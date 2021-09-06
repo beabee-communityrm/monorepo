@@ -19,7 +19,7 @@ jobs:
     steps:
       - id: setvars
         run: |
-          if [[ "${{ github.event.inputs.stage }}" == "dev" || "${{ github.ref }}" != "refs/heads/master" ]]; then
+          if [[ "${{ github.event.inputs.stage }}" == "dev" || "${{ github.ref }}" != "refs/heads/main" ]]; then
             echo "::set-output name=tag::dev"
           else
             echo "::set-output name=tag::latest"
