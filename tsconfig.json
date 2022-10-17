@@ -1,0 +1,10 @@
+{
+  "extends": "@tsconfig/recommended/tsconfig.json",
+  "include": ["./src"],
+  "compilerOptions": {
+    "target": "ES2021",
+    "module": "ES2020",
+    "declaration": true,
+    "outDir": "./dist/esm"
+  }
+}
