@@ -1,12 +1,12 @@
 {
   "name": "@beabee/beabee-common",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
   "types": "./dist/cjs/index.d.ts",
   "files": [
-    "./dist/"
+    "dist/"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
