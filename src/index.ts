@@ -1,3 +1,2 @@
-export function add(a: number, b: number): number {
-  return a + b;
-}
+export * from "./search";
+export * from "./data";
