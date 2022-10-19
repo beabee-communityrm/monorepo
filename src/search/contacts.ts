@@ -5,26 +5,6 @@ import {
   PermissionTypes,
 } from "../data";
 
-export const contactFilterNames = [
-  "firstname",
-  "lastname",
-  "email",
-  "joined",
-  "contributionType",
-  "contributionMonthlyAmount",
-  "contributionPeriod",
-  "deliveryOptIn",
-  "newsletterStatus",
-  "activePermission",
-  "activeMembership",
-  "membershipStarts",
-  "membershipExpires",
-  "manualPaymentSource",
-  "tags",
-] as const;
-
-export type ContactFilterName = typeof contactFilterNames[number];
-
 export const contactFilters = {
   firstname: {
     type: "text",
@@ -88,3 +68,5 @@ export const contactFilters = {
     nullable: true,
   },
 } as const;
+
+export type ContactFilterName = keyof typeof contactFilters;

@@ -1,17 +1,5 @@
 import { ItemStatus } from "../data";
 
-export const noticeFilterNames = [
-  "createdAt",
-  "updatedAt",
-  "name",
-  "expires",
-  "enabled",
-  "text",
-  "status",
-] as const;
-
-export type NoticeFilterName = typeof noticeFilterNames[number];
-
 export const noticeFilters = {
   createdAt: {
     type: "date",
@@ -42,3 +30,5 @@ export const noticeFilters = {
     ],
   },
 } as const;
+
+export type NoticeFilterName = keyof typeof noticeFilters;

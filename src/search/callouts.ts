@@ -1,16 +1,5 @@
 import { ItemStatus } from "../data";
 
-export const calloutFilterNames = [
-  "title",
-  "status",
-  "answeredBy",
-  "starts",
-  "expires",
-  "hidden",
-] as const;
-
-export type CalloutFilterName = typeof calloutFilterNames[number];
-
 export const calloutFilters = {
   title: {
     type: "text",
@@ -38,10 +27,7 @@ export const calloutFilters = {
   },
 } as const;
 
-export const calloutResponseFilterNames = ["member", "poll"] as const;
-
-export type CalloutResponseFilterName =
-  typeof calloutResponseFilterNames[number];
+export type CalloutFilterName = keyof typeof calloutFilters;
 
 export const calloutResponseFilters = {
   member: {
@@ -51,3 +37,5 @@ export const calloutResponseFilters = {
     type: "text",
   },
 } as const;
+
+export type CalloutResponseFilterName = keyof typeof calloutResponseFilters;
