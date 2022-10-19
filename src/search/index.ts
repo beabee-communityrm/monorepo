@@ -100,12 +100,13 @@ interface BaseFilterArgs {
   nullable?: boolean;
 }
 
-interface EnumFilterArgs extends BaseFilterArgs {
+export interface EnumFilterArgs<T extends readonly string[] = string[]>
+  extends BaseFilterArgs {
   type: "enum";
-  options: string[];
+  options: T;
 }
 
-interface OtherFilterArgs extends BaseFilterArgs {
+export interface OtherFilterArgs extends BaseFilterArgs {
   type: Exclude<FilterType, "enum">;
 }
 
@@ -152,4 +153,4 @@ export function convertFiltersToRules(
   };
 }
 
-export * as contacts from "./contacts";
+export * from "./contacts";

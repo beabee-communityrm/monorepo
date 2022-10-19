@@ -1,11 +1,10 @@
-import type { Filters } from ".";
 import {
   ContributionPeriod,
   ContributionType,
   NewsletterStatus,
 } from "../data";
 
-export const filterNames = [
+export const contactFilterNames = [
   "firstname",
   "lastname",
   "email",
@@ -23,9 +22,9 @@ export const filterNames = [
   "tags",
 ] as const;
 
-export type ContactFilterName = typeof filterNames[number];
+export type ContactFilterName = typeof contactFilterNames[number];
 
-export const filters: Filters<ContactFilterName> = {
+export const contactFilters = {
   firstname: {
     type: "text",
   },
@@ -87,4 +86,4 @@ export const filters: Filters<ContactFilterName> = {
     type: "array",
     nullable: true,
   },
-};
+} as const;
