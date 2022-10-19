@@ -37,3 +37,17 @@ export const calloutFilters = {
     type: "boolean",
   },
 } as const;
+
+export const calloutResponseFilterNames = ["member", "poll"] as const;
+
+export type CalloutResponseFilterName =
+  typeof calloutResponseFilterNames[number];
+
+export const calloutResponseFilters = {
+  member: {
+    type: "contact",
+  },
+  poll: {
+    type: "text",
+  },
+} as const;
