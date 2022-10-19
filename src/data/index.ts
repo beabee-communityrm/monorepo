@@ -30,3 +30,13 @@ export enum PaymentMethod {
   StripeBACS = "s_bacs",
   GoCardlessDirectDebit = "gc_direct-debit",
 }
+
+export enum PaymentStatus {
+  Pending = "pending",
+  Successful = "successful",
+  Failed = "failed",
+  Cancelled = "cancelled",
+}
+
+export const PermissionTypes = ["member", "admin", "superadmin"] as const;
+export type PermissionType = typeof PermissionTypes[number];
