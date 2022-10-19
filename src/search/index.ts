@@ -1,20 +1,23 @@
-export type GetPaginatedQueryRuleOperator =
-  | "equal"
-  | "not_equal"
-  | "less"
-  | "less_or_equal"
-  | "greater"
-  | "greater_or_equal"
-  | "between"
-  | "not_between"
-  | "begins_with"
-  | "not_begins_with"
-  | "contains"
-  | "not_contains"
-  | "ends_with"
-  | "not_ends_with"
-  | "is_empty"
-  | "is_not_empty";
+export const operators = [
+  "equal",
+  "not_equal",
+  "less",
+  "less_or_equal",
+  "greater",
+  "greater_or_equal",
+  "between",
+  "not_between",
+  "begins_with",
+  "not_begins_with",
+  "contains",
+  "not_contains",
+  "ends_with",
+  "not_ends_with",
+  "is_empty",
+  "is_not_empty",
+] as const;
+
+export type GetPaginatedQueryRuleOperator = typeof operators[number];
 
 export type GetPaginatedQueryRuleValue = string | number | boolean;
 
@@ -77,7 +80,7 @@ export const nullableOperators = {
   is_not_empty: { args: 0 },
 };
 
-export const operators: Record<
+export const operationParams: Record<
   FilterType,
   Partial<Record<FilterOperator, FilterOperatorParams>>
 > = {
