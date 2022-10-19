@@ -10,6 +10,13 @@ export enum ContributionType {
   None = "None",
 }
 
+export enum ItemStatus {
+  Draft = "draft",
+  Scheduled = "scheduled",
+  Open = "open",
+  Ended = "ended",
+}
+
 export enum MembershipStatus {
   Active = "active",
   Expiring = "expiring",

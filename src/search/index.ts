@@ -45,7 +45,8 @@ export type FilterType =
   | "number"
   | "boolean"
   | "array"
-  | "enum";
+  | "enum"
+  | "contact";
 
 export type FilterValue = GetPaginatedQueryRuleValue;
 export type FilterOperator = GetPaginatedQueryRuleOperator;
@@ -93,6 +94,7 @@ export const operators: Record<
   boolean: { equal },
   array: arrayOperators,
   enum: equalityOperators,
+  contact: equalityOperators,
 };
 
 interface BaseFilterArgs {
