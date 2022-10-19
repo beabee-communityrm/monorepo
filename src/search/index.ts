@@ -105,7 +105,7 @@ interface BaseFilterArgs {
   nullable?: boolean;
 }
 
-export interface EnumFilterArgs<T extends readonly string[] = string[]>
+export interface EnumFilterArgs<T extends readonly string[] = readonly string[]>
   extends BaseFilterArgs {
   type: "enum";
   options: T;
