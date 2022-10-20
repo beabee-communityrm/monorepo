@@ -23,15 +23,15 @@ export type RuleOperator = typeof ruleOperators[number];
 
 export type RuleValue = string | number | boolean;
 
-export interface Rule<T> {
-  field: T;
+export interface Rule<Field extends string> {
+  field: Field;
   operator: RuleOperator;
   value: RuleValue[];
 }
 
-export interface RuleGroup<T> {
+export interface RuleGroup<Field extends string> {
   condition: "AND" | "OR";
-  rules: (RuleGroup<T> | Rule<T>)[];
+  rules: (RuleGroup<Field> | Rule<Field>)[];
 }
 
 // *** Definitions for filters ***
@@ -129,19 +129,19 @@ export interface Paginated<T> {
   total: number;
 }
 
-export interface PaginatedQuery<T> {
+export interface PaginatedQuery<Field extends string> {
   limit?: number;
   offset?: number;
   sort?: string;
   order?: "ASC" | "DESC";
-  rules?: RuleGroup<T>;
+  rules?: RuleGroup<Field>;
 }
 
 // *** Helper methods ***
 
-export function isRuleGroup<T>(
-  ruleOrGroup: Rule<T> | RuleGroup<T>
-): ruleOrGroup is RuleGroup<T> {
+export function isRuleGroup<Field extends string>(
+  ruleOrGroup: Rule<Field> | RuleGroup<Field>
+): ruleOrGroup is RuleGroup<Field> {
   return "condition" in ruleOrGroup;
 }
 
