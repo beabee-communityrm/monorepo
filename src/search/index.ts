@@ -80,7 +80,7 @@ export const nullableOperators = {
   is_not_empty: { args: 0 },
 };
 
-export const operationParams: Record<
+export const operatorsByType: Record<
   FilterType,
   Partial<Record<FilterOperator, FilterOperatorParams>>
 > = {
@@ -123,6 +123,49 @@ export interface Filter {
   id: string;
   operator: FilterOperator;
   values: FilterValue[];
+}
+
+export function isRuleGroup<T>(
+  ruleOrGroup: GetPaginatedQueryRule<T> | GetPaginatedQueryRuleGroup<T>
+): ruleOrGroup is GetPaginatedQueryRuleGroup<T> {
+  return "condition" in ruleOrGroup;
+}
+
+export function validateRule<Field extends string>(
+  filters: Filters<Field>,
+  rule: GetPaginatedQueryRule<string>
+): rule is GetPaginatedQueryRule<Field> {
+  const filter = filters[rule.field as Field];
+  if (!filter) {
+    return false; // Invalid field
+  }
+
+  const operator = operatorsByType[filter.type][rule.operator];
+  if (!operator) {
+    return false; // Invalid operator
+  }
+
+  const values = Array.isArray(rule.value) ? rule.value : [rule.value];
+  if (operator.args !== values.length) {
+    return false; // Invalid number of args
+  }
+
+  return true;
+}
+
+export function validateRuleGroup<Field extends string>(
+  filters: Filters<Field>,
+  ruleGroup: GetPaginatedQueryRuleGroup<string>
+): ruleGroup is GetPaginatedQueryRuleGroup<Field> {
+  for (const rule of ruleGroup.rules) {
+    const valid = isRuleGroup(rule)
+      ? validateRuleGroup(filters, rule)
+      : validateRule(filters, rule);
+    if (!valid) {
+      return false;
+    }
+  }
+  return true;
 }
 
 export function convertRulesToFilters(
