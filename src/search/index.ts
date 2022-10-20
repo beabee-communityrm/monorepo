@@ -1,4 +1,6 @@
-export const operators = [
+// *** Definitions for rules ***
+
+export const ruleOperators = [
   "equal",
   "not_equal",
   "less",
@@ -17,30 +19,23 @@ export const operators = [
   "is_not_empty",
 ] as const;
 
-export type GetPaginatedQueryRuleOperator = typeof operators[number];
+export type RuleOperator = typeof ruleOperators[number];
 
-export type GetPaginatedQueryRuleValue = string | number | boolean;
+export type RuleValue = string | number | boolean;
 
-export interface GetPaginatedQueryRule<T> {
+export interface Rule<T> {
   field: T;
-  operator: GetPaginatedQueryRuleOperator;
-  value: GetPaginatedQueryRuleValue[];
+  operator: RuleOperator;
+  value: RuleValue[];
 }
 
-export interface GetPaginatedQueryRuleGroup<T> {
+export interface RuleGroup<T> {
   condition: "AND" | "OR";
-  rules: (GetPaginatedQueryRuleGroup<T> | GetPaginatedQueryRule<T>)[];
+  rules: (RuleGroup<T> | Rule<T>)[];
 }
 
-export interface GetPaginatedQuery<T> {
-  limit?: number;
-  offset?: number;
-  sort?: string;
-  order?: "ASC" | "DESC";
-  rules?: GetPaginatedQueryRuleGroup<T>;
-}
-
-// TODO: Combine these with above
+// *** Definitions for filters ***
+// TODO: Combine these with rules
 
 export type FilterType =
   | "text"
@@ -51,8 +46,8 @@ export type FilterType =
   | "enum"
   | "contact";
 
-export type FilterValue = GetPaginatedQueryRuleValue;
-export type FilterOperator = GetPaginatedQueryRuleOperator;
+export type FilterValue = RuleValue;
+export type FilterOperator = RuleOperator;
 
 export interface FilterOperatorParams {
   args: number;
@@ -125,16 +120,35 @@ export interface Filter {
   values: FilterValue[];
 }
 
+// *** Definitions for pagination ***
+
+export interface Paginated<T> {
+  items: T[];
+  offset: number;
+  count: number;
+  total: number;
+}
+
+export interface PaginatedQuery<T> {
+  limit?: number;
+  offset?: number;
+  sort?: string;
+  order?: "ASC" | "DESC";
+  rules?: RuleGroup<T>;
+}
+
+// *** Helper methods ***
+
 export function isRuleGroup<T>(
-  ruleOrGroup: GetPaginatedQueryRule<T> | GetPaginatedQueryRuleGroup<T>
-): ruleOrGroup is GetPaginatedQueryRuleGroup<T> {
+  ruleOrGroup: Rule<T> | RuleGroup<T>
+): ruleOrGroup is RuleGroup<T> {
   return "condition" in ruleOrGroup;
 }
 
 export function validateRule<Field extends string>(
   filters: Filters<Field>,
-  rule: GetPaginatedQueryRule<string>
-): rule is GetPaginatedQueryRule<Field> {
+  rule: Rule<string>
+): rule is Rule<Field> {
   const filter = filters[rule.field as Field];
   if (!filter) {
     return false; // Invalid field
@@ -154,8 +168,8 @@ export function validateRule<Field extends string>(
 
 export function validateRuleGroup<Field extends string>(
   filters: Filters<Field>,
-  ruleGroup: GetPaginatedQueryRuleGroup<string>
-): ruleGroup is GetPaginatedQueryRuleGroup<Field> {
+  ruleGroup: RuleGroup<string>
+): ruleGroup is RuleGroup<Field> {
   for (const rule of ruleGroup.rules) {
     const valid = isRuleGroup(rule)
       ? validateRuleGroup(filters, rule)
@@ -167,17 +181,17 @@ export function validateRuleGroup<Field extends string>(
   return true;
 }
 
-export function convertRulesToFilters(
-  rules: GetPaginatedQuery<string>["rules"]
+export function convertRuleGroupToFilters(
+  ruleGroup?: RuleGroup<string>
 ): Filter[] | null {
-  if (!rules) {
+  if (!ruleGroup) {
     return null;
   }
 
   // TODO: how to handle groups?
-  const rulesWithoutGroups = rules.rules.filter(
-    (rule) => "operator" in rule
-  ) as GetPaginatedQueryRule<string>[];
+  const rulesWithoutGroups = ruleGroup.rules.filter(
+    (rule) => !isRuleGroup(rule)
+  ) as Rule<string>[];
 
   return rulesWithoutGroups.map((rule) => ({
     id: rule.field,
@@ -186,10 +200,10 @@ export function convertRulesToFilters(
   }));
 }
 
-export function convertFiltersToRules(
+export function convertFiltersToRuleGroup(
   matchType: "all" | "any",
   filters: Filter[]
-): GetPaginatedQuery<string>["rules"] {
+): RuleGroup<string> {
   return {
     condition: matchType === "all" ? "AND" : "OR",
     rules: filters.map((filter) => ({
