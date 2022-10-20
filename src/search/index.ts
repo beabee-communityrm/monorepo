@@ -24,7 +24,7 @@ export type GetPaginatedQueryRuleValue = string | number | boolean;
 export interface GetPaginatedQueryRule<T> {
   field: T;
   operator: GetPaginatedQueryRuleOperator;
-  value: GetPaginatedQueryRuleValue | GetPaginatedQueryRuleValue[];
+  value: GetPaginatedQueryRuleValue[];
 }
 
 export interface GetPaginatedQueryRuleGroup<T> {
@@ -145,8 +145,7 @@ export function validateRule<Field extends string>(
     return false; // Invalid operator
   }
 
-  const values = Array.isArray(rule.value) ? rule.value : [rule.value];
-  if (operator.args !== values.length) {
+  if (operator.args !== rule.value.length) {
     return false; // Invalid number of args
   }
 
@@ -183,7 +182,7 @@ export function convertRulesToFilters(
   return rulesWithoutGroups.map((rule) => ({
     id: rule.field,
     operator: rule.operator,
-    values: Array.isArray(rule.value) ? [...rule.value] : [rule.value],
+    values: [...rule.value],
   }));
 }
 
