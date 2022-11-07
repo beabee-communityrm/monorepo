@@ -224,7 +224,7 @@ export function validateRule<Field extends string>(
   }
   if (
     filter.type === "date" &&
-    rule.value.some((v) => isValid(parseISO(v as string)))
+    rule.value.some((v) => !isValid(parseISO(v as string)))
   ) {
     return false; // Invalid date
   }
