@@ -23,15 +23,50 @@ export type RuleOperator = typeof ruleOperators[number];
 
 export type RuleValue = string | number | boolean;
 
-export interface Rule<Field extends string> {
-  field: Field;
+export interface Rule {
+  field: string;
   operator: RuleOperator;
   value: RuleValue[];
 }
 
-export interface RuleGroup<Field extends string> {
+export interface RuleGroup {
   condition: "AND" | "OR";
-  rules: (RuleGroup<Field> | Rule<Field>)[];
+  rules: (RuleGroup | Rule)[];
+}
+
+interface BaseValidatedRule<T extends FilterType, F extends string, V> {
+  type: T;
+  field: F;
+  operator: keyof typeof operatorsByType[T];
+  value: V[];
+}
+
+type ValidatedNumberRule<Field extends string> = BaseValidatedRule<
+  "number",
+  Field,
+  number
+>;
+
+type ValidatedStringRule<Field extends string> = BaseValidatedRule<
+  Exclude<FilterType, "number" | "boolean">,
+  Field,
+  string
+>;
+
+type ValidatedBooleanRule<Field extends string> = BaseValidatedRule<
+  "boolean",
+  Field,
+  boolean
+>;
+
+export type ValidatedRule<Field extends string> =
+  | ValidatedNumberRule<Field>
+  | ValidatedStringRule<Field>
+  | ValidatedBooleanRule<Field>;
+
+export interface ValidatedRuleGroup<Field extends string> {
+  condition: "AND" | "OR";
+  rules: (ValidatedRuleGroup<Field> | ValidatedRule<Field>)[];
 }
 
 // *** Definitions for filters ***
@@ -129,26 +164,26 @@ export interface Paginated<T> {
   total: number;
 }
 
-export interface PaginatedQuery<Field extends string> {
+export interface PaginatedQuery {
   limit?: number;
   offset?: number;
   sort?: string;
   order?: "ASC" | "DESC";
-  rules?: RuleGroup<Field>;
+  rules?: RuleGroup;
 }
 
 // *** Helper methods ***
 
-export function isRuleGroup<Field extends string>(
-  ruleOrGroup: Rule<Field> | RuleGroup<Field>
-): ruleOrGroup is RuleGroup<Field> {
+export function isRuleGroup(
+  ruleOrGroup: Rule | RuleGroup
+): ruleOrGroup is RuleGroup {
   return "condition" in ruleOrGroup;
 }
 
 export function validateRule<Field extends string>(
   filters: Filters<Field>,
-  rule: Rule<string>
-): rule is Rule<Field> {
+  rule: Rule
+): ValidatedRule<Field> | false {
   const filter = filters[rule.field as Field];
   if (!filter) {
     return false; // Invalid field
@@ -159,17 +194,36 @@ export function validateRule<Field extends string>(
     return false; // Invalid operator
   }
 
-  if (operator.args !== rule.value.length) {
-    return false; // Invalid number of args
+  const expectedType =
+    filter.type === "boolean" || filter.type === "number"
+      ? filter.type
+      : "string";
+
+  if (rule.value.some((v) => typeof v !== expectedType)) {
+    return false; // Invalid value type
+  }
+  if (
+    filter.type === "date" &&
+    rule.value.some((v) => isNaN(+new Date(v as string)))
+  ) {
+    return false; // Invalid date
   }
 
-  return true;
+  return {
+    ...rule,
+    type: filter.type,
+  } as ValidatedRule<Field>;
 }
 
 export function validateRuleGroup<Field extends string>(
   filters: Filters<Field>,
-  ruleGroup: RuleGroup<string>
-): ruleGroup is RuleGroup<Field> {
+  ruleGroup: RuleGroup
+): ValidatedRuleGroup<Field> | false {
+  const validatedRuleGroup: ValidatedRuleGroup<Field> = {
+    condition: ruleGroup.condition,
+    rules: [],
+  };
+
   for (const rule of ruleGroup.rules) {
     const valid = isRuleGroup(rule)
       ? validateRuleGroup(filters, rule)
@@ -177,12 +231,13 @@ export function validateRuleGroup<Field extends string>(
     if (!valid) {
       return false;
     }
+    validatedRuleGroup.rules.push(valid);
   }
-  return true;
+  return validatedRuleGroup;
 }
 
 export function convertRuleGroupToFilters(
-  ruleGroup?: RuleGroup<string>
+  ruleGroup?: RuleGroup
 ): Filter[] | null {
   if (!ruleGroup) {
     return null;
@@ -191,7 +246,7 @@ export function convertRuleGroupToFilters(
   // TODO: how to handle groups?
   const rulesWithoutGroups = ruleGroup.rules.filter(
     (rule) => !isRuleGroup(rule)
-  ) as Rule<string>[];
+  ) as Rule[];
 
   return rulesWithoutGroups.map((rule) => ({
     id: rule.field,
@@ -203,7 +258,7 @@ export function convertRuleGroupToFilters(
 export function convertFiltersToRuleGroup(
   matchType: "all" | "any",
   filters: Filter[]
-): RuleGroup<string> {
+): RuleGroup {
   return {
     condition: matchType === "all" ? "AND" : "OR",
     rules: filters.map((filter) => ({
