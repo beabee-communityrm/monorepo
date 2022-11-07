@@ -1,6 +1,6 @@
 {
   "name": "@beabee/beabee-common",
-  "version": "1.7.1",
+  "version": "1.7.2",
   "description": "",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
@@ -28,5 +28,8 @@
     "prettier": "^2.7.1",
     "rimraf": "^3.0.2",
     "typescript": "^4.8.4"
+  },
+  "dependencies": {
+    "date-fns": "^2.29.3"
   }
 }

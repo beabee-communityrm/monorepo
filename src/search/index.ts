@@ -1,3 +1,6 @@
+import isValid from "date-fns/isValid";
+import parseISO from "date-fns/parseISO";
+
 // *** Definitions for rules ***
 
 export const ruleOperators = [
@@ -221,7 +224,7 @@ export function validateRule<Field extends string>(
   }
   if (
     filter.type === "date" &&
-    rule.value.some((v) => isNaN(+new Date(v as string)))
+    rule.value.some((v) => isValid(parseISO(v as string)))
   ) {
     return false; // Invalid date
   }
