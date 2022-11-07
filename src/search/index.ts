@@ -88,9 +88,10 @@ export interface FilterOperatorParams {
   args: number;
 }
 
-const equal = { args: 1 };
-
-const equalityOperators = { equal, not_equal: { args: 1 } };
+const equalityOperators = {
+  equal: { args: 1 },
+  not_equal: { args: 1 },
+};
 const numericOperators = {
   ...equalityOperators,
   between: { args: 2 },
@@ -104,16 +105,13 @@ const arrayOperators = {
   contains: { args: 1 },
   not_contains: { args: 1 },
 };
-
+// Special operator can be applied across all fields if they are nullable
 export const nullableOperators = {
   is_empty: { args: 0 },
   is_not_empty: { args: 0 },
 };
 
-export const operatorsByType: Record<
-  FilterType,
-  Partial<Record<FilterOperator, FilterOperatorParams>>
-> = {
+export const operatorsByType = {
   text: {
     ...equalityOperators,
     ...arrayOperators,
@@ -124,11 +122,17 @@ export const operatorsByType: Record<
   },
   date: numericOperators,
   number: numericOperators,
-  boolean: { equal },
+  boolean: { equal: equalityOperators.equal },
   array: arrayOperators,
   enum: equalityOperators,
   contact: equalityOperators,
-};
+} as const;
+
+// More general type to allow mapping while maintaining full type above
+const operatorsByTypeMap: Record<
+  FilterType,
+  Partial<Record<FilterOperator, FilterOperatorParams>>
+> = operatorsByType;
 
 interface BaseFilterArgs {
   type: FilterType;
@@ -189,9 +193,22 @@ export function validateRule<Field extends string>(
     return false; // Invalid field
   }
 
-  const operator = operatorsByType[filter.type][rule.operator];
-  if (!operator) {
-    return false; // Invalid operator
+  if (rule.operator in nullableOperators) {
+    if (!filter.nullable && filter.type !== "text") {
+      return false; // Field cannot be empty (text can always be empty)
+    }
+    if (rule.value.length !== 0) {
+      return false; // Should have no args
+    }
+  } else {
+    const operator = operatorsByTypeMap[filter.type][rule.operator];
+    if (!operator) {
+      return false; // Invalid operator
+    }
+
+    if (operator.args !== rule.value.length) {
+      return false; // Invalid number of args
+    }
   }
 
   const expectedType =
