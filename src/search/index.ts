@@ -1,6 +1,3 @@
-import isValid from "date-fns/isValid";
-import parseISO from "date-fns/parseISO";
-
 // *** Definitions for rules ***
 
 export const ruleOperators = [
@@ -73,7 +70,6 @@ export interface ValidatedRuleGroup<Field extends string> {
 }
 
 // *** Definitions for filters ***
-// TODO: Combine these with rules
 
 export type FilterType =
   | "text"
@@ -84,12 +80,41 @@ export type FilterType =
   | "enum"
   | "contact";
 
-export type FilterValue = RuleValue;
-export type FilterOperator = RuleOperator;
-
 export interface FilterOperatorParams {
   args: number;
 }
+
+interface BaseFilterArgs {
+  type: FilterType;
+  nullable?: boolean;
+}
+
+export interface EnumFilterArgs<T extends readonly string[] = readonly string[]>
+  extends BaseFilterArgs {
+  type: "enum";
+  options: T;
+}
+
+export interface OtherFilterArgs extends BaseFilterArgs {
+  type: Exclude<FilterType, "enum">;
+}
+
+export type FilterArgs = EnumFilterArgs | OtherFilterArgs;
+
+export type Filters<T extends string = string> = Record<T, FilterArgs>;
+
+// TODO: Merge these with Rules
+
+export type FilterValue = RuleValue;
+export type FilterOperator = RuleOperator;
+
+export interface Filter {
+  id: string;
+  operator: FilterOperator;
+  values: FilterValue[];
+}
+
+// *** Operator definitions ***
 
 const equalityOperators = {
   equal: { args: 1 },
@@ -132,35 +157,10 @@ export const operatorsByType = {
 } as const;
 
 // More general type to allow mapping while maintaining full type above
-const operatorsByTypeMap: Record<
+export const operatorsByTypeMap: Record<
   FilterType,
   Partial<Record<FilterOperator, FilterOperatorParams>>
 > = operatorsByType;
-
-interface BaseFilterArgs {
-  type: FilterType;
-  nullable?: boolean;
-}
-
-export interface EnumFilterArgs<T extends readonly string[] = readonly string[]>
-  extends BaseFilterArgs {
-  type: "enum";
-  options: T;
-}
-
-export interface OtherFilterArgs extends BaseFilterArgs {
-  type: Exclude<FilterType, "enum">;
-}
-
-export type FilterArgs = EnumFilterArgs | OtherFilterArgs;
-
-export type Filters<T extends string = string> = Record<T, FilterArgs>;
-
-export interface Filter {
-  id: string;
-  operator: FilterOperator;
-  values: FilterValue[];
-}
 
 // *** Definitions for pagination ***
 
@@ -177,141 +177,6 @@ export interface PaginatedQuery {
   sort?: string;
   order?: "ASC" | "DESC";
   rules?: RuleGroup;
-}
-
-// *** Helper methods ***
-
-export function isRuleGroup(
-  ruleOrGroup: Rule | RuleGroup
-): ruleOrGroup is RuleGroup {
-  return "condition" in ruleOrGroup;
-}
-
-export class InvalidRule extends Error {
-  constructor(readonly rule: Rule, readonly message: string) {
-    super();
-    Object.setPrototypeOf(this, InvalidRule.prototype);
-  }
-}
-
-export function validateRule<Field extends string>(
-  filters: Filters<Field>,
-  rule: Rule
-): ValidatedRule<Field> {
-  const filter = filters[rule.field as Field];
-  if (!filter) {
-    throw new InvalidRule(rule, `Invalid field: ${rule.field}`);
-  }
-
-  if (rule.operator in nullableOperators) {
-    // Field cannot be empty (except text which can always be empty)
-    if (!filter.nullable && filter.type !== "text") {
-      throw new InvalidRule(
-        rule,
-        `Invalid nullable operator: field is not nullable`
-      );
-    }
-    if (rule.value.length !== 0) {
-      throw new InvalidRule(
-        rule,
-        `Invalid operator argument count: ${rule.operator} needs 0, ${rule.value.length} given`
-      );
-    }
-  } else {
-    const operator = operatorsByTypeMap[filter.type][rule.operator];
-    if (!operator) {
-      throw new InvalidRule(
-        rule,
-        `Invalid operator for type: ${filter.type} type doesn't define ${rule.operator}`
-      );
-    }
-
-    if (operator.args !== rule.value.length) {
-      throw new InvalidRule(
-        rule,
-        `Invalid operator argument count: ${rule.operator} needs ${operator.args}, ${rule.value.length} given`
-      );
-    }
-  }
-
-  const expectedType =
-    filter.type === "boolean" || filter.type === "number"
-      ? filter.type
-      : "string";
-
-  if (rule.value.some((v) => typeof v !== expectedType)) {
-    throw new InvalidRule(
-      rule,
-      `Invalid operator argument type: ${
-        rule.operator
-      } needs ${expectedType}, ${rule.value.map((v) => typeof v)} given`
-    );
-  }
-  if (
-    filter.type === "date" &&
-    rule.value.some((v) => !isValid(parseISO(v as string)))
-  ) {
-    throw new InvalidRule(
-      rule,
-      `Invalid operator argument: date type needs valid absolute or relative date, ${rule.value} given`
-    );
-  }
-
-  return {
-    ...rule,
-    type: filter.type,
-  } as ValidatedRule<Field>;
-}
-
-export function validateRuleGroup<Field extends string>(
-  filters: Filters<Field>,
-  ruleGroup: RuleGroup
-): ValidatedRuleGroup<Field> {
-  const validatedRuleGroup: ValidatedRuleGroup<Field> = {
-    condition: ruleGroup.condition,
-    rules: [],
-  };
-
-  for (const rule of ruleGroup.rules) {
-    const valid = isRuleGroup(rule)
-      ? validateRuleGroup(filters, rule)
-      : validateRule(filters, rule);
-    validatedRuleGroup.rules.push(valid);
-  }
-  return validatedRuleGroup;
-}
-
-export function convertRuleGroupToFilters(
-  ruleGroup?: RuleGroup
-): Filter[] | null {
-  if (!ruleGroup) {
-    return null;
-  }
-
-  // TODO: how to handle groups?
-  const rulesWithoutGroups = ruleGroup.rules.filter(
-    (rule) => !isRuleGroup(rule)
-  ) as Rule[];
-
-  return rulesWithoutGroups.map((rule) => ({
-    id: rule.field,
-    operator: rule.operator,
-    values: [...rule.value],
-  }));
-}
-
-export function convertFiltersToRuleGroup(
-  matchType: "all" | "any",
-  filters: Filter[]
-): RuleGroup {
-  return {
-    condition: matchType === "all" ? "AND" : "OR",
-    rules: filters.map((filter) => ({
-      field: filter.id,
-      operator: filter.operator,
-      value: filter.values,
-    })),
-  };
 }
 
 export * from "./callouts";
