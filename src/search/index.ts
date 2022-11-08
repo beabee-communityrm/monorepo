@@ -187,7 +187,7 @@ export function isRuleGroup(
   return "condition" in ruleOrGroup;
 }
 
-export default class InvalidRule extends Error {
+export class InvalidRule extends Error {
   constructor(readonly rule: Rule, readonly message: string) {
     super();
     Object.setPrototypeOf(this, InvalidRule.prototype);
