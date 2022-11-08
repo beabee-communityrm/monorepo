@@ -187,30 +187,50 @@ export function isRuleGroup(
   return "condition" in ruleOrGroup;
 }
 
+export default class InvalidRule extends Error {
+  constructor(readonly rule: Rule, readonly message: string) {
+    super();
+    Object.setPrototypeOf(this, InvalidRule.prototype);
+  }
+}
+
 export function validateRule<Field extends string>(
   filters: Filters<Field>,
   rule: Rule
-): ValidatedRule<Field> | false {
+): ValidatedRule<Field> {
   const filter = filters[rule.field as Field];
   if (!filter) {
-    return false; // Invalid field
+    throw new InvalidRule(rule, `Invalid field: ${rule.field}`);
   }
 
   if (rule.operator in nullableOperators) {
+    // Field cannot be empty (except text which can always be empty)
     if (!filter.nullable && filter.type !== "text") {
-      return false; // Field cannot be empty (text can always be empty)
+      throw new InvalidRule(
+        rule,
+        `Invalid nullable operator: field is not nullable`
+      );
     }
     if (rule.value.length !== 0) {
-      return false; // Should have no args
+      throw new InvalidRule(
+        rule,
+        `Invalid operator argument count: ${rule.operator} needs 0, ${rule.value.length} given`
+      );
     }
   } else {
     const operator = operatorsByTypeMap[filter.type][rule.operator];
     if (!operator) {
-      return false; // Invalid operator
+      throw new InvalidRule(
+        rule,
+        `Invalid operator for type: ${filter.type} type doesn't define ${rule.operator}`
+      );
     }
 
     if (operator.args !== rule.value.length) {
-      return false; // Invalid number of args
+      throw new InvalidRule(
+        rule,
+        `Invalid operator argument count: ${rule.operator} needs ${operator.args}, ${rule.value.length} given`
+      );
     }
   }
 
@@ -220,13 +240,21 @@ export function validateRule<Field extends string>(
       : "string";
 
   if (rule.value.some((v) => typeof v !== expectedType)) {
-    return false; // Invalid value type
+    throw new InvalidRule(
+      rule,
+      `Invalid operator argument type: ${
+        rule.operator
+      } needs ${expectedType}, ${rule.value.map((v) => typeof v)} given`
+    );
   }
   if (
     filter.type === "date" &&
     rule.value.some((v) => !isValid(parseISO(v as string)))
   ) {
-    return false; // Invalid date
+    throw new InvalidRule(
+      rule,
+      `Invalid operator argument: date type needs valid absolute or relative date, ${rule.value} given`
+    );
   }
 
   return {
@@ -238,7 +266,7 @@ export function validateRule<Field extends string>(
 export function validateRuleGroup<Field extends string>(
   filters: Filters<Field>,
   ruleGroup: RuleGroup
-): ValidatedRuleGroup<Field> | false {
+): ValidatedRuleGroup<Field> {
   const validatedRuleGroup: ValidatedRuleGroup<Field> = {
     condition: ruleGroup.condition,
     rules: [],
@@ -248,9 +276,6 @@ export function validateRuleGroup<Field extends string>(
     const valid = isRuleGroup(rule)
       ? validateRuleGroup(filters, rule)
       : validateRule(filters, rule);
-    if (!valid) {
-      return false;
-    }
     validatedRuleGroup.rules.push(valid);
   }
   return validatedRuleGroup;
