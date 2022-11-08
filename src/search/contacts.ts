@@ -18,6 +18,9 @@ export const contactFilters = {
   joined: {
     type: "date",
   },
+  contributionCancelled: {
+    type: "date",
+  },
   contributionType: {
     type: "enum",
     options: [
