@@ -34,29 +34,34 @@ export interface RuleGroup {
   rules: (RuleGroup | Rule)[];
 }
 
-interface BaseValidatedRule<T extends FilterType, F extends string, V> {
+// Validated rules
+
+export type ValidatedRuleValue<T extends FilterType> = T extends "number"
+  ? number
+  : T extends "boolean"
+  ? boolean
+  : string;
+
+interface BaseValidatedRule<T extends FilterType, F extends string> {
   type: T;
   field: F;
   operator: keyof typeof operatorsByType[T];
-  value: V[];
+  value: ValidatedRuleValue<T>[];
 }
 
 type ValidatedNumberRule<Field extends string> = BaseValidatedRule<
   "number",
-  Field,
-  number
+  Field
 >;
 
 type ValidatedStringRule<Field extends string> = BaseValidatedRule<
   Exclude<FilterType, "number" | "boolean">,
-  Field,
-  string
+  Field
 >;
 
 type ValidatedBooleanRule<Field extends string> = BaseValidatedRule<
   "boolean",
-  Field,
-  boolean
+  Field
 >;
 
 export type ValidatedRule<Field extends string> =
