@@ -1,6 +1,12 @@
 import add from "date-fns/add";
 import isValid from "date-fns/isValid";
 import parseISO from "date-fns/parseISO";
+import startOfDay from "date-fns/startOfDay";
+import startOfHour from "date-fns/startOfHour";
+import startOfMinute from "date-fns/startOfMinute";
+import startOfMonth from "date-fns/startOfMonth";
+import startOfSecond from "date-fns/startOfSecond";
+import startOfYear from "date-fns/startOfYear";
 
 // Must be ordered from highest resolution to lowest (seconds to years)
 const dateUnits = ["s", "m", "h", "d", "M", "y"] as const;
@@ -13,6 +19,15 @@ const dateUnitMap: Record<DateUnit, keyof Duration> = {
   h: "hours",
   m: "minutes",
   s: "seconds",
+};
+
+const startOf: Record<DateUnit, (d: Date) => Date> = {
+  y: startOfYear,
+  M: startOfMonth,
+  d: startOfDay,
+  h: startOfHour,
+  m: startOfMinute,
+  s: startOfSecond,
 };
 
 const relativeDate = /\$now(?<units>\(((y|M|d|h|m|s):(-?\d+),?)+\))?/;
@@ -51,7 +66,8 @@ export function parseDate(value: string, now?: Date): [Date, DateUnit] {
       .map(([unit]) => unit) as DateUnit[];
   }
 
-  return [date, getMinDateUnit(units) || "s"];
+  const minUnit = getMinDateUnit(units) || "s";
+  return [startOf[minUnit](date), minUnit];
 }
 
 export function getMinDateUnit(units: DateUnit[]): DateUnit | undefined {
