@@ -1,6 +1,5 @@
 import { InvalidRule } from "../error";
 import {
-  Filter,
   Filters,
   nullableOperators,
   operatorsByTypeMap,
@@ -102,37 +101,4 @@ export function validateRuleGroup<Field extends string>(
     validatedRuleGroup.rules.push(valid);
   }
   return validatedRuleGroup;
-}
-
-export function convertRuleGroupToFilters(
-  ruleGroup?: RuleGroup
-): Filter[] | null {
-  if (!ruleGroup) {
-    return null;
-  }
-
-  // TODO: how to handle groups?
-  const rulesWithoutGroups = ruleGroup.rules.filter(
-    (rule) => !isRuleGroup(rule)
-  ) as Rule[];
-
-  return rulesWithoutGroups.map((rule) => ({
-    id: rule.field,
-    operator: rule.operator,
-    values: [...rule.value],
-  }));
-}
-
-export function convertFiltersToRuleGroup(
-  matchType: "all" | "any",
-  filters: Filter[]
-): RuleGroup {
-  return {
-    condition: matchType === "all" ? "AND" : "OR",
-    rules: filters.map((filter) => ({
-      field: filter.id,
-      operator: filter.operator,
-      value: filter.values,
-    })),
-  };
 }

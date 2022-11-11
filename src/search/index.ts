@@ -85,10 +85,6 @@ export type FilterType =
   | "enum"
   | "contact";
 
-export interface FilterOperatorParams {
-  args: number;
-}
-
 interface BaseFilterArgs {
   type: FilterType;
   nullable?: boolean;
@@ -108,18 +104,11 @@ export type FilterArgs = EnumFilterArgs | OtherFilterArgs;
 
 export type Filters<T extends string = string> = Record<T, FilterArgs>;
 
-// TODO: Merge these with Rules
-
-export type FilterValue = RuleValue;
-export type FilterOperator = RuleOperator;
-
-export interface Filter {
-  id: string;
-  operator: FilterOperator;
-  values: FilterValue[];
-}
-
 // *** Operator definitions ***
+
+export interface RuleOperatorParams {
+  args: number;
+}
 
 const equalityOperators = {
   equal: { args: 1 },
@@ -164,7 +153,7 @@ export const operatorsByType = {
 // More general type to allow mapping while maintaining full type above
 export const operatorsByTypeMap: Record<
   FilterType,
-  Partial<Record<FilterOperator, FilterOperatorParams>>
+  Partial<Record<RuleOperator, RuleOperatorParams>>
 > = operatorsByType;
 
 // *** Definitions for pagination ***
