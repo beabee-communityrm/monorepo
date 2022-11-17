@@ -70,6 +70,8 @@ export function parseDate(value: string, now?: Date): [Date, DateUnit] {
   return [startOf[minUnit](date), minUnit];
 }
 
+export function getMinDateUnit(units: [DateUnit, ...DateUnit[]]): DateUnit;
+export function getMinDateUnit(units: DateUnit[]): DateUnit | undefined;
 export function getMinDateUnit(units: DateUnit[]): DateUnit | undefined {
   return dateUnits.find((unit) => units.includes(unit));
 }
