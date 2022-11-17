@@ -18,6 +18,9 @@ export const contactFilters = {
   joined: {
     type: "date",
   },
+  lastSeen: {
+    type: "date",
+  },
   contributionCancelled: {
     type: "date",
   },
