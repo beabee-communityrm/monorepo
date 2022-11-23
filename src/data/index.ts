@@ -11,6 +11,7 @@ export enum ContributionType {
 }
 
 export enum ItemStatus {
+  New = "new",
   Draft = "draft",
   Scheduled = "scheduled",
   Open = "open",
