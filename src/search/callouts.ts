@@ -33,7 +33,7 @@ export const calloutResponseFilters = {
   contact: {
     type: "contact",
   },
-  poll: {
+  callout: {
     type: "text",
   },
 } as const;
