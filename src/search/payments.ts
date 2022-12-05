@@ -1,5 +1,5 @@
 export const paymentFilters = {
-  member: {
+  contact: {
     type: "contact",
   },
   chargeDate: {

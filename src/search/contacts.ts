@@ -2,7 +2,7 @@ import {
   ContributionPeriod,
   ContributionType,
   NewsletterStatus,
-  PermissionTypes,
+  RoleTypes,
 } from "../data";
 
 export const contactFilters = {
@@ -54,7 +54,7 @@ export const contactFilters = {
   },
   activePermission: {
     type: "enum",
-    options: PermissionTypes,
+    options: RoleTypes,
   },
   activeMembership: {
     type: "boolean",

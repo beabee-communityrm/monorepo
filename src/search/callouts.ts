@@ -30,7 +30,7 @@ export const calloutFilters = {
 export type CalloutFilterName = keyof typeof calloutFilters;
 
 export const calloutResponseFilters = {
-  member: {
+  contact: {
     type: "contact",
   },
   poll: {

@@ -46,5 +46,5 @@ export enum PaymentStatus {
   Cancelled = "cancelled",
 }
 
-export const PermissionTypes = ["member", "admin", "superadmin"] as const;
-export type PermissionType = typeof PermissionTypes[number];
+export const RoleTypes = ["member", "admin", "superadmin"] as const;
+export type RoleType = typeof RoleTypes[number];
