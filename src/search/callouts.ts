@@ -36,6 +36,12 @@ export const calloutResponseFilters = {
   callout: {
     type: "text",
   },
+  createdAt: {
+    type: "date",
+  },
+  updatedAt: {
+    type: "date",
+  },
 } as const;
 
 export type CalloutResponseFilterName = keyof typeof calloutResponseFilters;
