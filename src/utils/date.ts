@@ -10,7 +10,7 @@ import startOfYear from "date-fns/startOfYear";
 
 // Must be ordered from highest resolution to lowest (seconds to years)
 const dateUnits = ["s", "m", "h", "d", "M", "y"] as const;
-type DateUnit = typeof dateUnits[number];
+type DateUnit = (typeof dateUnits)[number];
 
 const dateUnitMap: Record<DateUnit, keyof Duration> = {
   y: "years",
