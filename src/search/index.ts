@@ -19,7 +19,7 @@ export const ruleOperators = [
   "is_not_empty",
 ] as const;
 
-export type RuleOperator = typeof ruleOperators[number];
+export type RuleOperator = (typeof ruleOperators)[number];
 
 export type RuleValue = string | number | boolean;
 
@@ -45,7 +45,8 @@ export type ValidatedRuleValue<T extends FilterType> = T extends "number"
 interface BaseValidatedRule<T extends FilterType, F extends string> {
   type: T;
   field: F;
-  operator: keyof typeof operatorsByType[T];
+  param: string | undefined;
+  operator: keyof (typeof operatorsByType)[T];
   value: ValidatedRuleValue<T>[];
 }
 
@@ -83,7 +84,8 @@ export type FilterType =
   | "boolean"
   | "array"
   | "enum"
-  | "contact";
+  | "contact"
+  | "custom";
 
 interface BaseFilterArgs {
   type: FilterType;
@@ -152,6 +154,12 @@ export const operatorsByType = {
   array: arrayOperators,
   enum: equalityOperators,
   contact: equalityOperators,
+  custom: {
+    ...equalityOperators,
+    ...arrayOperators,
+    ...stringOperators,
+    ...numericOperators,
+  },
 } satisfies OperatorsByType;
 
 // More general type to allow mapping while maintaining full type above

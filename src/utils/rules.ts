@@ -20,7 +20,11 @@ export function validateRule<Field extends string>(
   filters: Filters<Field>,
   rule: Rule
 ): ValidatedRule<Field> {
-  const filter = filters[rule.field as Field];
+  const [fieldName, fieldParam] = rule.field.split(".", 2) as [
+    Field,
+    string | undefined
+  ];
+  const filter = filters[fieldName];
   if (!filter) {
     throw new InvalidRule(rule, `Invalid field: ${rule.field}`);
   }
@@ -80,8 +84,11 @@ export function validateRule<Field extends string>(
   }
 
   return {
-    ...rule,
+    field: fieldName,
+    param: fieldParam,
     type: filter.type,
+    operator: rule.operator,
+    value: rule.value,
   } as ValidatedRule<Field>;
 }
 
