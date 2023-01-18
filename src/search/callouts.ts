@@ -26,7 +26,7 @@ export const calloutFilters = {
   hidden: {
     type: "boolean",
   },
-} satisfies Filters;
+} as const satisfies Filters;
 
 export type CalloutFilterName = keyof typeof calloutFilters;
 
@@ -48,6 +48,6 @@ export const calloutResponseFilters = {
     type: "custom",
     nullable: true,
   },
-} satisfies Filters;
+} as const satisfies Filters;
 
 export type CalloutResponseFilterName = keyof typeof calloutResponseFilters;

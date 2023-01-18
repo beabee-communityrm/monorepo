@@ -30,6 +30,6 @@ export const noticeFilters = {
       ItemStatus.Ended,
     ],
   },
-} satisfies Filters;
+} as const satisfies Filters;
 
 export type NoticeFilterName = keyof typeof noticeFilters;

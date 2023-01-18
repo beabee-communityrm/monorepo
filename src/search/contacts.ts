@@ -74,6 +74,6 @@ export const contactFilters = {
     type: "array",
     nullable: true,
   },
-} satisfies Filters;
+} as const satisfies Filters;
 
 export type ContactFilterName = keyof typeof contactFilters;

@@ -160,7 +160,7 @@ export const operatorsByType = {
     ...stringOperators,
     ...numericOperators,
   },
-} satisfies OperatorsByType;
+} as const satisfies OperatorsByType;
 
 // More general type to allow mapping while maintaining full type above
 export const operatorsByTypeMap: OperatorsByType = operatorsByType;

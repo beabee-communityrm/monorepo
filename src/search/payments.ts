@@ -7,6 +7,6 @@ export const paymentFilters = {
   chargeDate: {
     type: "date",
   },
-} satisfies Filters;
+} as const satisfies Filters;
 
 export type PaymentFilterName = keyof typeof paymentFilters;
