@@ -33,6 +33,7 @@ export type CalloutFilterName = keyof typeof calloutFilters;
 export const calloutResponseFilters = {
   contact: {
     type: "contact",
+    nullable: true,
   },
   callout: {
     type: "text",
