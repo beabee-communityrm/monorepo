@@ -114,6 +114,12 @@ const equalityOperators = {
   equal: { args: 1 },
   not_equal: { args: 1 },
 };
+const stringOperators = {
+  begins_with: { args: 1 },
+  ends_with: { args: 1 },
+  not_begins_with: { args: 1 },
+  not_ends_with: { args: 1 },
+};
 const numericOperators = {
   ...equalityOperators,
   between: { args: 2 },
@@ -133,28 +139,23 @@ export const nullableOperators = {
   is_not_empty: { args: 0 },
 };
 
+type OperatorsByType = Record<
+  FilterType,
+  Partial<Record<RuleOperator, RuleOperatorParams>>
+>;
+
 export const operatorsByType = {
-  text: {
-    ...equalityOperators,
-    ...arrayOperators,
-    begins_with: { args: 1 },
-    ends_with: { args: 1 },
-    not_begins_with: { args: 1 },
-    not_ends_with: { args: 1 },
-  },
+  text: { ...equalityOperators, ...arrayOperators, ...stringOperators },
   date: numericOperators,
   number: numericOperators,
   boolean: { equal: equalityOperators.equal },
   array: arrayOperators,
   enum: equalityOperators,
   contact: equalityOperators,
-} as const;
+} satisfies OperatorsByType;
 
 // More general type to allow mapping while maintaining full type above
-export const operatorsByTypeMap: Record<
-  FilterType,
-  Partial<Record<RuleOperator, RuleOperatorParams>>
-> = operatorsByType;
+export const operatorsByTypeMap: OperatorsByType = operatorsByType;
 
 // *** Definitions for pagination ***
 
