@@ -29,18 +29,13 @@ export function validateRule<Field extends string>(
     throw new InvalidRule(rule, `Invalid field: ${rule.field}`);
   }
 
+  let expectedArgs = 0;
   if (rule.operator in nullableOperators) {
     // Field cannot be empty (except text which can always be empty)
     if (!filter.nullable && filter.type !== "text") {
       throw new InvalidRule(
         rule,
         `Invalid nullable operator: field is not nullable`
-      );
-    }
-    if (rule.value.length !== 0) {
-      throw new InvalidRule(
-        rule,
-        `Invalid operator argument count: ${rule.operator} needs 0, ${rule.value.length} given`
       );
     }
   } else {
@@ -51,13 +46,14 @@ export function validateRule<Field extends string>(
         `Invalid operator for type: ${filter.type} type doesn't define ${rule.operator}`
       );
     }
+    expectedArgs = operator.args;
+  }
 
-    if (operator.args !== rule.value.length) {
-      throw new InvalidRule(
-        rule,
-        `Invalid operator argument count: ${rule.operator} needs ${operator.args}, ${rule.value.length} given`
-      );
-    }
+  if (expectedArgs !== rule.value.length) {
+    throw new InvalidRule(
+      rule,
+      `Invalid operator argument count: ${rule.operator} needs ${expectedArgs}, ${rule.value.length} given`
+    );
   }
 
   const expectedType =
