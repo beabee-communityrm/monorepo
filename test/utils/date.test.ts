@@ -9,7 +9,7 @@ import {
   sub,
 } from "date-fns";
 
-import { getMinDateUnit, parseDate } from "../../src";
+import { getMinDateUnit, isValidDate, parseDate } from "../../src";
 
 describe("parseDate for absolute dates", () => {
   test("date with years has unit years", () => {
@@ -120,5 +120,25 @@ describe("parseDate for relative dates", () => {
     expect(getMinDateUnit(["d", "m"])).toBe("m");
     expect(getMinDateUnit(["d", "y"])).toBe("d");
     expect(getMinDateUnit(["d", "y", "h", "s"])).toBe("s");
+  });
+});
+
+describe("isValidDate", () => {
+  test("recognises valid absolute dates", () => {
+    expect(isValidDate("2022-12-01")).toEqual(true);
+    expect(isValidDate("2022-12-01T10:00")).toEqual(true);
+    expect(isValidDate("2022-12-01T10:00:00")).toEqual(true);
+
+    expect(isValidDate("2022-12-01T10:")).toEqual(false);
+  });
+
+  test("recognises valid relative dates", () => {
+    expect(isValidDate("$now(d:-1)")).toEqual(true);
+    expect(isValidDate("$now(d:1)")).toEqual(true);
+    expect(isValidDate("$now(d:1,M:-1)")).toEqual(true);
+
+    expect(isValidDate("$n")).toEqual(false);
+    expect(isValidDate("$now(d-1,M:-1)")).toEqual(false);
+    expect(isValidDate("$now(d-1,M:-1)")).toEqual(false);
   });
 });

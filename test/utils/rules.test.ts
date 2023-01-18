@@ -8,7 +8,7 @@ const testFilters = {
   count: {
     type: "number",
   },
-  date: {
+  starts: {
     type: "date",
     nullable: true,
   },
@@ -44,7 +44,7 @@ describe("validateRule should validate", () => {
   test("a null operator on a nullable filter", () => {
     expect(
       validateRule(testFilters, {
-        field: "date",
+        field: "starts",
         operator: "is_empty",
         value: [],
       })
@@ -65,6 +65,26 @@ describe("validateRule should validate", () => {
       operator: "begins_with",
       value: ["foo"],
     });
+  });
+
+  test("a date filter with a valid absolute date", () => {
+    expect(
+      validateRule(testFilters, {
+        field: "starts",
+        operator: "greater",
+        value: ["2022-12-01"],
+      })
+    ).toBeTruthy();
+  });
+
+  test("a date filter with a valid relative and absolute date", () => {
+    expect(
+      validateRule(testFilters, {
+        field: "starts",
+        operator: "between",
+        value: ["2022-12-01", "$now(d:-1,M:-1)"],
+      })
+    ).toBeTruthy();
   });
 });
 
@@ -117,5 +137,15 @@ describe("validateRule should fail for", () => {
         value: [],
       });
     }).toThrow(InvalidRule);
+  });
+
+  test("a date filter with an invalid relative date", () => {
+    expect(() =>
+      validateRule(testFilters, {
+        field: "starts",
+        operator: "between",
+        value: ["2022-12-01", "$now(d-1,M:-1)"],
+      })
+    ).toThrow(InvalidRule);
   });
 });

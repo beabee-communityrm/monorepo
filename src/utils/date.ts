@@ -30,7 +30,7 @@ const startOf: Record<DateUnit, (d: Date) => Date> = {
   s: startOfSecond,
 };
 
-const relativeDate = /\$now(?<units>\(((y|M|d|h|m|s):(-?\d+),?)+\))?/;
+const relativeDate = /^\$now(?<units>\(((y|M|d|h|m|s):(-?\d+),?)+\))?$/;
 const relativeUnit = /(y|M|d|h|m|s):(-?\d+)/g;
 type UnitMatches = IterableIterator<[string, DateUnit, string]>;
 
