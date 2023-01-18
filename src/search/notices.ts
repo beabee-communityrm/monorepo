@@ -1,3 +1,4 @@
+import type { Filters } from ".";
 import { ItemStatus } from "../data";
 
 export const noticeFilters = {
@@ -29,6 +30,6 @@ export const noticeFilters = {
       ItemStatus.Ended,
     ],
   },
-} as const;
+} satisfies Filters;
 
 export type NoticeFilterName = keyof typeof noticeFilters;

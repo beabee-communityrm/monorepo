@@ -1,3 +1,4 @@
+import type { Filters } from ".";
 import { ItemStatus } from "../data";
 
 export const calloutFilters = {
@@ -25,7 +26,7 @@ export const calloutFilters = {
   hidden: {
     type: "boolean",
   },
-} as const;
+} satisfies Filters;
 
 export type CalloutFilterName = keyof typeof calloutFilters;
 
@@ -42,6 +43,6 @@ export const calloutResponseFilters = {
   updatedAt: {
     type: "date",
   },
-} as const;
+} satisfies Filters;
 
 export type CalloutResponseFilterName = keyof typeof calloutResponseFilters;

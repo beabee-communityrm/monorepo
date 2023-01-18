@@ -1,3 +1,5 @@
+import type { Filters } from ".";
+
 export const paymentFilters = {
   contact: {
     type: "contact",
@@ -5,6 +7,6 @@ export const paymentFilters = {
   chargeDate: {
     type: "date",
   },
-} as const;
+} satisfies Filters;
 
 export type PaymentFilterName = keyof typeof paymentFilters;

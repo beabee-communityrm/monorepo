@@ -1,3 +1,4 @@
+import type { Filters } from ".";
 import {
   ContributionPeriod,
   ContributionType,
@@ -73,6 +74,6 @@ export const contactFilters = {
     type: "array",
     nullable: true,
   },
-} as const;
+} satisfies Filters;
 
 export type ContactFilterName = keyof typeof contactFilters;
