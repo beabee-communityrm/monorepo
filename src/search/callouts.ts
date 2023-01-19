@@ -45,7 +45,7 @@ export const calloutResponseFilters = {
     type: "date",
   },
   answers: {
-    type: "text",
+    type: "custom",
     nullable: true,
   },
 } as const satisfies Filters;

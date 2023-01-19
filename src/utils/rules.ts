@@ -57,7 +57,9 @@ export function validateRule<Field extends string>(
   }
 
   const expectedType =
-    filter.type === "boolean" || filter.type === "number"
+    filter.type === "custom"
+      ? typeof rule.value[0]
+      : filter.type === "boolean" || filter.type === "number"
       ? filter.type
       : "string";
 

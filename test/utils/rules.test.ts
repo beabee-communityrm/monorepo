@@ -1,5 +1,5 @@
 import { describe, expect, test } from "@jest/globals";
-import { Filters, InvalidRule, Rule, validateRule } from "../../src";
+import { Filters, InvalidRule, validateRule } from "../../src";
 
 const testFilters = {
   name: {
@@ -11,6 +11,9 @@ const testFilters = {
   starts: {
     type: "date",
     nullable: true,
+  },
+  answers: {
+    type: "custom",
   },
 } satisfies Filters;
 
@@ -86,6 +89,24 @@ describe("validateRule should validate", () => {
       })
     ).toBeTruthy();
   });
+
+  test("a custom filter with any value type", () => {
+    expect(
+      validateRule(testFilters, {
+        field: "answers.test",
+        operator: "equal",
+        value: [true],
+      })
+    ).toBeTruthy();
+
+    expect(
+      validateRule(testFilters, {
+        field: "answers.test",
+        operator: "equal",
+        value: [1],
+      })
+    ).toBeTruthy();
+  });
 });
 
 describe("validateRule should fail for", () => {
@@ -145,6 +166,16 @@ describe("validateRule should fail for", () => {
         field: "starts",
         operator: "between",
         value: ["2022-12-01", "$now(d-1,M:-1)"],
+      })
+    ).toThrow(InvalidRule);
+  });
+
+  test("a custom filter with multiple value types", () => {
+    expect(() =>
+      validateRule(testFilters, {
+        field: "answers",
+        operator: "between",
+        value: [0, false],
       })
     ).toThrow(InvalidRule);
   });
