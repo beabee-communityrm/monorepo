@@ -92,14 +92,13 @@ interface BaseFilterArgs {
   nullable?: boolean;
 }
 
-export interface ArrayFilterArgs<
-  T extends readonly string[] = readonly string[]
-> extends BaseFilterArgs {
+export interface ArrayFilterArgs<T extends readonly string[] | undefined>
+  extends BaseFilterArgs {
   type: "array";
   options?: T;
 }
 
-export interface EnumFilterArgs<T extends readonly string[] = readonly string[]>
+export interface EnumFilterArgs<T extends readonly string[]>
   extends BaseFilterArgs {
   type: "enum";
   options: T;
@@ -109,7 +108,10 @@ export interface OtherFilterArgs extends BaseFilterArgs {
   type: Exclude<FilterType, "array" | "enum">;
 }
 
-export type FilterArgs = ArrayFilterArgs | EnumFilterArgs | OtherFilterArgs;
+export type FilterArgs =
+  | ArrayFilterArgs<readonly string[] | undefined>
+  | EnumFilterArgs<readonly string[]>
+  | OtherFilterArgs;
 
 export type Filters<T extends string = string> = Record<T, FilterArgs>;
 
