@@ -81,6 +81,16 @@ export function validateRule<Field extends string>(
     );
   }
 
+  if (
+    filter.type === "enum" &&
+    rule.value.some((v) => filter.options.indexOf(v as string) === -1)
+  ) {
+    throw new InvalidRule(
+      rule,
+      `Invalid operator argument: enum type expected ${filter.options}, ${rule.value} given`
+    );
+  }
+
   return {
     field: fieldName,
     param: fieldParam,

@@ -15,6 +15,10 @@ const testFilters = {
   answers: {
     type: "custom",
   },
+  period: {
+    type: "enum",
+    options: ["monthly", "annually"],
+  },
 } satisfies Filters;
 
 describe("validateRule should validate", () => {
@@ -107,6 +111,16 @@ describe("validateRule should validate", () => {
       })
     ).toBeTruthy();
   });
+
+  test("a select filter with a valid option", () => {
+    expect(
+      validateRule(testFilters, {
+        field: "period",
+        operator: "equal",
+        value: ["monthly"],
+      })
+    );
+  });
 });
 
 describe("validateRule should fail for", () => {
@@ -176,6 +190,16 @@ describe("validateRule should fail for", () => {
         field: "answers",
         operator: "between",
         value: [0, false],
+      })
+    ).toThrow(InvalidRule);
+  });
+
+  test("a select filter with an invalid option", () => {
+    expect(() =>
+      validateRule(testFilters, {
+        field: "period",
+        operator: "equal",
+        value: ["weekly"],
       })
     ).toThrow(InvalidRule);
   });
