@@ -19,6 +19,13 @@ const testFilters = {
     type: "enum",
     options: ["monthly", "annually"],
   },
+  tags: {
+    type: "array",
+  },
+  hobbies: {
+    type: "array",
+    options: ["football", "knitting", "music"],
+  },
 } satisfies Filters;
 
 describe("validateRule should validate", () => {
@@ -119,7 +126,27 @@ describe("validateRule should validate", () => {
         operator: "equal",
         value: ["monthly"],
       })
-    );
+    ).toBeTruthy();
+  });
+
+  test("an array filter without defined options", () => {
+    expect(
+      validateRule(testFilters, {
+        field: "tags",
+        operator: "contains",
+        value: ["expert"],
+      })
+    ).toBeTruthy();
+  });
+
+  test("an array filter with defined options", () => {
+    expect(
+      validateRule(testFilters, {
+        field: "hobbies",
+        operator: "contains",
+        value: ["football"],
+      })
+    ).toBeTruthy();
   });
 });
 
@@ -200,6 +227,16 @@ describe("validateRule should fail for", () => {
         field: "period",
         operator: "equal",
         value: ["weekly"],
+      })
+    ).toThrow(InvalidRule);
+  });
+
+  test("an array filter with an invalid option", () => {
+    expect(() =>
+      validateRule(testFilters, {
+        field: "hobbies",
+        operator: "contains",
+        value: ["hockey"],
       })
     ).toThrow(InvalidRule);
   });

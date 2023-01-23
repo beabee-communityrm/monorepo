@@ -92,6 +92,13 @@ interface BaseFilterArgs {
   nullable?: boolean;
 }
 
+export interface ArrayFilterArgs<
+  T extends readonly string[] = readonly string[]
+> extends BaseFilterArgs {
+  type: "array";
+  options?: T;
+}
+
 export interface EnumFilterArgs<T extends readonly string[] = readonly string[]>
   extends BaseFilterArgs {
   type: "enum";
@@ -99,10 +106,10 @@ export interface EnumFilterArgs<T extends readonly string[] = readonly string[]>
 }
 
 export interface OtherFilterArgs extends BaseFilterArgs {
-  type: Exclude<FilterType, "enum">;
+  type: Exclude<FilterType, "array" | "enum">;
 }
 
-export type FilterArgs = EnumFilterArgs | OtherFilterArgs;
+export type FilterArgs = ArrayFilterArgs | EnumFilterArgs | OtherFilterArgs;
 
 export type Filters<T extends string = string> = Record<T, FilterArgs>;
 

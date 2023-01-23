@@ -82,12 +82,12 @@ export function validateRule<Field extends string>(
   }
 
   if (
-    filter.type === "enum" &&
-    rule.value.some((v) => filter.options.indexOf(v as string) === -1)
+    (filter.type === "enum" || filter.type === "array") &&
+    rule.value.some((v) => filter.options?.indexOf(v as string) === -1)
   ) {
     throw new InvalidRule(
       rule,
-      `Invalid operator argument: enum type expected ${filter.options}, ${rule.value} given`
+      `Invalid operator argument: ${filter.type} type expected ${filter.options}, ${rule.value} given`
     );
   }
 
