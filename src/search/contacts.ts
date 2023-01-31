@@ -50,6 +50,7 @@ export const contactFilters = {
       NewsletterStatus.Subscribed,
       NewsletterStatus.Unsubscribed,
       NewsletterStatus.Cleaned,
+      NewsletterStatus.Pending,
       NewsletterStatus.None,
     ],
   },
