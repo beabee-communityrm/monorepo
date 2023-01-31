@@ -44,10 +44,6 @@ export const calloutResponseFilters = {
   updatedAt: {
     type: "date",
   },
-  answers: {
-    type: "custom",
-    nullable: true,
-  },
 } as const satisfies Filters;
 
 export type CalloutResponseFilterName = keyof typeof calloutResponseFilters;

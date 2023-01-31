@@ -12,9 +12,6 @@ const testFilters = {
     type: "date",
     nullable: true,
   },
-  answers: {
-    type: "custom",
-  },
   period: {
     type: "enum",
     options: ["monthly", "annually"],
@@ -40,7 +37,6 @@ describe("validateRule should validate", () => {
       type: "text",
       field: "name",
       operator: "equal",
-      param: undefined,
       value: ["foo"],
     });
   });
@@ -65,22 +61,6 @@ describe("validateRule should validate", () => {
     ).toBeTruthy();
   });
 
-  test("a rule with a parameter", () => {
-    expect(
-      validateRule(testFilters, {
-        field: "name.bar",
-        operator: "begins_with",
-        value: ["foo"],
-      })
-    ).toEqual({
-      type: "text",
-      field: "name",
-      param: "bar",
-      operator: "begins_with",
-      value: ["foo"],
-    });
-  });
-
   test("a date filter with a valid absolute date", () => {
     expect(
       validateRule(testFilters, {
@@ -97,24 +77,6 @@ describe("validateRule should validate", () => {
         field: "starts",
         operator: "between",
         value: ["2022-12-01", "$now(d:-1,M:-1)"],
-      })
-    ).toBeTruthy();
-  });
-
-  test("a custom filter with any value type", () => {
-    expect(
-      validateRule(testFilters, {
-        field: "answers.test",
-        operator: "equal",
-        value: [true],
-      })
-    ).toBeTruthy();
-
-    expect(
-      validateRule(testFilters, {
-        field: "answers.test",
-        operator: "equal",
-        value: [1],
       })
     ).toBeTruthy();
   });
@@ -207,16 +169,6 @@ describe("validateRule should fail for", () => {
         field: "starts",
         operator: "between",
         value: ["2022-12-01", "$now(d-1,M:-1)"],
-      })
-    ).toThrow(InvalidRule);
-  });
-
-  test("a custom filter with multiple value types", () => {
-    expect(() =>
-      validateRule(testFilters, {
-        field: "answers",
-        operator: "between",
-        value: [0, false],
       })
     ).toThrow(InvalidRule);
   });

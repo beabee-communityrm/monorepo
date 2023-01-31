@@ -20,11 +20,7 @@ export function validateRule<Field extends string>(
   filters: Filters<Field>,
   rule: Rule
 ): ValidatedRule<Field> {
-  const [fieldName, fieldParam] = rule.field.split(".", 2) as [
-    Field,
-    string | undefined
-  ];
-  const filter = filters[fieldName];
+  const filter = filters[rule.field as Field];
   if (!filter) {
     throw new InvalidRule(rule, `Invalid field: ${rule.field}`);
   }
@@ -57,9 +53,7 @@ export function validateRule<Field extends string>(
   }
 
   const expectedType =
-    filter.type === "custom"
-      ? typeof rule.value[0]
-      : filter.type === "boolean" || filter.type === "number"
+    filter.type === "boolean" || filter.type === "number"
       ? filter.type
       : "string";
 
@@ -92,8 +86,8 @@ export function validateRule<Field extends string>(
   }
 
   return {
-    field: fieldName,
-    param: fieldParam,
+    field: rule.field,
+    // param: fieldParam,
     type: filter.type,
     operator: rule.operator,
     value: rule.value,
