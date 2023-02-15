@@ -44,6 +44,9 @@ export const calloutResponseFilters = {
   updatedAt: {
     type: "date",
   },
+  bucket: {
+    type: "text"
+  }
 } as const satisfies Filters;
 
 export type CalloutResponseFilterName = keyof typeof calloutResponseFilters;
