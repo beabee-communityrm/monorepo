@@ -45,7 +45,8 @@ export const calloutResponseFilters = {
     type: "date",
   },
   bucket: {
-    type: "text"
+    type: "text",
+    nullable: true
   }
 } as const satisfies Filters;
 
