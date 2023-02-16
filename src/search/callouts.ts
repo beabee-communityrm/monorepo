@@ -31,6 +31,9 @@ export const calloutFilters = {
 export type CalloutFilterName = keyof typeof calloutFilters;
 
 export const calloutResponseFilters = {
+  id: {
+    type: "text",
+  },
   contact: {
     type: "contact",
     nullable: true,
@@ -46,8 +49,8 @@ export const calloutResponseFilters = {
   },
   bucket: {
     type: "text",
-    nullable: true
-  }
+    nullable: true,
+  },
 } as const satisfies Filters;
 
 export type CalloutResponseFilterName = keyof typeof calloutResponseFilters;
