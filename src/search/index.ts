@@ -45,6 +45,7 @@ export type ValidatedRuleValue<T extends FilterType> = T extends "number"
 interface BaseValidatedRule<T extends FilterType, F extends string> {
   type: T;
   field: F;
+  nullable: boolean;
   operator: keyof (typeof operatorsByType)[T];
   value: ValidatedRuleValue<T>[];
 }

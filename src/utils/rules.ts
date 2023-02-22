@@ -87,8 +87,8 @@ export function validateRule<Field extends string>(
 
   return {
     field: rule.field,
-    // param: fieldParam,
     type: filter.type,
+    nullable: !!filter.nullable,
     operator: rule.operator,
     value: rule.value,
   } as ValidatedRule<Field>;
