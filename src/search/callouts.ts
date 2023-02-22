@@ -51,6 +51,9 @@ export const calloutResponseFilters = {
     type: "text",
     nullable: true,
   },
+  tags: {
+    type: "array",
+  },
 } as const satisfies Filters;
 
 export type CalloutResponseFilterName = keyof typeof calloutResponseFilters;
