@@ -54,6 +54,10 @@ export const calloutResponseFilters = {
   tags: {
     type: "array",
   },
+  assignee: {
+    type: "contact",
+    nullable: true,
+  },
 } as const satisfies Filters;
 
 export type CalloutResponseFilterName = keyof typeof calloutResponseFilters;
