@@ -10,8 +10,10 @@ export interface BaseCalloutComponentSchema {
 export interface OtherCalloutComponentSchema
   extends BaseCalloutComponentSchema {
   type:
+    | "address"
     | "button"
     | "checkbox"
+    | "email"
     | "number"
     | "password"
     | "textfield"
