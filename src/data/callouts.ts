@@ -1,4 +1,4 @@
-interface BaseCalloutComponentSchema {
+export interface BaseCalloutComponentSchema {
   key: string;
   label?: string;
   input?: boolean;
@@ -7,7 +7,8 @@ interface BaseCalloutComponentSchema {
   [key: string]: unknown;
 }
 
-interface OtherCalloutComponentSchema extends BaseCalloutComponentSchema {
+export interface OtherCalloutComponentSchema
+  extends BaseCalloutComponentSchema {
   type:
     | "button"
     | "checkbox"
@@ -17,12 +18,14 @@ interface OtherCalloutComponentSchema extends BaseCalloutComponentSchema {
     | "textarea";
 }
 
-interface SelectCalloutComponentSchema extends BaseCalloutComponentSchema {
+export interface SelectCalloutComponentSchema
+  extends BaseCalloutComponentSchema {
   type: "select";
   data: { values: { label: string; value: string }[] };
 }
 
-interface RadioCalloutComponentSchema extends BaseCalloutComponentSchema {
+export interface RadioCalloutComponentSchema
+  extends BaseCalloutComponentSchema {
   type: "radio" | "selectboxes";
   values: { label: string; value: string }[];
 }
