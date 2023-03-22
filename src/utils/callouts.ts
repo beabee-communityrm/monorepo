@@ -1,4 +1,9 @@
-import { CalloutComponentSchema } from "../data/callouts";
+import {
+  CalloutComponentSchema,
+  CalloutFormSchema,
+  CalloutResponseAnswer,
+  CalloutResponseAnswers,
+} from "../data/callouts";
 import { FilterArgs, Filters } from "../search";
 
 export function flattenComponents(
@@ -59,4 +64,58 @@ export function convertComponentsToFilters(
   });
 
   return Object.fromEntries(items);
+}
+
+export function getNiceAnswer(
+  component: CalloutComponentSchema,
+  value: string
+): string {
+  switch (component.type) {
+    case "radio":
+    case "selectboxes":
+      return component.values.find((v) => v.value === value)?.label || value;
+    case "select":
+      return (
+        component.data.values.find((v) => v.value === value)?.label || value
+      );
+    default:
+      return value;
+  }
+}
+
+export function convertAnswer(
+  component: CalloutComponentSchema,
+  answer: CalloutResponseAnswer
+): string {
+  if (!answer) {
+    return "";
+  } else if (typeof answer === "object") {
+    return Object.entries(answer)
+      .filter(([, selected]) => selected)
+      .map(([value]) => getNiceAnswer(component, value))
+      .join(", ");
+  } else if (typeof answer === "string") {
+    return getNiceAnswer(component, answer);
+  } else {
+    return answer.toString();
+  }
+}
+
+export function convertAnswers(
+  formSchema: CalloutFormSchema,
+  answers: CalloutResponseAnswers
+): Record<string, unknown> {
+  return Object.assign(
+    {},
+    ...flattenComponents(formSchema.components)
+      .filter((component) => component.input)
+      .map((component) => {
+        return {
+          [component.label || component.key]: convertAnswer(
+            component,
+            answers[component.key]
+          ),
+        };
+      })
+  );
 }

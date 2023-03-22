@@ -40,3 +40,13 @@ export type CalloutComponentSchema =
 export interface CalloutFormSchema {
   components: CalloutComponentSchema[];
 }
+
+export type CalloutResponseAnswer =
+  | string
+  | boolean
+  | number
+  | null
+  | undefined
+  | Record<string, boolean>;
+
+export type CalloutResponseAnswers = Record<string, CalloutResponseAnswer>;
