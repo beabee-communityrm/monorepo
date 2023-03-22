@@ -66,7 +66,7 @@ export function convertComponentsToFilters(
   return Object.fromEntries(items);
 }
 
-export function getNiceAnswer(
+function getNiceAnswer(
   component: CalloutComponentSchema,
   value: string
 ): string {
@@ -104,18 +104,13 @@ export function convertAnswer(
 export function convertAnswers(
   formSchema: CalloutFormSchema,
   answers: CalloutResponseAnswers
-): Record<string, unknown> {
-  return Object.assign(
-    {},
-    ...flattenComponents(formSchema.components)
+): Record<string, string> {
+  return Object.fromEntries(
+    flattenComponents(formSchema.components)
       .filter((component) => component.input)
-      .map((component) => {
-        return {
-          [component.label || component.key]: convertAnswer(
-            component,
-            answers[component.key]
-          ),
-        };
-      })
+      .map((component) => [
+        component.label || component.key,
+        convertAnswer(component, answers[component.key]),
+      ])
   );
 }

@@ -36,6 +36,7 @@ describe("validateRule should validate", () => {
     ).toEqual({
       type: "text",
       field: "name",
+      nullable: false,
       operator: "equal",
       value: ["foo"],
     });
