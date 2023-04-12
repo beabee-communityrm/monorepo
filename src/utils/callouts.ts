@@ -58,7 +58,7 @@ function convertComponentToFilter(
 
 export function convertComponentsToFilters(
   components: CalloutComponentSchema[]
-): Filters {
+): Record<string, FilterArgs & { label: string }> {
   const items = components.map((c) => {
     return [`answers.${c.key}`, convertComponentToFilter(c)] as const;
   });
