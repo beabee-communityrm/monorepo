@@ -8,12 +8,13 @@ interface Feeable {
 
 const stripeFees = {
   gb: {
-    [PaymentMethod.StripeCard]: (amount: number) => 0.2 + 0.014 * amount,
+    [PaymentMethod.StripeCard]: (amount: number) => 0.2 + 0.015 * amount,
     [PaymentMethod.StripeSEPA]: () => 0.3,
-    [PaymentMethod.StripeBACS]: (amount: number) => 0.2 * 0.01 * amount,
+    [PaymentMethod.StripeBACS]: (amount: number) =>
+      Math.min(2, Math.max(0.2, 0.01 * amount)),
   },
   eu: {
-    [PaymentMethod.StripeCard]: (amount: number) => 0.25 + 0.014 * amount,
+    [PaymentMethod.StripeCard]: (amount: number) => 0.25 + 0.015 * amount,
     [PaymentMethod.StripeSEPA]: () => 0.35,
     [PaymentMethod.StripeBACS]: () => 0, // Not available
   },
@@ -24,7 +25,7 @@ const stripeFees = {
   },
 } as const;
 
-const gcFee = (amount: number) => 0.2 + amount / 100;
+const gcFee = (amount: number) => 0.2 + amount * 0.01;
 
 export function calcPaymentFee(
   feeable: Feeable,
