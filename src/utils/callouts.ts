@@ -104,13 +104,21 @@ export function convertAnswer(
 export function convertAnswers(
   formSchema: CalloutFormSchema,
   answers: CalloutResponseAnswers
-): Record<string, string> {
-  return Object.fromEntries(
-    flattenComponents(formSchema.components)
-      .filter((component) => component.input)
-      .map((component) => [
-        component.label || component.key,
-        convertAnswer(component, answers[component.key]),
-      ])
+): {
+  labels: Record<string, string>;
+  values: Record<string, string>;
+} {
+  const validComponents = flattenComponents(formSchema.components).filter(
+    (c) => c.input
   );
+
+  const labels = validComponents.map((c) => [c.key, c.label || c.key] as const);
+  const values = validComponents.map(
+    (c) => [c.key, stringifyAnswer(c, answers[c.key])] as const
+  );
+
+  return {
+    labels: Object.fromEntries(labels),
+    values: Object.fromEntries(values),
+  };
 }
