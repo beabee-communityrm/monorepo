@@ -23,9 +23,9 @@ function convertValuesToOptions(
 
 function convertComponentToFilter(
   component: CalloutComponentSchema
-): FilterArgs {
+): FilterArgs & { label: string } {
   const baseItem = {
-    // label: component.label || component.key,
+    label: component.label || component.key,
     nullable: true,
   };
 
