@@ -2,7 +2,7 @@ import { describe, expect, test } from "@jest/globals";
 import {
   CalloutFormSchema,
   CalloutResponseAnswers,
-  convertAnswer,
+  stringifyAnswer,
   convertAnswers,
   flattenComponents,
   OtherCalloutComponentSchema,
@@ -84,27 +84,27 @@ const formSchema: CalloutFormSchema = {
   ],
 };
 
-describe("convertAnswer should show a nice answer for", () => {
+describe("stringifyAnswers should show a nice answer for", () => {
   test("text components", () => {
-    expect(convertAnswer(textComponent, answers.myTextComponent)).toBe(
+    expect(stringifyAnswer(textComponent, answers.myTextComponent)).toBe(
       "Some text"
     );
   });
 
   test("radio components", () => {
-    expect(convertAnswer(radioComponent, answers.myRadioComponent)).toBe(
+    expect(stringifyAnswer(radioComponent, answers.myRadioComponent)).toBe(
       "Option 1"
     );
   });
 
   test("select box components", () => {
     expect(
-      convertAnswer(selectBoxComponent, answers.mySelectBoxComponent)
+      stringifyAnswer(selectBoxComponent, answers.mySelectBoxComponent)
     ).toBe("Option 1, Option 3");
   });
 
   test("select components", () => {
-    expect(convertAnswer(selectComponent, answers.mySelectComponent)).toBe(
+    expect(stringifyAnswer(selectComponent, answers.mySelectComponent)).toBe(
       "Option 2"
     );
   });

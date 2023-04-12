@@ -83,7 +83,7 @@ function getNiceAnswer(
   }
 }
 
-export function convertAnswer(
+export function stringifyAnswer(
   component: CalloutComponentSchema,
   answer: CalloutResponseAnswer
 ): string {
