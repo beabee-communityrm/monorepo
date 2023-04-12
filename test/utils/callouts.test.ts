@@ -17,6 +17,13 @@ const textComponent: OtherCalloutComponentSchema = {
   input: true,
 };
 
+const textComponent2: OtherCalloutComponentSchema = {
+  type: "textfield",
+  key: "myTextComponent2",
+  label: "My text component",
+  input: true,
+};
+
 const radioComponent: RadioCalloutComponentSchema = {
   type: "radio",
   key: "myRadioComponent",
@@ -57,6 +64,7 @@ const selectBoxComponent: RadioCalloutComponentSchema = {
 
 const answers: CalloutResponseAnswers = {
   myTextComponent: "Some text",
+  myTextComponent2: "Some other text",
   myRadioComponent: "opt1",
   mySelectComponent: "opt2",
   mySelectBoxComponent: {
@@ -69,6 +77,7 @@ const answers: CalloutResponseAnswers = {
 const formSchema: CalloutFormSchema = {
   components: [
     textComponent,
+    textComponent2,
     radioComponent,
     selectComponent,
     selectBoxComponent,
