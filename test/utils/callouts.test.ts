@@ -3,7 +3,6 @@ import {
   CalloutFormSchema,
   CalloutResponseAnswers,
   stringifyAnswer,
-  convertAnswers,
   flattenComponents,
   OtherCalloutComponentSchema,
   RadioCalloutComponentSchema,
@@ -107,27 +106,6 @@ describe("stringifyAnswers should show a nice answer for", () => {
     expect(stringifyAnswer(selectComponent, answers.mySelectComponent)).toBe(
       "Option 2"
     );
-  });
-});
-
-describe("convertAnswers should", () => {
-  test("create a nice answers object", () => {
-    expect(convertAnswers(formSchema, answers)).toEqual({
-      labels: {
-        myTextComponent: "My text component",
-        myTextComponent2: "My text component",
-        myRadioComponent: "My radio component",
-        mySelectBoxComponent: "My select box component",
-        mySelectComponent: "My select component",
-      },
-      values: {
-        myTextComponent: "Some text",
-        myTextComponent2: "Some other text",
-        myRadioComponent: "Option 1",
-        mySelectBoxComponent: "Option 1, Option 3",
-        mySelectComponent: "Option 2",
-      },
-    });
   });
 });
 

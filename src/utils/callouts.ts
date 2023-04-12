@@ -100,25 +100,3 @@ export function stringifyAnswer(
     return answer.toString();
   }
 }
-
-export function convertAnswers(
-  formSchema: CalloutFormSchema,
-  answers: CalloutResponseAnswers
-): {
-  labels: Record<string, string>;
-  values: Record<string, string>;
-} {
-  const validComponents = flattenComponents(formSchema.components).filter(
-    (c) => c.input
-  );
-
-  const labels = validComponents.map((c) => [c.key, c.label || c.key] as const);
-  const values = validComponents.map(
-    (c) => [c.key, stringifyAnswer(c, answers[c.key])] as const
-  );
-
-  return {
-    labels: Object.fromEntries(labels),
-    values: Object.fromEntries(values),
-  };
-}
