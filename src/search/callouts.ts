@@ -61,3 +61,24 @@ export const calloutResponseFilters = {
 } as const satisfies Filters;
 
 export type CalloutResponseFilterName = keyof typeof calloutResponseFilters;
+
+export const calloutResponseCommentFilters = {
+  responseId: {
+    type: "text",
+  },
+  contact: {
+    type: "contact",
+  },
+  createdAt: {
+    type: "date",
+  },
+  updatedAt: {
+    type: "date",
+  },
+  text: {
+    type: "text",
+  },
+} as const satisfies Filters;
+
+export type CalloutResponseCommentFilterName =
+  keyof typeof calloutResponseCommentFilters;
