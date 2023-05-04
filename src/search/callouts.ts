@@ -59,7 +59,7 @@ export const calloutResponseFilters = {
     nullable: true,
   },
   answers: {
-    type: "text",
+    type: "blob",
   },
 } as const satisfies Filters;
 

@@ -79,6 +79,7 @@ export interface ValidatedRuleGroup<Field extends string> {
 
 export type FilterType =
   | "text"
+  | "blob"
   | "date"
   | "number"
   | "boolean"
@@ -156,18 +157,13 @@ type OperatorsByType = Record<
 
 export const operatorsByType = {
   text: { ...equalityOperators, ...arrayOperators, ...stringOperators },
+  blob: arrayOperators,
   date: numericOperators,
   number: numericOperators,
   boolean: { equal: equalityOperators.equal },
   array: arrayOperators,
   enum: equalityOperators,
   contact: equalityOperators,
-  // custom: {
-  //   ...equalityOperators,
-  //   ...arrayOperators,
-  //   ...stringOperators,
-  //   ...numericOperators,
-  // },
 } as const satisfies OperatorsByType;
 
 // More general type to allow mapping while maintaining full type above
