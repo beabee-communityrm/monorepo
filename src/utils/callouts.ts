@@ -1,10 +1,8 @@
 import {
   CalloutComponentSchema,
-  CalloutFormSchema,
   CalloutResponseAnswer,
-  CalloutResponseAnswers,
 } from "../data/callouts";
-import { FilterArgs, Filters } from "../search";
+import { FilterArgs } from "../search";
 
 export function flattenComponents(
   components: CalloutComponentSchema[]
@@ -50,6 +48,9 @@ function convertComponentToFilter(
         type: component.type === "radio" ? "enum" : "array",
         options: convertValuesToOptions(component.values),
       };
+
+    case "textarea":
+      return { ...baseItem, type: "blob" };
 
     default:
       return { ...baseItem, type: "text" };
