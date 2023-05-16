@@ -4,19 +4,19 @@ import {
   CalloutResponseAnswers,
   stringifyAnswer,
   flattenComponents,
-  OtherCalloutComponentSchema,
+  InputCalloutComponentSchema,
   RadioCalloutComponentSchema,
   SelectCalloutComponentSchema,
 } from "../../src";
 
-const textComponent: OtherCalloutComponentSchema = {
+const textComponent: InputCalloutComponentSchema = {
   type: "textfield",
   key: "myTextComponent",
   label: "My text component",
   input: true,
 };
 
-const textComponent2: OtherCalloutComponentSchema = {
+const textComponent2: InputCalloutComponentSchema = {
   type: "textfield",
   key: "myTextComponent2",
   label: "My text component",

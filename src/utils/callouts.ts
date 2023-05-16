@@ -1,16 +1,24 @@
 import {
   CalloutComponentSchema,
   CalloutResponseAnswer,
+  NestableCalloutComponentSchema,
 } from "../data/callouts";
 import { FilterArgs } from "../search";
+
+function isNestableComponent(
+  component: CalloutComponentSchema
+): component is NestableCalloutComponentSchema {
+  return "components" in component;
+}
 
 export function flattenComponents(
   components: CalloutComponentSchema[]
 ): CalloutComponentSchema[] {
-  return components.flatMap((component) => [
-    component,
-    ...flattenComponents(component.components || []),
-  ]);
+  return components.flatMap((component) =>
+    isNestableComponent(component)
+      ? [component, ...flattenComponents(component.components)]
+      : [component]
+  );
 }
 
 function convertValuesToOptions(

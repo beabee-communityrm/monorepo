@@ -1,13 +1,19 @@
 export interface BaseCalloutComponentSchema {
+  type: string;
   key: string;
-  label?: string;
-  input?: boolean;
-  // TODO: should only be on nestable components
-  components?: CalloutComponentSchema[];
+  label: string;
+  input: boolean;
   [key: string]: unknown;
 }
 
-export interface OtherCalloutComponentSchema
+export interface NestableCalloutComponentSchema
+  extends BaseCalloutComponentSchema {
+  type: "panel" | "well" | "tabs";
+  input: false;
+  components: CalloutComponentSchema[];
+}
+
+export interface InputCalloutComponentSchema
   extends BaseCalloutComponentSchema {
   type:
     | "address"
@@ -18,26 +24,31 @@ export interface OtherCalloutComponentSchema
     | "password"
     | "textfield"
     | "textarea";
+  input: true;
 }
 
 export interface SelectCalloutComponentSchema
   extends BaseCalloutComponentSchema {
   type: "select";
+  input: true;
   data: { values: { label: string; value: string }[] };
 }
 
 export interface RadioCalloutComponentSchema
   extends BaseCalloutComponentSchema {
   type: "radio" | "selectboxes";
+  input: true;
   values: { label: string; value: string }[];
 }
 
 export type CalloutComponentSchema =
   | SelectCalloutComponentSchema
   | RadioCalloutComponentSchema
-  | OtherCalloutComponentSchema;
+  | InputCalloutComponentSchema
+  | NestableCalloutComponentSchema;
 
 export interface CalloutFormSchema {
+  display?: "form" | "wizard";
   components: CalloutComponentSchema[];
 }
 
