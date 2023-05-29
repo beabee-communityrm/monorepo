@@ -47,9 +47,18 @@ export type CalloutComponentSchema =
   | InputCalloutComponentSchema
   | NestableCalloutComponentSchema;
 
+interface CalloutNavigationSchema {
+  showPrev: boolean;
+  showNext: boolean;
+  prevText: string;
+  nextText: string;
+  submitText: string;
+}
+
 export interface CalloutFormSchema {
   display?: "form" | "wizard";
   components: CalloutComponentSchema[];
+  navigation: CalloutNavigationSchema[];
 }
 
 export type CalloutResponseAnswer =

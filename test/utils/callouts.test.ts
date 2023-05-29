@@ -7,6 +7,7 @@ import {
   InputCalloutComponentSchema,
   RadioCalloutComponentSchema,
   SelectCalloutComponentSchema,
+  NestableCalloutComponentSchema,
 } from "../../src";
 
 const textComponent: InputCalloutComponentSchema = {
@@ -61,6 +62,14 @@ const selectBoxComponent: RadioCalloutComponentSchema = {
   ],
 };
 
+const panelComponent: NestableCalloutComponentSchema = {
+  type: "panel",
+  key: "myPanelComponent",
+  label: "My panel component",
+  input: false,
+  components: [textComponent, textComponent2],
+};
+
 const answers: CalloutResponseAnswers = {
   myTextComponent: "Some text",
   myTextComponent2: "Some other text",
@@ -81,6 +90,7 @@ const formSchema: CalloutFormSchema = {
     selectComponent,
     selectBoxComponent,
   ],
+  navigation: [],
 };
 
 describe("stringifyAnswers should show a nice answer for", () => {
