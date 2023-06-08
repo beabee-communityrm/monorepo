@@ -1,4 +1,5 @@
 export interface BaseCalloutComponentSchema {
+  id: string;
   type: string;
   key: string;
   label: string;
@@ -47,11 +48,12 @@ export type CalloutComponentSchema =
   | InputCalloutComponentSchema
   | NestableCalloutComponentSchema;
 
-interface CalloutNavigationSchema {
+export interface CalloutNavigationSchema {
   showPrev: boolean;
   showNext: boolean;
   prevText: string;
   nextText: string;
+  nextSlideId: string;
   submitText: string;
 }
 
