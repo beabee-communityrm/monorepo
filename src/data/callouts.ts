@@ -48,6 +48,11 @@ export type CalloutComponentSchema =
   | InputCalloutComponentSchema
   | NestableCalloutComponentSchema;
 
+export interface CalloutPageSchema extends NestableCalloutComponentSchema {
+  type: "panel";
+  title: string;
+}
+
 export interface CalloutNavigationSchema {
   showPrev: boolean;
   showNext: boolean;
@@ -59,7 +64,7 @@ export interface CalloutNavigationSchema {
 
 export interface CalloutFormSchema {
   display?: "form" | "wizard";
-  components: CalloutComponentSchema[];
+  components: CalloutPageSchema[];
   navigation: CalloutNavigationSchema[];
 }
 
