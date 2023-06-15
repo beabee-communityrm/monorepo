@@ -51,6 +51,7 @@ export type CalloutComponentSchema =
 export interface CalloutPageSchema extends NestableCalloutComponentSchema {
   type: "panel";
   title: string;
+  navigation: CalloutNavigationSchema;
 }
 
 export interface CalloutNavigationSchema {
@@ -65,7 +66,6 @@ export interface CalloutNavigationSchema {
 export interface CalloutFormSchema {
   display?: "form" | "wizard";
   components: CalloutPageSchema[];
-  navigation: Record<string, CalloutNavigationSchema>;
 }
 
 export type CalloutResponseAnswer =
