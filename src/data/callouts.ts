@@ -65,7 +65,7 @@ export interface CalloutNavigationSchema {
 export interface CalloutFormSchema {
   display?: "form" | "wizard";
   components: CalloutPageSchema[];
-  navigation: CalloutNavigationSchema[];
+  navigation: Record<string, CalloutNavigationSchema>;
 }
 
 export type CalloutResponseAnswer =
