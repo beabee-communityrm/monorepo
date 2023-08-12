@@ -41,12 +41,28 @@ export interface CalloutFormSchema {
   components: CalloutComponentSchema[];
 }
 
+export interface CalloutResponseAnswerAddress {
+  geometry: {
+    location: {
+      lat: number;
+      lng: number;
+    };
+  };
+}
+export interface CalloutResponseAnswerFileUpload {
+  url: string;
+}
 export type CalloutResponseAnswer =
   | string
   | boolean
   | number
   | null
   | undefined
-  | Record<string, boolean>;
+  | Record<string, boolean>
+  | CalloutResponseAnswerAddress
+  | CalloutResponseAnswerFileUpload;
 
-export type CalloutResponseAnswers = Record<string, CalloutResponseAnswer>;
+export type CalloutResponseAnswers = Record<
+  string,
+  CalloutResponseAnswer | CalloutResponseAnswer[]
+>;

@@ -1,6 +1,8 @@
 import {
   CalloutComponentSchema,
   CalloutResponseAnswer,
+  CalloutResponseAnswerAddress,
+  CalloutResponseAnswerFileUpload,
 } from "../data/callouts";
 import { FilterArgs } from "../search";
 
@@ -84,13 +86,32 @@ function getNiceAnswer(
   }
 }
 
+export function isAddressAnswer(
+  answer: CalloutResponseAnswer
+): answer is CalloutResponseAnswerAddress {
+  return !!answer && typeof answer === "object" && "geometry" in answer;
+}
+
+export function isFileUploadAnswer(
+  answer: CalloutResponseAnswer
+): answer is CalloutResponseAnswerFileUpload {
+  return !!answer && typeof answer === "object" && "url" in answer;
+}
+
 export function stringifyAnswer(
   component: CalloutComponentSchema,
-  answer: CalloutResponseAnswer
+  answer: CalloutResponseAnswer | CalloutResponseAnswer[]
 ): string {
-  if (!answer) {
+  if (Array.isArray(answer)) {
+    return answer.map((a) => stringifyAnswer(component, a)).join(", ");
+  } else if (!answer) {
     return "";
+  } else if (isAddressAnswer(answer)) {
+    return `${answer.geometry.location.lat}, ${answer.geometry.location.lng}`;
+  } else if (isFileUploadAnswer(answer)) {
+    return answer.url;
   } else if (typeof answer === "object") {
+    // Checkboxes
     return Object.entries(answer)
       .filter(([, selected]) => selected)
       .map(([value]) => getNiceAnswer(component, value))
