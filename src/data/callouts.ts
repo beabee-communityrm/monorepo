@@ -42,6 +42,7 @@ export interface CalloutFormSchema {
 }
 
 export interface CalloutResponseAnswerAddress {
+  formatted_address: string;
   geometry: {
     location: {
       lat: number;
