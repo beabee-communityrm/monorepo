@@ -11,7 +11,10 @@ export function flattenComponents(
 ): CalloutComponentSchema[] {
   return components.flatMap((component) => [
     component,
-    ...flattenComponents(component.components || []),
+    ...flattenComponents(
+      // Addresses have embedded components we don't want in our component list
+      (component.type !== "address" && component.components) || []
+    ),
   ]);
 }
 
