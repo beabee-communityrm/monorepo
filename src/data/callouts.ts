@@ -14,6 +14,7 @@ export interface OtherCalloutComponentSchema
     | "button"
     | "checkbox"
     | "email"
+    | "file"
     | "number"
     | "password"
     | "textfield"
