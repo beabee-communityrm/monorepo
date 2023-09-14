@@ -2,6 +2,8 @@ export interface BaseCalloutComponentSchema {
   key: string;
   label?: string;
   input?: boolean;
+  adminOnly?: boolean;
+
   // TODO: should only be on nestable components
   components?: CalloutComponentSchema[];
   [key: string]: unknown;
