@@ -6,6 +6,20 @@ import {
 } from "../data/callouts";
 import { FilterArgs } from "../search";
 
+export function filterComponents(
+  components: CalloutComponentSchema[],
+  filterFn: (component: CalloutComponentSchema) => boolean
+): CalloutComponentSchema[] {
+  return components.filter(filterFn).map((component) => {
+    return {
+      ...component,
+      ...(component.components && {
+        components: filterComponents(component.components, filterFn),
+      }),
+    };
+  });
+}
+
 export function flattenComponents(
   components: CalloutComponentSchema[]
 ): CalloutComponentSchema[] {
