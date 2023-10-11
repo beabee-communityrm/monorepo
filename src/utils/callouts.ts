@@ -71,16 +71,6 @@ function convertComponentToFilter(
   }
 }
 
-export function convertComponentsToFilters(
-  components: CalloutComponentSchema[]
-): Record<string, FilterArgs & { label: string }> {
-  const items = components.map((c) => {
-    return [`answers.${c.key}`, convertComponentToFilter(c)] as const;
-  });
-
-  return Object.fromEntries(items);
-}
-
 function getNiceAnswer(
   component: CalloutComponentSchema,
   value: string
@@ -118,6 +108,21 @@ export function getCalloutComponents(
   return formSchema.slides.flatMap((slide) =>
     flattenComponents(slide.components)
   );
+}
+
+export function getCalloutFilters(
+  formSchema: CalloutFormSchema
+): Record<string, FilterArgs & { label: string }> {
+  const items = formSchema.slides.flatMap((slide) => {
+    return slide.components.map((c) => {
+      return [
+        `answers.${slide.id}.${c.key}`,
+        convertComponentToFilter(c),
+      ] as const;
+    });
+  });
+
+  return Object.fromEntries(items);
 }
 
 export function isAddressAnswer(

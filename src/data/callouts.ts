@@ -58,6 +58,7 @@ export interface CalloutNavigationSchema {
 }
 
 export interface CalloutSlideSchema {
+  id: string;
   components: CalloutComponentSchema[];
   navigation: CalloutNavigationSchema;
 }
