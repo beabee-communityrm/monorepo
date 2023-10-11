@@ -1,10 +1,11 @@
 import {
   CalloutComponentSchema,
+  CalloutFormSchema,
   CalloutResponseAnswer,
   NestableCalloutComponentSchema,
 } from "../data/callouts";
 import { FilterArgs } from "../search";
-  import {
+import {
   CalloutResponseAnswerAddress,
   CalloutResponseAnswerFileUpload,
 } from "../data/callouts";
@@ -13,7 +14,7 @@ function isNestableComponent(
   component: CalloutComponentSchema
 ): component is NestableCalloutComponentSchema {
   // Addresses have embedded components we don't want to include
-  return "components" in component && component.type !== 'address';
+  return "components" in component && component.type !== "address";
 }
 
 export function filterComponents(
@@ -30,7 +31,7 @@ export function filterComponents(
   });
 }
 
-export function flattenComponents(
+function flattenComponents(
   components: CalloutComponentSchema[]
 ): CalloutComponentSchema[] {
   return components.flatMap((component) =>
@@ -38,6 +39,12 @@ export function flattenComponents(
       ? [component, ...flattenComponents(component.components)]
       : [component]
   );
+}
+
+export function getCalloutComponents(
+  callout: CalloutFormSchema
+): CalloutComponentSchema[] {
+  return callout.slides.flatMap((slide) => flattenComponents(slide.components));
 }
 
 function convertValuesToOptions(
