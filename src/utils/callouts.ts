@@ -4,11 +4,30 @@ import {
   NestableCalloutComponentSchema,
 } from "../data/callouts";
 import { FilterArgs } from "../search";
+  import {
+  CalloutResponseAnswerAddress,
+  CalloutResponseAnswerFileUpload,
+} from "../data/callouts";
 
 function isNestableComponent(
   component: CalloutComponentSchema
 ): component is NestableCalloutComponentSchema {
-  return "components" in component;
+  // Addresses have embedded components we don't want to include
+  return "components" in component && component.type !== 'address';
+}
+
+export function filterComponents(
+  components: CalloutComponentSchema[],
+  filterFn: (component: CalloutComponentSchema) => boolean
+): CalloutComponentSchema[] {
+  return components.filter(filterFn).map((component) => {
+    return {
+      ...component,
+      ...(isNestableComponent(component) && {
+        components: filterComponents(component.components, filterFn),
+      }),
+    };
+  });
 }
 
 export function flattenComponents(
@@ -92,13 +111,32 @@ function getNiceAnswer(
   }
 }
 
+export function isAddressAnswer(
+  answer: CalloutResponseAnswer
+): answer is CalloutResponseAnswerAddress {
+  return !!answer && typeof answer === "object" && "geometry" in answer;
+}
+
+export function isFileUploadAnswer(
+  answer: CalloutResponseAnswer
+): answer is CalloutResponseAnswerFileUpload {
+  return !!answer && typeof answer === "object" && "url" in answer;
+}
+
 export function stringifyAnswer(
   component: CalloutComponentSchema,
-  answer: CalloutResponseAnswer
+  answer: CalloutResponseAnswer | CalloutResponseAnswer[]
 ): string {
-  if (!answer) {
+  if (Array.isArray(answer)) {
+    return answer.map((a) => stringifyAnswer(component, a)).join(", ");
+  } else if (!answer) {
     return "";
+  } else if (isAddressAnswer(answer)) {
+    return answer.formatted_address;
+  } else if (isFileUploadAnswer(answer)) {
+    return answer.url;
   } else if (typeof answer === "object") {
+    // Checkboxes
     return Object.entries(answer)
       .filter(([, selected]) => selected)
       .map(([value]) => getNiceAnswer(component, value))

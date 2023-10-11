@@ -24,6 +24,7 @@ export const contactFilters = {
   },
   contributionCancelled: {
     type: "date",
+    nullable: true,
   },
   contributionType: {
     type: "enum",

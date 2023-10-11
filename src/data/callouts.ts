@@ -2,8 +2,9 @@ export interface BaseCalloutComponentSchema {
   id: string;
   type: string;
   key: string;
-  label: string;
-  input: boolean;
+  label?: string;
+  input?: boolean;
+  adminOnly?: boolean;
   [key: string]: unknown;
 }
 
@@ -21,6 +22,7 @@ export interface InputCalloutComponentSchema
     | "button"
     | "checkbox"
     | "email"
+    | "file"
     | "number"
     | "password"
     | "textfield"
@@ -68,12 +70,29 @@ export interface CalloutFormSchema {
   components: CalloutPageSchema[];
 }
 
+export interface CalloutResponseAnswerAddress {
+  formatted_address: string;
+  geometry: {
+    location: {
+      lat: number;
+      lng: number;
+    };
+  };
+}
+export interface CalloutResponseAnswerFileUpload {
+  url: string;
+}
 export type CalloutResponseAnswer =
   | string
   | boolean
   | number
   | null
   | undefined
-  | Record<string, boolean>;
+  | Record<string, boolean>
+  | CalloutResponseAnswerAddress
+  | CalloutResponseAnswerFileUpload;
 
-export type CalloutResponseAnswers = Record<string, CalloutResponseAnswer>;
+export type CalloutResponseAnswers = Record<
+  string,
+  CalloutResponseAnswer | CalloutResponseAnswer[]
+>;

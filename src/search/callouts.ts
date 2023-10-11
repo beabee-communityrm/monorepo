@@ -19,9 +19,11 @@ export const calloutFilters = {
   },
   starts: {
     type: "date",
+    nullable: true,
   },
   expires: {
     type: "date",
+    nullable: true,
   },
   hidden: {
     type: "boolean",
