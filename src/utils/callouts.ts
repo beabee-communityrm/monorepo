@@ -17,20 +17,6 @@ function isNestableComponent(
   return "components" in component && component.type !== "address";
 }
 
-export function filterComponents(
-  components: CalloutComponentSchema[],
-  filterFn: (component: CalloutComponentSchema) => boolean
-): CalloutComponentSchema[] {
-  return components.filter(filterFn).map((component) => {
-    return {
-      ...component,
-      ...(isNestableComponent(component) && {
-        components: filterComponents(component.components, filterFn),
-      }),
-    };
-  });
-}
-
 function flattenComponents(
   components: CalloutComponentSchema[]
 ): CalloutComponentSchema[] {
@@ -39,12 +25,6 @@ function flattenComponents(
       ? [component, ...flattenComponents(component.components)]
       : [component]
   );
-}
-
-export function getCalloutComponents(
-  callout: CalloutFormSchema
-): CalloutComponentSchema[] {
-  return callout.slides.flatMap((slide) => flattenComponents(slide.components));
 }
 
 function convertValuesToOptions(
@@ -116,6 +96,28 @@ function getNiceAnswer(
     default:
       return value;
   }
+}
+
+export function filterComponents(
+  components: CalloutComponentSchema[],
+  filterFn: (component: CalloutComponentSchema) => boolean
+): CalloutComponentSchema[] {
+  return components.filter(filterFn).map((component) => {
+    return {
+      ...component,
+      ...(isNestableComponent(component) && {
+        components: filterComponents(component.components, filterFn),
+      }),
+    };
+  });
+}
+
+export function getCalloutComponents(
+  formSchema: CalloutFormSchema
+): CalloutComponentSchema[] {
+  return formSchema.slides.flatMap((slide) =>
+    flattenComponents(slide.components)
+  );
 }
 
 export function isAddressAnswer(
