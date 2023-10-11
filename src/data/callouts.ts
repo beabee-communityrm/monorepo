@@ -50,24 +50,20 @@ export type CalloutComponentSchema =
   | InputCalloutComponentSchema
   | NestableCalloutComponentSchema;
 
-export interface CalloutPageSchema extends NestableCalloutComponentSchema {
-  type: "panel";
-  title: string;
-  navigation: CalloutNavigationSchema;
-}
-
 export interface CalloutNavigationSchema {
-  showPrev: boolean;
-  showNext: boolean;
   prevText: string;
   nextText: string;
   nextSlideId: string;
   submitText: string;
 }
 
+export interface CalloutSlideSchema {
+  components: CalloutComponentSchema[];
+  navigation: CalloutNavigationSchema;
+}
+
 export interface CalloutFormSchema {
-  display?: "form" | "wizard";
-  components: CalloutPageSchema[];
+  slides: CalloutSlideSchema[];
 }
 
 export interface CalloutResponseAnswerAddress {
