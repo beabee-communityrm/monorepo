@@ -17,16 +17,6 @@ function isNestableComponent(
   return "components" in component && component.type !== "address";
 }
 
-function flattenComponents(
-  components: CalloutComponentSchema[]
-): CalloutComponentSchema[] {
-  return components.flatMap((component) =>
-    isNestableComponent(component)
-      ? [component, ...flattenComponents(component.components)]
-      : [component]
-  );
-}
-
 function convertValuesToOptions(
   values: { value: string; label: string }[]
 ): string[] {
@@ -34,10 +24,10 @@ function convertValuesToOptions(
 }
 
 function convertComponentToFilter(
-  component: CalloutComponentSchema
+  component: CalloutComponentSchema & { fullKey: string }
 ): FilterArgs & { label: string } {
   const baseItem = {
-    label: component.label || component.key,
+    label: component.label || component.fullKey,
     nullable: true,
   };
 
@@ -88,6 +78,16 @@ function getNiceAnswer(
   }
 }
 
+export function flattenComponents(
+  components: CalloutComponentSchema[]
+): CalloutComponentSchema[] {
+  return components.flatMap((component) =>
+    isNestableComponent(component)
+      ? [component, ...flattenComponents(component.components)]
+      : [component]
+  );
+}
+
 export function filterComponents(
   components: CalloutComponentSchema[],
   filterFn: (component: CalloutComponentSchema) => boolean
@@ -104,23 +104,22 @@ export function filterComponents(
 
 export function getCalloutComponents(
   formSchema: CalloutFormSchema
-): CalloutComponentSchema[] {
+): (CalloutComponentSchema & { slideId: string; fullKey: string })[] {
   return formSchema.slides.flatMap((slide) =>
-    flattenComponents(slide.components)
+    flattenComponents(slide.components).map((component) => ({
+      ...component,
+      slideId: slide.id,
+      fullKey: `${slide.id}.${component.key}`,
+    }))
   );
 }
 
 export function getCalloutFilters(
   formSchema: CalloutFormSchema
 ): Record<string, FilterArgs & { label: string }> {
-  const items = formSchema.slides.flatMap((slide) => {
-    return slide.components.map((c) => {
-      return [
-        `answers.${slide.id}.${c.key}`,
-        convertComponentToFilter(c),
-      ] as const;
-    });
-  });
+  const items = getCalloutComponents(formSchema)
+    .filter((c) => c.input)
+    .map((c) => [`answers.${c.fullKey}`, convertComponentToFilter(c)]);
 
   return Object.fromEntries(items);
 }

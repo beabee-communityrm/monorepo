@@ -59,6 +59,7 @@ export interface CalloutNavigationSchema {
 
 export interface CalloutSlideSchema {
   id: string;
+  title: string;
   components: CalloutComponentSchema[];
   navigation: CalloutNavigationSchema;
 }
@@ -89,7 +90,10 @@ export type CalloutResponseAnswer =
   | CalloutResponseAnswerAddress
   | CalloutResponseAnswerFileUpload;
 
+/**
+ * Answers are grouped by slide key: {[slideId]: {[componentKey]: answer | answer[]}}
+ */
 export type CalloutResponseAnswers = Record<
   string,
-  CalloutResponseAnswer | CalloutResponseAnswer[]
+  Record<string, CalloutResponseAnswer | CalloutResponseAnswer[]> | undefined
 >;
