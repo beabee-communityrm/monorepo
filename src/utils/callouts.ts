@@ -1,10 +1,11 @@
 import {
   CalloutComponentSchema,
+  CalloutFormSchema,
   CalloutResponseAnswer,
   NestableCalloutComponentSchema,
 } from "../data/callouts";
 import { FilterArgs } from "../search";
-  import {
+import {
   CalloutResponseAnswerAddress,
   CalloutResponseAnswerFileUpload,
 } from "../data/callouts";
@@ -13,31 +14,7 @@ function isNestableComponent(
   component: CalloutComponentSchema
 ): component is NestableCalloutComponentSchema {
   // Addresses have embedded components we don't want to include
-  return "components" in component && component.type !== 'address';
-}
-
-export function filterComponents(
-  components: CalloutComponentSchema[],
-  filterFn: (component: CalloutComponentSchema) => boolean
-): CalloutComponentSchema[] {
-  return components.filter(filterFn).map((component) => {
-    return {
-      ...component,
-      ...(isNestableComponent(component) && {
-        components: filterComponents(component.components, filterFn),
-      }),
-    };
-  });
-}
-
-export function flattenComponents(
-  components: CalloutComponentSchema[]
-): CalloutComponentSchema[] {
-  return components.flatMap((component) =>
-    isNestableComponent(component)
-      ? [component, ...flattenComponents(component.components)]
-      : [component]
-  );
+  return "components" in component && component.type !== "address";
 }
 
 function convertValuesToOptions(
@@ -47,10 +24,10 @@ function convertValuesToOptions(
 }
 
 function convertComponentToFilter(
-  component: CalloutComponentSchema
+  component: CalloutComponentSchema & { fullKey: string }
 ): FilterArgs & { label: string } {
   const baseItem = {
-    label: component.label || component.key,
+    label: component.label || component.fullKey,
     nullable: true,
   };
 
@@ -84,16 +61,6 @@ function convertComponentToFilter(
   }
 }
 
-export function convertComponentsToFilters(
-  components: CalloutComponentSchema[]
-): Record<string, FilterArgs & { label: string }> {
-  const items = components.map((c) => {
-    return [`answers.${c.key}`, convertComponentToFilter(c)] as const;
-  });
-
-  return Object.fromEntries(items);
-}
-
 function getNiceAnswer(
   component: CalloutComponentSchema,
   value: string
@@ -109,6 +76,52 @@ function getNiceAnswer(
     default:
       return value;
   }
+}
+
+export function flattenComponents(
+  components: CalloutComponentSchema[]
+): CalloutComponentSchema[] {
+  return components.flatMap((component) =>
+    isNestableComponent(component)
+      ? [component, ...flattenComponents(component.components)]
+      : [component]
+  );
+}
+
+export function filterComponents(
+  components: CalloutComponentSchema[],
+  filterFn: (component: CalloutComponentSchema) => boolean
+): CalloutComponentSchema[] {
+  return components.filter(filterFn).map((component) => {
+    return {
+      ...component,
+      ...(isNestableComponent(component) && {
+        components: filterComponents(component.components, filterFn),
+      }),
+    };
+  });
+}
+
+export function getCalloutComponents(
+  formSchema: CalloutFormSchema
+): (CalloutComponentSchema & { slideId: string; fullKey: string })[] {
+  return formSchema.slides.flatMap((slide) =>
+    flattenComponents(slide.components).map((component) => ({
+      ...component,
+      slideId: slide.id,
+      fullKey: `${slide.id}.${component.key}`,
+    }))
+  );
+}
+
+export function getCalloutFilters(
+  formSchema: CalloutFormSchema
+): Record<string, FilterArgs & { label: string }> {
+  const items = getCalloutComponents(formSchema)
+    .filter((c) => c.input)
+    .map((c) => [`answers.${c.fullKey}`, convertComponentToFilter(c)]);
+
+  return Object.fromEntries(items);
 }
 
 export function isAddressAnswer(

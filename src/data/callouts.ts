@@ -50,24 +50,22 @@ export type CalloutComponentSchema =
   | InputCalloutComponentSchema
   | NestableCalloutComponentSchema;
 
-export interface CalloutPageSchema extends NestableCalloutComponentSchema {
-  type: "panel";
-  title: string;
-  navigation: CalloutNavigationSchema;
-}
-
 export interface CalloutNavigationSchema {
-  showPrev: boolean;
-  showNext: boolean;
   prevText: string;
   nextText: string;
   nextSlideId: string;
   submitText: string;
 }
 
+export interface CalloutSlideSchema {
+  id: string;
+  title: string;
+  components: CalloutComponentSchema[];
+  navigation: CalloutNavigationSchema;
+}
+
 export interface CalloutFormSchema {
-  display?: "form" | "wizard";
-  components: CalloutPageSchema[];
+  slides: CalloutSlideSchema[];
 }
 
 export interface CalloutResponseAnswerAddress {
@@ -92,7 +90,10 @@ export type CalloutResponseAnswer =
   | CalloutResponseAnswerAddress
   | CalloutResponseAnswerFileUpload;
 
+/**
+ * Answers are grouped by slide key: {[slideId]: {[componentKey]: answer | answer[]}}
+ */
 export type CalloutResponseAnswers = Record<
   string,
-  CalloutResponseAnswer | CalloutResponseAnswer[]
+  Record<string, CalloutResponseAnswer | CalloutResponseAnswer[]> | undefined
 >;
