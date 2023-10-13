@@ -41,7 +41,7 @@ export interface RadioCalloutComponentSchema
   extends BaseCalloutComponentSchema {
   type: "radio" | "selectboxes";
   input: true;
-  values: { label: string; value: string }[];
+  values: { label: string; value: string; nextSlideId: string }[];
 }
 
 export type CalloutComponentSchema =
