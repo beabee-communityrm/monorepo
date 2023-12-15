@@ -33,9 +33,9 @@ const radioComponent: RadioCalloutComponentSchema = {
   label: "My radio component",
   input: true,
   values: [
-    { value: "opt1", label: "Option 1" },
-    { value: "opt2", label: "Option 2" },
-    { value: "opt3", label: "Option 3" },
+    { value: "opt1", label: "Option 1", nextSlideId: "" },
+    { value: "opt2", label: "Option 2", nextSlideId: "" },
+    { value: "opt3", label: "Option 3", nextSlideId: "" },
   ],
 };
 
@@ -61,9 +61,9 @@ const selectBoxComponent: RadioCalloutComponentSchema = {
   label: "My select box component",
   input: true,
   values: [
-    { value: "opt1", label: "Option 1" },
-    { value: "opt2", label: "Option 2" },
-    { value: "opt3", label: "Option 3" },
+    { value: "opt1", label: "Option 1", nextSlideId: "" },
+    { value: "opt2", label: "Option 2", nextSlideId: "" },
+    { value: "opt3", label: "Option 3", nextSlideId: "" },
   ],
 };
 

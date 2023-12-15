@@ -2,6 +2,9 @@ import type { Filters } from ".";
 import { ItemStatus } from "../data";
 
 export const noticeFilters = {
+  id: {
+    type: "text",
+  },
   createdAt: {
     type: "date",
   },

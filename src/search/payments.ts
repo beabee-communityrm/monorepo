@@ -2,6 +2,9 @@ import type { Filters } from ".";
 import { PaymentStatus } from "../data";
 
 export const paymentFilters = {
+  id: {
+    type: "text",
+  },
   contact: {
     type: "contact",
   },

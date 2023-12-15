@@ -2,6 +2,9 @@ import type { Filters } from ".";
 import { ItemStatus } from "../data";
 
 export const calloutFilters = {
+  slug: {
+    type: "text",
+  },
   title: {
     type: "text",
   },

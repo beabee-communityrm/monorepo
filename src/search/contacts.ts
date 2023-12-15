@@ -7,6 +7,9 @@ import {
 } from "../data";
 
 export const contactFilters = {
+  id: {
+    type: "text",
+  },
   firstname: {
     type: "text",
   },

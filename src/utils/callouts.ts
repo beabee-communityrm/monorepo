@@ -145,7 +145,7 @@ export function stringifyAnswer(
   } else if (!answer) {
     return "";
   } else if (isAddressAnswer(answer)) {
-    return answer.formatted_address;
+    return answer.geometry.location.lat + ", " + answer.geometry.location.lng;
   } else if (isFileUploadAnswer(answer)) {
     return answer.url;
   } else if (typeof answer === "object") {
