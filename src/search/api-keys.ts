@@ -1,6 +1,6 @@
 import { Filters } from ".";
 
-const apiKeyFilters = {
+export const apiKeyFilters = {
   id: {
     type: "text",
   },
