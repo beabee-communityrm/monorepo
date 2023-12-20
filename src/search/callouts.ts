@@ -93,3 +93,20 @@ export const calloutResponseCommentFilters = {
 
 export type CalloutResponseCommentFilterName =
   keyof typeof calloutResponseCommentFilters;
+
+export const calloutTagFilters = {
+  id: {
+    type: "text",
+  },
+  name: {
+    type: "text",
+  },
+  description: {
+    type: "text",
+  },
+  calloutSlug: {
+    type: "text",
+  },
+} as const satisfies Filters;
+
+export type CalloutTagFilterName = keyof typeof calloutTagFilters;
