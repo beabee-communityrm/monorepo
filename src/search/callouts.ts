@@ -71,6 +71,9 @@ export const calloutResponseFilters = {
 export type CalloutResponseFilterName = keyof typeof calloutResponseFilters;
 
 export const calloutResponseCommentFilters = {
+  id: {
+    type: "text",
+  },
   responseId: {
     type: "text",
   },
