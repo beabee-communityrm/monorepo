@@ -8,7 +8,7 @@ import {
 
 export const contactFilters = {
   id: {
-    type: "text",
+    type: "contact",
   },
   firstname: {
     type: "text",
