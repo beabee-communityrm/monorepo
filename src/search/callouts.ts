@@ -1,5 +1,5 @@
-import type { Filters } from ".";
-import { ItemStatus } from "../data";
+import type { Filters } from "./index.ts";
+import { ItemStatus } from "../data/index.ts";
 
 export const calloutFilters = {
   slug: {

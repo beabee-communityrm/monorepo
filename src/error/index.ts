@@ -1,3 +1,3 @@
-import InvalidRule from "./InvalidRule";
+import InvalidRule from "./InvalidRule.ts";
 
 export { InvalidRule };

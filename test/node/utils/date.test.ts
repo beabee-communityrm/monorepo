@@ -9,7 +9,7 @@ import {
   sub,
 } from "date-fns";
 
-import { getMinDateUnit, isValidDate, parseDate } from "../../src";
+import { getMinDateUnit, isValidDate, parseDate } from "../../../src";
 
 describe("parseDate for absolute dates", () => {
   test("date with years has unit years", () => {

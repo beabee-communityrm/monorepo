@@ -1,4 +1,4 @@
-import { Filters } from ".";
+import { Filters } from "./index.ts";
 
 export const apiKeyFilters = {
   id: {

@@ -1,4 +1,4 @@
-import { InvalidRule } from "../error";
+import { InvalidRule } from "../error/index.ts";
 import {
   Filters,
   nullableOperators,
@@ -7,18 +7,18 @@ import {
   RuleGroup,
   ValidatedRule,
   ValidatedRuleGroup,
-} from "../search";
-import { isValidDate } from "./date";
+} from "../search/index.ts";
+import { isValidDate } from "./date.ts";
 
 export function isRuleGroup(
-  ruleOrGroup: Rule | RuleGroup
+  ruleOrGroup: Rule | RuleGroup,
 ): ruleOrGroup is RuleGroup {
   return "condition" in ruleOrGroup;
 }
 
 export function validateRule<Field extends string>(
   filters: Filters<Field>,
-  rule: Rule
+  rule: Rule,
 ): ValidatedRule<Field> {
   const filter = filters[rule.field as Field];
   if (!filter) {
@@ -31,7 +31,7 @@ export function validateRule<Field extends string>(
     if (!filter.nullable && filter.type !== "text") {
       throw new InvalidRule(
         rule,
-        `Invalid nullable operator: field is not nullable`
+        `Invalid nullable operator: field is not nullable`,
       );
     }
   } else {
@@ -39,7 +39,7 @@ export function validateRule<Field extends string>(
     if (!operator) {
       throw new InvalidRule(
         rule,
-        `Invalid operator for type: ${filter.type} type doesn't define ${rule.operator}`
+        `Invalid operator for type: ${filter.type} type doesn't define ${rule.operator}`,
       );
     }
     expectedArgs = operator.args;
@@ -48,7 +48,7 @@ export function validateRule<Field extends string>(
   if (expectedArgs !== rule.value.length) {
     throw new InvalidRule(
       rule,
-      `Invalid operator argument count: ${rule.operator} needs ${expectedArgs}, ${rule.value.length} given`
+      `Invalid operator argument count: ${rule.operator} needs ${expectedArgs}, ${rule.value.length} given`,
     );
   }
 
@@ -57,12 +57,13 @@ export function validateRule<Field extends string>(
       ? filter.type
       : "string";
 
+  // deno-lint-ignore valid-typeof
   if (rule.value.some((v) => typeof v !== expectedType)) {
     throw new InvalidRule(
       rule,
-      `Invalid operator argument type: ${
-        rule.operator
-      } needs ${expectedType}, ${rule.value.map((v) => typeof v)} given`
+      `Invalid operator argument type: ${rule.operator} needs ${expectedType}, ${rule.value.map(
+        (v) => typeof v,
+      )} given`,
     );
   }
   if (
@@ -71,7 +72,7 @@ export function validateRule<Field extends string>(
   ) {
     throw new InvalidRule(
       rule,
-      `Invalid operator argument: date type needs valid absolute or relative date, ${rule.value} given`
+      `Invalid operator argument: date type needs valid absolute or relative date, ${rule.value} given`,
     );
   }
 
@@ -81,7 +82,7 @@ export function validateRule<Field extends string>(
   ) {
     throw new InvalidRule(
       rule,
-      `Invalid operator argument: ${filter.type} type expected ${filter.options}, ${rule.value} given`
+      `Invalid operator argument: ${filter.type} type expected ${filter.options}, ${rule.value} given`,
     );
   }
 
@@ -96,7 +97,7 @@ export function validateRule<Field extends string>(
 
 export function validateRuleGroup<Field extends string>(
   filters: Filters<Field>,
-  ruleGroup: RuleGroup
+  ruleGroup: RuleGroup,
 ): ValidatedRuleGroup<Field> {
   const validatedRuleGroup: ValidatedRuleGroup<Field> = {
     condition: ruleGroup.condition,

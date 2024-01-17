@@ -2,13 +2,13 @@ import { describe, expect, test } from "@jest/globals";
 import {
   CalloutFormSchema,
   CalloutResponseAnswers,
-  stringifyAnswer,
+  getCalloutComponents,
   InputCalloutComponentSchema,
+  NestableCalloutComponentSchema,
   RadioCalloutComponentSchema,
   SelectCalloutComponentSchema,
-  NestableCalloutComponentSchema,
-  getCalloutComponents,
-} from "../../src";
+  stringifyAnswer,
+} from "../../../src";
 
 const textComponent: InputCalloutComponentSchema = {
   id: "myTextComponent",
@@ -67,6 +67,7 @@ const selectBoxComponent: RadioCalloutComponentSchema = {
   ],
 };
 
+// TODO: Add tests for nested components
 const panelComponent: NestableCalloutComponentSchema = {
   id: "myPanelComponent",
   type: "panel",
@@ -115,25 +116,25 @@ const formSchema: CalloutFormSchema = {
 describe("stringifyAnswers should show a nice answer for", () => {
   test("text components", () => {
     expect(
-      stringifyAnswer(textComponent, answers.slide1?.myTextComponent)
+      stringifyAnswer(textComponent, answers.slide1?.myTextComponent),
     ).toBe("Some text");
   });
 
   test("radio components", () => {
     expect(
-      stringifyAnswer(radioComponent, answers.slide1?.myRadioComponent)
+      stringifyAnswer(radioComponent, answers.slide1?.myRadioComponent),
     ).toBe("Option 1");
   });
 
   test("select box components", () => {
     expect(
-      stringifyAnswer(selectBoxComponent, answers.slide1?.mySelectBoxComponent)
+      stringifyAnswer(selectBoxComponent, answers.slide1?.mySelectBoxComponent),
     ).toBe("Option 1, Option 3");
   });
 
   test("select components", () => {
     expect(
-      stringifyAnswer(selectComponent, answers.slide1?.mySelectComponent)
+      stringifyAnswer(selectComponent, answers.slide1?.mySelectComponent),
     ).toBe("Option 2");
   });
 });
@@ -145,7 +146,7 @@ describe("getCalloutFilters should", () => {
         ...c,
         slideId: "slide1",
         fullKey: `slide1.${c.key}`,
-      }))
+      })),
     );
   });
 });

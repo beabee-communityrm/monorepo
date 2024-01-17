@@ -1,5 +1,5 @@
 import { describe, expect, test } from "@jest/globals";
-import { Filters, InvalidRule, validateRule } from "../../src";
+import { Filters, InvalidRule, validateRule } from "../../../src";
 
 const testFilters = {
   name: {
@@ -32,7 +32,7 @@ describe("validateRule should validate", () => {
         field: "name",
         operator: "equal",
         value: ["foo"],
-      })
+      }),
     ).toEqual({
       type: "text",
       field: "name",
@@ -48,7 +48,7 @@ describe("validateRule should validate", () => {
         field: "name",
         operator: "is_empty",
         value: [],
-      })
+      }),
     ).toBeTruthy();
   });
 
@@ -58,7 +58,7 @@ describe("validateRule should validate", () => {
         field: "starts",
         operator: "is_empty",
         value: [],
-      })
+      }),
     ).toBeTruthy();
   });
 
@@ -68,7 +68,7 @@ describe("validateRule should validate", () => {
         field: "starts",
         operator: "greater",
         value: ["2022-12-01"],
-      })
+      }),
     ).toBeTruthy();
   });
 
@@ -78,7 +78,7 @@ describe("validateRule should validate", () => {
         field: "starts",
         operator: "between",
         value: ["2022-12-01", "$now(d:-1,M:-1)"],
-      })
+      }),
     ).toBeTruthy();
   });
 
@@ -88,7 +88,7 @@ describe("validateRule should validate", () => {
         field: "period",
         operator: "equal",
         value: ["monthly"],
-      })
+      }),
     ).toBeTruthy();
   });
 
@@ -98,7 +98,7 @@ describe("validateRule should validate", () => {
         field: "tags",
         operator: "contains",
         value: ["expert"],
-      })
+      }),
     ).toBeTruthy();
   });
 
@@ -108,7 +108,7 @@ describe("validateRule should validate", () => {
         field: "hobbies",
         operator: "contains",
         value: ["football"],
-      })
+      }),
     ).toBeTruthy();
   });
 });

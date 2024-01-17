@@ -1,0 +1,22 @@
+{
+  "name": "@beabee/beabee-common",
+  "version": "1.19.6",
+  "description": "Shared code between Beabee projects",
+  "imports": {
+    "date-fns": "npm:date-fns@3.2.0",
+    "date-fns/add": "npm:date-fns@3.2.0/add",
+    "date-fns/isValid": "npm:date-fns@3.2.0/isValid",
+    "date-fns/parseISO": "npm:date-fns@3.2.0/parseISO",
+    "date-fns/startOfDay": "npm:date-fns@3.2.0/startOfDay",
+    "date-fns/startOfHour": "npm:date-fns@3.2.0/startOfHour",
+    "date-fns/startOfMinute": "npm:date-fns@3.2.0/startOfMinute",
+    "date-fns/startOfMonth": "npm:date-fns@3.2.0/startOfMonth",
+    "date-fns/startOfSecond": "npm:date-fns@3.2.0/startOfSecond",
+    "date-fns/startOfYear": "npm:date-fns@3.2.0/startOfYear"
+  },
+  "tasks": {
+    "lint": "deno lint mod.ts src",
+    "test": "deno test test/deno",
+    "format": "deno fmt"
+  }
+}

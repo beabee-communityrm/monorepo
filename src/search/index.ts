@@ -1,3 +1,9 @@
+export * from "./api-keys.ts";
+export * from "./callouts.ts";
+export * from "./contacts.ts";
+export * from "./notices.ts";
+export * from "./payments.ts";
+
 // *** Definitions for rules ***
 
 export const ruleOperators = [
@@ -39,8 +45,8 @@ export interface RuleGroup {
 export type ValidatedRuleValue<T extends FilterType> = T extends "number"
   ? number
   : T extends "boolean"
-  ? boolean
-  : string;
+    ? boolean
+    : string;
 
 interface BaseValidatedRule<T extends FilterType, F extends string> {
   type: T;
@@ -185,9 +191,3 @@ export interface PaginatedQuery {
   order?: "ASC" | "DESC";
   rules?: RuleGroup;
 }
-
-export * from "./api-keys";
-export * from "./callouts";
-export * from "./contacts";
-export * from "./notices";
-export * from "./payments";

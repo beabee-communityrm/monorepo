@@ -3,28 +3,28 @@ import {
   CalloutFormSchema,
   CalloutResponseAnswer,
   NestableCalloutComponentSchema,
-} from "../data/callouts";
-import { FilterArgs } from "../search";
+} from "../data/callouts.ts";
+import { FilterArgs } from "../search/index.ts";
 import {
   CalloutResponseAnswerAddress,
   CalloutResponseAnswerFileUpload,
-} from "../data/callouts";
+} from "../data/callouts.ts";
 
 function isNestableComponent(
-  component: CalloutComponentSchema
+  component: CalloutComponentSchema,
 ): component is NestableCalloutComponentSchema {
   // Addresses have embedded components we don't want to include
   return "components" in component && component.type !== "address";
 }
 
 function convertValuesToOptions(
-  values: { value: string; label: string }[]
+  values: { value: string; label: string }[],
 ): string[] {
-  return values.map(({ value, label }) => value);
+  return values.map(({ value }) => value);
 }
 
 function convertComponentToFilter(
-  component: CalloutComponentSchema & { fullKey: string }
+  component: CalloutComponentSchema & { fullKey: string },
 ): FilterArgs & { label: string } {
   const baseItem = {
     label: component.label || component.fullKey,
@@ -63,7 +63,7 @@ function convertComponentToFilter(
 
 function getNiceAnswer(
   component: CalloutComponentSchema,
-  value: string
+  value: string,
 ): string {
   switch (component.type) {
     case "radio":
@@ -79,18 +79,18 @@ function getNiceAnswer(
 }
 
 export function flattenComponents(
-  components: CalloutComponentSchema[]
+  components: CalloutComponentSchema[],
 ): CalloutComponentSchema[] {
   return components.flatMap((component) =>
     isNestableComponent(component)
       ? [component, ...flattenComponents(component.components)]
-      : [component]
+      : [component],
   );
 }
 
 export function filterComponents(
   components: CalloutComponentSchema[],
-  filterFn: (component: CalloutComponentSchema) => boolean
+  filterFn: (component: CalloutComponentSchema) => boolean,
 ): CalloutComponentSchema[] {
   return components.filter(filterFn).map((component) => {
     return {
@@ -103,19 +103,19 @@ export function filterComponents(
 }
 
 export function getCalloutComponents(
-  formSchema: CalloutFormSchema
+  formSchema: CalloutFormSchema,
 ): (CalloutComponentSchema & { slideId: string; fullKey: string })[] {
   return formSchema.slides.flatMap((slide) =>
     flattenComponents(slide.components).map((component) => ({
       ...component,
       slideId: slide.id,
       fullKey: `${slide.id}.${component.key}`,
-    }))
+    })),
   );
 }
 
 export function getCalloutFilters(
-  formSchema: CalloutFormSchema
+  formSchema: CalloutFormSchema,
 ): Record<string, FilterArgs & { label: string }> {
   const items = getCalloutComponents(formSchema)
     .filter((c) => c.input)
@@ -125,20 +125,20 @@ export function getCalloutFilters(
 }
 
 export function isAddressAnswer(
-  answer: CalloutResponseAnswer
+  answer: CalloutResponseAnswer,
 ): answer is CalloutResponseAnswerAddress {
   return !!answer && typeof answer === "object" && "geometry" in answer;
 }
 
 export function isFileUploadAnswer(
-  answer: CalloutResponseAnswer
+  answer: CalloutResponseAnswer,
 ): answer is CalloutResponseAnswerFileUpload {
   return !!answer && typeof answer === "object" && "url" in answer;
 }
 
 export function stringifyAnswer(
   component: CalloutComponentSchema,
-  answer: CalloutResponseAnswer | CalloutResponseAnswer[]
+  answer: CalloutResponseAnswer | CalloutResponseAnswer[],
 ): string {
   if (Array.isArray(answer)) {
     return answer.map((a) => stringifyAnswer(component, a)).join(", ");

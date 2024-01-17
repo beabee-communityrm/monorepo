@@ -1,3 +1,6 @@
+export * from "./callouts.ts";
+export type * from "./callouts.ts";
+
 export enum ContributionPeriod {
   Monthly = "monthly",
   Annually = "annually",
@@ -50,5 +53,3 @@ export const RoleTypes = ["member", "admin", "superadmin"] as const;
 export type RoleType = (typeof RoleTypes)[number];
 
 export type StripeFeeCountry = "eu" | "gb" | "ca";
-
-export * from "./callouts";
