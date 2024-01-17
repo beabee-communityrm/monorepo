@@ -18,7 +18,7 @@
     "./package.json": "./package.json"
   },
   "scripts": {
-    "test": "jest ./test",
+    "test": "jest ./test/node",
     "clear": "rimraf ./dist/",
     "build": "npm run clear && npm run build:esm && npm run build:cjs && npm run build:types",
     "build:esm": "node ./scripts/esbuild.esm.mjs",
