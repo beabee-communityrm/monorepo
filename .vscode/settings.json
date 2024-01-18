@@ -7,7 +7,7 @@
     "./dist",
     "./scripts",
     "./test/node",
-    "./jest.config.js"
+    "./node_modules"
   ],
   "editor.defaultFormatter": "denoland.vscode-deno",
   "editor.formatOnSave": true,

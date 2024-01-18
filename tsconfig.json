@@ -1,10 +1,12 @@
 {
   "extends": "@tsconfig/recommended",
-  "include": ["./src", "./test"],
+  "include": ["./src"],
+  "exclude": ["./test"],
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "Bundler",
+    "declarationDir": "./dist/types",
     "allowImportingTsExtensions": true,
     "declaration": true,
     "emitDeclarationOnly": true,
