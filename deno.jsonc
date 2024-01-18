@@ -1,7 +1,7 @@
 {
   "name": "@beabee/beabee-common",
   "version": "1.19.6",
-  "description": "Shared code between Beabee projects",
+  "description": "Shared code between Beabee projects for Node.js, Deno and the browser",
   "imports": {
     "date-fns": "npm:date-fns@3.2.0",
     "date-fns/add": "npm:date-fns@3.2.0/add",

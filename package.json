@@ -1,7 +1,7 @@
 {
   "name": "@beabee/beabee-common",
   "version": "1.19.6",
-  "description": "Shared code between Beabee projects",
+  "description": "Shared code between Beabee projects for Node.js, Deno and the browser",
   "type": "module",
   "main": "./dist/cjs/index.cjs",
   "module": "./dist/esm/index.js",
@@ -25,7 +25,7 @@
     "test:node:esm": "node test/node/import.mjs",
     "test:node:cjs": "node test/node/require.cjs",
     "clear": "rimraf ./dist/",
-    "build": "npm run clear && npm run build:esm && npm run build:cjs && npm run build:types",
+    "build": "npm run clear && npm run build:types && npm run build:esm && npm run build:cjs",
     "build:esm": "node ./scripts/esbuild.esm.mjs",
     "build:cjs": "node ./scripts/esbuild.cjs.mjs",
     "build:types": "tsc",
