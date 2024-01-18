@@ -26,8 +26,17 @@ export interface InputCalloutComponentSchema
     | "number"
     | "password"
     | "textfield"
-    | "textarea";
+    | "textarea"
+    | "content"
+    | "phoneNumber"
+    | "currency"
+    | "datetime"
+    | "time"
+    | "url"
+    | "signature";
   input: true;
+  filePattern?: string;
+  placeholder?: string;
 }
 
 export interface SelectCalloutComponentSchema
