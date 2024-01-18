@@ -29,7 +29,7 @@
     "build:deno": "node ./scripts/esbuild.deno.mjs",
     "build:types": "tsc -p tsconfig.build.types.json",
     "generate:index": "node scripts/generate-index.mjs",
-    "format": "prettier --write \"src/**/*.ts\"",
+    "format": "deno task format",
     "prepublishOnly": "npm run build"
   },
   "repository": {
@@ -47,7 +47,6 @@
     "@tsconfig/recommended": "^1.0.3",
     "esbuild": "^0.19.11",
     "jest": "^29.7.0",
-    "prettier": "^3.2.4",
     "rimraf": "^5.0.5",
     "ts-jest": "^29.1.1",
     "typescript": "^5.3.3"
