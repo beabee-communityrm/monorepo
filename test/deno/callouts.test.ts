@@ -113,29 +113,29 @@ const formSchema: CalloutFormSchema = {
   ],
 };
 
-Deno.test("stringifyAnswers should show a nice answer for", () => {
-  Deno.test("text components", () => {
+Deno.test("stringifyAnswers should show a nice answer for", async (t) => {
+  await t.step("text components", () => {
     assertEquals(
       stringifyAnswer(textComponent, answers.slide1?.myTextComponent),
       "Some text",
     );
   });
 
-  Deno.test("radio components", () => {
+  await t.step("radio components", () => {
     assertEquals(
       stringifyAnswer(radioComponent, answers.slide1?.myRadioComponent),
       "Option 1",
     );
   });
 
-  Deno.test("select box components", () => {
+  await t.step("select box components", () => {
     assertEquals(
       stringifyAnswer(selectBoxComponent, answers.slide1?.mySelectBoxComponent),
       "Option 1, Option 3",
     );
   });
 
-  Deno.test("select components", () => {
+  await t.step("select components", () => {
     assertEquals(
       stringifyAnswer(selectComponent, answers.slide1?.mySelectComponent),
       "Option 2",
@@ -143,8 +143,8 @@ Deno.test("stringifyAnswers should show a nice answer for", () => {
   });
 });
 
-Deno.test("getCalloutFilters should", () => {
-  Deno.test("keep a flat form schema the same", () => {
+Deno.test("getCalloutFilters should", async (t) => {
+  await t.step("keep a flat form schema the same", () => {
     assertEquals(
       getCalloutComponents(formSchema),
       formSchema.slides[0].components.map((c) => ({

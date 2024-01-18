@@ -18,13 +18,17 @@
     "./package.json": "./package.json"
   },
   "scripts": {
-    "test": "jest ./test/node",
+    "test": "npm run test:types && npm run test:jest",
+    "test:deno": "deno task test",
+    "test:jest": "jest ./test/node",
+    "test:types": "tsc -p tsconfig.build.types.json --noEmit --emitDeclarationOnly false",
     "clear": "rimraf ./dist/",
     "build": "npm run clear && npm run build:esm && npm run build:cjs && npm run build:types",
     "build:esm": "node ./scripts/esbuild.esm.mjs",
     "build:cjs": "node ./scripts/esbuild.cjs.mjs",
     "build:deno": "node ./scripts/esbuild.deno.mjs",
     "build:types": "tsc -p tsconfig.build.types.json",
+    "generate:index": "node scripts/generate-index.mjs",
     "format": "prettier --write \"src/**/*.ts\"",
     "prepublishOnly": "npm run build"
   },

@@ -1,14 +1,9 @@
 import {
   ContributionPeriod,
   PaymentMethod,
-  StripeFeeCountry,
 } from "../data/index.ts";
 
-interface Feeable {
-  amount: number;
-  period: ContributionPeriod;
-  paymentMethod: PaymentMethod;
-}
+import type { Feeable, StripeFeeCountry } from "../types/index.ts";
 
 const stripeFees = {
   gb: {

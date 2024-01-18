@@ -1,14 +1,17 @@
 import { InvalidRule } from "../error/index.ts";
 import {
-  Filters,
   nullableOperators,
   operatorsByTypeMap,
+} from "../search/index.ts";
+import { isValidDate } from "./date.ts";
+
+import type {
+  Filters,
   Rule,
   RuleGroup,
   ValidatedRule,
   ValidatedRuleGroup,
-} from "../search/index.ts";
-import { isValidDate } from "./date.ts";
+} from "../types/index.ts";
 
 export function isRuleGroup(
   ruleOrGroup: Rule | RuleGroup,

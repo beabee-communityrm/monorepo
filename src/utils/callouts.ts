@@ -1,14 +1,12 @@
-import {
+import type {
+  FilterArgs,
   CalloutComponentSchema,
   CalloutFormSchema,
   CalloutResponseAnswer,
   NestableCalloutComponentSchema,
-} from "../data/callouts.ts";
-import { FilterArgs } from "../search/index.ts";
-import {
   CalloutResponseAnswerAddress,
   CalloutResponseAnswerFileUpload,
-} from "../data/callouts.ts";
+} from "../types/index.ts";
 
 function isNestableComponent(
   component: CalloutComponentSchema,

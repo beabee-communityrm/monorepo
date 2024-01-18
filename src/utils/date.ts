@@ -8,13 +8,12 @@ import { startOfMonth } from "date-fns/startOfMonth";
 import { startOfSecond } from "date-fns/startOfSecond";
 import { startOfYear } from "date-fns/startOfYear";
 
-import type { Duration } from "date-fns";
+import type { DateUnit, UnitMatches, Duration } from "../types/index.ts";
 
 // Must be ordered from highest resolution to lowest (seconds to years)
-const dateUnits = ["s", "m", "h", "d", "M", "y"] as const;
-type DateUnit = (typeof dateUnits)[number];
+export const dateUnits = ["s", "m", "h", "d", "M", "y"] as const;
 
-const dateUnitMap: Record<DateUnit, keyof Duration> = {
+export const dateUnitMap: Record<DateUnit, keyof Duration> = {
   y: "years",
   M: "months",
   d: "days",
@@ -34,7 +33,6 @@ const startOf: Record<DateUnit, (d: Date) => Date> = {
 
 const relativeDate = /^\$now(?<units>\(((y|M|d|h|m|s):(-?\d+),?)+\))?$/;
 const relativeUnit = /(y|M|d|h|m|s):(-?\d+)/g;
-type UnitMatches = IterableIterator<[string, DateUnit, string]>;
 
 // Matches the different parts of an ISO 8601 date. Note we don't validate the
 // pattern properly as that is handled by parseISO, we just want to know which
