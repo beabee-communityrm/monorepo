@@ -1,8 +1,15 @@
 {
-  "extends": "@tsconfig/recommended/tsconfig.json",
-  "include": ["./src", "./test"],
+  "extends": "@tsconfig/recommended",
+  "include": ["./src"],
+  "exclude": ["./test"],
   "compilerOptions": {
-    "target": "ES2021",
-    "moduleResolution": "node"
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "declarationDir": "./dist/types",
+    "allowImportingTsExtensions": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "isolatedModules": true
   }
 }

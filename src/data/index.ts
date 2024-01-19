@@ -45,10 +45,3 @@ export enum PaymentStatus {
   Failed = "failed",
   Cancelled = "cancelled",
 }
-
-export const RoleTypes = ["member", "admin", "superadmin"] as const;
-export type RoleType = (typeof RoleTypes)[number];
-
-export type StripeFeeCountry = "eu" | "gb" | "ca";
-
-export * from "./callouts";

@@ -1,5 +1,5 @@
-import type { Filters } from ".";
-import { ItemStatus } from "../data";
+import type { Filters } from "../types/index.ts";
+import { ItemStatus } from "../data/index.ts";
 
 export const noticeFilters = {
   id: {
@@ -34,5 +34,3 @@ export const noticeFilters = {
     ],
   },
 } as const satisfies Filters;
-
-export type NoticeFilterName = keyof typeof noticeFilters;

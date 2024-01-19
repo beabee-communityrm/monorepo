@@ -1,4 +1,4 @@
-import { Filters } from ".";
+import type { Filters } from "../types/index.ts";
 
 export const apiKeyFilters = {
   id: {
@@ -8,5 +8,3 @@ export const apiKeyFilters = {
     type: "date",
   },
 } as const satisfies Filters;
-
-export type ApiKeyFilterName = keyof typeof apiKeyFilters;

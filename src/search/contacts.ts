@@ -1,10 +1,11 @@
-import type { Filters } from ".";
+import type { Filters } from "../types/index.ts";
 import {
   ContributionPeriod,
   ContributionType,
   NewsletterStatus,
-  RoleTypes,
-} from "../data";
+} from "../data/index.ts";
+
+export const RoleTypes = ["member", "admin", "superadmin"] as const;
 
 export const contactFilters = {
   id: {

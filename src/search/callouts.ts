@@ -1,5 +1,5 @@
-import type { Filters } from ".";
-import { ItemStatus } from "../data";
+import type { Filters } from "../types/index.ts";
+import { ItemStatus } from "../data/index.ts";
 
 export const calloutFilters = {
   slug: {
@@ -32,8 +32,6 @@ export const calloutFilters = {
     type: "boolean",
   },
 } as const satisfies Filters;
-
-export type CalloutFilterName = keyof typeof calloutFilters;
 
 export const calloutResponseFilters = {
   id: {
@@ -68,8 +66,6 @@ export const calloutResponseFilters = {
   },
 } as const satisfies Filters;
 
-export type CalloutResponseFilterName = keyof typeof calloutResponseFilters;
-
 export const calloutResponseCommentFilters = {
   id: {
     type: "text",
@@ -91,9 +87,6 @@ export const calloutResponseCommentFilters = {
   },
 } as const satisfies Filters;
 
-export type CalloutResponseCommentFilterName =
-  keyof typeof calloutResponseCommentFilters;
-
 export const calloutTagFilters = {
   id: {
     type: "text",
@@ -108,5 +101,3 @@ export const calloutTagFilters = {
     type: "text",
   },
 } as const satisfies Filters;
-
-export type CalloutTagFilterName = keyof typeof calloutTagFilters;

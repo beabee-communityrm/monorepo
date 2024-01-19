@@ -1,5 +1,5 @@
-import type { Filters } from ".";
-import { PaymentStatus } from "../data";
+import type { Filters } from "../types/index.ts";
+import { PaymentStatus } from "../data/index.ts";
 
 export const paymentFilters = {
   id: {
@@ -24,5 +24,3 @@ export const paymentFilters = {
     ],
   },
 } as const satisfies Filters;
-
-export type PaymentFilterName = keyof typeof paymentFilters;
