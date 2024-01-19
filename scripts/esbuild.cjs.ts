@@ -1,3 +1,4 @@
+// Build Node.js CommonJS module with esbuild.
 import { build } from "npm:esbuild@0.19.11";
 import { transformExtPlugin } from "npm:@gjsify/esbuild-plugin-transform-ext@0.0.4";
 import { extname, join } from "https://deno.land/std@0.212.0/path/mod.ts";

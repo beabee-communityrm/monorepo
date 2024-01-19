@@ -1,4 +1,4 @@
-// Simple script to generate index.ts files for each folder
+// Generate index.ts files for each folder
 const paths = [
   "./src/types",
   "./src/error",

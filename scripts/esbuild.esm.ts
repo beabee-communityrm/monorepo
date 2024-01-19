@@ -1,3 +1,4 @@
+// Build Node.js ESM module with esbuild.
 import { build } from "npm:esbuild@0.19.11";
 import { transformExtPlugin } from "npm:@gjsify/esbuild-plugin-transform-ext@0.0.4";
 
