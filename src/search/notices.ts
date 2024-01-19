@@ -34,4 +34,3 @@ export const noticeFilters = {
     ],
   },
 } as const satisfies Filters;
-

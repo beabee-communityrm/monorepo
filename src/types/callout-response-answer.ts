@@ -1,4 +1,7 @@
-import type { CalloutResponseAnswerAddress, CalloutResponseAnswerFileUpload } from "./index.ts";
+import type {
+  CalloutResponseAnswerAddress,
+  CalloutResponseAnswerFileUpload,
+} from "./index.ts";
 
 export type CalloutResponseAnswer =
   | string

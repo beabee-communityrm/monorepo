@@ -1,11 +1,11 @@
 import type {
-  FilterArgs,
   CalloutComponentSchema,
   CalloutFormSchema,
   CalloutResponseAnswer,
-  NestableCalloutComponentSchema,
   CalloutResponseAnswerAddress,
   CalloutResponseAnswerFileUpload,
+  FilterArgs,
+  NestableCalloutComponentSchema,
 } from "../types/index.ts";
 
 function isNestableComponent(
@@ -82,7 +82,7 @@ export function flattenComponents(
   return components.flatMap((component) =>
     isNestableComponent(component)
       ? [component, ...flattenComponents(component.components)]
-      : [component],
+      : [component]
   );
 }
 
@@ -108,7 +108,7 @@ export function getCalloutComponents(
       ...component,
       slideId: slide.id,
       fullKey: `${slide.id}.${component.key}`,
-    })),
+    }))
   );
 }
 

@@ -24,5 +24,3 @@ export const paymentFilters = {
     ],
   },
 } as const satisfies Filters;
-
-

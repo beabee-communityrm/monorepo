@@ -1,3 +1,3 @@
 export interface RuleOperatorParams {
-    args: number;
+  args: number;
 }

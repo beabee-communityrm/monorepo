@@ -1,6 +1,6 @@
-import type { Rule } from './index.ts';
+import type { Rule } from "./index.ts";
 
 export interface RuleGroup {
-    condition: "AND" | "OR";
-    rules: (RuleGroup | Rule)[];
+  condition: "AND" | "OR";
+  rules: (RuleGroup | Rule)[];
 }

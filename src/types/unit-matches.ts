@@ -1,3 +1,3 @@
-import { DateUnit } from './index.ts';
+import { DateUnit } from "./index.ts";
 
 export type UnitMatches = IterableIterator<[string, DateUnit, string]>;

@@ -1,4 +1,7 @@
-import type { CalloutComponentSchema, CalloutNavigationSchema } from './index.ts';
+import type {
+  CalloutComponentSchema,
+  CalloutNavigationSchema,
+} from "./index.ts";
 
 export interface CalloutSlideSchema {
   id: string;

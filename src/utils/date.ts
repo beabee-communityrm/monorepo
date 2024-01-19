@@ -8,7 +8,7 @@ import { startOfMonth } from "date-fns/startOfMonth";
 import { startOfSecond } from "date-fns/startOfSecond";
 import { startOfYear } from "date-fns/startOfYear";
 
-import type { DateUnit, UnitMatches, Duration } from "../types/index.ts";
+import type { DateUnit, Duration, UnitMatches } from "../types/index.ts";
 
 // Must be ordered from highest resolution to lowest (seconds to years)
 export const dateUnits = ["s", "m", "h", "d", "M", "y"] as const;

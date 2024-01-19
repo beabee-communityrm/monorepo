@@ -1,9 +1,9 @@
 export type FilterType =
-    | "text"
-    | "blob"
-    | "date"
-    | "number"
-    | "boolean"
-    | "array"
-    | "enum"
-    | "contact";
+  | "text"
+  | "blob"
+  | "date"
+  | "number"
+  | "boolean"
+  | "array"
+  | "enum"
+  | "contact";
