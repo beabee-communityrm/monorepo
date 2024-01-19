@@ -1,4 +1,4 @@
-// Sync NPM dependencies from package.json with Deno dependencies in deno.jsonc.
+// Sync NPM dependencies from package.json with Deno dependencies in deno.json.
 import { parse } from "https://deno.land/std@0.212.0/jsonc/mod.ts";
 
 // Load package.json
@@ -6,7 +6,7 @@ const packageJson = await Deno.readTextFile("./package.json");
 const packageJsonObj = parse(packageJson) as any;
 
 // Load deno.jsonc
-const denoJsonc = await Deno.readTextFile("./deno.jsonc");
+const denoJsonc = await Deno.readTextFile("./deno.json");
 const denoJsoncObj = parse(denoJsonc) as any;
 
 // Get dependencies
@@ -25,4 +25,4 @@ for (const [name, _version] of Object.entries(dependencies)) {
 // Write deno.jsonc
 const encoder = new TextEncoder();
 const denoJsoncString = JSON.stringify(denoJsoncObj, null, 2);
-await Deno.writeFile("./deno.jsonc", encoder.encode(denoJsoncString));
+await Deno.writeFile("./deno.json", encoder.encode(denoJsoncString));
