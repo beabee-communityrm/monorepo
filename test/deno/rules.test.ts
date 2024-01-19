@@ -27,8 +27,8 @@ const testFilters = {
   },
 } satisfies Filters;
 
-Deno.test("validateRule should validate", () => {
-  Deno.test("a basic rule", () => {
+Deno.test("validateRule should validate", async (t) => {
+  await t.step("a basic rule", () => {
     assertEquals(
       validateRule(testFilters, {
         field: "name",
@@ -47,7 +47,7 @@ Deno.test("validateRule should validate", () => {
     );
   });
 
-  Deno.test("a null operator on a non-nullable text filter", () => {
+  await t.step("a null operator on a non-nullable text filter", () => {
     assert(
       validateRule(testFilters, {
         field: "name",
@@ -57,7 +57,7 @@ Deno.test("validateRule should validate", () => {
     );
   });
 
-  Deno.test("a null operator on a nullable filter", () => {
+  await t.step("a null operator on a nullable filter", () => {
     assert(
       validateRule(testFilters, {
         field: "starts",
@@ -67,7 +67,7 @@ Deno.test("validateRule should validate", () => {
     );
   });
 
-  Deno.test("a date filter with a valid absolute date", () => {
+  await t.step("a date filter with a valid absolute date", () => {
     assert(
       validateRule(testFilters, {
         field: "starts",
@@ -77,7 +77,7 @@ Deno.test("validateRule should validate", () => {
     );
   });
 
-  Deno.test("a date filter with a valid relative and absolute date", () => {
+  await t.step("a date filter with a valid relative and absolute date", () => {
     assert(
       validateRule(testFilters, {
         field: "starts",
@@ -87,7 +87,7 @@ Deno.test("validateRule should validate", () => {
     );
   });
 
-  Deno.test("a select filter with a valid option", () => {
+  await t.step("a select filter with a valid option", () => {
     assert(
       validateRule(testFilters, {
         field: "period",
@@ -97,7 +97,7 @@ Deno.test("validateRule should validate", () => {
     );
   });
 
-  Deno.test("an array filter without defined options", () => {
+  await t.step("an array filter without defined options", () => {
     assert(
       validateRule(testFilters, {
         field: "tags",
@@ -107,7 +107,7 @@ Deno.test("validateRule should validate", () => {
     );
   });
 
-  Deno.test("an array filter with defined options", () => {
+  await t.step("an array filter with defined options", () => {
     assert(
       validateRule(testFilters, {
         field: "hobbies",
@@ -118,84 +118,77 @@ Deno.test("validateRule should validate", () => {
   });
 });
 
-Deno.test("validateRule should fail for", () => {
-  Deno.test("an invalid field", () => {
+Deno.test("validateRule should fail for", async (t) => {
+  await t.step("an invalid field", () => {
     assertThrows(() =>
       validateRule(testFilters, {
         field: "unknown",
         operator: "equal",
         value: ["test"],
-      })
-    );
+      }), InvalidRule);
   });
 
-  Deno.test("an invalid operator", () => {
+  await t.step("an invalid operator", () => {
     assertThrows(() =>
       validateRule(testFilters, {
         field: "name",
         operator: "greater",
         value: [0],
-      })
-    );
+      }), InvalidRule);
   });
 
-  Deno.test("an invalid value type", () => {
+  await t.step("an invalid value type", () => {
     assertThrows(() =>
       validateRule(testFilters, {
         field: "name",
         operator: "equal",
         value: [0],
-      })
-    );
+      }), InvalidRule);
   });
 
-  Deno.test("an invalid number of values", () => {
+  await t.step("an invalid number of values", () => {
     assertThrows(() =>
       validateRule(testFilters, {
         field: "name",
         operator: "equal",
         value: [],
-      })
-    );
+      }), InvalidRule);
   });
 
-  Deno.test("a null operator on non-nullable filter", () => {
+  await t.step("a null operator on non-nullable filter", () => {
     assertThrows(() => {
       validateRule(testFilters, {
         field: "count",
         operator: "is_empty",
         value: [],
-      });
+      }), InvalidRule;
     });
   });
 
-  Deno.test("a date filter with an invalid relative date", () => {
+  await t.step("a date filter with an invalid relative date", () => {
     assertThrows(() =>
       validateRule(testFilters, {
         field: "starts",
         operator: "between",
         value: ["2022-12-01", "$now(d-1,M:-1)"],
-      })
-    );
+      }), InvalidRule);
   });
 
-  Deno.test("a select filter with an invalid option", () => {
+  await t.step("a select filter with an invalid option", () => {
     assertThrows(() =>
       validateRule(testFilters, {
         field: "period",
         operator: "equal",
         value: ["weekly"],
-      })
-    );
+      }), InvalidRule);
   });
 
-  Deno.test("an array filter with an invalid option", () => {
+  await t.step("an array filter with an invalid option", () => {
     assertThrows(() =>
       validateRule(testFilters, {
         field: "hobbies",
         operator: "contains",
         value: ["hockey"],
-      })
-    );
+      }), InvalidRule);
   });
 });

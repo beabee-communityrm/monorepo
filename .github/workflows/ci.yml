@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+jobs:
+  linux:
+    strategy:
+      matrix:
+        node-version: [ 20.x ]
+        deno-version: [ vx.x.x ]
+        os:
+          - ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          submodules: true
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Setup Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: ${{ matrix.deno-version }}
+
+      - name: Run Node.js clean install
+        run: npm ci
+
+      - name: Run Deno linter
+        run: deno task lint
+
+      - name: Run Deno tests
+        run: deno task test
+
+      - name: Run Node builds
+        run: npm run build --if-present
+
+      - name: Run Node.js tests
+        run: npm test

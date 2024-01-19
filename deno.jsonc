@@ -1,22 +1,17 @@
 {
   "name": "@beabee/beabee-common",
   "version": "1.19.6",
-  "description": "Shared code between Beabee projects",
+  "description": "Shared code between Beabee projects for Node.js, Deno and the browser",
   "imports": {
-    "date-fns": "npm:date-fns@3.2.0",
-    "date-fns/add": "npm:date-fns@3.2.0/add",
-    "date-fns/isValid": "npm:date-fns@3.2.0/isValid",
-    "date-fns/parseISO": "npm:date-fns@3.2.0/parseISO",
-    "date-fns/startOfDay": "npm:date-fns@3.2.0/startOfDay",
-    "date-fns/startOfHour": "npm:date-fns@3.2.0/startOfHour",
-    "date-fns/startOfMinute": "npm:date-fns@3.2.0/startOfMinute",
-    "date-fns/startOfMonth": "npm:date-fns@3.2.0/startOfMonth",
-    "date-fns/startOfSecond": "npm:date-fns@3.2.0/startOfSecond",
-    "date-fns/startOfYear": "npm:date-fns@3.2.0/startOfYear"
+    "date-fns": "npm:date-fns@3.2.0"
   },
   "tasks": {
     "lint": "deno lint mod.ts src",
     "test": "deno test test/deno",
-    "format": "deno fmt"
+    "format": "deno fmt",
+    "build:node:esm": "deno run --allow-read --allow-write --allow-env --allow-run ./scripts/esbuild.esm.ts",
+    "build:node:cjs": "deno run --allow-read --allow-write --allow-env --allow-run ./scripts/esbuild.cjs.ts",
+    "generate:index": "deno run --allow-read --allow-write scripts/generate-index.ts",
+    "sync:deps": "deno run --allow-read --allow-write scripts/sync-deps.ts"
   }
 }

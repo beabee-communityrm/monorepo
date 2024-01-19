@@ -1,14 +1,6 @@
-import {
-  ContributionPeriod,
-  PaymentMethod,
-  StripeFeeCountry,
-} from "../data/index.ts";
+import { ContributionPeriod, PaymentMethod } from "../data/index.ts";
 
-interface Feeable {
-  amount: number;
-  period: ContributionPeriod;
-  paymentMethod: PaymentMethod;
-}
+import type { Feeable, StripeFeeCountry } from "../types/index.ts";
 
 const stripeFees = {
   gb: {
@@ -35,10 +27,9 @@ export function calcPaymentFee(
   feeable: Feeable,
   country: StripeFeeCountry,
 ): number {
-  const feeFn =
-    feeable.paymentMethod === PaymentMethod.GoCardlessDirectDebit
-      ? gcFee
-      : stripeFees[country][feeable.paymentMethod];
+  const feeFn = feeable.paymentMethod === PaymentMethod.GoCardlessDirectDebit
+    ? gcFee
+    : stripeFees[country][feeable.paymentMethod];
 
   return feeable.period === ContributionPeriod.Annually
     ? 0

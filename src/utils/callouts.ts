@@ -1,14 +1,12 @@
-import {
+import type {
   CalloutComponentSchema,
   CalloutFormSchema,
   CalloutResponseAnswer,
-  NestableCalloutComponentSchema,
-} from "../data/callouts.ts";
-import { FilterArgs } from "../search/index.ts";
-import {
   CalloutResponseAnswerAddress,
   CalloutResponseAnswerFileUpload,
-} from "../data/callouts.ts";
+  FilterArgs,
+  NestableCalloutComponentSchema,
+} from "../types/index.ts";
 
 function isNestableComponent(
   component: CalloutComponentSchema,
@@ -84,7 +82,7 @@ export function flattenComponents(
   return components.flatMap((component) =>
     isNestableComponent(component)
       ? [component, ...flattenComponents(component.components)]
-      : [component],
+      : [component]
   );
 }
 
@@ -110,7 +108,7 @@ export function getCalloutComponents(
       ...component,
       slideId: slide.id,
       fullKey: `${slide.id}.${component.key}`,
-    })),
+    }))
   );
 }
 

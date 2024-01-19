@@ -11,32 +11,32 @@ import {
 
 import { getMinDateUnit, isValidDate, parseDate } from "../../mod.ts";
 
-Deno.test("parseDate for absolute dates", () => {
-  Deno.test("date with years has unit years", () => {
+Deno.test("parseDate for absolute dates", async (t) => {
+  await t.step("date with years has unit years", () => {
     assertEquals(parseDate("2022"), [new Date(2022, 0), "y"]);
   });
-  Deno.test("date with months has unit months", () => {
+  await t.step("date with months has unit months", () => {
     assertEquals(parseDate("2022-02"), [new Date(2022, 1), "M"]);
   });
-  Deno.test("date with days has unit days", () => {
+  await t.step("date with days has unit days", () => {
     assertEquals(parseDate("2022-03-03"), [new Date(2022, 2, 3), "d"]);
   });
-  Deno.test("date with hours has unit hours", () => {
+  await t.step("date with hours has unit hours", () => {
     assertEquals(parseDate("2022-03-03T10"), [new Date(2022, 2, 3, 10), "h"]);
   });
-  Deno.test("date with minutes has unit minutes", () => {
+  await t.step("date with minutes has unit minutes", () => {
     assertEquals(parseDate("2022-03-03T10:50"), [
       new Date(2022, 2, 3, 10, 50),
       "m",
     ]);
   });
-  Deno.test("date with seconds has unit seconds", () => {
+  await t.step("date with seconds has unit seconds", () => {
     assertEquals(parseDate("2022-03-03T10:50:25"), [
       new Date(2022, 2, 3, 10, 50, 25),
       "s",
     ]);
   });
-  Deno.test("date with ms has unit seconds", () => {
+  await t.step("date with ms has unit seconds", () => {
     assertEquals(parseDate("2022-03-03T10:50:25.123"), [
       new Date(2022, 2, 3, 10, 50, 25),
       "s",
@@ -44,19 +44,19 @@ Deno.test("parseDate for absolute dates", () => {
   });
 });
 
-Deno.test("parseDate for relative dates", () => {
+Deno.test("parseDate for relative dates", async (t) => {
   const now = new Date();
 
-  Deno.test("$now has unit days", () => {
+  await t.step("$now has unit days", () => {
     assertEquals(parseDate("$now", now), [startOfDay(now), "d"]);
   });
-  Deno.test("$now - years has unit years", () => {
+  await t.step("$now - years has unit years", () => {
     assertEquals(parseDate("$now(y:-1)", now), [
       startOfYear(sub(now, { years: 1 })),
       "y",
     ]);
   });
-  Deno.test("$now - months has unit months", () => {
+  await t.step("$now - months has unit months", () => {
     assertEquals(parseDate("$now(M:-1)", now), [
       startOfMonth(sub(now, { months: 1 })),
       "M",
@@ -66,7 +66,7 @@ Deno.test("parseDate for relative dates", () => {
       "M",
     ]);
   });
-  Deno.test("$now - days has unit days", () => {
+  await t.step("$now - days has unit days", () => {
     assertEquals(parseDate("$now(d:-1)", now), [
       startOfDay(sub(now, { days: 1 })),
       "d",
@@ -80,7 +80,7 @@ Deno.test("parseDate for relative dates", () => {
       "d",
     ]);
   });
-  Deno.test("$now - hours has unit hours", () => {
+  await t.step("$now - hours has unit hours", () => {
     assertEquals(parseDate("$now(h:-1)", now), [
       startOfHour(sub(now, { hours: 1 })),
       "h",
@@ -90,7 +90,7 @@ Deno.test("parseDate for relative dates", () => {
       "h",
     ]);
   });
-  Deno.test("$now - minutes has unit minutes", () => {
+  await t.step("$now - minutes has unit minutes", () => {
     assertEquals(parseDate("$now(m:-1)", now), [
       startOfMinute(sub(now, { minutes: 1 })),
       "m",
@@ -100,7 +100,7 @@ Deno.test("parseDate for relative dates", () => {
       "m",
     ]);
   });
-  Deno.test("$now - seconds has unit seconds", () => {
+  await t.step("$now - seconds has unit seconds", () => {
     assertEquals(parseDate("$now(s:-1)", now), [
       startOfSecond(sub(now, { seconds: 1 })),
       "s",
@@ -111,20 +111,20 @@ Deno.test("parseDate for relative dates", () => {
     ]);
   });
 
-  Deno.test("parseDate returns invalid date on bad input", () => {
+  await t.step("parseDate returns invalid date on bad input", () => {
     const [date] = parseDate("Not a date");
     assertEquals(isNaN(+date), true);
   });
 
-  Deno.test("getMinDateUnit returns minimum date unit", () => {
+  await t.step("getMinDateUnit returns minimum date unit", () => {
     assertEquals(getMinDateUnit(["d", "m"]), "m");
     assertEquals(getMinDateUnit(["d", "y"]), "d");
     assertEquals(getMinDateUnit(["d", "y", "h", "s"]), "s");
   });
 });
 
-Deno.test("isValidDate", () => {
-  Deno.test("recognises valid absolute dates", () => {
+Deno.test("isValidDate", async (t) => {
+  await t.step("recognises valid absolute dates", () => {
     assertEquals(isValidDate("2022-12-01"), true);
     assertEquals(isValidDate("2022-12-01T10:00"), true);
     assertEquals(isValidDate("2022-12-01T10:00:00"), true);
@@ -132,7 +132,7 @@ Deno.test("isValidDate", () => {
     assertEquals(isValidDate("2022-12-01T10:"), false);
   });
 
-  Deno.test("recognises valid relative dates", () => {
+  await t.step("recognises valid relative dates", () => {
     assertEquals(isValidDate("$now(d:-1)"), true);
     assertEquals(isValidDate("$now(d:1)"), true);
     assertEquals(isValidDate("$now(d:1,M:-1)"), true);

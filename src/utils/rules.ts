@@ -1,14 +1,14 @@
 import { InvalidRule } from "../error/index.ts";
-import {
+import { nullableOperators, operatorsByTypeMap } from "../search/index.ts";
+import { isValidDate } from "./date.ts";
+
+import type {
   Filters,
-  nullableOperators,
-  operatorsByTypeMap,
   Rule,
   RuleGroup,
   ValidatedRule,
   ValidatedRuleGroup,
-} from "../search/index.ts";
-import { isValidDate } from "./date.ts";
+} from "../types/index.ts";
 
 export function isRuleGroup(
   ruleOrGroup: Rule | RuleGroup,
@@ -52,18 +52,19 @@ export function validateRule<Field extends string>(
     );
   }
 
-  const expectedType =
-    filter.type === "boolean" || filter.type === "number"
-      ? filter.type
-      : "string";
+  const expectedType = filter.type === "boolean" || filter.type === "number"
+    ? filter.type
+    : "string";
 
   // deno-lint-ignore valid-typeof
   if (rule.value.some((v) => typeof v !== expectedType)) {
     throw new InvalidRule(
       rule,
-      `Invalid operator argument type: ${rule.operator} needs ${expectedType}, ${rule.value.map(
-        (v) => typeof v,
-      )} given`,
+      `Invalid operator argument type: ${rule.operator} needs ${expectedType}, ${
+        rule.value.map(
+          (v) => typeof v,
+        )
+      } given`,
     );
   }
   if (

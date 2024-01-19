@@ -1,6 +1,6 @@
-import { Rule } from "../search/index.ts";
+import { Rule } from "../types/index.ts";
 
-export default class InvalidRule extends Error {
+export class InvalidRule extends Error {
   constructor(
     readonly rule: Rule,
     readonly message: string,
