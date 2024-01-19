@@ -34,7 +34,7 @@ export * from "./radio-callout-component-schema.ts";
 export * from "./role-type.ts";
 export * from "./rule-group.ts";
 export * from "./rule-operator.ts";
-export * from "./rule-pperator-params.ts";
+export * from "./rule-opperator-params.ts";
 export * from "./rule-value.ts";
 export * from "./rule.ts";
 export * from "./select-callout-component-schema.ts";
