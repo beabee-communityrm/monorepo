@@ -23,6 +23,7 @@ export * from "./filter-args.ts";
 export * from "./filter-type.ts";
 export * from "./filters.ts";
 export * from "./input-callout-component-schema.ts";
+export * from "./input-file-callout-component-schema.ts";
 export * from "./nestable-callout-component-schema.ts";
 export * from "./notice-filter-name.ts";
 export * from "./operators-by-type.ts";

@@ -20,6 +20,5 @@ export interface InputCalloutComponentSchema
     | "url"
     | "signature";
   input: true;
-  filePattern?: string;
   placeholder?: string;
 }
