@@ -1,3 +1,4 @@
+import type { CalloutNestableType } from "../data/index.ts";
 import type {
   BaseCalloutComponentSchema,
   CalloutComponentSchema,
@@ -5,7 +6,7 @@ import type {
 
 export interface NestableCalloutComponentSchema
   extends BaseCalloutComponentSchema {
-  type: "panel" | "well" | "tabs";
+  type: CalloutNestableType;
   input: false;
   components: CalloutComponentSchema[];
 }

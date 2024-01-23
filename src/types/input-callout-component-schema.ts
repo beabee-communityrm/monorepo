@@ -1,24 +1,9 @@
+import { CalloutInputType } from "../index.ts";
 import type { BaseCalloutComponentSchema } from "./index.ts";
 
 export interface InputCalloutComponentSchema
   extends BaseCalloutComponentSchema {
-  type:
-    | "address"
-    | "button"
-    | "checkbox"
-    | "email"
-    | "file"
-    | "number"
-    | "password"
-    | "textfield"
-    | "textarea"
-    | "content"
-    | "phoneNumber"
-    | "currency"
-    | "datetime"
-    | "time"
-    | "url"
-    | "signature";
+  type: CalloutInputType;
   input: true;
   placeholder?: string;
 }

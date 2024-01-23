@@ -1,9 +1,11 @@
 // Generate index.ts files for each folder
 const paths = [
-  "./src/types",
+  "./src/data",
   "./src/error",
-  "./src/utils",
   "./src/search",
+  "./src/types",
+  "./src/utils",
+  "./src/validators",
 ];
 
 const encoder = new TextEncoder();

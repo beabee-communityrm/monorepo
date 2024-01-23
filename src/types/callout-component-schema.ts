@@ -1,4 +1,5 @@
 import type {
+  FileCalloutComponentSchema,
   InputCalloutComponentSchema,
   NestableCalloutComponentSchema,
   RadioCalloutComponentSchema,
@@ -9,4 +10,5 @@ export type CalloutComponentSchema =
   | SelectCalloutComponentSchema
   | RadioCalloutComponentSchema
   | InputCalloutComponentSchema
-  | NestableCalloutComponentSchema;
+  | NestableCalloutComponentSchema
+  | FileCalloutComponentSchema;

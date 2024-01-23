@@ -8,13 +8,6 @@ import type {
   NestableCalloutComponentSchema,
 } from "../types/index.ts";
 
-function isNestableComponent(
-  component: CalloutComponentSchema,
-): component is NestableCalloutComponentSchema {
-  // Addresses have embedded components we don't want to include
-  return "components" in component && component.type !== "address";
-}
-
 function convertValuesToOptions(
   values: { value: string; label: string }[],
 ): string[] {
@@ -74,6 +67,13 @@ function getNiceAnswer(
     default:
       return value;
   }
+}
+
+export function isNestableComponent(
+  component: CalloutComponentSchema,
+): component is NestableCalloutComponentSchema {
+  // Addresses have embedded components we don't want to include
+  return "components" in component && component.type !== "address";
 }
 
 export function flattenComponents(
