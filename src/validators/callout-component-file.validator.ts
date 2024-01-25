@@ -6,7 +6,7 @@ import type {
 
 export class CalloutComponentFileValidator extends BaseCalloutValidator {
   validate(
-    schema: FileCalloutComponentSchema,
+    _schema: FileCalloutComponentSchema,
     answer: CalloutResponseAnswerFileUpload | CalloutResponseAnswerFileUpload[],
   ): boolean {
     const urlValidator = new UrlValidator();
