@@ -7,7 +7,6 @@ export enum CalloutInputType {
   password = "password",
   textfield = "textfield",
   textarea = "textarea",
-  content = "content",
   phoneNumber = "phoneNumber",
   currency = "currency",
   datetime = "datetime",

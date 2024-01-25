@@ -1,5 +1,6 @@
 export * from "./base-callout.validator.ts";
 export * from "./base.validator.ts";
+export * from "./callout-component-content.validator.ts";
 export * from "./callout-component-file.validator.ts";
 export * from "./callout-component-input.validator.ts";
 export * from "./callout-component-nestable.validator.ts";

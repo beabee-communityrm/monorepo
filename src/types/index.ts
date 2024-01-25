@@ -16,6 +16,7 @@ export * from "./callout-response-filter-name.ts";
 export * from "./callout-slide-schema.ts";
 export * from "./callout-tag-filter-name.ts";
 export * from "./callout-type.ts";
+export * from "./content-callout-component-schema.ts";
 export * from "./date-unit.ts";
 export * from "./duration.ts";
 export * from "./enum-filter-args.ts";

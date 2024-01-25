@@ -5,5 +5,11 @@ export interface SelectCalloutComponentSchema
   extends BaseCalloutComponentSchema {
   type: CalloutSelectType;
   input: true;
-  data: { values: { label: string; value: string }[] };
+  data: {
+    url?: string;
+    json?: string;
+    custom?: string;
+    resource?: string;
+    values: { label: string; value: string }[];
+  };
 }

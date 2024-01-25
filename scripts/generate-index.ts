@@ -6,6 +6,7 @@ const paths = [
   "./src/types",
   "./src/utils",
   "./src/validators",
+  "./test/deno/data",
 ];
 
 const encoder = new TextEncoder();

@@ -1,6 +1,7 @@
 import {
   BaseCalloutValidator,
   BaseValidator,
+  CalloutComponentContentValidator,
   CalloutComponentFileValidator,
   CalloutComponentInputValidator,
   CalloutComponentNestableValidator,
@@ -10,14 +11,14 @@ import {
 
 import type {
   CalloutComponentSchema,
+  CalloutComponentType,
   CalloutResponseAnswer,
-  CalloutType,
 } from "../types/index.ts";
 
 /**
  * A map of validator classes to be used for Callout component.
  */
-const calloutValidatorsMap: Record<CalloutType, BaseValidator> = {
+const calloutValidatorsMap: Record<CalloutComponentType, BaseValidator> = {
   // INPUT
   email: new CalloutComponentInputValidator(),
   address: new CalloutComponentInputValidator(),
@@ -25,7 +26,6 @@ const calloutValidatorsMap: Record<CalloutType, BaseValidator> = {
   checkbox: new CalloutComponentInputValidator(),
   textarea: new CalloutComponentInputValidator(),
   password: new CalloutComponentInputValidator(),
-  content: new CalloutComponentInputValidator(),
   currency: new CalloutComponentInputValidator(),
   datetime: new CalloutComponentInputValidator(),
   number: new CalloutComponentInputValidator(),
@@ -34,6 +34,8 @@ const calloutValidatorsMap: Record<CalloutType, BaseValidator> = {
   textfield: new CalloutComponentInputValidator(),
   time: new CalloutComponentInputValidator(),
   url: new CalloutComponentInputValidator(),
+
+  content: new CalloutComponentContentValidator(),
 
   // FILE
   file: new CalloutComponentFileValidator(),
