@@ -117,7 +117,7 @@ export const isURL = (value: unknown): value is string => {
     return false;
   }
   const urlRegex =
-    /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
+    /^(https?:\/\/)([\da-z\-]+\.)+[a-z]{2,6}(:[0-9]{1,5})?([\/\w \.-]*)*\/?(\?[a-zA-Z0-9=&]*)?$/;
   return urlRegex.test(value);
 };
 
