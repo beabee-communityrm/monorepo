@@ -2,33 +2,51 @@ import { assert } from "https://deno.land/std@0.212.0/assert/assert.ts";
 import { isEmail } from "../../mod.ts";
 
 Deno.test("email", async (t) => {
-  await t.step("should be valid", function () {
-    // Test with a valid email
+  await t.step("valid email", function () {
     assert(isEmail("test@example.com"));
-    // Test with a valid email containing a subdomain
+  });
+
+  await t.step("valid email with subdomain", function () {
     assert(isEmail("test@sub.example.com"));
-    // Test with a valid email containing a number
+  });
+
+  await t.step("valid email with number", function () {
     assert(isEmail("test123@example.com"));
-    // Test with a valid email containing a hyphen
+  });
+
+  await t.step("valid email with hyphen", function () {
     assert(isEmail("test-test@example.com"));
-    // Test with a valid email containing an underscore
+  });
+
+  await t.step("valid email with underscore", function () {
     assert(isEmail("test_test@example.com"));
-    // Test with a valid email containing a dot before the @
+  });
+
+  await t.step("valid email with dot before @", function () {
     assert(isEmail("test.test@example.com"));
   });
 
-  await t.step("should be invalid", function () {
-    // Test with an invalid email (missing @)
+  await t.step("invalid email missing @", function () {
     assert(!isEmail("testexample.com"));
-    // Test with an invalid email (missing domain)
+  });
+
+  await t.step("invalid email missing domain", function () {
     assert(!isEmail("test@"));
-    // Test with an invalid email (missing username)
+  });
+
+  await t.step("invalid email missing username", function () {
     assert(!isEmail("@example.com"));
-    // Test with an invalid email (missing top-level domain)
+  });
+
+  await t.step("invalid email missing top-level domain", function () {
     assert(!isEmail("test@example"));
-    // Test with an invalid email (contains spaces)
+  });
+
+  await t.step("invalid email contains spaces", function () {
     assert(!isEmail("test @example.com"));
-    // Test with an invalid email (contains multiple @)
+  });
+
+  await t.step("invalid email contains multiple @", function () {
     assert(!isEmail("test@test@example.com"));
   });
 });
