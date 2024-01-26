@@ -10,6 +10,7 @@
       "npm:esbuild@0.19.11": "npm:esbuild@0.19.11",
       "npm:esbuild@^0.19.11": "npm:esbuild@0.19.11",
       "npm:rimraf@^5.0.5": "npm:rimraf@5.0.5",
+      "npm:typescript@5.3.3": "npm:typescript@5.3.3",
       "npm:typescript@^5.3.3": "npm:typescript@5.3.3"
     },
     "npm": {
