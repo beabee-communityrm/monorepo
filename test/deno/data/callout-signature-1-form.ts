@@ -1,4 +1,6 @@
-export const calloutSignature1Form = {
+import type { CalloutComponentInputSchema } from "../../../mod.ts";
+
+export const calloutSignature1Form: CalloutComponentInputSchema = {
   "id": "e7cevrt",
   "key":
     "pleaseSignThatYouAreAwareThatWeWillTryToHackYourDeviceAndThatYouAgreeToThis",

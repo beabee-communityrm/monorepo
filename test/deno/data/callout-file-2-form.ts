@@ -1,14 +1,11 @@
-import type {
-  CalloutComponentFileSchema,
-  CalloutComponentFileType,
-} from "../../../mod.ts";
+import type { CalloutComponentFileSchema } from "../../../mod.ts";
 
 export const calloutFile2Form: CalloutComponentFileSchema = {
   "id": "eswedlk",
   "dir": "",
   "key": "uploadAPdfFile",
   "tags": [],
-  "type": <CalloutComponentFileType> "file",
+  "type": "file",
   "image": false,
   "input": true,
   "label": "Upload a PDF file",

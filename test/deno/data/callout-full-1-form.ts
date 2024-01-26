@@ -20,6 +20,88 @@ import { calloutTextarea2Form } from "./callout-textarea-2-form.ts";
 import { calloutTime1Form } from "./callout-time-1-form.ts";
 import { calloutUrl1Form } from "./callout-url-1-form.ts";
 
+import type { CalloutFormSchema } from "../../../mod.ts";
+
+const calloutForm1Schema: CalloutFormSchema = {
+  slides: [
+    {
+      id: "slidej5rkpu",
+      title: "Coding and life",
+      components: [calloutTextarea1Form, calloutTextarea2Form],
+      navigation: {
+        nextText: "Next",
+        prevText: "Back",
+        submitText: "Submit",
+        nextSlideId: "",
+      },
+    },
+    {
+      id: "slidecpvs6e",
+      title: "Coding",
+      components: [calloutRadio1Form, calloutSelectboxes1Form],
+      navigation: {
+        nextText: "Next",
+        prevText: "Back",
+        submitText: "Submit",
+        nextSlideId: "",
+      },
+    },
+    {
+      id: "slide4fmgkk",
+      title: "Numbers",
+      components: [
+        calloutNumber1Form,
+        calloutNumber2Form,
+        calloutNumber3Form,
+        calloutNumber4Form,
+      ],
+      navigation: {
+        nextText: "Next",
+        prevText: "Back",
+        submitText: "Submit",
+        nextSlideId: "",
+      },
+    },
+    {
+      id: "slided4f440",
+      title: "Contact",
+      components: [
+        calloutEmail1Form,
+        calloutTime1Form,
+        calloutAddress1Form,
+        calloutUrl1Form,
+        calloutPhoneNumber1Form,
+        calloutDateTime1Form,
+        calloutCheckbox1Form,
+        calloutSignature1Form,
+      ],
+      navigation: {
+        nextText: "Next",
+        prevText: "Back",
+        submitText: "Submit",
+        nextSlideId: "",
+      },
+    },
+    {
+      id: "slidewxji2g",
+      title: "Others",
+      components: [
+        calloutSelect1Form,
+        calloutContent1Form,
+        calloutFile1Form,
+        calloutFile2Form,
+        calloutFile3Form,
+      ],
+      navigation: {
+        nextText: "Next",
+        prevText: "Back",
+        submitText: "Submit",
+        nextSlideId: "",
+      },
+    },
+  ],
+};
+
 export const calloutFull1Form = {
   slug: "test-callout",
   title:
@@ -39,83 +121,5 @@ export const calloutFull1Form = {
   thanksText:
     "<p>That was very <strong>helpful</strong>, you have just successfully helped to advance the development of Telegram integration.</p>",
   thanksTitle: "Many thanks!",
-  formSchema: {
-    slides: [
-      {
-        id: "slidej5rkpu",
-        title: "Coding and life",
-        components: [calloutTextarea1Form, calloutTextarea2Form],
-        navigation: {
-          nextText: "Next",
-          prevText: "Back",
-          submitText: "Submit",
-          nextSlideId: "",
-        },
-      },
-      {
-        id: "slidecpvs6e",
-        title: "Coding",
-        components: [calloutRadio1Form, calloutSelectboxes1Form],
-        navigation: {
-          nextText: "Next",
-          prevText: "Back",
-          submitText: "Submit",
-          nextSlideId: "",
-        },
-      },
-      {
-        id: "slide4fmgkk",
-        title: "Numbers",
-        components: [
-          calloutNumber1Form,
-          calloutNumber2Form,
-          calloutNumber3Form,
-          calloutNumber4Form,
-        ],
-        navigation: {
-          nextText: "Next",
-          prevText: "Back",
-          submitText: "Submit",
-          nextSlideId: "",
-        },
-      },
-      {
-        id: "slided4f440",
-        title: "Contact",
-        components: [
-          calloutEmail1Form,
-          calloutTime1Form,
-          calloutAddress1Form,
-          calloutUrl1Form,
-          calloutPhoneNumber1Form,
-          calloutDateTime1Form,
-          calloutCheckbox1Form,
-          calloutSignature1Form,
-        ],
-        navigation: {
-          nextText: "Next",
-          prevText: "Back",
-          submitText: "Submit",
-          nextSlideId: "",
-        },
-      },
-      {
-        id: "slidewxji2g",
-        title: "Others",
-        components: [
-          calloutSelect1Form,
-          calloutContent1Form,
-          calloutFile1Form,
-          calloutFile2Form,
-          calloutFile3Form,
-        ],
-        navigation: {
-          nextText: "Next",
-          prevText: "Back",
-          submitText: "Submit",
-          nextSlideId: "",
-        },
-      },
-    ],
-  },
+  formSchema: calloutForm1Schema,
 };

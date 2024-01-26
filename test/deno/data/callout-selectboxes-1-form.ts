@@ -1,7 +1,4 @@
-import type {
-  CalloutComponentRadioSchema,
-  CalloutComponentRadioType,
-} from "../../../mod.ts";
+import type { CalloutComponentRadioSchema } from "../../../mod.ts";
 
 export const calloutSelectboxes1Form: CalloutComponentRadioSchema = {
   "id": "efumx3e",
@@ -10,7 +7,7 @@ export const calloutSelectboxes1Form: CalloutComponentRadioSchema = {
     "url": "",
   },
   "tags": [],
-  "type": <CalloutComponentRadioType> "selectboxes",
+  "type": "selectboxes",
   "input": true,
   "label": "Which programming languages have you already worked with?",
   "logic": [],

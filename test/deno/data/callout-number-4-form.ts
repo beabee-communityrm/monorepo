@@ -1,14 +1,11 @@
-import type {
-  CalloutComponentInputSchema,
-  CalloutComponentInputType,
-} from "../../../mod.ts";
+import type { CalloutComponentInputSchema } from "../../../mod.ts";
 
 export const calloutNumber4Form: CalloutComponentInputSchema = {
   "id": "ekoulk",
   "key": "hiddenNumber",
   "mask": false,
   "tags": [],
-  "type": <CalloutComponentInputType> "number",
+  "type": "number",
   "input": true,
   "label": "Hidden number",
   "logic": [],

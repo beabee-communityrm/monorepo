@@ -1,14 +1,11 @@
-import type {
-  CalloutComponentFileSchema,
-  CalloutComponentFileType,
-} from "../../../mod.ts";
+import type { CalloutComponentFileSchema } from "../../../mod.ts";
 
 export const calloutFile1Form: CalloutComponentFileSchema = {
   "id": "eg74nnr",
   "dir": "",
   "key": "uploadAnAvatarPicture",
   "tags": [],
-  "type": <CalloutComponentFileType> "file",
+  "type": "file",
   "image": true,
   "input": true,
   "label": "Upload an avatar picture",
