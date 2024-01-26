@@ -1,4 +1,5 @@
 import { BaseValidator } from "./base.validator.ts";
+import { isURL } from "../utils/index.ts";
 
 export class UrlValidator extends BaseValidator {
   // TODO: Add url validation settings
@@ -7,8 +8,6 @@ export class UrlValidator extends BaseValidator {
   }
 
   validate(value: string): boolean {
-    const urlRegex =
-      /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
-    return urlRegex.test(value);
+    return isURL(value);
   }
 }

@@ -1,12 +1,8 @@
 import { BaseValidator } from "./base.validator.ts";
+import { isEmail } from "../utils/index.ts";
 
 export class EmailValidator extends BaseValidator {
-  // deno-lint-ignore no-explicit-any
-  validate(value: any): boolean {
-    if (typeof value !== "string" || value.length === 0) {
-      return false;
-    }
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(value);
+  validate(value: unknown): boolean {
+    return isEmail(value);
   }
 }
