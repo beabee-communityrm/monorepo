@@ -26,7 +26,8 @@ TODO: Publish to deno.land
 
 ### Requirements
 
-Since this module uses Deno as the main runtime but also generates builds for Node.js, both runtimes are necessary dependencies for development:
+Since this module uses Deno as the main runtime but also generates builds for
+Node.js, both runtimes are necessary dependencies for development:
 
 - Deno latest stable version
 - Node.js latest stable version
@@ -40,7 +41,10 @@ npm run build # or deno task build
 
 ### Scripts
 
-The NPM scripts and the Deno tasks are synchronised with each other, so it doesn't matter if you run `npm run ...` or `deno task ...`, both should work and you can use whichever you prefer. They are defined in the `package.json` and `deno.json` and must be entered manually if new ones are to be added.
+The NPM scripts and the Deno tasks are synchronised with each other, so it
+doesn't matter if you run `npm run ...` or `deno task ...`, both should work and
+you can use whichever you prefer. They are defined in the `package.json` and
+`deno.json` and must be entered manually if new ones are to be added.
 
 The most important scripts are:
 
@@ -48,9 +52,12 @@ The most important scripts are:
 
 This executes the scripts `build:types`, `build:node:cjs` and `build:node:esm`:
 
-* `build:types` - This script generates the TypeScript types using the `tsc` compiler.
-* `build:node:cjs` - This script generates the CommonJS bundle using the `esbuild` bundler, the script is located in `./scripts/esbuild.cjs.ts`
-* `build:node:esm` - This script generates the ESM bundle using the `esbuild` bundler, the script is located in `./scripts/esbuild.esm.ts`
+- `build:types` - This script generates the TypeScript types using the `tsc`
+  compiler.
+- `build:node:cjs` - This script generates the CommonJS bundle using the
+  `esbuild` bundler, the script is located in `./scripts/esbuild.cjs.ts`
+- `build:node:esm` - This script generates the ESM bundle using the `esbuild`
+  bundler, the script is located in `./scripts/esbuild.esm.ts`
 
 ## License
 

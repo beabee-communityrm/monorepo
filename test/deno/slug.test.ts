@@ -16,7 +16,7 @@ Deno.test("slug", async (t) => {
     "should replace multiple spaces and dashes with a single instance",
     function () {
       assertEquals(slug("foo  bar--baz"), "foo-bar-baz");
-    }
+    },
   );
 
   await t.step("should remove trailing space if any", function () {
@@ -27,7 +27,7 @@ Deno.test("slug", async (t) => {
     "should preserve leading/trailing replacement characters if option set",
     function () {
       assertEquals(slug(" foo bar baz ", { trim: false }), "-foo-bar-baz-");
-    }
+    },
   );
 
   await t.step("should remove punctuation by default", function () {
@@ -54,7 +54,7 @@ Deno.test("slug", async (t) => {
     assertEquals(slug("foo_bar. -baz!"), "foobar-baz");
     assertEquals(
       slug("foo_bar-baz_bing!", { replacement: "_" }),
-      "foo_barbaz_bing"
+      "foo_barbaz_bing",
     );
   });
 
@@ -67,7 +67,7 @@ Deno.test("slug", async (t) => {
     allowed.forEach(function (a) {
       assertEquals(
         slug("foo " + a + " bar baz", { mode: "rfc3986" }),
-        "foo-" + a + "-bar-baz"
+        "foo-" + a + "-bar-baz",
       );
     });
   });
@@ -149,7 +149,7 @@ Deno.test("slug", async (t) => {
       assertEquals(
         slug("foo " + char + " bar baz"),
         "foo-" + replacement.toLowerCase() + "-bar-baz",
-        "replacing '" + char + "'"
+        "replacing '" + char + "'",
       );
     }
   });
@@ -231,7 +231,7 @@ Deno.test("slug", async (t) => {
       assertEquals(
         slug("foo " + char + " bar baz"),
         "foo-" + replacement.toLowerCase() + "-bar-baz",
-        "replacing '" + char + "'"
+        "replacing '" + char + "'",
       );
     }
   });
@@ -256,7 +256,7 @@ Deno.test("slug", async (t) => {
       assertEquals(
         slug("foo " + char + " bar baz"),
         "foo-" + replacement.toLowerCase() + "-bar-baz",
-        "replacing '" + char + "'"
+        "replacing '" + char + "'",
       );
     }
   });
@@ -347,7 +347,7 @@ Deno.test("slug", async (t) => {
       assertEquals(
         slug("foo " + char + " bar baz"),
         expected,
-        "replacing '" + char + "'"
+        "replacing '" + char + "'",
       );
     }
   });
@@ -378,7 +378,7 @@ Deno.test("slug", async (t) => {
       assertEquals(
         slug("foo " + char + " bar baz"),
         "foo-" + replacement.toLowerCase() + "-bar-baz",
-        "replacing '" + char + "'"
+        "replacing '" + char + "'",
       );
     }
   });
@@ -425,7 +425,7 @@ Deno.test("slug", async (t) => {
       assertEquals(
         slug("foo " + char + " bar baz"),
         "foo-" + replacement.toLowerCase() + "-bar-baz",
-        "replacing '" + char + "'"
+        "replacing '" + char + "'",
       );
     }
   });
@@ -455,7 +455,7 @@ Deno.test("slug", async (t) => {
       assertEquals(
         slug("foo " + char + " bar baz"),
         "foo-" + replacement.toLowerCase() + "-bar-baz",
-        "replacing '" + char + "'"
+        "replacing '" + char + "'",
       );
     }
   });
@@ -490,7 +490,7 @@ Deno.test("slug", async (t) => {
       assertEquals(
         slug("foo " + char + " bar baz"),
         "foo-" + replacement.toLowerCase() + "-bar-baz",
-        "replacing '" + char + "'"
+        "replacing '" + char + "'",
       );
     }
   });
@@ -603,7 +603,7 @@ Deno.test("slug", async (t) => {
       assertEquals(
         slug("foo " + char + " bar baz"),
         "foo-" + replacement.toLowerCase() + "-bar-baz",
-        "replacing '" + char + "'"
+        "replacing '" + char + "'",
       );
     }
   });
@@ -632,7 +632,7 @@ Deno.test("slug", async (t) => {
       assertEquals(
         slug("foo " + char + " bar baz"),
         "foo-" + replacement.toLowerCase() + "-bar-baz",
-        "replacing '" + char + "'"
+        "replacing '" + char + "'",
       );
     }
   });
@@ -709,7 +709,7 @@ Deno.test("slug", async (t) => {
       assertEquals(
         slug("foo " + char + " bar baz"),
         "foo-" + replacement.toLowerCase() + "-bar-baz",
-        "replacing '" + char + "'"
+        "replacing '" + char + "'",
       );
     }
   });
@@ -736,7 +736,7 @@ Deno.test("slug", async (t) => {
       assertEquals(
         slug("foo " + char + " bar baz"),
         "foo-" + replacement.toLowerCase() + "-bar-baz",
-        "replacing '" + char + "'"
+        "replacing '" + char + "'",
       );
     }
   });
@@ -782,7 +782,7 @@ Deno.test("slug", async (t) => {
       assertEquals(
         slug("foo " + char + " bar baz"),
         "foo-" + replacement.toLowerCase() + "-bar-baz",
-        "replacing '" + char + "'"
+        "replacing '" + char + "'",
       );
     }
   });
@@ -857,10 +857,10 @@ Deno.test("slug", async (t) => {
         assertEquals(
           slug("foo " + char + " bar baz", { locale: "bg" }),
           "foo-" + replacement.toLowerCase() + "-bar-baz",
-          "replacing '" + char + "'"
+          "replacing '" + char + "'",
         );
       }
-    }
+    },
   );
 
   await t.step("should replace serbian chars if locale provided", function () {
@@ -888,7 +888,7 @@ Deno.test("slug", async (t) => {
       assertEquals(
         slug("foo " + char + " bar baz", { locale: "sr" }),
         "foo-" + replacement.toLowerCase() + "-bar-baz",
-        "replacing '" + char + "'"
+        "replacing '" + char + "'",
       );
     }
   });
@@ -907,7 +907,7 @@ Deno.test("slug", async (t) => {
       assertEquals(
         slug("foo " + char + " bar baz", { locale: "de" }),
         "foo-" + replacement.toLowerCase() + "-bar-baz",
-        "replacing '" + char + "'"
+        "replacing '" + char + "'",
       );
     }
   });
@@ -934,10 +934,10 @@ Deno.test("slug", async (t) => {
         assertEquals(
           slug("foo " + char + " bar baz", { locale: "uk" }),
           "foo-" + replacement.toLowerCase() + "-bar-baz",
-          "replacing '" + char + "'"
+          "replacing '" + char + "'",
         );
       }
-    }
+    },
   );
 
   await t.step("should remove ellipsis in pretty mode", function () {
@@ -948,7 +948,7 @@ Deno.test("slug", async (t) => {
       assertEquals(
         slug("foo " + char + " bar baz"),
         "foo-bar-baz",
-        "replacing '" + char + "'"
+        "replacing '" + char + "'",
       );
     }
   });
@@ -963,7 +963,7 @@ Deno.test("slug", async (t) => {
       assertEquals(
         slug("foo " + char + " bar baz"),
         "foo-bar-baz",
-        "replacing '" + char + "'"
+        "replacing '" + char + "'",
       );
     });
   });
@@ -974,7 +974,7 @@ Deno.test("slug", async (t) => {
       assertEquals(
         slug("foo " + char + " bar baz"),
         "foo-bar-baz",
-        "replacing '" + char + "'"
+        "replacing '" + char + "'",
       );
     });
   });
@@ -1053,7 +1053,7 @@ Deno.test("slug", async (t) => {
       assertEquals(
         slug("foo" + char + " bar baz"),
         "foo" + replacement.toLowerCase() + "-bar-baz",
-        "replacing '" + char + "'"
+        "replacing '" + char + "'",
       );
     }
   });
@@ -1066,7 +1066,7 @@ Deno.test("slug", async (t) => {
     "should ignore symbols if they are not in the charmap",
     function () {
       assertEquals(slug("unicode ♥ is ☢"), "unicode-is");
-    }
+    },
   );
 
   await t.step("should ignore lone surrogates", function () {
@@ -1085,7 +1085,7 @@ Deno.test("slug", async (t) => {
     assertEquals(slug("food", { remove: /[od]/g }), "f");
     assertEquals(
       slug("one 1 two 2 three 3", { remove: /[0-9]/g }),
-      "one-two-three"
+      "one-two-three",
     );
     assertEquals(slug("one 1 two 2 three 3"), "one-1-two-2-three-3");
   });
@@ -1154,7 +1154,7 @@ Deno.test("slug", async (t) => {
       assertEquals(
         slug("foo" + char + " bar baz"),
         "foo" + replacement.toLowerCase() + "-bar-baz",
-        "replacing '" + char + "'"
+        "replacing '" + char + "'",
       );
     }
   });
@@ -1167,6 +1167,6 @@ Deno.test("slug", async (t) => {
     "should return empty result when fallback is disabled",
     function () {
       assertEquals(slug("=(", { fallback: false }), "");
-    }
+    },
   );
 });

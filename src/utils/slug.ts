@@ -35,7 +35,7 @@ function getWholeCharAndI(str: string, i: number): [string, number] {
         i +
         ' out of range for string "' +
         str +
-        '"; please open an issue at https://github.com/Trott/slug/issues/new'
+        '"; please open an issue at https://github.com/Trott/slug/issues/new',
     );
   }
   if (code < 0xd800 || code > 0xdfff) {
@@ -74,7 +74,7 @@ function getWholeCharAndI(str: string, i: number): [string, number] {
   throw new Error(
     'String "' +
       str +
-      '" reaches code believed to be unreachable; please open an issue at https://github.com/Trott/slug/issues/new'
+      '" reaches code believed to be unreachable; please open an issue at https://github.com/Trott/slug/issues/new',
   );
 }
 
@@ -84,8 +84,9 @@ function base64(input: string) {
 
 export function slug(s: string, opts?: Partial<Options & Mode>) {
   let result = slugify(s, opts);
-  const fallback =
-    opts && opts.fallback !== undefined ? opts.fallback : defaults.fallback;
+  const fallback = opts && opts.fallback !== undefined
+    ? opts.fallback
+    : defaults.fallback;
   // If output is an empty string, try slug for base64 of string.
   if (fallback === true && result === "") {
     // Get rid of lone surrogates.
@@ -160,8 +161,9 @@ function slugify(str: string, partialOpts?: Partial<Options & Mode>) {
     return b - a;
   });
 
-  const disallowedChars =
-    opts.mode === "rfc3986" ? /[^\w\s\-.~]/ : /[^A-Za-z0-9\s]/;
+  const disallowedChars = opts.mode === "rfc3986"
+    ? /[^\w\s\-.~]/
+    : /[^A-Za-z0-9\s]/;
 
   let result = "";
   for (let char, i = 0, l = str.length; i < l; i++) {
