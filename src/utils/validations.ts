@@ -1,5 +1,5 @@
-import slugify from "slugify";
-import { ContributionPeriod } from "..";
+import { slug } from "./slug.ts";
+import { ContributionPeriod } from "../data/index.ts";
 
 /**
  * Check if the value is a valid angle.
@@ -34,7 +34,7 @@ export const isLngLat = (value: unknown): value is [number, number] => {
  * @param value The value to check
  */
 export const isMapBounds = (
-  value: unknown
+  value: unknown,
 ): value is [[number, number], [number, number]] => {
   return Array.isArray(value) && value.length === 2 && value.every(isLngLat);
 };
@@ -70,7 +70,7 @@ export const isPeriod = (value: unknown): value is ContributionPeriod => {
  * @returns
  */
 export const isSlug = (value: unknown): value is string => {
-  return typeof value === "string" && value === slugify(value);
+  return typeof value === "string" && value === slug(value);
 };
 
 /**
@@ -96,7 +96,7 @@ export const isURL = (value: unknown): value is string => {
 export const isValidPayFee = (
   value: unknown,
   amount: unknown,
-  period: unknown
+  period: unknown,
 ): value is boolean => {
   if (
     typeof value !== "boolean" ||
