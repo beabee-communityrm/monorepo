@@ -26,7 +26,24 @@ export const isEmail = (value: unknown): value is string => {
  * @param value The value to check
  */
 export const isLngLat = (value: unknown): value is [number, number] => {
-  return Array.isArray(value) && value.length === 2 && value.every(isAngle);
+  if (!Array.isArray(value) || value.length !== 2) {
+    return false;
+  }
+  const [longitude, latitude] = value;
+
+  if (typeof longitude !== "number" || typeof latitude !== "number") {
+    return false;
+  }
+
+  // Longitude should be between -180 and 180
+  if (longitude < -180 || longitude > 180) {
+    return false;
+  }
+  // Latitude should be between -90 and 90
+  if (latitude < -90 || latitude > 90) {
+    return false;
+  }
+  return true;
 };
 
 /**
