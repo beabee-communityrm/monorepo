@@ -1,3 +1,3 @@
-import type { CalloutComponentSchema } from "../types/index.ts";
+import type { CalloutComponentSchema } from "./index.ts";
 
 export type CalloutComponentType = CalloutComponentSchema["type"];

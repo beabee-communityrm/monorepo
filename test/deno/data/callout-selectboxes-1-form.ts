@@ -1,9 +1,9 @@
 import type {
+  CalloutComponentRadioSchema,
   CalloutComponentRadioType,
-  RadioCalloutComponentSchema,
 } from "../../../mod.ts";
 
-export const calloutSelectboxes1Form: RadioCalloutComponentSchema = {
+export const calloutSelectboxes1Form: CalloutComponentRadioSchema = {
   "id": "efumx3e",
   "key": "whichProgrammingLanguagesHaveYouAlreadyWorkedWith",
   "data": {

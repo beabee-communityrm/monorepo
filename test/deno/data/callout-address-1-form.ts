@@ -1,9 +1,9 @@
 import type {
+  CalloutComponentInputSchema,
   CalloutComponentInputType,
-  InputCalloutComponentSchema,
 } from "../../../mod.ts";
 
-export const calloutAddress1Form: InputCalloutComponentSchema = {
+export const calloutAddress1Form: CalloutComponentInputSchema = {
   "id": "evej0rq",
   "key": "whatIsTheAddressOfYourFavouritePlace",
   "tags": [],

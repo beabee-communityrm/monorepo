@@ -1,12 +1,12 @@
 import { BaseCalloutValidator, UrlValidator } from "./index.ts";
 import type {
+  CalloutComponentFileSchema,
   CalloutResponseAnswerFileUpload,
-  FileCalloutComponentSchema,
 } from "../types/index.ts";
 
 export class CalloutComponentFileValidator extends BaseCalloutValidator {
   validate(
-    _schema: FileCalloutComponentSchema,
+    _schema: CalloutComponentFileSchema,
     answer: CalloutResponseAnswerFileUpload | CalloutResponseAnswerFileUpload[],
   ): boolean {
     const urlValidator = new UrlValidator();

@@ -1,9 +1,9 @@
 import type {
+  CalloutComponentSelectSchema,
   CalloutComponentSelectType,
-  SelectCalloutComponentSchema,
 } from "../../../mod.ts";
 
-export const calloutSelect1Form: SelectCalloutComponentSchema = {
+export const calloutSelect1Form: CalloutComponentSelectSchema = {
   "id": "e3dw34",
   "key": "selectAnyElementFromTheDropdownMenu",
   "data": {

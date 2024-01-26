@@ -1,9 +1,9 @@
 import type {
+  CalloutComponentInputSchema,
   CalloutComponentInputType,
-  InputCalloutComponentSchema,
 } from "../../../mod.ts";
 
-export const calloutNumber3Form: InputCalloutComponentSchema = {
+export const calloutNumber3Form: CalloutComponentInputSchema = {
   "id": "ebqyjaj",
   "key": "numberWithMultipleValuesAndDefaultValues",
   "mask": false,

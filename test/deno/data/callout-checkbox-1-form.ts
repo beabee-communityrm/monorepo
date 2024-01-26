@@ -1,9 +1,9 @@
 import type {
+  CalloutComponentInputSchema,
   CalloutComponentInputType,
-  InputCalloutComponentSchema,
 } from "../../../mod.ts";
 
-export const calloutCheckbox1Form: InputCalloutComponentSchema = {
+export const calloutCheckbox1Form: CalloutComponentInputSchema = {
   "id": "en6llhs",
   "key": "iHaveReadTheGeneralDataProtectionProvisionsAndAgreeToThem",
   "name": "",

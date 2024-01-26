@@ -1,10 +1,10 @@
 import type {
-  BaseCalloutComponentSchema,
+  CalloutComponentBaseSchema,
   CalloutComponentSelectType,
 } from "./index.ts";
 
-export interface SelectCalloutComponentSchema
-  extends BaseCalloutComponentSchema {
+export interface CalloutComponentSelectSchema
+  extends CalloutComponentBaseSchema {
   type: CalloutComponentSelectType;
   input: true;
   data: {

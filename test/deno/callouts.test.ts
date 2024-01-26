@@ -1,20 +1,20 @@
 import { assertEquals } from "https://deno.land/std@0.212.0/assert/assert_equals.ts";
 import {
+  CalloutComponentInputSchema,
   CalloutComponentInputType,
+  CalloutComponentNestableSchema,
   CalloutComponentNestableType,
+  CalloutComponentRadioSchema,
   CalloutComponentRadioType,
+  CalloutComponentSelectSchema,
   CalloutComponentSelectType,
   CalloutFormSchema,
   CalloutResponseAnswers,
   getCalloutComponents,
-  InputCalloutComponentSchema,
-  NestableCalloutComponentSchema,
-  RadioCalloutComponentSchema,
-  SelectCalloutComponentSchema,
   stringifyAnswer,
 } from "../../mod.ts";
 
-const textComponent: InputCalloutComponentSchema = {
+const textComponent: CalloutComponentInputSchema = {
   id: "myTextComponent",
   type: "textfield",
   key: "myTextComponent",
@@ -22,7 +22,7 @@ const textComponent: InputCalloutComponentSchema = {
   input: true,
 };
 
-const textComponent2: InputCalloutComponentSchema = {
+const textComponent2: CalloutComponentInputSchema = {
   id: "myTextComponent2",
   type: "textfield",
   key: "myTextComponent2",
@@ -30,7 +30,7 @@ const textComponent2: InputCalloutComponentSchema = {
   input: true,
 };
 
-const radioComponent: RadioCalloutComponentSchema = {
+const radioComponent: CalloutComponentRadioSchema = {
   id: "myRadioComponent",
   type: "radio",
   key: "myRadioComponent",
@@ -43,7 +43,7 @@ const radioComponent: RadioCalloutComponentSchema = {
   ],
 };
 
-const selectComponent: SelectCalloutComponentSchema = {
+const selectComponent: CalloutComponentSelectSchema = {
   id: "mySelectComponent",
   type: "select",
   key: "mySelectComponent",
@@ -58,7 +58,7 @@ const selectComponent: SelectCalloutComponentSchema = {
   },
 };
 
-const selectBoxComponent: RadioCalloutComponentSchema = {
+const selectBoxComponent: CalloutComponentRadioSchema = {
   id: "mySelectBoxComponent",
   type: "selectboxes",
   key: "mySelectBoxComponent",
@@ -72,7 +72,7 @@ const selectBoxComponent: RadioCalloutComponentSchema = {
 };
 
 // TODO: Add tests for nested components
-const panelComponent: NestableCalloutComponentSchema = {
+const panelComponent: CalloutComponentNestableSchema = {
   id: "myPanelComponent",
   type: "panel",
   key: "myPanelComponent",

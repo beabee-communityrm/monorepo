@@ -1,9 +1,9 @@
 import type {
+  CalloutComponentFileSchema,
   CalloutComponentFileType,
-  FileCalloutComponentSchema,
 } from "../../../mod.ts";
 
-export const calloutFile2Form: FileCalloutComponentSchema = {
+export const calloutFile2Form: CalloutComponentFileSchema = {
   "id": "eswedlk",
   "dir": "",
   "key": "uploadAPdfFile",

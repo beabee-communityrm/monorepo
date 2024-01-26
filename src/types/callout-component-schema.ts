@@ -1,16 +1,16 @@
 import type {
-  ContentCalloutComponentSchema,
-  FileCalloutComponentSchema,
-  InputCalloutComponentSchema,
-  NestableCalloutComponentSchema,
-  RadioCalloutComponentSchema,
-  SelectCalloutComponentSchema,
+  CalloutComponentContentSchema,
+  CalloutComponentFileSchema,
+  CalloutComponentInputSchema,
+  CalloutComponentNestableSchema,
+  CalloutComponentRadioSchema,
+  CalloutComponentSelectSchema,
 } from "./index.ts";
 
 export type CalloutComponentSchema =
-  | SelectCalloutComponentSchema
-  | RadioCalloutComponentSchema
-  | InputCalloutComponentSchema
-  | NestableCalloutComponentSchema
-  | FileCalloutComponentSchema
-  | ContentCalloutComponentSchema;
+  | CalloutComponentSelectSchema
+  | CalloutComponentRadioSchema
+  | CalloutComponentInputSchema
+  | CalloutComponentNestableSchema
+  | CalloutComponentFileSchema
+  | CalloutComponentContentSchema;

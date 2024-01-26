@@ -1,11 +1,11 @@
 import type {
+  CalloutComponentNestableSchema,
   CalloutComponentSchema,
   CalloutFormSchema,
   CalloutResponseAnswer,
   CalloutResponseAnswerAddress,
   CalloutResponseAnswerFileUpload,
   FilterArgs,
-  NestableCalloutComponentSchema,
 } from "../types/index.ts";
 
 function convertValuesToOptions(
@@ -71,7 +71,7 @@ function getNiceAnswer(
 
 export function isNestableComponent(
   component: CalloutComponentSchema,
-): component is NestableCalloutComponentSchema {
+): component is CalloutComponentNestableSchema {
   // Addresses have embedded components we don't want to include
   return "components" in component && component.type !== "address";
 }

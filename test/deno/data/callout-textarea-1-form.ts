@@ -1,9 +1,9 @@
 import type {
+  CalloutComponentInputSchema,
   CalloutComponentInputType,
-  InputCalloutComponentSchema,
 } from "../../../mod.ts";
 
-export const calloutTextarea1Form: InputCalloutComponentSchema = {
+export const calloutTextarea1Form: CalloutComponentInputSchema = {
   "id": "ei5n40f",
   "key": "howDoYouFeel",
   "case": "",

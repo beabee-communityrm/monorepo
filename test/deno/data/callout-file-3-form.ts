@@ -1,9 +1,9 @@
 import type {
+  CalloutComponentFileSchema,
   CalloutComponentFileType,
-  FileCalloutComponentSchema,
 } from "../../../mod.ts";
 
-export const calloutFile3Form: FileCalloutComponentSchema = {
+export const calloutFile3Form: CalloutComponentFileSchema = {
   "id": "em6ezrh",
   "dir": "",
   "key": "uploadMultipleImages",

@@ -1,4 +1,4 @@
-export interface BaseCalloutComponentSchema {
+export interface CalloutComponentBaseSchema {
   id: string;
   type: string;
   key: string;

@@ -1,9 +1,9 @@
 import type {
+  CalloutComponentContentSchema,
   CalloutComponentContentType,
-  ContentCalloutComponentSchema,
 } from "../../../mod.ts";
 
-export const calloutContent1Form: ContentCalloutComponentSchema = {
+export const calloutContent1Form: CalloutComponentContentSchema = {
   "id": "e9zio49",
   "key": "writeAShortStoryYouMayAlsoUseFormatting",
   "html": "",

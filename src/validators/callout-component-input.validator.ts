@@ -1,12 +1,12 @@
 import { BaseCalloutValidator, EmailValidator } from "./index.ts";
 import type {
+  CalloutComponentInputSchema,
   CalloutResponseAnswer,
-  InputCalloutComponentSchema,
 } from "../types/index.ts";
 
 export class CalloutComponentInputValidator extends BaseCalloutValidator {
   validate(
-    schema: InputCalloutComponentSchema,
+    schema: CalloutComponentInputSchema,
     answer: CalloutResponseAnswer | CalloutResponseAnswer[],
   ): boolean {
     const answers = Array.isArray(answer) ? answer : [answer];

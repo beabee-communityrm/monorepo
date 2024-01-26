@@ -1,9 +1,9 @@
 import type {
+  CalloutComponentInputSchema,
   CalloutComponentInputType,
-  InputCalloutComponentSchema,
 } from "../../../mod.ts";
 
-export const calloutEmail1Form: InputCalloutComponentSchema = {
+export const calloutEmail1Form: CalloutComponentInputSchema = {
   "id": "eu0o8lh",
   "key": "whichEMailCanWeUseToContactYou",
   "case": "",
