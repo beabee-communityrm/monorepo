@@ -9,7 +9,7 @@ import type {
 export class CalloutComponentNestableValidator extends BaseValidator {
   validate(
     schema: CalloutComponentSchema,
-    answers: Record<string, CalloutResponseAnswer | CalloutResponseAnswer[]>,
+    answerMap: Record<string, CalloutResponseAnswer | CalloutResponseAnswer[]>,
   ): boolean {
     if (!isNestableComponent(schema)) {
       throw new Error(
@@ -19,15 +19,18 @@ export class CalloutComponentNestableValidator extends BaseValidator {
     let valid = true;
     for (const component of schema.components) {
       const validator = new CalloutComponentValidator();
-      const answer = answers[component.key];
+      const answer = answerMap[component.key];
+      const answers = Array.isArray(answer) ? answer : [answer];
       if (!answer) {
         throw new Error(
           `[${this.constructor.name}] validate() -> no answer`,
         );
       }
-      valid = validator.validate(component, answer) && valid;
-      if (!valid) {
-        break;
+      for (const answer of answers) {
+        valid = validator.validate(component, answer) && valid;
+        if (!valid) {
+          return false;
+        }
       }
     }
     return valid;

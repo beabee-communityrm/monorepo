@@ -7,7 +7,7 @@ import type {
 export class CalloutComponentInputValidator extends BaseCalloutValidator {
   validate(
     schema: CalloutComponentInputSchema,
-    answer: CalloutResponseAnswer | CalloutResponseAnswer[],
+    answer: CalloutResponseAnswer,
   ): boolean {
     const answers = Array.isArray(answer) ? answer : [answer];
 

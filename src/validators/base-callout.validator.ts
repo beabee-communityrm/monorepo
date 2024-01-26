@@ -8,6 +8,6 @@ import type {
 export abstract class BaseCalloutValidator extends BaseValidator {
   abstract validate(
     schema: CalloutComponentSchema,
-    answer: CalloutResponseAnswer | CalloutResponseAnswer[],
+    answer: CalloutResponseAnswer,
   ): boolean;
 }

@@ -18,7 +18,10 @@ import type {
 /**
  * A map of validator classes to be used for Callout component.
  */
-const calloutValidatorsMap: Record<CalloutComponentType, BaseValidator> = {
+const calloutValidatorsMap: Record<
+  CalloutComponentType,
+  BaseValidator | BaseCalloutValidator
+> = {
   // INPUT
   email: new CalloutComponentInputValidator(),
   address: new CalloutComponentInputValidator(),
@@ -56,15 +59,14 @@ const calloutValidatorsMap: Record<CalloutComponentType, BaseValidator> = {
 export class CalloutComponentValidator extends BaseCalloutValidator {
   validate(
     schema: CalloutComponentSchema,
-    answer: CalloutResponseAnswer | CalloutResponseAnswer[],
+    answer: CalloutResponseAnswer,
   ): boolean {
-    const answers = Array.isArray(answer) ? answer : [answer];
     const validator = calloutValidatorsMap[schema.type];
 
     if (!validator) {
       console.error(`No validator found for ${schema.type}`);
       return false;
     }
-    return validator.validate(schema, answers);
+    return validator.validate(schema, answer);
   }
 }
