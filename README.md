@@ -57,6 +57,9 @@ Key scripts include:
 
 #### `build`
 
+Node.js builds are created using [esbuild](https://esbuild.github.io/) from Deno
+source. Deno projects can directly utilize TypeScript source from `./mod.ts`.
+
 This runs several sub-scripts:
 
 - `build:types` - Generates TypeScript types using the `tsc` compiler.
@@ -65,9 +68,6 @@ This runs several sub-scripts:
     at `./scripts/esbuild.cjs.ts`.
   - `build:node:esm` - Generates an ESM bundle using `esbuild`, script found at
     `./scripts/esbuild.esm.ts`.
-
-Node.js builds are created using [esbuild](https://esbuild.github.io/) from Deno
-source. Deno projects can directly utilize TypeScript source from `./mod.ts`.
 
 Deno's support for NPM packages differs in syntax, e.g., `date-fns` is imported
 as `import { format } from "npm:date-fns";` in Deno, and
@@ -85,21 +85,33 @@ Generates `index.ts` files. Located at `./scripts/generate-index.ts`.
 
 #### `format`
 
-Formats code using Deno's standard formatter.
+Formats code using
+[Deno's standard formatter](https://docs.deno.com/runtime/manual/tools/formatter).
 
 #### `lint`
 
-Lints code using Deno's standard linter.
+Lints code using
+[Deno's standard linter](https://docs.deno.com/runtime/manual/tools/linter).
 
 #### `test`
 
 Testing is divided into several scripts:
 
 - `test:types` - Checks for type errors using `tsc`.
-- `test:deno` - Main tests using Deno's standard testing framework.
+- `test:deno` - Main tests using
+  [Deno's standard testing framework](https://docs.deno.com/runtime/manual/basics/testing/).
 - `test:node`:
   - `test:node:esm` - Tests ESM build importability in Node.js.
   - `test:node:cjs` - Tests CJS build importability in Node.js.
+
+### Manage Dependencies
+
+You can use dependencies for both NPM and Deno. When incorporating Deno
+packages, they must be bundled for Node.js compatibility. For a practical
+example, refer to
+[this pull request](https://github.com/beabee-communityrm/beabee-common/pull/7).
+For integrating NPM dependencies, consult the `sync:deps` script which ensures
+synchronization between the dependency configurations for both environments.
 
 ## License
 
