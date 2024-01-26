@@ -54,10 +54,59 @@ This executes the scripts `build:types`, `build:node:cjs` and `build:node:esm`:
 
 - `build:types` - This script generates the TypeScript types using the `tsc`
   compiler.
-- `build:node:cjs` - This script generates the CommonJS bundle using the
-  `esbuild` bundler, the script is located in `./scripts/esbuild.cjs.ts`
-- `build:node:esm` - This script generates the ESM bundle using the `esbuild`
-  bundler, the script is located in `./scripts/esbuild.esm.ts`
+- `build:node`:
+  - `build:node:cjs` - This script generates the CommonJS bundle using the
+    `esbuild` bundler, the script is located in `./scripts/esbuild.cjs.ts`.
+  - `build:node:esm` - This script generates the ESM bundle using the `esbuild`
+    bundler, the script is located in `./scripts/esbuild.esm.ts`.
+
+The Node.js build scripts are using [esbuild](https://esbuild.github.io/) to
+generate outputs for ESM and CommonJS from the Deno source. Deno projects itself
+can directly use the TypeScript source with the starting entry point of
+`./mod.ts`.
+
+Deno has support for NPM packages, so we can also use them here, but Deno has
+its own import syntax for this. The names of the NPM packages must always start
+with `npm:`. For example, the NPM package `date-fns` must be imported as
+`import { format } from "npm:date-fns";` in Deno and in Node.js as ``import {
+format } from
+"date-fns";`. But Deno also has support for aliases, so we can create an alias for`date-fns`which points to`npm:date-fns`,
+this way we can support importing NPM packages for both runtime environments
+with the same codebase. And this is where the next script comes into play:
+
+#### `sync:deps`
+
+This script syncs the dependencies for both runtime environments from the
+`package.json` to the `deno.json` where the aliases for Deno are placed. You can
+find the script at `./scripts/sync-deps.ts`.
+
+#### `generate:index`
+
+This is a simple script to generate index.ts files, you can find it at
+`./scripts/generate-index.ts`
+
+#### `format`
+
+This formats the code, we use the standard formatter from Deno for this.
+
+#### `lint`
+
+This checks the code for linting errors. Here we also use the standard linter
+from Deno.
+
+#### `test`
+
+The tests are spitted into several scripts:
+
+- `test:types` - Uses the `tsc` without creating files to check if there are
+  type errors.
+- `test:deno` - This is the main test and uses the standard testing framework
+  that comes with Deno.
+- `test:node`:
+  - `build:node:esm` - A simple test that checks whether the ESM build can be
+    imported into Node.js without errors using `import`.
+  - `build:node:cjs` - A simple test that checks whether the CJS build can be
+    imported into Node.js without errors using `require`.
 
 ## License
 
