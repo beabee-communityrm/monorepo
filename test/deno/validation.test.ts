@@ -1,15 +1,8 @@
 import { assertEquals } from "https://deno.land/std@0.212.0/assert/assert_equals.ts";
+import { calloutFull1Form } from "./data/index.ts";
 
-Deno.test("Validate a full callout with form", async () => {
-  const decoder = new TextDecoder("utf-8");
-  const dataPath = new URL(
-    "./data/full-callout-with-form.json",
-    import.meta.url,
-  );
-  const data = await Deno.readFile(dataPath);
-  const json = JSON.parse(decoder.decode(data));
-
-  for (const slide of json.formSchema.slides) {
+Deno.test("Validate a full callout with form", () => {
+  for (const slide of calloutFull1Form.formSchema.slides) {
     for (const component of slide.components) {
       console.log(component);
 

@@ -1,5 +1,5 @@
 import type {
-  CalloutInputType,
+  CalloutComponentInputType,
   InputCalloutComponentSchema,
 } from "../../../mod.ts";
 
@@ -8,7 +8,7 @@ export const calloutNumber4Form: InputCalloutComponentSchema = {
   "key": "hiddenNumber",
   "mask": false,
   "tags": [],
-  "type": "number",
+  "type": <CalloutComponentInputType> "number",
   "input": true,
   "label": "Hidden number",
   "logic": [],

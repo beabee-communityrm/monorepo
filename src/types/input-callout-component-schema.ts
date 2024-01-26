@@ -1,9 +1,11 @@
-import { CalloutInputType } from "../index.ts";
-import type { BaseCalloutComponentSchema } from "./index.ts";
+import type {
+  BaseCalloutComponentSchema,
+  CalloutComponentInputType,
+} from "./index.ts";
 
 export interface InputCalloutComponentSchema
   extends BaseCalloutComponentSchema {
-  type: CalloutInputType;
+  type: CalloutComponentInputType;
   input: true;
   placeholder?: string;
 }

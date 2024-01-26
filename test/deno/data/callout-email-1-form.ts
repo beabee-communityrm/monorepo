@@ -1,5 +1,5 @@
 import type {
-  CalloutInputType,
+  CalloutComponentInputType,
   InputCalloutComponentSchema,
 } from "../../../mod.ts";
 
@@ -9,7 +9,7 @@ export const calloutEmail1Form: InputCalloutComponentSchema = {
   "case": "",
   "mask": false,
   "tags": [],
-  "type": <CalloutInputType> "email",
+  "type": <CalloutComponentInputType> "email",
   "input": true,
   "label": "Which e-mail can we use to contact you?",
   "logic": [],

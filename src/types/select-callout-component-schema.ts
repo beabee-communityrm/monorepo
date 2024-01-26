@@ -1,9 +1,11 @@
-import type { CalloutSelectType } from "../data/index.ts";
-import type { BaseCalloutComponentSchema } from "./index.ts";
+import type {
+  BaseCalloutComponentSchema,
+  CalloutComponentSelectType,
+} from "./index.ts";
 
 export interface SelectCalloutComponentSchema
   extends BaseCalloutComponentSchema {
-  type: CalloutSelectType;
+  type: CalloutComponentSelectType;
   input: true;
   data: {
     url?: string;

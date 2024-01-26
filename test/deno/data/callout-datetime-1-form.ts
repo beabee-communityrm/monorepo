@@ -1,13 +1,10 @@
-import type {
-  CalloutInputType,
-  InputCalloutComponentSchema,
-} from "../../../mod.ts";
+import type { InputCalloutComponentSchema } from "../../../mod.ts";
 
 export const calloutDateTime1Form: InputCalloutComponentSchema = {
   "id": "eeteu8",
   "key": "whenIsYourBirthday",
   "tags": [],
-  "type": <CalloutInputType.datetime> "datetime",
+  "type": "datetime",
   "input": true,
   "label": "When is your birthday?",
   "logic": [],

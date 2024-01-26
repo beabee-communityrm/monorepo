@@ -1,0 +1,15 @@
+export type CalloutComponentInputType =
+  | "address"
+  | "button"
+  | "checkbox"
+  | "email"
+  | "number"
+  | "password"
+  | "textfield"
+  | "textarea"
+  | "phoneNumber"
+  | "currency"
+  | "datetime"
+  | "time"
+  | "url"
+  | "signature";

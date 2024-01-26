@@ -1,5 +1,5 @@
 import type {
-  CalloutInputType,
+  CalloutComponentInputType,
   InputCalloutComponentSchema,
 } from "../../../mod.ts";
 
@@ -10,7 +10,7 @@ export const calloutTextarea1Form: InputCalloutComponentSchema = {
   "mask": false,
   "rows": 3,
   "tags": [],
-  "type": <CalloutInputType> "textarea",
+  "type": <CalloutComponentInputType> "textarea",
   "input": true,
   "label": "How did you get interested in software development?",
   "logic": [],

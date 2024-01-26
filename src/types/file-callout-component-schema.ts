@@ -1,8 +1,10 @@
-import type { CalloutFileType } from "../data/index.ts";
-import type { BaseCalloutComponentSchema } from "./index.ts";
+import type {
+  BaseCalloutComponentSchema,
+  CalloutComponentFileType,
+} from "./index.ts";
 
 export interface FileCalloutComponentSchema extends BaseCalloutComponentSchema {
-  type: CalloutFileType;
+  type: CalloutComponentFileType;
   input: true;
   filePattern: string;
 }

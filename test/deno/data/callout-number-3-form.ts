@@ -1,5 +1,5 @@
 import type {
-  CalloutInputType,
+  CalloutComponentInputType,
   InputCalloutComponentSchema,
 } from "../../../mod.ts";
 
@@ -8,7 +8,7 @@ export const calloutNumber3Form: InputCalloutComponentSchema = {
   "key": "numberWithMultipleValuesAndDefaultValues",
   "mask": false,
   "tags": [],
-  "type": <CalloutInputType> "number",
+  "type": <CalloutComponentInputType> "number",
   "input": true,
   "label": "What are your favourite numbers?",
   "logic": [],

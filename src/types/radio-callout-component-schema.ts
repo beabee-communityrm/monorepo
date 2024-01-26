@@ -1,9 +1,11 @@
-import type { CalloutRadioType } from "../data/index.ts";
-import type { BaseCalloutComponentSchema } from "./index.ts";
+import type {
+  BaseCalloutComponentSchema,
+  CalloutComponentRadioType,
+} from "./index.ts";
 
 export interface RadioCalloutComponentSchema
   extends BaseCalloutComponentSchema {
-  type: CalloutRadioType;
+  type: CalloutComponentRadioType;
   input: true;
   values: { label: string; value: string; nextSlideId: string }[];
 }

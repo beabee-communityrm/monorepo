@@ -1,5 +1,5 @@
 import type {
-  CalloutInputType,
+  CalloutComponentInputType,
   InputCalloutComponentSchema,
 } from "../../../mod.ts";
 
@@ -8,7 +8,7 @@ export const calloutUrl1Form: InputCalloutComponentSchema = {
   "key": "pleaseEnterYourHomepage",
   "mask": false,
   "tags": [],
-  "type": <CalloutInputType> "url",
+  "type": <CalloutComponentInputType> "url",
   "input": true,
   "label": "Please enter your homepage",
   "logic": [],

@@ -1,11 +1,11 @@
 import { assertEquals } from "https://deno.land/std@0.212.0/assert/assert_equals.ts";
 import {
+  CalloutComponentInputType,
+  CalloutComponentNestableType,
+  CalloutComponentRadioType,
+  CalloutComponentSelectType,
   CalloutFormSchema,
-  CalloutInputType,
-  CalloutNestableType,
-  CalloutRadioType,
   CalloutResponseAnswers,
-  CalloutSelectType,
   getCalloutComponents,
   InputCalloutComponentSchema,
   NestableCalloutComponentSchema,
@@ -16,7 +16,7 @@ import {
 
 const textComponent: InputCalloutComponentSchema = {
   id: "myTextComponent",
-  type: CalloutInputType.textfield,
+  type: "textfield",
   key: "myTextComponent",
   label: "My text component",
   input: true,
@@ -24,7 +24,7 @@ const textComponent: InputCalloutComponentSchema = {
 
 const textComponent2: InputCalloutComponentSchema = {
   id: "myTextComponent2",
-  type: CalloutInputType.textfield,
+  type: "textfield",
   key: "myTextComponent2",
   label: "My text component",
   input: true,
@@ -32,7 +32,7 @@ const textComponent2: InputCalloutComponentSchema = {
 
 const radioComponent: RadioCalloutComponentSchema = {
   id: "myRadioComponent",
-  type: CalloutRadioType.radio,
+  type: "radio",
   key: "myRadioComponent",
   label: "My radio component",
   input: true,
@@ -45,7 +45,7 @@ const radioComponent: RadioCalloutComponentSchema = {
 
 const selectComponent: SelectCalloutComponentSchema = {
   id: "mySelectComponent",
-  type: CalloutSelectType.select,
+  type: "select",
   key: "mySelectComponent",
   label: "My select component",
   input: true,
@@ -60,7 +60,7 @@ const selectComponent: SelectCalloutComponentSchema = {
 
 const selectBoxComponent: RadioCalloutComponentSchema = {
   id: "mySelectBoxComponent",
-  type: CalloutRadioType.selectboxes,
+  type: "selectboxes",
   key: "mySelectBoxComponent",
   label: "My select box component",
   input: true,
@@ -74,7 +74,7 @@ const selectBoxComponent: RadioCalloutComponentSchema = {
 // TODO: Add tests for nested components
 const panelComponent: NestableCalloutComponentSchema = {
   id: "myPanelComponent",
-  type: CalloutNestableType.panel,
+  type: "panel",
   key: "myPanelComponent",
   label: "My panel component",
   input: false,

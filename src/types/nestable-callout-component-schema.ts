@@ -1,12 +1,12 @@
-import type { CalloutNestableType } from "../data/index.ts";
 import type {
   BaseCalloutComponentSchema,
+  CalloutComponentNestableType,
   CalloutComponentSchema,
 } from "./index.ts";
 
 export interface NestableCalloutComponentSchema
   extends BaseCalloutComponentSchema {
-  type: CalloutNestableType;
+  type: CalloutComponentNestableType;
   input: false;
   components: CalloutComponentSchema[];
 }
