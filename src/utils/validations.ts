@@ -74,6 +74,27 @@ export const isSlug = (value: unknown): value is string => {
 };
 
 /**
+ * Check if the value is one of the given types
+ * @param types The valid types
+ * @param value The value to check
+ */
+export function isType(
+  types: Array<
+    | "string"
+    | "number"
+    | "bigint"
+    | "boolean"
+    | "symbol"
+    | "undefined"
+    | "object"
+    | "function"
+  >,
+  value: unknown,
+): boolean {
+  return types.includes(typeof value);
+}
+
+/**
  * Check if the value is a valid URL string
  * @param value The value to check
  */
