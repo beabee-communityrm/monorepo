@@ -1,6 +1,6 @@
 import {
+  BaseCalloutNestableValidator,
   BaseCalloutValidator,
-  BaseValidator,
   CalloutComponentContentValidator,
   CalloutComponentFileValidator,
   CalloutComponentInputValidator,
@@ -13,6 +13,7 @@ import type {
   CalloutComponentSchema,
   CalloutComponentType,
   CalloutResponseAnswer,
+  CalloutResponseAnswersNestable,
 } from "../types/index.ts";
 
 /**
@@ -20,7 +21,7 @@ import type {
  */
 const calloutValidatorsMap: Record<
   CalloutComponentType,
-  BaseValidator | BaseCalloutValidator
+  BaseCalloutValidator | BaseCalloutNestableValidator
 > = {
   // INPUT
   email: new CalloutComponentInputValidator(),
@@ -59,7 +60,7 @@ const calloutValidatorsMap: Record<
 export class CalloutComponentValidator extends BaseCalloutValidator {
   validate(
     schema: CalloutComponentSchema,
-    answer: CalloutResponseAnswer,
+    answer: CalloutResponseAnswer | CalloutResponseAnswersNestable,
   ): boolean {
     const validator = calloutValidatorsMap[schema.type];
 
@@ -67,6 +68,14 @@ export class CalloutComponentValidator extends BaseCalloutValidator {
       console.error(`No validator found for ${schema.type}`);
       return false;
     }
-    return validator.validate(schema, answer);
+    if (validator instanceof BaseCalloutValidator) {
+      return validator.validate(schema, answer as CalloutResponseAnswer);
+    } else if (validator instanceof BaseCalloutNestableValidator) {
+      return validator.validate(
+        schema,
+        answer as CalloutResponseAnswersNestable,
+      );
+    }
+    throw new Error(`No validator found for ${schema.type}`);
   }
 }

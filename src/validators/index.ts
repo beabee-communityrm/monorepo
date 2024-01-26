@@ -1,3 +1,4 @@
+export * from "./base-callout-nestable.validator.ts";
 export * from "./base-callout.validator.ts";
 export * from "./base.validator.ts";
 export * from "./callout-component-content.validator.ts";
