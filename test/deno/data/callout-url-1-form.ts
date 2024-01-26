@@ -39,8 +39,6 @@ export const calloutUrl1Form: CalloutComponentInputSchema = {
     "pattern": "",
     "multiple": false,
     "required": false,
-    "maxLength": "",
-    "minLength": "",
     "customMessage": "",
     "customPrivate": false,
     "strictDateValidation": false,

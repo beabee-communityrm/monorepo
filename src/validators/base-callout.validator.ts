@@ -2,6 +2,7 @@ import { BaseValidator } from "./index.ts";
 
 import type {
   CalloutComponentSchema,
+  CalloutComponentValidationRules,
   CalloutResponseAnswer,
 } from "../types/index.ts";
 

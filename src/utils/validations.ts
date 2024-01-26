@@ -152,3 +152,37 @@ export const isValidPayFee = (
 
   return true;
 };
+
+/**
+ * Checks if a value is a string and its length is in a range
+ * @param value The value to check
+ * @param minLength The minimum length
+ * @param maxLength The maximum length
+ */
+export const isTextInRange = (
+  value: unknown,
+  minLength = 0,
+  maxLength?: number,
+): boolean => {
+  let valid = typeof value === "string" && value.length >= minLength;
+  if (maxLength && valid) {
+    valid = (value as string).length <= maxLength;
+  }
+  return valid;
+};
+
+/**
+ * Checks if a value is a string and its word length is in a range
+ * @param value The value to check
+ * @param minWordLength The minimum word length
+ * @param maxWordLength The maximum word length
+ */
+export const isTextInWordRange = (
+  value: unknown,
+  minWordLength: number,
+  maxWordLength: number,
+): boolean => {
+  if (value !== "string") return false;
+  const words = value.split(" ");
+  return words.length >= minWordLength && words.length <= maxWordLength;
+};

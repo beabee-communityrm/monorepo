@@ -17,6 +17,7 @@ export * from "./callout-component-schema.ts";
 export * from "./callout-component-select-schema.ts";
 export * from "./callout-component-select-type.ts";
 export * from "./callout-component-type.ts";
+export * from "./callout-component-validation-rules.ts";
 export * from "./callout-filter-name.ts";
 export * from "./callout-form-schema.ts";
 export * from "./callout-navigation-schema.ts";
