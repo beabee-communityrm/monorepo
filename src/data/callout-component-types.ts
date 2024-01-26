@@ -9,7 +9,7 @@ import {
 
 import type { CalloutComponentType } from "../types/index.ts";
 
-/** Array of all possible component types */
+/** Array of all possible callout component types */
 export const calloutComponentTypes: CalloutComponentType[] = [
   ...calloutComponentFileTypes,
   ...calloutComponentInputTypes,

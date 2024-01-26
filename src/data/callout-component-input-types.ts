@@ -1,5 +1,6 @@
 import type { CalloutComponentInputType } from "../types/index.ts";
 
+/** Array of all possible callout input component types */
 export const calloutComponentInputTypes: CalloutComponentInputType[] = [
   "address",
   "button",
