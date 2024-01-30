@@ -1,6 +1,7 @@
 import type {
   CalloutComponentBaseSchema,
   CalloutComponentSelectType,
+  CalloutComponentSelectableRules,
 } from "./index.ts";
 
 export interface CalloutComponentSelectSchema
@@ -14,4 +15,5 @@ export interface CalloutComponentSelectSchema
     resource?: string;
     values: { label: string; value: string }[];
   };
+  validate?: CalloutComponentSelectableRules;
 }

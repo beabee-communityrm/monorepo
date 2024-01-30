@@ -4,7 +4,7 @@ import {
   isPassword,
   isURL,
 } from "../utils/index.ts";
-import { calloutComponentTextRuleValidator } from "./callout-component-text-rule.validator.ts";
+import { calloutComponentRuleTextValidator } from "./callout-component-text-rule.validator.ts";
 import type {
   CalloutComponentSchema,
   CalloutResponseAnswer,
@@ -29,7 +29,7 @@ export const calloutComponentInputValidator: ValidatorCallout = (
     case "textarea":
     case "textfield":
       return typeof answer === "string" &&
-        calloutComponentTextRuleValidator(schema.validate, answer);
+        calloutComponentRuleTextValidator(schema.validate, answer);
     // case "number":
     //   return new NumberValidator().validate(answer);
     // case "datetime":

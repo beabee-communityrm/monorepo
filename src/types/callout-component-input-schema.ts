@@ -1,13 +1,18 @@
 import type {
   CalloutComponentBaseSchema,
+  CalloutComponentEmailRules,
   CalloutComponentInputType,
-  CalloutComponentTextValidationRules,
+  CalloutComponentNumberRules,
+  CalloutComponentTextRules,
 } from "./index.ts";
 
 export interface CalloutComponentInputSchema
   extends CalloutComponentBaseSchema {
   type: CalloutComponentInputType;
   input: true;
-  validate?: CalloutComponentTextValidationRules; // TODO: Other types for other input types?
+  validate?:
+    & CalloutComponentTextRules
+    & CalloutComponentEmailRules
+    & CalloutComponentNumberRules; // TODO: Split to multiple schemas like `CalloutComponentEmailSchema`?
   placeholder?: string;
 }

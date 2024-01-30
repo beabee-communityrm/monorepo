@@ -1,8 +1,7 @@
-import type { CalloutComponentTextValidationRules } from "../types/index.ts";
+import type { CalloutComponentTextRules } from "../types/index.ts";
 
-// TODO: Move this to a new CalloutComponentTextValidator?
-export const calloutComponentTextRuleValidator = (
-  rules: CalloutComponentTextValidationRules | undefined,
+export const calloutComponentRuleTextValidator = (
+  rules: CalloutComponentTextRules | undefined,
   value: string,
 ): boolean => {
   if (!rules) {

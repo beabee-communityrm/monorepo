@@ -1,3 +1,5 @@
+import { calloutComponentValidateNumber1 } from "./callout-component-validate-number-1.ts";
+
 import type { CalloutComponentInputSchema } from "../../../mod.ts";
 
 export const calloutNumber4Form: CalloutComponentInputSchema = {
@@ -32,20 +34,7 @@ export const calloutNumber4Form: CalloutComponentInputSchema = {
   "multiple": false,
   "redrawOn": "",
   "tabindex": "",
-  "validate": {
-    // "max": "",
-    // "min": "",
-    // "json": "",
-    // "step": "any",
-    // "custom": "",
-    // "unique": false,
-    // "integer": "",
-    // "multiple": false,
-    // "required": false,
-    // "customMessage": "",
-    // "customPrivate": false,
-    // "strictDateValidation": false,
-  },
+  "validate": calloutComponentValidateNumber1,
   "adminOnly": false,
   "autofocus": false,
   "delimiter": false,

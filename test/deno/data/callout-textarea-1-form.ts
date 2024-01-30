@@ -1,4 +1,4 @@
-import { calloutComponentValidate1 } from "./callout-component-validate-1.ts";
+import { calloutComponentValidateText1 } from "./callout-component-validate-text-1.ts";
 
 import type { CalloutComponentInputSchema } from "../../../mod.ts";
 
@@ -38,7 +38,7 @@ export const calloutTextarea1Form: CalloutComponentInputSchema = {
   "multiple": false,
   "redrawOn": "",
   "tabindex": "",
-  "validate": calloutComponentValidate1,
+  "validate": calloutComponentValidateText1,
   "adminOnly": false,
   "autofocus": false,
   "encrypted": false,
