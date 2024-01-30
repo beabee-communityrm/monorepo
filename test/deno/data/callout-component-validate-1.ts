@@ -1,6 +1,6 @@
-import type { CalloutComponentValidationRules } from "../../../mod.ts";
+import type { CalloutComponentTextValidationRules } from "../../../mod.ts";
 
-export const calloutComponentValidate1: CalloutComponentValidationRules = {
+export const calloutComponentValidate1: CalloutComponentTextValidationRules = {
   json: "",
   custom: "",
   unique: false,

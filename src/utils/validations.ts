@@ -122,6 +122,14 @@ export const isURL = (value: unknown): value is string => {
 };
 
 /**
+ * Check if the value is a valid number
+ * @param value The value to check
+ */
+export const isNumber = (value: unknown): value is number => {
+  return typeof value === "number" && !isNaN(value);
+};
+
+/**
  * Check if the the pay fee value is correct for the given amount and period
  *
  * @param value The value to check
