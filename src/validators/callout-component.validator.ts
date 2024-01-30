@@ -1,81 +1,103 @@
 import {
-  BaseCalloutNestableValidator,
-  BaseCalloutValidator,
-  CalloutComponentContentValidator,
-  CalloutComponentFileValidator,
-  CalloutComponentInputValidator,
-  CalloutComponentNestableValidator,
-  CalloutComponentRadioValidator,
-  CalloutComponentSelectValidator,
+  calloutComponentContentValidator,
+  calloutComponentFileValidator,
+  calloutComponentInputValidator,
+  calloutComponentNestableValidator,
+  calloutComponentRadioValidator,
+  calloutComponentSelectValidator,
 } from "./index.ts";
 
+import { isNestableComponent } from "../utils/index.ts";
+
 import type {
+  CalloutComponentContentType,
+  CalloutComponentFileType,
+  CalloutComponentInputType,
+  CalloutComponentNestableType,
+  CalloutComponentRadioType,
   CalloutComponentSchema,
-  CalloutComponentType,
+  CalloutComponentSelectType,
   CalloutResponseAnswer,
   CalloutResponseAnswersNestable,
+  ValidatorCallout,
+  ValidatorCalloutNestable,
 } from "../types/index.ts";
 
 /**
  * A map of validator classes to be used for Callout component.
  */
 const calloutValidatorsMap: Record<
-  CalloutComponentType,
-  BaseCalloutValidator | BaseCalloutNestableValidator
+  | CalloutComponentContentType
+  | CalloutComponentFileType
+  | CalloutComponentInputType
+  | CalloutComponentRadioType
+  | CalloutComponentSelectType,
+  ValidatorCallout
 > = {
   // INPUT
-  email: new CalloutComponentInputValidator(),
-  address: new CalloutComponentInputValidator(),
-  button: new CalloutComponentInputValidator(),
-  checkbox: new CalloutComponentInputValidator(),
-  textarea: new CalloutComponentInputValidator(),
-  password: new CalloutComponentInputValidator(),
-  currency: new CalloutComponentInputValidator(),
-  datetime: new CalloutComponentInputValidator(),
-  number: new CalloutComponentInputValidator(),
-  phoneNumber: new CalloutComponentInputValidator(),
-  signature: new CalloutComponentInputValidator(),
-  textfield: new CalloutComponentInputValidator(),
-  time: new CalloutComponentInputValidator(),
-  url: new CalloutComponentInputValidator(),
+  email: calloutComponentInputValidator,
+  address: calloutComponentInputValidator,
+  button: calloutComponentInputValidator,
+  checkbox: calloutComponentInputValidator,
+  textarea: calloutComponentInputValidator,
+  password: calloutComponentInputValidator,
+  currency: calloutComponentInputValidator,
+  datetime: calloutComponentInputValidator,
+  number: calloutComponentInputValidator,
+  phoneNumber: calloutComponentInputValidator,
+  signature: calloutComponentInputValidator,
+  textfield: calloutComponentInputValidator,
+  time: calloutComponentInputValidator,
+  url: calloutComponentInputValidator,
 
-  content: new CalloutComponentContentValidator(),
+  content: calloutComponentContentValidator,
 
   // FILE
-  file: new CalloutComponentFileValidator(),
-
-  // NESTABLE
-  panel: new CalloutComponentNestableValidator(),
-  well: new CalloutComponentNestableValidator(),
-  tabs: new CalloutComponentNestableValidator(),
+  file: calloutComponentFileValidator,
 
   // RADIO
-  radio: new CalloutComponentRadioValidator(),
-  selectboxes: new CalloutComponentRadioValidator(),
+  radio: calloutComponentRadioValidator,
+  selectboxes: calloutComponentRadioValidator,
 
   // SELECT
-  select: new CalloutComponentSelectValidator(),
+  select: calloutComponentSelectValidator,
 };
 
-export class CalloutComponentValidator extends BaseCalloutValidator {
-  validate(
+/**
+ * A map of validator classes to be used for Callout component.
+ */
+const calloutNestableValidatorsMap: Record<
+  CalloutComponentNestableType,
+  ValidatorCalloutNestable
+> = {
+  // NESTABLE
+  panel: calloutComponentNestableValidator,
+  well: calloutComponentNestableValidator,
+  tabs: calloutComponentNestableValidator,
+};
+
+export const calloutComponentValidator:
+  | ValidatorCallout
+  | ValidatorCalloutNestable = (
     schema: CalloutComponentSchema,
     answer: CalloutResponseAnswer | CalloutResponseAnswersNestable,
-  ): boolean {
-    const validator = calloutValidatorsMap[schema.type];
-
-    if (!validator) {
-      console.error(`No validator found for ${schema.type}`);
-      return false;
-    }
-    if (validator instanceof BaseCalloutValidator) {
-      return validator.validate(schema, answer as CalloutResponseAnswer);
-    } else if (validator instanceof BaseCalloutNestableValidator) {
-      return validator.validate(
+  ): boolean => {
+    if (isNestableComponent(schema)) {
+      const validator = calloutNestableValidatorsMap[schema.type];
+      if (!validator) {
+        console.error(`No validator found for ${schema.type}`);
+        return false;
+      }
+      return validator(schema, answer as CalloutResponseAnswersNestable);
+    } else {
+      const validator = calloutValidatorsMap[schema.type];
+      if (!validator) {
+        console.error(`No validator found for ${schema.type}`);
+        return false;
+      }
+      return validator(
         schema,
-        answer as CalloutResponseAnswersNestable,
+        answer as CalloutResponseAnswer,
       );
     }
-    throw new Error(`No validator found for ${schema.type}`);
-  }
-}
+  };

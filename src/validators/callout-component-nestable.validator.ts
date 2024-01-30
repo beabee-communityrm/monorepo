@@ -1,38 +1,41 @@
-import { BaseValidator, CalloutComponentValidator } from "./index.ts";
+import { calloutComponentValidator } from "./index.ts";
 import { isNestableComponent } from "../utils/index.ts";
 
 import type {
   CalloutComponentSchema,
   CalloutResponseAnswer,
+  ValidatorCalloutNestable,
 } from "../types/index.ts";
 
-export class CalloutComponentNestableValidator extends BaseValidator {
-  validate(
-    schema: CalloutComponentSchema,
-    answerMap: Record<string, CalloutResponseAnswer | CalloutResponseAnswer[]>,
-  ): boolean {
-    if (!isNestableComponent(schema)) {
+export const calloutComponentNestableValidator: ValidatorCalloutNestable = (
+  schema: CalloutComponentSchema,
+  answerMap: Record<string, CalloutResponseAnswer | CalloutResponseAnswer[]>,
+): boolean => {
+  if (!isNestableComponent(schema)) {
+    throw new Error(
+      `[calloutComponentNestableValidator] schema is not nestable component`,
+    );
+  }
+  let valid = true;
+  for (const component of schema.components) {
+    const answer = answerMap[component.key];
+    const answers = Array.isArray(answer) ? answer : [answer];
+    if (!answer) {
       throw new Error(
-        `[${this.constructor.name}] validate() -> schema is not nestable component`,
+        `[calloutComponentNestableValidator] no answer`,
       );
     }
-    let valid = true;
-    for (const component of schema.components) {
-      const validator = new CalloutComponentValidator();
-      const answer = answerMap[component.key];
-      const answers = Array.isArray(answer) ? answer : [answer];
-      if (!answer) {
-        throw new Error(
-          `[${this.constructor.name}] validate() -> no answer`,
-        );
-      }
-      for (const answer of answers) {
-        valid = validator.validate(component, answer) && valid;
+    for (const _answersLevel2 of answers) {
+      const answersLevel2 = Array.isArray(_answersLevel2)
+        ? _answersLevel2
+        : [_answersLevel2];
+      for (const answer of answersLevel2) {
+        valid = calloutComponentValidator(component, answer) && valid;
         if (!valid) {
           return false;
         }
       }
     }
-    return valid;
   }
-}
+  return valid;
+};

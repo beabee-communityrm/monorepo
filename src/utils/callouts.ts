@@ -1,6 +1,20 @@
+import { CalloutComponentType } from "../index.ts";
+import {
+  calloutComponentContentTypes,
+  calloutComponentFileTypes,
+  calloutComponentInputTypes,
+  calloutComponentNestableTypes,
+  calloutComponentRadioTypes,
+  calloutComponentSelectTypes,
+} from "../data/index.ts";
 import type {
+  CalloutComponentContentSchema,
+  CalloutComponentFileSchema,
+  CalloutComponentInputSchema,
   CalloutComponentNestableSchema,
+  CalloutComponentRadioSchema,
   CalloutComponentSchema,
+  CalloutComponentSelectSchema,
   CalloutFormSchema,
   CalloutResponseAnswer,
   CalloutResponseAnswerAddress,
@@ -69,11 +83,84 @@ function getNiceAnswer(
   }
 }
 
+export function isCalloutComponentOfType<T extends CalloutComponentSchema>(
+  component: CalloutComponentSchema,
+  type: CalloutComponentType,
+): component is T {
+  return "type" in component && component.type === type;
+}
+
+/**
+ * Check if a component is a select component.
+ *
+ * @param component
+ * @returns
+ */
+export function isSelectComponent(
+  component: CalloutComponentSchema,
+): component is CalloutComponentSelectSchema {
+  return "type" in component && component.type in calloutComponentSelectTypes;
+}
+
+/**
+ * Check if a component is a radio component.
+ *
+ * @param component
+ * @returns
+ */
+export function isRadioComponent(
+  component: CalloutComponentSchema,
+): component is CalloutComponentRadioSchema {
+  return "type" in component && component.type in calloutComponentRadioTypes;
+}
+
+/**
+ * Check if a component is a content component.
+ *
+ * @param component
+ * @returns
+ */
+export function isContentComponent(
+  component: CalloutComponentSchema,
+): component is CalloutComponentContentSchema {
+  return "type" in component && component.type in calloutComponentContentTypes;
+}
+
+/**
+ * Check if a component is a file component.
+ *
+ * @param component
+ * @returns
+ */
+export function isFileComponent(
+  component: CalloutComponentSchema,
+): component is CalloutComponentFileSchema {
+  return "type" in component && component.type in calloutComponentFileTypes;
+}
+
+/**
+ * Check if a component is a file component.
+ *
+ * @param component
+ * @returns
+ */
+export function isInputComponent(
+  component: CalloutComponentSchema,
+): component is CalloutComponentInputSchema {
+  return "type" in component && component.type in calloutComponentInputTypes;
+}
+
+/**
+ * Check if a component is a nestable component.
+ * @param component
+ * @returns
+ */
 export function isNestableComponent(
   component: CalloutComponentSchema,
 ): component is CalloutComponentNestableSchema {
   // Addresses have embedded components we don't want to include
-  return "components" in component && component.type !== "address";
+  return "components" in component && component.type !== "address" &&
+    "type" in calloutComponentNestableTypes;
 }
 
 export function flattenComponents(

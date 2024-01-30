@@ -1,4 +1,4 @@
-export interface CalloutComponentValidationRules {
+export interface CalloutComponentTextValidationRules {
   json?: string;
   custom?: string;
   /** Makes sure the data submitted for this field is unique, and has not been submitted before. */

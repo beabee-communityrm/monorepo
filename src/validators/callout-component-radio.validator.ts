@@ -1,14 +1,12 @@
-import { BaseValidator } from "./base.validator.ts";
+import { ValidatorCallout } from "../types/index.ts";
 import type {
-  CalloutComponentRadioSchema,
+  CalloutComponentSchema,
   CalloutResponseAnswer,
 } from "../types/index.ts";
 
-export class CalloutComponentRadioValidator extends BaseValidator {
-  validate(
-    _schema: CalloutComponentRadioSchema,
-    _answer: CalloutResponseAnswer,
-  ): boolean {
-    throw new Error(`[${this.constructor.name}] Not implemented yet`);
-  }
-}
+export const calloutComponentRadioValidator: ValidatorCallout = (
+  _schema: CalloutComponentSchema,
+  _answer: CalloutResponseAnswer,
+): boolean => {
+  throw new Error(`[calloutComponentRadioValidator] Not implemented yet`);
+};
