@@ -130,6 +130,41 @@ export const isNumber = (value: unknown): value is number => {
 };
 
 /**
+ * Convert the value to a valid phone number
+ * @param value The value to convert
+ * @returns The valid phone number or null if the value is not a valid phone number
+ */
+export const toPhoneNumber = (value: unknown): string | false => {
+  if (typeof value !== "string" || !value.length) {
+    return false;
+  }
+  const result = value.replace(/(?!^\+)\D/g, "");
+  if (!isPhoneNumber(result)) {
+    return false;
+  }
+  return result;
+};
+
+/**
+ * Check if the value is a valid phone number with the following rules:
+ * * Only uses numbers
+ * * Optionally starts with a `+`
+ * Note: This method does not take into whitespaces, brackets or other
+ * characters commonly used in telephone number notation. To remove these, use `toPhoneNumber`.
+ * @param value The value to check
+ */
+export const isPhoneNumber = (value: unknown): value is string => {
+  if (typeof value !== "string" || !value.length) {
+    return false;
+  }
+  if (value.length > 15 || value.length < 5) {
+    return false;
+  }
+  const phoneRegex = /^(\+?[0-9])\d*$/;
+  return phoneRegex.test(value);
+};
+
+/**
  * Check if the the pay fee value is correct for the given amount and period
  *
  * @param value The value to check

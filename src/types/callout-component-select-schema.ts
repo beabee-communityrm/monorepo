@@ -1,7 +1,7 @@
 import type {
   CalloutComponentBaseSchema,
-  CalloutComponentSelectType,
   CalloutComponentSelectableRules,
+  CalloutComponentSelectType,
 } from "./index.ts";
 
 export interface CalloutComponentSelectSchema

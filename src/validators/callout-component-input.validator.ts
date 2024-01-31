@@ -1,10 +1,11 @@
 import {
   isEmail,
   isInputComponent,
+  isNumber,
   isPassword,
   isURL,
 } from "../utils/index.ts";
-import { calloutComponentRuleTextValidator } from "./callout-component-text-rule.validator.ts";
+import { calloutComponentRuleTextValidator } from "./callout-component-rule-text.validator.ts";
 import type {
   CalloutComponentSchema,
   CalloutResponseAnswer,
@@ -30,8 +31,8 @@ export const calloutComponentInputValidator: ValidatorCallout = (
     case "textfield":
       return typeof answer === "string" &&
         calloutComponentRuleTextValidator(schema.validate, answer);
-    // case "number":
-    //   return new NumberValidator().validate(answer);
+    case "number":
+      return isNumber(answer);
     // case "datetime":
     //   return new DateValidator().validate(answer);
     // case "time":
