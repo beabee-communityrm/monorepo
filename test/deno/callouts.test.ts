@@ -1,16 +1,16 @@
 import { assertEquals } from "https://deno.land/std@0.212.0/assert/assert_equals.ts";
 import {
-  CalloutComponentInputSchema,
   CalloutComponentNestableSchema,
   CalloutComponentRadioSchema,
   CalloutComponentSelectSchema,
+  CalloutComponentTextSchema,
   CalloutFormSchema,
   CalloutResponseAnswersSlide,
   getCalloutComponents,
   stringifyAnswer,
 } from "../../mod.ts";
 
-const textComponent: CalloutComponentInputSchema = {
+const textComponent: CalloutComponentTextSchema = {
   id: "myTextComponent",
   type: "textfield",
   key: "myTextComponent",
@@ -18,7 +18,7 @@ const textComponent: CalloutComponentInputSchema = {
   input: true,
 };
 
-const textComponent2: CalloutComponentInputSchema = {
+const textComponent2: CalloutComponentTextSchema = {
   id: "myTextComponent2",
   type: "textfield",
   key: "myTextComponent2",

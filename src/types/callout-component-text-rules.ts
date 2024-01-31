@@ -7,7 +7,7 @@ export interface CalloutComponentTextRules extends CalloutComponentBaseRules {
   maxWords?: number;
   /** The minimum amount of words that can be added to this field. */
   minWords?: number;
-  /** The minimum amount of words that can be added to this field. */
+  /** The maximum length requirement this field must meet */
   maxLength?: number;
   /** The minimum length requirement this field must meet. */
   minLength?: number;

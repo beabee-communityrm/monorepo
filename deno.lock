@@ -446,5 +446,17 @@
     "https://deno.land/x/denoflate@1.2.1/pkg/denoflate.js": "b9f9ad9457d3f12f28b1fb35c555f57443427f74decb403113d67364e4f2caf4",
     "https://deno.land/x/denoflate@1.2.1/pkg/denoflate_bg.wasm.js": "d581956245407a2115a3d7e8d85a9641c032940a8e810acbd59ca86afd34d44d",
     "https://deno.land/x/esbuild@v0.19.11/mod.js": "bd4916647799a0cd046dcf4eafd6ace09d22d5898870bd062206b8b6343d5e6a"
+  },
+  "workspace": {
+    "dependencies": [
+      "npm:date-fns@3.2.0"
+    ],
+    "packageJson": {
+      "dependencies": [
+        "npm:@tsconfig/recommended@^1.0.3",
+        "npm:date-fns@^3.2.0",
+        "npm:typescript@^5.3.3"
+      ]
+    }
   }
 }

@@ -7,6 +7,8 @@ const paths = [
   "./src/utils",
   "./src/validators",
   "./test/deno/data",
+  "./test/deno/data/components",
+  "./test/deno/data/components/validate-rules",
 ];
 
 const encoder = new TextEncoder();

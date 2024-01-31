@@ -149,8 +149,11 @@ export const toPhoneNumber = (value: unknown): string | false => {
  * Check if the value is a valid phone number with the following rules:
  * * Only uses numbers
  * * Optionally starts with a `+`
- * Note: This method does not take into whitespaces, brackets or other
- * characters commonly used in telephone number notation. To remove these, use `toPhoneNumber`.
+ * * Maximal length is 15 characters
+ * * Minimal length is 5 characters
+ * Note: This method is very generalised to work for as many countries as possible
+ * and does not take into whitespace, brackets or other characters commonly used
+ * in telephone number notation. To remove these, use `toPhoneNumber` instead.
  * @param value The value to check
  */
 export const isPhoneNumber = (value: unknown): value is string => {
@@ -208,6 +211,8 @@ export const isTextInRange = (
   maxLength?: number,
 ): boolean => {
   let valid = typeof value === "string" && value.length >= minLength;
+
+  // If a max length is set, check if the value is in range
   if (maxLength && valid) {
     valid = (value as string).length <= maxLength;
   }
@@ -222,10 +227,17 @@ export const isTextInRange = (
  */
 export const isTextInWordRange = (
   value: unknown,
-  minWordLength: number,
-  maxWordLength: number,
+  minWordLength = 0,
+  maxWordLength?: number,
 ): boolean => {
   if (value !== "string") return false;
   const words = value.split(" ");
-  return words.length >= minWordLength && words.length <= maxWordLength;
+  if (words.length < minWordLength) {
+    return false;
+  }
+  // if maxWordLength is not defined, then there is no upper limit
+  if (maxWordLength && words.length > maxWordLength) {
+    return false;
+  }
+  return true;
 };

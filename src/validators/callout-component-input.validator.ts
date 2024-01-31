@@ -1,10 +1,4 @@
-import {
-  isEmail,
-  isInputComponent,
-  isNumber,
-  isPassword,
-  isURL,
-} from "../utils/index.ts";
+import { isEmail, isNumber, isURL, toPhoneNumber } from "../utils/index.ts";
 import { calloutComponentRuleTextValidator } from "./callout-component-rule-text.validator.ts";
 import type {
   CalloutComponentSchema,
@@ -12,21 +6,18 @@ import type {
   ValidatorCallout,
 } from "../types/index.ts";
 
+// TODO: Split validators
 export const calloutComponentInputValidator: ValidatorCallout = (
   schema: CalloutComponentSchema,
   answer: CalloutResponseAnswer,
 ): boolean => {
-  if (!isInputComponent(schema)) {
-    throw new Error("Schema is not a input component");
-  }
-
   switch (schema.type) {
     case "email":
       return isEmail(answer);
     case "url":
       return isURL(answer);
-    // case "phoneNumber":
-    //   return new PhoneValidator().validate(answer);
+    case "phoneNumber":
+      return !!toPhoneNumber(answer);
     case "textarea":
     case "textfield":
       return typeof answer === "string" &&
@@ -41,8 +32,6 @@ export const calloutComponentInputValidator: ValidatorCallout = (
     //   return new AddressValidator().validate(answer);
     // case "checkbox":
     //   return new CheckboxValidator().validate(answer);
-    case "password":
-      return isPassword(answer);
     default:
       throw new Error(
         `[calloutComponentInputValidator] Unsupported type: ${schema.type}`,

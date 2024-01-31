@@ -10,13 +10,23 @@ import {
 import { isNestableComponent } from "../utils/index.ts";
 
 import type {
+  CalloutComponentAddressType,
+  CalloutComponentCheckboxType,
   CalloutComponentContentType,
+  CalloutComponentCurrencyType,
+  CalloutComponentDateTimeType,
+  CalloutComponentEmailType,
   CalloutComponentFileType,
-  CalloutComponentInputType,
   CalloutComponentNestableType,
+  CalloutComponentNumberType,
+  CalloutComponentPhoneNumberType,
   CalloutComponentRadioType,
   CalloutComponentSchema,
   CalloutComponentSelectType,
+  CalloutComponentSignatureType,
+  CalloutComponentTextType,
+  CalloutComponentTimeType,
+  CalloutComponentUrlType,
   CalloutResponseAnswer,
   CalloutResponseAnswersNestable,
   ValidatorCallout,
@@ -29,38 +39,42 @@ import type {
 const calloutValidatorsMap: Record<
   | CalloutComponentContentType
   | CalloutComponentFileType
-  | CalloutComponentInputType
+  | CalloutComponentAddressType
+  | CalloutComponentCheckboxType
+  | CalloutComponentNumberType
+  | CalloutComponentPhoneNumberType
+  | CalloutComponentCurrencyType
+  | CalloutComponentDateTimeType
+  | CalloutComponentTimeType
+  | CalloutComponentUrlType
+  | CalloutComponentSignatureType
+  | CalloutComponentEmailType
+  | CalloutComponentTextType
   | CalloutComponentRadioType
   | CalloutComponentSelectType,
   ValidatorCallout
 > = {
-  // INPUT
   email: calloutComponentInputValidator,
   address: calloutComponentInputValidator,
-  button: calloutComponentInputValidator,
   checkbox: calloutComponentInputValidator,
-  textarea: calloutComponentInputValidator,
-  password: calloutComponentInputValidator,
   currency: calloutComponentInputValidator,
   datetime: calloutComponentInputValidator,
   number: calloutComponentInputValidator,
   phoneNumber: calloutComponentInputValidator,
   signature: calloutComponentInputValidator,
-  textfield: calloutComponentInputValidator,
   time: calloutComponentInputValidator,
   url: calloutComponentInputValidator,
-
   content: calloutComponentContentValidator,
-
-  // FILE
   file: calloutComponentFileValidator,
+  select: calloutComponentSelectValidator,
+
+  // TEXT
+  textfield: calloutComponentInputValidator,
+  textarea: calloutComponentInputValidator,
 
   // RADIO
   radio: calloutComponentRadioValidator,
   selectboxes: calloutComponentRadioValidator,
-
-  // SELECT
-  select: calloutComponentSelectValidator,
 };
 
 /**

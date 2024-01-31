@@ -1,7 +1,7 @@
 import type {
   CalloutComponentBaseSchema,
   CalloutComponentRadioType,
-  CalloutComponentSelectableRules,
+  CalloutComponentSelectRules,
 } from "./index.ts";
 
 export interface CalloutComponentRadioSchema
@@ -9,5 +9,5 @@ export interface CalloutComponentRadioSchema
   type: CalloutComponentRadioType;
   input: true;
   values: { label: string; value: string; nextSlideId: string }[];
-  validate?: CalloutComponentSelectableRules;
+  validate?: CalloutComponentSelectRules;
 }

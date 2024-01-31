@@ -1,16 +1,36 @@
 import type {
+  CalloutComponentAddressSchema,
+  CalloutComponentCheckboxSchema,
   CalloutComponentContentSchema,
+  CalloutComponentCurrencySchema,
+  CalloutComponentDateTimeSchema,
+  CalloutComponentEmailSchema,
   CalloutComponentFileSchema,
-  CalloutComponentInputSchema,
   CalloutComponentNestableSchema,
+  CalloutComponentNumberSchema,
+  CalloutComponentPhoneNumberSchema,
   CalloutComponentRadioSchema,
   CalloutComponentSelectSchema,
+  CalloutComponentSignatureSchema,
+  CalloutComponentTextSchema,
+  CalloutComponentTimeSchema,
+  CalloutComponentUrlSchema,
 } from "./index.ts";
 
 export type CalloutComponentSchema =
-  | CalloutComponentSelectSchema
-  | CalloutComponentRadioSchema
-  | CalloutComponentInputSchema
-  | CalloutComponentNestableSchema
+  | CalloutComponentAddressSchema
+  | CalloutComponentCheckboxSchema
+  | CalloutComponentContentSchema
+  | CalloutComponentCurrencySchema
+  | CalloutComponentDateTimeSchema
+  | CalloutComponentEmailSchema
   | CalloutComponentFileSchema
-  | CalloutComponentContentSchema;
+  | CalloutComponentNestableSchema
+  | CalloutComponentNumberSchema
+  | CalloutComponentPhoneNumberSchema
+  | CalloutComponentRadioSchema
+  | CalloutComponentSelectSchema
+  | CalloutComponentSignatureSchema
+  | CalloutComponentTextSchema
+  | CalloutComponentTimeSchema
+  | CalloutComponentUrlSchema;

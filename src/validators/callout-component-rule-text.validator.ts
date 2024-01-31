@@ -1,3 +1,5 @@
+import { isTextInRange, isTextInWordRange } from "../utils/index.ts";
+
 import type { CalloutComponentTextRules } from "../types/index.ts";
 
 export const calloutComponentRuleTextValidator = (
@@ -9,26 +11,30 @@ export const calloutComponentRuleTextValidator = (
   }
 
   // Check if the value is required and not provided
-  if (rules.required && !value) {
+  if (rules.required && !value?.length) {
     return false;
   }
-
-  // Check if the value should be unique
-  // if (rules.unique && !this.isUnique(value)) {
-  //   return false;
-  // }
 
   // Check if the value matches the provided pattern
   if (rules.pattern && !new RegExp(rules.pattern).test(value)) {
     return false;
   }
 
-  // Check if the value has the correct number of words
-  const words = value.split(" ");
-  if (rules.minWords && words.length < rules.minWords) {
+  // Check word range if defined
+  if (
+    (typeof rules.maxWords === "number" ||
+      typeof rules.minWords === "number") &&
+    !isTextInWordRange(value, rules.minWords, rules.maxWords)
+  ) {
     return false;
   }
-  if (rules.maxWords && words.length > rules.maxWords) {
+
+  // Check length range if defined
+  if (
+    (typeof rules.maxLength === "number" ||
+      typeof rules.minLength === "number") &&
+    !isTextInRange(value, rules.minLength, rules.maxLength)
+  ) {
     return false;
   }
 

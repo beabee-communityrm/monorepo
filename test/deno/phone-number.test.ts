@@ -63,6 +63,17 @@ Deno.test("toPhoneNumber", async (t) => {
     },
   );
 
+  // Test case for a valid phone number with german country code +49
+  await t.step(
+    "valid phone number with german country code +49",
+    function () {
+      assert(
+        toPhoneNumber("+494721 56789") !== false,
+        "Expected phone number to be valid",
+      );
+    },
+  );
+
   // Test case for an invalid phone number (string)
   await t.step("invalid phone number - string", function () {
     assert(
