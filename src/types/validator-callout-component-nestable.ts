@@ -3,7 +3,7 @@ import type {
   CalloutResponseAnswer,
 } from "./index.ts";
 
-export type ValidatorCalloutNestable = (
+export type ValidatorCalloutComponentNestable = (
   schema: CalloutComponentNestableSchema,
   answerMap: Record<string, CalloutResponseAnswer | CalloutResponseAnswer[]>,
 ) => boolean;

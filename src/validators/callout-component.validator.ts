@@ -1,8 +1,15 @@
 import {
-  calloutComponentFileValidator,
+  calloutComponentContentValidator,
+  calloutComponentInputAddressValidator,
+  calloutComponentInputCheckboxValidator,
+  calloutComponentInputDateTimeValidator,
+  calloutComponentInputFileValidator,
+  calloutComponentInputSelectableValidator,
+  calloutComponentInputTextValidator,
+  calloutComponentInputTimeValidator,
+  calloutComponentInputUrlValidator,
   calloutComponentInputValidator,
   calloutComponentNestableValidator,
-  calloutComponentRadioValidator,
   calloutComponentSelectValidator,
 } from "./index.ts";
 
@@ -13,42 +20,42 @@ import {
 } from "../utils/index.ts";
 
 import type {
-  CalloutComponentBaseInputSchema,
   CalloutComponentBaseNestableSchema,
+  CalloutComponentInputSchema,
   CalloutComponentSchema,
   CalloutResponseAnswer,
   CalloutResponseAnswersNestable,
-  ValidatorCalloutInput,
-  ValidatorCalloutNestable,
+  ValidatorCalloutComponent,
+  ValidatorCalloutComponentNestable,
 } from "../types/index.ts";
 
 /**
  * A map of validator classes to be used for Callout component.
  */
 const calloutInputValidatorsMap: Record<
-  CalloutComponentBaseInputSchema["type"],
-  ValidatorCalloutInput
+  CalloutComponentInputSchema["type"],
+  ValidatorCalloutComponent
 > = {
   email: calloutComponentInputValidator,
-  address: calloutComponentInputValidator,
-  checkbox: calloutComponentInputValidator,
+  address: calloutComponentInputAddressValidator,
+  checkbox: calloutComponentInputCheckboxValidator,
   currency: calloutComponentInputValidator,
-  datetime: calloutComponentInputValidator,
+  datetime: calloutComponentInputDateTimeValidator,
   number: calloutComponentInputValidator,
   phoneNumber: calloutComponentInputValidator,
   signature: calloutComponentInputValidator,
-  time: calloutComponentInputValidator,
-  url: calloutComponentInputValidator,
-  file: calloutComponentFileValidator,
+  time: calloutComponentInputTimeValidator,
+  url: calloutComponentInputUrlValidator,
+  file: calloutComponentInputFileValidator,
   select: calloutComponentSelectValidator,
 
   // Text
-  textfield: calloutComponentInputValidator,
-  textarea: calloutComponentInputValidator,
+  textfield: calloutComponentInputTextValidator,
+  textarea: calloutComponentInputTextValidator,
 
   // Selectable
-  radio: calloutComponentRadioValidator,
-  selectboxes: calloutComponentRadioValidator,
+  radio: calloutComponentInputSelectableValidator,
+  selectboxes: calloutComponentInputSelectableValidator,
 };
 
 /**
@@ -56,7 +63,7 @@ const calloutInputValidatorsMap: Record<
  */
 const calloutNestableValidatorsMap: Record<
   CalloutComponentBaseNestableSchema["type"],
-  ValidatorCalloutNestable
+  ValidatorCalloutComponentNestable
 > = {
   // NESTABLE
   panel: calloutComponentNestableValidator,
@@ -87,7 +94,7 @@ export const calloutComponentValidator = (
     );
   } else if (isCalloutContentComponent(schema)) {
     // Content components are always valid
-    return true;
+    return calloutComponentContentValidator(schema, answer);
   }
 
   throw new Error(

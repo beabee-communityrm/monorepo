@@ -2,10 +2,10 @@ import { isCalloutInputFileComponent, isURL } from "../utils/index.ts";
 import type {
   CalloutComponentSchema,
   CalloutResponseAnswer,
-  ValidatorCalloutInput,
+  ValidatorCalloutComponent,
 } from "../types/index.ts";
 
-export const calloutComponentFileValidator: ValidatorCalloutInput = (
+export const calloutComponentInputFileValidator: ValidatorCalloutComponent = (
   schema: CalloutComponentSchema,
   answer: CalloutResponseAnswer,
 ): boolean => {
