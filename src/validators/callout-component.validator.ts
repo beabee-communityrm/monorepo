@@ -1,5 +1,4 @@
 import {
-  calloutComponentContentValidator,
   calloutComponentFileValidator,
   calloutComponentInputValidator,
   calloutComponentNestableValidator,
@@ -7,52 +6,28 @@ import {
   calloutComponentSelectValidator,
 } from "./index.ts";
 
-import { isNestableComponent } from "../utils/index.ts";
+import {
+  isCalloutContentComponent,
+  isCalloutInputComponent,
+  isCalloutNestableComponent,
+} from "../utils/index.ts";
 
 import type {
-  CalloutComponentAddressType,
-  CalloutComponentCheckboxType,
-  CalloutComponentContentType,
-  CalloutComponentCurrencyType,
-  CalloutComponentDateTimeType,
-  CalloutComponentEmailType,
-  CalloutComponentFileType,
-  CalloutComponentNestableType,
-  CalloutComponentNumberType,
-  CalloutComponentPhoneNumberType,
-  CalloutComponentRadioType,
+  CalloutComponentBaseInputSchema,
+  CalloutComponentBaseNestableSchema,
   CalloutComponentSchema,
-  CalloutComponentSelectType,
-  CalloutComponentSignatureType,
-  CalloutComponentTextType,
-  CalloutComponentTimeType,
-  CalloutComponentUrlType,
   CalloutResponseAnswer,
   CalloutResponseAnswersNestable,
-  ValidatorCallout,
+  ValidatorCalloutInput,
   ValidatorCalloutNestable,
 } from "../types/index.ts";
 
 /**
  * A map of validator classes to be used for Callout component.
  */
-const calloutValidatorsMap: Record<
-  | CalloutComponentContentType
-  | CalloutComponentFileType
-  | CalloutComponentAddressType
-  | CalloutComponentCheckboxType
-  | CalloutComponentNumberType
-  | CalloutComponentPhoneNumberType
-  | CalloutComponentCurrencyType
-  | CalloutComponentDateTimeType
-  | CalloutComponentTimeType
-  | CalloutComponentUrlType
-  | CalloutComponentSignatureType
-  | CalloutComponentEmailType
-  | CalloutComponentTextType
-  | CalloutComponentRadioType
-  | CalloutComponentSelectType,
-  ValidatorCallout
+const calloutInputValidatorsMap: Record<
+  CalloutComponentBaseInputSchema["type"],
+  ValidatorCalloutInput
 > = {
   email: calloutComponentInputValidator,
   address: calloutComponentInputValidator,
@@ -64,15 +39,14 @@ const calloutValidatorsMap: Record<
   signature: calloutComponentInputValidator,
   time: calloutComponentInputValidator,
   url: calloutComponentInputValidator,
-  content: calloutComponentContentValidator,
   file: calloutComponentFileValidator,
   select: calloutComponentSelectValidator,
 
-  // TEXT
+  // Text
   textfield: calloutComponentInputValidator,
   textarea: calloutComponentInputValidator,
 
-  // RADIO
+  // Selectable
   radio: calloutComponentRadioValidator,
   selectboxes: calloutComponentRadioValidator,
 };
@@ -81,7 +55,7 @@ const calloutValidatorsMap: Record<
  * A map of validator classes to be used for Callout component.
  */
 const calloutNestableValidatorsMap: Record<
-  CalloutComponentNestableType,
+  CalloutComponentBaseNestableSchema["type"],
   ValidatorCalloutNestable
 > = {
   // NESTABLE
@@ -90,28 +64,35 @@ const calloutNestableValidatorsMap: Record<
   tabs: calloutComponentNestableValidator,
 };
 
-export const calloutComponentValidator:
-  | ValidatorCallout
-  | ValidatorCalloutNestable = (
-    schema: CalloutComponentSchema,
-    answer: CalloutResponseAnswer | CalloutResponseAnswersNestable,
-  ): boolean => {
-    if (isNestableComponent(schema)) {
-      const validator = calloutNestableValidatorsMap[schema.type];
-      if (!validator) {
-        console.error(`No validator found for ${schema.type}`);
-        return false;
-      }
-      return validator(schema, answer as CalloutResponseAnswersNestable);
-    } else {
-      const validator = calloutValidatorsMap[schema.type];
-      if (!validator) {
-        console.error(`No validator found for ${schema.type}`);
-        return false;
-      }
-      return validator(
-        schema,
-        answer as CalloutResponseAnswer,
-      );
+export const calloutComponentValidator = (
+  schema: CalloutComponentSchema,
+  answer: CalloutResponseAnswer | CalloutResponseAnswersNestable,
+): boolean => {
+  if (isCalloutNestableComponent(schema)) {
+    const validator = calloutNestableValidatorsMap[schema.type];
+    if (!validator) {
+      console.error(`No validator found for ${schema.type}`);
+      return false;
     }
-  };
+    return validator(schema, answer as CalloutResponseAnswersNestable);
+  } else if (isCalloutInputComponent(schema)) {
+    const validator = calloutInputValidatorsMap[schema.type];
+    if (!validator) {
+      console.error(`No validator found for ${schema.type}`);
+      return false;
+    }
+    return validator(
+      schema,
+      answer as CalloutResponseAnswer,
+    );
+  } else if (isCalloutContentComponent(schema)) {
+    // Content components are always valid
+    return true;
+  }
+
+  throw new Error(
+    `[calloutComponentValidator] No validator found for ${
+      // deno-lint-ignore no-explicit-any
+      (schema as any).type}`,
+  );
+};

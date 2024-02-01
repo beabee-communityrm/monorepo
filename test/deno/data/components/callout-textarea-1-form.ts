@@ -1,14 +1,15 @@
+import { CalloutComponentType } from "../../../../mod.ts";
 import { calloutComponentValidateText1 } from "./validate-rules/callout-component-validate-text-1.ts";
 
-import type { CalloutComponentTextSchema } from "../../../../mod.ts";
+import type { CalloutComponentInputTextAreaSchema } from "../../../../mod.ts";
 
-export const calloutTextarea1Form: CalloutComponentTextSchema = {
+export const calloutTextarea1Form: CalloutComponentInputTextAreaSchema = {
   "id": "ei5n40f",
   "key": "howDoYouFeel",
   "mask": false,
   "rows": 3,
   "tags": [],
-  "type": "textarea",
+  "type": CalloutComponentType.INPUT_TEXT_AREA,
   "input": true,
   "label": "How did you get interested in software development?",
   "logic": [],

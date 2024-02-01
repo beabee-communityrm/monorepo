@@ -1,11 +1,12 @@
-import type { CalloutComponentCheckboxSchema } from "../../../../mod.ts";
+import { CalloutComponentType } from "../../../../mod.ts";
+import type { CalloutComponentInputCheckboxSchema } from "../../../../mod.ts";
 
-export const calloutCheckbox1Form: CalloutComponentCheckboxSchema = {
+export const calloutCheckbox1Form: CalloutComponentInputCheckboxSchema = {
   "id": "en6llhs",
   "key": "iHaveReadTheGeneralDataProtectionProvisionsAndAgreeToThem",
   "name": "",
   "tags": [],
-  "type": "checkbox",
+  "type": CalloutComponentType.INPUT_CHECKBOX,
   "input": true,
   "label":
     "I have read the general data protection provisions and agree to them.",

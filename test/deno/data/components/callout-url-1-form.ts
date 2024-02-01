@@ -1,11 +1,12 @@
-import type { CalloutComponentUrlSchema } from "../../../../mod.ts";
+import { CalloutComponentType } from "../../../../mod.ts";
+import type { CalloutComponentInputUrlSchema } from "../../../../mod.ts";
 
-export const calloutUrl1Form: CalloutComponentUrlSchema = {
+export const calloutUrl1Form: CalloutComponentInputUrlSchema = {
   "id": "ej4ubdg",
   "key": "pleaseEnterYourHomepage",
   "mask": false,
   "tags": [],
-  "type": "url",
+  "type": CalloutComponentType.INPUT_URL,
   "input": true,
   "label": "Please enter your homepage",
   "logic": [],

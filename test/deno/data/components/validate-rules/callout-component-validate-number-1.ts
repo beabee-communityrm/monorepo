@@ -1,9 +1,10 @@
-import type { CalloutComponentNumberRules } from "../../../../../mod.ts";
+import type { CalloutComponentInputNumberRules } from "../../../../../mod.ts";
 
-export const calloutComponentValidateNumber1: CalloutComponentNumberRules = {
-  max: 100,
-  min: 0,
-  step: "any",
-  integer: "",
-  required: false,
-};
+export const calloutComponentValidateNumber1: CalloutComponentInputNumberRules =
+  {
+    max: 100,
+    min: 0,
+    step: "any",
+    integer: "",
+    required: false,
+  };

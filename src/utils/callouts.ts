@@ -1,58 +1,34 @@
 import {
-  CalloutComponentAddressType,
-  CalloutComponentCheckboxType,
-  CalloutComponentContentType,
-  CalloutComponentCurrencyType,
-  CalloutComponentDateTimeType,
-  CalloutComponentEmailType,
-  CalloutComponentFileType,
-  CalloutComponentNestableType,
-  CalloutComponentNumberType,
-  CalloutComponentPhoneNumberType,
-  CalloutComponentSignatureType,
-  CalloutComponentTextType,
-  CalloutComponentTimeType,
-  CalloutComponentType,
-  CalloutComponentUrlType,
-} from "../index.ts";
-import {
-  calloutComponentAddressTypes,
-  calloutComponentCheckboxTypes,
-  calloutComponentContentTypes,
-  calloutComponentCurrencyTypes,
-  calloutComponentDateTimeTypes,
-  calloutComponentEmailTypes,
-  calloutComponentFileTypes,
+  calloutComponentInputSelectableTypes,
+  calloutComponentInputTextTypes,
+  calloutComponentInputTypes,
   calloutComponentNestableTypes,
-  calloutComponentNumberTypes,
-  calloutComponentPhoneNumberTypes,
-  calloutComponentRadioTypes,
-  calloutComponentSelectTypes,
-  calloutComponentSignatureTypes,
-  calloutComponentTextTypes,
-  calloutComponentTimeTypes,
-  calloutComponentUrlTypes,
+  CalloutComponentType,
 } from "../data/index.ts";
+import { CalloutComponentInputTextAreaSchema } from "../types/callout-component-input-text-area-schema.ts";
+import { CalloutComponentInputTextFieldSchema } from "../types/callout-component-input-text-field-schema.ts";
 import type {
-  CalloutComponentAddressSchema,
-  CalloutComponentCheckboxSchema,
+  CalloutComponentBaseNestableSchema,
+  CalloutComponentBaseSchema,
   CalloutComponentContentSchema,
-  CalloutComponentCurrencySchema,
-  CalloutComponentDateTimeSchema,
-  CalloutComponentEmailSchema,
-  CalloutComponentFileSchema,
-  CalloutComponentNestableSchema,
-  CalloutComponentNumberSchema,
-  CalloutComponentPhoneNumberSchema,
-  CalloutComponentRadioSchema,
-  CalloutComponentRadioType,
+  CalloutComponentInputAddressSchema,
+  CalloutComponentInputCheckboxSchema,
+  CalloutComponentInputCurrencySchema,
+  CalloutComponentInputDateTimeSchema,
+  CalloutComponentInputEmailSchema,
+  CalloutComponentInputFileSchema,
+  CalloutComponentInputNumberSchema,
+  CalloutComponentInputPhoneNumberSchema,
+  CalloutComponentInputSchema,
+  CalloutComponentInputSelectableRadioSchema,
+  CalloutComponentInputSelectableSchema,
+  CalloutComponentInputSelectableSelectboxesSchema,
+  CalloutComponentInputSelectSchema,
+  CalloutComponentInputSignatureSchema,
+  CalloutComponentInputTextSchema,
+  CalloutComponentInputTimeSchema,
+  CalloutComponentInputUrlSchema,
   CalloutComponentSchema,
-  CalloutComponentSelectSchema,
-  CalloutComponentSelectType,
-  CalloutComponentSignatureSchema,
-  CalloutComponentTextSchema,
-  CalloutComponentTimeSchema,
-  CalloutComponentUrlSchema,
   CalloutFormSchema,
   CalloutResponseAnswer,
   CalloutResponseAnswerAddress,
@@ -74,15 +50,21 @@ function convertComponentToFilter(
     nullable: true,
   };
 
-  if (isCheckboxComponent(component)) {
+  if (
+    isCalloutInputCheckboxComponent(component)
+  ) {
     return { ...baseItem, type: "boolean", nullable: false };
   }
 
-  if (isNumberComponent(component)) {
+  if (isCalloutInputNumberComponent(component)) {
     return { ...baseItem, type: "number" };
   }
 
-  if (isSelectComponent(component)) {
+  if (
+    isCalloutInputSelectComponent(
+      component,
+    )
+  ) {
     return {
       ...baseItem,
       type: "enum",
@@ -90,7 +72,9 @@ function convertComponentToFilter(
     };
   }
 
-  if (isTextComponent(component) && component.type === "textarea") {
+  if (
+    isCalloutInputTextAreaComponent(component) && component.type === "textarea"
+  ) {
     return { ...baseItem, type: "blob" };
   }
 
@@ -101,11 +85,11 @@ function getNiceAnswer(
   component: CalloutComponentSchema,
   value: string,
 ): string {
-  if (isRadioComponent(component)) {
+  if (isCalloutInputSelectableComponent(component)) {
     return component.values.find((v) => v.value === value)?.label || value;
   }
 
-  if (isSelectComponent(component)) {
+  if (isCalloutInputSelectComponent(component)) {
     return (
       component.data.values.find((v) => v.value === value)?.label || value
     );
@@ -114,8 +98,8 @@ function getNiceAnswer(
   return value;
 }
 
-export function isCalloutComponentOfType<T extends CalloutComponentSchema>(
-  component: CalloutComponentSchema,
+export function isCalloutComponentOfType<T extends CalloutComponentBaseSchema>(
+  component: CalloutComponentBaseSchema,
   type: CalloutComponentType,
 ): component is T {
   return "type" in component &&
@@ -128,13 +112,13 @@ export function isCalloutComponentOfType<T extends CalloutComponentSchema>(
  * @param component
  * @returns
  */
-export function isAddressComponent(
+export function isCalloutInputAddressComponent(
   component: CalloutComponentSchema,
-): component is CalloutComponentAddressSchema {
-  return "type" in component &&
-    calloutComponentAddressTypes.includes(
-      component.type as CalloutComponentAddressType,
-    );
+): component is CalloutComponentInputAddressSchema {
+  return isCalloutComponentOfType<CalloutComponentInputAddressSchema>(
+    component,
+    CalloutComponentType.INPUT_ADDRESS,
+  );
 }
 
 /**
@@ -143,13 +127,13 @@ export function isAddressComponent(
  * @param component
  * @returns
  */
-export function isCheckboxComponent(
+export function isCalloutInputCheckboxComponent(
   component: CalloutComponentSchema,
-): component is CalloutComponentCheckboxSchema {
-  return "type" in component &&
-    calloutComponentCheckboxTypes.includes(
-      component.type as CalloutComponentCheckboxType,
-    );
+): component is CalloutComponentInputCheckboxSchema {
+  return isCalloutComponentOfType<CalloutComponentInputCheckboxSchema>(
+    component,
+    CalloutComponentType.INPUT_CHECKBOX,
+  );
 }
 
 /**
@@ -158,13 +142,13 @@ export function isCheckboxComponent(
  * @param component
  * @returns
  */
-export function isContentComponent(
+export function isCalloutContentComponent(
   component: CalloutComponentSchema,
 ): component is CalloutComponentContentSchema {
-  return "type" in component &&
-    calloutComponentContentTypes.includes(
-      component.type as CalloutComponentContentType,
-    );
+  return isCalloutComponentOfType<CalloutComponentContentSchema>(
+    component,
+    CalloutComponentType.CONTENT,
+  );
 }
 
 /**
@@ -173,13 +157,13 @@ export function isContentComponent(
  * @param component
  * @returns
  */
-export function isCurrencyComponent(
+export function isCalloutInputCurrencyComponent(
   component: CalloutComponentSchema,
-): component is CalloutComponentCurrencySchema {
-  return "type" in component &&
-    calloutComponentCurrencyTypes.includes(
-      component.type as CalloutComponentCurrencyType,
-    );
+): component is CalloutComponentInputCurrencySchema {
+  return isCalloutComponentOfType<CalloutComponentInputCurrencySchema>(
+    component,
+    CalloutComponentType.INPUT_CURRENCY,
+  );
 }
 
 /**
@@ -188,13 +172,13 @@ export function isCurrencyComponent(
  * @param component
  * @returns
  */
-export function isDateTimeComponent(
+export function isCalloutInputDateTimeComponent(
   component: CalloutComponentSchema,
-): component is CalloutComponentDateTimeSchema {
-  return "type" in component &&
-    calloutComponentDateTimeTypes.includes(
-      component.type as CalloutComponentDateTimeType,
-    );
+): component is CalloutComponentInputDateTimeSchema {
+  return isCalloutComponentOfType<CalloutComponentInputDateTimeSchema>(
+    component,
+    CalloutComponentType.INPUT_DATE_TIME,
+  );
 }
 
 /**
@@ -203,13 +187,13 @@ export function isDateTimeComponent(
  * @param component
  * @returns
  */
-export function isEmailComponent(
+export function isCalloutInputEmailComponent(
   component: CalloutComponentSchema,
-): component is CalloutComponentEmailSchema {
-  return "type" in component &&
-    calloutComponentEmailTypes.includes(
-      component.type as CalloutComponentEmailType,
-    );
+): component is CalloutComponentInputEmailSchema {
+  return isCalloutComponentOfType<CalloutComponentInputEmailSchema>(
+    component,
+    CalloutComponentType.INPUT_EMAIL,
+  );
 }
 
 /**
@@ -218,13 +202,13 @@ export function isEmailComponent(
  * @param component
  * @returns
  */
-export function isFileComponent(
+export function isCalloutInputFileComponent(
   component: CalloutComponentSchema,
-): component is CalloutComponentFileSchema {
-  return "type" in component &&
-    calloutComponentFileTypes.includes(
-      component.type as CalloutComponentFileType,
-    );
+): component is CalloutComponentInputFileSchema {
+  return isCalloutComponentOfType<CalloutComponentInputFileSchema>(
+    component,
+    CalloutComponentType.INPUT_FILE,
+  );
 }
 
 /**
@@ -232,13 +216,28 @@ export function isFileComponent(
  * @param component
  * @returns
  */
-export function isNestableComponent(
+export function isCalloutNestableComponent(
   component: CalloutComponentSchema,
-): component is CalloutComponentNestableSchema {
+): component is CalloutComponentBaseNestableSchema {
   // Addresses have embedded components we don't want to include
   return "components" in component && component.type !== "address" &&
-    calloutComponentNestableTypes.includes(
-      component.type as CalloutComponentNestableType,
+    (calloutComponentNestableTypes as string[]).includes(
+      component.type,
+    );
+}
+
+/**
+ * Check if a component is a input component.
+ * @param component
+ * @returns
+ */
+export function isCalloutInputComponent(
+  component: CalloutComponentSchema,
+): component is CalloutComponentInputSchema {
+  // Addresses have embedded components we don't want to include
+  return "type" in component &&
+    (calloutComponentInputTypes as string[]).includes(
+      component.type,
     );
 }
 
@@ -248,13 +247,10 @@ export function isNestableComponent(
  * @param component
  * @returns
  */
-export function isNumberComponent(
+export function isCalloutInputNumberComponent(
   component: CalloutComponentSchema,
-): component is CalloutComponentNumberSchema {
-  return "type" in component &&
-    calloutComponentNumberTypes.includes(
-      component.type as CalloutComponentNumberType,
-    );
+): component is CalloutComponentInputNumberSchema {
+  return isCalloutComponentOfType(component, CalloutComponentType.INPUT_NUMBER);
 }
 
 /**
@@ -263,13 +259,13 @@ export function isNumberComponent(
  * @param component
  * @returns
  */
-export function isPhoneNumberComponent(
+export function isCalloutInputPhoneNumberComponent(
   component: CalloutComponentSchema,
-): component is CalloutComponentPhoneNumberSchema {
-  return "type" in component &&
-    calloutComponentPhoneNumberTypes.includes(
-      component.type as CalloutComponentPhoneNumberType,
-    );
+): component is CalloutComponentInputPhoneNumberSchema {
+  return isCalloutComponentOfType(
+    component,
+    CalloutComponentType.INPUT_PHONE_NUMBER,
+  );
 }
 
 /**
@@ -278,12 +274,42 @@ export function isPhoneNumberComponent(
  * @param component
  * @returns
  */
-export function isRadioComponent(
+export function isCalloutInputSelectableRadioComponent(
   component: CalloutComponentSchema,
-): component is CalloutComponentRadioSchema {
+): component is CalloutComponentInputSelectableRadioSchema {
+  return isCalloutComponentOfType(
+    component,
+    CalloutComponentType.INPUT_SELECTABLE_RADIO,
+  );
+}
+
+/**
+ * Check if a component is a radio component.
+ *
+ * @param component
+ * @returns
+ */
+export function isCalloutComponentInputSelectableSelectboxesComponent(
+  component: CalloutComponentSchema,
+): component is CalloutComponentInputSelectableSelectboxesSchema {
+  return isCalloutComponentOfType(
+    component,
+    CalloutComponentType.INPUT_SELECTABLE_SELECTBOXES,
+  );
+}
+
+/**
+ * Check if a component is a input selectable component.
+ *
+ * @param component
+ * @returns
+ */
+export function isCalloutInputSelectableComponent(
+  component: CalloutComponentSchema,
+): component is CalloutComponentInputSelectableSchema {
   return "type" in component &&
-    calloutComponentRadioTypes.includes(
-      component.type as CalloutComponentRadioType,
+    (calloutComponentInputSelectableTypes as string[]).includes(
+      component.type,
     );
 }
 
@@ -293,13 +319,13 @@ export function isRadioComponent(
  * @param component
  * @returns
  */
-export function isSelectComponent(
+export function isCalloutInputSelectComponent(
   component: CalloutComponentSchema,
-): component is CalloutComponentSelectSchema {
-  return "type" in component &&
-    calloutComponentSelectTypes.includes(
-      component.type as CalloutComponentSelectType,
-    );
+): component is CalloutComponentInputSelectSchema {
+  return isCalloutComponentOfType(
+    component,
+    CalloutComponentType.INPUT_SELECT,
+  );
 }
 
 /**
@@ -308,27 +334,57 @@ export function isSelectComponent(
  * @param component
  * @returns
  */
-export function isSignatureComponent(
+export function isCalloutInputSignatureComponent(
   component: CalloutComponentSchema,
-): component is CalloutComponentSignatureSchema {
-  return "type" in component &&
-    calloutComponentSignatureTypes.includes(
-      component.type as CalloutComponentSignatureType,
-    );
+): component is CalloutComponentInputSignatureSchema {
+  return isCalloutComponentOfType<CalloutComponentInputSignatureSchema>(
+    component,
+    CalloutComponentType.INPUT_SIGNATURE,
+  );
 }
 
 /**
- * Check if a component is a text component.
+ * Check if a component is a text area component.
  *
  * @param component
  * @returns
  */
-export function isTextComponent(
+export function isCalloutInputTextAreaComponent(
   component: CalloutComponentSchema,
-): component is CalloutComponentTextSchema {
+): component is CalloutComponentInputTextAreaSchema {
+  return isCalloutComponentOfType<CalloutComponentInputTextAreaSchema>(
+    component,
+    CalloutComponentType.INPUT_TEXT_AREA,
+  );
+}
+
+/**
+ * Check if a component is a text area component.
+ *
+ * @param component
+ * @returns
+ */
+export function isCalloutInputTextFieldComponent(
+  component: CalloutComponentSchema,
+): component is CalloutComponentInputTextFieldSchema {
+  return isCalloutComponentOfType<CalloutComponentInputTextFieldSchema>(
+    component,
+    CalloutComponentType.INPUT_TEXT_FIELD,
+  );
+}
+
+/**
+ * Check if a component is any text component.
+ *
+ * @param component
+ * @returns
+ */
+export function isCalloutInputTextComponent(
+  component: CalloutComponentSchema,
+): component is CalloutComponentInputTextSchema {
   return "type" in component &&
-    calloutComponentTextTypes.includes(
-      component.type as CalloutComponentTextType,
+    (calloutComponentInputTextTypes as string[]).includes(
+      component.type,
     );
 }
 
@@ -338,13 +394,10 @@ export function isTextComponent(
  * @param component
  * @returns
  */
-export function isTimeComponent(
+export function isCalloutInputTimeComponent(
   component: CalloutComponentSchema,
-): component is CalloutComponentTimeSchema {
-  return "type" in component &&
-    calloutComponentTimeTypes.includes(
-      component.type as CalloutComponentTimeType,
-    );
+): component is CalloutComponentInputTimeSchema {
+  return isCalloutComponentOfType(component, CalloutComponentType.INPUT_TIME);
 }
 
 /**
@@ -353,20 +406,17 @@ export function isTimeComponent(
  * @param component
  * @returns
  */
-export function isUrlComponent(
+export function isCalloutInputUrlComponent(
   component: CalloutComponentSchema,
-): component is CalloutComponentUrlSchema {
-  return "type" in component &&
-    calloutComponentUrlTypes.includes(
-      component.type as CalloutComponentUrlType,
-    );
+): component is CalloutComponentInputUrlSchema {
+  return isCalloutComponentOfType(component, CalloutComponentType.INPUT_URL);
 }
 
 export function flattenComponents(
   components: CalloutComponentSchema[],
 ): CalloutComponentSchema[] {
   return components.flatMap((component) =>
-    isNestableComponent(component)
+    isCalloutNestableComponent(component)
       ? [component, ...flattenComponents(component.components)]
       : [component]
   );
@@ -379,7 +429,7 @@ export function filterComponents(
   return components.filter(filterFn).map((component) => {
     return {
       ...component,
-      ...(isNestableComponent(component) && {
+      ...(isCalloutNestableComponent(component) && {
         components: filterComponents(component.components, filterFn),
       }),
     };

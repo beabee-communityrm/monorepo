@@ -1,17 +1,17 @@
-import { calloutComponentValidator } from "./index.ts";
-import { isNestableComponent } from "../utils/index.ts";
+import { calloutComponentValidator } from "./callout-component.validator.ts";
+import { isCalloutNestableComponent } from "../utils/index.ts";
 
 import type {
-  CalloutComponentSchema,
+  CalloutComponentNestableSchema,
   CalloutResponseAnswer,
   ValidatorCalloutNestable,
 } from "../types/index.ts";
 
 export const calloutComponentNestableValidator: ValidatorCalloutNestable = (
-  schema: CalloutComponentSchema,
+  schema: CalloutComponentNestableSchema,
   answerMap: Record<string, CalloutResponseAnswer | CalloutResponseAnswer[]>,
 ): boolean => {
-  if (!isNestableComponent(schema)) {
+  if (!isCalloutNestableComponent(schema)) {
     throw new Error(
       `[calloutComponentNestableValidator] schema is not nestable component`,
     );

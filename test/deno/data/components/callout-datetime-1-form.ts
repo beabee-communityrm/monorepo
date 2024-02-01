@@ -1,10 +1,11 @@
-import type { CalloutComponentDateTimeSchema } from "../../../../mod.ts";
+import { CalloutComponentType } from "../../../../mod.ts";
+import type { CalloutComponentInputDateTimeSchema } from "../../../../mod.ts";
 
-export const calloutDateTime1Form: CalloutComponentDateTimeSchema = {
+export const calloutDateTime1Form: CalloutComponentInputDateTimeSchema = {
   "id": "eeteu8",
   "key": "whenIsYourBirthday",
   "tags": [],
-  "type": "datetime",
+  "type": CalloutComponentType.INPUT_DATE_TIME,
   "input": true,
   "label": "When is your birthday?",
   "logic": [],

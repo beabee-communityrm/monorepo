@@ -1,11 +1,12 @@
-import type { CalloutComponentSignatureSchema } from "../../../../mod.ts";
+import { CalloutComponentType } from "../../../../mod.ts";
+import type { CalloutComponentInputSignatureSchema } from "../../../../mod.ts";
 
-export const calloutSignature1Form: CalloutComponentSignatureSchema = {
+export const calloutSignature1Form: CalloutComponentInputSignatureSchema = {
   "id": "e7cevrt",
   "key":
     "pleaseSignThatYouAreAwareThatWeWillTryToHackYourDeviceAndThatYouAgreeToThis",
   "tags": [],
-  "type": "signature",
+  "type": CalloutComponentType.INPUT_SIGNATURE,
   "input": true,
   "label":
     "Please sign that you are aware that we will try to hack your device and that you agree to this",

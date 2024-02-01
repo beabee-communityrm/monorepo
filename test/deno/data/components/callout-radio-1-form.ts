@@ -1,13 +1,14 @@
-import type { CalloutComponentRadioSchema } from "../../../../mod.ts";
+import { CalloutComponentType } from "../../../../mod.ts";
+import type { CalloutComponentInputSelectableRadioSchema } from "../../../../mod.ts";
 
-export const calloutRadio1Form: CalloutComponentRadioSchema = {
+export const calloutRadio1Form: CalloutComponentInputSelectableRadioSchema = {
   "id": "eo4k3e",
   "key": "whatIsYourFavoriteIde",
   "data": {
     "url": "",
   },
   "tags": [],
-  "type": "radio",
+  "type": CalloutComponentType.INPUT_SELECTABLE_RADIO,
   "input": true,
   "label": "What is your favorite IDE?",
   "logic": [],

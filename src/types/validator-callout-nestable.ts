@@ -1,6 +1,9 @@
-import type { CalloutComponentSchema, CalloutResponseAnswer } from "./index.ts";
+import type {
+  CalloutComponentNestableSchema,
+  CalloutResponseAnswer,
+} from "./index.ts";
 
 export type ValidatorCalloutNestable = (
-  schema: CalloutComponentSchema,
+  schema: CalloutComponentNestableSchema,
   answerMap: Record<string, CalloutResponseAnswer | CalloutResponseAnswer[]>,
 ) => boolean;

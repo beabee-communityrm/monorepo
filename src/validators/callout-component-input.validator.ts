@@ -1,14 +1,14 @@
 import { isEmail, isNumber, isURL, toPhoneNumber } from "../utils/index.ts";
 import { calloutComponentRuleTextValidator } from "./callout-component-rule-text.validator.ts";
 import type {
-  CalloutComponentSchema,
+  CalloutComponentInputSchema,
   CalloutResponseAnswer,
-  ValidatorCallout,
+  ValidatorCalloutInput,
 } from "../types/index.ts";
 
 // TODO: Split validators
-export const calloutComponentInputValidator: ValidatorCallout = (
-  schema: CalloutComponentSchema,
+export const calloutComponentInputValidator: ValidatorCalloutInput = (
+  schema: CalloutComponentInputSchema,
   answer: CalloutResponseAnswer,
 ): boolean => {
   switch (schema.type) {

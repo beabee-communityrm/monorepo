@@ -1,3 +1,4 @@
+import type { CalloutComponentType } from "../data/index.ts";
 import type {
   CalloutComponentBaseRules,
   CalloutResponseAnswer,
@@ -5,7 +6,7 @@ import type {
 
 export interface CalloutComponentBaseSchema {
   id: string;
-  type: string;
+  type: CalloutComponentType;
   key: string;
   label?: string;
   /** `true` if this is an input component */

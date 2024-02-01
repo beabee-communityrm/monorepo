@@ -1,12 +1,10 @@
 import type {
-  CalloutComponentBaseSchema,
-  CalloutComponentNestableType,
-  CalloutComponentSchema,
+  CalloutComponentNestablePanelSchema,
+  CalloutComponentNestableTabsSchema,
+  CalloutComponentNestableWellSchema,
 } from "./index.ts";
 
-export interface CalloutComponentNestableSchema
-  extends CalloutComponentBaseSchema {
-  type: CalloutComponentNestableType;
-  input: false;
-  components: CalloutComponentSchema[];
-}
+export type CalloutComponentNestableSchema =
+  | CalloutComponentNestablePanelSchema
+  | CalloutComponentNestableTabsSchema
+  | CalloutComponentNestableWellSchema;

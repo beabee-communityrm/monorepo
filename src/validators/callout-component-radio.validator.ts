@@ -1,10 +1,10 @@
-import { ValidatorCallout } from "../types/index.ts";
+import { ValidatorCalloutInput } from "../types/index.ts";
 import type {
   CalloutComponentSchema,
   CalloutResponseAnswer,
 } from "../types/index.ts";
 
-export const calloutComponentRadioValidator: ValidatorCallout = (
+export const calloutComponentRadioValidator: ValidatorCalloutInput = (
   _schema: CalloutComponentSchema,
   _answer: CalloutResponseAnswer,
 ): boolean => {

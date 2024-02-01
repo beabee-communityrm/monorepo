@@ -1,11 +1,12 @@
-import type { CalloutComponentAddressSchema } from "../../../../mod.ts";
+import { CalloutComponentType } from "../../../../mod.ts";
+import type { CalloutComponentInputAddressSchema } from "../../../../mod.ts";
 
-export const calloutAddress1Form: CalloutComponentAddressSchema = {
+export const calloutAddress1Form: CalloutComponentInputAddressSchema = {
   "id": "evej0rq",
   "key": "whatIsTheAddressOfYourFavouritePlace",
   "tags": [],
   "tree": true,
-  "type": "address",
+  "type": CalloutComponentType.INPUT_ADDRESS,
   "input": true,
   "label": "What is the address of your favourite place?",
   "logic": [],

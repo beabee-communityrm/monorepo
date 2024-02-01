@@ -1,13 +1,14 @@
+import { CalloutComponentType } from "../../../../mod.ts";
 import { calloutComponentValidateNumber1 } from "./validate-rules/callout-component-validate-number-1.ts";
 
-import type { CalloutComponentNumberSchema } from "../../../../mod.ts";
+import type { CalloutComponentInputNumberSchema } from "../../../../mod.ts";
 
-export const calloutNumber3Form: CalloutComponentNumberSchema = {
+export const calloutNumber3Form: CalloutComponentInputNumberSchema = {
   "id": "ebqyjaj",
   "key": "numberWithMultipleValuesAndDefaultValues",
   "mask": false,
   "tags": [],
-  "type": "number",
+  "type": CalloutComponentType.INPUT_NUMBER,
   "input": true,
   "label": "What are your favourite numbers?",
   "logic": [],

@@ -1,9 +1,9 @@
 import { isTextInRange, isTextInWordRange } from "../utils/index.ts";
 
-import type { CalloutComponentTextRules } from "../types/index.ts";
+import type { CalloutComponentInputTextRules } from "../types/index.ts";
 
 export const calloutComponentRuleTextValidator = (
-  rules: CalloutComponentTextRules | undefined,
+  rules: CalloutComponentInputTextRules | undefined,
   value: string,
 ): boolean => {
   if (!rules) {

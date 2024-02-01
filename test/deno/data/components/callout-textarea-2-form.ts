@@ -1,12 +1,13 @@
-import type { CalloutComponentTextSchema } from "../../../../mod.ts";
+import { CalloutComponentType } from "../../../../mod.ts";
+import type { CalloutComponentInputTextAreaSchema } from "../../../../mod.ts";
 
-export const calloutTextarea2Form: CalloutComponentTextSchema = {
+export const calloutTextarea2Form: CalloutComponentInputTextAreaSchema = {
   "id": "e7zrcm",
   "key": "textarea",
   "mask": false,
   "rows": 3,
   "tags": [],
-  "type": "textarea",
+  "type": CalloutComponentType.INPUT_TEXT_AREA,
   "input": true,
   "label": "Is there anything you would like to change in your life?",
   "logic": [],

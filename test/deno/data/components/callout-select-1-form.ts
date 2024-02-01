@@ -1,6 +1,7 @@
-import type { CalloutComponentSelectSchema } from "../../../../mod.ts";
+import { CalloutComponentType } from "../../../../mod.ts";
+import type { CalloutComponentInputSelectSchema } from "../../../../mod.ts";
 
-export const calloutSelect1Form: CalloutComponentSelectSchema = {
+export const calloutSelect1Form: CalloutComponentInputSelectSchema = {
   "id": "e3dw34",
   "key": "selectAnyElementFromTheDropdownMenu",
   "data": {
@@ -32,7 +33,7 @@ export const calloutSelect1Form: CalloutComponentSelectSchema = {
     "resource": "",
   },
   "tags": [],
-  "type": "select",
+  "type": CalloutComponentType.INPUT_SELECT,
   "input": true,
   "label": "Select any element from the dropdown menu",
   "limit": 100,

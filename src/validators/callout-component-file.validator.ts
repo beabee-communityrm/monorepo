@@ -1,15 +1,15 @@
-import { isFileComponent, isURL } from "../utils/index.ts";
+import { isCalloutInputFileComponent, isURL } from "../utils/index.ts";
 import type {
   CalloutComponentSchema,
   CalloutResponseAnswer,
-  ValidatorCallout,
+  ValidatorCalloutInput,
 } from "../types/index.ts";
 
-export const calloutComponentFileValidator: ValidatorCallout = (
+export const calloutComponentFileValidator: ValidatorCalloutInput = (
   schema: CalloutComponentSchema,
   answer: CalloutResponseAnswer,
 ): boolean => {
-  if (!isFileComponent(schema)) {
+  if (!isCalloutInputFileComponent(schema)) {
     throw new Error("Schema is not a file component");
   }
 

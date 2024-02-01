@@ -1,12 +1,13 @@
-import type { CalloutComponentPhoneNumberSchema } from "../../../../mod.ts";
+import { CalloutComponentType } from "../../../../mod.ts";
+import type { CalloutComponentInputPhoneNumberSchema } from "../../../../mod.ts";
 
-export const calloutPhoneNumber1Form: CalloutComponentPhoneNumberSchema = {
+export const calloutPhoneNumber1Form: CalloutComponentInputPhoneNumberSchema = {
   "id": "eh7gjzu",
   "key": "enterAPhoneNumberThatWeCanTryToHack",
   "case": "",
   "mask": false,
   "tags": [],
-  "type": "phoneNumber",
+  "type": CalloutComponentType.INPUT_PHONE_NUMBER,
   "input": true,
   "label": "Enter a phone number that we can try to hack",
   "logic": [],

@@ -1,11 +1,12 @@
-import type { CalloutComponentTimeSchema } from "../../../../mod.ts";
+import { CalloutComponentType } from "../../../../mod.ts";
+import type { CalloutComponentInputTimeSchema } from "../../../../mod.ts";
 
-export const calloutTime1Form: CalloutComponentTimeSchema = {
+export const calloutTime1Form: CalloutComponentInputTimeSchema = {
   "id": "ezykscw",
   "key": "whatIsTheBestTimeToReachYou",
   "mask": false,
   "tags": [],
-  "type": "time",
+  "type": CalloutComponentType.INPUT_TIME,
   "input": true,
   "label": "What is the best time to reach you?",
   "logic": [],

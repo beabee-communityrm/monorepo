@@ -1,0 +1,23 @@
+/** Enumeration of all possible callout component types */
+export enum CalloutComponentType {
+  CONTENT = "content",
+  INPUT_ADDRESS = "address",
+  INPUT_FILE = "file",
+  INPUT_SELECTABLE_RADIO = "radio",
+  INPUT_SELECTABLE_SELECTBOXES = "selectboxes",
+  INPUT_SELECT = "select",
+  INPUT_CHECKBOX = "checkbox",
+  INPUT_CURRENCY = "currency",
+  INPUT_DATE_TIME = "datetime",
+  INPUT_EMAIL = "email",
+  INPUT_NUMBER = "number",
+  INPUT_PHONE_NUMBER = "phoneNumber",
+  INPUT_SIGNATURE = "signature",
+  INPUT_TIME = "time",
+  INPUT_URL = "url",
+  INPUT_TEXT_AREA = "textarea",
+  INPUT_TEXT_FIELD = "textfield",
+  NESTABLE_PANEL = "panel",
+  NESTABLE_WELL = "well",
+  NESTABLE_TABS = "tabs",
+}
