@@ -129,6 +129,20 @@ export const isNumber = (value: unknown): value is number => {
   return typeof value === "number" && !isNaN(value);
 };
 
+export const isAmountOfMoney = (value: unknown): value is number => {
+  if (!isNumber(value) || value < 0) {
+    return false;
+  }
+
+  const decimalPart = value.toString().split(".")[1];
+  // If the amount of money has decimal
+  if (decimalPart && decimalPart.length > 2) {
+    return false;
+  }
+
+  return true;
+};
+
 /**
  * Check if the value is a valid phone number with the following rules:
  * * Only uses numbers

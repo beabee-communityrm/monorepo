@@ -8,11 +8,17 @@ import type {
 export const calloutComponentInputAddressValidator: ValidatorCalloutComponent =
   (
     schema: CalloutComponentSchema,
-    _answer: CalloutResponseAnswer,
+    answer: CalloutResponseAnswer,
   ): boolean => {
     if (!isCalloutInputAddressComponent(schema)) {
       throw new Error("Schema is not a address component");
     }
+
+    // If is not required and answer is undefined return `true` because we don't need to validate this
+    if (!schema.validate?.required && answer === undefined) {
+      return true;
+    }
+
     throw new Error(
       `[calloutComponentInputAddressValidator] Not implemented yet`,
     );

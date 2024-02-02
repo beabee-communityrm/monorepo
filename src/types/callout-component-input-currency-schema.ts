@@ -16,6 +16,8 @@ export interface CalloutComponentInputCurrencySchema
   truncateMultipleSpaces?: boolean;
   /** E.g. USD, EUR, GBP, etc. */
   currency: string;
+  /** The default value for the form */
+  defaultValue?: number | number[];
   /** The validation rules for the form */
   validate?: CalloutComponentInputCurrencyRules;
 }

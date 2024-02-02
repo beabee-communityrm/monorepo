@@ -8,13 +8,15 @@ import type {
 export const calloutComponentInputCheckboxValidator: ValidatorCalloutComponent =
   (
     schema: CalloutComponentSchema,
-    _answer: CalloutResponseAnswer,
+    answer: CalloutResponseAnswer,
   ): boolean => {
     if (!isCalloutInputCheckboxComponent(schema)) {
       throw new Error("Schema is not a checkbox component");
     }
 
-    throw new Error(
-      `[calloutComponentInputCheckboxValidator] Not implemented yet`,
-    );
+    if (schema.validate?.required && !answer) {
+      return true;
+    }
+
+    return typeof answer === "boolean";
   };

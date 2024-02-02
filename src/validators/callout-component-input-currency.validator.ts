@@ -1,4 +1,4 @@
-import { isCalloutInputUrlComponent } from "../utils/index.ts";
+import { isAmountOfMoney, isCalloutInputUrlComponent } from "../utils/index.ts";
 import type {
   CalloutComponentSchema,
   CalloutResponseAnswer,
@@ -8,13 +8,15 @@ import type {
 export const calloutComponentInputCurrencyValidator: ValidatorCalloutComponent =
   (
     schema: CalloutComponentSchema,
-    _answer: CalloutResponseAnswer,
+    answer: CalloutResponseAnswer,
   ): boolean => {
     if (!isCalloutInputUrlComponent(schema)) {
       throw new Error("Schema is not a currency component");
     }
 
-    throw new Error(
-      `[calloutComponentInputCurrencyValidator] Not implemented yet`,
-    );
+    if (schema.validate?.required && answer === undefined) {
+      return true;
+    }
+
+    return isAmountOfMoney(answer);
   };

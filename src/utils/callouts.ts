@@ -8,7 +8,6 @@ import {
 import { CalloutComponentInputTextAreaSchema } from "../types/callout-component-input-text-area-schema.ts";
 import { CalloutComponentInputTextFieldSchema } from "../types/callout-component-input-text-field-schema.ts";
 import type {
-  CalloutComponentBaseNestableSchema,
   CalloutComponentBaseSchema,
   CalloutComponentContentSchema,
   CalloutComponentInputAddressSchema,
@@ -28,6 +27,7 @@ import type {
   CalloutComponentInputTextSchema,
   CalloutComponentInputTimeSchema,
   CalloutComponentInputUrlSchema,
+  CalloutComponentNestableSchema,
   CalloutComponentSchema,
   CalloutFormSchema,
   CalloutResponseAnswer,
@@ -218,7 +218,7 @@ export function isCalloutInputFileComponent(
  */
 export function isCalloutNestableComponent(
   component: CalloutComponentSchema,
-): component is CalloutComponentBaseNestableSchema {
+): component is CalloutComponentNestableSchema {
   // Addresses have embedded components we don't want to include
   return "components" in component && component.type !== "address" &&
     (calloutComponentNestableTypes as string[]).includes(
