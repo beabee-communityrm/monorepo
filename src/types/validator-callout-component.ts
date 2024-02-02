@@ -1,6 +1,7 @@
-import type { CalloutComponentSchema, CalloutResponseAnswer } from "./index.ts";
+import type { CalloutComponentSchema } from "./index.ts";
 
 export type ValidatorCalloutComponent = (
   schema: CalloutComponentSchema,
-  answer: CalloutResponseAnswer,
+  // deno-lint-ignore no-explicit-any
+  answer: any,
 ) => boolean;

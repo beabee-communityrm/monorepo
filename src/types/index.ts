@@ -88,6 +88,5 @@ export * from "./validated-rule-group.ts";
 export * from "./validated-rule-value.ts";
 export * from "./validated-rule.ts";
 export * from "./validated-string-rule.ts";
-export * from "./validator-callout-component-nestable.ts";
 export * from "./validator-callout-component.ts";
 export * from "./validator.ts";

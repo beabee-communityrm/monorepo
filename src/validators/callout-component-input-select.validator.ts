@@ -5,7 +5,7 @@ import type {
   ValidatorCalloutComponent,
 } from "../types/index.ts";
 
-export const calloutComponentSelectValidator: ValidatorCalloutComponent = (
+export const calloutComponentInputSelectValidator: ValidatorCalloutComponent = (
   schema: CalloutComponentSchema,
   answer: CalloutResponseAnswer,
 ): boolean => {

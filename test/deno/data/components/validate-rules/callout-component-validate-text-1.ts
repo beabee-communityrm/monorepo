@@ -1,9 +1,9 @@
 import type { CalloutComponentInputTextRules } from "../../../../../mod.ts";
 
 export const calloutComponentValidateText1: CalloutComponentInputTextRules = {
-  maxWords: 100,
-  minWords: 1,
-  required: true,
-  maxLength: 1000,
-  minLength: 10,
+  minWords: 0,
+  maxWords: 10000,
+  required: false,
+  maxLength: 10000,
+  minLength: 0,
 };

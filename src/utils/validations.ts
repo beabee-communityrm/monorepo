@@ -232,13 +232,19 @@ export const isTextInRange = (
   minLength = 0,
   maxLength?: number,
 ): boolean => {
-  let valid = typeof value === "string" && value.length >= minLength;
-
-  // If a max length is set, check if the value is in range
-  if (maxLength && valid) {
-    valid = (value as string).length <= maxLength;
+  if (typeof value !== "string") {
+    return false;
   }
-  return valid;
+
+  if (typeof minLength === "number" && value.length < minLength) {
+    return false;
+  }
+
+  if (typeof maxLength === "number" && value.length > maxLength) {
+    return false;
+  }
+
+  return true;
 };
 
 /**
@@ -252,14 +258,19 @@ export const isTextInWordRange = (
   minWordLength = 0,
   maxWordLength?: number,
 ): boolean => {
-  if (value !== "string") return false;
-  const words = value.split(" ");
-  if (words.length < minWordLength) {
+  if (typeof value !== "string") {
     return false;
   }
-  // if maxWordLength is not defined, then there is no upper limit
-  if (maxWordLength && words.length > maxWordLength) {
+
+  const words = value.length > 0 ? value.split(" ") : [];
+
+  if (typeof minWordLength === "number" && words.length < minWordLength) {
     return false;
   }
+
+  if (typeof maxWordLength === "number" && words.length > maxWordLength) {
+    return false;
+  }
+
   return true;
 };

@@ -16,7 +16,6 @@ import { calloutSelect1Form } from "./components/callout-select-1-form.ts";
 import { calloutSelectboxes1Form } from "./components/callout-selectboxes-1-form.ts";
 import { calloutSignature1Form } from "./components/callout-signature-1-form.ts";
 import { calloutTextarea1Form } from "./components/callout-textarea-1-form.ts";
-import { calloutTextarea2Form } from "./components/callout-textarea-2-form.ts";
 import { calloutTime1Form } from "./components/callout-time-1-form.ts";
 import { calloutUrl1Form } from "./components/callout-url-1-form.ts";
 import { calloutNavigation1 } from "./callout-navigation-1.ts";
@@ -28,7 +27,7 @@ export const calloutForm1Schema: CalloutFormSchema = {
     {
       id: "slidej5rkpu",
       title: "Coding and life",
-      components: [calloutTextarea1Form, calloutTextarea2Form],
+      components: [calloutTextarea1Form],
       navigation: calloutNavigation1,
     },
     {

@@ -14,19 +14,21 @@ const validateRules = (
   rules: CalloutComponentInputTextRules | undefined,
   answer: string,
 ): boolean => {
+  // Nothing to do..
   if (!rules) {
     return true;
   }
 
   // Check if the answer matches the provided pattern
-  if (rules.pattern && !new RegExp(rules.pattern).test(answer)) {
+  if (
+    typeof rules.pattern === "string" && rules.pattern.length &&
+    !new RegExp(rules.pattern).test(answer)
+  ) {
     return false;
   }
 
   // Check word range if defined
   if (
-    (typeof rules.maxWords === "number" ||
-      typeof rules.minWords === "number") &&
     !isTextInWordRange(answer, rules.minWords, rules.maxWords)
   ) {
     return false;
@@ -34,8 +36,6 @@ const validateRules = (
 
   // Check length range if defined
   if (
-    (typeof rules.maxLength === "number" ||
-      typeof rules.minLength === "number") &&
     !isTextInRange(answer, rules.minLength, rules.maxLength)
   ) {
     return false;
@@ -54,7 +54,7 @@ export const calloutComponentInputTextValidator = (
   }
 
   // If answer is not required and is undefined return `true` because we don't need to validate this
-  if (!schema.validate?.required && (answer === undefined || answer === "")) {
+  if (!schema.validate?.required && !answer) {
     return true;
   }
 
@@ -62,9 +62,5 @@ export const calloutComponentInputTextValidator = (
     return false;
   }
 
-  if (!validateRules(schema?.validate, answer)) {
-    return false;
-  }
-
-  return true;
+  return validateRules(schema?.validate, answer);
 };
