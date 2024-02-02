@@ -79,7 +79,9 @@ export function getMinDateUnit(units: DateUnit[]): DateUnit | undefined {
 }
 
 export function isValidDate(s: string | Date) {
-  if(typeof s === "string") return relativeDate.test(s) || isValid(parseISO(s));
+  if (typeof s === "string") {
+    return relativeDate.test(s) || isValid(parseISO(s));
+  }
   return isValid(s);
 }
 
@@ -89,12 +91,12 @@ export function isDateBetween(
   end?: string | Date | null,
 ): boolean {
   let valid = isValidDate(date);
-  if(start) {
-    start = typeof start === 'string' ? parseISO(start) : start; 
+  if (start) {
+    start = typeof start === "string" ? parseISO(start) : start;
     valid = valid && date >= start;
   }
-  if(end) {
-    end = typeof end === 'string' ? parseISO(end) : end; 
+  if (end) {
+    end = typeof end === "string" ? parseISO(end) : end;
     valid = valid && date <= end;
   }
   return valid;
