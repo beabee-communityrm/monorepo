@@ -2,9 +2,7 @@ import type { CalloutComponentBaseRules } from "./index.ts";
 
 export interface CalloutComponentInputNumberRules
   extends CalloutComponentBaseRules {
-  /** TODO: Add description and types */
-  step?: "any" | string; // TODO: Add possible types
-  /** TODO: Add description and types */
+  /** TODO: For what is this property? */
   integer?: "";
   /** The maximum value that can be entered for this field. */
   max?: number;

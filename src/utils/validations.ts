@@ -130,22 +130,6 @@ export const isNumber = (value: unknown): value is number => {
 };
 
 /**
- * Convert the value to a valid phone number
- * @param value The value to convert
- * @returns The valid phone number or null if the value is not a valid phone number
- */
-export const toPhoneNumber = (value: unknown): string | false => {
-  if (typeof value !== "string" || !value.length) {
-    return false;
-  }
-  const result = value.replace(/(?!^\+)\D/g, "");
-  if (!isPhoneNumber(result)) {
-    return false;
-  }
-  return result;
-};
-
-/**
  * Check if the value is a valid phone number with the following rules:
  * * Only uses numbers
  * * Optionally starts with a `+`
@@ -194,6 +178,30 @@ export const isValidPayFee = (
   // £1 monthly contributions must pay fee
   if (!value && period === ContributionPeriod.Monthly && amount === 1) {
     return false;
+  }
+
+  return true;
+};
+
+export const isNumberInRange = (
+  value: unknown,
+  min?: number,
+  max?: number,
+): boolean => {
+  if (!isNumber(value)) {
+    return false;
+  }
+
+  if (typeof min === "number") {
+    if (value < min) {
+      return false;
+    }
+  }
+
+  if (typeof max === "number") {
+    if (value > max) {
+      return false;
+    }
   }
 
   return true;

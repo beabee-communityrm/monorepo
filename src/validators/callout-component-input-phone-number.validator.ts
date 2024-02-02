@@ -1,4 +1,7 @@
-import { isCalloutInputUrlComponent, isPhoneNumber } from "../utils/index.ts";
+import {
+  isCalloutInputPhoneNumberComponent,
+  isPhoneNumber,
+} from "../utils/index.ts";
 import type {
   CalloutComponentSchema,
   CalloutResponseAnswer,
@@ -10,7 +13,7 @@ export const calloutComponentInputPhoneNumberValidator:
     schema: CalloutComponentSchema,
     answer: CalloutResponseAnswer,
   ): boolean => {
-    if (!isCalloutInputUrlComponent(schema)) {
+    if (!isCalloutInputPhoneNumberComponent(schema)) {
       throw new Error("Schema is not a phone number component");
     }
 

@@ -64,7 +64,7 @@ export const calloutNumber1Form: CalloutComponentInputNumberSchema = {
   "inputFormat": "plain",
   "placeholder": "",
   "autocomplete": "",
-  "defaultValue": "",
+  "defaultValue": 100,
   "dataGridLabel": false,
   "labelPosition": "top",
   "showCharCount": false,

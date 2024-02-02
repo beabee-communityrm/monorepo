@@ -6,7 +6,7 @@ export * from "./callout-component-input-date-time.validator.ts";
 export * from "./callout-component-input-email.validator.ts";
 export * from "./callout-component-input-file.validator.ts";
 export * from "./callout-component-input-number.validator.ts";
-export * from "./callout-component-input-phone-numer.validator.ts";
+export * from "./callout-component-input-phone-number.validator.ts";
 export * from "./callout-component-input-selectable.validator.ts";
 export * from "./callout-component-input-signature.validator.ts";
 export * from "./callout-component-input-text.validator.ts";
