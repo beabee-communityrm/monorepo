@@ -25,9 +25,21 @@ export interface CalloutComponentInputDateTimeSchema
     enableTime: boolean;
     /** E.g. "yyyy-MM-dd hh:mm a" */
     format: string;
+    hourIncrement?: number;
+    minuteIncrement?: number;
+    /** E.g. "en" */
+    locale: string;
+    minDate: string | null;
+    maxDate: string | null;
+    disableWeekends: boolean;
+    disableWeekdays: boolean;
     /** Unused property */
     [key: string]: unknown;
   };
+  /** E.g. "2024-02-02T13:02:00+01:00" */
+  defaultValue?: string | string[];
+  enableMinDateInput: boolean;
+  enableMaxDateInput: boolean;
   /** The validation rules for the form */
   validate?: CalloutComponentInputDateTimeRules;
 }

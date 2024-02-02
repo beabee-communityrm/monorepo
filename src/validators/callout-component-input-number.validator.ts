@@ -17,7 +17,7 @@ export const calloutComponentInputNumberValidator: ValidatorCalloutComponent = (
     throw new Error("Schema is not a number component");
   }
 
-  // If is not required and answer is undefined return true because we don't need to validate this
+  // If answer is not required and is undefined return true because we don't need to validate this
   if (!schema.validate?.required && answer === undefined) {
     return true;
   }

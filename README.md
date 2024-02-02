@@ -113,6 +113,12 @@ example, refer to
 For integrating NPM dependencies, consult the `sync:deps` script which ensures
 synchronization between the dependency configurations for both environments.
 
+### Cross Platform Compatibility
+
+This module is cross platform independent and can be used under Node.js, Deno
+and in the browser. Therefore, please do not use any runtime APIs from Node.js,
+Deno or the Web API unless it is available in all these runtimes.
+
 ## License
 
 `beabee-common` is licensed under the [AGPL-3.0](./LICENSE) license.

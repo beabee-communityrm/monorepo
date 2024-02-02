@@ -81,7 +81,7 @@ function convertComponentToFilter(
   return { ...baseItem, type: "text" };
 }
 
-function getNiceAnswer(
+function getSelectableLabelFromValue(
   component: CalloutComponentSchema,
   value: string,
 ): string {
@@ -486,10 +486,10 @@ export function stringifyAnswer(
     // Checkboxes
     return Object.entries(answer)
       .filter(([, selected]) => selected)
-      .map(([value]) => getNiceAnswer(component, value))
+      .map(([value]) => getSelectableLabelFromValue(component, value))
       .join(", ");
   } else if (typeof answer === "string") {
-    return getNiceAnswer(component, answer);
+    return getSelectableLabelFromValue(component, answer);
   } else {
     return answer.toString();
   }

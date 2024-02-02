@@ -7,10 +7,16 @@ import type {
 
 export const calloutComponentSelectValidator: ValidatorCalloutComponent = (
   schema: CalloutComponentSchema,
-  _answer: CalloutResponseAnswer,
+  answer: CalloutResponseAnswer,
 ): boolean => {
   if (!isCalloutInputSelectComponent(schema)) {
     throw new Error("Schema is not a select component");
   }
-  throw new Error(`[calloutComponentSelectValidator] Not implemented yet`);
+
+  if (!schema.validate?.required && !answer) {
+    return true;
+  }
+
+  const optionValue = schema.data.values.find((v) => v.value === answer);
+  return !!optionValue;
 };

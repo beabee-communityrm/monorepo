@@ -18,11 +18,6 @@ const validateRules = (
     return true;
   }
 
-  // Check if the value is required and not provided
-  if (rules.required && !answer) {
-    return false;
-  }
-
   // Check if the answer matches the provided pattern
   if (rules.pattern && !new RegExp(rules.pattern).test(answer)) {
     return false;
@@ -56,6 +51,11 @@ export const calloutComponentInputTextValidator = (
 ): boolean => {
   if (!isCalloutInputTextComponent(schema)) {
     throw new Error("Schema is not a text component");
+  }
+
+  // If answer is not required and is undefined return `true` because we don't need to validate this
+  if (!schema.validate?.required && (answer === undefined || answer === "")) {
+    return true;
   }
 
   if (typeof answer !== "string") {

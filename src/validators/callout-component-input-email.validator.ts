@@ -13,5 +13,10 @@ export const calloutComponentInputEmailValidator: ValidatorCalloutComponent = (
     throw new Error("Schema is not a email component");
   }
 
+  // If answer is not required and is undefined return `true` because we don't need to validate this
+  if (!schema.validate?.required && answer === undefined) {
+    return true;
+  }
+
   return isEmail(answer);
 };
