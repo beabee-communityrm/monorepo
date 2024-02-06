@@ -112,7 +112,7 @@ You can use dependencies for both NPM and Deno. When incorporating Deno
 packages, they must be bundled for Node.js compatibility. For a practical
 example, refer to
 [this pull request](https://github.com/beabee-communityrm/beabee-common/pull/7).
-For integrating NPM dependencies, consult the `sync:deps` script which ensures
+For integrating NPM dependencies, consult the `sync` script which ensures
 synchronization between the dependency configurations for both environments.
 
 ### Cross Platform Compatibility
