@@ -1,7 +1,8 @@
-import {
-  isCalloutInputDateTimeComponent,
-  isDateBetween,
-} from "../utils/index.ts";
+import { isDateBetween } from "../utils/index.ts";
+
+import { isCalloutComponentOfType } from "../utils/index.ts";
+import { CalloutComponentType } from "../data/index.ts";
+
 import type {
   CalloutComponentSchema,
   CalloutResponseAnswer,
@@ -13,7 +14,9 @@ export const calloutComponentInputDateTimeValidator: ValidatorCalloutComponent =
     schema: CalloutComponentSchema,
     answer: CalloutResponseAnswer,
   ): boolean => {
-    if (!isCalloutInputDateTimeComponent(schema)) {
+    if (
+      !isCalloutComponentOfType(schema, CalloutComponentType.INPUT_DATE_TIME)
+    ) {
       throw new Error("Schema is not a date-time component");
     }
 

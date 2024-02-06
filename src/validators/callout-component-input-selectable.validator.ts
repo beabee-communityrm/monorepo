@@ -1,4 +1,6 @@
-import { isCalloutInputSelectableComponent } from "../utils/index.ts";
+import { isCalloutComponentOfBaseType } from "../utils/index.ts";
+import { CalloutComponentBaseType } from "../data/index.ts";
+
 import type {
   CalloutComponentSchema,
   CalloutResponseAnswer,
@@ -10,7 +12,12 @@ export const calloutComponentInputSelectableValidator:
     schema: CalloutComponentSchema,
     answer: CalloutResponseAnswer,
   ): boolean => {
-    if (!isCalloutInputSelectableComponent(schema)) {
+    if (
+      !isCalloutComponentOfBaseType(
+        schema,
+        CalloutComponentBaseType.INPUT_SELECTABLE,
+      )
+    ) {
       throw new Error("Schema is not a selectable component");
     }
 

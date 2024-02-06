@@ -1,4 +1,6 @@
-import { isCalloutInputSignatureComponent } from "../utils/index.ts";
+import { isCalloutComponentOfType } from "../utils/index.ts";
+import { CalloutComponentType } from "../data/index.ts";
+
 import type {
   CalloutComponentSchema,
   CalloutResponseAnswer,
@@ -10,7 +12,9 @@ export const calloutComponentInputSignatureValidator:
     schema: CalloutComponentSchema,
     _answer: CalloutResponseAnswer,
   ): boolean => {
-    if (!isCalloutInputSignatureComponent(schema)) {
+    if (
+      !isCalloutComponentOfType(schema, CalloutComponentType.INPUT_SIGNATURE)
+    ) {
       throw new Error("Schema is not a signature component");
     }
 

@@ -1,4 +1,6 @@
-import { isCalloutInputCheckboxComponent } from "../utils/index.ts";
+import { isCalloutComponentOfType } from "../utils/index.ts";
+import { CalloutComponentType } from "../data/index.ts";
+
 import type {
   CalloutComponentSchema,
   CalloutResponseAnswer,
@@ -10,7 +12,9 @@ export const calloutComponentInputCheckboxValidator: ValidatorCalloutComponent =
     schema: CalloutComponentSchema,
     answer: CalloutResponseAnswer,
   ): boolean => {
-    if (!isCalloutInputCheckboxComponent(schema)) {
+    if (
+      !isCalloutComponentOfType(schema, CalloutComponentType.INPUT_CHECKBOX)
+    ) {
       throw new Error("Schema is not a checkbox component");
     }
 

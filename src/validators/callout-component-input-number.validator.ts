@@ -1,8 +1,10 @@
 import {
-  isCalloutInputNumberComponent,
+  isCalloutComponentOfType,
   isNumber,
   isNumberInRange,
 } from "../utils/index.ts";
+import { CalloutComponentType } from "../data/index.ts";
+
 import type {
   CalloutComponentSchema,
   CalloutResponseAnswer,
@@ -13,7 +15,7 @@ export const calloutComponentInputNumberValidator: ValidatorCalloutComponent = (
   schema: CalloutComponentSchema,
   answer: CalloutResponseAnswer,
 ): boolean => {
-  if (!isCalloutInputNumberComponent(schema)) {
+  if (!isCalloutComponentOfType(schema, CalloutComponentType.INPUT_NUMBER)) {
     throw new Error("Schema is not a number component");
   }
 

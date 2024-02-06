@@ -1,4 +1,6 @@
-import { isCalloutInputUrlComponent, isURL } from "../utils/index.ts";
+import { isCalloutComponentOfType, isURL } from "../utils/index.ts";
+import { CalloutComponentType } from "../data/index.ts";
+
 import type {
   CalloutComponentSchema,
   CalloutResponseAnswer,
@@ -9,7 +11,7 @@ export const calloutComponentInputUrlValidator: ValidatorCalloutComponent = (
   schema: CalloutComponentSchema,
   answer: CalloutResponseAnswer,
 ): boolean => {
-  if (!isCalloutInputUrlComponent(schema)) {
+  if (!isCalloutComponentOfType(schema, CalloutComponentType.INPUT_URL)) {
     throw new Error("Schema is not a url component");
   }
 

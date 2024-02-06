@@ -1,4 +1,7 @@
-import { isAmountOfMoney, isCalloutInputUrlComponent } from "../utils/index.ts";
+import { isAmountOfMoney } from "../utils/index.ts";
+import { isCalloutComponentOfType } from "../utils/index.ts";
+import { CalloutComponentType } from "../data/index.ts";
+
 import type {
   CalloutComponentSchema,
   CalloutResponseAnswer,
@@ -10,7 +13,9 @@ export const calloutComponentInputCurrencyValidator: ValidatorCalloutComponent =
     schema: CalloutComponentSchema,
     answer: CalloutResponseAnswer,
   ): boolean => {
-    if (!isCalloutInputUrlComponent(schema)) {
+    if (
+      !isCalloutComponentOfType(schema, CalloutComponentType.INPUT_CURRENCY)
+    ) {
       throw new Error("Schema is not a currency component");
     }
 

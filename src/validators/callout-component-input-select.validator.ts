@@ -1,4 +1,6 @@
-import { isCalloutInputSelectComponent } from "../utils/index.ts";
+import { isCalloutComponentOfType } from "../utils/index.ts";
+import { CalloutComponentType } from "../data/index.ts";
+
 import type {
   CalloutComponentSchema,
   CalloutResponseAnswer,
@@ -9,7 +11,7 @@ export const calloutComponentInputSelectValidator: ValidatorCalloutComponent = (
   schema: CalloutComponentSchema,
   answer: CalloutResponseAnswer,
 ): boolean => {
-  if (!isCalloutInputSelectComponent(schema)) {
+  if (!isCalloutComponentOfType(schema, CalloutComponentType.INPUT_SELECT)) {
     throw new Error("Schema is not a select component");
   }
 

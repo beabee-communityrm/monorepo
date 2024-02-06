@@ -1,4 +1,6 @@
-import { isCalloutInputEmailComponent, isEmail } from "../utils/index.ts";
+import { isCalloutComponentOfType, isEmail } from "../utils/index.ts";
+import { CalloutComponentType } from "../data/index.ts";
+
 import type {
   CalloutComponentSchema,
   CalloutResponseAnswer,
@@ -9,7 +11,7 @@ export const calloutComponentInputEmailValidator: ValidatorCalloutComponent = (
   schema: CalloutComponentSchema,
   answer: CalloutResponseAnswer,
 ): boolean => {
-  if (!isCalloutInputEmailComponent(schema)) {
+  if (!isCalloutComponentOfType(schema, CalloutComponentType.INPUT_EMAIL)) {
     throw new Error("Schema is not a email component");
   }
 

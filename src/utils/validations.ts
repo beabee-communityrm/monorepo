@@ -5,13 +5,14 @@ import { ContributionPeriod } from "../data/index.ts";
  * Check if the value is a valid angle.
  * @param value The value to check
  */
-export const isAngle = (value: unknown): value is number => {
-  return typeof value === "number" && value >= -180 && value <= 180;
+export const isAngle = (value: unknown, span = 180): value is number => {
+  return typeof value === "number" && value >= (span * -1) && value <= span;
 };
 
 /**
  * Check if the value is a valid email address.
  * @param value The value to check
+ * @param span The span of the angle
  */
 export const isEmail = (value: unknown): value is string => {
   if (typeof value !== "string" || value.length === 0) {
@@ -31,15 +32,11 @@ export const isLngLat = (value: unknown): value is [number, number] => {
   }
   const [longitude, latitude] = value;
 
-  if (!isAngle(longitude) || !isAngle(latitude)) {
+  // Longitude should be between -180 and 180 and latitude should be between -90 and 90
+  if (!isAngle(longitude, 180) || !isAngle(latitude, 90)) {
     return false;
   }
 
-  // Longitude should be between -180 and 180 which is tested with `isAngle`.
-  // Latitude should be between -90 and 90
-  if (latitude < -90 || latitude > 90) {
-    return false;
-  }
   return true;
 };
 

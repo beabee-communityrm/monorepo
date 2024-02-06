@@ -1,8 +1,9 @@
 import {
-  isCalloutInputTextComponent,
+  isCalloutComponentOfBaseType,
   isTextInRange,
   isTextInWordRange,
 } from "../utils/index.ts";
+import { CalloutComponentBaseType } from "../data/index.ts";
 
 import type {
   CalloutComponentInputTextRules,
@@ -49,7 +50,9 @@ export const calloutComponentInputTextValidator = (
   schema: CalloutComponentSchema,
   answer: CalloutResponseAnswer,
 ): boolean => {
-  if (!isCalloutInputTextComponent(schema)) {
+  if (
+    !isCalloutComponentOfBaseType(schema, CalloutComponentBaseType.INPUT_TEXT)
+  ) {
     throw new Error("Schema is not a text component");
   }
 

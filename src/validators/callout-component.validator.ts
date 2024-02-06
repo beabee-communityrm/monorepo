@@ -14,7 +14,8 @@ import { calloutComponentInputTextValidator } from "./callout-component-input-te
 import { calloutComponentInputTimeValidator } from "./callout-component-input-time.validator.ts";
 import { calloutComponentInputUrlValidator } from "./callout-component-input-url.validator.ts";
 
-import { isCalloutNestableComponent } from "../utils/index.ts";
+import { isCalloutComponentOfBaseType } from "../utils/index.ts";
+import { CalloutComponentBaseType } from "../data/index.ts";
 
 import type {
   CalloutComponentSchema,
@@ -27,7 +28,9 @@ export const calloutComponentNestableValidator: ValidatorCalloutComponent = (
   schema: CalloutComponentSchema,
   answerMap: Record<string, CalloutResponseAnswer | CalloutResponseAnswer[]>,
 ): boolean => {
-  if (!isCalloutNestableComponent(schema)) {
+  if (
+    !isCalloutComponentOfBaseType(schema, CalloutComponentBaseType.NESTABLE)
+  ) {
     throw new Error(
       `[calloutComponentNestableValidator] schema is not a nestable component`,
     );

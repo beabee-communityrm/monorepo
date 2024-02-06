@@ -1,4 +1,6 @@
-import { isCalloutInputAddressComponent } from "../utils/index.ts";
+import { isCalloutComponentOfType } from "../utils/index.ts";
+import { CalloutComponentType } from "../data/index.ts";
+
 import type {
   CalloutComponentSchema,
   CalloutResponseAnswer,
@@ -10,7 +12,7 @@ export const calloutComponentInputAddressValidator: ValidatorCalloutComponent =
     schema: CalloutComponentSchema,
     answer: CalloutResponseAnswer,
   ): boolean => {
-    if (!isCalloutInputAddressComponent(schema)) {
+    if (!isCalloutComponentOfType(schema, CalloutComponentType.INPUT_ADDRESS)) {
       throw new Error("Schema is not a address component");
     }
 

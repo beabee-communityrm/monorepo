@@ -1,4 +1,6 @@
-import { isCalloutInputTimeComponent } from "../utils/index.ts";
+import { isCalloutComponentOfType } from "../utils/index.ts";
+import { CalloutComponentType } from "../data/index.ts";
+
 import type {
   CalloutComponentSchema,
   CalloutResponseAnswer,
@@ -9,7 +11,7 @@ export const calloutComponentInputTimeValidator: ValidatorCalloutComponent = (
   schema: CalloutComponentSchema,
   answer: CalloutResponseAnswer,
 ): boolean => {
-  if (!isCalloutInputTimeComponent(schema)) {
+  if (!isCalloutComponentOfType(schema, CalloutComponentType.INPUT_TIME)) {
     throw new Error("Schema is not a time component");
   }
 
