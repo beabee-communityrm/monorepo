@@ -1,19 +1,17 @@
-import { isCalloutComponentOfType, isURL } from "../utils/index.ts";
-import { CalloutComponentType } from "../data/index.ts";
+import { isURL } from "../utils/index.ts";
+
 import type {
-  CalloutComponentSchema,
+  CalloutComponentInputFileSchema,
   CalloutResponseAnswer,
   ValidatorCalloutComponent,
 } from "../types/index.ts";
 
-export const calloutComponentInputFileValidator: ValidatorCalloutComponent = (
-  schema: CalloutComponentSchema,
+export const calloutComponentInputFileValidator: ValidatorCalloutComponent<
+  CalloutComponentInputFileSchema
+> = (
+  schema: CalloutComponentInputFileSchema,
   answer: CalloutResponseAnswer,
 ): boolean => {
-  if (!isCalloutComponentOfType(schema, CalloutComponentType.INPUT_URL)) {
-    throw new Error("Schema is not a file component");
-  }
-
   // If answer is not required and is undefined return true because we don't need to validate this
   if (!schema.validate?.required && answer === undefined) {
     return true;

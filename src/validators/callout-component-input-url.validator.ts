@@ -2,13 +2,15 @@ import { isCalloutComponentOfType, isURL } from "../utils/index.ts";
 import { CalloutComponentType } from "../data/index.ts";
 
 import type {
-  CalloutComponentSchema,
+  CalloutComponentInputUrlSchema,
   CalloutResponseAnswer,
   ValidatorCalloutComponent,
 } from "../types/index.ts";
 
-export const calloutComponentInputUrlValidator: ValidatorCalloutComponent = (
-  schema: CalloutComponentSchema,
+export const calloutComponentInputUrlValidator: ValidatorCalloutComponent<
+  CalloutComponentInputUrlSchema
+> = (
+  schema: CalloutComponentInputUrlSchema,
   answer: CalloutResponseAnswer,
 ): boolean => {
   if (!isCalloutComponentOfType(schema, CalloutComponentType.INPUT_URL)) {

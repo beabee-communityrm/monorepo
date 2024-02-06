@@ -2,13 +2,15 @@ import { isCalloutComponentOfType, isEmail } from "../utils/index.ts";
 import { CalloutComponentType } from "../data/index.ts";
 
 import type {
-  CalloutComponentSchema,
+  CalloutComponentInputEmailSchema,
   CalloutResponseAnswer,
   ValidatorCalloutComponent,
 } from "../types/index.ts";
 
-export const calloutComponentInputEmailValidator: ValidatorCalloutComponent = (
-  schema: CalloutComponentSchema,
+export const calloutComponentInputEmailValidator: ValidatorCalloutComponent<
+  CalloutComponentInputEmailSchema
+> = (
+  schema: CalloutComponentInputEmailSchema,
   answer: CalloutResponseAnswer,
 ): boolean => {
   if (!isCalloutComponentOfType(schema, CalloutComponentType.INPUT_EMAIL)) {

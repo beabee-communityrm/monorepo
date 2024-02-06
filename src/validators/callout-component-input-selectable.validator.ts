@@ -2,14 +2,14 @@ import { isCalloutComponentOfBaseType } from "../utils/index.ts";
 import { CalloutComponentBaseType } from "../data/index.ts";
 
 import type {
-  CalloutComponentSchema,
+  CalloutComponentInputSelectableSchema,
   CalloutResponseAnswer,
   ValidatorCalloutComponent,
 } from "../types/index.ts";
 
 export const calloutComponentInputSelectableValidator:
-  ValidatorCalloutComponent = (
-    schema: CalloutComponentSchema,
+  ValidatorCalloutComponent<CalloutComponentInputSelectableSchema> = (
+    schema: CalloutComponentInputSelectableSchema,
     answer: CalloutResponseAnswer,
   ): boolean => {
     if (

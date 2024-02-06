@@ -1,14 +1,10 @@
-import {
-  isCalloutComponentOfBaseType,
-  isTextInRange,
-  isTextInWordRange,
-} from "../utils/index.ts";
-import { CalloutComponentBaseType } from "../data/index.ts";
+import { isTextInRange, isTextInWordRange } from "../utils/index.ts";
 
 import type {
   CalloutComponentInputTextRules,
-  CalloutComponentSchema,
+  CalloutComponentInputTextSchema,
   CalloutResponseAnswer,
+  ValidatorCalloutComponent,
 } from "../types/index.ts";
 
 const validateRules = (
@@ -46,16 +42,12 @@ const validateRules = (
   return true;
 };
 
-export const calloutComponentInputTextValidator = (
-  schema: CalloutComponentSchema,
+export const calloutComponentInputTextValidator: ValidatorCalloutComponent<
+  CalloutComponentInputTextSchema
+> = (
+  schema: CalloutComponentInputTextSchema,
   answer: CalloutResponseAnswer,
 ): boolean => {
-  if (
-    !isCalloutComponentOfBaseType(schema, CalloutComponentBaseType.INPUT_TEXT)
-  ) {
-    throw new Error("Schema is not a text component");
-  }
-
   // If answer is not required and is undefined return `true` because we don't need to validate this
   if (!schema.validate?.required && !answer) {
     return true;

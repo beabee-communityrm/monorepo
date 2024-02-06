@@ -14,27 +14,22 @@ import { calloutComponentInputTextValidator } from "./callout-component-input-te
 import { calloutComponentInputTimeValidator } from "./callout-component-input-time.validator.ts";
 import { calloutComponentInputUrlValidator } from "./callout-component-input-url.validator.ts";
 
-import { isCalloutComponentOfBaseType } from "../utils/index.ts";
-import { CalloutComponentBaseType } from "../data/index.ts";
+import { CalloutComponentType } from "../data/index.ts";
 
 import type {
+  CalloutComponentNestableSchema,
   CalloutComponentSchema,
   CalloutResponseAnswer,
   CalloutResponseAnswersNestable,
   ValidatorCalloutComponent,
 } from "../types/index.ts";
 
-export const calloutComponentNestableValidator: ValidatorCalloutComponent = (
-  schema: CalloutComponentSchema,
+export const calloutComponentNestableValidator: ValidatorCalloutComponent<
+  CalloutComponentNestableSchema
+> = (
+  schema: CalloutComponentNestableSchema,
   answerMap: Record<string, CalloutResponseAnswer | CalloutResponseAnswer[]>,
 ): boolean => {
-  if (
-    !isCalloutComponentOfBaseType(schema, CalloutComponentBaseType.NESTABLE)
-  ) {
-    throw new Error(
-      `[calloutComponentNestableValidator] schema is not a nestable component`,
-    );
-  }
   let valid = true;
   for (const component of schema.components) {
     const answer = answerMap[component.key];
@@ -64,36 +59,42 @@ export const calloutComponentNestableValidator: ValidatorCalloutComponent = (
  */
 const calloutValidatorsMap: Record<
   CalloutComponentSchema["type"],
-  ValidatorCalloutComponent
+  // deno-lint-ignore no-explicit-any
+  ValidatorCalloutComponent<any>
 > = {
-  content: calloutComponentContentValidator,
+  [CalloutComponentType.CONTENT]: calloutComponentContentValidator,
 
   // Input
-  email: calloutComponentInputEmailValidator,
-  address: calloutComponentInputAddressValidator,
-  checkbox: calloutComponentInputCheckboxValidator,
-  currency: calloutComponentInputCurrencyValidator,
-  datetime: calloutComponentInputDateTimeValidator,
-  number: calloutComponentInputNumberValidator,
-  phoneNumber: calloutComponentInputPhoneNumberValidator,
-  signature: calloutComponentInputSignatureValidator,
-  time: calloutComponentInputTimeValidator,
-  url: calloutComponentInputUrlValidator,
-  file: calloutComponentInputFileValidator,
-  select: calloutComponentInputSelectValidator,
+  [CalloutComponentType.INPUT_EMAIL]: calloutComponentInputEmailValidator,
+  [CalloutComponentType.INPUT_ADDRESS]: calloutComponentInputAddressValidator,
+  [CalloutComponentType.INPUT_CHECKBOX]: calloutComponentInputCheckboxValidator,
+  [CalloutComponentType.INPUT_CURRENCY]: calloutComponentInputCurrencyValidator,
+  [CalloutComponentType.INPUT_DATE_TIME]:
+    calloutComponentInputDateTimeValidator,
+  [CalloutComponentType.INPUT_NUMBER]: calloutComponentInputNumberValidator,
+  [CalloutComponentType.INPUT_PHONE_NUMBER]:
+    calloutComponentInputPhoneNumberValidator,
+  [CalloutComponentType.INPUT_SIGNATURE]:
+    calloutComponentInputSignatureValidator,
+  [CalloutComponentType.INPUT_TIME]: calloutComponentInputTimeValidator,
+  [CalloutComponentType.INPUT_URL]: calloutComponentInputUrlValidator,
+  [CalloutComponentType.INPUT_FILE]: calloutComponentInputFileValidator,
+  [CalloutComponentType.INPUT_SELECT]: calloutComponentInputSelectValidator,
 
   // Text
-  textfield: calloutComponentInputTextValidator,
-  textarea: calloutComponentInputTextValidator,
+  [CalloutComponentType.INPUT_TEXT_FIELD]: calloutComponentInputTextValidator,
+  [CalloutComponentType.INPUT_TEXT_AREA]: calloutComponentInputTextValidator,
 
   // Selectable
-  radio: calloutComponentInputSelectableValidator,
-  selectboxes: calloutComponentInputSelectableValidator,
+  [CalloutComponentType.INPUT_SELECTABLE_RADIO]:
+    calloutComponentInputSelectableValidator,
+  [CalloutComponentType.INPUT_SELECTABLE_SELECTBOXES]:
+    calloutComponentInputSelectableValidator,
 
   // NESTABLE
-  panel: calloutComponentNestableValidator,
-  well: calloutComponentNestableValidator,
-  tabs: calloutComponentNestableValidator,
+  [CalloutComponentType.NESTABLE_PANEL]: calloutComponentNestableValidator,
+  [CalloutComponentType.NESTABLE_WELL]: calloutComponentNestableValidator,
+  [CalloutComponentType.NESTABLE_TABS]: calloutComponentNestableValidator,
 };
 
 export const calloutComponentValidator = (
