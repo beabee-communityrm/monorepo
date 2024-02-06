@@ -51,7 +51,8 @@ npm run build # Alternatively, use `deno task build`
 
 Scripts for NPM and Deno tasks are synchronized, ensuring consistency whether
 you use `npm run ...` or `deno task ...`. They are defined in both
-`package.json` and `deno.json`. New scripts must be added manually.
+`package.json` and `deno.json`. New scripts can be synchronized with via
+`deno task sync` or `npm run sync`.
 
 Key scripts include:
 
@@ -74,10 +75,11 @@ as `import { format } from "npm:date-fns";` in Deno, and
 `import { format } from "date-fns";` in Node.js. Aliases in `deno.json` enable
 consistent codebase usage across environments.
 
-#### `sync:deps`
+#### `sync`
 
-Synchronizes dependencies across `package.json` and `deno.json`, establishing
-necessary aliases in Deno. See `./scripts/sync-deps.ts` for details.
+Synchronizes dependencies and scripts across `package.json` and `deno.json` to
+establishing necessary aliases in Deno and to make the scripts callable from
+both. See `./scripts/sync.ts` for details.
 
 #### `generate:index`
 

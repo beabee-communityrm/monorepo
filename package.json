@@ -33,7 +33,7 @@
     "build:node:cjs": "deno task build:node:cjs",
     "build:types": "tsc",
     "generate:index": "deno task generate:index",
-    "sync:deps": "deno task sync:deps",
+    "sync": "deno task sync",
     "prepublishOnly": "npm run build"
   },
   "repository": {
