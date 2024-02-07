@@ -1,19 +1,23 @@
+import {
+  CalloutComponentBaseType,
+  calloutComponentInputSelectableTypes,
+  calloutComponentInputTextTypes,
+  calloutComponentInputTypes,
+  calloutComponentNestableTypes,
+  CalloutComponentType,
+} from "../data/index.ts";
+
 import type {
+  CalloutComponentBaseMap,
+  CalloutComponentBaseSchema,
+  CalloutComponentMap,
   CalloutComponentSchema,
   CalloutFormSchema,
   CalloutResponseAnswer,
   CalloutResponseAnswerAddress,
   CalloutResponseAnswerFileUpload,
   FilterArgs,
-  NestableCalloutComponentSchema,
 } from "../types/index.ts";
-
-function isNestableComponent(
-  component: CalloutComponentSchema,
-): component is NestableCalloutComponentSchema {
-  // Addresses have embedded components we don't want to include
-  return "components" in component && component.type !== "address";
-}
 
 function convertValuesToOptions(
   values: { value: string; label: string }[],
@@ -29,58 +33,132 @@ function convertComponentToFilter(
     nullable: true,
   };
 
-  switch (component.type) {
-    case "checkbox":
-      return { ...baseItem, type: "boolean", nullable: false };
-
-    case "number":
-      return { ...baseItem, type: "number" };
-
-    case "select":
-      return {
-        ...baseItem,
-        type: "enum",
-        options: convertValuesToOptions(component.data.values),
-      };
-
-    case "selectboxes":
-    case "radio":
-      return {
-        ...baseItem,
-        type: component.type === "radio" ? "enum" : "array",
-        options: convertValuesToOptions(component.values),
-      };
-
-    case "textarea":
-      return { ...baseItem, type: "blob" };
-
-    default:
-      return { ...baseItem, type: "text" };
+  if (
+    isCalloutComponentOfType(component, CalloutComponentType.INPUT_CHECKBOX)
+  ) {
+    return { ...baseItem, type: "boolean", nullable: false };
   }
+
+  if (isCalloutComponentOfType(component, CalloutComponentType.INPUT_NUMBER)) {
+    return { ...baseItem, type: "number" };
+  }
+
+  if (
+    isCalloutComponentOfType(
+      component,
+      CalloutComponentType.INPUT_SELECT,
+    )
+  ) {
+    return {
+      ...baseItem,
+      type: "enum",
+      options: convertValuesToOptions(component.data.values),
+    };
+  }
+
+  if (
+    isCalloutComponentOfType(component, CalloutComponentType.INPUT_TEXT_AREA)
+  ) {
+    return { ...baseItem, type: "blob" };
+  }
+
+  return { ...baseItem, type: "text" };
 }
 
-function getNiceAnswer(
+function getSelectableLabelFromValue(
   component: CalloutComponentSchema,
   value: string,
 ): string {
-  switch (component.type) {
-    case "radio":
-    case "selectboxes":
-      return component.values.find((v) => v.value === value)?.label || value;
-    case "select":
-      return (
-        component.data.values.find((v) => v.value === value)?.label || value
-      );
-    default:
-      return value;
+  if (
+    isCalloutComponentOfBaseType(
+      component,
+      CalloutComponentBaseType.INPUT_SELECTABLE,
+    )
+  ) {
+    return component.values.find((v) => v.value === value)?.label || value;
   }
+
+  if (isCalloutComponentOfType(component, CalloutComponentType.INPUT_SELECT)) {
+    return (
+      component.data.values.find((v) => v.value === value)?.label || value
+    );
+  }
+
+  return value;
+}
+
+/**
+ * Check if a component is a specific component type
+ *
+ * @param component The component to check
+ * @param type The type of component to check
+ * @returns Ensure that the component is of the specific type
+ */
+export function isCalloutComponentOfType<T extends CalloutComponentType>(
+  component: CalloutComponentBaseSchema,
+  type: T,
+): component is CalloutComponentMap[T] {
+  return "type" in component &&
+    component.type === type;
+}
+
+/**
+ * Check if a component is a specific base component type
+ *
+ * @param component The component to check
+ * @param type The type of component to check
+ * @returns Ensure that the component is of the specific base type
+ */
+export function isCalloutComponentOfBaseType<
+  T extends CalloutComponentBaseType,
+>(
+  component: CalloutComponentBaseSchema,
+  type: T,
+): component is CalloutComponentBaseMap[T] {
+  if (!("type" in component)) {
+    return false;
+  }
+
+  // `content` has only one schema
+  if (type === CalloutComponentBaseType.CONTENT) {
+    return isCalloutComponentOfType(
+      component,
+      CalloutComponentType.CONTENT,
+    );
+  }
+
+  if (type === CalloutComponentBaseType.INPUT) {
+    return (calloutComponentInputTypes as string[]).includes(
+      component.type,
+    );
+  }
+
+  if (type === CalloutComponentBaseType.INPUT_TEXT) {
+    return (calloutComponentInputTextTypes as string[]).includes(
+      component.type,
+    );
+  }
+
+  if (type === CalloutComponentBaseType.INPUT_SELECTABLE) {
+    return (calloutComponentInputSelectableTypes as string[]).includes(
+      component.type,
+    );
+  }
+
+  if (type === CalloutComponentBaseType.NESTABLE) {
+    return (calloutComponentNestableTypes as string[]).includes(
+      component.type,
+    );
+  }
+
+  return false;
 }
 
 export function flattenComponents(
   components: CalloutComponentSchema[],
 ): CalloutComponentSchema[] {
   return components.flatMap((component) =>
-    isNestableComponent(component)
+    isCalloutComponentOfBaseType(component, CalloutComponentBaseType.NESTABLE)
       ? [component, ...flattenComponents(component.components)]
       : [component]
   );
@@ -93,7 +171,10 @@ export function filterComponents(
   return components.filter(filterFn).map((component) => {
     return {
       ...component,
-      ...(isNestableComponent(component) && {
+      ...(isCalloutComponentOfBaseType(
+        component,
+        CalloutComponentBaseType.NESTABLE,
+      ) && {
         components: filterComponents(component.components, filterFn),
       }),
     };
@@ -150,10 +231,10 @@ export function stringifyAnswer(
     // Checkboxes
     return Object.entries(answer)
       .filter(([, selected]) => selected)
-      .map(([value]) => getNiceAnswer(component, value))
+      .map(([value]) => getSelectableLabelFromValue(component, value))
       .join(", ");
   } else if (typeof answer === "string") {
-    return getNiceAnswer(component, answer);
+    return getSelectableLabelFromValue(component, answer);
   } else {
     return answer.toString();
   }

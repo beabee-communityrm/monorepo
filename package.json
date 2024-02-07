@@ -18,21 +18,22 @@
     "./package.json": "./package.json"
   },
   "scripts": {
-    "test": "npm run test:types && npm run test:node",
-    "test:deno": "deno task test",
-    "test:node": "npm run test:node:esm && npm run test:node:cjs",
+    "clear": "deno task clear",
+    "lint": "deno task lint",
+    "format": "deno task format",
+    "test": "deno task test",
+    "test:deno": "deno task test:deno",
+    "test:node": "deno task test:node",
     "test:types": "tsc --noEmit --emitDeclarationOnly false",
     "test:node:esm": "node test/node/import.mjs",
     "test:node:cjs": "node test/node/require.cjs",
-    "clear": "rimraf ./dist/",
-    "build": "npm run clear && npm run generate:index && npm run sync:deps && npm run format && npm run build:types && npm run build:node",
-    "build:node": "npm run build:node:esm && npm run build:node:cjs",
+    "build": "deno task build",
+    "build:node": "deno task build:node",
     "build:node:esm": "deno task build:node:esm",
     "build:node:cjs": "deno task build:node:cjs",
     "build:types": "tsc",
     "generate:index": "deno task generate:index",
-    "sync:deps": "deno task sync:deps",
-    "format": "deno task format",
+    "sync": "deno task sync",
     "prepublishOnly": "npm run build"
   },
   "repository": {
@@ -47,7 +48,6 @@
   "homepage": "https://github.com/beabee-communityrm/beabee-common#readme",
   "devDependencies": {
     "@tsconfig/recommended": "^1.0.3",
-    "rimraf": "^5.0.5",
     "typescript": "^5.3.3"
   },
   "dependencies": {

@@ -43,13 +43,13 @@ const absoluteDate =
   /^(?<y>\d{4,})(-(?<M>\d\d)(-(?<d>\d\d)([T ](?<h>\d\d)(:(?<m>\d\d)(:(?<s>\d\d))?)?)?)?)?/;
 
 // Convert relative dates and returns the minimum date unit specified
-export function parseDate(value: string, now?: Date): [Date, DateUnit] {
+export function parseDate(value: string, now = new Date()): [Date, DateUnit] {
   let date: Date;
   let units: DateUnit[];
 
   const relativeMatch = relativeDate.exec(value);
   if (relativeMatch) {
-    date = now || new Date();
+    date = now;
     const unitsGroup = relativeMatch.groups?.units;
     if (unitsGroup) {
       const unitMatches = unitsGroup.matchAll(relativeUnit) as UnitMatches;
@@ -78,6 +78,26 @@ export function getMinDateUnit(units: DateUnit[]): DateUnit | undefined {
   return dateUnits.find((unit) => units.includes(unit));
 }
 
-export function isValidDate(s: string) {
-  return relativeDate.test(s) || isValid(parseISO(s));
+export function isValidDate(s: string | Date) {
+  if (typeof s === "string") {
+    return relativeDate.test(s) || isValid(parseISO(s));
+  }
+  return isValid(s);
+}
+
+export function isDateBetween(
+  date: string | Date,
+  start?: string | Date | null,
+  end?: string | Date | null,
+): boolean {
+  let valid = isValidDate(date);
+  if (start) {
+    start = typeof start === "string" ? parseISO(start) : start;
+    valid = valid && date >= start;
+  }
+  if (end) {
+    end = typeof end === "string" ? parseISO(end) : end;
+    valid = valid && date <= end;
+  }
+  return valid;
 }

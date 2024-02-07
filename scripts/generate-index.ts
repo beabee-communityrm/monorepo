@@ -1,9 +1,14 @@
 // Generate index.ts files for each folder
 const paths = [
-  "./src/types",
+  "./src/data",
   "./src/error",
-  "./src/utils",
   "./src/search",
+  "./src/types",
+  "./src/utils",
+  "./src/validators",
+  "./test/deno/data",
+  "./test/deno/data/components",
+  "./test/deno/data/components/validate-rules",
 ];
 
 const encoder = new TextEncoder();

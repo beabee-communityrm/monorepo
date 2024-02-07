@@ -1,34 +1,36 @@
 import { assertEquals } from "https://deno.land/std@0.212.0/assert/assert_equals.ts";
 import {
+  CalloutComponentBaseNestableSchema,
+  CalloutComponentInputSelectableRadioSchema,
+  CalloutComponentInputSelectableSchema,
+  CalloutComponentInputSelectSchema,
+  CalloutComponentInputTextFieldSchema,
+  CalloutComponentType,
   CalloutFormSchema,
-  CalloutResponseAnswers,
+  CalloutResponseAnswersSlide,
   getCalloutComponents,
-  InputCalloutComponentSchema,
-  NestableCalloutComponentSchema,
-  RadioCalloutComponentSchema,
-  SelectCalloutComponentSchema,
   stringifyAnswer,
 } from "../../mod.ts";
 
-const textComponent: InputCalloutComponentSchema = {
+const textComponent: CalloutComponentInputTextFieldSchema = {
   id: "myTextComponent",
-  type: "textfield",
+  type: CalloutComponentType.INPUT_TEXT_FIELD,
   key: "myTextComponent",
   label: "My text component",
   input: true,
 };
 
-const textComponent2: InputCalloutComponentSchema = {
+const textComponent2: CalloutComponentInputTextFieldSchema = {
   id: "myTextComponent2",
-  type: "textfield",
+  type: CalloutComponentType.INPUT_TEXT_FIELD,
   key: "myTextComponent2",
   label: "My text component",
   input: true,
 };
 
-const radioComponent: RadioCalloutComponentSchema = {
+const radioComponent: CalloutComponentInputSelectableRadioSchema = {
   id: "myRadioComponent",
-  type: "radio",
+  type: CalloutComponentType.INPUT_SELECTABLE_RADIO,
   key: "myRadioComponent",
   label: "My radio component",
   input: true,
@@ -39,9 +41,9 @@ const radioComponent: RadioCalloutComponentSchema = {
   ],
 };
 
-const selectComponent: SelectCalloutComponentSchema = {
+const selectComponent: CalloutComponentInputSelectSchema = {
   id: "mySelectComponent",
-  type: "select",
+  type: CalloutComponentType.INPUT_SELECT,
   key: "mySelectComponent",
   label: "My select component",
   input: true,
@@ -54,9 +56,9 @@ const selectComponent: SelectCalloutComponentSchema = {
   },
 };
 
-const selectBoxComponent: RadioCalloutComponentSchema = {
+const selectBoxComponent: CalloutComponentInputSelectableSchema = {
   id: "mySelectBoxComponent",
-  type: "selectboxes",
+  type: CalloutComponentType.INPUT_SELECTABLE_SELECTBOXES,
   key: "mySelectBoxComponent",
   label: "My select box component",
   input: true,
@@ -68,16 +70,16 @@ const selectBoxComponent: RadioCalloutComponentSchema = {
 };
 
 // TODO: Add tests for nested components
-const panelComponent: NestableCalloutComponentSchema = {
+const panelComponent: CalloutComponentBaseNestableSchema = {
   id: "myPanelComponent",
-  type: "panel",
+  type: CalloutComponentType.NESTABLE_PANEL,
   key: "myPanelComponent",
   label: "My panel component",
   input: false,
   components: [textComponent, textComponent2],
 };
 
-const answers: CalloutResponseAnswers = {
+const answers: CalloutResponseAnswersSlide = {
   slide1: {
     myTextComponent: "Some text",
     myTextComponent2: "Some other text",
