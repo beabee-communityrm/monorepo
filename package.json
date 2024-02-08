@@ -34,7 +34,8 @@
     "build:types": "tsc",
     "generate:index": "deno task generate:index",
     "sync": "deno task sync",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "cache": "deno task cache"
   },
   "repository": {
     "type": "git",

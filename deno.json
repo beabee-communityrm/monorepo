@@ -20,6 +20,7 @@
     "build:node:esm": "deno run --allow-read --allow-write --allow-env --allow-run --allow-net ./scripts/esbuild.esm.ts",
     "build:node:cjs": "deno run --allow-read --allow-write --allow-env --allow-run --allow-net ./scripts/esbuild.cjs.ts",
     "build:types": "npm run build:types",
+    "cache": "deno cache mod.ts",
     "generate:index": "deno run --allow-read --allow-write scripts/generate-index.ts && deno task format",
     "sync": "deno run --allow-read --allow-write scripts/sync.ts",
     "prepublishOnly": "npm run prepublishOnly"
