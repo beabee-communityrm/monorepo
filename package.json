@@ -35,7 +35,9 @@
     "generate:index": "deno task generate:index",
     "sync": "deno task sync",
     "prepublishOnly": "npm run build",
-    "cache": "deno task cache"
+    "cache": "deno task cache",
+    "cache:deno": "deno task cache:deno",
+    "cache:node": "deno task cache:node"
   },
   "repository": {
     "type": "git",
