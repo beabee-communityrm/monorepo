@@ -37,7 +37,9 @@
     "prepublishOnly": "npm run build",
     "cache": "deno task cache",
     "cache:deno": "deno task cache:deno",
-    "cache:node": "deno task cache:node"
+    "cache:node": "deno task cache:node",
+    "check": "deno task check",
+    "check:format": "deno task check:format"
   },
   "repository": {
     "type": "git",

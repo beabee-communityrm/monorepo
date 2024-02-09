@@ -9,6 +9,8 @@
     "clear": "rm -rf ./dist/",
     "lint": "deno lint mod.ts src",
     "format": "deno fmt",
+    "check": "deno task check:format",
+    "check:format": "deno task format --check",
     "test": "deno task test:types && deno task test:deno && deno task test:node",
     "test:deno": "deno test -A test/deno",
     "test:types": "npm run test:types",
