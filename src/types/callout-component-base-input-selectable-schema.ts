@@ -9,6 +9,6 @@ export interface CalloutComponentBaseInputSelectableSchema
   type:
     | CalloutComponentType.INPUT_SELECTABLE_RADIO
     | CalloutComponentType.INPUT_SELECTABLE_SELECTBOXES;
-  values: { label: string; value: string; nextSlideId: string }[];
+  values: { label: string; value: string; nextSlideId?: string }[];
   validate?: CalloutComponentBaseRules;
 }
