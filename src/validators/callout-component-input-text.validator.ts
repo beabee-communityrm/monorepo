@@ -48,11 +48,6 @@ export const calloutComponentInputTextValidator: ValidatorCalloutComponent<
   schema: CalloutComponentInputTextSchema,
   answer: CalloutResponseAnswer,
 ): boolean => {
-  // If answer is not required and is undefined return `true` because we don't need to validate this
-  if (!schema.validate?.required && !answer) {
-    return true;
-  }
-
   if (typeof answer !== "string") {
     return false;
   }

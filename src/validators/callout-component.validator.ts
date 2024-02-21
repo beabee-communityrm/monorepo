@@ -24,34 +24,17 @@ import type {
   ValidatorCalloutComponent,
 } from "../types/index.ts";
 
-export const calloutComponentNestableValidator: ValidatorCalloutComponent<
-  CalloutComponentNestableSchema
-> = (
+export const calloutComponentNestableValidator = (
   schema: CalloutComponentNestableSchema,
-  answerMap: Record<string, CalloutResponseAnswer | CalloutResponseAnswer[]>,
+  answers: CalloutResponseAnswersNestable
 ): boolean => {
-  let valid = true;
   for (const component of schema.components) {
-    const answer = answerMap[component.key];
-    const answers = Array.isArray(answer) ? answer : [answer];
-    if (!answer) {
-      throw new Error(
-        `[calloutComponentNestableValidator] no answer`,
-      );
-    }
-    for (const _answersLevel2 of answers) {
-      const answersLevel2 = Array.isArray(_answersLevel2)
-        ? _answersLevel2
-        : [_answersLevel2];
-      for (const answer of answersLevel2) {
-        valid = calloutComponentValidator(component, answer) && valid;
-        if (!valid) {
-          return false;
-        }
-      }
+    const valid = calloutComponentValidator(component, answers[component.key]);
+    if (!valid) {
+      return false;
     }
   }
-  return valid;
+  return true;
 };
 
 /**
@@ -99,7 +82,7 @@ const calloutValidatorsMap: Record<
 
 export const calloutComponentValidator = (
   schema: CalloutComponentSchema,
-  answer: CalloutResponseAnswer | CalloutResponseAnswersNestable,
+  answer: CalloutResponseAnswer | CalloutResponseAnswer[] | undefined,
 ): boolean => {
   const validator = calloutValidatorsMap[schema.type];
   if (!validator) {
@@ -107,8 +90,17 @@ export const calloutComponentValidator = (
     return false;
   }
 
-  return validator(
-    schema,
-    answer as CalloutResponseAnswer,
-  );
+  if (answer === undefined) {
+    return schema.validate?.required ? false : true;
+  }
+
+  const values = Array.isArray(answer) ? answer : [answer];
+  for (const value of values) {
+    const valid = validator(schema, value);
+    if (!valid) {
+      return false;
+    }
+  }
+
+  return true;
 };

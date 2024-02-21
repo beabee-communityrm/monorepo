@@ -5,19 +5,19 @@ import type {
   CalloutResponseAnswer,
   ValidatorCalloutComponent,
 } from "../types/index.ts";
+import { isFileUploadAnswer } from "../utils/callouts.ts";
 
 export const calloutComponentInputFileValidator: ValidatorCalloutComponent<
   CalloutComponentInputFileSchema
 > = (
-  schema: CalloutComponentInputFileSchema,
+  _schema: CalloutComponentInputFileSchema,
   answer: CalloutResponseAnswer,
 ): boolean => {
-  // If answer is not required and is undefined return true because we don't need to validate this
-  if (!schema.validate?.required && answer === undefined) {
-    return true;
-  }
-
   // TODO: We just check the file URL at the moment, but we need to check the file size and type too
 
-  return isURL(answer);
+  if (isFileUploadAnswer(answer)) {
+    return isURL(answer.url)
+  }
+
+  return false;
 };

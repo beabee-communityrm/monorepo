@@ -12,10 +12,6 @@ export const calloutComponentInputDateTimeValidator: ValidatorCalloutComponent<
   schema: CalloutComponentInputDateTimeSchema,
   answer: CalloutResponseAnswer,
 ): boolean => {
-  if (!schema.validate?.required && !answer) {
-    return true;
-  }
-
   if (typeof answer !== "string") {
     return false;
   }
