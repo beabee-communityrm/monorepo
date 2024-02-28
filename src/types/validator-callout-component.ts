@@ -3,7 +3,10 @@ import type {
   CalloutResponseAnswer,
 } from "./index.ts";
 
-export type ValidatorCalloutComponent<S extends CalloutComponentBaseSchema> = (
+export type ValidatorCalloutComponent<
+  S extends CalloutComponentBaseSchema,
+  A = CalloutResponseAnswer,
+> = (
   schema: S,
-  answer: CalloutResponseAnswer,
+  answer: A,
 ) => boolean;

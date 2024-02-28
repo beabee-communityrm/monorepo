@@ -38,6 +38,9 @@ jobs:
       - name: Run Deno linter
         run: deno task lint
 
+      - name: Run Deno check
+        run: deno task check
+
       - name: Test the types
         run: npm run test:types
 

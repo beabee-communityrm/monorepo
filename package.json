@@ -44,7 +44,8 @@
     "cache:deno": "deno task cache:deno",
     "cache:node": "deno task cache:node",
     "check": "deno task check",
-    "check:format": "deno task check:format"
+    "check:format": "deno task check:format",
+    "check:types": "deno task check:types"
   },
   "repository": {
     "type": "git",

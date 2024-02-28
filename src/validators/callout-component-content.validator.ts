@@ -1,14 +1,14 @@
-import { CalloutResponseAnswer } from "../index.ts";
 import type {
   CalloutComponentContentSchema,
   ValidatorCalloutComponent,
 } from "../types/index.ts";
 
 export const calloutComponentContentValidator: ValidatorCalloutComponent<
-  CalloutComponentContentSchema
+  CalloutComponentContentSchema,
+  unknown
 > = (
   _: CalloutComponentContentSchema,
-  answer: CalloutResponseAnswer,
+  answer: unknown,
 ): boolean => {
   // Content components have no answer, so answer should be falsy
   return !answer;
