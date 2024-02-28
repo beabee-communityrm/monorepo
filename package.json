@@ -1,6 +1,6 @@
 {
   "name": "@beabee/beabee-common",
-  "version": "1.19.6",
+  "version": "0.20.1",
   "description": "Shared code between Beabee projects for Node.js, Deno and the browser",
   "type": "module",
   "main": "./dist/cjs/index.cjs",
@@ -11,9 +11,14 @@
   ],
   "exports": {
     ".": {
-      "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.cjs",
-      "types": "./dist/types/index.d.ts"
+      "import": {
+        "types": "./dist/types/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "types": "./dist/types/index.d.cts",
+        "default": "./dist/cjs/index.cjs"
+      }
     },
     "./package.json": "./package.json"
   },
@@ -31,7 +36,7 @@
     "build:node": "deno task build:node",
     "build:node:esm": "deno task build:node:esm",
     "build:node:cjs": "deno task build:node:cjs",
-    "build:types": "tsc",
+    "build:types": "tsc && echo 'export * from \"./index.ts\";' > dist/types/index.d.cts",
     "generate:index": "deno task generate:index",
     "sync": "deno task sync",
     "prepublishOnly": "npm run build",

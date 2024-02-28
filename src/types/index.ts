@@ -81,6 +81,7 @@ export * from "./rule-operator.ts";
 export * from "./rule-opperator-params.ts";
 export * from "./rule-value.ts";
 export * from "./rule.ts";
+export * from "./segment-filter-name.ts";
 export * from "./stripe-fee-country.ts";
 export * from "./text-case.ts";
 export * from "./unit-matches.ts";
