@@ -9,12 +9,8 @@ import type {
 export const calloutComponentInputCurrencyValidator: ValidatorCalloutComponent<
   CalloutComponentInputCurrencySchema
 > = (
-  schema: CalloutComponentInputCurrencySchema,
+  _schema: CalloutComponentInputCurrencySchema,
   answer: CalloutResponseAnswer,
 ): boolean => {
-  if (schema.validate?.required && answer === undefined) {
-    return true;
-  }
-
   return isAmountOfMoney(answer);
 };
