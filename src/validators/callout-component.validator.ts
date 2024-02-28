@@ -26,7 +26,7 @@ import type {
 
 export const calloutComponentNestableValidator = (
   schema: CalloutComponentNestableSchema,
-  answers: CalloutResponseAnswersNestable
+  answers: CalloutResponseAnswersNestable,
 ): boolean => {
   for (const component of schema.components) {
     const valid = calloutComponentValidator(component, answers[component.key]);

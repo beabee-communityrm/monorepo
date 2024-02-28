@@ -16,7 +16,7 @@ export const calloutComponentInputFileValidator: ValidatorCalloutComponent<
   // TODO: We just check the file URL at the moment, but we need to check the file size and type too
 
   if (isFileUploadAnswer(answer)) {
-    return isURL(answer.url)
+    return isURL(answer.url);
   }
 
   return false;

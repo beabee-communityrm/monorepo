@@ -1,4 +1,7 @@
-import type { CalloutComponentBaseSchema, CalloutResponseAnswer } from "./index.ts";
+import type {
+  CalloutComponentBaseSchema,
+  CalloutResponseAnswer,
+} from "./index.ts";
 
 export type ValidatorCalloutComponent<S extends CalloutComponentBaseSchema> = (
   schema: S,
