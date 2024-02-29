@@ -10,7 +10,7 @@ export const calloutComponentInputCurrencyValidator: ValidatorCalloutComponent<
   CalloutComponentInputCurrencySchema
 > = (
   _schema: CalloutComponentInputCurrencySchema,
-  answer: CalloutResponseAnswer,
+  answer: CalloutResponseAnswer | undefined,
 ): boolean => {
   return isAmountOfMoney(answer);
 };

@@ -7,7 +7,7 @@ import type {
 export const calloutComponentInputSelectableValidator:
   ValidatorCalloutComponent<CalloutComponentInputSelectableSchema> = (
     schema: CalloutComponentInputSelectableSchema,
-    answer: CalloutResponseAnswer,
+    answer: CalloutResponseAnswer | undefined,
   ): boolean => {
     const optionValue = schema.values.find((v) => v.value === answer);
     return !!optionValue;

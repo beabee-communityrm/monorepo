@@ -8,7 +8,7 @@ export const calloutComponentInputTimeValidator: ValidatorCalloutComponent<
   CalloutComponentInputTimeSchema
 > = (
   _schema: CalloutComponentInputTimeSchema,
-  _answer: CalloutResponseAnswer,
+  _answer: CalloutResponseAnswer | undefined,
 ): boolean => {
   throw new Error(
     `[calloutComponentInputTimeValidator] Not implemented yet`,

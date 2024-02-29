@@ -10,7 +10,7 @@ export const calloutComponentInputDateTimeValidator: ValidatorCalloutComponent<
   CalloutComponentInputDateTimeSchema
 > = (
   schema: CalloutComponentInputDateTimeSchema,
-  answer: CalloutResponseAnswer,
+  answer: CalloutResponseAnswer | undefined,
 ): boolean => {
   if (typeof answer !== "string") {
     return false;

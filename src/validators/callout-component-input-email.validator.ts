@@ -10,7 +10,7 @@ export const calloutComponentInputEmailValidator: ValidatorCalloutComponent<
   CalloutComponentInputEmailSchema
 > = (
   _schema: CalloutComponentInputEmailSchema,
-  answer: CalloutResponseAnswer,
+  answer: CalloutResponseAnswer | undefined,
 ): boolean => {
   return isEmail(answer);
 };

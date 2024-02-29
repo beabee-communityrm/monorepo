@@ -10,7 +10,7 @@ export const calloutComponentInputNumberValidator: ValidatorCalloutComponent<
   CalloutComponentInputNumberSchema
 > = (
   schema: CalloutComponentInputNumberSchema,
-  answer: CalloutResponseAnswer,
+  answer: CalloutResponseAnswer | undefined,
 ): boolean => {
   if (
     schema.validate &&

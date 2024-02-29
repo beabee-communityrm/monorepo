@@ -5,8 +5,7 @@
       "npm:@gjsify/esbuild-plugin-transform-ext@0.0.4": "npm:@gjsify/esbuild-plugin-transform-ext@0.0.4",
       "npm:@gjsify/esbuild-plugin-transform-ext@^0.0.4": "npm:@gjsify/esbuild-plugin-transform-ext@0.0.4",
       "npm:@tsconfig/recommended@^1.0.3": "npm:@tsconfig/recommended@1.0.3",
-      "npm:date-fns@3.2.0": "npm:date-fns@3.2.0",
-      "npm:date-fns@^3.2.0": "npm:date-fns@3.2.0",
+      "npm:date-fns@3.3.1": "npm:date-fns@3.3.1",
       "npm:esbuild@0.19.11": "npm:esbuild@0.19.11",
       "npm:esbuild@^0.19.11": "npm:esbuild@0.19.11",
       "npm:rimraf@^5.0.5": "npm:rimraf@5.0.5",
@@ -175,8 +174,8 @@
           "which": "which@2.0.2"
         }
       },
-      "date-fns@3.2.0": {
-        "integrity": "sha512-E4KWKavANzeuusPi0jUjpuI22SURAznGkx7eZV+4i6x2A+IZxAMcajgkvuDAU1bg40+xuhW1zRdVIIM/4khuIg==",
+      "date-fns@3.3.1": {
+        "integrity": "sha512-y8e109LYGgoQDveiEBD3DYXKba1jWf5BA8YU1FL5Tvm0BTdEfy54WLCwnuYWZNnzzvALy/QQ4Hov+Q9RVRv+Zw==",
         "dependencies": {}
       },
       "eastasianwidth@0.2.0": {
@@ -704,12 +703,12 @@
   },
   "workspace": {
     "dependencies": [
-      "npm:date-fns@3.2.0"
+      "npm:date-fns@3.3.1"
     ],
     "packageJson": {
       "dependencies": [
         "npm:@tsconfig/recommended@^1.0.3",
-        "npm:date-fns@^3.2.0",
+        "npm:date-fns@^3.3.1",
         "npm:typescript@^5.3.3"
       ]
     }

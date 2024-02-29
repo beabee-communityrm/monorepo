@@ -8,7 +8,7 @@ export const calloutComponentInputCheckboxValidator: ValidatorCalloutComponent<
   CalloutComponentInputCheckboxSchema
 > = (
   _schema: CalloutComponentInputCheckboxSchema,
-  answer: CalloutResponseAnswer,
+  answer: CalloutResponseAnswer | undefined,
 ): boolean => {
   return typeof answer === "boolean";
 };

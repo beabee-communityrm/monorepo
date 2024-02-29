@@ -18,7 +18,7 @@ export interface CalloutComponentBaseSchema {
   /** True if multiple responses / answers allowed */
   multiple?: boolean;
   /** If defined then this is the default value */
-  defaultValue?: CalloutResponseAnswer | CalloutResponseAnswer[];
+  defaultValue?: CalloutResponseAnswer | CalloutResponseAnswer[] | null;
   /** `true` if this component should be hidden */
   hidden?: boolean;
   /** Unused property */

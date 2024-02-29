@@ -5,7 +5,7 @@ import type {
 
 export type ValidatorCalloutComponent<
   S extends CalloutComponentBaseSchema,
-  A = CalloutResponseAnswer,
+  A = CalloutResponseAnswer | undefined,
 > = (
   schema: S,
   answer: A,

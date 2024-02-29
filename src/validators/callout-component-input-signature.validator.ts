@@ -8,7 +8,7 @@ export const calloutComponentInputSignatureValidator: ValidatorCalloutComponent<
   CalloutComponentInputSignatureSchema
 > = (
   _: CalloutComponentInputSignatureSchema,
-  _answer: CalloutResponseAnswer,
+  _answer: CalloutResponseAnswer | undefined,
 ): boolean => {
   throw new Error(
     `[calloutComponentInputSignatureValidator] Not implemented yet`,
