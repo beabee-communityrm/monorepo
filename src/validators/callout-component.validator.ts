@@ -25,13 +25,13 @@ import type {
   CalloutComponentNestableSchema,
   CalloutComponentSchema,
   CalloutResponseAnswer,
-  CalloutResponseAnswersNestable,
+  CalloutResponseAnswers,
   ValidatorCalloutComponent,
 } from "../types/index.ts";
 
 export const calloutComponentNestableValidator = (
   schema: CalloutComponentNestableSchema,
-  answers: CalloutResponseAnswersNestable,
+  answers: CalloutResponseAnswers,
 ): boolean => {
   for (const component of schema.components) {
     const valid = calloutComponentValidator(
@@ -118,7 +118,7 @@ export function calloutComponentValidator(
 
 export function calloutComponentValidator(
   schema: CalloutComponentNestableSchema,
-  answer: CalloutResponseAnswersNestable,
+  answer: CalloutResponseAnswers,
 ): boolean;
 
 export function calloutComponentValidator(
@@ -127,12 +127,12 @@ export function calloutComponentValidator(
     | CalloutResponseAnswer
     | CalloutResponseAnswer[]
     | undefined
-    | CalloutResponseAnswersNestable,
+    | CalloutResponseAnswers,
 ): boolean {
   if (isCalloutComponentOfBaseType(schema, CalloutComponentBaseType.NESTABLE)) {
     return calloutComponentNestableValidator(
       schema,
-      answer as CalloutResponseAnswersNestable,
+      answer as CalloutResponseAnswers,
     );
   }
 
