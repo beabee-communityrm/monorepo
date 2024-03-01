@@ -12,11 +12,6 @@ export const calloutComponentInputNumberValidator: ValidatorCalloutComponent<
   schema: CalloutComponentInputNumberSchema,
   answer: CalloutResponseAnswer,
 ): boolean => {
-  // If answer is not required and is undefined return true because we don't need to validate this
-  if (!schema.validate?.required && answer === undefined) {
-    return true;
-  }
-
   if (
     schema.validate &&
     !isNumberInRange(answer, schema.validate.min, schema.validate.max)

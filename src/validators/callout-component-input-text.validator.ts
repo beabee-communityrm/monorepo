@@ -9,17 +9,21 @@ import type {
 
 const validateRules = (
   rules: CalloutComponentInputTextRules | undefined,
-  answer: string,
+  answer: string | undefined,
 ): boolean => {
   // Nothing to do..
   if (!rules) {
     return true;
   }
 
+  if (!answer && rules.required) {
+    return false;
+  }
+
   // Check if the answer matches the provided pattern
   if (
     typeof rules.pattern === "string" && rules.pattern.length &&
-    !new RegExp(rules.pattern).test(answer)
+    !new RegExp(rules.pattern).test(answer || "")
   ) {
     return false;
   }
@@ -48,11 +52,6 @@ export const calloutComponentInputTextValidator: ValidatorCalloutComponent<
   schema: CalloutComponentInputTextSchema,
   answer: CalloutResponseAnswer,
 ): boolean => {
-  // If answer is not required and is undefined return `true` because we don't need to validate this
-  if (!schema.validate?.required && !answer) {
-    return true;
-  }
-
   if (typeof answer !== "string") {
     return false;
   }

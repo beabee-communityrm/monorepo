@@ -1,4 +1,6 @@
 {
+  "prettier.enable": false,
+  "eslint.enable": false,
   "deno.enable": true,
   "deno.lint": true,
   "deno.unstable": true,
@@ -9,6 +11,5 @@
     "./node_modules"
   ],
   "editor.defaultFormatter": "denoland.vscode-deno",
-  "editor.formatOnSave": true,
-  "typescript.format.enable": true
+  "editor.formatOnSave": true
 }

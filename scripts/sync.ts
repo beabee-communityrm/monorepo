@@ -76,11 +76,11 @@ const writeToFile = async () => {
   const encoder = new TextEncoder();
 
   // Write deno.jsonc
-  const denoJsoncString = JSON.stringify(denoJsoncObj, null, 2);
+  const denoJsoncString = JSON.stringify(denoJsoncObj, null, 2) + "\n";
   await Deno.writeFile("./deno.json", encoder.encode(denoJsoncString));
 
   // Write package.json
-  const packageJsonString = JSON.stringify(packageJsonObj, null, 2);
+  const packageJsonString = JSON.stringify(packageJsonObj, null, 2) + "\n";
   await Deno.writeFile("./package.json", encoder.encode(packageJsonString));
 };
 

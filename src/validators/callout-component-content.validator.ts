@@ -4,7 +4,8 @@ import type {
 } from "../types/index.ts";
 
 export const calloutComponentContentValidator: ValidatorCalloutComponent<
-  CalloutComponentContentSchema
+  CalloutComponentContentSchema,
+  unknown
 > = (
   _: CalloutComponentContentSchema,
   answer: unknown,

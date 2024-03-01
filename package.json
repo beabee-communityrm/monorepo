@@ -29,7 +29,9 @@
     "test": "deno task test",
     "test:deno": "deno task test:deno",
     "test:node": "deno task test:node",
-    "test:types": "tsc --noEmit --emitDeclarationOnly false",
+    "test:types": "deno task test:types",
+    "test:deno:types": "deno task test:deno:types",
+    "test:node:types": "tsc --noEmit --emitDeclarationOnly false",
     "test:node:esm": "node test/node/import.mjs",
     "test:node:cjs": "node test/node/require.cjs",
     "build": "deno task build",
@@ -39,7 +41,13 @@
     "build:types": "tsc && echo 'export * from \"./index.ts\";' > dist/types/index.d.cts",
     "generate:index": "deno task generate:index",
     "sync": "deno task sync",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "cache": "deno task cache",
+    "cache:deno": "deno task cache:deno",
+    "cache:node": "deno task cache:node",
+    "check": "deno task check",
+    "check:format": "deno task check:format",
+    "check:types": "deno task check:types"
   },
   "repository": {
     "type": "git",
@@ -56,6 +64,6 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "date-fns": "^3.2.0"
+    "date-fns": "^3.3.1"
   }
 }

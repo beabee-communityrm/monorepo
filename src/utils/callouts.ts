@@ -210,14 +210,14 @@ export function isAddressAnswer(
 }
 
 export function isFileUploadAnswer(
-  answer: CalloutResponseAnswer,
+  answer: CalloutResponseAnswer | undefined,
 ): answer is CalloutResponseAnswerFileUpload {
   return !!answer && typeof answer === "object" && "url" in answer;
 }
 
 export function stringifyAnswer(
   component: CalloutComponentSchema,
-  answer: CalloutResponseAnswer | CalloutResponseAnswer[],
+  answer: CalloutResponseAnswer | CalloutResponseAnswer[] | undefined,
 ): string {
   if (Array.isArray(answer)) {
     return answer.map((a) => stringifyAnswer(component, a)).join(", ");

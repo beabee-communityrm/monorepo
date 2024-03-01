@@ -38,23 +38,6 @@ Deno.test("Validate callout textarea form response", async (t) => {
   );
 
   await t.step(
-    `undefined should be invalid answer if answer is required`,
-    function () {
-      const schema: CalloutComponentInputTextAreaSchema = {
-        ...calloutTextarea1Form,
-      };
-      schema.validate = {
-        required: true,
-      };
-
-      assertEquals(
-        calloutComponentInputTextValidator(schema, undefined),
-        false,
-      );
-    },
-  );
-
-  await t.step(
     `"Hello world" should be valid answer for minLength 1 and maxLength 11 length validation rules`,
     function () {
       const schema: CalloutComponentInputTextAreaSchema = {

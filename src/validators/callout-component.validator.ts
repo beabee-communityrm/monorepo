@@ -14,56 +14,45 @@ import { calloutComponentInputTextValidator } from "./callout-component-input-te
 import { calloutComponentInputTimeValidator } from "./callout-component-input-time.validator.ts";
 import { calloutComponentInputUrlValidator } from "./callout-component-input-url.validator.ts";
 
-import { CalloutComponentType } from "../data/index.ts";
+import {
+  CalloutComponentBaseType,
+  CalloutComponentType,
+} from "../data/index.ts";
+import { isCalloutComponentOfBaseType } from "../utils/callouts.ts";
 
 import type {
+  CalloutComponentInputSchema,
   CalloutComponentNestableSchema,
   CalloutComponentSchema,
   CalloutResponseAnswer,
-  CalloutResponseAnswersNestable,
+  CalloutResponseAnswers,
   ValidatorCalloutComponent,
 } from "../types/index.ts";
 
-export const calloutComponentNestableValidator: ValidatorCalloutComponent<
-  CalloutComponentNestableSchema
-> = (
+export const calloutComponentNestableValidator = (
   schema: CalloutComponentNestableSchema,
-  answerMap: Record<string, CalloutResponseAnswer | CalloutResponseAnswer[]>,
+  answers: CalloutResponseAnswers,
 ): boolean => {
-  let valid = true;
   for (const component of schema.components) {
-    const answer = answerMap[component.key];
-    const answers = Array.isArray(answer) ? answer : [answer];
-    if (!answer) {
-      throw new Error(
-        `[calloutComponentNestableValidator] no answer`,
-      );
-    }
-    for (const _answersLevel2 of answers) {
-      const answersLevel2 = Array.isArray(_answersLevel2)
-        ? _answersLevel2
-        : [_answersLevel2];
-      for (const answer of answersLevel2) {
-        valid = calloutComponentValidator(component, answer) && valid;
-        if (!valid) {
-          return false;
-        }
-      }
+    const valid = calloutComponentValidator(
+      component,
+      answers[component.key],
+    );
+    if (!valid) {
+      return false;
     }
   }
-  return valid;
+  return true;
 };
 
 /**
  * A map of validator classes to be used for Callout component.
  */
-const calloutValidatorsMap: Record<
-  CalloutComponentSchema["type"],
+const calloutInputValidatorsMap: Record<
+  CalloutComponentInputSchema["type"],
   // deno-lint-ignore no-explicit-any
   ValidatorCalloutComponent<any>
 > = {
-  [CalloutComponentType.CONTENT]: calloutComponentContentValidator,
-
   // Input
   [CalloutComponentType.INPUT_EMAIL]: calloutComponentInputEmailValidator,
   [CalloutComponentType.INPUT_ADDRESS]: calloutComponentInputAddressValidator,
@@ -90,25 +79,73 @@ const calloutValidatorsMap: Record<
     calloutComponentInputSelectableValidator,
   [CalloutComponentType.INPUT_SELECTABLE_SELECTBOXES]:
     calloutComponentInputSelectableValidator,
-
-  // NESTABLE
-  [CalloutComponentType.NESTABLE_PANEL]: calloutComponentNestableValidator,
-  [CalloutComponentType.NESTABLE_WELL]: calloutComponentNestableValidator,
-  [CalloutComponentType.NESTABLE_TABS]: calloutComponentNestableValidator,
 };
-
-export const calloutComponentValidator = (
-  schema: CalloutComponentSchema,
-  answer: CalloutResponseAnswer | CalloutResponseAnswersNestable,
-): boolean => {
-  const validator = calloutValidatorsMap[schema.type];
+export function calloutComponentInputValidator(
+  schema: CalloutComponentInputSchema,
+  answer:
+    | CalloutResponseAnswer
+    | CalloutResponseAnswer[]
+    | undefined,
+): boolean {
+  const validator = calloutInputValidatorsMap[schema.type];
   if (!validator) {
     console.error(`No validator found for ${schema.type}`);
     return false;
   }
 
-  return validator(
-    schema,
-    answer as CalloutResponseAnswer,
-  );
-};
+  if (answer === undefined) {
+    return schema.validate?.required ? false : true;
+  }
+
+  const values = Array.isArray(answer) ? answer : [answer];
+  for (const value of values) {
+    const valid = validator(schema, value);
+    if (!valid) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+export function calloutComponentValidator(
+  schema: CalloutComponentSchema,
+  answer:
+    | CalloutResponseAnswer
+    | CalloutResponseAnswer[]
+    | undefined,
+): boolean;
+
+export function calloutComponentValidator(
+  schema: CalloutComponentNestableSchema,
+  answer: CalloutResponseAnswers,
+): boolean;
+
+export function calloutComponentValidator(
+  schema: CalloutComponentSchema,
+  answer:
+    | CalloutResponseAnswer
+    | CalloutResponseAnswer[]
+    | undefined
+    | CalloutResponseAnswers,
+): boolean {
+  if (isCalloutComponentOfBaseType(schema, CalloutComponentBaseType.NESTABLE)) {
+    return calloutComponentNestableValidator(
+      schema,
+      answer as CalloutResponseAnswers,
+    );
+  }
+
+  if (isCalloutComponentOfBaseType(schema, CalloutComponentBaseType.INPUT)) {
+    return calloutComponentInputValidator(
+      schema,
+      answer as CalloutResponseAnswer | CalloutResponseAnswer[] | undefined,
+    );
+  }
+
+  if (isCalloutComponentOfBaseType(schema, CalloutComponentBaseType.CONTENT)) {
+    return calloutComponentContentValidator(schema, answer as unknown);
+  }
+
+  throw new Error("Invalid schema type");
+}

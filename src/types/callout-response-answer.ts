@@ -7,8 +7,6 @@ export type CalloutResponseAnswer =
   | string
   | boolean
   | number
-  | null
-  | undefined
   | Record<string, boolean>
   | CalloutResponseAnswerAddress
   | CalloutResponseAnswerFileUpload;
