@@ -50,7 +50,7 @@ export const calloutComponentInputTextValidator: ValidatorCalloutComponent<
   CalloutComponentInputTextSchema
 > = (
   schema: CalloutComponentInputTextSchema,
-  answer: CalloutResponseAnswer | undefined,
+  answer: CalloutResponseAnswer,
 ): boolean => {
   if (typeof answer !== "string") {
     return false;

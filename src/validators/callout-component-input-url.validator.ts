@@ -10,7 +10,7 @@ export const calloutComponentInputUrlValidator: ValidatorCalloutComponent<
   CalloutComponentInputUrlSchema
 > = (
   _schema: CalloutComponentInputUrlSchema,
-  answer: CalloutResponseAnswer | undefined,
+  answer: CalloutResponseAnswer,
 ): boolean => {
   return isURL(answer);
 };

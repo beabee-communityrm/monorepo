@@ -11,7 +11,7 @@ export const calloutComponentInputFileValidator: ValidatorCalloutComponent<
   CalloutComponentInputFileSchema
 > = (
   _schema: CalloutComponentInputFileSchema,
-  answer: CalloutResponseAnswer | undefined,
+  answer: CalloutResponseAnswer,
 ): boolean => {
   // TODO: We just check the file URL at the moment, but we need to check the file size and type too
 

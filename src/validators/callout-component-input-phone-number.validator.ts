@@ -9,7 +9,7 @@ import type {
 export const calloutComponentInputPhoneNumberValidator:
   ValidatorCalloutComponent<CalloutComponentInputPhoneNumberSchema> = (
     _schema: CalloutComponentInputPhoneNumberSchema,
-    answer: CalloutResponseAnswer | undefined,
+    answer: CalloutResponseAnswer,
   ): boolean => {
     return isPhoneNumber(answer);
   };
