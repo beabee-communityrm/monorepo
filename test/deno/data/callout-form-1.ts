@@ -75,4 +75,5 @@ export const calloutForm1Schema: GetCalloutFormSchema = {
       navigation: calloutNavigation1,
     },
   ],
+  componentText: {},
 };

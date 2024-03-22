@@ -113,6 +113,7 @@ const formSchema: GetCalloutFormSchema = {
       },
     },
   ],
+  componentText: {},
 };
 
 Deno.test("stringifyAnswers should show a nice answer for", async (t) => {
