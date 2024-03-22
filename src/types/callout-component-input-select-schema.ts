@@ -14,4 +14,6 @@ export interface CalloutComponentInputSelectSchema
     [key: string]: unknown;
   };
   validate?: CalloutComponentInputSelectRules;
+  /** The placeholder for the component */
+  placeholder?: string;
 }

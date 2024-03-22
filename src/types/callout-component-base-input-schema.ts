@@ -27,4 +27,6 @@ export interface CalloutComponentBaseInputSchema
   input: true;
   /** The validation rules for input forms */
   validate?: CalloutComponentBaseRules;
+  /** The description for the component */
+  description?: string;
 }
