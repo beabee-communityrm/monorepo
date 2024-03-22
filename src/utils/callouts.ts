@@ -12,11 +12,11 @@ import type {
   CalloutComponentBaseSchema,
   CalloutComponentMap,
   CalloutComponentSchema,
-  CalloutFormSchema,
   CalloutResponseAnswer,
   CalloutResponseAnswerAddress,
   CalloutResponseAnswerFileUpload,
   FilterArgs,
+  SetCalloutFormSchema,
 } from "../types/index.ts";
 
 function convertValuesToOptions(
@@ -182,7 +182,7 @@ export function filterComponents(
 }
 
 export function getCalloutComponents(
-  formSchema: CalloutFormSchema,
+  formSchema: SetCalloutFormSchema,
 ): (CalloutComponentSchema & { slideId: string; fullKey: string })[] {
   return formSchema.slides.flatMap((slide) =>
     flattenComponents(slide.components).map((component) => ({
@@ -194,7 +194,7 @@ export function getCalloutComponents(
 }
 
 export function getCalloutFilters(
-  formSchema: CalloutFormSchema,
+  formSchema: SetCalloutFormSchema,
 ): Record<string, FilterArgs & { label: string }> {
   const items = getCalloutComponents(formSchema)
     .filter((c) => c.input)

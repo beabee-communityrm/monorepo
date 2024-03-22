@@ -1,6 +1,6 @@
-import type { CalloutNavigationSchema } from "../../../mod.ts";
+import type { GetCalloutNavigationSchema } from "../../../mod.ts";
 
-export const calloutNavigation1: CalloutNavigationSchema = {
+export const calloutNavigation1: GetCalloutNavigationSchema = {
   nextText: "Next",
   prevText: "Back",
   submitText: "Submit",

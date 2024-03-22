@@ -6,9 +6,9 @@ import {
   CalloutComponentInputSelectSchema,
   CalloutComponentInputTextFieldSchema,
   CalloutComponentType,
-  CalloutFormSchema,
   CalloutResponseAnswersSlide,
   getCalloutComponents,
+  GetCalloutFormSchema,
   stringifyAnswer,
 } from "../../mod.ts";
 
@@ -93,7 +93,7 @@ const answers: CalloutResponseAnswersSlide = {
   },
 };
 
-const formSchema: CalloutFormSchema = {
+const formSchema: GetCalloutFormSchema = {
   slides: [
     {
       id: "slide1",
