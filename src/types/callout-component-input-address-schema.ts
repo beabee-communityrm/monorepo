@@ -9,4 +9,6 @@ export interface CalloutComponentInputAddressSchema
   type: CalloutComponentType.INPUT_ADDRESS;
   /** The validation rules for the form */
   validate?: CalloutComponentInputAddressRules;
+  /** Placeholder for the form */
+  placeholder?: string;
 }

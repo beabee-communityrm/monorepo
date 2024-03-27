@@ -2,6 +2,9 @@ import type { Filters } from "../types/index.ts";
 import { ItemStatus } from "../data/index.ts";
 
 export const calloutFilters = {
+  id: {
+    type: "text",
+  },
   slug: {
     type: "text",
   },
@@ -41,7 +44,7 @@ export const calloutResponseFilters = {
     type: "contact",
     nullable: true,
   },
-  callout: {
+  calloutId: {
     type: "text",
   },
   createdAt: {
@@ -97,7 +100,7 @@ export const calloutTagFilters = {
   description: {
     type: "text",
   },
-  calloutSlug: {
+  calloutId: {
     type: "text",
   },
 } as const satisfies Filters;

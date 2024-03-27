@@ -20,9 +20,9 @@ import { calloutTime1Form } from "./components/callout-time-1-form.ts";
 import { calloutUrl1Form } from "./components/callout-url-1-form.ts";
 import { calloutNavigation1 } from "./callout-navigation-1.ts";
 
-import type { CalloutFormSchema } from "../../../mod.ts";
+import type { GetCalloutFormSchema } from "../../../mod.ts";
 
-export const calloutForm1Schema: CalloutFormSchema = {
+export const calloutForm1Schema: GetCalloutFormSchema = {
   slides: [
     {
       id: "slidej5rkpu",
@@ -75,4 +75,5 @@ export const calloutForm1Schema: CalloutFormSchema = {
       navigation: calloutNavigation1,
     },
   ],
+  componentText: {},
 };
