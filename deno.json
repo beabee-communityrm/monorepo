@@ -30,6 +30,7 @@
     "cache:node": "npm install",
     "generate:index": "deno run --allow-read --allow-write scripts/generate-index.ts && deno task format",
     "sync": "deno run --allow-read --allow-write scripts/sync.ts",
-    "prepublishOnly": "npm run prepublishOnly"
+    "prepublishOnly": "npm run prepublishOnly",
+    "npm:publish:latest": "npm run npm:publish:latest"
   }
 }

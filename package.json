@@ -47,7 +47,8 @@
     "cache:node": "deno task cache:node",
     "check": "deno task check",
     "check:format": "deno task check:format",
-    "check:types": "deno task check:types"
+    "check:types": "deno task check:types",
+    "npm:publish:latest": "npm publish --access public --tag latest"
   },
   "repository": {
     "type": "git",
