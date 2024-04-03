@@ -1,6 +1,6 @@
 {
   "name": "@beabee/beabee-common",
-  "version": "0.20.2",
+  "version": "0.20.3",
   "description": "Shared code between Beabee projects for Node.js, Deno and the browser",
   "type": "module",
   "main": "./dist/cjs/index.cjs",
@@ -47,7 +47,8 @@
     "cache:node": "deno task cache:node",
     "check": "deno task check",
     "check:format": "deno task check:format",
-    "check:types": "deno task check:types"
+    "check:types": "deno task check:types",
+    "npm:publish:latest": "npm publish --access public --tag latest"
   },
   "repository": {
     "type": "git",
@@ -61,9 +62,9 @@
   "homepage": "https://github.com/beabee-communityrm/beabee-common#readme",
   "devDependencies": {
     "@tsconfig/recommended": "^1.0.3",
-    "typescript": "^5.3.3"
+    "typescript": "^5.4.3"
   },
   "dependencies": {
-    "date-fns": "^3.3.1"
+    "date-fns": "^3.6.0"
   }
 }
