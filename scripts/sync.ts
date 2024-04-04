@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-explicit-any
 // Sync runtime configurations between package.json and deno.json.
 
 import { parse } from "https://deno.land/std@0.212.0/jsonc/mod.ts";
@@ -10,8 +11,54 @@ const packageJsonObj = parse(packageJson) as any;
 const denoJsonc = await Deno.readTextFile("./deno.json");
 const denoJsoncObj = parse(denoJsonc) as any;
 
+/**
+ * Compares two NPM version strings and returns the greater version.
+ * If versions are equal, returns the first version.
+ * Assumes semantic versioning.
+ *
+ * @param version1 The first version string.
+ * @param v2 The second version string.
+ * @returns The greater version string, or the first if they are equal.
+ */
+const compareNpmVersions = (v1: string, v2: string): string => {
+  // Remove any non-numeric/version related characters (e.g., ^, ~)
+  const cleanv1 = v1.replace(/[^0-9.]/g, "");
+  const cleanv2 = v2.replace(/[^0-9.]/g, "");
+
+  // Split versions into parts
+  const parts1 = cleanv1.split(".").map(Number);
+  const parts2 = cleanv2.split(".").map(Number);
+
+  console.debug(`Comparing ${v1} and ${v2}`);
+  console.debug(`Parts 1: ${parts1}`);
+  console.debug(`Parts 2: ${parts2}`);
+
+  // Compare each part
+  for (let i = 0; i < Math.max(parts1.length, parts2.length); i++) {
+    const part1 = parts1[i] || 0; // Default to 0 if undefined
+    const part2 = parts2[i] || 0; // Default to 0 if undefined
+
+    if (part1 > part2) return v1;
+    if (part2 > part1) return v2;
+  }
+
+  // If all parts are equal, return v1
+  return v1;
+};
+
+/** Sync NPM version with Deno version. */
+const syncVersions = () => {
+  const denoVersion = denoJsoncObj.version;
+  const npmVersion = packageJsonObj.version;
+
+  const newVersion = compareNpmVersions(npmVersion, denoVersion);
+
+  denoJsoncObj.version = newVersion;
+  packageJsonObj.version = newVersion;
+};
+
 /** Sync NPM dependencies from package.json with Deno dependencies in deno.json. */
-const syncDependencies = async () => {
+const syncDependencies = () => {
   // Get dependencies
   const dependencies = packageJsonObj.dependencies as Record<string, string>;
 
@@ -84,6 +131,7 @@ const writeToFile = async () => {
   await Deno.writeFile("./package.json", encoder.encode(packageJsonString));
 };
 
-await syncDependencies();
-await syncScripts();
+syncVersions();
+syncDependencies();
+syncScripts();
 await writeToFile();

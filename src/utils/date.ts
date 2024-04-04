@@ -52,7 +52,9 @@ export function parseDate(value: string, now = new Date()): [Date, DateUnit] {
     date = now;
     const unitsGroup = relativeMatch.groups?.units;
     if (unitsGroup) {
-      const unitMatches = unitsGroup.matchAll(relativeUnit) as UnitMatches;
+      const unitMatches = unitsGroup.matchAll(
+        relativeUnit,
+      ) as UnitMatches;
       units = [];
       for (const [_, unit, delta] of unitMatches) {
         date = add(date, { [dateUnitMap[unit]]: Number(delta) });
@@ -93,11 +95,11 @@ export function isDateBetween(
   let valid = isValidDate(date);
   if (start) {
     start = typeof start === "string" ? parseISO(start) : start;
-    valid = valid && date >= start;
+    valid = valid && date >= start!;
   }
   if (end) {
     end = typeof end === "string" ? parseISO(end) : end;
-    valid = valid && date <= end;
+    valid = valid && date <= end!;
   }
   return valid;
 }

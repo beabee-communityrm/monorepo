@@ -5,12 +5,10 @@
       "npm:@gjsify/esbuild-plugin-transform-ext@0.0.4": "npm:@gjsify/esbuild-plugin-transform-ext@0.0.4",
       "npm:@gjsify/esbuild-plugin-transform-ext@^0.0.4": "npm:@gjsify/esbuild-plugin-transform-ext@0.0.4",
       "npm:@tsconfig/recommended@^1.0.3": "npm:@tsconfig/recommended@1.0.3",
-      "npm:date-fns@3.3.1": "npm:date-fns@3.3.1",
+      "npm:date-fns@3.6.0": "npm:date-fns@3.6.0",
       "npm:esbuild@0.19.11": "npm:esbuild@0.19.11",
       "npm:esbuild@^0.19.11": "npm:esbuild@0.19.11",
-      "npm:rimraf@^5.0.5": "npm:rimraf@5.0.5",
-      "npm:typescript@5.3.3": "npm:typescript@5.3.3",
-      "npm:typescript@^5.3.3": "npm:typescript@5.3.3"
+      "npm:rimraf@^5.0.5": "npm:rimraf@5.0.5"
     },
     "npm": {
       "@esbuild/aix-ppc64@0.19.11": {
@@ -174,8 +172,8 @@
           "which": "which@2.0.2"
         }
       },
-      "date-fns@3.3.1": {
-        "integrity": "sha512-y8e109LYGgoQDveiEBD3DYXKba1jWf5BA8YU1FL5Tvm0BTdEfy54WLCwnuYWZNnzzvALy/QQ4Hov+Q9RVRv+Zw==",
+      "date-fns@3.6.0": {
+        "integrity": "sha512-fRHTG8g/Gif+kSh50gaGEdToemgfj74aRX3swtiouboip5JDLAyDE9F11nHMIcvOaXeOC6D7SpNhi7uFyB7Uww==",
         "dependencies": {}
       },
       "eastasianwidth@0.2.0": {
@@ -322,10 +320,6 @@
         "dependencies": {
           "ansi-regex": "ansi-regex@6.0.1"
         }
-      },
-      "typescript@5.3.3": {
-        "integrity": "sha512-pXWcraxM0uxAS+tN0AG/BF2TyqmHO014Z070UsJ+pFvYuRSq8KH8DmWpnbXe0pEPDHXZV3FcAbJkijJ5oNEnWw==",
-        "dependencies": {}
       },
       "which@2.0.2": {
         "integrity": "sha512-BLI3Tl1TW3Pvl70l3yq3Y64i+awpwXqsGBYWkkqMtnbXgrMD+yj7rhW0kuEDxzJaYXGjEW5ogapKNMEKNMjibA==",
@@ -703,13 +697,13 @@
   },
   "workspace": {
     "dependencies": [
-      "npm:date-fns@3.3.1"
+      "npm:date-fns@3.6.0"
     ],
     "packageJson": {
       "dependencies": [
         "npm:@tsconfig/recommended@^1.0.3",
-        "npm:date-fns@^3.3.1",
-        "npm:typescript@^5.3.3"
+        "npm:date-fns@^3.6.0",
+        "npm:typescript@^5.4.3"
       ]
     }
   }
