@@ -88,7 +88,6 @@ const syncScripts = () => {
     let isNodeWrap = false;
     let isNode = false;
     let isDeno = false;
-    syncVersions;
 
     if (denoScripts[scriptName]?.startsWith("deno task")) {
       isDenoWrap = true;
