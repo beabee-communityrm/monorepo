@@ -54,7 +54,7 @@ export function parseDate(value: string, now = new Date()): [Date, DateUnit] {
     if (unitsGroup) {
       const unitMatches = unitsGroup.matchAll(
         relativeUnit,
-      ) as unknown as UnitMatches;
+      ) as UnitMatches;
       units = [];
       for (const [_, unit, delta] of unitMatches) {
         date = add(date, { [dateUnitMap[unit]]: Number(delta) });
