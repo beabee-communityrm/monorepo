@@ -1,4 +1,4 @@
-// Build Node.js ESM module with esbuild.
+// Build browser bundle with esbuild.
 import { build, stop } from "https://deno.land/x/esbuild@v0.20.0/mod.js";
 import { denoPlugins } from "https://deno.land/x/esbuild_deno_loader@0.9.0/mod.ts";
 import { resolve } from "https://deno.land/std@0.212.0/path/mod.ts";
