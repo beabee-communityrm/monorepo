@@ -83,3 +83,11 @@ export const contactFilters = {
 } as const satisfies Filters;
 
 export type ContactFilterName = keyof typeof contactFilters;
+
+export const contactCalloutFilters = {
+  hasAnswered: {
+    type: "boolean",
+  },
+};
+
+export type ContactCalloutFilterName = keyof typeof contactCalloutFilters;
