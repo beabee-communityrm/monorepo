@@ -1,4 +1,4 @@
-export interface ContentShare {
+export interface ContentShareData {
   title: string;
   description: string;
   image: string;
