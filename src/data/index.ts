@@ -5,6 +5,7 @@ export * from "./callout-component-input-types.ts";
 export * from "./callout-component-nestable-types.ts";
 export * from "./callout-component-type.ts";
 export * from "./callout-component-types.ts";
+export * from "./content-ids.ts";
 export * from "./contribution-period.ts";
 export * from "./contribution-type.ts";
 export * from "./item-status.ts";
