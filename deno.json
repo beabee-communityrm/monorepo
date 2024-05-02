@@ -7,8 +7,8 @@
   },
   "tasks": {
     "clear": "rm -rf ./dist/",
-    "lint": "deno lint mod.ts src",
-    "format": "deno fmt",
+    "lint": "deno lint mod.ts",
+    "format": "deno fmt src scripts test",
     "check": "deno task check:format && deno task check:types",
     "check:types": "deno check mod.ts",
     "check:format": "deno task format --check",
