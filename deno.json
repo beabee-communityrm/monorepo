@@ -26,7 +26,7 @@
     "build:node:cjs": "deno run --allow-read --allow-write --allow-env --allow-run --allow-net ./scripts/esbuild.cjs.ts",
     "build:browser": "deno run --allow-read --allow-write --allow-env --allow-run --allow-net ./scripts/esbuild.browser.ts",
     "build:types": "npm run build:types",
-    "cache": "deno task check:types && deno task cache:deno && deno task cache:node",
+    "cache": "deno task cache:deno && deno task cache:node",
     "cache:deno": "deno cache --reload mod.ts",
     "cache:node": "npm install",
     "generate:index": "deno run --allow-read --allow-write scripts/generate-index.ts && deno task format",
