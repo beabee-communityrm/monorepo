@@ -34,6 +34,10 @@ export const calloutFilters = {
   hidden: {
     type: "boolean",
   },
+  channels: {
+    type: "array",
+    nullable: true,
+  },
 } as const satisfies Filters;
 
 export const calloutResponseFilters = {
@@ -66,10 +70,6 @@ export const calloutResponseFilters = {
   },
   answers: {
     type: "blob",
-  },
-  channels: {
-    type: "array",
-    nullable: true,
   },
 } as const satisfies Filters;
 
