@@ -67,6 +67,10 @@ export const calloutResponseFilters = {
   answers: {
     type: "blob",
   },
+  channels: {
+    type: "array",
+    nullable: true,
+  },
 } as const satisfies Filters;
 
 export const calloutResponseCommentFilters = {
