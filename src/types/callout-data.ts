@@ -1,12 +1,16 @@
+import type { CalloutResponseViewSchema } from "./index.ts";
+
+import type { CalloutAccess, CalloutCaptcha } from "../data/index.ts";
+
 export interface CalloutData {
-  slug: string | null;
-  title: string;
-  excerpt: string;
+  slug?: string;
   image: string;
   starts: Date | null;
   expires: Date | null;
   allowUpdate: boolean;
   allowMultiple: boolean;
-  access: "member" | "guest" | "anonymous" | "only-anonymous";
+  access: CalloutAccess;
+  captcha: CalloutCaptcha;
   hidden: boolean;
+  responseViewSchema?: CalloutResponseViewSchema | null;
 }

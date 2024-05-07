@@ -1,3 +1,6 @@
+export * from "./callout-access.ts";
+export * from "./callout-captcha.ts";
+export * from "./callout-channel.ts";
 export * from "./callout-component-base-type.ts";
 export * from "./callout-component-input-selectable-types.ts";
 export * from "./callout-component-input-text-types.ts";
