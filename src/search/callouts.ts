@@ -108,3 +108,18 @@ export const calloutTagFilters = {
     type: "text",
   },
 } as const satisfies Filters;
+
+export const calloutChannelFilters = {
+  id: {
+    type: "text",
+  },
+  name: {
+    type: "text",
+  },
+  description: {
+    type: "text",
+  },
+  calloutId: {
+    type: "text",
+  },
+} as const satisfies Filters;

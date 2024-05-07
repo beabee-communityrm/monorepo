@@ -4,6 +4,7 @@ export * from "./api-key-filter-name.ts";
 export * from "./array-filter-args.ts";
 export * from "./base-filter-args.ts";
 export * from "./base-validated-rule.ts";
+export * from "./callout-channel-filter-name.ts";
 export * from "./callout-component-base-input-schema.ts";
 export * from "./callout-component-base-input-selectable-schema.ts";
 export * from "./callout-component-base-input-text-schema.ts";
