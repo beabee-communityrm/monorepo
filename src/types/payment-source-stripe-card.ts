@@ -11,7 +11,7 @@ export interface PaymentSourceStripeCardActual {
 export interface PaymentSourceStripeCardLink {
   method: PaymentMethod.StripeCard;
   isLink: true;
-  emai: string;
+  email: string;
 }
 
 export type PaymentSourceStripeCard =
