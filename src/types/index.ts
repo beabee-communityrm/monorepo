@@ -79,6 +79,7 @@ export * from "./payment-source-go-cardless-direct-debit.ts";
 export * from "./payment-source-manual.ts";
 export * from "./payment-source-stripe-bacs.ts";
 export * from "./payment-source-stripe-card.ts";
+export * from "./payment-source-stripe-link.ts";
 export * from "./payment-source-stripe-paypal.ts";
 export * from "./payment-source-stripe-sepa.ts";
 export * from "./payment-source.ts";
