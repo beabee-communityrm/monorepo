@@ -17,8 +17,9 @@ export const paymentFilters = {
   status: {
     type: "enum",
     options: [
-      PaymentStatus.Successful,
+      PaymentStatus.Draft,
       PaymentStatus.Pending,
+      PaymentStatus.Successful,
       PaymentStatus.Failed,
       PaymentStatus.Cancelled,
     ],
