@@ -34,6 +34,10 @@ export const calloutFilters = {
   hidden: {
     type: "boolean",
   },
+  channels: {
+    type: "array",
+    nullable: true,
+  },
 } as const satisfies Filters;
 
 export const calloutResponseFilters = {
@@ -91,6 +95,21 @@ export const calloutResponseCommentFilters = {
 } as const satisfies Filters;
 
 export const calloutTagFilters = {
+  id: {
+    type: "text",
+  },
+  name: {
+    type: "text",
+  },
+  description: {
+    type: "text",
+  },
+  calloutId: {
+    type: "text",
+  },
+} as const satisfies Filters;
+
+export const calloutChannelFilters = {
   id: {
     type: "text",
   },

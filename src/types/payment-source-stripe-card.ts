@@ -1,6 +1,7 @@
+import type { PaymentSourceBase } from "./index.ts";
 import type { PaymentMethod } from "../data/index.ts";
 
-export interface PaymentSourceStripeCardActual {
+export interface PaymentSourceStripeCardActual extends PaymentSourceBase {
   method: PaymentMethod.StripeCard;
   isLink: false;
   last4: string;
@@ -8,7 +9,7 @@ export interface PaymentSourceStripeCardActual {
   expiryYear: number;
 }
 
-export interface PaymentSourceStripeCardLink {
+export interface PaymentSourceStripeCardLink extends PaymentSourceBase {
   method: PaymentMethod.StripeCard;
   isLink: true;
   email: string;

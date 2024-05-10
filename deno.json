@@ -1,14 +1,14 @@
 {
   "name": "@beabee/beabee-common",
-  "version": "0.20.10",
+  "version": "0.21.0",
   "description": "Shared code between Beabee projects for Node.js, Deno and the browser",
   "imports": {
     "date-fns": "npm:date-fns@3.6.0"
   },
   "tasks": {
     "clear": "rm -rf ./dist/",
-    "lint": "deno lint mod.ts src",
-    "format": "deno fmt",
+    "lint": "deno lint mod.ts",
+    "format": "deno fmt src scripts test",
     "check": "deno task check:format && deno task check:types",
     "check:types": "deno check mod.ts",
     "check:format": "deno task format --check",
@@ -26,7 +26,7 @@
     "build:node:cjs": "deno run --allow-read --allow-write --allow-env --allow-run --allow-net ./scripts/esbuild.cjs.ts",
     "build:browser": "deno run --allow-read --allow-write --allow-env --allow-run --allow-net ./scripts/esbuild.browser.ts",
     "build:types": "npm run build:types",
-    "cache": "deno task check:types && deno task cache:deno && deno task cache:node",
+    "cache": "deno task cache:deno && deno task cache:node",
     "cache:deno": "deno cache --reload mod.ts",
     "cache:node": "npm install",
     "generate:index": "deno run --allow-read --allow-write scripts/generate-index.ts && deno task format",
