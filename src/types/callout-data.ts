@@ -1,6 +1,10 @@
 import type { CalloutResponseViewSchema } from "./index.ts";
 
-import type { CalloutAccess, CalloutCaptcha, CalloutChannel } from "../data/index.ts";
+import type {
+  CalloutAccess,
+  CalloutCaptcha,
+  CalloutChannel,
+} from "../data/index.ts";
 
 export interface CalloutData {
   slug?: string;
