@@ -88,6 +88,6 @@ export const contactCalloutFilters = {
   hasAnswered: {
     type: "boolean",
   },
-};
+} as const satisfies Filters;
 
 export type ContactCalloutFilterName = keyof typeof contactCalloutFilters;

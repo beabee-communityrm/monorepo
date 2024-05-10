@@ -3,14 +3,16 @@ import type {
   PaymentSourceManual,
   PaymentSourceStripeBACS,
   PaymentSourceStripeCard,
+  PaymentSourceStripeLink,
   PaymentSourceStripePayPal,
   PaymentSourceStripeSEPA,
 } from "./index.ts";
 
 export type PaymentSource =
-  | PaymentSourceStripeCard
   | PaymentSourceGoCardlessDirectDebit
-  | PaymentSourceStripeBACS
-  | PaymentSourceStripeSEPA
   | PaymentSourceManual
-  | PaymentSourceStripePayPal;
+  | PaymentSourceStripeBACS
+  | PaymentSourceStripeCard
+  | PaymentSourceStripeLink
+  | PaymentSourceStripePayPal
+  | PaymentSourceStripeSEPA;
