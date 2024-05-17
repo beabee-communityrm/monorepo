@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Apply link styles to i18n markdown text */
+.content-i18n {
+  a {
+    @apply underline;
+  }
+}
+
+/* Apply standard styles to v-html content */
+.content-message,
+/* Apply standard styles to FormIO content component */
+.formio-component-content,
+/* Apply standard styles to FormIO HTML editor */
+.formio-dialog .formio-component-html .ck-content {
+  p,
+  ul,
+  ol {
+    margin: 0;
+  }
+
+  /* Force empty paragraphs to have height */
+  p:empty::after {
+    content: '\00A0';
+  }
+
+  /* List styles */
+  ul,
+  ol {
+    @apply relative ml-2 list-none pl-6;
+    li::before {
+      @apply absolute left-0;
+    }
+  }
+
+  ul li::before {
+    @apply pl-1 font-bold;
+    content: '•';
+  }
+
+  ol {
+    counter-reset: list;
+    li::before {
+      counter-increment: list;
+      content: counter(list) '.';
+    }
+  }
+
+  /* Link and header styles */
+  a {
+    @apply text-link underline;
+  }
+  h3 {
+    @apply font-title text-xl font-semibold;
+  }
+}

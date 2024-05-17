@@ -1,0 +1,50 @@
+{
+  "en": {
+    "baseLocale": "en",
+    "name": "English",
+    "displayName": "English",
+    "adminLocale": "en"
+  },
+  "de": {
+    "baseLocale": "de",
+    "name": "Deutsch (formal)",
+    "displayName": "Deutsch",
+    "adminLocale": "de"
+  },
+  "de@informal": {
+    "baseLocale": "de",
+    "name": "Deutsch (informal)",
+    "displayName": "Deutsch",
+    "adminLocale": "de@informal"
+  },
+  "it": {
+    "baseLocale": "it",
+    "name": "Italiano",
+    "displayName": "Italiano",
+    "adminLocale": "en"
+  },
+  "ru": {
+    "baseLocale": "ru",
+    "name": "Русский",
+    "displayName": "Русский",
+    "adminLocale": "en"
+  },
+  "pt": {
+    "baseLocale": "pt",
+    "name": "Português",
+    "displayName": "Português",
+    "adminLocale": "en"
+  },
+  "nl": {
+    "baseLocale": "nl",
+    "name": "Nederlands (callouts only)",
+    "displayName": "Nederlands",
+    "adminLocale": "en"
+  },
+  "de@easy": {
+    "baseLocale": "de",
+    "name": "Deutsch (easy, callouts only)",
+    "displayName": "Leichte Sprache",
+    "adminLocale": "de"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "parser": "vue-eslint-parser",
+  "parserOptions": {
+    "parser": "@typescript-eslint/parser",
+    "project": "./tsconfig.json",
+    "extraFileExtensions": [".vue"]
+  },
+  "plugins": ["@typescript-eslint"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:eslint-plugin-vue/vue3-recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "eslint-config-prettier"
+  ],
+  "rules": {
+    "vue/no-v-html": "off",
+    "no-console": "warn"
+  }
+}

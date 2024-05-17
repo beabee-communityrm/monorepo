@@ -1,0 +1,10 @@
+@font-face {
+  font-family: 'Helvetica Neue LT';
+  font-weight: bold;
+  font-style: normal;
+  font-display: auto;
+  unicode-range: U+000-5FF;
+  src:
+    url('../fonts/Helvetica Neue LT W05 75 Bold.woff2') format('woff2'),
+    url('../fonts/Helvetica Neue LT W05 75 Bold.woff') format('woff');
+}

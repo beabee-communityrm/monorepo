@@ -1,0 +1,40 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  check:
+    name: Check
+    uses: ./.github/workflows/check.yml
+
+  build-push:
+    name: Build and push
+    uses: ./.github/workflows/build-push.yml
+    needs: [check]
+    secrets: inherit
+
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    needs: [build-push]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          repository: beabee-communityrm/hive-deploy-stack
+          ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - run: |
+          git config --global user.name "Deploy bot"
+          git config --global user.email "<>"
+
+          echo -n ${{ needs.build-push.outputs.version }} > FRONTEND_VERSION
+          ./update.sh
+
+          git add FRONTEND_VERSION docker-compose.yml
+          if ! git diff --quiet --cached; then
+            git commit -m "Deploy frontend ${{ needs.build-push.outputs.version }}"
+            git push
+          fi

@@ -1,0 +1,220 @@
+.callout-form-builder {
+  .drag-and-drop-alert {
+    @apply mb-4 border border-dashed border-primary p-4;
+  }
+
+  .formbuilder {
+    @apply flex flex-row-reverse justify-end gap-8;
+  }
+
+  .formarea {
+    @apply max-w-2xl flex-1;
+  }
+
+  .formcomponents {
+    @apply flex-initial basis-[15rem];
+  }
+
+  .formcomponent {
+    @apply m-0 block w-full cursor-pointer rounded border border-primary-70 bg-white px-2 text-sm text-primary-80 hover:border-primary hover:bg-primary-10 hover:text-primary !important;
+    &.gu-transit {
+      @apply mb-4 text-base !important;
+    }
+  }
+
+  .form-builder-panel {
+    @apply mb-2;
+  }
+
+  .form-builder-group-header {
+    @apply cursor-pointer rounded bg-primary-20 text-sm font-semibold hover:bg-primary-40;
+  }
+
+  .builder-group-button {
+    @apply w-full p-2;
+  }
+
+  .builder-sidebar_search {
+    @apply hidden;
+  }
+
+  #group-container-custom,
+  #group-container-custom2,
+  #group-container-layout {
+    @apply flex w-full flex-col gap-1 border border-primary-10 p-2;
+  }
+
+  .component-settings-button {
+    @apply h-auto w-8 bg-white text-center text-base;
+  }
+
+  .form-radio-nextslide {
+    @apply text-sm text-body-80;
+  }
+}
+
+.formio-dialog {
+  @apply font-body text-base text-body !important;
+
+  .formio-dialog-content {
+    @apply bg-white !important;
+  }
+
+  .nav {
+    @apply mb-4 flex flex-wrap border-b border-primary-40;
+  }
+  .nav-item {
+    @apply p-3 text-sm leading-none;
+    &.active {
+      @apply border-b-2 border-link font-bold text-link;
+    }
+
+    /* Hide Logic and Layout tabs */
+    &:nth-last-child(2),
+    &:last-child {
+      @apply hidden;
+    }
+  }
+  .nav-link {
+    @apply p-0 !important;
+  }
+
+  .form-group {
+    @apply mb-3;
+  }
+
+  .table {
+    @apply w-full border-collapse;
+    thead {
+      @apply border-b border-primary-20 text-sm;
+    }
+    th {
+      @apply text-left;
+    }
+    th,
+    td {
+      @apply p-1;
+    }
+    .form-group {
+      @apply mb-0;
+    }
+  }
+
+  .card[class*='border'] {
+    @apply border-grey-light;
+    .card-header {
+      @apply border-b border-grey-light;
+    }
+  }
+  .card-header,
+  .card-body {
+    @apply p-3;
+  }
+  .card-title {
+    @apply text-base font-semibold;
+  }
+
+  .formio-component-tabs > .card {
+    & > .card-header,
+    & > .card-body {
+      @apply p-0;
+    }
+  }
+
+  .preview-panel .card-body {
+    @apply bg-white;
+  }
+
+  /* Hide first row (contains a header and link to help) */
+  .component-edit-container > .row:first-child {
+    @apply hidden;
+  }
+}
+
+.formio-component-mask,
+.formio-component-modalEdit,
+.formio-component-applyMaskOn,
+.formio-component-allowMultipleMasks,
+.formio-component-inputMask,
+.formio-component-displayMask,
+.formio-component-customClass,
+.formio-component-widget\.type,
+.formio-component-prefix,
+.formio-component-suffix,
+.formio-component-tooltip,
+.formio-component-errorLabel,
+.formio-component-validate\.customMessage,
+.formio-component-validate\.pattern,
+.formio-component-tableView,
+.formio-component-persistent,
+.formio-component-redrawOn,
+.formio-component-spellcheck,
+.formio-component-encrypted,
+.formio-component-inputFormat,
+.formio-component-clearOnHide,
+.formio-component-protected,
+.formio-component-customDefaultValuePanel,
+.formio-component-calculateValuePanel,
+.formio-component-calculateServer,
+.formio-component-allowCalculateOverride,
+.formio-component-dbIndex,
+.formio-component-custom-validation-js,
+.formio-component-json-validation-json,
+.formio-component-errors,
+.formio-component-tags,
+.formio-component-properties,
+.formio-component-customConditionalPanel,
+.formio-component-kickbox,
+.formio-component-labelMargin,
+.formio-component-inputType,
+.formio-component-labelWidth,
+.formio-component-editor,
+.formio-component-shortcut,
+.formio-component-dataType,
+.formio-component-idPath,
+.formio-component-template,
+.formio-component-refreshOn,
+.formio-component-refreshOnBlur,
+.formio-component-clearOnRefresh,
+.formio-component-customOptions,
+.formio-component-useExactSearch,
+.formio-component-searchEnabled,
+.formio-component-selectThreshold,
+.formio-component-optionsLabelPosition,
+.formio-component-readOnlyValue,
+.formio-component-displayInTimezone,
+.formio-component-panel-disable-function,
+.formio-component-enableMinDateInput,
+.formio-component-enableMaxDateInput,
+.formio-component-refreshOnChange,
+.formio-component-labelPosition {
+  @apply !hidden;
+}
+
+body:not(.show-advanced-options) {
+  /* Hide lots of options */
+  .formio-component-autocomplete,
+  .formio-component-tabindex,
+  .formio-component-hideLabel,
+  .formio-component-showWordCount,
+  .formio-component-showCharCount,
+  .formio-component-autofocus,
+  .formio-component-disabled,
+  .formio-component-theme,
+  .formio-component-size,
+  .formio-component-leftIcon,
+  .formio-component-rightIcon,
+  .formio-component-action,
+  .formio-component-saveOnEnter,
+  .formio-component-block,
+  .formio-component-shortcutButtons,
+  .formio-component-validateOn,
+  /* Form upload component */
+  .formio-component-dir,
+  /* .formio-component-image, */
+  .formio-component-uploadOnly,
+  .formio-component-fileTypes,
+  .formio-component-fileNameTemplate {
+    @apply hidden;
+  }
+}
