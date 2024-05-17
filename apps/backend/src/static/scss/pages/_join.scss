@@ -1,0 +1,382 @@
+$bp-join-why: 768px;
+
+.join-header {
+	position: relative;
+	margin: -22px 0 4rem;
+	overflow: hidden;
+	padding: 2rem;
+	background-color: $c-black;
+	@media (min-width: $bp-join-form) {
+		min-height: 320px;
+	}
+}
+
+
+.join-header__bg,
+.join-header-static {
+	background: url(https://static.thebristolcable.org/uploads/2020/05/AGM19_IMG_7049-%E2%94%AC%C2%AEChelseyCliff-tight-crop-1080x607.jpg) no-repeat top center;
+	@media (min-width: $bp-join-form) {
+		background-image: url(https://static.thebristolcable.org/uploads/2020/05/AGM19_IMG_7049-%E2%94%AC%C2%AEChelseyCliff-tight-crop-1900x1080.jpg);
+	}
+}
+
+.join-header__bg {
+	margin: -2rem -2rem 2rem;
+	padding-bottom: 56.25%;
+	background-size: 100%;
+
+	@media (min-width: $bp-join-form) {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		margin: 0;
+		padding-bottom: 0;
+		background-image: url(https://static.thebristolcable.org/uploads/2020/05/AGM19_IMG_7049-%E2%94%AC%C2%AEChelseyCliff-tight-crop-1900x1080.jpg);
+		background-size: cover;
+		background-attachment: fixed;
+	}
+}
+
+.join-header-static {
+	padding-bottom: 56.25%;
+	background-size: cover;
+	background-position: center 35%;
+	@media (min-width: $bp-join-form) {
+		padding-bottom: 0;
+		min-height: 320px;
+	}
+}
+
+.join-form {
+	background-color: transparentize(white, 0.1);
+	position: relative;
+	padding: 2rem;
+	margin: -2rem;
+
+	@media (min-width: $bp-join-form) {
+		width: 50%;
+		max-width: 600px;
+		margin: 0 auto;
+	}
+}
+
+.join-referrer {
+	margin-bottom: 22px;
+
+	@media (min-width: $bp-join-form) {
+		display: flex;
+		align-items: center;
+	}
+
+	p {
+		margin-bottom: 0;
+	}
+}
+
+.join-referrer-icon {
+	margin-right: 1rem;
+	float: left;
+}
+
+.join-referrer-hello {
+	margin-top: 0;
+	min-height: 105px;
+	display: flex;
+	align-items: center;
+	@media (min-width: $bp-join-form) {
+		display: block;
+		min-height: 0;
+	}
+}
+
+.join-title {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0 0 2rem;
+	font-size: 48px;
+}
+
+.join-paper {
+	width: 40px;
+	margin-right: 0.5rem;
+}
+
+.join-options {
+	list-style: none;
+	margin: 0 -0.5rem 2rem;
+	padding: 0;
+	@media (min-width: 768px) {
+		display: flex;
+	}
+}
+
+.join-options__opt {
+	flex: 1 1 100%;
+	margin: 0 0.5rem 1rem;
+
+	@media (min-width: $bp-join-form) {
+		margin-bottom: 0;
+		max-width: 180px;
+	}
+
+	@include custom-radio {
+		background-color: $c-blue--dark2;
+		border-color: transparent;
+	}
+	@include custom-radio--is(hover) {
+		border-color: transparent;
+	}
+	@include custom-radio--is(focus) {
+		background-color: $c-blue--dark1;
+	}
+	@include custom-radio--is(invalid, checked) {
+		background-color: $c-blue;
+	}
+}
+
+.join-field {
+	height: 48px;
+	border: 1px solid $c-black;
+	border-radius: 3px;
+	background-color: transparentize(white, 0.3);
+	padding: 0 15px;
+	margin-bottom: 2rem;
+	color: $c-black;
+	font-family: "Roboto", sans-serif;
+	font-size: 24px;
+}
+
+.join-field__input {
+	width: 100%;
+	height: 100%;
+	font-size: inherit !important; // Override theme
+	background: none;
+	border: 0;
+	outline: 0;
+
+	-moz-appearance: textfield;
+	&::-webkit-inner-spin-button,
+	&::-webkit-outer-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
+
+	&,
+	&:focus {
+		box-shadow: none !important; // Override theme
+	}
+}
+
+.join-field-group {
+	@media (min-width: $bp-join-form) {
+		display: flex;
+		margin: 0 -0.5rem -2rem;
+
+		& > .join-field {
+			margin-left: 0.5rem;
+			margin-right: 0.5rem;
+		}
+	}
+}
+
+.join-field-message {
+	height: 10rem;
+}
+
+.join-field-date {
+	width: 230px;
+}
+
+.join-other-amount {
+	body.has-js & {
+		margin-top: -1rem;
+	}
+
+	@include custom-radio;
+	@include custom-radio--is(invalid, checked) {
+		.join-other-amount-box {
+			border-color: $c-blue;
+			background-color: white;
+		}
+	}
+}
+
+.join-other-amount-box {
+	@extend .join-field;
+	border-width: 3px;
+	border-color: $c-blue--dark2;
+	background-color: transparentize(white, 0.5);
+
+	@media (min-width: $bp-join-form) {
+		text-align: center;
+		width: calc(33% - 0.5rem);
+	}
+
+	transition: border-color 0.2s, background-color 0.2s;
+	&:hover {
+		border-color: $c-blue--dark1;
+	}
+}
+
+.join-other-amount-box__input {
+	@extend .join-field__input;
+	width: 45px;
+	text-align: right;
+
+}
+
+.join-monthly {
+	font-weight: normal;
+	font-size: 14px;
+}
+
+.join-charge {
+	margin-bottom: 0.5rem;
+}
+
+.join-btn {
+	width: 100%;
+}
+
+.join-info {
+	opacity: 0.9;
+
+	& > a {
+		color: inherit;
+		text-decoration: underline;
+	}
+}
+
+.join-secure {
+	position: relative;
+	padding-left: 30px;
+	margin: 0;
+
+	& > svg {
+		position: absolute;
+		top: 50%;
+		left: 0;
+		margin-top: -12px;
+		width: 24px;
+		height: 24px;
+	}
+}
+
+.join-ts {
+	text-shadow: 0 0 5px $c-black;
+}
+
+.join-why {
+	text-align: center;
+	margin-bottom: 2rem;
+}
+
+.join-reasons {
+	list-style: none;
+	margin: 2rem auto 6rem;
+	padding: 0;
+
+	li {
+		margin-bottom: 4rem;
+	}
+
+	img {
+		display: block;
+		width: 100%;
+		margin-bottom: 20px;
+	}
+	
+	.pull-left img,
+	.pull-right img {
+		@media (min-width: $bp-join-why) {
+			margin-top: -46px;
+		}
+	}
+
+	h2 span {
+		color: $c-blue;
+	}
+}
+
+.join-footer {
+	background-color: $c-black;
+	background: url(https://static.thebristolcable.org/uploads/2020/05/Members_meeting_windmillhill2-1080x603.jpg) no-repeat center;
+	background-size: cover;
+	color: white;
+	margin-bottom: -22px;
+	padding: 4rem;
+
+	@media (min-width: $bp-join-why) {
+		background-image: url(https://static.thebristolcable.org/uploads/2020/05/Members_meeting_windmillhill2-1536x858.jpg);
+	}
+}
+
+.join-gift-reasons {
+	list-style: none;
+	padding: 0;
+	margin: 0 0 1rem;
+	font-weight: bold;
+
+	& > li {
+		position: relative;
+		margin-bottom: 1.5rem;
+		padding-left: calc(24px + 1rem);
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+
+		&::before {
+			content: "";
+			position: absolute;
+			left: 0;
+			vertical-align: middle;
+			margin-right: 0.5rem;
+			width: 24px;
+			height: 24px;
+			background: url(/static/imgs/gift.png);
+			background-size: 100% 100%;
+		}
+	}
+}
+
+.join-gift-submit {
+	position: absolute;
+	opacity: 0;
+}
+
+.join-gift-btn {
+	small {
+		display: block;
+		font-size: 2rem;
+		font-weight: normal;
+	}
+}
+
+.join-gift-mug {
+	float: right;
+	width: 100px;
+	margin-left: 1rem;
+}
+
+.join-link {
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.join-pay-fee[readonly] {
+	opacity: 0.5;
+}
+
+.join-reason-more {
+	margin-top: 10px;
+}
+
+.join-reason-box {
+	min-width: 100%;
+	max-width: 100%;
+	min-height: 70px;
+}

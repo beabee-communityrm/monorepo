@@ -1,0 +1,14 @@
+dt Paying fee?
+dd= contribution.payFee ? 'Yes' : 'No'
+dt Method
+dd= paymentMethod
+if access('superadmin')
+	dt Customer ID
+	dd= contribution.customerId
+	dt Mandate ID
+	dd= contribution.mandateId
+	dt Subscription ID
+	dd= contribution.subscriptionId
+if contribution.cancelledAt
+	dt Cancelled
+	dd= moment(contribution.cancelledAt).format('HH:mm:ss DD/MM/YYYY')

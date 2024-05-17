@@ -1,0 +1,34 @@
+.member-search-options {
+	margin-bottom: 1rem;
+}
+
+.member-search-group {
+	.form-group {
+		margin-bottom: 0.5rem;
+		margin-right: 1rem;
+	}
+	.control-label {
+		margin-right: 0.5rem;
+	}
+}
+
+.member-table {
+	tr {
+		cursor: pointer;
+	}
+	td {
+		outline: 0;
+	}
+}
+
+.member-tag {
+	margin-left: 1rem;
+	.glyphicon.glyphicon-remove {
+		font-size: 1rem;
+		margin-left: 0.5rem;
+	}
+}
+
+.member-add-tag {
+	width: 30%;
+}

@@ -1,0 +1,31 @@
+extends /views/base.pug
+
+block prepend title
+	- title = 'Export'
+
+block contents
+	.row
+		.col-md-12
+			+page_header(exportDetails.description)
+
+			dl.dl-horizontal
+				dt Status
+				dd= status
+				dt Count
+				dd= data.length
+			
+			if data.length > 0
+				div(style='overflow-x: auto')
+					table.table
+						thead
+							tr
+								each field in fields
+									th= field
+						tbody
+							each row in data
+								tr
+									each value in row
+										td= value
+			else
+				.alert.alert-info No data
+
