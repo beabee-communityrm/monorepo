@@ -16,4 +16,7 @@ git subtree add --prefix=apps/backend backend master
 git remote add -f frontend https://github.com/beabee-communityrm/beabee-frontend
 git subtree add --prefix=apps/frontend frontend main
 
+# Add common
+git remote add -f common https://github.com/beabee-communityrm/beabee-common
+git subtree add --prefix=packages/common common main
 ```
