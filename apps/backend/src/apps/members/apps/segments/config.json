@@ -1,6 +1,0 @@
-{
-  "title": "Segments",
-  "path": "segments",
-  "hidden": true,
-  "permissions": ["admin", "superadmin"]
-}

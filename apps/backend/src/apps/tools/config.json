@@ -1,8 +1,0 @@
-{
-  "title": "Tools",
-  "path": "tools",
-  "permissions": ["superadmin", "admin"],
-  "menu": "main",
-  "hidden": true,
-  "priority": 1
-}

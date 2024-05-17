@@ -1,7 +1,0 @@
-{
-  "title": "Projects",
-  "path": "projects",
-  "permissions": ["superadmin", "admin"],
-  "menu": "main",
-  "priority": 3
-}

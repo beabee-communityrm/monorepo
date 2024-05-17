@@ -1,7 +1,0 @@
-{
-  "title": "Emails",
-  "path": "emails",
-  "permissions": ["superadmin", "admin"],
-  "menu": "main",
-  "priority": 3
-}
