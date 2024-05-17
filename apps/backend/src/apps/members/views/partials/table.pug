@@ -1,0 +1,29 @@
+mixin contactsTable
+	.members-table
+		each contact in members
+			.members-table-row
+				a(href='/members/' + contact.id).members-table-row-link
+				if addToProject
+					label.members-table-action
+						input(type='checkbox' name='contactIds[]' value=contact.id)
+				+membersTableBasicInfo(contact)
+				span(style='flex: 0 1 120px')
+					= currencySymbol
+					= contact.contributionAmount
+					| /
+					= contact.contributionPeriod
+
+if addToProject
+	form(method='POST' action='/projects/' + addToProject.id)
+		+csrf
+		p Select the contacts to add to #[b= addToProject.title]
+		p
+			button(name='action' value='add-contacts').btn.btn-sm.btn-warning
+				span.glyphicon.glyphicon-plus
+				|
+				|
+				| Add
+
+		+contactsTable
+else
+	+contactsTable

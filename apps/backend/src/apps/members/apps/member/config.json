@@ -1,0 +1,7 @@
+{
+  "title": "Member",
+  "path": ":uuid",
+  "permissions": ["admin", "superadmin"],
+  "hidden": true,
+  "priority": 0
+}

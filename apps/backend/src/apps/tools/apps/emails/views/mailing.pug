@@ -1,0 +1,115 @@
+extends /views/base.pug
+
+block prepend title
+	- title = 'Email mailing'
+
+mixin headers(name, id, current)
+	select(name=name id=id required).form-control
+		option(selected disabled value='') Select one
+		each header in headers
+			option(selected=header === current)= header
+
+block contents
+	.row
+		.col-md-12
+			+page_header(email.name)
+
+	.row
+		.col-md-8
+			dl.dl-horizontal
+				dt Created
+				dd= moment.utc(mailing.createdDate).format('DD/MM/YYYY')
+				dt Recipients
+				dd
+					= mailing.recipients.length
+					|
+					| recipients
+					|
+					button.btn.btn-xs.btn-default Show
+				dt Last sent
+				dd= mailing.sentDate ? moment.utc(mailing.sentDate).format('DD/MM/YYYY') : 'Never'
+
+			form(method='POST').js-email-form
+				+csrf
+				if onlyPreview
+					input(type='hidden' name='emailField' value=mailing.emailField)#email
+					input(type='hidden' name='nameField' value=mailing.nameField)#name
+					each mergeField in mergeFields
+						input(
+							type='hidden'
+							name='mergeFields[' + mergeField + ']'
+							value=mailing.mergeFields[mergeField]
+							id='mf_' + mergeField
+						)
+				else
+					h5 Merge fields
+
+					.form-horizontal
+						.form-group
+							label(for='email').control-label.col-md-3 Email address
+							.col-md-9
+								+headers('emailField', 'email', mailing.emailField)
+						.form-group
+							label(for='name').control-label.col-md-3 Name
+							.col-md-9
+								+headers('nameField', 'name', mailing.nameField)
+
+						each mergeField in mergeFields
+							.form-group
+								label(for='mf_' + mergeField).control-label.col-md-3= `*|${mergeField}|*`
+								.col-md-9
+									if ['RPLINK', 'SPLINK', 'LOGINLINK'].includes(mergeField)
+										.form-control-static: i Generated on send
+									else
+										+headers(
+											`mergeFields[${mergeField}]`,
+											'mf_' + mergeField,
+											mailing.mergeFields && mailing.mergeFields[mergeField]
+										)
+
+				h5 Preview
+				.form-group.form-inline
+					.input-group
+						.input-group-btn
+							button(value=-1 type='button').btn.btn-default.js-step-recipient
+								i.glyphicon.glyphicon-step-backward
+							button(value=1 type='button').btn.btn-default.js-step-recipient
+								i.glyphicon.glyphicon-step-forward
+					|
+					|
+					| &nbsp;
+					span.js-recipient-no 1
+					| /#{Math.min(10, mailing.recipients.length)}
+					if mailing.recipients.length > 10
+						|
+						| (showing first 10 recipients)
+
+				.form-group
+					label.control-label To
+					input(type='text' readonly).form-control.js-email-to
+				.form-group
+					label.control-label Subject
+					input(type='text' readonly value=email.subject).form-control
+				.form-group
+					label.control-label Body
+					div.well.js-email-body
+
+				hr
+
+				.checkbox
+					label
+						input(type='checkbox' required)
+						| Ready to send?
+
+				button.btn.btn-danger= mailing.sentDate ? 'Resend' : 'Send'
+
+block append js
+	script.
+		var mailing = {
+			recipients: !{JSON.stringify(mailing.recipients.slice(0, 10))},
+			mergeFields: !{JSON.stringify(mergeFields)}
+		};
+
+	script(type='text/template').js-email-template
+		!= emailBody
+	script(src='/static/js/mailing.js?v=' + git)

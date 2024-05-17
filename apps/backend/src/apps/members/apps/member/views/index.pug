@@ -1,0 +1,28 @@
+extends /views/notrack.pug
+
+block prepend title
+	- title = 'Member'
+	- page = 'overview'
+
+block append js
+	script( src="/static/js/edit-member.js" )
+
+block contents
+	.row
+		.col-md-3
+			include partials/sidebar.pug
+		.col-md-9
+			+page_header(member.fullname)
+
+			.row
+				.col-md-6
+					include partials/overview.pug
+				.col-md-6
+					include partials/contribution.pug
+
+			include partials/profile.pug
+
+			if access( 'superadmin' )
+				.row
+					.col-md-6
+						include partials/security.pug

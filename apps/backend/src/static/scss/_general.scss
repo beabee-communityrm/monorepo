@@ -1,0 +1,114 @@
+body.dev::before {
+	z-index: 1000;
+	content: '';
+	background: repeating-linear-gradient( 45deg, orange, orange 10px, black 10px, black 20px );
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 3px;
+	color: white;
+	font-weight: bold;
+	text-align: center;
+	box-shadow: 0px 1px 5px rgba( 0, 0, 0, .25 );
+}
+
+body.is-embed {
+	background-color: transparent;
+}
+
+body.has-js .hidden-js {
+	display: none;
+}
+
+body:not(.has-js) .hidden-nojs {
+	display: none;
+}
+
+.no-list {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+
+.wrapper {
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+}
+
+.header,
+.footer {
+	flex-shrink: 0;
+}
+
+.main {
+	flex: 1 0 auto;
+}
+
+.header {
+	padding: 10px 0;
+	font-weight: 600;
+	margin-bottom: 22px;
+	line-height: 50px;
+
+	a,
+	&:hover {
+		color: $c-black;
+	}
+}
+
+.header-logo {
+	width: 50px;
+	height: 50px;
+	margin-right: 10px;
+}
+
+.splash-logo {
+	display: block;
+	margin: 0 auto;
+	width: 170px;
+	height: 170px;
+}
+
+.splash-container {
+	max-width: 500px;
+	margin: 0 auto;
+
+	h3 {
+		margin-bottom: 22px;
+		text-align: center;
+	}
+}
+
+label.question {
+	font-weight: 600;
+}
+
+.radio-inline.disabled {
+	color: #737373;
+}
+
+.comma-list > span {
+	display: inline-block;
+	&::after {
+		content: ",";
+		margin-right: 0.5rem;
+	}
+	&:last-child::after {
+		display: none;
+	}
+}
+
+.formio-editor-read-only-content {
+	white-space: pre-line;
+}
+
+.ql-container {
+	font-size: inherit !important;
+	font-family: inherit !important;
+}
+
+.ql-editor {
+	min-height: 200px;
+}

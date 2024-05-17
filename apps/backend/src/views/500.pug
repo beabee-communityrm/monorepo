@@ -1,0 +1,14 @@
+extends base.pug
+
+block prepend title
+	- title = "Error 500"
+	- heading = "500: Server Error"
+
+block contents
+	p.
+		The server suffered an error, a notification has been sent to our
+		team. Please contact #[+emailSupport] if this error persists.
+
+	if error
+		+page_header( 'Error' )
+		pre #{ error }

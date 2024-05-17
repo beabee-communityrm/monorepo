@@ -1,0 +1,25 @@
+span.list-group-item( class=role.isActive ? '' : 'disabled' )
+	h5.list-group-item-heading
+		= role.type[0].toUpperCase()
+		= role.type.slice(1)
+	p.list-group-item-text Valid&nbsp;
+		time( datetime=moment( role.dateAdded, moment.ISO_8601 ), title=moment( role.dateAdded ).format( 'HH:mm:ss DD/MM/Y' ) ) #{ moment( role.dateAdded ).format( 'DD/MM/Y' ) }
+		if role.dateExpires
+			|  &mdash;
+			time( datetime=moment( role.dateExpires, moment.ISO_8601 ), title=moment( role.dateExpires ).format( 'HH:mm:ss DD/MM/Y' ) ) #{ moment( role.dateExpires ).format( 'DD/MM/Y' ) }
+
+		else
+			|  onwards
+	if access('admin') && (role.type !== 'superadmin' || access('superadmin'))
+		span( style="position: absolute; top: 1em; right: 1em;" )
+			a( href="/members/" + member.id + "/permissions/" + role.type + "/modify", style="margin-right: 1em;" )
+				span.glyphicon.glyphicon-pencil
+			form(
+				action="/members/" + member.id + "/permissions/" + role.type + "/revoke",
+				method="post",
+				style="display:inline;"
+				onclick="return confirm('Are you sure?')"
+			)
+				+csrf
+				button.btn-link
+					span.glyphicon.glyphicon-remove
