@@ -1,0 +1,129 @@
+extend /views/notrack
+
+block prepend title
+	- title = segment.name
+
+block append css
+	link( rel='stylesheet', href='/static/css/lib/query-builder.default.css' )
+
+block append js
+	script( src='/static/js/lib/query-builder.standalone.js' )
+	script.
+		var searchRuleGroup = !{JSON.stringify(segment.ruleGroup)}
+	script( src='/static/js/search.js?v=' + git)
+
+block contents
+	.row
+		.col-md-12
+			.page-header
+				.pull-right
+					a(href='/members?segment=' + segment.id).btn.btn-default
+						i.glyphicon.glyphicon-user
+						span Contacts
+				h3= segment.name
+
+	.row
+		.col-md-8
+			form(method='POST').form-horizontal
+				+csrf
+				.form-group
+					label.col-md-3.control-label Name
+					.col-md-9
+						input(type='text' name='name' value=segment.name required).form-control
+				.form-group
+					label(for='description').control-label.col-md-3 Description
+					.col-md-9
+						textarea(name='description')#description.form-control= segment.description
+				.form-group
+					label(for='order').control-label.col-md-3 Order
+					.col-md-9
+						input(type='number' name='order' value=segment.order style='width: 100px')#order.form-control
+						p.help-block Controls the order the segments are listed
+				.form-group
+					label(for='newsletterTag').control-label.col-md-3 Newsletter tag
+					.col-md-9
+						input(type='text' name='newsletterTag' value=segment.newsletterTag)#newsletterTag.form-control
+						p.help-block Tag contacts in this segment in the newsletter
+				.form-group
+					.col-md-9.col-md-offset-3
+						button(name='action' value='update').btn.btn-success Update
+
+	.row
+		.col-md-12
+			hr
+
+			h4#ongoingemails
+				| Ongoing emails
+				|
+				a(href='/members/segments/' + segment.id + '/email').btn.btn-xs.btn-default
+					i.glyphicon.glyphicon-send
+					span New email
+
+
+			if ongoingEmails.length > 0
+				table.table
+					thead
+						tr
+							th Status
+							th Description
+							th
+					tbody
+						each ongoingEmail in ongoingEmails
+							tr
+								td
+									if ongoingEmail.enabled
+										span.label.label-success Active
+									else
+										span.label.label-warning Paused
+								td(width='100%')
+									| Send
+									|
+									a(href='/tools/emails/' + ongoingEmail.email.id)
+										| "
+										= ongoingEmail.email.name
+										| "
+									|
+									| to contacts when they
+									|
+									= ongoingEmail.trigger === 'onJoin' ? 'join' : 'leave'
+									|
+									| the segment
+								td(style='white-space: nowrap').text-right
+									form(method='POST')
+										+csrf
+										input(type='hidden' name='ongoingEmailId' value=ongoingEmail.id)
+										input(type='hidden' name='ongoingEmailEnabled' value=ongoingEmail.enabled ? 'false' : 'true')
+										button(
+											name='action' value='toggle-ongoing-email'
+											class=ongoingEmail.enabled ? 'btn-warning' : 'btn-success'
+										).btn.btn-xs
+											i.glyphicon(class='glyphicon-' + (ongoingEmail.enabled ? 'pause' : 'play'))
+										|
+										|
+										button(name='action' value='delete-ongoing-email').btn.btn-xs.btn-danger
+											i.glyphicon.glyphicon-trash
+			else
+				p No ongoing emails
+
+			hr
+
+			h4 Rules
+
+			#builder
+
+			form(method='POST').js-advanced-form
+				+csrf
+				input(type='hidden' name='rules')
+				button(name='action' value='update-rules').btn.btn-success Update rules
+
+			hr
+
+			h4 Delete segment
+
+			form(method='POST')
+				+csrf
+				p
+					label.checkbox-inline
+						input(type='checkbox' required)
+						| This change is irreversible, confirm to proceed
+				button(name='action' value='delete').btn.btn-danger.outline Delete

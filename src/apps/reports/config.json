@@ -1,0 +1,8 @@
+{
+  "title": "Reports",
+  "path": "reports",
+  "permissions": ["superadmin"],
+  "menu": "main",
+  "hidden": true,
+  "priority": 1
+}

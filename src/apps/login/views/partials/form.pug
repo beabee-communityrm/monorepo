@@ -1,0 +1,12 @@
+form( method="post", action="/login" + (nextParam || '') )
+	+csrf
+	.form-group
+		label( for="email" ) Email address:
+		input( name="email", type="text", required )#email.form-control
+	.form-group
+		label( for="password" ) Password:
+		input( name="password", type="password", required )#password.form-control
+		p.help-block.text-right
+			a( href="/password-reset" ) Forgot your password?
+	.form-group
+		button.btn.btn-primary Login

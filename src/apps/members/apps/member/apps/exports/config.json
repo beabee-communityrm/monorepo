@@ -1,0 +1,6 @@
+{
+  "title": "Exports",
+  "path": "exports",
+  "permissions": ["admin", "superadmin"],
+  "hidden": true
+}

@@ -1,0 +1,266 @@
+extends /views/base.pug
+
+mixin periodSchema(i, period)
+  .form-group
+    label.control-label.col-md-3 Preset amounts (#{period.name})
+    .col-md-9
+      input(type="hidden" name="data[periods][" + i + "][name]" value=period.name)
+      input(type='text' name="data[periods][" + i + "][presetAmounts]" value=period.presetAmounts.join(', ') required).form-control
+
+mixin linkSchema(i, link)
+  li.js-repeater-item.well
+    .form-group
+      label.control-label.col-md-3 Text
+      .col-md-9
+        input(type='text' name='data[footerLinks][' + i + '][text]' value=link.text required).form-control
+    .form-group
+      label.control-label.col-md-3 Link
+      .col-md-9
+        input(type='text' name='data[footerLinks][' + i + '][url]' value=link.url required).form-control
+    .row: .col-md-offset-3.col-md-9
+        button(type='button').btn.btn-xs.btn-danger.js-repeater-remove-item Delete
+
+block prepend title
+  - title = app.title
+
+block prepend js
+  script(src='/static/js/lib/quill.min.js')
+  script(src='/static/js/lib/quill-paste-smart.js')
+  script(type='text/template').js-repeater-template
+    +linkSchema(0, {})
+
+block append css
+  link(rel='stylesheet' href='/static/css/lib/quill.snow.css')
+
+block contents
+  .row
+    .col-md-12
+      +page_header('Content')
+
+  .row
+    .col-md-8
+      h4 General
+
+      form(method='POST').form-horizontal
+        +csrf
+
+        .form-group
+          label.control-label.col-md-3 Organisation name
+          .col-md-9
+            input(type='text' name='options[organisation]' value=Options('organisation') required).form-control
+        .form-group
+          label.control-label.col-md-3 Privacy URL
+          .col-md-9
+            input(type='text' name='options[footer-privacy-link-url]' value=Options('footer-privacy-link-url') required).form-control
+        .form-group
+          label.control-label.col-md-3 Terms URL
+          .col-md-9
+            input(type='text' name='options[footer-terms-link-url]' value=Options('footer-terms-link-url')).form-control
+        .form-group
+          label.control-label.col-md-3 Impressum URL
+          .col-md-9
+            input(type='text' name='options[footer-impressum-link-url]' value=Options('footer-impressum-link-url')).form-control
+        .form-group
+          label.control-label.col-md-3 Support email
+          .col-md-9
+            input(type='text' name='options[support-email]' value=Options('support-email')).form-control
+        .form-group
+          label.control-label.col-md-3 Support email from
+          .col-md-9
+            input(type='text' name='options[support-email-from]' value=Options('support-email-from')).form-control
+        .form-group
+          label.control-label.col-md-3 Main site URL
+          .col-md-9
+            input(type='text' name='options[home-link-url]' value=Options('home-link-url')).form-control
+
+        .form-group
+          .col-md-offset-3.col-md-9
+            .checkbox
+              label
+                input(type='checkbox' name="data[hideContribution]" value="true" checked=general.hideContribution)
+                | Hide contribution option
+
+        .row: .col-md-offset-3.col-md-9: h5 Share settings
+
+        .form-group
+          label.control-label.col-md-3 Twitter handle
+          .col-md-9
+            input(type='text' name='options[share-twitter-handle]' value=Options('share-twitter-handle')).form-control
+        .form-group
+          label.control-label.col-md-3 Share title
+          .col-md-9
+            input(type='text' name='options[share-title]' value=Options('share-title')).form-control
+        .form-group
+          label.control-label.col-md-3 Share description
+          .col-md-9
+            input(type='text' name='options[share-description]' value=Options('share-description')).form-control
+        .form-group
+          label.control-label.col-md-3 Share image URL
+          .col-md-9
+            input(type='text' name='options[share-image]' value=Options('share-image')).form-control
+
+        .row: .col-md-offset-3.col-md-9: h5 Footer links
+
+        ul(data-name="data[footerLinks]").no-list.js-repeater
+          if general.footerLinks
+            each link, i in general.footerLinks
+              +linkSchema(i, link)
+
+        .row: .col-md-offset-3.col-md-9
+          p: button(type='button').btn.btn-xs.btn-info.js-repeater-add-item Add link
+
+        .row: .col-md-offset-3.col-md-9: p: button(name='id' value='general').btn.btn-primary Save
+
+      hr
+
+      h4 Join page
+
+      form(method='POST').form-horizontal
+        +csrf
+
+        .form-group
+          label.control-label.col-md-3 Title
+          .col-md-9
+            input(type='text' name="data[title]" value=join.title required).form-control
+        .form-group
+          label.control-label.col-md-3 Subtitle
+          .col-md-9
+            textarea(name="data[subtitle]" required).form-control.js-rte-textarea= join.subtitle
+        
+        +periodSchema(0, join.periods ? join.periods[0] : {'name': 'monthly', presetAmounts: []})
+        +periodSchema(1, join.periods ? join.periods[1] : {'name': 'annually', presetAmounts: []})
+
+        .form-group.hidden
+          .col-md-offset-3.col-md-9
+            .checkbox
+              label
+                input(type='checkbox' name="data[showNoContribution]" value="true" checked=join.showNoContribution)
+                | Show no contribution option
+
+        .form-group
+          label.control-label.col-md-3 Initial amount
+          .col-md-9
+            input(type='number' name="data[initialAmount]" value=join.initialAmount required).form-control
+        .form-group
+          label.control-label.col-md-3 Initial period
+          .col-md-9
+            select(name="data[initialPeriod]" required).form-control
+              option(value='' selected disabled)
+              option(value='monthly' selected=join.initialPeriod === 'monthly') Monthly
+              option(value='annually' selected=join.initialPeriod === 'annually') Annually
+
+        .form-group
+          label.control-label.col-md-3 Min monthly amount
+          .col-md-9
+            input(type='number' name="options[contribution-min-monthly-amount]" value=Options('contribution-min-monthly-amount') required).form-control
+
+        .form-group
+          label.control-label.col-md-3 Payment methods
+          .col-md-9
+            input(type='text' name="data[paymentMethods]" value=join.paymentMethods && join.paymentMethods.join(', ') required).form-control
+
+        .form-group
+          .col-md-offset-3.col-md-9
+            .checkbox
+              label
+                input(type='hidden' name="options[show-absorb-fee]" value="false")
+                input(type='checkbox' name="options[show-absorb-fee]" value="true" checked=Options.bool('show-absorb-fee'))
+                | Show absorb fee
+
+        .row: .col-md-offset-3.col-md-9: p: button(name='id' value='join').btn.btn-primary Save
+
+      hr
+
+      h4 Join page - setup
+
+      form(method='POST').form-horizontal
+        +csrf
+
+        .form-group
+          label.control-label.col-md-3 Welcome
+          .col-md-9
+            input(type='text' name="data[welcome]" value=joinSetup.welcome required).form-control
+
+        .js-reveal
+          .form-group
+            .col-md-offset-3.col-md-9
+              .checkbox
+                label
+                  input(type='hidden' name="options[show-mail-opt-in]" value="false")
+                  input(type='checkbox' name="options[show-mail-opt-in]" value="true" checked=Options.bool('show-mail-opt-in')).js-reveal-types
+                  | Show mail opt-in
+          .js-reveal-type(data-type="options[show-mail-opt-in]").hidden
+            .form-group
+              label.control-label.col-md-3 Mail title
+              .col-md-9
+                input(type='text' name="data[mailTitle]" value=joinSetup.mailTitle required).form-control
+            .form-group
+              label.control-label.col-md-3 Mail text
+              .col-md-9
+                input(type='text' name="data[mailText]" value=joinSetup.mailText required).form-control
+            .form-group
+              label.control-label.col-md-3 Mail opt-in
+              .col-md-9
+                input(type='text' name="data[mailOptIn]" value=joinSetup.mailOptIn required).form-control
+
+        .js-reveal
+          .form-group
+            .col-md-offset-3.col-md-9
+              .checkbox
+                label
+                  input(type='checkbox' name="data[showNewsletterOptIn]" value="true" checked=joinSetup.showNewsletterOptIn).js-reveal-types
+                  | Show newsletter opt-in
+          .js-reveal-type(data-type="data[showNewsletterOptIn]")
+            .form-group
+              label.control-label.col-md-3 Newsletter title
+              .col-md-9
+                input(type='text' name="data[newsletterTitle]" value=joinSetup.newsletterTitle required).form-control
+            .form-group
+              label.control-label.col-md-3 Newsletter text
+              .col-md-9
+                input(type='text' name="data[newsletterText]" value=joinSetup.newsletterText required).form-control
+            .form-group
+              label.control-label.col-md-3 Newsletter opt-in
+              .col-md-9
+                input(type='text' name="data[newsletterOptIn]" value=joinSetup.newsletterOptIn required).form-control
+
+        .row: .col-md-offset-3.col-md-9: p: button(name='id' value='join/setup').btn.btn-primary Save
+
+      hr
+
+      h4 Profile page
+      form(method='POST').form-horizontal
+        +csrf
+
+        .form-group
+          label.control-label.col-md-3 Welcome text
+          .col-md-9
+            input(type='text' name="data[welcomeMessage]" value=profile.welcomeMessage required).form-control
+        .form-group
+          label.control-label.col-md-3 Footer text
+          .col-md-9
+            input(type='text' name="data[footerMessage]" value=profile.footerMessage required).form-control
+
+        .form-group
+          label.control-label.col-md-3 Intro message
+          .col-md-9
+            textarea(name="data[introMessage]" required).form-control.js-rte-textarea= profile.introMessage
+
+        .row: .col-md-offset-3.col-md-9: p: button(name='id' value='profile').btn.btn-primary Save
+
+      hr
+
+      h4 Contacts
+      form(method='POST').form-horizontal
+        +csrf
+
+        .form-group
+          label.control-label.col-md-3 Tags
+          .col-md-9
+            input(type='text' name="options[available-tags]" value=Options('available-tags') required).form-control
+        .form-group
+          label.control-label.col-md-3 Manual payment sources
+          .col-md-9
+            input(type='text' name="options[available-manual-payment-sources]" value=Options('available-manual-payment-sources') required).form-control
+
+        .row: .col-md-offset-3.col-md-9: p: button(name='id' value='profile').btn.btn-primary Save
