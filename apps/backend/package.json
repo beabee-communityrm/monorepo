@@ -1,5 +1,5 @@
 {
-  "name": "beabee",
+  "name": "@beabee/backend",
   "version": "2.2.8",
   "description": "A community engagement system for community newsrooms",
   "main": "built/app.js",
@@ -35,7 +35,7 @@
     "test": "jest --setupFiles dotenv/config"
   },
   "dependencies": {
-    "@beabee/beabee-common": "^0.21.0",
+    "@beabee/beabee-common": "0.21.0",
     "@captchafox/node": "^1.2.0",
     "@inquirer/prompts": "^3.3.0",
     "@sendgrid/mail": "^8.1.0",
