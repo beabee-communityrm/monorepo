@@ -2,9 +2,11 @@
   "extends": "@tsconfig/node20/tsconfig.json",
   "include": ["./src/**/*", "./test/**/*"],
   "compilerOptions": {
+    
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "exactOptionalPropertyTypes": true,
+    "strictNullChecks": true,
     "resolveJsonModule": true,
 
     // We currently rely on class fields not being initialised, especially for classes created by

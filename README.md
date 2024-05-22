@@ -1,4 +1,5 @@
 # monorepo
+
 Experimental monorepo for beabee
 
 ## Protocol
@@ -31,31 +32,32 @@ Create a package.json for the monorepo:
 
 ```json
 {
-    "name": "beabee",
-    "private": true,
-    "workspaces": [
-      "packages/*",
-      "apps/*"
-    ]
+  "name": "beabee",
+  "private": true,
+  "workspaces": ["packages/*", "apps/*"]
 }
 ```
 
 Update the `package.json` files to use the current common version included in the monorepo:
+
 ```json
 {
   "dependencies": {
-    "@beabee/beabee-common": "0.21.0",
+    "@beabee/beabee-common": "0.21.0"
   }
 }
 ```
 
-Removed all `package-lock.json` files in each package.
+- Removed all `package-lock.json` and `deno.lock` files in each package.
+- Moved the .nvmrc to the root of the monorepo.
+- Renamed the app packages to `@beabee/backend` and `@beabee/frontend`
 
 ### NPM's workspace feature
 
 There is not support for the workspace protocol like in pnpm and yarn, see
-* https://pnpm.io/workspaces#workspace-protocol-workspace
-* https://yarnpkg.com/features/workspaces#cross-references
+
+- https://pnpm.io/workspaces#workspace-protocol-workspace
+- https://yarnpkg.com/features/workspaces#cross-references
 
 NPM automatically resolves to the workspace package if the version number is the same,
 but this also means that with a new release all dependencies have to be updated,
@@ -70,3 +72,59 @@ I also had the problem again that I could not run `npm install` because it cance
 
 NPM lacks many workspace features with which a lot can be automated, which means that custom scripts would have to be created for this, which then increases the complexity again, so I recommend using `yarn` or `pnpm`.
 
+## Switch to yarn
+
+- [Install](https://yarnpkg.com/getting-started/install) `yarn`
+
+Initialise yarn for this workspace:
+
+```bash
+# Install yarn within this project
+yarn set version stable
+```
+
+Initialise yarn`s [Zero-Installs](https://v3.yarnpkg.com/features/zero-installs) feature
+
+```
+yarn init -2
+```
+
+Set the [node_linker](https://yarnpkg.com/configuration/yarnrc#nodeLinker) to `node-modules` in the `.yarnrc.yml` file for easier migration until we have migrated all packages to the `pnpm` or `pnp` linker.
+
+```yaml
+nodeLinker: node-modules
+```
+
+Update the `package.json` files to use the workspace common version included in the monorepo:
+
+```json
+{
+  "dependencies": {
+    "@beabee/beabee-common": "workspace:^"
+  }
+}
+```
+
+Install dependencies
+
+```bash
+touch yarn.lock
+yarn install
+```
+
+Add a first Yarn script to hte root of the monorepo to build all packages:
+
+```json
+{
+  "scripts": {
+    "build": "yarn workspaces foreach -v -W run build"
+  }
+}
+```
+
+- For `@beabee/backend` some build errors regarding gulp, sass and tsc had to be fixed, see the commit for that.
+- In addition, a few `@types` had to be reinstalled, which is probably due to yarn's stricter package resolution.
+
+#### Result
+
+Also `yarn` did not run the first time, but thanks to a better error message I now knew why, the package `muhammara` does not work with Node.js 21, which I accidentally had active, but with Node.js 20 everything went through on the first try.

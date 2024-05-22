@@ -1,8 +1,12 @@
 {
-    "name": "beabee",
-    "private": true,
-    "workspaces": [
-        "packages/*",
-        "apps/*"
-    ]
+  "name": "beabee",
+  "private": true,
+  "scripts": {
+    "build": "yarn workspaces foreach -v -W -t run build"
+  },
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "packageManager": "yarn@4.2.2"
 }

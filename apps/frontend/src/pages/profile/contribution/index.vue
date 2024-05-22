@@ -53,7 +53,7 @@ meta:
       <ContactCancelContribution
         id="me"
         :contribution="contribution"
-        @cancel="$router.push('/profile/contribution/cancel')"
+        @cancel="router.push('/profile/contribution/cancel')"
       />
     </template>
     <template #col2>
@@ -71,7 +71,7 @@ import {
 } from '@beabee/beabee-common';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 import ContributionBox from '@components/pages/profile/contribution/ContributionBox.vue';
 import ContactCancelContribution from '@components/contact/ContactCancelContribution.vue';
@@ -93,6 +93,7 @@ import { type ContentPaymentData, type ContributionInfo } from '@type';
 
 const { t } = useI18n();
 const route = useRoute();
+const router = useRouter();
 
 const updatedPaymentSource = ref(
   route.query.updatedPaymentSource !== undefined

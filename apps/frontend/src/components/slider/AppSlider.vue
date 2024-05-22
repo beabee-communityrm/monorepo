@@ -54,6 +54,7 @@ import { ref, computed, onMounted, onUnmounted } from 'vue';
 
 import AppStepper from '../stepper/AppStepper.vue';
 
+import type { Ref } from 'vue';
 import type { AppSliderProps } from '@type/app-slider-props';
 import type { AppSliderSlideEventDetails } from '@type/app-slider-slide-event-details';
 
@@ -70,7 +71,7 @@ const slideCount = computed(() => slideEls.value.length);
 const isFirstSlide = computed(() => activeSlide.value === 0);
 const isLastSlide = computed(() => activeSlide.value === slideCount.value - 1);
 const slidesContainerEl = ref<HTMLElement | null>(null);
-const slideEls = ref<HTMLElement[]>([]);
+const slideEls = ref<HTMLElement[]>([]) as Ref<HTMLElement[]>;
 
 /** Called when the stepper changes */
 const onStepperChange = (stepIndex: number) => {
@@ -84,7 +85,7 @@ const onStepperChange = (stepIndex: number) => {
  */
 const toSlide = (slideNumber: number, behavior: ScrollBehavior = 'smooth') => {
   // Get the slide element
-  const slideEl = slideEls.value[slideNumber];
+  const slideEl = slideEls.value[slideNumber] as HTMLElement;
 
   // Validate inputs
   if (slideNumber < 0 || slideNumber >= slideCount.value) {

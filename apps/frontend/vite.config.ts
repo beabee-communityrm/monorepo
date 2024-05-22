@@ -67,6 +67,9 @@ export default ({ command, mode }) => {
   return defineConfig({
     build: {
       sourcemap: true,
+      // rollupOptions: {
+      //   external: ['@tiptap/pm/state', '@tiptap/pm/dropcursor'],
+      // },
     },
     resolve: {
       alias,
