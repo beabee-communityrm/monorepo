@@ -54,7 +54,7 @@ Update the `package.json` files to use the current common version included in th
 
 ### NPM's workspace feature
 
-There is not support for the workspace protocol like in pnpm and yarn, see
+There is no support for the workspace protocol like in pnpm and yarn, see
 
 - https://pnpm.io/workspaces#workspace-protocol-workspace
 - https://yarnpkg.com/features/workspaces#cross-references
@@ -112,7 +112,7 @@ touch yarn.lock
 yarn install
 ```
 
-Add a first Yarn script to hte root of the monorepo to build all packages:
+Add a first Yarn script to the root of the monorepo to build all packages:
 
 ```json
 {
@@ -122,9 +122,23 @@ Add a first Yarn script to hte root of the monorepo to build all packages:
 }
 ```
 
-- For `@beabee/backend` some build errors regarding gulp, sass and tsc had to be fixed, see the commit for that.
+- For `@beabee/backend` some build errors regarding gulp, sass and tsc had to be fixed.
 - In addition, a few `@types` had to be reinstalled, which is probably due to yarn's stricter package resolution.
+- For more details, see this [commit](https://github.com/beabee-communityrm/monorepo/commit/19a4e2862fd83001333cd982bce756f3a4f3d6bb).
 
 #### Result
 
 Also `yarn` did not run the first time, but thanks to a better error message I now knew why, the package `muhammara` does not work with Node.js 21, which I accidentally had active, but with Node.js 20 everything went through on the first try.
+
+## Docker
+
+### Dockerizing a pre-built application
+
+- Bundle the backend using esbuild so that it does not depend on the other workspace packages
+- esbuild script extended to be a replacement for `tsc-watch`
+- Build the backend with `yarn build` and copy the result into the Docker image
+
+### TODO
+
+- Create a [single executable application](https://nodejs.org/api/single-executable-applications.html)?
+- Build apps in `apps/backend/src/apps`

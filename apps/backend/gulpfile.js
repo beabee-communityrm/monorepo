@@ -24,8 +24,6 @@ function buildCSS() {
   return gulp
     .src(paths.css.src)
     .pipe(sourcemaps.init())
-    // .pipe(sass().on("error", sass.logError))
-    // `require.resolve('bootstrap-sass')` resolves to `bootstrap-sass/assets/javascripts/bootstrap.js`
     .pipe(sass({
       includePaths: [dirname(require.resolve('bootstrap-sass/package.json'))]
     }).on('error', sass.logError))
