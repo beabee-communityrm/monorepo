@@ -131,3 +131,10 @@ Add a first Yarn script to the root of the monorepo to build all packages:
 Also `yarn` did not run the first time, but thanks to a better error message I now knew why, the package `muhammara` does not work with Node.js 21, which I accidentally had active, but with Node.js 20 everything went through on the first try.
 
 ## Docker
+
+### Backend
+
+- Changed the context to the root of this monorepo
+- Copied the workspace configuration from the root into the image
+- Paths adapted accordingly
+- Changed the packages that are needed from the workspace ('backend' and 'common')
