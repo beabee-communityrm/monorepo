@@ -137,4 +137,4 @@ Also `yarn` did not run the first time, but thanks to a better error message I n
 - Changed the context to the root of this monorepo
 - Copied the workspace configuration from the root into the image
 - Paths adapted accordingly
-- Changed the packages that are needed from the workspace ('backend' and 'common')
+- Copied the packages that are needed from the workspace ('backend' and 'common')

@@ -39,7 +39,7 @@
     "docker:build": "npm install && yarn build && docker compose build"
   },
   "dependencies": {
-    "@beabee/beabee-common": "^0.21.0",
+    "@beabee/beabee-common": "workspace:^",
     "@captchafox/node": "^1.2.0",
     "@inquirer/prompts": "^3.3.0",
     "@sendgrid/mail": "^8.1.0",
