@@ -15,5 +15,7 @@ runs:
         deno-version: vx.x.x
     - name: Install dependencies
       run: yarn install
+      shell: bash
     - name: Build common
       run: yarn build:common
+      shell: bash
