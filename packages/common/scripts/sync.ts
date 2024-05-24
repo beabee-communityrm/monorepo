@@ -95,26 +95,29 @@ const syncScripts = () => {
       isDeno = true;
     }
 
-    if (nodeScripts[scriptName]?.startsWith("npm run")) {
+    if (
+      nodeScripts[scriptName]?.startsWith("yarn") &&
+      !nodeScripts[scriptName]?.startsWith("yarn exec")
+    ) {
       isNodeWrap = true;
     } else if (nodeScripts[scriptName]?.startsWith("node ")) {
       isNode = true;
     }
 
     if (isDeno) {
-      nodeScripts[scriptName] = `deno task ${scriptName}`;
+      nodeScripts[scriptName] = `yarn exec 'deno task ${scriptName}'`;
     } else if (isNode) {
-      denoScripts[scriptName] = `npm run ${scriptName}`;
+      denoScripts[scriptName] = `yarn ${scriptName}`;
     } else if (isDenoWrap && isNodeWrap) {
       console.debug(`Leave the script "${scriptName}" as it is for both`);
     } else if (isDenoWrap) {
-      nodeScripts[scriptName] = `deno task ${scriptName}`;
+      nodeScripts[scriptName] = `yarn exec 'deno task ${scriptName}'`;
     } else if (isNodeWrap) {
-      denoScripts[scriptName] = `npm run ${scriptName}`;
+      denoScripts[scriptName] = `yarn ${scriptName}`;
     } else if (!nodeScripts[scriptName]) {
-      nodeScripts[scriptName] = `deno task ${scriptName}`;
+      nodeScripts[scriptName] = `yarn exec 'deno task ${scriptName}'`;
     } else if (!denoScripts[scriptName]) {
-      denoScripts[scriptName] = `npm run ${scriptName}`;
+      denoScripts[scriptName] = `yarn ${scriptName}`;
     }
   }
 };

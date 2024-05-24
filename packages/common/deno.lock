@@ -254,7 +254,6 @@
     ],
     "packageJson": {
       "dependencies": [
-        "npm:@tsconfig/recommended@^1.0.3",
         "npm:date-fns@^3.6.0",
         "npm:typescript@^5.4.5"
       ]

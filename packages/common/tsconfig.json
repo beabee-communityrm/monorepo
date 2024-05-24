@@ -4,11 +4,13 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
-    "moduleResolution": "Bundler",
+    "rootDir": "./src",
+    "moduleResolution": "bundler",
     "declarationDir": "./dist/types",
     "allowImportingTsExtensions": true,
     "declaration": true,
     "emitDeclarationOnly": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "skipLibCheck": true
   }
 }
