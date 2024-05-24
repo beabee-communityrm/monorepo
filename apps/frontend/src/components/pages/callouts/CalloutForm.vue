@@ -201,8 +201,9 @@ function handleNextSlide() {
       ? answers[decisionComponent.key as keyof typeof answers]
       : undefined;
 
-    nextSlideId = decisionComponent.values.find((v) => v.value === value)
-      ?.nextSlideId;
+    nextSlideId = decisionComponent.values.find(
+      (v) => v.value === value
+    )?.nextSlideId;
   }
 
   // Otherwise use the next slide ID from the navigation

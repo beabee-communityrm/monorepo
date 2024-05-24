@@ -24,9 +24,11 @@ function buildCSS() {
   return gulp
     .src(paths.css.src)
     .pipe(sourcemaps.init())
-    .pipe(sass({
-      includePaths: [dirname(require.resolve('bootstrap-sass/package.json'))]
-    }).on('error', sass.logError))
+    .pipe(
+      sass({
+        includePaths: [dirname(require.resolve("bootstrap-sass/package.json"))]
+      }).on("error", sass.logError)
+    )
     .pipe(postcss([autoprefixer()]))
     .pipe(sourcemaps.write("."))
     .pipe(gulp.dest(paths.css.dest));
