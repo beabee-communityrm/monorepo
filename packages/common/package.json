@@ -67,6 +67,7 @@
   },
   "homepage": "https://github.com/beabee-communityrm/beabee-common#readme",
   "devDependencies": {
+    "cacheable-request": "^12.0.1",
     "typescript": "^5.4.5"
   },
   "dependencies": {
