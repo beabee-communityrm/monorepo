@@ -1,9 +1,25 @@
-runs:
-  using: composite
+linux:
+  strategy:
+    matrix:
+      node-version: [20.x]
+      deno-version: [vx.x.x]
+      os:
+        - ubuntu-latest
+  runs-on: ${{ matrix.os }}
   steps:
-    - uses: actions/setup-node@v4
+    - name: Checkout repository
+      uses: actions/checkout@v4
       with:
-        node-version: 20
-        cache: "yarn"
-    - run: yarn install
-      shell: bash
+        submodules: true
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Setup Deno
+      uses: denoland/setup-deno@v1
+      with:
+        deno-version: ${{ matrix.deno-version }}
+    - name: Install dependencies
+      run: yarn install
+    - name: Build common
+      run: yarn build:common
