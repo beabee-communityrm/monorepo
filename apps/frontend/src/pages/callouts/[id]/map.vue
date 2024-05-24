@@ -289,7 +289,7 @@ const newResponseAddress = computed(() => {
 
 // A GeoJSON FeatureCollection of all the responses
 const responsesCollecton = computed<
-  GeoJSON.FeatureCollection<GeoJSON.Point, GetCalloutResponseMapData, any> // TODO: Add type
+  GeoJSON.FeatureCollection<GeoJSON.Point, GetCalloutResponseMapData>
 >(() => {
   const mapSchema = props.callout.responseViewSchema?.map;
   return {
@@ -337,15 +337,11 @@ function handleClick(e: { event: MapMouseEvent; map: Map }) {
 
   const clusterPoints = e.map.queryRenderedFeatures(e.event.point, {
     layers: ['clusters'],
-  }) as GeoJSON.Feature<GeoJSON.Point, any, any>[]; // TODO: Add type
+  }) as GeoJSON.Feature<GeoJSON.Point>[];
 
   if (clusterPoints.length > 0) {
     // Zoom to the cluster
-    const firstPoint = clusterPoints[0] as GeoJSON.Feature<
-      GeoJSON.Point,
-      any,
-      any
-    >; // TODO: Add type
+    const firstPoint = clusterPoints[0] as GeoJSON.Feature<GeoJSON.Point>;
     const source = e.map.getSource('responses') as GeoJSONSource;
 
     source.getClusterExpansionZoom(
