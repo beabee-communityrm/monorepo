@@ -1,11 +1,5 @@
-linux:
-  strategy:
-    matrix:
-      node-version: [20.x]
-      deno-version: [vx.x.x]
-      os:
-        - ubuntu-latest
-  runs-on: ${{ matrix.os }}
+runs:
+  using: composite
   steps:
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -14,11 +8,11 @@ linux:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: 20
     - name: Setup Deno
       uses: denoland/setup-deno@v1
       with:
-        deno-version: ${{ matrix.deno-version }}
+        deno-version: vx.x.x
     - name: Install dependencies
       run: yarn install
     - name: Build common
