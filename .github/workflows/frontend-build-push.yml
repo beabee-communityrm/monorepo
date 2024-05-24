@@ -1,4 +1,4 @@
-name: Build and push
+name: Frontend build and push
 
 on:
   workflow_call:
