@@ -1,4 +1,4 @@
-version: "3.4"
+# version: "3.4"
 
 x-base-app: &base-app
   build:
@@ -6,8 +6,8 @@ x-base-app: &base-app
     dockerfile: ./apps/backend/Dockerfile
     target: app
   volumes:
-    - ./built:/opt/membership-system/built
-    - ./src/migrations:/opt/membership-system/src/migrations
+    - ./built:/opt/membership-system/apps/backend/built
+    - ../../packages/common/dist:/opt/membership-system/packages/common/dist
   env_file:
     - .env
   environment:
@@ -34,11 +34,11 @@ services:
 
   api_app:
     <<: *base-app
-    command: node 'built/api/app'
+    command: yarn start:api
 
   webhook_app:
     <<: *base-app
-    command: "node built/webhooks/app"
+    command: yarn start:webhooks
 
   img_upload_app:
     image: beabee/pictshare:v0.1.1

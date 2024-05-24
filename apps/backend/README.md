@@ -44,7 +44,7 @@ docker compose build
 
 # Initialise database
 docker compose up -d db
-docker compose run --rm app npm run typeorm migration:run
+docker compose run --rm app yarn typeorm migration:run
 
 # Do the rest
 docker compose up -d

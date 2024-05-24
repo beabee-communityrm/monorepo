@@ -2,11 +2,27 @@
   "name": "beabee",
   "private": true,
   "scripts": {
-    "build": "yarn workspaces foreach -v -W -t run build"
+    "build": "yarn workspaces foreach -v -W -t run build",
+    "build:backend": "yarn workspace @beabee/backend run build",
+    "start:backend": "yarn workspace @beabee/backend run start",
+    "start:api": "yarn workspace @beabee/backend run start:api",
+    "start:webhooks": "yarn workspace @beabee/backend run start:webhooks",
+    "upgrade": "yarn set version latest && yarn install && yarn upgrade-interactive"
   },
   "workspaces": [
     "packages/*",
-    "apps/*"
+    "apps/*",
+    "!apps/cli"
   ],
+  "_moduleAliases": {
+    "@core": "./apps/backend/built/core",
+    "@api": "./apps/backend/built/api",
+    "@apps": "./apps/backend/built/apps",
+    "@config": "./apps/backend/built/config/config.js",
+    "@locale": "./apps/backend/built/locales/current.js",
+    "@models": "./apps/backend/built/models",
+    "@type": "./apps/backend/built/type",
+    "@enums": "./apps/backend/built/enums"
+  },
   "packageManager": "yarn@4.2.2"
 }

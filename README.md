@@ -131,14 +131,3 @@ Add a first Yarn script to the root of the monorepo to build all packages:
 Also `yarn` did not run the first time, but thanks to a better error message I now knew why, the package `muhammara` does not work with Node.js 21, which I accidentally had active, but with Node.js 20 everything went through on the first try.
 
 ## Docker
-
-### Dockerizing a pre-built application
-
-- Bundle the backend using esbuild so that it does not depend on the other workspace packages
-- esbuild script extended to be a replacement for `tsc-watch`
-- Build the backend with `yarn build` and copy the result into the Docker image
-
-### TODO
-
-- Create a [single executable application](https://nodejs.org/api/single-executable-applications.html)?
-- Build apps in `apps/backend/src/apps`
