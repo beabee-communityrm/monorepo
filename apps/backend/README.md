@@ -38,8 +38,8 @@ create a sandbox GoCardless account to test any payment flows.
 ```bash
 cp .env.example .env
 
-npm install
-npm run build
+yarn install
+yarn build
 docker compose build
 
 # Initialise database
@@ -85,13 +85,13 @@ By default, this should now be accessible via http://localhost:3000 and communic
 Development is containerized, in general you should be able to use the following to get started
 
 ```bash
-npm start
+yarn dev
 ```
 
 You can also use the following when just working on the API (faster reloading)
 
 ```bash
-npm run dev:api
+yarn dev:api
 ```
 
 #### Rebuilding containers
@@ -121,15 +121,15 @@ changes
 
 ```bash
 docker compose start db
-docker compose run app npm run typeorm migration:generate src/migrations/MigrationName && npm run fix:prettier
-npm run build
-docker compose run app npm run typeorm migration:run
+docker compose run app yarn typeorm migration:generate src/migrations/MigrationName && yarn fix:prettier
+yarn build
+docker compose run app yarn typeorm migration:run
 ```
 
 If you are still in the development phase, you may want to undo your last database migration as follows:
 
 ```bash
-docker compose run app npm run typeorm migration:revert
+docker compose run app yarn typeorm migration:revert
 ```
 
 To find out more about this topic, take a look at the [TypeORM Migration Guide](https://typeorm.io/migrations).
