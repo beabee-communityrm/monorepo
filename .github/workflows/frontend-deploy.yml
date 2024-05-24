@@ -26,11 +26,11 @@ jobs:
 
   check:
     name: Check
-    uses: ./.github/workflows/check.yml
+    uses: ./.github/workflows/frontend-check.yml
 
   build-push:
     name: Build and push
-    uses: ./.github/workflows/build-push.yml
+    uses: ./.github/workflows/frontend-build-push.yml
     needs: [check]
     secrets: inherit
 

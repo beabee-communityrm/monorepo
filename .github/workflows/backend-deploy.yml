@@ -2,7 +2,7 @@ name: Deploy
 
 on:
   push:
-    branches: ["master", "dev"]
+    branches: ["main", "dev"]
 
 jobs:
   init:
@@ -25,7 +25,7 @@ jobs:
           esac
 
   check:
-    uses: ./.github/workflows/check.yml
+    uses: ./.github/workflows/backend-check.yml
 
   test:
     runs-on: ubuntu-latest
@@ -33,7 +33,9 @@ jobs:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/setup
       - run: cp .env.example .env
+        working-directory: ./apps/backend
       - run: npm test
+        working-directory: ./apps/backend
 
   push:
     runs-on: ubuntu-latest

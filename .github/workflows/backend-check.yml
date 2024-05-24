@@ -8,18 +8,21 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/setup
-      - run: npm run check:prettier
+      - run: yarn check:prettier
+        working-directory: ./apps/backend
 
   tsc:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/setup
-      - run: npm run check:tsc
+      - run: yarn check:tsc
+        working-directory: ./apps/backend
 
   dependencies:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/setup
-      - run: npm run check:dependencies
+      - run: yarn check:dependencies
+        working-directory: ./apps/backend

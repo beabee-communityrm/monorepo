@@ -7,7 +7,7 @@ on:
 
 jobs:
   check:
-    uses: ./.github/workflows/check.yml
+    uses: ./.github/workflows/backend-check.yml
 
   test:
     runs-on: ubuntu-latest
@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/setup
       - run: cp .env.example .env
-      - run: npm test
+      - run: yarn test
 
   push:
     runs-on: ubuntu-latest

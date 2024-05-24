@@ -9,7 +9,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/setup
-      - run: npm run check:prettier
+      - run: yarn check:prettier
+        working-directory: ./apps/frontend
 
   vue-tsc:
     name: Types
@@ -17,7 +18,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/setup
-      - run: npm run check:vue-tsc
+      - run: yarn check:vue-tsc
+        working-directory: ./apps/frontend
 
   eslint:
     name: ESLint
@@ -25,4 +27,5 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/setup
-      - run: npm run check:eslint
+      - run: yarn check:eslint
+        working-directory: ./apps/frontend
