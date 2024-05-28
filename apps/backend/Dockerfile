@@ -54,8 +54,6 @@ COPY --chown=node:node --from=builder /opt/.yarn /opt/.yarn
 COPY --chown=node:node --from=builder /opt/node_modules /opt/node_modules
 COPY --chown=node:node --from=builder /opt/apps/backend/package.json /opt/apps/backend/
 COPY --chown=node:node --from=builder /opt/packages/common/package.json /opt/packages/common/
-COPY --chown=node:node --from=builder /opt/apps/backend/node_modules /opt/apps/backend/node_modules
-COPY --chown=node:node --from=builder /opt/packages/common/node_modules /opt/packages/common/node_modules
 
 # Replace's npm prune
 RUN yarn workspaces focus --production
