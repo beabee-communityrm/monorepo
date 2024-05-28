@@ -10,15 +10,22 @@ WORKDIR /opt/apps/frontend
 COPY package.json yarn.lock .yarnrc.yml /opt/
 COPY .yarn /opt/.yarn
 
-# Copy only the related package.json files (this makes the following steps easier to cache)
+# Copy common dependencies info
 COPY packages/common/package.json /opt/packages/common/package.json
+COPY packages/common/deno.json /opt/packages/common/deno.json
+COPY packages/common/deno.lock /opt/packages/common/deno.lock
+
+# Copy frontend dependencies info
 COPY apps/frontend/package.json /opt/apps/frontend/package.json
 
 # Replace's npm ci
 RUN yarn workspaces focus
 
 # Copy the rest of the related packages
-COPY packages/common /opt/packages/common
+COPY packages/common/src /opt/packages/common/src
+COPY packages/common/scripts /opt/packages/common/scripts
+COPY packages/common/test /opt/packages/common/test
+COPY packages/common/mod.ts packages/common/tsconfig.json /opt/packages/common/
 COPY apps/frontend /opt/apps/frontend
 
 # Build the backend and it's dependencies

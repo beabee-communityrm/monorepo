@@ -11,10 +11,12 @@ WORKDIR /opt/apps/backend
 COPY package.json yarn.lock .yarnrc.yml /opt/
 COPY .yarn /opt/.yarn
 
-# Copy only the related package.json files (this makes the following steps easier to cache)
+# Copy common dependencies info
 COPY packages/common/package.json /opt/packages/common/package.json
 COPY packages/common/deno.json /opt/packages/common/deno.json
 COPY packages/common/deno.lock /opt/packages/common/deno.lock
+
+# Copy backend dependencies info
 COPY apps/backend/package.json /opt/apps/backend/package.json
 
 # Replace's npm ci
