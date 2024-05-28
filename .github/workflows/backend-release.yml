@@ -64,7 +64,8 @@ jobs:
           file: ./apps/backend/Dockerfile
           target: app
           push: true
-          tags: ${{ steps.app_meta.outputs.tags }}
+          # TODO: remove -monorepo-test after test is done
+          tags: ${{ steps.app_meta.outputs.tags }}-monorepo-test
           labels: ${{ steps.app_meta.outputs.labels }}
           build-args: |
             REVISION=${{ github.sha }}
@@ -75,7 +76,8 @@ jobs:
           file: ./apps/backend/Dockerfile
           target: router
           push: true
-          tags: ${{ steps.router_meta.outputs.tags }}
+          # TODO: remove -monorepo-test after test is done
+          tags: ${{ steps.router_meta.outputs.tags }}-monorepo-test
           labels: ${{ steps.router_meta.outputs.labels }}
           build-args: |
             REVISION=${{ github.sha }}

@@ -40,7 +40,8 @@ jobs:
           context: .
           file: ./apps/frontend/Dockerfile
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          # TODO: remove -monorepo-test after test is done
+          tags: ${{ steps.meta.outputs.tags }}-monorepo-test
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             REVISION=${{ github.sha }}
