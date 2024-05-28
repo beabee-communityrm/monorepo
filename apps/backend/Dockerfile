@@ -1,7 +1,9 @@
 FROM node:20.10-alpine as builder
 
-RUN apk add --no-cache make g++ git gcc libgcc libstdc++ linux-headers python3
+# Add support for Node.js c/c++ addons and Deno
+RUN apk add --no-cache make g++ git gcc libgcc libstdc++ linux-headers python3 deno
 RUN npm install -g node-gyp 
+RUN deno --version
 
 WORKDIR /opt/apps/backend
 
@@ -9,19 +11,24 @@ WORKDIR /opt/apps/backend
 COPY package.json yarn.lock .yarnrc.yml /opt/
 COPY .yarn /opt/.yarn
 
-COPY apps/backend/package.json /opt/apps/backend/package.json
+# Copy only the related package.json files (this makes the following steps easier to cache)
 COPY packages/common/package.json /opt/packages/common/package.json
+COPY packages/common/deno.json /opt/packages/common/deno.json
+COPY packages/common/deno.lock /opt/packages/common/deno.lock
+COPY apps/backend/package.json /opt/apps/backend/package.json
 
 # Replace's npm ci
 RUN yarn workspaces focus
 
-# Copy the related packages
-# TODO: Copy only the necessary files
+# Copy the rest of the related packages
+COPY packages/common/src /opt/packages/common/src
+COPY packages/common/scripts /opt/packages/common/scripts
+COPY packages/common/test /opt/packages/common/test
+COPY packages/common/mod.ts packages/common/tsconfig.json /opt/packages/common/
 COPY apps/backend /opt/apps/backend
-COPY packages/common /opt/packages/common
 
-# COPY apps/backend/gulpfile.js apps/backend/tsconfig.json apps/backend/tsconfig.build.json /opt/
-# COPY apps/backend/src /opt/src/
+# Build the backend and it's dependencies
+RUN NODE_ENV=production yarn build:common
 RUN NODE_ENV=production yarn build:backend
 
 FROM nginx:1.24-alpine as router
@@ -41,6 +48,7 @@ WORKDIR /opt/apps/backend
 COPY --chown=node:node --from=builder /opt/package.json /opt/yarn.lock /opt/.yarnrc.yml /opt/
 COPY --chown=node:node --from=builder /opt/.yarn /opt/.yarn
 
+# Copy the node_module's and package.json's
 COPY --chown=node:node --from=builder /opt/node_modules /opt/node_modules
 COPY --chown=node:node --from=builder /opt/apps/backend/package.json /opt/apps/backend/
 COPY --chown=node:node --from=builder /opt/packages/common/package.json /opt/packages/common/

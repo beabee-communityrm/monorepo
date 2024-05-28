@@ -1,6 +1,6 @@
 Dockerfile
 docker-compose.yml
 tsconfig.tsbuildinfo
-node_modules
+node_modules/
 /built/
 .env

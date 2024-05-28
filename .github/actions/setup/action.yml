@@ -8,6 +8,7 @@ runs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
+        cache: yarn
         node-version: 20
     - name: Setup Deno
       uses: denoland/setup-deno@v1

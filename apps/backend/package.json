@@ -36,7 +36,7 @@
     "fix:prettier": "prettier --write .",
     "typeorm": "typeorm -d ./built/core/database.js",
     "test": "jest --setupFiles dotenv/config",
-    "docker:build": "npm install && yarn build && docker compose build"
+    "docker:build": "docker compose build"
   },
   "dependencies": {
     "@beabee/beabee-common": "workspace:^",
