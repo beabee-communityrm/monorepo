@@ -18,7 +18,7 @@
     "fix:prettier": "prettier --write .",
     "generate:index": "barrelsby --config barrelsby.json",
     "docker:build": "docker build -t beabee/frontend -f ./Dockerfile ../../",
-    "docker:start": "docker run -d -p 3001:80 beabee/frontend"
+    "docker:start": "docker run -d -p 3000:80 beabee/frontend"
   },
   "dependencies": {
     "@appsignal/javascript": "^1.3.28",
