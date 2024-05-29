@@ -1,6 +1,6 @@
 {
   "name": "@beabee/frontend",
-  "version": "2.2.0",
+  "version": "0.15.2",
   "type": "module",
   "private": true,
   "scripts": {

@@ -12,7 +12,7 @@ To set up:
 
 ```sh
 cp .env.example .env
-npm install
+yarn install
 ```
 
 By default your frontend will use the API at https://dev.beabee.io. You can change this by editing the `.env` file
@@ -20,18 +20,14 @@ By default your frontend will use the API at https://dev.beabee.io. You can chan
 To start development:
 
 ```sh
-npm start
+yarn start
 ```
 
 To build the project:
 
 ```sh
-npm run build
+yarn build
 ```
-
-## Testing with BrowserStack
-
-This project is tested with BrowserStack. As an open-source project, we have the privilege of using BrowserStack services for free, in exchange for acknowledging their support in our repository. BrowserStack is a comprehensive cloud web and mobile testing platform, enabling developers to test their websites and mobile applications across various browsers, operating systems, and real mobile devices.
 
 ## Internationalisation
 

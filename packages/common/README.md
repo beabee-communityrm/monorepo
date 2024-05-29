@@ -30,29 +30,21 @@ in the future.
 
 ## Development
 
-### Requirements
-
-Development of `beabee-common` requires the latest stable versions of both Deno
-and Node.js:
-
-- Deno (latest stable version)
-- Node.js (latest stable version)
-
 ### Build Process
 
 To build the project, run:
 
 ```bash
-npm install
-npm run build # Alternatively, use `deno task build`
+yarn install
+yarn build # Alternatively, use `deno task build`
 ```
 
 ### Scripts
 
 Scripts for NPM and Deno tasks are synchronized, ensuring consistency whether
-you use `npm run ...` or `deno task ...`. They are defined in both
+you use `yarn ...` or `deno task ...`. They are defined in both
 `package.json` and `deno.json`. New scripts can be synchronized with via
-`deno task sync` or `npm run sync`.
+`deno task sync` or `yarn sync`.
 
 Key scripts include:
 

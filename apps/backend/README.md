@@ -7,13 +7,6 @@ beabee was initially developed for the [South London Makerspace](http://southlon
 ![Deploy Status](https://github.com/beabee-communityrm/beabee/workflows/Deploy/badge.svg)
 ![Known Vulnerabilities](https://snyk.io/test/github/beabee-communityrm/beabee/badge.svg?targetFile=package.json)
 
-## Contact Us
-
-We're always excited to connect with our community, hear feedback, and answer any questions you might have! If you're interested in learning more about beabee or have any questions, please feel free to reach out:
-
-- **Issues**: [GitHub Issues](https://github.com/beabee-communityrm/beabee/issues)
-- **Email**: [tech@beabee.io](mailto:tech@beabee.io)
-
 Your input is invaluable to us as we continue to grow and improve beabee. Don't hesitate to get in touch!
 
 ## 💻 Install
@@ -135,8 +128,6 @@ docker compose run app yarn typeorm migration:revert
 To find out more about this topic, take a look at the [TypeORM Migration Guide](https://typeorm.io/migrations).
 
 ### 📰 Documentation
-
-Documentation is currently very limited, please [contact us](#contact-us) and we will try to adapt the documentation accordingly.
 
 The codebase is broadly split into a few different parts
 
@@ -267,8 +258,3 @@ BEABEE_STRIPE_WEBHOOKSECRET=<webhook secret>
 > ⚠️ To be able to create a payment in the frontend you need to be able to receive confirmation emails, so make sure you have setup [E-Mail](#email).
 
 > ⚠️ Since the environment variable has changed you also need to [rebuild the containers](#rebuilding-containers).
-
-## 🤝 Advertising
-
-Browser testing with<br/>
-<a href="https://www.browserstack.com/"><img src="https://user-images.githubusercontent.com/2084823/46341120-52388b00-c62f-11e8-8f41-270915ccc03b.png" width="150" /></a>

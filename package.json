@@ -1,6 +1,7 @@
 {
   "name": "beabee",
   "private": true,
+  "type": "module",
   "scripts": {
     "build": "yarn workspaces foreach -v -W -t run build",
     "build:backend": "yarn workspace @beabee/backend run build",
@@ -9,7 +10,11 @@
     "start:backend": "yarn workspace @beabee/backend run start",
     "start:api": "yarn workspace @beabee/backend run start:api",
     "start:webhooks": "yarn workspace @beabee/backend run start:webhooks",
-    "upgrade": "yarn set version latest && yarn install && yarn upgrade-interactive"
+    "upgrade": "yarn set version latest && yarn install && yarn upgrade-interactive",
+    "docker:build": "yarn workspaces foreach -v -W -t run docker:build",
+    "docker:start": "yarn workspaces foreach -v -W -t -p run docker:start",
+    "publish:next": "yarn workspaces foreach -v -W --no-private npm publish --tolerate-republish --tag next --access public",
+    "publish:latest": "yarn workspaces foreach -v -W --no-private npm publish --tolerate-republish --tag latest --access public"
   },
   "workspaces": [
     "packages/*",
