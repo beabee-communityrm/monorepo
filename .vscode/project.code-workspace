@@ -24,9 +24,10 @@
       "Callouts",
       "fortawesome",
       "otpauth",
+      "outdir",
       "qrcode",
       "TOTP",
-      "Vuelidate",
+      "Vuelidate"
     ],
   },
 }

@@ -10,6 +10,7 @@
     "start:backend": "yarn workspace @beabee/backend run start",
     "start:api": "yarn workspace @beabee/backend run start:api",
     "start:webhooks": "yarn workspace @beabee/backend run start:webhooks",
+    "dev": "yarn workspaces foreach -v -W -p -i run dev",
     "format": "yarn workspaces foreach -v -W -p run format",
     "upgrade": "yarn set version latest && yarn install && yarn upgrade-interactive",
     "docker:build": "yarn workspaces foreach -v -W run docker:build",

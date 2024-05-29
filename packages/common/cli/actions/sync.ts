@@ -1,5 +1,4 @@
 // deno-lint-ignore-file no-explicit-any
-// Sync runtime configurations between package.json and deno.json.
 
 import { parse } from "https://deno.land/std@0.212.0/jsonc/mod.ts";
 
@@ -100,7 +99,11 @@ const syncScripts = () => {
       !nodeScripts[scriptName]?.startsWith("yarn exec")
     ) {
       isNodeWrap = true;
-    } else if (nodeScripts[scriptName]?.startsWith("node ")) {
+    } else if (
+      nodeScripts[scriptName]?.startsWith("node ") ||
+      nodeScripts[scriptName]?.startsWith("concurrently ") ||
+      nodeScripts[scriptName]?.startsWith("tsc ")
+    ) {
       isNode = true;
     }
 
@@ -134,7 +137,12 @@ const writeToFile = async () => {
   await Deno.writeFile("./package.json", encoder.encode(packageJsonString));
 };
 
-syncVersions();
-syncDependencies();
-syncScripts();
-await writeToFile();
+/**
+ * Sync runtime configurations between package.json and deno.json.
+ */
+export const syncAction = async () => {
+  syncVersions();
+  syncDependencies();
+  syncScripts();
+  await writeToFile();
+};

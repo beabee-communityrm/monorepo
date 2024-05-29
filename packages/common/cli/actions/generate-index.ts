@@ -1,15 +1,4 @@
-// Generate index.ts files for each folder
-const paths = [
-  "./src/data",
-  "./src/error",
-  "./src/search",
-  "./src/types",
-  "./src/utils",
-  "./src/validators",
-  "./test/deno/data",
-  "./test/deno/data/components",
-  "./test/deno/data/components/validate-rules",
-];
+import type { GenerateIndexArguments } from "../types.ts";
 
 const encoder = new TextEncoder();
 
@@ -34,4 +23,10 @@ const generateIndex = async (paths: string[]) => {
   }
 };
 
-await generateIndex(paths);
+/**
+ * Generate index.ts files for specific paths.
+ * @param argv 
+ */
+export const generateIndexAction = async (argv: GenerateIndexArguments) => {
+  await generateIndex(argv.paths);
+};

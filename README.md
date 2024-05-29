@@ -51,6 +51,12 @@ You need the following tools installed on your machine:
    yarn docker:start
    ```
 
+4. Run the development mode to watch for changes on all packages:
+
+   ```bash
+   yarn dev
+   ```
+
 ## Developer Tools
 
 Check and upgrade all dependencies:

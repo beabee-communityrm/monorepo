@@ -31,6 +31,7 @@
     "clear": "yarn exec 'deno task clear'",
     "lint": "yarn exec 'deno task lint'",
     "format": "yarn exec 'deno task format'",
+    "dev": "yarn watch",
     "test": "yarn exec 'deno task test'",
     "test:deno": "yarn exec 'deno task test:deno'",
     "test:node": "yarn exec 'deno task test:node'",
@@ -46,7 +47,7 @@
     "build:browser": "yarn exec 'deno task build:browser'",
     "build:browser:cdn": "yarn exec 'deno task build:browser:cdn'",
     "build:browser:esm": "yarn exec 'deno task build:browser:esm'",
-    "build:types": "tsc --project ./tsconfig.json && echo 'export * from \"./index.ts\";' > dist/types/index.d.cts",
+    "build:types": "tsc --project ./tsconfig.json",
     "generate:index": "yarn exec 'deno task generate:index'",
     "sync": "yarn exec 'deno task sync'",
     "prepublishOnly": "yarn build",
@@ -58,12 +59,15 @@
     "check:types": "yarn exec 'deno task check:types'",
     "npm:publish:latest": "yarn npm publish --access public --tag latest",
     "cli": "yarn exec 'deno task cli'",
-    "watch": "yarn exec 'deno task watch'",
+    "watch": "concurrently 'yarn:watch:platforms' 'yarn:watch:types'",
+    "watch:platforms": "yarn exec 'deno task watch:platforms'",
     "watch:node": "yarn exec 'deno task watch:node'",
     "watch:node:esm": "yarn exec 'deno task watch:node:esm'",
     "watch:node:cjs": "yarn exec 'deno task watch:node:cjs'",
     "watch:browser": "yarn exec 'deno task watch:browser'",
-    "watch:types": "yarn exec 'deno task watch:types'"
+    "watch:types": "tsc --project ./tsconfig.json --watch",
+    "watch:browser:cdn": "yarn exec 'deno task watch:browser:cdn'",
+    "watch:browser:esm": "yarn exec 'deno task watch:browser:esm'"
   },
   "repository": {
     "type": "git",
@@ -77,6 +81,7 @@
   "homepage": "https://github.com/beabee-communityrm/beabee-common#readme",
   "devDependencies": {
     "cacheable-request": "^12.0.1",
+    "concurrently": "^8.2.2",
     "typescript": "^5.4.5"
   },
   "dependencies": {

@@ -1,14 +1,12 @@
 import yargs from "https://deno.land/x/yargs@v17.7.2-deno/deno.ts";
-import { buildAction } from "./actions/build.ts";
-import { watchAction } from "./actions/watch.ts";
-import { buildAllAction } from "./actions/buildAll.ts";
+import { buildAction, syncAction, watchAction, generateIndexAction } from "./actions/index.ts";
 
 import type { BuildPlatform, BuildType } from "./types.ts";
 import type { YargsInstance } from "https://deno.land/x/yargs@v17.7.2-deno/build/lib/yargs-factory.js";
 
 yargs(Deno.args)
     .command(
-        "build <platform> <type>",
+        "build [platform] [type]",
         "build for a specific platform and type",
         (yargs: YargsInstance) => {
             const types: BuildType[] = ["cdn", "cjs", "esm"];
@@ -24,13 +22,7 @@ yargs(Deno.args)
         buildAction,
     )
     .command(
-        "build-all",
-        "build for all platforms and types",
-        (yargs: YargsInstance) => yargs,
-        buildAllAction,
-    )
-    .command(
-        "watch <platform> <type>",
+        "watch [platform] [type]",
         "watch for a specific platform and type",
         (yargs: YargsInstance) => {
             const types: BuildType[] = ["cdn", "cjs", "esm"];
@@ -44,6 +36,23 @@ yargs(Deno.args)
             });
         },
         watchAction,
+    )
+    .command(
+        "generate-index <paths..>",
+        "generate index.ts files for specific paths",
+        (yargs: YargsInstance) => {
+            return yargs.positional("paths", {
+                describe: "the target paths to generate index.ts files for",
+                type: "string",
+            })
+        },
+        generateIndexAction,
+    )
+    .command(
+        "sync",
+        "sync runtime configurations between package.json and deno.json",
+        (yargs: YargsInstance) => yargs,
+        syncAction,
     )
     .strictCommands()
     .demandCommand(1)

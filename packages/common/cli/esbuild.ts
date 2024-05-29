@@ -1,15 +1,7 @@
-import {
-  build,
-  Config,
-  stop,
-} from "https://deno.land/x/esbuild@v0.20.0/mod.js";
 import { transformExtPlugin } from "npm:@gjsify/esbuild-plugin-transform-ext@0.0.4";
 import { denoPlugins as DenoPlugins } from "https://deno.land/x/esbuild_deno_loader@0.9.0/mod.ts";
-import {
-  extname,
-  join,
-  resolve,
-} from "https://deno.land/std@0.212.0/path/mod.ts";
+import { resolve } from "https://deno.land/std@0.212.0/path/mod.ts";
+import { renameExtPlugin } from "./plugins/rename.ts";
 
 import type { EsbuildConfigs } from "./types.ts";
 
@@ -35,8 +27,11 @@ export const esbuildConfigs: EsbuildConfigs = {
     },
     cjs: {
       plugins: [
+        // Rename imports
         transformExtPlugin({ outExtension: { ".ts": ".cjs", ".js": ".cjs" } }),
         ...denoPlugins,
+        // Rename files
+        renameExtPlugin(".js", ".cjs"),
       ],
       entryPoints: ["./src/index.ts", "./src/**/*.ts"],
       outdir: CJS_OUTDIR,
@@ -73,17 +68,4 @@ export const esbuildConfigs: EsbuildConfigs = {
     },
     cjs: null,
   },
-};
-
-export const renameExtensionsForCjs = async (directory = CJS_OUTDIR) => {
-  for await (const dirEntry of Deno.readDir(directory)) {
-    const oldPath = join(directory, dirEntry.name);
-
-    if (dirEntry.isDirectory) {
-      await renameExtensionsForCjs(oldPath);
-    } else if (extname(oldPath) === ".js") {
-      const newPath = oldPath.replace(".js", ".cjs");
-      await Deno.rename(oldPath, newPath);
-    }
-  }
 };

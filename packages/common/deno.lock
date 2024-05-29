@@ -3,7 +3,8 @@
   "packages": {
     "specifiers": {
       "npm:@gjsify/esbuild-plugin-transform-ext@0.0.4": "npm:@gjsify/esbuild-plugin-transform-ext@0.0.4",
-      "npm:date-fns@3.6.0": "npm:date-fns@3.6.0"
+      "npm:date-fns@3.6.0": "npm:date-fns@3.6.0",
+      "npm:esbuild-plugin-tsc@0.4.0": "npm:esbuild-plugin-tsc@0.4.0_typescript@5.4.3"
     },
     "npm": {
       "@gjsify/esbuild-plugin-transform-ext@0.0.4": {
@@ -12,6 +13,21 @@
       },
       "date-fns@3.6.0": {
         "integrity": "sha512-fRHTG8g/Gif+kSh50gaGEdToemgfj74aRX3swtiouboip5JDLAyDE9F11nHMIcvOaXeOC6D7SpNhi7uFyB7Uww==",
+        "dependencies": {}
+      },
+      "esbuild-plugin-tsc@0.4.0_typescript@5.4.3": {
+        "integrity": "sha512-q9gWIovt1nkwchMLc2zhyksaiHOv3kDK4b0AUol8lkMCRhJ1zavgfb2fad6BKp7FT9rh/OHmEBXVjczLoi/0yw==",
+        "dependencies": {
+          "strip-comments": "strip-comments@2.0.1",
+          "typescript": "typescript@5.4.3"
+        }
+      },
+      "strip-comments@2.0.1": {
+        "integrity": "sha512-ZprKx+bBLXv067WTCALv8SSz5l2+XhpYCsVtSqlMnkAXMWDq+/ekVbl1ghqP9rUHTzv6sm/DwCOiYutU/yp1fw==",
+        "dependencies": {}
+      },
+      "typescript@5.4.3": {
+        "integrity": "sha512-KrPd3PKaCLr78MalgiwJnA25Nm8HAmdwN3mYUYZgG/wizIo9EainNVQI9/yDavtVFRN2h3k8uf3GLHuhDMgEHg==",
         "dependencies": {}
       }
     }
@@ -406,6 +422,7 @@
     "packageJson": {
       "dependencies": [
         "npm:cacheable-request@^12.0.1",
+        "npm:concurrently@^8.2.2",
         "npm:date-fns@^3.6.0",
         "npm:typescript@^5.4.5"
       ]

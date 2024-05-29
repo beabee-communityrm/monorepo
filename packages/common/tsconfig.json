@@ -8,8 +8,8 @@
     "moduleResolution": "bundler",
     "declarationDir": "./dist/types",
     "allowImportingTsExtensions": true,
-    "declaration": true,
     "emitDeclarationOnly": true,
+    "declaration": true,
     "isolatedModules": true,
     "skipLibCheck": true
   }

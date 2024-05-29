@@ -42,11 +42,18 @@ yarn build # Alternatively, use `deno task build`
 ### Scripts
 
 Scripts for NPM and Deno tasks are synchronized, ensuring consistency whether
-you use `yarn ...` or `deno task ...`. They are defined in both
-`package.json` and `deno.json`. New scripts can be synchronized with via
-`deno task sync` or `yarn sync`.
+you use `yarn ...` or `deno task ...`. They are defined in both `package.json`
+and `deno.json`. New scripts can be synchronized with via `deno task sync` or
+`yarn sync`.
 
 Key scripts include:
+
+#### `cli`
+
+A CLI tool for managing the project. It is a Deno CLI application that allows
+for the management of the project via the command line. It is used to build the
+project, sync runtime configurations between `package.json` and `deno.json`, and
+generate index.ts files.
 
 #### `build`
 
@@ -97,6 +104,10 @@ Testing is divided into several scripts:
 - `test:node`:
   - `test:node:esm` - Tests ESM build importability in Node.js.
   - `test:node:cjs` - Tests CJS build importability in Node.js.
+
+#### `watch` or `dev`
+
+Watches for changes to the codebase and runs the appropriate scripts.
 
 ### Manage Dependencies
 
