@@ -50,11 +50,12 @@ yargs(Deno.args)
     )
     .command(
         "sync",
-        "sync runtime configurations between package.json and deno.json",
+        "sync package.json and deno.json configurations",
         (yargs: YargsInstance) => yargs,
         syncAction,
     )
     .strictCommands()
     .demandCommand(1)
+    .scriptName("deno task cli") // This is used to display the correct command name in the help output
     .help()
     .parse();

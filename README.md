@@ -64,7 +64,7 @@ Check and upgrade all dependencies:
 yarn upgrade
 ```
 
-Publish a new version of the library packages:
+Publish new versions of the library packages on NPM:
 
 ```bash
 yarn publish:latest # or yarn publish:next

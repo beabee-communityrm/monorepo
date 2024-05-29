@@ -36,7 +36,7 @@ To build the project, run:
 
 ```bash
 yarn install
-yarn build # Alternatively, use `deno task build`
+yarn build # or `deno task build`
 ```
 
 ### Scripts
@@ -54,6 +54,10 @@ A CLI tool for managing the project. It is a Deno CLI application that allows
 for the management of the project via the command line. It is used to build the
 project, sync runtime configurations between `package.json` and `deno.json`, and
 generate index.ts files.
+
+```bash
+yarn cli --help # or `deno task cli --help`
+```
 
 #### `build`
 
