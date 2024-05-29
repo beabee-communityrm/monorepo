@@ -65,6 +65,14 @@ Publish a new version of the library packages:
 yarn publish:latest # or yarn publish:next
 ```
 
+Visual Studio Code Workspace:
+
+If you want to use Visual Studio Code as your code editor, you can use the provided `.vscode/project.code-workspace` file to open the project in a workspace. This will allow you to have a single, unified view of the project, including all the necessary settings and extensions:
+
+```bash
+code .vscode/project.code-workspace
+```
+
 ## Backend
 
 For detailed information on the backend setup, including database migrations and running specific tools, please refer to the [Backend README](apps/backend/README.md).

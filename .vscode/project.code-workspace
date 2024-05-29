@@ -1,0 +1,32 @@
+{
+  "folders": [
+    {
+      "name": "ROOT",
+      "path": "../",
+    },
+    {
+      "name": "apps/backend",
+      "path": "../apps/backend",
+    },
+    {
+      "name": "apps/frontend",
+      "path": "../apps/frontend",
+    },
+    {
+      "name": "packages/common",
+      "path": "../packages/common",
+    },
+  ],
+  "settings": {
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "cSpell.words": [
+      "beabee",
+      "Callouts",
+      "fortawesome",
+      "otpauth",
+      "qrcode",
+      "TOTP",
+      "Vuelidate",
+    ],
+  },
+}
