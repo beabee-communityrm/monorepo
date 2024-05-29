@@ -47,8 +47,7 @@ You need the following tools installed on your machine:
 3. Initialize and start the Docker containers:
 
    ```bash
-   yarn docker:build
-   yarn docker:start
+   yarn docker:build # You can also start the containers with yarn docker:start
    ```
 
 4. Run the development mode to watch for changes on all packages:
