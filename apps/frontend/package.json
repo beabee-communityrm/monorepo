@@ -15,7 +15,7 @@
     "check:vue-tsc": "vue-tsc --noEmit",
     "check:eslint": "eslint 'src/**/*.{ts,vue}'",
     "check:prettier": "prettier -c .",
-    "fix:prettier": "prettier --write .",
+    "format": "prettier --write .",
     "generate:index": "barrelsby --config barrelsby.json",
     "docker:build": "docker build -t beabee/frontend -f ./Dockerfile ../../",
     "docker:start": "docker run -d -p 8080:80 beabee/frontend"

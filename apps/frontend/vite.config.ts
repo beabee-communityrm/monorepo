@@ -9,7 +9,7 @@ import theme from './plugins/theme';
 
 export default ({ command, mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
-  console.debug("API_PROXY_URL", env.API_PROXY_URL)
+  console.debug('API_PROXY_URL', env.API_PROXY_URL);
 
   const plugins = [
     vue(),

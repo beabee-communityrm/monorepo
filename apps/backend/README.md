@@ -114,7 +114,7 @@ changes
 
 ```bash
 docker compose start db
-docker compose run app yarn typeorm migration:generate src/migrations/MigrationName && yarn fix:prettier
+docker compose run app yarn typeorm migration:generate src/migrations/MigrationName && yarn format
 yarn build
 docker compose run app yarn typeorm migration:run
 ```

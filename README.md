@@ -65,6 +65,12 @@ Publish a new version of the library packages:
 yarn publish:latest # or yarn publish:next
 ```
 
+Run the format command on all packages to format the code:
+
+```bash
+yarn format
+```
+
 Visual Studio Code Workspace:
 
 If you want to use Visual Studio Code as your code editor, you can use the provided `.vscode/project.code-workspace` file to open the project in a workspace. This will allow you to have a single, unified view of the project, including all the necessary settings and extensions:
