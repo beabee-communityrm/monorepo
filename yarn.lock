@@ -599,7 +599,6 @@ __metadata:
   resolution: "@beabee/beabee-common@workspace:packages/common"
   dependencies:
     cacheable-request: "npm:^12.0.1"
-    concurrently: "npm:^8.2.2"
     date-fns: "npm:^3.6.0"
     typescript: "npm:^5.4.5"
   languageName: unknown
