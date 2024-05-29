@@ -43,6 +43,9 @@
     "build:node": "yarn exec 'deno task build:node'",
     "build:node:esm": "yarn exec 'deno task build:node:esm'",
     "build:node:cjs": "yarn exec 'deno task build:node:cjs'",
+    "build:browser": "yarn exec 'deno task build:browser'",
+    "build:browser:cdn": "yarn exec 'deno task build:browser:cdn'",
+    "build:browser:esm": "yarn exec 'deno task build:browser:esm'",
     "build:types": "tsc --project ./tsconfig.json && echo 'export * from \"./index.ts\";' > dist/types/index.d.cts",
     "generate:index": "yarn exec 'deno task generate:index'",
     "sync": "yarn exec 'deno task sync'",
@@ -54,7 +57,13 @@
     "check:format": "yarn exec 'deno task check:format'",
     "check:types": "yarn exec 'deno task check:types'",
     "npm:publish:latest": "yarn npm publish --access public --tag latest",
-    "build:browser": "yarn exec 'deno task build:browser'"
+    "cli": "yarn exec 'deno task cli'",
+    "watch": "yarn exec 'deno task watch'",
+    "watch:node": "yarn exec 'deno task watch:node'",
+    "watch:node:esm": "yarn exec 'deno task watch:node:esm'",
+    "watch:node:cjs": "yarn exec 'deno task watch:node:cjs'",
+    "watch:browser": "yarn exec 'deno task watch:browser'",
+    "watch:types": "yarn exec 'deno task watch:types'"
   },
   "repository": {
     "type": "git",
