@@ -23,7 +23,7 @@ RUN yarn workspaces focus
 
 # Copy the rest of the related packages
 COPY packages/common/src /opt/packages/common/src
-COPY packages/common/scripts /opt/packages/common/scripts
+COPY packages/common/cli /opt/packages/common/cli
 COPY packages/common/test /opt/packages/common/test
 COPY packages/common/mod.ts packages/common/tsconfig.json /opt/packages/common/
 COPY apps/frontend /opt/apps/frontend

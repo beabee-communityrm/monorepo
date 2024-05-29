@@ -43,7 +43,7 @@ jobs:
         working-directory: ./packages/common
 
       - name: Run Node builds
-        run: yarn build --if-present
+        run: yarn build
         working-directory: ./packages/common
 
       - name: Run Node.js tests

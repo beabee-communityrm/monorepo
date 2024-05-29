@@ -1230,7 +1230,8 @@ body.formio-dialog-open {
 }
 
 .formio-dialog.formio-dialog-theme-default .formio-dialog-buttons {
-  *zoom: 1;
+  transform: scale(1);
+  /*IE fallback: zoom: 1;*/
 }
 
 .formio-dialog.formio-dialog-theme-default .formio-dialog-buttons:after {
