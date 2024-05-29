@@ -1,6 +1,6 @@
 # Beabee Monorepo
 
-Welcome to the official Beabee Monorepo! This repository houses the most important components of the Beabee project, including the backend API, frontend application, and shared common library.
+Welcome to the official Beabee Monorepo! This repository houses the most important components of the Beabee project, including the backend API, frontend application, and shared libraries.
 
 ## Project Structure
 
