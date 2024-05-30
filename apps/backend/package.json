@@ -38,7 +38,8 @@
     "typeorm": "typeorm -d ./built/core/database.js",
     "test": "jest --setupFiles dotenv/config",
     "docker:build": "docker compose build",
-    "docker:start": "docker compose up -d"
+    "docker:start": "docker compose up -d",
+    "docker:restart": "docker compose restart"
   },
   "dependencies": {
     "@beabee/beabee-common": "workspace:^",
