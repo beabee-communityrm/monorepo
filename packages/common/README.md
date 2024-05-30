@@ -43,8 +43,8 @@ yarn build # or `deno task build`
 
 Scripts for NPM and Deno tasks are synchronized, ensuring consistency whether
 you use `yarn ...` or `deno task ...`. They are defined in both `package.json`
-and `deno.json`. New scripts can be synchronized with via `deno task sync` or
-`yarn sync`.
+and `deno.json`. New scripts can be synchronized with via `deno task cli sync`
+or `yarn cli sync`.
 
 Key scripts include:
 
@@ -67,11 +67,16 @@ source. Deno projects can directly utilize TypeScript source from `./mod.ts`.
 This runs several sub-scripts:
 
 - `build:types` - Generates TypeScript types using the `tsc` compiler.
-- `build:node`:
-  - `build:node:cjs` - Creates a CommonJS bundle with `esbuild`, script located
-    at `./scripts/esbuild.cjs.ts`.
-  - `build:node:esm` - Generates an ESM bundle using `esbuild`, script found at
-    `./scripts/esbuild.esm.ts`.
+- `build:node` - Generates a Deno-compatible Node.js bundle using `esbuild`.
+  - `build:node:cjs` - Generates a Deno-compatible Node.js bundle using
+    `esbuild`.
+  - `build:node:esm` - Generates a Deno-compatible Node.js bundle using
+    `esbuild`.
+- `build:browser` - Generates a browser-compatible bundle using `esbuild`.
+  - `build:browser:esm` - Generates a browser-compatible ESM bundle using
+    `esbuild`.
+  - `build:browser:cdn` - Generates a browser-compatible CDN bundle using
+    `esbuild`.
 
 Deno's support for NPM packages differs in syntax, e.g., `date-fns` is imported
 as `import { format } from "npm:date-fns";` in Deno, and
@@ -82,11 +87,11 @@ consistent codebase usage across environments.
 
 Synchronizes dependencies and scripts across `package.json` and `deno.json` to
 establishing necessary aliases in Deno and to make the scripts callable from
-both. See `./scripts/sync.ts` for details.
+both.
 
 #### `generate:index`
 
-Generates `index.ts` files. Located at `./scripts/generate-index.ts`.
+Generates `index.ts` files.
 
 #### `format`
 

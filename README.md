@@ -78,10 +78,10 @@ yarn format
 
 Visual Studio Code Workspace:
 
-If you want to use Visual Studio Code as your code editor, you can use the provided `.vscode/project.code-workspace` file to open the project in a workspace. This will allow you to have a single, unified view of the project, including all the necessary settings and extensions:
+If you want to use Visual Studio Code as your code editor, you can use the provided `.vscode/beabee.code-workspace` file to open the project in a workspace. This will allow you to have a single, unified view of the project, including all the necessary settings and extensions:
 
 ```bash
-code .vscode/project.code-workspace
+code .vscode/beabee.code-workspace
 ```
 
 ## Backend
