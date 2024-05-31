@@ -112,6 +112,10 @@ export async function updateContact(
   return deserializeContact(data);
 }
 
+export async function deleteContact(id: string): Promise<void> {
+  await instance.delete(`/contact/${id}`);
+}
+
 export async function fetchContribution(): Promise<ContributionInfo> {
   const { data } = await instance.get<Serial<ContributionInfo>>(
     '/contact/me/contribution'
