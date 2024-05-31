@@ -185,6 +185,9 @@
     "until": "fino",
     "yes": "Sì"
   },
+  "contactAccount": {
+    "confirmDelete": {}
+  },
   "contactContribution": {
     "confirmCancel": {
       "confirm": "Sì, sono sicuro",

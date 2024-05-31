@@ -372,6 +372,9 @@
     "until": "até",
     "yes": "Sim"
   },
+  "contactAccount": {
+    "confirmDelete": {}
+  },
   "contactContribution": {
     "confirmCancel": {},
     "updateNotice": {}
