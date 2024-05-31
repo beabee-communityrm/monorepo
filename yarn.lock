@@ -32,7 +32,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@appsignal/javascript@npm:^1.3.28":
+"@appsignal/javascript@npm:^1.3.30":
   version: 1.3.30
   resolution: "@appsignal/javascript@npm:1.3.30"
   dependencies:
@@ -495,13 +495,13 @@ __metadata:
   dependencies:
     "@beabee/beabee-common": "workspace:^"
     "@captchafox/node": "npm:^1.2.0"
-    "@inquirer/prompts": "npm:^3.3.0"
-    "@sendgrid/mail": "npm:^8.1.0"
-    "@tsconfig/node20": "npm:^20.1.2"
+    "@inquirer/prompts": "npm:^3.3.2"
+    "@sendgrid/mail": "npm:^8.1.3"
+    "@tsconfig/node20": "npm:^20.1.4"
     "@types/chance": "npm:^1.1.6"
     "@types/connect-busboy": "npm:^1.0.3"
     "@types/connect-pg-simple": "npm:^7.0.3"
-    "@types/cookie-parser": "npm:^1.4.6"
+    "@types/cookie-parser": "npm:^1.4.7"
     "@types/cors": "npm:^2.8.17"
     "@types/csurf": "npm:^1.11.5"
     "@types/discourse-sso": "npm:^1.0.3"
@@ -510,28 +510,28 @@ __metadata:
     "@types/express-flash": "npm:0.0.5"
     "@types/express-session": "npm:^1.17.10"
     "@types/gunzip-maybe": "npm:^1.4.2"
-    "@types/jsonwebtoken": "npm:^9.0.5"
+    "@types/jsonwebtoken": "npm:^9.0.6"
     "@types/lodash": "npm:^4.14.202"
     "@types/module-alias": "npm:^2.0.4"
     "@types/node": "npm:^20.10.4"
-    "@types/nodemailer": "npm:^6.4.14"
+    "@types/nodemailer": "npm:^6.4.15"
     "@types/papaparse": "npm:^5.3.14"
     "@types/passport": "npm:^1.0.16"
     "@types/passport-local": "npm:^1.0.38"
     "@types/pug": "npm:^2.0.10"
     "@types/tar-stream": "npm:^3.1.3"
-    "@types/uuid": "npm:^9.0.7"
+    "@types/uuid": "npm:^9.0.8"
     "@types/yaml-front-matter": "npm:^4.1.3"
     JSONStream: "npm:^1.3.5"
     ajv: "npm:^8.12.0"
     ajv-formats: "npm:^2.1.1"
-    autoprefixer: "npm:^10.4.16"
+    autoprefixer: "npm:^10.4.19"
     axios: "npm:^1.6.2"
     body-parser: "npm:^1.20.2"
     bootstrap-sass: "npm:^3.4.3"
     chance: "npm:^1.1.11"
     class-transformer: "npm:^0.5.1"
-    class-validator: "npm:^0.14.0"
+    class-validator: "npm:^0.14.1"
     clean-deep: "npm:^3.4.0"
     concurrently: "npm:^8.2.2"
     connect-busboy: "npm:^1.0.0"
@@ -539,8 +539,8 @@ __metadata:
     cookie-parser: "npm:^1.4.6"
     cors: "npm:^2.8.5"
     csurf: "npm:^1.11.0"
-    csv-parse: "npm:^5.5.2"
-    csv-stringify: "npm:^6.4.4"
+    csv-parse: "npm:^5.5.6"
+    csv-stringify: "npm:^6.5.0"
     date-fns: "npm:^2.30.0"
     discourse-sso: "npm:^1.0.5"
     dot: "npm:^1.1.3"
@@ -565,28 +565,28 @@ __metadata:
     module-alias: "npm:^2.2.3"
     moment: "npm:^2.29.4"
     muhammara: "npm:^4.1.0"
-    nodemailer: "npm:^6.9.7"
-    otpauth: "npm:^9.2.1"
+    nodemailer: "npm:^6.9.13"
+    otpauth: "npm:^9.2.4"
     papaparse: "npm:^5.4.1"
     passport: "npm:^0.7.0"
     passport-local: "npm:^1.0.0"
-    pg: "npm:^8.11.3"
-    postcss: "npm:^8.4.32"
+    pg: "npm:^8.11.5"
+    postcss: "npm:^8.4.38"
     prettier: "npm:3.1.0"
-    pug: "npm:^3.0.2"
+    pug: "npm:^3.0.3"
     query-string: "npm:^7.1.3"
-    reflect-metadata: "npm:^0.1.13"
-    rimraf: "npm:^5.0.5"
+    reflect-metadata: "npm:^0.1.14"
+    rimraf: "npm:^5.0.7"
     routing-controllers: "npm:^0.10.4"
-    sass: "npm:1.57.*"
+    sass: "npm:^1.77.4"
     slugify: "npm:^1.6.6"
     stripe: "npm:^14.21.0"
-    tar-stream: "npm:^3.1.6"
-    ts-jest: "npm:^29.1.1"
+    tar-stream: "npm:^3.1.7"
+    ts-jest: "npm:^29.1.4"
     ts-node: "npm:^10.9.2"
     tsc-watch: "npm:^6.0.4"
     tsconfig: "npm:^7.0.0"
-    typeorm: "npm:^0.3.17"
+    typeorm: "npm:^0.3.20"
     typescript: "npm:^5.3.3"
     uuid: "npm:^9.0.1"
     winston: "npm:^3.11.0"
@@ -609,27 +609,27 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@beabee/frontend@workspace:apps/frontend"
   dependencies:
-    "@appsignal/javascript": "npm:^1.3.28"
+    "@appsignal/javascript": "npm:^1.3.30"
     "@babel/types": "npm:^7.23.6"
     "@beabee/beabee-common": "workspace:^"
     "@captchafox/vue": "npm:^1.1.0"
-    "@fontsource/fira-sans": "npm:^5.0.18"
-    "@fontsource/fira-sans-condensed": "npm:^5.0.8"
-    "@fontsource/nunito-sans": "npm:^5.0.8"
-    "@fontsource/open-sans": "npm:^5.0.18"
-    "@fontsource/roboto": "npm:^5.0.12"
-    "@fontsource/roboto-slab": "npm:^5.0.18"
-    "@fontsource/rubik": "npm:^5.0.18"
-    "@fontsource/ubuntu": "npm:^5.0.8"
-    "@fontsource/work-sans": "npm:^5.0.16"
+    "@fontsource/fira-sans": "npm:^5.0.20"
+    "@fontsource/fira-sans-condensed": "npm:^5.0.13"
+    "@fontsource/nunito-sans": "npm:^5.0.13"
+    "@fontsource/open-sans": "npm:^5.0.28"
+    "@fontsource/roboto": "npm:^5.0.13"
+    "@fontsource/roboto-slab": "npm:^5.0.20"
+    "@fontsource/rubik": "npm:^5.0.20"
+    "@fontsource/ubuntu": "npm:^5.0.13"
+    "@fontsource/work-sans": "npm:^5.0.18"
     "@formio/vue": "npm:5.0.0"
-    "@fortawesome/fontawesome-svg-core": "npm:^6.5.1"
-    "@fortawesome/free-brands-svg-icons": "npm:^6.5.1"
-    "@fortawesome/free-regular-svg-icons": "npm:^6.5.1"
-    "@fortawesome/free-solid-svg-icons": "npm:^6.5.1"
-    "@fortawesome/vue-fontawesome": "npm:^3.0.5"
+    "@fortawesome/fontawesome-svg-core": "npm:^6.5.2"
+    "@fortawesome/free-brands-svg-icons": "npm:^6.5.2"
+    "@fortawesome/free-regular-svg-icons": "npm:^6.5.2"
+    "@fortawesome/free-solid-svg-icons": "npm:^6.5.2"
+    "@fortawesome/vue-fontawesome": "npm:^3.0.8"
     "@intlify/unplugin-vue-i18n": "npm:^1.6.0"
-    "@maptiler/client": "npm:^1.8.0"
+    "@maptiler/client": "npm:^1.8.1"
     "@maptiler/geocoding-control": "npm:^1.1.1"
     "@rollup/plugin-replace": "npm:^5.0.5"
     "@stripe/stripe-js": "npm:^2.2.1"
@@ -650,11 +650,11 @@ __metadata:
     "@types/cacheable-request": "npm:^8.3.2"
     "@typescript-eslint/eslint-plugin": "npm:^7.11.0"
     "@typescript-eslint/parser": "npm:^7.11.0"
-    "@vitejs/plugin-vue": "npm:^5.0.4"
+    "@vitejs/plugin-vue": "npm:^5.0.5"
     "@vue/tsconfig": "npm:^0.5.1"
     "@vuelidate/core": "npm:^2.0.3"
     "@vuelidate/validators": "npm:^2.0.4"
-    autoprefixer: "npm:^10.4.16"
+    autoprefixer: "npm:^10.4.19"
     axios: "npm:^1.6.2"
     barrelsby: "npm:^2.8.1"
     body-scroll-lock: "npm:^4.0.0-beta.0"
@@ -669,22 +669,22 @@ __metadata:
     maplibre-gl: "npm:^3.6.2"
     markdown-it: "npm:^14.0.0"
     mitt: "npm:^3.0.1"
-    otpauth: "npm:^9.2.1"
-    postcss: "npm:^8.4.32"
+    otpauth: "npm:^9.2.4"
+    postcss: "npm:^8.4.38"
     prettier: "npm:^3.1.1"
-    prettier-plugin-tailwindcss: "npm:^0.5.9"
+    prettier-plugin-tailwindcss: "npm:^0.5.14"
     qrcode-generator: "npm:^1.4.4"
     slugify: "npm:^1.6.6"
     tailwindcss: "npm:^3.3.6"
     typescript: "npm:^5.3.3"
-    vite: "npm:^5.2.11"
-    vite-plugin-pages: "npm:^0.32.0"
+    vite: "npm:^5.2.12"
+    vite-plugin-pages: "npm:^0.32.2"
     vue: "npm:^3.3.11"
     vue-accessible-color-picker: "npm:^5.0.1"
     vue-i18n: "npm:^9.8.0"
     vue-maplibre-gl: "npm:^3.0.3"
     vue-router: "npm:^4.2.5"
-    vue-tsc: "npm:^1.8.25"
+    vue-tsc: "npm:^1.8.27"
     vuedraggable: "npm:^4.1.0"
   languageName: unknown
   linkType: soft
@@ -944,63 +944,63 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fontsource/fira-sans-condensed@npm:^5.0.8":
+"@fontsource/fira-sans-condensed@npm:^5.0.13":
   version: 5.0.13
   resolution: "@fontsource/fira-sans-condensed@npm:5.0.13"
   checksum: 10c0/514a894010d7000991340fc590d132db0e72b4a51bc849bfe642589744fb01a8f85814c459abc92487a2a8dd20f49f64ab5474bbe77d9ae93f10670d01032e98
   languageName: node
   linkType: hard
 
-"@fontsource/fira-sans@npm:^5.0.18":
+"@fontsource/fira-sans@npm:^5.0.20":
   version: 5.0.20
   resolution: "@fontsource/fira-sans@npm:5.0.20"
   checksum: 10c0/0ee28b0c2f1c85d974f040ef32054c2f0d130f98b2210775d899275f8cb5a4d226db7f09b9d556453336dad7a2f47dac29856ecf69806076ffdd47851c32deb8
   languageName: node
   linkType: hard
 
-"@fontsource/nunito-sans@npm:^5.0.8":
+"@fontsource/nunito-sans@npm:^5.0.13":
   version: 5.0.13
   resolution: "@fontsource/nunito-sans@npm:5.0.13"
   checksum: 10c0/4a586928ae9e08c1fbd1122791f2209905eb8028391e274d9bf4015137ea7a25f9e083a46366bf24bc3e4ccb9f236fcbca8a9963611a9d5ae9be2442fd005a29
   languageName: node
   linkType: hard
 
-"@fontsource/open-sans@npm:^5.0.18":
+"@fontsource/open-sans@npm:^5.0.28":
   version: 5.0.28
   resolution: "@fontsource/open-sans@npm:5.0.28"
   checksum: 10c0/b5fea9c3703ffa22ceb1c4c1c3a7446348a9192af100aa2213640fab76b222beb08ed780d3ea84bb7b669c07eb5e415529df3352fc8a5118714e53e42fd20ceb
   languageName: node
   linkType: hard
 
-"@fontsource/roboto-slab@npm:^5.0.18":
+"@fontsource/roboto-slab@npm:^5.0.20":
   version: 5.0.20
   resolution: "@fontsource/roboto-slab@npm:5.0.20"
   checksum: 10c0/1c9514d55c7c43a73cfb84caafb66d3c864a4b2eccb6bece3f374a868962eef5f53efddec57f6db5b047452cc6086e99358950f2a40d82515886c869e2653b07
   languageName: node
   linkType: hard
 
-"@fontsource/roboto@npm:^5.0.12":
+"@fontsource/roboto@npm:^5.0.13":
   version: 5.0.13
   resolution: "@fontsource/roboto@npm:5.0.13"
   checksum: 10c0/7128bf10a82120cd343bb1d8352e2635d2c4612c2988ef9dc1f2536614475a8ec13db09dafd4df8061bfaa17f1b728fa0de24e4f5ffd889aad61d9b00271f45d
   languageName: node
   linkType: hard
 
-"@fontsource/rubik@npm:^5.0.18":
+"@fontsource/rubik@npm:^5.0.20":
   version: 5.0.20
   resolution: "@fontsource/rubik@npm:5.0.20"
   checksum: 10c0/b74d856451499401529a2dd1948d4261e1e0f69bcdcc50a918f5045900b6cd7111c2129f11b2ea76791de7b45550817d62cfc4cbf5b9801ee1b898fe0a70f4d7
   languageName: node
   linkType: hard
 
-"@fontsource/ubuntu@npm:^5.0.8":
+"@fontsource/ubuntu@npm:^5.0.13":
   version: 5.0.13
   resolution: "@fontsource/ubuntu@npm:5.0.13"
   checksum: 10c0/d9d480e8aae13ed868ad39258a0dab129a6a52e4788ce679ba0390742247012defa5ac9b7f7f8542ea2e0cd5efd37ca2033498ec0071a710b3a899197416e7d8
   languageName: node
   linkType: hard
 
-"@fontsource/work-sans@npm:^5.0.16":
+"@fontsource/work-sans@npm:^5.0.18":
   version: 5.0.18
   resolution: "@fontsource/work-sans@npm:5.0.18"
   checksum: 10c0/0b642305910ce712a116ed01a0e31b1c147c006765a0b9859a81bf40647efd5f43e8870184606aff27b3020301e3303e80adee23de10e7093a775d1dcc24ef48
@@ -1065,7 +1065,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fortawesome/fontawesome-svg-core@npm:^6.5.1":
+"@fortawesome/fontawesome-svg-core@npm:^6.5.2":
   version: 6.5.2
   resolution: "@fortawesome/fontawesome-svg-core@npm:6.5.2"
   dependencies:
@@ -1074,7 +1074,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fortawesome/free-brands-svg-icons@npm:^6.5.1":
+"@fortawesome/free-brands-svg-icons@npm:^6.5.2":
   version: 6.5.2
   resolution: "@fortawesome/free-brands-svg-icons@npm:6.5.2"
   dependencies:
@@ -1083,7 +1083,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fortawesome/free-regular-svg-icons@npm:^6.5.1":
+"@fortawesome/free-regular-svg-icons@npm:^6.5.2":
   version: 6.5.2
   resolution: "@fortawesome/free-regular-svg-icons@npm:6.5.2"
   dependencies:
@@ -1092,7 +1092,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fortawesome/free-solid-svg-icons@npm:^6.5.1":
+"@fortawesome/free-solid-svg-icons@npm:^6.5.2":
   version: 6.5.2
   resolution: "@fortawesome/free-solid-svg-icons@npm:6.5.2"
   dependencies:
@@ -1101,13 +1101,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fortawesome/vue-fontawesome@npm:^3.0.5":
-  version: 3.0.6
-  resolution: "@fortawesome/vue-fontawesome@npm:3.0.6"
+"@fortawesome/vue-fontawesome@npm:^3.0.8":
+  version: 3.0.8
+  resolution: "@fortawesome/vue-fontawesome@npm:3.0.8"
   peerDependencies:
     "@fortawesome/fontawesome-svg-core": ~1 || ~6
     vue: ">= 3.0.0 < 4"
-  checksum: 10c0/58f49ecde955fd0435d4fbbf7ae3c32038f0a1dac8e21d71ec6c1c7cf8b3e12b261c25ed2906cd97cda39fa969fec87ea1cf71d18d30d879ad369491443cafad
+  checksum: 10c0/a123db06deceb3b7304a94081262946f8da64884a6aac55ea3691ef7fe803692b3af933e772b04cdaad4f2c41473594122cc516a3078f861d413452ce6cb1d86
   languageName: node
   linkType: hard
 
@@ -1252,7 +1252,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@inquirer/prompts@npm:^3.3.0":
+"@inquirer/prompts@npm:^3.3.2":
   version: 3.3.2
   resolution: "@inquirer/prompts@npm:3.3.2"
   dependencies:
@@ -1814,7 +1814,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@maptiler/client@npm:^1.8.0":
+"@maptiler/client@npm:^1.8.1":
   version: 1.8.1
   resolution: "@maptiler/client@npm:1.8.1"
   dependencies:
@@ -2089,7 +2089,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sendgrid/mail@npm:^8.1.0":
+"@sendgrid/mail@npm:^8.1.3":
   version: 8.1.3
   resolution: "@sendgrid/mail@npm:8.1.3"
   dependencies:
@@ -2486,7 +2486,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tsconfig/node20@npm:^20.1.2":
+"@tsconfig/node20@npm:^20.1.4":
   version: 20.1.4
   resolution: "@tsconfig/node20@npm:20.1.4"
   checksum: 10c0/239cd6abaceaaffc758e7a9dd3748ec1acfdabd6de28a9a16a3824c21f17ad69a16184870298460345d2fb6f3663d092c21d5b764bef669a179658b4a7eac739
@@ -2619,7 +2619,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/cookie-parser@npm:^1.4.6":
+"@types/cookie-parser@npm:^1.4.7":
   version: 1.4.7
   resolution: "@types/cookie-parser@npm:1.4.7"
   dependencies:
@@ -2789,7 +2789,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jsonwebtoken@npm:^9.0.5":
+"@types/jsonwebtoken@npm:^9.0.6":
   version: 9.0.6
   resolution: "@types/jsonwebtoken@npm:9.0.6"
   dependencies:
@@ -2871,7 +2871,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/nodemailer@npm:^6.4.14":
+"@types/nodemailer@npm:^6.4.15":
   version: 6.4.15
   resolution: "@types/nodemailer@npm:6.4.15"
   dependencies:
@@ -3034,7 +3034,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/uuid@npm:^9.0.7":
+"@types/uuid@npm:^9.0.8":
   version: 9.0.8
   resolution: "@types/uuid@npm:9.0.8"
   checksum: 10c0/b411b93054cb1d4361919579ef3508a1f12bf15b5fdd97337d3d351bece6c921b52b6daeef89b62340fd73fd60da407878432a1af777f40648cbe53a01723489
@@ -3206,13 +3206,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitejs/plugin-vue@npm:^5.0.4":
-  version: 5.0.4
-  resolution: "@vitejs/plugin-vue@npm:5.0.4"
+"@vitejs/plugin-vue@npm:^5.0.5":
+  version: 5.0.5
+  resolution: "@vitejs/plugin-vue@npm:5.0.5"
   peerDependencies:
     vite: ^5.0.0
     vue: ^3.2.25
-  checksum: 10c0/2e65900ff41037a013ef40351aa2fb68ee1963da461795b4e3d01fc4a0226c65e9ca4bc39941dc163f883773bcd80744ee0f1f96ecc2f46fae1a4cd71c741308
+  checksum: 10c0/03b16e398be8de1e89a631ce8329722b26aa0856f3f4722acaefbd834edc16abdba2b7898091ec0b38adb1421b1abcf7c284aad39243ecde02128c8254188d2d
   languageName: node
   linkType: hard
 
@@ -3973,7 +3973,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"autoprefixer@npm:^10.4.16":
+"autoprefixer@npm:^10.4.19":
   version: 10.4.19
   resolution: "autoprefixer@npm:10.4.19"
   dependencies:
@@ -4744,7 +4744,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"class-validator@npm:^0.14.0":
+"class-validator@npm:^0.14.1":
   version: 0.14.1
   resolution: "class-validator@npm:0.14.1"
   dependencies:
@@ -5437,14 +5437,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"csv-parse@npm:^5.5.2":
+"csv-parse@npm:^5.5.6":
   version: 5.5.6
   resolution: "csv-parse@npm:5.5.6"
   checksum: 10c0/b4f6e9b885e4488829356455157bd009f3fed4119c5fbaadab1a879e85f0a9a1b62cd01e6de68ff77a50f820a6261722bce1b799da1ace2e2126e0b7c8d86760
   languageName: node
   linkType: hard
 
-"csv-stringify@npm:^6.4.4":
+"csv-stringify@npm:^6.5.0":
   version: 6.5.0
   resolution: "csv-stringify@npm:6.5.0"
   checksum: 10c0/838f793d28458fcaf2bc84ac7d33e918792a7ea004ffbffbb9553e7d0e9de46ef7e2b306096f8299634561e2b78b808299c4aa629943ff96d65375c6e03194b8
@@ -10907,7 +10907,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nodemailer@npm:^6.9.7":
+"nodemailer@npm:^6.9.13":
   version: 6.9.13
   resolution: "nodemailer@npm:6.9.13"
   checksum: 10c0/4d6899f45abb7760a7d3b4d1046de7e08e80a471b84d1f09065a25941ded482e7f9877be248550e681e0270383cb9299f6caded507cbc0e917341bb137cc94a4
@@ -11262,7 +11262,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"otpauth@npm:^9.2.1":
+"otpauth@npm:^9.2.4":
   version: 9.2.4
   resolution: "otpauth@npm:9.2.4"
   dependencies:
@@ -11765,7 +11765,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pg@npm:^8.11.3, pg@npm:^8.8.0":
+"pg@npm:^8.11.5, pg@npm:^8.8.0":
   version: 8.11.5
   resolution: "pg@npm:8.11.5"
   dependencies:
@@ -12015,7 +12015,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.4.23, postcss@npm:^8.4.32, postcss@npm:^8.4.38":
+"postcss@npm:^8.4.23, postcss@npm:^8.4.38":
   version: 8.4.38
   resolution: "postcss@npm:8.4.38"
   dependencies:
@@ -12107,7 +12107,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier-plugin-tailwindcss@npm:^0.5.9":
+"prettier-plugin-tailwindcss@npm:^0.5.14":
   version: 0.5.14
   resolution: "prettier-plugin-tailwindcss@npm:0.5.14"
   peerDependencies:
@@ -12487,19 +12487,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pug-code-gen@npm:^3.0.2":
-  version: 3.0.2
-  resolution: "pug-code-gen@npm:3.0.2"
+"pug-code-gen@npm:^3.0.3":
+  version: 3.0.3
+  resolution: "pug-code-gen@npm:3.0.3"
   dependencies:
     constantinople: "npm:^4.0.1"
     doctypes: "npm:^1.1.0"
     js-stringify: "npm:^1.0.2"
     pug-attrs: "npm:^3.0.0"
-    pug-error: "npm:^2.0.0"
-    pug-runtime: "npm:^3.0.0"
+    pug-error: "npm:^2.1.0"
+    pug-runtime: "npm:^3.0.1"
     void-elements: "npm:^3.1.0"
     with: "npm:^7.0.0"
-  checksum: 10c0/a9b7f7fe1cadd16682f46b5de087f22cce1be3b48cbb7137da046b4912434143f1ffdb0e7a07e03fa961f3342f944d3eefbc1a50751f7561ae431720c29448fe
+  checksum: 10c0/517a93930dbc80bc7fa5f60ff324229a07cc5ab70ed9d344ce105e2fe24de68db5121c8457a9ba99cdc8d48dd18779dd34956ebfcab009b3c1c6843a3cade109
   languageName: node
   linkType: hard
 
@@ -12507,6 +12507,13 @@ __metadata:
   version: 2.0.0
   resolution: "pug-error@npm:2.0.0"
   checksum: 10c0/f07d603f659e1cc27aef3f0cfa6c37608c7cc0611c1e55963a03d4eb78ef44982e8f0b1a703b5d5d5cece6409f13c8f3c337b2842299adc4caa64b0f747df517
+  languageName: node
+  linkType: hard
+
+"pug-error@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "pug-error@npm:2.1.0"
+  checksum: 10c0/bbce339b17fab9890de84975c0cd8723a847bf65f35653d3ebcf77018e8ad91529d56e978ab80f4c64c9f4f07ef9e56e7a9fda3be44249c344a93ba11fccff79
   languageName: node
   linkType: hard
 
@@ -12587,11 +12594,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pug@npm:^3.0.2":
-  version: 3.0.2
-  resolution: "pug@npm:3.0.2"
+"pug@npm:^3.0.3":
+  version: 3.0.3
+  resolution: "pug@npm:3.0.3"
   dependencies:
-    pug-code-gen: "npm:^3.0.2"
+    pug-code-gen: "npm:^3.0.3"
     pug-filters: "npm:^4.0.0"
     pug-lexer: "npm:^5.0.1"
     pug-linker: "npm:^4.0.0"
@@ -12599,7 +12606,7 @@ __metadata:
     pug-parser: "npm:^6.0.0"
     pug-runtime: "npm:^3.0.1"
     pug-strip-comments: "npm:^2.0.0"
-  checksum: 10c0/1d4d33e577a59f2df50bbb75aadebe67896c93046627a7435005bda693c34cf6023d814bd424d9b06b7842b03587da5ec66baedf7c49320a697696574302120b
+  checksum: 10c0/bda53d3a6deea1d348cd5ab17427c77f3d74165510ad16f4fd182cc63618ad09388ecda317d17122ee890c8a68f9a54b96221fce7f44a332e463fdbb10a9d1e2
   languageName: node
   linkType: hard
 
@@ -12889,7 +12896,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"reflect-metadata@npm:^0.1.13":
+"reflect-metadata@npm:^0.1.13, reflect-metadata@npm:^0.1.14":
   version: 0.1.14
   resolution: "reflect-metadata@npm:0.1.14"
   checksum: 10c0/3a6190c7f6cb224f26a012d11f9e329360c01c1945e2cbefea23976a8bacf9db6b794aeb5bf18adcb673c448a234fbc06fc41853c00a6c206b30f0777ecf019e
@@ -13185,7 +13192,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rimraf@npm:^5.0.5":
+"rimraf@npm:^5.0.7":
   version: 5.0.7
   resolution: "rimraf@npm:5.0.7"
   dependencies:
@@ -13382,16 +13389,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sass@npm:1.57.*":
-  version: 1.57.1
-  resolution: "sass@npm:1.57.1"
+"sass@npm:^1.77.4":
+  version: 1.77.4
+  resolution: "sass@npm:1.77.4"
   dependencies:
     chokidar: "npm:>=3.0.0 <4.0.0"
     immutable: "npm:^4.0.0"
     source-map-js: "npm:>=0.6.2 <2.0.0"
   bin:
     sass: sass.js
-  checksum: 10c0/de8ab22b4b4b962df8629d0a6e3ff1397c37406a8c422b23a2c3c82cb25f18f3fd2dceff0cbb679e600af1b17e331e5517bd7b4fa02cf068556128f2a45b5569
+  checksum: 10c0/b9cb4882bded282aabe38d011adfce375e1f282184fcf93dc3da5d5be834c6aa53c474c15634c351ef7bd85146cfd1cc81343654cc3bcf000d78e856da4225ef
   languageName: node
   linkType: hard
 
@@ -14283,7 +14290,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tar-stream@npm:^3.1.6":
+"tar-stream@npm:^3.1.7":
   version: 3.1.7
   resolution: "tar-stream@npm:3.1.7"
   dependencies:
@@ -14584,9 +14591,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-jest@npm:^29.1.1":
-  version: 29.1.3
-  resolution: "ts-jest@npm:29.1.3"
+"ts-jest@npm:^29.1.4":
+  version: 29.1.4
+  resolution: "ts-jest@npm:29.1.4"
   dependencies:
     bs-logger: "npm:0.x"
     fast-json-stable-stringify: "npm:2.x"
@@ -14616,7 +14623,7 @@ __metadata:
       optional: true
   bin:
     ts-jest: cli.js
-  checksum: 10c0/7810882f53c7d722dfcd9fbe65c1c80258ec4bd216a21448f27759f2f06d57a2f3f2472e1efe4a5e29fd4064dce07a93c8dbf3b13e77dac0e32419a30756f8f5
+  checksum: 10c0/97def10be26a553e529dfacafe264fa9833d638052bc2b1ebe6301262ae2d3e43954f4d91f2d2d07cf92352cdd4fa163a86f8116a1f6bb8cef7060cddfec794b
   languageName: node
   linkType: hard
 
@@ -14761,7 +14768,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typeorm@npm:^0.3.17":
+"typeorm@npm:^0.3.20":
   version: 0.3.20
   resolution: "typeorm@npm:0.3.20"
   dependencies:
@@ -15245,9 +15252,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-pages@npm:^0.32.0":
-  version: 0.32.1
-  resolution: "vite-plugin-pages@npm:0.32.1"
+"vite-plugin-pages@npm:^0.32.2":
+  version: 0.32.2
+  resolution: "vite-plugin-pages@npm:0.32.2"
   dependencies:
     "@types/debug": "npm:^4.1.12"
     debug: "npm:^4.3.4"
@@ -15256,21 +15263,27 @@ __metadata:
     fast-glob: "npm:^3.3.2"
     json5: "npm:^2.2.3"
     local-pkg: "npm:^0.5.0"
-    picocolors: "npm:^1.0.0"
-    yaml: "npm:^2.4.1"
+    picocolors: "npm:^1.0.1"
+    yaml: "npm:^2.4.2"
   peerDependencies:
     "@vue/compiler-sfc": ^2.7.0 || ^3.0.0
     vite: ^2.0.0 || ^3.0.0-0 || ^4.0.0 || ^5.0.0
   peerDependenciesMeta:
+    "@solidjs/router":
+      optional: true
     "@vue/compiler-sfc":
       optional: true
-  checksum: 10c0/4f26475375c1cd2e0ba5502528c0938692b14c5bd5777038ebab3cb6d72b7933e811b257340cef4d5c5788dacc429d3fa49962a2335863369b7d7f02ebe78a7a
+    react-router:
+      optional: true
+    vue-router:
+      optional: true
+  checksum: 10c0/77bbbdca5288283c14e1d3c2c263cb912a382f217cf41463e6dd4a81bedc2811b9b248f6571c6ef674dd23bcad1f20365f0d25e6a4c203706bc37186298229fc
   languageName: node
   linkType: hard
 
-"vite@npm:^5.2.11":
-  version: 5.2.11
-  resolution: "vite@npm:5.2.11"
+"vite@npm:^5.2.12":
+  version: 5.2.12
+  resolution: "vite@npm:5.2.12"
   dependencies:
     esbuild: "npm:^0.20.1"
     fsevents: "npm:~2.3.3"
@@ -15304,7 +15317,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 10c0/664b8d68e4f5152ae16bd2041af1bbaf11c43630ac461835bc31ff7d019913b33e465386e09f66dc1037d7aeefbb06939e0173787c063319bc2bd30c3b9ad8e4
+  checksum: 10c0/f03fdfc320adea3397df3e327029fd875f8220779f679ab183a3a994e8788b4ce531fee28f830361fb274f3cf08ed9adb9429496ecefdc3faf535b38da7ea8b1
   languageName: node
   linkType: hard
 
@@ -15413,7 +15426,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-tsc@npm:^1.8.25":
+"vue-tsc@npm:^1.8.27":
   version: 1.8.27
   resolution: "vue-tsc@npm:1.8.27"
   dependencies:
@@ -15795,7 +15808,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yaml@npm:^2.0.0, yaml@npm:^2.3.4, yaml@npm:^2.4.1":
+"yaml@npm:^2.0.0, yaml@npm:^2.3.4, yaml@npm:^2.4.2":
   version: 2.4.2
   resolution: "yaml@npm:2.4.2"
   bin:
