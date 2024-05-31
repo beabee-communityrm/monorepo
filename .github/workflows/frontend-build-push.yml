@@ -22,8 +22,7 @@ jobs:
         with:
           flavor: |
             latest=false
-          # TODO: remove -monorepo-test after test is done
-          images: ${{ secrets.DOCKER_ORGANISATION }}/frontend-monorepo-test
+          images: ${{ secrets.DOCKER_ORGANISATION }}/frontend
           tags: |
             type=ref,event=tag
             type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
@@ -40,8 +39,7 @@ jobs:
           context: .
           file: ./apps/frontend/Dockerfile
           push: true
-          # TODO: remove -monorepo-test after test is done
-          tags: ${{ steps.meta.outputs.tags }}-monorepo-test
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             REVISION=${{ github.sha }}

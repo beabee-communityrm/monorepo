@@ -34,9 +34,8 @@ jobs:
         with:
           flavor: |
             latest=false
-          # TODO: remove -monorepo-test after test is done
           images: |
-            ${{ secrets.DOCKER_ORGANISATION }}/beabee-monorepo-test
+            ${{ secrets.DOCKER_ORGANISATION }}/beabee
           tags: |
             type=ref,event=tag
             release
@@ -46,9 +45,8 @@ jobs:
         with:
           flavor: |
             latest=false
-          # TODO: remove -monorepo-test after test is done
           images: |
-            ${{ secrets.DOCKER_ORGANISATION }}/router-monorepo-test
+            ${{ secrets.DOCKER_ORGANISATION }}/router
           tags: |
             type=ref,event=tag
             release
@@ -64,8 +62,7 @@ jobs:
           file: ./apps/backend/Dockerfile
           target: app
           push: true
-          # TODO: remove -monorepo-test after test is done
-          tags: ${{ steps.app_meta.outputs.tags }}-monorepo-test
+          tags: ${{ steps.app_meta.outputs.tags }}
           labels: ${{ steps.app_meta.outputs.labels }}
           build-args: |
             REVISION=${{ github.sha }}
@@ -76,8 +73,7 @@ jobs:
           file: ./apps/backend/Dockerfile
           target: router
           push: true
-          # TODO: remove -monorepo-test after test is done
-          tags: ${{ steps.router_meta.outputs.tags }}-monorepo-test
+          tags: ${{ steps.router_meta.outputs.tags }}
           labels: ${{ steps.router_meta.outputs.labels }}
           build-args: |
             REVISION=${{ github.sha }}
