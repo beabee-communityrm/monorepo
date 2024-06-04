@@ -12,7 +12,7 @@ COPY .yarn /opt/.yarn
 
 # Copy common dependencies info
 COPY packages/common/package.json /opt/packages/common/package.json
-COPY packages/common/deno.json /opt/packages/common/deno.json
+COPY packages/common/deno.jsonc /opt/packages/common/deno.jsonc
 COPY packages/common/deno.lock /opt/packages/common/deno.lock
 
 # Copy frontend dependencies info
