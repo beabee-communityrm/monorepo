@@ -343,6 +343,9 @@
     "until": "до",
     "yes": "Да"
   },
+  "contactAccount": {
+    "confirmDelete": {}
+  },
   "contactContribution": {
     "confirmCancel": {},
     "updateNotice": {}

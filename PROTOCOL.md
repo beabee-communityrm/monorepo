@@ -4,7 +4,13 @@ This file can be removed if the migration to the monorepo is successful.
 
 ### Add existing repositories and keep the history
 
+Install git subtree under Fedora:
+
+```bash
+sudo dnf install git-subtree
 ```
+
+```bash
 # Init repo
 git init
 mkdir apps
@@ -130,9 +136,16 @@ Also `yarn` did not run the first time, but thanks to a better error message I n
 
 ## Docker
 
-### Backend
-
+For each subtree, the following steps are done:
 - Changed the context to the root of this monorepo
 - Copied the workspace configuration from the root into the image
 - Paths adapted accordingly
-- Copied the packages that are needed from the workspace ('backend' and 'common')
+- Copied the packages that are needed from the workspace
+
+## Update changes on the subtree
+
+```bash
+git subtree pull --prefix=apps/backend backend master --squash
+git subtree pull --prefix=apps/frontend frontend main --squash
+git subtree pull --prefix=packages/common common main --squash
+```
