@@ -62,7 +62,7 @@
     "axios": "^1.7.2",
     "body-scroll-lock": "^4.0.0-beta.0",
     "color2k": "^2.0.3",
-    "date-fns": "^2.30.0",
+    "date-fns": "^3.6.0",
     "formiojs": "npm:@beabee/formiojs@^4.15.11",
     "iframe-resizer": "^4.4.2",
     "maplibre-gl": "^3.6.2",
