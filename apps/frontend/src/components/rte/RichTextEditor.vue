@@ -62,15 +62,15 @@ import { computed, onBeforeUnmount, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useEditor, EditorContent, type ChainedCommands } from '@tiptap/vue-3';
 import Link from '@tiptap/extension-link';
-import Bold from '@tiptap/extension-bold';
-import Italic from '@tiptap/extension-italic';
-import Strike from '@tiptap/extension-strike';
-import Heading from '@tiptap/extension-heading';
-import BulletList from '@tiptap/extension-bullet-list';
-import OrderedList from '@tiptap/extension-ordered-list';
+// import Bold from '@tiptap/extension-bold';
+// import Italic from '@tiptap/extension-italic';
+// import Strike from '@tiptap/extension-strike';
+// import Heading from '@tiptap/extension-heading';
+// import BulletList from '@tiptap/extension-bullet-list';
+// import OrderedList from '@tiptap/extension-ordered-list';
 import Underline from '@tiptap/extension-underline';
 import StarterKit from '@tiptap/starter-kit';
-import Typeography from '@tiptap/extension-typography';
+import Typography from '@tiptap/extension-typography';
 import RichTextEditorButton from './RichTextEditorButton.vue';
 import AppLabel from '../forms/AppLabel.vue';
 import useVuelidate from '@vuelidate/core';
@@ -109,13 +109,13 @@ const editor = useEditor({
     Link.configure({
       openOnClick: false,
     }),
-    Typeography,
-    Bold,
-    Italic,
-    Strike,
-    Heading,
-    BulletList,
-    OrderedList,
+    Typography,
+    // Bold,
+    // Italic,
+    // Strike,
+    // Heading,
+    // BulletList,
+    // OrderedList,
   ],
   enableInputRules: false,
   enablePasteRules: false,
