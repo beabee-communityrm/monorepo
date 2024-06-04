@@ -50,7 +50,7 @@ yargs(Deno.args)
     )
     .command(
         "sync",
-        "sync package.json and deno.json configurations",
+        "sync package.json and deno.jsonc configurations",
         (yargs: YargsInstance) => yargs,
         syncAction,
     )

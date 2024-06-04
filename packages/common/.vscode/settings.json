@@ -10,6 +10,7 @@
     "./test/node",
     "./node_modules"
   ],
+  "deno.config": "./deno.jsonc",
   "editor.defaultFormatter": "denoland.vscode-deno",
   "editor.formatOnSave": true
 }

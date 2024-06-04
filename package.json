@@ -12,6 +12,8 @@
     "start:webhooks": "yarn workspace @beabee/backend run start:webhooks",
     "dev": "yarn workspaces foreach -v -W -p -i run dev",
     "format": "yarn workspaces foreach -v -W -p run format",
+    "test": "yarn workspaces foreach -v -W -p run test",
+    "check": "yarn workspaces foreach -v -W -p run check",
     "upgrade": "yarn set version latest && yarn install && yarn upgrade-interactive",
     "docker:build": "yarn workspaces foreach -v -W run docker:build",
     "docker:start": "yarn workspaces foreach -v -W -p run docker:start",

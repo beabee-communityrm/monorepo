@@ -8,7 +8,7 @@ import type { EsbuildConfigs } from "./types.ts";
 const CJS_OUTDIR = "./dist/cjs";
 
 const denoPlugins = DenoPlugins({
-  configPath: resolve("./deno.json"),
+  configPath: resolve("./deno.jsonc"),
 });
 
 export const esbuildConfigs: EsbuildConfigs = {
