@@ -34,6 +34,14 @@ export function calcPaymentFee(
     ? gcFee
     : stripeFees[country][feeable.paymentMethod];
 
+  if (!feeFn) {
+    const error = new Error(
+      `No fee function found for "${feeable.paymentMethod}" in "${country}". Please check that the payment methods have been configured correctly.`,
+    );
+    console.error(error);
+    return 0;
+  }
+
   return feeable.period === ContributionPeriod.Annually
     ? 0
     : feeFn(feeable.amount);
