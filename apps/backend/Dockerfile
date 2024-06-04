@@ -1,8 +1,11 @@
 FROM node:20.10-alpine as builder
 
-# Add support for Node.js c/c++ addons and Deno
-RUN apk add --no-cache make g++ git gcc libgcc libstdc++ linux-headers python3 deno
-RUN npm install -g node-gyp 
+# Add support for Node.js c/c++ addons
+# RUN apk add --no-cache make g++ git gcc libgcc libstdc++ linux-headers python3
+# RUN npm install -g node-gyp 
+
+# Add Deno
+RUN apk add --no-cache deno
 RUN deno --version
 
 WORKDIR /opt/apps/backend
