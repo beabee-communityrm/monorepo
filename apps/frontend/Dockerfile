@@ -7,7 +7,7 @@ RUN deno --version
 WORKDIR /opt/apps/frontend
 
 # Copy the workspace configuration
-COPY package.json yarn.lock .yarnrc.yml /opt/
+COPY package.json yarn.lock deno.jsonc .yarnrc.yml /opt/
 COPY .yarn /opt/.yarn
 
 # Copy common dependencies info
