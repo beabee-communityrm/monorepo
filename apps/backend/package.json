@@ -1,6 +1,6 @@
 {
   "name": "@beabee/backend",
-  "version": "0.15.4",
+  "version": "0.16.0",
   "private": true,
   "description": "A community engagement system for community newsrooms",
   "main": "built/app.js",
