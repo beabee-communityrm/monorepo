@@ -43,7 +43,7 @@ yarn build # or `deno task build`
 
 Scripts for NPM and Deno tasks are synchronized, ensuring consistency whether
 you use `yarn ...` or `deno task ...`. They are defined in both `package.json`
-and `deno.json`. New scripts can be synchronized with via `deno task cli sync`
+and `deno.jsonc`. New scripts can be synchronized with via `deno task cli sync`
 or `yarn cli sync`.
 
 Key scripts include:
@@ -52,7 +52,7 @@ Key scripts include:
 
 A CLI tool for managing the project. It is a Deno CLI application that allows
 for the management of the project via the command line. It is used to build the
-project, sync runtime configurations between `package.json` and `deno.json`, and
+project, sync runtime configurations between `package.json` and `deno.jsonc`, and
 generate index.ts files.
 
 ```bash
@@ -80,12 +80,12 @@ This runs several sub-scripts:
 
 Deno's support for NPM packages differs in syntax, e.g., `date-fns` is imported
 as `import { format } from "npm:date-fns";` in Deno, and
-`import { format } from "date-fns";` in Node.js. Aliases in `deno.json` enable
+`import { format } from "date-fns";` in Node.js. Aliases in `deno.jsonc` enable
 consistent codebase usage across environments.
 
 #### `sync`
 
-Synchronizes dependencies and scripts across `package.json` and `deno.json` to
+Synchronizes dependencies and scripts across `package.json` and `deno.jsonc` to
 establishing necessary aliases in Deno and to make the scripts callable from
 both.
 

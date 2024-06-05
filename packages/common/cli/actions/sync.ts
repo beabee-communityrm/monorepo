@@ -59,7 +59,7 @@ const syncVersions = () => {
   packageJsonObj.version = newVersion;
 };
 
-/** Sync NPM dependencies from package.json with Deno dependencies in deno.json. */
+/** Sync NPM dependencies from package.json with Deno dependencies in deno.jsonc. */
 const syncDependencies = () => {
   // Get dependencies
   const dependencies = packageJsonObj.dependencies as Record<string, string>;
@@ -79,7 +79,7 @@ const syncDependencies = () => {
   rootDenoJsoncObj.imports = denoJsoncObj.imports;
 };
 
-/** Sync NPM scripts from package.json with Deno tasks in deno.json. */
+/** Sync NPM scripts from package.json with Deno tasks in deno.jsonc. */
 const syncScripts = () => {
   const nodeScripts = packageJsonObj.scripts as Record<string, string>;
   const denoScripts = denoJsoncObj.tasks as Record<string, string>;
@@ -149,7 +149,7 @@ const writeToFile = async () => {
 };
 
 /**
- * Sync runtime configurations between package.json and deno.json.
+ * Sync runtime configurations between package.json and deno.jsonc.
  */
 export const syncAction = async () => {
   syncVersions();

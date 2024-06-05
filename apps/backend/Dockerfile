@@ -36,7 +36,7 @@ COPY apps/backend /opt/apps/backend
 RUN NODE_ENV=production yarn build:common
 RUN NODE_ENV=production yarn build:backend
 
-FROM nginx:1.24-alpine as router
+FROM nginx:stable-alpine as router
 
 COPY apps/backend/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --chown=nginx:nginx --from=builder /opt/apps/backend/built/static /opt/apps/backend/built/static
