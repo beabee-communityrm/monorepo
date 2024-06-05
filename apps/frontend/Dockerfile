@@ -1,4 +1,4 @@
-FROM node:20.10-alpine as builder
+FROM node:20-alpine3.19 as builder
 
 # Add support for Deno
 RUN apk add --no-cache deno

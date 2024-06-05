@@ -1,4 +1,4 @@
-FROM node:20.10-alpine as builder
+FROM node:20-alpine3.19 as builder
 
 # Add support for Node.js c/c++ addons
 # RUN apk add --no-cache make g++ git gcc libgcc libstdc++ linux-headers python3
@@ -41,7 +41,7 @@ FROM nginx:stable-alpine as router
 COPY apps/backend/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --chown=nginx:nginx --from=builder /opt/apps/backend/built/static /opt/apps/backend/built/static
 
-FROM node:20.10-alpine as app
+FROM node:20-alpine3.19 as app
 
 ARG REVISION=DEV
 
