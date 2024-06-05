@@ -734,15 +734,20 @@ __metadata:
   resolution: "@beabee/task-runner-dashboard@workspace:apps/task-runner-dashboard"
   dependencies:
     "@beabee/cli": "workspace:^"
+    "@beabee/task-runner": "workspace:^"
     "@bull-board/express": "npm:^5.19.2"
     bullmq: "npm:^5.7.15"
     esbuild: "npm:^0.21.4"
   languageName: unknown
   linkType: soft
 
-"@beabee/task-runner@workspace:packages/task-runner":
+"@beabee/task-runner@workspace:^, @beabee/task-runner@workspace:packages/task-runner":
   version: 0.0.0-use.local
   resolution: "@beabee/task-runner@workspace:packages/task-runner"
+  dependencies:
+    "@beabee/cli": "workspace:^"
+    bullmq: "npm:^5.7.15"
+    typescript: "npm:^5.4.5"
   languageName: unknown
   linkType: soft
 

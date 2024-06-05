@@ -1,20 +1,23 @@
 import Express from 'express';
-import { Queue } from 'bullmq';
 import { createBullBoard } from '@bull-board/api';
 import { BullMQAdapter } from '@bull-board/api/dist/src/queueAdapters/bullMQ.js';
 import { ExpressAdapter } from '@bull-board/express';
 
 import { basicAuth } from './auth';
 
+import type { TaskRunnerService } from '@beabee/task-runner';
+
 const TASK_RUNNER_DASHBOARD_PORT = process.env.TASK_RUNNER_DASHBOARD_PORT || 3004;
 const TASK_RUNNER_BASE_PATH = process.env.TASK_RUNNER_ROUTE_PREFIX || '/';
 
-export const createDashboard = (queues: Queue[]) => {
+export const createDashboard = (taskRunnerService: TaskRunnerService) => {
     const serverAdapter = new ExpressAdapter();
     serverAdapter.setBasePath(TASK_RUNNER_BASE_PATH);
 
+    const queues = taskRunnerService.getQueryInfos();
+
     const { addQueue, removeQueue, setQueues, replaceQueues } = createBullBoard({
-        queues: queues.map((queue) => new BullMQAdapter(queue)),
+        queues: queues.map((queue) => new BullMQAdapter(queue.queue, { description: queue.description })),
         serverAdapter: serverAdapter,
     });
 

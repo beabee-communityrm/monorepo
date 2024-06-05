@@ -1,5 +1,16 @@
 import { createDashboard } from './dashboard';
-import * as queues from './queues';
+import { TaskRunnerService } from '@beabee/task-runner';
 
-const { addQueue, removeQueue, setQueues, replaceQueues, express } = createDashboard(Object.values(queues));
+const TASK_RUNNER_REDIS_HOST = process.env.TASK_RUNNER_REDIS_HOST || 'localhost';
+const TASK_RUNNER_REDIS_PORT = Number(process.env.TASK_RUNNER_REDIS_PORT) || 6379;
+
+const taskRunnerService = new TaskRunnerService({
+    connection: {
+        host: TASK_RUNNER_REDIS_HOST,
+        port: TASK_RUNNER_REDIS_PORT,
+    },
+
+});
+
+const { addQueue, removeQueue, setQueues, replaceQueues, express } = createDashboard(taskRunnerService);
 

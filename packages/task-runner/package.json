@@ -4,11 +4,38 @@
   "main": "src/index.ts",
   "type": "module",
   "files": [
-    "src"
+    "src",
+    "dist"
   ],
   "scripts": {
-    "cli": "yarn exec 'deno task cli'",
-    "sync": "yarn exec 'deno task sync'"
+    "build": "yarn exec 'deno task build'",
+    "build:node": "yarn exec 'deno task build:node'",
+    "build:types": "tsc --project ./tsconfig.json",
+    "beabee:cli": "yarn exec 'deno task beabee:cli'",
+    "sync": "yarn exec 'deno task sync'",
+    "format": "yarn exec 'deno task format'",
+    "generate:index": "yarn exec 'deno task generate:index'",
+    "cli": "yarn exec 'deno task cli'"
   },
-  "dependencies": {}
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/types/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "types": "./dist/types/index.d.cts",
+        "default": "./dist/cjs/index.cjs"
+      }
+    },
+    "./src/*": "./src/*.ts",
+    "./package.json": "./package.json"
+  },
+  "devDependencies": {
+    "@beabee/cli": "workspace:^",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "bullmq": "^5.7.15"
+  }
 }

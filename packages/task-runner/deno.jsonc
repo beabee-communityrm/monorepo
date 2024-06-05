@@ -2,8 +2,16 @@
   "name": "@beabee/task-runner",
   "version": "0.16.0",
   "tasks": {
+    "beabee:cli": "deno run --allow-read --allow-write --allow-env --allow-run --allow-net ../../apps/cli/mod.ts",
+    "build": "deno task generate:index && deno task format && deno task sync && deno task build:node && deno task build:types",
+    "build:node": "deno task beabee:cli cross-build node",
+    "build:types": "yarn build:types",
     "cli": "deno run --allow-read --allow-write --allow-env --allow-run --allow-net ../../apps/cli/mod.ts",
-    "sync": "deno task cli cross-sync"
+    "sync": "deno task cli cross-sync",
+    "format": "deno fmt src",
+    "generate:index": "deno task cli generate-index ./src/services ./src/types"
   },
-  "imports": {}
+  "imports": {
+    "bullmq": "npm:bullmq@5.7.15"
+  }
 }

@@ -13,6 +13,7 @@ export const crossBuildAction = async (argv: BuildArguments) => {
       );
     }
     await build(config);
+    return await stop();
   }
 
   // Build for specific platform for all types
@@ -25,6 +26,7 @@ export const crossBuildAction = async (argv: BuildArguments) => {
       console.info(`Building ${argv.platform} ${types}`);
       await build(config);
     }
+    return await stop();
   }
 
   // Build for all platforms and types

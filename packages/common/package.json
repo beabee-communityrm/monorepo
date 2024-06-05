@@ -58,7 +58,7 @@
     "check:format": "yarn exec 'deno task check:format'",
     "check:types": "yarn exec 'deno task check:types'",
     "npm:publish:latest": "yarn npm publish --access public --tag latest",
-    "cli": "yarn exec 'deno task cli'",
+    "beabee:cli": "yarn exec 'deno task beabee:cli'",
     "watch": "concurrently 'yarn:watch:platforms' 'yarn:watch:types'",
     "watch:platforms": "yarn exec 'deno task watch:platforms'",
     "watch:node": "yarn exec 'deno task watch:node'",

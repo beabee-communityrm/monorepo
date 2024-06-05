@@ -7,7 +7,7 @@
   "scripts": {
     "clear": "rm -rf dist",
     "build": "esbuild --bundle --platform=node --packages=external --format=esm --outfile=dist/app.js src/app.ts",
-    "start": "node dist/index.js",
+    "start": "node dist/app.js",
     "watch": "yarn build --watch",
     "generate:index": "beabee-cli generate-index ./src/queues",
     "docker:build": "docker build -t beabee/task-runner-dashboard -f ./Dockerfile ../../",
@@ -16,6 +16,7 @@
     "docker:stop": "docker stop $(docker ps -a | grep beabee/task-runner-dashboard | awk '{print $1}')"
   },
   "dependencies": {
+    "@beabee/task-runner": "workspace:^",
     "@bull-board/express": "^5.19.2",
     "bullmq": "^5.7.15"
   },
