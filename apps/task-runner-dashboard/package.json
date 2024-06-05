@@ -1,0 +1,19 @@
+{
+  "name": "@beabee/task-runner-dashboard",
+  "version": "0.16.0",
+  "main": "dist/index.js",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "esbuild --bundle --platform=node --packages=external --format=esm --outfile=dist/index.js src/index.ts",
+    "start": "node dist/index.js",
+    "watch": "yarn build --watch"
+  },
+  "dependencies": {
+    "@bull-board/express": "^5.19.2",
+    "bullmq": "^5.7.15"
+  },
+  "devDependencies": {
+    "esbuild": "^0.21.4"
+  }
+}

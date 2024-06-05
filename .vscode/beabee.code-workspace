@@ -13,6 +13,10 @@
       "path": "../apps/frontend",
     },
     {
+      "name": "apps/task-runner-dashboard",
+      "path": "../apps/task-runner-dashboard",
+    },
+    {
       "name": "packages/common",
       "path": "../packages/common",
     },
