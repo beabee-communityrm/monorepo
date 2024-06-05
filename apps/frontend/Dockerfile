@@ -1,4 +1,4 @@
-FROM node:20.10-alpine as builder
+FROM node:20-alpine3.19 as builder
 
 # Add support for Deno
 RUN apk add --no-cache deno
@@ -7,12 +7,12 @@ RUN deno --version
 WORKDIR /opt/apps/frontend
 
 # Copy the workspace configuration
-COPY package.json yarn.lock .yarnrc.yml /opt/
+COPY package.json yarn.lock deno.jsonc .yarnrc.yml /opt/
 COPY .yarn /opt/.yarn
 
 # Copy common dependencies info
 COPY packages/common/package.json /opt/packages/common/package.json
-COPY packages/common/deno.json /opt/packages/common/deno.json
+COPY packages/common/deno.jsonc /opt/packages/common/deno.jsonc
 COPY packages/common/deno.lock /opt/packages/common/deno.lock
 
 # Copy frontend dependencies info

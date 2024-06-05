@@ -7,8 +7,11 @@ const packageJson = await Deno.readTextFile("./package.json");
 const packageJsonObj = parse(packageJson) as any;
 
 // Load deno.jsonc
-const denoJsonc = await Deno.readTextFile("./deno.json");
+const denoJsonc = await Deno.readTextFile("./deno.jsonc");
 const denoJsoncObj = parse(denoJsonc) as any;
+
+const rootDenoJsonc = await Deno.readTextFile("../../deno.jsonc");
+const rootDenoJsoncObj = parse(rootDenoJsonc) as any;
 
 /**
  * Compares two NPM version strings and returns the greater version.
@@ -56,7 +59,7 @@ const syncVersions = () => {
   packageJsonObj.version = newVersion;
 };
 
-/** Sync NPM dependencies from package.json with Deno dependencies in deno.json. */
+/** Sync NPM dependencies from package.json with Deno dependencies in deno.jsonc. */
 const syncDependencies = () => {
   // Get dependencies
   const dependencies = packageJsonObj.dependencies as Record<string, string>;
@@ -70,9 +73,13 @@ const syncDependencies = () => {
       ? `npm:${name}@${version}`
       : `npm:${name}`;
   }
+
+  // WORKAROUND: VSCode or the Deno plugin still seems to have a few problems resolving the import aliases in the mixed monorepo.
+  // This file bypasses the problem by copying the imports to the root deno.jsonc
+  rootDenoJsoncObj.imports = denoJsoncObj.imports;
 };
 
-/** Sync NPM scripts from package.json with Deno tasks in deno.json. */
+/** Sync NPM scripts from package.json with Deno tasks in deno.jsonc. */
 const syncScripts = () => {
   const nodeScripts = packageJsonObj.scripts as Record<string, string>;
   const denoScripts = denoJsoncObj.tasks as Record<string, string>;
@@ -130,7 +137,11 @@ const writeToFile = async () => {
 
   // Write deno.jsonc
   const denoJsoncString = JSON.stringify(denoJsoncObj, null, 2) + "\n";
-  await Deno.writeFile("./deno.json", encoder.encode(denoJsoncString));
+  await Deno.writeFile("./deno.jsonc", encoder.encode(denoJsoncString));
+
+  // Write deno.jsonc
+  const rootDenoJsoncString = JSON.stringify(rootDenoJsoncObj, null, 2) + "\n";
+  await Deno.writeFile("../../deno.jsonc", encoder.encode(rootDenoJsoncString));
 
   // Write package.json
   const packageJsonString = JSON.stringify(packageJsonObj, null, 2) + "\n";
@@ -138,7 +149,7 @@ const writeToFile = async () => {
 };
 
 /**
- * Sync runtime configurations between package.json and deno.json.
+ * Sync runtime configurations between package.json and deno.jsonc.
  */
 export const syncAction = async () => {
   syncVersions();

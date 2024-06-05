@@ -4,7 +4,7 @@ import currentLocale from "@locale";
 import type { StripeTaxRateCreateParams } from "@type/stripe-tax-rate-create-params";
 
 export const stripe = new Stripe(config.stripe.secretKey, {
-  apiVersion: "2023-10-16",
+  apiVersion: "2024-04-10",
   typescript: true
 });
 
