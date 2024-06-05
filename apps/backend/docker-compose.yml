@@ -66,25 +66,6 @@ services:
     ports:
       - ${MAIN_PORT}:80
 
-  frontend:
-    build:
-      context: ../..
-      dockerfile: ./apps/frontend/Dockerfile
-    restart: unless-stopped
-    # Not working because docker-entrypoint.sh is not executed
-    # volumes:
-    #   - ../../apps/frontend/dist:/usr/share/nginx/html
-    environment:
-      APP_BASE_URL: ${BEABEE_AUDIENCE}
-      API_BASE_URL: /api/1.0
-      APP_REVISION: dev
-      APP_VERSION: dev
-      APPSIGNAL_KEY: ""
-      CAPTCHAFOX_KEY: ""
-      MAPTILER_KEY: ""
-      CNR_MODE: ""
-      EXPERIMENTAL_FEATURES: ""
-
 volumes:
   db_data:
   upload_data:
