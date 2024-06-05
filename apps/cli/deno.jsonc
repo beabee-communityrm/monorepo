@@ -2,8 +2,10 @@
   "name": "@beabee/cli",
   "version": "0.16.0",
   "tasks": {
-    "build": "chmod +x ./src/cli.ts",
+    "build": "deno task generate:index && chmod +x ./src/cli.ts",
     "start": "./src/cli.ts",
-    "generate:index": "deno task start generate-index ./src/actions ./src/plugins"
-  }
+    "generate:index": "deno task start generate-index ./src/actions ./src/plugins",
+    "sync": "deno task start cross-sync"
+  },
+  "imports": {}
 }

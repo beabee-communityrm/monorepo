@@ -5,5 +5,10 @@
   "type": "module",
   "files": [
     "src"
-  ]
+  ],
+  "scripts": {
+    "cli": "yarn exec 'deno task cli'",
+    "sync": "yarn exec 'deno task sync'"
+  },
+  "dependencies": {}
 }

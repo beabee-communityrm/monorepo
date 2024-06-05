@@ -10,6 +10,10 @@
     "beabee-cli": "./bin.js"
   },
   "scripts": {
-    "build": "chmod +x ./src/cli.ts"
-  }
+    "start": "deno task start",
+    "build": "yarn exec 'deno task build'",
+    "generate:index": "yarn exec 'deno task generate:index'",
+    "sync": "yarn exec 'deno task sync'"
+  },
+  "dependencies": {}
 }

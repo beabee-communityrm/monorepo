@@ -1,5 +1,9 @@
 {
-    "name": "@beabee/task-runner",
-    "version": "0.16.0"
+  "name": "@beabee/task-runner",
+  "version": "0.16.0",
+  "tasks": {
+    "cli": "deno run --allow-read --allow-write --allow-env --allow-run --allow-net ../../apps/cli/mod.ts",
+    "sync": "deno task cli cross-sync"
+  },
+  "imports": {}
 }
-

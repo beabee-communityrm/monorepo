@@ -723,6 +723,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@beabee/root@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "@beabee/root@workspace:."
+  languageName: unknown
+  linkType: soft
+
 "@beabee/task-runner-dashboard@workspace:apps/task-runner-dashboard":
   version: 0.0.0-use.local
   resolution: "@beabee/task-runner-dashboard@workspace:apps/task-runner-dashboard"
@@ -4505,12 +4511,6 @@ __metadata:
   checksum: 10c0/30a2c0675eb52136b05ef496feb41574d9f0bb2d6d677761da579c00a841523fccf07f1dbabec2337b5f5750f428683b8ca60d89e56a1052c4ae1c0cd05de64d
   languageName: node
   linkType: hard
-
-"beabee@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "beabee@workspace:."
-  languageName: unknown
-  linkType: soft
 
 "bignumber.js@npm:^9.0.0":
   version: 9.1.2
