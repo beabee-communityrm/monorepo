@@ -7,10 +7,11 @@ import { ExpressAdapter } from '@bull-board/express';
 import { basicAuth } from './auth';
 
 const TASK_RUNNER_DASHBOARD_PORT = process.env.TASK_RUNNER_DASHBOARD_PORT || 3004;
+const TASK_RUNNER_BASE_PATH = process.env.TASK_RUNNER_ROUTE_PREFIX || '/';
 
 export const createDashboard = (queues: Queue[]) => {
     const serverAdapter = new ExpressAdapter();
-    serverAdapter.setBasePath('/admin/queues');
+    serverAdapter.setBasePath(TASK_RUNNER_BASE_PATH);
 
     const { addQueue, removeQueue, setQueues, replaceQueues } = createBullBoard({
         queues: queues.map((queue) => new BullMQAdapter(queue)),
@@ -19,12 +20,11 @@ export const createDashboard = (queues: Queue[]) => {
 
     const express = Express();
 
-    express.use('/admin/queues', basicAuth, serverAdapter.getRouter());
+    express.use(TASK_RUNNER_BASE_PATH, basicAuth, serverAdapter.getRouter());
 
     express.listen(TASK_RUNNER_DASHBOARD_PORT, () => {
         console.log(`Running on ${TASK_RUNNER_DASHBOARD_PORT}...`);
-        console.log(`For the UI, open http://localhost:${TASK_RUNNER_DASHBOARD_PORT}/admin/queues`);
-        console.log('Make sure Redis is running on port 6379 by default');
+        console.log(`For the UI, open http://localhost:${TASK_RUNNER_DASHBOARD_PORT}${TASK_RUNNER_BASE_PATH}`);
     });
 
     return {

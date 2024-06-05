@@ -73,6 +73,21 @@ services:
     volumes:
       - redis_data:/data
 
+  task-runner-dashboard:
+    build:
+      context: ../..
+      dockerfile: ./apps/task-runner-dashboard/Dockerfile
+      target: task-runner-dashboard
+    environment:
+      TASK_RUNNER_DASHBOARD_PORT: 3004
+      TASK_RUNNER_REDIS_HOST: redis
+      TASK_RUNNER_REDIS_PORT: 6379
+      TASK_RUNNER_ROUTE_PREFIX: /
+    ports:
+      - 3004:3004
+    volumes:
+      - ./dist:/opt/apps/task-runner-dashboard/dist
+
 volumes:
   db_data:
   upload_data:

@@ -1,11 +1,11 @@
 import { Queue } from 'bullmq';
 
-const REDIS_SERVICE_HOST = process.env.REDIS_SERVICE_HOST || 'localhost';
-const REDIS_SERVICE_PORT = process.env.REDIS_SERVICE_PORT || 6379;
+const TASK_RUNNER_REDIS_HOST = process.env.TASK_RUNNER_REDIS_HOST || 'localhost';
+const TASK_RUNNER_REDIS_PORT = process.env.TASK_RUNNER_REDIS_PORT || 6379;
 
 export const foobarQueue = new Queue('foobar', {
     connection: {
-        host: REDIS_SERVICE_HOST,
-        port: Number(REDIS_SERVICE_PORT),
+        host: TASK_RUNNER_REDIS_HOST,
+        port: Number(TASK_RUNNER_REDIS_PORT),
     },
 });

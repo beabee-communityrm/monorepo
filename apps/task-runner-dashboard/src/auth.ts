@@ -2,6 +2,7 @@ import type { Request, Response, NextFunction } from 'express';
 
 const TASK_RUNNER_DASHBOARD_PASSWORD = process.env.TASK_RUNNER_DASHBOARD_PASSWORD || 'password123';
 
+// TODO use beabee backend auth
 export const basicAuth = (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization;
     if (!authHeader) {
