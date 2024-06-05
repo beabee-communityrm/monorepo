@@ -32,7 +32,7 @@ COPY apps/frontend /opt/apps/frontend
 RUN NODE_ENV=production yarn build:common
 RUN NODE_ENV=production yarn build:frontend
 
-FROM nginx:stable-alpine
+FROM nginx:1.24-alpine
 
 WORKDIR /opt/apps/frontend
 
