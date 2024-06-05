@@ -1,0 +1,9 @@
+{
+  "name": "@beabee/task-runner",
+  "version": "0.16.0",
+  "main": "src/index.ts",
+  "type": "module",
+  "files": [
+    "src"
+  ]
+}

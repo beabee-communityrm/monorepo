@@ -3,8 +3,8 @@
     "target": "esnext",
     "module": "esnext",
     "moduleResolution": "Bundler",
-    "resolveJsonModule": true,
-    "allowImportingTsExtensions": true
+    "resolveJsonModule": true
   },
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*.ts"],
 }
+

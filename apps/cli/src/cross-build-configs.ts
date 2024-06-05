@@ -11,7 +11,7 @@ const denoPlugins = DenoPlugins({
   configPath: resolve("./deno.jsonc"),
 });
 
-export const esbuildConfigs: EsbuildConfigs = {
+export const crossBuildConfigs: EsbuildConfigs = {
   node: {
     esm: {
       plugins: [
@@ -37,7 +37,7 @@ export const esbuildConfigs: EsbuildConfigs = {
       outdir: CJS_OUTDIR,
       bundle: false,
       platform: "node",
-      target: "node16",
+      target: "node20",
       format: "cjs",
     },
     cdn: null,

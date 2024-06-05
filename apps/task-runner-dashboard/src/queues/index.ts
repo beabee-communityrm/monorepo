@@ -1,2 +1,1 @@
-export * from './foobar.queue';
-
+export * from "./foobar.queue.ts";

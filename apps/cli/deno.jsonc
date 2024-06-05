@@ -1,0 +1,9 @@
+{
+  "name": "@beabee/cli",
+  "version": "0.16.0",
+  "tasks": {
+    "build": "chmod +x ./src/cli.ts",
+    "start": "./src/cli.ts",
+    "generate:index": "deno task start generate-index ./src/actions ./src/plugins"
+  }
+}

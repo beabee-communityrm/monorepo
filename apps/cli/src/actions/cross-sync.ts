@@ -2,17 +2,6 @@
 
 import { parse } from "https://deno.land/std@0.212.0/jsonc/mod.ts";
 
-// Load package.json
-const packageJson = await Deno.readTextFile("./package.json");
-const packageJsonObj = parse(packageJson) as any;
-
-// Load deno.jsonc
-const denoJsonc = await Deno.readTextFile("./deno.jsonc");
-const denoJsoncObj = parse(denoJsonc) as any;
-
-const rootDenoJsonc = await Deno.readTextFile("../../deno.jsonc");
-const rootDenoJsoncObj = parse(rootDenoJsonc) as any;
-
 /**
  * Compares two NPM version strings and returns the greater version.
  * If versions are equal, returns the first version.
@@ -49,7 +38,7 @@ const compareNpmVersions = (v1: string, v2: string): string => {
 };
 
 /** Sync NPM version with Deno version. */
-const syncVersions = () => {
+const syncVersions = (denoJsoncObj: any, packageJsonObj: any) => {
   const denoVersion = denoJsoncObj.version;
   const npmVersion = packageJsonObj.version;
 
@@ -60,7 +49,7 @@ const syncVersions = () => {
 };
 
 /** Sync NPM dependencies from package.json with Deno dependencies in deno.jsonc. */
-const syncDependencies = () => {
+const syncDependencies = (denoJsoncObj: any, packageJsonObj: any, rootDenoJsoncObj: any) => {
   // Get dependencies
   const dependencies = packageJsonObj.dependencies as Record<string, string>;
 
@@ -80,7 +69,7 @@ const syncDependencies = () => {
 };
 
 /** Sync NPM scripts from package.json with Deno tasks in deno.jsonc. */
-const syncScripts = () => {
+const syncScripts = (denoJsoncObj: any, packageJsonObj: any) => {
   const nodeScripts = packageJsonObj.scripts as Record<string, string>;
   const denoScripts = denoJsoncObj.tasks as Record<string, string>;
 
@@ -132,7 +121,7 @@ const syncScripts = () => {
   }
 };
 
-const writeToFile = async () => {
+const writeToFile = async (denoJsoncObj: any, packageJsonObj: any, rootDenoJsoncObj: any) => {
   const encoder = new TextEncoder();
 
   // Write deno.jsonc
@@ -151,9 +140,21 @@ const writeToFile = async () => {
 /**
  * Sync runtime configurations between package.json and deno.jsonc.
  */
-export const syncAction = async () => {
-  syncVersions();
-  syncDependencies();
-  syncScripts();
-  await writeToFile();
+export const crossSyncAction = async () => {
+
+  // Load package.json
+  const packageJson = await Deno.readTextFile("./package.json");
+  const packageJsonObj = parse(packageJson) as any;
+
+  // Load deno.jsonc
+  const denoJsonc = await Deno.readTextFile("./deno.jsonc");
+  const denoJsoncObj = parse(denoJsonc) as any;
+
+  const rootDenoJsonc = await Deno.readTextFile("../../deno.jsonc");
+  const rootDenoJsoncObj = parse(rootDenoJsonc) as any;
+
+  syncVersions(denoJsoncObj, packageJsonObj);
+  syncDependencies(denoJsoncObj, packageJsonObj, rootDenoJsoncObj);
+  syncScripts(denoJsoncObj, packageJsonObj);
+  await writeToFile(denoJsoncObj, packageJsonObj, rootDenoJsoncObj);
 };

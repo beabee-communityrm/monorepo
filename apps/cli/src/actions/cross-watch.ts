@@ -1,12 +1,12 @@
 import { context } from "https://deno.land/x/esbuild@v0.20.0/mod.js";
-import { esbuildConfigs } from "../esbuild.ts";
+import { crossBuildConfigs } from "../cross-build-configs.ts";
 
 import type { BuildArguments, BuildPlatform, BuildType } from "../types.ts";
 
-export const watchAction = async (argv: BuildArguments) => {
+export const crossWatchAction = async (argv: BuildArguments) => {
   // Watch for specific platform and type
   if (argv.platform && argv.type) {
-    const config = esbuildConfigs[argv.platform][argv.type];
+    const config = crossBuildConfigs[argv.platform][argv.type];
     if (!config) {
       throw new Error(
         `Invalid platform and type combination: ${argv.platform}, ${argv.type}`,
@@ -20,9 +20,9 @@ export const watchAction = async (argv: BuildArguments) => {
   // Watch for specific platform for all types
   if (argv.platform && !argv.type) {
     for (
-      const types of Object.keys(esbuildConfigs[argv.platform]) as BuildType[]
+      const types of Object.keys(crossBuildConfigs[argv.platform]) as BuildType[]
     ) {
-      const config = esbuildConfigs[argv.platform][types];
+      const config = crossBuildConfigs[argv.platform][types];
       if (!config) continue;
       console.info(`Watching ${argv.platform} ${types}`);
       const ctx = await context(config);
@@ -32,9 +32,9 @@ export const watchAction = async (argv: BuildArguments) => {
   }
 
   // Watch for all platforms and types
-  for (const platforms of Object.keys(esbuildConfigs) as BuildPlatform[]) {
-    for (const types of Object.keys(esbuildConfigs[platforms]) as BuildType[]) {
-      const config = esbuildConfigs[platforms][types];
+  for (const platforms of Object.keys(crossBuildConfigs) as BuildPlatform[]) {
+    for (const types of Object.keys(crossBuildConfigs[platforms]) as BuildType[]) {
+      const config = crossBuildConfigs[platforms][types];
       if (!config) continue;
       console.info(`Watching ${platforms} ${types}`);
       const ctx = await context(config);

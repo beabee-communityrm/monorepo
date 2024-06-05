@@ -5,6 +5,10 @@
       "path": "../",
     },
     {
+      "name": "apps/cli",
+      "path": "../apps/cli",
+    },
+    {
       "name": "apps/backend",
       "path": "../apps/backend",
     },
@@ -19,6 +23,10 @@
     {
       "name": "packages/common",
       "path": "../packages/common",
+    },
+    {
+      "name": "packages/task-runner",
+      "path": "../packages/task-runner",
     },
   ],
   "settings": {

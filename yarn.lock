@@ -623,10 +623,19 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@beabee/beabee-common@workspace:packages/common"
   dependencies:
+    "@beabee/cli": "workspace:^"
     cacheable-request: "npm:^12.0.1"
     concurrently: "npm:^8.2.2"
     date-fns: "npm:^3.6.0"
     typescript: "npm:^5.4.5"
+  languageName: unknown
+  linkType: soft
+
+"@beabee/cli@workspace:^, @beabee/cli@workspace:apps/cli":
+  version: 0.0.0-use.local
+  resolution: "@beabee/cli@workspace:apps/cli"
+  bin:
+    beabee-cli: ./bin.js
   languageName: unknown
   linkType: soft
 
@@ -718,9 +727,16 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@beabee/task-runner-dashboard@workspace:apps/task-runner-dashboard"
   dependencies:
+    "@beabee/cli": "workspace:^"
     "@bull-board/express": "npm:^5.19.2"
     bullmq: "npm:^5.7.15"
     esbuild: "npm:^0.21.4"
+  languageName: unknown
+  linkType: soft
+
+"@beabee/task-runner@workspace:packages/task-runner":
+  version: 0.0.0-use.local
+  resolution: "@beabee/task-runner@workspace:packages/task-runner"
   languageName: unknown
   linkType: soft
 

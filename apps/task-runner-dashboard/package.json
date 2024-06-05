@@ -9,6 +9,7 @@
     "build": "esbuild --bundle --platform=node --packages=external --format=esm --outfile=dist/app.js src/app.ts",
     "start": "node dist/index.js",
     "watch": "yarn build --watch",
+    "generate:index": "beabee-cli generate-index ./src/queues",
     "docker:build": "docker build -t beabee/task-runner-dashboard -f ./Dockerfile ../../",
     "docker:start": "docker run -d -p 3004:3004 -e TASK_RUNNER_REDIS_HOST=localhost -e TASK_RUNNER_DASHBOARD_PORT=3004 beabee/task-runner-dashboard",
     "docker:restart": "docker restart $(docker ps -a | grep beabee/task-runner-dashboard | awk '{print $1}')",
@@ -19,6 +20,7 @@
     "bullmq": "^5.7.15"
   },
   "devDependencies": {
+    "@beabee/cli": "workspace:^",
     "esbuild": "^0.21.4"
   }
 }

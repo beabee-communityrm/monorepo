@@ -1,0 +1,15 @@
+{
+  "name": "@beabee/cli",
+  "version": "0.16.0",
+  "main": "bin.js",
+  "type": "module",
+  "files": [
+    "src"
+  ],
+  "bin": {
+    "beabee-cli": "./bin.js"
+  },
+  "scripts": {
+    "build": "chmod +x ./src/cli.ts"
+  }
+}

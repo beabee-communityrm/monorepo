@@ -1,13 +1,14 @@
+#!/usr/bin/env -S deno run --allow-read --allow-write --allow-env --allow-run --allow-net
 import yargs from "https://deno.land/x/yargs@v17.7.2-deno/deno.ts";
-import { buildAction, syncAction, watchAction, generateIndexAction } from "./actions/index.ts";
+import { crossBuildAction, crossWatchAction, crossSyncAction, generateIndexAction } from "./actions/index.ts";
 
 import type { BuildPlatform, BuildType } from "./types.ts";
 import type { YargsInstance } from "https://deno.land/x/yargs@v17.7.2-deno/build/lib/yargs-factory.js";
 
 yargs(Deno.args)
     .command(
-        "build [platform] [type]",
-        "build for a specific platform and type",
+        "cross-build [platform] [type]",
+        "cross build a deno library for a specific platform and type",
         (yargs: YargsInstance) => {
             const types: BuildType[] = ["cdn", "cjs", "esm"];
             const platforms: BuildPlatform[] = ["node", "browser"];
@@ -19,11 +20,11 @@ yargs(Deno.args)
                 choices: types,
             });
         },
-        buildAction,
+        crossBuildAction,
     )
     .command(
-        "watch [platform] [type]",
-        "watch for a specific platform and type",
+        "cross-watch [platform] [type]",
+        "watch a deno library for a specific platform and type to rebuild on changes",
         (yargs: YargsInstance) => {
             const types: BuildType[] = ["cdn", "cjs", "esm"];
             const platforms: BuildPlatform[] = ["node", "browser"];
@@ -35,7 +36,7 @@ yargs(Deno.args)
                 choices: types,
             });
         },
-        watchAction,
+        crossWatchAction,
     )
     .command(
         "generate-index <paths..>",
@@ -49,13 +50,13 @@ yargs(Deno.args)
         generateIndexAction,
     )
     .command(
-        "sync",
+        "cross-sync",
         "sync package.json and deno.jsonc configurations",
         (yargs: YargsInstance) => yargs,
-        syncAction,
+        crossSyncAction,
     )
     .strictCommands()
     .demandCommand(1)
-    .scriptName("deno task cli") // This is used to display the correct command name in the help output
+    .scriptName("beabee-cli") // This is used to display the correct command name in the help output
     .help()
     .parse();
