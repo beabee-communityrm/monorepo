@@ -18,6 +18,7 @@
     "test": "yarn workspaces foreach -v -W -p run test",
     "check": "yarn workspaces foreach -v -W -p run check",
     "sync": "yarn workspaces foreach -v -W -p run sync",
+    "generate:index": "yarn workspaces foreach -v -W -p run generate:index",
     "upgrade": "yarn set version latest && yarn install && yarn upgrade-interactive",
     "docker:build": "yarn workspaces foreach -v -W run docker:build",
     "docker:start": "yarn workspaces foreach -v -W -p run docker:start",

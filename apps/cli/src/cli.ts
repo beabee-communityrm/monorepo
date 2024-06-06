@@ -45,7 +45,10 @@ yargs(Deno.args)
             return yargs.positional("paths", {
                 describe: "the target paths to generate index.ts files for",
                 type: "string",
-            })
+            }).option("ext", {
+                describe: "the file extension to use for the index.ts files",
+                type: "string"
+            });
         },
         generateIndexAction,
     )

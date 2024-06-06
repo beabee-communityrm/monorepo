@@ -6,10 +6,9 @@
     "build": "deno task generate:index && deno task format && deno task sync && deno task build:node && deno task build:types",
     "build:node": "deno task beabee:cli cross-build node",
     "build:types": "yarn build:types",
-    "cli": "deno run --allow-read --allow-write --allow-env --allow-run --allow-net ../../apps/cli/mod.ts",
-    "sync": "deno task cli cross-sync",
+    "sync": "deno task beabee:cli cross-sync",
     "format": "deno fmt src",
-    "generate:index": "deno task cli generate-index ./src/services ./src/types"
+    "generate:index": "deno task beabee:cli generate-index --ext ts ./src/services ./src/types"
   },
   "imports": {
     "bullmq": "npm:bullmq@5.7.15"

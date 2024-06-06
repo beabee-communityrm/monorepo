@@ -1,8 +1,9 @@
+import { basename, extname } from "https://deno.land/std@0.212.0/path/mod.ts";
 import type { GenerateIndexArguments } from "../types.ts";
 
 const encoder = new TextEncoder();
 
-const generateIndex = async (paths: string[]) => {
+const generateIndex = async (paths: string[], ext?: string) => {
   for (const path of paths) {
     const files = await Array.fromAsync(Deno.readDir(path));
     // Sort files by file name
@@ -15,7 +16,8 @@ const generateIndex = async (paths: string[]) => {
         (file.name.endsWith(".ts") || file.name.endsWith(".tsx")) &&
         file.name !== "index.ts"
       ) {
-        indexContent += `export * from "./${file.name}";\n`;
+        const filename = basename(file.name, extname(file.name)) + (ext ? `.${ext}` : "");
+        indexContent += `export * from "./${filename}";\n`;
       }
     }
 
@@ -28,5 +30,5 @@ const generateIndex = async (paths: string[]) => {
  * @param argv 
  */
 export const generateIndexAction = async (argv: GenerateIndexArguments) => {
-  await generateIndex(argv.paths);
+  await generateIndex(argv.paths, argv.ext);
 };

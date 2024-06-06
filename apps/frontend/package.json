@@ -16,7 +16,7 @@
     "check:eslint": "eslint 'src/**/*.{ts,vue}'",
     "check:prettier": "prettier -c .",
     "format": "prettier --write .",
-    "generate:index": "barrelsby --config barrelsby.json",
+    "generate:index": "beabee-cli generate-index ./src/type ./src/enums ./src/lib && yarn format",
     "docker:build": "docker build --build-arg REVISION=$(git rev-parse --short HEAD) -t beabee/frontend -f ./Dockerfile ../../",
     "docker:start": "docker run -d -p 3002:80 -e APP_BASE_URL=http://localhost:3001 -e API_BASE_URL=/api/1.0/ beabee/frontend",
     "docker:restart": "docker restart $(docker ps -a | grep beabee/frontend | awk '{print $1}')"
@@ -79,6 +79,7 @@
   },
   "devDependencies": {
     "@babel/types": "^7.24.6",
+    "@beabee/cli": "workspace:^",
     "@intlify/unplugin-vue-i18n": "^1.6.0",
     "@rollup/plugin-replace": "^5.0.5",
     "@types/cacheable-request": "^8.3.2",
@@ -87,7 +88,6 @@
     "@vitejs/plugin-vue": "^5.0.5",
     "@vue/tsconfig": "^0.5.1",
     "autoprefixer": "^10.4.19",
-    "barrelsby": "^2.8.1",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-vue": "^9.26.0",

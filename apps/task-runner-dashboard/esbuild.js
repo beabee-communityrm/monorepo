@@ -8,4 +8,4 @@ let result = await build({
   platform: 'node',
   external: ['bullmq', '@bull-board/*', 'express'],
 })
-console.log(result)
+console.log("done", result)

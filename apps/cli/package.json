@@ -10,7 +10,7 @@
     "beabee-cli": "./bin.js"
   },
   "scripts": {
-    "start": "deno task start",
+    "beabee:cli": "yarn exec 'deno task beabee:cli'",
     "build": "yarn exec 'deno task build'",
     "generate:index": "yarn exec 'deno task generate:index'",
     "sync": "yarn exec 'deno task sync'"

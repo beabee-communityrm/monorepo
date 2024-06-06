@@ -3,9 +3,9 @@
   "version": "0.16.0",
   "tasks": {
     "build": "deno task generate:index && chmod +x ./src/cli.ts",
-    "start": "./src/cli.ts",
-    "generate:index": "deno task start generate-index ./src/actions ./src/plugins",
-    "sync": "deno task start cross-sync"
+    "beabee:cli": "./src/cli.ts",
+    "generate:index": "deno task beabee:cli generate-index --ext ts ./src/actions ./src/plugins",
+    "sync": "deno task beabee:cli cross-sync"
   },
   "imports": {}
 }

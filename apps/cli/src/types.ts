@@ -11,6 +11,7 @@ export interface BuildArguments {
 
 export interface GenerateIndexArguments {
   paths: string[];
+  ext?: string;
 }
 
 export type EsbuildConfigs = Record<

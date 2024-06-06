@@ -36,6 +36,7 @@
       "bullmq",
       "Callouts",
       "fortawesome",
+      "muhammara",
       "otpauth",
       "outdir",
       "qrcode",
@@ -47,6 +48,6 @@
       "./apps/backend",
       "./apps/frontend",
       "./apps/task-runner-dashboard"
-    ],
+    ]
   },
 }

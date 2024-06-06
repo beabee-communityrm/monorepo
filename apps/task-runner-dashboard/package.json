@@ -9,7 +9,7 @@
     "build": "node esbuild.js",
     "start": "node dist/app.js",
     "watch": "yarn build --watch",
-    "generate:index": "beabee-cli generate-index ./src/queues",
+    "generate:index": "beabee-cli generate-index --ext ts ./src",
     "docker:build": "docker build -t beabee/task-runner-dashboard -f ./Dockerfile ../../",
     "docker:start": "docker run -d -p 3004:3004 -e TASK_RUNNER_REDIS_HOST=localhost -e TASK_RUNNER_DASHBOARD_PORT=3004 beabee/task-runner-dashboard",
     "docker:restart": "docker restart $(docker ps -a | grep beabee/task-runner-dashboard | awk '{print $1}')",

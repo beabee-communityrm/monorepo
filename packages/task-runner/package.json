@@ -14,8 +14,7 @@
     "beabee:cli": "yarn exec 'deno task beabee:cli'",
     "sync": "yarn exec 'deno task sync'",
     "format": "yarn exec 'deno task format'",
-    "generate:index": "yarn exec 'deno task generate:index'",
-    "cli": "yarn exec 'deno task cli'"
+    "generate:index": "yarn exec 'deno task generate:index'"
   },
   "exports": {
     ".": {

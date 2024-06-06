@@ -28,7 +28,7 @@
     "dev:api:watch": "tsc-watch -p tsconfig.build.json --noClear --onSuccess 'docker compose restart api_app router'",
     "dev:api:logs": "yarn exec bash -c 'while true; do docker compose logs -f --tail=0 api_app; sleep 1; done'",
     "build": "rimraf built/ && gulp build && tsc -p ./tsconfig.build.json",
-    "generate:index": "ts-node scripts/generate-index.ts",
+    "generate:index": "beabee-cli generate-index ./src/api/controllers ./src/api/decorators ./src/api/dto ./src/api/errors ./src/api/interceptors ./src/api/middlewares ./src/api/params ./src/api/transformers ./src/api/utils ./src/api/validators ./src/enums ./src/models ./src/type",
     "watch": "tsc-watch -p tsconfig.build.json --noClear",
     "check": "concurrently 'yarn:check:*'",
     "check:tsc": "tsc --noEmit",
@@ -99,6 +99,7 @@
     "yaml-front-matter": "^4.1.1"
   },
   "devDependencies": {
+    "@beabee/cli": "workspace:^",
     "@tsconfig/node20": "^20.1.4",
     "@types/chance": "^1.1.6",
     "@types/connect-busboy": "^1.0.3",

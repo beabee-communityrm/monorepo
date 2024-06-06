@@ -43,7 +43,7 @@
     "cache": "deno task cache:deno && deno task cache:node",
     "cache:deno": "deno cache --reload mod.ts",
     "cache:node": "yarn cache:node",
-    "generate:index": "deno task beabee:cli generate-index ./src/data ./src/error ./src/search ./src/types ./src/utils ./src/validators ./test/deno/data ./test/deno/data/components ./test/deno/data/components/validate-rules",
+    "generate:index": "deno task beabee:cli generate-index --ext ts ./src/data ./src/error ./src/search ./src/types ./src/utils ./src/validators ./test/deno/data ./test/deno/data/components ./test/deno/data/components/validate-rules",
     "sync": "deno task beabee:cli cross-sync",
     "prepublishOnly": "yarn prepublishOnly",
     "npm:publish:latest": "yarn npm:publish:latest"
