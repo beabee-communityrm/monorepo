@@ -86,7 +86,7 @@ services:
     ports:
       - 3004:3004
     volumes:
-      - ./dist:/opt/apps/task-runner-dashboard/dist
+      - ../../apps/task-runner-dashboard/dist:/opt/apps/task-runner-dashboard/dist
 
 volumes:
   db_data:

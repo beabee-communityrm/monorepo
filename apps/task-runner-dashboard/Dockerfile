@@ -10,10 +10,11 @@ WORKDIR /opt/apps/task-runner-dashboard
 COPY package.json yarn.lock deno.jsonc .yarnrc.yml /opt/
 COPY .yarn /opt/.yarn
 
-# Copy cli dependencies info
-COPY apps/cli/package.json /opt/apps/cli/package.json
-COPY apps/cli/deno.jsonc /opt/apps/cli/deno.jsonc
-COPY apps/cli/deno.lock /opt/apps/cli/deno.lock
+# Copy @beabee/cli dependencies info
+COPY apps/cli/package.json apps/cli/deno.jsonc apps/cli/deno.lock /opt/apps/cli/
+
+# Copy @beabee/task-runner dependencies info
+COPY packages/task-runner/package.json packages/task-runner/deno.jsonc packages/task-runner/deno.lock /opt/packages/task-runner/
 
 # Copy task-runner-dashboard dependencies info
 COPY apps/task-runner-dashboard/package.json /opt/apps/task-runner-dashboard/package.json
@@ -23,6 +24,7 @@ RUN yarn workspaces focus
 
 # Copy the rest of the related packages
 COPY apps/cli /opt/apps/cli
+COPY packages/task-runner /opt/packages/task-runner
 
 # Copy the rest of task-runner-dashboard
 COPY apps/task-runner-dashboard /opt/apps/task-runner-dashboard
