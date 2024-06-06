@@ -28,6 +28,7 @@
         "default": "./dist/cjs/index.cjs"
       }
     },
+    "./src": "./src/index.ts",
     "./src/*": "./src/*.ts",
     "./package.json": "./package.json"
   },

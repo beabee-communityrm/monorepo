@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "clear": "rm -rf dist",
-    "build": "esbuild --bundle --platform=node --packages=external --format=esm --outfile=dist/app.js src/app.ts",
+    "build": "node esbuild.js",
     "start": "node dist/app.js",
     "watch": "yarn build --watch",
     "generate:index": "beabee-cli generate-index ./src/queues",
