@@ -14,6 +14,13 @@ export interface GenerateIndexArguments {
   ext?: string;
 }
 
+export interface I18nArguments {
+  sheetName?: string;
+  authJsonFile: string;
+  outputDir: string;
+  format: "json" | "js" | "ts";
+}
+
 export type EsbuildConfigs = Record<
   BuildPlatform,
   Record<BuildType, BuildOptions | null>

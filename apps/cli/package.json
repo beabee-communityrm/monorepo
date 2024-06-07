@@ -1,13 +1,13 @@
 {
   "name": "@beabee/cli",
   "version": "0.16.0",
-  "main": "bin.js",
+  "main": "cli",
   "type": "module",
   "files": [
     "src"
   ],
   "bin": {
-    "beabee-cli": "./bin.js"
+    "beabee-cli": "./cli.bin"
   },
   "scripts": {
     "beabee:cli": "yarn exec 'deno task beabee:cli'",
