@@ -4,6 +4,7 @@ import {
   PaginatedQuery,
   Rule,
   RuleGroup,
+  calloutResponseFilters,
   contactCalloutFilters,
   contactFilters,
   getCalloutFilters,
@@ -14,8 +15,8 @@ import { Brackets } from "typeorm";
 
 import { createQueryBuilder, getRepository } from "@core/database";
 
+import { calloutResponseFilterHandlers } from "@api/transformers/BaseCalloutResponseTransformer";
 import { BaseTransformer } from "@api/transformers/BaseTransformer";
-import CalloutResponseTransformer from "@api/transformers/CalloutResponseTransformer";
 import { getFilterHandler, prefixKeys } from "@api/utils";
 
 import Callout from "@models/Callout";
@@ -80,7 +81,7 @@ export abstract class BaseContactTransformer<
           filters,
           prefixKeys(`callouts.${calloutId}.`, contactCalloutFilters),
           prefixKeys(`callouts.${calloutId}.responses.`, {
-            ...CalloutResponseTransformer.filters,
+            ...calloutResponseFilters,
             ...getCalloutFilters(callout.formSchema)
           })
         );
@@ -178,7 +179,7 @@ const calloutsFilterHandler: FilterHandler = (qb, args) => {
 
       const responseField = restFields.join(".");
       const filterHandler = getFilterHandler(
-        CalloutResponseTransformer.filterHandlers,
+        calloutResponseFilterHandlers,
         responseField
       );
       params = filterHandler(subQb, { ...args, field: responseField });

@@ -11,6 +11,7 @@ import {
   GetContactOptsDto,
   ListContactsDto
 } from "@api/dto/ContactDto";
+import { BaseContactTransformer } from "@api/transformers/BaseContactTransformer";
 import ContactRoleTransformer from "@api/transformers/ContactRoleTransformer";
 import ContactProfileTransformer from "@api/transformers/ContactProfileTransformer";
 import { mergeRules } from "@api/utils/rules";
@@ -18,7 +19,6 @@ import { mergeRules } from "@api/utils/rules";
 import { GetContactWith } from "@enums/get-contact-with";
 
 import { AuthInfo } from "@type/auth-info";
-import { BaseContactTransformer } from "./BaseContactTransformer";
 
 class ContactTransformer extends BaseContactTransformer<
   GetContactDto,
