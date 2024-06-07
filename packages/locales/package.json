@@ -14,11 +14,14 @@
     "build:node": "yarn beabee:cli cross-build node",
     "build:types": "tsc",
     "build:json": "mkdir -p ./dist/json/ && cp ./src/locales/json/* ./dist/json/",
-    "update:locales": "yarn update:locales:json && yarn update:locales:ts",
+    "generate:index": "yarn beabee:cli generate-index --ext ts ./src/locales",
+    "update:locales": "yarn update:locales:json && yarn update:locales:ts && yarn generate:index",
     "update:locales:json": "beabee-cli i18n $(git rev-parse --symbolic-full-name --abbrev-ref HEAD) --output-dir ./src/locales/json --format json",
     "update:locales:ts": "beabee-cli i18n $(git rev-parse --symbolic-full-name --abbrev-ref HEAD) --output-dir ./src/locales --format ts"
   },
   "exports": {
+    "./package.json": "./package.json",
+    "./*.json": "./dist/json/*.json",
     ".": {
       "import": {
         "types": "./dist/types/index.d.ts",
@@ -28,9 +31,7 @@
         "types": "./dist/types/index.d.cts",
         "default": "./dist/cjs/index.cjs"
       }
-    },
-    "./*.json": "./dist/json/*.json",
-    "./package.json": "./package.json"
+    }
   },
   "devDependencies": {
     "@beabee/cli": "workspace:^",

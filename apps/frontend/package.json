@@ -91,8 +91,6 @@
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-vue": "^9.26.0",
-    "googleapis": "^129.0.0",
-    "markdown-it": "^14.1.0",
     "postcss": "^8.4.38",
     "prettier": "^3.3.0",
     "prettier-plugin-tailwindcss": "^0.6.1",

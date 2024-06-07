@@ -28,7 +28,7 @@
     "dev:api:watch": "tsc-watch -p tsconfig.build.json --noClear --onSuccess 'docker compose restart api_app router'",
     "dev:api:logs": "yarn exec bash -c 'while true; do docker compose logs -f --tail=0 api_app; sleep 1; done'",
     "build": "rimraf built/ && gulp build && tsc -p ./tsconfig.build.json",
-    "generate:index": "beabee-cli generate-index ./src/api/controllers ./src/api/decorators ./src/api/dto ./src/api/errors ./src/api/interceptors ./src/api/middlewares ./src/api/params ./src/api/transformers ./src/api/utils ./src/api/validators ./src/enums ./src/models ./src/type",
+    "generate:index": "beabee-cli generate-index --ext js ./src/api/controllers ./src/api/decorators ./src/api/dto ./src/api/errors ./src/api/interceptors ./src/api/middlewares ./src/api/params ./src/api/transformers ./src/api/utils ./src/api/validators ./src/enums ./src/models ./src/type",
     "watch": "tsc-watch -p tsconfig.build.json --noClear",
     "check": "concurrently 'yarn:check:*'",
     "check:tsc": "tsc --noEmit",
@@ -43,6 +43,7 @@
   },
   "dependencies": {
     "@beabee/beabee-common": "workspace:^",
+    "@beabee/locales": "workspace:^",
     "@captchafox/node": "^1.2.0",
     "@inquirer/prompts": "^3.3.2",
     "@sendgrid/mail": "^8.1.3",

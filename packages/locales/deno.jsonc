@@ -8,6 +8,7 @@
     "build:esbuild": "yarn build:esbuild",
     "build:cross": "yarn build:cross",
     "build:types": "yarn build:types",
+    "generate:index": "yarn generate:index",
     "update:locales": "yarn update:locales",
     "update:locales:json": "yarn update:locales:json",
     "update:locales:ts": "yarn update:locales:ts"

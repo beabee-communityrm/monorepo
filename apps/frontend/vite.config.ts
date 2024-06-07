@@ -9,12 +9,15 @@ import theme from './plugins/theme';
 
 export default ({ command, mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
-  console.debug('API_PROXY_URL', env.API_PROXY_URL);
+  const localesPath = path.dirname(
+    import.meta.resolve('@beabee/locales/en.json')
+  );
+  console.debug('import.meta.resolve', localesPath);
 
   const plugins = [
     vue(),
     vueI18n({
-      include: path.resolve(__dirname, './locales/*'),
+      include: path.join(localesPath, '*'),
       strictMessage: false,
     }),
     theme(),

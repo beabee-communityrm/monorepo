@@ -23,7 +23,7 @@ import Contact from "@models/Contact";
 import Callout from "@models/Callout";
 
 import config from "@config";
-import { isLocale, Locale } from "@locale";
+import { isLocale, Locale } from "@beabee/locales";
 
 const log = mainLogger.child({ app: "email-service" });
 

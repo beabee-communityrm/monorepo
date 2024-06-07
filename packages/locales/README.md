@@ -20,6 +20,11 @@ respective formats.
 yarn add @beabee/locales
 ```
 
+```ts
+import en from "@beabee/locales/en.json";
+import { en, pl } from "@beabee/locales";
+```
+
 ## Key Yarn Scripts
 
 ### `yarn build`
@@ -34,6 +39,4 @@ This script updates the locale files from a Google Spreadsheet.
 - **`yarn update:locales:json`**: This updates the JSON files with new
   translations or modifications.
 - **`yarn update:locales:ts`**: Similar to the JSON update, this script updates
-  TypeScript files with new or modified translations. It ensures that all
-  TypeScript files in the `src/locales` directory are up-to-date with the latest
-  translation keys and values.
+  TypeScript files with new or modified translations.

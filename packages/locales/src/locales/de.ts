@@ -885,7 +885,7 @@ export const de = {
       "titleAndImage": {
         "inputs": {
           "description": {
-            "help": "<p>Die <strong>Kurzbeschreibung</strong> ergänzt den Titel und sollte in wenigen Worten erklären, worum es bei dem Callout geht.</p>\n",
+            "help": "<p>Die <strong>Kurzbeschreibung</strong> ergänzt den Titel und sollte in wenigen Worten erklären, worum es bei dem Callout geht. </p>\n",
             "label": "Kurzbeschreibung",
             "placeholder": "Erkläre kurz und knapp, warum Menschen an dem Callout teilnehmen sollten."
           },

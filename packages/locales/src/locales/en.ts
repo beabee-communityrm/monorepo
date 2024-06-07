@@ -818,7 +818,7 @@ export const en = {
               "label": "Minimum zoom level"
             },
             "style": {
-              "help": "<p>The map view <strong>requires a third-party map tool</strong> like <a href=\"https://www.maptiler.com\" target=\"_blank\" rel=\"noopener noreferrer\">Maptiler</a> or <a href=\"https://www.mapbox.com\" target=\"_blank\" rel=\"noopener noreferrer\">Mapbox</a>. Those tools provide you with the map style URL you need to paste in here.</p>\n",
+              "help": "<p>The map view <strong>requires a third-party map tool</strong> like <a href=\"https://www.maptiler.com\" target=\"_blank\" rel=\"noopener noreferrer\">Maptiler</a> or <a href=\"https://www.mapbox.com\" target=\"_blank\" rel=\"noopener noreferrer\">Mapbox</a>. Those tools provide you with the map style URL you need to paste in here. </p>\n",
               "label": "Map style URL"
             },
             "title": "Map settings"

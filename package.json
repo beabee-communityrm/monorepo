@@ -9,6 +9,8 @@
     "build:frontend": "yarn workspace @beabee/frontend run build",
     "build:task-runner-dashboard": "yarn workspace @beabee/task-runner-dashboard run build",
     "build:common": "yarn workspace @beabee/beabee-common run build",
+    "build:locales": "yarn workspace @beabee/locales run build",
+    "build:cli": "yarn workspace @beabee/cli run build",
     "start:backend": "yarn workspace @beabee/backend run start",
     "start:api": "yarn workspace @beabee/backend run start:api",
     "start:webhooks": "yarn workspace @beabee/backend run start:webhooks",

@@ -7,9 +7,7 @@ import {
 import { generalContent } from '../store';
 import router from '@lib/router';
 
-import i18nConfig from './i18n-config.json';
-
-import en from '../../locales/en.json';
+import { i18nConfig, en } from '@beabee/locales';
 
 type Diff<T, U> = T extends U ? never : T;
 

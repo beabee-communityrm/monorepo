@@ -9,35 +9,28 @@
  * branch so changes for different features are kept separate.
  */
 import { join } from "https://deno.land/std@0.212.0/path/mod.ts"
-import { google } from 'npm:googleapis@131.0.0';
-// @deno-types="npm:@types/markdown-it@14.1.1"
-import { default as MarkdownIt } from 'npm:markdown-it@14.1.0';
+import { google } from 'npm:googleapis@140.0.0';
 import { I18nArguments } from "../types.ts";
 
-import type { Options as MarkdownItOptions } from "npm:@types/markdown-it@14.1.1"
+import * as rustyMarkdown from "https://deno.land/x/rusty_markdown@v0.4.1/mod.ts";
 
 interface LocaleData {
   [key: string]: string | LocaleData;
 }
 
 const cwd = Deno.cwd();
-const simpleMd = new MarkdownIt('zero').enable(['emphasis', 'link']);
 
-simpleMd.renderer.rules.link_open = function (tokens, idx, options: MarkdownItOptions, _env, self) {
-  const token = tokens[idx];
-  const hrefIndex = token.attrIndex('href');
-  if (hrefIndex >= 0) {
-    const href = token.attrs?.[hrefIndex]?.[1];
-    if (href?.startsWith('http')) {
-      token.attrPush(['target', '_blank']);
-      token.attrPush(['rel', 'noopener noreferrer']);
-    }
-  }
-  return self.renderToken(tokens, idx, options);
-};
+function enhanceAnchorTags(htmlString: string) {
+  const regex = /<a\s+(?!.*\btarget="_blank"\b)(href="http(?:s)?:\/\/[^"]+")>/gi;
+  return htmlString.replace(regex, `<a $1 target="_blank" rel="noopener noreferrer">`);
+}
 
 const optHandlers = {
-  md: (data: string) => simpleMd.render(data),
+  md: (data: string) => {
+    const tokens = rustyMarkdown.tokens(data);
+    const html = rustyMarkdown.html(tokens);
+    return enhanceAnchorTags(html);
+  },
 };
 
 const localeData: LocaleData = {};

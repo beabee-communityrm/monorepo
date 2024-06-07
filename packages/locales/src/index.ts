@@ -1,10 +1,6 @@
-import { de } from "./locales/de.ts";
-import { deInformal } from "./locales/de@informal.ts";
-import { deEasy } from "./locales/de@easy.ts";
-import { en } from "./locales/en.ts";
-import { pt } from "./locales/pt.ts";
-import { ru } from "./locales/ru.ts";
-import { it } from "./locales/it.ts";
+import { en, de, deInformal, deEasy, pt, ru, it, config as i18nConfig } from './locales/index.ts';
+
+export { en, de, deInformal, deEasy, pt, ru, it, i18nConfig }
 
 export const locales = {
   de,
@@ -22,3 +18,7 @@ export type Locale = keyof typeof locales;
 export function isLocale(s: string): s is Locale {
   return s in locales;
 }
+
+// export default function currentLocale() {
+//   return locales[OptionsService.getText("locale") as Locale];
+// }

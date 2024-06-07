@@ -14,33 +14,45 @@ WORKDIR /opt/apps/backend
 COPY package.json yarn.lock deno.jsonc .yarnrc.yml /opt/
 COPY .yarn /opt/.yarn
 
-# Copy cli dependencies info
+# Copy `@beabee/cli` dependencies info
 COPY apps/cli/package.json /opt/apps/cli/package.json
 COPY apps/cli/deno.jsonc /opt/apps/cli/deno.jsonc
 COPY apps/cli/deno.lock /opt/apps/cli/deno.lock
 
-# Copy common dependencies info
+# Copy `@beabee/beabee-common` dependencies info
 COPY packages/common/package.json /opt/packages/common/package.json
 COPY packages/common/deno.jsonc /opt/packages/common/deno.jsonc
 COPY packages/common/deno.lock /opt/packages/common/deno.lock
 
-# Copy backend dependencies info
+# Copy `@beabee/locales` dependencies info
+COPY packages/locales/package.json /opt/packages/locales/package.json
+COPY packages/locales/deno.jsonc /opt/packages/locales/deno.jsonc
+
+# Copy `@beabee/backend` dependencies info
 COPY apps/backend/package.json /opt/apps/backend/package.json
 
 # Replace's npm ci
 RUN yarn workspaces focus
 
-# Copy the rest of the related packages
+# Copy the rest of `@beabee/cli`
 COPY apps/cli /opt/apps/cli
+
+# Copy the rest of `@beabee/beabee-common`
 COPY packages/common/src /opt/packages/common/src
 COPY packages/common/test /opt/packages/common/test
 COPY packages/common/mod.ts packages/common/tsconfig.json /opt/packages/common/
 
-# Copy the rest of the backend
+# Copy the rest of `@beabee/locales`
+COPY packages/locales/src /opt/packages/locales/src
+COPY packages/locales/tsconfig.json /opt/packages/locales/
+
+# Copy the rest of `@beabee/backend`
 COPY apps/backend /opt/apps/backend
 
-# Build the backend and it's dependencies
+# Build `@beabee/backend` and it's dependencies
+RUN NODE_ENV=production yarn build:cli
 RUN NODE_ENV=production yarn build:common
+RUN NODE_ENV=production yarn build:locales
 RUN NODE_ENV=production yarn build:backend
 
 FROM nginx:1.24-alpine as router
