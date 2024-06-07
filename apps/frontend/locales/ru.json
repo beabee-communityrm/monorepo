@@ -245,10 +245,7 @@
       "tags": "Теги",
       "updatedAt": "Обновлённая дата"
     },
-    "dataGroup": {
-      "answers": "Вопросы",
-      "response": "Ответ"
-    }
+    "dataGroup": {}
   },
   "calloutResponseBuckets": {},
   "calloutResponseComments": {
@@ -343,9 +340,6 @@
     "until": "до",
     "yes": "Да"
   },
-  "contactAccount": {
-    "confirmDelete": {}
-  },
   "contactContribution": {
     "confirmCancel": {},
     "updateNotice": {}
@@ -372,6 +366,7 @@
     }
   },
   "contacts": {
+    "advancedSearch": {},
     "data": {
       "amount": "Сумма",
       "contribution": "Взнос",

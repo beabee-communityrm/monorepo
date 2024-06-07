@@ -34,7 +34,6 @@ meta:
             v-model="generalData.locale"
             :label="t('adminSettings.general.language')"
             :items="localeItems"
-            class="w-60"
             required
           />
         </div>

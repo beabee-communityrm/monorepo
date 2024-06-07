@@ -55,7 +55,7 @@ export default {
       },
       boxShadow: {
         DEFAULT: '0 0 8px 0 rgba(0, 0, 0, 0.2)',
-        input: 'var(--bs-input)',
+        input: '0 0 0 0.125rem rgba(var(--c-link), 0.25)',
         'auth-box': '0 0 1rem 0.125rem rgba(51, 51, 51, 0.4)',
       },
       fontSize: {

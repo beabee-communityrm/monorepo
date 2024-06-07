@@ -11,7 +11,7 @@
     />
   </div>
 </template>
-<script lang="ts" setup>
+<script lang="ts" setup generic="T extends string | number">
 import { computed } from 'vue';
 import AppCheckbox from './AppCheckbox.vue';
 import AppLabel from './AppLabel.vue';
@@ -22,8 +22,8 @@ import type { SelectItem } from './form.interface';
 const emit =
   defineEmits<(e: 'update:modelValue', value: (string | number)[]) => void>();
 const props = defineProps<{
-  modelValue: (string | number)[];
-  options: SelectItem[];
+  modelValue: T[];
+  options: SelectItem<T>[];
   label?: string;
   inline?: boolean;
   required?: boolean;
@@ -36,7 +36,7 @@ useVuelidate(
   { v: computed(() => props.modelValue.length) }
 );
 
-function handleUpdate(value: string | number, checked: boolean) {
+function handleUpdate(value: T, checked: boolean) {
   if (checked && props.modelValue.includes(value)) return;
 
   const newModelValue = checked

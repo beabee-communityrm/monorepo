@@ -1,0 +1,49 @@
+@import 'vue-multiselect/dist/vue-multiselect.css';
+
+.multiselect,
+.multiselect__tags {
+  @apply box-border min-h-[38px];
+}
+
+/* Set same font size and line height as AppInput */
+.multiselect,
+.multiselect__tags,
+.multiselect__input,
+.multiselect__single {
+  @apply text-[length:100%] leading-[20px];
+}
+
+/* Apply same border and focus shadow as AppInput */
+.multiselect__tags {
+  @apply rounded border border-primary-40 bg-white;
+
+  .multiselect--active > & {
+    @apply shadow-input;
+  }
+}
+
+/* Fix placeholder alignment to match standard text */
+.multiselect__placeholder {
+  @apply mb-2 p-0;
+}
+
+.multiselect__content-wrapper {
+  @apply w-fit min-w-full bg-white shadow-md;
+
+  /* Increase specificity to force consistent border */
+  .multiselect > & {
+    @apply border border-solid border-primary-40;
+  }
+
+  .multiselect:not(.multiselect--above) > & {
+    @apply -mt-px rounded-b;
+  }
+  .multiselect.multiselect--above > & {
+    @apply -mb-px rounded-t;
+  }
+}
+
+.multiselect__element:hover,
+.multiselect__option.multiselect__option--selected {
+  @apply bg-grey-lighter;
+}
