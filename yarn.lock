@@ -636,7 +636,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@beabee/cli@workspace:apps/cli"
   bin:
-    beabee-cli: ./bin.js
+    beabee-cli: ./cli.bin
   languageName: unknown
   linkType: soft
 
@@ -721,6 +721,15 @@ __metadata:
     vue-router: "npm:^4.3.2"
     vue-tsc: "npm:^2.0.19"
     vuedraggable: "npm:^4.1.0"
+  languageName: unknown
+  linkType: soft
+
+"@beabee/locales@workspace:packages/locales":
+  version: 0.0.0-use.local
+  resolution: "@beabee/locales@workspace:packages/locales"
+  dependencies:
+    "@beabee/cli": "workspace:^"
+    typescript: "npm:^5.4.5"
   languageName: unknown
   linkType: soft
 

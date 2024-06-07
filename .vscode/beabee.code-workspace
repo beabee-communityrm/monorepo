@@ -28,6 +28,10 @@
       "name": "packages/task-runner",
       "path": "../packages/task-runner",
     },
+    {
+      "name": "packages/locales",
+      "path": "../packages/locales",
+    },
   ],
   "settings": {
     "typescript.tsdk": "node_modules/typescript/lib",
@@ -47,7 +51,8 @@
       "./node_modules",
       "./apps/backend",
       "./apps/frontend",
-      "./apps/task-runner-dashboard"
+      "./apps/task-runner-dashboard",
+      "./packages/core"
     ]
   },
 }
