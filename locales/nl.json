@@ -162,9 +162,6 @@
     "timeAgo": "{time} geleden",
     "timeIn": "in {time}"
   },
-  "contactAccount": {
-    "confirmDelete": {}
-  },
   "contactContribution": {
     "confirmCancel": {},
     "updateNotice": {}
@@ -178,8 +175,11 @@
     }
   },
   "contacts": {
+    "advancedSearch": {},
     "data": {},
-    "dataGroup": {}
+    "dataGroup": {
+      "callout": "Chamada"
+    }
   },
   "contribution": {
     "paymentHistory": {}

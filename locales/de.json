@@ -237,6 +237,8 @@
     "addRule": "Filter hinzufügen",
     "button": "Filter",
     "createFilters": "Filter für die Suche erstellen",
+    "createFiltersAfter": "Regeln",
+    "createFiltersBefore": "Nur Ergebnisse anzeigen, die mit",
     "createdSegment": "Erstelltes Segment \"{segment}\"",
     "matchAfter": "der folgenden Filter enthalten",
     "matchBefore": "Ergebnisse sollen",
@@ -437,10 +439,7 @@
       "tags": "Tags",
       "updatedAt": "Geändert am"
     },
-    "dataGroup": {
-      "answers": "Fragen",
-      "response": "Antwort"
-    }
+    "dataGroup": {}
   },
   "calloutResponseBuckets": {
     "inbox": "Eingang",
@@ -579,14 +578,6 @@
     "until": "bis",
     "yes": "Ja"
   },
-  "contactAccount": {
-    "confirmDelete": {
-      "text": "Dadurch werden alle mit der Email-Adresse {email} verbundenen Daten gelöscht. Aktive Mitgliedschaften werden dadurch beendet.",
-      "title": "Kontakt löschen",
-      "warning": "Dieser Schritt kann nicht rückgängig gemacht werden. Sicher, dass du fortfahren möchtest?"
-    },
-    "contactDeleted": "Kontakt gelöscht."
-  },
   "contactContribution": {
     "confirmCancel": {
       "confirm": "Ja, Mitgliedschaft kündigen",
@@ -628,6 +619,7 @@
   },
   "contacts": {
     "addContact": "Kontakt hinzufügen",
+    "advancedSearch": {},
     "allContacts": "Alle Kontakte",
     "data": {
       "activeMembership": "Aktive Mitgliedschaft",
@@ -663,7 +655,7 @@
       "tags": "Tags"
     },
     "dataGroup": {
-      "contact": "Kontakt",
+      "callout": "Callout",
       "contribution": "Beitrag",
       "role": "Rolle"
     },

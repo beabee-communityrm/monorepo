@@ -28,6 +28,7 @@
     :prefix="prefix"
     required
     hide-error-message
+    class="min-w-[10rem]"
   />
 </template>
 <script lang="ts" setup>
@@ -39,7 +40,7 @@ import AppRadioGroup from '../../forms/AppRadioGroup.vue';
 import AppSelect from '../../forms/AppSelect.vue';
 import DateInput from './DateInput.vue';
 import { useI18n } from 'vue-i18n';
-import type { FilterItem } from '../search.interface';
+import type { FilterItem } from '@type';
 
 const emit = defineEmits(['update:modelValue']);
 const props = defineProps<{

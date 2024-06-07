@@ -4,7 +4,7 @@
 </template>
 <script lang="ts" setup>
 import type { RuleValue } from '@beabee/beabee-common';
-import type { FilterItem } from '../search.interface';
+import type { FilterItem } from '@type';
 import ArgInput from './ArgInput.vue';
 defineProps<{ value: RuleValue[]; item: FilterItem; readonly: boolean }>();
 </script>

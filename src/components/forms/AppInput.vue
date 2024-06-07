@@ -31,8 +31,12 @@
   <div class="flex items-center">
     <div v-if="$slots.before" class="flex-0 mr-2"><slot name="before" /></div>
     <div
-      class="flex flex-1 items-center overflow-hidden rounded border border-primary-40 bg-white focus-within:shadow-input"
-      :class="hasError && 'border-danger-70 bg-danger-10'"
+      class="flex flex-1 items-center overflow-hidden rounded border focus-within:shadow-input"
+      :class="
+        hasError
+          ? 'border-danger-70 bg-danger-10'
+          : 'border-primary-40 bg-white'
+      "
     >
       <span v-if="prefix" class="flex-0 px-2">{{ prefix }}</span>
       <div
@@ -40,12 +44,11 @@
         :class="{
           'border-l border-primary-40': prefix,
           'border-r border-primary-40': suffix,
-          'border-danger-70': hasError,
         }"
       >
         <input
           v-model.trim="value"
-          class="w-full bg-white/0 p-2 leading-tight focus:outline-none"
+          class="w-full bg-white/0 p-2 leading-[20px] focus:outline-none"
           :type="type"
           :name="name"
           :required="required"

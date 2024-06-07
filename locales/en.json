@@ -237,6 +237,8 @@
     "addRule": "Add rule",
     "button": "Filters",
     "createFilters": "Create filters for your search",
+    "createFiltersAfter": "rules",
+    "createFiltersBefore": "Only show results matching",
     "createdSegment": "Created segment \"{segment}\"",
     "matchAfter": "of the following",
     "matchBefore": "Match",
@@ -442,8 +444,8 @@
       "updatedAt": "Date updated"
     },
     "dataGroup": {
-      "answers": "Questions",
-      "response": "Response"
+      "answers": "Response answers",
+      "response": "Response information"
     }
   },
   "calloutResponseBuckets": {
@@ -583,14 +585,6 @@
     "until": "until",
     "yes": "Yes"
   },
-  "contactAccount": {
-    "actions": "Actions",
-    "confirmDelete": {
-      "text": "This will delete all data associated with {email}. If they have an active contribution this will be cancelled.",
-      "title": "Delete contact",
-      "warning": "This is irreversible. Are you sure you want to proceed?"
-    }
-  },
   "contactContribution": {
     "confirmCancel": {
       "confirm": "Yes, cancel it",
@@ -632,6 +626,10 @@
   },
   "contacts": {
     "addContact": "Add contact",
+    "advancedSearch": {
+      "hasAnswered": "Has participated in this callout?",
+      "selectCallout": "Select callout..."
+    },
     "allContacts": "All contacts",
     "data": {
       "activeMembership": "Active membership",
@@ -667,7 +665,8 @@
       "tags": "Tags"
     },
     "dataGroup": {
-      "contact": "Contact",
+      "callout": "Callout",
+      "contact": "Contact information",
       "contribution": "Contribution",
       "role": "Role"
     },
