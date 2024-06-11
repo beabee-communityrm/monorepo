@@ -37,9 +37,12 @@
     "format": "prettier --write .",
     "typeorm": "typeorm -d ./built/core/database.js",
     "test": "jest --setupFiles dotenv/config",
-    "docker:build": "docker compose build",
-    "docker:start": "docker compose up -d",
-    "docker:restart": "docker compose restart"
+    "docker-compose:build": "docker compose build",
+    "docker-compose:start": "docker compose up -d",
+    "docker-compose:restart": "docker compose restart",
+    "docker:build": "docker build --build-arg REVISION=$(git rev-parse --short HEAD) -t beabee/beabee -f ./Dockerfile ../..",
+    "docker:push:latest": "docker push beabee/beabee:latest",
+    "docker:push:dev": "docker push beabee/beabee:dev"
   },
   "dependencies": {
     "@beabee/beabee-common": "workspace:^",

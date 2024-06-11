@@ -19,7 +19,9 @@
     "generate:index": "beabee-cli generate-index ./src/type ./src/enums ./src/lib && yarn format",
     "docker:build": "docker build --build-arg REVISION=$(git rev-parse --short HEAD) -t beabee/frontend -f ./Dockerfile ../../",
     "docker:start": "docker run -d -p 3002:80 -e APP_BASE_URL=http://localhost:3001 -e API_BASE_URL=/api/1.0/ beabee/frontend",
-    "docker:restart": "docker restart $(docker ps -a | grep beabee/frontend | awk '{print $1}')"
+    "docker:restart": "docker restart $(docker ps -a | grep beabee/frontend | awk '{print $1}')",
+    "docker:push:latest": "docker push beabee/frontend:latest",
+    "docker:push:dev": "docker push beabee/frontend:dev"
   },
   "dependencies": {
     "@appsignal/javascript": "^1.3.30",
