@@ -246,7 +246,10 @@ export const pt = {
       "tags": "Etiquetas",
       "updatedAt": "Data de atualização"
     },
-    "dataGroup": {}
+    "dataGroup": {
+      "answers": "Perguntas",
+      "response": "Resposta"
+    }
   },
   "calloutResponseBuckets": {
     "inbox": "Caixa de entrada",
@@ -384,7 +387,6 @@ export const pt = {
   },
   "contacts": {
     "addContact": "Adicionar contacto",
-    "advancedSearch": {},
     "allContacts": "Todos os contactos",
     "data": {
       "activeMembership": "Membro ativo",
@@ -419,7 +421,7 @@ export const pt = {
       "tags": "Etiquetas"
     },
     "dataGroup": {
-      "callout": "Опрос",
+      "contact": "Contacto",
       "contribution": "Contribuição",
       "role": "Cargo"
     },

@@ -51,9 +51,6 @@
     "generate:index": "yarn exec 'deno task generate:index'",
     "sync": "yarn exec 'deno task sync'",
     "prepublishOnly": "yarn build",
-    "cache": "yarn exec 'deno task cache'",
-    "cache:deno": "yarn exec 'deno task cache:deno'",
-    "cache:node": "yarn exec 'deno task cache:node'",
     "check": "yarn exec 'deno task check'",
     "check:format": "yarn exec 'deno task check:format'",
     "check:types": "yarn exec 'deno task check:types'",
@@ -67,7 +64,9 @@
     "watch:browser": "yarn exec 'deno task watch:browser'",
     "watch:types": "tsc --project ./tsconfig.json --watch",
     "watch:browser:cdn": "yarn exec 'deno task watch:browser:cdn'",
-    "watch:browser:esm": "yarn exec 'deno task watch:browser:esm'"
+    "watch:browser:esm": "yarn exec 'deno task watch:browser:esm'",
+    "deno:cache": "yarn exec 'deno task deno:cache'",
+    "deno:cache:refresh": "yarn exec 'deno task deno:cache:refresh'"
   },
   "repository": {
     "type": "git",

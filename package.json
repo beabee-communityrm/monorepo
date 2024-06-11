@@ -11,6 +11,8 @@
     "build:common": "yarn workspace @beabee/beabee-common run build",
     "build:locales": "yarn workspace @beabee/locales run build",
     "build:cli": "yarn workspace @beabee/cli run build",
+    "deno:cache": "yarn workspaces foreach -v -W run deno:cache",
+    "deno:cache:refresh": "yarn workspaces foreach -v -W run deno:cache:refresh",
     "start:backend": "yarn workspace @beabee/backend run start",
     "start:api": "yarn workspace @beabee/backend run start:api",
     "start:webhooks": "yarn workspace @beabee/backend run start:webhooks",
@@ -29,7 +31,8 @@
   },
   "workspaces": [
     "packages/*",
-    "apps/*"
+    "apps/*",
+    "docker/*"
   ],
   "_moduleAliases": {
     "@core": "./apps/backend/built/core",

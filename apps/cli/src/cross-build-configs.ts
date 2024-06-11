@@ -9,6 +9,8 @@ const CJS_OUTDIR = "./dist/cjs";
 
 const denoPlugins = DenoPlugins({
   configPath: resolve(Deno.cwd(), "./deno.jsonc"),
+  // loader: "portable",
+  // nodeModulesDir: true,
 });
 
 export const crossBuildConfigs: EsbuildConfigs = {

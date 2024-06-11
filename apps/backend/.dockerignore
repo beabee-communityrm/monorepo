@@ -4,3 +4,4 @@ tsconfig.tsbuildinfo
 node_modules/
 /built/
 .env
+.vscode/

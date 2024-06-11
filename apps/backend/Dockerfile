@@ -1,12 +1,4 @@
-FROM node:20-alpine3.19 as builder
-
-# Add support for Node.js c/c++ addons
-# RUN apk add --no-cache make g++ git gcc libgcc libstdc++ linux-headers python3
-# RUN npm install -g node-gyp 
-
-# Add Deno
-RUN apk add --no-cache deno
-RUN deno --version
+FROM beabee/deno-node:latest as builder
 
 WORKDIR /opt/apps/backend
 
@@ -32,7 +24,7 @@ COPY packages/locales/deno.jsonc /opt/packages/locales/deno.jsonc
 COPY apps/backend/package.json /opt/apps/backend/package.json
 
 # Replace's npm ci
-RUN yarn workspaces focus
+RUN yarn install
 
 # Copy the rest of `@beabee/cli`
 COPY apps/cli /opt/apps/cli
@@ -60,13 +52,15 @@ FROM nginx:1.24-alpine as router
 COPY apps/backend/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --chown=nginx:nginx --from=builder /opt/apps/backend/built/static /opt/apps/backend/built/static
 
-FROM node:20-alpine3.19 as app
+FROM beabee/deno-node as app
 
 ARG REVISION=DEV
 
 ENV NODE_ENV=production
 
 WORKDIR /opt/apps/backend
+
+USER node
 
 # Workspace settings
 COPY --chown=node:node --from=builder /opt/package.json /opt/yarn.lock /opt/.yarnrc.yml /opt/
@@ -76,12 +70,14 @@ COPY --chown=node:node --from=builder /opt/.yarn /opt/.yarn
 COPY --chown=node:node --from=builder /opt/node_modules /opt/node_modules
 COPY --chown=node:node --from=builder /opt/apps/backend/package.json /opt/apps/backend/
 COPY --chown=node:node --from=builder /opt/packages/common/package.json /opt/packages/common/
+COPY --chown=node:node --from=builder /opt/packages/locales/package.json /opt/packages/locales/
 
 # Replace's npm prune
 RUN yarn workspaces focus --production
 
 COPY --chown=node:node --from=builder /opt/apps/backend/built /opt/apps/backend/built
 COPY --chown=node:node --from=builder /opt/packages/common/dist /opt/packages/common/dist
+COPY --chown=node:node --from=builder /opt/packages/locales/dist /opt/packages/locales/dist
 
 COPY apps/backend/crontab /etc/crontabs/root
 
@@ -90,5 +86,4 @@ RUN echo -n ${REVISION} > /opt/apps/backend/built/revision.txt
 ENV NODE_ENV=production
 ENV NODE_OPTIONS=--enable-source-maps
 
-USER node
 CMD [ "node", "./built/app.js" ]

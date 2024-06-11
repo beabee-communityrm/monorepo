@@ -1,8 +1,4 @@
-FROM node:20-alpine3.19 as task-runner-dashboard
-
-# Add support for Deno
-RUN apk add --no-cache deno
-RUN deno --version
+FROM beabee/deno-node:latest as task-runner-dashboard
 
 WORKDIR /opt/apps/task-runner-dashboard
 

@@ -1,0 +1,9 @@
+{
+  "name": "@beabee/deno-node",
+  "version": "0.16.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "docker:build": "docker build --build-arg REVISION=$(git rev-parse --short HEAD) -t beabee/deno-node -f ./Dockerfile ../.."
+  }
+}

@@ -237,8 +237,6 @@
     "addRule": "Filter hinzufügen",
     "button": "Filter",
     "createFilters": "Filter für die Suche erstellen",
-    "createFiltersAfter": "Regeln",
-    "createFiltersBefore": "Nur Ergebnisse anzeigen, die mit",
     "createdSegment": "Erstelltes Segment \"{segment}\"",
     "matchAfter": "der folgenden Filter enthalten",
     "matchBefore": "Ergebnisse sollen",
@@ -439,7 +437,10 @@
       "tags": "Tags",
       "updatedAt": "Geändert am"
     },
-    "dataGroup": {}
+    "dataGroup": {
+      "answers": "Fragen",
+      "response": "Antwort"
+    }
   },
   "calloutResponseBuckets": {
     "inbox": "Eingang",
@@ -619,7 +620,6 @@
   },
   "contacts": {
     "addContact": "Kontakt hinzufügen",
-    "advancedSearch": {},
     "allContacts": "Alle Kontakte",
     "data": {
       "activeMembership": "Aktive Mitgliedschaft",
@@ -655,7 +655,7 @@
       "tags": "Tags"
     },
     "dataGroup": {
-      "callout": "Callout",
+      "contact": "Kontakt",
       "contribution": "Beitrag",
       "role": "Rolle"
     },

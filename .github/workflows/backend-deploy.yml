@@ -25,6 +25,7 @@ jobs:
           esac
 
   check:
+    name: Check
     uses: ./.github/workflows/backend-check.yml
 
   test:
@@ -37,35 +38,11 @@ jobs:
       - run: yarn test
         working-directory: ./apps/backend
 
-  push:
-    runs-on: ubuntu-latest
+  build-push:
+    name: Build and push
+    uses: ./.github/workflows/backend-build-push.yml
     needs: [init, check, test]
-    steps:
-      - uses: actions/checkout@v4
-      - id: getrev
-        run: |
-          echo "revision=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-      - uses: docker/setup-buildx-action@v3
-      - uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-      - uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./apps/backend/Dockerfile
-          push: true
-          target: app
-          build-args: |
-            REVISION=${{ steps.getrev.outputs.revision }}
-          tags: ${{ secrets.DOCKER_ORGANISATION }}/beabee:${{ needs.init.outputs.tag }}
-      - uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./apps/backend/Dockerfile
-          push: true
-          target: router
-          tags: ${{ secrets.DOCKER_ORGANISATION }}/router:${{ needs.init.outputs.tag }}
+    secrets: inherit
 
   # deploy:
   #   runs-on: ubuntu-latest

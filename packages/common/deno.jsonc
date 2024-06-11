@@ -40,12 +40,11 @@
     "watch:browser:cdn": "deno task beabee:cli cross-watch browser cdn",
     "watch:browser:esm": "deno task beabee:cli cross-watch browser esm",
     "watch:types": "yarn watch:types",
-    "cache": "deno task cache:deno && deno task cache:node",
-    "cache:deno": "deno cache --reload mod.ts",
-    "cache:node": "yarn cache:node",
     "generate:index": "deno task beabee:cli generate-index --ext ts ./src/data ./src/error ./src/search ./src/types ./src/utils ./src/validators ./test/deno/data ./test/deno/data/components ./test/deno/data/components/validate-rules",
     "sync": "deno task beabee:cli cross-sync",
     "prepublishOnly": "yarn prepublishOnly",
-    "npm:publish:latest": "yarn npm:publish:latest"
+    "npm:publish:latest": "yarn npm:publish:latest",
+    "deno:cache": "deno cache mod.ts",
+    "deno:cache:refresh": "deno cache --reload --lock-write mod.ts"
   }
 }

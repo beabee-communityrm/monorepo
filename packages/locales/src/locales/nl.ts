@@ -175,11 +175,8 @@ export const nl = {
     }
   },
   "contacts": {
-    "advancedSearch": {},
     "data": {},
-    "dataGroup": {
-      "callout": "Chamada"
-    }
+    "dataGroup": {}
   },
   "contribution": {
     "paymentHistory": {}

@@ -7,12 +7,16 @@
     "src"
   ],
   "bin": {
-    "beabee-cli": "./cli.bin"
+    "beabee-cli": "./cli.sh",
+    "beabee-cli-bin": "./cli.bin"
   },
   "scripts": {
     "beabee:cli": "yarn exec 'deno task beabee:cli'",
     "build": "yarn exec 'deno task build'",
+    "compile": "yarn exec 'deno task compile'",
     "generate:index": "yarn exec 'deno task generate:index'",
-    "sync": "yarn exec 'deno task sync'"
+    "sync": "yarn exec 'deno task sync'",
+    "deno:cache": "yarn exec 'deno task deno:cache'",
+    "deno:cache:refresh": "yarn exec 'deno task deno:cache:refresh'"
   }
 }

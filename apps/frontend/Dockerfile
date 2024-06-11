@@ -1,8 +1,4 @@
-FROM node:20-alpine3.19 as builder
-
-# Add support for Deno
-RUN apk add --no-cache deno
-RUN deno --version
+FROM beabee/deno-node:latest as builder
 
 WORKDIR /opt/apps/frontend
 
@@ -28,7 +24,10 @@ COPY packages/locales/deno.jsonc /opt/packages/locales/deno.jsonc
 COPY apps/frontend/package.json /opt/apps/frontend/package.json
 
 # Replace's npm ci
-RUN yarn workspaces focus
+RUN yarn install
+
+# Copy the rest of `@beabee/cli`
+COPY apps/cli /opt/apps/cli
 
 # Copy the rest of `@beabee/beabee-common`
 COPY packages/common/src /opt/packages/common/src
@@ -44,8 +43,8 @@ COPY apps/frontend /opt/apps/frontend
 
 # Build the backend and it's dependencies
 RUN NODE_ENV=production yarn build:cli
-RUN NODE_ENV=production yarn build:common
 RUN NODE_ENV=production yarn build:locales
+RUN NODE_ENV=production yarn build:common
 RUN NODE_ENV=production yarn build:frontend
 
 FROM nginx:1.24-alpine

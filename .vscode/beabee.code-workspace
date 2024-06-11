@@ -32,6 +32,14 @@
       "name": "packages/locales",
       "path": "../packages/locales",
     },
+    {
+      "name": "docker/deno-node",
+      "path": "../docker/deno-node",
+    },
+    {
+      "name": "docker/workspace",
+      "path": "../docker/workspace",
+    },
   ],
   "settings": {
     "typescript.tsdk": "node_modules/typescript/lib",
