@@ -1,4 +1,4 @@
-name: Backend build and push
+name: deno-node build and push
 
 on:
   workflow_call:
