@@ -168,6 +168,7 @@ export const deEasy = {
     }
   },
   "contacts": {
+    "advancedSearch": {},
     "data": {},
     "dataGroup": {}
   },

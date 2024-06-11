@@ -12,7 +12,6 @@ meta:
     <AppSearch
       v-model="currentRules"
       :filter-groups="filterGroups"
-      :filter-items="filterItems"
       @reset="currentRules = undefined"
     />
     <AppPaginatedTable
@@ -64,7 +63,6 @@ import {
   headers,
   statusItems,
   filterGroups,
-  filterItems,
 } from '@components/pages/admin/payments.interface';
 import AppFilterGrid from '@components/AppFilterGrid.vue';
 

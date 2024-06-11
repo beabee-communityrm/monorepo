@@ -71,7 +71,7 @@ const contributionTypes = computed(() => [
   },
 ]);
 
-const manualPaymentSources = ref<SelectItem[]>([]);
+const manualPaymentSources = ref<SelectItem<string>[]>([]);
 
 onBeforeMount(async () => {
   manualPaymentSources.value = [

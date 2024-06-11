@@ -13,23 +13,18 @@ meta:
     <div class="flex-1">
       <AppSearch
         v-model="currentRules"
-        :filter-groups="filterGroupsWithQuestions"
-        :filter-items="filterItemsWithExtras"
+        :filter-groups="filterGroups"
         @reset="currentRules = undefined"
       >
         <AppSelect
           v-model="currentTag"
-          :items="[
-            { id: '', label: t('calloutResponsesPage.searchTag') },
-            ...tagItems,
-          ]"
+          :placeholder="t('calloutResponsesPage.searchTag')"
+          :items="tagItems"
         />
         <AppSelect
           v-model="currentAssignee"
-          :items="[
-            { id: '', label: t('calloutResponsesPage.searchAssignee') },
-            ...adminItems,
-          ]"
+          :placeholder="t('calloutResponsesPage.searchAssignee')"
+          :items="adminItems"
         />
       </AppSearch>
       <p class="text-sm font-semibold text-body-80">{{ t('common.show') }}</p>
@@ -49,13 +44,8 @@ meta:
             v-model="currentInlineAnswer"
             class="max-w-xs"
             :class="!showInlineAnswer && 'invisible'"
-            :items="[
-              { id: '', label: t('common.selectOne') },
-              ...Object.entries(formFilterItems).map(([id, item]) => ({
-                id: id.substring(8),
-                label: item.label,
-              })),
-            ]"
+            :placeholder="t('common.selectOne')"
+            :items="answerItems"
             required
           />
         </div>
@@ -204,7 +194,6 @@ import {
   type Paginated,
   type Rule,
   type RuleGroup,
-  getCalloutComponents,
   stringifyAnswer,
 } from '@beabee/beabee-common';
 import { computed, onBeforeMount, ref, watchEffect } from 'vue';
@@ -214,14 +203,12 @@ import AppButton from '@components/button/AppButton.vue';
 import AppSelect from '@components/forms/AppSelect.vue';
 import AppVTabs from '@components/tabs/AppVTabs.vue';
 import {
-  filterGroups,
-  filterItems,
   headers,
+  useCalloutResponseFilters,
 } from '@components/pages/admin/callout-responses.interface';
 import AppSearch from '@components/search/AppSearch.vue';
 
-import { fetchResponses, fetchTags } from '@utils/api/callout';
-import { convertComponentsToFilters } from '@utils/callouts';
+import { fetchResponses } from '@utils/api/callout';
 import AppButtonGroup from '@components/button/AppButtonGroup.vue';
 import { updateCalloutResponses } from '@utils/api/callout-response';
 import AppTag from '@components/AppTag.vue';
@@ -254,6 +241,7 @@ import type {
   GetCalloutResponseDataWith,
   UpdateCalloutResponseData,
 } from '@type';
+import { toRef } from 'vue';
 
 const props = defineProps<{ callout: GetCalloutDataWith<'form'> }>();
 
@@ -277,7 +265,9 @@ const currentInlineAnswer = ref('');
 const currentInlineComponent = computed(
   () =>
     showInlineAnswer.value &&
-    formComponents.value.find((c) => c.fullKey === currentInlineAnswer.value)
+    formComponents.value.find(
+      (c) => `answers.${c.fullKey}` === currentInlineAnswer.value
+    )
 );
 
 const selectedResponseItems = computed(
@@ -311,7 +301,6 @@ const selectedAssigneeId = computed(() => {
 });
 
 const adminItems = ref<{ id: string; label: string }[]>([]);
-const tagItems = ref<{ id: string; label: string }[]>([]);
 
 const bucketItems = computed(() =>
   buckets.value.map((bucket) => ({
@@ -320,32 +309,8 @@ const bucketItems = computed(() =>
   }))
 );
 
-const formComponents = computed(() =>
-  getCalloutComponents(props.callout.formSchema).filter((c) => !!c.input)
-);
-
-const formFilterItems = computed(
-  () => convertComponentsToFilters(formComponents.value) // TODO: Use @beabee/beabee-common method
-);
-
-const filterGroupsWithQuestions = computed(() => [
-  ...filterGroups.value,
-  {
-    label: t('calloutResponse.dataGroup.answers'),
-    items: Object.keys(formFilterItems.value),
-  },
-]);
-
-const filterItemsWithExtras = computed(() => {
-  return {
-    ...filterItems.value,
-    tags: {
-      ...filterItems.value.tags,
-      options: tagItems.value,
-    },
-    ...formFilterItems.value,
-  };
-});
+const { formComponents, answerItems, filterGroups, tagItems } =
+  useCalloutResponseFilters(toRef(props, 'callout'));
 
 const currentAssignee = defineParam('assignee', (v) => v || '');
 const currentTag = defineParam('tag', (v) => v || '');
@@ -354,9 +319,6 @@ const currentPaginatedQuery = definePaginatedQuery('createdAt');
 const currentRules = defineRulesParam();
 
 onBeforeMount(async () => {
-  const tags = await fetchTags(props.callout.slug);
-  tagItems.value = tags.map((tag) => ({ id: tag.id, label: tag.name }));
-
   const admins = await fetchContacts({
     rules: {
       condition: 'AND',

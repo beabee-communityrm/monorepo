@@ -245,10 +245,7 @@ export const ru = {
       "tags": "Теги",
       "updatedAt": "Обновлённая дата"
     },
-    "dataGroup": {
-      "answers": "Вопросы",
-      "response": "Ответ"
-    }
+    "dataGroup": {}
   },
   "calloutResponseBuckets": {},
   "calloutResponseComments": {
@@ -369,6 +366,7 @@ export const ru = {
     }
   },
   "contacts": {
+    "advancedSearch": {},
     "data": {
       "amount": "Сумма",
       "contribution": "Взнос",

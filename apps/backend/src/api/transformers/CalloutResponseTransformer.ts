@@ -17,10 +17,10 @@ import NotFoundError from "@api/errors/NotFoundError";
 import ContactTransformer, {
   loadContactRoles
 } from "@api/transformers/ContactTransformer";
+import { BaseCalloutResponseTransformer } from "@api/transformers/BaseCalloutResponseTransformer";
 import CalloutTransformer from "@api/transformers/CalloutTransformer";
 import CalloutResponseCommentTransformer from "@api/transformers/CalloutResponseCommentTransformer";
 import CalloutTagTransformer from "@api/transformers/CalloutTagTransformer";
-import { BaseCalloutResponseTransformer } from "@api/transformers/BaseCalloutResponseTransformer";
 import { batchUpdate } from "@api/utils/rules";
 
 import Callout from "@models/Callout";

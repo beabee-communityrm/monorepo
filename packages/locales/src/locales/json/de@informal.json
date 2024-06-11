@@ -437,10 +437,7 @@
       "tags": "Tags",
       "updatedAt": "Geändert am"
     },
-    "dataGroup": {
-      "answers": "Fragen",
-      "response": "Antwort"
-    }
+    "dataGroup": {}
   },
   "calloutResponseBuckets": {
     "inbox": "Eingang",
@@ -620,6 +617,7 @@
   },
   "contacts": {
     "addContact": "Kontakt hinzufügen",
+    "advancedSearch": {},
     "allContacts": "Alle Kontakte",
     "data": {
       "activeMembership": "Aktive Mitgliedschaft",
@@ -655,7 +653,7 @@
       "tags": "Tags"
     },
     "dataGroup": {
-      "contact": "Kontakt",
+      "callout": "Callout",
       "contribution": "Beitrag",
       "role": "Rolle"
     },

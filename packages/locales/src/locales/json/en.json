@@ -237,6 +237,8 @@
     "addRule": "Add rule",
     "button": "Filters",
     "createFilters": "Create filters for your search",
+    "createFiltersAfter": "rules",
+    "createFiltersBefore": "Only show results matching",
     "createdSegment": "Created segment \"{segment}\"",
     "matchAfter": "of the following",
     "matchBefore": "Match",
@@ -442,8 +444,8 @@
       "updatedAt": "Date updated"
     },
     "dataGroup": {
-      "answers": "Questions",
-      "response": "Response"
+      "answers": "Response answers",
+      "response": "Response information"
     }
   },
   "calloutResponseBuckets": {
@@ -624,6 +626,10 @@
   },
   "contacts": {
     "addContact": "Add contact",
+    "advancedSearch": {
+      "hasAnswered": "Has participated in this callout?",
+      "selectCallout": "Select callout..."
+    },
     "allContacts": "All contacts",
     "data": {
       "activeMembership": "Active membership",
@@ -659,7 +665,8 @@
       "tags": "Tags"
     },
     "dataGroup": {
-      "contact": "Contact",
+      "callout": "Callout",
+      "contact": "Contact information",
       "contribution": "Contribution",
       "role": "Role"
     },

@@ -1,6 +1,5 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'assets/styles/tailwind.css';
+@import 'assets/styles/multiselect.css';
 
 /* Apply link styles to i18n markdown text */
 .content-i18n {
