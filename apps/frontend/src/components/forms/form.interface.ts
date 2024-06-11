@@ -1,10 +1,5 @@
-export interface SelectItem {
-  id: string | number;
+export interface SelectItem<T extends string | number> {
+  id: T;
   label: string;
   count?: string;
-}
-
-export interface SelectGroup {
-  label: string;
-  items: SelectItem[];
 }

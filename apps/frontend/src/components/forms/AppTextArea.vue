@@ -2,8 +2,10 @@
   <AppLabel v-if="label" :label="label" :required="required" />
   <textarea
     v-model="value"
-    class="w-full rounded border border-primary-40 p-2 focus:shadow-input focus:outline-none"
-    :class="hasError && 'border-danger-70 bg-danger-10'"
+    class="w-full rounded border p-2 focus:shadow-input focus:outline-none"
+    :class="
+      hasError ? 'border-danger-70 bg-danger-10' : 'border-primary-40 bg-white'
+    "
     :required="required"
     v-bind="$attrs"
     @blur="validation.$touch"

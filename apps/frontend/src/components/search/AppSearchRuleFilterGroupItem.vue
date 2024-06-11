@@ -12,7 +12,8 @@ import type { Rule } from '@beabee/beabee-common';
 import BetweenArgs from './operators/BetweenArgs.vue';
 import SingleArg from './operators/SingleArg.vue';
 import NoArg from './operators/NoArg.vue';
-import type { FilterItem } from './search.interface';
+
+import type { FilterItem } from '@type';
 
 defineProps<{
   rule: Rule;

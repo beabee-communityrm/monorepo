@@ -246,10 +246,7 @@
       "tags": "Etiquetas",
       "updatedAt": "Data de atualização"
     },
-    "dataGroup": {
-      "answers": "Perguntas",
-      "response": "Resposta"
-    }
+    "dataGroup": {}
   },
   "calloutResponseBuckets": {
     "inbox": "Caixa de entrada",
@@ -372,9 +369,6 @@
     "until": "até",
     "yes": "Sim"
   },
-  "contactAccount": {
-    "confirmDelete": {}
-  },
   "contactContribution": {
     "confirmCancel": {},
     "updateNotice": {}
@@ -390,6 +384,7 @@
   },
   "contacts": {
     "addContact": "Adicionar contacto",
+    "advancedSearch": {},
     "allContacts": "Todos os contactos",
     "data": {
       "activeMembership": "Membro ativo",
@@ -424,7 +419,7 @@
       "tags": "Etiquetas"
     },
     "dataGroup": {
-      "contact": "Contacto",
+      "callout": "Опрос",
       "contribution": "Contribuição",
       "role": "Cargo"
     },

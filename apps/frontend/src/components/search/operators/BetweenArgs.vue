@@ -7,7 +7,7 @@
 <script lang="ts" setup>
 import type { RuleValue } from '@beabee/beabee-common';
 import { useI18n } from 'vue-i18n';
-import type { FilterItem } from '../search.interface';
+import type { FilterItem } from '@type';
 import ArgInput from './ArgInput.vue';
 const { t } = useI18n();
 defineProps<{ value: RuleValue[]; item: FilterItem; readonly: boolean }>();

@@ -26,7 +26,6 @@ meta:
     <AppSearch
       v-model="currentRules"
       :filter-groups="filterGroups"
-      :filter-items="filterItems"
       :has-changed="hasUnsavedSegment"
       @reset="currentRules = undefined"
     >
@@ -130,7 +129,6 @@ import AppTag from '@components/AppTag.vue';
 import {
   headers,
   filterGroups,
-  filterItems,
 } from '@components/pages/admin/contacts/contacts.interface';
 import AppSearchInput from '@components/forms/AppSearchInput.vue';
 import SaveSegment from '@components/pages/admin/contacts/SaveSegment.vue';

@@ -6,10 +6,16 @@
     "mfa": {
       "codeInput": {},
       "confirmDelete": {},
+      "createUnknownErrorNotification": "L'autenticazione a 2 fattori non è stata attivata a causa di un errore sconosciuto. Prova di nuovo o contatta il supporto",
+      "deleteUnknownErrorNotification": "L'autenticazione a 2 fattori non è stata rimossa a causa di un errore sconosciuto. Prova di nuovo o contatta il supporto",
       "enterCode": {},
-      "result": {},
+      "modalTitle": "Attiva autenticazione a 2 fattori",
+      "result": {
+        "successful": "L'autenticazione a 2 fattori è stata attivata"
+      },
       "scan": {},
       "secretInput": {},
+      "title": "Autenticazione a 2 fattori",
       "validateButton": {}
     },
     "newsletter": {
@@ -23,7 +29,11 @@
   "actions": {
     "add": "Aggiungi",
     "back": "Indietro",
+    "changePassword": "Modifica la password",
+    "close": "Chiudi",
     "continue": "Prosegui",
+    "disable": "Disattiva",
+    "enable": "Attiva",
     "update": "Aggiorna"
   },
   "addContact": {
@@ -125,7 +135,9 @@
       "endDate": "Data fine"
     },
     "noArchivedCallouts": "Nessuna callout",
-    "search": "Cerca un callout"
+    "search": "Cerca un callout",
+    "showAll": "Tutti",
+    "showAnswered": "Completati"
   },
   "calloutsAdmin": {
     "data": {},
@@ -133,7 +145,7 @@
   },
   "common": {
     "backToHome": "Torna alla home",
-    "contributing": "Contribuire a",
+    "contributing": "Il tuo contributo",
     "contributionPeriod": {
       "annually": "all'anno",
       "monthly": "al mese"
@@ -185,9 +197,6 @@
     "until": "fino",
     "yes": "Sì"
   },
-  "contactAccount": {
-    "confirmDelete": {}
-  },
   "contactContribution": {
     "confirmCancel": {
       "confirm": "Sì, sono sicuro",
@@ -207,8 +216,12 @@
     "dataGroup": {}
   },
   "contribution": {
+    "cancelContribution": "Cancella il tuo contributo",
+    "cancelDescription": "Cancellando il tuo contributo, la tua membership terminerà alla fine del ciclo di pagamento, il {date}.",
     "contributing": "Il tuo contributo è",
-    "paymentHistory": {},
+    "paymentHistory": {
+      "title": "Cronologia dei pagamenti"
+    },
     "paymentMethod": "Metodo di pagamento",
     "restartContribution": "Ripristina contributo",
     "startContribution": "Avvia contirbuto",
@@ -363,7 +376,7 @@
     "title": "Home",
     "viewAllCallouts": "Vedi tutte le callout",
     "viewOpenCallouts": "Vedi le callout in corso",
-    "welcome": "Benvenutə!",
+    "welcome": "Ben fatto {firstName}!",
     "yourProfile": "Il tuo profilo"
   },
   "item": {
@@ -431,7 +444,7 @@
     "adminSettings": "Impostazioni",
     "callouts": "Callout",
     "contacts": "Contatti",
-    "contribution": "Contribuisci",
+    "contribution": "Il tuo contributo",
     "dashboard": "Dashboard",
     "home": "Home",
     "legacyApp": "Vecchia dashboard",
@@ -460,6 +473,7 @@
       "label": "Addebito diretto"
     },
     "s_card": {
+      "changeLabel": "Modifica i dettagli della carta",
       "label": "Carta di credito"
     },
     "s_paypal": {},

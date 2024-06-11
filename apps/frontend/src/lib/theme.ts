@@ -1,4 +1,4 @@
-import { parseToRgba, mix, transparentize } from 'color2k';
+import { parseToRgba, mix } from 'color2k';
 import { watch } from 'vue';
 import { generalContent } from '../store';
 
@@ -115,11 +115,6 @@ watch(
     setShades('danger', colors.danger || '#ce3d3d', [10, 30, 70, 110]);
     setShades('white', colors.white || '#ffffff');
     setShades('black', colors.black || '#000000');
-
-    setCSSVar(
-      '--bs-input',
-      '0 0 0 0.125em ' + transparentize(colors.link, 0.75)
-    );
 
     // Load fonts
 
