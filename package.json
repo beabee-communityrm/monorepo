@@ -5,8 +5,11 @@
   "type": "module",
   "scripts": {
     "build": "yarn workspaces foreach -v -W -t run build",
+    "build:types": "yarn workspaces foreach -v -W -t run build:types",
     "build:backend": "yarn workspace @beabee/backend run build",
     "build:frontend": "yarn workspace @beabee/frontend run build",
+    "build:packages": "yarn workspaces foreach -v -W -t --include 'packages/*' run build",
+    "build:apps": "yarn workspaces foreach -v -W -t --include 'apps/*' run build",
     "build:task-runner-dashboard": "yarn workspace @beabee/task-runner-dashboard run build",
     "build:common": "yarn workspace @beabee/beabee-common run build",
     "build:locales": "yarn workspace @beabee/locales run build",
