@@ -1,0 +1,17 @@
+{
+  "include": ["./src"],
+  "exclude": ["./test"],
+  "compilerOptions": {
+    "lib": ["ESNext"],
+    "target": "ESNext",
+    "module": "ESNext",
+    "rootDir": "./src",
+    "moduleResolution": "bundler",
+    "declarationDir": "./dist/types",
+    "allowImportingTsExtensions": true,
+    "emitDeclarationOnly": true,
+    "declaration": true,
+    "isolatedModules": true,
+    "skipLibCheck": true
+  }
+}

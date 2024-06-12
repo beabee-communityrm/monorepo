@@ -33,6 +33,18 @@
       "path": "../packages/locales",
     },
     {
+      "name": "packages/core",
+      "path": "../packages/core",
+    },
+    {
+      "name": "packages/models",
+      "path": "../packages/models",
+    },
+    {
+      "name": "packages/config",
+      "path": "../packages/config",
+    },
+    {
       "name": "docker/deno-node",
       "path": "../docker/deno-node",
     },
@@ -60,7 +72,8 @@
       "./apps/backend",
       "./apps/frontend",
       "./apps/task-runner-dashboard",
-      "./packages/core"
+      "./packages/core",
+      "./packages/models"
     ]
   },
 }

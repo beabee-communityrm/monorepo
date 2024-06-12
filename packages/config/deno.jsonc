@@ -1,0 +1,18 @@
+{
+  "name": "@beabee/config",
+  "version": "0.16.0",
+  "tasks": {
+    "beabee:cli": "deno run --allow-read --allow-write --allow-env --allow-run --allow-net ../../apps/cli/mod.ts",
+    "build": "deno task generate:index && deno task format && deno task sync && deno task build:node && deno task build:types",
+    "build:node": "deno task beabee:cli cross-build node",
+    "build:types": "yarn build:types",
+    "sync": "deno task beabee:cli cross-sync",
+    "format": "deno fmt src",
+    "generate:index": "deno task beabee:cli generate-index --ext ts ./src",
+    "watch:types": "yarn watch:types"
+  },
+  "imports": {
+    "assert": "node:assert",
+    "process": "node:process"
+  }
+}

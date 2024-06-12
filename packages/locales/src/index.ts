@@ -19,6 +19,8 @@ export function isLocale(s: string): s is Locale {
   return s in locales;
 }
 
+export type LocaleObject = (typeof locales)[Locale];
+
 // export default function currentLocale() {
 //   return locales[OptionsService.getText("locale") as Locale];
 // }

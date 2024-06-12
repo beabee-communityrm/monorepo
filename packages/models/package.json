@@ -1,0 +1,37 @@
+{
+  "name": "@beabee/models",
+  "version": "0.16.0",
+  "main": "./dist/esm/index.js",
+  "type": "module",
+  "files": [
+    "src",
+    "dist"
+  ],
+  "scripts": {
+    "beabee:cli": "yarn exec 'deno task beabee:cli'",
+    "clear": "rm -rf dist; exit 0",
+    "build": "yarn generate:index && yarn build:esm && yarn build:cjs",
+    "build:esm": "tsc --project ./tsconfig.json --outDir ./dist/esm",
+    "build:cjs": "tsc --project ./tsconfig.cjs.json --outDir ./dist/cjs",
+    "generate:index": "beabee-cli generate-index --ext js ./src/models"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    "./src": "./src/index.ts",
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
+  "devDependencies": {
+    "@beabee/cli": "workspace:^",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "@beabee/beabee-common": "workspace:^",
+    "@beabee/config": "workspace:^",
+    "date-fns": "^3.6.0",
+    "date-fns-tz": "^3.1.3",
+    "typeorm": "^0.3.20"
+  }
+}
