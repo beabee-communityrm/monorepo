@@ -15,6 +15,7 @@ import { log as mainLogger } from "#core/logging";
 import { cleanEmailAddress, isDuplicateIndex } from "#core/utils";
 import { generatePassword, isValidPassword } from "#core/utils/auth";
 import { generateContactCode } from "#core/utils/contact";
+import type { LocaleObject } from "@beabee/locales";
 
 import ApiKeyService from "#core/services/ApiKeyService";
 import CalloutsService from "#core/services/CalloutsService";
@@ -25,7 +26,7 @@ import OptionsService from "#core/services/OptionsService";
 import PaymentService from "#core/services/PaymentService";
 import ReferralsService from "#core/services/ReferralsService";
 import ResetSecurityFlowService from "#core/services/ResetSecurityFlowService";
-import SegmentService from "#core/services/SegmentService";
+import { SegmentService } from "#core/services/SegmentService";
 import UploadFlowService from "#core/services/UploadFlowService";
 
 import {
@@ -104,6 +105,7 @@ class ContactsService {
   async createContact(
     partialContact: Partial<Contact> & Pick<Contact, "email">,
     partialProfile: Partial<ContactProfile> = {},
+    locale: LocaleObject,
     opts = { sync: true }
   ): Promise<Contact> {
     log.info("Create contact", { partialContact, partialProfile });
@@ -134,7 +136,7 @@ class ContactsService {
         await NewsletterService.upsertContact(contact);
       }
 
-      await EmailService.sendTemplateToAdmin("new-member", { contact });
+      await EmailService.sendTemplateToAdmin("new-member", { contact }, locale);
 
       return contact;
     } catch (error) {
@@ -144,7 +146,12 @@ class ContactsService {
         isDuplicateIndex(error, "referralCode") ||
         isDuplicateIndex(error, "pollsCode")
       ) {
-        return await this.createContact(partialContact, partialProfile, opts);
+        return await this.createContact(
+          partialContact,
+          partialProfile,
+          locale,
+          opts
+        );
       }
       throw error;
     }
@@ -326,7 +333,8 @@ class ContactsService {
 
   async updateContactContribution(
     contact: Contact,
-    paymentForm: PaymentForm
+    paymentForm: PaymentForm,
+    locale: LocaleObject
   ): Promise<void> {
     log.info("Update contribution for " + contact.id, { paymentForm });
     // At the moment the only possibility is to go from whatever contribution
@@ -366,21 +374,31 @@ class ContactsService {
     await this.extendContactRole(contact, "member", expiryDate);
 
     if (wasManual) {
-      await EmailService.sendTemplateToContact("manual-to-automatic", contact);
+      await EmailService.sendTemplateToContact(
+        "manual-to-automatic",
+        contact,
+        undefined,
+        locale
+      );
     }
   }
 
   async cancelContactContribution(
     contact: Contact,
-    email: "cancelled-contribution" | "cancelled-contribution-no-survey"
+    email: "cancelled-contribution" | "cancelled-contribution-no-survey",
+    locale: LocaleObject
   ): Promise<void> {
     log.info("Cancel contribution for " + contact.id);
     await PaymentService.cancelContribution(contact);
 
-    await EmailService.sendTemplateToContact(email, contact);
-    await EmailService.sendTemplateToAdmin("cancelled-member", {
-      contact: contact
-    });
+    await EmailService.sendTemplateToContact(email, contact, undefined, locale);
+    await EmailService.sendTemplateToAdmin(
+      "cancelled-member",
+      {
+        contact: contact
+      },
+      locale
+    );
   }
 
   /**
@@ -489,7 +507,8 @@ class ContactsService {
    */
   public async resetPasswordBegin(
     email: string,
-    resetUrl: string
+    resetUrl: string,
+    locale: LocaleObject
   ): Promise<void> {
     const contact = await this.findOneBy({ email });
 
@@ -502,9 +521,14 @@ class ContactsService {
       RESET_SECURITY_FLOW_TYPE.PASSWORD
     );
 
-    await EmailService.sendTemplateToContact("reset-password", contact, {
-      rpLink: resetUrl + "/" + rpFlow.id
-    });
+    await EmailService.sendTemplateToContact(
+      "reset-password",
+      contact,
+      {
+        rpLink: resetUrl + "/" + rpFlow.id
+      },
+      locale
+    );
   }
 
   /**
@@ -585,7 +609,8 @@ class ContactsService {
   public async resetDeviceBegin(
     email: string,
     type: RESET_SECURITY_FLOW_TYPE,
-    resetUrl: string
+    resetUrl: string,
+    locale: LocaleObject
   ): Promise<void> {
     const contact = await this.findOneBy({ email });
 
@@ -602,9 +627,14 @@ class ContactsService {
 
     const rdFlow = await ResetSecurityFlowService.create(contact, type);
 
-    await EmailService.sendTemplateToContact("reset-device", contact, {
-      rpLink: resetUrl + "/" + rdFlow.id
-    });
+    await EmailService.sendTemplateToContact(
+      "reset-device",
+      contact,
+      {
+        rpLink: resetUrl + "/" + rdFlow.id
+      },
+      locale
+    );
   }
 
   /**

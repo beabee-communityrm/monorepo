@@ -1,15 +1,6 @@
 {
   "extends": "@tsconfig/node20/tsconfig.json",
-  "include": [
-    "./src/**/*",
-    "./test/**/*",
-    "../common/src/types/payment-flow-data.ts",
-    "../common/src/types/payment-flow-params.ts",
-    "../common/src/types/payment-flow.ts",
-    "../common/src/types/payment-form.ts",
-    "../common/src/types/stripe-tax-rate-create-params.ts",
-    "../common/src/types/update-contribution-result.ts"
-  ],
+  "include": ["./src/**/*", "./test/**/*"],
   "compilerOptions": {
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -33,6 +24,7 @@
       "#types/*": ["./src/types/*.js"],
       "#enums/*": ["./src/enums/*.js"],
       "#core/utils": ["./src/utils/index.js"],
+      "#core/defaults.json": ["./src/defaults.json"],
       "#core/*": ["./src/*.js"],
       "#errors/*": ["./src/errors/*.js"],
       "#utils/*": ["./src/utils/*.js"],

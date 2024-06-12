@@ -35,5 +35,6 @@
   "devDependencies": {
     "@beabee/cli": "workspace:^",
     "typescript": "^5.4.5"
-  }
+  },
+  "dependencies": {}
 }

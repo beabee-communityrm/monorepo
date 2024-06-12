@@ -20,6 +20,8 @@ import type {
   PaymentFlowParams
 } from "@beabee/beabee-common";
 
+import type { LocaleObject } from "@beabee/locales";
+
 import { PaymentFlowProvider } from "#core/providers/payment-flow/index";
 import StripeProvider from "#core/providers/payment-flow/StripeProvider";
 import GCProvider from "#core/providers/payment-flow/GCProvider";
@@ -101,7 +103,10 @@ class PaymentFlowService implements PaymentFlowProvider {
     return paymentFlow;
   }
 
-  async sendConfirmEmail(joinFlow: JoinFlow): Promise<void> {
+  async sendConfirmEmail(
+    joinFlow: JoinFlow,
+    locale: LocaleObject
+  ): Promise<void> {
     log.info("Send confirm email for join flow " + joinFlow.id);
 
     const contact = await ContactsService.findOneBy({
@@ -115,7 +120,8 @@ class PaymentFlowService implements PaymentFlowProvider {
           contact,
           {
             loginLink: joinFlow.loginUrl
-          }
+          },
+          locale
         );
       } else {
         const rpFlow = await ResetSecurityFlowService.create(
@@ -127,7 +133,8 @@ class PaymentFlowService implements PaymentFlowProvider {
           contact,
           {
             spLink: joinFlow.setPasswordUrl + "/" + rpFlow.id
-          }
+          },
+          locale
         );
       }
     } else {
@@ -138,12 +145,16 @@ class PaymentFlowService implements PaymentFlowProvider {
           firstName: joinFlow.joinForm.firstname || "",
           lastName: joinFlow.joinForm.lastname || "",
           confirmLink: joinFlow.confirmUrl + "/" + joinFlow.id
-        }
+        },
+        locale
       );
     }
   }
 
-  async completeConfirmEmail(joinFlow: JoinFlow): Promise<Contact> {
+  async completeConfirmEmail(
+    joinFlow: JoinFlow,
+    locale: LocaleObject
+  ): Promise<Contact> {
     // Check for an existing active member first to avoid completing the join
     // flow unnecessarily. This should never really happen as the user won't
     // get a confirm email if they are already an active member
@@ -185,7 +196,8 @@ class PaymentFlowService implements PaymentFlowProvider {
     } else {
       contact = await ContactsService.createContact(
         partialContact,
-        deliveryAddress ? { deliveryAddress } : undefined
+        deliveryAddress ? { deliveryAddress } : undefined,
+        locale
       );
     }
 
@@ -193,11 +205,17 @@ class PaymentFlowService implements PaymentFlowProvider {
       await PaymentService.updatePaymentMethod(contact, completedPaymentFlow);
       await ContactsService.updateContactContribution(
         contact,
-        joinFlow.joinForm
+        joinFlow.joinForm,
+        locale
       );
     }
 
-    await EmailService.sendTemplateToContact("welcome", contact);
+    await EmailService.sendTemplateToContact(
+      "welcome",
+      contact,
+      undefined,
+      locale
+    );
 
     return contact;
   }

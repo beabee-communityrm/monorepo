@@ -3,10 +3,8 @@ import Mail from "nodemailer/lib/mailer";
 
 import { log as mainLogger } from "#core/logging";
 
-import OptionsService from "#core/services/OptionsService";
-
 import { EmailOptions, EmailRecipient, PreparedEmail } from "./index.js";
-import BaseProvider from "./BaseProvider";
+import BaseProvider from "./BaseProvider.js";
 
 import { SMTPEmailConfig } from "@beabee/config";
 

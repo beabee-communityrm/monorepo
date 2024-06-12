@@ -26,6 +26,8 @@ import {
   CalloutVariant
 } from "@beabee/models";
 
+import { LocaleObject } from "@beabee/locales";
+
 import DuplicateId from "#errors/DuplicateId";
 import InvalidCalloutResponse from "#errors/InvalidCalloutResponse";
 import NotFoundError from "#errors/NotFoundError";
@@ -205,6 +207,7 @@ class CalloutsService {
    * @param callout The callout
    * @param contact The contact
    * @param answers The response answers
+   * @param locale The locale
    * @param isPartial Deprecated: whether or not the answers are partial or not
    * @returns The new callout response
    */
@@ -212,6 +215,7 @@ class CalloutsService {
     callout: Callout,
     contact: Contact,
     answers: CalloutResponseAnswersSlide,
+    locale: LocaleObject,
     isPartial = false
   ): Promise<CalloutResponse> {
     if (callout.access === CalloutAccess.OnlyAnonymous) {
@@ -248,7 +252,7 @@ class CalloutsService {
 
     const savedResponse = await this.saveResponse(response);
 
-    await this.notifyAdmin(callout, contact.fullname);
+    await this.notifyAdmin(callout, contact.fullname, locale);
 
     if (callout.mcMergeField && callout.pollMergeField) {
       const [slideId, answerKey] = callout.pollMergeField.split(".");
@@ -272,7 +276,8 @@ class CalloutsService {
     callout: Callout,
     guestName: string | undefined,
     guestEmail: string | undefined,
-    answers: CalloutResponseAnswersSlide
+    answers: CalloutResponseAnswersSlide,
+    locale: LocaleObject
   ): Promise<CalloutResponse> {
     if (callout.access === CalloutAccess.Guest && !(guestName && guestEmail)) {
       throw new InvalidCalloutResponse("guest-fields-missing");
@@ -294,7 +299,7 @@ class CalloutsService {
 
     const savedResponse = await this.saveResponse(response);
 
-    await this.notifyAdmin(callout, guestName || "Anonymous");
+    await this.notifyAdmin(callout, guestName || "Anonymous", locale);
 
     return savedResponse;
   }
@@ -408,7 +413,8 @@ class CalloutsService {
    */
   private async notifyAdmin(
     callout: Callout,
-    responderName: string
+    responderName: string,
+    locale: LocaleObject
   ): Promise<void> {
     const variant =
       callout.variants?.find((v) => v.name === "default") ||
@@ -417,11 +423,15 @@ class CalloutsService {
         name: "default"
       }));
 
-    await EmailService.sendTemplateToAdmin("new-callout-response", {
-      calloutSlug: callout.slug,
-      calloutTitle: variant?.title || "Unknown title",
-      responderName: responderName
-    });
+    await EmailService.sendTemplateToAdmin(
+      "new-callout-response",
+      {
+        calloutSlug: callout.slug,
+        calloutTitle: variant?.title || "Unknown title",
+        responderName: responderName
+      },
+      locale
+    );
   }
 }
 

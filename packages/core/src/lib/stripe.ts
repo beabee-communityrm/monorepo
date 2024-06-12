@@ -1,5 +1,6 @@
 import Stripe from "stripe";
 import { config } from "@beabee/config";
+import { LocaleObject } from "@beabee/locales";
 import type { StripeTaxRateCreateParams } from "#types/stripe-tax-rate-create-params";
 
 export const stripe = new Stripe(config.stripe.secretKey, {
@@ -26,11 +27,13 @@ export const stripeTaxRateDisable = async (
  * Create a default tax rate.
  *
  * @param data The data to create the tax rate with
+ * @param locale The locale to use for the display name, should be the current locale.
  * @param options The options for the request
  * @returns The response from Stripe
  */
 export const stripeTaxRateCreateDefault = async (
   data: StripeTaxRateCreateParams,
+  locale: LocaleObject,
   options?: Stripe.RequestOptions
 ): Promise<Stripe.Response<Stripe.TaxRate>> => {
   data.active = data.active !== false;
@@ -44,7 +47,7 @@ export const stripeTaxRateCreateDefault = async (
         "created-by": "beabee",
         ...data.metadata
       },
-      display_name: data.display_name || currentLocale().taxRate.invoiceName
+      display_name: data.display_name || locale.taxRate.invoiceName
     },
     options
   );
@@ -60,6 +63,7 @@ export const stripeTaxRateCreateDefault = async (
  */
 export const stripeTaxRateUpdateOrCreateDefault = async (
   data: StripeTaxRateCreateParams,
+  locale: LocaleObject,
   id?: string,
   options?: Stripe.RequestOptions
 ): Promise<Stripe.Response<Stripe.TaxRate>> => {
@@ -87,7 +91,7 @@ export const stripeTaxRateUpdateOrCreateDefault = async (
     }
   }
 
-  return stripeTaxRateCreateDefault(data, options);
+  return stripeTaxRateCreateDefault(data, locale, options);
 };
 
 export { Stripe };

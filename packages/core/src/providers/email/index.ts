@@ -1,4 +1,5 @@
-import { Email } from "@beabee/models";
+import type { Email } from "@beabee/models";
+import type { LocaleObject } from "@beabee/locales";
 
 export interface EmailTemplate {
   id: string;
@@ -37,11 +38,13 @@ export interface EmailProvider {
   sendEmail(
     email: Email,
     recipients: EmailRecipient[],
+    locale: LocaleObject,
     opts?: EmailOptions
   ): Promise<void>;
   sendTemplate(
     templateId: string,
     recipients: EmailRecipient[],
+    locale: LocaleObject,
     opts?: EmailOptions
   ): Promise<void>;
   getTemplateEmail(templateId: string): Promise<false | Email | null>;

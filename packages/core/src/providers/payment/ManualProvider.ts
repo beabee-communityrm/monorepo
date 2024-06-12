@@ -1,10 +1,7 @@
 import { Contact } from "@beabee/models";
 import { PaymentProvider } from "./index.js";
 
-import type {
-  CompletedPaymentFlow,
-  ContributionInfo,
-} from "#types/index";
+import type { CompletedPaymentFlow, ContributionInfo } from "#types/index";
 
 import type {
   PaymentForm,
@@ -29,8 +26,8 @@ export default class ManualProvider extends PaymentProvider {
     };
   }
 
-  async cancelContribution(keepMandate: boolean): Promise<void> { }
-  async updateContact(updates: Partial<Contact>): Promise<void> { }
+  async cancelContribution(keepMandate: boolean): Promise<void> {}
+  async updateContact(updates: Partial<Contact>): Promise<void> {}
 
   async updateContribution(
     paymentForm: PaymentForm
@@ -42,5 +39,5 @@ export default class ManualProvider extends PaymentProvider {
   ): Promise<void> {
     throw new Error("Method not implemented.");
   }
-  async permanentlyDeleteContact(): Promise<void> { }
+  async permanentlyDeleteContact(): Promise<void> {}
 }

@@ -17,6 +17,7 @@ import { GiftFlow, ContactRole, GiftForm } from "@beabee/models";
 import { config } from "@beabee/config";
 
 import type { Address } from "@beabee/beabee-common";
+import type { LocaleObject } from "@beabee/locales";
 
 const log = mainLogger.child({ app: "gift-service" });
 
@@ -45,8 +46,9 @@ export default class GiftService {
             unit_amount: giftForm.months * GiftService.giftMonthlyAmount * 100,
             currency: config.currencyCode.toLowerCase(),
             product_data: {
-              name: `Gift membership - ${giftForm.months} month${giftForm.months != 1 ? "s" : ""
-                }`
+              name: `Gift membership - ${giftForm.months} month${
+                giftForm.months != 1 ? "s" : ""
+              }`
             }
           }
         }
@@ -70,7 +72,10 @@ export default class GiftService {
     return session.id;
   }
 
-  static async completeGiftFlow(sessionId: string): Promise<void> {
+  static async completeGiftFlow(
+    sessionId: string,
+    locale: LocaleObject
+  ): Promise<void> {
     const giftFlowRepository = getRepository(GiftFlow);
     const giftFlow = await giftFlowRepository.findOne({ where: { sessionId } });
 
@@ -95,18 +100,20 @@ export default class GiftService {
         "purchased-gift",
         { email: fromEmail, name: fromName },
         { fromName, gifteeFirstName: firstname, giftStartDate: startDate },
+        locale,
         { attachments }
       );
 
       // Immediately process gifts for today
       if (moment.utc(startDate).isSame(now, "day")) {
-        await GiftService.processGiftFlow(giftFlow, true);
+        await GiftService.processGiftFlow(giftFlow, locale, true);
       }
     }
   }
 
   static async processGiftFlow(
     giftFlow: GiftFlow,
+    locale: LocaleObject,
     sendImmediately = false
   ): Promise<void> {
     log.info("Process gift flow " + giftFlow.id, {
@@ -148,7 +155,8 @@ export default class GiftService {
         deliveryAddress: deliveryAddress,
         newsletterStatus: NewsletterStatus.Subscribed,
         newsletterGroups: OptionsService.getList("newsletter-default-groups")
-      }
+      },
+      locale
     );
 
     giftFlow.giftee = contact;
@@ -161,6 +169,7 @@ export default class GiftService {
       "giftee-success",
       contact,
       { fromName, message: message || "", giftCode: giftFlow.setupCode },
+      locale,
       { sendAt }
     );
   }

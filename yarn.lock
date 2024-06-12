@@ -520,7 +520,9 @@ __metadata:
   dependencies:
     "@beabee/beabee-common": "workspace:^"
     "@beabee/cli": "workspace:^"
+    "@beabee/core": "workspace:^"
     "@beabee/locales": "workspace:^"
+    "@beabee/models": "workspace:^"
     "@captchafox/node": "npm:^1.2.0"
     "@inquirer/prompts": "npm:^3.3.2"
     "@sendgrid/mail": "npm:^8.1.3"
@@ -652,7 +654,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@beabee/core@workspace:packages/core":
+"@beabee/core@workspace:^, @beabee/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@beabee/core@workspace:packages/core"
   dependencies:

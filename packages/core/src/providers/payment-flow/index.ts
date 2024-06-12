@@ -1,10 +1,9 @@
-import JoinFlow from "@beabee/models/JoinFlow";
-import {
+import { JoinFlow } from "@beabee/models";
+import type {
   CompletedPaymentFlow,
-  CompletedPaymentFlowData,
-  PaymentFlow,
-  PaymentFlowData
+  CompletedPaymentFlowData
 } from "#types/index";
+import type { PaymentFlow, PaymentFlowData } from "@beabee/beabee-common";
 
 export abstract class PaymentFlowProvider {
   abstract createPaymentFlow(

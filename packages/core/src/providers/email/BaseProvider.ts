@@ -1,7 +1,7 @@
 import { createQueryBuilder, getRepository } from "#core/database";
 import { log as mainLogger } from "#core/logging";
 import { formatEmailBody } from "#core/utils/email";
-import { currentLocale } from "#locales";
+import { LocaleObject } from "@beabee/locales";
 
 import OptionsService from "#core/services/OptionsService";
 import ResetSecurityFlowService from "#core/services/ResetSecurityFlowService";
@@ -85,12 +85,12 @@ const magicMergeFieldsProcessors = {
       recipient.mergeFields?.LOGINLINK
         ? recipient
         : {
-          ...recipient,
-          mergeFields: {
-            ...recipient.mergeFields,
-            LOGINLINK: `${config.audience}/auth/login`
+            ...recipient,
+            mergeFields: {
+              ...recipient.mergeFields,
+              LOGINLINK: `${config.audience}/auth/login`
+            }
           }
-        }
     );
   }
 } as const;
@@ -105,11 +105,12 @@ export default abstract class BaseProvider implements EmailProvider {
   async sendEmail(
     email: Email,
     recipients: EmailRecipient[],
+    locale: LocaleObject,
     opts?: EmailOptions | undefined
   ): Promise<void> {
     const preparedEmail = {
       ...email,
-      body: formatEmailBody(currentLocale(), email.body),
+      body: formatEmailBody(email.body, locale),
       fromEmail: email.fromEmail || OptionsService.getText("support-email"),
       fromName:
         email.fromName ||
@@ -130,11 +131,12 @@ export default abstract class BaseProvider implements EmailProvider {
   async sendTemplate(
     templateId: string,
     recipients: EmailRecipient[],
+    locale: LocaleObject,
     opts?: EmailOptions
   ): Promise<void> {
     const email = await getRepository(Email).findOneBy({ id: templateId });
     if (email) {
-      await this.sendEmail(email, recipients, opts);
+      await this.sendEmail(email, recipients, locale, opts);
     }
   }
 

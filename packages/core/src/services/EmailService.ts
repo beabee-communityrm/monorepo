@@ -6,6 +6,7 @@ import { loadFront } from "yaml-front-matter";
 import { log as mainLogger } from "#core/logging";
 
 import OptionsService from "#core/services/OptionsService";
+import { LocaleObject } from "@beabee/locales";
 
 import {
   EmailMergeFields,
@@ -181,11 +182,12 @@ class EmailService {
   async sendEmail(
     email: Email,
     recipients: EmailRecipient[],
+    locale: LocaleObject,
     opts?: EmailOptions
   ): Promise<void> {
     log.info("Sending email", { email: email.id, recipients });
     try {
-      await this.provider.sendEmail(email, recipients, opts);
+      await this.provider.sendEmail(email, recipients, locale, opts);
     } catch (error) {
       log.error("Unable to send email " + email.id, error);
     }
@@ -194,28 +196,37 @@ class EmailService {
   async sendEmailToContact(
     email: Email,
     contacts: Contact[],
+    locale: LocaleObject,
     opts?: EmailOptions
   ): Promise<void> {
     const recipients = contacts.map((contact) =>
       this.convertContactToRecipient(contact)
     );
-    await this.sendEmail(email, recipients, opts);
+    await this.sendEmail(email, recipients, locale, opts);
   }
 
   async sendTemplateTo<T extends GeneralEmailTemplateId>(
     template: T,
     to: EmailPerson,
     params: Parameters<GeneralEmailTemplates[T]>[0],
+    locale: LocaleObject,
     opts?: EmailOptions
   ): Promise<void> {
     const mergeFields = generalEmailTemplates[template](params as any); // https://github.com/microsoft/TypeScript/issues/30581
-    await this.sendTemplate(template, [{ to, mergeFields }], opts, true);
+    await this.sendTemplate(
+      template,
+      [{ to, mergeFields }],
+      locale,
+      opts,
+      true
+    );
   }
 
   async sendTemplateToContact<T extends ContactEmailTemplateId>(
     template: T,
     contact: Contact,
     params: ContactEmailParams<T>,
+    locale: LocaleObject,
     opts?: EmailOptions
   ): Promise<void>;
   async sendTemplateToContact<
@@ -225,13 +236,15 @@ class EmailService {
   >(
     template: T,
     contact: Contact,
-    params?: undefined,
+    params: undefined,
+    locale: LocaleObject,
     opts?: EmailOptions
   ): Promise<void>;
   async sendTemplateToContact<T extends ContactEmailTemplateId>(
     template: T,
     contact: Contact,
     params: ContactEmailParams<T>,
+    locale: LocaleObject,
     opts?: EmailOptions
   ): Promise<void> {
     log.info("Sending template to contact " + contact.id);
@@ -241,12 +254,13 @@ class EmailService {
       contactEmailTemplates[template](contact, params as any) // https://github.com/microsoft/TypeScript/issues/30581
     );
 
-    await this.sendTemplate(template, [recipient], opts, true);
+    await this.sendTemplate(template, [recipient], locale, opts, true);
   }
 
   async sendTemplateToAdmin<T extends AdminEmailTemplateId>(
     template: T,
     params: Parameters<AdminEmailTemplates[T]>[0],
+    locale: LocaleObject,
     opts?: EmailOptions
   ): Promise<void> {
     const recipient = {
@@ -254,12 +268,13 @@ class EmailService {
       mergeFields: adminEmailTemplates[template](params as any)
     };
 
-    await this.sendTemplate(template, [recipient], opts, false);
+    await this.sendTemplate(template, [recipient], locale, opts, false);
   }
 
   private async sendTemplate(
     template: EmailTemplateId,
     recipients: EmailRecipient[],
+    locale: LocaleObject,
     opts: EmailOptions | undefined,
     required: boolean
   ): Promise<void> {
@@ -271,17 +286,28 @@ class EmailService {
         recipients
       });
       try {
-        await this.provider.sendTemplate(providerTemplate, recipients, opts);
+        await this.provider.sendTemplate(
+          providerTemplate,
+          recipients,
+          locale,
+          opts
+        );
       } catch (error) {
         log.error("Unable to send template " + template, error);
       }
       // Fallback to cancelled contribution email if no no-survey variant
     } else if (template === "cancelled-contribution-no-survey") {
-      this.sendTemplate("cancelled-contribution", recipients, opts, required);
+      this.sendTemplate(
+        "cancelled-contribution",
+        recipients,
+        locale,
+        opts,
+        required
+      );
     } else {
       const defaultEmail = this.getDefaultEmail(template);
       if (defaultEmail) {
-        this.sendEmail(defaultEmail, recipients, opts);
+        this.sendEmail(defaultEmail, recipients, locale, opts);
       } else if (required) {
         log.error(
           `Tried to send ${template} that has no provider template or default`

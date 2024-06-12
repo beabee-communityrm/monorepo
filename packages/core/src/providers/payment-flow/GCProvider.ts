@@ -1,15 +1,14 @@
 import gocardless from "#core/lib/gocardless";
 import { log as mainLogger } from "#core/logging";
 
-import JoinFlow from "@beabee/models/JoinFlow";
+import { JoinFlow } from "@beabee/models";
 
 import { PaymentFlowProvider } from "./index.js";
-import {
+import type {
   CompletedPaymentFlow,
-  CompletedPaymentFlowData,
-  PaymentFlow,
-  PaymentFlowData
+  CompletedPaymentFlowData
 } from "#types/index";
+import type { PaymentFlow, PaymentFlowData } from "@beabee/beabee-common";
 
 const log = mainLogger.child({ app: "gc-payment-flow-provider" });
 

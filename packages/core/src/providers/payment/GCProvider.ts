@@ -1,4 +1,8 @@
-import { PaymentMethod, PaymentSource, getActualAmount } from "@beabee/beabee-common";
+import {
+  PaymentMethod,
+  PaymentSource,
+  getActualAmount
+} from "@beabee/beabee-common";
 import { Subscription } from "gocardless-nodejs";
 import moment from "moment";
 
@@ -20,12 +24,12 @@ import NoPaymentMethod from "#errors/NoPaymentMethod";
 
 import { config } from "@beabee/config";
 
-import {
-  CompletedPaymentFlow,
-  ContributionInfo,
+import type { CompletedPaymentFlow, ContributionInfo } from "#types/index";
+
+import type {
   PaymentForm,
   UpdateContributionResult
-} from "#types/index";
+} from "@beabee/beabee-common";
 
 const log = mainLogger.child({ app: "gc-payment-provider" });
 
@@ -61,11 +65,11 @@ export default class GCProvider extends PaymentProvider {
       hasPendingPayment: pendingPayment,
       ...(this.data.nextAmount &&
         this.contact.contributionPeriod && {
-        nextAmount: getActualAmount(
-          this.data.nextAmount.monthly,
-          this.contact.contributionPeriod
-        )
-      }),
+          nextAmount: getActualAmount(
+            this.data.nextAmount.monthly,
+            this.contact.contributionPeriod
+          )
+        }),
       ...(paymentSource && { paymentSource })
     };
   }
@@ -161,9 +165,9 @@ export default class GCProvider extends PaymentProvider {
     this.data.nextAmount = startNow
       ? null
       : {
-        monthly: paymentForm.monthlyAmount,
-        chargeable: Number(subscription.amount)
-      };
+          monthly: paymentForm.monthlyAmount,
+          chargeable: Number(subscription.amount)
+        };
 
     await this.updateData();
 

@@ -11,6 +11,7 @@ import {
   PreparedEmail
 } from "./index.js";
 import BaseProvider from "./BaseProvider.js";
+import type { LocaleObject } from "@beabee/locales";
 
 import { MandrillEmailConfig } from "@beabee/config";
 
@@ -72,6 +73,7 @@ export default class MandrillProvider extends BaseProvider {
   async sendTemplate(
     templateId: string,
     recipients: EmailRecipient[],
+    locale: LocaleObject,
     opts?: EmailOptions
   ): Promise<void> {
     log.info(`Sending template ${templateId}`);
@@ -85,7 +87,7 @@ export default class MandrillProvider extends BaseProvider {
       });
       log.info(`Sent template ${templateId}`, { data: resp.data });
     } else {
-      super.sendTemplate(templateId, recipients, opts);
+      super.sendTemplate(templateId, recipients, locale, opts);
     }
   }
 

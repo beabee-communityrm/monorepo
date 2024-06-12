@@ -4,6 +4,7 @@ import { getRepository } from "#core/database";
 import { log as mainLogger } from "#core/logging";
 
 import EmailService from "#core/services/EmailService";
+import type { LocaleObject } from "@beabee/locales";
 
 import {
   ReferralGiftForm,
@@ -67,7 +68,8 @@ export default class ReferralsService {
   static async createReferral(
     referrer: Contact | undefined,
     referee: Contact,
-    giftForm: ReferralGiftForm
+    giftForm: ReferralGiftForm,
+    locale: LocaleObject
   ): Promise<void> {
     log.info("Create referral", {
       referrerId: referrer?.id,
@@ -98,7 +100,8 @@ export default class ReferralsService {
           isEligible:
             !!referee.contributionMonthlyAmount &&
             referee.contributionMonthlyAmount >= 3
-        }
+        },
+        locale
       );
     }
   }
