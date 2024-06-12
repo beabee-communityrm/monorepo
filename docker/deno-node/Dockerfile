@@ -8,12 +8,10 @@ FROM node:${NODE_VERSION}-bookworm
 # Set shell
 SHELL ["/bin/bash", "-c"]
 
-USER node
-
 # Install Deno
 RUN curl -fsSL https://deno.land/install.sh | sh -s ${DENO_VERSION}
-ENV HOME="/home/node"
-ENV DENO_INSTALL="${HOME}/.deno"
+ENV DENO_INSTALL="/root/.deno"
+ENV DENO_DIR="/root/.deno"
 ENV PATH="${DENO_INSTALL}/bin:${PATH}"
 RUN echo "${PATH}"
 
@@ -21,5 +19,3 @@ RUN node --version
 RUN npm --version
 RUN yarn --version
 RUN deno --version
-
-USER root

@@ -7,8 +7,9 @@
     "src"
   ],
   "bin": {
-    "beabee-cli": "./cli.sh",
-    "beabee-cli-bin": "./cli.bin"
+    "beabee-cli": "./cli.bin",
+    "beabee-cli-node": "./cli.js",
+    "beabee-cli-sh": "./cli.sh"
   },
   "scripts": {
     "beabee:cli": "yarn exec 'deno task beabee:cli'",

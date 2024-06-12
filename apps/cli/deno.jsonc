@@ -2,7 +2,7 @@
   "name": "@beabee/cli",
   "version": "0.16.0",
   "tasks": {
-    "build": "deno task generate:index && chmod +x ./cli.sh",
+    "build": "deno task generate:index && deno task compile && chmod +x ./cli.sh",
     "compile": "deno compile --allow-read --allow-write --allow-env --allow-run --allow-net --output ./cli.bin ./src/cli.ts && chmod +x ./cli.bin",
     "beabee:cli": "deno run --allow-read --allow-write --allow-env --allow-run --allow-net ./src/cli.ts",
     "generate:index": "deno task beabee:cli generate-index --ext ts ./src/actions ./src/plugins",

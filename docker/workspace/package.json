@@ -7,5 +7,8 @@
     "docker:build": "docker build --build-arg REVISION=$(git rev-parse --short HEAD) -t beabee/workspace -f ./Dockerfile ../..",
     "docker:push:latest": "docker push beabee/workspace:latest",
     "docker:push:dev": "docker push beabee/workspace:dev"
+  },
+  "devDependencies": {
+    "@beabee/deno-node": "workspace:^"
   }
 }

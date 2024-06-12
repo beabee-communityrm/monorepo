@@ -62,7 +62,7 @@
     "watch:node:esm": "yarn exec 'deno task watch:node:esm'",
     "watch:node:cjs": "yarn exec 'deno task watch:node:cjs'",
     "watch:browser": "yarn exec 'deno task watch:browser'",
-    "watch:types": "tsc --project ./tsconfig.json --watch",
+    "watch:types": "tsc --project ./tsconfig.json --watch --preserveWatchOutput",
     "watch:browser:cdn": "yarn exec 'deno task watch:browser:cdn'",
     "watch:browser:esm": "yarn exec 'deno task watch:browser:esm'",
     "deno:cache": "yarn exec 'deno task deno:cache'",

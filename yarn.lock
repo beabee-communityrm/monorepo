@@ -637,12 +637,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@beabee/cli@workspace:apps/cli"
   bin:
-    beabee-cli: ./cli.sh
-    beabee-cli-bin: ./cli.bin
+    beabee-cli: ./cli.bin
+    beabee-cli-node: ./cli.js
+    beabee-cli-sh: ./cli.sh
   languageName: unknown
   linkType: soft
 
-"@beabee/deno-node@workspace:docker/deno-node":
+"@beabee/deno-node@workspace:^, @beabee/deno-node@workspace:docker/deno-node":
   version: 0.0.0-use.local
   resolution: "@beabee/deno-node@workspace:docker/deno-node"
   languageName: unknown
@@ -772,6 +773,8 @@ __metadata:
 "@beabee/workspace@workspace:docker/workspace":
   version: 0.0.0-use.local
   resolution: "@beabee/workspace@workspace:docker/workspace"
+  dependencies:
+    "@beabee/deno-node": "workspace:^"
   languageName: unknown
   linkType: soft
 
