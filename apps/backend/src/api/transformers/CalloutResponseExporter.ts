@@ -7,7 +7,7 @@ import { stringify } from "csv-stringify/sync";
 import { format } from "date-fns";
 import { In, SelectQueryBuilder } from "typeorm";
 
-import { getRepository } from "@core/database";
+import { database, NotFoundError, AuthInfo } from "@beabee/core";
 
 import { GetExportQuery } from "@api/dto/BaseDto";
 import {
@@ -15,14 +15,9 @@ import {
   ExportCalloutResponsesOptsDto
 } from "@api/dto/CalloutResponseDto";
 import { BaseCalloutResponseTransformer } from "@api/transformers/BaseCalloutResponseTransformer";
-import NotFoundError from "@api/errors/NotFoundError";
 import { groupBy } from "@api/utils";
 
-import CalloutResponse from "@models/CalloutResponse";
-import CalloutResponseComment from "@models/CalloutResponseComment";
-import Callout from "@models/Callout";
-
-import { AuthInfo } from "@type/auth-info";
+import { CalloutResponse, CalloutResponseComment, Callout } from "@beabee/models";
 
 class CalloutResponseExporter extends BaseCalloutResponseTransformer<
   ExportCalloutResponseDto,
@@ -36,11 +31,11 @@ class CalloutResponseExporter extends BaseCalloutResponseTransformer<
   ): ExportCalloutResponseDto {
     const contact: [string, string, string, string] = response.contact
       ? [
-          response.contact.firstname,
-          response.contact.lastname,
-          response.contact.fullname,
-          response.contact.email
-        ]
+        response.contact.firstname,
+        response.contact.lastname,
+        response.contact.fullname,
+        response.contact.email
+      ]
       : ["", "", response.guestName || "", response.guestEmail || ""];
 
     return [
@@ -70,7 +65,7 @@ class CalloutResponseExporter extends BaseCalloutResponseTransformer<
   }
 
   protected async modifyItems(responses: CalloutResponse[]): Promise<void> {
-    const comments = await getRepository(CalloutResponseComment).find({
+    const comments = await database.getRepository(CalloutResponseComment).find({
       where: { responseId: In(responses.map((r) => r.id)) },
       relations: { contact: true },
       order: { createdAt: "ASC" }
@@ -91,7 +86,7 @@ class CalloutResponseExporter extends BaseCalloutResponseTransformer<
     calloutId: string,
     query: GetExportQuery
   ): Promise<[string, string]> {
-    const callout = await getRepository(Callout).findOneBy({
+    const callout = await database.getRepository(Callout).findOneBy({
       id: calloutId
     });
     if (!callout) {
@@ -110,9 +105,8 @@ class CalloutResponseExporter extends BaseCalloutResponseTransformer<
       components
     });
 
-    const exportName = `responses-${
-      callout.slug
-    }_${new Date().toISOString()}.csv`;
+    const exportName = `responses-${callout.slug
+      }_${new Date().toISOString()}.csv`;
 
     const headers = [
       "Date",

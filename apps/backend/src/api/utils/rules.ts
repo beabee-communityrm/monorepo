@@ -25,20 +25,18 @@ import {
 } from "typeorm";
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
 
-import { createQueryBuilder } from "@core/database";
+import {
+  database, FilterHandler,
+  FilterHandlers,
+  RichRuleValue
+} from "@beabee/core";
 
 import type {
   GetPaginatedRuleGroupRule,
   GetPaginatedRuleGroup
 } from "@api/dto/BaseDto";
 
-import {
-  FilterHandler,
-  FilterHandlers,
-  RichRuleValue
-} from "@type/filter-handlers";
-
-import Contact from "@models/Contact";
+import { Contact } from "@beabee/models";
 
 // Operator definitions
 
@@ -351,7 +349,7 @@ export function buildSelectQuery<
   contact?: Contact,
   filterHandlers?: FilterHandlers<Field>
 ): SelectQueryBuilder<Entity> {
-  const qb = createQueryBuilder(entity, "item");
+  const qb = database.createQueryBuilder(entity, "item");
   if (ruleGroup) {
     qb.where(
       ...convertRulesToWhereClause(ruleGroup, contact, filterHandlers, "item.")
@@ -375,7 +373,7 @@ export async function batchUpdate<
   try {
     const validatedRuleGroup = validateRuleGroup(filters, ruleGroup);
 
-    const qb = createQueryBuilder()
+    const qb = database.createQueryBuilder()
       .update(entity, updates)
       .where(
         ...convertRulesToWhereClause(

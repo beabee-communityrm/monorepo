@@ -4,8 +4,8 @@ import express, { Response } from "express";
 import session from "express-session";
 import { PostgresDriver } from "typeorm/driver/postgres/PostgresDriver.js";
 
-import { dataSource } from "#core/database";
-import passport from "#core/lib/passport";
+import { database } from "@beabee/core";
+import { passport } from "#express";
 
 import { config } from "@beabee/config";
 
@@ -20,7 +20,7 @@ export function setTrackingCookie(memberId: string, res: Response) {
   });
 }
 
-export default (app: express.Express): void => {
+export const sessions = (app: express.Express): void => {
   app.use(
     session({
       name: config.session,
@@ -33,7 +33,7 @@ export default (app: express.Express): void => {
       },
       saveUninitialized: false,
       store: new pgSession({
-        pool: (dataSource.driver as PostgresDriver).master
+        pool: (database.dataSource.driver as PostgresDriver).master
       }),
       resave: false,
       rolling: true

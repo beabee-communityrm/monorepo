@@ -4,6 +4,7 @@
     "target": "ESNext",
     "module": "NodeNext",
     "rootDir": "./src",
+    "declarationDir": "./dist/esm",
     "outDir": "./dist/esm",
     "moduleResolution": "NodeNext",
     "declaration": true,

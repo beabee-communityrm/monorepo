@@ -1,9 +1,7 @@
 import express from "express";
 
-import { isSuperAdmin } from "@core/middleware";
-import { wrapAsync } from "@core/utils";
-
-import OptionsService from "@core/services/OptionsService";
+import { isSuperAdmin } from "#express";
+import { wrapAsync, optionsService } from "@beabee/core";
 
 const app = express();
 
@@ -12,13 +10,13 @@ app.set("views", __dirname + "/views");
 app.use(isSuperAdmin);
 
 app.get("/", function (req, res) {
-  const options = OptionsService.getAll();
+  const options = optionsService.getAll();
   res.render("index", { options, showHidden: req.query.hidden !== undefined });
 });
 
 app.get("/:key/edit", function (req, res) {
-  if (OptionsService.isKey(req.params.key)) {
-    const option = OptionsService.get(req.params.key);
+  if (optionsService.isKey(req.params.key)) {
+    const option = optionsService.get(req.params.key);
     res.locals.breadcrumb.push({
       name: option.key
     });
@@ -33,8 +31,8 @@ app.get("/:key/edit", function (req, res) {
 app.post(
   "/:key/edit",
   wrapAsync(async function (req, res) {
-    if (OptionsService.isKey(req.params.key)) {
-      await OptionsService.set(req.params.key, req.body.value || "");
+    if (optionsService.isKey(req.params.key)) {
+      await optionsService.set(req.params.key, req.body.value || "");
       req.flash("success", "option-updated");
     }
     res.redirect("/settings/options");
@@ -42,8 +40,8 @@ app.post(
 );
 
 app.get("/:key/reset", function (req, res) {
-  if (OptionsService.isKey(req.params.key)) {
-    const option = OptionsService.get(req.params.key);
+  if (optionsService.isKey(req.params.key)) {
+    const option = optionsService.get(req.params.key);
     res.locals.breadcrumb.push({
       name: option.key
     });
@@ -58,8 +56,8 @@ app.get("/:key/reset", function (req, res) {
 app.post(
   "/:key/reset",
   wrapAsync(async function (req, res) {
-    if (OptionsService.isKey(req.params.key)) {
-      await OptionsService.reset(req.params.key);
+    if (optionsService.isKey(req.params.key)) {
+      await optionsService.reset(req.params.key);
       req.flash("success", "option-reset");
     }
     res.redirect("/settings/options");

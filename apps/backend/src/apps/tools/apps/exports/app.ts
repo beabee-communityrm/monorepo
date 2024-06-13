@@ -2,13 +2,10 @@ import express from "express";
 import Papa from "papaparse";
 import { ObjectLiteral, SelectQueryBuilder } from "typeorm";
 
-import { getRepository } from "@core/database";
-import { hasNewModel, hasSchema, isAdmin } from "@core/middleware";
-import { wrapAsync } from "@core/utils";
-import { Param, parseParams } from "@core/utils/params";
+import { database, wrapAsync, Param, parseParams } from "@beabee/core";
+import { hasNewModel, hasSchema, isAdmin } from "#express";
 
-import Export, { ExportTypeId } from "@models/Export";
-import ExportItem from "@models/ExportItem";
+import { Export, ExportItem, ExportTypeId } from "@beabee/models";
 
 import { createSchema, updateSchema } from "./schemas.json";
 
@@ -74,7 +71,7 @@ app.use(isAdmin);
 app.get(
   "/",
   wrapAsync(async function (req, res) {
-    const exports = await getRepository(Export).find();
+    const exports = await database.getRepository(Export).find();
 
     const exportsByType = Object.keys(ExportTypes).map((type) => ({
       exportName: new ExportTypes[type as ExportTypeId]().exportName,
@@ -97,7 +94,7 @@ app.post(
   "/",
   hasSchema(createSchema).orFlash,
   wrapAsync(async function (req, res) {
-    const exportDetails = await getRepository(Export).save(
+    const exportDetails = await database.getRepository(Export).save(
       await schemaToExport(req.body)
     );
     req.flash("success", "exports-created");
@@ -112,7 +109,7 @@ app.get(
     const exportDetails = req.model as Export;
     const exportType = new ExportTypes[exportDetails.type](exportDetails);
 
-    const exportItems = await getRepository(ExportItem).find({
+    const exportItems = await database.getRepository(ExportItem).find({
       where: { exportId: exportDetails.id }
     });
     const newItemIds = await exportType.getNewItemIds();
@@ -177,12 +174,12 @@ app.post(
         export: exportDetails,
         status: exportType.itemStatuses[0]
       }));
-      await getRepository(ExportItem).insert(newExportItems);
+      await database.getRepository(ExportItem).insert(newExportItems);
 
       req.flash("success", "exports-added");
       res.redirect("/tools/exports/" + exportDetails.id);
     } else if (data.action === "update") {
-      await getRepository(ExportItem).update(
+      await database.getRepository(ExportItem).update(
         { exportId: exportDetails.id, status: data.oldStatus },
         { status: data.newStatus }
       );
@@ -192,15 +189,14 @@ app.post(
     } else if (data.action === "export") {
       const items = await exportType.getItems(data.status);
 
-      const exportName = `export-${
-        exportDetails.description
-      }_${new Date().toISOString()}.csv`;
+      const exportName = `export-${exportDetails.description
+        }_${new Date().toISOString()}.csv`;
       const exportData = await exportType.getExport(items as any);
 
       res.attachment(exportName).send(Papa.unparse(exportData as any)); // TODO: fix
     } else if (data.action === "delete") {
-      await getRepository(ExportItem).delete({ exportId: exportDetails.id });
-      await getRepository(Export).delete(exportDetails.id);
+      await database.getRepository(ExportItem).delete({ exportId: exportDetails.id });
+      await database.getRepository(Export).delete(exportDetails.id);
       req.flash("success", "exports-deleted");
       res.redirect("/tools/exports");
     }

@@ -2,15 +2,12 @@ import { RoleTypes, RoleType } from "@beabee/beabee-common";
 import express from "express";
 import passport from "passport";
 
-import { getRepository } from "@core/database";
-import { isValidNextUrl, getNextParam, wrapAsync } from "@core/utils";
-import { loginAndRedirect } from "@core/utils/contact";
+import { database, wrapAsync, loginAndRedirect, contactsService } from "@beabee/core";
+import { isValidNextUrl, getNextParam } from "#express";
 
-import ContactsService from "@core/services/ContactsService";
+import { ContactRole } from "@beabee/models";
 
-import ContactRole from "@models/ContactRole";
-
-import config from "@config";
+import { config } from "@beabee/config";
 
 const app = express();
 
@@ -31,7 +28,7 @@ if (config.dev) {
     wrapAsync(async (req, res) => {
       let contact;
       if (RoleTypes.indexOf(req.params.id as RoleType) > -1) {
-        const role = await getRepository(ContactRole).findOne({
+        const role = await database.getRepository(ContactRole).findOne({
           where: {
             type: req.params.id as RoleType
           },
@@ -39,7 +36,7 @@ if (config.dev) {
         });
         contact = role?.contact;
       } else {
-        contact = await ContactsService.findOneBy({ id: req.params.id });
+        contact = await contactsService.findOneBy({ id: req.params.id });
       }
 
       if (contact) {
@@ -55,9 +52,9 @@ app.get(
   "/:code",
   wrapAsync(async function (req, res) {
     const nextParam = req.query.next as string;
-    const contact = await ContactsService.findByLoginOverride(req.params.code);
+    const contact = await contactsService.findByLoginOverride(req.params.code);
     if (contact) {
-      await ContactsService.updateContact(contact, { loginOverride: null });
+      await contactsService.updateContact(contact, { loginOverride: null });
       loginAndRedirect(
         req,
         res,

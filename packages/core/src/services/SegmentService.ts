@@ -1,4 +1,4 @@
-import { getRepository } from "#core/database";
+import { database } from "#core/database";
 
 import { Contact, Segment, SegmentContact } from "@beabee/models";
 
@@ -10,14 +10,14 @@ export class SegmentService {
     const segment = new Segment();
     segment.name = name;
     segment.ruleGroup = ruleGroup;
-    return await getRepository(Segment).save(segment);
+    return await database.getRepository(Segment).save(segment);
   }
 
   async updateSegment(
     segmentId: string,
     updates: Partial<Segment>
   ): Promise<void> {
-    await getRepository(Segment).update(segmentId, updates);
+    await database.getRepository(Segment).update(segmentId, updates);
   }
 
   /**
@@ -25,6 +25,8 @@ export class SegmentService {
    * @param contact The contact
    */
   static async permanentlyDeleteContact(contact: Contact): Promise<void> {
-    await getRepository(SegmentContact).delete({ contactId: contact.id });
+    await database
+      .getRepository(SegmentContact)
+      .delete({ contactId: contact.id });
   }
 }

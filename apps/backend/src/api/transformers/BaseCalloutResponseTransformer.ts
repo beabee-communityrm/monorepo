@@ -7,18 +7,13 @@ import {
   RuleOperator
 } from "@beabee/beabee-common";
 
-import { createQueryBuilder } from "@core/database";
+import { database, AuthInfo, FilterHandlers } from "@beabee/core";
 
 import { BaseGetCalloutResponseOptsDto } from "@api/dto/CalloutResponseDto";
 import { BaseTransformer } from "@api/transformers/BaseTransformer";
 import { mergeRules } from "@api/utils/rules";
 
-import CalloutResponse from "@models/CalloutResponse";
-import CalloutResponseTag from "@models/CalloutResponseTag";
-
-import { AuthInfo } from "@type/auth-info";
-import { FilterHandlers } from "@type/filter-handlers";
-
+import { CalloutResponse, CalloutResponseTag } from "@beabee/models";
 export abstract class BaseCalloutResponseTransformer<
   GetDto,
   GetOptsDto extends BaseGetCalloutResponseOptsDto
@@ -84,7 +79,7 @@ export const calloutResponseFilterHandlers: FilterHandlers<string> = {
    * Filter for responses with a specific tag
    */
   tags: (qb, args) => {
-    const subQb = createQueryBuilder()
+    const subQb = database.createQueryBuilder()
       .subQuery()
       .select("crt.responseId")
       .from(CalloutResponseTag, "crt");

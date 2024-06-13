@@ -1,13 +1,10 @@
 import { ContributionType } from "@beabee/beabee-common";
 import express from "express";
 
-import { wrapAsync } from "@core/utils";
-import { calcMonthsLeft } from "@core/utils/payment";
+import { wrapAsync, calcMonthsLeft, paymentService, contactsService } from "@beabee/core";
 
-import PaymentService from "@core/services/PaymentService";
-import ContactsService from "@core/services/ContactsService";
-
-import Contact from "@models/Contact";
+import { Contact } from "@beabee/models";
+import currentLocale from "#locale";
 
 const app = express();
 
@@ -18,7 +15,7 @@ app.get(
   wrapAsync(async (req, res) => {
     const contact = req.model as Contact;
     if (contact.contributionType === ContributionType.Automatic) {
-      const payments = await PaymentService.getPayments(contact);
+      const payments = await paymentService.getPayments(contact);
 
       const successfulPayments = payments
         .filter((p) => p.isSuccessful)
@@ -52,24 +49,25 @@ app.post(
 
     switch (req.body.action) {
       case "update-subscription":
-        await ContactsService.updateContactContribution(contact, {
+        await contactsService.updateContactContribution(contact, {
           monthlyAmount: Number(req.body.amount),
           period: req.body.period,
           prorate: req.body.prorate === "true",
           payFee: req.body.payFee === "true"
-        });
+        }, currentLocale());
         req.flash("success", "contribution-updated");
         break;
 
       case "cancel-subscription":
-        await ContactsService.cancelContactContribution(
+        await contactsService.cancelContactContribution(
           contact,
-          "cancelled-contribution"
+          "cancelled-contribution",
+          currentLocale()
         );
         break;
 
       case "force-update":
-        await ContactsService.forceUpdateContactContribution(contact, {
+        await contactsService.forceUpdateContactContribution(contact, {
           type: req.body.type,
           amount: req.body.amount,
           period: req.body.period,

@@ -5,13 +5,13 @@ import JSONStream from "JSONStream";
 import tar from "tar-stream";
 
 import { log as mainLogger } from "#core/logging";
-import { cleanEmailAddress } from "#core/utils";
+import { cleanEmailAddress } from "#utils";
 
 import {
   NewsletterContact,
   NewsletterProvider,
   UpdateNewsletterContact
-} from "./index.js";
+} from "#types/index";
 
 import { MailchimpNewsletterConfig } from "@beabee/config";
 import { NewsletterStatus } from "@beabee/beabee-common";
@@ -174,7 +174,7 @@ function validateOperationStatus(statusCode: number, operationId: string) {
   );
 }
 
-export default class MailchimpProvider implements NewsletterProvider {
+export class MailchimpProvider implements NewsletterProvider {
   private readonly instance;
   private readonly listId;
 

@@ -1,6 +1,6 @@
-import { getRepository } from "#core/database";
+import { database } from "#core/database";
 
-import OptionsService from "#core/services/OptionsService";
+import { optionsService } from "#core/services/OptionsService";
 
 import { PageSettings } from "@beabee/models";
 
@@ -10,7 +10,7 @@ interface PageSettingsCache extends PageSettings {
 
 export type JustPageSettings = Omit<PageSettings, "id" | "pattern">;
 
-export default class PageSettingsService {
+export class PageSettingsService {
   private static pathCache: Record<string, JustPageSettings | "default"> = {};
   private static psCache: PageSettingsCache[] = [];
 
@@ -23,23 +23,25 @@ export default class PageSettingsService {
     return cache === "default"
       ? {
           shareUrl: "/",
-          shareTitle: OptionsService.getText("share-title"),
-          shareDescription: OptionsService.getText("share-description"),
-          shareImage: OptionsService.getText("share-image")
+          shareTitle: optionsService.getText("share-title"),
+          shareDescription: optionsService.getText("share-description"),
+          shareImage: optionsService.getText("share-image")
         }
       : cache;
   }
 
   static async reload(): Promise<void> {
-    this.psCache = (await getRepository(PageSettings).find()).map((ps) => ({
-      ...ps,
-      patternRegex: new RegExp(ps.pattern)
-    }));
+    this.psCache = (await database.getRepository(PageSettings).find()).map(
+      (ps) => ({
+        ...ps,
+        patternRegex: new RegExp(ps.pattern)
+      })
+    );
     this.pathCache = {};
   }
 
   static async create(ps: PageSettings): Promise<PageSettings> {
-    const savedPs = await getRepository(PageSettings).save(ps);
+    const savedPs = await database.getRepository(PageSettings).save(ps);
     await this.reload();
     return savedPs;
   }
@@ -48,12 +50,12 @@ export default class PageSettingsService {
     ps: PageSettings,
     fields: Partial<PageSettings>
   ): Promise<void> {
-    await getRepository(PageSettings).update(ps.id, fields);
+    await database.getRepository(PageSettings).update(ps.id, fields);
     await this.reload();
   }
 
   static async delete(ps: PageSettings): Promise<void> {
-    await getRepository(PageSettings).delete(ps.id);
+    await database.getRepository(PageSettings).delete(ps.id);
     await this.reload();
   }
 }

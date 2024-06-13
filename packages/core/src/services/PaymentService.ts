@@ -1,15 +1,15 @@
 import { MembershipStatus, PaymentMethod } from "@beabee/beabee-common";
 
-import { getRepository, runTransaction } from "#core/database";
+import { database } from "#core/database";
 import { log as mainLogger } from "#core/logging";
-import { calcRenewalDate } from "#core/utils/payment";
+import { calcRenewalDate } from "#utils/payment";
 
 import { Contact, Payment, ContactContribution } from "@beabee/models";
 
 import { PaymentProvider } from "#core/providers/payment/index";
-import GCProvider from "#core/providers/payment/GCProvider";
-import ManualProvider from "#core/providers/payment/ManualProvider";
-import StripeProvider from "#core/providers/payment/StripeProvider";
+import { GCProvider } from "#core/providers/payment/GCProvider";
+import { ManualProvider } from "#core/providers/payment/ManualProvider";
+import { StripeProvider } from "#core/providers/payment/StripeProvider";
 
 import type { CompletedPaymentFlow, ContributionInfo } from "#types/index";
 
@@ -45,11 +45,11 @@ type ProviderFn<T> = (
 
 class PaymentService {
   async getContribution(contact: Contact): Promise<ContactContribution> {
-    const contribution = await getRepository(
-      ContactContribution
-    ).findOneByOrFail({
-      contactId: contact.id
-    });
+    const contribution = await database
+      .getRepository(ContactContribution)
+      .findOneByOrFail({
+        contactId: contact.id
+      });
     // No need to refetch contact, just add it in
     return { ...contribution, contact };
   }
@@ -58,14 +58,16 @@ class PaymentService {
     key: "customerId" | "mandateId" | "subscriptionId",
     value: string
   ): Promise<ContactContribution | null> {
-    return await getRepository(ContactContribution).findOne({
+    return await database.getRepository(ContactContribution).findOne({
       where: { [key]: value },
       relations: { contact: true }
     });
   }
 
   async updateData(contact: Contact, updates: Partial<ContactContribution>) {
-    await getRepository(ContactContribution).update(contact.id, updates);
+    await database
+      .getRepository(ContactContribution)
+      .update(contact.id, updates);
   }
 
   private async provider(contact: Contact, fn: ProviderFn<void>): Promise<void>;
@@ -126,12 +128,14 @@ class PaymentService {
   }
 
   async getPayments(contact: Contact): Promise<Payment[]> {
-    return await getRepository(Payment).findBy({ contactId: contact.id });
+    return await database
+      .getRepository(Payment)
+      .findBy({ contactId: contact.id });
   }
 
   async createContact(contact: Contact): Promise<void> {
     log.info("Create contact for contact " + contact.id);
-    await getRepository(ContactContribution).save({ contact });
+    await database.getRepository(ContactContribution).save({ contact });
   }
 
   async updateContact(
@@ -150,10 +154,9 @@ class PaymentService {
     const ret = await this.provider(contact, (p) =>
       p.updateContribution(paymentForm)
     );
-    await getRepository(ContactContribution).update(
-      { contactId: contact.id },
-      { cancelledAt: null }
-    );
+    await database
+      .getRepository(ContactContribution)
+      .update({ contactId: contact.id }, { cancelledAt: null });
     return ret;
   }
 
@@ -181,7 +184,7 @@ class PaymentService {
         ...ContactContribution.empty,
         method: newMethod
       });
-      await getRepository(ContactContribution).save(contribution);
+      await database.getRepository(ContactContribution).save(contribution);
     }
 
     await this.providerFromData(contribution, (p) =>
@@ -195,10 +198,9 @@ class PaymentService {
   ): Promise<void> {
     log.info("Cancel contribution for contact " + contact.id);
     await this.provider(contact, (p) => p.cancelContribution(keepMandate));
-    await getRepository(ContactContribution).update(
-      { contactId: contact.id },
-      { cancelledAt: new Date() }
-    );
+    await database
+      .getRepository(ContactContribution)
+      .update({ contactId: contact.id }, { cancelledAt: new Date() });
   }
 
   /**
@@ -211,7 +213,7 @@ class PaymentService {
     log.info("Permanently delete payment data for contact " + contact.id);
     await this.provider(contact, (p) => p.permanentlyDeleteContact());
 
-    await runTransaction(async (em) => {
+    await database.runTransaction(async (em) => {
       await em
         .getRepository(ContactContribution)
         .delete({ contactId: contact.id });
@@ -222,4 +224,4 @@ class PaymentService {
   }
 }
 
-export default new PaymentService();
+export const paymentService = new PaymentService();

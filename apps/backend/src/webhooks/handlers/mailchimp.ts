@@ -2,14 +2,10 @@ import { NewsletterStatus, ContributionType } from "@beabee/beabee-common";
 import bodyParser from "body-parser";
 import express from "express";
 
-import { log as mainLogger } from "@core/logging";
-import { cleanEmailAddress, wrapAsync } from "@core/utils";
+import { log as mainLogger, cleanEmailAddress, wrapAsync, contactsService, newsletterService, optionsService } from "@beabee/core";
 
-import ContactsService from "@core/services/ContactsService";
-import NewsletterService from "@core/services/NewsletterService";
-import OptionsService from "@core/services/OptionsService";
-
-import config from "@config";
+import { config } from "@beabee/config";
+import currentLocale from "#locale";
 
 const log = mainLogger.child({ app: "webhook-mailchimp" });
 
@@ -119,9 +115,9 @@ async function handleUpdateEmail(data: MCUpdateEmailData) {
 
   log.info(`Update email from ${oldEmail} to ${newEmail}`);
 
-  const contact = await ContactsService.findOneBy({ email: oldEmail });
+  const contact = await contactsService.findOneBy({ email: oldEmail });
   if (contact) {
-    await ContactsService.updateContact(
+    await contactsService.updateContact(
       contact,
       { email: newEmail },
       // Don't try to sync to old email address
@@ -140,20 +136,20 @@ async function handleSubscribe(data: MCProfileData) {
     data: { email }
   });
 
-  const contact = await ContactsService.findOneBy({ email });
+  const contact = await contactsService.findOneBy({ email });
   if (contact) {
-    await ContactsService.updateContactProfile(contact, {
+    await contactsService.updateContactProfile(contact, {
       newsletterStatus: NewsletterStatus.Subscribed
     });
     if (contact.membership?.isActive) {
-      await NewsletterService.addTagToContacts(
+      await newsletterService.addTagToContacts(
         [contact],
-        OptionsService.getText("newsletter-active-member-tag")
+        optionsService.getText("newsletter-active-member-tag")
       );
     }
   } else {
-    const nlContact = await NewsletterService.getNewsletterContact(email);
-    await ContactsService.createContact(
+    const nlContact = await newsletterService.getNewsletterContact(email);
+    await contactsService.createContact(
       {
         email,
         contributionType: ContributionType.None,
@@ -163,7 +159,8 @@ async function handleSubscribe(data: MCProfileData) {
       {
         newsletterStatus: NewsletterStatus.Subscribed,
         newsletterGroups: nlContact?.groups || []
-      }
+      },
+      currentLocale(),
     );
   }
 }
@@ -173,9 +170,9 @@ async function handleUnsubscribe(data: MCProfileData) {
 
   log.info("Unsubscribe " + email);
 
-  const contact = await ContactsService.findOneBy({ email });
+  const contact = await contactsService.findOneBy({ email });
   if (contact) {
-    await ContactsService.updateContactProfile(contact, {
+    await contactsService.updateContactProfile(contact, {
       newsletterStatus: NewsletterStatus.Unsubscribed
     });
   }
@@ -186,9 +183,9 @@ async function handleCleaned(data: MCCleanedEmailData) {
 
   log.info("Cleaned " + email);
 
-  const contact = await ContactsService.findOneBy({ email });
+  const contact = await contactsService.findOneBy({ email });
   if (contact) {
-    await ContactsService.updateContactProfile(contact, {
+    await contactsService.updateContactProfile(contact, {
       newsletterStatus: NewsletterStatus.Cleaned
     });
   }
@@ -199,14 +196,14 @@ async function handleUpdateProfile(data: MCProfileData): Promise<boolean> {
 
   log.info("Update profile for " + email);
 
-  const contact = await ContactsService.findOneBy({ email });
+  const contact = await contactsService.findOneBy({ email });
   if (contact) {
-    const nlContact = await NewsletterService.getNewsletterContact(email);
-    await ContactsService.updateContact(contact, {
+    const nlContact = await newsletterService.getNewsletterContact(email);
+    await contactsService.updateContact(contact, {
       firstname: data.merges.FNAME || contact.firstname,
       lastname: data.merges.LNAME || contact.lastname
     });
-    await ContactsService.updateContactProfile(contact, {
+    await contactsService.updateContactProfile(contact, {
       newsletterGroups: nlContact?.groups || []
     });
     return true;

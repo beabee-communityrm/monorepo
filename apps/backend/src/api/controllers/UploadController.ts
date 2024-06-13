@@ -11,12 +11,10 @@ import {
   Req
 } from "routing-controllers";
 
-import UploadFlowService from "@core/services/UploadFlowService";
-
-import Contact from "@models/Contact";
+import { uploadFlowService, BadRequestError } from "@beabee/core";
+import { Contact } from "@beabee/models";
 
 import { GetUploadFlowDto } from "@api/dto/UploadFlowDto";
-import BadRequestError from "@api/errors/BadRequestError";
 import { UUIDParams } from "@api/params/UUIDParams";
 
 @JsonController("/upload")
@@ -30,7 +28,7 @@ export class UploadController {
       throw new BadRequestError();
     }
 
-    const newUploadFlowId = await UploadFlowService.create(contact, req.ip);
+    const newUploadFlowId = await uploadFlowService.create(contact, req.ip);
     return plainToInstance(GetUploadFlowDto, { id: newUploadFlowId });
   }
 
@@ -39,7 +37,7 @@ export class UploadController {
   @Get("/:id")
   @OnUndefined(204)
   async get(@Params() { id }: UUIDParams): Promise<void> {
-    if (!(await UploadFlowService.validate(id))) {
+    if (!(await uploadFlowService.validate(id))) {
       throw new NotFoundError();
     }
   }

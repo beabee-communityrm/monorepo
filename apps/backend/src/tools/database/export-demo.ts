@@ -2,10 +2,10 @@ import "module-alias/register";
 
 import { Brackets } from "typeorm";
 
-import { createQueryBuilder } from "@core/database";
-import { runApp } from "@core/server";
+import { database } from "@beabee/core";
+import { runApp } from "#express";
 
-import Contact from "@models/Contact";
+import { Contact, Callout, CalloutResponse } from "@beabee/models";
 
 import {
   ModelAnonymiser,
@@ -26,8 +26,6 @@ import {
   resetSecurityFlowAnonymiser
 } from "./anonymisers/models";
 import { anonymiseModel, clearModels } from "./anonymisers";
-import Callout from "@models/Callout";
-import CalloutResponse from "@models/CalloutResponse";
 
 const contactAnonymisers = [
   contactAnonymiser,
@@ -65,7 +63,7 @@ async function main() {
     resetSecurityFlowAnonymiser
   ] as ModelAnonymiser[]);
 
-  const contacts = await createQueryBuilder(Contact, "item")
+  const contacts = await database.createQueryBuilder(Contact, "item")
     .select("item.id")
     .orderBy("random()")
     .limit(400)
@@ -82,7 +80,7 @@ async function main() {
     );
   }
 
-  const callouts = await createQueryBuilder(Callout, "item")
+  const callouts = await database.createQueryBuilder(Callout, "item")
     .select("item.id")
     .orderBy("item.date", "DESC")
     .limit(20)
@@ -98,7 +96,7 @@ async function main() {
     );
   }
 
-  const responses = await createQueryBuilder(CalloutResponse, "item")
+  const responses = await database.createQueryBuilder(CalloutResponse, "item")
     .select("item.id")
     .where("item.calloutId IN (:...ids)", { ids: calloutIds })
     .andWhere(

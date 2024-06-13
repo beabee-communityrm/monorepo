@@ -6,18 +6,13 @@ import {
 } from "gocardless-nodejs/types/Types";
 import moment, { DurationInputObject } from "moment";
 
-import { getRepository } from "@core/database";
-import gocardless from "@core/lib/gocardless";
-import { log as mainLogger } from "@core/logging";
-import { convertStatus } from "@core/utils/payment/gocardless";
+import { database, gocardless, log as mainLogger, gocardlessUtils, contactsService, paymentService } from "@beabee/core";
 
-import ContactsService from "@core/services/ContactsService";
-import PaymentService from "@core/services/PaymentService";
+import { Payment } from "@beabee/models";
 
-import Payment from "@models/Payment";
-
-import config from "@config";
+import { config } from "@beabee/config";
 import { PaymentStatus } from "@beabee/beabee-common";
+import currentLocale from "#locale";
 
 const log = mainLogger.child({ app: "payment-webhook-utils" });
 
@@ -31,13 +26,13 @@ export async function updatePayment(
   const payment = await findOrCreatePayment(gcPayment);
 
   if (payment) {
-    payment.status = convertStatus(gcPayment.status!);
+    payment.status = gocardlessUtils.convertStatus(gcPayment.status!);
     payment.description = gcPayment.description || "Unknown";
     payment.amount = Number(gcPayment.amount) / 100;
     payment.amountRefunded = Number(gcPayment.amount_refunded) / 100;
     payment.chargeDate = moment.utc(gcPayment.charge_date).toDate();
 
-    await getRepository(Payment).save(payment);
+    await database.getRepository(Payment).save(payment);
 
     switch (action) {
       case "cancelled":
@@ -67,11 +62,11 @@ async function cancelPayment(payment: Payment): Promise<void> {
   });
 
   if (expiryDate) {
-    await ContactsService.updateContactRole(payment.contact, "member", {
+    await contactsService.updateContactRole(payment.contact, "member", {
       dateExpires: expiryDate
     });
   } else {
-    await ContactsService.revokeContactRole(payment.contact, "member");
+    await contactsService.revokeContactRole(payment.contact, "member");
   }
 }
 
@@ -98,18 +93,18 @@ async function confirmPayment(payment: Payment): Promise<void> {
   //   return;
   // }
 
-  await ContactsService.extendContactRole(
+  await contactsService.extendContactRole(
     payment.contact,
     "member",
     await calcConfirmedPaymentPeriodEnd(payment)
   );
 
-  const contribution = await PaymentService.getContribution(payment.contact);
+  const contribution = await paymentService.getContribution(payment.contact);
   if (payment.amount === contribution.nextAmount?.chargeable) {
-    await ContactsService.updateContact(payment.contact, {
+    await contactsService.updateContact(payment.contact, {
       contributionMonthlyAmount: contribution.nextAmount?.monthly
     });
-    await PaymentService.updateData(payment.contact, { nextAmount: null });
+    await paymentService.updateData(payment.contact, { nextAmount: null });
   }
   // TODO: resubscribe to newsletter
 }
@@ -156,7 +151,7 @@ async function calcFailedPaymentPeriodEnd(
   const subscriptionId = payment.subscriptionId!; // Definitely exists
   const subscription = await gocardless.subscriptions.get(subscriptionId);
 
-  const latestSuccessfulPayment = await getRepository(Payment).findOne({
+  const latestSuccessfulPayment = await database.getRepository(Payment).findOne({
     where: {
       subscriptionId,
       status: PaymentStatus.Successful
@@ -190,9 +185,9 @@ export async function updatePaymentStatus(
   paymentId: string,
   gcStatus: GCPaymentStatus
 ): Promise<void> {
-  const status = convertStatus(gcStatus);
+  const status = gocardlessUtils.convertStatus(gcStatus);
   log.info(`Update payment status ${paymentId} to ${status}`);
-  await getRepository(Payment).update({ id: paymentId }, { status });
+  await database.getRepository(Payment).update({ id: paymentId }, { status });
 }
 
 export async function cancelSubscription(
@@ -200,14 +195,15 @@ export async function cancelSubscription(
 ): Promise<void> {
   log.info("Cancel subscription " + subscriptionId);
 
-  const contribution = await PaymentService.getContributionBy(
+  const contribution = await paymentService.getContributionBy(
     "subscriptionId",
     subscriptionId
   );
   if (contribution) {
-    await ContactsService.cancelContactContribution(
+    await contactsService.cancelContactContribution(
       contribution.contact,
-      "cancelled-contribution"
+      "cancelled-contribution",
+      currentLocale()
     );
   } else {
     log.info("Unlink subscription " + subscriptionId);
@@ -215,7 +211,7 @@ export async function cancelSubscription(
 }
 
 export async function cancelMandate(mandateId: string): Promise<void> {
-  const contribution = await PaymentService.getContributionBy(
+  const contribution = await paymentService.getContributionBy(
     "mandateId",
     mandateId
   );
@@ -225,7 +221,7 @@ export async function cancelMandate(mandateId: string): Promise<void> {
       mandateId
     });
 
-    await PaymentService.updateData(contribution.contact, { mandateId: null });
+    await paymentService.updateData(contribution.contact, { mandateId: null });
   } else {
     log.info("Unlinked mandate " + mandateId);
   }
@@ -234,7 +230,7 @@ export async function cancelMandate(mandateId: string): Promise<void> {
 async function findOrCreatePayment(
   gcPayment: GCPayment
 ): Promise<Payment | undefined> {
-  const payment = await getRepository(Payment).findOne({
+  const payment = await database.getRepository(Payment).findOne({
     where: { id: gcPayment.id! },
     relations: { contact: true }
   });
@@ -242,7 +238,7 @@ async function findOrCreatePayment(
     return payment;
   }
 
-  const contribution = await PaymentService.getContributionBy(
+  const contribution = await paymentService.getContributionBy(
     "mandateId",
     gcPayment.links!.mandate!
   );

@@ -1,15 +1,15 @@
 import { NewsletterStatus } from "@beabee/beabee-common";
 
-import { getRepository } from "#core/database";
+import { database } from "#core/database";
 import { log as mainLogger } from "#core/logging";
 
 import {
   NewsletterContact,
   NewsletterProvider,
   UpdateNewsletterContact
-} from "#core/providers/newsletter/index";
-import MailchimpProvider from "#core/providers/newsletter/MailchimpProvider";
-import NoneProvider from "#core/providers/newsletter/NoneProvider";
+} from "#types/index";
+import { MailchimpProvider } from "#core/providers/newsletter/MailchimpProvider";
+import { NoneProvider } from "#core/providers/newsletter/NoneProvider";
 
 import { Contact, ContactProfile } from "@beabee/models";
 
@@ -34,9 +34,11 @@ async function contactToNlUpdate(
 ): Promise<UpdateNewsletterContact | undefined> {
   // TODO: Fix that it relies on contact.profile being loaded
   if (!contact.profile) {
-    contact.profile = await getRepository(ContactProfile).findOneByOrFail({
-      contactId: contact.id
-    });
+    contact.profile = await database
+      .getRepository(ContactProfile)
+      .findOneByOrFail({
+        contactId: contact.id
+      });
   }
 
   if (contact.profile.newsletterStatus !== NewsletterStatus.None) {
@@ -162,4 +164,4 @@ class NewsletterService {
   }
 }
 
-export default new NewsletterService();
+export const newsletterService = new NewsletterService();

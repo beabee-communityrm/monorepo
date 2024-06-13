@@ -6,11 +6,11 @@ import {
 } from "@beabee/beabee-common";
 import { differenceInMonths } from "date-fns";
 
-import OptionsService from "#core/services/OptionsService";
+import { optionsService } from "#core/services/OptionsService";
 
 import { stripe, Stripe } from "#core/lib/stripe";
 import { log as mainLogger } from "#core/logging";
-import { getChargeableAmount } from "#core/utils/payment";
+import { getChargeableAmount } from "#utils/payment";
 
 import { config } from "@beabee/config";
 import { PaymentForm } from "@beabee/beabee-common";
@@ -90,9 +90,9 @@ export async function createSubscription(
       })
   };
 
-  if (OptionsService.getBool("tax-rate-enabled")) {
+  if (optionsService.getBool("tax-rate-enabled")) {
     params.default_tax_rates = [
-      OptionsService.getText("tax-rate-stripe-default-id")
+      optionsService.getText("tax-rate-stripe-default-id")
     ];
   }
 

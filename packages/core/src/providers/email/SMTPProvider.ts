@@ -3,14 +3,14 @@ import Mail from "nodemailer/lib/mailer";
 
 import { log as mainLogger } from "#core/logging";
 
-import { EmailOptions, EmailRecipient, PreparedEmail } from "./index.js";
-import BaseProvider from "./BaseProvider.js";
+import { EmailOptions, EmailRecipient, PreparedEmail } from "#types/index";
+import { BaseProvider } from "./BaseProvider.js";
 
 import { SMTPEmailConfig } from "@beabee/config";
 
 const log = mainLogger.child({ app: "smtp-email-provider" });
 
-export default class SMTPProvider extends BaseProvider {
+export class SMTPProvider extends BaseProvider {
   private readonly client: Mail;
 
   constructor(settings: SMTPEmailConfig["settings"]) {

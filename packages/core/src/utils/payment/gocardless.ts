@@ -14,8 +14,8 @@ import {
 import moment from "moment";
 
 import { log as mainLogger } from "#core/logging";
-import gocardless from "#core/lib/gocardless";
-import { getChargeableAmount } from "#core/utils/payment";
+import { gocardless } from "#core/lib/gocardless";
+import { getChargeableAmount } from "#utils/payment";
 
 import { config } from "@beabee/config";
 

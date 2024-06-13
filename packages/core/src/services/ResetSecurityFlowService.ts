@@ -1,7 +1,7 @@
 import { subHours } from "date-fns";
 import { InsertResult, MoreThan } from "typeorm";
 
-import { createQueryBuilder, getRepository } from "#core/database";
+import { database } from "#core/database";
 
 import { ResetSecurityFlow, Contact } from "@beabee/models";
 
@@ -24,7 +24,9 @@ class ResetSecurityFlowService {
    * @returns The reset security flow
    */
   async create(contact: Contact, type: RESET_SECURITY_FLOW_TYPE) {
-    return await getRepository(ResetSecurityFlow).save({ contact, type });
+    return await database
+      .getRepository(ResetSecurityFlow)
+      .save({ contact, type });
   }
 
   /**
@@ -38,13 +40,13 @@ class ResetSecurityFlowService {
     contactIds: string[],
     type: RESET_SECURITY_FLOW_TYPE
   ): Promise<{ [id: string]: string }> {
-    const rpInsertResult: InsertResetSecurityFlowResult =
-      await createQueryBuilder()
-        .insert()
-        .into(ResetSecurityFlow)
-        .values(contactIds.map((id) => ({ contact: { id }, type })))
-        .returning(["id", "contact"])
-        .execute();
+    const rpInsertResult: InsertResetSecurityFlowResult = await database
+      .createQueryBuilder()
+      .insert()
+      .into(ResetSecurityFlow)
+      .values(contactIds.map((id) => ({ contact: { id }, type })))
+      .returning(["id", "contact"])
+      .execute();
 
     const rpFlowIdsByContactId = Object.fromEntries(
       (rpInsertResult.raw || []).map((rpFlow) => [rpFlow.contactId, rpFlow.id])
@@ -58,7 +60,7 @@ class ResetSecurityFlowService {
    * @param contact The contact
    */
   async deleteAll(contact: Contact) {
-    return await getRepository(ResetSecurityFlow).delete({
+    return await database.getRepository(ResetSecurityFlow).delete({
       contactId: contact.id
     });
   }
@@ -69,11 +71,11 @@ class ResetSecurityFlowService {
    * @returns The reset security flow
    */
   async get(id: string) {
-    return await getRepository(ResetSecurityFlow).findOne({
+    return await database.getRepository(ResetSecurityFlow).findOne({
       where: { id, date: MoreThan(subHours(new Date(), 24)) },
       relations: { contact: true }
     });
   }
 }
 
-export default new ResetSecurityFlowService();
+export const resetSecurityFlowService = new ResetSecurityFlowService();

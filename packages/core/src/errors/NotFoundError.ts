@@ -12,5 +12,3 @@ export class NotFoundError extends _NotFoundError {
     this.code = code;
   }
 }
-
-export default NotFoundError;

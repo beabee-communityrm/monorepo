@@ -9,10 +9,7 @@ import {
   Req
 } from "routing-controllers";
 
-import { getRepository } from "@core/database";
-import { generatePassword } from "@core/utils/auth";
-
-import PaymentFlowService from "@core/services/PaymentFlowService";
+import { database, generatePassword, paymentFlowService } from "@beabee/core";
 
 import { GetContactDto } from "@api/dto/ContactDto";
 import { GetPaymentFlowDto } from "@api/dto/PaymentFlowDto";
@@ -24,8 +21,7 @@ import { SignupConfirmEmailParams } from "@api/params/SignupConfirmEmailParams";
 import ContactTransformer from "@api/transformers/ContactTransformer";
 import { login } from "@api/utils";
 
-import JoinFlow from "@models/JoinFlow";
-import Password from "@models/Password";
+import { JoinFlow, Password } from "@beabee/models";
 
 @JsonController("/signup")
 export class SignupController {
@@ -42,7 +38,7 @@ export class SignupController {
     };
 
     if (data.contribution) {
-      const flow = await PaymentFlowService.createPaymentJoinFlow(
+      const flow = await paymentFlowService.createPaymentJoinFlow(
         {
           ...baseForm,
           ...data.contribution,
@@ -55,15 +51,15 @@ export class SignupController {
 
       return plainToInstance(GetPaymentFlowDto, flow);
     } else {
-      const joinFlow = await PaymentFlowService.createJoinFlow(baseForm, data);
-      await PaymentFlowService.sendConfirmEmail(joinFlow);
+      const joinFlow = await paymentFlowService.createJoinFlow(baseForm, data);
+      await paymentFlowService.sendConfirmEmail(joinFlow);
     }
   }
 
   @OnUndefined(204)
   @Post("/complete")
   async completeSignup(@Body() data: CompleteSignupFlowDto): Promise<void> {
-    const joinFlow = await PaymentFlowService.getJoinFlowByPaymentId(
+    const joinFlow = await paymentFlowService.getJoinFlowByPaymentId(
       data.paymentFlowId
     );
     if (!joinFlow) {
@@ -73,10 +69,10 @@ export class SignupController {
     // Merge additional data into the join form
     if (data.firstname || data.lastname || data.vatNumber) {
       Object.assign(joinFlow.joinForm, data);
-      await getRepository(JoinFlow).save(joinFlow);
+      await database.getRepository(JoinFlow).save(joinFlow);
     }
 
-    await PaymentFlowService.sendConfirmEmail(joinFlow);
+    await paymentFlowService.sendConfirmEmail(joinFlow);
   }
 
   @Post("/confirm-email")
@@ -84,14 +80,14 @@ export class SignupController {
     @Req() req: Request,
     @Body() { joinFlowId }: SignupConfirmEmailParams
   ): Promise<GetContactDto> {
-    const joinFlow = await getRepository(JoinFlow).findOneBy({
+    const joinFlow = await database.getRepository(JoinFlow).findOneBy({
       id: joinFlowId
     });
     if (!joinFlow) {
       throw new NotFoundError();
     }
 
-    const contact = await PaymentFlowService.completeConfirmEmail(joinFlow);
+    const contact = await paymentFlowService.completeConfirmEmail(joinFlow);
     await login(req, contact);
 
     return ContactTransformer.convert(contact);

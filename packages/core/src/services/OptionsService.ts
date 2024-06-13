@@ -1,7 +1,7 @@
-import { getRepository } from "#core/database";
+import { database } from "#core/database";
 import _defaultOptions from "#core/defaults.json";
 import { log as mainLogger } from "#core/logging";
-import NetworkCommunicatorService from "./NetworkCommunicatorService.js";
+import { networkCommunicatorService } from "./NetworkCommunicatorService.js";
 
 import { Option } from "@beabee/models";
 
@@ -23,7 +23,7 @@ class OptionsService {
   private optionCache: Record<OptionKey, OptionWithDefault> | undefined;
 
   constructor() {
-    NetworkCommunicatorService.on("reload", this.reload.bind(this));
+    networkCommunicatorService.on("reload", this.reload.bind(this));
   }
 
   isKey(s: any): s is OptionKey {
@@ -40,7 +40,7 @@ class OptionsService {
         default: true
       };
     }
-    (await getRepository(Option).find()).map((option) => {
+    (await database.getRepository(Option).find()).map((option) => {
       if (this.isKey(option.key)) {
         newCache[option.key] = { ...option, default: false };
       }
@@ -108,8 +108,8 @@ class OptionsService {
     });
 
     if (options.length) {
-      await getRepository(Option).save(options);
-      await NetworkCommunicatorService.notifyAll("reload");
+      await database.getRepository(Option).save(options);
+      await networkCommunicatorService.notifyAll("reload");
     }
   }
 
@@ -122,10 +122,10 @@ class OptionsService {
     if (option) {
       option.value = defaultOptions[key];
       option.default = true;
-      await getRepository(Option).delete(key);
-      await NetworkCommunicatorService.notifyAll("reload");
+      await database.getRepository(Option).delete(key);
+      await networkCommunicatorService.notifyAll("reload");
     }
   }
 }
 
-export default new OptionsService();
+export const optionsService = new OptionsService();

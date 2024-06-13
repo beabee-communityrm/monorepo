@@ -2,10 +2,10 @@ import "module-alias/register";
 
 import readline from "readline";
 
-import { dataSource } from "@core/database";
-import { runApp } from "@core/server";
+import { database } from "@beabee/core";
+import { runApp } from "#express";
 
-import config from "@config";
+import { config } from "@beabee/config";
 
 if (!config.dev) {
   console.error("Can't import to live database");
@@ -14,7 +14,7 @@ if (!config.dev) {
 
 runApp(async () => {
   // File format: first line is SQL, second is params (repeated)
-  await dataSource.manager.transaction(async (manager) => {
+  await database.dataSource.manager.transaction(async (manager) => {
     const rl = readline.createInterface({
       input: process.stdin,
       output: process.stdout,

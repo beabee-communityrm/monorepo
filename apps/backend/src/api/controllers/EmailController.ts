@@ -9,20 +9,18 @@ import {
   Put
 } from "routing-controllers";
 
-import EmailService from "@core/services/EmailService";
+import { emailService, database, ExternalEmailTemplate } from "@beabee/core";
 
-import { getRepository } from "@core/database";
 
-import Email from "@models/Email";
+import { Email } from "@beabee/models";
 
 import { GetEmailDto, UpdateEmailDto } from "@api/dto/EmailDto";
-import ExternalEmailTemplate from "@api/errors/ExternalEmailTemplate";
 
 async function findEmail(id: string): Promise<Email | null> {
   if (isUUID(id, "4")) {
-    return await getRepository(Email).findOneBy({ id });
-  } else if (EmailService.isTemplateId(id)) {
-    const maybeEmail = await EmailService.getTemplateEmail(id);
+    return await database.getRepository(Email).findOneBy({ id });
+  } else if (emailService.isTemplateId(id)) {
+    const maybeEmail = await emailService.getTemplateEmail(id);
     if (maybeEmail) {
       return maybeEmail;
     } else if (maybeEmail === false) {
@@ -56,14 +54,14 @@ export class EmailController {
   ): Promise<GetEmailDto | undefined> {
     const email = await findEmail(id);
     if (email) {
-      await getRepository(Email).update(email.id, data);
+      await database.getRepository(Email).update(email.id, data);
       return data;
-    } else if (EmailService.isTemplateId(id)) {
-      const email = await getRepository(Email).save({
+    } else if (emailService.isTemplateId(id)) {
+      const email = await database.getRepository(Email).save({
         name: "Email for " + id,
         ...data
       });
-      await EmailService.setTemplateEmail(id, email);
+      await emailService.setTemplateEmail(id, email);
       return emailToData(email);
     }
   }

@@ -3,17 +3,11 @@ import express from "express";
 import _ from "lodash";
 import Papa from "papaparse";
 
-import { createQueryBuilder, getRepository } from "@core/database";
-import { hasNewModel, isAdmin } from "@core/middleware";
-import { wrapAsync } from "@core/utils";
-import { formatEmailBody } from "@core/utils/email";
+import { database, wrapAsync, formatEmailBody, emailService, optionsService } from "@beabee/core";
+import { hasNewModel, isAdmin, } from "#express";
 
-import EmailService from "@core/services/EmailService";
-import OptionsService from "@core/services/OptionsService";
-
-import Email from "@models/Email";
-import EmailMailing, { EmailMailingRecipient } from "@models/EmailMailing";
-import SegmentOngoingEmail from "@models/SegmentOngoingEmail";
+import { EmailMailing, EmailMailingRecipient, SegmentOngoingEmail, Email } from "@beabee/models";
+import currentLocale from "#locale";
 
 const app = express();
 
@@ -52,7 +46,7 @@ const assignableSystemEmails = {
 };
 
 function providerTemplateMap() {
-  return OptionsService.getJSON("email-templates");
+  return optionsService.getJSON("email-templates");
 }
 
 app.set("views", __dirname + "/views");
@@ -62,12 +56,12 @@ app.use(isAdmin);
 app.get(
   "/",
   wrapAsync(async (req, res) => {
-    const emails = await createQueryBuilder(Email, "e")
+    const emails = await database.createQueryBuilder(Email, "e")
       .loadRelationCountAndMap("e.mailingCount", "e.mailings")
       .orderBy({ name: "ASC" })
       .getMany();
 
-    const segmentEmails = await getRepository(SegmentOngoingEmail).find();
+    const segmentEmails = await database.getRepository(SegmentOngoingEmail).find();
     const systemEmails = Object.values(providerTemplateMap());
 
     const emailsWithFlags = emails.map((email) => ({
@@ -83,7 +77,7 @@ app.get(
 app.post(
   "/",
   wrapAsync(async (req, res) => {
-    const emails = await getRepository(Email).save(schemaToEmail(req.body));
+    const emails = await database.getRepository(Email).save(schemaToEmail(req.body));
     res.redirect("/tools/emails/" + emails.id);
   })
 );
@@ -94,11 +88,11 @@ app.get(
   wrapAsync(async (req, res) => {
     const email = req.model as Email;
 
-    const mailings = await getRepository(EmailMailing).find({
+    const mailings = await database.getRepository(EmailMailing).find({
       where: { emailId: email.id },
       order: { createdDate: "ASC" }
     });
-    const segmentEmails = await getRepository(SegmentOngoingEmail).find({
+    const segmentEmails = await database.getRepository(SegmentOngoingEmail).find({
       where: { emailId: email.id },
       relations: { segment: true }
     });
@@ -124,7 +118,7 @@ app.post(
 
     switch (req.body.action) {
       case "update":
-        await getRepository(Email).update(email.id, schemaToEmail(req.body));
+        await database.getRepository(Email).update(email.id, schemaToEmail(req.body));
         req.flash("success", "transactional-email-updated");
         res.redirect(req.originalUrl);
         break;
@@ -141,14 +135,14 @@ app.post(
             [systemEmail]: email.id
           }))
         );
-        OptionsService.setJSON("email-templates", newEmailTemplates);
+        optionsService.setJSON("email-templates", newEmailTemplates);
         req.flash("success", "transactional-email-updated");
         res.redirect(req.originalUrl);
         break;
       }
       case "delete":
-        await getRepository(EmailMailing).delete({ emailId: email.id });
-        await getRepository(Email).delete(email.id);
+        await database.getRepository(EmailMailing).delete({ emailId: email.id });
+        await database.getRepository(Email).delete(email.id);
         req.flash("success", "transactional-email-deleted");
         res.redirect("/tools/emails");
         break;
@@ -172,7 +166,7 @@ app.post("/:id/mailings", hasNewModel(Email, "id"), busboy(), (req, res) => {
     const mailing = new EmailMailing();
     mailing.email = email;
     mailing.recipients = recipients;
-    const savedMailing = await getRepository(EmailMailing).save(mailing);
+    const savedMailing = await database.getRepository(EmailMailing).save(mailing);
     res.redirect(`/tools/emails/${email.id}/mailings/${savedMailing.id}`);
   });
 
@@ -184,7 +178,7 @@ app.get(
   hasNewModel(Email, "id"),
   wrapAsync(async (req, res, next) => {
     const email = req.model as Email;
-    const mailing = await getRepository(EmailMailing).findOneBy({
+    const mailing = await database.getRepository(EmailMailing).findOneBy({
       id: req.params.mailingId
     });
     if (!mailing) return next("route");
@@ -195,7 +189,7 @@ app.get(
     );
     res.render("mailing", {
       email,
-      emailBody: formatEmailBody(email.body),
+      emailBody: formatEmailBody(email.body, currentLocale()),
       mailing,
       mergeFields,
       headers: Object.keys(mailing.recipients[0]),
@@ -215,7 +209,7 @@ app.post(
   hasNewModel(Email, "id"),
   wrapAsync(async (req, res, next) => {
     const email = req.model as Email;
-    const mailing = await getRepository(EmailMailing).findOneBy({
+    const mailing = await database.getRepository(EmailMailing).findOneBy({
       id: req.params.mailingId
     });
     if (!mailing) return next("route");
@@ -233,9 +227,9 @@ app.post(
       )
     }));
 
-    await EmailService.sendEmail(email, recipients);
+    await emailService.sendEmail(email, recipients, currentLocale());
 
-    await getRepository(EmailMailing).update(mailing.id, {
+    await database.getRepository(EmailMailing).update(mailing.id, {
       sentDate: new Date(),
       emailField,
       nameField,

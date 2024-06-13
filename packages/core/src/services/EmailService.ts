@@ -5,7 +5,7 @@ import { loadFront } from "yaml-front-matter";
 
 import { log as mainLogger } from "#core/logging";
 
-import OptionsService from "#core/services/OptionsService";
+import { optionsService } from "#core/services/OptionsService";
 import { LocaleObject } from "@beabee/locales";
 
 import {
@@ -14,10 +14,10 @@ import {
   EmailPerson,
   EmailProvider,
   EmailRecipient
-} from "#core/providers/email/index";
-import MandrillProvider from "#core/providers/email/MandrillProvider";
-import SendGridProvider from "#core/providers/email/SendGridProvider";
-import SMTPProvider from "#core/providers/email/SMTPProvider";
+} from "#types/index";
+import { MandrillProvider } from "#core/providers/email/MandrillProvider";
+import { SendGridProvider } from "#core/providers/email/SendGridProvider";
+import { SMTPProvider } from "#core/providers/email/SMTPProvider";
 
 import { Email, Contact } from "@beabee/models";
 
@@ -264,7 +264,7 @@ class EmailService {
     opts?: EmailOptions
   ): Promise<void> {
     const recipient = {
-      to: { email: OptionsService.getText("support-email") },
+      to: { email: optionsService.getText("support-email") },
       mergeFields: adminEmailTemplates[template](params as any)
     };
 
@@ -329,8 +329,8 @@ class EmailService {
     template: EmailTemplateId,
     email: Email
   ): Promise<void> {
-    OptionsService.setJSON("email-templates", {
-      ...OptionsService.getJSON("email-templates"),
+    optionsService.setJSON("email-templates", {
+      ...optionsService.getJSON("email-templates"),
       [template]: email.id
     });
   }
@@ -344,11 +344,11 @@ class EmailService {
   }
 
   private getProviderTemplate(template: EmailTemplateId): string | undefined {
-    return OptionsService.getJSON("email-templates")[template];
+    return optionsService.getJSON("email-templates")[template];
   }
 
   private getDefaultEmail(template: EmailTemplateId): Email | undefined {
-    const locale = OptionsService.getText("locale") as Locale;
+    const locale = optionsService.getText("locale") as Locale;
     return (
       this.defaultEmails[locale]?.[template] ||
       this.defaultEmails.en?.[template]
@@ -372,4 +372,4 @@ class EmailService {
   }
 }
 
-export default new EmailService();
+export const emailService = new EmailService();

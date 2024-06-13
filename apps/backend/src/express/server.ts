@@ -1,17 +1,15 @@
 import { Express } from "express";
 
-import * as db from "#core/database";
-import { log as mainLogger } from "#core/logging";
+import { database as db } from "@beabee/core";
 
-import OptionsService from "#core/services/OptionsService";
-import NetworkCommunicatorService from "#core/services/NetworkCommunicatorService";
+import { optionsService, networkCommunicatorService, log as mainLogger } from "@beabee/core";
 
 const log = mainLogger.child({ app: "server" });
 
 export async function initApp() {
   log.info("Initializing app...");
   await db.connect();
-  await OptionsService.reload();
+  await optionsService.reload();
 }
 
 export function startServer(app: Express) {
@@ -20,7 +18,7 @@ export function startServer(app: Express) {
   app.set("trust proxy", true);
 
   const server = app.listen(3000);
-  NetworkCommunicatorService.startServer();
+  networkCommunicatorService.startServer();
 
   process.on("SIGTERM", () => {
     log.debug("Waiting for server to shutdown");

@@ -1,17 +1,19 @@
 {
   "name": "@beabee/core",
   "version": "0.16.0",
-  "main": "src/index.ts",
+  "main": "dist/cjs/index.cjs",
+  "module": "dist/esm/index.js",
   "type": "module",
   "files": [
     "src",
     "dist"
   ],
   "scripts": {
-    "build": "yarn generate:index && yarn format && yarn build:tsc",
-    "build:tsc": "tsc --project ./tsconfig.json",
+    "build": "yarn generate:index && yarn format && yarn build:node && yarn build:types",
+    "build:types": "tsc --project ./tsconfig.json && cp ./dist/types/index.d.ts ./dist/types/index.d.cts",
+    "build:node": "beabee-cli cross-build node",
     "format": "prettier --write .",
-    "generate:index": "beabee-cli generate-index --ext js ./src/lib ./src/services ./src/types ./src/errors ./src/utils"
+    "generate:index": "beabee-cli generate-index --ext js ./src/lib ./src/services ./src/types ./src/errors ./src/utils ./src/providers/email ./src/providers/newsletter/ ./src/providers/payment ./src/providers/payment-flow"
   },
   "exports": {
     ".": {
@@ -27,6 +29,17 @@
     "./src": "./src/index.ts",
     "./src/*": "./src/*.ts",
     "./package.json": "./package.json"
+  },
+  "imports": {
+    "#models/*": "./src/models/*.js",
+    "#services/*": "./src/services/*.js",
+    "#types/*": "./src/types/*.js",
+    "#enums/*": "./src/enums/*.js",
+    "#core/defaults.json": "./src/defaults.json",
+    "#core/*": "./src/*.js",
+    "#errors/*": "./src/errors/*.js",
+    "#utils": "./src/utils/index.js",
+    "#utils/*": "./src/utils/*.js"
   },
   "devDependencies": {
     "@beabee/cli": "workspace:^",

@@ -9,8 +9,8 @@ import {
   EmailRecipient,
   EmailTemplate,
   PreparedEmail
-} from "./index.js";
-import BaseProvider from "./BaseProvider.js";
+} from "#types/index";
+import { BaseProvider } from "./BaseProvider.js";
 import type { LocaleObject } from "@beabee/locales";
 
 import { MandrillEmailConfig } from "@beabee/config";
@@ -31,7 +31,7 @@ interface MandrillMessage {
   attachments?: { type: string; name: string; content: string }[];
 }
 
-export default class MandrillProvider extends BaseProvider {
+export class MandrillProvider extends BaseProvider {
   private readonly instance;
 
   constructor(settings: MandrillEmailConfig["settings"]) {

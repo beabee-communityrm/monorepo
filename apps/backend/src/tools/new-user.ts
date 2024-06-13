@@ -1,21 +1,16 @@
 import "module-alias/register";
 
-import { ContributionType } from "@beabee/beabee-common";
+import { ContributionType, RESET_SECURITY_FLOW_TYPE } from "@beabee/beabee-common";
 import { input, password, select } from "@inquirer/prompts";
 import moment from "moment";
 
-import { getRepository } from "@core/database";
-import { runApp } from "@core/server";
-import { generatePassword, passwordRequirements } from "@core/utils/auth";
+import { database, generatePassword, passwordRequirements, contactsService, resetSecurityFlowService } from "@beabee/core";
+import { runApp } from "#express";
 
-import ContactsService from "@core/services/ContactsService";
-import ResetSecurityFlowService from "@core/services/ResetSecurityFlowService";
+import { ContactRole } from "@beabee/models";
 
-import ContactRole from "@models/ContactRole";
-
-import config from "@config";
-
-import { RESET_SECURITY_FLOW_TYPE } from "@enums/reset-security-flow-type";
+import { config } from "@beabee/config";
+import currentLocale from "#locale";
 
 function notEmpty(s: string) {
   return s.trim() !== "";
@@ -69,7 +64,7 @@ runApp(async () => {
         break;
     }
 
-    const membership = getRepository(ContactRole).create({
+    const membership = database.getRepository(ContactRole).create({
       type: "member",
       ...(dateAdded && { dateAdded }),
       dateExpires
@@ -78,13 +73,13 @@ runApp(async () => {
   }
 
   if (answers.role != "None") {
-    const admin = getRepository(ContactRole).create({
+    const admin = database.getRepository(ContactRole).create({
       type: answers.role === "Admin" ? "admin" : "superadmin"
     });
     roles.push(admin);
   }
 
-  const contact = await ContactsService.createContact({
+  const contact = await contactsService.createContact({
     firstname: answers.firstname,
     lastname: answers.lastname,
     email: answers.email,
@@ -93,10 +88,10 @@ runApp(async () => {
     ...(answers.password && {
       password: await generatePassword(answers.password)
     })
-  });
+  }, undefined, currentLocale());
 
   if (!answers.password) {
-    const rpFlow = await ResetSecurityFlowService.create(
+    const rpFlow = await resetSecurityFlowService.create(
       contact,
       RESET_SECURITY_FLOW_TYPE.PASSWORD
     );

@@ -1,27 +1,26 @@
 import { SelectQueryBuilder } from "typeorm";
 
-import { createQueryBuilder } from "@core/database";
+import { database } from "@beabee/core";
 
-import Contact from "@models/Contact";
-import Referral from "@models/Referral";
+import { Contact, Referral } from "@beabee/models";
 
 import BaseExport, { ExportResult } from "./BaseExport";
 
 function contactDetails(contact: Contact | null) {
   return contact
     ? [
-        contact.email,
-        contact.firstname,
-        contact.lastname,
-        ...(contact.profile.deliveryOptIn && contact.profile.deliveryAddress
-          ? [
-              contact.profile.deliveryAddress.line1,
-              contact.profile.deliveryAddress.line2,
-              contact.profile.deliveryAddress.city,
-              contact.profile.deliveryAddress.postcode
-            ]
-          : ["", "", "", ""])
-      ]
+      contact.email,
+      contact.firstname,
+      contact.lastname,
+      ...(contact.profile.deliveryOptIn && contact.profile.deliveryAddress
+        ? [
+          contact.profile.deliveryAddress.line1,
+          contact.profile.deliveryAddress.line2,
+          contact.profile.deliveryAddress.city,
+          contact.profile.deliveryAddress.postcode
+        ]
+        : ["", "", "", ""])
+    ]
     : ["", "", "", "", "", "", ""];
 }
 
@@ -32,7 +31,7 @@ export default class ReferralsExport extends BaseExport<Referral> {
   idColumn = "r.id";
 
   protected get query(): SelectQueryBuilder<Referral> {
-    return createQueryBuilder(Referral, "r")
+    return database.createQueryBuilder(Referral, "r")
       .leftJoinAndSelect("r.referrer", "referrer")
       .leftJoinAndSelect("r.referee", "referee")
       .leftJoinAndSelect("referrer.profile", "p1")

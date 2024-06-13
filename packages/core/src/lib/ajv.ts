@@ -43,4 +43,4 @@ ajv.addFormat("time2", function (time) {
   return timeRegex.test(time);
 });
 
-export default ajv;
+export { ajv };

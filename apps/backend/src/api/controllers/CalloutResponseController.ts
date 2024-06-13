@@ -23,7 +23,7 @@ import {
 import { PaginatedDto } from "@api/dto/PaginatedDto";
 import CalloutResponseTransformer from "@api/transformers/CalloutResponseTransformer";
 
-import { AuthInfo } from "@type/auth-info";
+import { AuthInfo } from "@beabee/core";
 
 @JsonController("/callout-responses")
 export class CalloutResponseController {

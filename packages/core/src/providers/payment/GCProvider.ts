@@ -6,21 +6,21 @@ import {
 import { Subscription } from "gocardless-nodejs";
 import moment from "moment";
 
-import gocardless from "#core/lib/gocardless";
+import { gocardless } from "#core/lib/gocardless";
 import { log as mainLogger } from "#core/logging";
 import {
   updateSubscription,
   createSubscription,
   prorateSubscription,
   hasPendingPayment
-} from "#core/utils/payment/gocardless";
-import { calcRenewalDate } from "#core/utils/payment";
+} from "#utils/payment/gocardless";
+import { calcRenewalDate } from "#utils/payment";
 
 import { PaymentProvider } from "./index.js";
 
 import { Contact } from "@beabee/models";
 
-import NoPaymentMethod from "#errors/NoPaymentMethod";
+import { NoPaymentMethod } from "#errors/index";
 
 import { config } from "@beabee/config";
 
@@ -33,7 +33,7 @@ import type {
 
 const log = mainLogger.child({ app: "gc-payment-provider" });
 
-export default class GCProvider extends PaymentProvider {
+export class GCProvider extends PaymentProvider {
   async getContributionInfo(): Promise<Partial<ContributionInfo>> {
     let paymentSource: PaymentSource | undefined;
     let pendingPayment = false;

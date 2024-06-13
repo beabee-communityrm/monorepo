@@ -2,12 +2,9 @@ import { ErrorObject, ValidateFunction } from "ajv";
 import { NextFunction, Request, RequestHandler, Response } from "express";
 import { EntityTarget, FindOneOptions, ObjectLiteral } from "typeorm";
 
-import { getRepository } from "#core/database";
-import ajv from "#core/lib/ajv";
-import { wrapAsync, isInvalidType } from "#core/utils";
-import * as auth from "#core/utils/auth";
+import * as auth from "./auth.js";
 
-import OptionsService from "#core/services/OptionsService";
+import { optionsService, database, wrapAsync, isInvalidType, ajv, AuthenticationStatus } from "@beabee/core";
 
 import { config } from "@beabee/config";
 
@@ -36,7 +33,7 @@ interface HasSchema {
 
 function convertErrorsToMessages(errors: ErrorObject[]): string[] {
   const genericErrorMessage =
-    OptionsService.getText("flash-validation-error-generic") || "";
+    optionsService.getText("flash-validation-error-generic") || "";
   return (
     errors
       .map((error) => {
@@ -50,8 +47,8 @@ function convertErrorsToMessages(errors: ErrorObject[]): string[] {
         }
       })
       .map((key) => {
-        return OptionsService.isKey(key)
-          ? OptionsService.getText(key)
+        return optionsService.isKey(key)
+          ? optionsService.getText(key)
           : config.dev
             ? key
             : genericErrorMessage;
@@ -75,8 +72,8 @@ const send400: OnErrorHandler = (errors, req, res) => {
 
 const redirectTo =
   (url: string): OnErrorHandler =>
-  (errors, req, res) =>
-    res.redirect(url);
+    (errors, req, res) =>
+      res.redirect(url);
 
 const replyWithJSON: OnErrorHandler = (errors, req, res) => {
   res.status(400).send(convertErrorsToMessages(errors));
@@ -133,7 +130,7 @@ export function hasNewModel<T extends ObjectLiteral>(
   return wrapAsync(async (req, res, next) => {
     if (!req.model || (req.model as any)[prop] !== req.params[prop as string]) {
       try {
-        req.model = await getRepository(entity).findOne({
+        req.model = await database.getRepository(entity).findOne({
           where: {
             [prop]: req.params[prop as string]
           } as T,
@@ -168,7 +165,7 @@ export function isLoggedIn(
   const status = auth.loggedIn(req);
 
   switch (status) {
-    case auth.AuthenticationStatus.LOGGED_IN:
+    case AuthenticationStatus.LOGGED_IN:
       return next();
     default:
       auth.handleNotAuthed(status, req, res);
@@ -182,9 +179,9 @@ export function isLoggedIn(
 export function isAdmin(req: Request, res: Response, next: NextFunction): void {
   const status = auth.canAdmin(req);
   switch (status) {
-    case auth.AuthenticationStatus.LOGGED_IN:
+    case AuthenticationStatus.LOGGED_IN:
       return next();
-    case auth.AuthenticationStatus.NOT_ADMIN:
+    case AuthenticationStatus.NOT_ADMIN:
       req.flash("warning", "403");
       res.redirect("/");
       return;
@@ -208,9 +205,9 @@ export function isSuperAdmin(
 ): void {
   const status = auth.canSuperAdmin(req);
   switch (status) {
-    case auth.AuthenticationStatus.LOGGED_IN:
+    case AuthenticationStatus.LOGGED_IN:
       return next();
-    case auth.AuthenticationStatus.NOT_ADMIN:
+    case AuthenticationStatus.NOT_ADMIN:
       req.flash("warning", "403");
       res.redirect("/");
       return;

@@ -1,17 +1,15 @@
 import { contactFilters, validateRuleGroup } from "@beabee/beabee-common";
-import { SegmentService as CoreSegmentService, getRepository } from "@beabee/core";
+import { SegmentService as CoreSegmentService, database, AuthInfo } from "@beabee/core";
 
 import ContactTransformer from "@api/transformers/ContactTransformer";
 import { buildSelectQuery } from "@api/utils/rules";
 
-import { Contact, Segment, SegmentContact } from "@beabee/models";
-
-import { AuthInfo } from "#types/auth-info";
+import { Contact, Segment } from "@beabee/models";
 
 class SegmentService extends CoreSegmentService {
   /** @deprecated */
   async getSegmentsWithCount(auth: AuthInfo | undefined): Promise<Segment[]> {
-    const segments = await getRepository(Segment).find({
+    const segments = await database.getRepository(Segment).find({
       order: { order: "ASC" }
     });
     for (const segment of segments) {
@@ -46,4 +44,4 @@ class SegmentService extends CoreSegmentService {
   }
 }
 
-export default new SegmentService();
+export const segmentService = new SegmentService();

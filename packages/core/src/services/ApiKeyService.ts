@@ -1,5 +1,5 @@
-import { getRepository } from "#core/database";
-import { generateApiKey } from "#core/utils/auth";
+import { database } from "#core/database";
+import { generateApiKey } from "#utils/auth";
 
 import { ApiKey, Contact } from "@beabee/models";
 
@@ -18,7 +18,7 @@ class ApiKeyService {
   ): Promise<string> {
     const { id, secretHash, token } = generateApiKey();
 
-    await getRepository(ApiKey).save({
+    await database.getRepository(ApiKey).save({
       id,
       secretHash,
       creator,
@@ -35,7 +35,7 @@ class ApiKeyService {
    * @returns Whether the API key was deleted
    */
   async delete(id: string): Promise<boolean> {
-    const res = await getRepository(ApiKey).delete({ id });
+    const res = await database.getRepository(ApiKey).delete({ id });
     return !!res.affected;
   }
 
@@ -44,11 +44,10 @@ class ApiKeyService {
    * @param contact The contact
    */
   async permanentlyDeleteContact(contact: Contact) {
-    await getRepository(ApiKey).update(
-      { creatorId: contact.id },
-      { creatorId: null }
-    );
+    await database
+      .getRepository(ApiKey)
+      .update({ creatorId: contact.id }, { creatorId: null });
   }
 }
 
-export default new ApiKeyService();
+export const apiKeyService = new ApiKeyService();

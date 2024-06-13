@@ -8,7 +8,7 @@ import type {
   UpdateContributionResult
 } from "@beabee/beabee-common";
 
-export default class ManualProvider extends PaymentProvider {
+export class ManualProvider extends PaymentProvider {
   async canChangeContribution(useExistingMandate: boolean): Promise<boolean> {
     return !useExistingMandate;
   }

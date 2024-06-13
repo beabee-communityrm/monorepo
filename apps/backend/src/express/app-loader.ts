@@ -10,8 +10,8 @@ import {
   AppConfigOverrides
 } from "@beabee/config";
 
-import { log as mainLogger } from "#core/logging";
-import templateLocals from "#core/template-locals";
+import { log as mainLogger } from "@beabee/core";
+import { templateLocals } from "#express";
 
 let git = "";
 try {
@@ -115,7 +115,7 @@ async function routeApps(
   }
 }
 
-export default async function (app: express.Express): Promise<void> {
+export const appLoader = async function (app: express.Express): Promise<void> {
   const appConfigs = await loadAppConfigs(
     __dirname + "/../apps",
     config.appOverrides

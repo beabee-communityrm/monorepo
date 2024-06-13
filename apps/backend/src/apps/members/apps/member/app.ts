@@ -1,27 +1,20 @@
 import express from "express";
 import moment from "moment";
 
-import config from "@config";
+import { config } from "@beabee/config";
 
-import { getRepository } from "@core/database";
-import { isAdmin } from "@core/middleware";
-import { wrapAsync } from "@core/utils";
-import { canSuperAdmin, generateCode } from "@core/utils/auth";
+import { } from "@beabee/core";
+import { isAdmin, canSuperAdmin } from "#express";
+import { database, generateCode, wrapAsync, contactsService, optionsService, paymentService } from "@beabee/core";
 
-import ContactsService from "@core/services/ContactsService";
-import OptionsService from "@core/services/OptionsService";
-import PaymentService from "@core/services/PaymentService";
-import ReferralsService from "@core/services/ReferralsService";
+import { Contact, ResetSecurityFlow } from "@beabee/models";
 
-import Contact from "@models/Contact";
-import ResetSecurityFlow from "@models/ResetSecurityFlow";
-
-import { RESET_SECURITY_FLOW_TYPE } from "@enums/reset-security-flow-type";
+import { RESET_SECURITY_FLOW_TYPE } from "@beabee/beabee-common";
 
 const app = express();
 
 async function getAvailableTags(): Promise<string[]> {
-  return OptionsService.getList("available-tags");
+  return optionsService.getList("available-tags");
 }
 
 app.set("views", __dirname + "/views");
@@ -31,14 +24,14 @@ app.use(isAdmin);
 app.use(
   wrapAsync(async (req, res, next) => {
     // Bit of a hack to get parent app params
-    const contact = await ContactsService.findOne({
+    const contact = await contactsService.findOne({
       where: { id: req.allParams.uuid },
       relations: { profile: true }
     });
     if (contact) {
       req.model = contact;
       const { method, ...contribution } =
-        await PaymentService.getContribution(contact);
+        await paymentService.getContribution(contact);
       res.locals.contribution = contribution;
       res.locals.paymentMethod = method;
       next();
@@ -54,7 +47,7 @@ app.get(
     const contact = req.model as Contact;
     const availableTags = await getAvailableTags();
 
-    const rpFlow = await getRepository(ResetSecurityFlow).findOne({
+    const rpFlow = await database.getRepository(ResetSecurityFlow).findOne({
       where: { contactId: contact.id },
       order: { date: "DESC" }
     });
@@ -81,7 +74,7 @@ app.post(
 
     switch (req.body.action) {
       case "save-about": {
-        await ContactsService.updateContactProfile(contact, {
+        await contactsService.updateContactProfile(contact, {
           tags: req.body.tags || [],
           description: req.body.description || "",
           bio: req.body.bio || ""
@@ -90,10 +83,10 @@ app.post(
         break;
       }
       case "save-contact":
-        await ContactsService.updateContact(contact, {
+        await contactsService.updateContact(contact, {
           email: req.body.email
         });
-        await ContactsService.updateContactProfile(contact, {
+        await contactsService.updateContactProfile(contact, {
           telephone: req.body.telephone || "",
           twitter: req.body.twitter || "",
           preferredContact: req.body.preferred || ""
@@ -101,13 +94,13 @@ app.post(
         req.flash("success", "member-updated");
         break;
       case "save-notes":
-        await ContactsService.updateContactProfile(contact, {
+        await contactsService.updateContactProfile(contact, {
           notes: req.body.notes
         });
         req.flash("success", "member-updated");
         break;
       case "login-override":
-        await ContactsService.updateContact(contact, {
+        await contactsService.updateContact(contact, {
           loginOverride: {
             code: generateCode(),
             expires: moment().add(24, "hours").toDate()
@@ -116,14 +109,14 @@ app.post(
         req.flash("success", "member-login-override-generated");
         break;
       case "password-reset":
-        await getRepository(ResetSecurityFlow).save({
+        await database.getRepository(ResetSecurityFlow).save({
           contact,
           type: RESET_SECURITY_FLOW_TYPE.PASSWORD
         });
         req.flash("success", "member-password-reset-generated");
         break;
       case "permanently-delete":
-        await ContactsService.permanentlyDeleteContact(contact);
+        await contactsService.permanentlyDeleteContact(contact);
 
         req.flash("success", "member-permanently-deleted");
         res.redirect("/members");

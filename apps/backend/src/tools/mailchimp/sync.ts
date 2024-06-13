@@ -4,16 +4,10 @@ import { NewsletterStatus } from "@beabee/beabee-common";
 import moment from "moment";
 import { Between } from "typeorm";
 
-import { getRepository } from "@core/database";
-import { log as mainLogger } from "@core/logging";
-import { runApp } from "@core/server";
+import { database, log as mainLogger, contactsService, newsletterService, optionsService } from "@beabee/core";
+import { runApp } from "#express";
 
-import ContactsService from "@core/services/ContactsService";
-import NewsletterService from "@core/services/NewsletterService";
-import OptionsService from "@core/services/OptionsService";
-
-import Contact from "@models/Contact";
-import ContactRole from "@models/ContactRole";
+import { Contact, ContactRole } from "@beabee/models";
 
 const log = mainLogger.child({ app: "mailchimp-sync" });
 
@@ -31,7 +25,7 @@ async function fetchContacts(
     endDate: actualEndDate
   });
 
-  const memberships = await getRepository(ContactRole).find({
+  const memberships = await database.getRepository(ContactRole).find({
     where: {
       type: "member",
       dateExpires: Between(actualStartDate, actualEndDate)
@@ -55,15 +49,15 @@ async function processContacts(contacts: Contact[]) {
   log.info(
     `Removing active member tag from ${contactsToArchive.length} contacts`
   );
-  await NewsletterService.removeTagFromContacts(
+  await newsletterService.removeTagFromContacts(
     contactsToArchive,
-    OptionsService.getText("newsletter-active-member-tag")
+    optionsService.getText("newsletter-active-member-tag")
   );
 
-  if (OptionsService.getBool("newsletter-archive-on-expired")) {
+  if (optionsService.getBool("newsletter-archive-on-expired")) {
     log.info(`Archiving ${contactsToArchive.length} contacts`);
     for (const contact of contactsToArchive) {
-      await ContactsService.updateContactProfile(
+      await contactsService.updateContactProfile(
         contact,
         {
           newsletterStatus: NewsletterStatus.Unsubscribed
@@ -74,8 +68,8 @@ async function processContacts(contacts: Contact[]) {
         }
       );
     }
-    await NewsletterService.upsertContacts(contactsToArchive);
-    await NewsletterService.archiveContacts(contactsToArchive);
+    await newsletterService.upsertContacts(contactsToArchive);
+    await newsletterService.archiveContacts(contactsToArchive);
   }
 }
 

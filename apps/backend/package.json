@@ -28,7 +28,7 @@
     "dev:api:watch": "tsc-watch -p tsconfig.build.json --noClear --onSuccess 'docker compose restart api_app router'",
     "dev:api:logs": "yarn exec bash -c 'while true; do docker compose logs -f --tail=0 api_app; sleep 1; done'",
     "build": "rimraf built/ && gulp build && tsc -p ./tsconfig.build.json",
-    "generate:index": "beabee-cli generate-index --ext js ./src/api/controllers ./src/api/decorators ./src/api/dto ./src/api/errors ./src/api/interceptors ./src/api/middlewares ./src/api/params ./src/api/transformers ./src/api/utils ./src/api/validators ./src/services ./src/express",
+    "generate:index": "beabee-cli generate-index --ext js ./src/api/controllers ./src/api/decorators ./src/api/dto ./src/api/interceptors ./src/api/middlewares ./src/api/params ./src/api/transformers ./src/api/utils ./src/api/validators ./src/services ./src/express",
     "watch": "tsc-watch -p tsconfig.build.json --noClear",
     "check": "concurrently 'yarn:check:*'",
     "check:tsc": "tsc --noEmit",
@@ -155,14 +155,16 @@
     "> 1%"
   ],
   "_moduleAliases": {
-    "@core": "./built/core",
     "@api": "./built/api",
     "@apps": "./built/apps",
-    "@config": "./built/config/config.js",
-    "@locale": "./built/locales/current.js",
-    "@models": "./built/models",
-    "@type": "./built/type",
-    "@enums": "./built/enums"
+    "@locale": "./built/locales/current.js"
+  },
+  "imports": {
+    "#api": "./src/api",
+    "#apps": "./src/apps",
+    "#locale": "./src/locales/current.js",
+    "#express": "./src/express/index.js",
+    "#services": "./src/services/index.js"
   },
   "overrides": {
     "gulp-sourcemaps": {

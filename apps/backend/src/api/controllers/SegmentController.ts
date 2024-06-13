@@ -12,7 +12,7 @@ import {
   QueryParams
 } from "routing-controllers";
 
-import { getRepository } from "@core/database";
+import { database, AuthInfo } from "@beabee/core";
 
 import { CurrentAuth } from "@api/decorators/CurrentAuth";
 import PartialBody from "@api/decorators/PartialBody";
@@ -29,11 +29,7 @@ import { UUIDParams } from "@api/params/UUIDParams";
 import ContactTransformer from "@api/transformers/ContactTransformer";
 import SegmentTransformer from "@api/transformers/SegmentTransformer";
 
-import Segment from "@models/Segment";
-import SegmentContact from "@models/SegmentContact";
-import SegmentOngoingEmail from "@models/SegmentOngoingEmail";
-
-import { AuthInfo } from "@type/auth-info";
+import { Segment, SegmentContact, SegmentOngoingEmail } from "@beabee/models";
 
 @JsonController("/segments")
 @Authorized("admin")
@@ -54,14 +50,14 @@ export class SegmentController {
   ): Promise<GetSegmentDto> {
     // Default to inserting new segment at the bottom
     if (data.order === undefined) {
-      const segments = await getRepository(Segment).find({
+      const segments = await database.getRepository(Segment).find({
         select: { order: true },
         order: { order: "DESC" },
         take: 1
       });
       data.order = segments.length > 0 ? segments[0].order + 1 : 0;
     }
-    const segment = await getRepository(Segment).save(data);
+    const segment = await database.getRepository(Segment).save(data);
 
     // Use fetchOne to ensure that the segment has a contactCount
     return await SegmentTransformer.fetchOneByIdOrFail(auth, segment.id, {
@@ -84,7 +80,7 @@ export class SegmentController {
     @Params() { id }: UUIDParams,
     @PartialBody() data: CreateSegmentDto
   ): Promise<GetSegmentDto | undefined> {
-    await getRepository(Segment).update(id, data);
+    await database.getRepository(Segment).update(id, data);
     return await SegmentTransformer.fetchOneById(auth, id, {
       with: [GetSegmentWith.contactCount]
     });
@@ -93,9 +89,9 @@ export class SegmentController {
   @Delete("/:id")
   @OnUndefined(204)
   async deleteSegment(@Params() { id }: UUIDParams): Promise<void> {
-    await getRepository(SegmentContact).delete({ segment: { id } });
-    await getRepository(SegmentOngoingEmail).delete({ segment: { id } });
-    const result = await getRepository(Segment).delete(id);
+    await database.getRepository(SegmentContact).delete({ segment: { id } });
+    await database.getRepository(SegmentOngoingEmail).delete({ segment: { id } });
+    const result = await database.getRepository(Segment).delete(id);
     if (result.affected === 0) {
       throw new NotFoundError();
     }
@@ -107,15 +103,15 @@ export class SegmentController {
     @Params() { id }: UUIDParams,
     @QueryParams() query: ListContactsDto
   ): Promise<PaginatedDto<GetContactDto> | undefined> {
-    const segment = await getRepository(Segment).findOneBy({ id });
+    const segment = await database.getRepository(Segment).findOneBy({ id });
     if (segment) {
       return await ContactTransformer.fetch(auth, {
         ...query,
         rules: query.rules
           ? {
-              condition: "AND",
-              rules: [segment.ruleGroup, query.rules]
-            }
+            condition: "AND",
+            rules: [segment.ruleGroup, query.rules]
+          }
           : segment.ruleGroup
       });
     }

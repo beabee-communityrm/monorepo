@@ -16,10 +16,7 @@ import {
   Res
 } from "routing-controllers";
 
-import CalloutsService from "@core/services/CalloutsService";
-
-import { getRepository } from "@core/database";
-import { verify } from "@core/lib/captchafox";
+import { calloutsService, database, captchafox, AuthInfo, InvalidCalloutResponse, UnauthorizedError } from "@beabee/core";
 
 import { GetExportQuery } from "@api/dto/BaseDto";
 
@@ -41,8 +38,6 @@ import { PaginatedDto } from "@api/dto/PaginatedDto";
 import { CalloutId } from "@api/decorators/CalloutId";
 import { CurrentAuth } from "@api/decorators/CurrentAuth";
 import PartialBody from "@api/decorators/PartialBody";
-import InvalidCalloutResponse from "@api/errors/InvalidCalloutResponse";
-import UnauthorizedError from "@api/errors/UnauthorizedError";
 import CalloutTagTransformer from "@api/transformers/CalloutTagTransformer";
 import CalloutTransformer from "@api/transformers/CalloutTransformer";
 import CalloutResponseExporter from "@api/transformers/CalloutResponseExporter";
@@ -50,14 +45,9 @@ import CalloutResponseMapTransformer from "@api/transformers/CalloutResponseMapT
 import CalloutResponseTransformer from "@api/transformers/CalloutResponseTransformer";
 import { validateOrReject } from "@api/utils";
 
-import Callout from "@models/Callout";
-import CalloutResponseTag from "@models/CalloutResponseTag";
-import CalloutTag from "@models/CalloutTag";
-import Contact from "@models/Contact";
+import { Callout, CalloutResponseTag, CalloutTag, Contact } from "@beabee/models";
 
 import { CalloutCaptcha } from "@beabee/beabee-common";
-
-import { AuthInfo } from "@type/auth-info";
 
 @JsonController("/callout")
 export class CalloutController {
@@ -81,12 +71,12 @@ export class CalloutController {
 
     let id;
     if (fromId) {
-      id = await CalloutsService.duplicateCallout(fromId);
+      id = await calloutsService.duplicateCallout(fromId);
       if (Object.keys(data).length > 0) {
-        await CalloutsService.updateCallout(id, data);
+        await calloutsService.updateCallout(id, data);
       }
     } else {
-      id = await CalloutsService.createCallout(data, data.slug ? false : 0);
+      id = await calloutsService.createCallout(data, data.slug ? false : 0);
     }
 
     return CalloutTransformer.fetchOneByIdOrFail(auth, id);
@@ -111,7 +101,7 @@ export class CalloutController {
     @CalloutId() id: string,
     @PartialBody() data: CreateCalloutDto // Actually Partial<CreateCalloutDto>
   ): Promise<GetCalloutDto | undefined> {
-    await CalloutsService.updateCallout(id, data);
+    await calloutsService.updateCallout(id, data);
     return CalloutTransformer.fetchOneById(auth, id);
   }
 
@@ -119,7 +109,7 @@ export class CalloutController {
   @OnUndefined(204)
   @Delete("/:id")
   async deleteCallout(@CalloutId() id: string): Promise<void> {
-    const deleted = await CalloutsService.deleteCallout(id);
+    const deleted = await calloutsService.deleteCallout(id);
     if (!deleted) {
       throw new NotFoundError();
     }
@@ -167,7 +157,7 @@ export class CalloutController {
     @Body() data: CreateCalloutResponseDto,
     @QueryParam("captchaToken", { required: false }) captchaToken: string
   ): Promise<void> {
-    const callout = await getRepository(Callout).findOneBy({ id });
+    const callout = await database.getRepository(Callout).findOneBy({ id });
     if (!callout) {
       throw new NotFoundError();
     }
@@ -184,7 +174,7 @@ export class CalloutController {
         throw new UnauthorizedError({ code: "captcha-required" });
       }
 
-      const error = await verify(captchaToken);
+      const error = await captchafox.verify(captchaToken);
       if (error) {
         throw new UnauthorizedError({
           code: "captcha-failed",
@@ -195,14 +185,14 @@ export class CalloutController {
 
     // TODO: support assignee/bucket/tags on create
     if (!caller || callout.access === "only-anonymous") {
-      await CalloutsService.setGuestResponse(
+      await calloutsService.setGuestResponse(
         callout,
         data.guestName,
         data.guestEmail,
         data.answers
       );
     } else {
-      await CalloutsService.setResponse(callout, caller, data.answers);
+      await calloutsService.setResponse(callout, caller, data.answers);
     }
   }
 
@@ -229,7 +219,7 @@ export class CalloutController {
     @Body() data: CreateCalloutTagDto
   ): Promise<GetCalloutTagDto> {
     // TODO: handle foreign key error
-    const tag = await getRepository(CalloutTag).save({
+    const tag = await database.getRepository(CalloutTag).save({
       name: data.name,
       description: data.description,
       calloutId: id
@@ -255,7 +245,7 @@ export class CalloutController {
     @Param("tagId") tagId: string,
     @PartialBody() data: CreateCalloutTagDto // Partial<CreateCalloutTagData>
   ): Promise<GetCalloutTagDto | undefined> {
-    await getRepository(CalloutTag).update({ id: tagId, calloutId: id }, data);
+    await database.getRepository(CalloutTag).update({ id: tagId, calloutId: id }, data);
 
     return CalloutTagTransformer.fetchOneById(auth, tagId);
   }
@@ -267,8 +257,8 @@ export class CalloutController {
     @CalloutId() id: string,
     @Param("tagId") tagId: string
   ): Promise<void> {
-    await getRepository(CalloutResponseTag).delete({ tag: { id: tagId } });
-    const result = await getRepository(CalloutTag).delete({
+    await database.getRepository(CalloutResponseTag).delete({ tag: { id: tagId } });
+    const result = await database.getRepository(CalloutTag).delete({
       calloutId: id,
       id: tagId
     });

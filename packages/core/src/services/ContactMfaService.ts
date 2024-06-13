@@ -2,13 +2,12 @@ import { NotFoundError } from "routing-controllers";
 
 import { Contact, ContactMfa } from "@beabee/models";
 
-import { getRepository } from "#core/database";
-import { validateTotpToken } from "#core/utils/auth";
+import { database } from "#core/database";
+import { validateTotpToken } from "#utils/auth";
 
 import { LOGIN_CODES } from "@beabee/beabee-common";
 
-import BadRequestError from "#errors/BadRequestError";
-import UnauthorizedError from "#errors/UnauthorizedError";
+import { BadRequestError, UnauthorizedError } from "#errors/index";
 
 import { ContactMfaSecure } from "#types/contact-mfa-secure";
 import { CreateContactMfaData } from "#types/create-contact-mfa-data";
@@ -53,7 +52,7 @@ class ContactMfaService {
       throw new UnauthorizedError({ code: LOGIN_CODES.INVALID_TOKEN });
     }
 
-    const mfa = await getRepository(ContactMfa).save({
+    const mfa = await database.getRepository(ContactMfa).save({
       contact,
       ...data
     });
@@ -105,7 +104,7 @@ class ContactMfaService {
       throw new NotFoundError("Contact has no MFA");
     }
 
-    await getRepository(ContactMfa).delete(mfa.id);
+    await database.getRepository(ContactMfa).delete(mfa.id);
   }
 
   /**
@@ -131,7 +130,7 @@ class ContactMfaService {
    * @param contact The contact
    */
   async permanentlyDeleteContact(contact: Contact): Promise<void> {
-    await getRepository(ContactMfa).delete({ contactId: contact.id });
+    await database.getRepository(ContactMfa).delete({ contactId: contact.id });
   }
 
   /**
@@ -145,7 +144,7 @@ class ContactMfaService {
    * @returns The **insecure** contact MFA with the `secret` key
    */
   private async getInsecure(contact: Contact): Promise<ContactMfa | null> {
-    const mfa = await getRepository(ContactMfa).findOneBy({
+    const mfa = await database.getRepository(ContactMfa).findOneBy({
       contactId: contact.id
     });
     return mfa || null;
@@ -162,7 +161,7 @@ class ContactMfaService {
    * @returns The **insecure** contact MFA with the `secret` key
    */
   private async getByIdInsecure(id: string): Promise<ContactMfa | null> {
-    const mfa = await getRepository(ContactMfa).findOneBy({ id });
+    const mfa = await database.getRepository(ContactMfa).findOneBy({ id });
     return mfa || null;
   }
 
@@ -184,4 +183,4 @@ class ContactMfaService {
   }
 }
 
-export default new ContactMfaService();
+export const contactMfaService = new ContactMfaService();

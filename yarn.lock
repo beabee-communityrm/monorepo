@@ -829,6 +829,7 @@ __metadata:
     "@beabee/config": "workspace:^"
     date-fns: "npm:^3.6.0"
     date-fns-tz: "npm:^3.1.3"
+    reflect-metadata: "npm:^0.2.2"
     typeorm: "npm:^0.3.20"
     typescript: "npm:^5.4.5"
   languageName: unknown

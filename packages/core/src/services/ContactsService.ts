@@ -6,28 +6,24 @@ import {
 } from "@beabee/beabee-common";
 import { FindManyOptions, FindOneOptions, FindOptionsWhere, In } from "typeorm";
 
-import {
-  createQueryBuilder,
-  getRepository,
-  runTransaction
-} from "#core/database";
+import { database } from "#core/database";
 import { log as mainLogger } from "#core/logging";
-import { cleanEmailAddress, isDuplicateIndex } from "#core/utils";
-import { generatePassword, isValidPassword } from "#core/utils/auth";
-import { generateContactCode } from "#core/utils/contact";
+import { cleanEmailAddress, isDuplicateIndex } from "#utils";
+import { generatePassword, isValidPassword } from "#utils/auth";
+import { generateContactCode } from "#utils/contact";
 import type { LocaleObject } from "@beabee/locales";
 
-import ApiKeyService from "#core/services/ApiKeyService";
-import CalloutsService from "#core/services/CalloutsService";
-import ContactMfaService from "#core/services/ContactMfaService";
-import EmailService from "#core/services/EmailService";
-import NewsletterService from "#core/services/NewsletterService";
-import OptionsService from "#core/services/OptionsService";
-import PaymentService from "#core/services/PaymentService";
-import ReferralsService from "#core/services/ReferralsService";
-import ResetSecurityFlowService from "#core/services/ResetSecurityFlowService";
-import { SegmentService } from "#core/services/SegmentService";
-import UploadFlowService from "#core/services/UploadFlowService";
+import { apiKeyService } from "./ApiKeyService.js";
+import { calloutsService } from "./CalloutsService.js";
+import { contactMfaService } from "./ContactMfaService.js";
+import { emailService } from "./EmailService.js";
+import { newsletterService } from "./NewsletterService.js";
+import { optionsService } from "./OptionsService.js";
+import { paymentService } from "./PaymentService.js";
+import { ReferralsService } from "./ReferralsService.js";
+import { resetSecurityFlowService } from "./ResetSecurityFlowService.js";
+import { SegmentService } from "./SegmentService.js";
+import { uploadFlowService } from "./UploadFlowService.js";
 
 import {
   Contact,
@@ -39,11 +35,13 @@ import {
   ProjectEngagement
 } from "@beabee/models";
 
-import BadRequestError from "#errors/BadRequestError";
-import CantUpdateContribution from "#errors/CantUpdateContribution";
-import DuplicateEmailError from "#errors/DuplicateEmailError";
-import NotFoundError from "#errors/NotFoundError";
-import UnauthorizedError from "#errors/UnauthorizedError";
+import {
+  BadRequestError,
+  CantUpdateContribution,
+  DuplicateEmailError,
+  NotFoundError,
+  UnauthorizedError
+} from "#errors/index";
 
 import {
   CONTACT_MFA_TYPE,
@@ -68,34 +66,41 @@ const log = mainLogger.child({ app: "contacts-service" });
 
 class ContactsService {
   async find(options?: FindManyOptions<Contact>): Promise<Contact[]> {
-    return await getRepository(Contact).find(options);
+    return await database.getRepository(Contact).find(options);
   }
 
   async findByIds(
     ids: string[],
     options?: FindOneOptions<Contact>
   ): Promise<Contact[]> {
-    return await getRepository(Contact).findBy({ id: In(ids), ...options });
+    return await database
+      .getRepository(Contact)
+      .findBy({ id: In(ids), ...options });
   }
 
   async findOne(
     options: FindOneOptions<Contact>
   ): Promise<Contact | undefined> {
     // TODO: check undefined
-    return (await getRepository(Contact).findOne(options)) || undefined;
+    return (
+      (await database.getRepository(Contact).findOne(options)) || undefined
+    );
   }
 
   async findOneBy(
     where: FindOptionsWhere<Contact>
   ): Promise<Contact | undefined> {
     // TODO: check undefined
-    return (await getRepository(Contact).findOneBy(where)) || undefined;
+    return (
+      (await database.getRepository(Contact).findOneBy(where)) || undefined
+    );
   }
 
   async findByLoginOverride(code: string): Promise<Contact | undefined> {
     // TODO: check undefined
     return (
-      (await createQueryBuilder(Contact, "m")
+      (await database
+        .createQueryBuilder(Contact, "m")
         .where("m.loginOverride ->> 'code' = :code", { code: code })
         .andWhere("m.loginOverride ->> 'expires' > :now", { now: new Date() })
         .getOne()) || undefined
@@ -111,7 +116,7 @@ class ContactsService {
     log.info("Create contact", { partialContact, partialProfile });
 
     try {
-      const contact = getRepository(Contact).create({
+      const contact = database.getRepository(Contact).create({
         referralCode: generateContactCode(partialContact),
         pollsCode: generateContactCode(partialContact),
         roles: [],
@@ -122,21 +127,21 @@ class ContactsService {
         ...partialContact,
         email: cleanEmailAddress(partialContact.email)
       });
-      await getRepository(Contact).save(contact);
+      await database.getRepository(Contact).save(contact);
 
-      contact.profile = getRepository(ContactProfile).create({
+      contact.profile = database.getRepository(ContactProfile).create({
         ...partialProfile,
         contact: contact
       });
-      await getRepository(ContactProfile).save(contact.profile);
+      await database.getRepository(ContactProfile).save(contact.profile);
 
-      await PaymentService.createContact(contact);
+      await paymentService.createContact(contact);
 
       if (opts.sync) {
-        await NewsletterService.upsertContact(contact);
+        await newsletterService.upsertContact(contact);
       }
 
-      await EmailService.sendTemplateToAdmin("new-member", { contact }, locale);
+      await emailService.sendTemplateToAdmin("new-member", { contact }, locale);
 
       return contact;
     } catch (error) {
@@ -183,16 +188,16 @@ class ContactsService {
 
     Object.assign(contact, updates);
     try {
-      await getRepository(Contact).update(contact.id, updates);
+      await database.getRepository(Contact).update(contact.id, updates);
     } catch (err) {
       throw isDuplicateIndex(err, "email") ? new DuplicateEmailError() : err;
     }
 
     if (opts.sync) {
-      await NewsletterService.upsertContact(contact, updates, oldEmail);
+      await newsletterService.upsertContact(contact, updates, oldEmail);
     }
 
-    await PaymentService.updateContact(contact, updates);
+    await paymentService.updateContact(contact, updates);
   }
 
   /**
@@ -217,7 +222,7 @@ class ContactsService {
       role.dateAdded = updates.dateAdded || role.dateAdded;
       role.dateExpires = updates.dateExpires || role.dateExpires;
     } else {
-      role = getRepository(ContactRole).create({
+      role = database.getRepository(ContactRole).create({
         type: roleType,
         dateAdded: updates?.dateAdded || new Date(),
         dateExpires: updates?.dateExpires || null
@@ -225,17 +230,17 @@ class ContactsService {
       contact.roles.push(role);
     }
 
-    await getRepository(Contact).save(contact);
+    await database.getRepository(Contact).save(contact);
 
     if (!wasActive && contact.membership?.isActive) {
-      await NewsletterService.addTagToContacts(
+      await newsletterService.addTagToContacts(
         [contact],
-        OptionsService.getText("newsletter-active-member-tag")
+        optionsService.getText("newsletter-active-member-tag")
       );
     } else if (wasActive && !contact.membership.isActive) {
-      await NewsletterService.removeTagFromContacts(
+      await newsletterService.removeTagFromContacts(
         [contact],
-        OptionsService.getText("newsletter-active-member-tag")
+        optionsService.getText("newsletter-active-member-tag")
       );
     }
 
@@ -279,15 +284,15 @@ class ContactsService {
   ): Promise<boolean> {
     log.info(`Revoke role ${roleType} for ${contact.id}`);
     contact.roles = contact.roles.filter((p) => p.type !== roleType);
-    const ret = await getRepository(ContactRole).delete({
+    const ret = await database.getRepository(ContactRole).delete({
       contactId: contact.id,
       type: roleType
     });
 
     if (!contact.membership?.isActive) {
-      await NewsletterService.removeTagFromContacts(
+      await newsletterService.removeTagFromContacts(
         [contact],
-        OptionsService.getText("newsletter-active-member-tag")
+        optionsService.getText("newsletter-active-member-tag")
       );
     }
 
@@ -305,27 +310,29 @@ class ContactsService {
     let isFirstSync = false;
 
     if (shouldSync) {
-      contact.profile = await getRepository(ContactProfile).findOneByOrFail({
-        contactId: contact.id
-      });
+      contact.profile = await database
+        .getRepository(ContactProfile)
+        .findOneByOrFail({
+          contactId: contact.id
+        });
       // If this is the first time the contact is being synced to the newsletter
       // then we need to set the active member tag
       isFirstSync = contact.profile.newsletterStatus === NewsletterStatus.None;
     }
 
-    await getRepository(ContactProfile).update(contact.id, updates);
+    await database.getRepository(ContactProfile).update(contact.id, updates);
 
     if (contact.profile) {
       Object.assign(contact.profile, updates);
     }
 
     if (shouldSync) {
-      await NewsletterService.upsertContact(contact);
+      await newsletterService.upsertContact(contact);
       // Add the active member tag
       if (isFirstSync && contact.membership?.isActive) {
-        await NewsletterService.addTagToContacts(
+        await newsletterService.addTagToContacts(
           [contact],
-          OptionsService.getText("newsletter-active-member-tag")
+          optionsService.getText("newsletter-active-member-tag")
         );
       }
     }
@@ -353,7 +360,7 @@ class ContactsService {
       throw new CantUpdateContribution();
     }
 
-    const { startNow, expiryDate } = await PaymentService.updateContribution(
+    const { startNow, expiryDate } = await paymentService.updateContribution(
       contact,
       paymentForm
     );
@@ -374,7 +381,7 @@ class ContactsService {
     await this.extendContactRole(contact, "member", expiryDate);
 
     if (wasManual) {
-      await EmailService.sendTemplateToContact(
+      await emailService.sendTemplateToContact(
         "manual-to-automatic",
         contact,
         undefined,
@@ -389,10 +396,10 @@ class ContactsService {
     locale: LocaleObject
   ): Promise<void> {
     log.info("Cancel contribution for " + contact.id);
-    await PaymentService.cancelContribution(contact);
+    await paymentService.cancelContribution(contact);
 
-    await EmailService.sendTemplateToContact(email, contact, undefined, locale);
-    await EmailService.sendTemplateToAdmin(
+    await emailService.sendTemplateToContact(email, contact, undefined, locale);
+    await emailService.sendTemplateToAdmin(
       "cancelled-member",
       {
         contact: contact
@@ -408,20 +415,20 @@ class ContactsService {
    */
   async permanentlyDeleteContact(contact: Contact): Promise<void> {
     // Delete external data first, this is more likely to fail so we'd exit the process early
-    await NewsletterService.permanentlyDeleteContacts([contact]);
-    await PaymentService.permanentlyDeleteContact(contact);
+    await newsletterService.permanentlyDeleteContacts([contact]);
+    await paymentService.permanentlyDeleteContact(contact);
 
     // Delete internal data after the external services are done, this should really never fail
-    await ResetSecurityFlowService.deleteAll(contact);
-    await ApiKeyService.permanentlyDeleteContact(contact);
+    await resetSecurityFlowService.deleteAll(contact);
+    await apiKeyService.permanentlyDeleteContact(contact);
     await ReferralsService.permanentlyDeleteContact(contact);
-    await UploadFlowService.permanentlyDeleteContact(contact);
+    await uploadFlowService.permanentlyDeleteContact(contact);
     await SegmentService.permanentlyDeleteContact(contact);
-    await CalloutsService.permanentlyDeleteContact(contact);
-    await ContactMfaService.permanentlyDeleteContact(contact);
+    await calloutsService.permanentlyDeleteContact(contact);
+    await contactMfaService.permanentlyDeleteContact(contact);
 
     log.info("Permanently delete contact " + contact.id);
-    await runTransaction(async (em) => {
+    await database.runTransaction(async (em) => {
       // Projects are only in the legacy app, so really no one should have any, but we'll delete them just in case
       // TODO: Remove this when we've reworked projects
       await em
@@ -472,7 +479,7 @@ class ContactsService {
       contributionMonthlyAmount: monthlyAmount
     });
 
-    await PaymentService.updateData(contact, {
+    await paymentService.updateData(contact, {
       mandateId: data.source || null,
       customerId: data.reference || null
     });
@@ -516,12 +523,12 @@ class ContactsService {
       return;
     }
 
-    const rpFlow = await ResetSecurityFlowService.create(
+    const rpFlow = await resetSecurityFlowService.create(
       contact,
       RESET_SECURITY_FLOW_TYPE.PASSWORD
     );
 
-    await EmailService.sendTemplateToContact(
+    await emailService.sendTemplateToContact(
       "reset-password",
       contact,
       {
@@ -548,7 +555,7 @@ class ContactsService {
     id: string,
     data: { password: string; token?: string }
   ) {
-    const rpFlow = await ResetSecurityFlowService.get(id);
+    const rpFlow = await resetSecurityFlowService.get(id);
 
     if (!rpFlow) {
       throw new NotFoundError({
@@ -563,7 +570,7 @@ class ContactsService {
     }
 
     // Check if contact has MFA enabled, if so validate MFA
-    const mfa = await ContactMfaService.get(rpFlow.contact);
+    const mfa = await contactMfaService.get(rpFlow.contact);
     if (mfa) {
       // In the future, we might want to add more types of reset flows
       if (mfa.type !== CONTACT_MFA_TYPE.TOTP) {
@@ -578,7 +585,7 @@ class ContactsService {
         });
       }
 
-      const { isValid } = await ContactMfaService.checkToken(
+      const { isValid } = await contactMfaService.checkToken(
         rpFlow.contact,
         data.token,
         1
@@ -594,7 +601,7 @@ class ContactsService {
     });
 
     // Stop all other reset flows if they exist
-    await ResetSecurityFlowService.deleteAll(rpFlow.contact);
+    await resetSecurityFlowService.deleteAll(rpFlow.contact);
 
     return rpFlow.contact;
   }
@@ -620,14 +627,14 @@ class ContactsService {
     }
 
     // Check if contact has MFA enabled
-    const mfa = await ContactMfaService.get(contact);
+    const mfa = await contactMfaService.get(contact);
     if (!mfa) {
       return;
     }
 
-    const rdFlow = await ResetSecurityFlowService.create(contact, type);
+    const rdFlow = await resetSecurityFlowService.create(contact, type);
 
-    await EmailService.sendTemplateToContact(
+    await emailService.sendTemplateToContact(
       "reset-device",
       contact,
       {
@@ -649,7 +656,7 @@ class ContactsService {
    * @throws {UnauthorizedError} If the password is invalid
    */
   public async resetDeviceComplete(id: string, password: string) {
-    const rdFlow = await ResetSecurityFlowService.get(id);
+    const rdFlow = await resetSecurityFlowService.get(id);
 
     if (!rdFlow) {
       throw new NotFoundError({
@@ -674,13 +681,13 @@ class ContactsService {
     await this.resetPasswordTries(rdFlow.contact);
 
     // Disable MFA, we can use the unsecure method because we already validated the password
-    await ContactMfaService.deleteUnsecure(rdFlow.contact);
+    await contactMfaService.deleteUnsecure(rdFlow.contact);
 
     // Stop all other reset flows if they exist
-    await ResetSecurityFlowService.deleteAll(rdFlow.contact);
+    await resetSecurityFlowService.deleteAll(rdFlow.contact);
 
     return rdFlow.contact;
   }
 }
 
-export default new ContactsService();
+export const contactsService = new ContactsService();

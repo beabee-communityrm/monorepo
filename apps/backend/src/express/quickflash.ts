@@ -1,7 +1,7 @@
-import OptionsService from "#core/services/OptionsService";
+import { optionsService } from "@beabee/core";
 import { NextFunction, Request, Response } from "express";
 
-export default function (
+export const quickflash = function (
   req: Request,
   res: Response,
   next: NextFunction
@@ -14,8 +14,8 @@ export default function (
 
     for (const message of messages) {
       const key = "flash-" + message;
-      const optionMessage = OptionsService.isKey(key)
-        ? OptionsService.getText(key)
+      const optionMessage = optionsService.isKey(key)
+        ? optionsService.getText(key)
         : message;
 
       flashes.push({

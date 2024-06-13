@@ -2,10 +2,8 @@ import "module-alias/register";
 
 import express, { Handler } from "express";
 
-import { log, requestErrorLogger, requestLogger } from "@core/logging";
-import { initApp, startServer } from "@core/server";
-
-import OptionsService, { OptionKey } from "@core/services/OptionsService";
+import { log, requestErrorLogger, requestLogger, optionsService, OptionKey } from "@beabee/core";
+import { initApp, startServer } from "#express";
 
 import gocardlessApp from "./handlers/gocardless";
 import mailchimpApp from "./handlers/mailchimp";
@@ -13,7 +11,7 @@ import stripeApp from "./handlers/stripe";
 
 function checkOpt(key: OptionKey): Handler {
   return (req, res, next) => {
-    if (OptionsService.getBool(key)) {
+    if (optionsService.getBool(key)) {
       next();
     } else {
       next("router");

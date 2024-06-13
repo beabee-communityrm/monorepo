@@ -2,10 +2,9 @@ import { ContributionType } from "@beabee/beabee-common";
 import _ from "lodash";
 import { SelectQueryBuilder } from "typeorm";
 
-import { createQueryBuilder } from "@core/database";
-import { Param } from "@core/utils/params";
+import { database, Param } from "@beabee/core";
 
-import Contact from "@models/Contact";
+import { Contact } from "@beabee/models";
 
 import { ExportResult } from "./BaseExport";
 import ActiveMembersExport from "./ActiveMembersExport";
@@ -32,7 +31,7 @@ export default class EditionExport extends ActiveMembersExport {
   }
 
   protected get query(): SelectQueryBuilder<Contact> {
-    return createQueryBuilder(Contact, "m")
+    return database.createQueryBuilder(Contact, "m")
       .innerJoinAndSelect("m.profile", "profile")
       .orderBy({
         firstname: "ASC",

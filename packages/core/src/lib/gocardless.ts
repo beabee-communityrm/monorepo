@@ -20,7 +20,7 @@ import { DeepPartial } from "typeorm";
 
 const log = mainLogger.child({ app: "gocardless-api" });
 
-const gocardless = axios.create({
+const _gocardless = axios.create({
   baseURL: `https://${
     config.gocardless.sandbox ? "api-sandbox" : "api"
   }.gocardless.com`,
@@ -32,7 +32,7 @@ const gocardless = axios.create({
   }
 });
 
-gocardless.interceptors.request.use((config) => {
+_gocardless.interceptors.request.use((config) => {
   log.info(`${config.method} ${config.url}`, {
     params: config.params,
     data: config.data
@@ -54,7 +54,7 @@ function isCancellationFailed(error: any) {
   );
 }
 
-gocardless.interceptors.response.use(
+_gocardless.interceptors.response.use(
   (response) => {
     return response;
   },
@@ -98,17 +98,17 @@ function createMethods<T, C = T>(
 
   const methods: Methods<T, C> = {
     async create(data) {
-      const response = await gocardless.post(endpoint, { [key]: data });
+      const response = await _gocardless.post(endpoint, { [key]: data });
       return <T>response.data[key];
     },
     async list(params) {
-      const response = await gocardless.get(endpoint, { params });
+      const response = await _gocardless.get(endpoint, { params });
       return <T[]>response.data[key];
     },
     async all(params) {
       const {
         data: { meta, [key]: resources }
-      } = await gocardless.get(endpoint, { params });
+      } = await _gocardless.get(endpoint, { params });
 
       const moreResources = meta.cursors.after
         ? await this.all({ ...params, after: meta.cursors.after })
@@ -117,24 +117,24 @@ function createMethods<T, C = T>(
       return <T[]>[...resources, ...moreResources];
     },
     async get(id, params) {
-      const response = await gocardless.get(`${endpoint}/${id}`, { params });
+      const response = await _gocardless.get(`${endpoint}/${id}`, { params });
       return <T>response.data[key];
     },
     async update(id, data) {
-      const response = await gocardless.put(`${endpoint}/${id}`, {
+      const response = await _gocardless.put(`${endpoint}/${id}`, {
         [key]: data
       });
       return <T>response.data[key];
     },
     async remove(id) {
-      const response = await gocardless.delete(`${endpoint}/${id}`);
+      const response = await _gocardless.delete(`${endpoint}/${id}`);
       return response.status < 300;
     }
   };
 
   function actionMethod(action: string) {
     return async (id: string, data?: Record<string, unknown>) => {
-      const response = await gocardless.post(
+      const response = await _gocardless.post(
         `${endpoint}/${id}/actions/${action}`,
         { data }
       );
@@ -153,7 +153,7 @@ interface CreateRedirectFlow extends RedirectFlow {
   prefilled_customer: RedirectFlowPrefilledCustomer;
 }
 
-export default {
+export const gocardless = {
   //creditors: createMethods<Creditor>('creditors', STANDARD_METHODS),
   //creditorBankAccounts: createMethods<CreditorBankAccount>('creditor_bank_accounts', ['create', 'get', 'list', 'all'], ['disable']),
   customers: createMethods<Customer>("customers", [

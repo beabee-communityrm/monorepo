@@ -13,7 +13,7 @@ import { CompleteJoinFlowDto } from "@api/dto/JoinFlowDto";
 import IsPassword from "@api/validators/IsPassword";
 import IsUrl from "@api/validators/IsUrl";
 
-import type JoinForm from "@models/JoinForm";
+import type JoinForm from "@beabee/models/JoinForm";
 
 import { CompleteUrls } from "@type/complete-urls";
 
@@ -42,8 +42,7 @@ export class StartSignupFlowDto implements CompleteUrls {
 
 export class CompleteSignupFlowDto
   extends CompleteJoinFlowDto
-  implements Pick<JoinForm, "firstname" | "lastname" | "vatNumber">
-{
+  implements Pick<JoinForm, "firstname" | "lastname" | "vatNumber"> {
   @IsOptional()
   @IsString()
   firstname?: string;

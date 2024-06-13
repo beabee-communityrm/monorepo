@@ -1,6 +1,3 @@
-import "module-alias/register";
-import "reflect-metadata";
-
 import {
   DataSource,
   EntityManager,
@@ -18,7 +15,7 @@ import { config } from "@beabee/config";
 const log = mainLogger.child({ app: "database" });
 
 // This is used by the TypeORM CLI to run migrations
-export const dataSource: DataSource = new DataSource({
+const dataSource: DataSource = new DataSource({
   type: "postgres",
   url: config.databaseUrl,
   logging: config.dev,
@@ -26,27 +23,25 @@ export const dataSource: DataSource = new DataSource({
   migrations: [__dirname + "/../migrations/*.js"]
 });
 
-export function runTransaction<T>(
+function runTransaction<T>(
   runInTransaction: (em: EntityManager) => Promise<T>
 ): Promise<T> {
   return dataSource.transaction(runInTransaction);
 }
 
-export function getRepository<Entity extends ObjectLiteral>(
+function getRepository<Entity extends ObjectLiteral>(
   target: EntityTarget<Entity>
 ): Repository<Entity> {
   return dataSource.getRepository(target);
 }
 
-export function createQueryBuilder<Entity extends ObjectLiteral>(
+function createQueryBuilder<Entity extends ObjectLiteral>(
   entityClass: EntityTarget<Entity>,
   alias: string,
   queryRunner?: QueryRunner
 ): SelectQueryBuilder<Entity>;
-export function createQueryBuilder(
-  queryRunner?: QueryRunner
-): SelectQueryBuilder<any>;
-export function createQueryBuilder<Entity extends ObjectLiteral>(
+function createQueryBuilder(queryRunner?: QueryRunner): SelectQueryBuilder<any>;
+function createQueryBuilder<Entity extends ObjectLiteral>(
   arg1?: EntityTarget<Entity> | QueryRunner,
   alias?: string,
   queryRunner?: QueryRunner
@@ -62,7 +57,7 @@ export function createQueryBuilder<Entity extends ObjectLiteral>(
   }
 }
 
-export async function connect(): Promise<void> {
+async function connect(): Promise<void> {
   try {
     await dataSource.initialize();
     log.info("Connected to database");
@@ -72,6 +67,15 @@ export async function connect(): Promise<void> {
   }
 }
 
-export async function close(): Promise<void> {
+async function close(): Promise<void> {
   await dataSource.destroy();
 }
+
+export const database = {
+  dataSource,
+  connect,
+  close,
+  runTransaction,
+  getRepository,
+  createQueryBuilder
+};

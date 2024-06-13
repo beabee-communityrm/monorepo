@@ -1,12 +1,10 @@
 import { RoleType } from "@beabee/beabee-common";
 import express, { NextFunction, Request, Response } from "express";
 
-import { hasSchema } from "@core/middleware";
-import { createDateTime, wrapAsync } from "@core/utils";
+import { hasSchema } from "#express";
+import { createDateTime, wrapAsync, contactsService } from "@beabee/core";
 
-import ContactsService from "@core/services/ContactsService";
-
-import Contact from "@models/Contact";
+import { Contact } from "@beabee/models";
 
 import { createPermissionSchema, updatePermissionSchema } from "./schemas.json";
 
@@ -67,7 +65,7 @@ app.post(
       return;
     }
 
-    await ContactsService.updateContactRole(contact, type, {
+    await contactsService.updateContactRole(contact, type, {
       dateAdded,
       dateExpires
     });
@@ -112,7 +110,7 @@ app.post(
       return;
     }
 
-    await ContactsService.updateContactRole(contact, roleType, {
+    await contactsService.updateContactRole(contact, roleType, {
       dateAdded,
       dateExpires
     });
@@ -126,7 +124,7 @@ app.post(
   "/:id/revoke",
   canUpdateRole,
   wrapAsync(async (req, res) => {
-    await ContactsService.revokeContactRole(
+    await contactsService.revokeContactRole(
       req.model as Contact,
       req.params.id as RoleType
     );

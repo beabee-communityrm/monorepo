@@ -31,7 +31,7 @@ import { GetCalloutDto } from "@api/dto/CalloutDto";
 import { GetCalloutResponseCommentDto } from "@api/dto/CalloutResponseCommentDto";
 import { GetCalloutTagDto } from "@api/dto/CalloutTagDto";
 
-import Callout from "@models/Callout";
+import Callout from "@beabee/models/Callout";
 
 import { CalloutResponseViewSchema } from "@type/callout-response-view-schema";
 
@@ -65,9 +65,9 @@ export class ListCalloutResponsesDto extends GetPaginatedQuery {
 
 // TODO: this is a bit hacky
 export interface GetCalloutResponseOptsDto
-  extends BaseGetCalloutResponseOptsDto {}
+  extends BaseGetCalloutResponseOptsDto { }
 export interface ListCalloutResponsesDto
-  extends BaseGetCalloutResponseOptsDto {}
+  extends BaseGetCalloutResponseOptsDto { }
 
 export class GetCalloutResponseDto {
   @IsString()
@@ -179,7 +179,7 @@ export type ExportCalloutResponseDto = [
 
 export interface ExportCalloutResponsesOptsDto
   extends GetExportQuery,
-    BaseGetCalloutResponseOptsDto {
+  BaseGetCalloutResponseOptsDto {
   callout: Callout;
   components: (CalloutComponentSchema & { slideId: string })[];
 }

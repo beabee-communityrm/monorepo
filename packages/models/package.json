@@ -1,7 +1,8 @@
 {
   "name": "@beabee/models",
   "version": "0.16.0",
-  "main": "./dist/esm/index.js",
+  "main": "./dist/cjs/index.cjs",
+  "module": "./dist/esm/index.js",
   "type": "module",
   "files": [
     "src",
@@ -12,7 +13,8 @@
     "clear": "rm -rf dist; exit 0",
     "build": "yarn generate:index && yarn build:esm && yarn build:cjs",
     "build:esm": "tsc --project ./tsconfig.json --outDir ./dist/esm",
-    "build:cjs": "tsc --project ./tsconfig.cjs.json --outDir ./dist/cjs",
+    "build:cjs": "tsc --project ./tsconfig.cjs.json --outDir ./dist/cjs && yarn rename:cjs",
+    "rename:cjs": "mv ./dist/cjs/index.js ./dist/cjs/index.cjs && mv ./dist/cjs/index.d.ts ./dist/cjs/index.d.cts",
     "generate:index": "beabee-cli generate-index --ext js ./src/models"
   },
   "exports": {
@@ -20,7 +22,7 @@
     "./src": "./src/index.ts",
     ".": {
       "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.cjs"
     }
   },
   "devDependencies": {
@@ -32,6 +34,7 @@
     "@beabee/config": "workspace:^",
     "date-fns": "^3.6.0",
     "date-fns-tz": "^3.1.3",
+    "reflect-metadata": "^0.2.2",
     "typeorm": "^0.3.20"
   }
 }

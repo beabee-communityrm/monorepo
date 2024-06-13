@@ -8,6 +8,8 @@
     "strictNullChecks": true,
     "resolveJsonModule": true,
     "moduleResolution": "Node16",
+    "declaration": true,
+    "emitDeclarationOnly": true,
 
     // We currently rely on class fields not being initialised, especially for classes created by
     // class-transformer (in controllers). Disabling this flag for now.
@@ -15,22 +17,18 @@
     "useDefineForClassFields": false,
 
     "sourceMap": true,
-    "outDir": "./dist",
+    "outDir": "./dist/types",
     "baseUrl": "./",
     "paths": {
-      "#config": ["./src/config/config.js"],
       "#models/*": ["./src/models/*.js"],
       "#services/*": ["./src/services/*.js"],
       "#types/*": ["./src/types/*.js"],
       "#enums/*": ["./src/enums/*.js"],
-      "#core/utils": ["./src/utils/index.js"],
       "#core/defaults.json": ["./src/defaults.json"],
       "#core/*": ["./src/*.js"],
       "#errors/*": ["./src/errors/*.js"],
-      "#utils/*": ["./src/utils/*.js"],
-      "#dto/*": ["./src/dto/*.js"],
-      "#transformers/*": ["./src/transformers/*.js"],
-      "#validators/*": ["./src/validators/*.js"]
+      "#utils": ["./src/utils/index.js"],
+      "#utils/*": ["./src/utils/*.js"]
     },
     "typeRoots": ["./src/typings", "./node_modules/@types/"]
   }

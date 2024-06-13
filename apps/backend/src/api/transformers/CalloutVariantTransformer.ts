@@ -1,5 +1,5 @@
 import { CalloutVariantDto } from "@api/dto/CalloutVariantDto";
-import CalloutVariant from "@models/CalloutVariant";
+import { CalloutVariant } from "@beabee/models";
 import { TransformPlainToInstance } from "class-transformer";
 import { BaseTransformer } from "./BaseTransformer";
 

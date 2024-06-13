@@ -2,14 +2,10 @@ import express from "express";
 import _ from "lodash";
 import moment from "moment";
 
-import { createQueryBuilder, getRepository } from "@core/database";
-import { hasNewModel, hasSchema, isAdmin } from "@core/middleware";
-import { wrapAsync } from "@core/utils";
+import { database, wrapAsync } from "@beabee/core";
+import { hasNewModel, hasSchema, isAdmin } from "#express";
 
-import Contact from "@models/Contact";
-import Project from "@models/Project";
-import ProjectContact from "@models/ProjectContact";
-import ProjectEngagement from "@models/ProjectEngagement";
+import { Contact, Project, ProjectContact, ProjectEngagement } from "@beabee/models";
 
 import { createProjectSchema } from "./schemas.json";
 
@@ -92,7 +88,7 @@ app.use(isAdmin);
 app.get(
   "/",
   wrapAsync(async (req, res) => {
-    const projects = await createQueryBuilder(Project, "p")
+    const projects = await database.createQueryBuilder(Project, "p")
       .loadRelationCountAndMap("p.contactCount", "p.contacts")
       .getMany();
 
@@ -104,7 +100,7 @@ app.post(
   "/",
   hasSchema(createProjectSchema).orFlash,
   wrapAsync(async (req, res) => {
-    const project = await getRepository(Project).save({
+    const project = await database.getRepository(Project).save({
       ...schemaToProject(req.body),
       owner: req.user!
     });
@@ -119,11 +115,11 @@ app.get(
   wrapAsync(async (req, res) => {
     const project = req.model as Project;
 
-    const projectContacts = await getRepository(ProjectContact).find({
+    const projectContacts = await database.getRepository(ProjectContact).find({
       where: { projectId: project.id },
       relations: { contact: { profile: true } }
     });
-    const engagements = await getRepository(ProjectEngagement).find({
+    const engagements = await database.getRepository(ProjectEngagement).find({
       where: { projectId: project.id },
       relations: { byContact: true, toContact: true }
     });
@@ -156,12 +152,12 @@ app.post(
 
     switch (data.action) {
       case "update":
-        await getRepository(Project).update(project.id, schemaToProject(data));
+        await database.getRepository(Project).update(project.id, schemaToProject(data));
         req.flash("success", "project-updated");
         res.redirect(req.originalUrl);
         break;
       case "add-contacts":
-        await getRepository(ProjectContact).insert(
+        await database.getRepository(ProjectContact).insert(
           data.contactIds.map((contactId) => ({
             project,
             contact: { id: contactId }
@@ -171,13 +167,13 @@ app.post(
         res.redirect(req.originalUrl);
         break;
       case "update-contact-tag":
-        await getRepository(ProjectContact).update(data.projectContactId, {
+        await database.getRepository(ProjectContact).update(data.projectContactId, {
           tag: data.tag
         });
         res.redirect(req.originalUrl + "#contacts");
         break;
       case "add-contact-engagement":
-        await getRepository(ProjectEngagement).insert({
+        await database.getRepository(ProjectEngagement).insert({
           ...schemaToEngagement(data),
           project,
           byContact: req.user!
@@ -185,15 +181,15 @@ app.post(
         res.redirect(req.originalUrl + "#contacts");
         break;
       case "delete-contact-engagement":
-        await getRepository(ProjectEngagement).delete(data.projectEngagementId);
+        await database.getRepository(ProjectEngagement).delete(data.projectEngagementId);
         res.redirect(req.originalUrl + "#contacts");
         break;
       case "delete":
-        await getRepository(ProjectEngagement).delete({
+        await database.getRepository(ProjectEngagement).delete({
           projectId: project.id
         });
-        await getRepository(ProjectContact).delete({ projectId: project.id });
-        await getRepository(Project).delete(project.id);
+        await database.getRepository(ProjectContact).delete({ projectId: project.id });
+        await database.getRepository(Project).delete(project.id);
         req.flash("success", "project-deleted");
         res.redirect("/projects");
         break;

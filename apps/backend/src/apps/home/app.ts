@@ -1,5 +1,5 @@
 import express from "express";
-import OptionsService, { OptionKey } from "@core/services/OptionsService";
+import { optionsService, OptionKey } from "@beabee/core";
 
 const app = express();
 
@@ -12,7 +12,7 @@ app.get("/", (req, res, next) => {
       : "user-home-url"
     : "home-redirect-url";
 
-  const redirectUrl = OptionsService.getText(redirectUrlOpt);
+  const redirectUrl = optionsService.getText(redirectUrlOpt);
   if (redirectUrl) {
     res.redirect(redirectUrl);
   } else {

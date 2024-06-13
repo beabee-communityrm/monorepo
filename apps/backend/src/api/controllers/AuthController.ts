@@ -1,4 +1,4 @@
-import { RoleTypes, RoleType } from "@beabee/beabee-common";
+import { RoleTypes, RoleType, LOGIN_CODES } from "@beabee/beabee-common";
 import { isUUID } from "class-validator";
 import { Request, Response } from "express";
 import {
@@ -14,24 +14,12 @@ import {
   Res
 } from "routing-controllers";
 
-import { UnauthorizedError } from "../errors/UnauthorizedError";
-
-import { getRepository } from "@core/database";
-import passport from "@core/lib/passport";
-
-import ContactsService from "@core/services/ContactsService";
-
+import { UnauthorizedError, database, contactsService, PassportLoginInfo } from "@beabee/core";
+import { passport } from "#express";
 import { LoginDto } from "@api/dto/LoginDto";
 import { login } from "@api/utils";
-
-import Contact from "@models/Contact";
-import ContactRole from "@models/ContactRole";
-
-import { LOGIN_CODES } from "@enums/login-codes";
-
-import { PassportLoginInfo } from "@type/passport-login-info";
-
-import config from "@config";
+import { Contact, ContactRole } from "@beabee/models";
+import { config } from "@beabee/config";
 
 @JsonController("/auth")
 export class AuthController {
@@ -92,13 +80,13 @@ export class AuthController {
 
     let contact: Contact | undefined;
     if (RoleTypes.indexOf(id as RoleType) > -1) {
-      const role = await getRepository(ContactRole).findOne({
+      const role = await database.getRepository(ContactRole).findOne({
         where: { type: id as RoleType },
         relations: { contact: true }
       });
       contact = role?.contact;
     } else if (isUUID(id, "4")) {
-      contact = await ContactsService.findOneBy({ id });
+      contact = await contactsService.findOneBy({ id });
     }
 
     if (contact) {

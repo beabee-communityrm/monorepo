@@ -1,1 +1,1 @@
-export * from "./ValidateResponseInterceptor";
+export * from "./ValidateResponseInterceptor.js";

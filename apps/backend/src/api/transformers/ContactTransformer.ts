@@ -1,11 +1,9 @@
 import { TransformPlainToInstance } from "class-transformer";
 import { SelectQueryBuilder } from "typeorm";
+import { GetContactWith } from "@beabee/beabee-common"
+import { database, paymentService, AuthInfo } from "@beabee/core";
 
-import { createQueryBuilder } from "@core/database";
-import PaymentService from "@core/services/PaymentService";
-
-import Contact from "@models/Contact";
-import ContactRole from "@models/ContactRole";
+import { Contact, ContactRole } from "@beabee/models";
 import {
   GetContactDto,
   GetContactOptsDto,
@@ -15,10 +13,6 @@ import { BaseContactTransformer } from "@api/transformers/BaseContactTransformer
 import ContactRoleTransformer from "@api/transformers/ContactRoleTransformer";
 import ContactProfileTransformer from "@api/transformers/ContactProfileTransformer";
 import { mergeRules } from "@api/utils/rules";
-
-import { GetContactWith } from "@enums/get-contact-with";
-
-import { AuthInfo } from "@type/auth-info";
 
 class ContactTransformer extends BaseContactTransformer<
   GetContactDto,
@@ -48,12 +42,12 @@ class ContactTransformer extends BaseContactTransformer<
       }),
       ...(opts?.with?.includes(GetContactWith.Profile) &&
         contact.profile && {
-          profile: ContactProfileTransformer.convert(
-            contact.profile,
-            undefined,
-            auth
-          )
-        }),
+        profile: ContactProfileTransformer.convert(
+          contact.profile,
+          undefined,
+          auth
+        )
+      }),
       ...(opts?.with?.includes(GetContactWith.Roles) && {
         roles: contact.roles.map(ContactRoleTransformer.convert)
       }),
@@ -137,7 +131,7 @@ class ContactTransformer extends BaseContactTransformer<
         throw new Error("Cannot fetch contribution for multiple contacts");
       }
 
-      contacts[0].contributionInfo = await PaymentService.getContributionInfo(
+      contacts[0].contributionInfo = await paymentService.getContributionInfo(
         contacts[0]
       );
     }
@@ -147,7 +141,7 @@ class ContactTransformer extends BaseContactTransformer<
 export async function loadContactRoles(contacts: Contact[]): Promise<void> {
   if (contacts.length > 0) {
     // Load roles after to ensure offset/limit work
-    const roles = await createQueryBuilder(ContactRole, "cr")
+    const roles = await database.createQueryBuilder(ContactRole, "cr")
       .where("cr.contactId IN (:...ids)", {
         ids: contacts.map((t) => t.id)
       })

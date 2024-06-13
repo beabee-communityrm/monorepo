@@ -10,17 +10,17 @@ import { PaymentProvider } from "./index.js";
 
 import { stripe } from "#core/lib/stripe";
 import { log as mainLogger } from "#core/logging";
-import { calcRenewalDate, getChargeableAmount } from "#core/utils/payment";
+import { calcRenewalDate, getChargeableAmount } from "#utils/payment";
 import {
   createSubscription,
   deleteSubscription,
   manadateToSource,
   updateSubscription
-} from "#core/utils/payment/stripe";
+} from "#utils/payment/stripe";
 
 import { Contact } from "@beabee/models";
 
-import NoPaymentMethod from "#errors/NoPaymentMethod";
+import { NoPaymentMethod } from "#errors/index";
 
 import { config } from "@beabee/config";
 
@@ -30,7 +30,7 @@ import { PaymentForm, UpdateContributionResult } from "@beabee/beabee-common";
 
 const log = mainLogger.child({ app: "stripe-payment-provider" });
 
-export default class StripeProvider extends PaymentProvider {
+export class StripeProvider extends PaymentProvider {
   async canChangeContribution(useExistingMandate: boolean): Promise<boolean> {
     return !useExistingMandate || !!this.data.mandateId;
   }

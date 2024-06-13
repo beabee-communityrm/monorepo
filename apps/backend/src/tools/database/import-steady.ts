@@ -3,21 +3,17 @@ import "module-alias/register";
 import {
   ContributionPeriod,
   ContributionType,
-  NewsletterStatus
+  NewsletterStatus,
+  Address
 } from "@beabee/beabee-common";
 import { parse } from "csv-parse";
 import { In } from "typeorm";
 
-import { getRepository } from "@core/database";
-import { runApp } from "@core/server";
-import { cleanEmailAddress } from "@core/utils";
+import { database, cleanEmailAddress, contactsService } from "@beabee/core";
+import { runApp } from "#express";
 
-import ContactsService from "@core/services/ContactsService";
-
-import Contact from "@models/Contact";
-import ContactRole from "@models/ContactRole";
-
-import { Address } from "@type/address";
+import { Contact, ContactRole } from "@beabee/models";
+import currentLocale from "#locale";
 
 const headers = [
   "first_name",
@@ -98,7 +94,7 @@ function convertPeriod(period: "annual" | "monthly"): ContributionPeriod {
 }
 
 function getRole(row: SteadyRow): ContactRole {
-  return getRepository(ContactRole).create({
+  return database.getRepository(ContactRole).create({
     type: "member",
     dateAdded: new Date(row.subscribed_at),
     dateExpires: row.expires_at ? new Date(row.expires_at) : null
@@ -130,7 +126,7 @@ function getDeliveryAddress(row: SteadyRow): [boolean, Address | null] {
 async function setContributionData(contact: Contact, row: SteadyRow) {
   const period = convertPeriod(row.subscription_period);
 
-  await ContactsService.forceUpdateContactContribution(contact, {
+  await contactsService.forceUpdateContactContribution(contact, {
     type: ContributionType.Manual,
     source: "Steady",
     reference: row.plan_name,
@@ -161,7 +157,7 @@ async function updateExistingContact(contact: Contact, row: SteadyRow) {
     return;
   }
 
-  await ContactsService.updateContact(contact, {
+  await contactsService.updateContact(contact, {
     contributionMonthlyAmount: row.plan_monthly_amount_cents / 100,
     firstname: row.first_name,
     lastname: row.last_name
@@ -172,18 +168,18 @@ async function updateExistingContact(contact: Contact, row: SteadyRow) {
   const role = getRole(row);
   if (contact.membership?.isActive) {
     if (role.dateExpires) {
-      await ContactsService.extendContactRole(
+      await contactsService.extendContactRole(
         contact,
         "member",
         role.dateExpires
       );
     }
   } else {
-    await ContactsService.updateContactRole(contact, "member", role);
+    await contactsService.updateContactRole(contact, "member", role);
   }
 
   const [deliveryOptIn, deliveryAddress] = getDeliveryAddress(row);
-  await ContactsService.updateContactProfile(contact, {
+  await contactsService.updateContactProfile(contact, {
     deliveryOptIn,
     deliveryAddress,
     tags: ["Steady"]
@@ -207,7 +203,7 @@ async function addNewContact(row: SteadyRow) {
     return;
   }
 
-  const contact = await ContactsService.createContact(
+  const contact = await contactsService.createContact(
     {
       email: row.email,
       firstname: row.first_name,
@@ -220,7 +216,8 @@ async function addNewContact(row: SteadyRow) {
       deliveryAddress,
       newsletterStatus: NewsletterStatus.None,
       tags: ["Steady"]
-    }
+    },
+    currentLocale(),
   );
 
   await setContributionData(contact, row);
@@ -235,7 +232,7 @@ async function addNewContact(row: SteadyRow) {
 async function processRows(rows: SteadyRow[]) {
   console.error(`Processing ${rows.length} rows`);
 
-  const existingContacts = await getRepository(Contact).find({
+  const existingContacts = await database.getRepository(Contact).find({
     where: { email: In(rows.map((row) => row.email)) }
   });
 

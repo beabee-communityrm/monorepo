@@ -7,10 +7,10 @@ import {
   ValidationOptions
 } from "class-validator";
 
-import OptionsService from "@core/services/OptionsService";
+import { optionsService } from "@beabee/core";
 
 function getMinAmount(period: ContributionPeriod) {
-  const minMonthlyAmount = OptionsService.getInt(
+  const minMonthlyAmount = optionsService.getInt(
     "contribution-min-monthly-amount"
   );
 

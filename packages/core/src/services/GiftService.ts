@@ -2,15 +2,15 @@ import { ContributionType, NewsletterStatus } from "@beabee/beabee-common";
 import muhammara from "muhammara";
 import moment from "moment";
 
-import { getRepository } from "#core/database";
+import { database } from "#core/database";
 import { log as mainLogger } from "#core/logging";
 import { stripe, Stripe } from "#core/lib/stripe";
-import { isDuplicateIndex } from "#core/utils";
-import { generateContactCode } from "#core/utils/contact";
+import { isDuplicateIndex } from "#utils";
+import { generateContactCode } from "#utils/contact";
 
-import EmailService from "#core/services/EmailService";
-import ContactsService from "#core/services/ContactsService";
-import OptionsService from "#core/services/OptionsService";
+import { emailService } from "#core/services/EmailService";
+import { contactsService } from "#core/services/ContactsService";
+import { optionsService } from "#core/services/OptionsService";
 
 import { GiftFlow, ContactRole, GiftForm } from "@beabee/models";
 
@@ -21,7 +21,7 @@ import type { LocaleObject } from "@beabee/locales";
 
 const log = mainLogger.child({ app: "gift-service" });
 
-export default class GiftService {
+export class GiftService {
   private static readonly giftMonthlyAmount = 3;
 
   /**
@@ -55,17 +55,17 @@ export default class GiftService {
       ]
     };
 
-    if (OptionsService.getBool("tax-rate-enabled")) {
+    if (optionsService.getBool("tax-rate-enabled")) {
       params.subscription_data = {
         default_tax_rates: [
-          OptionsService.getText("tax-rate-stripe-default-id")
+          optionsService.getText("tax-rate-stripe-default-id")
         ]
       };
     }
 
     const session = await stripe.checkout.sessions.create(params);
 
-    await getRepository(GiftFlow).update(giftFlow.id, {
+    await database.getRepository(GiftFlow).update(giftFlow.id, {
       sessionId: session.id
     });
 
@@ -76,7 +76,7 @@ export default class GiftService {
     sessionId: string,
     locale: LocaleObject
   ): Promise<void> {
-    const giftFlowRepository = getRepository(GiftFlow);
+    const giftFlowRepository = database.getRepository(GiftFlow);
     const giftFlow = await giftFlowRepository.findOne({ where: { sessionId } });
 
     log.info("Complete gift flow", { sessionId, giftFlowId: giftFlow?.id });
@@ -96,7 +96,7 @@ export default class GiftService {
         }
       ];
 
-      await EmailService.sendTemplateTo(
+      await emailService.sendTemplateTo(
         "purchased-gift",
         { email: fromEmail, name: fromName },
         { fromName, gifteeFirstName: firstname, giftStartDate: startDate },
@@ -134,14 +134,16 @@ export default class GiftService {
 
     if (giftFlow.processed) return;
 
-    await getRepository(GiftFlow).update(giftFlow.id, { processed: true });
+    await database
+      .getRepository(GiftFlow)
+      .update(giftFlow.id, { processed: true });
 
-    const role = getRepository(ContactRole).create({
+    const role = database.getRepository(ContactRole).create({
       type: "member",
       dateExpires: now.clone().add(months, "months").toDate()
     });
 
-    const contact = await ContactsService.createContact(
+    const contact = await contactsService.createContact(
       {
         firstname,
         lastname,
@@ -154,18 +156,18 @@ export default class GiftService {
         deliveryOptIn: !!deliveryAddress?.line1,
         deliveryAddress: deliveryAddress,
         newsletterStatus: NewsletterStatus.Subscribed,
-        newsletterGroups: OptionsService.getList("newsletter-default-groups")
+        newsletterGroups: optionsService.getList("newsletter-default-groups")
       },
       locale
     );
 
     giftFlow.giftee = contact;
-    await getRepository(GiftFlow).save(giftFlow);
+    await database.getRepository(GiftFlow).save(giftFlow);
 
     const sendAt = sendImmediately
       ? undefined
       : now.clone().startOf("day").add({ h: 9 }).toDate();
-    await EmailService.sendTemplateToContact(
+    await emailService.sendTemplateToContact(
       "giftee-success",
       contact,
       { fromName, message: message || "", giftCode: giftFlow.setupCode },
@@ -182,7 +184,7 @@ export default class GiftService {
     log.info("Update gift flow address " + giftFlow.id);
 
     if (!giftFlow.processed && !giftFlow.giftForm.giftAddress) {
-      await getRepository(GiftFlow).update(giftFlow.id, {
+      await database.getRepository(GiftFlow).update(giftFlow.id, {
         giftForm: {
           giftAddress,
           deliveryAddress
@@ -199,7 +201,7 @@ export default class GiftService {
       giftFlow.sessionId = "UNKNOWN";
       giftFlow.setupCode = generateContactCode(giftForm)!;
       giftFlow.giftForm = giftForm;
-      await getRepository(GiftFlow).insert(giftFlow);
+      await database.getRepository(GiftFlow).insert(giftFlow);
       return giftFlow;
     } catch (error) {
       if (isDuplicateIndex(error, "setupCode")) {

@@ -2,7 +2,7 @@ import { verify as cfVerify } from "@captchafox/node";
 
 import { config } from "@beabee/config";
 
-export async function verify(token: string): Promise<string> {
+async function verify(token: string): Promise<string> {
   const resp = await cfVerify(config.captchaFox.secret, token);
   if (resp.success) {
     return "";
@@ -11,3 +11,7 @@ export async function verify(token: string): Promise<string> {
     return errorCodes ? errorCodes.join(", ") : "unknown";
   }
 }
+
+export const captchafox = {
+  verify
+};

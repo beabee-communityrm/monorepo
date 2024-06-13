@@ -2,14 +2,12 @@ import { RoleType } from "@beabee/beabee-common";
 import { stringify } from "csv-stringify/sync";
 import { SelectQueryBuilder } from "typeorm";
 
-import { getMembershipStatus } from "@core/services/PaymentService";
-
 import { GetExportQuery } from "@api/dto/BaseDto";
 import { ExportContactDto } from "@api/dto/ContactDto";
 
-import Contact from "@models/Contact";
+import { Contact } from "@beabee/models";
 
-import { AuthInfo } from "@type/auth-info";
+import { AuthInfo, getMembershipStatus } from "@beabee/core";
 import { BaseContactTransformer } from "./BaseContactTransformer";
 
 class ContactExporter extends BaseContactTransformer<

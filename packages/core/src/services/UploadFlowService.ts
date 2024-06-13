@@ -2,7 +2,7 @@ import { sub } from "date-fns";
 import { HttpError } from "routing-controllers";
 import { MoreThan } from "typeorm";
 
-import { getRepository } from "#core/database";
+import { database } from "#core/database";
 
 import { Contact, UploadFlow } from "@beabee/models";
 
@@ -28,7 +28,7 @@ class UploadFlowService {
       await this.canUploadOrFail(ipAddress, oneHourAgo, 20);
     }
 
-    const newUploadFlow = await getRepository(UploadFlow).save({
+    const newUploadFlow = await database.getRepository(UploadFlow).save({
       contact: contact || null,
       ipAddress,
       used: false
@@ -47,10 +47,9 @@ class UploadFlowService {
     const oneMinAgo = sub(new Date(), { minutes: 1 });
 
     // Both checks if the flow exists and set's it as used so it can only be used once
-    const res = await getRepository(UploadFlow).update(
-      { id, date: MoreThan(oneMinAgo), used: false },
-      { used: true }
-    );
+    const res = await database
+      .getRepository(UploadFlow)
+      .update({ id, date: MoreThan(oneMinAgo), used: false }, { used: true });
 
     return !!res.affected;
   }
@@ -60,7 +59,7 @@ class UploadFlowService {
    * @param contact The contact
    */
   async permanentlyDeleteContact(contact: Contact): Promise<void> {
-    await getRepository(UploadFlow).delete({ contactId: contact.id });
+    await database.getRepository(UploadFlow).delete({ contactId: contact.id });
   }
 
   /**
@@ -70,7 +69,7 @@ class UploadFlowService {
    * @param max The maximum number of uploads allowed
    */
   private async canUploadOrFail(ipAddress: string, date: Date, max: number) {
-    const uploadFlows = await getRepository(UploadFlow).find({
+    const uploadFlows = await database.getRepository(UploadFlow).find({
       where: { ipAddress, date: MoreThan(date) }
     });
     if (uploadFlows.length >= max) {
@@ -79,4 +78,4 @@ class UploadFlowService {
   }
 }
 
-export default new UploadFlowService();
+export const uploadFlowService = new UploadFlowService();

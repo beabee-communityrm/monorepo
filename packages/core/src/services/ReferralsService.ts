@@ -1,9 +1,9 @@
 import _ from "lodash";
 
-import { getRepository } from "#core/database";
+import { database } from "#core/database";
 import { log as mainLogger } from "#core/logging";
 
-import EmailService from "#core/services/EmailService";
+import { emailService } from "#core/services/EmailService";
 import type { LocaleObject } from "@beabee/locales";
 
 import {
@@ -15,9 +15,9 @@ import {
 
 const log = mainLogger.child({ app: "referrals-service" });
 
-export default class ReferralsService {
+export class ReferralsService {
   static async getGifts(): Promise<ReferralGift[]> {
-    return await getRepository(ReferralGift).find();
+    return await database.getRepository(ReferralGift).find();
   }
 
   static async isGiftAvailable(
@@ -26,7 +26,7 @@ export default class ReferralsService {
   ): Promise<boolean> {
     if (!giftForm.referralGift) return true; // No gift option
 
-    const gift = await getRepository(ReferralGift).findOneBy({
+    const gift = await database.getRepository(ReferralGift).findOneBy({
       name: giftForm.referralGift
     });
     if (gift && gift.enabled && gift.minAmount <= amount) {
@@ -48,7 +48,7 @@ export default class ReferralsService {
     log.info("Update gift stock", giftForm);
 
     if (giftForm.referralGift) {
-      const gift = await getRepository(ReferralGift).findOneBy({
+      const gift = await database.getRepository(ReferralGift).findOneBy({
         name: giftForm.referralGift
       });
       if (gift && giftForm.referralGiftOptions) {
@@ -59,7 +59,9 @@ export default class ReferralsService {
         if (optionStock !== undefined) {
           // TODO: this update isn't atomic
           gift.stock.set(optionStockRef, optionStock - 1);
-          getRepository(ReferralGift).update(gift.name, { stock: gift.stock });
+          database
+            .getRepository(ReferralGift)
+            .update(gift.name, { stock: gift.stock });
         }
       }
     }
@@ -87,12 +89,12 @@ export default class ReferralsService {
     } as ReferralGift;
     referral.refereeGiftOptions = giftForm.referralGiftOptions || null;
 
-    await getRepository(Referral).save(referral);
+    await database.getRepository(Referral).save(referral);
 
     await ReferralsService.updateGiftStock(giftForm);
 
     if (referrer) {
-      await EmailService.sendTemplateToContact(
+      await emailService.sendTemplateToContact(
         "successful-referral",
         referrer,
         {
@@ -107,7 +109,7 @@ export default class ReferralsService {
   }
 
   static async getContactReferrals(referrer: Contact): Promise<Referral[]> {
-    return await getRepository(Referral).find({
+    return await database.getRepository(Referral).find({
       relations: { referrerGift: true, referee: true },
       where: { referrerId: referrer.id }
     });
@@ -121,7 +123,7 @@ export default class ReferralsService {
       !referral.referrerHasSelected &&
       (await ReferralsService.isGiftAvailable(giftForm, referral.refereeAmount))
     ) {
-      await getRepository(Referral).update(referral.id, {
+      await database.getRepository(Referral).update(referral.id, {
         referrerGift:
           giftForm.referralGift != null
             ? { name: giftForm.referralGift }
@@ -143,9 +145,8 @@ export default class ReferralsService {
    */
   static async permanentlyDeleteContact(contact: Contact): Promise<void> {
     log.info("Permanently delete contact referrals for contact " + contact.id);
-    await getRepository(Referral).update(
-      { referrerId: contact.id },
-      { referrer: null }
-    );
+    await database
+      .getRepository(Referral)
+      .update({ referrerId: contact.id }, { referrer: null });
   }
 }

@@ -8,13 +8,13 @@ import {
 import { BadRequestError } from "routing-controllers";
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity.js";
 
-import EmailService from "#core/services/EmailService";
-import NewsletterService from "#core/services/NewsletterService";
-import OptionsService from "#core/services/OptionsService";
+import { emailService } from "#core/services/EmailService";
+import { newsletterService } from "#core/services/NewsletterService";
+import { optionsService } from "#core/services/OptionsService";
 
-import { getRepository, runTransaction } from "#core/database";
+import { database } from "#core/database";
 import { log as mainLogger } from "#core/logging";
-import { isDuplicateIndex } from "#core/utils";
+import { isDuplicateIndex } from "#utils";
 
 import {
   Contact,
@@ -28,9 +28,11 @@ import {
 
 import { LocaleObject } from "@beabee/locales";
 
-import DuplicateId from "#errors/DuplicateId";
-import InvalidCalloutResponse from "#errors/InvalidCalloutResponse";
-import NotFoundError from "#errors/NotFoundError";
+import {
+  DuplicateId,
+  InvalidCalloutResponse,
+  NotFoundError
+} from "#errors/index";
 
 const log = mainLogger.child({ app: "callouts-service" });
 
@@ -81,7 +83,7 @@ class CalloutsService {
   ): Promise<void> {
     log.info("Updating callout " + id);
     // Prevent the join survey from being made inactive
-    if (OptionsService.getText("join-survey") === id) {
+    if (optionsService.getText("join-survey") === id) {
       if (data.expires) {
         throw new BadRequestError(
           "Cannot set an expiry date on the join survey"
@@ -97,7 +99,7 @@ class CalloutsService {
   }
 
   async duplicateCallout(id: string): Promise<string> {
-    const callout = await getRepository(Callout).findOne({
+    const callout = await database.getRepository(Callout).findOne({
       where: { id },
       relations: { variants: true, tags: true }
     });
@@ -117,7 +119,7 @@ class CalloutsService {
     const newId = await this.createCallout(data, 0);
 
     if (tags.length > 0) {
-      await getRepository(CalloutTag).save(
+      await database.getRepository(CalloutTag).save(
         tags.map((tag) => {
           const { id, ...newTag } = tag;
           return { ...newTag, calloutId: newId };
@@ -136,7 +138,7 @@ class CalloutsService {
   async deleteCallout(id: string): Promise<boolean> {
     log.info("Deleting callout " + id);
 
-    return await runTransaction(async (em) => {
+    return await database.runTransaction(async (em) => {
       await em
         .createQueryBuilder()
         .delete()
@@ -190,7 +192,7 @@ class CalloutsService {
     contact: Contact
   ): Promise<CalloutResponse | undefined> {
     return (
-      (await getRepository(CalloutResponse).findOne({
+      (await database.getRepository(CalloutResponse).findOne({
         where: {
           calloutId: callout.id,
           contactId: contact.id
@@ -256,7 +258,7 @@ class CalloutsService {
 
     if (callout.mcMergeField && callout.pollMergeField) {
       const [slideId, answerKey] = callout.pollMergeField.split(".");
-      await NewsletterService.updateContactFields(contact, {
+      await newsletterService.updateContactFields(contact, {
         [callout.mcMergeField]: answers[slideId]?.[answerKey]?.toString() || ""
       });
     }
@@ -311,13 +313,12 @@ class CalloutsService {
   public async permanentlyDeleteContact(contact: Contact): Promise<void> {
     log.info("Permanently delete callout data for contact " + contact.id);
 
-    await getRepository(CalloutResponseComment).delete({
+    await database.getRepository(CalloutResponseComment).delete({
       contactId: contact.id
     });
-    await getRepository(CalloutResponse).update(
-      { contactId: contact.id },
-      { contactId: null }
-    );
+    await database
+      .getRepository(CalloutResponse)
+      .update({ contactId: contact.id }, { contactId: null });
   }
 
   /**
@@ -340,7 +341,7 @@ class CalloutsService {
       })
     };
 
-    return await runTransaction(async (em) => {
+    return await database.runTransaction(async (em) => {
       try {
         if (id) {
           const result = await em.getRepository(Callout).update(id, fixedData);
@@ -385,16 +386,18 @@ class CalloutsService {
     response: CalloutResponse
   ): Promise<CalloutResponse> {
     if (!response.number) {
-      const lastResponse = await getRepository(CalloutResponse).findOne({
-        where: { calloutId: response.callout.id },
-        order: { number: "DESC" }
-      });
+      const lastResponse = await database
+        .getRepository(CalloutResponse)
+        .findOne({
+          where: { calloutId: response.callout.id },
+          order: { number: "DESC" }
+        });
 
       response.number = lastResponse ? lastResponse.number + 1 : 1;
     }
 
     try {
-      return await getRepository(CalloutResponse).save(response);
+      return await database.getRepository(CalloutResponse).save(response);
     } catch (error) {
       if (isDuplicateIndex(error)) {
         response.number = 0;
@@ -418,12 +421,12 @@ class CalloutsService {
   ): Promise<void> {
     const variant =
       callout.variants?.find((v) => v.name === "default") ||
-      (await getRepository(CalloutVariant).findOneBy({
+      (await database.getRepository(CalloutVariant).findOneBy({
         calloutId: callout.id,
         name: "default"
       }));
 
-    await EmailService.sendTemplateToAdmin(
+    await emailService.sendTemplateToAdmin(
       "new-callout-response",
       {
         calloutSlug: callout.slug,
@@ -435,4 +438,4 @@ class CalloutsService {
   }
 }
 
-export default new CalloutsService();
+export const calloutsService = new CalloutsService();

@@ -23,8 +23,7 @@ import {
 } from "@api/dto";
 import { ContentParams } from "@api/params/ContentParams";
 import ContentTransformer from "@api/transformers/ContentTransformer";
-import { stripeTaxRateUpdateOrCreateDefault } from "@core/lib/stripe";
-import OptionsService from "@core/services/OptionsService";
+import { optionsService, stripeTaxRateUpdateOrCreateDefault } from "@beabee/core";
 
 @JsonController("/content")
 export class ContentController {
@@ -112,9 +111,9 @@ export class ContentController {
         active: data.taxRateEnabled,
         percentage: data.taxRate
       },
-      OptionsService.getText("tax-rate-stripe-default-id")
+      optionsService.getText("tax-rate-stripe-default-id")
     );
-    await OptionsService.set("tax-rate-stripe-default-id", taxRateObj.id);
+    await optionsService.set("tax-rate-stripe-default-id", taxRateObj.id);
 
     await ContentTransformer.updateOne("payment", data);
     return ContentTransformer.fetchOne("payment");

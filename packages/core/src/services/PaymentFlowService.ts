@@ -4,14 +4,14 @@ import {
   RESET_SECURITY_FLOW_TYPE
 } from "@beabee/beabee-common";
 
-import { getRepository } from "#core/database";
+import { database } from "#core/database";
 import { log as mainLogger } from "#core/logging";
 
-import EmailService from "#core/services/EmailService";
-import ContactsService from "#core/services/ContactsService";
-import OptionsService from "#core/services/OptionsService";
-import PaymentService from "#core/services/PaymentService";
-import ResetSecurityFlowService from "./ResetSecurityFlowService.js";
+import { emailService } from "#core/services/EmailService";
+import { contactsService } from "#core/services/ContactsService";
+import { optionsService } from "#core/services/OptionsService";
+import { paymentService } from "#core/services/PaymentService";
+import { resetSecurityFlowService } from "#core/services/ResetSecurityFlowService";
 import { JoinFlow, JoinForm, Contact } from "@beabee/models";
 import type {
   Address,
@@ -23,10 +23,10 @@ import type {
 import type { LocaleObject } from "@beabee/locales";
 
 import { PaymentFlowProvider } from "#core/providers/payment-flow/index";
-import StripeProvider from "#core/providers/payment-flow/StripeProvider";
-import GCProvider from "#core/providers/payment-flow/GCProvider";
+import { stripeProvider } from "#core/providers/payment-flow/StripeProvider";
+import { gcProvider } from "#core/providers/payment-flow/GCProvider";
 
-import DuplicateEmailError from "#errors/DuplicateEmailError";
+import { DuplicateEmailError } from "#errors/index";
 
 import type {
   CompleteUrls,
@@ -35,11 +35,11 @@ import type {
 } from "#types/index";
 
 const paymentProviders = {
-  [PaymentMethod.StripeCard]: StripeProvider,
-  [PaymentMethod.StripeSEPA]: StripeProvider,
-  [PaymentMethod.StripeBACS]: StripeProvider,
-  [PaymentMethod.StripePayPal]: StripeProvider,
-  [PaymentMethod.GoCardlessDirectDebit]: GCProvider
+  [PaymentMethod.StripeCard]: stripeProvider,
+  [PaymentMethod.StripeSEPA]: stripeProvider,
+  [PaymentMethod.StripeBACS]: stripeProvider,
+  [PaymentMethod.StripePayPal]: stripeProvider,
+  [PaymentMethod.GoCardlessDirectDebit]: gcProvider
 };
 
 const log = mainLogger.child({ app: "payment-flow-service" });
@@ -58,7 +58,7 @@ class PaymentFlowService implements PaymentFlowProvider {
       prorate: false,
       paymentMethod: PaymentMethod.StripeCard
     };
-    return await getRepository(JoinFlow).save({
+    return await database.getRepository(JoinFlow).save({
       ...urls,
       joinForm,
       paymentFlowId: ""
@@ -71,7 +71,7 @@ class PaymentFlowService implements PaymentFlowProvider {
     completeUrl: string,
     user: { email: string; firstname?: string; lastname?: string }
   ): Promise<PaymentFlowParams> {
-    const joinFlow = await getRepository(JoinFlow).save({
+    const joinFlow = await database.getRepository(JoinFlow).save({
       ...urls,
       joinForm,
       paymentFlowId: ""
@@ -84,7 +84,7 @@ class PaymentFlowService implements PaymentFlowProvider {
       completeUrl,
       user
     );
-    await getRepository(JoinFlow).update(joinFlow.id, {
+    await database.getRepository(JoinFlow).update(joinFlow.id, {
       paymentFlowId: paymentFlow.id
     });
     return paymentFlow.params;
@@ -93,13 +93,13 @@ class PaymentFlowService implements PaymentFlowProvider {
   async getJoinFlowByPaymentId(
     paymentFlowId: string
   ): Promise<JoinFlow | null> {
-    return await getRepository(JoinFlow).findOneBy({ paymentFlowId });
+    return await database.getRepository(JoinFlow).findOneBy({ paymentFlowId });
   }
 
   async completeJoinFlow(joinFlow: JoinFlow): Promise<CompletedPaymentFlow> {
     log.info("Completing join flow " + joinFlow.id);
     const paymentFlow = await this.completePaymentFlow(joinFlow);
-    await getRepository(JoinFlow).delete(joinFlow.id);
+    await database.getRepository(JoinFlow).delete(joinFlow.id);
     return paymentFlow;
   }
 
@@ -109,13 +109,13 @@ class PaymentFlowService implements PaymentFlowProvider {
   ): Promise<void> {
     log.info("Send confirm email for join flow " + joinFlow.id);
 
-    const contact = await ContactsService.findOneBy({
+    const contact = await contactsService.findOneBy({
       email: joinFlow.joinForm.email
     });
 
     if (contact?.membership?.isActive) {
       if (contact.password.hash) {
-        await EmailService.sendTemplateToContact(
+        await emailService.sendTemplateToContact(
           "email-exists-login",
           contact,
           {
@@ -124,11 +124,11 @@ class PaymentFlowService implements PaymentFlowProvider {
           locale
         );
       } else {
-        const rpFlow = await ResetSecurityFlowService.create(
+        const rpFlow = await resetSecurityFlowService.create(
           contact,
           RESET_SECURITY_FLOW_TYPE.PASSWORD
         );
-        await EmailService.sendTemplateToContact(
+        await emailService.sendTemplateToContact(
           "email-exists-set-password",
           contact,
           {
@@ -138,7 +138,7 @@ class PaymentFlowService implements PaymentFlowProvider {
         );
       }
     } else {
-      await EmailService.sendTemplateTo(
+      await emailService.sendTemplateTo(
         "confirm-email",
         { email: joinFlow.joinForm.email },
         {
@@ -158,7 +158,7 @@ class PaymentFlowService implements PaymentFlowProvider {
     // Check for an existing active member first to avoid completing the join
     // flow unnecessarily. This should never really happen as the user won't
     // get a confirm email if they are already an active member
-    let contact = await ContactsService.findOne({
+    let contact = await contactsService.findOne({
       where: { email: joinFlow.joinForm.email },
       relations: { profile: true }
     });
@@ -186,15 +186,15 @@ class PaymentFlowService implements PaymentFlowProvider {
       // Prefill contact data from payment provider if possible
       partialContact.firstname ||= paymentData.firstname || "";
       partialContact.lastname ||= paymentData.lastname || "";
-      deliveryAddress = OptionsService.getBool("show-mail-opt-in")
+      deliveryAddress = optionsService.getBool("show-mail-opt-in")
         ? paymentData.billingAddress
         : undefined;
     }
 
     if (contact) {
-      await ContactsService.updateContact(contact, partialContact);
+      await contactsService.updateContact(contact, partialContact);
     } else {
-      contact = await ContactsService.createContact(
+      contact = await contactsService.createContact(
         partialContact,
         deliveryAddress ? { deliveryAddress } : undefined,
         locale
@@ -202,15 +202,15 @@ class PaymentFlowService implements PaymentFlowProvider {
     }
 
     if (completedPaymentFlow) {
-      await PaymentService.updatePaymentMethod(contact, completedPaymentFlow);
-      await ContactsService.updateContactContribution(
+      await paymentService.updatePaymentMethod(contact, completedPaymentFlow);
+      await contactsService.updateContactContribution(
         contact,
         joinFlow.joinForm,
         locale
       );
     }
 
-    await EmailService.sendTemplateToContact(
+    await emailService.sendTemplateToContact(
       "welcome",
       contact,
       undefined,
@@ -249,4 +249,4 @@ class PaymentFlowService implements PaymentFlowProvider {
   }
 }
 
-export default new PaymentFlowService();
+export const paymentFlowService = new PaymentFlowService();

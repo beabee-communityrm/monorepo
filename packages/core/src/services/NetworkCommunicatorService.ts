@@ -5,8 +5,8 @@ import { sign, verify, JsonWebTokenError } from "jsonwebtoken";
 import express, { Request, Response } from "express";
 import { config } from "@beabee/config";
 import { log as mainLogger } from "#core/logging";
-import { wrapAsync } from "#core/utils";
-import { extractToken } from "#core/utils/auth";
+import { wrapAsync } from "#utils";
+import { extractToken } from "#utils/auth";
 
 import type { NetworkServiceMap } from "#types/network-service-map";
 
@@ -155,4 +155,4 @@ class NetworkCommunicatorService {
   }
 }
 
-export default new NetworkCommunicatorService();
+export const networkCommunicatorService = new NetworkCommunicatorService();

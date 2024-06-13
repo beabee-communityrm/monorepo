@@ -1,4 +1,4 @@
-import gocardless from "#core/lib/gocardless";
+import { gocardless } from "#core/lib/gocardless";
 import { log as mainLogger } from "#core/logging";
 
 import { JoinFlow } from "@beabee/models";
@@ -73,4 +73,4 @@ class GCProvider implements PaymentFlowProvider {
   }
 }
 
-export default new GCProvider();
+export const gcProvider = new GCProvider();

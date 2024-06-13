@@ -2,12 +2,10 @@ import express from "express";
 import moment from "moment";
 import { createQueryBuilder } from "typeorm";
 
-import { getRepository } from "@core/database";
-import { hasNewModel, isAdmin } from "@core/middleware";
-import { wrapAsync } from "@core/utils";
+import { database, wrapAsync } from "@beabee/core";
+import { hasNewModel, isAdmin } from "#express";
 
-import Callout from "@models/Callout";
-import CalloutResponse from "@models/CalloutResponse";
+import { Callout, CalloutResponse } from "@beabee/models";
 
 const app = express();
 
@@ -32,7 +30,7 @@ app.get(
   hasNewModel(Callout, "slug"),
   wrapAsync(async (req, res) => {
     const poll = req.model as Callout;
-    const responsesCount = await getRepository(CalloutResponse).count({
+    const responsesCount = await database.getRepository(CalloutResponse).count({
       where: { calloutId: poll.id }
     });
     res.render("poll", { poll, responsesCount });
@@ -47,7 +45,7 @@ app.post(
 
     switch (req.body.action) {
       case "update":
-        await getRepository(Callout).update(callout.id, {
+        await database.getRepository(Callout).update(callout.id, {
           pollMergeField: req.body.pollMergeField,
           mcMergeField: req.body.mcMergeField
         });
@@ -56,7 +54,7 @@ app.post(
         break;
 
       case "delete-responses":
-        await getRepository(CalloutResponse).delete({
+        await database.getRepository(CalloutResponse).delete({
           calloutId: callout.id
         });
         req.flash("success", "polls-responses-deleted");

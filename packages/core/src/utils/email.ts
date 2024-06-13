@@ -1,6 +1,6 @@
 import juice from "juice";
 
-import OptionsService from "#core/services/OptionsService";
+import { optionsService } from "#core/services/OptionsService";
 
 import { LocaleObject } from "@beabee/locales";
 
@@ -13,24 +13,24 @@ export function getEmailFooter(locale: LocaleObject): string {
 <p><br></p>
 <hr>
 <p><br></p>
-<p><img src="${OptionsService.getText(
+<p><img src="${optionsService.getText(
     "logo"
-  )}" style="display:inline-block; vertical-align: middle" width="50" height="50"><span style="margin-left: 10px">${OptionsService.getText(
+  )}" style="display:inline-block; vertical-align: middle" width="50" height="50"><span style="margin-left: 10px">${optionsService.getText(
     "organisation"
   )}</span></p>
 <p><br></p>
 <p style="color: #666;">${
     locale.footer.contactUs
-  } <a href="mailto:${OptionsService.getText(
+  } <a href="mailto:${optionsService.getText(
     "support-email"
-  )}">${OptionsService.getText("support-email")}</a>.</p>
+  )}">${optionsService.getText("support-email")}</a>.</p>
 <p style="color: #666;">${[
     [
       locale.footer.privacyPolicy,
-      OptionsService.getText("footer-privacy-link-url")
+      optionsService.getText("footer-privacy-link-url")
     ],
-    [locale.footer.terms, OptionsService.getText("footer-terms-link-url")],
-    ["Impressum", OptionsService.getText("footer-impressum-link-url")]
+    [locale.footer.terms, optionsService.getText("footer-terms-link-url")],
+    ["Impressum", optionsService.getText("footer-impressum-link-url")]
   ]
     .filter(([text, url]) => !!url)
     .map(([text, url]) => `<a href="${url}">${text}</a>`)

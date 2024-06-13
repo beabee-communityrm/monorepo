@@ -1,5 +1,6 @@
-import { AuthInfo } from "#types/auth-info";
+import { AuthInfo } from "@beabee/core";
 import { NextFunction, Request, RequestHandler, Response } from "express";
+import { Contact } from "@beabee/models";
 
 export function isValidNextUrl(url: string): boolean {
   return /^\/([^/]|$)/.test(url);
@@ -14,7 +15,7 @@ export function userToAuth(user: Express.User): AuthInfo {
 }
 
 export interface RequestWithUser extends Request {
-  user: Express.User;
+  user: Express.User & Contact;
 }
 
 export function hasUser(

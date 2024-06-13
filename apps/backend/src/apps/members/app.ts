@@ -1,20 +1,14 @@
-import { RuleGroup } from "@beabee/beabee-common";
+import { RuleGroup, GetContactWith } from "@beabee/beabee-common";
 import express, { Request } from "express";
 import queryString from "query-string";
 
-import { getRepository } from "@core/database";
-import { isAdmin } from "@core/middleware";
-import { userToAuth, wrapAsync } from "@core/utils";
-
-import OptionsService from "@core/services/OptionsService";
-import SegmentService from "@core/services/SegmentService";
+import { database, wrapAsync, optionsService } from "@beabee/core";
+import { isAdmin, userToAuth } from "#express";
+import { segmentService } from "#services";
 
 import ContactTransformer from "@api/transformers/ContactTransformer";
 
-import Project from "@models/Project";
-import Contact from "@models/Contact";
-
-import { GetContactWith } from "@enums/get-contact-with";
+import { Project, Contact } from "@beabee/models";
 
 const app = express();
 
@@ -23,7 +17,7 @@ app.set("views", __dirname + "/views");
 app.use(isAdmin);
 
 function getAvailableTags() {
-  return Promise.resolve(OptionsService.getList("available-tags"));
+  return Promise.resolve(optionsService.getList("available-tags"));
 }
 
 type SortOption = {
@@ -84,10 +78,10 @@ export function cleanRuleGroup(group: RuleGroup): RuleGroup {
       "condition" in rule
         ? cleanRuleGroup(rule)
         : {
-            field: rule.field,
-            operator: rule.operator,
-            value: Array.isArray(rule.value) ? rule.value : [rule.value]
-          }
+          field: rule.field,
+          operator: rule.operator,
+          value: Array.isArray(rule.value) ? rule.value : [rule.value]
+        }
     )
   };
 }
@@ -111,8 +105,8 @@ app.get(
 
     const auth = userToAuth(req.user!);
 
-    const totalMembers = await getRepository(Contact).count();
-    const segments = await SegmentService.getSegmentsWithCount(auth);
+    const totalMembers = await database.getRepository(Contact).count();
+    const segments = await segmentService.getSegmentsWithCount(auth);
     const activeSegment = query.segment
       ? segments.find((s) => s.id === query.segment)
       : undefined;
@@ -160,7 +154,7 @@ app.get(
 
     const addToProject =
       query.addToProject &&
-      (await getRepository(Project).findOneBy({
+      (await database.getRepository(Project).findOneBy({
         id: query.addToProject as string
       }));
 
@@ -187,14 +181,14 @@ app.post(
     const searchRuleGroup = getSearchRuleGroup(req.query);
     if (searchRuleGroup) {
       if (req.body.action === "save-segment") {
-        const segment = await SegmentService.createSegment(
+        const segment = await segmentService.createSegment(
           "Untitled segment",
           searchRuleGroup
         );
         res.redirect("/members/?segment=" + segment.id);
       } else if (req.body.action === "update-segment" && req.query.segment) {
         const segmentId = req.query.segment as string;
-        await SegmentService.updateSegment(segmentId, {
+        await segmentService.updateSegment(segmentId, {
           ruleGroup: searchRuleGroup
         });
         res.redirect("/members/?segment=" + segmentId);

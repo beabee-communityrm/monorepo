@@ -13,7 +13,7 @@ import {
   Param
 } from "routing-controllers";
 
-import ApiKeyService from "@core/services/ApiKeyService";
+import { apiKeyService, AuthInfo } from "@beabee/core";
 
 import { CurrentAuth } from "@api/decorators/CurrentAuth";
 import {
@@ -25,9 +25,7 @@ import {
 import { PaginatedDto } from "@api/dto/PaginatedDto";
 import ApiKeyTransformer from "@api/transformers/ApiKeyTransformer";
 
-import Contact from "@models/Contact";
-
-import { AuthInfo } from "@type/auth-info";
+import { Contact } from "@beabee/models";
 
 @JsonController("/api-key")
 @Authorized("admin")
@@ -54,7 +52,7 @@ export class ApiKeyController {
     @CurrentUser({ required: true }) creator: Contact,
     @Body() data: CreateApiKeyDto
   ): Promise<NewApiKeyDto> {
-    const token = await ApiKeyService.create(
+    const token = await apiKeyService.create(
       creator,
       data.description,
       data.expires
@@ -66,7 +64,7 @@ export class ApiKeyController {
   @OnUndefined(204)
   @Delete("/:id")
   async deleteApiKey(@Param("id") id: string): Promise<void> {
-    if (!(await ApiKeyService.delete(id))) {
+    if (!(await apiKeyService.delete(id))) {
       throw new NotFoundError();
     }
   }

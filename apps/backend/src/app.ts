@@ -1,4 +1,6 @@
 import "module-alias/register";
+import './typings/index.d.ts';
+import './typings/passport-totp.d.ts';
 
 import cleanDeep from "clean-deep";
 import cookie from "cookie-parser";
@@ -7,19 +9,13 @@ import express, { ErrorRequestHandler } from "express";
 import flash from "express-flash";
 import helmet from "helmet";
 
-import appLoader from "@core/app-loader";
-import { log, requestErrorLogger, requestLogger } from "@core/logging";
-import quickflash from "@core/quickflash";
-import { initApp, startServer } from "@core/server";
-import sessions from "@core/sessions";
-import { isInvalidType } from "@core/utils";
-
-import OptionsService, { OptionKey } from "@core/services/OptionsService";
-import PageSettingsService from "@core/services/PageSettingsService";
+import { appLoader } from "#express";
+import { log, requestErrorLogger, requestLogger, isInvalidType, optionsService, OptionKey, PageSettingsService } from "@beabee/core";
+import { quickflash, initApp, startServer, sessions } from "#express";
 
 //import specialUrlHandler from '@apps/tools/apps/special-urls/handler';
 
-import config from "@config";
+import { config } from "@beabee/config";
 
 if (!config.gocardless.sandbox && config.dev) {
   log.error(
@@ -69,7 +65,7 @@ app.use("/membership.js", (req, res) => {
 });
 
 app.get("/favicon.png", (req, res) => {
-  res.redirect(OptionsService.getText("logo"));
+  res.redirect(optionsService.getText("logo"));
 });
 
 // Log the rest
@@ -80,9 +76,9 @@ initApp()
     // Load some caches and make them immediately available
     await PageSettingsService.reload();
     app.use((req, res, next) => {
-      res.locals.Options = (opt: OptionKey) => OptionsService.getText(opt);
-      res.locals.Options.list = (opt: OptionKey) => OptionsService.getList(opt);
-      res.locals.Options.bool = (opt: OptionKey) => OptionsService.getBool(opt);
+      res.locals.Options = (opt: OptionKey) => optionsService.getText(opt);
+      res.locals.Options.list = (opt: OptionKey) => optionsService.getList(opt);
+      res.locals.Options.bool = (opt: OptionKey) => optionsService.getBool(opt);
       res.locals.pageSettings = PageSettingsService.getPath(req.path);
       next();
     });

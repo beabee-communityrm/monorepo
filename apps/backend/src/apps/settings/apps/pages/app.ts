@@ -1,12 +1,9 @@
 import express from "express";
 
-import { getRepository } from "@core/database";
-import { hasNewModel, hasSchema, isAdmin } from "@core/middleware";
-import { wrapAsync } from "@core/utils";
+import { database, wrapAsync, PageSettingsService } from "@beabee/core";
+import { hasNewModel, hasSchema, isAdmin } from "#express";
 
-import PageSettingsService from "@core/services/PageSettingsService";
-
-import PageSettings from "@models/PageSettings";
+import { PageSettings } from "@beabee/models";
 
 import { createPageSchema } from "./schema.json";
 
@@ -27,7 +24,7 @@ app.use(isAdmin);
 app.get(
   "/",
   wrapAsync(async (req, res) => {
-    const pages = await getRepository(PageSettings).find();
+    const pages = await database.getRepository(PageSettings).find();
     res.render("index", { pages });
   })
 );

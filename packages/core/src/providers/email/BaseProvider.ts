@@ -1,10 +1,10 @@
-import { createQueryBuilder, getRepository } from "#core/database";
+import { database } from "#core/database";
 import { log as mainLogger } from "#core/logging";
-import { formatEmailBody } from "#core/utils/email";
+import { formatEmailBody } from "#utils/email";
 import { LocaleObject } from "@beabee/locales";
 
-import OptionsService from "#core/services/OptionsService";
-import ResetSecurityFlowService from "#core/services/ResetSecurityFlowService";
+import { optionsService } from "#core/services/OptionsService";
+import { resetSecurityFlowService } from "#core/services/ResetSecurityFlowService";
 
 import { Email, Contact } from "@beabee/models";
 
@@ -16,7 +16,7 @@ import {
   EmailOptions,
   EmailTemplate,
   PreparedEmail
-} from "./index.js";
+} from "#types/index";
 
 import { config } from "@beabee/config";
 
@@ -41,7 +41,8 @@ function generateResetPasswordLinks(type: "set" | "reset") {
     log.info(`Creating ${emails.length} links for ${mergeField}`);
 
     // Get list of contacts who match the recipients
-    const contacts = await createQueryBuilder(Contact, "c")
+    const contacts = await database
+      .createQueryBuilder(Contact, "c")
       .select(["id", "email"])
       .where("c.email IN (:...emails)", { emails })
       .getRawMany<{ id: string; email: string }>();
@@ -50,7 +51,7 @@ function generateResetPasswordLinks(type: "set" | "reset") {
       contacts.map((m) => [m.email, m.id])
     );
 
-    const rpFlowIdsByContactId = await ResetSecurityFlowService.createManyRaw(
+    const rpFlowIdsByContactId = await resetSecurityFlowService.createManyRaw(
       Object.values(contactIdsByEmail),
       RESET_SECURITY_FLOW_TYPE.PASSWORD
     );
@@ -95,7 +96,7 @@ const magicMergeFieldsProcessors = {
   }
 } as const;
 
-export default abstract class BaseProvider implements EmailProvider {
+export abstract class BaseProvider implements EmailProvider {
   protected abstract doSendEmail(
     email: PreparedEmail,
     recipients: EmailRecipient[],
@@ -111,10 +112,10 @@ export default abstract class BaseProvider implements EmailProvider {
     const preparedEmail = {
       ...email,
       body: formatEmailBody(email.body, locale),
-      fromEmail: email.fromEmail || OptionsService.getText("support-email"),
+      fromEmail: email.fromEmail || optionsService.getText("support-email"),
       fromName:
         email.fromName ||
-        (email.fromEmail ? "" : OptionsService.getText("support-email-from"))
+        (email.fromEmail ? "" : optionsService.getText("support-email-from"))
     };
 
     let preparedRecipients = recipients;
@@ -134,18 +135,23 @@ export default abstract class BaseProvider implements EmailProvider {
     locale: LocaleObject,
     opts?: EmailOptions
   ): Promise<void> {
-    const email = await getRepository(Email).findOneBy({ id: templateId });
+    const email = await database
+      .getRepository(Email)
+      .findOneBy({ id: templateId });
     if (email) {
       await this.sendEmail(email, recipients, locale, opts);
     }
   }
 
   async getTemplateEmail(templateId: string): Promise<false | Email | null> {
-    return (await getRepository(Email).findOneBy({ id: templateId })) || null;
+    return (
+      (await database.getRepository(Email).findOneBy({ id: templateId })) ||
+      null
+    );
   }
 
   async getTemplates(): Promise<EmailTemplate[]> {
-    const emails = await getRepository(Email).find();
+    const emails = await database.getRepository(Email).find();
     return emails.map((email) => ({ id: email.id, name: email.name }));
   }
 }

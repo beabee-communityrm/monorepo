@@ -3,13 +3,12 @@ import "module-alias/register";
 import moment from "moment";
 import { Between } from "typeorm";
 
-import { getRepository } from "@core/database";
-import { log as mainLogger } from "@core/logging";
-import { runApp } from "@core/server";
+import { runApp } from "#express";
 
-import GiftService from "@core/services/GiftService";
+import { database, GiftService, log as mainLogger } from "@beabee/core";
 
-import GiftFlow from "@models/GiftFlow";
+import { GiftFlow } from "@beabee/models";
+import currentLocale from "#locale";
 
 const log = mainLogger.child({ app: "start-gifts" });
 
@@ -21,7 +20,7 @@ async function main(date: string | undefined) {
     `Processing gifts between ${fromDate.format()} and ${toDate.format()}`
   );
 
-  const giftFlows = await getRepository(GiftFlow).find({
+  const giftFlows = await database.getRepository(GiftFlow).find({
     where: {
       giftForm: { startDate: Between(fromDate.toDate(), toDate.toDate()) },
       completed: true,
@@ -35,7 +34,7 @@ async function main(date: string | undefined) {
     log.info(`Processing gift ${giftFlow.id}`);
 
     try {
-      await GiftService.processGiftFlow(giftFlow);
+      await GiftService.processGiftFlow(giftFlow, currentLocale());
     } catch (error) {
       log.error(`Error prorcessing gift ${giftFlow.id}`, error);
     }

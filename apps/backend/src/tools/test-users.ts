@@ -3,23 +3,21 @@ import "module-alias/register";
 import {
   ContributionPeriod,
   ContributionType,
-  PaymentStatus
+  PaymentStatus,
+  getActualAmount
 } from "@beabee/beabee-common";
 import moment from "moment";
 import { Brackets } from "typeorm";
 
-import { createQueryBuilder } from "@core/database";
-import { runApp } from "@core/server";
-import { getActualAmount } from "@core/utils";
+import { database } from "@beabee/core";
+import { runApp } from "#express";
 
-import config from "@config";
+import { config } from "@beabee/config";
 
-import Payment from "@models/Payment";
-import Contact from "@models/Contact";
-import ContactContribution from "@models/ContactContribution";
+import { Payment, Contact, ContactContribution } from "@beabee/models";
 
 async function logContact(type: string, conditions: Brackets[]) {
-  const qb = createQueryBuilder(Contact, "m")
+  const qb = database.createQueryBuilder(Contact, "m")
     .innerJoinAndSelect("m.roles", "mp")
     .where("TRUE");
 
@@ -70,27 +68,27 @@ async function logContactVaryContributions(
 async function getFilters() {
   const now = moment.utc();
 
-  const hasScheduledPayments = createQueryBuilder()
+  const hasScheduledPayments = database.createQueryBuilder()
     .subQuery()
     .select("p.contactId")
     .from(Payment, "p")
     .where("p.status = :status", { status: PaymentStatus.Pending });
-  const hasFailedPayments = createQueryBuilder()
+  const hasFailedPayments = database.createQueryBuilder()
     .subQuery()
     .select("p.contactId")
     .from(Payment, "p")
     .where("p.status = 'failed'", { status: PaymentStatus.Failed });
-  const hasSubscription = createQueryBuilder()
+  const hasSubscription = database.createQueryBuilder()
     .subQuery()
     .select("cc.contactId")
     .from(ContactContribution, "cc")
     .where("cc.subscriptionId IS NOT NULL");
-  const hasCancelled = createQueryBuilder()
+  const hasCancelled = database.createQueryBuilder()
     .subQuery()
     .select("cc.contactId")
     .from(ContactContribution, "cc")
     .where("cc.cancelledAt IS NOT NULL");
-  const isPayingFee = createQueryBuilder()
+  const isPayingFee = database.createQueryBuilder()
     .subQuery()
     .select("cc.contactId")
     .from(ContactContribution, "cc")

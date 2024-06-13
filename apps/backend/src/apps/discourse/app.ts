@@ -1,13 +1,12 @@
 import express from "express";
 import DiscourseSSO from "discourse-sso";
 
-import config from "@config";
+import { config } from "@beabee/config";
 
-import { getRepository } from "@core/database";
-import { isLoggedIn } from "@core/middleware";
-import { hasUser, wrapAsync } from "@core/utils";
+import { database, wrapAsync } from "@beabee/core";
+import { isLoggedIn, hasUser } from "#express";
 
-import ProjectContact from "@models/ProjectContact";
+import { ProjectContact } from "@beabee/models";
 
 const sso = new DiscourseSSO(config.discourse.ssoSecret);
 
@@ -22,7 +21,7 @@ app.get(
       const { sso: payload, sig } = req.query;
 
       if (payload && sig && sso.validate(payload as string, sig as string)) {
-        const projectContacts = await getRepository(ProjectContact).find({
+        const projectContacts = await database.getRepository(ProjectContact).find({
           where: { contactId: req.user.id },
           relations: { project: true }
         });

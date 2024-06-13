@@ -2,13 +2,10 @@ import axios from "axios";
 import express from "express";
 import { Brackets } from "typeorm";
 
-import { createQueryBuilder } from "@core/database";
-import { log } from "@core/logging";
-import { isAdmin } from "@core/middleware";
-import { wrapAsync } from "@core/utils";
+import { database, log, wrapAsync } from "@beabee/core";
+import { isAdmin } from "#express";
 
-import ContactRole from "@models/ContactRole";
-import ContactProfile from "@models/ContactProfile";
+import { ContactRole, ContactProfile } from "@beabee/models";
 
 const app = express();
 
@@ -65,9 +62,9 @@ async function getPostcodes(postcodes: string[]): Promise<PostcodeCache[]> {
     for (const result of data.result) {
       postcodeCache[result.query] = result.result
         ? {
-            latitude: result.result.latitude,
-            longitude: result.result.longitude
-          }
+          latitude: result.result.latitude,
+          longitude: result.result.longitude
+        }
         : null;
     }
   }
@@ -85,7 +82,7 @@ app.get(
   "/locations",
   wrapAsync(async (req, res) => {
     const now = new Date();
-    const profiles = await createQueryBuilder(ContactProfile, "profile")
+    const profiles = await database.createQueryBuilder(ContactProfile, "profile")
       .innerJoin(ContactRole, "mp", "profile.contactId = mp.contactId")
       .where("profile.deliveryOptIn = true")
       .andWhere("mp.type = 'member' AND mp.dateAdded <= :now", { now })

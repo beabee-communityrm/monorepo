@@ -1,15 +1,7 @@
 import { BadRequestError } from "routing-controllers";
+import { InvalidCalloutResponseCode } from "../types/index.js";
 
-type InvalidCalloutResponseCode =
-  | "only-anonymous"
-  | "expired-user"
-  | "closed"
-  | "cant-update"
-  | "guest-fields-missing"
-  | "logged-in-guest-fields"
-  | "unknown-user";
-
-export default class InvalidCalloutResponse extends BadRequestError {
+export class InvalidCalloutResponse extends BadRequestError {
   readonly code = "invalid-callout-response";
   constructor(readonly subCode: InvalidCalloutResponseCode) {
     super();

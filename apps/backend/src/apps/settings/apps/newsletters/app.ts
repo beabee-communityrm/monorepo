@@ -2,19 +2,13 @@ import { NewsletterStatus } from "@beabee/beabee-common";
 import express from "express";
 import moment from "moment";
 
-import { log as mainLogger } from "@core/logging";
-import { isSuperAdmin } from "@core/middleware";
-import { wrapAsync } from "@core/utils";
+import { log as mainLogger, wrapAsync, contactsService, newsletterService, optionsService, NewsletterContact } from "@beabee/core";
+import { isSuperAdmin } from "#express";
 
-import ContactsService from "@core/services/ContactsService";
-import NewsletterService from "@core/services/NewsletterService";
-import OptionsService from "@core/services/OptionsService";
+import { Contact } from "@beabee/models";
 
-import { NewsletterContact } from "@core/providers/newsletter";
-
-import Contact from "@models/Contact";
-
-import config from "@config";
+import { config } from "@beabee/config";
+import currentLocale from "#locale";
 
 const log = mainLogger.child({ app: "newsletter-settings" });
 
@@ -30,7 +24,7 @@ app.get("/", (req, res) => {
 
 async function setResyncStatus(message: string) {
   log.info("Resync status: " + message);
-  await OptionsService.set(
+  await optionsService.set(
     "newsletter-resync-status",
     `[${moment.utc().format("HH:mm DD/MM")}] ${message}`
   );
@@ -47,11 +41,11 @@ function isMismatchedContact(contact: Contact, nlContact: NewsletterContact) {
   return (
     contact.profile.newsletterStatus !== nlContact.status ||
     groupsList(contact.profile.newsletterGroups) !==
-      groupsList(nlContact.groups) ||
+    groupsList(nlContact.groups) ||
     !!contact.membership?.isActive !==
-      nlContact.tags.includes(
-        OptionsService.getText("newsletter-active-member-tag")
-      )
+    nlContact.tags.includes(
+      optionsService.getText("newsletter-active-member-tag")
+    )
   );
 }
 
@@ -78,10 +72,10 @@ async function handleResync(
   try {
     await setResyncStatus("In progress: Fetching contact lists");
 
-    const contacts = await ContactsService.find({
+    const contacts = await contactsService.find({
       relations: { profile: true }
     });
-    const nlContacts = await NewsletterService.getNewsletterContacts();
+    const nlContacts = await newsletterService.getNewsletterContacts();
 
     const newContactsToUpload: Contact[] = [],
       existingContacts: Contact[] = [],
@@ -116,7 +110,7 @@ async function handleResync(
         contacts.every((m) => m.email !== nm.email)
     );
 
-    await OptionsService.set(
+    await optionsService.set(
       "newsletter-resync-data",
       JSON.stringify({
         uploadIds: newContactsToUpload.map((m) => m.id),
@@ -144,7 +138,7 @@ async function handleResync(
     await setResyncStatus(
       `In progress: Uploading ${newContactsToUpload.length} new contacts to the newsletter list`
     );
-    await NewsletterService.upsertContacts(newContactsToUpload);
+    await newsletterService.upsertContacts(newContactsToUpload);
 
     // Must fix status before mass update to avoid overwriting in the wrong direction
     if (statusSource === "theirs") {
@@ -153,7 +147,7 @@ async function handleResync(
       );
 
       for (const [contact, nlContact] of mismatchedContacts) {
-        await ContactsService.updateContactProfile(
+        await contactsService.updateContactProfile(
           contact,
           {
             newsletterStatus: nlContact.status,
@@ -167,24 +161,24 @@ async function handleResync(
     await setResyncStatus(
       `In progress: Updating ${existingContacts.length} contacts in newsletter list`
     );
-    await NewsletterService.upsertContacts(existingContacts);
+    await newsletterService.upsertContacts(existingContacts);
 
     // Sync tags before archiving
     await setResyncStatus(
       `In progress: Updating active member tag for ${mismatchedContacts.length} contacts in newsletter list`
     );
 
-    await NewsletterService.addTagToContacts(
+    await newsletterService.addTagToContacts(
       mismatchedContacts
         .filter(([m]) => m.membership?.isActive)
         .map(([m]) => m),
-      OptionsService.getText("newsletter-active-member-tag")
+      optionsService.getText("newsletter-active-member-tag")
     );
-    await NewsletterService.removeTagFromContacts(
+    await newsletterService.removeTagFromContacts(
       mismatchedContacts
         .filter(([m]) => !m.membership?.isActive)
         .map(([m]) => m),
-      OptionsService.getText("newsletter-active-member-tag")
+      optionsService.getText("newsletter-active-member-tag")
     );
 
     // TODO: Check other tags
@@ -192,14 +186,14 @@ async function handleResync(
     await setResyncStatus(
       `In progress: Archiving ${existingContactsToArchive.length} contacts from newsletter list`
     );
-    await NewsletterService.archiveContacts(existingContactsToArchive);
+    await newsletterService.archiveContacts(existingContactsToArchive);
 
     await setResyncStatus(
       `In progress: Importing ${nlContactsToImport.length} contacts from newsletter list`
     );
 
     for (const nlContact of nlContactsToImport) {
-      await ContactsService.createContact(
+      await contactsService.createContact(
         {
           email: nlContact.email,
           firstname: nlContact.firstname,
@@ -210,6 +204,7 @@ async function handleResync(
           newsletterStatus: nlContact.status,
           newsletterGroups: nlContact.groups
         },
+        currentLocale(),
         { sync: false }
       );
     }
@@ -243,9 +238,9 @@ app.post(
 app.get(
   "/report",
   wrapAsync(async (req, res) => {
-    const data = OptionsService.getJSON("newsletter-resync-data") as ReportData;
-    const newContactsToUpload = await ContactsService.findByIds(data.uploadIds);
-    const mismatchedContacts = await ContactsService.findByIds(
+    const data = optionsService.getJSON("newsletter-resync-data") as ReportData;
+    const newContactsToUpload = await contactsService.findByIds(data.uploadIds);
+    const mismatchedContacts = await contactsService.findByIds(
       data.mismatched.map((m) => m.id),
       { relations: { profile: true } }
     );
