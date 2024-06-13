@@ -17,7 +17,11 @@ import {
 import { BaseCalloutResponseTransformer } from "@api/transformers/BaseCalloutResponseTransformer";
 import { groupBy } from "@api/utils";
 
-import { CalloutResponse, CalloutResponseComment, Callout } from "@beabee/models";
+import {
+  CalloutResponse,
+  CalloutResponseComment,
+  Callout
+} from "@beabee/models";
 
 class CalloutResponseExporter extends BaseCalloutResponseTransformer<
   ExportCalloutResponseDto,
@@ -31,11 +35,11 @@ class CalloutResponseExporter extends BaseCalloutResponseTransformer<
   ): ExportCalloutResponseDto {
     const contact: [string, string, string, string] = response.contact
       ? [
-        response.contact.firstname,
-        response.contact.lastname,
-        response.contact.fullname,
-        response.contact.email
-      ]
+          response.contact.firstname,
+          response.contact.lastname,
+          response.contact.fullname,
+          response.contact.email
+        ]
       : ["", "", response.guestName || "", response.guestEmail || ""];
 
     return [
@@ -105,8 +109,9 @@ class CalloutResponseExporter extends BaseCalloutResponseTransformer<
       components
     });
 
-    const exportName = `responses-${callout.slug
-      }_${new Date().toISOString()}.csv`;
+    const exportName = `responses-${
+      callout.slug
+    }_${new Date().toISOString()}.csv`;
 
     const headers = [
       "Date",

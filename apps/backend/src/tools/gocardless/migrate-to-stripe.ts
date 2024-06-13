@@ -64,7 +64,8 @@ runApp(async () => {
 
   const migrationData = await loadMigrationData();
 
-  const contacts = await database.createQueryBuilder(Contact, "contact")
+  const contacts = await database
+    .createQueryBuilder(Contact, "contact")
     // Only select those that are't renewing in the next 5 days
     .innerJoinAndSelect(
       "contact.roles",

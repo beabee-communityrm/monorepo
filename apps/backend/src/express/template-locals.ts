@@ -6,7 +6,8 @@ function hasPermission(perms1: string[], perms2: string[]) {
   return perms1.filter((p) => perms2.includes(p)).length > 0;
 }
 
-export const templateLocals = (appConfigs: AppConfig[]) =>
+export const templateLocals =
+  (appConfigs: AppConfig[]) =>
   (req: Request, res: Response, next: NextFunction): void => {
     // Process which apps should be shown in menu
     res.locals.menu = {

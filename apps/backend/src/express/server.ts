@@ -2,7 +2,11 @@ import { Express } from "express";
 
 import { database as db } from "@beabee/core";
 
-import { optionsService, networkCommunicatorService, log as mainLogger } from "@beabee/core";
+import {
+  optionsService,
+  networkCommunicatorService,
+  log as mainLogger
+} from "@beabee/core";
 
 const log = mainLogger.child({ app: "server" });
 

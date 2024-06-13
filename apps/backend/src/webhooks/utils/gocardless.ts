@@ -6,7 +6,14 @@ import {
 } from "gocardless-nodejs/types/Types";
 import moment, { DurationInputObject } from "moment";
 
-import { database, gocardless, log as mainLogger, gocardlessUtils, contactsService, paymentService } from "@beabee/core";
+import {
+  database,
+  gocardless,
+  log as mainLogger,
+  gocardlessUtils,
+  contactsService,
+  paymentService
+} from "@beabee/core";
 
 import { Payment } from "@beabee/models";
 
@@ -151,13 +158,15 @@ async function calcFailedPaymentPeriodEnd(
   const subscriptionId = payment.subscriptionId!; // Definitely exists
   const subscription = await gocardless.subscriptions.get(subscriptionId);
 
-  const latestSuccessfulPayment = await database.getRepository(Payment).findOne({
-    where: {
-      subscriptionId,
-      status: PaymentStatus.Successful
-    },
-    order: { chargeDate: "DESC" }
-  });
+  const latestSuccessfulPayment = await database
+    .getRepository(Payment)
+    .findOne({
+      where: {
+        subscriptionId,
+        status: PaymentStatus.Successful
+      },
+      order: { chargeDate: "DESC" }
+    });
 
   if (latestSuccessfulPayment) {
     return moment

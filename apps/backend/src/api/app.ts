@@ -68,7 +68,7 @@ app.use(cookie());
 
 initApp()
   .then(() => {
-    (app);
+    app;
 
     useExpressServer(app, {
       routePrefix: "/1.0",

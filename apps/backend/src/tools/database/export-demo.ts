@@ -63,7 +63,8 @@ async function main() {
     resetSecurityFlowAnonymiser
   ] as ModelAnonymiser[]);
 
-  const contacts = await database.createQueryBuilder(Contact, "item")
+  const contacts = await database
+    .createQueryBuilder(Contact, "item")
     .select("item.id")
     .orderBy("random()")
     .limit(400)
@@ -80,7 +81,8 @@ async function main() {
     );
   }
 
-  const callouts = await database.createQueryBuilder(Callout, "item")
+  const callouts = await database
+    .createQueryBuilder(Callout, "item")
     .select("item.id")
     .orderBy("item.date", "DESC")
     .limit(20)
@@ -96,7 +98,8 @@ async function main() {
     );
   }
 
-  const responses = await database.createQueryBuilder(CalloutResponse, "item")
+  const responses = await database
+    .createQueryBuilder(CalloutResponse, "item")
     .select("item.id")
     .where("item.calloutId IN (:...ids)", { ids: calloutIds })
     .andWhere(

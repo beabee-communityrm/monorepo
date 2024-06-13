@@ -19,11 +19,13 @@ export class StatsController {
   @Authorized("admin")
   @Get("/")
   async getStats(@QueryParams() query: GetStatsOptsDto): Promise<GetStatsDto> {
-    const newContacts = await database.createQueryBuilder(Contact, "m")
+    const newContacts = await database
+      .createQueryBuilder(Contact, "m")
       .where("m.joined BETWEEN :from AND :to", query)
       .getCount();
 
-    const payments = await database.createQueryBuilder(Payment, "p")
+    const payments = await database
+      .createQueryBuilder(Payment, "p")
       .select("SUM(p.amount)", "total")
       .addSelect("AVG(p.amount)", "average")
       .where("p.chargeDate BETWEEN :from AND :to AND status = :status", {

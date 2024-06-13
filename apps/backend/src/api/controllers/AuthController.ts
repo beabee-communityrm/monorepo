@@ -14,7 +14,12 @@ import {
   Res
 } from "routing-controllers";
 
-import { UnauthorizedError, database, contactsService, PassportLoginInfo } from "@beabee/core";
+import {
+  UnauthorizedError,
+  database,
+  contactsService,
+  PassportLoginInfo
+} from "@beabee/core";
 import { passport } from "#express";
 import { LoginDto } from "@api/dto/LoginDto";
 import { login } from "@api/utils";

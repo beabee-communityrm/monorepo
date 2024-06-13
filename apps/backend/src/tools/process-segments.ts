@@ -2,9 +2,15 @@ import "module-alias/register";
 
 import { In } from "typeorm";
 
-import { database, log as mainLogger, emailService, newsletterService, contactsService } from "@beabee/core";
+import {
+  database,
+  log as mainLogger,
+  emailService,
+  newsletterService,
+  contactsService
+} from "@beabee/core";
 import { runApp } from "#express";
-import { segmentService } from "#services"
+import { segmentService } from "#services";
 
 import { Segment, SegmentOngoingEmail, SegmentContact } from "@beabee/models";
 import currentLocale from "#locale";
@@ -35,19 +41,21 @@ async function processSegment(segment: Segment) {
     segmentId: segment.id,
     contactId: In(oldSegmentContactIds)
   });
-  await database.getRepository(SegmentContact).insert(
-    newContacts.map((contact) => ({ segment, contact }))
-  );
+  await database
+    .getRepository(SegmentContact)
+    .insert(newContacts.map((contact) => ({ segment, contact })));
 
-  const outgoingEmails = await database.getRepository(SegmentOngoingEmail).find({
-    where: { segmentId: segment.id },
-    relations: { email: true }
-  });
+  const outgoingEmails = await database
+    .getRepository(SegmentOngoingEmail)
+    .find({
+      where: { segmentId: segment.id },
+      relations: { email: true }
+    });
 
   // Only fetch old contacts if we need to
   const oldContacts =
     segment.newsletterTag ||
-      outgoingEmails.some((oe) => oe.trigger === "onLeave")
+    outgoingEmails.some((oe) => oe.trigger === "onLeave")
       ? await contactsService.findByIds(oldSegmentContactIds)
       : [];
 
@@ -59,7 +67,11 @@ async function processSegment(segment: Segment) {
           ? newContacts
           : [];
     if (emailContacts.length > 0) {
-      await emailService.sendEmailToContact(outgoingEmail.email, emailContacts, currentLocale());
+      await emailService.sendEmailToContact(
+        outgoingEmail.email,
+        emailContacts,
+        currentLocale()
+      );
     }
   }
 
@@ -78,7 +90,9 @@ async function processSegment(segment: Segment) {
 async function main(segmentId?: string) {
   let segments: Segment[];
   if (segmentId) {
-    const segment = await database.getRepository(Segment).findOneBy({ id: segmentId });
+    const segment = await database
+      .getRepository(Segment)
+      .findOneBy({ id: segmentId });
     if (segment) {
       segments = [segment];
     } else {

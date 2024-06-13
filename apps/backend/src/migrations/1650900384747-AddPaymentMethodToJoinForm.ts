@@ -2,7 +2,8 @@ import { addThenSetNotNull } from "@beabee/core";
 import { MigrationInterface, QueryRunner } from "typeorm";
 
 export class AddPaymentMethodToJoinForm1650900384747
-  implements MigrationInterface {
+  implements MigrationInterface
+{
   name = "AddPaymentMethodToJoinForm1650900384747";
 
   public async up(queryRunner: QueryRunner): Promise<void> {

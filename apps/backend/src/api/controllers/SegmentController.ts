@@ -90,7 +90,9 @@ export class SegmentController {
   @OnUndefined(204)
   async deleteSegment(@Params() { id }: UUIDParams): Promise<void> {
     await database.getRepository(SegmentContact).delete({ segment: { id } });
-    await database.getRepository(SegmentOngoingEmail).delete({ segment: { id } });
+    await database
+      .getRepository(SegmentOngoingEmail)
+      .delete({ segment: { id } });
     const result = await database.getRepository(Segment).delete(id);
     if (result.affected === 0) {
       throw new NotFoundError();
@@ -109,9 +111,9 @@ export class SegmentController {
         ...query,
         rules: query.rules
           ? {
-            condition: "AND",
-            rules: [segment.ruleGroup, query.rules]
-          }
+              condition: "AND",
+              rules: [segment.ruleGroup, query.rules]
+            }
           : segment.ruleGroup
       });
     }

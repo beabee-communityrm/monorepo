@@ -1,5 +1,9 @@
 import { contactFilters, validateRuleGroup } from "@beabee/beabee-common";
-import { SegmentService as CoreSegmentService, database, AuthInfo } from "@beabee/core";
+import {
+  SegmentService as CoreSegmentService,
+  database,
+  AuthInfo
+} from "@beabee/core";
 
 import ContactTransformer from "@api/transformers/ContactTransformer";
 import { buildSelectQuery } from "@api/utils/rules";

@@ -94,9 +94,9 @@ app.post(
   "/",
   hasSchema(createSchema).orFlash,
   wrapAsync(async function (req, res) {
-    const exportDetails = await database.getRepository(Export).save(
-      await schemaToExport(req.body)
-    );
+    const exportDetails = await database
+      .getRepository(Export)
+      .save(await schemaToExport(req.body));
     req.flash("success", "exports-created");
     res.redirect("/tools/exports/" + exportDetails.id);
   })
@@ -179,23 +179,28 @@ app.post(
       req.flash("success", "exports-added");
       res.redirect("/tools/exports/" + exportDetails.id);
     } else if (data.action === "update") {
-      await database.getRepository(ExportItem).update(
-        { exportId: exportDetails.id, status: data.oldStatus },
-        { status: data.newStatus }
-      );
+      await database
+        .getRepository(ExportItem)
+        .update(
+          { exportId: exportDetails.id, status: data.oldStatus },
+          { status: data.newStatus }
+        );
 
       req.flash("success", "exports-updated");
       res.redirect("/tools/exports/" + exportDetails.id);
     } else if (data.action === "export") {
       const items = await exportType.getItems(data.status);
 
-      const exportName = `export-${exportDetails.description
-        }_${new Date().toISOString()}.csv`;
+      const exportName = `export-${
+        exportDetails.description
+      }_${new Date().toISOString()}.csv`;
       const exportData = await exportType.getExport(items as any);
 
       res.attachment(exportName).send(Papa.unparse(exportData as any)); // TODO: fix
     } else if (data.action === "delete") {
-      await database.getRepository(ExportItem).delete({ exportId: exportDetails.id });
+      await database
+        .getRepository(ExportItem)
+        .delete({ exportId: exportDetails.id });
       await database.getRepository(Export).delete(exportDetails.id);
       req.flash("success", "exports-deleted");
       res.redirect("/tools/exports");

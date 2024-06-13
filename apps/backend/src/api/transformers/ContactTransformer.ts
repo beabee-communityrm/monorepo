@@ -1,6 +1,6 @@
 import { TransformPlainToInstance } from "class-transformer";
 import { SelectQueryBuilder } from "typeorm";
-import { GetContactWith } from "@beabee/beabee-common"
+import { GetContactWith } from "@beabee/beabee-common";
 import { database, paymentService, AuthInfo } from "@beabee/core";
 
 import { Contact, ContactRole } from "@beabee/models";
@@ -42,12 +42,12 @@ class ContactTransformer extends BaseContactTransformer<
       }),
       ...(opts?.with?.includes(GetContactWith.Profile) &&
         contact.profile && {
-        profile: ContactProfileTransformer.convert(
-          contact.profile,
-          undefined,
-          auth
-        )
-      }),
+          profile: ContactProfileTransformer.convert(
+            contact.profile,
+            undefined,
+            auth
+          )
+        }),
       ...(opts?.with?.includes(GetContactWith.Roles) && {
         roles: contact.roles.map(ContactRoleTransformer.convert)
       }),
@@ -141,7 +141,8 @@ class ContactTransformer extends BaseContactTransformer<
 export async function loadContactRoles(contacts: Contact[]): Promise<void> {
   if (contacts.length > 0) {
     // Load roles after to ensure offset/limit work
-    const roles = await database.createQueryBuilder(ContactRole, "cr")
+    const roles = await database
+      .createQueryBuilder(ContactRole, "cr")
       .where("cr.contactId IN (:...ids)", {
         ids: contacts.map((t) => t.id)
       })

@@ -79,7 +79,8 @@ export const calloutResponseFilterHandlers: FilterHandlers<string> = {
    * Filter for responses with a specific tag
    */
   tags: (qb, args) => {
-    const subQb = database.createQueryBuilder()
+    const subQb = database
+      .createQueryBuilder()
       .subQuery()
       .select("crt.responseId")
       .from(CalloutResponseTag, "crt");

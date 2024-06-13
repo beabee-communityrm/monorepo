@@ -1,10 +1,19 @@
 import "module-alias/register";
 
-import { ContributionType, RESET_SECURITY_FLOW_TYPE } from "@beabee/beabee-common";
+import {
+  ContributionType,
+  RESET_SECURITY_FLOW_TYPE
+} from "@beabee/beabee-common";
 import { input, password, select } from "@inquirer/prompts";
 import moment from "moment";
 
-import { database, generatePassword, passwordRequirements, contactsService, resetSecurityFlowService } from "@beabee/core";
+import {
+  database,
+  generatePassword,
+  passwordRequirements,
+  contactsService,
+  resetSecurityFlowService
+} from "@beabee/core";
 import { runApp } from "#express";
 
 import { ContactRole } from "@beabee/models";
@@ -79,16 +88,20 @@ runApp(async () => {
     roles.push(admin);
   }
 
-  const contact = await contactsService.createContact({
-    firstname: answers.firstname,
-    lastname: answers.lastname,
-    email: answers.email,
-    contributionType: ContributionType.None,
-    roles: roles,
-    ...(answers.password && {
-      password: await generatePassword(answers.password)
-    })
-  }, undefined, currentLocale());
+  const contact = await contactsService.createContact(
+    {
+      firstname: answers.firstname,
+      lastname: answers.lastname,
+      email: answers.email,
+      contributionType: ContributionType.None,
+      roles: roles,
+      ...(answers.password && {
+        password: await generatePassword(answers.password)
+      })
+    },
+    undefined,
+    currentLocale()
+  );
 
   if (!answers.password) {
     const rpFlow = await resetSecurityFlowService.create(

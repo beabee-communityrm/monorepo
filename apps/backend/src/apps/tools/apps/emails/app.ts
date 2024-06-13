@@ -3,10 +3,21 @@ import express from "express";
 import _ from "lodash";
 import Papa from "papaparse";
 
-import { database, wrapAsync, formatEmailBody, emailService, optionsService } from "@beabee/core";
-import { hasNewModel, isAdmin, } from "#express";
+import {
+  database,
+  wrapAsync,
+  formatEmailBody,
+  emailService,
+  optionsService
+} from "@beabee/core";
+import { hasNewModel, isAdmin } from "#express";
 
-import { EmailMailing, EmailMailingRecipient, SegmentOngoingEmail, Email } from "@beabee/models";
+import {
+  EmailMailing,
+  EmailMailingRecipient,
+  SegmentOngoingEmail,
+  Email
+} from "@beabee/models";
 import currentLocale from "#locale";
 
 const app = express();
@@ -56,12 +67,15 @@ app.use(isAdmin);
 app.get(
   "/",
   wrapAsync(async (req, res) => {
-    const emails = await database.createQueryBuilder(Email, "e")
+    const emails = await database
+      .createQueryBuilder(Email, "e")
       .loadRelationCountAndMap("e.mailingCount", "e.mailings")
       .orderBy({ name: "ASC" })
       .getMany();
 
-    const segmentEmails = await database.getRepository(SegmentOngoingEmail).find();
+    const segmentEmails = await database
+      .getRepository(SegmentOngoingEmail)
+      .find();
     const systemEmails = Object.values(providerTemplateMap());
 
     const emailsWithFlags = emails.map((email) => ({
@@ -77,7 +91,9 @@ app.get(
 app.post(
   "/",
   wrapAsync(async (req, res) => {
-    const emails = await database.getRepository(Email).save(schemaToEmail(req.body));
+    const emails = await database
+      .getRepository(Email)
+      .save(schemaToEmail(req.body));
     res.redirect("/tools/emails/" + emails.id);
   })
 );
@@ -92,10 +108,12 @@ app.get(
       where: { emailId: email.id },
       order: { createdDate: "ASC" }
     });
-    const segmentEmails = await database.getRepository(SegmentOngoingEmail).find({
-      where: { emailId: email.id },
-      relations: { segment: true }
-    });
+    const segmentEmails = await database
+      .getRepository(SegmentOngoingEmail)
+      .find({
+        where: { emailId: email.id },
+        relations: { segment: true }
+      });
     const systemEmails = Object.entries(providerTemplateMap())
       .filter(([systemId, emailId]) => emailId === email.id)
       .map(([systemId]) => systemId);
@@ -118,7 +136,9 @@ app.post(
 
     switch (req.body.action) {
       case "update":
-        await database.getRepository(Email).update(email.id, schemaToEmail(req.body));
+        await database
+          .getRepository(Email)
+          .update(email.id, schemaToEmail(req.body));
         req.flash("success", "transactional-email-updated");
         res.redirect(req.originalUrl);
         break;
@@ -141,7 +161,9 @@ app.post(
         break;
       }
       case "delete":
-        await database.getRepository(EmailMailing).delete({ emailId: email.id });
+        await database
+          .getRepository(EmailMailing)
+          .delete({ emailId: email.id });
         await database.getRepository(Email).delete(email.id);
         req.flash("success", "transactional-email-deleted");
         res.redirect("/tools/emails");
@@ -166,7 +188,9 @@ app.post("/:id/mailings", hasNewModel(Email, "id"), busboy(), (req, res) => {
     const mailing = new EmailMailing();
     mailing.email = email;
     mailing.recipients = recipients;
-    const savedMailing = await database.getRepository(EmailMailing).save(mailing);
+    const savedMailing = await database
+      .getRepository(EmailMailing)
+      .save(mailing);
     res.redirect(`/tools/emails/${email.id}/mailings/${savedMailing.id}`);
   });
 

@@ -22,7 +22,13 @@ import CalloutResponseCommentTransformer from "@api/transformers/CalloutResponse
 import CalloutTagTransformer from "@api/transformers/CalloutTagTransformer";
 import { batchUpdate } from "@api/utils/rules";
 
-import { Callout, CalloutResponse, CalloutResponseComment, CalloutResponseTag, Contact } from "@beabee/models";
+import {
+  Callout,
+  CalloutResponse,
+  CalloutResponseComment,
+  CalloutResponseTag,
+  Contact
+} from "@beabee/models";
 
 export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
   GetCalloutResponseDto,
@@ -62,8 +68,8 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
       }),
       ...(opts.with?.includes(GetCalloutResponseWith.Tags) &&
         response.tags && {
-        tags: response.tags.map((rt) => CalloutTagTransformer.convert(rt.tag))
-      })
+          tags: response.tags.map((rt) => CalloutTagTransformer.convert(rt.tag))
+        })
     };
   }
 
@@ -96,7 +102,8 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
       const responseIds = responses.map((r) => r.id);
 
       if (query.with?.includes(GetCalloutResponseWith.LatestComment)) {
-        const comments = await database.createQueryBuilder(CalloutResponseComment, "c")
+        const comments = await database
+          .createQueryBuilder(CalloutResponseComment, "c")
           .distinctOn(["c.response"])
           .where("c.response IN (:...ids)", { ids: responseIds })
           .leftJoinAndSelect("c.contact", "contact")
@@ -121,7 +128,8 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
 
       if (query.with?.includes(GetCalloutResponseWith.Tags)) {
         // Load tags after to ensure offset/limit work
-        const responseTags = await database.createQueryBuilder(CalloutResponseTag, "rt")
+        const responseTags = await database
+          .createQueryBuilder(CalloutResponseTag, "rt")
           .where("rt.response IN (:...ids)", { ids: responseIds })
           .innerJoinAndSelect("rt.tag", "tag")
           .getMany();
@@ -140,7 +148,9 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
     calloutId: string,
     query: ListCalloutResponsesDto
   ): Promise<PaginatedDto<GetCalloutResponseDto>> {
-    const callout = await database.getRepository(Callout).findOneBy({ id: calloutId });
+    const callout = await database
+      .getRepository(Callout)
+      .findOneBy({ id: calloutId });
     if (!callout) {
       throw new NotFoundError();
     }
@@ -222,7 +232,8 @@ async function updateResponseTags(responseIds: string[], tagUpdates: string[]) {
     );
 
   if (addTags.length > 0) {
-    await database.createQueryBuilder()
+    await database
+      .createQueryBuilder()
       .insert()
       .into(CalloutResponseTag)
       .values(addTags)
@@ -230,7 +241,8 @@ async function updateResponseTags(responseIds: string[], tagUpdates: string[]) {
       .execute();
   }
   if (removeTags.length > 0) {
-    await database.createQueryBuilder()
+    await database
+      .createQueryBuilder()
       .delete()
       .from(CalloutResponseTag)
       .where(removeTags)

@@ -2,7 +2,14 @@ import { NewsletterStatus } from "@beabee/beabee-common";
 import express from "express";
 import moment from "moment";
 
-import { log as mainLogger, wrapAsync, contactsService, newsletterService, optionsService, NewsletterContact } from "@beabee/core";
+import {
+  log as mainLogger,
+  wrapAsync,
+  contactsService,
+  newsletterService,
+  optionsService,
+  NewsletterContact
+} from "@beabee/core";
 import { isSuperAdmin } from "#express";
 
 import { Contact } from "@beabee/models";
@@ -41,11 +48,11 @@ function isMismatchedContact(contact: Contact, nlContact: NewsletterContact) {
   return (
     contact.profile.newsletterStatus !== nlContact.status ||
     groupsList(contact.profile.newsletterGroups) !==
-    groupsList(nlContact.groups) ||
+      groupsList(nlContact.groups) ||
     !!contact.membership?.isActive !==
-    nlContact.tags.includes(
-      optionsService.getText("newsletter-active-member-tag")
-    )
+      nlContact.tags.includes(
+        optionsService.getText("newsletter-active-member-tag")
+      )
   );
 }
 

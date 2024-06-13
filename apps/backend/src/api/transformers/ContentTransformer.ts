@@ -1,6 +1,11 @@
 import { plainToInstance } from "class-transformer";
 import { ContentId, ContentData } from "@beabee/beabee-common";
-import { database, getEmailFooter, optionsService, OptionKey } from "@beabee/core";
+import {
+  database,
+  getEmailFooter,
+  optionsService,
+  OptionKey
+} from "@beabee/core";
 
 import {
   GetContentContactsDto,
@@ -93,7 +98,8 @@ class ContentTransformer {
     await optionsService.set(optionUpdates);
 
     // Save the rest
-    await database.createQueryBuilder()
+    await database
+      .createQueryBuilder()
       .update(Content)
       .set({
         data: () => '"data" || :data::jsonb'

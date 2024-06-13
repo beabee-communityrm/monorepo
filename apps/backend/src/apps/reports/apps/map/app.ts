@@ -62,9 +62,9 @@ async function getPostcodes(postcodes: string[]): Promise<PostcodeCache[]> {
     for (const result of data.result) {
       postcodeCache[result.query] = result.result
         ? {
-          latitude: result.result.latitude,
-          longitude: result.result.longitude
-        }
+            latitude: result.result.latitude,
+            longitude: result.result.longitude
+          }
         : null;
     }
   }
@@ -82,7 +82,8 @@ app.get(
   "/locations",
   wrapAsync(async (req, res) => {
     const now = new Date();
-    const profiles = await database.createQueryBuilder(ContactProfile, "profile")
+    const profiles = await database
+      .createQueryBuilder(ContactProfile, "profile")
       .innerJoin(ContactRole, "mp", "profile.contactId = mp.contactId")
       .where("profile.deliveryOptIn = true")
       .andWhere("mp.type = 'member' AND mp.dateAdded <= :now", { now })

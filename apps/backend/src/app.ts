@@ -1,6 +1,6 @@
 import "module-alias/register";
-import './typings/index.d.ts';
-import './typings/passport-totp.d.ts';
+import "./typings/index.d.ts";
+import "./typings/passport-totp.d.ts";
 
 import cleanDeep from "clean-deep";
 import cookie from "cookie-parser";
@@ -10,7 +10,15 @@ import flash from "express-flash";
 import helmet from "helmet";
 
 import { appLoader } from "#express";
-import { log, requestErrorLogger, requestLogger, isInvalidType, optionsService, OptionKey, PageSettingsService } from "@beabee/core";
+import {
+  log,
+  requestErrorLogger,
+  requestLogger,
+  isInvalidType,
+  optionsService,
+  OptionKey,
+  PageSettingsService
+} from "@beabee/core";
 import { quickflash, initApp, startServer, sessions } from "#express";
 
 //import specialUrlHandler from '@apps/tools/apps/special-urls/handler';

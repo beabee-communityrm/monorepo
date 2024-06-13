@@ -26,4 +26,4 @@ export const quickflash = function (
   }
   res.locals.flashes = flashes;
   next();
-}
+};

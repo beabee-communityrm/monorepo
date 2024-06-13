@@ -37,13 +37,13 @@ export class CalloutResponseCommentController {
     @Body() data: CreateCalloutResponseCommentDto,
     @CurrentUser({ required: true }) contact: Contact
   ): Promise<GetCalloutResponseCommentDto> {
-    const comment: CalloutResponseComment = await database.getRepository(
-      CalloutResponseComment
-    ).save({
-      contact,
-      text: data.text,
-      response: { id: data.responseId }
-    });
+    const comment: CalloutResponseComment = await database
+      .getRepository(CalloutResponseComment)
+      .save({
+        contact,
+        text: data.text,
+        response: { id: data.responseId }
+      });
     return CalloutResponseCommentTransformer.convert(comment);
   }
 
@@ -78,7 +78,9 @@ export class CalloutResponseCommentController {
   async deleteCalloutResponseComment(
     @Params() { id }: UUIDParams
   ): Promise<void> {
-    const result = await database.getRepository(CalloutResponseComment).delete(id);
+    const result = await database
+      .getRepository(CalloutResponseComment)
+      .delete(id);
     if (!result.affected) throw new NotFoundError();
   }
 }

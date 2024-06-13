@@ -64,7 +64,8 @@ abstract class CalloutComponentBaseDto implements CalloutComponentBaseSchema {
 
 class CalloutComponentContentDto
   extends CalloutComponentBaseDto
-  implements CalloutComponentContentSchema {
+  implements CalloutComponentContentSchema
+{
   @Equals(false)
   input!: false;
 
@@ -95,7 +96,8 @@ class CalloutComponentContentDto
 
 class CalloutComponentInputDto
   extends CalloutComponentBaseDto
-  implements CalloutComponentBaseInputSchema {
+  implements CalloutComponentBaseInputSchema
+{
   @IsIn(calloutComponentInputTypes)
   type!: CalloutComponentBaseInputSchema["type"];
 
@@ -122,7 +124,8 @@ class CalloutComponentInputSelectDataDto {
 
 class CalloutComponentInputSelectDto
   extends CalloutComponentInputDto
-  implements CalloutComponentInputSelectSchema {
+  implements CalloutComponentInputSelectSchema
+{
   @Equals(CalloutComponentType.INPUT_SELECT)
   type!: CalloutComponentType.INPUT_SELECT;
 
@@ -145,7 +148,8 @@ class CalloutComponentInputSelectableValueDto {
 
 class CalloutComponentInputSelectableDto
   extends CalloutComponentInputDto
-  implements CalloutComponentBaseInputSelectableSchema {
+  implements CalloutComponentBaseInputSelectableSchema
+{
   @IsIn(calloutComponentInputSelectableTypes)
   type!: CalloutComponentBaseInputSelectableSchema["type"];
 
@@ -228,7 +232,8 @@ function IsComponent(validationOptions?: ValidationOptions) {
 
 class CalloutComponentNestableDto
   extends CalloutComponentBaseDto
-  implements CalloutComponentBaseNestableSchema {
+  implements CalloutComponentBaseNestableSchema
+{
   @IsIn(calloutComponentNestableTypes)
   type!: CalloutComponentBaseNestableSchema["type"];
 

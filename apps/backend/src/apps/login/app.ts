@@ -2,7 +2,12 @@ import { RoleTypes, RoleType } from "@beabee/beabee-common";
 import express from "express";
 import passport from "passport";
 
-import { database, wrapAsync, loginAndRedirect, contactsService } from "@beabee/core";
+import {
+  database,
+  wrapAsync,
+  loginAndRedirect,
+  contactsService
+} from "@beabee/core";
 import { isValidNextUrl, getNextParam } from "#express";
 
 import { ContactRole } from "@beabee/models";

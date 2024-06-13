@@ -122,4 +122,4 @@ export const appLoader = async function (app: express.Express): Promise<void> {
   );
   app.use(templateLocals(appConfigs));
   await routeApps(app, appConfigs);
-}
+};

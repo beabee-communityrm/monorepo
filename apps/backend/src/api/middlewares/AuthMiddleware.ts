@@ -3,10 +3,14 @@ import crypto from "node:crypto";
 import { Request, Response } from "express";
 import { Middleware, ExpressMiddlewareInterface } from "routing-controllers";
 
-import { database, contactsService, extractToken, AuthInfo } from "@beabee/core";
+import {
+  database,
+  contactsService,
+  extractToken,
+  AuthInfo
+} from "@beabee/core";
 
 import { ApiKey } from "@beabee/models";
-
 
 @Middleware({ type: "before" })
 export class AuthMiddleware implements ExpressMiddlewareInterface {

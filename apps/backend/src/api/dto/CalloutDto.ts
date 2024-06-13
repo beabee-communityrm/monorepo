@@ -36,7 +36,10 @@ import IsMapBounds from "@api/validators/IsMapBounds";
 import IsLngLat from "@api/validators/IsLngLat";
 import IsVariantsObject from "@api/validators/IsVariantsObject";
 
-import { CalloutMapSchema, CalloutResponseViewSchema } from "@beabee/beabee-common";
+import {
+  CalloutMapSchema,
+  CalloutResponseViewSchema
+} from "@beabee/beabee-common";
 
 export enum GetCalloutWith {
   Form = "form",

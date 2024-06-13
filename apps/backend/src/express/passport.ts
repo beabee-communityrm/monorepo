@@ -4,9 +4,17 @@ import passportLocal from "passport-local";
 import { config } from "@beabee/config";
 
 import {
-  database, log,
-  cleanEmailAddress, sleep, generatePassword, isValidPassword,
-  contactsService, contactMfaService, ContactMfaSecure, UnauthorizedError, PassportLocalDoneCallback
+  database,
+  log,
+  cleanEmailAddress,
+  sleep,
+  generatePassword,
+  isValidPassword,
+  contactsService,
+  contactMfaService,
+  ContactMfaSecure,
+  UnauthorizedError,
+  PassportLocalDoneCallback
 } from "@beabee/core";
 
 import { CONTACT_MFA_TYPE, LOGIN_CODES } from "@beabee/beabee-common";
@@ -136,7 +144,9 @@ passport.deserializeUser(async function (data, done) {
         const now = new Date();
         if (!contact.lastSeen || +now - +contact.lastSeen > 60000) {
           // Don't use contactsService.updateContact to avoid overhead
-          await database.getRepository(Contact).update(contact.id, { lastSeen: now });
+          await database
+            .getRepository(Contact)
+            .update(contact.id, { lastSeen: now });
           contact.lastSeen = now;
         }
 

@@ -2,7 +2,13 @@ import "module-alias/register";
 
 import express, { Handler } from "express";
 
-import { log, requestErrorLogger, requestLogger, optionsService, OptionKey } from "@beabee/core";
+import {
+  log,
+  requestErrorLogger,
+  requestLogger,
+  optionsService,
+  OptionKey
+} from "@beabee/core";
 import { initApp, startServer } from "#express";
 
 import gocardlessApp from "./handlers/gocardless";

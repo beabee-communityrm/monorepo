@@ -217,7 +217,7 @@ async function addNewContact(row: SteadyRow) {
       newsletterStatus: NewsletterStatus.None,
       tags: ["Steady"]
     },
-    currentLocale(),
+    currentLocale()
   );
 
   await setContributionData(contact, row);

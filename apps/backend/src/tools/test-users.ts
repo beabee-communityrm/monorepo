@@ -17,7 +17,8 @@ import { config } from "@beabee/config";
 import { Payment, Contact, ContactContribution } from "@beabee/models";
 
 async function logContact(type: string, conditions: Brackets[]) {
-  const qb = database.createQueryBuilder(Contact, "m")
+  const qb = database
+    .createQueryBuilder(Contact, "m")
     .innerJoinAndSelect("m.roles", "mp")
     .where("TRUE");
 
@@ -68,27 +69,32 @@ async function logContactVaryContributions(
 async function getFilters() {
   const now = moment.utc();
 
-  const hasScheduledPayments = database.createQueryBuilder()
+  const hasScheduledPayments = database
+    .createQueryBuilder()
     .subQuery()
     .select("p.contactId")
     .from(Payment, "p")
     .where("p.status = :status", { status: PaymentStatus.Pending });
-  const hasFailedPayments = database.createQueryBuilder()
+  const hasFailedPayments = database
+    .createQueryBuilder()
     .subQuery()
     .select("p.contactId")
     .from(Payment, "p")
     .where("p.status = 'failed'", { status: PaymentStatus.Failed });
-  const hasSubscription = database.createQueryBuilder()
+  const hasSubscription = database
+    .createQueryBuilder()
     .subQuery()
     .select("cc.contactId")
     .from(ContactContribution, "cc")
     .where("cc.subscriptionId IS NOT NULL");
-  const hasCancelled = database.createQueryBuilder()
+  const hasCancelled = database
+    .createQueryBuilder()
     .subQuery()
     .select("cc.contactId")
     .from(ContactContribution, "cc")
     .where("cc.cancelledAt IS NOT NULL");
-  const isPayingFee = database.createQueryBuilder()
+  const isPayingFee = database
+    .createQueryBuilder()
     .subQuery()
     .select("cc.contactId")
     .from(ContactContribution, "cc")

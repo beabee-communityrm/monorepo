@@ -8,13 +8,19 @@ import {
 import { plainToInstance } from "class-transformer";
 import { ObjectLiteral, SelectQueryBuilder } from "typeorm";
 
-import { database, AuthInfo, FilterHandlers, NotFoundError, InvalidRuleError, UnauthorizedError } from "@beabee/core";
+import {
+  database,
+  AuthInfo,
+  FilterHandlers,
+  NotFoundError,
+  InvalidRuleError,
+  UnauthorizedError
+} from "@beabee/core";
 
 import { PaginatedDto } from "@api/dto/PaginatedDto";
 import { convertRulesToWhereClause } from "@api/utils/rules";
 
 import { Contact } from "@beabee/models";
-
 
 /**
  * Base transformer for querying and converting models to DTOs
@@ -26,7 +32,7 @@ export abstract class BaseTransformer<
   GetDtoOpts = unknown,
   Query extends GetDtoOpts & PaginatedQuery = GetDtoOpts & PaginatedQuery
 > {
-  protected abstract model: { new(): Model };
+  protected abstract model: { new (): Model };
   protected modelIdField = "id";
 
   protected abstract filters: Filters<FilterName>;
@@ -86,7 +92,7 @@ export abstract class BaseTransformer<
     fieldPrefix: string,
     query: Query,
     auth: AuthInfo | undefined
-  ): void { }
+  ): void {}
 
   /**
    * Modify the items after they are fetched.
@@ -102,7 +108,7 @@ export abstract class BaseTransformer<
     items: Model[],
     query: Query,
     auth: AuthInfo | undefined
-  ): Promise<void> { }
+  ): Promise<void> {}
 
   /**
    * Check for sufficient authentication and prepare the query,

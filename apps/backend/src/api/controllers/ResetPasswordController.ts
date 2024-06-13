@@ -27,7 +27,8 @@ export class ResetPasswordController {
     await contactsService.resetPasswordBegin(
       data.email,
       data.resetUrl,
-      currentLocale());
+      currentLocale()
+    );
   }
 
   @OnUndefined(204)

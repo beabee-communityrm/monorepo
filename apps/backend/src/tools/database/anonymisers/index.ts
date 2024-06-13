@@ -65,7 +65,8 @@ function writeItems<T extends ObjectLiteral>(
   model: EntityTarget<T>,
   items: T[]
 ) {
-  const [query, params] = database.createQueryBuilder()
+  const [query, params] = database
+    .createQueryBuilder()
     .insert()
     .into(model)
     .values(items as QueryDeepPartialEntity<T>)
@@ -90,13 +91,17 @@ async function anonymiseCalloutResponses(
   ) => SelectQueryBuilder<CalloutResponse>,
   valueMap: Map<string, unknown>
 ): Promise<void> {
-  const callouts = await database.createQueryBuilder(Callout, "callout").getMany();
+  const callouts = await database
+    .createQueryBuilder(Callout, "callout")
+    .getMany();
   for (const callout of callouts) {
     const answersMap = createAnswersMap(
       [] // TODO
     );
 
-    const responses = await fn(database.createQueryBuilder(CalloutResponse, "item"))
+    const responses = await fn(
+      database.createQueryBuilder(CalloutResponse, "item")
+    )
       .andWhere("item.calloutId = :id", { id: callout.id })
       .orderBy("item.id", "ASC")
       .getMany();
@@ -145,7 +150,9 @@ export async function anonymiseModel<T extends ObjectLiteral>(
   );
 
   for (let i = 0; ; i += 1000) {
-    const items = await fn(database.createQueryBuilder(anonymiser.model, "item"))
+    const items = await fn(
+      database.createQueryBuilder(anonymiser.model, "item")
+    )
       .orderBy(orderBy)
       .offset(i)
       .limit(1000)

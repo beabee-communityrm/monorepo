@@ -8,7 +8,12 @@ import {
 } from "@beabee/beabee-common";
 import { TransformPlainToInstance } from "class-transformer";
 
-import { database, NotFoundError, AuthInfo, CalloutResponseViewSchema } from "@beabee/core";
+import {
+  database,
+  NotFoundError,
+  AuthInfo,
+  CalloutResponseViewSchema
+} from "@beabee/core";
 
 import {
   GetCalloutResponseMapDto,
@@ -86,11 +91,13 @@ class CalloutResponseMapTransformer extends BaseCalloutResponseTransformer<
         // Only show results from relevant buckets
         {
           condition: "OR",
-          rules: query.callout.responseViewSchema.buckets.map((bucket: string) => ({
-            field: "bucket",
-            operator: "equal",
-            value: [bucket]
-          }))
+          rules: query.callout.responseViewSchema.buckets.map(
+            (bucket: string) => ({
+              field: "bucket",
+              operator: "equal",
+              value: [bucket]
+            })
+          )
         },
         // Only load responses for the given callout
         {
@@ -107,7 +114,9 @@ class CalloutResponseMapTransformer extends BaseCalloutResponseTransformer<
     calloutId: string,
     query: ListCalloutResponsesDto
   ): Promise<PaginatedDto<GetCalloutResponseMapDto>> {
-    const callout = await database.getRepository(Callout).findOneBy({ id: calloutId });
+    const callout = await database
+      .getRepository(Callout)
+      .findOneBy({ id: calloutId });
     if (!callout?.responseViewSchema) {
       throw new NotFoundError();
     }

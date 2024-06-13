@@ -4,7 +4,13 @@ import moment from "moment";
 import { config } from "@beabee/config";
 
 import { hasNewModel, hasSchema } from "#express";
-import { wrapAsync, loginAndRedirect, GiftService, contactsService, optionsService } from "@beabee/core";
+import {
+  wrapAsync,
+  loginAndRedirect,
+  GiftService,
+  contactsService,
+  optionsService
+} from "@beabee/core";
 
 import { GiftFlow, GiftForm } from "@beabee/models";
 
@@ -35,14 +41,14 @@ interface AddressSchema {
 
 type UpdateGiftAddressSchema =
   | {
-    sameAddress: true;
-    giftAddress: AddressSchema;
-  }
+      sameAddress: true;
+      giftAddress: AddressSchema;
+    }
   | {
-    sameAddress: false;
-    giftAddress: AddressSchema;
-    deliveryAddress: AddressSchema;
-  };
+      sameAddress: false;
+      giftAddress: AddressSchema;
+      deliveryAddress: AddressSchema;
+    };
 
 function schemaToGiftForm(data: CreateGiftSchema): GiftForm {
   const giftForm = new GiftForm();

@@ -7,7 +7,36 @@ import crypto from "crypto";
 import { EntityTarget, ObjectLiteral } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
 
-import { Email, EmailMailing, Export, ExportItem, GiftFlow, Contact, ContactRole, ContactProfile, Notice, Option, PageSettings, Payment, ContactContribution, Callout, CalloutResponse, CalloutResponseTag, CalloutTag, Project, ProjectContact, ProjectEngagement, Referral, ReferralGift, Segment, SegmentContact, SegmentOngoingEmail, CalloutResponseComment, ResetSecurityFlow, Password } from "@beabee/models";
+import {
+  Email,
+  EmailMailing,
+  Export,
+  ExportItem,
+  GiftFlow,
+  Contact,
+  ContactRole,
+  ContactProfile,
+  Notice,
+  Option,
+  PageSettings,
+  Payment,
+  ContactContribution,
+  Callout,
+  CalloutResponse,
+  CalloutResponseTag,
+  CalloutTag,
+  Project,
+  ProjectContact,
+  ProjectEngagement,
+  Referral,
+  ReferralGift,
+  Segment,
+  SegmentContact,
+  SegmentOngoingEmail,
+  CalloutResponseComment,
+  ResetSecurityFlow,
+  Password
+} from "@beabee/models";
 
 export type PropertyMap<T> = ((prop: T) => T) | ObjectMap<T>;
 export type ObjectMap<T> = { [K in keyof T]?: PropertyMap<T[K]> };

@@ -31,7 +31,8 @@ export default class EditionExport extends ActiveMembersExport {
   }
 
   protected get query(): SelectQueryBuilder<Contact> {
-    return database.createQueryBuilder(Contact, "m")
+    return database
+      .createQueryBuilder(Contact, "m")
       .innerJoinAndSelect("m.profile", "profile")
       .orderBy({
         firstname: "ASC",

@@ -1,6 +1,11 @@
 import express from "express";
 
-import { database, wrapAsync, PageSettingsService, JustPageSettings } from "@beabee/core";
+import {
+  database,
+  wrapAsync,
+  PageSettingsService,
+  JustPageSettings
+} from "@beabee/core";
 
 import { Callout } from "@beabee/models";
 
@@ -21,7 +26,8 @@ async function getCalloutShareSettings(
       .map((q) => q.split("="))
       .find(([k]) => k === "lang")?.[1] || "default";
 
-  const callout = await database.createQueryBuilder(Callout, "c")
+  const callout = await database
+    .createQueryBuilder(Callout, "c")
     .innerJoinAndSelect("c.variants", "v", "v.name = :locale", { locale })
     .where("c.slug = :slug", { slug })
     .getOne();

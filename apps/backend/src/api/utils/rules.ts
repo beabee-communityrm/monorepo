@@ -26,7 +26,8 @@ import {
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
 
 import {
-  database, FilterHandler,
+  database,
+  FilterHandler,
   FilterHandlers,
   RichRuleValue
 } from "@beabee/core";
@@ -373,7 +374,8 @@ export async function batchUpdate<
   try {
     const validatedRuleGroup = validateRuleGroup(filters, ruleGroup);
 
-    const qb = database.createQueryBuilder()
+    const qb = database
+      .createQueryBuilder()
       .update(entity, updates)
       .where(
         ...convertRulesToWhereClause(

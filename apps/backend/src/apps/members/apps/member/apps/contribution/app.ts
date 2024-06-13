@@ -1,7 +1,12 @@
 import { ContributionType } from "@beabee/beabee-common";
 import express from "express";
 
-import { wrapAsync, calcMonthsLeft, paymentService, contactsService } from "@beabee/core";
+import {
+  wrapAsync,
+  calcMonthsLeft,
+  paymentService,
+  contactsService
+} from "@beabee/core";
 
 import { Contact } from "@beabee/models";
 import currentLocale from "#locale";
@@ -49,12 +54,16 @@ app.post(
 
     switch (req.body.action) {
       case "update-subscription":
-        await contactsService.updateContactContribution(contact, {
-          monthlyAmount: Number(req.body.amount),
-          period: req.body.period,
-          prorate: req.body.prorate === "true",
-          payFee: req.body.payFee === "true"
-        }, currentLocale());
+        await contactsService.updateContactContribution(
+          contact,
+          {
+            monthlyAmount: Number(req.body.amount),
+            period: req.body.period,
+            prorate: req.body.prorate === "true",
+            payFee: req.body.payFee === "true"
+          },
+          currentLocale()
+        );
         req.flash("success", "contribution-updated");
         break;
 

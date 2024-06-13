@@ -4,7 +4,16 @@ import { add } from "date-fns";
 import express from "express";
 import Stripe from "stripe";
 
-import { database, stripeUtils, log as mainLogger, stripe, wrapAsync, GiftService, contactsService, paymentService } from "@beabee/core";
+import {
+  database,
+  stripeUtils,
+  log as mainLogger,
+  stripe,
+  wrapAsync,
+  GiftService,
+  contactsService,
+  paymentService
+} from "@beabee/core";
 
 import { Payment, ContactContribution } from "@beabee/models";
 
@@ -226,7 +235,9 @@ async function getContributionFromInvoice(
 async function findOrCreatePayment(
   invoice: Stripe.Invoice
 ): Promise<Payment | undefined> {
-  const payment = await database.getRepository(Payment).findOneBy({ id: invoice.id });
+  const payment = await database
+    .getRepository(Payment)
+    .findOneBy({ id: invoice.id });
   if (payment) {
     return payment;
   }

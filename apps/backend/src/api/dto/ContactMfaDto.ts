@@ -1,8 +1,12 @@
 import { IsOptional, IsString } from "class-validator";
 
-import { CONTACT_MFA_TYPE, } from "@beabee/beabee-common";
+import { CONTACT_MFA_TYPE } from "@beabee/beabee-common";
 
-import { CreateContactMfaData, DeleteContactMfaData, ContactMfaSecure } from "@beabee/core";
+import {
+  CreateContactMfaData,
+  DeleteContactMfaData,
+  ContactMfaSecure
+} from "@beabee/core";
 
 /**
  * Get contact multi factor authentication validation data

@@ -1,11 +1,7 @@
 import { ServerResponse } from "node:http";
 
 import { Request } from "express";
-import {
-  Action,
-  Interceptor,
-  InterceptorInterface,
-} from "routing-controllers";
+import { Action, Interceptor, InterceptorInterface } from "routing-controllers";
 
 import { log as mainLogger } from "@beabee/core";
 import { validateOrReject } from "@api/utils";

@@ -19,8 +19,14 @@ import { calloutResponseFilterHandlers } from "@api/transformers/BaseCalloutResp
 import { BaseTransformer } from "@api/transformers/BaseTransformer";
 import { getFilterHandler, prefixKeys } from "@api/utils";
 
-import { Callout, CalloutResponse, Contact, ContactProfile, ContactRole, ContactContribution } from "@beabee/models";
-
+import {
+  Callout,
+  CalloutResponse,
+  Contact,
+  ContactProfile,
+  ContactRole,
+  ContactContribution
+} from "@beabee/models";
 
 function flattenRules(rules: RuleGroup): Rule[] {
   return rules.rules.flatMap((rule) =>
@@ -69,7 +75,9 @@ export abstract class BaseContactTransformer<
 
     const filters: Partial<Filters> = {};
     for (const calloutId of calloutIds) {
-      const callout = await database.getRepository(Callout).findOneBy({ id: calloutId });
+      const callout = await database
+        .getRepository(Callout)
+        .findOneBy({ id: calloutId });
       if (callout) {
         Object.assign(
           filters,
@@ -90,7 +98,8 @@ export abstract class BaseContactTransformer<
 
 function membershipField(field: keyof ContactRole): FilterHandler {
   return (qb, { fieldPrefix, convertToWhereClause }) => {
-    const subQb = database.createQueryBuilder()
+    const subQb = database
+      .createQueryBuilder()
       .subQuery()
       .select(`cr.contactId`)
       .from(ContactRole, "cr")
@@ -103,7 +112,8 @@ function membershipField(field: keyof ContactRole): FilterHandler {
 
 function profileField(field: keyof ContactProfile): FilterHandler {
   return (qb, { fieldPrefix, convertToWhereClause }) => {
-    const subQb = database.createQueryBuilder()
+    const subQb = database
+      .createQueryBuilder()
       .subQuery()
       .select(`profile.contactId`)
       .from(ContactProfile, "profile")
@@ -115,7 +125,8 @@ function profileField(field: keyof ContactProfile): FilterHandler {
 
 function contributionField(field: keyof ContactContribution): FilterHandler {
   return (qb, { fieldPrefix, convertToWhereClause }) => {
-    const subQb = database.createQueryBuilder()
+    const subQb = database
+      .createQueryBuilder()
       .subQuery()
       .select(`cc.contactId`)
       .from(ContactContribution, "cc")
@@ -133,7 +144,8 @@ const activePermission: FilterHandler = (qb, args) => {
       ? (args.value[0] as boolean)
       : args.operator === "equal";
 
-  const subQb = database.createQueryBuilder()
+  const subQb = database
+    .createQueryBuilder()
     .subQuery()
     .select(`cr.contactId`)
     .from(ContactRole, "cr")
@@ -166,7 +178,8 @@ const calloutsFilterHandler: FilterHandler = (qb, args) => {
      * Filter field: callout.<id>.responses.<restFields>
      */
     case "responses": {
-      const subQb = database.createQueryBuilder()
+      const subQb = database
+        .createQueryBuilder()
         .subQuery()
         .select("item.contactId")
         .from(CalloutResponse, "item");
@@ -192,7 +205,8 @@ const calloutsFilterHandler: FilterHandler = (qb, args) => {
      * Filter field: callout.<id>.hasAnswered
      */
     case "hasAnswered": {
-      const subQb = database.createQueryBuilder()
+      const subQb = database
+        .createQueryBuilder()
         .subQuery()
         .select("item.contactId")
         .from(CalloutResponse, "item")

@@ -2,7 +2,14 @@ import { NewsletterStatus, ContributionType } from "@beabee/beabee-common";
 import bodyParser from "body-parser";
 import express from "express";
 
-import { log as mainLogger, cleanEmailAddress, wrapAsync, contactsService, newsletterService, optionsService } from "@beabee/core";
+import {
+  log as mainLogger,
+  cleanEmailAddress,
+  wrapAsync,
+  contactsService,
+  newsletterService,
+  optionsService
+} from "@beabee/core";
 
 import { config } from "@beabee/config";
 import currentLocale from "#locale";
@@ -160,7 +167,7 @@ async function handleSubscribe(data: MCProfileData) {
         newsletterStatus: NewsletterStatus.Subscribed,
         newsletterGroups: nlContact?.groups || []
       },
-      currentLocale(),
+      currentLocale()
     );
   }
 }

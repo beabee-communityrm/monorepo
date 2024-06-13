@@ -1,4 +1,8 @@
-import { ContributionPeriod, NewsletterStatus, GetContactWith } from "@beabee/beabee-common";
+import {
+  ContributionPeriod,
+  NewsletterStatus,
+  GetContactWith
+} from "@beabee/beabee-common";
 import { plainToInstance } from "class-transformer";
 import { Response } from "express";
 import {
@@ -18,7 +22,14 @@ import {
   Res
 } from "routing-controllers";
 
-import { contactsService, optionsService, paymentFlowService, paymentService, contactMfaService, generatePassword } from "@beabee/core";
+import {
+  contactsService,
+  optionsService,
+  paymentFlowService,
+  paymentService,
+  contactMfaService,
+  generatePassword
+} from "@beabee/core";
 
 import { Contact, JoinFlow } from "@beabee/models";
 
@@ -53,7 +64,12 @@ import { GetPaymentFlowDto } from "@api/dto/PaymentFlowDto";
 import { CurrentAuth } from "@api/decorators/CurrentAuth";
 import PartialBody from "@api/decorators/PartialBody";
 import { TargetUser } from "@api/decorators/TargetUser";
-import { UnauthorizedError, CantUpdateContribution, NoPaymentMethod, AuthInfo } from "@beabee/core";
+import {
+  UnauthorizedError,
+  CantUpdateContribution,
+  NoPaymentMethod,
+  AuthInfo
+} from "@beabee/core";
 import { ContactRoleParams } from "@api/params/ContactRoleParams";
 import { mergeRules } from "@api/utils/rules";
 
@@ -203,7 +219,11 @@ export class ContactController {
       throw new CantUpdateContribution();
     }
 
-    await contactsService.updateContactContribution(target, data, currentLocale());
+    await contactsService.updateContactContribution(
+      target,
+      data,
+      currentLocale()
+    );
 
     return await this.getContribution(target);
   }

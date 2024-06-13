@@ -21,10 +21,12 @@ app.get(
       const { sso: payload, sig } = req.query;
 
       if (payload && sig && sso.validate(payload as string, sig as string)) {
-        const projectContacts = await database.getRepository(ProjectContact).find({
-          where: { contactId: req.user.id },
-          relations: { project: true }
-        });
+        const projectContacts = await database
+          .getRepository(ProjectContact)
+          .find({
+            where: { contactId: req.user.id },
+            relations: { project: true }
+          });
 
         const groups = projectContacts
           .map((pm) => pm.project.groupName)

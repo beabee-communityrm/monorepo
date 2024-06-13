@@ -4,7 +4,13 @@ import { NewsletterStatus } from "@beabee/beabee-common";
 import moment from "moment";
 import { Between } from "typeorm";
 
-import { database, log as mainLogger, contactsService, newsletterService, optionsService } from "@beabee/core";
+import {
+  database,
+  log as mainLogger,
+  contactsService,
+  newsletterService,
+  optionsService
+} from "@beabee/core";
 import { runApp } from "#express";
 
 import { Contact, ContactRole } from "@beabee/models";

@@ -16,7 +16,14 @@ import {
   Res
 } from "routing-controllers";
 
-import { calloutsService, database, captchafox, AuthInfo, InvalidCalloutResponse, UnauthorizedError } from "@beabee/core";
+import {
+  calloutsService,
+  database,
+  captchafox,
+  AuthInfo,
+  InvalidCalloutResponse,
+  UnauthorizedError
+} from "@beabee/core";
 
 import { GetExportQuery } from "@api/dto/BaseDto";
 
@@ -45,7 +52,12 @@ import CalloutResponseMapTransformer from "@api/transformers/CalloutResponseMapT
 import CalloutResponseTransformer from "@api/transformers/CalloutResponseTransformer";
 import { validateOrReject } from "@api/utils";
 
-import { Callout, CalloutResponseTag, CalloutTag, Contact } from "@beabee/models";
+import {
+  Callout,
+  CalloutResponseTag,
+  CalloutTag,
+  Contact
+} from "@beabee/models";
 
 import { CalloutCaptcha } from "@beabee/beabee-common";
 import currentLocale from "#locale";
@@ -252,7 +264,9 @@ export class CalloutController {
     @Param("tagId") tagId: string,
     @PartialBody() data: CreateCalloutTagDto // Partial<CreateCalloutTagData>
   ): Promise<GetCalloutTagDto | undefined> {
-    await database.getRepository(CalloutTag).update({ id: tagId, calloutId: id }, data);
+    await database
+      .getRepository(CalloutTag)
+      .update({ id: tagId, calloutId: id }, data);
 
     return CalloutTagTransformer.fetchOneById(auth, tagId);
   }
@@ -264,7 +278,9 @@ export class CalloutController {
     @CalloutId() id: string,
     @Param("tagId") tagId: string
   ): Promise<void> {
-    await database.getRepository(CalloutResponseTag).delete({ tag: { id: tagId } });
+    await database
+      .getRepository(CalloutResponseTag)
+      .delete({ tag: { id: tagId } });
     const result = await database.getRepository(CalloutTag).delete({
       calloutId: id,
       id: tagId

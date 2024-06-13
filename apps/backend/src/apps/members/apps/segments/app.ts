@@ -2,9 +2,15 @@ import express from "express";
 
 import { database, wrapAsync } from "@beabee/core";
 import { hasNewModel, userToAuth } from "#express";
-import { segmentService } from "#services"
+import { segmentService } from "#services";
 
-import { Email, EmailMailing, Segment, SegmentOngoingEmail, SegmentContact } from "@beabee/models";
+import {
+  Email,
+  EmailMailing,
+  Segment,
+  SegmentOngoingEmail,
+  SegmentContact
+} from "@beabee/models";
 
 import { EmailSchema, schemaToEmail } from "@apps/tools/apps/emails/app";
 import { cleanRuleGroup } from "@apps/members/app";
@@ -29,10 +35,12 @@ app.get(
   hasNewModel(Segment, "id"),
   wrapAsync(async (req, res) => {
     const segment = req.model as Segment;
-    const ongoingEmails = await database.getRepository(SegmentOngoingEmail).find({
-      where: { segmentId: segment.id },
-      relations: { email: true }
-    });
+    const ongoingEmails = await database
+      .getRepository(SegmentOngoingEmail)
+      .find({
+        where: { segmentId: segment.id },
+        relations: { email: true }
+      });
     res.render("segment", { segment, ongoingEmails });
   })
 );
@@ -62,20 +70,23 @@ app.post(
         res.redirect(req.originalUrl);
         break;
       case "toggle-ongoing-email":
-        await database.getRepository(SegmentOngoingEmail).update(
-          req.body.ongoingEmailId,
-          { enabled: req.body.ongoingEmailEnabled === "true" }
-        );
+        await database
+          .getRepository(SegmentOngoingEmail)
+          .update(req.body.ongoingEmailId, {
+            enabled: req.body.ongoingEmailEnabled === "true"
+          });
         res.redirect("/members/segments/" + segment.id + "#ongoingemails");
         break;
       case "delete-ongoing-email":
-        await database.getRepository(SegmentOngoingEmail).delete(
-          req.body.ongoingEmailId
-        );
+        await database
+          .getRepository(SegmentOngoingEmail)
+          .delete(req.body.ongoingEmailId);
         res.redirect("/members/segments/" + segment.id + "#ongoingemails");
         break;
       case "delete":
-        await database.getRepository(SegmentContact).delete({ segmentId: segment.id });
+        await database
+          .getRepository(SegmentContact)
+          .delete({ segmentId: segment.id });
         await database.getRepository(SegmentOngoingEmail).delete({
           segmentId: segment.id
         });
@@ -131,12 +142,14 @@ app.post(
     const email =
       data.email === "__new__"
         ? await database.getRepository(Email).save(
-          schemaToEmail({
-            ...data,
-            name: "Email to segment " + segment.name
-          })
-        )
-        : await database.getRepository(Email).findOneByOrFail({ id: data.email });
+            schemaToEmail({
+              ...data,
+              name: "Email to segment " + segment.name
+            })
+          )
+        : await database
+            .getRepository(Email)
+            .findOneByOrFail({ id: data.email });
 
     if (data.type === "ongoing") {
       await database.getRepository(SegmentOngoingEmail).save({
