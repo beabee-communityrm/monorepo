@@ -18,6 +18,7 @@ import {
 import { Content } from "@beabee/models";
 
 import { config } from "@beabee/config";
+import currentLocale from "#locale";
 
 class ContentTransformer {
   convert<Id extends ContentId>(
@@ -147,7 +148,7 @@ const contentData = {
     manualPaymentSources: ["option", "available-manual-payment-sources", "list"]
   }),
   email: withValue<"email">({
-    footer: ["readonly", getEmailFooter],
+    footer: ["readonly", () => getEmailFooter(currentLocale())],
     supportEmail: ["option", "support-email", "text"],
     supportEmailName: ["option", "support-email-from", "text"]
   }),

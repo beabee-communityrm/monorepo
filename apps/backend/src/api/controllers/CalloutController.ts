@@ -48,6 +48,7 @@ import { validateOrReject } from "@api/utils";
 import { Callout, CalloutResponseTag, CalloutTag, Contact } from "@beabee/models";
 
 import { CalloutCaptcha } from "@beabee/beabee-common";
+import currentLocale from "#locale";
 
 @JsonController("/callout")
 export class CalloutController {
@@ -189,10 +190,16 @@ export class CalloutController {
         callout,
         data.guestName,
         data.guestEmail,
-        data.answers
+        data.answers,
+        currentLocale()
       );
     } else {
-      await calloutsService.setResponse(callout, caller, data.answers);
+      await calloutsService.setResponse(
+        callout,
+        caller,
+        data.answers,
+        currentLocale()
+      );
     }
   }
 

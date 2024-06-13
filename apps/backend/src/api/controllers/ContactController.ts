@@ -61,6 +61,7 @@ import ContactExporter from "@api/transformers/ContactExporter";
 import ContactTransformer from "@api/transformers/ContactTransformer";
 import ContactRoleTransformer from "@api/transformers/ContactRoleTransformer";
 import PaymentTransformer from "@api/transformers/PaymentTransformer";
+import currentLocale from "#locale";
 
 @JsonController("/contact")
 @Authorized()
@@ -87,7 +88,8 @@ export class ContactController {
           // once groups are exposed to the frontend
           newsletterGroups: optionsService.getList("newsletter-default-groups")
         })
-      }
+      },
+      currentLocale()
     );
 
     if (data.roles) {
@@ -201,7 +203,7 @@ export class ContactController {
       throw new CantUpdateContribution();
     }
 
-    await contactsService.updateContactContribution(target, data);
+    await contactsService.updateContactContribution(target, data, currentLocale());
 
     return await this.getContribution(target);
   }
@@ -267,7 +269,8 @@ export class ContactController {
   async cancelContribution(@TargetUser() target: Contact): Promise<void> {
     await contactsService.cancelContactContribution(
       target,
-      "cancelled-contribution-no-survey"
+      "cancelled-contribution-no-survey",
+      currentLocale()
     );
   }
 
@@ -277,7 +280,11 @@ export class ContactController {
     @Body() data: CompleteJoinFlowDto
   ): Promise<GetContributionInfoDto> {
     const joinFlow = await this.handleCompleteUpdatePaymentMethod(target, data);
-    await contactsService.updateContactContribution(target, joinFlow.joinForm);
+    await contactsService.updateContactContribution(
+      target,
+      joinFlow.joinForm,
+      currentLocale()
+    );
     return await this.getContribution(target);
   }
 

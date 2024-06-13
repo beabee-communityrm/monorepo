@@ -15,9 +15,9 @@ import ContactTransformer, {
 } from "@api/transformers/ContactTransformer";
 import { mergeRules } from "@api/utils/rules";
 
-import CalloutResponseComment from "@beabee/models/CalloutResponseComment";
+import { CalloutResponseComment } from "@beabee/models";
 
-import { AuthInfo } from "@type/auth-info";
+import { AuthInfo } from "@beabee/core";
 
 class CalloutResponseCommentTransformer extends BaseTransformer<
   CalloutResponseComment,

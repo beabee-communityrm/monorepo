@@ -36,7 +36,7 @@ import {
   validate
 } from "class-validator";
 
-import { log as mainLogger } from "@beabee/core/logging";
+import { log as mainLogger } from "@beabee/core";
 
 const log = mainLogger.child({ app: "callout-form-validation" });
 

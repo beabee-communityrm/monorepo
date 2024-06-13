@@ -9,7 +9,7 @@ import {
   Req
 } from "routing-controllers";
 
-import ContactsService from "@beabee/core/services/ContactsService";
+import { contactsService } from "@beabee/core";
 
 import { login } from "@api/utils";
 import {
@@ -17,16 +17,18 @@ import {
   UpdateResetDeviceDto
 } from "@api/dto/ResetDeviceDto";
 import { UUIDParams } from "@api/params/UUIDParams";
+import currentLocale from "#locale";
 
 @JsonController("/reset-device")
 export class ResetDeviceController {
   @OnUndefined(204)
   @Post()
   async create(@Body() data: CreateResetDeviceDto): Promise<void> {
-    await ContactsService.resetDeviceBegin(
+    await contactsService.resetDeviceBegin(
       data.email,
       data.type,
-      data.resetUrl
+      data.resetUrl,
+      currentLocale()
     );
   }
 
@@ -37,7 +39,7 @@ export class ResetDeviceController {
     @Params() { id }: UUIDParams,
     @Body() data: UpdateResetDeviceDto
   ): Promise<void> {
-    const contact = await ContactsService.resetDeviceComplete(
+    const contact = await contactsService.resetDeviceComplete(
       id,
       data.password
     );

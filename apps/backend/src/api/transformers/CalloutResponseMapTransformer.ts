@@ -86,7 +86,7 @@ class CalloutResponseMapTransformer extends BaseCalloutResponseTransformer<
         // Only show results from relevant buckets
         {
           condition: "OR",
-          rules: query.callout.responseViewSchema.buckets.map((bucket) => ({
+          rules: query.callout.responseViewSchema.buckets.map((bucket: string) => ({
             field: "bucket",
             operator: "equal",
             value: [bucket]

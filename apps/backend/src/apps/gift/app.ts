@@ -11,6 +11,7 @@ import { GiftFlow, GiftForm } from "@beabee/models";
 import { Address } from "@beabee/beabee-common";
 
 import { createGiftSchema, updateGiftAddressSchema } from "./schema.json";
+import currentLocale from "#locale";
 
 const app = express();
 
@@ -112,7 +113,7 @@ app.get(
 
     if (giftFlow.completed) {
       if (!giftFlow.processed) {
-        await GiftService.processGiftFlow(giftFlow, true);
+        await GiftService.processGiftFlow(giftFlow, currentLocale(), true);
       }
 
       if (giftFlow.giftee) {

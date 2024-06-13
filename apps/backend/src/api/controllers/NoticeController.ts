@@ -12,7 +12,7 @@ import {
   QueryParams
 } from "routing-controllers";
 
-import { getRepository } from "@beabee/core/database";
+import { database, AuthInfo } from "@beabee/core";
 
 import { CurrentAuth } from "@api/decorators/CurrentAuth";
 import PartialBody from "@api/decorators/PartialBody";
@@ -25,9 +25,7 @@ import { PaginatedDto } from "@api/dto/PaginatedDto";
 import { UUIDParams } from "@api/params/UUIDParams";
 import NoticeTransformer from "@api/transformers/NoticeTransformer";
 
-import Notice from "@beabee/models/Notice";
-
-import { AuthInfo } from "@type/auth-info";
+import { Notice } from "@beabee/models";
 
 @JsonController("/notice")
 @Authorized()
@@ -51,7 +49,7 @@ export class NoticeController {
   @Post("/")
   @Authorized("admin")
   async createNotice(@Body() data: CreateNoticeDto): Promise<GetNoticeDto> {
-    const notice = await getRepository(Notice).save(data);
+    const notice = await database.getRepository(Notice).save(data);
     return NoticeTransformer.convert(notice);
   }
 
@@ -62,7 +60,7 @@ export class NoticeController {
     @Params() { id }: UUIDParams,
     @PartialBody() data: CreateNoticeDto
   ): Promise<GetNoticeDto | undefined> {
-    await getRepository(Notice).update(id, data);
+    await database.getRepository(Notice).update(id, data);
     return await NoticeTransformer.fetchOneById(auth, id);
   }
 
@@ -70,7 +68,7 @@ export class NoticeController {
   @Delete("/:id")
   @Authorized("admin")
   async deleteNotice(@Params() { id }: UUIDParams): Promise<void> {
-    const result = await getRepository(Notice).delete(id);
+    const result = await database.getRepository(Notice).delete(id);
     if (!result.affected) throw new NotFoundError();
   }
 }

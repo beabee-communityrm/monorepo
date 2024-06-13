@@ -24,6 +24,7 @@ import {
 import { ContentParams } from "@api/params/ContentParams";
 import ContentTransformer from "@api/transformers/ContentTransformer";
 import { optionsService, stripeTaxRateUpdateOrCreateDefault } from "@beabee/core";
+import currentLocale from "#locale";
 
 @JsonController("/content")
 export class ContentController {
@@ -111,6 +112,7 @@ export class ContentController {
         active: data.taxRateEnabled,
         percentage: data.taxRate
       },
+      currentLocale(),
       optionsService.getText("tax-rate-stripe-default-id")
     );
     await optionsService.set("tax-rate-stripe-default-id", taxRateObj.id);

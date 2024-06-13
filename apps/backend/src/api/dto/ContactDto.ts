@@ -36,9 +36,7 @@ import { ForceUpdateContributionDto } from "@api/dto/ContributionDto";
 
 import IsPassword from "@api/validators/IsPassword";
 
-import { GetContactWith } from "@enums/get-contact-with";
-
-import { ContributionInfo } from "@type/contribution-info";
+import { GetContactWith, ContributionInfo } from "@beabee/beabee-common";
 
 const contactSortFields = [
   "firstname",

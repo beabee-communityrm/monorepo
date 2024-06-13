@@ -1,9 +1,7 @@
 import { Request } from "express";
 import { createParamDecorator } from "routing-controllers";
 
-import UnauthorizedError from "@api/errors/UnauthorizedError";
-
-import { AuthInfo } from "@type/auth-info";
+import { UnauthorizedError, AuthInfo } from "@beabee/core";
 
 export function CurrentAuth(options?: { required?: boolean }) {
   return createParamDecorator({

@@ -1,6 +1,6 @@
 import { IsDefined, IsOptional, IsString } from "class-validator";
 
-import { Address } from "@type/address";
+import { Address } from "@beabee/beabee-common";
 
 export class UpdateAddressDto implements Address {
   @IsDefined()
@@ -20,4 +20,4 @@ export class UpdateAddressDto implements Address {
   postcode!: string;
 }
 
-export class GetAddressDto extends UpdateAddressDto {}
+export class GetAddressDto extends UpdateAddressDto { }

@@ -22,6 +22,7 @@ import ContactTransformer from "@api/transformers/ContactTransformer";
 import { login } from "@api/utils";
 
 import { JoinFlow, Password } from "@beabee/models";
+import currentLocale from "#locale";
 
 @JsonController("/signup")
 export class SignupController {
@@ -52,7 +53,7 @@ export class SignupController {
       return plainToInstance(GetPaymentFlowDto, flow);
     } else {
       const joinFlow = await paymentFlowService.createJoinFlow(baseForm, data);
-      await paymentFlowService.sendConfirmEmail(joinFlow);
+      await paymentFlowService.sendConfirmEmail(joinFlow, currentLocale());
     }
   }
 
@@ -72,7 +73,7 @@ export class SignupController {
       await database.getRepository(JoinFlow).save(joinFlow);
     }
 
-    await paymentFlowService.sendConfirmEmail(joinFlow);
+    await paymentFlowService.sendConfirmEmail(joinFlow, currentLocale());
   }
 
   @Post("/confirm-email")
@@ -87,7 +88,10 @@ export class SignupController {
       throw new NotFoundError();
     }
 
-    const contact = await paymentFlowService.completeConfirmEmail(joinFlow);
+    const contact = await paymentFlowService.completeConfirmEmail(
+      joinFlow,
+      currentLocale()
+    );
     await login(req, contact);
 
     return ContactTransformer.convert(contact);

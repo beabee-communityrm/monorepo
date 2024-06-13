@@ -5,12 +5,12 @@ import {
   createParamDecorator
 } from "routing-controllers";
 
-import ContactsService from "@beabee/core/services/ContactsService";
+import { contactsService } from "@beabee/core";
 
 import { UUIDParams } from "@api/params/UUIDParams";
 import { validateOrReject } from "@api/utils";
 
-import Contact from "@beabee/models/Contact";
+import { Contact } from "@beabee/models";
 
 /**
  * The target user can either be the current user or for admins
@@ -35,7 +35,7 @@ export function TargetUser() {
         uuid.id = id;
         await validateOrReject(uuid);
 
-        const target = await ContactsService.findOneBy({ id });
+        const target = await contactsService.findOneBy({ id });
         if (target) {
           return target;
         } else {

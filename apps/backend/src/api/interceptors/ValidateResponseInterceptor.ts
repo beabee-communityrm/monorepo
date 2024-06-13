@@ -5,10 +5,9 @@ import {
   Action,
   Interceptor,
   InterceptorInterface,
-  InternalServerError
 } from "routing-controllers";
 
-import { log as mainLogger } from "@beabee/core/logging";
+import { log as mainLogger } from "@beabee/core";
 import { validateOrReject } from "@api/utils";
 
 const log = mainLogger.child({ app: "validate-response-interceptor" });
