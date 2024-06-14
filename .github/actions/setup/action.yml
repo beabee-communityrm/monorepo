@@ -14,8 +14,11 @@ runs:
       uses: denoland/setup-deno@v1
       with:
         deno-version: vx.x.x
-    - name: Install dependencies
+    - name: Install node dependencies
       run: yarn install
+      shell: bash
+    - name: Install deno dependencies
+      run: yarn deno:cache
       shell: bash
     - name: Build
       run: yarn build
