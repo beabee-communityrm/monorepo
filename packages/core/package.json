@@ -9,9 +9,14 @@
     "dist"
   ],
   "scripts": {
-    "build": "yarn generate:index && yarn format && yarn build:node && yarn build:types",
-    "build:types": "tsc --project ./tsconfig.json && cp ./dist/types/index.d.ts ./dist/types/index.d.cts",
+    "build": "yarn generate:index && yarn format && yarn build:node && yarn build:types && yarn run build:types:cjs",
+    "build:types": "tsc --project ./tsconfig.json",
+    "build:types:cjs": "cp ./dist/types/index.d.ts ./dist/types/index.d.cts",
     "build:node": "beabee-cli cross-build node",
+    "check": "yarn check:types",
+    "check:types": "yarn build:types --noEmit --emitDeclarationOnly false",
+    "check:node": "yarn build:node --noEmit --emitDeclarationOnly false",
+    "test": "jest src",
     "format": "prettier --write .",
     "generate:index": "beabee-cli generate-index --ext js ./src/lib ./src/services ./src/types ./src/errors ./src/utils ./src/providers/email ./src/providers/newsletter/ ./src/providers/payment ./src/providers/payment-flow"
   },
@@ -43,7 +48,10 @@
   },
   "devDependencies": {
     "@beabee/cli": "workspace:^",
+    "jest": "^29.7.0",
     "prettier": "^3.3.1",
+    "ts-jest": "^29.1.4",
+    "ts-node": "^10.9.2",
     "typescript": "^5.4.5"
   },
   "dependencies": {

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getNextParam } from "#express";
+import { getNextParam } from "#express/utils";
 import { AuthenticationStatus } from "@beabee/core";
 /**
  * Checks the user is logged in and activated.

@@ -8,11 +8,13 @@
     "dist"
   ],
   "scripts": {
+    "beabee:cli": "yarn exec 'deno task beabee:cli'",
     "build": "yarn exec 'deno task build'",
     "build:node": "yarn exec 'deno task build:node'",
     "build:types": "tsc --project ./tsconfig.json",
     "watch:types": "tsc --project ./tsconfig.json --watch --preserveWatchOutput",
-    "beabee:cli": "yarn exec 'deno task beabee:cli'",
+    "check": "yarn check:types",
+    "check:types": "yarn build:types --noEmit --emitDeclarationOnly false",
     "sync": "yarn exec 'deno task sync'",
     "format": "yarn exec 'deno task format'",
     "generate:index": "yarn exec 'deno task generate:index'"

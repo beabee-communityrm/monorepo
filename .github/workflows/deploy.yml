@@ -26,12 +26,24 @@ jobs:
 
   check:
     name: Check
-    uses: ./.github/workflows/frontend-check.yml
+    uses: ./.github/workflows/check.yml
 
-  build-push:
+  node-deno-build-push:
+    name: Build and push
+    uses: ./.github/workflows/deno-node-build-push.yml
+    needs: [init]
+    secrets: inherit
+
+  frontend-build-push:
     name: Build and push
     uses: ./.github/workflows/frontend-build-push.yml
-    needs: [check]
+    needs: [init, check, node-deno-build-push]
+    secrets: inherit
+
+  backend-build-push:
+    name: Build and push
+    uses: ./.github/workflows/backend-build-push.yml
+    needs: [init, check, node-deno-build-push]
     secrets: inherit
 
   # deploy:

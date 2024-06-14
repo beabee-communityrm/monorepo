@@ -11,7 +11,7 @@ import {
 } from "@beabee/config";
 
 import { log as mainLogger } from "@beabee/core";
-import { templateLocals } from "#express";
+import { templateLocals } from "#express/template-locals";
 
 let git = "";
 try {

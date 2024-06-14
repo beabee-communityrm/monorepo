@@ -1,0 +1,13 @@
+name: Check Workspace
+
+on: [pull_request, workflow_call]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - run: yarn build
+      - run: yarn check
+      - run: yarn test

@@ -7,13 +7,13 @@ on:
 
 jobs:
   check:
-    name: Frontend check
-    uses: ./.github/workflows/frontend-check.yml
+    name: Check workspacec
+    uses: ./.github/workflows/check.yml
 
   build-push:
-    name: Frontend build and push
-    uses: ./.github/workflows/frontend-build-push.yml
-    needs: [check]
+    name: Deno and Node build and push
+    uses: ./.github/workflows/build-push.yml
+    needs: []
     secrets: inherit
 
   release:
@@ -31,10 +31,11 @@ jobs:
           git config --global user.email "<>"
 
           echo -n ${{ needs.build-push.outputs.version }} > FRONTEND_VERSION
+          echo -n ${{ needs.build-push.outputs.version }} > API_VERSION
           ./update.sh
 
           git add FRONTEND_VERSION docker-compose.yml
           if ! git diff --quiet --cached; then
-            git commit -m "Deploy frontend ${{ needs.build-push.outputs.version }}"
+            git commit -m "Deploy ${{ needs.build-push.outputs.version }}"
             git push
           fi

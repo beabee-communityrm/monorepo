@@ -14,6 +14,8 @@
     "build:node": "beabee-cli cross-build node",
     "build:types": "tsc",
     "build:json": "mkdir -p ./dist/json/ && cp ./src/locales/json/* ./dist/json/",
+    "check": "yarn check:types",
+    "check:types": "yarn build:types --noEmit --emitDeclarationOnly false",
     "generate:index": "beabee-cli generate-index --ext ts ./src/locales",
     "update:locales": "yarn update:locales:json && yarn update:locales:ts && yarn generate:index",
     "update:locales:json": "beabee-cli i18n $(git rev-parse --symbolic-full-name --abbrev-ref HEAD) --output-dir ./src/locales/json --format json",

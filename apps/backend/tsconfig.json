@@ -28,6 +28,7 @@
       "#api": ["./src/api"],
       "#apps": ["./src/apps"],
       "#locale": ["./src/locales/current.js"],
+      "#express/*": ["./src/express/*.js"],
       "#express": ["./src/express/index.js"],
       "#services": ["./src/services/index.js"]
     },

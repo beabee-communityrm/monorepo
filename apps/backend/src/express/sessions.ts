@@ -5,7 +5,7 @@ import session from "express-session";
 import { PostgresDriver } from "typeorm/driver/postgres/PostgresDriver.js";
 
 import { database } from "@beabee/core";
-import { passport } from "#express";
+import { passport } from "#express/passport";
 
 import { config } from "@beabee/config";
 

@@ -9,7 +9,9 @@
     "sync": "deno task beabee:cli cross-sync",
     "format": "deno fmt src",
     "generate:index": "deno task beabee:cli generate-index --ext ts ./src/services ./src/types",
-    "watch:types": "yarn watch:types"
+    "watch:types": "yarn watch:types",
+    "check": "yarn check",
+    "check:types": "yarn check:types"
   },
   "imports": {
     "bullmq": "npm:bullmq@5.7.15"

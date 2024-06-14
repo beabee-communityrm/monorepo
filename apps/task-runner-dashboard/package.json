@@ -9,6 +9,8 @@
     "build": "node esbuild.js",
     "start": "node dist/app.js",
     "watch": "yarn build --watch",
+    "check": "yarn check:types",
+    "check:types": "tsc --noEmit --emitDeclarationOnly false",
     "generate:index": "beabee-cli generate-index --ext ts ./src",
     "docker:build": "docker build -t beabee/task-runner-dashboard -f ./Dockerfile ../../",
     "docker:start": "docker run -d -p 3004:3004 -e TASK_RUNNER_REDIS_HOST=localhost -e TASK_RUNNER_DASHBOARD_PORT=3004 beabee/task-runner-dashboard",
@@ -22,6 +24,7 @@
   },
   "devDependencies": {
     "@beabee/cli": "workspace:^",
-    "esbuild": "^0.21.4"
+    "esbuild": "^0.21.4",
+    "typescript": "^5.4.5"
   }
 }

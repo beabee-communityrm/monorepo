@@ -11,9 +11,13 @@
   "scripts": {
     "beabee:cli": "yarn exec 'deno task beabee:cli'",
     "clear": "rm -rf dist; exit 0",
-    "build": "yarn generate:index && yarn build:esm && yarn build:cjs",
+    "build": "yarn generate:index && yarn build:esm && yarn build:cjs && yarn rename:cjs",
     "build:esm": "tsc --project ./tsconfig.json --outDir ./dist/esm",
-    "build:cjs": "tsc --project ./tsconfig.cjs.json --outDir ./dist/cjs && yarn rename:cjs",
+    "build:cjs": "tsc --project ./tsconfig.cjs.json --outDir ./dist/cjs",
+    "check": "yarn check:types",
+    "check:types": "yarn check:types:esm && yarn check:types:cjs",
+    "check:types:esm": "yarn run build:esm --noEmit",
+    "check:types:cjs": "yarn run build:cjs --noEmit",
     "rename:cjs": "mv ./dist/cjs/index.js ./dist/cjs/index.cjs && mv ./dist/cjs/index.d.ts ./dist/cjs/index.d.cts",
     "generate:index": "beabee-cli generate-index --ext js ./src/models"
   },
