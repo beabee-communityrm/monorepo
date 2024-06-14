@@ -1,4 +1,3 @@
-export * from "./auth.test.js";
 export * from "./auth.js";
 export * from "./contact.js";
 export * from "./database.js";
@@ -7,7 +6,6 @@ export * from "./db.js";
 export * from "./email.js";
 export * from "./express.js";
 export * from "./params.js";
-export * from "./payment.test.js";
 export * from "./payment.js";
 export * from "./promise.js";
 export * from "./regex.js";

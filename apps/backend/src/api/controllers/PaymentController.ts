@@ -6,14 +6,14 @@ import {
   QueryParams
 } from "routing-controllers";
 
-import { CurrentAuth } from "@api/decorators/CurrentAuth";
-import { PaginatedDto } from "@api/dto/PaginatedDto";
+import { CurrentAuth } from "#api/decorators/CurrentAuth";
+import { PaginatedDto } from "#api/dto/PaginatedDto";
 import {
   GetPaymentDto,
   GetPaymentOptsDto,
   ListPaymentsDto
-} from "@api/dto/PaymentDto";
-import PaymentTransformer from "@api/transformers/PaymentTransformer";
+} from "#api/dto/PaymentDto";
+import PaymentTransformer from "#api/transformers/PaymentTransformer";
 
 import { AuthInfo } from "@beabee/core";
 

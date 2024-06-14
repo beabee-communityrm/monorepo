@@ -14,16 +14,16 @@ import {
 
 import { database, AuthInfo } from "@beabee/core";
 
-import { CurrentAuth } from "@api/decorators/CurrentAuth";
-import PartialBody from "@api/decorators/PartialBody";
+import { CurrentAuth } from "#api/decorators/CurrentAuth";
+import PartialBody from "#api/decorators/PartialBody";
 import {
   CreateNoticeDto,
   GetNoticeDto,
   ListNoticesDto
-} from "@api/dto/NoticeDto";
-import { PaginatedDto } from "@api/dto/PaginatedDto";
-import { UUIDParams } from "@api/params/UUIDParams";
-import NoticeTransformer from "@api/transformers/NoticeTransformer";
+} from "#api/dto/NoticeDto";
+import { PaginatedDto } from "#api/dto/PaginatedDto";
+import { UUIDParams } from "#api/params/UUIDParams";
+import NoticeTransformer from "#api/transformers/NoticeTransformer";
 
 import { Notice } from "@beabee/models";
 

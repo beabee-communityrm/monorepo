@@ -11,15 +11,17 @@ import {
 import { log as mainLogger } from "#core/logging";
 
 import { config } from "@beabee/config";
+import * as Models from "@beabee/models";
 
 const log = mainLogger.child({ app: "database" });
 
 // This is used by the TypeORM CLI to run migrations
+// FIXME: https://medium.com/@JorgeSantanaDeveloper/troubleshooting-the-no-metadata-was-found-error-in-typeorm-2fab1003b099
 const dataSource: DataSource = new DataSource({
   type: "postgres",
   url: config.databaseUrl,
   logging: config.dev,
-  entities: [__dirname + "/../models/*.js"],
+  entities: Object.values(Models),
   migrations: [__dirname + "/../migrations/*.js"]
 });
 

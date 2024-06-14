@@ -1,5 +1,3 @@
-import "module-alias/register";
-
 import express, { Handler } from "express";
 
 import {

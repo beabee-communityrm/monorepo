@@ -13,7 +13,7 @@ import { emailService, database, ExternalEmailTemplate } from "@beabee/core";
 
 import { Email } from "@beabee/models";
 
-import { GetEmailDto, UpdateEmailDto } from "@api/dto/EmailDto";
+import { GetEmailDto, UpdateEmailDto } from "#api/dto/EmailDto";
 
 async function findEmail(id: string): Promise<Email | null> {
   if (isUUID(id, "4")) {

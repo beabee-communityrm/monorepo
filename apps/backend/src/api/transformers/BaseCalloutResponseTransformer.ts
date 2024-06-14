@@ -9,9 +9,9 @@ import {
 
 import { database, AuthInfo, FilterHandlers } from "@beabee/core";
 
-import { BaseGetCalloutResponseOptsDto } from "@api/dto/CalloutResponseDto";
-import { BaseTransformer } from "@api/transformers/BaseTransformer";
-import { mergeRules } from "@api/utils/rules";
+import { BaseGetCalloutResponseOptsDto } from "#api/dto/CalloutResponseDto";
+import { BaseTransformer } from "#api/transformers/BaseTransformer";
+import { mergeRules } from "#api/utils/rules";
 
 import { CalloutResponse, CalloutResponseTag } from "@beabee/models";
 export abstract class BaseCalloutResponseTransformer<

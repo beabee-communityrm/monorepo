@@ -4,8 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "docker:build": "docker build --build-arg REVISION=$(git rev-parse --short HEAD) -t beabee/deno-node -f ./Dockerfile ../..",
+    "docker:build:latest": "docker build --build-arg REVISION=$(git rev-parse --short HEAD) --build-arg VERSION=latest -t beabee/deno-node:latest -f ./Dockerfile ../..",
+    "docker:build:local": "docker build --build-arg REVISION=$(git rev-parse --short HEAD) --build-arg VERSION=local -t beabee/deno-node:local -f ./Dockerfile ../..",
     "docker:push:latest": "docker push beabee/deno-node:latest",
-    "docker:push:dev": "docker push beabee/deno-node:dev"
+    "docker:push:local": "docker push beabee/deno-node:local"
   }
 }

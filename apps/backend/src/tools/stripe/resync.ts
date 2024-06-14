@@ -1,5 +1,3 @@
-import "module-alias/register";
-
 import { PaymentMethod } from "@beabee/beabee-common";
 import { In } from "typeorm";
 

@@ -5,8 +5,8 @@ import {
   AuthInfo
 } from "@beabee/core";
 
-import ContactTransformer from "@api/transformers/ContactTransformer";
-import { buildSelectQuery } from "@api/utils/rules";
+import ContactTransformer from "#api/transformers/ContactTransformer";
+import { buildSelectQuery } from "#api/utils/rules";
 
 import { Contact, Segment } from "@beabee/models";
 

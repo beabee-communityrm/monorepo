@@ -23,18 +23,18 @@ import {
   ValidateNested
 } from "class-validator";
 
-import { GetPaginatedQuery } from "@api/dto/BaseDto";
+import { GetPaginatedQuery } from "#api/dto/BaseDto";
 import {
   GetContactProfileDto,
   UpdateContactProfileDto
-} from "@api/dto/ContactProfileDto";
+} from "#api/dto/ContactProfileDto";
 import {
   CreateContactRoleDto,
   GetContactRoleDto
-} from "@api/dto/ContactRoleDto";
-import { ForceUpdateContributionDto } from "@api/dto/ContributionDto";
+} from "#api/dto/ContactRoleDto";
+import { ForceUpdateContributionDto } from "#api/dto/ContributionDto";
 
-import IsPassword from "@api/validators/IsPassword";
+import IsPassword from "#api/validators/IsPassword";
 
 import { GetContactWith, ContributionInfo } from "@beabee/beabee-common";
 

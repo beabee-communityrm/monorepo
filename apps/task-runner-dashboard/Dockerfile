@@ -15,6 +15,9 @@ COPY packages/task-runner/package.json packages/task-runner/deno.jsonc packages/
 # Copy task-runner-dashboard dependencies info
 COPY apps/task-runner-dashboard/package.json /opt/apps/task-runner-dashboard/package.json
 
+# Copy deno-node dependencies info
+COPY docker/deno-node/package.json /opt/docker/deno-node/package.json
+
 # Replace's npm ci
 RUN yarn workspaces focus
 

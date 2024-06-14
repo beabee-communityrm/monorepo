@@ -16,7 +16,7 @@ import {
 } from "#utils/payment/gocardless";
 import { calcRenewalDate } from "#utils/payment";
 
-import { PaymentProvider } from "./index.js";
+import { PaymentProvider } from "./PaymentProvider.js";
 
 import { Contact } from "@beabee/models";
 

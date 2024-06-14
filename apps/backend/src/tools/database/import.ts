@@ -1,5 +1,3 @@
-import "module-alias/register";
-
 import readline from "readline";
 
 import { database } from "@beabee/core";

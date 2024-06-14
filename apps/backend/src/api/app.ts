@@ -1,4 +1,3 @@
-import "module-alias/register";
 import "reflect-metadata";
 
 import { RoleType } from "@beabee/beabee-common";

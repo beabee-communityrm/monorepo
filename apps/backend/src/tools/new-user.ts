@@ -1,5 +1,3 @@
-import "module-alias/register";
-
 import {
   ContributionType,
   RESET_SECURITY_FLOW_TYPE

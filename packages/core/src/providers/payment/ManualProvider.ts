@@ -1,5 +1,5 @@
 import { Contact } from "@beabee/models";
-import { PaymentProvider } from "./index.js";
+import { PaymentProvider } from "./PaymentProvider.js";
 
 import type { CompletedPaymentFlow, ContributionInfo } from "#types/index";
 

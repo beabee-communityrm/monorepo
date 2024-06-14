@@ -14,7 +14,8 @@ const generateIndex = async (paths: string[], ext?: string) => {
     for (const file of files) {
       if (
         (file.name.endsWith(".ts") || file.name.endsWith(".tsx")) &&
-        file.name !== "index.ts"
+        file.name !== "index.ts" &&
+        !file.name.includes('.test.') // Ignore test files
       ) {
         const filename = basename(file.name, extname(file.name)) + (ext ? `.${ext}` : "");
         indexContent += `export * from "./${filename}";\n`;

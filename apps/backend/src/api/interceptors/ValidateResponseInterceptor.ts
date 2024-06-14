@@ -4,7 +4,7 @@ import { Request } from "express";
 import { Action, Interceptor, InterceptorInterface } from "routing-controllers";
 
 import { log as mainLogger } from "@beabee/core";
-import { validateOrReject } from "@api/utils";
+import { validateOrReject } from "#api/utils";
 
 const log = mainLogger.child({ app: "validate-response-interceptor" });
 

@@ -35,7 +35,7 @@ import {
 import type {
   GetPaginatedRuleGroupRule,
   GetPaginatedRuleGroup
-} from "@api/dto/BaseDto";
+} from "#api/dto/BaseDto";
 
 import { Contact } from "@beabee/models";
 

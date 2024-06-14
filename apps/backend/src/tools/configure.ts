@@ -1,5 +1,3 @@
-import "module-alias/register";
-
 import { checkbox, input } from "@inquirer/prompts";
 
 import { database, optionsService } from "@beabee/core";

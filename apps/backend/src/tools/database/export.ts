@@ -1,5 +1,3 @@
-import "module-alias/register";
-
 import { runApp } from "#express";
 
 import * as models from "./anonymisers/models";

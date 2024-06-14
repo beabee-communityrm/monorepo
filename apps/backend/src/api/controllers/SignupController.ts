@@ -11,15 +11,15 @@ import {
 
 import { database, generatePassword, paymentFlowService } from "@beabee/core";
 
-import { GetContactDto } from "@api/dto/ContactDto";
-import { GetPaymentFlowDto } from "@api/dto/PaymentFlowDto";
+import { GetContactDto } from "#api/dto/ContactDto";
+import { GetPaymentFlowDto } from "#api/dto/PaymentFlowDto";
 import {
   StartSignupFlowDto,
   CompleteSignupFlowDto
-} from "@api/dto/SignupFlowDto";
-import { SignupConfirmEmailParams } from "@api/params/SignupConfirmEmailParams";
-import ContactTransformer from "@api/transformers/ContactTransformer";
-import { login } from "@api/utils";
+} from "#api/dto/SignupFlowDto";
+import { SignupConfirmEmailParams } from "#api/params/SignupConfirmEmailParams";
+import ContactTransformer from "#api/transformers/ContactTransformer";
+import { login } from "#api/utils";
 
 import { JoinFlow, Password } from "@beabee/models";
 import currentLocale from "#locale";

@@ -21,8 +21,8 @@ import {
   PassportLoginInfo
 } from "@beabee/core";
 import { passport } from "#express";
-import { LoginDto } from "@api/dto/LoginDto";
-import { login } from "@api/utils";
+import { LoginDto } from "#api/dto/LoginDto";
+import { login } from "#api/utils";
 import { Contact, ContactRole } from "@beabee/models";
 import { config } from "@beabee/config";
 

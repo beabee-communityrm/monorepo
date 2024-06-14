@@ -10,7 +10,7 @@ import {
 
 import { database } from "@beabee/core";
 
-import { GetStatsDto, GetStatsOptsDto } from "@api/dto/StatsDto";
+import { GetStatsDto, GetStatsOptsDto } from "#api/dto/StatsDto";
 
 import { Contact, Payment } from "@beabee/models";
 

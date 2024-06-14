@@ -14,20 +14,20 @@ import {
 
 import { database, AuthInfo } from "@beabee/core";
 
-import { CurrentAuth } from "@api/decorators/CurrentAuth";
-import PartialBody from "@api/decorators/PartialBody";
-import { GetContactDto, ListContactsDto } from "@api/dto/ContactDto";
+import { CurrentAuth } from "#api/decorators/CurrentAuth";
+import PartialBody from "#api/decorators/PartialBody";
+import { GetContactDto, ListContactsDto } from "#api/dto/ContactDto";
 import {
   GetSegmentDto,
   ListSegmentsDto,
   CreateSegmentDto,
   GetSegmentWith,
   GetSegmentOptsDto
-} from "@api/dto/SegmentDto";
-import { PaginatedDto } from "@api/dto/PaginatedDto";
-import { UUIDParams } from "@api/params/UUIDParams";
-import ContactTransformer from "@api/transformers/ContactTransformer";
-import SegmentTransformer from "@api/transformers/SegmentTransformer";
+} from "#api/dto/SegmentDto";
+import { PaginatedDto } from "#api/dto/PaginatedDto";
+import { UUIDParams } from "#api/params/UUIDParams";
+import ContactTransformer from "#api/transformers/ContactTransformer";
+import SegmentTransformer from "#api/transformers/SegmentTransformer";
 
 import { Segment, SegmentContact, SegmentOngoingEmail } from "@beabee/models";
 
@@ -111,9 +111,9 @@ export class SegmentController {
         ...query,
         rules: query.rules
           ? {
-              condition: "AND",
-              rules: [segment.ruleGroup, query.rules]
-            }
+            condition: "AND",
+            rules: [segment.ruleGroup, query.rules]
+          }
           : segment.ruleGroup
       });
     }

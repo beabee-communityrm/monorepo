@@ -11,12 +11,12 @@ import {
 
 import { contactsService } from "@beabee/core";
 
-import { login } from "@api/utils";
+import { login } from "#api/utils";
 import {
   CreateResetPasswordDto,
   UpdateResetPasswordDto
-} from "@api/dto/ResetPasswordDto";
-import { UUIDParams } from "@api/params/UUIDParams";
+} from "#api/dto/ResetPasswordDto";
+import { UUIDParams } from "#api/params/UUIDParams";
 import currentLocale from "#locale";
 
 @JsonController("/reset-password")

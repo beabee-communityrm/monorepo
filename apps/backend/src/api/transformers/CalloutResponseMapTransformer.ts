@@ -20,10 +20,10 @@ import {
   GetCalloutResponseMapOptsDto,
   ListCalloutResponseMapDto,
   ListCalloutResponsesDto
-} from "@api/dto/CalloutResponseDto";
-import { PaginatedDto } from "@api/dto/PaginatedDto";
-import { BaseCalloutResponseTransformer } from "@api/transformers/BaseCalloutResponseTransformer";
-import { mergeRules } from "@api/utils/rules";
+} from "#api/dto/CalloutResponseDto";
+import { PaginatedDto } from "#api/dto/PaginatedDto";
+import { BaseCalloutResponseTransformer } from "#api/transformers/BaseCalloutResponseTransformer";
+import { mergeRules } from "#api/utils/rules";
 
 import { Callout, CalloutResponse } from "@beabee/models";
 

@@ -18,7 +18,7 @@ import {
   GetContentShareDto,
   GetContentPaymentDto,
   GetContentTelegramDto
-} from "@api/dto/index";
+} from "#api/dto/index";
 
 import { Content } from "@beabee/models";
 

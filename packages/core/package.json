@@ -9,10 +9,13 @@
     "dist"
   ],
   "scripts": {
-    "build": "yarn generate:index && yarn format && yarn build:node && yarn build:types && yarn run build:types:cjs",
+    "build": "yarn generate:index && yarn format && yarn build:node && yarn build:types && yarn run build:types:cjs && yarn build:assets",
     "build:types": "tsc --project ./tsconfig.json",
     "build:types:cjs": "cp ./dist/types/index.d.ts ./dist/types/index.d.cts",
     "build:node": "beabee-cli cross-build node",
+    "build:assets": "yarn build:assets:cjs && yarn build:assets:esm",
+    "build:assets:cjs": "cp -r ./src/data ./dist/cjs/data && cp ./src/defaults.json ./dist/cjs/defaults.json",
+    "build:assets:esm": "cp -r ./src/data ./dist/esm/data && cp ./src/defaults.json ./dist/esm/defaults.json",
     "check": "yarn check:types",
     "check:types": "yarn build:types --noEmit --emitDeclarationOnly false",
     "check:node": "yarn build:node --noEmit --emitDeclarationOnly false",
@@ -21,6 +24,13 @@
     "generate:index": "beabee-cli generate-index --ext js ./src/lib ./src/services ./src/types ./src/errors ./src/utils ./src/providers/email ./src/providers/newsletter/ ./src/providers/payment ./src/providers/payment-flow"
   },
   "exports": {
+    "./package.json": "./package.json",
+    "./defaults.json": {
+      "import": "./dist/esm/defaults.json",
+      "require": "./dist/cjs/defaults.json"
+    },
+    "./src": "./src/index.ts",
+    "./src/*": "./src/*.ts",
     ".": {
       "import": {
         "types": "./dist/types/index.d.ts",
@@ -30,21 +40,93 @@
         "types": "./dist/types/index.d.cts",
         "default": "./dist/cjs/index.cjs"
       }
-    },
-    "./src": "./src/index.ts",
-    "./src/*": "./src/*.ts",
-    "./package.json": "./package.json"
+    }
   },
   "imports": {
-    "#models/*": "./src/models/*.js",
-    "#services/*": "./src/services/*.js",
-    "#types/*": "./src/types/*.js",
-    "#enums/*": "./src/enums/*.js",
-    "#core/defaults.json": "./src/defaults.json",
-    "#core/*": "./src/*.js",
-    "#errors/*": "./src/errors/*.js",
-    "#utils": "./src/utils/index.js",
-    "#utils/*": "./src/utils/*.js"
+    "#core/defaults.json": {
+      "import": "./dist/esm/defaults.json",
+      "require": "./dist/cjs/defaults.json"
+    },
+    "#models/*": {
+      "import": {
+        "types": "./dist/types/models/*.d.ts",
+        "default": "./dist/esm/models/*.js"
+      },
+      "require": {
+        "types": "./dist/types/models/*.d.cts",
+        "default": "./dist/cjs/models/*.cjs"
+      }
+    },
+    "#services/*": {
+      "import": {
+        "types": "./dist/types/services/*.d.ts",
+        "default": "./dist/esm/services/*.js"
+      },
+      "require": {
+        "types": "./dist/types/services/*.d.cts",
+        "default": "./dist/cjs/services/*.cjs"
+      }
+    },
+    "#types/*": {
+      "import": {
+        "types": "./dist/types/*.d.ts",
+        "default": "./dist/esm/*.js"
+      },
+      "require": {
+        "types": "./dist/types/*.d.cts",
+        "default": "./dist/cjs/*.cjs"
+      }
+    },
+    "#enums/*": {
+      "import": {
+        "types": "./dist/types/enums/*.d.ts",
+        "default": "./dist/esm/enums/*.js"
+      },
+      "require": {
+        "types": "./dist/types/enums/*.d.cts",
+        "default": "./dist/cjs/enums/*.cjs"
+      }
+    },
+    "#core/*": {
+      "import": {
+        "types": "./dist/types/*.d.ts",
+        "default": "./dist/esm/*.js"
+      },
+      "require": {
+        "types": "./dist/types/*.d.cts",
+        "default": "./dist/cjs/*.cjs"
+      }
+    },
+    "#errors/*": {
+      "import": {
+        "types": "./dist/types/errors/*.d.ts",
+        "default": "./dist/esm/errors/*.js"
+      },
+      "require": {
+        "types": "./dist/types/errors/*.d.cts",
+        "default": "./dist/cjs/errors/*.cjs"
+      }
+    },
+    "#utils": {
+      "import": {
+        "types": "./dist/types/utils/index.d.ts",
+        "default": "./dist/esm/utils/index.js"
+      },
+      "require": {
+        "types": "./dist/types/utils/index.d.cts",
+        "default": "./dist/cjs/utils/index.cjs"
+      }
+    },
+    "#utils/*": {
+      "import": {
+        "types": "./dist/types/utils/*.d.ts",
+        "default": "./dist/esm/utils/*.js"
+      },
+      "require": {
+        "types": "./dist/types/utils/*.d.cts",
+        "default": "./dist/cjs/utils/*.cjs"
+      }
+    }
   },
   "devDependencies": {
     "@beabee/cli": "workspace:^",

@@ -1,4 +1,4 @@
-/built/
+/dist/
 /src/static/
 package.json
 package-lock.json

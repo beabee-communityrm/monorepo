@@ -1,6 +1,5 @@
 **/node_modules
 **/dist/
-**/built/
 **/.env
 **/.vscode/
 node_modules/

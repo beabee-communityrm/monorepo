@@ -1,7 +1,3 @@
-import "module-alias/register";
-import "./typings/index.d.ts";
-import "./typings/passport-totp.d.ts";
-
 import cleanDeep from "clean-deep";
 import cookie from "cookie-parser";
 import csrf from "csurf"; // TODO: This package is deprecated, see https://www.npmjs.com/package/csurf

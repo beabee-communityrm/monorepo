@@ -6,7 +6,7 @@ import {
 import { add } from "date-fns";
 import Stripe from "stripe";
 
-import { PaymentProvider } from "./index.js";
+import { PaymentProvider } from "./PaymentProvider.js";
 
 import { stripe } from "#core/lib/stripe";
 import { log as mainLogger } from "#core/logging";

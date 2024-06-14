@@ -1,4 +1,4 @@
-name: Frontend Deploy
+name: Deploy Workspace
 
 on:
   push:
@@ -28,22 +28,10 @@ jobs:
     name: Check
     uses: ./.github/workflows/check.yml
 
-  node-deno-build-push:
+  build-push:
     name: Build and push
-    uses: ./.github/workflows/deno-node-build-push.yml
+    uses: ./.github/workflows/build-push.yml
     needs: [init]
-    secrets: inherit
-
-  frontend-build-push:
-    name: Build and push
-    uses: ./.github/workflows/frontend-build-push.yml
-    needs: [init, check, node-deno-build-push]
-    secrets: inherit
-
-  backend-build-push:
-    name: Build and push
-    uses: ./.github/workflows/backend-build-push.yml
-    needs: [init, check, node-deno-build-push]
     secrets: inherit
 
   # deploy:

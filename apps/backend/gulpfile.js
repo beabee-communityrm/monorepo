@@ -8,15 +8,15 @@ const sourcemaps = require("gulp-sourcemaps");
 const paths = {
   css: {
     src: "./src/static/scss/**/*.scss",
-    dest: "./built/static/css"
+    dest: "./dist/static/css"
   },
   staticFiles: {
     src: ["./src/static/**/*", "!./src/static/scss/**/*"],
-    dest: "./built/static"
+    dest: "./dist/static"
   },
   appFiles: {
     src: ["./src/**/*.{json,pug,sql}", "./src/core/data/**/*"],
-    dest: "./built"
+    dest: "./dist"
   }
 };
 

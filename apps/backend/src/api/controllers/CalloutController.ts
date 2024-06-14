@@ -25,32 +25,32 @@ import {
   UnauthorizedError
 } from "@beabee/core";
 
-import { GetExportQuery } from "@api/dto/BaseDto";
+import { GetExportQuery } from "#api/dto/BaseDto";
 
 import {
   CreateCalloutDto,
   GetCalloutDto,
   GetCalloutOptsDto,
   ListCalloutsDto
-} from "@api/dto/CalloutDto";
+} from "#api/dto/CalloutDto";
 import {
   CreateCalloutResponseDto,
   GetCalloutResponseDto,
   GetCalloutResponseMapDto,
   ListCalloutResponsesDto
-} from "@api/dto/CalloutResponseDto";
-import { CreateCalloutTagDto, GetCalloutTagDto } from "@api/dto/CalloutTagDto";
-import { PaginatedDto } from "@api/dto/PaginatedDto";
+} from "#api/dto/CalloutResponseDto";
+import { CreateCalloutTagDto, GetCalloutTagDto } from "#api/dto/CalloutTagDto";
+import { PaginatedDto } from "#api/dto/PaginatedDto";
 
-import { CalloutId } from "@api/decorators/CalloutId";
-import { CurrentAuth } from "@api/decorators/CurrentAuth";
-import PartialBody from "@api/decorators/PartialBody";
-import CalloutTagTransformer from "@api/transformers/CalloutTagTransformer";
-import CalloutTransformer from "@api/transformers/CalloutTransformer";
-import CalloutResponseExporter from "@api/transformers/CalloutResponseExporter";
-import CalloutResponseMapTransformer from "@api/transformers/CalloutResponseMapTransformer";
-import CalloutResponseTransformer from "@api/transformers/CalloutResponseTransformer";
-import { validateOrReject } from "@api/utils";
+import { CalloutId } from "#api/decorators/CalloutId";
+import { CurrentAuth } from "#api/decorators/CurrentAuth";
+import PartialBody from "#api/decorators/PartialBody";
+import CalloutTagTransformer from "#api/transformers/CalloutTagTransformer";
+import CalloutTransformer from "#api/transformers/CalloutTransformer";
+import CalloutResponseExporter from "#api/transformers/CalloutResponseExporter";
+import CalloutResponseMapTransformer from "#api/transformers/CalloutResponseMapTransformer";
+import CalloutResponseTransformer from "#api/transformers/CalloutResponseTransformer";
+import { validateOrReject } from "#api/utils";
 
 import {
   Callout,

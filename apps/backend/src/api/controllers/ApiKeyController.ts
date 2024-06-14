@@ -15,15 +15,15 @@ import {
 
 import { apiKeyService, AuthInfo } from "@beabee/core";
 
-import { CurrentAuth } from "@api/decorators/CurrentAuth";
+import { CurrentAuth } from "#api/decorators/CurrentAuth";
 import {
   CreateApiKeyDto,
   GetApiKeyDto,
   ListApiKeysDto,
   NewApiKeyDto
-} from "@api/dto/ApiKeyDto";
-import { PaginatedDto } from "@api/dto/PaginatedDto";
-import ApiKeyTransformer from "@api/transformers/ApiKeyTransformer";
+} from "#api/dto/ApiKeyDto";
+import { PaginatedDto } from "#api/dto/PaginatedDto";
+import ApiKeyTransformer from "#api/transformers/ApiKeyTransformer";
 
 import { Contact } from "@beabee/models";
 

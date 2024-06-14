@@ -67,7 +67,9 @@
       "qrcode",
       "quickflash",
       "TOTP",
-      "Vuelidate"
+      "Vuelidate",
+      "Beabee",
+      "Deno"
     ],
     "deno.disablePaths": [
       "./node_modules",

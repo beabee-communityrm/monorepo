@@ -15,17 +15,17 @@ import {
 
 import { database, AuthInfo } from "@beabee/core";
 
-import { CurrentAuth } from "@api/decorators/CurrentAuth";
-import PartialBody from "@api/decorators/PartialBody";
+import { CurrentAuth } from "#api/decorators/CurrentAuth";
+import PartialBody from "#api/decorators/PartialBody";
 import {
   CreateCalloutResponseCommentDto,
   GetCalloutResponseCommentDto,
   ListCalloutResponseCommentsDto
-} from "@api/dto/CalloutResponseCommentDto";
-import { PaginatedDto } from "@api/dto/PaginatedDto";
-import { UUIDParams } from "@api/params/UUIDParams";
+} from "#api/dto/CalloutResponseCommentDto";
+import { PaginatedDto } from "#api/dto/PaginatedDto";
+import { UUIDParams } from "#api/params/UUIDParams";
 
-import CalloutResponseCommentTransformer from "@api/transformers/CalloutResponseCommentTransformer";
+import CalloutResponseCommentTransformer from "#api/transformers/CalloutResponseCommentTransformer";
 
 import { CalloutResponseComment, Contact } from "@beabee/models";
 

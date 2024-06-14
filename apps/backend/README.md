@@ -48,13 +48,13 @@ docker compose up -d
 #### Create a new super admin
 
 ```bash
-docker compose run --rm app node built/tools/new-user
+docker compose run --rm app node dist/tools/new-user
 ```
 
 #### Payment methods and email domain
 
 ```bash
-docker compose exec app node built/tools/configure
+docker compose exec app node dist/tools/configure
 ```
 
 > ⚠️ If you only set up the system locally, it doesn't matter what email domain you specify, but it still has to be valid, e.g. `example.org`.
@@ -64,7 +64,7 @@ docker compose exec app node built/tools/configure
 Need some test data? Download it here: coming soon
 
 ```bash
-docker compose run --rm -T app node built/tools/database/import.js < <import file>
+docker compose run --rm -T app node dist/tools/database/import.js < <import file>
 ```
 
 #### Go to the frontend
@@ -187,7 +187,7 @@ The backend and frontend share some code through the [beabee-common](https://git
 
 #### 🖼️ Frontend
 
-You are currently browsing the repository that includes our legacy frontend application. This version is phased out and will be deprecated in due course. The revamped and currently active frontend, built with Vite and Vue, is accessible [here](https://github.com/beabee-communityrm/beabee-frontend).
+You are currently browsing the repository that includes our legacy frontend application. This version is phased out and will be deprecated in due course. The revamped and currently active frontend, with Vite and Vue, is accessible [here](https://github.com/beabee-communityrm/beabee-frontend).
 
 #### 📡 Webhooks
 
@@ -208,7 +208,7 @@ Webhooks are handled by the `webhook_app` service. This is a separate service fr
 By default we are using [MailDev](https://github.com/maildev/maildev) for local development. For this to work it must be configured the first time, run the following command if not already done:
 
 ```bash
-docker compose exec app node built/tools/configure
+docker compose exec app node dist/tools/configure
 ```
 
 If the Docker Compose Stack is started, you can reach MailDev via http://localhost:3025/ by default. If you now receive an e-mail during your tests, you will find it there.
@@ -237,7 +237,7 @@ BEABEE_STRIPE_SECRETKEY=<secret key>
 And also that you have configured the payment methods using
 
 ```bash
-docker compose exec app node built/tools/configure
+docker compose exec app node dist/tools/configure
 ```
 
 You can get the public key and secret key in the [Stripe dashboard](https://dashboard.stripe.com).

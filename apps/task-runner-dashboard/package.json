@@ -12,7 +12,8 @@
     "check": "yarn check:types",
     "check:types": "tsc --noEmit --emitDeclarationOnly false",
     "generate:index": "beabee-cli generate-index --ext ts ./src",
-    "docker:build": "docker build -t beabee/task-runner-dashboard -f ./Dockerfile ../../",
+    "docker:build:latest": "docker build --build-arg REVISION=$(git rev-parse --short HEAD) --build-arg VERSION=latest -t beabee/task-runner-dashboard:latest -f ./Dockerfile ../../",
+    "docker:build:local": "docker build --build-arg REVISION=$(git rev-parse --short HEAD) --build-arg VERSION=local -t beabee/task-runner-dashboard:local -f ./Dockerfile ../../",
     "docker:start": "docker run -d -p 3004:3004 -e TASK_RUNNER_REDIS_HOST=localhost -e TASK_RUNNER_DASHBOARD_PORT=3004 beabee/task-runner-dashboard",
     "docker:restart": "docker restart $(docker ps -a | grep beabee/task-runner-dashboard | awk '{print $1}')",
     "docker:stop": "docker stop $(docker ps -a | grep beabee/task-runner-dashboard | awk '{print $1}')"

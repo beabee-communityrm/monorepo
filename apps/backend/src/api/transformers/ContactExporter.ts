@@ -2,8 +2,8 @@ import { RoleType } from "@beabee/beabee-common";
 import { stringify } from "csv-stringify/sync";
 import { SelectQueryBuilder } from "typeorm";
 
-import { GetExportQuery } from "@api/dto/BaseDto";
-import { ExportContactDto } from "@api/dto/ContactDto";
+import { GetExportQuery } from "#api/dto/BaseDto";
+import { ExportContactDto } from "#api/dto/ContactDto";
 
 import { Contact } from "@beabee/models";
 

@@ -26,15 +26,15 @@ import {
   ValidateNested
 } from "class-validator";
 
-import { GetExportQuery, GetPaginatedQuery } from "@api/dto/BaseDto";
-import { GetCalloutFormDto, SetCalloutFormDto } from "@api/dto/CalloutFormDto";
-import { CalloutVariantDto } from "@api/dto/CalloutVariantDto";
-import { LinkDto } from "@api/dto/LinkDto";
-import IsSlug from "@api/validators/IsSlug";
-import IsUrl from "@api/validators/IsUrl";
-import IsMapBounds from "@api/validators/IsMapBounds";
-import IsLngLat from "@api/validators/IsLngLat";
-import IsVariantsObject from "@api/validators/IsVariantsObject";
+import { GetExportQuery, GetPaginatedQuery } from "#api/dto/BaseDto";
+import { GetCalloutFormDto, SetCalloutFormDto } from "#api/dto/CalloutFormDto";
+import { CalloutVariantDto } from "#api/dto/CalloutVariantDto";
+import { LinkDto } from "#api/dto/LinkDto";
+import IsSlug from "#api/validators/IsSlug";
+import IsUrl from "#api/validators/IsUrl";
+import IsMapBounds from "#api/validators/IsMapBounds";
+import IsLngLat from "#api/validators/IsLngLat";
+import IsVariantsObject from "#api/validators/IsVariantsObject";
 
 import {
   CalloutMapSchema,

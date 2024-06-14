@@ -7,11 +7,11 @@ import {
   IsString
 } from "class-validator";
 
-import { UpdateAddressDto } from "@api/dto/AddressDto";
-import { StartContributionDto } from "@api/dto/ContributionDto";
-import { CompleteJoinFlowDto } from "@api/dto/JoinFlowDto";
-import IsPassword from "@api/validators/IsPassword";
-import IsUrl from "@api/validators/IsUrl";
+import { UpdateAddressDto } from "#api/dto/AddressDto";
+import { StartContributionDto } from "#api/dto/ContributionDto";
+import { CompleteJoinFlowDto } from "#api/dto/JoinFlowDto";
+import IsPassword from "#api/validators/IsPassword";
+import IsUrl from "#api/validators/IsUrl";
 
 import { JoinForm } from "@beabee/models";
 
@@ -42,8 +42,7 @@ export class StartSignupFlowDto implements CompleteUrls {
 
 export class CompleteSignupFlowDto
   extends CompleteJoinFlowDto
-  implements Pick<JoinForm, "firstname" | "lastname" | "vatNumber">
-{
+  implements Pick<JoinForm, "firstname" | "lastname" | "vatNumber"> {
   @IsOptional()
   @IsString()
   firstname?: string;

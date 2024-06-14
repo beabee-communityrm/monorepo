@@ -12,9 +12,9 @@ import {
   SegmentContact
 } from "@beabee/models";
 
-import { EmailSchema, schemaToEmail } from "@apps/tools/apps/emails/app";
-import { cleanRuleGroup } from "@apps/members/app";
-import ContactTransformer from "@api/transformers/ContactTransformer";
+import { EmailSchema, schemaToEmail } from "#apps/tools/apps/emails/app";
+import { cleanRuleGroup } from "#apps/members/app";
+import ContactTransformer from "#api/transformers/ContactTransformer";
 
 const app = express();
 
@@ -142,14 +142,14 @@ app.post(
     const email =
       data.email === "__new__"
         ? await database.getRepository(Email).save(
-            schemaToEmail({
-              ...data,
-              name: "Email to segment " + segment.name
-            })
-          )
+          schemaToEmail({
+            ...data,
+            name: "Email to segment " + segment.name
+          })
+        )
         : await database
-            .getRepository(Email)
-            .findOneByOrFail({ id: data.email });
+          .getRepository(Email)
+          .findOneByOrFail({ id: data.email });
 
     if (data.type === "ongoing") {
       await database.getRepository(SegmentOngoingEmail).save({

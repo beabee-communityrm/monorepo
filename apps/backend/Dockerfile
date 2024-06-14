@@ -1,56 +1,46 @@
-FROM beabee/deno-node:latest as builder
+ARG VERSION=latest
 
-WORKDIR /opt/apps/backend
+FROM beabee/deno-node:${VERSION} as builder
+
+ENV NODE_ENV=production
+ARG PACKAGE=backend
+
+WORKDIR /opt
 
 # Copy the workspace configuration
 COPY package.json yarn.lock deno.jsonc .yarnrc.yml /opt/
 COPY .yarn /opt/.yarn
 
-# Copy `@beabee/cli` dependencies info
-COPY apps/cli/package.json /opt/apps/cli/package.json
-COPY apps/cli/deno.jsonc /opt/apps/cli/deno.jsonc
-COPY apps/cli/deno.lock /opt/apps/cli/deno.lock
+# Copy dependencies info..
 
-# Copy `@beabee/beabee-common` dependencies info
-COPY packages/common/package.json /opt/packages/common/package.json
-COPY packages/common/deno.jsonc /opt/packages/common/deno.jsonc
-COPY packages/common/deno.lock /opt/packages/common/deno.lock
+# .. for docker images
+COPY docker/deno-node/package.json /opt/docker/deno-node/
+COPY docker/workspace/package.json /opt/docker/workspace/
 
-# Copy `@beabee/locales` dependencies info
-COPY packages/locales/package.json /opt/packages/locales/package.json
-COPY packages/locales/deno.jsonc /opt/packages/locales/deno.jsonc
+# .. for packages
+COPY packages/common/package.json packages/common/deno.jsonc packages/common/deno.lock /opt/packages/common/
+COPY packages/task-runner/package.json packages/task-runner/deno.jsonc packages/task-runner/deno.lock /opt/packages/task-runner/
+COPY packages/locales/package.json packages/locales/deno.jsonc /opt/packages/locales/
+COPY packages/config/package.json packages/config/deno.jsonc /opt/packages/config/
+COPY packages/core/package.json packages/core/deno.jsonc /opt/packages/core/
+COPY packages/models/package.json /opt/packages/models/
 
-# Copy `@beabee/backend` dependencies info
-COPY apps/backend/package.json /opt/apps/backend/package.json
+# .. for apps
+COPY apps/${PACKAGE}/package.json /opt/apps/${PACKAGE}/
+COPY apps/cli/package.json apps/cli/deno.jsonc apps/cli/deno.lock /opt/apps/cli/
 
-# Replace's npm ci
-RUN yarn install
+RUN yarn workspaces focus @beabee/${PACKAGE}
 
-# Copy the rest of `@beabee/cli`
-COPY apps/cli /opt/apps/cli
+# Copy the rest 
+COPY ./packages /opt/packages
+COPY ./apps /opt/apps
 
-# Copy the rest of `@beabee/beabee-common`
-COPY packages/common/src /opt/packages/common/src
-COPY packages/common/test /opt/packages/common/test
-COPY packages/common/mod.ts packages/common/tsconfig.json /opt/packages/common/
-
-# Copy the rest of `@beabee/locales`
-COPY packages/locales/src /opt/packages/locales/src
-COPY packages/locales/tsconfig.json /opt/packages/locales/
-
-# Copy the rest of `@beabee/backend`
-COPY apps/backend /opt/apps/backend
-
-# Build `@beabee/backend` and it's dependencies
-RUN NODE_ENV=production yarn build:cli
-RUN NODE_ENV=production yarn build:common
-RUN NODE_ENV=production yarn build:locales
-RUN NODE_ENV=production yarn build:backend
+RUN yarn build:${PACKAGE}
 
 FROM nginx:1.24-alpine as router
 
 COPY apps/backend/nginx.conf /etc/nginx/conf.d/default.conf
-COPY --chown=nginx:nginx --from=builder /opt/apps/backend/built/static /opt/apps/backend/built/static
+COPY --chown=nginx:nginx --from=builder /opt/apps/backend/dist/static /opt/apps/backend/dist/static
 
 FROM beabee/deno-node as app
 
@@ -58,32 +48,32 @@ ARG REVISION=DEV
 
 ENV NODE_ENV=production
 
-WORKDIR /opt/apps/backend
-
-USER node
-
-# Workspace settings
-COPY --chown=node:node --from=builder /opt/package.json /opt/yarn.lock /opt/.yarnrc.yml /opt/
+# Copy the workspace configuration
+COPY --chown=node:node --from=builder /opt/package.json /opt/
+COPY --chown=node:node --from=builder /opt/yarn.lock /opt/
+COPY --chown=node:node --from=builder /opt/.yarnrc.yml /opt/
 COPY --chown=node:node --from=builder /opt/.yarn /opt/.yarn
-
-# Copy the node_module's and package.json's
 COPY --chown=node:node --from=builder /opt/node_modules /opt/node_modules
-COPY --chown=node:node --from=builder /opt/apps/backend/package.json /opt/apps/backend/
-COPY --chown=node:node --from=builder /opt/packages/common/package.json /opt/packages/common/
-COPY --chown=node:node --from=builder /opt/packages/locales/package.json /opt/packages/locales/
 
-# Replace's npm prune
-RUN yarn workspaces focus --production
+# Apps and packages
+COPY --chown=node:node --from=builder /opt/apps/backend /opt/apps/backend
+COPY --chown=node:node --from=builder /opt/packages /opt/packages
+COPY --chown=node:node --from=builder /opt/docker /opt/docker
 
-COPY --chown=node:node --from=builder /opt/apps/backend/built /opt/apps/backend/built
-COPY --chown=node:node --from=builder /opt/packages/common/dist /opt/packages/common/dist
-COPY --chown=node:node --from=builder /opt/packages/locales/dist /opt/packages/locales/dist
+# COPY apps/backend/crontab /etc/crontabs/root
+COPY apps/backend/crontab /etc/cron.d/beabee-cron
+RUN chmod 0644 /etc/cron.d/beabee-cron
 
-COPY apps/backend/crontab /etc/crontabs/root
-
-RUN echo -n ${REVISION} > /opt/apps/backend/built/revision.txt
+RUN echo -n ${REVISION} > /opt/apps/backend/dist/revision.txt
 
 ENV NODE_ENV=production
 ENV NODE_OPTIONS=--enable-source-maps
 
-CMD [ "node", "./built/app.js" ]
+USER node
+
+WORKDIR /opt/apps/backend
+
+# Replace's npm prune
+RUN yarn workspaces focus @beabee/backend --production
+
+CMD [ "yarn", "start:app:prod" ]

@@ -8,11 +8,11 @@ import {
   GetContactDto,
   GetContactOptsDto,
   ListContactsDto
-} from "@api/dto/ContactDto";
-import { BaseContactTransformer } from "@api/transformers/BaseContactTransformer";
-import ContactRoleTransformer from "@api/transformers/ContactRoleTransformer";
-import ContactProfileTransformer from "@api/transformers/ContactProfileTransformer";
-import { mergeRules } from "@api/utils/rules";
+} from "#api/dto/ContactDto";
+import { BaseContactTransformer } from "#api/transformers/BaseContactTransformer";
+import ContactRoleTransformer from "#api/transformers/ContactRoleTransformer";
+import ContactProfileTransformer from "#api/transformers/ContactProfileTransformer";
+import { mergeRules } from "#api/utils/rules";
 
 class ContactTransformer extends BaseContactTransformer<
   GetContactDto,
@@ -42,12 +42,12 @@ class ContactTransformer extends BaseContactTransformer<
       }),
       ...(opts?.with?.includes(GetContactWith.Profile) &&
         contact.profile && {
-          profile: ContactProfileTransformer.convert(
-            contact.profile,
-            undefined,
-            auth
-          )
-        }),
+        profile: ContactProfileTransformer.convert(
+          contact.profile,
+          undefined,
+          auth
+        )
+      }),
       ...(opts?.with?.includes(GetContactWith.Roles) && {
         roles: contact.roles.map(ContactRoleTransformer.convert)
       }),

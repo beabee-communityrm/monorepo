@@ -1,5 +1,3 @@
-import "module-alias/register";
-
 import moment from "moment";
 import { Between } from "typeorm";
 

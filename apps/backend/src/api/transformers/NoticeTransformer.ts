@@ -5,9 +5,9 @@ import {
 } from "@beabee/beabee-common";
 import { TransformPlainToInstance } from "class-transformer";
 
-import { BaseTransformer } from "@api/transformers/BaseTransformer";
-import { GetNoticeDto, ListNoticesDto } from "@api/dto/NoticeDto";
-import { mergeRules, statusFilterHandler } from "@api/utils/rules";
+import { BaseTransformer } from "#api/transformers/BaseTransformer";
+import { GetNoticeDto, ListNoticesDto } from "#api/dto/NoticeDto";
+import { mergeRules, statusFilterHandler } from "#api/utils/rules";
 
 import { Notice } from "@beabee/models";
 

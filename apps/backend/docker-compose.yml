@@ -1,12 +1,9 @@
 # version: "3.4"
 
 x-base-app: &base-app
-  build:
-    context: ../..
-    dockerfile: ./apps/backend/Dockerfile
-    target: app
+  image: beabee/beabee:local
   volumes:
-    - ./built:/opt/apps/backend/built
+    - ./dist:/opt/apps/backend/dist
     - ../../packages/common/dist:/opt/packages/common/dist
     - ./src/migrations:/opt/apps/backend/src/migrations
   env_file:
@@ -35,11 +32,12 @@ services:
 
   api_app:
     <<: *base-app
-    command: node ./built/api/app.js
+    command: yarn start:api:prod
 
   webhook_app:
     <<: *base-app
-    command: node ./built/webhooks/app.js
+    working_dir: /opt/apps/backend
+    command: yarn start:webhooks:prod
 
   img_upload_app:
     image: beabee/pictshare:v0.1.1
@@ -53,16 +51,14 @@ services:
   cron:
     <<: *base-app
     user: root
-    command: "crond -f -d 7"
+    # alpine: command: crond -f -d 7
+    command: "cron -f"
     init: true
 
   router:
-    build:
-      context: ../..
-      dockerfile: ./apps/backend/Dockerfile
-      target: router
+    image: beabee/router:local
     volumes:
-      - ./built/static:/opt/built/static:ro
+      - ./dist/static:/opt/dist/static:ro
     ports:
       - ${MAIN_PORT}:80
 

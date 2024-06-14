@@ -18,7 +18,7 @@ import {
 } from "@beabee/core";
 
 import { CONTACT_MFA_TYPE, LOGIN_CODES } from "@beabee/beabee-common";
-import { LoginDto } from "@api/dto/LoginDto";
+import { LoginDto } from "#api/dto/LoginDto";
 
 import { Contact } from "@beabee/models";
 

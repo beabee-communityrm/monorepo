@@ -1,7 +1,14 @@
+**/node_modules
+**/dist
+**/.env
+**/.vscode/
+**/Dockerfile
+**/README.md
 Dockerfile
 docker-compose.yml
 tsconfig.tsbuildinfo
 node_modules/
-/built/
+dist/
 .env
 .vscode/
+README.md

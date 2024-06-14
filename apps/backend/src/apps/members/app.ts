@@ -6,7 +6,7 @@ import { database, wrapAsync, optionsService } from "@beabee/core";
 import { isAdmin, userToAuth } from "#express";
 import { segmentService } from "#services";
 
-import ContactTransformer from "@api/transformers/ContactTransformer";
+import ContactTransformer from "#api/transformers/ContactTransformer";
 
 import { Project, Contact } from "@beabee/models";
 
@@ -78,10 +78,10 @@ export function cleanRuleGroup(group: RuleGroup): RuleGroup {
       "condition" in rule
         ? cleanRuleGroup(rule)
         : {
-            field: rule.field,
-            operator: rule.operator,
-            value: Array.isArray(rule.value) ? rule.value : [rule.value]
-          }
+          field: rule.field,
+          operator: rule.operator,
+          value: Array.isArray(rule.value) ? rule.value : [rule.value]
+        }
     )
   };
 }

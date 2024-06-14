@@ -1,7 +1,7 @@
 {
   "include": ["./src"],
   "compilerOptions": {
-    "target": "ESNext",
+    "target": "ES6",
     "module": "NodeNext",
     "rootDir": "./src",
     "declarationDir": "./dist/esm",

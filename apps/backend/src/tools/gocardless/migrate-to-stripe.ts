@@ -1,5 +1,3 @@
-import "module-alias/register";
-
 import { PaymentMethod, PaymentStatus } from "@beabee/beabee-common";
 import { parse } from "csv-parse";
 import { add, startOfDay } from "date-fns";

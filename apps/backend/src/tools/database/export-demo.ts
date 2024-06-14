@@ -1,5 +1,3 @@
-import "module-alias/register";
-
 import { Brackets } from "typeorm";
 
 import { database } from "@beabee/core";
