@@ -10,7 +10,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup
-      - run: yarn build
       - run: yarn check
   test:
     name: Build and test the complete workspace
@@ -19,5 +18,4 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup
-      - run: yarn build
       - run: yarn test

@@ -19,6 +19,8 @@
     "generate:index": "yarn exec 'deno task generate:index'",
     "sync": "yarn exec 'deno task sync'",
     "deno:cache": "yarn exec 'deno task deno:cache'",
-    "deno:cache:refresh": "yarn exec 'deno task deno:cache:refresh'"
-  }
+    "deno:cache:refresh": "yarn exec 'deno task deno:cache:refresh'",
+    "chmod": "yarn exec 'deno task chmod'"
+  },
+  "dependencies": {}
 }

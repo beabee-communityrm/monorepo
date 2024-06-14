@@ -17,6 +17,6 @@ runs:
     - name: Install dependencies
       run: yarn install
       shell: bash
-    - name: Build common
-      run: yarn build:common
+    - name: Build
+      run: yarn build
       shell: bash
