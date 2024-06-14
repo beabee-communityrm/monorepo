@@ -8,7 +8,7 @@
     "dist"
   ],
   "scripts": {
-    "beabee:cli": "yarn exec 'deno task beabee:cli'",
+    "beabee:cli": "",
     "clear": "rm -rf dist; exit 0",
     "build": "yarn build:node && yarn build:types && yarn build:json",
     "build:node": "beabee-cli cross-build node",
@@ -17,9 +17,9 @@
     "check": "yarn check:types",
     "check:types": "yarn build:types --noEmit --emitDeclarationOnly false",
     "generate:index": "beabee-cli generate-index --ext ts ./src/locales",
-    "update:locales": "yarn update:locales:json && yarn update:locales:ts && yarn generate:index",
-    "update:locales:json": "beabee-cli i18n $(git rev-parse --symbolic-full-name --abbrev-ref HEAD) --output-dir ./src/locales/json --format json",
-    "update:locales:ts": "beabee-cli i18n $(git rev-parse --symbolic-full-name --abbrev-ref HEAD) --output-dir ./src/locales --format ts"
+    "update:locales": "yarn exec 'deno task update:locales'",
+    "update:locales:json": "yarn exec 'deno task update:locales:json'",
+    "update:locales:ts": "yarn exec 'deno task update:locales:ts'"
   },
   "exports": {
     "./package.json": "./package.json",

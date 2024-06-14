@@ -10,7 +10,7 @@
  */
 import { join } from "https://deno.land/std@0.212.0/path/mod.ts"
 import { I18nArguments } from "../types.ts";
-import { getGoogleApis } from "../googleapis.ts";
+import { google } from "../debs.ts";
 
 import * as rustyMarkdown from "https://deno.land/x/rusty_markdown@v0.4.1/mod.ts";
 
@@ -50,8 +50,6 @@ function processKeyData(keyOpts: string[], keyData: string) {
 
 async function loadSheet(name: string, authJsonFile: string) {
   console.log('Loading sheet ' + name);
-
-  const google = await getGoogleApis();
 
   const auth = new google.auth.GoogleAuth({
     keyFile: join(cwd, authJsonFile),

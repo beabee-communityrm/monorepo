@@ -20,7 +20,6 @@ RUN curl -fsSL https://deno.land/install.sh | sh -s ${DENO_VERSION}
 ENV DENO_INSTALL="/root/.deno"
 ENV DENO_DIR="/root/.deno"
 ENV PATH="${DENO_INSTALL}/bin:${PATH}"
-RUN echo "${PATH}"
 
 RUN node --version
 RUN npm --version

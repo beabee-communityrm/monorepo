@@ -1,3 +1,5 @@
+#### -> WORKSPACE BUILDER (reusable) ####
+
 ARG VERSION=latest
 
 FROM beabee/deno-node:${VERSION} as builder
@@ -13,7 +15,7 @@ COPY .yarn /opt/.yarn
 
 # Copy dependencies info..
 
-# .. for docker images
+# .. for docker images (only for the package.json so that yarn does not complain)
 COPY docker/deno-node/package.json /opt/docker/deno-node/
 COPY docker/workspace/package.json /opt/docker/workspace/
 
@@ -30,6 +32,7 @@ COPY apps/${PACKAGE}/package.json /opt/apps/${PACKAGE}/
 COPY apps/cli/package.json apps/cli/deno.jsonc apps/cli/deno.lock /opt/apps/cli/
 
 RUN yarn workspaces focus @beabee/${PACKAGE}
+# RUN yarn deno:cache
 
 # Copy the rest 
 COPY ./packages /opt/packages
@@ -37,10 +40,18 @@ COPY ./apps /opt/apps
 
 RUN yarn build:${PACKAGE}
 
+#### <- WORKSPACE BUILDER ####
+
+#### -> ROUTER ####
+
 FROM nginx:1.24-alpine as router
 
 COPY apps/backend/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --chown=nginx:nginx --from=builder /opt/apps/backend/dist/static /opt/apps/backend/dist/static
+
+#### <- ROUTER ####
+
+#### -> APP ####
 
 FROM beabee/deno-node as app
 
@@ -77,3 +88,5 @@ WORKDIR /opt/apps/backend
 RUN yarn workspaces focus @beabee/backend --production
 
 CMD [ "yarn", "start:app:prod" ]
+
+#### <- APP ####

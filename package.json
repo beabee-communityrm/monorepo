@@ -27,7 +27,8 @@
     "upgrade": "yarn set version latest && yarn install && yarn upgrade-interactive",
     "docker:build:latest": "yarn workspaces foreach --verbose --worktree --topological-dev run docker:build:latest",
     "docker:build:local": "yarn workspaces foreach --verbose --worktree --topological-dev run docker:build:local",
-    "docker:start": "yarn workspaces foreach --verbose --worktree -p run docker:start",
+    "docker:start:local": "yarn workspaces foreach --verbose --worktree -p run docker:start:local",
+    "docker:start:latest": "yarn workspaces foreach --verbose --worktree -p run docker:start:latest",
     "publish:next": "yarn workspaces foreach --verbose --worktree --no-private npm publish --tolerate-republish --tag next --access public",
     "publish:latest": "yarn workspaces foreach --verbose --worktree --no-private npm publish --tolerate-republish --tag latest --access public"
   },

@@ -2,15 +2,15 @@
   "name": "@beabee/locale",
   "version": "0.16.0",
   "tasks": {
-    "beabee:cli": "deno run --allow-read --allow-write --allow-env --allow-run --allow-net ../../apps/cli/mod.ts",
+    "i18n": "deno run --allow-read --allow-write --allow-env --allow-run --allow-net ./scripts/i18n/cli.ts",
     "clear": "yarn clear",
     "build": "yarn build",
     "build:esbuild": "yarn build:esbuild",
     "build:cross": "yarn build:cross",
     "build:types": "yarn build:types",
     "generate:index": "yarn generate:index",
-    "update:locales": "yarn update:locales",
-    "update:locales:json": "yarn update:locales:json",
-    "update:locales:ts": "yarn update:locales:ts"
+    "update:locales": "yarn update:locales:json && yarn update:locales:ts && yarn generate:index",
+    "update:locales:json": "deno task i18n locales $(git rev-parse --symbolic-full-name --abbrev-ref HEAD) --output-dir ./src/locales/json --format json",
+    "update:locales:ts": "deno task i18n locales $(git rev-parse --symbolic-full-name --abbrev-ref HEAD) --output-dir ./src/locales --format ts"
   }
 }

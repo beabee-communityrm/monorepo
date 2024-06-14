@@ -2,7 +2,7 @@
   "include": ["./src"],
   "exclude": ["./test"],
   "compilerOptions": {
-    "lib": ["ESNext"],
+    "lib": ["ESNext", "DOM"],
     "target": "ESNext",
     "module": "ESNext",
     "rootDir": "./src",

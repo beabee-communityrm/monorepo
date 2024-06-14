@@ -1,6 +1,6 @@
 #!/usr/bin/env -S deno run --allow-read --allow-write --allow-env --allow-run --allow-net
 import yargs from "https://deno.land/x/yargs@v17.7.2-deno/deno.ts";
-import { crossBuildAction, crossWatchAction, crossSyncAction, generateIndexAction, i18nAction } from "./actions/index.ts";
+import { crossBuildAction, crossWatchAction, crossSyncAction, generateIndexAction } from "./actions/index.ts";
 
 import type { BuildPlatform, BuildType } from "./types.ts";
 import type { YargsInstance } from "https://deno.land/x/yargs@v17.7.2-deno/build/lib/yargs-factory.js";
@@ -57,30 +57,6 @@ yargs(Deno.args)
         "sync package.json and deno.jsonc configurations",
         (yargs: YargsInstance) => yargs,
         crossSyncAction,
-    )
-    .command(
-        "i18n [sheet-name]",
-        "parse the google sheet and sync the locale files",
-        (yargs: YargsInstance) => {
-            return yargs.positional("sheet-name", {
-                describe: "Additional sheet name to parse",
-                type: "string",
-            }).option("auth-json-file", {
-                describe: "The path to the Google Auth JSON file",
-                type: "string",
-                default: "./.credentials.json",
-            }).option("output-dir", {
-                describe: "The path to the output directory",
-                type: "string",
-                default: "./locales",
-            }).option("format", {
-                describe: "The format of the output file",
-                type: "string",
-                choices: ["json", "js", "ts"],
-                default: "json",
-            });
-        },
-        i18nAction,
     )
     .strictCommands()
     .demandCommand(1)

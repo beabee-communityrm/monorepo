@@ -14,7 +14,8 @@
   "scripts": {
     "beabee:cli": "yarn exec 'deno task beabee:cli'",
     "build": "yarn exec 'deno task build'",
-    "compile": "yarn exec 'deno task compile'",
+    "build:compile": "yarn exec 'deno task build:compile'",
+    "build:install": "yarn exec 'deno task build:install'",
     "generate:index": "yarn exec 'deno task generate:index'",
     "sync": "yarn exec 'deno task sync'",
     "deno:cache": "yarn exec 'deno task deno:cache'",
