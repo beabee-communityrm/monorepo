@@ -13,7 +13,7 @@ jobs:
   build-push:
     name: Deno and Node build and push
     uses: ./.github/workflows/build-push.yml
-    needs: []
+    needs: ['check']
     secrets: inherit
 
   release:
