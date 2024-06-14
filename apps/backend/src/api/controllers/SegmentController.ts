@@ -111,9 +111,9 @@ export class SegmentController {
         ...query,
         rules: query.rules
           ? {
-            condition: "AND",
-            rules: [segment.ruleGroup, query.rules]
-          }
+              condition: "AND",
+              rules: [segment.ruleGroup, query.rules]
+            }
           : segment.ruleGroup
       });
     }

@@ -40,7 +40,8 @@ export class UpdateContributionDto {
 
 export class StartContributionDto
   extends UpdateContributionDto
-  implements StartJoinFlowDto {
+  implements StartJoinFlowDto
+{
   @IsUrl()
   completeUrl!: string;
 

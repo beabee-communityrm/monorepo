@@ -32,7 +32,7 @@ export abstract class BaseTransformer<
   GetDtoOpts = unknown,
   Query extends GetDtoOpts & PaginatedQuery = GetDtoOpts & PaginatedQuery
 > {
-  protected abstract model: { new(): Model };
+  protected abstract model: { new (): Model };
   protected modelIdField = "id";
 
   protected abstract filters: Filters<FilterName>;
@@ -92,7 +92,7 @@ export abstract class BaseTransformer<
     fieldPrefix: string,
     query: Query,
     auth: AuthInfo | undefined
-  ): void { }
+  ): void {}
 
   /**
    * Modify the items after they are fetched.
@@ -108,7 +108,7 @@ export abstract class BaseTransformer<
     items: Model[],
     query: Query,
     auth: AuthInfo | undefined
-  ): Promise<void> { }
+  ): Promise<void> {}
 
   /**
    * Check for sufficient authentication and prepare the query,

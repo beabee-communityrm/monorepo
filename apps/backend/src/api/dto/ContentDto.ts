@@ -212,21 +212,21 @@ export class GetContentPaymentDto implements ContentPaymentData {
 
 export type GetContentDto<Id extends ContentId = ContentId> =
   Id extends "contacts"
-  ? GetContentContactsDto
-  : never | Id extends "email"
-  ? GetContentEmailDto
-  : never | Id extends "general"
-  ? GetContentGeneralDto
-  : never | Id extends "join"
-  ? GetContentJoinDto
-  : never | Id extends "join/setup"
-  ? GetContentJoinSetupDto
-  : never | Id extends "profile"
-  ? GetContentProfileDto
-  : never | Id extends "share"
-  ? GetContentShareDto
-  : never | Id extends "payment"
-  ? GetContentPaymentDto
-  : never | Id extends "telegram"
-  ? GetContentTelegramDto
-  : never;
+    ? GetContentContactsDto
+    : never | Id extends "email"
+      ? GetContentEmailDto
+      : never | Id extends "general"
+        ? GetContentGeneralDto
+        : never | Id extends "join"
+          ? GetContentJoinDto
+          : never | Id extends "join/setup"
+            ? GetContentJoinSetupDto
+            : never | Id extends "profile"
+              ? GetContentProfileDto
+              : never | Id extends "share"
+                ? GetContentShareDto
+                : never | Id extends "payment"
+                  ? GetContentPaymentDto
+                  : never | Id extends "telegram"
+                    ? GetContentTelegramDto
+                    : never;

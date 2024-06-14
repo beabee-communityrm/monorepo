@@ -42,12 +42,12 @@ class ContactTransformer extends BaseContactTransformer<
       }),
       ...(opts?.with?.includes(GetContactWith.Profile) &&
         contact.profile && {
-        profile: ContactProfileTransformer.convert(
-          contact.profile,
-          undefined,
-          auth
-        )
-      }),
+          profile: ContactProfileTransformer.convert(
+            contact.profile,
+            undefined,
+            auth
+          )
+        }),
       ...(opts?.with?.includes(GetContactWith.Roles) && {
         roles: contact.roles.map(ContactRoleTransformer.convert)
       }),
