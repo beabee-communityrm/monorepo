@@ -22,7 +22,7 @@
     "test:node": "deno task test:node:esm && deno task test:node:cjs",
     "test:node:esm": "yarn test:node:esm",
     "test:node:cjs": "yarn test:node:cjs",
-    "build": "deno task generate:index && deno task sync && deno task format && deno task build:node && deno task build:browser && deno task build:types",
+    "build": "deno task generate:index && deno task sync && deno task format && deno task build:node && deno task build:types",
     "build:node": "deno task beabee:cli cross-build node",
     "build:node:esm": "deno task beabee:cli cross-build node esm",
     "build:node:cjs": "deno task beabee:cli cross-build node cjs",
