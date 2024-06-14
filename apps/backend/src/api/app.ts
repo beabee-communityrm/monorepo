@@ -1,5 +1,3 @@
-import "reflect-metadata";
-
 import { RoleType } from "@beabee/beabee-common";
 import cookie from "cookie-parser";
 import cors from "cors";
