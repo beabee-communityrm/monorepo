@@ -2,7 +2,8 @@
   "name": "@beabee/cli",
   "version": "0.16.0",
   "tasks": {
-    "build": "deno task generate:index && deno task build:install && deno task chmod",
+    "clear": "rm -rf cli.bin; exit 0",
+    "build": "deno task clear && deno task generate:index && deno task build:install && deno task chmod",
     "chmod": "chmod +x ./cli.sh ./cli.bin ./cli.js",
     "build:compile": "deno compile --allow-read --allow-write --allow-env --allow-run --allow-net --output ./cli.bin ./src/cli.ts",
     "build:install": "deno compile --allow-read --allow-write --allow-env --allow-run --allow-net --output ./cli.bin ./src/cli.ts",

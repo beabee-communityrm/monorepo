@@ -17,7 +17,9 @@
     "check:types": "yarn build:types --noEmit --emitDeclarationOnly false",
     "sync": "yarn exec 'deno task sync'",
     "format": "yarn exec 'deno task format'",
-    "generate:index": "yarn exec 'deno task generate:index'"
+    "generate:index": "yarn exec 'deno task generate:index'",
+    "deno:cache": "yarn exec 'deno task deno:cache'",
+    "deno:cache:refresh": "yarn exec 'deno task deno:cache:refresh'"
   },
   "exports": {
     ".": {
@@ -39,6 +41,6 @@
     "typescript": "^5.4.5"
   },
   "dependencies": {
-    "bullmq": "^5.7.15"
+    "bullmq": "^5.8.2"
   }
 }

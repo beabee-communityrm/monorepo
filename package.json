@@ -6,12 +6,12 @@
   "scripts": {
     "build": "yarn workspaces foreach --verbose --worktree --topological-dev run build",
     "build:types": "yarn workspaces foreach --verbose --worktree --topological-dev run build:types",
-    "build:backend": "yarn workspaces foreach --from '@beabee/backend' --recursive run build",
-    "build:frontend": "yarn workspaces foreach --from '@beabee/frontend' --recursive run build",
-    "build:task-runner-dashboard": "yarn workspaces foreach --from '@beabee/task-runner-dashboard' --recursive run build",
-    "build:common": "yarn workspaces foreach --from '@beabee/beabee-common' --recursive run build",
-    "build:locales": "yarn workspaces foreach --from '@beabee/locales' --recursive run build",
-    "build:cli": "yarn workspaces foreach --from '@beabee/cli' --recursive run build",
+    "build:backend": "yarn workspaces foreach --from '@beabee/backend' --recursive --topological-dev run build",
+    "build:frontend": "yarn workspaces foreach --from '@beabee/frontend' --recursive --topological-dev run build",
+    "build:task-runner-dashboard": "yarn workspaces foreach --from '@beabee/task-runner-dashboard' --recursive --topological-dev run build",
+    "build:common": "yarn workspaces foreach --from '@beabee/beabee-common' --recursive --topological-dev run build",
+    "build:locales": "yarn workspaces foreach --from '@beabee/locales' --recursive --topological-dev run build",
+    "build:cli": "yarn workspaces foreach --from '@beabee/cli' --recursive --topological-dev run build",
     "deno:cache": "yarn workspaces foreach --verbose --worktree run deno:cache",
     "deno:cache:refresh": "yarn workspaces foreach --verbose --worktree run deno:cache:refresh",
     "start:backend": "yarn workspace @beabee/backend run start",
@@ -24,7 +24,7 @@
     "check": "yarn workspaces foreach --verbose --worktree -p run check",
     "sync": "yarn workspaces foreach --verbose --worktree -p run sync",
     "generate:index": "yarn workspaces foreach --verbose --worktree -p run generate:index",
-    "upgrade": "yarn set version latest && yarn install && yarn upgrade-interactive",
+    "upgrade": "yarn set version latest && yarn install && yarn upgrade-interactive && yarn run sync && yarn deno:cache:refresh",
     "docker:build:latest": "yarn workspaces foreach --verbose --worktree --topological-dev run docker:build:latest",
     "docker:build:local": "yarn workspaces foreach --verbose --worktree --topological-dev run docker:build:local",
     "docker:start:local": "yarn workspaces foreach --verbose --worktree -p run docker:start:local",
@@ -37,5 +37,5 @@
     "apps/*",
     "docker/*"
   ],
-  "packageManager": "yarn@4.2.2"
+  "packageManager": "yarn@4.3.0"
 }

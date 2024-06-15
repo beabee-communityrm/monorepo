@@ -11,9 +11,11 @@
     "generate:index": "deno task beabee:cli generate-index --ext ts ./src/services ./src/types",
     "watch:types": "yarn watch:types",
     "check": "yarn check",
-    "check:types": "yarn check:types"
+    "check:types": "yarn check:types",
+    "deno:cache": "deno cache mod.ts",
+    "deno:cache:refresh": "deno cache --reload --lock-write mod.ts"
   },
   "imports": {
-    "bullmq": "npm:bullmq@5.7.15"
+    "bullmq": "npm:bullmq@5.8.2"
   }
 }
