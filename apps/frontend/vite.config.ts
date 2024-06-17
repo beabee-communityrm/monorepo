@@ -71,6 +71,9 @@ export default ({ command, mode }) => {
   return defineConfig({
     build: {
       sourcemap: true,
+      watch: {
+        clearScreen: false,
+      },
     },
     resolve: {
       alias,
