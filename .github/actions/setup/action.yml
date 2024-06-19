@@ -13,13 +13,12 @@ runs:
     - name: Setup Deno
       uses: denoland/setup-deno@v1
       with:
-        deno-version: vx.x.x
+        deno-version: v1.x.x
+        cache: true
     - name: Install node dependencies
       run: yarn install
-      shell: bash
-    - name: Install deno dependencies
-      run: yarn deno:cache
-      shell: bash
+    # re-enable when the cache server is running stably again
+    # - name: Install deno dependencies
+    #   run: yarn deno:cache
     - name: Build
       run: yarn build
-      shell: bash
