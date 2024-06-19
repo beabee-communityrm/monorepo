@@ -4,6 +4,7 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
+    "lib": ["ESNext", "DOM"],
     "rootDir": "./src",
     "moduleResolution": "bundler",
     "declarationDir": "./dist/types",

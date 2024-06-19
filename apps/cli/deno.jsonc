@@ -13,6 +13,5 @@
     "deno:cache": "deno cache ./src/deps.ts",
     "deno:cache:refresh": "deno cache --reload --lock-write ./src/deps.ts"
   },
-  "imports": {
-  }
+  "imports": {}
 }

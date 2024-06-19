@@ -1,4 +1,4 @@
-import { Queue, ConnectionOptions } from "../deps.ts";
+import { ConnectionOptions, Queue } from "../deps.ts";
 import { KNOWN_QUEUES } from "../constants.ts";
 import type { QueryInfo } from "../types/query-info.ts";
 
