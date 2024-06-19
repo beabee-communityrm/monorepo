@@ -139,6 +139,7 @@
   "dependencies": {
     "@beabee/beabee-common": "workspace:^",
     "@beabee/config": "workspace:^",
+    "@beabee/locales": "workspace:^",
     "@beabee/models": "workspace:^",
     "@captchafox/node": "^1.2.0",
     "@sendgrid/mail": "^8.1.3",

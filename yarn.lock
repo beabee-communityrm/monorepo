@@ -645,6 +645,7 @@ __metadata:
     "@beabee/beabee-common": "workspace:^"
     "@beabee/cli": "workspace:^"
     "@beabee/config": "workspace:^"
+    "@beabee/locales": "workspace:^"
     "@beabee/models": "workspace:^"
     "@captchafox/node": "npm:^1.2.0"
     "@sendgrid/mail": "npm:^8.1.3"
