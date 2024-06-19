@@ -11,6 +11,7 @@ WORKDIR /opt
 # Copy the workspace configuration
 COPY package.json yarn.lock deno.jsonc .yarnrc.yml /opt/
 COPY .yarn /opt/.yarn
+COPY scripts /opt/scripts
 
 # Copy dependencies info..
 

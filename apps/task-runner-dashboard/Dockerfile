@@ -5,6 +5,7 @@ WORKDIR /opt/apps/task-runner-dashboard
 # Copy the workspace configuration
 COPY package.json yarn.lock deno.jsonc .yarnrc.yml /opt/
 COPY .yarn /opt/.yarn
+COPY scripts /opt/scripts
 
 # Copy @beabee/cli dependencies info
 COPY apps/cli/package.json apps/cli/deno.jsonc apps/cli/deno.lock /opt/apps/cli/
