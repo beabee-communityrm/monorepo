@@ -46,8 +46,7 @@ COPY ./apps /opt/apps
 
 # Replace's npm ci
 RUN yarn install
-# Cache deno dependencies (with 3 retries)
-RUN for i in 1 2 3; do yarn deno:cache && break || sleep 5; done
+RUN yarn deno:cache:retry
 
 # Build all the packages and apps
 RUN NODE_ENV=production yarn build

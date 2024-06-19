@@ -17,10 +17,9 @@ runs:
     - name: Install node dependencies
       run: yarn install
       shell: bash
-    # re-enable when the cache server is running stably again
-    # - name: Install deno dependencies
-    #   run: yarn deno:cache
-    #   shell: bash
+    - name: Install deno dependencies
+      run: yarn deno:cache:retry
+      shell: bash
     - name: Build
       run: yarn build
       shell: bash

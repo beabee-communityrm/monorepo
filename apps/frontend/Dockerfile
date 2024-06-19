@@ -39,8 +39,7 @@ COPY apps/cli/src/deps.ts /opt/apps/cli/src/deps.ts
 
 # Install dependencies for the current app
 RUN yarn workspaces focus @beabee/${PACKAGE}
-# Cache deno dependencies (with 3 retries)
-RUN for i in 1 2 3; do yarn deno:cache && break || sleep 5; done
+RUN yarn deno:cache:retry
 
 # Copy the rest
 COPY ./packages /opt/packages

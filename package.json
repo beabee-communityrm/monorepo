@@ -12,6 +12,8 @@
     "build:common": "yarn workspaces foreach --from '@beabee/beabee-common' --recursive --topological-dev run build",
     "build:locales": "yarn workspaces foreach --from '@beabee/locales' --recursive --topological-dev run build",
     "build:cli": "yarn workspaces foreach --from '@beabee/cli' --recursive --topological-dev run build",
+    "deno:cache:retry": "./scripts/retry.sh deno:cache",
+    "deno:cache:refresh:retry": "./scripts/retry.sh deno:cache:refresh",
     "deno:cache": "yarn workspaces foreach --verbose --worktree run deno:cache",
     "deno:cache:refresh": "yarn workspaces foreach --verbose --worktree run deno:cache:refresh",
     "start:backend": "yarn workspace @beabee/backend run start",
