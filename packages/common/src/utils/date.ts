@@ -8,7 +8,7 @@ import {
   startOfMonth,
   startOfSecond,
   startOfYear,
-} from "date-fns";
+} from "../deps.ts";
 
 import type { DateUnit, Duration, UnitMatches } from "../types/index.ts";
 

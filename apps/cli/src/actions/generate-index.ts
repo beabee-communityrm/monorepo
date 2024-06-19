@@ -1,4 +1,4 @@
-import { basename, extname } from "https://deno.land/std@0.212.0/path/mod.ts";
+import { basename, extname } from "../deps.ts";
 import type { GenerateIndexArguments } from "../types.ts";
 
 const encoder = new TextEncoder();

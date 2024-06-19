@@ -1,6 +1,5 @@
-import { Queue } from "bullmq";
+import { Queue, ConnectionOptions } from "../deps.ts";
 import { KNOWN_QUEUES } from "../constants.ts";
-import type { ConnectionOptions } from "bullmq";
 import type { QueryInfo } from "../types/query-info.ts";
 
 export class TaskRunnerService {

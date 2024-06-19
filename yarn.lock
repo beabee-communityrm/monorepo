@@ -530,6 +530,7 @@ __metadata:
     "@beabee/beabee-common": "workspace:^"
     "@beabee/cli": "workspace:^"
     "@beabee/core": "workspace:^"
+    "@beabee/deno-node": "workspace:^"
     "@beabee/locales": "workspace:^"
     "@beabee/models": "workspace:^"
     "@inquirer/prompts": "npm:^3.3.2"
@@ -701,6 +702,7 @@ __metadata:
     "@babel/types": "npm:^7.24.7"
     "@beabee/beabee-common": "workspace:^"
     "@beabee/cli": "workspace:^"
+    "@beabee/deno-node": "workspace:^"
     "@beabee/locales": "workspace:^"
     "@captchafox/vue": "npm:^1.2.0"
     "@fontsource/fira-sans": "npm:^5.0.20"
@@ -811,6 +813,7 @@ __metadata:
   resolution: "@beabee/task-runner-dashboard@workspace:apps/task-runner-dashboard"
   dependencies:
     "@beabee/cli": "workspace:^"
+    "@beabee/deno-node": "workspace:^"
     "@beabee/task-runner": "workspace:^"
     "@bull-board/express": "npm:^5.20.2"
     bullmq: "npm:^5.8.2"

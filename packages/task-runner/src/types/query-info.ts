@@ -1,4 +1,4 @@
-import { Queue } from "bullmq";
+import { Queue } from "../deps.ts";
 
 export type QueryInfo = {
   description: string;

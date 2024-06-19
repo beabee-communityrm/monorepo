@@ -95,6 +95,7 @@
   },
   "devDependencies": {
     "@beabee/cli": "workspace:^",
+    "@beabee/deno-node": "workspace:^",
     "@tsconfig/node20": "^20.1.4",
     "@types/chance": "^1.1.6",
     "@types/connect-busboy": "^1.0.3",

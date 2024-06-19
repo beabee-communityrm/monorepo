@@ -5,7 +5,7 @@
 # https://github.com/denoland/deno_docker/blob/main/alpine.dockerfile
 # The problem is that node and deno install different system libraries that seem to be incompatible with each other.
 
-ARG DENO_VERSION=v1.44.2
+ARG DENO_VERSION=v1.44.3
 ARG NODE_VERSION=20
 
 FROM node:${NODE_VERSION}-bookworm
@@ -15,10 +15,12 @@ FROM node:${NODE_VERSION}-bookworm
 
 RUN apt-get update && apt-get install -y cron
 
+USER node
+
 # Install Deno
 RUN curl -fsSL https://deno.land/install.sh | sh -s ${DENO_VERSION}
-ENV DENO_INSTALL="/root/.deno"
-ENV DENO_DIR="/root/.deno"
+ENV DENO_INSTALL="/home/node/.deno"
+ENV DENO_DIR="/home/node/.deno"
 ENV PATH="${DENO_INSTALL}/bin:${PATH}"
 
 RUN node --version
@@ -28,3 +30,7 @@ RUN deno --version
 
 RUN node -e "console.log('Welcome to Node!')"
 RUN deno eval "console.log('Welcome to Deno!')"
+
+USER root
+RUN mkdir -p /opt
+RUN chown -R node:node /opt

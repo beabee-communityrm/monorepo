@@ -31,4 +31,6 @@ COPY apps/task-runner-dashboard /opt/apps/task-runner-dashboard
 # Build the task-runner-dashboard and it's dependencies
 RUN NODE_ENV=production yarn build:task-runner-dashboard
 
+USER node
+
 CMD ["node", "dist/app.js"]

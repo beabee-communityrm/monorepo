@@ -1,6 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
 
-import { parse } from "https://deno.land/std@0.212.0/jsonc/mod.ts";
+import { parse } from "../deps.ts";
 
 import type { DenoJsonc, PackageJson } from "../types.ts";
 

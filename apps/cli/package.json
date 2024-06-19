@@ -21,6 +21,5 @@
     "deno:cache": "yarn exec 'deno task deno:cache'",
     "deno:cache:refresh": "yarn exec 'deno task deno:cache:refresh'",
     "chmod": "yarn exec 'deno task chmod'"
-  },
-  "dependencies": {}
+  }
 }

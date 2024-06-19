@@ -2,9 +2,9 @@ import type {
   BuildResult,
   Plugin,
   PluginBuild,
-} from "https://deno.land/x/esbuild@v0.20.0/mod.d.ts";
+} from "../deps.ts";
 
-import { extname, join } from "https://deno.land/std@0.212.0/path/mod.ts";
+import { extname, join } from "../deps.ts";
 
 const renameExtensions = async (
   from: string,

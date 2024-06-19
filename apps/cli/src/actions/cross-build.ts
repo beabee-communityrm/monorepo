@@ -1,4 +1,4 @@
-import { build, stop } from "https://deno.land/x/esbuild@v0.20.0/mod.js";
+import { build, stop } from "../deps.ts";
 import { crossBuildConfigs } from "../cross-build-configs.ts";
 
 import type { BuildArguments, BuildPlatform, BuildType } from "../types.ts";

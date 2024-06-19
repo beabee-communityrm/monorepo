@@ -1,6 +1,4 @@
-import { transformExtPlugin } from "npm:@gjsify/esbuild-plugin-transform-ext@0.0.4";
-import { denoPlugins as DenoPlugins } from "https://deno.land/x/esbuild_deno_loader@0.9.0/mod.ts";
-import { resolve } from "https://deno.land/std@0.212.0/path/mod.ts";
+import { transformExtPlugin, DenoPlugins, resolve } from "./deps.ts";
 import { renameExtPlugin } from "./plugins/rename.ts";
 
 import type { EsbuildConfigs } from "./types.ts";

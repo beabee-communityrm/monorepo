@@ -43,7 +43,7 @@
     "sync": "deno task beabee:cli cross-sync",
     "prepublishOnly": "yarn prepublishOnly",
     "npm:publish:latest": "yarn npm:publish:latest",
-    "deno:cache": "deno cache mod.ts",
-    "deno:cache:refresh": "deno cache --reload --lock-write mod.ts"
+    "deno:cache": "deno cache src/deps.ts",
+    "deno:cache:refresh": "deno cache --reload --lock-write src/deps.ts"
   }
 }

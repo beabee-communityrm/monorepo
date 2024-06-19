@@ -1,5 +1,5 @@
 import path from 'path';
-import { defineConfig, loadEnv } from 'vite';
+import { defineConfig, loadEnv, ConfigEnv } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import vueI18n from '@intlify/unplugin-vue-i18n/vite';
 import pages from 'vite-plugin-pages'; // TODO: Replace with https://github.com/posva/unplugin-vue-router as recommended by `vite-plugin-pages` itself
@@ -7,7 +7,7 @@ import replace from '@rollup/plugin-replace';
 
 import theme from './plugins/theme';
 
-export default ({ command, mode }) => {
+export default ({ command, mode }: ConfigEnv) => {
   const env = loadEnv(mode, process.cwd(), '');
   const localesPath = path.dirname(
     import.meta.resolve('@beabee/locales/en.json')
@@ -71,9 +71,9 @@ export default ({ command, mode }) => {
   return defineConfig({
     build: {
       sourcemap: true,
-      watch: {
+      watch: command === 'serve' ? {
         clearScreen: false,
-      },
+      } : null,
     },
     resolve: {
       alias,

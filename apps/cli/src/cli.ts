@@ -1,10 +1,8 @@
 #!/usr/bin/env -S deno run --allow-read --allow-write --allow-env --allow-run --allow-net
-import yargs from "https://deno.land/x/yargs@v17.7.2-deno/deno.ts";
+import { yargs, YargsInstance } from "./deps.ts";
 import { crossBuildAction, crossWatchAction, crossSyncAction, generateIndexAction } from "./actions/index.ts";
 
 import type { BuildPlatform, BuildType } from "./types.ts";
-import type { YargsInstance } from "https://deno.land/x/yargs@v17.7.2-deno/build/lib/yargs-factory.js";
-
 yargs(Deno.args)
     .command(
         "cross-build [platform] [type]",
