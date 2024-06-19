@@ -71,9 +71,12 @@ export default ({ command, mode }: ConfigEnv) => {
   return defineConfig({
     build: {
       sourcemap: true,
-      watch: command === 'serve' ? {
-        clearScreen: false,
-      } : null,
+      watch:
+        command === 'serve'
+          ? {
+              clearScreen: false,
+            }
+          : null,
     },
     resolve: {
       alias,
