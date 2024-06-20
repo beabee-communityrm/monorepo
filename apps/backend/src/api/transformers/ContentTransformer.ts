@@ -1,10 +1,6 @@
 import { plainToInstance } from "class-transformer";
 import { ContentId, ContentData } from "@beabee/beabee-common";
-import {
-  database,
-  getEmailFooter,
-  optionsService,
-} from "@beabee/core";
+import { database, getEmailFooter, optionsService } from "@beabee/core";
 
 import {
   GetContentContactsDto,

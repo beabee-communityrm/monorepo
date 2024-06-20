@@ -4,7 +4,7 @@ import {
   log,
   requestErrorLogger,
   requestLogger,
-  optionsService,
+  optionsService
 } from "@beabee/core";
 import { initApp, startServer } from "#express";
 import { OptionKey } from "@beabee/config";
