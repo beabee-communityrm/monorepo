@@ -5,6 +5,11 @@ x-base-app: &base-app
   volumes:
     - ./dist:/opt/apps/backend/dist
     - ../../packages/common/dist:/opt/packages/common/dist
+    - ../../packages/config/dist:/opt/packages/config/dist
+    - ../../packages/core/dist:/opt/packages/core/dist
+    - ../../packages/locales/dist:/opt/packages/locales/dist
+    - ../../packages/models/dist:/opt/packages/models/dist
+    - ../../packages/task-runner/dist:/opt/packages/task-runner/dist
     - ./src/migrations:/opt/apps/backend/src/migrations
   env_file:
     - .env

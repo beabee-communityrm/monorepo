@@ -823,6 +823,20 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@beabee/task-runner-worker@workspace:apps/task-runner-worker":
+  version: 0.0.0-use.local
+  resolution: "@beabee/task-runner-worker@workspace:apps/task-runner-worker"
+  dependencies:
+    "@beabee/cli": "workspace:^"
+    "@beabee/deno-node": "workspace:^"
+    "@beabee/task-runner": "workspace:^"
+    "@bull-board/express": "npm:^5.20.2"
+    bullmq: "npm:^5.8.2"
+    esbuild: "npm:^0.21.5"
+    typescript: "npm:^5.4.5"
+  languageName: unknown
+  linkType: soft
+
 "@beabee/task-runner@workspace:^, @beabee/task-runner@workspace:packages/task-runner":
   version: 0.0.0-use.local
   resolution: "@beabee/task-runner@workspace:packages/task-runner"

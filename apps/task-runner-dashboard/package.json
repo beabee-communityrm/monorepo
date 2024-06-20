@@ -17,7 +17,9 @@
     "docker:start:local": "docker run -d -p 3004:3004 -e TASK_RUNNER_REDIS_HOST=localhost -e TASK_RUNNER_DASHBOARD_PORT=3004 beabee/task-runner-dashboard:local",
     "docker:start:latest": "docker run -d -p 3004:3004 -e TASK_RUNNER_REDIS_HOST=localhost -e TASK_RUNNER_DASHBOARD_PORT=3004 beabee/task-runner-dashboard:latest",
     "docker:restart": "docker restart $(docker ps -a | grep beabee/task-runner-dashboard | awk '{print $1}')",
-    "docker:stop": "docker stop $(docker ps -a | grep beabee/task-runner-dashboard | awk '{print $1}')"
+    "docker:stop": "docker stop $(docker ps -a | grep beabee/task-runner-dashboard | awk '{print $1}')",
+    "docker:push:latest": "docker push beabee/task-runner-dashboard:latest",
+    "docker:push:local": "docker push beabee/task-runner-dashboard:local"
   },
   "dependencies": {
     "@beabee/task-runner": "workspace:^",

@@ -1,2 +1,2 @@
-export { Queue } from "bullmq";
-export type { ConnectionOptions } from "bullmq";
+export { Queue, Worker } from "bullmq";
+export type { ConnectionOptions, Processor } from "bullmq";

@@ -21,6 +21,10 @@
       "path": "../apps/task-runner-dashboard",
     },
     {
+      "name": "apps/task-runner-worker",
+      "path": "../apps/task-runner-worker",
+    },
+    {
       "name": "packages/common",
       "path": "../packages/common",
     },
@@ -76,6 +80,7 @@
       "./apps/backend",
       "./apps/frontend",
       "./apps/task-runner-dashboard",
+      "./apps/task-runner-worker",
       "./packages/core",
       "./packages/models"
     ]

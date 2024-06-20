@@ -1,0 +1,34 @@
+{
+  "name": "@beabee/task-runner-worker",
+  "version": "0.16.0",
+  "main": "dist/app.js",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "clear": "rm -rf dist",
+    "build": "node esbuild.js",
+    "start": "node dist/app.js",
+    "watch": "yarn build --watch",
+    "check": "yarn check:types",
+    "check:types": "tsc --noEmit --emitDeclarationOnly false",
+    "generate:index": "beabee-cli generate-index --ext ts ./src ./src/handler",
+    "docker:build:latest": "docker build --build-arg REVISION=$(git rev-parse --short HEAD) --build-arg VERSION=latest -t beabee/task-runner-worker:latest -f ./Dockerfile ../../",
+    "docker:build:local": "docker build --build-arg REVISION=$(git rev-parse --short HEAD) --build-arg VERSION=local -t beabee/task-runner-worker:local -f ./Dockerfile ../../",
+    "docker:start:local": "docker run -d -p 3004:3004 -e TASK_RUNNER_REDIS_HOST=localhost -e TASK_RUNNER_DASHBOARD_PORT=3004 beabee/task-runner-worker:local",
+    "docker:start:latest": "docker run -d -p 3004:3004 -e TASK_RUNNER_REDIS_HOST=localhost -e TASK_RUNNER_DASHBOARD_PORT=3004 beabee/task-runner-worker:latest",
+    "docker:restart": "docker restart $(docker ps -a | grep beabee/task-runner-worker | awk '{print $1}')",
+    "docker:stop": "docker stop $(docker ps -a | grep beabee/task-runner-worker | awk '{print $1}')",
+    "docker:push:latest": "docker push beabee/task-runner-worker:latest",
+    "docker:push:local": "docker push beabee/task-runner-worker:local"
+  },
+  "dependencies": {
+    "@beabee/task-runner": "workspace:^",
+    "bullmq": "^5.8.2"
+  },
+  "devDependencies": {
+    "@beabee/cli": "workspace:^",
+    "@beabee/deno-node": "workspace:^",
+    "esbuild": "^0.21.5",
+    "typescript": "^5.4.5"
+  }
+}
