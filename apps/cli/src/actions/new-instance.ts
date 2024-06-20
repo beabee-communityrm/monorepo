@@ -20,6 +20,22 @@ export const newInstanceAction = async (argv: NewInstanceArguments) => {
     let output = '';
 
     output += `
+    ===============================================================
+    -- Portainer stack
+    
+    Name: beabee-${name}
+    Build method: Repository
+    Repository: https://github.com/beabee-communityrm/hive-deploy-stack.git
+    Branch: refs/heads/main
+    Access control: Restricted
+    Restricted to: beabee
+    Stack file: docker-compose.yml
+    `;
+
+    output += `
+    ===============================================================
+    -- Environment variables
+
     BEABEE_DOMAIN=${domain}
     BEABEE_AUDIENCE=https://${domain}
     BEABEE_DEV=false
@@ -59,6 +75,7 @@ export const newInstanceAction = async (argv: NewInstanceArguments) => {
     BEABEE_STRIPE_WEBHOOKSECRET=whsec_???
     BEABEE_STRIPE_MEMBERSHIPPRODUCTID=prod_???
     BEABEE_STRIPE_COUNTRY=eu
+
     `;
     }
 
