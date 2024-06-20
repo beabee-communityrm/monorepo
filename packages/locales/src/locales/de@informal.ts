@@ -579,6 +579,14 @@ export const deInformal = {
     "until": "bis",
     "yes": "Ja"
   },
+  "contactAccount": {
+    "confirmDelete": {
+      "text": "Dadurch werden alle mit der Email-Adresse {email} verbundenen Daten gelöscht. Aktive Mitgliedschaften werden dadurch beendet.",
+      "title": "Kontakt löschen",
+      "warning": "Dieser Schritt kann nicht rückgängig gemacht werden. Sicher, dass du fortfahren möchtest?"
+    },
+    "contactDeleted": "Kontakt gelöscht."
+  },
   "contactContribution": {
     "confirmCancel": {
       "confirm": "Ja, Mitgliedschaft kündigen",

@@ -197,6 +197,14 @@ export const it = {
     "until": "fino",
     "yes": "Sì"
   },
+  "contactAccount": {
+    "confirmDelete": {
+      "text": "Admin",
+      "title": "Admin",
+      "warning": "Admin"
+    },
+    "contactDeleted": "Admin"
+  },
   "contactContribution": {
     "confirmCancel": {
       "confirm": "Sì, sono sicuro",

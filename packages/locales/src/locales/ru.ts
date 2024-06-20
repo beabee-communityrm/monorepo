@@ -343,6 +343,14 @@ export const ru = {
     "until": "до",
     "yes": "Да"
   },
+  "contactAccount": {
+    "confirmDelete": {
+      "text": "contactAccount.confirmDelete.text",
+      "title": "contactAccount.confirmDelete.title",
+      "warning": "contactAccount.confirmDelete.warning"
+    },
+    "contactDeleted": "contactAccount.contactDeleted"
+  },
   "contactContribution": {
     "confirmCancel": {},
     "updateNotice": {}

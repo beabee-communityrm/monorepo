@@ -372,6 +372,14 @@ export const pt = {
     "until": "até",
     "yes": "Sim"
   },
+  "contactAccount": {
+    "confirmDelete": {
+      "text": "This will delete all data associated with {email}. If they have an active contribution this will be cancelled.",
+      "title": "Delete contact",
+      "warning": "This is irreversible. Are you sure you want to proceed?"
+    },
+    "contactDeleted": "Contact deleted."
+  },
   "contactContribution": {
     "confirmCancel": {},
     "updateNotice": {}

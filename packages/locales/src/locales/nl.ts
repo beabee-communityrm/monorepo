@@ -162,6 +162,14 @@ export const nl = {
     "timeAgo": "{time} geleden",
     "timeIn": "in {time}"
   },
+  "contactAccount": {
+    "confirmDelete": {
+      "text": "Dadurch werden alle mit der Email-Adresse {email} verbundenen Daten gelöscht. Aktive Mitgliedschaften werden dadurch beendet.",
+      "title": "Kontakt löschen",
+      "warning": "Dieser Schritt kann nicht rückgängig gemacht werden. Sicher, dass du fortfahren möchtest?"
+    },
+    "contactDeleted": "Kontakt gelöscht."
+  },
   "contactContribution": {
     "confirmCancel": {},
     "updateNotice": {}
