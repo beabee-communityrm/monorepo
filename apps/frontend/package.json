@@ -86,6 +86,7 @@
     "@babel/types": "^7.24.7",
     "@beabee/cli": "workspace:^",
     "@beabee/deno-node": "workspace:^",
+    "@beabee/workspace": "workspace:^",
     "@intlify/unplugin-vue-i18n": "^1.6.0",
     "@rollup/plugin-replace": "^5.0.7",
     "@types/cacheable-request": "^8.3.2",

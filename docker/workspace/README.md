@@ -1,5 +1,6 @@
 # beabee/workspace
 
-Experimental Docker image that contains all packages and apps of the Beabee platform.
+Docker image that contains all packages and apps of the Beabee monorepo.
 
-The idea is to use this for all Docker images and to copy out the builded files. 
+This image builds all the packages and apps that are copied into the other docker images.
+This way we avoid building the packages multiple times for each docker image.

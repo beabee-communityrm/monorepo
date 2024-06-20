@@ -7,14 +7,11 @@ import { basicAuth } from './auth';
 
 import type { TaskRunnerQueueService } from '@beabee/task-runner/src';
 
-const TASK_RUNNER_DASHBOARD_PORT = process.env.TASK_RUNNER_DASHBOARD_PORT || 3004;
-const TASK_RUNNER_BASE_PATH = process.env.TASK_RUNNER_ROUTE_PREFIX || '/';
-
-export const createDashboard = (TaskRunnerQueueService: TaskRunnerQueueService) => {
+export const createDashboard = (taskRunnerQueueService: TaskRunnerQueueService, options: { route: string, port: number }) => {
     const serverAdapter = new ExpressAdapter();
-    serverAdapter.setBasePath(TASK_RUNNER_BASE_PATH);
+    serverAdapter.setBasePath(options.route);
 
-    const queues = TaskRunnerQueueService.getInfos();
+    const queues = taskRunnerQueueService.getInfos();
 
     const { addQueue, removeQueue, setQueues, replaceQueues } = createBullBoard({
         queues: queues.map((queue) => new BullMQAdapter(queue.queue, { description: queue.description })),
@@ -28,11 +25,11 @@ export const createDashboard = (TaskRunnerQueueService: TaskRunnerQueueService) 
 
     const express = Express();
 
-    express.use(TASK_RUNNER_BASE_PATH, basicAuth, serverAdapter.getRouter());
+    express.use(options.route, basicAuth, serverAdapter.getRouter());
 
-    express.listen(TASK_RUNNER_DASHBOARD_PORT, () => {
-        console.log(`Running on ${TASK_RUNNER_DASHBOARD_PORT}...`);
-        console.log(`For the UI, open http://localhost:${TASK_RUNNER_DASHBOARD_PORT}${TASK_RUNNER_BASE_PATH}`);
+    express.listen(options.port, () => {
+        console.log(`Running on ${options.port}...`);
+        console.log(`For the UI, open http://localhost:${options.port}${options.route}`);
     });
 
     return {

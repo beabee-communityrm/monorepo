@@ -1,37 +1,43 @@
-FROM beabee/deno-node:latest as task-runner-dashboard
+ARG VERSION=latest
+FROM beabee/workspace:${VERSION} as workspace-builder
 
-WORKDIR /opt/apps/task-runner-dashboard
+#### -> APP ####
+
+FROM node:20-alpine3.20 as app
+
+ARG REVISION=DEV
+
+ENV NODE_ENV=production
+ENV NODE_OPTIONS=--enable-source-maps
+WORKDIR /opt/apps/task-runner-worker
 
 # Copy the workspace configuration
-COPY package.json yarn.lock deno.jsonc .yarnrc.yml /opt/
-COPY .yarn /opt/.yarn
-COPY scripts /opt/scripts
+COPY --chown=node:node --from=workspace-builder /opt/package.json /opt/
+COPY --chown=node:node --from=workspace-builder /opt/yarn.lock /opt/
+COPY --chown=node:node --from=workspace-builder /opt/.yarnrc.yml /opt/
+COPY --chown=node:node --from=workspace-builder /opt/.yarn /opt/.yarn
+COPY --chown=node:node --from=workspace-builder /opt/node_modules /opt/node_modules
 
-# Copy @beabee/cli dependencies info
-COPY apps/cli/package.json apps/cli/deno.jsonc apps/cli/deno.lock /opt/apps/cli/
+# Copy dependency info
+# Note: We don't need the source files because the app is bundled, but yarn needs the package.json files
+COPY --chown=node:node --from=workspace-builder /opt/packages/common/package.json /opt/packages/common/
+COPY --chown=node:node --from=workspace-builder /opt/packages/config/package.json /opt/packages/config/
+COPY --chown=node:node --from=workspace-builder /opt/packages/core/package.json /opt/packages/core/
+COPY --chown=node:node --from=workspace-builder /opt/packages/locales/package.json /opt/packages/locales/
+COPY --chown=node:node --from=workspace-builder /opt/packages/models/package.json /opt/packages/models/
+COPY --chown=node:node --from=workspace-builder /opt/packages/task-runner/package.json /opt/packages/task-runner/
 
-# Copy @beabee/task-runner dependencies info
-COPY packages/task-runner/package.json packages/task-runner/deno.jsonc packages/task-runner/deno.lock /opt/packages/task-runner/
+COPY --chown=node:node --from=workspace-builder /opt/docker/deno-node/package.json /opt/docker/deno-node/
+COPY --chown=node:node --from=workspace-builder /opt/docker/workspace/package.json /opt/docker/workspace/
 
-# Copy task-runner-dashboard dependencies info
-COPY apps/task-runner-dashboard/package.json /opt/apps/task-runner-dashboard/package.json
+# Copy the app itself
+COPY --chown=node:node --from=workspace-builder /opt/apps/task-runner-worker /opt/apps/task-runner-worker
 
-# Copy deno-node dependencies info
-COPY docker/deno-node/package.json /opt/docker/deno-node/package.json
-
-# Replace's npm ci
-RUN yarn workspaces focus
-
-# Copy the rest of the related packages
-COPY apps/cli /opt/apps/cli
-COPY packages/task-runner /opt/packages/task-runner
-
-# Copy the rest of task-runner-dashboard
-COPY apps/task-runner-dashboard /opt/apps/task-runner-dashboard
-
-# Build the task-runner-dashboard and it's dependencies
-RUN NODE_ENV=production yarn build:task-runner-dashboard
+# Replace's npm prune
+RUN yarn workspaces focus @beabee/task-runner-worker --production
 
 USER node
 
-CMD ["node", "dist/app.js"]
+CMD [ "yarn", "start:task-runner-worker" ]
+
+#### <- APP ####

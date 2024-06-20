@@ -28,6 +28,7 @@
   "devDependencies": {
     "@beabee/cli": "workspace:^",
     "@beabee/deno-node": "workspace:^",
+    "@beabee/workspace": "workspace:^",
     "esbuild": "^0.21.5",
     "typescript": "^5.4.5"
   }

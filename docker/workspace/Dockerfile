@@ -41,13 +41,15 @@ COPY apps/frontend/package.json /opt/apps/frontend/
 
 COPY apps/task-runner-dashboard/package.json /opt/apps/task-runner-dashboard/
 
+COPY apps/task-runner-worker/package.json /opt/apps/task-runner-worker/
+
+# Install all the dependencies
+RUN yarn install
+RUN yarn deno:cache:retry
+
 # Copy the rest 
 COPY ./packages /opt/packages
 COPY ./apps /opt/apps
-
-# Replace's npm ci
-RUN yarn install
-RUN yarn deno:cache:retry
 
 # Build all the packages and apps
 RUN NODE_ENV=production yarn build

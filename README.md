@@ -47,8 +47,13 @@ You need the following tools installed on your machine:
 3. Initialize and start the Docker containers:
 
    ```bash
-   yarn docker:build:local # You can also start the containers with yarn docker:start:local
+   # Build all docker images
+   yarn docker:build:local
+   # Build the docker-compose stack
+   yarn docker-compose:build
    ```
+
+   > You can also start the containers with `yarn docker:start:local`
 
 4. Run the development mode to watch for changes on all packages:
 
