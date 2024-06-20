@@ -5,7 +5,7 @@
 # https://github.com/denoland/deno_docker/blob/main/alpine.dockerfile
 # The problem is that node and deno install different system libraries that seem to be incompatible with each other.
 
-ARG DENO_VERSION=v1.44.3
+ARG DENO_VERSION=v1.44.4
 ARG NODE_VERSION=20
 
 FROM node:${NODE_VERSION}-bookworm
