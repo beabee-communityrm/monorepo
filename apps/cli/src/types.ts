@@ -14,6 +14,11 @@ export interface GenerateIndexArguments {
   ext?: string;
 }
 
+export interface NewInstanceArguments {
+  name: string;
+  domain: string;
+}
+
 export type EsbuildConfigs = Record<
   BuildPlatform,
   Record<BuildType, BuildOptions | null>

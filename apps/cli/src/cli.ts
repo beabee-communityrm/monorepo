@@ -1,6 +1,6 @@
 #!/usr/bin/env -S deno run --allow-read --allow-write --allow-env --allow-run --allow-net
 import { yargs, YargsInstance } from "./deps.ts";
-import { crossBuildAction, crossWatchAction, crossSyncAction, generateIndexAction } from "./actions/index.ts";
+import { crossBuildAction, crossWatchAction, crossSyncAction, generateIndexAction, newInstanceAction } from "./actions/index.ts";
 
 import type { BuildPlatform, BuildType } from "./types.ts";
 yargs(Deno.args)
@@ -55,6 +55,20 @@ yargs(Deno.args)
         "sync package.json and deno.jsonc configurations",
         (yargs: YargsInstance) => yargs,
         crossSyncAction,
+    )
+    .command(
+        "new-instance <name> <domain>",
+        "create a new instance of Beabee",
+        (yargs: YargsInstance) => {
+            return yargs.positional("name", {
+                describe: "the name of the new instance",
+                type: "string",
+            }).positional("domain", {
+                describe: "the domain of the new instance",
+                type: "string",
+            });
+        },
+        newInstanceAction,
     )
     .strictCommands()
     .demandCommand(1)
