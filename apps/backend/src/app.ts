@@ -12,14 +12,13 @@ import {
   requestLogger,
   isInvalidType,
   optionsService,
-  OptionKey,
   PageSettingsService
 } from "@beabee/core";
 import { quickflash, initApp, startServer, sessions } from "#express";
 
 //import specialUrlHandler from '@apps/tools/apps/special-urls/handler';
 
-import { config } from "@beabee/config";
+import { config, OptionKey } from "@beabee/config";
 
 if (!config.gocardless.sandbox && config.dev) {
   log.error(

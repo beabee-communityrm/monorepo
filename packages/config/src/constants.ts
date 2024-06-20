@@ -1,4 +1,4 @@
-{
+export const DEFAULT_OPTIONS = {
   "organisation": "UK Makerspace",
   "software-name": "Membership System",
   "logo": "",
@@ -56,17 +56,21 @@
   "flash-password-changed": "Password changed",
   "flash-password-invalid": "Incorrect current password",
   "flash-password-reset-code-err": "Invalid password reset code",
-  "flash-password-reset": "If there is an account associated with % you will receive an email shortly",
-  "flash-password-reset-attempt": "Since your last login someone requested a password reset, this has now been cancelled",
+  "flash-password-reset":
+    "If there is an account associated with % you will receive an email shortly",
+  "flash-password-reset-attempt":
+    "Since your last login someone requested a password reset, this has now been cancelled",
   "flash-email-duplicate": "Email address already in use",
   "flash-account-locked": "Maximum number of password attempts exceeded",
-  "flash-account-attempts": "There has been % attempt(s) to login to your account since you last logged in",
+  "flash-account-attempts":
+    "There has been % attempt(s) to login to your account since you last logged in",
   "flash-member-added": "Contact added",
   "flash-member-updated": "Contact updated",
   "flash-member-permanently-deleted": "Contact permanently deleted",
   "flash-member-login-override-generated": "Login override code generated",
   "flash-member-password-reset-generated": "Password reset code generated",
-  "flash-member-add-invalid-direct-debit": "Invalid direct debit, you must specify the first and last name",
+  "flash-member-add-invalid-direct-debit":
+    "Invalid direct debit, you must specify the first and last name",
   "flash-account-updated": "Your account details have been updated",
   "flash-delivery-updated": "Your delivery details have been updated",
   "flash-emails-sent": "Email sent",
@@ -76,7 +80,8 @@
   "flash-permission-created": "Permission created",
   "flash-permission-updated": "Permission updated",
   "flash-permission-removed": "Permission removed",
-  "flash-permission-expiry-error": "Expiry date must not be the same as or before the start date",
+  "flash-permission-expiry-error":
+    "Expiry date must not be the same as or before the start date",
   "flash-permission-name-required": "Permissions must have a name",
   "flash-permission-slug-required": "Permissions must have a slug",
   "flash-permission-duplicate": "User already has this permission",
@@ -85,24 +90,30 @@
   "flash-contribution-cancellation-err": "Error cancelling contribution",
   "flash-contribution-updated": "Contribution updated",
   "flash-contribution-gift-updated": "Thanks for starting your contribution",
-  "flash-contribution-updating-not-allowed": "You can't change your contribution online at the moment, please contact membership@thebristolcable.org",
-  "flash-contribution-updating-failed": "There was a problem updating your contribution, please contact membership@thebristolcable.org",
+  "flash-contribution-updating-not-allowed":
+    "You can't change your contribution online at the moment, please contact membership@thebristolcable.org",
+  "flash-contribution-updating-failed":
+    "There was a problem updating your contribution, please contact membership@thebristolcable.org",
   "flash-contribution-exists": "You already have an active contribution",
   "flash-contribution-doesnt-exist": "You don't have an active contribution",
-  "flash-contribution-restarted": "You have successfully restarted your membership",
+  "flash-contribution-restarted":
+    "You have successfully restarted your membership",
   "flash-contribution-restart-code-err": "Invalid restart code",
   "flash-2fa-disabled": "Two factor authentication has been disabled",
   "flash-2fa-enabled": "Two factor authentication has been enabled",
   "flash-2fa-setup-failed": "The verification code did not match",
   "flash-2fa-required": "You must complete two factor authentication first",
-  "flash-2fa-already-complete": "You've already completed two factor authentication",
-  "flash-2fa-unnecessary": "You do not have two factor authentication enabled on your account",
+  "flash-2fa-already-complete":
+    "You've already completed two factor authentication",
+  "flash-2fa-unnecessary":
+    "You do not have two factor authentication enabled on your account",
   "flash-2fa-no-change": "There was no change to two factor authentication",
   "flash-2fa-invalid": "Your one time password is invalid",
   "flash-2fa-already-enabled": "Two factor authentication is already enabled",
   "flash-2fa-already-disabled": "Two factor authentication is already disabled",
   "flash-2fa-unable-to-disable": "Unable to disable two factor authentication",
-  "flash-transaction-date-in-future": "Transactions do not occour in the future",
+  "flash-transaction-date-in-future":
+    "Transactions do not occour in the future",
   "flash-option-404": "Option not found",
   "flash-option-updated": "Option updated",
   "flash-option-reset": "Option reset to default",
@@ -113,8 +124,10 @@
   "flash-exports-deleted": "Export deleted",
   "flash-exports-ineligible": "Item is not eligible to be in this export.",
   "flash-gifts-date-in-the-past": "The gift start date can't be in the past",
-  "flash-gifts-email-duplicate": "The giftee's email address is already registered",
-  "flash-gifts-already-activated": "The gift has already been activated, please login to continue",
+  "flash-gifts-email-duplicate":
+    "The giftee's email address is already registered",
+  "flash-gifts-already-activated":
+    "The gift has already been activated, please login to continue",
   "flash-migration-manual-to-auto-sent": "Email sent to manual contributors",
   "flash-notices-created": "Notice created",
   "flash-notices-updated": "Notice updated",
@@ -126,12 +139,16 @@
   "flash-polls-updated": "Callout updated",
   "flash-polls-deleted": "Callout deleted",
   "flash-polls-closed": "This callout is closed",
-  "flash-polls-unknown-user": "We weren't able to register your answer, please contact membership@thebristolcable.org",
+  "flash-polls-unknown-user":
+    "We weren't able to register your answer, please contact membership@thebristolcable.org",
   "flash-polls-cant-update": "You have already submitted an answer",
-  "flash-polls-expired-user": "Your membership has expired, please restart it to submit your answer",
-  "flash-polls-guest-fields-missing": "Please provide your name and email address",
+  "flash-polls-expired-user":
+    "Your membership has expired, please restart it to submit your answer",
+  "flash-polls-guest-fields-missing":
+    "Please provide your name and email address",
   "flash-polls-only-anonymous": "This poll only allows anonymous submissions",
-  "flash-polls-responses-password-protected": "This poll's responses are passsword protected",
+  "flash-polls-responses-password-protected":
+    "This poll's responses are passsword protected",
   "flash-project-created": "Project created",
   "flash-project-updated": "Project updated",
   "flash-project-deleted": "Project deleted",
@@ -146,7 +163,8 @@
   "flash-segment-updated": "Segment updated",
   "flash-segment-deleted": "Segment deleted",
   "flash-segment-no-rule-group": "No filters found for the segment",
-  "flash-segment-created-ongoing-email": "An ongoing email has been setup for the segment",
+  "flash-segment-created-ongoing-email":
+    "An ongoing email has been setup for the segment",
   "flash-segment-preview-email": "Preview the email below before sending",
   "flash-transactional-email-created": "Email created",
   "flash-transactional-email-updated": "Email updated",
@@ -160,14 +178,20 @@
   "flash-validation-error.amount-minimum": "The minimum contribution is £1",
   "flash-validation-error.amount-required": "Contribution amount is required",
   "flash-validation-error.period-required": "Contribution period is required",
-  "flash-validation-error.amountOther-minimum": "The minimum contribution is £1",
-  "flash-validation-error.payFee-required": "You must absorb the transaction fee for £1 contributions",
-  "flash-validation-error.delivery_line1-required": "Delivery address line 1 is required",
-  "flash-validation-error.delivery_city-required": "Delivery town/city is required",
+  "flash-validation-error.amountOther-minimum":
+    "The minimum contribution is £1",
+  "flash-validation-error.payFee-required":
+    "You must absorb the transaction fee for £1 contributions",
+  "flash-validation-error.delivery_line1-required":
+    "Delivery address line 1 is required",
+  "flash-validation-error.delivery_city-required":
+    "Delivery town/city is required",
   "flash-validation-error.verify-const": "Passwords did not match",
   "flash-validation-error.email-format": "Email was invalid",
   "flash-validation-error.postcode-format": "Postcode was invalid",
-  "flash-validation-error.password-format": "Password must be at least 8 characters and with at least one number, lower and upper case letter",
+  "flash-validation-error.password-format":
+    "Password must be at least 8 characters and with at least one number, lower and upper case letter",
   "flash-validation-error.url-format": "URL was invalid",
-  "flash-validation-error.candidates-maxItems": "You can only choose at most three candidates"
-}
+  "flash-validation-error.candidates-maxItems":
+    "You can only choose at most three candidates",
+};

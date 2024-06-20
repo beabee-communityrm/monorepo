@@ -4,7 +4,6 @@ import {
   database,
   getEmailFooter,
   optionsService,
-  OptionKey
 } from "@beabee/core";
 
 import {
@@ -22,7 +21,7 @@ import {
 
 import { Content } from "@beabee/models";
 
-import { config } from "@beabee/config";
+import { config, OptionKey } from "@beabee/config";
 import currentLocale from "#locale";
 
 class ContentTransformer {

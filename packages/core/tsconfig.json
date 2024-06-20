@@ -24,7 +24,6 @@
       "#services/*": ["./src/services/*.js"],
       "#types/*": ["./src/types/*.js"],
       "#enums/*": ["./src/enums/*.js"],
-      "#core/defaults.json": ["./src/defaults.json"],
       "#core/*": ["./src/*.js"],
       "#errors/*": ["./src/errors/*.js"],
       "#utils": ["./src/utils/index.js"],

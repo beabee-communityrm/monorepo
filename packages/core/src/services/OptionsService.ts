@@ -1,13 +1,9 @@
+import { OptionKey, OptionValue, DEFAULT_OPTIONS } from "@beabee/config";
 import { database } from "#core/database";
-import _defaultOptions from "#core/defaults.json";
 import { log as mainLogger } from "#core/logging";
 import { networkCommunicatorService } from "./NetworkCommunicatorService.js";
 
 import { Option } from "@beabee/models";
-
-export type OptionKey = keyof typeof _defaultOptions;
-type OptionValue = string | boolean | number;
-const defaultOptions: { [key in OptionKey]: string } = _defaultOptions;
 
 const log = mainLogger.child({ app: "options-service" });
 
@@ -27,16 +23,16 @@ class OptionsService {
   }
 
   isKey(s: any): s is OptionKey {
-    return s in defaultOptions;
+    return s in DEFAULT_OPTIONS;
   }
 
   async reload(): Promise<void> {
     log.info("Reload cache");
     const newCache: Partial<Record<OptionKey, OptionWithDefault>> = {};
-    for (const key of Object.keys(defaultOptions)) {
+    for (const key of Object.keys(DEFAULT_OPTIONS)) {
       newCache[key as OptionKey] = {
         key,
-        value: defaultOptions[key as OptionKey],
+        value: DEFAULT_OPTIONS[key as OptionKey],
         default: true
       };
     }
@@ -120,7 +116,7 @@ class OptionsService {
   async reset(key: OptionKey): Promise<void> {
     const option = this.get(key);
     if (option) {
-      option.value = defaultOptions[key];
+      option.value = DEFAULT_OPTIONS[key];
       option.default = true;
       await database.getRepository(Option).delete(key);
       await networkCommunicatorService.notifyAll("reload");

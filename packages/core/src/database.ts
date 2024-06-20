@@ -8,6 +8,9 @@ import {
   SelectQueryBuilder
 } from "typeorm";
 
+import { cwd } from "node:process";
+import { resolve } from "node:path";
+
 import { log as mainLogger } from "#core/logging";
 
 import { config } from "@beabee/config";
@@ -22,7 +25,8 @@ const dataSource: DataSource = new DataSource({
   url: config.databaseUrl,
   logging: config.dev,
   entities: Object.values(Models),
-  migrations: [__dirname + "/../migrations/*.js"]
+  // TODO: Move migrations to it's own package like we do with the models / entities
+  migrations: [resolve(cwd() + "/../migrations/*.js")]
 });
 
 function runTransaction<T>(

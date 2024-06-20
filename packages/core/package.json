@@ -14,8 +14,8 @@
     "build:types:cjs": "cp ./dist/types/index.d.ts ./dist/types/index.d.cts",
     "build:node": "beabee-cli cross-build node",
     "build:assets": "yarn build:assets:cjs && yarn build:assets:esm",
-    "build:assets:cjs": "cp -r ./src/data ./dist/cjs/data && cp ./src/defaults.json ./dist/cjs/defaults.json",
-    "build:assets:esm": "cp -r ./src/data ./dist/esm/data && cp ./src/defaults.json ./dist/esm/defaults.json",
+    "build:assets:cjs": "cp -r ./src/data ./dist/cjs/data",
+    "build:assets:esm": "cp -r ./src/data ./dist/esm/data",
     "check": "yarn check:types",
     "check:types": "yarn build:types --noEmit --emitDeclarationOnly false",
     "check:node": "yarn build:node --noEmit --emitDeclarationOnly false",
@@ -25,10 +25,6 @@
   },
   "exports": {
     "./package.json": "./package.json",
-    "./defaults.json": {
-      "import": "./dist/esm/defaults.json",
-      "require": "./dist/cjs/defaults.json"
-    },
     "./src": "./src/index.ts",
     "./src/*": "./src/*.ts",
     ".": {
@@ -43,10 +39,6 @@
     }
   },
   "imports": {
-    "#core/defaults.json": {
-      "import": "./dist/esm/defaults.json",
-      "require": "./dist/cjs/defaults.json"
-    },
     "#models/*": {
       "import": {
         "types": "./dist/types/models/*.d.ts",

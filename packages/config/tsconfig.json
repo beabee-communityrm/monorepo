@@ -12,6 +12,7 @@
     "emitDeclarationOnly": true,
     "declaration": true,
     "isolatedModules": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "resolveJsonModule": true
   }
 }

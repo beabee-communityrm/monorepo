@@ -1,5 +1,6 @@
 import express from "express";
-import { optionsService, OptionKey } from "@beabee/core";
+import { optionsService } from "@beabee/core";
+import { OptionKey } from "@beabee/config";
 
 const app = express();
 

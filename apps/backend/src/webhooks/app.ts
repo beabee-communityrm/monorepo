@@ -5,9 +5,9 @@ import {
   requestErrorLogger,
   requestLogger,
   optionsService,
-  OptionKey
 } from "@beabee/core";
 import { initApp, startServer } from "#express";
+import { OptionKey } from "@beabee/config";
 
 import gocardlessApp from "./handlers/gocardless";
 import mailchimpApp from "./handlers/mailchimp";
