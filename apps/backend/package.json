@@ -16,6 +16,7 @@
   },
   "homepage": "https://github.com/beabee-communityrm/beabee#readme",
   "scripts": {
+    "clear": "rimraf /dist",
     "start:app:prod": "node dist/app.js",
     "start:app:local": "node -r dotenv/config dist/app.js",
     "start:api:prod": "node dist/api/app.js",
@@ -30,7 +31,9 @@
     "dev:api": "yarn build && docker compose restart && concurrently -c red,green,blue 'yarn:dev:api:*'",
     "dev:api:watch": "tsc-watch -p tsconfig.build.json --noClear --onSuccess 'docker compose restart api_app router'",
     "dev:api:logs": "yarn exec bash -c 'while true; do docker compose logs -f --tail=0 api_app; sleep 1; done'",
-    "build": "rimraf /dist && gulp build && tsc -p ./tsconfig.build.json",
+    "build": "yarn clear && yarn generate:index && yarn build:gulp && yarn build:tsc",
+    "build:tsc": "tsc -p ./tsconfig.build.json",
+    "build:gulp": "gulp build",
     "generate:index": "beabee-cli generate-index --ext js ./src/api/controllers ./src/api/decorators ./src/api/dto ./src/api/interceptors ./src/api/middlewares ./src/api/params ./src/api/transformers ./src/api/utils ./src/api/validators ./src/services ./src/express",
     "watch": "tsc-watch -p tsconfig.build.json --noClear",
     "check": "concurrently 'yarn:check:*'",

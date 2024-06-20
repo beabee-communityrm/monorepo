@@ -9,7 +9,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "yarn generate:index && yarn format && yarn build:node && yarn build:types && yarn run build:types:cjs && yarn build:assets",
+    "build": "yarn build:node && yarn build:types && yarn run build:types:cjs && yarn build:assets",
     "build:types": "tsc --project ./tsconfig.json",
     "build:types:cjs": "cp ./dist/types/index.d.ts ./dist/types/index.d.cts",
     "build:node": "beabee-cli cross-build node",
