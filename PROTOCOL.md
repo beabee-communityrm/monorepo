@@ -149,3 +149,7 @@ git subtree pull --prefix=apps/backend backend master --squash
 git subtree pull --prefix=apps/frontend frontend main --squash
 git subtree pull --prefix=packages/common common main --squash
 ```
+
+## Update Docker Compose Stack
+
+- Changed `npm run typeorm migration:run` to `yarn typeorm migration:run`

@@ -18,8 +18,6 @@ import * as Models from "@beabee/models";
 
 const log = mainLogger.child({ app: "database" });
 
-// This is used by the TypeORM CLI to run migrations
-// FIXME: https://medium.com/@JorgeSantanaDeveloper/troubleshooting-the-no-metadata-was-found-error-in-typeorm-2fab1003b099
 const dataSource: DataSource = new DataSource({
   type: "postgres",
   url: config.databaseUrl,
@@ -85,3 +83,5 @@ export const database = {
   getRepository,
   createQueryBuilder
 };
+
+export default database;

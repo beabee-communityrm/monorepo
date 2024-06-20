@@ -41,7 +41,7 @@
     "check:prettier": "prettier -c .",
     "check:dependencies": "dpdm -T --no-warning --no-tree --exit-code circular:1 src/app.ts src/webhooks/app.ts src/api/app.ts",
     "format": "prettier --write .",
-    "typeorm": "typeorm -d ./dist/core/database.js",
+    "typeorm": "typeorm -d ./dist/typeorm/data-source.js",
     "docker-compose:build": "docker compose build",
     "docker-compose:start": "docker compose up -d",
     "docker-compose:restart": "docker compose restart",
