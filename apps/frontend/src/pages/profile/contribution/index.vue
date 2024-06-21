@@ -89,7 +89,10 @@ import AppNotification from '@components/AppNotification.vue';
 
 import { currentUser } from '@store';
 
-import { type ContentPaymentData, type ContributionInfo } from '@type';
+import {
+  type ContentPaymentData,
+  type ContributionInfo,
+} from '@beabee/beabee-common';
 
 const { t } = useI18n();
 const route = useRoute();

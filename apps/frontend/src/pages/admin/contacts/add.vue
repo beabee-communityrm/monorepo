@@ -81,7 +81,7 @@ import { addBreadcrumb } from '@store/breadcrumb';
 
 import { createContact } from '@utils/api/contact';
 
-import type { ContactRoleData } from '@type';
+import type { ContactRoleData } from '@beabee/beabee-common';
 
 const { t } = useI18n();
 const router = useRouter();

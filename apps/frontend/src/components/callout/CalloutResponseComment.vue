@@ -72,7 +72,7 @@ import { formatLocale } from '@utils/dates';
 import type {
   GetCalloutResponseCommentData,
   UpdateCalloutResponseCommentData,
-} from '@type';
+} from '@beabee/beabee-common';
 
 const { t } = useI18n();
 

@@ -1,4 +1,4 @@
-import type { CalloutMapSchema } from '@type';
+import type { CalloutMapSchema } from '@beabee/beabee-common';
 
 export interface CalloutResponseViewSchema {
   buckets: string[];

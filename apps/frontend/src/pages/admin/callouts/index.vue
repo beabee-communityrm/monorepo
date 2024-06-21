@@ -92,7 +92,10 @@ import { fetchCallouts } from '@utils/api/callout';
 
 import { addBreadcrumb } from '@store/breadcrumb';
 
-import type { GetCalloutDataWith, GetCalloutsQuery } from '@type';
+import type {
+  GetCalloutDataWith,
+  GetCalloutsQuery,
+} from '@beabee/beabee-common';
 
 const { t } = useI18n();
 

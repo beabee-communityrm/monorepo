@@ -3,7 +3,7 @@ import type {
   Noop,
   GetPaymentData,
   GetContactData,
-} from '@type';
+} from '@beabee/beabee-common';
 
 export type GetPaymentDataWith<With extends GetPaymentWith> = GetPaymentData &
   ('contact' extends With ? { contact: GetContactData | null } : Noop);

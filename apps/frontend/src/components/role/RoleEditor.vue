@@ -45,7 +45,7 @@ import AppSubHeading from '@components/AppSubHeading.vue';
 import RoleEditorItem from './RoleEditorItem.vue';
 import RoleEditorForm from './RoleEditorForm.vue';
 
-import type { ContactRoleData } from '@type';
+import type { ContactRoleData } from '@beabee/beabee-common';
 
 const emit = defineEmits(['delete', 'update']);
 const props = defineProps<{ roles: ContactRoleData[] }>();

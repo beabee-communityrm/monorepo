@@ -9,7 +9,7 @@ import type {
   GetPaymentWith,
   GetPaymentsQuery,
   Serial,
-} from '@type';
+} from '@beabee/beabee-common';
 
 // TODO: how to make this type safe?
 export function deserializePayment(

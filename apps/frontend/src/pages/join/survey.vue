@@ -44,7 +44,10 @@ import { fetchCallout } from '@utils/api/callout';
 
 import { currentUser } from '@store';
 
-import type { GetCalloutDataWith, ContentJoinSetupData } from '@type';
+import type {
+  GetCalloutDataWith,
+  ContentJoinSetupData,
+} from '@beabee/beabee-common';
 
 const { t } = useI18n();
 const router = useRouter();

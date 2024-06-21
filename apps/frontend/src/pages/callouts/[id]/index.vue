@@ -146,7 +146,10 @@ import { currentUser, canAdmin, isEmbed } from '@store';
 import { addNotification } from '@store/notifications';
 import { addBreadcrumb } from '@store/breadcrumb';
 
-import type { GetCalloutDataWith, GetCalloutResponseDataWith } from '@type';
+import type {
+  GetCalloutDataWith,
+  GetCalloutResponseDataWith,
+} from '@beabee/beabee-common';
 import AppToggle from '@components/forms/AppToggle.vue';
 
 const props = defineProps<{

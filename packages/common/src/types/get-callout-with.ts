@@ -1,6 +1,8 @@
 export type GetCalloutWith =
   | "form"
-  | "responseViewSchema"
-  | "responseCount"
   | "hasAnswered"
+  | "responseCount"
+  | "responseViewSchema"
+  | "variantNames"
+  | "variants"
   | void;

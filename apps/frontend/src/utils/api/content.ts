@@ -1,5 +1,5 @@
 import { instance } from '.';
-import type { ContentId, Content } from '@type';
+import type { ContentId, Content } from '@beabee/beabee-common';
 
 export async function fetchContent<Id extends ContentId>(
   id: Id

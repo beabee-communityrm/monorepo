@@ -44,7 +44,7 @@ import AppTime from '../AppTime.vue';
 import AppSubHeading from '../AppSubHeading.vue';
 import { formatLocale } from '@utils/dates';
 
-import type { GetCalloutData } from '@type';
+import type { GetCalloutData } from '@beabee/beabee-common';
 
 defineProps<{ callout: GetCalloutData }>();
 

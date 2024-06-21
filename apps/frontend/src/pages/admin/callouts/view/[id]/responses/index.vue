@@ -240,7 +240,7 @@ import type {
   GetCalloutResponseWith,
   GetCalloutResponseDataWith,
   UpdateCalloutResponseData,
-} from '@type';
+} from '@beabee/beabee-common';
 import { toRef } from 'vue';
 
 const props = defineProps<{ callout: GetCalloutDataWith<'form'> }>();

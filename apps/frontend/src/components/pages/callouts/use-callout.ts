@@ -3,7 +3,7 @@ import { type Ref, computed } from 'vue';
 
 import { currentUser, generalContent } from '@store';
 
-import type { GetCalloutDataWith } from '@type';
+import type { GetCalloutDataWith } from '@beabee/beabee-common';
 import { isLocaleKey } from '@lib/i18n';
 import { i18nConfig } from '@beabee/locales';
 import { useRoute, useRouter } from 'vue-router';

@@ -51,7 +51,6 @@
   </AuthBox>
 </template>
 <script lang="ts" setup>
-import { NewsletterStatus } from '@beabee/beabee-common';
 import useVuelidate from '@vuelidate/core';
 import { computed, reactive } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -67,7 +66,11 @@ import { type SetupContactData } from './join.interface';
 
 import { fetchContact } from '@utils/api/contact';
 
-import type { ContentJoinSetupData } from '@type';
+import {
+  type ContentJoinSetupData,
+  GetContactWith,
+  NewsletterStatus,
+} from '@beabee/beabee-common';
 
 const props = defineProps<{
   setupContent: ContentJoinSetupData;
@@ -79,7 +82,7 @@ const { t } = useI18n();
 
 useVuelidate({ $stopPropagation: true });
 
-const contact = await fetchContact('me', ['profile']);
+const contact = await fetchContact('me', [GetContactWith.Profile]);
 
 const data = reactive<SetupContactData>({
   email: contact.email,

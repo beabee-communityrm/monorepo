@@ -79,7 +79,7 @@
   </AppForm>
 </template>
 <script lang="ts" setup>
-import { NewsletterStatus } from '@beabee/beabee-common';
+import { NewsletterStatus, GetContactWith } from '@beabee/beabee-common';
 import { computed, reactive, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import AppAddress from '../AppAddress.vue';
@@ -120,7 +120,7 @@ const data = reactive({
 watch(
   toRef(props, 'id'),
   async (id) => {
-    const contact = await fetchContact(id, ['profile']);
+    const contact = await fetchContact(id, [GetContactWith.Profile]);
 
     data.emailAddress = contact.email;
     data.firstName = contact.firstname;

@@ -143,7 +143,10 @@ import AppSubHeading from '@components/AppSubHeading.vue';
 import { fetchCallouts } from '@utils/api/callout';
 import { fetchContent, updateContent } from '@utils/api/content';
 
-import type { GetCalloutData, ContentJoinSetupData } from '@type';
+import type {
+  GetCalloutData,
+  ContentJoinSetupData,
+} from '@beabee/beabee-common';
 
 const setupContent = ref<ContentJoinSetupData>();
 const openCallouts = ref<GetCalloutData[]>([]);

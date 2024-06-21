@@ -78,7 +78,10 @@ import { fetchResponsesForMap } from '@utils/api/callout';
 
 import { isEmbed } from '@store';
 
-import type { GetCalloutDataWith, GetCalloutResponseMapData } from '@type';
+import type {
+  GetCalloutDataWith,
+  GetCalloutResponseMapData,
+} from '@beabee/beabee-common';
 
 const HASH_PREFIX = '#response-' as const;
 

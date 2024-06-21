@@ -4,11 +4,9 @@ import { deserializeCalloutResponse } from './callout-response';
 
 import type {
   GetCalloutsQuery,
-  Serial,
   GetCalloutResponsesQuery,
   CreateCalloutResponseData,
   CreateCalloutData,
-  UpdateCalloutData,
   GetCalloutWith,
   GetCalloutDataWith,
   GetCalloutData,
@@ -16,9 +14,14 @@ import type {
   GetCalloutResponseDataWith,
   GetCalloutTagData,
   CreateCalloutTagData,
-  UpdateCalloutTagData,
   GetCalloutResponseMapData,
-} from '@type';
+} from '@beabee/beabee-common';
+
+import type {
+  Serial,
+  UpdateCalloutData,
+  UpdateCalloutTagData,
+} from '@beabee/beabee-common';
 
 // TODO: how to make this type safe?
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

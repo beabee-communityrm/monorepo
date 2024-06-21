@@ -7,10 +7,10 @@ import type {
   GetCalloutResponseWith,
   GetCalloutResponsesQuery,
   GetCalloutResponseDataWith,
-  Serial,
-  UpdateCalloutResponseData,
   GetCalloutResponseData,
 } from '@type';
+
+import type { Serial, UpdateCalloutResponseData } from '@beabee/beabee-common';
 
 // TODO: how to make this type safe?
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

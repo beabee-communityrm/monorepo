@@ -56,7 +56,6 @@ meta:
   </App2ColGrid>
 </template>
 <script lang="ts" setup>
-import { ContributionType } from '@beabee/beabee-common';
 import { onBeforeMount, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
@@ -75,7 +74,12 @@ import AppNotification from '@components/AppNotification.vue';
 
 import { fetchContact, forceUpdateContribution } from '@utils/api/contact';
 
-import type { ContributionInfo, GetContactData } from '@type';
+import {
+  ContributionType,
+  GetContactWith,
+  type ContributionInfo,
+  type GetContactData,
+} from '@beabee/beabee-common';
 
 const { t } = useI18n();
 
@@ -88,7 +92,9 @@ const contributionData = ref<UpdateContribution>();
 const showCancelDialog = ref(false);
 
 onBeforeMount(async () => {
-  const contact = await fetchContact(props.contact.id, ['contribution']);
+  const contact = await fetchContact(props.contact.id, [
+    GetContactWith.Contribution,
+  ]);
 
   contributionInfo.value = contact.contribution;
   contributionData.value = {

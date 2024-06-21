@@ -6,7 +6,7 @@ import type {
   GetNoticeData,
   GetNoticesQuery,
   Serial,
-} from '@type';
+} from '@beabee/beabee-common';
 
 function deserializeNotice(notice: Serial<GetNoticeData>): GetNoticeData {
   return {

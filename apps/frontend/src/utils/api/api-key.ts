@@ -6,7 +6,7 @@ import type {
   GetApiKeyData,
   GetApiKeysQuery,
   Serial,
-} from '@type';
+} from '@beabee/beabee-common';
 
 function deserializeApiKey(apiKey: Serial<GetApiKeyData>): GetApiKeyData {
   return {

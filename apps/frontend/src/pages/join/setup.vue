@@ -28,7 +28,10 @@ import { updateContact } from '@utils/api/contact';
 import { updateCurrentUser } from '@store';
 
 import type { SetupContactData } from '@components/pages/join/join.interface';
-import type { ContentJoinSetupData, UpdateContactData } from '@type';
+import type {
+  ContentJoinSetupData,
+  UpdateContactData,
+} from '@beabee/beabee-common';
 
 const router = useRouter();
 

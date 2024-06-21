@@ -255,20 +255,21 @@ import {
 import { formatLocale } from '@utils/dates';
 import { fetchContent } from '@utils/api/content';
 import { fetchContactMfa, deleteContactMfa } from '@utils/api/contact-mfa';
-import { CONTACT_MFA_TYPE } from '@enums/contact-mfa-type';
+import { CONTACT_MFA_TYPE } from '@beabee/beabee-common';
 import { fetchCallout, fetchResponses } from '@utils/api/callout';
 
 import { addNotification } from '@store/notifications';
 
 import env from '@env';
 
-import type {
-  GetContactData,
-  GetContactDataWith,
-  ContactRoleData,
-  GetCalloutDataWith,
-  GetCalloutResponseDataWith,
-} from '@type';
+import {
+  type GetContactData,
+  type GetContactDataWith,
+  type ContactRoleData,
+  type GetCalloutDataWith,
+  type GetCalloutResponseDataWith,
+  GetContactWith,
+} from '@beabee/beabee-common';
 
 const { t, n } = useI18n();
 
@@ -279,7 +280,7 @@ const props = defineProps<{
 // TODO: remove this when we rework how the contact is passed to child pages
 // eslint-disable-next-line vue/no-dupe-keys
 const contact = ref<GetContactDataWith<
-  'profile' | 'contribution' | 'roles'
+  GetContactWith.Profile | GetContactWith.Contribution | GetContactWith.Roles
 > | null>(null);
 const contactTags = ref<string[]>([]);
 const contactAnnotations = reactive({
@@ -355,18 +356,18 @@ async function handleChangedRoles(cb: () => Promise<unknown>) {
   changingRoles.value = true;
   await cb();
   contact.value = await fetchContact(props.contact.id, [
-    'profile',
-    'contribution',
-    'roles',
+    GetContactWith.Profile,
+    GetContactWith.Contribution,
+    GetContactWith.Roles,
   ]);
   changingRoles.value = false;
 }
 
 onBeforeMount(async () => {
   contact.value = await fetchContact(props.contact.id, [
-    'profile',
-    'contribution',
-    'roles',
+    GetContactWith.Profile,
+    GetContactWith.Contribution,
+    GetContactWith.Roles,
   ]);
   contactAnnotations.notes = contact.value.profile.notes || '';
   contactAnnotations.description = contact.value.profile.description || '';

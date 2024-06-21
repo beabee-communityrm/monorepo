@@ -55,7 +55,7 @@ import ContributionMethod from './ContributionMethod.vue';
 import { type ContributionContent } from './contribution.interface';
 import { useI18n } from 'vue-i18n';
 import AppChoice from '../forms/AppChoice.vue';
-import type { ContentPaymentData } from '@type/content-payment-data';
+import type { ContentPaymentData } from '@beabee/beabee-common';
 
 const props = withDefaults(
   defineProps<{

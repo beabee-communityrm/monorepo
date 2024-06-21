@@ -1,4 +1,4 @@
-import type { FooterLink } from "./index.ts";
+import type { ContentThemeData, FooterLink } from "./index.ts";
 
 export interface ContentGeneralData<L = string> {
   organisationName: string;
@@ -6,14 +6,14 @@ export interface ContentGeneralData<L = string> {
   siteUrl: string;
   supportEmail: string;
   privacyLink: string;
-  termsLink: string;
-  impressumLink: string;
+  termsLink?: string;
+  impressumLink?: string;
   /** Current locale, e.g. en, de@informal, ... */
   locale: L;
-  theme: object;
+  theme: ContentThemeData;
   currencyCode: string;
   currencySymbol: string;
-  backgroundUrl: string;
-  hideContribution: boolean;
-  footerLinks: FooterLink[];
+  backgroundUrl?: string;
+  hideContribution?: boolean;
+  footerLinks?: FooterLink[];
 }

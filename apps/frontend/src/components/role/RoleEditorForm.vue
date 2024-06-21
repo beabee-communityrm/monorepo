@@ -71,7 +71,7 @@ import AppLabel from '../forms/AppLabel.vue';
 import AppRadioGroup from '../forms/AppRadioGroup.vue';
 import AppSelect from '../forms/AppSelect.vue';
 
-import type { ContactRoleData } from '@type';
+import type { ContactRoleData } from '@beabee/beabee-common';
 
 const { t } = useI18n();
 
