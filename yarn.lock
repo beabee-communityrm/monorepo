@@ -834,6 +834,7 @@ __metadata:
   resolution: "@beabee/task-runner-worker@workspace:apps/task-runner-worker"
   dependencies:
     "@beabee/cli": "workspace:^"
+    "@beabee/config": "workspace:^"
     "@beabee/core": "workspace:^"
     "@beabee/deno-node": "workspace:^"
     "@beabee/task-runner": "workspace:^"

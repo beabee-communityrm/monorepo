@@ -22,6 +22,7 @@
     "docker:push:local": "docker push beabee/task-runner-worker:local"
   },
   "dependencies": {
+    "@beabee/config": "workspace:^",
     "@beabee/core": "workspace:^",
     "@beabee/task-runner": "workspace:^",
     "bullmq": "^5.8.2"

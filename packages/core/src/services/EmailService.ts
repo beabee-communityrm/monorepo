@@ -2,6 +2,8 @@ import fs from "fs";
 import moment from "moment";
 import path from "path";
 import yamlFrontMatter from "yaml-front-matter";
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
 import { log as mainLogger } from "#core/logging";
 
@@ -26,6 +28,16 @@ import { isLocale, Locale } from "@beabee/locales";
 
 const log = mainLogger.child({ app: "email-service" });
 const { loadFront } = yamlFrontMatter;
+
+let currentDirname = ''
+
+// Get the current directory name for ESM and CommonJS
+if (typeof __dirname === "undefined") {
+  const __filename = fileURLToPath(import.meta.url);
+  currentDirname = dirname(__filename);
+} else {
+  currentDirname = __dirname;
+}
 
 const generalEmailTemplates = {
   "purchased-gift": (params: {
@@ -153,7 +165,7 @@ class EmailService {
   > = {};
 
   constructor() {
-    const emailDir = path.join(__dirname, "../data/email");
+    const emailDir = path.join(currentDirname, "../data/email");
     const emailFiles = fs.readdirSync(emailDir);
     log.info("Loading default emails");
 
@@ -232,8 +244,8 @@ class EmailService {
   ): Promise<void>;
   async sendTemplateToContact<
     T extends ContactEmailParams<T> extends undefined
-      ? ContactEmailTemplateId
-      : never
+    ? ContactEmailTemplateId
+    : never
   >(
     template: T,
     contact: Contact,
