@@ -2,8 +2,8 @@ import fs from "fs";
 import moment from "moment";
 import path from "path";
 import yamlFrontMatter from "yaml-front-matter";
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
+import { fileURLToPath } from "url";
+import { dirname } from "path";
 
 import { log as mainLogger } from "#core/logging";
 
@@ -29,7 +29,7 @@ import { isLocale, Locale } from "@beabee/locales";
 const log = mainLogger.child({ app: "email-service" });
 const { loadFront } = yamlFrontMatter;
 
-let currentDirname = ''
+let currentDirname = "";
 
 // Get the current directory name for ESM and CommonJS
 if (typeof __dirname === "undefined") {
@@ -244,8 +244,8 @@ class EmailService {
   ): Promise<void>;
   async sendTemplateToContact<
     T extends ContactEmailParams<T> extends undefined
-    ? ContactEmailTemplateId
-    : never
+      ? ContactEmailTemplateId
+      : never
   >(
     template: T,
     contact: Contact,
