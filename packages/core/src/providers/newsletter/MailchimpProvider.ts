@@ -11,7 +11,7 @@ import {
   NewsletterContact,
   NewsletterProvider,
   UpdateNewsletterContact
-} from "#types/index";
+} from "../../types/index.js";
 
 import { MailchimpNewsletterConfig } from "@beabee/config";
 import { NewsletterStatus } from "@beabee/beabee-common";

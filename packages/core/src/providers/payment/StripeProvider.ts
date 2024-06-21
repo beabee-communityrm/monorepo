@@ -24,7 +24,10 @@ import { NoPaymentMethod } from "#errors/index";
 
 import { config } from "@beabee/config";
 
-import { CompletedPaymentFlow, ContributionInfo } from "#types/index";
+import type {
+  CompletedPaymentFlow,
+  ContributionInfo
+} from "../../types/index.js";
 
 import { PaymentForm, UpdateContributionResult } from "@beabee/beabee-common";
 

@@ -8,7 +8,7 @@ import { log as mainLogger } from "#core/logging";
 import { wrapAsync } from "#utils";
 import { extractToken } from "#utils/auth";
 
-import type { NetworkServiceMap } from "#types/network-service-map";
+import type { NetworkServiceMap } from "../types/index.js";
 
 const { sign, verify, JsonWebTokenError } = jsonwebtoken;
 const log = mainLogger.child({ app: "network-communicator-service" });

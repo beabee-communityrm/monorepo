@@ -24,6 +24,8 @@
   "dependencies": {
     "@beabee/config": "workspace:^",
     "@beabee/core": "workspace:^",
+    "@beabee/locales": "workspace:^",
+    "@beabee/models": "workspace:^",
     "@beabee/task-runner": "workspace:^",
     "bullmq": "^5.8.2"
   },

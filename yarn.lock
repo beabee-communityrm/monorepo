@@ -837,6 +837,8 @@ __metadata:
     "@beabee/config": "workspace:^"
     "@beabee/core": "workspace:^"
     "@beabee/deno-node": "workspace:^"
+    "@beabee/locales": "workspace:^"
+    "@beabee/models": "workspace:^"
     "@beabee/task-runner": "workspace:^"
     "@beabee/workspace": "workspace:^"
     bullmq: "npm:^5.8.2"

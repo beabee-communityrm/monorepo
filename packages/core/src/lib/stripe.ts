@@ -1,7 +1,7 @@
 import Stripe from "stripe";
 import { config } from "@beabee/config";
 import { LocaleObject } from "@beabee/locales";
-import type { StripeTaxRateCreateParams } from "#types/stripe-tax-rate-create-params";
+import type { StripeTaxRateCreateParams } from "../types/index.js";
 
 export const stripe = new Stripe(config.stripe.secretKey, {
   apiVersion: "2024-04-10",

@@ -4,7 +4,10 @@ import { database } from "#core/database";
 
 import { Contact, ContactContribution } from "@beabee/models";
 
-import type { CompletedPaymentFlow, ContributionInfo } from "#types/index";
+import type {
+  CompletedPaymentFlow,
+  ContributionInfo
+} from "../../types/index.js";
 
 import type {
   PaymentForm,

@@ -9,9 +9,11 @@ import { LOGIN_CODES } from "@beabee/beabee-common";
 
 import { BadRequestError, UnauthorizedError } from "#errors/index";
 
-import { ContactMfaSecure } from "#types/contact-mfa-secure";
-import { CreateContactMfaData } from "#types/create-contact-mfa-data";
-import { DeleteContactMfaData } from "#types/delete-contact-mfa-data";
+import type {
+  ContactMfaSecure,
+  CreateContactMfaData,
+  DeleteContactMfaData
+} from "../types/index.js";
 
 /**
  * Contact multi factor authentication service

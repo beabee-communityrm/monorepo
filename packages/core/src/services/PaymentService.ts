@@ -11,7 +11,7 @@ import { GCProvider } from "#core/providers/payment/GCProvider";
 import { ManualProvider } from "#core/providers/payment/ManualProvider";
 import { StripeProvider } from "#core/providers/payment/StripeProvider";
 
-import type { CompletedPaymentFlow, ContributionInfo } from "#types/index";
+import type { CompletedPaymentFlow, ContributionInfo } from "../types/index.js";
 
 import type {
   PaymentForm,

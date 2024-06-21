@@ -2,7 +2,11 @@ import sgMail from "@sendgrid/mail";
 
 import { log as mainLogger } from "#core/logging";
 
-import { EmailOptions, EmailRecipient, PreparedEmail } from "#types/index";
+import {
+  EmailOptions,
+  EmailRecipient,
+  PreparedEmail
+} from "../../types/index.js";
 import { BaseProvider } from "./BaseProvider.js";
 
 import { SendGridEmailConfig } from "@beabee/config";

@@ -9,7 +9,7 @@ import { JoinFlow } from "@beabee/models";
 import type {
   CompletedPaymentFlow,
   CompletedPaymentFlowData
-} from "#types/index";
+} from "../../types/index.js";
 
 import type { PaymentFlow } from "@beabee/beabee-common";
 

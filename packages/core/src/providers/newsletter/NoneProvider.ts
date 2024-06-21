@@ -2,7 +2,7 @@ import {
   NewsletterContact,
   NewsletterProvider,
   UpdateNewsletterContact
-} from "#types/index";
+} from "../../types/index.js";
 
 export class NoneProvider implements NewsletterProvider {
   async addTagToContacts(emails: string[], tag: string): Promise<void> {}

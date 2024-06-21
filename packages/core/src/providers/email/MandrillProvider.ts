@@ -9,7 +9,7 @@ import {
   EmailRecipient,
   EmailTemplate,
   PreparedEmail
-} from "#types/index";
+} from "../../types/index.js";
 import { BaseProvider } from "./BaseProvider.js";
 import type { LocaleObject } from "@beabee/locales";
 

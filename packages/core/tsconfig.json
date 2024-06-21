@@ -22,7 +22,6 @@
     "paths": {
       "#models/*": ["./src/models/*.js"],
       "#services/*": ["./src/services/*.js"],
-      "#types/*": ["./src/types/*.js"],
       "#enums/*": ["./src/enums/*.js"],
       "#core/*": ["./src/*.js"],
       "#errors/*": ["./src/errors/*.js"],

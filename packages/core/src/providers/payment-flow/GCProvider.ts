@@ -7,7 +7,7 @@ import { PaymentFlowProvider } from "./index.js";
 import type {
   CompletedPaymentFlow,
   CompletedPaymentFlowData
-} from "#types/index";
+} from "../../types/index.js";
 import type { PaymentFlow, PaymentFlowData } from "@beabee/beabee-common";
 
 const log = mainLogger.child({ app: "gc-payment-flow-provider" });

@@ -3,11 +3,11 @@ import { NewsletterStatus } from "@beabee/beabee-common";
 import { database } from "#core/database";
 import { log as mainLogger } from "#core/logging";
 
-import {
+import type {
   NewsletterContact,
   NewsletterProvider,
   UpdateNewsletterContact
-} from "#types/index";
+} from "../types/index.js";
 import { MailchimpProvider } from "#core/providers/newsletter/MailchimpProvider";
 import { NoneProvider } from "#core/providers/newsletter/NoneProvider";
 

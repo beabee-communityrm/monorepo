@@ -1,5 +1,5 @@
 import { QueryFailedError } from "typeorm";
-import type { PgError } from "#types/index";
+import type { PgError } from "../types/index.js";
 
 export function isDuplicateIndex(error: unknown, key?: string): boolean {
   if (error instanceof QueryFailedError) {

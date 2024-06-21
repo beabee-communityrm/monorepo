@@ -10,13 +10,13 @@ import { log as mainLogger } from "#core/logging";
 import { optionsService } from "#core/services/OptionsService";
 import { LocaleObject } from "@beabee/locales";
 
-import {
+import type {
   EmailMergeFields,
   EmailOptions,
   EmailPerson,
   EmailProvider,
   EmailRecipient
-} from "#types/index";
+} from "../types/index.js";
 import { MandrillProvider } from "#core/providers/email/MandrillProvider";
 import { SendGridProvider } from "#core/providers/email/SendGridProvider";
 import { SMTPProvider } from "#core/providers/email/SMTPProvider";

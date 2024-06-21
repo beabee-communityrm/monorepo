@@ -3,8 +3,8 @@ import { log as mainLogger } from "#core/logging";
 import { formatEmailBody } from "#utils/email";
 import { LocaleObject } from "@beabee/locales";
 
-import { optionsService } from "#core/services/OptionsService";
-import { resetSecurityFlowService } from "#core/services/ResetSecurityFlowService";
+import { optionsService } from "../../services/OptionsService.js";
+import { resetSecurityFlowService } from "../../services/ResetSecurityFlowService.js";
 
 import { Email, Contact } from "@beabee/models";
 
@@ -16,7 +16,7 @@ import {
   EmailOptions,
   EmailTemplate,
   PreparedEmail
-} from "#types/index";
+} from "../../types/index.js";
 
 import { config } from "@beabee/config";
 

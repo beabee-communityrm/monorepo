@@ -59,16 +59,6 @@
         "default": "./dist/cjs/services/*.cjs"
       }
     },
-    "#types/*": {
-      "import": {
-        "types": "./dist/types/*.d.ts",
-        "default": "./dist/esm/*.js"
-      },
-      "require": {
-        "types": "./dist/types/*.d.cts",
-        "default": "./dist/cjs/*.cjs"
-      }
-    },
     "#enums/*": {
       "import": {
         "types": "./dist/types/enums/*.d.ts",

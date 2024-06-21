@@ -32,7 +32,7 @@ import type {
   CompleteUrls,
   CompletedPaymentFlow,
   CompletedPaymentFlowData
-} from "#types/index";
+} from "../types/index.js";
 
 const paymentProviders = {
   [PaymentMethod.StripeCard]: stripeProvider,

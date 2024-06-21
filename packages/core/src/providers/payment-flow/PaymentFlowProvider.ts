@@ -2,7 +2,7 @@ import { JoinFlow } from "@beabee/models";
 import type {
   CompletedPaymentFlow,
   CompletedPaymentFlowData
-} from "#types/index";
+} from "../../types/index.js";
 import type { PaymentFlow, PaymentFlowData } from "@beabee/beabee-common";
 
 export abstract class PaymentFlowProvider {
