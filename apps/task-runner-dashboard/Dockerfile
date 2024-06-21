@@ -13,7 +13,7 @@ COPY --chown=node:node --from=workspace-builder /opt/.yarn /opt/.yarn
 COPY --chown=node:node --from=workspace-builder /opt/node_modules /opt/node_modules
 
 # Copy dependency info
-# Note: We don't need the source files because the app is bundled, but yarn needs the package.json files
+# Note: We don't need the source files because the app is bundled, but yarn needs the package.json files to resolve the dependencies
 COPY --chown=node:node --from=workspace-builder /opt/packages/common/package.json /opt/packages/common/
 COPY --chown=node:node --from=workspace-builder /opt/packages/config/package.json /opt/packages/config/
 COPY --chown=node:node --from=workspace-builder /opt/packages/core/package.json /opt/packages/core/

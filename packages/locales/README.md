@@ -36,6 +36,10 @@ distributable format located in the `dist` directory.
 
 This script updates the locale files from a Google Spreadsheet.
 
+To be able to use the `yarn update:locales` script, you need to copy the
+`example.credentials.json` file in the `locales` package to `.credentials.json`
+and replace the values with the ones from the service account key file.
+
 - **`yarn update:locales:json`**: This updates the JSON files with new
   translations or modifications.
 - **`yarn update:locales:ts`**: Similar to the JSON update, this script updates
