@@ -1,11 +1,11 @@
-import { JobPayloadStripeSubscription, TaskRunnerWorkerService, QUEUE } from "@beabee/task-runner/src";
+import { JobPayloadStripeSubscription, TaskRunnerWorkerService, QUEUE, JobResultStripeSubscription } from "@beabee/task-runner/src";
 import { Job } from "bullmq";
 
-// import { stripeProvider } from "@beabee/core/src";
+import { stripe, contactsService } from "@beabee/core";
 
 export class StripeSubscriptionHandler {
     constructor(taskRunnerWorkerService: TaskRunnerWorkerService) {
-        const worker = taskRunnerWorkerService.create<JobPayloadStripeSubscription, null, 'update'>(QUEUE.STRIPE_SUBSCRIPTION, this.update);
+        const worker = taskRunnerWorkerService.create<JobPayloadStripeSubscription, JobResultStripeSubscription, 'update'>(QUEUE.STRIPE_SUBSCRIPTION, this.update);
         worker.on('completed', (jobId, result) => {
             console.debug(`[StripeSubscriptionHandler] Job ${jobId} completed with result: ${result}`);
         });
@@ -19,8 +19,32 @@ export class StripeSubscriptionHandler {
      * Handle the update job
      * @param job 
      */
-    update(job: Job<JobPayloadStripeSubscription, null, 'update'>) {
-        console.debug("[StripeSubscriptionHandler] new update job", job.name);
-        return null;
+    async update(job: Job<JobPayloadStripeSubscription, JobResultStripeSubscription, 'update'>) {
+        console.debug("[StripeSubscriptionHandler] new update job", job);
+
+        const result: JobResultStripeSubscription = {
+            updatedSubscriptions: 0
+        }
+
+        const contacts = await contactsService.find({
+            relations: { contribution: true }
+        });
+
+        for (let i = 0; i < contacts.length; i++) {
+            const contact = contacts[i];
+            const subscriptionItems = await stripe.subscriptionItems.list({ subscription: contact.contribution.subscriptionId })
+            for (const subscriptionItem of subscriptionItems.data) {
+                await stripe.subscriptionItems.update(
+                    subscriptionItem.id,
+                    {
+                        tax_rates: [job.data.taxRateId]
+                    }
+                )
+                result.updatedSubscriptions++;
+            }
+            job.updateProgress(i / contacts.length * 100);
+        }
+
+        return result;
     }
 }

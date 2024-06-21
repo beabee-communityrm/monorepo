@@ -96,14 +96,19 @@ services:
     #   context: ../..
     #   dockerfile: ./apps/task-runner-worker/Dockerfile
     image: beabee/task-runner-worker:local
-    environment:
-      TASK_RUNNER_REDIS_HOST: redis
-      TASK_RUNNER_REDIS_PORT: 6379
+    env_file:
+      - .env
     ports:
       - 3005:3005
     volumes:
       # App itself
       - ../../apps/task-runner-worker/dist:/opt/apps/task-runner-worker/dist
+      # Packages (excluded from the bundle)
+      - ../../packages/common/dist:/opt/packages/common/dist
+      - ../../packages/config/dist:/opt/packages/config/dist
+      - ../../packages/core/dist:/opt/packages/core/dist
+      - ../../packages/locales/dist:/opt/packages/locales/dist
+      - ../../packages/models/dist:/opt/packages/models/dist
 
 volumes:
   db_data:

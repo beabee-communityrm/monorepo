@@ -2,9 +2,9 @@
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
+    "lib": ["deno.ns"],
     "moduleResolution": "Bundler",
     "resolveJsonModule": true
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts"]
 }
-

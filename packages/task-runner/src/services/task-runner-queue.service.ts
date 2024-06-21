@@ -4,7 +4,12 @@ import {
   TASK_RUNNER_KNOWN_QUEUES,
   TASK_RUNNER_KNOWN_QUEUES_NAMES,
 } from "../constants.ts";
-import type { QueryInfo, QueueName } from "../types/index.ts";
+import type {
+  JobPayloadStripeSubscription,
+  JobResultStripeSubscription,
+  QueryInfo,
+  QueueName,
+} from "../types/index.ts";
 
 export class TaskRunnerQueueService {
   private readonly _queues: Record<string, Queue> = {};
@@ -43,6 +48,9 @@ export class TaskRunnerQueueService {
    * Get a queue.
    * If the queue is not existent, a new queue is created
    */
+  get(
+    name: "stripeSubscription",
+  ): Queue<JobPayloadStripeSubscription, JobResultStripeSubscription, "update">;
   get<DataType = any, ResultType = any, NameType extends string = string>(
     name: QueueName,
   ): Queue<DataType, ResultType, NameType> {
@@ -50,11 +58,17 @@ export class TaskRunnerQueueService {
       throw new Error(`Unknown queue: ${name}`);
     }
     if (!this._queues[name]) {
-      return this.create<DataType, ResultType, NameType>(name);
+      return this.create(name) as Queue<DataType, ResultType, NameType>;
     }
     return this._queues[name] as Queue<DataType, ResultType, NameType>;
   }
 
+  /**
+   * Create a queue
+   */
+  create(
+    name: "stripeSubscription",
+  ): Queue<JobPayloadStripeSubscription, JobResultStripeSubscription, "update">;
   create<DataType = any, ResultType = any, NameType extends string = string>(
     name: QueueName,
   ) {

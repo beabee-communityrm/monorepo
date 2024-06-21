@@ -1,3 +1,3 @@
 export interface JobPayloadStripeSubscription {
-  subscriptionId: string;
+  taxRateId: string;
 }

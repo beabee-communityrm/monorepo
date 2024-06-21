@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Server } from "node:http";
 import { EventEmitter } from "node:events";
-import { sign, verify, JsonWebTokenError } from "jsonwebtoken";
+import jsonwebtoken from "jsonwebtoken";
 import express, { Request, Response } from "express";
 import { config } from "@beabee/config";
 import { log as mainLogger } from "#core/logging";
@@ -10,6 +10,7 @@ import { extractToken } from "#utils/auth";
 
 import type { NetworkServiceMap } from "#types/network-service-map";
 
+const { sign, verify, JsonWebTokenError } = jsonwebtoken;
 const log = mainLogger.child({ app: "network-communicator-service" });
 
 class NetworkCommunicatorService {

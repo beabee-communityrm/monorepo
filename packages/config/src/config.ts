@@ -159,4 +159,10 @@ export const config = {
   },
   logFormat: env.e("BEABEE_LOGFORMAT", ["json", "simple"] as const, "json"),
   appOverrides: env.json("BEABEE_APPOVERRIDES", {}) as AppConfigOverrides,
+  taskRunner: {
+    redis: {
+      host: env.s("BEABEE_TASKRUNNER_REDIS_HOST", "redis"),
+      port: env.n("BEABEE_TASKRUNNER_REDIS_PORT", 6379),
+    },
+  },
 };

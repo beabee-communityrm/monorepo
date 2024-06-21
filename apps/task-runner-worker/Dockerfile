@@ -33,6 +33,9 @@ COPY --chown=node:node --from=workspace-builder /opt/docker/workspace/package.js
 # Copy the app itself
 COPY --chown=node:node --from=workspace-builder /opt/apps/task-runner-worker /opt/apps/task-runner-worker
 
+# Copy packages which are excluded from the bundle
+COPY --chown=node:node --from=workspace-builder /opt/packages /opt/packages
+
 # Replace's npm prune
 RUN yarn workspaces focus @beabee/task-runner-worker --production
 

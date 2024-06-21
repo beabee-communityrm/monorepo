@@ -6,11 +6,11 @@ import {
 } from "@beabee/beabee-common";
 import { differenceInMonths, format } from "date-fns";
 import {
+  PaymentStatus as GCPaymentStatus,
   SubscriptionIntervalUnit,
   PaymentCurrency,
-  PaymentStatus as GCPaymentStatus,
   Subscription
-} from "gocardless-nodejs";
+} from "gocardless-nodejs/types/Types.js";
 import moment from "moment";
 
 import { log as mainLogger } from "#core/logging";

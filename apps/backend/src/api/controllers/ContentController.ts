@@ -1,12 +1,20 @@
 import {
   Authorized,
-  Body,
   Get,
   JsonController,
   Params,
   Patch,
   BadRequestError
 } from "routing-controllers";
+
+import {
+  optionsService,
+  stripeTaxRateUpdateOrCreateDefault
+} from "@beabee/core";
+
+import { config } from "@beabee/config";
+
+import { TaskRunnerQueueService } from "@beabee/task-runner";
 
 import PartialBody from "#api/decorators/PartialBody";
 import {
@@ -23,10 +31,6 @@ import {
 } from "#api/dto";
 import { ContentParams } from "#api/params/ContentParams";
 import ContentTransformer from "#api/transformers/ContentTransformer";
-import {
-  optionsService,
-  stripeTaxRateUpdateOrCreateDefault
-} from "@beabee/core";
 import currentLocale from "#locale";
 
 @JsonController("/content")
@@ -118,6 +122,22 @@ export class ContentController {
       currentLocale(),
       optionsService.getText("tax-rate-stripe-default-id")
     );
+
+    const queue = new TaskRunnerQueueService({
+      connection: {
+        host: config.taskRunner.redis.host,
+        port: config.taskRunner.redis.port
+      }
+    }).get("stripeSubscription");
+
+    queue
+      .add("update", {
+        taxRateId: taxRateObj.id
+      })
+      .then((job) => {
+        console.debug("job done", job);
+      });
+
     await optionsService.set("tax-rate-stripe-default-id", taxRateObj.id);
 
     await ContentTransformer.updateOne("payment", data);

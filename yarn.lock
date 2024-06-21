@@ -533,6 +533,7 @@ __metadata:
     "@beabee/deno-node": "workspace:^"
     "@beabee/locales": "workspace:^"
     "@beabee/models": "workspace:^"
+    "@beabee/task-runner": "workspace:^"
     "@beabee/workspace": "workspace:^"
     "@inquirer/prompts": "npm:^3.3.2"
     "@tsconfig/node20": "npm:^20.1.4"
@@ -547,7 +548,7 @@ __metadata:
     "@types/express": "npm:^4.17.21"
     "@types/express-session": "npm:^1.18.0"
     "@types/lodash": "npm:^4.17.5"
-    "@types/node": "npm:^20.14.5"
+    "@types/node": "npm:^20.14.7"
     "@types/papaparse": "npm:^5.3.14"
     "@types/passport": "npm:^1.0.16"
     "@types/passport-local": "npm:^1.0.38"
@@ -603,7 +604,7 @@ __metadata:
     tsc-watch: "npm:^6.2.0"
     tsconfig: "npm:^7.0.0"
     typeorm: "npm:^0.3.20"
-    typescript: "npm:^5.4.5"
+    typescript: "npm:^5.5.2"
     uuid: "npm:^9.0.1"
   languageName: unknown
   linkType: soft
@@ -616,7 +617,7 @@ __metadata:
     cacheable-request: "npm:^12.0.1"
     concurrently: "npm:^8.2.2"
     date-fns: "npm:^3.6.0"
-    typescript: "npm:^5.4.5"
+    typescript: "npm:^5.5.2"
   languageName: unknown
   linkType: soft
 
@@ -635,7 +636,7 @@ __metadata:
   resolution: "@beabee/config@workspace:packages/config"
   dependencies:
     "@beabee/cli": "workspace:^"
-    typescript: "npm:^5.4.5"
+    typescript: "npm:^5.5.2"
   languageName: unknown
   linkType: soft
 
@@ -658,6 +659,8 @@ __metadata:
     ajv: "npm:^8.16.0"
     ajv-formats: "npm:^3.0.1"
     axios: "npm:^1.7.2"
+    class-transformer: "npm:^0.5.1"
+    class-validator: "npm:^0.14.1"
     date-fns: "npm:^3.6.0"
     express: "npm:^4.19.2"
     express-flash: "npm:0.0.2"
@@ -683,7 +686,7 @@ __metadata:
     ts-jest: "npm:^29.1.5"
     ts-node: "npm:^10.9.2"
     typeorm: "npm:^0.3.20"
-    typescript: "npm:^5.4.5"
+    typescript: "npm:^5.5.2"
     uuid: "npm:^9.0.1"
     winston: "npm:^3.13.0"
     yaml-front-matter: "npm:^4.1.1"
@@ -768,7 +771,7 @@ __metadata:
     qrcode-generator: "npm:^1.4.4"
     slugify: "npm:^1.6.6"
     tailwindcss: "npm:^3.4.4"
-    typescript: "npm:^5.4.5"
+    typescript: "npm:^5.5.2"
     vite: "npm:^5.3.1"
     vite-plugin-pages: "npm:^0.32.2"
     vue: "npm:^3.4.29"
@@ -776,7 +779,7 @@ __metadata:
     vue-i18n: "npm:^9.13.1"
     vue-maplibre-gl: "npm:^3.1.3"
     vue-multiselect: "npm:^3.0.0"
-    vue-router: "npm:^4.3.3"
+    vue-router: "npm:^4.4.0"
     vue-tsc: "npm:^2.0.21"
     vuedraggable: "npm:^4.1.0"
   languageName: unknown
@@ -787,7 +790,7 @@ __metadata:
   resolution: "@beabee/locales@workspace:packages/locales"
   dependencies:
     "@beabee/cli": "workspace:^"
-    typescript: "npm:^5.4.5"
+    typescript: "npm:^5.5.2"
   languageName: unknown
   linkType: soft
 
@@ -801,7 +804,7 @@ __metadata:
     date-fns: "npm:^3.6.0"
     date-fns-tz: "npm:^3.1.3"
     typeorm: "npm:^0.3.20"
-    typescript: "npm:^5.4.5"
+    typescript: "npm:^5.5.2"
   languageName: unknown
   linkType: soft
 
@@ -822,7 +825,7 @@ __metadata:
     "@bull-board/express": "npm:^5.20.2"
     bullmq: "npm:^5.8.2"
     esbuild: "npm:^0.21.5"
-    typescript: "npm:^5.4.5"
+    typescript: "npm:^5.5.2"
   languageName: unknown
   linkType: soft
 
@@ -831,12 +834,13 @@ __metadata:
   resolution: "@beabee/task-runner-worker@workspace:apps/task-runner-worker"
   dependencies:
     "@beabee/cli": "workspace:^"
+    "@beabee/core": "workspace:^"
     "@beabee/deno-node": "workspace:^"
     "@beabee/task-runner": "workspace:^"
     "@beabee/workspace": "workspace:^"
     bullmq: "npm:^5.8.2"
     esbuild: "npm:^0.21.5"
-    typescript: "npm:^5.4.5"
+    typescript: "npm:^5.5.2"
   languageName: unknown
   linkType: soft
 
@@ -846,7 +850,7 @@ __metadata:
   dependencies:
     "@beabee/cli": "workspace:^"
     bullmq: "npm:^5.8.2"
-    typescript: "npm:^5.4.5"
+    typescript: "npm:^5.5.2"
   languageName: unknown
   linkType: soft
 
@@ -3121,12 +3125,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^20.14.5":
-  version: 20.14.5
-  resolution: "@types/node@npm:20.14.5"
+"@types/node@npm:^20.14.7":
+  version: 20.14.7
+  resolution: "@types/node@npm:20.14.7"
   dependencies:
     undici-types: "npm:~5.26.4"
-  checksum: 10c0/06a8c304b5f7f190d4497807dc67ad09ee7b14ea2996bfdc823553c624698d8cab1ef9d16f8b764f20cb9eb11caa0e832787741e9ef70e1c89d620797ab28436
+  checksum: 10c0/6211ffe86f769a58617e3bdca58610256021ef54bd99d2c442ee6109196cd6ee8e0bcd1cfac0e39bf4bb353f8900fa5fae540485a03816bd91ad1f86a0e18512
   languageName: node
   linkType: hard
 
@@ -15181,7 +15185,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^5.2.2, typescript@npm:^5.4.5":
+"typescript@npm:^5.2.2":
   version: 5.4.5
   resolution: "typescript@npm:5.4.5"
   bin:
@@ -15191,13 +15195,33 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A^5.2.2#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.4.5#optional!builtin<compat/typescript>":
+"typescript@npm:^5.5.2":
+  version: 5.5.2
+  resolution: "typescript@npm:5.5.2"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10c0/8ca39b27b5f9bd7f32db795045933ab5247897660627251e8254180b792a395bf061ea7231947d5d7ffa5cb4cc771970fd4ef543275f9b559f08c9325cccfce3
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@npm%3A^5.2.2#optional!builtin<compat/typescript>":
   version: 5.4.5
   resolution: "typescript@patch:typescript@npm%3A5.4.5#optional!builtin<compat/typescript>::version=5.4.5&hash=5adc0c"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 10c0/db2ad2a16ca829f50427eeb1da155e7a45e598eec7b086d8b4e8ba44e5a235f758e606d681c66992230d3fc3b8995865e5fd0b22a2c95486d0b3200f83072ec9
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@npm%3A^5.5.2#optional!builtin<compat/typescript>":
+  version: 5.5.2
+  resolution: "typescript@patch:typescript@npm%3A5.5.2#optional!builtin<compat/typescript>::version=5.5.2&hash=379a07"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10c0/a7b7ede75dc7fc32a76d0d0af6b91f5fbd8620890d84c906f663d8783bf3de6d7bd50f0430b8bb55eac88a38934af847ff709e7156e5138b95ae94cbd5f73e5b
   languageName: node
   linkType: hard
 
@@ -15745,14 +15769,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-router@npm:^4.3.3":
-  version: 4.3.3
-  resolution: "vue-router@npm:4.3.3"
+"vue-router@npm:^4.4.0":
+  version: 4.4.0
+  resolution: "vue-router@npm:4.4.0"
   dependencies:
     "@vue/devtools-api": "npm:^6.5.1"
   peerDependencies:
     vue: ^3.2.0
-  checksum: 10c0/bd58907346b899acb896f58764c6eb0f6ff7a68bd6e5781a774c746ac3dad5d7cc05a7a9d2b3c46288a3de2bfe94b14613fe1c50a06dbaf749f92f2fd8126138
+  checksum: 10c0/aad52e6bf8f52b1fcc3465ad55ff7aaf302b22b7cec14108957eebeba608ad485626fea3eb6750ca516f3d3974c3830a3cd6d97ec8c431aaa45ed23ffede2803
   languageName: node
   linkType: hard
 

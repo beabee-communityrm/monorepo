@@ -1,7 +1,7 @@
 import fs from "fs";
 import moment from "moment";
 import path from "path";
-import { loadFront } from "yaml-front-matter";
+import yamlFrontMatter from "yaml-front-matter";
 
 import { log as mainLogger } from "#core/logging";
 
@@ -25,6 +25,7 @@ import { config } from "@beabee/config";
 import { isLocale, Locale } from "@beabee/locales";
 
 const log = mainLogger.child({ app: "email-service" });
+const { loadFront } = yamlFrontMatter;
 
 const generalEmailTemplates = {
   "purchased-gift": (params: {

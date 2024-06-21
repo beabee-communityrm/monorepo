@@ -163,7 +163,7 @@
     "packageJson": {
       "dependencies": [
         "npm:bullmq@^5.8.2",
-        "npm:typescript@^5.4.5"
+        "npm:typescript@^5.5.2"
       ]
     }
   }

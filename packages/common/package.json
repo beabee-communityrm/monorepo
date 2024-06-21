@@ -81,7 +81,7 @@
     "@beabee/cli": "workspace:^",
     "cacheable-request": "^12.0.1",
     "concurrently": "^8.2.2",
-    "typescript": "^5.4.5"
+    "typescript": "^5.5.2"
   },
   "dependencies": {
     "date-fns": "^3.6.0"
