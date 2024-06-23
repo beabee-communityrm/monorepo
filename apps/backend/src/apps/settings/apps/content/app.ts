@@ -1,12 +1,9 @@
 import express, { Request, Response, NextFunction } from "express";
 
-import { getRepository } from "@core/database";
-import { isAdmin } from "@core/middleware";
-import { wrapAsync } from "@core/utils";
+import { database, wrapAsync, optionsService } from "@beabee/core";
+import { isAdmin } from "#express";
 
-import OptionsService from "@core/services/OptionsService";
-
-import Content from "@models/Content";
+import { Content } from "@beabee/models";
 
 import type { ContentId } from "@beabee/beabee-common";
 
@@ -19,7 +16,7 @@ app.use(isAdmin);
 app.get(
   "/",
   wrapAsync(async (req, res) => {
-    const content = await getRepository(Content).find();
+    const content = await database.getRepository(Content).find();
     function get(id: ContentId) {
       return content.find((c) => c.id === id)?.data || {};
     }
@@ -85,14 +82,14 @@ app.post(
   wrapAsync(async (req, res) => {
     if (req.body.id) {
       const id = req.body.id as ContentId;
-      await getRepository(Content).save({
+      await database.getRepository(Content).save({
         id,
         data: parseData[id](req.body.data || {})
       });
     }
 
     if (req.body.options) {
-      await OptionsService.set(req.body.options);
+      await optionsService.set(req.body.options);
     }
 
     res.redirect("/settings/content");

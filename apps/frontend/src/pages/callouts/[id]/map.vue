@@ -230,7 +230,10 @@ import AppButton from '@components/button/AppButton.vue';
 
 import { isEmbed } from '@store';
 
-import type { GetCalloutDataWith, GetCalloutResponseMapData } from '@type';
+import type {
+  GetCalloutDataWith,
+  GetCalloutResponseMapData,
+} from '@beabee/beabee-common';
 import { currentLocaleConfig } from '@lib/i18n';
 import CalloutHeader from '@components/pages/callouts/CalloutHeader.vue';
 

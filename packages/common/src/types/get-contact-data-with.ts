@@ -3,12 +3,17 @@ import type {
   ContactRoleData,
   ContributionInfo,
   GetContactData,
-  GetContactWith,
+  GetContactWithType,
   Noop,
 } from "./index.ts";
 
-export type GetContactDataWith<With extends GetContactWith> =
+import type { GetContactWith } from "../data/index.ts";
+
+export type GetContactDataWith<With extends GetContactWithType> =
   & GetContactData
-  & ("profile" extends With ? { profile: ContactProfileData } : Noop)
-  & ("contribution" extends With ? { contribution: ContributionInfo } : Noop)
-  & ("roles" extends With ? { roles: ContactRoleData[] } : Noop);
+  & (GetContactWith.Profile extends With ? { profile: ContactProfileData }
+    : Noop)
+  & (GetContactWith.Contribution extends With
+    ? { contribution: ContributionInfo }
+    : Noop)
+  & (GetContactWith.Roles extends With ? { roles: ContactRoleData[] } : Noop);

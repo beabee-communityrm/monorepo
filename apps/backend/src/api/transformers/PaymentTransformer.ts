@@ -7,17 +7,16 @@ import {
   GetPaymentOptsDto,
   GetPaymentWith,
   ListPaymentsDto
-} from "@api/dto/PaymentDto";
+} from "#api/dto/PaymentDto";
 import ContactTransformer, {
   loadContactRoles
-} from "@api/transformers/ContactTransformer";
-import { BaseTransformer } from "@api/transformers/BaseTransformer";
-import { mergeRules } from "@api/utils/rules";
+} from "#api/transformers/ContactTransformer";
+import { BaseTransformer } from "#api/transformers/BaseTransformer";
+import { mergeRules } from "#api/utils/rules";
 
-import Contact from "@models/Contact";
-import Payment from "@models/Payment";
+import { Contact, Payment } from "@beabee/models";
 
-import { AuthInfo } from "@type/auth-info";
+import { AuthInfo } from "@beabee/core";
 
 class PaymentTransformer extends BaseTransformer<
   Payment,

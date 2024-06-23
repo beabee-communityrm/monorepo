@@ -1,6 +1,4 @@
-import "module-alias/register";
-
-import { runApp } from "@core/server";
+import { runApp } from "#express";
 
 import * as models from "./anonymisers/models";
 import { anonymiseModel, clearModels } from "./anonymisers";

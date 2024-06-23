@@ -1,6 +1,3 @@
-import "module-alias/register";
-import "reflect-metadata";
-
 import { RoleType } from "@beabee/beabee-common";
 import cookie from "cookie-parser";
 import cors from "cors";
@@ -38,13 +35,12 @@ import {
   log as mainLogger,
   requestErrorLogger,
   requestLogger
-} from "@core/logging";
-import sessions from "@core/sessions";
-import { initApp, startServer } from "@core/server";
+} from "@beabee/core";
+import { initApp, startServer, sessions } from "#express";
 
-import Contact from "@models/Contact";
+import { Contact } from "@beabee/models";
 
-import config from "@config";
+import { config } from "@beabee/config";
 
 function currentUserChecker(action: { request: Request }): Contact | undefined {
   return action.request.auth?.entity instanceof Contact

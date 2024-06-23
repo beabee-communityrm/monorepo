@@ -1,5 +1,6 @@
 import type {
   CalloutData,
+  CalloutResponseViewSchema,
   CalloutVariantData,
   SetCalloutFormSchema,
 } from "./index.ts";
@@ -7,4 +8,5 @@ import type {
 export interface CreateCalloutData extends CalloutData {
   formSchema: SetCalloutFormSchema;
   variants: Record<string, CalloutVariantData>;
+  responseViewSchema?: CalloutResponseViewSchema | null;
 }

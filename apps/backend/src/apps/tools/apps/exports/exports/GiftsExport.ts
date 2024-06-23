@@ -1,11 +1,9 @@
-import { ContributionType } from "@beabee/beabee-common";
+import { ContributionType, Address } from "@beabee/beabee-common";
 import { SelectQueryBuilder } from "typeorm";
 
-import { createQueryBuilder } from "@core/database";
+import { database } from "@beabee/core";
 
-import GiftFlow from "@models/GiftFlow";
-
-import { Address } from "@type/address";
+import { GiftFlow } from "@beabee/models";
 
 import BaseExport, { ExportResult } from "./BaseExport";
 
@@ -25,7 +23,8 @@ export default class GiftsExport extends BaseExport<GiftFlow> {
   idColumn = "g.id";
 
   protected get query(): SelectQueryBuilder<GiftFlow> {
-    return createQueryBuilder(GiftFlow, "g")
+    return database
+      .createQueryBuilder(GiftFlow, "g")
       .leftJoinAndSelect("g.giftee", "giftee")
       .leftJoinAndSelect("giftee.roles", "roles")
       .leftJoinAndSelect("giftee.profile", "profile")

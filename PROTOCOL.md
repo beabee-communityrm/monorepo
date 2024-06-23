@@ -149,3 +149,11 @@ git subtree pull --prefix=apps/backend backend master --squash
 git subtree pull --prefix=apps/frontend frontend main --squash
 git subtree pull --prefix=packages/common common main --squash
 ```
+
+## Update Docker Compose Stack
+
+- Changed `command: npm run typeorm migration:run` to `command: yarn typeorm migration:run`
+- Changed `command: 'node built/api/app'` to `command: yarn start:api:prod`
+- Changed `command: 'node built/webhooks/app'` to `command: yarn start:webhooks:prod`
+
+Please checkout the beabee-dev stack on portainer to see the changes.

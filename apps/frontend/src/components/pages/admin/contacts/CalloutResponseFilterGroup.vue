@@ -29,7 +29,10 @@ import AppSelect from '@components/forms/AppSelect.vue';
 
 import { fetchCallout, fetchCallouts } from '@utils/api/callout';
 
-import { type GetCalloutData, type GetCalloutDataWith } from '@type';
+import {
+  type GetCalloutData,
+  type GetCalloutDataWith,
+} from '@beabee/beabee-common';
 import type {
   SearchRuleEmits,
   SearchRuleFilterGroupProps,

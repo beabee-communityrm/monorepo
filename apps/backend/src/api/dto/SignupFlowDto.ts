@@ -7,15 +7,15 @@ import {
   IsString
 } from "class-validator";
 
-import { UpdateAddressDto } from "@api/dto/AddressDto";
-import { StartContributionDto } from "@api/dto/ContributionDto";
-import { CompleteJoinFlowDto } from "@api/dto/JoinFlowDto";
-import IsPassword from "@api/validators/IsPassword";
-import IsUrl from "@api/validators/IsUrl";
+import { UpdateAddressDto } from "#api/dto/AddressDto";
+import { StartContributionDto } from "#api/dto/ContributionDto";
+import { CompleteJoinFlowDto } from "#api/dto/JoinFlowDto";
+import IsPassword from "#api/validators/IsPassword";
+import IsUrl from "#api/validators/IsUrl";
 
-import type JoinForm from "@models/JoinForm";
+import { JoinForm } from "@beabee/models";
 
-import { CompleteUrls } from "@type/complete-urls";
+import { CompleteUrls } from "@beabee/core";
 
 export class StartSignupFlowDto implements CompleteUrls {
   @IsUrl()

@@ -12,9 +12,9 @@ import {
   IsString
 } from "class-validator";
 
-import IsUrl from "@api/validators/IsUrl";
-import IsValidPayFee from "@api/validators/IsValidPayFee";
-import MinContributionAmount from "@api/validators/MinContributionAmount";
+import IsUrl from "#api/validators/IsUrl";
+import IsValidPayFee from "#api/validators/IsValidPayFee";
+import MinContributionAmount from "#api/validators/MinContributionAmount";
 
 import { StartJoinFlowDto } from "./JoinFlowDto";
 

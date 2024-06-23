@@ -3,14 +3,14 @@ import crypto from "node:crypto";
 import { Request, Response } from "express";
 import { Middleware, ExpressMiddlewareInterface } from "routing-controllers";
 
-import { getRepository } from "@core/database";
+import {
+  database,
+  contactsService,
+  extractToken,
+  AuthInfo
+} from "@beabee/core";
 
-import ContactsService from "@core/services/ContactsService";
-import { extractToken } from "@core/utils/auth";
-
-import ApiKey from "@models/ApiKey";
-
-import { AuthInfo } from "@type/auth-info";
+import { ApiKey } from "@beabee/models";
 
 @Middleware({ type: "before" })
 export class AuthMiddleware implements ExpressMiddlewareInterface {
@@ -36,7 +36,7 @@ async function getAuth(request: Request): Promise<AuthInfo | undefined> {
       // API key can act as a user
       const contactId = headers["x-contact-id"]?.toString();
       if (contactId) {
-        const contact = await ContactsService.findOneBy({ id: contactId });
+        const contact = await contactsService.findOneBy({ id: contactId });
         if (contact) {
           return {
             method: "api-key",
@@ -65,7 +65,7 @@ async function getAuth(request: Request): Promise<AuthInfo | undefined> {
 async function getValidApiKey(key: string): Promise<ApiKey | undefined> {
   const [_, secret] = key.split("_");
   const secretHash = crypto.createHash("sha256").update(secret).digest("hex");
-  const apiKey = await getRepository(ApiKey).findOneBy({ secretHash });
+  const apiKey = await database.getRepository(ApiKey).findOneBy({ secretHash });
   return !!apiKey && (!apiKey.expires || apiKey.expires > new Date())
     ? apiKey
     : undefined;

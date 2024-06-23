@@ -1,0 +1,163 @@
+{
+  "name": "@beabee/core",
+  "version": "0.16.0",
+  "main": "dist/cjs/index.cjs",
+  "module": "dist/esm/index.js",
+  "type": "module",
+  "files": [
+    "src",
+    "dist"
+  ],
+  "scripts": {
+    "build": "yarn build:node && yarn build:types && yarn run build:types:cjs && yarn build:assets",
+    "build:types": "tsc --project ./tsconfig.json",
+    "build:types:cjs": "cp ./dist/types/index.d.ts ./dist/types/index.d.cts",
+    "build:node": "beabee-cli cross-build node",
+    "build:assets": "yarn build:assets:cjs && yarn build:assets:esm",
+    "build:assets:cjs": "cp -r ./src/data ./dist/cjs/data",
+    "build:assets:esm": "cp -r ./src/data ./dist/esm/data",
+    "check": "yarn check:types",
+    "check:types": "yarn build:types --noEmit --emitDeclarationOnly false",
+    "check:node": "yarn build:node --noEmit --emitDeclarationOnly false",
+    "test": "jest src",
+    "format": "prettier --write .",
+    "generate:index": "beabee-cli generate-index --ext js ./src/lib ./src/services ./src/types ./src/errors ./src/utils ./src/providers/email ./src/providers/newsletter/ ./src/providers/payment ./src/providers/payment-flow"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    "./src": "./src/index.ts",
+    "./src/*": "./src/*.ts",
+    ".": {
+      "import": {
+        "types": "./dist/types/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "types": "./dist/types/index.d.cts",
+        "default": "./dist/cjs/index.cjs"
+      }
+    }
+  },
+  "imports": {
+    "#models/*": {
+      "import": {
+        "types": "./dist/types/models/*.d.ts",
+        "default": "./dist/esm/models/*.js"
+      },
+      "require": {
+        "types": "./dist/types/models/*.d.cts",
+        "default": "./dist/cjs/models/*.cjs"
+      }
+    },
+    "#services/*": {
+      "import": {
+        "types": "./dist/types/services/*.d.ts",
+        "default": "./dist/esm/services/*.js"
+      },
+      "require": {
+        "types": "./dist/types/services/*.d.cts",
+        "default": "./dist/cjs/services/*.cjs"
+      }
+    },
+    "#enums/*": {
+      "import": {
+        "types": "./dist/types/enums/*.d.ts",
+        "default": "./dist/esm/enums/*.js"
+      },
+      "require": {
+        "types": "./dist/types/enums/*.d.cts",
+        "default": "./dist/cjs/enums/*.cjs"
+      }
+    },
+    "#core/*": {
+      "import": {
+        "types": "./dist/types/*.d.ts",
+        "default": "./dist/esm/*.js"
+      },
+      "require": {
+        "types": "./dist/types/*.d.cts",
+        "default": "./dist/cjs/*.cjs"
+      }
+    },
+    "#errors/*": {
+      "import": {
+        "types": "./dist/types/errors/*.d.ts",
+        "default": "./dist/esm/errors/*.js"
+      },
+      "require": {
+        "types": "./dist/types/errors/*.d.cts",
+        "default": "./dist/cjs/errors/*.cjs"
+      }
+    },
+    "#utils": {
+      "import": {
+        "types": "./dist/types/utils/index.d.ts",
+        "default": "./dist/esm/utils/index.js"
+      },
+      "require": {
+        "types": "./dist/types/utils/index.d.cts",
+        "default": "./dist/cjs/utils/index.cjs"
+      }
+    },
+    "#utils/*": {
+      "import": {
+        "types": "./dist/types/utils/*.d.ts",
+        "default": "./dist/esm/utils/*.js"
+      },
+      "require": {
+        "types": "./dist/types/utils/*.d.cts",
+        "default": "./dist/cjs/utils/*.cjs"
+      }
+    }
+  },
+  "devDependencies": {
+    "@beabee/cli": "workspace:^",
+    "jest": "^29.7.0",
+    "prettier": "^3.3.2",
+    "ts-jest": "^29.1.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.2"
+  },
+  "dependencies": {
+    "@beabee/beabee-common": "workspace:^",
+    "@beabee/config": "workspace:^",
+    "@beabee/locales": "workspace:^",
+    "@beabee/models": "workspace:^",
+    "@captchafox/node": "^1.2.0",
+    "@sendgrid/mail": "^8.1.3",
+    "@types/express-flash": "^0.0.5",
+    "@types/gunzip-maybe": "^1.4.2",
+    "@types/jsonwebtoken": "^9.0.6",
+    "@types/nodemailer": "^6.4.15",
+    "JSONStream": "^1.3.5",
+    "ajv": "^8.16.0",
+    "ajv-formats": "^3.0.1",
+    "axios": "^1.7.2",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.1",
+    "date-fns": "^3.6.0",
+    "express": "^4.19.2",
+    "express-flash": "0.0.2",
+    "express-winston": "^4.2.0",
+    "gocardless-nodejs": "^3.26.0",
+    "gunzip-maybe": "^1.4.2",
+    "jsonwebtoken": "^9.0.2",
+    "juice": "^10.0.0",
+    "lodash": "^4.17.21",
+    "module-alias": "^2.2.3",
+    "moment": "^2.30.1",
+    "muhammara": "^4.1.0",
+    "nodemailer": "^6.9.13",
+    "otpauth": "^9.3.1",
+    "passport": "^0.7.0",
+    "passport-local": "^1.0.0",
+    "pg": "^8.12.0",
+    "routing-controllers": "^0.10.4",
+    "stripe": "^15.12.0",
+    "tar-stream": "^3.1.7",
+    "typeorm": "^0.3.20",
+    "uuid": "^9.0.1",
+    "winston": "^3.13.0",
+    "yaml-front-matter": "^4.1.1"
+  }
+}

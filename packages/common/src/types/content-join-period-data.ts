@@ -1,4 +1,4 @@
-import { ContributionPeriod } from "../data/index.ts";
+import type { ContributionPeriod } from "../data/index.ts";
 
 export interface ContentJoinPeriodData {
   name: ContributionPeriod;

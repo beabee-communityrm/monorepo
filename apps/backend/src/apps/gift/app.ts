@@ -1,21 +1,23 @@
 import express from "express";
 import moment from "moment";
 
-import config from "@config";
+import { config } from "@beabee/config";
 
-import { hasNewModel, hasSchema } from "@core/middleware";
-import { wrapAsync } from "@core/utils";
-import { loginAndRedirect } from "@core/utils/contact";
+import { hasNewModel, hasSchema } from "#express";
+import {
+  wrapAsync,
+  loginAndRedirect,
+  GiftService,
+  contactsService,
+  optionsService
+} from "@beabee/core";
 
-import GiftService from "@core/services/GiftService";
-import ContactsService from "@core/services/ContactsService";
-import OptionsService from "@core/services/OptionsService";
+import { GiftFlow, GiftForm } from "@beabee/models";
 
-import GiftFlow, { GiftForm } from "@models/GiftFlow";
-
-import { Address } from "@type/address";
+import { Address } from "@beabee/beabee-common";
 
 import { createGiftSchema, updateGiftAddressSchema } from "./schema.json";
+import currentLocale from "#locale";
 
 const app = express();
 
@@ -92,7 +94,7 @@ app.post(
     if (moment(giftForm.startDate).isBefore(undefined, "day")) {
       error = "flash-gifts-date-in-the-past" as const;
     } else {
-      const contact = await ContactsService.findOneBy({
+      const contact = await contactsService.findOneBy({
         email: giftForm.email
       });
       if (contact) {
@@ -101,7 +103,7 @@ app.post(
     }
 
     if (error) {
-      res.status(400).send([OptionsService.getText(error)]);
+      res.status(400).send([optionsService.getText(error)]);
     } else {
       const sessionId = await GiftService.createGiftFlow(giftForm);
       res.send({ sessionId });
@@ -117,7 +119,7 @@ app.get(
 
     if (giftFlow.completed) {
       if (!giftFlow.processed) {
-        await GiftService.processGiftFlow(giftFlow, true);
+        await GiftService.processGiftFlow(giftFlow, currentLocale(), true);
       }
 
       if (giftFlow.giftee) {

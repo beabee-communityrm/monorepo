@@ -2,7 +2,7 @@ import type {
   UpdateContactData,
   ContactRoleData,
   ForceUpdateContributionData,
-} from '@type';
+} from '@beabee/beabee-common';
 
 export interface CreateContactData extends UpdateContactData {
   email: string;

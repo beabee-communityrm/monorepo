@@ -1,4 +1,4 @@
-import type { UpdateCalloutResponseCommentData } from '@type';
+import type { UpdateCalloutResponseCommentData } from '@beabee/beabee-common';
 
 export interface CalloutResponseCommentData
   extends UpdateCalloutResponseCommentData {

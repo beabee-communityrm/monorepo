@@ -52,8 +52,8 @@ Key scripts include:
 
 A CLI tool for managing the project. It is a Deno CLI application that allows
 for the management of the project via the command line. It is used to build the
-project, sync runtime configurations between `package.json` and `deno.jsonc`, and
-generate index.ts files.
+project, sync runtime configurations between `package.json` and `deno.jsonc`,
+and generate index.ts files.
 
 ```bash
 yarn cli --help # or `deno task cli --help`
@@ -107,7 +107,7 @@ Lints code using
 
 Testing is divided into several scripts:
 
-- `test:types` - Checks for type errors using `tsc`.
+- `check:types` - Checks for type errors using `tsc`.
 - `test:deno` - Main tests using
   [Deno's standard testing framework](https://docs.deno.com/runtime/manual/basics/testing/).
 - `test:node`:

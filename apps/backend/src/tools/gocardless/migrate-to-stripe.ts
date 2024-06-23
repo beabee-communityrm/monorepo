@@ -1,23 +1,15 @@
-import "module-alias/register";
-
 import { PaymentMethod, PaymentStatus } from "@beabee/beabee-common";
 import { parse } from "csv-parse";
 import { add, startOfDay } from "date-fns";
 import Stripe from "stripe";
 import { Equal, In } from "typeorm";
 
-import { createQueryBuilder, getRepository } from "@core/database";
-import { runApp } from "@core/server";
-import { stripe } from "@core/lib/stripe";
-import { stripeTypeToPaymentMethod } from "@core/utils/payment/stripe";
+import { database, stripe, stripeUtils, paymentService } from "@beabee/core";
+import { runApp } from "#express";
 
-import PaymentService from "@core/services/PaymentService";
+import { Contact, Payment, ContactContribution } from "@beabee/models";
 
-import Contact from "@models/Contact";
-import Payment from "@models/Payment";
-import ContactContribution from "@models/ContactContribution";
-
-import config from "@config";
+import { config } from "@beabee/config";
 
 interface MigrationRow {
   old_customer_id: string;
@@ -70,7 +62,8 @@ runApp(async () => {
 
   const migrationData = await loadMigrationData();
 
-  const contacts = await createQueryBuilder(Contact, "contact")
+  const contacts = await database
+    .createQueryBuilder(Contact, "contact")
     // Only select those that are't renewing in the next 5 days
     .innerJoinAndSelect(
       "contact.roles",
@@ -89,7 +82,7 @@ runApp(async () => {
 
   console.log("Found", contacts.length, "contacts");
 
-  const payments = await getRepository(Payment).find({
+  const payments = await database.getRepository(Payment).find({
     where: {
       contactId: In(contacts.map((c) => c.id)),
       status: Equal(PaymentStatus.Pending)
@@ -138,14 +131,14 @@ runApp(async () => {
 
       if (isDangerMode) {
         // Cancel the GoCardless contribution
-        await PaymentService.cancelContribution(contact);
+        await paymentService.cancelContribution(contact);
 
         // Update the contribution data to point to the new Stripe customer
         // We do this directly rather than using updatePaymentMethod as it's not
         // meant for updating payment methods that are already associated with
         // the customer in Stripe
-        await getRepository(ContactContribution).update(contact.id, {
-          method: stripeTypeToPaymentMethod(migrationRow.type),
+        await database.getRepository(ContactContribution).update(contact.id, {
+          method: stripeUtils.stripeTypeToPaymentMethod(migrationRow.type),
           customerId: migrationRow.customer_id,
           mandateId: migrationRow.source_id,
           subscriptionId: null,
@@ -160,7 +153,7 @@ runApp(async () => {
         });
 
         // Recreate the contribution
-        await PaymentService.updateContribution(contact, {
+        await paymentService.updateContribution(contact, {
           monthlyAmount: contact.contributionMonthlyAmount,
           period: contact.contributionPeriod,
           payFee: false,

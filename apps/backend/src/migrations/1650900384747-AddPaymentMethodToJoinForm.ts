@@ -1,4 +1,4 @@
-import { addThenSetNotNull } from "@core/utils/db";
+import { addThenSetNotNull } from "@beabee/core";
 import { MigrationInterface, QueryRunner } from "typeorm";
 
 export class AddPaymentMethodToJoinForm1650900384747

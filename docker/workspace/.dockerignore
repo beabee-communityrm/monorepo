@@ -1,0 +1,9 @@
+**/node_modules
+**/dist
+**/.env
+**/.vscode/
+**/Dockerfile
+**/README.md
+node_modules/
+.vscode/
+README.md

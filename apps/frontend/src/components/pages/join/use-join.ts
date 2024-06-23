@@ -2,12 +2,11 @@ import {
   calcPaymentFee,
   ContributionPeriod,
   PaymentMethod,
+  type ContentPaymentData,
 } from '@beabee/beabee-common';
 import { reactive, computed, type Ref } from 'vue';
 
 import i18n from '@lib/i18n';
-
-import type { ContentPaymentData } from '@type';
 
 const { n, t } = i18n.global;
 

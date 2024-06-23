@@ -232,7 +232,7 @@ import {
   fetchContactMfa,
   deleteContactMfa,
 } from '@utils/api/contact-mfa';
-import { CONTACT_MFA_TYPE } from '@enums/contact-mfa-type';
+import { CONTACT_MFA_TYPE, GetContactWith } from '@beabee/beabee-common';
 import { isRequestError } from '@utils/api/index';
 import { LOGIN_CODES } from '@enums/login-codes';
 
@@ -586,7 +586,7 @@ const validationStepsDone = computed(() => {
 watch(
   toRef(props, 'contactId'),
   async (contactId) => {
-    const contact = await fetchContact(contactId, ['profile']);
+    const contact = await fetchContact(contactId, [GetContactWith.Profile]);
     totpIdentity.value.issuer =
       generalContent.value.organisationName || 'beabee';
     totpIdentity.value.label = contact.email;

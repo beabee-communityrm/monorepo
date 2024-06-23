@@ -127,7 +127,7 @@ import {
   faHourglassEnd,
 } from '@fortawesome/free-solid-svg-icons';
 
-import type { GetCalloutDataWith } from '@type';
+import type { GetCalloutDataWith } from '@beabee/beabee-common';
 
 const props = defineProps<{
   callout: GetCalloutDataWith<'form' | 'responseCount'>;

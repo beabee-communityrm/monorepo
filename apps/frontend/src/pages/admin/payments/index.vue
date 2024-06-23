@@ -68,7 +68,10 @@ import AppFilterGrid from '@components/AppFilterGrid.vue';
 
 import { addBreadcrumb } from '@store/breadcrumb';
 
-import type { GetPaymentDataWith, GetPaymentsQuery } from '@type';
+import type {
+  GetPaymentDataWith,
+  GetPaymentsQuery,
+} from '@beabee/beabee-common';
 
 const { t, n } = useI18n();
 

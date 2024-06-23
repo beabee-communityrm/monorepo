@@ -121,7 +121,10 @@ import { fetchContent, updateContent } from '@utils/api/content';
 
 import { generalContent } from '@store';
 
-import type { ContentJoinData, ContentPaymentData } from '@type';
+import type {
+  ContentJoinData,
+  ContentPaymentData,
+} from '@beabee/beabee-common';
 
 const joinContent = ref<ContentJoinData>();
 const paymentContent = ref<ContentPaymentData>();

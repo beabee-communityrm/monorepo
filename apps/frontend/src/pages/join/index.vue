@@ -77,7 +77,10 @@ import { signUp, completeUrl } from '@utils/api/signup';
 
 import { generalContent, isEmbed } from '@store';
 
-import type { ContentJoinData, ContentPaymentData } from '@type';
+import type {
+  ContentJoinData,
+  ContentPaymentData,
+} from '@beabee/beabee-common';
 
 const { t } = useI18n();
 

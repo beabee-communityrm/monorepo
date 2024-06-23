@@ -1,10 +1,9 @@
 import { ParamsDictionary } from "express-serve-static-core";
 
-import ApiKey from "@models/ApiKey";
-import { CalloutResponseAnswersSlide } from "@models/CalloutResponse";
-import Contact from "@models/Contact";
+import ApiKey from "@beabee/models/ApiKey";
+import { CalloutResponseAnswersSlide, Contact } from "@beabee/models";
 
-import { AuthInfo as AuthInfo2 } from "@type/auth-info";
+import { AuthInfo as AuthInfo2 } from "@beabee/beabee-common";
 
 declare global {
   type HTMLElement = never;

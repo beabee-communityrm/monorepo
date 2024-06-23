@@ -6,9 +6,12 @@ import type {
   CreateCalloutResponseCommentData,
   GetCalloutResponseCommentData,
   GetCalloutResponseCommentsQuery,
+} from '@type';
+
+import type {
   Serial,
   UpdateCalloutResponseCommentData,
-} from '@type';
+} from '@beabee/beabee-common';
 
 export async function fetchCalloutResponseComments(
   query: GetCalloutResponseCommentsQuery

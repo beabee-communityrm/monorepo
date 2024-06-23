@@ -78,7 +78,7 @@ import { createResponse } from '@utils/api/callout';
 import { isRequestError } from '@utils/api';
 import { getDecisionComponent } from '@utils/callouts';
 
-import type { GetCalloutDataWith } from '@type';
+import type { GetCalloutDataWith } from '@beabee/beabee-common';
 import CalloutFormCaptcha from './CalloutFormCaptcha.vue';
 import { requiredIf } from '@vuelidate/validators';
 

@@ -67,7 +67,7 @@ import { createSegment, updateSegment } from '@utils/api/segments';
 
 import { addNotification } from '@store/notifications';
 
-import type { GetSegmentData, GetSegmentDataWith } from '@type';
+import type { GetSegmentData, GetSegmentDataWith } from '@beabee/beabee-common';
 
 const emit = defineEmits(['saved']);
 const props = defineProps<{

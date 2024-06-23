@@ -4,12 +4,12 @@ import { instance } from '.';
 
 import { RESET_SECURITY_FLOW_TYPE } from '@enums/reset-security-flow-type';
 
+import type { CreateResetPasswordData, CreateResetDeviceData } from '@type';
+
 import type {
-  CreateResetPasswordData,
   UpdateResetPasswordData,
-  CreateResetDeviceData,
   UpdateResetDeviceData,
-} from '@type';
+} from '@beabee/beabee-common';
 
 /**
  * Starts the reset password flow.

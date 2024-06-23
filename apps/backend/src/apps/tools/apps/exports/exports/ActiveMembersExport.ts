@@ -1,10 +1,8 @@
 import { Brackets, SelectQueryBuilder } from "typeorm";
 
-import { createQueryBuilder } from "@core/database";
-import { Param } from "@core/utils/params";
+import { database, Param } from "@beabee/core";
 
-import ContactContribution from "@models/ContactContribution";
-import Contact from "@models/Contact";
+import { ContactContribution, Contact } from "@beabee/models";
 
 import BaseExport, { ExportResult } from "./BaseExport";
 
@@ -25,7 +23,7 @@ export default class ActiveMembersExport extends BaseExport<Contact> {
   }
 
   protected get query(): SelectQueryBuilder<Contact> {
-    return createQueryBuilder(Contact, "m").orderBy({
+    return database.createQueryBuilder(Contact, "m").orderBy({
       firstname: "ASC",
       lastname: "ASC"
     });

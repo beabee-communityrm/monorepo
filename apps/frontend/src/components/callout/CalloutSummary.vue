@@ -51,7 +51,7 @@ import ItemDateRange from '@components/item/ItemDateRange.vue';
 import AppSubHeading from '@components/AppSubHeading.vue';
 import AppButton from '@components/button/AppButton.vue';
 
-import type { GetCalloutDataWith } from '@type';
+import type { GetCalloutDataWith } from '@beabee/beabee-common';
 
 const { t } = useI18n();
 

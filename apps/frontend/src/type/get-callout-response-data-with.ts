@@ -7,7 +7,7 @@ import type {
   GetCalloutData,
   GetCalloutResponseCommentData,
   GetCalloutResponseData,
-} from '@type';
+} from '@beabee/beabee-common';
 
 export type GetCalloutResponseDataWith<With extends GetCalloutResponseWith> =
   GetCalloutResponseData &

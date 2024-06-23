@@ -1,14 +1,17 @@
 # version: "3.4"
 
 x-base-app: &base-app
-  build:
-    context: ../..
-    dockerfile: ./apps/backend/Dockerfile
-    target: app
+  image: beabee/beabee:local
   volumes:
-    - ./built:/opt/apps/backend/built
+    # App itself
+    - ./dist:/opt/apps/backend/dist
+    # Packages
     - ../../packages/common/dist:/opt/packages/common/dist
-    - ./src/migrations:/opt/apps/backend/src/migrations
+    - ../../packages/config/dist:/opt/packages/config/dist
+    - ../../packages/core/dist:/opt/packages/core/dist
+    - ../../packages/locales/dist:/opt/packages/locales/dist
+    - ../../packages/models/dist:/opt/packages/models/dist
+    - ../../packages/task-runner/dist:/opt/packages/task-runner/dist
   env_file:
     - .env
   environment:
@@ -35,11 +38,12 @@ services:
 
   api_app:
     <<: *base-app
-    command: node ./built/api/app.js
+    command: yarn start:api:prod
 
   webhook_app:
     <<: *base-app
-    command: node ./built/webhooks/app.js
+    working_dir: /opt/apps/backend
+    command: yarn start:webhooks:prod
 
   img_upload_app:
     image: beabee/pictshare:v0.1.1
@@ -53,19 +57,60 @@ services:
   cron:
     <<: *base-app
     user: root
-    command: "crond -f -d 7"
+    command: crond -f -d 7
+    # debian: command: "cron -f"
     init: true
 
   router:
-    build:
-      context: ../..
-      dockerfile: ./apps/backend/Dockerfile
-      target: router
+    image: beabee/router:local
     volumes:
-      - ./built/static:/opt/built/static:ro
+      - ./dist/static:/opt/dist/static:ro
     ports:
       - ${MAIN_PORT}:80
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - 6379:6379
+    volumes:
+      - redis_data:/data
+
+  task-runner-dashboard:
+    # build:
+    #   context: ../..
+    #   dockerfile: ./apps/task-runner-dashboard/Dockerfile
+    image: beabee/task-runner-dashboard:local
+    environment:
+      TASK_RUNNER_DASHBOARD_PORT: 3004
+      TASK_RUNNER_REDIS_HOST: redis
+      TASK_RUNNER_REDIS_PORT: 6379
+      TASK_RUNNER_DASHBOARD_ROUTE_PREFIX: /
+    ports:
+      - 3004:3004
+    volumes:
+      # App itself
+      - ../../apps/task-runner-dashboard/dist:/opt/apps/task-runner-dashboard/dist
+
+  task-runner-worker:
+    # build:
+    #   context: ../..
+    #   dockerfile: ./apps/task-runner-worker/Dockerfile
+    image: beabee/task-runner-worker:local
+    env_file:
+      - .env
+    ports:
+      - 3005:3005
+    volumes:
+      # App itself
+      - ../../apps/task-runner-worker/dist:/opt/apps/task-runner-worker/dist
+      # Packages (excluded from the bundle)
+      - ../../packages/common/dist:/opt/packages/common/dist
+      - ../../packages/config/dist:/opt/packages/config/dist
+      - ../../packages/core/dist:/opt/packages/core/dist
+      - ../../packages/locales/dist:/opt/packages/locales/dist
+      - ../../packages/models/dist:/opt/packages/models/dist
 
 volumes:
   db_data:
   upload_data:
+  redis_data:

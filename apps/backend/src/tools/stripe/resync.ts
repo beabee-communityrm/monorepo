@@ -1,14 +1,9 @@
-import "module-alias/register";
-
 import { PaymentMethod } from "@beabee/beabee-common";
 import { In } from "typeorm";
 
-import { getRepository } from "@core/database";
-import { runApp } from "@core/server";
-import { stripe } from "@core/lib/stripe";
-import ContactsService from "@core/services/ContactsService";
-
-import ContactContribution from "@models/ContactContribution";
+import { database, stripe, contactsService } from "@beabee/core";
+import { runApp } from "#express";
+import { ContactContribution } from "@beabee/models";
 
 import {
   handleInvoicePaid,
@@ -32,7 +27,7 @@ async function* fetchInvoices(customerId: string) {
 }
 
 runApp(async () => {
-  const contributions = await getRepository(ContactContribution).find({
+  const contributions = await database.getRepository(ContactContribution).find({
     where: {
       method: In([
         PaymentMethod.StripeBACS,
@@ -68,7 +63,7 @@ runApp(async () => {
           );
           contribution.subscriptionId = null;
           if (isDangerMode) {
-            await ContactsService.revokeContactRole(
+            await contactsService.revokeContactRole(
               contribution.contact,
               "member"
             );
@@ -123,7 +118,7 @@ runApp(async () => {
     }
 
     if (isDangerMode) {
-      await getRepository(ContactContribution).save(contribution);
+      await database.getRepository(ContactContribution).save(contribution);
     } else {
       console.log(contribution.cancelledAt, contribution);
     }

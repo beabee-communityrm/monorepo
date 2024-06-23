@@ -2,7 +2,8 @@ import { computed, type Raw, type Component } from 'vue';
 import i18n from '../../../../lib/i18n';
 import { type AppStepperStep } from '../../../../type/app-stepper-step';
 
-import type { CalloutMapSchema, LocaleProp } from '@type';
+import type { LocaleProp } from '@type';
+import type { CalloutMapSchema } from '@beabee/beabee-common';
 import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
 
 const { t } = i18n.global;

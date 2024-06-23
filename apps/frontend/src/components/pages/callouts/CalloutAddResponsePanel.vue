@@ -25,7 +25,7 @@ import { ref, toRef, watch } from 'vue';
 import CalloutSidePanel from './CalloutSidePanel.vue';
 import CalloutThanksBox from './CalloutThanksBox.vue';
 
-import type { GetCalloutDataWith } from '@type';
+import type { GetCalloutDataWith } from '@beabee/beabee-common';
 
 defineEmits<(e: 'close') => void>();
 const props = defineProps<{

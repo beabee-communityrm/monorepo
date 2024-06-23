@@ -1,9 +1,9 @@
-import type { CalloutResponseAnswersSlide } from "./index.ts";
+import type { CalloutResponseAnswers } from "./index.ts";
 
 export interface CreateCalloutResponseData {
   guestName?: string;
   guestEmail?: string;
-  answers: CalloutResponseAnswersSlide;
+  answers: CalloutResponseAnswers;
   bucket?: string;
   tags?: string[];
   assigneeId?: string | null;

@@ -1,0 +1,15 @@
+{
+  "name": "@beabee/workspace",
+  "version": "0.16.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "docker:build:latest": "docker build --build-arg REVISION=$(git rev-parse --short HEAD) --build-arg VERSION=latest -t beabee/workspace:latest -f ./Dockerfile ../..",
+    "docker:build:local": "docker build --build-arg REVISION=$(git rev-parse --short HEAD) --build-arg VERSION=local -t beabee/workspace:local -f ./Dockerfile ../..",
+    "docker:push:latest": "docker push beabee/workspace:latest",
+    "docker:push:dev": "docker push beabee/workspace:dev"
+  },
+  "devDependencies": {
+    "@beabee/deno-node": "workspace:^"
+  }
+}

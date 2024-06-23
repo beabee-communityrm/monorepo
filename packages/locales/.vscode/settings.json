@@ -1,0 +1,12 @@
+{
+  "prettier.enable": false,
+  "eslint.enable": false,
+  "deno.enable": true,
+  "deno.lint": true,
+  "deno.unstable": true,
+  "deno.cacheOnSave": true,
+  "deno.disablePaths": ["./dist", "./test/node", "./node_modules"],
+  "deno.config": "./deno.jsonc",
+  "editor.defaultFormatter": "denoland.vscode-deno",
+  "editor.formatOnSave": true
+}

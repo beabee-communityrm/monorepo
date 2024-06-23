@@ -1,6 +1,5 @@
 import {
   Authorized,
-  Body,
   Get,
   JsonController,
   Params,
@@ -8,7 +7,16 @@ import {
   BadRequestError
 } from "routing-controllers";
 
-import PartialBody from "@api/decorators/PartialBody";
+import {
+  optionsService,
+  stripeTaxRateUpdateOrCreateDefault
+} from "@beabee/core";
+
+import { config } from "@beabee/config";
+
+import { TaskRunnerQueueService } from "@beabee/task-runner";
+
+import PartialBody from "#api/decorators/PartialBody";
 import {
   GetContentContactsDto,
   GetContentDto,
@@ -20,11 +28,10 @@ import {
   GetContentShareDto,
   GetContentPaymentDto,
   GetContentTelegramDto
-} from "@api/dto";
-import { ContentParams } from "@api/params/ContentParams";
-import ContentTransformer from "@api/transformers/ContentTransformer";
-import { stripeTaxRateUpdateOrCreateDefault } from "@core/lib/stripe";
-import OptionsService from "@core/services/OptionsService";
+} from "#api/dto";
+import { ContentParams } from "#api/params/ContentParams";
+import ContentTransformer from "#api/transformers/ContentTransformer";
+import currentLocale from "#locale";
 
 @JsonController("/content")
 export class ContentController {
@@ -112,9 +119,26 @@ export class ContentController {
         active: data.taxRateEnabled,
         percentage: data.taxRate
       },
-      OptionsService.getText("tax-rate-stripe-default-id")
+      currentLocale(),
+      optionsService.getText("tax-rate-stripe-default-id")
     );
-    await OptionsService.set("tax-rate-stripe-default-id", taxRateObj.id);
+
+    const queue = new TaskRunnerQueueService({
+      connection: {
+        host: config.taskRunner.redis.host,
+        port: config.taskRunner.redis.port
+      }
+    }).get("stripeSubscription");
+
+    queue
+      .add("update", {
+        taxRateId: taxRateObj.id
+      })
+      .then((job) => {
+        console.debug("job done", job);
+      });
+
+    await optionsService.set("tax-rate-stripe-default-id", taxRateObj.id);
 
     await ContentTransformer.updateOne("payment", data);
     return ContentTransformer.fetchOne("payment");

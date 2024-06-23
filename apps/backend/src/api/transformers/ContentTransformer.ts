@@ -1,9 +1,7 @@
 import { plainToInstance } from "class-transformer";
 import { ContentId, ContentData } from "@beabee/beabee-common";
-import { createQueryBuilder, getRepository } from "@core/database";
-import { getEmailFooter } from "@core/utils/email";
+import { database, getEmailFooter, optionsService } from "@beabee/core";
 
-import OptionsService, { OptionKey } from "@core/services/OptionsService";
 import {
   GetContentContactsDto,
   GetContentDto,
@@ -15,11 +13,12 @@ import {
   GetContentShareDto,
   GetContentPaymentDto,
   GetContentTelegramDto
-} from "@api/dto/index";
+} from "#api/dto/index";
 
-import Content from "@models/Content";
+import { Content } from "@beabee/models";
 
-import config from "@config";
+import { config, OptionKey } from "@beabee/config";
+import currentLocale from "#locale";
 
 class ContentTransformer {
   convert<Id extends ContentId>(
@@ -42,7 +41,7 @@ class ContentTransformer {
   }
 
   async fetchOne<Id extends ContentId>(id: Id): Promise<GetContentDto<Id>> {
-    const content = await getRepository(Content).findOneBy({ id });
+    const content = await database.getRepository(Content).findOneBy({ id });
 
     const ret: Record<string, unknown> = {};
 
@@ -52,7 +51,7 @@ class ContentTransformer {
           ret[key] = content?.data[key] || value[1];
           break;
         case "option":
-          ret[key] = OptionsService[optTypeGetter[value[2]]](value[1]);
+          ret[key] = optionsService[optTypeGetter[value[2]]](value[1]);
           break;
         case "readonly":
           ret[key] = value[1]();
@@ -91,10 +90,11 @@ class ContentTransformer {
       }
     }
 
-    await OptionsService.set(optionUpdates);
+    await optionsService.set(optionUpdates);
 
     // Save the rest
-    await createQueryBuilder()
+    await database
+      .createQueryBuilder()
       .update(Content)
       .set({
         data: () => '"data" || :data::jsonb'
@@ -149,7 +149,7 @@ const contentData = {
     manualPaymentSources: ["option", "available-manual-payment-sources", "list"]
   }),
   email: withValue<"email">({
-    footer: ["readonly", getEmailFooter],
+    footer: ["readonly", () => getEmailFooter(currentLocale())],
     supportEmail: ["option", "support-email", "text"],
     supportEmailName: ["option", "support-email-from", "text"]
   }),

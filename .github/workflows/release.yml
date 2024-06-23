@@ -1,0 +1,41 @@
+name: Release Workspace
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  check:
+    name: Check workspacec
+    uses: ./.github/workflows/check.yml
+
+  build-push:
+    name: Deno and Node build and push
+    uses: ./.github/workflows/build-push.yml
+    needs: ['check']
+    secrets: inherit
+
+  release:
+    name: Release Workspace
+    runs-on: ubuntu-latest
+    needs: [build-push]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: beabee-communityrm/hive-deploy-stack
+          ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - run: |
+          git config --global user.name "Deploy bot"
+          git config --global user.email "<>"
+
+          echo -n ${{ needs.build-push.outputs.version }} > FRONTEND_VERSION
+          echo -n ${{ needs.build-push.outputs.version }} > API_VERSION
+          ./update.sh
+
+          git add FRONTEND_VERSION docker-compose.yml
+          if ! git diff --quiet --cached; then
+            git commit -m "Deploy ${{ needs.build-push.outputs.version }}"
+            git push
+          fi

@@ -8,24 +8,24 @@ import {
 } from "@beabee/beabee-common";
 import { TransformPlainToInstance } from "class-transformer";
 
-import { getRepository } from "@core/database";
+import {
+  database,
+  NotFoundError,
+  AuthInfo,
+  CalloutResponseViewSchema
+} from "@beabee/core";
 
 import {
   GetCalloutResponseMapDto,
   GetCalloutResponseMapOptsDto,
   ListCalloutResponseMapDto,
   ListCalloutResponsesDto
-} from "@api/dto/CalloutResponseDto";
-import { PaginatedDto } from "@api/dto/PaginatedDto";
-import NotFoundError from "@api/errors/NotFoundError";
-import { BaseCalloutResponseTransformer } from "@api/transformers/BaseCalloutResponseTransformer";
-import { mergeRules } from "@api/utils/rules";
+} from "#api/dto/CalloutResponseDto";
+import { PaginatedDto } from "#api/dto/PaginatedDto";
+import { BaseCalloutResponseTransformer } from "#api/transformers/BaseCalloutResponseTransformer";
+import { mergeRules } from "#api/utils/rules";
 
-import Callout from "@models/Callout";
-import CalloutResponse from "@models/CalloutResponse";
-
-import { AuthInfo } from "@type/auth-info";
-import { CalloutResponseViewSchema } from "@type/callout-response-view-schema";
+import { Callout, CalloutResponse } from "@beabee/models";
 
 class CalloutResponseMapTransformer extends BaseCalloutResponseTransformer<
   GetCalloutResponseMapDto,
@@ -91,11 +91,13 @@ class CalloutResponseMapTransformer extends BaseCalloutResponseTransformer<
         // Only show results from relevant buckets
         {
           condition: "OR",
-          rules: query.callout.responseViewSchema.buckets.map((bucket) => ({
-            field: "bucket",
-            operator: "equal",
-            value: [bucket]
-          }))
+          rules: query.callout.responseViewSchema.buckets.map(
+            (bucket: string) => ({
+              field: "bucket",
+              operator: "equal",
+              value: [bucket]
+            })
+          )
         },
         // Only load responses for the given callout
         {
@@ -112,7 +114,9 @@ class CalloutResponseMapTransformer extends BaseCalloutResponseTransformer<
     calloutId: string,
     query: ListCalloutResponsesDto
   ): Promise<PaginatedDto<GetCalloutResponseMapDto>> {
-    const callout = await getRepository(Callout).findOneBy({ id: calloutId });
+    const callout = await database
+      .getRepository(Callout)
+      .findOneBy({ id: calloutId });
     if (!callout?.responseViewSchema) {
       throw new NotFoundError();
     }

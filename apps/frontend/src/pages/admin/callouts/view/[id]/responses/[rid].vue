@@ -197,7 +197,7 @@ import type {
   GetCalloutResponseData,
   GetCalloutResponseDataWith,
   UpdateCalloutResponseData,
-} from '@type';
+} from '@beabee/beabee-common';
 
 const props = defineProps<{
   rid: string;

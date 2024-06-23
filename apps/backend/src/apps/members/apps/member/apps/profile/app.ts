@@ -1,14 +1,12 @@
 import express from "express";
 
-import { hasSchema } from "@core/middleware";
-import { wrapAsync } from "@core/utils";
+import { hasSchema } from "#express";
 
-import ContactsService from "@core/services/ContactsService";
+import { wrapAsync, contactsService, DuplicateEmailError } from "@beabee/core";
 
-import Contact from "@models/Contact";
+import { Contact } from "@beabee/models";
 
 import { updateProfileSchema } from "./schemas.json";
-import DuplicateEmailError from "@api/errors/DuplicateEmailError";
 
 const app = express();
 
@@ -37,12 +35,12 @@ app.post(
     const contact = req.model as Contact;
 
     try {
-      await ContactsService.updateContact(contact, {
+      await contactsService.updateContact(contact, {
         email,
         firstname,
         lastname
       });
-      await ContactsService.updateContactProfile(contact, {
+      await contactsService.updateContactProfile(contact, {
         deliveryOptIn: delivery_optin,
         deliveryAddress: delivery_optin
           ? {

@@ -5,6 +5,10 @@
       "path": "../",
     },
     {
+      "name": "apps/cli",
+      "path": "../apps/cli",
+    },
+    {
       "name": "apps/backend",
       "path": "../apps/backend",
     },
@@ -13,27 +17,72 @@
       "path": "../apps/frontend",
     },
     {
+      "name": "apps/task-runner-dashboard",
+      "path": "../apps/task-runner-dashboard",
+    },
+    {
+      "name": "apps/task-runner-worker",
+      "path": "../apps/task-runner-worker",
+    },
+    {
       "name": "packages/common",
       "path": "../packages/common",
+    },
+    {
+      "name": "packages/task-runner",
+      "path": "../packages/task-runner",
+    },
+    {
+      "name": "packages/locales",
+      "path": "../packages/locales",
+    },
+    {
+      "name": "packages/core",
+      "path": "../packages/core",
+    },
+    {
+      "name": "packages/models",
+      "path": "../packages/models",
+    },
+    {
+      "name": "packages/config",
+      "path": "../packages/config",
+    },
+    {
+      "name": "docker/deno-node",
+      "path": "../docker/deno-node",
+    },
+    {
+      "name": "docker/workspace",
+      "path": "../docker/workspace",
     },
   ],
   "settings": {
     "typescript.tsdk": "node_modules/typescript/lib",
     "cSpell.words": [
       "beabee",
+      "bullmq",
       "Callouts",
+      "captchafox",
       "fortawesome",
+      "muhammara",
       "otpauth",
       "outdir",
       "qrcode",
+      "quickflash",
       "TOTP",
-      "Vuelidate"
+      "Vuelidate",
+      "Beabee",
+      "Deno"
     ],
     "deno.disablePaths": [
       "./node_modules",
       "./apps/backend",
       "./apps/frontend",
-      "./apps/task-runner-dashboard"
+      "./apps/task-runner-dashboard",
+      "./apps/task-runner-worker",
+      "./packages/core",
+      "./packages/models"
     ]
   },
 }

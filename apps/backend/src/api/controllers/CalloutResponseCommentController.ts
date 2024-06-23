@@ -13,24 +13,21 @@ import {
   QueryParams
 } from "routing-controllers";
 
-import { getRepository } from "@core/database";
+import { database, AuthInfo } from "@beabee/core";
 
-import { CurrentAuth } from "@api/decorators/CurrentAuth";
-import PartialBody from "@api/decorators/PartialBody";
+import { CurrentAuth } from "#api/decorators/CurrentAuth";
+import PartialBody from "#api/decorators/PartialBody";
 import {
   CreateCalloutResponseCommentDto,
   GetCalloutResponseCommentDto,
   ListCalloutResponseCommentsDto
-} from "@api/dto/CalloutResponseCommentDto";
-import { PaginatedDto } from "@api/dto/PaginatedDto";
-import { UUIDParams } from "@api/params/UUIDParams";
+} from "#api/dto/CalloutResponseCommentDto";
+import { PaginatedDto } from "#api/dto/PaginatedDto";
+import { UUIDParams } from "#api/params/UUIDParams";
 
-import CalloutResponseCommentTransformer from "@api/transformers/CalloutResponseCommentTransformer";
+import CalloutResponseCommentTransformer from "#api/transformers/CalloutResponseCommentTransformer";
 
-import CalloutResponseComment from "@models/CalloutResponseComment";
-import Contact from "@models/Contact";
-
-import { AuthInfo } from "@type/auth-info";
+import { CalloutResponseComment, Contact } from "@beabee/models";
 
 @JsonController("/callout-response-comments")
 @Authorized("admin")
@@ -40,13 +37,13 @@ export class CalloutResponseCommentController {
     @Body() data: CreateCalloutResponseCommentDto,
     @CurrentUser({ required: true }) contact: Contact
   ): Promise<GetCalloutResponseCommentDto> {
-    const comment: CalloutResponseComment = await getRepository(
-      CalloutResponseComment
-    ).save({
-      contact,
-      text: data.text,
-      response: { id: data.responseId }
-    });
+    const comment: CalloutResponseComment = await database
+      .getRepository(CalloutResponseComment)
+      .save({
+        contact,
+        text: data.text,
+        response: { id: data.responseId }
+      });
     return CalloutResponseCommentTransformer.convert(comment);
   }
 
@@ -72,7 +69,7 @@ export class CalloutResponseCommentController {
     @Params() { id }: UUIDParams,
     @PartialBody() data: CreateCalloutResponseCommentDto
   ): Promise<GetCalloutResponseCommentDto | undefined> {
-    await getRepository(CalloutResponseComment).update(id, data);
+    await database.getRepository(CalloutResponseComment).update(id, data);
     return await CalloutResponseCommentTransformer.fetchOneById(auth, id);
   }
 
@@ -81,7 +78,9 @@ export class CalloutResponseCommentController {
   async deleteCalloutResponseComment(
     @Params() { id }: UUIDParams
   ): Promise<void> {
-    const result = await getRepository(CalloutResponseComment).delete(id);
+    const result = await database
+      .getRepository(CalloutResponseComment)
+      .delete(id);
     if (!result.affected) throw new NotFoundError();
   }
 }

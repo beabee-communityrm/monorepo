@@ -1,11 +1,10 @@
 import express from "express";
 import _ from "lodash";
 
-import { getRepository } from "@core/database";
-import { hasNewModel, hasSchema, isAdmin } from "@core/middleware";
-import { wrapAsync } from "@core/utils";
+import { database, wrapAsync } from "@beabee/core";
+import { hasNewModel, hasSchema, isAdmin } from "#express";
 
-import ReferralGift from "@models/ReferralGift";
+import { ReferralGift } from "@beabee/models";
 
 import { updateSchema } from "./schemas.json";
 
@@ -18,7 +17,7 @@ app.use(isAdmin);
 app.get(
   "/",
   wrapAsync(async (req, res) => {
-    const gifts = await getRepository(ReferralGift).find();
+    const gifts = await database.getRepository(ReferralGift).find();
     res.render("index", { gifts });
   })
 );
@@ -62,7 +61,7 @@ app.post(
   [hasSchema(updateSchema).orFlash, hasNewModel(ReferralGift, "name")],
   wrapAsync(async (req, res) => {
     const gift = req.model as ReferralGift;
-    const giftRepository = getRepository(ReferralGift);
+    const giftRepository = database.getRepository(ReferralGift);
     const data = req.body as UpdateSchema;
 
     switch (data.action) {

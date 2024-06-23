@@ -1,13 +1,9 @@
-import "module-alias/register";
-
 import { checkbox, input } from "@inquirer/prompts";
 
-import { getRepository } from "@core/database";
-import { runApp } from "@core/server";
+import { database, optionsService } from "@beabee/core";
+import { runApp } from "#express";
 
-import OptionsService from "@core/services/OptionsService";
-
-import Content from "@models/Content";
+import { Content } from "@beabee/models";
 
 function notEmpty(s: string) {
   return s.trim() !== "";
@@ -28,9 +24,9 @@ runApp(async () => {
     })
   };
 
-  await OptionsService.set("support-email", "support@" + answers.emailDomain);
+  await optionsService.set("support-email", "support@" + answers.emailDomain);
 
-  await getRepository(Content).update("join", {
+  await database.getRepository(Content).update("join", {
     data: () =>
       `jsonb_set(data, \'{paymentMethods}\', \'${JSON.stringify(
         answers.paymentProviders

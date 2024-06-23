@@ -1,0 +1,16 @@
+{
+  "include": ["./src"],
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "NodeNext",
+    "rootDir": "./src",
+    "declarationDir": "./dist/esm",
+    "outDir": "./dist/esm",
+    "moduleResolution": "NodeNext",
+    "declaration": true,
+    "isolatedModules": true,
+    "skipLibCheck": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true
+  }
+}

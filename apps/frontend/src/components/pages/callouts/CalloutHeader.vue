@@ -51,7 +51,7 @@
 
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n';
-import type { GetCalloutDataWith } from '@type';
+import type { GetCalloutDataWith } from '@beabee/beabee-common';
 import {
   faGlobe,
   faImages,

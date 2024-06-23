@@ -48,7 +48,7 @@ import AppHeading from '@components/AppHeading.vue';
 import { formatLocale } from '@utils/dates';
 import { fetchPayments } from '@utils/api/contact';
 
-import type { GetPaymentData, GetPaymentsQuery } from '@type';
+import type { GetPaymentData, GetPaymentsQuery } from '@beabee/beabee-common';
 
 const { t, n } = useI18n();
 

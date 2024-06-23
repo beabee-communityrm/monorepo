@@ -46,3 +46,11 @@ export function calcPaymentFee(
     ? 0
     : feeFn(feeable.amount);
 }
+
+export function getActualAmount(
+  amount: number,
+  period: ContributionPeriod,
+): number {
+  // TODO: fix this properly
+  return Math.round(amount * (period === ContributionPeriod.Annually ? 12 : 1));
+}

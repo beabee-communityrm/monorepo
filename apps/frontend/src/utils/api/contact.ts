@@ -4,6 +4,11 @@ import {
   type Paginated,
   PaymentMethod,
   type RoleType,
+  type ContactRoleData,
+  type UpdateContactRoleData,
+  type StartContributionData,
+  type UpdateContactData,
+  type GetContactWithType,
 } from '@beabee/beabee-common';
 
 import { deserializeDate, instance } from '.';
@@ -16,17 +21,12 @@ import type {
   GetContactData,
   GetContactDataWith,
   GetContactsQuery,
-  GetContactWith,
   GetPaymentData,
   GetPaymentsQuery,
-  ContactRoleData,
   PaymentFlowParams,
   Serial,
   SetContributionData,
-  StartContributionData,
-  UpdateContactData,
-  UpdateContactRoleData,
-} from '@type';
+} from '@beabee/beabee-common';
 
 // TODO: how to make this type safe?
 export function deserializeContact(data: any): any {
@@ -63,7 +63,7 @@ function deserializeContribution(
   };
 }
 
-export async function fetchContacts<With extends GetContactWith = void>(
+export async function fetchContacts<With extends GetContactWithType = void>(
   query: GetContactsQuery,
   _with?: readonly With[]
 ): Promise<Paginated<GetContactDataWith<With>>> {
@@ -87,7 +87,7 @@ export async function createContact(
   return deserializeContact(data);
 }
 
-export async function fetchContact<With extends GetContactWith = void>(
+export async function fetchContact<With extends GetContactWithType = void>(
   id: string,
   _with?: readonly With[]
 ): Promise<GetContactDataWith<With>> {

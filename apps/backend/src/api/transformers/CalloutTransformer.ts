@@ -13,26 +13,25 @@ import {
 } from "routing-controllers";
 import { SelectQueryBuilder } from "typeorm";
 
-import { createQueryBuilder } from "@core/database";
+import { database, AuthInfo, FilterHandlers } from "@beabee/core";
 
 import {
   GetCalloutWith,
   ListCalloutsDto,
   GetCalloutDto,
   GetCalloutOptsDto
-} from "@api/dto/CalloutDto";
-import { BaseTransformer } from "@api/transformers/BaseTransformer";
-import CalloutVariantTransformer from "@api/transformers/CalloutVariantTransformer";
-import { groupBy } from "@api/utils";
-import { mergeRules, statusFilterHandler } from "@api/utils/rules";
+} from "#api/dto/CalloutDto";
+import { BaseTransformer } from "#api/transformers/BaseTransformer";
+import CalloutVariantTransformer from "#api/transformers/CalloutVariantTransformer";
+import { groupBy } from "#api/utils";
+import { mergeRules, statusFilterHandler } from "#api/utils/rules";
 
-import Contact from "@models/Contact";
-import Callout from "@models/Callout";
-import CalloutResponse from "@models/CalloutResponse";
-import CalloutVariant from "@models/CalloutVariant";
-
-import { AuthInfo } from "@type/auth-info";
-import { FilterHandlers } from "@type/filter-handlers";
+import {
+  Contact,
+  Callout,
+  CalloutResponse,
+  CalloutVariant
+} from "@beabee/models";
 
 class CalloutTransformer extends BaseTransformer<
   Callout,
@@ -74,7 +73,8 @@ class CalloutTransformer extends BaseTransformer<
           }
 
           // TODO: deduplicate with hasAnswered
-          const subQb = createQueryBuilder()
+          const subQb = database
+            .createQueryBuilder()
             .subQuery()
             .select("cr.calloutId")
             .distinctOn(["cr.calloutId"])
@@ -237,10 +237,9 @@ class CalloutTransformer extends BaseTransformer<
         GetCalloutWith.VariantNames
       );
       if (withVariants || withVariantNames) {
-        const qb = createQueryBuilder(CalloutVariant, "cv").where(
-          "cv.calloutId IN (:...ids)",
-          { ids: calloutIds }
-        );
+        const qb = database
+          .createQueryBuilder(CalloutVariant, "cv")
+          .where("cv.calloutId IN (:...ids)", { ids: calloutIds });
 
         // Fetch minimal data if not requesting the variants
         if (!query.with?.includes(GetCalloutWith.Variants)) {
@@ -266,7 +265,8 @@ class CalloutTransformer extends BaseTransformer<
         auth?.entity instanceof Contact &&
         query.with?.includes(GetCalloutWith.HasAnswered)
       ) {
-        const answeredCallouts = await createQueryBuilder(CalloutResponse, "cr")
+        const answeredCallouts = await database
+          .createQueryBuilder(CalloutResponse, "cr")
           .select("cr.calloutId", "id")
           .distinctOn(["cr.calloutId"])
           .where("cr.calloutId IN (:...ids) AND cr.contactId = :id", {

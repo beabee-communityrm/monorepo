@@ -25,15 +25,15 @@ import {
   GetExportQuery,
   GetPaginatedQuery,
   GetPaginatedRuleGroup
-} from "@api/dto/BaseDto";
-import { GetContactDto } from "@api/dto/ContactDto";
-import { GetCalloutDto } from "@api/dto/CalloutDto";
-import { GetCalloutResponseCommentDto } from "@api/dto/CalloutResponseCommentDto";
-import { GetCalloutTagDto } from "@api/dto/CalloutTagDto";
+} from "#api/dto/BaseDto";
+import { GetContactDto } from "#api/dto/ContactDto";
+import { GetCalloutDto } from "#api/dto/CalloutDto";
+import { GetCalloutResponseCommentDto } from "#api/dto/CalloutResponseCommentDto";
+import { GetCalloutTagDto } from "#api/dto/CalloutTagDto";
 
-import Callout from "@models/Callout";
+import { Callout } from "@beabee/models";
 
-import { CalloutResponseViewSchema } from "@type/callout-response-view-schema";
+import { CalloutResponseViewSchema } from "@beabee/beabee-common";
 
 export interface BaseGetCalloutResponseOptsDto {
   callout?: Callout;

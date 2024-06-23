@@ -125,7 +125,10 @@ import { isRequestError } from '@utils/api';
 
 import { addNotification } from '@store/notifications';
 
-import type { ContentPaymentData, ContributionInfo } from '@type';
+import type {
+  ContentPaymentData,
+  ContributionInfo,
+} from '@beabee/beabee-common';
 
 const validation = useVuelidate();
 

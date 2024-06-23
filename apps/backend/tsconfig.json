@@ -14,17 +14,17 @@
     "useDefineForClassFields": false,
 
     "sourceMap": true,
-    "outDir": "./built",
+    "outDir": "./dist",
     "baseUrl": "./",
     "paths": {
-      "@core/*": ["./src/core/*"],
-      "@apps/*": ["./src/apps/*"],
-      "@api/*": ["./src/api/*"],
-      "@config": ["./src/config/config"],
-      "@locale": ["./src/locales/current"],
-      "@models/*": ["./src/models/*"],
-      "@type/*": ["./src/type/*"],
-      "@enums/*": ["./src/enums/*"]
+      "#api/utils": ["./src/api/utils/index.js"],
+      "#api/dto": ["./src/api/dto/index.js"],
+      "#api/*": ["./src/api/*"],
+      "#apps/*": ["./src/apps/*"],
+      "#locale": ["./src/locales/current.js"],
+      "#express/*": ["./src/express/*.js"],
+      "#express": ["./src/express/index.js"],
+      "#services": ["./src/services/index.js"]
     },
     "typeRoots": ["./src/typings", "./node_modules/@types/"]
   }

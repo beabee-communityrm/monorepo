@@ -2,11 +2,10 @@ import express from "express";
 import moment from "moment";
 import { Between } from "typeorm";
 
-import { getRepository } from "@core/database";
-import { isSuperAdmin } from "@core/middleware";
-import { wrapAsync } from "@core/utils";
+import { database, wrapAsync } from "@beabee/core";
+import { isSuperAdmin } from "#express";
 
-import Payment from "@models/Payment";
+import { Payment } from "@beabee/models";
 
 const app = express();
 
@@ -34,7 +33,7 @@ app.get(
     const end = start.clone().add(1, "month");
     const previous = start.clone().subtract(1, "month");
 
-    const payments = await getRepository(Payment).find({
+    const payments = await database.getRepository(Payment).find({
       where: {
         createdAt: Between(start.toDate(), end.toDate())
       },

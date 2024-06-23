@@ -5,6 +5,9 @@ import {
   type CalloutComponentInputSelectableRadioSchema,
   type GetCalloutSlideSchema,
   type SetCalloutSlideSchema,
+  type CalloutCaptcha,
+  type CalloutAccess,
+  type CalloutChannel,
 } from '@beabee/beabee-common';
 import { format } from 'date-fns';
 import type { CalloutStepsProps } from '@components/pages/admin/callouts/callouts.interface';
@@ -14,13 +17,13 @@ import type { FilterItem, FilterItems } from '@type';
 import env from '../env';
 import i18n from '@lib/i18n';
 
+import type { LocaleProp } from '@type/index';
 import type {
   CalloutVariantData,
   CalloutVariantNavigationData,
   CreateCalloutData,
   GetCalloutDataWith,
-  LocaleProp,
-} from '@type';
+} from '@beabee/beabee-common';
 import type {
   FormBuilderNavigation,
   FormBuilderSlide,
@@ -283,7 +286,7 @@ export function convertStepsToCallout(
   const variants = convertVariantsForCallout(steps);
 
   return {
-    slug: slug || null,
+    slug: slug || '',
     image: steps.titleAndImage.coverImageURL,
     formSchema: { slides },
     responseViewSchema: steps.settings.showResponses
@@ -314,16 +317,16 @@ export function convertStepsToCallout(
     allowUpdate:
       !steps.settings.multipleResponses && steps.settings.usersCanEditAnswers,
     hidden: !steps.settings.showOnUserDashboards,
-    captcha: steps.settings.requireCaptcha,
-    access:
-      steps.settings.whoCanTakePart === 'members'
-        ? 'member'
-        : steps.settings.allowAnonymousResponses === 'none'
-          ? 'guest'
-          : steps.settings.allowAnonymousResponses === 'guests'
-            ? 'anonymous'
-            : 'only-anonymous',
+    captcha: steps.settings.requireCaptcha as CalloutCaptcha,
+    access: (steps.settings.whoCanTakePart === 'members'
+      ? 'member'
+      : steps.settings.allowAnonymousResponses === 'none'
+        ? 'guest'
+        : steps.settings.allowAnonymousResponses === 'guests'
+          ? 'anonymous'
+          : 'only-anonymous') as CalloutAccess,
     variants,
+    channels: [] as CalloutChannel[],
   };
 }
 

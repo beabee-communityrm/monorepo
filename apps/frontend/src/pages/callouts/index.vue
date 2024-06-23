@@ -91,7 +91,7 @@ import type {
   GetCalloutData,
   GetCalloutDataWith,
   GetCalloutsQuery,
-} from '@type';
+} from '@beabee/beabee-common';
 
 const { t } = useI18n();
 

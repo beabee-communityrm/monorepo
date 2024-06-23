@@ -6,13 +6,24 @@ Welcome to the official Beabee Monorepo! This repository houses the most importa
 
 The Beabee Monorepo is organized into the following directories:
 
-- `apps/`
-
+- `apps/` Contains the applications.
   - `frontend/`: Contains the code for the frontend application.
   - `backend/`: Contains the code for the backend API.
+  - `task-runner-worker/`: Contains the code for the task runner worker.
+  - `task-runner-dashboard/`: Contains the code for the task runner dashboard.
+  - `cli/`: Contains the code for the CLI.
 
-- `packages/`
+- `packages/` Contains packages used by the applications.
   - `common/`: Contains shared code and utilities used by both the frontend and backend.
+  - `config/`: Contains the configuration for the application.
+  - `core/`: Contains the core code for the application.
+  - `locales/`: Contains the localization files for the application.
+  - `models/`: Contains the TypeORM database models for the application.
+  - `task-runner/`: Contains shared code for the task runner used by `task-runner-worker`, `task-runner-dashboard` and the `backend`.
+
+- `docker/`: Contains the Docker configurations.
+  - `deno-node/`: Contains the Docker configuration for the Deno + Node.js environment.
+  - `workspace/`: Contains the Docker configuration for the workspace builder to build everything in the monorepo and to copy them into the application containers.
 
 ## Development Setup
 
@@ -47,8 +58,13 @@ You need the following tools installed on your machine:
 3. Initialize and start the Docker containers:
 
    ```bash
-   yarn docker:build # You can also start the containers with yarn docker:start
+   # Build all docker images
+   yarn docker:build:local
+   # Build the docker-compose stack
+   yarn docker-compose:build
    ```
+
+   > You can also start the containers with `yarn docker:start:local`
 
 4. Run the development mode to watch for changes on all packages:
 

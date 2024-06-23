@@ -6,9 +6,7 @@ import {
   PaymentStatus
 } from "gocardless-nodejs/types/Types";
 
-import { log as mainLogger } from "@core/logging";
-import gocardless from "@core/lib/gocardless";
-import { wrapAsync } from "@core/utils";
+import { log as mainLogger, gocardless, wrapAsync } from "@beabee/core";
 import {
   updatePaymentStatus,
   updatePayment,

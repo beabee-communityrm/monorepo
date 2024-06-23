@@ -8,18 +8,19 @@ import {
 import { plainToInstance } from "class-transformer";
 import { ObjectLiteral, SelectQueryBuilder } from "typeorm";
 
-import { createQueryBuilder } from "@core/database";
+import {
+  database,
+  AuthInfo,
+  FilterHandlers,
+  NotFoundError,
+  InvalidRuleError,
+  UnauthorizedError
+} from "@beabee/core";
 
-import { PaginatedDto } from "@api/dto/PaginatedDto";
-import NotFoundError from "@api/errors/NotFoundError";
-import InvalidRuleError from "@api/errors/InvalidRuleError";
-import UnauthorizedError from "@api/errors/UnauthorizedError";
-import { convertRulesToWhereClause } from "@api/utils/rules";
+import { PaginatedDto } from "#api/dto/PaginatedDto";
+import { convertRulesToWhereClause } from "#api/utils/rules";
 
-import Contact from "@models/Contact";
-
-import { AuthInfo } from "@type/auth-info";
-import { FilterHandlers } from "@type/filter-handlers";
+import { Contact } from "@beabee/models";
 
 /**
  * Base transformer for querying and converting models to DTOs
@@ -155,7 +156,7 @@ export abstract class BaseTransformer<
     try {
       const ruleGroup = query.rules && validateRuleGroup(filters, query.rules);
 
-      const qb = createQueryBuilder(this.model, "item").offset(offset);
+      const qb = database.createQueryBuilder(this.model, "item").offset(offset);
 
       if (limit !== -1) {
         qb.limit(limit);

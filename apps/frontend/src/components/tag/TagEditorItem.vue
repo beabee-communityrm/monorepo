@@ -51,7 +51,10 @@ import AppButton from '../button/AppButton.vue';
 import AppButtonGroup from '../button/AppButtonGroup.vue';
 import TagEditorForm from './TagEditorForm.vue';
 
-import type { GetCalloutTagData, UpdateCalloutTagData } from '@type';
+import type {
+  GetCalloutTagData,
+  UpdateCalloutTagData,
+} from '@beabee/beabee-common';
 
 defineEmits<{
   (e: 'delete', id: string): void;

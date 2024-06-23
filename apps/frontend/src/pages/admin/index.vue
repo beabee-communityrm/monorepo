@@ -109,7 +109,11 @@ import { faChartLine } from '@fortawesome/free-solid-svg-icons';
 import env from '../../env';
 import AppTime from '@components/AppTime.vue';
 
-import type { GetCalloutDataWith, GetContactData, GetStatsData } from '@type';
+import type {
+  GetCalloutDataWith,
+  GetContactData,
+  GetStatsData,
+} from '@beabee/beabee-common';
 
 const { n, t } = useI18n();
 

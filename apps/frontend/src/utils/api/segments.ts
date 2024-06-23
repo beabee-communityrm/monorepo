@@ -7,7 +7,7 @@ import type {
   GetSegmentsQuery,
   Serial,
   UpdateSegmentData,
-} from '@type';
+} from '@beabee/beabee-common';
 
 export async function fetchSegments<With extends GetSegmentWith = void>(
   query?: GetSegmentsQuery,
