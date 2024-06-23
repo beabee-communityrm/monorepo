@@ -3,7 +3,7 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
-  PrimaryColumn
+  PrimaryColumn,
 } from "typeorm";
 import type { Contact } from "./Contact.js";
 import type { RoleType } from "@beabee/beabee-common";

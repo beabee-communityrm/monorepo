@@ -8,7 +8,7 @@
  * The script can optional load a second sheet to overwrite the main sheet, we add a new sheet for a
  * branch so changes for different features are kept separate.
  */
-import { join } from "https://deno.land/std@0.212.0/path/mod.ts"
+import { join } from "https://deno.land/std@0.212.0/path/mod.ts";
 import { I18nArguments } from "../types.ts";
 import { google } from "../debs.ts";
 
@@ -21,8 +21,12 @@ interface LocaleData {
 const cwd = Deno.cwd();
 
 function enhanceAnchorTags(htmlString: string) {
-  const regex = /<a\s+(?!.*\btarget="_blank"\b)(href="http(?:s)?:\/\/[^"]+")>/gi;
-  return htmlString.replace(regex, `<a $1 target="_blank" rel="noopener noreferrer">`);
+  const regex =
+    /<a\s+(?!.*\btarget="_blank"\b)(href="http(?:s)?:\/\/[^"]+")>/gi;
+  return htmlString.replace(
+    regex,
+    `<a $1 target="_blank" rel="noopener noreferrer">`,
+  );
 }
 
 const optHandlers = {
@@ -41,7 +45,11 @@ function processKeyData(keyOpts: string[], keyData: string) {
     return (
       keyOpts
         // Apply handlers
-        .reduce((data: string, opt: string) => optHandlers[opt as keyof typeof optHandlers](data), keyData || '')
+        .reduce(
+          (data: string, opt: string) =>
+            optHandlers[opt as keyof typeof optHandlers](data),
+          keyData || "",
+        )
         // Santize special i18n character
         .replace(/@/g, "{'@'}")
     );
@@ -49,17 +57,17 @@ function processKeyData(keyOpts: string[], keyData: string) {
 }
 
 async function loadSheet(name: string, authJsonFile: string) {
-  console.log('Loading sheet ' + name);
+  console.log("Loading sheet " + name);
 
   const auth = new google.auth.GoogleAuth({
     keyFile: join(cwd, authJsonFile),
-    scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
+    scopes: ["https://www.googleapis.com/auth/spreadsheets.readonly"],
   });
 
-  const sheets = google.sheets({ version: 'v4', auth } as any);
+  const sheets = google.sheets({ version: "v4", auth } as any);
 
   const resp = await sheets.spreadsheets.values.get({
-    spreadsheetId: '1l35DW5OMi-xM8HXek5Q1jOxsXScINqqpEvPWDlpBPX8',
+    spreadsheetId: "1l35DW5OMi-xM8HXek5Q1jOxsXScINqqpEvPWDlpBPX8",
     range: name,
   });
 
@@ -72,7 +80,9 @@ async function loadSheet(name: string, authJsonFile: string) {
   const rows = resp.data.values
     ?.slice(1)
     .map((row: string[]) =>
-      Object.fromEntries(headers.map((header: string, i: number) => [header, row[i]]))
+      Object.fromEntries(
+        headers.map((header: string, i: number) => [header, row[i]]),
+      )
     )
     .filter((row: Record<string, string>) => row.key);
 
@@ -81,7 +91,9 @@ async function loadSheet(name: string, authJsonFile: string) {
   }
 
   // Add locales to data
-  const locales = headers.filter((h: string) => h !== 'key' && !h.startsWith('!'));
+  const locales = headers.filter((h: string) =>
+    h !== "key" && !h.startsWith("!")
+  );
   for (const locale of locales) {
     if (!localeData[locale]) {
       localeData[locale] = {};
@@ -92,16 +104,18 @@ async function loadSheet(name: string, authJsonFile: string) {
   // Construct nested objects from a.b.c key paths
   for (const row of rows) {
     let isConfig = false;
-    if (row.key.startsWith('_')) {
+    if (row.key.startsWith("_")) {
       row.key = row.key.slice(1);
       isConfig = true;
     }
 
-    const keyParts = row.key.split('.');
-    const [lastKeyPart, ...keyOpts] = keyParts.pop()!.split(':');
+    const keyParts = row.key.split(".");
+    const [lastKeyPart, ...keyOpts] = keyParts.pop()!.split(":");
 
     for (const locale of locales) {
-      let localeDataPart: any = isConfig ? localeConfig[locale] : localeData[locale];
+      let localeDataPart: any = isConfig
+        ? localeConfig[locale]
+        : localeData[locale];
 
       for (const part of keyParts) {
         if (!localeDataPart[part]) {
@@ -111,7 +125,7 @@ async function loadSheet(name: string, authJsonFile: string) {
       }
 
       if (localeDataPart[lastKeyPart] !== undefined) {
-        console.log('Duplicate key ' + row.key);
+        console.log("Duplicate key " + row.key);
       }
 
       localeDataPart[lastKeyPart] = isConfig
@@ -126,7 +140,7 @@ function sortObject(obj: LocaleData) {
   const ret: LocaleData = {};
   for (const key of Object.keys(obj).sort()) {
     const value = obj[key];
-    ret[key] = typeof value === 'object' ? sortObject(value) : value;
+    ret[key] = typeof value === "object" ? sortObject(value) : value;
   }
   return ret;
 }
@@ -138,21 +152,25 @@ function sortObject(obj: LocaleData) {
  * @param format The format to convert to
  * @returns The string
  */
-const objectToFormat = (obj: object, name: string, format: "json" | "js" | "ts") => {
-  let content = '';
+const objectToFormat = (
+  obj: object,
+  name: string,
+  format: "json" | "js" | "ts",
+) => {
+  let content = "";
   if (format === "js" || format === "ts") {
     content = `export const ${name} = `;
   }
   content += JSON.stringify(obj, null, 2);
   if (format === "js" || format === "ts") {
-    content += ';';
+    content += ";";
   }
-  content += '\n';
+  content += "\n";
   return content;
-}
+};
 
 const localeToVariable = (input: string): string => {
-  const parts = input.split('@');
+  const parts = input.split("@");
 
   if (parts.length !== 2) {
     return input;
@@ -161,13 +179,14 @@ const localeToVariable = (input: string): string => {
   const base = parts[0];
   const modifier = parts[1];
 
-  const capitalizedModifier = modifier.charAt(0).toUpperCase() + modifier.slice(1);
+  const capitalizedModifier = modifier.charAt(0).toUpperCase() +
+    modifier.slice(1);
 
   return base + capitalizedModifier;
-}
+};
 
 export const i18nAction = async (argv: I18nArguments) => {
-  await loadSheet('Sheet1', argv.authJsonFile);
+  await loadSheet("Sheet1", argv.authJsonFile);
 
   if (argv.sheetName) {
     try {
@@ -180,21 +199,29 @@ export const i18nAction = async (argv: I18nArguments) => {
   await Deno.mkdir(join(cwd, argv.outputDir), { recursive: true });
 
   for (const locale in localeData) {
-    console.log('Updating ' + locale);
+    console.log("Updating " + locale);
     const fileName = join(cwd, argv.outputDir, locale + "." + argv.format);
-    const content = objectToFormat(sortObject(localeData[locale] as LocaleData), localeToVariable(locale), argv.format);
+    const content = objectToFormat(
+      sortObject(localeData[locale] as LocaleData),
+      localeToVariable(locale),
+      argv.format,
+    );
 
     await Deno.writeTextFile(
       fileName,
-      content
+      content,
     );
   }
 
   // '../src/lib/i18n-config.json'
-  const configFileName = join(cwd, argv.outputDir, 'config.' + argv.format);
-  const content = objectToFormat(sortObject(localeConfig), 'config', argv.format);
+  const configFileName = join(cwd, argv.outputDir, "config." + argv.format);
+  const content = objectToFormat(
+    sortObject(localeConfig),
+    "config",
+    argv.format,
+  );
   await Deno.writeTextFile(
     configFileName,
-    content
+    content,
   );
-}
+};

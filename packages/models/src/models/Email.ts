@@ -3,7 +3,7 @@ import {
   CreateDateColumn,
   Entity,
   OneToMany,
-  PrimaryGeneratedColumn
+  PrimaryGeneratedColumn,
 } from "typeorm";
 import type { EmailMailing } from "./EmailMailing.js";
 

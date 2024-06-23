@@ -65,7 +65,11 @@ const syncVersions = (denoJsoncObj: DenoJsonc, packageJsonObj: PackageJson) => {
 };
 
 /** Sync NPM dependencies from package.json with Deno dependencies in deno.jsonc. */
-const syncDependencies = (denoJsoncObj: DenoJsonc, packageJsonObj: PackageJson, rootDenoJsoncObj: DenoJsonc) => {
+const syncDependencies = (
+  denoJsoncObj: DenoJsonc,
+  packageJsonObj: PackageJson,
+  rootDenoJsoncObj: DenoJsonc,
+) => {
   // Get dependencies
   const npmDependencies = packageJsonObj.dependencies as Record<string, string>;
 
@@ -149,7 +153,11 @@ const syncScripts = (denoJsoncObj: DenoJsonc, packageJsonObj: PackageJson) => {
   }
 };
 
-const writeToFile = async (denoJsoncObj: DenoJsonc, packageJsonObj: PackageJson, rootDenoJsoncObj: DenoJsonc) => {
+const writeToFile = async (
+  denoJsoncObj: DenoJsonc,
+  packageJsonObj: PackageJson,
+  rootDenoJsoncObj: DenoJsonc,
+) => {
   const encoder = new TextEncoder();
 
   // Write deno.jsonc
@@ -169,7 +177,6 @@ const writeToFile = async (denoJsoncObj: DenoJsonc, packageJsonObj: PackageJson,
  * Sync runtime configurations between package.json and deno.jsonc.
  */
 export const crossSyncAction = async () => {
-
   // Load package.json
   const packageJson = await Deno.readTextFile("./package.json");
   const packageJsonObj = ensurePackageJson(parse(packageJson) as any);

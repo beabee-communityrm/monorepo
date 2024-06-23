@@ -1,9 +1,9 @@
 import {
+  Column,
   CreateDateColumn,
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
-  Column
 } from "typeorm";
 import { Contact } from "./Contact.js";
 import { RESET_SECURITY_FLOW_TYPE } from "@beabee/beabee-common";

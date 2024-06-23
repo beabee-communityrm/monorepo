@@ -7,11 +7,11 @@ export const deEasy = {
       "result": {},
       "scan": {},
       "secretInput": {},
-      "validateButton": {}
+      "validateButton": {},
     },
     "newsletter": {
-      "currentStatus": {}
-    }
+      "currentStatus": {},
+    },
   },
   "actions": {
     "back": "Hier kommst du zu deiner letzten Seite.",
@@ -19,38 +19,38 @@ export const deEasy = {
     "getStarted": "Hier kannst du starten.",
     "next": "Hier kommst du auf die nächste Seite.",
     "share": "Hier schickst du den Text / die Datei / das Bild an andere.",
-    "submit": "Hier wird deine Meldung weg-geschickt."
+    "submit": "Hier wird deine Meldung weg-geschickt.",
   },
   "addContact": {
-    "errors": {}
+    "errors": {},
   },
   "addNotice": {
-    "form": {}
+    "form": {},
   },
   "adminDashboard": {
     "latestCallout": {},
     "mostRecentMembers": {},
-    "numbers": {}
+    "numbers": {},
   },
   "adminSettings": {
     "apikey": {
       "confirmCreate": {},
       "confirmDelete": {},
-      "expires": {}
+      "expires": {},
     },
     "email": {},
     "general": {
       "footer": {
         "dataPrivacy": {},
-        "otherLinks": {}
+        "otherLinks": {},
       },
-      "socialSharing": {}
+      "socialSharing": {},
     },
     "payment": {},
     "theme": {
       "colorNames": {},
-      "presetColors": {}
-    }
+      "presetColors": {},
+    },
   },
   "advancedSearch": {
     "matchType": {},
@@ -63,75 +63,80 @@ export const deEasy = {
       "date": {},
       "enum": {},
       "number": {},
-      "text": {}
+      "text": {},
     },
     "saveSegment": {
-      "createOrUpdate": {}
-    }
+      "createOrUpdate": {},
+    },
   },
   "apiKey": {
-    "data": {}
+    "data": {},
   },
   "callout": {
     "actions": {},
     "addAPoint": "Hier kannst du einen Ort rein-schreiben.",
     "addLocation": "Hier kannst du einen neuen Ort rein-schreiben.",
-    "confirmHuman": "Du musst hier klicken. Dann weiß der Computer: Dass du ein Mensch bist. Und keine Maschine.",
+    "confirmHuman":
+      "Du musst hier klicken. Dann weiß der Computer: Dass du ein Mensch bist. Und keine Maschine.",
     "ended": "Den Aufruf gibt es nicht mehr.",
     "form": {
-      "submittingResponseError": "Das hat nicht geklappt. Versuche es noch mal."
+      "submittingResponseError":
+        "Das hat nicht geklappt. Versuche es noch mal.",
     },
-    "fromMap": "Suche dir einen Punkt auf der Karte. Dann ziehe den Pfeil mit der Mouse.",
+    "fromMap":
+      "Suche dir einen Punkt auf der Karte. Dann ziehe den Pfeil mit der Mouse.",
     "fromMyLocation": "Das ist der Ort: Wo ich gerade bin.",
     "getStarted": "Hier geht es los.",
     "responseSubmitted": "Dein Brief / Deine Mail wurde weg-geschickt.",
     "share": {
-      "address": "Hier kannst du den Aufruf an andere schicken. Drücke dazu hier.",
-      "services": "Diesen Aufruf kannst du hier auch an andere Menschen schicken. Zum Beispiel über Facebook oder über TikTok oder über Instagram."
+      "address":
+        "Hier kannst du den Aufruf an andere schicken. Drücke dazu hier.",
+      "services":
+        "Diesen Aufruf kannst du hier auch an andere Menschen schicken. Zum Beispiel über Facebook oder über TikTok oder über Instagram.",
     },
     "views": {
       "gallery": "Bild-Sammlung / Galerie",
-      "map": "Karte"
-    }
+      "map": "Karte",
+    },
   },
   "calloutAdmin": {},
   "calloutAdminOverview": {
     "actions": {
-      "confirmDelete": {}
+      "confirmDelete": {},
     },
     "dates": {},
     "settings": {
       "answers": {},
       "contactInfo": {},
       "endsWith": {},
-      "openTo": {}
-    }
+      "openTo": {},
+    },
   },
   "calloutBuilder": {
     "actions": {},
     "nextSlide": {},
-    "translationFields": {}
+    "translationFields": {},
   },
   "calloutResponse": {
     "data": {},
-    "dataGroup": {}
+    "dataGroup": {},
   },
   "calloutResponseBuckets": {},
   "calloutResponseComments": {
     "actions": {},
-    "confirmDelete": {}
+    "confirmDelete": {},
   },
   "calloutResponsePage": {
     "actions": {},
-    "notifications": {}
+    "notifications": {},
   },
   "calloutResponsesPage": {},
   "callouts": {
-    "data": {}
+    "data": {},
   },
   "calloutsAdmin": {
     "data": {},
-    "filter": {}
+    "filter": {},
   },
   "common": {
     "contributionPeriod": {},
@@ -141,7 +146,7 @@ export const deEasy = {
     "newsletterStatus": {},
     "noResults": "Der Computer hat keine Ergebnisse gefunden.",
     "paymentStatus": {
-      "draft": "Hier ist ein erster Vorschlag."
+      "draft": "Hier ist ein erster Vorschlag.",
     },
     "role": {},
     "selectNone": "keine",
@@ -151,36 +156,38 @@ export const deEasy = {
       "draft": "Hier ist ein erster Vorschlag.",
       "ended": "… ist zu Ende.",
       "open": "Open",
-      "scheduled": "Scheduled"
+      "scheduled": "Scheduled",
     },
     "thankYou": "Vielen Dank.",
     "timeAgo": "vor",
-    "timeIn": "in"
+    "timeIn": "in",
   },
   "contactAccount": {
     "confirmDelete": {
-      "text": "Dadurch werden alle mit der Email-Adresse {email} verbundenen Daten gelöscht. Aktive Mitgliedschaften werden dadurch beendet.",
+      "text":
+        "Dadurch werden alle mit der Email-Adresse {email} verbundenen Daten gelöscht. Aktive Mitgliedschaften werden dadurch beendet.",
       "title": "Kontakt löschen",
-      "warning": "Dieser Schritt kann nicht rückgängig gemacht werden. Sicher, dass du fortfahren möchtest?"
+      "warning":
+        "Dieser Schritt kann nicht rückgängig gemacht werden. Sicher, dass du fortfahren möchtest?",
     },
-    "contactDeleted": "Kontakt gelöscht."
+    "contactDeleted": "Kontakt gelöscht.",
   },
   "contactContribution": {
     "confirmCancel": {},
-    "updateNotice": {}
+    "updateNotice": {},
   },
   "contactOverview": {
     "annotation": {},
     "security": {
-      "mfa": {}
-    }
+      "mfa": {},
+    },
   },
   "contacts": {
     "data": {},
-    "dataGroup": {}
+    "dataGroup": {},
   },
   "contribution": {
-    "paymentHistory": {}
+    "paymentHistory": {},
   },
   "createCallout": {
     "steps": {
@@ -188,31 +195,31 @@ export const deEasy = {
       "dates": {
         "inputs": {
           "expires": {
-            "opts": {}
+            "opts": {},
           },
           "starts": {
-            "opts": {}
-          }
-        }
+            "opts": {},
+          },
+        },
       },
       "endMessage": {
         "inputs": {
           "action": {
-            "opts": {}
+            "opts": {},
           },
           "text": {},
           "title": {},
-          "url": {}
-        }
+          "url": {},
+        },
       },
       "mailchimp": {},
       "settings": {
         "inputs": {
           "anonymous": {
-            "opts": {}
+            "opts": {},
           },
           "editable": {
-            "opts": {}
+            "opts": {},
           },
           "mapSchema": {
             "addressPattern": {},
@@ -224,13 +231,13 @@ export const deEasy = {
             "initialZoom": {},
             "maxZoom": {},
             "minZoom": {},
-            "style": {}
+            "style": {},
           },
           "multiple": {
-            "opts": {}
+            "opts": {},
           },
           "requireCaptcha": {
-            "opts": {}
+            "opts": {},
           },
           "responseImageFilter": {},
           "responseImageProp": {},
@@ -238,16 +245,16 @@ export const deEasy = {
           "responseTitleProp": {},
           "showResponses": {},
           "visible": {
-            "opts": {}
+            "opts": {},
           },
           "whichResponseBuckets": {},
           "whichResponseViews": {
-            "opts": {}
+            "opts": {},
           },
           "who": {
-            "opts": {}
-          }
-        }
+            "opts": {},
+          },
+        },
       },
       "titleAndImage": {
         "inputs": {
@@ -255,26 +262,27 @@ export const deEasy = {
           "image": {},
           "intro": {},
           "overrideShare": {
-            "opts": {}
+            "opts": {},
           },
           "shareDescription": {},
           "shareTitle": {},
           "slug": {
-            "opts": {}
+            "opts": {},
           },
-          "title": {}
-        }
-      }
-    }
+          "title": {},
+        },
+      },
+    },
   },
   "editCallout": {},
   "editNotice": {},
   "footer": {
     "contactUs": "Schreibe uns. Nutze diese Adresse:",
     "impressum": "Impressum",
-    "poweredBy": "Wir machen einige Journalisten stark. Diese Journalisten gehören zu keiner Organisation. Dazu sagt man auch: Sie sind un-abhängig.",
+    "poweredBy":
+      "Wir machen einige Journalisten stark. Diese Journalisten gehören zu keiner Organisation. Dazu sagt man auch: Sie sind un-abhängig.",
     "privacyPolicy": "Datenschutzerklärung",
-    "terms": "Allgemeine Geschäftsbedingungen"
+    "terms": "Allgemeine Geschäftsbedingungen",
   },
   "forgotPassword": {},
   "form": {
@@ -282,7 +290,8 @@ export const deEasy = {
     "errorMessages": {
       "api": {},
       "generic": "Das ist nicht richtig. Hol dir Hilfe.",
-      "validation": "Das ist nicht richtig. Du hast ein Feld nicht richtig ausgefüllt. Suche das Feld. Versuche es noch mal."
+      "validation":
+        "Das ist nicht richtig. Du hast ein Feld nicht richtig ausgefüllt. Suche das Feld. Versuche es noch mal.",
     },
     "errors": {
       "address": {},
@@ -292,8 +301,10 @@ export const deEasy = {
       "confirmPassword": {},
       "email": {},
       "file": {
-        "rateLimited": "Das war nicht richtig. Das waren zu viele Sachen auf einmal. Du musst etwas warten. Dann versuche es noch mal.",
-        "tooBig": "Das war nicht richtig. Dein Text ist zu lang. Oder dein Bild ist zu groß. Man darf nur 20 MB hoch-laden."
+        "rateLimited":
+          "Das war nicht richtig. Das waren zu viele Sachen auf einmal. Du musst etwas warten. Dann versuche es noch mal.",
+        "tooBig":
+          "Das war nicht richtig. Dein Text ist zu lang. Oder dein Bild ist zu groß. Man darf nur 20 MB hoch-laden.",
       },
       "firstName": {},
       "lastName": {},
@@ -302,38 +313,41 @@ export const deEasy = {
       "postCode": {},
       "unknown": {},
       "url": {},
-      "verifyCode": {}
+      "verifyCode": {},
     },
-    "richtext": {}
+    "richtext": {},
   },
   "formRenderer": {
     "components": {
       "file": {
-        "browse": "Du musst warten: Bis sich das Rädchen nicht mehr dreht./ Bis der Balken blau ist.",
-        "dropFiles": "Du musst die Datei mit dem Pfeil von der Mouse hier her ziehen.",
+        "browse":
+          "Du musst warten: Bis sich das Rädchen nicht mehr dreht./ Bis der Balken blau ist.",
+        "dropFiles":
+          "Du musst die Datei mit dem Pfeil von der Mouse hier her ziehen.",
         "or": "oder",
         "switchToFileUpload": "Hier wird dein Foto hoch-geladen.",
         "takePicture": "Hier machst du ein Foto.",
-        "useCamera": "Du musst die Kamera an-machen."
+        "useCamera": "Du musst die Kamera an-machen.",
       },
       "multiple": {
-        "addAnother": "Hier kannst du ein neues Foto hoch-laden./ Hier kannst du eine neue Datei hoch-laden."
-      }
-    }
+        "addAnother":
+          "Hier kannst du ein neues Foto hoch-laden./ Hier kannst du eine neue Datei hoch-laden.",
+      },
+    },
   },
   "homePage": {},
   "item": {
     "status": {
       "endsIn": "Das Hoch-laden ist gleich zu Ende.",
-      "startsIn": "Das Hoch-laden beginnt gleich."
-    }
+      "startsIn": "Das Hoch-laden beginnt gleich.",
+    },
   },
   "join": {
     "errors": {
       "confirmEmail": {},
-      "failed": {}
+      "failed": {},
     },
-    "tax": {}
+    "tax": {},
   },
   "joinPayment": {},
   "joinSetup": {},
@@ -342,64 +356,64 @@ export const deEasy = {
   "membershipBuilder": {
     "steps": {
       "accountConfirmation": {
-        "joinSurvey": {}
+        "joinSurvey": {},
       },
       "emails": {},
       "intro": {},
-      "joinForm": {}
-    }
+      "joinForm": {},
+    },
   },
   "menu": {
-    "callouts": "Aufruf"
+    "callouts": "Aufruf",
   },
   "notFound": {
     "goBack": "Hier geht es zu einer neuen Seite. Die gibt dir eine Übersicht.",
-    "text": "Die Internet-Seite gibt es nicht mehr. Hol dir Hilfe."
+    "text": "Die Internet-Seite gibt es nicht mehr. Hol dir Hilfe.",
   },
   "noticeAdminOverview": {
     "actions": {
-      "confirmDelete": {}
-    }
+      "confirmDelete": {},
+    },
   },
   "notices": {
-    "data": {}
+    "data": {},
   },
   "notification": {
-    "error": "Das war nicht richtig. Probiere es noch mal."
+    "error": "Das war nicht richtig. Probiere es noch mal.",
   },
   "pageTitle": {
-    "notFound": "Der Computer hat die Seite nicht gefunden."
+    "notFound": "Der Computer hat die Seite nicht gefunden.",
   },
   "paymentMethods": {
     "gc_direct-debit": {},
     "s_bacs": {},
     "s_card": {},
     "s_paypal": {},
-    "s_sepa": {}
+    "s_sepa": {},
   },
   "payments": {
     "data": {},
-    "dataGroup": {}
+    "dataGroup": {},
   },
   "paymentsAdmin": {
-    "filter": {}
+    "filter": {},
   },
   "resetDevice": {},
   "resetPassword": {},
   "roleEditor": {
     "confirmDelete": {},
     "expires": {
-      "opts": {}
+      "opts": {},
     },
     "starts": {
-      "opts": {}
-    }
+      "opts": {},
+    },
   },
   "setPassword": {},
   "tagEditor": {
-    "confirmDelete": {}
+    "confirmDelete": {},
   },
   "taxRate": {
-    "invoiceName": "MwSt"
-  }
+    "invoiceName": "MwSt",
+  },
 };

@@ -37,4 +37,3 @@ export interface DenoJsonc {
   imports: Record<string, string>;
   tasks: Record<string, string>;
 }
-

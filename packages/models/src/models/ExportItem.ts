@@ -3,7 +3,7 @@ import {
   Entity,
   Index,
   ManyToOne,
-  PrimaryGeneratedColumn
+  PrimaryGeneratedColumn,
 } from "typeorm";
 import { Export } from "./Export.js";
 

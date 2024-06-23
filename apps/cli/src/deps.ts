@@ -1,10 +1,14 @@
 // ESBuild
-export { build, stop, context } from "https://deno.land/x/esbuild@v0.20.0/mod.js";
+export {
+  build,
+  context,
+  stop,
+} from "https://deno.land/x/esbuild@v0.20.0/mod.js";
 export type {
-    BuildResult,
-    Plugin,
-    PluginBuild,
-    BuildOptions,
+  BuildOptions,
+  BuildResult,
+  Plugin,
+  PluginBuild,
 } from "https://deno.land/x/esbuild@v0.20.0/mod.d.ts";
 
 // ESBuild Plugins
@@ -16,7 +20,12 @@ export { default as yargs } from "https://deno.land/x/yargs@v17.7.2-deno/deno.ts
 export type { YargsInstance } from "https://deno.land/x/yargs@v17.7.2-deno/build/lib/yargs-factory.js";
 
 // Path
-export { resolve, extname, join, basename } from "https://deno.land/std@0.224.0/path/mod.ts";
+export {
+  basename,
+  extname,
+  join,
+  resolve,
+} from "https://deno.land/std@0.224.0/path/mod.ts";
 
 // JSONC
 export { parse } from "https://deno.land/std@0.224.0/jsonc/mod.ts";

@@ -19,7 +19,9 @@ export const crossBuildAction = async (argv: BuildArguments) => {
   // Build for specific platform for all types
   if (argv.platform) {
     for (
-      const types of Object.keys(crossBuildConfigs[argv.platform]) as BuildType[]
+      const types of Object.keys(
+        crossBuildConfigs[argv.platform],
+      ) as BuildType[]
     ) {
       const config = crossBuildConfigs[argv.platform][types];
       if (!config) continue;
@@ -31,7 +33,9 @@ export const crossBuildAction = async (argv: BuildArguments) => {
 
   // Build for all platforms and types
   for (const platforms of Object.keys(crossBuildConfigs) as BuildPlatform[]) {
-    for (const types of Object.keys(crossBuildConfigs[platforms]) as BuildType[]) {
+    for (
+      const types of Object.keys(crossBuildConfigs[platforms]) as BuildType[]
+    ) {
       const config = crossBuildConfigs[platforms][types];
       if (!config) continue;
       console.info(`Building ${platforms} ${types}`);

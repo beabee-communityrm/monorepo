@@ -1,8 +1,4 @@
-import type {
-  BuildResult,
-  Plugin,
-  PluginBuild,
-} from "../deps.ts";
+import type { BuildResult, Plugin, PluginBuild } from "../deps.ts";
 
 import { extname, join } from "../deps.ts";
 

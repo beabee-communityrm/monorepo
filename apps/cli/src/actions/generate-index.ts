@@ -15,9 +15,10 @@ const generateIndex = async (paths: string[], ext?: string) => {
       if (
         (file.name.endsWith(".ts") || file.name.endsWith(".tsx")) &&
         file.name !== "index.ts" &&
-        !file.name.includes('.test.') // Ignore test files
+        !file.name.includes(".test.") // Ignore test files
       ) {
-        const filename = basename(file.name, extname(file.name)) + (ext ? `.${ext}` : "");
+        const filename = basename(file.name, extname(file.name)) +
+          (ext ? `.${ext}` : "");
         indexContent += `export * from "./${filename}";\n`;
       }
     }
@@ -28,7 +29,7 @@ const generateIndex = async (paths: string[], ext?: string) => {
 
 /**
  * Generate index.ts files for specific paths.
- * @param argv 
+ * @param argv
  */
 export const generateIndexAction = async (argv: GenerateIndexArguments) => {
   await generateIndex(argv.paths, argv.ext);

@@ -3,18 +3,20 @@ export const nl = {
     "mfa": {
       "codeInput": {},
       "confirmDelete": {
-        "descToken": "Om 2FA te deactiveren, voer alstublieft uw huidige 2FA-code in:"
+        "descToken":
+          "Om 2FA te deactiveren, voer alstublieft uw huidige 2FA-code in:",
       },
-      "createUnknownErrorNotification": "De 2-factor authenticatie kon niet worden opgeslagen vanwege een \nonbekende fout. Probeer het opnieuw of neem contact op met de \nondersteuning.",
+      "createUnknownErrorNotification":
+        "De 2-factor authenticatie kon niet worden opgeslagen vanwege een \nonbekende fout. Probeer het opnieuw of neem contact op met de \nondersteuning.",
       "enterCode": {},
       "result": {},
       "scan": {},
       "secretInput": {},
-      "validateButton": {}
+      "validateButton": {},
     },
     "newsletter": {
-      "currentStatus": {}
-    }
+      "currentStatus": {},
+    },
   },
   "actions": {
     "back": "Terug",
@@ -22,38 +24,38 @@ export const nl = {
     "getStarted": "Start",
     "next": "Volgende",
     "share": "Delen",
-    "submit": "Indienen"
+    "submit": "Indienen",
   },
   "addContact": {
-    "errors": {}
+    "errors": {},
   },
   "addNotice": {
-    "form": {}
+    "form": {},
   },
   "adminDashboard": {
     "latestCallout": {},
     "mostRecentMembers": {},
-    "numbers": {}
+    "numbers": {},
   },
   "adminSettings": {
     "apikey": {
       "confirmCreate": {},
       "confirmDelete": {},
-      "expires": {}
+      "expires": {},
     },
     "email": {},
     "general": {
       "footer": {
         "dataPrivacy": {},
-        "otherLinks": {}
+        "otherLinks": {},
       },
-      "socialSharing": {}
+      "socialSharing": {},
     },
     "payment": {},
     "theme": {
       "colorNames": {},
-      "presetColors": {}
-    }
+      "presetColors": {},
+    },
   },
   "advancedSearch": {
     "matchType": {},
@@ -66,14 +68,14 @@ export const nl = {
       "date": {},
       "enum": {},
       "number": {},
-      "text": {}
+      "text": {},
     },
     "saveSegment": {
-      "createOrUpdate": {}
-    }
+      "createOrUpdate": {},
+    },
   },
   "apiKey": {
-    "data": {}
+    "data": {},
   },
   "callout": {
     "actions": {},
@@ -81,31 +83,32 @@ export const nl = {
     "addLocation": "Voeg een locatie toe",
     "ended": "Deze oproep is geëindigd op {date}",
     "form": {
-      "submittingResponseError": "er was een probleem om je antwoord te verwerken, probeer het opnieuw"
+      "submittingResponseError":
+        "er was een probleem om je antwoord te verwerken, probeer het opnieuw",
     },
     "getStarted": "Start",
     "responseSubmitted": "Antwoord ingediend",
     "share": {
       "address": "Deel deze oproep met het volgende adres:",
-      "services": "Of deel snel via een van deze diensten:"
+      "services": "Of deel snel via een van deze diensten:",
     },
     "views": {
       "gallery": "Gallerij",
-      "map": "Kaart"
-    }
+      "map": "Kaart",
+    },
   },
   "calloutAdmin": {},
   "calloutAdminOverview": {
     "actions": {
-      "confirmDelete": {}
+      "confirmDelete": {},
     },
     "dates": {},
     "settings": {
       "answers": {},
       "contactInfo": {},
       "endsWith": {},
-      "openTo": {}
-    }
+      "openTo": {},
+    },
   },
   "calloutBuilder": {
     "actions": {},
@@ -114,29 +117,29 @@ export const nl = {
       "description": "Description",
       "label": "Label",
       "option": "Option {n}",
-      "placeholder": "Placeholder"
-    }
+      "placeholder": "Placeholder",
+    },
   },
   "calloutResponse": {
     "data": {},
-    "dataGroup": {}
+    "dataGroup": {},
   },
   "calloutResponseBuckets": {},
   "calloutResponseComments": {
     "actions": {},
-    "confirmDelete": {}
+    "confirmDelete": {},
   },
   "calloutResponsePage": {
     "actions": {},
-    "notifications": {}
+    "notifications": {},
   },
   "calloutResponsesPage": {},
   "callouts": {
-    "data": {}
+    "data": {},
   },
   "calloutsAdmin": {
     "data": {},
-    "filter": {}
+    "filter": {},
   },
   "common": {
     "contributionPeriod": {},
@@ -146,7 +149,7 @@ export const nl = {
     "newsletterStatus": {},
     "noResults": "Geen resultaten gevonden",
     "paymentStatus": {
-      "draft": "Ontwerp"
+      "draft": "Ontwerp",
     },
     "role": {},
     "selectNone": "Geen",
@@ -156,38 +159,40 @@ export const nl = {
       "draft": "Ontwerp",
       "ended": "Beëindigd",
       "open": "Open",
-      "scheduled": "Gepland"
+      "scheduled": "Gepland",
     },
     "thankYou": "Dankjewel",
     "timeAgo": "{time} geleden",
-    "timeIn": "in {time}"
+    "timeIn": "in {time}",
   },
   "contactAccount": {
     "confirmDelete": {
-      "text": "Dadurch werden alle mit der Email-Adresse {email} verbundenen Daten gelöscht. Aktive Mitgliedschaften werden dadurch beendet.",
+      "text":
+        "Dadurch werden alle mit der Email-Adresse {email} verbundenen Daten gelöscht. Aktive Mitgliedschaften werden dadurch beendet.",
       "title": "Kontakt löschen",
-      "warning": "Dieser Schritt kann nicht rückgängig gemacht werden. Sicher, dass du fortfahren möchtest?"
+      "warning":
+        "Dieser Schritt kann nicht rückgängig gemacht werden. Sicher, dass du fortfahren möchtest?",
     },
-    "contactDeleted": "Kontakt gelöscht."
+    "contactDeleted": "Kontakt gelöscht.",
   },
   "contactContribution": {
     "confirmCancel": {},
-    "updateNotice": {}
+    "updateNotice": {},
   },
   "contactOverview": {
     "annotation": {},
     "security": {
       "mfa": {
-        "disabledDesc": "Deze contactpersoon heeft geen 2FA geactiveerd."
-      }
-    }
+        "disabledDesc": "Deze contactpersoon heeft geen 2FA geactiveerd.",
+      },
+    },
   },
   "contacts": {
     "data": {},
-    "dataGroup": {}
+    "dataGroup": {},
   },
   "contribution": {
-    "paymentHistory": {}
+    "paymentHistory": {},
   },
   "createCallout": {
     "steps": {
@@ -195,31 +200,31 @@ export const nl = {
       "dates": {
         "inputs": {
           "expires": {
-            "opts": {}
+            "opts": {},
           },
           "starts": {
-            "opts": {}
-          }
-        }
+            "opts": {},
+          },
+        },
       },
       "endMessage": {
         "inputs": {
           "action": {
-            "opts": {}
+            "opts": {},
           },
           "text": {},
           "title": {},
-          "url": {}
-        }
+          "url": {},
+        },
       },
       "mailchimp": {},
       "settings": {
         "inputs": {
           "anonymous": {
-            "opts": {}
+            "opts": {},
           },
           "editable": {
-            "opts": {}
+            "opts": {},
           },
           "mapSchema": {
             "addressPattern": {},
@@ -231,13 +236,13 @@ export const nl = {
             "initialZoom": {},
             "maxZoom": {},
             "minZoom": {},
-            "style": {}
+            "style": {},
           },
           "multiple": {
-            "opts": {}
+            "opts": {},
           },
           "requireCaptcha": {
-            "opts": {}
+            "opts": {},
           },
           "responseImageFilter": {},
           "responseImageProp": {},
@@ -245,16 +250,16 @@ export const nl = {
           "responseTitleProp": {},
           "showResponses": {},
           "visible": {
-            "opts": {}
+            "opts": {},
           },
           "whichResponseBuckets": {},
           "whichResponseViews": {
-            "opts": {}
+            "opts": {},
           },
           "who": {
-            "opts": {}
-          }
-        }
+            "opts": {},
+          },
+        },
       },
       "titleAndImage": {
         "inputs": {
@@ -262,17 +267,17 @@ export const nl = {
           "image": {},
           "intro": {},
           "overrideShare": {
-            "opts": {}
+            "opts": {},
           },
           "shareDescription": {},
           "shareTitle": {},
           "slug": {
-            "opts": {}
+            "opts": {},
           },
-          "title": {}
-        }
-      }
-    }
+          "title": {},
+        },
+      },
+    },
   },
   "editCallout": {},
   "editNotice": {},
@@ -281,17 +286,19 @@ export const nl = {
     "impressum": "Impressum",
     "poweredBy": "We versterken onafhankelijk lokale redacties",
     "privacyPolicy": "Privacy verklaring",
-    "terms": "Algemene voorwaarden"
+    "terms": "Algemene voorwaarden",
   },
   "forgotPassword": {},
   "form": {
     "email": "E-mail",
     "errorMessages": {
       "api": {
-        "mfa-token-required": "U heeft tweefactorauthenticatie ingeschakeld, dus u heeft de token uit \nuw authenticatie-app nodig om uw wachtwoord te resetten. Voer deze \nalstublieft in."
+        "mfa-token-required":
+          "U heeft tweefactorauthenticatie ingeschakeld, dus u heeft de token uit \nuw authenticatie-app nodig om uw wachtwoord te resetten. Voer deze \nalstublieft in.",
       },
-      "generic": "Oeps, er ging iets fout! Neem contact op met support als het nog een keer gebeurd.",
-      "validation": "Er ontbreekt iets. Bekijk de velden hierboven."
+      "generic":
+        "Oeps, er ging iets fout! Neem contact op met support als het nog een keer gebeurd.",
+      "validation": "Er ontbreekt iets. Bekijk de velden hierboven.",
     },
     "errors": {
       "address": {},
@@ -301,8 +308,9 @@ export const nl = {
       "confirmPassword": {},
       "email": {},
       "file": {
-        "rateLimited": "Upload mislukt: je hebt te veel bestanden geupload, wacht een paar minuten en probeer het opnieuw",
-        "tooBig": "Upload mislukt: het bestand mag niet groter zijn dan 20Mb"
+        "rateLimited":
+          "Upload mislukt: je hebt te veel bestanden geupload, wacht een paar minuten en probeer het opnieuw",
+        "tooBig": "Upload mislukt: het bestand mag niet groter zijn dan 20Mb",
       },
       "firstName": {},
       "lastName": {},
@@ -313,10 +321,10 @@ export const nl = {
       "url": {},
       "verifyCode": {
         "max": "De code mag maximaal {max} tekens lang zijn.",
-        "min": "De code moet minimaal {min} tekens lang zijn."
-      }
+        "min": "De code moet minimaal {min} tekens lang zijn.",
+      },
     },
-    "richtext": {}
+    "richtext": {},
   },
   "formRenderer": {
     "components": {
@@ -326,101 +334,103 @@ export const nl = {
         "or": "of",
         "switchToFileUpload": "Verander naar bestand upload",
         "takePicture": "Neem een foto",
-        "useCamera": "gebruik je camera"
+        "useCamera": "gebruik je camera",
       },
       "multiple": {
-        "addAnother": "Een andere toevoegen"
-      }
-    }
+        "addAnother": "Een andere toevoegen",
+      },
+    },
   },
   "homePage": {},
   "item": {
     "status": {
       "endsIn": "Beëindigd op {duration}",
-      "startsIn": "Gestart in {duration}"
-    }
+      "startsIn": "Gestart in {duration}",
+    },
   },
   "join": {
     "errors": {
       "confirmEmail": {},
-      "failed": {}
+      "failed": {},
     },
-    "tax": {}
+    "tax": {},
   },
   "joinPayment": {},
   "joinSetup": {},
   "login": {
-    "lostMfaDevice": "2FA-apparaat kwijt?"
+    "lostMfaDevice": "2FA-apparaat kwijt?",
   },
   "lostDevice": {
-    "description": "Voer uw e-mailadres in, dan sturen we u instructies om uw 2FA te resetten.",
-    "title": "Bent u uw 2FA-apparaat kwijt?"
+    "description":
+      "Voer uw e-mailadres in, dan sturen we u instructies om uw 2FA te resetten.",
+    "title": "Bent u uw 2FA-apparaat kwijt?",
   },
   "membershipBuilder": {
     "steps": {
       "accountConfirmation": {
-        "joinSurvey": {}
+        "joinSurvey": {},
       },
       "emails": {},
       "intro": {},
-      "joinForm": {}
-    }
+      "joinForm": {},
+    },
   },
   "menu": {
-    "callouts": "Oproepen"
+    "callouts": "Oproepen",
   },
   "notFound": {
     "goBack": "Ga terug naar home",
-    "text": "Deze pagina bestaat niet. Als u denkt dat dit een vergissing is, neem dan contact op met {support}."
+    "text":
+      "Deze pagina bestaat niet. Als u denkt dat dit een vergissing is, neem dan contact op met {support}.",
   },
   "noticeAdminOverview": {
     "actions": {
-      "confirmDelete": {}
-    }
+      "confirmDelete": {},
+    },
   },
   "notices": {
-    "data": {}
+    "data": {},
   },
   "notification": {
-    "error": "Er ging iets fout. Probeer de pagina te herladen"
+    "error": "Er ging iets fout. Probeer de pagina te herladen",
   },
   "pageTitle": {
     "lostDevice": "Bent u uw 2FA-apparaat kwijt?",
     "notFound": "Pagina niet gevonden",
-    "resetDevice": "Secundair Apparaat Resetten"
+    "resetDevice": "Secundair Apparaat Resetten",
   },
   "paymentMethods": {
     "gc_direct-debit": {},
     "s_bacs": {},
     "s_card": {},
     "s_paypal": {},
-    "s_sepa": {}
+    "s_sepa": {},
   },
   "payments": {
     "data": {},
-    "dataGroup": {}
+    "dataGroup": {},
   },
   "paymentsAdmin": {
-    "filter": {}
+    "filter": {},
   },
   "resetDevice": {
-    "success": "Het resetten van het 2FA-apparaat is gelukt."
+    "success": "Het resetten van het 2FA-apparaat is gelukt.",
   },
   "resetPassword": {},
   "roleEditor": {
     "confirmDelete": {},
     "expires": {
-      "opts": {}
+      "opts": {},
     },
     "starts": {
-      "opts": {}
-    }
+      "opts": {},
+    },
   },
   "setPassword": {},
   "tagEditor": {
-    "confirmDelete": {}
+    "confirmDelete": {},
   },
   "taxRate": {
-    "invoiceName": "???"
-  }
+    "invoiceName": "???",
+  },
 };

@@ -7,7 +7,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
   Unique,
-  UpdateDateColumn
+  UpdateDateColumn,
 } from "typeorm";
 
 import type { Contact } from "./Contact.js";

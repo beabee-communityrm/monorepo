@@ -4,22 +4,21 @@ import type { NewInstanceArguments } from "../types.ts";
 /**
  * Generate a new instance.
  * Based on https://raw.githubusercontent.com/beabee-communityrm/hive-deploy-stack/main/new-instance.sh
- * @param argv 
+ * @param argv
  */
 export const newInstanceAction = async (argv: NewInstanceArguments) => {
+  const { name, domain } = argv;
 
-    const { name, domain } = argv;
+  const secret = await generatePassword(64);
+  const service_secret = await generatePassword(64);
+  const gc_secret = await generatePassword(128);
+  const nl_secret = await generatePassword(64);
 
-    const secret = await generatePassword(64);
-    const service_secret = await generatePassword(64);
-    const gc_secret = await generatePassword(128);
-    const nl_secret = await generatePassword(64);
+  const db_name = `beabee-${name}`;
+  const db_pass = await generatePassword(64);
+  let output = "";
 
-    const db_name = `beabee-${name}`;
-    const db_pass = await generatePassword(64);
-    let output = '';
-
-    output += `
+  output += `
     ===============================================================
     -- Portainer stack
     
@@ -32,7 +31,7 @@ export const newInstanceAction = async (argv: NewInstanceArguments) => {
     Stack file: docker-compose.yml
     `;
 
-    output += `
+  output += `
     ===============================================================
     -- Environment variables
 
@@ -57,10 +56,10 @@ export const newInstanceAction = async (argv: NewInstanceArguments) => {
     BEABEE_NEWSLETTER_PROVIDER=none
     `;
 
-    if (name.startsWith("cnr-")) {
-        output += "BEABEE_CNR_MODE=true";
-    } else {
-        output += `
+  if (name.startsWith("cnr-")) {
+    output += "BEABEE_CNR_MODE=true";
+  } else {
+    output += `
     BEABEE_NEWSLETTER_SETTINGS_APIKEY=???
     BEABEE_NEWSLETTER_SETTINGS_DATACENTER=???
     BEABEE_NEWSLETTER_SETTINGS_LISTID=???
@@ -77,9 +76,9 @@ export const newInstanceAction = async (argv: NewInstanceArguments) => {
     BEABEE_STRIPE_COUNTRY=eu
 
     `;
-    }
+  }
 
-    output += `
+  output += `
     ===============================================================
     -- Database initialisation
     
@@ -110,7 +109,7 @@ export const newInstanceAction = async (argv: NewInstanceArguments) => {
     ===============================================================
     `;
 
-    output += `
+  output += `
     # DNS records
     
     Type: CNAME
@@ -132,5 +131,5 @@ export const newInstanceAction = async (argv: NewInstanceArguments) => {
     Webhook URL: https://${domain}/webhook/mailchimp?secret=${nl_secret}
     `;
 
-    console.log(output);
+  console.log(output);
 };

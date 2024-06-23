@@ -3,7 +3,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  PrimaryGeneratedColumn
+  PrimaryGeneratedColumn,
 } from "typeorm";
 
 export type ExportTypeId = "active-members" | "edition" | "gifts" | "referrals";

@@ -6,57 +6,76 @@ export const deInformal = {
     "loginDetail": "Anmeldedaten",
     "mfa": {
       "codeInput": {
-        "info": "Wenn du dein 2FA-Gerät verloren hast, wende dich bitte an den Support.",
-        "label": "Code"
+        "info":
+          "Wenn du dein 2FA-Gerät verloren hast, wende dich bitte an den Support.",
+        "label": "Code",
       },
       "confirmDelete": {
-        "desc": "Möchtest du die Multi-Faktor-Authentifizierung wirklich deaktivieren? \nDanach brauchst du nur noch dein Passwort zum Anmelden. Bitte vergiss \nnicht, den Eintrag in deiner Authenticator-App zu löschen. Du kannst \ndiese Funktion jederzeit wieder einschalten.",
-        "descToken": "Um 2FA zu deaktivieren, gib bitte deinen aktuellen 2FA-Code ein:",
-        "title": "2FA deaktivieren"
+        "desc":
+          "Möchtest du die Multi-Faktor-Authentifizierung wirklich deaktivieren? \nDanach brauchst du nur noch dein Passwort zum Anmelden. Bitte vergiss \nnicht, den Eintrag in deiner Authenticator-App zu löschen. Du kannst \ndiese Funktion jederzeit wieder einschalten.",
+        "descToken":
+          "Um 2FA zu deaktivieren, gib bitte deinen aktuellen 2FA-Code ein:",
+        "title": "2FA deaktivieren",
       },
-      "createUnknownErrorNotification": "Die 2-Faktor-Authentifizierung konnte aufgrund eines unbekannten Fehlers nicht gespeichert werden. Bitte versuche es erneut oder kontaktiere den Support.",
-      "deleteUnknownErrorNotification": "Die 2-Faktor-Authentifizierung konnte aufgrund eines unbekannten Fehlers nicht entfernt werden. Bitte versuche es erneut oder kontaktiere den Support.",
-      "disabledNotification": "Zwei-Faktor Authentifizierung erfolgreich deaktiviert",
-      "enabledNotification": "Zwei-Faktor Authentifizierung erfolgreich aktiviert",
+      "createUnknownErrorNotification":
+        "Die 2-Faktor-Authentifizierung konnte aufgrund eines unbekannten Fehlers nicht gespeichert werden. Bitte versuche es erneut oder kontaktiere den Support.",
+      "deleteUnknownErrorNotification":
+        "Die 2-Faktor-Authentifizierung konnte aufgrund eines unbekannten Fehlers nicht entfernt werden. Bitte versuche es erneut oder kontaktiere den Support.",
+      "disabledNotification":
+        "Zwei-Faktor Authentifizierung erfolgreich deaktiviert",
+      "enabledNotification":
+        "Zwei-Faktor Authentifizierung erfolgreich aktiviert",
       "enterCode": {
-        "desc": "Gebe den Code ein, der in deiner Authentifizierungs-App angezeigt wird.",
-        "title": "Überprüfung"
+        "desc":
+          "Gebe den Code ein, der in deiner Authentifizierungs-App angezeigt wird.",
+        "title": "Überprüfung",
       },
       "modalTitle": "Aktivere 2-Faktor Authentifizierung",
       "result": {
-        "invalidCode": "Der Code konnte nicht bestätigt werden. Bitte versuche es erneut oder kontaktiere den Support.",
-        "successful": "Die 2-Faktor Authentifizierung wurde erfolgreich eingerichtet.",
-        "title": "Fertig"
+        "invalidCode":
+          "Der Code konnte nicht bestätigt werden. Bitte versuche es erneut oder kontaktiere den Support.",
+        "successful":
+          "Die 2-Faktor Authentifizierung wurde erfolgreich eingerichtet.",
+        "title": "Fertig",
       },
       "scan": {
-        "desc": "Scanne den unten stehenden QR-Code mit deiner Authentifizierungs-App.",
-        "title": "QR-Code"
+        "desc":
+          "Scanne den unten stehenden QR-Code mit deiner Authentifizierungs-App.",
+        "title": "QR-Code",
       },
       "secretInput": {
-        "desc": "Oder gib einfach den folgenden Code in deine Authenticator-App ein.",
-        "label": "Secret"
+        "desc":
+          "Oder gib einfach den folgenden Code in deine Authenticator-App ein.",
+        "label": "Secret",
       },
       "title": "2-Faktor Authentifizierung",
       "validateButton": {
-        "label": "Token überprüfen"
-      }
+        "label": "Token überprüfen",
+      },
     },
     "newsletter": {
-      "cantUpdate": "Um den Newsletter-Status dieses Kontakts zu ändern, wende dich bitte an support{'@'}beabee.io.",
+      "cantUpdate":
+        "Um den Newsletter-Status dieses Kontakts zu ändern, wende dich bitte an support{'@'}beabee.io.",
       "currentStatus": {
-        "cleaned": "Dieser Kontakt wurde aus deiner Newsletter-Liste entfernt, die E-Mail-Adresse hat wahrscheinlich gebounct.",
-        "none": "Dieser Kontakt ist nicht für deine Newsletterliste angemeldet.",
-        "pending": "Dieser Kontakt hat ein Opt-in für Ihre Newsletter-Liste erhalten, das er akzeptieren muss, um sich anzumelden.",
-        "subscribed": "Dieser Kontakt ist für deine Newsletterliste angemeldet.",
-        "unsubscribed": "Dieser Kontakt ist nicht für deine Newsletterliste angemeldet."
+        "cleaned":
+          "Dieser Kontakt wurde aus deiner Newsletter-Liste entfernt, die E-Mail-Adresse hat wahrscheinlich gebounct.",
+        "none":
+          "Dieser Kontakt ist nicht für deine Newsletterliste angemeldet.",
+        "pending":
+          "Dieser Kontakt hat ein Opt-in für Ihre Newsletter-Liste erhalten, das er akzeptieren muss, um sich anzumelden.",
+        "subscribed":
+          "Dieser Kontakt ist für deine Newsletterliste angemeldet.",
+        "unsubscribed":
+          "Dieser Kontakt ist nicht für deine Newsletterliste angemeldet.",
       },
       "subscribe": "Für den Newsletter anmelden",
       "title": "Newsletter",
-      "unsubscribe": "Vom Newsletter abmelden"
+      "unsubscribe": "Vom Newsletter abmelden",
     },
     "savedPassword": "Das neue Passwort wurde gespeichert. ",
-    "subTitle": "Alle benötigten Felder sind mit * markiert. Alle Informationen werden vertraulich behandelt.",
-    "title": "Account"
+    "subTitle":
+      "Alle benötigten Felder sind mit * markiert. Alle Informationen werden vertraulich behandelt.",
+    "title": "Account",
   },
   "actions": {
     "add": "Hinzufügen",
@@ -102,15 +121,15 @@ export const deInformal = {
     "view": "Anzeigen",
     "yesDelete": "Ja, löschen",
     "yesDisable": "Ja, deaktivieren",
-    "yesRemove": "Ja, entfernen"
+    "yesRemove": "Ja, entfernen",
   },
   "addContact": {
     "contactSaved": "Kontakt gespeichert",
     "errors": {
-      "duplicateEmail": "Diese E-Mail-Adresse existiert bereits."
+      "duplicateEmail": "Diese E-Mail-Adresse existiert bereits.",
     },
     "subscribeToNewsletter": "Mit Newsletter-Tool synchronisieren",
-    "title": "Kontakt hinzufügen"
+    "title": "Kontakt hinzufügen",
   },
   "addNotice": {
     "form": {
@@ -119,61 +138,69 @@ export const deInformal = {
       "name": "Name",
       "startDateAndTime": "Anfangsdatum und -zeit",
       "text": "Text",
-      "url": "URL"
+      "url": "URL",
     },
-    "title": "Hinweis hinzufügen"
+    "title": "Hinweis hinzufügen",
   },
   "adminDashboard": {
-    "hint1": "<p>Das beabee-Handbuch für Community-Journalismus <a href=\"https://beabee.io/neu-handbuch-community-journalismus/\" target=\"_blank\" rel=\"noopener noreferrer\">„Lust auf Lokal” ist erschienen</a>. Es enthält nicht nur unser gesammeltes Wissen zum Aufbau unabhängiger Lokalredaktionen, sondern auch viele Beispiele aus der Praxis.</p>\n",
-    "hint2": "<p>Im <a href=\"https://beabee.io/#blog\" target=\"_blank\" rel=\"noopener noreferrer\">Blog</a> auf unserer Website findest du viele Best-Practice-Beispiele anderer Redaktionen, von denen du dich inspierieren lassen kannst.</p>\n",
-    "hint3": "<p>Unsere Community-Meetups finden jeden dritten Donnerstag im Monat statt. Du willst dein Best-Practice-Beispiel mit anderen teilen? Schreib eine E-Mail an <a href=\"mailto:tobias.hauswurz{'@'}correctiv.org\">tobias.hauswurz{'@'}correctiv.org</a></p>\n",
+    "hint1":
+      '<p>Das beabee-Handbuch für Community-Journalismus <a href="https://beabee.io/neu-handbuch-community-journalismus/" target="_blank" rel="noopener noreferrer">„Lust auf Lokal” ist erschienen</a>. Es enthält nicht nur unser gesammeltes Wissen zum Aufbau unabhängiger Lokalredaktionen, sondern auch viele Beispiele aus der Praxis.</p>\n',
+    "hint2":
+      '<p>Im <a href="https://beabee.io/#blog" target="_blank" rel="noopener noreferrer">Blog</a> auf unserer Website findest du viele Best-Practice-Beispiele anderer Redaktionen, von denen du dich inspierieren lassen kannst.</p>\n',
+    "hint3":
+      "<p>Unsere Community-Meetups finden jeden dritten Donnerstag im Monat statt. Du willst dein Best-Practice-Beispiel mit anderen teilen? Schreib eine E-Mail an <a href=\"mailto:tobias.hauswurz{'@'}correctiv.org\">tobias.hauswurz{'@'}correctiv.org</a></p>\n",
     "joinSlack": "Tritt der beabee-Community auf Slack bei!",
     "latestCallout": {
       "createNew": "Neuen Callout erstellen?",
       "empty": "Es gibt aktuell keine aktiven Callouts.",
-      "title": "Letzer Callout"
+      "title": "Letzer Callout",
     },
     "mostRecentMembers": {
-      "title": "Neueste Mitglieder"
+      "title": "Neueste Mitglieder",
     },
     "numbers": {
       "averageContribution": "Durchschn. monatlicher Beitrag",
       "newMembers": "Neue Mitglieder",
       "revenue": "Einnahmen",
-      "title": "Überblick der letzten 30 Tage"
+      "title": "Überblick der letzten 30 Tage",
     },
     "responsesSoFar": "{n} Antworten bisher",
     "seeAllResponses": "Alle Antworten anzeigen",
-    "supportInbox": "<p>Benötigst du Hilfe? Besuche unser <a href=\"https://wiki.beabee.io/beabee-help-center/\" target=\"_blank\" rel=\"noopener noreferrer\">beabee Help Center</a> oder schreib' uns eine E-Mail an:  <a href=\"mailto:support{'@'}beabee.io\">support{'@'}beabee.io</a></p>\n",
-    "welcomeBack": "Willkommen zurück {firstName}!"
+    "supportInbox":
+      '<p>Benötigst du Hilfe? Besuche unser <a href="https://wiki.beabee.io/beabee-help-center/" target="_blank" rel="noopener noreferrer">beabee Help Center</a> oder schreib\' uns eine E-Mail an:  <a href="mailto:support{\'@\'}beabee.io">support{\'@\'}beabee.io</a></p>\n',
+    "welcomeBack": "Willkommen zurück {firstName}!",
   },
   "adminSettings": {
     "apikey": {
       "confirmCreate": {
-        "text": "Bitte speichere den folgenden Token. Er kann später NICHT wieder angezeigt werden.",
-        "title": "API Key erfolgreich erstellt"
+        "text":
+          "Bitte speichere den folgenden Token. Er kann später NICHT wieder angezeigt werden.",
+        "title": "API Key erfolgreich erstellt",
       },
       "confirmDelete": {
-        "text": "Das kann nicht rückgängig gemacht werden. Alles, was diesen API Key verwendet, wird nicht mehr funktionieren.",
-        "title": "API Key löschen?"
+        "text":
+          "Das kann nicht rückgängig gemacht werden. Alles, was diesen API Key verwendet, wird nicht mehr funktionieren.",
+        "title": "API Key löschen?",
       },
       "copied": "API Key in die Zwischenablage kopiert",
       "create": "Neuen API Key erstellen",
       "expires": {
         "days": "In {n} Tagen",
-        "never": "Nie"
+        "never": "Nie",
       },
-      "expiresHelp": "Aus Sicherheitsgründen sollte immer ein Enddatum eingestellt werden, um zu verhindern, dass das System langfristig unbefugt genutzt wird.",
-      "expiresNeverWarning": "Ich habe das Risiko verstanden, kein Enddatum festzulegen.",
+      "expiresHelp":
+        "Aus Sicherheitsgründen sollte immer ein Enddatum eingestellt werden, um zu verhindern, dass das System langfristig unbefugt genutzt wird.",
+      "expiresNeverWarning":
+        "Ich habe das Risiko verstanden, kein Enddatum festzulegen.",
       "label": "API Keys",
-      "showingOf": "API Keys {start} bis {end} von {total} werden angezeigt."
+      "showingOf": "API Keys {start} bis {end} von {total} werden angezeigt.",
     },
     "email": {
       "fromEmail": "E-Mail-Adresse",
       "fromName": "Name",
       "label": "E-Mail",
       "text": "Alle E-Mails werden von dieser Adresse gesendet.",
-      "title": "Lege eine Standard-E-Mail-Adresse fest."
+      "title": "Lege eine Standard-E-Mail-Adresse fest.",
     },
     "general": {
       "footer": {
@@ -181,17 +208,18 @@ export const deInformal = {
           "impressumUrl": "Link zu deinem Impressum",
           "privacyUrl": "Link zu deiner Datenschutzerklärung",
           "termsUrl": "Link zu deinen AGB",
-          "title": "Rechtliche Angaben"
+          "title": "Rechtliche Angaben",
         },
         "otherLinks": {
           "add": "Weiteren Link hinzufügen",
           "linkText": "Link-Text",
           "title": "Weitere Links",
-          "url": "URL"
+          "url": "URL",
         },
         "siteUrl": "URL deiner Webseite",
-        "text": "Diese Links erscheinen im Footer in beabee und in deinem E-Mail-Footer.",
-        "title": "Footer"
+        "text":
+          "Diese Links erscheinen im Footer in beabee und in deinem E-Mail-Footer.",
+        "title": "Footer",
       },
       "label": "Allgemein",
       "language": "Sprache",
@@ -201,15 +229,16 @@ export const deInformal = {
         "description": "Beschreibung",
         "image": "Bild",
         "shareTitle": "Überschrift",
-        "text": "Konfiguriere hier, was auf sozialen Medien erscheint, wenn ein Link zu Deiner beabee-Community geteilt wird.",
+        "text":
+          "Konfiguriere hier, was auf sozialen Medien erscheint, wenn ein Link zu Deiner beabee-Community geteilt wird.",
         "title": "Soziale Netzwerke",
-        "twitterHandle": "Twitter-Handle"
-      }
+        "twitterHandle": "Twitter-Handle",
+      },
     },
     "payment": {
       "paymentTitle": "Zahlungen",
       "taxRate": "Mehrwertsteuersatz",
-      "taxRateEnabled": "Mehrwertsteuer aktivieren"
+      "taxRateEnabled": "Mehrwertsteuer aktivieren",
     },
     "theme": {
       "bodyFont": "Text",
@@ -219,52 +248,54 @@ export const deInformal = {
         "link": "Linkfarbe",
         "primary": "Hauptfarbe",
         "success": "Erfolgsnachricht",
-        "warning": "Warnungen"
+        "warning": "Warnungen",
       },
       "colors": "Farben",
       "customColors": "Benutzerdefinierte Farben",
-      "fontNotListed": "<p>Keine passende Schrift dabei? Kontaktiere <a href=\"mailto:support{'@'}beabee.io\">support{'@'}beabee.io</a> und wir fügen eine hinzu.</p>\n",
+      "fontNotListed":
+        "<p>Keine passende Schrift dabei? Kontaktiere <a href=\"mailto:support{'@'}beabee.io\">support{'@'}beabee.io</a> und wir fügen eine hinzu.</p>\n",
       "fonts": "Schriftarten",
       "label": "Theme",
       "presetColors": {
-        "default": "Standardfarben"
+        "default": "Standardfarben",
       },
-      "titleFont": "Überschriften"
+      "titleFont": "Überschriften",
     },
-    "title": "Einstellungen"
+    "title": "Einstellungen",
   },
   "advancedSearch": {
     "addRule": "Filter hinzufügen",
     "button": "Filter",
     "createFilters": "Filter für die Suche erstellen",
-    "createdSegment": "Erstelltes Segment \"{segment}\"",
+    "createdSegment": 'Erstelltes Segment "{segment}"',
     "matchAfter": "der folgenden Filter enthalten",
     "matchBefore": "Ergebnisse sollen",
     "matchType": {
       "AND": "alle",
-      "OR": "mindestens einen"
+      "OR": "mindestens einen",
     },
     "matchWord": {
       "AND": "und",
-      "OR": "oder"
+      "OR": "oder",
     },
     "nestedRules": "Verschachtelte Regeln",
-    "noNestedRules": "Dieser Filter enthält verschachtelte Regeln, die nicht mit dem erweiterten Sucheditor bearbeitet werden können.",
+    "noNestedRules":
+      "Dieser Filter enthält verschachtelte Regeln, die nicht mit dem erweiterten Sucheditor bearbeitet werden können.",
     "operators": {
       "all": {
         "is_empty": "ist leer",
-        "is_not_empty": "ist nicht leer"
+        "is_not_empty": "ist nicht leer",
       },
       "array": {
         "contains": "enthält",
-        "not_contains": "enthält nicht"
+        "not_contains": "enthält nicht",
       },
       "blob": {
         "contains": "enthält",
-        "not_contains": "enthält nicht"
+        "not_contains": "enthält nicht",
       },
       "boolean": {
-        "equal": "ist"
+        "equal": "ist",
       },
       "date": {
         "between": "zwischen",
@@ -274,11 +305,11 @@ export const deInformal = {
         "less": "vor",
         "less_or_equal": "vor oder am",
         "not_between": "nicht zwischen",
-        "not_equal": "ist nicht"
+        "not_equal": "ist nicht",
       },
       "enum": {
         "equal": "ist",
-        "not_equal": "ist nicht"
+        "not_equal": "ist nicht",
       },
       "number": {
         "between": "zwischen",
@@ -288,7 +319,7 @@ export const deInformal = {
         "less": "weniger als",
         "less_or_equal": "höchstens",
         "not_between": "nicht zwischen",
-        "not_equal": "ist nicht"
+        "not_equal": "ist nicht",
       },
       "text": {
         "begins_with": "beginnt mit",
@@ -298,37 +329,39 @@ export const deInformal = {
         "not_begins_with": "beginnt nicht mit",
         "not_contains": "enthält nicht",
         "not_ends_with": "endet nicht mit",
-        "not_equal": "ist nicht"
-      }
+        "not_equal": "ist nicht",
+      },
     },
     "saveSegment": {
       "createOrUpdate": {
         "create": "Neues Segment erstellen",
         "label": "Möchtest du ein neues Segment erstellen?",
-        "update": "Segment \"{segment}\" aktualisieren"
+        "update": 'Segment "{segment}" aktualisieren',
       },
       "createSegment": "Segment erstellen",
       "segmentName": "Name des Segments",
-      "text": "Ein Segment ist eine Gruppe von Kontakten, auf die ausgewählte Filter zutreffen. Genau wie die, die du gerade erstellt hast. Neue Kontakte, auf die die Filter ebenfalls zutreffen, werden dem Segment automatisch hinzugefügt.",
+      "text":
+        "Ein Segment ist eine Gruppe von Kontakten, auf die ausgewählte Filter zutreffen. Genau wie die, die du gerade erstellt hast. Neue Kontakte, auf die die Filter ebenfalls zutreffen, werden dem Segment automatisch hinzugefügt.",
       "title": "Segment speichern",
-      "updateSegment": "Segment aktualisieren"
+      "updateSegment": "Segment aktualisieren",
     },
     "selectFilter": "Filter auswählen",
-    "updatedSegment": "Aktualisiertes Segment \"{segment}\""
+    "updatedSegment": 'Aktualisiertes Segment "{segment}"',
   },
   "apiKey": {
     "data": {
       "createdAt": "Erstellt",
       "description": "Beschreibung",
       "expires": "Enddatum",
-      "token": "Token"
-    }
+      "token": "Token",
+    },
   },
   "callout": {
     "actions": {
-      "updateResponse": "Antwort bearbeiten"
+      "updateResponse": "Antwort bearbeiten",
     },
-    "addAPoint": "Klicken Sie dort auf die Karte, wo Sie einen Ort ergänzen möchten",
+    "addAPoint":
+      "Klicken Sie dort auf die Karte, wo Sie einen Ort ergänzen möchten",
     "addLocation": "Neuen Ort eingeben",
     "confirmHuman": "Bitte bestätige, dass du ein Mensch bist",
     "contactDetails": "Kontaktdaten",
@@ -337,83 +370,87 @@ export const deInformal = {
       "email": "Deine E-Mail-Adresse",
       "guestFieldsMissing": "Bitte gib' uns Deine Kontaktdaten. ",
       "name": "Dein Name",
-      "submittingResponseError": "Es gab ein Problem bei der Übermittlung deiner Antworten. Bitte versuche es erneut."
+      "submittingResponseError":
+        "Es gab ein Problem bei der Übermittlung deiner Antworten. Bitte versuche es erneut.",
     },
     "getStarted": "Starten",
     "joinNow": "Mitglied werden",
     "loginToYourAccount": "Einloggen",
-    "membersOnly": "An diesem Callout können nur zahlende Mitglieder teilnehmen. Um teilzunehmen",
+    "membersOnly":
+      "An diesem Callout können nur zahlende Mitglieder teilnehmen. Um teilzunehmen",
     "responseSubmitted": "Antwort eingereicht",
     "share": {
       "address": "Diesen Callout per Link teilen:",
-      "services": "Diesen Callout auf einer der folgenden Plattformen teilen: "
+      "services": "Diesen Callout auf einer der folgenden Plattformen teilen: ",
     },
     "showingPreview": "Im Vorschaumodus sind Antworten deaktiviert.",
     "toContributionPage": "Meinen Beitrag ändern",
     "updateContribution": "Bitte ändere deinen Beitrag. ",
     "views": {
       "gallery": "Galerie",
-      "map": "Karte"
+      "map": "Karte",
     },
     "youResponded": "Du hast geantwortet ♥",
-    "yourResponse": "Deine Antwort"
+    "yourResponse": "Deine Antwort",
   },
   "calloutAdmin": {
     "deleted": "Callout gelöscht",
-    "ended": "Dieser Callout ist beendet. Du kannst ihn wieder öffnen, indem du ihn bearbeiten.",
+    "ended":
+      "Dieser Callout ist beendet. Du kannst ihn wieder öffnen, indem du ihn bearbeiten.",
     "overview": "Überblick",
-    "reopened": "Dieser Callout ist wieder geöffnet. Gehe auf Bearbeiten um ein neues Enddatum einzustellen.",
-    "responses": "Antworten"
+    "reopened":
+      "Dieser Callout ist wieder geöffnet. Gehe auf Bearbeiten um ein neues Enddatum einzustellen.",
+    "responses": "Antworten",
   },
   "calloutAdminOverview": {
     "actions": {
       "confirmDelete": {
         "text": "Bist du sicher, dass du diesen Callout löschen willst?",
-        "title": "Callout löschen?"
-      }
+        "title": "Callout löschen?",
+      },
     },
     "created": "Super, dein Callout wurde erstellt!",
     "dates": {
       "ends": "Enddatum",
       "label": "Termine",
-      "starts": "Startdatum"
+      "starts": "Startdatum",
     },
     "settings": {
       "answers": {
         "editable": "Können bearbeitet werden",
         "final": "Können nicht bearbeitet werden",
-        "label": "Antworten"
+        "label": "Antworten",
       },
       "contactInfo": {
         "label": "Kontaktinformationen",
         "optional": "Nicht benötigt",
-        "required": "Benötigt"
+        "required": "Benötigt",
       },
       "endsWith": {
         "label": "Endet mit",
         "message": "Dankesnachricht",
-        "redirect": "Weiterleitung"
+        "redirect": "Weiterleitung",
       },
       "label": "Einstellungen",
       "openTo": {
         "everyone": "Alle",
         "label": "Wer kann teilnehmen?",
-        "membersOnly": "Nur Mitglieder"
-      }
+        "membersOnly": "Nur Mitglieder",
+      },
     },
     "summary": "Zusammenfassung",
-    "updated": "Änderungen gespeichert!"
+    "updated": "Änderungen gespeichert!",
   },
   "calloutBuilder": {
     "actions": {
       "addSlide": "Slide hinzufügen",
-      "removeSlide": "Slide entfernen"
+      "removeSlide": "Slide entfernen",
     },
     "internalTitle": "Interner Titel",
     "nextButton": "Text für den Weiter-Button",
     "nextSlide": {
       "default": "-- Standard --",
-      "label": "Nächster Slide"
+      "label": "Nächster Slide",
     },
     "prevButton": "Text für den Zurück-Button",
     "showAdvancedOptions": "Erweiterte Optionen anzeigen",
@@ -423,8 +460,8 @@ export const deInformal = {
       "description": "Description",
       "label": "Label",
       "option": "Option {n}",
-      "placeholder": "Placeholder"
-    }
+      "placeholder": "Placeholder",
+    },
   },
   "calloutResponse": {
     "data": {
@@ -435,50 +472,50 @@ export const deInformal = {
       "contact": "Kontakt",
       "createdAt": "Beantwortet am",
       "tags": "Tags",
-      "updatedAt": "Geändert am"
+      "updatedAt": "Geändert am",
     },
     "dataGroup": {
       "answers": "Fragen",
-      "response": "Antwort"
-    }
+      "response": "Antwort",
+    },
   },
   "calloutResponseBuckets": {
     "inbox": "Eingang",
     "trash": "Papierkorb",
-    "verified": "Verifiziert"
+    "verified": "Verifiziert",
   },
   "calloutResponseComments": {
     "actions": {
       "addComment": "Kommentar hinzufügen",
-      "updateComment": "Kommentar bearbeiten"
+      "updateComment": "Kommentar bearbeiten",
     },
     "addComment": "Einen Kommentar hinzufügen",
     "comments": "Kommentare",
     "confirmDelete": {
       "text": "Bist du sicher, dass du diesen Kommentar löschen willst?",
-      "title": "Kommentar löschen?"
-    }
+      "title": "Kommentar löschen?",
+    },
   },
   "calloutResponsePage": {
     "actions": {
       "assignTo": "Zuweisen",
       "moveBucket": "Antwort verschieben",
       "toggleTag": "Tag hinzufügen / entfernen",
-      "viewOnMap": "Auf Karte anzeigen"
+      "viewOnMap": "Auf Karte anzeigen",
     },
     "editMode": "Vorsicht, du befindest dich im Bearbeitungsmodus!",
     "manageFolders": "Ordner bearbeiten",
     "manageReviewers": "Auswerter bearbeiten",
     "manageTags": "Tags bearbeiten",
     "notifications": {
-      "addedAssignee": "\"{assignee}\" zugewiesen",
-      "addedTag": "Tag \"{tag}\" hinzugefügt",
+      "addedAssignee": '"{assignee}" zugewiesen',
+      "addedTag": 'Tag "{tag}" hinzugefügt',
       "movedToBucket": "Verschoben in {bucket}",
-      "removedAssignee": "Nicht mehr \"{assignee}\" zugewiesen",
-      "removedTag": "Tag \"{tag}\" entfernt"
+      "removedAssignee": 'Nicht mehr "{assignee}" zugewiesen',
+      "removedTag": 'Tag "{tag}" entfernt',
     },
     "responseOf": "Antwort {no} von {total} in {bucket}",
-    "selectedCount": "{n} Antwort ausgewählt | {n} Antworten ausgewählt"
+    "selectedCount": "{n} Antwort ausgewählt | {n} Antworten ausgewählt",
   },
   "calloutResponsesPage": {
     "moveToBucket": "Nach {bucket} verschieben",
@@ -489,19 +526,19 @@ export const deInformal = {
     "searchTag": "Getaggt mit...",
     "showAnswer": "Antwort",
     "showLatestComment": "Letzter Kommentar",
-    "showingOf": "Antworten {start} bis {end} von {total} werden angezeigt"
+    "showingOf": "Antworten {start} bis {end} von {total} werden angezeigt",
   },
   "callouts": {
     "archive": "Archiv",
     "data": {
       "callout": "Callout",
-      "endDate": "Enddatum"
+      "endDate": "Enddatum",
     },
     "noArchivedCallouts": "Keine Callouts",
     "search": "Callouts durchsuchen",
     "showAll": "Alle",
     "showAnswered": "Beantwortet",
-    "showingOf": "Callouts {start} bis {end} von {total} werden angezeigt."
+    "showingOf": "Callouts {start} bis {end} von {total} werden angezeigt.",
   },
   "calloutsAdmin": {
     "addCallout": "Callout anlegen",
@@ -510,28 +547,28 @@ export const deInformal = {
       "responses": "Antworten",
       "starts": "Startdatum",
       "status": "Status",
-      "title": "Titel"
+      "title": "Titel",
     },
     "filter": {
       "all": "Alle Callouts",
       "draft": "Entwürfe",
       "ended": "Beendete Callouts",
       "open": "Aktive Callouts",
-      "scheduled": "Geplante Callouts"
-    }
+      "scheduled": "Geplante Callouts",
+    },
   },
   "common": {
     "backToHome": "Zurück zur Startseite",
     "contributing": "Dein Beitrag",
     "contributionPeriod": {
       "annually": "Jährlich",
-      "monthly": "Monatlich"
+      "monthly": "Monatlich",
     },
     "contributionType": {
       "automatic": "Automatisch",
       "gift": "Geschenk",
       "manual": "Manuell",
-      "none": "None"
+      "none": "None",
     },
     "hello": "Hallo",
     "itemsPerPage": "{items} Einträge pro Seite",
@@ -543,7 +580,7 @@ export const deInformal = {
       "none": "Kein Status",
       "pending": "Pending",
       "subscribed": "Subscribed",
-      "unsubscribed": "Unsubscribed"
+      "unsubscribed": "Unsubscribed",
     },
     "no": "Nein",
     "noResults": "Keine Ergebnisse gefunden",
@@ -553,7 +590,7 @@ export const deInformal = {
       "draft": "Entwurf",
       "failed": "Fehlgeschlagen",
       "pending": "In Bearbeitung",
-      "successful": "Erfolgreich"
+      "successful": "Erfolgreich",
     },
     "perMonth": "/ Monat",
     "perMonthText": "pro Monat",
@@ -562,7 +599,7 @@ export const deInformal = {
     "role": {
       "admin": "Admin",
       "member": "Mitglied",
-      "superadmin": "Überadmin"
+      "superadmin": "Überadmin",
     },
     "selectNone": "-- Keine --",
     "selectOne": "Auswählen",
@@ -571,38 +608,43 @@ export const deInformal = {
       "draft": "Entwurf",
       "ended": "Beendet",
       "open": "Aktiv",
-      "scheduled": "Geplant"
+      "scheduled": "Geplant",
     },
     "thankYou": "Vielen Dank!",
     "timeAgo": "vor {time}",
     "timeIn": "in {time}",
     "until": "bis",
-    "yes": "Ja"
+    "yes": "Ja",
   },
   "contactAccount": {
     "confirmDelete": {
-      "text": "Dadurch werden alle mit der Email-Adresse {email} verbundenen Daten gelöscht. Aktive Mitgliedschaften werden dadurch beendet.",
+      "text":
+        "Dadurch werden alle mit der Email-Adresse {email} verbundenen Daten gelöscht. Aktive Mitgliedschaften werden dadurch beendet.",
       "title": "Kontakt löschen",
-      "warning": "Dieser Schritt kann nicht rückgängig gemacht werden. Sicher, dass du fortfahren möchtest?"
+      "warning":
+        "Dieser Schritt kann nicht rückgängig gemacht werden. Sicher, dass du fortfahren möchtest?",
     },
-    "contactDeleted": "Kontakt gelöscht."
+    "contactDeleted": "Kontakt gelöscht.",
   },
   "contactContribution": {
     "confirmCancel": {
       "confirm": "Ja, Mitgliedschaft kündigen",
-      "text": "Bist du sicher, dass du die Mitgliedschaft dieses Kontakts kündigen willst? Das kann nicht rückgängig gemacht werden. ",
-      "title": "Mitgliedschaft kündigen?"
+      "text":
+        "Bist du sicher, dass du die Mitgliedschaft dieses Kontakts kündigen willst? Das kann nicht rückgängig gemacht werden. ",
+      "title": "Mitgliedschaft kündigen?",
     },
     "updateNotice": {
-      "text": "Du kannst den Beitrag eines Kontakts derzeit nicht aktualisieren. Wende dich an support{'@'}beabee.io, um Unterstützung zu erhalten.",
-      "title": "Derzeit nicht verfügbar"
-    }
+      "text":
+        "Du kannst den Beitrag eines Kontakts derzeit nicht aktualisieren. Wende dich an support{'@'}beabee.io, um Unterstützung zu erhalten.",
+      "title": "Derzeit nicht verfügbar",
+    },
   },
   "contactOverview": {
     "about": "Über",
     "account": "Account",
     "annotation": {
-      "copy": "<p>Alle hier eingegebenen Information sind <strong>nur für Administratoren sichtbar</strong>.\nNutzer bekommen das nicht angezeigt.</p>\n"
+      "copy":
+        "<p>Alle hier eingegebenen Information sind <strong>nur für Administratoren sichtbar</strong>.\nNutzer bekommen das nicht angezeigt.</p>\n",
     },
     "callouts": "Callouts",
     "cancellationDate": "Gekündigt am",
@@ -618,13 +660,14 @@ export const deInformal = {
       "instructions": "Link kopieren und teilen:",
       "loginOverride": "Automatischer Login",
       "mfa": {
-        "desc": "Dieser Kontakt hat 2FA eingeschaltet. Klick auf \"{ disableLabel }\", um es auszuschalten.",
-        "disabledDesc": "Dieser Kontakt hat keine 2FA aktiviert."
+        "desc":
+          'Dieser Kontakt hat 2FA eingeschaltet. Klick auf "{ disableLabel }", um es auszuschalten.',
+        "disabledDesc": "Dieser Kontakt hat keine 2FA aktiviert.",
       },
       "resetPassword": "Passwort zurücksetzen",
       "title": "Sicherheit",
-      "whatDoTheButtonsDo": "Auf den Button klicken, um Link zu erzeugen:"
-    }
+      "whatDoTheButtonsDo": "Auf den Button klicken, um Link zu erzeugen:",
+    },
   },
   "contacts": {
     "addContact": "Kontakt hinzufügen",
@@ -660,51 +703,64 @@ export const deInformal = {
       "period": "Zeitraum",
       "phone": "Telefon",
       "preferredChannel": "Bevorzugter Kanal",
-      "tags": "Tags"
+      "tags": "Tags",
     },
     "dataGroup": {
       "contact": "Kontakt",
       "contribution": "Beitrag",
-      "role": "Rolle"
+      "role": "Rolle",
     },
     "noContacts": "Keine Kontakte",
     "noResults": "Keine Kontakte gefunden",
     "numResults": "{n} Kontakt gefunden | {n} Kontakte gefunden",
     "search": "Kontakte durchsuchen...",
-    "showingOf": "{start} to {end} von {total} Kontakten werden angezeigt."
+    "showingOf": "{start} to {end} von {total} Kontakten werden angezeigt.",
   },
   "contribution": {
-    "adminCancelDescription": "Wenn du die Mitgliedschaft des Kontakts kündigst, endet sie am Ende des aktuellen Zahlungszyklus am {date}.",
+    "adminCancelDescription":
+      "Wenn du die Mitgliedschaft des Kontakts kündigst, endet sie am Ende des aktuellen Zahlungszyklus am {date}.",
     "bankAccount": "Bankverbindung",
     "billing": "Zahlungsart",
     "cancelContribution": "Mitgliedschaft kündigen",
-    "cancelDescription": "Wenn du jetzt kündigst, endet deine Mitgliedschaft am {date}.",
+    "cancelDescription":
+      "Wenn du jetzt kündigst, endet deine Mitgliedschaft am {date}.",
     "cancelMessage": "Schade, dass du uns verlässt.",
     "cancelledContribution": "Deine Mitgliedschaft wurde gekündigt.",
     "changeBank": "Ändere deine Bankverbindung.",
-    "changeBankInfo": "Im nächsten Schritt kannst du deine neue Bankverbindung eingeben.",
+    "changeBankInfo":
+      "Im nächsten Schritt kannst du deine neue Bankverbindung eingeben.",
     "contributing": "Sie zahlen",
-    "contributionUpdateError": "Du kannst deinen Beitrag aktuell nicht ändern, weil eine Zahlung kurz bevorsteht.",
+    "contributionUpdateError":
+      "Du kannst deinen Beitrag aktuell nicht ändern, weil eine Zahlung kurz bevorsteht.",
     "dueToRenew": "Deine Mitgliedschaft wird am {renewalDate} erneuert.",
     "expired": "Deine Mitgliedschaft ist ausgelaufen.",
-    "expiredText": "Möchtest Du deine Mitgliedschaft verlängern? Selbst kleinste Beträge helfen uns und unserer Arbeit. Danke!",
+    "expiredText":
+      "Möchtest Du deine Mitgliedschaft verlängern? Selbst kleinste Beträge helfen uns und unserer Arbeit. Danke!",
     "hasPendingPayment": "Deine Zahlung wird gerade verarbeitet.",
-    "manualPayment": "Du zahlst deinen Beitrag aktuell via {source}. Indem du über unser Mitgliedersystem bezahlst, bekommen wir einen besseren Überblick, auf welche Beiträge wir uns monatlich verlassen können. Für dich wird es außerdem einfacher, deinen Beitrag jederzeit zu ändern.",
+    "manualPayment":
+      "Du zahlst deinen Beitrag aktuell via {source}. Indem du über unser Mitgliedersystem bezahlst, bekommen wir einen besseren Überblick, auf welche Beiträge wir uns monatlich verlassen können. Für dich wird es außerdem einfacher, deinen Beitrag jederzeit zu ändern.",
     "manualPaymentSource": "einem Drittanbieter",
     "nextAmountChanging": "Ab dem {renewalDate} zahlst Du {nextAmount}.",
     "paymentHistory": {
       "empty": "Ältere Zahlungen und Rechnungen finden Sie hier.",
-      "title": "Bisher gezahlte Beiträge"
+      "title": "Bisher gezahlte Beiträge",
     },
     "paymentMethod": "Zahlungsart",
-    "paymentSourceUpdateError": "Du kannst deine Bankverbindung aktuell nicht ändern, weil eine Zahlung kurz bevorsteht.",
-    "prorateDecreaseMessage": "Dein Beitrag bleibt noch für 1 Monat gleich. | Dein Beitrag bleibt noch für {n} Monaten gleich.",
-    "prorateDecreaseMessageWillStart": "Der neue Beitrag wird am {renewalDate} zum ersten Mal eingezogen.",
-    "prorateIncreaseMessage": "Deine Mitgliedschaft mit dem oben angezeigten Beitrag läuft noch 1 Monat. | Deine Mitgliedschaft mit dem oben angezeigten Beitrag läuft noch {n} Monaten.",
-    "prorateIncreaseMessageOneOff": "Du kannst aber eine Einmalzahlung in Höhe von {oneOffPayment} leisten um deine Mitgliedschaft sofort zu verlängern und den Beitrag zu erhöhen.",
-    "prorateNoText": "Wählst Du diese Option, bleibt dein Beitrag bis zum neuen Abrechnungszeitrarum gleich.",
+    "paymentSourceUpdateError":
+      "Du kannst deine Bankverbindung aktuell nicht ändern, weil eine Zahlung kurz bevorsteht.",
+    "prorateDecreaseMessage":
+      "Dein Beitrag bleibt noch für 1 Monat gleich. | Dein Beitrag bleibt noch für {n} Monaten gleich.",
+    "prorateDecreaseMessageWillStart":
+      "Der neue Beitrag wird am {renewalDate} zum ersten Mal eingezogen.",
+    "prorateIncreaseMessage":
+      "Deine Mitgliedschaft mit dem oben angezeigten Beitrag läuft noch 1 Monat. | Deine Mitgliedschaft mit dem oben angezeigten Beitrag läuft noch {n} Monaten.",
+    "prorateIncreaseMessageOneOff":
+      "Du kannst aber eine Einmalzahlung in Höhe von {oneOffPayment} leisten um deine Mitgliedschaft sofort zu verlängern und den Beitrag zu erhöhen.",
+    "prorateNoText":
+      "Wählst Du diese Option, bleibt dein Beitrag bis zum neuen Abrechnungszeitrarum gleich.",
     "prorateNoTitle": "Ändern Sie meinen Beitrag ab dem {renewalDate}.",
-    "prorateYesText": "Wählst Du diese Option, buchen wir eine Einmalzahlung in Höhe von {oneOffPayment} ab und deine Mitgliedschaft wird mit deinem neuen Beitrag sofort verlängert.",
+    "prorateYesText":
+      "Wählst Du diese Option, buchen wir eine Einmalzahlung in Höhe von {oneOffPayment} ab und deine Mitgliedschaft wird mit deinem neuen Beitrag sofort verlängert.",
     "prorateYesTitle": "Meinen Beitrag jetzt erhöhen",
     "restartContribution": "Mitgliedschaft erneuern",
     "startContribution": "Mitgliedschaft beginnen",
@@ -714,15 +770,17 @@ export const deInformal = {
     "updatedContribution": "Dein Beitrag wurde geändert.",
     "updatedPaymentSource": "Deine Zahlungsart wurde aktualisiert. ",
     "willExpire": "Deine Mitgliedschaft läuft in {expires} ab.",
-    "willRenew": "Deine Mitgliedschaft verlängert sich am {renewalDate} automatisch.",
-    "willRenewWithNewAmount": "Deine Mitgliedschaft verlängert sich am {renewalDate} automatisch. Dein Beitrag ist dann {nextAmount}."
+    "willRenew":
+      "Deine Mitgliedschaft verlängert sich am {renewalDate} automatisch.",
+    "willRenewWithNewAmount":
+      "Deine Mitgliedschaft verlängert sich am {renewalDate} automatisch. Dein Beitrag ist dann {nextAmount}.",
   },
   "createCallout": {
     "lastSaved": "Zuletzt vor {duration} gespeichert.",
     "lastSavedNow": "Zuletzt vor wenigen Augenblicken gespeichert.",
     "steps": {
       "content": {
-        "title": "Inhalt"
+        "title": "Inhalt",
       },
       "dates": {
         "inputs": {
@@ -730,18 +788,18 @@ export const deInformal = {
             "label": "Wann soll der Callout enden?",
             "opts": {
               "never": "Nie, bis er manuell beendet wird",
-              "schedule": "Ein Enddatum festlegen"
-            }
+              "schedule": "Ein Enddatum festlegen",
+            },
           },
           "starts": {
             "label": "Wann willst Du den Callout veröffentlichen?",
             "opts": {
               "now": "Sofort",
-              "schedule": "Ein Startdatum festlegen"
-            }
-          }
+              "schedule": "Ein Startdatum festlegen",
+            },
+          },
         },
-        "title": "Zeitplan"
+        "title": "Zeitplan",
       },
       "endMessage": {
         "inputs": {
@@ -749,207 +807,243 @@ export const deInformal = {
             "label": "Wenn die Teilnehmenden ihre Antworten abgeschickt haben",
             "opts": {
               "redirect": "Leite sie auf eine andere Seite weiter",
-              "showMessage": "Zeige ihnen eine Dankesnachricht"
-            }
+              "showMessage": "Zeige ihnen eine Dankesnachricht",
+            },
           },
           "text": {
-            "help": "<p>Erkläre den Teilnehmenden, warum ihre Antwort hilfreich ist und was damit passiert.</p>\n",
+            "help":
+              "<p>Erkläre den Teilnehmenden, warum ihre Antwort hilfreich ist und was damit passiert.</p>\n",
             "label": "Text der Dankesnachricht",
-            "placeholder": "Erkläre den Teilnehmenden, warum ihre Antwort hilfreich ist und was damit passiert."
+            "placeholder":
+              "Erkläre den Teilnehmenden, warum ihre Antwort hilfreich ist und was damit passiert.",
           },
           "title": {
-            "help": "<p>Die Teilnehmer sehen den <strong>Titel</strong> wenn sie ihre Antworten abgeschickt haben.</p>\n",
+            "help":
+              "<p>Die Teilnehmer sehen den <strong>Titel</strong> wenn sie ihre Antworten abgeschickt haben.</p>\n",
             "label": "Titel der Dankesnachricht",
-            "placeholder": "Danke!"
+            "placeholder": "Danke!",
           },
           "url": {
-            "help": "<p>Leite Teilnehmende zum Beispiel auf deine Webseite oder zu einem Hintergrundartikel zum Thema des Callouts weiter.</p>\n",
+            "help":
+              "<p>Leite Teilnehmende zum Beispiel auf deine Webseite oder zu einem Hintergrundartikel zum Thema des Callouts weiter.</p>\n",
             "label": "URL für die Weiterleitung",
-            "placeholder": "https://example.com"
-          }
+            "placeholder": "https://example.com",
+          },
         },
-        "title": "Nachricht am Ende"
+        "title": "Nachricht am Ende",
       },
       "mailchimp": {
-        "title": "Mailchimp-Synchronisation"
+        "title": "Mailchimp-Synchronisation",
       },
       "settings": {
         "inputs": {
           "anonymous": {
-            "help": "<p>Wenn du <strong>anonyme Antworten</strong> erlaubst, werden Teilenehmer nicht nach ihren Kontaktdaten gefragt.</p>\n",
+            "help":
+              "<p>Wenn du <strong>anonyme Antworten</strong> erlaubst, werden Teilenehmer nicht nach ihren Kontaktdaten gefragt.</p>\n",
             "label": "Sollen Gastteilnehmer nach Kontaktdaten gefragt werden?",
             "opts": {
-              "all": "Alle Antworten sollen anonym sein, auch bei eingeloggten Teilnehmern.",
-              "guests": "Nein, Gastteilnehmer können sollen anonym antworten können.",
-              "none": "Ja, nach Kontaktdaten fragen."
-            }
+              "all":
+                "Alle Antworten sollen anonym sein, auch bei eingeloggten Teilnehmern.",
+              "guests":
+                "Nein, Gastteilnehmer können sollen anonym antworten können.",
+              "none": "Ja, nach Kontaktdaten fragen.",
+            },
           },
           "editable": {
-            "help": "<p>Wenn ja, können Teilnehmende <strong>ihre abgeschickten Antworten bearbeiten</strong>, solange der Callout aktiv ist.</p>\n",
-            "label": "Sollen Teilnehmende ihre Antworten bearbeiten können, solange der Callout aktiv ist?",
+            "help":
+              "<p>Wenn ja, können Teilnehmende <strong>ihre abgeschickten Antworten bearbeiten</strong>, solange der Callout aktiv ist.</p>\n",
+            "label":
+              "Sollen Teilnehmende ihre Antworten bearbeiten können, solange der Callout aktiv ist?",
             "opts": {
               "no": "Nein, Antworten sind final",
-              "yes": "Ja"
-            }
+              "yes": "Ja",
+            },
           },
           "mapSchema": {
             "addressPattern": {
-              "label": "Welches Format möchtest du benutzen?"
+              "label": "Welches Format möchtest du benutzen?",
             },
             "addressPatternProp": {
               "label": "Soll ein Feld mit der Adresse gefüllt werden?",
-              "none": "-- Kein Feld mit der Adresse füllen --"
+              "none": "-- Kein Feld mit der Adresse füllen --",
             },
             "addressProp": {
-              "label": "Welches Feld soll für die Darstellung der Antworten auf der Karte verwendet werden?"
+              "label":
+                "Welches Feld soll für die Darstellung der Antworten auf der Karte verwendet werden?",
             },
             "bounds": {
-              "label": "Maximale Kartengröße"
+              "label": "Maximale Kartengröße",
             },
             "center": {
-              "label": "Karten-Zentrum"
+              "label": "Karten-Zentrum",
             },
             "geocodeCountries": {},
             "initialZoom": {
-              "label": "Voreingestellter Zoom"
+              "label": "Voreingestellter Zoom",
             },
             "maxZoom": {
-              "label": "Maximaler Zoom"
+              "label": "Maximaler Zoom",
             },
             "minZoom": {
-              "label": "Minimaler Zoom"
+              "label": "Minimaler Zoom",
             },
             "style": {
-              "help": "<p>Für die Kartenansicht benötigst du ein externes Kartentool, z. B. <a href=\"https://www.maptiler.com\" target=\"_blank\" rel=\"noopener noreferrer\">Maptiler</a> oder <a href=\"https://www.mapbox.com\" target=\"_blank\" rel=\"noopener noreferrer\">Mapbox</a>. Diese Tools stellen dir die URL für die Kartenansicht zur Verfügung, die du hier einfügen musst.</p>\n",
-              "label": "Karten-URL"
+              "help":
+                '<p>Für die Kartenansicht benötigst du ein externes Kartentool, z. B. <a href="https://www.maptiler.com" target="_blank" rel="noopener noreferrer">Maptiler</a> oder <a href="https://www.mapbox.com" target="_blank" rel="noopener noreferrer">Mapbox</a>. Diese Tools stellen dir die URL für die Kartenansicht zur Verfügung, die du hier einfügen musst.</p>\n',
+              "label": "Karten-URL",
             },
-            "title": "Karteneinstellungen"
+            "title": "Karteneinstellungen",
           },
           "multiple": {
-            "help": "<p>Wenn ja, können eingeloggte Nutzer <strong>mehrfach</strong> am Callout teilnehmen.</p>\n",
+            "help":
+              "<p>Wenn ja, können eingeloggte Nutzer <strong>mehrfach</strong> am Callout teilnehmen.</p>\n",
             "label": "Sollen Nutzer mehrfach teilnehmen können?",
             "opts": {
               "no": "Nein, nur eine Teilnahme",
-              "yes": "Ja"
-            }
+              "yes": "Ja",
+            },
           },
           "requireCaptcha": {
-            "help": "<p>Wenn du den <strong>Bot-Spam-Schutz</strong> aktivierst, müssen die Teilnehmenden ein Captcha ausfüllen, um zu bestätigen, dass sie Menschen sind. Das verhindert Spamming von Bots.</p>\n",
+            "help":
+              "<p>Wenn du den <strong>Bot-Spam-Schutz</strong> aktivierst, müssen die Teilnehmenden ein Captcha ausfüllen, um zu bestätigen, dass sie Menschen sind. Das verhindert Spamming von Bots.</p>\n",
             "label": "Bot-Spam-Schutz für den Callout aktivieren?",
             "opts": {
-              "all": "Ja, alle Teilnehmenden müssen bestätigen, dass sie Menschen sind.",
-              "guests": "Ja, Gastteilnehmer müssen bestätigen, dass sie Menschen sind.",
-              "none": "Nein"
-            }
+              "all":
+                "Ja, alle Teilnehmenden müssen bestätigen, dass sie Menschen sind.",
+              "guests":
+                "Ja, Gastteilnehmer müssen bestätigen, dass sie Menschen sind.",
+              "none": "Nein",
+            },
           },
           "responseImageFilter": {
-            "label": "Möchtest du einen Filter auf die Bilder legen?"
+            "label": "Möchtest du einen Filter auf die Bilder legen?",
           },
           "responseImageProp": {
-            "help": "<p>Das Bild wird verwendet, um die Antwort in der Karten- oder Galerieansicht zu visualisieren. Wichtig: Es muss sich um eine Datei-Upload-Komponente handeln.</p>\n",
-            "label": "Welches Feld soll als Bild für Darstellung der Antwort dienen?"
+            "help":
+              "<p>Das Bild wird verwendet, um die Antwort in der Karten- oder Galerieansicht zu visualisieren. Wichtig: Es muss sich um eine Datei-Upload-Komponente handeln.</p>\n",
+            "label":
+              "Welches Feld soll als Bild für Darstellung der Antwort dienen?",
           },
           "responseLinks": {
-            "label": "Links am Ende von Antworten hinzufügen?"
+            "label": "Links am Ende von Antworten hinzufügen?",
           },
           "responseTitleProp": {
-            "help": "<p>Der Titel erscheint als Überschrift auf jeder Antwort in der Karten- oder Galerieansicht.</p>\n",
-            "label": "Welches Feld soll als Überschrift dienen?"
+            "help":
+              "<p>Der Titel erscheint als Überschrift auf jeder Antwort in der Karten- oder Galerieansicht.</p>\n",
+            "label": "Welches Feld soll als Überschrift dienen?",
           },
           "showResponses": {
-            "help": "<p>Mit dieser Funktion ist es möglich, Callout-Antworten auf einer Karte oder als Galerie darzustellen.</p>\n",
-            "label": "Sollen Antworten öffentlich angezeigt werden?"
+            "help":
+              "<p>Mit dieser Funktion ist es möglich, Callout-Antworten auf einer Karte oder als Galerie darzustellen.</p>\n",
+            "label": "Sollen Antworten öffentlich angezeigt werden?",
           },
           "visible": {
-            "help": "<p>Du kannst den Callout <strong>nicht anzeigen</strong> lassen. Dann ist er nur über den Link erreichbar.</p>\n",
-            "label": "Soll der Callout deinen Mitgliedern im Dashboard angezeigt werden?",
+            "help":
+              "<p>Du kannst den Callout <strong>nicht anzeigen</strong> lassen. Dann ist er nur über den Link erreichbar.</p>\n",
+            "label":
+              "Soll der Callout deinen Mitgliedern im Dashboard angezeigt werden?",
             "opts": {
               "no": "Nein, Callout nicht im Dashboard anzeigen.",
-              "yes": "Ja, Callout im Dashboard anzeigen."
-            }
+              "yes": "Ja, Callout im Dashboard anzeigen.",
+            },
           },
           "whichResponseBuckets": {
-            "label": "Welche Antwortbereiche sollen öffentlich angezeigt werden?"
+            "label":
+              "Welche Antwortbereiche sollen öffentlich angezeigt werden?",
           },
           "whichResponseViews": {
-            "help": "<p>Hier kannst du entscheiden, ob du die Karten- oder die Galerieansicht verwenden möchtest. Es ist auch möglich beides auszuwählen.</p>\n",
+            "help":
+              "<p>Hier kannst du entscheiden, ob du die Karten- oder die Galerieansicht verwenden möchtest. Es ist auch möglich beides auszuwählen.</p>\n",
             "label": "Wie soll die Antwort dargestellt werden?",
             "opts": {
               "gallery": "Galerie-Ansicht",
-              "map": "Karten-Ansicht"
-            }
+              "map": "Karten-Ansicht",
+            },
           },
           "who": {
-            "help": "<p>Callouts können für <strong>Alle</strong> oder nur für <strong>Mitglieder</strong> zugänglich sein.</p>\n",
+            "help":
+              "<p>Callouts können für <strong>Alle</strong> oder nur für <strong>Mitglieder</strong> zugänglich sein.</p>\n",
             "label": "Wer kann teilnehmen?",
             "opts": {
               "everyone": "Alle",
-              "members": "Nur Mitglieder"
-            }
-          }
+              "members": "Nur Mitglieder",
+            },
+          },
         },
-        "title": "Einstellungen"
+        "title": "Einstellungen",
       },
       "titleAndImage": {
         "inputs": {
           "description": {
-            "help": "<p>Die <strong>Kurzbeschreibung</strong> ergänzt den Titel und sollte in wenigen Worten erklären, worum es bei dem Callout geht. </p>\n",
+            "help":
+              "<p>Die <strong>Kurzbeschreibung</strong> ergänzt den Titel und sollte in wenigen Worten erklären, worum es bei dem Callout geht. </p>\n",
             "label": "Kurzbeschreibung",
-            "placeholder": "Erkläre kurz und knapp, warum Menschen an dem Callout teilnehmen sollten."
+            "placeholder":
+              "Erkläre kurz und knapp, warum Menschen an dem Callout teilnehmen sollten.",
           },
           "image": {
-            "help": "<p>Das <strong>Titelbild</strong> dient zur Illustration des Callouts.</p>\n",
-            "label": "Titelbild"
+            "help":
+              "<p>Das <strong>Titelbild</strong> dient zur Illustration des Callouts.</p>\n",
+            "label": "Titelbild",
           },
           "intro": {
-            "help": "<p>Die <strong>Einleitung</strong> erscheint vor den Fragen. Erkläre darin, warum du den Callout machst, also was das Ziel ist und wie die Antworten helfen. Gib so viel Kontext wie möglich, um den Teilnehmenden die Beantwortung zu erleichtern.</p>\n",
-            "label": "Einleitung"
+            "help":
+              "<p>Die <strong>Einleitung</strong> erscheint vor den Fragen. Erkläre darin, warum du den Callout machst, also was das Ziel ist und wie die Antworten helfen. Gib so viel Kontext wie möglich, um den Teilnehmenden die Beantwortung zu erleichtern.</p>\n",
+            "label": "Einleitung",
           },
           "overrideShare": {
             "label": "Callout-Titel und -Beschreibung zum Teilen verwenden?",
             "opts": {
               "no": "Nein, Titel und Beschreibung selbst festlegen.",
-              "yes": "Ja"
-            }
+              "yes": "Ja",
+            },
           },
           "shareDescription": {
-            "help": "<p>Die <strong>Social-Media-Beschreibung</strong> ist die Kurzbeschreibung deines Callouts fürs Teilen in sozialen Netzwerken.</p>\n",
+            "help":
+              "<p>Die <strong>Social-Media-Beschreibung</strong> ist die Kurzbeschreibung deines Callouts fürs Teilen in sozialen Netzwerken.</p>\n",
             "label": "Social-Media-Beschreibung",
-            "placeholder": "Die Kurzbeschreibung deines Callouts für Social Media"
+            "placeholder":
+              "Die Kurzbeschreibung deines Callouts für Social Media",
           },
           "shareTitle": {
-            "help": "<p>Der <strong>Social-Media-Titel</strong> ist die Überschrift fürs Teilen in sozialen Netzwerken.</p>\n",
+            "help":
+              "<p>Der <strong>Social-Media-Titel</strong> ist die Überschrift fürs Teilen in sozialen Netzwerken.</p>\n",
             "label": "Social-Media-Titel",
-            "placeholder": "Die Überschrift deines Callouts in sozialen Netzwerken."
+            "placeholder":
+              "Die Überschrift deines Callouts in sozialen Netzwerken.",
           },
           "slug": {
-            "help": "<p>Du kannst den <strong>Permalink</strong> an deine Nutzer schicken, damit sie an dem Callout teilnehmen können.</p>\n",
+            "help":
+              "<p>Du kannst den <strong>Permalink</strong> an deine Nutzer schicken, damit sie an dem Callout teilnehmen können.</p>\n",
             "label": "Permalink",
             "opts": {
               "auto": "Automatisch aus Callout-Titel generieren",
-              "manual": "Benutzerdefinierten Permalink festlegen"
-            }
+              "manual": "Benutzerdefinierten Permalink festlegen",
+            },
           },
           "title": {
-            "help": "<p>Der <strong>Titel</strong> taucht immer dort auf, wo dein Callout erwähnt wird. Überlege dir einen guten Namen, der Interesse weckt.</p>\n",
+            "help":
+              "<p>Der <strong>Titel</strong> taucht immer dort auf, wo dein Callout erwähnt wird. Überlege dir einen guten Namen, der Interesse weckt.</p>\n",
             "label": "Titel",
-            "placeholder": "Der Name deines Callouts."
-          }
+            "placeholder": "Der Name deines Callouts.",
+          },
         },
         "title": "Titel und Bild",
-        "urlWillBe": "Der Permalink wird so aussehen"
-      }
+        "urlWillBe": "Der Permalink wird so aussehen",
+      },
     },
     "title": "Callout anlegen",
-    "untitledCallout": "Unbenannter Callout"
+    "untitledCallout": "Unbenannter Callout",
   },
   "editCallout": {
-    "replicated": "Dein Callout wurde kopiert! Du bearbeitest jetzt die Kopie. Bitte denke unbedingt daran, den Titel zu bearbeiten.",
+    "replicated":
+      "Dein Callout wurde kopiert! Du bearbeitest jetzt die Kopie. Bitte denke unbedingt daran, den Titel zu bearbeiten.",
     "title": "Bearbeiten: {title}",
-    "warning": "Vorsicht! Du bearbeitest einen veröffentlichten Callout. Wenn du Umfrageelemente bearbeitest riskierst Du, Antworten unbrauchbar zu machen."
+    "warning":
+      "Vorsicht! Du bearbeitest einen veröffentlichten Callout. Wenn du Umfrageelemente bearbeitest riskierst Du, Antworten unbrauchbar zu machen.",
   },
   "editNotice": {
-    "title": "Bearbeiten: {title}"
+    "title": "Bearbeiten: {title}",
   },
   "footer": {
     "contactUs": "Kontaktiere uns unter",
@@ -958,13 +1052,15 @@ export const deInformal = {
     "joinCommunity": "Mitglied werden",
     "poweredBy": "Wir stärken unabhängige Lokalredaktionen.",
     "privacyPolicy": "Datenschutzerklärung",
-    "terms": "Allgemeine Geschäftsbedingungen"
+    "terms": "Allgemeine Geschäftsbedingungen",
   },
   "forgotPassword": {
     "backToLogin": "Zurück zum Login",
-    "description": "Bitte gib deine E-Mail-Adresse ein. Wir schicken dir dann die Anleitung zum Zurücksetzen deines Passworts.",
-    "message": "Gibt es einen Account mit der E-mail-Adresse {email}, bekommst du in Kürze eine Nachricht. Bitte schaue in deinen Posteingang und befolge die Anleitung in der E-Mail. Sollte die E-mail nicht auftauchen, checke deinen Spamordner. ",
-    "title": "Passwort vergessen?"
+    "description":
+      "Bitte gib deine E-Mail-Adresse ein. Wir schicken dir dann die Anleitung zum Zurücksetzen deines Passworts.",
+    "message":
+      "Gibt es einen Account mit der E-mail-Adresse {email}, bekommst du in Kürze eine Nachricht. Bitte schaue in deinen Posteingang und befolge die Anleitung in der E-Mail. Sollte die E-mail nicht auftauchen, checke deinen Spamordner. ",
+    "title": "Passwort vergessen?",
   },
   "form": {
     "addressLine1": "Adresse",
@@ -976,75 +1072,81 @@ export const deInformal = {
     "email": "E-Mail",
     "errorMessages": {
       "api": {
-        "account-locked": "Konto wegen zu vieler fehlgeschlagener Anmeldeversuche gesperrt. Bitte Passwort zurücksetzen oder an den Support wenden, um Hilfe zu erhalten.",
+        "account-locked":
+          "Konto wegen zu vieler fehlgeschlagener Anmeldeversuche gesperrt. Bitte Passwort zurücksetzen oder an den Support wenden, um Hilfe zu erhalten.",
         "duplicate-email": "Diese E-Mail-Adresse existiert bereits.",
         "invalid-token": "Dein eingegebener 2FA Token stimmt nicht.",
         "login-failed": "Falsche Kombination von Passwort und E-Mail.",
-        "mfa-token-required": "Bitte gebe den Code deiner Authentifizierungs-App ein."
+        "mfa-token-required":
+          "Bitte gebe den Code deiner Authentifizierungs-App ein.",
       },
-      "generic": "Upps! Etwas ist schiefgelaufen. Bitte wende dich an den Support, sollte das erneut passieren.",
-      "validation": "Es fehlt etwas! Bitte kontrolliere die obigen Felder."
+      "generic":
+        "Upps! Etwas ist schiefgelaufen. Bitte wende dich an den Support, sollte das erneut passieren.",
+      "validation": "Es fehlt etwas! Bitte kontrolliere die obigen Felder.",
     },
     "errors": {
       "address": {
-        "required": "Dieses Feld wird benötigt, wenn du eine Adresse eintragen willst."
+        "required":
+          "Dieses Feld wird benötigt, wenn du eine Adresse eintragen willst.",
       },
       "addressLine1": {
-        "required": "Adresse benötigt"
+        "required": "Adresse benötigt",
       },
       "cityOrTown": {
-        "required": "Ort benötigt"
+        "required": "Ort benötigt",
       },
       "color": {
         "pattern": "Ungültiger Farbcode",
-        "required": "Farbe benötigt"
+        "required": "Farbe benötigt",
       },
       "confirmPassword": {
         "password": "Passwort ungültig",
         "required": "Passwort benötigt",
-        "sameAs": "Passwörter stimmen nicht überein"
+        "sameAs": "Passwörter stimmen nicht überein",
       },
       "email": {
         "email": "Ungültige E-Mail-Adresse",
-        "required": "E-Mail-Adresse benötigt"
+        "required": "E-Mail-Adresse benötigt",
       },
       "file": {
-        "rateLimited": "Hochladen fehlgeschlagen: Du hast in zu kurzer Zeit zu viele Dateien hochgeladen. Bitte warte ein paar Minuten, bevor du es erneut versuchst.",
-        "tooBig": "Hochladen fehlgeschlagen: Die Dateigröße darf max. 20 MB betragen."
+        "rateLimited":
+          "Hochladen fehlgeschlagen: Du hast in zu kurzer Zeit zu viele Dateien hochgeladen. Bitte warte ein paar Minuten, bevor du es erneut versuchst.",
+        "tooBig":
+          "Hochladen fehlgeschlagen: Die Dateigröße darf max. 20 MB betragen.",
       },
       "firstName": {
-        "required": "Vorname benötigt"
+        "required": "Vorname benötigt",
       },
       "lastName": {
-        "required": "Nachname benötigt"
+        "required": "Nachname benötigt",
       },
       "name": {
-        "required": "Name benötigt"
+        "required": "Name benötigt",
       },
       "password": {
         "password": "Passwort ungültig",
         "required": "Passwort benötigt",
-        "sameAs": "Passwörter stimmen nicht überein"
+        "sameAs": "Passwörter stimmen nicht überein",
       },
       "postCode": {
-        "required": "Postleitzahl benötigt"
+        "required": "Postleitzahl benötigt",
       },
       "unknown": {
         "email": "Ungültige E-Mail-Adresse",
         "max": "Dieses Feld darf höchstens {max} sein",
         "min": "Dieses Feld muss mindestens {min}",
         "required": "Dieses Feld wird benötigt",
-        "url": "Ungültige URL"
+        "url": "Ungültige URL",
       },
       "url": {
         "required": "URL benötigt",
-        "url": "Ungültige URL"
+        "url": "Ungültige URL",
       },
       "verifyCode": {
         "max": "Dein Code darf höchstens {max} Zeichen lang sein.",
         "min": "Dein Code muss mindestens {min} Zeichen haben.",
-        "required": "Code benötigt"
-      }
+        "required": "Code benötigt",
+      },
     },
     "firstName": "Vorname",
     "lastName": "Nachname",
@@ -1052,7 +1154,8 @@ export const deInformal = {
     "newPasswordConfirm": "Neues Passwort bestätigen",
     "notes": "Anmerkungen",
     "password": "Passwort",
-    "passwordInfo": "Das Passwort muss aus mindestens acht Zeichen bestehen und mindestens eine Zahl, einen Groß- und einen Kleinbuchstaben enthalten.",
+    "passwordInfo":
+      "Das Passwort muss aus mindestens acht Zeichen bestehen und mindestens eine Zahl, einen Groß- und einen Kleinbuchstaben enthalten.",
     "phone": "Telefon",
     "postCode": "Postleitzahl",
     "richtext": {
@@ -1063,12 +1166,12 @@ export const deInformal = {
       "link": "Link",
       "numberedlist": "Nummerierung",
       "strikethrough": "Durchstreichen",
-      "underline": "Unterstreichen"
+      "underline": "Unterstreichen",
     },
     "saveChanges": "Änderungen speichern",
     "saved": "Gespeichert!",
     "unsavedChanges": "Ungespeicherte Änderungen",
-    "updated": "Aktualisiert"
+    "updated": "Aktualisiert",
   },
   "formRenderer": {
     "components": {
@@ -1078,12 +1181,12 @@ export const deInformal = {
         "or": "oder",
         "switchToFileUpload": "Zum Upload wechseln",
         "takePicture": "Foto aufnehmen",
-        "useCamera": "Kamera benutzen"
+        "useCamera": "Kamera benutzen",
       },
       "multiple": {
-        "addAnother": "Neue hinzufügen"
-      }
-    }
+        "addAnother": "Neue hinzufügen",
+      },
+    },
   },
   "homePage": {
     "editProfile": "Profil bearbeiten",
@@ -1095,30 +1198,35 @@ export const deInformal = {
     "viewAllCallouts": "Alle Callouts anzeigen",
     "viewOpenCallouts": "Aktive Callouts anzeigen",
     "welcome": "Herzlich willkommen {firstName}!",
-    "yourProfile": "Dein Profil"
+    "yourProfile": "Dein Profil",
   },
   "item": {
     "status": {
       "endsIn": "Endet in {duration}",
-      "startsIn": "Startet in {duration}"
-    }
+      "startsIn": "Startet in {duration}",
+    },
   },
   "join": {
-    "absorbFeeForce": "Bei einem Beitrag von {amount}, musst du die {fee} Transaktionskosten übernehmen.",
+    "absorbFeeForce":
+      "Bei einem Beitrag von {amount}, musst du die {fee} Transaktionskosten übernehmen.",
     "absorbFeeOptIn": "Ja, ich übernehme die {fee} Transaktionskosten.",
-    "absorbFeeText": "Unser Zahlungsdienstleister stellt uns jede Transaktion in Rechnung. Das heißt, wir erhalten weniger von deinem monatlichen Beitrag. Möchtest du die Kosten dafür übernehmen? Alternativ kannst du auch jährlich bezahlen.",
+    "absorbFeeText":
+      "Unser Zahlungsdienstleister stellt uns jede Transaktion in Rechnung. Das heißt, wir erhalten weniger von deinem monatlichen Beitrag. Möchtest du die Kosten dafür übernehmen? Alternativ kannst du auch jährlich bezahlen.",
     "contribute": "Mit {contribution} unterstützen.",
     "errors": {
       "confirmEmail": {
-        "message": "Fast geschafft! Wir müssen nur noch deine E-Mail-Adresse bestätigen, um fortzufahren.",
-        "proceed": "Wir haben dir eine E-Mail geschickt. Bitte klicke auf den Bestätigungslink, um fortzufahren.",
-        "title": "E-Mail-Adresse bestätigen"
+        "message":
+          "Fast geschafft! Wir müssen nur noch deine E-Mail-Adresse bestätigen, um fortzufahren.",
+        "proceed":
+          "Wir haben dir eine E-Mail geschickt. Bitte klicke auf den Bestätigungslink, um fortzufahren.",
+        "title": "E-Mail-Adresse bestätigen",
       },
       "failed": {
         "backToJoin": "Zurück zur Registrierung",
-        "message": "Es gab ein Problem bei der Registrierung, unser Team wurde benachrichtigt. Bitte kontaktiere uns, wenn das Problem weiterhin auftritt.",
-        "title": "Etwas ist schief gelaufen"
-      }
+        "message":
+          "Es gab ein Problem bei der Registrierung, unser Team wurde benachrichtigt. Bitte kontaktiere uns, wenn das Problem weiterhin auftritt.",
+        "title": "Etwas ist schief gelaufen",
+      },
     },
     "login": "Anmelden",
     "memberAccount": "Mitglieder-Account",
@@ -1131,20 +1239,22 @@ export const deInformal = {
     "poweredBy": "Powered by beabee",
     "privacy": "Datenschutzerklärung",
     "tax": {
-      "included": "Beitrag inklusive {taxRate}% MwSt."
-    }
+      "included": "Beitrag inklusive {taxRate}% MwSt.",
+    },
   },
   "joinPayment": {
-    "genericError": "Upps! Etwas ist schiefgelaufen. Bitte wende dich an den Support, sollte das erneut passieren.",
+    "genericError":
+      "Upps! Etwas ist schiefgelaufen. Bitte wende dich an den Support, sollte das erneut passieren.",
     "goBack": "Möchtest du etwas ändern? {back}",
     "goBackButton": "Zurück zum letzten Schritt",
-    "note": "Du kannst deine Zahlungsdaten jederzeit in deinem Nutzer-Account ändern und dort auch sehen, wie viel du in der Vergangenheit bereits gezahlt hast. ",
-    "willBeContributing": "Du zahlst {contribution}"
+    "note":
+      "Du kannst deine Zahlungsdaten jederzeit in deinem Nutzer-Account ändern und dort auch sehen, wie viel du in der Vergangenheit bereits gezahlt hast. ",
+    "willBeContributing": "Du zahlst {contribution}",
   },
   "joinSetup": {
     "confirmDetails": "Bitte bestätige deine Angaben:",
     "continue": "Weiter",
-    "welcome": "Willkommen {firstName}!"
+    "welcome": "Willkommen {firstName}!",
   },
   "login": {
     "backTo": "Zurück zu {newsroomName}",
@@ -1152,48 +1262,57 @@ export const deInformal = {
     "joinNow": "Jetzt Mitglied werden!",
     "lostMfaDevice": "2FA-Gerät verloren?",
     "notMember": "Noch kein Mitglied?",
-    "title": "Einloggen"
+    "title": "Einloggen",
   },
   "lostDevice": {
-    "description": "Bitte gib deine E-Mail-Adresse ein, und wir senden dir Anweisungen, wie du dein 2FA zurücksetzen kannst.",
-    "message": "Gibt es einen Account mit der E-mail-Adresse {email}, bekommst du in Kürze eine Nachricht. Bitte schaue in deinen Posteingang und befolge die Anleitung in der E-Mail. Sollte die E-mail nicht auftauchen, checke deinen Spamordner. ",
-    "title": "Du hast dein 2FA-Gerät verloren?"
+    "description":
+      "Bitte gib deine E-Mail-Adresse ein, und wir senden dir Anweisungen, wie du dein 2FA zurücksetzen kannst.",
+    "message":
+      "Gibt es einen Account mit der E-mail-Adresse {email}, bekommst du in Kürze eine Nachricht. Bitte schaue in deinen Posteingang und befolge die Anleitung in der E-Mail. Sollte die E-mail nicht auftauchen, checke deinen Spamordner. ",
+    "title": "Du hast dein 2FA-Gerät verloren?",
   },
   "membershipBuilder": {
     "steps": {
       "accountConfirmation": {
-        "description": "Stelle ein, welche persönlichen Informationen Du über deine Mitglieder sammeln willst.",
+        "description":
+          "Stelle ein, welche persönlichen Informationen Du über deine Mitglieder sammeln willst.",
         "joinSurvey": {
-          "required": "Die Mitglieder müssen den Fragebogen ausfüllen, ehe sie fortfahren können.",
+          "required":
+            "Die Mitglieder müssen den Fragebogen ausfüllen, ehe sie fortfahren können.",
           "slug": "Callout",
           "slugHelp": "Du kannst jeden Callout verwenden, der Enddatum hat.",
-          "text": "Als Teil des Anmeldeprozesses kannst du deine Mitglieder einen kurzen Fragebogen ausfüllen lassen. Du kannst zum Beispiel zusätzliche Informationen abfragen oder in Erfahrung bringen, warum sie Mitglied geworden sind.",
-          "textIntro": "Erkläre deinen Mitgliedern kurz, warum du weitere Informationen von ihnen haben möchtest.",
-          "title": "Anmelde-Fragebogen"
+          "text":
+            "Als Teil des Anmeldeprozesses kannst du deine Mitglieder einen kurzen Fragebogen ausfüllen lassen. Du kannst zum Beispiel zusätzliche Informationen abfragen oder in Erfahrung bringen, warum sie Mitglied geworden sind.",
+          "textIntro":
+            "Erkläre deinen Mitgliedern kurz, warum du weitere Informationen von ihnen haben möchtest.",
+          "title": "Anmelde-Fragebogen",
         },
         "optInLabel": "Beschriftung Kontrollkästchen ",
         "optInText": "Text",
         "optInTitle": "Überschrift",
         "showMailOptIn": "Nach Adresse fragen",
         "showNewsletterOptIn": "Nach Newsletterabonnement fragen",
-        "text": "Neue Mitglieder müssen ihre Registrierung in folgendem Bildschirm bestätigen. Außerdem werden hier persönliche Informationen abgefragt.",
+        "text":
+          "Neue Mitglieder müssen ihre Registrierung in folgendem Bildschirm bestätigen. Außerdem werden hier persönliche Informationen abgefragt.",
         "title": "Persönliche Informationen abfragen",
-        "welcomeMessage": "Willkommensnachricht"
+        "welcomeMessage": "Willkommensnachricht",
       },
       "emails": {
         "bigTitle": "Willkommens- & Kündigungs-E-Mail",
         "cancellationEmail": "Kündigungs-E-Mail",
         "description": "Passe deine Willkommens- und Kündigungs-E-Mail an",
-        "text": "Neue Mitglieder bekommen eine automatische E-Mail, sobald ihre Registrierung abgeschlossen ist. Wer kündigt, bekommt ebenfalls eine automatische E-Mail. Alle E-Mails werden von deiner Support-E-Mail-Adresse gesendet und enthalten eine Standardsignatur. Du kannst die Support-E-Mai-Adresse und die Signatur in den E-Mail-Einstellungen anpassen.",
+        "text":
+          "Neue Mitglieder bekommen eine automatische E-Mail, sobald ihre Registrierung abgeschlossen ist. Wer kündigt, bekommt ebenfalls eine automatische E-Mail. Alle E-Mails werden von deiner Support-E-Mail-Adresse gesendet und enthalten eine Standardsignatur. Du kannst die Support-E-Mai-Adresse und die Signatur in den E-Mail-Einstellungen anpassen.",
         "title": "E-Mails",
-        "welcomeEmail": "Willkommens-E-Mail"
+        "welcomeEmail": "Willkommens-E-Mail",
       },
       "intro": {
         "description": "Heiße neue Mitglieder willkommen",
         "message": "Nachricht",
         "showWelcomeMessage": "Zeige Willkommensnachricht",
-        "text": "Neue Mitglieder werden nach der Registrierung zu ihrem Nutzer-Dashboard weitergeleitet. Dort kannst Du ihnen eine Willkommensnachricht anzeigen lassen. Hier kannst Du sie anpassen:",
-        "title": "Willkommensnachricht"
+        "text":
+          "Neue Mitglieder werden nach der Registrierung zu ihrem Nutzer-Dashboard weitergeleitet. Dort kannst Du ihnen eine Willkommensnachricht anzeigen lassen. Hier kannst Du sie anpassen:",
+        "title": "Willkommensnachricht",
       },
       "joinForm": {
         "backgroundImage": "Hintergrundbild",
@@ -1205,11 +1324,12 @@ export const deInformal = {
         "showAbsorbFee": "Nutzer um Ausgleich der Gebühren bitten",
         "showNoContribution": "Registrierung ohne Zahlung erlauben",
         "suggestedAmounts": "Beiträge vorschlagen",
-        "text": "In diesem Abschnitt kannst du dein Registrierungsformular bearbeiten, optimieren und ansehen.",
-        "title": "Registrierung"
-      }
+        "text":
+          "In diesem Abschnitt kannst du dein Registrierungsformular bearbeiten, optimieren und ansehen.",
+        "title": "Registrierung",
+      },
     },
-    "title": "Membership Builder"
+    "title": "Membership Builder",
   },
   "menu": {
     "account": "Account",
@@ -1226,34 +1346,35 @@ export const deInformal = {
     "notices": "Hinweise",
     "payments": "Zahlungen",
     "settings": "Einstellungen",
-    "yourProfile": "Dein Profil"
+    "yourProfile": "Dein Profil",
   },
   "notFound": {
     "goBack": "Zurück zum Dashboard",
-    "text": "Diese Seite existiert nicht. Wenn Du glaubst, dass das ein Fehler ist kontaktiere {support}."
+    "text":
+      "Diese Seite existiert nicht. Wenn Du glaubst, dass das ein Fehler ist kontaktiere {support}.",
   },
   "noticeAdminOverview": {
     "actions": {
       "confirmDelete": {
         "text": "Bist du sicher, dass du diesen Hinweis löschen willst?",
-        "title": "Hinweis löschen?"
-      }
+        "title": "Hinweis löschen?",
+      },
     },
     "created": "Super, dein Hinweis wurde erstellt!",
     "summary": "Zusammenfassung",
-    "updated": "Änderungen gespeichert!"
+    "updated": "Änderungen gespeichert!",
   },
   "notices": {
     "addNotice": "Hinweis hinzufügen",
     "data": {
       "createdAt": "Erstellt",
       "name": "Name",
-      "status": "Status"
+      "status": "Status",
     },
-    "showingOf": "Hinweise {start} bis {end} von {total} werden angezeigt."
+    "showingOf": "Hinweise {start} bis {end} von {total} werden angezeigt.",
   },
   "notification": {
-    "error": "Da ist etwas schiefgelaufen!"
+    "error": "Da ist etwas schiefgelaufen!",
   },
   "pageTitle": {
     "confirmEmail": "E-Mail-Adresse bestätigen",
@@ -1267,45 +1388,45 @@ export const deInformal = {
     "resetDevice": "Zweitgerät zurücksetzen",
     "resetPassword": "Passwort zurücksetzen",
     "setPassword": "Passwort vergeben",
-    "setup": "Account fertigstellen"
+    "setup": "Account fertigstellen",
   },
   "paymentMethods": {
     "gc_direct-debit": {
       "changeLabel": "Lastschrift ändern",
       "label": "Lastschrift",
-      "setLabel": "Deine Laschriftdaten"
+      "setLabel": "Deine Laschriftdaten",
     },
     "s_bacs": {
       "changeLabel": "Lastschrift ändern",
       "label": "Lastschrift",
-      "setLabel": "Deine Laschriftdaten"
+      "setLabel": "Deine Laschriftdaten",
     },
     "s_card": {
       "changeLabel": "Kreditkartendetails ändern",
       "label": "Kreditkarte",
-      "setLabel": "Deine Kreditkartendetails"
+      "setLabel": "Deine Kreditkartendetails",
     },
     "s_paypal": {
       "changeLabel": "PayPal ändern",
       "label": "PayPal",
-      "setLabel": "Deine PayPal-Daten"
+      "setLabel": "Deine PayPal-Daten",
     },
     "s_sepa": {
       "changeLabel": "Lastschrift ändern",
       "label": "Lastschrift",
-      "setLabel": "Deine Laschriftdaten"
-    }
+      "setLabel": "Deine Laschriftdaten",
+    },
   },
   "payments": {
     "data": {
       "amount": "Betrag",
       "chargeDate": "Abbuchungsdatum",
       "contact": "Kontakt",
-      "status": "Status"
+      "status": "Status",
     },
     "dataGroup": {
-      "payment": "Zahlung"
-    }
+      "payment": "Zahlung",
+    },
   },
   "paymentsAdmin": {
     "filter": {
@@ -1313,16 +1434,18 @@ export const deInformal = {
       "cancelled": "Stonierte Zahlungen",
       "failed": "Gescheiterte Zahlungen",
       "pending": "Ausstehende Zahlungen",
-      "successful": "Erfolgreiche Zahlungen"
+      "successful": "Erfolgreiche Zahlungen",
     },
-    "showingOf": "Zahlungen {start} bis {end} von {total}"
+    "showingOf": "Zahlungen {start} bis {end} von {total}",
   },
   "resetDevice": {
-    "description": "Gib deinPasswort ein, um den 2FA-Schutz zurückzusetzen. Sobald du eingeloggt bist, kannst du ein neues Gerät einrichten.",
-    "failed": "Das Zurücksetzen des Geräts war nicht erfolgreich, möglicherweise ist die Verbindung abgelaufen.",
+    "description":
+      "Gib deinPasswort ein, um den 2FA-Schutz zurückzusetzen. Sobald du eingeloggt bist, kannst du ein neues Gerät einrichten.",
+    "failed":
+      "Das Zurücksetzen des Geräts war nicht erfolgreich, möglicherweise ist die Verbindung abgelaufen.",
     "invalidPassword": "Ungültiges Passwort",
     "success": "Das Zurücksetzen des 2FA-Geräts hat geklappt.",
-    "title": "2FA-Gerät zurücksetzen?"
+    "title": "2FA-Gerät zurücksetzen?",
   },
   "resetPassword": {
     "description": "Neues Passwort eingeben, um fortzufahren.",
@@ -1330,47 +1453,48 @@ export const deInformal = {
     "login": "Einloggen",
     "lostDevice": "2FA-Gerät verloren? Bitte an den Support wenden.",
     "success": "Dein Passwort wurde aktualisiert.",
-    "title": "Passwort aktualisieren?"
+    "title": "Passwort aktualisieren?",
   },
   "roleEditor": {
     "add": "Rolle hinzufügen",
     "addNewRole": "Neue Rolle hinzufügen",
     "confirmDelete": {
       "text": "Bist Du sicher, dass Du diese Rolle entfernen willst?",
-      "title": "Rolle entfernen"
+      "title": "Rolle entfernen",
     },
     "expires": {
       "label": "Ablaufdatum für diese Rolle",
       "opts": {
         "never": "Niemals",
-        "schedule": "Ablaufdatum festlegen"
-      }
+        "schedule": "Ablaufdatum festlegen",
+      },
     },
     "new": "Neue Rolle",
     "starts": {
       "label": "Startdatum für diese Rolle",
       "opts": {
         "now": "Sofort",
-        "schedule": "Startdatum festlegen"
-      }
+        "schedule": "Startdatum festlegen",
+      },
     },
     "title": "Rolle",
-    "today": "heute"
+    "today": "heute",
   },
   "setPassword": {
     "description": "Neues Passwort eingeben, um fortzufahren.",
-    "title": "Passwort vergeben"
+    "title": "Passwort vergeben",
   },
   "tagEditor": {
     "add": "Tag hinzufügen",
     "addNewTag": "Tag hinzufügen",
     "confirmDelete": {
-      "text": "Bist du sicher, dass du diesen Tag entfernen willst? Die damit getaggten Antworten werden nicht gelöscht.",
-      "title": "Tag entfernen"
+      "text":
+        "Bist du sicher, dass du diesen Tag entfernen willst? Die damit getaggten Antworten werden nicht gelöscht.",
+      "title": "Tag entfernen",
     },
-    "name": "Name"
+    "name": "Name",
   },
   "taxRate": {
-    "invoiceName": "MwSt"
-  }
+    "invoiceName": "MwSt",
+  },
 };

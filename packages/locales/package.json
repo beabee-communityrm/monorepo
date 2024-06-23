@@ -10,6 +10,7 @@
   "scripts": {
     "beabee:cli": "",
     "clear": "rm -rf dist; exit 0",
+    "format": "deno fmt .",
     "build": "yarn build:node && yarn build:types && yarn build:json",
     "build:node": "beabee-cli cross-build node",
     "build:types": "tsc",

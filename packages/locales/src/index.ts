@@ -1,6 +1,15 @@
-import { en, de, deInformal, deEasy, pt, ru, it, config as i18nConfig } from './locales/index.ts';
+import {
+  config as i18nConfig,
+  de,
+  deEasy,
+  deInformal,
+  en,
+  it,
+  pt,
+  ru,
+} from "./locales/index.ts";
 
-export { en, de, deInformal, deEasy, pt, ru, it, i18nConfig }
+export { de, deEasy, deInformal, en, i18nConfig, it, pt, ru };
 
 export const locales = {
   de,
@@ -10,7 +19,7 @@ export const locales = {
   nl: en, // CNR only
   pt,
   ru,
-  it
+  it,
 } as const;
 
 export type Locale = keyof typeof locales;

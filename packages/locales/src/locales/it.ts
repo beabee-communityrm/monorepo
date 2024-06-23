@@ -6,25 +6,28 @@ export const it = {
     "mfa": {
       "codeInput": {},
       "confirmDelete": {},
-      "createUnknownErrorNotification": "L'autenticazione a 2 fattori non è stata attivata a causa di un errore sconosciuto. Prova di nuovo o contatta il supporto",
-      "deleteUnknownErrorNotification": "L'autenticazione a 2 fattori non è stata rimossa a causa di un errore sconosciuto. Prova di nuovo o contatta il supporto",
+      "createUnknownErrorNotification":
+        "L'autenticazione a 2 fattori non è stata attivata a causa di un errore sconosciuto. Prova di nuovo o contatta il supporto",
+      "deleteUnknownErrorNotification":
+        "L'autenticazione a 2 fattori non è stata rimossa a causa di un errore sconosciuto. Prova di nuovo o contatta il supporto",
       "enterCode": {},
       "modalTitle": "Attiva autenticazione a 2 fattori",
       "result": {
-        "successful": "L'autenticazione a 2 fattori è stata attivata"
+        "successful": "L'autenticazione a 2 fattori è stata attivata",
       },
       "scan": {},
       "secretInput": {},
       "title": "Autenticazione a 2 fattori",
-      "validateButton": {}
+      "validateButton": {},
     },
     "newsletter": {
       "currentStatus": {},
-      "title": "Newsletter"
+      "title": "Newsletter",
     },
     "savedPassword": "Nuova password salvata",
-    "subTitle": "I campi obbligatori sono indicati con un asterisco. Le informazioni inviate qui sono private.",
-    "title": "Account"
+    "subTitle":
+      "I campi obbligatori sono indicati con un asterisco. Le informazioni inviate qui sono private.",
+    "title": "Account",
   },
   "actions": {
     "add": "Aggiungi",
@@ -34,41 +37,41 @@ export const it = {
     "continue": "Prosegui",
     "disable": "Disattiva",
     "enable": "Attiva",
-    "update": "Aggiorna"
+    "update": "Aggiorna",
   },
   "addContact": {
-    "errors": {}
+    "errors": {},
   },
   "addNotice": {
-    "form": {}
+    "form": {},
   },
   "adminDashboard": {
     "latestCallout": {},
     "mostRecentMembers": {},
-    "numbers": {}
+    "numbers": {},
   },
   "adminSettings": {
     "apikey": {
       "confirmCreate": {},
       "confirmDelete": {},
-      "expires": {}
+      "expires": {},
     },
     "email": {},
     "general": {
       "footer": {
         "dataPrivacy": {
           "privacyUrl": "Url della privacy",
-          "termsUrl": "Url dei termini di servizio"
+          "termsUrl": "Url dei termini di servizio",
         },
-        "otherLinks": {}
+        "otherLinks": {},
       },
-      "socialSharing": {}
+      "socialSharing": {},
     },
     "payment": {},
     "theme": {
       "colorNames": {},
-      "presetColors": {}
-    }
+      "presetColors": {},
+    },
   },
   "advancedSearch": {
     "matchType": {},
@@ -81,80 +84,80 @@ export const it = {
       "date": {},
       "enum": {},
       "number": {},
-      "text": {}
+      "text": {},
     },
     "saveSegment": {
-      "createOrUpdate": {}
-    }
+      "createOrUpdate": {},
+    },
   },
   "apiKey": {
-    "data": {}
+    "data": {},
   },
   "callout": {
     "actions": {},
     "form": {},
     "share": {},
-    "views": {}
+    "views": {},
   },
   "calloutAdmin": {},
   "calloutAdminOverview": {
     "actions": {
-      "confirmDelete": {}
+      "confirmDelete": {},
     },
     "dates": {},
     "settings": {
       "answers": {},
       "contactInfo": {},
       "endsWith": {},
-      "openTo": {}
-    }
+      "openTo": {},
+    },
   },
   "calloutBuilder": {
     "actions": {},
     "nextSlide": {},
-    "translationFields": {}
+    "translationFields": {},
   },
   "calloutResponse": {
     "data": {},
-    "dataGroup": {}
+    "dataGroup": {},
   },
   "calloutResponseBuckets": {},
   "calloutResponseComments": {
     "actions": {},
-    "confirmDelete": {}
+    "confirmDelete": {},
   },
   "calloutResponsePage": {
     "actions": {},
-    "notifications": {}
+    "notifications": {},
   },
   "calloutResponsesPage": {},
   "callouts": {
     "archive": "Archivio",
     "data": {
       "callout": "Callout",
-      "endDate": "Data fine"
+      "endDate": "Data fine",
     },
     "noArchivedCallouts": "Nessuna callout",
     "search": "Cerca un callout",
     "showAll": "Tutti",
-    "showAnswered": "Completati"
+    "showAnswered": "Completati",
   },
   "calloutsAdmin": {
     "data": {},
-    "filter": {}
+    "filter": {},
   },
   "common": {
     "backToHome": "Torna alla home",
     "contributing": "Il tuo contributo",
     "contributionPeriod": {
       "annually": "all'anno",
-      "monthly": "al mese"
+      "monthly": "al mese",
     },
     "contributionType": {
       "automatic": "Automatico",
       "gift": "Regalo",
       "manual": "Manuale",
-      "none": "Nessuno"
+      "none": "Nessuno",
     },
     "hello": "Ciao",
     "joined": "Iscritto",
@@ -165,7 +168,7 @@ export const it = {
       "none": "Nessuno",
       "pending": "In attesa",
       "subscribed": "Iscritto",
-      "unsubscribed": "Annulla l'iscrizione"
+      "unsubscribed": "Annulla l'iscrizione",
     },
     "no": "No",
     "noResults": "Nessun risultato",
@@ -175,7 +178,7 @@ export const it = {
       "draft": "Bozza",
       "failed": "Errore",
       "pending": "In attesa",
-      "successful": "Riuscito"
+      "successful": "Riuscito",
     },
     "perMonth": "/ mese",
     "perMonthText": "al mese",
@@ -189,53 +192,55 @@ export const it = {
       "draft": "Bozza",
       "ended": "Chiuso",
       "open": "Aperto",
-      "scheduled": "Programmato"
+      "scheduled": "Programmato",
     },
     "thankYou": "Grazie!",
     "timeAgo": "{time} fa",
     "timeIn": "in {time}",
     "until": "fino",
-    "yes": "Sì"
+    "yes": "Sì",
   },
   "contactAccount": {
     "confirmDelete": {
       "text": "Admin",
       "title": "Admin",
-      "warning": "Admin"
+      "warning": "Admin",
     },
-    "contactDeleted": "Admin"
+    "contactDeleted": "Admin",
   },
   "contactContribution": {
     "confirmCancel": {
       "confirm": "Sì, sono sicuro",
-      "text": "Sei sicuro di voler cancellare il contributo? Non potrà essere ripristinato",
-      "title": "Cancellare il contributo?"
+      "text":
+        "Sei sicuro di voler cancellare il contributo? Non potrà essere ripristinato",
+      "title": "Cancellare il contributo?",
     },
-    "updateNotice": {}
+    "updateNotice": {},
   },
   "contactOverview": {
     "annotation": {},
     "security": {
-      "mfa": {}
-    }
+      "mfa": {},
+    },
   },
   "contacts": {
     "data": {},
-    "dataGroup": {}
+    "dataGroup": {},
   },
   "contribution": {
     "cancelContribution": "Cancella il tuo contributo",
-    "cancelDescription": "Cancellando il tuo contributo, la tua membership terminerà alla fine del ciclo di pagamento, il {date}.",
+    "cancelDescription":
+      "Cancellando il tuo contributo, la tua membership terminerà alla fine del ciclo di pagamento, il {date}.",
     "contributing": "Il tuo contributo è",
     "paymentHistory": {
-      "title": "Cronologia dei pagamenti"
+      "title": "Cronologia dei pagamenti",
     },
     "paymentMethod": "Metodo di pagamento",
     "restartContribution": "Ripristina contributo",
     "startContribution": "Avvia contirbuto",
     "updateContribution": "Aggiorna il tuo contributo",
     "updatePaymentType": "Aggiorna il metodo di pagamento",
-    "willRenew": "Il tuo contributo sarà aggiornato il {renewalDate}."
+    "willRenew": "Il tuo contributo sarà aggiornato il {renewalDate}.",
   },
   "createCallout": {
     "steps": {
@@ -243,31 +248,31 @@ export const it = {
       "dates": {
         "inputs": {
           "expires": {
-            "opts": {}
+            "opts": {},
           },
           "starts": {
-            "opts": {}
-          }
-        }
+            "opts": {},
+          },
+        },
       },
       "endMessage": {
         "inputs": {
           "action": {
-            "opts": {}
+            "opts": {},
           },
           "text": {},
           "title": {},
-          "url": {}
-        }
+          "url": {},
+        },
       },
       "mailchimp": {},
       "settings": {
         "inputs": {
           "anonymous": {
-            "opts": {}
+            "opts": {},
           },
           "editable": {
-            "opts": {}
+            "opts": {},
           },
           "mapSchema": {
             "addressPattern": {},
@@ -279,13 +284,13 @@ export const it = {
             "initialZoom": {},
             "maxZoom": {},
             "minZoom": {},
-            "style": {}
+            "style": {},
           },
           "multiple": {
-            "opts": {}
+            "opts": {},
           },
           "requireCaptcha": {
-            "opts": {}
+            "opts": {},
           },
           "responseImageFilter": {},
           "responseImageProp": {},
@@ -293,16 +298,16 @@ export const it = {
           "responseTitleProp": {},
           "showResponses": {},
           "visible": {
-            "opts": {}
+            "opts": {},
           },
           "whichResponseBuckets": {},
           "whichResponseViews": {
-            "opts": {}
+            "opts": {},
           },
           "who": {
-            "opts": {}
-          }
-        }
+            "opts": {},
+          },
+        },
       },
       "titleAndImage": {
         "inputs": {
@@ -310,17 +315,17 @@ export const it = {
           "image": {},
           "intro": {},
           "overrideShare": {
-            "opts": {}
+            "opts": {},
           },
           "shareDescription": {},
           "shareTitle": {},
           "slug": {
-            "opts": {}
+            "opts": {},
           },
-          "title": {}
-        }
-      }
-    }
+          "title": {},
+        },
+      },
+    },
   },
   "editCallout": {},
   "editNotice": {},
@@ -331,20 +336,22 @@ export const it = {
     "joinCommunity": "Unisciti alla nostra community",
     "poweredBy": "powering independent local newsrooms",
     "privacyPolicy": "Privacy",
-    "terms": "Termini e condizioni"
+    "terms": "Termini e condizioni",
   },
   "forgotPassword": {
     "backToLogin": "Torna alla pagina di login ",
-    "description": "Inserisci la tua mail. Ti invieremo le istruzioni su come reimpostare la tua password.",
-    "message": "Se esiste già un account associato a {email}, riceverai una mail a breve. Controlla anche la tua cartella spam.",
-    "title": "Hai dimenticato la password?"
+    "description":
+      "Inserisci la tua mail. Ti invieremo le istruzioni su come reimpostare la tua password.",
+    "message":
+      "Se esiste già un account associato a {email}, riceverai una mail a breve. Controlla anche la tua cartella spam.",
+    "title": "Hai dimenticato la password?",
   },
   "form": {
     "addressLine1": "Dettagli indirizzo 1",
     "addressLine2": "Dettagli indirizzo 2",
     "cityOrTown": "Città",
     "errorMessages": {
-      "api": {}
+      "api": {},
     },
     "errors": {
       "address": {},
@@ -361,21 +368,22 @@ export const it = {
       "postCode": {},
       "unknown": {},
       "url": {},
-      "verifyCode": {}
+      "verifyCode": {},
     },
     "firstName": "Nome",
     "lastName": "Cognome",
-    "passwordInfo": "Crea una password sicura: almeno 8 caratteri, un numero, una lettera minuscola e una maiuscola.",
+    "passwordInfo":
+      "Crea una password sicura: almeno 8 caratteri, un numero, una lettera minuscola e una maiuscola.",
     "postCode": "CAP",
     "richtext": {},
     "saved": "Salvato!",
-    "updated": "Aggiornato"
+    "updated": "Aggiornato",
   },
   "formRenderer": {
     "components": {
       "file": {},
-      "multiple": {}
-    }
+      "multiple": {},
+    },
   },
   "homePage": {
     "manageContribution": "Gestisci il tuo contributo",
@@ -385,43 +393,47 @@ export const it = {
     "viewAllCallouts": "Vedi tutte le callout",
     "viewOpenCallouts": "Vedi le callout in corso",
     "welcome": "Ben fatto {firstName}!",
-    "yourProfile": "Il tuo profilo"
+    "yourProfile": "Il tuo profilo",
   },
   "item": {
-    "status": {}
+    "status": {},
   },
   "join": {
     "absorbFeeOptIn": "Sì, intendo coprire i {fee} della transazione.",
-    "absorbFeeText": "La nostra piattaforma di pagamento addebita un costo per la transazione. Significa che mensilmente riceveremo meno rispetto alla quota che hai scelto. Vuoi coprire il costo della transazione? Il pagamento annuale, invece, non prevede costi ulteriori.  ",
+    "absorbFeeText":
+      "La nostra piattaforma di pagamento addebita un costo per la transazione. Significa che mensilmente riceveremo meno rispetto alla quota che hai scelto. Vuoi coprire il costo della transazione? Il pagamento annuale, invece, non prevede costi ulteriori.  ",
     "contribute": "Contribuisci con {contribution}",
     "errors": {
       "confirmEmail": {
-        "message": "Ci sei quasi! Devi solo confermare il tuo indirizzo mail. Controlla la tua casella di posta.",
-        "proceed": "Ti abbiamo inviato una mail. Clicca il link all'interno per procedere. ",
-        "title": "Conferma il tuo account."
+        "message":
+          "Ci sei quasi! Devi solo confermare il tuo indirizzo mail. Controlla la tua casella di posta.",
+        "proceed":
+          "Ti abbiamo inviato una mail. Clicca il link all'interno per procedere. ",
+        "title": "Conferma il tuo account.",
       },
       "failed": {
-        "title": "Qualcosa è andato storto"
-      }
+        "title": "Qualcosa è andato storto",
+      },
     },
     "login": "Log in",
     "memberAccount": "Il tuo account",
     "memberAlready": "Sei già iscritto?",
     "paymentMethod": "Metodo di pagamento",
     "privacy": "Privacy",
-    "tax": {}
+    "tax": {},
   },
   "joinPayment": {
     "genericError": "Ops! Qualcosa è andato storto",
     "goBack": "Ti sei perso qualcosa? {back}",
     "goBackButton": "Torna alla schermata precedente",
-    "note": "Potrai modificare l'ammontare del tuo contributo e accedere allo storico delle tue donazioni in qualsiasi momento tramite il tuo account.",
-    "willBeContributing": "Contribuirai con {contribution}"
+    "note":
+      "Potrai modificare l'ammontare del tuo contributo e accedere allo storico delle tue donazioni in qualsiasi momento tramite il tuo account.",
+    "willBeContributing": "Contribuirai con {contribution}",
   },
   "joinSetup": {
     "confirmDetails": "Per favore, conferma i tuoi dettagli.",
     "continue": "Ottimo! Prosegui",
-    "welcome": "Benvenutə {firstName}!"
+    "welcome": "Benvenutə {firstName}!",
   },
   "login": {
     "backTo": "Torna a  {newsroomName}",
@@ -429,22 +441,24 @@ export const it = {
     "joinNow": "Iscriviti!",
     "lostMfaDevice": "Hai perso il tuo dispositivo 2FA?",
     "notMember": "Non sei iscritto?",
-    "title": "Accedi al tuo account"
+    "title": "Accedi al tuo account",
   },
   "lostDevice": {
-    "description": "Inserisci la tua mail. Ti invieremo le istruzioni su come reimpostare il tuo 2FA.",
-    "message": "Se esiste già un account associato a {email}, riceverai una mail a breve. Controlla anche la tua cartella spam.",
-    "title": "Hai perso il tuo dispositivo 2FA?"
+    "description":
+      "Inserisci la tua mail. Ti invieremo le istruzioni su come reimpostare il tuo 2FA.",
+    "message":
+      "Se esiste già un account associato a {email}, riceverai una mail a breve. Controlla anche la tua cartella spam.",
+    "title": "Hai perso il tuo dispositivo 2FA?",
   },
   "membershipBuilder": {
     "steps": {
       "accountConfirmation": {
-        "joinSurvey": {}
+        "joinSurvey": {},
       },
       "emails": {},
       "intro": {},
-      "joinForm": {}
-    }
+      "joinForm": {},
+    },
   },
   "menu": {
     "account": "Account",
@@ -460,64 +474,64 @@ export const it = {
     "notices": "Notifiche",
     "payments": "Pagamenti",
     "settings": "Impostazioni",
-    "yourProfile": "Il tuo profilo"
+    "yourProfile": "Il tuo profilo",
   },
   "notFound": {},
   "noticeAdminOverview": {
     "actions": {
-      "confirmDelete": {}
-    }
+      "confirmDelete": {},
+    },
   },
   "notices": {
-    "data": {}
+    "data": {},
   },
   "notification": {},
   "pageTitle": {},
   "paymentMethods": {
     "gc_direct-debit": {
-      "label": "Addebito diretto"
+      "label": "Addebito diretto",
     },
     "s_bacs": {
-      "label": "Addebito diretto"
+      "label": "Addebito diretto",
     },
     "s_card": {
       "changeLabel": "Modifica i dettagli della carta",
-      "label": "Carta di credito"
+      "label": "Carta di credito",
     },
     "s_paypal": {},
     "s_sepa": {
-      "label": "Addebito diretto"
-    }
+      "label": "Addebito diretto",
+    },
   },
   "payments": {
     "data": {},
-    "dataGroup": {}
+    "dataGroup": {},
   },
   "paymentsAdmin": {
-    "filter": {}
+    "filter": {},
   },
   "resetDevice": {},
   "resetPassword": {
     "login": "Accedi al tuo account. ",
-    "title": "Vuoi reimpostare la tua password?"
+    "title": "Vuoi reimpostare la tua password?",
   },
   "roleEditor": {
     "confirmDelete": {},
     "expires": {
-      "opts": {}
+      "opts": {},
     },
     "starts": {
-      "opts": {}
-    }
+      "opts": {},
+    },
   },
   "setPassword": {
     "description": "Imposta una nuova password.",
-    "title": "Imposta una password"
+    "title": "Imposta una password",
   },
   "tagEditor": {
-    "confirmDelete": {}
+    "confirmDelete": {},
   },
   "taxRate": {
-    "invoiceName": "VAT"
-  }
+    "invoiceName": "VAT",
+  },
 };

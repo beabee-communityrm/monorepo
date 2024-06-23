@@ -5,7 +5,7 @@ import {
   Entity,
   ManyToOne,
   PrimaryColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
 } from "typeorm";
 import type { Contact } from "./Contact.js";
 

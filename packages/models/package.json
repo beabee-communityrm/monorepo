@@ -11,6 +11,7 @@
   "scripts": {
     "beabee:cli": "yarn exec 'deno task beabee:cli'",
     "clear": "rm -rf dist; exit 0",
+    "format": "deno fmt .",
     "build": "yarn generate:index && yarn build:esm && yarn build:cjs && yarn build:cjs-package",
     "build:esm": "tsc --project ./tsconfig.json --outDir ./dist/esm",
     "build:cjs": "tsc --project ./tsconfig.cjs.json --outDir ./dist/cjs",

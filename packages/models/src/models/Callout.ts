@@ -1,15 +1,15 @@
 import {
-  CalloutData,
   CalloutAccess,
   CalloutCaptcha,
-  CalloutChannel
+  CalloutChannel,
+  CalloutData,
 } from "@beabee/beabee-common";
 import {
   Column,
   CreateDateColumn,
   Entity,
   OneToMany,
-  PrimaryGeneratedColumn
+  PrimaryGeneratedColumn,
 } from "typeorm";
 
 import { ItemWithStatus } from "./ItemWithStatus.js";
@@ -17,7 +17,10 @@ import type { CalloutResponse } from "./CalloutResponse.js";
 import type { CalloutTag } from "./CalloutTag.js";
 import type { CalloutVariant } from "./CalloutVariant.js";
 
-import type { CalloutResponseViewSchema, SetCalloutFormSchema } from "@beabee/beabee-common";
+import type {
+  CalloutResponseViewSchema,
+  SetCalloutFormSchema,
+} from "@beabee/beabee-common";
 
 @Entity()
 export class Callout extends ItemWithStatus implements CalloutData {

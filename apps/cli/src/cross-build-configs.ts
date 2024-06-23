@@ -1,4 +1,4 @@
-import { transformExtPlugin, DenoPlugins, resolve } from "./deps.ts";
+import { DenoPlugins, resolve, transformExtPlugin } from "./deps.ts";
 import { renameExtPlugin } from "./plugins/rename.ts";
 
 import type { EsbuildConfigs } from "./types.ts";

@@ -4,7 +4,7 @@ import {
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
 } from "typeorm";
 import { CalloutResponse } from "./CalloutResponse.js";
 import { Contact } from "./Contact.js";

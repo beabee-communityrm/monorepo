@@ -11,7 +11,7 @@ const stockTransformer: ValueTransformer = {
   },
   from(value: [string, number][]): Map<string, number> {
     return new Map(value);
-  }
+  },
 };
 
 @Entity()

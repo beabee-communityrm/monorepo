@@ -3,7 +3,7 @@ import {
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
-  Unique
+  Unique,
 } from "typeorm";
 import type { Contact } from "./Contact.js";
 import type { Project } from "./Project.js";

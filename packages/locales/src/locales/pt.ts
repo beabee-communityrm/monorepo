@@ -6,57 +6,71 @@ export const pt = {
     "loginDetail": "Detalhes de login",
     "mfa": {
       "codeInput": {
-        "info": "Caso tenhas perdido o teu disppositvo de 2FA entra em contacto connosco.",
-        "label": "Código"
+        "info":
+          "Caso tenhas perdido o teu disppositvo de 2FA entra em contacto connosco.",
+        "label": "Código",
       },
       "confirmDelete": {
-        "desc": "Tens a certeza de que queres desativar a autenticação de múltiplos fatores? A partir daí, passas a só precisar da tua palavra-passe para fazer login. Lembra-te de eliminar a entrada no tua app de autenticação. Podes sempre ativá-la novamente.",
-        "descToken": "Para desativar o 2FA, por favor, insere o teu código 2FA atual:",
-        "title": "Desativar 2FA"
+        "desc":
+          "Tens a certeza de que queres desativar a autenticação de múltiplos fatores? A partir daí, passas a só precisar da tua palavra-passe para fazer login. Lembra-te de eliminar a entrada no tua app de autenticação. Podes sempre ativá-la novamente.",
+        "descToken":
+          "Para desativar o 2FA, por favor, insere o teu código 2FA atual:",
+        "title": "Desativar 2FA",
       },
-      "createUnknownErrorNotification": "A autenticação de dois fatores não pôde ser salva devido a um erro \ndesconhecido. Por favor, tenta novamente ou fala connosco.",
-      "deleteUnknownErrorNotification": "A autenticação de dois fatores não pôde ser eliminada devido a um erro \ndesconhecido. Por favor, tenta novamente ou fala connosco.",
-      "disabledNotification": "Autenticação de dois factores desativada com sucesso",
-      "enabledNotification": "Autenticação de dois factores ativada com sucesso",
+      "createUnknownErrorNotification":
+        "A autenticação de dois fatores não pôde ser salva devido a um erro \ndesconhecido. Por favor, tenta novamente ou fala connosco.",
+      "deleteUnknownErrorNotification":
+        "A autenticação de dois fatores não pôde ser eliminada devido a um erro \ndesconhecido. Por favor, tenta novamente ou fala connosco.",
+      "disabledNotification":
+        "Autenticação de dois factores desativada com sucesso",
+      "enabledNotification":
+        "Autenticação de dois factores ativada com sucesso",
       "enterCode": {
         "desc": "Introduz o código que vem na tua app de autenticação",
-        "title": "Verificação"
+        "title": "Verificação",
       },
       "modalTitle": "Ativar autenticação de dois factores",
       "result": {
-        "invalidCode": "O código não pode ser validado. Tenta de novo ou contacta-nos {support}",
+        "invalidCode":
+          "O código não pode ser validado. Tenta de novo ou contacta-nos {support}",
         "successful": "Autenticação de dois factores ativada com sucesso.",
-        "title": "Feito"
+        "title": "Feito",
       },
       "scan": {
-        "desc": "Faça scan do código QR abaixo, usando a sua app de autenticação.",
-        "title": "Código QR"
+        "desc":
+          "Faça scan do código QR abaixo, usando a sua app de autenticação.",
+        "title": "Código QR",
       },
       "secretInput": {
-        "desc": "Alternativamente podes inserir o seguinte código na tua app de autenticação.",
-        "label": "Código secreto"
+        "desc":
+          "Alternativamente podes inserir o seguinte código na tua app de autenticação.",
+        "label": "Código secreto",
       },
       "title": "Autenticação de dois factores",
       "validateButton": {
-        "label": "Verificar token"
-      }
+        "label": "Verificar token",
+      },
     },
     "newsletter": {
-      "cantUpdate": "Para mudar o estado deste contacto relativamente à newsletter, por favor contacte o apoio ao cliente em support{'@'}beabee.io.",
+      "cantUpdate":
+        "Para mudar o estado deste contacto relativamente à newsletter, por favor contacte o apoio ao cliente em support{'@'}beabee.io.",
       "currentStatus": {
-        "cleaned": "Este contacto foi retirado automaticamente da lista de assinantes da newsletter, provavelmente porque o seu endereço de e-mail está a devolver as mensagens.",
+        "cleaned":
+          "Este contacto foi retirado automaticamente da lista de assinantes da newsletter, provavelmente porque o seu endereço de e-mail está a devolver as mensagens.",
         "none": "Este contacto não assina a newsletter.",
-        "pending": "Este contacto recebeu o pedido para assinar a newsletter, e só se tornará assinante quando aceitar.",
+        "pending":
+          "Este contacto recebeu o pedido para assinar a newsletter, e só se tornará assinante quando aceitar.",
         "subscribed": "Este contacto assina a newsletter.",
-        "unsubscribed": "Este contacto não assina a newsletter."
+        "unsubscribed": "Este contacto não assina a newsletter.",
       },
       "subscribe": "Inscrever na newsletter",
       "title": "Newsletter",
-      "unsubscribe": "Suspender inscrição na newsletter"
+      "unsubscribe": "Suspender inscrição na newsletter",
     },
     "savedPassword": "Nova palavra-passe gravada",
-    "subTitle": "Os campos obrigatórios estão marcados com asteriscos. Toda a informação enviada por aqui é privada.",
-    "title": "Conta"
+    "subTitle":
+      "Os campos obrigatórios estão marcados com asteriscos. Toda a informação enviada por aqui é privada.",
+    "title": "Conta",
   },
   "actions": {
     "add": "Adicionar",
@@ -102,62 +116,66 @@ export const pt = {
     "view": "Ver",
     "yesDelete": "Sim, apagar",
     "yesDisable": "Sim, desactivar",
-    "yesRemove": "Sim, remover"
+    "yesRemove": "Sim, remover",
   },
   "addContact": {
     "contactSaved": "Contacto gravado",
     "errors": {
-      "duplicateEmail": "Este endereço de email já existe"
+      "duplicateEmail": "Este endereço de email já existe",
     },
     "subscribeToNewsletter": "Sincronizar com newsletter tool",
-    "title": "Adicionar um contacto"
+    "title": "Adicionar um contacto",
   },
   "addNotice": {
-    "form": {}
+    "form": {},
   },
   "adminDashboard": {
-    "hint1": "<p>Sabias que as chamadas podem ser criadas sem data de conclusão, e assim continuarem indefinidamente? Há mais pormenores na nossa <a href=\"https://beabee.io/en/beabee-full-feature-list/\" target=\"_blank\" rel=\"noopener noreferrer\">demonstração de funcionalidades</a></p>\n",
-    "hint2": "<p>Sabe mais sobre a <a href=\"https://beabee.io/en/beabee-model/\" target=\"_blank\" rel=\"noopener noreferrer\">visão beabee</a> no que toca ao envolvimento da comunidade e formar relações com o seu público.</p>\n",
-    "hint3": "<p>O nosso <a href=\"https://beabee.io/en/beabee-faq/\" target=\"_blank\" rel=\"noopener noreferrer\">FAQ</a> abordamos questões frequentes sobre como começar e casos de estudo. Se a resposta que procuras não estiver lá, contacta-nos.</p>\n",
+    "hint1":
+      '<p>Sabias que as chamadas podem ser criadas sem data de conclusão, e assim continuarem indefinidamente? Há mais pormenores na nossa <a href="https://beabee.io/en/beabee-full-feature-list/" target="_blank" rel="noopener noreferrer">demonstração de funcionalidades</a></p>\n',
+    "hint2":
+      '<p>Sabe mais sobre a <a href="https://beabee.io/en/beabee-model/" target="_blank" rel="noopener noreferrer">visão beabee</a> no que toca ao envolvimento da comunidade e formar relações com o seu público.</p>\n',
+    "hint3":
+      '<p>O nosso <a href="https://beabee.io/en/beabee-faq/" target="_blank" rel="noopener noreferrer">FAQ</a> abordamos questões frequentes sobre como começar e casos de estudo. Se a resposta que procuras não estiver lá, contacta-nos.</p>\n',
     "joinSlack": "Junta-te à comunidade beabee no Slack!",
     "latestCallout": {
       "createNew": "Criar nova?",
       "empty": "Não há chamadas ativas neste momento.",
-      "title": "Última chamada"
+      "title": "Última chamada",
     },
     "mostRecentMembers": {
-      "title": "Membros mais recentes"
+      "title": "Membros mais recentes",
     },
     "numbers": {
       "averageContribution": "Contribuição mensal média",
       "newMembers": "Novos membros",
       "revenue": "Receitas",
-      "title": "Números dos últimos 30 dias"
+      "title": "Números dos últimos 30 dias",
     },
     "responsesSoFar": "{n} resposta dada | {n} respostas dadas",
     "seeAllResponses": "Ver todas as respostas",
-    "supportInbox": "<p>Tens alguma dúvida? Consulta o <a href=\"https://wiki.beabee.io/help-center-english/\" target=\"_blank\" rel=\"noopener noreferrer\">Centro de Ajuda beabee</a> ou fala connosco: <a href=\"mailto:support{'@'}beabee.io\">support{'@'}beabee.io</a></p>\n",
-    "welcomeBack": "Boas-vindas, {firstName}!"
+    "supportInbox":
+      '<p>Tens alguma dúvida? Consulta o <a href="https://wiki.beabee.io/help-center-english/" target="_blank" rel="noopener noreferrer">Centro de Ajuda beabee</a> ou fala connosco: <a href="mailto:support{\'@\'}beabee.io">support{\'@\'}beabee.io</a></p>\n',
+    "welcomeBack": "Boas-vindas, {firstName}!",
   },
   "adminSettings": {
     "apikey": {
       "confirmCreate": {},
       "confirmDelete": {},
-      "expires": {}
+      "expires": {},
     },
     "email": {},
     "general": {
       "footer": {
         "dataPrivacy": {},
-        "otherLinks": {}
+        "otherLinks": {},
       },
-      "socialSharing": {}
+      "socialSharing": {},
     },
     "payment": {},
     "theme": {
       "colorNames": {},
-      "presetColors": {}
-    }
+      "presetColors": {},
+    },
   },
   "advancedSearch": {
     "matchType": {},
@@ -170,18 +188,18 @@ export const pt = {
       "date": {},
       "enum": {},
       "number": {},
-      "text": {}
+      "text": {},
     },
     "saveSegment": {
-      "createOrUpdate": {}
-    }
+      "createOrUpdate": {},
+    },
   },
   "apiKey": {
-    "data": {}
+    "data": {},
   },
   "callout": {
     "actions": {
-      "updateResponse": "Actualiza a tua resposta"
+      "updateResponse": "Actualiza a tua resposta",
     },
     "addAPoint": "Carrega no mapa no sítio onde queres adicionar o ponto.",
     "addLocation": "Adicionar localização",
@@ -192,7 +210,8 @@ export const pt = {
       "email": "O teu email",
       "guestFieldsMissing": "Dá-nos os teus contactos",
       "name": "O teu nome",
-      "submittingResponseError": "Houve um problema a enviar a tua resposta, por favor tenta novamente"
+      "submittingResponseError":
+        "Houve um problema a enviar a tua resposta, por favor tenta novamente",
     },
     "getStarted": "Começar",
     "joinNow": "Inscreve-te agora",
@@ -201,29 +220,29 @@ export const pt = {
     "responseSubmitted": "Resposta submetida",
     "share": {
       "address": "Podes partilhar esta chamada com este endereço:",
-      "services": "Ou partilha rapidamente com uma destas plataformas:"
+      "services": "Ou partilha rapidamente com uma destas plataformas:",
     },
     "toContributionPage": "Editar a minha contribuição",
     "updateContribution": "Por favor atualiza a tua contribuição",
     "views": {
       "gallery": "Galeria",
-      "map": "Mapa"
+      "map": "Mapa",
     },
     "youResponded": "Já respondeste a esta chamada ♥",
-    "yourResponse": "A tua resposta"
+    "yourResponse": "A tua resposta",
   },
   "calloutAdmin": {},
   "calloutAdminOverview": {
     "actions": {
-      "confirmDelete": {}
+      "confirmDelete": {},
     },
     "dates": {},
     "settings": {
       "answers": {},
       "contactInfo": {},
       "endsWith": {},
-      "openTo": {}
-    }
+      "openTo": {},
+    },
   },
   "calloutBuilder": {
     "actions": {},
@@ -232,8 +251,8 @@ export const pt = {
       "description": "Description",
       "label": "Label",
       "option": "Option {n}",
-      "placeholder": "Placeholder"
-    }
+      "placeholder": "Placeholder",
+    },
   },
   "calloutResponse": {
     "data": {
@@ -244,47 +263,47 @@ export const pt = {
       "contact": "Contacto",
       "createdAt": "Data de envio",
       "tags": "Etiquetas",
-      "updatedAt": "Data de atualização"
+      "updatedAt": "Data de atualização",
     },
     "dataGroup": {
       "answers": "Perguntas",
-      "response": "Resposta"
-    }
+      "response": "Resposta",
+    },
   },
   "calloutResponseBuckets": {
     "inbox": "Caixa de entrada",
     "trash": "Lixo",
-    "verified": "Verificadas"
+    "verified": "Verificadas",
   },
   "calloutResponseComments": {
     "actions": {
       "addComment": "Adicionar comentário",
-      "updateComment": "Editar comentário"
+      "updateComment": "Editar comentário",
     },
     "addComment": "Adicionar um comentário",
     "comments": "Comentários",
     "confirmDelete": {
       "text": "Tens a certeza que queres apagar este comentário?",
-      "title": "Apagar comentário?"
-    }
+      "title": "Apagar comentário?",
+    },
   },
   "calloutResponsePage": {
     "actions": {
       "assignTo": "Atribuir a",
       "moveBucket": "Mover balde",
-      "toggleTag": "Ativar etiqueta"
+      "toggleTag": "Ativar etiqueta",
     },
     "editMode": "Está no modo de edição, cuidado!",
     "manageTags": "Gerir etiquetas",
     "notifications": {
       "addedAssignee": "Atribuída a {assignee}",
-      "addedTag": "Etiqueta \"{tag}\" acrescentada",
+      "addedTag": 'Etiqueta "{tag}" acrescentada',
       "movedToBucket": "Movida para {bucket}",
       "removedAssignee": "Atribuição a {assignee} removida",
-      "removedTag": "Etiqueta \"{tag}\" removida"
+      "removedTag": 'Etiqueta "{tag}" removida',
     },
     "responseOf": "Resposta {no} de um total de {total} em {bucket}",
-    "selectedCount": "{n} resposta selecionada | {n} respostas selecionadas"
+    "selectedCount": "{n} resposta selecionada | {n} respostas selecionadas",
   },
   "calloutResponsesPage": {
     "moveToBucket": "Mover para {bucket}",
@@ -295,36 +314,36 @@ export const pt = {
     "searchTag": "Etiquetada com...",
     "showAnswer": "Resposta",
     "showLatestComment": "Último comentário",
-    "showingOf": "Respostas {start} a {end} de um total de {total}"
+    "showingOf": "Respostas {start} a {end} de um total de {total}",
   },
   "callouts": {
     "archive": "Arquivo",
     "data": {
       "callout": "Chamada",
-      "endDate": "Data de conclusão"
+      "endDate": "Data de conclusão",
     },
     "noArchivedCallouts": "Não há chamadas",
     "search": "Pesquisar chamadas...",
     "showAll": "Todas",
     "showAnswered": "Respondidas",
-    "showingOf": "Chamadas {start} a {end} de um total de {total}"
+    "showingOf": "Chamadas {start} a {end} de um total de {total}",
   },
   "calloutsAdmin": {
     "data": {},
-    "filter": {}
+    "filter": {},
   },
   "common": {
     "backToHome": "Voltar ao início",
     "contributing": "A contribuir",
     "contributionPeriod": {
       "annually": "Anualmente",
-      "monthly": "Mensalmente"
+      "monthly": "Mensalmente",
     },
     "contributionType": {
       "automatic": "Automática",
       "gift": "Presente",
       "manual": "Manual",
-      "none": "Nenhuma"
+      "none": "Nenhuma",
     },
     "hello": "Olá",
     "itemsPerPage": "{items} itens por página",
@@ -336,7 +355,7 @@ export const pt = {
       "none": "Nenhum",
       "pending": "Pendente",
       "subscribed": "Inscrito",
-      "unsubscribed": "Não inscrito"
+      "unsubscribed": "Não inscrito",
     },
     "no": "Não",
     "noResults": "Nenhum resultado encontrado",
@@ -346,7 +365,7 @@ export const pt = {
       "draft": "Rascunho",
       "failed": "Falhado",
       "pending": "A aguardar",
-      "successful": "Sucesso"
+      "successful": "Sucesso",
     },
     "perMonth": "/ mês",
     "perMonthText": "por mês",
@@ -355,7 +374,7 @@ export const pt = {
     "role": {
       "admin": "Administrador",
       "member": "Membro",
-      "superadmin": "Super Administrador"
+      "superadmin": "Super Administrador",
     },
     "selectNone": "Nenhum",
     "selectOne": "Escolhe uma opção...",
@@ -364,34 +383,36 @@ export const pt = {
       "draft": "Rascunho",
       "ended": "Concluído",
       "open": "Aberto",
-      "scheduled": "Agendado"
+      "scheduled": "Agendado",
     },
     "thankYou": "Obrigado!",
     "timeAgo": "há {time}",
     "timeIn": "em {time}",
     "until": "até",
-    "yes": "Sim"
+    "yes": "Sim",
   },
   "contactAccount": {
     "confirmDelete": {
-      "text": "This will delete all data associated with {email}. If they have an active contribution this will be cancelled.",
+      "text":
+        "This will delete all data associated with {email}. If they have an active contribution this will be cancelled.",
       "title": "Delete contact",
-      "warning": "This is irreversible. Are you sure you want to proceed?"
+      "warning": "This is irreversible. Are you sure you want to proceed?",
     },
-    "contactDeleted": "Contact deleted."
+    "contactDeleted": "Contact deleted.",
   },
   "contactContribution": {
     "confirmCancel": {},
-    "updateNotice": {}
+    "updateNotice": {},
   },
   "contactOverview": {
     "annotation": {},
     "security": {
       "mfa": {
-        "desc": "Este contato ativou o 2FA. Clica no botão \"{ disableLabel }\" para desativar.",
-        "disabledDesc": "Este contato não ativou o 2FA."
-      }
-    }
+        "desc":
+          'Este contato ativou o 2FA. Clica no botão "{ disableLabel }" para desativar.',
+        "disabledDesc": "Este contato não ativou o 2FA.",
+      },
+    },
   },
   "contacts": {
     "addContact": "Adicionar contacto",
@@ -426,50 +447,62 @@ export const pt = {
       "period": "Período",
       "phone": "Telefone",
       "preferredChannel": "Canal preferido",
-      "tags": "Etiquetas"
+      "tags": "Etiquetas",
     },
     "dataGroup": {
       "contact": "Contacto",
       "contribution": "Contribuição",
-      "role": "Cargo"
+      "role": "Cargo",
     },
     "noContacts": "Nenhum contacto ainda adicionado",
     "noResults": "Nenhum contacto encontrado",
     "numResults": "{n} contacto encontrado | {n} contactos encontrados",
     "search": "Pesquisar contactos...",
-    "showingOf": "Contactos {start} a {end} de um total de {total}"
+    "showingOf": "Contactos {start} a {end} de um total de {total}",
   },
   "contribution": {
-    "adminCancelDescription": "Se cancelares a contribuição deste contacto, a sua adesão terminará no fim deste ciclo de pagamento a {date}.",
+    "adminCancelDescription":
+      "Se cancelares a contribuição deste contacto, a sua adesão terminará no fim deste ciclo de pagamento a {date}.",
     "bankAccount": "Conta bancária",
     "billing": "Faturação",
     "cancelContribution": "Cancelar contribuição",
-    "cancelDescription": "Se cancelares a tua contribuição, a tua adesão terminará no fim deste ciclo de pagamento a {date}.",
+    "cancelDescription":
+      "Se cancelares a tua contribuição, a tua adesão terminará no fim deste ciclo de pagamento a {date}.",
     "cancelMessage": "Ficamos tristes que nos deixes.",
     "cancelledContribution": "A tua contribuição foi cancelada.",
     "changeBank": "Mudar para outra conta bancária",
-    "changeBankInfo": "No próximo passo, vais poder inserir os detalhes bancários da tua nova conta.",
+    "changeBankInfo":
+      "No próximo passo, vais poder inserir os detalhes bancários da tua nova conta.",
     "contributing": "Estás a contribuir",
-    "contributionUpdateError": "Não é possível atualizar a tua contribuição porque tens um pagamento pendente.",
+    "contributionUpdateError":
+      "Não é possível atualizar a tua contribuição porque tens um pagamento pendente.",
     "dueToRenew": "A tua contribuição vai renovar a {renewalDate}.",
     "expired": "A tua contribuição expirou.",
-    "expiredText": "Considera renovar a tua contribuição mensal, nem que seja pelo valor mais baixo. É muito importante para o nosso jornalismo. Obrigado!",
+    "expiredText":
+      "Considera renovar a tua contribuição mensal, nem que seja pelo valor mais baixo. É muito importante para o nosso jornalismo. Obrigado!",
     "hasPendingPayment": "O teu pagamento está agora a ser processado",
-    "manualPayment": "A tua contribuição está a ser paga via {source}. Se começares a pagar através do nosso sistema de contribuições, será mais fácil para ti gerires a tua contribuição mensal e vais ajudar-nos a perceber quanto dinheiro recebemos por mês da nossa Comunidade.",
+    "manualPayment":
+      "A tua contribuição está a ser paga via {source}. Se começares a pagar através do nosso sistema de contribuições, será mais fácil para ti gerires a tua contribuição mensal e vais ajudar-nos a perceber quanto dinheiro recebemos por mês da nossa Comunidade.",
     "manualPaymentSource": "Uma ferramenta desenvolvida por outra organização",
     "paymentHistory": {
       "empty": "Os pagamentos já realizados vão aparecer aqui.",
-      "title": "Histórico de pagamentos"
+      "title": "Histórico de pagamentos",
     },
     "paymentMethod": "Método de pagamento",
-    "paymentSourceUpdateError": "Não é possível atualizar a sua conta bancária porque o pagamento está pendente.",
-    "prorateDecreaseMessage": "Resta 1 mês na sua contribuição atual. | Restam {n} meses na tua contribuição atual.",
-    "prorateDecreaseMessageWillStart": "A tua nova contribuição vai começar a {renewalDate}.",
-    "prorateIncreaseMessage": "Tens 1 mês restante na sua contribuição atual. | Tens {n} meses restantes na tua contribuição atual.",
-    "prorateIncreaseMessageOneOff": "Podes fazer um pagamento único {oneOffPayment} para arrancar com a sua contribuição desde já.",
+    "paymentSourceUpdateError":
+      "Não é possível atualizar a sua conta bancária porque o pagamento está pendente.",
+    "prorateDecreaseMessage":
+      "Resta 1 mês na sua contribuição atual. | Restam {n} meses na tua contribuição atual.",
+    "prorateDecreaseMessageWillStart":
+      "A tua nova contribuição vai começar a {renewalDate}.",
+    "prorateIncreaseMessage":
+      "Tens 1 mês restante na sua contribuição atual. | Tens {n} meses restantes na tua contribuição atual.",
+    "prorateIncreaseMessageOneOff":
+      "Podes fazer um pagamento único {oneOffPayment} para arrancar com a sua contribuição desde já.",
     "prorateNoText": "Vais manter a tua contribuição atual ate lá.",
     "prorateNoTitle": "Atualizar a minha contribuição a {renewalDate}",
-    "prorateYesText": "Vamos cobrar-te um pagamento único {oneOffPayment} agora e a tua contribuição será atualizada de forma imediata.",
+    "prorateYesText":
+      "Vamos cobrar-te um pagamento único {oneOffPayment} agora e a tua contribuição será atualizada de forma imediata.",
     "prorateYesTitle": "Atualizar a minha contribuição agora",
     "restartContribution": "Voltar a contribuir",
     "startContribution": "Começar a contribuir",
@@ -479,8 +512,10 @@ export const pt = {
     "updatedContribution": "A tua contribuição foi atualizada.",
     "updatedPaymentSource": "O teu método de pagamento foi atualizado.",
     "willExpire": "A tua contribuição vai expirar a {expires}.",
-    "willRenew": "A tua contribuição vai renovar automaticamente a {renewalDate}.",
-    "willRenewWithNewAmount": "A tua contribuição vai renovar automaticamente a {renewalDate}, passando para a nova quantia de {nextAmount}."
+    "willRenew":
+      "A tua contribuição vai renovar automaticamente a {renewalDate}.",
+    "willRenewWithNewAmount":
+      "A tua contribuição vai renovar automaticamente a {renewalDate}, passando para a nova quantia de {nextAmount}.",
   },
   "createCallout": {
     "steps": {
@@ -488,31 +523,31 @@ export const pt = {
       "dates": {
         "inputs": {
           "expires": {
-            "opts": {}
+            "opts": {},
           },
           "starts": {
-            "opts": {}
-          }
-        }
+            "opts": {},
+          },
+        },
       },
       "endMessage": {
         "inputs": {
           "action": {
-            "opts": {}
+            "opts": {},
           },
           "text": {},
           "title": {},
-          "url": {}
-        }
+          "url": {},
+        },
       },
       "mailchimp": {},
       "settings": {
         "inputs": {
           "anonymous": {
-            "opts": {}
+            "opts": {},
           },
           "editable": {
-            "opts": {}
+            "opts": {},
           },
           "mapSchema": {
             "addressPattern": {},
@@ -524,13 +559,13 @@ export const pt = {
             "initialZoom": {},
             "maxZoom": {},
             "minZoom": {},
-            "style": {}
+            "style": {},
           },
           "multiple": {
-            "opts": {}
+            "opts": {},
           },
           "requireCaptcha": {
-            "opts": {}
+            "opts": {},
           },
           "responseImageFilter": {},
           "responseImageProp": {},
@@ -538,16 +573,16 @@ export const pt = {
           "responseTitleProp": {},
           "showResponses": {},
           "visible": {
-            "opts": {}
+            "opts": {},
           },
           "whichResponseBuckets": {},
           "whichResponseViews": {
-            "opts": {}
+            "opts": {},
           },
           "who": {
-            "opts": {}
-          }
-        }
+            "opts": {},
+          },
+        },
       },
       "titleAndImage": {
         "inputs": {
@@ -555,17 +590,17 @@ export const pt = {
           "image": {},
           "intro": {},
           "overrideShare": {
-            "opts": {}
+            "opts": {},
           },
           "shareDescription": {},
           "shareTitle": {},
           "slug": {
-            "opts": {}
+            "opts": {},
           },
-          "title": {}
-        }
-      }
-    }
+          "title": {},
+        },
+      },
+    },
   },
   "editCallout": {},
   "editNotice": {},
@@ -576,13 +611,15 @@ export const pt = {
     "joinCommunity": "Junta-te à Comunidade",
     "poweredBy": "A apoiar redações locais e independentes",
     "privacyPolicy": "Política de privacidade",
-    "terms": "Termos e condições"
+    "terms": "Termos e condições",
   },
   "forgotPassword": {
     "backToLogin": "Voltar à página de login",
-    "description": "Deixa-nos o teu e-mail e nós enviamos-te as instruções para repores a tua palavra-passe.",
-    "message": "Se existir uma conta associada com o endereço {email}, vais receber um email dentro de momentos. Se não receberes, vê na tua caixa de spam.",
-    "title": "Esqueceste-te da palavra-passe?"
+    "description":
+      "Deixa-nos o teu e-mail e nós enviamos-te as instruções para repores a tua palavra-passe.",
+    "message":
+      "Se existir uma conta associada com o endereço {email}, vais receber um email dentro de momentos. Se não receberes, vê na tua caixa de spam.",
+    "title": "Esqueceste-te da palavra-passe?",
   },
   "form": {
     "addressLine1": "Endereço (linha 1)",
@@ -594,75 +631,80 @@ export const pt = {
     "email": "Email",
     "errorMessages": {
       "api": {
-        "account-locked": "Conta bloqueada por demasiadas tentativas de login. Faz reset da tua password ou fala connosco.",
+        "account-locked":
+          "Conta bloqueada por demasiadas tentativas de login. Faz reset da tua password ou fala connosco.",
         "duplicate-email": "Este endereço de e-mail já existe",
         "invalid-token": "Token 2FA inválido",
         "login-failed": "Combinação inválida de email e palavra-passe",
-        "mfa-token-required": "Ativaste a autenticação de dois fatores. Introduz o token da tua aplicação de autenticação para continuar."
+        "mfa-token-required":
+          "Ativaste a autenticação de dois fatores. Introduz o token da tua aplicação de autenticação para continuar.",
       },
-      "generic": "Ups, houve aqui um erro. Fala connosco se isto voltar a acontecer.",
-      "validation": "Falta alguma coisa. Verifica os campos acima."
+      "generic":
+        "Ups, houve aqui um erro. Fala connosco se isto voltar a acontecer.",
+      "validation": "Falta alguma coisa. Verifica os campos acima.",
     },
     "errors": {
       "address": {
-        "required": "Este campo é obrigatório se quiseres adicionar um endereço"
+        "required":
+          "Este campo é obrigatório se quiseres adicionar um endereço",
       },
       "addressLine1": {
-        "required": "A primeira linha do endereço é obrigatória"
+        "required": "A primeira linha do endereço é obrigatória",
       },
       "cityOrTown": {
-        "required": "A localidade é obrigatória"
+        "required": "A localidade é obrigatória",
       },
       "color": {
         "pattern": "Cor inválida",
-        "required": "A cor é obrigatória"
+        "required": "A cor é obrigatória",
       },
       "confirmPassword": {
         "password": "Palavra-passe inválida",
         "required": "A palavra-passe é obrigatória",
-        "sameAs": "As palavras-passe não coincidem"
+        "sameAs": "As palavras-passe não coincidem",
       },
       "email": {
         "email": "Endereço de email inválido",
-        "required": "O email é obrigatório"
+        "required": "O email é obrigatório",
       },
       "file": {
-        "rateLimited": "Falha no upload: fizeste upload de demasiados ficheiros recentemente. Espera um pouco e volta a tentar.",
-        "tooBig": "Falha no upload: o ficheiro deve ter menos de 20Mb."
+        "rateLimited":
+          "Falha no upload: fizeste upload de demasiados ficheiros recentemente. Espera um pouco e volta a tentar.",
+        "tooBig": "Falha no upload: o ficheiro deve ter menos de 20Mb.",
       },
       "firstName": {
-        "required": "O primeiro nome é obrigatório"
+        "required": "O primeiro nome é obrigatório",
       },
       "lastName": {
-        "required": "O último nome é obrigatório"
+        "required": "O último nome é obrigatório",
       },
       "name": {
-        "required": "O nome é obrigatório"
+        "required": "O nome é obrigatório",
       },
       "password": {
         "password": "Palavra-passe inválida",
         "required": "A palavra-passe é obrigatória",
-        "sameAs": "As palavras-passe não coincidem"
+        "sameAs": "As palavras-passe não coincidem",
       },
       "postCode": {
-        "required": "O código postal é obrigatório"
+        "required": "O código postal é obrigatório",
       },
       "unknown": {
         "email": "Endereço de email inválido",
         "max": "Este campo pode ter no máximo {max}",
         "min": "Este campo tem de ser pelo menos {min}",
         "required": "Este campo é obrigatório",
-        "url": "URL inválido"
+        "url": "URL inválido",
       },
       "url": {
         "required": "O URL é obrigatório",
-        "url": "URL inválido"
+        "url": "URL inválido",
       },
       "verifyCode": {
         "max": "O código deve ter no máximo {max} caracteres.",
         "min": "O código deve ter no mínimo {min} caracteres.",
-        "required": "O código é obrigatório"
-      }
+        "required": "O código é obrigatório",
+      },
     },
     "firstName": "Primeiro nome",
     "lastName": "Último nome",
@@ -670,7 +712,8 @@ export const pt = {
     "newPasswordConfirm": "Confirmar nova palavra-passe",
     "notes": "Notas",
     "password": "Palavra-passe",
-    "passwordInfo": "Define uma palavra-passe segura: 8 ou mais caracteres, incluindo um número, letras maiúsculas e letras minúsculas.",
+    "passwordInfo":
+      "Define uma palavra-passe segura: 8 ou mais caracteres, incluindo um número, letras maiúsculas e letras minúsculas.",
     "phone": "Telefone",
     "postCode": "Código postal",
     "richtext": {
@@ -681,12 +724,12 @@ export const pt = {
       "link": "Link",
       "numberedlist": "Lista numerada",
       "strikethrough": "Rasurado",
-      "underline": "Sublinhado"
+      "underline": "Sublinhado",
     },
     "saveChanges": "Gravar alterações",
     "saved": "Gravado!",
     "unsavedChanges": "Alterações não gravadas",
-    "updated": "Atualizado"
+    "updated": "Atualizado",
   },
   "formRenderer": {
     "components": {
@@ -696,12 +739,12 @@ export const pt = {
         "or": "Ou",
         "switchToFileUpload": "Mudar para upload de ficheiros",
         "takePicture": "Tirar foto",
-        "useCamera": "Usar câmera"
+        "useCamera": "Usar câmera",
       },
       "multiple": {
-        "addAnother": "Adicionar outro"
-      }
-    }
+        "addAnother": "Adicionar outro",
+      },
+    },
   },
   "homePage": {
     "editProfile": "Editar o teu perfil de comunidade",
@@ -713,30 +756,34 @@ export const pt = {
     "viewAllCallouts": "Ver todas as chamadas",
     "viewOpenCallouts": "Ver chamadas abertas",
     "welcome": "Damos-te as boas-vindas, {firstName}!",
-    "yourProfile": "O teu perfil"
+    "yourProfile": "O teu perfil",
   },
   "item": {
     "status": {
       "endsIn": "Acaba em {duration}",
-      "startsIn": "Começa em {duration}"
-    }
+      "startsIn": "Começa em {duration}",
+    },
   },
   "join": {
-    "absorbFeeForce": "É necessário que {amount} contributos suportem a taxa de {fee}.",
+    "absorbFeeForce":
+      "É necessário que {amount} contributos suportem a taxa de {fee}.",
     "absorbFeeOptIn": "Sim, posso suportar a taxa de {fee}.",
-    "absorbFeeText": "O nosso processador de pagamentos cobra-nos por transação, o que significa que perdemos uma parte de cada contributo mensal. Poderias suportar a taxa de {fee}? ",
+    "absorbFeeText":
+      "O nosso processador de pagamentos cobra-nos por transação, o que significa que perdemos uma parte de cada contributo mensal. Poderias suportar a taxa de {fee}? ",
     "contribute": "Contribuir {contribution}",
     "errors": {
       "confirmEmail": {
-        "message": "Está quase! Precisamos apenas de confirmar o teu email para passares a fazer parte da comunidade.",
+        "message":
+          "Está quase! Precisamos apenas de confirmar o teu email para passares a fazer parte da comunidade.",
         "proceed": "Enviámos-te um email. Clica no link para continuar.",
-        "title": "Confirmar endereço de email"
+        "title": "Confirmar endereço de email",
       },
       "failed": {
         "backToJoin": "Voltar à página de registo",
-        "message": "Houve um problema ao criar a tua conta e a nossa equipa já foi avisada. Entra em contacto connosco se o problema continuar.",
-        "title": "Houve aqui um problema."
-      }
+        "message":
+          "Houve um problema ao criar a tua conta e a nossa equipa já foi avisada. Entra em contacto connosco se o problema continuar.",
+        "title": "Houve aqui um problema.",
+      },
     },
     "login": "Login",
     "memberAccount": "Conta de membro",
@@ -748,19 +795,21 @@ export const pt = {
     "paymentMethod": "Forma de pagamento",
     "poweredBy": "Powered by beabee",
     "privacy": "Política de Privacidade",
-    "tax": {}
+    "tax": {},
   },
   "joinPayment": {
-    "genericError": "Ups, houve aqui um erro. Fala connosco se isto voltar a acontecer.",
+    "genericError":
+      "Ups, houve aqui um erro. Fala connosco se isto voltar a acontecer.",
     "goBack": "Esqueceste-te de alguma coisa? {back}",
     "goBackButton": "Voltar ao passo anterior",
-    "note": "Podes alterar a tua contribuição e aceder ao teu historial de pagamentos a qualquer altura na tua conta.",
-    "willBeContributing": "O tua contribuição será de {contribution}"
+    "note":
+      "Podes alterar a tua contribuição e aceder ao teu historial de pagamentos a qualquer altura na tua conta.",
+    "willBeContributing": "O tua contribuição será de {contribution}",
   },
   "joinSetup": {
     "confirmDetails": "Por favor confirma os teus detalhes",
     "continue": "Tudo OK! Continuar",
-    "welcome": "Boas-vindas, {firstName}!"
+    "welcome": "Boas-vindas, {firstName}!",
   },
   "login": {
     "backTo": "Voltar a {newsroomName}",
@@ -768,22 +817,24 @@ export const pt = {
     "joinNow": "Junta-te agora!",
     "lostMfaDevice": "Perdeste o teu dispositivo 2FA?",
     "notMember": "Ainda não és membro?",
-    "title": "Fazer login"
+    "title": "Fazer login",
   },
   "lostDevice": {
-    "description": "Por favor, insira o seu endereço de e-mail e nós lhe enviaremos instruções de como redefinir seu 2FA",
-    "message": "Se existir uma conta associada com o endereço {email}, receberá um e-mail dentro de momentos. Deverá ter recebido um e-mail com instruções na sua caixa de entrada. Verifique a sua pasta de spam se não tiver aparecido.",
-    "title": "Perdeste o teu dispositivo 2FA?"
+    "description":
+      "Por favor, insira o seu endereço de e-mail e nós lhe enviaremos instruções de como redefinir seu 2FA",
+    "message":
+      "Se existir uma conta associada com o endereço {email}, receberá um e-mail dentro de momentos. Deverá ter recebido um e-mail com instruções na sua caixa de entrada. Verifique a sua pasta de spam se não tiver aparecido.",
+    "title": "Perdeste o teu dispositivo 2FA?",
   },
   "membershipBuilder": {
     "steps": {
       "accountConfirmation": {
-        "joinSurvey": {}
+        "joinSurvey": {},
       },
       "emails": {},
       "intro": {},
-      "joinForm": {}
-    }
+      "joinForm": {},
+    },
   },
   "menu": {
     "account": "Conta",
@@ -797,22 +848,23 @@ export const pt = {
     "logout": "Sair",
     "notices": "Avisos",
     "settings": "Definições",
-    "yourProfile": "Perfil"
+    "yourProfile": "Perfil",
   },
   "notFound": {
     "goBack": "Regressar à página principal",
-    "text": "Esta página não existe. Se achas que devia existir, entra em contacto connosco {support}."
+    "text":
+      "Esta página não existe. Se achas que devia existir, entra em contacto connosco {support}.",
   },
   "noticeAdminOverview": {
     "actions": {
-      "confirmDelete": {}
-    }
+      "confirmDelete": {},
+    },
   },
   "notices": {
-    "data": {}
+    "data": {},
   },
   "notification": {
-    "error": "Houve aqui um erro. Experimenta recarregar a página."
+    "error": "Houve aqui um erro. Experimenta recarregar a página.",
   },
   "pageTitle": {
     "confirmEmail": "Confirma o email",
@@ -826,92 +878,96 @@ export const pt = {
     "resetDevice": "Redefinir dispositivo secundário",
     "resetPassword": "Redefinir palavra-passe",
     "setPassword": "Definir uma palavra-passe",
-    "setup": "Setup"
+    "setup": "Setup",
   },
   "paymentMethods": {
     "gc_direct-debit": {
       "changeLabel": "Alterar débito direto",
       "label": "Débito direto",
-      "setLabel": "Detalhes do teu débito direto"
+      "setLabel": "Detalhes do teu débito direto",
     },
     "s_bacs": {
       "changeLabel": "Alterar débito direto",
       "label": "Débito direto",
-      "setLabel": "Detalhes do teu débito direto"
+      "setLabel": "Detalhes do teu débito direto",
     },
     "s_card": {
       "changeLabel": "Alterar detalhes do cartão",
       "label": "Cartão",
-      "setLabel": "Detalhes do teu cartão"
+      "setLabel": "Detalhes do teu cartão",
     },
     "s_paypal": {},
     "s_sepa": {
       "changeLabel": "Alterar débito direto",
       "label": "Débito direto",
-      "setLabel": "Detalhes do teu débito direto"
-    }
+      "setLabel": "Detalhes do teu débito direto",
+    },
   },
   "payments": {
     "data": {},
-    "dataGroup": {}
+    "dataGroup": {},
   },
   "paymentsAdmin": {
-    "filter": {}
+    "filter": {},
   },
   "resetDevice": {
-    "description": "Insere a tua palavra-pase para fazer reset do seu dispositivo 2FA. Vais poder associar um novo dispositivo quando fizeres login.",
-    "failed": "A redefinição do dispositivo 2FA falhou. É possível que o link tenha expirado.",
+    "description":
+      "Insere a tua palavra-pase para fazer reset do seu dispositivo 2FA. Vais poder associar um novo dispositivo quando fizeres login.",
+    "failed":
+      "A redefinição do dispositivo 2FA falhou. É possível que o link tenha expirado.",
     "invalidPassword": "Palavra-passe inválida",
     "success": "A redefinição do dispositivo 2FA foi bem-sucedida.",
-    "title": "Fazer reset do teu dispositvo 2FA?"
+    "title": "Fazer reset do teu dispositvo 2FA?",
   },
   "resetPassword": {
     "description": "Define uma nova palavra-passe para poderes entrar.",
     "failed": "O reset de palavra-passe falhou, o link talvez tenha expirado.",
     "login": "Entrar na tua conta",
-    "lostDevice": "Se perdeste o teu dispositivo associado ao 2FA entra em contacto connosco",
+    "lostDevice":
+      "Se perdeste o teu dispositivo associado ao 2FA entra em contacto connosco",
     "success": "A tua password foi atualizada.",
-    "title": "Repôr a tua palavra-passe?"
+    "title": "Repôr a tua palavra-passe?",
   },
   "roleEditor": {
     "add": "Adicionar cargo",
     "addNewRole": "Adicionar um novo cargo",
     "confirmDelete": {
       "text": "Tens a certeza que pretendes remover este cargo?",
-      "title": "Remover cargo"
+      "title": "Remover cargo",
     },
     "expires": {
       "label": "Data de expiração para este cargo",
       "opts": {
         "never": "Nunca",
-        "schedule": "Definir uma data de expiração"
-      }
+        "schedule": "Definir uma data de expiração",
+      },
     },
     "new": "Novo cargo",
     "starts": {
       "label": "Data de início para este cargo",
       "opts": {
         "now": "Agora",
-        "schedule": "Definir uma data de início"
-      }
+        "schedule": "Definir uma data de início",
+      },
     },
     "title": "Cargos",
-    "today": "agora"
+    "today": "agora",
   },
   "setPassword": {
     "description": "Define uma nova palavra-passe para poderes entrar.",
-    "title": "Definir uma palavra-passe"
+    "title": "Definir uma palavra-passe",
   },
   "tagEditor": {
     "add": "Adicionar etiqueta",
     "addNewTag": "Adicionar uma etiqueta",
     "confirmDelete": {
-      "text": "Tens a certeza que queres eliminar esta etiqueta? As respostas com esta etiqueta não vão ser apagadas.",
-      "title": "Remover etiqueta"
+      "text":
+        "Tens a certeza que queres eliminar esta etiqueta? As respostas com esta etiqueta não vão ser apagadas.",
+      "title": "Remover etiqueta",
     },
-    "name": "Nome"
+    "name": "Nome",
   },
   "taxRate": {
-    "invoiceName": "???"
-  }
+    "invoiceName": "???",
+  },
 };

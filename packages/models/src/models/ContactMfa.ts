@@ -3,7 +3,7 @@ import {
   Entity,
   JoinColumn,
   OneToOne,
-  PrimaryGeneratedColumn
+  PrimaryGeneratedColumn,
 } from "typeorm";
 
 import { CONTACT_MFA_TYPE } from "@beabee/beabee-common";
@@ -12,7 +12,7 @@ import type { Contact } from "./Contact.js";
 
 /**
  * The **unsecure** contact multi factor authentication information with the `secret` key
- **/
+ */
 @Entity()
 export class ContactMfa {
   @PrimaryGeneratedColumn("uuid")

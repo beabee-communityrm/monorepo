@@ -3,48 +3,48 @@ export const config = {
     "adminLocale": "de",
     "baseLocale": "de",
     "displayName": "Deutsch",
-    "name": "Deutsch (formal)"
+    "name": "Deutsch (formal)",
   },
   "de@easy": {
     "adminLocale": "de",
     "baseLocale": "de",
     "displayName": "Leichte Sprache",
-    "name": "Deutsch (easy, callouts only)"
+    "name": "Deutsch (easy, callouts only)",
   },
   "de@informal": {
     "adminLocale": "de@informal",
     "baseLocale": "de",
     "displayName": "Deutsch",
-    "name": "Deutsch (informal)"
+    "name": "Deutsch (informal)",
   },
   "en": {
     "adminLocale": "en",
     "baseLocale": "en",
     "displayName": "English",
-    "name": "English"
+    "name": "English",
   },
   "it": {
     "adminLocale": "en",
     "baseLocale": "it",
     "displayName": "Italiano",
-    "name": "Italiano"
+    "name": "Italiano",
   },
   "nl": {
     "adminLocale": "en",
     "baseLocale": "nl",
     "displayName": "Nederlands",
-    "name": "Nederlands (callouts only)"
+    "name": "Nederlands (callouts only)",
   },
   "pt": {
     "adminLocale": "en",
     "baseLocale": "pt",
     "displayName": "Português",
-    "name": "Português"
+    "name": "Português",
   },
   "ru": {
     "adminLocale": "en",
     "baseLocale": "ru",
     "displayName": "Русский",
-    "name": "Русский"
-  }
+    "name": "Русский",
+  },
 };

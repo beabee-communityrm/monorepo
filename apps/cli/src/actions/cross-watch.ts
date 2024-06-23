@@ -20,7 +20,9 @@ export const crossWatchAction = async (argv: BuildArguments) => {
   // Watch for specific platform for all types
   if (argv.platform && !argv.type) {
     for (
-      const types of Object.keys(crossBuildConfigs[argv.platform]) as BuildType[]
+      const types of Object.keys(
+        crossBuildConfigs[argv.platform],
+      ) as BuildType[]
     ) {
       const config = crossBuildConfigs[argv.platform][types];
       if (!config) continue;
@@ -33,7 +35,9 @@ export const crossWatchAction = async (argv: BuildArguments) => {
 
   // Watch for all platforms and types
   for (const platforms of Object.keys(crossBuildConfigs) as BuildPlatform[]) {
-    for (const types of Object.keys(crossBuildConfigs[platforms]) as BuildType[]) {
+    for (
+      const types of Object.keys(crossBuildConfigs[platforms]) as BuildType[]
+    ) {
       const config = crossBuildConfigs[platforms][types];
       if (!config) continue;
       console.info(`Watching ${platforms} ${types}`);

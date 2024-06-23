@@ -40,7 +40,7 @@ export class ContactContribution {
       subscriptionId: null,
       payFee: null,
       nextAmount: null,
-      cancelledAt: null
+      cancelledAt: null,
     };
   }
 }

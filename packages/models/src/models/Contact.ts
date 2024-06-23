@@ -1,8 +1,8 @@
 import {
-  ContributionType,
   ContributionPeriod,
+  ContributionType,
+  getActualAmount,
   RoleType,
-  getActualAmount
 } from "@beabee/beabee-common";
 import {
   Column,
@@ -10,7 +10,7 @@ import {
   Entity,
   OneToMany,
   OneToOne,
-  PrimaryGeneratedColumn
+  PrimaryGeneratedColumn,
 } from "typeorm";
 
 import { config } from "@beabee/config";
@@ -101,12 +101,10 @@ export class Contact {
   }
 
   get contributionAmount(): number | null {
-    return this.contributionMonthlyAmount === null
-      ? null
-      : getActualAmount(
-        this.contributionMonthlyAmount,
-        this.contributionPeriod!
-      );
+    return this.contributionMonthlyAmount === null ? null : getActualAmount(
+      this.contributionMonthlyAmount,
+      this.contributionPeriod!,
+    );
   }
 
   get contributionDescription(): string {
@@ -119,8 +117,9 @@ export class Contact {
     ) {
       return "None";
     } else {
-      return `${config.currencySymbol}${this.contributionAmount}/${this.contributionPeriod === "monthly" ? "month" : "year"
-        }`;
+      return `${config.currencySymbol}${this.contributionAmount}/${
+        this.contributionPeriod === "monthly" ? "month" : "year"
+      }`;
     }
   }
 
