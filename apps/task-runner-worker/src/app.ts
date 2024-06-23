@@ -1,6 +1,6 @@
-import { TaskRunnerWorkerService } from '@beabee/task-runner/src';
-import { database } from '@beabee/core';
-import { StripeSubscriptionHandler } from './handler/stripe-subscription.handler';
+import { TaskRunnerWorkerService } from "@beabee/task-runner/src";
+import { database } from "@beabee/core";
+import { StripeSubscriptionHandler } from "./handler/stripe-subscription.handler";
 
 import { config } from "@beabee/config";
 
@@ -8,11 +8,12 @@ import { config } from "@beabee/config";
 await database.connect();
 
 const taskRunnerWorkerService = new TaskRunnerWorkerService({
-    connection: {
-        host: config.taskRunner.redis.host,
-        port: config.taskRunner.redis.port,
-    },
+  connection: {
+    host: config.taskRunner.redis.host,
+    port: config.taskRunner.redis.port,
+  },
 });
 
-const stripeSubscriptionHandler = new StripeSubscriptionHandler(taskRunnerWorkerService);
-
+const stripeSubscriptionHandler = new StripeSubscriptionHandler(
+  taskRunnerWorkerService,
+);
