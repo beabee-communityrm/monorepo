@@ -15,17 +15,17 @@ export class StripeSubscriptionHandler {
       JobResultStripeSubscription,
       "update"
     >(QUEUE.STRIPE_SUBSCRIPTION, this.update);
-    worker.on("completed", (jobId, result) => {
+    worker.on("completed", (job, result) => {
       console.debug(
-        `[StripeSubscriptionHandler] Job ${jobId} completed with result: ${result}`,
+        `[StripeSubscriptionHandler] Job ${job.id} completed with result: ${result}`,
       );
     });
     worker.on("failed", (job, err) => {
-      console.debug(
-        `[StripeSubscriptionHandler] ${job.id} has failed with ${err.message}`,
+      console.error(
+        `[StripeSubscriptionHandler] Job ${job.id} has failed with ${err.message}`,
       );
     });
-    console.log("[StripeSubscriptionHandler] Worker started!");
+    console.debug("[StripeSubscriptionHandler] Worker started!");
   }
 
   /**
@@ -39,7 +39,7 @@ export class StripeSubscriptionHandler {
       "update"
     >,
   ) {
-    console.debug("[StripeSubscriptionHandler] new update job", job);
+    console.debug(`[StripeSubscriptionHandler] new job: "${job.name}"`);
 
     const result: JobResultStripeSubscription = {
       updatedSubscriptions: 0,

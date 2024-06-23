@@ -4,8 +4,13 @@ import { StripeSubscriptionHandler } from "./handler/stripe-subscription.handler
 
 import { config } from "@beabee/config";
 
-// Init database connection
+import { log as mainLogger, optionsService } from "@beabee/core";
+
+const log = mainLogger.child({ app: "TaskRunnerWorker" });
+
+log.info("Initializing app...");
 await database.connect();
+await optionsService.reload();
 
 const taskRunnerWorkerService = new TaskRunnerWorkerService({
   connection: {
@@ -14,6 +19,6 @@ const taskRunnerWorkerService = new TaskRunnerWorkerService({
   },
 });
 
-const stripeSubscriptionHandler = new StripeSubscriptionHandler(
+new StripeSubscriptionHandler(
   taskRunnerWorkerService,
 );
