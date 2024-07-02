@@ -11,7 +11,8 @@
     "generate:index": "deno task beabee:cli generate-index --ext ts ./src/actions ./src/plugins ./src/utils",
     "sync": "deno task beabee:cli cross-sync",
     "deno:cache": "deno cache ./src/deps.ts",
-    "deno:cache:refresh": "deno cache --reload --lock-write ./src/deps.ts"
+    "deno:cache:refresh": "deno cache --reload --lock-write ./src/deps.ts",
+    "format": "yarn format"
   },
   "imports": {}
 }
