@@ -10,9 +10,12 @@
     "beabee:cli": "deno run --allow-read --allow-write --allow-env --allow-run --allow-net ./src/cli.ts",
     "generate:index": "deno task beabee:cli generate-index --ext ts ./src/actions ./src/plugins ./src/utils",
     "sync": "deno task beabee:cli cross-sync",
+    "check": "deno task check:format && deno task check:types",
+    "check:format": "deno task format --check",
+    "check:types": "deno check ./mod.ts",
     "deno:cache": "deno cache ./src/deps.ts",
     "deno:cache:refresh": "deno cache --reload --lock-write ./src/deps.ts",
-    "format": "yarn format"
+    "format": "deno fmt ."
   },
   "imports": {}
 }

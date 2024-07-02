@@ -14,6 +14,9 @@
     "build:types": "tsc --project ./tsconfig.json",
     "watch:types": "tsc --project ./tsconfig.json --watch --preserveWatchOutput",
     "beabee:cli": "yarn exec 'deno task beabee:cli'",
+    "check": "yarn exec 'deno task check'",
+    "check:format": "yarn exec 'deno task check:format'",
+    "check:types": "yarn build:types --noEmit --emitDeclarationOnly false",
     "sync": "yarn exec 'deno task sync'",
     "format": "yarn exec 'deno task format'",
     "generate:index": "yarn exec 'deno task generate:index'"

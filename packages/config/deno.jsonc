@@ -8,6 +8,9 @@
     "build:types": "yarn build:types",
     "sync": "deno task beabee:cli cross-sync",
     "format": "deno fmt src",
+    "check": "deno task check:format && deno task check:types",
+    "check:format": "deno task format --check",
+    "check:types": "yarn check:types",
     "generate:index": "deno task beabee:cli generate-index --ext ts ./src/types",
     "watch:types": "yarn watch:types"
   },

@@ -12,7 +12,7 @@
     "beabee-cli-sh": "./cli.sh"
   },
   "scripts": {
-    "format": "deno fmt .",
+    "format": "yarn exec 'deno task format'",
     "beabee:cli": "yarn exec 'deno task beabee:cli'",
     "build": "yarn exec 'deno task build'",
     "build:compile": "yarn exec 'deno task build:compile'",
@@ -22,7 +22,10 @@
     "deno:cache": "yarn exec 'deno task deno:cache'",
     "deno:cache:refresh": "yarn exec 'deno task deno:cache:refresh'",
     "chmod": "yarn exec 'deno task chmod'",
-    "clear": "yarn exec 'deno task clear'"
+    "clear": "yarn exec 'deno task clear'",
+    "check": "yarn exec 'deno task check'",
+    "check:format": "yarn exec 'deno task check:format'",
+    "check:types": "yarn exec 'deno task check:types'"
   },
   "dependencies": {}
 }

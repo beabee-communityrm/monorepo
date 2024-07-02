@@ -54,6 +54,7 @@ You need the following tools installed on your machine:
    ```bash
    yarn docker:build:local # Build all docker images for the local environment
    yarn docker-compose:build # Build the docker-compose stack for the local environment
+   yarn docker-compose:start # Start the docker-compose stack for the local environment
    ```
 
    > You can also start the containers with `yarn docker:start:local`
