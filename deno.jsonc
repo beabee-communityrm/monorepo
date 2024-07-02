@@ -3,7 +3,7 @@
   "version": "0.16.0",
   "imports": {
     "date-fns": "npm:date-fns@3.6.0",
-    "bullmq": "npm:bullmq@5.8.2",
+    "bullmq": "npm:bullmq@5.8.3",
     "linkify-it": "npm:linkify-it@5.0.0",
     "assert": "node:assert",
     "process": "node:process",

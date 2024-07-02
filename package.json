@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "setup": "yarn workspaces foreach --verbose --worktree -p run setup",
     "build": "yarn workspaces foreach --verbose --worktree --topological-dev run build",
     "build:types": "yarn workspaces foreach --verbose --worktree --topological-dev run build:types",
     "build:backend": "yarn workspaces foreach --from '@beabee/backend' --recursive --topological-dev run build",
@@ -36,6 +37,8 @@
     "docker:build:local": "yarn workspaces foreach --verbose --worktree --topological-dev run docker:build:local",
     "docker:start:local": "yarn workspaces foreach --verbose --worktree -p run docker:start:local",
     "docker:start:latest": "yarn workspaces foreach --verbose --worktree -p run docker:start:latest",
+    "docker:push:latest": "yarn workspaces foreach --verbose --worktree -p run docker:push:latest",
+    "docker:push:dev": "yarn workspaces foreach --verbose --worktree -p run docker:push:dev",
     "publish:next": "yarn workspaces foreach --verbose --worktree --no-private npm publish --tolerate-republish --tag next --access public",
     "publish:latest": "yarn workspaces foreach --verbose --worktree --no-private npm publish --tolerate-republish --tag latest --access public"
   },

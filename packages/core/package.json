@@ -116,7 +116,7 @@
     "prettier": "^3.3.2",
     "ts-jest": "^29.1.5",
     "ts-node": "^10.9.2",
-    "typescript": "^5.5.2"
+    "typescript": "^5.5.3"
   },
   "dependencies": {
     "@beabee/beabee-common": "workspace:^",
@@ -147,7 +147,7 @@
     "module-alias": "^2.2.3",
     "moment": "^2.30.1",
     "muhammara": "^4.1.0",
-    "nodemailer": "^6.9.13",
+    "nodemailer": "^6.9.14",
     "otpauth": "^9.3.1",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",

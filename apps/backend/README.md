@@ -2,7 +2,7 @@
 
 Welcome to the official GitHub repository for beabee, where you'll find both the backend API and the legacy frontend application for beabee. Discover more about beabee by visiting our website at [beabee.io](https://beabee.io/en/home/).
 
-beabee was initially developed for the [South London Makerspace](http://southlondonmakerspace.org) and later adapted for use by [The Bristol Cable](https://thebristolcable.org).
+beabee was initially developed for the [South London Makerspace](http://southlondonmakerspace.org), later adapted for use by [The Bristol Cable](https://thebristolcable.org) and was then taken over by [CORRECTIV](https://correctiv.org/).
 
 ![Deploy Status](https://github.com/beabee-communityrm/beabee/workflows/Deploy/badge.svg)
 ![Known Vulnerabilities](https://snyk.io/test/github/beabee-communityrm/beabee/badge.svg?targetFile=package.json)
@@ -99,11 +99,15 @@ docker compose up -d
 
 ````
 
-If you change the dependencies in `package.json` you must rebuild and recreate the Docker containers
+If you change the dependencies in `package.json` you must rebuild and recreate the workspace and backend Docker containers
 
 ```bash
-docker compose build
-docker compose up -d
+cd ../../docker/workspace/
+yarn docker:build:local
+
+cd ../../apps/backend/
+yarn docker:build:local
+yarn docker-compose:start # or docker compose up -d
 ````
 
 #### Generating database migrations
@@ -130,16 +134,6 @@ To find out more about this topic, take a look at the [TypeORM Migration Guide](
 ### 📰 Documentation
 
 The codebase is broadly split into a few different parts
-
-- **beabee core**
-
-  Shared between all services (API, webhooks and legacy)
-
-```
-./src/core
-./src/models - Data models and database entities
-./src/config - Config loader
-```
 
 - **API service**
 

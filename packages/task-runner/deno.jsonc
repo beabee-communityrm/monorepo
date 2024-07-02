@@ -16,6 +16,6 @@
     "deno:cache:refresh": "deno cache --reload --lock-write src/deps.ts"
   },
   "imports": {
-    "bullmq": "npm:bullmq@5.8.2"
+    "bullmq": "npm:bullmq@5.8.3"
   }
 }

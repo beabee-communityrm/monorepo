@@ -38,9 +38,9 @@
   },
   "devDependencies": {
     "@beabee/cli": "workspace:^",
-    "typescript": "^5.5.2"
+    "typescript": "^5.5.3"
   },
   "dependencies": {
-    "bullmq": "^5.8.2"
+    "bullmq": "^5.8.3"
   }
 }

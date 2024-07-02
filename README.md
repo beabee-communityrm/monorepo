@@ -41,32 +41,24 @@ You need the following tools installed on your machine:
 
 ### Initial Setup
 
-1. Copy the example environment files:
-
-   ```bash
-   cp apps/backend/.env.example apps/backend/.env
-   cp apps/frontend/.env.example apps/frontend/.env
-   ```
-
-2. Install dependencies and build the project:
+1. Install dependencies, copy the example environment files and build the project:
 
    ```bash
    yarn install
+   yarn setup # This prepares packages, for example, the .env.example is copied to .env if necessary
    yarn build
    ```
 
-3. Initialize and start the Docker containers:
+2. Initialize and start the Docker containers:
 
    ```bash
-   # Build all docker images
-   yarn docker:build:local
-   # Build the docker-compose stack
-   yarn docker-compose:build
+   yarn docker:build:local # Build all docker images for the local environment
+   yarn docker-compose:build # Build the docker-compose stack for the local environment
    ```
 
    > You can also start the containers with `yarn docker:start:local`
 
-4. Run the development mode to watch for changes on all packages:
+3. Run the development mode to watch for changes on all packages:
 
    ```bash
    yarn dev
@@ -86,11 +78,37 @@ Publish new versions of the library packages on NPM:
 yarn publish:latest # or yarn publish:next
 ```
 
+Publish new versions of the Docker images to Docker Hub (Normally not necessary, as this is done automatically via a GitHub action):
+
+```bash
+yarn docker:push:latest # or yarn docker:push:dev
+```
+
 Run the format command on all packages to format the code:
 
 ```bash
 yarn format
 ```
+
+Check for linting and type checking errors on all packages:
+
+```bash
+yarn check
+```
+
+Run the tests on all packages:
+
+```bash
+yarn test
+```
+
+Some packages use Deno. To ensure that they still work with the `yarn workspace`, they still contain a `package.json` that is synchronised with the `deno.jsonc`. To synchronise these with each other, run:
+
+```bash
+yarn sync
+```
+
+> To see what other scripts are available and what they do, take a look at the `package.json` files for the root and subprojects.
 
 Visual Studio Code Workspace:
 

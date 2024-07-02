@@ -8,7 +8,7 @@
     "dist"
   ],
   "scripts": {
-    "beabee:cli": "",
+    "setup": "cp -n example.credentials.json .credentials.json; exit 0",
     "clear": "rm -rf dist; exit 0",
     "format": "deno fmt .",
     "build": "yarn build:node && yarn build:types && yarn build:json",
@@ -38,6 +38,6 @@
   },
   "devDependencies": {
     "@beabee/cli": "workspace:^",
-    "typescript": "^5.5.2"
+    "typescript": "^5.5.3"
   }
 }

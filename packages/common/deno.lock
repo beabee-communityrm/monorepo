@@ -21,7 +21,7 @@
         "npm:cacheable-request@^12.0.1",
         "npm:concurrently@^8.2.2",
         "npm:date-fns@^3.6.0",
-        "npm:typescript@^5.5.2"
+        "npm:typescript@^5.5.3"
       ]
     }
   }

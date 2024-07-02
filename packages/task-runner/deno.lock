@@ -2,7 +2,7 @@
   "version": "3",
   "packages": {
     "specifiers": {
-      "npm:bullmq@5.8.2": "npm:bullmq@5.8.2"
+      "npm:bullmq@5.8.3": "npm:bullmq@5.8.3"
     },
     "npm": {
       "@ioredis/commands@1.2.0": {
@@ -33,8 +33,8 @@
         "integrity": "sha512-x0fWaQtYp4E6sktbsdAqnehxDgEc/VwM7uLsRCYWaiGu0ykYdZPiS8zCWdnjHwyiumousxfBm4SO31eXqwEZhQ==",
         "dependencies": {}
       },
-      "bullmq@5.8.2": {
-        "integrity": "sha512-V64+Nz28FO9YEEUiDonG5KFhjihedML/OxuHpB0D5vV8aWcF1ui/5nmjDcCIyx4EXiUUDDypSUotjzcYu8gkeg==",
+      "bullmq@5.8.3": {
+        "integrity": "sha512-RJgQu/vgSZqjOYrZ7F1UJsSAzveNx7FFpR3Tp/1TxOMXXN9TtZMSly5MT+vjzOhQX//3+YWNRbMWpC1mkqBc9w==",
         "dependencies": {
           "cron-parser": "cron-parser@4.9.0",
           "ioredis": "ioredis@5.4.1",
@@ -158,12 +158,12 @@
   "remote": {},
   "workspace": {
     "dependencies": [
-      "npm:bullmq@5.8.2"
+      "npm:bullmq@5.8.3"
     ],
     "packageJson": {
       "dependencies": [
-        "npm:bullmq@^5.8.2",
-        "npm:typescript@^5.5.2"
+        "npm:bullmq@^5.8.3",
+        "npm:typescript@^5.5.3"
       ]
     }
   }
