@@ -59,7 +59,7 @@ You need the following tools installed on your machine:
 
    > You can also start the containers with `yarn docker:start:local`
 
-3. Run the development mode to watch for changes on all packages:
+3. Run the development mode to watch for changes on all packages which have a `dev` script:
 
    ```bash
    yarn dev

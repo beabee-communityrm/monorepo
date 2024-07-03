@@ -289,6 +289,7 @@ class CalloutsService {
     ) {
       throw new InvalidCalloutResponse("only-anonymous");
     } else if (!callout.active || callout.access === CalloutAccess.Member) {
+      // TODO: Create a separate error code for `callout.access === CalloutAccess.Member`
       throw new InvalidCalloutResponse("closed");
     }
 
