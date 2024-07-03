@@ -10,31 +10,22 @@ WORKDIR /opt/apps/frontend
 COPY package.json yarn.lock deno.jsonc .yarnrc.yml /opt/
 COPY .yarn /opt/.yarn
 
-# Copy common dependencies info
+# Copy dependencies info
 COPY packages/common/package.json /opt/packages/common/package.json
-COPY packages/common/deno.jsonc /opt/packages/common/deno.jsonc
-COPY packages/common/deno.lock /opt/packages/common/deno.lock
-
-# Copy frontend dependencies info
 COPY apps/frontend/package.json /opt/apps/frontend/package.json
 
-# Replace's npm ci
+# Install dependencies
 RUN yarn workspaces focus
 
-# Copy the rest of the related packages
-COPY packages/common/src /opt/packages/common/src
-COPY packages/common/cli /opt/packages/common/cli
-COPY packages/common/test /opt/packages/common/test
-COPY packages/common/mod.ts packages/common/tsconfig.json /opt/packages/common/
-COPY apps/frontend /opt/apps/frontend
-
-# Build the backend and it's dependencies
+# Build common
+COPY packages/common /opt/packages/common
 RUN NODE_ENV=production yarn build:common
+
+# Build frontend
+COPY apps/frontend /opt/apps/frontend
 RUN NODE_ENV=production yarn build:frontend
 
 FROM nginx:1.24-alpine
-
-WORKDIR /opt/apps/frontend
 
 ARG REVISION
 

@@ -9,7 +9,6 @@ import theme from './plugins/theme';
 
 export default ({ command, mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
-  console.debug('API_PROXY_URL', env.API_PROXY_URL);
 
   const plugins = [
     vue(),
@@ -47,6 +46,8 @@ export default ({ command, mode }) => {
 
   // Use environment variables when developing locally
   if (command === 'serve') {
+    console.debug('API_PROXY_URL', env.API_PROXY_URL);
+
     plugins.push(
       replace({
         values: {
