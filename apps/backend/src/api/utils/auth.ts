@@ -1,6 +1,6 @@
 import { Request } from "express";
 
-import Contact from "@models/Contact";
+import Contact from "@beabee/beabee-core/models/Contact";
 
 export function login(req: Request, contact: Contact): Promise<void> {
   return new Promise<void>((resolve, reject) => {

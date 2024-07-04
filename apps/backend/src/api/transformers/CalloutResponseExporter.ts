@@ -7,7 +7,7 @@ import { stringify } from "csv-stringify/sync";
 import { format } from "date-fns";
 import { In, SelectQueryBuilder } from "typeorm";
 
-import { getRepository } from "@core/database";
+import { getRepository } from "@beabee/beabee-core/database";
 
 import { GetExportQuery } from "@api/dto/BaseDto";
 import {
@@ -18,9 +18,9 @@ import { BaseCalloutResponseTransformer } from "@api/transformers/BaseCalloutRes
 import NotFoundError from "@api/errors/NotFoundError";
 import { groupBy } from "@api/utils";
 
-import CalloutResponse from "@models/CalloutResponse";
-import CalloutResponseComment from "@models/CalloutResponseComment";
-import Callout from "@models/Callout";
+import CalloutResponse from "@beabee/beabee-core/models/CalloutResponse";
+import CalloutResponseComment from "@beabee/beabee-core/models/CalloutResponseComment";
+import Callout from "@beabee/beabee-core/models/Callout";
 
 import { AuthInfo } from "@type/auth-info";
 

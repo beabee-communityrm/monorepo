@@ -8,18 +8,24 @@ import flash from "express-flash";
 import helmet from "helmet";
 
 import appLoader from "@core/app-loader";
-import { log, requestErrorLogger, requestLogger } from "@core/logging";
+import {
+  log,
+  requestErrorLogger,
+  requestLogger
+} from "@beabee/beabee-core/logging";
 import quickflash from "@core/quickflash";
 import { initApp, startServer } from "@core/server";
 import sessions from "@core/sessions";
 import { isInvalidType } from "@core/utils";
 
-import OptionsService, { OptionKey } from "@core/services/OptionsService";
+import OptionsService, {
+  OptionKey
+} from "@beabee/beabee-core/services/OptionsService";
 import PageSettingsService from "@core/services/PageSettingsService";
 
 //import specialUrlHandler from '@apps/tools/apps/special-urls/handler';
 
-import config from "@config";
+import config from "@beabee/beabee-core/config";
 
 if (!config.gocardless.sandbox && config.dev) {
   log.error(

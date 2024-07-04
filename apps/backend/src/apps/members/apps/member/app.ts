@@ -1,22 +1,21 @@
+import { RESET_SECURITY_FLOW_TYPE } from "@beabee/beabee-common";
 import express from "express";
 import moment from "moment";
 
-import config from "@config";
+import config from "@beabee/beabee-core/config";
 
-import { getRepository } from "@core/database";
+import { getRepository } from "@beabee/beabee-core/database";
 import { isAdmin } from "@core/middleware";
 import { wrapAsync } from "@core/utils";
 import { canSuperAdmin, generateCode } from "@core/utils/auth";
 
 import ContactsService from "@core/services/ContactsService";
-import OptionsService from "@core/services/OptionsService";
+import OptionsService from "@beabee/beabee-core/services/OptionsService";
 import PaymentService from "@core/services/PaymentService";
 import ReferralsService from "@core/services/ReferralsService";
 
-import Contact from "@models/Contact";
-import ResetSecurityFlow from "@models/ResetSecurityFlow";
-
-import { RESET_SECURITY_FLOW_TYPE } from "@enums/reset-security-flow-type";
+import Contact from "@beabee/beabee-core/models/Contact";
+import ResetSecurityFlow from "@beabee/beabee-core/models/ResetSecurityFlow";
 
 const app = express();
 

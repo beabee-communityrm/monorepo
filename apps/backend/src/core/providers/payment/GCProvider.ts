@@ -3,7 +3,7 @@ import { Subscription } from "gocardless-nodejs";
 import moment from "moment";
 
 import gocardless from "@core/lib/gocardless";
-import { log as mainLogger } from "@core/logging";
+import { log as mainLogger } from "@beabee/beabee-core/logging";
 import { getActualAmount } from "@core/utils";
 import {
   updateSubscription,
@@ -15,11 +15,11 @@ import { calcRenewalDate } from "@core/utils/payment";
 
 import { PaymentProvider } from ".";
 
-import Contact from "@models/Contact";
+import Contact from "@beabee/beabee-core/models/Contact";
 
 import NoPaymentMethod from "@api/errors/NoPaymentMethod";
 
-import config from "@config";
+import config from "@beabee/beabee-core/config";
 
 import {
   CompletedPaymentFlow,

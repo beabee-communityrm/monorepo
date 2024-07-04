@@ -1,8 +1,8 @@
-import { getRepository } from "@core/database";
+import { getRepository } from "@beabee/beabee-core/database";
 
-import OptionsService from "@core/services/OptionsService";
+import OptionsService from "@beabee/beabee-core/services/OptionsService";
 
-import PageSettings from "@models/PageSettings";
+import PageSettings from "@beabee/beabee-core/models/PageSettings";
 
 interface PageSettingsCache extends PageSettings {
   patternRegex: RegExp;

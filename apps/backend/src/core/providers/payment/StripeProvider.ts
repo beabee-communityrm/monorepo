@@ -5,7 +5,7 @@ import Stripe from "stripe";
 import { PaymentProvider } from ".";
 
 import { stripe } from "@core/lib/stripe";
-import { log as mainLogger } from "@core/logging";
+import { log as mainLogger } from "@beabee/beabee-core/logging";
 import { getActualAmount } from "@core/utils";
 import { calcRenewalDate, getChargeableAmount } from "@core/utils/payment";
 import {
@@ -15,11 +15,11 @@ import {
   updateSubscription
 } from "@core/utils/payment/stripe";
 
-import Contact from "@models/Contact";
+import Contact from "@beabee/beabee-core/models/Contact";
 
 import NoPaymentMethod from "@api/errors/NoPaymentMethod";
 
-import config from "@config";
+import config from "@beabee/beabee-core/config";
 
 import {
   CompletedPaymentFlow,

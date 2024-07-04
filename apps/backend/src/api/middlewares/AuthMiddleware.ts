@@ -3,12 +3,12 @@ import crypto from "node:crypto";
 import { Request, Response } from "express";
 import { Middleware, ExpressMiddlewareInterface } from "routing-controllers";
 
-import { getRepository } from "@core/database";
+import { getRepository } from "@beabee/beabee-core/database";
 
 import ContactsService from "@core/services/ContactsService";
 import { extractToken } from "@core/utils/auth";
 
-import ApiKey from "@models/ApiKey";
+import ApiKey from "@beabee/beabee-core/models/ApiKey";
 
 import { AuthInfo } from "@type/auth-info";
 

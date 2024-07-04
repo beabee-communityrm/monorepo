@@ -3,7 +3,7 @@ import express from "express";
 import { isSuperAdmin } from "@core/middleware";
 import { wrapAsync } from "@core/utils";
 
-import OptionsService from "@core/services/OptionsService";
+import OptionsService from "@beabee/beabee-core/services/OptionsService";
 
 const app = express();
 

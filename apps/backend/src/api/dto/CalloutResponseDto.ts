@@ -31,7 +31,7 @@ import { GetCalloutDto } from "@api/dto/CalloutDto";
 import { GetCalloutResponseCommentDto } from "@api/dto/CalloutResponseCommentDto";
 import { GetCalloutTagDto } from "@api/dto/CalloutTagDto";
 
-import Callout from "@models/Callout";
+import Callout from "@beabee/beabee-core/models/Callout";
 
 import { CalloutResponseViewSchema } from "@type/callout-response-view-schema";
 

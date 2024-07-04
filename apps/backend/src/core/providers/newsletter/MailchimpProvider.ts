@@ -4,7 +4,7 @@ import gunzip from "gunzip-maybe";
 import JSONStream from "JSONStream";
 import tar from "tar-stream";
 
-import { log as mainLogger } from "@core/logging";
+import { log as mainLogger } from "@beabee/beabee-core/logging";
 import { cleanEmailAddress } from "@core/utils";
 
 import {
@@ -13,7 +13,7 @@ import {
   UpdateNewsletterContact
 } from ".";
 
-import { MailchimpNewsletterConfig } from "@config";
+import { MailchimpNewsletterConfig } from "@beabee/beabee-core/config";
 import { NewsletterStatus } from "@beabee/beabee-common";
 
 const log = mainLogger.child({ app: "mailchimp-provider" });

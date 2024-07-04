@@ -1,16 +1,16 @@
 import express from "express";
 
-import { getRepository } from "@core/database";
+import { getRepository } from "@beabee/beabee-core/database";
 import { hasNewModel } from "@core/middleware";
 import { userToAuth, wrapAsync } from "@core/utils";
 
 import SegmentService from "@core/services/SegmentService";
 
-import Email from "@models/Email";
-import EmailMailing from "@models/EmailMailing";
-import Segment from "@models/Segment";
-import SegmentOngoingEmail from "@models/SegmentOngoingEmail";
-import SegmentContact from "@models/SegmentContact";
+import Email from "@beabee/beabee-core/models/Email";
+import EmailMailing from "@beabee/beabee-core/models/EmailMailing";
+import Segment from "@beabee/beabee-core/models/Segment";
+import SegmentOngoingEmail from "@beabee/beabee-core/models/SegmentOngoingEmail";
+import SegmentContact from "@beabee/beabee-core/models/SegmentContact";
 
 import { EmailSchema, schemaToEmail } from "@apps/tools/apps/emails/app";
 import { cleanRuleGroup } from "@apps/members/app";

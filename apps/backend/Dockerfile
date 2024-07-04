@@ -12,6 +12,7 @@ COPY .yarn /opt/.yarn
 
 # Copy dependencies info
 COPY packages/common/package.json /opt/packages/common/package.json
+COPY packages/core/package.json /opt/packages/core/package.json
 COPY apps/backend/package.json /opt/apps/backend/package.json
 
 # Install dependencies
@@ -19,11 +20,15 @@ RUN yarn workspaces focus
 
 # Build common
 COPY packages/common /opt/packages/common
-RUN NODE_ENV=production yarn build:common
+RUN NODE_ENV=production yarn workspace @beabee/beabee-common build
+
+# Build core
+COPY packages/core /opt/packages/core
+RUN NODE_ENV=production yarn workspace @beabee/beabee-core build
 
 # Build backend
 COPY apps/backend /opt/apps/backend
-RUN NODE_ENV=production yarn build:backend
+RUN NODE_ENV=production yarn workspace @beabee/backend build
 
 FROM nginx:1.24-alpine as router
 
@@ -45,6 +50,7 @@ COPY --chown=node:node --from=builder /opt/.yarn /opt/.yarn
 # Copy the node_module's and package.json's
 COPY --chown=node:node --from=builder /opt/node_modules /opt/node_modules
 COPY --chown=node:node --from=builder /opt/apps/backend/package.json /opt/apps/backend/
+COPY --chown=node:node --from=builder /opt/packages/core/package.json /opt/packages/core/
 COPY --chown=node:node --from=builder /opt/packages/common/package.json /opt/packages/common/
 
 # Prune non-production dependencies
@@ -52,6 +58,7 @@ RUN yarn workspaces focus --production
 
 # Copy the built files
 COPY --chown=node:node --from=builder /opt/apps/backend/built /opt/apps/backend/built
+COPY --chown=node:node --from=builder /opt/packages/core/dist /opt/packages/core/dist
 COPY --chown=node:node --from=builder /opt/packages/common/dist /opt/packages/common/dist
 
 COPY apps/backend/crontab /etc/crontabs/root

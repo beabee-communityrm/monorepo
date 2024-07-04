@@ -13,7 +13,7 @@ import { CompleteJoinFlowDto } from "@api/dto/JoinFlowDto";
 import IsPassword from "@api/validators/IsPassword";
 import IsUrl from "@api/validators/IsUrl";
 
-import type JoinForm from "@models/JoinForm";
+import type JoinForm from "@beabee/beabee-core/models/JoinForm";
 
 import { CompleteUrls } from "@type/complete-urls";
 

@@ -6,17 +6,17 @@ import {
 } from "gocardless-nodejs/types/Types";
 import moment, { DurationInputObject } from "moment";
 
-import { getRepository } from "@core/database";
+import { getRepository } from "@beabee/beabee-core/database";
 import gocardless from "@core/lib/gocardless";
-import { log as mainLogger } from "@core/logging";
+import { log as mainLogger } from "@beabee/beabee-core/logging";
 import { convertStatus } from "@core/utils/payment/gocardless";
 
 import ContactsService from "@core/services/ContactsService";
 import PaymentService from "@core/services/PaymentService";
 
-import Payment from "@models/Payment";
+import Payment from "@beabee/beabee-core/models/Payment";
 
-import config from "@config";
+import config from "@beabee/beabee-core/config";
 import { PaymentStatus } from "@beabee/beabee-common";
 
 const log = mainLogger.child({ app: "payment-webhook-utils" });

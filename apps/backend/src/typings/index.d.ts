@@ -1,8 +1,8 @@
 import { ParamsDictionary } from "express-serve-static-core";
 
-import ApiKey from "@models/ApiKey";
-import { CalloutResponseAnswersSlide } from "@models/CalloutResponse";
-import Contact from "@models/Contact";
+import ApiKey from "@beabee/beabee-core/models/ApiKey";
+import { CalloutResponseAnswersSlide } from "@beabee/beabee-core/models/CalloutResponse";
+import Contact from "@beabee/beabee-core/models/Contact";
 
 import { AuthInfo as AuthInfo2 } from "@type/auth-info";
 

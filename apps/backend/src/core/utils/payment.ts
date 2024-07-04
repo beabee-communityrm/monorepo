@@ -4,8 +4,8 @@ import {
   PaymentMethod,
   calcPaymentFee
 } from "@beabee/beabee-common";
-import config from "@config";
-import Contact from "@models/Contact";
+import config from "@beabee/beabee-core/config";
+import Contact from "@beabee/beabee-core/models/Contact";
 import { addMonths, getYear, setYear, sub, differenceInMonths } from "date-fns";
 import { getActualAmount } from ".";
 

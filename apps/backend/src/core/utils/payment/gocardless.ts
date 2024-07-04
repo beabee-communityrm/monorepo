@@ -12,11 +12,11 @@ import {
 } from "gocardless-nodejs/types/Types";
 import moment from "moment";
 
-import { log as mainLogger } from "@core/logging";
+import { log as mainLogger } from "@beabee/beabee-core/logging";
 import gocardless from "@core/lib/gocardless";
 import { getChargeableAmount } from "@core/utils/payment";
 
-import config from "@config";
+import config from "@beabee/beabee-core/config";
 
 import { PaymentForm } from "@type/index";
 

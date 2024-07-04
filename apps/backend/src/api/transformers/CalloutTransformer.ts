@@ -13,7 +13,7 @@ import {
 } from "routing-controllers";
 import { SelectQueryBuilder } from "typeorm";
 
-import { createQueryBuilder } from "@core/database";
+import { createQueryBuilder } from "@beabee/beabee-core/database";
 
 import {
   GetCalloutWith,
@@ -26,10 +26,10 @@ import CalloutVariantTransformer from "@api/transformers/CalloutVariantTransform
 import { groupBy } from "@api/utils";
 import { mergeRules, statusFilterHandler } from "@api/utils/rules";
 
-import Contact from "@models/Contact";
-import Callout from "@models/Callout";
-import CalloutResponse from "@models/CalloutResponse";
-import CalloutVariant from "@models/CalloutVariant";
+import Contact from "@beabee/beabee-core/models/Contact";
+import Callout from "@beabee/beabee-core/models/Callout";
+import CalloutResponse from "@beabee/beabee-core/models/CalloutResponse";
+import CalloutVariant from "@beabee/beabee-core/models/CalloutVariant";
 
 import { AuthInfo } from "@type/auth-info";
 import { FilterHandlers } from "@type/filter-handlers";

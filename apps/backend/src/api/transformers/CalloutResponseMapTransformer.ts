@@ -8,7 +8,7 @@ import {
 } from "@beabee/beabee-common";
 import { TransformPlainToInstance } from "class-transformer";
 
-import { getRepository } from "@core/database";
+import { getRepository } from "@beabee/beabee-core/database";
 
 import {
   GetCalloutResponseMapDto,
@@ -21,8 +21,8 @@ import NotFoundError from "@api/errors/NotFoundError";
 import { BaseCalloutResponseTransformer } from "@api/transformers/BaseCalloutResponseTransformer";
 import { mergeRules } from "@api/utils/rules";
 
-import Callout from "@models/Callout";
-import CalloutResponse from "@models/CalloutResponse";
+import Callout from "@beabee/beabee-core/models/Callout";
+import CalloutResponse from "@beabee/beabee-core/models/CalloutResponse";
 
 import { AuthInfo } from "@type/auth-info";
 import { CalloutResponseViewSchema } from "@type/callout-response-view-schema";

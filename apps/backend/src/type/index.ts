@@ -10,8 +10,6 @@ export * from "./contribution-info.js";
 export * from "./create-contact-mfa-data.js";
 export * from "./delete-contact-mfa-data.js";
 export * from "./filter-handlers.js";
-export * from "./network-service-map.js";
-export * from "./network-service.js";
 export * from "./passport-local-done-callback.js";
 export * from "./passport-local-strategy-options.js";
 export * from "./passport-local-verify-options.js";

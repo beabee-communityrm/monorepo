@@ -1,11 +1,11 @@
 import { TransformPlainToInstance } from "class-transformer";
 import { SelectQueryBuilder } from "typeorm";
 
-import { createQueryBuilder } from "@core/database";
+import { createQueryBuilder } from "@beabee/beabee-core/database";
 import PaymentService from "@core/services/PaymentService";
 
-import Contact from "@models/Contact";
-import ContactRole from "@models/ContactRole";
+import Contact from "@beabee/beabee-core/models/Contact";
+import ContactRole from "@beabee/beabee-core/models/ContactRole";
 import {
   GetContactDto,
   GetContactOptsDto,

@@ -6,7 +6,7 @@ import { createDateTime, wrapAsync } from "@core/utils";
 
 import ContactsService from "@core/services/ContactsService";
 
-import Contact from "@models/Contact";
+import Contact from "@beabee/beabee-core/models/Contact";
 
 import { createPermissionSchema, updatePermissionSchema } from "./schemas.json";
 

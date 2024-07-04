@@ -1,10 +1,10 @@
 import { stripe } from "@core/lib/stripe";
-import { log as mainLogger } from "@core/logging";
+import { log as mainLogger } from "@beabee/beabee-core/logging";
 import { paymentMethodToStripeType } from "@core/utils/payment/stripe";
 
 import { PaymentFlowProvider } from ".";
 
-import JoinFlow from "@models/JoinFlow";
+import JoinFlow from "@beabee/beabee-core/models/JoinFlow";
 
 import {
   CompletedPaymentFlow,

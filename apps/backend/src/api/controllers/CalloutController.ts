@@ -18,7 +18,7 @@ import {
 
 import CalloutsService from "@core/services/CalloutsService";
 
-import { getRepository } from "@core/database";
+import { getRepository } from "@beabee/beabee-core/database";
 import { verify } from "@core/lib/captchafox";
 
 import { GetExportQuery } from "@api/dto/BaseDto";
@@ -50,10 +50,10 @@ import CalloutResponseMapTransformer from "@api/transformers/CalloutResponseMapT
 import CalloutResponseTransformer from "@api/transformers/CalloutResponseTransformer";
 import { validateOrReject } from "@api/utils";
 
-import Callout from "@models/Callout";
-import CalloutResponseTag from "@models/CalloutResponseTag";
-import CalloutTag from "@models/CalloutTag";
-import Contact from "@models/Contact";
+import Callout from "@beabee/beabee-core/models/Callout";
+import CalloutResponseTag from "@beabee/beabee-core/models/CalloutResponseTag";
+import CalloutTag from "@beabee/beabee-core/models/CalloutTag";
+import Contact from "@beabee/beabee-core/models/Contact";
 
 import { CalloutCaptcha } from "@beabee/beabee-common";
 

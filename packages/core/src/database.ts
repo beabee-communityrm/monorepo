@@ -1,4 +1,3 @@
-import "module-alias/register";
 import "reflect-metadata";
 
 import {
@@ -11,9 +10,9 @@ import {
   SelectQueryBuilder
 } from "typeorm";
 
-import { log as mainLogger } from "@core/logging";
+import { log as mainLogger } from "./logging";
 
-import config from "@config";
+import config from "./config/config";
 
 const log = mainLogger.child({ app: "database" });
 
@@ -22,8 +21,8 @@ export const dataSource: DataSource = new DataSource({
   type: "postgres",
   url: config.databaseUrl,
   logging: config.dev,
-  entities: [__dirname + "/../models/*.js"],
-  migrations: [__dirname + "/../migrations/*.js"]
+  entities: [__dirname + "/models/*.js"],
+  // TODO: migrations: [__dirname + "/../migrations/*.js"]
 });
 
 export function runTransaction<T>(

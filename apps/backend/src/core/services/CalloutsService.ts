@@ -10,19 +10,19 @@ import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity
 
 import EmailService from "@core/services/EmailService";
 import NewsletterService from "@core/services/NewsletterService";
-import OptionsService from "@core/services/OptionsService";
+import OptionsService from "@beabee/beabee-core/services/OptionsService";
 
-import { getRepository, runTransaction } from "@core/database";
-import { log as mainLogger } from "@core/logging";
+import { getRepository, runTransaction } from "@beabee/beabee-core/database";
+import { log as mainLogger } from "@beabee/beabee-core/logging";
 import { isDuplicateIndex } from "@core/utils";
 
-import Contact from "@models/Contact";
-import Callout from "@models/Callout";
-import CalloutResponse from "@models/CalloutResponse";
-import CalloutResponseComment from "@models/CalloutResponseComment";
-import CalloutResponseTag from "@models/CalloutResponseTag";
-import CalloutTag from "@models/CalloutTag";
-import CalloutVariant from "@models/CalloutVariant";
+import Contact from "@beabee/beabee-core/models/Contact";
+import Callout from "@beabee/beabee-core/models/Callout";
+import CalloutResponse from "@beabee/beabee-core/models/CalloutResponse";
+import CalloutResponseComment from "@beabee/beabee-core/models/CalloutResponseComment";
+import CalloutResponseTag from "@beabee/beabee-core/models/CalloutResponseTag";
+import CalloutTag from "@beabee/beabee-core/models/CalloutTag";
+import CalloutVariant from "@beabee/beabee-core/models/CalloutVariant";
 
 import DuplicateId from "@api/errors/DuplicateId";
 import InvalidCalloutResponse from "@api/errors/InvalidCalloutResponse";

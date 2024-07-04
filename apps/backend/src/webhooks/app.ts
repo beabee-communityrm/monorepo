@@ -2,10 +2,16 @@ import "module-alias/register";
 
 import express, { Handler } from "express";
 
-import { log, requestErrorLogger, requestLogger } from "@core/logging";
+import {
+  log,
+  requestErrorLogger,
+  requestLogger
+} from "@beabee/beabee-core/logging";
 import { initApp, startServer } from "@core/server";
 
-import OptionsService, { OptionKey } from "@core/services/OptionsService";
+import OptionsService, {
+  OptionKey
+} from "@beabee/beabee-core/services/OptionsService";
 
 import gocardlessApp from "./handlers/gocardless";
 import mailchimpApp from "./handlers/mailchimp";

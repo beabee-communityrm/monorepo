@@ -1,4 +1,5 @@
 import {
+  ContributionInfo,
   ContributionType,
   ContributionPeriod,
   RoleType
@@ -12,15 +13,14 @@ import {
   PrimaryGeneratedColumn
 } from "typeorm";
 
-import { getActualAmount } from "@core/utils";
-import config from "@config";
+import { getActualAmount } from "../utils";
+import config from "../config/config";
 
 import type ContactContribution from "./ContactContribution";
 import type ContactRole from "./ContactRole";
 import type ContactProfile from "./ContactProfile";
 import Password from "./Password";
 
-import { ContributionInfo } from "@type/contribution-info";
 
 interface LoginOverride {
   code: string;

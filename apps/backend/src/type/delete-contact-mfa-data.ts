@@ -1,4 +1,4 @@
-import { CONTACT_MFA_TYPE } from "@enums/contact-mfa-type";
+import { CONTACT_MFA_TYPE } from "@beabee/beabee-common";
 
 export interface DeleteContactMfaData {
   type: CONTACT_MFA_TYPE;

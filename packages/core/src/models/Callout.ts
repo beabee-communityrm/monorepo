@@ -1,5 +1,6 @@
 import {
   SetCalloutFormSchema,
+  CalloutResponseViewSchema,
   CalloutData,
   CalloutAccess,
   CalloutCaptcha,
@@ -17,8 +18,6 @@ import ItemWithStatus from "./ItemWithStatus";
 import type CalloutResponse from "./CalloutResponse";
 import type CalloutTag from "./CalloutTag";
 import type CalloutVariant from "./CalloutVariant";
-
-import { CalloutResponseViewSchema } from "@type/index";
 
 @Entity()
 export default class Callout extends ItemWithStatus implements CalloutData {

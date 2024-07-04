@@ -7,14 +7,14 @@ import {
   RuleOperator
 } from "@beabee/beabee-common";
 
-import { createQueryBuilder } from "@core/database";
+import { createQueryBuilder } from "@beabee/beabee-core/database";
 
 import { BaseGetCalloutResponseOptsDto } from "@api/dto/CalloutResponseDto";
 import { BaseTransformer } from "@api/transformers/BaseTransformer";
 import { mergeRules } from "@api/utils/rules";
 
-import CalloutResponse from "@models/CalloutResponse";
-import CalloutResponseTag from "@models/CalloutResponseTag";
+import CalloutResponse from "@beabee/beabee-core/models/CalloutResponse";
+import CalloutResponseTag from "@beabee/beabee-core/models/CalloutResponseTag";
 
 import { AuthInfo } from "@type/auth-info";
 import { FilterHandlers } from "@type/filter-handlers";

@@ -1,12 +1,12 @@
 import { MembershipStatus, PaymentMethod } from "@beabee/beabee-common";
 
-import { getRepository, runTransaction } from "@core/database";
-import { log as mainLogger } from "@core/logging";
+import { getRepository, runTransaction } from "@beabee/beabee-core/database";
+import { log as mainLogger } from "@beabee/beabee-core/logging";
 import { calcRenewalDate } from "@core/utils/payment";
 
-import Contact from "@models/Contact";
-import Payment from "@models/Payment";
-import ContactContribution from "@models/ContactContribution";
+import Contact from "@beabee/beabee-core/models/Contact";
+import Payment from "@beabee/beabee-core/models/Payment";
+import ContactContribution from "@beabee/beabee-core/models/ContactContribution";
 
 import { PaymentProvider } from "@core/providers/payment";
 import GCProvider from "@core/providers/payment/GCProvider";

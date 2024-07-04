@@ -8,14 +8,14 @@ import {
 import { parse } from "csv-parse";
 import { In } from "typeorm";
 
-import { getRepository } from "@core/database";
+import { getRepository } from "@beabee/beabee-core/database";
 import { runApp } from "@core/server";
 import { cleanEmailAddress } from "@core/utils";
 
 import ContactsService from "@core/services/ContactsService";
 
-import Contact from "@models/Contact";
-import ContactRole from "@models/ContactRole";
+import Contact from "@beabee/beabee-core/models/Contact";
+import ContactRole from "@beabee/beabee-core/models/ContactRole";
 
 import { Address } from "@type/address";
 

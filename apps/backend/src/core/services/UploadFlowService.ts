@@ -2,10 +2,10 @@ import { sub } from "date-fns";
 import { HttpError } from "routing-controllers";
 import { MoreThan } from "typeorm";
 
-import { getRepository } from "@core/database";
+import { getRepository } from "@beabee/beabee-core/database";
 
-import Contact from "@models/Contact";
-import UploadFlow from "@models/UploadFlow";
+import Contact from "@beabee/beabee-core/models/Contact";
+import UploadFlow from "@beabee/beabee-core/models/UploadFlow";
 
 class UploadFlowService {
   /**

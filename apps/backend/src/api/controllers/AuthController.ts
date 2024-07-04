@@ -1,4 +1,4 @@
-import { RoleTypes, RoleType } from "@beabee/beabee-common";
+import { LOGIN_CODES, RoleTypes, RoleType } from "@beabee/beabee-common";
 import { isUUID } from "class-validator";
 import { Request, Response } from "express";
 import {
@@ -16,7 +16,7 @@ import {
 
 import { UnauthorizedError } from "../errors/UnauthorizedError";
 
-import { getRepository } from "@core/database";
+import { getRepository } from "@beabee/beabee-core/database";
 import passport from "@core/lib/passport";
 
 import ContactsService from "@core/services/ContactsService";
@@ -24,14 +24,12 @@ import ContactsService from "@core/services/ContactsService";
 import { LoginDto } from "@api/dto/LoginDto";
 import { login } from "@api/utils";
 
-import Contact from "@models/Contact";
-import ContactRole from "@models/ContactRole";
-
-import { LOGIN_CODES } from "@enums/login-codes";
+import Contact from "@beabee/beabee-core/models/Contact";
+import ContactRole from "@beabee/beabee-core/models/ContactRole";
 
 import { PassportLoginInfo } from "@type/passport-login-info";
 
-import config from "@config";
+import config from "@beabee/beabee-core/config";
 
 @JsonController("/auth")
 export class AuthController {

@@ -12,7 +12,7 @@ import {
   QueryParams
 } from "routing-controllers";
 
-import { getRepository } from "@core/database";
+import { getRepository } from "@beabee/beabee-core/database";
 
 import { CurrentAuth } from "@api/decorators/CurrentAuth";
 import PartialBody from "@api/decorators/PartialBody";
@@ -29,9 +29,9 @@ import { UUIDParams } from "@api/params/UUIDParams";
 import ContactTransformer from "@api/transformers/ContactTransformer";
 import SegmentTransformer from "@api/transformers/SegmentTransformer";
 
-import Segment from "@models/Segment";
-import SegmentContact from "@models/SegmentContact";
-import SegmentOngoingEmail from "@models/SegmentOngoingEmail";
+import Segment from "@beabee/beabee-core/models/Segment";
+import SegmentContact from "@beabee/beabee-core/models/SegmentContact";
+import SegmentOngoingEmail from "@beabee/beabee-core/models/SegmentOngoingEmail";
 
 import { AuthInfo } from "@type/auth-info";
 
