@@ -1,10 +1,6 @@
 FROM node:20-alpine3.19 as builder
 
-# Add support for Node.js c/c++ addons
-# RUN apk add --no-cache make g++ git gcc libgcc libstdc++ linux-headers python3
-# RUN npm install -g node-gyp 
-
-# Add Deno
+# Add support for Deno
 RUN apk add --no-cache deno
 RUN deno --version
 
@@ -14,26 +10,19 @@ WORKDIR /opt/apps/backend
 COPY package.json yarn.lock deno.jsonc .yarnrc.yml /opt/
 COPY .yarn /opt/.yarn
 
-# Copy common dependencies info
+# Copy dependencies info
 COPY packages/common/package.json /opt/packages/common/package.json
-COPY packages/common/deno.jsonc /opt/packages/common/deno.jsonc
-COPY packages/common/deno.lock /opt/packages/common/deno.lock
-
-# Copy backend dependencies info
 COPY apps/backend/package.json /opt/apps/backend/package.json
 
-# Replace's npm ci
+# Install dependencies
 RUN yarn workspaces focus
 
-# Copy the rest of the related packages
-COPY packages/common/src /opt/packages/common/src
-COPY packages/common/cli /opt/packages/common/cli
-COPY packages/common/test /opt/packages/common/test
-COPY packages/common/mod.ts packages/common/tsconfig.json /opt/packages/common/
-COPY apps/backend /opt/apps/backend
-
-# Build the backend and it's dependencies
+# Build common
+COPY packages/common /opt/packages/common
 RUN NODE_ENV=production yarn build:common
+
+# Build backend
+COPY apps/backend /opt/apps/backend
 RUN NODE_ENV=production yarn build:backend
 
 FROM nginx:1.24-alpine as router
@@ -49,7 +38,7 @@ ENV NODE_ENV=production
 
 WORKDIR /opt/apps/backend
 
-# Workspace settings
+# Copy the workspace configuration
 COPY --chown=node:node --from=builder /opt/package.json /opt/yarn.lock /opt/.yarnrc.yml /opt/
 COPY --chown=node:node --from=builder /opt/.yarn /opt/.yarn
 
@@ -58,9 +47,10 @@ COPY --chown=node:node --from=builder /opt/node_modules /opt/node_modules
 COPY --chown=node:node --from=builder /opt/apps/backend/package.json /opt/apps/backend/
 COPY --chown=node:node --from=builder /opt/packages/common/package.json /opt/packages/common/
 
-# Replace's npm prune
+# Prune non-production dependencies
 RUN yarn workspaces focus --production
 
+# Copy the built files
 COPY --chown=node:node --from=builder /opt/apps/backend/built /opt/apps/backend/built
 COPY --chown=node:node --from=builder /opt/packages/common/dist /opt/packages/common/dist
 

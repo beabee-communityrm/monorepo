@@ -1,0 +1,13 @@
+**/node_modules/
+**/.vscode/
+**/.env
+**/Dockerfile
+**/docker-compose.yml
+**/tsconfig.tsbuildinfo
+
+/apps/*/dist/
+/packages/*/dist/
+
+# TODO: should use dist/ folder
+/apps/backend/built/
+
