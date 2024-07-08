@@ -1,4 +1,3 @@
-import { ContributionPeriod } from "@beabee/beabee-common";
 import { RequestHandler } from "express";
 
 export function wrapAsync(fn: RequestHandler): RequestHandler {
@@ -9,14 +8,6 @@ export function wrapAsync(fn: RequestHandler): RequestHandler {
       next(error);
     }
   };
-}
-
-export function getActualAmount(
-  amount: number,
-  period: ContributionPeriod
-): number {
-  // TODO: fix this properly
-  return Math.round(amount * (period === ContributionPeriod.Annually ? 12 : 1));
 }
 
 export function extractToken(authHeader?: string): string | null {
