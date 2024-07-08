@@ -57,6 +57,21 @@ function convertComponentToFilter(
   }
 
   if (
+    isCalloutComponentOfBaseType(
+      component,
+      CalloutComponentBaseType.INPUT_SELECTABLE,
+    )
+  ) {
+    return {
+      ...baseItem,
+      type: component.type === CalloutComponentType.INPUT_SELECTABLE_RADIO
+        ? "enum"
+        : "array",
+      options: convertValuesToOptions(component.values),
+    };
+  }
+
+  if (
     isCalloutComponentOfType(component, CalloutComponentType.INPUT_TEXT_AREA)
   ) {
     return { ...baseItem, type: "blob" };
