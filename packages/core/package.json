@@ -4,7 +4,8 @@
   "version": "0.16.0",
   "type": "commonjs",
   "scripts": {
-    "build": "rimraf dist/ && tsc"
+    "build": "rimraf dist/ && tsc",
+    "dev": "tsc-watch --noClear"
   },
   "files": [
     "dist/"
@@ -28,6 +29,7 @@
   },
   "devDependencies": {
     "rimraf": "^5.0.7",
+    "tsc-watch": "^6.2.0",
     "typescript": "^5.4.5"
   }
 }
