@@ -18,5 +18,8 @@ runs:
       run: yarn install
       shell: bash
     - name: Build common
-      run: yarn build:common
+      run: yarn workspace @beabee/beabee-common build
+      shell: bash
+    - name: Build core
+      run: yarn workspace @beabee/beabee-core build
       shell: bash
