@@ -52,6 +52,7 @@ app.post(
         }
       } catch (error) {
         log.error("Error while processing events", error);
+        res.sendStatus(500);
       }
     } else {
       log.error("Invalid webhook signature");
