@@ -16,13 +16,12 @@ import config from "./config/config";
 
 const log = mainLogger.child({ app: "database" });
 
-// This is used by the TypeORM CLI to run migrations
 export const dataSource: DataSource = new DataSource({
   type: "postgres",
   url: config.databaseUrl,
   logging: config.dev,
   entities: [__dirname + "/models/*.js"],
-  // TODO: migrations: [__dirname + "/../migrations/*.js"]
+  migrations: [__dirname + "/migrations/*.js"]
 });
 
 export function runTransaction<T>(
