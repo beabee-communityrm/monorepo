@@ -1,20 +1,20 @@
 import { NewsletterStatus } from "@beabee/beabee-common";
 
-import { getRepository } from "@beabee/core/database";
-import { log as mainLogger } from "@beabee/core/logging";
+import { getRepository } from "#database";
+import { log as mainLogger } from "#logging";
 
 import {
   NewsletterContact,
   NewsletterProvider,
   UpdateNewsletterContact
-} from "@core/providers/newsletter";
-import MailchimpProvider from "@core/providers/newsletter/MailchimpProvider";
-import NoneProvider from "@core/providers/newsletter/NoneProvider";
+} from "#providers/newsletter";
+import MailchimpProvider from "#providers/newsletter/MailchimpProvider";
+import NoneProvider from "#providers/newsletter/NoneProvider";
 
-import Contact from "@beabee/core/models/Contact";
-import ContactProfile from "@beabee/core/models/ContactProfile";
+import Contact from "#models/Contact";
+import ContactProfile from "#models/ContactProfile";
 
-import config from "@beabee/core/config";
+import config from "#config/config";
 
 const log = mainLogger.child({ app: "newsletter-service" });
 

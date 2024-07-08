@@ -13,31 +13,31 @@ import {
   createQueryBuilder,
   getRepository,
   runTransaction
-} from "@beabee/core/database";
-import { log as mainLogger } from "@beabee/core/logging";
+} from "#database";
+import { log as mainLogger } from "#logging";
 import { cleanEmailAddress, isDuplicateIndex } from "@core/utils";
 import { generatePassword, isValidPassword } from "@core/utils/auth";
 import { generateContactCode } from "@core/utils/contact";
 
-import ApiKeyService from "@core/services/ApiKeyService";
-import CalloutsService from "@core/services/CalloutsService";
-import ContactMfaService from "@core/services/ContactMfaService";
-import EmailService from "@core/services/EmailService";
-import NewsletterService from "@core/services/NewsletterService";
-import OptionsService from "@beabee/core/services/OptionsService";
-import PaymentService from "@core/services/PaymentService";
-import ReferralsService from "@core/services/ReferralsService";
-import ResetSecurityFlowService from "@core/services/ResetSecurityFlowService";
-import SegmentService from "@core/services/SegmentService";
-import UploadFlowService from "@core/services/UploadFlowService";
+import ApiKeyService from "#services/ApiKeyService";
+import CalloutsService from "#services/CalloutsService";
+import ContactMfaService from "#services/ContactMfaService";
+import EmailService from "#services/EmailService";
+import NewsletterService from "#services/NewsletterService";
+import OptionsService from "#services/OptionsService";
+import PaymentService from "#services/PaymentService";
+import ReferralsService from "#services/ReferralsService";
+import ResetSecurityFlowService from "#services/ResetSecurityFlowService";
+import SegmentService from "#services/SegmentService";
+import UploadFlowService from "#services/UploadFlowService";
 
-import Contact from "@beabee/core/models/Contact";
-import ContactProfile from "@beabee/core/models/ContactProfile";
-import ContactRole from "@beabee/core/models/ContactRole";
-import GiftFlow from "@beabee/core/models/GiftFlow";
-import Password from "@beabee/core/models/Password";
-import Project from "@beabee/core/models/Project";
-import ProjectEngagement from "@beabee/core/models/ProjectEngagement";
+import Contact from "#models/Contact";
+import ContactProfile from "#models/ContactProfile";
+import ContactRole from "#models/ContactRole";
+import GiftFlow from "#models/GiftFlow";
+import Password from "#models/Password";
+import Project from "#models/Project";
+import ProjectEngagement from "#models/ProjectEngagement";
 
 import BadRequestError from "@api/errors/BadRequestError";
 import CantUpdateContribution from "@api/errors/CantUpdateContribution";

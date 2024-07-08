@@ -4,21 +4,21 @@ import {
   RESET_SECURITY_FLOW_TYPE
 } from "@beabee/beabee-common";
 
-import { getRepository } from "@beabee/core/database";
-import { log as mainLogger } from "@beabee/core/logging";
+import { getRepository } from "#database";
+import { log as mainLogger } from "#logging";
 
-import EmailService from "@core/services/EmailService";
-import ContactsService from "@core/services/ContactsService";
-import OptionsService from "@beabee/core/services/OptionsService";
-import PaymentService from "@core/services/PaymentService";
+import EmailService from "#services/EmailService";
+import ContactsService from "#services/ContactsService";
+import OptionsService from "#services/OptionsService";
+import PaymentService from "#services/PaymentService";
 import ResetSecurityFlowService from "./ResetSecurityFlowService";
-import JoinFlow from "@beabee/core/models/JoinFlow";
-import JoinForm from "@beabee/core/models/JoinForm";
-import Contact from "@beabee/core/models/Contact";
+import JoinFlow from "#models/JoinFlow";
+import JoinForm from "#models/JoinForm";
+import Contact from "#models/Contact";
 
-import { PaymentFlowProvider } from "@core/providers/payment-flow";
-import StripeProvider from "@core/providers/payment-flow/StripeProvider";
-import GCProvider from "@core/providers/payment-flow/GCProvider";
+import { PaymentFlowProvider } from "#providers/payment-flow";
+import StripeProvider from "#providers/payment-flow/StripeProvider";
+import GCProvider from "#providers/payment-flow/GCProvider";
 
 import DuplicateEmailError from "@api/errors/DuplicateEmailError";
 

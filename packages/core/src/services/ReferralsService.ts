@@ -1,14 +1,14 @@
 import _ from "lodash";
 
-import { getRepository } from "@beabee/core/database";
-import { log as mainLogger } from "@beabee/core/logging";
+import { getRepository } from "#database";
+import { log as mainLogger } from "#logging";
 
-import EmailService from "@core/services/EmailService";
+import EmailService from "#services/EmailService";
 
-import { ReferralGiftForm } from "@beabee/core/models/JoinForm";
-import Contact from "@beabee/core/models/Contact";
-import ReferralGift from "@beabee/core/models/ReferralGift";
-import Referral from "@beabee/core/models/Referral";
+import { ReferralGiftForm } from "#models/JoinForm";
+import Contact from "#models/Contact";
+import ReferralGift from "#models/ReferralGift";
+import Referral from "#models/Referral";
 
 const log = mainLogger.child({ app: "referrals-service" });
 
