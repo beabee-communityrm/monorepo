@@ -640,7 +640,6 @@ __metadata:
     express: "npm:^4.19.2"
     express-winston: "npm:^4.2.0"
     jsonwebtoken: "npm:^9.0.2"
-    module-alias: "npm:^2.2.3"
     reflect-metadata: "npm:^0.2.2"
     rimraf: "npm:^5.0.7"
     typeorm: "npm:^0.3.20"
