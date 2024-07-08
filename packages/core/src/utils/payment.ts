@@ -1,5 +1,5 @@
 import { calcPaymentFee, ContributionPeriod, PaymentForm, PaymentMethod } from "@beabee/beabee-common";
-import config from "../config/config";
+import config from "#config/config";
 
 export function getActualAmount(
   amount: number,

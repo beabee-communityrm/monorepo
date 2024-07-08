@@ -5,13 +5,12 @@ import axios from "axios";
 import express, { Request, Response } from "express";
 import { sign, verify, JsonWebTokenError } from "jsonwebtoken";
 
-import { log as mainLogger } from "../logging";
-import { wrapAsync } from "../utils";
-import { extractToken } from "../utils";
+import { log as mainLogger } from "#logging";
+import { extractToken, wrapAsync } from "#utils/index";
 
-import type { NetworkServiceMap } from "../type/network-service-map";
+import type { NetworkServiceMap } from "#type/network-service-map";
 
-import config from "../config/config";
+import config from "#config/config";
 
 const log = mainLogger.child({ app: "network-communicator-service" });
 

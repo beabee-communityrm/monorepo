@@ -10,6 +10,9 @@
   "files": [
     "dist/"
   ],
+  "imports": {
+    "#*": "./dist/*.js"
+  },
   "exports": {
     "./config": "./dist/config/config.js",
     "./database": "./dist/database.js",
