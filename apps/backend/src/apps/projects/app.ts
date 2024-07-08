@@ -2,17 +2,14 @@ import express from "express";
 import _ from "lodash";
 import moment from "moment";
 
-import {
-  createQueryBuilder,
-  getRepository
-} from "@beabee/beabee-core/database";
+import { createQueryBuilder, getRepository } from "@beabee/core/database";
 import { hasNewModel, hasSchema, isAdmin } from "@core/middleware";
 import { wrapAsync } from "@core/utils";
 
-import Contact from "@beabee/beabee-core/models/Contact";
-import Project from "@beabee/beabee-core/models/Project";
-import ProjectContact from "@beabee/beabee-core/models/ProjectContact";
-import ProjectEngagement from "@beabee/beabee-core/models/ProjectEngagement";
+import Contact from "@beabee/core/models/Contact";
+import Project from "@beabee/core/models/Project";
+import ProjectContact from "@beabee/core/models/ProjectContact";
+import ProjectEngagement from "@beabee/core/models/ProjectEngagement";
 
 import { createProjectSchema } from "./schemas.json";
 

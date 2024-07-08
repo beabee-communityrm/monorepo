@@ -1,7 +1,7 @@
 import gocardless from "@core/lib/gocardless";
-import { log as mainLogger } from "@beabee/beabee-core/logging";
+import { log as mainLogger } from "@beabee/core/logging";
 
-import JoinFlow from "@beabee/beabee-core/models/JoinFlow";
+import JoinFlow from "@beabee/core/models/JoinFlow";
 
 import { PaymentFlowProvider } from ".";
 import {

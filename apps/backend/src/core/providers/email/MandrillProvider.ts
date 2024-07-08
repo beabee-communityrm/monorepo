@@ -1,13 +1,13 @@
 import axios, { AxiosRequestTransformer } from "axios";
 
-import { log as mainLogger } from "@beabee/beabee-core/logging";
+import { log as mainLogger } from "@beabee/core/logging";
 
-import Email from "@beabee/beabee-core/models/Email";
+import Email from "@beabee/core/models/Email";
 
 import { EmailOptions, EmailRecipient, EmailTemplate, PreparedEmail } from ".";
 import BaseProvider from "./BaseProvider";
 
-import { MandrillEmailConfig } from "@beabee/beabee-core/config";
+import { MandrillEmailConfig } from "@beabee/core/config";
 
 const log = mainLogger.child({ app: "mandrill-email-provider" });
 

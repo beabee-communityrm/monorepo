@@ -38,13 +38,13 @@ import {
   log as mainLogger,
   requestErrorLogger,
   requestLogger
-} from "@beabee/beabee-core/logging";
+} from "@beabee/core/logging";
 import sessions from "@core/sessions";
 import { initApp, startServer } from "@core/server";
 
-import Contact from "@beabee/beabee-core/models/Contact";
+import Contact from "@beabee/core/models/Contact";
 
-import config from "@beabee/beabee-core/config";
+import config from "@beabee/core/config";
 
 function currentUserChecker(action: { request: Request }): Contact | undefined {
   return action.request.auth?.entity instanceof Contact

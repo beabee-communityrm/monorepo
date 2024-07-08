@@ -8,12 +8,12 @@ import {
   QueryParams
 } from "routing-controllers";
 
-import { createQueryBuilder } from "@beabee/beabee-core/database";
+import { createQueryBuilder } from "@beabee/core/database";
 
 import { GetStatsDto, GetStatsOptsDto } from "@api/dto/StatsDto";
 
-import Contact from "@beabee/beabee-core/models/Contact";
-import Payment from "@beabee/beabee-core/models/Payment";
+import Contact from "@beabee/core/models/Contact";
+import Payment from "@beabee/core/models/Payment";
 
 @JsonController("/stats")
 export class StatsController {

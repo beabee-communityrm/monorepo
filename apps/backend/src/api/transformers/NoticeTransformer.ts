@@ -9,7 +9,7 @@ import { BaseTransformer } from "@api/transformers/BaseTransformer";
 import { GetNoticeDto, ListNoticesDto } from "@api/dto/NoticeDto";
 import { mergeRules, statusFilterHandler } from "@api/utils/rules";
 
-import Notice from "@beabee/beabee-core/models/Notice";
+import Notice from "@beabee/core/models/Notice";
 
 import { AuthInfo } from "@type/auth-info";
 

@@ -2,10 +2,10 @@ import { CONTACT_MFA_TYPE, LOGIN_CODES } from "@beabee/beabee-common";
 import passport from "passport";
 import passportLocal from "passport-local";
 
-import config from "@beabee/beabee-core/config";
+import config from "@beabee/core/config";
 
-import { getRepository } from "@beabee/beabee-core/database";
-import { log } from "@beabee/beabee-core/logging";
+import { getRepository } from "@beabee/core/database";
+import { log } from "@beabee/core/logging";
 import { cleanEmailAddress, sleep } from "@core/utils";
 import { generatePassword, isValidPassword } from "@core/utils/auth";
 
@@ -15,7 +15,7 @@ import ContactMfaService from "@core/services/ContactMfaService";
 import { LoginDto } from "@api/dto/LoginDto";
 import { UnauthorizedError } from "@api/errors/UnauthorizedError";
 
-import Contact from "@beabee/beabee-core/models/Contact";
+import Contact from "@beabee/core/models/Contact";
 
 import type { ContactMfaSecure } from "@type/contact-mfa-secure";
 import type { PassportLocalDoneCallback } from "@type/passport-local-done-callback";

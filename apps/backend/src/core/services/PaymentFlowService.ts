@@ -4,17 +4,17 @@ import {
   RESET_SECURITY_FLOW_TYPE
 } from "@beabee/beabee-common";
 
-import { getRepository } from "@beabee/beabee-core/database";
-import { log as mainLogger } from "@beabee/beabee-core/logging";
+import { getRepository } from "@beabee/core/database";
+import { log as mainLogger } from "@beabee/core/logging";
 
 import EmailService from "@core/services/EmailService";
 import ContactsService from "@core/services/ContactsService";
-import OptionsService from "@beabee/beabee-core/services/OptionsService";
+import OptionsService from "@beabee/core/services/OptionsService";
 import PaymentService from "@core/services/PaymentService";
 import ResetSecurityFlowService from "./ResetSecurityFlowService";
-import JoinFlow from "@beabee/beabee-core/models/JoinFlow";
-import JoinForm from "@beabee/beabee-core/models/JoinForm";
-import Contact from "@beabee/beabee-core/models/Contact";
+import JoinFlow from "@beabee/core/models/JoinFlow";
+import JoinForm from "@beabee/core/models/JoinForm";
+import Contact from "@beabee/core/models/Contact";
 
 import { PaymentFlowProvider } from "@core/providers/payment-flow";
 import StripeProvider from "@core/providers/payment-flow/StripeProvider";

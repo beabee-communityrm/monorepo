@@ -1,14 +1,14 @@
 import nodemailer from "nodemailer";
 import Mail from "nodemailer/lib/mailer";
 
-import { log as mainLogger } from "@beabee/beabee-core/logging";
+import { log as mainLogger } from "@beabee/core/logging";
 
-import OptionsService from "@beabee/beabee-core/services/OptionsService";
+import OptionsService from "@beabee/core/services/OptionsService";
 
 import { EmailOptions, EmailRecipient, PreparedEmail } from ".";
 import BaseProvider from "./BaseProvider";
 
-import { SMTPEmailConfig } from "@beabee/beabee-core/config";
+import { SMTPEmailConfig } from "@beabee/core/config";
 
 const log = mainLogger.child({ app: "smtp-email-provider" });
 

@@ -1,6 +1,6 @@
 import { verify as cfVerify } from "@captchafox/node";
 
-import config from "@beabee/beabee-core/config";
+import config from "@beabee/core/config";
 
 export async function verify(token: string): Promise<string> {
   const resp = await cfVerify(config.captchaFox.secret, token);

@@ -1,5 +1,5 @@
 import Stripe from "stripe";
-import config from "@beabee/beabee-core/config";
+import config from "@beabee/core/config";
 import currentLocale from "@locale";
 import type { StripeTaxRateCreateParams } from "@type/stripe-tax-rate-create-params";
 

@@ -21,5 +21,5 @@ runs:
       run: yarn workspace @beabee/beabee-common build
       shell: bash
     - name: Build core
-      run: yarn workspace @beabee/beabee-core build
+      run: yarn workspace @beabee/core build
       shell: bash

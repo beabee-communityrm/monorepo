@@ -1,13 +1,13 @@
 import { contactFilters, validateRuleGroup } from "@beabee/beabee-common";
 
-import { getRepository } from "@beabee/beabee-core/database";
+import { getRepository } from "@beabee/core/database";
 
 import ContactTransformer from "@api/transformers/ContactTransformer";
 import { buildSelectQuery } from "@api/utils/rules";
 
-import Contact from "@beabee/beabee-core/models/Contact";
-import Segment from "@beabee/beabee-core/models/Segment";
-import SegmentContact from "@beabee/beabee-core/models/SegmentContact";
+import Contact from "@beabee/core/models/Contact";
+import Segment from "@beabee/core/models/Segment";
+import SegmentContact from "@beabee/core/models/SegmentContact";
 
 import { AuthInfo } from "@type/auth-info";
 

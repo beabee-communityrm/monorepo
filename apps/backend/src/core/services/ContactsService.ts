@@ -13,8 +13,8 @@ import {
   createQueryBuilder,
   getRepository,
   runTransaction
-} from "@beabee/beabee-core/database";
-import { log as mainLogger } from "@beabee/beabee-core/logging";
+} from "@beabee/core/database";
+import { log as mainLogger } from "@beabee/core/logging";
 import { cleanEmailAddress, isDuplicateIndex } from "@core/utils";
 import { generatePassword, isValidPassword } from "@core/utils/auth";
 import { generateContactCode } from "@core/utils/contact";
@@ -24,20 +24,20 @@ import CalloutsService from "@core/services/CalloutsService";
 import ContactMfaService from "@core/services/ContactMfaService";
 import EmailService from "@core/services/EmailService";
 import NewsletterService from "@core/services/NewsletterService";
-import OptionsService from "@beabee/beabee-core/services/OptionsService";
+import OptionsService from "@beabee/core/services/OptionsService";
 import PaymentService from "@core/services/PaymentService";
 import ReferralsService from "@core/services/ReferralsService";
 import ResetSecurityFlowService from "@core/services/ResetSecurityFlowService";
 import SegmentService from "@core/services/SegmentService";
 import UploadFlowService from "@core/services/UploadFlowService";
 
-import Contact from "@beabee/beabee-core/models/Contact";
-import ContactProfile from "@beabee/beabee-core/models/ContactProfile";
-import ContactRole from "@beabee/beabee-core/models/ContactRole";
-import GiftFlow from "@beabee/beabee-core/models/GiftFlow";
-import Password from "@beabee/beabee-core/models/Password";
-import Project from "@beabee/beabee-core/models/Project";
-import ProjectEngagement from "@beabee/beabee-core/models/ProjectEngagement";
+import Contact from "@beabee/core/models/Contact";
+import ContactProfile from "@beabee/core/models/ContactProfile";
+import ContactRole from "@beabee/core/models/ContactRole";
+import GiftFlow from "@beabee/core/models/GiftFlow";
+import Password from "@beabee/core/models/Password";
+import Project from "@beabee/core/models/Project";
+import ProjectEngagement from "@beabee/core/models/ProjectEngagement";
 
 import BadRequestError from "@api/errors/BadRequestError";
 import CantUpdateContribution from "@api/errors/CantUpdateContribution";

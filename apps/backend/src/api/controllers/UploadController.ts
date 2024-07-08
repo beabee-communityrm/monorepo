@@ -13,7 +13,7 @@ import {
 
 import UploadFlowService from "@core/services/UploadFlowService";
 
-import Contact from "@beabee/beabee-core/models/Contact";
+import Contact from "@beabee/core/models/Contact";
 
 import { GetUploadFlowDto } from "@api/dto/UploadFlowDto";
 import BadRequestError from "@api/errors/BadRequestError";

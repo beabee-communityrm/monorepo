@@ -16,7 +16,7 @@ import {
 
 import { UnauthorizedError } from "../errors/UnauthorizedError";
 
-import { getRepository } from "@beabee/beabee-core/database";
+import { getRepository } from "@beabee/core/database";
 import passport from "@core/lib/passport";
 
 import ContactsService from "@core/services/ContactsService";
@@ -24,12 +24,12 @@ import ContactsService from "@core/services/ContactsService";
 import { LoginDto } from "@api/dto/LoginDto";
 import { login } from "@api/utils";
 
-import Contact from "@beabee/beabee-core/models/Contact";
-import ContactRole from "@beabee/beabee-core/models/ContactRole";
+import Contact from "@beabee/core/models/Contact";
+import ContactRole from "@beabee/core/models/ContactRole";
 
 import { PassportLoginInfo } from "@type/passport-login-info";
 
-import config from "@beabee/beabee-core/config";
+import config from "@beabee/core/config";
 
 @JsonController("/auth")
 export class AuthController {

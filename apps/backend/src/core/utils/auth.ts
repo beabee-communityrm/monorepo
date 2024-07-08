@@ -5,10 +5,10 @@ import jwt from "jsonwebtoken";
 import { getNextParam } from "@core/utils";
 import { TOTP, Secret } from "otpauth";
 
-import Contact from "@beabee/beabee-core/models/Contact";
-import Password from "@beabee/beabee-core/models/Password";
+import Contact from "@beabee/core/models/Contact";
+import Password from "@beabee/core/models/Password";
 
-import config from "@beabee/beabee-core/config";
+import config from "@beabee/core/config";
 
 export function generateJWTToken(contact: Contact): string {
   return jwt.sign({ contactId: contact.id }, config.secret);

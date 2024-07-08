@@ -3,9 +3,9 @@ import moment from "moment";
 import path from "path";
 import { loadFront } from "yaml-front-matter";
 
-import { log as mainLogger } from "@beabee/beabee-core/logging";
+import { log as mainLogger } from "@beabee/core/logging";
 
-import OptionsService from "@beabee/beabee-core/services/OptionsService";
+import OptionsService from "@beabee/core/services/OptionsService";
 
 import {
   EmailMergeFields,
@@ -18,11 +18,11 @@ import MandrillProvider from "@core/providers/email/MandrillProvider";
 import SendGridProvider from "@core/providers/email/SendGridProvider";
 import SMTPProvider from "@core/providers/email/SMTPProvider";
 
-import Email from "@beabee/beabee-core/models/Email";
-import Contact from "@beabee/beabee-core/models/Contact";
-import Callout from "@beabee/beabee-core/models/Callout";
+import Email from "@beabee/core/models/Email";
+import Contact from "@beabee/core/models/Contact";
+import Callout from "@beabee/core/models/Callout";
 
-import config from "@beabee/beabee-core/config";
+import config from "@beabee/core/config";
 import { isLocale, Locale } from "@locale";
 
 const log = mainLogger.child({ app: "email-service" });

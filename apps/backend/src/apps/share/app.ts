@@ -1,18 +1,15 @@
 import express from "express";
 
-import {
-  createQueryBuilder,
-  getRepository
-} from "@beabee/beabee-core/database";
+import { createQueryBuilder, getRepository } from "@beabee/core/database";
 import { wrapAsync } from "@core/utils";
 
 import PageSettingsService, {
   JustPageSettings
 } from "@core/services/PageSettingsService";
 
-import Callout from "@beabee/beabee-core/models/Callout";
+import Callout from "@beabee/core/models/Callout";
 
-import config from "@beabee/beabee-core/config";
+import config from "@beabee/core/config";
 
 const app = express();
 

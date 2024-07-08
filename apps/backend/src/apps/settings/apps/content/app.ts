@@ -1,12 +1,12 @@
 import express, { Request, Response, NextFunction } from "express";
 
-import { getRepository } from "@beabee/beabee-core/database";
+import { getRepository } from "@beabee/core/database";
 import { isAdmin } from "@core/middleware";
 import { wrapAsync } from "@core/utils";
 
-import OptionsService from "@beabee/beabee-core/services/OptionsService";
+import OptionsService from "@beabee/core/services/OptionsService";
 
-import Content from "@beabee/beabee-core/models/Content";
+import Content from "@beabee/core/models/Content";
 
 import type { ContentId } from "@beabee/beabee-common";
 

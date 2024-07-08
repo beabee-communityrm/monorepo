@@ -1,8 +1,8 @@
-import { getRepository } from "@beabee/beabee-core/database";
+import { getRepository } from "@beabee/core/database";
 import { generateApiKey } from "@core/utils/auth";
 
-import ApiKey from "@beabee/beabee-core/models/ApiKey";
-import Contact from "@beabee/beabee-core/models/Contact";
+import ApiKey from "@beabee/core/models/ApiKey";
+import Contact from "@beabee/core/models/Contact";
 
 class ApiKeyService {
   /**

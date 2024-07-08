@@ -2,13 +2,10 @@ import { RESET_SECURITY_FLOW_TYPE } from "@beabee/beabee-common";
 import { subHours } from "date-fns";
 import { InsertResult, MoreThan } from "typeorm";
 
-import {
-  createQueryBuilder,
-  getRepository
-} from "@beabee/beabee-core/database";
+import { createQueryBuilder, getRepository } from "@beabee/core/database";
 
-import ResetSecurityFlow from "@beabee/beabee-core/models/ResetSecurityFlow";
-import Contact from "@beabee/beabee-core/models/Contact";
+import ResetSecurityFlow from "@beabee/core/models/ResetSecurityFlow";
+import Contact from "@beabee/core/models/Contact";
 
 interface InsertResetSecurityFlowResult extends InsertResult {
   raw: { id: string; contactId: string }[] | undefined;

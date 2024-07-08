@@ -6,14 +6,11 @@ import {
 } from "typeorm";
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
 
-import {
-  createQueryBuilder,
-  getRepository
-} from "@beabee/beabee-core/database";
-import { log as mainLogger } from "@beabee/beabee-core/logging";
+import { createQueryBuilder, getRepository } from "@beabee/core/database";
+import { log as mainLogger } from "@beabee/core/logging";
 
-import Callout from "@beabee/beabee-core/models/Callout";
-import CalloutResponse from "@beabee/beabee-core/models/CalloutResponse";
+import Callout from "@beabee/core/models/Callout";
+import CalloutResponse from "@beabee/core/models/CalloutResponse";
 import {
   CalloutComponentSchema,
   CalloutResponseAnswersSlide

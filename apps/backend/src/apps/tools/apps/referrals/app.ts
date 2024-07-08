@@ -1,11 +1,11 @@
 import express from "express";
 import _ from "lodash";
 
-import { getRepository } from "@beabee/beabee-core/database";
+import { getRepository } from "@beabee/core/database";
 import { hasNewModel, hasSchema, isAdmin } from "@core/middleware";
 import { wrapAsync } from "@core/utils";
 
-import ReferralGift from "@beabee/beabee-core/models/ReferralGift";
+import ReferralGift from "@beabee/core/models/ReferralGift";
 
 import { updateSchema } from "./schemas.json";
 

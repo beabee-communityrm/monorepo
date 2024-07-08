@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "@beabee/beabee-common": "workspace:^",
-    "@beabee/beabee-core": "workspace:^",
+    "@beabee/core": "workspace:^",
     "@captchafox/node": "^1.2.0",
     "@inquirer/prompts": "^3.3.2",
     "@sendgrid/mail": "^8.1.3",

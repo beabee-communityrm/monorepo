@@ -1,10 +1,10 @@
 import { Brackets, SelectQueryBuilder } from "typeorm";
 
-import { createQueryBuilder } from "@beabee/beabee-core/database";
+import { createQueryBuilder } from "@beabee/core/database";
 import { Param } from "@core/utils/params";
 
-import ContactContribution from "@beabee/beabee-core/models/ContactContribution";
-import Contact from "@beabee/beabee-core/models/Contact";
+import ContactContribution from "@beabee/core/models/ContactContribution";
+import Contact from "@beabee/core/models/Contact";
 
 import BaseExport, { ExportResult } from "./BaseExport";
 

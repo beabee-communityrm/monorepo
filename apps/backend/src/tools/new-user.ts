@@ -7,16 +7,16 @@ import {
 import { input, password, select } from "@inquirer/prompts";
 import moment from "moment";
 
-import { getRepository } from "@beabee/beabee-core/database";
+import { getRepository } from "@beabee/core/database";
 import { runApp } from "@core/server";
 import { generatePassword, passwordRequirements } from "@core/utils/auth";
 
 import ContactsService from "@core/services/ContactsService";
 import ResetSecurityFlowService from "@core/services/ResetSecurityFlowService";
 
-import ContactRole from "@beabee/beabee-core/models/ContactRole";
+import ContactRole from "@beabee/core/models/ContactRole";
 
-import config from "@beabee/beabee-core/config";
+import config from "@beabee/core/config";
 
 function notEmpty(s: string) {
   return s.trim() !== "";

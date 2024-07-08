@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 
-import { AppConfig } from "@beabee/beabee-core/config";
+import { AppConfig } from "@beabee/core/config";
 
 function hasPermission(perms1: string[], perms2: string[]) {
   return perms1.filter((p) => perms2.includes(p)).length > 0;

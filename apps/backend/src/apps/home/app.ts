@@ -1,7 +1,7 @@
 import express from "express";
 import OptionsService, {
   OptionKey
-} from "@beabee/beabee-core/services/OptionsService";
+} from "@beabee/core/services/OptionsService";
 
 const app = express();
 

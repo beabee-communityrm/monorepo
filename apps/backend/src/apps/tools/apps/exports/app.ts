@@ -2,13 +2,13 @@ import express from "express";
 import Papa from "papaparse";
 import { ObjectLiteral, SelectQueryBuilder } from "typeorm";
 
-import { getRepository } from "@beabee/beabee-core/database";
+import { getRepository } from "@beabee/core/database";
 import { hasNewModel, hasSchema, isAdmin } from "@core/middleware";
 import { wrapAsync } from "@core/utils";
 import { Param, parseParams } from "@core/utils/params";
 
-import Export, { ExportTypeId } from "@beabee/beabee-core/models/Export";
-import ExportItem from "@beabee/beabee-core/models/ExportItem";
+import Export, { ExportTypeId } from "@beabee/core/models/Export";
+import ExportItem from "@beabee/core/models/ExportItem";
 
 import { createSchema, updateSchema } from "./schemas.json";
 

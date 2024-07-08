@@ -12,7 +12,7 @@ import {
   QueryParams
 } from "routing-controllers";
 
-import { getRepository } from "@beabee/beabee-core/database";
+import { getRepository } from "@beabee/core/database";
 
 import { CurrentAuth } from "@api/decorators/CurrentAuth";
 import PartialBody from "@api/decorators/PartialBody";
@@ -25,7 +25,7 @@ import { PaginatedDto } from "@api/dto/PaginatedDto";
 import { UUIDParams } from "@api/params/UUIDParams";
 import NoticeTransformer from "@api/transformers/NoticeTransformer";
 
-import Notice from "@beabee/beabee-core/models/Notice";
+import Notice from "@beabee/core/models/Notice";
 
 import { AuthInfo } from "@type/auth-info";
 

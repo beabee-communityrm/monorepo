@@ -24,7 +24,7 @@ RUN NODE_ENV=production yarn workspace @beabee/beabee-common build
 
 # Build core
 COPY packages/core /opt/packages/core
-RUN NODE_ENV=production yarn workspace @beabee/beabee-core build
+RUN NODE_ENV=production yarn workspace @beabee/core build
 
 # Build backend
 COPY apps/backend /opt/apps/backend

@@ -4,8 +4,8 @@ import { add } from "date-fns";
 import express from "express";
 import Stripe from "stripe";
 
-import { getRepository } from "@beabee/beabee-core/database";
-import { log as mainLogger } from "@beabee/beabee-core/logging";
+import { getRepository } from "@beabee/core/database";
+import { log as mainLogger } from "@beabee/core/logging";
 import { stripe } from "@core/lib/stripe";
 import { wrapAsync } from "@core/utils";
 import { convertStatus } from "@core/utils/payment/stripe";
@@ -14,10 +14,10 @@ import GiftService from "@core/services/GiftService";
 import ContactsService from "@core/services/ContactsService";
 import PaymentService from "@core/services/PaymentService";
 
-import Payment from "@beabee/beabee-core/models/Payment";
-import ContactContribution from "@beabee/beabee-core/models/ContactContribution";
+import Payment from "@beabee/core/models/Payment";
+import ContactContribution from "@beabee/core/models/ContactContribution";
 
-import config from "@beabee/beabee-core/config";
+import config from "@beabee/core/config";
 
 const log = mainLogger.child({ app: "webhook-stripe" });
 

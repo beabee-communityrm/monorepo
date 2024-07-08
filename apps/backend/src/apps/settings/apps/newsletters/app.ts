@@ -2,19 +2,19 @@ import { NewsletterStatus } from "@beabee/beabee-common";
 import express from "express";
 import moment from "moment";
 
-import { log as mainLogger } from "@beabee/beabee-core/logging";
+import { log as mainLogger } from "@beabee/core/logging";
 import { isSuperAdmin } from "@core/middleware";
 import { wrapAsync } from "@core/utils";
 
 import ContactsService from "@core/services/ContactsService";
 import NewsletterService from "@core/services/NewsletterService";
-import OptionsService from "@beabee/beabee-core/services/OptionsService";
+import OptionsService from "@beabee/core/services/OptionsService";
 
 import { NewsletterContact } from "@core/providers/newsletter";
 
-import Contact from "@beabee/beabee-core/models/Contact";
+import Contact from "@beabee/core/models/Contact";
 
-import config from "@beabee/beabee-core/config";
+import config from "@beabee/core/config";
 
 const log = mainLogger.child({ app: "newsletter-settings" });
 

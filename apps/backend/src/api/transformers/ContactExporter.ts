@@ -7,7 +7,7 @@ import { getMembershipStatus } from "@core/services/PaymentService";
 import { GetExportQuery } from "@api/dto/BaseDto";
 import { ExportContactDto } from "@api/dto/ContactDto";
 
-import Contact from "@beabee/beabee-core/models/Contact";
+import Contact from "@beabee/core/models/Contact";
 
 import { AuthInfo } from "@type/auth-info";
 import { BaseContactTransformer } from "./BaseContactTransformer";

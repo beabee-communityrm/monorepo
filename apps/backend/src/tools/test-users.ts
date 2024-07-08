@@ -8,15 +8,15 @@ import {
 import moment from "moment";
 import { Brackets } from "typeorm";
 
-import { createQueryBuilder } from "@beabee/beabee-core/database";
+import { createQueryBuilder } from "@beabee/core/database";
 import { runApp } from "@core/server";
 import { getActualAmount } from "@core/utils";
 
-import config from "@beabee/beabee-core/config";
+import config from "@beabee/core/config";
 
-import Payment from "@beabee/beabee-core/models/Payment";
-import Contact from "@beabee/beabee-core/models/Contact";
-import ContactContribution from "@beabee/beabee-core/models/ContactContribution";
+import Payment from "@beabee/core/models/Payment";
+import Contact from "@beabee/core/models/Contact";
+import ContactContribution from "@beabee/core/models/ContactContribution";
 
 async function logContact(type: string, conditions: Brackets[]) {
   const qb = createQueryBuilder(Contact, "m")

@@ -2,10 +2,7 @@ import { TransformPlainToInstance } from "class-transformer";
 import { SelectQueryBuilder } from "typeorm";
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity.js";
 
-import {
-  createQueryBuilder,
-  getRepository
-} from "@beabee/beabee-core/database";
+import { createQueryBuilder, getRepository } from "@beabee/core/database";
 
 import {
   BatchUpdateCalloutResponseDto,
@@ -26,11 +23,11 @@ import CalloutResponseCommentTransformer from "@api/transformers/CalloutResponse
 import CalloutTagTransformer from "@api/transformers/CalloutTagTransformer";
 import { batchUpdate } from "@api/utils/rules";
 
-import Callout from "@beabee/beabee-core/models/Callout";
-import CalloutResponse from "@beabee/beabee-core/models/CalloutResponse";
-import CalloutResponseComment from "@beabee/beabee-core/models/CalloutResponseComment";
-import CalloutResponseTag from "@beabee/beabee-core/models/CalloutResponseTag";
-import Contact from "@beabee/beabee-core/models/Contact";
+import Callout from "@beabee/core/models/Callout";
+import CalloutResponse from "@beabee/core/models/CalloutResponse";
+import CalloutResponseComment from "@beabee/core/models/CalloutResponseComment";
+import CalloutResponseTag from "@beabee/core/models/CalloutResponseTag";
+import Contact from "@beabee/core/models/Contact";
 
 import { AuthInfo } from "@type/auth-info";
 

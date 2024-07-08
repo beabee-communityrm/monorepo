@@ -2,12 +2,12 @@ import "module-alias/register";
 
 import { checkbox, input } from "@inquirer/prompts";
 
-import { getRepository } from "@beabee/beabee-core/database";
+import { getRepository } from "@beabee/core/database";
 import { runApp } from "@core/server";
 
-import OptionsService from "@beabee/beabee-core/services/OptionsService";
+import OptionsService from "@beabee/core/services/OptionsService";
 
-import Content from "@beabee/beabee-core/models/Content";
+import Content from "@beabee/core/models/Content";
 
 function notEmpty(s: string) {
   return s.trim() !== "";

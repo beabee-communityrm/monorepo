@@ -2,8 +2,8 @@ import "module-alias/register";
 
 import { In } from "typeorm";
 
-import { getRepository } from "@beabee/beabee-core/database";
-import { log as mainLogger } from "@beabee/beabee-core/logging";
+import { getRepository } from "@beabee/core/database";
+import { log as mainLogger } from "@beabee/core/logging";
 import { runApp } from "@core/server";
 
 import EmailService from "@core/services/EmailService";
@@ -11,9 +11,9 @@ import NewsletterService from "@core/services/NewsletterService";
 import ContactsService from "@core/services/ContactsService";
 import SegmentService from "@core/services/SegmentService";
 
-import Segment from "@beabee/beabee-core/models/Segment";
-import SegmentOngoingEmail from "@beabee/beabee-core/models/SegmentOngoingEmail";
-import SegmentContact from "@beabee/beabee-core/models/SegmentContact";
+import Segment from "@beabee/core/models/Segment";
+import SegmentOngoingEmail from "@beabee/core/models/SegmentOngoingEmail";
+import SegmentContact from "@beabee/core/models/SegmentContact";
 
 const log = mainLogger.child({ app: "process-segments" });
 

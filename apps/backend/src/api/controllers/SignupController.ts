@@ -9,7 +9,7 @@ import {
   Req
 } from "routing-controllers";
 
-import { getRepository } from "@beabee/beabee-core/database";
+import { getRepository } from "@beabee/core/database";
 import { generatePassword } from "@core/utils/auth";
 
 import PaymentFlowService from "@core/services/PaymentFlowService";
@@ -24,8 +24,8 @@ import { SignupConfirmEmailParams } from "@api/params/SignupConfirmEmailParams";
 import ContactTransformer from "@api/transformers/ContactTransformer";
 import { login } from "@api/utils";
 
-import JoinFlow from "@beabee/beabee-core/models/JoinFlow";
-import Password from "@beabee/beabee-core/models/Password";
+import JoinFlow from "@beabee/core/models/JoinFlow";
+import Password from "@beabee/core/models/Password";
 
 @JsonController("/signup")
 export class SignupController {

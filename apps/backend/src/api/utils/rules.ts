@@ -25,7 +25,7 @@ import {
 } from "typeorm";
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
 
-import { createQueryBuilder } from "@beabee/beabee-core/database";
+import { createQueryBuilder } from "@beabee/core/database";
 
 import type {
   GetPaginatedRuleGroupRule,
@@ -38,7 +38,7 @@ import {
   RichRuleValue
 } from "@type/filter-handlers";
 
-import Contact from "@beabee/beabee-core/models/Contact";
+import Contact from "@beabee/core/models/Contact";
 
 // Operator definitions
 

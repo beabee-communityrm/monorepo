@@ -2,8 +2,8 @@ import { ObjectLiteral, SelectQueryBuilder } from "typeorm";
 
 import { Param } from "@core/utils/params";
 
-import Export from "@beabee/beabee-core/models/Export";
-import ExportItem from "@beabee/beabee-core/models/ExportItem";
+import Export from "@beabee/core/models/Export";
+import ExportItem from "@beabee/core/models/ExportItem";
 
 export type ExportResult =
   | Record<string, unknown>[]

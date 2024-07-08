@@ -8,7 +8,7 @@ import {
 import { plainToInstance } from "class-transformer";
 import { ObjectLiteral, SelectQueryBuilder } from "typeorm";
 
-import { createQueryBuilder } from "@beabee/beabee-core/database";
+import { createQueryBuilder } from "@beabee/core/database";
 
 import { PaginatedDto } from "@api/dto/PaginatedDto";
 import NotFoundError from "@api/errors/NotFoundError";
@@ -16,7 +16,7 @@ import InvalidRuleError from "@api/errors/InvalidRuleError";
 import UnauthorizedError from "@api/errors/UnauthorizedError";
 import { convertRulesToWhereClause } from "@api/utils/rules";
 
-import Contact from "@beabee/beabee-core/models/Contact";
+import Contact from "@beabee/core/models/Contact";
 
 import { AuthInfo } from "@type/auth-info";
 import { FilterHandlers } from "@type/filter-handlers";

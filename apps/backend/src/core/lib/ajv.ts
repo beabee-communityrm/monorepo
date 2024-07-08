@@ -1,4 +1,4 @@
-import config from "@beabee/beabee-core/config";
+import config from "@beabee/core/config";
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
 

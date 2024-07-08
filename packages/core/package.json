@@ -1,5 +1,5 @@
 {
-  "name": "@beabee/beabee-core",
+  "name": "@beabee/core",
   "description": "Core package for the beabee backend",
   "version": "0.16.0",
   "type": "commonjs",

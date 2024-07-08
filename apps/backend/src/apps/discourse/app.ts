@@ -1,13 +1,13 @@
 import express from "express";
 import DiscourseSSO from "discourse-sso";
 
-import config from "@beabee/beabee-core/config";
+import config from "@beabee/core/config";
 
-import { getRepository } from "@beabee/beabee-core/database";
+import { getRepository } from "@beabee/core/database";
 import { isLoggedIn } from "@core/middleware";
 import { hasUser, wrapAsync } from "@core/utils";
 
-import ProjectContact from "@beabee/beabee-core/models/ProjectContact";
+import ProjectContact from "@beabee/core/models/ProjectContact";
 
 const sso = new DiscourseSSO(config.discourse.ssoSecret);
 

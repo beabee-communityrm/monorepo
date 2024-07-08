@@ -2,20 +2,20 @@ import { ContributionType, NewsletterStatus } from "@beabee/beabee-common";
 import muhammara from "muhammara";
 import moment from "moment";
 
-import { getRepository } from "@beabee/beabee-core/database";
-import { log as mainLogger } from "@beabee/beabee-core/logging";
+import { getRepository } from "@beabee/core/database";
+import { log as mainLogger } from "@beabee/core/logging";
 import { stripe, Stripe } from "@core/lib/stripe";
 import { isDuplicateIndex } from "@core/utils";
 import { generateContactCode } from "@core/utils/contact";
 
 import EmailService from "@core/services/EmailService";
 import ContactsService from "@core/services/ContactsService";
-import OptionsService from "@beabee/beabee-core/services/OptionsService";
+import OptionsService from "@beabee/core/services/OptionsService";
 
-import GiftFlow, { GiftForm } from "@beabee/beabee-core/models/GiftFlow";
-import ContactRole from "@beabee/beabee-core/models/ContactRole";
+import GiftFlow, { GiftForm } from "@beabee/core/models/GiftFlow";
+import ContactRole from "@beabee/core/models/ContactRole";
 
-import config from "@beabee/beabee-core/config";
+import config from "@beabee/core/config";
 
 import { Address } from "@type/address";
 

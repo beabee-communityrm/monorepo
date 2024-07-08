@@ -1,7 +1,7 @@
 import { NewsletterStatus } from "@beabee/beabee-common";
 
-import { getRepository } from "@beabee/beabee-core/database";
-import { log as mainLogger } from "@beabee/beabee-core/logging";
+import { getRepository } from "@beabee/core/database";
+import { log as mainLogger } from "@beabee/core/logging";
 
 import {
   NewsletterContact,
@@ -11,10 +11,10 @@ import {
 import MailchimpProvider from "@core/providers/newsletter/MailchimpProvider";
 import NoneProvider from "@core/providers/newsletter/NoneProvider";
 
-import Contact from "@beabee/beabee-core/models/Contact";
-import ContactProfile from "@beabee/beabee-core/models/ContactProfile";
+import Contact from "@beabee/core/models/Contact";
+import ContactProfile from "@beabee/core/models/ContactProfile";
 
-import config from "@beabee/beabee-core/config";
+import config from "@beabee/core/config";
 
 const log = mainLogger.child({ app: "newsletter-service" });
 

@@ -5,7 +5,7 @@ import { wrapAsync } from "@core/utils";
 
 import ContactsService from "@core/services/ContactsService";
 
-import Contact from "@beabee/beabee-core/models/Contact";
+import Contact from "@beabee/core/models/Contact";
 
 import { updateProfileSchema } from "./schemas.json";
 import DuplicateEmailError from "@api/errors/DuplicateEmailError";

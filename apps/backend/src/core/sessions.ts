@@ -4,10 +4,10 @@ import express, { Response } from "express";
 import session from "express-session";
 import { PostgresDriver } from "typeorm/driver/postgres/PostgresDriver";
 
-import { dataSource } from "@beabee/beabee-core/database";
+import { dataSource } from "@beabee/core/database";
 import passport from "@core/lib/passport";
 
-import config from "@beabee/beabee-core/config";
+import config from "@beabee/core/config";
 
 const pgSession = _pgSession(session);
 

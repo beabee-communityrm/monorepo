@@ -1,16 +1,13 @@
 import { RESET_SECURITY_FLOW_TYPE } from "@beabee/beabee-common";
-import {
-  createQueryBuilder,
-  getRepository
-} from "@beabee/beabee-core/database";
-import { log as mainLogger } from "@beabee/beabee-core/logging";
+import { createQueryBuilder, getRepository } from "@beabee/core/database";
+import { log as mainLogger } from "@beabee/core/logging";
 import { formatEmailBody } from "@core/utils/email";
 
-import OptionsService from "@beabee/beabee-core/services/OptionsService";
+import OptionsService from "@beabee/core/services/OptionsService";
 import ResetSecurityFlowService from "@core/services/ResetSecurityFlowService";
 
-import Email from "@beabee/beabee-core/models/Email";
-import Contact from "@beabee/beabee-core/models/Contact";
+import Email from "@beabee/core/models/Email";
+import Contact from "@beabee/core/models/Contact";
 
 import {
   EmailProvider,
@@ -20,7 +17,7 @@ import {
   PreparedEmail
 } from ".";
 
-import config from "@beabee/beabee-core/config";
+import config from "@beabee/core/config";
 
 const log = mainLogger.child({ app: "base-email-provider" });
 

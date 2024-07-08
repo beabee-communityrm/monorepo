@@ -1,4 +1,4 @@
-import JoinFlow from "@beabee/beabee-core/models/JoinFlow";
+import JoinFlow from "@beabee/core/models/JoinFlow";
 import {
   CompletedPaymentFlow,
   CompletedPaymentFlowData,

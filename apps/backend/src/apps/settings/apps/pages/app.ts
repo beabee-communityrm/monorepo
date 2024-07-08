@@ -1,12 +1,12 @@
 import express from "express";
 
-import { getRepository } from "@beabee/beabee-core/database";
+import { getRepository } from "@beabee/core/database";
 import { hasNewModel, hasSchema, isAdmin } from "@core/middleware";
 import { wrapAsync } from "@core/utils";
 
 import PageSettingsService from "@core/services/PageSettingsService";
 
-import PageSettings from "@beabee/beabee-core/models/PageSettings";
+import PageSettings from "@beabee/core/models/PageSettings";
 
 import { createPageSchema } from "./schema.json";
 
