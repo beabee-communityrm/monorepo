@@ -19,15 +19,15 @@ import {
 } from "routing-controllers";
 
 import ContactsService from "@core/services/ContactsService";
-import OptionsService from "@core/services/OptionsService";
+import OptionsService from "@beabee/core/services/OptionsService";
 import PaymentFlowService from "@core/services/PaymentFlowService";
 import PaymentService from "@core/services/PaymentService";
 import ContactMfaService from "@core/services/ContactMfaService";
 
 import { generatePassword } from "@core/utils/auth";
 
-import Contact from "@models/Contact";
-import JoinFlow from "@models/JoinFlow";
+import Contact from "@beabee/core/models/Contact";
+import JoinFlow from "@beabee/core/models/JoinFlow";
 
 import { GetExportQuery } from "@api/dto/BaseDto";
 import {

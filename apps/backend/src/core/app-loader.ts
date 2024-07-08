@@ -7,9 +7,9 @@ import config, {
   AppConfig,
   AppConfigOverride,
   AppConfigOverrides
-} from "@config";
+} from "@beabee/core/config";
 
-import { log as mainLogger } from "@core/logging";
+import { log as mainLogger } from "@beabee/core/logging";
 import templateLocals from "@core/template-locals";
 
 let git = "";

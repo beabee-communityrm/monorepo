@@ -1,14 +1,17 @@
-import axios from "axios";
-import { Server } from "node:http";
 import { EventEmitter } from "node:events";
-import { sign, verify, JsonWebTokenError } from "jsonwebtoken";
-import express, { Request, Response } from "express";
-import config from "@config";
-import { log as mainLogger } from "@core/logging";
-import { wrapAsync } from "@core/utils";
-import { extractToken } from "@core/utils/auth";
+import { Server } from "node:http";
 
-import type { NetworkServiceMap } from "@type/network-service-map";
+import axios from "axios";
+import express, { Request, Response } from "express";
+import { sign, verify, JsonWebTokenError } from "jsonwebtoken";
+
+import { log as mainLogger } from "../logging";
+import { wrapAsync } from "../utils";
+import { extractToken } from "../utils";
+
+import type { NetworkServiceMap } from "../type/network-service-map";
+
+import config from "../config/config";
 
 const log = mainLogger.child({ app: "network-communicator-service" });
 

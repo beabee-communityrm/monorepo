@@ -1,3 +1,4 @@
+import { Address } from "@beabee/beabee-common";
 import {
   Column,
   CreateDateColumn,
@@ -7,8 +8,6 @@ import {
 } from "typeorm";
 
 import type Contact from "./Contact";
-
-import { Address } from "@type/address";
 
 export class GiftForm {
   @Column()

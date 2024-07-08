@@ -3,17 +3,19 @@ import express from "express";
 import _ from "lodash";
 import Papa from "papaparse";
 
-import { createQueryBuilder, getRepository } from "@core/database";
+import { createQueryBuilder, getRepository } from "@beabee/core/database";
 import { hasNewModel, isAdmin } from "@core/middleware";
 import { wrapAsync } from "@core/utils";
 import { formatEmailBody } from "@core/utils/email";
 
 import EmailService from "@core/services/EmailService";
-import OptionsService from "@core/services/OptionsService";
+import OptionsService from "@beabee/core/services/OptionsService";
 
-import Email from "@models/Email";
-import EmailMailing, { EmailMailingRecipient } from "@models/EmailMailing";
-import SegmentOngoingEmail from "@models/SegmentOngoingEmail";
+import Email from "@beabee/core/models/Email";
+import EmailMailing, {
+  EmailMailingRecipient
+} from "@beabee/core/models/EmailMailing";
+import SegmentOngoingEmail from "@beabee/core/models/SegmentOngoingEmail";
 
 const app = express();
 

@@ -1,7 +1,7 @@
 import express from "express";
 import moment from "moment";
 
-import config from "@config";
+import config from "@beabee/core/config";
 
 import { hasNewModel, hasSchema } from "@core/middleware";
 import { wrapAsync } from "@core/utils";
@@ -9,9 +9,9 @@ import { loginAndRedirect } from "@core/utils/contact";
 
 import GiftService from "@core/services/GiftService";
 import ContactsService from "@core/services/ContactsService";
-import OptionsService from "@core/services/OptionsService";
+import OptionsService from "@beabee/core/services/OptionsService";
 
-import GiftFlow, { GiftForm } from "@models/GiftFlow";
+import GiftFlow, { GiftForm } from "@beabee/core/models/GiftFlow";
 
 import { Address } from "@type/address";
 

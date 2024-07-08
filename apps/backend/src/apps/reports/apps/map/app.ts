@@ -2,13 +2,13 @@ import axios from "axios";
 import express from "express";
 import { Brackets } from "typeorm";
 
-import { createQueryBuilder } from "@core/database";
-import { log } from "@core/logging";
+import { createQueryBuilder } from "@beabee/core/database";
+import { log } from "@beabee/core/logging";
 import { isAdmin } from "@core/middleware";
 import { wrapAsync } from "@core/utils";
 
-import ContactRole from "@models/ContactRole";
-import ContactProfile from "@models/ContactProfile";
+import ContactRole from "@beabee/core/models/ContactRole";
+import ContactProfile from "@beabee/core/models/ContactProfile";
 
 const app = express();
 

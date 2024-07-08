@@ -13,18 +13,18 @@ import {
 import { isUUID } from "class-validator";
 import { Brackets } from "typeorm";
 
-import { createQueryBuilder, getRepository } from "@core/database";
+import { createQueryBuilder, getRepository } from "@beabee/core/database";
 
 import { calloutResponseFilterHandlers } from "@api/transformers/BaseCalloutResponseTransformer";
 import { BaseTransformer } from "@api/transformers/BaseTransformer";
 import { getFilterHandler, prefixKeys } from "@api/utils";
 
-import Callout from "@models/Callout";
-import CalloutResponse from "@models/CalloutResponse";
-import Contact from "@models/Contact";
-import ContactProfile from "@models/ContactProfile";
-import ContactRole from "@models/ContactRole";
-import ContactContribution from "@models/ContactContribution";
+import Callout from "@beabee/core/models/Callout";
+import CalloutResponse from "@beabee/core/models/CalloutResponse";
+import Contact from "@beabee/core/models/Contact";
+import ContactProfile from "@beabee/core/models/ContactProfile";
+import ContactRole from "@beabee/core/models/ContactRole";
+import ContactContribution from "@beabee/core/models/ContactContribution";
 
 import { FilterHandler, FilterHandlers } from "@type/filter-handlers";
 

@@ -16,6 +16,10 @@
       "name": "packages/common",
       "path": "../packages/common",
     },
+    {
+      "name": "packages/core",
+      "path": "../packages/core",
+    },
   ],
   "settings": {
     "typescript.tsdk": "node_modules/typescript/lib",

@@ -1,11 +1,11 @@
 import sgMail from "@sendgrid/mail";
 
-import { log as mainLogger } from "@core/logging";
+import { log as mainLogger } from "@beabee/core/logging";
 
 import { EmailOptions, EmailRecipient, PreparedEmail } from ".";
 import BaseProvider from "./BaseProvider";
 
-import { SendGridEmailConfig } from "@config";
+import { SendGridEmailConfig } from "@beabee/core/config";
 
 const log = mainLogger.child({ app: "sendgrid-email-provider" });
 

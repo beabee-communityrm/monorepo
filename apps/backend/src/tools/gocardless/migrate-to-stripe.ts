@@ -6,18 +6,18 @@ import { add, startOfDay } from "date-fns";
 import Stripe from "stripe";
 import { Equal, In } from "typeorm";
 
-import { createQueryBuilder, getRepository } from "@core/database";
+import { createQueryBuilder, getRepository } from "@beabee/core/database";
 import { runApp } from "@core/server";
 import { stripe } from "@core/lib/stripe";
 import { stripeTypeToPaymentMethod } from "@core/utils/payment/stripe";
 
 import PaymentService from "@core/services/PaymentService";
 
-import Contact from "@models/Contact";
-import Payment from "@models/Payment";
-import ContactContribution from "@models/ContactContribution";
+import Contact from "@beabee/core/models/Contact";
+import Payment from "@beabee/core/models/Payment";
+import ContactContribution from "@beabee/core/models/ContactContribution";
 
-import config from "@config";
+import config from "@beabee/core/config";
 
 interface MigrationRow {
   old_customer_id: string;

@@ -14,7 +14,7 @@ import {
 import { BaseTransformer } from "@api/transformers/BaseTransformer";
 import ContactTransformer from "@api/transformers/ContactTransformer";
 
-import Segment from "@models/Segment";
+import Segment from "@beabee/core/models/Segment";
 
 import { AuthInfo } from "@type/auth-info";
 

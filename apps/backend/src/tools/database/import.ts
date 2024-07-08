@@ -2,10 +2,10 @@ import "module-alias/register";
 
 import readline from "readline";
 
-import { dataSource } from "@core/database";
+import { dataSource } from "@beabee/core/database";
 import { runApp } from "@core/server";
 
-import config from "@config";
+import config from "@beabee/core/config";
 
 if (!config.dev) {
   console.error("Can't import to live database");

@@ -1,4 +1,4 @@
-import Contact from "@models/Contact";
+import Contact from "@beabee/core/models/Contact";
 import { PaymentProvider } from ".";
 
 import {

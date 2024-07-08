@@ -24,7 +24,7 @@ import {
 import { ContentParams } from "@api/params/ContentParams";
 import ContentTransformer from "@api/transformers/ContentTransformer";
 import { stripeTaxRateUpdateOrCreateDefault } from "@core/lib/stripe";
-import OptionsService from "@core/services/OptionsService";
+import OptionsService from "@beabee/core/services/OptionsService";
 
 @JsonController("/content")
 export class ContentController {

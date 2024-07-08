@@ -25,7 +25,7 @@ import {
 import { PaginatedDto } from "@api/dto/PaginatedDto";
 import ApiKeyTransformer from "@api/transformers/ApiKeyTransformer";
 
-import Contact from "@models/Contact";
+import Contact from "@beabee/core/models/Contact";
 
 import { AuthInfo } from "@type/auth-info";
 

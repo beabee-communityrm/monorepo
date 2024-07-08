@@ -2,17 +2,17 @@ import { RuleGroup } from "@beabee/beabee-common";
 import express, { Request } from "express";
 import queryString from "query-string";
 
-import { getRepository } from "@core/database";
+import { getRepository } from "@beabee/core/database";
 import { isAdmin } from "@core/middleware";
 import { userToAuth, wrapAsync } from "@core/utils";
 
-import OptionsService from "@core/services/OptionsService";
+import OptionsService from "@beabee/core/services/OptionsService";
 import SegmentService from "@core/services/SegmentService";
 
 import ContactTransformer from "@api/transformers/ContactTransformer";
 
-import Project from "@models/Project";
-import Contact from "@models/Contact";
+import Project from "@beabee/core/models/Project";
+import Contact from "@beabee/core/models/Contact";
 
 import { GetContactWith } from "@enums/get-contact-with";
 

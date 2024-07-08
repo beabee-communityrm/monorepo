@@ -3,6 +3,7 @@ import { AuthInfo } from "@type/auth-info";
 import { NextFunction, Request, RequestHandler, Response } from "express";
 import { QueryFailedError } from "typeorm";
 
+// TODO: use core utils instead
 export function getActualAmount(
   amount: number,
   period: ContributionPeriod
@@ -15,6 +16,7 @@ export function isValidNextUrl(url: string): boolean {
   return /^\/([^/]|$)/.test(url);
 }
 
+// TODO: use core utils instead
 export function wrapAsync(fn: RequestHandler): RequestHandler {
   return async (req, res, next) => {
     try {

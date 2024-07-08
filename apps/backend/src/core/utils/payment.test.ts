@@ -4,11 +4,11 @@ import { ContributionPeriod, ContributionType } from "@beabee/beabee-common";
 import { add, sub } from "date-fns";
 
 import { calcRenewalDate } from "./payment";
-import Contact from "@models/Contact";
-import ContactRole from "@models/ContactRole";
-import Password from "@models/Password";
+import Contact from "@beabee/core/models/Contact";
+import ContactRole from "@beabee/core/models/ContactRole";
+import Password from "@beabee/core/models/Password";
 
-import config from "@config";
+import config from "@beabee/core/config";
 
 function createContact(contact?: Partial<Contact>): Contact {
   return Object.assign(new Contact(), {

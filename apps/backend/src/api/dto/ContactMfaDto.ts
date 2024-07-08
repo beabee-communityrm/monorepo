@@ -1,6 +1,5 @@
+import { CONTACT_MFA_TYPE } from "@beabee/beabee-common";
 import { IsOptional, IsString } from "class-validator";
-
-import { CONTACT_MFA_TYPE } from "@enums/contact-mfa-type";
 
 import { CreateContactMfaData } from "@type/create-contact-mfa-data";
 import { DeleteContactMfaData } from "@type/delete-contact-mfa-data";

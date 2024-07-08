@@ -1,12 +1,11 @@
+import { LOGIN_CODES } from "@beabee/beabee-common";
 import { NotFoundError } from "routing-controllers";
 
-import Contact from "@models/Contact";
-import ContactMfa from "@models/ContactMfa";
+import Contact from "@beabee/core/models/Contact";
+import ContactMfa from "@beabee/core/models/ContactMfa";
 
-import { getRepository } from "@core/database";
+import { getRepository } from "@beabee/core/database";
 import { validateTotpToken } from "@core/utils/auth";
-
-import { LOGIN_CODES } from "@enums/login-codes";
 
 import BadRequestError from "@api/errors/BadRequestError";
 import UnauthorizedError from "@api/errors/UnauthorizedError";

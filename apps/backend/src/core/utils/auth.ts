@@ -1,15 +1,14 @@
+import { LOGIN_CODES } from "@beabee/beabee-common";
 import crypto from "crypto";
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { getNextParam } from "@core/utils";
 import { TOTP, Secret } from "otpauth";
 
-import Contact from "@models/Contact";
-import Password from "@models/Password";
+import Contact from "@beabee/core/models/Contact";
+import Password from "@beabee/core/models/Password";
 
-import { LOGIN_CODES } from "@enums/login-codes";
-
-import config from "@config";
+import config from "@beabee/core/config";
 
 export function generateJWTToken(contact: Contact): string {
   return jwt.sign({ contactId: contact.id }, config.secret);
@@ -244,6 +243,7 @@ export async function isValidPassword(
     : LOGIN_CODES.LOGIN_FAILED;
 }
 
+// TODO: use core version
 export function extractToken(authHeader?: string): string | null {
   if (!authHeader) return null;
   if (authHeader?.startsWith("Bearer ")) {

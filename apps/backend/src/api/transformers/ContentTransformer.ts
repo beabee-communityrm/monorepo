@@ -1,9 +1,11 @@
 import { plainToInstance } from "class-transformer";
 import { ContentId, ContentData } from "@beabee/beabee-common";
-import { createQueryBuilder, getRepository } from "@core/database";
+import { createQueryBuilder, getRepository } from "@beabee/core/database";
 import { getEmailFooter } from "@core/utils/email";
 
-import OptionsService, { OptionKey } from "@core/services/OptionsService";
+import OptionsService, {
+  OptionKey
+} from "@beabee/core/services/OptionsService";
 import {
   GetContentContactsDto,
   GetContentDto,
@@ -17,9 +19,9 @@ import {
   GetContentTelegramDto
 } from "@api/dto/index";
 
-import Content from "@models/Content";
+import Content from "@beabee/core/models/Content";
 
-import config from "@config";
+import config from "@beabee/core/config";
 
 class ContentTransformer {
   convert<Id extends ContentId>(

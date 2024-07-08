@@ -13,7 +13,7 @@ import {
   QueryParams
 } from "routing-controllers";
 
-import { getRepository } from "@core/database";
+import { getRepository } from "@beabee/core/database";
 
 import { CurrentAuth } from "@api/decorators/CurrentAuth";
 import PartialBody from "@api/decorators/PartialBody";
@@ -27,8 +27,8 @@ import { UUIDParams } from "@api/params/UUIDParams";
 
 import CalloutResponseCommentTransformer from "@api/transformers/CalloutResponseCommentTransformer";
 
-import CalloutResponseComment from "@models/CalloutResponseComment";
-import Contact from "@models/Contact";
+import CalloutResponseComment from "@beabee/core/models/CalloutResponseComment";
+import Contact from "@beabee/core/models/Contact";
 
 import { AuthInfo } from "@type/auth-info";
 

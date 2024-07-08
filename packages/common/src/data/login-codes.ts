@@ -1,6 +1,5 @@
 /**
  * Login codes
- * TODO: Move to common
  */
 export enum LOGIN_CODES {
   LOCKED = "account-locked",
@@ -9,5 +8,5 @@ export enum LOGIN_CODES {
   REQUIRES_2FA = "requires-2fa",
   UNSUPPORTED_2FA = "unsupported-2fa",
   INVALID_TOKEN = "invalid-token",
-  MISSING_TOKEN = "missing-token"
+  MISSING_TOKEN = "missing-token",
 }

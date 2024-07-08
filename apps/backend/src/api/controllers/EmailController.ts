@@ -11,9 +11,9 @@ import {
 
 import EmailService from "@core/services/EmailService";
 
-import { getRepository } from "@core/database";
+import { getRepository } from "@beabee/core/database";
 
-import Email from "@models/Email";
+import Email from "@beabee/core/models/Email";
 
 import { GetEmailDto, UpdateEmailDto } from "@api/dto/EmailDto";
 import ExternalEmailTemplate from "@api/errors/ExternalEmailTemplate";

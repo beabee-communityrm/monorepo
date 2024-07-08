@@ -7,7 +7,7 @@ import { calcMonthsLeft } from "@core/utils/payment";
 import PaymentService from "@core/services/PaymentService";
 import ContactsService from "@core/services/ContactsService";
 
-import Contact from "@models/Contact";
+import Contact from "@beabee/core/models/Contact";
 
 const app = express();
 

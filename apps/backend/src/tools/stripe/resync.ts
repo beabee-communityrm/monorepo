@@ -3,12 +3,12 @@ import "module-alias/register";
 import { PaymentMethod } from "@beabee/beabee-common";
 import { In } from "typeorm";
 
-import { getRepository } from "@core/database";
+import { getRepository } from "@beabee/core/database";
 import { runApp } from "@core/server";
 import { stripe } from "@core/lib/stripe";
 import ContactsService from "@core/services/ContactsService";
 
-import ContactContribution from "@models/ContactContribution";
+import ContactContribution from "@beabee/core/models/ContactContribution";
 
 import {
   handleInvoicePaid,

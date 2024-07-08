@@ -1,3 +1,4 @@
+import { CONTACT_MFA_TYPE } from "@beabee/beabee-common";
 import {
   Column,
   Entity,
@@ -5,8 +6,6 @@ import {
   OneToOne,
   PrimaryGeneratedColumn
 } from "typeorm";
-
-import { CONTACT_MFA_TYPE } from "@enums/contact-mfa-type";
 
 import type Contact from "./Contact";
 

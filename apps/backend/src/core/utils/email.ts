@@ -1,6 +1,6 @@
 import juice from "juice";
 
-import OptionsService from "@core/services/OptionsService";
+import OptionsService from "@beabee/core/services/OptionsService";
 
 import currentLocale from "@locale";
 

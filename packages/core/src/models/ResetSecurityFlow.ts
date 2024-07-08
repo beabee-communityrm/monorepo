@@ -1,3 +1,4 @@
+import { RESET_SECURITY_FLOW_TYPE } from "@beabee/beabee-common";
 import {
   CreateDateColumn,
   Entity,
@@ -6,7 +7,6 @@ import {
   Column
 } from "typeorm";
 import Contact from "./Contact";
-import { RESET_SECURITY_FLOW_TYPE } from "@enums/reset-security-flow-type";
 
 @Entity()
 export default class ResetSecurityFlow {

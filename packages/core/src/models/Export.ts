@@ -1,4 +1,3 @@
-import { ParamValue } from "@core/utils/params";
 import {
   Column,
   CreateDateColumn,
@@ -7,6 +6,8 @@ import {
 } from "typeorm";
 
 export type ExportTypeId = "active-members" | "edition" | "gifts" | "referrals";
+
+export type ParamValue = number | boolean | string | undefined;
 
 @Entity()
 export default class Export {
