@@ -1,6 +1,7 @@
 import "module-alias/register";
 
 import {
+  Address,
   ContributionPeriod,
   ContributionType,
   NewsletterStatus
@@ -10,14 +11,12 @@ import { In } from "typeorm";
 
 import { getRepository } from "@beabee/core/database";
 import { runApp } from "@core/server";
-import { cleanEmailAddress } from "@core/utils";
+import { cleanEmailAddress } from "@beabee/core/utils/index";
 
-import ContactsService from "@core/services/ContactsService";
+import ContactsService from "@beabee/core/services/ContactsService";
 
 import Contact from "@beabee/core/models/Contact";
 import ContactRole from "@beabee/core/models/ContactRole";
-
-import { Address } from "@type/address";
 
 const headers = [
   "first_name",

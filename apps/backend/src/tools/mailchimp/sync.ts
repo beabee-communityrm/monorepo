@@ -8,8 +8,8 @@ import { getRepository } from "@beabee/core/database";
 import { log as mainLogger } from "@beabee/core/logging";
 import { runApp } from "@core/server";
 
-import ContactsService from "@core/services/ContactsService";
-import NewsletterService from "@core/services/NewsletterService";
+import ContactsService from "@beabee/core/services/ContactsService";
+import NewsletterService from "@beabee/core/services/NewsletterService";
 import OptionsService from "@beabee/core/services/OptionsService";
 
 import Contact from "@beabee/core/models/Contact";

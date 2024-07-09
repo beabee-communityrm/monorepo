@@ -1,8 +1,8 @@
-import { MembershipStatus, PaymentMethod } from "@beabee/beabee-common";
+import { MembershipStatus, PaymentForm, PaymentMethod } from "@beabee/beabee-common";
 
 import { getRepository, runTransaction } from "#database";
 import { log as mainLogger } from "#logging";
-import { calcRenewalDate } from "@core/utils/payment";
+import { calcRenewalDate } from "#utils/payment";
 
 import Contact from "#models/Contact";
 import Payment from "#models/Payment";
@@ -16,9 +16,8 @@ import StripeProvider from "#providers/payment/StripeProvider";
 import {
   CompletedPaymentFlow,
   ContributionInfo,
-  PaymentForm,
   UpdateContributionResult
-} from "@type/index";
+} from "#type/index";
 
 const log = mainLogger.child({ app: "payment-service" });
 

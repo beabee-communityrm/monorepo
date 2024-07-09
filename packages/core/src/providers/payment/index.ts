@@ -1,16 +1,15 @@
-import { PaymentMethod } from "@beabee/beabee-common";
+import { PaymentForm, PaymentMethod } from "@beabee/beabee-common";
 
-import { getRepository } from "@beabee/core/database";
+import { getRepository } from "#database";
 
-import Contact from "@beabee/core/models/Contact";
-import ContactContribution from "@beabee/core/models/ContactContribution";
+import Contact from "#models/Contact";
+import ContactContribution from "#models/ContactContribution";
 
 import {
   CompletedPaymentFlow,
   ContributionInfo,
-  PaymentForm,
   UpdateContributionResult
-} from "@type/index";
+} from "#type/index";
 
 export abstract class PaymentProvider {
   protected readonly data: ContactContribution;

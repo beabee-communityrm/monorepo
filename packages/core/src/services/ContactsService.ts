@@ -3,9 +3,11 @@ import {
   RoleType,
   ContributionPeriod,
   NewsletterStatus,
+  PaymentForm,
   LOGIN_CODES,
   CONTACT_MFA_TYPE,
-  RESET_SECURITY_FLOW_TYPE
+  RESET_SECURITY_FLOW_TYPE,
+  RESET_SECURITY_FLOW_ERROR_CODE
 } from "@beabee/beabee-common";
 import { FindManyOptions, FindOneOptions, FindOptionsWhere, In } from "typeorm";
 
@@ -15,9 +17,10 @@ import {
   runTransaction
 } from "#database";
 import { log as mainLogger } from "#logging";
-import { cleanEmailAddress, isDuplicateIndex } from "@core/utils";
-import { generatePassword, isValidPassword } from "@core/utils/auth";
-import { generateContactCode } from "@core/utils/contact";
+import { cleanEmailAddress } from "#utils/index";
+import { isDuplicateIndex } from "#utils/db";
+import { generatePassword, isValidPassword } from "#utils/auth";
+import { generateContactCode } from "#utils/contact";
 
 import ApiKeyService from "#services/ApiKeyService";
 import CalloutsService from "#services/CalloutsService";
@@ -44,10 +47,6 @@ import CantUpdateContribution from "@api/errors/CantUpdateContribution";
 import DuplicateEmailError from "@api/errors/DuplicateEmailError";
 import NotFoundError from "@api/errors/NotFoundError";
 import UnauthorizedError from "@api/errors/UnauthorizedError";
-
-import { RESET_SECURITY_FLOW_ERROR_CODE } from "@enums/reset-security-flow-error-code";
-
-import { PaymentForm } from "@type/index";
 
 export type PartialContact = Pick<Contact, "email" | "contributionType"> &
   Partial<Contact>;

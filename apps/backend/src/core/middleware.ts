@@ -4,12 +4,13 @@ import { EntityTarget, FindOneOptions, ObjectLiteral } from "typeorm";
 
 import { getRepository } from "@beabee/core/database";
 import ajv from "@core/lib/ajv";
-import { wrapAsync, isInvalidType } from "@core/utils";
 import * as auth from "@core/utils/auth";
 
 import OptionsService from "@beabee/core/services/OptionsService";
 
 import config from "@beabee/core/config";
+import { wrapAsync } from "@beabee/core/utils/index";
+import { isInvalidType } from "@beabee/core/utils/db";
 
 interface OnErrorHandler {
   (

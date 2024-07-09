@@ -9,7 +9,7 @@ import {
   Put
 } from "routing-controllers";
 
-import EmailService from "@core/services/EmailService";
+import EmailService from "@beabee/core/services/EmailService";
 
 import { getRepository } from "@beabee/core/database";
 

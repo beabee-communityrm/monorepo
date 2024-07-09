@@ -1,11 +1,11 @@
 import { ContributionType } from "@beabee/beabee-common";
 import express from "express";
 
-import { wrapAsync } from "@core/utils";
+import { wrapAsync } from "@beabee/core/utils/index";
 import { calcMonthsLeft } from "@core/utils/payment";
 
-import PaymentService from "@core/services/PaymentService";
-import ContactsService from "@core/services/ContactsService";
+import PaymentService from "@beabee/core/services/PaymentService";
+import ContactsService from "@beabee/core/services/ContactsService";
 
 import Contact from "@beabee/core/models/Contact";
 

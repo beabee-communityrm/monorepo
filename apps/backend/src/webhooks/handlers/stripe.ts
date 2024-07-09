@@ -6,13 +6,12 @@ import Stripe from "stripe";
 
 import { getRepository } from "@beabee/core/database";
 import { log as mainLogger } from "@beabee/core/logging";
-import { stripe } from "@core/lib/stripe";
-import { wrapAsync } from "@core/utils";
-import { convertStatus } from "@core/utils/payment/stripe";
+import { stripe, convertStatus } from "@beabee/core/lib/stripe";
+import { wrapAsync } from "@beabee/core/utils/index";
 
-import GiftService from "@core/services/GiftService";
-import ContactsService from "@core/services/ContactsService";
-import PaymentService from "@core/services/PaymentService";
+import GiftService from "@beabee/core/services/GiftService";
+import ContactsService from "@beabee/core/services/ContactsService";
+import PaymentService from "@beabee/core/services/PaymentService";
 
 import Payment from "@beabee/core/models/Payment";
 import ContactContribution from "@beabee/core/models/ContactContribution";

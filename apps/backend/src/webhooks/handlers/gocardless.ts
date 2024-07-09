@@ -7,8 +7,8 @@ import {
 } from "gocardless-nodejs/types/Types";
 
 import { log as mainLogger } from "@beabee/core/logging";
-import gocardless from "@core/lib/gocardless";
-import { wrapAsync } from "@core/utils";
+import gocardless from "@beabee/core/lib/gocardless";
+import { wrapAsync } from "@beabee/core/utils/index";
 import {
   updatePaymentStatus,
   updatePayment,

@@ -1,10 +1,10 @@
-import JoinFlow from "@beabee/core/models/JoinFlow";
+import JoinFlow from "#models/JoinFlow";
 import {
   CompletedPaymentFlow,
   CompletedPaymentFlowData,
   PaymentFlow,
   PaymentFlowData
-} from "@type/index";
+} from "#type/index";
 
 export abstract class PaymentFlowProvider {
   abstract createPaymentFlow(

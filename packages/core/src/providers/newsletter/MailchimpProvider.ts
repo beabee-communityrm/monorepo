@@ -1,20 +1,20 @@
+import { NewsletterStatus } from "@beabee/beabee-common";
 import axios from "axios";
 import crypto from "crypto";
 import gunzip from "gunzip-maybe";
 import JSONStream from "JSONStream";
 import tar from "tar-stream";
 
-import { log as mainLogger } from "@beabee/core/logging";
-import { cleanEmailAddress } from "@core/utils";
+import { log as mainLogger } from "#logging";
+import { cleanEmailAddress } from "#utils/index";
 
 import {
   NewsletterContact,
   NewsletterProvider,
   UpdateNewsletterContact
-} from ".";
+} from "#type/index";
 
-import { MailchimpNewsletterConfig } from "@beabee/core/config";
-import { NewsletterStatus } from "@beabee/beabee-common";
+import { MailchimpNewsletterConfig } from "#config/config";
 
 const log = mainLogger.child({ app: "mailchimp-provider" });
 

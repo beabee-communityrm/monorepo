@@ -5,8 +5,8 @@ import { In } from "typeorm";
 
 import { getRepository } from "@beabee/core/database";
 import { runApp } from "@core/server";
-import { stripe } from "@core/lib/stripe";
-import ContactsService from "@core/services/ContactsService";
+import { stripe } from "@beabee/core/lib/stripe";
+import ContactsService from "@beabee/core/services/ContactsService";
 
 import ContactContribution from "@beabee/core/models/ContactContribution";
 

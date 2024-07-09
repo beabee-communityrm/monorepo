@@ -1,19 +1,18 @@
+import { Address } from "@beabee/beabee-common";
 import express from "express";
 import moment from "moment";
 
 import config from "@beabee/core/config";
 
 import { hasNewModel, hasSchema } from "@core/middleware";
-import { wrapAsync } from "@core/utils";
+import { wrapAsync } from "@beabee/core/utils/index";
 import { loginAndRedirect } from "@core/utils/contact";
 
-import GiftService from "@core/services/GiftService";
-import ContactsService from "@core/services/ContactsService";
+import GiftService from "@beabee/core/services/GiftService";
+import ContactsService from "@beabee/core/services/ContactsService";
 import OptionsService from "@beabee/core/services/OptionsService";
 
 import GiftFlow, { GiftForm } from "@beabee/core/models/GiftFlow";
-
-import { Address } from "@type/address";
 
 import { createGiftSchema, updateGiftAddressSchema } from "./schema.json";
 

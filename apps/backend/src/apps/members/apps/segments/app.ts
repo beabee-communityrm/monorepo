@@ -2,9 +2,9 @@ import express from "express";
 
 import { getRepository } from "@beabee/core/database";
 import { hasNewModel } from "@core/middleware";
-import { userToAuth, wrapAsync } from "@core/utils";
-
-import SegmentService from "@core/services/SegmentService";
+import { userToAuth } from "@core/utils";
+import { getSegmentContacts, getSegmentsWithCount } from "@core/utils/segments";
+import { wrapAsync } from "@beabee/core/utils/index";
 
 import Email from "@beabee/core/models/Email";
 import EmailMailing from "@beabee/core/models/EmailMailing";
@@ -23,9 +23,7 @@ app.set("views", __dirname + "/views");
 app.get(
   "/",
   wrapAsync(async (req, res) => {
-    const segments = await SegmentService.getSegmentsWithCount(
-      userToAuth(req.user!)
-    );
+    const segments = await getSegmentsWithCount(userToAuth(req.user!));
     res.render("index", { segments });
   })
 );
@@ -156,7 +154,7 @@ app.post(
     }
 
     if (data.type === "one-off" || data.sendNow) {
-      const contacts = await SegmentService.getSegmentContacts(segment);
+      const contacts = await getSegmentContacts(segment);
       const mailing = await getRepository(EmailMailing).save({
         email,
         emailField: "Email",

@@ -1,11 +1,11 @@
 import express from "express";
 
 import { createQueryBuilder, getRepository } from "@beabee/core/database";
-import { wrapAsync } from "@core/utils";
+import { wrapAsync } from "@beabee/core/utils/index";
 
 import PageSettingsService, {
   JustPageSettings
-} from "@core/services/PageSettingsService";
+} from "@beabee/core/services/PageSettingsService";
 
 import Callout from "@beabee/core/models/Callout";
 

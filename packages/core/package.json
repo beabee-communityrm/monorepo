@@ -11,14 +11,17 @@
     "dist/"
   ],
   "imports": {
+    "#locale": "./dist/locales/current.js",
     "#*": "./dist/*.js"
   },
   "exports": {
     "./config": "./dist/config/config.js",
     "./database": "./dist/database.js",
     "./logging": "./dist/logging.js",
+    "./lib/*": "./dist/lib/*.js",
     "./models/*": "./dist/models/*.js",
-    "./services/*": "./dist/services/*.js"
+    "./services/*": "./dist/services/*.js",
+    "./utils/*": "./dist/utils/*.js"
   },
   "dependencies": {
     "@beabee/beabee-common": "workspace:^",
@@ -26,6 +29,7 @@
     "express": "^4.19.2",
     "express-winston": "^4.2.0",
     "jsonwebtoken": "^9.0.2",
+    "otpauth": "^9.3.1",
     "reflect-metadata": "^0.2.2",
     "typeorm": "^0.3.20",
     "winston": "^3.13.0"

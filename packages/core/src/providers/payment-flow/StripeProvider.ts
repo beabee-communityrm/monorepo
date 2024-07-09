@@ -1,16 +1,15 @@
-import { stripe } from "@core/lib/stripe";
-import { log as mainLogger } from "@beabee/core/logging";
-import { paymentMethodToStripeType } from "@core/utils/payment/stripe";
+import { stripe, paymentMethodToStripeType } from "#lib/stripe";
+import { log as mainLogger } from "#logging";
 
 import { PaymentFlowProvider } from ".";
 
-import JoinFlow from "@beabee/core/models/JoinFlow";
+import JoinFlow from "#models/JoinFlow";
 
 import {
   CompletedPaymentFlow,
   CompletedPaymentFlowData,
   PaymentFlow
-} from "@type/index";
+} from "#type/index";
 
 const log = mainLogger.child({ app: "stripe-payment-flow-provider" });
 

@@ -1,4 +1,4 @@
-import JoinForm from "@beabee/core/models/JoinForm";
+import type JoinForm from "#models/JoinForm";
 
 export interface CompletedPaymentFlow {
   joinForm: JoinForm;

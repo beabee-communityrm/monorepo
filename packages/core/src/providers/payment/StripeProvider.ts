@@ -1,32 +1,30 @@
-import { ContributionType, PaymentSource } from "@beabee/beabee-common";
+import { ContributionType, PaymentForm, PaymentSource } from "@beabee/beabee-common";
 import { add } from "date-fns";
 import Stripe from "stripe";
 
 import { PaymentProvider } from ".";
 
-import { stripe } from "@core/lib/stripe";
-import { log as mainLogger } from "@beabee/core/logging";
-import { getActualAmount } from "@core/utils";
-import { calcRenewalDate, getChargeableAmount } from "@core/utils/payment";
 import {
+  stripe,
   createSubscription,
   deleteSubscription,
   manadateToSource,
   updateSubscription
-} from "@core/utils/payment/stripe";
+} from "#lib/stripe";
+import { log as mainLogger } from "#logging";
+import { calcRenewalDate, getActualAmount, getChargeableAmount } from "#utils/payment";
 
-import Contact from "@beabee/core/models/Contact";
+import Contact from "#models/Contact";
 
 import NoPaymentMethod from "@api/errors/NoPaymentMethod";
 
-import config from "@beabee/core/config";
+import config from "#config/config";
 
 import {
   CompletedPaymentFlow,
   ContributionInfo,
-  PaymentForm,
   UpdateContributionResult
-} from "@type/index";
+} from "#type/index";
 
 const log = mainLogger.child({ app: "stripe-payment-provider" });
 

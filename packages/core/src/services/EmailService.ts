@@ -20,10 +20,9 @@ import SMTPProvider from "#providers/email/SMTPProvider";
 
 import Email from "#models/Email";
 import Contact from "#models/Contact";
-import Callout from "#models/Callout";
 
 import config from "#config/config";
-import { isLocale, Locale } from "@locale";
+import { isLocale, Locale } from "#locale";
 
 const log = mainLogger.child({ app: "email-service" });
 

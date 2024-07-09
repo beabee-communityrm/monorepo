@@ -16,7 +16,7 @@ import {
   Res
 } from "routing-controllers";
 
-import CalloutsService from "@core/services/CalloutsService";
+import CalloutsService from "@beabee/core/services/CalloutsService";
 
 import { getRepository } from "@beabee/core/database";
 import { verify } from "@core/lib/captchafox";

@@ -5,14 +5,12 @@ import Contact from "#models/Contact";
 import ContactMfa from "#models/ContactMfa";
 
 import { getRepository } from "#database";
-import { validateTotpToken } from "@core/utils/auth";
+import { validateTotpToken } from "#utils/auth";
 
 import BadRequestError from "@api/errors/BadRequestError";
 import UnauthorizedError from "@api/errors/UnauthorizedError";
 
-import { ContactMfaSecure } from "@type/contact-mfa-secure";
-import { CreateContactMfaData } from "@type/create-contact-mfa-data";
-import { DeleteContactMfaData } from "@type/delete-contact-mfa-data";
+import { ContactMfaSecure, CreateContactMfaData, DeleteContactMfaData } from "#type/index";
 
 /**
  * Contact multi factor authentication service

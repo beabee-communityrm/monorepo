@@ -1,4 +1,4 @@
-import { Address } from "@type/address";
+import { Address } from "@beabee/beabee-common";
 
 export interface CompletedPaymentFlowData {
   firstname?: string;

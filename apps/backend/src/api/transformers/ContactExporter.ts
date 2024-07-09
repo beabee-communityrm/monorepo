@@ -2,7 +2,7 @@ import { RoleType } from "@beabee/beabee-common";
 import { stringify } from "csv-stringify/sync";
 import { SelectQueryBuilder } from "typeorm";
 
-import { getMembershipStatus } from "@core/services/PaymentService";
+import { getMembershipStatus } from "@beabee/core/services/PaymentService";
 
 import { GetExportQuery } from "@api/dto/BaseDto";
 import { ExportContactDto } from "@api/dto/ContactDto";

@@ -1,12 +1,13 @@
-import Contact from "@beabee/core/models/Contact";
+import { PaymentForm } from "@beabee/beabee-common";
+
+import Contact from "#models/Contact";
 import { PaymentProvider } from ".";
 
 import {
   CompletedPaymentFlow,
   ContributionInfo,
-  PaymentForm,
   UpdateContributionResult
-} from "@type/index";
+} from "#type/index";
 
 export default class ManualProvider extends PaymentProvider {
   async canChangeContribution(useExistingMandate: boolean): Promise<boolean> {

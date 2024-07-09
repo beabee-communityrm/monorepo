@@ -5,7 +5,7 @@ import {
   createParamDecorator
 } from "routing-controllers";
 
-import ContactsService from "@core/services/ContactsService";
+import ContactsService from "@beabee/core/services/ContactsService";
 
 import { UUIDParams } from "@api/params/UUIDParams";
 import { validateOrReject } from "@api/utils";

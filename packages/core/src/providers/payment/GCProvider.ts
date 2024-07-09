@@ -1,32 +1,24 @@
-import { PaymentMethod, PaymentSource } from "@beabee/beabee-common";
+import { PaymentForm, PaymentMethod, PaymentSource } from "@beabee/beabee-common";
 import { Subscription } from "gocardless-nodejs";
 import moment from "moment";
 
-import gocardless from "@core/lib/gocardless";
-import { log as mainLogger } from "@beabee/core/logging";
-import { getActualAmount } from "@core/utils";
-import {
-  updateSubscription,
-  createSubscription,
-  prorateSubscription,
-  hasPendingPayment
-} from "@core/utils/payment/gocardless";
-import { calcRenewalDate } from "@core/utils/payment";
+import gocardless, {createSubscription, updateSubscription, prorateSubscription, hasPendingPayment} from "#lib/gocardless";
+import { log as mainLogger } from "#logging";
+import { calcRenewalDate, getActualAmount } from "#utils/payment";
 
 import { PaymentProvider } from ".";
 
-import Contact from "@beabee/core/models/Contact";
+import Contact from "#models/Contact";
 
 import NoPaymentMethod from "@api/errors/NoPaymentMethod";
 
-import config from "@beabee/core/config";
+import config from "#config/config";
 
 import {
   CompletedPaymentFlow,
   ContributionInfo,
-  PaymentForm,
   UpdateContributionResult
-} from "@type/index";
+} from "#type/index";
 
 const log = mainLogger.child({ app: "gc-payment-provider" });
 

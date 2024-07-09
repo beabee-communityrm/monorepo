@@ -12,12 +12,12 @@ import { log, requestErrorLogger, requestLogger } from "@beabee/core/logging";
 import quickflash from "@core/quickflash";
 import { initApp, startServer } from "@core/server";
 import sessions from "@core/sessions";
-import { isInvalidType } from "@core/utils";
+import { isInvalidType } from "@beabee/core/utils/db";
 
 import OptionsService, {
   OptionKey
 } from "@beabee/core/services/OptionsService";
-import PageSettingsService from "@core/services/PageSettingsService";
+import PageSettingsService from "@beabee/core/services/PageSettingsService";
 
 //import specialUrlHandler from '@apps/tools/apps/special-urls/handler';
 

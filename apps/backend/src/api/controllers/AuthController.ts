@@ -19,7 +19,7 @@ import { UnauthorizedError } from "../errors/UnauthorizedError";
 import { getRepository } from "@beabee/core/database";
 import passport from "@core/lib/passport";
 
-import ContactsService from "@core/services/ContactsService";
+import ContactsService from "@beabee/core/services/ContactsService";
 
 import { LoginDto } from "@api/dto/LoginDto";
 import { login } from "@api/utils";

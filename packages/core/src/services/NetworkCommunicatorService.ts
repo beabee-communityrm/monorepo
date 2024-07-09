@@ -6,7 +6,8 @@ import express, { Request, Response } from "express";
 import { sign, verify, JsonWebTokenError } from "jsonwebtoken";
 
 import { log as mainLogger } from "#logging";
-import { extractToken, wrapAsync } from "#utils/index";
+import { wrapAsync } from "#utils/index";
+import { extractToken } from "#utils/auth";
 
 import type { NetworkServiceMap } from "#type/network-service-map";
 

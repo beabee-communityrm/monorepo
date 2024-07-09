@@ -5,11 +5,11 @@ import { In } from "typeorm";
 import { getRepository } from "@beabee/core/database";
 import { log as mainLogger } from "@beabee/core/logging";
 import { runApp } from "@core/server";
+import { getSegmentContacts } from "@core/utils/segments";
 
-import EmailService from "@core/services/EmailService";
-import NewsletterService from "@core/services/NewsletterService";
-import ContactsService from "@core/services/ContactsService";
-import SegmentService from "@core/services/SegmentService";
+import EmailService from "@beabee/core/services/EmailService";
+import NewsletterService from "@beabee/core/services/NewsletterService";
+import ContactsService from "@beabee/core/services/ContactsService";
 
 import Segment from "@beabee/core/models/Segment";
 import SegmentOngoingEmail from "@beabee/core/models/SegmentOngoingEmail";
@@ -20,7 +20,7 @@ const log = mainLogger.child({ app: "process-segments" });
 async function processSegment(segment: Segment) {
   log.info("Process segment " + segment.name);
 
-  const matchedContacts = await SegmentService.getSegmentContacts(segment);
+  const matchedContacts = await getSegmentContacts(segment);
 
   const segmentContacts = await getRepository(SegmentContact).find({
     where: { segmentId: segment.id }

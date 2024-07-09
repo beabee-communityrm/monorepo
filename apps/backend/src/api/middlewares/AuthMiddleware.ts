@@ -5,8 +5,8 @@ import { Middleware, ExpressMiddlewareInterface } from "routing-controllers";
 
 import { getRepository } from "@beabee/core/database";
 
-import ContactsService from "@core/services/ContactsService";
-import { extractToken } from "@core/utils/auth";
+import ContactsService from "@beabee/core/services/ContactsService";
+import { extractToken } from "@beabee/core/utils/auth";
 
 import ApiKey from "@beabee/core/models/ApiKey";
 

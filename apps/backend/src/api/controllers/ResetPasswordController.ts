@@ -9,7 +9,7 @@ import {
   Req
 } from "routing-controllers";
 
-import ContactsService from "@core/services/ContactsService";
+import ContactsService from "@beabee/core/services/ContactsService";
 
 import { login } from "@api/utils";
 import {

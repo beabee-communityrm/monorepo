@@ -2,9 +2,9 @@ import express from "express";
 
 import { getRepository } from "@beabee/core/database";
 import { hasNewModel, hasSchema, isAdmin } from "@core/middleware";
-import { wrapAsync } from "@core/utils";
+import { wrapAsync } from "@beabee/core/utils/index";
 
-import PageSettingsService from "@core/services/PageSettingsService";
+import PageSettingsService from "@beabee/core/services/PageSettingsService";
 
 import PageSettings from "@beabee/core/models/PageSettings";
 

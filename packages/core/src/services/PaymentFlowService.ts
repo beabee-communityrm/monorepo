@@ -1,4 +1,5 @@
 import {
+  Address,
   ContributionPeriod,
   PaymentMethod,
   RESET_SECURITY_FLOW_TYPE
@@ -23,14 +24,13 @@ import GCProvider from "#providers/payment-flow/GCProvider";
 import DuplicateEmailError from "@api/errors/DuplicateEmailError";
 
 import {
-  Address,
   CompleteUrls,
   CompletedPaymentFlow,
   CompletedPaymentFlowData,
   PaymentFlow,
   PaymentFlowData,
   PaymentFlowParams
-} from "@type/index";
+} from "#type/index";
 
 const paymentProviders = {
   [PaymentMethod.StripeCard]: StripeProvider,

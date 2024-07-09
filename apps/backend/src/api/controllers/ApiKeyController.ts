@@ -13,7 +13,7 @@ import {
   Param
 } from "routing-controllers";
 
-import ApiKeyService from "@core/services/ApiKeyService";
+import ApiKeyService from "@beabee/core/services/ApiKeyService";
 
 import { CurrentAuth } from "@api/decorators/CurrentAuth";
 import {

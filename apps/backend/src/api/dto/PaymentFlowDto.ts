@@ -1,6 +1,6 @@
 import { IsOptional, IsString } from "class-validator";
 
-import { PaymentFlowParams } from "@type/index";
+import { PaymentFlowParams } from "@core/type/index";
 
 export class GetPaymentFlowDto implements PaymentFlowParams {
   @IsOptional()

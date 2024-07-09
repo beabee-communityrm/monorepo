@@ -1,9 +1,9 @@
 import express from "express";
 
 import { hasSchema } from "@core/middleware";
-import { wrapAsync } from "@core/utils";
+import { wrapAsync } from "@beabee/core/utils/index";
 
-import ContactsService from "@core/services/ContactsService";
+import ContactsService from "@beabee/core/services/ContactsService";
 
 import Contact from "@beabee/core/models/Contact";
 

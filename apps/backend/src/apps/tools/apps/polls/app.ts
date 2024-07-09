@@ -4,7 +4,7 @@ import { createQueryBuilder } from "typeorm";
 
 import { getRepository } from "@beabee/core/database";
 import { hasNewModel, isAdmin } from "@core/middleware";
-import { wrapAsync } from "@core/utils";
+import { wrapAsync } from "@beabee/core/utils/index";
 
 import Callout from "@beabee/core/models/Callout";
 import CalloutResponse from "@beabee/core/models/CalloutResponse";

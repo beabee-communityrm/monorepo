@@ -2,7 +2,7 @@ import {
   NewsletterContact,
   NewsletterProvider,
   UpdateNewsletterContact
-} from ".";
+} from "#type/index";
 
 export default class NoneProvider implements NewsletterProvider {
   async addTagToContacts(emails: string[], tag: string): Promise<void> {}

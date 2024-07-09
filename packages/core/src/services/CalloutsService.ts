@@ -14,7 +14,7 @@ import OptionsService from "#services/OptionsService";
 
 import { getRepository, runTransaction } from "#database";
 import { log as mainLogger } from "#logging";
-import { isDuplicateIndex } from "@core/utils";
+import { isDuplicateIndex } from "#utils/db";
 
 import Contact from "#models/Contact";
 import Callout from "#models/Callout";

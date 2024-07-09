@@ -1,20 +1,20 @@
-import { RuleGroup } from "@beabee/beabee-common";
+import { GetContactWith, RuleGroup } from "@beabee/beabee-common";
 import express, { Request } from "express";
 import queryString from "query-string";
 
 import { getRepository } from "@beabee/core/database";
 import { isAdmin } from "@core/middleware";
-import { userToAuth, wrapAsync } from "@core/utils";
+import { userToAuth } from "@core/utils";
+import { getSegmentsWithCount } from "@core/utils/segments";
+import { wrapAsync } from "@beabee/core/utils/index";
 
 import OptionsService from "@beabee/core/services/OptionsService";
-import SegmentService from "@core/services/SegmentService";
+import SegmentService from "@beabee/core/services/SegmentService";
 
 import ContactTransformer from "@api/transformers/ContactTransformer";
 
 import Project from "@beabee/core/models/Project";
 import Contact from "@beabee/core/models/Contact";
-
-import { GetContactWith } from "@enums/get-contact-with";
 
 const app = express();
 
@@ -112,7 +112,7 @@ app.get(
     const auth = userToAuth(req.user!);
 
     const totalMembers = await getRepository(Contact).count();
-    const segments = await SegmentService.getSegmentsWithCount(auth);
+    const segments = await getSegmentsWithCount(auth);
     const activeSegment = query.segment
       ? segments.find((s) => s.id === query.segment)
       : undefined;

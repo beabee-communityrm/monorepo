@@ -5,10 +5,10 @@ import Papa from "papaparse";
 
 import { createQueryBuilder, getRepository } from "@beabee/core/database";
 import { hasNewModel, isAdmin } from "@core/middleware";
-import { wrapAsync } from "@core/utils";
-import { formatEmailBody } from "@core/utils/email";
+import { wrapAsync } from "@beabee/core/utils/index";
+import { formatEmailBody } from "@beabee/core/utils/email";
 
-import EmailService from "@core/services/EmailService";
+import EmailService from "@beabee/core/services/EmailService";
 import OptionsService from "@beabee/core/services/OptionsService";
 
 import Email from "@beabee/core/models/Email";

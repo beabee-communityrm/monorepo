@@ -1,12 +1,12 @@
-import { ContributionType, NewsletterStatus } from "@beabee/beabee-common";
+import { Address, ContributionType, NewsletterStatus } from "@beabee/beabee-common";
 import muhammara from "muhammara";
 import moment from "moment";
 
 import { getRepository } from "#database";
 import { log as mainLogger } from "#logging";
-import { stripe, Stripe } from "@core/lib/stripe";
-import { isDuplicateIndex } from "@core/utils";
-import { generateContactCode } from "@core/utils/contact";
+import { stripe, Stripe } from "#lib/stripe";
+import { isDuplicateIndex } from "#utils/db";
+import { generateContactCode } from "#utils/contact";
 
 import EmailService from "#services/EmailService";
 import ContactsService from "#services/ContactsService";
@@ -16,8 +16,6 @@ import GiftFlow, { GiftForm } from "#models/GiftFlow";
 import ContactRole from "#models/ContactRole";
 
 import config from "#config/config";
-
-import { Address } from "@type/address";
 
 const log = mainLogger.child({ app: "gift-service" });
 

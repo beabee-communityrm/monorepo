@@ -6,13 +6,12 @@ import config from "@beabee/core/config";
 
 import { getRepository } from "@beabee/core/database";
 import { isAdmin } from "@core/middleware";
-import { wrapAsync } from "@core/utils";
+import { wrapAsync } from "@beabee/core/utils/index";
 import { canSuperAdmin, generateCode } from "@core/utils/auth";
 
-import ContactsService from "@core/services/ContactsService";
+import ContactsService from "@beabee/core/services/ContactsService";
 import OptionsService from "@beabee/core/services/OptionsService";
-import PaymentService from "@core/services/PaymentService";
-import ReferralsService from "@core/services/ReferralsService";
+import PaymentService from "@beabee/core/services/PaymentService";
 
 import Contact from "@beabee/core/models/Contact";
 import ResetSecurityFlow from "@beabee/core/models/ResetSecurityFlow";
