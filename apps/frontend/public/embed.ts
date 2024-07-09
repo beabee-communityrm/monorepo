@@ -1,4 +1,4 @@
-import iframeResizer from 'iframe-resizer/js/iframeResizer';
+import iframeResize from '@iframe-resizer/parent';
 
 if (document.currentScript?.parentNode) {
   const id = 'beabee-embed-' + Math.random().toString(36).substring(7);
@@ -16,5 +16,5 @@ if (document.currentScript?.parentNode) {
     document.currentScript
   );
 
-  iframeResizer({ heightCalculationMethod: 'lowestElement' }, '#' + id);
+  iframeResize({ license: 'GPLv3', waitForLoad: true }, '#' + id);
 }
