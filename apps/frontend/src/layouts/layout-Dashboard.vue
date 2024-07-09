@@ -1,5 +1,8 @@
 <template>
-  <div class="relative flex min-h-screen flex-col md:flex-row">
+  <div
+    class="relative flex flex-col md:flex-row"
+    :class="!isEmbed && 'min-h-screen'"
+  >
     <TheMenu v-if="!isEmbed" />
 
     <main
