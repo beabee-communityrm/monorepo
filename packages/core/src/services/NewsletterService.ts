@@ -7,7 +7,7 @@ import {
   NewsletterContact,
   NewsletterProvider,
   UpdateNewsletterContact
-} from "#providers/newsletter";
+} from "#type/index";
 import MailchimpProvider from "#providers/newsletter/MailchimpProvider";
 import NoneProvider from "#providers/newsletter/NoneProvider";
 
