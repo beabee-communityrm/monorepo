@@ -21,7 +21,7 @@ import { PaymentFlowProvider } from "#providers/payment-flow";
 import StripeProvider from "#providers/payment-flow/StripeProvider";
 import GCProvider from "#providers/payment-flow/GCProvider";
 
-import DuplicateEmailError from "@api/errors/DuplicateEmailError";
+import DuplicateEmailError from "#errors/DuplicateEmailError";
 
 import {
   CompleteUrls,

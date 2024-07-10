@@ -17,6 +17,7 @@
   "exports": {
     "./config": "./dist/config/config.js",
     "./database": "./dist/database.js",
+    "./errors": "./dist/errors/index.js",
     "./logging": "./dist/logging.js",
     "./lib/*": "./dist/lib/*.js",
     "./models/*": "./dist/models/*.js",

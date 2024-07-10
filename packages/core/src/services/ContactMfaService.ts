@@ -7,8 +7,8 @@ import ContactMfa from "#models/ContactMfa";
 import { getRepository } from "#database";
 import { validateTotpToken } from "#utils/auth";
 
-import BadRequestError from "@api/errors/BadRequestError";
-import UnauthorizedError from "@api/errors/UnauthorizedError";
+import BadRequestError from "#errors/BadRequestError";
+import UnauthorizedError from "#errors/UnauthorizedError";
 
 import { ContactMfaSecure, CreateContactMfaData, DeleteContactMfaData } from "#type/index";
 
