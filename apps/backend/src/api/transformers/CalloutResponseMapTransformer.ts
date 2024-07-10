@@ -17,7 +17,7 @@ import {
   ListCalloutResponsesDto
 } from "@api/dto/CalloutResponseDto";
 import { PaginatedDto } from "@api/dto/PaginatedDto";
-import NotFoundError from "@api/errors/NotFoundError";
+import { NotFoundError } from "@beabee/core/errors";
 import { BaseCalloutResponseTransformer } from "@api/transformers/BaseCalloutResponseTransformer";
 import { mergeRules } from "@api/utils/rules";
 

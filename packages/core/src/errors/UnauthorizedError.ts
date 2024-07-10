@@ -12,5 +12,3 @@ export class UnauthorizedError extends _UnauthorizedError {
     this.code = code;
   }
 }
-
-export default UnauthorizedError;

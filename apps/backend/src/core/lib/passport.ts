@@ -14,11 +14,11 @@ import ContactsService from "@beabee/core/services/ContactsService";
 import ContactMfaService from "@beabee/core/services/ContactMfaService";
 
 import { LoginDto } from "@api/dto/LoginDto";
-import { UnauthorizedError } from "@api/errors/UnauthorizedError";
+import { UnauthorizedError } from "@beabee/core/errors";
 
 import Contact from "@beabee/core/models/Contact";
 
-import type { ContactMfaSecure } from "@beabee/type/contact-mfa-secure";
+import type { ContactMfaSecure } from "@beabee/core/type";
 import type { PassportLocalDoneCallback } from "@type/passport-local-done-callback";
 
 // Add support for local authentication in Passport.js

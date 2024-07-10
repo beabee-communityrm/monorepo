@@ -9,7 +9,7 @@ type InvalidCalloutResponseCode =
   | "logged-in-guest-fields"
   | "unknown-user";
 
-export default class InvalidCalloutResponse extends BadRequestError {
+export class InvalidCalloutResponse extends BadRequestError {
   readonly code = "invalid-callout-response";
   constructor(readonly subCode: InvalidCalloutResponseCode) {
     super();

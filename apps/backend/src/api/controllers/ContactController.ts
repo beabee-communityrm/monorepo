@@ -64,9 +64,11 @@ import { GetPaymentFlowDto } from "@api/dto/PaymentFlowDto";
 import { CurrentAuth } from "@api/decorators/CurrentAuth";
 import PartialBody from "@api/decorators/PartialBody";
 import { TargetUser } from "@api/decorators/TargetUser";
-import { UnauthorizedError } from "@api/errors/UnauthorizedError";
-import CantUpdateContribution from "@api/errors/CantUpdateContribution";
-import NoPaymentMethod from "@api/errors/NoPaymentMethod";
+import {
+  CantUpdateContribution,
+  NoPaymentMethod,
+  UnauthorizedError
+} from "@beabee/core/errors";
 import { ContactRoleParams } from "@api/params/ContactRoleParams";
 import { mergeRules } from "@api/utils/rules";
 

@@ -12,5 +12,3 @@ export class BadRequestError extends _BadRequestError {
     this.code = code;
   }
 }
-
-export default BadRequestError;

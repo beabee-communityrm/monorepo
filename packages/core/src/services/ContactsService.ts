@@ -42,11 +42,7 @@ import Password from "#models/Password";
 import Project from "#models/Project";
 import ProjectEngagement from "#models/ProjectEngagement";
 
-import BadRequestError from "#errors/BadRequestError";
-import CantUpdateContribution from "#errors/CantUpdateContribution";
-import DuplicateEmailError from "#errors/DuplicateEmailError";
-import NotFoundError from "#errors/NotFoundError";
-import UnauthorizedError from "#errors/UnauthorizedError";
+import { BadRequestError, CantUpdateContribution, DuplicateEmailError, NotFoundError, UnauthorizedError } from "#errors/index";
 
 export type PartialContact = Pick<Contact, "email" | "contributionType"> &
   Partial<Contact>;

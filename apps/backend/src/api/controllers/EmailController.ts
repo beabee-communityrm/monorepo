@@ -16,7 +16,7 @@ import { getRepository } from "@beabee/core/database";
 import Email from "@beabee/core/models/Email";
 
 import { GetEmailDto, UpdateEmailDto } from "@api/dto/EmailDto";
-import ExternalEmailTemplate from "@api/errors/ExternalEmailTemplate";
+import { ExternalEmailTemplate } from "@beabee/core/errors";
 
 async function findEmail(id: string): Promise<Email | null> {
   if (isUUID(id, "4")) {

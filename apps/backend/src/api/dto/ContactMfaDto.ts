@@ -5,7 +5,7 @@ import {
   ContactMfaSecure,
   CreateContactMfaData,
   DeleteContactMfaData
-} from "@beabee/core/type/index";
+} from "@beabee/core/type";
 
 /**
  * Get contact multi factor authentication validation data

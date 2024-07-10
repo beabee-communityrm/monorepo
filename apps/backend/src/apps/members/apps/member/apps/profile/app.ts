@@ -8,7 +8,7 @@ import ContactsService from "@beabee/core/services/ContactsService";
 import Contact from "@beabee/core/models/Contact";
 
 import { updateProfileSchema } from "./schemas.json";
-import DuplicateEmailError from "@api/errors/DuplicateEmailError";
+import { DuplicateEmailError } from "@beabee/core/errors";
 
 const app = express();
 

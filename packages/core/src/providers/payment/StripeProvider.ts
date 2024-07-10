@@ -16,7 +16,7 @@ import { calcRenewalDate, getActualAmount, getChargeableAmount } from "#utils/pa
 
 import Contact from "#models/Contact";
 
-import NoPaymentMethod from "#errors/NoPaymentMethod";
+import { NoPaymentMethod } from "#errors/index";
 
 import config from "#config/config";
 

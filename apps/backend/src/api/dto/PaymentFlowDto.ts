@@ -1,6 +1,6 @@
 import { IsOptional, IsString } from "class-validator";
 
-import { PaymentFlowParams } from "@core/type/index";
+import { PaymentFlowParams } from "@beabee/core/type";
 
 export class GetPaymentFlowDto implements PaymentFlowParams {
   @IsOptional()

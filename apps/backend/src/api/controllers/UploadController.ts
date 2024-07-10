@@ -16,7 +16,7 @@ import UploadFlowService from "@beabee/core/services/UploadFlowService";
 import Contact from "@beabee/core/models/Contact";
 
 import { GetUploadFlowDto } from "@api/dto/UploadFlowDto";
-import BadRequestError from "@api/errors/BadRequestError";
+import { BadRequestError } from "@beabee/core/errors";
 import { UUIDParams } from "@api/params/UUIDParams";
 
 @JsonController("/upload")

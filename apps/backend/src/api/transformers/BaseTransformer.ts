@@ -11,9 +11,11 @@ import { ObjectLiteral, SelectQueryBuilder } from "typeorm";
 import { createQueryBuilder } from "@beabee/core/database";
 
 import { PaginatedDto } from "@api/dto/PaginatedDto";
-import NotFoundError from "@api/errors/NotFoundError";
-import InvalidRuleError from "@api/errors/InvalidRuleError";
-import UnauthorizedError from "@api/errors/UnauthorizedError";
+import {
+  NotFoundError,
+  InvalidRuleError,
+  UnauthorizedError
+} from "@beabee/core/errors";
 import { convertRulesToWhereClause } from "@api/utils/rules";
 
 import Contact from "@beabee/core/models/Contact";

@@ -1,7 +1,7 @@
 import { Rule } from "@beabee/beabee-common";
 import { BadRequestError } from "routing-controllers";
 
-export default class InvalidRuleError extends BadRequestError {
+export class InvalidRuleError extends BadRequestError {
   readonly code = "invalid-rule";
 
   constructor(

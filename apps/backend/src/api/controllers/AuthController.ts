@@ -14,7 +14,7 @@ import {
   Res
 } from "routing-controllers";
 
-import { UnauthorizedError } from "../errors/UnauthorizedError";
+import { UnauthorizedError } from "@beabee/core/errors";
 
 import { getRepository } from "@beabee/core/database";
 import passport from "@core/lib/passport";
