@@ -1,22 +1,6 @@
 import crypto from "crypto";
 import { Request, Response } from "express";
-import jwt from "jsonwebtoken";
 import { getNextParam } from "@core/utils";
-
-import Contact from "@beabee/core/models/Contact";
-
-import config from "@beabee/core/config";
-
-export function generateJWTToken(contact: Contact): string {
-  return jwt.sign({ contactId: contact.id }, config.secret);
-}
-
-export function parseJWTToken(token: string): string {
-  const { contactId } = jwt.verify(token, config.secret) as {
-    contactId: string;
-  };
-  return contactId;
-}
 
 export enum AuthenticationStatus {
   LOGGED_IN = 1,

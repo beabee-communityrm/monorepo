@@ -1,5 +1,3 @@
-import _ from "lodash";
-
 import { getRepository } from "#database";
 import { log as mainLogger } from "#logging";
 
