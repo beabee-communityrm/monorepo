@@ -53,7 +53,10 @@ export default class SendGridProvider extends BaseProvider {
         }
       });
 
-      log.info(`Sent email to recipients ${i} to ${i + 1000}`, { resp });
+      log.info(
+        `Sent email to recipients ${i} to ${i + 1000} of ${recipients.length}`,
+        { resp }
+      );
     }
   }
 }
