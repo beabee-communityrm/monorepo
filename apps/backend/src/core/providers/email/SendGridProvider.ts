@@ -24,34 +24,36 @@ export default class SendGridProvider extends BaseProvider {
     recipients: EmailRecipient[],
     opts?: EmailOptions
   ): Promise<void> {
-    const resp = await sgMail.sendMultiple({
-      from: {
-        email: email.fromEmail,
-        name: email.fromName
-      },
-      subject: email.subject,
-      html: email.body,
-      personalizations: recipients.map((recipient) => ({
-        to: recipient.to,
-        ...(recipient.mergeFields && { substitutions: recipient.mergeFields })
-      })),
-      ...(opts?.sendAt && {
-        sendAt: +opts.sendAt
-      }),
-      ...(opts?.attachments && {
-        attachments: opts.attachments.map((attachment) => ({
-          filename: attachment.name,
-          type: attachment.type,
-          content: attachment.content
-        }))
-      }),
-      mailSettings: {
-        sandboxMode: {
-          enable: this.testMode
+    for (let i = 0; i < recipients.length; i += 1000) {
+      const resp = await sgMail.sendMultiple({
+        from: {
+          email: email.fromEmail,
+          name: email.fromName
+        },
+        subject: email.subject,
+        html: email.body,
+        personalizations: recipients.slice(i, i + 1000).map((recipient) => ({
+          to: recipient.to,
+          ...(recipient.mergeFields && { substitutions: recipient.mergeFields })
+        })),
+        ...(opts?.sendAt && {
+          sendAt: +opts.sendAt
+        }),
+        ...(opts?.attachments && {
+          attachments: opts.attachments.map((attachment) => ({
+            filename: attachment.name,
+            type: attachment.type,
+            content: attachment.content
+          }))
+        }),
+        mailSettings: {
+          sandboxMode: {
+            enable: this.testMode
+          }
         }
-      }
-    });
+      });
 
-    log.info("Sent email", { resp });
+      log.info(`Sent email to recipients ${i} to ${i + 1000}`, { resp });
+    }
   }
 }
