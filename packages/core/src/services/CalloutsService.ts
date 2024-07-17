@@ -24,7 +24,11 @@ import CalloutResponseTag from "#models/CalloutResponseTag";
 import CalloutTag from "#models/CalloutTag";
 import CalloutVariant from "#models/CalloutVariant";
 
-import { DuplicateId, InvalidCalloutResponse, NotFoundError } from "#errors/index";
+import {
+  DuplicateId,
+  InvalidCalloutResponse,
+  NotFoundError
+} from "#errors/index";
 
 const log = mainLogger.child({ app: "callouts-service" });
 

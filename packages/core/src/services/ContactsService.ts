@@ -11,11 +11,7 @@ import {
 } from "@beabee/beabee-common";
 import { FindManyOptions, FindOneOptions, FindOptionsWhere, In } from "typeorm";
 
-import {
-  createQueryBuilder,
-  getRepository,
-  runTransaction
-} from "#database";
+import { createQueryBuilder, getRepository, runTransaction } from "#database";
 import { log as mainLogger } from "#logging";
 import { cleanEmailAddress } from "#utils/index";
 import { isDuplicateIndex } from "#utils/db";
@@ -42,7 +38,13 @@ import Password from "#models/Password";
 import Project from "#models/Project";
 import ProjectEngagement from "#models/ProjectEngagement";
 
-import { BadRequestError, CantUpdateContribution, DuplicateEmailError, NotFoundError, UnauthorizedError } from "#errors/index";
+import {
+  BadRequestError,
+  CantUpdateContribution,
+  DuplicateEmailError,
+  NotFoundError,
+  UnauthorizedError
+} from "#errors/index";
 
 export type PartialContact = Pick<Contact, "email" | "contributionType"> &
   Partial<Contact>;

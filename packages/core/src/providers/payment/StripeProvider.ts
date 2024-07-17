@@ -1,4 +1,8 @@
-import { ContributionType, PaymentForm, PaymentSource } from "@beabee/beabee-common";
+import {
+  ContributionType,
+  PaymentForm,
+  PaymentSource
+} from "@beabee/beabee-common";
 import { add } from "date-fns";
 import Stripe from "stripe";
 
@@ -12,7 +16,11 @@ import {
   updateSubscription
 } from "#lib/stripe";
 import { log as mainLogger } from "#logging";
-import { calcRenewalDate, getActualAmount, getChargeableAmount } from "#utils/payment";
+import {
+  calcRenewalDate,
+  getActualAmount,
+  getChargeableAmount
+} from "#utils/payment";
 
 import Contact from "#models/Contact";
 

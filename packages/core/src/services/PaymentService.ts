@@ -1,4 +1,8 @@
-import { MembershipStatus, PaymentForm, PaymentMethod } from "@beabee/beabee-common";
+import {
+  MembershipStatus,
+  PaymentForm,
+  PaymentMethod
+} from "@beabee/beabee-common";
 
 import { getRepository, runTransaction } from "#database";
 import { log as mainLogger } from "#logging";

@@ -34,7 +34,9 @@ export default class SendGridProvider extends BaseProvider {
         html: email.body,
         personalizations: recipients.slice(i, i + 1000).map((recipient) => ({
           to: recipient.to,
-          ...(recipient.mergeFields && { substitutions: recipient.mergeFields })
+          ...(recipient.mergeFields && {
+            substitutions: recipient.mergeFields
+          })
         })),
         ...(opts?.sendAt && {
           sendAt: +opts.sendAt

@@ -21,7 +21,6 @@ import type ContactRole from "./ContactRole";
 import type ContactProfile from "./ContactProfile";
 import Password from "./Password";
 
-
 interface LoginOverride {
   code: string;
   expires: Date;

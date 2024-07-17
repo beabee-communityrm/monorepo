@@ -18,7 +18,7 @@ import {
   Subscription,
   SubscriptionIntervalUnit,
   PaymentCurrency,
-  PaymentStatus as GCPaymentStatus,
+  PaymentStatus as GCPaymentStatus
 } from "gocardless-nodejs/types/Types";
 import { DeepPartial } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
@@ -131,7 +131,9 @@ function createMethods<T, C = T>(
       return <T[]>[...resources, ...moreResources];
     },
     async get(id, params) {
-      const response = await gocardlessInstance.get(`${endpoint}/${id}`, { params });
+      const response = await gocardlessInstance.get(`${endpoint}/${id}`, {
+        params
+      });
       return <T>response.data[key];
     },
     async update(id, data) {

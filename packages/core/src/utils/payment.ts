@@ -1,4 +1,10 @@
-import { calcPaymentFee, ContributionPeriod, ContributionType, PaymentForm, PaymentMethod } from "@beabee/beabee-common";
+import {
+  calcPaymentFee,
+  ContributionPeriod,
+  ContributionType,
+  PaymentForm,
+  PaymentMethod
+} from "@beabee/beabee-common";
 import { addMonths, getYear, setYear, sub } from "date-fns";
 
 import config from "#config/config";

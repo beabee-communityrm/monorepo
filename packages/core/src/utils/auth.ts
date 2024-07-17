@@ -21,7 +21,6 @@ export function generateApiKey(
   return { id, secret, secretHash, token };
 }
 
-
 /**
  * Used to create a long salt for each individual user
  * @returns a 256 byte / 512 character hex string

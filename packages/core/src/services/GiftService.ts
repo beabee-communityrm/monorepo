@@ -1,4 +1,8 @@
-import { Address, ContributionType, NewsletterStatus } from "@beabee/beabee-common";
+import {
+  Address,
+  ContributionType,
+  NewsletterStatus
+} from "@beabee/beabee-common";
 import muhammara from "muhammara";
 import moment from "moment";
 
