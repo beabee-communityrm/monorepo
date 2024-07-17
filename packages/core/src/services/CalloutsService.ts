@@ -332,15 +332,18 @@ class CalloutsService {
     };
 
     return await runTransaction(async (em) => {
+      let newId = id;
       try {
-        if (id) {
-          const result = await em.getRepository(Callout).update(id, fixedData);
+        if (newId) {
+          const result = await em
+            .getRepository(Callout)
+            .update(newId, fixedData);
           if (result.affected === 0) {
             throw new NotFoundError();
           }
         } else {
           const result = await em.getRepository(Callout).insert(fixedData);
-          id = result.identifiers[0].id as string;
+          newId = result.identifiers[0].id as string;
         }
       } catch (err) {
         throw isDuplicateIndex(err, "slug")
@@ -348,11 +351,9 @@ class CalloutsService {
           : err;
       }
 
-      // Type checker doesn't understand that id is defined here
-      const newId = id;
-
       if (variants) {
-        await em.getRepository(CalloutVariant).save(
+        await em.getRepository(CalloutVariant).delete({ calloutId: newId });
+        await em.getRepository(CalloutVariant).insert(
           Object.entries(variants).map(([name, variant]) => ({
             ...variant,
             name,

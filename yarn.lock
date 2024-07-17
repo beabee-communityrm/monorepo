@@ -681,6 +681,8 @@ __metadata:
     "@fortawesome/free-regular-svg-icons": "npm:^6.5.2"
     "@fortawesome/free-solid-svg-icons": "npm:^6.5.2"
     "@fortawesome/vue-fontawesome": "npm:^3.0.8"
+    "@iframe-resizer/child": "npm:^5.1.4"
+    "@iframe-resizer/parent": "npm:^5.1.4"
     "@intlify/unplugin-vue-i18n": "npm:^1.6.0"
     "@maptiler/client": "npm:^1.8.1"
     "@maptiler/geocoding-control": "npm:^1.2.4"
@@ -718,7 +720,6 @@ __metadata:
     eslint-plugin-vue: "npm:^9.26.0"
     formiojs: "npm:@beabee/formiojs@^4.15.11"
     googleapis: "npm:^129.0.0"
-    iframe-resizer: "npm:^4.4.2"
     maplibre-gl: "npm:^3.6.2"
     markdown-it: "npm:^14.1.0"
     mitt: "npm:^3.0.1"
@@ -1210,6 +1211,29 @@ __metadata:
   version: 2.0.3
   resolution: "@humanwhocodes/object-schema@npm:2.0.3"
   checksum: 10c0/80520eabbfc2d32fe195a93557cef50dfe8c8905de447f022675aaf66abc33ae54098f5ea78548d925aa671cd4ab7c7daa5ad704fe42358c9b5e7db60f80696c
+  languageName: node
+  linkType: hard
+
+"@iframe-resizer/child@npm:^5.1.4":
+  version: 5.1.4
+  resolution: "@iframe-resizer/child@npm:5.1.4"
+  checksum: 10c0/0e525272539ef3c56d970ae6958845cb31a268113b41d8dbf403435f68112d188d7112f6fde013bff58d432064f0b0aef87a9a439c1d74b44ab5c7870b64a7e3
+  languageName: node
+  linkType: hard
+
+"@iframe-resizer/core@npm:5.1.4":
+  version: 5.1.4
+  resolution: "@iframe-resizer/core@npm:5.1.4"
+  checksum: 10c0/adcc861109edf9265787c70f02f2599ce6eba7e6c8068d3907da68c9f862a4a073451a1d16980b7ef6bb7c90ff82694d62d80c1d9427c4cdaa4ae597616a0714
+  languageName: node
+  linkType: hard
+
+"@iframe-resizer/parent@npm:^5.1.4":
+  version: 5.1.4
+  resolution: "@iframe-resizer/parent@npm:5.1.4"
+  dependencies:
+    "@iframe-resizer/core": "npm:5.1.4"
+  checksum: 10c0/5794312980950a07769332b5ff4f5f433d1e1c665f387e50437b55cc03394461d299f2a92a5085e9dffcf5a86735d61c472d1b7503bef34d67a6fda904c70748
   languageName: node
   linkType: hard
 
@@ -8333,13 +8357,6 @@ __metadata:
   version: 1.2.1
   resolution: "ieee754@npm:1.2.1"
   checksum: 10c0/b0782ef5e0935b9f12883a2e2aa37baa75da6e66ce6515c168697b42160807d9330de9a32ec1ed73149aea02e0d822e572bca6f1e22bdcbd2149e13b050b17bb
-  languageName: node
-  linkType: hard
-
-"iframe-resizer@npm:^4.4.2":
-  version: 4.4.2
-  resolution: "iframe-resizer@npm:4.4.2"
-  checksum: 10c0/214a6e95c3d58a7956cc3ad468774c24c19a9c52b7a4beabc389748caaea4b7c62b711f67aa4d6de81c0d54017f0f7bbe81cabc8f39e2f79fbef7279822f2b20
   languageName: node
   linkType: hard
 

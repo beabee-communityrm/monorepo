@@ -7,7 +7,7 @@ import router from './lib/router';
 
 import './lib/theme';
 
-import 'iframe-resizer/js/iframeResizer.contentWindow';
+import '@iframe-resizer/child';
 
 import './index.css';
 
