@@ -8,7 +8,7 @@ import { runApp } from "@core/server";
 import { stripe } from "@beabee/core/lib/stripe";
 import ContactsService from "@beabee/core/services/ContactsService";
 
-import ContactContribution from "@beabee/core/models/ContactContribution";
+import { ContactContribution } from "@beabee/core/models";
 
 import {
   handleInvoicePaid,

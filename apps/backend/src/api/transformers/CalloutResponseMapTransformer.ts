@@ -21,8 +21,7 @@ import { NotFoundError } from "@beabee/core/errors";
 import { BaseCalloutResponseTransformer } from "@api/transformers/BaseCalloutResponseTransformer";
 import { mergeRules } from "@api/utils/rules";
 
-import Callout from "@beabee/core/models/Callout";
-import CalloutResponse from "@beabee/core/models/CalloutResponse";
+import { Callout, CalloutResponse } from "@beabee/core/models";
 
 import { AuthInfo } from "@type/auth-info";
 import { CalloutResponseViewSchema } from "@type/callout-response-view-schema";

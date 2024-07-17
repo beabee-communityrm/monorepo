@@ -18,9 +18,11 @@ import { BaseCalloutResponseTransformer } from "@api/transformers/BaseCalloutRes
 import { NotFoundError } from "@beabee/core/errors";
 import { groupBy } from "@api/utils";
 
-import CalloutResponse from "@beabee/core/models/CalloutResponse";
-import CalloutResponseComment from "@beabee/core/models/CalloutResponseComment";
-import Callout from "@beabee/core/models/Callout";
+import {
+  CalloutResponse,
+  CalloutResponseComment,
+  Callout
+} from "@beabee/core/models";
 
 import { AuthInfo } from "@type/auth-info";
 

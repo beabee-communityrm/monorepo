@@ -3,7 +3,7 @@ import { SelectQueryBuilder } from "typeorm";
 
 import { createQueryBuilder } from "@beabee/core/database";
 
-import GiftFlow from "@beabee/core/models/GiftFlow";
+import { GiftFlow } from "@beabee/core/models";
 
 import BaseExport, { ExportResult } from "./BaseExport";
 

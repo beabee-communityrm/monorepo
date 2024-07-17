@@ -24,8 +24,7 @@ import ContactsService from "@beabee/core/services/ContactsService";
 import { LoginDto } from "@api/dto/LoginDto";
 import { login } from "@api/utils";
 
-import Contact from "@beabee/core/models/Contact";
-import ContactRole from "@beabee/core/models/ContactRole";
+import { Contact, ContactRole } from "@beabee/core/models";
 
 import { PassportLoginInfo } from "@type/passport-login-info";
 

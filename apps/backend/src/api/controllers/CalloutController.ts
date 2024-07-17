@@ -49,10 +49,12 @@ import CalloutResponseMapTransformer from "@api/transformers/CalloutResponseMapT
 import CalloutResponseTransformer from "@api/transformers/CalloutResponseTransformer";
 import { validateOrReject } from "@api/utils";
 
-import Callout from "@beabee/core/models/Callout";
-import CalloutResponseTag from "@beabee/core/models/CalloutResponseTag";
-import CalloutTag from "@beabee/core/models/CalloutTag";
-import Contact from "@beabee/core/models/Contact";
+import {
+  Callout,
+  CalloutResponseTag,
+  CalloutTag,
+  Contact
+} from "@beabee/core/models";
 
 import { CalloutCaptcha } from "@beabee/beabee-common";
 

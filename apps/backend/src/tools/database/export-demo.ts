@@ -5,7 +5,7 @@ import { Brackets } from "typeorm";
 import { createQueryBuilder } from "@beabee/core/database";
 import { runApp } from "@core/server";
 
-import Contact from "@beabee/core/models/Contact";
+import { Contact, Callout, CalloutResponse } from "@beabee/core/models";
 
 import {
   ModelAnonymiser,
@@ -26,8 +26,6 @@ import {
   resetSecurityFlowAnonymiser
 } from "./anonymisers/models";
 import { anonymiseModel, clearModels } from "./anonymisers";
-import Callout from "@beabee/core/models/Callout";
-import CalloutResponse from "@beabee/core/models/CalloutResponse";
 
 const contactAnonymisers = [
   contactAnonymiser,

@@ -8,7 +8,7 @@ import { isLoggedIn } from "@core/middleware";
 import { hasUser } from "@core/utils";
 import { wrapAsync } from "@beabee/core/utils/index";
 
-import ProjectContact from "@beabee/core/models/ProjectContact";
+import { ProjectContact } from "@beabee/core/models";
 
 const sso = new DiscourseSSO(config.discourse.ssoSecret);
 

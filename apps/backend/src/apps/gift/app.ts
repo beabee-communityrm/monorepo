@@ -12,7 +12,7 @@ import GiftService from "@beabee/core/services/GiftService";
 import ContactsService from "@beabee/core/services/ContactsService";
 import OptionsService from "@beabee/core/services/OptionsService";
 
-import GiftFlow, { GiftForm } from "@beabee/core/models/GiftFlow";
+import { GiftFlow, GiftForm } from "@beabee/core/models";
 
 import { createGiftSchema, updateGiftAddressSchema } from "./schema.json";
 

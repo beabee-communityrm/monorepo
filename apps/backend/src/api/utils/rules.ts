@@ -38,7 +38,7 @@ import {
   RichRuleValue
 } from "@type/filter-handlers";
 
-import Contact from "@beabee/core/models/Contact";
+import { Contact } from "@beabee/core/models";
 
 // Operator definitions
 

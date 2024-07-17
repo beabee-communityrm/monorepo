@@ -12,8 +12,7 @@ import { createQueryBuilder } from "@beabee/core/database";
 
 import { GetStatsDto, GetStatsOptsDto } from "@api/dto/StatsDto";
 
-import Contact from "@beabee/core/models/Contact";
-import Payment from "@beabee/core/models/Payment";
+import { Contact, Payment } from "@beabee/core/models";
 
 @JsonController("/stats")
 export class StatsController {

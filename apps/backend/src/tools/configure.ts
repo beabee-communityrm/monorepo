@@ -7,7 +7,7 @@ import { runApp } from "@core/server";
 
 import OptionsService from "@beabee/core/services/OptionsService";
 
-import Content from "@beabee/core/models/Content";
+import { Content } from "@beabee/core/models";
 
 function notEmpty(s: string) {
   return s.trim() !== "";

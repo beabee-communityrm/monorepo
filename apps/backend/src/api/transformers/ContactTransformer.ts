@@ -4,9 +4,8 @@ import { SelectQueryBuilder } from "typeorm";
 
 import { createQueryBuilder } from "@beabee/core/database";
 import PaymentService from "@beabee/core/services/PaymentService";
+import { Contact, ContactRole } from "@beabee/core/models";
 
-import Contact from "@beabee/core/models/Contact";
-import ContactRole from "@beabee/core/models/ContactRole";
 import {
   GetContactDto,
   GetContactOptsDto,

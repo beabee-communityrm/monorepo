@@ -1,7 +1,6 @@
 import { validateRuleGroup, contactFilters } from "@beabee/beabee-common";
 import { getRepository } from "@beabee/core/database";
-import Contact from "@beabee/core/models/Contact";
-import Segment from "@beabee/core/models/Segment";
+import { Contact, Segment } from "@beabee/core/models";
 
 import ContactTransformer from "@api/transformers/ContactTransformer";
 import { buildSelectQuery } from "@api/utils";

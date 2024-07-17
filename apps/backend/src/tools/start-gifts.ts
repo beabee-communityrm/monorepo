@@ -9,7 +9,7 @@ import { runApp } from "@core/server";
 
 import GiftService from "@beabee/core/services/GiftService";
 
-import GiftFlow from "@beabee/core/models/GiftFlow";
+import { GiftFlow } from "@beabee/core/models";
 
 const log = mainLogger.child({ app: "start-gifts" });
 

@@ -15,8 +15,7 @@ import { cleanEmailAddress } from "@beabee/core/utils/index";
 
 import ContactsService from "@beabee/core/services/ContactsService";
 
-import Contact from "@beabee/core/models/Contact";
-import ContactRole from "@beabee/core/models/ContactRole";
+import { Contact, ContactRole } from "@beabee/core/models";
 
 const headers = [
   "first_name",

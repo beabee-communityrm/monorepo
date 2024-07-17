@@ -13,8 +13,7 @@ import ContactsService from "@beabee/core/services/ContactsService";
 import OptionsService from "@beabee/core/services/OptionsService";
 import PaymentService from "@beabee/core/services/PaymentService";
 
-import Contact from "@beabee/core/models/Contact";
-import ResetSecurityFlow from "@beabee/core/models/ResetSecurityFlow";
+import { Contact, ResetSecurityFlow } from "@beabee/core/models";
 
 const app = express();
 

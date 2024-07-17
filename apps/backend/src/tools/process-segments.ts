@@ -11,9 +11,11 @@ import EmailService from "@beabee/core/services/EmailService";
 import NewsletterService from "@beabee/core/services/NewsletterService";
 import ContactsService from "@beabee/core/services/ContactsService";
 
-import Segment from "@beabee/core/models/Segment";
-import SegmentOngoingEmail from "@beabee/core/models/SegmentOngoingEmail";
-import SegmentContact from "@beabee/core/models/SegmentContact";
+import {
+  Segment,
+  SegmentOngoingEmail,
+  SegmentContact
+} from "@beabee/core/models";
 
 const log = mainLogger.child({ app: "process-segments" });
 

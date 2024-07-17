@@ -23,11 +23,13 @@ import CalloutResponseCommentTransformer from "@api/transformers/CalloutResponse
 import CalloutTagTransformer from "@api/transformers/CalloutTagTransformer";
 import { batchUpdate } from "@api/utils/rules";
 
-import Callout from "@beabee/core/models/Callout";
-import CalloutResponse from "@beabee/core/models/CalloutResponse";
-import CalloutResponseComment from "@beabee/core/models/CalloutResponseComment";
-import CalloutResponseTag from "@beabee/core/models/CalloutResponseTag";
-import Contact from "@beabee/core/models/Contact";
+import {
+  Callout,
+  CalloutResponse,
+  CalloutResponseComment,
+  CalloutResponseTag,
+  Contact
+} from "@beabee/core/models";
 
 import { AuthInfo } from "@type/auth-info";
 

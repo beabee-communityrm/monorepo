@@ -6,11 +6,13 @@ import { userToAuth } from "@core/utils";
 import { getSegmentContacts, getSegmentsWithCount } from "@core/utils/segments";
 import { wrapAsync } from "@beabee/core/utils/index";
 
-import Email from "@beabee/core/models/Email";
-import EmailMailing from "@beabee/core/models/EmailMailing";
-import Segment from "@beabee/core/models/Segment";
-import SegmentOngoingEmail from "@beabee/core/models/SegmentOngoingEmail";
-import SegmentContact from "@beabee/core/models/SegmentContact";
+import {
+  Email,
+  EmailMailing,
+  Segment,
+  SegmentOngoingEmail,
+  SegmentContact
+} from "@beabee/core/models";
 
 import { EmailSchema, schemaToEmail } from "@apps/tools/apps/emails/app";
 import { cleanRuleGroup } from "@apps/members/app";

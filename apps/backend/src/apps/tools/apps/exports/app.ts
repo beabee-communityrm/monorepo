@@ -7,8 +7,9 @@ import { hasNewModel, hasSchema, isAdmin } from "@core/middleware";
 import { wrapAsync } from "@beabee/core/utils/index";
 import { Param, parseParams } from "@core/utils/params";
 
-import Export, { ExportTypeId } from "@beabee/core/models/Export";
-import ExportItem from "@beabee/core/models/ExportItem";
+import { Export, ExportItem } from "@beabee/core/models";
+
+import { ExportTypeId } from "@beabee/core/type";
 
 import { createSchema, updateSchema } from "./schemas.json";
 

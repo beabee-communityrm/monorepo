@@ -12,8 +12,7 @@ import ContactsService from "@beabee/core/services/ContactsService";
 import NewsletterService from "@beabee/core/services/NewsletterService";
 import OptionsService from "@beabee/core/services/OptionsService";
 
-import Contact from "@beabee/core/models/Contact";
-import ContactRole from "@beabee/core/models/ContactRole";
+import { Contact, ContactRole } from "@beabee/core/models";
 
 const log = mainLogger.child({ app: "mailchimp-sync" });
 

@@ -8,7 +8,7 @@ import { getRepository } from "@beabee/core/database";
 import ContactsService from "@beabee/core/services/ContactsService";
 import { extractToken } from "@beabee/core/utils/auth";
 
-import ApiKey from "@beabee/core/models/ApiKey";
+import { ApiKey } from "@beabee/core/models";
 
 import { AuthInfo } from "@type/auth-info";
 

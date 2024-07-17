@@ -12,9 +12,7 @@ import { stripe, stripeTypeToPaymentMethod } from "@beabee/core/lib/stripe";
 
 import PaymentService from "@beabee/core/services/PaymentService";
 
-import Contact from "@beabee/core/models/Contact";
-import Payment from "@beabee/core/models/Payment";
-import ContactContribution from "@beabee/core/models/ContactContribution";
+import { Contact, Payment, ContactContribution } from "@beabee/core/models";
 
 import config from "@beabee/core/config";
 

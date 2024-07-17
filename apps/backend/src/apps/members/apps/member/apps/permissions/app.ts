@@ -7,7 +7,7 @@ import { wrapAsync } from "@beabee/core/utils/index";
 
 import ContactsService from "@beabee/core/services/ContactsService";
 
-import Contact from "@beabee/core/models/Contact";
+import { Contact } from "@beabee/core/models";
 
 import { createPermissionSchema, updatePermissionSchema } from "./schemas.json";
 

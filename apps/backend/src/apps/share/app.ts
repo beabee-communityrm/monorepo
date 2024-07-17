@@ -7,7 +7,7 @@ import PageSettingsService, {
   JustPageSettings
 } from "@beabee/core/services/PageSettingsService";
 
-import Callout from "@beabee/core/models/Callout";
+import { Callout } from "@beabee/core/models";
 
 import config from "@beabee/core/config";
 

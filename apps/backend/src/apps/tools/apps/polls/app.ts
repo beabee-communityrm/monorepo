@@ -6,8 +6,7 @@ import { getRepository } from "@beabee/core/database";
 import { hasNewModel, isAdmin } from "@core/middleware";
 import { wrapAsync } from "@beabee/core/utils/index";
 
-import Callout from "@beabee/core/models/Callout";
-import CalloutResponse from "@beabee/core/models/CalloutResponse";
+import { Callout, CalloutResponse } from "@beabee/core/models";
 
 const app = express();
 

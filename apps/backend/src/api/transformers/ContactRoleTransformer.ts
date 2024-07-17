@@ -3,7 +3,7 @@ import { TransformPlainToInstance } from "class-transformer";
 
 import { GetContactRoleDto } from "@api/dto/ContactRoleDto";
 
-import ContactRole from "@beabee/core/models/ContactRole";
+import { ContactRole } from "@beabee/core/models";
 
 class ContactRoleTransformer extends BaseTransformer<
   ContactRole,

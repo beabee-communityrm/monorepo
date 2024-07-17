@@ -6,10 +6,12 @@ import { createQueryBuilder, getRepository } from "@beabee/core/database";
 import { hasNewModel, hasSchema, isAdmin } from "@core/middleware";
 import { wrapAsync } from "@beabee/core/utils/index";
 
-import Contact from "@beabee/core/models/Contact";
-import Project from "@beabee/core/models/Project";
-import ProjectContact from "@beabee/core/models/ProjectContact";
-import ProjectEngagement from "@beabee/core/models/ProjectEngagement";
+import {
+  Contact,
+  Project,
+  ProjectContact,
+  ProjectEngagement
+} from "@beabee/core/models";
 
 import { createProjectSchema } from "./schemas.json";
 

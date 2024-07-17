@@ -11,11 +11,8 @@ import { formatEmailBody } from "@beabee/core/utils/email";
 import EmailService from "@beabee/core/services/EmailService";
 import OptionsService from "@beabee/core/services/OptionsService";
 
-import Email from "@beabee/core/models/Email";
-import EmailMailing, {
-  EmailMailingRecipient
-} from "@beabee/core/models/EmailMailing";
-import SegmentOngoingEmail from "@beabee/core/models/SegmentOngoingEmail";
+import { Email, EmailMailing, SegmentOngoingEmail } from "@beabee/core/models";
+import { EmailMailingRecipient } from "@beabee/core/type";
 
 const app = express();
 

@@ -10,7 +10,7 @@ import ContactsService from "@beabee/core/services/ContactsService";
 import { UUIDParams } from "@api/params/UUIDParams";
 import { validateOrReject } from "@api/utils";
 
-import Contact from "@beabee/core/models/Contact";
+import { Contact } from "@beabee/core/models";
 
 /**
  * The target user can either be the current user or for admins

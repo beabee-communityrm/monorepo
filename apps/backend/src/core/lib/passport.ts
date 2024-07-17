@@ -16,7 +16,7 @@ import ContactMfaService from "@beabee/core/services/ContactMfaService";
 import { LoginDto } from "@api/dto/LoginDto";
 import { UnauthorizedError } from "@beabee/core/errors";
 
-import Contact from "@beabee/core/models/Contact";
+import { Contact } from "@beabee/core/models";
 
 import type { ContactMfaSecure } from "@beabee/core/type";
 import type { PassportLocalDoneCallback } from "@type/passport-local-done-callback";

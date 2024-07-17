@@ -14,8 +14,7 @@ import ContactTransformer, {
 import { BaseTransformer } from "@api/transformers/BaseTransformer";
 import { mergeRules } from "@api/utils/rules";
 
-import Contact from "@beabee/core/models/Contact";
-import Payment from "@beabee/core/models/Payment";
+import { Contact, Payment } from "@beabee/core/models";
 
 import { AuthInfo } from "@type/auth-info";
 
