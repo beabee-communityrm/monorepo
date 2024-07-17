@@ -109,7 +109,6 @@ export const stripeTaxRateUpdateOrCreateDefault = async (
 
 export { Stripe };
 
-
 function getPriceData(
   paymentForm: PaymentForm,
   paymentMethod: PaymentMethod

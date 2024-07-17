@@ -9,7 +9,11 @@ import { validateTotpToken } from "#utils/auth";
 
 import { BadRequestError, UnauthorizedError } from "#errors/index";
 
-import { ContactMfaSecure, CreateContactMfaData, DeleteContactMfaData } from "#type/index";
+import {
+  ContactMfaSecure,
+  CreateContactMfaData,
+  DeleteContactMfaData
+} from "#type/index";
 
 /**
  * Contact multi factor authentication service

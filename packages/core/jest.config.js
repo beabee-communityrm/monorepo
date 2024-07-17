@@ -3,7 +3,7 @@ const { pathsToModuleNameMapper } = require("ts-jest");
 const tsconfig = require("tsconfig");
 const dotenv = require("dotenv");
 
-dotenv.config({path: ".env.test"});
+dotenv.config({ path: ".env.test" });
 
 const { config } = tsconfig.loadSync(__dirname);
 

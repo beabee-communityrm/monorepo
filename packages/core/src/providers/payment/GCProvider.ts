@@ -1,8 +1,17 @@
-import { PaymentForm, PaymentMethod, PaymentSource } from "@beabee/beabee-common";
+import {
+  PaymentForm,
+  PaymentMethod,
+  PaymentSource
+} from "@beabee/beabee-common";
 import { Subscription } from "gocardless-nodejs";
 import moment from "moment";
 
-import gocardless, {createSubscription, updateSubscription, prorateSubscription, hasPendingPayment} from "#lib/gocardless";
+import gocardless, {
+  createSubscription,
+  updateSubscription,
+  prorateSubscription,
+  hasPendingPayment
+} from "#lib/gocardless";
 import { log as mainLogger } from "#logging";
 import { calcRenewalDate, getActualAmount } from "#utils/payment";
 

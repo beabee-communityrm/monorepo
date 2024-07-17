@@ -1,4 +1,8 @@
-import { ContributionPeriod, PaymentForm, PaymentMethod } from "@beabee/beabee-common";
+import {
+  ContributionPeriod,
+  PaymentForm,
+  PaymentMethod
+} from "@beabee/beabee-common";
 import { Column } from "typeorm";
 
 import Password from "./Password";
