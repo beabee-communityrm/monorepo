@@ -1,7 +1,7 @@
 import { Request } from "express";
 import { createParamDecorator } from "routing-controllers";
 
-import UnauthorizedError from "@api/errors/UnauthorizedError";
+import { UnauthorizedError } from "@beabee/core/errors";
 
 import { AuthInfo } from "@type/auth-info";
 

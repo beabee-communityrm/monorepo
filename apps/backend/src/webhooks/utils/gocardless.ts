@@ -7,12 +7,11 @@ import {
 import moment, { DurationInputObject } from "moment";
 
 import { getRepository } from "@beabee/core/database";
-import gocardless from "@core/lib/gocardless";
+import gocardless, { convertStatus } from "@beabee/core/lib/gocardless";
 import { log as mainLogger } from "@beabee/core/logging";
-import { convertStatus } from "@core/utils/payment/gocardless";
 
-import ContactsService from "@core/services/ContactsService";
-import PaymentService from "@core/services/PaymentService";
+import ContactsService from "@beabee/core/services/ContactsService";
+import PaymentService from "@beabee/core/services/PaymentService";
 
 import Payment from "@beabee/core/models/Payment";
 

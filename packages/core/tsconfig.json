@@ -9,7 +9,6 @@
     "resolveJsonModule": true,
 
     "declaration": true,
-    // "emitDeclarationOnly": true,
 
     // We currently rely on class fields not being initialised, especially for classes created by
     // class-transformer (in controllers). Disabling this flag for now.
@@ -19,8 +18,10 @@
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
+    "rootDir": "./src",
     "paths": {
-      "#*": ["./src/*"],
+      "#locale": ["./src/locales/current"],
+      "#*": ["./src/*"]
     },
     "typeRoots": ["./src/typings", "./node_modules/@types/"]
   }

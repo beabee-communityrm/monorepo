@@ -10,10 +10,6 @@ export function wrapAsync(fn: RequestHandler): RequestHandler {
   };
 }
 
-export function extractToken(authHeader?: string): string | null {
-  if (!authHeader) return null;
-  if (authHeader?.startsWith("Bearer ")) {
-    return authHeader.split(" ")[1] || null;
-  }
-  return null;
+export function cleanEmailAddress(email: string): string {
+  return email.trim().toLowerCase();
 }

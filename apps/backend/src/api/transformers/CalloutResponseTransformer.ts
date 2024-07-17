@@ -13,7 +13,7 @@ import {
   ListCalloutResponsesDto
 } from "@api/dto/CalloutResponseDto";
 import { PaginatedDto } from "@api/dto/PaginatedDto";
-import NotFoundError from "@api/errors/NotFoundError";
+import { NotFoundError } from "@beabee/core/errors";
 import ContactTransformer, {
   loadContactRoles
 } from "@api/transformers/ContactTransformer";

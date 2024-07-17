@@ -7,7 +7,7 @@ import { getRepository } from "@beabee/core/database";
 import { log as mainLogger } from "@beabee/core/logging";
 import { runApp } from "@core/server";
 
-import GiftService from "@core/services/GiftService";
+import GiftService from "@beabee/core/services/GiftService";
 
 import GiftFlow from "@beabee/core/models/GiftFlow";
 

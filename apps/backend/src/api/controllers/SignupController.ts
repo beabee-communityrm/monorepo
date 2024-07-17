@@ -10,9 +10,9 @@ import {
 } from "routing-controllers";
 
 import { getRepository } from "@beabee/core/database";
-import { generatePassword } from "@core/utils/auth";
+import { generatePassword } from "@beabee/core/utils/auth";
 
-import PaymentFlowService from "@core/services/PaymentFlowService";
+import PaymentFlowService from "@beabee/core/services/PaymentFlowService";
 
 import { GetContactDto } from "@api/dto/ContactDto";
 import { GetPaymentFlowDto } from "@api/dto/PaymentFlowDto";

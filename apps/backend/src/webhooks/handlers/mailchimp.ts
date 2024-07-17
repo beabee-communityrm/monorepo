@@ -3,10 +3,10 @@ import bodyParser from "body-parser";
 import express from "express";
 
 import { log as mainLogger } from "@beabee/core/logging";
-import { cleanEmailAddress, wrapAsync } from "@core/utils";
+import { cleanEmailAddress, wrapAsync } from "@beabee/core/utils/index";
 
-import ContactsService from "@core/services/ContactsService";
-import NewsletterService from "@core/services/NewsletterService";
+import ContactsService from "@beabee/core/services/ContactsService";
+import NewsletterService from "@beabee/core/services/NewsletterService";
 import OptionsService from "@beabee/core/services/OptionsService";
 
 import config from "@beabee/core/config";

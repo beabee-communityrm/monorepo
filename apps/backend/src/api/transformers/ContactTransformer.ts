@@ -1,8 +1,9 @@
+import { GetContactWith } from "@beabee/beabee-common";
 import { TransformPlainToInstance } from "class-transformer";
 import { SelectQueryBuilder } from "typeorm";
 
 import { createQueryBuilder } from "@beabee/core/database";
-import PaymentService from "@core/services/PaymentService";
+import PaymentService from "@beabee/core/services/PaymentService";
 
 import Contact from "@beabee/core/models/Contact";
 import ContactRole from "@beabee/core/models/ContactRole";
@@ -15,8 +16,6 @@ import { BaseContactTransformer } from "@api/transformers/BaseContactTransformer
 import ContactRoleTransformer from "@api/transformers/ContactRoleTransformer";
 import ContactProfileTransformer from "@api/transformers/ContactProfileTransformer";
 import { mergeRules } from "@api/utils/rules";
-
-import { GetContactWith } from "@enums/get-contact-with";
 
 import { AuthInfo } from "@type/auth-info";
 

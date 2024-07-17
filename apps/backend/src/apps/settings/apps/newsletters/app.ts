@@ -4,13 +4,13 @@ import moment from "moment";
 
 import { log as mainLogger } from "@beabee/core/logging";
 import { isSuperAdmin } from "@core/middleware";
-import { wrapAsync } from "@core/utils";
+import { wrapAsync } from "@beabee/core/utils/index";
 
-import ContactsService from "@core/services/ContactsService";
-import NewsletterService from "@core/services/NewsletterService";
+import ContactsService from "@beabee/core/services/ContactsService";
+import NewsletterService from "@beabee/core/services/NewsletterService";
 import OptionsService from "@beabee/core/services/OptionsService";
 
-import { NewsletterContact } from "@core/providers/newsletter";
+import { NewsletterContact } from "@beabee/core/type";
 
 import Contact from "@beabee/core/models/Contact";
 

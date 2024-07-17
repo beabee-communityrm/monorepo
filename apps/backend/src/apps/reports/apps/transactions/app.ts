@@ -4,7 +4,7 @@ import { Between } from "typeorm";
 
 import { getRepository } from "@beabee/core/database";
 import { isSuperAdmin } from "@core/middleware";
-import { wrapAsync } from "@core/utils";
+import { wrapAsync } from "@beabee/core/utils/index";
 
 import Payment from "@beabee/core/models/Payment";
 

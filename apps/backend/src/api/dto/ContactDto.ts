@@ -1,6 +1,7 @@
 import {
   ContributionPeriod,
   ContributionType,
+  GetContactWith,
   MembershipStatus,
   NewsletterStatus,
   RoleType,
@@ -36,9 +37,7 @@ import { ForceUpdateContributionDto } from "@api/dto/ContributionDto";
 
 import IsPassword from "@api/validators/IsPassword";
 
-import { GetContactWith } from "@enums/get-contact-with";
-
-import { ContributionInfo } from "@type/contribution-info";
+import { ContributionInfo } from "@beabee/core/type";
 
 const contactSortFields = [
   "firstname",

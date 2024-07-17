@@ -15,7 +15,7 @@ import IsUrl from "@api/validators/IsUrl";
 
 import type JoinForm from "@beabee/core/models/JoinForm";
 
-import { CompleteUrls } from "@type/complete-urls";
+import { CompleteUrls } from "@beabee/core/type";
 
 export class StartSignupFlowDto implements CompleteUrls {
   @IsUrl()

@@ -2,7 +2,7 @@ import express, { Request, Response, NextFunction } from "express";
 
 import { getRepository } from "@beabee/core/database";
 import { isAdmin } from "@core/middleware";
-import { wrapAsync } from "@core/utils";
+import { wrapAsync } from "@beabee/core/utils/index";
 
 import OptionsService from "@beabee/core/services/OptionsService";
 

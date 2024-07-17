@@ -3,10 +3,11 @@ import express from "express";
 import passport from "passport";
 
 import { getRepository } from "@beabee/core/database";
-import { isValidNextUrl, getNextParam, wrapAsync } from "@core/utils";
+import { isValidNextUrl, getNextParam } from "@core/utils";
+import { wrapAsync } from "@beabee/core/utils/index";
 import { loginAndRedirect } from "@core/utils/contact";
 
-import ContactsService from "@core/services/ContactsService";
+import ContactsService from "@beabee/core/services/ContactsService";
 
 import ContactRole from "@beabee/core/models/ContactRole";
 

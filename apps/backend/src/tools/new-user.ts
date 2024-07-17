@@ -9,10 +9,11 @@ import moment from "moment";
 
 import { getRepository } from "@beabee/core/database";
 import { runApp } from "@core/server";
-import { generatePassword, passwordRequirements } from "@core/utils/auth";
+import { passwordRequirements } from "@core/utils/auth";
+import { generatePassword } from "@beabee/core/utils/auth";
 
-import ContactsService from "@core/services/ContactsService";
-import ResetSecurityFlowService from "@core/services/ResetSecurityFlowService";
+import ContactsService from "@beabee/core/services/ContactsService";
+import ResetSecurityFlowService from "@beabee/core/services/ResetSecurityFlowService";
 
 import ContactRole from "@beabee/core/models/ContactRole";
 

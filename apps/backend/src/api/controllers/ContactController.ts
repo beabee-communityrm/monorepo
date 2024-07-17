@@ -1,4 +1,8 @@
-import { ContributionPeriod, NewsletterStatus } from "@beabee/beabee-common";
+import {
+  ContributionPeriod,
+  NewsletterStatus,
+  GetContactWith
+} from "@beabee/beabee-common";
 import { plainToInstance } from "class-transformer";
 import { Response } from "express";
 import {
@@ -18,13 +22,13 @@ import {
   Res
 } from "routing-controllers";
 
-import ContactsService from "@core/services/ContactsService";
+import ContactsService from "@beabee/core/services/ContactsService";
 import OptionsService from "@beabee/core/services/OptionsService";
-import PaymentFlowService from "@core/services/PaymentFlowService";
-import PaymentService from "@core/services/PaymentService";
-import ContactMfaService from "@core/services/ContactMfaService";
+import PaymentFlowService from "@beabee/core/services/PaymentFlowService";
+import PaymentService from "@beabee/core/services/PaymentService";
+import ContactMfaService from "@beabee/core/services/ContactMfaService";
 
-import { generatePassword } from "@core/utils/auth";
+import { generatePassword } from "@beabee/core/utils/auth";
 
 import Contact from "@beabee/core/models/Contact";
 import JoinFlow from "@beabee/core/models/JoinFlow";
@@ -60,9 +64,11 @@ import { GetPaymentFlowDto } from "@api/dto/PaymentFlowDto";
 import { CurrentAuth } from "@api/decorators/CurrentAuth";
 import PartialBody from "@api/decorators/PartialBody";
 import { TargetUser } from "@api/decorators/TargetUser";
-import { UnauthorizedError } from "@api/errors/UnauthorizedError";
-import CantUpdateContribution from "@api/errors/CantUpdateContribution";
-import NoPaymentMethod from "@api/errors/NoPaymentMethod";
+import {
+  CantUpdateContribution,
+  NoPaymentMethod,
+  UnauthorizedError
+} from "@beabee/core/errors";
 import { ContactRoleParams } from "@api/params/ContactRoleParams";
 import { mergeRules } from "@api/utils/rules";
 
@@ -70,8 +76,6 @@ import ContactExporter from "@api/transformers/ContactExporter";
 import ContactTransformer from "@api/transformers/ContactTransformer";
 import ContactRoleTransformer from "@api/transformers/ContactRoleTransformer";
 import PaymentTransformer from "@api/transformers/PaymentTransformer";
-
-import { GetContactWith } from "@enums/get-contact-with";
 
 import { AuthInfo } from "@type/auth-info";
 

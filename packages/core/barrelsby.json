@@ -1,0 +1,5 @@
+{
+  "delete": true,
+  "local": true,
+  "directory": ["./src/errors", "./src/models", "./src/services", "./src/type"]
+}

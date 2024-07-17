@@ -3,7 +3,7 @@ import _ from "lodash";
 
 import { getRepository } from "@beabee/core/database";
 import { hasNewModel, hasSchema, isAdmin } from "@core/middleware";
-import { wrapAsync } from "@core/utils";
+import { wrapAsync } from "@beabee/core/utils/index";
 
 import ReferralGift from "@beabee/core/models/ReferralGift";
 

@@ -122,7 +122,6 @@ export * from "./get-callout-with.ts";
 export * from "./get-callouts-query.ts";
 export * from "./get-contact-data-with.ts";
 export * from "./get-contact-data.ts";
-export * from "./get-contact-with.ts";
 export * from "./get-contacts-query.ts";
 export * from "./get-email-data.ts";
 export * from "./get-notice-data.ts";

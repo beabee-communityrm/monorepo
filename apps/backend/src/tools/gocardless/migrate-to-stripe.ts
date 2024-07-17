@@ -8,10 +8,9 @@ import { Equal, In } from "typeorm";
 
 import { createQueryBuilder, getRepository } from "@beabee/core/database";
 import { runApp } from "@core/server";
-import { stripe } from "@core/lib/stripe";
-import { stripeTypeToPaymentMethod } from "@core/utils/payment/stripe";
+import { stripe, stripeTypeToPaymentMethod } from "@beabee/core/lib/stripe";
 
-import PaymentService from "@core/services/PaymentService";
+import PaymentService from "@beabee/core/services/PaymentService";
 
 import Contact from "@beabee/core/models/Contact";
 import Payment from "@beabee/core/models/Payment";

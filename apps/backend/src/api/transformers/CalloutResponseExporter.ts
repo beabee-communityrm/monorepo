@@ -15,7 +15,7 @@ import {
   ExportCalloutResponsesOptsDto
 } from "@api/dto/CalloutResponseDto";
 import { BaseCalloutResponseTransformer } from "@api/transformers/BaseCalloutResponseTransformer";
-import NotFoundError from "@api/errors/NotFoundError";
+import { NotFoundError } from "@beabee/core/errors";
 import { groupBy } from "@api/utils";
 
 import CalloutResponse from "@beabee/core/models/CalloutResponse";

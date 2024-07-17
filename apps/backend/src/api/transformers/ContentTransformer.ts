@@ -1,7 +1,7 @@
 import { plainToInstance } from "class-transformer";
 import { ContentId, ContentData } from "@beabee/beabee-common";
 import { createQueryBuilder, getRepository } from "@beabee/core/database";
-import { getEmailFooter } from "@core/utils/email";
+import { getEmailFooter } from "@beabee/core/utils/email";
 
 import OptionsService, {
   OptionKey

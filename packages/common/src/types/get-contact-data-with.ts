@@ -1,9 +1,9 @@
+import { GetContactWith } from "../index.ts";
 import type {
   ContactProfileData,
   ContactRoleData,
   ContributionInfo,
   GetContactData,
-  GetContactWith,
   Noop,
 } from "./index.ts";
 

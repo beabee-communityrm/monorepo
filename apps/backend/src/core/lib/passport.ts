@@ -6,18 +6,19 @@ import config from "@beabee/core/config";
 
 import { getRepository } from "@beabee/core/database";
 import { log } from "@beabee/core/logging";
-import { cleanEmailAddress, sleep } from "@core/utils";
-import { generatePassword, isValidPassword } from "@core/utils/auth";
+import { sleep } from "@core/utils";
+import { generatePassword, isValidPassword } from "@beabee/core/utils/auth";
+import { cleanEmailAddress } from "@beabee/core/utils/index";
 
-import ContactsService from "@core/services/ContactsService";
-import ContactMfaService from "@core/services/ContactMfaService";
+import ContactsService from "@beabee/core/services/ContactsService";
+import ContactMfaService from "@beabee/core/services/ContactMfaService";
 
 import { LoginDto } from "@api/dto/LoginDto";
-import { UnauthorizedError } from "@api/errors/UnauthorizedError";
+import { UnauthorizedError } from "@beabee/core/errors";
 
 import Contact from "@beabee/core/models/Contact";
 
-import type { ContactMfaSecure } from "@type/contact-mfa-secure";
+import type { ContactMfaSecure } from "@beabee/core/type";
 import type { PassportLocalDoneCallback } from "@type/passport-local-done-callback";
 
 // Add support for local authentication in Passport.js

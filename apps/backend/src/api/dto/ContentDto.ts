@@ -27,7 +27,7 @@ import {
 import { LinkDto } from "@api/dto/LinkDto";
 import { GetContentTelegramDto } from "@api/dto/ContentTelegramDto";
 
-import { Locale } from "@locale";
+import { Locale } from "@beabee/core/locale";
 
 export class GetContentContactsDto implements ContentContactsData {
   @IsString({ each: true })

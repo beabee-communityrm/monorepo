@@ -16,7 +16,7 @@ import {
   Res
 } from "routing-controllers";
 
-import CalloutsService from "@core/services/CalloutsService";
+import CalloutsService from "@beabee/core/services/CalloutsService";
 
 import { getRepository } from "@beabee/core/database";
 import { verify } from "@core/lib/captchafox";
@@ -41,8 +41,7 @@ import { PaginatedDto } from "@api/dto/PaginatedDto";
 import { CalloutId } from "@api/decorators/CalloutId";
 import { CurrentAuth } from "@api/decorators/CurrentAuth";
 import PartialBody from "@api/decorators/PartialBody";
-import InvalidCalloutResponse from "@api/errors/InvalidCalloutResponse";
-import UnauthorizedError from "@api/errors/UnauthorizedError";
+import { InvalidCalloutResponse, UnauthorizedError } from "@beabee/core/errors";
 import CalloutTagTransformer from "@api/transformers/CalloutTagTransformer";
 import CalloutTransformer from "@api/transformers/CalloutTransformer";
 import CalloutResponseExporter from "@api/transformers/CalloutResponseExporter";

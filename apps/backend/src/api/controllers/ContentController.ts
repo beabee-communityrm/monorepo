@@ -23,7 +23,7 @@ import {
 } from "@api/dto";
 import { ContentParams } from "@api/params/ContentParams";
 import ContentTransformer from "@api/transformers/ContentTransformer";
-import { stripeTaxRateUpdateOrCreateDefault } from "@core/lib/stripe";
+import { stripeTaxRateUpdateOrCreateDefault } from "@beabee/core/lib/stripe";
 import OptionsService from "@beabee/core/services/OptionsService";
 
 @JsonController("/content")
