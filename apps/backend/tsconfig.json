@@ -20,9 +20,7 @@
       "@core/*": ["./src/core/*"],
       "@apps/*": ["./src/apps/*"],
       "@api/*": ["./src/api/*"],
-      "@models/*": ["./src/models/*"],
-      "@type/*": ["./src/type/*"],
-      "@enums/*": ["./src/enums/*"]
+      "@type/*": ["./src/type/*"]
     },
     "typeRoots": ["./src/typings", "./node_modules/@types/"]
   }

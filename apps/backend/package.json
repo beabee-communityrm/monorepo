@@ -36,7 +36,7 @@
     "check:dependencies": "dpdm -T --no-warning --no-tree --exit-code circular:1 src/app.ts src/webhooks/app.ts src/api/app.ts",
     "format": "prettier --write .",
     "typeorm": "typeorm -d ./built/core/lib/typeorm.js",
-    "test": "jest --setupFiles dotenv/config",
+    "test": "jest --setupFiles dotenv/config --passWithNoTests",
     "docker:build": "docker compose build",
     "docker:start": "docker compose up -d",
     "docker:restart": "docker compose restart"
