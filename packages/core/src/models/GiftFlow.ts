@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn
 } from "typeorm";
 
-import { type Contact, GiftForm } from "./index";
+import type { Contact, GiftForm } from "./index";
 
 @Entity()
 export class GiftFlow {
@@ -22,7 +22,7 @@ export class GiftFlow {
   @Column({ unique: true })
   setupCode!: string;
 
-  @Column(() => GiftForm)
+  @Column("GiftForm")
   giftForm!: GiftForm;
 
   @Column({ default: false })

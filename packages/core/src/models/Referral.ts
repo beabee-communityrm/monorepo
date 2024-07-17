@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn
 } from "typeorm";
 
-import { type Contact, ReferralGift } from "./index";
+import type { Contact, ReferralGift } from "./index";
 
 @Entity()
 export class Referral {
@@ -29,13 +29,13 @@ export class Referral {
   @Column()
   refereeAmount!: number;
 
-  @ManyToOne(() => ReferralGift, { nullable: true })
+  @ManyToOne("ReferralGift", { nullable: true })
   refereeGift!: ReferralGift | null;
 
   @Column({ type: "jsonb", nullable: true })
   refereeGiftOptions!: Record<string, string> | null;
 
-  @ManyToOne(() => ReferralGift, { nullable: true })
+  @ManyToOne("ReferralGift", { nullable: true })
   referrerGift!: ReferralGift | null;
 
   @Column({ type: "jsonb", nullable: true })

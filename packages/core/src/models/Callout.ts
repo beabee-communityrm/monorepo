@@ -14,12 +14,8 @@ import {
   PrimaryGeneratedColumn
 } from "typeorm";
 
-import {
-  ItemWithStatus,
-  type CalloutResponse,
-  type CalloutTag,
-  type CalloutVariant
-} from "./index";
+import type { CalloutResponse, CalloutTag, CalloutVariant } from "./index";
+import { ItemWithStatus } from "./ItemWithStatus";
 
 @Entity()
 export class Callout extends ItemWithStatus implements CalloutData {

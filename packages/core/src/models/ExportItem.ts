@@ -5,7 +5,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn
 } from "typeorm";
-import { Export } from "./index";
+import type { Export } from "./index";
 
 @Entity()
 @Index(["export", "itemId"], { unique: true })
@@ -15,7 +15,7 @@ export class ExportItem {
 
   @Column()
   exportId!: string;
-  @ManyToOne(() => Export)
+  @ManyToOne("Export")
   export!: Export;
 
   @Column()
