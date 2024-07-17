@@ -13,8 +13,8 @@ import {
   PrimaryGeneratedColumn
 } from "typeorm";
 
-import { getActualAmount } from "../utils/payment";
-import config from "../config/config";
+import { getActualAmount } from "#utils/payment";
+import config from "#config/config";
 
 import type ContactContribution from "./ContactContribution";
 import type ContactRole from "./ContactRole";

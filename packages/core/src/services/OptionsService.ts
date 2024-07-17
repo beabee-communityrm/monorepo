@@ -1,13 +1,12 @@
-import { getRepository } from "../database";
-import _defaultOptions from "../defaults.json";
-import { log as mainLogger } from "../logging";
-import NetworkCommunicatorService from "./NetworkCommunicatorService";
+import { getRepository } from "#database";
+import defaultOptions from "#data/options/defaults";
+import { log as mainLogger } from "#logging";
+import NetworkCommunicatorService from "#services/NetworkCommunicatorService";
 
-import Option from "../models/Option";
+import Option from "#models/Option";
 
-export type OptionKey = keyof typeof _defaultOptions;
+export type OptionKey = keyof typeof defaultOptions;
 type OptionValue = string | boolean | number;
-const defaultOptions: { [key in OptionKey]: string } = _defaultOptions;
 
 const log = mainLogger.child({ app: "options-service" });
 

@@ -1,4 +1,4 @@
-{
+export default {
   "organisation": "UK Makerspace",
   "software-name": "Membership System",
   "logo": "",
@@ -170,4 +170,4 @@
   "flash-validation-error.password-format": "Password must be at least 8 characters and with at least one number, lower and upper case letter",
   "flash-validation-error.url-format": "URL was invalid",
   "flash-validation-error.candidates-maxItems": "You can only choose at most three candidates"
-}
+} as const;
