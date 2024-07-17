@@ -1,9 +1,8 @@
 import { stripe, paymentMethodToStripeType } from "#lib/stripe";
 import { log as mainLogger } from "#logging";
+import { JoinFlow } from "#models/index";
 
 import { PaymentFlowProvider } from ".";
-
-import JoinFlow from "#models/JoinFlow";
 
 import {
   CompletedPaymentFlow,

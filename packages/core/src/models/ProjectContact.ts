@@ -5,12 +5,11 @@ import {
   PrimaryGeneratedColumn,
   Unique
 } from "typeorm";
-import type Contact from "./Contact";
-import type Project from "./Project";
+import type { Contact, Project } from "./index";
 
 @Entity()
 @Unique(["project", "contact"])
-export default class ProjectContact {
+export class ProjectContact {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 

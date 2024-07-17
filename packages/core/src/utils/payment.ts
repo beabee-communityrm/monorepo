@@ -7,8 +7,8 @@ import {
 } from "@beabee/beabee-common";
 import { addMonths, getYear, setYear, sub } from "date-fns";
 
+import { Contact } from "#models/index";
 import config from "#config/config";
-import Contact from "#models/Contact";
 
 export function getActualAmount(
   amount: number,

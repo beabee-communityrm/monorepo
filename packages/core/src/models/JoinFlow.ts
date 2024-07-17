@@ -5,10 +5,10 @@ import {
   PrimaryGeneratedColumn
 } from "typeorm";
 
-import JoinForm from "./JoinForm";
+import { JoinForm } from "./index";
 
 @Entity()
-export default class JoinFlow {
+export class JoinFlow {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 

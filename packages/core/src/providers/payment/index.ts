@@ -2,8 +2,7 @@ import { PaymentForm, PaymentMethod } from "@beabee/beabee-common";
 
 import { getRepository } from "#database";
 
-import Contact from "#models/Contact";
-import ContactContribution from "#models/ContactContribution";
+import { Contact, ContactContribution } from "#models/index";
 
 import {
   CompletedPaymentFlow,

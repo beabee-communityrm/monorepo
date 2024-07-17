@@ -3,10 +3,8 @@ import { log as mainLogger } from "#logging";
 
 import EmailService from "#services/EmailService";
 
-import { ReferralGiftForm } from "#models/JoinForm";
-import Contact from "#models/Contact";
-import ReferralGift from "#models/ReferralGift";
-import Referral from "#models/Referral";
+import { Contact, ReferralGift, Referral } from "#models/index";
+import { ReferralGiftForm } from "#type/index";
 
 const log = mainLogger.child({ app: "referrals-service" });
 

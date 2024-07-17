@@ -6,11 +6,10 @@ import {
   PrimaryGeneratedColumn
 } from "typeorm";
 
-import type Contact from "./Contact";
-import type Project from "./Project";
+import type { Contact, Project } from "./index";
 
 @Entity()
-export default class ProjectEngagement {
+export class ProjectEngagement {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 

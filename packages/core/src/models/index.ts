@@ -20,6 +20,7 @@ export * from "./EmailMailing";
 export * from "./Export";
 export * from "./ExportItem";
 export * from "./GiftFlow";
+export * from "./GiftForm";
 export * from "./ItemWithStatus";
 export * from "./JoinFlow";
 export * from "./JoinForm";

@@ -5,12 +5,11 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn
 } from "typeorm";
-import type Email from "./Email";
-
-export type EmailMailingRecipient = Record<string, string>;
+import { type Email } from "./index";
+import { EmailMailingRecipient } from "#type/index";
 
 @Entity()
-export default class EmailMailing {
+export class EmailMailing {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 

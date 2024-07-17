@@ -23,9 +23,9 @@
     "./errors": "./dist/errors/index.js",
     "./locale": "./dist/locales/current.js",
     "./logging": "./dist/logging.js",
+    "./models": "./dist/models/index.js",
     "./type": "./dist/type/index.js",
     "./lib/*": "./dist/lib/*.js",
-    "./models/*": "./dist/models/*.js",
     "./services/*": "./dist/services/*.js",
     "./utils/*": "./dist/utils/*.js"
   },

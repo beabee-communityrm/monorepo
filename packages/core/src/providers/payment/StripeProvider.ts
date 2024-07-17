@@ -22,7 +22,7 @@ import {
   getChargeableAmount
 } from "#utils/payment";
 
-import Contact from "#models/Contact";
+import { Contact } from "#models/index";
 
 import { NoPaymentMethod } from "#errors/index";
 

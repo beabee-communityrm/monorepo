@@ -14,13 +14,15 @@ import {
   PrimaryGeneratedColumn
 } from "typeorm";
 
-import ItemWithStatus from "./ItemWithStatus";
-import type CalloutResponse from "./CalloutResponse";
-import type CalloutTag from "./CalloutTag";
-import type CalloutVariant from "./CalloutVariant";
+import {
+  ItemWithStatus,
+  type CalloutResponse,
+  type CalloutTag,
+  type CalloutVariant
+} from "./index";
 
 @Entity()
-export default class Callout extends ItemWithStatus implements CalloutData {
+export class Callout extends ItemWithStatus implements CalloutData {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 

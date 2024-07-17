@@ -15,7 +15,7 @@ const stockTransformer: ValueTransformer = {
 };
 
 @Entity()
-export default class ReferralGift {
+export class ReferralGift {
   @PrimaryColumn()
   name!: string;
 

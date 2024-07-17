@@ -5,10 +5,10 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn
 } from "typeorm";
-import type Contact from "./Contact";
+import type { Contact } from "./index";
 
 @Entity()
-export default class UploadFlow {
+export class UploadFlow {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 

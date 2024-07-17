@@ -17,7 +17,7 @@ import { calcRenewalDate, getActualAmount } from "#utils/payment";
 
 import { PaymentProvider } from ".";
 
-import Contact from "#models/Contact";
+import { Contact } from "#models/index";
 
 import { NoPaymentMethod } from "#errors/index";
 

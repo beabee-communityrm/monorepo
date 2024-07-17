@@ -6,10 +6,10 @@ import {
   ManyToOne,
   PrimaryColumn
 } from "typeorm";
-import type Contact from "./Contact";
+import { type Contact } from "./index";
 
 @Entity()
-export default class ContactRole {
+export class ContactRole {
   @PrimaryColumn()
   contactId!: string;
   @ManyToOne("Contact", "roles")

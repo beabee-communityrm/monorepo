@@ -16,8 +16,7 @@ import EmailService from "#services/EmailService";
 import ContactsService from "#services/ContactsService";
 import OptionsService from "#services/OptionsService";
 
-import GiftFlow, { GiftForm } from "#models/GiftFlow";
-import ContactRole from "#models/ContactRole";
+import { GiftFlow, GiftForm, ContactRole } from "#models/index";
 
 import config from "#config/config";
 

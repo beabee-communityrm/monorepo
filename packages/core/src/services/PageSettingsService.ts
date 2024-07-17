@@ -2,7 +2,7 @@ import { getRepository } from "#database";
 
 import OptionsService from "#services/OptionsService";
 
-import PageSettings from "#models/PageSettings";
+import { PageSettings } from "#models/index";
 
 interface PageSettingsCache extends PageSettings {
   patternRegex: RegExp;

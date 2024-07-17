@@ -10,14 +10,16 @@ import {
   UpdateDateColumn
 } from "typeorm";
 
-import type Contact from "./Contact";
-import type Callout from "./Callout";
-import type CalloutResponseTag from "./CalloutResponseTag";
-import type CalloutResponseComment from "./CalloutResponseComment";
+import type {
+  Contact,
+  Callout,
+  CalloutResponseComment,
+  CalloutResponseTag
+} from "./index";
 
 @Entity()
 @Unique(["callout", "number"])
-export default class CalloutResponse {
+export class CalloutResponse {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 

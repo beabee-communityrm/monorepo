@@ -13,9 +13,7 @@ import ContactsService from "#services/ContactsService";
 import OptionsService from "#services/OptionsService";
 import PaymentService from "#services/PaymentService";
 import ResetSecurityFlowService from "./ResetSecurityFlowService";
-import JoinFlow from "#models/JoinFlow";
-import JoinForm from "#models/JoinForm";
-import Contact from "#models/Contact";
+import { JoinFlow, JoinForm, Contact } from "#models/index";
 
 import { PaymentFlowProvider } from "#providers/payment-flow";
 import StripeProvider from "#providers/payment-flow/StripeProvider";

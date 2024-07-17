@@ -1,10 +1,10 @@
 import { PaymentMethod } from "@beabee/beabee-common";
 import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from "typeorm";
 
-import type Contact from "./Contact";
+import { type Contact } from "./index";
 
 @Entity()
-export default class ContactContribution {
+export class ContactContribution {
   @PrimaryColumn()
   contactId!: string;
   @OneToOne("Contact", "contribution")

@@ -6,11 +6,10 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from "typeorm";
-import CalloutResponse from "./CalloutResponse";
-import Contact from "./Contact";
+import { CalloutResponse, Contact } from "./index";
 
 @Entity()
-export default class CalloutResponseComment {
+export class CalloutResponseComment {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 

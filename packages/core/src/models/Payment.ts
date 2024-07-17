@@ -7,10 +7,10 @@ import {
   PrimaryColumn,
   UpdateDateColumn
 } from "typeorm";
-import type Contact from "./Contact";
+import { type Contact } from "./index";
 
 @Entity()
-export default class Payment {
+export class Payment {
   @PrimaryColumn()
   id!: string;
 

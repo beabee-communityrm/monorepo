@@ -16,10 +16,12 @@ import {
 import { getActualAmount } from "#utils/payment";
 import config from "#config/config";
 
-import type ContactContribution from "./ContactContribution";
-import type ContactRole from "./ContactRole";
-import type ContactProfile from "./ContactProfile";
-import Password from "./Password";
+import {
+  type ContactContribution,
+  type ContactProfile,
+  type ContactRole,
+  Password
+} from "./index";
 
 interface LoginOverride {
   code: string;
@@ -27,7 +29,7 @@ interface LoginOverride {
 }
 
 @Entity()
-export default class Contact {
+export class Contact {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 

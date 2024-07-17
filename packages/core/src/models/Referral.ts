@@ -6,11 +6,10 @@ import {
   PrimaryGeneratedColumn
 } from "typeorm";
 
-import type Contact from "./Contact";
-import ReferralGift from "./ReferralGift";
+import { type Contact, ReferralGift } from "./index";
 
 @Entity()
-export default class Referral {
+export class Referral {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 

@@ -5,10 +5,10 @@ import {
   OneToMany,
   PrimaryGeneratedColumn
 } from "typeorm";
-import type EmailMailing from "./EmailMailing";
+import { type EmailMailing } from "./index";
 
 @Entity()
-export default class Email {
+export class Email {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 

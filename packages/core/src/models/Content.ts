@@ -2,7 +2,7 @@ import { Column, Entity, PrimaryColumn, UpdateDateColumn } from "typeorm";
 import { ContentId } from "@beabee/beabee-common";
 
 @Entity()
-export default class Content {
+export class Content {
   @PrimaryColumn()
   id!: ContentId;
 

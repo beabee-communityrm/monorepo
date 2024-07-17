@@ -5,11 +5,11 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn
 } from "typeorm";
-import Export from "./Export";
+import { Export } from "./index";
 
 @Entity()
 @Index(["export", "itemId"], { unique: true })
-export default class ExportItem {
+export class ExportItem {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 

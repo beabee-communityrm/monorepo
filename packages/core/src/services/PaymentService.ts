@@ -8,9 +8,7 @@ import { getRepository, runTransaction } from "#database";
 import { log as mainLogger } from "#logging";
 import { calcRenewalDate } from "#utils/payment";
 
-import Contact from "#models/Contact";
-import Payment from "#models/Payment";
-import ContactContribution from "#models/ContactContribution";
+import { Contact, Payment, ContactContribution } from "#models/index";
 
 import { PaymentProvider } from "#providers/payment";
 import GCProvider from "#providers/payment/GCProvider";

@@ -6,10 +6,10 @@ import {
   PrimaryGeneratedColumn,
   Column
 } from "typeorm";
-import Contact from "./Contact";
+import type { Contact } from "./index";
 
 @Entity()
-export default class ResetSecurityFlow {
+export class ResetSecurityFlow {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 
