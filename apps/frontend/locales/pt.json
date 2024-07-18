@@ -160,7 +160,7 @@
     }
   },
   "advancedSearch": {
-    "matchType": {},
+    "createFiltersType": {},
     "matchWord": {},
     "operators": {
       "all": {},
@@ -369,6 +369,9 @@
     "until": "até",
     "yes": "Sim"
   },
+  "contactAccount": {
+    "confirmDelete": {}
+  },
   "contactContribution": {
     "confirmCancel": {},
     "updateNotice": {}
@@ -420,6 +423,7 @@
     },
     "dataGroup": {
       "callout": "Опрос",
+      "contact": "Контакты",
       "contribution": "Contribuição",
       "role": "Cargo"
     },

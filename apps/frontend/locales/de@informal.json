@@ -236,14 +236,13 @@
   "advancedSearch": {
     "addRule": "Filter hinzufügen",
     "button": "Filter",
-    "createFilters": "Filter für die Suche erstellen",
-    "createdSegment": "Erstelltes Segment \"{segment}\"",
-    "matchAfter": "der folgenden Filter enthalten",
-    "matchBefore": "Ergebnisse sollen",
-    "matchType": {
-      "AND": "alle",
-      "OR": "mindestens einen"
+    "createFiltersAfter": "Regel entsprechen",
+    "createFiltersBefore": "Nur Ergebnisse anzeigen, die",
+    "createFiltersType": {
+      "all": "allen",
+      "any": "einer beliebigen"
     },
+    "createdSegment": "Erstelltes Segment \"{segment}\"",
     "matchWord": {
       "AND": "und",
       "OR": "oder"
@@ -437,7 +436,10 @@
       "tags": "Tags",
       "updatedAt": "Geändert am"
     },
-    "dataGroup": {}
+    "dataGroup": {
+      "answers": "Antworten",
+      "response": "Informationen"
+    }
   },
   "calloutResponseBuckets": {
     "inbox": "Eingang",
@@ -576,6 +578,14 @@
     "until": "bis",
     "yes": "Ja"
   },
+  "contactAccount": {
+    "confirmDelete": {
+      "text": "Dadurch werden alle mit der Email-Adresse {email} verbundenen Daten gelöscht. Aktive Mitgliedschaften werden dadurch beendet.",
+      "title": "Kontakt löschen",
+      "warning": "Dieser Schritt kann nicht rückgängig gemacht werden. Sicher, dass du fortfahren möchtest?"
+    },
+    "contactDeleted": "Kontakt gelöscht."
+  },
   "contactContribution": {
     "confirmCancel": {
       "confirm": "Ja, Mitgliedschaft kündigen",
@@ -617,7 +627,10 @@
   },
   "contacts": {
     "addContact": "Kontakt hinzufügen",
-    "advancedSearch": {},
+    "advancedSearch": {
+      "hasAnswered": "Hat teilgenommen?",
+      "selectCallout": "Callout auswählen..."
+    },
     "allContacts": "Alle Kontakte",
     "data": {
       "activeMembership": "Aktive Mitgliedschaft",
@@ -654,6 +667,7 @@
     },
     "dataGroup": {
       "callout": "Callout",
+      "contact": "Kontaktdaten",
       "contribution": "Beitrag",
       "role": "Rolle"
     },

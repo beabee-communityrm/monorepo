@@ -9,8 +9,8 @@
       <AppSelect
         v-model="ruleGroup.condition"
         :items="[
-          { id: 'AND', label: t('advancedSearch.matchType.AND') },
-          { id: 'OR', label: t('advancedSearch.matchType.OR') },
+          { id: 'AND', label: t('advancedSearch.createFiltersType.all') },
+          { id: 'OR', label: t('advancedSearch.createFiltersType.any') },
         ]"
         required
       />
