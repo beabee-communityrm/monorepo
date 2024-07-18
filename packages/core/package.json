@@ -4,7 +4,7 @@
   "version": "0.16.0",
   "type": "commonjs",
   "scripts": {
-    "build": "rimraf dist/ && tsc -p tsconfig.build.json",
+    "build": "rimraf dist/ && tsc -p tsconfig.build.json && cp -r src/data dist/",
     "dev": "tsc-watch --noClear",
     "format": "prettier --write .",
     "generate:index": "barrelsby -c barrelsby.json",
