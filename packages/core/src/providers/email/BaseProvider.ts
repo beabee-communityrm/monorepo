@@ -7,8 +7,7 @@ import { formatEmailBody } from "#utils/email";
 import OptionsService from "#services/OptionsService";
 import ResetSecurityFlowService from "#services/ResetSecurityFlowService";
 
-import Email from "#models/Email";
-import Contact from "#models/Contact";
+import { Email, Contact } from "#models/index";
 
 import {
   EmailProvider,

@@ -24,8 +24,7 @@ import { SignupConfirmEmailParams } from "@api/params/SignupConfirmEmailParams";
 import ContactTransformer from "@api/transformers/ContactTransformer";
 import { login } from "@api/utils";
 
-import JoinFlow from "@beabee/core/models/JoinFlow";
-import Password from "@beabee/core/models/Password";
+import { JoinFlow, Password } from "@beabee/core/models";
 
 @JsonController("/signup")
 export class SignupController {

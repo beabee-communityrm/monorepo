@@ -13,8 +13,7 @@ import SegmentService from "@beabee/core/services/SegmentService";
 
 import ContactTransformer from "@api/transformers/ContactTransformer";
 
-import Project from "@beabee/core/models/Project";
-import Contact from "@beabee/core/models/Contact";
+import { Project, Contact } from "@beabee/core/models";
 
 const app = express();
 

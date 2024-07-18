@@ -1,4 +1,4 @@
-import Contact from "@beabee/core/models/Contact";
+import { Contact } from "@beabee/core/models";
 import { calcRenewalDate } from "@beabee/core/utils/payment";
 import { differenceInMonths } from "date-fns";
 

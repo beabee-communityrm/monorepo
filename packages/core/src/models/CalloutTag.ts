@@ -1,8 +1,8 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import Callout from "./Callout";
+import type { Callout } from "./index";
 
 @Entity()
-export default class CalloutTag {
+export class CalloutTag {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 

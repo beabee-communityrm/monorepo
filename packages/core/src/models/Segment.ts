@@ -1,9 +1,9 @@
 import { RuleGroup } from "@beabee/beabee-common";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import type SegmentContact from "./SegmentContact";
+import type { SegmentContact } from "./index";
 
 @Entity()
-export default class Segment {
+export class Segment {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 

@@ -7,8 +7,7 @@ import { log } from "@beabee/core/logging";
 import { isAdmin } from "@core/middleware";
 import { wrapAsync } from "@beabee/core/utils/index";
 
-import ContactRole from "@beabee/core/models/ContactRole";
-import ContactProfile from "@beabee/core/models/ContactProfile";
+import { ContactRole, ContactProfile } from "@beabee/core/models";
 
 const app = express();
 

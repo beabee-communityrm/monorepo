@@ -6,11 +6,10 @@ import {
   PrimaryGeneratedColumn
 } from "typeorm";
 
-import type Segment from "./Segment";
-import type Email from "./Email";
+import type { Segment, Email } from "./index";
 
 @Entity()
-export default class SegmentOngoingEmail {
+export class SegmentOngoingEmail {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 

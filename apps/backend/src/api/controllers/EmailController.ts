@@ -13,7 +13,7 @@ import EmailService from "@beabee/core/services/EmailService";
 
 import { getRepository } from "@beabee/core/database";
 
-import Email from "@beabee/core/models/Email";
+import { Email } from "@beabee/core/models";
 
 import { GetEmailDto, UpdateEmailDto } from "@api/dto/EmailDto";
 import { ExternalEmailTemplate } from "@beabee/core/errors";

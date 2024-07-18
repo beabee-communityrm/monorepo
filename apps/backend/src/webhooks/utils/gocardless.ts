@@ -13,7 +13,7 @@ import { log as mainLogger } from "@beabee/core/logging";
 import ContactsService from "@beabee/core/services/ContactsService";
 import PaymentService from "@beabee/core/services/PaymentService";
 
-import Payment from "@beabee/core/models/Payment";
+import { Payment } from "@beabee/core/models";
 
 import config from "@beabee/core/config";
 import { PaymentStatus } from "@beabee/beabee-common";

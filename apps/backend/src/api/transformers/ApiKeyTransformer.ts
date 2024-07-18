@@ -8,7 +8,7 @@ import { SelectQueryBuilder } from "typeorm";
 
 import { GetApiKeyDto } from "@api/dto/ApiKeyDto";
 
-import ApiKey from "@beabee/core/models/ApiKey";
+import { ApiKey } from "@beabee/core/models";
 
 import { BaseTransformer } from "./BaseTransformer";
 import ContactTransformer, { loadContactRoles } from "./ContactTransformer";

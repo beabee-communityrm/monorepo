@@ -12,7 +12,7 @@ import OptionsService from "@beabee/core/services/OptionsService";
 
 import { NewsletterContact } from "@beabee/core/type";
 
-import Contact from "@beabee/core/models/Contact";
+import { Contact } from "@beabee/core/models";
 
 import config from "@beabee/core/config";
 

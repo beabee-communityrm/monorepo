@@ -7,13 +7,13 @@ import {
   PrimaryGeneratedColumn
 } from "typeorm";
 
-import type Contact from "./Contact";
+import { type Contact } from "./index";
 
 /**
  * The **unsecure** contact multi factor authentication information with the `secret` key
  **/
 @Entity()
-export default class ContactMfa {
+export class ContactMfa {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 

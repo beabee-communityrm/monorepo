@@ -15,7 +15,7 @@ import { generatePassword } from "@beabee/core/utils/auth";
 import ContactsService from "@beabee/core/services/ContactsService";
 import ResetSecurityFlowService from "@beabee/core/services/ResetSecurityFlowService";
 
-import ContactRole from "@beabee/core/models/ContactRole";
+import { ContactRole } from "@beabee/core/models";
 
 import config from "@beabee/core/config";
 

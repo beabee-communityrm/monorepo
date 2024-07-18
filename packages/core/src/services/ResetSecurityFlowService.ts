@@ -4,8 +4,7 @@ import { InsertResult, MoreThan } from "typeorm";
 
 import { createQueryBuilder, getRepository } from "#database";
 
-import ResetSecurityFlow from "#models/ResetSecurityFlow";
-import Contact from "#models/Contact";
+import { ResetSecurityFlow, Contact } from "#models/index";
 
 interface InsertResetSecurityFlowResult extends InsertResult {
   raw: { id: string; contactId: string }[] | undefined;

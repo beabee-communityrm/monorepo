@@ -1,4 +1,4 @@
-import Email from "#models/Email";
+import { Email } from "#models/index";
 
 export interface EmailTemplate {
   id: string;

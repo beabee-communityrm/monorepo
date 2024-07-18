@@ -19,12 +19,14 @@ import { calloutResponseFilterHandlers } from "@api/transformers/BaseCalloutResp
 import { BaseTransformer } from "@api/transformers/BaseTransformer";
 import { getFilterHandler, prefixKeys } from "@api/utils";
 
-import Callout from "@beabee/core/models/Callout";
-import CalloutResponse from "@beabee/core/models/CalloutResponse";
-import Contact from "@beabee/core/models/Contact";
-import ContactProfile from "@beabee/core/models/ContactProfile";
-import ContactRole from "@beabee/core/models/ContactRole";
-import ContactContribution from "@beabee/core/models/ContactContribution";
+import {
+  Callout,
+  CalloutResponse,
+  Contact,
+  ContactProfile,
+  ContactRole,
+  ContactContribution
+} from "@beabee/core/models";
 
 import { FilterHandler, FilterHandlers } from "@type/filter-handlers";
 

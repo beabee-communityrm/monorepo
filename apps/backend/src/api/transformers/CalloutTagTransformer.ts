@@ -7,7 +7,7 @@ import { TransformPlainToInstance } from "class-transformer";
 
 import { GetCalloutTagDto } from "@api/dto/CalloutTagDto";
 
-import CalloutTag from "@beabee/core/models/CalloutTag";
+import { CalloutTag } from "@beabee/core/models";
 
 import { BaseTransformer } from "./BaseTransformer";
 

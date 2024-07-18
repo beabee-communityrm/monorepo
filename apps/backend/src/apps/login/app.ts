@@ -9,7 +9,7 @@ import { loginAndRedirect } from "@core/utils/contact";
 
 import ContactsService from "@beabee/core/services/ContactsService";
 
-import ContactRole from "@beabee/core/models/ContactRole";
+import { ContactRole } from "@beabee/core/models";
 
 import config from "@beabee/core/config";
 

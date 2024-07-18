@@ -19,7 +19,7 @@ import {
   GetContentTelegramDto
 } from "@api/dto/index";
 
-import Content from "@beabee/core/models/Content";
+import { Content } from "@beabee/core/models";
 
 import config from "@beabee/core/config";
 

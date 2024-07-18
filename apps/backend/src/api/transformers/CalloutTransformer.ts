@@ -26,10 +26,12 @@ import CalloutVariantTransformer from "@api/transformers/CalloutVariantTransform
 import { groupBy } from "@api/utils";
 import { mergeRules, statusFilterHandler } from "@api/utils/rules";
 
-import Contact from "@beabee/core/models/Contact";
-import Callout from "@beabee/core/models/Callout";
-import CalloutResponse from "@beabee/core/models/CalloutResponse";
-import CalloutVariant from "@beabee/core/models/CalloutVariant";
+import {
+  Contact,
+  Callout,
+  CalloutResponse,
+  CalloutVariant
+} from "@beabee/core/models";
 
 import { AuthInfo } from "@type/auth-info";
 import { FilterHandlers } from "@type/filter-handlers";

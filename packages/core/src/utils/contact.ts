@@ -1,4 +1,4 @@
-import Contact from "#models/Contact";
+import { Contact } from "#models/index";
 
 export function generateContactCode(contact: Partial<Contact>): string | null {
   if (contact.firstname && contact.lastname) {

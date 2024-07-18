@@ -4,8 +4,7 @@ import { MoreThan } from "typeorm";
 
 import { getRepository } from "#database";
 
-import Contact from "#models/Contact";
-import UploadFlow from "#models/UploadFlow";
+import { Contact, UploadFlow } from "#models/index";
 
 class UploadFlowService {
   /**

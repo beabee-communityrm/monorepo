@@ -2,7 +2,7 @@ import axios, { AxiosRequestTransformer } from "axios";
 
 import { log as mainLogger } from "#logging";
 
-import Email from "#models/Email";
+import { Email } from "#models/index";
 
 import { EmailOptions, EmailRecipient, EmailTemplate, PreparedEmail } from ".";
 import BaseProvider from "./BaseProvider";

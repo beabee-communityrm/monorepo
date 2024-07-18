@@ -13,8 +13,7 @@ import GiftService from "@beabee/core/services/GiftService";
 import ContactsService from "@beabee/core/services/ContactsService";
 import PaymentService from "@beabee/core/services/PaymentService";
 
-import Payment from "@beabee/core/models/Payment";
-import ContactContribution from "@beabee/core/models/ContactContribution";
+import { Payment, ContactContribution } from "@beabee/core/models";
 
 import config from "@beabee/core/config";
 

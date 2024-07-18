@@ -27,8 +27,7 @@ import { UUIDParams } from "@api/params/UUIDParams";
 
 import CalloutResponseCommentTransformer from "@api/transformers/CalloutResponseCommentTransformer";
 
-import CalloutResponseComment from "@beabee/core/models/CalloutResponseComment";
-import Contact from "@beabee/core/models/Contact";
+import { CalloutResponseComment, Contact } from "@beabee/core/models";
 
 import { AuthInfo } from "@type/auth-info";
 

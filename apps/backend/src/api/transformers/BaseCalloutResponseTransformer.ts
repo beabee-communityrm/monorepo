@@ -13,8 +13,7 @@ import { BaseGetCalloutResponseOptsDto } from "@api/dto/CalloutResponseDto";
 import { BaseTransformer } from "@api/transformers/BaseTransformer";
 import { mergeRules } from "@api/utils/rules";
 
-import CalloutResponse from "@beabee/core/models/CalloutResponse";
-import CalloutResponseTag from "@beabee/core/models/CalloutResponseTag";
+import { CalloutResponse, CalloutResponseTag } from "@beabee/core/models";
 
 import { AuthInfo } from "@type/auth-info";
 import { FilterHandlers } from "@type/filter-handlers";

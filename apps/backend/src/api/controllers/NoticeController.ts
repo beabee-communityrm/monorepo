@@ -25,7 +25,7 @@ import { PaginatedDto } from "@api/dto/PaginatedDto";
 import { UUIDParams } from "@api/params/UUIDParams";
 import NoticeTransformer from "@api/transformers/NoticeTransformer";
 
-import Notice from "@beabee/core/models/Notice";
+import { Notice } from "@beabee/core/models";
 
 import { AuthInfo } from "@type/auth-info";
 

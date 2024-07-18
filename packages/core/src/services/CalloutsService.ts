@@ -16,13 +16,15 @@ import { getRepository, runTransaction } from "#database";
 import { log as mainLogger } from "#logging";
 import { isDuplicateIndex } from "#utils/db";
 
-import Contact from "#models/Contact";
-import Callout from "#models/Callout";
-import CalloutResponse from "#models/CalloutResponse";
-import CalloutResponseComment from "#models/CalloutResponseComment";
-import CalloutResponseTag from "#models/CalloutResponseTag";
-import CalloutTag from "#models/CalloutTag";
-import CalloutVariant from "#models/CalloutVariant";
+import {
+  Contact,
+  Callout,
+  CalloutResponse,
+  CalloutResponseComment,
+  CalloutResponseTag,
+  CalloutTag,
+  CalloutVariant
+} from "#models/index";
 
 import {
   DuplicateId,

@@ -1,6 +1,6 @@
 import { PaymentForm } from "@beabee/beabee-common";
 
-import Contact from "#models/Contact";
+import { Contact } from "#models/index";
 import { PaymentProvider } from ".";
 
 import {

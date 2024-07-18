@@ -5,14 +5,10 @@ import {
 } from "@beabee/beabee-common";
 import { Column } from "typeorm";
 
-import Password from "./Password";
+import { Password } from "./Password";
+import { ReferralGiftForm } from "#type/index";
 
-export interface ReferralGiftForm {
-  referralGift?: string | null;
-  referralGiftOptions?: Record<string, string> | null;
-}
-
-export default class JoinForm implements PaymentForm, ReferralGiftForm {
+export class JoinForm implements PaymentForm, ReferralGiftForm {
   @Column()
   email!: string;
 

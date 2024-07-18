@@ -14,9 +14,7 @@ import { getActualAmount } from "@beabee/core/utils/payment";
 
 import config from "@beabee/core/config";
 
-import Payment from "@beabee/core/models/Payment";
-import Contact from "@beabee/core/models/Contact";
-import ContactContribution from "@beabee/core/models/ContactContribution";
+import { Payment, Contact, ContactContribution } from "@beabee/core/models";
 
 async function logContact(type: string, conditions: Brackets[]) {
   const qb = createQueryBuilder(Contact, "m")

@@ -18,8 +18,7 @@ import MandrillProvider from "#providers/email/MandrillProvider";
 import SendGridProvider from "#providers/email/SendGridProvider";
 import SMTPProvider from "#providers/email/SMTPProvider";
 
-import Email from "#models/Email";
-import Contact from "#models/Contact";
+import { Email, Contact } from "#models/index";
 
 import config from "#config/config";
 import { isLocale, Locale } from "#locale";

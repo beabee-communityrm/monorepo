@@ -6,22 +6,21 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from "typeorm";
-import CalloutResponse from "./CalloutResponse";
-import Contact from "./Contact";
+import type { CalloutResponse, Contact } from "./index";
 
 @Entity()
-export default class CalloutResponseComment {
+export class CalloutResponseComment {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 
   @Column()
   contactId!: string;
-  @ManyToOne((type) => Contact)
+  @ManyToOne("Contact")
   contact!: Contact;
 
   @Column()
   responseId!: string;
-  @ManyToOne((type) => CalloutResponse)
+  @ManyToOne("CalloutResponse")
   response!: CalloutResponse;
 
   @CreateDateColumn()

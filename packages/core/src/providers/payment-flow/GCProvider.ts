@@ -1,7 +1,7 @@
 import gocardless from "#lib/gocardless";
 import { log as mainLogger } from "#logging";
 
-import JoinFlow from "#models/JoinFlow";
+import { JoinFlow } from "#models/index";
 
 import { PaymentFlowProvider } from ".";
 import {

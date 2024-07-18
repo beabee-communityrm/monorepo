@@ -3,7 +3,7 @@ import defaultOptions from "#data/options/defaults";
 import { log as mainLogger } from "#logging";
 import NetworkCommunicatorService from "#services/NetworkCommunicatorService";
 
-import Option from "#models/Option";
+import { Option } from "#models/index";
 
 export type OptionKey = keyof typeof defaultOptions;
 type OptionValue = string | boolean | number;

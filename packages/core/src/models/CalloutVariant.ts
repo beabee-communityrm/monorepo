@@ -1,9 +1,9 @@
 import { Column, Entity, ManyToOne, PrimaryColumn } from "typeorm";
-import type Callout from "./Callout";
+import type { Callout } from "./index";
 import { CalloutVariantNavigationData } from "@beabee/beabee-common";
 
 @Entity()
-export default class CalloutVariant {
+export class CalloutVariant {
   @PrimaryColumn()
   calloutId!: string;
   @ManyToOne("Callout")

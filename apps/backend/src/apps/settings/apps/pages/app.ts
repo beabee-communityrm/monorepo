@@ -6,7 +6,7 @@ import { wrapAsync } from "@beabee/core/utils/index";
 
 import PageSettingsService from "@beabee/core/services/PageSettingsService";
 
-import PageSettings from "@beabee/core/models/PageSettings";
+import { PageSettings } from "@beabee/core/models";
 
 import { createPageSchema } from "./schema.json";
 

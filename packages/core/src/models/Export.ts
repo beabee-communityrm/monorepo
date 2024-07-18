@@ -5,12 +5,10 @@ import {
   PrimaryGeneratedColumn
 } from "typeorm";
 
-export type ExportTypeId = "active-members" | "edition" | "gifts" | "referrals";
-
-export type ParamValue = number | boolean | string | undefined;
+import { ExportTypeId, ParamValue } from "#type/index";
 
 @Entity()
-export default class Export {
+export class Export {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 

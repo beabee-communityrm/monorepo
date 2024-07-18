@@ -6,7 +6,7 @@ import { getRepository } from "@beabee/core/database";
 import { isSuperAdmin } from "@core/middleware";
 import { wrapAsync } from "@beabee/core/utils/index";
 
-import Payment from "@beabee/core/models/Payment";
+import { Payment } from "@beabee/core/models";
 
 const app = express();
 

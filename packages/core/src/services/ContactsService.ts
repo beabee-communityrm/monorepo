@@ -30,13 +30,15 @@ import ResetSecurityFlowService from "#services/ResetSecurityFlowService";
 import SegmentService from "#services/SegmentService";
 import UploadFlowService from "#services/UploadFlowService";
 
-import Contact from "#models/Contact";
-import ContactProfile from "#models/ContactProfile";
-import ContactRole from "#models/ContactRole";
-import GiftFlow from "#models/GiftFlow";
-import Password from "#models/Password";
-import Project from "#models/Project";
-import ProjectEngagement from "#models/ProjectEngagement";
+import {
+  Contact,
+  ContactProfile,
+  ContactRole,
+  GiftFlow,
+  Password,
+  Project,
+  ProjectEngagement
+} from "#models/index";
 
 import {
   BadRequestError,

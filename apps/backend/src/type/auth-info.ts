@@ -1,6 +1,5 @@
 import { RoleType } from "@beabee/beabee-common";
-import type ApiKey from "@beabee/core/models/ApiKey";
-import Contact from "@beabee/core/models/Contact";
+import type { ApiKey, Contact } from "@beabee/core/models";
 
 export interface AuthInfo {
   method: "user" | "api-key";

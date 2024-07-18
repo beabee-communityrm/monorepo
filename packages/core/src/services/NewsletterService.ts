@@ -11,8 +11,7 @@ import {
 import MailchimpProvider from "#providers/newsletter/MailchimpProvider";
 import NoneProvider from "#providers/newsletter/NoneProvider";
 
-import Contact from "#models/Contact";
-import ContactProfile from "#models/ContactProfile";
+import { Contact, ContactProfile } from "#models/index";
 
 import config from "#config/config";
 

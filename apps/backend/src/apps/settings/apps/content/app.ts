@@ -6,7 +6,7 @@ import { wrapAsync } from "@beabee/core/utils/index";
 
 import OptionsService from "@beabee/core/services/OptionsService";
 
-import Content from "@beabee/core/models/Content";
+import { Content } from "@beabee/core/models";
 
 import type { ContentId } from "@beabee/beabee-common";
 

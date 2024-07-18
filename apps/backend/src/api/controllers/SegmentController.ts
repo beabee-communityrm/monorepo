@@ -29,9 +29,11 @@ import { UUIDParams } from "@api/params/UUIDParams";
 import ContactTransformer from "@api/transformers/ContactTransformer";
 import SegmentTransformer from "@api/transformers/SegmentTransformer";
 
-import Segment from "@beabee/core/models/Segment";
-import SegmentContact from "@beabee/core/models/SegmentContact";
-import SegmentOngoingEmail from "@beabee/core/models/SegmentOngoingEmail";
+import {
+  Segment,
+  SegmentContact,
+  SegmentOngoingEmail
+} from "@beabee/core/models";
 
 import { AuthInfo } from "@type/auth-info";
 

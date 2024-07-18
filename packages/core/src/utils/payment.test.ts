@@ -4,9 +4,7 @@ import { ContributionPeriod, ContributionType } from "@beabee/beabee-common";
 import { add, sub } from "date-fns";
 
 import { calcRenewalDate } from "./payment";
-import Contact from "#models/Contact";
-import ContactRole from "#models/ContactRole";
-import Password from "#models/Password";
+import { Contact, ContactRole, Password } from "#models/index";
 
 import config from "#config/config";
 

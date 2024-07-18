@@ -7,10 +7,10 @@ import {
   PrimaryColumn
 } from "typeorm";
 
-import type Contact from "./Contact";
+import { type Contact } from "./index";
 
 @Entity()
-export default class ApiKey {
+export class ApiKey {
   @PrimaryColumn()
   id!: string;
 

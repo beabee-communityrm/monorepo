@@ -7,34 +7,36 @@ import crypto from "crypto";
 import { EntityTarget, ObjectLiteral } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
 
-import Email from "@beabee/core/models/Email";
-import EmailMailing from "@beabee/core/models/EmailMailing";
-import Export from "@beabee/core/models/Export";
-import ExportItem from "@beabee/core/models/ExportItem";
-import GiftFlow from "@beabee/core/models/GiftFlow";
-import Contact from "@beabee/core/models/Contact";
-import ContactRole from "@beabee/core/models/ContactRole";
-import ContactProfile from "@beabee/core/models/ContactProfile";
-import Notice from "@beabee/core/models/Notice";
-import Option from "@beabee/core/models/Option";
-import PageSettings from "@beabee/core/models/PageSettings";
-import Payment from "@beabee/core/models/Payment";
-import ContactContribution from "@beabee/core/models/ContactContribution";
-import Callout from "@beabee/core/models/Callout";
-import CalloutResponse from "@beabee/core/models/CalloutResponse";
-import CalloutResponseTag from "@beabee/core/models/CalloutResponseTag";
-import CalloutTag from "@beabee/core/models/CalloutTag";
-import Project from "@beabee/core/models/Project";
-import ProjectContact from "@beabee/core/models/ProjectContact";
-import ProjectEngagement from "@beabee/core/models/ProjectEngagement";
-import Referral from "@beabee/core/models/Referral";
-import ReferralGift from "@beabee/core/models/ReferralGift";
-import Segment from "@beabee/core/models/Segment";
-import SegmentContact from "@beabee/core/models/SegmentContact";
-import SegmentOngoingEmail from "@beabee/core/models/SegmentOngoingEmail";
-import CalloutResponseComment from "@beabee/core/models/CalloutResponseComment";
-import ResetSecurityFlow from "@beabee/core/models/ResetSecurityFlow";
-import Password from "@beabee/core/models/Password";
+import {
+  Email,
+  EmailMailing,
+  Export,
+  ExportItem,
+  GiftFlow,
+  Contact,
+  ContactRole,
+  ContactProfile,
+  Notice,
+  Option,
+  PageSettings,
+  Payment,
+  ContactContribution,
+  Callout,
+  CalloutResponse,
+  CalloutResponseTag,
+  CalloutTag,
+  Project,
+  ProjectContact,
+  ProjectEngagement,
+  Referral,
+  ReferralGift,
+  Segment,
+  SegmentContact,
+  SegmentOngoingEmail,
+  CalloutResponseComment,
+  ResetSecurityFlow,
+  Password
+} from "@beabee/core/models";
 
 export type PropertyMap<T> = ((prop: T) => T) | ObjectMap<T>;
 export type ObjectMap<T> = { [K in keyof T]?: PropertyMap<T[K]> };

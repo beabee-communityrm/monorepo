@@ -3,7 +3,7 @@ import { NotFoundError, createParamDecorator } from "routing-controllers";
 
 import { getRepository } from "@beabee/core/database";
 
-import Callout from "@beabee/core/models/Callout";
+import { Callout } from "@beabee/core/models";
 
 /**
  * Allows the use of either a callout ID or slug in the route

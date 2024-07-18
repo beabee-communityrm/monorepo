@@ -5,10 +5,10 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from "typeorm";
-import ItemWithStatus from "./ItemWithStatus";
+import { ItemWithStatus } from "./ItemWithStatus";
 
 @Entity()
-export default class Notice extends ItemWithStatus {
+export class Notice extends ItemWithStatus {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 

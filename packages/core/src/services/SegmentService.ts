@@ -1,8 +1,6 @@
 import { getRepository } from "#database";
 
-import Contact from "#models/Contact";
-import Segment from "#models/Segment";
-import SegmentContact from "#models/SegmentContact";
+import { Contact, Segment, SegmentContact } from "#models/index";
 
 class SegmentService {
   async createSegment(

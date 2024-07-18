@@ -42,7 +42,7 @@ import {
 import sessions from "@core/sessions";
 import { initApp, startServer } from "@core/server";
 
-import Contact from "@beabee/core/models/Contact";
+import { Contact } from "@beabee/core/models";
 
 import config from "@beabee/core/config";
 

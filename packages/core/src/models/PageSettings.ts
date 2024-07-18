@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
-export default class PageSettings {
+export class PageSettings {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 

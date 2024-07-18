@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryColumn } from "typeorm";
 
 @Entity()
-export default class Option {
+export class Option {
   @PrimaryColumn()
   key!: string;
 
