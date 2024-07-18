@@ -198,6 +198,9 @@ async function handlePreview() {
 }
 
 async function reset() {
+  // Clear any existing steps data to force form reset
+  steps.value = undefined;
+
   const callout = props.id
     ? await fetchCallout(props.id, ['form', 'responseViewSchema', 'variants'])
     : undefined;
