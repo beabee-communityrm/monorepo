@@ -16,12 +16,8 @@ import {
 import { getActualAmount } from "#utils/payment";
 import config from "#config/config";
 
-import type {
-  ContactContribution,
-  ContactProfile,
-  ContactRole,
-  Password
-} from "./index";
+import type { ContactContribution, ContactProfile, ContactRole } from "./index";
+import { Password } from "./Password";
 
 interface LoginOverride {
   code: string;
@@ -42,7 +38,7 @@ export class Contact {
   @Column()
   lastname!: string;
 
-  @Column("Password")
+  @Column(() => Password)
   password!: Password;
 
   @CreateDateColumn()

@@ -5,14 +5,14 @@ import {
 } from "@beabee/beabee-common";
 import { Column } from "typeorm";
 
-import type { Password } from "./index";
+import { Password } from "./Password";
 import { ReferralGiftForm } from "#type/index";
 
 export class JoinForm implements PaymentForm, ReferralGiftForm {
   @Column()
   email!: string;
 
-  @Column("Password")
+  @Column(() => Password)
   password!: Password;
 
   @Column({ type: "real" })

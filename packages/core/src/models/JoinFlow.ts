@@ -5,7 +5,7 @@ import {
   PrimaryGeneratedColumn
 } from "typeorm";
 
-import type { JoinForm } from "./index";
+import { JoinForm } from "./JoinForm";
 
 @Entity()
 export class JoinFlow {
@@ -27,6 +27,6 @@ export class JoinFlow {
   @Column()
   confirmUrl!: string;
 
-  @Column("JoinForm")
+  @Column(() => JoinForm)
   joinForm!: JoinForm;
 }
