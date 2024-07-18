@@ -236,11 +236,11 @@
   "advancedSearch": {
     "addRule": "Filter hinzufügen",
     "button": "Filter",
-    "createFiltersAfter": "Regel entsprechen",
+    "createFiltersAfter": "Regeln entsprechen",
     "createFiltersBefore": "Nur Ergebnisse anzeigen, die",
     "createFiltersType": {
       "all": "allen",
-      "any": "einer beliebigen"
+      "any": "einer dieser"
     },
     "createdSegment": "Erstelltes Segment \"{segment}\"",
     "matchWord": {
@@ -432,7 +432,7 @@
       "bucket": "Ordner",
       "callout": "Callout",
       "contact": "Kontakt",
-      "createdAt": "Beantwortet am",
+      "createdAt": "Teilgenommen am",
       "tags": "Tags",
       "updatedAt": "Geändert am"
     },
