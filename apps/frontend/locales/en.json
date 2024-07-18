@@ -236,16 +236,13 @@
   "advancedSearch": {
     "addRule": "Add rule",
     "button": "Filters",
-    "createFilters": "Create filters for your search",
     "createFiltersAfter": "rules",
     "createFiltersBefore": "Only show results matching",
-    "createdSegment": "Created segment \"{segment}\"",
-    "matchAfter": "of the following",
-    "matchBefore": "Match",
-    "matchType": {
-      "AND": "all",
-      "OR": "any"
+    "createFiltersType": {
+      "all": "all",
+      "any": "any"
     },
+    "createdSegment": "Created segment \"{segment}\"",
     "matchWord": {
       "AND": "and",
       "OR": "or"
@@ -584,6 +581,14 @@
     "timeIn": "in {time}",
     "until": "until",
     "yes": "Yes"
+  },
+  "contactAccount": {
+    "confirmDelete": {
+      "text": "This will delete all data associated with {email}. If they have an active contribution this will be cancelled.",
+      "title": "Delete contact",
+      "warning": "This is irreversible. Are you sure you want to proceed?"
+    },
+    "contactDeleted": "Contact deleted."
   },
   "contactContribution": {
     "confirmCancel": {
