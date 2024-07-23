@@ -5,7 +5,6 @@ import { In } from "typeorm";
 import { getRepository } from "@beabee/core/database";
 import { log as mainLogger } from "@beabee/core/logging";
 import { runApp } from "@core/server";
-import { getSegmentContacts } from "@core/utils/segments";
 
 import EmailService from "@beabee/core/services/EmailService";
 import NewsletterService from "@beabee/core/services/NewsletterService";
@@ -16,13 +15,22 @@ import {
   SegmentOngoingEmail,
   SegmentContact
 } from "@beabee/core/models";
+import ContactTransformer from "@api/transformers/ContactTransformer";
+import { GetContactWith } from "@beabee/beabee-common";
 
 const log = mainLogger.child({ app: "process-segments" });
 
 async function processSegment(segment: Segment) {
   log.info("Process segment " + segment.name);
 
-  const matchedContacts = await getSegmentContacts(segment);
+  const { items: matchedContacts } = await ContactTransformer.fetchRaw(
+    { method: "internal", roles: ["admin"] },
+    {
+      limit: -1,
+      rules: segment.ruleGroup,
+      with: [GetContactWith.Profile, GetContactWith.Roles]
+    }
+  );
 
   const segmentContacts = await getRepository(SegmentContact).find({
     where: { segmentId: segment.id }
