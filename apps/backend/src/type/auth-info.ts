@@ -15,7 +15,7 @@ interface AuthInfoApiKey {
 
 interface AuthInfoInternal {
   method: "internal";
-  contact: undefined;
+  contact?: undefined;
   roles: RoleType[];
 }
 

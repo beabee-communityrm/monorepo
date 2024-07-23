@@ -18,8 +18,7 @@ import {
 } from "@beabee/core/errors";
 import { convertRulesToWhereClause } from "@api/utils/rules";
 
-import { AuthInfo } from "@type/auth-info";
-import { FilterHandlers } from "@type/filter-handlers";
+import { AuthInfo, FetchRawResult, FilterHandlers } from "@type/index";
 
 /**
  * Base transformer for querying and converting models to DTOs
@@ -137,6 +136,61 @@ export abstract class BaseTransformer<
   }
 
   /**
+   * Fetch a list of items without converting them to DTOs
+   *
+   * @param auth The contact who is requesting the results
+   * @param query
+   * @returns A list of items that match the query
+   */
+  async fetchRaw(
+    auth: AuthInfo | undefined,
+    query_: Query
+  ): Promise<FetchRawResult<Model, Query>> {
+    const [query, filters, filterHandlers] = await this.preFetch(query_, auth);
+
+    const limit = query.limit || 50;
+    const offset = query.offset || 0;
+
+    let ruleGroup;
+    try {
+      ruleGroup = query.rules && validateRuleGroup(filters, query.rules);
+    } catch (err) {
+      throw err instanceof InvalidRule
+        ? new InvalidRuleError(err.rule, err.message)
+        : err;
+    }
+
+    const qb = createQueryBuilder(this.model, "item").offset(offset);
+
+    if (limit !== -1) {
+      qb.limit(limit);
+    }
+
+    if (ruleGroup) {
+      qb.where(
+        ...convertRulesToWhereClause(
+          ruleGroup,
+          auth?.contact,
+          filterHandlers,
+          "item."
+        )
+      );
+    }
+
+    if (query.sort) {
+      qb.orderBy(`item."${query.sort}"`, query.order || "ASC", "NULLS LAST");
+    }
+
+    this.modifyQueryBuilder(qb, "item.", query, auth);
+
+    const [items, total] = await qb.getManyAndCount();
+
+    await this.modifyItems(items, query, auth);
+
+    return { items, total, offset, query };
+  }
+
+  /**
    * Fetch a list of items
    *
    * @param auth The contact who is requesting the results
@@ -147,52 +201,14 @@ export abstract class BaseTransformer<
     auth: AuthInfo | undefined,
     query_: Query
   ): Promise<PaginatedDto<GetDto>> {
-    const [query, filters, filterHandlers] = await this.preFetch(query_, auth);
+    const { items, total, query, offset } = await this.fetchRaw(auth, query_);
 
-    const limit = query.limit || 50;
-    const offset = query.offset || 0;
-
-    try {
-      const ruleGroup = query.rules && validateRuleGroup(filters, query.rules);
-
-      const qb = createQueryBuilder(this.model, "item").offset(offset);
-
-      if (limit !== -1) {
-        qb.limit(limit);
-      }
-
-      if (ruleGroup) {
-        qb.where(
-          ...convertRulesToWhereClause(
-            ruleGroup,
-            auth?.entity instanceof Contact ? auth.entity : undefined,
-            filterHandlers,
-            "item."
-          )
-        );
-      }
-
-      if (query.sort) {
-        qb.orderBy(`item."${query.sort}"`, query.order || "ASC", "NULLS LAST");
-      }
-
-      this.modifyQueryBuilder(qb, "item.", query, auth);
-
-      const [items, total] = await qb.getManyAndCount();
-
-      await this.modifyItems(items, query, auth);
-
-      return plainToInstance(PaginatedDto<GetDto>, {
-        total,
-        offset,
-        count: items.length,
-        items: items.map((item) => this.convert(item, query, auth))
-      });
-    } catch (err) {
-      throw err instanceof InvalidRule
-        ? new InvalidRuleError(err.rule, err.message)
-        : err;
-    }
+    return plainToInstance(PaginatedDto<GetDto>, {
+      total,
+      offset,
+      count: items.length,
+      items: items.map((item) => this.convert(item, query, auth))
+    });
   }
 
   /**
