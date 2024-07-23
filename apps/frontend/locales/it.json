@@ -71,7 +71,7 @@
     }
   },
   "advancedSearch": {
-    "matchType": {},
+    "createFiltersType": {},
     "matchWord": {},
     "operators": {
       "all": {},
@@ -197,6 +197,9 @@
     "until": "fino",
     "yes": "Sì"
   },
+  "contactAccount": {
+    "confirmDelete": {}
+  },
   "contactContribution": {
     "confirmCancel": {
       "confirm": "Sì, sono sicuro",
@@ -212,8 +215,12 @@
     }
   },
   "contacts": {
+    "advancedSearch": {},
     "data": {},
-    "dataGroup": {}
+    "dataGroup": {
+      "callout": "Callout",
+      "contact": "Informazioni di contatto"
+    }
   },
   "contribution": {
     "cancelContribution": "Cancella il tuo contributo",

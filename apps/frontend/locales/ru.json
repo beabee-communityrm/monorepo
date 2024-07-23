@@ -153,7 +153,7 @@
     }
   },
   "advancedSearch": {
-    "matchType": {},
+    "createFiltersType": {},
     "matchWord": {},
     "operators": {
       "all": {},
@@ -340,6 +340,9 @@
     "until": "до",
     "yes": "Да"
   },
+  "contactAccount": {
+    "confirmDelete": {}
+  },
   "contactContribution": {
     "confirmCancel": {},
     "updateNotice": {}
@@ -386,7 +389,10 @@
       "preferredChannel": "Предпочтительный канал",
       "tags": "Теги"
     },
-    "dataGroup": {}
+    "dataGroup": {
+      "callout": "Chamada",
+      "contact": "Informação de contacto"
+    }
   },
   "contribution": {
     "adminCancelDescription": "Если вы отмените взнос этого контакта, он будет считаться членом клуба до завершения подписки {date}.",

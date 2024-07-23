@@ -53,7 +53,7 @@
     }
   },
   "advancedSearch": {
-    "matchType": {},
+    "createFiltersType": {},
     "matchWord": {},
     "operators": {
       "all": {},
@@ -156,6 +156,9 @@
     "thankYou": "Vielen Dank.",
     "timeAgo": "vor",
     "timeIn": "in"
+  },
+  "contactAccount": {
+    "confirmDelete": {}
   },
   "contactContribution": {
     "confirmCancel": {},
