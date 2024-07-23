@@ -41,11 +41,8 @@ export function TargetUser() {
         } else {
           throw new NotFoundError();
         }
-      } else if (
-        auth.entity instanceof Contact &&
-        (id === "me" || id === auth.entity.id)
-      ) {
-        return auth.entity;
+      } else if (auth.contact && (id === "me" || id === auth.contact.id)) {
+        return auth.contact;
       } else {
         throw new UnauthorizedError();
       }

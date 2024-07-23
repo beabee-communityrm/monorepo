@@ -18,8 +18,6 @@ import {
 } from "@beabee/core/errors";
 import { convertRulesToWhereClause } from "@api/utils/rules";
 
-import { Contact } from "@beabee/core/models";
-
 import { AuthInfo } from "@type/auth-info";
 import { FilterHandlers } from "@type/filter-handlers";
 

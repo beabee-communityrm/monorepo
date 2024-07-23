@@ -26,12 +26,7 @@ import CalloutVariantTransformer from "@api/transformers/CalloutVariantTransform
 import { groupBy } from "@api/utils";
 import { mergeRules, statusFilterHandler } from "@api/utils/rules";
 
-import {
-  Contact,
-  Callout,
-  CalloutResponse,
-  CalloutVariant
-} from "@beabee/core/models";
+import { Callout, CalloutResponse, CalloutVariant } from "@beabee/core/models";
 
 import { AuthInfo } from "@type/auth-info";
 import { FilterHandlers } from "@type/filter-handlers";
@@ -68,9 +63,11 @@ class CalloutTransformer extends BaseTransformer<
             throw new BadRequestError("answeredBy only supports equal");
           }
 
+          // Non-admins can only query for their own responses
           if (
-            !auth?.roles.includes("admin") &&
-            args.value[0] !== auth?.entity.id
+            auth?.contact &&
+            !auth.roles.includes("admin") &&
+            args.value[0] !== auth.contact.id
           ) {
             throw new UnauthorizedError();
           }
@@ -264,16 +261,13 @@ class CalloutTransformer extends BaseTransformer<
         }
       }
 
-      if (
-        auth?.entity instanceof Contact &&
-        query.with?.includes(GetCalloutWith.HasAnswered)
-      ) {
+      if (auth?.contact && query.with?.includes(GetCalloutWith.HasAnswered)) {
         const answeredCallouts = await createQueryBuilder(CalloutResponse, "cr")
           .select("cr.calloutId", "id")
           .distinctOn(["cr.calloutId"])
           .where("cr.calloutId IN (:...ids) AND cr.contactId = :id", {
             ids: calloutIds,
-            id: auth.entity.id
+            id: auth.contact.id
           })
           .orderBy("cr.calloutId")
           .getRawMany<{ id: string }>();

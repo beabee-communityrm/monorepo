@@ -8,7 +8,7 @@ export function isValidNextUrl(url: string): boolean {
 export function userToAuth(user: Express.User): AuthInfo {
   return {
     method: "user",
-    entity: user,
+    contact: user,
     roles: user.activeRoles
   };
 }
