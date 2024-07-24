@@ -168,7 +168,7 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
       filters,
       query2.rules,
       responseUpdates,
-      auth?.entity instanceof Contact ? auth.entity : undefined,
+      auth?.contact,
       filterHandlers,
       (qb) => qb.returning(["id"])
     );

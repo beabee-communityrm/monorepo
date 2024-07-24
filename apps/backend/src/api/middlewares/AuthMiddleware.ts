@@ -40,7 +40,7 @@ async function getAuth(request: Request): Promise<AuthInfo | undefined> {
         if (contact) {
           return {
             method: "api-key",
-            entity: contact,
+            contact,
             // API can never acquire superadmin role
             roles: contact.activeRoles.filter((r) => r !== "superadmin")
           };
@@ -48,7 +48,6 @@ async function getAuth(request: Request): Promise<AuthInfo | undefined> {
       } else {
         return {
           method: "api-key",
-          entity: apiKey,
           roles: apiKey.activeRoles
         };
       }
@@ -56,7 +55,7 @@ async function getAuth(request: Request): Promise<AuthInfo | undefined> {
   } else if (request.user) {
     return {
       method: "user",
-      entity: request.user,
+      contact: request.user,
       roles: request.user.activeRoles
     };
   }

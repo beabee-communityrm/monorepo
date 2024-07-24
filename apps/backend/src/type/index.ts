@@ -1,6 +1,7 @@
 export * from "./auth-info.js";
 export * from "./callout-map-schema.js";
 export * from "./callout-response-view-schema.js";
+export * from "./fetch-raw-result.js";
 export * from "./filter-handlers.js";
 export * from "./passport-local-done-callback.js";
 export * from "./passport-local-strategy-options.js";

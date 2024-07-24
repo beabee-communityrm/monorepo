@@ -47,9 +47,7 @@ import { Contact } from "@beabee/core/models";
 import config from "@beabee/core/config";
 
 function currentUserChecker(action: { request: Request }): Contact | undefined {
-  return action.request.auth?.entity instanceof Contact
-    ? action.request.auth.entity
-    : undefined;
+  return action.request.auth?.contact;
 }
 
 function authorizationChecker(
