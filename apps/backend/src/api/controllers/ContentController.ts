@@ -23,8 +23,10 @@ import {
 } from "@api/dto";
 import { ContentParams } from "@api/params/ContentParams";
 import ContentTransformer from "@api/transformers/ContentTransformer";
-import { stripeTaxRateUpdateOrCreateDefault } from "@beabee/core/lib/stripe";
-import OptionsService from "@beabee/core/services/OptionsService";
+import {
+  disableSalesTaxRate,
+  updateSalesTaxRate
+} from "@beabee/core/lib/stripe";
 
 @JsonController("/content")
 export class ContentController {
@@ -99,22 +101,18 @@ export class ContentController {
   @Authorized("admin")
   @Patch("/payment")
   async updatePayment(
-    @PartialBody() data: GetContentPaymentDto
+    @PartialBody() data: GetContentPaymentDto // Should be Partial<GetContentPaymentDto>
   ): Promise<GetContentPaymentDto> {
-    if (data.taxRateEnabled && data.taxRate === undefined) {
-      throw new BadRequestError(
-        "taxRate must be provided when taxRateEnabled is true"
-      );
+    if (data.taxRateEnabled === false) {
+      await disableSalesTaxRate();
+    } else if (data.taxRateEnabled === true) {
+      if (data.taxRate === undefined) {
+        throw new BadRequestError(
+          "taxRate must be provided when taxRateEnabled is true"
+        );
+      }
+      await updateSalesTaxRate(data.taxRate);
     }
-
-    const taxRateObj = await stripeTaxRateUpdateOrCreateDefault(
-      {
-        active: data.taxRateEnabled,
-        percentage: data.taxRate
-      },
-      OptionsService.getText("tax-rate-stripe-default-id")
-    );
-    await OptionsService.set("tax-rate-stripe-default-id", taxRateObj.id);
 
     await ContentTransformer.updateOne("payment", data);
     return ContentTransformer.fetchOne("payment");
