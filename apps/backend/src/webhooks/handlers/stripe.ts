@@ -157,11 +157,16 @@ async function handleCustomerSubscriptionDeleted(
  */
 async function handleInvoiceCreated(invoice: Stripe.Invoice) {
   const payment = await handleInvoiceUpdated(invoice);
-  const taxRateId = OptionsService.getText("tax-rate-stripe-id");
-  if (payment && taxRateId) {
-    await stripe.invoices.update(invoice.id, {
-      default_tax_rates: [taxRateId]
-    });
+
+  // The first invoice for a subscription is immediately finalised, we can only
+  // update the tax rate on draft invoices
+  if (invoice.status === "draft") {
+    const taxRateId = OptionsService.getText("tax-rate-stripe-id");
+    if (payment && taxRateId) {
+      await stripe.invoices.update(invoice.id, {
+        default_tax_rates: ["", taxRateId]
+      });
+    }
   }
 }
 

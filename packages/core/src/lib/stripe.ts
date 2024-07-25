@@ -147,6 +147,8 @@ export async function createSubscription(
     renewalDate
   });
 
+  const taxRateId = OptionsService.getText("tax-rate-stripe-id");
+
   return await stripe.subscriptions.create({
     customer: customerId,
     items: [{ price_data: getPriceData(paymentForm, paymentMethod) }],
@@ -155,12 +157,13 @@ export async function createSubscription(
       renewalDate > new Date() && {
         billing_cycle_anchor: Math.floor(+renewalDate / 1000),
         proration_behavior: "none"
-      })
+      }),
+    default_tax_rates: taxRateId ? [taxRateId] : []
   });
 }
 
 /**
- * Update a subscription with a new payment method.
+ * Update a subscription with a new payment method or amount.
  *
  * @param subscriptionId
  * @param paymentForm
