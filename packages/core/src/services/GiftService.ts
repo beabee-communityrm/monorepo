@@ -56,14 +56,6 @@ export default class GiftService {
       ]
     };
 
-    if (OptionsService.getBool("tax-rate-enabled")) {
-      params.subscription_data = {
-        default_tax_rates: [
-          OptionsService.getText("tax-rate-stripe-default-id")
-        ]
-      };
-    }
-
     const session = await stripe.checkout.sessions.create(params);
 
     await getRepository(GiftFlow).update(giftFlow.id, {

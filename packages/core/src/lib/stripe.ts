@@ -31,7 +31,7 @@ export const stripe = new Stripe(config.stripe.secretKey, {
 export async function updateSalesTaxRate(percentage: number): Promise<void> {
   log.info(`Updating sales tax rate to ${percentage}%`);
 
-  const id = OptionsService.getText("tax-rate-stripe-default-id");
+  const id = OptionsService.getText("tax-rate-stripe-id");
   if (id) {
     const taxRate = await stripe.taxRates.retrieve(id);
     // Tax rate is already set to the right percentage
@@ -49,16 +49,16 @@ export async function updateSalesTaxRate(percentage: number): Promise<void> {
     display_name: currentLocale().taxRate.invoiceName
   });
 
-  await OptionsService.set("tax-rate-stripe-default-id", taxRate.id);
+  await OptionsService.set("tax-rate-stripe-id", taxRate.id);
 }
 
 export async function disableSalesTaxRate(): Promise<void> {
   log.info("Disabling sales tax rate");
 
-  const id = OptionsService.getText("tax-rate-stripe-default-id");
+  const id = OptionsService.getText("tax-rate-stripe-id");
   if (id) {
     await stripe.taxRates.update(id, { active: false });
-    await OptionsService.set("tax-rate-stripe-default-id", "");
+    await OptionsService.set("tax-rate-stripe-id", "");
   }
 }
 
