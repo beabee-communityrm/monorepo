@@ -11,6 +11,7 @@ import { wrapAsync } from "@beabee/core/utils/index";
 
 import GiftService from "@beabee/core/services/GiftService";
 import ContactsService from "@beabee/core/services/ContactsService";
+import OptionsService from "@beabee/core/services/OptionsService";
 import PaymentService from "@beabee/core/services/PaymentService";
 
 import { Payment, ContactContribution } from "@beabee/core/models";
@@ -57,6 +58,9 @@ app.post(
           break;
 
         case "invoice.created":
+          await handleInvoiceCreated(evt.data.object);
+          break;
+
         case "invoice.updated":
           await handleInvoiceUpdated(evt.data.object);
           break;
@@ -144,6 +148,20 @@ async function handleCustomerSubscriptionDeleted(
       contribution.contact,
       "cancelled-contribution"
     );
+  }
+}
+
+/**
+ * Set the current tax rate on a newly created invoice
+ * @param invoice The new invoice
+ */
+async function handleInvoiceCreated(invoice: Stripe.Invoice) {
+  const payment = await handleInvoiceUpdated(invoice);
+  const taxRateId = OptionsService.getText("tax-rate-stripe-default-id");
+  if (payment && taxRateId) {
+    await stripe.invoices.update(invoice.id, {
+      default_tax_rates: [taxRateId]
+    });
   }
 }
 

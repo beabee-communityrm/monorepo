@@ -147,7 +147,7 @@ export async function createSubscription(
     renewalDate
   });
 
-  const params: Stripe.SubscriptionCreateParams = {
+  return await stripe.subscriptions.create({
     customer: customerId,
     items: [{ price_data: getPriceData(paymentForm, paymentMethod) }],
     off_session: true,
@@ -156,19 +156,12 @@ export async function createSubscription(
         billing_cycle_anchor: Math.floor(+renewalDate / 1000),
         proration_behavior: "none"
       })
-  };
-
-  if (OptionsService.getBool("tax-rate-enabled")) {
-    params.default_tax_rates = [
-      OptionsService.getText("tax-rate-stripe-default-id")
-    ];
-  }
-
-  return await stripe.subscriptions.create(params);
+  });
 }
 
 /**
  * Update a subscription with a new payment method.
+ *
  * @param subscriptionId
  * @param paymentForm
  * @param paymentMethod
