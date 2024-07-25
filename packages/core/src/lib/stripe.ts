@@ -84,6 +84,13 @@ function getPriceData(
   };
 }
 
+/**
+ * Calculate the proration amount and time for a subscription item.
+ *
+ * @param subscription The subscription to prorate
+ * @param subscriptionItem The subscription item to prorate ti
+ * @returns The amount to prorate and the time to prorate at
+ */
 async function calculateProrationParams(
   subscription: Stripe.Subscription,
   subscriptionItem: Stripe.InvoiceRetrieveUpcomingParams.SubscriptionItem
@@ -120,6 +127,15 @@ async function calculateProrationParams(
   };
 }
 
+/**
+ * Create a new subscription in Stripe, optionally starting at a specific date.
+ *
+ * @param customerId The Stripe customer ID
+ * @param paymentForm The payment form data
+ * @param paymentMethod The payment method to use
+ * @param renewalDate The date the subscription should start
+ * @returns The new Stripe subscription
+ */
 export async function createSubscription(
   customerId: string,
   paymentForm: PaymentForm,
@@ -241,6 +257,11 @@ export async function updateSubscription(
   return { subscription, startNow };
 }
 
+/**
+ * Delete a subscription in Stripe, ignoring missing subscription errors.
+ *
+ * @param subscriptionId The subscription ID
+ */
 export async function deleteSubscription(
   subscriptionId: string
 ): Promise<void> {
@@ -257,6 +278,12 @@ export async function deleteSubscription(
   }
 }
 
+/**
+ * Convert a payment method to a Stripe payment type.
+ *
+ * @param method The payment method
+ * @returns The Stripe payment type
+ */
 export function paymentMethodToStripeType(
   method: PaymentMethod
 ): Stripe.PaymentMethod.Type {
@@ -276,6 +303,13 @@ export function paymentMethodToStripeType(
   }
 }
 
+/**
+ * Convert a Stripe payment type to a payment method, mirrors
+ * paymentMethodToStripeType.
+ *
+ * @param type The Stripe payment type
+ * @returns The payment method
+ */
 export function stripeTypeToPaymentMethod(
   type: Stripe.PaymentMethod.Type
 ): PaymentMethod {
@@ -293,6 +327,12 @@ export function stripeTypeToPaymentMethod(
   }
 }
 
+/**
+ * Retrieve the payment source for a given Stripe mandate
+ *
+ * @param mandateId
+ * @returns The payment source
+ */
 export async function manadateToSource(
   mandateId: string
 ): Promise<PaymentSource | undefined> {
@@ -335,6 +375,12 @@ export async function manadateToSource(
   }
 }
 
+/**
+ * Convert a Stripe invoice status to a payment status.
+ *
+ * @param status The Stripe invoice status
+ * @returns The payment status
+ */
 export function convertStatus(status: Stripe.Invoice.Status): PaymentStatus {
   switch (status) {
     case "draft":
@@ -353,3 +399,5 @@ export function convertStatus(status: Stripe.Invoice.Status): PaymentStatus {
       return PaymentStatus.Failed;
   }
 }
+
+export { Stripe };
