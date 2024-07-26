@@ -22,6 +22,11 @@ export const stripe = new Stripe(config.stripe.secretKey, {
   typescript: true
 });
 
+export function getSalesTaxRateObject(): string[] {
+  const taxRateId = OptionsService.getText("tax-rate-stripe-id");
+  return taxRateId ? [taxRateId] : [];
+}
+
 /**
  * Update the subscription sales tax rate.
  *
@@ -147,8 +152,6 @@ export async function createSubscription(
     renewalDate
   });
 
-  const taxRateId = OptionsService.getText("tax-rate-stripe-id");
-
   return await stripe.subscriptions.create({
     customer: customerId,
     items: [{ price_data: getPriceData(paymentForm, paymentMethod) }],
@@ -158,7 +161,7 @@ export async function createSubscription(
         billing_cycle_anchor: Math.floor(+renewalDate / 1000),
         proration_behavior: "none"
       }),
-    default_tax_rates: taxRateId ? [taxRateId] : []
+    default_tax_rates: getSalesTaxRateObject()
   });
 }
 

@@ -6,12 +6,15 @@ import Stripe from "stripe";
 
 import { getRepository } from "@beabee/core/database";
 import { log as mainLogger } from "@beabee/core/logging";
-import { stripe, convertStatus } from "@beabee/core/lib/stripe";
+import {
+  stripe,
+  convertStatus,
+  getSalesTaxRateObject
+} from "@beabee/core/lib/stripe";
 import { wrapAsync } from "@beabee/core/utils/index";
 
 import GiftService from "@beabee/core/services/GiftService";
 import ContactsService from "@beabee/core/services/ContactsService";
-import OptionsService from "@beabee/core/services/OptionsService";
 import PaymentService from "@beabee/core/services/PaymentService";
 
 import { Payment, ContactContribution } from "@beabee/core/models";
@@ -152,19 +155,38 @@ async function handleCustomerSubscriptionDeleted(
 }
 
 /**
- * Set the current tax rate on a newly created invoice
+ * Ensure the invoice has the correct tax rate applied
  * @param invoice The new invoice
  */
 async function handleInvoiceCreated(invoice: Stripe.Invoice) {
   const payment = await handleInvoiceUpdated(invoice);
+  // Only update the tax rate on invoices that we know about
+  if (!payment) return;
 
-  // The first invoice for a subscription is immediately finalised, we can only
-  // update the tax rate on draft invoices
-  if (invoice.status === "draft") {
-    const taxRateId = OptionsService.getText("tax-rate-stripe-id");
-    if (payment && taxRateId) {
-      await stripe.invoices.update(invoice.id, {
-        default_tax_rates: ["", taxRateId]
+  // Can't update non-draft invoices. This should never be a problem as only a
+  // subscription's initial invoice is created in a finalised state
+  // https://docs.stripe.com/billing/invoices/subscription#update-first-invoice
+  if (invoice.status !== "draft") return;
+
+  const taxRateObj = getSalesTaxRateObject();
+  const invoiceTaxRateObj = invoice.default_tax_rates.map((rate) => rate.id);
+  // If they don't match, update the invoice and subscription (for next time)
+  if (
+    invoiceTaxRateObj.length !== taxRateObj.length ||
+    invoiceTaxRateObj.every((rate) => !taxRateObj.includes(rate))
+  ) {
+    const updateTaxRateObj = taxRateObj.length > 0 ? taxRateObj : "";
+    log.info("Updating tax rate on invoice " + invoice.id, {
+      oldTaxRate: invoiceTaxRateObj,
+      newTaxRate: updateTaxRateObj
+    });
+    await stripe.invoices.update(invoice.id, {
+      default_tax_rates: updateTaxRateObj
+    });
+    if (invoice.subscription) {
+      log.info("Updating tax rate on subscription " + invoice.subscription);
+      await stripe.subscriptions.update(invoice.subscription as string, {
+        default_tax_rates: updateTaxRateObj
       });
     }
   }
