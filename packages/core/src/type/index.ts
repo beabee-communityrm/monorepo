@@ -20,6 +20,5 @@ export * from "./payment-flow-data";
 export * from "./payment-flow-params";
 export * from "./payment-flow";
 export * from "./referral-gift-form";
-export * from "./stripe-tax-rate-create-params";
 export * from "./update-contribution-result";
 export * from "./update-newsletter-contact";

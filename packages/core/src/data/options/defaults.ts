@@ -14,7 +14,7 @@ export default {
   "contribution-min-monthly-amount": "1",
   "tax-rate-enabled": "false",
   "tax-rate-percentage": "7",
-  "tax-rate-stripe-default-id": "",
+  "tax-rate-stripe-id": "",
   "show-absorb-fee": "true",
   "show-mail-opt-in": "",
   "available-tags": "",

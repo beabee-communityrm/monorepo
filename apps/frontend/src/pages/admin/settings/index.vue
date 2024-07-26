@@ -87,40 +87,38 @@ meta:
     <template #col2>
       <div class="my-8 border-b border-b-primary-40 md:hidden" />
 
-      <!-- Remove this hidden div to make the payment tax form visible -->
-      <div class="hidden">
-        <AppForm
-          :button-text="t('actions.update')"
-          :success-text="t('form.saved')"
-          @submit="handleSavePayment"
+      <AppForm
+        :button-text="t('actions.update')"
+        :success-text="t('form.saved')"
+        @submit="handleSavePayment"
+      >
+        <AppSubHeading>
+          {{ t('adminSettings.payment.paymentTitle') }}</AppSubHeading
         >
-          <AppSubHeading>
-            {{ t('adminSettings.payment.paymentTitle') }}</AppSubHeading
-          >
-          <div class="mb-4">
-            <AppCheckbox
-              v-model="paymentData.taxRateEnabled"
-              :label="t('adminSettings.payment.taxRateEnabled')"
-              class="font-bold"
-            />
-          </div>
-          <div
-            v-if="paymentData.taxRateEnabled"
-            class="mb-4 max-w-[8rem] whitespace-nowrap"
-          >
-            <AppInput
-              v-model="paymentData.taxRate"
-              type="number"
-              :label="t('adminSettings.payment.taxRate')"
-              :min="0"
-              :max="100"
-              suffix="%"
-              required
-            />
-          </div>
-        </AppForm>
-        <div class="my-8 border-b border-b-primary-40" />
-      </div>
+        <div class="mb-4">
+          <AppCheckbox
+            v-model="paymentData.taxRateEnabled"
+            :label="t('adminSettings.payment.taxRateEnabled')"
+            class="font-bold"
+          />
+        </div>
+        <div
+          v-if="paymentData.taxRateEnabled"
+          class="mb-4 max-w-[8rem] whitespace-nowrap"
+        >
+          <AppInput
+            v-model="paymentData.taxRate"
+            type="number"
+            :label="t('adminSettings.payment.taxRate')"
+            :min="0"
+            :max="100"
+            suffix="%"
+            required
+          />
+        </div>
+      </AppForm>
+
+      <div class="my-8 border-b border-b-primary-40" />
 
       <AppForm
         :button-text="t('actions.update')"

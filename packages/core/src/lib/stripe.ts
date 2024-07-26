@@ -15,8 +15,6 @@ import { getChargeableAmount } from "#utils/payment";
 
 import OptionsService from "#services/OptionsService";
 
-import type { StripeTaxRateCreateParams } from "#type/index";
-
 const log = mainLogger.child({ app: "stripe-utils" });
 
 export const stripe = new Stripe(config.stripe.secretKey, {
@@ -24,91 +22,58 @@ export const stripe = new Stripe(config.stripe.secretKey, {
   typescript: true
 });
 
-/**
- * Disable a tax rate.
- *
- * @param id The id of the tax rate
- * @param options The options for the request
- * @returns The response from Stripe
- */
-export const stripeTaxRateDisable = async (
-  id: string,
-  options?: Stripe.RequestOptions
-): Promise<Stripe.Response<Stripe.TaxRate>> => {
-  console.debug("Disabling tax rate", id);
-  return stripe.taxRates.update(id, { active: false }, options);
-};
+export function getSalesTaxRateObject(): string[] {
+  const taxRateId = OptionsService.getText("tax-rate-stripe-id");
+  return taxRateId ? [taxRateId] : [];
+}
 
 /**
- * Create a default tax rate.
+ * Update the subscription sales tax rate.
  *
- * @param data The data to create the tax rate with
- * @param options The options for the request
- * @returns The response from Stripe
- */
-export const stripeTaxRateCreateDefault = async (
-  data: StripeTaxRateCreateParams,
-  options?: Stripe.RequestOptions
-): Promise<Stripe.Response<Stripe.TaxRate>> => {
-  data.active = data.active !== false;
-  data.metadata ||= {};
-
-  return stripe.taxRates.create(
-    {
-      inclusive: true,
-      ...data,
-      metadata: {
-        "created-by": "beabee",
-        ...data.metadata
-      },
-      display_name: data.display_name || currentLocale().taxRate.invoiceName
-    },
-    options
-  );
-};
-
-/**
- * Update or create a tax rate.
- *
- * @param data The data to create the tax rate with
- * @param id The id of the tax rate to update or disable
- * @param options The options for the request
+ * @param percentage The new sales tax rate percentage
  * @returns
  */
-export const stripeTaxRateUpdateOrCreateDefault = async (
-  data: StripeTaxRateCreateParams,
-  id?: string,
-  options?: Stripe.RequestOptions
-): Promise<Stripe.Response<Stripe.TaxRate>> => {
-  // If the id and percentage is set, we need to check if the percentage is the same
+export async function updateSalesTaxRate(percentage: number): Promise<void> {
+  log.info(`Updating sales tax rate to ${percentage}%`);
+
+  const id = OptionsService.getText("tax-rate-stripe-id");
   if (id) {
-    // If the percentage is not set, we can just update the tax rate
-    if (data.percentage === undefined) {
-      return stripe.taxRates.update(id, data, options);
-    }
-
-    let oldTaxRate = await stripe.taxRates.retrieve(id);
-
-    // If the percentage is set, but the same, we can also just update the tax rate
-    if (oldTaxRate.percentage === data.percentage) {
-      const updateData: Stripe.TaxRateUpdateParams &
-        Partial<StripeTaxRateCreateParams> = {
-        ...data
-      };
-      delete updateData.percentage;
-      return stripe.taxRates.update(id, updateData, options);
-    }
-    // If the percentage is different, we need to disable the old tax rate and create a new one
-    else {
-      await stripeTaxRateDisable(id, options);
+    const taxRate = await stripe.taxRates.retrieve(id);
+    // Tax rate is already set to the right percentage
+    if (taxRate.percentage === percentage) {
+      return;
     }
   }
 
-  return stripeTaxRateCreateDefault(data, options);
-};
+  await disableSalesTaxRate();
 
-export { Stripe };
+  const taxRate = await stripe.taxRates.create({
+    percentage: percentage,
+    active: true,
+    inclusive: true,
+    display_name: currentLocale().taxRate.invoiceName
+  });
 
+  await OptionsService.set("tax-rate-stripe-id", taxRate.id);
+}
+
+export async function disableSalesTaxRate(): Promise<void> {
+  log.info("Disabling sales tax rate");
+
+  const id = OptionsService.getText("tax-rate-stripe-id");
+  if (id) {
+    await stripe.taxRates.update(id, { active: false });
+    await OptionsService.set("tax-rate-stripe-id", "");
+  }
+}
+
+/**
+ * Convert a payment form and method into a Stripe price data object.
+ *
+ * @param paymentForm The payment form
+ * @param paymentMethod The payment method
+ * @returns A Stripe price data object
+ */
 function getPriceData(
   paymentForm: PaymentForm,
   paymentMethod: PaymentMethod
@@ -124,6 +89,13 @@ function getPriceData(
   };
 }
 
+/**
+ * Calculate the proration amount and time for a subscription item.
+ *
+ * @param subscription The subscription to prorate
+ * @param subscriptionItem The subscription item to prorate ti
+ * @returns The amount to prorate and the time to prorate at
+ */
 async function calculateProrationParams(
   subscription: Stripe.Subscription,
   subscriptionItem: Stripe.InvoiceRetrieveUpcomingParams.SubscriptionItem
@@ -160,6 +132,15 @@ async function calculateProrationParams(
   };
 }
 
+/**
+ * Create a new subscription in Stripe, optionally starting at a specific date.
+ *
+ * @param customerId The Stripe customer ID
+ * @param paymentForm The payment form data
+ * @param paymentMethod The payment method to use
+ * @param renewalDate The date the subscription should start
+ * @returns The new Stripe subscription
+ */
 export async function createSubscription(
   customerId: string,
   paymentForm: PaymentForm,
@@ -171,7 +152,7 @@ export async function createSubscription(
     renewalDate
   });
 
-  const params: Stripe.SubscriptionCreateParams = {
+  return await stripe.subscriptions.create({
     customer: customerId,
     items: [{ price_data: getPriceData(paymentForm, paymentMethod) }],
     off_session: true,
@@ -179,20 +160,14 @@ export async function createSubscription(
       renewalDate > new Date() && {
         billing_cycle_anchor: Math.floor(+renewalDate / 1000),
         proration_behavior: "none"
-      })
-  };
-
-  if (OptionsService.getBool("tax-rate-enabled")) {
-    params.default_tax_rates = [
-      OptionsService.getText("tax-rate-stripe-default-id")
-    ];
-  }
-
-  return await stripe.subscriptions.create(params);
+      }),
+    default_tax_rates: getSalesTaxRateObject()
+  });
 }
 
 /**
- * Update a subscription with a new payment method.
+ * Update a subscription with a new payment method or amount.
+ *
  * @param subscriptionId
  * @param paymentForm
  * @param paymentMethod
@@ -281,6 +256,11 @@ export async function updateSubscription(
   return { subscription, startNow };
 }
 
+/**
+ * Delete a subscription in Stripe, ignoring missing subscription errors.
+ *
+ * @param subscriptionId The subscription ID
+ */
 export async function deleteSubscription(
   subscriptionId: string
 ): Promise<void> {
@@ -297,6 +277,12 @@ export async function deleteSubscription(
   }
 }
 
+/**
+ * Convert a payment method to a Stripe payment type.
+ *
+ * @param method The payment method
+ * @returns The Stripe payment type
+ */
 export function paymentMethodToStripeType(
   method: PaymentMethod
 ): Stripe.PaymentMethod.Type {
@@ -316,6 +302,13 @@ export function paymentMethodToStripeType(
   }
 }
 
+/**
+ * Convert a Stripe payment type to a payment method, mirrors
+ * paymentMethodToStripeType.
+ *
+ * @param type The Stripe payment type
+ * @returns The payment method
+ */
 export function stripeTypeToPaymentMethod(
   type: Stripe.PaymentMethod.Type
 ): PaymentMethod {
@@ -333,6 +326,12 @@ export function stripeTypeToPaymentMethod(
   }
 }
 
+/**
+ * Retrieve the payment source for a given Stripe mandate
+ *
+ * @param mandateId
+ * @returns The payment source
+ */
 export async function manadateToSource(
   mandateId: string
 ): Promise<PaymentSource | undefined> {
@@ -375,6 +374,12 @@ export async function manadateToSource(
   }
 }
 
+/**
+ * Convert a Stripe invoice status to a payment status.
+ *
+ * @param status The Stripe invoice status
+ * @returns The payment status
+ */
 export function convertStatus(status: Stripe.Invoice.Status): PaymentStatus {
   switch (status) {
     case "draft":
@@ -393,3 +398,5 @@ export function convertStatus(status: Stripe.Invoice.Status): PaymentStatus {
       return PaymentStatus.Failed;
   }
 }
+
+export { Stripe };

@@ -6,7 +6,11 @@ import Stripe from "stripe";
 
 import { getRepository } from "@beabee/core/database";
 import { log as mainLogger } from "@beabee/core/logging";
-import { stripe, convertStatus } from "@beabee/core/lib/stripe";
+import {
+  stripe,
+  convertStatus,
+  getSalesTaxRateObject
+} from "@beabee/core/lib/stripe";
 import { wrapAsync } from "@beabee/core/utils/index";
 
 import GiftService from "@beabee/core/services/GiftService";
@@ -57,6 +61,9 @@ app.post(
           break;
 
         case "invoice.created":
+          await handleInvoiceCreated(evt.data.object);
+          break;
+
         case "invoice.updated":
           await handleInvoiceUpdated(evt.data.object);
           break;
@@ -83,7 +90,10 @@ async function handleCheckoutSessionCompleted(
   await GiftService.completeGiftFlow(session.id);
 }
 
-// Customer has been deleted, remove any reference to it in our system
+/**
+ * Customer has been deleted, remove any reference to it in our system
+ * @param customer The customer
+ */
 async function handleCustomerDeleted(customer: Stripe.Customer) {
   const contribution = await PaymentService.getContributionBy(
     "customerId",
@@ -98,9 +108,12 @@ async function handleCustomerDeleted(customer: Stripe.Customer) {
   }
 }
 
-// Checks if the subscription has become incomplete_expired, this means that the
-// subscription never properly started (e.g. initial payment failed) so we
-// should revoke their membership
+/**
+ * Checks if the subscription has become incomplete_expired, this means that the
+ * subscription never properly started (e.g. initial payment failed) so we
+ * should revoke their membership.
+ * @param subscription
+ */
 async function handleCustomerSubscriptionUpdated(
   subscription: Stripe.Subscription
 ) {
@@ -121,7 +134,10 @@ async function handleCustomerSubscriptionUpdated(
   }
 }
 
-// The subscription has been cancelled, send the user a cancellation email
+/**
+ * The subscription has been cancelled, send the user a cancellation email
+ * @param subscription The subscription
+ */
 async function handleCustomerSubscriptionDeleted(
   subscription: Stripe.Subscription
 ) {
@@ -138,7 +154,49 @@ async function handleCustomerSubscriptionDeleted(
   }
 }
 
-// Invoice created or updated, update our equivalent entry in the Payment table
+/**
+ * Ensure the invoice has the correct tax rate applied
+ * @param invoice The new invoice
+ */
+async function handleInvoiceCreated(invoice: Stripe.Invoice) {
+  const payment = await handleInvoiceUpdated(invoice);
+  // Only update the tax rate on invoices that we know about
+  if (!payment) return;
+
+  // Can't update non-draft invoices. This should never be a problem as only a
+  // subscription's initial invoice is created in a finalised state
+  // https://docs.stripe.com/billing/invoices/subscription#update-first-invoice
+  if (invoice.status !== "draft") return;
+
+  const taxRateObj = getSalesTaxRateObject();
+  const invoiceTaxRateObj = invoice.default_tax_rates.map((rate) => rate.id);
+  // If they don't match, update the invoice and subscription (for next time)
+  if (
+    invoiceTaxRateObj.length !== taxRateObj.length ||
+    invoiceTaxRateObj.every((rate) => !taxRateObj.includes(rate))
+  ) {
+    const updateTaxRateObj = taxRateObj.length > 0 ? taxRateObj : "";
+    log.info("Updating tax rate on invoice " + invoice.id, {
+      oldTaxRate: invoiceTaxRateObj,
+      newTaxRate: updateTaxRateObj
+    });
+    await stripe.invoices.update(invoice.id, {
+      default_tax_rates: updateTaxRateObj
+    });
+    if (invoice.subscription) {
+      log.info("Updating tax rate on subscription " + invoice.subscription);
+      await stripe.subscriptions.update(invoice.subscription as string, {
+        default_tax_rates: updateTaxRateObj
+      });
+    }
+  }
+}
+
+/**
+ * Invoice created or updated, update our equivalent entry in the Payment table
+ * @param invoice The invoice
+ * @returns The updated payment
+ */
 export async function handleInvoiceUpdated(invoice: Stripe.Invoice) {
   const payment = await findOrCreatePayment(invoice);
   if (payment) {
@@ -151,12 +209,15 @@ export async function handleInvoiceUpdated(invoice: Stripe.Invoice) {
     payment.amount = invoice.total / 100;
     payment.chargeDate = new Date(invoice.created * 1000);
 
-    await getRepository(Payment).save(payment);
+    return await getRepository(Payment).save(payment);
   }
 }
 
-// Invoice has been paid, if this is related to a subscription then extend the
-// user's membership to the new end of the subscription
+/**
+ * Invoice has been paid, if this is related to a subscription then extend the
+ * user's membership to the new end of the subscription
+ * @param invoice The invoice
+ */
 export async function handleInvoicePaid(invoice: Stripe.Invoice) {
   const contribution = await getContributionFromInvoice(invoice);
   if (!contribution || !invoice.subscription) {
@@ -191,7 +252,10 @@ export async function handleInvoicePaid(invoice: Stripe.Invoice) {
   }
 }
 
-// Payment method has been detached, remove any reference to it in our system
+/**
+ * Payment method has been detached, remove any reference to it in our system
+ * @param paymentMethod The detached payment method
+ */
 async function handlePaymentMethodDetached(
   paymentMethod: Stripe.PaymentMethod
 ) {
@@ -208,8 +272,11 @@ async function handlePaymentMethodDetached(
   }
 }
 
-// A couple of helpers
-
+/**
+ * Find the contact contribution associated with an invoice
+ * @param invoice The invoice
+ * @returns The contact contribution
+ */
 async function getContributionFromInvoice(
   invoice: Stripe.Invoice
 ): Promise<ContactContribution | null> {
@@ -228,6 +295,12 @@ async function getContributionFromInvoice(
   }
 }
 
+/**
+ * Find the corresponding payment for an invoice, creating it if it doesn't
+ * exist. Ignore any invoices from customers we don't recognise
+ * @param invoice The invoice
+ * @returns The corresponding payment
+ */
 async function findOrCreatePayment(
   invoice: Stripe.Invoice
 ): Promise<Payment | undefined> {
