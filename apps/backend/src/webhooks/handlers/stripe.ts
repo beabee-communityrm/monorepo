@@ -170,22 +170,36 @@ async function handleInvoiceCreated(invoice: Stripe.Invoice) {
 
   const taxRateObj = getSalesTaxRateObject();
   const invoiceTaxRateObj = invoice.default_tax_rates.map((rate) => rate.id);
-  // If they don't match, update the invoice and subscription (for next time)
+
+  // If tax rates match then there's nothing to do
   if (
-    invoiceTaxRateObj.length !== taxRateObj.length ||
-    invoiceTaxRateObj.every((rate) => !taxRateObj.includes(rate))
+    invoiceTaxRateObj.length === taxRateObj.length &&
+    invoiceTaxRateObj.every((rate) => taxRateObj.includes(rate))
   ) {
-    const updateTaxRateObj = taxRateObj.length > 0 ? taxRateObj : "";
-    log.info("Updating tax rate on invoice " + invoice.id, {
-      oldTaxRate: invoiceTaxRateObj,
-      newTaxRate: updateTaxRateObj
-    });
-    await stripe.invoices.update(invoice.id, {
-      default_tax_rates: updateTaxRateObj
-    });
-    if (invoice.subscription) {
-      log.info("Updating tax rate on subscription " + invoice.subscription);
-      await stripe.subscriptions.update(invoice.subscription as string, {
+    return;
+  }
+
+  const updateTaxRateObj = taxRateObj.length > 0 ? taxRateObj : "";
+  log.info("Updating tax rate on invoice " + invoice.id, {
+    oldTaxRate: invoiceTaxRateObj,
+    newTaxRate: updateTaxRateObj
+  });
+  await stripe.invoices.update(invoice.id, {
+    default_tax_rates: updateTaxRateObj
+  });
+
+  // Update the subscription if it exists
+  if (invoice.subscription) {
+    const subscriptionId = invoice.subscription as string;
+    const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+    if (
+      subscription.status !== "canceled" &&
+      subscription.status !== "incomplete_expired"
+    ) {
+      log.info(
+        `Updating tax rate on subscription ${subscriptionId} with status ${subscription.status}`
+      );
+      await stripe.subscriptions.update(subscriptionId, {
         default_tax_rates: updateTaxRateObj
       });
     }
