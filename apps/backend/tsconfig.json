@@ -2,10 +2,15 @@
   "extends": "@tsconfig/node20/tsconfig.json",
   "include": ["./src/**/*", "./test/**/*"],
   "compilerOptions": {
+    // For TypeORM and class-transformer, class-validator, etc.
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+
+    // For strict type checking
     "exactOptionalPropertyTypes": true,
     "strictNullChecks": true,
+
+    // Allow importing JSON files
     "resolveJsonModule": true,
 
     // We currently rely on class fields not being initialised, especially for classes created by
