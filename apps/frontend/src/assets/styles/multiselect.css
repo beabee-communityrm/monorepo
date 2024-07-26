@@ -43,6 +43,10 @@
   }
 }
 
+.multiselect__option {
+  @apply whitespace-normal;
+}
+
 .multiselect__element:hover,
 .multiselect__option.multiselect__option--selected {
   @apply bg-grey-lighter;
