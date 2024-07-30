@@ -8,7 +8,6 @@ import { getRepository } from "@beabee/core/database";
 import { log as mainLogger } from "@beabee/core/logging";
 import { runApp } from "@core/server";
 
-import ContactsService from "@beabee/core/services/ContactsService";
 import NewsletterService from "@beabee/core/services/NewsletterService";
 import OptionsService from "@beabee/core/services/OptionsService";
 
@@ -58,24 +57,6 @@ async function processContacts(contacts: Contact[]) {
     contactsToArchive,
     OptionsService.getText("newsletter-active-member-tag")
   );
-
-  if (OptionsService.getBool("newsletter-archive-on-expired")) {
-    log.info(`Archiving ${contactsToArchive.length} contacts`);
-    for (const contact of contactsToArchive) {
-      await ContactsService.updateContactProfile(
-        contact,
-        {
-          newsletterStatus: NewsletterStatus.Unsubscribed
-        },
-        {
-          // Sync in one go below with upsertContacts
-          sync: false
-        }
-      );
-    }
-    await NewsletterService.upsertContacts(contactsToArchive);
-    await NewsletterService.archiveContacts(contactsToArchive);
-  }
 }
 
 runApp(async () => {

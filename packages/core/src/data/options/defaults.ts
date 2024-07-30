@@ -36,7 +36,6 @@ export default {
   "email-templates": "{}",
   "newsletter-active-member-tag": "Active member",
   "newsletter-default-groups": "",
-  "newsletter-archive-on-expired": "true",
   "newsletter-resync-status": "",
   "newsletter-resync-data": "",
   "tracking-code": "",
