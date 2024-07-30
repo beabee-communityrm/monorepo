@@ -13,7 +13,7 @@ import gocardless, {
   hasPendingPayment
 } from "#lib/gocardless";
 import { log as mainLogger } from "#logging";
-import { calcRenewalDate, getActualAmount } from "#utils/payment";
+import { calcRenewalDate } from "#utils/payment";
 
 import { PaymentProvider } from ".";
 
@@ -59,15 +59,7 @@ export default class GCProvider extends PaymentProvider {
     }
 
     return {
-      payFee: this.data.payFee || false,
       hasPendingPayment: pendingPayment,
-      ...(this.data.nextAmount &&
-        this.contact.contributionPeriod && {
-          nextAmount: getActualAmount(
-            this.data.nextAmount.monthly,
-            this.contact.contributionPeriod
-          )
-        }),
       ...(paymentSource && { paymentSource })
     };
   }

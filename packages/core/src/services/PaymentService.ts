@@ -6,7 +6,7 @@ import {
 
 import { getRepository, runTransaction } from "#database";
 import { log as mainLogger } from "#logging";
-import { calcRenewalDate } from "#utils/payment";
+import { calcRenewalDate, getActualAmount } from "#utils/payment";
 
 import { Contact, Payment, ContactContribution } from "#models/index";
 
@@ -117,6 +117,14 @@ class PaymentService {
         ...(contact.contributionPeriod !== null && {
           period: contact.contributionPeriod
         }),
+        ...(d.payFee !== null && { payFee: d.payFee }),
+        ...(d.nextAmount &&
+          contact.contributionPeriod && {
+            nextAmount: getActualAmount(
+              d.nextAmount.monthly,
+              contact.contributionPeriod
+            )
+          }),
         ...(contact.membership?.dateExpires && {
           membershipExpiryDate: contact.membership.dateExpires
         }),
