@@ -2,7 +2,7 @@
 const { pathsToModuleNameMapper } = require("ts-jest");
 const tsconfig = require("tsconfig");
 
-const { config } = tsconfig.loadSync(__dirname);
+const { config } = tsconfig.loadSync(__dirname, "tsconfig.build.json");
 
 module.exports = {
   preset: "ts-jest",
