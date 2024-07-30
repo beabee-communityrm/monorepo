@@ -1,7 +1,35 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "@tsconfig/node20/tsconfig.json",
+  "include": ["./src/**/*", "./src/**/*.json"],
   "exclude": ["./src/static/**/*", "./**/*.test.ts"],
   "compilerOptions": {
-    "rootDir": "./src"
+    // For TypeORM and class-transformer, class-validator, etc.
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+
+    // For strict type checking
+    "exactOptionalPropertyTypes": true,
+    "strictNullChecks": true,
+
+    // Allow importing JSON files
+    "resolveJsonModule": true,
+
+    // We currently rely on class fields not being initialised, especially for classes created by
+    // class-transformer (in controllers). Disabling this flag for now.
+    // More info: https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html#the-usedefineforclassfields-flag-and-the-declare-property-modifier
+    "useDefineForClassFields": false,
+
+    "sourceMap": true,
+    "rootDir": "./src",
+    "outDir": "./built",
+    "paths": {
+      "@core/*": ["./src/core/*"],
+      "@apps/*": ["./src/apps/*"],
+      "@api/*": ["./src/api/*"],
+      "@type/*": ["./src/type/*"]
+    },
+
+    // Add additional type root for local typings
+    "typeRoots": ["./src/typings", "./node_modules/@types/"]
   }
 }
