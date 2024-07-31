@@ -4,6 +4,7 @@ import {
   type Paginated,
   PaymentMethod,
   type RoleType,
+  type UpdateContactData,
 } from '@beabee/beabee-common';
 
 import { deserializeDate, instance } from '.';
@@ -24,7 +25,6 @@ import type {
   Serial,
   SetContributionData,
   StartContributionData,
-  UpdateContactData,
   UpdateContactRoleData,
 } from '@type';
 

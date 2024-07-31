@@ -31,6 +31,7 @@ meta:
   </AuthBox>
 </template>
 <script lang="ts" setup>
+import type { ContentJoinSetupData } from '@beabee/beabee-common';
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
@@ -44,7 +45,7 @@ import { fetchCallout } from '@utils/api/callout';
 
 import { currentUser } from '@store';
 
-import type { GetCalloutDataWith, ContentJoinSetupData } from '@type';
+import type { GetCalloutDataWith } from '@type';
 
 const { t } = useI18n();
 const router = useRouter();
@@ -56,6 +57,7 @@ const setupContent = ref<ContentJoinSetupData>({
   newsletterText: '',
   newsletterOptIn: '',
   newsletterTitle: '',
+  newsletterGroups: [],
   showNewsletterOptIn: false,
   showMailOptIn: false,
   mailTitle: '',
