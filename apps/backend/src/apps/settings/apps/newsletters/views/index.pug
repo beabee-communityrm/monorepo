@@ -35,7 +35,7 @@ block contents
 				form(method='post')
 					+csrf
 					p.
-						Sometimes the subscription status can differ between the system and
+						→ Sometimes the subscription status can differ between the system and
 						the newsletter provider. Who should we believe if it does?
 					p
 						span.radio-inline
@@ -48,7 +48,7 @@ block contents
 								| Provider
 
 					p.
-						The syncing process can remove unsubscribed contacts from the
+						→ The syncing process can remove unsubscribed contacts from the
 						newsletter provider. Would you like it to do so?
 					.checkbox
 						label
@@ -56,7 +56,17 @@ block contents
 							| Yes, remove unsubscribed contacts
 
 					p.
-						This will perform the following #[b irrevisble] actions:
+						→ You can update the mismatched data on both systems, or just on the
+						membership system.
+					p
+						.checkbox-inline
+							label
+								input(type='checkbox' name='updateThem' value='true' checked)
+								| Also update the data on the newsletter provider
+
+
+					p.
+						→ This will perform the following #[b irrevisble] actions:
 
 					ul
 						li Import new contacts from the newsletter list
@@ -71,6 +81,6 @@ block contents
 							| I understand the risks
 					.checkbox
 						label
-							input(type='checkbox' name='dryRun' value='true')
+							input(type='checkbox' name='dryRun' value='true' checked)
 							| Dry run
 					button(name='action' value='resync').btn.btn-danger Resync
