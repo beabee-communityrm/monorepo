@@ -60,10 +60,6 @@ export class UpdateContactProfileDto implements Partial<GetContactProfileDto> {
   preferredContact?: string;
 
   @IsOptional()
-  @IsString({ each: true })
-  newsletterGroups?: string[];
-
-  @IsOptional()
   @IsBoolean()
   deliveryOptIn?: boolean;
 
@@ -75,6 +71,10 @@ export class UpdateContactProfileDto implements Partial<GetContactProfileDto> {
   @IsOptional()
   @IsEnum(NewsletterStatus)
   newsletterStatus?: NewsletterStatus;
+
+  @IsOptional()
+  @IsString({ each: true })
+  newsletterGroups?: string[];
 
   // Admin only
 

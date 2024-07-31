@@ -15,6 +15,7 @@ import {
 } from "@beabee/beabee-common";
 import { Type } from "class-transformer";
 import {
+  IsArray,
   IsBoolean,
   IsEnum,
   IsIn,
@@ -139,6 +140,14 @@ export class GetContentJoinDto implements ContentJoinData {
   stripeCountry!: StripeFeeCountry;
 }
 
+class GetContentJoinSetupNewsletterGroup {
+  @IsString()
+  id!: string;
+
+  @IsString()
+  label!: string;
+}
+
 export class GetContentJoinSetupDto implements ContentJoinSetupData {
   @IsString()
   welcome!: string;
@@ -154,6 +163,9 @@ export class GetContentJoinSetupDto implements ContentJoinSetupData {
 
   @IsBoolean()
   showNewsletterOptIn!: boolean;
+
+  @ValidateNested({ each: true })
+  newsletterGroups!: GetContentJoinSetupNewsletterGroup[];
 
   @IsString()
   mailTitle!: string;

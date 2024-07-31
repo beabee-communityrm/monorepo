@@ -1,3 +1,5 @@
+import { NewsletterStatus } from "@beabee/beabee-common";
+
 export default {
   organisation: "UK Makerspace",
   "software-name": "Membership System",

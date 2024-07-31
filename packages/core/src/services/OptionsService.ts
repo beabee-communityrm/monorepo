@@ -55,8 +55,8 @@ class OptionsService {
     return this.optionCache[key];
   }
 
-  getText(key: OptionKey): string {
-    return this.get(key).value;
+  getText<K extends OptionKey>(key: K): (typeof defaultOptions)[K] {
+    return this.get(key).value as (typeof defaultOptions)[K]; // TODO: ensure type
   }
 
   getInt(key: OptionKey): number {
