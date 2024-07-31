@@ -19,7 +19,6 @@ meta:
 import {
   NewsletterStatus,
   type ContentJoinSetupData,
-  type UpdateContactData,
   type UpdateContactProfileData,
 } from '@beabee/beabee-common';
 import { onBeforeMount, ref } from 'vue';
@@ -65,6 +64,7 @@ async function handleSubmitSetup(data: SetupContactData) {
         newsletterStatus: NewsletterStatus.Subscribed,
         newsletterGroups: data.profile.newsletterGroups,
       }),
+    // Only set mail opt-in if the opt-in was visible
     ...(setupContent.value.showMailOptIn && {
       deliveryOptIn: data.profile.deliveryOptIn,
       deliveryAddress: {
@@ -76,14 +76,14 @@ async function handleSubmitSetup(data: SetupContactData) {
     }),
   };
 
-  const updateContactData: UpdateContactData = {
+  const updatedContact = await updateContact('me', {
     email: data.email,
     firstname: data.firstName,
     lastname: data.lastName,
+    password: data.password,
     ...(Object.keys(profile).length > 0 && { profile }),
-  };
+  });
 
-  const updatedContact = await updateContact('me', updateContactData);
   await updateCurrentUser(updatedContact);
 
   if (setupContent.value.surveySlug) {

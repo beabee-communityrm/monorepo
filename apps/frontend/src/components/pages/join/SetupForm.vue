@@ -24,6 +24,15 @@
           v-model:firstName="data.firstName"
           v-model:lastName="data.lastName"
         />
+
+        <AppInput
+          v-model="data.password"
+          :label="t('form.password')"
+          type="password"
+          name="password"
+          required
+          :info-message="t('form.passwordInfo')"
+        />
       </div>
 
       <section v-if="setupContent.showMailOptIn" class="mb-6">
@@ -82,6 +91,7 @@ import AppCheckboxGroup from '@components/forms/AppCheckboxGroup.vue';
 import { type SetupContactData } from './join.interface';
 
 import { fetchContact } from '@utils/api/contact';
+import AppInput from '@components/forms/AppInput.vue';
 
 const props = defineProps<{
   setupContent: ContentJoinSetupData;
@@ -99,6 +109,7 @@ const data = reactive<SetupContactData>({
   email: contact.email,
   firstName: contact.firstname,
   lastName: contact.lastname,
+  password: '',
   profile: {
     newsletterOptIn:
       contact.profile.newsletterStatus === NewsletterStatus.Subscribed,

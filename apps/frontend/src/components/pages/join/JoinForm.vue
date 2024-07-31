@@ -8,7 +8,6 @@
       <AccountSection
         v-if="generalContent.hideContribution"
         v-model:email="signUpData.email"
-        v-model:password="signUpData.password"
         class="mb-6"
       />
       <Contribution
@@ -27,11 +26,7 @@
           class="mb-4"
           :label="t('join.noContribution')"
         />
-        <AccountSection
-          v-model:email="signUpData.email"
-          v-model:password="signUpData.password"
-          class="my-6"
-        />
+        <AccountSection v-model:email="signUpData.email" class="my-6" />
       </Contribution>
     </AppForm>
 
