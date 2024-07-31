@@ -57,28 +57,31 @@ const isSaving = ref(false);
 async function handleSubmitSetup(data: SetupContactData) {
   isSaving.value = true;
 
+  const profile: UpdateContactProfileData = {
+    // Subscribe the user if they've opted in or selected groups
+    ...(setupContent.value.showNewsletterOptIn &&
+      (data.profile.newsletterOptIn ||
+        data.profile.newsletterGroups.length > 0) && {
+        newsletterStatus: NewsletterStatus.Subscribed,
+        newsletterGroups: data.profile.newsletterGroups,
+      }),
+    ...(setupContent.value.showMailOptIn && {
+      deliveryOptIn: data.profile.deliveryOptIn,
+      deliveryAddress: {
+        line1: data.addressLine1,
+        line2: data.addressLine2,
+        city: data.cityOrTown,
+        postcode: data.postCode,
+      },
+    }),
+  };
+
   const updateContactData: UpdateContactData = {
     email: data.email,
     firstname: data.firstName,
     lastname: data.lastName,
+    ...(Object.keys(profile).length > 0 && { profile }),
   };
-
-  if (data.profile.newsletterOptIn || setupContent.value.showMailOptIn) {
-    updateContactData.profile = {
-      ...(data.profile.newsletterOptIn && {
-        newsletterStatus: NewsletterStatus.Subscribed,
-      }),
-      ...(setupContent.value.showMailOptIn && {
-        deliveryOptIn: data.profile.deliveryOptIn,
-        deliveryAddress: {
-          line1: data.addressLine1,
-          line2: data.addressLine2,
-          city: data.cityOrTown,
-          postcode: data.postCode,
-        },
-      }),
-    };
-  }
 
   const updatedContact = await updateContact('me', updateContactData);
   await updateCurrentUser(updatedContact);

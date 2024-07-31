@@ -15,7 +15,6 @@ import {
 } from "@beabee/beabee-common";
 import { Type } from "class-transformer";
 import {
-  IsArray,
   IsBoolean,
   IsEnum,
   IsIn,
@@ -165,6 +164,7 @@ export class GetContentJoinSetupDto implements ContentJoinSetupData {
   showNewsletterOptIn!: boolean;
 
   @ValidateNested({ each: true })
+  @Type(() => GetContentJoinSetupNewsletterGroup)
   newsletterGroups!: GetContentJoinSetupNewsletterGroup[];
 
   @IsString()
