@@ -128,7 +128,7 @@ import AppSearch from '@components/search/AppSearch.vue';
 import AppTag from '@components/AppTag.vue';
 import {
   headers,
-  filterGroups,
+  useContactFilters,
 } from '@components/pages/admin/contacts/contacts.interface';
 import AppSearchInput from '@components/forms/AppSearchInput.vue';
 import SaveSegment from '@components/pages/admin/contacts/SaveSegment.vue';
@@ -154,6 +154,8 @@ addBreadcrumb(
     { title: t('menu.contacts'), to: '/admin/contacts', icon: faUsers },
   ])
 );
+
+const { filterGroups } = useContactFilters();
 
 const currentPaginatedQuery = definePaginatedQuery('joined');
 const currentSearch = defineParam('s', (v) => v || '');
