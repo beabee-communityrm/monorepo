@@ -67,6 +67,10 @@ const filterItems = computed<FilterItems<ContactFilterName>>(() => ({
       [NewsletterStatus.None]: t('common.newsletterStatus.none'),
     }
   ),
+  newsletterGroups: withLabel(
+    contactFilters.newsletterGroups,
+    t('contacts.data.newsletterGroups')
+  ),
   tags: withLabel(contactFilters.tags, t('contacts.data.tags')),
   deliveryOptIn: withLabel(
     contactFilters.deliveryOptIn,
@@ -137,6 +141,7 @@ export const filterGroups = computed<FilterGroups>(() => [
       'joined',
       'lastSeen',
       'newsletterStatus',
+      'newsletterGroups',
       'tags',
       'deliveryOptIn',
     ]),

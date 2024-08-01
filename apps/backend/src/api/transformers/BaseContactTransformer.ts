@@ -47,6 +47,7 @@ export abstract class BaseContactTransformer<
   filterHandlers: FilterHandlers<string> = {
     deliveryOptIn: profileField("deliveryOptIn"),
     newsletterStatus: profileField("newsletterStatus"),
+    newsletterGroups: profileField("newsletterGroups"),
     tags: profileField("tags"),
     activePermission,
     activeMembership: activePermission,
