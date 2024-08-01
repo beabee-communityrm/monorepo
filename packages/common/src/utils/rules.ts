@@ -28,7 +28,9 @@ export function validateRule<Field extends string>(
   let expectedArgs = 0;
   if (rule.operator in nullableOperators) {
     // Field cannot be empty (except text which can always be empty)
-    if (!filter.nullable && filter.type !== "text") {
+    if (
+      !filter.nullable && filter.type !== "text" && filter.type !== "array"
+    ) {
       throw new InvalidRule(
         rule,
         `Invalid nullable operator: field is not nullable`,

@@ -78,7 +78,6 @@ export const contactFilters = {
   },
   tags: {
     type: "array",
-    nullable: true,
   },
 } as const satisfies Filters;
 

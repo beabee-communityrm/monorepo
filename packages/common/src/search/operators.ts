@@ -35,7 +35,7 @@ export const operatorsByType = {
   date: numericOperators,
   number: numericOperators,
   boolean: { equal: equalityOperators.equal },
-  array: arrayOperators,
+  array: { ...arrayOperators, ...nullableOperators },
   enum: equalityOperators,
   contact: equalityOperators,
 } as const satisfies OperatorsByType;
