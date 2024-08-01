@@ -36,7 +36,6 @@ export const calloutFilters = {
   },
   channels: {
     type: "array",
-    nullable: true,
   },
 } as const satisfies Filters;
 

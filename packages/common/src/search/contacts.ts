@@ -59,6 +59,9 @@ export const contactFilters = {
       NewsletterStatus.None,
     ],
   },
+  newsletterGroups: {
+    type: "array",
+  },
   activePermission: {
     type: "enum",
     options: RoleTypes,
@@ -78,7 +81,6 @@ export const contactFilters = {
   },
   tags: {
     type: "array",
-    nullable: true,
   },
 } as const satisfies Filters;
 

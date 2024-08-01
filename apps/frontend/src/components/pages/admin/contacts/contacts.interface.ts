@@ -4,8 +4,9 @@ import {
   ContributionType,
   type ContactFilterName,
   contactFilters,
+  type ContentJoinSetupData,
 } from '@beabee/beabee-common';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 
 import i18n from '@lib/i18n';
 import { generalContent } from '@store';
@@ -16,6 +17,7 @@ import { withItems, withLabel } from '@utils/rules';
 import CalloutResponseFilterGroup from './CalloutResponseFilterGroup.vue';
 
 import type { FilterItems, FilterGroups } from '@type';
+import { fetchContent } from '@utils/api/content';
 
 const { t } = i18n.global;
 
@@ -66,6 +68,10 @@ const filterItems = computed<FilterItems<ContactFilterName>>(() => ({
       [NewsletterStatus.Cleaned]: t('common.newsletterStatus.cleaned'),
       [NewsletterStatus.None]: t('common.newsletterStatus.none'),
     }
+  ),
+  newsletterGroups: withLabel(
+    contactFilters.newsletterGroups,
+    t('contacts.data.newsletterGroups')
   ),
   tags: withLabel(contactFilters.tags, t('contacts.data.tags')),
   deliveryOptIn: withLabel(
@@ -126,47 +132,63 @@ const filterItems = computed<FilterItems<ContactFilterName>>(() => ({
   ),
 }));
 
-export const filterGroups = computed<FilterGroups>(() => [
-  {
-    id: 'contact',
-    label: t('contacts.dataGroup.contact'),
-    items: withItems(filterItems, [
-      'firstname',
-      'lastname',
-      'email',
-      'joined',
-      'lastSeen',
-      'newsletterStatus',
-      'tags',
-      'deliveryOptIn',
-    ]),
-  },
-  {
-    id: 'contribution',
-    label: t('contacts.dataGroup.contribution'),
-    items: withItems(filterItems, [
-      'contributionType',
-      'contributionMonthlyAmount',
-      'contributionPeriod',
-      'contributionCancelled',
-      'manualPaymentSource',
-    ]),
-  },
-  {
-    id: 'role',
-    label: t('contacts.dataGroup.role'),
-    items: withItems(filterItems, [
-      'activePermission',
-      'activeMembership',
-      'membershipStarts',
-      'membershipExpires',
-    ]),
-  },
-  {
-    id: 'callout',
-    label: t('contacts.dataGroup.callout'),
-    items: {},
-    custom: CalloutResponseFilterGroup,
-    itemsMatch: /^callouts\.[a-z0-9A-Z-]+\./,
-  },
-]);
+export function useContactFilters() {
+  const setupContent = ref<ContentJoinSetupData | null>(null);
+  (async () => {
+    setupContent.value = await fetchContent('join/setup');
+  })();
+
+  const filterGroups = computed<FilterGroups>(() => [
+    {
+      id: 'contact',
+      label: t('contacts.dataGroup.contact'),
+      items: {
+        ...withItems(filterItems, [
+          'firstname',
+          'lastname',
+          'email',
+          'joined',
+          'lastSeen',
+          'newsletterStatus',
+        ]),
+        newsletterGroups: {
+          ...filterItems.value.newsletterGroups,
+          ...(setupContent.value?.newsletterGroups.length && {
+            options: setupContent.value.newsletterGroups,
+          }),
+        },
+        ...withItems(filterItems, ['tags', 'deliveryOptIn']),
+      },
+    },
+    {
+      id: 'contribution',
+      label: t('contacts.dataGroup.contribution'),
+      items: withItems(filterItems, [
+        'contributionType',
+        'contributionMonthlyAmount',
+        'contributionPeriod',
+        'contributionCancelled',
+        'manualPaymentSource',
+      ]),
+    },
+    {
+      id: 'role',
+      label: t('contacts.dataGroup.role'),
+      items: withItems(filterItems, [
+        'activePermission',
+        'activeMembership',
+        'membershipStarts',
+        'membershipExpires',
+      ]),
+    },
+    {
+      id: 'callout',
+      label: t('contacts.dataGroup.callout'),
+      items: {},
+      custom: CalloutResponseFilterGroup,
+      itemsMatch: /^callouts\.[a-z0-9A-Z-]+\./,
+    },
+  ]);
+
+  return { filterGroups };
+}
