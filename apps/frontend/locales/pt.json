@@ -378,6 +378,9 @@
   },
   "contactOverview": {
     "annotation": {},
+    "newsletter": {
+      "groups": "Grupos"
+    },
     "security": {
       "mfa": {
         "desc": "Este contato ativou o 2FA. Clica no botão \"{ disableLabel }\" para desativar.",
@@ -402,7 +405,6 @@
       "description": "Descrição",
       "email": "Email",
       "firstname": "Primeiro nome",
-      "groups": "Grupos",
       "joined": "Inscreveu-se em",
       "lastSeen": "Visto pela última vez em",
       "lastname": "Último nome",
@@ -410,7 +412,6 @@
       "membershipExpires": "Membro até",
       "membershipStarts": "Membro desde",
       "name": "Nome",
-      "newsletter": "Newsletter",
       "newsletterStatus": "Assinatura da newsletter",
       "notes": "Notas",
       "payingFee": "Paga a taxa?",

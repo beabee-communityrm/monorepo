@@ -171,6 +171,7 @@
   },
   "contactOverview": {
     "annotation": {},
+    "newsletter": {},
     "security": {
       "mfa": {
         "disabledDesc": "Deze contactpersoon heeft geen 2FA geactiveerd."
