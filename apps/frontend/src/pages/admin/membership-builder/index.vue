@@ -11,7 +11,7 @@ meta:
       <p>{{ stepT('text') }}</p>
     </template>
   </App2ColGrid>
-  <App2ColGrid v-if="joinContent" extended>
+  <App2ColGrid v-if="joinContent && paymentContent" extended>
     <template #col1>
       <AppForm
         :button-text="t('form.saveChanges')"
@@ -92,7 +92,7 @@ meta:
     <template #col2>
       <JoinForm
         :join-content="joinContent"
-        :payment-content="paymentContent!"
+        :payment-content="paymentContent"
         preview
       />
     </template>
