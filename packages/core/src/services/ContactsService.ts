@@ -70,7 +70,10 @@ class ContactsService {
     ids: string[],
     options?: FindOneOptions<Contact>
   ): Promise<Contact[]> {
-    return await getRepository(Contact).findBy({ id: In(ids), ...options });
+    return await getRepository(Contact).find({
+      where: { id: In(ids) },
+      ...options
+    });
   }
 
   async findOne(
