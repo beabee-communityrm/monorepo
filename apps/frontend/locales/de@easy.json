@@ -166,6 +166,7 @@
   },
   "contactOverview": {
     "annotation": {},
+    "newsletter": {},
     "security": {
       "mfa": {}
     }

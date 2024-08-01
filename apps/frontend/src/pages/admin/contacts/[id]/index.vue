@@ -114,40 +114,57 @@ meta:
       </AppForm>
     </template>
     <template #col2>
-      <AppHeading>{{ t('contactOverview.profile') }}</AppHeading>
-      <AppInfoList>
-        <AppInfoListItem
-          :name="t('contacts.data.preferredChannel')"
-          :value="contact.profile.preferredContact"
-        />
-        <AppInfoListItem
-          :name="t('contacts.data.email')"
-          :value="contact.email"
-        />
-        <AppInfoListItem
-          :name="t('contacts.data.phone')"
-          :value="contact.profile.telephone"
-        />
-        <AppInfoListItem
-          :name="t('contacts.data.deliveryOptIn')"
-          :value="
-            contact.profile.deliveryOptIn ? t('common.yes') : t('common.no')
-          "
-        />
-        <AppInfoListItem
-          :name="t('contactOverview.newsletter')"
-          :value="
-            t('common.newsletterStatus.' + contact.profile.newsletterStatus)
-          "
-        />
-        <AppInfoListItem
-          :name="t('contacts.data.groups')"
-          :value="contact.profile.newsletterGroups.join(', ')"
-        />
-      </AppInfoList>
+      <section class="mb-6">
+        <AppHeading>{{ t('contactOverview.profile') }}</AppHeading>
+        <AppInfoList>
+          <AppInfoListItem
+            :name="t('contacts.data.preferredChannel')"
+            :value="contact.profile.preferredContact"
+          />
+          <AppInfoListItem
+            :name="t('contacts.data.email')"
+            :value="contact.email"
+          />
+          <AppInfoListItem
+            :name="t('contacts.data.phone')"
+            :value="contact.profile.telephone"
+          />
+          <AppInfoListItem
+            :name="t('contacts.data.deliveryOptIn')"
+            :value="
+              contact.profile.deliveryOptIn ? t('common.yes') : t('common.no')
+            "
+          />
+        </AppInfoList>
+      </section>
+
+      <section class="mb-6">
+        <AppHeading>{{ t('contactOverview.newsletter.title') }}</AppHeading>
+        <AppInfoList>
+          <AppInfoListItem
+            :name="t('contactOverview.newsletter.status')"
+            :value="
+              t('common.newsletterStatus.' + contact.profile.newsletterStatus)
+            "
+          />
+          <AppInfoListItem
+            :name="t('contactOverview.newsletter.groups')"
+            :value="
+              contact.profile.newsletterGroups
+                .map(
+                  (id) =>
+                    setupContent?.newsletterGroups.find(
+                      (group) => group.id === id
+                    )?.label || id
+                )
+                .join(', ')
+            "
+          />
+        </AppInfoList>
+      </section>
 
       <!-- Security -->
-      <section class="mt-6">
+      <section class="mb-6">
         <AppHeading>{{ t('contactOverview.security.title') }}</AppHeading>
 
         <!-- Multi factor authentication -->
@@ -198,8 +215,8 @@ meta:
         </section>
       </section>
 
-      <template v-if="joinSurvey && joinSurveyResponse">
-        <AppHeading class="mt-6">
+      <section v-if="joinSurvey && joinSurveyResponse" class="mb-6">
+        <AppHeading>
           {{ t('contactOverview.joinSurvey') }}
         </AppHeading>
         <CalloutForm
@@ -209,7 +226,7 @@ meta:
           all-slides
           readonly
         />
-      </template>
+      </section>
     </template>
   </App2ColGrid>
 
@@ -228,7 +245,11 @@ meta:
 
 <script lang="ts" setup>
 import { onBeforeMount, ref, reactive } from 'vue';
-import { ContributionType, type RoleType } from '@beabee/beabee-common';
+import {
+  ContributionType,
+  type ContentJoinSetupData,
+  type RoleType,
+} from '@beabee/beabee-common';
 import { useI18n } from 'vue-i18n';
 import { faCircleNotch, faMobileAlt } from '@fortawesome/free-solid-svg-icons';
 
@@ -362,6 +383,8 @@ async function handleChangedRoles(cb: () => Promise<unknown>) {
   changingRoles.value = false;
 }
 
+const setupContent = ref<ContentJoinSetupData>();
+
 onBeforeMount(async () => {
   contact.value = await fetchContact(props.contact.id, [
     'profile',
@@ -380,11 +403,12 @@ onBeforeMount(async () => {
     mfa.value.isEnabled = true;
   }
 
-  const setupContent = await fetchContent('join/setup');
-  if (setupContent.surveySlug) {
-    joinSurvey.value = await fetchCallout(setupContent.surveySlug, ['form']);
+  setupContent.value = await fetchContent('join/setup');
+  const joinSurveySlug = setupContent.value.surveySlug;
+  if (joinSurveySlug) {
+    joinSurvey.value = await fetchCallout(joinSurveySlug, ['form']);
     const responses = await fetchResponses(
-      setupContent.surveySlug,
+      joinSurveySlug,
       {
         limit: 1,
         order: 'DESC',
