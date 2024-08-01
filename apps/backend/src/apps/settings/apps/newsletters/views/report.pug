@@ -1,6 +1,13 @@
 
 extends /views/base.pug
 
+mixin diff(a, b)
+	span
+		if a !== b
+			| #{a} ↔ #{b}
+		else
+			| -
+
 block contents
 	.row
 		.col-md-12
@@ -17,7 +24,12 @@ block contents
 				tbody
 					each contact in newContactsToUpload
 						tr
-							td: a(href='/members/' + contact.id)= contact.fullname
+							td
+								a(href='/admin/contacts/' + contact.id)= contact.fullname || contact.email
+								if contact.membership && contact.membership.isActive
+									|
+									|
+									span.label.label-success Member
 							td= contact.email
 		
 			h4 Contacts to import
@@ -43,16 +55,10 @@ block contents
 				tbody
 					each m in mismatchedContacts
 						tr
-							td: a(href='/members/' + m.contact.id)= m.contact.fullname
-							td
-								= m.contact.profile.newsletterStatus
-								| <>
-								= m.status
-							td
-								= m.contact.profile.newsletterGroups
-								| <>
-								= m.groups
-							td
-								= m.contact.membership && m.contact.membership.isActive ? 'Yes' : 'No'
-								| <>
-								= m.tags.includes(Options('newsletter-active-member-tag')) ? 'Yes' : 'No'
+							td: a(href='/admin/contacts/' + m.contact.id)= m.contact.fullname
+							td: +diff(m.contact.profile.newsletterStatus, m.status)
+							td: +diff(m.contact.profile.newsletterGroups.toString(), m.groups.toString())
+							td: +diff(
+									m.contact.membership && m.contact.membership.isActive ? 'Yes' : 'No',
+									m.tags.includes(Options('newsletter-active-member-tag')) ? 'Yes' : 'No'
+								)
