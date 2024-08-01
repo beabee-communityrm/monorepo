@@ -13,7 +13,6 @@ const { n, t } = i18n.global;
 
 const signUpData = reactive({
   email: '',
-  password: '',
   amount: 5,
   period: ContributionPeriod.Monthly,
   payFee: true,

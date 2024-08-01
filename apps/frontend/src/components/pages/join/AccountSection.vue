@@ -30,15 +30,6 @@
         required
       />
     </div>
-
-    <AppInput
-      v-model="passwordProxy"
-      :label="t('form.password')"
-      type="password"
-      name="password"
-      required
-      :info-message="t('form.passwordInfo')"
-    />
   </section>
 </template>
 
@@ -49,20 +40,14 @@ import { computed } from 'vue';
 import AppSubHeading from '../../AppSubHeading.vue';
 import { isEmbed } from '../../../store';
 
-const emit = defineEmits(['update:email', 'update:password']);
+const emit = defineEmits(['update:email']);
 const props = defineProps<{
   email: string;
-  password: string;
 }>();
 
 const emailProxy = computed({
   get: () => props.email,
   set: (email) => emit('update:email', email),
-});
-
-const passwordProxy = computed({
-  get: () => props.password,
-  set: (password) => emit('update:password', password),
 });
 
 const { t } = useI18n();
