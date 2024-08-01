@@ -139,6 +139,14 @@ export class GetContentJoinDto implements ContentJoinData {
   stripeCountry!: StripeFeeCountry;
 }
 
+class GetContentJoinSetupNewsletterGroup {
+  @IsString()
+  id!: string;
+
+  @IsString()
+  label!: string;
+}
+
 export class GetContentJoinSetupDto implements ContentJoinSetupData {
   @IsString()
   welcome!: string;
@@ -154,6 +162,10 @@ export class GetContentJoinSetupDto implements ContentJoinSetupData {
 
   @IsBoolean()
   showNewsletterOptIn!: boolean;
+
+  @ValidateNested({ each: true })
+  @Type(() => GetContentJoinSetupNewsletterGroup)
+  newsletterGroups!: GetContentJoinSetupNewsletterGroup[];
 
   @IsString()
   mailTitle!: string;

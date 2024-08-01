@@ -96,14 +96,7 @@ export class ContactController {
           password: await generatePassword(data.password)
         })
       },
-      data.profile && {
-        ...data.profile,
-        ...(data.profile.newsletterStatus === NewsletterStatus.Subscribed && {
-          // Automatically add default groups for now, this should be revisited
-          // once groups are exposed to the frontend
-          newsletterGroups: OptionsService.getList("newsletter-default-groups")
-        })
-      }
+      data.profile
     );
 
     if (data.roles) {

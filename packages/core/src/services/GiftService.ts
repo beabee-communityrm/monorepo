@@ -142,7 +142,9 @@ export default class GiftService {
         deliveryOptIn: !!deliveryAddress?.line1,
         deliveryAddress: deliveryAddress,
         newsletterStatus: NewsletterStatus.Subscribed,
-        newsletterGroups: OptionsService.getList("newsletter-default-groups")
+        newsletterGroups: OptionsService.getJSON("newsletter-groups").map(
+          (group: { id: string }) => group.id
+        )
       }
     );
 

@@ -6,6 +6,7 @@ import JSONStream from "JSONStream";
 import tar from "tar-stream";
 
 import { log as mainLogger } from "#logging";
+import OptionsService from "#services/OptionsService";
 import { cleanEmailAddress } from "#utils/index";
 
 import {
@@ -126,6 +127,9 @@ function nlContactToMCMember(
     throw new Error("NewsletterStatus = None for " + nlContact.email);
   }
 
+  const groups: { id: string; label: string }[] =
+    OptionsService.getJSON("newsletter-groups");
+
   return {
     email_address: nlContact.email,
     status: nlContact.status,
@@ -139,7 +143,9 @@ function nlContactToMCMember(
     ...(nlContact.groups && {
       interests: Object.assign(
         {},
-        ...nlContact.groups.map((group) => ({ [group]: true }))
+        ...groups.map((group) => ({
+          [group.id]: nlContact.groups?.includes(group.id)
+        }))
       )
     })
   };

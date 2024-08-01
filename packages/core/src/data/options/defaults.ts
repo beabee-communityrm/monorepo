@@ -1,3 +1,5 @@
+import { NewsletterStatus } from "@beabee/beabee-common";
+
 export default {
   organisation: "UK Makerspace",
   "software-name": "Membership System",
@@ -35,7 +37,8 @@ export default {
   "footer-twitter-link-url": "",
   "email-templates": "{}",
   "newsletter-active-member-tag": "Active member",
-  "newsletter-default-groups": "",
+  "newsletter-default-status": NewsletterStatus.None,
+  "newsletter-groups": "[]",
   "newsletter-resync-status": "",
   "newsletter-resync-data": "",
   "tracking-code": "",

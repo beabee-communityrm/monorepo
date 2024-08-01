@@ -19,7 +19,7 @@
     "start": "node built/app.js",
     "start:api": "node built/api/app.js",
     "start:webhooks": "node built/webhooks/app.js",
-    "dev": "yarn dev:app",
+    "dev": "yarn dev:api",
     "dev:app": "yarn build && docker compose restart && concurrently -c red,green,blue 'yarn:dev:app:*'",
     "dev:app:watch": "tsc-watch -p tsconfig.build.json --noClear --onSuccess 'docker compose restart app api_app webhook_app router'",
     "dev:app:watch:assets": "gulp watch",

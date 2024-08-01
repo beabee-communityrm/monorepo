@@ -3,6 +3,7 @@ export interface ContentJoinSetupData {
   newsletterText: string;
   newsletterOptIn: string;
   newsletterTitle: string;
+  newsletterGroups: { id: string; label: string }[];
   showNewsletterOptIn: boolean;
   showMailOptIn: boolean;
   mailTitle: string;

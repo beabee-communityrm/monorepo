@@ -191,6 +191,7 @@ const contentData = {
     newsletterOptIn: ["data", ""],
     newsletterText: ["data", ""],
     newsletterTitle: ["data", ""],
+    newsletterGroups: ["option", "newsletter-groups", "json"],
     showMailOptIn: ["option", "show-mail-opt-in", "bool"],
     showNewsletterOptIn: ["data", false],
     surveyRequired: ["data", false],

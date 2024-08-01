@@ -1,9 +1,9 @@
+import type { ContentJoinSetupData } from '@beabee/beabee-common';
 import type {
   ContentContactsData,
   ContentEmailData,
   ContentGeneralData,
   ContentJoinData,
-  ContentJoinSetupData,
   ContentProfileData,
   ContentShareData,
   ContentPaymentData,

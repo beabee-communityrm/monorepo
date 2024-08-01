@@ -4,6 +4,7 @@ export interface SetupContactData {
   lastName: string;
   profile: {
     newsletterOptIn: boolean;
+    newsletterGroups: string[];
     deliveryOptIn: boolean;
   };
   addressLine1: string;

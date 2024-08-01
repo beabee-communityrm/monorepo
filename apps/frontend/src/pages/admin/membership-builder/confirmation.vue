@@ -128,7 +128,7 @@ meta:
 <script lang="ts" setup>
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { ItemStatus } from '@beabee/beabee-common';
+import { ItemStatus, type ContentJoinSetupData } from '@beabee/beabee-common';
 
 import AppForm from '@components/forms/AppForm.vue';
 import AppInput from '@components/forms/AppInput.vue';
@@ -143,7 +143,7 @@ import AppSubHeading from '@components/AppSubHeading.vue';
 import { fetchCallouts } from '@utils/api/callout';
 import { fetchContent, updateContent } from '@utils/api/content';
 
-import type { GetCalloutData, ContentJoinSetupData } from '@type';
+import type { GetCalloutData } from '@type';
 
 const setupContent = ref<ContentJoinSetupData>();
 const openCallouts = ref<GetCalloutData[]>([]);

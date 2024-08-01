@@ -18,13 +18,15 @@
       full-button
       @submit.prevent="onSubmit?.(data)"
     >
-      <ContactBasicFields
-        v-model:email="data.email"
-        v-model:firstName="data.firstName"
-        v-model:lastName="data.lastName"
-      />
+      <div class="mb-6">
+        <ContactBasicFields
+          v-model:email="data.email"
+          v-model:firstName="data.firstName"
+          v-model:lastName="data.lastName"
+        />
+      </div>
 
-      <template v-if="setupContent.showMailOptIn">
+      <section v-if="setupContent.showMailOptIn" class="mb-6">
         <ContactMailOptIn
           v-model="data.profile.deliveryOptIn"
           :content="setupContent"
@@ -37,21 +39,34 @@
           v-model:cityOrTown="data.cityOrTown"
           :required="data.profile.deliveryOptIn"
         />
-      </template>
+      </section>
 
-      <AppOptIn
-        v-if="showNewsletterOptIn"
-        v-model="data.profile.newsletterOptIn"
-        :title="setupContent.newsletterTitle"
-        :text="setupContent.newsletterText"
-        :label="setupContent.newsletterOptIn"
-        class="mb-6"
-      />
+      <section v-if="showNewsletterOptIn" class="mb-6">
+        <h4 class="mb-1 text-lg">{{ setupContent.newsletterTitle }}</h4>
+        <div
+          class="content-message mb-4 text-sm"
+          v-html="setupContent.newsletterText"
+        />
+        <AppCheckboxGroup
+          v-if="hasNewsletterGroups"
+          v-model="data.profile.newsletterGroups"
+          :options="setupContent.newsletterGroups"
+        />
+        <AppCheckbox
+          v-else
+          v-model="data.profile.newsletterOptIn"
+          :label="setupContent.newsletterOptIn"
+          class="font-bold"
+        />
+      </section>
     </AppForm>
   </AuthBox>
 </template>
 <script lang="ts" setup>
-import { NewsletterStatus } from '@beabee/beabee-common';
+import {
+  NewsletterStatus,
+  type ContentJoinSetupData,
+} from '@beabee/beabee-common';
 import useVuelidate from '@vuelidate/core';
 import { computed, reactive } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -59,15 +74,14 @@ import { useI18n } from 'vue-i18n';
 import AppAddress from '@components/AppAddress.vue';
 import ContactBasicFields from '@components/contact/ContactBasicFields.vue';
 import ContactMailOptIn from '@components/contact/ContactMailOptIn.vue';
-import AppOptIn from '@components/AppOptIn.vue';
 import AppForm from '@components/forms/AppForm.vue';
 import AuthBox from '@components/AuthBox.vue';
+import AppCheckbox from '@components/forms/AppCheckbox.vue';
+import AppCheckboxGroup from '@components/forms/AppCheckboxGroup.vue';
 
 import { type SetupContactData } from './join.interface';
 
 import { fetchContact } from '@utils/api/contact';
-
-import type { ContentJoinSetupData } from '@type';
 
 const props = defineProps<{
   setupContent: ContentJoinSetupData;
@@ -86,7 +100,9 @@ const data = reactive<SetupContactData>({
   firstName: contact.firstname,
   lastName: contact.lastname,
   profile: {
-    newsletterOptIn: false,
+    newsletterOptIn:
+      contact.profile.newsletterStatus === NewsletterStatus.Subscribed,
+    newsletterGroups: contact.profile.newsletterGroups,
     deliveryOptIn: contact.profile.deliveryOptIn,
   },
   addressLine1: contact.profile.deliveryAddress?.line1 || '',
@@ -95,9 +111,14 @@ const data = reactive<SetupContactData>({
   postCode: contact.profile.deliveryAddress?.postcode || '',
 });
 
+const hasNewsletterGroups = computed(
+  () => props.setupContent.newsletterGroups.length > 0
+);
+
 const showNewsletterOptIn = computed(
   () =>
     props.setupContent.showNewsletterOptIn &&
-    contact.profile.newsletterStatus !== NewsletterStatus.Subscribed
+    (contact.profile.newsletterStatus !== NewsletterStatus.Subscribed ||
+      hasNewsletterGroups.value)
 );
 </script>

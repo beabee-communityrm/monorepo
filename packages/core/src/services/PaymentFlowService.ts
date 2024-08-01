@@ -1,6 +1,7 @@
 import {
   Address,
   ContributionPeriod,
+  NewsletterStatus,
   PaymentMethod,
   RESET_SECURITY_FLOW_TYPE
 } from "@beabee/beabee-common";
@@ -181,10 +182,10 @@ class PaymentFlowService implements PaymentFlowProvider {
     if (contact) {
       await ContactsService.updateContact(contact, partialContact);
     } else {
-      contact = await ContactsService.createContact(
-        partialContact,
-        deliveryAddress ? { deliveryAddress } : undefined
-      );
+      contact = await ContactsService.createContact(partialContact, {
+        newsletterStatus: OptionsService.getText("newsletter-default-status"),
+        deliveryAddress: deliveryAddress || null
+      });
     }
 
     if (completedPaymentFlow) {
