@@ -26,7 +26,7 @@ block contents
 						tr
 							td
 								a(href='/members/' + contact.id)= contact.fullname || contact.email
-								if contact.membership.isActive
+								if contact.membership && contact.membership.isActive
 									|
 									|
 									span.label.label-success Member
