@@ -29,6 +29,7 @@ import {
   ContributionInfo,
   UpdateContributionResult
 } from "#type/index";
+import { UpdatePaymentMethodResult } from "#type/update-payment-method-result";
 
 const log = mainLogger.child({ app: "stripe-payment-provider" });
 
@@ -65,18 +66,15 @@ export default class StripeProvider extends PaymentProvider {
   async cancelContribution(keepMandate: boolean): Promise<void> {
     if (this.data.mandateId && !keepMandate) {
       await stripe.paymentMethods.detach(this.data.mandateId);
-      this.data.mandateId = null;
     }
     if (this.data.subscriptionId) {
       await deleteSubscription(this.data.subscriptionId);
-      this.data.subscriptionId = null;
     }
-    this.data.nextAmount = null;
-
-    await this.updateData();
   }
 
-  async updatePaymentMethod(flow: CompletedPaymentFlow): Promise<void> {
+  async updatePaymentMethod(
+    flow: CompletedPaymentFlow
+  ): Promise<UpdatePaymentMethodResult> {
     const paymentMethod = await stripe.paymentMethods.retrieve(flow.mandateId);
     const address = paymentMethod.billing_details.address;
 
@@ -96,29 +94,30 @@ export default class StripeProvider extends PaymentProvider {
         : null
     };
 
-    if (this.data.customerId) {
-      log.info("Attach new payment source to " + this.data.customerId);
+    let customerId = this.data.customerId;
+    if (customerId) {
+      log.info("Attach new payment source to " + customerId);
       await stripe.paymentMethods.attach(flow.mandateId, {
-        customer: this.data.customerId
+        customer: customerId
       });
-      await stripe.customers.update(this.data.customerId, customerData);
+      await stripe.customers.update(customerId, customerData);
     } else {
       log.info("Create new customer");
       const customer = await stripe.customers.create({
         email: this.contact.email,
         name: `${this.contact.firstname} ${this.contact.lastname}`,
         payment_method: flow.mandateId,
-        ...(flow.joinForm.vatNumber && {
+        ...(flow.vatNumber && {
           tax_id_data: [
             {
               type: "eu_vat",
-              value: flow.joinForm.vatNumber
+              value: flow.vatNumber
             }
           ]
         }),
         ...customerData
       });
-      this.data.customerId = customer.id;
+      customerId = customer.id;
     }
 
     if (this.data.mandateId) {
@@ -126,9 +125,10 @@ export default class StripeProvider extends PaymentProvider {
       await stripe.paymentMethods.detach(this.data.mandateId);
     }
 
-    this.data.mandateId = flow.mandateId;
-
-    await this.updateData();
+    return {
+      customerId,
+      mandateId: flow.mandateId
+    };
   }
 
   async updateContribution(
@@ -161,23 +161,13 @@ export default class StripeProvider extends PaymentProvider {
     const { subscription, startNow } =
       await this.updateOrCreateContribution(paymentForm);
 
-    this.data.subscriptionId = subscription.id;
-    this.data.payFee = paymentForm.payFee;
-    this.data.nextAmount = startNow
-      ? null
-      : {
-          chargeable: getChargeableAmount(paymentForm, this.method),
-          monthly: paymentForm.monthlyAmount
-        };
-
-    await this.updateData();
-
     return {
       startNow,
       expiryDate: add(
         new Date(subscription.current_period_end * 1000),
         config.gracePeriod
-      )
+      ),
+      subscriptionId: subscription.id
     };
   }
 

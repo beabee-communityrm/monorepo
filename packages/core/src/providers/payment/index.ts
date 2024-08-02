@@ -9,6 +9,7 @@ import {
   ContributionInfo,
   UpdateContributionResult
 } from "#type/index";
+import { UpdatePaymentMethodResult } from "#type/update-payment-method-result";
 
 export abstract class PaymentProvider {
   protected readonly data: ContactContribution;
@@ -42,7 +43,7 @@ export abstract class PaymentProvider {
 
   abstract updatePaymentMethod(
     completedPaymentFlow: CompletedPaymentFlow
-  ): Promise<void>;
+  ): Promise<UpdatePaymentMethodResult>;
 
   abstract permanentlyDeleteContact(): Promise<void>;
 }

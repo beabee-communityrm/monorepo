@@ -8,11 +8,13 @@ import {
   ContributionInfo,
   UpdateContributionResult
 } from "#type/index";
+import { UpdatePaymentMethodResult } from "#type/update-payment-method-result";
 
 export default class ManualProvider extends PaymentProvider {
   async canChangeContribution(useExistingMandate: boolean): Promise<boolean> {
     return !useExistingMandate;
   }
+
   async getContributionInfo(): Promise<Partial<ContributionInfo>> {
     return {
       paymentSource: {
@@ -30,15 +32,24 @@ export default class ManualProvider extends PaymentProvider {
   async cancelContribution(keepMandate: boolean): Promise<void> {}
   async updateContact(updates: Partial<Contact>): Promise<void> {}
 
+  async updatePaymentMethod(
+    flow: CompletedPaymentFlow
+  ): Promise<UpdatePaymentMethodResult> {
+    return {
+      customerId: flow.customerId,
+      mandateId: flow.mandateId
+    };
+  }
+
   async updateContribution(
     paymentForm: PaymentForm
   ): Promise<UpdateContributionResult> {
-    throw new Error("Method not implemented.");
+    return {
+      startNow: true,
+      expiryDate: null,
+      subscriptionId: ""
+    };
   }
-  async updatePaymentMethod(
-    completedPaymentFlow: CompletedPaymentFlow
-  ): Promise<void> {
-    throw new Error("Method not implemented.");
-  }
+
   async permanentlyDeleteContact(): Promise<void> {}
 }

@@ -7,7 +7,8 @@ import {
   LOGIN_CODES,
   CONTACT_MFA_TYPE,
   RESET_SECURITY_FLOW_TYPE,
-  RESET_SECURITY_FLOW_ERROR_CODE
+  RESET_SECURITY_FLOW_ERROR_CODE,
+  PaymentMethod
 } from "@beabee/beabee-common";
 import { FindManyOptions, FindOneOptions, FindOptionsWhere, In } from "typeorm";
 
@@ -127,7 +128,7 @@ class ContactsService {
       });
       await getRepository(ContactProfile).save(contact.profile);
 
-      await PaymentService.createContact(contact);
+      await PaymentService.onCreateContact(contact);
 
       if (opts.sync) {
         await NewsletterService.upsertContact(contact);
@@ -184,7 +185,7 @@ class ContactsService {
       await NewsletterService.upsertContact(contact, updates, oldEmail);
     }
 
-    await PaymentService.updateContact(contact, updates);
+    await PaymentService.onUpdateContact(contact, updates);
   }
 
   /**
@@ -362,7 +363,11 @@ class ContactsService {
       })
     });
 
-    await this.extendContactRole(contact, "member", expiryDate);
+    if (expiryDate) {
+      await this.extendContactRole(contact, "member", expiryDate);
+    } else {
+      await this.updateContactRole(contact, "member", { dateExpires: null });
+    }
 
     if (wasManual) {
       await EmailService.sendTemplateToContact("manual-to-automatic", contact);
@@ -453,9 +458,10 @@ class ContactsService {
       contributionMonthlyAmount: monthlyAmount
     });
 
-    await PaymentService.updateData(contact, {
-      mandateId: data.source || null,
-      customerId: data.reference || null
+    await PaymentService.updatePaymentMethod(contact, {
+      paymentMethod: PaymentMethod.None,
+      mandateId: data.source || "",
+      customerId: data.reference || ""
     });
   }
 

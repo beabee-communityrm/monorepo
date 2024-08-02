@@ -40,10 +40,12 @@ class StripeProvider implements PaymentFlowProvider {
     const siPaymentMethodId = setupIntent.payment_method as string;
 
     return {
-      // paymentMethod: joinFlow.joinForm.paymentMethod,
-      joinForm: joinFlow.joinForm,
+      paymentMethod: joinFlow.joinForm.paymentMethod,
       customerId: "", // Not needed
-      mandateId: siPaymentMethodId
+      mandateId: siPaymentMethodId,
+      ...(joinFlow.joinForm.vatNumber && {
+        vatNumber: joinFlow.joinForm.vatNumber
+      })
     };
   }
 

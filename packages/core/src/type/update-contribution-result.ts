@@ -1,4 +1,5 @@
 export interface UpdateContributionResult {
   startNow: boolean;
-  expiryDate: Date;
+  expiryDate: Date | null;
+  subscriptionId: string;
 }

@@ -24,6 +24,7 @@ import {
 const log = mainLogger.child({ app: "payment-service" });
 
 const PaymentProviders = {
+  [PaymentMethod.None]: ManualProvider,
   [PaymentMethod.StripeCard]: StripeProvider,
   [PaymentMethod.StripeSEPA]: StripeProvider,
   [PaymentMethod.StripeBACS]: StripeProvider,
@@ -42,8 +43,8 @@ export function getMembershipStatus(contact: Contact): MembershipStatus {
 }
 
 type ProviderFn<T> = (
-  p: PaymentProvider,
-  data: ContactContribution
+  provider: PaymentProvider,
+  contribution: ContactContribution
 ) => Promise<T>;
 
 class PaymentService {
@@ -65,28 +66,20 @@ class PaymentService {
   ): Promise<ContactContribution | null> {
     return await getRepository(ContactContribution).findOne({
       where: { [key]: value },
-      relations: { contact: true }
+      relations: { contact: true },
+      order: { createdAt: "DESC" }
     });
   }
 
-  async updateData(contact: Contact, updates: Partial<ContactContribution>) {
-    await getRepository(ContactContribution).update(contact.id, updates);
-  }
-
-  private async provider(contact: Contact, fn: ProviderFn<void>): Promise<void>;
-  private async provider<T>(contact: Contact, fn: ProviderFn<T>): Promise<T>;
-  private async provider<T>(contact: Contact, fn: ProviderFn<T>): Promise<T> {
-    return this.providerFromData(await this.getContribution(contact), fn);
-  }
-
-  private async providerFromData<T>(
-    data: ContactContribution,
+  private async withProvider<T>(
+    contact: Contact,
     fn: ProviderFn<T>
   ): Promise<T> {
-    const Provider = data.method
-      ? PaymentProviders[data.method]
-      : ManualProvider;
-    return await fn(new Provider(data), data);
+    const contribution = await this.getContribution(contact);
+    return await fn(
+      new PaymentProviders[contribution.method](contribution),
+      contribution
+    );
   }
 
   async canChangeContribution(
@@ -94,124 +87,141 @@ class PaymentService {
     useExistingPaymentSource: boolean,
     paymentForm: PaymentForm
   ): Promise<boolean> {
-    const ret = await this.provider(contact, (p) =>
-      p.canChangeContribution(useExistingPaymentSource, paymentForm)
-    );
-    log.info(
-      `Contact ${contact.id} ${ret ? "can" : "cannot"} change contribution`
-    );
-    return ret;
+    return await this.withProvider(contact, async (provider) => {
+      const canChange = await provider.canChangeContribution(
+        useExistingPaymentSource,
+        paymentForm
+      );
+      log.info(
+        `Contact ${contact.id} ${canChange ? "can" : "cannot"} change contribution`
+      );
+      return canChange;
+    });
   }
 
   async getContributionInfo(contact: Contact): Promise<ContributionInfo> {
-    return await this.provider<ContributionInfo>(contact, async (p, d) => {
-      // Store payment data in contact for getMembershipStatus
-      // TODO: fix this!
-      contact.contribution = d;
+    return await this.withProvider<ContributionInfo>(
+      contact,
+      async (provider, contribution) => {
+        // Store payment data in contact for getMembershipStatus
+        // TODO: fix this!
+        contact.contributions = [contribution];
 
-      const renewalDate = !d.cancelledAt && calcRenewalDate(contact);
+        const renewalDate =
+          !contribution.cancelledAt && calcRenewalDate(contact);
 
-      return {
-        type: contact.contributionType,
-        ...(contact.contributionAmount !== null && {
-          amount: contact.contributionAmount
-        }),
-        ...(contact.contributionPeriod !== null && {
-          period: contact.contributionPeriod
-        }),
-        ...(d.payFee !== null && { payFee: d.payFee }),
-        ...(d.nextAmount &&
-          contact.contributionPeriod && {
-            nextAmount: getActualAmount(
-              d.nextAmount.monthly,
-              contact.contributionPeriod
-            )
+        return {
+          type: contact.contributionType,
+          ...(contribution.amount !== null && {
+            amount: contribution.amount
           }),
-        ...(contact.membership?.dateExpires && {
-          membershipExpiryDate: contact.membership.dateExpires
-        }),
-        membershipStatus: getMembershipStatus(contact),
-        ...(await p.getContributionInfo()),
-        ...(d.cancelledAt && { cancellationDate: d.cancelledAt }),
-        ...(renewalDate && { renewalDate })
-      };
-    });
+          ...(contribution.period !== null && {
+            period: contribution.period
+          }),
+          ...(contribution.payFee !== null && { payFee: contribution.payFee }),
+          // TODO: pending amount
+          // ...
+          ...(contact.membership?.dateExpires && {
+            membershipExpiryDate: contact.membership.dateExpires
+          }),
+          membershipStatus: getMembershipStatus(contact),
+          ...(await provider.getContributionInfo()),
+          ...(contribution.cancelledAt && {
+            cancellationDate: contribution.cancelledAt
+          }),
+          ...(renewalDate && { renewalDate })
+        };
+      }
+    );
   }
 
   async getPayments(contact: Contact): Promise<Payment[]> {
     return await getRepository(Payment).findBy({ contactId: contact.id });
   }
 
-  async createContact(contact: Contact): Promise<void> {
+  async onCreateContact(contact: Contact): Promise<void> {
     log.info("Create contact for contact " + contact.id);
-    await getRepository(ContactContribution).save({ contact });
+    await getRepository(ContactContribution).save({
+      contactId: contact.id,
+      status: "current",
+      method: PaymentMethod.None
+    });
   }
 
-  async updateContact(
+  async onUpdateContact(
     contact: Contact,
     updates: Partial<Contact>
   ): Promise<void> {
     log.info("Update contact for contact " + contact.id);
-    await this.provider(contact, (p) => p.updateContact(updates));
+    await this.withProvider(contact, (p) => p.updateContact(updates));
   }
 
   async updateContribution(
     contact: Contact,
     paymentForm: PaymentForm
   ): Promise<UpdateContributionResult> {
-    log.info("Update contribution for contact " + contact.id);
-    const ret = await this.provider(contact, (p) =>
-      p.updateContribution(paymentForm)
-    );
-    await getRepository(ContactContribution).update(
-      { contactId: contact.id },
-      { cancelledAt: null }
-    );
-    return ret;
+    return await this.withProvider(contact, async (provider, contribution) => {
+      const result = await provider.updateContribution(paymentForm);
+
+      await this.setNewContribution(contribution, {
+        status: result.startNow ? "current" : "pending",
+        subscriptionId: result.subscriptionId,
+        monthlyAmount: paymentForm.monthlyAmount,
+        period: paymentForm.period,
+        payFee: paymentForm.payFee
+      });
+
+      return result;
+    });
   }
 
   async updatePaymentMethod(
     contact: Contact,
-    completedPaymentFlow: CompletedPaymentFlow
+    flow: CompletedPaymentFlow
   ): Promise<void> {
-    log.info("Update payment method for contact " + contact.id, {
-      completedPaymentFlow
-    });
+    log.info("Update payment method for contact " + contact.id, { flow });
 
     const contribution = await this.getContribution(contact);
-    const newMethod = completedPaymentFlow.joinForm.paymentMethod;
+    const newMethod = flow.paymentMethod;
     if (contribution.method !== newMethod) {
       log.info("Changing payment method, cancelling previous contribution", {
         contribution,
         newMethod
       });
-      await this.providerFromData(contribution, (p) =>
-        p.cancelContribution(false)
-      );
 
-      // Clear the old payment data, set the new method
-      Object.assign(contribution, {
-        ...ContactContribution.empty,
-        method: newMethod
-      });
-      await getRepository(ContactContribution).save(contribution);
+      await this.cancelContribution(contact, false);
+      // // Clear the old payment data, set the new method
+      // Object.assign(contribution, {
+      //   //...ContactContribution.none,
+      //   method: newMethod
+      // });
+      // await getRepository(ContactContribution).save(contribution);
     }
 
-    await this.providerFromData(contribution, (p) =>
-      p.updatePaymentMethod(completedPaymentFlow)
-    );
+    const result = await new PaymentProviders[newMethod](
+      contribution
+    ).updatePaymentMethod(flow);
+
+    await this.setNewContribution(contribution, {
+      method: newMethod,
+      customerId: result.customerId,
+      mandateId: result.mandateId
+    });
   }
 
   async cancelContribution(
     contact: Contact,
     keepMandate = false
   ): Promise<void> {
-    log.info("Cancel contribution for contact " + contact.id);
-    await this.provider(contact, (p) => p.cancelContribution(keepMandate));
-    await getRepository(ContactContribution).update(
-      { contactId: contact.id },
-      { cancelledAt: new Date() }
-    );
+    return await this.withProvider(contact, async (provider, contribution) => {
+      log.info("Cancel contribution for contact " + contact.id);
+
+      await provider.cancelContribution(keepMandate);
+
+      await this.setNewContribution(contribution, {
+        cancelledAt: new Date()
+      });
+    });
   }
 
   /**
@@ -222,7 +232,7 @@ class PaymentService {
    */
   async permanentlyDeleteContact(contact: Contact): Promise<void> {
     log.info("Permanently delete payment data for contact " + contact.id);
-    await this.provider(contact, (p) => p.permanentlyDeleteContact());
+    await this.withProvider(contact, (p) => p.permanentlyDeleteContact());
 
     await runTransaction(async (em) => {
       await em
@@ -231,6 +241,25 @@ class PaymentService {
       await em
         .getRepository(Payment)
         .update({ contactId: contact.id }, { contactId: null });
+    });
+  }
+
+  private async setNewContribution(
+    contribution: ContactContribution,
+    updates: Partial<ContactContribution>
+  ) {
+    // Archive the current contribution if it's being overridden
+    if (updates.status === undefined || updates.status === "current") {
+      await getRepository(ContactContribution).update(contribution.id, {
+        status: null
+      });
+    }
+
+    // Remove ID so save is based on unique keys (contact, status)
+    const { id, ...contributionNoId } = contribution;
+    await getRepository(ContactContribution).save({
+      ...contributionNoId,
+      ...updates
     });
   }
 }

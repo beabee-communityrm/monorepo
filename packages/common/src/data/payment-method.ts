@@ -1,4 +1,5 @@
 export enum PaymentMethod {
+  None = "none",
   StripeCard = "s_card",
   StripeSEPA = "s_sepa",
   StripeBACS = "s_bacs",

@@ -31,6 +31,7 @@ import {
 } from "#type/index";
 
 const paymentProviders = {
+  [PaymentMethod.None]: StripeProvider, // TODO
   [PaymentMethod.StripeCard]: StripeProvider,
   [PaymentMethod.StripeSEPA]: StripeProvider,
   [PaymentMethod.StripeBACS]: StripeProvider,
@@ -224,7 +225,7 @@ class PaymentFlowService implements PaymentFlowProvider {
     completedPaymentFlow: CompletedPaymentFlow
   ): Promise<CompletedPaymentFlowData> {
     return paymentProviders[
-      completedPaymentFlow.joinForm.paymentMethod
+      completedPaymentFlow.paymentMethod
     ].getCompletedPaymentFlowData(completedPaymentFlow);
   }
 }
