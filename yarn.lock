@@ -651,7 +651,6 @@ __metadata:
     stripe: "npm:^15.9.0"
     tar-stream: "npm:^3.1.7"
     ts-jest: "npm:^29.1.4"
-    tsc-watch: "npm:^6.2.0"
     tsconfig: "npm:^7.0.0"
     typeorm: "npm:^0.3.20"
     typescript: "npm:^5.4.5"

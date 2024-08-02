@@ -29,7 +29,7 @@
     "dev:api:logs": "yarn exec bash -c 'while true; do docker compose logs -f --tail=0 api_app; sleep 1; done'",
     "build": "rimraf built/ && gulp build && tsc -p ./tsconfig.build.json",
     "generate:index": "ts-node scripts/generate-index.ts",
-    "watch": "tsc-watch -p tsconfig.build.json --noClear",
+    "watch": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "check": "concurrently 'yarn:check:*'",
     "check:tsc": "tsc --noEmit",
     "check:prettier": "prettier -c .",
