@@ -1,17 +1,21 @@
 <template>
-  <AuthBox :title="joinContent.title" :preview="preview">
+  <AuthBox v-if="generalContent.hideContribution">
+    <template v-if="!isEmbed">
+      <AppTitle>{{ joinContent.title }}</AppTitle>
+      <div class="content-message mb-6" v-html="joinContent.subtitle" />
+    </template>
+    <AppForm :button-text="buttonText" full-button @submit="onSubmit">
+      <AccountSection v-model:email="signUpData.email" class="mb-6" />
+    </AppForm>
+  </AuthBox>
+
+  <AuthBox v-else :title="joinContent.title" :preview="preview">
     <template #header>
       <div class="content-message" v-html="joinContent.subtitle" />
     </template>
 
     <AppForm :button-text="buttonText" full-button @submit="onSubmit">
-      <AccountSection
-        v-if="generalContent.hideContribution"
-        v-model:email="signUpData.email"
-        class="mb-6"
-      />
       <Contribution
-        v-else
         v-model:amount="signUpData.amount"
         v-model:period="signUpData.period"
         v-model:payFee="signUpData.payFee"
@@ -60,7 +64,7 @@
 import { computed, toRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import useVuelidate from '@vuelidate/core';
-import { generalContent } from '@store';
+import { generalContent, isEmbed } from '@store';
 import { useJoin } from './use-join';
 
 import beabeeLogo from '@assets/images/beabee-logo.png';
@@ -72,6 +76,7 @@ import AppForm from '@components/forms/AppForm.vue';
 import AuthBox from '@components/AuthBox.vue';
 
 import type { ContentJoinData, ContentPaymentData } from '@type';
+import AppTitle from '@components/AppTitle.vue';
 
 const props = defineProps<{
   joinContent: ContentJoinData;

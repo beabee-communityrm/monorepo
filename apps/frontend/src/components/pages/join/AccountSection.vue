@@ -1,26 +1,5 @@
 <template>
   <section>
-    <AppSubHeading>{{ t('join.memberAccount') }}</AppSubHeading>
-
-    <p class="mb-2 text-sm">
-      {{ t('join.memberAlready') }}
-      <a
-        v-if="isEmbed"
-        href="/auth/login"
-        target="_blank"
-        class="text-link underline hover:text-primary"
-      >
-        {{ t('join.login') }}
-      </a>
-      <router-link
-        v-else
-        to="/auth/login"
-        class="text-link underline hover:text-primary"
-      >
-        {{ t('join.login') }}
-      </router-link>
-    </p>
-
     <div class="mb-4">
       <AppInput
         v-model="emailProxy"
@@ -29,6 +8,25 @@
         name="email"
         required
       />
+
+      <p class="mt-2 text-sm">
+        {{ t('join.memberAlready') }}
+        <a
+          v-if="isEmbed"
+          href="/auth/login"
+          target="_blank"
+          class="text-link underline hover:text-primary"
+        >
+          {{ t('join.login') }}
+        </a>
+        <router-link
+          v-else
+          to="/auth/login"
+          class="text-link underline hover:text-primary"
+        >
+          {{ t('join.login') }}
+        </router-link>
+      </p>
     </div>
   </section>
 </template>
@@ -37,7 +35,6 @@
 import AppInput from '../../forms/AppInput.vue';
 import { useI18n } from 'vue-i18n';
 import { computed } from 'vue';
-import AppSubHeading from '../../AppSubHeading.vue';
 import { isEmbed } from '../../../store';
 
 const emit = defineEmits(['update:email']);
