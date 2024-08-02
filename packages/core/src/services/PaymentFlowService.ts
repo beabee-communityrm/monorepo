@@ -1,7 +1,7 @@
 import {
   Address,
   ContributionPeriod,
-  NewsletterStatus,
+  PaymentFlowParams,
   PaymentMethod,
   RESET_SECURITY_FLOW_TYPE
 } from "@beabee/beabee-common";
@@ -27,8 +27,7 @@ import {
   CompletedPaymentFlow,
   CompletedPaymentFlowData,
   PaymentFlow,
-  PaymentFlowData,
-  PaymentFlowParams
+  PaymentFlowData
 } from "#type/index";
 
 const paymentProviders = {

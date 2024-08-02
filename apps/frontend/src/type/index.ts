@@ -88,7 +88,6 @@ export * from './locale-prop';
 export * from './login-data';
 export * from './noop';
 export * from './notice-data';
-export * from './payment-flow-params';
 export * from './rule-group-with-empty';
 export * from './serial';
 export * from './set-contribution-data';

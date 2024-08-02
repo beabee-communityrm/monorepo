@@ -17,7 +17,6 @@ export * from "./newsletter-contact";
 export * from "./newsletter-provider";
 export * from "./param-value";
 export * from "./payment-flow-data";
-export * from "./payment-flow-params";
 export * from "./payment-flow";
 export * from "./referral-gift-form";
 export * from "./update-contribution-result";
