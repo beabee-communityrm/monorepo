@@ -1172,7 +1172,8 @@
     "steps": {
       "accountConfirmation": {
         "deliveryAddress": {
-          "showOptIn": "Nach Adresse fragen"
+          "showOptIn": "Nach Adresse fragen",
+          "title": "Adresse"
         },
         "description": "Stelle ein, welche persönlichen Informationen Du über deine Mitglieder sammeln willst.",
         "joinSurvey": {
@@ -1184,8 +1185,14 @@
           "title": "Anmelde-Fragebogen"
         },
         "newsletter": {
-          "groups": {},
-          "showOptIn": "Nach Newsletterabonnement fragen"
+          "groups": {
+            "add": "Neue Gruppe hinzufügen",
+            "help": "<p>Du kannst Nutzer entscheiden lassen, welche Newsletter-Gruppe sie abonnieren möchten. Die Gruppen müssen zuvor in Mailchimp eingerichtet werden. Wende dich an <a href=\"mailto:support{'@'}beabee.io\">support{'@'}beabee.io</a>, wenn du dabei Hilfe benötigst.</p>\n",
+            "title": "Newsletter-Gruppe"
+          },
+          "optInDisabled": "Der Text wird nicht genutzt, wenn die Newsletter-Gruppen sichtbar sind.",
+          "showOptIn": "Nach Newsletterabonnement fragen",
+          "title": "Newsletter"
         },
         "optInLabel": "Beschriftung Kontrollkästchen ",
         "optInText": "Text",

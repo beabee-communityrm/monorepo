@@ -739,7 +739,8 @@
         "deliveryAddress": {},
         "joinSurvey": {},
         "newsletter": {
-          "groups": {}
+          "groups": {},
+          "title": "Рассылка"
         }
       },
       "emails": {},

@@ -778,7 +778,8 @@
         "deliveryAddress": {},
         "joinSurvey": {},
         "newsletter": {
-          "groups": {}
+          "groups": {},
+          "title": "Newsletter"
         }
       },
       "emails": {},
