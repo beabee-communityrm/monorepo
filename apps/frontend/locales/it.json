@@ -157,6 +157,7 @@
       "none": "Nessuno"
     },
     "hello": "Ciao",
+    "id": "ID",
     "joined": "Iscritto",
     "loading": "Caricamento...",
     "login": "Login",
@@ -439,7 +440,11 @@
   "membershipBuilder": {
     "steps": {
       "accountConfirmation": {
-        "joinSurvey": {}
+        "deliveryAddress": {},
+        "joinSurvey": {},
+        "newsletter": {
+          "groups": {}
+        }
       },
       "emails": {},
       "intro": {},

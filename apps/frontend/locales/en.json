@@ -537,8 +537,10 @@
       "none": "None"
     },
     "hello": "Hello",
+    "id": "ID",
     "itemsPerPage": "{items} items per page",
     "joined": "Joined",
+    "label": "Label",
     "loading": "Loading...",
     "login": "Login",
     "newsletterStatus": {
@@ -1175,6 +1177,10 @@
   "membershipBuilder": {
     "steps": {
       "accountConfirmation": {
+        "deliveryAddress": {
+          "showOptIn": "Ask for postal address",
+          "title": "Postal address"
+        },
         "description": "Compose your confirmation screen",
         "joinSurvey": {
           "required": "Users must complete the survey before proceeding",
@@ -1184,11 +1190,19 @@
           "textIntro": "Tell your users a bit about why you are asking for this information",
           "title": "Join survey"
         },
+        "newsletter": {
+          "groups": {
+            "add": "Add new group",
+            "help": "<p>You can let users choose which newsletter groups they want to join. These groups must already be configured in Mailchimp, contact <a href=\"mailto:support{'@'}beabee.io\">support{'@'}beabee.io</a> if you are unsure how to use this feature.</p>\n",
+            "title": "Newsletter groups"
+          },
+          "optInDisabled": "Opt-in text is not used when newsletter groups are visible",
+          "showOptIn": "Ask to subscribe to newsletter",
+          "title": "Newsletter"
+        },
         "optInLabel": "Checkbox label",
         "optInText": "Text",
         "optInTitle": "Heading",
-        "showMailOptIn": "Ask for postal address",
-        "showNewsletterOptIn": "Ask to subscribe to newsletter",
         "text": "After joining, users will be asked to confirm their registration. Here you can set the details of the confirmation screen.",
         "title": "Account confirmation",
         "welcomeMessage": "Welcome message"

@@ -533,8 +533,10 @@
       "none": "None"
     },
     "hello": "Hallo",
+    "id": "ID",
     "itemsPerPage": "{items} Einträge pro Seite",
     "joined": "Mitglied seit",
+    "label": "Label",
     "loading": "Lädt...",
     "login": "Login",
     "newsletterStatus": {
@@ -1169,6 +1171,9 @@
   "membershipBuilder": {
     "steps": {
       "accountConfirmation": {
+        "deliveryAddress": {
+          "showOptIn": "Nach Adresse fragen"
+        },
         "description": "Stelle ein, welche persönlichen Informationen Du über deine Mitglieder sammeln willst.",
         "joinSurvey": {
           "required": "Die Mitglieder müssen den Fragebogen ausfüllen, ehe sie fortfahren können.",
@@ -1178,11 +1183,13 @@
           "textIntro": "Erkläre deinen Mitgliedern kurz, warum du weitere Informationen von ihnen haben möchtest.",
           "title": "Anmelde-Fragebogen"
         },
+        "newsletter": {
+          "groups": {},
+          "showOptIn": "Nach Newsletterabonnement fragen"
+        },
         "optInLabel": "Beschriftung Kontrollkästchen ",
         "optInText": "Text",
         "optInTitle": "Überschrift",
-        "showMailOptIn": "Nach Adresse fragen",
-        "showNewsletterOptIn": "Nach Newsletterabonnement fragen",
         "text": "Neue Mitglieder müssen ihre Registrierung in folgendem Bildschirm bestätigen. Außerdem werden hier persönliche Informationen abgefragt.",
         "title": "Persönliche Informationen abfragen",
         "welcomeMessage": "Willkommensnachricht"
