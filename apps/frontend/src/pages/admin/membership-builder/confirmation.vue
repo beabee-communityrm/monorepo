@@ -25,9 +25,12 @@ meta:
           />
         </div>
 
+        <AppSubHeading class="mt-6">
+          {{ stepT('deliveryAddress.title') }}
+        </AppSubHeading>
         <AppCheckbox
           v-model="setupContent.showMailOptIn"
-          :label="stepT('showMailOptIn')"
+          :label="stepT('deliveryAddress.showOptIn')"
           class="mb-4 font-semibold"
         />
 
@@ -55,9 +58,12 @@ meta:
           </div>
         </template>
 
+        <AppSubHeading class="mt-6">
+          {{ stepT('newsletter.title') }}
+        </AppSubHeading>
         <AppCheckbox
           v-model="setupContent.showNewsletterOptIn"
-          :label="stepT('showNewsletterOptIn')"
+          :label="stepT('newsletter.showOptIn')"
           class="mb-4 font-semibold"
         />
 
@@ -80,12 +86,43 @@ meta:
             <AppInput
               v-model="setupContent.newsletterOptIn"
               :label="stepT('optInLabel')"
-              required
+              :required="setupContent.newsletterGroups.length === 0"
+              :disabled="setupContent.newsletterGroups.length > 0"
+            />
+            <AppInputHelp
+              v-if="setupContent.newsletterGroups.length > 0"
+              :message="stepT('newsletter.optInDisabled')"
             />
           </div>
+          <AppSectionHeading>{{
+            stepT('newsletter.groups.title')
+          }}</AppSectionHeading>
+          <div
+            class="content-i18n mb-4"
+            v-html="stepT('newsletter.groups.help')"
+          />
+          <AppRepeatable
+            v-model="setupContent.newsletterGroups"
+            :new-item="() => ({ id: '', label: '' })"
+            :add-label="stepT('newsletter.groups.add')"
+            class="mb-4"
+          >
+            <template #default="{ item }">
+              <div class="flex-1">
+                <AppInput v-model="item.id" :label="t('common.id')" required />
+              </div>
+              <div class="flex-1">
+                <AppInput
+                  v-model="item.label"
+                  :label="t('common.label')"
+                  required
+                />
+              </div>
+            </template>
+          </AppRepeatable>
         </template>
 
-        <AppSubHeading>
+        <AppSubHeading class="mt-6">
           {{ stepT('joinSurvey.title') }}
         </AppSubHeading>
         <p class="mb-4">{{ stepT('joinSurvey.text') }}</p>
@@ -144,6 +181,8 @@ import { fetchCallouts } from '@utils/api/callout';
 import { fetchContent, updateContent } from '@utils/api/content';
 
 import type { GetCalloutData } from '@type';
+import AppRepeatable from '@components/forms/AppRepeatable.vue';
+import AppSectionHeading from '@components/AppSectionHeading.vue';
 
 const setupContent = ref<ContentJoinSetupData>();
 const openCallouts = ref<GetCalloutData[]>([]);

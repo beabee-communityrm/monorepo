@@ -339,7 +339,11 @@
   "membershipBuilder": {
     "steps": {
       "accountConfirmation": {
-        "joinSurvey": {}
+        "deliveryAddress": {},
+        "joinSurvey": {},
+        "newsletter": {
+          "groups": {}
+        }
       },
       "emails": {},
       "intro": {},

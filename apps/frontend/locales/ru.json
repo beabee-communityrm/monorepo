@@ -736,7 +736,12 @@
   "membershipBuilder": {
     "steps": {
       "accountConfirmation": {
-        "joinSurvey": {}
+        "deliveryAddress": {},
+        "joinSurvey": {},
+        "newsletter": {
+          "groups": {},
+          "title": "Рассылка"
+        }
       },
       "emails": {},
       "intro": {},

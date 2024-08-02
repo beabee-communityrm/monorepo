@@ -324,8 +324,10 @@
       "none": "Nenhuma"
     },
     "hello": "Olá",
+    "id": "ID",
     "itemsPerPage": "{items} itens por página",
     "joined": "Juntaste-te",
+    "label": "Label",
     "loading": "A carregar...",
     "login": "Login",
     "newsletterStatus": {
@@ -773,7 +775,12 @@
   "membershipBuilder": {
     "steps": {
       "accountConfirmation": {
-        "joinSurvey": {}
+        "deliveryAddress": {},
+        "joinSurvey": {},
+        "newsletter": {
+          "groups": {},
+          "title": "Newsletter"
+        }
       },
       "emails": {},
       "intro": {},

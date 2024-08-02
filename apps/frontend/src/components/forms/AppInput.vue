@@ -28,37 +28,36 @@
  -->
 <template>
   <AppLabel v-if="label" :label="label" :required="required" />
-  <div class="flex items-center">
+  <div class="flex items-center" :class="disabled && 'opacity-60'">
     <div v-if="$slots.before" class="flex-0 mr-2"><slot name="before" /></div>
     <div
       class="flex flex-1 items-center overflow-hidden rounded border focus-within:shadow-input"
       :class="
         hasError
           ? 'border-danger-70 bg-danger-10'
-          : 'border-primary-40 bg-white'
+          : disabled
+            ? 'border-primary-40 bg-grey-lighter'
+            : 'border-primary-40 bg-white'
       "
     >
       <span v-if="prefix" class="flex-0 px-2">{{ prefix }}</span>
-      <div
-        class="flex-1"
+      <input
+        v-model.trim="value"
+        class="w-full flex-1 bg-white/0 p-2 leading-[20px] focus:outline-none"
         :class="{
           'border-l border-primary-40': prefix,
           'border-r border-primary-40': suffix,
         }"
-      >
-        <input
-          v-model.trim="value"
-          class="w-full bg-white/0 p-2 leading-[20px] focus:outline-none"
-          :type="type"
-          :name="name"
-          :required="required"
-          :min="min"
-          :max="max"
-          :pattern="pattern"
-          v-bind="$attrs"
-          @blur="validation.$touch"
-        />
-      </div>
+        :type="type"
+        :name="name"
+        :required="required"
+        :disabled="disabled"
+        :min="min"
+        :max="max"
+        :pattern="pattern"
+        v-bind="$attrs"
+        @blur="validation.$touch"
+      />
       <span v-if="suffix" class="flex-0 px-2">{{ suffix }}</span>
     </div>
     <div v-if="$slots.after" class="flex-0 ml-2"><slot name="after" /></div>
@@ -95,6 +94,7 @@ const props = withDefaults(
     label?: string;
     infoMessage?: string;
     required?: boolean;
+    disabled?: boolean;
     min?: number | string;
     max?: number | string;
     sameAs?: number | string;
