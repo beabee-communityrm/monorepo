@@ -27,8 +27,8 @@ class ContactExporter extends BaseContactTransformer<
       Joined: contact.joined.toISOString(),
       Tags: contact.profile.tags.join(", "),
       ContributionType: contact.contributionType,
-      ContributionMonthlyAmount: contact.contributionMonthlyAmount,
-      ContributionPeriod: contact.contributionPeriod,
+      ContributionMonthlyAmount: contact.contribution.monthlyAmount,
+      ContributionPeriod: contact.contribution.period,
       ContributionDescription: contact.contributionDescription,
       ContributionCancelled:
         contact.contribution.cancelledAt?.toISOString() || "",
@@ -51,7 +51,8 @@ class ContactExporter extends BaseContactTransformer<
     qb.orderBy(`${fieldPrefix}joined`);
     qb.leftJoinAndSelect(`${fieldPrefix}roles`, "roles");
     qb.leftJoinAndSelect(`${fieldPrefix}profile`, "profile");
-    qb.leftJoinAndSelect(`${fieldPrefix}contribution`, "contribution");
+    qb.leftJoinAndSelect(`${fieldPrefix}contributions`, "contributions");
+    qb.addOrderBy("contributions.createdAt", "DESC");
   }
 
   async export(

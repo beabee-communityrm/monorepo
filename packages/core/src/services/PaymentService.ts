@@ -51,10 +51,12 @@ class PaymentService {
     const contribution = await getRepository(
       ContactContribution
     ).findOneByOrFail({
-      contactId: contact.id
+      contactId: contact.id,
+      status: "current"
     });
-    // No need to refetch contact, just add it in
-    return { ...contribution, contact };
+    // No need to do a join on contact
+    contribution.contact = contact;
+    return contribution;
   }
 
   async getContributionBy(

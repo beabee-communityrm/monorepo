@@ -83,7 +83,7 @@ export default class GCProvider extends PaymentProvider {
     // result in double charging
     return (
       (useExistingMandate &&
-        this.contact.contributionPeriod === "monthly" &&
+        this.data.period === "monthly" &&
         paymentForm.period === "monthly") ||
       !(this.data.mandateId && (await hasPendingPayment(this.data.mandateId)))
     );
@@ -106,7 +106,7 @@ export default class GCProvider extends PaymentProvider {
     if (this.data.subscriptionId) {
       if (
         this.contact.membership?.isActive &&
-        this.contact.contributionPeriod === paymentForm.period
+        this.data.period === paymentForm.period
       ) {
         subscription = await updateSubscription(
           this.data.subscriptionId,
@@ -140,7 +140,7 @@ export default class GCProvider extends PaymentProvider {
         this.data.mandateId,
         renewalDate,
         paymentForm,
-        this.contact.contributionMonthlyAmount || 0
+        this.data.monthlyAmount || 0
       ));
 
     log.info("Activate contribution for " + this.contact.id, {

@@ -71,8 +71,12 @@ export class Contact {
   @OneToOne("ContactProfile", "contact")
   profile!: ContactProfile;
 
-  @OneToOne("ContactContribution", "contact")
-  contribution!: ContactContribution;
+  @OneToMany("ContactContribution", "contact")
+  contributions!: ContactContribution[];
+
+  get contribution(): ContactContribution {
+    return this.contributions.find((c) => c.status === "current")!;
+  }
 
   contributionInfo?: ContributionInfo;
 

@@ -149,7 +149,7 @@ export default class StripeProvider extends PaymentProvider {
         this.data.customerId,
         {
           ...paymentForm,
-          monthlyAmount: this.contact.contributionMonthlyAmount || 0
+          monthlyAmount: this.data.monthlyAmount || 0
         },
         this.method,
         calcRenewalDate(this.contact)

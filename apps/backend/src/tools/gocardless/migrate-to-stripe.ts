@@ -77,9 +77,9 @@ runApp(async () => {
     )
     // Only select those which haven't cancelled and use GoCardless
     .innerJoinAndSelect(
-      "contact.contribution",
+      "contact.contributions",
       "cc",
-      "cc.cancelledAt IS NULL AND cc.method = :method",
+      "cc.cancelledAt IS NULL AND cc.method = :method AND cc.status = 'current'",
       { method: PaymentMethod.GoCardlessDirectDebit }
     )
     .getMany();
