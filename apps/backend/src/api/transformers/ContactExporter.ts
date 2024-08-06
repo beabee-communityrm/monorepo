@@ -51,8 +51,11 @@ class ContactExporter extends BaseContactTransformer<
     qb.orderBy(`${fieldPrefix}joined`);
     qb.leftJoinAndSelect(`${fieldPrefix}roles`, "roles");
     qb.leftJoinAndSelect(`${fieldPrefix}profile`, "profile");
-    qb.leftJoinAndSelect(`${fieldPrefix}contributions`, "contributions");
-    qb.addOrderBy("contributions.createdAt", "DESC");
+    qb.leftJoinAndSelect(
+      `${fieldPrefix}contributions`,
+      "contributions",
+      "contributions.status = 'current'"
+    );
   }
 
   async export(
