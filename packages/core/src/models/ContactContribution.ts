@@ -62,20 +62,4 @@ export class ContactContribution {
       ? null
       : getActualAmount(this.monthlyAmount, this.period);
   }
-
-  // static get none(): Omit<ContactContribution, "contact" | "contactId"> {
-  //   return {
-  //     method: null,
-  //     customerId: null,
-  //     mandateId: null,
-  //     subscriptionId: null,
-  //     monthlyAmount: null,
-  //     period: null,
-  //     payFee: null,
-  //     nextAmount: null,
-  //     cancelledAt: null,
-
-  //     amount: null
-  //   };
-  // }
 }

@@ -4,6 +4,7 @@ import { Contact } from "#models/index";
 import { PaymentProvider } from ".";
 
 import {
+  CancelContributionResult,
   CompletedPaymentFlow,
   ContributionInfo,
   UpdateContributionResult
@@ -29,7 +30,12 @@ export default class ManualProvider extends PaymentProvider {
     };
   }
 
-  async cancelContribution(keepMandate: boolean): Promise<void> {}
+  async cancelContribution(): Promise<CancelContributionResult> {
+    return {
+      mandateId: null,
+      subscriptionId: null
+    };
+  }
   async updateContact(updates: Partial<Contact>): Promise<void> {}
 
   async updatePaymentMethod(

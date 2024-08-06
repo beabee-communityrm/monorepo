@@ -24,6 +24,7 @@ import { NoPaymentMethod } from "#errors/index";
 import config from "#config/config";
 
 import {
+  CancelContributionResult,
   CompletedPaymentFlow,
   ContributionInfo,
   UpdateContributionResult
@@ -158,7 +159,9 @@ export default class GCProvider extends PaymentProvider {
     };
   }
 
-  async cancelContribution(keepMandate: boolean): Promise<void> {
+  async cancelContribution(
+    keepMandate: boolean
+  ): Promise<CancelContributionResult> {
     log.info("Cancel subscription for " + this.contact.id, { keepMandate });
 
     const subscriptionId = this.data.subscriptionId;
@@ -170,6 +173,11 @@ export default class GCProvider extends PaymentProvider {
     if (subscriptionId) {
       await gocardless.subscriptions.cancel(subscriptionId);
     }
+
+    return {
+      mandateId: keepMandate ? mandateId : null,
+      subscriptionId: null
+    };
   }
 
   async updatePaymentMethod(

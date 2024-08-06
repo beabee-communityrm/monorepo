@@ -32,7 +32,7 @@ const PaymentProviders = {
   [PaymentMethod.StripeBACS]: StripeProvider,
   [PaymentMethod.StripePayPal]: StripeProvider,
   [PaymentMethod.GoCardlessDirectDebit]: GCProvider
-};
+} satisfies Record<PaymentMethod, typeof PaymentProvider>;
 
 export function getMembershipStatus(contact: Contact): MembershipStatus {
   return contact.membership
@@ -195,12 +195,6 @@ class PaymentService {
 
       await this.cancelContribution(contact, false);
       contribution = await this.getContribution(contact);
-      // // Clear the old payment data, set the new method
-      // Object.assign(contribution, {
-      //   //...ContactContribution.none,
-      //   method: newMethod
-      // });
-      // await getRepository(ContactContribution).save(contribution);
     }
 
     const result = await new PaymentProviders[newMethod](
@@ -222,10 +216,11 @@ class PaymentService {
     return await this.withProvider(contact, async (provider, contribution) => {
       log.info("Cancel contribution for contact " + contact.id);
 
-      await provider.cancelContribution(keepMandate);
+      const result = await provider.cancelContribution(keepMandate);
 
       await this.setNewContribution(contribution, {
-        cancelledAt: new Date()
+        cancelledAt: new Date(),
+        ...result
       });
     });
   }

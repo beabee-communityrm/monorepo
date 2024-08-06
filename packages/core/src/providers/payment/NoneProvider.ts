@@ -1,3 +1,4 @@
+import { CancelContributionResult } from "#type/cancel-contribution-results";
 import { ContributionInfo } from "#type/contribution-info";
 import { UpdateContributionResult } from "#type/update-contribution-result";
 import { UpdatePaymentMethodResult } from "#type/update-payment-method-result";
@@ -12,7 +13,12 @@ export default class NoneProvider extends PaymentProvider {
     return {};
   }
 
-  async cancelContribution(): Promise<void> {}
+  async cancelContribution(): Promise<CancelContributionResult> {
+    return {
+      mandateId: null,
+      subscriptionId: null
+    };
+  }
   async updateContact(): Promise<void> {}
 
   updateContribution(): Promise<UpdateContributionResult> {

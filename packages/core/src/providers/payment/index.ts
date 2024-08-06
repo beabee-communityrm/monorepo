@@ -5,11 +5,12 @@ import { getRepository } from "#database";
 import { Contact, ContactContribution } from "#models/index";
 
 import {
+  CancelContributionResult,
   CompletedPaymentFlow,
   ContributionInfo,
-  UpdateContributionResult
+  UpdateContributionResult,
+  UpdatePaymentMethodResult
 } from "#type/index";
-import { UpdatePaymentMethodResult } from "#type/update-payment-method-result";
 
 export abstract class PaymentProvider {
   protected readonly data: ContactContribution;
@@ -31,7 +32,9 @@ export abstract class PaymentProvider {
     paymentForm: PaymentForm
   ): Promise<boolean>;
 
-  abstract cancelContribution(keepMandate: boolean): Promise<void>;
+  abstract cancelContribution(
+    keepMandate: boolean
+  ): Promise<CancelContributionResult>;
 
   abstract getContributionInfo(): Promise<Partial<ContributionInfo>>;
 

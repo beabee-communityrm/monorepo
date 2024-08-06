@@ -16,7 +16,7 @@ import {
   updateSubscription
 } from "#lib/stripe";
 import { log as mainLogger } from "#logging";
-import { calcRenewalDate, getChargeableAmount } from "#utils/payment";
+import { calcRenewalDate } from "#utils/payment";
 
 import { Contact } from "#models/index";
 
@@ -25,6 +25,7 @@ import { NoPaymentMethod } from "#errors/index";
 import config from "#config/config";
 
 import {
+  CancelContributionResult,
   CompletedPaymentFlow,
   ContributionInfo,
   UpdateContributionResult
@@ -63,13 +64,20 @@ export default class StripeProvider extends PaymentProvider {
     };
   }
 
-  async cancelContribution(keepMandate: boolean): Promise<void> {
+  async cancelContribution(
+    keepMandate: boolean
+  ): Promise<CancelContributionResult> {
     if (this.data.mandateId && !keepMandate) {
       await stripe.paymentMethods.detach(this.data.mandateId);
     }
     if (this.data.subscriptionId) {
       await deleteSubscription(this.data.subscriptionId);
     }
+
+    return {
+      mandateId: keepMandate ? this.data.mandateId : null,
+      subscriptionId: null
+    };
   }
 
   async updatePaymentMethod(
