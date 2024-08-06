@@ -141,13 +141,13 @@ runApp(async () => {
         // We do this directly rather than using updatePaymentMethod as it's not
         // meant for updating payment methods that are already associated with
         // the customer in Stripe
-        await getRepository(ContactContribution).update(contact.id, {
+        await getRepository(ContactContribution).save({
+          contactId: contact.id,
           method: stripeTypeToPaymentMethod(migrationRow.type),
           customerId: migrationRow.customer_id,
           mandateId: migrationRow.source_id,
           subscriptionId: null,
-          payFee: null,
-          nextAmount: null
+          payFee: null
         });
 
         await stripe.customers.update(migrationRow.customer_id, {
