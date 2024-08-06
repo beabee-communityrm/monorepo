@@ -185,7 +185,7 @@ class PaymentService {
   ): Promise<void> {
     log.info("Update payment method for contact " + contact.id, { flow });
 
-    const contribution = await this.getContribution(contact);
+    let contribution = await this.getContribution(contact);
     const newMethod = flow.paymentMethod;
     if (contribution.method !== newMethod) {
       log.info("Changing payment method, cancelling previous contribution", {
@@ -194,6 +194,7 @@ class PaymentService {
       });
 
       await this.cancelContribution(contact, false);
+      contribution = await this.getContribution(contact);
       // // Clear the old payment data, set the new method
       // Object.assign(contribution, {
       //   //...ContactContribution.none,
@@ -209,7 +210,8 @@ class PaymentService {
     await this.setNewContribution(contribution, {
       method: newMethod,
       customerId: result.customerId,
-      mandateId: result.mandateId
+      mandateId: result.mandateId,
+      cancelledAt: null
     });
   }
 
