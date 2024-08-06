@@ -365,8 +365,6 @@ class ContactsService {
 
     if (expiryDate) {
       await this.extendContactRole(contact, "member", expiryDate);
-    } else {
-      await this.updateContactRole(contact, "member", { dateExpires: null });
     }
 
     if (wasManual) {

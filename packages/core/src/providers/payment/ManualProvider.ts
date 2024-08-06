@@ -46,7 +46,6 @@ export default class ManualProvider extends PaymentProvider {
   ): Promise<UpdateContributionResult> {
     return {
       startNow: true,
-      expiryDate: null,
       subscriptionId: ""
     };
   }
