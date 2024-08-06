@@ -248,18 +248,20 @@ class PaymentService {
     contribution: ContactContribution,
     updates: Partial<ContactContribution>
   ) {
-    // Archive the current contribution if it's being overridden
-    if (updates.status === undefined || updates.status === "current") {
-      await getRepository(ContactContribution).update(contribution.id, {
-        status: null
-      });
-    }
+    await runTransaction(async (em) => {
+      // Archive the current contribution if it's being overridden
+      if (updates.status === undefined || updates.status === "current") {
+        await em.getRepository(ContactContribution).update(contribution.id, {
+          status: null
+        });
+      }
 
-    // Remove ID so save is based on unique keys (contact, status)
-    const { id, ...contributionNoId } = contribution;
-    await getRepository(ContactContribution).save({
-      ...contributionNoId,
-      ...updates
+      // Remove ID so save is based on unique keys (contact, status)
+      const { id, createdAt, updatedAt, ...contributionNoId } = contribution;
+      await em.getRepository(ContactContribution).save({
+        ...contributionNoId,
+        ...updates
+      });
     });
   }
 }
