@@ -13,6 +13,7 @@ import { Contact, Payment, ContactContribution } from "#models/index";
 import { PaymentProvider } from "#providers/payment";
 import GCProvider from "#providers/payment/GCProvider";
 import ManualProvider from "#providers/payment/ManualProvider";
+import NoneProvider from "#providers/payment/NoneProvider";
 import StripeProvider from "#providers/payment/StripeProvider";
 
 import {
@@ -24,7 +25,8 @@ import {
 const log = mainLogger.child({ app: "payment-service" });
 
 const PaymentProviders = {
-  [PaymentMethod.None]: ManualProvider,
+  [PaymentMethod.None]: NoneProvider,
+  [PaymentMethod.Manual]: ManualProvider,
   [PaymentMethod.StripeCard]: StripeProvider,
   [PaymentMethod.StripeSEPA]: StripeProvider,
   [PaymentMethod.StripeBACS]: StripeProvider,

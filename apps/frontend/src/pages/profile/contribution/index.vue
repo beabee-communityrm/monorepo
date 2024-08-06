@@ -44,7 +44,10 @@ meta:
       />
 
       <PaymentSource
-        v-if="contribution.paymentSource?.method"
+        v-if="
+          contribution.paymentSource &&
+          contribution.paymentSource.method !== PaymentMethod.Manual
+        "
         class="mb-7 md:mb-9"
         :email="email"
         :payment-source="contribution.paymentSource"

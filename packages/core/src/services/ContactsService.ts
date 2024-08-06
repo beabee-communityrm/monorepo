@@ -457,7 +457,10 @@ class ContactsService {
     });
 
     await PaymentService.updatePaymentMethod(contact, {
-      paymentMethod: PaymentMethod.None,
+      paymentMethod:
+        data.type === ContributionType.Manual
+          ? PaymentMethod.Manual
+          : PaymentMethod.None,
       mandateId: data.source || "",
       customerId: data.reference || ""
     });

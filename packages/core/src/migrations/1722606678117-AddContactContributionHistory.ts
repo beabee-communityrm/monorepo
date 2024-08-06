@@ -25,7 +25,13 @@ export class AddContactContributionHistory1722606678117
       WHERE "contact"."id" = "contact_contribution"."contactId"`
     );
     await queryRunner.query(
-      `UPDATE "contact_contribution" SET "method" = 'none' WHERE "method" IS NULL`
+      `UPDATE "contact_contribution"
+      SET "method" = CASE WHEN "contact"."contributionType" = 'Manual' THEN 'manual' ELSE 'none' END
+      FROM "contact"
+      WHERE
+        "contact"."id" = "contact_contribution"."contactId" AND
+        "contact"."contributionType" != 'Automatic' AND
+        "method" IS NULL`
     );
 
     // await queryRunner.query(
@@ -62,7 +68,7 @@ export class AddContactContributionHistory1722606678117
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `DELETE FROM "contact_contribution" WHERE "status" != 'current'`
+      `DELETE FROM "contact_contribution" WHERE "status" IS NULL OR "status" != 'current'`
     );
 
     await queryRunner.query(
@@ -75,7 +81,7 @@ export class AddContactContributionHistory1722606678117
       `ALTER TABLE "contact_contribution" ALTER COLUMN "method" DROP NOT NULL`
     );
     await queryRunner.query(
-      `UPDATE "contact_contribution" SET "method" = NULL WHERE "method" = 'none'`
+      `UPDATE "contact_contribution" SET "method" = NULL WHERE "method" = 'none' OR "method" = 'manual'`
     );
     await queryRunner.query(
       `ALTER TABLE "contact_contribution" DROP CONSTRAINT "PK_f1a243bb5ecb7d0f234cc02b7be"`

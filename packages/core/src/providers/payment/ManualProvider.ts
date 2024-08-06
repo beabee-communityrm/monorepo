@@ -1,4 +1,4 @@
-import { PaymentForm } from "@beabee/beabee-common";
+import { PaymentForm, PaymentMethod } from "@beabee/beabee-common";
 
 import { Contact } from "#models/index";
 import { PaymentProvider } from ".";
@@ -18,7 +18,7 @@ export default class ManualProvider extends PaymentProvider {
   async getContributionInfo(): Promise<Partial<ContributionInfo>> {
     return {
       paymentSource: {
-        method: null,
+        method: PaymentMethod.Manual,
         ...(this.data.customerId && {
           reference: this.data.customerId
         }),

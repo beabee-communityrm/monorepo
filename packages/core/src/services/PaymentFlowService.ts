@@ -17,6 +17,7 @@ import ResetSecurityFlowService from "./ResetSecurityFlowService";
 import { JoinFlow, JoinForm, Contact } from "#models/index";
 
 import { PaymentFlowProvider } from "#providers/payment-flow";
+import NoneProvider from "#providers/payment-flow/NoneProvider";
 import StripeProvider from "#providers/payment-flow/StripeProvider";
 import GCProvider from "#providers/payment-flow/GCProvider";
 
@@ -31,7 +32,8 @@ import {
 } from "#type/index";
 
 const paymentProviders = {
-  [PaymentMethod.None]: StripeProvider, // TODO
+  [PaymentMethod.None]: NoneProvider,
+  [PaymentMethod.Manual]: NoneProvider,
   [PaymentMethod.StripeCard]: StripeProvider,
   [PaymentMethod.StripeSEPA]: StripeProvider,
   [PaymentMethod.StripeBACS]: StripeProvider,
