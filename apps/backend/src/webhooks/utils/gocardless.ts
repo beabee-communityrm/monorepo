@@ -88,28 +88,20 @@ async function confirmPayment(payment: Payment): Promise<void> {
     return;
   }
 
-  // TODO: Keep list of valid subscriptions
-  // if (payment.subscriptionId !== gcData.subscriptionId) {
-  //   log.error("Mismatched subscription IDs for payment " + payment.id, {
-  //     gcSubscriptionId: payment.subscriptionId,
-  //     ourSubscriptionId: gcData.subscriptionId
-  //   });
-  //   return;
-  // }
-
   await ContactsService.extendContactRole(
     payment.contact,
     "member",
     await calcConfirmedPaymentPeriodEnd(payment)
   );
 
-  const contribution = await PaymentService.getContribution(payment.contact);
-  if (payment.amount === contribution.nextAmount?.chargeable) {
-    await ContactsService.updateContact(payment.contact, {
-      contributionMonthlyAmount: contribution.nextAmount?.monthly
-    });
-    await PaymentService.updateData(payment.contact, { nextAmount: null });
-  }
+  // TODO
+  // const contribution = await PaymentService.getContribution(payment.contact);
+  // if (payment.amount === contribution.nextAmount?.chargeable) {
+  //   await ContactsService.updateContact(payment.contact, {
+  //     contributionMonthlyAmount: contribution.nextAmount?.monthly
+  //   });
+  //   await PaymentService.updateData(payment.contact, { nextAmount: null });
+  // }
   // TODO: resubscribe to newsletter
 }
 
@@ -224,7 +216,8 @@ export async function cancelMandate(mandateId: string): Promise<void> {
       mandateId
     });
 
-    await PaymentService.updateData(contribution.contact, { mandateId: null });
+    // TODO:
+    // await PaymentService.updateData(contribution.contact, { mandateId: null });
   } else {
     log.info("Unlinked mandate " + mandateId);
   }

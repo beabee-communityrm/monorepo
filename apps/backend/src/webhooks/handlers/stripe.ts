@@ -104,7 +104,8 @@ async function handleCustomerDeleted(customer: Stripe.Customer) {
       customerId: customer.id,
       contactId: contribution.contact.id
     });
-    await PaymentService.updateData(contribution.contact, { customerId: null });
+    // TODO:
+    // await PaymentService.updateData(contribution.contact, { customerId: null });
   }
 }
 
@@ -127,9 +128,10 @@ async function handleCustomerSubscriptionUpdated(
         `Subscription ${subscription.id} never started, revoking membership from ${contribution.contact.id}`
       );
       await ContactsService.revokeContactRole(contribution.contact, "member");
-      await PaymentService.updateData(contribution.contact, {
-        subscriptionId: null
-      });
+      // TODO
+      // await PaymentService.updateData(contribution.contact, {
+      //   subscriptionId: null
+      // });
     }
   }
 }
@@ -258,12 +260,13 @@ export async function handleInvoicePaid(invoice: Stripe.Invoice) {
     add(new Date(line.period.end * 1000), config.gracePeriod)
   );
 
-  if (line.amount === contribution.nextAmount?.chargeable) {
-    await ContactsService.updateContact(contribution.contact, {
-      contributionMonthlyAmount: contribution.nextAmount.monthly
-    });
-    await PaymentService.updateData(contribution.contact, { nextAmount: null });
-  }
+  // TODO
+  // if (line.amount === contribution.nextAmount?.chargeable) {
+  //   await ContactsService.updateContact(contribution.contact, {
+  //     contributionMonthlyAmount: contribution.nextAmount.monthly
+  //   });
+  //   await PaymentService.updateData(contribution.contact, { nextAmount: null });
+  // }
 }
 
 /**
@@ -282,7 +285,8 @@ async function handlePaymentMethodDetached(
       mandateId: paymentMethod.id,
       contactId: contribution.contact.id
     });
-    await PaymentService.updateData(contribution.contact, { mandateId: null });
+    // TODO
+    // await PaymentService.updateData(contribution.contact, { mandateId: null });
   }
 }
 
