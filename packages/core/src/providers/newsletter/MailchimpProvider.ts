@@ -31,6 +31,7 @@ interface Batch {
 interface OperationNoBody {
   method: "GET" | "DELETE" | "POST";
   path: string;
+  params?: string;
   operation_id: string;
   body?: undefined;
 }
@@ -38,6 +39,7 @@ interface OperationNoBody {
 interface OperationWithBody {
   method: "POST" | "PATCH" | "PUT";
   path: string;
+  params?: Record<string, string>;
   body: string;
   operation_id: string;
 }
@@ -242,7 +244,8 @@ export default class MailchimpProvider implements NewsletterProvider {
   ): Promise<void> {
     await this.instance.put(
       this.emailUrl(oldEmail),
-      nlContactToMCMember(member)
+      nlContactToMCMember(member),
+      { params: { skip_merge_validation: true } }
     );
   }
 
@@ -251,6 +254,7 @@ export default class MailchimpProvider implements NewsletterProvider {
       const mcMember = nlContactToMCMember(contact);
       return {
         path: this.emailUrl(contact.email),
+        params: { skip_merge_validation: "true" },
         method: "PUT",
         body: JSON.stringify({ ...mcMember, status_if_new: mcMember.status }),
         operation_id: `update_${contact.email}`
