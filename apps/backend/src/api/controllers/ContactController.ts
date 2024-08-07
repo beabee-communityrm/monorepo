@@ -405,6 +405,10 @@ export class ContactController {
     }
 
     const completedFlow = await PaymentFlowService.completeJoinFlow(joinFlow);
+    if (!completedFlow) {
+      throw new NotFoundError();
+    }
+
     await PaymentService.updatePaymentMethod(target, completedFlow);
 
     return joinFlow;
