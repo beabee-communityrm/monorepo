@@ -93,9 +93,14 @@ class PaymentFlowService implements PaymentFlowProvider {
     return await getRepository(JoinFlow).findOneBy({ paymentFlowId });
   }
 
-  async completeJoinFlow(joinFlow: JoinFlow): Promise<CompletedPaymentFlow> {
+  async completeJoinFlow(
+    joinFlow: JoinFlow
+  ): Promise<CompletedPaymentFlow | undefined> {
     log.info("Completing join flow " + joinFlow.id);
-    const paymentFlow = await this.completePaymentFlow(joinFlow);
+    const paymentFlow =
+      joinFlow.joinForm.monthlyAmount > 0
+        ? await this.completePaymentFlow(joinFlow)
+        : undefined;
     await getRepository(JoinFlow).delete(joinFlow.id);
     return paymentFlow;
   }
@@ -161,13 +166,10 @@ class PaymentFlowService implements PaymentFlowProvider {
       lastname: joinFlow.joinForm.lastname || ""
     };
 
-    let completedPaymentFlow: CompletedPaymentFlow | undefined;
+    const completedPaymentFlow = await this.completeJoinFlow(joinFlow);
     let deliveryAddress: Address | undefined;
 
-    // Only complete join flow for those with a contribution
-    // TODO: rework join flow to properly accommodate no contributions
-    if (joinFlow.joinForm.monthlyAmount !== 0) {
-      completedPaymentFlow = await this.completeJoinFlow(joinFlow);
+    if (completedPaymentFlow) {
       const paymentData =
         await this.getCompletedPaymentFlowData(completedPaymentFlow);
 
