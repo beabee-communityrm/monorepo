@@ -159,7 +159,7 @@ export default class StripeProvider extends PaymentProvider {
           ...paymentForm,
           monthlyAmount: this.data.monthlyAmount || 0
         },
-        this.method,
+        this.data.method,
         calcRenewalDate(this.contact)
       );
       // Set this for the updateOrCreateContribution call below
@@ -187,7 +187,7 @@ export default class StripeProvider extends PaymentProvider {
       return await updateSubscription(
         this.data.subscriptionId,
         paymentForm,
-        this.method
+        this.data.method
       );
     } else {
       // Cancel any existing (failing) subscriptions
@@ -197,7 +197,7 @@ export default class StripeProvider extends PaymentProvider {
       const subscription = await createSubscription(
         this.data.customerId!, // customerId is asserted in updateContribution
         paymentForm,
-        this.method,
+        this.data.method,
         calcRenewalDate(this.contact)
       );
       return { subscription, startNow: true };

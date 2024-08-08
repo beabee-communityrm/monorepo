@@ -15,12 +15,10 @@ import {
 export abstract class PaymentProvider {
   protected readonly data: ContactContribution;
   protected readonly contact: Contact;
-  protected readonly method: PaymentMethod;
 
   constructor(data: ContactContribution) {
     this.data = data;
     this.contact = data.contact;
-    this.method = data.method as PaymentMethod;
   }
 
   protected async updateData() {
