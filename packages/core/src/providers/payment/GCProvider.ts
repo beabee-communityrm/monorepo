@@ -156,32 +156,28 @@ class GCProvider implements PaymentProvider {
       completedPaymentFlow
     });
 
-    // Save before cancelling to stop the webhook triggering a cancelled email
-    // contribution.subscriptionId = null;
-    // TODO await this.updateData();
+    let subscriptionId = contribution.subscriptionId;
 
     if (contribution.mandateId) {
-      // This will also cancel the subscription
-      await gocardless.mandates.cancel(contribution.mandateId);
-    }
+      await this.cancelContribution(contribution, false);
 
-    if (
-      !!contribution.subscriptionId &&
-      contribution.period &&
-      contribution.monthlyAmount
-    ) {
-      await this.updateContribution(contribution, {
-        monthlyAmount: contribution.monthlyAmount,
-        period: contribution.period,
-        payFee: !!contribution.payFee,
-        prorate: false
-      });
-      // TODO: handle result
+      // Recreate the subscription on the new mandate
+      if (subscriptionId && contribution.period && contribution.monthlyAmount) {
+        const subscription = await createSubscription(contribution.mandateId, {
+          monthlyAmount: contribution.monthlyAmount,
+          period: contribution.period,
+          payFee: !!contribution.payFee,
+          prorate: false
+        });
+
+        subscriptionId = subscription.id!;
+      }
     }
 
     return {
       customerId: completedPaymentFlow.customerId,
-      mandateId: completedPaymentFlow.mandateId
+      mandateId: completedPaymentFlow.mandateId,
+      subscriptionId
     };
   }
 
@@ -197,11 +193,6 @@ class GCProvider implements PaymentProvider {
     contribution: ContactContribution,
     paymentForm: PaymentForm
   ): Promise<UpdateContributionResult> {
-    log.info("Update contribution for " + contribution.contact.id, {
-      userId: contribution.contact.id,
-      paymentForm
-    });
-
     if (!contribution.mandateId) {
       throw new NoPaymentMethod();
     }
@@ -226,9 +217,9 @@ class GCProvider implements PaymentProvider {
       ));
 
     log.info("Activate contribution for " + contribution.contact.id, {
-      userId: contribution.contact.id,
       paymentForm,
       startNow,
+      subscriptionId: subscription.id,
       expiryDate
     });
 

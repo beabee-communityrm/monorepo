@@ -210,8 +210,7 @@ class StripeProvider implements PaymentProvider {
       paymentForm
     );
 
-    log.info("Activate contribution for  " + contribution.contact.id, {
-      userId: contribution.contact.id,
+    log.info("Activate contribution for " + contribution.contact.id, {
       paymentForm,
       startNow,
       subscriptionId: subscription.id

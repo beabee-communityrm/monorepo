@@ -152,6 +152,8 @@ class PaymentService {
     contact: Contact,
     paymentForm: PaymentForm
   ): Promise<UpdateContributionResult> {
+    log.info("Update contribution for contact " + contact.id, { paymentForm });
+
     return await this.withProvider(contact, async (provider, contribution) => {
       const result = await provider.updateContribution(
         contribution,
@@ -178,6 +180,7 @@ class PaymentService {
 
     let contribution = await this.getContribution(contact);
     const newMethod = flow.paymentMethod;
+
     if (contribution.method !== newMethod) {
       log.info("Changing payment method, cancelling previous contribution", {
         contribution,
