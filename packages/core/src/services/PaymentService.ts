@@ -34,16 +34,6 @@ const paymentProviders = {
   [PaymentMethod.GoCardlessDirectDebit]: GCProvider
 } satisfies Record<PaymentMethod, PaymentProvider>;
 
-export function getMembershipStatus(contact: Contact): MembershipStatus {
-  return contact.membership
-    ? contact.membership.isActive
-      ? contact.contribution.cancelledAt
-        ? MembershipStatus.Expiring
-        : MembershipStatus.Active
-      : MembershipStatus.Expired
-    : MembershipStatus.None;
-}
-
 type ProviderFn<T> = (
   provider: PaymentProvider,
   contribution: ContactContribution
@@ -124,7 +114,7 @@ class PaymentService {
           ...(contact.membership?.dateExpires && {
             membershipExpiryDate: contact.membership.dateExpires
           }),
-          membershipStatus: getMembershipStatus(contact),
+          membershipStatus: contact.membershipStatus,
           ...(await provider.getContributionInfo(contribution)),
           ...(contribution.cancelledAt && {
             cancellationDate: contribution.cancelledAt

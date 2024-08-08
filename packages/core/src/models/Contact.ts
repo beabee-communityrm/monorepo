@@ -2,7 +2,8 @@ import {
   ContributionInfo,
   ContributionType,
   ContributionPeriod,
-  RoleType
+  RoleType,
+  MembershipStatus
 } from "@beabee/beabee-common";
 import {
   Column,
@@ -80,6 +81,10 @@ export class Contact {
 
   contributionInfo?: ContributionInfo;
 
+  /**
+   * Get the active roles of the contact. The roles must be loaded for this to
+   * work.
+   */
   get activeRoles(): RoleType[] {
     const ret = this.roles.filter((p) => p.isActive).map((p) => p.type);
     if (ret.includes("superadmin")) {
@@ -101,15 +106,9 @@ export class Contact {
       : "";
   }
 
-  get contributionAmount(): number | null {
-    return this.contributionMonthlyAmount === null
-      ? null
-      : getActualAmount(
-          this.contributionMonthlyAmount,
-          this.contributionPeriod!
-        );
-  }
-
+  /**
+   * @deprecated
+   */
   get contributionDescription(): string {
     if (this.contributionType === "Gift") {
       return "Gift";
@@ -120,16 +119,44 @@ export class Contact {
     ) {
       return "None";
     } else {
-      return `${config.currencySymbol}${this.contributionAmount}/${
+      const amount =
+        this.contributionMonthlyAmount === null
+          ? null
+          : getActualAmount(
+              this.contributionMonthlyAmount,
+              this.contributionPeriod!
+            );
+      return `${config.currencySymbol}${amount}/${
         this.contributionPeriod === "monthly" ? "month" : "year"
       }`;
     }
   }
 
+  /**
+   * Get the membership role of the contact. The roles must be loaded for this
+   * to work.
+   */
   get membership(): ContactRole | undefined {
     return this.roles.find((p) => p.type === "member");
   }
 
+  /**
+   * Get the membership status of the contact. The roles and contributions must
+   * be loaded for this to work.
+   */
+  get membershipStatus(): MembershipStatus {
+    return this.membership
+      ? this.membership.isActive
+        ? this.contribution.cancelledAt
+          ? MembershipStatus.Expiring
+          : MembershipStatus.Active
+        : MembershipStatus.Expired
+      : MembershipStatus.None;
+  }
+
+  /**
+   * @deprecated
+   */
   get setupComplete(): boolean {
     return this.password.hash !== "";
   }

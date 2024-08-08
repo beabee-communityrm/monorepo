@@ -2,8 +2,6 @@ import { RoleType } from "@beabee/beabee-common";
 import { stringify } from "csv-stringify/sync";
 import { SelectQueryBuilder } from "typeorm";
 
-import { getMembershipStatus } from "@beabee/core/services/PaymentService";
-
 import { GetExportQuery } from "@api/dto/BaseDto";
 import { ExportContactDto } from "@api/dto/ContactDto";
 
@@ -34,7 +32,7 @@ class ContactExporter extends BaseContactTransformer<
         contact.contribution.cancelledAt?.toISOString() || "",
       MembershipStarts: contact.membership?.dateAdded.toISOString() || "",
       MembershipExpires: contact.membership?.dateExpires?.toISOString() || "",
-      MembershipStatus: getMembershipStatus(contact),
+      MembershipStatus: contact.membershipStatus,
       NewsletterStatus: contact.profile.newsletterStatus,
       DeliveryOptIn: contact.profile.deliveryOptIn,
       DeliveryAddressLine1: contact.profile.deliveryAddress?.line1 || "",
