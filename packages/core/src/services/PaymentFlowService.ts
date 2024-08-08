@@ -99,10 +99,9 @@ class PaymentFlowService implements PaymentFlowProvider {
     joinFlow: JoinFlow
   ): Promise<CompletedPaymentFlow | undefined> {
     log.info("Completing join flow " + joinFlow.id);
-    const paymentFlow =
-      joinFlow.joinForm.monthlyAmount > 0
-        ? await this.completePaymentFlow(joinFlow)
-        : undefined;
+    const paymentFlow = joinFlow.paymentFlowId
+      ? await this.completePaymentFlow(joinFlow)
+      : undefined;
     await getRepository(JoinFlow).delete(joinFlow.id);
     return paymentFlow;
   }
