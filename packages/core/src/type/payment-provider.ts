@@ -3,7 +3,7 @@ import { PaymentForm } from "@beabee/beabee-common";
 import {
   CancelContributionResult,
   CompletedPaymentFlow,
-  ContributionInfo,
+  GetContributionInfoResult,
   UpdateContributionResult,
   UpdatePaymentMethodResult
 } from ".";
@@ -15,14 +15,14 @@ export interface PaymentProvider {
     paymentForm: PaymentForm
   ): Promise<boolean>;
 
+  getContributionInfo(
+    contribution: ContactContribution
+  ): Promise<GetContributionInfoResult>;
+
   cancelContribution(
     contribution: ContactContribution,
     keepMandate: boolean
   ): Promise<CancelContributionResult>;
-
-  getContributionInfo(
-    contribution: ContactContribution
-  ): Promise<Partial<ContributionInfo>>;
 
   updateContact(
     contribution: ContactContribution,

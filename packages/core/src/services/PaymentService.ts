@@ -1,4 +1,5 @@
 import {
+  ContributionInfo,
   MembershipStatus,
   PaymentForm,
   PaymentMethod
@@ -17,7 +18,6 @@ import StripeProvider from "#providers/payment/StripeProvider";
 
 import {
   CompletedPaymentFlow,
-  ContributionInfo,
   PaymentProvider,
   UpdateContributionResult
 } from "#type/index";
