@@ -1,9 +1,4 @@
-import {
-  ContributionType,
-  PaymentForm,
-  PaymentSource
-} from "@beabee/beabee-common";
-import { add } from "date-fns";
+import { ContributionType, PaymentForm } from "@beabee/beabee-common";
 import Stripe from "stripe";
 
 import {
@@ -25,7 +20,7 @@ import config from "#config/config";
 import {
   CancelContributionResult,
   CompletedPaymentFlow,
-  ContributionInfo,
+  GetContributionInfoResult,
   PaymentProvider,
   UpdateContributionResult,
   UpdatePaymentMethodResult
@@ -34,6 +29,14 @@ import {
 const log = mainLogger.child({ app: "stripe-payment-provider" });
 
 class StripeProvider implements PaymentProvider {
+  /**
+   * Check if contribution can be changed. Stripe contributions can always be
+   * changed if there is a mandate available
+   *
+   * @param contribution The contribution
+   * @param useExistingMandate Whether or not to use the existing mandate
+   * @returns if the contribution can be changed
+   */
   async canChangeContribution(
     contribution: ContactContribution,
     useExistingMandate: boolean
@@ -41,14 +44,20 @@ class StripeProvider implements PaymentProvider {
     return !useExistingMandate || !!contribution.mandateId;
   }
 
+  /**
+   * Fetch information about the payment source
+   *
+   * @param contribution The contribution
+   * @returns The additional information
+   */
   async getContributionInfo(
     contribution: ContactContribution
-  ): Promise<Partial<ContributionInfo>> {
-    let paymentSource: PaymentSource | undefined;
+  ): Promise<GetContributionInfoResult> {
     try {
-      paymentSource = contribution.mandateId
+      const paymentSource = contribution.mandateId
         ? await manadateToSource(contribution.mandateId)
         : undefined;
+      return { ...(paymentSource && { paymentSource }) };
     } catch (err) {
       // 404s can happen on dev as we don't use real mandate IDs
       if (
@@ -62,11 +71,16 @@ class StripeProvider implements PaymentProvider {
       }
     }
 
-    return {
-      ...(paymentSource && { paymentSource })
-    };
+    return {};
   }
 
+  /**
+   * Cancel the subscription and optionally the mandate
+   *
+   * @param contribution The contribution
+   * @param keepMandate Whether or not to keep the mandate
+   * @returns Updated contribution information
+   */
   async cancelContribution(
     contribution: ContactContribution,
     keepMandate: boolean
@@ -84,6 +98,15 @@ class StripeProvider implements PaymentProvider {
     };
   }
 
+  /**
+   * Update the payment method for a contribution.  This attaches a new payment
+   * method to a customer and detaches any existing one. It will create the
+   * Stripe customer if it doesn't yet exist.
+   *
+   * @param contribution The contribution
+   * @param flow The completed payment flow
+   * @returns Updated contribution information
+   */
   async updatePaymentMethod(
     contribution: ContactContribution,
     flow: CompletedPaymentFlow
@@ -114,12 +137,14 @@ class StripeProvider implements PaymentProvider {
         customer: customerId
       });
       await stripe.customers.update(customerId, customerData);
+      // TODO: Update tax_id_data if VAT number was passed through the payment flow
     } else {
       log.info("Create new customer");
       const customer = await stripe.customers.create({
         email: contribution.contact.email,
         name: `${contribution.contact.firstname} ${contribution.contact.lastname}`,
         payment_method: flow.mandateId,
+        // Add VAT number if it was passed through the payment flow
         ...(flow.vatNumber && {
           tax_id_data: [
             {
@@ -144,6 +169,14 @@ class StripeProvider implements PaymentProvider {
     };
   }
 
+  /**
+   * Update a contribution using the payment form. This will either create a new
+   * subscription or update the existing one.
+   *
+   * @param contribution The contribution
+   * @param paymentForm The payment form
+   * @returns Updated contribution information
+   */
   async updateContribution(
     contribution: ContactContribution,
     paymentForm: PaymentForm
@@ -177,6 +210,13 @@ class StripeProvider implements PaymentProvider {
       paymentForm
     );
 
+    log.info("Activate contribution for  " + contribution.contact.id, {
+      userId: contribution.contact.id,
+      paymentForm,
+      startNow,
+      subscriptionId: subscription.id
+    });
+
     return {
       startNow,
       expiryDate: add(
@@ -187,35 +227,12 @@ class StripeProvider implements PaymentProvider {
     };
   }
 
-  private async updateOrCreateContribution(
-    contribution: ContactContribution,
-    paymentForm: PaymentForm
-  ): Promise<{ subscription: Stripe.Subscription; startNow: boolean }> {
-    if (
-      contribution.subscriptionId &&
-      contribution.contact.membership?.isActive
-    ) {
-      log.info("Update subscription " + contribution.subscriptionId);
-      return await updateSubscription(
-        contribution.subscriptionId,
-        paymentForm,
-        contribution.method
-      );
-    } else {
-      // Cancel any existing (failing) subscriptions
-      await this.cancelContribution(contribution, true);
-
-      log.info("Create subscription");
-      const subscription = await createSubscription(
-        contribution.customerId!, // customerId is asserted in updateContribution
-        paymentForm,
-        contribution.method,
-        calcRenewalDate(contribution.contact)
-      );
-      return { subscription, startNow: true };
-    }
-  }
-
+  /**
+   * Update a contact's email, firstname or lastname in Stripe if they've changed
+   *
+   * @param contribution The contribution
+   * @param updates The updates to apply
+   */
   async updateContact(
     contribution: ContactContribution,
     updates: Partial<Contact>
@@ -234,6 +251,11 @@ class StripeProvider implements PaymentProvider {
     }
   }
 
+  /**
+   * Permanently delete a customer from Stripe
+   *
+   * @param contribution The contribution
+   */
   async permanentlyDeleteContact(
     contribution: ContactContribution
   ): Promise<void> {
@@ -241,5 +263,44 @@ class StripeProvider implements PaymentProvider {
       await stripe.customers.del(contribution.customerId);
     }
   }
+
+  /**
+   * Update a subscription if a successful one exists, otherwise cancel any
+   * failing ones and create a new one
+   *
+   * @param contribution The contribution
+   * @param paymentForm The payment form
+   * @returns The Stripe subscription and whether it should start now
+   */
+  private async updateOrCreateContribution(
+    contribution: ContactContribution,
+    paymentForm: PaymentForm
+  ): Promise<{ subscription: Stripe.Subscription; startNow: boolean }> {
+    if (
+      contribution.subscriptionId &&
+      contribution.contact.membership?.isActive
+    ) {
+      log.info("Update subscription " + contribution.subscriptionId);
+      return await updateSubscription(
+        contribution.subscriptionId,
+        paymentForm,
+        contribution.method
+      );
+    } else {
+      // Cancel any existing (failing) subscription
+      await this.cancelContribution(contribution, true);
+
+      log.info("Creating new subscription");
+      const subscription = await createSubscription(
+        contribution.customerId!, // customerId is asserted in updateContribution
+        paymentForm,
+        contribution.method,
+        calcRenewalDate(contribution.contact)
+      );
+
+      return { subscription, startNow: true };
+    }
+  }
 }
+
 export default new StripeProvider();

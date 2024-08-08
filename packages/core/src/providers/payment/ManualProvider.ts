@@ -1,11 +1,14 @@
-import { PaymentForm, PaymentMethod } from "@beabee/beabee-common";
+import {
+  ContributionInfo,
+  PaymentForm,
+  PaymentMethod
+} from "@beabee/beabee-common";
 
 import { ContactContribution } from "#models/index";
 
 import {
   CancelContributionResult,
   CompletedPaymentFlow,
-  ContributionInfo,
   PaymentProvider,
   UpdateContributionResult,
   UpdatePaymentMethodResult
