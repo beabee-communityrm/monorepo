@@ -6,11 +6,10 @@ import {
 
 import { getRepository, runTransaction } from "#database";
 import { log as mainLogger } from "#logging";
-import { calcRenewalDate, getActualAmount } from "#utils/payment";
+import { calcRenewalDate } from "#utils/payment";
 
 import { Contact, Payment, ContactContribution } from "#models/index";
 
-import { PaymentProvider } from "#providers/payment";
 import GCProvider from "#providers/payment/GCProvider";
 import ManualProvider from "#providers/payment/ManualProvider";
 import NoneProvider from "#providers/payment/NoneProvider";
@@ -19,12 +18,13 @@ import StripeProvider from "#providers/payment/StripeProvider";
 import {
   CompletedPaymentFlow,
   ContributionInfo,
+  PaymentProvider,
   UpdateContributionResult
 } from "#type/index";
 
 const log = mainLogger.child({ app: "payment-service" });
 
-const PaymentProviders = {
+const paymentProviders = {
   [PaymentMethod.None]: NoneProvider,
   [PaymentMethod.Manual]: ManualProvider,
   [PaymentMethod.StripeCard]: StripeProvider,
@@ -32,7 +32,7 @@ const PaymentProviders = {
   [PaymentMethod.StripeBACS]: StripeProvider,
   [PaymentMethod.StripePayPal]: StripeProvider,
   [PaymentMethod.GoCardlessDirectDebit]: GCProvider
-} satisfies Record<PaymentMethod, typeof PaymentProvider>;
+} satisfies Record<PaymentMethod, PaymentProvider>;
 
 export function getMembershipStatus(contact: Contact): MembershipStatus {
   return contact.membership
@@ -78,10 +78,7 @@ class PaymentService {
     fn: ProviderFn<T>
   ): Promise<T> {
     const contribution = await this.getContribution(contact);
-    return await fn(
-      new PaymentProviders[contribution.method](contribution),
-      contribution
-    );
+    return await fn(paymentProviders[contribution.method], contribution);
   }
 
   async canChangeContribution(
@@ -89,8 +86,9 @@ class PaymentService {
     useExistingPaymentSource: boolean,
     paymentForm: PaymentForm
   ): Promise<boolean> {
-    return await this.withProvider(contact, async (provider) => {
+    return await this.withProvider(contact, async (provider, contribution) => {
       const canChange = await provider.canChangeContribution(
+        contribution,
         useExistingPaymentSource,
         paymentForm
       );
@@ -127,7 +125,7 @@ class PaymentService {
             membershipExpiryDate: contact.membership.dateExpires
           }),
           membershipStatus: getMembershipStatus(contact),
-          ...(await provider.getContributionInfo()),
+          ...(await provider.getContributionInfo(contribution)),
           ...(contribution.cancelledAt && {
             cancellationDate: contribution.cancelledAt
           }),
@@ -157,7 +155,7 @@ class PaymentService {
     updates: Partial<Contact>
   ): Promise<void> {
     log.info("Update contact for contact " + contact.id);
-    await this.withProvider(contact, (p) => p.updateContact(updates));
+    await this.withProvider(contact, (p, c) => p.updateContact(c, updates));
   }
 
   async updateContribution(
@@ -165,7 +163,10 @@ class PaymentService {
     paymentForm: PaymentForm
   ): Promise<UpdateContributionResult> {
     return await this.withProvider(contact, async (provider, contribution) => {
-      const result = await provider.updateContribution(paymentForm);
+      const result = await provider.updateContribution(
+        contribution,
+        paymentForm
+      );
 
       await this.setNewContribution(contribution, {
         status: result.startNow ? "current" : "pending",
@@ -197,9 +198,10 @@ class PaymentService {
       contribution = await this.getContribution(contact);
     }
 
-    const result = await new PaymentProviders[newMethod](
-      contribution
-    ).updatePaymentMethod(flow);
+    const result = await paymentProviders[newMethod].updatePaymentMethod(
+      contribution,
+      flow
+    );
 
     await this.setNewContribution(contribution, {
       method: newMethod,
@@ -216,7 +218,10 @@ class PaymentService {
     return await this.withProvider(contact, async (provider, contribution) => {
       log.info("Cancel contribution for contact " + contact.id);
 
-      const result = await provider.cancelContribution(keepMandate);
+      const result = await provider.cancelContribution(
+        contribution,
+        keepMandate
+      );
 
       await this.setNewContribution(contribution, {
         cancelledAt: new Date(),
@@ -233,7 +238,7 @@ class PaymentService {
    */
   async permanentlyDeleteContact(contact: Contact): Promise<void> {
     log.info("Permanently delete payment data for contact " + contact.id);
-    await this.withProvider(contact, (p) => p.permanentlyDeleteContact());
+    await this.withProvider(contact, (p, c) => p.permanentlyDeleteContact(c));
 
     await runTransaction(async (em) => {
       await em

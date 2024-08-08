@@ -1,10 +1,12 @@
-import { CancelContributionResult } from "#type/cancel-contribution-results";
-import { ContributionInfo } from "#type/contribution-info";
-import { UpdateContributionResult } from "#type/update-contribution-result";
-import { UpdatePaymentMethodResult } from "#type/update-payment-method-result";
-import { PaymentProvider } from ".";
+import { ContributionInfo } from "@beabee/beabee-common";
+import {
+  CancelContributionResult,
+  PaymentProvider,
+  UpdateContributionResult,
+  UpdatePaymentMethodResult
+} from "#type/index";
 
-export default class NoneProvider extends PaymentProvider {
+class NoneProvider implements PaymentProvider {
   canChangeContribution(): Promise<boolean> {
     throw new Error("Method not implemented.");
   }
@@ -33,3 +35,5 @@ export default class NoneProvider extends PaymentProvider {
 
   async permanentlyDeleteContact(): Promise<void> {}
 }
+
+export default new NoneProvider();

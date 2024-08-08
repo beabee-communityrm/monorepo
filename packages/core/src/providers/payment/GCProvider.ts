@@ -1,8 +1,4 @@
-import {
-  PaymentForm,
-  PaymentMethod,
-  PaymentSource
-} from "@beabee/beabee-common";
+import { PaymentForm, PaymentMethod } from "@beabee/beabee-common";
 import { Subscription } from "gocardless-nodejs";
 import moment from "moment";
 
@@ -15,9 +11,7 @@ import gocardless, {
 import { log as mainLogger } from "#logging";
 import { calcRenewalDate } from "#utils/payment";
 
-import { PaymentProvider } from ".";
-
-import { Contact } from "#models/index";
+import { Contact, ContactContribution } from "#models/index";
 
 import { NoPaymentMethod } from "#errors/index";
 
@@ -27,56 +21,58 @@ import {
   CancelContributionResult,
   CompletedPaymentFlow,
   ContributionInfo,
-  UpdateContributionResult
+  PaymentProvider,
+  UpdateContributionResult,
+  UpdatePaymentMethodResult
 } from "#type/index";
-import { UpdatePaymentMethodResult } from "#type/update-payment-method-result";
 
 const log = mainLogger.child({ app: "gc-payment-provider" });
 
-export default class GCProvider extends PaymentProvider {
-  async getContributionInfo(): Promise<Partial<ContributionInfo>> {
-    let paymentSource: PaymentSource | undefined;
-    let pendingPayment = false;
-
-    if (this.data.mandateId) {
-      try {
-        const mandate = await gocardless.mandates.get(this.data.mandateId);
+class GCProvider implements PaymentProvider {
+  async getContributionInfo(
+    contribution: ContactContribution
+  ): Promise<Partial<ContributionInfo>> {
+    try {
+      if (contribution.mandateId) {
+        const mandate = await gocardless.mandates.get(contribution.mandateId);
         const bankAccount = await gocardless.customerBankAccounts.get(
           mandate.links!.customer_bank_account!
         );
 
-        paymentSource = {
-          method: PaymentMethod.GoCardlessDirectDebit,
-          bankName: bankAccount.bank_name || "",
-          accountHolderName: bankAccount.account_holder_name || "",
-          accountNumberEnding: bankAccount.account_number_ending || ""
+        const pendingPayment = await hasPendingPayment(contribution.mandateId);
+
+        return {
+          paymentSource: {
+            method: PaymentMethod.GoCardlessDirectDebit,
+            bankName: bankAccount.bank_name || "",
+            accountHolderName: bankAccount.account_holder_name || "",
+            accountNumberEnding: bankAccount.account_number_ending || ""
+          },
+          hasPendingPayment: pendingPayment
         };
-        pendingPayment = await hasPendingPayment(this.data.mandateId);
-      } catch (err: any) {
-        // 404s can happen on dev as we don't use real mandate IDs
-        if (!(config.dev && err.response && err.response.status === 404)) {
-          throw err;
-        }
+      }
+    } catch (err: any) {
+      // 404s can happen on dev as we don't use real mandate IDs
+      if (!(config.dev && err.response && err.response.status === 404)) {
+        throw err;
       }
     }
 
-    return {
-      hasPendingPayment: pendingPayment,
-      ...(paymentSource && { paymentSource })
-    };
+    return {};
   }
 
   async canChangeContribution(
+    contribution: ContactContribution,
     useExistingMandate: boolean,
     paymentForm: PaymentForm
   ): Promise<boolean> {
     // No payment method available
-    if (useExistingMandate && !this.data.mandateId) {
+    if (useExistingMandate && !contribution.mandateId) {
       return false;
     }
 
     // Can always change contribution if there is no subscription
-    if (!this.data.subscriptionId) {
+    if (!contribution.subscriptionId) {
       return true;
     }
 
@@ -85,42 +81,46 @@ export default class GCProvider extends PaymentProvider {
     // result in double charging
     return (
       (useExistingMandate &&
-        this.data.period === "monthly" &&
+        contribution.period === "monthly" &&
         paymentForm.period === "monthly") ||
-      !(this.data.mandateId && (await hasPendingPayment(this.data.mandateId)))
+      !(
+        contribution.mandateId &&
+        (await hasPendingPayment(contribution.mandateId))
+      )
     );
   }
 
   async updateContribution(
+    contribution: ContactContribution,
     paymentForm: PaymentForm
   ): Promise<UpdateContributionResult> {
-    log.info("Update contribution for " + this.contact.id, {
-      userId: this.contact.id,
+    log.info("Update contribution for " + contribution.contact.id, {
+      userId: contribution.contact.id,
       paymentForm
     });
 
-    if (!this.data.mandateId) {
+    if (!contribution.mandateId) {
       throw new NoPaymentMethod();
     }
 
     let subscription: Subscription | undefined;
 
-    if (this.data.subscriptionId) {
+    if (contribution.subscriptionId) {
       if (
-        this.contact.membership?.isActive &&
-        this.data.period === paymentForm.period
+        contribution.contact.membership?.isActive &&
+        contribution.period === paymentForm.period
       ) {
         subscription = await updateSubscription(
-          this.data.subscriptionId,
+          contribution.subscriptionId,
           paymentForm
         );
       } else {
         // Cancel failed subscriptions or when period is changing
-        await this.cancelContribution(true);
+        await this.cancelContribution(contribution, true);
       }
     }
 
-    const renewalDate = calcRenewalDate(this.contact);
+    const renewalDate = calcRenewalDate(contribution.contact);
     let expiryDate;
 
     if (subscription) {
@@ -128,7 +128,7 @@ export default class GCProvider extends PaymentProvider {
     } else {
       log.info("Creating new subscription");
       subscription = await createSubscription(
-        this.data.mandateId,
+        contribution.mandateId,
         paymentForm,
         renewalDate
       );
@@ -139,14 +139,14 @@ export default class GCProvider extends PaymentProvider {
     const startNow =
       !renewalDate ||
       (await prorateSubscription(
-        this.data.mandateId,
+        contribution.mandateId,
         renewalDate,
         paymentForm,
-        this.data.monthlyAmount || 0
+        contribution.monthlyAmount || 0
       ));
 
-    log.info("Activate contribution for " + this.contact.id, {
-      userId: this.contact.id,
+    log.info("Activate contribution for " + contribution.contact.id, {
+      userId: contribution.contact.id,
       paymentForm,
       startNow,
       expiryDate
@@ -160,12 +160,15 @@ export default class GCProvider extends PaymentProvider {
   }
 
   async cancelContribution(
+    contribution: ContactContribution,
     keepMandate: boolean
   ): Promise<CancelContributionResult> {
-    log.info("Cancel subscription for " + this.contact.id, { keepMandate });
+    log.info("Cancel subscription for " + contribution.contact.id, {
+      keepMandate
+    });
 
-    const subscriptionId = this.data.subscriptionId;
-    const mandateId = this.data.mandateId;
+    const subscriptionId = contribution.subscriptionId;
+    const mandateId = contribution.mandateId;
 
     if (mandateId && !keepMandate) {
       await gocardless.mandates.cancel(mandateId);
@@ -181,30 +184,31 @@ export default class GCProvider extends PaymentProvider {
   }
 
   async updatePaymentMethod(
+    contribution: ContactContribution,
     completedPaymentFlow: CompletedPaymentFlow
   ): Promise<UpdatePaymentMethodResult> {
-    log.info("Update payment source for " + this.contact.id, {
-      userId: this.contact.id,
-      data: this.data,
+    log.info("Update payment source for " + contribution.contact.id, {
+      userId: contribution.contact.id,
+      data: contribution,
       completedPaymentFlow
     });
 
-    const hadSubscription = !!this.data.subscriptionId;
+    const hadSubscription = !!contribution.subscriptionId;
 
     // Save before cancelling to stop the webhook triggering a cancelled email
-    // this.data.subscriptionId = null;
+    // contribution.subscriptionId = null;
     // TODO await this.updateData();
 
-    if (this.data.mandateId) {
+    if (contribution.mandateId) {
       // This will also cancel the subscription
-      await gocardless.mandates.cancel(this.data.mandateId);
+      await gocardless.mandates.cancel(contribution.mandateId);
     }
 
-    if (hadSubscription && this.data.period && this.data.monthlyAmount) {
-      await this.updateContribution({
-        monthlyAmount: this.data.monthlyAmount,
-        period: this.data.period,
-        payFee: !!this.data.payFee,
+    if (hadSubscription && contribution.period && contribution.monthlyAmount) {
+      await this.updateContribution(contribution, {
+        monthlyAmount: contribution.monthlyAmount,
+        period: contribution.period,
+        payFee: !!contribution.payFee,
         prorate: false
       });
     }
@@ -215,25 +219,32 @@ export default class GCProvider extends PaymentProvider {
     };
   }
 
-  async updateContact(updates: Partial<Contact>): Promise<void> {
+  async updateContact(
+    contribution: ContactContribution,
+    updates: Partial<Contact>
+  ): Promise<void> {
     if (
       (updates.email || updates.firstname || updates.lastname) &&
-      this.data.customerId
+      contribution.customerId
     ) {
       log.info("Update contact in GoCardless");
-      await gocardless.customers.update(this.data.customerId, {
+      await gocardless.customers.update(contribution.customerId, {
         ...(updates.email && { email: updates.email }),
         ...(updates.firstname && { given_name: updates.firstname }),
         ...(updates.lastname && { family_name: updates.lastname })
       });
     }
   }
-  async permanentlyDeleteContact(): Promise<void> {
-    if (this.data.mandateId) {
-      await gocardless.mandates.cancel(this.data.mandateId);
+  async permanentlyDeleteContact(
+    contribution: ContactContribution
+  ): Promise<void> {
+    if (contribution.mandateId) {
+      await gocardless.mandates.cancel(contribution.mandateId);
     }
-    if (this.data.customerId) {
-      await gocardless.customers.remove(this.data.customerId);
+    if (contribution.customerId) {
+      await gocardless.customers.remove(contribution.customerId);
     }
   }
 }
+
+export default new GCProvider();

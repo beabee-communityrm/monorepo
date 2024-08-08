@@ -1,30 +1,35 @@
 import { PaymentForm, PaymentMethod } from "@beabee/beabee-common";
 
-import { Contact } from "#models/index";
-import { PaymentProvider } from ".";
+import { ContactContribution } from "#models/index";
 
 import {
   CancelContributionResult,
   CompletedPaymentFlow,
   ContributionInfo,
-  UpdateContributionResult
+  PaymentProvider,
+  UpdateContributionResult,
+  UpdatePaymentMethodResult
 } from "#type/index";
-import { UpdatePaymentMethodResult } from "#type/update-payment-method-result";
 
-export default class ManualProvider extends PaymentProvider {
-  async canChangeContribution(useExistingMandate: boolean): Promise<boolean> {
+class ManualProvider implements PaymentProvider {
+  async canChangeContribution(
+    contribution: ContactContribution,
+    useExistingMandate: boolean
+  ): Promise<boolean> {
     return !useExistingMandate;
   }
 
-  async getContributionInfo(): Promise<Partial<ContributionInfo>> {
+  async getContributionInfo(
+    contribution: ContactContribution
+  ): Promise<Partial<ContributionInfo>> {
     return {
       paymentSource: {
         method: PaymentMethod.Manual,
-        ...(this.data.customerId && {
-          reference: this.data.customerId
+        ...(contribution.customerId && {
+          reference: contribution.customerId
         }),
-        ...(this.data.mandateId && {
-          source: this.data.mandateId
+        ...(contribution.mandateId && {
+          source: contribution.mandateId
         })
       }
     };
@@ -36,9 +41,10 @@ export default class ManualProvider extends PaymentProvider {
       subscriptionId: null
     };
   }
-  async updateContact(updates: Partial<Contact>): Promise<void> {}
+  async updateContact(): Promise<void> {}
 
   async updatePaymentMethod(
+    contribution: ContactContribution,
     flow: CompletedPaymentFlow
   ): Promise<UpdatePaymentMethodResult> {
     return {
@@ -48,6 +54,7 @@ export default class ManualProvider extends PaymentProvider {
   }
 
   async updateContribution(
+    contribution: ContactContribution,
     paymentForm: PaymentForm
   ): Promise<UpdateContributionResult> {
     return {
@@ -58,3 +65,5 @@ export default class ManualProvider extends PaymentProvider {
 
   async permanentlyDeleteContact(): Promise<void> {}
 }
+
+export default new ManualProvider();
