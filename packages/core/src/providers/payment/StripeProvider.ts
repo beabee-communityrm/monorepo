@@ -219,10 +219,7 @@ class StripeProvider implements PaymentProvider {
 
     return {
       startNow,
-      expiryDate: add(
-        new Date(subscription.current_period_end * 1000),
-        config.gracePeriod
-      ),
+      expiryDate: new Date(subscription.current_period_end * 1000),
       subscriptionId: subscription.id
     };
   }

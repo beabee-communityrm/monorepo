@@ -48,6 +48,8 @@ import {
   NotFoundError,
   UnauthorizedError
 } from "#errors/index";
+import { add } from "date-fns";
+import config from "#config/config";
 
 export type PartialContact = Pick<Contact, "email" | "contributionType"> &
   Partial<Contact>;
@@ -364,7 +366,11 @@ class ContactsService {
     });
 
     if (expiryDate) {
-      await this.extendContactRole(contact, "member", expiryDate);
+      await this.extendContactRole(
+        contact,
+        "member",
+        add(expiryDate, config.gracePeriod)
+      );
     }
 
     if (wasManual) {
