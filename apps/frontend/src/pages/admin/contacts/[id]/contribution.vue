@@ -56,7 +56,7 @@ meta:
   </App2ColGrid>
 </template>
 <script lang="ts" setup>
-import { ContributionType } from '@beabee/beabee-common';
+import { ContributionType, PaymentMethod } from '@beabee/beabee-common';
 import { onBeforeMount, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
@@ -95,7 +95,7 @@ onBeforeMount(async () => {
     type: contact.contribution.type,
     amount: contact.contribution.amount,
     period: contact.contribution.period,
-    ...(contact.contribution.paymentSource?.method === null
+    ...(contact.contribution.paymentSource?.method === PaymentMethod.Manual
       ? {
           source: contact.contribution.paymentSource.source,
           reference: contact.contribution.paymentSource.reference,

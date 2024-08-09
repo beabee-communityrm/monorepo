@@ -2,6 +2,7 @@
 import {
   ContributionPeriod,
   type Paginated,
+  type PaymentFlowParams,
   PaymentMethod,
   type RoleType,
   type UpdateContactData,
@@ -21,7 +22,6 @@ import type {
   GetPaymentData,
   GetPaymentsQuery,
   ContactRoleData,
-  PaymentFlowParams,
   Serial,
   SetContributionData,
   StartContributionData,

@@ -7,7 +7,7 @@
         {{
           t('contribution.manualPayment', {
             source:
-              (modelValue.paymentSource?.method === null &&
+              (modelValue.paymentSource?.method === PaymentMethod.Manual &&
                 modelValue.paymentSource.source) ||
               t('contribution.manualPaymentSource'),
           })

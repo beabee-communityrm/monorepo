@@ -26,7 +26,6 @@ import { v4 as uuidv4 } from "uuid";
 import { log as mainLogger } from "#logging";
 
 import { differenceInMonths, format } from "date-fns";
-import moment from "moment";
 
 import { getChargeableAmount } from "#utils/payment";
 
@@ -250,22 +249,6 @@ async function getNextPendingPayment(query: Record<string, unknown>) {
       return payments[0];
     }
   }
-}
-
-export async function getSubscriptionNextChargeDate(
-  subscription: Subscription
-): Promise<Date> {
-  const pendingPayment = await getNextPendingPayment({
-    subscription: subscription.id,
-    "charge_date[gte]": moment.utc().format("YYYY-MM-DD")
-  });
-
-  // Check for pending payments because subscription.upcoming_payments doesn't
-  // include pending payments
-  const date = pendingPayment
-    ? pendingPayment.charge_date
-    : subscription.upcoming_payments![0].charge_date;
-  return moment.utc(date).add(config.gracePeriod).toDate();
 }
 
 export async function createSubscription(
