@@ -1,4 +1,5 @@
 import {
+  ContributionInfo,
   ContributionPeriod,
   ContributionType,
   GetContactWith,
@@ -36,8 +37,6 @@ import {
 import { ForceUpdateContributionDto } from "@api/dto/ContributionDto";
 
 import IsPassword from "@api/validators/IsPassword";
-
-import { ContributionInfo } from "@beabee/core/type";
 
 const contactSortFields = [
   "firstname",
