@@ -6,7 +6,6 @@ import {
   ContentEmailData,
   ContentGeneralData,
   ContentJoinData,
-  ContentJoinPeriodData,
   ContentJoinSetupData,
   ContentProfileData,
   ContentShareData,
@@ -93,12 +92,12 @@ export class GetContentGeneralDto implements ContentGeneralData<Locale> {
   footerLinks!: LinkDto[];
 }
 
-class GetContentJoinPeriodDto implements ContentJoinPeriodData {
-  @IsEnum(ContributionPeriod)
-  name!: ContributionPeriod;
+class GetContentJoinPresetAmountsDto {
+  @IsNumber({}, { each: true })
+  [ContributionPeriod.Monthly]!: number[];
 
   @IsNumber({}, { each: true })
-  presetAmounts!: number[];
+  [ContributionPeriod.Annually]!: number[];
 }
 
 export class GetContentJoinDto implements ContentJoinData {
@@ -114,9 +113,9 @@ export class GetContentJoinDto implements ContentJoinData {
   @IsEnum(ContributionPeriod)
   initialPeriod!: ContributionPeriod;
 
-  @ValidateNested({ each: true })
-  @Type(() => GetContentJoinPeriodDto)
-  periods!: GetContentJoinPeriodDto[];
+  @ValidateNested()
+  @Type(() => GetContentJoinPresetAmountsDto)
+  presetAmounts!: GetContentJoinPresetAmountsDto;
 
   @IsBoolean()
   showNoContribution!: boolean;

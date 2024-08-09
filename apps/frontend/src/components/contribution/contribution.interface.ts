@@ -1,4 +1,4 @@
-import type { ContentJoinData } from '@type';
+import type { ContentJoinData } from '@beabee/beabee-common';
 
 export type ContributionContent = Pick<
   ContentJoinData,
@@ -6,6 +6,6 @@ export type ContributionContent = Pick<
   | 'initialPeriod'
   | 'minMonthlyAmount'
   | 'showAbsorbFee'
-  | 'periods'
+  | 'presetAmounts'
   | 'paymentMethods'
 >;

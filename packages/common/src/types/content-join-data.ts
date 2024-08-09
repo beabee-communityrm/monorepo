@@ -1,6 +1,6 @@
 import type { ContributionPeriod, PaymentMethod } from "../data/index.ts";
 
-import type { ContentJoinPeriodData, StripeFeeCountry } from "./index.ts";
+import type { StripeFeeCountry } from "./index.ts";
 
 export interface ContentJoinData {
   title: string;
@@ -8,10 +8,15 @@ export interface ContentJoinData {
   initialAmount: number;
   initialPeriod: ContributionPeriod;
   minMonthlyAmount: number;
-  periods: ContentJoinPeriodData[];
+  presetAmounts: {
+    [ContributionPeriod.Monthly]: number[];
+    [ContributionPeriod.Annually]: number[];
+  };
+  paymentMethods: PaymentMethod[];
+
   showAbsorbFee: boolean;
   showNoContribution: boolean;
-  paymentMethods: PaymentMethod[];
+
   /** @deprecated Use {@link ContentPaymentData.stripePublicKey} instead. */
   stripePublicKey: string;
   /** @deprecated Use {@link ContentPaymentData.stripeCountry} instead. */

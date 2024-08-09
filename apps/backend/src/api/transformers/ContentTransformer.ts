@@ -175,7 +175,7 @@ const contentData = {
     initialAmount: ["data", 0],
     initialPeriod: ["data", ""],
     minMonthlyAmount: ["option", "contribution-min-monthly-amount", "int"],
-    periods: ["data", []],
+    presetAmounts: ["data", []],
     paymentMethods: ["data", []],
     showAbsorbFee: ["option", "show-absorb-fee", "bool"],
     showNoContribution: ["data", false],

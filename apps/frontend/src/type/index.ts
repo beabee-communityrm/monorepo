@@ -26,7 +26,6 @@ export * from './content-contacts-data';
 export * from './content-email-data';
 export * from './content-general-data';
 export * from './content-id';
-export * from './content-join-data';
 export * from './content-join-period-data';
 export * from './content-payment-data';
 export * from './content-profile-data';
