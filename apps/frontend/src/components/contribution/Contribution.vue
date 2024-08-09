@@ -1,14 +1,8 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <AppChoice
+  <ContributionPeriodVue
     v-if="showPeriod"
     v-model="periodProxy"
-    :items="
-      content.periods.map((period) => ({
-        label: t('common.contributionPeriod.' + period.name),
-        value: period.name,
-      }))
-    "
     :disabled="disabled"
     class="mb-4"
   />
@@ -17,7 +11,7 @@
     v-model.number="amountProxy"
     :is-monthly="isMonthly"
     :min-amount="minAmount"
-    :defined-amounts="definedAmounts"
+    :preset-amounts="content.presetAmounts[periodProxy]"
     :disabled="disabled"
     class="mb-4"
   />
@@ -45,6 +39,7 @@
 <script lang="ts" setup>
 import {
   calcPaymentFee,
+  type ContentPaymentData,
   ContributionPeriod,
   PaymentMethod,
 } from '@beabee/beabee-common';
@@ -53,9 +48,7 @@ import ContributionAmount from './ContributionAmount.vue';
 import ContributionFee from './ContributionFee.vue';
 import ContributionMethod from './ContributionMethod.vue';
 import { type ContributionContent } from './contribution.interface';
-import { useI18n } from 'vue-i18n';
-import AppChoice from '../forms/AppChoice.vue';
-import type { ContentPaymentData } from '@type/content-payment-data';
+import ContributionPeriodVue from './ContributionPeriod.vue';
 
 const props = withDefaults(
   defineProps<{
@@ -71,8 +64,6 @@ const props = withDefaults(
   }>(),
   { showPeriod: true, showPaymentMethod: true, disabled: false }
 );
-
-const { t } = useI18n();
 
 const fee = computed(() =>
   calcPaymentFee(props, props.paymentContent.stripeCountry)
@@ -112,13 +103,6 @@ const isMonthly = computed(
 const minAmount = computed(() => {
   const { minMonthlyAmount } = props.content;
   return isMonthly.value ? minMonthlyAmount : minMonthlyAmount * 12;
-});
-
-const definedAmounts = computed(() => {
-  const selectedPeriod = props.content.periods.find((period) => {
-    return period.name === periodProxy.value;
-  });
-  return selectedPeriod?.presetAmounts || [];
 });
 
 watch(isMonthly, (value) => {

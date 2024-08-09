@@ -14,24 +14,26 @@
       <div class="content-message" v-html="joinContent.subtitle" />
     </template>
 
+    <div class="mb-6">Navigation controls</div>
+
     <AppForm :button-text="buttonText" full-button @submit="onSubmit">
-      <Contribution
-        v-model:amount="signUpData.amount"
-        v-model:period="signUpData.period"
-        v-model:payFee="signUpData.payFee"
-        v-model:paymentMethod="signUpData.paymentMethod"
-        :content="joinContent"
-        :payment-content="paymentContent"
-        :disabled="signUpData.noContribution"
-      >
-        <AppCheckbox
-          v-if="joinContent.showNoContribution"
-          v-model="signUpData.noContribution"
-          class="mb-4"
-          :label="t('join.noContribution')"
-        />
-        <AccountSection v-model:email="signUpData.email" class="my-6" />
-      </Contribution>
+      <ContributionPeriodVue v-model="signUpData.period" class="mb-6" />
+
+      <ContributionAmount
+        v-model="signUpData.amount"
+        :min-amount="
+          joinContent.minMonthlyAmount *
+          (signUpData.period === ContributionPeriod.Annually ? 12 : 1)
+        "
+        :preset-amounts="joinContent.presetAmounts[signUpData.period]"
+        class="mb-6"
+      />
+      <p class="mb-6 text-center">
+        or you can make a
+        <router-link to="/donate" class="font-semibold underline"
+          >one time contribution</router-link
+        >
+      </p>
     </AppForm>
 
     <div class="mt-3 text-center text-xs">
@@ -61,22 +63,25 @@
   </AuthBox>
 </template>
 <script lang="ts" setup>
-import { computed, toRef } from 'vue';
+import {
+  ContributionPeriod,
+  type ContentJoinData,
+  type ContentPaymentData,
+} from '@beabee/beabee-common';
+import { computed, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import useVuelidate from '@vuelidate/core';
 import { generalContent, isEmbed } from '@store';
 import { useJoin } from './use-join';
 
-import beabeeLogo from '@assets/images/beabee-logo.png';
-
 import AccountSection from './AccountSection.vue';
-import Contribution from '@components/contribution/Contribution.vue';
-import AppCheckbox from '@components/forms/AppCheckbox.vue';
 import AppForm from '@components/forms/AppForm.vue';
 import AuthBox from '@components/AuthBox.vue';
-
-import type { ContentJoinData, ContentPaymentData } from '@type';
 import AppTitle from '@components/AppTitle.vue';
+import ContributionPeriodVue from '@components/contribution/ContributionPeriod.vue';
+import ContributionAmount from '@components/contribution/ContributionAmount.vue';
+
+import beabeeLogo from '@assets/images/beabee-logo.png';
 
 const props = defineProps<{
   joinContent: ContentJoinData;
@@ -91,10 +96,22 @@ const { signUpData, signUpDescription } = useJoin(
   toRef(props, 'paymentContent')
 );
 
+// Change amount when switching periods
+watch(
+  () => signUpData.period,
+  (period) => {
+    signUpData.amount =
+      period === ContributionPeriod.Annually
+        ? signUpData.amount * 12
+        : Math.floor(signUpData.amount / 12);
+  }
+);
+
 const buttonText = computed(() => {
   return signUpData.noContribution
     ? t('join.now')
-    : t('join.contribute', signUpDescription.value);
+    : //: t('join.contribute', signUpDescription.value);
+      'Next: Payment method';
 });
 
 useVuelidate({ $stopPropagation: true });

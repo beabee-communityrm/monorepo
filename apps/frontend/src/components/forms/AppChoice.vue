@@ -1,36 +1,34 @@
 <template>
   <div
-    class="flex flex-grow basis-[120px] flex-wrap overflow-hidden rounded p-[1px]"
+    class="flex flex-wrap p-px font-semibold"
+    :class="variant !== 'collapsed' && 'gap-2'"
   >
     <button
       v-for="item in items"
       :key="item.value"
       type="button"
-      class="flex-grow basis-[90px] bg-white text-sm font-semibold outline outline-1 outline-primary-40"
+      class="flex-1 border border-link p-2.5 enabled:hover:bg-link-10 disabled:opacity-50"
       :class="[
-        size === 'xs' ? 'p-2' : 'p-2.5',
-        disabled
-          ? 'opacity-50'
-          : item.value === modelValue
-            ? 'z-20 !bg-link font-bold text-white !outline-link-110'
-            : 'hover:z-10 hover:bg-link-10 hover:outline-link',
+        variant === 'collapsed'
+          ? 'border-l-0 first:rounded-l first:border-l last:rounded-r'
+          : 'rounded',
+        cols == 2 && 'basis-1/3', // 1/3 allows for gap-2 :/
+        item.value === modelValue && 'bg-link-10',
       ]"
       :disabled="disabled"
       @click="$emit('update:modelValue', item.value)"
     >
-      {{ item.label }}
+      <slot :item="item">{{ item.label }}</slot>
     </button>
   </div>
 </template>
 <script lang="ts" setup generic="T extends string | number">
-defineEmits(['update:modelValue']);
-withDefaults(
-  defineProps<{
-    modelValue: T;
-    items: { label: string; value: T }[];
-    disabled?: boolean;
-    size?: 'xs' | 'sm';
-  }>(),
-  { size: 'sm' }
-);
+defineEmits<{ (evt: 'update:modelValue', value: T): void }>();
+defineProps<{
+  modelValue: T;
+  items: { label: string; value: T }[];
+  disabled?: boolean;
+  variant?: 'collapsed' | 'expanded';
+  cols?: 2;
+}>();
 </script>

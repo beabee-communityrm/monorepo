@@ -60,7 +60,10 @@ meta:
 </template>
 
 <script lang="ts" setup>
-import { ContributionPeriod } from '@beabee/beabee-common';
+import {
+  ContributionPeriod,
+  type ContentJoinData,
+} from '@beabee/beabee-common';
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
@@ -77,7 +80,7 @@ import { signUp, completeUrl } from '@utils/api/signup';
 
 import { generalContent, isEmbed } from '@store';
 
-import type { ContentJoinData, ContentPaymentData } from '@type';
+import type { ContentPaymentData } from '@type';
 
 const { t } = useI18n();
 
@@ -90,12 +93,17 @@ const joinContent = ref<ContentJoinData>({
   initialAmount: 5,
   initialPeriod: ContributionPeriod.Monthly,
   minMonthlyAmount: 5,
-  periods: [],
+  presetAmounts: {
+    [ContributionPeriod.Monthly]: [5, 10, 20, 50],
+    [ContributionPeriod.Annually]: [60, 120, 240, 600],
+  },
   showAbsorbFee: true,
   showNoContribution: false,
   subtitle: '',
   title: '',
   paymentMethods: [],
+  stripeCountry: 'eu',
+  stripePublicKey: '',
 });
 
 const paymentContent = ref<ContentPaymentData>({
