@@ -14,36 +14,7 @@ meta:
       <div class="content-message mb-6" v-html="joinContent.subtitle" />
     </template>
 
-    <AppForm :button-text="t('join.now')" full-button @submit="submitSignUp">
-      <div class="mb-4">
-        <AppInput
-          v-model="data.email"
-          :label="t('form.email')"
-          type="email"
-          name="email"
-          required
-        />
-
-        <p class="mt-2 text-sm">
-          {{ t('join.memberAlready') }}
-          <a
-            v-if="isEmbed"
-            href="/auth/login"
-            target="_blank"
-            class="text-link underline hover:text-primary"
-          >
-            {{ t('join.login') }}
-          </a>
-          <router-link
-            v-else
-            to="/auth/login"
-            class="text-link underline hover:text-primary"
-          >
-            {{ t('join.login') }}
-          </router-link>
-        </p>
-      </div>
-    </AppForm>
+    <JoinFormEmailOnly />
   </AuthBox>
 
   <AuthBox v-else :title="joinContent.title">
@@ -113,7 +84,6 @@ meta:
       :email="data.email"
       :stripe-client-secret="stripeClientSecret"
       :stripe-public-key="paymentContent.stripePublicKey"
-      @submit="submitSignUp"
     />
   </AuthBox>
 </template>
@@ -128,12 +98,11 @@ import {
 } from '@beabee/beabee-common';
 import { computed, onBeforeMount, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 
 import JoinFormStep1 from '@components/pages/join/JoinFormStep1.vue';
 
 import { fetchContent } from '@utils/api/content';
-import { signUp } from '@utils/api/signup';
 
 import { generalContent, isEmbed } from '@store';
 
@@ -141,14 +110,13 @@ import AuthBox from '@components/AuthBox.vue';
 import JoinFormStep3 from '@components/pages/join/JoinFormStep3.vue';
 import JoinFormStep2 from '@components/pages/join/JoinFormStep2.vue';
 import { faHandSparkles } from '@fortawesome/free-solid-svg-icons';
-import AppForm from '@components/forms/AppForm.vue';
-import AppInput from '@components/forms/AppInput.vue';
 import AppTitle from '@components/AppTitle.vue';
+import JoinFormEmailOnly from '@components/pages/join/JoinFormEmailOnly.vue';
+import { signUpWithContribution } from '@utils/api/signup';
 
 const { t } = useI18n();
 
 const route = useRoute();
-const router = useRouter();
 
 const steps = computed(() => [
   'Your contribution',
@@ -164,8 +132,8 @@ const joinContent = ref<ContentJoinData>({
   initialPeriod: ContributionPeriod.Monthly,
   minMonthlyAmount: 5,
   presetAmounts: {
-    [ContributionPeriod.Monthly]: [5, 10, 20, 50],
-    [ContributionPeriod.Annually]: [60, 120, 240, 600],
+    [ContributionPeriod.Monthly]: [],
+    [ContributionPeriod.Annually]: [],
   },
   showAbsorbFee: true,
   showNoContribution: false,
@@ -200,24 +168,15 @@ async function goToStep(step: number) {
   if (currentStep.value === step) return;
 
   if (step === 2) {
-    await submitSignUp();
-  }
-  currentStep.value = step;
-}
-
-async function submitSignUp() {
-  const ret = await signUp(data, !!generalContent.value.hideContribution);
-  const topWindow = window.top || window;
-  if (ret.redirectUrl) {
-    topWindow.location.href = ret.redirectUrl;
-  } else if (ret.clientSecret) {
-    stripeClientSecret.value = ret.clientSecret;
-  } else {
-    if (isEmbed) {
-      topWindow.location.href = '/join/confirm-email';
-    } else {
-      router.push({ path: '/join/confirm-email' });
+    const ret = await signUpWithContribution(data);
+    if (ret.clientSecret) {
+      stripeClientSecret.value = ret.clientSecret;
+      currentStep.value = 2;
+    } else if (ret.redirectUrl) {
+      (window.top || window).location.href = ret.redirectUrl;
     }
+  } else {
+    currentStep.value = step;
   }
 }
 

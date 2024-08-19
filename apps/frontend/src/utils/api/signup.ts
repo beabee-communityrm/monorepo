@@ -9,26 +9,34 @@ import type { CompleteSignupData, Serial, SignupData } from '@type';
 
 export const completeUrl = env.appUrl + '/join/complete';
 
-export async function signUp(
-  data: SignupData,
-  noContribution: boolean
+const signUpUrls = {
+  loginUrl: env.appUrl + '/auth/login',
+  setPasswordUrl: env.appUrl + '/auth/set-password',
+  confirmUrl: env.appUrl + '/join/confirm-email',
+};
+
+export async function signUpWithEmailOnly(email: string): Promise<void> {
+  await instance.post<Serial<PaymentFlowParams>>('/signup', {
+    email: email,
+    ...signUpUrls,
+  });
+}
+
+export async function signUpWithContribution(
+  data: SignupData
 ): Promise<PaymentFlowParams> {
   return (
     await instance.post<Serial<PaymentFlowParams>>('/signup', {
       email: data.email,
-      loginUrl: env.appUrl + '/auth/login',
-      setPasswordUrl: env.appUrl + '/auth/set-password',
-      confirmUrl: env.appUrl + '/join/confirm-email',
-      ...(!noContribution && {
-        contribution: {
-          amount: data.amount,
-          period: data.period,
-          payFee: data.payFee && data.period === ContributionPeriod.Monthly,
-          prorate: false,
-          paymentMethod: data.paymentMethod,
-          completeUrl,
-        },
-      }),
+      contribution: {
+        amount: data.amount,
+        period: data.period,
+        payFee: data.payFee && data.period === ContributionPeriod.Monthly,
+        prorate: false,
+        paymentMethod: data.paymentMethod,
+        completeUrl,
+      },
+      ...signUpUrls,
     })
   ).data;
 }
