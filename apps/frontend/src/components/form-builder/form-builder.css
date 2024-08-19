@@ -1,6 +1,6 @@
 .callout-form-builder {
   .drag-and-drop-alert {
-    @apply mb-4 border border-dashed border-primary p-4;
+    @apply mb-4 border border-dashed border-primary bg-primary-5 px-4 py-10;
   }
 
   .formbuilder {
@@ -19,6 +19,38 @@
     @apply m-0 block w-full cursor-pointer rounded border border-primary-70 bg-white px-2 text-sm text-primary-80 hover:border-primary hover:bg-primary-10 hover:text-primary !important;
     &.gu-transit {
       @apply mb-4 text-base !important;
+    }
+  }
+
+  .builder-component {
+    .formio-component {
+      @apply -mx-4 -my-2 rounded border border-solid border-white px-4 py-4;
+    }
+    &:hover .formio-component {
+      @apply border-primary-20 !important;
+    }
+
+    .form-group {
+      @apply mb-1;
+    }
+
+    /* Disable interaction with form elements in form editor */
+    .form-group input,
+    .form-group .form-check {
+      @apply pointer-events-none !important;
+    }
+  }
+
+  .component-btn-group {
+    @apply -right-4;
+  }
+  .component-settings-button {
+    @apply mr-0.5 h-auto w-8 rounded border border-primary-40 bg-primary-5 text-center text-base text-primary-80 shadow-md;
+    &:hover {
+      @apply border-primary-70 text-primary;
+    }
+    &:not(:first-child) {
+      @apply mr-1 !important;
     }
   }
 
@@ -44,12 +76,13 @@
     @apply flex w-full flex-col gap-1 border border-primary-10 p-2;
   }
 
-  .component-settings-button {
-    @apply h-auto w-8 bg-white text-center text-base;
-  }
-
   .form-radio-nextslide {
     @apply text-sm text-body-80;
+  }
+
+  .formio-component-content,
+  .formio-component-htmlelement {
+    @apply border-0;
   }
 }
 
@@ -57,7 +90,7 @@
   @apply font-body text-base text-body !important;
 
   .formio-dialog-content {
-    @apply bg-white !important;
+    @apply max-h-min bg-primary-5 px-6 py-10 !important;
   }
 
   .nav {
@@ -79,25 +112,63 @@
     @apply p-0 !important;
   }
 
+  .alert {
+    @apply border-t-[12px] border-danger-70 bg-white px-3 py-2 text-sm text-danger;
+
+    &:not(:first-child) {
+      @apply mt-4 border border-t-[12px];
+    }
+
+    span[role='link'] {
+      @apply font-bold text-link no-underline;
+      &:hover {
+        @apply text-link-110;
+      }
+    }
+  }
+
   .form-group {
-    @apply mb-3;
+    @apply my-1 mb-0;
+
+    &.formio-component-html {
+      @apply mb-6 mt-0;
+    }
+
+    .form-check-label {
+      @apply mb-0 text-base !important;
+    }
+  }
+
+  .form-control {
+    @apply text-base !important;
   }
 
   .table {
-    @apply w-full border-collapse;
+    @apply w-full border-collapse border-0;
     thead {
       @apply border-b border-primary-20 text-sm;
     }
     th {
       @apply text-left;
     }
+    thead,
     th,
     td {
-      @apply p-1;
+      @apply border-0 p-1 align-middle !important;
     }
     .form-group {
       @apply mb-0;
     }
+    &.datagrid-table {
+      @apply my-2 border-0 !important;
+    }
+    .formio-drag-button {
+      @apply border-link !important;
+    }
+  }
+
+  .col-form-label {
+    @apply mb-1 mt-2 font-body text-base font-semibold;
   }
 
   .card[class*='border'] {
@@ -121,14 +192,52 @@
     }
   }
 
-  .preview-panel .card-body {
-    @apply bg-white;
+  .preview-panel {
+    .card-header {
+      @apply px-0;
+    }
+    .card-body {
+      @apply mb-6 rounded bg-white p-8;
+    }
+    .list-group-item .row:first-child {
+      @apply flex text-sm;
+    }
   }
 
-  /* Hide first row (contains a header and link to help) */
-  .component-edit-container > .row:first-child {
-    @apply hidden;
+  .component-edit-container {
+    .row {
+      @apply gap-4;
+      /* Hide first row (contains a header and link to help) */
+      &:first-child {
+        @apply hidden;
+      }
+    }
+    .formio-component-defaultValue {
+      .form-radio {
+        @apply grid grid-cols-3 gap-x-4 gap-y-2 pb-8 pt-2;
+      }
+    }
+    .btn {
+      @apply rounded px-3 py-2.5 font-body text-base !important;
+
+      &.btn-success {
+        @apply mr-1 border-primary-70 bg-primary-70 text-white hover:bg-primary-80 !important;
+      }
+      &.btn-secondary {
+        @apply mr-1 border-primary-40 bg-white text-primary-80 hover:border-primary-70 hover:bg-primary-10 hover:text-primary !important;
+      }
+      &.btn-danger {
+        @apply border-danger bg-white text-danger hover:bg-danger-10 !important;
+      }
+    }
   }
+}
+
+/* Remove error div margin when empty */
+.callout-form-renderer .formio-errors:empty,
+.callout-form-builder .formarea .formio-errors:empty,
+.formio-dialog .formio-errors:empty {
+  @apply mt-0 !important;
 }
 
 .formio-component-mask,
