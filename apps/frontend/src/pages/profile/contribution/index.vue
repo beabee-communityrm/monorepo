@@ -71,6 +71,7 @@ import {
   ContributionType,
   MembershipStatus,
   PaymentMethod,
+  type ContentPaymentData,
 } from '@beabee/beabee-common';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -92,7 +93,7 @@ import AppNotification from '@components/AppNotification.vue';
 
 import { currentUser } from '@store';
 
-import { type ContentPaymentData, type ContributionInfo } from '@type';
+import { type ContributionInfo } from '@type';
 
 const { t } = useI18n();
 const route = useRoute();

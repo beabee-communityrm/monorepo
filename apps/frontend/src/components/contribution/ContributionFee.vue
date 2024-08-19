@@ -19,23 +19,16 @@
 
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n';
-import { computed } from 'vue';
 import AppCheckbox from '../forms/AppCheckbox.vue';
 
 const { t, n } = useI18n();
 
-const emit = defineEmits(['update:modelValue']);
-
-const props = defineProps<{
+defineProps<{
   amount: number;
   fee: number;
   force: boolean;
-  modelValue: boolean;
-  disabled: boolean;
+  disabled?: boolean;
 }>();
 
-const payFee = computed<boolean>({
-  get: () => !props.disabled && props.modelValue,
-  set: (value) => emit('update:modelValue', value),
-});
+const payFee = defineModel<boolean>({ required: true });
 </script>

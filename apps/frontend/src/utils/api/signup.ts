@@ -9,14 +9,17 @@ import type { CompleteSignupData, Serial, SignupData } from '@type';
 
 export const completeUrl = env.appUrl + '/join/complete';
 
-export async function signUp(data: SignupData): Promise<PaymentFlowParams> {
+export async function signUp(
+  data: SignupData,
+  noContribution: boolean
+): Promise<PaymentFlowParams> {
   return (
     await instance.post<Serial<PaymentFlowParams>>('/signup', {
       email: data.email,
       loginUrl: env.appUrl + '/auth/login',
       setPasswordUrl: env.appUrl + '/auth/set-password',
       confirmUrl: env.appUrl + '/join/confirm-email',
-      ...(!data.noContribution && {
+      ...(!noContribution && {
         contribution: {
           amount: data.amount,
           period: data.period,

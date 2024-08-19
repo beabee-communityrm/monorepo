@@ -94,7 +94,7 @@ meta:
       </AppForm>
     </template>
     <template #col2>
-      <JoinForm
+      <JoinFormStep1
         :join-content="joinContent"
         :payment-content="paymentContent"
         preview
@@ -119,7 +119,7 @@ import RichTextEditor from '@components/rte/RichTextEditor.vue';
 import AppLabel from '@components/forms/AppLabel.vue';
 import AppSelect from '@components/forms/AppSelect.vue';
 import AppCheckbox from '@components/forms/AppCheckbox.vue';
-import JoinForm from '@components/pages/join/JoinForm.vue';
+import JoinFormStep1 from '@components/pages/join/JoinFormStep1.vue';
 import AppImageUpload from '@components/forms/AppImageUpload.vue';
 import PeriodAmounts from '@components/pages/admin/membership-builder/PeriodAmounts.vue';
 import App2ColGrid from '@components/App2ColGrid.vue';

@@ -1,6 +1,6 @@
 <template>
   <AppChoice
-    :model-value="modelValue"
+    v-model="period"
     :items="[
       {
         label: t('common.contributionPeriod.monthly'),
@@ -12,7 +12,6 @@
       },
     ]"
     variant="collapsed"
-    @update:model-value="$emit('update:modelValue', $event)"
   />
 </template>
 <script lang="ts" setup>
@@ -21,8 +20,7 @@ import { useI18n } from 'vue-i18n';
 
 import AppChoice from '@components/forms/AppChoice.vue';
 
-defineEmits<{ (evt: 'update:modelValue', value: ContributionPeriod): void }>();
-defineProps<{ modelValue: ContributionPeriod }>();
+const period = defineModel<ContributionPeriod>({ required: true });
 
 const { t } = useI18n();
 </script>

@@ -8,85 +8,155 @@ meta:
   noCnrMode: true
 </route>
 <template>
-  <JoinForm
-    v-if="!stripeClientSecret"
-    :join-content="joinContent"
-    :payment-content="paymentContent"
-    @submit.prevent="submitSignUp"
-  />
+  <AuthBox v-if="generalContent.hideContribution">
+    <template v-if="!isEmbed">
+      <AppTitle>{{ joinContent.title }}</AppTitle>
+      <div class="content-message mb-6" v-html="joinContent.subtitle" />
+    </template>
+
+    <AppForm :button-text="t('join.now')" full-button @submit="submitSignUp">
+      <div class="mb-4">
+        <AppInput
+          v-model="data.email"
+          :label="t('form.email')"
+          type="email"
+          name="email"
+          required
+        />
+
+        <p class="mt-2 text-sm">
+          {{ t('join.memberAlready') }}
+          <a
+            v-if="isEmbed"
+            href="/auth/login"
+            target="_blank"
+            class="text-link underline hover:text-primary"
+          >
+            {{ t('join.login') }}
+          </a>
+          <router-link
+            v-else
+            to="/auth/login"
+            class="text-link underline hover:text-primary"
+          >
+            {{ t('join.login') }}
+          </router-link>
+        </p>
+      </div>
+    </AppForm>
+  </AuthBox>
 
   <AuthBox v-else :title="joinContent.title">
     <template #header>
       <div class="content-message" v-html="joinContent.subtitle" />
     </template>
 
-    <AppNotification
-      variant="info"
-      :title="t('joinPayment.willBeContributing', signUpDescription)"
-      :icon="faHandSparkles"
-      class="mb-4"
+    <div class="mb-6 flex gap-px">
+      <span
+        v-for="(step, i) in steps"
+        :key="i"
+        class="group flex-1 text-center"
+        :class="currentStep >= i && 'cursor-pointer'"
+        @click="currentStep >= i && goToStep(i)"
+      >
+        <span
+          class="text-xs font-bold"
+          :class="currentStep === i ? 'text-link' : 'text-body-60'"
+          >{{ step }}</span
+        >
+        <div
+          class="mt-2 h-2 group-first:rounded-l group-last:rounded-r"
+          :class="currentStep >= i ? 'bg-link-70' : 'bg-primary-10'"
+        />
+      </span>
+    </div>
+
+    <template v-if="currentStep > 0">
+      <div class="mb-4 flex items-center gap-4 rounded bg-primary-5 p-4">
+        <font-awesome-icon
+          :icon="faHandSparkles"
+          class="text-primary-40"
+          size="2x"
+        />
+        <span>
+          {{ t('joinPayment.willBeContributing', {}) /* TODO */ }}
+        </span>
+      </div>
+      <p
+        v-if="paymentContent.taxRateEnabled"
+        class="-mt-2 mb-4 text-right text-xs"
+      >
+        {{ t('join.tax.included', { taxRate: paymentContent.taxRate }) }}
+      </p>
+    </template>
+
+    <JoinFormStep1
+      v-if="currentStep === 0"
+      v-model:amount="data.amount"
+      v-model:period="data.period"
+      :join-content="joinContent"
+      :payment-content="paymentContent"
+      @submit="() => goToStep(1)"
     />
-    <p
-      v-if="paymentContent.taxRateEnabled"
-      class="-mt-2 mb-4 text-right text-xs"
-    >
-      {{ t('join.tax.included', { taxRate: paymentContent.taxRate }) }}
-    </p>
-
-    <p class="mb-3 text-xs font-semibold text-body-80">
-      {{ t('joinPayment.note') }}
-    </p>
-    <p class="mb-6 text-xs font-semibold text-body-80">
-      <i18n-t keypath="joinPayment.goBack">
-        <template #back>
-          <a
-            class="cursor-pointer text-link underline"
-            @click="stripeClientSecret = ''"
-          >
-            {{ t('joinPayment.goBackButton') }}
-          </a>
-        </template>
-      </i18n-t>
-    </p>
-
-    <StripePayment
-      :client-secret="stripeClientSecret"
-      :public-key="paymentContent.stripePublicKey"
-      :email="signUpData.email"
-      :return-url="completeUrl"
-      show-name-fields
+    <JoinFormStep2
+      v-else-if="currentStep === 1"
+      v-model:email="data.email"
+      v-model:payment-method="data.paymentMethod"
+      v-model:pay-fee="data.payFee"
+      :data="data"
+      :fee="fee"
+      :join-content="joinContent"
+      @submit="() => goToStep(2)"
+    />
+    <JoinFormStep3
+      v-else-if="currentStep === 2"
+      :email="data.email"
+      :stripe-client-secret="stripeClientSecret"
+      :stripe-public-key="paymentContent.stripePublicKey"
+      @submit="submitSignUp"
     />
   </AuthBox>
 </template>
 
 <script lang="ts" setup>
 import {
+  calcPaymentFee,
   ContributionPeriod,
+  PaymentMethod,
   type ContentJoinData,
+  type ContentPaymentData,
 } from '@beabee/beabee-common';
-import { onBeforeMount, ref } from 'vue';
+import { computed, onBeforeMount, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
-import StripePayment from '@components/StripePayment.vue';
-import { useJoin } from '@components/pages/join/use-join';
-import JoinForm from '@components/pages/join/JoinForm.vue';
-import { faHandSparkles } from '@fortawesome/free-solid-svg-icons';
-import AppNotification from '@components/AppNotification.vue';
-import AuthBox from '@components/AuthBox.vue';
+import JoinFormStep1 from '@components/pages/join/JoinFormStep1.vue';
 
 import { fetchContent } from '@utils/api/content';
-import { signUp, completeUrl } from '@utils/api/signup';
+import { signUp } from '@utils/api/signup';
 
 import { generalContent, isEmbed } from '@store';
 
-import type { ContentPaymentData } from '@type';
+import AuthBox from '@components/AuthBox.vue';
+import JoinFormStep3 from '@components/pages/join/JoinFormStep3.vue';
+import JoinFormStep2 from '@components/pages/join/JoinFormStep2.vue';
+import { faHandSparkles } from '@fortawesome/free-solid-svg-icons';
+import AppForm from '@components/forms/AppForm.vue';
+import AppInput from '@components/forms/AppInput.vue';
+import AppTitle from '@components/AppTitle.vue';
 
 const { t } = useI18n();
 
 const route = useRoute();
 const router = useRouter();
 
+const steps = computed(() => [
+  'Your contribution',
+  'Payment method',
+  'Payment data',
+]);
+
+const currentStep = ref(0);
 const stripeClientSecret = ref('');
 
 const joinContent = ref<ContentJoinData>({
@@ -113,15 +183,35 @@ const paymentContent = ref<ContentPaymentData>({
   taxRate: 7,
 });
 
-const { signUpData, signUpDescription } = useJoin(paymentContent);
+const data = reactive({
+  email: '',
+  amount: 5,
+  period: ContributionPeriod.Monthly,
+  payFee: true,
+  prorate: false,
+  paymentMethod: PaymentMethod.StripeCard,
+});
+
+const fee = computed(() =>
+  calcPaymentFee(data, paymentContent.value.stripeCountry)
+);
+
+async function goToStep(step: number) {
+  if (currentStep.value === step) return;
+
+  if (step === 2) {
+    await submitSignUp();
+  }
+  currentStep.value = step;
+}
 
 async function submitSignUp() {
-  const data = await signUp(signUpData);
+  const ret = await signUp(data, !!generalContent.value.hideContribution);
   const topWindow = window.top || window;
-  if (data.redirectUrl) {
-    topWindow.location.href = data.redirectUrl;
-  } else if (data.clientSecret) {
-    stripeClientSecret.value = data.clientSecret;
+  if (ret.redirectUrl) {
+    topWindow.location.href = ret.redirectUrl;
+  } else if (ret.clientSecret) {
+    stripeClientSecret.value = ret.clientSecret;
   } else {
     if (isEmbed) {
       topWindow.location.href = '/join/confirm-email';
@@ -132,29 +222,22 @@ async function submitSignUp() {
 }
 
 onBeforeMount(async () => {
-  stripeClientSecret.value = '';
-
   joinContent.value = await fetchContent('join');
-
   paymentContent.value = await fetchContent('payment');
 
-  signUpData.amount =
+  data.amount =
     (route.query.amount && Number(route.query.amount)) ||
     joinContent.value.initialAmount;
 
   const period = route.query.period as ContributionPeriod;
-  signUpData.period = Object.values(ContributionPeriod).includes(period)
+  data.period = Object.values(ContributionPeriod).includes(period)
     ? period
     : joinContent.value.initialPeriod;
 
-  signUpData.paymentMethod = joinContent.value.paymentMethods[0];
+  data.paymentMethod = joinContent.value.paymentMethods[0];
 
   if (!joinContent.value.showAbsorbFee) {
-    signUpData.payFee = false;
-  }
-
-  if (generalContent.value.hideContribution) {
-    signUpData.noContribution = true;
+    data.payFee = false;
   }
 });
 </script>

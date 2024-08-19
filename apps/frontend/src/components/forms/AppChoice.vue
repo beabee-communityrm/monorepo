@@ -26,7 +26,7 @@
 defineEmits<{ (evt: 'update:modelValue', value: T): void }>();
 defineProps<{
   modelValue: T;
-  items: { label: string; value: T }[];
+  items: { label?: string; value: T }[];
   disabled?: boolean;
   variant?: 'collapsed' | 'expanded';
   cols?: 2;
