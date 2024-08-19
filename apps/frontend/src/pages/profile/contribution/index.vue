@@ -108,7 +108,10 @@ const content = ref<ContributionContent>({
   initialAmount: 5,
   initialPeriod: ContributionPeriod.Monthly,
   minMonthlyAmount: 5,
-  periods: [],
+  presetAmounts: {
+    [ContributionPeriod.Monthly]: [],
+    [ContributionPeriod.Annually]: [],
+  },
   showAbsorbFee: true,
   paymentMethods: [PaymentMethod.StripeCard],
 });
