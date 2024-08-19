@@ -50,7 +50,9 @@ meta:
           size="2x"
         />
         <span>
-          {{ t('joinPayment.willBeContributing', {}) /* TODO */ }}
+          {{
+            t('joinPayment.willBeContributing', { contribution: description })
+          }}
         </span>
       </div>
       <p
@@ -114,7 +116,7 @@ import AppTitle from '@components/AppTitle.vue';
 import JoinFormEmailOnly from '@components/pages/join/JoinFormEmailOnly.vue';
 import { signUpWithContribution } from '@utils/api/signup';
 
-const { t } = useI18n();
+const { t, n } = useI18n();
 
 const route = useRoute();
 
@@ -163,6 +165,18 @@ const data = reactive({
 const fee = computed(() =>
   calcPaymentFee(data, paymentContent.value.stripeCountry)
 );
+
+const description = computed(() => {
+  const totalAmount = data.amount + (data.payFee ? fee.value : 0);
+
+  return (
+    n(totalAmount, 'currency') +
+    ' ' +
+    (data.period === ContributionPeriod.Monthly
+      ? t('common.perMonthText')
+      : t('common.perYearText'))
+  );
+});
 
 async function goToStep(step: number) {
   if (currentStep.value === step) return;
