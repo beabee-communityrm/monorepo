@@ -1,30 +1,43 @@
 <template>
   <div>
     <AppLabel :label="t('common.contributionPeriod.' + period)" />
-    <PeriodAmountValue
-      v-for="(amount, i) in modelValue"
-      :key="i"
-      :min-amount="minAmount"
-      :model-value="amount"
-      @update:model-value="updateAmount(i, $event)"
-    />
+    <AppRepeatable
+      v-model="amounts"
+      :add-label="'Add amount'"
+      :new-item="() => 0"
+    >
+      <template #default="{ index }">
+        <div class="max-w-[8rem]">
+          <AppInput
+            v-model="amounts[index]"
+            type="number"
+            :min="minAmount"
+            :prefix="generalContent.currencySymbol"
+            required
+            class="block"
+          />
+        </div>
+      </template>
+    </AppRepeatable>
   </div>
 </template>
 <script lang="ts" setup>
 import { ContributionPeriod } from '@beabee/beabee-common';
 import { useI18n } from 'vue-i18n';
 import { computed } from 'vue';
-import PeriodAmountValue from './PeriodAmountValue.vue';
 import AppLabel from '../../../forms/AppLabel.vue';
+import AppRepeatable from '@components/forms/AppRepeatable.vue';
+import { generalContent } from '@store/generalContent';
+import AppInput from '@components/forms/AppInput.vue';
 
-const emit = defineEmits(['update:modelValue']);
 const props = defineProps<{
   period: ContributionPeriod;
-  modelValue: number[];
   minMonthlyAmount: number;
 }>();
 
 const { t } = useI18n();
+
+const amounts = defineModel<number[]>({ required: true });
 
 const minAmount = computed(() => {
   const ret =
@@ -32,10 +45,4 @@ const minAmount = computed(() => {
     (props.period === ContributionPeriod.Annually ? 12 : 1);
   return ret;
 });
-
-function updateAmount(i: number, newAmount: number) {
-  const newAmounts = [...props.modelValue];
-  newAmounts[i] = newAmount;
-  emit('update:modelValue', newAmounts);
-}
 </script>

@@ -1,6 +1,10 @@
 <template>
   <AppForm :button-text="'Next: payment'" full-button @submit="onSubmit">
-    <ContributionPeriodVue v-model="period" class="mb-6" />
+    <ContributionPeriodVue
+      :model-value="period"
+      class="mb-6"
+      @update:model-value="updatePeriod"
+    />
 
     <ContributionAmount
       v-model="amount"
@@ -47,7 +51,6 @@ import {
   type ContentJoinData,
   type ContentPaymentData,
 } from '@beabee/beabee-common';
-import { watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import useVuelidate from '@vuelidate/core';
 import { generalContent } from '@store';
@@ -70,16 +73,18 @@ const period = defineModel<ContributionPeriod>('period', { required: true });
 
 const { t } = useI18n();
 
-// Change amount when switching periods
-watch(period, (newPeriod) => {
-  const newAmount =
-    newPeriod === ContributionPeriod.Annually
-      ? amount.value * 12
-      : Math.floor(amount.value / 12);
+// Update the amount when the user switches the period
+function updatePeriod(newPeriod: ContributionPeriod) {
+  if (period.value !== newPeriod) {
+    const newAmount =
+      newPeriod === ContributionPeriod.Annually
+        ? amount.value * 12
+        : Math.floor(amount.value / 12);
 
-  // eslint-disable-next-line vue/no-mutating-props
-  amount.value = newAmount;
-});
+    amount.value = newAmount;
+    period.value = newPeriod;
+  }
+}
 
 useVuelidate({ $stopPropagation: true });
 </script>

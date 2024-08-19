@@ -94,11 +94,15 @@ meta:
       </AppForm>
     </template>
     <template #col2>
-      <JoinFormStep1
-        :join-content="joinContent"
-        :payment-content="paymentContent"
-        preview
-      />
+      <AuthBox preview>
+        <JoinFormStep1
+          :amount="joinContent.initialAmount"
+          :period="joinContent.initialPeriod"
+          :join-content="joinContent"
+          :payment-content="paymentContent"
+          preview
+        />
+      </AuthBox>
     </template>
   </App2ColGrid>
 </template>
@@ -128,6 +132,7 @@ import AppSubHeading from '@components/AppSubHeading.vue';
 import { fetchContent, updateContent } from '@utils/api/content';
 
 import { generalContent } from '@store';
+import AuthBox from '@components/AuthBox.vue';
 
 const joinContent = ref<ContentJoinData>();
 const paymentContent = ref<ContentPaymentData>();
