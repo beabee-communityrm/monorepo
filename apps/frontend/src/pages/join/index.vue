@@ -22,24 +22,25 @@ meta:
       <div class="content-message" v-html="joinContent.subtitle" />
     </template>
 
-    <div class="mb-6 flex gap-px">
-      <span
+    <div class="mb-6 flex items-end gap-px text-xs font-bold">
+      <button
         v-for="(step, i) in steps"
         :key="i"
         class="group flex-1 text-center"
-        :class="currentStep >= i && 'cursor-pointer'"
-        @click="currentStep >= i && goToStep(i)"
+        :disabled="currentStep < i"
+        @click="goToStep(i)"
       >
-        <span
-          class="text-xs font-bold"
-          :class="currentStep === i ? 'text-link' : 'text-body-60'"
-          >{{ step }}</span
-        >
         <div
-          class="mt-2 h-2 group-first:rounded-l group-last:rounded-r"
+          class="px-2 pb-2"
+          :class="currentStep === i ? 'text-link' : 'text-body-60'"
+        >
+          {{ step }}
+        </div>
+        <div
+          class="h-2 group-first:rounded-l group-last:rounded-r"
           :class="currentStep >= i ? 'bg-link-70' : 'bg-primary-10'"
         />
-      </span>
+      </button>
     </div>
 
     <template v-if="currentStep > 0">
@@ -49,7 +50,7 @@ meta:
           class="text-primary-40"
           size="2x"
         />
-        <span>
+        <span class="font-semibold">
           {{
             t('joinPayment.willBeContributing', { contribution: description })
           }}

@@ -11,17 +11,13 @@
       />
     </div>
     <ContributionMethod
-      v-model="paymentMethod"
+      v-model:payment-method="paymentMethod"
+      v-model:pay-fee="payFee"
+      :content="joinContent"
+      :data="data"
       :methods="joinContent.paymentMethods"
-    />
-    <ContributionFee
-      v-if="
-        data.period === ContributionPeriod.Monthly && joinContent.showAbsorbFee
-      "
-      v-model="payFee"
-      :amount="data.amount"
-      :fee="fee"
-      :force="false"
+      show-payment-method
+      class="mb-6"
     />
   </AppForm>
 </template>
@@ -32,14 +28,12 @@ import {
   type ContentJoinData,
 } from '@beabee/beabee-common';
 import ContributionMethod from '@components/contribution/ContributionMethod.vue';
-import ContributionFee from '@components/contribution/ContributionFee.vue';
 import { useI18n } from 'vue-i18n';
-import type { SignupData } from '@type/signup-data';
 import AppInput from '@components/forms/AppInput.vue';
 import AppForm from '@components/forms/AppForm.vue';
 
 defineProps<{
-  data: SignupData;
+  data: { period: ContributionPeriod; amount: number };
   fee: number;
   joinContent: ContentJoinData;
   onSubmit?: () => Promise<void>;

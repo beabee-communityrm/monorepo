@@ -1,6 +1,24 @@
 <template>
   <div>
     <AppChoice
+      v-if="showPeriod"
+      :model-value="period"
+      :items="[
+        {
+          label: t('common.contributionPeriod.monthly'),
+          value: ContributionPeriod.Monthly,
+        },
+        {
+          label: t('common.contributionPeriod.annually'),
+          value: ContributionPeriod.Annually,
+        },
+      ]"
+      variant="collapsed"
+      class="mb-4"
+      @update:model-value="updatePeriod"
+    />
+
+    <AppChoice
       v-model="amount"
       :items="
         presetAmounts.map((amount) => ({
@@ -56,32 +74,46 @@ import { minValue } from '@vuelidate/validators';
 import useVuelidate from '@vuelidate/core';
 import AppChoice from '../forms/AppChoice.vue';
 import { generalContent } from '@store/generalContent';
+import { ContributionPeriod } from '@beabee/beabee-common';
 
 const { t, n } = useI18n();
 
-const emits = defineEmits(['update:modelValue']);
 const props = defineProps<{
-  modelValue: number;
-  minAmount: number;
+  minMonthlyAmount: number;
   presetAmounts: number[];
+  showPeriod: boolean;
 }>();
 
-const amount = computed({
-  get: () => props.modelValue,
-  set: (newAmount) => {
-    emits('update:modelValue', newAmount);
-    validation.value.amount.$touch();
-  },
-});
+const amount = defineModel<number>('amount', { required: true });
+const period = defineModel<ContributionPeriod>('period', { required: true });
 
 const hasError = computed(() => validation.value.$errors.length > 0);
 const isPresetAmount = computed(() =>
   props.presetAmounts.includes(amount.value)
 );
 
+const minAmount = computed(
+  () =>
+    props.minMonthlyAmount *
+    (period.value === ContributionPeriod.Annually ? 12 : 1)
+);
+
 const rules = computed(() => ({
-  amount: { minValue: minValue(props.minAmount) },
+  amount: { minValue: minValue(minAmount) },
 }));
 
 const validation = useVuelidate(rules, { amount });
+
+// Update the amount when the user switches the period
+function updatePeriod(newPeriod: ContributionPeriod) {
+  if (period.value !== newPeriod) {
+    const newAmount =
+      newPeriod === ContributionPeriod.Annually
+        ? amount.value * 12
+        : Math.floor(amount.value / 12);
+
+    amount.value = newAmount;
+    period.value = newPeriod;
+  }
+}
 </script>

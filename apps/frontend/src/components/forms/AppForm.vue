@@ -59,6 +59,9 @@ const { t } = useI18n();
 const errorMessages = computed<Record<string, string>>(() => ({
   unknown: t('form.errorMessages.generic'),
   'duplicate-email': t('form.errorMessages.api.duplicate-email'),
+  'cant-update-contribution': t(
+    'form.errorMessages.api.cant-update-contribution'
+  ),
   [LOGIN_CODES.LOGIN_FAILED]: t('form.errorMessages.api.login-failed'),
   [LOGIN_CODES.INVALID_TOKEN]: t('form.errorMessages.api.invalid-token'),
   [LOGIN_CODES.LOCKED]: t('form.errorMessages.api.account-locked'),

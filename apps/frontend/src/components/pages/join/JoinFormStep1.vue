@@ -1,18 +1,11 @@
 <template>
   <AppForm :button-text="'Next: payment'" full-button @submit="onSubmit">
-    <ContributionPeriodVue
-      :model-value="period"
-      class="mb-6"
-      @update:model-value="updatePeriod"
-    />
-
     <ContributionAmount
-      v-model="amount"
-      :min-amount="
-        joinContent.minMonthlyAmount *
-        (period === ContributionPeriod.Annually ? 12 : 1)
-      "
+      v-model:amount="amount"
+      v-model:period="period"
+      :min-monthly-amount="joinContent.minMonthlyAmount"
       :preset-amounts="joinContent.presetAmounts[period]"
+      show-period
       class="mb-6"
     />
     <p class="mb-6 text-center">
@@ -56,7 +49,6 @@ import useVuelidate from '@vuelidate/core';
 import { generalContent } from '@store';
 
 import AppForm from '@components/forms/AppForm.vue';
-import ContributionPeriodVue from '@components/contribution/ContributionPeriod.vue';
 import ContributionAmount from '@components/contribution/ContributionAmount.vue';
 
 import beabeeLogo from '@assets/images/beabee-logo.png';
@@ -73,18 +65,6 @@ const period = defineModel<ContributionPeriod>('period', { required: true });
 
 const { t } = useI18n();
 
-// Update the amount when the user switches the period
-function updatePeriod(newPeriod: ContributionPeriod) {
-  if (period.value !== newPeriod) {
-    const newAmount =
-      newPeriod === ContributionPeriod.Annually
-        ? amount.value * 12
-        : Math.floor(amount.value / 12);
-
-    amount.value = newAmount;
-    period.value = newPeriod;
-  }
-}
-
+// Stops errors propagating to membership builder parent
 useVuelidate({ $stopPropagation: true });
 </script>

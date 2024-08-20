@@ -71,6 +71,7 @@ import {
   ContributionType,
   MembershipStatus,
   PaymentMethod,
+  type ContentJoinData,
   type ContentPaymentData,
 } from '@beabee/beabee-common';
 import { computed, onBeforeMount, ref } from 'vue';
@@ -83,7 +84,6 @@ import PaymentSource from '@components/pages/profile/contribution/PaymentSource.
 import PageTitle from '@components/PageTitle.vue';
 import ContactPaymentsHistory from '@components/contact/ContactPaymentsHistory.vue';
 import UpdateContribution from '@components/pages/profile/contribution/UpdateContribution.vue';
-import type { ContributionContent } from '@components/contribution/contribution.interface';
 
 import { fetchContribution } from '@utils/api/contact';
 import { fetchContent } from '@utils/api/content';
@@ -105,7 +105,7 @@ const updatedPaymentSource = ref(
 const startedContribution = ref(route.query.startedContribution !== undefined);
 const cancelledContribution = ref(route.query.cancelled !== undefined);
 
-const content = ref<ContributionContent>({
+const content = ref<ContentJoinData>({
   initialAmount: 5,
   initialPeriod: ContributionPeriod.Monthly,
   minMonthlyAmount: 5,
