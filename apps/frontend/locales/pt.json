@@ -447,7 +447,6 @@
     "changeBank": "Mudar para outra conta bancária",
     "changeBankInfo": "No próximo passo, vais poder inserir os detalhes bancários da tua nova conta.",
     "contributing": "Estás a contribuir",
-    "contributionUpdateError": "Não é possível atualizar a tua contribuição porque tens um pagamento pendente.",
     "dueToRenew": "A tua contribuição vai renovar a {renewalDate}.",
     "expired": "A tua contribuição expirou.",
     "expiredText": "Considera renovar a tua contribuição mensal, nem que seja pelo valor mais baixo. É muito importante para o nosso jornalismo. Obrigado!",
@@ -592,6 +591,7 @@
     "errorMessages": {
       "api": {
         "account-locked": "Conta bloqueada por demasiadas tentativas de login. Faz reset da tua password ou fala connosco.",
+        "cant-update-contribution": "Não é possível atualizar a tua contribuição porque tens um pagamento pendente.",
         "duplicate-email": "Este endereço de e-mail já existe",
         "invalid-token": "Token 2FA inválido",
         "login-failed": "Combinação inválida de email e palavra-passe",
