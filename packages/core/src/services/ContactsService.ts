@@ -213,6 +213,7 @@ class ContactsService {
       role.dateExpires = updates.dateExpires || role.dateExpires;
     } else {
       role = getRepository(ContactRole).create({
+        contactId: contact.id,
         type: roleType,
         dateAdded: updates?.dateAdded || new Date(),
         dateExpires: updates?.dateExpires || null
@@ -220,7 +221,7 @@ class ContactsService {
       contact.roles.push(role);
     }
 
-    await getRepository(Contact).save(contact);
+    await getRepository(ContactRole).save(contact.roles);
 
     if (!wasActive && contact.membership?.isActive) {
       await NewsletterService.addTagToContacts(
