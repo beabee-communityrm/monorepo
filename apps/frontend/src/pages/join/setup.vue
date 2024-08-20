@@ -10,7 +10,6 @@ meta:
     <SetupForm
       v-if="setupContent"
       :setup-content="setupContent"
-      :loading="isSaving"
       @submit="handleSubmitSetup"
     />
   </Suspense>
@@ -37,12 +36,9 @@ import type { SetupContactData } from '@components/pages/join/join.interface';
 const router = useRouter();
 
 const setupContent = ref<ContentJoinSetupData>();
-const isSaving = ref(false);
 
 async function handleSubmitSetup(data: SetupContactData) {
   if (!setupContent.value) return; // Not possible
-
-  isSaving.value = true;
 
   const profile: UpdateContactProfileData = {
     // Subscribe the user if they've opted in or selected groups
