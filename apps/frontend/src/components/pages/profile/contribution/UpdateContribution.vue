@@ -171,13 +171,6 @@ const showChangePeriod = computed(
       contribution.value.period !== ContributionPeriod.Annually)
 );
 
-const canSubmit = computed(
-  () =>
-    !isAutoActiveMember.value ||
-    contribution.value.amount != newContribution.amount ||
-    contribution.value.payFee != newContribution.payFee
-);
-
 const buttonText = computed(() =>
   isManualActiveMember.value
     ? t('contribution.updatePaymentType')
