@@ -13,7 +13,7 @@
           ? 'border-l-0 first:rounded-l first:border-l last:rounded-r'
           : 'rounded',
         cols == 2 && 'basis-1/3', // 1/3 allows for gap-2 :/
-        item.value === modelValue && 'bg-link-10',
+        item.value === modelValue ? 'bg-link-10' : 'bg-white',
       ]"
       :disabled="disabled"
       @click="$emit('update:modelValue', item.value)"
