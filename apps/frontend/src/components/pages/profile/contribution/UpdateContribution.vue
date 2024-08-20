@@ -96,6 +96,7 @@ import {
   ContributionType,
   type ContentPaymentData,
   type ContentJoinData,
+  type ContributionInfo,
 } from '@beabee/beabee-common';
 import { computed, onBeforeMount, reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -116,7 +117,6 @@ import {
 import { currentUser } from '@store/currentUser';
 import { formatLocale } from '@utils/dates';
 
-import type { ContributionInfo } from '@type';
 import AppForm from '@components/forms/AppForm.vue';
 import ContributionAmount from '@components/contribution/ContributionAmount.vue';
 import ContributionMethod from '@components/contribution/ContributionMethod.vue';

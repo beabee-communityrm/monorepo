@@ -39,6 +39,7 @@ meta:
   </App2ColGrid>
 </template>
 <script lang="ts" setup>
+import type { ContentEmailData } from '@beabee/beabee-common';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -48,8 +49,6 @@ import AppForm from '@components/forms/AppForm.vue';
 import AppInput from '@components/forms/AppInput.vue';
 
 import { fetchContent, updateContent } from '@utils/api/content';
-
-import type { ContentEmailData } from '@type';
 
 const { t } = useI18n();
 
