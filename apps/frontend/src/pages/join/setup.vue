@@ -8,6 +8,7 @@ meta:
 <template>
   <Suspense>
     <SetupForm
+      v-if="setupContent"
       :setup-content="setupContent"
       :loading="isSaving"
       @submit="handleSubmitSetup"
@@ -35,25 +36,12 @@ import type { SetupContactData } from '@components/pages/join/join.interface';
 
 const router = useRouter();
 
-const setupContent = ref<ContentJoinSetupData>({
-  welcome: '',
-  newsletterText: '',
-  newsletterOptIn: '',
-  newsletterTitle: '',
-  newsletterGroups: [],
-  showNewsletterOptIn: false,
-  showMailOptIn: false,
-  mailTitle: '',
-  mailText: '',
-  mailOptIn: '',
-  surveySlug: '',
-  surveyRequired: false,
-  surveyText: '',
-});
-
+const setupContent = ref<ContentJoinSetupData>();
 const isSaving = ref(false);
 
 async function handleSubmitSetup(data: SetupContactData) {
+  if (!setupContent.value) return; // Not possible
+
   isSaving.value = true;
 
   const profile: UpdateContactProfileData = {

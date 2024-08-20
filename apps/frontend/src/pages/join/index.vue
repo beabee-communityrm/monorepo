@@ -9,7 +9,7 @@ meta:
 </route>
 <template>
   <AuthBox v-if="generalContent.hideContribution">
-    <template v-if="!isEmbed">
+    <template v-if="joinContent && !isEmbed">
       <AppTitle>{{ joinContent.title }}</AppTitle>
       <div class="content-message mb-6" v-html="joinContent.subtitle" />
     </template>
@@ -17,7 +17,7 @@ meta:
     <JoinFormEmailOnly />
   </AuthBox>
 
-  <AuthBox v-else :title="joinContent.title">
+  <AuthBox v-else-if="joinContent && paymentContent" :title="joinContent.title">
     <template #header>
       <div class="content-message" v-html="joinContent.subtitle" />
     </template>
@@ -130,29 +130,8 @@ const steps = computed(() => [
 const currentStep = ref(0);
 const stripeClientSecret = ref('');
 
-const joinContent = ref<ContentJoinData>({
-  initialAmount: 5,
-  initialPeriod: ContributionPeriod.Monthly,
-  minMonthlyAmount: 5,
-  presetAmounts: {
-    [ContributionPeriod.Monthly]: [],
-    [ContributionPeriod.Annually]: [],
-  },
-  showAbsorbFee: true,
-  showNoContribution: false,
-  subtitle: '',
-  title: '',
-  paymentMethods: [],
-  stripeCountry: 'eu',
-  stripePublicKey: '',
-});
-
-const paymentContent = ref<ContentPaymentData>({
-  stripePublicKey: '',
-  stripeCountry: 'eu',
-  taxRateEnabled: false,
-  taxRate: 7,
-});
+const joinContent = ref<ContentJoinData>();
+const paymentContent = ref<ContentPaymentData>();
 
 const data = reactive({
   email: '',
@@ -164,7 +143,9 @@ const data = reactive({
 });
 
 const fee = computed(() =>
-  calcPaymentFee(data, paymentContent.value.stripeCountry)
+  paymentContent.value
+    ? calcPaymentFee(data, paymentContent.value.stripeCountry)
+    : 0
 );
 
 const description = computed(() => {

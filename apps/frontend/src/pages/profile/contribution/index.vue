@@ -7,7 +7,7 @@ meta:
 <template>
   <PageTitle :title="t('menu.contribution')" />
 
-  <App2ColGrid v-if="!isIniting">
+  <App2ColGrid v-if="content && paymentContent && contribution">
     <template #col1>
       <AppNotification
         v-if="updatedPaymentSource"
@@ -67,9 +67,6 @@ meta:
 
 <script lang="ts" setup>
 import {
-  ContributionPeriod,
-  ContributionType,
-  MembershipStatus,
   PaymentMethod,
   type ContentJoinData,
   type ContentPaymentData,
@@ -105,42 +102,17 @@ const updatedPaymentSource = ref(
 const startedContribution = ref(route.query.startedContribution !== undefined);
 const cancelledContribution = ref(route.query.cancelled !== undefined);
 
-const content = ref<ContentJoinData>({
-  initialAmount: 5,
-  initialPeriod: ContributionPeriod.Monthly,
-  minMonthlyAmount: 5,
-  presetAmounts: {
-    [ContributionPeriod.Monthly]: [],
-    [ContributionPeriod.Annually]: [],
-  },
-  showAbsorbFee: true,
-  paymentMethods: [PaymentMethod.StripeCard],
-});
-
-const paymentContent = ref<ContentPaymentData>({
-  stripePublicKey: '',
-  stripeCountry: 'eu',
-  taxRate: 0,
-  taxRateEnabled: false,
-});
+const content = ref<ContentJoinData>();
+const paymentContent = ref<ContentPaymentData>();
+const contribution = ref<ContributionInfo>();
 
 const email = computed(() =>
   currentUser.value ? currentUser.value.email : ''
 );
 
-const isIniting = ref(true);
-const contribution = ref<ContributionInfo>({
-  type: ContributionType.None,
-  membershipStatus: MembershipStatus.None,
-});
-
 onBeforeMount(async () => {
-  isIniting.value = true;
-
   content.value = await fetchContent('join');
   paymentContent.value = await fetchContent('payment');
-
   contribution.value = await fetchContribution();
-  isIniting.value = false;
 });
 </script>

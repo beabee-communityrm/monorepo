@@ -8,7 +8,7 @@ meta:
   <PageTitle :title="`${t('common.hello')} ${user.firstname}!`" no-collapse />
 
   <section
-    v-if="showWelcomeMessage && profileContent.introMessage"
+    v-if="showWelcomeMessage && profileContent?.introMessage"
     class="mb-10"
   >
     <WelcomeMessage
@@ -90,9 +90,7 @@ const removeWelcomeMessage = () => {
   showWelcomeMessage.value = false;
 };
 
-const profileContent = ref<ContentProfileData>({
-  introMessage: '',
-});
+const profileContent = ref<ContentProfileData>();
 
 const callouts = ref<GetCalloutData[]>([]);
 

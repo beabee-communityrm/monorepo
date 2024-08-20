@@ -15,7 +15,7 @@ meta:
     "
   >
     <template #header>
-      <p class="content-message" v-html="setupContent.surveyText" />
+      <p class="content-message" v-html="setupContent?.surveyText" />
     </template>
     <CalloutForm
       v-if="joinSurvey"
@@ -23,7 +23,10 @@ meta:
       :style="'small'"
       @submitted="goToProfile"
     />
-    <div v-if="!setupContent.surveyRequired" class="text-center">
+    <div
+      v-if="setupContent && !setupContent.surveyRequired"
+      class="text-center"
+    >
       <AppButton variant="text" @click="goToProfile">
         {{ t('actions.skip') }}
       </AppButton>
@@ -51,22 +54,7 @@ const { t } = useI18n();
 const router = useRouter();
 
 const joinSurvey = ref<GetCalloutDataWith<'form'>>();
-
-const setupContent = ref<ContentJoinSetupData>({
-  welcome: '',
-  newsletterText: '',
-  newsletterOptIn: '',
-  newsletterTitle: '',
-  newsletterGroups: [],
-  showNewsletterOptIn: false,
-  showMailOptIn: false,
-  mailTitle: '',
-  mailText: '',
-  mailOptIn: '',
-  surveySlug: '',
-  surveyRequired: false,
-  surveyText: '',
-});
+const setupContent = ref<ContentJoinSetupData>();
 
 function goToProfile() {
   router.push({ path: '/profile', query: { welcomeMessage: 'true' } });
