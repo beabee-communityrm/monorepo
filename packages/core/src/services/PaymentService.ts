@@ -181,7 +181,10 @@ class PaymentService {
     let contribution = await this.getContribution(contact);
     const newMethod = flow.paymentMethod;
 
-    if (contribution.method !== newMethod) {
+    if (
+      contribution.method !== newMethod &&
+      contribution.method !== PaymentMethod.None
+    ) {
       log.info("Changing payment method, cancelling previous contribution", {
         contribution,
         newMethod
