@@ -45,7 +45,7 @@ export class ContactContribution {
   @Column({ type: String, nullable: true })
   subscriptionId!: string | null;
 
-  @Column({ type: Number, nullable: true })
+  @Column({ type: "real", nullable: true })
   monthlyAmount!: number | null;
 
   @Column({ type: String, nullable: true })
