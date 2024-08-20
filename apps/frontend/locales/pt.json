@@ -722,7 +722,6 @@
     "absorbFeeForce": "É necessário que {amount} contributos suportem a taxa de {fee}.",
     "absorbFeeOptIn": "Sim, posso suportar a taxa de {fee}.",
     "absorbFeeText": "O nosso processador de pagamentos cobra-nos por transação, o que significa que perdemos uma parte de cada contributo mensal. Poderias suportar a taxa de {fee}? ",
-    "contribute": "Contribuir {contribution}",
     "errors": {
       "confirmEmail": {
         "message": "Está quase! Precisamos apenas de confirmar o teu email para passares a fazer parte da comunidade.",
@@ -736,10 +735,8 @@
       }
     },
     "login": "Login",
-    "memberAccount": "Conta de membro",
     "memberAlready": "Já és membro?",
     "minimumContribution": "O contributo mínimo é",
-    "noContribution": "Não pretendo contribuir neste momento",
     "notice": "Ao avançar, estás a aceitar a",
     "now": "Entrar agora!",
     "paymentMethod": "Forma de pagamento",

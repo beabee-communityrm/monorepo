@@ -122,9 +122,9 @@ const { t, n } = useI18n();
 const route = useRoute();
 
 const steps = computed(() => [
-  'Your contribution',
-  'Payment method',
-  'Payment data',
+  t('join.step1Text'),
+  t('join.step2Text'),
+  t('join.step3Text'),
 ]);
 
 const currentStep = ref(0);

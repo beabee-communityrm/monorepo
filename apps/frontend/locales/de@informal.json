@@ -1116,7 +1116,6 @@
     "absorbFeeForce": "Bei einem Beitrag von {amount}, musst du die {fee} Transaktionskosten übernehmen.",
     "absorbFeeOptIn": "Ja, ich übernehme die {fee} Transaktionskosten.",
     "absorbFeeText": "Unser Zahlungsdienstleister stellt uns jede Transaktion in Rechnung. Das heißt, wir erhalten weniger von deinem monatlichen Beitrag. Möchtest du die Kosten dafür übernehmen? Alternativ kannst du auch jährlich bezahlen.",
-    "contribute": "Mit {contribution} unterstützen.",
     "errors": {
       "confirmEmail": {
         "message": "Fast geschafft! Wir müssen nur noch deine E-Mail-Adresse bestätigen, um fortzufahren.",
@@ -1130,10 +1129,8 @@
       }
     },
     "login": "Anmelden",
-    "memberAccount": "Mitglieder-Account",
     "memberAlready": "Bist du bereits Mitglied?",
     "minimumContribution": "Der minimale Beitrag ist",
-    "noContribution": "Ich möchte jetzt keinen Beitrag leisten",
     "notice": "Indem du fortfährst, akzeptierst Du unsere",
     "now": "Jetzt Mitglied werden! ",
     "paymentMethod": "Zahlungsart",

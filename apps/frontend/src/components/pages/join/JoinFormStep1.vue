@@ -1,5 +1,5 @@
 <template>
-  <AppForm :button-text="'Next: payment'" full-button @submit="onSubmit">
+  <AppForm :button-text="t('join.step1Next')" full-button @submit="onSubmit">
     <ContributionAmount
       v-model:amount="amount"
       v-model:period="period"
@@ -8,12 +8,13 @@
       show-period
       class="mb-6"
     />
-    <p class="mb-6 text-center">
-      or you can make a
-      <router-link to="/donate" class="font-semibold underline"
-        >one time contribution</router-link
-      >
-    </p>
+    <i18n-t tag="p" keypath="join.orOneTime" class="mb-6 text-center">
+      <template #oneTimeContribution>
+        <router-link to="/donate" class="font-semibold underline">{{
+          t('join.oneTimeContribution')
+        }}</router-link>
+      </template>
+    </i18n-t>
   </AppForm>
 
   <div class="mt-3 text-center text-xs">

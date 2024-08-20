@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <AppForm :button-text="'Finish payment'" full-button @submit="onSubmit">
+  <AppForm :button-text="t('join.step2Next')" full-button @submit="onSubmit">
     <div class="mb-4">
       <AppInput
         v-model="email"

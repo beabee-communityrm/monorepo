@@ -22,8 +22,9 @@
     type="submit"
     class="mt-4 w-full"
     @click="completePayment"
-    >{{ t('actions.continue') }}</AppButton
   >
+    {{ buttonText || t('actions.continue') }}
+  </AppButton>
 </template>
 <script lang="ts" setup>
 import useVuelidate from '@vuelidate/core';
@@ -45,6 +46,7 @@ const props = defineProps<{
   publicKey: string;
   email: string;
   returnUrl: string;
+  buttonText?: string;
   showNameFields?: boolean;
 }>();
 

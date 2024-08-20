@@ -41,7 +41,7 @@
           : 'border-link bg-link-10'
       "
     >
-      <span class="flex-0 select-none px-4">Custom amount</span>
+      <span class="flex-0 select-none px-4">{{ t('join.customAmount') }}</span>
       <div
         class="flex flex-1 border-l bg-white p-4 group-focus-within:border-link"
         :class="isPresetAmount ? 'border-grey-light' : 'border-link'"

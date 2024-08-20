@@ -1122,7 +1122,7 @@
     "absorbFeeForce": "{amount} contributions must absorb the {fee} fee.",
     "absorbFeeOptIn": "Yes, I'll absorb the {fee} fee.",
     "absorbFeeText": "Our payment processor charges us per transaction which means we receive less from monthly contributions. Are you happy to absorb the {fee} transaction fee?  Alternatively you could pay annually.",
-    "contribute": "Contribute {contribution}",
+    "customAmount": "Custom amount",
     "errors": {
       "confirmEmail": {
         "message": "Almost there! We just need to confirm your email address to finish setting up your membership.",
@@ -1136,15 +1136,21 @@
       }
     },
     "login": "Log in",
-    "memberAccount": "Member account",
     "memberAlready": "Are you a member already?",
     "minimumContribution": "Minimum contribution is",
-    "noContribution": "I don't want to contribute right now",
     "notice": "By proceeding you are accepting the",
     "now": "Join now!",
+    "oneTimeContribution": "one time contribution",
+    "orOneTime": "Or you can make a {oneTimeContribution}.",
     "paymentMethod": "Payment method",
     "poweredBy": "Powered by beabee",
     "privacy": "Privacy Policy",
+    "step1Next": "Next: payment method",
+    "step1Text": "Your contribution",
+    "step2Next": "Next: payment details",
+    "step2Text": "Payment method",
+    "step3Next": "Finalise payment",
+    "step3Text": "Payment details",
     "tax": {
       "included": "Contribution includes {taxRate}% VAT."
     }
