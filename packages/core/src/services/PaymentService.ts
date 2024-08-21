@@ -22,6 +22,7 @@ import {
   PaymentProvider,
   UpdateContributionResult
 } from "#type/index";
+import { CantUpdateContribution } from "#errors/CantUpdateContribution";
 
 const log = mainLogger.child({ app: "payment-service" });
 
@@ -154,6 +155,18 @@ class PaymentService {
     paymentForm: PaymentForm
   ): Promise<UpdateContributionResult> {
     log.info("Update contribution for contact " + contact.id, { paymentForm });
+
+    // Some period changes on active members aren't allowed at the moment to
+    // prevent proration problems
+    if (
+      contact.membership?.isActive &&
+      // Annual contributors can't change their period
+      contact.contributionPeriod === ContributionPeriod.Annually &&
+      paymentForm.period !== ContributionPeriod.Annually
+    ) {
+      log.info("Can't update contribution for " + contact.id);
+      throw new CantUpdateContribution();
+    }
 
     return await this.withProvider(contact, async (provider, contribution) => {
       if (contribution.subscriptionId && !contact.membership?.isActive) {

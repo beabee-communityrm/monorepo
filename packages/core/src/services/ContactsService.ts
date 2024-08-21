@@ -336,41 +336,23 @@ class ContactsService {
     // type the user was before to an automatic contribution
     const wasManual = contact.contributionType === ContributionType.Manual;
 
-    // Some period changes on active members aren't allowed at the moment to
-    // prevent proration problems
-    if (
-      contact.membership?.isActive &&
-      // Annual contributors can't change their period
-      contact.contributionPeriod === ContributionPeriod.Annually &&
-      paymentForm.period !== ContributionPeriod.Annually
-    ) {
-      log.info("Can't update contribution for " + contact.id);
-      throw new CantUpdateContribution();
-    }
+    const res = await PaymentService.updateContribution(contact, paymentForm);
 
-    const { startNow, expiryDate } = await PaymentService.updateContribution(
-      contact,
-      paymentForm
-    );
-
-    log.info("Updated contribution for " + contact.id, {
-      startNow,
-      expiryDate
-    });
+    log.info("Updated contribution for " + contact.id, res);
 
     await this.updateContact(contact, {
       contributionType: ContributionType.Automatic,
       contributionPeriod: paymentForm.period,
-      ...(startNow && {
+      ...(res.startNow && {
         contributionMonthlyAmount: paymentForm.monthlyAmount
       })
     });
 
-    if (expiryDate) {
+    if (res.expiryDate) {
       await this.extendContactRole(
         contact,
         "member",
-        add(expiryDate, config.gracePeriod)
+        add(res.expiryDate, config.gracePeriod)
       );
     }
 
