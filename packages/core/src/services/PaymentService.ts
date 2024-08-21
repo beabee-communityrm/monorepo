@@ -147,7 +147,7 @@ class PaymentService {
     updates: Partial<Contact>
   ): Promise<void> {
     log.info("Update contact for contact " + contact.id);
-    await this.withProvider(contact, (p, c) => p.updateContact(c, updates));
+    await this.withProvider(contact, (p, c) => p.onUpdateContact(c, updates));
   }
 
   async updateContribution(

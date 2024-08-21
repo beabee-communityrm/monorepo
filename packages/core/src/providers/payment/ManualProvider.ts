@@ -44,7 +44,7 @@ class ManualProvider implements PaymentProvider {
       subscriptionId: null
     };
   }
-  async updateContact(): Promise<void> {}
+  async onUpdateContact(): Promise<void> {}
 
   async updatePaymentMethod(
     contribution: ContactContribution,

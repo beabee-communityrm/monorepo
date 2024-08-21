@@ -247,7 +247,7 @@ class GCProvider implements PaymentProvider {
    * @param contribution The contribution
    * @param updates The updates to apply
    */
-  async updateContact(
+  async onUpdateContact(
     contribution: ContactContribution,
     updates: Partial<Contact>
   ): Promise<void> {
