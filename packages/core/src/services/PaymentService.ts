@@ -201,7 +201,8 @@ class PaymentService {
         subscriptionId: result.subscriptionId,
         monthlyAmount: paymentForm.monthlyAmount,
         period: paymentForm.period,
-        payFee: paymentForm.payFee
+        payFee: paymentForm.payFee,
+        cancelledAt: null
       });
 
       return result;
@@ -238,8 +239,7 @@ class PaymentService {
     await this.setNewContribution(contribution, {
       method: newMethod,
       customerId: result.customerId,
-      mandateId: result.mandateId,
-      cancelledAt: null
+      mandateId: result.mandateId
     });
   }
 
