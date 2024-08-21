@@ -1,13 +1,14 @@
 import {
   ContributionInfo,
   ContributionPeriod,
-  MembershipStatus,
   PaymentForm,
   PaymentMethod
 } from "@beabee/beabee-common";
+import { Equal, Or } from "typeorm";
 
 import { getRepository, runTransaction } from "#database";
 import { log as mainLogger } from "#logging";
+import { CantUpdateContribution } from "#errors/CantUpdateContribution";
 import { calcRenewalDate } from "#utils/payment";
 
 import { Contact, Payment, ContactContribution } from "#models/index";
@@ -22,7 +23,6 @@ import {
   PaymentProvider,
   UpdateContributionResult
 } from "#type/index";
-import { CantUpdateContribution } from "#errors/CantUpdateContribution";
 
 const log = mainLogger.child({ app: "payment-service" });
 
@@ -108,39 +108,49 @@ class PaymentService {
   }
 
   async getContributionInfo(contact: Contact): Promise<ContributionInfo> {
-    return await this.withProvider<ContributionInfo>(
-      contact,
-      async (provider, contribution) => {
-        // Store payment data in contact for getMembershipStatus
-        // TODO: fix this!
-        contact.contributions = [contribution];
+    // There will always be a current contribution, and possibly one pending one
+    const [contribution, pendingContribution] = (await getRepository(
+      ContactContribution
+    ).find({
+      where: {
+        contactId: contact.id,
+        status: Or(Equal("current"), Equal("pending"))
+      },
+      order: { status: "ASC" } // Current first
+    })) as [ContactContribution, ContactContribution?];
 
-        const renewalDate =
-          !contribution.cancelledAt && calcRenewalDate(contact);
+    // Store current contrbution in contact for getMembershipStatus
+    // TODO: fix this!
+    contact.contributions = [contribution];
 
-        return {
-          type: contact.contributionType,
-          ...(contribution.amount !== null && {
-            amount: contribution.amount
-          }),
-          ...(contribution.period !== null && {
-            period: contribution.period
-          }),
-          ...(contribution.payFee !== null && { payFee: contribution.payFee }),
-          // TODO: pending amount
-          // ...
-          ...(contact.membership?.dateExpires && {
-            membershipExpiryDate: contact.membership.dateExpires
-          }),
-          membershipStatus: contact.membershipStatus,
-          ...(await provider.getContributionInfo(contribution)),
-          ...(contribution.cancelledAt && {
-            cancellationDate: contribution.cancelledAt
-          }),
-          ...(renewalDate && { renewalDate })
-        };
-      }
-    );
+    const cancellationDate = pendingContribution
+      ? null
+      : contribution.cancelledAt;
+    const renewalDate = !cancellationDate && calcRenewalDate(contact);
+
+    return {
+      membershipStatus: contact.membershipStatus,
+      type: contact.contributionType,
+      ...(cancellationDate && { cancellationDate }),
+      ...(renewalDate && { renewalDate }),
+      ...(contribution.amount !== null && {
+        amount: contribution.amount
+      }),
+      ...(contribution.period !== null && {
+        period: contribution.period
+      }),
+      ...(contribution.payFee !== null && { payFee: contribution.payFee }),
+      ...(contact.membership?.dateExpires && {
+        membershipExpiryDate: contact.membership.dateExpires
+      }),
+      ...(await paymentProviders[contribution.method].getContributionInfo(
+        contribution
+      )),
+      // TODO: more information about pending contribution
+      ...(pendingContribution?.monthlyAmount && {
+        nextAmount: pendingContribution.monthlyAmount
+      })
+    };
   }
 
   async getPayments(contact: Contact): Promise<Payment[]> {
