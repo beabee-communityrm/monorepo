@@ -174,6 +174,10 @@ meta:
 </template>
 
 <script lang="ts" setup>
+import type {
+  ContentPaymentData,
+  ContentShareData,
+} from '@beabee/beabee-common';
 import axios from 'axios';
 import { onBeforeMount, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -193,7 +197,6 @@ import { fetchContent, updateContent } from '@utils/api/content';
 
 import { generalContent as storeGeneralContent } from '@store';
 
-import type { ContentShareData, ContentPaymentData } from '@type';
 import { localeItems } from '@lib/i18n';
 
 const { t } = useI18n();

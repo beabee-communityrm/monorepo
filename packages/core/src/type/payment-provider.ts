@@ -24,7 +24,7 @@ export interface PaymentProvider {
     keepMandate: boolean
   ): Promise<CancelContributionResult>;
 
-  updateContact(
+  onUpdateContact(
     contribution: ContactContribution,
     updates: Partial<Contact>
   ): Promise<void>;

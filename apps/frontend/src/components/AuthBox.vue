@@ -8,7 +8,7 @@
   >
     <div
       v-if="!isEmbed"
-      class="mb-4 flex-initial basis-64"
+      class="mb-6 flex-initial basis-64"
       :class="{ 'md:mb-0': !preview }"
     >
       <div

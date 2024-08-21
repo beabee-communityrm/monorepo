@@ -21,7 +21,7 @@ class NoneProvider implements PaymentProvider {
       subscriptionId: null
     };
   }
-  async updateContact(): Promise<void> {}
+  async onUpdateContact(): Promise<void> {}
 
   updateContribution(): Promise<UpdateContributionResult> {
     throw new Error("Method not implemented.");

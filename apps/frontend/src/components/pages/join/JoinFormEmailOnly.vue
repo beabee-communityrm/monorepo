@@ -1,8 +1,8 @@
 <template>
-  <section>
+  <AppForm :button-text="t('join.now')" full-button @submit="handleEmailSignup">
     <div class="mb-4">
       <AppInput
-        v-model="emailProxy"
+        v-model="email"
         :label="t('form.email')"
         type="email"
         name="email"
@@ -28,24 +28,29 @@
         </router-link>
       </p>
     </div>
-  </section>
+  </AppForm>
 </template>
-
 <script lang="ts" setup>
-import AppInput from '../../forms/AppInput.vue';
+import AppForm from '@components/forms/AppForm.vue';
+import AppInput from '@components/forms/AppInput.vue';
+import { isEmbed } from '@store/index';
+import { signUpWithEmailOnly } from '@utils/api/signup';
+import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { computed } from 'vue';
-import { isEmbed } from '../../../store';
-
-const emit = defineEmits(['update:email']);
-const props = defineProps<{
-  email: string;
-}>();
-
-const emailProxy = computed({
-  get: () => props.email,
-  set: (email) => emit('update:email', email),
-});
+import { useRouter } from 'vue-router';
 
 const { t } = useI18n();
+const router = useRouter();
+
+const email = ref('');
+
+async function handleEmailSignup() {
+  await signUpWithEmailOnly(email.value);
+
+  if (isEmbed) {
+    window.top!.location.href = '/join/confirm-email';
+  } else {
+    router.push({ path: '/join/confirm-email' });
+  }
+}
 </script>

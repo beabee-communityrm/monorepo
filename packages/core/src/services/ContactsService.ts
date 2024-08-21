@@ -213,6 +213,7 @@ class ContactsService {
       role.dateExpires = updates.dateExpires || role.dateExpires;
     } else {
       role = getRepository(ContactRole).create({
+        contactId: contact.id,
         type: roleType,
         dateAdded: updates?.dateAdded || new Date(),
         dateExpires: updates?.dateExpires || null
@@ -220,7 +221,7 @@ class ContactsService {
       contact.roles.push(role);
     }
 
-    await getRepository(Contact).save(contact);
+    await getRepository(ContactRole).save(contact.roles);
 
     if (!wasActive && contact.membership?.isActive) {
       await NewsletterService.addTagToContacts(
@@ -335,41 +336,23 @@ class ContactsService {
     // type the user was before to an automatic contribution
     const wasManual = contact.contributionType === ContributionType.Manual;
 
-    // Some period changes on active members aren't allowed at the moment to
-    // prevent proration problems
-    if (
-      contact.membership?.isActive &&
-      // Annual contributors can't change their period
-      contact.contributionPeriod === ContributionPeriod.Annually &&
-      paymentForm.period !== ContributionPeriod.Annually
-    ) {
-      log.info("Can't update contribution for " + contact.id);
-      throw new CantUpdateContribution();
-    }
+    const res = await PaymentService.updateContribution(contact, paymentForm);
 
-    const { startNow, expiryDate } = await PaymentService.updateContribution(
-      contact,
-      paymentForm
-    );
-
-    log.info("Updated contribution for " + contact.id, {
-      startNow,
-      expiryDate
-    });
+    log.info("Updated contribution for " + contact.id, res);
 
     await this.updateContact(contact, {
       contributionType: ContributionType.Automatic,
       contributionPeriod: paymentForm.period,
-      ...(startNow && {
+      ...(res.startNow && {
         contributionMonthlyAmount: paymentForm.monthlyAmount
       })
     });
 
-    if (expiryDate) {
+    if (res.expiryDate) {
       await this.extendContactRole(
         contact,
         "member",
-        add(expiryDate, config.gracePeriod)
+        add(res.expiryDate, config.gracePeriod)
       );
     }
 
@@ -433,42 +416,6 @@ class ContactsService {
       await em.getRepository(ContactRole).delete({ contactId: contact.id });
       await em.getRepository(ContactProfile).delete({ contactId: contact.id });
       await em.getRepository(Contact).delete(contact.id);
-    });
-  }
-
-  /**
-   * TODO: Remove this!
-   * @deprecated This is a temporary method until we rework manual contribution updates
-   * @param contact
-   * @param data
-   */
-  async forceUpdateContactContribution(
-    contact: Contact,
-    data: ForceUpdateContribution
-  ): Promise<void> {
-    if (contact.contributionType === ContributionType.Automatic) {
-      throw new CantUpdateContribution();
-    }
-
-    const period = data.period && data.amount ? data.period : null;
-    const monthlyAmount =
-      data.period && data.amount
-        ? data.amount / (data.period === ContributionPeriod.Annually ? 12 : 1)
-        : null;
-
-    await this.updateContact(contact, {
-      contributionType: data.type,
-      contributionPeriod: period,
-      contributionMonthlyAmount: monthlyAmount
-    });
-
-    await PaymentService.updatePaymentMethod(contact, {
-      paymentMethod:
-        data.type === ContributionType.Manual
-          ? PaymentMethod.Manual
-          : PaymentMethod.None,
-      mandateId: data.source || "",
-      customerId: data.reference || ""
     });
   }
 

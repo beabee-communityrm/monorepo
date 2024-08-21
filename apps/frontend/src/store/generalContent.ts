@@ -1,8 +1,7 @@
+import type { ContentGeneralData } from '@beabee/beabee-common';
 import { computed, ref } from 'vue';
 import { fetchContent } from '@utils/api/content';
 import defaultBgUrl from '@assets/images/auth-bg.jpg';
-
-import type { ContentGeneralData } from '@type';
 
 export const generalContent = ref<ContentGeneralData>({
   organisationName: '',
@@ -11,11 +10,14 @@ export const generalContent = ref<ContentGeneralData>({
   supportEmail: '',
   privacyLink: '',
   termsLink: '',
+  impressumLink: '',
   locale: '',
   currencyCode: '',
   currencySymbol: '',
   footerLinks: [],
   theme: {},
+  backgroundUrl: '',
+  hideContribution: false,
 });
 
 export const initGeneralContent = fetchContent('general').then((content) => {

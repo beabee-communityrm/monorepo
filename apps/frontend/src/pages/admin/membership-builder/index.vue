@@ -44,10 +44,14 @@ meta:
         <AppSubHeading> {{ stepT('suggestedAmounts') }} * </AppSubHeading>
         <div class="mb-4 flex gap-4">
           <PeriodAmounts
-            v-for="(period, periodI) in joinContent.periods"
-            :key="period.name"
-            v-model="joinContent.periods[periodI].presetAmounts"
-            :period="period.name"
+            v-model="joinContent.presetAmounts.monthly"
+            :period="ContributionPeriod.Monthly"
+            :min-monthly-amount="joinContent.minMonthlyAmount"
+            class="flex-1"
+          />
+          <PeriodAmounts
+            v-model="joinContent.presetAmounts.annually"
+            :period="ContributionPeriod.Annually"
             :min-monthly-amount="joinContent.minMonthlyAmount"
             class="flex-1"
           />
@@ -90,11 +94,15 @@ meta:
       </AppForm>
     </template>
     <template #col2>
-      <JoinForm
-        :join-content="joinContent"
-        :payment-content="paymentContent"
-        preview
-      />
+      <AuthBox preview>
+        <JoinFormStep1
+          :amount="joinContent.initialAmount"
+          :period="joinContent.initialPeriod"
+          :join-content="joinContent"
+          :payment-content="paymentContent"
+          preview
+        />
+      </AuthBox>
     </template>
   </App2ColGrid>
 </template>
@@ -103,7 +111,11 @@ import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import useVuelidate from '@vuelidate/core';
 import { required } from '@vuelidate/validators';
-import { ContributionPeriod } from '@beabee/beabee-common';
+import {
+  ContributionPeriod,
+  type ContentJoinData,
+  type ContentPaymentData,
+} from '@beabee/beabee-common';
 
 import AppForm from '@components/forms/AppForm.vue';
 import AppInput from '@components/forms/AppInput.vue';
@@ -111,7 +123,7 @@ import RichTextEditor from '@components/rte/RichTextEditor.vue';
 import AppLabel from '@components/forms/AppLabel.vue';
 import AppSelect from '@components/forms/AppSelect.vue';
 import AppCheckbox from '@components/forms/AppCheckbox.vue';
-import JoinForm from '@components/pages/join/JoinForm.vue';
+import JoinFormStep1 from '@components/pages/join/JoinFormStep1.vue';
 import AppImageUpload from '@components/forms/AppImageUpload.vue';
 import PeriodAmounts from '@components/pages/admin/membership-builder/PeriodAmounts.vue';
 import App2ColGrid from '@components/App2ColGrid.vue';
@@ -120,8 +132,7 @@ import AppSubHeading from '@components/AppSubHeading.vue';
 import { fetchContent, updateContent } from '@utils/api/content';
 
 import { generalContent } from '@store';
-
-import type { ContentJoinData, ContentPaymentData } from '@type';
+import AuthBox from '@components/AuthBox.vue';
 
 const joinContent = ref<ContentJoinData>();
 const paymentContent = ref<ContentPaymentData>();
@@ -146,18 +157,17 @@ const selectedDefaultAmount = computed({
 });
 
 const defaultAmounts = computed(() => {
-  return joinContent.value
-    ? joinContent.value.periods.flatMap((period) =>
-        period.presetAmounts.map((amount) => ({
-          id: `${period.name}_${amount}`,
-          label: `${n(amount, 'currency')} ${
-            period.name === ContributionPeriod.Monthly
-              ? t('common.perMonth')
-              : t('common.perYear')
-          }`,
-        }))
-      )
-    : [];
+  return [ContributionPeriod.Monthly, ContributionPeriod.Annually].flatMap(
+    (period) =>
+      joinContent.value?.presetAmounts[period].map((amount) => ({
+        id: `${period}_${amount}`,
+        label: `${n(amount, 'currency')} ${
+          period === ContributionPeriod.Monthly
+            ? t('common.perMonth')
+            : t('common.perYear')
+        }`,
+      })) || []
+  );
 });
 
 const validation = useVuelidate(

@@ -49,17 +49,12 @@ export class StartContributionDto
   paymentMethod!: PaymentMethod;
 }
 
-export class ForceUpdateContributionDto {
-  @IsIn([ContributionType.Manual, ContributionType.None])
-  type!: ContributionType.Manual | ContributionType.None;
-
-  @IsOptional()
+export class CreateManualContributionDto {
   @IsNumber()
-  amount?: number;
+  amount!: number;
 
-  @IsOptional()
   @IsEnum(ContributionPeriod)
-  period?: ContributionPeriod;
+  period!: ContributionPeriod;
 
   @IsOptional()
   @IsString()

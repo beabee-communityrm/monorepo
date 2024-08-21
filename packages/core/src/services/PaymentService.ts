@@ -1,12 +1,14 @@
 import {
   ContributionInfo,
-  MembershipStatus,
+  ContributionPeriod,
   PaymentForm,
   PaymentMethod
 } from "@beabee/beabee-common";
+import { Equal, Or } from "typeorm";
 
 import { getRepository, runTransaction } from "#database";
 import { log as mainLogger } from "#logging";
+import { CantUpdateContribution } from "#errors/CantUpdateContribution";
 import { calcRenewalDate } from "#utils/payment";
 
 import { Contact, Payment, ContactContribution } from "#models/index";
@@ -73,13 +75,29 @@ class PaymentService {
 
   async canChangeContribution(
     contact: Contact,
-    useExistingPaymentSource: boolean,
+    useExistingMandate: boolean,
     paymentForm: PaymentForm
   ): Promise<boolean> {
     return await this.withProvider(contact, async (provider, contribution) => {
+      if (useExistingMandate && !contact.contribution.mandateId) {
+        log.info(
+          `Contact ${contact.id} has no mandate available, cannot change contribution`
+        );
+        return false;
+      }
+
+      // If there is no subscription then we can always change the contribution
+      // because a new one will be created
+      if (contact.contribution.subscriptionId === null) {
+        log.info(
+          `Contact ${contact.id} has no subscription, can change contribution`
+        );
+        return true;
+      }
+
       const canChange = await provider.canChangeContribution(
         contribution,
-        useExistingPaymentSource,
+        useExistingMandate,
         paymentForm
       );
       log.info(
@@ -90,39 +108,49 @@ class PaymentService {
   }
 
   async getContributionInfo(contact: Contact): Promise<ContributionInfo> {
-    return await this.withProvider<ContributionInfo>(
-      contact,
-      async (provider, contribution) => {
-        // Store payment data in contact for getMembershipStatus
-        // TODO: fix this!
-        contact.contributions = [contribution];
+    // There will always be a current contribution, and possibly one pending one
+    const [contribution, pendingContribution] = (await getRepository(
+      ContactContribution
+    ).find({
+      where: {
+        contactId: contact.id,
+        status: Or(Equal("current"), Equal("pending"))
+      },
+      order: { status: "ASC" } // Current first
+    })) as [ContactContribution, ContactContribution?];
 
-        const renewalDate =
-          !contribution.cancelledAt && calcRenewalDate(contact);
+    // Store current contrbution in contact for getMembershipStatus
+    // TODO: fix this!
+    contact.contributions = [contribution];
 
-        return {
-          type: contact.contributionType,
-          ...(contribution.amount !== null && {
-            amount: contribution.amount
-          }),
-          ...(contribution.period !== null && {
-            period: contribution.period
-          }),
-          ...(contribution.payFee !== null && { payFee: contribution.payFee }),
-          // TODO: pending amount
-          // ...
-          ...(contact.membership?.dateExpires && {
-            membershipExpiryDate: contact.membership.dateExpires
-          }),
-          membershipStatus: contact.membershipStatus,
-          ...(await provider.getContributionInfo(contribution)),
-          ...(contribution.cancelledAt && {
-            cancellationDate: contribution.cancelledAt
-          }),
-          ...(renewalDate && { renewalDate })
-        };
-      }
-    );
+    const cancellationDate = pendingContribution
+      ? null
+      : contribution.cancelledAt;
+    const renewalDate = !cancellationDate && calcRenewalDate(contact);
+
+    return {
+      membershipStatus: contact.membershipStatus,
+      type: contact.contributionType,
+      ...(cancellationDate && { cancellationDate }),
+      ...(renewalDate && { renewalDate }),
+      ...(contribution.amount !== null && {
+        amount: contribution.amount
+      }),
+      ...(contribution.period !== null && {
+        period: contribution.period
+      }),
+      ...(contribution.payFee !== null && { payFee: contribution.payFee }),
+      ...(contact.membership?.dateExpires && {
+        membershipExpiryDate: contact.membership.dateExpires
+      }),
+      ...(await paymentProviders[contribution.method].getContributionInfo(
+        contribution
+      )),
+      // TODO: more information about pending contribution
+      ...(pendingContribution?.monthlyAmount && {
+        nextAmount: pendingContribution.monthlyAmount
+      })
+    };
   }
 
   async getPayments(contact: Contact): Promise<Payment[]> {
@@ -145,7 +173,7 @@ class PaymentService {
     updates: Partial<Contact>
   ): Promise<void> {
     log.info("Update contact for contact " + contact.id);
-    await this.withProvider(contact, (p, c) => p.updateContact(c, updates));
+    await this.withProvider(contact, (p, c) => p.onUpdateContact(c, updates));
   }
 
   async updateContribution(
@@ -154,7 +182,25 @@ class PaymentService {
   ): Promise<UpdateContributionResult> {
     log.info("Update contribution for contact " + contact.id, { paymentForm });
 
+    // Some period changes on active members aren't allowed at the moment to
+    // prevent proration problems
+    if (
+      contact.membership?.isActive &&
+      // Annual contributors can't change their period
+      contact.contributionPeriod === ContributionPeriod.Annually &&
+      paymentForm.period !== ContributionPeriod.Annually
+    ) {
+      log.info("Can't update contribution for " + contact.id);
+      throw new CantUpdateContribution();
+    }
+
     return await this.withProvider(contact, async (provider, contribution) => {
+      if (contribution.subscriptionId && !contact.membership?.isActive) {
+        log.info("Contact has a subscription but is not active, cancelling");
+        await this.cancelContribution(contact);
+        contribution = await this.getContribution(contact);
+      }
+
       const result = await provider.updateContribution(
         contribution,
         paymentForm
@@ -165,7 +211,8 @@ class PaymentService {
         subscriptionId: result.subscriptionId,
         monthlyAmount: paymentForm.monthlyAmount,
         period: paymentForm.period,
-        payFee: paymentForm.payFee
+        payFee: paymentForm.payFee,
+        cancelledAt: null
       });
 
       return result;
@@ -181,7 +228,10 @@ class PaymentService {
     let contribution = await this.getContribution(contact);
     const newMethod = flow.paymentMethod;
 
-    if (contribution.method !== newMethod) {
+    if (
+      contribution.method !== newMethod &&
+      contribution.method !== PaymentMethod.None
+    ) {
       log.info("Changing payment method, cancelling previous contribution", {
         contribution,
         newMethod
@@ -199,8 +249,7 @@ class PaymentService {
     await this.setNewContribution(contribution, {
       method: newMethod,
       customerId: result.customerId,
-      mandateId: result.mandateId,
-      cancelledAt: null
+      mandateId: result.mandateId
     });
   }
 

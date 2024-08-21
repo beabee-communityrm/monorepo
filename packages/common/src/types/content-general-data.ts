@@ -10,7 +10,23 @@ export interface ContentGeneralData<L = string> {
   impressumLink: string;
   /** Current locale, e.g. en, de@informal, ... */
   locale: L;
-  theme: object;
+  theme: {
+    colors?: {
+      _name?: string;
+      primary?: string;
+      link?: string;
+      body?: string;
+      success?: string;
+      warning?: string;
+      danger?: string;
+      white?: string;
+      black?: string;
+    };
+    fonts?: {
+      body?: string;
+      title?: string;
+    };
+  };
   currencyCode: string;
   currencySymbol: string;
   backgroundUrl: string;

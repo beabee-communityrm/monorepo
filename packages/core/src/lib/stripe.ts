@@ -133,6 +133,36 @@ async function calculateProrationParams(
 }
 
 /**
+ * Update a subscription if one exists, otherwise create a new one
+ *
+ * @param contribution The contribution
+ * @param paymentForm The payment form
+ * @returns The Stripe subscription and whether it should start now
+ */
+export async function updateOrCreateSubscription(
+  customerId: string,
+  paymentForm: PaymentForm,
+  paymentMethod: PaymentMethod,
+  subscriptionId: string | null,
+  renewalDate?: Date
+): Promise<{ subscription: Stripe.Subscription; startNow: boolean }> {
+  if (subscriptionId) {
+    log.info("Update subscription " + subscriptionId);
+    return await updateSubscription(subscriptionId, paymentForm, paymentMethod);
+  } else {
+    log.info("Creating new subscription");
+    const subscription = await createSubscription(
+      customerId,
+      paymentForm,
+      paymentMethod,
+      renewalDate
+    );
+
+    return { subscription, startNow: true };
+  }
+}
+
+/**
  * Create a new subscription in Stripe, optionally starting at a specific date.
  *
  * @param customerId The Stripe customer ID
@@ -173,7 +203,7 @@ export async function createSubscription(
  * @param paymentMethod
  * @returns
  */
-export async function updateSubscription(
+async function updateSubscription(
   subscriptionId: string,
   paymentForm: PaymentForm,
   paymentMethod: PaymentMethod

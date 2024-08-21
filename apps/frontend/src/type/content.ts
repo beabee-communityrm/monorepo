@@ -1,14 +1,14 @@
-import type { ContentJoinSetupData } from '@beabee/beabee-common';
 import type {
   ContentContactsData,
   ContentEmailData,
   ContentGeneralData,
+  ContentId,
   ContentJoinData,
+  ContentJoinSetupData,
+  ContentPaymentData,
   ContentProfileData,
   ContentShareData,
-  ContentPaymentData,
-  ContentId,
-} from '@type';
+} from '@beabee/beabee-common';
 
 export type Content<Id extends ContentId> = Id extends 'join'
   ? ContentJoinData

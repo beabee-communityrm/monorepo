@@ -8,7 +8,7 @@ meta:
   <PageTitle :title="`${t('common.hello')} ${user.firstname}!`" no-collapse />
 
   <section
-    v-if="showWelcomeMessage && profileContent.introMessage"
+    v-if="showWelcomeMessage && profileContent?.introMessage"
     class="mb-10"
   >
     <WelcomeMessage
@@ -59,7 +59,7 @@ meta:
 </template>
 
 <script lang="ts" setup>
-import { ItemStatus } from '@beabee/beabee-common';
+import { ItemStatus, type ContentProfileData } from '@beabee/beabee-common';
 import { ref, onBeforeMount, type Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
@@ -78,7 +78,7 @@ import { fetchCallouts } from '@utils/api/callout';
 
 import { currentUser, generalContent } from '@store';
 
-import type { GetContactData, GetCalloutData, ContentProfileData } from '@type';
+import type { GetContactData, GetCalloutData } from '@type';
 
 const { t } = useI18n();
 
@@ -90,9 +90,7 @@ const removeWelcomeMessage = () => {
   showWelcomeMessage.value = false;
 };
 
-const profileContent = ref<ContentProfileData>({
-  introMessage: '',
-});
+const profileContent = ref<ContentProfileData>();
 
 const callouts = ref<GetCalloutData[]>([]);
 

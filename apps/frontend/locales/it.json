@@ -394,7 +394,6 @@
   "join": {
     "absorbFeeOptIn": "Sì, intendo coprire i {fee} della transazione.",
     "absorbFeeText": "La nostra piattaforma di pagamento addebita un costo per la transazione. Significa che mensilmente riceveremo meno rispetto alla quota che hai scelto. Vuoi coprire il costo della transazione? Il pagamento annuale, invece, non prevede costi ulteriori.  ",
-    "contribute": "Contribuisci con {contribution}",
     "errors": {
       "confirmEmail": {
         "message": "Ci sei quasi! Devi solo confermare il tuo indirizzo mail. Controlla la tua casella di posta.",
@@ -406,7 +405,6 @@
       }
     },
     "login": "Log in",
-    "memberAccount": "Il tuo account",
     "memberAlready": "Sei già iscritto?",
     "paymentMethod": "Metodo di pagamento",
     "privacy": "Privacy",

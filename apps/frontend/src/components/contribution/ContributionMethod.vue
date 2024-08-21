@@ -1,46 +1,84 @@
 <template>
-  <div v-if="methods.length > 1" :class="disabled && 'opacity-50'">
-    <AppSubHeading>{{ t('join.paymentMethod') }}</AppSubHeading>
-    <div
-      class="grid gap-2"
-      :class="methods.length > 2 ? 'grid-cols-3' : 'grid-cols-2'"
-    >
-      <div v-for="method in methods" :key="method">
-        <button
-          class="h-full min-h-[2.5rem] w-full rounded border border-primary-40 p-1.5 text-left text-lg font-semibold enabled:cursor-pointer"
-          :class="
-            disabled
-              ? ''
-              : method === modelValue
-                ? '!border-link-110 bg-link text-white'
-                : 'bg-white hover:border-link hover:bg-link-10'
-          "
-          type="button"
-          :disabled="disabled"
-          @click="emit('update:modelValue', method)"
-        >
-          <PaymentMethodIcon :method="method" /><span
+  <div>
+    <template v-if="showPaymentMethod && methods.length">
+      <AppLabel :label="t('join.paymentMethod')" required />
+
+      <AppChoice
+        v-model="paymentMethod"
+        :items="methods.map((method) => ({ value: method }))"
+        class="mb-4"
+      >
+        <template #default="{ item }">
+          <PaymentMethodIcon :method="item.value" /><span
             class="text-xs"
             :class="methods.length > 2 ? 'block' : 'm-2 inline'"
-            >{{ t(`paymentMethods.${method}.label`) }}</span
+            >{{ t(`paymentMethods.${item.value}.label`) }}</span
           >
-        </button>
-      </div>
-    </div>
+        </template>
+      </AppChoice>
+    </template>
+
+    <template v-if="showAbsorbFee">
+      <p class="mb-2 text-sm leading-normal">
+        {{ t('join.absorbFeeText', { fee: n(fee, 'currency') }) }}
+      </p>
+
+      <AppCheckbox
+        v-model="payFee"
+        :disabled="forceFee"
+        :label="
+          t(forceFee ? 'join.absorbFeeForce' : 'join.absorbFeeOptIn', {
+            fee: n(fee, 'currency'),
+            amount: n(data.amount, 'currency'),
+          })
+        "
+      />
+    </template>
   </div>
 </template>
 <script lang="ts" setup>
-import { PaymentMethod } from '@beabee/beabee-common';
+import {
+  calcPaymentFee,
+  ContributionPeriod,
+  PaymentMethod,
+  type StripeFeeCountry,
+} from '@beabee/beabee-common';
 import { useI18n } from 'vue-i18n';
 import PaymentMethodIcon from '../payment-method/PaymentMethodIcon.vue';
-import AppSubHeading from '../AppSubHeading.vue';
+import AppChoice from '@components/forms/AppChoice.vue';
+import AppLabel from '@components/forms/AppLabel.vue';
+import { computed, watchEffect } from 'vue';
+import AppCheckbox from '@components/forms/AppCheckbox.vue';
 
-const { t } = useI18n();
+const { n, t } = useI18n();
 
-const emit = defineEmits(['update:modelValue']);
-defineProps<{
-  modelValue: PaymentMethod;
+const props = defineProps<{
+  content: { showAbsorbFee: boolean; stripeCountry: StripeFeeCountry };
+  data: { period: ContributionPeriod; amount: number };
   methods: PaymentMethod[];
-  disabled: boolean;
+  showPaymentMethod: boolean;
 }>();
+
+const paymentMethod = defineModel<PaymentMethod>('paymentMethod', {
+  required: true,
+});
+const payFee = defineModel<boolean>('payFee', { required: true });
+
+const fee = computed(() =>
+  calcPaymentFee(
+    { ...props.data, paymentMethod: paymentMethod.value },
+    props.content.stripeCountry
+  )
+);
+
+const showAbsorbFee = computed(
+  () =>
+    props.content.showAbsorbFee &&
+    props.data.period === ContributionPeriod.Monthly
+);
+
+const forceFee = computed(() => showAbsorbFee.value && props.data.amount === 1);
+watchEffect(() => {
+  if (forceFee.value) payFee.value = true;
+});
 </script>

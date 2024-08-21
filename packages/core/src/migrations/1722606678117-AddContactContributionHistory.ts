@@ -10,7 +10,7 @@ export class AddContactContributionHistory1722606678117
       `ALTER TABLE "contact_contribution" ADD "status" character varying`
     );
     await queryRunner.query(
-      `ALTER TABLE "contact_contribution" ADD "monthlyAmount" integer`
+      `ALTER TABLE "contact_contribution" ADD "monthlyAmount" real`
     );
     await queryRunner.query(
       `ALTER TABLE "contact_contribution" ADD "period" character varying`

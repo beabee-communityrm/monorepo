@@ -1,143 +1,119 @@
 <template>
-  <div class="flex flex-wrap gap-2">
-    <div
-      class="flex flex-grow basis-[250px] rounded border border-primary-40 text-sm"
-      :class="
-        disabled
-          ? 'opacity-50'
-          : hasError
-            ? 'border-danger bg-danger-10'
-            : 'bg-white'
-      "
-    >
-      <label class="flex flex-1 items-baseline px-6 font-bold text-body-60">
-        <span>{{ generalContent.currencySymbol }}</span>
-        <div class="relative mx-1 font-semibold">
-          <div class="text-6xl/[7rem]">
-            {{ amount || '0' }}
-          </div>
-          <input
-            :value="amount"
-            class="absolute inset-0 w-full border-0 text-6xl/[7rem] text-body outline-none"
-            :min="minAmount"
-            :class="{ 'bg-danger-10': hasError }"
-            :disabled="disabled"
-            @input="handleInput"
-            @keydown.up.prevent="0 /* just stop caret moving */"
-            @keyup.up="changeAmount(amount + 1)"
-            @keyup.down="changeAmount(amount - 1)"
-          />
-        </div>
-        <div class="flex-0">{{ perPeriod }}</div>
-      </label>
-
-      <div class="flex h-full flex-none flex-col">
-        <button
-          class="amount-button border-b border-l"
-          type="button"
-          :disabled="disabled"
-          @click="changeAmount(amount + 1)"
-        >
-          ▲
-        </button>
-
-        <button
-          class="amount-button border-l"
-          type="button"
-          :disabled="disabled"
-          :class="{ 'is-invalid': amount <= minAmount }"
-          @click="changeAmount(amount - 1)"
-        >
-          ▼
-        </button>
-      </div>
-    </div>
+  <div>
+    <AppChoice
+      v-if="showPeriod"
+      :model-value="period"
+      :items="[
+        {
+          label: t('common.contributionPeriod.monthly'),
+          value: ContributionPeriod.Monthly,
+        },
+        {
+          label: t('common.contributionPeriod.annually'),
+          value: ContributionPeriod.Annually,
+        },
+      ]"
+      variant="collapsed"
+      class="mb-4"
+      @update:model-value="updatePeriod"
+    />
 
     <AppChoice
-      :model-value="amount"
+      v-model="amount"
       :items="
-        definedAmounts.map((amount) => ({
+        presetAmounts.map((amount) => ({
           label: n(amount, 'currency'),
           value: amount,
         }))
       "
-      :disabled="disabled"
-      :size="'xs'"
-      @update:model-value="changeAmount($event)"
-    />
+      :cols="2"
+    >
+      <template #default="{ item }">
+        <span class="inline-block p-1.5">{{ item.label }}</span>
+      </template>
+    </AppChoice>
+
+    <label
+      class="group mt-2 flex items-center rounded border font-semibold focus-within:border-link focus-within:bg-link-10"
+      :class="
+        isPresetAmount
+          ? 'border-grey-light bg-grey-lighter'
+          : 'border-link bg-link-10'
+      "
+    >
+      <span class="flex-0 select-none px-4">{{ t('join.customAmount') }}</span>
+      <div
+        class="flex flex-1 border-l bg-white p-4 group-focus-within:border-link"
+        :class="isPresetAmount ? 'border-grey-light' : 'border-link'"
+      >
+        <span class="flex-0">{{ generalContent.currencySymbol }}</span>
+        <input
+          v-model.number="amount"
+          type="number"
+          :min="minAmount"
+          class="w-full flex-1 outline-none"
+        />
+      </div>
+    </label>
 
     <div
       v-if="hasError"
-      class="col-span-12 mt-0 text-sm font-semibold text-danger"
+      class="col-span-12 mt-2 text-center text-sm font-semibold text-danger"
       role="alert"
     >
       {{ t('join.minimumContribution') }}
-      {{ n(minAmount, 'currency') }} {{ perPeriod }}
+      {{ n(minAmount, 'currency') }}
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { computed, toRefs } from 'vue';
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { minValue } from '@vuelidate/validators';
 import useVuelidate from '@vuelidate/core';
-import { generalContent } from '../../store';
 import AppChoice from '../forms/AppChoice.vue';
+import { generalContent } from '@store/generalContent';
+import { ContributionPeriod } from '@beabee/beabee-common';
 
 const { t, n } = useI18n();
 
-const emits = defineEmits(['update:modelValue']);
 const props = defineProps<{
-  modelValue: number;
-  isMonthly: boolean;
-  minAmount: number;
-  definedAmounts: number[];
-  disabled: boolean;
+  minMonthlyAmount: number;
+  presetAmounts: number[];
+  showPeriod: boolean;
 }>();
 
-const amount = computed({
-  get: () => props.modelValue,
-  set: (newAmount) => {
-    emits('update:modelValue', newAmount);
-    validation.value.amount.$touch();
-  },
-});
-
-function handleInput(event: Event) {
-  changeAmount(Number((event.target as HTMLInputElement).value) || 0, true);
-}
-
-function changeAmount(newAmount: number, allowInvalid = false) {
-  amount.value = allowInvalid
-    ? newAmount
-    : Math.max(props.minAmount, newAmount);
-}
+const amount = defineModel<number>('amount', { required: true });
+const period = defineModel<ContributionPeriod>('period', { required: true });
 
 const hasError = computed(() => validation.value.$errors.length > 0);
-
-const rules = computed(() =>
-  props.disabled
-    ? { amount: {} }
-    : {
-        amount: {
-          minValue: minValue(toRefs(props).minAmount),
-        },
-      }
+const isPresetAmount = computed(() =>
+  props.presetAmounts.includes(amount.value)
 );
+
+const minAmount = computed(
+  () =>
+    props.minMonthlyAmount *
+    (period.value === ContributionPeriod.Annually ? 12 : 1)
+);
+
+const rules = computed(() => ({
+  amount: { minValue: minValue(minAmount) },
+}));
 
 const validation = useVuelidate(rules, { amount });
 
-const perPeriod = computed(() => {
-  return props.isMonthly ? t('common.perMonth') : t('common.perYear');
-});
-</script>
+// Update the amount when the user switches the period
+function updatePeriod(newPeriod: ContributionPeriod) {
+  if (period.value !== newPeriod) {
+    const newAmount =
+      newPeriod === ContributionPeriod.Annually
+        ? amount.value * 12
+        : Math.floor(amount.value / 12);
 
-<style lang="postcss" scoped>
-.amount-button {
-  @apply h-1/2 border-primary-40 bg-white px-4 py-2 text-primary-70 enabled:hover:bg-primary-5 enabled:hover:text-primary;
-  &.is-invalid {
-    @apply cursor-not-allowed text-grey;
+    amount.value = newAmount;
+    period.value = newPeriod;
   }
 }
-</style>
+</script>

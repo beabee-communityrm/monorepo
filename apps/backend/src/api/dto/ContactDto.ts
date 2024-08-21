@@ -34,7 +34,7 @@ import {
   CreateContactRoleDto,
   GetContactRoleDto
 } from "@api/dto/ContactRoleDto";
-import { ForceUpdateContributionDto } from "@api/dto/ContributionDto";
+import { CreateManualContributionDto } from "@api/dto/ContributionDto";
 
 import IsPassword from "@api/validators/IsPassword";
 
@@ -172,8 +172,8 @@ export class UpdateContactDto extends BaseContactDto {
 export class CreateContactDto extends UpdateContactDto {
   @IsOptional()
   @ValidateNested()
-  @Type(() => ForceUpdateContributionDto)
-  contribution?: ForceUpdateContributionDto;
+  @Type(() => CreateManualContributionDto)
+  contribution?: CreateManualContributionDto;
 
   @IsOptional()
   @ValidateNested({ each: true })
