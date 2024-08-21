@@ -230,6 +230,24 @@ export class ContactController {
     return await this.handleStartUpdatePaymentMethod(target, data);
   }
 
+  @OnUndefined(204)
+  @Post("/:id/contribution/cancel")
+  async cancelContribution(@TargetUser() target: Contact): Promise<void> {
+    await ContactsService.cancelContactContribution(
+      target,
+      "cancelled-contribution-no-survey"
+    );
+  }
+
+  @Post("/:id/contribution/complete")
+  async completeStartContribution(
+    @TargetUser() target: Contact,
+    @Body() data: CompleteJoinFlowDto
+  ): Promise<GetContributionInfoDto> {
+    const joinFlow = await this.handleCompleteUpdatePaymentMethod(target, data);
+    await ContactsService.updateContactContribution(target, joinFlow.joinForm);
+    return await this.getContribution(target);
+  }
   /**
    * Get contact multi factor authentication if exists
    * @param target The target contact
@@ -276,25 +294,6 @@ export class ContactController {
       // this is checked in the `@TargetUser()` decorator
       await ContactMfaService.deleteUnsecure(target);
     }
-  }
-
-  @OnUndefined(204)
-  @Post("/:id/contribution/cancel")
-  async cancelContribution(@TargetUser() target: Contact): Promise<void> {
-    await ContactsService.cancelContactContribution(
-      target,
-      "cancelled-contribution-no-survey"
-    );
-  }
-
-  @Post("/:id/contribution/complete")
-  async completeStartContribution(
-    @TargetUser() target: Contact,
-    @Body() data: CompleteJoinFlowDto
-  ): Promise<GetContributionInfoDto> {
-    const joinFlow = await this.handleCompleteUpdatePaymentMethod(target, data);
-    await ContactsService.updateContactContribution(target, joinFlow.joinForm);
-    return await this.getContribution(target);
   }
 
   @Get("/:id/payment")
