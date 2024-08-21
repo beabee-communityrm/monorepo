@@ -189,7 +189,7 @@ class GCProvider implements PaymentProvider {
     ) {
       // GoCardless doesn't support changing the period of a subscription
       // TODO: protect against race conditions
-      this.cancelContribution(contribution, false);
+      this.cancelContribution(contribution, true);
       contribution.subscriptionId = null;
     }
 
