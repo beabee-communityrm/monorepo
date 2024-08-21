@@ -251,6 +251,43 @@ async function getNextPendingPayment(query: Record<string, unknown>) {
   }
 }
 
+/**
+ * Update a subscription if a successful one exists, otherwise cancel any
+ * existing ones and create a new one
+ *
+ * @param contribution The contribution
+ * @param startDate The date the subscription should start
+ * @param paymentForm The payment form
+ * @returns The GoCardless subscription and the expiry date
+ */
+export async function updateOrCreateSubscription(
+  mandateId: string,
+  paymentForm: PaymentForm,
+  subscriptionId: string | null,
+  startDate: Date | undefined
+): Promise<{ subscription: Subscription; expiryDate: string }> {
+  if (subscriptionId) {
+    log.info("Update subscription " + subscriptionId);
+    const subscription = await updateSubscription(subscriptionId, paymentForm);
+    return {
+      subscription,
+      expiryDate: subscription.upcoming_payments![0].charge_date!
+    };
+  } else {
+    log.info("Creating new subscription");
+    const subscription = await createSubscription(
+      mandateId,
+      paymentForm,
+      startDate
+    );
+    return {
+      subscription,
+      // The second payment is the first renewal payment when you first create a subscription
+      expiryDate: subscription.upcoming_payments![1].charge_date!
+    };
+  }
+}
+
 export async function createSubscription(
   mandateId: string,
   paymentForm: PaymentForm,

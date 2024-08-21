@@ -6,7 +6,7 @@ import {
   createSubscription,
   deleteSubscription,
   manadateToSource,
-  updateSubscription
+  updateOrCreateSubscription
 } from "#lib/stripe";
 import { log as mainLogger } from "#logging";
 import { calcRenewalDate } from "#utils/payment";
@@ -185,6 +185,8 @@ class StripeProvider implements PaymentProvider {
       throw new NoPaymentMethod();
     }
 
+    let subscriptionId = contribution.subscriptionId;
+
     // Manual contributors don't have a real subscription yet, create one on
     // their previous amount so Stripe can automatically handle any proration
     if (
@@ -201,13 +203,16 @@ class StripeProvider implements PaymentProvider {
         contribution.method,
         calcRenewalDate(contribution.contact)
       );
-      // Set this for the updateOrCreateContribution call below
-      contribution.subscriptionId = newSubscription.id;
+
+      subscriptionId = newSubscription.id;
     }
 
-    const { subscription, startNow } = await this.updateOrCreateContribution(
-      contribution,
-      paymentForm
+    const { subscription, startNow } = await updateOrCreateSubscription(
+      contribution.customerId,
+      paymentForm,
+      contribution.method,
+      subscriptionId,
+      calcRenewalDate(contribution.contact)
     );
 
     log.info("Activate contribution for " + contribution.contact.id, {
@@ -257,44 +262,6 @@ class StripeProvider implements PaymentProvider {
   ): Promise<void> {
     if (contribution.customerId) {
       await stripe.customers.del(contribution.customerId);
-    }
-  }
-
-  /**
-   * Update a subscription if a successful one exists, otherwise cancel any
-   * failing ones and create a new one
-   *
-   * @param contribution The contribution
-   * @param paymentForm The payment form
-   * @returns The Stripe subscription and whether it should start now
-   */
-  private async updateOrCreateContribution(
-    contribution: ContactContribution,
-    paymentForm: PaymentForm
-  ): Promise<{ subscription: Stripe.Subscription; startNow: boolean }> {
-    if (
-      contribution.subscriptionId &&
-      contribution.contact.membership?.isActive
-    ) {
-      log.info("Update subscription " + contribution.subscriptionId);
-      return await updateSubscription(
-        contribution.subscriptionId,
-        paymentForm,
-        contribution.method
-      );
-    } else {
-      // Cancel any existing (failing) subscription
-      await this.cancelContribution(contribution, true);
-
-      log.info("Creating new subscription");
-      const subscription = await createSubscription(
-        contribution.customerId!, // customerId is asserted in updateContribution
-        paymentForm,
-        contribution.method,
-        calcRenewalDate(contribution.contact)
-      );
-
-      return { subscription, startNow: true };
     }
   }
 }

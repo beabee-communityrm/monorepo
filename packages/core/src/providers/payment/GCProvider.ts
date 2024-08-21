@@ -1,9 +1,8 @@
 import { PaymentForm, PaymentMethod } from "@beabee/beabee-common";
-import { Subscription } from "gocardless-nodejs";
 
 import gocardless, {
   createSubscription,
-  updateSubscription,
+  updateOrCreateSubscription,
   prorateSubscription,
   hasPendingPayment
 } from "#lib/gocardless";
@@ -159,6 +158,7 @@ class GCProvider implements PaymentProvider {
     let subscriptionId = contribution.subscriptionId;
 
     if (contribution.mandateId) {
+      // TODO: protect against race conditions
       await this.cancelContribution(contribution, false);
 
       // Recreate the subscription on the new mandate
@@ -197,12 +197,23 @@ class GCProvider implements PaymentProvider {
       throw new NoPaymentMethod();
     }
 
+    if (
+      contribution.subscriptionId &&
+      paymentForm.period !== contribution.period
+    ) {
+      // GoCardless doesn't support changing the period of a subscription
+      // TODO: protect against race conditions
+      this.cancelContribution(contribution, false);
+      contribution.subscriptionId = null;
+    }
+
     const startDate = calcRenewalDate(contribution.contact);
 
-    const { subscription, expiryDate } = await this.updateOrCreateSubscription(
-      contribution,
-      startDate,
-      paymentForm
+    const { subscription, expiryDate } = await updateOrCreateSubscription(
+      contribution.mandateId,
+      paymentForm,
+      contribution.subscriptionId,
+      startDate
     );
 
     // Start the subscription now if there is no start date, or check and
@@ -266,53 +277,6 @@ class GCProvider implements PaymentProvider {
     }
     if (contribution.customerId) {
       await gocardless.customers.remove(contribution.customerId);
-    }
-  }
-
-  /**
-   * Update a subscription if a successful one exists, otherwise cancel any
-   * existing ones and create a new one
-   *
-   * @param contribution The contribution
-   * @param startDate The date the subscription should start
-   * @param paymentForm The payment form
-   * @returns The GoCardless subscription and the expiry date
-   */
-  private async updateOrCreateSubscription(
-    contribution: ContactContribution,
-    startDate: Date | undefined,
-    paymentForm: PaymentForm
-  ): Promise<{ subscription: Subscription; expiryDate: string }> {
-    if (
-      contribution.subscriptionId &&
-      contribution.contact.membership?.isActive &&
-      // GoCardless doesn't support changing the period of a subscription
-      contribution.period === paymentForm.period
-    ) {
-      log.info("Update subscription " + contribution.subscriptionId);
-      const subscription = await updateSubscription(
-        contribution.subscriptionId,
-        paymentForm
-      );
-      return {
-        subscription,
-        expiryDate: subscription.upcoming_payments![0].charge_date!
-      };
-    } else {
-      // Cancel any existing subscription
-      await this.cancelContribution(contribution, true);
-
-      log.info("Creating new subscription");
-      const subscription = await createSubscription(
-        contribution.mandateId!, // mandateId asserted in updateContribution
-        paymentForm,
-        startDate
-      );
-      return {
-        subscription,
-        // The second payment is the first renewal payment when you first create a subscription
-        expiryDate: subscription.upcoming_payments![1].charge_date!
-      };
     }
   }
 }

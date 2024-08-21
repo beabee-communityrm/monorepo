@@ -1,5 +1,6 @@
 import {
   ContributionInfo,
+  ContributionPeriod,
   MembershipStatus,
   PaymentForm,
   PaymentMethod
@@ -155,6 +156,12 @@ class PaymentService {
     log.info("Update contribution for contact " + contact.id, { paymentForm });
 
     return await this.withProvider(contact, async (provider, contribution) => {
+      if (contribution.subscriptionId && !contact.membership?.isActive) {
+        log.info("Contact has a subscription but is not active, cancelling");
+        await this.cancelContribution(contact);
+        contribution = await this.getContribution(contact);
+      }
+
       const result = await provider.updateContribution(
         contribution,
         paymentForm
