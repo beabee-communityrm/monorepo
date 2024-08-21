@@ -1,4 +1,4 @@
-import { ContributionType } from "@beabee/beabee-common";
+import { ContributionPeriod, ContributionType } from "@beabee/beabee-common";
 import express from "express";
 
 import { wrapAsync } from "@beabee/core/utils/index";
@@ -68,13 +68,20 @@ app.post(
         );
         break;
 
-      case "force-update":
-        await ContactsService.forceUpdateContactContribution(contact, {
-          type: req.body.type,
-          amount: req.body.amount,
+      case "update-manual-subscription":
+        await PaymentService.updatePaymentMethod(contact, {
+          paymentMethod: req.body.method,
+          mandateId: req.body.source || "",
+          customerId: req.body.reference || ""
+        });
+
+        await ContactsService.updateContactContribution(contact, {
+          monthlyAmount:
+            req.body.amount /
+            (req.body.period === ContributionPeriod.Annually ? 12 : 1),
           period: req.body.period,
-          source: req.body.source,
-          reference: req.body.reference
+          prorate: false,
+          payFee: false
         });
 
         req.flash("success", "contribution-updated");

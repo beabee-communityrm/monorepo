@@ -4,7 +4,8 @@ import {
   Address,
   ContributionPeriod,
   ContributionType,
-  NewsletterStatus
+  NewsletterStatus,
+  PaymentMethod
 } from "@beabee/beabee-common";
 import { parse } from "csv-parse";
 import { In } from "typeorm";
@@ -15,7 +16,8 @@ import { cleanEmailAddress } from "@beabee/core/utils/index";
 
 import ContactsService from "@beabee/core/services/ContactsService";
 
-import { Contact, ContactRole } from "@beabee/core/models";
+import { Contact, ContactRole, Payment } from "@beabee/core/models";
+import PaymentService from "@beabee/core/services/PaymentService";
 
 const headers = [
   "first_name",
@@ -128,14 +130,17 @@ function getDeliveryAddress(row: SteadyRow): [boolean, Address | null] {
 async function setContributionData(contact: Contact, row: SteadyRow) {
   const period = convertPeriod(row.subscription_period);
 
-  await ContactsService.forceUpdateContactContribution(contact, {
-    type: ContributionType.Manual,
-    source: "Steady",
-    reference: row.plan_name,
+  await PaymentService.updatePaymentMethod(contact, {
+    paymentMethod: PaymentMethod.Manual,
+    customerId: row.plan_name,
+    mandateId: "Steady"
+  });
+
+  await ContactsService.updateContactContribution(contact, {
     period,
-    amount:
-      (row.plan_monthly_amount_cents / 100) *
-      (period === ContributionPeriod.Annually ? 12 : 1)
+    monthlyAmount: row.plan_monthly_amount_cents / 100,
+    payFee: false,
+    prorate: false
   });
 }
 

@@ -1,7 +1,8 @@
 import {
   ContributionPeriod,
   NewsletterStatus,
-  GetContactWith
+  GetContactWith,
+  PaymentMethod
 } from "@beabee/beabee-common";
 import { plainToInstance } from "class-transformer";
 import { Response } from "express";
@@ -52,7 +53,6 @@ import {
 } from "@api/dto/ContactRoleDto";
 import {
   StartContributionDto,
-  ForceUpdateContributionDto,
   UpdateContributionDto
 } from "@api/dto/ContributionDto";
 import { CompleteJoinFlowDto, StartJoinFlowDto } from "@api/dto/JoinFlowDto";
@@ -106,10 +106,17 @@ export class ContactController {
     }
 
     if (data.contribution) {
-      await ContactsService.forceUpdateContactContribution(
-        contact,
-        data.contribution
-      );
+      await PaymentService.updatePaymentMethod(contact, {
+        paymentMethod: PaymentMethod.Manual,
+        customerId: data.contribution.reference || "",
+        mandateId: data.contribution.source || ""
+      });
+      await ContactsService.updateContactContribution(contact, {
+        monthlyAmount: data.contribution.amount,
+        period: data.contribution.period,
+        prorate: false,
+        payFee: false
+      });
     }
 
     return ContactTransformer.convert(
@@ -287,23 +294,6 @@ export class ContactController {
   ): Promise<GetContributionInfoDto> {
     const joinFlow = await this.handleCompleteUpdatePaymentMethod(target, data);
     await ContactsService.updateContactContribution(target, joinFlow.joinForm);
-    return await this.getContribution(target);
-  }
-
-  /**
-   * TODO: Remove this!
-   * @deprecated This is a temporary API endpoint until we rework the contribution/payment tables
-   * @param target
-   * @param data
-   * @returns
-   */
-  @Authorized("admin")
-  @Patch("/:id/contribution/force")
-  async forceUpdateContribution(
-    @TargetUser() target: Contact,
-    @Body() data: ForceUpdateContributionDto
-  ): Promise<GetContributionInfoDto> {
-    await ContactsService.forceUpdateContactContribution(target, data);
     return await this.getContribution(target);
   }
 

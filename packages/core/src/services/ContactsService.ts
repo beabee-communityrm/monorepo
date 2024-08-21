@@ -420,42 +420,6 @@ class ContactsService {
   }
 
   /**
-   * TODO: Remove this!
-   * @deprecated This is a temporary method until we rework manual contribution updates
-   * @param contact
-   * @param data
-   */
-  async forceUpdateContactContribution(
-    contact: Contact,
-    data: ForceUpdateContribution
-  ): Promise<void> {
-    if (contact.contributionType === ContributionType.Automatic) {
-      throw new CantUpdateContribution();
-    }
-
-    const period = data.period && data.amount ? data.period : null;
-    const monthlyAmount =
-      data.period && data.amount
-        ? data.amount / (data.period === ContributionPeriod.Annually ? 12 : 1)
-        : null;
-
-    await this.updateContact(contact, {
-      contributionType: data.type,
-      contributionPeriod: period,
-      contributionMonthlyAmount: monthlyAmount
-    });
-
-    await PaymentService.updatePaymentMethod(contact, {
-      paymentMethod:
-        data.type === ContributionType.Manual
-          ? PaymentMethod.Manual
-          : PaymentMethod.None,
-      mandateId: data.source || "",
-      customerId: data.reference || ""
-    });
-  }
-
-  /**
    * Increment the number of password tries for a contact.
    * @param contact The contact to increment the password tries for
    * @returns The new number of tries
