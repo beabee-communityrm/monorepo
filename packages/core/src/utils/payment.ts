@@ -64,23 +64,29 @@ export function calcRenewalDate(
   if (contact.membership.dateExpires) {
     // Simple case, use their expiry date
     renewalDate = sub(contact.membership.dateExpires, config.gracePeriod);
-  } else if (contact.contributionPeriod === ContributionPeriod.Annually) {
-    // Annual contribution, calculate based on their start date
-    const thisYear = getYear(now);
-    // Find the next time their renewal occurs (either later this year or next year)
-    const startDate = setYear(contact.membership.dateAdded, thisYear);
-    renewalDate =
-      startDate <= now ? setYear(startDate, thisYear + 1) : startDate;
-  } else {
-    // Monthly contribution, give them a 1 month grace period
-    renewalDate = addMonths(now, 1);
-  }
 
-  // Ensure date is no more than 1 period away from now, this could happen if
-  // manual contributors had their expiry date set arbritarily in the future
-  const maxDate = addMonths(
-    now,
-    contact.contributionPeriod === ContributionPeriod.Annually ? 12 : 1
-  );
-  return renewalDate > maxDate ? maxDate : renewalDate;
+    // Ensure date is no more than 1 period away from now, this could happen if
+    // manual contributors had their expiry date set arbritarily in the future
+    if (contact.contributionType === ContributionType.Manual) {
+      const maxDate = addMonths(
+        now,
+        contact.contributionPeriod === ContributionPeriod.Annually ? 12 : 1
+      );
+      renewalDate = renewalDate > maxDate ? maxDate : renewalDate;
+    }
+    return renewalDate;
+  } else {
+    switch (contact.contributionPeriod) {
+      // Annual contribution, calculate based on their start date
+      case ContributionPeriod.Annually:
+        const thisYear = getYear(now);
+        // Find the next time their renewal occurs (either later this year or next year)
+        const startDate = setYear(contact.membership.dateAdded, thisYear);
+        return startDate <= now ? setYear(startDate, thisYear + 1) : startDate;
+
+      // Just give monthly contributors a simple grace period
+      case ContributionPeriod.Monthly:
+        return addMonths(now, 1);
+    }
+  }
 }
