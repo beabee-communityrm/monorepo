@@ -42,29 +42,15 @@ class GCProvider implements PaymentProvider {
     useExistingMandate: boolean,
     paymentForm: PaymentForm
   ): Promise<boolean> {
-    // No payment method available
-    if (useExistingMandate && !contribution.mandateId) {
-      return false;
-    }
-
-    // Can always change contribution if there is no subscription
-    if (!contribution.subscriptionId) {
-      return true;
-    }
-
-    // Monthly contributors can update their contribution amount even if they have
-    // pending payments
-    if (
-      useExistingMandate &&
-      contribution.period === "monthly" &&
-      paymentForm.period === "monthly"
-    ) {
-      return true;
-    }
-
-    // Otherwise only allow changing if there is no mandate or no pending payments
     return (
+      // Monthly contributors can update their amount at any time as long as
+      // they aren't trying to change the payment method
+      (useExistingMandate &&
+        contribution.period === "monthly" &&
+        paymentForm.period === "monthly") ||
+      // If there is no active mandate then a new one can be created
       !contribution.mandateId ||
+      // Otherwise ensure there are no pending payments to prevent double charging
       !(await hasPendingPayment(contribution.mandateId))
     );
   }

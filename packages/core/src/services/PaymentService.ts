@@ -75,13 +75,29 @@ class PaymentService {
 
   async canChangeContribution(
     contact: Contact,
-    useExistingPaymentSource: boolean,
+    useExistingMandate: boolean,
     paymentForm: PaymentForm
   ): Promise<boolean> {
     return await this.withProvider(contact, async (provider, contribution) => {
+      if (useExistingMandate && !contact.contribution.mandateId) {
+        log.info(
+          `Contact ${contact.id} has no mandate available, cannot change contribution`
+        );
+        return false;
+      }
+
+      // If there is no subscription then we can always change the contribution
+      // because a new one will be created
+      if (contact.contribution.subscriptionId === null) {
+        log.info(
+          `Contact ${contact.id} has no subscription, can change contribution`
+        );
+        return true;
+      }
+
       const canChange = await provider.canChangeContribution(
         contribution,
-        useExistingPaymentSource,
+        useExistingMandate,
         paymentForm
       );
       log.info(

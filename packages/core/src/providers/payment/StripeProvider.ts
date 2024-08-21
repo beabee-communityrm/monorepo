@@ -31,17 +31,12 @@ const log = mainLogger.child({ app: "stripe-payment-provider" });
 class StripeProvider implements PaymentProvider {
   /**
    * Check if contribution can be changed. Stripe contributions can always be
-   * changed if there is a mandate available
+   * changed
    *
-   * @param contribution The contribution
-   * @param useExistingMandate Whether or not to use the existing mandate
    * @returns if the contribution can be changed
    */
-  async canChangeContribution(
-    contribution: ContactContribution,
-    useExistingMandate: boolean
-  ): Promise<boolean> {
-    return !useExistingMandate || !!contribution.mandateId;
+  async canChangeContribution(): Promise<boolean> {
+    return true;
   }
 
   /**
