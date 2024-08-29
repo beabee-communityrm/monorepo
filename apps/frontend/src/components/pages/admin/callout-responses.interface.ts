@@ -13,6 +13,8 @@ import { fetchTags } from '@utils/api/callout';
 import type { SelectItem } from '@components/forms/form.interface';
 import { convertComponentsToFilters } from '@utils/callouts';
 
+import env from '@env';
+
 const { t } = i18n.global;
 
 export const headers = computed<Header[]>(() => [
@@ -21,10 +23,14 @@ export const headers = computed<Header[]>(() => [
     text: t('calloutResponsesPage.response'),
     sortable: true,
   },
-  {
-    value: 'contact',
-    text: t('calloutResponse.data.contact'),
-  },
+  ...(env.cnrMode
+    ? []
+    : [
+        {
+          value: 'contact',
+          text: t('calloutResponse.data.contact'),
+        },
+      ]),
   {
     value: 'assignee',
     text: t('calloutResponse.data.assignee'),
