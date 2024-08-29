@@ -12,6 +12,23 @@
         @submitted="handleSubmitted"
       />
     </template>
+    <ul class="mt-8 w-full border-t border-primary-40 pt-4 text-sm">
+      <li>
+        <a :href="generalContent.privacyLink" class="text-link">{{
+          t('footer.privacyPolicy')
+        }}</a>
+      </li>
+      <li v-if="generalContent.termsLink">
+        <a :href="generalContent.termsLink" class="text-link">{{
+          t('footer.terms')
+        }}</a>
+      </li>
+      <li v-if="generalContent.impressumLink">
+        <a :href="generalContent.impressumLink" class="text-link">{{
+          t('footer.impressum')
+        }}</a>
+      </li>
+    </ul>
   </CalloutSidePanel>
 </template>
 
@@ -24,14 +41,18 @@ import { useCallout } from './use-callout';
 import { ref, toRef, watch } from 'vue';
 import CalloutSidePanel from './CalloutSidePanel.vue';
 import CalloutThanksBox from './CalloutThanksBox.vue';
+import { generalContent } from '@store/generalContent';
 
 import type { GetCalloutDataWith } from '@type';
+import { useI18n } from 'vue-i18n';
 
 defineEmits<(e: 'close') => void>();
 const props = defineProps<{
   callout: GetCalloutDataWith<'form' | 'variantNames'>;
   answers?: CalloutResponseAnswers;
 }>();
+
+const { t } = useI18n();
 
 const showOnlyThanks = ref(false);
 
