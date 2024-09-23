@@ -17,14 +17,13 @@ meta:
 
   <AppTitle v-if="!isEmbed" big>{{ callout.title }}</AppTitle>
 
-  <div v-if="responses /* Avoids layout thrashing */">
+  <template v-if="responses /* Avoids layout thrashing */">
     <CalloutThanksBox
       v-if="latestResponse || thanks"
       id="thanks"
       :callout="callout"
       class="mb-6"
     />
-
     <AppMessageBox
       v-else-if="!isOpen && callout.expires /* Type narrowing */"
       :title="
@@ -36,6 +35,7 @@ meta:
     />
 
     <div class="flex flex-col gap-6 md:max-w-2xl">
+      <CalloutIntroThing :callout="callout" />
       <template v-if="!showResponseForm">
         <div
           v-if="isOpen || latestResponse"
@@ -111,7 +111,7 @@ meta:
         </template>
       </div>
     </div>
-  </div>
+  </template>
 </template>
 <script lang="ts" setup>
 import type {
@@ -151,6 +151,7 @@ import { addNotification } from '@store/notifications';
 import { addBreadcrumb } from '@store/breadcrumb';
 
 import AppToggle from '@components/forms/AppToggle.vue';
+import CalloutIntroThing from '@components/pages/callouts/CalloutIntroThing.vue';
 
 const props = defineProps<{
   callout: GetCalloutDataWith<'form' | 'variantNames'>;
@@ -274,23 +275,3 @@ onBeforeMount(async () => {
     : { total: 0, count: 0, offset: 0, items: [] };
 });
 </script>
-
-<style scoped>
-.slide-enter-from,
-.slide-leave-to {
-  max-height: 0;
-  height: 0;
-  padding: 0;
-  margin: 0;
-  overflow: hidden;
-}
-.slide-enter-active,
-.slide-leave-active {
-  transition: all 0.2s ease-out;
-}
-.slide-enter-to,
-.slide-leave-from {
-  max-height: 16rem;
-  height: auto;
-}
-</style>
