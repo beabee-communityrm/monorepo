@@ -1,9 +1,8 @@
-import { ItemStatus } from '@beabee/beabee-common';
+import { ItemStatus, type GetCalloutDataWith } from '@beabee/beabee-common';
 import { type Ref, computed } from 'vue';
 
 import { currentUser, generalContent } from '@store';
 
-import type { GetCalloutDataWith } from '@type';
 import { isLocaleKey } from '@lib/i18n';
 import i18nConfig from '@lib/i18n-config.json';
 import { useRoute, useRouter } from 'vue-router';

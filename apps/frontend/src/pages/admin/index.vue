@@ -90,7 +90,7 @@ meta:
   />
 </template>
 <script lang="ts" setup>
-import { ItemStatus } from '@beabee/beabee-common';
+import { ItemStatus, type GetCalloutDataWith } from '@beabee/beabee-common';
 import { useI18n } from 'vue-i18n';
 import PageTitle from '@components/PageTitle.vue';
 import { currentUser } from '@store';
@@ -109,7 +109,7 @@ import { faChartLine } from '@fortawesome/free-solid-svg-icons';
 import env from '../../env';
 import AppTime from '@components/AppTime.vue';
 
-import type { GetCalloutDataWith, GetContactData, GetStatsData } from '@type';
+import type { GetContactData, GetStatsData } from '@type';
 
 const { n, t } = useI18n();
 

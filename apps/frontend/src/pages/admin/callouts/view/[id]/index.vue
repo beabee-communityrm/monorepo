@@ -101,7 +101,7 @@ meta:
   </div>
 </template>
 <script lang="ts" setup>
-import { ItemStatus } from '@beabee/beabee-common';
+import { ItemStatus, type GetCalloutDataWith } from '@beabee/beabee-common';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
@@ -126,8 +126,6 @@ import {
   faHourglassStart,
   faHourglassEnd,
 } from '@fortawesome/free-solid-svg-icons';
-
-import type { GetCalloutDataWith } from '@type';
 
 const props = defineProps<{
   callout: GetCalloutDataWith<'form' | 'responseCount'>;

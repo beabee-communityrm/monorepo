@@ -35,7 +35,10 @@ meta:
   </div>
 </template>
 <script lang="ts" setup>
-import type { Paginated } from '@beabee/beabee-common';
+import type {
+  GetCalloutResponseDataWith,
+  Paginated,
+} from '@beabee/beabee-common';
 import { ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -45,7 +48,7 @@ import { fetchCalloutResponses } from '@utils/api/callout-response';
 import { definePaginatedQuery } from '@utils/pagination';
 import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
 
-import type { GetCalloutResponseDataWith, GetContactData } from '@type';
+import type { GetContactData } from '@type';
 
 const props = defineProps<{
   contact: GetContactData;

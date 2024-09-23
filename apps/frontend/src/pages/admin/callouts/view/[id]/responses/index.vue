@@ -191,10 +191,14 @@ meta:
 </template>
 <script lang="ts" setup>
 import {
+  type GetCalloutDataWith,
+  type GetCalloutResponseDataWith,
+  type GetCalloutResponseWith,
   type Paginated,
   type Rule,
   type RuleGroup,
   stringifyAnswer,
+  type UpdateCalloutResponseData,
 } from '@beabee/beabee-common';
 import { computed, onBeforeMount, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -235,12 +239,6 @@ import { addNotification } from '@store/notifications';
 import { addBreadcrumb } from '@store/breadcrumb';
 import AppTime from '@components/AppTime.vue';
 
-import type {
-  GetCalloutDataWith,
-  GetCalloutResponseWith,
-  GetCalloutResponseDataWith,
-  UpdateCalloutResponseData,
-} from '@type';
 import { toRef } from 'vue';
 
 const props = defineProps<{ callout: GetCalloutDataWith<'form'> }>();

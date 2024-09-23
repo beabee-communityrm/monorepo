@@ -2,8 +2,13 @@ import { computed, type Raw, type Component } from 'vue';
 import i18n from '../../../../lib/i18n';
 import { type AppStepperStep } from '../../../../type/app-stepper-step';
 
-import type { CalloutMapSchema, LocaleProp } from '@type';
+import type { LocaleProp } from '@type';
 import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
+import type {
+  CalloutCaptcha,
+  CalloutChannel,
+  CalloutMapSchema,
+} from '@beabee/beabee-common';
 
 const { t } = i18n.global;
 
@@ -40,7 +45,7 @@ export interface TitleAndImageStepProps {
 export interface SettingsStepProps {
   whoCanTakePart: 'members' | 'everyone';
   allowAnonymousResponses: 'none' | 'guests' | 'all';
-  requireCaptcha: 'none' | 'guest' | 'all';
+  requireCaptcha: CalloutCaptcha;
   showOnUserDashboards: boolean;
   multipleResponses: boolean;
   usersCanEditAnswers: boolean;
@@ -53,6 +58,7 @@ export interface SettingsStepProps {
   responseLinks: { text: string; url: string }[];
   mapSchema: CalloutMapSchema;
   locales: string[];
+  channels: CalloutChannel[];
 }
 
 export interface EndMessageStepProps {

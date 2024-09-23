@@ -21,7 +21,12 @@
   />
 </template>
 <script lang="ts" setup>
-import { ItemStatus, contactCalloutFilters } from '@beabee/beabee-common';
+import {
+  type GetCalloutData,
+  type GetCalloutDataWith,
+  ItemStatus,
+  contactCalloutFilters,
+} from '@beabee/beabee-common';
 import { computed, onBeforeMount, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -29,7 +34,6 @@ import AppSelect from '@components/forms/AppSelect.vue';
 
 import { fetchCallout, fetchCallouts } from '@utils/api/callout';
 
-import { type GetCalloutData, type GetCalloutDataWith } from '@type';
 import type {
   SearchRuleEmits,
   SearchRuleFilterGroupProps,

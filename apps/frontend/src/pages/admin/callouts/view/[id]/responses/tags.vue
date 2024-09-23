@@ -58,7 +58,7 @@ import type {
   GetCalloutDataWith,
   GetCalloutTagData,
   UpdateCalloutTagData,
-} from '@type';
+} from '@beabee/beabee-common';
 
 const props = defineProps<{
   callout: GetCalloutDataWith<'form'>;

@@ -19,8 +19,7 @@ import { useI18n } from 'vue-i18n';
 import PageTitle from '@components/PageTitle.vue';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { fetchCallout } from '@utils/api/callout';
-
-import type { GetCalloutDataWith } from '@type';
+import type { GetCalloutDataWith } from '@beabee/beabee-common';
 
 const props = defineProps<{ id: string }>();
 

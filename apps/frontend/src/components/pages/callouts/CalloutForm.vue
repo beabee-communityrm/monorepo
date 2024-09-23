@@ -62,7 +62,10 @@
 </template>
 
 <script lang="ts" setup>
-import type { CalloutResponseAnswers } from '@beabee/beabee-common';
+import type {
+  CalloutResponseAnswersSlide,
+  GetCalloutDataWith,
+} from '@beabee/beabee-common';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import useVuelidate from '@vuelidate/core';
@@ -78,7 +81,6 @@ import { createResponse } from '@utils/api/callout';
 import { isRequestError } from '@utils/api';
 import { getDecisionComponent } from '@utils/callouts';
 
-import type { GetCalloutDataWith } from '@type';
 import CalloutFormCaptcha from './CalloutFormCaptcha.vue';
 import { requiredIf } from '@vuelidate/validators';
 
@@ -87,13 +89,13 @@ const { t } = useI18n();
 const emit = defineEmits<{ (e: 'submitted'): void }>();
 const props = defineProps<{
   callout: GetCalloutDataWith<'form'>;
-  answers?: CalloutResponseAnswers;
+  answers?: CalloutResponseAnswersSlide;
   preview?: boolean;
   readonly?: boolean;
   style?: 'simple' | 'small';
   noBg?: boolean;
   allSlides?: boolean;
-  onSubmit?(answers: CalloutResponseAnswers): void;
+  onSubmit?(answers: CalloutResponseAnswersSlide): void;
 }>();
 
 const guestName = ref('');
@@ -117,7 +119,7 @@ const initialAnswers = Object.fromEntries(
   slides.value.map((slide) => [slide.id, props.answers?.[slide.id] || {}])
 );
 
-const answersProxy = ref<CalloutResponseAnswers>(initialAnswers);
+const answersProxy = ref<CalloutResponseAnswersSlide>(initialAnswers);
 
 const slideIds = ref<string[]>([slides.value[0].id]);
 
@@ -157,7 +159,7 @@ const validation = useVuelidate(rules, { captchaToken });
 async function handleSubmit() {
   // Only submit answers for slides in the current flow
   // The user might have visited other flows then gone back
-  const validAnswers: CalloutResponseAnswers = {};
+  const validAnswers: CalloutResponseAnswersSlide = {};
   for (const slideId of slideIds.value) {
     validAnswers[slideId] = answersProxy.value[slideId];
   }

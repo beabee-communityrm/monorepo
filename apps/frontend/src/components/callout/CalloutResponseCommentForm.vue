@@ -16,14 +16,13 @@
 </template>
 
 <script lang="ts" setup>
+import type { GetCalloutResponseCommentData } from '@beabee/beabee-common';
 import AppForm from '../forms/AppForm.vue';
 import RichTextEditor from '../rte/RichTextEditor.vue';
 import { type CommentFormData } from './calloutResponseComment.interface';
 import { reactive } from 'vue';
 import { useI18n } from 'vue-i18n';
 import useVuelidate from '@vuelidate/core';
-
-import type { GetCalloutResponseCommentData } from '@type';
 
 const { t } = useI18n();
 

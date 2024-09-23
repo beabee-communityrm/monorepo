@@ -248,6 +248,8 @@ import { onBeforeMount, ref, reactive } from 'vue';
 import {
   ContributionType,
   type ContentJoinSetupData,
+  type GetCalloutDataWith,
+  type GetCalloutResponseDataWith,
   type RoleType,
 } from '@beabee/beabee-common';
 import { useI18n } from 'vue-i18n';
@@ -287,8 +289,6 @@ import type {
   GetContactData,
   GetContactDataWith,
   ContactRoleData,
-  GetCalloutDataWith,
-  GetCalloutResponseDataWith,
 } from '@type';
 
 const { t, n } = useI18n();

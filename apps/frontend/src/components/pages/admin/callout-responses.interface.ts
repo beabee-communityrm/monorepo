@@ -2,12 +2,13 @@ import {
   type CalloutResponseFilterName,
   calloutResponseFilters,
   getCalloutComponents,
+  type GetCalloutDataWith,
 } from '@beabee/beabee-common';
 import { computed, ref, watchEffect, type Ref } from 'vue';
 import i18n from '../../../lib/i18n';
 import { type Header } from '../../table/table.interface';
 
-import type { FilterItems, GetCalloutDataWith } from '@type';
+import type { FilterItems } from '@type';
 import { withLabel } from '@utils/rules';
 import { fetchTags } from '@utils/api/callout';
 import type { SelectItem } from '@components/forms/form.interface';

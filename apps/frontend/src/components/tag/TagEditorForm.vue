@@ -19,7 +19,10 @@ import { useI18n } from 'vue-i18n';
 import AppForm from '@components/forms/AppForm.vue';
 import AppInput from '@components/forms/AppInput.vue';
 
-import type { CreateCalloutTagData, GetCalloutTagData } from '@type';
+import type {
+  CreateCalloutTagData,
+  GetCalloutTagData,
+} from '@beabee/beabee-common';
 
 const { t } = useI18n();
 

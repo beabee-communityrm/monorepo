@@ -5,6 +5,12 @@ import {
   type CalloutComponentInputSelectableRadioSchema,
   type GetCalloutSlideSchema,
   type SetCalloutSlideSchema,
+  type CalloutVariantData,
+  type CalloutVariantNavigationData,
+  type GetCalloutDataWith,
+  CalloutAccess,
+  CalloutCaptcha,
+  type CreateCalloutData,
 } from '@beabee/beabee-common';
 import { format } from 'date-fns';
 import type { CalloutStepsProps } from '@components/pages/admin/callouts/callouts.interface';
@@ -14,13 +20,7 @@ import type { FilterItem, FilterItems } from '@type';
 import env from '../env';
 import i18n from '@lib/i18n';
 
-import type {
-  CalloutVariantData,
-  CalloutVariantNavigationData,
-  CreateCalloutData,
-  GetCalloutDataWith,
-  LocaleProp,
-} from '@type';
+import type { LocaleProp } from '@type';
 import type {
   FormBuilderNavigation,
   FormBuilderSlide,
@@ -159,7 +159,7 @@ export function convertCalloutToSteps(
     },
     settings: {
       ...settings,
-      requireCaptcha: callout?.captcha || 'none',
+      requireCaptcha: callout?.captcha || CalloutCaptcha.None,
       showResponses: !!callout?.responseViewSchema,
       responseViews: [
         ...(callout?.responseViewSchema?.gallery ? ['gallery' as const] : []),
@@ -187,6 +187,7 @@ export function convertCalloutToSteps(
       locales: callout
         ? Object.keys(callout.variants).filter((v) => v !== 'default')
         : [],
+      channels: callout?.channels || [],
     },
     endMessage: {
       whenFinished: callout?.thanksRedirect ? 'redirect' : 'message',
@@ -283,7 +284,7 @@ export function convertStepsToCallout(
   const variants = convertVariantsForCallout(steps);
 
   return {
-    slug: slug || null,
+    slug: slug || undefined,
     image: steps.titleAndImage.coverImageURL,
     formSchema: { slides },
     responseViewSchema: steps.settings.showResponses
@@ -317,13 +318,14 @@ export function convertStepsToCallout(
     captcha: steps.settings.requireCaptcha,
     access:
       steps.settings.whoCanTakePart === 'members'
-        ? 'member'
+        ? CalloutAccess.Member
         : steps.settings.allowAnonymousResponses === 'none'
-          ? 'guest'
+          ? CalloutAccess.Guest
           : steps.settings.allowAnonymousResponses === 'guests'
-            ? 'anonymous'
-            : 'only-anonymous',
+            ? CalloutAccess.Anonymous
+            : CalloutAccess.OnlyAnonymous,
     variants,
+    channels: steps.settings.channels,
   };
 }
 

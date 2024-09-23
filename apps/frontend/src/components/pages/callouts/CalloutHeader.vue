@@ -51,7 +51,6 @@
 
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n';
-import type { GetCalloutDataWith } from '@type';
 import {
   faGlobe,
   faImages,
@@ -65,6 +64,7 @@ import { computed, toRef, ref, watch } from 'vue';
 import AppDropdownButton from '@components/button/AppDropdownButton.vue';
 import AppSelectableList from '@components/AppSelectableList.vue';
 import { useRoute } from 'vue-router';
+import type { GetCalloutDataWith } from '@beabee/beabee-common';
 
 defineEmits<{ (e: 'addnew'): void }>();
 const props = defineProps<{
