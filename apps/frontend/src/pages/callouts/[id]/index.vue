@@ -23,8 +23,8 @@ meta:
       variant="info"
     />
 
-    <div class="flex flex-col gap-6 md:max-w-2xl">
-      <CalloutIntroBox v-if="!isRespondPage" :callout="callout" />
+    <div class="md:max-w-2xl">
+      <CalloutIntroBox v-if="!isRespondPage" class="mb-6" :callout="callout" />
 
       <CalloutLoginPrompt v-if="showLoginPrompt" />
       <CalloutMemberOnlyPrompt v-else-if="showMemberOnlyPrompt && !isPreview" />

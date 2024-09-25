@@ -1,19 +1,17 @@
 <template>
-  <div class="mb-6 flex h-auto flex-col border border-primary-40 p-5">
-    {{ t('callout.share.address') }}
+  <div>
+    <p class="mb-2">{{ t('callout.share.address') }}</p>
 
-    <div
-      class="mb-4 mt-2 flex flex-row items-center justify-between rounded bg-white pl-3"
-    >
-      <span class="mr-2 text-link">{{ calloutUrl }}</span>
+    <div class="mb-4 flex items-center rounded pl-3">
+      <span class="mr-2 flex-1 text-link">{{ calloutUrl }}</span>
       <AppButton :icon="faCopy" size="sm" @click="copyToClipboard">
         {{ t('actions.copy') }}
       </AppButton>
     </div>
 
-    {{ t('callout.share.services') }}
+    <p class="mb-2">{{ t('callout.share.services') }}</p>
 
-    <div class="mt-3 grid w-2/3 grid-cols-3 grid-rows-2 gap-2">
+    <div class="grid w-2/3 grid-cols-3 grid-rows-2 gap-2">
       <div>
         <a
           :href="
@@ -104,14 +102,13 @@ import { faCopy, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { useI18n } from 'vue-i18n';
 import env from '../../../env';
 import AppButton from '../../button/AppButton.vue';
+import { computed } from 'vue';
 
 const { t } = useI18n();
 
-const props = defineProps<{
-  slug: string;
-}>();
+const props = defineProps<{ slug: string }>();
 
-const calloutUrl = `${env.appUrl}/callouts/${props.slug}`;
+const calloutUrl = computed(() => `${env.appUrl}/callouts/${props.slug}`);
 
-const copyToClipboard = () => navigator.clipboard.writeText(calloutUrl);
+const copyToClipboard = () => navigator.clipboard.writeText(calloutUrl.value);
 </script>
