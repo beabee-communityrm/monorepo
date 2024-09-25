@@ -1,24 +1,25 @@
 <template>
-  <div class="mb-6 flex h-auto flex-col border border-primary-40 p-5">
-    {{ t('callout.share.address') }}
+  <AppExpandableBox
+    :button-icon="faShareNodes"
+    :button-text="t('actions.share')"
+  >
+    <p class="mb-2">{{ addressText }}</p>
 
-    <div
-      class="mb-4 mt-2 flex flex-row items-center justify-between rounded bg-white pl-3"
-    >
-      <span class="mr-2 text-link">{{ calloutUrl }}</span>
+    <div class="mb-4 flex items-center rounded pl-3">
+      <span class="mr-2 flex-1 text-link">{{ fullUrl }}</span>
       <AppButton :icon="faCopy" size="sm" @click="copyToClipboard">
         {{ t('actions.copy') }}
       </AppButton>
     </div>
 
-    {{ t('callout.share.services') }}
+    <p class="mb-2">{{ servicesText }}</p>
 
-    <div class="mt-3 grid w-2/3 grid-cols-3 grid-rows-2 gap-2">
+    <div class="grid grid-cols-2 gap-2 sm:grid-cols-3">
       <div>
         <a
           :href="
             'https://www.facebook.com/sharer/sharer.php?u=' +
-            encodeURIComponent(calloutUrl)
+            encodeURIComponent(fullUrl)
           "
           target="_blank"
           rel="nofollow noopener"
@@ -31,7 +32,7 @@
         <a
           :href="
             'https://www.linkedin.com/shareArticle?mini=true&url=' +
-            encodeURIComponent(calloutUrl)
+            encodeURIComponent(fullUrl)
           "
           target="_blank"
           rel="nofollow noopener"
@@ -43,8 +44,7 @@
       <div>
         <a
           :href="
-            'https://telegram.me/share/url?url=' +
-            encodeURIComponent(calloutUrl)
+            'https://telegram.me/share/url?url=' + encodeURIComponent(fullUrl)
           "
           target="_blank"
           rel="nofollow noopener"
@@ -55,9 +55,7 @@
       </div>
       <div>
         <a
-          :href="
-            'https://twitter.com/share?url=' + encodeURIComponent(calloutUrl)
-          "
+          :href="'https://twitter.com/share?url=' + encodeURIComponent(fullUrl)"
           target="_blank"
           rel="nofollow noopener"
         >
@@ -68,8 +66,7 @@
       <div>
         <a
           :href="
-            'https://api.whatsapp.com/send?text=' +
-            encodeURIComponent(calloutUrl)
+            'https://api.whatsapp.com/send?text=' + encodeURIComponent(fullUrl)
           "
           target="_blank"
           rel="nofollow noopener"
@@ -80,7 +77,7 @@
       </div>
       <div>
         <a
-          :href="'mailto:?body=' + encodeURIComponent(calloutUrl)"
+          :href="'mailto:?body=' + encodeURIComponent(fullUrl)"
           target="_blank"
           rel="nofollow noopener"
         >
@@ -89,7 +86,7 @@
         </a>
       </div>
     </div>
-  </div>
+  </AppExpandableBox>
 </template>
 
 <script lang="ts" setup>
@@ -100,18 +97,26 @@ import {
   faTwitter,
   faWhatsapp,
 } from '@fortawesome/free-brands-svg-icons';
-import { faCopy, faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCopy,
+  faEnvelope,
+  faShareNodes,
+} from '@fortawesome/free-solid-svg-icons';
 import { useI18n } from 'vue-i18n';
-import env from '../../../env';
-import AppButton from '../../button/AppButton.vue';
+import AppButton from '@components/button/AppButton.vue';
+import AppExpandableBox from '@components/AppExpandableBox.vue';
+import { computed } from 'vue';
+import env from '@env';
 
 const { t } = useI18n();
 
 const props = defineProps<{
-  slug: string;
+  url: string;
+  addressText: string;
+  servicesText: string;
 }>();
 
-const calloutUrl = `${env.appUrl}/callouts/${props.slug}`;
+const fullUrl = computed(() => env.appUrl + props.url);
 
-const copyToClipboard = () => navigator.clipboard.writeText(calloutUrl);
+const copyToClipboard = () => navigator.clipboard.writeText(fullUrl.value);
 </script>

@@ -12,7 +12,7 @@ meta:
     v-if="callout.responseViewSchema?.map"
     class="absolute inset-0 flex flex-col"
   >
-    <CalloutHeader
+    <CalloutMapHeader
       v-if="!isEmbed"
       :callout="callout"
       class="flex-0"
@@ -233,7 +233,7 @@ import AppButton from '@components/button/AppButton.vue';
 import { isEmbed } from '@store';
 
 import { currentLocaleConfig } from '@lib/i18n';
-import CalloutHeader from '@components/pages/callouts/CalloutHeader.vue';
+import CalloutMapHeader from '@components/pages/callouts/CalloutMapHeader.vue';
 
 type GetCalloutResponseMapDataWithAddress = GetCalloutResponseMapData & {
   address: CalloutResponseAnswerAddress;

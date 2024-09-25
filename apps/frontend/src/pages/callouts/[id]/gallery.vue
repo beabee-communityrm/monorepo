@@ -9,7 +9,7 @@ meta:
 
 <template>
   <div class="absolute inset-0 flex flex-col">
-    <CalloutHeader
+    <CalloutMapHeader
       v-if="!isEmbed"
       :callout="callout"
       class="flex-0"
@@ -72,7 +72,7 @@ import { useRoute, useRouter } from 'vue-router';
 
 import CalloutShowResponsePanel from '@components/pages/callouts/CalloutShowResponsePanel.vue';
 import CalloutIntroPanel from '@components/pages/callouts/CalloutIntroPanel.vue';
-import CalloutHeader from '@components/pages/callouts/CalloutHeader.vue';
+import CalloutMapHeader from '@components/pages/callouts/CalloutMapHeader.vue';
 
 import { fetchResponsesForMap } from '@utils/api/callout';
 

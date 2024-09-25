@@ -38,7 +38,7 @@
     </AppButton>
 
     <AppButton
-      v-if="isOpen"
+      v-if="callout.status === ItemStatus.Open"
       variant="link"
       class="hidden px-2 md:inline-block"
       @click="$emit('addnew')"
@@ -59,12 +59,12 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import AppButton from '@components/button/AppButton.vue';
 import AppTitle from '@components/AppTitle.vue';
-import { useCallout } from './use-callout';
+import { useCalloutVariants } from './use-callout';
 import { computed, toRef, ref, watch } from 'vue';
 import AppDropdownButton from '@components/button/AppDropdownButton.vue';
 import AppSelectableList from '@components/AppSelectableList.vue';
 import { useRoute } from 'vue-router';
-import type { GetCalloutDataWith } from '@beabee/beabee-common';
+import { ItemStatus, type GetCalloutDataWith } from '@beabee/beabee-common';
 
 defineEmits<{ (e: 'addnew'): void }>();
 const props = defineProps<{
@@ -74,7 +74,7 @@ const props = defineProps<{
 
 const { t } = useI18n();
 
-const { currentVariant, isOpen, variantItems } = useCallout(
+const { currentVariant, variantItems } = useCalloutVariants(
   toRef(props, 'callout')
 );
 
