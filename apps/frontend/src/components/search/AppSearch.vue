@@ -1,7 +1,7 @@
 <template>
   <div class="mb-8">
     <AppExpandableBox
-      v-model="showExpanded"
+      v-model:expanded="showExpanded"
       :button-icon="faFilter"
       :button-text="t('advancedSearch.button')"
     >

@@ -1,6 +1,13 @@
 <template>
   <CalloutSidePanel :show="!!answers" @close="$emit('close')">
-    <CalloutThanksBox v-if="showOnlyThanks" :callout="callout" class="p-0" />
+    <div v-if="showOnlyThanks">
+      <CalloutThanksBox :callout="callout" class="p-0" />
+      <AppShareBox
+        :address-text="t('callout.share.address')"
+        :services-text="t('callout.share.services')"
+        :url="`/callouts/${callout.slug}/map`"
+      />
+    </div>
     <template v-else>
       <CalloutLoginPrompt v-if="showLoginPrompt" />
       <CalloutMemberOnlyPrompt v-else-if="showMemberOnlyPrompt" />
@@ -47,6 +54,7 @@ import CalloutThanksBox from './CalloutThanksBox.vue';
 import { generalContent } from '@store/generalContent';
 
 import { useI18n } from 'vue-i18n';
+import AppShareBox from '../../AppShareBox.vue';
 
 defineEmits<(e: 'close') => void>();
 const props = defineProps<{

@@ -24,7 +24,17 @@ meta:
     />
 
     <div class="md:max-w-2xl">
-      <CalloutIntroBox v-if="!isRespondPage" class="mb-6" :callout="callout" />
+      <template v-if="!isRespondPage">
+        <div v-if="callout.status === ItemStatus.Open" class="mb-6">
+          <AppShareBox
+            :address-text="t('callout.share.address')"
+            :services-text="t('callout.share.services')"
+            :url="`/callouts/${callout.slug}`"
+          />
+        </div>
+        <img class="mb-6 w-full" :src="callout.image" />
+        <div class="content-message mb-6 text-lg" v-html="callout.intro" />
+      </template>
 
       <CalloutLoginPrompt v-if="showLoginPrompt" />
       <CalloutMemberOnlyPrompt v-else-if="showMemberOnlyPrompt && !isPreview" />
@@ -71,10 +81,11 @@ meta:
   </template>
 </template>
 <script lang="ts" setup>
-import type {
-  GetCalloutDataWith,
-  GetCalloutResponseDataWith,
-  Paginated,
+import {
+  ItemStatus,
+  type GetCalloutDataWith,
+  type GetCalloutResponseDataWith,
+  type Paginated,
 } from '@beabee/beabee-common';
 import { computed, onBeforeMount, ref, toRef } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -99,8 +110,8 @@ import { currentUser, canAdmin, isEmbed } from '@store';
 import { addNotification } from '@store/notifications';
 import { addBreadcrumb } from '@store/breadcrumb';
 
-import CalloutIntroBox from '@components/pages/callouts/CalloutIntroBox.vue';
 import CalloutVariantsBox from '@components/pages/callouts/CalloutVariantsBox.vue';
+import AppShareBox from '@components/AppShareBox.vue';
 
 const props = defineProps<{
   callout: GetCalloutDataWith<'form' | 'variantNames'>;

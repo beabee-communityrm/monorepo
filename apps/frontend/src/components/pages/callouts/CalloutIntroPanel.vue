@@ -2,10 +2,18 @@
   <CalloutSidePanel :show="show" @close="$emit('close')">
     <div class="flex h-full flex-col items-start lg:justify-center">
       <AppTitle class="pt-8">{{ callout.title }}</AppTitle>
-      <figure class="mb-6">
-        <img class="w-full object-cover" :src="callout.image" />
-      </figure>
-      <div class="mb-6 text-lg" v-html="callout.intro"></div>
+
+      <div v-if="callout.status === ItemStatus.Open" class="mb-6">
+        <AppShareBox
+          :address-text="t('callout.share.address')"
+          :services-text="t('callout.share.services')"
+          :url="route.path /* Could be either /map or /gallery */"
+        />
+      </div>
+
+      <img class="mb-6 w-full" :src="callout.image" />
+      <div class="content-message mb-6 text-lg" v-html="callout.intro" />
+
       <AppButton variant="primary" class="px-6" @click="$emit('close')">
         {{ t('actions.getStarted') }}
       </AppButton>
@@ -37,10 +45,14 @@ import CalloutSidePanel from './CalloutSidePanel.vue';
 import AppTitle from '@components/AppTitle.vue';
 import AppButton from '@components/button/AppButton.vue';
 import { generalContent } from '@store/generalContent';
-import type { GetCalloutDataWith } from '@beabee/beabee-common';
+import { ItemStatus, type GetCalloutDataWith } from '@beabee/beabee-common';
+import AppShareBox from '@components/AppShareBox.vue';
+import { useRoute } from 'vue-router';
 
 defineEmits<{ (e: 'close'): void }>();
 defineProps<{ callout: GetCalloutDataWith<'form'>; show: boolean }>();
+
+const route = useRoute();
 
 const { t } = useI18n();
 </script>

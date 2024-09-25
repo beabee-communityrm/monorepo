@@ -9,8 +9,12 @@ meta:
   <CalloutVariantsBox :callout="callout" />
   <AppTitle v-if="!isEmbed" big>{{ callout.title }}</AppTitle>
   <CalloutThanksBox :callout="callout" class="mb-6" />
-  <div class="flex flex-col gap-6 md:max-w-2xl">
-    <CalloutIntroBox :callout="callout" />
+  <div class="md:max-w-2xl">
+    <AppShareBox
+      :address-text="t('callout.share.address')"
+      :services-text="t('callout.share.services')"
+      :url="`/callouts/${callout.slug}`"
+    />
   </div>
 </template>
 <script lang="ts" setup>
@@ -19,11 +23,11 @@ import CalloutVariantsBox from '@components/pages/callouts/CalloutVariantsBox.vu
 import AppTitle from '@components/AppTitle.vue';
 import CalloutThanksBox from '@components/pages/callouts/CalloutThanksBox.vue';
 import { currentUser, isEmbed } from '@store/index';
-import CalloutIntroBox from '@components/pages/callouts/CalloutIntroBox.vue';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { computed } from 'vue';
 import { faBullhorn } from '@fortawesome/free-solid-svg-icons';
 import { useI18n } from 'vue-i18n';
+import AppShareBox from '@components/AppShareBox.vue';
 
 const props = defineProps<{
   callout: GetCalloutDataWith<'form' | 'variantNames'>;
