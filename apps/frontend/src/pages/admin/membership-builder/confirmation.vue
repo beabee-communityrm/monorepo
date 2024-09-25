@@ -165,7 +165,11 @@ meta:
 <script lang="ts" setup>
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { ItemStatus, type ContentJoinSetupData } from '@beabee/beabee-common';
+import {
+  ItemStatus,
+  type ContentJoinSetupData,
+  type GetCalloutData,
+} from '@beabee/beabee-common';
 
 import AppForm from '@components/forms/AppForm.vue';
 import AppInput from '@components/forms/AppInput.vue';
@@ -180,7 +184,6 @@ import AppSubHeading from '@components/AppSubHeading.vue';
 import { fetchCallouts } from '@utils/api/callout';
 import { fetchContent, updateContent } from '@utils/api/content';
 
-import type { GetCalloutData } from '@type';
 import AppRepeatable from '@components/forms/AppRepeatable.vue';
 import AppSectionHeading from '@components/AppSectionHeading.vue';
 

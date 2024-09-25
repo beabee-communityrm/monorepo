@@ -37,8 +37,7 @@ import CalloutSidePanel from './CalloutSidePanel.vue';
 import AppTitle from '@components/AppTitle.vue';
 import AppButton from '@components/button/AppButton.vue';
 import { generalContent } from '@store/generalContent';
-
-import type { GetCalloutDataWith } from '@type';
+import type { GetCalloutDataWith } from '@beabee/beabee-common';
 
 defineEmits<{ (e: 'close'): void }>();
 defineProps<{ callout: GetCalloutDataWith<'form'>; show: boolean }>();

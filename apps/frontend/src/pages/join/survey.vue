@@ -31,7 +31,10 @@ meta:
   </AuthBox>
 </template>
 <script lang="ts" setup>
-import type { ContentJoinSetupData } from '@beabee/beabee-common';
+import type {
+  ContentJoinSetupData,
+  GetCalloutDataWith,
+} from '@beabee/beabee-common';
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
@@ -44,8 +47,6 @@ import { fetchContent } from '@utils/api/content';
 import { fetchCallout } from '@utils/api/callout';
 
 import { currentUser } from '@store';
-
-import type { GetCalloutDataWith } from '@type';
 
 const { t } = useI18n();
 const router = useRouter();

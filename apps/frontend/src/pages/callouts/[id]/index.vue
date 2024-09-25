@@ -114,7 +114,11 @@ meta:
   </div>
 </template>
 <script lang="ts" setup>
-import type { Paginated } from '@beabee/beabee-common';
+import type {
+  GetCalloutDataWith,
+  GetCalloutResponseDataWith,
+  Paginated,
+} from '@beabee/beabee-common';
 import { computed, onBeforeMount, ref, toRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
@@ -146,7 +150,6 @@ import { currentUser, canAdmin, isEmbed } from '@store';
 import { addNotification } from '@store/notifications';
 import { addBreadcrumb } from '@store/breadcrumb';
 
-import type { GetCalloutDataWith, GetCalloutResponseDataWith } from '@type';
 import AppToggle from '@components/forms/AppToggle.vue';
 
 const props = defineProps<{

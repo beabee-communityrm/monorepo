@@ -29,8 +29,7 @@ import CalloutSidePanel from './CalloutSidePanel.vue';
 import AppTitle from '@components/AppTitle.vue';
 import AppButton from '@components/button/AppButton.vue';
 import { faMap, faLocationCrosshairs } from '@fortawesome/free-solid-svg-icons';
-
-import type { GetCalloutDataWith } from '@type';
+import type { GetCalloutDataWith } from '@beabee/beabee-common';
 
 defineEmits<{
   (e: 'close'): void;

@@ -1,14 +1,14 @@
 import { deserializeDate, instance } from '.';
 import { deserializeContact } from './contact';
-import type { Paginated } from '@beabee/beabee-common';
-
 import type {
   CreateCalloutResponseCommentData,
   GetCalloutResponseCommentData,
   GetCalloutResponseCommentsQuery,
-  Serial,
+  Paginated,
   UpdateCalloutResponseCommentData,
-} from '@type';
+} from '@beabee/beabee-common';
+
+import type { Serial } from '@type';
 
 export async function fetchCalloutResponseComments(
   query: GetCalloutResponseCommentsQuery

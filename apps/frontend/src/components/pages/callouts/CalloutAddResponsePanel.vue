@@ -33,7 +33,10 @@
 </template>
 
 <script lang="ts" setup>
-import { type CalloutResponseAnswers } from '@beabee/beabee-common';
+import {
+  type CalloutResponseAnswersSlide,
+  type GetCalloutDataWith,
+} from '@beabee/beabee-common';
 import CalloutForm from './CalloutForm.vue';
 import CalloutMemberOnlyPrompt from './CalloutMemberOnlyPrompt.vue';
 import CalloutLoginPrompt from './CalloutLoginPrompt.vue';
@@ -43,13 +46,12 @@ import CalloutSidePanel from './CalloutSidePanel.vue';
 import CalloutThanksBox from './CalloutThanksBox.vue';
 import { generalContent } from '@store/generalContent';
 
-import type { GetCalloutDataWith } from '@type';
 import { useI18n } from 'vue-i18n';
 
 defineEmits<(e: 'close') => void>();
 const props = defineProps<{
   callout: GetCalloutDataWith<'form' | 'variantNames'>;
-  answers?: CalloutResponseAnswers;
+  answers?: CalloutResponseAnswersSlide;
 }>();
 
 const { t } = useI18n();

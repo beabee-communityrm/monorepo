@@ -71,7 +71,13 @@ meta:
 <script lang="ts" setup>
 import { computed, onBeforeMount, ref, watch, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { ItemStatus, type Paginated } from '@beabee/beabee-common';
+import {
+  ItemStatus,
+  type GetCalloutData,
+  type GetCalloutDataWith,
+  type GetCalloutsQuery,
+  type Paginated,
+} from '@beabee/beabee-common';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 
 import PageTitle from '@components/PageTitle.vue';
@@ -86,12 +92,6 @@ import AppTime from '@components/AppTime.vue';
 
 import { fetchCallouts } from '@utils/api/callout';
 import { defineParam } from '@utils/pagination';
-
-import type {
-  GetCalloutData,
-  GetCalloutDataWith,
-  GetCalloutsQuery,
-} from '@type';
 
 const { t } = useI18n();
 

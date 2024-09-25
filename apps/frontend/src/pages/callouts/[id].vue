@@ -5,8 +5,8 @@
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { fetchCallout } from '@utils/api/callout';
-import type { GetCalloutDataWith } from '@type';
 import { watch } from 'vue';
+import type { GetCalloutDataWith } from '@beabee/beabee-common';
 
 const props = defineProps<{ id: string }>();
 const callout =
