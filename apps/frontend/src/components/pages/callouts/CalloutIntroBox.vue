@@ -1,19 +1,22 @@
 <template>
-  <div v-if="isOpen" class="flex items-center justify-between">
+  <div
+    v-if="callout.status === ItemStatus.Open"
+    class="flex items-center justify-between"
+  >
     <div class="flex items-center text-sm font-semibold text-body-60">
       <ItemStatusText :item="callout" circle />
     </div>
     <AppButton
-      :icon="showSharingPanel ? faCaretDown : faShare"
+      :icon="showSharingBox ? faCaretDown : faShare"
       variant="primaryOutlined"
-      @click="showSharingPanel = !showSharingPanel"
+      @click="showSharingBox = !showSharingBox"
     >
       {{ t('actions.share') }}
     </AppButton>
   </div>
 
   <transition name="slide">
-    <SharingPanel v-if="showSharingPanel" :slug="callout.slug" />
+    <CalloutSharingBox v-if="showSharingBox" :slug="callout.slug" />
   </transition>
 
   <img class="w-full" :src="callout.image" />
@@ -21,10 +24,13 @@
   <div class="content-message text-lg" v-html="callout.intro" />
 </template>
 <script setup lang="ts">
-import type { GetCalloutDataWith } from '@beabee/beabee-common';
+import { ItemStatus, type GetCalloutDataWith } from '@beabee/beabee-common';
+import AppButton from '@components/button/AppButton.vue';
+import ItemStatusText from '@components/item/ItemStatusText.vue';
 import { faCaretDown, faShare } from '@fortawesome/free-solid-svg-icons';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import CalloutSharingBox from './CalloutSharingBox.vue';
 
 defineProps<{
   callout: GetCalloutDataWith<'form'>;
@@ -32,7 +38,7 @@ defineProps<{
 
 const { t } = useI18n();
 
-const showSharingPanel = ref(false);
+const showSharingBox = ref(false);
 </script>
 
 <style scoped>

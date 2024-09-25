@@ -7,23 +7,12 @@ meta:
 </route>
 
 <template>
-  <div
-    v-if="variantItems.length > 1"
-    class="mb-6 flex flex-wrap items-center rounded bg-white p-4 md:max-w-2xl"
-  >
-    <font-awesome-icon :icon="faGlobe" class="mr-2" />
-    <AppToggle v-model="currentVariant" :items="variantItems" />
-  </div>
+  <CalloutVariantsBox :callout="callout" />
 
   <AppTitle v-if="!isEmbed" big>{{ callout.title }}</AppTitle>
 
   <template v-if="responses /* Avoids layout thrashing */">
-    <CalloutThanksBox
-      v-if="latestResponse || thanks"
-      id="thanks"
-      :callout="callout"
-      class="mb-6"
-    />
+    <CalloutThanksBox v-if="latestResponse" :callout="callout" class="mb-6" />
     <AppMessageBox
       v-else-if="!isOpen && callout.expires /* Type narrowing */"
       :title="
@@ -35,45 +24,13 @@ meta:
     />
 
     <div class="flex flex-col gap-6 md:max-w-2xl">
-      <CalloutIntroThing :callout="callout" />
-      <template v-if="!showResponseForm">
-        <div
-          v-if="isOpen || latestResponse"
-          class="flex items-center justify-between"
-        >
-          <div class="flex items-center text-sm font-semibold text-body-60">
-            <ItemStatusText :item="callout" circle />
-            <span
-              v-if="latestResponse"
-              class="border-body-40 ml-3 w-32 border-l pl-3"
-            >
-              {{ t('callout.youResponded') }}
-            </span>
-          </div>
-          <AppButton
-            v-if="isOpen"
-            :icon="showSharingPanel ? faCaretDown : faShare"
-            variant="primaryOutlined"
-            @click="showSharingPanel = !showSharingPanel"
-          >
-            {{ t('actions.share') }}
-          </AppButton>
-        </div>
-
-        <transition name="slide">
-          <SharingPanel v-if="showSharingPanel" :slug="callout.slug" />
-        </transition>
-
-        <img class="w-full" :src="callout.image" />
-
-        <div class="content-message text-lg" v-html="callout.intro" />
-      </template>
+      <CalloutIntroBox v-if="!isRespondPage" :callout="callout" />
 
       <CalloutLoginPrompt v-if="showLoginPrompt" />
       <CalloutMemberOnlyPrompt v-else-if="showMemberOnlyPrompt && !isPreview" />
-      <div v-else-if="showResponsePanel">
+      <div v-else-if="canRespond || latestResponse">
         <AppButton
-          v-if="canRespond && !showResponseForm"
+          v-if="canRespond && !isRespondPage"
           class="w-full"
           :to="{
             path: '/callouts/' + callout.slug + '/respond',
@@ -122,17 +79,9 @@ import type {
 import { computed, onBeforeMount, ref, toRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
-import {
-  faBullhorn,
-  faCaretDown,
-  faGlobe,
-  faInfoCircle,
-  faShare,
-} from '@fortawesome/free-solid-svg-icons';
+import { faBullhorn, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
 import AppButton from '@components/button/AppButton.vue';
-import SharingPanel from '@components/pages/callouts/CalloutSharingPanel.vue';
-import ItemStatusText from '@components/item/ItemStatusText.vue';
 import AppNotification from '@components/AppNotification.vue';
 import CalloutForm from '@components/pages/callouts/CalloutForm.vue';
 import { useCallout } from '@components/pages/callouts/use-callout';
@@ -150,13 +99,12 @@ import { currentUser, canAdmin, isEmbed } from '@store';
 import { addNotification } from '@store/notifications';
 import { addBreadcrumb } from '@store/breadcrumb';
 
-import AppToggle from '@components/forms/AppToggle.vue';
-import CalloutIntroThing from '@components/pages/callouts/CalloutIntroThing.vue';
+import CalloutIntroBox from '@components/pages/callouts/CalloutIntroBox.vue';
+import CalloutVariantsBox from '@components/pages/callouts/CalloutVariantsBox.vue';
 
 const props = defineProps<{
   callout: GetCalloutDataWith<'form' | 'variantNames'>;
   respond?: boolean; // Flag for /respond route
-  thanks?: boolean; // Flag for /thanks route
   // Suppress the warning about the ID prop being passed by the router
   id?: string;
 }>();
@@ -197,49 +145,30 @@ addBreadcrumb(
   )
 );
 
-const responses = ref<Paginated<GetCalloutResponseDataWith<'answers'>>>();
-
-const showSharingPanel = ref(false);
-
 const isPreview = computed(
   () => route.query.preview === null && canAdmin.value
 );
+const isRespondPage = computed(() => isEmbed || props.respond);
 
-const {
-  isOpen,
-  showLoginPrompt,
-  showMemberOnlyPrompt,
-  variantItems,
-  currentVariant,
-} = useCallout(toRef(props, 'callout'));
+const { isOpen, showLoginPrompt, showMemberOnlyPrompt } = useCallout(
+  toRef(props, 'callout')
+);
 
+const responses = ref<Paginated<GetCalloutResponseDataWith<'answers'>>>();
 const latestResponse = computed(() =>
-  props.callout.allowMultiple || isPreview.value
-    ? undefined
-    : responses.value?.items?.[0]
+  props.callout.allowMultiple ? undefined : responses.value?.items?.[0]
 );
-
-const showResponsePanel = computed(
-  () =>
-    // Preview mode
-    isPreview.value ||
-    // Current user has previously responded
-    latestResponse.value ||
-    // Callout is open, current user has access and not on the thanks page
-    (isOpen.value &&
-      !showLoginPrompt.value &&
-      !showMemberOnlyPrompt.value &&
-      !props.thanks)
-);
-
-const showResponseForm = computed(() => isEmbed || props.respond);
 
 const canRespond = computed(
   () =>
     // Preview mode
     isPreview.value ||
-    // Callout is open and current user hasn't responded or can update
-    (isOpen.value && (!latestResponse.value || props.callout.allowUpdate))
+    // Callout is open and current user has access
+    (isOpen.value &&
+      !showLoginPrompt.value &&
+      !showMemberOnlyPrompt.value &&
+      // Current user hasn't responded or can update
+      (!latestResponse.value || props.callout.allowUpdate))
 );
 
 function handleSubmitResponse() {
@@ -259,19 +188,20 @@ function handleSubmitResponse() {
 }
 
 onBeforeMount(async () => {
-  responses.value = currentUser.value
-    ? await fetchResponses(
-        props.callout.slug,
-        {
-          rules: {
-            condition: 'AND',
-            rules: [{ field: 'contact', operator: 'equal', value: ['me'] }],
+  responses.value =
+    !isPreview.value && currentUser.value
+      ? await fetchResponses(
+          props.callout.slug,
+          {
+            rules: {
+              condition: 'AND',
+              rules: [{ field: 'contact', operator: 'equal', value: ['me'] }],
+            },
+            sort: 'createdAt',
+            order: 'DESC',
           },
-          sort: 'createdAt',
-          order: 'DESC',
-        },
-        ['answers']
-      )
-    : { total: 0, count: 0, offset: 0, items: [] };
+          ['answers']
+        )
+      : { total: 0, count: 0, offset: 0, items: [] };
 });
 </script>
