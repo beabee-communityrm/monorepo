@@ -58,7 +58,7 @@ export interface SettingsStepProps {
   responseLinks: { text: string; url: string }[];
   mapSchema: CalloutMapSchema;
   locales: string[];
-  channels: CalloutChannel[];
+  channels: CalloutChannel[] | null;
 }
 
 export interface EndMessageStepProps {

@@ -187,7 +187,7 @@ export function convertCalloutToSteps(
       locales: callout
         ? Object.keys(callout.variants).filter((v) => v !== 'default')
         : [],
-      channels: callout?.channels || [],
+      channels: callout?.channels || null,
     },
     endMessage: {
       whenFinished: callout?.thanksRedirect ? 'redirect' : 'message',
