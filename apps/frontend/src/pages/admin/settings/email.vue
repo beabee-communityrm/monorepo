@@ -48,8 +48,7 @@ import AppForm from '@components/forms/AppForm.vue';
 import AppInput from '@components/forms/AppInput.vue';
 
 import { fetchContent, updateContent } from '@utils/api/content';
-
-import type { ContentEmailData } from '@type';
+import type { ContentEmailData } from '@beabee/beabee-common';
 
 const { t } = useI18n();
 

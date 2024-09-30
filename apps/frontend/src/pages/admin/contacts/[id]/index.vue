@@ -247,9 +247,13 @@ meta:
 import { onBeforeMount, ref, reactive } from 'vue';
 import {
   ContributionType,
+  GetContactWith,
+  type ContactRoleData,
   type ContentJoinSetupData,
   type GetCalloutDataWith,
   type GetCalloutResponseDataWith,
+  type GetContactData,
+  type GetContactDataWith,
   type RoleType,
 } from '@beabee/beabee-common';
 import { useI18n } from 'vue-i18n';
@@ -285,12 +289,6 @@ import { addNotification } from '@store/notifications';
 
 import env from '@env';
 
-import type {
-  GetContactData,
-  GetContactDataWith,
-  ContactRoleData,
-} from '@type';
-
 const { t, n } = useI18n();
 
 const props = defineProps<{
@@ -300,7 +298,7 @@ const props = defineProps<{
 // TODO: remove this when we rework how the contact is passed to child pages
 // eslint-disable-next-line vue/no-dupe-keys
 const contact = ref<GetContactDataWith<
-  'profile' | 'contribution' | 'roles'
+  GetContactWith.Profile | GetContactWith.Contribution | GetContactWith.Roles
 > | null>(null);
 const contactTags = ref<string[]>([]);
 const contactAnnotations = reactive({
@@ -376,9 +374,9 @@ async function handleChangedRoles(cb: () => Promise<unknown>) {
   changingRoles.value = true;
   await cb();
   contact.value = await fetchContact(props.contact.id, [
-    'profile',
-    'contribution',
-    'roles',
+    GetContactWith.Profile,
+    GetContactWith.Contribution,
+    GetContactWith.Roles,
   ]);
   changingRoles.value = false;
 }
@@ -387,9 +385,9 @@ const setupContent = ref<ContentJoinSetupData>();
 
 onBeforeMount(async () => {
   contact.value = await fetchContact(props.contact.id, [
-    'profile',
-    'contribution',
-    'roles',
+    GetContactWith.Profile,
+    GetContactWith.Contribution,
+    GetContactWith.Roles,
   ]);
   contactAnnotations.notes = contact.value.profile.notes || '';
   contactAnnotations.description = contact.value.profile.description || '';

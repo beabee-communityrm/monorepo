@@ -47,6 +47,7 @@ import {
   calcPaymentFee,
   ContributionPeriod,
   PaymentMethod,
+  type ContentPaymentData,
 } from '@beabee/beabee-common';
 import { computed, watch } from 'vue';
 import ContributionAmount from './ContributionAmount.vue';
@@ -55,7 +56,6 @@ import ContributionMethod from './ContributionMethod.vue';
 import { type ContributionContent } from './contribution.interface';
 import { useI18n } from 'vue-i18n';
 import AppChoice from '../forms/AppChoice.vue';
-import type { ContentPaymentData } from '@type/content-payment-data';
 
 const props = withDefaults(
   defineProps<{

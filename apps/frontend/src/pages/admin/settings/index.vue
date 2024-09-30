@@ -193,8 +193,11 @@ import { fetchContent, updateContent } from '@utils/api/content';
 
 import { generalContent as storeGeneralContent } from '@store';
 
-import type { ContentShareData, ContentPaymentData } from '@type';
 import { localeItems } from '@lib/i18n';
+import type {
+  ContentPaymentData,
+  ContentShareData,
+} from '@beabee/beabee-common';
 
 const { t } = useI18n();
 

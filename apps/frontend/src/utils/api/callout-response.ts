@@ -5,13 +5,12 @@ import type {
   GetCalloutResponseWith,
   Paginated,
   RuleGroup,
+  Serial,
   UpdateCalloutResponseData,
 } from '@beabee/beabee-common';
 import { deserializeDate, instance } from '.';
 import { deserializeContact } from './contact';
 import { deserializeComment } from './callout-response-comments';
-
-import type { Serial } from '@type';
 
 // TODO: how to make this type safe?
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

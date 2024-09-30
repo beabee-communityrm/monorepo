@@ -17,6 +17,7 @@
 </template>
 
 <script lang="ts" setup>
+import type { GetContactData } from '@beabee/beabee-common';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -25,8 +26,6 @@ import AppSelectableList from '@components/AppSelectableList.vue';
 import AppDropdownButton from '@components/button/AppDropdownButton.vue';
 
 import { fetchContacts } from '@utils/api/contact';
-
-import type { GetContactData } from '@type';
 
 const emit = defineEmits<{
   (event: 'assign', id: string | null, successText: string): void;

@@ -12,13 +12,12 @@ import type {
   GetCalloutTagData,
   GetCalloutWith,
   Paginated,
+  Serial,
   UpdateCalloutData,
   UpdateCalloutTagData,
 } from '@beabee/beabee-common';
 import { deserializeDate, instance } from '.';
 import { deserializeCalloutResponse } from './callout-response';
-
-import type { Serial } from '@type';
 
 // TODO: how to make this type safe?
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -7,8 +7,11 @@ import type {
   Noop,
 } from "./index.ts";
 
-export type GetContactDataWith<With extends GetContactWith> =
+export type GetContactDataWith<With extends GetContactWith | void> =
   & GetContactData
-  & ("profile" extends With ? { profile: ContactProfileData } : Noop)
-  & ("contribution" extends With ? { contribution: ContributionInfo } : Noop)
-  & ("roles" extends With ? { roles: ContactRoleData[] } : Noop);
+  & (GetContactWith.Profile extends With ? { profile: ContactProfileData }
+    : Noop)
+  & (GetContactWith.Contribution extends With
+    ? { contribution: ContributionInfo }
+    : Noop)
+  & (GetContactWith.Roles extends With ? { roles: ContactRoleData[] } : Noop);

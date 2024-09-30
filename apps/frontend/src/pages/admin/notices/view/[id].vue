@@ -65,8 +65,7 @@ import ItemDateRange from '@components/item/ItemDateRange.vue';
 import { addBreadcrumb } from '@store/breadcrumb';
 
 import { deleteNotice, fetchNotice } from '@utils/api/notice';
-
-import type { GetNoticeData } from '@type';
+import type { GetNoticeData } from '@beabee/beabee-common';
 
 const props = defineProps<{ id: string }>();
 const { t } = useI18n();

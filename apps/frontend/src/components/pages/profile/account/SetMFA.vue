@@ -253,6 +253,7 @@ import type { AppStepperStep } from '@type/app-stepper-step';
 import type { AppSliderSlideEventDetails } from '@type/app-slider-slide-event-details';
 import type { SetMfaSteps } from '@type/set-mfa-steps';
 import type { SetMfaTotpIdentity } from '@type/set-mfa-totp-identity';
+import { GetContactWith } from '@beabee/beabee-common';
 
 const { t } = useI18n();
 
@@ -586,7 +587,7 @@ const validationStepsDone = computed(() => {
 watch(
   toRef(props, 'contactId'),
   async (contactId) => {
-    const contact = await fetchContact(contactId, ['profile']);
+    const contact = await fetchContact(contactId, [GetContactWith.Profile]);
     totpIdentity.value.issuer =
       generalContent.value.organisationName || 'beabee';
     totpIdentity.value.label = contact.email;

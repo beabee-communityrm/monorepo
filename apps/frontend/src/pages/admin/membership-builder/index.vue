@@ -103,7 +103,11 @@ import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import useVuelidate from '@vuelidate/core';
 import { required } from '@vuelidate/validators';
-import { ContributionPeriod } from '@beabee/beabee-common';
+import {
+  ContributionPeriod,
+  type ContentJoinData,
+  type ContentPaymentData,
+} from '@beabee/beabee-common';
 
 import AppForm from '@components/forms/AppForm.vue';
 import AppInput from '@components/forms/AppInput.vue';
@@ -120,8 +124,6 @@ import AppSubHeading from '@components/AppSubHeading.vue';
 import { fetchContent, updateContent } from '@utils/api/content';
 
 import { generalContent } from '@store';
-
-import type { ContentJoinData, ContentPaymentData } from '@type';
 
 const joinContent = ref<ContentJoinData>();
 const paymentContent = ref<ContentPaymentData>();

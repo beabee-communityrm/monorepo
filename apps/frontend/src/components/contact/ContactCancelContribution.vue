@@ -22,14 +22,16 @@
 </template>
 
 <script lang="ts" setup>
-import { ContributionType, MembershipStatus } from '@beabee/beabee-common';
+import {
+  ContributionType,
+  MembershipStatus,
+  type ContributionInfo,
+} from '@beabee/beabee-common';
 import AppButton from '../button/AppButton.vue';
 import { formatLocale } from '@utils/dates';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import AppHeading from '../AppHeading.vue';
-
-import type { ContributionInfo } from '@type';
 
 const { t } = useI18n();
 

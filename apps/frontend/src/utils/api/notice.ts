@@ -1,12 +1,11 @@
-import type { Paginated } from '@beabee/beabee-common';
-import { deserializeDate, instance } from '.';
-
 import type {
   CreateNoticeData,
   GetNoticeData,
   GetNoticesQuery,
+  Paginated,
   Serial,
-} from '@type';
+} from '@beabee/beabee-common';
+import { deserializeDate, instance } from '.';
 
 function deserializeNotice(notice: Serial<GetNoticeData>): GetNoticeData {
   return {

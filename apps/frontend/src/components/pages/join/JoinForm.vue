@@ -75,8 +75,11 @@ import AppCheckbox from '@components/forms/AppCheckbox.vue';
 import AppForm from '@components/forms/AppForm.vue';
 import AuthBox from '@components/AuthBox.vue';
 
-import type { ContentJoinData, ContentPaymentData } from '@type';
 import AppTitle from '@components/AppTitle.vue';
+import type {
+  ContentJoinData,
+  ContentPaymentData,
+} from '@beabee/beabee-common';
 
 const props = defineProps<{
   joinContent: ContentJoinData;

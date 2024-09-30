@@ -45,7 +45,7 @@ meta:
   </AppPaginatedTable>
 </template>
 <script lang="ts" setup>
-import type { Paginated } from '@beabee/beabee-common';
+import type { GetNoticeData, Paginated } from '@beabee/beabee-common';
 import { computed, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { faPlus, faSignHanging } from '@fortawesome/free-solid-svg-icons';
@@ -61,8 +61,6 @@ import { addBreadcrumb } from '@store/breadcrumb';
 import { fetchNotices } from '@utils/api/notice';
 import { formatLocale } from '@utils/dates';
 import { definePaginatedQuery } from '@utils/pagination';
-
-import type { GetNoticeData } from '@type';
 
 const { t } = useI18n();
 
