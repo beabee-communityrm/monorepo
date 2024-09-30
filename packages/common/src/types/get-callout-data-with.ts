@@ -1,5 +1,6 @@
 import type {
   CalloutResponseViewSchema,
+  CalloutVariantData,
   GetCalloutData,
   GetCalloutFormData,
   GetCalloutWith,
@@ -13,4 +14,7 @@ export type GetCalloutDataWith<With extends GetCalloutWith> =
   & ("responseViewSchema" extends With
     ? { responseViewSchema: CalloutResponseViewSchema | null }
     : Noop)
-  & ("form" extends With ? GetCalloutFormData : Noop);
+  & ("form" extends With ? GetCalloutFormData : Noop)
+  & ("variantNames" extends With ? { variantNames: string[] } : Noop)
+  & ("variants" extends With ? { variants: Record<string, CalloutVariantData> }
+    : Noop);

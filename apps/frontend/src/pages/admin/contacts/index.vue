@@ -108,6 +108,9 @@ meta:
 <script lang="ts" setup>
 import {
   ContributionPeriod,
+  GetContactWith,
+  type GetContactDataWith,
+  type GetSegmentDataWith,
   type Paginated,
   type RuleGroup,
 } from '@beabee/beabee-common';
@@ -143,8 +146,6 @@ import { fetchContacts } from '@utils/api/contact';
 import { formatLocale } from '@utils/dates';
 import { fetchSegments } from '@utils/api/segments';
 
-import type { GetContactDataWith, GetSegmentDataWith } from '@type';
-
 const { t, n } = useI18n();
 
 const route = useRoute();
@@ -179,7 +180,10 @@ const hasUnsavedSegment = computed(
 
 const segments = ref<GetSegmentDataWith<'contactCount'>[]>([]);
 const contactsTotal = ref<number | null>(null);
-const contactsTable = ref<Paginated<GetContactDataWith<'profile' | 'roles'>>>();
+const contactsTable =
+  ref<
+    Paginated<GetContactDataWith<GetContactWith.Profile | GetContactWith.Roles>>
+  >();
 
 const segmentItems = computed(() => [
   {
@@ -196,7 +200,9 @@ const segmentItems = computed(() => [
   })),
 ]);
 
-function getMembershipStartDate(contact: GetContactDataWith<'roles'>): string {
+function getMembershipStartDate(
+  contact: GetContactDataWith<GetContactWith.Roles>
+): string {
   const membership = contact.roles.find((role) => role.role === 'member');
   return membership ? formatLocale(membership.dateAdded, 'PPP') : '';
 }
@@ -251,7 +257,10 @@ function getSearchRules(): RuleGroup {
 
 watchEffect(async () => {
   const query = { ...currentPaginatedQuery.query, rules: getSearchRules() };
-  contactsTable.value = await fetchContacts(query, ['profile', 'roles']);
+  contactsTable.value = await fetchContacts(query, [
+    GetContactWith.Profile,
+    GetContactWith.Roles,
+  ]);
 });
 
 function handleExport() {

@@ -3,7 +3,7 @@ import { instance } from '.';
 import type { GetContactMfaData } from '@type/get-contact-mfa-data';
 import type { CreateContactMfaData } from '@type/create-contact-mfa-data';
 import type { DeleteContactMfaData } from '@type/delete-contact-mfa-data';
-import type { Serial } from '@type/serial';
+import type { Serial } from '@beabee/beabee-common';
 
 /**
  * Deserialize a contact MFA

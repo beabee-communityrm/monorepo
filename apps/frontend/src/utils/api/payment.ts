@@ -1,15 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { Paginated } from '@beabee/beabee-common';
+import type {
+  GetPaymentDataWith,
+  GetPaymentsQuery,
+  GetPaymentWith,
+  Paginated,
+  Serial,
+} from '@beabee/beabee-common';
 
 import { deserializeDate, instance } from '.';
 import { deserializeContact } from './contact';
-
-import type {
-  GetPaymentDataWith,
-  GetPaymentWith,
-  GetPaymentsQuery,
-  Serial,
-} from '@type';
 
 // TODO: how to make this type safe?
 export function deserializePayment(

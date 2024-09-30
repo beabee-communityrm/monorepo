@@ -1,5 +1,9 @@
+import type {
+  GetEmailData,
+  Serial,
+  UpdateEmailData,
+} from '@beabee/beabee-common';
 import { instance } from '.';
-import type { GetEmailData, Serial, UpdateEmailData } from '@type';
 
 export async function fetchEmail(id: string): Promise<GetEmailData | false> {
   return (await instance.get<Serial<GetEmailData>>('/email/' + id)).data;

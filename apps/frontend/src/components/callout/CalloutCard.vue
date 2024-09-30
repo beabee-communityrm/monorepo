@@ -39,12 +39,11 @@
 </template>
 
 <script lang="ts" setup>
+import type { GetCalloutData } from '@beabee/beabee-common';
 import { useI18n } from 'vue-i18n';
 import AppTime from '../AppTime.vue';
 import AppSubHeading from '../AppSubHeading.vue';
 import { formatLocale } from '@utils/dates';
-
-import type { GetCalloutData } from '@type';
 
 defineProps<{ callout: GetCalloutData }>();
 

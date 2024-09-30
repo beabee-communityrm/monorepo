@@ -40,6 +40,7 @@
   </div>
 </template>
 <script lang="ts" setup>
+import type { GetCalloutDataWith } from '@beabee/beabee-common';
 import { useI18n } from 'vue-i18n';
 import { computed } from 'vue';
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
@@ -50,8 +51,6 @@ import ItemStatusText from '@components/item/ItemStatusText.vue';
 import ItemDateRange from '@components/item/ItemDateRange.vue';
 import AppSubHeading from '@components/AppSubHeading.vue';
 import AppButton from '@components/button/AppButton.vue';
-
-import type { GetCalloutDataWith } from '@type';
 
 const { t } = useI18n();
 

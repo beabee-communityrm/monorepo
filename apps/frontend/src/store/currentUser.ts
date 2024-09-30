@@ -1,11 +1,9 @@
-import type { RoleType } from '@beabee/beabee-common';
+import type { GetContactData, RoleType } from '@beabee/beabee-common';
 import { computed, type ComputedRef, ref } from 'vue';
 
 import { instance } from '@utils/api';
 
 import { fetchContact } from '@utils/api/contact';
-
-import type { GetContactData } from '@type';
 
 export async function updateCurrentUser(
   contact?: GetContactData

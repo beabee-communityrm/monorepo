@@ -58,6 +58,7 @@ meta:
 import {
   ContributionType,
   NewsletterStatus,
+  type ContactRoleData,
   type RoleType,
 } from '@beabee/beabee-common';
 import useVuelidate from '@vuelidate/core';
@@ -80,8 +81,6 @@ import RoleEditor from '@components/role/RoleEditor.vue';
 import { addBreadcrumb } from '@store/breadcrumb';
 
 import { createContact } from '@utils/api/contact';
-
-import type { ContactRoleData } from '@type';
 
 const { t } = useI18n();
 const router = useRouter();

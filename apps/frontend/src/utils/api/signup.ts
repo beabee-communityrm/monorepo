@@ -1,11 +1,12 @@
 import {
   ContributionPeriod,
   type PaymentFlowParams,
+  type Serial,
 } from '@beabee/beabee-common';
 import env from '../../env';
 import { instance } from '.';
 
-import type { CompleteSignupData, Serial, SignupData } from '@type';
+import type { CompleteSignupData, SignupData } from '@type';
 
 export const completeUrl = env.appUrl + '/join/complete';
 

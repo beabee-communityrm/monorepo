@@ -1,24 +1,23 @@
-import type { Paginated } from '@beabee/beabee-common';
+import type {
+  CreateCalloutData,
+  CreateCalloutResponseData,
+  CreateCalloutTagData,
+  GetCalloutData,
+  GetCalloutDataWith,
+  GetCalloutResponseDataWith,
+  GetCalloutResponseMapData,
+  GetCalloutResponsesQuery,
+  GetCalloutResponseWith,
+  GetCalloutsQuery,
+  GetCalloutTagData,
+  GetCalloutWith,
+  Paginated,
+  Serial,
+  UpdateCalloutData,
+  UpdateCalloutTagData,
+} from '@beabee/beabee-common';
 import { deserializeDate, instance } from '.';
 import { deserializeCalloutResponse } from './callout-response';
-
-import type {
-  GetCalloutsQuery,
-  Serial,
-  GetCalloutResponsesQuery,
-  CreateCalloutResponseData,
-  CreateCalloutData,
-  UpdateCalloutData,
-  GetCalloutWith,
-  GetCalloutDataWith,
-  GetCalloutData,
-  GetCalloutResponseWith,
-  GetCalloutResponseDataWith,
-  GetCalloutTagData,
-  CreateCalloutTagData,
-  UpdateCalloutTagData,
-  GetCalloutResponseMapData,
-} from '@type';
 
 // TODO: how to make this type safe?
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

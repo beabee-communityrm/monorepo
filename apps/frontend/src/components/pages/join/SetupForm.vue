@@ -73,6 +73,7 @@
 </template>
 <script lang="ts" setup>
 import {
+  GetContactWith,
   NewsletterStatus,
   type ContentJoinSetupData,
 } from '@beabee/beabee-common';
@@ -103,7 +104,7 @@ const { t } = useI18n();
 
 useVuelidate({ $stopPropagation: true });
 
-const contact = await fetchContact('me', ['profile']);
+const contact = await fetchContact('me', [GetContactWith.Profile]);
 
 const data = reactive<SetupContactData>({
   email: contact.email,

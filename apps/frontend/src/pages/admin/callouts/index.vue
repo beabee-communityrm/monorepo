@@ -68,7 +68,11 @@ meta:
 </template>
 
 <script lang="ts" setup>
-import type { Paginated } from '@beabee/beabee-common';
+import type {
+  GetCalloutDataWith,
+  GetCalloutsQuery,
+  Paginated,
+} from '@beabee/beabee-common';
 import { computed, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 import {
@@ -91,8 +95,6 @@ import { formatLocale } from '@utils/dates';
 import { fetchCallouts } from '@utils/api/callout';
 
 import { addBreadcrumb } from '@store/breadcrumb';
-
-import type { GetCalloutDataWith, GetCalloutsQuery } from '@type';
 
 const { t } = useI18n();
 

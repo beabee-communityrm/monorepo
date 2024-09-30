@@ -98,6 +98,8 @@ import {
   PaymentMethod,
   MembershipStatus,
   ContributionType,
+  type ContributionInfo,
+  type ContentPaymentData,
 } from '@beabee/beabee-common';
 import { computed, onBeforeMount, reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -124,8 +126,6 @@ import { formatLocale } from '@utils/dates';
 import { isRequestError } from '@utils/api';
 
 import { addNotification } from '@store/notifications';
-
-import type { ContentPaymentData, ContributionInfo } from '@type';
 
 const validation = useVuelidate();
 

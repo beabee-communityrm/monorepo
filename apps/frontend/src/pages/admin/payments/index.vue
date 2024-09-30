@@ -42,7 +42,11 @@ meta:
 </template>
 
 <script lang="ts" setup>
-import type { Paginated } from '@beabee/beabee-common';
+import type {
+  GetPaymentDataWith,
+  GetPaymentsQuery,
+  Paginated,
+} from '@beabee/beabee-common';
 import { useI18n } from 'vue-i18n';
 import { computed, ref, watchEffect } from 'vue';
 import { faEuro } from '@fortawesome/free-solid-svg-icons';
@@ -67,8 +71,6 @@ import {
 import AppFilterGrid from '@components/AppFilterGrid.vue';
 
 import { addBreadcrumb } from '@store/breadcrumb';
-
-import type { GetPaymentDataWith, GetPaymentsQuery } from '@type';
 
 const { t, n } = useI18n();
 

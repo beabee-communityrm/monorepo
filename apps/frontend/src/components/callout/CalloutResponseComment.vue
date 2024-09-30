@@ -54,6 +54,10 @@
 </template>
 
 <script lang="ts" setup>
+import type {
+  GetCalloutResponseCommentData,
+  UpdateCalloutResponseCommentData,
+} from '@beabee/beabee-common';
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { faPencil, faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -68,11 +72,6 @@ import {
   updateCalloutResponseComment,
 } from '@utils/api/callout-response-comments';
 import { formatLocale } from '@utils/dates';
-
-import type {
-  GetCalloutResponseCommentData,
-  UpdateCalloutResponseCommentData,
-} from '@type';
 
 const { t } = useI18n();
 

@@ -1,4 +1,4 @@
-import type { ContentJoinData } from '@type';
+import type { ContentJoinData } from '@beabee/beabee-common';
 
 export type ContributionContent = Pick<
   ContentJoinData,

@@ -1,12 +1,11 @@
-import type { Paginated } from '@beabee/beabee-common';
-import { deserializeDate, instance } from '.';
-
 import type {
   CreateApiKeyData,
   GetApiKeyData,
   GetApiKeysQuery,
+  Paginated,
   Serial,
-} from '@type';
+} from '@beabee/beabee-common';
+import { deserializeDate, instance } from '.';
 
 function deserializeApiKey(apiKey: Serial<GetApiKeyData>): GetApiKeyData {
   return {

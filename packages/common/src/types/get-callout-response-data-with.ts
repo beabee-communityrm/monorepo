@@ -1,5 +1,5 @@
+import { CalloutResponseAnswersSlide } from "../index.ts";
 import type {
-  CalloutResponseAnswers,
   GetCalloutData,
   GetCalloutResponseCommentData,
   GetCalloutResponseData,
@@ -10,7 +10,7 @@ import type {
 
 export type GetCalloutResponseDataWith<With extends GetCalloutResponseWith> =
   & GetCalloutResponseData
-  & ("answers" extends With ? { answers: CalloutResponseAnswers }
+  & ("answers" extends With ? { answers: CalloutResponseAnswersSlide }
     : Noop)
   & ("assignee" extends With ? { assignee: GetContactData | null } : Noop)
   & ("callout" extends With ? { callout: GetCalloutData } : Noop)

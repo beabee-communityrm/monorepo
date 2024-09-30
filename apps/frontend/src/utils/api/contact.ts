@@ -1,32 +1,29 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
+  type ContactRoleData,
+  type ContributionInfo,
   ContributionPeriod,
+  type CreateContactData,
+  type ForceUpdateContributionData,
+  type GetContactData,
+  type GetContactDataWith,
+  type GetContactsQuery,
+  GetContactWith,
+  type GetPaymentData,
+  type GetPaymentsQuery,
   type Paginated,
   type PaymentFlowParams,
   PaymentMethod,
   type RoleType,
+  type Serial,
+  type SetContributionData,
+  type StartContributionData,
   type UpdateContactData,
+  type UpdateContactRoleData,
 } from '@beabee/beabee-common';
 
 import { deserializeDate, instance } from '.';
 import env from '../../env';
-
-import type {
-  ContributionInfo,
-  CreateContactData,
-  ForceUpdateContributionData,
-  GetContactData,
-  GetContactDataWith,
-  GetContactsQuery,
-  GetContactWith,
-  GetPaymentData,
-  GetPaymentsQuery,
-  ContactRoleData,
-  Serial,
-  SetContributionData,
-  StartContributionData,
-  UpdateContactRoleData,
-} from '@type';
 
 // TODO: how to make this type safe?
 export function deserializeContact(data: any): any {
@@ -63,7 +60,7 @@ function deserializeContribution(
   };
 }
 
-export async function fetchContacts<With extends GetContactWith = void>(
+export async function fetchContacts<With extends GetContactWith | void = void>(
   query: GetContactsQuery,
   _with?: readonly With[]
 ): Promise<Paginated<GetContactDataWith<With>>> {
@@ -87,7 +84,7 @@ export async function createContact(
   return deserializeContact(data);
 }
 
-export async function fetchContact<With extends GetContactWith = void>(
+export async function fetchContact<With extends GetContactWith | void = void>(
   id: string,
   _with?: readonly With[]
 ): Promise<GetContactDataWith<With>> {

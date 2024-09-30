@@ -59,7 +59,12 @@ meta:
 </template>
 
 <script lang="ts" setup>
-import { ItemStatus } from '@beabee/beabee-common';
+import {
+  ItemStatus,
+  type ContentProfileData,
+  type GetCalloutData,
+  type GetContactData,
+} from '@beabee/beabee-common';
 import { ref, onBeforeMount, type Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
@@ -77,8 +82,6 @@ import { fetchContent } from '@utils/api/content';
 import { fetchCallouts } from '@utils/api/callout';
 
 import { currentUser, generalContent } from '@store';
-
-import type { GetContactData, GetCalloutData, ContentProfileData } from '@type';
 
 const { t } = useI18n();
 

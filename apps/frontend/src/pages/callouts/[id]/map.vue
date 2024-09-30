@@ -12,7 +12,7 @@ meta:
     v-if="callout.responseViewSchema?.map"
     class="absolute inset-0 flex flex-col"
   >
-    <CalloutHeader
+    <CalloutMapHeader
       v-if="!isEmbed"
       :callout="callout"
       class="flex-0"
@@ -200,7 +200,9 @@ import 'vue-maplibre-gl/dist/vue-maplibre-gl.css';
 
 import type {
   CalloutResponseAnswerAddress,
-  CalloutResponseAnswers,
+  CalloutResponseAnswersSlide,
+  GetCalloutDataWith,
+  GetCalloutResponseMapData,
 } from '@beabee/beabee-common';
 import { faInfoCircle, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useI18n } from 'vue-i18n';
@@ -230,9 +232,8 @@ import AppButton from '@components/button/AppButton.vue';
 
 import { isEmbed } from '@store';
 
-import type { GetCalloutDataWith, GetCalloutResponseMapData } from '@type';
 import { currentLocaleConfig } from '@lib/i18n';
-import CalloutHeader from '@components/pages/callouts/CalloutHeader.vue';
+import CalloutMapHeader from '@components/pages/callouts/CalloutMapHeader.vue';
 
 type GetCalloutResponseMapDataWithAddress = GetCalloutResponseMapData & {
   address: CalloutResponseAnswerAddress;
@@ -256,7 +257,7 @@ const responses = ref<GetCalloutResponseMapDataWithAddress[]>([]);
 const { isOpen } = useCallout(toRef(props, 'callout'));
 
 const introOpen = ref(false);
-const newResponseAnswers = ref<CalloutResponseAnswers>();
+const newResponseAnswers = ref<CalloutResponseAnswersSlide>();
 const geocodeAddress = ref<CalloutResponseAnswerAddress>();
 
 const isAddMode = computed(() => route.hash === '#add');
@@ -276,15 +277,11 @@ const newResponseAddress = computed(() => {
   const addressProp = props.callout.responseViewSchema?.map?.addressProp;
   if (addressProp && newResponseAnswers.value) {
     const [slideId, answerKey] = addressProp.split('.');
-    const slide = newResponseAnswers.value[slideId];
-    if (slide && typeof slide === 'object' && answerKey in slide) {
-      const addressAnswer = (slide as CalloutResponseAnswers)[answerKey];
-      return addressAnswer as CalloutResponseAnswerAddress | undefined;
-    }
-    return undefined;
-  } else {
-    return undefined;
+    return newResponseAnswers.value[slideId]?.[answerKey] as
+      | CalloutResponseAnswerAddress
+      | undefined;
   }
+  return undefined;
 });
 
 // A GeoJSON FeatureCollection of all the responses
@@ -409,7 +406,7 @@ async function handleAddClick(e: { event: MapMouseEvent; map: Map }) {
     },
   };
 
-  const responseAnswers: CalloutResponseAnswers = {};
+  const responseAnswers: CalloutResponseAnswersSlide = {};
   setKey(responseAnswers, mapSchema.addressProp, address);
 
   if (mapSchema.addressPatternProp && geocodeResult) {

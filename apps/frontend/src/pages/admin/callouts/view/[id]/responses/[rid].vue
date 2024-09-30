@@ -158,7 +158,13 @@ meta:
 <script lang="ts" setup>
 import { computed, onBeforeMount, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
-import type { CalloutResponseAnswers } from '@beabee/beabee-common';
+import type {
+  CalloutResponseAnswersSlide,
+  GetCalloutDataWith,
+  GetCalloutResponseData,
+  GetCalloutResponseDataWith,
+  UpdateCalloutResponseData,
+} from '@beabee/beabee-common';
 import {
   faCaretLeft,
   faCaretRight,
@@ -191,13 +197,6 @@ import {
   fetchCalloutResponse,
   updateCalloutResponse,
 } from '@utils/api/callout-response';
-
-import type {
-  GetCalloutDataWith,
-  GetCalloutResponseData,
-  GetCalloutResponseDataWith,
-  UpdateCalloutResponseData,
-} from '@type';
 
 const props = defineProps<{
   rid: string;
@@ -260,7 +259,7 @@ async function handleUpdate(
   doingAction.value = false;
 }
 
-async function handleEditResponse(answers: CalloutResponseAnswers) {
+async function handleEditResponse(answers: CalloutResponseAnswersSlide) {
   await handleUpdate({ answers }, t('form.saved'));
   editMode.value = false;
 }

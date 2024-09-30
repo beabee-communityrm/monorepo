@@ -88,9 +88,11 @@ import { computed, ref, watch } from 'vue';
 
 import CalloutSidePanel from './CalloutSidePanel.vue';
 import CalloutForm from './CalloutForm.vue';
-import { filterComponents } from '@beabee/beabee-common';
-
-import type { GetCalloutDataWith, GetCalloutResponseMapData } from '@type';
+import {
+  filterComponents,
+  type GetCalloutDataWith,
+  type GetCalloutResponseMapData,
+} from '@beabee/beabee-common';
 
 defineEmits<(e: 'close') => void>();
 const props = defineProps<{
