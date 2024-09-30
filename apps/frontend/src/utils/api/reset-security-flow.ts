@@ -6,10 +6,10 @@ import { RESET_SECURITY_FLOW_TYPE } from '@enums/reset-security-flow-type';
 
 import type {
   CreateResetPasswordData,
-  UpdateResetPasswordData,
   CreateResetDeviceData,
   UpdateResetDeviceData,
 } from '@type';
+import type { UpdateResetPasswordData } from '@beabee/beabee-common';
 
 /**
  * Starts the reset password flow.

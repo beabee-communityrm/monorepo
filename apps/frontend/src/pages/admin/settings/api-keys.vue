@@ -108,7 +108,7 @@ import useVuelidate from '@vuelidate/core';
 import { useI18n } from 'vue-i18n';
 import { faCopy, faTrash, faWarning } from '@fortawesome/free-solid-svg-icons';
 import { addDays } from 'date-fns';
-import type { Paginated } from '@beabee/beabee-common';
+import type { GetApiKeyData, Paginated } from '@beabee/beabee-common';
 
 import AppForm from '@components/forms/AppForm.vue';
 import AppInput from '@components/forms/AppInput.vue';
@@ -127,8 +127,6 @@ import { addNotification } from '@store/notifications';
 import { formatLocale } from '@utils/dates';
 import { definePaginatedQuery } from '@utils/pagination';
 import { createApiKey, fetchApiKeys, deleteApiKey } from '@utils/api/api-key';
-
-import type { GetApiKeyData } from '@type';
 
 const { n, t } = useI18n();
 

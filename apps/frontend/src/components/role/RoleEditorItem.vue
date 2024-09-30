@@ -59,8 +59,7 @@ import AppConfirmDialog from '../AppConfirmDialog.vue';
 import RoleEditorForm from './RoleEditorForm.vue';
 
 import { formatLocale } from '@utils/dates';
-
-import type { ContactRoleData } from '@type';
+import type { ContactRoleData } from '@beabee/beabee-common';
 
 const emit = defineEmits(['delete', 'update']);
 defineProps<{ role: ContactRoleData }>();

@@ -19,6 +19,7 @@ meta:
 </template>
 
 <script lang="ts" setup>
+import type { GetContactData } from '@beabee/beabee-common';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
@@ -32,8 +33,6 @@ import { addBreadcrumb } from '@store/breadcrumb';
 import env from '../../../env';
 
 import { fetchContact } from '@utils/api/contact';
-
-import type { GetContactData } from '@type';
 
 const props = defineProps<{ id: string }>();
 

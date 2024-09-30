@@ -43,8 +43,7 @@ import App2ColGrid from '@components/App2ColGrid.vue';
 import { fetchContent } from '@utils/api/content';
 import { fetchEmail, updateEmail } from '@utils/api/email';
 import { isRequestError } from '@utils/api';
-
-import type { GetEmailData } from '@type';
+import type { GetEmailData } from '@beabee/beabee-common';
 
 const { t } = useI18n();
 const stepT = (key: string) => t('membershipBuilder.steps.emails.' + key);

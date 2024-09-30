@@ -36,7 +36,12 @@
 </template>
 
 <script lang="ts" setup>
-import { type Paginated, PaymentStatus } from '@beabee/beabee-common';
+import {
+  type GetPaymentData,
+  type GetPaymentsQuery,
+  type Paginated,
+  PaymentStatus,
+} from '@beabee/beabee-common';
 import { useI18n } from 'vue-i18n';
 import { computed, ref, watchEffect } from 'vue';
 
@@ -47,8 +52,6 @@ import AppHeading from '@components/AppHeading.vue';
 
 import { formatLocale } from '@utils/dates';
 import { fetchPayments } from '@utils/api/contact';
-
-import type { GetPaymentData, GetPaymentsQuery } from '@type';
 
 const { t, n } = useI18n();
 

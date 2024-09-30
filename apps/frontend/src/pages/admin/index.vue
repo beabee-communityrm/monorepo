@@ -90,7 +90,12 @@ meta:
   />
 </template>
 <script lang="ts" setup>
-import { ItemStatus, type GetCalloutDataWith } from '@beabee/beabee-common';
+import {
+  ItemStatus,
+  type GetCalloutDataWith,
+  type GetContactData,
+  type GetStatsData,
+} from '@beabee/beabee-common';
 import { useI18n } from 'vue-i18n';
 import PageTitle from '@components/PageTitle.vue';
 import { currentUser } from '@store';
@@ -108,8 +113,6 @@ import { addBreadcrumb } from '@store/breadcrumb';
 import { faChartLine } from '@fortawesome/free-solid-svg-icons';
 import env from '../../env';
 import AppTime from '@components/AppTime.vue';
-
-import type { GetContactData, GetStatsData } from '@type';
 
 const { n, t } = useI18n();
 

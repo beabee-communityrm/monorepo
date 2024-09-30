@@ -66,7 +66,7 @@ import AppInput from '@components/forms/AppInput.vue';
 import AppLabel from '@components/forms/AppLabel.vue';
 
 import type { NoticeFormData } from './notice.interface';
-import type { CreateNoticeData, GetNoticeData } from '@type';
+import type { CreateNoticeData, GetNoticeData } from '@beabee/beabee-common';
 
 defineEmits(['submit']);
 const props = defineProps<{ notice: GetNoticeData | undefined }>();

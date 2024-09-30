@@ -52,7 +52,11 @@
 </template>
 
 <script lang="ts" setup>
-import type { RuleGroup } from '@beabee/beabee-common';
+import type {
+  GetSegmentData,
+  GetSegmentDataWith,
+  RuleGroup,
+} from '@beabee/beabee-common';
 import { faFloppyDisk } from '@fortawesome/free-solid-svg-icons';
 import useVuelidate from '@vuelidate/core';
 import { ref } from 'vue';
@@ -66,8 +70,6 @@ import AppRadioGroup from '@components/forms/AppRadioGroup.vue';
 import { createSegment, updateSegment } from '@utils/api/segments';
 
 import { addNotification } from '@store/notifications';
-
-import type { GetSegmentData, GetSegmentDataWith } from '@type';
 
 const emit = defineEmits(['saved']);
 const props = defineProps<{

@@ -31,8 +31,7 @@ import { updateNotice, fetchNotice } from '@utils/api/notice';
 
 import { addBreadcrumb } from '@store/breadcrumb';
 import { addNotification } from '@store/notifications';
-
-import type { CreateNoticeData, GetNoticeData } from '@type';
+import type { CreateNoticeData, GetNoticeData } from '@beabee/beabee-common';
 
 const { t } = useI18n();
 const router = useRouter();

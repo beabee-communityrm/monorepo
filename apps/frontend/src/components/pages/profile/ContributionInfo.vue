@@ -24,8 +24,7 @@ import AppInfoList from '@components/AppInfoList.vue';
 import AppInfoListItem from '@components/AppInfoListItem.vue';
 
 import { formatLocale } from '@utils/dates';
-
-import type { GetContactData } from '@type';
+import type { GetContactData } from '@beabee/beabee-common';
 
 const { t, n } = useI18n();
 
