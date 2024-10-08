@@ -7,6 +7,8 @@ import replace from '@rollup/plugin-replace';
 
 import theme from './plugins/theme';
 
+const FRONTEND_APP_URL = 'http://localhost:3000';
+
 export default ({ command, mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
 
@@ -46,12 +48,14 @@ export default ({ command, mode }) => {
 
   // Use environment variables when developing locally
   if (command === 'serve') {
-    console.debug('API_PROXY_URL', env.API_PROXY_URL);
+    console.info(
+      `Please note that the frontend development server is creating a proxy to the backend from ${FRONTEND_APP_URL} to ${env.API_BASE_URL}`
+    );
 
     plugins.push(
       replace({
         values: {
-          __appUrl__: 'http://localhost:3000',
+          __appUrl__: FRONTEND_APP_URL,
           __apiUrl__: env.API_BASE_URL,
           __revision__: 'dev',
           __version__: 'dev',
@@ -67,6 +71,7 @@ export default ({ command, mode }) => {
   }
 
   return defineConfig({
+    clearScreen: false,
     build: {
       sourcemap: true,
     },

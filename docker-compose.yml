@@ -2,14 +2,14 @@
 
 x-base-app: &base-app
   build:
-    context: ../..
+    context: .
     dockerfile: ./apps/backend/Dockerfile
     target: app
   volumes:
-    - ./built:/opt/apps/backend/built
-    - ../../packages/common/dist:/opt/packages/common/dist
-    - ../../packages/core/dist:/opt/packages/core/dist
-    - ../../packages/core/src/migrations:/opt/packages/core/src/migrations
+    - ./apps/backend/built:/opt/apps/backend/built
+    - ./packages/common/dist:/opt/packages/common/dist
+    - ./packages/core/dist:/opt/packages/core/dist
+    - ./packages/core/src/migrations:/opt/packages/core/src/migrations
   env_file:
     - .env
   environment:
@@ -59,7 +59,7 @@ services:
 
   router:
     build:
-      context: ../..
+      context: .
       dockerfile: ./apps/backend/Dockerfile
       target: router
     volumes:

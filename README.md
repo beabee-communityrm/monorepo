@@ -30,31 +30,53 @@ You need the following tools installed on your machine:
 
 ### Initial Setup
 
-1. Copy the example environment files:
-
-   ```bash
-   cp apps/backend/.env.example apps/backend/.env
-   cp apps/frontend/.env.example apps/frontend/.env
-   ```
-
-2. Install dependencies and build the project:
+1. Install dependencies and build the project:
 
    ```bash
    yarn install
+   ```
+
+2. Run the presetup script to copy the example environment files:
+
+   ```bash
+   yarn presetup
+   ```
+
+3. Build the project locally:
+
+   ```bash
    yarn build
    ```
 
-3. Initialize and start the Docker containers:
+4. Build the Docker Compose stack:
 
    ```bash
-   yarn docker:build # You can also start the containers with yarn docker:start
+   yarn docker:compose:build
    ```
 
-4. Run the development mode to watch for changes on all packages:
+5. Start the Docker Compose stack:
+
+   ```bash
+   yarn docker:compose:start
+   ```
+
+6. Run the setup script to create a new user and configure the payment method and email domain:
+
+   ```bash
+   yarn setup
+   ```
+
+   Open your browser and navigate to http://localhost:3025 to access MailDev to confirm the email address you used for the setup script.
+
+7. Run the development mode to watch for changes on all packages:
 
    ```bash
    yarn dev
    ```
+
+   Open your browser and navigate to http://localhost:3000 to access the frontend.
+
+8. Happy coding!
 
 ## Developer Tools
 

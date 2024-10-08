@@ -20,7 +20,7 @@ By default your frontend will use the API at https://dev.beabee.io. You can chan
 To start development:
 
 ```sh
-yarn start
+yarn dev
 ```
 
 To build the project:

@@ -4,6 +4,7 @@ export default () => {
   const plugins: Plugin[] = [];
 
   return defineConfig({
+    clearScreen: false,
     build: {
       sourcemap: true,
       rollupOptions: {

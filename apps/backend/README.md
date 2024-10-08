@@ -29,18 +29,16 @@ To just look around the system you can just use the example env file (`.env.exam
 create a sandbox GoCardless account to test any payment flows.
 
 ```bash
-cp .env.example .env
-
 yarn install
 yarn build
-docker compose build
+docker compose -f ../../docker-compose.yml build
 
 # Initialise database
-docker compose up -d db
-docker compose run --rm app yarn typeorm migration:run
+docker compose -f ../../docker-compose.yml up -d db
+docker compose -f ../../docker-compose.yml run --rm app yarn typeorm migration:run
 
 # Do the rest
-docker compose up -d
+docker compose -f ../../docker-compose.yml up -d
 ```
 
 ### To get started
@@ -48,13 +46,13 @@ docker compose up -d
 #### Create a new super admin
 
 ```bash
-docker compose run --rm app node built/tools/new-user
+docker compose -f ../../docker-compose.yml run --rm app node built/tools/new-user
 ```
 
 #### Payment methods and email domain
 
 ```bash
-docker compose exec app node built/tools/configure
+docker compose -f ../../docker-compose.yml exec app node built/tools/configure
 ```
 
 > ⚠️ If you only set up the system locally, it doesn't matter what email domain you specify, but it still has to be valid, e.g. `example.org`.
@@ -64,7 +62,7 @@ docker compose exec app node built/tools/configure
 Need some test data? Download it here: coming soon
 
 ```bash
-docker compose run --rm -T app node built/tools/database/import.js < <import file>
+docker compose -f ../../docker-compose.yml run --rm -T app node built/tools/database/import.js < <import file>
 ```
 
 #### Go to the frontend
@@ -92,18 +90,18 @@ yarn dev:api
 If you make changes to `.env` you need to recreate the Docker containers
 
 ```bash
-docker compose up -d
+docker compose -f ../../docker-compose.yml up -d
 ```
 
-docker compose up -d
+docker compose -f ../../docker-compose.yml up -d
 
 ````
 
 If you change the dependencies in `package.json` you must rebuild and recreate the Docker containers
 
 ```bash
-docker compose build
-docker compose up -d
+docker compose -f ../../docker-compose.yml build
+docker compose -f ../../docker-compose.yml up -d
 ````
 
 #### Generating database migrations
@@ -113,16 +111,16 @@ file. TypeORM will automatically generate a migration file based on your schema
 changes
 
 ```bash
-docker compose start db
-docker compose run app yarn typeorm migration:generate src/migrations/MigrationName && yarn format
+docker compose -f ../../docker-compose.yml start db
+docker compose -f ../../docker-compose.yml run app yarn typeorm migration:generate src/migrations/MigrationName && yarn format
 yarn build
-docker compose run app yarn typeorm migration:run
+docker compose -f ../../docker-compose.yml run app yarn typeorm migration:run
 ```
 
 If you are still in the development phase, you may want to undo your last database migration as follows:
 
 ```bash
-docker compose run app yarn typeorm migration:revert
+docker compose -f ../../docker-compose.yml run app yarn typeorm migration:revert
 ```
 
 To find out more about this topic, take a look at the [TypeORM Migration Guide](https://typeorm.io/migrations).
@@ -208,7 +206,7 @@ Webhooks are handled by the `webhook_app` service. This is a separate service fr
 By default we are using [MailDev](https://github.com/maildev/maildev) for local development. For this to work it must be configured the first time, run the following command if not already done:
 
 ```bash
-docker compose exec app node built/tools/configure
+docker compose -f ../../docker-compose.yml exec app node built/tools/configure
 ```
 
 If the Docker Compose Stack is started, you can reach MailDev via http://localhost:3025/ by default. If you now receive an e-mail during your tests, you will find it there.
@@ -237,7 +235,7 @@ BEABEE_STRIPE_SECRETKEY=<secret key>
 And also that you have configured the payment methods using
 
 ```bash
-docker compose exec app node built/tools/configure
+docker compose -f ../../docker-compose.yml exec app node built/tools/configure
 ```
 
 You can get the public key and secret key in the [Stripe dashboard](https://dashboard.stripe.com).
@@ -253,6 +251,17 @@ Now the stripe CLI prints out the webhook secret, copy it and add it to the .env
 
 ```bash
 BEABEE_STRIPE_WEBHOOKSECRET=<webhook secret>
+```
+
+##### Testing payment
+
+To test payments you can use the following credit card details:
+
+```bash
+Number: 4242 4242 4242 4242
+Expiry: Any future date
+CVC: Any 3 digits
+ZIP: Any 5 digits
 ```
 
 > ⚠️ To be able to create a payment in the frontend you need to be able to receive confirmation emails, so make sure you have setup [E-Mail](#email).
