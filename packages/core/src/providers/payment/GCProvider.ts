@@ -199,35 +199,30 @@ class GCProvider implements PaymentProvider {
 
     const startDate = calcRenewalDate(contribution.contact);
 
-    const { subscription, expiryDate } = await this.updateOrCreateSubscription(
-      contribution,
-      startDate,
-      paymentForm
-    );
+    const { subscriptionId, expiryDate } =
+      await this.updateOrCreateSubscription(
+        contribution,
+        startDate,
+        paymentForm
+      );
 
     // Start the subscription now if there is no start date, or check and
     // apply any necessary proration
-    const startNow =
-      !startDate ||
-      (await prorateSubscription(
-        contribution.mandateId,
-        startDate,
-        paymentForm,
-        contribution.monthlyAmount || 0
-      ));
+    const startNow = await prorateSubscription(
+      contribution.mandateId,
+      startDate,
+      paymentForm,
+      contribution.monthlyAmount || 0
+    );
 
     log.info("Activate contribution for " + contribution.contact.id, {
       paymentForm,
       startNow,
-      subscriptionId: subscription.id,
+      subscriptionId,
       expiryDate
     });
 
-    return {
-      startNow,
-      expiryDate: new Date(expiryDate),
-      subscriptionId: subscription.id!
-    };
+    return { startNow, expiryDate, subscriptionId };
   }
 
   /**
@@ -276,13 +271,13 @@ class GCProvider implements PaymentProvider {
    * @param contribution The contribution
    * @param startDate The date the subscription should start
    * @param paymentForm The payment form
-   * @returns The GoCardless subscription and the expiry date
+   * @returns The GoCardless subscription ID and the expiry date
    */
   private async updateOrCreateSubscription(
     contribution: ContactContribution,
     startDate: Date | undefined,
     paymentForm: PaymentForm
-  ): Promise<{ subscription: Subscription; expiryDate: string }> {
+  ): Promise<{ subscriptionId: string; expiryDate: Date }> {
     if (
       contribution.subscriptionId &&
       contribution.contact.membership?.isActive &&
@@ -295,8 +290,8 @@ class GCProvider implements PaymentProvider {
         paymentForm
       );
       return {
-        subscription,
-        expiryDate: subscription.upcoming_payments![0].charge_date!
+        subscriptionId: subscription.id!,
+        expiryDate: new Date(subscription.upcoming_payments![0].charge_date!)
       };
     } else {
       // Cancel any existing subscription
@@ -309,9 +304,9 @@ class GCProvider implements PaymentProvider {
         startDate
       );
       return {
-        subscription,
+        subscriptionId: subscription.id!,
         // The second payment is the first renewal payment when you first create a subscription
-        expiryDate: subscription.upcoming_payments![1].charge_date!
+        expiryDate: new Date(subscription.upcoming_payments![1].charge_date!)
       };
     }
   }

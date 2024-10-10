@@ -311,13 +311,25 @@ export async function updateSubscription(
   }
 }
 
+/**
+ * Prorate a subscription change if needed. Proration happens in whole months,
+ * so less than a month will be instantly started with no charge.
+ *
+ * @param mandateId The GoCardless mandate ID
+ * @param renewalDate The date the subscription renews, or undefined if it's a new subscription
+ * @param paymentForm The payment form data
+ * @param lastMonthlyAmount The monthly amount to prorate from
+ * @returns Whether or not the subscription is valid immediately
+ */
 export async function prorateSubscription(
   mandateId: string,
-  renewalDate: Date,
+  renewalDate: Date | undefined,
   paymentForm: PaymentForm,
   lastMonthlyAmount: number
 ): Promise<boolean> {
-  const monthsLeft = Math.max(0, differenceInMonths(renewalDate, new Date()));
+  const monthsLeft = renewalDate
+    ? Math.max(0, differenceInMonths(renewalDate, new Date()))
+    : 0;
   const prorateAmount =
     (paymentForm.monthlyAmount - lastMonthlyAmount) * monthsLeft;
 
