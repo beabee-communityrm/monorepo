@@ -34,7 +34,7 @@ one, add before and after screenshots.
 ## Checklist before requesting a review
 
 - [ ] Done a self-review of my code
-- [ ] Run `npm run check` and addressed any problems
+- [ ] Run `yarn check` and addressed any problems
 - [ ] PR doesn't have merge conflicts
 
 ## Checklist before merging

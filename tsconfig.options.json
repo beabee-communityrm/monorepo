@@ -5,6 +5,7 @@
     "declarationMap": true,
     "incremental": true,
     "noEmitOnError": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "preserveWatchOutput": true
   }
 }

@@ -4,7 +4,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "start": "vite",
+    "start": "yarn dev",
     "dev": "vite",
     "build": "yarn check:vue-tsc && yarn build:main && yarn build:embed",
     "build:main": "vite build",
@@ -17,7 +17,7 @@
     "check:prettier": "prettier -c .",
     "format": "prettier --write .",
     "generate:index": "barrelsby --config barrelsby.json",
-    "docker:build": "docker build --build-arg REVISION=$(git rev-parse --short HEAD) -t beabee/frontend -f ./Dockerfile ../../",
+    "docker:build:latest": "docker build --build-arg REVISION=$(git rev-parse --short HEAD) --build-arg VERSION=latest -t beabee/frontend:latest -f ./Dockerfile ../../",
     "docker:start": "docker run -d -p 3002:80 -e APP_BASE_URL=http://localhost:3001 -e API_BASE_URL=/api/1.0/ beabee/frontend",
     "docker:restart": "docker restart $(docker ps -a | grep beabee/frontend | awk '{print $1}')"
   },
@@ -82,11 +82,11 @@
   "devDependencies": {
     "@babel/types": "^7.24.6",
     "@intlify/unplugin-vue-i18n": "^1.6.0",
-    "@rollup/plugin-replace": "^5.0.5",
+    "@rollup/plugin-replace": "^6.0.1",
     "@types/cacheable-request": "^8.3.2",
     "@typescript-eslint/eslint-plugin": "^7.12.0",
     "@typescript-eslint/parser": "^7.12.0",
-    "@vitejs/plugin-vue": "^5.0.5",
+    "@vitejs/plugin-vue": "^5.1.4",
     "@vue/tsconfig": "^0.5.1",
     "autoprefixer": "^10.4.19",
     "barrelsby": "^2.8.1",
@@ -100,8 +100,8 @@
     "prettier-plugin-tailwindcss": "^0.6.1",
     "tailwindcss": "^3.4.3",
     "typescript": "^5.4.5",
-    "vite": "^5.2.12",
-    "vite-plugin-pages": "^0.32.2",
+    "vite": "^5.4.8",
+    "vite-plugin-pages": "^0.32.3",
     "vue-tsc": "^2.0.19"
   },
   "overrides": {

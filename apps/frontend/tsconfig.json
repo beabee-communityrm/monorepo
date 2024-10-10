@@ -3,6 +3,7 @@
   "compilerOptions": {
     "sourceMap": true,
     "isolatedModules": true,
+    "preserveWatchOutput": true,
     "paths": {
       "@components/*": ["./src/components/*"],
       "@layouts/*": ["./src/layouts/*"],
