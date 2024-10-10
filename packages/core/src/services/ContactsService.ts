@@ -7,7 +7,8 @@ import {
   LOGIN_CODES,
   CONTACT_MFA_TYPE,
   RESET_SECURITY_FLOW_TYPE,
-  RESET_SECURITY_FLOW_ERROR_CODE
+  RESET_SECURITY_FLOW_ERROR_CODE,
+  PaymentMethod
 } from "@beabee/beabee-common";
 import { FindManyOptions, FindOneOptions, FindOptionsWhere, In } from "typeorm";
 
@@ -47,6 +48,8 @@ import {
   NotFoundError,
   UnauthorizedError
 } from "#errors/index";
+import { add } from "date-fns";
+import config from "#config/config";
 
 export type PartialContact = Pick<Contact, "email" | "contributionType"> &
   Partial<Contact>;
@@ -127,7 +130,7 @@ class ContactsService {
       });
       await getRepository(ContactProfile).save(contact.profile);
 
-      await PaymentService.createContact(contact);
+      await PaymentService.onCreateContact(contact);
 
       if (opts.sync) {
         await NewsletterService.upsertContact(contact);
@@ -184,7 +187,7 @@ class ContactsService {
       await NewsletterService.upsertContact(contact, updates, oldEmail);
     }
 
-    await PaymentService.updateContact(contact, updates);
+    await PaymentService.onUpdateContact(contact, updates);
   }
 
   /**
@@ -362,7 +365,13 @@ class ContactsService {
       })
     });
 
-    await this.extendContactRole(contact, "member", expiryDate);
+    if (expiryDate) {
+      await this.extendContactRole(
+        contact,
+        "member",
+        add(expiryDate, config.gracePeriod)
+      );
+    }
 
     if (wasManual) {
       await EmailService.sendTemplateToContact("manual-to-automatic", contact);
@@ -453,9 +462,13 @@ class ContactsService {
       contributionMonthlyAmount: monthlyAmount
     });
 
-    await PaymentService.updateData(contact, {
-      mandateId: data.source || null,
-      customerId: data.reference || null
+    await PaymentService.updatePaymentMethod(contact, {
+      paymentMethod:
+        data.type === ContributionType.Manual
+          ? PaymentMethod.Manual
+          : PaymentMethod.None,
+      mandateId: data.source || "",
+      customerId: data.reference || ""
     });
   }
 

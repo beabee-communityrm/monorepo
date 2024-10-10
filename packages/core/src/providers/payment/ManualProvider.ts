@@ -1,44 +1,72 @@
-import { PaymentForm } from "@beabee/beabee-common";
+import {
+  ContributionInfo,
+  PaymentForm,
+  PaymentMethod
+} from "@beabee/beabee-common";
 
-import { Contact } from "#models/index";
-import { PaymentProvider } from ".";
+import { ContactContribution } from "#models/index";
 
 import {
+  CancelContributionResult,
   CompletedPaymentFlow,
-  ContributionInfo,
-  UpdateContributionResult
+  PaymentProvider,
+  UpdateContributionResult,
+  UpdatePaymentMethodResult
 } from "#type/index";
 
-export default class ManualProvider extends PaymentProvider {
-  async canChangeContribution(useExistingMandate: boolean): Promise<boolean> {
+class ManualProvider implements PaymentProvider {
+  async canChangeContribution(
+    contribution: ContactContribution,
+    useExistingMandate: boolean
+  ): Promise<boolean> {
     return !useExistingMandate;
   }
-  async getContributionInfo(): Promise<Partial<ContributionInfo>> {
+
+  async getContributionInfo(
+    contribution: ContactContribution
+  ): Promise<Partial<ContributionInfo>> {
     return {
       paymentSource: {
-        method: null,
-        ...(this.data.customerId && {
-          reference: this.data.customerId
+        method: PaymentMethod.Manual,
+        ...(contribution.customerId && {
+          reference: contribution.customerId
         }),
-        ...(this.data.mandateId && {
-          source: this.data.mandateId
+        ...(contribution.mandateId && {
+          source: contribution.mandateId
         })
       }
     };
   }
 
-  async cancelContribution(keepMandate: boolean): Promise<void> {}
-  async updateContact(updates: Partial<Contact>): Promise<void> {}
+  async cancelContribution(): Promise<CancelContributionResult> {
+    return {
+      mandateId: null,
+      subscriptionId: null
+    };
+  }
+  async updateContact(): Promise<void> {}
+
+  async updatePaymentMethod(
+    contribution: ContactContribution,
+    flow: CompletedPaymentFlow
+  ): Promise<UpdatePaymentMethodResult> {
+    return {
+      customerId: flow.customerId,
+      mandateId: flow.mandateId
+    };
+  }
 
   async updateContribution(
+    contribution: ContactContribution,
     paymentForm: PaymentForm
   ): Promise<UpdateContributionResult> {
-    throw new Error("Method not implemented.");
+    return {
+      startNow: true,
+      subscriptionId: ""
+    };
   }
-  async updatePaymentMethod(
-    completedPaymentFlow: CompletedPaymentFlow
-  ): Promise<void> {
-    throw new Error("Method not implemented.");
-  }
+
   async permanentlyDeleteContact(): Promise<void> {}
 }
+
+export default new ManualProvider();

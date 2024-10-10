@@ -5,7 +5,8 @@
   "type": "commonjs",
   "scripts": {
     "build": "rimraf dist/ && tsc -p tsconfig.build.json && cp -r src/data dist/",
-    "dev": "tsc-watch --noClear -p tsconfig.build.json",
+    "dev": "yarn watch",
+    "watch": "tsc --project tsconfig.build.json --watch --preserveWatchOutput",
     "format": "prettier --write .",
     "generate:index": "barrelsby -c barrelsby.json",
     "test": "jest --passWithNoTests"
@@ -70,7 +71,6 @@
     "prettier": "3.3.0",
     "rimraf": "^5.0.7",
     "ts-jest": "^29.1.4",
-    "tsc-watch": "^6.2.0",
     "tsconfig": "^7.0.0",
     "typescript": "^5.4.5"
   },

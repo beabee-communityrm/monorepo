@@ -1,7 +1,7 @@
 import {
   Address,
   ContributionPeriod,
-  NewsletterStatus,
+  PaymentFlowParams,
   PaymentMethod,
   RESET_SECURITY_FLOW_TYPE
 } from "@beabee/beabee-common";
@@ -17,6 +17,7 @@ import ResetSecurityFlowService from "./ResetSecurityFlowService";
 import { JoinFlow, JoinForm, Contact } from "#models/index";
 
 import { PaymentFlowProvider } from "#providers/payment-flow";
+import NoneProvider from "#providers/payment-flow/NoneProvider";
 import StripeProvider from "#providers/payment-flow/StripeProvider";
 import GCProvider from "#providers/payment-flow/GCProvider";
 
@@ -27,11 +28,12 @@ import {
   CompletedPaymentFlow,
   CompletedPaymentFlowData,
   PaymentFlow,
-  PaymentFlowData,
-  PaymentFlowParams
+  PaymentFlowData
 } from "#type/index";
 
 const paymentProviders = {
+  [PaymentMethod.None]: NoneProvider,
+  [PaymentMethod.Manual]: NoneProvider,
   [PaymentMethod.StripeCard]: StripeProvider,
   [PaymentMethod.StripeSEPA]: StripeProvider,
   [PaymentMethod.StripeBACS]: StripeProvider,
@@ -226,7 +228,7 @@ class PaymentFlowService implements PaymentFlowProvider {
     completedPaymentFlow: CompletedPaymentFlow
   ): Promise<CompletedPaymentFlowData> {
     return paymentProviders[
-      completedPaymentFlow.joinForm.paymentMethod
+      completedPaymentFlow.paymentMethod
     ].getCompletedPaymentFlowData(completedPaymentFlow);
   }
 }
