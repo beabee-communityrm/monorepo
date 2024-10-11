@@ -26,8 +26,8 @@
     "setup:user": "docker compose run --rm app node built/tools/new-user",
     "setup:payment": "docker compose exec app node built/tools/configure",
     "setup:db": "yarn workspace @beabee/backend run typeorm:migrate",
-    "presetup": "yarn presetup:env",
-    "presetup:env": "cp -n .env.example .env 2>/dev/null || true && cp -n apps/frontend/.env.example apps/frontend/.env 2>/dev/null || true"
+    "presetup": "yarn workspaces foreach -v -W -p -i run presetup && yarn presetup:env",
+    "presetup:env": "cp -n .env.example .env 2>/dev/null || true"
   },
   "workspaces": [
     "packages/*",
