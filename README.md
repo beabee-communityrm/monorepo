@@ -127,7 +127,7 @@ Documentation is currently limited. For more detailed guidance and documentation
 
 We're always excited to connect with our community, hear feedback, and answer any questions you might have! If you're interested in learning more about Beabee or have any questions, please feel free to reach out:
 
-- **Issues**: [GitHub Issues](https://github.com/beabee-communityrm/beabee/issues)
+- **Issues**: [GitHub Issues](https://github.com/beabee-communityrm/monorepo/issues)
 - **Email**: [tech@beabee.io](mailto:tech@beabee.io)
 
 Your input is invaluable to us as we continue to grow and improve Beabee. Don't hesitate to get in touch!

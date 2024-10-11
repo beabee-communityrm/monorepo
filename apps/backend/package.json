@@ -7,14 +7,14 @@
   "type": "commonjs",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/beabee-communityrm/beabee.git"
+    "url": "git+https://github.com/beabee-communityrm/monorepo.git"
   },
   "author": "Tom Lynch & Chris Roberts",
-  "license": "GPL-3.0",
+  "license": "AGPL-3.0",
   "bugs": {
-    "url": "https://github.com/beabee-communityrm/beabee/issues"
+    "url": "https://github.com/beabee-communityrm/monorepo/issues"
   },
-  "homepage": "https://github.com/beabee-communityrm/beabee#readme",
+  "homepage": "https://github.com/beabee-communityrm/monorepo/blob/main/apps/backend/README.md",
   "scripts": {
     "test": "jest --setupFiles dotenv/config --passWithNoTests",
     "start": "node built/app.js",
