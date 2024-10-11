@@ -11,9 +11,9 @@ runs:
         cache: yarn
         node-version: 20
     - name: Setup Deno
-      uses: denoland/setup-deno@v1
+      uses: denoland/setup-deno@v2
       with:
-        deno-version: vx.x.x
+        deno-version: v1.x.x
     - name: Install dependencies
       run: yarn install
       shell: bash
