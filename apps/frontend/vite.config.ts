@@ -7,7 +7,8 @@ import replace from '@rollup/plugin-replace';
 
 import theme from './plugins/theme';
 
-const FRONTEND_APP_URL = 'http://localhost:3000';
+const PORT = 3000;
+const FRONTEND_APP_URL = `http://localhost:${PORT}`;
 
 export default ({ command, mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
@@ -80,7 +81,7 @@ export default ({ command, mode }) => {
     },
     plugins,
     server: {
-      port: 3000,
+      port: PORT,
       // Proxy API requests to the backend
       proxy: {
         '^/(api|login|upload|uploads|favicon.png)': {

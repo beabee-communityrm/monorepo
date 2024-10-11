@@ -1,5 +1,6 @@
 # version: "3.4"
 
+# Backend app and legacy frontend
 x-base-app: &base-app
   build:
     context: .
@@ -57,6 +58,36 @@ services:
     command: "crond -f -d 7"
     init: true
 
+  # The new frontend
+  frontend:
+    build:
+      context: .
+      dockerfile: ./apps/frontend/Dockerfile
+    environment:
+      APP_BASE_URL: ${BEABEE_AUDIENCE}
+      API_BASE_URL: /api/1.0
+      CNR_MODE: ${BEABEE_CNR_MODE-}
+      EXPERIMENTAL_FEATURES: ${BEABEE_EXPERIMENTAL_FEATURES-}
+      APPSIGNAL_KEY: ${APPSIGNAL_KEY-}
+      CAPTCHAFOX_KEY: ${BEABEE_CAPTCHAFOX_KEY-}
+      MAPTILER_KEY: ${BEABEE_MAPTILER_KEY-}
+    ports:
+      - 3003:80
+
+  # Router for the new frontend
+  app_router:
+    build:
+      context: .
+      dockerfile: ./apps/router/Dockerfile
+    environment:
+      LEGACY_APP_URL: http://router
+      LEGACY_APP_COOKIE_DOMAIN: ${BEABEE_COOKIE_DOMAIN}
+      FRONTEND_APP_URL: http://frontend
+      TRUSTED_ORIGINS: ${BEABEE_TRUSTEDORIGINS-}
+    ports:
+      - 3002:80
+
+  # Router for legacy app
   router:
     build:
       context: .

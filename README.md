@@ -57,7 +57,7 @@ You need the following tools installed on your machine:
 5. Start the Docker Compose stack:
 
    ```bash
-   yarn docker:compose:start
+   yarn docker:compose:up
    ```
 
 6. Run the setup script to create a new user and configure the payment method and email domain:
