@@ -1,7 +1,19 @@
 import type { Filters } from "../types/index.ts";
 import { ItemStatus } from "../data/index.ts";
 
-export const calloutFilters: Readonly<Filters> = {
+type CalloutFilters = Readonly<{
+  id: { type: "text" };
+  slug: { type: "text" };
+  title: { type: "text" };
+  status: { type: "enum"; options: ItemStatus[] };
+  answeredBy: { type: "contact" };
+  starts: { type: "date"; nullable: true };
+  expires: { type: "date"; nullable: true };
+  hidden: { type: "boolean" };
+  channels: { type: "array" };
+}>;
+
+export const calloutFilters: CalloutFilters = {
   id: {
     type: "text",
   },
@@ -37,9 +49,21 @@ export const calloutFilters: Readonly<Filters> = {
   channels: {
     type: "array",
   },
-} as const satisfies Filters;
+} as const;
 
-export const calloutResponseFilters: Readonly<Filters> = {
+type CalloutResponseFilters = Readonly<{
+  id: { type: "text" };
+  contact: { type: "contact"; nullable: true };
+  calloutId: { type: "text" };
+  createdAt: { type: "date" };
+  updatedAt: { type: "date" };
+  bucket: { type: "text"; nullable: true };
+  tags: { type: "array" };
+  assignee: { type: "contact"; nullable: true };
+  answers: { type: "blob" };
+}>;
+
+export const calloutResponseFilters: CalloutResponseFilters = {
   id: {
     type: "text",
   },
@@ -70,9 +94,18 @@ export const calloutResponseFilters: Readonly<Filters> = {
   answers: {
     type: "blob",
   },
-} as const satisfies Filters;
+} as const;
 
-export const calloutResponseCommentFilters: Readonly<Filters> = {
+type CalloutResponseCommentFilters = Readonly<{
+  id: { type: "text" };
+  responseId: { type: "text" };
+  contact: { type: "contact" };
+  createdAt: { type: "date" };
+  updatedAt: { type: "date" };
+  text: { type: "text" };
+}>;
+
+export const calloutResponseCommentFilters: CalloutResponseCommentFilters = {
   id: {
     type: "text",
   },
@@ -93,7 +126,14 @@ export const calloutResponseCommentFilters: Readonly<Filters> = {
   },
 } as const satisfies Filters;
 
-export const calloutTagFilters: Readonly<Filters> = {
+type CalloutTagFilters = Readonly<{
+  id: { type: "text" };
+  name: { type: "text" };
+  description: { type: "text" };
+  calloutId: { type: "text" };
+}>;
+
+export const calloutTagFilters: CalloutTagFilters = {
   id: {
     type: "text",
   },
@@ -108,7 +148,14 @@ export const calloutTagFilters: Readonly<Filters> = {
   },
 } as const satisfies Filters;
 
-export const calloutChannelFilters: Readonly<Filters> = {
+type CalloutChannelFilters = Readonly<{
+  id: { type: "text" };
+  name: { type: "text" };
+  description: { type: "text" };
+  calloutId: { type: "text" };
+}>;
+
+export const calloutChannelFilters: CalloutChannelFilters = {
   id: {
     type: "text",
   },
