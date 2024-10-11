@@ -606,6 +606,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@beabee/beabee-common@workspace:packages/common"
   dependencies:
+    "@gjsify/esbuild-plugin-transform-ext": "npm:^0.0.4"
     cacheable-request: "npm:^12.0.1"
     concurrently: "npm:^8.2.2"
     date-fns: "npm:^3.6.0"
@@ -1166,6 +1167,13 @@ __metadata:
     "@fortawesome/fontawesome-svg-core": ~1 || ~6
     vue: ">= 3.0.0 < 4"
   checksum: 10c0/a123db06deceb3b7304a94081262946f8da64884a6aac55ea3691ef7fe803692b3af933e772b04cdaad4f2c41473594122cc516a3078f861d413452ce6cb1d86
+  languageName: node
+  linkType: hard
+
+"@gjsify/esbuild-plugin-transform-ext@npm:^0.0.4":
+  version: 0.0.4
+  resolution: "@gjsify/esbuild-plugin-transform-ext@npm:0.0.4"
+  checksum: 10c0/76ce0cd5b65d776f5eddf89a1fba108ea1dc53f9956376967dae3c255c7444bc50bfb16edbcbf59d00b01137317073d4921b6471b002e7ec2e0dceff6a73de69
   languageName: node
   linkType: hard
 

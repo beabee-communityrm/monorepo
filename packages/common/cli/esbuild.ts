@@ -1,7 +1,8 @@
-import { transformExtPlugin } from "npm:@gjsify/esbuild-plugin-transform-ext@0.0.4";
+import { transformExtPlugin } from "@gjsify/esbuild-plugin-transform-ext";
 import { denoPlugins as DenoPlugins } from "https://deno.land/x/esbuild_deno_loader@0.9.0/mod.ts";
 import { resolve } from "https://deno.land/std@0.212.0/path/mod.ts";
 import { renameExtPlugin } from "./plugins/rename.ts";
+import type { Plugin } from "esbuild";
 
 import type { EsbuildConfigs } from "./types.ts";
 
@@ -46,7 +47,7 @@ export const esbuildConfigs: EsbuildConfigs = {
   browser: {
     cdn: {
       plugins: [
-        ...denoPlugins,
+        ...denoPlugins as Plugin[],
       ],
       entryPoints: ["./src/index.browser.ts"],
       outfile: "./dist/browser/beabee-common.js",
@@ -57,7 +58,7 @@ export const esbuildConfigs: EsbuildConfigs = {
     },
     esm: {
       plugins: [
-        ...denoPlugins,
+        ...denoPlugins as Plugin[],
       ],
       entryPoints: ["./src/index.ts"],
       outfile: "./dist/browser/index.js",
