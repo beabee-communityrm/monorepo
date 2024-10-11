@@ -15,8 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup
-      - run: cp .env.example .env
-        working-directory: ./apps/backend
+      - run: yarn presetup
       - run: yarn test
         working-directory: ./apps/backend
 
