@@ -1,6 +1,6 @@
 import type { Filters } from "../types/index.ts";
 
-export const apiKeyFilters = {
+export const apiKeyFilters: Readonly<Filters> = {
   id: {
     type: "text",
   },

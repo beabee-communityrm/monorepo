@@ -1,7 +1,7 @@
 import type { Filters } from "../types/index.ts";
 import { PaymentStatus } from "../data/index.ts";
 
-export const paymentFilters = {
+export const paymentFilters: Readonly<Filters> = {
   id: {
     type: "text",
   },

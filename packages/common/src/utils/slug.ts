@@ -32,10 +32,10 @@ function getWholeCharAndI(str: string, i: number): [string, number] {
   if (isNaN(code)) {
     throw new RangeError(
       "Index " +
-        i +
-        ' out of range for string "' +
-        str +
-        '"; please open an issue at https://github.com/Trott/slug/issues/new',
+      i +
+      ' out of range for string "' +
+      str +
+      '"; please open an issue at https://github.com/Trott/slug/issues/new',
     );
   }
   if (code < 0xd800 || code > 0xdfff) {
@@ -73,8 +73,8 @@ function getWholeCharAndI(str: string, i: number): [string, number] {
   /* istanbul ignore next */
   throw new Error(
     'String "' +
-      str +
-      '" reaches code believed to be unreachable; please open an issue at https://github.com/Trott/slug/issues/new',
+    str +
+    '" reaches code believed to be unreachable; please open an issue at https://github.com/Trott/slug/issues/new',
   );
 }
 
@@ -82,7 +82,7 @@ function base64(input: string) {
   return btoa(unescape(encodeURIComponent(input)));
 }
 
-export function slug(s: string, opts?: Partial<Options & Mode>) {
+export function slug(s: string, opts?: Partial<Options & Mode>): string {
   let result = slugify(s, opts);
   const fallback = opts && opts.fallback !== undefined
     ? opts.fallback

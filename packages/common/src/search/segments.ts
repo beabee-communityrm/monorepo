@@ -1,6 +1,6 @@
 import type { Filters } from "../types/index.ts";
 
-export const segmentFilters = {
+export const segmentFilters: Readonly<Filters> = {
   id: {
     type: "text",
   },
