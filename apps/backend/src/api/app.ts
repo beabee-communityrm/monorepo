@@ -63,6 +63,8 @@ app.use(requestLogger);
 
 app.use(cors({ origin: config.trustedOrigins, credentials: true }));
 
+console.debug("config.trustedOrigins", config.trustedOrigins);
+
 app.use(cookie());
 
 initApp()

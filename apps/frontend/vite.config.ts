@@ -49,10 +49,6 @@ export default ({ command, mode }) => {
 
   // Use environment variables when developing locally
   if (command === 'serve') {
-    console.info(
-      `Please note that the frontend development server is creating a proxy to the backend from ${FRONTEND_APP_URL} to ${env.API_BASE_URL}`
-    );
-
     plugins.push(
       replace({
         values: {
@@ -82,14 +78,6 @@ export default ({ command, mode }) => {
     plugins,
     server: {
       port: PORT,
-      // Proxy API requests to the backend
-      proxy: {
-        '^/(api|login|upload|uploads|favicon.png)': {
-          target: env.API_PROXY_URL,
-          changeOrigin: true,
-          cookieDomainRewrite: 'localhost',
-        },
-      },
     },
     // Useful for linking beabee-common locally
     ...(command === 'serve' && {

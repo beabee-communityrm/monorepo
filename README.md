@@ -140,19 +140,34 @@ This will build and start all the necessary services for the Beabee project.
 
 #### Ports:
 
-The Beabee project uses several ports for different services:
+The Beabee project uses several ports for different services on development mode:
 
 - `3000`: Frontend development server (Vite)
-- `3001`: Main application port (defined by MAIN_PORT in .env)
 - `3002`: Router for the new frontend
 - `3003`: New frontend application
+
+- `3001`: Main application port (defined by MAIN_PORT in .env)
+- `3004`: API application
 - `3025`: MailDev for email testing (defined by MAIL_PORT in .env)
 - `6543`: PostgreSQL database (mapped from container's 5432)
 
+As you can see, you can access the frontend via three different ports. This is because the frontend is served by three different applications:
+
+- Directly via Vite (http://localhost:3000)
+- Router over Docker Compose (http://localhost:3002)
+- Directly via Docker Compose (http://localhost:3003)
+
+The recommended way is to use the Vite development server (http://localhost:3000), as this will give you hot module replacement (HMR) and other modern development features.
+
+Accessing the frontend through the router (http://localhost:3002) mimics the production environment and can be used to test if the access works as it will be delivered later. This is useful for verifying the production-like behavior during development.
+
+The direct Docker access (http://localhost:3003) can be used for debugging purposes, allowing you to inspect the raw output of the frontend container without any routing layer.
+
 When running the project, make sure these ports are available on your local machine. You can access different parts of the application using these ports:
 
+- Frontend: http://localhost:3000
 - Main application: http://localhost:3001
-- New frontend: http://localhost:3003
+- API application: http://localhost:3004
 - MailDev interface: http://localhost:3025
 
 Note: The actual ports used may vary based on your specific .env configuration. Always refer to your local .env file for the most accurate port settings.
