@@ -8,11 +8,13 @@ The Beabee Monorepo is organized into the following directories:
 
 - `apps/`
 
-  - `frontend/`: Contains the code for the frontend application.
-  - `backend/`: Contains the code for the backend API.
+  - `frontend/`: Contains the code for the frontend application. See [Frontend README](apps/frontend/README.md) for more information.
+  - `backend/`: Contains the code for the backend API. See [Backend README](apps/backend/README.md) for more information.
+  - `router/`: Contains the code for the new frontend router. See [Router README](apps/router/README.md) for more information.
 
 - `packages/`
-  - `common/`: Contains shared code and utilities used by both the frontend and backend.
+  - `common/`: Contains shared code and utilities used by both the frontend and backend. See [Common Package README](packages/common/README.md) for more information.
+  - `core/`: Contains shared core functionality used by the backend. See [Core Package README](packages/core/README.md) for more information.
 
 ## Development Setup
 
@@ -86,7 +88,127 @@ You need the following tools installed on your machine:
 
 9. Happy coding!
 
-## Developer Tools
+### Visual Studio Code Workspace
+
+If you want to use Visual Studio Code as your code editor, you can use the provided `.vscode/beabee.code-workspace` file to open the project in a workspace. This will allow you to have a single, unified view of the project, including all the necessary settings and extensions:
+
+```bash
+code .vscode/beabee.code-workspace
+```
+
+### Docker Compose
+
+The Beabee project uses Docker Compose to manage its multi-container Docker application. The `docker-compose.yml` file defines the following services:
+
+- `db`: PostgreSQL database
+- `mail`: MailDev for email testing
+- `app`: Main backend application
+- `api_app`: API application
+- `webhook_app`: Webhook handling application
+- `img_upload_app`: Image upload service using PictShare
+- `cron`: Cron job service
+- `frontend`: New frontend application
+- `app_router`: Router for the new frontend
+- `router`: Router for the legacy app
+
+#### Key Features:
+
+1. **Database**: PostgreSQL is used with a named volume for data persistence.
+2. **Email Testing**: MailDev is included for local email testing.
+3. **Image Uploads**: PictShare is used for handling image uploads.
+4. **Frontend**: The new frontend is built and served separately.
+5. **Routing**: Separate routers are used for the new frontend and legacy app.
+
+#### Environment Variables:
+
+The Docker Compose setup relies on environment variables defined in the `.env` file. Make sure to set up your environment variables correctly as mentioned in the Initial Setup section.
+
+#### Volumes:
+
+Two named volumes are used:
+- `db_data`: For persisting PostgreSQL data
+- `upload_data`: For storing uploaded files
+
+To start the Docker Compose stack, use the commands mentioned in the Initial Setup section:
+
+```bash
+yarn docker:compose:build
+yarn docker:compose:up
+```
+
+This will build and start all the necessary services for the Beabee project.
+
+#### Ports:
+
+The Beabee project uses several ports for different services:
+
+- `3000`: Frontend development server (Vite)
+- `3001`: Main application port (defined by MAIN_PORT in .env)
+- `3002`: Router for the new frontend
+- `3003`: New frontend application
+- `3025`: MailDev for email testing (defined by MAIL_PORT in .env)
+- `6543`: PostgreSQL database (mapped from container's 5432)
+
+When running the project, make sure these ports are available on your local machine. You can access different parts of the application using these ports:
+
+- Main application: http://localhost:3001
+- New frontend: http://localhost:3003
+- MailDev interface: http://localhost:3025
+
+Note: The actual ports used may vary based on your specific .env configuration. Always refer to your local .env file for the most accurate port settings.
+
+### Development Mode
+
+The `yarn dev` command starts the development mode for all packages in the monorepo. Here's what happens when you run this command:
+
+#### Root Project
+
+The root `yarn dev` command runs the dev scripts for all workspaces in parallel:
+
+```bash
+yarn workspaces foreach -v -W -p -i run dev
+```
+
+#### Backend
+
+For the backend, `yarn dev` is an alias for `yarn dev:api`, which does the following:
+1. Builds the project
+2. Restarts the Docker Compose services
+3. Runs three concurrent processes:
+   - Watches for TypeScript changes and rebuilds
+   - Watches for asset changes
+   - Streams logs from the Docker containers
+
+#### Frontend
+
+The frontend's `yarn dev` command starts the Vite development server:
+
+```bash
+vite
+```
+
+This provides hot module replacement (HMR) for rapid development.
+
+#### Common Package
+
+For the common package, `yarn dev` is an alias for `yarn watch`, which runs concurrent watch processes for:
+- Node.js ESM and CJS builds
+- Browser builds
+- TypeScript type definitions
+
+#### Core Package
+
+The core package's `yarn dev` command runs a TypeScript watch process:
+
+```bash
+tsc-watch --noClear -p tsconfig.build.json
+```
+
+This continuously compiles TypeScript files as they change.
+
+By running `yarn dev` in the root of the project, you start development processes for all these packages simultaneously, allowing you to work on different parts of the project with live reloading and quick feedback.
+
+### Other Developer Tools
 
 Check and upgrade all dependencies:
 
@@ -106,144 +228,7 @@ Run the format command on all packages to format the code:
 yarn format
 ```
 
-Visual Studio Code Workspace:
-
-If you want to use Visual Studio Code as your code editor, you can use the provided `.vscode/beabee.code-workspace` file to open the project in a workspace. This will allow you to have a single, unified view of the project, including all the necessary settings and extensions:
-
-```bash
-code .vscode/beabee.code-workspace
-```
-
-## Backend
-
-For detailed information on the backend setup, including database migrations and running specific tools, please refer to the [Backend README](apps/backend/README.md).
-
-## Frontend
-
-For detailed information on the frontend setup, including internationalization and development commands, please refer to the [Frontend README](apps/frontend/README.md).
-
-## Common Package
-
-The `beabee-common` package contains shared code utilized across Beabee projects, compatible with Node.js, Deno, and web browsers.
-For more information, please refer to the [Common Package README](packages/common/README.md).
-
-## Router
-
-For detailed information on the router setup, please refer to the [Router README](apps/router/README.md).
-
-## Docker Compose
-
-The Beabee project uses Docker Compose to manage its multi-container Docker application. The `docker-compose.yml` file defines the following services:
-
-- `db`: PostgreSQL database
-- `mail`: MailDev for email testing
-- `app`: Main backend application
-- `api_app`: API application
-- `webhook_app`: Webhook handling application
-- `img_upload_app`: Image upload service using PictShare
-- `cron`: Cron job service
-- `frontend`: New frontend application
-- `app_router`: Router for the new frontend
-- `router`: Router for the legacy app
-
-### Key Features:
-
-1. **Database**: PostgreSQL is used with a named volume for data persistence.
-2. **Email Testing**: MailDev is included for local email testing.
-3. **Image Uploads**: PictShare is used for handling image uploads.
-4. **Frontend**: The new frontend is built and served separately.
-5. **Routing**: Separate routers are used for the new frontend and legacy app.
-
-### Environment Variables:
-
-The Docker Compose setup relies on environment variables defined in the `.env` file. Make sure to set up your environment variables correctly as mentioned in the Initial Setup section.
-
-### Volumes:
-
-Two named volumes are used:
-- `db_data`: For persisting PostgreSQL data
-- `upload_data`: For storing uploaded files
-
-To start the Docker Compose stack, use the commands mentioned in the Initial Setup section:
-
-```bash
-yarn docker:compose:build
-yarn docker:compose:up
-```
-
-This will build and start all the necessary services for the Beabee project.
-
-### Ports:
-
-The Beabee project uses several ports for different services:
-
-- `3000`: Frontend development server (Vite)
-- `3001`: Main application port (defined by MAIN_PORT in .env)
-- `3002`: Router for the new frontend
-- `3003`: New frontend application
-- `3025`: MailDev for email testing (defined by MAIL_PORT in .env)
-- `6543`: PostgreSQL database (mapped from container's 5432)
-
-When running the project, make sure these ports are available on your local machine. You can access different parts of the application using these ports:
-
-- Main application: http://localhost:3001
-- New frontend: http://localhost:3003
-- MailDev interface: http://localhost:3025
-
-Note: The actual ports used may vary based on your specific .env configuration. Always refer to your local .env file for the most accurate port settings.
-
-## Development Mode
-
-The `yarn dev` command starts the development mode for all packages in the monorepo. Here's what happens when you run this command:
-
-### Root Project
-
-The root `yarn dev` command runs the dev scripts for all workspaces in parallel:
-
-```bash
-yarn workspaces foreach -v -W -p -i run dev
-```
-
-### Backend
-
-For the backend, `yarn dev` is an alias for `yarn dev:api`, which does the following:
-1. Builds the project
-2. Restarts the Docker Compose services
-3. Runs three concurrent processes:
-   - Watches for TypeScript changes and rebuilds
-   - Watches for asset changes
-   - Streams logs from the Docker containers
-
-### Frontend
-
-The frontend's `yarn dev` command starts the Vite development server:
-
-```bash
-vite
-```
-
-This provides hot module replacement (HMR) for rapid development.
-
-### Common Package
-
-For the common package, `yarn dev` is an alias for `yarn watch`, which runs concurrent watch processes for:
-- Node.js ESM and CJS builds
-- Browser builds
-- TypeScript type definitions
-
-### Core Package
-
-The core package's `yarn dev` command runs a TypeScript watch process:
-
-```bash
-tsc-watch --noClear -p tsconfig.build.json
-```
-
-This continuously compiles TypeScript files as they change.
-
-By running `yarn dev` in the root of the project, you start development processes for all these packages simultaneously, allowing you to work on different parts of the project with live reloading and quick feedback.
-
-## Documentation
+### More Documentation
 
 Documentation is currently limited. For more detailed guidance and documentation, please contact us directly.
 
