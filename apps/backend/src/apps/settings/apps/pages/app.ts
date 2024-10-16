@@ -1,4 +1,4 @@
-import express from "express";
+import express, { type Express } from "express";
 
 import { getRepository } from "@beabee/core/database";
 import { hasNewModel, hasSchema, isAdmin } from "@core/middleware";
@@ -18,7 +18,7 @@ interface CreatePageSchema {
   shareImage: string;
 }
 
-const app = express();
+const app: Express = express();
 
 app.set("views", __dirname + "/views");
 

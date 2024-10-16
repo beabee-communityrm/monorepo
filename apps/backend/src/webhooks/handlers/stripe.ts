@@ -1,7 +1,7 @@
 import { PaymentStatus } from "@beabee/beabee-common";
 import bodyParser from "body-parser";
 import { add } from "date-fns";
-import express from "express";
+import express, { type Express } from "express";
 import Stripe from "stripe";
 
 import { getRepository } from "@beabee/core/database";
@@ -23,7 +23,7 @@ import config from "@beabee/core/config";
 
 const log = mainLogger.child({ app: "webhook-stripe" });
 
-const app = express();
+const app: Express = express();
 
 app.use(bodyParser.raw({ type: "application/json" }));
 
