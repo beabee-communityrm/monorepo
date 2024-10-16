@@ -46,8 +46,8 @@ export default ({ command, mode }) => {
 
   /*
    * Use environment variables when developing locally
-   * On production, the environment variables are replaced in the Dockerfile on each request
-   * see `./docker-entrypoint.sh`
+   * On production, the environment variables are replaced in the Dockerfile on each request using `./docker-entrypoint.sh`.
+   * Keep this in sync with the placeholders in `./docker-entrypoint.sh`.
    */
   if (command === 'serve') {
     plugins.push(
@@ -71,6 +71,7 @@ export default ({ command, mode }) => {
   return defineConfig({
     clearScreen: false,
     build: {
+      outDir: 'dist',
       sourcemap: true,
     },
     resolve: {
