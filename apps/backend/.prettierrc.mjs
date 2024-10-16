@@ -1,4 +1,4 @@
-{
+export default {
   "trailingComma": "none",
   "overrides": [
     {
