@@ -748,6 +748,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@beabee/router@workspace:apps/router":
+  version: 0.0.0-use.local
+  resolution: "@beabee/router@workspace:apps/router"
+  languageName: unknown
+  linkType: soft
+
 "@captchafox/node@npm:^1.2.0":
   version: 1.2.0
   resolution: "@captchafox/node@npm:1.2.0"

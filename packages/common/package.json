@@ -71,14 +71,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/beabee-communityrm/beabee-common.git"
+    "url": "git+https://github.com/beabee-communityrm/monorepo.git"
   },
   "author": "",
   "license": "AGPL-3.0",
   "bugs": {
-    "url": "https://github.com/beabee-communityrm/beabee-common/issues"
+    "url": "https://github.com/beabee-communityrm/monorepo/issues"
   },
-  "homepage": "https://github.com/beabee-communityrm/beabee-common#readme",
+  "homepage": "https://github.com/beabee-communityrm/monorepo/blob/main/packages/common/README.md",
   "devDependencies": {
     "@gjsify/esbuild-plugin-transform-ext": "^0.0.4",
     "cacheable-request": "^12.0.1",
