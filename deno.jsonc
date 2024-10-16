@@ -1,7 +1,6 @@
 {
-  "imports": {
-    "date-fns": "npm:date-fns@3.6.0",
-    "@gjsify/esbuild-plugin-transform-ext": "npm:@gjsify/esbuild-plugin-transform-ext@0.0.4",
-    "esbuild": "https://deno.land/x/esbuild@v0.24.0/mod.js"
-  }
+  "nodeModulesDir": "auto",
+  "workspace": [
+    "./packages/common"
+  ]
 }

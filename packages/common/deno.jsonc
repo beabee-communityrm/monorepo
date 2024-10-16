@@ -3,9 +3,10 @@
   "version": "0.21.0",
   "description": "Shared code between Beabee projects for Node.js, Deno and the browser",
   "imports": {
-    "date-fns": "npm:date-fns@3.6.0",
-    "@gjsify/esbuild-plugin-transform-ext": "npm:@gjsify/esbuild-plugin-transform-ext@0.0.4",
-    "esbuild": "https://deno.land/x/esbuild@v0.24.0/mod.js"
+    "@luca/esbuild-deno-loader": "jsr:@luca/esbuild-deno-loader@^0.11.0",
+    "esbuild": "https://deno.land/x/esbuild@v0.24.0/mod.js",
+    "std": "https://deno.land/std@0.212.0/path/mod.ts",
+    "date-fns": "npm:date-fns@3.6.0"
   },
   "exports": {
     ".": "./mod.ts"

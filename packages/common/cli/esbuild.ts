@@ -1,6 +1,5 @@
 import { transformExtPlugin } from "@gjsify/esbuild-plugin-transform-ext";
-import { denoPlugins as DenoPlugins } from "https://deno.land/x/esbuild_deno_loader@0.9.0/mod.ts";
-import { resolve } from "https://deno.land/std@0.212.0/path/mod.ts";
+import { denoPlugins as DenoPlugins } from "@luca/esbuild-deno-loader";
 import { renameExtPlugin } from "./plugins/rename.ts";
 import type { Plugin } from "esbuild";
 
@@ -8,15 +7,13 @@ import type { EsbuildConfigs } from "./types.ts";
 
 const CJS_OUTDIR = "./dist/cjs";
 
-const denoPlugins = DenoPlugins({
-  configPath: resolve("./deno.jsonc"),
-});
+const denoPlugins = DenoPlugins();
 
 export const esbuildConfigs: EsbuildConfigs = {
   node: {
     esm: {
       plugins: [
-        transformExtPlugin({ outExtension: { ".ts": ".js" } }),
+        transformExtPlugin({ outExtension: { ".ts": ".js" } }) as Plugin, // TODO: Upgrade plugin type
         ...denoPlugins,
       ],
       entryPoints: ["./src/index.ts", "./src/**/*.ts"],
@@ -29,7 +26,7 @@ export const esbuildConfigs: EsbuildConfigs = {
     cjs: {
       plugins: [
         // Rename imports
-        transformExtPlugin({ outExtension: { ".ts": ".cjs", ".js": ".cjs" } }),
+        transformExtPlugin({ outExtension: { ".ts": ".cjs", ".js": ".cjs" } }) as Plugin, // TODO: Upgrade plugin type
         ...denoPlugins,
         // Rename files
         renameExtPlugin(".js", ".cjs"),
@@ -47,7 +44,7 @@ export const esbuildConfigs: EsbuildConfigs = {
   browser: {
     cdn: {
       plugins: [
-        ...denoPlugins as Plugin[],
+        ...denoPlugins,
       ],
       entryPoints: ["./src/index.browser.ts"],
       outfile: "./dist/browser/beabee-common.js",
@@ -58,7 +55,7 @@ export const esbuildConfigs: EsbuildConfigs = {
     },
     esm: {
       plugins: [
-        ...denoPlugins as Plugin[],
+        ...denoPlugins,
       ],
       entryPoints: ["./src/index.ts"],
       outfile: "./dist/browser/index.js",
