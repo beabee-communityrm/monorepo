@@ -44,7 +44,6 @@ export function deserializeDate<T extends null | undefined>(
 }
 
 export const instance = axios.create({
-  // baseURL: new URL(env.apiUrl, env.appUrl).href,
   baseURL: env.apiUrl,
   withCredentials: true,
   headers: {

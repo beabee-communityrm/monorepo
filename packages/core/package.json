@@ -74,7 +74,14 @@
     "tsconfig": "^7.0.0",
     "typescript": "^5.4.5"
   },
-  "prettier": {
-    "trailingComma": "none"
-  }
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/beabee-communityrm/monorepo.git"
+  },
+  "author": "",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/beabee-communityrm/monorepo/issues"
+  },
+  "homepage": "https://github.com/beabee-communityrm/monorepo/blob/main/packages/core/README.md"
 }
