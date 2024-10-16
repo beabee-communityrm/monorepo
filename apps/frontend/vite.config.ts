@@ -7,9 +7,6 @@ import replace from '@rollup/plugin-replace';
 
 import theme from './plugins/theme';
 
-const PORT = 3000;
-const FRONTEND_APP_URL = `http://localhost:${PORT}`;
-
 export default ({ command, mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
 
@@ -47,15 +44,19 @@ export default ({ command, mode }) => {
     '@assets': `${path.resolve(__dirname, './src/assets')}`,
   };
 
-  // Use environment variables when developing locally
+  /*
+   * Use environment variables when developing locally
+   * On production, the environment variables are replaced in the Dockerfile on each request
+   * see `./docker-entrypoint.sh`
+   */
   if (command === 'serve') {
     plugins.push(
       replace({
         values: {
-          __appUrl__: FRONTEND_APP_URL,
+          __appUrl__: env.APP_BASE_URL,
           __apiUrl__: env.API_BASE_URL,
-          __revision__: 'dev',
-          __version__: 'dev',
+          __revision__: env.REVISION || 'dev',
+          __version__: env.VERSION || 'dev',
           __appsignalKey__: env.APPSIGNAL_KEY || '',
           __captchafoxKey__: env.CAPTCHAFOX_KEY || '',
           __maptilerKey__: env.MAPTILER_KEY || '',
@@ -77,7 +78,7 @@ export default ({ command, mode }) => {
     },
     plugins,
     server: {
-      port: PORT,
+      port: Number(env.PORT || 3000),
     },
     // Useful for linking beabee-common locally
     ...(command === 'serve' && {

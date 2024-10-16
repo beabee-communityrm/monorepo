@@ -16,7 +16,6 @@
     "check": "yarn workspaces foreach -v -W -p run check",
     "upgrade": "yarn set version latest && yarn install && yarn upgrade-interactive",
     "docker:build:latest": "yarn workspaces foreach -v -W run docker:build:latest",
-    "docker:start": "yarn workspaces foreach -v -W -p run docker:start",
     "docker:compose:restart": "docker compose restart",
     "docker:compose:up": "yarn setup:db && docker compose up -d",
     "docker:compose:down": "docker compose down",

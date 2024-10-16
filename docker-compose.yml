@@ -68,11 +68,17 @@ services:
     env_file:
       - ./apps/frontend/.env
     environment:
-      CNR_MODE: ${BEABEE_CNR_MODE-}
-      VERSION: ${VERSION-}
-      REVISION: ${REVISION-}
-    ports:
-      - 3003:80
+      # API Access Options:
+      # ┌─────────────────────────────┬───────────────────────────────────────────┐
+      # | Environment                 │ URL                                       │
+      # ├─────────────────────────────┼───────────────────────────────────────────┤
+      # │ Via Docker Router           │ http://localhost:3002/api/1.0/            │
+      # │ Direct API Access           │ http://localhost:3004/1.0/                │
+      # │ Production (Same router)    │ /api/1.0/                                 │
+      # └─────────────────────────────┴───────────────────────────────────────────┘
+      # Note: In Docker, we override the API base URL to make sure the frontend
+      #       accesses the API via the router, mirroring production.
+      API_BASE_URL: http://localhost:3002/api/1.0/ 
 
   # Router for the new frontend
   app_router:

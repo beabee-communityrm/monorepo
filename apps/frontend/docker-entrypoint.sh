@@ -3,6 +3,8 @@
 if [ ! -f /.installed ]; then
   touch /.installed
 
+  # Replace environment variables in the frontend build
+  # Keep this in sync with vite.config.ts
   find /usr/share/nginx/html -type f -name '*.js' -exec \
     sed -i \
       -e s#__appUrl__#$APP_BASE_URL#g \
