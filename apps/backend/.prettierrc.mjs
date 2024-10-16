@@ -1,9 +1,9 @@
 export default {
-  "trailingComma": "none",
-  "overrides": [
+  trailingComma: "none",
+  overrides: [
     {
-      "files": ["*.yfm"],
-      "options": { "parser": "html" }
+      files: ["*.yfm"],
+      options: { parser: "html" }
     }
   ]
-}
+};
