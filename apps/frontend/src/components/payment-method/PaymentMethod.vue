@@ -30,6 +30,8 @@ const description = computed(() => {
       return `${source.accountHolderName}, ${source.bankName}, ••••••••••${source.accountNumberEnding}`;
     case PaymentMethod.StripePayPal:
       return `${source.payerEmail}`;
+    case PaymentMethod.Manual:
+      return [source.reference, source.source].filter((s) => !!s).join(', ');
     default:
       return '';
   }

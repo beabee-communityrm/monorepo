@@ -12,6 +12,7 @@ import {
   type GetPaymentData,
   type GetPaymentsQuery,
   type Paginated,
+  type PaymentFlowParams,
   PaymentMethod,
   type RoleType,
   type Serial,
@@ -23,8 +24,6 @@ import {
 
 import { deserializeDate, instance } from '.';
 import env from '../../env';
-
-import type { PaymentFlowParams } from '@type';
 
 // TODO: how to make this type safe?
 export function deserializeContact(data: any): any {

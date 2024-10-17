@@ -26,7 +26,6 @@ import { v4 as uuidv4 } from "uuid";
 import { log as mainLogger } from "#logging";
 
 import { differenceInMonths, format } from "date-fns";
-import moment from "moment";
 
 import { getChargeableAmount } from "#utils/payment";
 
@@ -252,22 +251,6 @@ async function getNextPendingPayment(query: Record<string, unknown>) {
   }
 }
 
-export async function getSubscriptionNextChargeDate(
-  subscription: Subscription
-): Promise<Date> {
-  const pendingPayment = await getNextPendingPayment({
-    subscription: subscription.id,
-    "charge_date[gte]": moment.utc().format("YYYY-MM-DD")
-  });
-
-  // Check for pending payments because subscription.upcoming_payments doesn't
-  // include pending payments
-  const date = pendingPayment
-    ? pendingPayment.charge_date
-    : subscription.upcoming_payments![0].charge_date;
-  return moment.utc(date).add(config.gracePeriod).toDate();
-}
-
 export async function createSubscription(
   mandateId: string,
   paymentForm: PaymentForm,
@@ -328,13 +311,25 @@ export async function updateSubscription(
   }
 }
 
+/**
+ * Prorate a subscription change if needed. Proration happens in whole months,
+ * so less than a month will be instantly started with no charge.
+ *
+ * @param mandateId The GoCardless mandate ID
+ * @param renewalDate The date the subscription renews, or undefined if it's a new subscription
+ * @param paymentForm The payment form data
+ * @param lastMonthlyAmount The monthly amount to prorate from
+ * @returns Whether or not the subscription is valid immediately
+ */
 export async function prorateSubscription(
   mandateId: string,
-  renewalDate: Date,
+  renewalDate: Date | undefined,
   paymentForm: PaymentForm,
   lastMonthlyAmount: number
 ): Promise<boolean> {
-  const monthsLeft = Math.max(0, differenceInMonths(renewalDate, new Date()));
+  const monthsLeft = renewalDate
+    ? Math.max(0, differenceInMonths(renewalDate, new Date()))
+    : 0;
   const prorateAmount =
     (paymentForm.monthlyAmount - lastMonthlyAmount) * monthsLeft;
 

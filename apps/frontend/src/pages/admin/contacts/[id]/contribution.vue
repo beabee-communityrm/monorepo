@@ -59,6 +59,7 @@ meta:
 import {
   ContributionType,
   GetContactWith,
+  PaymentMethod,
   type ContributionInfo,
   type GetContactData,
 } from '@beabee/beabee-common';
@@ -100,7 +101,7 @@ onBeforeMount(async () => {
     type: contact.contribution.type,
     amount: contact.contribution.amount,
     period: contact.contribution.period,
-    ...(contact.contribution.paymentSource?.method === null
+    ...(contact.contribution.paymentSource?.method === PaymentMethod.Manual
       ? {
           source: contact.contribution.paymentSource.source,
           reference: contact.contribution.paymentSource.reference,
