@@ -1,4 +1,4 @@
-import express from "express";
+import express, { type Express, type Request, type Response } from "express";
 
 import { getRepository } from "@beabee/core/database";
 import { hasNewModel } from "@core/middleware";
@@ -18,13 +18,13 @@ import { EmailSchema, schemaToEmail } from "@apps/tools/apps/emails/app";
 import { cleanRuleGroup } from "@apps/members/app";
 import ContactTransformer from "@api/transformers/ContactTransformer";
 
-const app = express();
+const app: Express = express();
 
 app.set("views", __dirname + "/views");
 
 app.get(
   "/",
-  wrapAsync(async (req, res) => {
+  wrapAsync(async (req: Request, res: Response) => {
     const segments = await getSegmentsWithCount(userToAuth(req.user!));
     res.render("index", { segments });
   })

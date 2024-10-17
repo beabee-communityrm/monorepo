@@ -1,5 +1,10 @@
 import { RoleType } from "@beabee/beabee-common";
-import express, { NextFunction, Request, Response } from "express";
+import express, {
+  type Express,
+  type NextFunction,
+  type Request,
+  type Response
+} from "express";
 
 import { hasSchema } from "@core/middleware";
 import { createDateTime } from "@core/utils";
@@ -28,7 +33,7 @@ function canUpdateRole(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-const app = express();
+const app: Express = express();
 
 app.set("views", __dirname + "/views");
 

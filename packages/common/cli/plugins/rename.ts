@@ -2,7 +2,7 @@ import type {
   BuildResult,
   Plugin,
   PluginBuild,
-} from "https://deno.land/x/esbuild@v0.20.0/mod.d.ts";
+} from "esbuild";
 
 import { extname, join } from "https://deno.land/std@0.212.0/path/mod.ts";
 

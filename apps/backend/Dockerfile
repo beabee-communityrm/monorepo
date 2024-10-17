@@ -1,7 +1,26 @@
-FROM node:20-alpine3.19 AS builder
+ARG DENO_VERSION=2.0.0
+ARG NODE_VERSION=22
 
-# Add support for Deno
-RUN apk add --no-cache deno
+FROM node:${NODE_VERSION}-bookworm-slim as builder
+
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    # for installing Deno
+    curl \
+    # for extracting the Deno archive
+    p7zip-full \
+    # for cleaning up the apt cache
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Deno
+ENV DENO_INSTALL="/root/.deno"
+RUN curl -fsSL https://deno.land/install.sh | sh -s ${DENO_VERSION}
+ENV PATH="${DENO_INSTALL}/bin:${PATH}"
+
+# Check versions
+RUN node --version
+RUN npm --version
+RUN yarn --version
 RUN deno --version
 
 WORKDIR /opt/apps/backend
