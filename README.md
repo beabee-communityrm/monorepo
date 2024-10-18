@@ -143,13 +143,12 @@ This will build and start all the necessary services for the Beabee project.
 The Beabee project uses several ports for different services on development mode:
 
 - `3000`: Frontend development server (Vite)
-- `3002`: Router for the new frontend
-- `3001`: Backend application port (defined by MAIN_PORT in .env)
-- `3004`: API application
+- `3002`: Router for the new frontend and to the legacy router (which also serves the backend)
+- `3004`: Direct access to the API application (intended for frontend development with Vite only)
 - `3025`: MailDev for email testing (defined by MAIL_PORT in .env)
 - `6543`: PostgreSQL database (mapped from container's 5432)
 
-As you can see, you can access the frontend via three different ports. This is because the frontend is served by three different applications:
+As you can see, you can access the frontend via two different ports. This is because the frontend is served by two different applications:
 
 - Directly via Vite (http://localhost:3000)
 - Router over Docker Compose (http://localhost:3002)
@@ -158,10 +157,12 @@ The recommended way is to use the Vite development server (http://localhost:3000
 
 Accessing the frontend through the router (http://localhost:3002) mimics more closely the production environment and can be used to test if the access works as it will be delivered later. This is useful for verifying the production-like behavior during development.
 
+Note: We also have two routers, one for the new frontend and one for the legacy frontend. This is because we have subsequently connected the new frontend. As soon as the old frontend has been removed from the code base, we will merge both routers into one.
+
 When running the project, make sure these ports are available on your local machine. You can access different parts of the application using these ports:
 
-- Frontend: http://localhost:3000 (or http://localhost:3002)
-- Backend application: http://localhost:3001
+- Frontend development: http://localhost:3000
+- New router: http://localhost:3002
 - API application: http://localhost:3004
 - MailDev interface: http://localhost:3025
 

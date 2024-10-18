@@ -116,8 +116,6 @@ services:
     volumes:
       # Used for local development
       - ./apps/backend/built/static:/opt/built/static:ro
-    ports:
-      - ${MAIN_PORT}:80
 
 volumes:
   db_data:
