@@ -66,7 +66,7 @@ docker compose -f ../../docker-compose.yml run --rm -T app node built/tools/data
 
 Now [check out the frontend](../frontend) in parallel in a separate directory and start it as described in the README.md.
 
-By default, this should now be accessible via http://localhost:3000 and communicate with the backend API over http://localhost:3001.
+By default, this should now be accessible via http://localhost:3000 and communicate with the backend API over http://localhost:3002.
 
 ## `</>` Development
 

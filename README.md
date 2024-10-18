@@ -96,76 +96,49 @@ If you want to use Visual Studio Code as your code editor, you can use the provi
 code .vscode/beabee.code-workspace
 ```
 
+#### Ports:
+
+The Beabee project uses several ports for different services in development mode:
+
+- `3000`: Frontend development server (Vite)
+- `3002`: Router for the new frontend and legacy backend
+- `3025`: MailDev for email testing (defined by MAIL_PORT in .env)
+- `6543`: PostgreSQL database (mapped from container's 5432)
+
+As you can see, you can access the frontend via two different URLs:
+
+- Via Vite dev server + proxy (http://localhost:3000)
+- Router over Docker Compose (http://localhost:3002)
+
+The recommended way for frontend development is to use the Vite development server (http://localhost:3000), as this will give you hot module replacement (HMR) and other modern development features.
+
+Accessing the frontend through the router (http://localhost:3002) mimics more closely the production environment and can be used to test if the access works as it will be delivered later. This is useful for verifying the production-like behavior during development.
+
+When running the project, make sure these ports are available on your local machine. You can access different parts of the application using these URLs:
+
+- Frontend development: http://localhost:3000
+- Router (frontend and backend): http://localhost:3002
+- MailDev interface: http://localhost:3025
+
+Note: The actual ports used may vary based on your specific .env configuration. Always refer to your local .env file for the most accurate port settings.
+
 ### Docker Compose
 
-The Beabee project uses Docker Compose to manage its multi-container Docker application. The `docker-compose.yml` file defines the following services:
+The `docker-compose.yml` file defines several services, including:
 
 - `db`: PostgreSQL database
 - `mail`: MailDev for email testing
 - `app`: Backend application
 - `api_app`: API application
 - `webhook_app`: Webhook handling application
-- `img_upload_app`: Image upload service using PictShare
+- `img_upload_app`: Image upload service
 - `cron`: Cron job service
-- `frontend`: New frontend application
-- `app_router`: Router for the new frontend
-- `router`: Router for the legacy app
+- `frontend`: Frontend application
+- `app_router`: Router for the frontend and backend
 
-#### Key Features:
+The frontend service is configured to use the `APP_BASE_URL` environment variable, which is set to `http://localhost:3002` by default.
 
-1. **Database**: PostgreSQL is used with a named volume for data persistence.
-2. **Email Testing**: MailDev is included for local email testing.
-3. **Image Uploads**: PictShare is used for handling image uploads.
-4. **Frontend**: The new frontend is built and served separately.
-5. **Routing**: Separate routers are used for the new frontend and legacy app.
-
-#### Environment Variables:
-
-The Docker Compose setup relies on environment variables defined in the `.env` file. Make sure to set up your environment variables correctly as mentioned in the Initial Setup section.
-
-#### Volumes:
-
-Two named volumes are used:
-- `db_data`: For persisting PostgreSQL data
-- `upload_data`: For storing uploaded files
-
-To start the Docker Compose stack, use the commands mentioned in the Initial Setup section:
-
-```bash
-yarn docker:compose:build
-yarn docker:compose:up
-```
-
-This will build and start all the necessary services for the Beabee project.
-
-#### Ports:
-
-The Beabee project uses several ports for different services on development mode:
-
-- `3000`: Frontend development server (Vite)
-- `3002`: Router for the new frontend
-- `3001`: Backend application port (defined by MAIN_PORT in .env)
-- `3004`: API application
-- `3025`: MailDev for email testing (defined by MAIL_PORT in .env)
-- `6543`: PostgreSQL database (mapped from container's 5432)
-
-As you can see, you can access the frontend via three different ports. This is because the frontend is served by three different applications:
-
-- Directly via Vite (http://localhost:3000)
-- Router over Docker Compose (http://localhost:3002)
-
-The recommended way is to use the Vite development server (http://localhost:3000), as this will give you hot module replacement (HMR) and other modern development features.
-
-Accessing the frontend through the router (http://localhost:3002) mimics more closely the production environment and can be used to test if the access works as it will be delivered later. This is useful for verifying the production-like behavior during development.
-
-When running the project, make sure these ports are available on your local machine. You can access different parts of the application using these ports:
-
-- Frontend: http://localhost:3000 (or http://localhost:3002)
-- Backend application: http://localhost:3001
-- API application: http://localhost:3004
-- MailDev interface: http://localhost:3025
-
-Note: The actual ports used may vary based on your specific .env configuration. Always refer to your local .env file for the most accurate port settings.
+For more detailed information about each service and its configuration, please refer to the `docker-compose.yml` file in the root directory.
 
 ### Development Mode
 
