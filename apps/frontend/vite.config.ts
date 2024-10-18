@@ -53,7 +53,10 @@ export default ({ command, mode }) => {
     plugins.push(
       replace({
         values: {
-          __appUrl__: env.APP_BASE_URL,
+          // In Docker this is the router application URL
+          // In Vite this is the Vite dev server URL with hot module reloading
+          // and proxy API requests to the router application URL
+          __appUrl__: `http://localhost:${env.VITE_DEV_SERVER_PORT}`,
           __apiUrl__: env.API_BASE_URL,
           __revision__: env.REVISION || 'dev',
           __version__: env.VERSION || 'dev',
@@ -79,7 +82,15 @@ export default ({ command, mode }) => {
     },
     plugins,
     server: {
-      port: Number(env.PORT || 3000),
+      port: Number(env.VITE_DEV_SERVER_PORT || 3000),
+      // Proxy API requests to the backend
+      proxy: {
+        '^/(api|login|upload|uploads|favicon.png)': {
+          target: env.APP_BASE_URL,
+          changeOrigin: true,
+          cookieDomainRewrite: 'localhost',
+        },
+      },
     },
     // Useful for linking beabee-common locally
     ...(command === 'serve' && {

@@ -69,18 +69,6 @@ services:
       dockerfile: ./apps/frontend/Dockerfile
     env_file:
       - ./apps/frontend/.env
-    environment:
-      # API Access Options:
-      # ┌─────────────────────────────┬───────────────────────────────────────────┐
-      # | Environment                 │ URL                                       │
-      # ├─────────────────────────────┼───────────────────────────────────────────┤
-      # │ Via Docker Router           │ http://localhost:3002/api/1.0/            │
-      # │ Direct API Access           │ http://localhost:3004/1.0/                │
-      # │ Production (Same router)    │ /api/1.0/                                 │
-      # └─────────────────────────────┴───────────────────────────────────────────┘
-      # Note: In Docker, we override the API base URL to make sure the frontend
-      #       accesses the API via the router, mirroring production.
-      API_BASE_URL: http://localhost:3002/api/1.0/
     volumes:
       # Used for local development
       - ./apps/frontend/docker-entrypoint.sh:/docker-entrypoint.d/30-beabee-frontend.sh
