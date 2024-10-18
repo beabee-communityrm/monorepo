@@ -1,4 +1,4 @@
-import express from "express";
+import express, { type Express, type Request, type Response } from "express";
 
 import { hasSchema } from "@core/middleware";
 import { wrapAsync } from "@beabee/core/utils/index";
@@ -10,18 +10,18 @@ import { Contact } from "@beabee/core/models";
 import { updateProfileSchema } from "./schemas.json";
 import { DuplicateEmailError } from "@beabee/core/errors";
 
-const app = express();
+const app: Express = express();
 
 app.set("views", __dirname + "/views");
 
-app.get("/", (req, res) => {
+app.get("/", (req: Request, res: Response) => {
   res.render("index", { member: req.model });
 });
 
 app.post(
   "/",
   [hasSchema(updateProfileSchema).orFlash],
-  wrapAsync(async (req, res) => {
+  wrapAsync(async (req: Request, res: Response) => {
     const {
       body: {
         email,

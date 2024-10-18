@@ -59,26 +59,6 @@ const syncVersions = () => {
   packageJsonObj.version = newVersion;
 };
 
-/** Sync NPM dependencies from package.json with Deno dependencies in deno.jsonc. */
-const syncDependencies = () => {
-  // Get dependencies
-  const dependencies = packageJsonObj.dependencies as Record<string, string>;
-
-  for (const [name, _version] of Object.entries(dependencies)) {
-    // Remove version prefix and suffix
-    const version = _version.replace(/^[\^~><=\*]+|$/, "");
-
-    // Add dependency to deno.jsonc
-    denoJsoncObj.imports[name] = version
-      ? `npm:${name}@${version}`
-      : `npm:${name}`;
-  }
-
-  // WORKAROUND: VSCode or the Deno plugin still seems to have a few problems resolving the import aliases in the mixed monorepo.
-  // This file bypasses the problem by copying the imports to the root deno.jsonc
-  rootDenoJsoncObj.imports = denoJsoncObj.imports;
-};
-
 /** Sync NPM scripts from package.json with Deno tasks in deno.jsonc. */
 const syncScripts = () => {
   const nodeScripts = packageJsonObj.scripts as Record<string, string>;
@@ -153,7 +133,6 @@ const writeToFile = async () => {
  */
 export const syncAction = async () => {
   syncVersions();
-  syncDependencies();
   syncScripts();
   await writeToFile();
 };

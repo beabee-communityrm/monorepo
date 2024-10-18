@@ -1,9 +1,9 @@
-import express from "express";
+import express, { type Express } from "express";
 import OptionsService, {
   OptionKey
 } from "@beabee/core/services/OptionsService";
 
-const app = express();
+const app: Express = express();
 
 app.set("views", __dirname + "/views");
 

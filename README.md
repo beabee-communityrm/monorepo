@@ -28,7 +28,7 @@ You need the following tools installed on your machine:
 - Docker Compose >= 2
 - Node.js >= 20.10.0
 - Yarn >= 1.22.22
-- Deno >= 1.38.1
+- Deno >= 2.0.0
 
 ### Initial Setup
 

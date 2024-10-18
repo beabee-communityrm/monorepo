@@ -1,6 +1,6 @@
-import { type CalloutResponseAnswers } from '@beabee/beabee-common';
+import { type CalloutResponseAnswersSlide } from '@beabee/beabee-common';
 
 export interface FormChangeEvent {
   isValid: boolean;
-  data: CalloutResponseAnswers[string];
+  data: CalloutResponseAnswersSlide[string];
 }
