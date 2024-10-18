@@ -3,7 +3,7 @@
   "eslint.enable": false,
   "deno.enable": true,
   "deno.lint": true,
-  "deno.unstable": true,
+  "deno.unstable": [],
   "deno.cacheOnSave": true,
   "deno.disablePaths": [
     "./dist",

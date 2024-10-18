@@ -1,9 +1,0 @@
-{
-  "trailingComma": "none",
-  "overrides": [
-    {
-      "files": ["*.yfm"],
-      "options": { "parser": "html" }
-    }
-  ]
-}
