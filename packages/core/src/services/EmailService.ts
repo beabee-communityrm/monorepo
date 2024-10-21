@@ -322,7 +322,7 @@ class EmailService {
   }
 
   private getDefaultEmail(template: EmailTemplateId): Email | undefined {
-    const locale = OptionsService.getText("locale") as Locale;
+    const locale = OptionsService.getText("locale");
     return (
       this.defaultEmails[locale]?.[template] ||
       this.defaultEmails.en?.[template]

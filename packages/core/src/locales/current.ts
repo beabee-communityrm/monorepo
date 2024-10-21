@@ -26,5 +26,5 @@ export function isLocale(s: string): s is Locale {
 }
 
 export default function currentLocale() {
-  return locales[OptionsService.getText("locale") as Locale];
+  return locales[OptionsService.getText("locale")];
 }
