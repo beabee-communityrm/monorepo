@@ -50,6 +50,15 @@ const generalEmailTemplates = {
   }) => ({
     FNAME: params.firstName,
     URL: params.newUrl
+  }),
+  "confirm-callout-response-guest": (params: {
+    guestName: string;
+    calloutSlug: string;
+    calloutTitle: string;
+  }) => ({
+    GUESTNAME: params.guestName,
+    CALLOUTTITLE: params.calloutTitle,
+    CALLOUTLINK: `${config.audience}/callouts/${params.calloutTitle}`
   })
 } as const;
 
@@ -119,6 +128,13 @@ const contactEmailTemplates = {
   }),
   "email-exists-set-password": (_: Contact, params: { spLink: string }) => ({
     SPLINK: params.spLink
+  }),
+  "confirm-callout-response": (
+    _: Contact,
+    params: { calloutSlug: string; calloutTitle: string }
+  ) => ({
+    CALLOUTTITLE: params.calloutTitle,
+    CALLOUTLINK: `${config.audience}/callouts/${params.calloutTitle}`
   })
 } as const;
 
