@@ -45,9 +45,6 @@ export class CalloutResponse {
   @Column({ type: "jsonb" })
   answers!: CalloutResponseAnswersSlide;
 
-  @Column()
-  isPartial!: boolean;
-
   @CreateDateColumn()
   createdAt!: Date;
 
