@@ -8,6 +8,7 @@ import slugify from "slugify";
 import { BadRequestError } from "routing-controllers";
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
 
+import ContactsService from "#services/ContactsService";
 import EmailService from "#services/EmailService";
 import NewsletterService from "#services/NewsletterService";
 import OptionsService from "#services/OptionsService";
@@ -15,6 +16,7 @@ import OptionsService from "#services/OptionsService";
 import { getRepository, runTransaction } from "#database";
 import { log as mainLogger } from "#logging";
 import { isDuplicateIndex } from "#utils/db";
+import { cleanEmailAddress } from "#utils/index";
 
 import {
   Contact,
@@ -274,6 +276,16 @@ class CalloutsService {
       throw new InvalidCalloutResponse("only-anonymous");
     } else if (!callout.active || callout.access === CalloutAccess.Member) {
       throw new InvalidCalloutResponse("closed");
+    }
+
+    if (guestEmail) {
+      guestEmail = cleanEmailAddress(guestEmail);
+
+      // If the guest email matches a contact, then use that contact instead
+      const contact = await ContactsService.findOneBy({ email: guestEmail });
+      if (contact) {
+        return this.setResponse(callout, contact, answers);
+      }
     }
 
     const response = new CalloutResponse();
