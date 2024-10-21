@@ -8,7 +8,6 @@ import slugify from "slugify";
 import { BadRequestError } from "routing-controllers";
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
 
-import ContactsService from "#services/ContactsService";
 import EmailService from "#services/EmailService";
 import NewsletterService from "#services/NewsletterService";
 import OptionsService from "#services/OptionsService";
@@ -282,7 +281,9 @@ class CalloutsService {
       guestEmail = cleanEmailAddress(guestEmail);
 
       // If the guest email matches a contact, then use that contact instead
-      const contact = await ContactsService.findOneBy({ email: guestEmail });
+      const contact = await getRepository(Contact).findOneBy({
+        email: guestEmail
+      });
       if (contact) {
         return this.setResponse(callout, contact, answers);
       }
