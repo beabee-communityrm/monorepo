@@ -36,5 +36,5 @@ defineProps<{
   buttonText: string;
 }>();
 
-const expanded = defineModel<boolean>();
+const expanded = defineModel<boolean>('expanded');
 </script>
