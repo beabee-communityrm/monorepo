@@ -86,6 +86,6 @@
     "typescript": "^5.4.5"
   },
   "dependencies": {
-    "date-fns": "^3.6.0"
+    "date-fns": "^4.1.0"
   }
 }
