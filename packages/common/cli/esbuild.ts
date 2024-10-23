@@ -5,9 +5,9 @@ import type { Plugin } from "esbuild";
 
 import type { EsbuildConfigs } from "./types.ts";
 
-const CJS_OUTDIR = "./dist/cjs";
-
-const denoPlugins = DenoPlugins();
+const denoPlugins = DenoPlugins({
+  nodeModulesDir: "auto"
+});
 
 export const esbuildConfigs: EsbuildConfigs = {
   node: {
@@ -32,7 +32,7 @@ export const esbuildConfigs: EsbuildConfigs = {
         renameExtPlugin(".js", ".cjs"),
       ],
       entryPoints: ["./src/index.ts", "./src/**/*.ts"],
-      outdir: CJS_OUTDIR,
+      outdir: "./dist/cjs",
       bundle: false,
       platform: "node",
       target: "node16",

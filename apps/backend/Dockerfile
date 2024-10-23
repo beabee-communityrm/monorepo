@@ -1,4 +1,4 @@
-ARG DENO_VERSION=2.0.0
+ARG DENO_VERSION=2.0.2
 ARG NODE_VERSION=22
 
 FROM node:${NODE_VERSION}-bookworm-slim as builder
@@ -26,7 +26,7 @@ RUN deno --version
 WORKDIR /opt/apps/backend
 
 # Copy the workspace configuration
-COPY package.json yarn.lock deno.jsonc .yarnrc.yml /opt/
+COPY package.json yarn.lock deno.jsonc deno.lock .yarnrc.yml /opt/
 COPY .yarn /opt/.yarn
 
 # Copy dependencies info

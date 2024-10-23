@@ -1,5 +1,5 @@
 {
-  "nodeModulesDir": "auto",
+  "nodeModulesDir": "none",
   "workspace": [
     "./packages/common"
   ]
