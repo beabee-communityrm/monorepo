@@ -68,7 +68,7 @@ meta:
 
           <CalloutForm
             :callout="callout"
-            :answers="latestResponse?.answers"
+            :answers="prefilledAnswers"
             :preview="isPreview"
             :readonly="!canRespond"
             :all-slides="!canRespond"
@@ -83,6 +83,7 @@ meta:
 <script lang="ts" setup>
 import {
   ItemStatus,
+  type CalloutResponseAnswersSlide,
   type GetCalloutDataWith,
   type GetCalloutResponseDataWith,
   type Paginated,
@@ -168,6 +169,14 @@ const { isOpen, showLoginPrompt, showMemberOnlyPrompt } = useCallout(
 const responses = ref<Paginated<GetCalloutResponseDataWith<'answers'>>>();
 const latestResponse = computed(() =>
   props.callout.allowMultiple ? undefined : responses.value?.items?.[0]
+);
+
+const prefilledAnswers = computed(() =>
+  route.query.answers
+    ? (JSON.parse(
+        route.query.answers.toString()
+      ) as CalloutResponseAnswersSlide)
+    : latestResponse.value?.answers
 );
 
 const canRespond = computed(

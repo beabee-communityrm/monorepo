@@ -7,7 +7,6 @@
     >
       <template #before><slot /></template>
       <AppSearchForm
-        v-if="showExpanded"
         :model-value="modelValue"
         :filter-groups="filterGroups"
         :has-changed="!!hasChanged"
