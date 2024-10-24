@@ -7,29 +7,7 @@ import {
 
 export const RoleTypes = ["member", "admin", "superadmin"] as const;
 
-type ContactFilters = Readonly<{
-  id: { type: "contact" };
-  firstname: { type: "text" };
-  lastname: { type: "text" };
-  email: { type: "text" };
-  joined: { type: "date" };
-  lastSeen: { type: "date" };
-  contributionCancelled: { type: "date"; nullable: true };
-  contributionType: { type: "enum"; options: readonly ContributionType[] };
-  contributionMonthlyAmount: { type: "number" };
-  contributionPeriod: { type: "enum"; options: readonly ContributionPeriod[] };
-  deliveryOptIn: { type: "boolean" };
-  newsletterStatus: { type: "enum"; options: readonly NewsletterStatus[] };
-  newsletterGroups: { type: "array" };
-  activePermission: { type: "enum"; options: typeof RoleTypes };
-  activeMembership: { type: "boolean" };
-  membershipStarts: { type: "date" };
-  membershipExpires: { type: "date" };
-  manualPaymentSource: { type: "text"; nullable: true };
-  tags: { type: "array" };
-}>;
-
-export const contactFilters: ContactFilters = {
+export const contactFilters: Readonly<Filters> = {
   id: {
     type: "contact",
   },
@@ -108,11 +86,7 @@ export const contactFilters: ContactFilters = {
 
 export type ContactFilterName = keyof typeof contactFilters;
 
-type ContactCalloutFilters = Readonly<{
-  hasAnswered: { type: "boolean" };
-}>;
-
-export const contactCalloutFilters: ContactCalloutFilters = {
+export const contactCalloutFilters: Readonly<Filters> = {
   hasAnswered: {
     type: "boolean",
   },

@@ -72,11 +72,9 @@ const numericOperatorsWhere = {
 
 function withOperators<T extends FilterType>(
   type: T,
-  operators: Partial<
-    Record<
-      keyof (typeof operatorsByType)[T] | "is_empty" | "is_not_empty",
-      (field: string) => string
-    >
+  operators: Record<
+    keyof (typeof operatorsByType)[T] | "is_empty" | "is_not_empty",
+    (field: string) => string
   >
 ) {
   return operators;
