@@ -1,7 +1,7 @@
 import type { ContentId } from "../types/index.ts";
 
 /** All possible strings that can be passed to the content get controller to retrieve Beabee content data */
-export const contentIds: readonly ContentId[] = [
+export const contentIds = [
   "contacts",
   "email",
   "general",
@@ -11,4 +11,4 @@ export const contentIds: readonly ContentId[] = [
   "share",
   "payment",
   "telegram",
-] satisfies readonly ContentId[];
+] satisfies ContentId[];

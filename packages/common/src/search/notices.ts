@@ -1,7 +1,7 @@
 import type { Filters } from "../types/index.ts";
 import { ItemStatus } from "../data/index.ts";
 
-export const noticeFilters: Readonly<Filters> = {
+export const noticeFilters = {
   id: {
     type: "text",
   },

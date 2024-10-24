@@ -1,7 +1,7 @@
 import type { Filters } from "../types/index.ts";
 import { ItemStatus } from "../data/index.ts";
 
-export const calloutFilters: Readonly<Filters> = {
+export const calloutFilters = {
   id: {
     type: "text",
   },
@@ -39,7 +39,7 @@ export const calloutFilters: Readonly<Filters> = {
   },
 } as const satisfies Filters;
 
-export const calloutResponseFilters: Readonly<Filters> = {
+export const calloutResponseFilters = {
   id: {
     type: "text",
   },
@@ -72,7 +72,7 @@ export const calloutResponseFilters: Readonly<Filters> = {
   },
 } as const satisfies Filters;
 
-export const calloutResponseCommentFilters: Readonly<Filters> = {
+export const calloutResponseCommentFilters = {
   id: {
     type: "text",
   },
@@ -93,7 +93,7 @@ export const calloutResponseCommentFilters: Readonly<Filters> = {
   },
 } as const satisfies Filters;
 
-export const calloutTagFilters: Readonly<Filters> = {
+export const calloutTagFilters = {
   id: {
     type: "text",
   },
@@ -108,7 +108,7 @@ export const calloutTagFilters: Readonly<Filters> = {
   },
 } as const satisfies Filters;
 
-export const calloutChannelFilters: Readonly<Filters> = {
+export const calloutChannelFilters = {
   id: {
     type: "text",
   },

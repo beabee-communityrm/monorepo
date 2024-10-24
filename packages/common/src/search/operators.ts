@@ -29,7 +29,7 @@ export const nullableOperators = {
   is_not_empty: { args: 0 },
 };
 
-export const operatorsByType: Readonly<OperatorsByType> = {
+export const operatorsByType = {
   text: { ...equalityOperators, ...arrayOperators, ...stringOperators },
   blob: arrayOperators,
   date: numericOperators,

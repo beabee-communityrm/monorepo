@@ -7,7 +7,7 @@ import {
 
 export const RoleTypes = ["member", "admin", "superadmin"] as const;
 
-export const contactFilters: Readonly<Filters> = {
+export const contactFilters = {
   id: {
     type: "contact",
   },
@@ -86,7 +86,7 @@ export const contactFilters: Readonly<Filters> = {
 
 export type ContactFilterName = keyof typeof contactFilters;
 
-export const contactCalloutFilters: Readonly<Filters> = {
+export const contactCalloutFilters = {
   hasAnswered: {
     type: "boolean",
   },
