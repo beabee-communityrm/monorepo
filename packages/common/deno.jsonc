@@ -48,6 +48,8 @@
     "generate:index": "deno task cli generate-index ./src/data ./src/error ./src/search ./src/types ./src/utils ./src/validators ./test/deno/data ./test/deno/data/components ./test/deno/data/components/validate-rules ./cli/actions ./cli/plugins",
     "sync": "deno task cli sync",
     "prepublishOnly": "yarn prepublishOnly",
-    "npm:publish:latest": "yarn npm:publish:latest"
+    "npm:publish:latest": "yarn npm:publish:latest",
+    "cache": "yarn cache",
+    "cache:node": "yarn cache:node"
   }
 }
