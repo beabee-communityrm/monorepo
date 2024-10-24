@@ -16,8 +16,7 @@ export function setTrackingCookie(memberId: string, res: Response) {
     ...config.cookie,
     httpOnly: true,
     maxAge: 365 * 24 * 60 * 60 * 1000,
-    // If secure is false, sameSite none is not allowed
-    sameSite: config.cookie.secure ? "none" : "lax"
+    sameSite: "none"
   });
 }
 

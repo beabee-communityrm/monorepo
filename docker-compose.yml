@@ -39,9 +39,6 @@ services:
   api_app:
     <<: *base-app
     command: node ./built/api/app.js
-    ports:
-      # Only used for local development
-      - 3004:3000
 
   webhook_app:
     <<: *base-app
