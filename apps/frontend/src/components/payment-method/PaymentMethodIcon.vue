@@ -13,6 +13,8 @@ import PayPal from './icons/PayPal.vue';
 defineProps<{ method: PaymentMethod }>();
 
 const icons = {
+  [PaymentMethod.None]: null,
+  [PaymentMethod.Manual]: null,
   [PaymentMethod.StripeCard]: CreditCard,
   [PaymentMethod.StripeSEPA]: SEPA,
   [PaymentMethod.StripeBACS]: BACS,
