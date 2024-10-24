@@ -93,7 +93,12 @@
                 :locales="steps.settings.data.locales"
               />
             </div>
-            <div class="text-right">
+            <div class="flex justify-between">
+              <div>
+                <p v-if="showAdvancedOptions" class="text-sm text-grey">
+                  {{ t('common.id') }}: {{ currentSlide.id }}
+                </p>
+              </div>
               <AppButton
                 variant="dangerOutlined"
                 :icon="faTrash"
