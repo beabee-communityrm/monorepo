@@ -3,7 +3,12 @@
   "version": "0.21.0",
   "description": "Shared code between Beabee projects for Node.js, Deno and the browser",
   "imports": {
-    "date-fns": "npm:date-fns@3.6.0"
+    "@luca/esbuild-deno-loader": "jsr:@luca/esbuild-deno-loader@^0.11.0",
+    "esbuild": "https://deno.land/x/esbuild@v0.24.0/mod.js",
+    "std": "https://deno.land/std@0.212.0/path/mod.ts"
+  },
+  "exports": {
+    ".": "./mod.ts"
   },
   "tasks": {
     "clear": "rm -rf ./dist/",
@@ -39,12 +44,12 @@
     "watch:browser:cdn": "deno task cli watch browser cdn",
     "watch:browser:esm": "deno task cli watch browser esm",
     "watch:types": "yarn watch:types",
-    "cache": "deno task cache:deno && deno task cache:node",
     "cache:deno": "deno cache --reload mod.ts",
-    "cache:node": "yarn cache:node",
     "generate:index": "deno task cli generate-index ./src/data ./src/error ./src/search ./src/types ./src/utils ./src/validators ./test/deno/data ./test/deno/data/components ./test/deno/data/components/validate-rules ./cli/actions ./cli/plugins",
     "sync": "deno task cli sync",
     "prepublishOnly": "yarn prepublishOnly",
-    "npm:publish:latest": "yarn npm:publish:latest"
+    "npm:publish:latest": "yarn npm:publish:latest",
+    "cache": "yarn cache",
+    "cache:node": "yarn cache:node"
   }
 }

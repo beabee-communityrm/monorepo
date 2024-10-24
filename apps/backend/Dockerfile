@@ -1,13 +1,32 @@
-FROM node:20-alpine3.19 AS builder
+ARG DENO_VERSION=2.0.2
+ARG NODE_VERSION=22
 
-# Add support for Deno
-RUN apk add --no-cache deno
+FROM node:${NODE_VERSION}-bookworm-slim as builder
+
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    # for installing Deno
+    curl \
+    # for extracting the Deno archive
+    p7zip-full \
+    # for cleaning up the apt cache
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Deno
+ENV DENO_INSTALL="/root/.deno"
+RUN curl -fsSL https://deno.land/install.sh | sh -s ${DENO_VERSION}
+ENV PATH="${DENO_INSTALL}/bin:${PATH}"
+
+# Check versions
+RUN node --version
+RUN npm --version
+RUN yarn --version
 RUN deno --version
 
 WORKDIR /opt/apps/backend
 
 # Copy the workspace configuration
-COPY package.json yarn.lock deno.jsonc .yarnrc.yml /opt/
+COPY package.json yarn.lock deno.jsonc deno.lock .yarnrc.yml /opt/
 COPY .yarn /opt/.yarn
 
 # Copy dependencies info
@@ -35,11 +54,13 @@ FROM nginx:1.24-alpine AS router
 COPY apps/backend/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --chown=nginx:nginx --from=builder /opt/apps/backend/built/static /opt/apps/backend/built/static
 
-FROM node:20-alpine3.19 AS app
+FROM node:${NODE_VERSION}-bookworm-slim AS app
 
 ARG REVISION=DEV
 
 ENV NODE_ENV=production
+
+RUN apt-get update && apt-get install -y cron && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /opt/apps/backend
 
@@ -61,7 +82,10 @@ COPY --chown=node:node --from=builder /opt/apps/backend/built /opt/apps/backend/
 COPY --chown=node:node --from=builder /opt/packages/core/dist /opt/packages/core/dist
 COPY --chown=node:node --from=builder /opt/packages/common/dist /opt/packages/common/dist
 
-COPY apps/backend/crontab /etc/crontabs/root
+# COPY apps/backend/crontab /etc/crontabs/root
+COPY apps/backend/crontab /etc/cron.d/beabee-cron
+RUN chmod 0644 /etc/cron.d/beabee-cron
+RUN crontab /etc/cron.d/beabee-cron
 
 RUN echo -n ${REVISION} > /opt/apps/backend/built/revision.txt
 

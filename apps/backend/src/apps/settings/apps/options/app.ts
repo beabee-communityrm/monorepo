@@ -1,22 +1,22 @@
-import express from "express";
+import express, { type Express, type Request, type Response } from "express";
 
 import { isSuperAdmin } from "@core/middleware";
 import { wrapAsync } from "@beabee/core/utils/index";
 
 import OptionsService from "@beabee/core/services/OptionsService";
 
-const app = express();
+const app: Express = express();
 
 app.set("views", __dirname + "/views");
 
 app.use(isSuperAdmin);
 
-app.get("/", function (req, res) {
+app.get("/", function (req: Request, res: Response) {
   const options = OptionsService.getAll();
   res.render("index", { options, showHidden: req.query.hidden !== undefined });
 });
 
-app.get("/:key/edit", function (req, res) {
+app.get("/:key/edit", function (req: Request, res: Response) {
   if (OptionsService.isKey(req.params.key)) {
     const option = OptionsService.get(req.params.key);
     res.locals.breadcrumb.push({
@@ -32,7 +32,7 @@ app.get("/:key/edit", function (req, res) {
 
 app.post(
   "/:key/edit",
-  wrapAsync(async function (req, res) {
+  wrapAsync(async function (req: Request, res: Response) {
     if (OptionsService.isKey(req.params.key)) {
       await OptionsService.set(req.params.key, req.body.value || "");
       req.flash("success", "option-updated");
@@ -41,7 +41,7 @@ app.post(
   })
 );
 
-app.get("/:key/reset", function (req, res) {
+app.get("/:key/reset", function (req: Request, res: Response) {
   if (OptionsService.isKey(req.params.key)) {
     const option = OptionsService.get(req.params.key);
     res.locals.breadcrumb.push({
@@ -57,7 +57,7 @@ app.get("/:key/reset", function (req, res) {
 
 app.post(
   "/:key/reset",
-  wrapAsync(async function (req, res) {
+  wrapAsync(async function (req: Request, res: Response) {
     if (OptionsService.isKey(req.params.key)) {
       await OptionsService.reset(req.params.key);
       req.flash("success", "option-reset");

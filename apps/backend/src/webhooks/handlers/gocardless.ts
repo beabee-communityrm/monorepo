@@ -1,5 +1,5 @@
 import bodyParser from "body-parser";
-import express from "express";
+import express, { type Express, type Request, type Response } from "express";
 import {
   Event,
   EventResourceType,
@@ -18,19 +18,19 @@ import {
 
 const log = mainLogger.child({ app: "webhook-gocardless" });
 
-const app = express();
+const app: Express = express();
 
 const textBodyParser = bodyParser.text({
   type: "application/json",
   limit: "1mb"
 });
 
-app.get("/", (req, res) => res.sendStatus(200));
+app.get("/", (req: Request, res: Response) => res.sendStatus(200));
 
 app.post(
   "/",
   textBodyParser,
-  wrapAsync(async (req, res) => {
+  wrapAsync(async (req: Request, res: Response) => {
     const valid = gocardless.webhooks.validate(req);
 
     if (valid) {

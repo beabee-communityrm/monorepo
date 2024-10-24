@@ -1,6 +1,6 @@
-import express from "express";
+import express, { type Express, type Request, type Response } from "express";
 
-import { createQueryBuilder, getRepository } from "@beabee/core/database";
+import { createQueryBuilder } from "@beabee/core/database";
 import { wrapAsync } from "@beabee/core/utils/index";
 
 import PageSettingsService, {
@@ -11,7 +11,7 @@ import { Callout } from "@beabee/core/models";
 
 import config from "@beabee/core/config";
 
-const app = express();
+const app: Express = express();
 
 app.set("views", __dirname + "/views");
 
@@ -50,7 +50,7 @@ async function getCalloutShareSettings(
 
 app.get(
   "/",
-  wrapAsync(async (req, res) => {
+  wrapAsync(async (req: Request, res: Response) => {
     let pageSettings: JustPageSettings | undefined;
 
     const uri = req.query.uri ? req.query.uri.toString() : undefined;

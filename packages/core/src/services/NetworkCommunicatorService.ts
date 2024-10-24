@@ -2,7 +2,7 @@ import { EventEmitter } from "node:events";
 import { Server } from "node:http";
 
 import axios from "axios";
-import express, { Request, Response } from "express";
+import express, { Request, Response, type Express } from "express";
 import { sign, verify, JsonWebTokenError } from "jsonwebtoken";
 
 import { log as mainLogger } from "#logging";
@@ -61,7 +61,7 @@ class NetworkCommunicatorService {
   /**
    * Start the internal server
    */
-  public startServer() {
+  public startServer(): Express {
     const internalApp = express();
     this.server = internalApp.listen(4000);
 

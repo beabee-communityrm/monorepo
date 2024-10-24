@@ -1,5 +1,5 @@
 import { RESET_SECURITY_FLOW_TYPE } from "@beabee/beabee-common";
-import express from "express";
+import express, { type Express } from "express";
 import moment from "moment";
 
 import config from "@beabee/core/config";
@@ -15,7 +15,7 @@ import PaymentService from "@beabee/core/services/PaymentService";
 
 import { Contact, ResetSecurityFlow } from "@beabee/core/models";
 
-const app = express();
+const app: Express = express();
 
 async function getAvailableTags(): Promise<string[]> {
   return OptionsService.getList("available-tags");

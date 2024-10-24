@@ -1,4 +1,9 @@
-import express, { Request, Response, NextFunction } from "express";
+import express, {
+  type Express,
+  type Request,
+  type Response,
+  type NextFunction
+} from "express";
 
 import { getRepository } from "@beabee/core/database";
 import { isAdmin } from "@core/middleware";
@@ -10,7 +15,7 @@ import { Content } from "@beabee/core/models";
 
 import type { ContentId } from "@beabee/beabee-common";
 
-const app = express();
+const app: Express = express();
 
 app.set("views", __dirname + "/views");
 
@@ -18,7 +23,7 @@ app.use(isAdmin);
 
 app.get(
   "/",
-  wrapAsync(async (req, res) => {
+  wrapAsync(async (req: Request, res: Response) => {
     const content = await getRepository(Content).find();
     function get(id: ContentId) {
       return content.find((c) => c.id === id)?.data || {};
