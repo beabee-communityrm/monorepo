@@ -13,6 +13,10 @@
       "path": "../apps/frontend",
     },
     {
+      "name": "apps/router",
+      "path": "../apps/router",
+    },
+    {
       "name": "packages/common",
       "path": "../packages/common",
     },
@@ -37,7 +41,8 @@
       "./node_modules",
       "./apps/backend",
       "./apps/frontend",
-      "./apps/task-runner-dashboard"
+      "./apps/router",
+      "./packages/core"
     ]
   },
 }

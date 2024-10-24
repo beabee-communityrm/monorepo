@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# This script converts the TRUSTED_ORIGINS variable from the comma
+# separated format beabee expects for lists, to the space separated
+# on that the Content-Security-Policy header exports.
+# It must be ahead of 20-envsubst-on-templates.sh
+
+TRUSTED_ORIGINS=${TRUSTED_ORIGINS//,/ }
