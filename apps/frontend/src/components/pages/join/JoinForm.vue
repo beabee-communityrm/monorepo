@@ -18,8 +18,8 @@
       <Contribution
         v-model:amount="signUpData.amount"
         v-model:period="signUpData.period"
-        v-model:pay-fee="signUpData.payFee"
-        v-model:payment-method="signUpData.paymentMethod"
+        v-model:payFee="signUpData.payFee"
+        v-model:paymentMethod="signUpData.paymentMethod"
         :content="joinContent"
         :payment-content="paymentContent"
         :disabled="signUpData.noContribution"

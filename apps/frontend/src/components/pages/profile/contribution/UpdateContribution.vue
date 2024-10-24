@@ -32,9 +32,9 @@
 
       <Contribution
         v-model:amount="newContribution.amount"
-        v-model:pay-fee="newContribution.payFee"
+        v-model:payFee="newContribution.payFee"
         v-model:period="newContribution.period"
-        v-model:payment-method="newContribution.paymentMethod"
+        v-model:paymentMethod="newContribution.paymentMethod"
         :content="content"
         :payment-content="paymentContent"
         :show-period="showChangePeriod"
