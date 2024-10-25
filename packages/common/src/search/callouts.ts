@@ -1,7 +1,46 @@
 import type { Filters } from "../types/index.ts";
 import { ItemStatus } from "../data/index.ts";
+import type { AssertFilters } from "../types/index.ts";
 
-export const calloutFilters = {
+type CalloutFilters = {
+  readonly id: {
+    readonly type: "text";
+  };
+  readonly slug: {
+    readonly type: "text";
+  };
+  readonly title: {
+    readonly type: "text";
+  };
+  readonly status: {
+    readonly type: "enum";
+    readonly options: [
+      ItemStatus.Draft,
+      ItemStatus.Scheduled,
+      ItemStatus.Open,
+      ItemStatus.Ended,
+    ];
+  };
+  readonly answeredBy: {
+    readonly type: "contact";
+  };
+  readonly starts: {
+    readonly type: "date";
+    readonly nullable: true;
+  };
+  readonly expires: {
+    readonly type: "date";
+    readonly nullable: true;
+  };
+  readonly hidden: {
+    readonly type: "boolean";
+  };
+  readonly channels: {
+    readonly type: "array";
+  };
+};
+
+export const calloutFilters: AssertFilters<CalloutFilters> = {
   id: {
     type: "text",
   },
@@ -18,7 +57,7 @@ export const calloutFilters = {
       ItemStatus.Scheduled,
       ItemStatus.Open,
       ItemStatus.Ended,
-    ],
+    ] as const satisfies ItemStatus[],
   },
   answeredBy: {
     type: "contact",
@@ -39,7 +78,40 @@ export const calloutFilters = {
   },
 } as const satisfies Filters;
 
-export const calloutResponseFilters = {
+type CalloutResponseFilters = {
+  readonly id: {
+    readonly type: "text";
+  };
+  readonly contact: {
+    readonly type: "contact";
+    readonly nullable: true;
+  };
+  readonly calloutId: {
+    readonly type: "text";
+  };
+  readonly createdAt: {
+    readonly type: "date";
+  };
+  readonly updatedAt: {
+    readonly type: "date";
+  };
+  readonly bucket: {
+    readonly type: "text";
+    readonly nullable: true;
+  };
+  readonly tags: {
+    readonly type: "array";
+  };
+  readonly assignee: {
+    readonly type: "contact";
+    readonly nullable: true;
+  };
+  readonly answers: {
+    readonly type: "blob";
+  };
+};
+
+export const calloutResponseFilters: AssertFilters<CalloutResponseFilters> = {
   id: {
     type: "text",
   },
@@ -72,7 +144,30 @@ export const calloutResponseFilters = {
   },
 } as const satisfies Filters;
 
-export const calloutResponseCommentFilters = {
+type CalloutResponseCommentFilters = {
+  readonly id: {
+    readonly type: "text";
+  };
+  readonly responseId: {
+    readonly type: "text";
+  };
+  readonly contact: {
+    readonly type: "contact";
+  };
+  readonly createdAt: {
+    readonly type: "date";
+  };
+  readonly updatedAt: {
+    readonly type: "date";
+  };
+  readonly text: {
+    readonly type: "text";
+  };
+};
+
+export const calloutResponseCommentFilters: AssertFilters<
+  CalloutResponseCommentFilters
+> = {
   id: {
     type: "text",
   },
@@ -93,7 +188,22 @@ export const calloutResponseCommentFilters = {
   },
 } as const satisfies Filters;
 
-export const calloutTagFilters = {
+type CalloutTagFilters = {
+  readonly id: {
+    readonly type: "text";
+  };
+  readonly name: {
+    readonly type: "text";
+  };
+  readonly description: {
+    readonly type: "text";
+  };
+  readonly calloutId: {
+    readonly type: "text";
+  };
+};
+
+export const calloutTagFilters: AssertFilters<CalloutTagFilters> = {
   id: {
     type: "text",
   },
@@ -108,7 +218,22 @@ export const calloutTagFilters = {
   },
 } as const satisfies Filters;
 
-export const calloutChannelFilters = {
+type CalloutChannelFilters = {
+  readonly id: {
+    readonly type: "text";
+  };
+  readonly name: {
+    readonly type: "text";
+  };
+  readonly description: {
+    readonly type: "text";
+  };
+  readonly calloutId: {
+    readonly type: "text";
+  };
+};
+
+export const calloutChannelFilters: AssertFilters<CalloutChannelFilters> = {
   id: {
     type: "text",
   },

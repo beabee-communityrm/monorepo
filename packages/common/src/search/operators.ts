@@ -1,16 +1,39 @@
 import type { OperatorsByType } from "../types/index.ts";
 
-const equalityOperators = {
+type EqualityOperators = {
+  equal: { args: 1 };
+  not_equal?: { args: 1 };
+};
+
+const equalityOperators: EqualityOperators = {
   equal: { args: 1 },
   not_equal: { args: 1 },
 };
-const stringOperators = {
+
+type StringOperators = {
+  begins_with: { args: 1 };
+  ends_with: { args: 1 };
+  not_begins_with: { args: 1 };
+  not_ends_with: { args: 1 };
+};
+
+const stringOperators: StringOperators = {
   begins_with: { args: 1 },
   ends_with: { args: 1 },
   not_begins_with: { args: 1 },
   not_ends_with: { args: 1 },
 };
-const numericOperators = {
+
+type NumericOperators = {
+  between: { args: 2 };
+  not_between: { args: 2 };
+  less: { args: 1 };
+  greater: { args: 1 };
+  less_or_equal: { args: 1 };
+  greater_or_equal: { args: 1 };
+};
+
+const numericOperators: NumericOperators = {
   ...equalityOperators,
   between: { args: 2 },
   not_between: { args: 2 },
@@ -19,17 +42,44 @@ const numericOperators = {
   less_or_equal: { args: 1 },
   greater_or_equal: { args: 1 },
 };
-const arrayOperators = {
+
+type ArrayOperators = {
+  contains: { args: 1 };
+  not_contains: { args: 1 };
+};
+
+const arrayOperators: ArrayOperators = {
   contains: { args: 1 },
   not_contains: { args: 1 },
 };
+
+type NullableOperators = {
+  is_empty: { args: 0 };
+  is_not_empty: { args: 0 };
+};
+
 // Special operator can be applied across all fields if they are nullable
-export const nullableOperators = {
+export const nullableOperators: NullableOperators = {
   is_empty: { args: 0 },
   is_not_empty: { args: 0 },
 };
 
-export const operatorsByType = {
+// Explicit type of OperatorsByType
+type ExplicitOperatorsByType = {
+  readonly text: EqualityOperators & StringOperators;
+  readonly blob: ArrayOperators;
+  readonly date: NumericOperators;
+  readonly number: NumericOperators;
+  readonly boolean: EqualityOperators;
+  readonly array: ArrayOperators & NullableOperators;
+  readonly enum: EqualityOperators;
+  readonly contact: EqualityOperators;
+};
+
+// Assert that the operatorsByType is of the correct type
+type AssertOperatorsByType<T extends OperatorsByType> = T;
+
+export const operatorsByType: AssertOperatorsByType<ExplicitOperatorsByType> = {
   text: { ...equalityOperators, ...arrayOperators, ...stringOperators },
   blob: arrayOperators,
   date: numericOperators,
