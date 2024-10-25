@@ -56,8 +56,12 @@ services:
   cron:
     <<: *base-app
     user: root
-    # command: "crond -f -d 7"
-    command: ["cron", "-f"]
+
+    # Start cron on Alpine
+    command: "crond -f -d 7"
+
+    # Start cron on Debian
+    # command: ["cron", "-f"]
     init: true
 
   # The new frontend
@@ -102,9 +106,6 @@ services:
     volumes:
       # Used for local development
       - ./apps/backend/built/static:/opt/built/static:ro
-    ports:
-      # Only used for local development
-      - 3004:80
 
 volumes:
   db_data:
