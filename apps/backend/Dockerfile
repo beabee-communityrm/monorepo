@@ -1,4 +1,4 @@
-ARG DENO_VERSION=2.0.2
+ARG DENO_VERSION=2.0.3
 ARG NODE_VERSION=22
 
 FROM node:${NODE_VERSION}-bookworm-slim as builder

@@ -1,16 +1,16 @@
-ARG DENO_VERSION=2.0.2
+ARG DENO_VERSION=2.0.3
 ARG NODE_VERSION=22
 
 FROM node:${NODE_VERSION}-bookworm-slim as builder
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
-  # for installing Deno
-  curl \
-  # for extracting the Deno archive
-  p7zip-full \
-  # for cleaning up the apt cache
-  && rm -rf /var/lib/apt/lists/*
+    # for installing Deno
+    curl \
+    # for extracting the Deno archive
+    p7zip-full \
+    # for cleaning up the apt cache
+    && rm -rf /var/lib/apt/lists/*
 
 # Install Deno
 ENV DENO_INSTALL="/root/.deno"
