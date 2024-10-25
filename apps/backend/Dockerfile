@@ -49,7 +49,7 @@ RUN NODE_ENV=production yarn workspace @beabee/core build
 COPY apps/backend /opt/apps/backend
 RUN NODE_ENV=production yarn workspace @beabee/backend build
 
-FROM nginx:1.24-alpine AS router
+FROM nginx:1.27-alpine AS router
 
 COPY apps/backend/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --chown=nginx:nginx --from=builder /opt/apps/backend/built/static /opt/apps/backend/built/static
