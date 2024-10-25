@@ -156,12 +156,13 @@
     "npm:stripe@^15.9.0": "15.12.0",
     "npm:tailwindcss@^3.4.3": "3.4.14_postcss@8.4.47_ts-node@10.9.2__@types+node@22.5.4__typescript@5.6.3_typescript@5.6.3",
     "npm:tar-stream@^3.1.7": "3.1.7",
-    "npm:ts-jest@^29.1.4": "29.2.5_jest@29.7.0__ts-node@10.9.2___@types+node@22.5.4___typescript@5.6.3__typescript@5.6.3_typescript@5.6.3_ts-node@10.9.2__@types+node@22.5.4__typescript@5.6.3",
+    "npm:ts-jest@^29.2.5": "29.2.5_jest@29.7.0__ts-node@10.9.2___@types+node@22.5.4___typescript@5.6.3__typescript@5.6.3_typescript@5.6.3_ts-node@10.9.2__@types+node@22.5.4__typescript@5.6.3",
     "npm:ts-node@^10.9.2": "10.9.2_@types+node@22.5.4_typescript@5.6.3",
     "npm:tsc-watch@^6.2.0": "6.2.0_typescript@5.6.3",
     "npm:tsconfig@7": "7.0.0",
     "npm:typeorm@~0.3.20": "0.3.20_ts-node@10.9.2__@types+node@22.5.4__typescript@5.6.3_typescript@5.6.3",
     "npm:typescript@^5.4.5": "5.6.3",
+    "npm:typescript@^5.6.3": "5.6.3",
     "npm:uuid@^9.0.1": "9.0.1",
     "npm:vite-plugin-pages@~0.32.3": "0.32.3_vite@5.4.10__@types+node@20.17.0__sass@1.80.4_@types+node@20.17.0_sass@1.80.4",
     "npm:vite@^5.4.10": "5.4.10_@types+node@20.17.0_sass@1.80.4",
@@ -9910,12 +9911,12 @@
             "npm:sass@^1.77.4",
             "npm:slugify@^1.6.6",
             "npm:stripe@^15.9.0",
-            "npm:ts-jest@^29.1.4",
+            "npm:ts-jest@^29.2.5",
             "npm:ts-node@^10.9.2",
             "npm:tsc-watch@^6.2.0",
             "npm:tsconfig@7",
             "npm:typeorm@~0.3.20",
-            "npm:typescript@^5.4.5",
+            "npm:typescript@^5.6.3",
             "npm:uuid@^9.0.1"
           ]
         }
@@ -9990,7 +9991,7 @@
             "npm:qrcode-generator@^1.4.4",
             "npm:slugify@^1.6.6",
             "npm:tailwindcss@^3.4.3",
-            "npm:typescript@^5.4.5",
+            "npm:typescript@^5.6.3",
             "npm:vite-plugin-pages@~0.32.3",
             "npm:vite@^5.4.10",
             "npm:vue-accessible-color-picker@^5.1.0",
@@ -10014,7 +10015,7 @@
             "npm:cacheable-request@^12.0.1",
             "npm:concurrently@^8.2.2",
             "npm:date-fns@^4.1.0",
-            "npm:typescript@^5.4.5"
+            "npm:typescript@^5.6.3"
           ]
         }
       },
@@ -10053,11 +10054,11 @@
             "npm:slugify@^1.6.6",
             "npm:stripe@^15.9.0",
             "npm:tar-stream@^3.1.7",
-            "npm:ts-jest@^29.1.4",
+            "npm:ts-jest@^29.2.5",
             "npm:tsc-watch@^6.2.0",
             "npm:tsconfig@7",
             "npm:typeorm@~0.3.20",
-            "npm:typescript@^5.4.5",
+            "npm:typescript@^5.6.3",
             "npm:uuid@^9.0.1",
             "npm:winston@^3.13.0",
             "npm:yaml-front-matter@^4.1.1"
