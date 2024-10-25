@@ -2,12 +2,16 @@ import type { OperatorsByType } from "../types/index.ts";
 
 type EqualityOperators = {
   equal: { args: 1 };
-  not_equal?: { args: 1 };
+  not_equal: { args: 1 };
 };
 
 const equalityOperators: EqualityOperators = {
   equal: { args: 1 },
   not_equal: { args: 1 },
+};
+
+type BooleanOperators = {
+  equal: EqualityOperators["equal"];
 };
 
 type StringOperators = {
@@ -31,7 +35,7 @@ type NumericOperators = {
   greater: { args: 1 };
   less_or_equal: { args: 1 };
   greater_or_equal: { args: 1 };
-};
+} & EqualityOperators;
 
 const numericOperators: NumericOperators = {
   ...equalityOperators,
@@ -70,7 +74,7 @@ type ExplicitOperatorsByType = {
   readonly blob: ArrayOperators;
   readonly date: NumericOperators;
   readonly number: NumericOperators;
-  readonly boolean: EqualityOperators;
+  readonly boolean: BooleanOperators;
   readonly array: ArrayOperators & NullableOperators;
   readonly enum: EqualityOperators;
   readonly contact: EqualityOperators;
