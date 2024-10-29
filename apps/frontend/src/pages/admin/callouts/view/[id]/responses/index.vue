@@ -144,7 +144,15 @@ meta:
           <AppTime :datetime="value" />
         </template>
 
-        <template #after="{ item }">
+        <template
+          #after="{
+            item,
+          }: {
+            item: GetCalloutResponseDataWith<
+              'answers' | 'assignee' | 'contact' | 'latestComment' | 'tags'
+            >;
+          }"
+        >
           <div
             v-if="
               item.tags.length > 0 ||

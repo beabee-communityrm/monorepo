@@ -64,7 +64,10 @@ meta:
           :disabled="selectedCount === 0"
           @toggle="
             (tagId, successText) =>
-              handleUpdateAction({ tags: [tagId] }, successText)
+              handleUpdateAction(
+                { tags: [tagId] }, // TODO: Callout responses only use string[] for updates
+                successText
+              )
           "
         />
       </template>
@@ -103,16 +106,24 @@ meta:
           getMembershipStartDate(item)
         }}</span>
       </template>
-      <template #after="{ item }">
+      <template
+        #after="{
+          item,
+        }: {
+          item: GetContactDataWith<
+            GetContactWith.Profile | GetContactWith.Tags
+          >;
+        }"
+      >
         <p v-if="item.profile.description" class="whitespace-normal text-xs">
           {{ item.profile.description }}
         </p>
         <div
-          v-if="item.profile.tags && item.profile.tags.length > 0"
+          v-if="item.tags && item.tags.length > 0"
           :class="item.profile.description && 'mt-2'"
         >
           <font-awesome-icon :icon="faTag" class="mr-2" />
-          <AppTag v-for="tag in item.profile.tags" :key="tag" :tag="tag" />
+          <AppTag v-for="tag in item.tags" :key="tag.id" :tag="tag.name" />
         </div>
       </template>
     </AppPaginatedTable>
@@ -202,7 +213,9 @@ const segments = ref<GetSegmentDataWith<'contactCount'>[]>([]);
 const contactsTotal = ref<number | null>(null);
 const contactsTable = ref<
   Paginated<
-    GetContactDataWith<GetContactWith.Profile | GetContactWith.Roles> & {
+    GetContactDataWith<
+      GetContactWith.Profile | GetContactWith.Roles | GetContactWith.Tags
+    > & {
       selected: boolean;
     }
   >
@@ -218,11 +231,11 @@ const selectedTags = computed(() => {
   const tagCount = Object.fromEntries(tagItems.value.map((t) => [t.id, 0]));
 
   // TODO: Add support for contact tags
-  // for (const item of selectedContactItems.value) {
-  //   for (const tag of item.tags) {
-  //     tagCount[tag.id]++;
-  //   }
-  // }
+  for (const item of selectedContactItems.value) {
+    for (const tag of item.tags || []) {
+      tagCount[tag.id]++;
+    }
+  }
 
   return Object.entries(tagCount)
     .filter((tc) => tc[1] === selectedCount.value)
@@ -318,6 +331,7 @@ async function refreshResponses() {
   const newContacts = await fetchContacts(query, [
     GetContactWith.Profile,
     GetContactWith.Roles,
+    GetContactWith.Tags,
   ]);
   contactsTable.value = {
     ...newContacts,

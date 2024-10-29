@@ -434,7 +434,8 @@
     "noResults": "Nenhum contacto encontrado",
     "numResults": "{n} contacto encontrado | {n} contactos encontrados",
     "search": "Pesquisar contactos...",
-    "showingOf": "Contactos {start} a {end} de um total de {total}"
+    "showingOf": "Contactos {start} a {end} de um total de {total}",
+    "manageTags": "Gerir etiquetas"
   },
   "contribution": {
     "adminCancelDescription": "Se cancelares a contribuição deste contacto, a sua adesão terminará no fim deste ciclo de pagamento a {date}.",

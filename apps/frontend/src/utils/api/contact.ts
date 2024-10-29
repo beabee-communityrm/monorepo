@@ -4,9 +4,11 @@ import {
   type ContributionInfo,
   ContributionPeriod,
   type CreateContactData,
+  type CreateContactTagData,
   type ForceUpdateContributionData,
   type GetContactData,
   type GetContactDataWith,
+  type GetContactTagData,
   type GetContactsQuery,
   GetContactWith,
   type GetPaymentData,
@@ -20,6 +22,7 @@ import {
   type StartContributionData,
   type UpdateContactData,
   type UpdateContactRoleData,
+  type UpdateContactTagData,
 } from '@beabee/beabee-common';
 
 import { deserializeDate, instance } from '.';
@@ -260,4 +263,50 @@ export async function updateRole(
 
 export async function deleteRole(id: string, role: RoleType): Promise<void> {
   await instance.delete(`/contact/${id}/role/${role}`);
+}
+
+export async function fetchTags(id: string): Promise<GetContactTagData[]> {
+  const { data } = await instance.get<Serial<GetContactTagData>[]>(
+    `/contact/${id}/tags`
+  );
+
+  return data;
+}
+
+// TODO: Implement this API endpoint
+export async function createTag(
+  id: string,
+  dataIn: CreateContactTagData
+): Promise<GetContactTagData> {
+  const { data } = await instance.post<Serial<GetContactTagData>>(
+    `/contact/${id}/tags`,
+    {
+      name: dataIn.name,
+      description: dataIn.description,
+    }
+  );
+
+  return data;
+}
+
+// TODO: Implement this API endpoint
+export async function updateTag(
+  id: string,
+  tagId: string,
+  dataIn: UpdateContactTagData
+): Promise<GetContactTagData> {
+  const { data } = await instance.patch<Serial<GetContactTagData>>(
+    `/contact/${id}/tags/${tagId}`,
+    {
+      name: dataIn.name,
+      description: dataIn.description,
+    }
+  );
+
+  return data;
+}
+
+// TODO: Implement this API endpoint
+export async function deleteTag(id: string, tagId: string): Promise<void> {
+  await instance.delete(`/contact/${id}/tags/${tagId}`);
 }

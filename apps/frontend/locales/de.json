@@ -680,7 +680,8 @@
     "noResults": "Keine Kontakte gefunden",
     "numResults": "{n} Kontakt gefunden | {n} Kontakte gefunden",
     "search": "Kontakte durchsuchen...",
-    "showingOf": "{start} to {end} von {total} Kontakten werden angezeigt."
+    "showingOf": "{start} to {end} von {total} Kontakten werden angezeigt.",
+    "manageTags": "Tags bearbeiten"
   },
   "contribution": {
     "adminCancelDescription": "Wenn du die Mitgliedschaft des Kontakts kündigst, endet sie am Ende des aktuellen Zahlungszyklus am {date}.",
