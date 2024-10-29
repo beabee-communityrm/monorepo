@@ -213,8 +213,7 @@ class CalloutsService {
   async setResponse(
     callout: Callout,
     contact: Contact,
-    answers: CalloutResponseAnswersSlide,
-    isPartial = false
+    answers: CalloutResponseAnswersSlide
   ): Promise<CalloutResponse> {
     if (callout.access === CalloutAccess.OnlyAnonymous) {
       throw new InvalidCalloutResponse("only-anonymous");
@@ -227,26 +226,16 @@ class CalloutsService {
       throw new InvalidCalloutResponse("closed");
     }
 
-    // Don't allow partial answers for multiple answer callouts
-    if (callout.allowMultiple && isPartial) {
-      throw new Error(
-        "Partial answers for multiple answer callouts not supported"
-      );
-    }
-
     let response = await this.getResponse(callout, contact);
-    if (response && !callout.allowMultiple) {
-      if (!callout.allowUpdate && !response.isPartial) {
-        throw new InvalidCalloutResponse("cant-update");
-      }
-    } else {
+    if (!response || callout.allowMultiple) {
       response = new CalloutResponse();
       response.callout = callout;
-      response.contact = contact || null;
+      response.contact = contact;
+    } else if (!callout.allowUpdate) {
+      throw new InvalidCalloutResponse("cant-update");
     }
 
     response.answers = answers;
-    response.isPartial = isPartial;
 
     const savedResponse = await this.saveResponse(response);
 
@@ -292,7 +281,6 @@ class CalloutsService {
     response.guestName = guestName || null;
     response.guestEmail = guestEmail || null;
     response.answers = answers;
-    response.isPartial = false;
 
     const savedResponse = await this.saveResponse(response);
 
