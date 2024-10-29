@@ -14,6 +14,7 @@ import {
   type Paginated,
   PaymentMethod,
   type RoleType,
+  type RuleGroup,
   type Serial,
   type SetContributionData,
   type StartContributionData,
@@ -108,6 +109,21 @@ export async function updateContact(
     dataIn
   );
   return deserializeContact(data);
+}
+
+// TODO: Implement this API endpoint
+export async function updateContacts(
+  rules: RuleGroup,
+  updates: UpdateContactData
+): Promise<{ affected: number }> {
+  const { data } = await instance.patch<Serial<{ affected: number }>>(
+    '/contacts',
+    {
+      rules,
+      updates,
+    }
+  );
+  return data;
 }
 
 export async function deleteContact(id: string): Promise<void> {

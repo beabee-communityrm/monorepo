@@ -42,16 +42,30 @@ meta:
     />
     <AppPaginatedTable
       v-model:query="currentPaginatedQuery"
+      keypath="contacts.showingOf"
       :headers="headers"
       :result="contactsTable"
-      keypath="contacts.showingOf"
+      selectable
     >
       <template #actions>
+        <!-- TODO: Add support for exporting selected contacts (instead of all contacts) -->
         <AppButton
           :icon="faDownload"
           variant="primaryOutlined"
           :title="t('actions.export')"
+          :disabled="selectedCount > 0"
           @click="handleExport"
+        />
+        <ToggleTagButton
+          :tag-items="tagItems"
+          :selected-tags="selectedTags"
+          :manage-url="`${route.path}/tags`"
+          :loading="doingAction"
+          :disabled="selectedCount === 0"
+          @toggle="
+            (tagId, successText) =>
+              handleUpdateAction({ tags: [tagId] }, successText)
+          "
         />
       </template>
       <template #empty>
@@ -113,6 +127,7 @@ import {
   type GetSegmentDataWith,
   type Paginated,
   type RuleGroup,
+  type UpdateContactData,
 } from '@beabee/beabee-common';
 import { computed, onBeforeMount, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -124,9 +139,12 @@ import {
   faUsers,
 } from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';
+import { addNotification } from '@store/notifications';
 
 import PageTitle from '@components/PageTitle.vue';
 import AppButton from '@components/button/AppButton.vue';
+// TODO: Make this reusable
+import ToggleTagButton from '@components/pages/admin/callouts/ToggleTagButton.vue';
 import AppSearch from '@components/search/AppSearch.vue';
 import AppTag from '@components/AppTag.vue';
 import {
@@ -142,9 +160,11 @@ import {
   defineParam,
   defineRulesParam,
 } from '@utils/pagination';
-import { fetchContacts } from '@utils/api/contact';
+import { fetchContacts, updateContacts } from '@utils/api/contact';
 import { formatLocale } from '@utils/dates';
 import { fetchSegments } from '@utils/api/segments';
+
+import type { SelectItem } from '@components/forms/form.interface';
 
 const { t, n } = useI18n();
 
@@ -156,7 +176,7 @@ addBreadcrumb(
   ])
 );
 
-const { filterGroups } = useContactFilters();
+const doingAction = ref(false);
 
 const currentPaginatedQuery = definePaginatedQuery('joined');
 const currentSearch = defineParam('s', (v) => v || '');
@@ -180,10 +200,37 @@ const hasUnsavedSegment = computed(
 
 const segments = ref<GetSegmentDataWith<'contactCount'>[]>([]);
 const contactsTotal = ref<number | null>(null);
-const contactsTable =
-  ref<
-    Paginated<GetContactDataWith<GetContactWith.Profile | GetContactWith.Roles>>
-  >();
+const contactsTable = ref<
+  Paginated<
+    GetContactDataWith<GetContactWith.Profile | GetContactWith.Roles> & {
+      selected: boolean;
+    }
+  >
+>();
+
+const selectedContactItems = computed(
+  () => contactsTable.value?.items.filter((ri) => ri.selected) || []
+);
+
+const selectedCount = computed(() => selectedContactItems.value.length);
+
+const selectedTags = computed(() => {
+  const tagCount = Object.fromEntries(tagItems.value.map((t) => [t.id, 0]));
+
+  // TODO: Add support for contact tags
+  // for (const item of selectedContactItems.value) {
+  //   for (const tag of item.tags) {
+  //     tagCount[tag.id]++;
+  //   }
+  // }
+
+  return Object.entries(tagCount)
+    .filter((tc) => tc[1] === selectedCount.value)
+    .map(([tagId]) => tagId);
+});
+
+const tagItems = ref<SelectItem<string>[]>([]); // Fake data for now
+const { filterGroups /*, tagItems*/ } = useContactFilters();
 
 const segmentItems = computed(() => [
   {
@@ -255,17 +302,51 @@ function getSearchRules(): RuleGroup {
     : searchRules;
 }
 
-watchEffect(async () => {
+function getSelectedContactsRules(): RuleGroup {
+  return {
+    condition: 'OR',
+    rules: selectedContactItems.value.map((item) => ({
+      field: 'id',
+      operator: 'equal',
+      value: [item.id],
+    })),
+  };
+}
+
+async function refreshResponses() {
   const query = { ...currentPaginatedQuery.query, rules: getSearchRules() };
-  contactsTable.value = await fetchContacts(query, [
+  const newContacts = await fetchContacts(query, [
     GetContactWith.Profile,
     GetContactWith.Roles,
   ]);
-});
+  contactsTable.value = {
+    ...newContacts,
+    items: newContacts.items.map((c) => ({ ...c, selected: false })),
+  };
+}
+
+watchEffect(refreshResponses);
 
 function handleExport() {
   const rules = getSearchRules();
   const rulesQuery = encodeURIComponent(JSON.stringify(rules));
   window.open(`/api/1.0/contact.csv?rules=${rulesQuery}`, '_blank');
+}
+
+async function handleUpdateAction(
+  updates: UpdateContactData,
+  successText: string
+): Promise<void> {
+  doingAction.value = true;
+
+  await updateContacts(getSelectedContactsRules(), updates);
+  await refreshResponses();
+
+  addNotification({
+    variant: 'success',
+    title: successText,
+  });
+
+  doingAction.value = false;
 }
 </script>
