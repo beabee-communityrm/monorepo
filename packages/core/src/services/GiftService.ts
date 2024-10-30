@@ -3,7 +3,6 @@ import {
   ContributionType,
   NewsletterStatus
 } from "@beabee/beabee-common";
-import muhammara from "muhammara";
 import moment from "moment";
 
 import { getRepository } from "#database";
@@ -77,20 +76,10 @@ export default class GiftService {
       const { fromName, fromEmail, firstname, startDate } = giftFlow.giftForm;
       const now = moment.utc();
 
-      const giftCard = GiftService.createGiftCard(giftFlow.setupCode);
-      const attachments = [
-        {
-          type: "application/pdf",
-          name: "Gift card.pdf",
-          content: giftCard.toString("base64")
-        }
-      ];
-
       await EmailService.sendTemplateTo(
         "purchased-gift",
         { email: fromEmail, name: fromName },
-        { fromName, gifteeFirstName: firstname, giftStartDate: startDate },
-        { attachments }
+        { fromName, gifteeFirstName: firstname, giftStartDate: startDate }
       );
 
       // Immediately process gifts for today
@@ -195,32 +184,5 @@ export default class GiftService {
       }
       throw error;
     }
-  }
-
-  private static createGiftCard(code: string) {
-    const inStream = new muhammara.PDFRStreamForFile(
-      __dirname + "/../../static/pdfs/gift.pdf"
-    );
-    const outStream = new muhammara.PDFWStreamForBuffer();
-
-    const pdfWriter = muhammara.createWriterToModify(inStream, outStream);
-    const font = pdfWriter.getFontForFile(
-      __dirname + "/../../static/fonts/Lato-Regular.ttf"
-    );
-
-    const pageModifier = new muhammara.PDFPageModifier(pdfWriter, 0, true);
-    const context = pageModifier.startContext().getContext();
-
-    context.cm(-1, 0, 0, -1, 406, 570);
-    context.writeText("thebristolcable.org/gift/" + code, 0, 0, {
-      font,
-      size: 14,
-      color: 0x000000
-    });
-
-    pageModifier.endContext().writePage();
-    pdfWriter.end();
-
-    return outStream.buffer;
   }
 }
