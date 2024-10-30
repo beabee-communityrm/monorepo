@@ -8,13 +8,13 @@ ARG NODE_VERSION=22-bookworm-slim
 FROM node:${NODE_VERSION} AS base
 
 # Copy the workspace configuration
-COPY package.json yarn.lock deno.jsonc deno.lock .yarnrc.yml /opt/
-COPY .yarn /opt/.yarn
+COPY --chown=node:node package.json yarn.lock deno.jsonc deno.lock .yarnrc.yml /opt/
+COPY --chown=node:node .yarn /opt/.yarn
 
 # Copy dependencies info
-COPY packages/common/package.json /opt/packages/common/package.json
-COPY packages/core/package.json /opt/packages/core/package.json
-COPY apps/backend/package.json /opt/apps/backend/package.json
+COPY --chown=node:node packages/common/package.json /opt/packages/common/package.json
+COPY --chown=node:node packages/core/package.json /opt/packages/core/package.json
+COPY --chown=node:node apps/backend/package.json /opt/apps/backend/package.json
 
 ENV NODE_ENV=production
 ENV NODE_OPTIONS=--enable-source-maps
