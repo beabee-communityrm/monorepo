@@ -1,7 +1,7 @@
 ARG DENO_VERSION=2.0.3
-ARG NODE_VERSION=22
+ARG NODE_VERSION=22-bookworm-slim
 
-FROM node:${NODE_VERSION}-bookworm-slim as builder
+FROM node:${NODE_VERSION} AS builder
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
@@ -54,7 +54,7 @@ FROM nginx:1.27-alpine AS router
 COPY apps/backend/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --chown=nginx:nginx --from=builder /opt/apps/backend/built/static /opt/apps/backend/built/static
 
-FROM node:${NODE_VERSION}-alpine AS app
+FROM node:${NODE_VERSION} AS app
 
 ARG REVISION=DEV
 
