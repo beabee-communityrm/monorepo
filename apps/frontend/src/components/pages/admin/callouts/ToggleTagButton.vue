@@ -2,11 +2,11 @@
   <AppDropdownButton
     :icon="faTag"
     variant="primaryOutlined"
-    :title="t('calloutResponsePage.actions.toggleTag')"
+    :title="t('tags.toggleTag')"
     :show-title="withText"
   >
     <p v-if="tagItems.length === 0" class="px-3 py-2 italic">
-      {{ t('calloutResponsesPage.noTags') }}
+      {{ t('tags.noTags') }}
     </p>
     <AppSelectableList
       v-else
@@ -22,9 +22,7 @@
       class="block border-t border-primary-40 px-3 py-2 font-semibold text-primary underline hover:bg-primary-5 group-hover:border-primary"
       :to="manageUrl"
     >
-      <font-awesome-icon class="mr-2" :icon="faCog" />{{
-        t('calloutResponsePage.manageTags')
-      }}
+      <font-awesome-icon class="mr-2" :icon="faCog" />{{ t('tags.manageTags') }}
     </router-link>
   </AppDropdownButton>
 </template>
@@ -53,8 +51,8 @@ function handleToggle(item: unknown, selected: boolean) {
     selected ? '-' + tag.id : '+' + tag.id,
     t(
       selected
-        ? 'calloutResponsePage.notifications.removedTag'
-        : 'calloutResponsePage.notifications.addedTag',
+        ? 'tags.notifications.removedTag'
+        : 'tags.notifications.addedTag',
       {
         tag: tag.label,
       }

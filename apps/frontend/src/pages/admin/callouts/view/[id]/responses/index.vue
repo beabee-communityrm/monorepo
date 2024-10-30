@@ -18,7 +18,7 @@ meta:
       >
         <AppSelect
           v-model="currentTag"
-          :placeholder="t('calloutResponsesPage.searchTag')"
+          :placeholder="t('tags.searchTag')"
           :items="tagItems"
         />
         <AppSelect

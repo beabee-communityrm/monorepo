@@ -9,7 +9,7 @@ meta:
   <div class="grid gap-8 lg:grid-cols-2 xl:grid-cols-3">
     <div>
       <AppHeading>
-        {{ t('calloutResponsePage.manageTags') }}
+        {{ t('tags.manageTags') }}
       </AppHeading>
 
       <TagEditorItem
@@ -69,7 +69,7 @@ const { t } = useI18n();
 const tags = ref<GetCalloutTagData[]>();
 const formVisible = ref(false);
 
-addBreadcrumb(computed(() => [{ title: t('calloutResponsePage.manageTags') }]));
+addBreadcrumb(computed(() => [{ title: t('tags.manageTags') }]));
 
 async function handleUpdateTag(tagId: string, data: UpdateCalloutTagData) {
   const updatedTag = await updateTag(props.callout.slug, tagId, data);

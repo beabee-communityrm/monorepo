@@ -466,30 +466,24 @@
     "actions": {
       "assignTo": "Assign to",
       "moveBucket": "Move bucket",
-      "toggleTag": "Toggle tag",
       "viewOnMap": "View on map"
     },
     "editMode": "You are in edit mode, be careful!",
     "manageFolders": "Manage folders",
     "manageReviewers": "Manage reviewers",
-    "manageTags": "Manage tags",
     "notifications": {
       "addedAssignee": "Assigned to \"{assignee}\"",
-      "addedTag": "Added tag \"{tag}\"",
       "movedToBucket": "Moved to {bucket}",
       "removedAssignee": "Unassigned from \"{assignee}\"",
-      "removedTag": "Removed tag \"{tag}\" "
     },
     "responseOf": "Response {no} out of {total} in {bucket}",
     "selectedCount": "{n} response selected | {n} responses selected"
   },
   "calloutResponsesPage": {
     "moveToBucket": "Move to {bucket}",
-    "noTags": "No tags",
     "response": "Response",
     "responseNo": "Response {no}",
     "searchAssignee": "Assigned to...",
-    "searchTag": "Tagged with...",
     "showAnswer": "Answer",
     "showLatestComment": "Latest comment",
     "showingOf": "Showing {start} to {end} responses out of {total}"
@@ -685,7 +679,6 @@
     "numResults": "{n} contact found | {n} contacts found",
     "search": "Search contacts...",
     "showingOf": "Showing {start} to {end} contacts out of {total}",
-    "manageTags": "Manage tags",
   },
   "contribution": {
     "adminCancelDescription": "If you cancel the contact's contribution their membership will finish at the end of their current payment cycle on {date}.",
@@ -1388,6 +1381,16 @@
   "setPassword": {
     "description": "Set a new password to login.",
     "title": "Set a password"
+  },
+  "tags": {
+    "manageTags": "Manage tags",
+    "toggleTag": "Toggle tag",
+    "noTags": "No tags",
+    "searchTag": "Tagged with...",
+    "notifications": {
+      "addedTag": "Added tag \"{tag}\"",
+      "removedTag": "Removed tag \"{tag}\""
+    },
   },
   "tagEditor": {
     "add": "Add tag",

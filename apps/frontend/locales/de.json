@@ -462,30 +462,24 @@
     "actions": {
       "assignTo": "Zuweisen",
       "moveBucket": "Antwort verschieben",
-      "toggleTag": "Tag hinzufügen / entfernen",
       "viewOnMap": "Auf Karte anzeigen"
     },
     "editMode": "Vorsicht, du befindest dich im Bearbeitungsmodus!",
     "manageFolders": "Ordner bearbeiten",
     "manageReviewers": "Auswerter bearbeiten",
-    "manageTags": "Tags bearbeiten",
     "notifications": {
       "addedAssignee": "\"{assignee}\" zugewiesen",
-      "addedTag": "Tag \"{tag}\" hinzugefügt",
       "movedToBucket": "Verschoben in {bucket}",
       "removedAssignee": "Nicht mehr \"{assignee}\" zugewiesen",
-      "removedTag": "Tag \"{tag}\" entfernt"
     },
     "responseOf": "Antwort {no} von {total} in {bucket}",
     "selectedCount": "{n} Antwort ausgewählt | {n} Antworten ausgewählt"
   },
   "calloutResponsesPage": {
     "moveToBucket": "Nach {bucket} verschieben",
-    "noTags": "Keine Tags",
     "response": "Antwort",
     "responseNo": "Antwort {no}",
     "searchAssignee": "Zugewiesen an...",
-    "searchTag": "Getaggt mit...",
     "showAnswer": "Antwort",
     "showLatestComment": "Letzter Kommentar",
     "showingOf": "Antworten {start} bis {end} von {total} werden angezeigt"
@@ -681,7 +675,6 @@
     "numResults": "{n} Kontakt gefunden | {n} Kontakte gefunden",
     "search": "Kontakte durchsuchen...",
     "showingOf": "{start} to {end} von {total} Kontakten werden angezeigt.",
-    "manageTags": "Tags bearbeiten"
   },
   "contribution": {
     "adminCancelDescription": "Wenn du die Mitgliedschaft des Kontakts kündigst, endet sie am Ende des aktuellen Zahlungszyklus am {date}.",
@@ -1382,6 +1375,16 @@
   "setPassword": {
     "description": "Neues Passwort eingeben, um fortzufahren.",
     "title": "Passwort vergeben"
+  },
+  "tags": {
+    "manageTags": "Tags bearbeiten",
+    "toggleTag": "Tag hinzufügen / entfernen",
+    "noTags": "Keine Tags",
+    "searchTag": "Getaggt mit...",
+    "notifications": {
+      "addedTag": "Tag \"{tag}\" hinzugefügt",
+      "removedTag": "Tag \"{tag}\" entfernt",
+    },
   },
   "tagEditor": {
     "add": "Tag hinzufügen",
