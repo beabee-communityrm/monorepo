@@ -57,11 +57,8 @@ services:
     <<: *base-app
     user: root
 
-    # Start cron on Alpine
-    command: "crond -f -d 7"
-
-    # Start cron on Debian
-    # command: ["cron", "-f"]
+    # Start cron
+    command: ["cron", "-f"]
     init: true
 
   # The new frontend
