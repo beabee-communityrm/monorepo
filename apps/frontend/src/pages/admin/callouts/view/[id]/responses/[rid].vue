@@ -181,7 +181,7 @@ import AppButton from '@components/button/AppButton.vue';
 import AppButtonGroup from '@components/button/AppButtonGroup.vue';
 import { addBreadcrumb } from '@store/breadcrumb';
 import MoveBucketButton from '@components/pages/admin/callouts/MoveBucketButton.vue';
-import ToggleTagButton from '@components/pages/admin/callouts/ToggleTagButton.vue';
+import ToggleTagButton from '@components/tag/ToggleTagButton.vue';
 import { buckets } from '@components/pages/admin/callouts/callouts.interface';
 import AppTag from '@components/AppTag.vue';
 import CalloutResponseComments from '@components/callout/CalloutResponseComments.vue';

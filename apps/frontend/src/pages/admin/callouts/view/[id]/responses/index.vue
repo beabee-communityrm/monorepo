@@ -225,7 +225,7 @@ import AppButtonGroup from '@components/button/AppButtonGroup.vue';
 import { updateCalloutResponses } from '@utils/api/callout-response';
 import AppTag from '@components/AppTag.vue';
 import MoveBucketButton from '@components/pages/admin/callouts/MoveBucketButton.vue';
-import ToggleTagButton from '@components/pages/admin/callouts/ToggleTagButton.vue';
+import ToggleTagButton from '@components/tag/ToggleTagButton.vue';
 import { buckets } from '@components/pages/admin/callouts/callouts.interface';
 import SetAssigneeButton from '@components/pages/admin/callouts/SetAssigneeButton.vue';
 import { fetchContacts } from '@utils/api/contact';

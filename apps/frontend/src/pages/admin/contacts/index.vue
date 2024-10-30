@@ -154,8 +154,7 @@ import { addNotification } from '@store/notifications';
 
 import PageTitle from '@components/PageTitle.vue';
 import AppButton from '@components/button/AppButton.vue';
-// TODO: Make this reusable
-import ToggleTagButton from '@components/pages/admin/callouts/ToggleTagButton.vue';
+import ToggleTagButton from '@components/tag/ToggleTagButton.vue';
 import AppSearch from '@components/search/AppSearch.vue';
 import AppTag from '@components/AppTag.vue';
 import {
