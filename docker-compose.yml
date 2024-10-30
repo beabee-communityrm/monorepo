@@ -2,10 +2,6 @@
 
 # Backend app and legacy frontend
 x-base-app: &base-app
-  build:
-    context: .
-    dockerfile: ./apps/backend/Dockerfile
-    target: app
   volumes:
     - ./apps/backend/built:/opt/apps/backend/built
     - ./packages/common/dist:/opt/packages/common/dist
@@ -34,15 +30,44 @@ services:
     ports:
       - ${MAIL_PORT}:1080
 
-  app: *base-app
+  app:
+    <<: *base-app
+    build:
+      context: .
+      dockerfile: ./apps/backend/Dockerfile
+      target: legacy_app
 
   api_app:
     <<: *base-app
-    command: node ./built/api/app.js
+    build:
+      context: .
+      dockerfile: ./apps/backend/Dockerfile
+      target: api_app
 
   webhook_app:
     <<: *base-app
-    command: node ./built/webhooks/app.js
+    build:
+      context: .
+      dockerfile: ./apps/backend/Dockerfile
+      target: webhook_app
+
+  cron:
+    <<: *base-app
+    build:
+      context: .
+      dockerfile: ./apps/backend/Dockerfile
+      target: cron_app
+    init: true
+
+  # Router for legacy app
+  router:
+    build:
+      context: .
+      dockerfile: ./apps/backend/Dockerfile
+      target: router
+    volumes:
+      # Used for local development
+      - ./apps/backend/built/static:/opt/built/static:ro
 
   img_upload_app:
     image: beabee/pictshare:v0.1.1
@@ -52,14 +77,6 @@ services:
     init: true
     volumes:
       - upload_data:/var/www/data
-
-  cron:
-    <<: *base-app
-    user: root
-
-    # Start cron
-    command: ["cron", "-f"]
-    init: true
 
   # The new frontend
   frontend:
@@ -93,16 +110,6 @@ services:
     ports:
       # Only used for local development
       - 3002:80
-
-  # Router for legacy app
-  router:
-    build:
-      context: .
-      dockerfile: ./apps/backend/Dockerfile
-      target: router
-    volumes:
-      # Used for local development
-      - ./apps/backend/built/static:/opt/built/static:ro
 
 volumes:
   db_data:

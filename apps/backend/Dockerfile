@@ -69,13 +69,10 @@ RUN echo -n ${REVISION} > /opt/apps/backend/built/revision.txt
 RUN yarn workspaces focus --production
 
 ##################################
-# Application image
-# The main application image with the built application
+# Distribution stage
+# The main image with the built application
 ##################################
-FROM base AS app
-
-# Install cron
-RUN apt-get update && apt-get install -y cron && rm -rf /var/lib/apt/lists/*
+FROM base AS dist
 
 # Copy built files and dependencies
 COPY --chown=node:node --from=builder /opt/node_modules /opt/node_modules
@@ -83,18 +80,37 @@ COPY --chown=node:node --from=builder /opt/apps/backend/built /opt/apps/backend/
 COPY --chown=node:node --from=builder /opt/packages/core/dist /opt/packages/core/dist
 COPY --chown=node:node --from=builder /opt/packages/common/dist /opt/packages/common/dist
 
+##################################
+# Output stages
+##################################
+
+## Application images
+FROM dist AS legacy_app
+USER node
+CMD [ "node", "./built/app.js" ]
+
+FROM dist AS api_app
+USER node
+CMD [ "node", "./built/api/app.js" ]
+
+FROM dist as webhook_app
+USER node
+CMD [ "node", "./built/webhook/app.js" ]
+
+## Cron image
+FROM dist as cron_app
+
+# Install cron
+RUN apt-get update && apt-get install -y cron && rm -rf /var/lib/apt/lists/*
+
 # Install crontab
 COPY apps/backend/crontab /etc/cron.d/beabee-cron
 RUN chmod 0644 /etc/cron.d/beabee-cron
 RUN crontab /etc/cron.d/beabee-cron
 
-USER node
-CMD [ "node", "./built/app.js" ]
+CMD [ "cron", "-f" ]
 
-##################################
-# Router image
-# The legacy router image
-##################################
+## Router image
 FROM nginx:1.27-alpine AS router
 
 COPY apps/backend/nginx.conf /etc/nginx/conf.d/default.conf
