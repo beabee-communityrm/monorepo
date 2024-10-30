@@ -4,11 +4,9 @@ import {
   type ContributionInfo,
   ContributionPeriod,
   type CreateContactData,
-  type CreateContactTagData,
   type ForceUpdateContributionData,
   type GetContactData,
   type GetContactDataWith,
-  type GetContactTagData,
   type GetContactsQuery,
   GetContactWith,
   type GetPaymentData,
@@ -22,13 +20,13 @@ import {
   type StartContributionData,
   type UpdateContactData,
   type UpdateContactRoleData,
-  type UpdateContactTagData,
 } from '@beabee/beabee-common';
 
 import { deserializeDate, instance } from '.';
 import env from '../../env';
 
 import type { PaymentFlowParams } from '@type';
+import { TagOperations } from './tag-operations';
 
 // TODO: how to make this type safe?
 export function deserializeContact(data: any): any {
@@ -228,7 +226,7 @@ export async function completeUpdatePaymentMethod(
   return deserializeContribution(data);
 }
 
-export async function fetchPayments(
+export async function fetchContactPayments(
   id: string,
   query: GetPaymentsQuery
 ): Promise<Paginated<GetPaymentData>> {
@@ -265,48 +263,5 @@ export async function deleteRole(id: string, role: RoleType): Promise<void> {
   await instance.delete(`/contact/${id}/role/${role}`);
 }
 
-export async function fetchTags(id: string): Promise<GetContactTagData[]> {
-  const { data } = await instance.get<Serial<GetContactTagData>[]>(
-    `/contact/${id}/tags`
-  );
-
-  return data;
-}
-
 // TODO: Implement this API endpoint
-export async function createTag(
-  id: string,
-  dataIn: CreateContactTagData
-): Promise<GetContactTagData> {
-  const { data } = await instance.post<Serial<GetContactTagData>>(
-    `/contact/${id}/tags`,
-    {
-      name: dataIn.name,
-      description: dataIn.description,
-    }
-  );
-
-  return data;
-}
-
-// TODO: Implement this API endpoint
-export async function updateTag(
-  id: string,
-  tagId: string,
-  dataIn: UpdateContactTagData
-): Promise<GetContactTagData> {
-  const { data } = await instance.patch<Serial<GetContactTagData>>(
-    `/contact/${id}/tags/${tagId}`,
-    {
-      name: dataIn.name,
-      description: dataIn.description,
-    }
-  );
-
-  return data;
-}
-
-// TODO: Implement this API endpoint
-export async function deleteTag(id: string, tagId: string): Promise<void> {
-  await instance.delete(`/contact/${id}/tags/${tagId}`);
-}
+export const contactTagOperations = new TagOperations('contact');

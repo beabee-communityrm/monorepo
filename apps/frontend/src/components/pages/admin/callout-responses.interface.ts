@@ -10,7 +10,7 @@ import { type Header } from '../../table/table.interface';
 
 import type { FilterItems } from '@type';
 import { withLabel } from '@utils/rules';
-import { fetchTags } from '@utils/api/callout';
+import { calloutTagOperations } from '@utils/api/callout';
 import type { SelectItem } from '@components/forms/form.interface';
 import { convertComponentsToFilters } from '@utils/callouts';
 
@@ -101,7 +101,9 @@ export function useCalloutResponseFilters(
 
   const tagItems = ref<SelectItem<string>[]>([]);
   watchEffect(async () => {
-    const tags = callout.value ? await fetchTags(callout.value.slug) : [];
+    const tags = callout.value
+      ? await calloutTagOperations.fetchTags(callout.value.slug)
+      : [];
     tagItems.value = tags.map((tag) => ({ id: tag.id, label: tag.name }));
   });
 

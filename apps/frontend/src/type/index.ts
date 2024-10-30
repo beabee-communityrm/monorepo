@@ -10,6 +10,7 @@ export * from './app-qr-code-type-number';
 export * from './app-slider-props';
 export * from './app-slider-slide-event-details';
 export * from './app-stepper-step';
+export * from './breadcrumb-item';
 export * from './complete-signup-data';
 export * from './contact-mfa-data';
 export * from './content';

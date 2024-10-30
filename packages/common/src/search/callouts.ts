@@ -1,5 +1,6 @@
 import type { Filters } from "../types/index.ts";
 import { ItemStatus } from "../data/index.ts";
+import { tagFilters } from "./tags.ts";
 
 export const calloutFilters = {
   id: {
@@ -94,15 +95,7 @@ export const calloutResponseCommentFilters = {
 } as const satisfies Filters;
 
 export const calloutTagFilters = {
-  id: {
-    type: "text",
-  },
-  name: {
-    type: "text",
-  },
-  description: {
-    type: "text",
-  },
+  ...tagFilters,
   calloutId: {
     type: "text",
   },

@@ -192,7 +192,7 @@ import CalloutForm from '@components/pages/callouts/CalloutForm.vue';
 import { addNotification } from '@store/notifications';
 
 import { formatLocale } from '@utils/dates';
-import { fetchResponses, fetchTags } from '@utils/api/callout';
+import { fetchResponses, calloutTagOperations } from '@utils/api/callout';
 import {
   fetchCalloutResponse,
   updateCalloutResponse,
@@ -265,7 +265,7 @@ async function handleEditResponse(answers: CalloutResponseAnswersSlide) {
 }
 
 onBeforeMount(async () => {
-  const tags = await fetchTags(props.callout.slug);
+  const tags = await calloutTagOperations.fetchTags(props.callout.slug);
   tagItems.value = tags.map((tag) => ({ id: tag.id, label: tag.name }));
 });
 

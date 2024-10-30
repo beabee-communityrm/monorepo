@@ -254,7 +254,7 @@ export class CalloutController {
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @CalloutId() id: string,
     @Param("tagId") tagId: string,
-    @PartialBody() data: CreateCalloutTagDto // Partial<CreateCalloutTagData>
+    @PartialBody() data: CreateCalloutTagDto // Partial<TagCreateData>
   ): Promise<GetCalloutTagDto | undefined> {
     await getRepository(CalloutTag).update({ id: tagId, calloutId: id }, data);
 
