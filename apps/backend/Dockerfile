@@ -49,16 +49,15 @@ RUN NODE_ENV=production yarn workspace @beabee/core build
 COPY apps/backend /opt/apps/backend
 RUN NODE_ENV=production yarn workspace @beabee/backend build
 
+# Prune non-production dependencies
+RUN yarn workspaces focus --production
+
 FROM nginx:1.27-alpine AS router
 
 COPY apps/backend/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --chown=nginx:nginx --from=builder /opt/apps/backend/built/static /opt/apps/backend/built/static
 
 FROM node:${NODE_VERSION} AS app
-
-ARG REVISION=DEV
-
-ENV NODE_ENV=production
 
 WORKDIR /opt/apps/backend
 
@@ -71,9 +70,6 @@ COPY --chown=node:node --from=builder /opt/node_modules /opt/node_modules
 COPY --chown=node:node --from=builder /opt/apps/backend/package.json /opt/apps/backend/
 COPY --chown=node:node --from=builder /opt/packages/core/package.json /opt/packages/core/
 COPY --chown=node:node --from=builder /opt/packages/common/package.json /opt/packages/common/
-
-# Prune non-production dependencies
-RUN yarn workspaces focus --production
 
 # Copy the built files
 COPY --chown=node:node --from=builder /opt/apps/backend/built /opt/apps/backend/built
@@ -88,6 +84,7 @@ COPY apps/backend/crontab /etc/crontabs/root
 # RUN chmod 0644 /etc/cron.d/beabee-cron
 # RUN crontab /etc/cron.d/beabee-cron
 
+ARG REVISION=DEV
 RUN echo -n ${REVISION} > /opt/apps/backend/built/revision.txt
 
 ENV NODE_ENV=production
