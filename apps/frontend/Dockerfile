@@ -1,7 +1,7 @@
 ARG DENO_VERSION=2.0.3
 ARG NODE_VERSION=22
 
-FROM node:${NODE_VERSION}-bookworm-slim as builder
+FROM node:${NODE_VERSION}-bookworm-slim AS builder
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
