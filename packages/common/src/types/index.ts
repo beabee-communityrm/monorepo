@@ -2,7 +2,6 @@ export * from "./address.ts";
 export * from "./allow-null.ts";
 export * from "./api-key-filter-name.ts";
 export * from "./array-filter-args.ts";
-export * from "./assert-filters.ts";
 export * from "./base-filter-args.ts";
 export * from "./base-validated-rule.ts";
 export * from "./callout-channel-filter-name.ts";

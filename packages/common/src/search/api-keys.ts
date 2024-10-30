@@ -1,19 +1,12 @@
-import type { AssertFilters, Filters } from "../types/index.ts";
+import type { Filters } from "../types/index.ts";
 
-type ApiKeyFilters = {
-  readonly id: {
-    readonly type: "text";
-  };
-  readonly createdAt: {
-    readonly type: "date";
-  };
-};
-
-export const apiKeyFilters: AssertFilters<ApiKeyFilters> = {
+export const apiKeyFilters = {
   id: {
     type: "text",
   },
   createdAt: {
     type: "date",
   },
-} as const satisfies Filters;
+} as const;
+
+apiKeyFilters satisfies Filters;

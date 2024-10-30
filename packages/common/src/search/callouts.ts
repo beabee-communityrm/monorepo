@@ -1,46 +1,7 @@
 import type { Filters } from "../types/index.ts";
 import { ItemStatus } from "../data/index.ts";
-import type { AssertFilters } from "../types/index.ts";
 
-type CalloutFilters = {
-  readonly id: {
-    readonly type: "text";
-  };
-  readonly slug: {
-    readonly type: "text";
-  };
-  readonly title: {
-    readonly type: "text";
-  };
-  readonly status: {
-    readonly type: "enum";
-    readonly options: [
-      ItemStatus.Draft,
-      ItemStatus.Scheduled,
-      ItemStatus.Open,
-      ItemStatus.Ended,
-    ];
-  };
-  readonly answeredBy: {
-    readonly type: "contact";
-  };
-  readonly starts: {
-    readonly type: "date";
-    readonly nullable: true;
-  };
-  readonly expires: {
-    readonly type: "date";
-    readonly nullable: true;
-  };
-  readonly hidden: {
-    readonly type: "boolean";
-  };
-  readonly channels: {
-    readonly type: "array";
-  };
-};
-
-export const calloutFilters: AssertFilters<CalloutFilters> = {
+export const calloutFilters = {
   id: {
     type: "text",
   },
@@ -57,7 +18,7 @@ export const calloutFilters: AssertFilters<CalloutFilters> = {
       ItemStatus.Scheduled,
       ItemStatus.Open,
       ItemStatus.Ended,
-    ] as const satisfies ItemStatus[],
+    ] satisfies ItemStatus[] as ItemStatus[],
   },
   answeredBy: {
     type: "contact",
@@ -76,42 +37,10 @@ export const calloutFilters: AssertFilters<CalloutFilters> = {
   channels: {
     type: "array",
   },
-} as const satisfies Filters;
+} as const;
+calloutFilters satisfies Filters;
 
-type CalloutResponseFilters = {
-  readonly id: {
-    readonly type: "text";
-  };
-  readonly contact: {
-    readonly type: "contact";
-    readonly nullable: true;
-  };
-  readonly calloutId: {
-    readonly type: "text";
-  };
-  readonly createdAt: {
-    readonly type: "date";
-  };
-  readonly updatedAt: {
-    readonly type: "date";
-  };
-  readonly bucket: {
-    readonly type: "text";
-    readonly nullable: true;
-  };
-  readonly tags: {
-    readonly type: "array";
-  };
-  readonly assignee: {
-    readonly type: "contact";
-    readonly nullable: true;
-  };
-  readonly answers: {
-    readonly type: "blob";
-  };
-};
-
-export const calloutResponseFilters: AssertFilters<CalloutResponseFilters> = {
+export const calloutResponseFilters = {
   id: {
     type: "text",
   },
@@ -142,32 +71,10 @@ export const calloutResponseFilters: AssertFilters<CalloutResponseFilters> = {
   answers: {
     type: "blob",
   },
-} as const satisfies Filters;
+} as const;
+calloutResponseFilters satisfies Filters;
 
-type CalloutResponseCommentFilters = {
-  readonly id: {
-    readonly type: "text";
-  };
-  readonly responseId: {
-    readonly type: "text";
-  };
-  readonly contact: {
-    readonly type: "contact";
-  };
-  readonly createdAt: {
-    readonly type: "date";
-  };
-  readonly updatedAt: {
-    readonly type: "date";
-  };
-  readonly text: {
-    readonly type: "text";
-  };
-};
-
-export const calloutResponseCommentFilters: AssertFilters<
-  CalloutResponseCommentFilters
-> = {
+export const calloutResponseCommentFilters = {
   id: {
     type: "text",
   },
@@ -186,24 +93,10 @@ export const calloutResponseCommentFilters: AssertFilters<
   text: {
     type: "text",
   },
-} as const satisfies Filters;
+} as const;
+calloutResponseCommentFilters satisfies Filters;
 
-type CalloutTagFilters = {
-  readonly id: {
-    readonly type: "text";
-  };
-  readonly name: {
-    readonly type: "text";
-  };
-  readonly description: {
-    readonly type: "text";
-  };
-  readonly calloutId: {
-    readonly type: "text";
-  };
-};
-
-export const calloutTagFilters: AssertFilters<CalloutTagFilters> = {
+export const calloutTagFilters = {
   id: {
     type: "text",
   },
@@ -216,24 +109,10 @@ export const calloutTagFilters: AssertFilters<CalloutTagFilters> = {
   calloutId: {
     type: "text",
   },
-} as const satisfies Filters;
+} as const;
+calloutTagFilters satisfies Filters;
 
-type CalloutChannelFilters = {
-  readonly id: {
-    readonly type: "text";
-  };
-  readonly name: {
-    readonly type: "text";
-  };
-  readonly description: {
-    readonly type: "text";
-  };
-  readonly calloutId: {
-    readonly type: "text";
-  };
-};
-
-export const calloutChannelFilters: AssertFilters<CalloutChannelFilters> = {
+export const calloutChannelFilters = {
   id: {
     type: "text",
   },
@@ -246,4 +125,5 @@ export const calloutChannelFilters: AssertFilters<CalloutChannelFilters> = {
   calloutId: {
     type: "text",
   },
-} as const satisfies Filters;
+} as const;
+calloutChannelFilters satisfies Filters;

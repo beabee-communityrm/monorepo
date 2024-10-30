@@ -1,4 +1,4 @@
-import type { AssertFilters, Filters } from "../types/index.ts";
+import type { Filters } from "../types/index.ts";
 import {
   ContributionPeriod,
   ContributionType,
@@ -7,84 +7,7 @@ import {
 
 export const RoleTypes = ["member", "admin", "superadmin"] as const;
 
-type ContactFilters = {
-  readonly id: {
-    readonly type: "contact";
-  };
-  readonly firstname: {
-    readonly type: "text";
-  };
-  readonly lastname: {
-    readonly type: "text";
-  };
-  readonly email: {
-    readonly type: "text";
-  };
-  readonly joined: {
-    readonly type: "date";
-  };
-  readonly lastSeen: {
-    readonly type: "date";
-  };
-  readonly contributionCancelled: {
-    readonly type: "date";
-    readonly nullable: true;
-  };
-  readonly contributionType: {
-    readonly type: "enum";
-    readonly options: [
-      ContributionType.Automatic,
-      ContributionType.Gift,
-      ContributionType.Manual,
-      ContributionType.None,
-    ];
-  };
-  readonly contributionMonthlyAmount: {
-    readonly type: "number";
-  };
-  readonly contributionPeriod: {
-    readonly type: "enum";
-    readonly options: [ContributionPeriod.Monthly, ContributionPeriod.Annually];
-  };
-  readonly deliveryOptIn: {
-    readonly type: "boolean";
-  };
-  readonly newsletterStatus: {
-    readonly type: "enum";
-    readonly options: [
-      NewsletterStatus.Subscribed,
-      NewsletterStatus.Unsubscribed,
-      NewsletterStatus.Cleaned,
-      NewsletterStatus.Pending,
-      NewsletterStatus.None,
-    ];
-  };
-  readonly newsletterGroups: {
-    readonly type: "array";
-  };
-  readonly activePermission: {
-    readonly type: "enum";
-    readonly options: typeof RoleTypes;
-  };
-  readonly activeMembership: {
-    readonly type: "boolean";
-  };
-  readonly membershipStarts: {
-    readonly type: "date";
-  };
-  readonly membershipExpires: {
-    readonly type: "date";
-  };
-  readonly manualPaymentSource: {
-    readonly type: "text";
-    readonly nullable: true;
-  };
-  readonly tags: {
-    readonly type: "array";
-  };
-};
-
-export const contactFilters: AssertFilters<ContactFilters> = {
+export const contactFilters = {
   id: {
     type: "contact",
   },
@@ -114,7 +37,7 @@ export const contactFilters: AssertFilters<ContactFilters> = {
       ContributionType.Gift,
       ContributionType.Manual,
       ContributionType.None,
-    ] as const satisfies ContributionType[],
+    ] satisfies ContributionType[] as ContributionType[],
   },
   contributionMonthlyAmount: {
     type: "number",
@@ -124,7 +47,7 @@ export const contactFilters: AssertFilters<ContactFilters> = {
     options: [
       ContributionPeriod.Monthly,
       ContributionPeriod.Annually,
-    ] as const satisfies ContributionPeriod[],
+    ] satisfies ContributionPeriod[] as ContributionPeriod[],
   },
   deliveryOptIn: {
     type: "boolean",
@@ -137,14 +60,14 @@ export const contactFilters: AssertFilters<ContactFilters> = {
       NewsletterStatus.Cleaned,
       NewsletterStatus.Pending,
       NewsletterStatus.None,
-    ] as const satisfies NewsletterStatus[],
+    ] satisfies NewsletterStatus[] as NewsletterStatus[],
   },
   newsletterGroups: {
     type: "array",
   },
   activePermission: {
     type: "enum",
-    options: RoleTypes,
+    options: RoleTypes satisfies typeof RoleTypes as typeof RoleTypes,
   },
   activeMembership: {
     type: "boolean",
@@ -162,20 +85,16 @@ export const contactFilters: AssertFilters<ContactFilters> = {
   tags: {
     type: "array",
   },
-} as const satisfies Filters;
+} as const;
+contactFilters satisfies Filters;
 
 export type ContactFilterName = keyof typeof contactFilters;
 
-type ContactCalloutFilters = {
-  readonly hasAnswered: {
-    readonly type: "boolean";
-  };
-};
-
-export const contactCalloutFilters: AssertFilters<ContactCalloutFilters> = {
+export const contactCalloutFilters = {
   hasAnswered: {
     type: "boolean",
   },
-} as const satisfies Filters;
+} as const;
+contactCalloutFilters satisfies Filters;
 
 export type ContactCalloutFilterName = keyof typeof contactCalloutFilters;

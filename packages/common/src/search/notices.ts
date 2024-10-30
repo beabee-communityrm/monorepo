@@ -1,41 +1,7 @@
-import type { AssertFilters, Filters } from "../types/index.ts";
+import type { Filters } from "../types/index.ts";
 import { ItemStatus } from "../data/index.ts";
 
-type NoticeFilters = {
-  readonly id: {
-    readonly type: "text";
-  };
-  readonly createdAt: {
-    readonly type: "date";
-  };
-  readonly updatedAt: {
-    readonly type: "date";
-  };
-  readonly name: {
-    readonly type: "text";
-  };
-  readonly expires: {
-    readonly type: "date";
-    readonly nullable: true;
-  };
-  readonly enabled: {
-    readonly type: "boolean";
-  };
-  readonly text: {
-    readonly type: "text";
-  };
-  readonly status: {
-    readonly type: "enum";
-    readonly options: [
-      ItemStatus.Draft,
-      ItemStatus.Scheduled,
-      ItemStatus.Open,
-      ItemStatus.Ended,
-    ];
-  };
-};
-
-export const noticeFilters: AssertFilters<NoticeFilters> = {
+export const noticeFilters = {
   id: {
     type: "text",
   },
@@ -65,6 +31,7 @@ export const noticeFilters: AssertFilters<NoticeFilters> = {
       ItemStatus.Scheduled,
       ItemStatus.Open,
       ItemStatus.Ended,
-    ] as const satisfies ItemStatus[],
+    ] satisfies ItemStatus[] as ItemStatus[],
   },
-} as const satisfies Filters;
+} as const;
+noticeFilters satisfies Filters;

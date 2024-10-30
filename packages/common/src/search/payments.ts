@@ -1,32 +1,7 @@
-import type { AssertFilters, Filters } from "../types/index.ts";
+import type { Filters } from "../types/index.ts";
 import { PaymentStatus } from "../data/index.ts";
 
-type PaymentFilters = {
-  readonly id: {
-    readonly type: "text";
-  };
-  readonly contact: {
-    readonly type: "contact";
-  };
-  readonly chargeDate: {
-    readonly type: "date";
-  };
-  readonly amount: {
-    readonly type: "number";
-  };
-  readonly status: {
-    readonly type: "enum";
-    readonly options: [
-      PaymentStatus.Draft,
-      PaymentStatus.Pending,
-      PaymentStatus.Successful,
-      PaymentStatus.Failed,
-      PaymentStatus.Cancelled,
-    ];
-  };
-};
-
-export const paymentFilters: AssertFilters<PaymentFilters> = {
+export const paymentFilters = {
   id: {
     type: "text",
   },
@@ -47,6 +22,7 @@ export const paymentFilters: AssertFilters<PaymentFilters> = {
       PaymentStatus.Successful,
       PaymentStatus.Failed,
       PaymentStatus.Cancelled,
-    ] as const satisfies PaymentStatus[],
+    ] satisfies readonly PaymentStatus[] as readonly PaymentStatus[],
   },
-} as const satisfies Filters;
+} as const;
+paymentFilters satisfies Filters;

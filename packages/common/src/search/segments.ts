@@ -1,18 +1,6 @@
-import type { AssertFilters, Filters } from "../types/index.ts";
+import type { Filters } from "../types/index.ts";
 
-type SegmentFilters = {
-  readonly id: {
-    readonly type: "text";
-  };
-  readonly name: {
-    readonly type: "text";
-  };
-  readonly description: {
-    readonly type: "text";
-  };
-};
-
-export const segmentFilters: AssertFilters<SegmentFilters> = {
+export const segmentFilters = {
   id: {
     type: "text",
   },
@@ -22,4 +10,5 @@ export const segmentFilters: AssertFilters<SegmentFilters> = {
   description: {
     type: "text",
   },
-} as const satisfies Filters;
+} as const;
+segmentFilters satisfies Filters;
