@@ -50,17 +50,10 @@ RUN deno --version
 # Install dependencies
 RUN yarn workspaces focus
 
-# Build common
-COPY packages/common /opt/packages/common
-RUN yarn workspace @beabee/beabee-common build
-
-# Build core
-COPY packages/core /opt/packages/core
-RUN yarn workspace @beabee/core build
-
-# Build backend
+# Copy source and build
+COPY packages /opt/packages
 COPY apps/backend /opt/apps/backend
-RUN yarn workspace @beabee/backend build
+RUN yarn workspaces foreach --recursive --topological-dev --parallel --verbose --from @beabee/backend run build
 
 ARG REVISION=DEV
 RUN echo -n ${REVISION} > /opt/apps/backend/built/revision.txt
