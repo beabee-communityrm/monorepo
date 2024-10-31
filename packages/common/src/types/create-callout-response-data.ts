@@ -5,6 +5,7 @@ export interface CreateCalloutResponseData {
   guestEmail?: string;
   answers: CalloutResponseAnswersSlide;
   bucket?: string;
+  /** List of tags ids to add to the callout response */
   tags?: string[];
   assigneeId?: string | null;
 }

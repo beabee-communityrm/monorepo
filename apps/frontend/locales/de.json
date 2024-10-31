@@ -470,7 +470,7 @@
     "notifications": {
       "addedAssignee": "\"{assignee}\" zugewiesen",
       "movedToBucket": "Verschoben in {bucket}",
-      "removedAssignee": "Nicht mehr \"{assignee}\" zugewiesen",
+      "removedAssignee": "Nicht mehr \"{assignee}\" zugewiesen"
     },
     "responseOf": "Antwort {no} von {total} in {bucket}",
     "selectedCount": "{n} Antwort ausgewählt | {n} Antworten ausgewählt"
@@ -675,6 +675,7 @@
     "numResults": "{n} Kontakt gefunden | {n} Kontakte gefunden",
     "search": "Kontakte durchsuchen...",
     "showingOf": "{start} to {end} von {total} Kontakten werden angezeigt.",
+    "selectedCount": "{n} Kontakt ausgewählt | {n} Kontakte ausgewählt"
   },
   "contribution": {
     "adminCancelDescription": "Wenn du die Mitgliedschaft des Kontakts kündigst, endet sie am Ende des aktuellen Zahlungszyklus am {date}.",
@@ -1384,7 +1385,7 @@
     "notifications": {
       "addedTag": "Tag \"{tag}\" hinzugefügt",
       "removedTag": "Tag \"{tag}\" entfernt",
-    },
+    }
   },
   "tagEditor": {
     "add": "Tag hinzufügen",

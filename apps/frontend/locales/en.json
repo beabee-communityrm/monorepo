@@ -474,7 +474,7 @@
     "notifications": {
       "addedAssignee": "Assigned to \"{assignee}\"",
       "movedToBucket": "Moved to {bucket}",
-      "removedAssignee": "Unassigned from \"{assignee}\"",
+      "removedAssignee": "Unassigned from \"{assignee}\""
     },
     "responseOf": "Response {no} out of {total} in {bucket}",
     "selectedCount": "{n} response selected | {n} responses selected"
@@ -679,6 +679,7 @@
     "numResults": "{n} contact found | {n} contacts found",
     "search": "Search contacts...",
     "showingOf": "Showing {start} to {end} contacts out of {total}",
+    "selectedCount": "{n} contact selected | {n} contacts selected"
   },
   "contribution": {
     "adminCancelDescription": "If you cancel the contact's contribution their membership will finish at the end of their current payment cycle on {date}.",

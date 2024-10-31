@@ -48,28 +48,37 @@ meta:
       selectable
     >
       <template #actions>
-        <!-- TODO: Add support for exporting selected contacts (instead of all contacts) -->
-        <AppButton
-          :icon="faDownload"
-          variant="primaryOutlined"
-          :title="t('actions.export')"
-          :disabled="selectedCount > 0"
-          @click="handleExport"
-        />
-        <ToggleTagButton
-          :tag-items="tagItems"
-          :selected-tags="selectedTags"
-          :manage-url="`${route.path}/tags`"
-          :loading="doingAction"
-          :disabled="selectedCount === 0"
-          @toggle="
-            (tagId, successText) =>
-              handleUpdateAction(
-                { tags: [tagId] }, // TODO: Callout responses only use string[] for updates
-                successText
-              )
-          "
-        />
+        <AppButtonGroup>
+          <!-- TODO: Add support for exporting selected contacts (instead of all contacts) -->
+          <AppButton
+            :icon="faDownload"
+            variant="primaryOutlined"
+            :title="t('actions.export')"
+            :disabled="selectedCount > 0"
+            @click="handleExport"
+          />
+          <ToggleTagButton
+            :tag-items="tagItems"
+            :selected-tags="selectedTags"
+            :manage-url="`${route.path}/tags`"
+            :loading="doingAction"
+            :disabled="selectedCount === 0"
+            @toggle="
+              (tagId, successText) =>
+                handleUpdateAction(
+                  { tags: [tagId] }, // TODO: Callout responses only use string[] for updates
+                  successText
+                )
+            "
+          />
+        </AppButtonGroup>
+        <p v-if="selectedCount > 0" class="self-center text-sm">
+          <i18n-t keypath="contacts.selectedCount" :plural="selectedCount">
+            <template #n>
+              <b>{{ selectedCount }}</b>
+            </template>
+          </i18n-t>
+        </p>
       </template>
       <template #empty>
         <p>
@@ -153,6 +162,7 @@ import { addBreadcrumb } from '@store/breadcrumb';
 import { addNotification } from '@store/notifications';
 
 import PageTitle from '@components/PageTitle.vue';
+import AppButtonGroup from '@components/button/AppButtonGroup.vue';
 import AppButton from '@components/button/AppButton.vue';
 import ToggleTagButton from '@components/tag/ToggleTagButton.vue';
 import AppSearch from '@components/search/AppSearch.vue';
