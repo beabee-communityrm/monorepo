@@ -86,17 +86,15 @@ FROM dist AS api_app
 USER node
 CMD [ "node", "./built/api/app.js" ]
 
-FROM dist as webhook_app
+FROM dist AS webhook_app
 USER node
-CMD [ "node", "./built/webhook/app.js" ]
+CMD [ "node", "./built/webhooks/app.js" ]
 
 ## Cron image
-FROM dist as cron_app
+FROM dist AS cron_app
 
-# Install cron
 RUN apt-get update && apt-get install -y cron && rm -rf /var/lib/apt/lists/*
 
-# Install crontab
 COPY apps/backend/crontab /etc/cron.d/beabee-cron
 RUN chmod 0644 /etc/cron.d/beabee-cron
 RUN crontab /etc/cron.d/beabee-cron
