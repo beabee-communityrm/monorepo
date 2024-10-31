@@ -100,9 +100,3 @@ RUN chmod 0644 /etc/cron.d/beabee-cron
 RUN crontab /etc/cron.d/beabee-cron
 
 CMD [ "cron", "-f" ]
-
-## Router image
-FROM nginx:1.27-alpine AS router
-
-COPY apps/backend/nginx.conf /etc/nginx/conf.d/default.conf
-COPY --chown=nginx:nginx --from=builder /opt/apps/backend/built/static /opt/apps/backend/built/static

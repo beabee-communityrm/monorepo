@@ -62,16 +62,6 @@ services:
       target: cron_app
     init: true
 
-  # Router for legacy app
-  router:
-    build:
-      context: .
-      dockerfile: ./apps/backend/Dockerfile
-      target: router
-    volumes:
-      # Used for local development
-      - ./apps/backend/built/static:/opt/built/static:ro
-
   # Image upload handler
   img_upload_app:
     image: beabee/pictshare:v0.1.1
@@ -95,15 +85,13 @@ services:
       - ./apps/frontend/nginx.conf:/etc/nginx/conf.d/default.conf
       - ./apps/frontend/dist:/usr/share/nginx/html
 
-  # Router for the new frontend
+  # Application router
   app_router:
     build:
       context: .
       dockerfile: ./apps/router/Dockerfile
     environment:
-      LEGACY_APP_URL: http://router
       LEGACY_APP_COOKIE_DOMAIN: ${BEABEE_COOKIE_DOMAIN}
-      FRONTEND_APP_URL: http://frontend
       TRUSTED_ORIGINS: ${BEABEE_TRUSTEDORIGINS-}
     volumes:
       # Used for local development

@@ -1,5 +1,7 @@
 import "module-alias/register";
 
+import path from "path";
+
 import cleanDeep from "clean-deep";
 import cookie from "cookie-parser";
 import csrf from "csurf"; // TODO: This package is deprecated, see https://www.npmjs.com/package/csurf
@@ -69,6 +71,8 @@ app.use("/membership.js", (req, res) => {
     res.status(404).send("");
   }
 });
+
+app.use("/static", express.static(path.join(__dirname, "static")));
 
 app.get("/favicon.png", (req, res) => {
   res.redirect(OptionsService.getText("logo"));
