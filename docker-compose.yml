@@ -2,10 +2,14 @@
 
 # Backend app and legacy frontend
 x-base-app: &base-app
+  build: &base-app-build
+    context: .
+    dockerfile: ./apps/backend/Dockerfile
   volumes:
     - ./apps/backend/built:/opt/apps/backend/built
     - ./packages/common/dist:/opt/packages/common/dist
     - ./packages/core/dist:/opt/packages/core/dist
+    # Allow migrations to be written out from the container
     - ./packages/core/src/migrations:/opt/packages/core/src/migrations
   env_file:
     - .env
@@ -22,7 +26,6 @@ services:
       POSTGRES_PASSWORD: membership_system
       POSTGRES_DB: membership_system
     ports:
-      # Only used for local development to connect to the database from the host machine
       - 6543:5432
 
   mail:
@@ -30,32 +33,32 @@ services:
     ports:
       - ${MAIL_PORT}:1080
 
+  # Legacy app
   app:
     <<: *base-app
     build:
-      context: .
-      dockerfile: ./apps/backend/Dockerfile
+      <<: *base-app-build
       target: legacy_app
 
+  # API app
   api_app:
     <<: *base-app
     build:
-      context: .
-      dockerfile: ./apps/backend/Dockerfile
+      <<: *base-app-build
       target: api_app
 
+  # Webhook app
   webhook_app:
     <<: *base-app
     build:
-      context: .
-      dockerfile: ./apps/backend/Dockerfile
+      <<: *base-app-build
       target: webhook_app
 
-  cron:
+  # Cron app
+  cron_app:
     <<: *base-app
     build:
-      context: .
-      dockerfile: ./apps/backend/Dockerfile
+      <<: *base-app-build
       target: cron_app
     init: true
 
@@ -69,6 +72,7 @@ services:
       # Used for local development
       - ./apps/backend/built/static:/opt/built/static:ro
 
+  # Image upload handler
   img_upload_app:
     image: beabee/pictshare:v0.1.1
     environment:
@@ -108,7 +112,6 @@ services:
       - ./apps/router/nginx.conf:/etc/nginx/templates/default.conf.template
       - ./apps/router/.well-known:/usr/share/nginx/html/.well-known
     ports:
-      # Only used for local development
       - 3002:80
 
 volumes:
