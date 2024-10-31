@@ -2,7 +2,6 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import type { TagData } from "@beabee/beabee-common";
 import type { Callout } from "./index";
 
-// Note: This is very similar to ContactTag, maybe a common model makes sense
 @Entity()
 export class CalloutTag implements TagData {
   @PrimaryGeneratedColumn("uuid")

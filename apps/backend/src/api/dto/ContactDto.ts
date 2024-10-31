@@ -33,6 +33,7 @@ import {
   CreateContactRoleDto,
   GetContactRoleDto
 } from "@api/dto/ContactRoleDto";
+import { GetContactTagDto } from "@api/dto/ContactTagDto";
 import { ForceUpdateContributionDto } from "@api/dto/ContributionDto";
 
 import IsPassword from "@api/validators/IsPassword";
@@ -157,6 +158,10 @@ export class GetContactDto extends BaseContactDto {
   @IsOptional()
   @ValidateNested()
   roles?: GetContactRoleDto[];
+
+  @IsOptional()
+  @ValidateNested({ each: true })
+  tags?: GetContactTagDto[];
 }
 
 export class UpdateContactDto extends BaseContactDto {
@@ -180,6 +185,10 @@ export class CreateContactDto extends UpdateContactDto {
   @ValidateNested({ each: true })
   @Type(() => CreateContactRoleDto)
   roles?: CreateContactRoleDto[];
+
+  @IsOptional()
+  @IsString({ each: true })
+  tags?: string[];
 }
 
 export interface ExportContactDto {

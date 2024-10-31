@@ -1,8 +1,5 @@
-import {
-  ContributionPeriod,
-  NewsletterStatus,
-  GetContactWith
-} from "@beabee/beabee-common";
+import { ContributionPeriod, GetContactWith } from "@beabee/beabee-common";
+import { getRepository } from "@beabee/core/database";
 import { plainToInstance } from "class-transformer";
 import { Response } from "express";
 import {
@@ -23,14 +20,13 @@ import {
 } from "routing-controllers";
 
 import ContactsService from "@beabee/core/services/ContactsService";
-import OptionsService from "@beabee/core/services/OptionsService";
 import PaymentFlowService from "@beabee/core/services/PaymentFlowService";
 import PaymentService from "@beabee/core/services/PaymentService";
 import ContactMfaService from "@beabee/core/services/ContactMfaService";
 
 import { generatePassword } from "@beabee/core/utils/auth";
 
-import { Contact, JoinFlow } from "@beabee/core/models";
+import { Contact, JoinFlow, ContactTag } from "@beabee/core/models";
 
 import { GetExportQuery } from "@api/dto/BaseDto";
 import {
@@ -41,6 +37,7 @@ import {
   ListContactsDto,
   UpdateContactDto
 } from "@api/dto/ContactDto";
+import { CreateContactTagDto, GetContactTagDto } from "@api/dto/ContactTagDto";
 import {
   CreateContactMfaDto,
   DeleteContactMfaDto,
@@ -75,6 +72,7 @@ import ContactExporter from "@api/transformers/ContactExporter";
 import ContactTransformer from "@api/transformers/ContactTransformer";
 import ContactRoleTransformer from "@api/transformers/ContactRoleTransformer";
 import PaymentTransformer from "@api/transformers/PaymentTransformer";
+import ContactTagTransformer from "@api/transformers/ContactTagTransformer";
 
 import { AuthInfo } from "@type/auth-info";
 
@@ -145,6 +143,35 @@ export class ContactController {
     return res;
   }
 
+  @Authorized("admin")
+  @Get("/tags")
+  async getAllContactTags(
+    @CurrentAuth({ required: true }) auth: AuthInfo
+  ): Promise<GetContactTagDto[]> {
+    const result = await ContactTagTransformer.fetch(auth, {
+      limit: -1,
+      rules: {
+        condition: "AND",
+        rules: []
+      }
+    });
+
+    return result.items;
+  }
+
+  @Authorized("admin")
+  @Post("/tags")
+  async createGlobalContactTag(
+    @Body() data: CreateContactTagDto
+  ): Promise<GetContactTagDto> {
+    const tag = await getRepository(ContactTag).save({
+      name: data.name,
+      description: data.description
+    });
+
+    return ContactTagTransformer.convert(tag);
+  }
+
   @Get("/:id")
   async getContact(
     @CurrentAuth({ required: true }) auth: AuthInfo,
@@ -174,7 +201,7 @@ export class ContactController {
     if (data.profile) {
       if (
         !auth.roles.includes("admin") &&
-        (data.profile.tags || data.profile.notes || data.profile.description)
+        (data.profile.notes || data.profile.description)
       ) {
         throw new UnauthorizedError();
       }

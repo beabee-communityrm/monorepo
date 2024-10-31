@@ -17,6 +17,7 @@ import ContactProfileTransformer from "@api/transformers/ContactProfileTransform
 import { mergeRules } from "@api/utils/rules";
 
 import { AuthInfo } from "@type/auth-info";
+import ContactTagTransformer from "./ContactTagTransformer";
 
 class ContactTransformer extends BaseContactTransformer<
   GetContactDto,
@@ -57,6 +58,9 @@ class ContactTransformer extends BaseContactTransformer<
       }),
       ...(opts?.with?.includes(GetContactWith.Contribution) && {
         contribution: contact.contributionInfo
+      }),
+      ...(opts?.with?.includes(GetContactWith.Tags) && {
+        tags: contact.tags.map(ContactTagTransformer.convert)
       })
     };
   }
@@ -87,6 +91,12 @@ class ContactTransformer extends BaseContactTransformer<
       if (query.with?.includes(GetContactWith.Profile)) {
         qb.innerJoinAndSelect(`${fieldPrefix}profile`, "profile");
       }
+
+      if (query.with?.includes(GetContactWith.Tags)) {
+        qb.leftJoinAndSelect(`${fieldPrefix}tags`, "tags");
+      }
+
+      console.debug("query.with", query.with);
 
       switch (query.sort) {
         // Add member role to allow sorting by membershipStarts and membershipExpires

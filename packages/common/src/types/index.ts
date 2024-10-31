@@ -72,6 +72,7 @@ export * from "./client-api-error-data.ts";
 export * from "./contact-data.ts";
 export * from "./contact-profile-data.ts";
 export * from "./contact-role-data.ts";
+export * from "./contact-tag-filter-name.ts";
 export * from "./content-contacts-data.ts";
 export * from "./content-data.ts";
 export * from "./content-email-data.ts";

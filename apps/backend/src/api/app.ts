@@ -126,6 +126,7 @@ initApp()
           log.notice("Bad request, probably a validation error", {
             body: req.body,
             query: req.query,
+            stack: error.stack,
             error
           });
         }

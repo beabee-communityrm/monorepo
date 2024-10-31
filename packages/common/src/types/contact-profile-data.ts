@@ -11,8 +11,6 @@ export interface ContactProfileData {
   newsletterGroups: string[];
 
   // Admin only
-  /** @deprecated TODO: remove */
-  tags?: string[];
   notes?: string;
   description?: string;
 }

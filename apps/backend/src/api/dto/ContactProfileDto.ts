@@ -77,11 +77,6 @@ export class UpdateContactProfileDto implements Partial<GetContactProfileDto> {
   newsletterGroups?: string[];
 
   // Admin only
-
-  @IsOptional()
-  @IsString({ each: true })
-  tags?: string[];
-
   @IsOptional()
   @IsString()
   notes?: string;

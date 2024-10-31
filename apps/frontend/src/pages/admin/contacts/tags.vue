@@ -6,11 +6,7 @@ meta:
 </route>
 
 <template>
-  <TagManager
-    :entity-id="contact.id"
-    :operations="contactTagOperations"
-    :breadcrumbs="breadcrumbs"
-  />
+  <TagManager :operations="contactTagOperations" :breadcrumbs="breadcrumbs" />
 </template>
 
 <script lang="ts" setup>
@@ -19,11 +15,6 @@ import { useI18n } from 'vue-i18n';
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import TagManager from '@components/tag/TagManager.vue';
 import { contactTagOperations } from '@utils/api/contact';
-import type { GetContactDataWith, GetContactWith } from '@beabee/beabee-common';
-
-defineProps<{
-  contact: GetContactDataWith<GetContactWith.Profile>;
-}>();
 
 const { t } = useI18n();
 

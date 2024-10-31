@@ -298,7 +298,10 @@ const props = defineProps<{
 // TODO: remove this when we rework how the contact is passed to child pages
 // eslint-disable-next-line vue/no-dupe-keys
 const contact = ref<GetContactDataWith<
-  GetContactWith.Profile | GetContactWith.Contribution | GetContactWith.Roles
+  | GetContactWith.Profile
+  | GetContactWith.Contribution
+  | GetContactWith.Roles
+  | GetContactWith.Tags
 > | null>(null);
 const contactTags = ref<string[]>([]);
 const contactAnnotations = reactive({
@@ -377,6 +380,7 @@ async function handleChangedRoles(cb: () => Promise<unknown>) {
     GetContactWith.Profile,
     GetContactWith.Contribution,
     GetContactWith.Roles,
+    GetContactWith.Tags,
   ]);
   changingRoles.value = false;
 }
@@ -388,10 +392,11 @@ onBeforeMount(async () => {
     GetContactWith.Profile,
     GetContactWith.Contribution,
     GetContactWith.Roles,
+    GetContactWith.Tags,
   ]);
   contactAnnotations.notes = contact.value.profile.notes || '';
   contactAnnotations.description = contact.value.profile.description || '';
-  contactAnnotations.tags = contact.value.profile.tags || [];
+  contactAnnotations.tags = contact.value.tags.map((tag) => tag.name);
 
   contactTags.value = (await fetchContent('contacts')).tags;
 

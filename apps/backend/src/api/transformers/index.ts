@@ -13,6 +13,7 @@ export * from "./CalloutVariantTransformer.js";
 export * from "./ContactExporter.js";
 export * from "./ContactProfileTransformer.js";
 export * from "./ContactRoleTransformer.js";
+export * from "./ContactTagTransformer.js";
 export * from "./ContactTransformer.js";
 export * from "./ContentTransformer.js";
 export * from "./NoticeTransformer.js";

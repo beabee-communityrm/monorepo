@@ -8,6 +8,8 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn
@@ -78,7 +80,18 @@ export class Contact {
 
   contributionInfo?: ContributionInfo;
 
-  @OneToMany("ContactTag", "contact")
+  @ManyToMany("ContactTag", "contact")
+  @JoinTable({
+    name: "contact_tag_assignments",
+    joinColumn: {
+      name: "contactId",
+      referencedColumnName: "id"
+    },
+    inverseJoinColumn: {
+      name: "tagId",
+      referencedColumnName: "id"
+    }
+  })
   tags!: ContactTag[];
 
   get activeRoles(): RoleType[] {

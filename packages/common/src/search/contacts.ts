@@ -4,6 +4,7 @@ import {
   ContributionType,
   NewsletterStatus,
 } from "../data/index.ts";
+import { tagFilters } from "./tags.ts";
 
 export const RoleTypes = ["member", "admin", "superadmin"] as const;
 
@@ -85,6 +86,13 @@ export const contactFilters = {
 } as const satisfies Filters;
 
 export type ContactFilterName = keyof typeof contactFilters;
+
+export const contactTagFilters = {
+  ...tagFilters,
+  contactId: {
+    type: "text",
+  },
+} as const satisfies Filters;
 
 export const contactCalloutFilters = {
   hasAnswered: {

@@ -14,6 +14,7 @@ export * from "./ContactContribution";
 export * from "./ContactMfa";
 export * from "./ContactProfile";
 export * from "./ContactRole";
+export * from "./ContactTag";
 export * from "./Content";
 export * from "./Email";
 export * from "./EmailMailing";
