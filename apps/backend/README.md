@@ -110,7 +110,7 @@ changes
 ```bash
 docker compose -f ../../docker-compose.yml start db
 docker compose -f ../../docker-compose.yml run app yarn typeorm migration:generate /opt/packages/core/src/migrations/MigrationName && yarn format
-yarn build
+yarn build # necessary for the new migration files to be found
 docker compose -f ../../docker-compose.yml run app yarn typeorm migration:run
 ```
 
