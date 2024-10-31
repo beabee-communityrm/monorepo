@@ -1,10 +1,10 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import type { TagData } from "@beabee/beabee-common";
-import type { Callout } from "./index";
+import type { Contact } from "./index";
 
-// Note: This is very similar to ContactTag, maybe a common model makes sense
+// Note: This is very similar to CalloutTag, maybe a common model makes sense
 @Entity()
-export class CalloutTag implements TagData {
+export class ContactTag implements TagData {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 
@@ -15,7 +15,7 @@ export class CalloutTag implements TagData {
   description!: string;
 
   @Column()
-  calloutId!: string;
-  @ManyToOne("Callout")
-  callout!: Callout;
+  ContactId!: string;
+  @ManyToOne("Contact")
+  Contact!: Contact;
 }

@@ -16,8 +16,10 @@ import {
 import { getActualAmount } from "#utils/payment";
 import config from "#config/config";
 
-import type { ContactContribution, ContactProfile, ContactRole } from "./index";
 import { Password } from "./Password";
+import { ContactTag } from "./ContactTag";
+
+import type { ContactContribution, ContactProfile, ContactRole } from "./index";
 
 interface LoginOverride {
   code: string;
@@ -75,6 +77,9 @@ export class Contact {
   contribution!: ContactContribution;
 
   contributionInfo?: ContributionInfo;
+
+  @OneToMany("ContactTag", "contact")
+  tags!: ContactTag[];
 
   get activeRoles(): RoleType[] {
     const ret = this.roles.filter((p) => p.isActive).map((p) => p.type);
