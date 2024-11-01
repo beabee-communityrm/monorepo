@@ -10,7 +10,7 @@ on:
 
 jobs:
   check:
-    uses: ./.github/workflows/backend-check.yml
+    uses: ./.github/workflows/check.yml
 
   test:
     runs-on: ubuntu-latest
