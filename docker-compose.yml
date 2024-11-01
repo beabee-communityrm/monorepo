@@ -60,7 +60,6 @@ services:
     build:
       <<: *base-app-build
       target: cron_app
-    init: true
 
   # Image upload handler
   img_upload_app:

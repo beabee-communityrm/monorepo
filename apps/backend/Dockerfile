@@ -7,6 +7,9 @@ ARG NODE_VERSION=22-bookworm-slim
 ##################################
 FROM node:${NODE_VERSION} AS base
 
+# https://github.com/nodejs/docker-node/blob/main/docs/BestPractices.md#handling-kernel-signals
+RUN apt-get update && apt-get install -y tini
+
 # Copy the workspace configuration
 COPY --chown=node:node package.json yarn.lock deno.jsonc deno.lock .yarnrc.yml /opt/
 COPY --chown=node:node .yarn /opt/.yarn
@@ -28,13 +31,11 @@ WORKDIR /opt/apps/backend
 FROM base AS builder
 
 # Install dependencies
-RUN apt-get update && apt-get install -y \
+RUN apt-get install -y \
     # for installing Deno
     curl \
     # for extracting the Deno archive
-    p7zip-full \
-    # for cleaning up the apt cache
-    && rm -rf /var/lib/apt/lists/*
+    p7zip-full
 
 # Install Deno
 ENV DENO_INSTALL="/root/.deno"
@@ -73,6 +74,8 @@ COPY --chown=node:node --from=builder /opt/apps/backend/built /opt/apps/backend/
 COPY --chown=node:node --from=builder /opt/packages/core/dist /opt/packages/core/dist
 COPY --chown=node:node --from=builder /opt/packages/common/dist /opt/packages/common/dist
 
+ENTRYPOINT [ "tini", "--" ]
+
 ##################################
 # Output stages
 ##################################
@@ -93,7 +96,7 @@ CMD [ "node", "./built/webhooks/app.js" ]
 ## Cron image
 FROM dist AS cron_app
 
-RUN apt-get update && apt-get install -y cron && rm -rf /var/lib/apt/lists/*
+RUN apt-get install -y cron && rm -rf /var/lib/apt/lists/*
 
 COPY apps/backend/crontab /etc/cron.d/beabee-cron
 RUN chmod 0644 /etc/cron.d/beabee-cron
