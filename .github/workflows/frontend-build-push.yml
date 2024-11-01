@@ -22,7 +22,7 @@ jobs:
         with:
           flavor: |
             latest=false
-          images: ${{ secrets.DOCKER_ORGANISATION }}/frontend
+          images: ${{ secrets.DOCKER_ORGANISATION }}/beabee-frontend
           tags: |
             type=ref,event=tag
             type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}

@@ -42,4 +42,4 @@ jobs:
           context: .
           file: ./apps/router/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_ORGANISATION }}/app-router:${{ needs.init.outputs.tag }}
+          tags: ${{ secrets.DOCKER_ORGANISATION }}/beabee-router:${{ needs.init.outputs.tag }}
