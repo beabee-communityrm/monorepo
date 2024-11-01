@@ -1,9 +1,5 @@
 name: Frontend Deploy
 
-on:
-  push:
-    branches: ["main", "dev"]
-
 jobs:
   init:
     name: Initialise
@@ -33,16 +29,3 @@ jobs:
     uses: ./.github/workflows/frontend-build-push.yml
     needs: [check]
     secrets: inherit
-
-  # deploy:
-  #   runs-on: ubuntu-latest
-  #   needs: [init, build-push]
-  #   steps:
-  # TODO: Switch to https://github.com/luminos-company/portami
-  #     - uses: jonasschatz/portami@main
-  #       with:
-  #         endpoint: "https://port.hive.beabee.io"
-  #         access_token: ${{ secrets.PORTAINER_ACCESSTOKEN }}
-  #         stack_name: ${{ needs.init.outputs.stack }}
-  #         prune: true
-  #         pull: true

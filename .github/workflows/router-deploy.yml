@@ -1,15 +1,5 @@
 name: Router Deploy
 
-on:
-  push:
-    branches: ["main", "dev"]
-  workflow_dispatch:
-    inputs:
-      stage:
-        description: "Stage"
-        required: true
-        default: "dev"
-
 jobs:
   init:
     runs-on: ubuntu-latest
