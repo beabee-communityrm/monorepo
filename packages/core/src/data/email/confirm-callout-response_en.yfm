@@ -8,10 +8,9 @@ subject: You responded to a callout!
   Your response to the callout <a href="*|CALLOUTLINK|*">"*|CALLOUTTITLE|*"</a>
   has been recorded, thanks.
 </p>
-<p><br /></p>
 <p>
-  <b>Note:</b> If you didn't submit a response to this callout, please get in
-  touch with us.
+  If you didn't respond to this callout, please reply to this email or contact
+  our support team on *|SUPPORTEMAIL|*
 </p>
 <p><br /></p>
 <p>Best wishes</p>

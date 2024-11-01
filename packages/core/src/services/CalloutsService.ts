@@ -285,7 +285,17 @@ class CalloutsService {
         email: guestEmail
       });
       if (contact) {
-        return this.setResponse(callout, contact, answers);
+        const response = await this.setResponse(callout, contact, answers);
+
+        // Let the contact know in case it wasn't them
+        const title = await this.getCalloutTitle(callout);
+        await EmailService.sendTemplateToContact(
+          "confirm-callout-response",
+          contact,
+          { calloutTitle: title, calloutSlug: callout.slug }
+        );
+
+        return response;
       }
     }
 
@@ -405,6 +415,25 @@ class CalloutsService {
   }
 
   /**
+   * Return the default callout title, fetching it if it's not already available
+   * @param callout The callout
+   * @returns Callout title
+   */
+  private async getCalloutTitle(callout: Callout): Promise<string> {
+    const defaultVariant =
+      callout.variants?.find((v) => v.name === "default") ||
+      (await getRepository(CalloutVariant).findOneByOrFail({
+        calloutId: callout.id,
+        name: "default"
+      }));
+
+    // Store for future use
+    callout.variants = [...(callout.variants || []), defaultVariant];
+
+    return defaultVariant.title;
+  }
+
+  /**
    * Notify admins about a new response. Handles fetching the callout title
    * in the default variant if it's not already available
    * @param callout The callout
@@ -414,16 +443,11 @@ class CalloutsService {
     callout: Callout,
     responderName: string
   ): Promise<void> {
-    const variant =
-      callout.variants?.find((v) => v.name === "default") ||
-      (await getRepository(CalloutVariant).findOneBy({
-        calloutId: callout.id,
-        name: "default"
-      }));
+    const title = await this.getCalloutTitle(callout);
 
     await EmailService.sendTemplateToAdmin("new-callout-response", {
       calloutSlug: callout.slug,
-      calloutTitle: variant?.title || "Unknown title",
+      calloutTitle: title,
       responderName: responderName
     });
   }
