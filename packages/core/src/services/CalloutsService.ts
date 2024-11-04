@@ -189,17 +189,22 @@ class CalloutsService {
   async getResponse(
     callout: Callout,
     contact: Contact
-  ): Promise<CalloutResponse | undefined> {
-    return (
-      (await getRepository(CalloutResponse).findOne({
-        where: {
-          calloutId: callout.id,
-          contactId: contact.id
-        },
-        // Get most recent response for callouts with allowMultiple
-        order: { createdAt: "DESC" }
-      })) || undefined
-    );
+  ): Promise<CalloutResponse | null> {
+    const response = await getRepository(CalloutResponse).findOne({
+      where: {
+        calloutId: callout.id,
+        contactId: contact.id
+      },
+      // Get most recent response for callouts with allowMultiple
+      order: { createdAt: "DESC" }
+    });
+
+    if (response) {
+      response.callout = callout;
+      response.contact = contact;
+    }
+
+    return response;
   }
 
   /**
@@ -239,8 +244,6 @@ class CalloutsService {
     response.answers = answers;
 
     const savedResponse = await this.saveResponse(response);
-
-    await this.notifyAdmin(callout, contact.fullname);
 
     if (callout.mcMergeField && callout.pollMergeField) {
       const [slideId, answerKey] = callout.pollMergeField.split(".");
@@ -305,11 +308,7 @@ class CalloutsService {
     response.guestEmail = guestEmail || null;
     response.answers = answers;
 
-    const savedResponse = await this.saveResponse(response);
-
-    await this.notifyAdmin(callout, guestName || "Anonymous");
-
-    return savedResponse;
+    return await this.saveResponse(response);
   }
 
   /**
@@ -403,7 +402,16 @@ class CalloutsService {
     }
 
     try {
-      return await getRepository(CalloutResponse).save(response);
+      const savedResponse = await getRepository(CalloutResponse).save(response);
+
+      await EmailService.sendTemplateToAdmin("new-callout-response", {
+        calloutSlug: response.callout.slug,
+        calloutTitle: await this.getCalloutTitle(response.callout),
+        responderName:
+          response.contact?.fullname || response.guestName || "Anonymous"
+      });
+
+      return savedResponse;
     } catch (error) {
       if (isDuplicateIndex(error)) {
         response.number = 0;
@@ -431,25 +439,6 @@ class CalloutsService {
     callout.variants = [...(callout.variants || []), defaultVariant];
 
     return defaultVariant.title;
-  }
-
-  /**
-   * Notify admins about a new response. Handles fetching the callout title
-   * in the default variant if it's not already available
-   * @param callout The callout
-   * @param responderName The name of the responder
-   */
-  private async notifyAdmin(
-    callout: Callout,
-    responderName: string
-  ): Promise<void> {
-    const title = await this.getCalloutTitle(callout);
-
-    await EmailService.sendTemplateToAdmin("new-callout-response", {
-      calloutSlug: callout.slug,
-      calloutTitle: title,
-      responderName: responderName
-    });
   }
 }
 
