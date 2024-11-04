@@ -125,7 +125,7 @@ const contactEmailTemplates = {
     params: { calloutSlug: string; calloutTitle: string }
   ) => ({
     CALLOUTTITLE: params.calloutTitle,
-    CALLOUTLINK: `${config.audience}/callouts/${params.calloutTitle}`,
+    CALLOUTLINK: `${config.audience}/callouts/${params.calloutSlug}`,
     SUPPORTEMAIL: OptionsService.getText("support-email")
   })
 } as const;
