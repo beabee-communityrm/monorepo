@@ -23,7 +23,8 @@ import {
   projectContactsAnonymiser,
   projectEngagmentsAnonymiser,
   referralsAnonymiser,
-  resetSecurityFlowAnonymiser
+  resetSecurityFlowAnonymiser,
+  calloutVariantAnonymiser
 } from "./anonymisers/models";
 import { anonymiseModel, clearModels } from "./anonymisers";
 
@@ -37,7 +38,8 @@ const contactAnonymisers = [
 
 const calloutsAnonymisers = [
   calloutsAnonymiser,
-  calloutTagsAnonymiser
+  calloutTagsAnonymiser,
+  calloutVariantAnonymiser
 ] as ModelAnonymiser[];
 
 const calloutResponseAnonymisers = [

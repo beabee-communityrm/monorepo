@@ -240,6 +240,8 @@ export const calloutTagsAnonymiser = createModelAnonymiser(CalloutTag, {
   description: () => chance.sentence()
 });
 
+export const calloutVariantAnonymiser = createModelAnonymiser(CalloutVariant);
+
 export const contactAnonymiser = createModelAnonymiser(Contact, {
   id: () => uuidv4(),
   email: () => chance.email({ domain: "fake.beabee.io", length: 10 }),
