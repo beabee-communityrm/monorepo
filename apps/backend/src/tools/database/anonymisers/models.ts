@@ -62,8 +62,8 @@ function createObjectMap<T>(objectMap: ObjectMap<T>): ObjectMap<T> {
 export function createComponentAnonymiser(
   component: CalloutComponentSchema
 ): (
-  v: CalloutResponseAnswer | CalloutResponseAnswer[]
-) => CalloutResponseAnswer | CalloutResponseAnswer[] {
+  v: CalloutResponseAnswer | CalloutResponseAnswer[] | undefined
+) => CalloutResponseAnswer | CalloutResponseAnswer[] | undefined {
   function anonymiseAnswer(v: CalloutResponseAnswer): CalloutResponseAnswer {
     switch (component.type) {
       case "address":
@@ -97,7 +97,9 @@ export function createComponentAnonymiser(
   }
 
   return (v) => {
-    return Array.isArray(v) ? v.map(anonymiseAnswer) : anonymiseAnswer(v);
+    return (
+      v && (Array.isArray(v) ? v.map(anonymiseAnswer) : anonymiseAnswer(v))
+    );
   };
 }
 // Property generators

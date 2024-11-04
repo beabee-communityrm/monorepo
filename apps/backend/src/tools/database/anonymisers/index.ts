@@ -12,8 +12,9 @@ import { log as mainLogger } from "@beabee/core/logging";
 import { Callout, CalloutResponse } from "@beabee/core/models";
 
 import {
-  CalloutComponentSchema,
-  CalloutResponseAnswersSlide
+  CalloutResponseAnswers,
+  CalloutResponseAnswersSlide,
+  SetCalloutSlideSchema
 } from "@beabee/beabee-common";
 
 import {
@@ -78,12 +79,22 @@ function writeItems<T extends ObjectLiteral>(
 }
 
 function createAnswersMap(
-  components: CalloutComponentSchema[]
+  slides: SetCalloutSlideSchema[]
 ): ObjectMap<CalloutResponseAnswersSlide> {
-  // return Object.fromEntries(
-  //   components.map((c) => [c.key, createComponentAnonymiser(c)])
-  // );
-  return {};
+  const ret: ObjectMap<CalloutResponseAnswersSlide> = {};
+
+  for (const slide of slides) {
+    const slideMap: ObjectMap<CalloutResponseAnswers> = {};
+    for (const component of slide.components) {
+      if (component.key) {
+        slideMap[component.key] = createComponentAnonymiser(component);
+      }
+    }
+
+    ret[slide.id] = slideMap;
+  }
+
+  return ret;
 }
 
 async function anonymiseCalloutResponses(
@@ -94,9 +105,7 @@ async function anonymiseCalloutResponses(
 ): Promise<void> {
   const callouts = await createQueryBuilder(Callout, "callout").getMany();
   for (const callout of callouts) {
-    const answersMap = createAnswersMap(
-      [] // TODO
-    );
+    const answersMap = createAnswersMap(callout.formSchema.slides);
 
     const responses = await fn(createQueryBuilder(CalloutResponse, "item"))
       .andWhere("item.calloutId = :id", { id: callout.id })
