@@ -1,6 +1,9 @@
 import {
   CalloutComponentSchema,
+  CalloutComponentType,
   CalloutResponseAnswer,
+  CalloutResponseAnswerAddress,
+  CalloutResponseAnswerFileUpload,
   CalloutResponseAnswers,
   CalloutResponseAnswersSlide,
   SetCalloutSlideSchema
@@ -113,31 +116,52 @@ function createComponentAnonymiser(
 ) => CalloutResponseAnswer | CalloutResponseAnswer[] | undefined {
   function anonymiseAnswer(v: CalloutResponseAnswer): CalloutResponseAnswer {
     switch (component.type) {
-      case "address":
+      case CalloutComponentType.CONTENT:
+        return v;
+      case CalloutComponentType.INPUT_ADDRESS:
         return {
           formatted_address: chance.address(),
           geometry: {
             location: { lat: chance.latitude(), lng: chance.longitude() }
           }
-        };
-      case "email":
-        return chance.email({ domain: "example.com", length: 10 });
-      case "checkbox":
+        } satisfies CalloutResponseAnswerAddress;
+      case CalloutComponentType.INPUT_CHECKBOX:
         return chance.pickone([true, false]);
-      case "number":
+      case CalloutComponentType.INPUT_CURRENCY:
+        return chance.floating({ min: 0, max: 1000, fixed: 2 });
+      case CalloutComponentType.INPUT_DATE_TIME:
+        return chance.date().toISOString();
+      case CalloutComponentType.INPUT_EMAIL:
+        return chance.email({ domain: "example.com", length: 10 });
+      case CalloutComponentType.INPUT_FILE:
+        return {
+          url: "https://placehold.co/600x400"
+        } satisfies CalloutResponseAnswerFileUpload;
+      case CalloutComponentType.INPUT_NUMBER:
         return chance.integer();
-      case "textarea":
-        return chance.paragraph();
-      case "textfield":
-        return chance.sentence();
-      case "select":
-      case "radio":
-      case "selectboxes":
+      case CalloutComponentType.INPUT_PHONE_NUMBER:
+        return chance.phone();
+      // case CalloutComponentType.INPUT_SIGNATURE: TODO: Implement
+      case CalloutComponentType.INPUT_SELECT:
+      case CalloutComponentType.INPUT_SELECTABLE_RADIO:
+      case CalloutComponentType.INPUT_SELECTABLE_SELECTBOXES:
         const values =
           component.type === "select"
             ? component.data.values
             : component.values;
         return chance.pickone(values.map(({ value }) => value));
+      case CalloutComponentType.INPUT_TEXT_AREA:
+        return chance.paragraph();
+      case CalloutComponentType.INPUT_TEXT_FIELD:
+        return chance.sentence();
+      case CalloutComponentType.INPUT_TIME:
+        return (
+          chance.hour({ twentyfour: true }).toString().padStart(2, "0") +
+          ":" +
+          chance.minute().toString().padStart(2, "0")
+        );
+      case CalloutComponentType.INPUT_URL:
+        return chance.url();
       default:
         throw new Error("Unknown component type " + component.type);
     }
