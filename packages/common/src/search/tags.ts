@@ -12,3 +12,5 @@ export const tagFilters = {
   },
 } as const;
 tagFilters satisfies Filters;
+
+export type TagFiltersType = typeof tagFilters;
