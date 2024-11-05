@@ -29,6 +29,7 @@ jobs:
       tags: ${{ steps.meta.outputs.tags }}
       labels: ${{ steps.meta.outputs.labels }}
       version: ${{ steps.meta.outputs.version }}
+      json: ${{ steps.meta.outputs.json }}
 
     steps:
       - uses: actions/checkout@v4
@@ -47,6 +48,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: [check, test, init]
 
+    strategy:
+      matrix:
+        tag: ${{ fromJSON(needs.init.outputs.json).tags }}
+
     steps:
 
       - uses: docker/setup-buildx-action@v3
@@ -64,7 +69,7 @@ jobs:
             REVISION=${{ github.sha }}
           labels: ${{ needs.init.outputs.labels }}
           target: legacy_app
-          tags: ${{ secrets.DOCKER_ORGANISATION }}/beabee-legacy-app:${{ needs.init.outputs.tags }}
+          tags: ${{ secrets.DOCKER_ORGANISATION }}/beabee-legacy-app:${{ matrix.tag }}
 
       - name: Build and push API app
         uses: docker/build-push-action@v5
@@ -75,7 +80,7 @@ jobs:
             REVISION=${{ github.sha }}
           labels: ${{ needs.init.outputs.labels }}
           target: api_app
-          tags: ${{ secrets.DOCKER_ORGANISATION }}/beabee-api-app:${{ needs.init.outputs.tags }}
+          tags: ${{ secrets.DOCKER_ORGANISATION }}/beabee-api-app:${{ matrix.tag }}
 
       - name: Build and push webhook app
         uses: docker/build-push-action@v5
@@ -86,7 +91,7 @@ jobs:
             REVISION=${{ github.sha }}
           labels: ${{ needs.init.outputs.labels }}
           target: webhook_app
-          tags: ${{ secrets.DOCKER_ORGANISATION }}/beabee-webhook-app:${{ needs.init.outputs.tags }}
+          tags: ${{ secrets.DOCKER_ORGANISATION }}/beabee-webhook-app:${{ matrix.tag }}
 
       - name: Build and push cron app
         uses: docker/build-push-action@v5
@@ -97,11 +102,15 @@ jobs:
             REVISION=${{ github.sha }}
           labels: ${{ needs.init.outputs.labels }}
           target: cron_app
-          tags: ${{ secrets.DOCKER_ORGANISATION }}/beabee-cron-app:${{ needs.init.outputs.tags }}
+          tags: ${{ secrets.DOCKER_ORGANISATION }}/beabee-cron-app:${{ matrix.tag }}
 
   build-push-frontend:
     runs-on: ubuntu-latest
     needs: [check, test, init]
+
+    strategy:
+      matrix:
+        tag: ${{ fromJSON(needs.init.outputs.json).tags }}
 
     steps:
 
@@ -120,11 +129,15 @@ jobs:
             VERSION=${{ needs.init.outputs.version }}
             REVISION=${{ github.sha }}
           labels: ${{ needs.init.outputs.labels }}
-          tags: ${{ secrets.DOCKER_ORGANISATION }}/beabee-frontend:${{ needs.init.outputs.tags }}
+          tags: ${{ secrets.DOCKER_ORGANISATION }}/beabee-frontend:${{ matrix.tag }}
 
   build-push-router:
     runs-on: ubuntu-latest
     needs: [check, test, init]
+
+    strategy:
+      matrix:
+        tag: ${{ fromJSON(needs.init.outputs.json).tags }}
 
     steps:
 
@@ -142,7 +155,7 @@ jobs:
           build-args: |
             REVISION=${{ github.sha }}
           labels: ${{ needs.init.outputs.labels }}
-          tags: ${{ secrets.DOCKER_ORGANISATION }}/beabee-router:${{ needs.init.outputs.tags }}
+          tags: ${{ secrets.DOCKER_ORGANISATION }}/beabee-router:${{ matrix.tag }}
 
   release:
     if: ${{ startsWith(github.ref, 'refs/tags/v') }}
@@ -154,7 +167,7 @@ jobs:
         with:
           repository: beabee-communityrm/hive-deploy-stack
           ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
-          ref: fix/actions # TODO: Change to main
+          ref: main
 
       - run: |
           git config --global user.name "Deploy bot"
@@ -165,7 +178,7 @@ jobs:
 
           git add VERSION docker-compose.yml
           if ! git diff --quiet --cached; then
-            git commit -m "Deploy version ${{ needs.push.outputs.version }}"
+            git commit -m "Deploy version ${{ needs.init.outputs.version }}"
             git push
           fi
 
