@@ -88,9 +88,7 @@ watch(
 
     // en is already loaded
     if (newLocale !== 'en') {
-      const messages = await import(`../../locales/${newLocale}.json`, {
-        assert: { type: 'json' },
-      });
+      const messages = await import(`../../locales/${newLocale}.json`);
       i18n.global.setLocaleMessage(justLocale, messages.default);
     }
 
