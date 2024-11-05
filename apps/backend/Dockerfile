@@ -1,4 +1,4 @@
-ARG DENO_VERSION=2.0.3
+ARG DENO_VERSION=2.0.4
 ARG NODE_VERSION=22-bookworm-slim
 
 ##################################
