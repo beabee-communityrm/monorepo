@@ -38,14 +38,17 @@ export const contactFilters = {
       ContributionType.Gift,
       ContributionType.Manual,
       ContributionType.None,
-    ],
+    ] satisfies ContributionType[] as ContributionType[],
   },
   contributionMonthlyAmount: {
     type: "number",
   },
   contributionPeriod: {
     type: "enum",
-    options: [ContributionPeriod.Monthly, ContributionPeriod.Annually],
+    options: [
+      ContributionPeriod.Monthly,
+      ContributionPeriod.Annually,
+    ] satisfies ContributionPeriod[] as ContributionPeriod[],
   },
   deliveryOptIn: {
     type: "boolean",
@@ -58,14 +61,14 @@ export const contactFilters = {
       NewsletterStatus.Cleaned,
       NewsletterStatus.Pending,
       NewsletterStatus.None,
-    ],
+    ] satisfies NewsletterStatus[] as NewsletterStatus[],
   },
   newsletterGroups: {
     type: "array",
   },
   activePermission: {
     type: "enum",
-    options: RoleTypes,
+    options: RoleTypes satisfies typeof RoleTypes as typeof RoleTypes,
   },
   activeMembership: {
     type: "boolean",
@@ -83,7 +86,8 @@ export const contactFilters = {
   tags: {
     type: "array",
   },
-} as const satisfies Filters;
+} as const;
+contactFilters satisfies Filters;
 
 export type ContactFilterName = keyof typeof contactFilters;
 
@@ -98,6 +102,7 @@ export const contactCalloutFilters = {
   hasAnswered: {
     type: "boolean",
   },
-} as const satisfies Filters;
+} as const;
+contactCalloutFilters satisfies Filters;
 
 export type ContactCalloutFilterName = keyof typeof contactCalloutFilters;

@@ -1,4 +1,4 @@
-import express from "express";
+import express, { type Express } from "express";
 import Papa from "papaparse";
 import { ObjectLiteral, SelectQueryBuilder } from "typeorm";
 
@@ -66,7 +66,7 @@ async function schemaToExport(data: CreateSchema): Promise<Export> {
   return exportDetails;
 }
 
-const app = express();
+const app: Express = express();
 
 app.set("views", __dirname + "/views");
 

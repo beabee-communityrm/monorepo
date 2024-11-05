@@ -1,5 +1,5 @@
 import axios from "axios";
-import express from "express";
+import express, { type Express } from "express";
 import { Brackets } from "typeorm";
 
 import { createQueryBuilder } from "@beabee/core/database";
@@ -9,7 +9,7 @@ import { wrapAsync } from "@beabee/core/utils/index";
 
 import { ContactRole, ContactProfile } from "@beabee/core/models";
 
-const app = express();
+const app: Express = express();
 
 app.set("views", __dirname + "/views");
 

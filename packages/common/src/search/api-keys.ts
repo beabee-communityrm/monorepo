@@ -7,4 +7,6 @@ export const apiKeyFilters = {
   createdAt: {
     type: "date",
   },
-} as const satisfies Filters;
+} as const;
+
+apiKeyFilters satisfies Filters;

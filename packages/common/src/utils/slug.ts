@@ -82,7 +82,7 @@ function base64(input: string) {
   return btoa(unescape(encodeURIComponent(input)));
 }
 
-export function slug(s: string, opts?: Partial<Options & Mode>) {
+export function slug(s: string, opts?: Partial<Options & Mode>): string {
   let result = slugify(s, opts);
   const fallback = opts && opts.fallback !== undefined
     ? opts.fallback

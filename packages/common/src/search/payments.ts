@@ -22,6 +22,7 @@ export const paymentFilters = {
       PaymentStatus.Successful,
       PaymentStatus.Failed,
       PaymentStatus.Cancelled,
-    ],
+    ] satisfies readonly PaymentStatus[] as readonly PaymentStatus[],
   },
-} as const satisfies Filters;
+} as const;
+paymentFilters satisfies Filters;

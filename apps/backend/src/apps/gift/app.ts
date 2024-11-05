@@ -1,5 +1,5 @@
 import { Address } from "@beabee/beabee-common";
-import express from "express";
+import express, { type Express } from "express";
 import moment from "moment";
 
 import config from "@beabee/core/config";
@@ -16,7 +16,7 @@ import { GiftFlow, GiftForm } from "@beabee/core/models";
 
 import { createGiftSchema, updateGiftAddressSchema } from "./schema.json";
 
-const app = express();
+const app: Express = express();
 
 interface CreateGiftSchema {
   firstname: string;

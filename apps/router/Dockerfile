@@ -1,4 +1,4 @@
-FROM nginx:1.24-alpine
+FROM nginx:1.27-alpine
 
 COPY apps/router/15-trusted-origins.envsh /docker-entrypoint.d/
 COPY apps/router/sec_headers /etc/nginx/sec_headers

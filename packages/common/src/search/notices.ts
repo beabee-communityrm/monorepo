@@ -31,6 +31,7 @@ export const noticeFilters = {
       ItemStatus.Scheduled,
       ItemStatus.Open,
       ItemStatus.Ended,
-    ],
+    ] satisfies ItemStatus[] as ItemStatus[],
   },
-} as const satisfies Filters;
+} as const;
+noticeFilters satisfies Filters;
