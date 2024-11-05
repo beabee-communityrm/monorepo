@@ -2,14 +2,14 @@
 
 # Backend app and legacy frontend
 x-base-app: &base-app
-  build:
+  build: &base-app-build
     context: .
     dockerfile: ./apps/backend/Dockerfile
-    target: app
   volumes:
     - ./apps/backend/built:/opt/apps/backend/built
     - ./packages/common/dist:/opt/packages/common/dist
     - ./packages/core/dist:/opt/packages/core/dist
+    # Allow migrations to be written out from the container
     - ./packages/core/src/migrations:/opt/packages/core/src/migrations
   env_file:
     - .env
@@ -26,7 +26,6 @@ services:
       POSTGRES_PASSWORD: membership_system
       POSTGRES_DB: membership_system
     ports:
-      # Only used for local development to connect to the database from the host machine
       - 6543:5432
 
   mail:
@@ -34,32 +33,41 @@ services:
     ports:
       - ${MAIL_PORT}:1080
 
-  app: *base-app
+  # Legacy app
+  app:
+    <<: *base-app
+    build:
+      <<: *base-app-build
+      target: legacy_app
 
+  # API app
   api_app:
     <<: *base-app
-    command: node ./built/api/app.js
+    build:
+      <<: *base-app-build
+      target: api_app
 
+  # Webhook app
   webhook_app:
     <<: *base-app
-    command: node ./built/webhooks/app.js
+    build:
+      <<: *base-app-build
+      target: webhook_app
 
+  # Cron app
+  cron_app:
+    <<: *base-app
+    build:
+      <<: *base-app-build
+      target: cron_app
+
+  # Image upload handler
   img_upload_app:
-    image: beabee/pictshare:v0.1.1
+    image: beabee/pictshare:v0.2.0
     environment:
       URL: ${BEABEE_AUDIENCE}/uploads/
-      CONTENTCONTROLLERS: IMAGE,TEXT
-    init: true
     volumes:
       - upload_data:/var/www/data
-
-  cron:
-    <<: *base-app
-    user: root
-
-    # Start cron
-    command: ["cron", "-f"]
-    init: true
 
   # The new frontend
   frontend:
@@ -74,15 +82,13 @@ services:
       - ./apps/frontend/nginx.conf:/etc/nginx/conf.d/default.conf
       - ./apps/frontend/dist:/usr/share/nginx/html
 
-  # Router for the new frontend
+  # Application router
   app_router:
     build:
       context: .
       dockerfile: ./apps/router/Dockerfile
     environment:
-      LEGACY_APP_URL: http://router
       LEGACY_APP_COOKIE_DOMAIN: ${BEABEE_COOKIE_DOMAIN}
-      FRONTEND_APP_URL: http://frontend
       TRUSTED_ORIGINS: ${BEABEE_TRUSTEDORIGINS-}
     volumes:
       # Used for local development
@@ -91,18 +97,7 @@ services:
       - ./apps/router/nginx.conf:/etc/nginx/templates/default.conf.template
       - ./apps/router/.well-known:/usr/share/nginx/html/.well-known
     ports:
-      # Only used for local development
       - 3002:80
-
-  # Router for legacy app
-  router:
-    build:
-      context: .
-      dockerfile: ./apps/backend/Dockerfile
-      target: router
-    volumes:
-      # Used for local development
-      - ./apps/backend/built/static:/opt/built/static:ro
 
 volumes:
   db_data:
