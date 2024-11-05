@@ -47,11 +47,20 @@ async function loadAppConfig(
   path: string,
   overrides: AppConfigOverride = {}
 ): Promise<AppConfig> {
-  const appConfig = (
-    await import(path + "/config.json", {
-      assert: { type: "json" }
-    })
-  ).default;
+  let appConfig: Partial<AppConfig> &
+    Pick<AppConfig, "title" | "path" | "disabled">;
+  try {
+    appConfig = (
+      await import(path + "/config.json", {
+        assert: { type: "json" }
+      })
+    ).default;
+  } catch (e) {
+    // Fallback to JSON.parse
+    appConfig = JSON.parse(
+      await fs.promises.readFile(path + "/config.json", "utf8")
+    );
+  }
 
   const subApps = fs.existsSync(path + "/apps")
     ? await loadAppConfigs(path + "/apps", overrides.subApps)

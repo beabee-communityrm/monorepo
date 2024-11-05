@@ -1,5 +1,5 @@
 import { NewsletterStatus } from "@beabee/beabee-common";
-import express from "express";
+import express, { type Express, type Request, type Response } from "express";
 import moment from "moment";
 
 import { log as mainLogger } from "@beabee/core/logging";
@@ -18,13 +18,13 @@ import config from "@beabee/core/config";
 
 const log = mainLogger.child({ app: "newsletter-settings" });
 
-const app = express();
+const app: Express = express();
 
 app.set("views", __dirname + "/views");
 
 app.use(isSuperAdmin);
 
-app.get("/", (req, res) => {
+app.get("/", (req: Request, res: Response) => {
   res.render("index", { provider: config.newsletter.provider });
 });
 

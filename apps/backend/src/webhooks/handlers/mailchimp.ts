@@ -1,6 +1,6 @@
 import { NewsletterStatus, ContributionType } from "@beabee/beabee-common";
 import bodyParser from "body-parser";
-import express from "express";
+import express, { type Express, type Request, type Response } from "express";
 
 import { log as mainLogger } from "@beabee/core/logging";
 import { cleanEmailAddress, wrapAsync } from "@beabee/core/utils/index";
@@ -13,7 +13,7 @@ import config from "@beabee/core/config";
 
 const log = mainLogger.child({ app: "webhook-mailchimp" });
 
-const app = express();
+const app: Express = express();
 
 interface MCProfileData {
   email: string;
@@ -54,7 +54,7 @@ type MCWebhook =
 // Mailchimp pings this endpoint when you first add the webhook
 // Don't check for newsletter provider here as the webhook can be set
 // before Mailchimp has been enabled
-app.get("/", (req, res) => {
+app.get("/", (req: Request, res: Response) => {
   res.sendStatus(
     req.query.secret === config.newsletter.settings.webhookSecret ? 200 : 404
   );

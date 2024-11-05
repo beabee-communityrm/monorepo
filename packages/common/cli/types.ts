@@ -1,4 +1,4 @@
-import type { BuildOptions } from "https://deno.land/x/esbuild@v0.20.0/mod.js";
+import type { BuildOptions } from "esbuild";
 
 export type BuildPlatform = "node" | "browser";
 

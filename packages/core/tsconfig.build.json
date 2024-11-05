@@ -19,6 +19,7 @@
     // More info: https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html#the-usedefineforclassfields-flag-and-the-declare-property-modifier
     "useDefineForClassFields": false,
 
+    "diagnostics": true,
     "declaration": true,
     "sourceMap": true,
     "rootDir": "./src",

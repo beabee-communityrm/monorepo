@@ -1,5 +1,5 @@
 import { RoleTypes, RoleType } from "@beabee/beabee-common";
-import express from "express";
+import express, { type Express, type Request, type Response } from "express";
 import passport from "passport";
 
 import { getRepository } from "@beabee/core/database";
@@ -13,11 +13,11 @@ import { ContactRole } from "@beabee/core/models";
 
 import config from "@beabee/core/config";
 
-const app = express();
+const app: Express = express();
 
 app.set("views", __dirname + "/views");
 
-app.get("/", function (req, res) {
+app.get("/", function (req: Request, res: Response) {
   const nextParam = req.query.next as string;
   if (req.user) {
     res.redirect(isValidNextUrl(nextParam) ? nextParam : "/");

@@ -1,4 +1,4 @@
-import express from "express";
+import express, { type Express, type Request, type Response } from "express";
 import moment from "moment";
 import { Between } from "typeorm";
 
@@ -8,7 +8,7 @@ import { wrapAsync } from "@beabee/core/utils/index";
 
 import { Payment } from "@beabee/core/models";
 
-const app = express();
+const app: Express = express();
 
 app.set("views", __dirname + "/views");
 
@@ -16,7 +16,7 @@ app.use(isSuperAdmin);
 
 app.get(
   "/:year?/:month?",
-  wrapAsync(async function (req, res) {
+  wrapAsync(async function (req: Request, res: Response) {
     const start = moment.utc().startOf("month");
     if (req.params.month && req.params.year) {
       start.set({

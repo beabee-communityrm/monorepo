@@ -1,4 +1,4 @@
-import express from "express";
+import express, { type Express } from "express";
 
-const app = express();
+const app: Express = express();
 export default app;

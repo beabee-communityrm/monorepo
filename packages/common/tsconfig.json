@@ -11,7 +11,9 @@
     "emitDeclarationOnly": true,
     "declaration": true,
     "isolatedModules": true,
+    "isolatedDeclarations": true,
     "skipLibCheck": true,
-    "preserveWatchOutput": true
+    "preserveWatchOutput": true,
+    "diagnostics": true
   }
 }

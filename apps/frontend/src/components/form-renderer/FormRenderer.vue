@@ -12,7 +12,7 @@
 <script lang="ts" setup>
 import type {
   CalloutComponentSchema,
-  CalloutResponseAnswers,
+  CalloutResponseAnswersSlide,
 } from '@beabee/beabee-common';
 import { computed, onBeforeMount, ref } from 'vue';
 import { Form } from '../../lib/formio';
@@ -34,11 +34,11 @@ import useVuelidate from '@vuelidate/core';
 import { sameAs } from '@vuelidate/validators';
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', value: CalloutResponseAnswers[string]): void;
+  (e: 'update:modelValue', value: CalloutResponseAnswersSlide[string]): void;
 }>();
 const props = defineProps<{
   components: CalloutComponentSchema[];
-  modelValue?: CalloutResponseAnswers[string];
+  modelValue?: CalloutResponseAnswersSlide[string];
   readonly?: boolean;
   componentI18nText?: Record<string, string>;
 }>();
