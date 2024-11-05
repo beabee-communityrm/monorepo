@@ -154,7 +154,7 @@ jobs:
         with:
           repository: beabee-communityrm/hive-deploy-stack
           ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
-          ref: fix/actions # TODO: Change to main
+          ref: main
 
       - run: |
           git config --global user.name "Deploy bot"
