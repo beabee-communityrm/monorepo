@@ -3,51 +3,9 @@ name: Check
 on: [pull_request, workflow_call]
 
 jobs:
-  frontend-prettier:
+  check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup
-      - run: yarn check:prettier
-        working-directory: ./apps/frontend
-
-  frontend-types:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/setup
-      - run: yarn check:vue-tsc
-        working-directory: ./apps/frontend
-
-  frontend-eslint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/setup
-      - run: yarn check:eslint
-        working-directory: ./apps/frontend
-
-  backend-prettier:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/setup
-      - run: yarn check:prettier
-        working-directory: ./apps/backend
-
-  backend-types:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/setup
-      - run: yarn check:tsc
-        working-directory: ./apps/backend
-
-  backend-dependencies:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/setup
-      - run: yarn check:dependencies
-        working-directory: ./apps/backend
-
+      - run: yarn check
