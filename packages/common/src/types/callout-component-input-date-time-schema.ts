@@ -22,7 +22,6 @@ export interface CalloutComponentInputDateTimeSchema
   };
   widget: {
     mode: "single";
-    enableTime: boolean;
     /** E.g. "yyyy-MM-dd hh:mm a" */
     format: string;
     hourIncrement?: number;
@@ -38,6 +37,8 @@ export interface CalloutComponentInputDateTimeSchema
   };
   /** E.g. "2024-02-02T13:02:00+01:00" */
   defaultValue?: string | string[];
+  enableDate: boolean;
+  enableTime: boolean;
   enableMinDateInput: boolean;
   enableMaxDateInput: boolean;
   /** The validation rules for the form */
