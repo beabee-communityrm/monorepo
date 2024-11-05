@@ -18,6 +18,7 @@ class ContactTagTransformer extends BaseTransformer<
 
   protected allowedRoles: RoleType[] = ["admin"];
 
+  // TODO: Same logic as in CalloutTagTransformer
   @TransformPlainToInstance(GetContactTagDto)
   convert(tag: ContactTag): GetContactTagDto {
     return {

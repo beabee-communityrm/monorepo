@@ -109,15 +109,15 @@ changes
 
 ```bash
 docker compose -f ../../docker-compose.yml start db
-docker compose -f ../../docker-compose.yml run app yarn typeorm migration:generate /opt/packages/core/src/migrations/MigrationName && yarn format
+docker compose -f ../../docker-compose.yml run app npm run typeorm migration:generate /opt/packages/core/src/migrations/MigrationName && yarn format
 yarn build # necessary for the new migration files to be found
-docker compose -f ../../docker-compose.yml run app yarn typeorm migration:run
+docker compose -f ../../docker-compose.yml run app npm run typeorm migration:run
 ```
 
 If you are still in the development phase, you may want to undo your last database migration as follows:
 
 ```bash
-docker compose -f ../../docker-compose.yml run app yarn typeorm migration:revert
+docker compose -f ../../docker-compose.yml run app npm run typeorm migration:revert
 ```
 
 To find out more about this topic, take a look at the [TypeORM Migration Guide](https://typeorm.io/migrations).

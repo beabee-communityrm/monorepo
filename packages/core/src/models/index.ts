@@ -15,6 +15,7 @@ export * from "./ContactMfa";
 export * from "./ContactProfile";
 export * from "./ContactRole";
 export * from "./ContactTag";
+export * from "./ContactTagAssignment";
 export * from "./Content";
 export * from "./Email";
 export * from "./EmailMailing";

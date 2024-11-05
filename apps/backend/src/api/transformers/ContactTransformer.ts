@@ -4,7 +4,11 @@ import { SelectQueryBuilder } from "typeorm";
 
 import { createQueryBuilder } from "@beabee/core/database";
 import PaymentService from "@beabee/core/services/PaymentService";
-import { Contact, ContactRole } from "@beabee/core/models";
+import {
+  Contact,
+  ContactRole,
+  ContactTagAssignment
+} from "@beabee/core/models";
 
 import {
   GetContactDto,
@@ -60,7 +64,7 @@ class ContactTransformer extends BaseContactTransformer<
         contribution: contact.contributionInfo
       }),
       ...(opts?.with?.includes(GetContactWith.Tags) && {
-        tags: contact.tags.map(ContactTagTransformer.convert)
+        tags: contact.tags.map((ct) => ContactTagTransformer.convert(ct.tag))
       })
     };
   }
@@ -91,12 +95,6 @@ class ContactTransformer extends BaseContactTransformer<
       if (query.with?.includes(GetContactWith.Profile)) {
         qb.innerJoinAndSelect(`${fieldPrefix}profile`, "profile");
       }
-
-      if (query.with?.includes(GetContactWith.Tags)) {
-        qb.leftJoinAndSelect(`${fieldPrefix}tags`, "tags");
-      }
-
-      console.debug("query.with", query.with);
 
       switch (query.sort) {
         // Add member role to allow sorting by membershipStarts and membershipExpires
@@ -137,17 +135,33 @@ class ContactTransformer extends BaseContactTransformer<
   ): Promise<void> {
     await loadContactRoles(contacts);
 
-    if (
-      contacts.length > 0 &&
-      query.with?.includes(GetContactWith.Contribution)
-    ) {
-      if (contacts.length > 1) {
-        throw new Error("Cannot fetch contribution for multiple contacts");
+    if (contacts.length > 0) {
+      const contactIds = contacts.map((c) => c.id);
+
+      if (query.with?.includes(GetContactWith.Contribution)) {
+        if (contacts.length > 1) {
+          throw new Error("Cannot fetch contribution for multiple contacts");
+        }
+
+        contacts[0].contributionInfo = await PaymentService.getContributionInfo(
+          contacts[0]
+        );
       }
 
-      contacts[0].contributionInfo = await PaymentService.getContributionInfo(
-        contacts[0]
-      );
+      // TODO: Same logic as in CalloutResponseTransformer
+      if (query.with?.includes(GetContactWith.Tags)) {
+        // Load tags after to ensure offset/limit work
+        const contactTags = await createQueryBuilder(ContactTagAssignment, "ct")
+          .where("ct.contactId IN (:...ids)", { ids: contactIds })
+          .innerJoinAndSelect("ct.tag", "tag")
+          .getMany();
+
+        for (const contact of contacts) {
+          contact.tags = contactTags.filter(
+            (ct) => ct.contactId === contact.id
+          );
+        }
+      }
     }
   }
 }

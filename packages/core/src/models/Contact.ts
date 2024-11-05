@@ -8,8 +8,6 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinTable,
-  ManyToMany,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn
@@ -19,9 +17,9 @@ import { getActualAmount } from "#utils/payment";
 import config from "#config/config";
 
 import { Password } from "./Password";
-import { ContactTag } from "./ContactTag";
 
 import type { ContactContribution, ContactProfile, ContactRole } from "./index";
+import { ContactTagAssignment } from "./ContactTagAssignment";
 
 interface LoginOverride {
   code: string;
@@ -80,19 +78,8 @@ export class Contact {
 
   contributionInfo?: ContributionInfo;
 
-  @ManyToMany("ContactTag", "contact")
-  @JoinTable({
-    name: "contact_tag_assignments",
-    joinColumn: {
-      name: "contactId",
-      referencedColumnName: "id"
-    },
-    inverseJoinColumn: {
-      name: "tagId",
-      referencedColumnName: "id"
-    }
-  })
-  tags!: ContactTag[];
+  @OneToMany("ContactTagAssignment", "contact")
+  tags!: ContactTagAssignment[];
 
   get activeRoles(): RoleType[] {
     const ret = this.roles.filter((p) => p.isActive).map((p) => p.type);
