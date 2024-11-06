@@ -47,6 +47,7 @@ RUN NODE_ENV=production yarn build:frontend
 FROM nginx:1.27-alpine
 
 ARG REVISION
+ARG VERSION
 
 ENV APP_REVISION=${REVISION}
 ENV APP_VERSION=${VERSION}
