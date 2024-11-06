@@ -74,6 +74,9 @@ services:
     build:
       context: .
       dockerfile: ./apps/frontend/Dockerfile
+      args:
+        - VERSION=${VERSION}
+        - REVISION=${REVISION}
     env_file:
       - ./apps/frontend/.env
     volumes:
