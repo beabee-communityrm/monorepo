@@ -1,5 +1,4 @@
 import { ContributionPeriod, GetContactWith } from "@beabee/beabee-common";
-import { getRepository } from "@beabee/core/database";
 import { plainToInstance } from "class-transformer";
 import { Response } from "express";
 import {
@@ -26,7 +25,7 @@ import ContactMfaService from "@beabee/core/services/ContactMfaService";
 
 import { generatePassword } from "@beabee/core/utils/auth";
 
-import { Contact, JoinFlow, ContactTag } from "@beabee/core/models";
+import { Contact, JoinFlow } from "@beabee/core/models";
 
 import { GetExportQuery } from "@api/dto/BaseDto";
 import {
@@ -37,7 +36,6 @@ import {
   ListContactsDto,
   UpdateContactDto
 } from "@api/dto/ContactDto";
-import { CreateContactTagDto, GetContactTagDto } from "@api/dto/ContactTagDto";
 import {
   CreateContactMfaDto,
   DeleteContactMfaDto,

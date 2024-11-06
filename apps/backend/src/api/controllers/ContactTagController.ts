@@ -6,13 +6,16 @@ import {
   JsonController,
   Post,
   Patch,
-  Param
+  Param,
+  OnUndefined,
+  Delete,
+  NotFoundError
 } from "routing-controllers";
 import PartialBody from "@api/decorators/PartialBody";
 
-import { ContactTag } from "@beabee/core/models";
 import { CreateContactTagDto, GetContactTagDto } from "@api/dto/ContactTagDto";
 import { CurrentAuth } from "@api/decorators/CurrentAuth";
+import ContactTagService from "@beabee/core/services/ContactTagService";
 import ContactTagTransformer from "@api/transformers/ContactTagTransformer";
 import { AuthInfo } from "@type/auth-info";
 
@@ -40,11 +43,7 @@ export class ContactTagController {
   async createGlobalContactTag(
     @Body() data: CreateContactTagDto
   ): Promise<GetContactTagDto> {
-    const tag = await getRepository(ContactTag).save({
-      name: data.name,
-      description: data.description
-    });
-
+    const tag = await ContactTagService.create(data);
     return ContactTagTransformer.convert(tag);
   }
 
@@ -55,7 +54,14 @@ export class ContactTagController {
     @Param("tagId") tagId: string,
     @PartialBody() data: CreateContactTagDto // Partial<TagCreateData>
   ): Promise<GetContactTagDto | undefined> {
-    await getRepository(ContactTag).update({ id: tagId }, data);
+    await ContactTagService.update(tagId, data);
     return ContactTagTransformer.fetchOneById(auth, tagId);
+  }
+
+  @Authorized("admin")
+  @OnUndefined(204)
+  @Delete("/:tagId")
+  async deleteContactTag(@Param("tagId") tagId: string): Promise<void> {
+    await ContactTagService.delete(tagId);
   }
 }
