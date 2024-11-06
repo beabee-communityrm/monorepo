@@ -237,13 +237,6 @@ export function useContactFilters() {
         'membershipExpires',
       ]),
     },
-    // {
-    //   id: 'callout',
-    //   label: t('contacts.dataGroup.callout'),
-    //   items: {},
-    //   custom: CalloutResponseFilterGroup,
-    //   itemsMatch: /^callouts\.[a-z0-9A-Z-]+\./,
-    // },
   ]);
 
   return { filterGroups, tagItems };

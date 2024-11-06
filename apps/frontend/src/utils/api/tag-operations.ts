@@ -6,13 +6,8 @@ import type {
   TagUpdateData,
 } from '@beabee/beabee-common';
 
-export class TagOperations {
-  private getBasePath(entityId: string | undefined): string {
-    if (!entityId) return `/${this.entityType}/tags`;
-    return `/${this.entityType}/${entityId}/tags`;
-  }
-
-  constructor(private entityType: 'callout' | 'contact') {}
+export abstract class TagOperations {
+  abstract getBasePath(entityId: string | undefined): string;
 
   async fetchTags(entityId?: string): Promise<TagGetData[]> {
     const { data } = await instance.get<Serial<TagGetData>[]>(

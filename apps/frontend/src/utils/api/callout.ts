@@ -132,4 +132,10 @@ export async function createResponse(
   );
 }
 
-export const calloutTagOperations = new TagOperations('callout');
+class CalloutTagOperations extends TagOperations {
+  getBasePath(entityId: string | undefined): string {
+    return `/callout/${entityId}/tags`;
+  }
+}
+
+export const calloutTagOperations = new CalloutTagOperations();

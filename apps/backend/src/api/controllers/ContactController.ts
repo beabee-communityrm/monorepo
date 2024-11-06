@@ -72,7 +72,6 @@ import ContactExporter from "@api/transformers/ContactExporter";
 import ContactTransformer from "@api/transformers/ContactTransformer";
 import ContactRoleTransformer from "@api/transformers/ContactRoleTransformer";
 import PaymentTransformer from "@api/transformers/PaymentTransformer";
-import ContactTagTransformer from "@api/transformers/ContactTagTransformer";
 
 import { AuthInfo } from "@type/auth-info";
 
@@ -143,35 +142,6 @@ export class ContactController {
     return res;
   }
 
-  @Authorized("admin")
-  @Get("/tags")
-  async getAllContactTags(
-    @CurrentAuth({ required: true }) auth: AuthInfo
-  ): Promise<GetContactTagDto[]> {
-    const result = await ContactTagTransformer.fetch(auth, {
-      limit: -1,
-      rules: {
-        condition: "AND",
-        rules: []
-      }
-    });
-
-    return result.items;
-  }
-
-  @Authorized("admin")
-  @Post("/tags")
-  async createGlobalContactTag(
-    @Body() data: CreateContactTagDto
-  ): Promise<GetContactTagDto> {
-    const tag = await getRepository(ContactTag).save({
-      name: data.name,
-      description: data.description
-    });
-
-    return ContactTagTransformer.convert(tag);
-  }
-
   @Get("/:id")
   async getContact(
     @CurrentAuth({ required: true }) auth: AuthInfo,
@@ -238,7 +208,6 @@ export class ContactController {
     }
 
     await ContactsService.updateContactContribution(target, data);
-
     return await this.getContribution(target);
   }
 

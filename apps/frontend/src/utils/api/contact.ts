@@ -264,4 +264,12 @@ export async function deleteRole(id: string, role: RoleType): Promise<void> {
 }
 
 // TODO: Implement this API endpoint
-export const contactTagOperations = new TagOperations('contact');
+class ContactTagOperations extends TagOperations {
+  getBasePath(contactId: string | undefined): string {
+    if (contactId) {
+      throw new Error('Contact ID is not supported');
+    }
+    return '/contact-tags';
+  }
+}
+export const contactTagOperations = new ContactTagOperations();

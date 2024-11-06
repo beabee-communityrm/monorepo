@@ -207,6 +207,7 @@ export class CalloutController {
     }
   }
 
+  // TODO: move to CalloutTagController
   @Authorized("admin")
   @Get("/:id/tags")
   async getCalloutTags(
@@ -223,6 +224,7 @@ export class CalloutController {
     return result.items;
   }
 
+  // TODO: move to CalloutTagController
   @Authorized("admin")
   @Post("/:id/tags")
   async createCalloutTag(
@@ -239,6 +241,7 @@ export class CalloutController {
     return CalloutTagTransformer.convert(tag);
   }
 
+  // TODO: move to CalloutTagController
   @Authorized("admin")
   @Get("/:id/tags/:tagId")
   async getCalloutTag(
@@ -248,6 +251,7 @@ export class CalloutController {
     return CalloutTagTransformer.fetchOneById(auth, tagId);
   }
 
+  // TODO: move to CalloutTagController
   @Authorized("admin")
   @Patch("/:id/tags/:tagId")
   async updateCalloutTag(
@@ -261,6 +265,7 @@ export class CalloutController {
     return CalloutTagTransformer.fetchOneById(auth, tagId);
   }
 
+  // TODO: move to CalloutTagController
   @Authorized("admin")
   @Delete("/:id/tags/:tagId")
   @OnUndefined(204)
