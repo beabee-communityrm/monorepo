@@ -1,72 +1,105 @@
-FROM node:20-alpine3.19 AS builder
+ARG DENO_VERSION=2.0.4
+ARG NODE_VERSION=22-bookworm-slim
 
-# Add support for Deno
-RUN apk add --no-cache deno
-RUN deno --version
+##################################
+# The base stage
+# Copy the workspace configuration, dependency info and common settings
+##################################
+FROM node:${NODE_VERSION} AS base
 
-WORKDIR /opt/apps/backend
+# https://github.com/nodejs/docker-node/blob/main/docs/BestPractices.md#handling-kernel-signals
+RUN apt-get update && apt-get install -y tini
 
 # Copy the workspace configuration
-COPY package.json yarn.lock deno.jsonc .yarnrc.yml /opt/
-COPY .yarn /opt/.yarn
+COPY --chown=node:node package.json yarn.lock deno.jsonc deno.lock .yarnrc.yml /opt/
+COPY --chown=node:node .yarn /opt/.yarn
 
 # Copy dependencies info
-COPY packages/common/package.json /opt/packages/common/package.json
-COPY packages/core/package.json /opt/packages/core/package.json
-COPY apps/backend/package.json /opt/apps/backend/package.json
-
-# Install dependencies
-RUN yarn workspaces focus
-
-# Build common
-COPY packages/common /opt/packages/common
-RUN NODE_ENV=production yarn workspace @beabee/beabee-common build
-
-# Build core
-COPY packages/core /opt/packages/core
-RUN NODE_ENV=production yarn workspace @beabee/core build
-
-# Build backend
-COPY apps/backend /opt/apps/backend
-RUN NODE_ENV=production yarn workspace @beabee/backend build
-
-FROM nginx:1.24-alpine AS router
-
-COPY apps/backend/nginx.conf /etc/nginx/conf.d/default.conf
-COPY --chown=nginx:nginx --from=builder /opt/apps/backend/built/static /opt/apps/backend/built/static
-
-FROM node:20-alpine3.19 AS app
-
-ARG REVISION=DEV
-
-ENV NODE_ENV=production
-
-WORKDIR /opt/apps/backend
-
-# Copy the workspace configuration
-COPY --chown=node:node --from=builder /opt/package.json /opt/yarn.lock /opt/.yarnrc.yml /opt/
-COPY --chown=node:node --from=builder /opt/.yarn /opt/.yarn
-
-# Copy the node_module's and package.json's
-COPY --chown=node:node --from=builder /opt/node_modules /opt/node_modules
-COPY --chown=node:node --from=builder /opt/apps/backend/package.json /opt/apps/backend/
-COPY --chown=node:node --from=builder /opt/packages/core/package.json /opt/packages/core/
-COPY --chown=node:node --from=builder /opt/packages/common/package.json /opt/packages/common/
-
-# Prune non-production dependencies
-RUN yarn workspaces focus --production
-
-# Copy the built files
-COPY --chown=node:node --from=builder /opt/apps/backend/built /opt/apps/backend/built
-COPY --chown=node:node --from=builder /opt/packages/core/dist /opt/packages/core/dist
-COPY --chown=node:node --from=builder /opt/packages/common/dist /opt/packages/common/dist
-
-COPY apps/backend/crontab /etc/crontabs/root
-
-RUN echo -n ${REVISION} > /opt/apps/backend/built/revision.txt
+COPY --chown=node:node packages/common/package.json /opt/packages/common/package.json
+COPY --chown=node:node packages/core/package.json /opt/packages/core/package.json
+COPY --chown=node:node apps/backend/package.json /opt/apps/backend/package.json
 
 ENV NODE_ENV=production
 ENV NODE_OPTIONS=--enable-source-maps
 
+WORKDIR /opt/apps/backend
+
+##################################
+# The builder stage
+# Install build dependencies and build the application
+##################################
+FROM base AS builder
+
+# Install dependencies
+RUN apt-get install -y \
+    # for installing Deno
+    curl \
+    # for extracting the Deno archive
+    p7zip-full
+
+# Install Deno
+ENV DENO_INSTALL="/root/.deno"
+RUN curl -fsSL https://deno.land/install.sh | sh -s ${DENO_VERSION}
+ENV PATH="${DENO_INSTALL}/bin:${PATH}"
+
+# Check versions
+RUN node --version
+RUN npm --version
+RUN yarn --version
+RUN deno --version
+
+# Install dependencies
+RUN yarn workspaces focus
+
+# Copy source and build
+COPY packages /opt/packages
+COPY apps/backend /opt/apps/backend
+RUN yarn workspaces foreach --recursive --topological-dev --parallel --verbose --from @beabee/backend run build
+
+ARG REVISION=DEV
+RUN echo -n ${REVISION} > /opt/apps/backend/built/revision.txt
+
+# Prune non-production dependencies
+RUN yarn workspaces focus --production
+
+##################################
+# Distribution stage
+# The main image with the built application
+##################################
+FROM base AS dist
+
+# Copy built files and dependencies
+COPY --chown=node:node --from=builder /opt/node_modules /opt/node_modules
+COPY --chown=node:node --from=builder /opt/apps/backend/built /opt/apps/backend/built
+COPY --chown=node:node --from=builder /opt/packages/core/dist /opt/packages/core/dist
+COPY --chown=node:node --from=builder /opt/packages/common/dist /opt/packages/common/dist
+
+ENTRYPOINT [ "tini", "--" ]
+
+##################################
+# Output stages
+##################################
+
+## Application images
+FROM dist AS legacy_app
 USER node
 CMD [ "node", "./built/app.js" ]
+
+FROM dist AS api_app
+USER node
+CMD [ "node", "./built/api/app.js" ]
+
+FROM dist AS webhook_app
+USER node
+CMD [ "node", "./built/webhooks/app.js" ]
+
+## Cron image
+FROM dist AS cron_app
+
+RUN apt-get install -y cron && rm -rf /var/lib/apt/lists/*
+
+COPY apps/backend/crontab /etc/cron.d/beabee-cron
+RUN chmod 0644 /etc/cron.d/beabee-cron
+RUN crontab /etc/cron.d/beabee-cron
+
+CMD [ "cron", "-f" ]

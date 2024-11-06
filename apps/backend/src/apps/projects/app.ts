@@ -1,4 +1,4 @@
-import express from "express";
+import express, { type Express } from "express";
 import _ from "lodash";
 import moment from "moment";
 
@@ -85,7 +85,7 @@ function schemaToEngagement(
   };
 }
 
-const app = express();
+const app: Express = express();
 
 app.set("views", __dirname + "/views");
 

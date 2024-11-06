@@ -244,8 +244,8 @@
 .formio-component-modalEdit,
 .formio-component-applyMaskOn,
 .formio-component-allowMultipleMasks,
-.formio-component-inputMask,
 .formio-component-displayMask,
+.formio-component-inputMaskPlaceholderChar,
 .formio-component-customClass,
 .formio-component-widget\.type,
 .formio-component-prefix,
@@ -318,6 +318,7 @@ body:not(.show-advanced-options) {
   .formio-component-block,
   .formio-component-shortcutButtons,
   .formio-component-validateOn,
+  .formio-component-inputMask,
   /* Form upload component */
   .formio-component-dir,
   /* .formio-component-image, */

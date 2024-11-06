@@ -4,6 +4,7 @@
     "sourceMap": true,
     "isolatedModules": true,
     "preserveWatchOutput": true,
+    "diagnostics": true,
     "paths": {
       "@components/*": ["./src/components/*"],
       "@layouts/*": ["./src/layouts/*"],

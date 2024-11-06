@@ -1,5 +1,5 @@
 import busboy from "connect-busboy";
-import express from "express";
+import express, { type Express } from "express";
 import _ from "lodash";
 import Papa from "papaparse";
 
@@ -14,7 +14,7 @@ import OptionsService from "@beabee/core/services/OptionsService";
 import { Email, EmailMailing, SegmentOngoingEmail } from "@beabee/core/models";
 import { EmailMailingRecipient } from "@beabee/core/type";
 
-const app = express();
+const app: Express = express();
 
 export interface EmailSchema {
   name: string;

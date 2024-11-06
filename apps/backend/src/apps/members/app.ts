@@ -1,5 +1,5 @@
 import { GetContactWith, RuleGroup } from "@beabee/beabee-common";
-import express, { Request } from "express";
+import express, { type Express, type Request } from "express";
 import queryString from "query-string";
 
 import { getRepository } from "@beabee/core/database";
@@ -15,7 +15,7 @@ import ContactTransformer from "@api/transformers/ContactTransformer";
 
 import { Project, Contact } from "@beabee/core/models";
 
-const app = express();
+const app: Express = express();
 
 app.set("views", __dirname + "/views");
 

@@ -10,4 +10,5 @@ export const segmentFilters = {
   description: {
     type: "text",
   },
-} as const satisfies Filters;
+} as const;
+segmentFilters satisfies Filters;

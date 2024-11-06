@@ -3,6 +3,8 @@ import winston from "winston";
 
 import config from "./config/config";
 
+import type { ErrorRequestHandler } from "express";
+
 const appFormat = winston.format((info) => {
   const { app, ...rest } = info;
   return app ? { ...rest, message: `[${app}] ${rest.message}` } : info;
@@ -42,6 +44,7 @@ export const requestLogger = expressWinston.logger({
   }
 });
 
-export const requestErrorLogger = expressWinston.errorLogger({
-  winstonInstance: logger.child({ app: "request-error" })
-});
+export const requestErrorLogger: ErrorRequestHandler =
+  expressWinston.errorLogger({
+    winstonInstance: logger.child({ app: "request-error" })
+  });

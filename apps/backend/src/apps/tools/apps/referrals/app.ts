@@ -1,4 +1,4 @@
-import express from "express";
+import express, { type Express, type Request, type Response } from "express";
 import _ from "lodash";
 
 import { getRepository } from "@beabee/core/database";
@@ -9,7 +9,7 @@ import { ReferralGift } from "@beabee/core/models";
 
 import { updateSchema } from "./schemas.json";
 
-const app = express();
+const app: Express = express();
 
 app.set("views", __dirname + "/views");
 
@@ -17,15 +17,19 @@ app.use(isAdmin);
 
 app.get(
   "/",
-  wrapAsync(async (req, res) => {
+  wrapAsync(async (req: Request, res: Response) => {
     const gifts = await getRepository(ReferralGift).find();
     res.render("index", { gifts });
   })
 );
 
-app.get("/gifts/:name", hasNewModel(ReferralGift, "name"), (req, res) => {
-  res.render("gift", { gift: req.model });
-});
+app.get(
+  "/gifts/:name",
+  hasNewModel(ReferralGift, "name"),
+  wrapAsync(async (req: Request, res: Response) => {
+    res.render("gift", { gift: req.model });
+  })
+);
 
 interface UpdateGiftSchema {
   action: "update-gift";
@@ -60,7 +64,7 @@ type UpdateSchema =
 app.post(
   "/gifts/:name",
   [hasSchema(updateSchema).orFlash, hasNewModel(ReferralGift, "name")],
-  wrapAsync(async (req, res) => {
+  wrapAsync(async (req: Request, res: Response) => {
     const gift = req.model as ReferralGift;
     const giftRepository = getRepository(ReferralGift);
     const data = req.body as UpdateSchema;

@@ -18,7 +18,7 @@ export const calloutFilters = {
       ItemStatus.Scheduled,
       ItemStatus.Open,
       ItemStatus.Ended,
-    ],
+    ] satisfies ItemStatus[] as ItemStatus[],
   },
   answeredBy: {
     type: "contact",
@@ -37,7 +37,8 @@ export const calloutFilters = {
   channels: {
     type: "array",
   },
-} as const satisfies Filters;
+} as const;
+calloutFilters satisfies Filters;
 
 export const calloutResponseFilters = {
   id: {
@@ -70,7 +71,8 @@ export const calloutResponseFilters = {
   answers: {
     type: "blob",
   },
-} as const satisfies Filters;
+} as const;
+calloutResponseFilters satisfies Filters;
 
 export const calloutResponseCommentFilters = {
   id: {
@@ -91,7 +93,8 @@ export const calloutResponseCommentFilters = {
   text: {
     type: "text",
   },
-} as const satisfies Filters;
+} as const;
+calloutResponseCommentFilters satisfies Filters;
 
 export const calloutTagFilters = {
   id: {
@@ -106,7 +109,8 @@ export const calloutTagFilters = {
   calloutId: {
     type: "text",
   },
-} as const satisfies Filters;
+} as const;
+calloutTagFilters satisfies Filters;
 
 export const calloutChannelFilters = {
   id: {
@@ -121,4 +125,5 @@ export const calloutChannelFilters = {
   calloutId: {
     type: "text",
   },
-} as const satisfies Filters;
+} as const;
+calloutChannelFilters satisfies Filters;

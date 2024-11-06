@@ -43,7 +43,10 @@ const absoluteDate =
   /^(?<y>\d{4,})(-(?<M>\d\d)(-(?<d>\d\d)([T ](?<h>\d\d)(:(?<m>\d\d)(:(?<s>\d\d))?)?)?)?)?/;
 
 // Convert relative dates and returns the minimum date unit specified
-export function parseDate(value: string, now = new Date()): [Date, DateUnit] {
+export function parseDate(
+  value: string,
+  now: Date = new Date(),
+): [Date, DateUnit] {
   let date: Date;
   let units: DateUnit[];
 
@@ -80,7 +83,7 @@ export function getMinDateUnit(units: DateUnit[]): DateUnit | undefined {
   return dateUnits.find((unit) => units.includes(unit));
 }
 
-export function isValidDate(s: string | Date) {
+export function isValidDate(s: string | Date): boolean {
   if (typeof s === "string") {
     return relativeDate.test(s) || isValid(parseISO(s));
   }
