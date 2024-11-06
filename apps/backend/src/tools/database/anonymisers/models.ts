@@ -181,8 +181,8 @@ function createComponentAnonymiser(
  * Create an anonymisation map for callout response answers based on the form
  * schema
  *
- * @param slides
- * @returns
+ * @param slides The callout slide schema
+ * @returns An object map that can be used to anonymise callout response answers
  */
 export function createAnswersAnonymiser(
   slides: SetCalloutSlideSchema[]
