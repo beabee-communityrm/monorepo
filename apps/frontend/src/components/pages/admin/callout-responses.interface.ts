@@ -5,25 +5,34 @@ import {
   type GetCalloutDataWith,
 } from '@beabee/beabee-common';
 import { computed, ref, watchEffect, type Ref } from 'vue';
-import i18n from '../../../lib/i18n';
-import { type Header } from '../../table/table.interface';
-
 import type { FilterItems } from '@type';
+import type { Header } from '@components/table/table.interface';
+import type { SelectItem } from '@components/forms/form.interface';
+
+import i18n from '@lib/i18n';
+import env from '@env';
 import { withLabel } from '@utils/rules';
 import { calloutTagOperations } from '@utils/api/callout';
-import type { SelectItem } from '@components/forms/form.interface';
 import { convertComponentsToFilters } from '@utils/callouts';
-
-import env from '@env';
 
 const { t } = i18n.global;
 
+/**
+ * Callout Response Interface Module
+ * Provides configuration and utilities for the callout response view
+ */
+
+/**
+ * Table Headers Configuration
+ * @description Defines the columns shown in the callout responses table
+ */
 export const headers = computed<Header[]>(() => [
   {
     value: 'number',
     text: t('calloutResponsesPage.response'),
     sortable: true,
   },
+  // Conditionally show contact column based on environment
   ...(env.cnrMode
     ? []
     : [
@@ -44,12 +53,19 @@ export const headers = computed<Header[]>(() => [
   },
 ]);
 
+/**
+ * Filter Items Configuration
+ * @description Defines all available filter options for callout responses
+ */
 const filterItems = computed<FilterItems<CalloutResponseFilterName>>(() => ({
+  // Response Identification Filters
   id: withLabel(calloutResponseFilters.id, ''),
   calloutId: withLabel(
     calloutResponseFilters.calloutId,
     t('calloutResponse.data.callout')
   ),
+
+  // Timestamp Filters
   createdAt: withLabel(
     calloutResponseFilters.createdAt,
     t('calloutResponse.data.createdAt')
@@ -58,11 +74,15 @@ const filterItems = computed<FilterItems<CalloutResponseFilterName>>(() => ({
     calloutResponseFilters.updatedAt,
     t('calloutResponse.data.updatedAt')
   ),
+
+  // Organization Filters
   bucket: withLabel(
     calloutResponseFilters.bucket,
     t('calloutResponse.data.bucket')
   ),
   tags: withLabel(calloutResponseFilters.tags, t('calloutResponse.data.tags')),
+
+  // User Association Filters
   contact: withLabel(
     calloutResponseFilters.contact,
     t('calloutResponse.data.contact')
@@ -71,22 +91,39 @@ const filterItems = computed<FilterItems<CalloutResponseFilterName>>(() => ({
     calloutResponseFilters.assignee,
     t('calloutResponse.data.assignee')
   ),
+
+  // Content Filters
   answers: withLabel(
     calloutResponseFilters.answers,
     t('calloutResponse.data.answers')
   ),
 }));
 
+/**
+ * Callout Response Filters Hook
+ * @description Provides filter configuration and form component management
+ * @param callout - Reference to the current callout data
+ * @param prefix - Optional prefix for filter keys
+ * @returns Form components, filter groups, and items for the response view
+ */
 export function useCalloutResponseFilters(
   callout: Ref<GetCalloutDataWith<'form'> | undefined>,
   prefix: Ref<string> = ref('')
 ) {
+  /**
+   * Form Components Management
+   * @description Extracts and manages form components from callout schema
+   */
   const formComponents = computed(() =>
     callout.value
       ? getCalloutComponents(callout.value.formSchema).filter((c) => !!c.input)
       : []
   );
 
+  /**
+   * Answer Filter Configuration
+   * @description Converts form components to filter items
+   */
   const answerFilterItems = computed(() =>
     // TODO: Use @beabee/beabee-common method
     convertComponentsToFilters(formComponents.value, prefix.value + 'answers')
@@ -99,6 +136,10 @@ export function useCalloutResponseFilters(
     }))
   );
 
+  /**
+   * Tag Management
+   * @description Fetches and manages available callout tags
+   */
   const tagItems = ref<SelectItem<string>[]>([]);
   watchEffect(async () => {
     const tags = callout.value
@@ -107,6 +148,10 @@ export function useCalloutResponseFilters(
     tagItems.value = tags.map((tag) => ({ id: tag.id, label: tag.name }));
   });
 
+  /**
+   * Filter Groups Configuration
+   * @description Organizes filters into logical groups
+   */
   const filterGroups = computed(() => [
     {
       id: 'response',

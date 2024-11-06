@@ -6,21 +6,30 @@ import {
   contactFilters,
   type ContentJoinSetupData,
 } from '@beabee/beabee-common';
-import { computed, ref } from 'vue';
+import { computed, ref, watchEffect } from 'vue';
 
 import i18n from '@lib/i18n';
 import { generalContent } from '@store';
 import { type Header } from '@components/table/table.interface';
+import type { SelectItem } from '@components/forms/form.interface';
 
 import { withItems, withLabel } from '@utils/rules';
 
-import CalloutResponseFilterGroup from './CalloutResponseFilterGroup.vue';
-
 import type { FilterItems, FilterGroups } from '@type';
 import { fetchContent } from '@utils/api/content';
+import { contactTagOperations } from '@utils/api/contact';
 
 const { t } = i18n.global;
 
+/**
+ * Contact List Interface Module
+ * Provides configuration and utilities for the contact list view
+ */
+
+/**
+ * Table Headers Configuration
+ * @description Defines the columns shown in the contacts table
+ */
 export const headers = computed<Header[]>(() => [
   {
     value: 'firstname',
@@ -28,7 +37,11 @@ export const headers = computed<Header[]>(() => [
     sortable: true,
     width: '100%',
   },
-  { value: 'email', text: t('contacts.data.email'), sortable: true },
+  {
+    value: 'email',
+    text: t('contacts.data.email'),
+    sortable: true,
+  },
   {
     value: 'contributionMonthlyAmount',
     text: t('contacts.data.contribution'),
@@ -49,13 +62,20 @@ export const headers = computed<Header[]>(() => [
   },
 ]);
 
+/**
+ * Filter Items Configuration
+ * @description Defines all available filter options for contacts
+ */
 const filterItems = computed<FilterItems<ContactFilterName>>(() => ({
+  // Contact Information Filters
   id: withLabel(contactFilters.id, t('contacts.data.id')),
   firstname: withLabel(contactFilters.firstname, t('contacts.data.firstname')),
   lastname: withLabel(contactFilters.lastname, t('contacts.data.lastname')),
   email: withLabel(contactFilters.email, t('contacts.data.email')),
   joined: withLabel(contactFilters.joined, t('contacts.data.joined')),
   lastSeen: withLabel(contactFilters.lastSeen, t('contacts.data.lastSeen')),
+
+  // Newsletter Status Filters
   newsletterStatus: withLabel(
     contactFilters.newsletterStatus,
     t('contacts.data.newsletterStatus'),
@@ -73,11 +93,15 @@ const filterItems = computed<FilterItems<ContactFilterName>>(() => ({
     contactFilters.newsletterGroups,
     t('contacts.data.newsletterGroups')
   ),
+
+  // Tag and Delivery Filters
   tags: withLabel(contactFilters.tags, t('contacts.data.tags')),
   deliveryOptIn: withLabel(
     contactFilters.deliveryOptIn,
     t('contacts.data.deliveryOptIn')
   ),
+
+  // Contribution Filters
   contributionCancelled: withLabel(
     contactFilters.contributionCancelled,
     t('contacts.data.contributionCancelled')
@@ -109,6 +133,8 @@ const filterItems = computed<FilterItems<ContactFilterName>>(() => ({
     contactFilters.manualPaymentSource,
     t('contacts.data.manualPaymentSource')
   ),
+
+  // Role and Membership Filters
   activePermission: withLabel(
     contactFilters.activePermission,
     t('contacts.data.activePermission'),
@@ -132,12 +158,36 @@ const filterItems = computed<FilterItems<ContactFilterName>>(() => ({
   ),
 }));
 
+/**
+ * Contact Filters Hook
+ * @description Provides filter configuration and tag management for the contact list
+ * @returns Filter groups and tag items for use in the contact list view
+ */
 export function useContactFilters() {
+  /**
+   * Newsletter setup content
+   * @description Fetches and stores newsletter configuration
+   */
   const setupContent = ref<ContentJoinSetupData | null>(null);
   (async () => {
     setupContent.value = await fetchContent('join/setup');
   })();
 
+  /**
+   * Tag Management
+   * @description Fetches and manages available contact tags
+   */
+  const tagItems = ref<SelectItem<string>[]>([]);
+  watchEffect(async () => {
+    const tags = await contactTagOperations.fetchTags();
+    // TODO: Use tag id
+    tagItems.value = tags.map((tag) => ({ id: tag.name, label: tag.name }));
+  });
+
+  /**
+   * Filter Groups Configuration
+   * @description Organizes filters into logical groups
+   */
   const filterGroups = computed<FilterGroups>(() => [
     {
       id: 'contact',
@@ -157,7 +207,13 @@ export function useContactFilters() {
             options: setupContent.value.newsletterGroups,
           }),
         },
-        ...withItems(filterItems, ['tags', 'deliveryOptIn']),
+        tags: {
+          ...filterItems.value.tags,
+          ...(tagItems.value.length && {
+            options: tagItems.value,
+          }),
+        },
+        ...withItems(filterItems, ['deliveryOptIn']),
       },
     },
     {
@@ -181,14 +237,14 @@ export function useContactFilters() {
         'membershipExpires',
       ]),
     },
-    {
-      id: 'callout',
-      label: t('contacts.dataGroup.callout'),
-      items: {},
-      custom: CalloutResponseFilterGroup,
-      itemsMatch: /^callouts\.[a-z0-9A-Z-]+\./,
-    },
+    // {
+    //   id: 'callout',
+    //   label: t('contacts.dataGroup.callout'),
+    //   items: {},
+    //   custom: CalloutResponseFilterGroup,
+    //   itemsMatch: /^callouts\.[a-z0-9A-Z-]+\./,
+    // },
   ]);
 
-  return { filterGroups };
+  return { filterGroups, tagItems };
 }

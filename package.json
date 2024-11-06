@@ -17,7 +17,7 @@
     "upgrade": "yarn set version latest && yarn install && yarn upgrade-interactive",
     "docker:build:latest": "yarn workspaces foreach -v -W run docker:build:latest",
     "docker:compose:restart": "docker compose restart",
-    "docker:compose:up": "yarn setup:db && docker compose up -d",
+    "docker:compose:up": "docker compose up -d",
     "docker:compose:down": "docker compose down",
     "docker:compose:build": "docker compose build",
     "docker:compose:rebuild": "yarn docker:compose:down && yarn docker:compose:build && yarn docker:compose:up",
@@ -28,6 +28,7 @@
     "setup:user": "docker compose run --rm app node built/tools/new-user",
     "setup:payment": "docker compose exec app node built/tools/configure",
     "setup:db": "yarn workspace @beabee/backend run typeorm:migrate",
+    "typeorm": "yarn workspace @beabee/backend run typeorm",
     "presetup": "yarn workspaces foreach -v -W -p -i run presetup && yarn presetup:env && yarn cache:deno",
     "presetup:env": "cp -n .env.example .env 2>/dev/null || true"
   },

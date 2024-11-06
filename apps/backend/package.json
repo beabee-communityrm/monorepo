@@ -37,7 +37,8 @@
     "check:dependencies": "dpdm -T --no-warning --no-tree --exit-code circular:1 src/app.ts src/webhooks/app.ts src/api/app.ts",
     "format": "prettier --write .",
     "typeorm": "typeorm -d ./built/core/lib/typeorm.js",
-    "typeorm:migrate": "docker compose -f ../../docker-compose.yml up -d db && docker compose -f ../../docker-compose.yml run --rm app yarn typeorm migration:run"
+    "typeorm:migrate": "docker compose -f ../../docker-compose.yml up -d db && docker compose -f ../../docker-compose.yml run --rm app yarn typeorm migration:run",
+    "typeorm:revert": "docker compose -f ../../docker-compose.yml up -d db && docker compose -f ../../docker-compose.yml run --rm app yarn typeorm migration:revert"
   },
   "dependencies": {
     "@beabee/beabee-common": "workspace:^",

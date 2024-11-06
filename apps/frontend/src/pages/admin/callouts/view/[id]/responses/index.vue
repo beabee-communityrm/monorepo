@@ -248,12 +248,30 @@ import { addBreadcrumb } from '@store/breadcrumb';
 import AppTime from '@components/AppTime.vue';
 
 import { toRef } from 'vue';
+import { useTagFilter } from '../../../../../../composables/useTagFilter';
 
+/**
+ * Callout Responses Table Component
+ * Provides functionality for:
+ * - Viewing and filtering callout responses
+ * - Managing response tags
+ * - Managing response buckets
+ * - Managing response assignments
+ * - Viewing response details (comments, answers)
+ * - Exporting responses
+ */
+
+/**
+ * Props & Composables
+ */
 const props = defineProps<{ callout: GetCalloutDataWith<'form'> }>();
-
 const { t, n } = useI18n();
 const route = useRoute();
 
+/**
+ * Table State
+ * @description Manages the paginated table data and selection state
+ */
 const responses = ref<
   Paginated<
     GetCalloutResponseDataWith<
@@ -263,38 +281,36 @@ const responses = ref<
     }
   >
 >();
-const showLatestComment = ref(false);
-const doingAction = ref(false);
-
-const showInlineAnswer = ref(false);
-const currentInlineAnswer = ref('');
-const currentInlineComponent = computed(
-  () =>
-    showInlineAnswer.value &&
-    formComponents.value.find(
-      (c) => `answers.${c.fullKey}` === currentInlineAnswer.value
-    )
-);
 
 const selectedResponseItems = computed(
   () => responses.value?.items.filter((ri) => ri.selected) || []
 );
-
 const selectedCount = computed(() => selectedResponseItems.value.length);
+
+/**
+ * Tag Management
+ * @description Handles tag filtering and selection state
+ */
+const { currentTag, addTagToRules } = useTagFilter();
 
 const selectedTags = computed(() => {
   const tagCount = Object.fromEntries(tagItems.value.map((t) => [t.id, 0]));
-
   for (const item of selectedResponseItems.value) {
     for (const tag of item.tags) {
       tagCount[tag.id]++;
     }
   }
-
   return Object.entries(tagCount)
     .filter((tc) => tc[1] === selectedCount.value)
     .map(([tagId]) => tagId);
 });
+
+/**
+ * Assignee Management
+ * @description Handles assignee filtering and selection state
+ */
+const adminItems = ref<{ id: string; label: string }[]>([]);
+const currentAssignee = defineParam('assignee', (v) => v || '');
 
 const selectedAssigneeId = computed(() => {
   let assigneeId = selectedResponseItems.value[0]?.assignee?.id;
@@ -306,8 +322,11 @@ const selectedAssigneeId = computed(() => {
   return assigneeId;
 });
 
-const adminItems = ref<{ id: string; label: string }[]>([]);
-
+/**
+ * Bucket Management
+ * @description Handles bucket filtering and navigation
+ */
+const currentBucket = defineParam('bucket', (v) => v || '', 'replace');
 const bucketItems = computed(() =>
   buckets.value.map((bucket) => ({
     ...bucket,
@@ -315,15 +334,42 @@ const bucketItems = computed(() =>
   }))
 );
 
+/**
+ * Answer Display Configuration
+ * @description Manages the visibility and selection of inline answers
+ */
+const showInlineAnswer = ref(false);
+const currentInlineAnswer = ref('');
+const currentInlineComponent = computed(
+  () =>
+    showInlineAnswer.value &&
+    formComponents.value.find(
+      (c) => `answers.${c.fullKey}` === currentInlineAnswer.value
+    )
+);
+
+/**
+ * Comment Display Configuration
+ */
+const showLatestComment = ref(false);
+
+/**
+ * Search & Filter State
+ * @description Manages search and filter parameters
+ */
+const currentPaginatedQuery = definePaginatedQuery('createdAt');
+const currentRules = defineRulesParam();
 const { formComponents, answerItems, filterGroups, tagItems } =
   useCalloutResponseFilters(toRef(props, 'callout'));
 
-const currentAssignee = defineParam('assignee', (v) => v || '');
-const currentTag = defineParam('tag', (v) => v || '');
-const currentBucket = defineParam('bucket', (v) => v || '', 'replace');
-const currentPaginatedQuery = definePaginatedQuery('createdAt');
-const currentRules = defineRulesParam();
+/**
+ * Action State
+ */
+const doingAction = ref(false);
 
+/**
+ * Lifecycle Hooks
+ */
 onBeforeMount(async () => {
   const admins = await fetchContacts({
     rules: {
@@ -354,36 +400,45 @@ addBreadcrumb(
   ])
 );
 
+/**
+ * Helper Functions
+ */
+
+/**
+ * Builds the search rules for the current filter state
+ */
 function getSearchRules(): RuleGroup {
+  const rules: RuleGroup[] = [];
+
   const bucketRule: Rule = currentBucket.value
     ? { field: 'bucket', operator: 'equal', value: [currentBucket.value] }
     : { field: 'bucket', operator: 'is_empty', value: [] };
 
-  const rules: RuleGroup = { condition: 'AND', rules: [bucketRule] };
+  rules.push({ condition: 'AND', rules: [bucketRule] });
 
   if (currentRules.value) {
-    rules.rules.push(currentRules.value);
-  }
-
-  if (currentTag.value) {
-    rules.rules.push({
-      field: 'tags',
-      operator: 'contains',
-      value: [currentTag.value],
-    });
+    rules.push(currentRules.value);
   }
 
   if (currentAssignee.value) {
-    rules.rules.push({
-      field: 'assignee',
-      operator: 'equal',
-      value: [currentAssignee.value],
+    rules.push({
+      condition: 'AND',
+      rules: [
+        {
+          field: 'assignee',
+          operator: 'equal',
+          value: [currentAssignee.value],
+        },
+      ],
     });
   }
 
-  return rules;
+  return addTagToRules(rules, currentTag.value);
 }
 
+/**
+ * Gets rules for selected responses
+ */
 function getSelectedResponseRules(): RuleGroup {
   return {
     condition: 'OR',
@@ -395,6 +450,13 @@ function getSelectedResponseRules(): RuleGroup {
   };
 }
 
+/**
+ * Action Handlers
+ */
+
+/**
+ * Refreshes the response list based on current filters
+ */
 async function refreshResponses() {
   const _with: GetCalloutResponseWith[] = ['assignee', 'contact', 'tags'];
   if (showLatestComment.value) {
@@ -421,6 +483,9 @@ async function refreshResponses() {
 
 watchEffect(refreshResponses);
 
+/**
+ * Handles exporting responses
+ */
 function handleExport() {
   const rules: RuleGroup =
     selectedResponseItems.value.length > 0
@@ -435,20 +500,20 @@ function handleExport() {
   );
 }
 
+/**
+ * Handles response update actions (tags, bucket, assignee)
+ */
 async function handleUpdateAction(
   updates: UpdateCalloutResponseData,
   successText: string
 ): Promise<void> {
   doingAction.value = true;
-
   await updateCalloutResponses(getSelectedResponseRules(), updates);
   await refreshResponses();
-
   addNotification({
     variant: 'success',
     title: successText,
   });
-
   doingAction.value = false;
 }
 </script>
