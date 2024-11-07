@@ -148,7 +148,6 @@ class ContactTransformer extends BaseContactTransformer<
         );
       }
 
-      // TODO: Same logic as in CalloutResponseTransformer
       if (query.with?.includes(GetContactWith.Tags)) {
         // Load tags after to ensure offset/limit work
         await contactTagTransformer.loadEntityTags(

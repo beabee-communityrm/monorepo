@@ -35,7 +35,8 @@ import {
   SegmentOngoingEmail,
   CalloutResponseComment,
   ResetSecurityFlow,
-  Password
+  Password,
+  ContactTagAssignment
 } from "@beabee/core/models";
 
 export type PropertyMap<T> = ((prop: T) => T) | ObjectMap<T>;
@@ -193,8 +194,7 @@ export const contactProfileAnonymiser = createModelAnonymiser(ContactProfile, {
     line2: chance.pickone(["Cabot", "Easton", "Southmead", "Hanham"]),
     city: "Bristol",
     postcode: "BS1 1AA"
-  }),
-  tags: (tags) => tags.map(() => chance.profession())
+  })
 });
 
 export const contactRoleAnonymiser = createModelAnonymiser(ContactRole, {
@@ -286,3 +286,11 @@ export const segmentContactsAnonymiser = createModelAnonymiser(SegmentContact, {
 
 export const segmentOngoingEmailsAnonymiser =
   createModelAnonymiser(SegmentOngoingEmail);
+
+export const contactTagAssignmentAnonymiser = createModelAnonymiser(
+  ContactTagAssignment,
+  {
+    contactId: () => uuidv4(),
+    tagId: () => uuidv4()
+  }
+);

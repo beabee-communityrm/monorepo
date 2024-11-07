@@ -48,7 +48,6 @@ export abstract class BaseContactTransformer<
     deliveryOptIn: profileField("deliveryOptIn"),
     newsletterStatus: profileField("newsletterStatus"),
     newsletterGroups: profileField("newsletterGroups"),
-    tags: profileField("tags"),
     activePermission,
     activeMembership: activePermission,
     membershipStarts: membershipField("dateAdded"),

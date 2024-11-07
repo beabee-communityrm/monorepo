@@ -7,7 +7,7 @@ import { getMembershipStatus } from "@beabee/core/services/PaymentService";
 import { GetExportQuery } from "@api/dto/BaseDto";
 import { ExportContactDto } from "@api/dto/ContactDto";
 
-import { Contact } from "@beabee/core/models";
+import { Contact, ContactTagAssignment } from "@beabee/core/models";
 
 import { AuthInfo } from "@type/auth-info";
 import { BaseContactTransformer } from "./BaseContactTransformer";
@@ -19,13 +19,16 @@ class ContactExporter extends BaseContactTransformer<
   protected allowedRoles: RoleType[] = ["admin"];
 
   convert(contact: Contact): ExportContactDto {
+    const tagNames =
+      contact.tags?.map((assignment) => assignment.tag.name) || [];
+
     return {
       Id: contact.id,
       EmailAddress: contact.email,
       FirstName: contact.firstname,
       LastName: contact.lastname,
       Joined: contact.joined.toISOString(),
-      Tags: contact.profile.tags.join(", "),
+      Tags: tagNames.join(", "),
       ContributionType: contact.contributionType,
       ContributionMonthlyAmount: contact.contributionMonthlyAmount,
       ContributionPeriod: contact.contributionPeriod,
@@ -52,6 +55,10 @@ class ContactExporter extends BaseContactTransformer<
     qb.leftJoinAndSelect(`${fieldPrefix}roles`, "roles");
     qb.leftJoinAndSelect(`${fieldPrefix}profile`, "profile");
     qb.leftJoinAndSelect(`${fieldPrefix}contribution`, "contribution");
+    qb.leftJoinAndSelect(
+      `${fieldPrefix}tags`,
+      "tagAssignments"
+    ).leftJoinAndSelect("tagAssignments.tag", "tag");
   }
 
   async export(
