@@ -13,13 +13,32 @@ import PartialBody from "@api/decorators/PartialBody";
 
 import { CreateContactTagDto, GetContactTagDto } from "@api/dto/ContactTagDto";
 import { CurrentAuth } from "@api/decorators/CurrentAuth";
-import ContactTagService from "@beabee/core/services/ContactTagService";
-import { contactTagTransformer } from "@api/transformers/TagTransformer";
 import { AuthInfo } from "@type/auth-info";
+import { contactTagTransformer } from "@api/transformers/TagTransformer";
+import { ContactTagAssignment } from "@beabee/core/models";
 
+/**
+ * Controller for managing contact tags.
+ * Provides CRUD operations for global contact tags.
+ * All operations require admin privileges.
+ *
+ * @remarks
+ * Contact tags can be assigned to contacts to categorize and group them.
+ * Tags are managed globally and can be assigned to multiple contacts.
+ */
 @JsonController("/contact-tags")
 @Authorized()
 export class ContactTagController {
+  /**
+   * Retrieves all contact tags.
+   *
+   * @param auth - Current user's authentication information
+   * @returns Array of contact tag DTOs
+   *
+   * @example
+   * GET /contact-tags
+   * Returns: [{ id: "...", name: "Important", description: "..." }, ...]
+   */
   @Authorized("admin")
   @Get("/")
   async getAllContactTags(
@@ -36,30 +55,61 @@ export class ContactTagController {
     return result.items;
   }
 
+  /**
+   * Creates a new global contact tag.
+   *
+   * @param data - Tag creation data containing name and optional description
+   * @returns The created contact tag DTO
+   *
+   * @example
+   * POST /contact-tags
+   * Body: { name: "VIP", description: "Very important contacts" }
+   */
   @Authorized("admin")
   @Post("/")
   async createGlobalContactTag(
     @Body() data: CreateContactTagDto
   ): Promise<GetContactTagDto> {
-    const tag = await ContactTagService.create(data);
+    const tag = await contactTagTransformer.create(data);
     return contactTagTransformer.convert(tag);
   }
 
+  /**
+   * Updates an existing contact tag.
+   *
+   * @param auth - Current user's authentication information
+   * @param tagId - ID of the tag to update
+   * @param data - Updated tag data
+   * @returns The updated contact tag DTO
+   *
+   * @example
+   * PATCH /contact-tags/:tagId
+   * Body: { name: "Updated Name", description: "Updated description" }
+   */
   @Authorized("admin")
   @Patch("/:tagId")
   async updateContactTag(
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @Param("tagId") tagId: string,
-    @PartialBody() data: CreateContactTagDto // Partial<TagCreateData>
+    @PartialBody() data: CreateContactTagDto
   ): Promise<GetContactTagDto | undefined> {
-    await ContactTagService.update(tagId, data);
+    await contactTagTransformer.update(tagId, data);
     return contactTagTransformer.fetchOneById(auth, tagId);
   }
 
+  /**
+   * Deletes a contact tag and removes all its assignments.
+   *
+   * @param tagId - ID of the tag to delete
+   * @returns void - Returns 204 No Content on success
+   *
+   * @example
+   * DELETE /contact-tags/:tagId
+   */
   @Authorized("admin")
   @OnUndefined(204)
   @Delete("/:tagId")
   async deleteContactTag(@Param("tagId") tagId: string): Promise<void> {
-    await ContactTagService.delete(tagId);
+    await contactTagTransformer.delete(tagId, ContactTagAssignment);
   }
 }

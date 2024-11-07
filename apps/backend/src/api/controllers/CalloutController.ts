@@ -207,7 +207,7 @@ export class CalloutController {
     }
   }
 
-  // TODO: move to CalloutTagController
+  // TODO: move to CalloutTagController like we did for contact tags?
   @Authorized("admin")
   @Get("/:id/tags")
   async getCalloutTags(
@@ -224,7 +224,7 @@ export class CalloutController {
     return result.items;
   }
 
-  // TODO: move to CalloutTagController
+  // TODO: move to CalloutTagController like we did for contact tags?
   @Authorized("admin")
   @Post("/:id/tags")
   async createCalloutTag(
@@ -237,11 +237,10 @@ export class CalloutController {
       description: data.description,
       calloutId: id
     });
-
     return calloutTagTransformer.convert(tag);
   }
 
-  // TODO: move to CalloutTagController
+  // TODO: move to CalloutTagController like we did for contact tags?
   @Authorized("admin")
   @Get("/:id/tags/:tagId")
   async getCalloutTag(
@@ -251,7 +250,7 @@ export class CalloutController {
     return calloutTagTransformer.fetchOneById(auth, tagId);
   }
 
-  // TODO: move to CalloutTagController
+  // TODO: move to CalloutTagController like we did for contact tags?
   @Authorized("admin")
   @Patch("/:id/tags/:tagId")
   async updateCalloutTag(
@@ -265,7 +264,7 @@ export class CalloutController {
     return calloutTagTransformer.fetchOneById(auth, tagId);
   }
 
-  // TODO: move to CalloutTagController
+  // TODO: move to CalloutTagController like we did for contact tags?
   @Authorized("admin")
   @Delete("/:id/tags/:tagId")
   @OnUndefined(204)
@@ -273,13 +272,6 @@ export class CalloutController {
     @CalloutId() id: string,
     @Param("tagId") tagId: string
   ): Promise<void> {
-    await getRepository(CalloutResponseTag).delete({ tag: { id: tagId } });
-    const result = await getRepository(CalloutTag).delete({
-      calloutId: id,
-      id: tagId
-    });
-    if (result.affected === 0) {
-      throw new NotFoundError();
-    }
+    await calloutTagTransformer.delete(tagId, CalloutResponseTag);
   }
 }

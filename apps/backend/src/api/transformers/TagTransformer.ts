@@ -12,6 +12,8 @@ import { GetContactTagDto } from "@api/dto/ContactTagDto";
 import { createQueryBuilder } from "@beabee/core/database";
 import type { TagData } from "@beabee/beabee-common";
 import type { TagAssignment, TaggableEntity } from "@beabee/core/type";
+import { getRepository } from "@beabee/core/database";
+import { NotFoundError } from "routing-controllers";
 
 /**
  * Generic transformer for handling tag-related operations.
@@ -110,6 +112,156 @@ class TagTransformer<
 
     for (const entity of entities) {
       entity.tags = entityTags.filter((et) => et[entityIdField] === entity.id);
+    }
+  }
+
+  /**
+   * Updates tags for an entity or multiple entities.
+   * Handles adding and removing tags based on prefix (+ or -).
+   *
+   * @param entityIds - Array of entity IDs to update tags for
+   * @param tagUpdates - Array of tag updates (e.g., ["+tagId1", "-tagId2"])
+   * @param AssignmentModel - The constructor for the tag assignment model
+   * @param entityField - The name of the entity field in the assignment
+   *
+   * @example
+   * await calloutTagTransformer.updateEntityTags(
+   *   responseIds,
+   *   ["+tag1", "-tag2"],
+   *   CalloutResponseTag,
+   *   "response"
+   * );
+   */
+  async updateEntityTags(
+    entityIds: string[],
+    tagUpdates: string[],
+    AssignmentModel: new () => any,
+    entityField: string
+  ): Promise<void> {
+    const addTags = tagUpdates
+      .filter((tag) => tag.startsWith("+"))
+      .flatMap((tag) =>
+        entityIds.map((id) => ({
+          [entityField]: { id },
+          tag: { id: tag.slice(1) }
+        }))
+      );
+
+    const removeTags = tagUpdates
+      .filter((tag) => tag.startsWith("-"))
+      .flatMap((tag) =>
+        entityIds.map((id) => ({
+          [entityField]: { id },
+          tag: { id: tag.slice(1) }
+        }))
+      );
+
+    if (addTags.length > 0) {
+      await createQueryBuilder()
+        .insert()
+        .into(AssignmentModel)
+        .values(addTags)
+        .orIgnore()
+        .execute();
+    }
+    if (removeTags.length > 0) {
+      await createQueryBuilder()
+        .delete()
+        .from(AssignmentModel)
+        .where(removeTags)
+        .execute();
+    }
+  }
+
+  /**
+   * Helper method to extract tag updates from update data
+   *
+   * @param data - Update data containing tags and other fields
+   * @returns Object containing tag updates and other updates separately
+   */
+  protected getUpdateData<T extends { tags?: string[] }>(
+    data: T
+  ): {
+    tagUpdates: string[] | undefined;
+    otherUpdates: Omit<T, "tags">;
+  } {
+    const { tags: tagUpdates, ...otherUpdates } = data;
+    return { tagUpdates, otherUpdates };
+  }
+
+  /**
+   * Creates a new tag
+   *
+   * @param data - Tag creation data containing name and optional description
+   * @returns Created tag
+   *
+   * @example
+   * const tag = await contactTagTransformer.create({
+   *   name: "Important",
+   *   description: "For important contacts"
+   * });
+   */
+  async create(data: Partial<TModel>): Promise<TModel> {
+    const { name, description, ...rest } = data;
+    const tag = await getRepository(this.model).save({
+      ...rest,
+      name,
+      description: description || ""
+    });
+    return tag as TModel;
+  }
+
+  /**
+   * Updates an existing tag
+   *
+   * @param id - Tag ID
+   * @param data - Tag update data
+   * @throws NotFoundError if tag doesn't exist
+   *
+   * @example
+   * await contactTagTransformer.update(tagId, {
+   *   name: "New Name",
+   *   description: "Updated description"
+   * });
+   */
+  async update(id: string, data: Partial<TModel>): Promise<void> {
+    const result = await getRepository(this.model).update({ id }, data);
+    if (result.affected === 0) {
+      throw new NotFoundError();
+    }
+  }
+
+  /**
+   * Deletes a tag and its assignments
+   *
+   * @param id - Tag ID
+   * @param AssignmentModel - The tag assignment model to clean up
+   * @throws NotFoundError if tag doesn't exist
+   *
+   * @example
+   * await contactTagTransformer.delete(tagId, ContactTagAssignment);
+   */
+  async delete(id: string, AssignmentModel: new () => any): Promise<void> {
+    // Check if tag exists
+    const tag = await getRepository(this.model).findOneBy({ id });
+    if (!tag) {
+      throw new NotFoundError();
+    }
+
+    // Check if tag is still assigned to any entities
+    const assignments = await getRepository(AssignmentModel).count({
+      where: { tag: { id } }
+    });
+
+    if (assignments > 0) {
+      // Delete all assignments first
+      await getRepository(AssignmentModel).delete({ tag: { id } });
+    }
+
+    // Delete tag
+    const result = await getRepository(this.model).delete({ id });
+    if (!result.affected) {
+      throw new NotFoundError();
     }
   }
 }
