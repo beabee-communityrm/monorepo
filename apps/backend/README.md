@@ -8,12 +8,6 @@ Your input is invaluable to us as we continue to grow and improve beabee. Don't 
 
 ## 💻 Install
 
-> ⚠️⚠️⚠️ **WARNING** ⚠️⚠️⚠️
->
-> If you want to deploy beabee on a server refer to
-> [beabee/beabee-deploy](https://github.com/beabee-communityrm/beabee-deploy/)
-> instead. The instructions below are for running beabee locally for development
-
 You need:
 
 - Docker >= 19.03.8
@@ -108,16 +102,16 @@ file. TypeORM will automatically generate a migration file based on your schema
 changes
 
 ```bash
-docker compose -f ../../docker-compose.yml start db
-docker compose -f ../../docker-compose.yml run app npm run typeorm migration:generate /opt/packages/core/src/migrations/MigrationName && yarn format
-yarn build # necessary for the new migration files to be found
-docker compose -f ../../docker-compose.yml run app npm run typeorm migration:run
+yarn typeorm:generate /opt/packages/core/src/migrations/<MigrationName>
+yarn format
+yarn build:with-deps # necessary for the new migration files to be found because it is looking for the javascript files, not the typescript
+yarn typeorm:run
 ```
 
 If you are still in the development phase, you may want to undo your last database migration as follows:
 
 ```bash
-docker compose -f ../../docker-compose.yml run app npm run typeorm migration:revert
+yarn typeorm:revert
 ```
 
 To find out more about this topic, take a look at the [TypeORM Migration Guide](https://typeorm.io/migrations).
@@ -128,12 +122,10 @@ The codebase is broadly split into a few different parts
 
 - **beabee core**
 
-  Shared between all services (API, webhooks and legacy)
+  The remaining files that have not yet been moved to the `@beabee/core` package, contains shared business logic between multiple services (API, webhooks and legacy)
 
 ```
 ./src/core
-./src/models - Data models and database entities
-./src/config - Config loader
 ```
 
 - **API service**
@@ -187,7 +179,7 @@ Webhooks are handled by the `webhook_app` service. This is a separate service fr
 By default we are using [MailDev](https://github.com/maildev/maildev) for local development. For this to work it must be configured the first time, run the following command if not already done:
 
 ```bash
-docker compose -f ../../docker-compose.yml exec app node built/tools/configure
+yarn setup:payment
 ```
 
 If the Docker Compose Stack is started, you can reach MailDev via http://localhost:3025/ by default. If you now receive an e-mail during your tests, you will find it there.
@@ -216,7 +208,7 @@ BEABEE_STRIPE_SECRETKEY=<secret key>
 And also that you have configured the payment methods using
 
 ```bash
-docker compose -f ../../docker-compose.yml exec app node built/tools/configure
+yarn setup:payment
 ```
 
 You can get the public key and secret key in the [Stripe dashboard](https://dashboard.stripe.com).
