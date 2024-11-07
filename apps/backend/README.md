@@ -84,16 +84,12 @@ If you make changes to `.env` you need to recreate the Docker containers
 docker compose -f ../../docker-compose.yml up -d
 ```
 
-docker compose -f ../../docker-compose.yml up -d
-
-````
-
 If you change the dependencies in `package.json` you must rebuild and recreate the Docker containers
 
 ```bash
 docker compose -f ../../docker-compose.yml build
 docker compose -f ../../docker-compose.yml up -d
-````
+```
 
 #### Generating database migrations
 
@@ -102,10 +98,10 @@ file. TypeORM will automatically generate a migration file based on your schema
 changes
 
 ```bash
-yarn typeorm:generate /opt/packages/core/src/migrations/<MigrationName>
-yarn format
-yarn build:with-deps # necessary for the new migration files to be found because it is looking for the javascript files, not the typescript
-yarn typeorm:run
+yarn typeorm:generate /opt/packages/core/src/migrations/<MigrationName> # The migration file is generated inside the docker container
+yarn format # Formats the migration file
+yarn build:with-deps # Necessary for the new migration .js files to be found
+yarn typeorm:run # Runs the migration
 ```
 
 If you are still in the development phase, you may want to undo your last database migration as follows:
