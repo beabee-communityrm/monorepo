@@ -1,4 +1,3 @@
-import { getRepository } from "@beabee/core/database";
 import {
   Authorized,
   Body,
@@ -8,15 +7,14 @@ import {
   Patch,
   Param,
   OnUndefined,
-  Delete,
-  NotFoundError
+  Delete
 } from "routing-controllers";
 import PartialBody from "@api/decorators/PartialBody";
 
 import { CreateContactTagDto, GetContactTagDto } from "@api/dto/ContactTagDto";
 import { CurrentAuth } from "@api/decorators/CurrentAuth";
 import ContactTagService from "@beabee/core/services/ContactTagService";
-import ContactTagTransformer from "@api/transformers/ContactTagTransformer";
+import { contactTagTransformer } from "@api/transformers/TagTransformer";
 import { AuthInfo } from "@type/auth-info";
 
 @JsonController("/contact-tags")
@@ -27,7 +25,7 @@ export class ContactTagController {
   async getAllContactTags(
     @CurrentAuth({ required: true }) auth: AuthInfo
   ): Promise<GetContactTagDto[]> {
-    const result = await ContactTagTransformer.fetch(auth, {
+    const result = await contactTagTransformer.fetch(auth, {
       limit: -1,
       rules: {
         condition: "AND",
@@ -44,7 +42,7 @@ export class ContactTagController {
     @Body() data: CreateContactTagDto
   ): Promise<GetContactTagDto> {
     const tag = await ContactTagService.create(data);
-    return ContactTagTransformer.convert(tag);
+    return contactTagTransformer.convert(tag);
   }
 
   @Authorized("admin")
@@ -55,7 +53,7 @@ export class ContactTagController {
     @PartialBody() data: CreateContactTagDto // Partial<TagCreateData>
   ): Promise<GetContactTagDto | undefined> {
     await ContactTagService.update(tagId, data);
-    return ContactTagTransformer.fetchOneById(auth, tagId);
+    return contactTagTransformer.fetchOneById(auth, tagId);
   }
 
   @Authorized("admin")

@@ -20,7 +20,7 @@ import ContactTransformer, {
 import { BaseCalloutResponseTransformer } from "@api/transformers/BaseCalloutResponseTransformer";
 import CalloutTransformer from "@api/transformers/CalloutTransformer";
 import CalloutResponseCommentTransformer from "@api/transformers/CalloutResponseCommentTransformer";
-import CalloutTagTransformer from "@api/transformers/CalloutTagTransformer";
+import { calloutTagTransformer } from "@api/transformers/TagTransformer";
 import { batchUpdate } from "@api/utils/rules";
 
 import {
@@ -71,7 +71,7 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
       }),
       ...(opts.with?.includes(GetCalloutResponseWith.Tags) &&
         response.tags && {
-          tags: response.tags.map((rt) => CalloutTagTransformer.convert(rt.tag))
+          tags: response.tags.map((rt) => calloutTagTransformer.convert(rt.tag))
         })
     };
   }

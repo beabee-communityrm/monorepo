@@ -21,7 +21,7 @@ import ContactProfileTransformer from "@api/transformers/ContactProfileTransform
 import { mergeRules } from "@api/utils/rules";
 
 import { AuthInfo } from "@type/auth-info";
-import ContactTagTransformer from "./ContactTagTransformer";
+import { contactTagTransformer } from "./TagTransformer";
 
 class ContactTransformer extends BaseContactTransformer<
   GetContactDto,
@@ -64,7 +64,7 @@ class ContactTransformer extends BaseContactTransformer<
         contribution: contact.contributionInfo
       }),
       ...(opts?.with?.includes(GetContactWith.Tags) && {
-        tags: contact.tags.map((ct) => ContactTagTransformer.convert(ct.tag))
+        tags: contact.tags.map((ct) => contactTagTransformer.convert(ct.tag))
       })
     };
   }

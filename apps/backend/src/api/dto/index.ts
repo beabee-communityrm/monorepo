@@ -28,4 +28,5 @@ export * from "./ResetPasswordDto.js";
 export * from "./SegmentDto.js";
 export * from "./SignupFlowDto.js";
 export * from "./StatsDto.js";
+export * from "./TagDto.js";
 export * from "./UploadFlowDto.js";

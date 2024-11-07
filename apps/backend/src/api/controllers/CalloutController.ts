@@ -42,7 +42,7 @@ import { CalloutId } from "@api/decorators/CalloutId";
 import { CurrentAuth } from "@api/decorators/CurrentAuth";
 import PartialBody from "@api/decorators/PartialBody";
 import { InvalidCalloutResponse, UnauthorizedError } from "@beabee/core/errors";
-import CalloutTagTransformer from "@api/transformers/CalloutTagTransformer";
+import { calloutTagTransformer } from "@api/transformers/TagTransformer";
 import CalloutTransformer from "@api/transformers/CalloutTransformer";
 import CalloutResponseExporter from "@api/transformers/CalloutResponseExporter";
 import CalloutResponseMapTransformer from "@api/transformers/CalloutResponseMapTransformer";
@@ -214,7 +214,7 @@ export class CalloutController {
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @CalloutId() id: string
   ): Promise<GetCalloutTagDto[]> {
-    const result = await CalloutTagTransformer.fetch(auth, {
+    const result = await calloutTagTransformer.fetch(auth, {
       rules: {
         condition: "AND",
         rules: [{ field: "calloutId", operator: "equal", value: [id] }]
@@ -238,7 +238,7 @@ export class CalloutController {
       calloutId: id
     });
 
-    return CalloutTagTransformer.convert(tag);
+    return calloutTagTransformer.convert(tag);
   }
 
   // TODO: move to CalloutTagController
@@ -248,7 +248,7 @@ export class CalloutController {
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @Param("tagId") tagId: string
   ): Promise<GetCalloutTagDto | undefined> {
-    return CalloutTagTransformer.fetchOneById(auth, tagId);
+    return calloutTagTransformer.fetchOneById(auth, tagId);
   }
 
   // TODO: move to CalloutTagController
@@ -262,7 +262,7 @@ export class CalloutController {
   ): Promise<GetCalloutTagDto | undefined> {
     await getRepository(CalloutTag).update({ id: tagId, calloutId: id }, data);
 
-    return CalloutTagTransformer.fetchOneById(auth, tagId);
+    return calloutTagTransformer.fetchOneById(auth, tagId);
   }
 
   // TODO: move to CalloutTagController

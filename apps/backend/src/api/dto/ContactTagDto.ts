@@ -1,24 +1,7 @@
-import { IsIn, IsString, IsUUID } from "class-validator";
+import { CreateTagDto, GetTagDto, ListTagsDto } from "./TagDto";
 
-import { GetPaginatedQuery } from "@api/dto/BaseDto";
+export class GetContactTagDto extends GetTagDto {}
 
-export class GetContactTagDto {
-  @IsUUID()
-  id!: string;
+export class CreateContactTagDto extends CreateTagDto {}
 
-  @IsString()
-  name!: string;
-}
-
-export class CreateContactTagDto {
-  @IsString()
-  name!: string;
-
-  @IsString()
-  description!: string;
-}
-
-export class ListContactTagsDto extends GetPaginatedQuery {
-  @IsIn(["id", "name"])
-  sort?: string;
-}
+export class ListContactTagsDto extends ListTagsDto {}
