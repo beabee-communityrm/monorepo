@@ -284,21 +284,25 @@ class CalloutsService {
       guestEmail = cleanEmailAddress(guestEmail);
 
       // If the guest email matches a contact, then use that contact instead
-      const contact = await getRepository(Contact).findOneBy({
-        email: guestEmail
-      });
-      if (contact) {
-        const response = await this.setResponse(callout, contact, answers);
+      try {
+        const contact = await getRepository(Contact).findOneBy({
+          email: guestEmail
+        });
+        if (contact) {
+          const response = await this.setResponse(callout, contact, answers);
 
-        // Let the contact know in case it wasn't them
-        const title = await this.getCalloutTitle(callout);
-        await EmailService.sendTemplateToContact(
-          "confirm-callout-response",
-          contact,
-          { calloutTitle: title, calloutSlug: callout.slug }
-        );
+          // Let the contact know in case it wasn't them
+          const title = await this.getCalloutTitle(callout);
+          await EmailService.sendTemplateToContact(
+            "confirm-callout-response",
+            contact,
+            { calloutTitle: title, calloutSlug: callout.slug }
+          );
 
-        return response;
+          return response;
+        }
+      } catch (error) {
+        log.error("Failed to associate guest response with contact", error);
       }
     }
 
