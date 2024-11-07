@@ -21,7 +21,7 @@ import { BaseCalloutResponseTransformer } from "@api/transformers/BaseCalloutRes
 import CalloutTransformer from "@api/transformers/CalloutTransformer";
 import CalloutResponseCommentTransformer from "@api/transformers/CalloutResponseCommentTransformer";
 import { calloutTagTransformer } from "@api/transformers/TagTransformer";
-import { batchUpdate } from "@api/utils/rules";
+import { batchUpdate, loadEntityTags } from "@api/utils";
 
 import {
   Callout,
@@ -131,16 +131,7 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
       // TODO: Same logic as in ContactTransformer
       if (query.with?.includes(GetCalloutResponseWith.Tags)) {
         // Load tags after to ensure offset/limit work
-        const responseTags = await createQueryBuilder(CalloutResponseTag, "rt")
-          .where("rt.response IN (:...ids)", { ids: responseIds })
-          .innerJoinAndSelect("rt.tag", "tag")
-          .getMany();
-
-        for (const response of responses) {
-          response.tags = responseTags.filter(
-            (rt) => rt.responseId === response.id
-          );
-        }
+        await loadEntityTags(responses, CalloutResponseTag, "responseId");
       }
     }
   }

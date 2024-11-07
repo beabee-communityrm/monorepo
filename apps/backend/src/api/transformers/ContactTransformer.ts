@@ -18,7 +18,7 @@ import {
 import { BaseContactTransformer } from "@api/transformers/BaseContactTransformer";
 import ContactRoleTransformer from "@api/transformers/ContactRoleTransformer";
 import ContactProfileTransformer from "@api/transformers/ContactProfileTransformer";
-import { mergeRules } from "@api/utils/rules";
+import { mergeRules, loadEntityTags } from "@api/utils";
 
 import { AuthInfo } from "@type/auth-info";
 import { contactTagTransformer } from "./TagTransformer";
@@ -151,16 +151,7 @@ class ContactTransformer extends BaseContactTransformer<
       // TODO: Same logic as in CalloutResponseTransformer
       if (query.with?.includes(GetContactWith.Tags)) {
         // Load tags after to ensure offset/limit work
-        const contactTags = await createQueryBuilder(ContactTagAssignment, "ct")
-          .where("ct.contactId IN (:...ids)", { ids: contactIds })
-          .innerJoinAndSelect("ct.tag", "tag")
-          .getMany();
-
-        for (const contact of contacts) {
-          contact.tags = contactTags.filter(
-            (ct) => ct.contactId === contact.id
-          );
-        }
+        await loadEntityTags(contacts, ContactTagAssignment, "contactId");
       }
     }
   }
