@@ -18,7 +18,7 @@ import {
 import { BaseContactTransformer } from "@api/transformers/BaseContactTransformer";
 import ContactRoleTransformer from "@api/transformers/ContactRoleTransformer";
 import ContactProfileTransformer from "@api/transformers/ContactProfileTransformer";
-import { mergeRules, loadEntityTags } from "@api/utils";
+import { mergeRules } from "@api/utils";
 
 import { AuthInfo } from "@type/auth-info";
 import { contactTagTransformer } from "./TagTransformer";
@@ -151,7 +151,11 @@ class ContactTransformer extends BaseContactTransformer<
       // TODO: Same logic as in CalloutResponseTransformer
       if (query.with?.includes(GetContactWith.Tags)) {
         // Load tags after to ensure offset/limit work
-        await loadEntityTags(contacts, ContactTagAssignment, "contactId");
+        await contactTagTransformer.loadEntityTags(
+          contacts,
+          ContactTagAssignment,
+          "contactId"
+        );
       }
     }
   }
