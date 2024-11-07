@@ -16,6 +16,8 @@ import { cleanEmailAddress } from "@beabee/core/utils/index";
 import ContactsService from "@beabee/core/services/ContactsService";
 
 import { Contact, ContactRole } from "@beabee/core/models";
+import { contactTagTransformer } from "@api/transformers/TagTransformer";
+import { ContactTagAssignment } from "@beabee/core/models";
 
 const headers = [
   "first_name",
@@ -183,9 +185,16 @@ async function updateExistingContact(contact: Contact, row: SteadyRow) {
   const [deliveryOptIn, deliveryAddress] = getDeliveryAddress(row);
   await ContactsService.updateContactProfile(contact, {
     deliveryOptIn,
-    deliveryAddress,
-    tags: ["Steady"]
+    deliveryAddress
   });
+
+  // Add Steady tag
+  await contactTagTransformer.updateEntityTags(
+    [contact.id],
+    ["+steady"], // Add the "steady" tag
+    ContactTagAssignment,
+    "contact"
+  );
 
   await setContributionData(contact, row);
 }
@@ -216,9 +225,16 @@ async function addNewContact(row: SteadyRow) {
     {
       deliveryOptIn,
       deliveryAddress,
-      newsletterStatus: NewsletterStatus.None,
-      tags: ["Steady"]
+      newsletterStatus: NewsletterStatus.None
     }
+  );
+
+  // Add Steady tag
+  await contactTagTransformer.updateEntityTags(
+    [contact.id],
+    ["+steady"], // Add the "steady" tag
+    ContactTagAssignment,
+    "contact"
   );
 
   await setContributionData(contact, row);
@@ -232,6 +248,20 @@ async function addNewContact(row: SteadyRow) {
  */
 async function processRows(rows: SteadyRow[]) {
   console.error(`Processing ${rows.length} rows`);
+
+  // Check if steady tag exists and create if it doesn't
+  const steadyTag = await getRepository(ContactTagAssignment)
+    .createQueryBuilder("ta")
+    .innerJoinAndSelect("ta.tag", "tag")
+    .where("tag.name = :name", { name: "Steady" })
+    .getOne();
+
+  if (!steadyTag) {
+    await contactTagTransformer.create({
+      name: "Steady",
+      description: "Imported from Steady"
+    });
+  }
 
   const existingContacts = await getRepository(Contact).find({
     where: { email: In(rows.map((row) => row.email)) }
