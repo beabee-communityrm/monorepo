@@ -34,6 +34,41 @@ export abstract class BaseTransformer<
   protected modelIdField = "id";
 
   protected abstract filters: Filters<FilterName>;
+  /**
+   * A collection of filter handlers that process query filters for specific fields.
+   *
+   * Each handler is a function that modifies the query builder based on filter conditions.
+   * Handlers can be used to:
+   * - Add WHERE clauses
+   * - Join related tables
+   * - Add complex filtering logic
+   *
+   * @example
+   * ```typescript
+   * filterHandlers = {
+   *   // Simple field filter
+   *   email: (qb, args) => {
+   *     qb.where(`email = :value`, { value: args.value[0] });
+   *   },
+   *
+   *   // Complex relation filter
+   *   tags: (qb, args) => {
+   *     const subQb = createQueryBuilder()
+   *       .subQuery()
+   *       .select("tag_assignment.contactId")
+   *       .from("contact_tag_assignments", "tag_assignment");
+   *
+   *     if (args.operator === "contains") {
+   *       subQb.where("tag_assignment.tagId = :tagId");
+   *       qb.where(`id IN ${subQb.getQuery()}`, { tagId: args.value[0] });
+   *     }
+   *   }
+   * }
+   * ```
+   *
+   * @see FilterHandler Type definition for filter handler functions
+   * @see FilterHandlers Interface for the complete handlers collection
+   */
   protected filterHandlers: FilterHandlers<FilterName> = {};
 
   protected allowedRoles: RoleType[] | undefined;
