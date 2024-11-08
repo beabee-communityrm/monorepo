@@ -137,7 +137,12 @@ meta:
           :class="item.profile.description && 'mt-2'"
         >
           <font-awesome-icon :icon="faTag" class="mr-2" />
-          <AppTag v-for="tag in item.tags" :key="tag.id" :tag="tag.name" />
+          <AppTag
+            v-for="tag in item.tags"
+            :id="tag.id"
+            :key="tag.id"
+            :tag="tag.name"
+          />
         </div>
       </template>
     </AppPaginatedTable>

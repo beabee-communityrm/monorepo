@@ -181,7 +181,7 @@ export function useContactFilters() {
   watchEffect(async () => {
     const tags = await contactTagOperations.fetchTags();
     // TODO: Use tag id
-    tagItems.value = tags.map((tag) => ({ id: tag.name, label: tag.name }));
+    tagItems.value = tags.map((tag) => ({ id: tag.id, label: tag.name }));
   });
 
   /**

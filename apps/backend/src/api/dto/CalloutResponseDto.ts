@@ -152,7 +152,7 @@ export class BatchUpdateCalloutResponseDto {
 
   @ValidateNested()
   @Type(() => CreateCalloutResponseDto)
-  updates!: CreateCalloutResponseDto;
+  updates!: Partial<CreateCalloutResponseDto>;
 }
 
 export class BatchUpdateCalloutResponseResultDto {

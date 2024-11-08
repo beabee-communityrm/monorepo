@@ -21,10 +21,11 @@ import {
   IsOptional,
   IsString,
   Validate,
-  ValidateNested
+  ValidateNested,
+  IsDefined
 } from "class-validator";
 
-import { GetPaginatedQuery } from "@api/dto/BaseDto";
+import { GetPaginatedQuery, GetPaginatedRuleGroup } from "@api/dto/BaseDto";
 import {
   GetContactProfileDto,
   UpdateContactProfileDto
@@ -173,6 +174,10 @@ export class UpdateContactDto extends BaseContactDto {
   @ValidateNested()
   @Type(() => UpdateContactProfileDto)
   profile?: UpdateContactProfileDto;
+
+  @IsOptional()
+  @IsString({ each: true })
+  tags?: string[];
 }
 
 export class CreateContactDto extends UpdateContactDto {
@@ -212,4 +217,88 @@ export interface ExportContactDto {
   DeliveryAddressLine2: string;
   DeliveryAddressCity: string;
   DeliveryAddressPostcode: string;
+}
+
+/**
+ * DTO for batch update request on contacts.
+ * Combines filter rules with update operations.
+ *
+ * @example
+ * {
+ *   "rules": {
+ *     "condition": "OR",
+ *     "rules": [
+ *       { "field": "id", "operator": "equal", "value": ["id1"] },
+ *       { "field": "id", "operator": "equal", "value": ["id2"] }
+ *     ]
+ *   },
+ *   "updates": {
+ *     "tags": ["+tag1", "-tag2"]
+ *   }
+ * }
+ *
+ * The rules determine which contacts will be updated,
+ * while updates specify what changes to apply to the matched contacts.
+ *
+ * @see GetPaginatedRuleGroup for available filter rules
+ * @see BatchUpdateContactUpdatesDto for available update operations
+ */
+export class BatchUpdateContactDto {
+  @IsDefined()
+  @ValidateNested()
+  @Type(() => GetPaginatedRuleGroup)
+  rules!: GetPaginatedRuleGroup;
+
+  @ValidateNested()
+  @Type(() => BatchUpdateContactUpdatesDto)
+  updates!: Partial<BatchUpdateContactUpdatesDto>;
+}
+
+/**
+ * Response DTO for batch update operations.
+ * Contains the number of contacts that were affected by the update.
+ *
+ * @example
+ * {
+ *   "affected": 42  // Number of contacts that were updated
+ * }
+ *
+ * Note: The affected count includes all contacts that matched the filter rules,
+ * even if some of them didn't require changes (e.g., already had the tags).
+ */
+export class BatchUpdateContactResultDto {
+  @IsNumber()
+  affected!: number;
+}
+
+/**
+ * DTO for batch update operations on contacts.
+ * Currently limited to tag operations only for safety and simplicity.
+ *
+ * Tag updates use a prefix syntax:
+ * - '+tagId' to add a tag
+ * - '-tagId' to remove a tag
+ *
+ * @example
+ * {
+ *   "tags": [
+ *     "+tag1",  // Add tag1
+ *     "+tag2",  // Add tag2
+ *     "-tag3"   // Remove tag3
+ *   ]
+ * }
+ *
+ * Note: This DTO is intentionally restricted to tag operations.
+ * When extending with additional properties in the future, consider:
+ * - Security implications of batch operations
+ * - Performance impact on the database
+ * - Data validation requirements
+ * - Atomic operation guarantees
+ *
+ * @see BatchUpdateContactDto for the complete batch update request structure
+ */
+export class BatchUpdateContactUpdatesDto {
+  @IsOptional()
+  @IsString({ each: true })
+  tags?: string[];
 }

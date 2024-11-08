@@ -172,9 +172,11 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
     const responses: { id: string }[] = result.raw;
 
     if (tagUpdates) {
-      await updateResponseTags(
+      await calloutTagTransformer.updateEntityTags(
         responses.map((r) => r.id),
-        tagUpdates
+        tagUpdates,
+        CalloutResponseTag,
+        "response"
       );
     }
 
@@ -184,7 +186,7 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
   async updateOneById(
     auth: AuthInfo | undefined,
     id: string,
-    updates: CreateCalloutResponseDto
+    updates: Partial<CreateCalloutResponseDto>
   ): Promise<boolean> {
     const query: BatchUpdateCalloutResponseDto = {
       rules: {
@@ -212,35 +214,6 @@ function getUpdateData(data: Partial<CreateCalloutResponseDto>): {
       })
     }
   };
-}
-
-async function updateResponseTags(responseIds: string[], tagUpdates: string[]) {
-  const addTags = tagUpdates
-    .filter((tag) => tag.startsWith("+"))
-    .flatMap((tag) =>
-      responseIds.map((id) => ({ response: { id }, tag: { id: tag.slice(1) } }))
-    );
-  const removeTags = tagUpdates
-    .filter((tag) => tag.startsWith("-"))
-    .flatMap((tag) =>
-      responseIds.map((id) => ({ response: { id }, tag: { id: tag.slice(1) } }))
-    );
-
-  if (addTags.length > 0) {
-    await createQueryBuilder()
-      .insert()
-      .into(CalloutResponseTag)
-      .values(addTags)
-      .orIgnore()
-      .execute();
-  }
-  if (removeTags.length > 0) {
-    await createQueryBuilder()
-      .delete()
-      .from(CalloutResponseTag)
-      .where(removeTags)
-      .execute();
-  }
 }
 
 export default new CalloutResponseTransformer();

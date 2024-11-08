@@ -20,6 +20,7 @@ export * from "./payment-flow-data";
 export * from "./payment-flow-params";
 export * from "./payment-flow";
 export * from "./referral-gift-form";
+export * from "./select-result";
 export * from "./tag-assignment";
 export * from "./taggable-entity";
 export * from "./update-contribution-result";

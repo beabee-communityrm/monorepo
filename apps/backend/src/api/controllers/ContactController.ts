@@ -34,7 +34,9 @@ import {
   GetContactOptsDto,
   GetContributionInfoDto,
   ListContactsDto,
-  UpdateContactDto
+  UpdateContactDto,
+  BatchUpdateContactDto,
+  BatchUpdateContactResultDto
 } from "@api/dto/ContactDto";
 import {
   CreateContactMfaDto,
@@ -128,6 +130,38 @@ export class ContactController {
     return await ContactTransformer.fetch(auth, query);
   }
 
+  /**
+   * Batch update multiple contacts at once based on filter rules
+   *
+   * This endpoint allows administrators to update multiple contacts simultaneously
+   * using a set of filter rules to determine which contacts to update.
+   *
+   * @param auth The authenticated user's information (must be admin)
+   * @param data Contains both the filter rules and the updates to apply
+   * @returns The number of contacts that were affected by the update
+   *
+   * @example
+   * // Update all contacts with a specific email domain
+   * {
+   *   "rules": {
+   *     "condition": "AND",
+   *     "rules": [{ "field": "email", "operator": "contains", "value": ["@example.com"] }]
+   *   },
+   *   "updates": {
+   *     "profile": { "notes": "Domain migration pending" }
+   *   }
+   * }
+   */
+  @Authorized("admin")
+  @Patch("/")
+  async updateContacts(
+    @CurrentAuth({ required: true }) auth: AuthInfo,
+    @PartialBody() data: BatchUpdateContactDto
+  ): Promise<BatchUpdateContactResultDto> {
+    const affected = await ContactTransformer.update(auth, data);
+    return plainToInstance(BatchUpdateContactResultDto, { affected });
+  }
+
   @Authorized("admin")
   @Get(".csv")
   async exportContacts(
@@ -149,37 +183,35 @@ export class ContactController {
     return await ContactTransformer.fetchOneById(auth, target.id, query);
   }
 
+  /**
+   * Update a single contact by their ID
+   *
+   * This endpoint allows updating a specific contact's information. Unlike the batch update,
+   * this endpoint:
+   * - Can be used by non-admins to update their own contact information
+   * - Returns the updated contact data
+   * - Requires the contact ID in the URL
+   * - Validates access rights through @TargetUser decorator
+   *
+   * @param auth The authenticated user's information
+   * @param target The contact to update (validated through @TargetUser)
+   * @param data The updates to apply to the contact
+   * @returns The updated contact information
+   *
+   * @example
+   * // Update a contact's name
+   * {
+   *   "firstname": "John",
+   *   "lastname": "Doe"
+   * }
+   */
   @Patch("/:id")
   async updateContact(
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @TargetUser() target: Contact,
-    @PartialBody() data: UpdateContactDto // Should be Partial<UpdateContactData>
+    @PartialBody() data: Partial<UpdateContactDto>
   ): Promise<GetContactDto | undefined> {
-    if (data.email || data.firstname || data.lastname || data.password) {
-      await ContactsService.updateContact(target, {
-        ...(data.email && { email: data.email }),
-        ...(data.firstname !== undefined && { firstname: data.firstname }),
-        ...(data.lastname !== undefined && { lastname: data.lastname }),
-        ...(data.password && {
-          password: await generatePassword(data.password)
-        })
-      });
-    }
-
-    if (data.profile) {
-      if (
-        !auth.roles.includes("admin") &&
-        (data.profile.notes || data.profile.description)
-      ) {
-        throw new UnauthorizedError();
-      }
-
-      await ContactsService.updateContactProfile(target, data.profile);
-    }
-
-    return await ContactTransformer.fetchOneById(auth, target.id, {
-      with: data.profile ? [GetContactWith.Profile] : []
-    });
+    return await ContactTransformer.updateOneByContact(auth, target, data);
   }
 
   @Delete("/:id")
@@ -349,6 +381,7 @@ export class ContactController {
     return await this.getContribution(target);
   }
 
+  // TODO: move to PaymentTransformer or PaymentService
   private async handleStartUpdatePaymentMethod(
     target: Contact,
     data: StartContributionDto
@@ -377,6 +410,7 @@ export class ContactController {
     return plainToInstance(GetPaymentFlowDto, ret);
   }
 
+  // TODO: move to PaymentTransformer or PaymentService
   private async handleCompleteUpdatePaymentMethod(
     target: Contact,
     data: CompleteJoinFlowDto

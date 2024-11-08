@@ -13,20 +13,43 @@ import {
 import {
   GetContactDto,
   GetContactOptsDto,
-  ListContactsDto
+  ListContactsDto,
+  UpdateContactDto,
+  BatchUpdateContactDto,
+  BatchUpdateContactUpdatesDto
 } from "@api/dto/ContactDto";
 import { BaseContactTransformer } from "@api/transformers/BaseContactTransformer";
 import ContactRoleTransformer from "@api/transformers/ContactRoleTransformer";
 import ContactProfileTransformer from "@api/transformers/ContactProfileTransformer";
-import { mergeRules } from "@api/utils";
+import { batchSelect, mergeRules } from "@api/utils";
 
 import { AuthInfo } from "@type/auth-info";
 import { contactTagTransformer } from "./TagTransformer";
+import ContactsService from "@beabee/core/services/ContactsService";
+import { generatePassword } from "@beabee/core/utils/auth";
+import { UnauthorizedError } from "@beabee/core/errors";
+import { batchUpdate } from "@api/utils";
+import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
 
+/**
+ * Transformer for Contact entities.
+ * Handles conversion, updates, and batch operations for contacts.
+ *
+ * @extends BaseContactTransformer<GetContactDto, GetContactOptsDto>
+ */
 class ContactTransformer extends BaseContactTransformer<
   GetContactDto,
   GetContactOptsDto
 > {
+  /**
+   * Converts a Contact entity to its DTO representation.
+   * Includes optional related data based on the provided options.
+   *
+   * @param contact - The contact entity to convert
+   * @param opts - Optional parameters to control included data
+   * @param auth - Optional auth info for permission checks
+   * @returns The converted contact DTO
+   */
   @TransformPlainToInstance(GetContactDto)
   convert(
     contact: Contact,
@@ -69,6 +92,14 @@ class ContactTransformer extends BaseContactTransformer<
     };
   }
 
+  /**
+   * Transforms the query to enforce access control based on auth info.
+   * Non-admin users can only access their own contact.
+   *
+   * @param query - The original query
+   * @param auth - Auth info for permission checks
+   * @returns The transformed query with additional access control rules
+   */
   protected transformQuery<T extends ListContactsDto>(
     query: T,
     auth: AuthInfo | undefined
@@ -86,6 +117,14 @@ class ContactTransformer extends BaseContactTransformer<
     };
   }
 
+  /**
+   * Modifies the query builder to handle joins and sorting.
+   * Supports profile joins and custom sorting for membership dates and names.
+   *
+   * @param qb - The query builder to modify
+   * @param fieldPrefix - Prefix for field names in the query
+   * @param query - The query containing sort and include options
+   */
   protected modifyQueryBuilder(
     qb: SelectQueryBuilder<Contact>,
     fieldPrefix: string,
@@ -129,6 +168,13 @@ class ContactTransformer extends BaseContactTransformer<
     }
   }
 
+  /**
+   * Loads additional data for contacts after the main query.
+   * Handles roles, contribution info, and tags.
+   *
+   * @param contacts - The contacts to modify
+   * @param query - The query containing include options
+   */
   protected async modifyItems(
     contacts: Contact[],
     query: ListContactsDto
@@ -136,8 +182,6 @@ class ContactTransformer extends BaseContactTransformer<
     await loadContactRoles(contacts);
 
     if (contacts.length > 0) {
-      const contactIds = contacts.map((c) => c.id);
-
       if (query.with?.includes(GetContactWith.Contribution)) {
         if (contacts.length > 1) {
           throw new Error("Cannot fetch contribution for multiple contacts");
@@ -158,8 +202,134 @@ class ContactTransformer extends BaseContactTransformer<
       }
     }
   }
+
+  /**
+   * Updates a single contact by its entity.
+   * Handles contact details, profile updates, and permission checks.
+   *
+   * @param auth - Auth info for permission checks
+   * @param target - The contact to update
+   * @param data - The update data
+   * @returns The updated contact DTO or undefined
+   * @throws UnauthorizedError if user lacks permission for profile updates
+   */
+  async updateOneByContact(
+    auth: AuthInfo,
+    target: Contact,
+    data: Partial<UpdateContactDto>
+  ): Promise<GetContactDto | undefined> {
+    if (data.email || data.firstname || data.lastname || data.password) {
+      await ContactsService.updateContact(target, {
+        ...(data.email && { email: data.email }),
+        ...(data.firstname !== undefined && { firstname: data.firstname }),
+        ...(data.lastname !== undefined && { lastname: data.lastname }),
+        ...(data.password && {
+          password: await generatePassword(data.password)
+        })
+      });
+    }
+
+    if (data.profile) {
+      if (
+        !auth.roles.includes("admin") &&
+        (data.profile.notes || data.profile.description)
+      ) {
+        throw new UnauthorizedError();
+      }
+
+      await ContactsService.updateContactProfile(target, data.profile);
+    }
+
+    return await this.fetchOneById(auth, target.id, {
+      with: data.profile ? [GetContactWith.Profile] : []
+    });
+  }
+
+  /**
+   * Performs batch updates on contacts.
+   * Currently supports tag updates and basic contact field updates.
+   *
+   * @param auth - Auth info for permission checks
+   * @param query - The batch update query containing rules and updates
+   * @returns Number of affected contacts
+   *
+   * @example
+   * await contactTransformer.update(auth, {
+   *   rules: { condition: "OR", rules: [...] },
+   *   updates: { tags: ["+tag1", "-tag2"] }
+   * });
+   */
+  async update(
+    auth: AuthInfo | undefined,
+    query: BatchUpdateContactDto
+  ): Promise<number> {
+    const [query2, filters, filterHandlers] = await this.preFetch(query, auth);
+
+    const { tagUpdates, contactUpdates } = this.getUpdateData(query2.updates);
+    const hasContactUpdates = Object.keys(contactUpdates).length > 0;
+
+    // Choose the appropriate batch operation:
+    // - batchUpdate: When contact properties need to be modified
+    // - batchSelect: When only related data (tags) needs to be updated
+    // This separation prevents empty update errors from TypeORM
+    const result = hasContactUpdates
+      ? await batchUpdate(
+          this.model,
+          filters,
+          query2.rules,
+          contactUpdates,
+          auth?.contact,
+          filterHandlers,
+          (qb) => qb.returning(["id"])
+        )
+      : await batchSelect(
+          this.model,
+          filters,
+          query2.rules,
+          auth?.contact,
+          filterHandlers
+        );
+
+    const contacts: { id: string }[] = result.raw;
+
+    if (tagUpdates && contacts.length > 0) {
+      await contactTagTransformer.updateEntityTags(
+        contacts.map((c) => c.id),
+        tagUpdates,
+        ContactTagAssignment,
+        "contact"
+      );
+    }
+
+    return result.affected || -1;
+  }
+
+  /**
+   * Extracts update data from the batch update DTO.
+   * Separates tag updates from contact field updates.
+   *
+   * @param data - The update data from the request
+   * @returns Object containing tag updates and contact updates
+   */
+  protected getUpdateData(data: Partial<BatchUpdateContactUpdatesDto>): {
+    tagUpdates: string[] | undefined;
+    contactUpdates: QueryDeepPartialEntity<Contact>;
+  } {
+    const { tags: tagUpdates, ...contactUpdates } = data;
+
+    return {
+      tagUpdates,
+      contactUpdates: contactUpdates || {}
+    };
+  }
 }
 
+/**
+ * Loads roles for an array of contacts.
+ * Used to populate the roles relationship after the main query.
+ *
+ * @param contacts - Array of contacts to load roles for
+ */
 export async function loadContactRoles(contacts: Contact[]): Promise<void> {
   if (contacts.length > 0) {
     // Load roles after to ensure offset/limit work

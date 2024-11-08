@@ -58,7 +58,7 @@ export class CalloutResponseController {
   async updateCalloutResponse(
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @Params() { id }: UUIDParams,
-    @PartialBody() data: CreateCalloutResponseDto // Should be Partial<CreateCalloutResponseData>
+    @PartialBody() data: Partial<CreateCalloutResponseDto>
   ): Promise<GetCalloutResponseDto | undefined> {
     await CalloutResponseTransformer.updateOneById(auth, id, data);
     return await CalloutResponseTransformer.fetchOneById(auth, id);

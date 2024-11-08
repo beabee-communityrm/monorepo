@@ -118,7 +118,7 @@ export async function updateContacts(
   updates: UpdateContactData
 ): Promise<{ affected: number }> {
   const { data } = await instance.patch<Serial<{ affected: number }>>(
-    '/contacts',
+    '/contact',
     {
       rules,
       updates,
