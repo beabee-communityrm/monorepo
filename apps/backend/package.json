@@ -29,7 +29,7 @@
     "dev:api:watch": "tsc-watch -p tsconfig.build.json --noClear --onSuccess 'docker compose -f ../../docker-compose.yml restart api_app router'",
     "dev:api:logs": "yarn exec bash -c 'while true; do docker compose -f ../../docker-compose.yml logs -f --tail=0 api_app; sleep 1; done'",
     "build": "rimraf built/ && gulp build && tsc -p ./tsconfig.build.json",
-    "build:with-deps": "yarn workspaces foreach --recursive --topological-dev --parallel --verbose --from @beabee/backend run build",
+    "build:core": "yarn workspace @beabee/core run build",
     "generate:index": "ts-node scripts/generate-index.ts",
     "watch": "tsc-watch -p tsconfig.build.json --noClear",
     "check": "concurrently 'yarn:check:*'",
@@ -42,10 +42,9 @@
     "setup:payment": "docker compose exec app node built/tools/configure",
     "setup:db": "yarn typeorm:migrate",
     "typeorm": "typeorm -d ./built/core/lib/typeorm.js",
-    "typeorm:migrate": "docker compose -f ../../docker-compose.yml up -d db app && docker compose -f ../../docker-compose.yml run --rm app npm run typeorm migration:run",
+    "typeorm:migrate": "docker compose -f ../../docker-compose.yml up -d db app && docker compose -f ../../docker-compose.yml run --rm app npm run typeorm migration:run && yarn build:core",
     "typeorm:revert": "docker compose -f ../../docker-compose.yml up -d db app && docker compose -f ../../docker-compose.yml run --rm app npm run typeorm migration:revert",
-    "typeorm:generate": "docker compose -f ../../docker-compose.yml up -d db app && docker compose -f ../../docker-compose.yml run --rm app npm run typeorm migration:generate --check",
-    "typeorm:run": "docker compose -f ../../docker-compose.yml up -d db app && docker compose -f ../../docker-compose.yml run --rm app npm run typeorm migration:run"
+    "typeorm:generate": "docker compose -f ../../docker-compose.yml up -d db app && docker compose -f ../../docker-compose.yml run --rm app npm run typeorm migration:generate --check"
   },
   "dependencies": {
     "@beabee/beabee-common": "workspace:^",

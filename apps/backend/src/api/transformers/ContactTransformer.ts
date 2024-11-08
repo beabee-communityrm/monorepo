@@ -130,42 +130,40 @@ class ContactTransformer extends BaseContactTransformer<
     fieldPrefix: string,
     query: ListContactsDto
   ): void {
-    {
-      if (query.with?.includes(GetContactWith.Profile)) {
-        qb.innerJoinAndSelect(`${fieldPrefix}profile`, "profile");
-      }
-
-      switch (query.sort) {
-        // Add member role to allow sorting by membershipStarts and membershipExpires
-        case "membershipStarts":
-        case "membershipExpires":
-          qb.leftJoin(
-            ContactRole,
-            "cr",
-            `cr.contactId = ${fieldPrefix}id AND cr.type = 'member'`
-          )
-            .addSelect("cr.dateAdded", "membershipStarts")
-            .addSelect(
-              "COALESCE(cr.dateExpires, '-infinity'::timestamp)",
-              "membershipExpires"
-            )
-            .orderBy(`"${query.sort}"`, query.order || "ASC", "NULLS LAST");
-          break;
-
-        // Always put empty first/last names at the bottom
-        case "firstname":
-        case "lastname":
-          qb.orderBy(
-            `NULLIF(${fieldPrefix}${query.sort}, '')`,
-            query.order || "ASC",
-            "NULLS LAST"
-          );
-          break;
-      }
-
-      // Always sort by ID to ensure predictable offset and limit
-      qb.addOrderBy(`${fieldPrefix}id`, "ASC");
+    if (query.with?.includes(GetContactWith.Profile)) {
+      qb.innerJoinAndSelect(`${fieldPrefix}profile`, "profile");
     }
+
+    switch (query.sort) {
+      // Add member role to allow sorting by membershipStarts and membershipExpires
+      case "membershipStarts":
+      case "membershipExpires":
+        qb.leftJoin(
+          ContactRole,
+          "cr",
+          `cr.contactId = ${fieldPrefix}id AND cr.type = 'member'`
+        )
+          .addSelect("cr.dateAdded", "membershipStarts")
+          .addSelect(
+            "COALESCE(cr.dateExpires, '-infinity'::timestamp)",
+            "membershipExpires"
+          )
+          .orderBy(`"${query.sort}"`, query.order || "ASC", "NULLS LAST");
+        break;
+
+      // Always put empty first/last names at the bottom
+      case "firstname":
+      case "lastname":
+        qb.orderBy(
+          `NULLIF(${fieldPrefix}${query.sort}, '')`,
+          query.order || "ASC",
+          "NULLS LAST"
+        );
+        break;
+    }
+
+    // Always sort by ID to ensure predictable offset and limit
+    qb.addOrderBy(`${fieldPrefix}id`, "ASC");
   }
 
   /**

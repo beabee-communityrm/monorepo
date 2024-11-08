@@ -100,8 +100,8 @@ changes
 ```bash
 yarn typeorm:generate /opt/packages/core/src/migrations/<MigrationName> # The migration file is generated inside the docker container
 yarn format # Formats the migration file
-yarn build:with-deps # Necessary for the new migration .js files to be found
-yarn typeorm:run # Runs the migration
+yarn build:core # Necessary for the new migration .js files to be found
+yarn typeorm:migrate # Runs the migration
 ```
 
 If you are still in the development phase, you may want to undo your last database migration as follows:

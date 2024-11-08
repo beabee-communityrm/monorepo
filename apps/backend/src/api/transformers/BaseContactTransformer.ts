@@ -43,7 +43,6 @@ export abstract class BaseContactTransformer<
   protected model = Contact;
   protected filters: Filters<ContactFilterName> = contactFilters;
 
-  // TODO: should be protected once SegmentService is refactored
   filterHandlers: FilterHandlers<string> = {
     deliveryOptIn: profileField("deliveryOptIn"),
     newsletterStatus: profileField("newsletterStatus"),
@@ -57,7 +56,8 @@ export abstract class BaseContactTransformer<
       contributionField("mandateId")(qb, args);
       qb.andWhere(`${args.fieldPrefix}contributionType = 'Manual'`);
     },
-    "callouts.": calloutsFilterHandler
+    "callouts.": calloutsFilterHandler,
+    tags: tagField()
   };
 
   protected async transformFilters(
@@ -216,3 +216,27 @@ const calloutsFilterHandler: FilterHandler = (qb, args) => {
 
   return { calloutId, ...params };
 };
+
+function tagField(): FilterHandler {
+  return (qb, args) => {
+    const subQb = createQueryBuilder()
+      .subQuery()
+      .select("tag_assignment.contactId")
+      .from("contact_tag_assignments", "tag_assignment");
+
+    if (args.operator === "contains" || args.operator === "not_contains") {
+      subQb.where(args.addParamSuffix("tag_assignment.tagId = :valueA"));
+    }
+
+    const inOp =
+      args.operator === "not_contains" || args.operator === "is_not_empty"
+        ? "NOT IN"
+        : "IN";
+
+    qb.where(`${args.fieldPrefix}id ${inOp} ${subQb.getQuery()}`);
+
+    return args.operator === "contains" || args.operator === "not_contains"
+      ? { valueA: args.value[0] }
+      : {};
+  };
+}

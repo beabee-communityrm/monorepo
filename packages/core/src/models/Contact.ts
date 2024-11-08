@@ -18,8 +18,15 @@ import config from "#config/config";
 
 import { Password } from "./Password";
 
-import type { ContactContribution, ContactProfile, ContactRole } from "./index";
+import type {
+  ContactContribution,
+  ContactProfile,
+  ContactRole,
+  ContactTag
+} from "./index";
 import { ContactTagAssignment } from "./ContactTagAssignment";
+import type { TagData } from "@beabee/beabee-common";
+import type { TaggableEntity, TagAssignment } from "@beabee/core/type";
 
 interface LoginOverride {
   code: string;
@@ -27,7 +34,7 @@ interface LoginOverride {
 }
 
 @Entity()
-export class Contact {
+export class Contact implements TaggableEntity<TagData> {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 
