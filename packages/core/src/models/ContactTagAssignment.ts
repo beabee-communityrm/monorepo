@@ -5,7 +5,8 @@ import {
   ManyToOne,
   PrimaryColumn
 } from "typeorm";
-import { Contact, ContactTag } from "./index";
+import { Contact } from "./Contact";
+import { ContactTag } from "./ContactTag";
 import type { TagData } from "@beabee/beabee-common";
 import type { TagAssignment } from "@beabee/core/type";
 
