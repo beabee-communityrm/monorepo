@@ -14,6 +14,41 @@ import type { TagData } from "@beabee/beabee-common";
 import type { TagAssignment, TaggableEntity } from "@beabee/core/type";
 import { getRepository } from "@beabee/core/database";
 import { NotFoundError } from "routing-controllers";
+import { FilterHandler } from "@type/filter-handlers";
+
+/**
+ * Creates a filter handler for tag-based filtering
+ *
+ * @param entityIdField - The name of the ID field in the tag assignment table
+ * @param tableName - The name of the tag assignment table
+ * @returns A filter handler for tag-based queries
+ */
+export function createTagFilterHandler(
+  entityIdField: string,
+  tableName: string
+): FilterHandler {
+  return (qb, args) => {
+    const subQb = createQueryBuilder()
+      .subQuery()
+      .select(`ta.${entityIdField}`)
+      .from(tableName, "ta");
+
+    if (args.operator === "contains" || args.operator === "not_contains") {
+      subQb.where(args.addParamSuffix("ta.tagId = :valueA"));
+    }
+
+    const inOp =
+      args.operator === "not_contains" || args.operator === "is_not_empty"
+        ? "NOT IN"
+        : "IN";
+
+    qb.where(`${args.fieldPrefix}id ${inOp} ${subQb.getQuery()}`);
+
+    return args.operator === "contains" || args.operator === "not_contains"
+      ? { valueA: args.value[0] }
+      : {};
+  };
+}
 
 /**
  * Generic transformer for handling tag-related operations.

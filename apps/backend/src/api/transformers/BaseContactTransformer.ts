@@ -29,6 +29,7 @@ import {
 } from "@beabee/core/models";
 
 import { FilterHandler, FilterHandlers } from "@type/filter-handlers";
+import { createTagFilterHandler } from "./TagTransformer";
 
 function flattenRules(rules: RuleGroup): Rule[] {
   return rules.rules.flatMap((rule) =>
@@ -57,7 +58,7 @@ export abstract class BaseContactTransformer<
       qb.andWhere(`${args.fieldPrefix}contributionType = 'Manual'`);
     },
     "callouts.": calloutsFilterHandler,
-    tags: tagField()
+    tags: createTagFilterHandler("contactId", "contact_tag_assignments")
   };
 
   protected async transformFilters(

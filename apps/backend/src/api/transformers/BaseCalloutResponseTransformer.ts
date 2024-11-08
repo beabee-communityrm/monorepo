@@ -17,6 +17,7 @@ import { CalloutResponse, CalloutResponseTag } from "@beabee/core/models";
 
 import { AuthInfo } from "@type/auth-info";
 import { FilterHandlers } from "@type/filter-handlers";
+import { createTagFilterHandler } from "./TagTransformer";
 
 export abstract class BaseCalloutResponseTransformer<
   GetDto,
@@ -79,26 +80,7 @@ const answerArrayOperators: Partial<
 };
 
 export const calloutResponseFilterHandlers: FilterHandlers<string> = {
-  /**
-   * Filter for responses with a specific tag
-   */
-  tags: (qb, args) => {
-    const subQb = createQueryBuilder()
-      .subQuery()
-      .select("crt.responseId")
-      .from(CalloutResponseTag, "crt");
-
-    if (args.operator === "contains" || args.operator === "not_contains") {
-      subQb.where(args.addParamSuffix("crt.tag = :valueA"));
-    }
-
-    const inOp =
-      args.operator === "not_contains" || args.operator === "is_not_empty"
-        ? "NOT IN"
-        : "IN";
-
-    qb.where(`${args.fieldPrefix}id ${inOp} ${subQb.getQuery()}`);
-  },
+  tags: createTagFilterHandler("responseId", "callout_response_tag"),
   /**
    * Text search across all answers in a response by aggregating them into a
    * single string
