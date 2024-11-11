@@ -15,6 +15,7 @@ import OptionsService from "#services/OptionsService";
 import { getRepository, runTransaction } from "#database";
 import { log as mainLogger } from "#logging";
 import { isDuplicateIndex } from "#utils/db";
+import { normalizeEmailAddress } from "#utils/index";
 
 import {
   Contact,
@@ -188,17 +189,22 @@ class CalloutsService {
   async getResponse(
     callout: Callout,
     contact: Contact
-  ): Promise<CalloutResponse | undefined> {
-    return (
-      (await getRepository(CalloutResponse).findOne({
-        where: {
-          calloutId: callout.id,
-          contactId: contact.id
-        },
-        // Get most recent response for callouts with allowMultiple
-        order: { createdAt: "DESC" }
-      })) || undefined
-    );
+  ): Promise<CalloutResponse | null> {
+    const response = await getRepository(CalloutResponse).findOne({
+      where: {
+        calloutId: callout.id,
+        contactId: contact.id
+      },
+      // Get most recent response for callouts with allowMultiple
+      order: { createdAt: "DESC" }
+    });
+
+    if (response) {
+      response.callout = callout;
+      response.contact = contact;
+    }
+
+    return response;
   }
 
   /**
@@ -239,8 +245,6 @@ class CalloutsService {
 
     const savedResponse = await this.saveResponse(response);
 
-    await this.notifyAdmin(callout, contact.fullname);
-
     if (callout.mcMergeField && callout.pollMergeField) {
       const [slideId, answerKey] = callout.pollMergeField.split(".");
       await NewsletterService.updateContactFields(contact, {
@@ -276,17 +280,39 @@ class CalloutsService {
       throw new InvalidCalloutResponse("closed");
     }
 
+    if (guestEmail) {
+      guestEmail = normalizeEmailAddress(guestEmail);
+
+      // If the guest email matches a contact, then use that contact instead
+      try {
+        const contact = await getRepository(Contact).findOneBy({
+          email: guestEmail
+        });
+        if (contact) {
+          const response = await this.setResponse(callout, contact, answers);
+
+          // Let the contact know in case it wasn't them
+          const title = await this.getCalloutTitle(callout);
+          await EmailService.sendTemplateToContact(
+            "confirm-callout-response",
+            contact,
+            { calloutTitle: title, calloutSlug: callout.slug }
+          );
+
+          return response;
+        }
+      } catch (error) {
+        log.error("Failed to associate guest response with contact", error);
+      }
+    }
+
     const response = new CalloutResponse();
     response.callout = callout;
     response.guestName = guestName || null;
     response.guestEmail = guestEmail || null;
     response.answers = answers;
 
-    const savedResponse = await this.saveResponse(response);
-
-    await this.notifyAdmin(callout, guestName || "Anonymous");
-
-    return savedResponse;
+    return await this.saveResponse(response);
   }
 
   /**
@@ -380,7 +406,16 @@ class CalloutsService {
     }
 
     try {
-      return await getRepository(CalloutResponse).save(response);
+      const savedResponse = await getRepository(CalloutResponse).save(response);
+
+      await EmailService.sendTemplateToAdmin("new-callout-response", {
+        calloutSlug: response.callout.slug,
+        calloutTitle: await this.getCalloutTitle(response.callout),
+        responderName:
+          response.contact?.fullname || response.guestName || "Anonymous"
+      });
+
+      return savedResponse;
     } catch (error) {
       if (isDuplicateIndex(error)) {
         response.number = 0;
@@ -392,27 +427,22 @@ class CalloutsService {
   }
 
   /**
-   * Notify admins about a new response. Handles fetching the callout title
-   * in the default variant if it's not already available
+   * Return the default callout title, fetching it if it's not already available
    * @param callout The callout
-   * @param responderName The name of the responder
+   * @returns Callout title
    */
-  private async notifyAdmin(
-    callout: Callout,
-    responderName: string
-  ): Promise<void> {
-    const variant =
+  private async getCalloutTitle(callout: Callout): Promise<string> {
+    const defaultVariant =
       callout.variants?.find((v) => v.name === "default") ||
-      (await getRepository(CalloutVariant).findOneBy({
+      (await getRepository(CalloutVariant).findOneByOrFail({
         calloutId: callout.id,
         name: "default"
       }));
 
-    await EmailService.sendTemplateToAdmin("new-callout-response", {
-      calloutSlug: callout.slug,
-      calloutTitle: variant?.title || "Unknown title",
-      responderName: responderName
-    });
+    // Store for future use
+    callout.variants = [...(callout.variants || []), defaultVariant];
+
+    return defaultVariant.title;
   }
 }
 

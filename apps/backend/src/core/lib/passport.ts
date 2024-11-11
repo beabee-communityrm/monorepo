@@ -8,7 +8,7 @@ import { getRepository } from "@beabee/core/database";
 import { log } from "@beabee/core/logging";
 import { sleep } from "@core/utils";
 import { generatePassword, isValidPassword } from "@beabee/core/utils/auth";
-import { cleanEmailAddress } from "@beabee/core/utils/index";
+import { normalizeEmailAddress } from "@beabee/core/utils/index";
 
 import ContactsService from "@beabee/core/services/ContactsService";
 import ContactMfaService from "@beabee/core/services/ContactMfaService";
@@ -36,7 +36,7 @@ passport.use(
     ) {
       const token = req.body.token;
 
-      email = cleanEmailAddress(email);
+      email = normalizeEmailAddress(email);
 
       const contact = await ContactsService.findOneBy({ email });
 

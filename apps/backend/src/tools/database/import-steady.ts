@@ -11,7 +11,7 @@ import { In } from "typeorm";
 
 import { getRepository } from "@beabee/core/database";
 import { runApp } from "@core/server";
-import { cleanEmailAddress } from "@beabee/core/utils/index";
+import { normalizeEmailAddress } from "@beabee/core/utils/index";
 
 import ContactsService from "@beabee/core/services/ContactsService";
 
@@ -273,7 +273,7 @@ async function loadRows(): Promise<SteadyRow[]> {
         if (isSteadyRow(row)) {
           rows.push({
             ...row,
-            email: cleanEmailAddress(row.email),
+            email: normalizeEmailAddress(row.email),
             plan_monthly_amount_cents: parseInt(row.plan_monthly_amount_cents),
             gifted: row.gifted === "true",
             subscription_period: row.subscription_period as "annual" | "monthly"
