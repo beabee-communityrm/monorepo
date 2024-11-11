@@ -7,7 +7,7 @@ import tar from "tar-stream";
 
 import { log as mainLogger } from "#logging";
 import OptionsService from "#services/OptionsService";
-import { cleanEmailAddress } from "#utils/index";
+import { normalizeEmailAddress } from "#utils/index";
 
 import {
   NewsletterContact,
@@ -156,7 +156,7 @@ function nlContactToMCMember(
 function mcMemberToNlContact(member: MCMember): NewsletterContact {
   const { FNAME, LNAME, ...fields } = member.merge_fields;
   return {
-    email: cleanEmailAddress(member.email_address),
+    email: normalizeEmailAddress(member.email_address),
     firstname: FNAME || "",
     lastname: LNAME || "",
     joined: new Date(
@@ -285,7 +285,7 @@ export default class MailchimpProvider implements NewsletterProvider {
   private emailUrl(email: string) {
     const emailHash = crypto
       .createHash("md5")
-      .update(cleanEmailAddress(email))
+      .update(normalizeEmailAddress(email))
       .digest("hex");
     return `lists/${this.listId}/members/${emailHash}`;
   }

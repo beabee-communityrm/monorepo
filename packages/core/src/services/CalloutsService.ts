@@ -15,7 +15,7 @@ import OptionsService from "#services/OptionsService";
 import { getRepository, runTransaction } from "#database";
 import { log as mainLogger } from "#logging";
 import { isDuplicateIndex } from "#utils/db";
-import { cleanEmailAddress } from "#utils/index";
+import { normalizeEmailAddress } from "#utils/index";
 
 import {
   Contact,
@@ -281,7 +281,7 @@ class CalloutsService {
     }
 
     if (guestEmail) {
-      guestEmail = cleanEmailAddress(guestEmail);
+      guestEmail = normalizeEmailAddress(guestEmail);
 
       // If the guest email matches a contact, then use that contact instead
       try {

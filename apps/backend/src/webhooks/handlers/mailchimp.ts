@@ -3,7 +3,7 @@ import bodyParser from "body-parser";
 import express, { type Express, type Request, type Response } from "express";
 
 import { log as mainLogger } from "@beabee/core/logging";
-import { cleanEmailAddress, wrapAsync } from "@beabee/core/utils/index";
+import { normalizeEmailAddress, wrapAsync } from "@beabee/core/utils/index";
 
 import ContactsService from "@beabee/core/services/ContactsService";
 import NewsletterService from "@beabee/core/services/NewsletterService";
@@ -114,8 +114,8 @@ app.post(
 );
 
 async function handleUpdateEmail(data: MCUpdateEmailData) {
-  const oldEmail = cleanEmailAddress(data.old_email);
-  const newEmail = cleanEmailAddress(data.new_email);
+  const oldEmail = normalizeEmailAddress(data.old_email);
+  const newEmail = normalizeEmailAddress(data.new_email);
 
   log.info(`Update email from ${oldEmail} to ${newEmail}`);
 
@@ -133,7 +133,7 @@ async function handleUpdateEmail(data: MCUpdateEmailData) {
 }
 
 async function handleSubscribe(data: MCProfileData) {
-  const email = cleanEmailAddress(data.email);
+  const email = normalizeEmailAddress(data.email);
 
   log.info({
     action: "subscribe",
@@ -169,7 +169,7 @@ async function handleSubscribe(data: MCProfileData) {
 }
 
 async function handleUnsubscribe(data: MCProfileData) {
-  const email = cleanEmailAddress(data.email);
+  const email = normalizeEmailAddress(data.email);
 
   log.info("Unsubscribe " + email);
 
@@ -182,7 +182,7 @@ async function handleUnsubscribe(data: MCProfileData) {
 }
 
 async function handleCleaned(data: MCCleanedEmailData) {
-  const email = cleanEmailAddress(data.email);
+  const email = normalizeEmailAddress(data.email);
 
   log.info("Cleaned " + email);
 
@@ -195,7 +195,7 @@ async function handleCleaned(data: MCCleanedEmailData) {
 }
 
 async function handleUpdateProfile(data: MCProfileData): Promise<boolean> {
-  const email = cleanEmailAddress(data.email);
+  const email = normalizeEmailAddress(data.email);
 
   log.info("Update profile for " + email);
 
