@@ -123,13 +123,15 @@ function createResponse(
     answers[slideId][answerKey] = parseValue(componentsByKey[key], value);
   }
 
+  const contactId =
+    (row.contact_email && contactIdsByEmail[row.contact_email]) || null;
+
   return getRepository(CalloutResponse).create({
     calloutId,
-    contactId:
-      (row.contact_email && contactIdsByEmail[row.contact_email]) || null,
+    contactId,
     number,
-    guestName: row.guest_name || null,
-    guestEmail: row.guest_email || null,
+    guestName: (!contactId && row.guest_name) || null,
+    guestEmail: (!contactId && row.guest_email) || null,
     answers,
     bucket: row.bucket || "",
     ...(row.created_at && { createdAt: new Date(row.created_at) })
