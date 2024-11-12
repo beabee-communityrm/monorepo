@@ -24,6 +24,17 @@ interface ResponseRow {
   created_at?: string;
 }
 
+/**
+ * Standard metadata headers
+ * - contact_email: The contact's email address
+ * - guest_email: The guest's email address
+ * - guest_name: The guest's name
+ * - bucket: The response bucket
+ * - created_at: The response creation date
+ *
+ * Note if contact_email is non-empty and matches a valid contact, the
+ * guest_name and guest_email fields will be ignored
+ */
 const metadataHeaders = [
   "contact_email",
   "guest_email",
@@ -32,6 +43,12 @@ const metadataHeaders = [
   "created_at"
 ];
 
+/**
+ * Load rows from stdin and filter out invalid rows
+ *
+ * @param headers Allowed headers
+ * @returns Valid rows
+ */
 async function loadRows(headers: string[]): Promise<ResponseRow[]> {
   return new Promise((resolve) => {
     const rows: ResponseRow[] = [];
@@ -51,12 +68,19 @@ async function loadRows(headers: string[]): Promise<ResponseRow[]> {
   });
 }
 
+/**
+ * Loads contact IDs for the given contact emails
+ *
+ * @param rows CSV response rows
+ * @returns A mapping from contact email to contact ID
+ */
 async function loadContactIds(
   rows: ResponseRow[]
 ): Promise<Record<string, string>> {
   const contactEmails = rows
     .map((r) => r.contact_email)
-    .filter((s): s is string => !!s);
+    .filter((s): s is string => !!s)
+    .filter((s, i, a) => a.indexOf(s) === i);
   const contacts = await getRepository(Contact).find({
     select: { id: true, email: true },
     where: { email: In(contactEmails) }
@@ -68,6 +92,13 @@ async function loadContactIds(
   );
 }
 
+/**
+ * Parse the value pased on the component type
+ *
+ * @param component The component
+ * @param value The value
+ * @returns The parsed value
+ */
 function parseValue(
   component: CalloutComponentSchema,
   value: string
@@ -79,15 +110,25 @@ function parseValue(
     case CalloutComponentType.INPUT_CHECKBOX:
       return value.toLowerCase() === "true" || value === "1";
 
+    case CalloutComponentType.INPUT_SELECT:
+      // Map labels to values or fallback to the original value
+      return (
+        component.data.values.find((v) => v.label === value)?.value || value
+      );
+
     case CalloutComponentType.INPUT_SELECTABLE_RADIO:
-      return component.values.find((v) => v.value === value)?.value || value;
+      // Map labels to values or fallback to the original value
+      return component.values.find((v) => v.label === value)?.value || value;
 
     case CalloutComponentType.INPUT_SELECTABLE_SELECTBOXES:
-      return value
-        .split(",")
-        .map((v) => v.trim())
-        .map((v) => component.values.find((vv) => vv.value === v)?.value || v)
-        .reduce((acc, v) => ({ ...acc, [v]: true }), {});
+      return (
+        value
+          .split(",")
+          .map((v) => v.trim())
+          // Map labels to values or fallback to the original value
+          .map((v) => component.values.find((vv) => vv.label === v)?.value || v)
+          .reduce((acc, v) => ({ ...acc, [v]: true }), {})
+      );
 
     case CalloutComponentType.INPUT_ADDRESS:
       const [lat, lng] = value.split(",").map((v) => parseFloat(v));
@@ -106,6 +147,16 @@ function parseValue(
   }
 }
 
+/**
+ * Create a CalloutResponse from a row
+ *
+ * @param row The row
+ * @param calloutId The associated callout ID
+ * @param number The response number
+ * @param contactIdsByEmail A mapping of contact emails to IDs
+ * @param componentsByKey A mapping of component keys to schemas
+ * @returns A CalloutResponse
+ */
 function createResponse(
   row: ResponseRow,
   calloutId: string,
