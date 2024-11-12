@@ -7,17 +7,15 @@ import {
   RuleOperator
 } from "@beabee/beabee-common";
 
-import { createQueryBuilder } from "@beabee/core/database";
-
 import { BaseGetCalloutResponseOptsDto } from "@api/dto/CalloutResponseDto";
 import { BaseTransformer } from "@api/transformers/BaseTransformer";
 import { mergeRules } from "@api/utils/rules";
 
-import { CalloutResponse, CalloutResponseTag } from "@beabee/core/models";
+import { CalloutResponse } from "@beabee/core/models";
 
 import { AuthInfo } from "@type/auth-info";
 import { FilterHandlers } from "@type/filter-handlers";
-import { createTagFilterHandler } from "./TagTransformer";
+import { calloutTagTransformer } from "./TagTransformer";
 
 export abstract class BaseCalloutResponseTransformer<
   GetDto,
@@ -80,7 +78,7 @@ const answerArrayOperators: Partial<
 };
 
 export const calloutResponseFilterHandlers: FilterHandlers<string> = {
-  tags: createTagFilterHandler("responseId", "callout_response_tag"),
+  tags: calloutTagTransformer.tagFilterHandler,
   /**
    * Text search across all answers in a response by aggregating them into a
    * single string

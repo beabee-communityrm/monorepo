@@ -17,40 +17,6 @@ import { NotFoundError } from "routing-controllers";
 import { FilterHandler } from "@type/filter-handlers";
 
 /**
- * Creates a filter handler for tag-based filtering
- *
- * @param entityIdField - The name of the ID field in the tag assignment table
- * @param tableName - The name of the tag assignment table
- * @returns A filter handler for tag-based queries
- */
-export function createTagFilterHandler(
-  entityIdField: string,
-  tableName: string
-): FilterHandler {
-  return (qb, args) => {
-    const subQb = createQueryBuilder()
-      .subQuery()
-      .select(`ta.${entityIdField}`)
-      .from(tableName, "ta");
-
-    if (args.operator === "contains" || args.operator === "not_contains") {
-      subQb.where(args.addParamSuffix("ta.tagId = :valueA"));
-    }
-
-    const inOp =
-      args.operator === "not_contains" || args.operator === "is_not_empty"
-        ? "NOT IN"
-        : "IN";
-
-    qb.where(`${args.fieldPrefix}id ${inOp} ${subQb.getQuery()}`);
-
-    return args.operator === "contains" || args.operator === "not_contains"
-      ? { valueA: args.value[0] }
-      : {};
-  };
-}
-
-/**
  * Generic transformer for handling tag-related operations.
  * Provides functionality for converting tags and loading tag relationships.
  *
@@ -65,7 +31,7 @@ export function createTagFilterHandler(
  *   GetCalloutTagDto
  * );
  */
-class TagTransformer<
+export class TagTransformer<
   TModel extends TagData,
   TDto extends GetTagDto,
   TFilterName extends string
@@ -76,11 +42,15 @@ class TagTransformer<
    * @param model - The constructor for the tag model
    * @param filters - Record of filters available for this tag type
    * @param dtoType - The constructor for the DTO class
+   * @param entityIdField - The name of the foreign key field in the assignment model
+   * @param tableName - The name of the tag assignment table
    */
   constructor(
     protected model: any,
     protected filters: Record<TFilterName, any>,
-    protected dtoType: new () => TDto
+    protected dtoType: new () => TDto,
+    protected entityIdField: string,
+    protected tableName: string
   ) {
     super();
   }
@@ -299,16 +269,47 @@ class TagTransformer<
       throw new NotFoundError();
     }
   }
+
+  /**
+   * Creates a filter handler for tag-based filtering using the transformer's configuration
+   *
+   * @returns A filter handler for tag-based queries
+   */
+  public tagFilterHandler: FilterHandler = (qb, args) => {
+    const subQb = createQueryBuilder()
+      .subQuery()
+      .select(`ta.${this.entityIdField}`)
+      .from(this.tableName, "ta");
+
+    if (args.operator === "contains" || args.operator === "not_contains") {
+      subQb.where(args.addParamSuffix("ta.tagId = :valueA"));
+    }
+
+    const inOp =
+      args.operator === "not_contains" || args.operator === "is_not_empty"
+        ? "NOT IN"
+        : "IN";
+
+    qb.where(`${args.fieldPrefix}id ${inOp} ${subQb.getQuery()}`);
+
+    return args.operator === "contains" || args.operator === "not_contains"
+      ? { valueA: args.value[0] }
+      : {};
+  };
 }
 
 export const calloutTagTransformer = new TagTransformer(
   CalloutTag,
   calloutTagFilters,
-  GetCalloutTagDto
+  GetCalloutTagDto,
+  "responseId",
+  "callout_response_tag"
 );
 
 export const contactTagTransformer = new TagTransformer(
   ContactTag,
   contactTagFilters,
-  GetContactTagDto
+  GetContactTagDto,
+  "contactId",
+  "contact_tag_assignments"
 );
