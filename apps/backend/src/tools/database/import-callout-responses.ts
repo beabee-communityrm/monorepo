@@ -129,15 +129,24 @@ const metadataHeaders = [
 ];
 
 runApp(async () => {
+  if (!process.argv[2]) {
+    console.error("Usage: import-callout-responses <callout-slug>");
+    process.exit(1);
+  }
+
   const callout = await getRepository(Callout).findOneByOrFail({
     slug: process.argv[2]
   });
+
+  console.error(`Importing responses for callout ${callout.slug}`);
 
   const calloutComponents = getCalloutComponents(callout.formSchema);
   const headers = [
     ...calloutComponents.map((c) => c.fullKey),
     ...metadataHeaders
   ];
+
+  console.error(`Possible headers: ${headers.join(", ")}`);
 
   const rows = await loadRows(headers);
 
@@ -152,7 +161,9 @@ runApp(async () => {
     order: { number: "DESC" },
     select: { number: true }
   });
-  const nextNumber = (lastResponseByNumber?.number || 1) + 1;
+  const nextNumber = (lastResponseByNumber?.number || 0) + 1;
+
+  console.error(`Next response number: ${nextNumber}`);
 
   const calloutResponses: CalloutResponse[] = rows.map((row, i) =>
     createResponse(
