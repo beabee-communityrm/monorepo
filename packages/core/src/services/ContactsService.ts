@@ -13,7 +13,7 @@ import { FindManyOptions, FindOneOptions, FindOptionsWhere, In } from "typeorm";
 
 import { createQueryBuilder, getRepository, runTransaction } from "#database";
 import { log as mainLogger } from "#logging";
-import { cleanEmailAddress } from "#utils/index";
+import { normalizeEmailAddress } from "#utils/index";
 import { isDuplicateIndex } from "#utils/db";
 import { generatePassword, isValidPassword } from "#utils/auth";
 import { generateContactCode } from "#utils/contact";
@@ -117,7 +117,7 @@ class ContactsService {
         lastname: "",
         contributionType: ContributionType.None,
         ...partialContact,
-        email: cleanEmailAddress(partialContact.email)
+        email: normalizeEmailAddress(partialContact.email)
       });
       await getRepository(Contact).save(contact);
 
@@ -168,7 +168,7 @@ class ContactsService {
     });
 
     if (updates.email) {
-      updates.email = cleanEmailAddress(updates.email);
+      updates.email = normalizeEmailAddress(updates.email);
     }
 
     const oldEmail = updates.email && contact.email;

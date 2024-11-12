@@ -96,10 +96,18 @@ CMD [ "node", "./built/webhooks/app.js" ]
 ## Cron image
 FROM dist AS cron_app
 
-RUN apt-get install -y cron && rm -rf /var/lib/apt/lists/*
+RUN apt-get install -y cron rsyslog && rm -rf /var/lib/apt/lists/*
 
-COPY apps/backend/crontab /etc/cron.d/beabee-cron
-RUN chmod 0644 /etc/cron.d/beabee-cron
-RUN crontab /etc/cron.d/beabee-cron
+# Disable Kernal logging
+RUN sed -i '/imklog/s/^/#/' /etc/rsyslog.conf
+# Redirect cron logs to PID 1 stdout
+RUN ln -s /proc/1/fd/1 /var/log/cron.log
 
-CMD [ "cron", "-f" ]
+# Configure cron jobs
+COPY apps/backend/crontab crontab
+RUN crontab ./crontab
+
+# 1. Make environment variables available to cron jobs
+# 2. Start the syslog daemon
+# 3. Start cron in the foreground with log level 15
+CMD [ "sh", "-c", "env > /etc/environment; rsyslogd; exec cron -fL 15" ]

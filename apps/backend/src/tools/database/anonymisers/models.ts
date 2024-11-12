@@ -1,6 +1,12 @@
 import {
   CalloutComponentSchema,
-  CalloutResponseAnswer
+  CalloutComponentType,
+  CalloutResponseAnswer,
+  CalloutResponseAnswerAddress,
+  CalloutResponseAnswerFileUpload,
+  CalloutResponseAnswers,
+  CalloutResponseAnswersSlide,
+  SetCalloutSlideSchema
 } from "@beabee/beabee-common";
 import { Chance } from "chance";
 import crypto from "crypto";
@@ -36,19 +42,59 @@ import {
   CalloutResponseComment,
   ResetSecurityFlow,
   Password,
-  ContactTagAssignment
+  ContactTagAssignment,
+  CalloutVariant
 } from "@beabee/core/models";
 
-export type PropertyMap<T> = ((prop: T) => T) | ObjectMap<T>;
+/**
+ * Generic types for object maps
+ *
+ * Object maps are used to describe how to anonymise each key on an object.
+ *
+ * Each key can either be a function which returns the correct type or, if the
+ * value is an object, it can be a nested object map. Leaf nodes should always
+ * be functions.
+ *
+ * For example, for an object with the shape:
+ * {
+ *   "foo": "bar",
+ *   "baz": {
+ *     "qux": "quux"
+ *   }
+ * }
+ *
+ * The anonymisation map could be:
+ * {
+ *  "foo": () => "anon",
+ *  "baz": {
+ *    "qux": () => "zzzz"
+ *  }
+ *
+ * OR
+ * {
+ *   "foo": () => "anon",
+ *   "baz": () => ({"qux": "zzzz"})
+ * }
+ */
 export type ObjectMap<T> = { [K in keyof T]?: PropertyMap<T[K]> };
+export type PropertyMap<T> = ((prop: T) => T) | ObjectMap<T>;
 
+/**
+ * A model anonymiser describes how to anonymise a given database model
+ */
 export interface ModelAnonymiser<T extends ObjectLiteral = ObjectLiteral> {
   model: EntityTarget<T>;
   objectMap: ObjectMap<T>;
 }
 
-// Functions to facilitate type checking when creating anonymisers
-
+/**
+ * Create a model anonymiser. This is a helper function to ensure that the
+ * object map is correctly typed for the given model.
+ *
+ * @param model The model to anonymise
+ * @param objectMap The object map to use for anonymisation
+ * @returns A model anonymiser
+ */
 function createModelAnonymiser<T extends ObjectLiteral>(
   model: EntityTarget<T>,
   objectMap: ObjectMap<T> = {}
@@ -56,52 +102,109 @@ function createModelAnonymiser<T extends ObjectLiteral>(
   return { model, objectMap };
 }
 
-function createObjectMap<T>(objectMap: ObjectMap<T>): ObjectMap<T> {
-  return objectMap;
-}
-
-export function createComponentAnonymiser(
+/**
+ * Create a callout component anonymiser
+ * This function maps the correct anonymisation function to the correct component
+ * e.g. for an email component, it will return a random email address
+ *
+ * @param component The callout component
+ * @returns A method that anonymises the answer to the given component
+ */
+function createComponentAnonymiser(
   component: CalloutComponentSchema
 ): (
-  v: CalloutResponseAnswer | CalloutResponseAnswer[]
-) => CalloutResponseAnswer | CalloutResponseAnswer[] {
+  value: CalloutResponseAnswer | CalloutResponseAnswer[] | undefined
+) => CalloutResponseAnswer | CalloutResponseAnswer[] | undefined {
   function anonymiseAnswer(v: CalloutResponseAnswer): CalloutResponseAnswer {
     switch (component.type) {
-      case "address":
+      case CalloutComponentType.CONTENT:
+        return v;
+      case CalloutComponentType.INPUT_ADDRESS:
         return {
           formatted_address: chance.address(),
           geometry: {
             location: { lat: chance.latitude(), lng: chance.longitude() }
           }
-        };
-      case "email":
-        return chance.email({ domain: "example.com", length: 10 });
-      case "checkbox":
+        } satisfies CalloutResponseAnswerAddress;
+      case CalloutComponentType.INPUT_CHECKBOX:
         return chance.pickone([true, false]);
-      case "number":
+      case CalloutComponentType.INPUT_CURRENCY:
+        return chance.floating({ min: 0, max: 1000, fixed: 2 });
+      case CalloutComponentType.INPUT_DATE_TIME:
+        return chance.date().toISOString();
+      case CalloutComponentType.INPUT_EMAIL:
+        return chance.email({ domain: "example.com", length: 10 });
+      case CalloutComponentType.INPUT_FILE:
+        return {
+          url: "https://placehold.co/600x400"
+        } satisfies CalloutResponseAnswerFileUpload;
+      case CalloutComponentType.INPUT_NUMBER:
         return chance.integer();
-      case "textarea":
-        return chance.paragraph();
-      case "textfield":
-        return chance.sentence();
-      case "select":
-      case "radio":
-      case "selectboxes":
+      case CalloutComponentType.INPUT_PHONE_NUMBER:
+        return chance.phone();
+      // case CalloutComponentType.INPUT_SIGNATURE: TODO: Implement
+      case CalloutComponentType.INPUT_SELECT:
+      case CalloutComponentType.INPUT_SELECTABLE_RADIO:
+      case CalloutComponentType.INPUT_SELECTABLE_SELECTBOXES:
         const values =
           component.type === "select"
             ? component.data.values
             : component.values;
         return chance.pickone(values.map(({ value }) => value));
+      case CalloutComponentType.INPUT_TEXT_AREA:
+        return chance.paragraph();
+      case CalloutComponentType.INPUT_TEXT_FIELD:
+        return chance.sentence();
+      case CalloutComponentType.INPUT_TIME:
+        return (
+          chance.hour({ twentyfour: true }).toString().padStart(2, "0") +
+          ":" +
+          chance.minute().toString().padStart(2, "0")
+        );
+      case CalloutComponentType.INPUT_URL:
+        return chance.url();
       default:
         throw new Error("Unknown component type " + component.type);
     }
   }
 
-  return (v) => {
-    return Array.isArray(v) ? v.map(anonymiseAnswer) : anonymiseAnswer(v);
+  return (value) => {
+    return (
+      value &&
+      (Array.isArray(value)
+        ? value.map(anonymiseAnswer)
+        : anonymiseAnswer(value))
+    );
   };
 }
-// Property generators
+
+/**
+ * Create an anonymisation map for callout response answers based on the form
+ * schema
+ *
+ * @param slides The callout slide schema
+ * @returns An object map that can be used to anonymise callout response answers
+ */
+export function createAnswersAnonymiser(
+  slides: SetCalloutSlideSchema[]
+): ObjectMap<CalloutResponseAnswersSlide> {
+  const ret: ObjectMap<CalloutResponseAnswersSlide> = {};
+
+  for (const slide of slides) {
+    const slideMap: ObjectMap<CalloutResponseAnswers> = {};
+    for (const component of slide.components) {
+      if (component.key) {
+        slideMap[component.key] = createComponentAnonymiser(component);
+      }
+    }
+
+    ret[slide.id] = slideMap;
+  }
+
+  return ret;
+}
+
+// Generic property generators
 
 const chance = new Chance();
 
@@ -162,6 +265,8 @@ export const calloutTagsAnonymiser = createModelAnonymiser(CalloutTag, {
   description: () => chance.sentence()
 });
 
+export const calloutVariantAnonymiser = createModelAnonymiser(CalloutVariant);
+
 export const contactAnonymiser = createModelAnonymiser(Contact, {
   id: () => uuidv4(),
   email: () => chance.email({ domain: "fake.beabee.io", length: 10 }),
@@ -189,12 +294,14 @@ export const contactProfileAnonymiser = createModelAnonymiser(ContactProfile, {
   notes: () => chance.sentence(),
   telephone: () => chance.phone(),
   twitter: () => chance.twitter(),
-  deliveryAddress: () => ({
-    line1: chance.address(),
-    line2: chance.pickone(["Cabot", "Easton", "Southmead", "Hanham"]),
-    city: "Bristol",
-    postcode: "BS1 1AA"
-  })
+  deliveryAddress: {
+    line1: () => chance.address(),
+    line2: () => chance.pickone(["Cabot", "Easton", "Southmead", "Hanham"]),
+    city: () => "Bristol",
+    postcode: () => "BS1 1AA"
+  }
+  // TODO: Move to contactAnonymiser?
+  // tags: (tags) => tags.map(() => chance.profession())
 });
 
 export const contactRoleAnonymiser = createModelAnonymiser(ContactRole, {
@@ -217,14 +324,14 @@ export const giftFlowAnonymiser = createModelAnonymiser(GiftFlow, {
   id: () => uuidv4(),
   setupCode: uniqueCode,
   sessionId: randomId(12),
-  giftForm: createObjectMap<GiftFlow["giftForm"]>({
+  giftForm: {
     firstname: () => chance.first(),
     lastname: () => chance.last(),
     email: () => chance.email({ domain: "fake.beabee.io", length: 10 }),
     message: () => chance.sentence(),
     fromName: () => chance.name(),
     fromEmail: () => chance.email({ domain: "fake.beabee.io", length: 10 })
-  }),
+  },
   gifteeId: () => uuidv4()
 });
 

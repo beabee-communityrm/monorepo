@@ -24,6 +24,7 @@ const anonymisers = [
   models.calloutResponsesAnonymiser, // Before Comments and Tags
   models.calloutResponseCommentsAnonymiser,
   models.calloutResponseTagsAnonymiser,
+  models.calloutVariantAnonymiser,
   models.projectsAnonymiser,
   models.projectContactsAnonymiser,
   models.projectEngagmentsAnonymiser,

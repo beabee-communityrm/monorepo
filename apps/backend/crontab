@@ -1,4 +1,7 @@
+# Add node to the PATH
+PATH=/usr/local/bin:/usr/bin:/bin
+
 # min hour day month weekday command
-0 1 * * * su node -c 'cd /opt/apps/backend/ && node ./built/tools/mailchimp/sync.js'
-0 1 * * * su node -c 'cd /opt/apps/backend/ && node ./built/tools/start-gifts.js'
-0 1 * * * su node -c 'cd /opt/apps/backend/ && node ./built/tools/process-segments.js'
+0 1 * * * su node -c 'cd /opt/apps/backend/ && node ./built/tools/mailchimp/sync.js' > /proc/1/fd/1 2>&1
+0 1 * * * su node -c 'cd /opt/apps/backend/ && node ./built/tools/start-gifts.js' > /proc/1/fd/1 2>&1
+0 1 * * * su node -c 'cd /opt/apps/backend/ && node ./built/tools/process-segments.js' > /proc/1/fd/1 2>&1

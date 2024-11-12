@@ -1,4 +1,5 @@
 import { NewsletterStatus } from "@beabee/beabee-common";
+import { Locale } from "#locale";
 
 export default {
   organisation: "UK Makerspace",
@@ -45,7 +46,7 @@ export default {
   "switch-webhook-gc": "true",
   "switch-webhook-mailchimp": "true",
   "switch-webhook-stripe": "true",
-  locale: "en",
+  locale: "en" as Locale,
   theme: "{}",
   "flash-logged-in": "Login successful",
   "flash-logged-out": "Logged out",
