@@ -103,6 +103,8 @@ function parseValue(
   component: CalloutComponentSchema,
   value: string
 ): CalloutResponseAnswer {
+  value = value.trim();
+
   switch (component.type) {
     case CalloutComponentType.INPUT_NUMBER:
       return parseFloat(value);
@@ -131,10 +133,10 @@ function parseValue(
       );
 
     case CalloutComponentType.INPUT_ADDRESS:
-      const [lat, lng] = value.split(",").map((v) => parseFloat(v));
+      const [lat, lng, ...rest] = value.split(",");
       return {
-        geometry: { location: { lat, lng } },
-        formatted_address: ""
+        geometry: { location: { lat: Number(lat), lng: Number(lng) } },
+        formatted_address: rest.join(",")
       } satisfies CalloutResponseAnswerAddress;
 
     case CalloutComponentType.INPUT_FILE:
