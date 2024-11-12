@@ -9,6 +9,25 @@ meta:
   <App2ColGrid v-if="contact" extended>
     <template #col1>
       <AppHeading>{{ t('contactOverview.overview') }}</AppHeading>
+      <p v-if="contact.tags.length > 0" class="mb-4">
+        <font-awesome-icon :icon="faTag" class="mr-2" />
+        <AppTag
+          v-for="tagAssignment in contact.tags"
+          :key="tagAssignment.id"
+          :tag="tagAssignment.name"
+        />
+      </p>
+      <div class="mb-4 flex gap-2">
+        <ToggleTagButton
+          size="sm"
+          with-text
+          :tag-items="tagItems"
+          :selected-tags="contact.tags.map((t) => t.id)"
+          :manage-url="`${route.path}/tags`"
+          :loading="changingTags"
+          @toggle="handleToggleTag"
+        />
+      </div>
       <AppInfoList>
         <AppInfoListItem
           :name="t('contacts.data.joined')"
@@ -257,7 +276,12 @@ import {
   type RoleType,
 } from '@beabee/beabee-common';
 import { useI18n } from 'vue-i18n';
-import { faCircleNotch, faMobileAlt } from '@fortawesome/free-solid-svg-icons';
+import { useRoute } from 'vue-router';
+import {
+  faCircleNotch,
+  faMobileAlt,
+  faTag,
+} from '@fortawesome/free-solid-svg-icons';
 
 import AppHeading from '@components/AppHeading.vue';
 import AppInput from '@components/forms/AppInput.vue';
@@ -272,12 +296,16 @@ import PaymentMethod from '@components/payment-method/PaymentMethod.vue';
 import AppConfirmDialog from '@components/AppConfirmDialog.vue';
 import App2ColGrid from '@components/App2ColGrid.vue';
 import CalloutForm from '@components/pages/callouts/CalloutForm.vue';
+import AppTag from '@components/AppTag.vue';
+import ToggleTagButton from '@components/tag/ToggleTagButton.vue';
 
 import {
   deleteRole,
   fetchContact,
   updateContact,
   updateRole,
+  contactTagOperations,
+  updateContacts,
 } from '@utils/api/contact';
 import { formatLocale } from '@utils/dates';
 import { fetchContent } from '@utils/api/content';
@@ -290,6 +318,7 @@ import { addNotification } from '@store/notifications';
 import env from '@env';
 
 const { t, n } = useI18n();
+const route = useRoute();
 
 const props = defineProps<{
   contact: GetContactData;
@@ -387,6 +416,36 @@ async function handleChangedRoles(cb: () => Promise<unknown>) {
 
 const setupContent = ref<ContentJoinSetupData>();
 
+const changingTags = ref(false);
+const tagItems = ref<{ id: string; label: string }[]>([]);
+
+async function handleToggleTag(tagId: string, successText: string) {
+  if (!contact.value) return;
+
+  changingTags.value = true;
+  try {
+    await updateContacts(
+      {
+        condition: 'AND',
+        rules: [{ field: 'id', operator: 'equal', value: [contact.value.id] }],
+      },
+      { tags: [tagId] }
+    );
+
+    // Refresh contact data
+    contact.value = await fetchContact(props.contact.id, [
+      GetContactWith.Profile,
+      GetContactWith.Contribution,
+      GetContactWith.Roles,
+      GetContactWith.Tags,
+    ]);
+
+    addNotification({ title: successText, variant: 'success' });
+  } finally {
+    changingTags.value = false;
+  }
+}
+
 onBeforeMount(async () => {
   contact.value = await fetchContact(props.contact.id, [
     GetContactWith.Profile,
@@ -427,5 +486,11 @@ onBeforeMount(async () => {
     );
     joinSurveyResponse.value = responses.items[0];
   }
+
+  const tags = await contactTagOperations.fetchTags();
+  tagItems.value = tags.map((tag) => ({
+    id: tag.id,
+    label: tag.name,
+  }));
 });
 </script>

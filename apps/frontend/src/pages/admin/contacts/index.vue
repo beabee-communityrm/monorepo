@@ -70,10 +70,7 @@ meta:
             :disabled="selectedCount === 0"
             @toggle="
               (tagId, successText) =>
-                handleUpdateAction(
-                  { tags: [tagId] }, // TODO: Callout responses only use string[] for updates
-                  successText
-                )
+                handleUpdateAction({ tags: [tagId] }, successText)
             "
           />
         </AppButtonGroup>
