@@ -4,6 +4,8 @@ import {
   CalloutComponentSchema,
   CalloutComponentType,
   CalloutResponseAnswer,
+  CalloutResponseAnswerAddress,
+  CalloutResponseAnswerFileUpload,
   CalloutResponseAnswersSlide,
   getCalloutComponents
 } from "@beabee/beabee-common";
@@ -21,6 +23,15 @@ interface ResponseRow {
   bucket?: string;
   created_at?: string;
 }
+
+const metadataHeaders = [
+  "contact_email",
+  "guest_email",
+  "guest_name",
+  "bucket",
+  "tags",
+  "created_at"
+];
 
 async function loadRows(headers: string[]): Promise<ResponseRow[]> {
   return new Promise((resolve) => {
@@ -77,9 +88,16 @@ function parseValue(
         .reduce((acc, v) => ({ ...acc, [v]: true }), {});
 
     case CalloutComponentType.INPUT_ADDRESS:
-    case CalloutComponentType.INPUT_SIGNATURE:
+      const [lat, lng] = value.split(",").map((v) => parseFloat(v));
+      return {
+        geometry: { location: { lat, lng } },
+        formatted_address: ""
+      } satisfies CalloutResponseAnswerAddress;
+
     case CalloutComponentType.INPUT_FILE:
-      throw new Error(`Component type ${component.type} is not supported`);
+      return {
+        url: value
+      } satisfies CalloutResponseAnswerFileUpload;
 
     default:
       return value;
@@ -118,15 +136,6 @@ function createResponse(
     ...(row.created_at && { createdAt: new Date(row.created_at) })
   });
 }
-
-const metadataHeaders = [
-  "contact_email",
-  "guest_email",
-  "guest_name",
-  "bucket",
-  "tags",
-  "created_at"
-];
 
 runApp(async () => {
   if (!process.argv[2]) {
