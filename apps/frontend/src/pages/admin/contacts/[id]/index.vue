@@ -9,6 +9,8 @@ meta:
   <App2ColGrid v-if="contact" extended>
     <template #col1>
       <AppHeading>{{ t('contactOverview.overview') }}</AppHeading>
+
+      <!-- Tags -->
       <p v-if="contact.tags.length > 0" class="mb-4">
         <font-awesome-icon :icon="faTag" class="mr-2" />
         <AppTag
@@ -17,18 +19,8 @@ meta:
           :tag="tagAssignment.name"
         />
       </p>
-      <div class="mb-4 flex gap-2">
-        <ToggleTagButton
-          size="sm"
-          with-text
-          :tag-items="tagItems"
-          :selected-tags="contact.tags.map((t) => t.id)"
-          :manage-url="`${route.path}/tags`"
-          :loading="changingTags"
-          @toggle="handleToggleTag"
-        />
-      </div>
-      <AppInfoList>
+
+      <AppInfoList class="mb-4">
         <AppInfoListItem
           :name="t('contacts.data.joined')"
           :value="formatLocale(contact.joined, 'PPP')"
@@ -40,6 +32,18 @@ meta:
           "
         />
       </AppInfoList>
+
+      <div class="mb-4 flex gap-2">
+        <ToggleTagButton
+          size="sm"
+          with-text
+          :tag-items="tagItems"
+          :selected-tags="contact.tags.map((t) => t.id)"
+          :manage-url="`${route.path}/tags`"
+          :loading="changingTags"
+          @toggle="handleToggleTag"
+        />
+      </div>
 
       <div v-if="!env.cnrMode">
         <AppHeading class="mt-6">
@@ -122,14 +126,6 @@ meta:
           :label="t('contacts.data.notes')"
           class="mb-4"
         />
-        <div class="mb-4">
-          <TagDropdown
-            v-if="contactTags.length > 0"
-            v-model="contactAnnotations.tags"
-            :tags="contactTags"
-            :label="t('contacts.data.tags')"
-          />
-        </div>
       </AppForm>
     </template>
     <template #col2>
@@ -286,7 +282,6 @@ import {
 import AppHeading from '@components/AppHeading.vue';
 import AppInput from '@components/forms/AppInput.vue';
 import AppButton from '@components/button/AppButton.vue';
-import TagDropdown from '@components/pages/admin/contacts/TagDropdown.vue';
 import RoleEditor from '@components/role/RoleEditor.vue';
 import AppInfoList from '@components/AppInfoList.vue';
 import AppInfoListItem from '@components/AppInfoListItem.vue';
