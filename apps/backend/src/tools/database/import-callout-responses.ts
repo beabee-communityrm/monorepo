@@ -29,7 +29,6 @@ const metadataHeaders = [
   "guest_email",
   "guest_name",
   "bucket",
-  "tags",
   "created_at"
 ];
 
