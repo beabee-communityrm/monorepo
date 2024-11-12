@@ -80,10 +80,13 @@ function parseValue(
       return value.toLowerCase() === "true" || value === "1";
 
     case CalloutComponentType.INPUT_SELECTABLE_RADIO:
+      return component.values.find((v) => v.value === value)?.value || value;
+
     case CalloutComponentType.INPUT_SELECTABLE_SELECTBOXES:
       return value
         .split(",")
         .map((v) => v.trim())
+        .map((v) => component.values.find((vv) => vv.value === v)?.value || v)
         .reduce((acc, v) => ({ ...acc, [v]: true }), {});
 
     case CalloutComponentType.INPUT_ADDRESS:
