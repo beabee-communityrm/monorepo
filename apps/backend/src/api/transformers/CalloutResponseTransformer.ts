@@ -6,11 +6,11 @@ import { createQueryBuilder, getRepository } from "@beabee/core/database";
 
 import {
   BatchUpdateCalloutResponseDto,
-  CreateCalloutResponseDto,
   GetCalloutResponseDto,
   GetCalloutResponseOptsDto,
   GetCalloutResponseWith,
-  ListCalloutResponsesDto
+  ListCalloutResponsesDto,
+  UpdateCalloutResponseDto
 } from "@api/dto/CalloutResponseDto";
 import { PaginatedDto } from "@api/dto/PaginatedDto";
 import { NotFoundError } from "@beabee/core/errors";
@@ -186,7 +186,7 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
   async updateOneById(
     auth: AuthInfo | undefined,
     id: string,
-    updates: Partial<CreateCalloutResponseDto>
+    updates: UpdateCalloutResponseDto
   ): Promise<boolean> {
     const query: BatchUpdateCalloutResponseDto = {
       rules: {
@@ -200,7 +200,7 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
   }
 }
 
-function getUpdateData(data: Partial<CreateCalloutResponseDto>): {
+function getUpdateData(data: UpdateCalloutResponseDto): {
   tagUpdates: string[] | undefined;
   responseUpdates: QueryDeepPartialEntity<CalloutResponse>;
 } {
