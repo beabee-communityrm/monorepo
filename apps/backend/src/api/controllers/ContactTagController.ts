@@ -45,11 +45,7 @@ export class ContactTagController {
     @CurrentAuth({ required: true }) auth: AuthInfo
   ): Promise<GetContactTagDto[]> {
     const result = await contactTagTransformer.fetch(auth, {
-      limit: -1,
-      rules: {
-        condition: "AND",
-        rules: []
-      }
+      limit: -1
     });
 
     return result.items;
