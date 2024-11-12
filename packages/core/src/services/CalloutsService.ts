@@ -399,7 +399,8 @@ class CalloutsService {
     if (!response.number) {
       const lastResponse = await getRepository(CalloutResponse).findOne({
         where: { calloutId: response.callout.id },
-        order: { number: "DESC" }
+        order: { number: "DESC" },
+        select: { number: true }
       });
 
       response.number = lastResponse ? lastResponse.number + 1 : 1;
