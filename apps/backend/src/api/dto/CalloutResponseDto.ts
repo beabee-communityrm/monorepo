@@ -31,8 +31,6 @@ import { GetCalloutDto } from "@api/dto/CalloutDto";
 import { GetCalloutResponseCommentDto } from "@api/dto/CalloutResponseCommentDto";
 import { GetCalloutTagDto } from "@api/dto/CalloutTagDto";
 
-import { createPartialDTO } from "@api/utils";
-
 import { Callout } from "@beabee/core/models";
 
 import { CalloutResponseViewSchema } from "@type/callout-response-view-schema";
@@ -146,9 +144,34 @@ export class CreateCalloutResponseDto {
   assigneeId?: string | null;
 }
 
-export class UpdateCalloutResponseDto extends createPartialDTO(
-  CreateCalloutResponseDto
-) {}
+export class UpdateCalloutResponseDto
+  implements Partial<CreateCalloutResponseDto>
+{
+  // TODO: validate
+  @IsObject()
+  @IsOptional()
+  answers?: CalloutResponseAnswersSlide;
+
+  @IsOptional()
+  @IsString()
+  guestName?: string;
+
+  @IsOptional()
+  @IsEmail()
+  guestEmail?: string;
+
+  @IsOptional()
+  @IsString()
+  bucket?: string;
+
+  @IsOptional()
+  @IsString({ each: true })
+  tags?: string[];
+
+  @IsUUID("4")
+  @IsOptional()
+  assigneeId?: string | null;
+}
 
 export class BatchUpdateCalloutResponseDto {
   @IsDefined()

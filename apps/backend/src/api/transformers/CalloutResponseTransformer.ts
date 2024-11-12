@@ -204,7 +204,8 @@ function getUpdateData(data: UpdateCalloutResponseDto): {
   tagUpdates: string[] | undefined;
   responseUpdates: QueryDeepPartialEntity<CalloutResponse>;
 } {
-  const { tags: tagUpdates, assigneeId, ...otherUpdates } = data.data;
+  console.log("getUpdateData", data);
+  const { tags: tagUpdates, assigneeId, ...otherUpdates } = data;
   return {
     tagUpdates,
     responseUpdates: {
