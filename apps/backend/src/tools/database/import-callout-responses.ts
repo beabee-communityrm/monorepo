@@ -1,3 +1,5 @@
+import "module-alias/register";
+
 import {
   CalloutComponentSchema,
   CalloutComponentType,
@@ -56,6 +58,34 @@ async function loadContactIds(
   );
 }
 
+function parseValue(
+  component: CalloutComponentSchema,
+  value: string
+): CalloutResponseAnswer {
+  switch (component.type) {
+    case CalloutComponentType.INPUT_NUMBER:
+      return parseFloat(value);
+
+    case CalloutComponentType.INPUT_CHECKBOX:
+      return value.toLowerCase() === "true" || value === "1";
+
+    case CalloutComponentType.INPUT_SELECTABLE_RADIO:
+    case CalloutComponentType.INPUT_SELECTABLE_SELECTBOXES:
+      return value
+        .split(",")
+        .map((v) => v.trim())
+        .reduce((acc, v) => ({ ...acc, [v]: true }), {});
+
+    case CalloutComponentType.INPUT_ADDRESS:
+    case CalloutComponentType.INPUT_SIGNATURE:
+    case CalloutComponentType.INPUT_FILE:
+      throw new Error(`Component type ${component.type} is not supported`);
+
+    default:
+      return value;
+  }
+}
+
 function createResponse(
   row: ResponseRow,
   calloutId: string,
@@ -65,6 +95,10 @@ function createResponse(
 ): CalloutResponse {
   const answers: CalloutResponseAnswersSlide = {};
   for (const [key, value] of Object.entries(row)) {
+    if (metadataHeaders.includes(key)) {
+      continue;
+    }
+
     const [slideId, answerKey] = key.split(".");
     if (!answers[slideId]) {
       answers[slideId] = {};
@@ -83,20 +117,6 @@ function createResponse(
     bucket: row.bucket || "",
     ...(row.created_at && { createdAt: new Date(row.created_at) })
   });
-}
-
-function parseValue(
-  component: CalloutComponentSchema,
-  value: string
-): CalloutResponseAnswer {
-  switch (component.type) {
-    case CalloutComponentType.INPUT_NUMBER:
-      return parseFloat(value);
-    case CalloutComponentType.INPUT_CHECKBOX:
-      return value === "true";
-    default:
-      return value;
-  }
 }
 
 const metadataHeaders = [
