@@ -12,13 +12,8 @@ import { log as mainLogger } from "@beabee/core/logging";
 import { Callout, CalloutResponse } from "@beabee/core/models";
 
 import {
-  CalloutComponentSchema,
-  CalloutResponseAnswersSlide
-} from "@beabee/beabee-common";
-
-import {
   calloutResponsesAnonymiser,
-  createComponentAnonymiser,
+  createAnswersAnonymiser,
   ModelAnonymiser,
   ObjectMap,
   PropertyMap
@@ -33,10 +28,63 @@ function stringify(value: any): string {
   });
 }
 
+/**
+ * Anonymise callout responses. This is a special case as the answers are stored
+ * in a nested structure that is dependent on the callout form schema, so the
+ * anonymiser needs to be created per callout.
+ *
+ * @param prepareQuery A function which can modify the query builder before fetching the items
+ * @param valueMap A map of old values to new values to use if the same value is encountered multiple times
+ */
+async function anonymiseCalloutResponses(
+  prepareQuery: (
+    qb: SelectQueryBuilder<CalloutResponse>
+  ) => SelectQueryBuilder<CalloutResponse>,
+  valueMap: Map<string, unknown>
+): Promise<void> {
+  const callouts = await createQueryBuilder(Callout, "callout").getMany();
+  for (const callout of callouts) {
+    const answersMap = createAnswersAnonymiser(callout.formSchema.slides);
+
+    const responses = await prepareQuery(
+      createQueryBuilder(CalloutResponse, "item")
+    )
+      .andWhere("item.calloutId = :id", { id: callout.id })
+      .orderBy("item.id", "ASC")
+      .getMany();
+
+    if (responses.length === 0) {
+      continue;
+    }
+
+    log.info("-- " + callout.slug);
+
+    const newResponses = responses.map((response) => ({
+      ...anonymiseItem(
+        response,
+        calloutResponsesAnonymiser.objectMap,
+        valueMap
+      ),
+      answers: anonymiseItem(response.answers, answersMap, undefined, false)
+    }));
+
+    writeItems(CalloutResponse, newResponses);
+  }
+}
+
+/**
+ * Anonymise a database item using an object anonymisation map
+ *
+ * @param item The item to anonymise
+ * @param objectMap The object map describing how to anonymise the item
+ * @param valueMap A map of old values to new values to use if the same value is encountered multiple times
+ * @param copyProps Whether to initially copy the item or start with an empty object
+ * @returns The anonymised item
+ */
 function anonymiseItem<T>(
   item: T,
   objectMap: ObjectMap<T>,
-  valueMap?: Map<string, unknown>,
+  valueMap: Map<string, unknown> = new Map(),
   copyProps = true
 ): T {
   const newItem = copyProps ? Object.assign({}, item) : ({} as T);
@@ -49,20 +97,27 @@ function anonymiseItem<T>(
 
       const newValue =
         typeof propertyMap === "function"
-          ? valueMap?.get(valueKey) || propertyMap(oldValue)
+          ? valueMap.get(valueKey) || propertyMap(oldValue)
           : anonymiseItem(oldValue, propertyMap, valueMap);
 
       newItem[prop] = newValue;
 
-      if (valueMap) {
-        valueMap.set(valueKey, newValue);
-      }
+      valueMap.set(valueKey, newValue);
     }
   }
 
   return newItem;
 }
 
+/**
+ * Write items to the console for export
+ * The output is in the format:
+ * INSERT INTO "table" ("column1", "column2") VALUES ($1, $2), ($3, $4);
+ * ["value1", "value2", "value3", "value4"]
+ *
+ * @param model The target database model
+ * @param items The items to write for export
+ */
 function writeItems<T extends ObjectLiteral>(
   model: EntityTarget<T>,
   items: T[]
@@ -77,60 +132,15 @@ function writeItems<T extends ObjectLiteral>(
   console.log(stringify(params));
 }
 
-function createAnswersMap(
-  components: CalloutComponentSchema[]
-): ObjectMap<CalloutResponseAnswersSlide> {
-  // return Object.fromEntries(
-  //   components.map((c) => [c.key, createComponentAnonymiser(c)])
-  // );
-  return {};
-}
-
-async function anonymiseCalloutResponses(
-  fn: (
-    qb: SelectQueryBuilder<CalloutResponse>
-  ) => SelectQueryBuilder<CalloutResponse>,
-  valueMap: Map<string, unknown>
-): Promise<void> {
-  const callouts = await createQueryBuilder(Callout, "callout").getMany();
-  for (const callout of callouts) {
-    const answersMap = createAnswersMap(
-      [] // TODO
-    );
-
-    const responses = await fn(createQueryBuilder(CalloutResponse, "item"))
-      .andWhere("item.calloutId = :id", { id: callout.id })
-      .orderBy("item.id", "ASC")
-      .getMany();
-
-    if (responses.length === 0) {
-      continue;
-    }
-
-    log.info("-- " + callout.slug);
-
-    const newResponses = responses.map((response) => {
-      const newResponse = anonymiseItem(
-        response,
-        calloutResponsesAnonymiser.objectMap,
-        valueMap
-      );
-      newResponse.answers = anonymiseItem(
-        response.answers,
-        answersMap,
-        undefined,
-        false
-      );
-      return newResponse;
-    });
-
-    writeItems(CalloutResponse, newResponses);
-  }
-}
-
+/**
+ * Anonymise the items for a model returned by a query builder
+ * @param anonymiser The anonymiser for the model
+ * @param prepareQuery A function which can modify the query builder before fetching the items
+ * @param valueMap A map of old values to new values to use if the same value is encountered multiple times
+ */
 export async function anonymiseModel<T extends ObjectLiteral>(
   anonymiser: ModelAnonymiser<T>,
-  fn: (qb: SelectQueryBuilder<T>) => SelectQueryBuilder<T>,
+  prepareQuery: (qb: SelectQueryBuilder<T>) => SelectQueryBuilder<T>,
   valueMap: Map<string, unknown>
 ): Promise<void> {
   const metadata = getRepository(anonymiser.model).metadata;
@@ -138,7 +148,7 @@ export async function anonymiseModel<T extends ObjectLiteral>(
 
   // Callout responses are handled separately
   if (anonymiser === calloutResponsesAnonymiser) {
-    return await anonymiseCalloutResponses(fn as any, valueMap);
+    return await anonymiseCalloutResponses(prepareQuery as any, valueMap);
   }
 
   // Order by primary keys for predictable pagination
@@ -147,7 +157,9 @@ export async function anonymiseModel<T extends ObjectLiteral>(
   );
 
   for (let i = 0; ; i += 1000) {
-    const items = await fn(createQueryBuilder(anonymiser.model, "item"))
+    const items = await prepareQuery(
+      createQueryBuilder(anonymiser.model, "item")
+    )
       .orderBy(orderBy)
       .offset(i)
       .limit(1000)
@@ -165,6 +177,15 @@ export async function anonymiseModel<T extends ObjectLiteral>(
   }
 }
 
+/**
+ * Output SQL to clear models
+ * The ouput is in the format:
+ * DELETE FROM "table";
+ * -- Empty params line
+ *
+ * The empty line is important to ensure the same format as writeItems
+ * @param anonymisers
+ */
 export function clearModels(anonymisers: ModelAnonymiser<ObjectLiteral>[]) {
   // Reverse order to clear foreign keys correctly
   for (let i = anonymisers.length - 1; i >= 0; i--) {

@@ -23,7 +23,8 @@ import {
   projectContactsAnonymiser,
   projectEngagmentsAnonymiser,
   referralsAnonymiser,
-  resetSecurityFlowAnonymiser
+  resetSecurityFlowAnonymiser,
+  calloutVariantAnonymiser
 } from "./anonymisers/models";
 import { anonymiseModel, clearModels } from "./anonymisers";
 
@@ -37,7 +38,8 @@ const contactAnonymisers = [
 
 const calloutsAnonymisers = [
   calloutsAnonymiser,
-  calloutTagsAnonymiser
+  calloutTagsAnonymiser,
+  calloutVariantAnonymiser
 ] as ModelAnonymiser[];
 
 const calloutResponseAnonymisers = [
@@ -63,6 +65,7 @@ async function main() {
     resetSecurityFlowAnonymiser
   ] as ModelAnonymiser[]);
 
+  // Get 400 random contacts
   const contacts = await createQueryBuilder(Contact, "item")
     .select("item.id")
     .orderBy("random()")
@@ -80,6 +83,7 @@ async function main() {
     );
   }
 
+  // Get the 20 latest callouts
   const callouts = await createQueryBuilder(Callout, "item")
     .select("item.id")
     .orderBy("item.date", "DESC")
@@ -88,7 +92,7 @@ async function main() {
   const calloutIds = callouts.map((c) => c.id);
 
   for (const anonymiser of calloutsAnonymisers) {
-    const pk = anonymiser === calloutsAnonymiser ? "id" : "calloutid";
+    const pk = anonymiser === calloutsAnonymiser ? "id" : "calloutId";
     await anonymiseModel(
       anonymiser,
       (qb) => qb.where(`item.${pk} IN (:...ids)`, { ids: calloutIds }),
