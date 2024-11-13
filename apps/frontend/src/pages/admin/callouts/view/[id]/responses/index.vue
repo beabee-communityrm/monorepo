@@ -161,10 +161,7 @@ meta:
             "
             class="flex flex-col gap-2"
           >
-            <div v-if="item.tags.length > 0">
-              <font-awesome-icon :icon="faTag" class="mr-2" />
-              <AppTag v-for="tag in item.tags" :key="tag.id" :tag="tag.name" />
-            </div>
+            <TagList :tags="item.tags" @select="currentTag = $event" />
             <p v-if="currentInlineComponent && item.answers">
               <font-awesome-icon :icon="faUserPen" class="mr-2" />
               <b>{{ t('calloutResponsesPage.showAnswer') }}:{{ ' ' }}</b>
@@ -223,7 +220,6 @@ import AppSearch from '@components/search/AppSearch.vue';
 import { fetchResponses } from '@utils/api/callout';
 import AppButtonGroup from '@components/button/AppButtonGroup.vue';
 import { updateCalloutResponses } from '@utils/api/callout-response';
-import AppTag from '@components/AppTag.vue';
 import MoveBucketButton from '@components/pages/admin/callouts/MoveBucketButton.vue';
 import ToggleTagButton from '@components/tag/ToggleTagButton.vue';
 import { buckets } from '@components/pages/admin/callouts/callouts.interface';
@@ -239,7 +235,6 @@ import AppCheckbox from '@components/forms/AppCheckbox.vue';
 import {
   faComment,
   faDownload,
-  faTag,
   faUser,
   faUserPen,
 } from '@fortawesome/free-solid-svg-icons';
@@ -249,6 +244,7 @@ import AppTime from '@components/AppTime.vue';
 
 import { toRef } from 'vue';
 import { useTagFilter } from '../../../../../../composables/useTagFilter';
+import TagList from '@components/tag/TagList.vue';
 
 /**
  * Callout Responses Table Component

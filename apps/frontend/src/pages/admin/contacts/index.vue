@@ -133,13 +133,7 @@ meta:
           v-if="item.tags && item.tags.length > 0"
           :class="item.profile.description && 'mt-2'"
         >
-          <font-awesome-icon :icon="faTag" class="mr-2" />
-          <AppTag
-            v-for="tag in item.tags"
-            :id="tag.id"
-            :key="tag.id"
-            :tag="tag.name"
-          />
+          <TagList :tags="item.tags" @select="currentTag = $event" />
         </div>
       </template>
     </AppPaginatedTable>
@@ -159,12 +153,7 @@ import {
 import { computed, onBeforeMount, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
-import {
-  faPlus,
-  faDownload,
-  faTag,
-  faUsers,
-} from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faDownload, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { addNotification } from '@store/notifications';
 
@@ -173,7 +162,7 @@ import AppButtonGroup from '@components/button/AppButtonGroup.vue';
 import AppButton from '@components/button/AppButton.vue';
 import ToggleTagButton from '@components/tag/ToggleTagButton.vue';
 import AppSearch from '@components/search/AppSearch.vue';
-import AppTag from '@components/AppTag.vue';
+import TagList from '@components/tag/TagList.vue';
 import {
   headers,
   useContactFilters,
