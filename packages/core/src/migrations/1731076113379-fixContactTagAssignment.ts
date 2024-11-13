@@ -12,7 +12,6 @@ export class FixContactTagAssignment1731076113379
     await queryRunner.query(
       `ALTER TABLE "contact_tag_assignments" DROP CONSTRAINT "FK_a9fefa4713408da694e358de52a"`
     );
-    await queryRunner.query(`ALTER TABLE "contact_profile" DROP COLUMN "tags"`);
     await queryRunner.query(
       `ALTER TABLE "contact_tag_assignments" ADD CONSTRAINT "FK_a9fefa4713408da694e358de52a" FOREIGN KEY ("contactId") REFERENCES "contact"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`
     );
@@ -27,9 +26,6 @@ export class FixContactTagAssignment1731076113379
     );
     await queryRunner.query(
       `ALTER TABLE "contact_tag_assignments" DROP CONSTRAINT "FK_a9fefa4713408da694e358de52a"`
-    );
-    await queryRunner.query(
-      `ALTER TABLE "contact_profile" ADD "tags" jsonb NOT NULL DEFAULT '[]'`
     );
     await queryRunner.query(
       `ALTER TABLE "contact_tag_assignments" ADD CONSTRAINT "FK_a9fefa4713408da694e358de52a" FOREIGN KEY ("contactId") REFERENCES "contact"("id") ON DELETE CASCADE ON UPDATE NO ACTION`
