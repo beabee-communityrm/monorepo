@@ -11,14 +11,12 @@ meta:
       <AppHeading>{{ t('contactOverview.overview') }}</AppHeading>
 
       <!-- Tags -->
-      <p v-if="contact.tags.length > 0" class="mb-4">
-        <font-awesome-icon :icon="faTag" class="mr-2" />
-        <AppTag
-          v-for="tagAssignment in contact.tags"
-          :key="tagAssignment.id"
-          :tag="tagAssignment.name"
-        />
-      </p>
+      <TagList
+        v-if="contact.tags.length > 0"
+        :tags="contact.tags"
+        class="mb-4"
+        @select="(tagId) => $router.push(`/admin/contacts?tag=${tagId}`)"
+      />
 
       <AppInfoList class="mb-4">
         <AppInfoListItem
@@ -273,11 +271,7 @@ import {
 } from '@beabee/beabee-common';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
-import {
-  faCircleNotch,
-  faMobileAlt,
-  faTag,
-} from '@fortawesome/free-solid-svg-icons';
+import { faCircleNotch, faMobileAlt } from '@fortawesome/free-solid-svg-icons';
 
 import AppHeading from '@components/AppHeading.vue';
 import AppInput from '@components/forms/AppInput.vue';
@@ -291,8 +285,8 @@ import PaymentMethod from '@components/payment-method/PaymentMethod.vue';
 import AppConfirmDialog from '@components/AppConfirmDialog.vue';
 import App2ColGrid from '@components/App2ColGrid.vue';
 import CalloutForm from '@components/pages/callouts/CalloutForm.vue';
-import AppTag from '@components/AppTag.vue';
 import ToggleTagButton from '@components/tag/ToggleTagButton.vue';
+import TagList from '@components/tag/TagList.vue';
 
 import {
   deleteRole,

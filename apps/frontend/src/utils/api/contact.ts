@@ -112,7 +112,6 @@ export async function updateContact(
   return deserializeContact(data);
 }
 
-// TODO: Implement this API endpoint
 export async function updateContacts(
   rules: RuleGroup,
   updates: UpdateContactData
@@ -263,7 +262,6 @@ export async function deleteRole(id: string, role: RoleType): Promise<void> {
   await instance.delete(`/contact/${id}/role/${role}`);
 }
 
-// TODO: Implement this API endpoint
 class ContactTagOperations extends TagOperations {
   getBasePath(contactId: string | undefined): string {
     if (contactId) {

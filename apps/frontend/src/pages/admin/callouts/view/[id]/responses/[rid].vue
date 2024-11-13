@@ -45,10 +45,17 @@ meta:
     <AppHeading>
       {{ t('calloutResponsesPage.responseNo', { no: n(response.number) }) }}
     </AppHeading>
-    <p v-if="response.tags.length > 0" class="mb-4">
-      <font-awesome-icon :icon="faTag" class="mr-2" />
-      <AppTag v-for="tag in response.tags" :key="tag.id" :tag="tag.name" />
-    </p>
+    <TagList
+      v-if="response.tags.length > 0"
+      :tags="response.tags"
+      class="mb-4"
+      @select="
+        (tagId) =>
+          $router.push(
+            `/admin/callouts/view/${callout.slug}/responses?tag=${tagId}`
+          )
+      "
+    />
 
     <AppInfoList class="mb-4">
       <AppInfoListItem :name="t('calloutResponse.data.contact')">
@@ -170,7 +177,6 @@ import {
   faCaretRight,
   faMap,
   faPen,
-  faTag,
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -183,11 +189,11 @@ import { addBreadcrumb } from '@store/breadcrumb';
 import MoveBucketButton from '@components/pages/admin/callouts/MoveBucketButton.vue';
 import ToggleTagButton from '@components/tag/ToggleTagButton.vue';
 import { buckets } from '@components/pages/admin/callouts/callouts.interface';
-import AppTag from '@components/AppTag.vue';
 import CalloutResponseComments from '@components/callout/CalloutResponseComments.vue';
 import SetAssigneeButton from '@components/pages/admin/callouts/SetAssigneeButton.vue';
 import AppNotification from '@components/AppNotification.vue';
 import CalloutForm from '@components/pages/callouts/CalloutForm.vue';
+import TagList from '@components/tag/TagList.vue';
 
 import { addNotification } from '@store/notifications';
 
