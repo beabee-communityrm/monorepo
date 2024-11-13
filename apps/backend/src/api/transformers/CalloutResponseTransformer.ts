@@ -128,7 +128,6 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
         .filter((c): c is Contact => !!c);
       await loadContactRoles(contacts);
 
-      // TODO: Same logic as in ContactTransformer
       if (query.with?.includes(GetCalloutResponseWith.Tags)) {
         // Load tags after to ensure offset/limit work
         await calloutTagTransformer.loadEntityTags(
