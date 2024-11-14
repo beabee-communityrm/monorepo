@@ -203,30 +203,6 @@ const calloutsFilterHandler: FilterHandler = (qb, args) => {
   return { calloutId, ...params };
 };
 
-function tagField(): FilterHandler {
-  return (qb, args) => {
-    const subQb = createQueryBuilder()
-      .subQuery()
-      .select("tag_assignment.contactId")
-      .from("contact_tag_assignments", "tag_assignment");
-
-    if (args.operator === "contains" || args.operator === "not_contains") {
-      subQb.where(args.addParamSuffix("tag_assignment.tagId = :valueA"));
-    }
-
-    const inOp =
-      args.operator === "not_contains" || args.operator === "is_not_empty"
-        ? "NOT IN"
-        : "IN";
-
-    qb.where(`${args.fieldPrefix}id ${inOp} ${subQb.getQuery()}`);
-
-    return args.operator === "contains" || args.operator === "not_contains"
-      ? { valueA: args.value[0] }
-      : {};
-  };
-}
-
 export const contactFilterHandlers: FilterHandlers<string> = {
   deliveryOptIn: profileField("deliveryOptIn"),
   newsletterStatus: profileField("newsletterStatus"),

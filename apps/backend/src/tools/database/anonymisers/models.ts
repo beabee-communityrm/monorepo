@@ -43,7 +43,8 @@ import {
   ResetSecurityFlow,
   Password,
   ContactTagAssignment,
-  CalloutVariant
+  CalloutVariant,
+  ContactTag
 } from "@beabee/core/models";
 
 /**
@@ -300,13 +301,25 @@ export const contactProfileAnonymiser = createModelAnonymiser(ContactProfile, {
     city: () => "Bristol",
     postcode: () => "BS1 1AA"
   }
-  // TODO: Move to contactAnonymiser?
-  // tags: (tags) => tags.map(() => chance.profession())
 });
 
 export const contactRoleAnonymiser = createModelAnonymiser(ContactRole, {
   contactId: () => uuidv4()
 });
+
+export const contactTagAnonymiser = createModelAnonymiser(ContactTag, {
+  id: () => uuidv4(),
+  name: () => chance.word(),
+  description: () => chance.sentence()
+});
+
+export const contactTagAssignmentAnonymiser = createModelAnonymiser(
+  ContactTagAssignment,
+  {
+    contactId: () => uuidv4(),
+    tagId: () => uuidv4()
+  }
+);
 
 export const emailAnonymiser = createModelAnonymiser(Email);
 
@@ -393,11 +406,3 @@ export const segmentContactsAnonymiser = createModelAnonymiser(SegmentContact, {
 
 export const segmentOngoingEmailsAnonymiser =
   createModelAnonymiser(SegmentOngoingEmail);
-
-export const contactTagAssignmentAnonymiser = createModelAnonymiser(
-  ContactTagAssignment,
-  {
-    contactId: () => uuidv4(),
-    tagId: () => uuidv4()
-  }
-);
