@@ -400,7 +400,12 @@
   },
   "setPassword": {},
   "tagEditor": {
-    "confirmDelete": {}
+    "confirmDelete": {
+      "text_contact": "Willst du den Tag wirklich weg machen? Der Tag \"{tagName}\" ist dann auch bei den Menschen weg.",
+      "text_response": "Willst du den Tag wirklich weg machen? Der Tag \"{tagName}\" ist dann auch bei den Antworten weg.",
+      "text_global": "Willst du den Tag \"{tagName}\" wirklich weg machen?",
+      "title": "Tag weg machen"
+    },
   },
   "taxRate": {
     "invoiceName": "MwSt"

@@ -1398,7 +1398,9 @@
     "add": "Add tag",
     "addNewTag": "Add a tag",
     "confirmDelete": {
-      "text": "Are you sure you want to remove this tag? Any responses with this tag will not be deleted.",
+      "text_contact": "Are you sure you want to remove this tag? Every contact that is tagged with \"{tagName}\" will loose the tag.",
+      "text_response": "Are you sure you want to remove this tag? Every response that is tagged with \"{tagName}\" will loose the tag.",
+      "text_global": "Are you sure you want to remove the tag \"{tagName}\"?",
       "title": "Remove tag"
     },
     "name": "Name"

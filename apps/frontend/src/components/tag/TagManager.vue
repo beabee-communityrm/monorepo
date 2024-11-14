@@ -23,6 +23,7 @@ interface Props {
   entityId?: string | undefined;
   operations: TagOperations;
   breadcrumbs?: BreadcrumbItem[];
+  type?: 'contact' | 'response';
 }
 
 const props = defineProps<Props>();
@@ -72,6 +73,7 @@ onBeforeMount(async () => {
         v-for="tag in tags"
         :key="tag.id"
         :tag="tag"
+        :type="props.type"
         @update="(data: TagUpdateData) => handleUpdateTag(tag.id, data)"
         @delete="handleDeleteTag"
       />

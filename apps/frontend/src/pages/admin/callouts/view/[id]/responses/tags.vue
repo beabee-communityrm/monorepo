@@ -10,6 +10,7 @@ meta:
     :entity-id="callout.id"
     :operations="calloutTagOperations"
     :breadcrumbs="breadcrumbs"
+    type="response"
   />
 </template>
 

@@ -6,7 +6,11 @@ meta:
 </route>
 
 <template>
-  <TagManager :operations="contactTagOperations" :breadcrumbs="breadcrumbs" />
+  <TagManager
+    :operations="contactTagOperations"
+    :breadcrumbs="breadcrumbs"
+    type="contact"
+  />
 </template>
 
 <script lang="ts" setup>

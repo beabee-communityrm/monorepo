@@ -37,7 +37,13 @@
       @close="showDeleteModal = false"
       @confirm="$emit('delete', tag.id)"
     >
-      <p>{{ t('tagEditor.confirmDelete.text') }}</p>
+      <p>
+        {{
+          t(`tagEditor.confirmDelete.text_${type || 'global'}`, {
+            tagName: tag.name,
+          })
+        }}
+      </p>
     </AppConfirmDialog>
   </div>
 </template>
@@ -53,11 +59,14 @@ import TagEditorForm from './TagEditorForm.vue';
 
 import type { TagGetData, TagUpdateData } from '@beabee/beabee-common';
 
+type TagType = 'contact' | 'response' | undefined;
+
 defineEmits<{
   (e: 'delete', id: string): void;
 }>();
 const props = defineProps<{
   tag: TagGetData;
+  type?: TagType;
   onUpdate?: (data: TagUpdateData) => Promise<void>;
 }>();
 

@@ -1392,7 +1392,9 @@
     "add": "Tag hinzufügen",
     "addNewTag": "Tag hinzufügen",
     "confirmDelete": {
-      "text": "Bist du sicher, dass du diesen Tag entfernen willst? Die damit getaggten Antworten werden nicht gelöscht.",
+      "text_contact": "Sind Sie sicher, dass Sie diesen Tag entfernen wollen? Jeder Kontakt mit dem Tag \"{tagName}\" wird den Tag verlieren.",
+      "text_response": "Sind Sie sicher, dass Sie diesen Tag entfernen wollen? Jede Antwort mit dem Tag \"{tagName}\" wird den Tag verlieren.",
+      "text_global": "Sind Sie sicher, dass Sie den Tag \"{tagName}\" entfernen wollen?",
       "title": "Tag entfernen"
     },
     "name": "Name"
