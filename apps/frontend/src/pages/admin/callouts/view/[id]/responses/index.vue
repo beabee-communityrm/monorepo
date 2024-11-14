@@ -79,7 +79,7 @@ meta:
               :selected-tags="selectedTags"
               :manage-url="`/admin/callouts/view/${callout.slug}/responses/tags`"
               :loading="doingAction"
-              :disabled="selectedCount === 0"
+              :disable-tags="selectedCount === 0"
               @toggle="
                 (tagId, successText) =>
                   handleUpdateAction({ tags: [tagId] }, successText)
@@ -290,6 +290,10 @@ const selectedCount = computed(() => selectedResponseItems.value.length);
 const { currentTag, addTagToRules } = useTagFilter();
 
 const selectedTags = computed(() => {
+  if (selectedCount.value === 0) {
+    return [];
+  }
+
   const tagCount = Object.fromEntries(tagItems.value.map((t) => [t.id, 0]));
   for (const item of selectedResponseItems.value) {
     for (const tag of item.tags) {

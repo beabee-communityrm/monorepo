@@ -67,7 +67,7 @@ meta:
             :selected-tags="selectedTags"
             :manage-url="`${route.path}/tags`"
             :loading="doingAction"
-            :disabled="selectedCount === 0"
+            :disable-tags="selectedCount === 0"
             @toggle="
               (tagId, successText) =>
                 handleUpdateAction({ tags: [tagId] }, successText)
@@ -222,6 +222,10 @@ const selectedCount = computed(() => selectedContactItems.value.length);
 const { currentTag, addTagToRules } = useTagFilter();
 
 const selectedTags = computed(() => {
+  if (selectedCount.value === 0) {
+    return [];
+  }
+
   const tagCount = Object.fromEntries(tagItems.value.map((t) => [t.id, 0]));
   for (const item of selectedContactItems.value) {
     for (const tag of item.tags || []) {

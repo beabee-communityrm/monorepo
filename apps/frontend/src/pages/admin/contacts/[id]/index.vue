@@ -270,7 +270,6 @@ import {
   type RoleType,
 } from '@beabee/beabee-common';
 import { useI18n } from 'vue-i18n';
-import { useRoute } from 'vue-router';
 import { faCircleNotch, faMobileAlt } from '@fortawesome/free-solid-svg-icons';
 
 import AppHeading from '@components/AppHeading.vue';

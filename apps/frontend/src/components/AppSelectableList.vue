@@ -4,10 +4,11 @@
       v-for="item in items"
       :key="item.id"
       class="flex items-center justify-between gap-4 px-3 py-2"
-      :class="
-        selectedByItemId[item.id] ? 'bg-primary-10' : 'hover:bg-primary-5'
-      "
-      @click="$emit('click', item, selectedByItemId[item.id])"
+      :class="[
+        selectedByItemId[item.id] ? 'bg-primary-10' : 'hover:bg-primary-5',
+        disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer',
+      ]"
+      @click="!disabled && $emit('click', item, selectedByItemId[item.id])"
     >
       <span><slot :item="item" /></span>
       <font-awesome-icon v-if="selectedByItemId[item.id]" :icon="faCheck" />
@@ -23,6 +24,7 @@ defineEmits<{ (event: 'click', item: Item, selected: boolean): void }>();
 const props = defineProps<{
   items: Item[];
   selectedItemIds?: string[];
+  disabled?: boolean;
 }>();
 
 const selectedByItemId = computed(() =>
