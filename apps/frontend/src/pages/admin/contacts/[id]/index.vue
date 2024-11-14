@@ -37,7 +37,7 @@ meta:
           with-text
           :tag-items="tagItems"
           :selected-tags="contact.tags.map((t) => t.id)"
-          :manage-url="`${route.path}/tags`"
+          :manage-url="'/admin/contacts/tags'"
           :loading="changingTags"
           @toggle="handleToggleTag"
         />
@@ -307,7 +307,6 @@ import { addNotification } from '@store/notifications';
 import env from '@env';
 
 const { t, n } = useI18n();
-const route = useRoute();
 
 const props = defineProps<{
   contact: GetContactData;
