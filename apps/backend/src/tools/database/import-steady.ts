@@ -293,12 +293,7 @@ async function loadRows(): Promise<SteadyRow[]> {
     const rows: SteadyRow[] = [];
 
     process.stdin
-      .pipe(
-        parse({
-          columns: true,
-          skipEmptyLines: true
-        })
-      )
+      .pipe(parse({ columns: true, skipEmptyLines: true }))
       .on("data", (row) => {
         if (isSteadyRow(row)) {
           rows.push({

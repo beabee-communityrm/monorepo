@@ -278,7 +278,11 @@
 .callout-form-renderer .formio-read-only {
   /* Respect text formatting */
   div[ref='value'] {
-    @apply whitespace-pre-wrap break-words;
+    @apply break-words;
+  }
+
+  .formio-component-textarea div[ref='value'] {
+    @apply whitespace-pre-wrap;
   }
 
   a {
