@@ -205,7 +205,7 @@ import {
   stringifyAnswer,
   type UpdateCalloutResponseData,
 } from '@beabee/beabee-common';
-import { computed, onBeforeMount, ref, watchEffect } from 'vue';
+import { computed, onBeforeMount, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import AppButton from '@components/button/AppButton.vue';
@@ -455,33 +455,68 @@ function getSelectedResponseRules(): RuleGroup {
  */
 
 /**
+ * Table State
+ */
+const isRefreshing = ref(false);
+
+/**
  * Refreshes the response list based on current filters
  */
 async function refreshResponses() {
-  const _with: GetCalloutResponseWith[] = ['assignee', 'contact', 'tags'];
-  if (showLatestComment.value) {
-    _with.push('latestComment');
-  }
-  if (showInlineAnswer.value) {
-    _with.push('answers');
-  }
+  if (isRefreshing.value) return;
 
-  const newResponses = await fetchResponses(
-    props.callout.slug,
-    {
-      ...currentPaginatedQuery.query,
-      rules: getSearchRules(),
-    },
-    _with
-  );
+  isRefreshing.value = true;
+  try {
+    const _with: GetCalloutResponseWith[] = ['assignee', 'contact', 'tags'];
+    if (showLatestComment.value) {
+      _with.push('latestComment');
+    }
+    if (showInlineAnswer.value) {
+      _with.push('answers');
+    }
 
-  responses.value = {
-    ...newResponses,
-    items: newResponses.items.map((r) => ({ ...r, selected: false })),
-  };
+    // Store currently selected IDs before refresh
+    const selectedIds = new Set(
+      selectedResponseItems.value.map((item) => item.id)
+    );
+
+    const newResponses = await fetchResponses(
+      props.callout.slug,
+      {
+        ...currentPaginatedQuery.query,
+        rules: getSearchRules(),
+      },
+      _with
+    );
+
+    responses.value = {
+      ...newResponses,
+      items: newResponses.items.map((r) => ({
+        ...r,
+        selected: selectedIds.has(r.id),
+      })),
+    };
+  } finally {
+    isRefreshing.value = false;
+  }
 }
 
-watchEffect(refreshResponses);
+// Replace watchEffect with watch
+watch(
+  [
+    currentPaginatedQuery,
+    currentRules,
+    currentAssignee,
+    currentTag,
+    currentBucket,
+    showLatestComment,
+    showInlineAnswer,
+  ],
+  () => refreshResponses(),
+  { deep: true }
+);
+
+refreshResponses();
 
 /**
  * Handles exporting responses

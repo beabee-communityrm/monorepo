@@ -150,7 +150,7 @@ import {
   type RuleGroup,
   type UpdateContactData,
 } from '@beabee/beabee-common';
-import { computed, onBeforeMount, ref, watchEffect } from 'vue';
+import { computed, onBeforeMount, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import { faPlus, faDownload, faUsers } from '@fortawesome/free-solid-svg-icons';
@@ -360,22 +360,50 @@ function getSelectedContactsRules(): RuleGroup {
  */
 
 /**
+ * Table state
+ */
+const isRefreshing = ref(false);
+
+/**
  * Refreshes the contact list based on current filters
  */
 async function refreshResponses() {
-  const query = { ...currentPaginatedQuery.query, rules: getSearchRules() };
-  const newContacts = await fetchContacts(query, [
-    GetContactWith.Profile,
-    GetContactWith.Roles,
-    GetContactWith.Tags,
-  ]);
-  contactsTable.value = {
-    ...newContacts,
-    items: newContacts.items.map((c) => ({ ...c, selected: false })),
-  };
+  if (isRefreshing.value) return;
+
+  isRefreshing.value = true;
+  try {
+    // Store currently selected IDs before refresh
+    const selectedIds = new Set(
+      selectedContactItems.value.map((item) => item.id)
+    );
+
+    const query = { ...currentPaginatedQuery.query, rules: getSearchRules() };
+    const newContacts = await fetchContacts(query, [
+      GetContactWith.Profile,
+      GetContactWith.Roles,
+      GetContactWith.Tags,
+    ]);
+
+    // Preserve selection state for existing contacts
+    contactsTable.value = {
+      ...newContacts,
+      items: newContacts.items.map((c) => ({
+        ...c,
+        selected: selectedIds.has(c.id),
+      })),
+    };
+  } finally {
+    isRefreshing.value = false;
+  }
 }
 
-watchEffect(refreshResponses);
+watch(
+  [currentPaginatedQuery, currentSearch, currentRules, currentTag],
+  () => refreshResponses(),
+  { deep: true }
+);
+
+refreshResponses();
 
 /**
  * Handles exporting contacts
