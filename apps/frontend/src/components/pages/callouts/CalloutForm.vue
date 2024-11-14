@@ -1,5 +1,5 @@
 <template>
-  <form :class="formClass" @submit.prevent>
+  <form ref="formEl" :class="formClass" @submit.prevent>
     <FormRenderer
       v-for="slide in visibleSlides"
       :key="slide.id"
@@ -104,6 +104,7 @@ const captchaToken = ref('');
 const formError = ref('');
 const isLoading = ref(false);
 
+const formEl = ref<HTMLFormElement>();
 const formClass = computed(() => [
   'callout-form',
   {
@@ -216,6 +217,8 @@ function handleNextSlide() {
   }
 
   slideIds.value.unshift(nextSlideId);
+
+  formEl.value?.scrollIntoView();
 }
 
 function handlePrevSlide() {
