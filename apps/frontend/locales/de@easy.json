@@ -277,7 +277,9 @@
   "form": {
     "email": "E-Mail",
     "errorMessages": {
-      "api": {},
+      "api": {
+        "duplicate-tag-name": "Diesen Tag gibt es schon."
+      },
       "generic": "Das ist nicht richtig. Hol dir Hilfe.",
       "validation": "Das ist nicht richtig. Du hast ein Feld nicht richtig ausgefüllt. Suche das Feld. Versuche es noch mal."
     },

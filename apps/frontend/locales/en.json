@@ -990,7 +990,8 @@
         "duplicate-email": "Email address already exists",
         "invalid-token": "Invalid 2FA token",
         "login-failed": "Invalid password/email combination",
-        "mfa-token-required": "You have 2FA enabled, enter the token from your authenticator app to proceed"
+        "mfa-token-required": "You have 2FA enabled, enter the token from your authenticator app to proceed",
+        "duplicate-tag-name": "A tag with this name already exists"
       },
       "generic": "Oops, something went wrong! Contact support if this happens again.",
       "validation": "Something is missing. Please check the fields above."

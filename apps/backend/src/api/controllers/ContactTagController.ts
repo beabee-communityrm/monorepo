@@ -16,6 +16,7 @@ import { CurrentAuth } from "@api/decorators/CurrentAuth";
 import { AuthInfo } from "@type/auth-info";
 import { contactTagTransformer } from "@api/transformers/TagTransformer";
 import { ContactTagAssignment } from "@beabee/core/models";
+import { DuplicateTagNameError } from "@beabee/core/errors";
 
 /**
  * Controller for managing contact tags.
@@ -66,8 +67,15 @@ export class ContactTagController {
   async createGlobalContactTag(
     @Body() data: CreateContactTagDto
   ): Promise<GetContactTagDto> {
-    const tag = await contactTagTransformer.create(data);
-    return contactTagTransformer.convert(tag);
+    try {
+      const tag = await contactTagTransformer.create(data);
+      return contactTagTransformer.convert(tag);
+    } catch (error) {
+      if (DuplicateTagNameError.isPostgresError(error)) {
+        throw new DuplicateTagNameError(data.name);
+      }
+      throw error;
+    }
   }
 
   /**

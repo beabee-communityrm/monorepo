@@ -984,7 +984,8 @@
         "duplicate-email": "Diese E-Mail-Adresse existiert bereits.",
         "invalid-token": "Dein eingegebener 2FA Token stimmt nicht.",
         "login-failed": "Falsche Kombination von Passwort und E-Mail.",
-        "mfa-token-required": "Bitte gebe den Code deiner Authentifizierungs-App ein."
+        "mfa-token-required": "Bitte gebe den Code deiner Authentifizierungs-App ein.",
+        "duplicate-tag-name": "Ein Tag mit diesem Namen existiert bereits."
       },
       "generic": "Upps! Etwas ist schiefgelaufen. Bitte wende dich an den Support, sollte das erneut passieren.",
       "validation": "Es fehlt etwas! Bitte kontrolliere die obigen Felder."
