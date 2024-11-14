@@ -19,6 +19,8 @@ import type { FilterItems, FilterGroups } from '@type';
 import { fetchContent } from '@utils/api/content';
 import { contactTagOperations } from '@utils/api/contact';
 
+import CalloutResponseFilterGroup from './CalloutResponseFilterGroup.vue';
+
 const { t } = i18n.global;
 
 /**
@@ -236,6 +238,13 @@ export function useContactFilters() {
         'membershipStarts',
         'membershipExpires',
       ]),
+    },
+    {
+      id: 'callout',
+      label: t('contacts.dataGroup.callout'),
+      items: {},
+      custom: CalloutResponseFilterGroup,
+      itemsMatch: /^callouts\.[a-z0-9A-Z-]+\./,
     },
   ]);
 
