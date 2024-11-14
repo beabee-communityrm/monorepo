@@ -1,4 +1,5 @@
 import { BadRequestError } from "routing-controllers";
+import { isDuplicateIndex } from "../utils/db";
 
 export class DuplicateTagNameError extends BadRequestError {
   readonly code = "duplicate-tag-name";
@@ -9,9 +10,6 @@ export class DuplicateTagNameError extends BadRequestError {
   }
 
   static isPostgresError(error: any): boolean {
-    return (
-      error?.code === "23505" &&
-      error?.constraint === "UQ_4f430fb165d3f0dfdfe5121c7c7"
-    );
+    return isDuplicateIndex(error, "name");
   }
 }

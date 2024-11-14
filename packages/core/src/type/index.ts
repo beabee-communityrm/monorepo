@@ -19,6 +19,7 @@ export * from "./param-value";
 export * from "./payment-flow-data";
 export * from "./payment-flow-params";
 export * from "./payment-flow";
+export * from "./pg-error";
 export * from "./referral-gift-form";
 export * from "./select-result";
 export * from "./tag-assignment";
