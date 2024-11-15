@@ -7,8 +7,8 @@ import {
   OneToMany,
   PrimaryColumn
 } from "typeorm";
-import { type Contact } from "./index";
-import { ContactRolePermission } from "./ContactRolePermission";
+import type { Contact } from "./index";
+import type { ContactRolePermission } from "./ContactRolePermission";
 
 /**
  * Entity representing a role assigned to a contact
@@ -35,7 +35,7 @@ export class ContactRole {
    * Permissions assigned to this role
    * Managed through ContactRolePermission junction table
    */
-  @OneToMany(() => ContactRolePermission, (assignment) => assignment.role)
+  @OneToMany("ContactRolePermission", "role")
   permissionAssignments!: ContactRolePermission[];
 
   /**

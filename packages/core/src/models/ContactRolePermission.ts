@@ -5,8 +5,8 @@ import {
   ManyToOne,
   PrimaryColumn
 } from "typeorm";
-import { ContactRole } from "./ContactRole";
-import { Permission } from "./Permission";
+import type { ContactRole } from "./ContactRole";
+import type { Permission } from "./Permission";
 
 /**
  * Entity representing the many-to-many relationship between ContactRoles and Permissions.
@@ -32,7 +32,7 @@ export class ContactRolePermission {
    * Reference to the ContactRole entity
    * Bidirectional relationship with ContactRole.permissionAssignments
    */
-  @ManyToOne(() => ContactRole, (role) => role.permissionAssignments)
+  @ManyToOne("ContactRole", "permissionAssignments")
   role!: ContactRole;
 
   /**
@@ -46,7 +46,7 @@ export class ContactRolePermission {
    * Reference to the Permission entity
    * Bidirectional relationship with Permission.roleAssignments
    */
-  @ManyToOne(() => Permission, (permission) => permission.roleAssignments)
+  @ManyToOne("Permission", "roleAssignments")
   permission!: Permission;
 
   /**
