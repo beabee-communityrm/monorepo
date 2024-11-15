@@ -11,7 +11,13 @@ export abstract class TagOperations {
 
   async fetchTags(entityId?: string): Promise<TagGetData[]> {
     const { data } = await instance.get<Serial<TagGetData>[]>(
-      this.getBasePath(entityId)
+      this.getBasePath(entityId),
+      {
+        params: {
+          sort: 'name',
+          order: 'ASC',
+        },
+      }
     );
     return data;
   }

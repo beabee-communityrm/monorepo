@@ -113,6 +113,7 @@ export class TagTransformer<
     const entityTags = (await createQueryBuilder(AssignmentModel, "et")
       .where(`et.${entityIdField} IN (:...ids)`, { ids: entityIds })
       .innerJoinAndSelect("et.tag", "tag")
+      .orderBy("tag.name", "ASC")
       .getMany()) as TAssignment[];
 
     for (const entity of entities) {

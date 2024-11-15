@@ -59,6 +59,7 @@ import {
 import { CalloutCaptcha } from "@beabee/beabee-common";
 
 import { AuthInfo } from "@type/auth-info";
+import { ListTagsDto } from "@api/dto";
 
 @JsonController("/callout")
 export class CalloutController {
@@ -212,9 +213,11 @@ export class CalloutController {
   @Get("/:id/tags")
   async getCalloutTags(
     @CurrentAuth({ required: true }) auth: AuthInfo,
-    @CalloutId() id: string
+    @CalloutId() id: string,
+    @QueryParams() query: ListTagsDto
   ): Promise<GetCalloutTagDto[]> {
     const result = await calloutTagTransformer.fetch(auth, {
+      ...query,
       rules: {
         condition: "AND",
         rules: [{ field: "calloutId", operator: "equal", value: [id] }]

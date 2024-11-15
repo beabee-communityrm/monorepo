@@ -7,11 +7,12 @@ import {
   Patch,
   Param,
   OnUndefined,
-  Delete
+  Delete,
+  QueryParams
 } from "routing-controllers";
 import PartialBody from "@api/decorators/PartialBody";
 
-import { CreateContactTagDto, GetContactTagDto } from "@api/dto/ContactTagDto";
+import { CreateContactTagDto, GetContactTagDto, ListTagsDto } from "@api/dto";
 import { CurrentAuth } from "@api/decorators/CurrentAuth";
 import { AuthInfo } from "@type/auth-info";
 import { contactTagTransformer } from "@api/transformers/TagTransformer";
@@ -43,10 +44,12 @@ export class ContactTagController {
   @Authorized("admin")
   @Get("/")
   async getAllContactTags(
-    @CurrentAuth({ required: true }) auth: AuthInfo
+    @CurrentAuth({ required: true }) auth: AuthInfo,
+    @QueryParams() query: ListTagsDto
   ): Promise<GetContactTagDto[]> {
     const result = await contactTagTransformer.fetch(auth, {
-      limit: -1
+      limit: -1,
+      ...query
     });
 
     return result.items;
