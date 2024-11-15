@@ -287,7 +287,7 @@ export class TagTransformer<
     }
 
     const inOp =
-      args.operator === "not_contains" || args.operator === "is_not_empty"
+      args.operator === "not_contains" || args.operator === "is_empty"
         ? "NOT IN"
         : "IN";
 
