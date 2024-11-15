@@ -60,10 +60,12 @@ import { CalloutCaptcha } from "@beabee/beabee-common";
 
 import { AuthInfo } from "@type/auth-info";
 import { ListTagsDto } from "@api/dto";
+import { RequirePermission } from "@beabee/core/decorators";
 
 @JsonController("/callout")
 export class CalloutController {
   @Get("/")
+  @RequirePermission("GET /callout")
   async getCallouts(
     @CurrentAuth() auth: AuthInfo | undefined,
     @QueryParams() query: ListCalloutsDto
@@ -71,8 +73,8 @@ export class CalloutController {
     return CalloutTransformer.fetch(auth, query);
   }
 
-  @Authorized("admin")
   @Post("/")
+  @RequirePermission("POST /callout")
   async createCallout(
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @QueryParam("fromId", { required: false }) fromId: string,
@@ -95,6 +97,7 @@ export class CalloutController {
   }
 
   @Get("/:id")
+  @RequirePermission("GET /callout/:id")
   async getCallout(
     @CurrentAuth() auth: AuthInfo | undefined,
     @CalloutId() id: string,
@@ -106,8 +109,8 @@ export class CalloutController {
     });
   }
 
-  @Authorized("admin")
   @Patch("/:id")
+  @RequirePermission("PATCH /callout/:id")
   async updateCallout(
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @CalloutId() id: string,
@@ -117,9 +120,9 @@ export class CalloutController {
     return CalloutTransformer.fetchOneById(auth, id);
   }
 
-  @Authorized("admin")
-  @OnUndefined(204)
   @Delete("/:id")
+  @RequirePermission("DELETE /callout/:id")
+  @OnUndefined(204)
   async deleteCallout(@CalloutId() id: string): Promise<void> {
     const deleted = await CalloutsService.deleteCallout(id);
     if (!deleted) {

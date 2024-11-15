@@ -25,9 +25,14 @@
     "./logging": "./dist/logging.js",
     "./models": "./dist/models/index.js",
     "./type": "./dist/type/index.js",
+    "./lib": "./dist/lib/index.js",
     "./lib/*": "./dist/lib/*.js",
+    "./services": "./dist/services/index.js",
     "./services/*": "./dist/services/*.js",
-    "./utils/*": "./dist/utils/*.js"
+    "./utils": "./dist/utils/index.js",
+    "./utils/*": "./dist/utils/*.js",
+    "./decorators": "./dist/decorators/index.js",
+    "./decorators/*": "./dist/decorators/*.js"
   },
   "dependencies": {
     "@beabee/beabee-common": "workspace:^",

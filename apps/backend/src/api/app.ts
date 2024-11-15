@@ -17,6 +17,7 @@ import * as Controllers from "./controllers/index";
 import { ValidateResponseInterceptor } from "./interceptors/ValidateResponseInterceptor";
 
 import { AuthMiddleware } from "./middlewares/AuthMiddleware";
+import { PermissionService } from "@beabee/core/services";
 
 import {
   log as mainLogger,
@@ -49,8 +50,9 @@ app.use(cors({ origin: config.trustedOrigins, credentials: true }));
 
 app.use(cookie());
 
+// Bootstrap the app
 initApp()
-  .then(() => {
+  .then(async () => {
     sessions(app);
 
     useExpressServer(app, {
@@ -103,6 +105,8 @@ initApp()
     } as ErrorRequestHandler);
 
     app.use(requestErrorLogger);
+
+    await PermissionService.syncPermissions();
 
     startServer(app);
   })

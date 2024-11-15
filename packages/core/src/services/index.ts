@@ -14,6 +14,7 @@ export * from "./OptionsService";
 export * from "./PageSettingsService";
 export * from "./PaymentFlowService";
 export * from "./PaymentService";
+export * from "./PermissionService";
 export * from "./ReferralsService";
 export * from "./ResetSecurityFlowService";
 export * from "./SegmentService";

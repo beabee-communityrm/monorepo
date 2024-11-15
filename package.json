@@ -14,6 +14,7 @@
     "format": "yarn workspaces foreach -v -W -p run format",
     "test": "yarn workspaces foreach -v -W -p run test",
     "check": "yarn workspaces foreach -v -W -p run check",
+    "generate:index": "yarn workspaces foreach -v -W -p run generate:index",
     "upgrade": "yarn set version latest && yarn install && yarn upgrade-interactive",
     "docker:build:latest": "yarn workspaces foreach -v -W run docker:build:latest",
     "docker:compose:restart": "docker compose restart",
