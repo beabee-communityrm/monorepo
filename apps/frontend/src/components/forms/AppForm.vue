@@ -62,6 +62,7 @@ const errorMessages = computed<Record<string, string>>(() => ({
   [LOGIN_CODES.LOGIN_FAILED]: t('form.errorMessages.api.login-failed'),
   [LOGIN_CODES.INVALID_TOKEN]: t('form.errorMessages.api.invalid-token'),
   [LOGIN_CODES.LOCKED]: t('form.errorMessages.api.account-locked'),
+  'duplicate-tag-name': t('form.errorMessages.api.duplicate-tag-name'),
   ...props.errorText,
 }));
 

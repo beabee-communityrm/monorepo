@@ -3,6 +3,7 @@ export * from "./AuthController.js";
 export * from "./CalloutController.js";
 export * from "./CalloutResponseCommentController.js";
 export * from "./CalloutResponseController.js";
+export * from "./ContactTagController.js";
 export * from "./ContactController.js";
 export * from "./ContentController.js";
 export * from "./EmailController.js";

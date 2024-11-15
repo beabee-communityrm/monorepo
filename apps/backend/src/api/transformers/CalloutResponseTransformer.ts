@@ -6,11 +6,11 @@ import { createQueryBuilder, getRepository } from "@beabee/core/database";
 
 import {
   BatchUpdateCalloutResponseDto,
-  CreateCalloutResponseDto,
   GetCalloutResponseDto,
   GetCalloutResponseOptsDto,
   GetCalloutResponseWith,
-  ListCalloutResponsesDto
+  ListCalloutResponsesDto,
+  UpdateCalloutResponseDto
 } from "@api/dto/CalloutResponseDto";
 import { PaginatedDto } from "@api/dto/PaginatedDto";
 import { NotFoundError } from "@beabee/core/errors";
@@ -20,8 +20,8 @@ import ContactTransformer, {
 import { BaseCalloutResponseTransformer } from "@api/transformers/BaseCalloutResponseTransformer";
 import CalloutTransformer from "@api/transformers/CalloutTransformer";
 import CalloutResponseCommentTransformer from "@api/transformers/CalloutResponseCommentTransformer";
-import CalloutTagTransformer from "@api/transformers/CalloutTagTransformer";
-import { batchUpdate } from "@api/utils/rules";
+import { calloutTagTransformer } from "@api/transformers/TagTransformer";
+import { batchUpdate } from "@api/utils";
 
 import {
   Callout,
@@ -71,7 +71,7 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
       }),
       ...(opts.with?.includes(GetCalloutResponseWith.Tags) &&
         response.tags && {
-          tags: response.tags.map((rt) => CalloutTagTransformer.convert(rt.tag))
+          tags: response.tags.map((rt) => calloutTagTransformer.convert(rt.tag))
         })
     };
   }
@@ -130,16 +130,11 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
 
       if (query.with?.includes(GetCalloutResponseWith.Tags)) {
         // Load tags after to ensure offset/limit work
-        const responseTags = await createQueryBuilder(CalloutResponseTag, "rt")
-          .where("rt.response IN (:...ids)", { ids: responseIds })
-          .innerJoinAndSelect("rt.tag", "tag")
-          .getMany();
-
-        for (const response of responses) {
-          response.tags = responseTags.filter(
-            (rt) => rt.responseId === response.id
-          );
-        }
+        await calloutTagTransformer.loadEntityTags(
+          responses,
+          CalloutResponseTag,
+          "responseId"
+        );
       }
     }
   }
@@ -176,9 +171,11 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
     const responses: { id: string }[] = result.raw;
 
     if (tagUpdates) {
-      await updateResponseTags(
+      await calloutTagTransformer.updateEntityTags(
         responses.map((r) => r.id),
-        tagUpdates
+        tagUpdates,
+        CalloutResponseTag,
+        "response"
       );
     }
 
@@ -188,7 +185,7 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
   async updateOneById(
     auth: AuthInfo | undefined,
     id: string,
-    updates: CreateCalloutResponseDto
+    updates: UpdateCalloutResponseDto
   ): Promise<boolean> {
     const query: BatchUpdateCalloutResponseDto = {
       rules: {
@@ -202,10 +199,11 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
   }
 }
 
-function getUpdateData(data: Partial<CreateCalloutResponseDto>): {
+function getUpdateData(data: UpdateCalloutResponseDto): {
   tagUpdates: string[] | undefined;
   responseUpdates: QueryDeepPartialEntity<CalloutResponse>;
 } {
+  console.log("getUpdateData", data);
   const { tags: tagUpdates, assigneeId, ...otherUpdates } = data;
   return {
     tagUpdates,
@@ -216,35 +214,6 @@ function getUpdateData(data: Partial<CreateCalloutResponseDto>): {
       })
     }
   };
-}
-
-async function updateResponseTags(responseIds: string[], tagUpdates: string[]) {
-  const addTags = tagUpdates
-    .filter((tag) => tag.startsWith("+"))
-    .flatMap((tag) =>
-      responseIds.map((id) => ({ response: { id }, tag: { id: tag.slice(1) } }))
-    );
-  const removeTags = tagUpdates
-    .filter((tag) => tag.startsWith("-"))
-    .flatMap((tag) =>
-      responseIds.map((id) => ({ response: { id }, tag: { id: tag.slice(1) } }))
-    );
-
-  if (addTags.length > 0) {
-    await createQueryBuilder()
-      .insert()
-      .into(CalloutResponseTag)
-      .values(addTags)
-      .orIgnore()
-      .execute();
-  }
-  if (removeTags.length > 0) {
-    await createQueryBuilder()
-      .delete()
-      .from(CalloutResponseTag)
-      .where(removeTags)
-      .execute();
-  }
 }
 
 export default new CalloutResponseTransformer();

@@ -1,6 +1,6 @@
 <template>
   <span
-    class="mr-1 inline-block whitespace-nowrap rounded border border-white bg-white px-1 py-0.5 text-xs font-bold text-link"
+    class="inline-block whitespace-nowrap rounded border border-white bg-white px-1 py-0.5 text-xs font-bold text-link"
   >
     {{ props.tag }}
     <font-awesome-icon

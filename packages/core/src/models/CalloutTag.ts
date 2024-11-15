@@ -1,8 +1,9 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import type { TagData } from "@beabee/beabee-common";
 import type { Callout } from "./index";
 
 @Entity()
-export class CalloutTag {
+export class CalloutTag implements TagData {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 

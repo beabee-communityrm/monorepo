@@ -19,18 +19,15 @@ import { useI18n } from 'vue-i18n';
 import AppForm from '@components/forms/AppForm.vue';
 import AppInput from '@components/forms/AppInput.vue';
 
-import type {
-  CreateCalloutTagData,
-  GetCalloutTagData,
-} from '@beabee/beabee-common';
+import type { TagCreateData, TagGetData } from '@beabee/beabee-common';
 
 const { t } = useI18n();
 
 defineEmits<{ (e: 'cancel'): void }>();
 
 const props = defineProps<{
-  tag?: GetCalloutTagData;
-  onSave?: (data: CreateCalloutTagData) => Promise<void>;
+  tag?: TagGetData;
+  onSave?: (data: TagCreateData) => Promise<void>;
 }>();
 
 // This means no form this form is embedded into will ever validate

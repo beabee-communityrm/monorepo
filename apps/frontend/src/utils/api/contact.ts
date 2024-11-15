@@ -14,6 +14,7 @@ import {
   type Paginated,
   PaymentMethod,
   type RoleType,
+  type RuleGroup,
   type Serial,
   type SetContributionData,
   type StartContributionData,
@@ -25,6 +26,7 @@ import { deserializeDate, instance } from '.';
 import env from '../../env';
 
 import type { PaymentFlowParams } from '@type';
+import { TagOperations } from './tag-operations';
 
 // TODO: how to make this type safe?
 export function deserializeContact(data: any): any {
@@ -108,6 +110,20 @@ export async function updateContact(
     dataIn
   );
   return deserializeContact(data);
+}
+
+export async function updateContacts(
+  rules: RuleGroup,
+  updates: UpdateContactData
+): Promise<{ affected: number }> {
+  const { data } = await instance.patch<Serial<{ affected: number }>>(
+    '/contact',
+    {
+      rules,
+      updates,
+    }
+  );
+  return data;
 }
 
 export async function deleteContact(id: string): Promise<void> {
@@ -209,7 +225,7 @@ export async function completeUpdatePaymentMethod(
   return deserializeContribution(data);
 }
 
-export async function fetchPayments(
+export async function fetchContactPayments(
   id: string,
   query: GetPaymentsQuery
 ): Promise<Paginated<GetPaymentData>> {
@@ -245,3 +261,13 @@ export async function updateRole(
 export async function deleteRole(id: string, role: RoleType): Promise<void> {
   await instance.delete(`/contact/${id}/role/${role}`);
 }
+
+class ContactTagOperations extends TagOperations {
+  getBasePath(contactId: string | undefined): string {
+    if (contactId) {
+      throw new Error('Contact ID is not supported');
+    }
+    return '/contact-tags';
+  }
+}
+export const contactTagOperations = new ContactTagOperations();

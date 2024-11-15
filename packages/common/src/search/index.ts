@@ -5,3 +5,4 @@ export * from "./notices.ts";
 export * from "./operators.ts";
 export * from "./payments.ts";
 export * from "./segments.ts";
+export * from "./tags.ts";

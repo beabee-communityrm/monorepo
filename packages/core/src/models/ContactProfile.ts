@@ -36,9 +36,6 @@ export class ContactProfile {
   @Column({ type: "jsonb", nullable: true })
   deliveryAddress!: Address | null;
 
-  @Column({ type: "jsonb", default: "[]" })
-  tags!: string[];
-
   @Column({ default: NewsletterStatus.None })
   newsletterStatus!: NewsletterStatus;
 

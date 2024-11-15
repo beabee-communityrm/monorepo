@@ -37,7 +37,13 @@
       @close="showDeleteModal = false"
       @confirm="$emit('delete', tag.id)"
     >
-      <p>{{ t('tagEditor.confirmDelete.text') }}</p>
+      <p>
+        {{
+          t(`tagEditor.confirmDelete.text_${type || 'global'}`, {
+            tagName: tag.name,
+          })
+        }}
+      </p>
     </AppConfirmDialog>
   </div>
 </template>
@@ -51,17 +57,17 @@ import AppButton from '../button/AppButton.vue';
 import AppButtonGroup from '../button/AppButtonGroup.vue';
 import TagEditorForm from './TagEditorForm.vue';
 
-import type {
-  GetCalloutTagData,
-  UpdateCalloutTagData,
-} from '@beabee/beabee-common';
+import type { TagGetData, TagUpdateData } from '@beabee/beabee-common';
+
+type TagType = 'contact' | 'response' | undefined;
 
 defineEmits<{
   (e: 'delete', id: string): void;
 }>();
 const props = defineProps<{
-  tag: GetCalloutTagData;
-  onUpdate?: (data: UpdateCalloutTagData) => Promise<void>;
+  tag: TagGetData;
+  type?: TagType;
+  onUpdate?: (data: TagUpdateData) => Promise<void>;
 }>();
 
 const { t } = useI18n();
@@ -69,7 +75,7 @@ const { t } = useI18n();
 const formVisible = ref(false);
 const showDeleteModal = ref(false);
 
-async function handleSave(data: UpdateCalloutTagData) {
+async function handleSave(data: TagUpdateData) {
   await props.onUpdate?.(data);
   formVisible.value = false;
 }

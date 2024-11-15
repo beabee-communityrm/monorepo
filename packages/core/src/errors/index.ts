@@ -6,6 +6,7 @@ export * from "./BadRequestError";
 export * from "./CantUpdateContribution";
 export * from "./DuplicateEmailError";
 export * from "./DuplicateId";
+export * from "./DuplicateTagNameError";
 export * from "./ExternalEmailTemplate";
 export * from "./InvalidCalloutResponse";
 export * from "./InvalidRuleError";

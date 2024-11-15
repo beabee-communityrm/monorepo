@@ -277,7 +277,9 @@
   "form": {
     "email": "E-Mail",
     "errorMessages": {
-      "api": {},
+      "api": {
+        "duplicate-tag-name": "Diesen Tag gibt es schon."
+      },
       "generic": "Das ist nicht richtig. Hol dir Hilfe.",
       "validation": "Das ist nicht richtig. Du hast ein Feld nicht richtig ausgefüllt. Suche das Feld. Versuche es noch mal."
     },
@@ -398,7 +400,12 @@
   },
   "setPassword": {},
   "tagEditor": {
-    "confirmDelete": {}
+    "confirmDelete": {
+      "text_contact": "Willst du den Tag wirklich weg machen? Der Tag \"{tagName}\" ist dann auch bei den Menschen weg.",
+      "text_response": "Willst du den Tag wirklich weg machen? Der Tag \"{tagName}\" ist dann auch bei den Antworten weg.",
+      "text_global": "Willst du den Tag \"{tagName}\" wirklich weg machen?",
+      "title": "Tag weg machen"
+    },
   },
   "taxRate": {
     "invoiceName": "MwSt"

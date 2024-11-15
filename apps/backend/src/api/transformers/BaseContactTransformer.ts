@@ -29,6 +29,7 @@ import {
 } from "@beabee/core/models";
 
 import { FilterHandler, FilterHandlers } from "@type/filter-handlers";
+import { contactTagTransformer } from "./TagTransformer";
 
 function flattenRules(rules: RuleGroup): Rule[] {
   return rules.rules.flatMap((rule) =>
@@ -43,23 +44,7 @@ export abstract class BaseContactTransformer<
   protected model = Contact;
   protected filters: Filters<ContactFilterName> = contactFilters;
 
-  // TODO: should be protected once SegmentService is refactored
-  filterHandlers: FilterHandlers<string> = {
-    deliveryOptIn: profileField("deliveryOptIn"),
-    newsletterStatus: profileField("newsletterStatus"),
-    newsletterGroups: profileField("newsletterGroups"),
-    tags: profileField("tags"),
-    activePermission,
-    activeMembership: activePermission,
-    membershipStarts: membershipField("dateAdded"),
-    membershipExpires: membershipField("dateExpires"),
-    contributionCancelled: contributionField("cancelledAt"),
-    manualPaymentSource: (qb, args) => {
-      contributionField("mandateId")(qb, args);
-      qb.andWhere(`${args.fieldPrefix}contributionType = 'Manual'`);
-    },
-    "callouts.": calloutsFilterHandler
-  };
+  filterHandlers: FilterHandlers<string> = contactFilterHandlers;
 
   protected async transformFilters(
     query: GetOptsDto & PaginatedQuery
@@ -216,4 +201,21 @@ const calloutsFilterHandler: FilterHandler = (qb, args) => {
   }
 
   return { calloutId, ...params };
+};
+
+export const contactFilterHandlers: FilterHandlers<string> = {
+  deliveryOptIn: profileField("deliveryOptIn"),
+  newsletterStatus: profileField("newsletterStatus"),
+  newsletterGroups: profileField("newsletterGroups"),
+  activePermission,
+  activeMembership: activePermission,
+  membershipStarts: membershipField("dateAdded"),
+  membershipExpires: membershipField("dateExpires"),
+  contributionCancelled: contributionField("cancelledAt"),
+  manualPaymentSource: (qb, args) => {
+    contributionField("mandateId")(qb, args);
+    qb.andWhere(`${args.fieldPrefix}contributionType = 'Manual'`);
+  },
+  "callouts.": calloutsFilterHandler,
+  tags: contactTagTransformer.tagFilterHandler
 };

@@ -144,6 +144,35 @@ export class CreateCalloutResponseDto {
   assigneeId?: string | null;
 }
 
+export class UpdateCalloutResponseDto
+  implements Partial<CreateCalloutResponseDto>
+{
+  // TODO: validate
+  @IsObject()
+  @IsOptional()
+  answers?: CalloutResponseAnswersSlide;
+
+  @IsOptional()
+  @IsString()
+  guestName?: string;
+
+  @IsOptional()
+  @IsEmail()
+  guestEmail?: string;
+
+  @IsOptional()
+  @IsString()
+  bucket?: string;
+
+  @IsOptional()
+  @IsString({ each: true })
+  tags?: string[];
+
+  @IsUUID("4")
+  @IsOptional()
+  assigneeId?: string | null;
+}
+
 export class BatchUpdateCalloutResponseDto {
   @IsDefined()
   @ValidateNested()
@@ -152,7 +181,7 @@ export class BatchUpdateCalloutResponseDto {
 
   @ValidateNested()
   @Type(() => CreateCalloutResponseDto)
-  updates!: CreateCalloutResponseDto;
+  updates!: UpdateCalloutResponseDto;
 }
 
 export class BatchUpdateCalloutResponseResultDto {

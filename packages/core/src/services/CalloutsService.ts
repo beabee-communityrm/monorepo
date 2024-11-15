@@ -213,7 +213,6 @@ class CalloutsService {
    * @param callout The callout
    * @param contact The contact
    * @param answers The response answers
-   * @param isPartial Deprecated: whether or not the answers are partial or not
    * @returns The new callout response
    */
   async setResponse(

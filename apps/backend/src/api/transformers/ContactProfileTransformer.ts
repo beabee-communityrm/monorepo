@@ -32,7 +32,6 @@ class ContactProfileTransformer extends BaseTransformer<
       newsletterStatus: profile.newsletterStatus,
       newsletterGroups: profile.newsletterGroups,
       ...(auth?.roles.includes("admin") && {
-        tags: profile.tags,
         notes: profile.notes,
         description: profile.description
       })

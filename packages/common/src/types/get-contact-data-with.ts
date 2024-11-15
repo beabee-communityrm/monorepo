@@ -14,4 +14,7 @@ export type GetContactDataWith<With extends GetContactWith | void> =
   & (GetContactWith.Contribution extends With
     ? { contribution: ContributionInfo }
     : Noop)
-  & (GetContactWith.Roles extends With ? { roles: ContactRoleData[] } : Noop);
+  & (GetContactWith.Roles extends With ? { roles: ContactRoleData[] }
+    : Noop)
+  & (GetContactWith.Tags extends With ? { tags: { id: string; name: string }[] }
+    : Noop);

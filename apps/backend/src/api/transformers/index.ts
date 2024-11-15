@@ -7,7 +7,6 @@ export * from "./CalloutResponseCommentTransformer.js";
 export * from "./CalloutResponseExporter.js";
 export * from "./CalloutResponseMapTransformer.js";
 export * from "./CalloutResponseTransformer.js";
-export * from "./CalloutTagTransformer.js";
 export * from "./CalloutTransformer.js";
 export * from "./CalloutVariantTransformer.js";
 export * from "./ContactExporter.js";

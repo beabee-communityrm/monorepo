@@ -13,6 +13,7 @@ import {
   getMinDateUnit,
   RuleGroup
 } from "@beabee/beabee-common";
+import { SelectResult } from "@beabee/core/type";
 import { BadRequestError } from "routing-controllers";
 import {
   Brackets,
@@ -389,6 +390,72 @@ export async function batchUpdate<
     queryCallback?.(qb, "");
 
     return await qb.execute();
+  } catch (err) {
+    if (err instanceof InvalidRule) {
+      const err2: any = new BadRequestError(err.message);
+      err2.rule = err.rule;
+      throw err2;
+    } else {
+      throw err;
+    }
+  }
+}
+
+/**
+ * Selects entities based on filter rules without performing updates.
+ * Returns a SelectResult object similar to UpdateResult for consistency.
+ *
+ * @param entity - The entity to select from
+ * @param filters - Available filters for the entity
+ * @param ruleGroup - Rules to filter entities
+ * @param contact - Optional contact for permission checks
+ * @param filterHandlers - Optional custom filter handlers
+ * @param queryCallback - Optional callback to modify the query
+ * @returns SelectResult containing raw results and affected count
+ *
+ * @example
+ * const result = await batchSelect(
+ *   Contact,
+ *   filters,
+ *   ruleGroup,
+ *   auth?.contact,
+ *   filterHandlers
+ * );
+ * const ids = result.raw.map(r => r.id);
+ */
+export async function batchSelect<
+  Entity extends ObjectLiteral,
+  Field extends string
+>(
+  entity: EntityTarget<Entity>,
+  filters: Filters<Field>,
+  ruleGroup: RuleGroup,
+  contact?: Contact,
+  filterHandlers?: FilterHandlers<Field>,
+  queryCallback?: (qb: SelectQueryBuilder<Entity>, fieldPrefix: string) => void
+): Promise<SelectResult> {
+  try {
+    const validatedRuleGroup = validateRuleGroup(filters, ruleGroup);
+
+    const qb = createQueryBuilder(entity, "entity")
+      .select(["entity.id"])
+      .where(
+        ...convertRulesToWhereClause(
+          validatedRuleGroup,
+          contact,
+          filterHandlers,
+          "entity."
+        )
+      );
+
+    queryCallback?.(qb, "entity.");
+
+    const raw = await qb.getRawMany();
+
+    return {
+      raw: raw.map((r) => ({ id: r.entity_id })),
+      affected: raw.length
+    };
   } catch (err) {
     if (err instanceof InvalidRule) {
       const err2: any = new BadRequestError(err.message);

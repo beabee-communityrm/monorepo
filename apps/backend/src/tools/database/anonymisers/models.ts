@@ -42,7 +42,9 @@ import {
   CalloutResponseComment,
   ResetSecurityFlow,
   Password,
-  CalloutVariant
+  ContactTagAssignment,
+  CalloutVariant,
+  ContactTag
 } from "@beabee/core/models";
 
 /**
@@ -298,13 +300,26 @@ export const contactProfileAnonymiser = createModelAnonymiser(ContactProfile, {
     line2: () => chance.pickone(["Cabot", "Easton", "Southmead", "Hanham"]),
     city: () => "Bristol",
     postcode: () => "BS1 1AA"
-  },
-  tags: (tags) => tags.map(() => chance.profession())
+  }
 });
 
 export const contactRoleAnonymiser = createModelAnonymiser(ContactRole, {
   contactId: () => uuidv4()
 });
+
+export const contactTagAnonymiser = createModelAnonymiser(ContactTag, {
+  id: () => uuidv4(),
+  name: () => chance.word(),
+  description: () => chance.sentence()
+});
+
+export const contactTagAssignmentAnonymiser = createModelAnonymiser(
+  ContactTagAssignment,
+  {
+    contactId: () => uuidv4(),
+    tagId: () => uuidv4()
+  }
+);
 
 export const emailAnonymiser = createModelAnonymiser(Email);
 

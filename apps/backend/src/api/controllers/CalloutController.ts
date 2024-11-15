@@ -42,7 +42,7 @@ import { CalloutId } from "@api/decorators/CalloutId";
 import { CurrentAuth } from "@api/decorators/CurrentAuth";
 import PartialBody from "@api/decorators/PartialBody";
 import { InvalidCalloutResponse, UnauthorizedError } from "@beabee/core/errors";
-import CalloutTagTransformer from "@api/transformers/CalloutTagTransformer";
+import { calloutTagTransformer } from "@api/transformers/TagTransformer";
 import CalloutTransformer from "@api/transformers/CalloutTransformer";
 import CalloutResponseExporter from "@api/transformers/CalloutResponseExporter";
 import CalloutResponseMapTransformer from "@api/transformers/CalloutResponseMapTransformer";
@@ -59,6 +59,7 @@ import {
 import { CalloutCaptcha } from "@beabee/beabee-common";
 
 import { AuthInfo } from "@type/auth-info";
+import { ListTagsDto } from "@api/dto";
 
 @JsonController("/callout")
 export class CalloutController {
@@ -207,13 +208,16 @@ export class CalloutController {
     }
   }
 
+  // TODO: move to CalloutTagController like we did for contact tags?
   @Authorized("admin")
   @Get("/:id/tags")
   async getCalloutTags(
     @CurrentAuth({ required: true }) auth: AuthInfo,
-    @CalloutId() id: string
+    @CalloutId() id: string,
+    @QueryParams() query: ListTagsDto
   ): Promise<GetCalloutTagDto[]> {
-    const result = await CalloutTagTransformer.fetch(auth, {
+    const result = await calloutTagTransformer.fetch(auth, {
+      ...query,
       rules: {
         condition: "AND",
         rules: [{ field: "calloutId", operator: "equal", value: [id] }]
@@ -223,6 +227,7 @@ export class CalloutController {
     return result.items;
   }
 
+  // TODO: move to CalloutTagController like we did for contact tags?
   @Authorized("admin")
   @Post("/:id/tags")
   async createCalloutTag(
@@ -235,32 +240,34 @@ export class CalloutController {
       description: data.description,
       calloutId: id
     });
-
-    return CalloutTagTransformer.convert(tag);
+    return calloutTagTransformer.convert(tag);
   }
 
+  // TODO: move to CalloutTagController like we did for contact tags?
   @Authorized("admin")
   @Get("/:id/tags/:tagId")
   async getCalloutTag(
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @Param("tagId") tagId: string
   ): Promise<GetCalloutTagDto | undefined> {
-    return CalloutTagTransformer.fetchOneById(auth, tagId);
+    return calloutTagTransformer.fetchOneById(auth, tagId);
   }
 
+  // TODO: move to CalloutTagController like we did for contact tags?
   @Authorized("admin")
   @Patch("/:id/tags/:tagId")
   async updateCalloutTag(
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @CalloutId() id: string,
     @Param("tagId") tagId: string,
-    @PartialBody() data: CreateCalloutTagDto // Partial<CreateCalloutTagData>
+    @PartialBody() data: CreateCalloutTagDto // Partial<TagCreateData>
   ): Promise<GetCalloutTagDto | undefined> {
     await getRepository(CalloutTag).update({ id: tagId, calloutId: id }, data);
 
-    return CalloutTagTransformer.fetchOneById(auth, tagId);
+    return calloutTagTransformer.fetchOneById(auth, tagId);
   }
 
+  // TODO: move to CalloutTagController like we did for contact tags?
   @Authorized("admin")
   @Delete("/:id/tags/:tagId")
   @OnUndefined(204)
@@ -268,13 +275,6 @@ export class CalloutController {
     @CalloutId() id: string,
     @Param("tagId") tagId: string
   ): Promise<void> {
-    await getRepository(CalloutResponseTag).delete({ tag: { id: tagId } });
-    const result = await getRepository(CalloutTag).delete({
-      calloutId: id,
-      id: tagId
-    });
-    if (result.affected === 0) {
-      throw new NotFoundError();
-    }
+    await calloutTagTransformer.delete(tagId, CalloutResponseTag);
   }
 }

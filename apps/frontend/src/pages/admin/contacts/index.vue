@@ -33,6 +33,11 @@ meta:
         v-model="currentSearch"
         :placeholder="t('contacts.search')"
       />
+      <AppSelect
+        v-model="currentTag"
+        :placeholder="t('tags.searchTag')"
+        :items="tagItems"
+      />
     </AppSearch>
     <SaveSegment
       v-if="hasUnsavedSegment && currentRules"
@@ -42,17 +47,40 @@ meta:
     />
     <AppPaginatedTable
       v-model:query="currentPaginatedQuery"
+      keypath="contacts.showingOf"
       :headers="headers"
       :result="contactsTable"
-      keypath="contacts.showingOf"
+      selectable
     >
       <template #actions>
-        <AppButton
-          :icon="faDownload"
-          variant="primaryOutlined"
-          :title="t('actions.export')"
-          @click="handleExport"
-        />
+        <AppButtonGroup>
+          <!-- TODO: Add support for exporting selected contacts (instead of all contacts) -->
+          <AppButton
+            :icon="faDownload"
+            variant="primaryOutlined"
+            :title="t('actions.export')"
+            :disabled="selectedCount > 0"
+            @click="handleExport"
+          />
+          <ToggleTagButton
+            :tag-items="tagItems"
+            :selected-tags="selectedTags"
+            :manage-url="`${route.path}/tags`"
+            :loading="doingAction"
+            :disable-tags="selectedCount === 0"
+            @toggle="
+              (tagId, successText) =>
+                handleUpdateAction({ tags: [tagId] }, successText)
+            "
+          />
+        </AppButtonGroup>
+        <p v-if="selectedCount > 0" class="self-center text-sm">
+          <i18n-t keypath="contacts.selectedCount" :plural="selectedCount">
+            <template #n>
+              <b>{{ selectedCount }}</b>
+            </template>
+          </i18n-t>
+        </p>
       </template>
       <template #empty>
         <p>
@@ -89,16 +117,23 @@ meta:
           getMembershipStartDate(item)
         }}</span>
       </template>
-      <template #after="{ item }">
+      <template
+        #after="{
+          item,
+        }: {
+          item: GetContactDataWith<
+            GetContactWith.Profile | GetContactWith.Tags
+          >;
+        }"
+      >
         <p v-if="item.profile.description" class="whitespace-normal text-xs">
           {{ item.profile.description }}
         </p>
         <div
-          v-if="item.profile.tags && item.profile.tags.length > 0"
+          v-if="item.tags && item.tags.length > 0"
           :class="item.profile.description && 'mt-2'"
         >
-          <font-awesome-icon :icon="faTag" class="mr-2" />
-          <AppTag v-for="tag in item.profile.tags" :key="tag" :tag="tag" />
+          <TagList :tags="item.tags" @select="currentTag = $event" />
         </div>
       </template>
     </AppPaginatedTable>
@@ -113,22 +148,21 @@ import {
   type GetSegmentDataWith,
   type Paginated,
   type RuleGroup,
+  type UpdateContactData,
 } from '@beabee/beabee-common';
-import { computed, onBeforeMount, ref, watchEffect } from 'vue';
+import { computed, onBeforeMount, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
-import {
-  faPlus,
-  faDownload,
-  faTag,
-  faUsers,
-} from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faDownload, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';
+import { addNotification } from '@store/notifications';
 
 import PageTitle from '@components/PageTitle.vue';
+import AppButtonGroup from '@components/button/AppButtonGroup.vue';
 import AppButton from '@components/button/AppButton.vue';
+import ToggleTagButton from '@components/tag/ToggleTagButton.vue';
 import AppSearch from '@components/search/AppSearch.vue';
-import AppTag from '@components/AppTag.vue';
+import TagList from '@components/tag/TagList.vue';
 import {
   headers,
   useContactFilters,
@@ -142,28 +176,74 @@ import {
   defineParam,
   defineRulesParam,
 } from '@utils/pagination';
-import { fetchContacts } from '@utils/api/contact';
+import { fetchContacts, updateContacts } from '@utils/api/contact';
 import { formatLocale } from '@utils/dates';
 import { fetchSegments } from '@utils/api/segments';
+import AppSelect from '@components/forms/AppSelect.vue';
+import { useTagFilter } from '../../../composables/useTagFilter';
 
+/**
+ * Contact list page component
+ * Provides functionality for:
+ * - Viewing and filtering contacts
+ * - Managing contact tags
+ * - Exporting contacts
+ * - Saving contact segments
+ */
+
+/**
+ * Props & Composables
+ */
 const { t, n } = useI18n();
-
 const route = useRoute();
 
-addBreadcrumb(
-  computed(() => [
-    { title: t('menu.contacts'), to: '/admin/contacts', icon: faUsers },
-  ])
-);
+/**
+ * Table state
+ * @description Manages the paginated table data and selection state
+ */
+const contactsTable =
+  ref<
+    Paginated<
+      GetContactDataWith<
+        GetContactWith.Profile | GetContactWith.Roles | GetContactWith.Tags
+      > & { selected: boolean }
+    >
+  >();
 
-const { filterGroups } = useContactFilters();
-
-const currentPaginatedQuery = definePaginatedQuery('joined');
-const currentSearch = defineParam('s', (v) => v || '');
-const currentRules = defineRulesParam(
-  computed(() => currentSegment.value?.ruleGroup)
+const selectedContactItems = computed(
+  () => contactsTable.value?.items.filter((ri) => ri.selected) || []
 );
+const selectedCount = computed(() => selectedContactItems.value.length);
+
+/**
+ * Tag Management
+ * @description Handles tag filtering and selection state
+ */
+const { currentTag, addTagToRules } = useTagFilter();
+
+const selectedTags = computed(() => {
+  if (selectedCount.value === 0) {
+    return [];
+  }
+
+  const tagCount = Object.fromEntries(tagItems.value.map((t) => [t.id, 0]));
+  for (const item of selectedContactItems.value) {
+    for (const tag of item.tags || []) {
+      tagCount[tag.id]++;
+    }
+  }
+  return Object.entries(tagCount)
+    .filter((tc) => tc[1] === selectedCount.value)
+    .map(([tagId]) => tagId);
+});
+
+/**
+ * Segment Management
+ * @description Handles segment filtering and saving
+ */
 const currentSegmentId = defineParam('segment', (v) => v || '', 'replace');
+const segments = ref<GetSegmentDataWith<'contactCount'>[]>([]);
+const contactsTotal = ref<number | null>(null);
 
 const currentSegment = computed(() =>
   currentSegmentId.value
@@ -177,13 +257,6 @@ const hasUnsavedSegment = computed(
     !!currentRules.value &&
     currentRules.value.rules.length > 0
 );
-
-const segments = ref<GetSegmentDataWith<'contactCount'>[]>([]);
-const contactsTotal = ref<number | null>(null);
-const contactsTable =
-  ref<
-    Paginated<GetContactDataWith<GetContactWith.Profile | GetContactWith.Roles>>
-  >();
 
 const segmentItems = computed(() => [
   {
@@ -200,6 +273,44 @@ const segmentItems = computed(() => [
   })),
 ]);
 
+/**
+ * Search & Filter state
+ * @description Manages search and filter parameters
+ */
+const currentPaginatedQuery = definePaginatedQuery('joined');
+const currentSearch = defineParam('s', (v) => v || '');
+const currentRules = defineRulesParam(
+  computed(() => currentSegment.value?.ruleGroup)
+);
+
+const { filterGroups, tagItems } = useContactFilters();
+
+/**
+ * Action state
+ */
+const doingAction = ref(false);
+
+/**
+ * Lifecycle hooks
+ */
+onBeforeMount(async () => {
+  contactsTotal.value = (await fetchContacts({ limit: 1 })).total;
+  segments.value = await fetchSegments({ sort: 'order' }, ['contactCount']);
+});
+
+addBreadcrumb(
+  computed(() => [
+    { title: t('menu.contacts'), to: '/admin/contacts', icon: faUsers },
+  ])
+);
+
+/**
+ * Helper Functions
+ */
+
+/**
+ * Gets the membership start date for a contact
+ */
 function getMembershipStartDate(
   contact: GetContactDataWith<GetContactWith.Roles>
 ): string {
@@ -207,6 +318,105 @@ function getMembershipStartDate(
   return membership ? formatLocale(membership.dateAdded, 'PPP') : '';
 }
 
+/**
+ * Builds the search rules for the current filter state
+ */
+function getSearchRules(): RuleGroup {
+  const searchRules: RuleGroup = {
+    condition: 'OR',
+    rules: currentSearch.value
+      .split(' ')
+      .filter((v) => !!v)
+      .flatMap((value) => [
+        { field: 'email', operator: 'contains', value: [value] },
+        { field: 'firstname', operator: 'contains', value: [value] },
+        { field: 'lastname', operator: 'contains', value: [value] },
+      ]),
+  };
+
+  const rules: RuleGroup[] = [];
+  if (currentSearch.value) rules.push(searchRules);
+  if (currentRules.value) rules.push(currentRules.value);
+
+  return addTagToRules(rules, currentTag.value);
+}
+
+/**
+ * Gets rules for selected contacts
+ */
+function getSelectedContactsRules(): RuleGroup {
+  return {
+    condition: 'OR',
+    rules: selectedContactItems.value.map((item) => ({
+      field: 'id',
+      operator: 'equal',
+      value: [item.id],
+    })),
+  };
+}
+
+/**
+ * Action Handlers
+ */
+
+/**
+ * Table state
+ */
+const isRefreshing = ref(false);
+
+/**
+ * Refreshes the contact list based on current filters
+ */
+async function refreshResponses() {
+  if (isRefreshing.value) return;
+
+  isRefreshing.value = true;
+  try {
+    // Store currently selected IDs before refresh
+    const selectedIds = new Set(
+      selectedContactItems.value.map((item) => item.id)
+    );
+
+    const query = { ...currentPaginatedQuery.query, rules: getSearchRules() };
+    const newContacts = await fetchContacts(query, [
+      GetContactWith.Profile,
+      GetContactWith.Roles,
+      GetContactWith.Tags,
+    ]);
+
+    // Preserve selection state for existing contacts
+    contactsTable.value = {
+      ...newContacts,
+      items: newContacts.items.map((c) => ({
+        ...c,
+        selected: selectedIds.has(c.id),
+      })),
+    };
+  } finally {
+    isRefreshing.value = false;
+  }
+}
+
+watch(
+  [currentPaginatedQuery, currentSearch, currentRules, currentTag],
+  () => refreshResponses(),
+  { deep: true }
+);
+
+refreshResponses();
+
+/**
+ * Handles exporting contacts
+ */
+function handleExport() {
+  const rules = getSearchRules();
+  const rulesQuery = encodeURIComponent(JSON.stringify(rules));
+  window.open(`/api/1.0/contact.csv?rules=${rulesQuery}`, '_blank');
+}
+
+/**
+ * Handles segment save events
+ */
 function handleSavedSegment(segment: GetSegmentDataWith<'contactCount'>) {
   const segmentIndex = segments.value.findIndex((s) => s.id === segment.id);
   if (segmentIndex > -1) {
@@ -217,55 +427,17 @@ function handleSavedSegment(segment: GetSegmentDataWith<'contactCount'>) {
   currentSegmentId.value = segment.id;
 }
 
-onBeforeMount(async () => {
-  contactsTotal.value = (await fetchContacts({ limit: 1 })).total;
-  segments.value = await fetchSegments({ sort: 'order' }, ['contactCount']);
-});
-
-function getSearchRules(): RuleGroup {
-  const searchRules: RuleGroup = {
-    condition: 'OR',
-    rules: currentSearch.value
-      .split(' ')
-      .filter((v) => !!v)
-      .flatMap((value) => [
-        {
-          field: 'email',
-          operator: 'contains',
-          value: [value],
-        },
-        {
-          field: 'firstname',
-          operator: 'contains',
-          value: [value],
-        },
-        {
-          field: 'lastname',
-          operator: 'contains',
-          value: [value],
-        },
-      ]),
-  };
-
-  return currentRules.value
-    ? {
-        condition: 'AND',
-        rules: [currentRules.value, searchRules],
-      }
-    : searchRules;
-}
-
-watchEffect(async () => {
-  const query = { ...currentPaginatedQuery.query, rules: getSearchRules() };
-  contactsTable.value = await fetchContacts(query, [
-    GetContactWith.Profile,
-    GetContactWith.Roles,
-  ]);
-});
-
-function handleExport() {
-  const rules = getSearchRules();
-  const rulesQuery = encodeURIComponent(JSON.stringify(rules));
-  window.open(`/api/1.0/contact.csv?rules=${rulesQuery}`, '_blank');
+/**
+ * Handles contact update actions
+ */
+async function handleUpdateAction(
+  updates: UpdateContactData,
+  successText: string
+): Promise<void> {
+  doingAction.value = true;
+  await updateContacts(getSelectedContactsRules(), updates);
+  await refreshResponses();
+  addNotification({ variant: 'success', title: successText });
+  doingAction.value = false;
 }
 </script>

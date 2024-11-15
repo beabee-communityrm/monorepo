@@ -35,10 +35,6 @@ export class GetContactProfileDto {
   @IsString({ each: true })
   newsletterGroups!: string[];
 
-  @IsArray({ groups: ["admin"] })
-  @IsString({ groups: ["admin"], each: true })
-  tags?: string[];
-
   @IsString({ groups: ["admin"] })
   notes?: string;
 
@@ -77,11 +73,6 @@ export class UpdateContactProfileDto implements Partial<GetContactProfileDto> {
   newsletterGroups?: string[];
 
   // Admin only
-
-  @IsOptional()
-  @IsString({ each: true })
-  tags?: string[];
-
   @IsOptional()
   @IsString()
   notes?: string;

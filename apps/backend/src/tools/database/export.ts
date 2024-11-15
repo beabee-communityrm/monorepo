@@ -8,7 +8,9 @@ import { anonymiseModel, clearModels } from "./anonymisers";
 // Order these so they respect foreign key constraints
 const anonymisers = [
   models.contactAnonymiser, // A lot of relations depend on contacts so leave it first
-  models.contactRoleAnonymiser,
+  models.contactTagAnonymiser, // Tags must be created before assignments
+  models.contactRoleAnonymiser, // Roles can be created after contacts
+  models.contactTagAssignmentAnonymiser, // Must be after both contacts and tags
   models.contactProfileAnonymiser,
   models.emailAnonymiser,
   models.emailMailingAnonymiser,

@@ -18,7 +18,7 @@ meta:
       >
         <AppSelect
           v-model="currentTag"
-          :placeholder="t('calloutResponsesPage.searchTag')"
+          :placeholder="t('tags.searchTag')"
           :items="tagItems"
         />
         <AppSelect
@@ -77,9 +77,9 @@ meta:
             <ToggleTagButton
               :tag-items="tagItems"
               :selected-tags="selectedTags"
-              :manage-url="`${route.path}/tags`"
+              :manage-url="`/admin/callouts/view/${callout.slug}/responses/tags`"
               :loading="doingAction"
-              :disabled="selectedCount === 0"
+              :disable-tags="selectedCount === 0"
               @toggle="
                 (tagId, successText) =>
                   handleUpdateAction({ tags: [tagId] }, successText)
@@ -144,7 +144,15 @@ meta:
           <AppTime :datetime="value" />
         </template>
 
-        <template #after="{ item }">
+        <template
+          #after="{
+            item,
+          }: {
+            item: GetCalloutResponseDataWith<
+              'answers' | 'assignee' | 'contact' | 'latestComment' | 'tags'
+            >;
+          }"
+        >
           <div
             v-if="
               item.tags.length > 0 ||
@@ -153,10 +161,7 @@ meta:
             "
             class="flex flex-col gap-2"
           >
-            <div v-if="item.tags.length > 0">
-              <font-awesome-icon :icon="faTag" class="mr-2" />
-              <AppTag v-for="tag in item.tags" :key="tag.id" :tag="tag.name" />
-            </div>
+            <TagList :tags="item.tags" @select="currentTag = $event" />
             <p v-if="currentInlineComponent && item.answers">
               <font-awesome-icon :icon="faUserPen" class="mr-2" />
               <b>{{ t('calloutResponsesPage.showAnswer') }}:{{ ' ' }}</b>
@@ -200,7 +205,7 @@ import {
   stringifyAnswer,
   type UpdateCalloutResponseData,
 } from '@beabee/beabee-common';
-import { computed, onBeforeMount, ref, watchEffect } from 'vue';
+import { computed, onBeforeMount, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import AppButton from '@components/button/AppButton.vue';
@@ -215,9 +220,8 @@ import AppSearch from '@components/search/AppSearch.vue';
 import { fetchResponses } from '@utils/api/callout';
 import AppButtonGroup from '@components/button/AppButtonGroup.vue';
 import { updateCalloutResponses } from '@utils/api/callout-response';
-import AppTag from '@components/AppTag.vue';
 import MoveBucketButton from '@components/pages/admin/callouts/MoveBucketButton.vue';
-import ToggleTagButton from '@components/pages/admin/callouts/ToggleTagButton.vue';
+import ToggleTagButton from '@components/tag/ToggleTagButton.vue';
 import { buckets } from '@components/pages/admin/callouts/callouts.interface';
 import SetAssigneeButton from '@components/pages/admin/callouts/SetAssigneeButton.vue';
 import { fetchContacts } from '@utils/api/contact';
@@ -231,7 +235,6 @@ import AppCheckbox from '@components/forms/AppCheckbox.vue';
 import {
   faComment,
   faDownload,
-  faTag,
   faUser,
   faUserPen,
 } from '@fortawesome/free-solid-svg-icons';
@@ -240,12 +243,31 @@ import { addBreadcrumb } from '@store/breadcrumb';
 import AppTime from '@components/AppTime.vue';
 
 import { toRef } from 'vue';
+import { useTagFilter } from '../../../../../../composables/useTagFilter';
+import TagList from '@components/tag/TagList.vue';
 
+/**
+ * Callout Responses Table Component
+ * Provides functionality for:
+ * - Viewing and filtering callout responses
+ * - Managing response tags
+ * - Managing response buckets
+ * - Managing response assignments
+ * - Viewing response details (comments, answers)
+ * - Exporting responses
+ */
+
+/**
+ * Props & Composables
+ */
 const props = defineProps<{ callout: GetCalloutDataWith<'form'> }>();
-
 const { t, n } = useI18n();
 const route = useRoute();
 
+/**
+ * Table State
+ * @description Manages the paginated table data and selection state
+ */
 const responses = ref<
   Paginated<
     GetCalloutResponseDataWith<
@@ -255,38 +277,40 @@ const responses = ref<
     }
   >
 >();
-const showLatestComment = ref(false);
-const doingAction = ref(false);
-
-const showInlineAnswer = ref(false);
-const currentInlineAnswer = ref('');
-const currentInlineComponent = computed(
-  () =>
-    showInlineAnswer.value &&
-    formComponents.value.find(
-      (c) => `answers.${c.fullKey}` === currentInlineAnswer.value
-    )
-);
 
 const selectedResponseItems = computed(
   () => responses.value?.items.filter((ri) => ri.selected) || []
 );
-
 const selectedCount = computed(() => selectedResponseItems.value.length);
 
-const selectedTags = computed(() => {
-  const tagCount = Object.fromEntries(tagItems.value.map((t) => [t.id, 0]));
+/**
+ * Tag Management
+ * @description Handles tag filtering and selection state
+ */
+const { currentTag, addTagToRules } = useTagFilter();
 
+const selectedTags = computed(() => {
+  if (selectedCount.value === 0) {
+    return [];
+  }
+
+  const tagCount = Object.fromEntries(tagItems.value.map((t) => [t.id, 0]));
   for (const item of selectedResponseItems.value) {
     for (const tag of item.tags) {
       tagCount[tag.id]++;
     }
   }
-
   return Object.entries(tagCount)
     .filter((tc) => tc[1] === selectedCount.value)
     .map(([tagId]) => tagId);
 });
+
+/**
+ * Assignee Management
+ * @description Handles assignee filtering and selection state
+ */
+const adminItems = ref<{ id: string; label: string }[]>([]);
+const currentAssignee = defineParam('assignee', (v) => v || '');
 
 const selectedAssigneeId = computed(() => {
   let assigneeId = selectedResponseItems.value[0]?.assignee?.id;
@@ -298,8 +322,11 @@ const selectedAssigneeId = computed(() => {
   return assigneeId;
 });
 
-const adminItems = ref<{ id: string; label: string }[]>([]);
-
+/**
+ * Bucket Management
+ * @description Handles bucket filtering and navigation
+ */
+const currentBucket = defineParam('bucket', (v) => v || '', 'replace');
 const bucketItems = computed(() =>
   buckets.value.map((bucket) => ({
     ...bucket,
@@ -307,15 +334,42 @@ const bucketItems = computed(() =>
   }))
 );
 
+/**
+ * Answer Display Configuration
+ * @description Manages the visibility and selection of inline answers
+ */
+const showInlineAnswer = ref(false);
+const currentInlineAnswer = ref('');
+const currentInlineComponent = computed(
+  () =>
+    showInlineAnswer.value &&
+    formComponents.value.find(
+      (c) => `answers.${c.fullKey}` === currentInlineAnswer.value
+    )
+);
+
+/**
+ * Comment Display Configuration
+ */
+const showLatestComment = ref(false);
+
+/**
+ * Search & Filter State
+ * @description Manages search and filter parameters
+ */
+const currentPaginatedQuery = definePaginatedQuery('createdAt');
+const currentRules = defineRulesParam();
 const { formComponents, answerItems, filterGroups, tagItems } =
   useCalloutResponseFilters(toRef(props, 'callout'));
 
-const currentAssignee = defineParam('assignee', (v) => v || '');
-const currentTag = defineParam('tag', (v) => v || '');
-const currentBucket = defineParam('bucket', (v) => v || '', 'replace');
-const currentPaginatedQuery = definePaginatedQuery('createdAt');
-const currentRules = defineRulesParam();
+/**
+ * Action State
+ */
+const doingAction = ref(false);
 
+/**
+ * Lifecycle Hooks
+ */
 onBeforeMount(async () => {
   const admins = await fetchContacts({
     rules: {
@@ -346,36 +400,45 @@ addBreadcrumb(
   ])
 );
 
+/**
+ * Helper Functions
+ */
+
+/**
+ * Builds the search rules for the current filter state
+ */
 function getSearchRules(): RuleGroup {
+  const rules: RuleGroup[] = [];
+
   const bucketRule: Rule = currentBucket.value
     ? { field: 'bucket', operator: 'equal', value: [currentBucket.value] }
     : { field: 'bucket', operator: 'is_empty', value: [] };
 
-  const rules: RuleGroup = { condition: 'AND', rules: [bucketRule] };
+  rules.push({ condition: 'AND', rules: [bucketRule] });
 
   if (currentRules.value) {
-    rules.rules.push(currentRules.value);
-  }
-
-  if (currentTag.value) {
-    rules.rules.push({
-      field: 'tags',
-      operator: 'contains',
-      value: [currentTag.value],
-    });
+    rules.push(currentRules.value);
   }
 
   if (currentAssignee.value) {
-    rules.rules.push({
-      field: 'assignee',
-      operator: 'equal',
-      value: [currentAssignee.value],
+    rules.push({
+      condition: 'AND',
+      rules: [
+        {
+          field: 'assignee',
+          operator: 'equal',
+          value: [currentAssignee.value],
+        },
+      ],
     });
   }
 
-  return rules;
+  return addTagToRules(rules, currentTag.value);
 }
 
+/**
+ * Gets rules for selected responses
+ */
 function getSelectedResponseRules(): RuleGroup {
   return {
     condition: 'OR',
@@ -387,32 +450,77 @@ function getSelectedResponseRules(): RuleGroup {
   };
 }
 
+/**
+ * Action Handlers
+ */
+
+/**
+ * Table State
+ */
+const isRefreshing = ref(false);
+
+/**
+ * Refreshes the response list based on current filters
+ */
 async function refreshResponses() {
-  const _with: GetCalloutResponseWith[] = ['assignee', 'contact', 'tags'];
-  if (showLatestComment.value) {
-    _with.push('latestComment');
-  }
-  if (showInlineAnswer.value) {
-    _with.push('answers');
-  }
+  if (isRefreshing.value) return;
 
-  const newResponses = await fetchResponses(
-    props.callout.slug,
-    {
-      ...currentPaginatedQuery.query,
-      rules: getSearchRules(),
-    },
-    _with
-  );
+  isRefreshing.value = true;
+  try {
+    const _with: GetCalloutResponseWith[] = ['assignee', 'contact', 'tags'];
+    if (showLatestComment.value) {
+      _with.push('latestComment');
+    }
+    if (showInlineAnswer.value) {
+      _with.push('answers');
+    }
 
-  responses.value = {
-    ...newResponses,
-    items: newResponses.items.map((r) => ({ ...r, selected: false })),
-  };
+    // Store currently selected IDs before refresh
+    const selectedIds = new Set(
+      selectedResponseItems.value.map((item) => item.id)
+    );
+
+    const newResponses = await fetchResponses(
+      props.callout.slug,
+      {
+        ...currentPaginatedQuery.query,
+        rules: getSearchRules(),
+      },
+      _with
+    );
+
+    responses.value = {
+      ...newResponses,
+      items: newResponses.items.map((r) => ({
+        ...r,
+        selected: selectedIds.has(r.id),
+      })),
+    };
+  } finally {
+    isRefreshing.value = false;
+  }
 }
 
-watchEffect(refreshResponses);
+// Replace watchEffect with watch
+watch(
+  [
+    currentPaginatedQuery,
+    currentRules,
+    currentAssignee,
+    currentTag,
+    currentBucket,
+    showLatestComment,
+    showInlineAnswer,
+  ],
+  () => refreshResponses(),
+  { deep: true }
+);
 
+refreshResponses();
+
+/**
+ * Handles exporting responses
+ */
 function handleExport() {
   const rules: RuleGroup =
     selectedResponseItems.value.length > 0
@@ -427,20 +535,20 @@ function handleExport() {
   );
 }
 
+/**
+ * Handles response update actions (tags, bucket, assignee)
+ */
 async function handleUpdateAction(
   updates: UpdateCalloutResponseData,
   successText: string
 ): Promise<void> {
   doingAction.value = true;
-
   await updateCalloutResponses(getSelectedResponseRules(), updates);
   await refreshResponses();
-
   addNotification({
     variant: 'success',
     title: successText,
   });
-
   doingAction.value = false;
 }
 </script>

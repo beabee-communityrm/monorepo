@@ -14,6 +14,8 @@ import OptionsService from "@beabee/core/services/OptionsService";
 import PaymentService from "@beabee/core/services/PaymentService";
 
 import { Contact, ResetSecurityFlow } from "@beabee/core/models";
+import { contactTagTransformer } from "@api/transformers/TagTransformer";
+import { ContactTagAssignment } from "@beabee/core/models";
 
 const app: Express = express();
 
@@ -79,10 +81,30 @@ app.post(
     switch (req.body.action) {
       case "save-about": {
         await ContactsService.updateContactProfile(contact, {
-          tags: req.body.tags || [],
           description: req.body.description || "",
           bio: req.body.bio || ""
         });
+
+        const oldTags = contact.tags?.map((t) => t.tag.id) || [];
+        const newTags = req.body.tags || [];
+        const tagUpdates = [
+          ...newTags
+            .filter((tag: string) => !oldTags.includes(tag))
+            .map((tag: string) => `+${tag}`),
+          ...oldTags
+            .filter((tag: string) => !newTags.includes(tag))
+            .map((tag: string) => `-${tag}`)
+        ];
+
+        if (tagUpdates.length > 0) {
+          await contactTagTransformer.updateEntityTags(
+            [contact.id],
+            tagUpdates,
+            ContactTagAssignment,
+            "contact"
+          );
+        }
+
         req.flash("success", "member-updated");
         break;
       }

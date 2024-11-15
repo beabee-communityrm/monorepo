@@ -2,7 +2,7 @@
 
 .multiselect,
 .multiselect__tags {
-  @apply box-border min-h-[38px];
+  @apply box-border min-h-[38px] w-full;
 }
 
 /* Set same font size and line height as AppInput */
@@ -25,6 +25,8 @@
 /* Fix placeholder alignment to match standard text */
 .multiselect__placeholder {
   @apply mb-2 p-0;
+  display: block !important;
+  position: static !important;
 }
 
 .multiselect__content-wrapper {
@@ -50,4 +52,13 @@
 .multiselect__element:hover,
 .multiselect__option.multiselect__option--selected {
   @apply bg-grey-lighter;
+}
+
+.multiselect {
+  @apply w-full;
+}
+
+.multiselect__input,
+.multiselect__single {
+  @apply w-full;
 }

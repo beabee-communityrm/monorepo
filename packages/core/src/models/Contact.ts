@@ -16,8 +16,17 @@ import {
 import { getActualAmount } from "#utils/payment";
 import config from "#config/config";
 
-import type { ContactContribution, ContactProfile, ContactRole } from "./index";
 import { Password } from "./Password";
+
+import type {
+  ContactContribution,
+  ContactProfile,
+  ContactRole,
+  ContactTag
+} from "./index";
+import { ContactTagAssignment } from "./ContactTagAssignment";
+import type { TagData } from "@beabee/beabee-common";
+import type { TaggableEntity, TagAssignment } from "@beabee/core/type";
 
 interface LoginOverride {
   code: string;
@@ -25,7 +34,7 @@ interface LoginOverride {
 }
 
 @Entity()
-export class Contact {
+export class Contact implements TaggableEntity<TagData> {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 
@@ -75,6 +84,9 @@ export class Contact {
   contribution!: ContactContribution;
 
   contributionInfo?: ContributionInfo;
+
+  @OneToMany("ContactTagAssignment", "contact")
+  tags!: ContactTagAssignment[];
 
   get activeRoles(): RoleType[] {
     const ret = this.roles.filter((p) => p.isActive).map((p) => p.type);

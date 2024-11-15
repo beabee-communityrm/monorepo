@@ -466,30 +466,24 @@
     "actions": {
       "assignTo": "Assign to",
       "moveBucket": "Move bucket",
-      "toggleTag": "Toggle tag",
       "viewOnMap": "View on map"
     },
     "editMode": "You are in edit mode, be careful!",
     "manageFolders": "Manage folders",
     "manageReviewers": "Manage reviewers",
-    "manageTags": "Manage tags",
     "notifications": {
       "addedAssignee": "Assigned to \"{assignee}\"",
-      "addedTag": "Added tag \"{tag}\"",
       "movedToBucket": "Moved to {bucket}",
-      "removedAssignee": "Unassigned from \"{assignee}\"",
-      "removedTag": "Removed tag \"{tag}\" "
+      "removedAssignee": "Unassigned from \"{assignee}\""
     },
     "responseOf": "Response {no} out of {total} in {bucket}",
     "selectedCount": "{n} response selected | {n} responses selected"
   },
   "calloutResponsesPage": {
     "moveToBucket": "Move to {bucket}",
-    "noTags": "No tags",
     "response": "Response",
     "responseNo": "Response {no}",
     "searchAssignee": "Assigned to...",
-    "searchTag": "Tagged with...",
     "showAnswer": "Answer",
     "showLatestComment": "Latest comment",
     "showingOf": "Showing {start} to {end} responses out of {total}"
@@ -684,7 +678,8 @@
     "noResults": "No contacts found",
     "numResults": "{n} contact found | {n} contacts found",
     "search": "Search contacts...",
-    "showingOf": "Showing {start} to {end} contacts out of {total}"
+    "showingOf": "Showing {start} to {end} contacts out of {total}",
+    "selectedCount": "{n} contact selected | {n} contacts selected"
   },
   "contribution": {
     "adminCancelDescription": "If you cancel the contact's contribution their membership will finish at the end of their current payment cycle on {date}.",
@@ -995,7 +990,8 @@
         "duplicate-email": "Email address already exists",
         "invalid-token": "Invalid 2FA token",
         "login-failed": "Invalid password/email combination",
-        "mfa-token-required": "You have 2FA enabled, enter the token from your authenticator app to proceed"
+        "mfa-token-required": "You have 2FA enabled, enter the token from your authenticator app to proceed",
+        "duplicate-tag-name": "A tag with this name already exists"
       },
       "generic": "Oops, something went wrong! Contact support if this happens again.",
       "validation": "Something is missing. Please check the fields above."
@@ -1388,11 +1384,23 @@
     "description": "Set a new password to login.",
     "title": "Set a password"
   },
+  "tags": {
+    "manageTags": "Manage tags",
+    "toggleTag": "Toggle tag",
+    "noTags": "No tags",
+    "searchTag": "Tagged with...",
+    "notifications": {
+      "addedTag": "Added tag \"{tag}\"",
+      "removedTag": "Removed tag \"{tag}\""
+    },
+  },
   "tagEditor": {
     "add": "Add tag",
     "addNewTag": "Add a tag",
     "confirmDelete": {
-      "text": "Are you sure you want to remove this tag? Any responses with this tag will not be deleted.",
+      "text_contact": "Are you sure you want to remove this tag? Every contact that is tagged with \"{tagName}\" will loose the tag.",
+      "text_response": "Are you sure you want to remove this tag? Every response that is tagged with \"{tagName}\" will loose the tag.",
+      "text_global": "Are you sure you want to remove the tag \"{tagName}\"?",
       "title": "Remove tag"
     },
     "name": "Name"

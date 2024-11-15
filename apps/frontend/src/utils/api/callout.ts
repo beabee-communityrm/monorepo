@@ -1,7 +1,6 @@
 import type {
   CreateCalloutData,
   CreateCalloutResponseData,
-  CreateCalloutTagData,
   GetCalloutData,
   GetCalloutDataWith,
   GetCalloutResponseDataWith,
@@ -9,15 +8,14 @@ import type {
   GetCalloutResponsesQuery,
   GetCalloutResponseWith,
   GetCalloutsQuery,
-  GetCalloutTagData,
   GetCalloutWith,
   Paginated,
   Serial,
   UpdateCalloutData,
-  UpdateCalloutTagData,
 } from '@beabee/beabee-common';
 import { deserializeDate, instance } from '.';
 import { deserializeCalloutResponse } from './callout-response';
+import { TagOperations } from './tag-operations';
 
 // TODO: how to make this type safe?
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -134,45 +132,10 @@ export async function createResponse(
   );
 }
 
-export async function fetchTags(slug: string): Promise<GetCalloutTagData[]> {
-  const { data } = await instance.get<Serial<GetCalloutTagData>[]>(
-    `/callout/${slug}/tags`
-  );
-
-  return data;
+class CalloutTagOperations extends TagOperations {
+  getBasePath(entityId: string | undefined): string {
+    return `/callout/${entityId}/tags`;
+  }
 }
 
-export async function createTag(
-  slug: string,
-  dataIn: CreateCalloutTagData
-): Promise<GetCalloutTagData> {
-  const { data } = await instance.post<Serial<GetCalloutTagData>>(
-    `/callout/${slug}/tags`,
-    {
-      name: dataIn.name,
-      description: dataIn.description,
-    }
-  );
-
-  return data;
-}
-
-export async function updateTag(
-  slug: string,
-  tagId: string,
-  dataIn: UpdateCalloutTagData
-): Promise<GetCalloutTagData> {
-  const { data } = await instance.patch<Serial<GetCalloutTagData>>(
-    `/callout/${slug}/tags/${tagId}`,
-    {
-      name: dataIn.name,
-      description: dataIn.description,
-    }
-  );
-
-  return data;
-}
-
-export async function deleteTag(slug: string, tagId: string): Promise<void> {
-  await instance.delete(`/callout/${slug}/tags/${tagId}`);
-}
+export const calloutTagOperations = new CalloutTagOperations();

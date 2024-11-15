@@ -269,27 +269,21 @@
     "actions": {
       "assignTo": "Atribuir a",
       "moveBucket": "Mover balde",
-      "toggleTag": "Ativar etiqueta"
     },
     "editMode": "Está no modo de edição, cuidado!",
-    "manageTags": "Gerir etiquetas",
     "notifications": {
       "addedAssignee": "Atribuída a {assignee}",
-      "addedTag": "Etiqueta \"{tag}\" acrescentada",
       "movedToBucket": "Movida para {bucket}",
       "removedAssignee": "Atribuição a {assignee} removida",
-      "removedTag": "Etiqueta \"{tag}\" removida"
     },
     "responseOf": "Resposta {no} de um total de {total} em {bucket}",
     "selectedCount": "{n} resposta selecionada | {n} respostas selecionadas"
   },
   "calloutResponsesPage": {
     "moveToBucket": "Mover para {bucket}",
-    "noTags": "Sem etiquetas",
     "response": "Resposta",
     "responseNo": "Resposta {no}",
     "searchAssignee": "Atribuída a...",
-    "searchTag": "Etiquetada com...",
     "showAnswer": "Resposta",
     "showLatestComment": "Último comentário",
     "showingOf": "Respostas {start} a {end} de um total de {total}"
@@ -434,7 +428,8 @@
     "noResults": "Nenhum contacto encontrado",
     "numResults": "{n} contacto encontrado | {n} contactos encontrados",
     "search": "Pesquisar contactos...",
-    "showingOf": "Contactos {start} a {end} de um total de {total}"
+    "showingOf": "Contactos {start} a {end} de um total de {total}",
+    "selectedCount": "{n} contacto selecionado | {n} contactos selecionados"
   },
   "contribution": {
     "adminCancelDescription": "Se cancelares a contribuição deste contacto, a sua adesão terminará no fim deste ciclo de pagamento a {date}.",
@@ -903,6 +898,16 @@
   "setPassword": {
     "description": "Define uma nova palavra-passe para poderes entrar.",
     "title": "Definir uma palavra-passe"
+  },
+  "tags": {
+    "manageTags": "Gerir etiquetas",
+    "toggleTag": "Ativar etiqueta",
+    "noTags": "Sem etiquetas",
+    "searchTag": "Etiquetada com...",
+    "notifications": {
+      "addedTag": "Etiqueta \"{tag}\" acrescentada",
+      "removedTag": "Etiqueta \"{tag}\" removida"
+    },
   },
   "tagEditor": {
     "add": "Adicionar etiqueta",

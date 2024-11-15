@@ -1,15 +1,9 @@
 import { onBeforeMount, onBeforeUnmount, type Ref, reactive } from 'vue';
-import type { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import type { BreadcrumbItem } from '@type';
 
-interface Item {
-  title: string;
-  to?: string;
-  icon?: IconDefinition;
-}
+export const breadcrumbItems = reactive<Ref<BreadcrumbItem[]>[]>([]);
 
-export const breadcrumbItems = reactive<Ref<Item[]>[]>([]);
-
-export const addBreadcrumb = (items: Ref<Item[]>): void => {
+export const addBreadcrumb = (items: Ref<BreadcrumbItem[]>): void => {
   onBeforeMount(() => {
     breadcrumbItems.push(items);
   });
