@@ -62,11 +62,8 @@ export class PermissionService {
     permissionIds: string[]
   ): Promise<void> {
     const rolePermissionRepo = getRepository(ContactRolePermission);
-
-    // Remove existing permissions
     await rolePermissionRepo.delete({ roleId });
 
-    // Add new permissions
     const assignments = permissionIds.map((permissionId) => ({
       roleId,
       permissionId,
@@ -103,24 +100,5 @@ export class PermissionService {
   ): Promise<boolean> {
     const permissions = await this.getRolePermissions(roleId);
     return permissions.some((p) => p.key === permissionKey);
-  }
-
-  /**
-   * Groups permissions by their resource type
-   * Useful for UI organization
-   */
-  static async getGroupedPermissions(): Promise<Record<string, Permission[]>> {
-    const permissions = await this.getAvailablePermissions();
-    return permissions.reduce(
-      (groups, permission) => {
-        const resource = permission.key.split(" ")[1].split("/")[1];
-        if (!groups[resource]) {
-          groups[resource] = [];
-        }
-        groups[resource].push(permission);
-        return groups;
-      },
-      {} as Record<string, Permission[]>
-    );
   }
 }

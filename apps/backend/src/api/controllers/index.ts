@@ -9,6 +9,7 @@ export * from "./ContentController.js";
 export * from "./EmailController.js";
 export * from "./NoticeController.js";
 export * from "./PaymentController.js";
+export * from "./PermissionController.js";
 export * from "./ResetDeviceController.js";
 export * from "./ResetPasswordController.js";
 export * from "./RootController.js";

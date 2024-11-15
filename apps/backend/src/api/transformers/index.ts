@@ -16,4 +16,6 @@ export * from "./ContactTransformer.js";
 export * from "./ContentTransformer.js";
 export * from "./NoticeTransformer.js";
 export * from "./PaymentTransformer.js";
+export * from "./PermissionTransformer.js";
 export * from "./SegmentTransformer.js";
+export * from "./TagTransformer.js";

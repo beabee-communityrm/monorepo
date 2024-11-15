@@ -1,5 +1,6 @@
 export * from "./AddressDto.js";
 export * from "./ApiKeyDto.js";
+export * from "./PermissionDto.js";
 export * from "./BaseDto.js";
 export * from "./CalloutDto.js";
 export * from "./CalloutFormDto.js";
@@ -23,6 +24,7 @@ export * from "./NoticeDto.js";
 export * from "./PaginatedDto.js";
 export * from "./PaymentDto.js";
 export * from "./PaymentFlowDto.js";
+export * from "./PermissionDto.js";
 export * from "./ResetDeviceDto.js";
 export * from "./ResetPasswordDto.js";
 export * from "./SegmentDto.js";
