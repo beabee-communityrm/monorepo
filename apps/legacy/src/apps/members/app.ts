@@ -5,7 +5,6 @@ import queryString from "query-string";
 import { getRepository } from "@beabee/core/database";
 import { isAdmin } from "#core/middleware";
 import { userToAuth } from "#core/utils/index";
-import { getSegmentsWithCount } from "#core/utils/segments";
 import { wrapAsync } from "@beabee/core/utils/index";
 
 import OptionsService from "@beabee/core/services/OptionsService";
@@ -13,7 +12,7 @@ import SegmentService from "@beabee/core/services/SegmentService";
 
 import ContactTransformer from "@api/transformers/ContactTransformer";
 
-import { Project, Contact } from "@beabee/core/models";
+import { Project, Contact, Segment } from "@beabee/core/models";
 
 const app: Express = express();
 
@@ -111,7 +110,7 @@ app.get(
     const auth = userToAuth(req.user!);
 
     const totalMembers = await getRepository(Contact).count();
-    const segments = await getSegmentsWithCount(auth);
+    const segments = await getRepository(Segment).find();
     const activeSegment = query.segment
       ? segments.find((s) => s.id === query.segment)
       : undefined;

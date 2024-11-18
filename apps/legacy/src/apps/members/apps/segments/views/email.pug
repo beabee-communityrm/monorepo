@@ -25,22 +25,13 @@ block contents
 					.form-group
 						label.control-label.col-md-3 Type
 						.col-md-9
-							label.radio-inline(class=segment.contactCount === 0 ? 'disabled' : '')
-								input(
-									type='radio' name='type' value='one-off' required
-									checked=segment.contactCount > 0
-									disabled=segment.contactCount === 0
-								).js-reveal-types
+							label.radio-inline
+								input( type='radio' name='type' value='one-off' required).js-reveal-types
 								| One-off
 							|
 							label.radio-inline
-								input(
-									type='radio' name='type' value='ongoing' required
-									checked=segment.contactCount === 0
-									).js-reveal-types
+								input(type='radio' name='type' value='ongoing' required checked).js-reveal-types
 								| Ongoing
-							if segment.contactCount === 0
-								p.help-block You can't send a one-off email to an empty segment
 
 					.hidden.js-reveal-type(data-type='ongoing')
 						.js-reveal
@@ -58,16 +49,15 @@ block contents
 									p.help-block Ongoing emails are triggered once per day
 						
 							.hidden.js-reveal-type(data-type='onJoin')
-								if segment.contactCount > 0
-									.form-group
-										.col-md-offset-3.col-md-9
-											p.
-												There are currently #{segment.contactCount} contacts in this
-												segment, do you want to send them the email now?
-											.checkbox
-												label
-													input(type='checkbox' name='sendNow' value='true')
-													| Yes, send now
+								.form-group
+									.col-md-offset-3.col-md-9
+										p.
+											Do you want to send the email immediately to all contacts
+											who are currently in the segment?
+										.checkbox
+											label
+												input(type='checkbox' name='sendNow' value='true')
+												| Yes, send now
 
 					.row: .col-md-offset-3.col-md-9: h5 Email
 

@@ -2,8 +2,7 @@ import express, { type Express, type Request, type Response } from "express";
 
 import { getRepository } from "@beabee/core/database";
 import { hasNewModel } from "#core/middleware";
-import { userToAuth } from "#core/utils/index";
-import { getSegmentContacts, getSegmentsWithCount } from "#core/utils/segments";
+import { getSegmentContacts } from "#core/utils/segments";
 import { wrapAsync } from "@beabee/core/utils/index";
 
 import {
@@ -16,7 +15,6 @@ import {
 
 import { EmailSchema, schemaToEmail } from "#apps/tools/apps/emails/app";
 import { cleanRuleGroup } from "#apps/members/app";
-import ContactTransformer from "@api/transformers/ContactTransformer";
 
 const app: Express = express();
 
@@ -25,7 +23,7 @@ app.set("views", __dirname + "/views");
 app.get(
   "/",
   wrapAsync(async (req: Request, res: Response) => {
-    const segments = await getSegmentsWithCount(userToAuth(req.user!));
+    const segments = await getRepository(Segment).find();
     res.render("index", { segments });
   })
 );
@@ -99,11 +97,6 @@ app.get(
   hasNewModel(Segment, "id"),
   wrapAsync(async (req, res) => {
     const segment = req.model as Segment;
-    segment.contactCount = await ContactTransformer.count(
-      userToAuth(req.user!),
-      { rules: segment.ruleGroup }
-    );
-
     res.render("email", {
       segment,
       emails: await getRepository(Email).find()

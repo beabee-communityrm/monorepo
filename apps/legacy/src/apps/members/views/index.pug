@@ -25,9 +25,6 @@ block contents
 						class=(activeSegment && segment.id === activeSegment.id && 'active')
 					): a(href="/members?segment=" + segment.id)
 						= segment.name
-						|
-						|
-						small (#{segment.contactCount.toLocaleString()})
 
 		.col-md-9
 			.page-header
