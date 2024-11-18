@@ -28,7 +28,8 @@
     "express": "^4.19.2",
     "gocardless-nodejs": "^3.25.0",
     "moment": "^2.30.1",
-    "stripe": "^15.9.0"
+    "stripe": "^15.9.0",
+    "typeorm": "^0.3.20"
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.4",

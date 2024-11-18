@@ -812,6 +812,7 @@ __metadata:
     ts-jest: "npm:^29.2.5"
     ts-node: "npm:^10.9.2"
     tsc-watch: "npm:^6.2.0"
+    typeorm: "npm:^0.3.20"
     typescript: "npm:^5.6.3"
   languageName: unknown
   linkType: soft

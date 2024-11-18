@@ -1,5 +1,3 @@
-import "module-alias/register";
-
 import { PaymentMethod } from "@beabee/beabee-common";
 import { In } from "typeorm";
 
@@ -10,10 +8,7 @@ import ContactsService from "@beabee/core/services/ContactsService";
 
 import { ContactContribution } from "@beabee/core/models";
 
-import {
-  handleInvoicePaid,
-  handleInvoiceUpdated
-} from "../../webhooks/handlers/stripe";
+import { handleInvoicePaid, handleInvoiceUpdated } from "#handlers/stripe";
 
 const isDangerMode = process.argv.includes("--danger");
 
