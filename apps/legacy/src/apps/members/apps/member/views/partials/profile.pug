@@ -19,9 +19,6 @@ mixin memberTag(tag)
 		= tag
 		span.glyphicon.glyphicon-remove.hidden.js-edit-member-hidden
 
-script(type='text/template').js-edit-member-tag-template
-	+memberTag('XXX')
-
 .row
 	.col-md-12
 		+editablePanel('Contact details', 'contact')
@@ -103,9 +100,4 @@ script(type='text/template').js-edit-member-tag-template
 				| Tags:
 				span.js-edit-member-tags
 					each tag in member.profile.tags
-						+memberTag(tag)
-			p.hidden.js-edit-member-hidden.form-inline
-				select(style='width:30%').form-control.member-add-tag.js-edit-member-add-tag
-					option(value='' selected disabled) Add tag
-					each tag in availableTags
-						option= tag
+						a(href='/members/?tag=' + encodeURIComponent(tag) data-tag=tag).label.label-info.member-tag= tag
