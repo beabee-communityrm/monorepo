@@ -23,7 +23,7 @@ import { mergeRules } from "@api/utils/rules";
 
 import { Callout, CalloutResponse } from "@beabee/core/models";
 
-import { AuthInfo } from "@type/auth-info";
+import { AuthInfo } from "@beabee/core/type";
 import { CalloutResponseViewSchema } from "@type/callout-response-view-schema";
 
 class CalloutResponseMapTransformer extends BaseCalloutResponseTransformer<

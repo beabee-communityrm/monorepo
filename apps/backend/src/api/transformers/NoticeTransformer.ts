@@ -11,7 +11,7 @@ import { mergeRules, statusFilterHandler } from "@api/utils/rules";
 
 import { Notice } from "@beabee/core/models";
 
-import { AuthInfo } from "@type/auth-info";
+import { AuthInfo } from "@beabee/core/type";
 
 export class NoticeTransformer extends BaseTransformer<
   Notice,

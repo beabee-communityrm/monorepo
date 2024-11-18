@@ -23,7 +23,7 @@ import {
   requestErrorLogger,
   requestLogger
 } from "@beabee/core/logging";
-import sessions from "@core/sessions";
+import sessions from "@core/lib/sessions";
 import { initApp, startServer } from "@beabee/core/server";
 
 import { Contact } from "@beabee/core/models";

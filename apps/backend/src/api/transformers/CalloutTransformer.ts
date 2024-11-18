@@ -28,7 +28,7 @@ import { mergeRules, statusFilterHandler } from "@api/utils/rules";
 
 import { Callout, CalloutResponse, CalloutVariant } from "@beabee/core/models";
 
-import { AuthInfo } from "@type/auth-info";
+import { AuthInfo } from "@beabee/core/type";
 import { FilterHandlers } from "@type/filter-handlers";
 
 class CalloutTransformer extends BaseTransformer<

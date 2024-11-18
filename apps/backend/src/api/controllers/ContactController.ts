@@ -73,7 +73,7 @@ import ContactTransformer from "@api/transformers/ContactTransformer";
 import ContactRoleTransformer from "@api/transformers/ContactRoleTransformer";
 import PaymentTransformer from "@api/transformers/PaymentTransformer";
 
-import { AuthInfo } from "@type/auth-info";
+import { AuthInfo } from "@beabee/core/type";
 
 @JsonController("/contact")
 @Authorized()

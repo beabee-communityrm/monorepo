@@ -14,7 +14,7 @@ import PartialBody from "@api/decorators/PartialBody";
 
 import { CreateContactTagDto, GetContactTagDto, ListTagsDto } from "@api/dto";
 import { CurrentAuth } from "@api/decorators/CurrentAuth";
-import { AuthInfo } from "@type/auth-info";
+import { AuthInfo } from "@beabee/core/type";
 import { contactTagTransformer } from "@api/transformers/TagTransformer";
 import { ContactTagAssignment } from "@beabee/core/models";
 import { DuplicateTagNameError } from "@beabee/core/errors";

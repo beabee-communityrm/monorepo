@@ -13,7 +13,7 @@ import { mergeRules } from "@api/utils/rules";
 
 import { CalloutResponse } from "@beabee/core/models";
 
-import { AuthInfo } from "@type/auth-info";
+import { AuthInfo } from "@beabee/core/type";
 import { FilterHandlers } from "@type/filter-handlers";
 import { calloutTagTransformer } from "./TagTransformer";
 

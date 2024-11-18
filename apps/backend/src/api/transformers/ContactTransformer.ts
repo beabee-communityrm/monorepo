@@ -23,7 +23,7 @@ import ContactRoleTransformer from "@api/transformers/ContactRoleTransformer";
 import ContactProfileTransformer from "@api/transformers/ContactProfileTransformer";
 import { batchSelect, mergeRules } from "@api/utils";
 
-import { AuthInfo } from "@type/auth-info";
+import { AuthInfo } from "@beabee/core/type";
 import { contactTagTransformer } from "./TagTransformer";
 import ContactsService from "@beabee/core/services/ContactsService";
 import { generatePassword } from "@beabee/core/utils/auth";
