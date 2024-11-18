@@ -1,3 +1,1 @@
-export default {
-  trailingComma: "none"
-};
+../../configs/backend/.prettierrc.mjs
