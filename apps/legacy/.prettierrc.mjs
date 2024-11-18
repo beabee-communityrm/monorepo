@@ -1,0 +1,1 @@
+../../configs/backend/.prettierrc.mjs

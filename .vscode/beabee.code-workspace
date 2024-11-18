@@ -13,6 +13,10 @@
       "path": "../apps/frontend",
     },
     {
+      "name": "apps/legacy",
+      "path": "../apps/legacy",
+    },
+    {
       "name": "apps/router",
       "path": "../apps/router",
     },
@@ -45,7 +49,9 @@
       "./node_modules",
       "./apps/backend",
       "./apps/frontend",
+      "./apps/legacy",
       "./apps/router",
+      "./apps/webhooks",
       "./packages/core"
     ]
   },

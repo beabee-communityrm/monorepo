@@ -1,0 +1,60 @@
+{
+  "name": "@beabee/legacy",
+  "version": "0.16.0",
+  "description": "A community engagement system for community newsrooms",
+  "private": true,
+  "main": "built/app.js",
+  "type": "commonjs",
+  "imports": {
+    "#*": "./dist/*.js"
+  },
+  "scripts": {
+    "build": "rimraf built/ && tsc -p ./tsconfig.build.json",
+    "dev": "tsc-watch -p tsconfig.build.json --noClear --onSuccess 'docker compose restart app'",
+    "watch": "tsc-watch -p tsconfig.build.json --noClear",
+    "format": "prettier --write .",
+    "generate:index": "barrelsby -c barrelsby.json",
+    "test": "jest --setupFiles dotenv/config --passWithNoTests",
+    "check": "concurrently 'yarn:check:*'",
+    "check:tsc": "tsc --noEmit",
+    "check:prettier": "prettier -c .",
+    "check:dependencies": "dpdm -T --no-warning --no-tree --exit-code circular:1 src/app.ts"
+  },
+  "dependencies": {
+    "@beabee/beabee-common": "workspace:^",
+    "@beabee/core": "workspace:^",
+    "body-parser": "^1.20.2",
+    "date-fns": "^4.1.0",
+    "express": "^4.19.2",
+    "gocardless-nodejs": "^3.25.0",
+    "moment": "^2.30.1",
+    "stripe": "^15.9.0",
+    "typeorm": "^0.3.20"
+  },
+  "devDependencies": {
+    "@tsconfig/node20": "^20.1.4",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.14.1",
+    "barrelsby": "^2.8.1",
+    "concurrently": "^8.2.2",
+    "dotenv": "^16.4.5",
+    "dpdm": "^3.14.0",
+    "jest": "^29.7.0",
+    "prettier": "3.3.0",
+    "rimraf": "^5.0.7",
+    "ts-jest": "^29.2.5",
+    "ts-node": "^10.9.2",
+    "tsc-watch": "^6.2.0",
+    "typescript": "^5.6.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/beabee-communityrm/monorepo.git"
+  },
+  "author": "",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/beabee-communityrm/monorepo/issues"
+  },
+  "homepage": "https://github.com/beabee-communityrm/monorepo/blob/main/apps/legacy/README.md"
+}
