@@ -9824,6 +9824,7 @@
           "dependencies": [
             "npm:@tsconfig/node20@^20.1.4",
             "npm:@types/express@^4.17.21",
+            "npm:@types/node@^20.14.1",
             "npm:barrelsby@^2.8.1",
             "npm:body-parser@^1.20.2",
             "npm:concurrently@^8.2.2",
