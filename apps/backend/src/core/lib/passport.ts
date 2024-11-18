@@ -6,7 +6,6 @@ import config from "@beabee/core/config";
 
 import { getRepository } from "@beabee/core/database";
 import { log } from "@beabee/core/logging";
-import { sleep } from "@core/utils";
 import { generatePassword, isValidPassword } from "@beabee/core/utils/auth";
 import { normalizeEmailAddress } from "@beabee/core/utils/index";
 
@@ -71,7 +70,7 @@ passport.use(
       }
 
       // Delay by 1 second to slow down password guessing
-      await sleep(1000);
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       return done(null, false, { message: code });
     }
   )

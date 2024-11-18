@@ -20,3 +20,11 @@ export function wrapAsync(fn: RequestHandler): RequestHandler {
 export function normalizeEmailAddress(email: string): string {
   return email.trim().toLowerCase();
 }
+
+export function isValidNextUrl(url: string): boolean {
+  return /^\/([^/]|$)/.test(url);
+}
+
+export function getNextParam(url: string): string {
+  return isValidNextUrl(url) ? "?next=" + encodeURIComponent(url) : "";
+}
