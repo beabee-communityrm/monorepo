@@ -63,7 +63,7 @@ jobs:
       - name: Build and push legacy app
         uses: docker/build-push-action@v5
         with:
-          file: ./apps/backend/Dockerfile
+          file: ./configs/backend/Dockerfile
           push: true
           build-args: |
             REVISION=${{ github.sha }}
@@ -74,7 +74,7 @@ jobs:
       - name: Build and push API app
         uses: docker/build-push-action@v5
         with:
-          file: ./apps/backend/Dockerfile
+          file: ./configs/backend/Dockerfile
           push: true
           build-args: |
             REVISION=${{ github.sha }}
@@ -85,7 +85,7 @@ jobs:
       - name: Build and push webhook app
         uses: docker/build-push-action@v5
         with:
-          file: ./apps/backend/Dockerfile
+          file: ./configs/backend/Dockerfile
           push: true
           build-args: |
             REVISION=${{ github.sha }}
@@ -96,7 +96,7 @@ jobs:
       - name: Build and push cron app
         uses: docker/build-push-action@v5
         with:
-          file: ./apps/backend/Dockerfile
+          file: ./configs/backend/Dockerfile
           push: true
           build-args: |
             REVISION=${{ github.sha }}
