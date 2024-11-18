@@ -1,0 +1,51 @@
+{
+  "name": "@beabee/webhooks",
+  "version": "0.16.0",
+  "description": "A community engagement system for community newsrooms",
+  "private": true,
+  "main": "built/app.js",
+  "type": "commonjs",
+  "imports": {
+    "#*": "./dist/*.js"
+  },
+  "scripts": {
+    "build": "rimraf built/ && tsc -p ./tsconfig.build.json",
+    "dev": "echo TODO",
+    "test": "jest --setupFiles dotenv/config --passWithNoTests",
+    "watch": "tsc-watch -p tsconfig.build.json --noClear",
+    "generate:index": "barrelsby -c barrelsby.json",
+    "check": "concurrently 'yarn:check:*'",
+    "check:tsc": "tsc --noEmit",
+    "check:prettier": "prettier -c .",
+    "check:dependencies": "dpdm -T --no-warning --no-tree --exit-code circular:1 src/app.ts",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "@beabee/beabee-common": "workspace:^",
+    "@beabee/core": "workspace:^"
+  },
+  "devDependencies": {
+    "@tsconfig/node20": "^20.1.4",
+    "barrelsby": "^2.8.1",
+    "concurrently": "^8.2.2",
+    "dotenv": "^16.4.5",
+    "dpdm": "^3.14.0",
+    "jest": "^29.7.0",
+    "prettier": "3.3.0",
+    "rimraf": "^5.0.7",
+    "ts-jest": "^29.2.5",
+    "ts-node": "^10.9.2",
+    "tsc-watch": "^6.2.0",
+    "typescript": "^5.6.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/beabee-communityrm/monorepo.git"
+  },
+  "author": "",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/beabee-communityrm/monorepo/issues"
+  },
+  "homepage": "https://github.com/beabee-communityrm/monorepo/blob/main/apps/webhooks/README.md"
+}

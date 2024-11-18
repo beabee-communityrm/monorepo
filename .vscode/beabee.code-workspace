@@ -17,6 +17,10 @@
       "path": "../apps/router",
     },
     {
+      "name": "apps/webhooks",
+      "path": "../apps/webhooks",
+    },
+    {
       "name": "packages/common",
       "path": "../packages/common",
     },

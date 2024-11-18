@@ -1,0 +1,14 @@
+{
+  "extends": "../../configs/backend/tsconfig.build.json",
+  "include": ["./src/**/*", "./src/**/*.json"],
+  "exclude": ["./**/*.test.ts"],
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "paths": {
+    },
+
+    // Add additional type root for local typings
+    "typeRoots": ["./src/typings", "./node_modules/@types/"]
+  }
+}
