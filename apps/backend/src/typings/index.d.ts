@@ -15,21 +15,9 @@ declare global {
     export interface User extends Contact {}
 
     export interface Request {
-      flash(
-        level: "info" | "success" | "warning" | "error" | "danger",
-        message: string
-      ): void;
-      model: unknown;
-      allParams: ParamsDictionary;
-      answers?: CalloutResponseAnswersSlide;
       auth: AuthInfo2 | undefined;
     }
   }
-}
-
-declare module "papaparse" {
-  // eslint-disable-next-line @typescript-eslint/no-empty-interface
-  interface File {}
 }
 
 declare module "express-session" {
