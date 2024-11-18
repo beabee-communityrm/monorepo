@@ -5,8 +5,7 @@
   "compilerOptions": {
     "rootDir": "./src",
     "outDir": "./dist",
-    "paths": {
-    },
+    "paths": {},
 
     // Add additional type root for local typings
     "typeRoots": ["./src/typings", "./node_modules/@types/"]
