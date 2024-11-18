@@ -12,13 +12,13 @@ import { normalizeEmailAddress } from "@beabee/core/utils/index";
 import ContactsService from "@beabee/core/services/ContactsService";
 import ContactMfaService from "@beabee/core/services/ContactMfaService";
 
-import { LoginDto } from "@api/dto/LoginDto";
 import { UnauthorizedError } from "@beabee/core/errors";
 
 import { Contact } from "@beabee/core/models";
 
 import type { ContactMfaSecure } from "@beabee/core/type";
-import type { PassportLocalDoneCallback } from "@type/passport-local-done-callback";
+
+import type { LoginData, PassportLocalDoneCallback } from "#type";
 
 // Add support for local authentication in Passport.js
 passport.use(
@@ -28,7 +28,7 @@ passport.use(
       passReqToCallback: true
     },
     async function (
-      req: { body: LoginDto },
+      req: { body: LoginData },
       email: string,
       password: string,
       done: PassportLocalDoneCallback
