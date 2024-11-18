@@ -11,3 +11,7 @@ node_modules/
 
 *.tsbuildinfo
 .env
+
+dist/
+
+.DS_Store
