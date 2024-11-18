@@ -114,7 +114,12 @@ const data = reactive<SetupContactData>({
   profile: {
     newsletterOptIn:
       contact.profile.newsletterStatus === NewsletterStatus.Subscribed,
-    newsletterGroups: contact.profile.newsletterGroups,
+    newsletterGroups: [
+      ...contact.profile.newsletterGroups,
+      ...props.setupContent.newsletterGroups
+        .filter((g) => g.checked)
+        .map((g) => g.id),
+    ].filter((v, i, a) => a.indexOf(v) === i),
     deliveryOptIn: contact.profile.deliveryOptIn,
   },
   addressLine1: contact.profile.deliveryAddress?.line1 || '',
