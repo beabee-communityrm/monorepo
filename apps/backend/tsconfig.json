@@ -1,5 +1,8 @@
 {
-  "extends": ["./tsconfig.build.json", "../../configs/backend/tsconfig.options.json"],
+  "extends": [
+    "./tsconfig.build.json",
+    "../../configs/backend/tsconfig.options.json"
+  ],
   "exclude": [], // Override tsconfig.build.json exclude
   "references": [{ "path": "../../packages/core" }],
   "compilerOptions": {
