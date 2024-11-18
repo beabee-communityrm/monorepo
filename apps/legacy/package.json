@@ -9,7 +9,7 @@
     "#*": "./dist/*.js"
   },
   "scripts": {
-    "build": "rimraf built/ && tsc -p ./tsconfig.build.json",
+    "build": "rimraf built/ && gulp build && tsc -p ./tsconfig.build.json",
     "dev": "tsc-watch -p tsconfig.build.json --noClear --onSuccess 'docker compose restart app'",
     "watch": "tsc-watch -p tsconfig.build.json --noClear",
     "format": "prettier --write .",
