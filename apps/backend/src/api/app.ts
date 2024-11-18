@@ -24,7 +24,7 @@ import {
   requestLogger
 } from "@beabee/core/logging";
 import sessions from "@core/sessions";
-import { initApp, startServer } from "@core/server";
+import { initApp, startServer } from "@beabee/core/server";
 
 import { Contact } from "@beabee/core/models";
 

@@ -12,7 +12,7 @@ import helmet from "helmet";
 import appLoader from "@core/app-loader";
 import { log, requestErrorLogger, requestLogger } from "@beabee/core/logging";
 import quickflash from "@core/quickflash";
-import { initApp, startServer } from "@core/server";
+import { initApp, startServer } from "@beabee/core/server";
 import sessions from "@core/sessions";
 import { isInvalidType } from "@beabee/core/utils/db";
 

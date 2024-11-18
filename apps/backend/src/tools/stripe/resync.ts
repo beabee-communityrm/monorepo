@@ -4,7 +4,7 @@ import { PaymentMethod } from "@beabee/beabee-common";
 import { In } from "typeorm";
 
 import { getRepository } from "@beabee/core/database";
-import { runApp } from "@core/server";
+import { runApp } from "@beabee/core/server";
 import { stripe } from "@beabee/core/lib/stripe";
 import ContactsService from "@beabee/core/services/ContactsService";
 

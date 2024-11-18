@@ -3,7 +3,7 @@ import "module-alias/register";
 import { checkbox, input } from "@inquirer/prompts";
 
 import { getRepository } from "@beabee/core/database";
-import { runApp } from "@core/server";
+import { runApp } from "@beabee/core/server";
 
 import OptionsService from "@beabee/core/services/OptionsService";
 

@@ -14,7 +14,7 @@ import {
   updatePayment,
   cancelSubscription,
   cancelMandate
-} from "../utils/gocardless";
+} from "#utils/gocardless";
 
 const log = mainLogger.child({ app: "webhook-gocardless" });
 
