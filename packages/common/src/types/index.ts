@@ -81,6 +81,7 @@ export * from "./content-id.ts";
 export * from "./content-join-data.ts";
 export * from "./content-join-period-data.ts";
 export * from "./content-join-setup-data.ts";
+export * from "./content-join-setup-newsletter-group-data.ts";
 export * from "./content-payment-data.ts";
 export * from "./content-profile-data.ts";
 export * from "./content-share-data.ts";
