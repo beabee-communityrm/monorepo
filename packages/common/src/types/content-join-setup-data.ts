@@ -1,9 +1,11 @@
+import type { ContentJoinSetupNewsletterGroupData } from "./content-join-setup-newsletter-group-data.ts";
+
 export interface ContentJoinSetupData {
   welcome: string;
   newsletterText: string;
   newsletterOptIn: string;
   newsletterTitle: string;
-  newsletterGroups: { id: string; label: string; checked: boolean }[];
+  newsletterGroups: ContentJoinSetupNewsletterGroupData[];
   showNewsletterOptIn: boolean;
   showMailOptIn: boolean;
   mailTitle: string;
