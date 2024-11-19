@@ -75,7 +75,7 @@ export class MigrateSegmentTagRules1731670066414 implements MigrationInterface {
                 }
               }
             } else {
-              processRules(rule.rules);
+              rule.rules = processRules(rule.rules);
             }
           }
 
