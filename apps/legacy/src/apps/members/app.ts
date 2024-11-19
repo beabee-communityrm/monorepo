@@ -1,4 +1,4 @@
-import { GetContactWith, RuleGroup } from "@beabee/beabee-common";
+import { GetContactWith, Paginated, RuleGroup } from "@beabee/beabee-common";
 import express, { type Express, type Request } from "express";
 import queryString from "query-string";
 
@@ -10,7 +10,7 @@ import { wrapAsync } from "@beabee/core/utils/index";
 import OptionsService from "@beabee/core/services/OptionsService";
 import SegmentService from "@beabee/core/services/SegmentService";
 
-import ContactTransformer from "@api/transformers/ContactTransformer";
+// import ContactTransformer from "@api/transformers/ContactTransformer";
 
 import { Project, Contact, Segment } from "@beabee/core/models";
 
@@ -127,14 +127,21 @@ app.get(
     const sort = (query.sort as string) || "lastname_ASC";
     const [sortId, sortDir] = sort.split("_");
 
-    const result = await ContactTransformer.fetch(auth, {
-      offset: limit * (page - 1),
-      limit,
-      sort: sortOptions[sortId].sort,
-      order: sortDir as "ASC" | "DESC",
-      with: [GetContactWith.Profile, GetContactWith.Roles],
-      ...(searchRuleGroup && { rules: searchRuleGroup })
-    });
+    // const result = await ContactTransformer.fetch(auth, {
+    //   offset: limit * (page - 1),
+    //   limit,
+    //   sort: sortOptions[sortId].sort,
+    //   order: sortDir as "ASC" | "DESC",
+    //   with: [GetContactWith.Profile, GetContactWith.Roles],
+    //   ...(searchRuleGroup && { rules: searchRuleGroup })
+    // });
+
+    const result: Paginated<Contact> = {
+      items: [],
+      total: 0,
+      count: 0,
+      offset: 0
+    };
 
     const pages = [...Array(Math.ceil(result.total / limit))].map(
       (v, page) => ({
