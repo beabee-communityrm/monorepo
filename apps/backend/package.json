@@ -42,9 +42,10 @@
     "setup:payment": "docker compose exec app node built/tools/configure",
     "setup:db": "yarn typeorm:migrate",
     "typeorm": "typeorm -d ./built/core/lib/typeorm.js",
-    "typeorm:migrate": "docker compose -f ../../docker-compose.yml up -d db app && docker compose -f ../../docker-compose.yml run --rm app npm run typeorm migration:run && yarn build:core",
+    "typeorm:migrate": "docker compose -f ../../docker-compose.yml up -d db app && docker compose -f ../../docker-compose.yml run --rm app npm run typeorm migration:run",
     "typeorm:revert": "docker compose -f ../../docker-compose.yml up -d db app && docker compose -f ../../docker-compose.yml run --rm app npm run typeorm migration:revert",
-    "typeorm:generate": "docker compose -f ../../docker-compose.yml up -d db app && docker compose -f ../../docker-compose.yml run --rm app npm run typeorm migration:generate --check"
+    "typeorm:generate": "docker compose -f ../../docker-compose.yml up -d db app && docker compose -f ../../docker-compose.yml run --rm app npm run typeorm migration:generate --check",
+    "typeorm:generate:root": "docker compose -f ../../docker-compose.yml up -d db app && docker compose -f ../../docker-compose.yml run --user root --rm app npm run typeorm migration:generate --check"
   },
   "dependencies": {
     "@beabee/beabee-common": "workspace:^",

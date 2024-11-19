@@ -8,7 +8,7 @@ import { AuthInfo } from "@type/auth-info";
 import { BaseTransformer } from "./BaseTransformer";
 import { SelectQueryBuilder } from "typeorm";
 import { getRepository } from "@beabee/core/database";
-import { PermissionService } from "@beabee/core/services/PermissionService";
+import { PermissionService } from "../services/PermissionService";
 
 /**
  * Transformer for handling Permission entities

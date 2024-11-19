@@ -17,7 +17,7 @@ import * as Controllers from "./controllers/index";
 import { ValidateResponseInterceptor } from "./interceptors/ValidateResponseInterceptor";
 
 import { AuthMiddleware } from "./middlewares/AuthMiddleware";
-import { PermissionService } from "@beabee/core/services";
+import { PermissionService } from "./services/PermissionService";
 
 import {
   log as mainLogger,

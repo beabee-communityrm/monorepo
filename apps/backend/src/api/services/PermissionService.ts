@@ -3,7 +3,7 @@ import { Permission, ContactRolePermission } from "@beabee/core/models";
 import {
   extractPermissionsFromControllers,
   getPermissionDescription
-} from "../utils/permission-extractor";
+} from "@api/utils";
 import { Not, In } from "typeorm";
 
 /**
