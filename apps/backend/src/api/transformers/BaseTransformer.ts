@@ -16,10 +16,10 @@ import {
   InvalidRuleError,
   UnauthorizedError
 } from "@beabee/core/errors";
-import { convertRulesToWhereClause } from "@api/utils/rules";
+import { convertRulesToWhereClause } from "@beabee/core/utils/rules";
 
-import { FetchRawResult, FilterHandlers } from "@type/index";
-import { AuthInfo } from "@beabee/core/type";
+import { FetchRawResult } from "@type/index";
+import { AuthInfo, FilterHandlers } from "@beabee/core/type";
 
 /**
  * Base transformer for querying and converting models to DTOs

@@ -14,7 +14,7 @@ import type { TagData } from "@beabee/beabee-common";
 import type { TagAssignment, TaggableEntity } from "@beabee/core/type";
 import { getRepository } from "@beabee/core/database";
 import { NotFoundError } from "routing-controllers";
-import { FilterHandler } from "@type/filter-handlers";
+import { FilterHandler } from "@beabee/core/type";
 
 /**
  * Generic transformer for handling tag-related operations.

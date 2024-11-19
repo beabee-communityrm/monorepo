@@ -12,6 +12,7 @@ export * from "./create-contact-mfa-data";
 export * from "./delete-contact-mfa-data";
 export * from "./email-mailing-recipient";
 export * from "./export-type-id";
+export * from "./filter-handlers";
 export * from "./login-data";
 export * from "./network-service-map";
 export * from "./network-service";

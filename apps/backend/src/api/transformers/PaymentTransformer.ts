@@ -12,7 +12,7 @@ import ContactTransformer, {
   loadContactRoles
 } from "@api/transformers/ContactTransformer";
 import { BaseTransformer } from "@api/transformers/BaseTransformer";
-import { mergeRules } from "@api/utils/rules";
+import { mergeRules } from "@beabee/core/utils/rules";
 
 import { Contact, Payment } from "@beabee/core/models";
 

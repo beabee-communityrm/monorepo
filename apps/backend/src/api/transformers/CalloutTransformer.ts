@@ -24,12 +24,11 @@ import {
 import { BaseTransformer } from "@api/transformers/BaseTransformer";
 import CalloutVariantTransformer from "@api/transformers/CalloutVariantTransformer";
 import { groupBy } from "@api/utils";
-import { mergeRules, statusFilterHandler } from "@api/utils/rules";
+import { mergeRules, statusFilterHandler } from "@beabee/core/utils/rules";
 
 import { Callout, CalloutResponse, CalloutVariant } from "@beabee/core/models";
 
-import { AuthInfo } from "@beabee/core/type";
-import { FilterHandlers } from "@type/filter-handlers";
+import { AuthInfo, FilterHandlers } from "@beabee/core/type";
 
 class CalloutTransformer extends BaseTransformer<
   Callout,

@@ -17,7 +17,7 @@ import { createQueryBuilder, getRepository } from "@beabee/core/database";
 
 import { calloutResponseFilterHandlers } from "@api/transformers/BaseCalloutResponseTransformer";
 import { BaseTransformer } from "@api/transformers/BaseTransformer";
-import { getFilterHandler, prefixKeys } from "@api/utils";
+import { prefixKeys } from "@api/utils";
 
 import {
   Callout,
@@ -27,8 +27,9 @@ import {
   ContactRole,
   ContactContribution
 } from "@beabee/core/models";
+import { getFilterHandler } from "@beabee/core/utils/rules";
 
-import { FilterHandler, FilterHandlers } from "@type/filter-handlers";
+import { FilterHandler, FilterHandlers } from "@beabee/core/type";
 import { contactTagTransformer } from "./TagTransformer";
 
 function flattenRules(rules: RuleGroup): Rule[] {

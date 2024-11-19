@@ -11,9 +11,9 @@ import {
   InvalidRule,
   parseDate,
   getMinDateUnit,
-  RuleGroup
+  RuleGroup,
+  Rule
 } from "@beabee/beabee-common";
-import { SelectResult } from "@beabee/core/type";
 import { BadRequestError } from "routing-controllers";
 import {
   Brackets,
@@ -26,20 +26,15 @@ import {
 } from "typeorm";
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
 
-import { createQueryBuilder } from "@beabee/core/database";
-
-import type {
-  GetPaginatedRuleGroupRule,
-  GetPaginatedRuleGroup
-} from "@api/dto/BaseDto";
+import { createQueryBuilder } from "#database";
+import { Contact } from "#models";
 
 import {
   FilterHandler,
   FilterHandlers,
-  RichRuleValue
-} from "@type/filter-handlers";
-
-import { Contact } from "@beabee/core/models";
+  RichRuleValue,
+  SelectResult
+} from "#type/index";
 
 // Operator definitions
 
@@ -468,10 +463,10 @@ export async function batchSelect<
 }
 
 export function mergeRules(
-  rules: (GetPaginatedRuleGroupRule | undefined | false)[]
-): GetPaginatedRuleGroup {
+  rules: (Rule | RuleGroup | undefined | false)[]
+): RuleGroup {
   return {
     condition: "AND",
-    rules: rules.filter((rule): rule is GetPaginatedRuleGroupRule => !!rule)
+    rules: rules.filter((rule): rule is Rule | RuleGroup => !!rule)
   };
 }

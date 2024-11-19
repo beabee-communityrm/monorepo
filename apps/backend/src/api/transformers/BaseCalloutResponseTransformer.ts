@@ -9,12 +9,11 @@ import {
 
 import { BaseGetCalloutResponseOptsDto } from "@api/dto/CalloutResponseDto";
 import { BaseTransformer } from "@api/transformers/BaseTransformer";
-import { mergeRules } from "@api/utils/rules";
+import { mergeRules } from "@beabee/core/utils/rules";
 
 import { CalloutResponse } from "@beabee/core/models";
 
-import { AuthInfo } from "@beabee/core/type";
-import { FilterHandlers } from "@type/filter-handlers";
+import { AuthInfo, FilterHandlers } from "@beabee/core/type";
 import { calloutTagTransformer } from "./TagTransformer";
 
 export abstract class BaseCalloutResponseTransformer<
