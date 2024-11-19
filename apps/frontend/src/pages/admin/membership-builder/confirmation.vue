@@ -103,7 +103,7 @@ meta:
           />
           <AppRepeatable
             v-model="setupContent.newsletterGroups"
-            :new-item="() => ({ id: '', label: '' })"
+            :new-item="() => ({ id: '', label: '', checked: false })"
             :add-label="stepT('newsletter.groups.add')"
             class="mb-4"
           >
@@ -117,6 +117,9 @@ meta:
                   :label="t('common.label')"
                   required
                 />
+              </div>
+              <div class="flex-0 flex h-10 items-center self-end">
+                <AppCheckbox v-model="item.checked" label="Default" />
               </div>
             </template>
           </AppRepeatable>
@@ -186,6 +189,7 @@ import { fetchContent, updateContent } from '@utils/api/content';
 
 import AppRepeatable from '@components/forms/AppRepeatable.vue';
 import AppSectionHeading from '@components/AppSectionHeading.vue';
+import AppLabel from '@components/forms/AppLabel.vue';
 
 const setupContent = ref<ContentJoinSetupData>();
 const openCallouts = ref<GetCalloutData[]>([]);
