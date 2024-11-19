@@ -189,7 +189,6 @@ import { fetchContent, updateContent } from '@utils/api/content';
 
 import AppRepeatable from '@components/forms/AppRepeatable.vue';
 import AppSectionHeading from '@components/AppSectionHeading.vue';
-import AppLabel from '@components/forms/AppLabel.vue';
 
 const setupContent = ref<ContentJoinSetupData>();
 const openCallouts = ref<GetCalloutData[]>([]);
