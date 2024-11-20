@@ -109,16 +109,12 @@ export class ContactController {
       );
     }
 
-    return ContactTransformer.convert(
-      contact,
-      {
-        with: [
-          ...(data.profile ? [GetContactWith.Profile] : []),
-          ...(data.roles ? [GetContactWith.Roles] : [])
-        ]
-      },
-      auth
-    );
+    return ContactTransformer.convert(contact, auth, {
+      with: [
+        ...(data.profile ? [GetContactWith.Profile] : []),
+        ...(data.roles ? [GetContactWith.Roles] : [])
+      ]
+    });
   }
 
   @Authorized("admin")

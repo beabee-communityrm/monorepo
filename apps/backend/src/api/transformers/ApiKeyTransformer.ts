@@ -12,6 +12,7 @@ import { ApiKey } from "@beabee/core/models";
 
 import { BaseTransformer } from "./BaseTransformer";
 import ContactTransformer, { loadContactRoles } from "./ContactTransformer";
+import { AuthInfo } from "@type/auth-info";
 
 class ApiKeyTransformer extends BaseTransformer<
   ApiKey,
@@ -24,12 +25,12 @@ class ApiKeyTransformer extends BaseTransformer<
   protected allowedRoles: RoleType[] = ["admin"];
 
   @TransformPlainToInstance(GetApiKeyDto)
-  convert(key: ApiKey): GetApiKeyDto {
+  convert(key: ApiKey, auth: AuthInfo): GetApiKeyDto {
     return {
       id: key.id,
       description: key.description,
       expires: key.expires,
-      creator: ContactTransformer.convert(key.creator),
+      creator: ContactTransformer.convert(key.creator, auth),
       createdAt: key.createdAt
     };
   }

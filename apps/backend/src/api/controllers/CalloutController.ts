@@ -65,7 +65,7 @@ import { ListTagsDto } from "@api/dto";
 export class CalloutController {
   @Get("/")
   async getCallouts(
-    @CurrentAuth() auth: AuthInfo | undefined,
+    @CurrentAuth() auth: AuthInfo,
     @QueryParams() query: ListCalloutsDto
   ): Promise<PaginatedDto<GetCalloutDto>> {
     return CalloutTransformer.fetch(auth, query);
@@ -96,7 +96,7 @@ export class CalloutController {
 
   @Get("/:id")
   async getCallout(
-    @CurrentAuth() auth: AuthInfo | undefined,
+    @CurrentAuth() auth: AuthInfo,
     @CalloutId() id: string,
     @QueryParams() query: GetCalloutOptsDto
   ): Promise<GetCalloutDto | undefined> {
@@ -154,7 +154,7 @@ export class CalloutController {
 
   @Get("/:id/responses/map")
   async getCalloutResponsesMap(
-    @CurrentAuth() auth: AuthInfo | undefined,
+    @CurrentAuth() auth: AuthInfo,
     @CalloutId() id: string,
     @QueryParams() query: ListCalloutResponsesDto
   ): Promise<PaginatedDto<GetCalloutResponseMapDto>> {

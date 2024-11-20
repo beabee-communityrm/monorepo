@@ -46,15 +46,15 @@ class ContactTransformer extends BaseContactTransformer<
    * Includes optional related data based on the provided options.
    *
    * @param contact - The contact entity to convert
+   * @param auth - Auth info for permission checks
    * @param opts - Optional parameters to control included data
-   * @param auth - Optional auth info for permission checks
    * @returns The converted contact DTO
    */
   @TransformPlainToInstance(GetContactDto)
   convert(
     contact: Contact,
-    opts?: GetContactOptsDto,
-    auth?: AuthInfo | undefined
+    auth: AuthInfo,
+    opts?: GetContactOptsDto
   ): GetContactDto {
     return {
       id: contact.id,
@@ -74,11 +74,7 @@ class ContactTransformer extends BaseContactTransformer<
       }),
       ...(opts?.with?.includes(GetContactWith.Profile) &&
         contact.profile && {
-          profile: ContactProfileTransformer.convert(
-            contact.profile,
-            undefined,
-            auth
-          )
+          profile: ContactProfileTransformer.convert(contact.profile, auth)
         }),
       ...(opts?.with?.includes(GetContactWith.Roles) && {
         roles: contact.roles.map(ContactRoleTransformer.convert)
@@ -102,13 +98,13 @@ class ContactTransformer extends BaseContactTransformer<
    */
   protected transformQuery<T extends ListContactsDto>(
     query: T,
-    auth: AuthInfo | undefined
+    auth: AuthInfo
   ): T {
     return {
       ...query,
       rules: mergeRules([
         query.rules,
-        !auth?.roles.includes("admin") && {
+        !auth.roles.includes("admin") && {
           field: "id",
           operator: "equal",
           value: ["me"]
@@ -257,10 +253,7 @@ class ContactTransformer extends BaseContactTransformer<
    *   updates: { tags: ["+tag1", "-tag2"] }
    * });
    */
-  async update(
-    auth: AuthInfo | undefined,
-    query: BatchUpdateContactDto
-  ): Promise<number> {
+  async update(auth: AuthInfo, query: BatchUpdateContactDto): Promise<number> {
     const [query2, filters, filterHandlers] = await this.preFetch(query, auth);
 
     const { tagUpdates, contactUpdates } = this.getUpdateData(query2.updates);
@@ -276,7 +269,7 @@ class ContactTransformer extends BaseContactTransformer<
           filters,
           query2.rules,
           contactUpdates,
-          auth?.contact,
+          auth.contact,
           filterHandlers,
           (qb) => qb.returning(["id"])
         )
@@ -284,7 +277,7 @@ class ContactTransformer extends BaseContactTransformer<
           this.model,
           filters,
           query2.rules,
-          auth?.contact,
+          auth.contact,
           filterHandlers
         );
 

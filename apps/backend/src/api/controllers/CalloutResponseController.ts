@@ -29,7 +29,7 @@ import { AuthInfo } from "@type/auth-info";
 export class CalloutResponseController {
   @Get("/")
   async getCalloutResponses(
-    @CurrentAuth() auth: AuthInfo | undefined,
+    @CurrentAuth() auth: AuthInfo,
     @QueryParams() query: ListCalloutResponsesDto
   ): Promise<PaginatedDto<GetCalloutResponseDto>> {
     return CalloutResponseTransformer.fetch(auth, query);
@@ -47,7 +47,7 @@ export class CalloutResponseController {
 
   @Get("/:id")
   async getCalloutResponse(
-    @CurrentAuth() auth: AuthInfo | undefined,
+    @CurrentAuth() auth: AuthInfo,
     @Params() { id }: UUIDParams,
     @QueryParams() query: GetCalloutResponseOptsDto
   ): Promise<GetCalloutResponseDto | undefined> {

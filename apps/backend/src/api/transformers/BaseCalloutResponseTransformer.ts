@@ -48,7 +48,7 @@ export abstract class BaseCalloutResponseTransformer<
 
   protected async transformQuery<T extends GetOptsDto & PaginatedQuery>(
     query: T,
-    auth: AuthInfo | undefined
+    auth: AuthInfo
   ): Promise<T> {
     const authRules = await getAuthRules(auth);
 
@@ -74,15 +74,13 @@ export abstract class BaseCalloutResponseTransformer<
  * @param auth The authentication info
  * @returns The rules
  */
-async function getAuthRules(
-  auth: AuthInfo | undefined
-): Promise<RuleGroup | undefined> {
+async function getAuthRules(auth: AuthInfo): Promise<RuleGroup | undefined> {
   // Admins can see all responses, no restrictions needed
-  if (auth?.roles.includes("admin")) {
+  if (auth.roles.includes("admin")) {
     return;
   }
 
-  if (auth?.method !== "user") {
+  if (auth.method !== "user") {
     throw new UnauthorizedError();
   }
 

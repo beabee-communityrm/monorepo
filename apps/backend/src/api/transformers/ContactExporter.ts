@@ -62,7 +62,7 @@ class ContactExporter extends BaseContactTransformer<
   }
 
   async export(
-    auth: AuthInfo | undefined,
+    auth: AuthInfo,
     query?: GetExportQuery
   ): Promise<[string, string]> {
     const result = await this.fetch(auth, { limit: -1, ...query });

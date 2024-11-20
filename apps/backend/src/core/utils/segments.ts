@@ -8,9 +8,7 @@ import { buildSelectQuery } from "@api/utils";
 import { AuthInfo } from "@type/auth-info";
 
 /** @deprecated */
-export async function getSegmentsWithCount(
-  auth: AuthInfo | undefined
-): Promise<Segment[]> {
+export async function getSegmentsWithCount(auth: AuthInfo): Promise<Segment[]> {
   const segments = await getRepository(Segment).find({
     order: { order: "ASC" }
   });

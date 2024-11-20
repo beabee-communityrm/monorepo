@@ -53,7 +53,7 @@ class CalloutTransformer extends BaseTransformer<
 
   protected async transformFilters(
     query: GetCalloutOptsDto & PaginatedQuery,
-    auth: AuthInfo | undefined
+    auth: AuthInfo
   ): Promise<
     [Partial<Filters<CalloutFilterName>>, FilterHandlers<CalloutFilterName>]
   > {
@@ -68,7 +68,7 @@ class CalloutTransformer extends BaseTransformer<
 
           // Non-admins can only query for their own responses
           if (
-            auth?.contact &&
+            auth.contact &&
             !auth.roles.includes("admin") &&
             args.value[0] !== auth.contact.id
           ) {
@@ -91,7 +91,11 @@ class CalloutTransformer extends BaseTransformer<
   }
 
   @TransformPlainToInstance(GetCalloutDto)
-  convert(callout: Callout, opts?: GetCalloutOptsDto): GetCalloutDto {
+  convert(
+    callout: Callout,
+    auth: AuthInfo,
+    opts?: GetCalloutOptsDto
+  ): GetCalloutDto {
     const variants = Object.fromEntries(
       callout.variants.map((variant) => [
         variant.name,
@@ -164,11 +168,11 @@ class CalloutTransformer extends BaseTransformer<
 
   protected async transformQuery<T extends ListCalloutsDto>(
     query: T,
-    auth: AuthInfo | undefined
+    auth: AuthInfo
   ): Promise<T> {
     const authRules = await getAuthRules(auth, query.showHiddenForAll);
 
-    if (auth?.roles.includes("admin")) {
+    if (auth.roles.includes("admin")) {
       return query;
     }
 
@@ -208,7 +212,7 @@ class CalloutTransformer extends BaseTransformer<
   protected async modifyItems(
     callouts: Callout[],
     query: ListCalloutsDto,
-    auth: AuthInfo | undefined
+    auth: AuthInfo
   ): Promise<void> {
     if (callouts.length > 0) {
       const calloutIds = callouts.map((c) => c.id);
@@ -243,7 +247,7 @@ class CalloutTransformer extends BaseTransformer<
         }
       }
 
-      if (auth?.contact && query.with?.includes(GetCalloutWith.HasAnswered)) {
+      if (auth.contact && query.with?.includes(GetCalloutWith.HasAnswered)) {
         const answeredCallouts = await createQueryBuilder(CalloutResponse, "cr")
           .select("cr.calloutId", "id")
           .distinctOn(["cr.calloutId"])
@@ -272,16 +276,16 @@ class CalloutTransformer extends BaseTransformer<
  * @returns
  */
 async function getAuthRules(
-  auth: AuthInfo | undefined,
+  auth: AuthInfo,
   showHiddenForAll: boolean
 ): Promise<RuleGroup | undefined> {
   // Admins can see all callouts, no restrictions needed
-  if (auth?.roles.includes("admin")) {
+  if (auth.roles.includes("admin")) {
     return;
   }
 
   const reviewerRules =
-    auth?.method === "user" ? await getReviewerRules(auth.contact, "id") : [];
+    auth.method === "user" ? await getReviewerRules(auth.contact, "id") : [];
 
   return {
     condition: "OR",

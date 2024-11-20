@@ -33,6 +33,7 @@ class CalloutResponseMapTransformer extends BaseCalloutResponseTransformer<
   @TransformPlainToInstance(GetCalloutResponseMapDto)
   convert(
     response: CalloutResponse,
+    auth: AuthInfo,
     opts: GetCalloutResponseMapOptsDto
   ): GetCalloutResponseMapDto {
     let title = "",
@@ -109,7 +110,7 @@ class CalloutResponseMapTransformer extends BaseCalloutResponseTransformer<
   }
 
   async fetchForCallout(
-    auth: AuthInfo | undefined,
+    auth: AuthInfo,
     calloutId: string,
     query: ListCalloutResponsesDto
   ): Promise<PaginatedDto<GetCalloutResponseMapDto>> {

@@ -30,7 +30,11 @@ class SegmentTransformer extends BaseTransformer<
   protected allowedRoles: RoleType[] = ["admin"];
 
   @TransformPlainToInstance(GetSegmentDto)
-  convert(segment: Segment, opts: GetSegmentOptsDto): GetSegmentDto {
+  convert(
+    segment: Segment,
+    auth: AuthInfo,
+    opts: GetSegmentOptsDto
+  ): GetSegmentDto {
     return {
       id: segment.id,
       name: segment.name,
@@ -46,7 +50,7 @@ class SegmentTransformer extends BaseTransformer<
   protected async modifyItems(
     segments: Segment[],
     query: ListSegmentsDto,
-    auth: AuthInfo | undefined
+    auth: AuthInfo
   ): Promise<void> {
     if (query.with?.includes(GetSegmentWith.contactCount)) {
       for (const segment of segments) {

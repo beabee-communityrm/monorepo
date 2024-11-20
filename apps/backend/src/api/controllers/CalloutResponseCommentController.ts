@@ -1,7 +1,7 @@
 import {
   Authorized,
+  BadRequestError,
   Body,
-  CurrentUser,
   Delete,
   Get,
   JsonController,
@@ -36,17 +36,21 @@ import { AuthInfo } from "@type/auth-info";
 export class CalloutResponseCommentController {
   @Post("/")
   async createCalloutReponseComment(
-    @Body() data: CreateCalloutResponseCommentDto,
-    @CurrentUser({ required: true }) contact: Contact
+    @CurrentAuth({ required: true }) auth: AuthInfo,
+    @Body() data: CreateCalloutResponseCommentDto
   ): Promise<GetCalloutResponseCommentDto> {
+    if (!auth.contact) {
+      throw new BadRequestError("Authentication with contact required");
+    }
+
     const comment: CalloutResponseComment = await getRepository(
       CalloutResponseComment
     ).save({
-      contact,
+      contact: auth.contact,
       text: data.text,
       response: { id: data.responseId }
     });
-    return CalloutResponseCommentTransformer.convert(comment);
+    return CalloutResponseCommentTransformer.convert(comment, auth);
   }
 
   @Get("/")

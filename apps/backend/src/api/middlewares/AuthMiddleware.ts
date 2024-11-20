@@ -24,7 +24,7 @@ export class AuthMiddleware implements ExpressMiddlewareInterface {
   }
 }
 
-async function getAuth(request: Request): Promise<AuthInfo | undefined> {
+async function getAuth(request: Request): Promise<AuthInfo> {
   const headers = request.headers;
   const authHeader = headers.authorization;
   const token = extractToken(authHeader);
@@ -59,6 +59,8 @@ async function getAuth(request: Request): Promise<AuthInfo | undefined> {
       roles: request.user.activeRoles
     };
   }
+
+  return { method: "none", roles: [] };
 }
 
 async function getValidApiKey(key: string): Promise<ApiKey | undefined> {

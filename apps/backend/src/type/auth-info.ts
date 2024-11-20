@@ -1,6 +1,12 @@
 import { RoleType } from "@beabee/beabee-common";
 import type { Contact } from "@beabee/core/models";
 
+interface AuthInfoNone {
+  method: "none";
+  contact?: undefined;
+  roles: RoleType[]; // Should be empty
+}
+
 interface AuthInfoContact {
   method: "user";
   contact: Contact;
@@ -19,4 +25,8 @@ interface AuthInfoInternal {
   roles: RoleType[];
 }
 
-export type AuthInfo = AuthInfoContact | AuthInfoApiKey | AuthInfoInternal;
+export type AuthInfo =
+  | AuthInfoNone
+  | AuthInfoContact
+  | AuthInfoApiKey
+  | AuthInfoInternal;

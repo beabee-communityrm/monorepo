@@ -73,7 +73,7 @@ export abstract class BaseTransformer<
 
   protected allowedRoles: RoleType[] | undefined;
 
-  abstract convert(model: Model, opts: GetDtoOpts, auth?: AuthInfo): GetDto;
+  abstract convert(model: Model, auth: AuthInfo, opts?: GetDtoOpts): GetDto;
 
   /**
    * Transform the query before the results are fetched.
@@ -87,7 +87,7 @@ export abstract class BaseTransformer<
    */
   protected transformQuery<T extends Query>(
     query: T,
-    auth: AuthInfo | undefined
+    auth: AuthInfo
   ): T | Promise<T> {
     return query;
   }
@@ -103,7 +103,7 @@ export abstract class BaseTransformer<
    */
   protected async transformFilters(
     query: Query,
-    auth: AuthInfo | undefined
+    auth: AuthInfo
   ): Promise<[Partial<Filters<FilterName>>, FilterHandlers<FilterName>]> {
     return [{}, {}];
   }
@@ -124,7 +124,7 @@ export abstract class BaseTransformer<
     qb: SelectQueryBuilder<Model>,
     fieldPrefix: string,
     query: Query,
-    auth: AuthInfo | undefined
+    auth: AuthInfo
   ): void {}
 
   /**
@@ -140,7 +140,7 @@ export abstract class BaseTransformer<
   protected async modifyItems(
     items: Model[],
     query: Query,
-    auth: AuthInfo | undefined
+    auth: AuthInfo
   ): Promise<void> {}
 
   /**
@@ -152,11 +152,11 @@ export abstract class BaseTransformer<
    */
   protected async preFetch<T extends Query>(
     query: T,
-    auth: AuthInfo | undefined
+    auth: AuthInfo
   ): Promise<[T, Filters<FilterName>, FilterHandlers<FilterName>]> {
     if (
       this.allowedRoles &&
-      !this.allowedRoles.some((r) => auth?.roles.includes(r))
+      !this.allowedRoles.some((r) => auth.roles.includes(r))
     ) {
       throw new UnauthorizedError();
     }
@@ -178,7 +178,7 @@ export abstract class BaseTransformer<
    * @returns A list of items that match the query
    */
   async fetchRaw(
-    auth: AuthInfo | undefined,
+    auth: AuthInfo,
     query_: Query
   ): Promise<FetchRawResult<Model, Query>> {
     const [query, filters, filterHandlers] = await this.preFetch(query_, auth);
@@ -205,7 +205,7 @@ export abstract class BaseTransformer<
       qb.where(
         ...convertRulesToWhereClause(
           ruleGroup,
-          auth?.contact,
+          auth.contact,
           filterHandlers,
           "item."
         )
@@ -232,17 +232,14 @@ export abstract class BaseTransformer<
    * @param query_ The query
    * @returns A list of items that match the query
    */
-  async fetch(
-    auth: AuthInfo | undefined,
-    query_: Query
-  ): Promise<PaginatedDto<GetDto>> {
+  async fetch(auth: AuthInfo, query_: Query): Promise<PaginatedDto<GetDto>> {
     const { items, total, query, offset } = await this.fetchRaw(auth, query_);
 
     return plainToInstance(PaginatedDto<GetDto>, {
       total,
       offset,
       count: items.length,
-      items: items.map((item) => this.convert(item, query, auth))
+      items: items.map((item) => this.convert(item, auth, query))
     });
   }
 
@@ -253,10 +250,7 @@ export abstract class BaseTransformer<
    * @param query The query
    * @returns A single item or undefined if not found
    */
-  async fetchOne(
-    auth: AuthInfo | undefined,
-    query: Query
-  ): Promise<GetDto | undefined> {
+  async fetchOne(auth: AuthInfo, query: Query): Promise<GetDto | undefined> {
     const result = await this.fetch(auth, { ...query, limit: 1 });
     return result.items[0];
   }
@@ -267,10 +261,7 @@ export abstract class BaseTransformer<
    * @param query The query
    * @returns A single item
    */
-  async fetchOneOrFail(
-    auth: AuthInfo | undefined,
-    query: Query
-  ): Promise<GetDto> {
+  async fetchOneOrFail(auth: AuthInfo, query: Query): Promise<GetDto> {
     const result = await this.fetchOne(auth, query);
     if (!result) {
       throw new NotFoundError();
@@ -287,7 +278,7 @@ export abstract class BaseTransformer<
    * @returns A single item or undefined if not found
    */
   async fetchOneById(
-    auth: AuthInfo | undefined,
+    auth: AuthInfo,
     id: string,
     opts?: GetDtoOpts
   ): Promise<GetDto | undefined> {
@@ -311,7 +302,7 @@ export abstract class BaseTransformer<
    * @returns A single item
    */
   async fetchOneByIdOrFail(
-    auth: AuthInfo | undefined,
+    auth: AuthInfo,
     id: string,
     opts?: GetDtoOpts
   ): Promise<GetDto> {
@@ -329,7 +320,7 @@ export abstract class BaseTransformer<
    * @param query The query
    * @returns The number of items that match the query
    */
-  async count(auth: AuthInfo | undefined, query: Query): Promise<number> {
+  async count(auth: AuthInfo, query: Query): Promise<number> {
     return (await this.fetch(auth, { ...query, limit: 0 })).total;
   }
 }

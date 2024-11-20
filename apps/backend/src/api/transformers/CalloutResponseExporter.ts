@@ -34,6 +34,7 @@ class CalloutResponseExporter extends BaseCalloutResponseTransformer<
 
   convert(
     response: CalloutResponse,
+    auth: AuthInfo,
     opts: ExportCalloutResponsesOptsDto
   ): ExportCalloutResponseDto {
     const contact: [string, string, string, string] = response.contact
@@ -89,7 +90,7 @@ class CalloutResponseExporter extends BaseCalloutResponseTransformer<
   }
 
   async export(
-    auth: AuthInfo | undefined,
+    auth: AuthInfo,
     calloutId: string,
     query: GetExportQuery
   ): Promise<[string, string]> {

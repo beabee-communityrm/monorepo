@@ -28,10 +28,13 @@ class CalloutResponseCommentTransformer extends BaseTransformer<
   protected filters = calloutResponseCommentFilters;
 
   @TransformPlainToInstance(GetCalloutResponseCommentDto)
-  convert(comment: CalloutResponseComment): GetCalloutResponseCommentDto {
+  convert(
+    comment: CalloutResponseComment,
+    auth: AuthInfo
+  ): GetCalloutResponseCommentDto {
     return {
       id: comment.id,
-      contact: ContactTransformer.convert(comment.contact),
+      contact: ContactTransformer.convert(comment.contact, auth),
       createdAt: comment.createdAt,
       updatedAt: comment.updatedAt,
       responseId: comment.responseId,
@@ -41,13 +44,13 @@ class CalloutResponseCommentTransformer extends BaseTransformer<
 
   protected transformQuery<T extends ListCalloutResponseCommentsDto>(
     query: T,
-    auth: AuthInfo | undefined
+    auth: AuthInfo
   ): T {
     return {
       ...query,
       rules: mergeRules([
         query.rules,
-        !auth?.roles.includes("admin") && {
+        !auth.roles.includes("admin") && {
           field: "contact",
           operator: "equal",
           value: ["me"]

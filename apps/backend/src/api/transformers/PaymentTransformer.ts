@@ -28,13 +28,18 @@ class PaymentTransformer extends BaseTransformer<
   protected filters = paymentFilters;
 
   @TransformPlainToInstance(GetPaymentDto)
-  convert(payment: Payment, opts: GetPaymentOptsDto): GetPaymentDto {
+  convert(
+    payment: Payment,
+    auth: AuthInfo,
+    opts: GetPaymentOptsDto
+  ): GetPaymentDto {
     return {
       amount: payment.amount,
       chargeDate: payment.chargeDate,
       status: payment.status,
       ...(opts.with?.includes(GetPaymentWith.Contact) && {
-        contact: payment.contact && ContactTransformer.convert(payment.contact)
+        contact:
+          payment.contact && ContactTransformer.convert(payment.contact, auth)
       })
     };
   }

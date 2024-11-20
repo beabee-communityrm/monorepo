@@ -22,7 +22,7 @@ declare global {
       model: unknown;
       allParams: ParamsDictionary;
       answers?: CalloutResponseAnswersSlide;
-      auth: AuthInfo2 | undefined;
+      auth: AuthInfo2;
     }
   }
 }

@@ -40,6 +40,7 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
   @TransformPlainToInstance(GetCalloutResponseDto)
   convert(
     response: CalloutResponse,
+    auth: AuthInfo,
     opts: GetCalloutResponseOptsDto
   ): GetCalloutResponseDto {
     return {
@@ -55,19 +56,23 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
       }),
       ...(opts.with?.includes(GetCalloutResponseWith.Assignee) && {
         assignee:
-          response.assignee && ContactTransformer.convert(response.assignee)
+          response.assignee &&
+          ContactTransformer.convert(response.assignee, auth)
       }),
       ...(opts.with?.includes(GetCalloutResponseWith.Callout) && {
-        callout: CalloutTransformer.convert(response.callout)
+        callout: CalloutTransformer.convert(response.callout, auth)
       }),
       ...(opts.with?.includes(GetCalloutResponseWith.Contact) && {
         contact:
-          response.contact && ContactTransformer.convert(response.contact)
+          response.contact && ContactTransformer.convert(response.contact, auth)
       }),
       ...(opts.with?.includes(GetCalloutResponseWith.LatestComment) && {
         latestComment:
           response.latestComment &&
-          CalloutResponseCommentTransformer.convert(response.latestComment)
+          CalloutResponseCommentTransformer.convert(
+            response.latestComment,
+            auth
+          )
       }),
       ...(opts.with?.includes(GetCalloutResponseWith.Tags) &&
         response.tags && {
@@ -140,7 +145,7 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
   }
 
   async fetchForCallout(
-    auth: AuthInfo | undefined,
+    auth: AuthInfo,
     calloutId: string,
     query: ListCalloutResponsesDto
   ): Promise<PaginatedDto<GetCalloutResponseDto>> {
@@ -152,7 +157,7 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
   }
 
   async update(
-    auth: AuthInfo | undefined,
+    auth: AuthInfo,
     query: BatchUpdateCalloutResponseDto
   ): Promise<number> {
     const [query2, filters, filterHandlers] = await this.preFetch(query, auth);
@@ -163,7 +168,7 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
       filters,
       query2.rules,
       responseUpdates,
-      auth?.contact,
+      auth.contact,
       filterHandlers,
       (qb) => qb.returning(["id"])
     );
@@ -183,7 +188,7 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
   }
 
   async updateOneById(
-    auth: AuthInfo | undefined,
+    auth: AuthInfo,
     id: string,
     updates: UpdateCalloutResponseDto
   ): Promise<boolean> {
