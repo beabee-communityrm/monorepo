@@ -10,11 +10,21 @@ import { GetTagDto } from "@api/dto/TagDto";
 import { GetCalloutTagDto } from "@api/dto/CalloutTagDto";
 import { GetContactTagDto } from "@api/dto/ContactTagDto";
 import { createQueryBuilder } from "@beabee/core/database";
-import type { TagData } from "@beabee/beabee-common";
+import type {
+  CalloutTagFilterName,
+  ContactTagFilterName,
+  Filters,
+  PaginatedQuery,
+  TagData
+} from "@beabee/beabee-common";
 import type { TagAssignment, TaggableEntity } from "@beabee/core/type";
 import { getRepository } from "@beabee/core/database";
 import { NotFoundError } from "routing-controllers";
 import { FilterHandler } from "@type/filter-handlers";
+import { AuthInfo } from "@type/auth-info";
+import { getReviewerRules } from "./BaseCalloutResponseTransformer";
+import { mergeRules } from "@api/utils";
+import { UnauthorizedError } from "@beabee/core/errors";
 
 /**
  * Generic transformer for handling tag-related operations.
@@ -31,32 +41,17 @@ import { FilterHandler } from "@type/filter-handlers";
  *   GetCalloutTagDto
  * );
  */
-export class TagTransformer<
+abstract class TagTransformer<
   TModel extends TagData,
   TDto extends GetTagDto,
   TFilterName extends string
 > extends BaseTransformer<TModel, TDto, TFilterName> {
-  /**
-   * Creates a new TagTransformer instance.
-   *
-   * @param model - The constructor for the tag model
-   * @param filters - Record of filters available for this tag type
-   * @param dtoType - The constructor for the DTO class
-   * @param entityIdField - The name of the foreign key field in the assignment model
-   * @param tableName - The name of the tag assignment table
-   */
-  constructor(
-    protected model: any,
-    protected filters: Record<TFilterName, any>,
-    protected dtoType: new () => TDto,
-    protected entityIdField: string,
-    protected tableName: string
-  ) {
-    super();
-  }
-
-  /** Roles allowed to perform tag operations */
-  protected allowedRoles: RoleType[] = ["admin"];
+  /** The constructor for the DTO class */
+  protected abstract dtoType: new () => TDto;
+  /** The name of the foreign key field in the assignment model */
+  protected abstract entityIdField: string;
+  /** The name of the tag assignment table */
+  protected abstract tableName: string;
 
   /**
    * Converts a tag model instance to its DTO representation.
@@ -213,8 +208,8 @@ export class TagTransformer<
       ...rest,
       name,
       description: description || ""
-    });
-    return tag as TModel;
+    } as TModel);
+    return tag;
   }
 
   /**
@@ -231,7 +226,7 @@ export class TagTransformer<
    * });
    */
   async update(id: string, data: Partial<TModel>): Promise<void> {
-    const result = await getRepository(this.model).update({ id }, data);
+    const result = await getRepository(this.model).update(id, data as any);
     if (result.affected === 0) {
       throw new NotFoundError();
     }
@@ -249,7 +244,7 @@ export class TagTransformer<
    */
   async delete(id: string, AssignmentModel: new () => any): Promise<void> {
     // Check if tag exists
-    const tag = await getRepository(this.model).findOneBy({ id });
+    const tag = await getRepository(this.model).findOneBy({ id } as any);
     if (!tag) {
       throw new NotFoundError();
     }
@@ -265,7 +260,7 @@ export class TagTransformer<
     }
 
     // Delete tag
-    const result = await getRepository(this.model).delete({ id });
+    const result = await getRepository(this.model).delete(id);
     if (!result.affected) {
       throw new NotFoundError();
     }
@@ -299,18 +294,60 @@ export class TagTransformer<
   };
 }
 
-export const calloutTagTransformer = new TagTransformer(
+class CalloutTagTransformer extends TagTransformer<
   CalloutTag,
-  calloutTagFilters,
   GetCalloutTagDto,
-  "responseId",
-  "callout_response_tag"
-);
+  CalloutTagFilterName
+> {
+  protected model = CalloutTag;
+  protected filters: Filters<CalloutTagFilterName> = calloutTagFilters;
+  protected dtoType = GetCalloutTagDto;
+  protected entityIdField = "calloutId";
+  protected tableName = "callout_response_tags";
 
-export const contactTagTransformer = new TagTransformer(
+  protected async transformQuery<T extends PaginatedQuery>(
+    query: T,
+    auth: AuthInfo
+  ): Promise<T> {
+    if (auth.roles.includes("admin")) {
+      return query;
+    }
+
+    const reviewerRules = auth.contact
+      ? await getReviewerRules(auth.contact, "calloutId")
+      : [];
+
+    if (reviewerRules.length === 0) {
+      throw new UnauthorizedError();
+    }
+
+    return {
+      ...query,
+      rules: mergeRules([
+        query.rules,
+        {
+          condition: "OR",
+          rules: reviewerRules
+        }
+      ])
+    };
+  }
+}
+
+export const calloutTagTransformer = new CalloutTagTransformer();
+
+class ContactTagTransformer extends TagTransformer<
   ContactTag,
-  contactTagFilters,
   GetContactTagDto,
-  "contactId",
-  "contact_tag_assignments"
-);
+  ContactTagFilterName
+> {
+  protected model = ContactTag;
+  protected filters: Filters<ContactTagFilterName> = contactTagFilters;
+  protected dtoType = GetContactTagDto;
+  protected entityIdField = "contactId";
+  protected tableName = "contact_tag_assignments";
+
+  protected allowedRoles: RoleType[] = ["admin"];
+}
+
+export const contactTagTransformer = new ContactTagTransformer();

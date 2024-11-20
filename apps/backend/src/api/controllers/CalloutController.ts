@@ -209,7 +209,6 @@ export class CalloutController {
   }
 
   // TODO: move to CalloutTagController like we did for contact tags?
-  @Authorized("admin")
   @Get("/:id/tags")
   async getCalloutTags(
     @CurrentAuth({ required: true }) auth: AuthInfo,
@@ -228,7 +227,6 @@ export class CalloutController {
   }
 
   // TODO: move to CalloutTagController like we did for contact tags?
-  @Authorized("admin")
   @Post("/:id/tags")
   async createCalloutTag(
     @CalloutId() id: string,
@@ -244,7 +242,6 @@ export class CalloutController {
   }
 
   // TODO: move to CalloutTagController like we did for contact tags?
-  @Authorized("admin")
   @Get("/:id/tags/:tagId")
   async getCalloutTag(
     @CurrentAuth({ required: true }) auth: AuthInfo,
@@ -254,7 +251,6 @@ export class CalloutController {
   }
 
   // TODO: move to CalloutTagController like we did for contact tags?
-  @Authorized("admin")
   @Patch("/:id/tags/:tagId")
   async updateCalloutTag(
     @CurrentAuth({ required: true }) auth: AuthInfo,
@@ -268,7 +264,6 @@ export class CalloutController {
   }
 
   // TODO: move to CalloutTagController like we did for contact tags?
-  @Authorized("admin")
   @Delete("/:id/tags/:tagId")
   @OnUndefined(204)
   async deleteCalloutTag(

@@ -80,21 +80,13 @@ async function getAuthRules(auth: AuthInfo): Promise<RuleGroup | undefined> {
     return;
   }
 
-  if (auth.method !== "user") {
-    throw new UnauthorizedError();
-  }
-
   return {
     condition: "OR",
     rules: [
       // User's can always see their own responses
-      {
-        field: "contact",
-        operator: "equal",
-        value: ["me"]
-      },
+      { field: "contact", operator: "equal", value: ["me"] },
       // And any responses for callouts they are reviewers for
-      ...(await getReviewerRules(auth.contact, "calloutId"))
+      ...(auth.contact ? await getReviewerRules(auth.contact, "calloutId") : [])
     ]
   };
 }
