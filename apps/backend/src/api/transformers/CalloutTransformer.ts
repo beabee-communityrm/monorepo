@@ -28,12 +28,7 @@ import CalloutVariantTransformer from "@api/transformers/CalloutVariantTransform
 import { groupBy } from "@api/utils";
 import { mergeRules, statusFilterHandler } from "@api/utils/rules";
 
-import {
-  Callout,
-  CalloutResponse,
-  CalloutReviewer,
-  CalloutVariant
-} from "@beabee/core/models";
+import { Callout, CalloutResponse, CalloutVariant } from "@beabee/core/models";
 
 import { AuthInfo } from "@type/auth-info";
 import { FilterHandlers } from "@type/filter-handlers";
@@ -177,37 +172,14 @@ class CalloutTransformer extends BaseTransformer<
       return query;
     }
 
-    // Non-admins can't see response counts
-    if (query.with?.includes(GetCalloutWith.ResponseCount)) {
-      throw new UnauthorizedError();
-    }
+    // TODO: Non-admins can't see response counts
+    // if (query.with?.includes(GetCalloutWith.ResponseCount)) {
+    //   throw new UnauthorizedError();
+    // }
 
     return {
       ...query,
-      // Non-admins can only query for open or ended non-hidden callouts
-      rules: mergeRules([
-        query.rules,
-        {
-          condition: "OR",
-          rules: [
-            {
-              field: "status",
-              operator: "equal",
-              value: [ItemStatus.Open]
-            },
-            {
-              field: "status",
-              operator: "equal",
-              value: [ItemStatus.Ended]
-            }
-          ]
-        },
-        !query.showHiddenForAll && {
-          field: "hidden",
-          operator: "equal",
-          value: [false]
-        }
-      ])
+      rules: mergeRules([query.rules, authRules])
     };
   }
 
@@ -308,7 +280,7 @@ async function getAuthRules(
     return;
   }
 
-  let reviewerRules =
+  const reviewerRules =
     auth?.method === "user" ? await getReviewerRules(auth.contact, "id") : [];
 
   return {
