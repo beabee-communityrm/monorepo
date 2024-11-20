@@ -2,7 +2,6 @@
 name: adminCallouts
 meta:
   pageTitle: menu.callouts
-  role: admin
 </route>
 <template>
   <PageTitle :title="t('menu.callouts')" border>

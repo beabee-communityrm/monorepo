@@ -2,7 +2,6 @@
 name: adminCalloutViewResponsesItem
 meta:
   pageTitle: menu.callouts
-  role: admin
 </route>
 <template>
   <div v-if="response" class="md:max-w-2xl">
