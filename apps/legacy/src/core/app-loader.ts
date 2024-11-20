@@ -6,7 +6,7 @@ import moment from "moment";
 import config, {
   AppConfig,
   AppConfigOverride,
-  AppConfigOverrides
+  AppConfigOverrides,
 } from "@beabee/core/config";
 
 import { log as mainLogger } from "@beabee/core/logging";
@@ -23,7 +23,7 @@ const log = mainLogger.child({ app: "app-loader" });
 
 async function loadAppConfigs(
   basePath: string,
-  overrides: AppConfigOverrides = {}
+  overrides: AppConfigOverrides = {},
 ): Promise<AppConfig[]> {
   const appConfigs = fs
     .readdirSync(basePath)
@@ -34,7 +34,7 @@ async function loadAppConfigs(
       );
     })
     .map((appDir) =>
-      loadAppConfig(appDir, basePath + "/" + appDir, overrides[appDir])
+      loadAppConfig(appDir, basePath + "/" + appDir, overrides[appDir]),
     );
 
   return (await Promise.all(appConfigs))
@@ -45,20 +45,20 @@ async function loadAppConfigs(
 async function loadAppConfig(
   uid: string,
   path: string,
-  overrides: AppConfigOverride = {}
+  overrides: AppConfigOverride = {},
 ): Promise<AppConfig> {
   let appConfig: Partial<AppConfig> &
     Pick<AppConfig, "title" | "path" | "disabled">;
   try {
     appConfig = (
       await import(path + "/config.json", {
-        assert: { type: "json" }
+        assert: { type: "json" },
       })
     ).default;
   } catch (e) {
     // Fallback to JSON.parse
     appConfig = JSON.parse(
-      await fs.promises.readFile(path + "/config.json", "utf8")
+      await fs.promises.readFile(path + "/config.json", "utf8"),
     );
   }
 
@@ -74,7 +74,7 @@ async function loadAppConfig(
     permissions: [],
     subApps,
     ...appConfig,
-    ...overrides.config
+    ...overrides.config,
   };
 }
 
@@ -86,7 +86,7 @@ async function requireApp(appPath: string): Promise<express.Express> {
 async function routeApps(
   parentApp: express.Express,
   appConfigs: AppConfig[],
-  depth = 0
+  depth = 0,
 ) {
   for (const appConfig of appConfigs) {
     log.info(`Loading app ${"..".repeat(depth)}${appConfig.path}`);
@@ -114,7 +114,7 @@ async function routeApps(
         req.allParams = { ...req.allParams, ...req.params };
         next();
       },
-      app
+      app,
     );
 
     if (appConfig.subApps.length > 0) {
@@ -126,7 +126,7 @@ async function routeApps(
 export default async function (app: express.Express): Promise<void> {
   const appConfigs = await loadAppConfigs(
     __dirname + "/../apps",
-    config.appOverrides
+    config.appOverrides,
   );
   app.use(templateLocals(appConfigs));
   await routeApps(app, appConfigs);

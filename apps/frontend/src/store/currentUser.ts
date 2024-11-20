@@ -10,7 +10,8 @@ export async function updateCurrentUser(
 ): Promise<void> {
   try {
     currentUser.value = contact || (await fetchContact('me'));
-  } catch (err) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (_err) {
     currentUser.value = null;
   }
 }

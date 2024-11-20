@@ -5,7 +5,8 @@ subject: Obrigado pela vossa resposta
 <p>Olá *|FNAME|*,</p>
 <p><br /></p>
 <p>
-  Recebemos uma resposta à chamada <a href="*|CALLOUTLINK|*">"*|CALLOUTTITLE|*"</a>
+  Recebemos uma resposta à chamada
+  <a href="*|CALLOUTLINK|*">"*|CALLOUTTITLE|*"</a>
   com o seu endereço de correio eletrónico *|EMAIL|*.
 </p>
 <p><br /></p>

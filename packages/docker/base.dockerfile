@@ -14,12 +14,19 @@ RUN apt-get update && apt-get install -y tini
 COPY --chown=node:node package.json yarn.lock deno.jsonc deno.lock .yarnrc.yml /opt/
 COPY --chown=node:node .yarn /opt/.yarn
 
-# Copy dependencies info
+# Copy dependencies info from packages
 COPY --chown=node:node packages/common/package.json /opt/packages/common/package.json
 COPY --chown=node:node packages/core/package.json /opt/packages/core/package.json
+COPY --chown=node:node packages/docker/package.json /opt/packages/docker/package.json
+
+# Copy dependencies info from apps
 COPY --chown=node:node apps/backend/package.json /opt/apps/backend/package.json
 COPY --chown=node:node apps/legacy/package.json /opt/apps/legacy/package.json
 COPY --chown=node:node apps/webhooks/package.json /opt/apps/webhooks/package.json
+
+# Copy config files with dependencies info
+COPY --chown=node:node packages/prettier-config /opt/packages/prettier-config
+COPY --chown=node:node packages/tsconfig /opt/packages/tsconfig
 
 ENV NODE_ENV=production
 ENV NODE_OPTIONS=--enable-source-maps
@@ -54,7 +61,6 @@ RUN deno --version
 RUN yarn workspaces focus -A
 
 # Copy source files
-COPY configs /opt/configs
 COPY packages /opt/packages
 COPY apps/backend /opt/apps/backend
 COPY apps/legacy /opt/apps/legacy

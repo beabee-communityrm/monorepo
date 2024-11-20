@@ -10,7 +10,7 @@ app.get(
     await new Promise<void>((resolve) => req.logout(resolve));
     req.flash("success", "logged-out");
     res.redirect("/");
-  })
+  }),
 );
 
 export default app;

@@ -29,7 +29,7 @@ app.get(
   wrapAsync(async (req, res) => {
     const pages = await getRepository(PageSettings).find();
     res.render("index", { pages });
-  })
+  }),
 );
 
 function schemaToPageSettings(data: CreatePageSchema): PageSettings {
@@ -50,7 +50,7 @@ app.post(
     const ps = await PageSettingsService.create(schemaToPageSettings(req.body));
     req.flash("success", "pages-created");
     res.redirect("/settings/pages/" + ps.id);
-  })
+  }),
 );
 
 app.get("/:id", hasNewModel(PageSettings, "id"), (req, res) => {
@@ -76,7 +76,7 @@ app.post(
         res.redirect("/settings/pages");
         break;
     }
-  })
+  }),
 );
 
 export default app;

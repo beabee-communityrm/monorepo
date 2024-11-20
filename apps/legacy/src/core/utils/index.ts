@@ -6,7 +6,7 @@ export function userToAuth(user: Express.User): AuthInfo {
   return {
     method: "user",
     contact: user,
-    roles: user.activeRoles
+    roles: user.activeRoles,
   };
 }
 
@@ -18,8 +18,8 @@ export function hasUser(
   fn: (
     req: RequestWithUser,
     res: Response,
-    next: NextFunction
-  ) => void | Promise<void>
+    next: NextFunction,
+  ) => void | Promise<void>,
 ): RequestHandler {
   return (req, res, next) => {
     if (req.user) {
@@ -32,7 +32,7 @@ export function hasUser(
 
 export function isSocialScraper(req: Request): boolean {
   return /^(Twitterbot|facebookexternalhit)/.test(
-    req.headers["user-agent"] || ""
+    req.headers["user-agent"] || "",
   );
 }
 
@@ -43,11 +43,11 @@ export function sleep(ms: number): Promise<void> {
 export function createDateTime(date: string, time: string): Date;
 export function createDateTime(
   date: string | undefined,
-  time: string | undefined
+  time: string | undefined,
 ): Date | null;
 export function createDateTime(
   date: string | undefined,
-  time: string | undefined
+  time: string | undefined,
 ): Date | null {
   return date && time ? new Date(date + "T" + time) : null;
 }

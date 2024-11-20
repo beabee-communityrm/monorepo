@@ -4,7 +4,7 @@ import { NextFunction, Request, Response } from "express";
 export default function (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): void {
   const flash = req.flash(),
     flashes = [];
@@ -20,7 +20,7 @@ export default function (
 
       flashes.push({
         type: level === "error" ? "danger" : level,
-        message: optionMessage
+        message: optionMessage,
       });
     }
   }

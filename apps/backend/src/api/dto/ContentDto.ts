@@ -11,7 +11,8 @@ import {
   ContentProfileData,
   ContentShareData,
   ContentPaymentData,
-  ContentId
+  ContentId,
+  ContentJoinSetupNewsletterGroupData
 } from "@beabee/beabee-common";
 import { Type } from "class-transformer";
 import {
@@ -139,12 +140,17 @@ export class GetContentJoinDto implements ContentJoinData {
   stripeCountry!: StripeFeeCountry;
 }
 
-class GetContentJoinSetupNewsletterGroup {
+class GetContentJoinSetupNewsletterGroup
+  implements ContentJoinSetupNewsletterGroupData
+{
   @IsString()
   id!: string;
 
   @IsString()
   label!: string;
+
+  @IsBoolean()
+  checked!: boolean;
 }
 
 export class GetContentJoinSetupDto implements ContentJoinSetupData {

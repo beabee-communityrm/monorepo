@@ -1,6 +1,6 @@
 import express, { type Express } from "express";
 import OptionsService, {
-  OptionKey
+  OptionKey,
 } from "@beabee/core/services/OptionsService";
 
 const app: Express = express();

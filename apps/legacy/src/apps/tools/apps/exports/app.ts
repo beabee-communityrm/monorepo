@@ -79,7 +79,7 @@ app.get(
 
     const exportsByType = Object.keys(ExportTypes).map((type) => ({
       exportName: new ExportTypes[type as ExportTypeId]().exportName,
-      exports: exports.filter((e) => e.type === type)
+      exports: exports.filter((e) => e.type === type),
     }));
 
     const exportTypesWithParams = [];
@@ -91,7 +91,7 @@ app.get(
     }
 
     res.render("index", { exportsByType, exportTypesWithParams });
-  })
+  }),
 );
 
 app.post(
@@ -99,11 +99,11 @@ app.post(
   hasSchema(createSchema).orFlash,
   wrapAsync(async function (req, res) {
     const exportDetails = await getRepository(Export).save(
-      await schemaToExport(req.body)
+      await schemaToExport(req.body),
     );
     req.flash("success", "exports-created");
     res.redirect("/tools/exports/" + exportDetails.id);
-  })
+  }),
 );
 
 app.get(
@@ -114,13 +114,13 @@ app.get(
     const exportType = new ExportTypes[exportDetails.type](exportDetails);
 
     const exportItems = await getRepository(ExportItem).find({
-      where: { exportId: exportDetails.id }
+      where: { exportId: exportDetails.id },
     });
     const newItemIds = await exportType.getNewItemIds();
 
     const exportItemsByStatus = exportType.itemStatuses.map((status) => ({
       name: status,
-      items: exportItems.filter((item) => item.status === status)
+      items: exportItems.filter((item) => item.status === status),
     }));
 
     res.render("export", {
@@ -128,9 +128,9 @@ app.get(
       exportType,
       exportItems,
       exportItemsByStatus,
-      newItemCount: newItemIds.length
+      newItemCount: newItemIds.length,
     });
-  })
+  }),
 );
 
 app.get(
@@ -158,9 +158,9 @@ app.get(
       fields,
       data,
       exportDetails,
-      status: req.params.status
+      status: req.params.status,
     });
-  })
+  }),
 );
 
 app.post(
@@ -176,7 +176,7 @@ app.post(
       const newExportItems = newItemIds.map((id) => ({
         itemId: id,
         export: exportDetails,
-        status: exportType.itemStatuses[0]
+        status: exportType.itemStatuses[0],
       }));
       await getRepository(ExportItem).insert(newExportItems);
 
@@ -185,7 +185,7 @@ app.post(
     } else if (data.action === "update") {
       await getRepository(ExportItem).update(
         { exportId: exportDetails.id, status: data.oldStatus },
-        { status: data.newStatus }
+        { status: data.newStatus },
       );
 
       req.flash("success", "exports-updated");
@@ -205,7 +205,7 @@ app.post(
       req.flash("success", "exports-deleted");
       res.redirect("/tools/exports");
     }
-  })
+  }),
 );
 
 export default app;

@@ -95,9 +95,3 @@ mixin memberTag(tag)
 			.form-group
 				label(for='bio').control-label Notes
 				textarea(name='bio' rows='3' readonly)#bio.form-control= member.profile.bio
-
-			p
-				| Tags:
-				span.js-edit-member-tags
-					each tag in member.profile.tags
-						a(href='/members/?tag=' + encodeURIComponent(tag) data-tag=tag).label.label-info.member-tag= tag

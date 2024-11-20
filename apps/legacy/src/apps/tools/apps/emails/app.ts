@@ -47,7 +47,7 @@ const assignableSystemEmails = {
   "email-exists-set-password": "Email exists - set password",
   "new-member": "New contact notification",
   "cancelled-member": "Cancelled member notification",
-  "new-callout-response": "New callout response notification"
+  "new-callout-response": "New callout response notification",
 };
 
 function providerTemplateMap() {
@@ -72,11 +72,11 @@ app.get(
     const emailsWithFlags = emails.map((email) => ({
       ...email,
       isSystem: systemEmails.indexOf(email.id) > -1,
-      isSegment: segmentEmails.findIndex((se) => se.emailId === email.id) > -1
+      isSegment: segmentEmails.findIndex((se) => se.emailId === email.id) > -1,
     }));
 
     res.render("index", { emails: emailsWithFlags });
-  })
+  }),
 );
 
 app.post(
@@ -84,7 +84,7 @@ app.post(
   wrapAsync(async (req, res) => {
     const emails = await getRepository(Email).save(schemaToEmail(req.body));
     res.redirect("/tools/emails/" + emails.id);
-  })
+  }),
 );
 
 app.get(
@@ -95,11 +95,11 @@ app.get(
 
     const mailings = await getRepository(EmailMailing).find({
       where: { emailId: email.id },
-      order: { createdDate: "ASC" }
+      order: { createdDate: "ASC" },
     });
     const segmentEmails = await getRepository(SegmentOngoingEmail).find({
       where: { emailId: email.id },
-      relations: { segment: true }
+      relations: { segment: true },
     });
     const systemEmails = Object.entries(providerTemplateMap())
       .filter(([systemId, emailId]) => emailId === email.id)
@@ -110,9 +110,9 @@ app.get(
       mailings,
       segmentEmails,
       systemEmails,
-      assignableSystemEmails
+      assignableSystemEmails,
     });
-  })
+  }),
 );
 
 app.post(
@@ -137,8 +137,8 @@ app.post(
             .map(([systemEmail]) => ({ [systemEmail]: undefined })),
           // (Re)assign the new trigger
           ...((req.body.systemEmails || []) as string[]).map((systemEmail) => ({
-            [systemEmail]: email.id
-          }))
+            [systemEmail]: email.id,
+          })),
         );
         OptionsService.setJSON("email-templates", newEmailTemplates);
         req.flash("success", "transactional-email-updated");
@@ -152,7 +152,7 @@ app.post(
         res.redirect("/tools/emails");
         break;
     }
-  })
+  }),
 );
 
 app.post("/:id/mailings", hasNewModel(Email, "id"), busboy(), (req, res) => {
@@ -164,7 +164,7 @@ app.post("/:id/mailings", hasNewModel(Email, "id"), busboy(), (req, res) => {
       header: true,
       complete: function (results) {
         recipients = results.data as EmailMailingRecipient[];
-      }
+      },
     });
   });
   req.busboy.on("finish", async () => {
@@ -184,13 +184,13 @@ app.get(
   wrapAsync(async (req, res, next) => {
     const email = req.model as Email;
     const mailing = await getRepository(EmailMailing).findOneBy({
-      id: req.params.mailingId
+      id: req.params.mailingId,
     });
     if (!mailing) return next("route");
 
     const matches = email.body.match(/\*\|[^|]+\|\*/g) || [];
     const mergeFields = _.uniq(
-      matches.map((f) => f.substring(2, f.length - 2))
+      matches.map((f) => f.substring(2, f.length - 2)),
     );
     res.render("mailing", {
       email,
@@ -198,9 +198,9 @@ app.get(
       mailing,
       mergeFields,
       headers: Object.keys(mailing.recipients[0]),
-      onlyPreview: req.query.preview !== undefined
+      onlyPreview: req.query.preview !== undefined,
     });
-  })
+  }),
 );
 
 interface SendSchema {
@@ -215,7 +215,7 @@ app.post(
   wrapAsync(async (req, res, next) => {
     const email = req.model as Email;
     const mailing = await getRepository(EmailMailing).findOneBy({
-      id: req.params.mailingId
+      id: req.params.mailingId,
     });
     if (!mailing) return next("route");
 
@@ -224,12 +224,12 @@ app.post(
     const recipients = mailing.recipients.map((recipient) => ({
       to: {
         email: recipient[emailField],
-        name: recipient[nameField]
+        name: recipient[nameField],
       },
       mergeFields: _.mapValues(
         mergeFields,
-        (valueField) => recipient[valueField]
-      )
+        (valueField) => recipient[valueField],
+      ),
     }));
 
     await EmailService.sendEmail(email, recipients);
@@ -238,13 +238,13 @@ app.post(
       sentDate: new Date(),
       emailField,
       nameField,
-      mergeFields
+      mergeFields,
     });
 
     req.flash("success", "transactional-email-sending");
 
     res.redirect(req.originalUrl);
-  })
+  }),
 );
 
 export default app;

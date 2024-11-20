@@ -31,8 +31,8 @@ app.post(
         delivery_line1,
         delivery_line2,
         delivery_city,
-        delivery_postcode
-      }
+        delivery_postcode,
+      },
     } = req;
     const contact = req.model as Contact;
 
@@ -40,7 +40,7 @@ app.post(
       await ContactsService.updateContact(contact, {
         email,
         firstname,
-        lastname
+        lastname,
       });
       await ContactsService.updateContactProfile(contact, {
         deliveryOptIn: delivery_optin,
@@ -49,9 +49,9 @@ app.post(
               line1: delivery_line1,
               line2: delivery_line2,
               city: delivery_city,
-              postcode: delivery_postcode
+              postcode: delivery_postcode,
             }
-          : null
+          : null,
       });
     } catch (error) {
       if (error instanceof DuplicateEmailError) {
@@ -62,7 +62,7 @@ app.post(
     }
 
     res.redirect(req.originalUrl);
-  })
+  }),
 );
 
 export default app;

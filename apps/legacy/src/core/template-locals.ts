@@ -10,7 +10,7 @@ export default (appConfigs: AppConfig[]) =>
   (req: Request, res: Response, next: NextFunction): void => {
     // Process which apps should be shown in menu
     res.locals.menu = {
-      main: []
+      main: [],
     };
 
     const userPermissions = req.user
@@ -31,13 +31,13 @@ export default (appConfigs: AppConfig[]) =>
             .filter(
               (subAppConfig) =>
                 !subAppConfig.hidden &&
-                hasPermission(userPermissions, subAppConfig.permissions)
+                hasPermission(userPermissions, subAppConfig.permissions),
             )
             .map((subAppConfig) => ({
               title: subAppConfig.title,
               path: subAppConfig.path,
-              hidden: subAppConfig.hidden
-            }))
+              hidden: subAppConfig.hidden,
+            })),
         });
       }
     }

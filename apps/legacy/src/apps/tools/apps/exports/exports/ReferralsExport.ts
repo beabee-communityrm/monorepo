@@ -17,9 +17,9 @@ function contactDetails(contact: Contact | null) {
               contact.profile.deliveryAddress.line1,
               contact.profile.deliveryAddress.line2,
               contact.profile.deliveryAddress.city,
-              contact.profile.deliveryAddress.postcode
+              contact.profile.deliveryAddress.postcode,
             ]
-          : ["", "", "", ""])
+          : ["", "", "", ""]),
       ]
     : ["", "", "", "", "", "", ""];
 }
@@ -43,7 +43,7 @@ export default class ReferralsExport extends BaseExport<Referral> {
     const giftOptions = referrals
       .map((referral) => [
         ...Object.keys(referral.referrerGiftOptions || {}),
-        ...Object.keys(referral.refereeGiftOptions || {})
+        ...Object.keys(referral.refereeGiftOptions || {}),
       ])
       .reduce((a, b) => [...a, ...b], [])
       .filter((opt, i, arr) => arr.indexOf(opt) === i); // deduplicate
@@ -60,7 +60,7 @@ export default class ReferralsExport extends BaseExport<Referral> {
       "Postcode",
       "RefereeAmount",
       "Gift",
-      ...giftOptions
+      ...giftOptions,
     ];
 
     const data = referrals
@@ -76,8 +76,8 @@ export default class ReferralsExport extends BaseExport<Referral> {
             referral.refereeAmount,
             referral.referrerGift,
             ...giftOptions.map(
-              (opt) => (referral.referrerGiftOptions || { [opt]: "" })[opt]
-            )
+              (opt) => (referral.referrerGiftOptions || { [opt]: "" })[opt],
+            ),
           ],
           [
             referral.date.toISOString(),
@@ -86,9 +86,9 @@ export default class ReferralsExport extends BaseExport<Referral> {
             referral.refereeAmount,
             referral.refereeGift,
             ...giftOptions.map(
-              (opt) => (referral.refereeGiftOptions || { [opt]: "" })[opt]
-            )
-          ]
+              (opt) => (referral.refereeGiftOptions || { [opt]: "" })[opt],
+            ),
+          ],
         ];
       })
       .reduce((a, b) => [...a, ...b], []);

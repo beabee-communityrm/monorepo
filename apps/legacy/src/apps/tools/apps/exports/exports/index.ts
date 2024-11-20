@@ -7,5 +7,5 @@ export default {
   "active-members": ActiveMembersExport,
   edition: EditionExport,
   gifts: GiftsExport,
-  referrals: ReferralsExport
+  referrals: ReferralsExport,
 } as const;

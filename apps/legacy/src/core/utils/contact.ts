@@ -6,7 +6,7 @@ export function loginAndRedirect(
   req: Request,
   res: Response,
   contact: Contact,
-  url?: string
+  url?: string,
 ): void {
   req.login(contact as Express.User, function (loginError) {
     if (loginError) {

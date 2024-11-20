@@ -20,7 +20,7 @@ app.get("/:key/edit", function (req: Request, res: Response) {
   if (OptionsService.isKey(req.params.key)) {
     const option = OptionsService.get(req.params.key);
     res.locals.breadcrumb.push({
-      name: option.key
+      name: option.key,
     });
 
     req.flash("warning", "option-404");
@@ -38,14 +38,14 @@ app.post(
       req.flash("success", "option-updated");
     }
     res.redirect("/settings/options");
-  })
+  }),
 );
 
 app.get("/:key/reset", function (req: Request, res: Response) {
   if (OptionsService.isKey(req.params.key)) {
     const option = OptionsService.get(req.params.key);
     res.locals.breadcrumb.push({
-      name: option.key
+      name: option.key,
     });
 
     res.render("reset", { key: option.key });
@@ -63,7 +63,7 @@ app.post(
       req.flash("success", "option-reset");
     }
     res.redirect("/settings/options");
-  })
+  }),
 );
 
 export default app;

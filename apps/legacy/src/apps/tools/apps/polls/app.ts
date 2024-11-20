@@ -23,7 +23,7 @@ app.get(
       .getMany();
 
     res.render("index", { polls });
-  })
+  }),
 );
 
 app.get(
@@ -32,10 +32,10 @@ app.get(
   wrapAsync(async (req: Request, res: Response) => {
     const poll = req.model as Callout;
     const responsesCount = await getRepository(CalloutResponse).count({
-      where: { calloutId: poll.id }
+      where: { calloutId: poll.id },
     });
     res.render("poll", { poll, responsesCount });
-  })
+  }),
 );
 
 app.post(
@@ -48,7 +48,7 @@ app.post(
       case "update":
         await getRepository(Callout).update(callout.id, {
           pollMergeField: req.body.pollMergeField,
-          mcMergeField: req.body.mcMergeField
+          mcMergeField: req.body.mcMergeField,
         });
         req.flash("success", "polls-updated");
         res.redirect(req.originalUrl);
@@ -56,13 +56,13 @@ app.post(
 
       case "delete-responses":
         await getRepository(CalloutResponse).delete({
-          calloutId: callout.id
+          calloutId: callout.id,
         });
         req.flash("success", "polls-responses-deleted");
         res.redirect("/tools/polls/" + callout.slug);
         break;
     }
-  })
+  }),
 );
 
 export default app;

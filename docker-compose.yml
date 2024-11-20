@@ -4,7 +4,7 @@
 x-base-app: &base-app
   build: &base-app-build
     context: .
-    dockerfile: ./configs/backend/Dockerfile
+    dockerfile: ./packages/docker/base.dockerfile
   volumes:
     - ./apps/backend/built:/opt/apps/backend/built
     - ./apps/webhooks/dist:/opt/apps/webhooks/dist
