@@ -1,9 +1,2 @@
-export default {
-  trailingComma: "none",
-  overrides: [
-    {
-      files: ["*.yfm"],
-      options: { parser: "html" }
-    }
-  ]
-};
+import { baseConfig } from "@beabee/prettier-config";
+export default baseConfig;
