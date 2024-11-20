@@ -35,7 +35,6 @@ export class CalloutResponseController {
     return CalloutResponseTransformer.fetch(auth, query);
   }
 
-  @Authorized("admin")
   @Patch("/")
   async updateCalloutResponses(
     @CurrentAuth({ required: true }) auth: AuthInfo,
@@ -53,7 +52,6 @@ export class CalloutResponseController {
   ): Promise<GetCalloutResponseDto | undefined> {
     return await CalloutResponseTransformer.fetchOneById(auth, id, query);
   }
-  @Authorized("admin")
   @Patch("/:id")
   async updateCalloutResponse(
     @CurrentAuth({ required: true }) auth: AuthInfo,
