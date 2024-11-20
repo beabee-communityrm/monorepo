@@ -84,7 +84,8 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
   protected modifyQueryBuilder(
     qb: SelectQueryBuilder<CalloutResponse>,
     fieldPrefix: string,
-    query: ListCalloutResponsesDto
+    query: ListCalloutResponsesDto,
+    auth: AuthInfo
   ): void {
     if (query.with?.includes(GetCalloutResponseWith.Assignee)) {
       qb.leftJoinAndSelect(`${fieldPrefix}assignee`, "assignee");
@@ -97,7 +98,10 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
         "variant.name = 'default'"
       );
     }
-    if (query.with?.includes(GetCalloutResponseWith.Contact)) {
+    if (
+      query.with?.includes(GetCalloutResponseWith.Contact) &&
+      auth.roles.includes("admin")
+    ) {
       qb.leftJoinAndSelect(`${fieldPrefix}contact`, "contact");
     }
   }
