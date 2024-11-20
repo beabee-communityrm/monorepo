@@ -82,7 +82,9 @@ class CalloutResponseMapTransformer extends BaseCalloutResponseTransformer<
     };
   }
 
-  protected transformQuery<T extends ListCalloutResponseMapDto>(query: T): T {
+  protected async transformQuery<T extends ListCalloutResponseMapDto>(
+    query: T
+  ): Promise<T> {
     return {
       ...query,
       rules: mergeRules([

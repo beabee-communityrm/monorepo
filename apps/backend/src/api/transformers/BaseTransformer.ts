@@ -88,7 +88,7 @@ export abstract class BaseTransformer<
   protected transformQuery<T extends Query>(
     query: T,
     auth: AuthInfo | undefined
-  ): T {
+  ): T | Promise<T> {
     return query;
   }
 
@@ -164,7 +164,7 @@ export abstract class BaseTransformer<
     const [filters, filterHandlers] = await this.transformFilters(query, auth);
 
     return [
-      this.transformQuery(query, auth),
+      await this.transformQuery(query, auth),
       { ...this.filters, ...filters },
       { ...this.filterHandlers, ...filterHandlers }
     ];

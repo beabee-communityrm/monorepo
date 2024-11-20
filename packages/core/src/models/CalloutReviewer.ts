@@ -11,7 +11,7 @@ import type { Contact } from "./Contact";
 
 @Entity()
 @Unique(["callout", "contact"])
-export default class CalloutReviewer {
+export class CalloutReviewer {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 

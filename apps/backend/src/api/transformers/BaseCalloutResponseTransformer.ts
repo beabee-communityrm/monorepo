@@ -4,6 +4,7 @@ import {
   Filters,
   getCalloutFilters,
   PaginatedQuery,
+  RuleGroup,
   RuleOperator
 } from "@beabee/beabee-common";
 
@@ -11,11 +12,13 @@ import { BaseGetCalloutResponseOptsDto } from "@api/dto/CalloutResponseDto";
 import { BaseTransformer } from "@api/transformers/BaseTransformer";
 import { mergeRules } from "@api/utils/rules";
 
-import { CalloutResponse } from "@beabee/core/models";
+import { CalloutResponse, CalloutReviewer } from "@beabee/core/models";
 
 import { AuthInfo } from "@type/auth-info";
 import { FilterHandlers } from "@type/filter-handlers";
 import { calloutTagTransformer } from "./TagTransformer";
+import { UnauthorizedError } from "@beabee/core/errors";
+import { getRepository } from "@beabee/core/database";
 
 export abstract class BaseCalloutResponseTransformer<
   GetDto,
@@ -42,20 +45,17 @@ export abstract class BaseCalloutResponseTransformer<
     ];
   }
 
-  protected transformQuery<T extends GetOptsDto & PaginatedQuery>(
+  protected async transformQuery<T extends GetOptsDto & PaginatedQuery>(
     query: T,
     auth: AuthInfo | undefined
-  ): T {
+  ): Promise<T> {
+    const authRules = await getAuthRules(auth);
+
     return {
       ...query,
       rules: mergeRules([
         query.rules,
-        // Non admins can only see their own responses
-        !auth?.roles.includes("admin") && {
-          field: "contact",
-          operator: "equal",
-          value: ["me"]
-        },
+        authRules,
         // Only load responses for the given callout
         !!query.callout && {
           field: "calloutId",
@@ -65,6 +65,47 @@ export abstract class BaseCalloutResponseTransformer<
       ])
     };
   }
+}
+
+/**
+ * Get the rules for filtering responses based on the user's role
+ *
+ * @param auth The authentication info
+ * @returns The rules
+ */
+async function getAuthRules(
+  auth: AuthInfo | undefined
+): Promise<RuleGroup | undefined> {
+  // Admins can see all responses, no restrictions needed
+  if (auth?.roles.includes("admin")) {
+    return;
+  }
+
+  if (auth?.method !== "user") {
+    throw new UnauthorizedError();
+  }
+
+  const reviewer = await getRepository(CalloutReviewer).findBy({
+    contactId: auth.contact.id
+  });
+
+  return {
+    condition: "OR",
+    rules: [
+      // User's can always see their own responses
+      {
+        field: "contact",
+        operator: "equal",
+        value: ["me"]
+      },
+      // And any responses for callouts they are reviewers for
+      ...reviewer.map((r) => ({
+        field: "calloutId",
+        operator: "equal" as const,
+        value: [r.calloutId]
+      }))
+    ]
+  };
 }
 
 // Arrays are actually {a: true, b: false} type objects in answers
