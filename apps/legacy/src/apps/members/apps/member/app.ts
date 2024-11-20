@@ -30,7 +30,7 @@ app.use(
     // Bit of a hack to get parent app params
     const contact = await ContactsService.findOne({
       where: { id: req.allParams.uuid },
-      relations: { profile: true },
+      relations: { profile: true }
     });
     if (contact) {
       req.model = contact;
@@ -42,7 +42,7 @@ app.use(
     } else {
       next("route");
     }
-  }),
+  })
 );
 
 app.get(
@@ -53,16 +53,16 @@ app.get(
 
     const rpFlow = await getRepository(ResetSecurityFlow).findOne({
       where: { contactId: contact.id },
-      order: { date: "DESC" },
+      order: { date: "DESC" }
     });
 
     res.render("index", {
       member: contact,
       rpFlow,
       availableTags,
-      password_tries: config.passwordTries,
+      password_tries: config.passwordTries
     });
-  }),
+  })
 );
 
 app.post(
@@ -80,7 +80,7 @@ app.post(
       case "save-about": {
         await ContactsService.updateContactProfile(contact, {
           description: req.body.description || "",
-          bio: req.body.bio || "",
+          bio: req.body.bio || ""
         });
 
         req.flash("success", "member-updated");
@@ -88,18 +88,18 @@ app.post(
       }
       case "save-contact":
         await ContactsService.updateContact(contact, {
-          email: req.body.email,
+          email: req.body.email
         });
         await ContactsService.updateContactProfile(contact, {
           telephone: req.body.telephone || "",
           twitter: req.body.twitter || "",
-          preferredContact: req.body.preferred || "",
+          preferredContact: req.body.preferred || ""
         });
         req.flash("success", "member-updated");
         break;
       case "save-notes":
         await ContactsService.updateContactProfile(contact, {
-          notes: req.body.notes,
+          notes: req.body.notes
         });
         req.flash("success", "member-updated");
         break;
@@ -107,15 +107,15 @@ app.post(
         await ContactsService.updateContact(contact, {
           loginOverride: {
             code: generateCode(),
-            expires: moment().add(24, "hours").toDate(),
-          },
+            expires: moment().add(24, "hours").toDate()
+          }
         });
         req.flash("success", "member-login-override-generated");
         break;
       case "password-reset":
         await getRepository(ResetSecurityFlow).save({
           contact,
-          type: RESET_SECURITY_FLOW_TYPE.PASSWORD,
+          type: RESET_SECURITY_FLOW_TYPE.PASSWORD
         });
         req.flash("success", "member-password-reset-generated");
         break;
@@ -128,7 +128,7 @@ app.post(
     }
 
     res.redirect(req.baseUrl);
-  }),
+  })
 );
 
 export default app;

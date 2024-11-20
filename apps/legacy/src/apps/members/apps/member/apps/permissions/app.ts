@@ -3,7 +3,7 @@ import express, {
   type Express,
   type NextFunction,
   type Request,
-  type Response,
+  type Response
 } from "express";
 
 import { hasSchema } from "#core/middleware";
@@ -41,7 +41,7 @@ app.get(
   "/",
   wrapAsync(async (req, res) => {
     res.render("index", { member: req.model });
-  }),
+  })
 );
 
 app.post(
@@ -75,11 +75,11 @@ app.post(
 
     await ContactsService.updateContactRole(contact, type, {
       dateAdded,
-      dateExpires,
+      dateExpires
     });
 
     res.redirect(req.originalUrl);
-  }),
+  })
 );
 
 app.get(
@@ -95,7 +95,7 @@ app.get(
       req.flash("warning", "permission-404");
       res.redirect(req.baseUrl);
     }
-  }),
+  })
 );
 
 app.post(
@@ -104,7 +104,7 @@ app.post(
   hasSchema(updatePermissionSchema).orFlash,
   wrapAsync(async (req, res) => {
     const {
-      body: { startDate, startTime, expiryDate, expiryTime },
+      body: { startDate, startTime, expiryDate, expiryTime }
     } = req;
     const contact = req.model as Contact;
     const roleType = req.params.id as RoleType;
@@ -120,12 +120,12 @@ app.post(
 
     await ContactsService.updateContactRole(contact, roleType, {
       dateAdded,
-      dateExpires,
+      dateExpires
     });
 
     req.flash("success", "permission-updated");
     res.redirect(req.baseUrl);
-  }),
+  })
 );
 
 app.post(
@@ -134,12 +134,12 @@ app.post(
   wrapAsync(async (req, res) => {
     await ContactsService.revokeContactRole(
       req.model as Contact,
-      req.params.id as RoleType,
+      req.params.id as RoleType
     );
 
     req.flash("success", "permission-removed");
     res.redirect(req.baseUrl);
-  }),
+  })
 );
 
 export default app;

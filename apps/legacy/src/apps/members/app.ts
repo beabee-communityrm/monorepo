@@ -32,26 +32,26 @@ type SortOption = {
 const sortOptions: Record<string, SortOption> = {
   lastname: {
     label: "Last name",
-    sort: "lastname",
+    sort: "lastname"
   },
   firstname: {
     label: "First name",
-    sort: "firstname",
+    sort: "firstname"
   },
   email: {
     label: "Email",
-    sort: "email",
+    sort: "email"
   },
   joined: {
     label: "Joined",
-    sort: "joined",
-  },
+    sort: "joined"
+  }
 } as const;
 
 function convertBasicSearch(query: Request["query"]): RuleGroup | undefined {
   const search: RuleGroup = {
     condition: "AND",
-    rules: [],
+    rules: []
   };
 
   for (const field of ["firstname", "lastname", "email"] as const) {
@@ -59,7 +59,7 @@ function convertBasicSearch(query: Request["query"]): RuleGroup | undefined {
       search.rules.push({
         field,
         operator: "contains",
-        value: [query[field] as string],
+        value: [query[field] as string]
       });
     }
   }
@@ -67,7 +67,7 @@ function convertBasicSearch(query: Request["query"]): RuleGroup | undefined {
     search.rules.push({
       field: "tags",
       operator: "contains",
-      value: [query.tag as string],
+      value: [query.tag as string]
     });
   }
 
@@ -84,15 +84,15 @@ export function cleanRuleGroup(group: RuleGroup): RuleGroup {
         : {
             field: rule.field,
             operator: rule.operator,
-            value: Array.isArray(rule.value) ? rule.value : [rule.value],
-          },
-    ),
+            value: Array.isArray(rule.value) ? rule.value : [rule.value]
+          }
+    )
   };
 }
 
 function getSearchRuleGroup(
   query: Request["query"],
-  searchType?: string,
+  searchType?: string
 ): RuleGroup | undefined {
   return (searchType || query.type) === "basic"
     ? convertBasicSearch(query)
@@ -140,14 +140,14 @@ app.get(
       items: [],
       total: 0,
       count: 0,
-      offset: 0,
+      offset: 0
     };
 
     const pages = [...Array(Math.ceil(result.total / limit))].map(
       (v, page) => ({
         number: page + 1,
-        path: "/members?" + queryString.stringify({ ...query, page: page + 1 }),
-      }),
+        path: "/members?" + queryString.stringify({ ...query, page: page + 1 })
+      })
     );
 
     const next = page + 1 <= pages.length ? pages[page] : null;
@@ -160,13 +160,13 @@ app.get(
       next,
       start: (page - 1) * limit + 1,
       end: Math.min(result.total, page * limit),
-      total: pages.length,
+      total: pages.length
     };
 
     const addToProject =
       query.addToProject &&
       (await getRepository(Project).findOneBy({
-        id: query.addToProject as string,
+        id: query.addToProject as string
       }));
 
     res.render("index", {
@@ -181,9 +181,9 @@ app.get(
       totalMembers,
       segments,
       activeSegment,
-      addToProject,
+      addToProject
     });
-  }),
+  })
 );
 
 app.post(
@@ -194,13 +194,13 @@ app.post(
       if (req.body.action === "save-segment") {
         const segment = await SegmentService.createSegment(
           "Untitled segment",
-          searchRuleGroup,
+          searchRuleGroup
         );
         res.redirect("/members/?segment=" + segment.id);
       } else if (req.body.action === "update-segment" && req.query.segment) {
         const segmentId = req.query.segment as string;
         await SegmentService.updateSegment(segmentId, {
-          ruleGroup: searchRuleGroup,
+          ruleGroup: searchRuleGroup
         });
         res.redirect("/members/?segment=" + segmentId);
       } else {
@@ -210,7 +210,7 @@ app.post(
       req.flash("error", "segment-no-rule-group");
       res.redirect(req.originalUrl);
     }
-  }),
+  })
 );
 
 export default app;

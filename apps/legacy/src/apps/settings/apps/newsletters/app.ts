@@ -32,7 +32,7 @@ async function setResyncStatus(message: string) {
   log.info("Resync status: " + message);
   await OptionsService.set(
     "newsletter-resync-status",
-    `[${moment.utc().format("HH:mm DD/MM")}] ${message}`,
+    `[${moment.utc().format("HH:mm DD/MM")}] ${message}`
   );
 }
 
@@ -50,7 +50,7 @@ function isMismatchedContact(contact: Contact, nlContact: NewsletterContact) {
       groupsList(nlContact.groups) ||
     !!contact.membership?.isActive !==
       nlContact.tags.includes(
-        OptionsService.getText("newsletter-active-member-tag"),
+        OptionsService.getText("newsletter-active-member-tag")
       )
   );
 }
@@ -76,13 +76,13 @@ async function handleResync(
     updateThem: boolean;
     dryRun: boolean;
     removeUnsubscribed: boolean;
-  },
+  }
 ) {
   try {
     await setResyncStatus("In progress: Fetching contact lists");
 
     const contacts = await ContactsService.find({
-      relations: { profile: true },
+      relations: { profile: true }
     });
     const nlContacts = await NewsletterService.getNewsletterContacts();
 
@@ -119,7 +119,7 @@ async function handleResync(
     const nlContactsToImport = nlContacts.filter(
       (nm) =>
         nm.status !== NewsletterStatus.Pending &&
-        contacts.every((m) => m.email !== nm.email),
+        contacts.every((m) => m.email !== nm.email)
     );
 
     await OptionsService.set(
@@ -129,27 +129,27 @@ async function handleResync(
         imports: nlContactsToImport.map((m) => ({
           email: m.email,
           status: m.status,
-          groups: m.groups,
+          groups: m.groups
         })),
         mismatched: mismatchedContacts.map(([m, nlm]) => ({
           id: m.id,
           status: nlm.status,
           groups: nlm.groups,
-          tags: nlm.tags,
-        })),
-      } as ReportData),
+          tags: nlm.tags
+        }))
+      } as ReportData)
     );
 
     if (opts.dryRun) {
       await setResyncStatus(
-        `DRY RUN: Successfully synced all contacts. ${nlContactsToImport.length} imported, ${mismatchedContacts.length} fixed, ${existingContactsToArchive.length} archived and ${newContactsToUpload.length} newly uploaded`,
+        `DRY RUN: Successfully synced all contacts. ${nlContactsToImport.length} imported, ${mismatchedContacts.length} fixed, ${existingContactsToArchive.length} archived and ${newContactsToUpload.length} newly uploaded`
       );
       return;
     }
 
     if (opts.updateThem) {
       await setResyncStatus(
-        `In progress: Uploading ${newContactsToUpload.length} new contacts to the newsletter list`,
+        `In progress: Uploading ${newContactsToUpload.length} new contacts to the newsletter list`
       );
       await NewsletterService.upsertContacts(newContactsToUpload);
     }
@@ -157,7 +157,7 @@ async function handleResync(
     // Must fix status before mass update to avoid overwriting in the wrong direction
     if (statusSource === "theirs") {
       await setResyncStatus(
-        `In progress: Fixing ${mismatchedContacts.length} mismatched contacts`,
+        `In progress: Fixing ${mismatchedContacts.length} mismatched contacts`
       );
 
       for (const [contact, nlContact] of mismatchedContacts) {
@@ -165,47 +165,47 @@ async function handleResync(
           contact,
           {
             newsletterStatus: nlContact.status,
-            newsletterGroups: nlContact.groups,
+            newsletterGroups: nlContact.groups
           },
-          { sync: false },
+          { sync: false }
         );
       }
     }
 
     if (opts.updateThem) {
       await setResyncStatus(
-        `In progress: Updating ${existingContacts.length} contacts in newsletter list`,
+        `In progress: Updating ${existingContacts.length} contacts in newsletter list`
       );
       await NewsletterService.upsertContacts(existingContacts);
 
       // Sync tags before archiving
       await setResyncStatus(
-        `In progress: Updating active member tag for ${mismatchedContacts.length} contacts in newsletter list`,
+        `In progress: Updating active member tag for ${mismatchedContacts.length} contacts in newsletter list`
       );
 
       await NewsletterService.addTagToContacts(
         mismatchedContacts
           .filter(([m]) => m.membership?.isActive)
           .map(([m]) => m),
-        OptionsService.getText("newsletter-active-member-tag"),
+        OptionsService.getText("newsletter-active-member-tag")
       );
       await NewsletterService.removeTagFromContacts(
         mismatchedContacts
           .filter(([m]) => !m.membership?.isActive)
           .map(([m]) => m),
-        OptionsService.getText("newsletter-active-member-tag"),
+        OptionsService.getText("newsletter-active-member-tag")
       );
 
       // TODO: Check other tags
 
       await setResyncStatus(
-        `In progress: Archiving ${existingContactsToArchive.length} contacts from newsletter list`,
+        `In progress: Archiving ${existingContactsToArchive.length} contacts from newsletter list`
       );
       await NewsletterService.archiveContacts(existingContactsToArchive);
     }
 
     await setResyncStatus(
-      `In progress: Importing ${nlContactsToImport.length} contacts from newsletter list`,
+      `In progress: Importing ${nlContactsToImport.length} contacts from newsletter list`
     );
 
     for (const nlContact of nlContactsToImport) {
@@ -214,23 +214,23 @@ async function handleResync(
           email: nlContact.email,
           firstname: nlContact.firstname,
           lastname: nlContact.lastname,
-          joined: nlContact.joined,
+          joined: nlContact.joined
         },
         {
           newsletterStatus: nlContact.status,
-          newsletterGroups: nlContact.groups,
+          newsletterGroups: nlContact.groups
         },
-        { sync: false },
+        { sync: false }
       );
     }
 
     if (opts.updateThem) {
       await setResyncStatus(
-        `Successfully synced all contacts. ${nlContactsToImport.length} imported, ${mismatchedContacts.length} fixed, ${existingContactsToArchive.length} archived, ${newContactsToUpload.length} newly uploaded`,
+        `Successfully synced all contacts. ${nlContactsToImport.length} imported, ${mismatchedContacts.length} fixed, ${existingContactsToArchive.length} archived, ${newContactsToUpload.length} newly uploaded`
       );
     } else {
       await setResyncStatus(
-        `Successfully synced all contacts. ${nlContactsToImport.length} imported, ${mismatchedContacts.length} fixed`,
+        `Successfully synced all contacts. ${nlContactsToImport.length} imported, ${mismatchedContacts.length} fixed`
       );
     }
   } catch (error: any) {
@@ -250,10 +250,10 @@ app.post(
       handleResync(req.body.statusSource, {
         updateThem: req.body.updateThem === "true",
         dryRun: req.body.dryRun === "true",
-        removeUnsubscribed: req.body.removeUnsubscribed === "true",
+        removeUnsubscribed: req.body.removeUnsubscribed === "true"
       });
     }
-  }),
+  })
 );
 
 app.get(
@@ -263,7 +263,7 @@ app.get(
     const newContactsToUpload = await ContactsService.findByIds(data.uploadIds);
     const mismatchedContacts = await ContactsService.findByIds(
       data.mismatched.map((m) => m.id),
-      { relations: { profile: true } },
+      { relations: { profile: true } }
     );
 
     res.render("report", {
@@ -271,10 +271,10 @@ app.get(
       newContactsToUpload,
       mismatchedContacts: data.mismatched.map((m) => ({
         ...m,
-        contact: mismatchedContacts.find((m2) => m.id === m2.id),
-      })),
+        contact: mismatchedContacts.find((m2) => m.id === m2.id)
+      }))
     });
-  }),
+  })
 );
 
 export default app;

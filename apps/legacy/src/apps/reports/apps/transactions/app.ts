@@ -21,7 +21,7 @@ app.get(
     if (req.params.month && req.params.year) {
       start.set({
         month: Number(req.params.month) - 1,
-        year: Number(req.params.year),
+        year: Number(req.params.year)
       });
     }
 
@@ -36,10 +36,10 @@ app.get(
 
     const payments = await getRepository(Payment).find({
       where: {
-        createdAt: Between(start.toDate(), end.toDate()),
+        createdAt: Between(start.toDate(), end.toDate())
       },
       order: { chargeDate: "DESC" },
-      relations: { contact: true },
+      relations: { contact: true }
     });
 
     const successfulPayments = payments
@@ -54,9 +54,9 @@ app.get(
       total: total,
       next: end,
       previous: previous,
-      start: start,
+      start: start
     });
-  }),
+  })
 );
 
 export default app;

@@ -7,7 +7,7 @@ import { Contact, Segment } from "@beabee/core/models";
 export async function getSegmentContacts(segment: Segment): Promise<Contact[]> {
   const validatedRuleGroup = validateRuleGroup(
     contactFilters,
-    segment.ruleGroup,
+    segment.ruleGroup
   );
   // const qb = buildSelectQuery(
   //   Contact,

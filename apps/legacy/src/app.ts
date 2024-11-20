@@ -17,7 +17,7 @@ import sessions from "#core/sessions";
 import { isInvalidType } from "@beabee/core/utils/db";
 
 import OptionsService, {
-  OptionKey,
+  OptionKey
 } from "@beabee/core/services/OptionsService";
 import PageSettingsService from "@beabee/core/services/PageSettingsService";
 
@@ -27,7 +27,7 @@ import config from "@beabee/core/config";
 
 if (!config.gocardless.sandbox && config.dev) {
   log.error(
-    "Dev mode enabled but GoCardless is not in sandbox, refusing to start",
+    "Dev mode enabled but GoCardless is not in sandbox, refusing to start"
   );
   process.exit(1);
 }
@@ -47,7 +47,7 @@ app.use((req, res, next) => {
   if (req.headers["content-type"] === "application/x-www-form-urlencoded") {
     req.body = cleanDeep(req.body, {
       emptyArrays: false,
-      emptyObjects: false,
+      emptyObjects: false
     });
   }
   next();
@@ -104,7 +104,7 @@ initApp()
         return res
           .status(403)
           .send(
-            "Error: Please make sure cookies are enabled. (CSRF token invalid)",
+            "Error: Please make sure cookies are enabled. (CSRF token invalid)"
           );
       }
       next(err);

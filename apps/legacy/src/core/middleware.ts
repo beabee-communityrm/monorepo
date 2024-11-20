@@ -17,7 +17,7 @@ interface OnErrorHandler {
     errors: ErrorObject[],
     req: Request,
     res: Response,
-    next?: NextFunction,
+    next?: NextFunction
   ): void;
 }
 
@@ -64,7 +64,7 @@ function convertErrorsToMessages(errors: ErrorObject[]): string[] {
 
 const flashErrors: OnErrorHandler = (errors, req, res) => {
   convertErrorsToMessages(errors).forEach((message) =>
-    req.flash("danger", message),
+    req.flash("danger", message)
   );
 
   res.redirect(req.originalUrl);
@@ -85,7 +85,7 @@ const replyWithJSON: OnErrorHandler = (errors, req, res) => {
 
 function onRequest(
   validators: Validators,
-  onErrors: OnErrorHandler,
+  onErrors: OnErrorHandler
 ): RequestHandler {
   return (req, res, next) => {
     const errors = validationKeys
@@ -105,7 +105,7 @@ function onRequest(
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export function hasSchema(
-  schema: Partial<Record<ValidationKeys, object>>,
+  schema: Partial<Record<ValidationKeys, object>>
 ): HasSchema {
   const validators: Validators = {};
 
@@ -122,23 +122,23 @@ export function hasSchema(
     orRedirect(url) {
       return onRequest(validators, redirectTo(url));
     },
-    orReplyWithJSON: onRequest(validators, replyWithJSON),
+    orReplyWithJSON: onRequest(validators, replyWithJSON)
   };
 }
 
 export function hasNewModel<T extends ObjectLiteral>(
   entity: EntityTarget<T>,
   prop: keyof T,
-  findOpts: FindOneOptions<T> = {},
+  findOpts: FindOneOptions<T> = {}
 ): RequestHandler {
   return wrapAsync(async (req, res, next) => {
     if (!req.model || (req.model as any)[prop] !== req.params[prop as string]) {
       try {
         req.model = await getRepository(entity).findOne({
           where: {
-            [prop]: req.params[prop as string],
+            [prop]: req.params[prop as string]
           } as T,
-          ...findOpts,
+          ...findOpts
         });
       } catch (err) {
         if (!isInvalidType(err)) {
@@ -164,7 +164,7 @@ export function hasNewModel<T extends ObjectLiteral>(
 export function isLoggedIn(
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ): void {
   const status = auth.loggedIn(req);
 
@@ -205,7 +205,7 @@ export function isAdmin(req: Request, res: Response, next: NextFunction): void {
 export function isSuperAdmin(
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ): void {
   const status = auth.canSuperAdmin(req);
   switch (status) {

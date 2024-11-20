@@ -7,7 +7,7 @@ export enum AuthenticationStatus {
   NOT_LOGGED_IN = 0,
   NOT_MEMBER = -1,
   NOT_ADMIN = -2,
-  REQUIRES_2FA = -3,
+  REQUIRES_2FA = -3
 }
 
 export function generateCode(): string {
@@ -63,7 +63,7 @@ export function canSuperAdmin(req: Request): AuthenticationStatus {
 export function handleNotAuthed(
   status: AuthenticationStatus,
   req: Request,
-  res: Response,
+  res: Response
 ): void {
   const nextUrl = req.method === "GET" ? getNextParam(req.originalUrl) : "";
 

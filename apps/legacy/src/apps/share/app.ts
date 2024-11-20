@@ -4,7 +4,7 @@ import { createQueryBuilder } from "@beabee/core/database";
 import { wrapAsync } from "@beabee/core/utils/index";
 
 import PageSettingsService, {
-  JustPageSettings,
+  JustPageSettings
 } from "@beabee/core/services/PageSettingsService";
 
 import { Callout } from "@beabee/core/models";
@@ -16,7 +16,7 @@ const app: Express = express();
 app.set("views", __dirname + "/views");
 
 async function getCalloutShareSettings(
-  uri: string,
+  uri: string
 ): Promise<JustPageSettings | undefined> {
   const parts = uri.substring("/callouts/".length).split("?");
   const slug = parts[0].split("/")[0];
@@ -35,7 +35,7 @@ async function getCalloutShareSettings(
     const variant = callout.variants.find((v) => v.name === locale);
     if (!variant) {
       throw new Error(
-        `No variant found for callout ${callout.slug} and locale ${locale}`,
+        `No variant found for callout ${callout.slug} and locale ${locale}`
       );
     }
 
@@ -43,7 +43,7 @@ async function getCalloutShareSettings(
       shareTitle: variant.shareTitle || variant.title,
       shareDescription: variant.shareDescription || variant.excerpt,
       shareImage: callout.image,
-      shareUrl: config.audience + "/callouts/" + callout.slug,
+      shareUrl: config.audience + "/callouts/" + callout.slug
     };
   }
 }
@@ -61,7 +61,7 @@ app.get(
     }
 
     res.render("index", pageSettings && { pageSettings });
-  }),
+  })
 );
 
 export default app;

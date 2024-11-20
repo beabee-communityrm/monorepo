@@ -17,7 +17,7 @@ declare global {
     export interface Request {
       flash(
         level: "info" | "success" | "warning" | "error" | "danger",
-        message: string,
+        message: string
       ): void;
       model: unknown;
       allParams: ParamsDictionary;

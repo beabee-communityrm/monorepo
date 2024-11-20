@@ -12,7 +12,7 @@ function addressFields(address: Address | null) {
     GifteeAddress1: address?.line1 || "",
     GifteeAddress2: address?.line2 || "",
     GifteeCity: address?.city || "",
-    GifteePostcode: address?.postcode?.trim().toUpperCase() || "",
+    GifteePostcode: address?.postcode?.trim().toUpperCase() || ""
   };
 }
 
@@ -47,7 +47,7 @@ export default class GiftsExport extends BaseExport<GiftFlow> {
             GifteeHasActivated: !giftee.password.hash,
             GifteeHasConverted:
               giftee.contributionType !== ContributionType.Gift,
-            ...addressFields(giftee.profile.deliveryAddress),
+            ...addressFields(giftee.profile.deliveryAddress)
           }
         : {
             GifteeName: giftForm.firstname + " " + giftForm.lastname,
@@ -56,7 +56,7 @@ export default class GiftsExport extends BaseExport<GiftFlow> {
             GifteeExpiryDate: "",
             GifteeHasActivated: false,
             GifteeHasConverted: false,
-            ...addressFields(giftForm.deliveryAddress),
+            ...addressFields(giftForm.deliveryAddress)
           };
 
       return {
@@ -67,7 +67,7 @@ export default class GiftsExport extends BaseExport<GiftFlow> {
         GifterName: giftForm.fromName,
         GifterEmail: giftForm.fromEmail,
         Message: giftForm.message,
-        ...gifteeDetails,
+        ...gifteeDetails
       };
     });
   }

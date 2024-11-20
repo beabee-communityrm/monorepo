@@ -92,7 +92,7 @@ app.post(
       error = "flash-gifts-date-in-the-past" as const;
     } else {
       const contact = await ContactsService.findOneBy({
-        email: giftForm.email,
+        email: giftForm.email
       });
       if (contact) {
         error = "flash-gifts-email-duplicate" as const;
@@ -105,7 +105,7 @@ app.post(
       const sessionId = await GiftService.createGiftFlow(giftForm);
       res.send({ sessionId });
     }
-  }),
+  })
 );
 
 app.get(
@@ -133,7 +133,7 @@ app.get(
     } else {
       res.redirect("/gift/failed/" + giftFlow.id);
     }
-  }),
+  })
 );
 
 app.get("/thanks/:id", hasNewModel(GiftFlow, "id"), (req, res) => {
@@ -141,7 +141,7 @@ app.get("/thanks/:id", hasNewModel(GiftFlow, "id"), (req, res) => {
   if (giftFlow.completed) {
     res.render("thanks", {
       ...giftFlow.giftForm,
-      processed: giftFlow.processed,
+      processed: giftFlow.processed
     });
   } else {
     res.redirect("/gift/failed/" + giftFlow.id);
@@ -157,11 +157,11 @@ app.post(
     await GiftService.updateGiftFlowAddress(
       giftFlow,
       giftAddress,
-      deliveryAddress,
+      deliveryAddress
     );
 
     res.redirect(req.originalUrl);
-  }),
+  })
 );
 
 app.get("/failed/:id", hasNewModel(GiftFlow, "id"), (req, res) => {

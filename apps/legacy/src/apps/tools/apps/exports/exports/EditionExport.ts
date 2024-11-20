@@ -21,13 +21,13 @@ export default class EditionExport extends ActiveMembersExport {
       {
         name: "monthlyAmountThreshold",
         label: "Monthly contribution amount threshold",
-        type: "number",
+        type: "number"
       },
       {
         name: "includeNonOptIn",
         label: "Include those without delivery opt in",
-        type: "boolean",
-      },
+        type: "boolean"
+      }
     ];
   }
 
@@ -36,7 +36,7 @@ export default class EditionExport extends ActiveMembersExport {
       .innerJoinAndSelect("m.profile", "profile")
       .orderBy({
         firstname: "ASC",
-        lastname: "ASC",
+        lastname: "ASC"
       });
   }
 
@@ -46,7 +46,7 @@ export default class EditionExport extends ActiveMembersExport {
       .andWhere("m.contributionMonthlyAmount >= :amount")
       .setParameters({
         now: new Date(),
-        amount: this.ex!.params?.monthlyAmountThreshold || 3,
+        amount: this.ex!.params?.monthlyAmountThreshold || 3
       });
 
     if (!this.ex!.params?.includeNonOptIn) {
@@ -62,7 +62,7 @@ export default class EditionExport extends ActiveMembersExport {
         line1: "",
         line2: "",
         city: "",
-        postcode: "",
+        postcode: ""
       };
 
       return {
@@ -75,7 +75,7 @@ export default class EditionExport extends ActiveMembersExport {
         Postcode: deliveryAddress.postcode.trim().toUpperCase(),
         ReferralCode: contact.referralCode,
         IsGift: contact.contributionType === ContributionType.Gift,
-        ContributionMonthlyAmount: contact.contributionMonthlyAmount,
+        ContributionMonthlyAmount: contact.contributionMonthlyAmount
       };
     });
   }

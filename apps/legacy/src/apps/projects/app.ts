@@ -10,7 +10,7 @@ import {
   Contact,
   Project,
   ProjectContact,
-  ProjectEngagement,
+  ProjectEngagement
 } from "@beabee/core/models";
 
 import { createProjectSchema } from "./schemas.json";
@@ -67,21 +67,21 @@ type UpdateAction =
   | DeleteProjectAction;
 
 function schemaToProject(
-  data: CreateProjectSchema,
+  data: CreateProjectSchema
 ): Pick<Project, "title" | "description" | "status" | "groupName"> {
   const { title, description, status, groupName } = data;
   return { title, description, status, groupName: groupName || null };
 }
 
 function schemaToEngagement(
-  data: CreateEngagementSchema,
+  data: CreateEngagementSchema
 ): Pick<ProjectEngagement, "type" | "notes" | "date" | "toContact"> {
   const { type, date, time, notes } = data;
   return {
     type,
     notes,
     date: moment(`${date}T${time}`).toDate(),
-    toContact: { id: data.contactId } as Contact,
+    toContact: { id: data.contactId } as Contact
   };
 }
 
@@ -99,7 +99,7 @@ app.get(
       .getMany();
 
     res.render("index", { projects });
-  }),
+  })
 );
 
 app.post(
@@ -108,11 +108,11 @@ app.post(
   wrapAsync(async (req, res) => {
     const project = await getRepository(Project).save({
       ...schemaToProject(req.body),
-      owner: req.user!,
+      owner: req.user!
     });
     req.flash("success", "project-created");
     res.redirect("/projects/" + project.id);
-  }),
+  })
 );
 
 app.get(
@@ -123,30 +123,30 @@ app.get(
 
     const projectContacts = await getRepository(ProjectContact).find({
       where: { projectId: project.id },
-      relations: { contact: { profile: true } },
+      relations: { contact: { profile: true } }
     });
     const engagements = await getRepository(ProjectEngagement).find({
       where: { projectId: project.id },
-      relations: { byContact: true, toContact: true },
+      relations: { byContact: true, toContact: true }
     });
 
     const projectContactsWithEngagement = projectContacts.map((pm) => {
       const contactEngagements = engagements.filter(
-        (e) => pm.contact.id === e.toContact.id,
+        (e) => pm.contact.id === e.toContact.id
       );
       return {
         ...pm,
         engagements: contactEngagements,
         engagementsByDate: _.sortBy(contactEngagements, "date"),
-        latestEngagement: contactEngagements[contactEngagements.length - 1],
+        latestEngagement: contactEngagements[contactEngagements.length - 1]
       };
     });
 
     res.render("project", {
       project,
-      projectContacts: projectContactsWithEngagement,
+      projectContacts: projectContactsWithEngagement
     });
-  }),
+  })
 );
 
 app.post(
@@ -166,15 +166,15 @@ app.post(
         await getRepository(ProjectContact).insert(
           data.contactIds.map((contactId) => ({
             project,
-            contact: { id: contactId },
-          })),
+            contact: { id: contactId }
+          }))
         );
         req.flash("success", "project-members-added");
         res.redirect(req.originalUrl);
         break;
       case "update-contact-tag":
         await getRepository(ProjectContact).update(data.projectContactId, {
-          tag: data.tag,
+          tag: data.tag
         });
         res.redirect(req.originalUrl + "#contacts");
         break;
@@ -182,7 +182,7 @@ app.post(
         await getRepository(ProjectEngagement).insert({
           ...schemaToEngagement(data),
           project,
-          byContact: req.user!,
+          byContact: req.user!
         });
         res.redirect(req.originalUrl + "#contacts");
         break;
@@ -192,7 +192,7 @@ app.post(
         break;
       case "delete":
         await getRepository(ProjectEngagement).delete({
-          projectId: project.id,
+          projectId: project.id
         });
         await getRepository(ProjectContact).delete({ projectId: project.id });
         await getRepository(Project).delete(project.id);
@@ -200,7 +200,7 @@ app.post(
         res.redirect("/projects");
         break;
     }
-  }),
+  })
 );
 
 export default app;

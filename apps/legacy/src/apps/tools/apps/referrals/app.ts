@@ -20,7 +20,7 @@ app.get(
   wrapAsync(async (req: Request, res: Response) => {
     const gifts = await getRepository(ReferralGift).find();
     res.render("index", { gifts });
-  }),
+  })
 );
 
 app.get(
@@ -28,7 +28,7 @@ app.get(
   hasNewModel(ReferralGift, "name"),
   wrapAsync(async (req: Request, res: Response) => {
     res.render("gift", { gift: req.model });
-  }),
+  })
 );
 
 interface UpdateGiftSchema {
@@ -75,7 +75,7 @@ app.post(
           label: data.label,
           description: data.description,
           minAmount: data.minAmount,
-          enabled: !!data.enabled,
+          enabled: !!data.enabled
         });
         req.flash("success", "referral-gifts-updated");
         break;
@@ -83,7 +83,7 @@ app.post(
         const options = _.zip(data.optionNames, data.optionValues)
           .map(([name, values]) => ({
             name: name!,
-            values: values ? values.split(",").map((s) => s.trim()) : [],
+            values: values ? values.split(",").map((s) => s.trim()) : []
           }))
           .filter(({ name }) => !!name);
         await giftRepository.update(gift.name, { options });
@@ -92,7 +92,7 @@ app.post(
       }
       case "update-stock": {
         const stock = new Map(
-          _.zip(data.stockRefs, data.stockCounts.map(Number)),
+          _.zip(data.stockRefs, data.stockCounts.map(Number))
         );
         await giftRepository.update(gift.name, { stock });
         req.flash("success", "referral-gifts-stock-updated");
@@ -105,9 +105,9 @@ app.post(
     }
 
     res.redirect(
-      data.action === "delete-gift" ? "/tools/referrals" : req.originalUrl,
+      data.action === "delete-gift" ? "/tools/referrals" : req.originalUrl
     );
-  }),
+  })
 );
 
 export default app;

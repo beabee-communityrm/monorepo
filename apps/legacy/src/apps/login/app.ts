@@ -6,7 +6,7 @@ import { getRepository } from "@beabee/core/database";
 import {
   isValidNextUrl,
   getNextParam,
-  wrapAsync,
+  wrapAsync
 } from "@beabee/core/utils/index";
 import { loginAndRedirect } from "#core/utils/contact";
 
@@ -37,9 +37,9 @@ if (config.dev) {
       if (RoleTypes.indexOf(req.params.id as RoleType) > -1) {
         const role = await getRepository(ContactRole).findOne({
           where: {
-            type: req.params.id as RoleType,
+            type: req.params.id as RoleType
           },
-          relations: { contact: true },
+          relations: { contact: true }
         });
         contact = role?.contact;
       } else {
@@ -51,7 +51,7 @@ if (config.dev) {
       } else {
         res.redirect("/login");
       }
-    }),
+    })
   );
 }
 
@@ -66,20 +66,20 @@ app.get(
         req,
         res,
         contact,
-        isValidNextUrl(nextParam) ? nextParam : "/",
+        isValidNextUrl(nextParam) ? nextParam : "/"
       );
     } else {
       req.flash("error", "login-code-invalid");
       res.redirect("/login");
     }
-  }),
+  })
 );
 
 app.post("/", (req, res) => {
   const nextParam = req.query.next as string;
   passport.authenticate("local", {
     failureRedirect: "/login" + getNextParam(nextParam),
-    failureFlash: true,
+    failureFlash: true
   })(req, res, () => {
     req.session.method = "plain";
     res.redirect(isValidNextUrl(nextParam) ? nextParam : "/");

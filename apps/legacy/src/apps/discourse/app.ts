@@ -25,7 +25,7 @@ app.get(
       if (payload && sig && sso.validate(payload as string, sig as string)) {
         const projectContacts = await getRepository(ProjectContact).find({
           where: { contactId: req.user.id },
-          relations: { project: true },
+          relations: { project: true }
         });
 
         const groups = projectContacts
@@ -39,15 +39,15 @@ app.get(
           external_id: req.user.id,
           name: req.user.fullname,
           username: req.user.email,
-          add_groups: groups,
+          add_groups: groups
         };
         const q = sso.buildLoginString(loginPayload);
         res.redirect(`${config.discourse.url}/session/sso_login?${q}`);
       } else {
         res.status(403).send({ error: "Invalid signature" });
       }
-    }),
-  ),
+    })
+  )
 );
 
 module.exports = app;

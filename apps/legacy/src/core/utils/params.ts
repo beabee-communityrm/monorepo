@@ -35,17 +35,17 @@ function getParamValue(param: Param, s: string): ParamValue {
 }
 
 export async function loadParams<T extends Paramable>(
-  item: T,
+  item: T
 ): Promise<T & { params: Param[] }> {
   return {
     ...item,
-    params: item.getParams ? await item.getParams() : [],
+    params: item.getParams ? await item.getParams() : []
   };
 }
 
 export async function parseParams(
   item: Paramable,
-  data: Record<string, string>,
+  data: Record<string, string>
 ): Promise<Record<string, ParamValue>> {
   const params = item.getParams ? await item.getParams() : [];
   return _.mapValues(data, (value, paramName) => {

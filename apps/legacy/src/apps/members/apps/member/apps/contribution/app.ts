@@ -32,7 +32,7 @@ app.get(
         canChange: true, // TODO: remove
         monthsLeft: calcMonthsLeft(contact),
         payments,
-        total,
+        total
       });
     } else if (
       contact.contributionType === ContributionType.Manual ||
@@ -42,7 +42,7 @@ app.get(
     } else {
       res.render("none", { member: contact });
     }
-  }),
+  })
 );
 
 app.post(
@@ -56,7 +56,7 @@ app.post(
           monthlyAmount: Number(req.body.amount),
           period: req.body.period,
           prorate: req.body.prorate === "true",
-          payFee: req.body.payFee === "true",
+          payFee: req.body.payFee === "true"
         });
         req.flash("success", "contribution-updated");
         break;
@@ -64,7 +64,7 @@ app.post(
       case "cancel-subscription":
         await ContactsService.cancelContactContribution(
           contact,
-          "cancelled-contribution",
+          "cancelled-contribution"
         );
         break;
 
@@ -74,7 +74,7 @@ app.post(
           amount: req.body.amount,
           period: req.body.period,
           source: req.body.source,
-          reference: req.body.reference,
+          reference: req.body.reference
         });
 
         req.flash("success", "contribution-updated");
@@ -82,7 +82,7 @@ app.post(
     }
 
     res.redirect(req.originalUrl);
-  }),
+  })
 );
 
 export default app;

@@ -10,7 +10,7 @@ import {
   EmailMailing,
   Segment,
   SegmentOngoingEmail,
-  SegmentContact,
+  SegmentContact
 } from "@beabee/core/models";
 
 import { EmailSchema, schemaToEmail } from "#apps/tools/apps/emails/app";
@@ -25,7 +25,7 @@ app.get(
   wrapAsync(async (req: Request, res: Response) => {
     const segments = await getRepository(Segment).find();
     res.render("index", { segments });
-  }),
+  })
 );
 
 app.get(
@@ -35,10 +35,10 @@ app.get(
     const segment = req.model as Segment;
     const ongoingEmails = await getRepository(SegmentOngoingEmail).find({
       where: { segmentId: segment.id },
-      relations: { email: true },
+      relations: { email: true }
     });
     res.render("segment", { segment, ongoingEmails });
-  }),
+  })
 );
 
 app.post(
@@ -53,14 +53,14 @@ app.post(
           name: req.body.name,
           description: req.body.description || "",
           order: req.body.order || 0,
-          newsletterTag: req.body.newsletterTag,
+          newsletterTag: req.body.newsletterTag
         });
         req.flash("success", "segment-updated");
         res.redirect(req.originalUrl);
         break;
       case "update-rules":
         await getRepository(Segment).update(segment.id, {
-          ruleGroup: cleanRuleGroup(JSON.parse(req.body.rules)),
+          ruleGroup: cleanRuleGroup(JSON.parse(req.body.rules))
         });
         req.flash("success", "segment-updated");
         res.redirect(req.originalUrl);
@@ -68,20 +68,20 @@ app.post(
       case "toggle-ongoing-email":
         await getRepository(SegmentOngoingEmail).update(
           req.body.ongoingEmailId,
-          { enabled: req.body.ongoingEmailEnabled === "true" },
+          { enabled: req.body.ongoingEmailEnabled === "true" }
         );
         res.redirect("/members/segments/" + segment.id + "#ongoingemails");
         break;
       case "delete-ongoing-email":
         await getRepository(SegmentOngoingEmail).delete(
-          req.body.ongoingEmailId,
+          req.body.ongoingEmailId
         );
         res.redirect("/members/segments/" + segment.id + "#ongoingemails");
         break;
       case "delete":
         await getRepository(SegmentContact).delete({ segmentId: segment.id });
         await getRepository(SegmentOngoingEmail).delete({
-          segmentId: segment.id,
+          segmentId: segment.id
         });
         await getRepository(Segment).delete(segment.id);
 
@@ -89,7 +89,7 @@ app.post(
         res.redirect("/members/segments");
         break;
     }
-  }),
+  })
 );
 
 app.get(
@@ -99,9 +99,9 @@ app.get(
     const segment = req.model as Segment;
     res.render("email", {
       segment,
-      emails: await getRepository(Email).find(),
+      emails: await getRepository(Email).find()
     });
-  }),
+  })
 );
 
 interface CreateBaseEmail extends Omit<EmailSchema, "name"> {
@@ -132,8 +132,8 @@ app.post(
         ? await getRepository(Email).save(
             schemaToEmail({
               ...data,
-              name: "Email to segment " + segment.name,
-            }),
+              name: "Email to segment " + segment.name
+            })
           )
         : await getRepository(Email).findOneByOrFail({ id: data.email });
 
@@ -142,7 +142,7 @@ app.post(
         segment,
         trigger: data.trigger,
         email,
-        enabled: true,
+        enabled: true
       });
 
       req.flash("success", "segment-created-ongoing-email");
@@ -158,14 +158,14 @@ app.post(
           EMAIL: "Email",
           NAME: "Name",
           FNAME: "FirstName",
-          LNAME: "LastName",
+          LNAME: "LastName"
         },
         recipients: contacts.map((contact) => ({
           Email: contact.email,
           Name: contact.fullname,
           FirstName: contact.firstname,
-          LastName: contact.lastname,
-        })),
+          LastName: contact.lastname
+        }))
       });
 
       req.flash("warning", "segment-preview-email");
@@ -174,7 +174,7 @@ app.post(
     } else {
       res.redirect(`/members/segments/${segment.id}#ongoingemails`);
     }
-  }),
+  })
 );
 
 export default app;

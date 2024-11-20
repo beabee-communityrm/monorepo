@@ -2,7 +2,7 @@ import express, {
   type Express,
   type Request,
   type Response,
-  type NextFunction,
+  type NextFunction
 } from "express";
 
 import { getRepository } from "@beabee/core/database";
@@ -34,39 +34,39 @@ app.get(
       joinSetup: get("join/setup"),
       profile: get("profile"),
       payment: get("payment"),
-      telegram: get("telegram"),
+      telegram: get("telegram")
     });
-  }),
+  })
 );
 
 const parseData = {
   general: (data: any) => ({
     ...data,
-    hideContribution: data.hideContribution === "true",
+    hideContribution: data.hideContribution === "true"
   }),
   join: (data: any) => ({
     ...data,
     initialAmount: Number(data.initialAmount),
     periods: data.periods.map((p: { name: string; presetAmounts: string }) => ({
       name: p.name,
-      presetAmounts: p.presetAmounts.split(",").map((s) => Number(s.trim())),
+      presetAmounts: p.presetAmounts.split(",").map((s) => Number(s.trim()))
     })),
     showNoContribution: data.showNoContribution === "true",
     paymentMethods: data.paymentMethods
       .split(",")
       .map((s: string) => s.trim())
-      .filter((s: string) => !!s),
+      .filter((s: string) => !!s)
   }),
   "join/setup": (data: any) => ({
     ...data,
-    showNewsletterOptIn: data.showNewsletterOptIn === "true",
+    showNewsletterOptIn: data.showNewsletterOptIn === "true"
   }),
   profile: (d: any) => d,
   contacts: (d: any) => d,
   share: (d: any) => d,
   email: (d: any) => d,
   payment: (d: any) => d,
-  telegram: (d: any) => d,
+  telegram: (d: any) => d
 } as const;
 
 // urlencoding parser doesn't support overwriting if the same query param
@@ -92,7 +92,7 @@ app.post(
       const id = req.body.id as ContentId;
       await getRepository(Content).save({
         id,
-        data: parseData[id](req.body.data || {}),
+        data: parseData[id](req.body.data || {})
       });
     }
 
@@ -101,7 +101,7 @@ app.post(
     }
 
     res.redirect("/settings/content");
-  }),
+  })
 );
 
 export default app;

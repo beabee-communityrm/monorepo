@@ -42,10 +42,10 @@ async function getPostcodes(postcodes: string[]): Promise<PostcodeCache[]> {
   const cleanPostcodes = postcodes.map(cleanPostcode);
 
   const dedupedPostcodes = cleanPostcodes.filter(
-    (postcode, i) => cleanPostcodes.indexOf(postcode) === i,
+    (postcode, i) => cleanPostcodes.indexOf(postcode) === i
   );
   const unknownPostcodes = dedupedPostcodes.filter(
-    (postcode) => postcodeCache[postcode] === undefined,
+    (postcode) => postcodeCache[postcode] === undefined
   );
   log.info(`Getting ${unknownPostcodes.length} postcodes`);
 
@@ -56,8 +56,8 @@ async function getPostcodes(postcodes: string[]): Promise<PostcodeCache[]> {
     const resp = await axios.post(
       "https://api.postcodes.io/postcodes?filter=postcode,latitude,longitude",
       {
-        postcodes: unknownPostcodesSlice,
-      },
+        postcodes: unknownPostcodesSlice
+      }
     );
 
     const data = resp.data as PostcodeResponse;
@@ -65,7 +65,7 @@ async function getPostcodes(postcodes: string[]): Promise<PostcodeCache[]> {
       postcodeCache[result.query] = result.result
         ? {
             latitude: result.result.latitude,
-            longitude: result.result.longitude,
+            longitude: result.result.longitude
           }
         : null;
     }
@@ -92,8 +92,8 @@ app.get(
         new Brackets((qb) =>
           qb
             .where("mp.dateExpires >= :now", { now })
-            .orWhere("mp.dateExpires = NULL"),
-        ),
+            .orWhere("mp.dateExpires = NULL")
+        )
       )
       .getMany();
 
@@ -102,7 +102,7 @@ app.get(
       .filter((p): p is string => !!p);
     const postcodes = await getPostcodes(contactPostcodes);
     res.send({ postcodes });
-  }),
+  })
 );
 
 export default app;

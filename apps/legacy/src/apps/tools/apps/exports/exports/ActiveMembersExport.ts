@@ -18,15 +18,15 @@ export default class ActiveMembersExport extends BaseExport<Contact> {
       {
         name: "hasActiveSubscription",
         label: "Has active subscription",
-        type: "boolean",
-      },
+        type: "boolean"
+      }
     ];
   }
 
   protected get query(): SelectQueryBuilder<Contact> {
     return createQueryBuilder(Contact, "m").orderBy({
       firstname: "ASC",
-      lastname: "ASC",
+      lastname: "ASC"
     });
   }
 
@@ -38,7 +38,7 @@ export default class ActiveMembersExport extends BaseExport<Contact> {
       .andWhere(
         new Brackets((qb) => {
           qb.where("mp.dateExpires IS NULL").orWhere("mp.dateExpires > :now");
-        }),
+        })
       )
       .setParameters({ now: new Date() });
 
@@ -62,7 +62,7 @@ export default class ActiveMembersExport extends BaseExport<Contact> {
       ContributionType: contact.contributionType,
       ContributionMonthlyAmount: contact.contributionMonthlyAmount,
       ContributionPeriod: contact.contributionPeriod,
-      ContributionDescription: contact.contributionDescription,
+      ContributionDescription: contact.contributionDescription
     }));
   }
 }

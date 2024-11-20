@@ -16,7 +16,7 @@ export function setTrackingCookie(memberId: string, res: Response) {
     ...config.cookie,
     httpOnly: true,
     maxAge: 365 * 24 * 60 * 60 * 1000,
-    sameSite: "none",
+    sameSite: "none"
   });
 }
 
@@ -29,15 +29,15 @@ export default (app: express.Express): void => {
         ...config.cookie,
         httpOnly: true,
         sameSite: "lax",
-        maxAge: 267840000,
+        maxAge: 267840000
       },
       saveUninitialized: false,
       store: new pgSession({
-        pool: (dataSource.driver as PostgresDriver).master,
+        pool: (dataSource.driver as PostgresDriver).master
       }),
       resave: false,
-      rolling: true,
-    }),
+      rolling: true
+    })
   );
 
   // Passport
