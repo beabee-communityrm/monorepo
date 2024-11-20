@@ -3,7 +3,9 @@ import {
   calloutFilters,
   Filters,
   ItemStatus,
-  PaginatedQuery
+  PaginatedQuery,
+  Rule,
+  RuleGroup
 } from "@beabee/beabee-common";
 import { TransformPlainToInstance } from "class-transformer";
 import {
@@ -13,7 +15,7 @@ import {
 } from "routing-controllers";
 import { SelectQueryBuilder } from "typeorm";
 
-import { createQueryBuilder } from "@beabee/core/database";
+import { createQueryBuilder, getRepository } from "@beabee/core/database";
 
 import {
   GetCalloutWith,
@@ -26,10 +28,16 @@ import CalloutVariantTransformer from "@api/transformers/CalloutVariantTransform
 import { groupBy } from "@api/utils";
 import { mergeRules, statusFilterHandler } from "@api/utils/rules";
 
-import { Callout, CalloutResponse, CalloutVariant } from "@beabee/core/models";
+import {
+  Callout,
+  CalloutResponse,
+  CalloutReviewer,
+  CalloutVariant
+} from "@beabee/core/models";
 
 import { AuthInfo } from "@type/auth-info";
 import { FilterHandlers } from "@type/filter-handlers";
+import { getReviewerRules } from "./BaseCalloutResponseTransformer";
 
 class CalloutTransformer extends BaseTransformer<
   Callout,
@@ -159,10 +167,12 @@ class CalloutTransformer extends BaseTransformer<
     };
   }
 
-  protected transformQuery<T extends ListCalloutsDto>(
+  protected async transformQuery<T extends ListCalloutsDto>(
     query: T,
     auth: AuthInfo | undefined
-  ): T {
+  ): Promise<T> {
+    const authRules = await getAuthRules(auth, query.showHiddenForAll);
+
     if (auth?.roles.includes("admin")) {
       return query;
     }
@@ -280,6 +290,58 @@ class CalloutTransformer extends BaseTransformer<
       }
     }
   }
+}
+
+/**
+ * Get the rules for filtering callouts based on the user's role
+ *
+ * @param auth The authentication info
+ * @param showHiddenForAll Whether to show hidden callouts to non-admins
+ * @returns
+ */
+async function getAuthRules(
+  auth: AuthInfo | undefined,
+  showHiddenForAll: boolean
+): Promise<RuleGroup | undefined> {
+  // Admins can see all callouts, no restrictions needed
+  if (auth?.roles.includes("admin")) {
+    return;
+  }
+
+  let reviewerRules =
+    auth?.method === "user" ? await getReviewerRules(auth.contact, "id") : [];
+
+  return {
+    condition: "OR",
+    rules: [
+      // Reviewers can see all the callouts they are reviewers for
+      ...reviewerRules,
+
+      // Non-admins can only see open or ended non-hidden callouts
+      mergeRules([
+        {
+          condition: "OR",
+          rules: [
+            {
+              field: "status",
+              operator: "equal",
+              value: [ItemStatus.Open]
+            },
+            {
+              field: "status",
+              operator: "equal",
+              value: [ItemStatus.Ended]
+            }
+          ]
+        },
+        !showHiddenForAll && {
+          field: "hidden",
+          operator: "equal",
+          value: [true]
+        }
+      ])
+    ]
+  };
 }
 
 export default new CalloutTransformer();
