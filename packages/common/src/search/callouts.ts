@@ -129,3 +129,16 @@ export const calloutChannelFilters = {
   },
 } as const;
 calloutChannelFilters satisfies Filters;
+
+export const calloutReviewerFilters = {
+  id: {
+    type: "text",
+  },
+  contact: {
+    type: "contact",
+  },
+  calloutId: {
+    type: "text",
+  },
+} as const;
+calloutReviewerFilters satisfies Filters;

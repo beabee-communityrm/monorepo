@@ -60,6 +60,8 @@ import { CalloutCaptcha } from "@beabee/beabee-common";
 
 import { AuthInfo } from "@type/auth-info";
 import { ListTagsDto } from "@api/dto";
+import CalloutReviewerTransformer from "@api/transformers/CalloutReviewerTransformer";
+import { GetCalloutReviewerDto } from "@api/dto/CalloutReviewerDto";
 
 @JsonController("/callout")
 export class CalloutController {
@@ -233,6 +235,7 @@ export class CalloutController {
     @Body() data: CreateCalloutTagDto
   ): Promise<GetCalloutTagDto> {
     // TODO: handle foreign key error
+    // TODO: move to transformer
     const tag = await getRepository(CalloutTag).save({
       name: data.name,
       description: data.description,
@@ -271,5 +274,56 @@ export class CalloutController {
     @Param("tagId") tagId: string
   ): Promise<void> {
     await calloutTagTransformer.delete(tagId, CalloutResponseTag);
+  }
+
+  // The same code as tags but for reviewers
+  @Get("/:id/reviewers")
+  async getCalloutReviewers(
+    @CurrentAuth({ required: true }) auth: AuthInfo,
+    @CalloutId() id: string,
+    @QueryParams() query: ListCalloutResponsesDto
+  ): Promise<GetCalloutReviewerDto[]> {
+    const result = await CalloutReviewerTransformer.fetch(auth, {
+      ...query,
+      rules: {
+        condition: "AND",
+        rules: [{ field: "calloutId", operator: "equal", value: [id] }]
+      }
+    });
+
+    return result.items;
+  }
+
+  @Post("/:id/reviewers")
+  async createCalloutReviewer(
+    @CalloutId() id: string,
+    @Body() data: CreateCalloutTagDto
+  ): Promise<GetCalloutReviewerDto> {}
+
+  @Get("/:id/reviewers/:reviewerId")
+  async getCalloutReviewer(
+    @CurrentAuth({ required: true }) auth: AuthInfo,
+    @Param("reviewerId") reviewerId: string
+  ): Promise<GetCalloutReviewerDto | undefined> {
+    return CalloutReviewerTransformer.fetchOneById(auth, reviewerId);
+  }
+
+  @Patch("/:id/reviewers/:reviewerId")
+  async updateCalloutReviewer(
+    @CurrentAuth({ required: true }) auth: AuthInfo,
+    @CalloutId() id: string,
+    @Param("reviewerId") reviewerId: string,
+    @PartialBody() data: CreateCalloutTagDto // Partial<TagCreateData>
+  ): Promise<GetCalloutReviewerDto | undefined> {
+    return CalloutReviewerTransformer.fetchOneById(auth, reviewerId);
+  }
+
+  @Delete("/:id/reviewers/:reviewerId")
+  @OnUndefined(204)
+  async deleteCalloutReviewer(
+    @CalloutId() id: string,
+    @Param("reviewerId") reviewerId: string
+  ): Promise<void> {
+    await CalloutReviewerTransformer.delete(reviewerId);
   }
 }

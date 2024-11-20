@@ -284,8 +284,9 @@ async function getAuthRules(
     return;
   }
 
-  const reviewerRules =
-    auth.method === "user" ? await getReviewerRules(auth.contact, "id") : [];
+  const reviewerRules = auth.contact
+    ? await getReviewerRules(auth.contact, "id")
+    : [];
 
   return {
     condition: "OR",
@@ -313,7 +314,7 @@ async function getAuthRules(
         !showHiddenForAll && {
           field: "hidden",
           operator: "equal",
-          value: [true]
+          value: [false]
         }
       ])
     ]

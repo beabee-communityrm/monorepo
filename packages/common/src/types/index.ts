@@ -65,6 +65,7 @@ export * from "./callout-response-comment-data.ts";
 export * from "./callout-response-comment-filter-name.ts";
 export * from "./callout-response-filter-name.ts";
 export * from "./callout-response-view-schema.ts";
+export * from "./callout-reviewer-filter-name.ts";
 export * from "./callout-tag-filter-name.ts";
 export * from "./callout-variant-data.ts";
 export * from "./callout-variant-navigation-data.ts";
