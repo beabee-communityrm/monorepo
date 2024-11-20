@@ -1,5 +1,2 @@
-export default {
-  singleQuote: true,
-  trailingComma: 'es5',
-  plugins: ['prettier-plugin-tailwindcss'],
-};
+import { frontendConfig } from '@beabee/prettier-config';
+export default frontendConfig;

@@ -24,12 +24,29 @@ export class MigrateSegmentTagRules1731670066414 implements MigrationInterface {
     let migratedCount = 0;
     let skippedCount = 0;
 
+    const filterDeletedRules = (
+      rules: (Rule | RuleGroup)[]
+    ): (Rule | RuleGroup)[] => {
+      return rules.filter((rule) => {
+        if ("field" in rule) {
+          if (rule.value.includes("__DELETE_ME__")) {
+            return false;
+          }
+        } else {
+          rule.rules = filterDeletedRules(rule.rules);
+        }
+        return true;
+      });
+    };
+
     for (const segment of segments) {
       try {
         let modified = false;
         const ruleGroup = segment.ruleGroup;
 
-        const processRules = (rules: (Rule | RuleGroup)[]): void => {
+        const processRules = (
+          rules: (Rule | RuleGroup)[]
+        ): (Rule | RuleGroup)[] => {
           for (const rule of rules) {
             if ("field" in rule) {
               if (
@@ -52,17 +69,20 @@ export class MigrateSegmentTagRules1731670066414 implements MigrationInterface {
                     console.warn(
                       `Tag not found: ${tagName} in segment: ${segment.id}`
                     );
-                    return value;
+                    modified = true;
+                    return "__DELETE_ME__";
                   });
                 }
               }
             } else {
-              processRules(rule.rules);
+              rule.rules = processRules(rule.rules);
             }
           }
+
+          return filterDeletedRules(rules);
         };
 
-        processRules(ruleGroup.rules);
+        ruleGroup.rules = processRules(ruleGroup.rules);
 
         if (modified) {
           await queryRunner.manager.update(

@@ -1,0 +1,9 @@
+{
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
+  "compilerOptions": {
+    "sourceMap": true,
+    "isolatedModules": true,
+    "preserveWatchOutput": true,
+    "diagnostics": true,
+  },
+}

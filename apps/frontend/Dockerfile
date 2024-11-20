@@ -5,12 +5,12 @@ FROM node:${NODE_VERSION}-bookworm-slim AS builder
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
-    # for installing Deno
-    curl \
-    # for extracting the Deno archive
-    p7zip-full \
-    # for cleaning up the apt cache
-    && rm -rf /var/lib/apt/lists/*
+  # for installing Deno
+  curl \
+  # for extracting the Deno archive
+  p7zip-full \
+  # for cleaning up the apt cache
+  && rm -rf /var/lib/apt/lists/*
 
 # Install Deno
 ENV DENO_INSTALL="/root/.deno"
@@ -32,6 +32,10 @@ COPY .yarn /opt/.yarn
 # Copy dependencies info
 COPY packages/common/package.json /opt/packages/common/package.json
 COPY apps/frontend/package.json /opt/apps/frontend/package.json
+
+# Copy config files with dependencies info
+COPY packages/prettier-config /opt/packages/prettier-config
+COPY packages/tsconfig /opt/packages/tsconfig
 
 # Install dependencies
 RUN yarn workspaces focus

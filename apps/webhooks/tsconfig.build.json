@@ -1,5 +1,5 @@
 {
-  "extends": "../../configs/backend/tsconfig.build.json",
+  "extends": "@beabee/tsconfig/tsconfig.server.json",
   "include": ["./src/**/*", "./src/**/*.json"],
   "exclude": ["./**/*.test.ts"],
   "compilerOptions": {

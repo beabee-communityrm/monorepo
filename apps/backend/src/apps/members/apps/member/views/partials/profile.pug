@@ -98,14 +98,3 @@ script(type='text/template').js-edit-member-tag-template
 			.form-group
 				label(for='bio').control-label Notes
 				textarea(name='bio' rows='3' readonly)#bio.form-control= member.profile.bio
-
-			p
-				| Tags:
-				span.js-edit-member-tags
-					each tag in member.profile.tags
-						+memberTag(tag)
-			p.hidden.js-edit-member-hidden.form-inline
-				select(style='width:30%').form-control.member-add-tag.js-edit-member-add-tag
-					option(value='' selected disabled) Add tag
-					each tag in availableTags
-						option= tag

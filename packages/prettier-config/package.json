@@ -1,0 +1,24 @@
+{
+  "name": "@beabee/prettier-config",
+  "version": "0.16.0",
+  "type": "module",
+  "main": "index.mjs",
+  "types": "index.d.ts",
+  "module": "index.mjs",
+  "exports": {
+    ".": {
+      "import": "./index.mjs",
+      "types": "./index.d.ts"
+    }
+  },
+  "peerDependencies": {
+    "prettier": "^3.x"
+  },
+  "dependencies": {
+    "prettier-plugin-tailwindcss": "^0.6.9"
+  },
+  "devDependencies": {
+    "@types/prettier": "^3.0.0",
+    "prettier": "^3.3.3"
+  }
+}
