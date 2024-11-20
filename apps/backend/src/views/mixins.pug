@@ -109,12 +109,6 @@ mixin membersTableBasicInfo(member)
 				span(style='flex: 0 1 250px')= member.firstname + ' ' + member.lastname
 			span= member.email
 		small= member.profile.description
-	span
-		each tag in member.profile.tags
-			if !search || tag !== search.tag
-				|
-				|
-				a(href='/members/?type=basic&tag=' + encodeURIComponent(tag)).label.label-info.members-table-action= tag
 
 mixin paymentStatus(payment)
 	case payment.status
