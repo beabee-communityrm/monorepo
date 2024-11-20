@@ -49,6 +49,7 @@
   "dependencies": {
     "@beabee/beabee-common": "workspace:^",
     "@beabee/core": "workspace:^",
+    "@beabee/prettier-config": "workspace:^",
     "@captchafox/node": "^1.2.0",
     "@inquirer/prompts": "^3.3.2",
     "ajv": "^8.15.0",
