@@ -128,7 +128,7 @@ FROM dist-common AS legacy_app
 COPY --chown=node:node --from=builder /opt/apps/legacy/dist /opt/apps/legacy/dist
 
 ARG REVISION=DEV
-RUN echo -n ${REVISION} > /opt/apps/legacy/built/revision.txt && chown node:node /opt/apps/legacy/built/revision.txt
+RUN echo -n ${REVISION} > /opt/apps/legacy/dist/revision.txt && chown node:node /opt/apps/legacy/dist/revision.txt
 
 WORKDIR /opt/apps/legacy
 USER node
