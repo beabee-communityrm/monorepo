@@ -256,10 +256,17 @@ async function handleUpdate(
   if (!response.value) return;
 
   doingAction.value = true;
-  await updateCalloutResponse(response.value.id, data);
-  await refreshResponse();
+  try {
+    await updateCalloutResponse(response.value.id, data);
+    await refreshResponse();
 
-  addNotification({ variant: 'success', title: successText });
+    addNotification({ variant: 'success', title: successText });
+  } catch (err) {
+    addNotification({
+      variant: 'error',
+      title: t('form.errorMessages.generic'),
+    });
+  }
 
   doingAction.value = false;
 }

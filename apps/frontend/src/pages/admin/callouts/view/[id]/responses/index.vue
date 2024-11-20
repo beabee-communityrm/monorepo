@@ -542,12 +542,20 @@ async function handleUpdateAction(
   successText: string
 ): Promise<void> {
   doingAction.value = true;
-  await updateCalloutResponses(getSelectedResponseRules(), updates);
-  await refreshResponses();
-  addNotification({
-    variant: 'success',
-    title: successText,
-  });
+  try {
+    await updateCalloutResponses(getSelectedResponseRules(), updates);
+    await refreshResponses();
+    addNotification({
+      variant: 'success',
+      title: successText,
+    });
+  } catch (err) {
+    addNotification({
+      variant: 'error',
+      title: t('form.errorMessages.generic'),
+    });
+  }
+
   doingAction.value = false;
 }
 </script>
