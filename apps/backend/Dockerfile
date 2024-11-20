@@ -19,6 +19,10 @@ COPY --chown=node:node packages/common/package.json /opt/packages/common/package
 COPY --chown=node:node packages/core/package.json /opt/packages/core/package.json
 COPY --chown=node:node apps/backend/package.json /opt/apps/backend/package.json
 
+# Copy config files with dependencies info
+COPY packages/prettier-config /opt/packages/prettier-config
+COPY packages/tsconfig /opt/packages/tsconfig
+
 ENV NODE_ENV=production
 ENV NODE_OPTIONS=--enable-source-maps
 
