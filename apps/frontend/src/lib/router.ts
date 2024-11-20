@@ -33,7 +33,7 @@ router.beforeEach(async (to) => {
   }
   // Route requires a specific role
   if (to.meta.role && !user?.activeRoles.includes(to.meta.role)) {
-    return { path: 'profile' };
+    return { path: '/profile' };
   }
 });
 
