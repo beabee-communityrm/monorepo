@@ -1,6 +1,13 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import type { ContactRolePermission } from "./ContactRolePermission";
 
+// TODO: Not used yet and move this to a better place
+enum PermissionLevel {
+  BASIC = "basic",
+  ADVANCED = "advanced",
+  FULL = "full"
+}
+
 /**
  * Entity representing a permission in the system.
  * Permissions are used to control access to specific API endpoints and functionality.
@@ -29,6 +36,17 @@ export class Permission {
    */
   @Column({ unique: true })
   key!: string;
+
+  /**
+   * The level of permission required to access this endpoint
+   * TODO: Not used yet
+   */
+  @Column({
+    type: "enum",
+    enum: PermissionLevel,
+    default: PermissionLevel.BASIC
+  })
+  level!: PermissionLevel;
 
   /**
    * Human-readable description of what the permission allows
