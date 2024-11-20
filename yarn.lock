@@ -481,9 +481,9 @@ __metadata:
     "@beabee/beabee-common": "workspace:^"
     "@beabee/core": "workspace:^"
     "@beabee/prettier-config": "workspace:^"
+    "@beabee/tsconfig": "workspace:^"
     "@captchafox/node": "npm:^1.2.0"
     "@inquirer/prompts": "npm:^3.3.2"
-    "@tsconfig/node20": "npm:^20.1.4"
     "@types/chance": "npm:^1.1.6"
     "@types/connect-busboy": "npm:^1.0.3"
     "@types/connect-pg-simple": "npm:^7.0.3"
@@ -631,6 +631,7 @@ __metadata:
     "@babel/types": "npm:^7.24.6"
     "@beabee/beabee-common": "workspace:^"
     "@beabee/prettier-config": "workspace:^"
+    "@beabee/tsconfig": "workspace:^"
     "@captchafox/vue": "npm:^1.1.0"
     "@fontsource/fira-sans": "npm:^5.0.20"
     "@fontsource/fira-sans-condensed": "npm:^5.0.13"
@@ -672,7 +673,6 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:^7.12.0"
     "@typescript-eslint/parser": "npm:^7.12.0"
     "@vitejs/plugin-vue": "npm:^5.1.4"
-    "@vue/tsconfig": "npm:^0.5.1"
     "@vuelidate/core": "npm:^2.0.3"
     "@vuelidate/validators": "npm:^2.0.4"
     autoprefixer: "npm:^10.4.19"
@@ -724,6 +724,18 @@ __metadata:
 "@beabee/router@workspace:apps/router":
   version: 0.0.0-use.local
   resolution: "@beabee/router@workspace:apps/router"
+  languageName: unknown
+  linkType: soft
+
+"@beabee/tsconfig@workspace:^, @beabee/tsconfig@workspace:packages/tsconfig":
+  version: 0.0.0-use.local
+  resolution: "@beabee/tsconfig@workspace:packages/tsconfig"
+  dependencies:
+    "@tsconfig/node22": "npm:^22.0.0"
+    "@vue/tsconfig": "npm:^0.6.0"
+    typescript: "npm:^5.x.x"
+  peerDependencies:
+    typescript: ^5.x.x
   languageName: unknown
   linkType: soft
 
@@ -2788,10 +2800,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tsconfig/node20@npm:^20.1.4":
-  version: 20.1.4
-  resolution: "@tsconfig/node20@npm:20.1.4"
-  checksum: 10c0/239cd6abaceaaffc758e7a9dd3748ec1acfdabd6de28a9a16a3824c21f17ad69a16184870298460345d2fb6f3663d092c21d5b764bef669a179658b4a7eac739
+"@tsconfig/node22@npm:^22.0.0":
+  version: 22.0.0
+  resolution: "@tsconfig/node22@npm:22.0.0"
+  checksum: 10c0/ccb736a008d33fb5ae0ac1254e83d7fa53cdbade02c645131eafcddd11f61982a4efe4c507487952202c240d2bd46c991561a4a0dfea52972947446d80de2081
   languageName: node
   linkType: hard
 
@@ -3830,10 +3842,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/tsconfig@npm:^0.5.1":
-  version: 0.5.1
-  resolution: "@vue/tsconfig@npm:0.5.1"
-  checksum: 10c0/cf4049c0daf26579e42803eca661809f95f9196323b4a6aec1714ac3c80df37b44d3878468f56e2f3d1fe64640fe9cb42f20db42509ef858ab059fe05e0dd862
+"@vue/tsconfig@npm:^0.6.0":
+  version: 0.6.0
+  resolution: "@vue/tsconfig@npm:0.6.0"
+  peerDependencies:
+    typescript: 5.x
+    vue: ^3.3.0
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+    vue:
+      optional: true
+  checksum: 10c0/ed471e7aaf0d476e667e497a83ea6bf5dc25ce671d7be8876cb94225e3598e53c8cc7f170e9ec6c57b5fde6443353ed90271ac1b17bca911f923c65369d0ecf8
   languageName: node
   linkType: hard
 
@@ -14988,7 +15008,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^5.2.2, typescript@npm:^5.6.3":
+"typescript@npm:^5.2.2, typescript@npm:^5.6.3, typescript@npm:^5.x.x":
   version: 5.6.3
   resolution: "typescript@npm:5.6.3"
   bin:
@@ -14998,7 +15018,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A^5.2.2#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.6.3#optional!builtin<compat/typescript>":
+"typescript@patch:typescript@npm%3A^5.2.2#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.6.3#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.x.x#optional!builtin<compat/typescript>":
   version: 5.6.3
   resolution: "typescript@patch:typescript@npm%3A5.6.3#optional!builtin<compat/typescript>::version=5.6.3&hash=8c6c40"
   bin:

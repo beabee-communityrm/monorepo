@@ -1,5 +1,5 @@
 {
-  "extends": "@vue/tsconfig/tsconfig.dom.json",
+  "extends": "@beabee/tsconfig/tsconfig.frontend.json",
   "compilerOptions": {
     "sourceMap": true,
     "isolatedModules": true,
