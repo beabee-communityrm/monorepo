@@ -3,13 +3,11 @@
   "include": ["./src/**/*", "./src/**/*.json"],
   "exclude": ["./**/*.test.ts"],
   "compilerOptions": {
-    "declaration": true,
     "rootDir": "./src",
     "outDir": "./dist",
-    "paths": {
-      "#locale": ["./src/locales/current"],
-      "#*": ["./src/*"]
-    },
+    "paths": {},
+
+    // Add additional type root for local typings
     "typeRoots": ["./src/typings", "./node_modules/@types/"]
   }
 }

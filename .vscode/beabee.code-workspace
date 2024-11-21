@@ -17,6 +17,10 @@
       "path": "../apps/router",
     },
     {
+      "name": "apps/webhooks",
+      "path": "../apps/webhooks",
+    },
+    {
       "name": "packages/common",
       "path": "../packages/common",
     },
@@ -24,25 +28,25 @@
       "name": "packages/core",
       "path": "../packages/core",
     },
+    {
+      "name": "packages/prettier-config",
+      "path": "../packages/prettier-config",
+    },
+    {
+      "name": "packages/tsconfig",
+      "path": "../packages/tsconfig",
+    }
   ],
   "settings": {
     "typescript.tsdk": "node_modules/typescript/lib",
-    "cSpell.words": [
-      "beabee",
-      "Callouts",
-      "fortawesome",
-      "otpauth",
-      "outdir",
-      "qrcode",
-      "TOTP",
-      "Vuelidate"
-    ],
     "deno.disablePaths": [
       "./node_modules",
       "./apps/backend",
       "./apps/frontend",
       "./apps/router",
-      "./packages/core"
+      "./packages/core",
+      "./packages/prettier-config",
+      "./packages/tsconfig"
     ]
   },
 }

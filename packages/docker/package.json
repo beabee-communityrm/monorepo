@@ -1,0 +1,8 @@
+{
+  "name": "@beabee/docker",
+  "version": "0.16.0",
+  "private": true,
+  "files": [
+    "base.dockerfile"
+  ]
+}

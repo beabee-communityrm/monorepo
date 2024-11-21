@@ -8,7 +8,7 @@ import {
 import { Contact } from "./Contact";
 import { ContactTag } from "./ContactTag";
 import type { TagData } from "@beabee/beabee-common";
-import type { TagAssignment } from "@beabee/core/type";
+import type { TagAssignment } from "#type";
 
 @Entity("contact_tag_assignments")
 @Index(["contactId", "tagId"], { unique: true })

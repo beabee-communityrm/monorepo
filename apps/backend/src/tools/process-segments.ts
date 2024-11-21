@@ -4,7 +4,7 @@ import { In } from "typeorm";
 
 import { getRepository } from "@beabee/core/database";
 import { log as mainLogger } from "@beabee/core/logging";
-import { runApp } from "@core/server";
+import { runApp } from "@beabee/core/server";
 
 import EmailService from "@beabee/core/services/EmailService";
 import NewsletterService from "@beabee/core/services/NewsletterService";

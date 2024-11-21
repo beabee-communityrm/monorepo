@@ -1,6 +1,4 @@
-node_modules
-/built/
-/tsconfig.tsbuildinfo
-.env
-.DS_Store
 data.export
+
+# TODO: use standard build directory
+/built/

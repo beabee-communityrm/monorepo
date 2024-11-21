@@ -8,7 +8,7 @@ import { input, password, select } from "@inquirer/prompts";
 import moment from "moment";
 
 import { getRepository } from "@beabee/core/database";
-import { runApp } from "@core/server";
+import { runApp } from "@beabee/core/server";
 import { passwordRequirements } from "@core/utils/auth";
 import { generatePassword } from "@beabee/core/utils/auth";
 

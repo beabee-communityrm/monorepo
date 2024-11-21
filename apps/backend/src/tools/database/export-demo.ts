@@ -3,7 +3,7 @@ import "module-alias/register";
 import { Brackets } from "typeorm";
 
 import { createQueryBuilder } from "@beabee/core/database";
-import { runApp } from "@core/server";
+import { runApp } from "@beabee/core/server";
 
 import { Contact, Callout, CalloutResponse } from "@beabee/core/models";
 

@@ -11,7 +11,7 @@ import {
 } from "@beabee/beabee-common";
 import { getRepository, runTransaction } from "@beabee/core/database";
 import { Callout, CalloutResponse, Contact } from "@beabee/core/models";
-import { runApp } from "@core/server";
+import { runApp } from "@beabee/core/server";
 import { parse } from "csv-parse";
 import { In } from "typeorm";
 

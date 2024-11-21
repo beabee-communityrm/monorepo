@@ -4,9 +4,10 @@
 x-base-app: &base-app
   build: &base-app-build
     context: .
-    dockerfile: ./apps/backend/Dockerfile
+    dockerfile: ./packages/docker/base.dockerfile
   volumes:
     - ./apps/backend/built:/opt/apps/backend/built
+    - ./apps/webhooks/dist:/opt/apps/webhooks/dist
     - ./packages/common/dist:/opt/packages/common/dist
     - ./packages/core/dist:/opt/packages/core/dist
     # Allow migrations to be written out from the container

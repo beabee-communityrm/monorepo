@@ -1,17 +1,15 @@
-import "module-alias/register";
-
 import express, { Handler } from "express";
 
 import { log, requestErrorLogger, requestLogger } from "@beabee/core/logging";
-import { initApp, startServer } from "@core/server";
+import { initApp, startServer } from "@beabee/core/server";
 
 import OptionsService, {
   OptionKey
 } from "@beabee/core/services/OptionsService";
 
-import gocardlessApp from "./handlers/gocardless";
-import mailchimpApp from "./handlers/mailchimp";
-import stripeApp from "./handlers/stripe";
+import gocardlessApp from "#handlers/gocardless";
+import mailchimpApp from "#handlers/mailchimp";
+import stripeApp from "#handlers/stripe";
 
 function checkOpt(key: OptionKey): Handler {
   return (req, res, next) => {
