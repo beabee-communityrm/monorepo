@@ -99,7 +99,7 @@ export class ContactTagController {
     @Param("tagId") tagId: string,
     @PartialBody() data: CreateContactTagDto
   ): Promise<GetContactTagDto | undefined> {
-    await contactTagTransformer.update(tagId, data);
+    await contactTagTransformer.updateById(auth, tagId, data);
     return contactTagTransformer.fetchOneById(auth, tagId);
   }
 

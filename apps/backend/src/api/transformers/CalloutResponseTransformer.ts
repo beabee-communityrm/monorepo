@@ -157,7 +157,7 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
     return await this.fetch(auth, { ...query, callout });
   }
 
-  async update(
+  async updateWithTags(
     auth: AuthInfo,
     query_: BatchUpdateCalloutResponseDto
   ): Promise<number> {
@@ -191,7 +191,7 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
     return result.affected || -1;
   }
 
-  async updateOneById(
+  async updateWithTagsById(
     auth: AuthInfo,
     id: string,
     updates: UpdateCalloutResponseDto
@@ -203,7 +203,7 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
       },
       updates
     };
-    const affected = await this.update(auth, query);
+    const affected = await this.updateWithTags(auth, query);
     return affected !== 0;
   }
 }

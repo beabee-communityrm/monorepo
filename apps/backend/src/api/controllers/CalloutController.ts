@@ -56,7 +56,10 @@ import { CalloutCaptcha } from "@beabee/beabee-common";
 import { AuthInfo } from "@type/auth-info";
 import { ListTagsDto } from "@api/dto";
 import CalloutReviewerTransformer from "@api/transformers/CalloutReviewerTransformer";
-import { GetCalloutReviewerDto } from "@api/dto/CalloutReviewerDto";
+import {
+  CreateCalloutReviewerDto,
+  GetCalloutReviewerDto
+} from "@api/dto/CalloutReviewerDto";
 
 @JsonController("/callout")
 export class CalloutController {
@@ -256,8 +259,7 @@ export class CalloutController {
     @Param("tagId") tagId: string,
     @PartialBody() data: CreateCalloutTagDto // Partial<TagCreateData>
   ): Promise<GetCalloutTagDto | undefined> {
-    await getRepository(CalloutTag).update({ id: tagId, calloutId: id }, data);
-
+    await calloutTagTransformer.updateById(auth, tagId, data);
     return calloutTagTransformer.fetchOneById(auth, tagId);
   }
 
@@ -293,7 +295,7 @@ export class CalloutController {
   @Post("/:id/reviewers")
   async createCalloutReviewer(
     @CalloutId() id: string,
-    @Body() data: CreateCalloutTagDto
+    @Body() data: CreateCalloutReviewerDto
   ): Promise<GetCalloutReviewerDto> {
     throw new Error("Not implemented");
   }
@@ -302,16 +304,6 @@ export class CalloutController {
   async getCalloutReviewer(
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @Param("reviewerId") reviewerId: string
-  ): Promise<GetCalloutReviewerDto | undefined> {
-    return CalloutReviewerTransformer.fetchOneById(auth, reviewerId);
-  }
-
-  @Patch("/:id/reviewers/:reviewerId")
-  async updateCalloutReviewer(
-    @CurrentAuth({ required: true }) auth: AuthInfo,
-    @CalloutId() id: string,
-    @Param("reviewerId") reviewerId: string,
-    @PartialBody() data: CreateCalloutTagDto // Partial<TagCreateData>
   ): Promise<GetCalloutReviewerDto | undefined> {
     return CalloutReviewerTransformer.fetchOneById(auth, reviewerId);
   }

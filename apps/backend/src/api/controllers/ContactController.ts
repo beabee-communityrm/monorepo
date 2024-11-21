@@ -154,7 +154,7 @@ export class ContactController {
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @PartialBody() data: BatchUpdateContactDto
   ): Promise<BatchUpdateContactResultDto> {
-    const affected = await ContactTransformer.update(auth, data);
+    const affected = await ContactTransformer.updateWithTags(auth, data);
     return plainToInstance(BatchUpdateContactResultDto, { affected });
   }
 

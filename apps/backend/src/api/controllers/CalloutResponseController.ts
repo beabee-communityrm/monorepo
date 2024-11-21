@@ -40,7 +40,10 @@ export class CalloutResponseController {
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @PartialBody() data: BatchUpdateCalloutResponseDto
   ): Promise<BatchUpdateCalloutResponseResultDto> {
-    const affected = await CalloutResponseTransformer.update(auth, data);
+    const affected = await CalloutResponseTransformer.updateWithTags(
+      auth,
+      data
+    );
     return plainToInstance(BatchUpdateCalloutResponseResultDto, { affected });
   }
 
@@ -58,7 +61,7 @@ export class CalloutResponseController {
     @Params() { id }: UUIDParams,
     @PartialBody() data: UpdateCalloutResponseDto
   ): Promise<GetCalloutResponseDto | undefined> {
-    await CalloutResponseTransformer.updateOneById(auth, id, data);
+    await CalloutResponseTransformer.updateWithTagsById(auth, id, data);
     return await CalloutResponseTransformer.fetchOneById(auth, id);
   }
 }

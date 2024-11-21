@@ -214,26 +214,6 @@ abstract class TagTransformer<
   }
 
   /**
-   * Updates an existing tag
-   *
-   * @param id - Tag ID
-   * @param data - Tag update data
-   * @throws NotFoundError if tag doesn't exist
-   *
-   * @example
-   * await contactTagTransformer.update(tagId, {
-   *   name: "New Name",
-   *   description: "Updated description"
-   * });
-   */
-  async update(id: string, data: Partial<TModel>): Promise<void> {
-    const result = await getRepository(this.model).update(id, data as any);
-    if (result.affected === 0) {
-      throw new NotFoundError();
-    }
-  }
-
-  /**
    * Deletes a tag and its assignments
    *
    * @param auth - The authentication info

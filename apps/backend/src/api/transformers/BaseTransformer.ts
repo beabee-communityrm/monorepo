@@ -17,9 +17,10 @@ import {
   InvalidRuleError,
   UnauthorizedError
 } from "@beabee/core/errors";
-import { convertRulesToWhereClause } from "@api/utils/rules";
+import { batchUpdate, convertRulesToWhereClause } from "@api/utils/rules";
 
 import { AuthInfo, FetchRawResult, FilterHandlers } from "@type/index";
+import { BadRequestError } from "routing-controllers";
 
 /**
  * Base transformer for querying and converting models to DTOs
@@ -340,12 +341,12 @@ export abstract class BaseTransformer<
    */
   async delete(auth: AuthInfo, rules: RuleGroup): Promise<boolean> {
     const { query, filters, filterHandlers } = await this.preFetch(
-      { rules } as Query,
+      { rules } as Query, // TODO: why casting?
       auth
     );
 
     if (!query.rules) {
-      throw new Error(
+      throw new BadRequestError(
         "No rules provided to delete, this would delete all items"
       );
     }
@@ -371,5 +372,47 @@ export abstract class BaseTransformer<
       condition: "AND",
       rules: [{ field: this.modelIdField, operator: "equal", value: [id] }]
     });
+  }
+
+  async update(
+    auth: AuthInfo,
+    opts: { rules: RuleGroup; updates: Partial<Model> }
+  ): Promise<number> {
+    const { query, filters, filterHandlers } = await this.preFetch(
+      { rules: opts.rules } as Query, // TODO: why casting?
+      auth
+    );
+
+    if (!query.rules) {
+      throw new BadRequestError(
+        "No rules provided to update, this would update all items"
+      );
+    }
+
+    const res = await batchUpdate(
+      this.model,
+      filters,
+      query.rules,
+      opts.updates,
+      auth.contact,
+      filterHandlers
+    );
+
+    return res.affected || -1;
+  }
+
+  async updateById(
+    auth: AuthInfo,
+    id: string,
+    updates: Partial<Model>
+  ): Promise<boolean> {
+    const updated = await this.update(auth, {
+      rules: {
+        condition: "AND",
+        rules: [{ field: this.modelIdField, operator: "equal", value: [id] }]
+      },
+      updates
+    });
+    return updated > 0;
   }
 }

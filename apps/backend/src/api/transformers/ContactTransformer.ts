@@ -249,7 +249,10 @@ class ContactTransformer extends BaseContactTransformer<
    *   updates: { tags: ["+tag1", "-tag2"] }
    * });
    */
-  async update(auth: AuthInfo, query_: BatchUpdateContactDto): Promise<number> {
+  async updateWithTags(
+    auth: AuthInfo,
+    query_: BatchUpdateContactDto
+  ): Promise<number> {
     const { query, filters, filterHandlers } = await this.preFetch(
       query_,
       auth
