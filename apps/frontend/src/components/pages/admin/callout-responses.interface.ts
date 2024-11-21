@@ -5,7 +5,7 @@ import {
   type GetCalloutDataWith,
 } from '@beabee/beabee-common';
 import { computed, ref, watchEffect, type Ref } from 'vue';
-import type { FilterItems } from '@type';
+import { type FilterGroups, type FilterItems } from '@type';
 import type { Header } from '@components/table/table.interface';
 import type { SelectItem } from '@components/forms/form.interface';
 
@@ -170,12 +170,17 @@ export function useCalloutResponseFilters(
    * Filter Groups Configuration
    * @description Organizes filters into logical groups
    */
-  const filterGroups = computed(() => [
+  const filterGroups = computed<FilterGroups>(() => [
     {
       id: 'response',
       label: t('calloutResponse.dataGroup.response'),
       items: {
         [prefix.value + 'createdAt']: filterItems.value.createdAt,
+        [prefix.value + 'assignee']: {
+          ...filterItems.value.assignee,
+          type: 'enum',
+          options: reviewerItems.value,
+        },
         [prefix.value + 'tags']: {
           ...filterItems.value.tags,
           options: tagItems.value,
