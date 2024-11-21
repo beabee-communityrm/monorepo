@@ -25,7 +25,7 @@ import {
 } from "typeorm";
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
 
-import { simpleFilterHandler } from "#filter-handlers";
+import { simpleFilterHandler } from "#filter-handlers/simple.filter-handlers";
 
 import { createQueryBuilder } from "#database";
 import { Contact } from "#models";
