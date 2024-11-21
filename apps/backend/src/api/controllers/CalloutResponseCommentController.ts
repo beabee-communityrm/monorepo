@@ -27,12 +27,11 @@ import { UUIDParams } from "@api/params/UUIDParams";
 
 import CalloutResponseCommentTransformer from "@api/transformers/CalloutResponseCommentTransformer";
 
-import { CalloutResponseComment, Contact } from "@beabee/core/models";
+import { CalloutResponseComment } from "@beabee/core/models";
 
 import { AuthInfo } from "@type/auth-info";
 
 @JsonController("/callout-response-comments")
-@Authorized("admin")
 export class CalloutResponseCommentController {
   @Post("/")
   async createCalloutReponseComment(
@@ -43,6 +42,7 @@ export class CalloutResponseCommentController {
       throw new BadRequestError("Authentication with contact required");
     }
 
+    // TODO: check auth here
     const comment: CalloutResponseComment = await getRepository(
       CalloutResponseComment
     ).save({
@@ -84,6 +84,7 @@ export class CalloutResponseCommentController {
   async deleteCalloutResponseComment(
     @Params() { id }: UUIDParams
   ): Promise<void> {
+    // TODO: check auth here
     const result = await getRepository(CalloutResponseComment).delete(id);
     if (!result.affected) throw new NotFoundError();
   }

@@ -79,6 +79,9 @@ export const calloutResponseCommentFilters = {
   id: {
     type: "text",
   },
+  calloutId: {
+    type: "text",
+  },
   responseId: {
     type: "text",
   },

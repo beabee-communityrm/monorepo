@@ -87,6 +87,7 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
     query: ListCalloutResponsesDto,
     auth: AuthInfo
   ): void {
+    // TODO: Add auth check for assignee
     if (query.with?.includes(GetCalloutResponseWith.Assignee)) {
       qb.leftJoinAndSelect(`${fieldPrefix}assignee`, "assignee");
     }
