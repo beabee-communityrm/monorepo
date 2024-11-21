@@ -352,13 +352,13 @@ export abstract class BaseTransformer<
 
     const result = await createQueryBuilder()
       .delete()
-      .from(this.model, "item")
+      .from(this.model)
       .where(
         ...convertRulesToWhereClause(
           validateRuleGroup(filters, query.rules),
           auth.contact,
           filterHandlers,
-          "item."
+          ""
         )
       )
       .execute();

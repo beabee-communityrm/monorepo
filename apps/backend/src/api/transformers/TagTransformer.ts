@@ -249,26 +249,27 @@ abstract class TagTransformer<
       auth
     );
 
+    const [whereClause, params] = convertRulesToWhereClause(
+      validateRuleGroup(filters, query.rules),
+      auth.contact,
+      filterHandlers,
+      "item."
+    );
+
     // Delete any matching tag assignments first
     await createQueryBuilder()
       .delete()
-      .from(this.assignmentModel, "ta")
+      .from(this.assignmentModel)
       .where((qb) => {
         const subQb = createQueryBuilder()
           .subQuery()
-          .select("item.tagId")
+          .select("item.id")
           .from(this.model, "item")
-          .where(
-            ...convertRulesToWhereClause(
-              validateRuleGroup(filters, query.rules),
-              auth.contact,
-              filterHandlers,
-              "item."
-            )
-          );
+          .where(whereClause);
 
-        qb.where("ta.tagId IN " + subQb.getQuery());
+        qb.where("tagId IN " + subQb.getQuery());
       })
+      .setParameters(params)
       .execute();
 
     return await super.delete(auth, rules);
