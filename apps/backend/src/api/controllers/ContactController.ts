@@ -209,7 +209,7 @@ export class ContactController {
   async updateContact(
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @TargetUser() target: Contact,
-    @PartialBody() data: Partial<UpdateContactDto>
+    @PartialBody() data: UpdateContactDto // Should be Partial<UpdateContactDto>
   ): Promise<GetContactDto | undefined> {
     return await ContactTransformer.updateOneByContact(auth, target, data);
   }
