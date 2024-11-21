@@ -237,7 +237,7 @@ abstract class TagTransformer<
    * @example
    * await contactTagTransformer.delete(tagId, ContactTagAssignment);
    */
-  async delete(id: string): Promise<void> {
+  async delete(auth: AuthInfo, id: string): Promise<void> {
     // Check if tag exists
     const tag = await getRepository(this.model).findOneBy({ id });
     if (!tag) {

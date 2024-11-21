@@ -115,7 +115,10 @@ export class ContactTagController {
   @Authorized("admin")
   @OnUndefined(204)
   @Delete("/:tagId")
-  async deleteContactTag(@Param("tagId") tagId: string): Promise<void> {
-    await contactTagTransformer.delete(tagId);
+  async deleteContactTag(
+    @CurrentAuth({ required: true }) auth: AuthInfo,
+    @Param("tagId") tagId: string
+  ): Promise<void> {
+    await contactTagTransformer.deleteById(auth, tagId);
   }
 }

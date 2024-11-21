@@ -41,7 +41,6 @@ class CalloutTransformer extends BaseTransformer<
   GetCalloutOptsDto
 > {
   protected model = Callout;
-  protected modelIdField = "id";
   protected filters = calloutFilters;
   protected filterHandlers: FilterHandlers<CalloutFilterName> = {
     status: statusFilterHandler,

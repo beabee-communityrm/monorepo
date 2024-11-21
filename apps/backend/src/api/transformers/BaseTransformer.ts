@@ -3,6 +3,7 @@ import {
   InvalidRule,
   PaginatedQuery,
   RoleType,
+  RuleGroup,
   validateRuleGroup
 } from "@beabee/beabee-common";
 import { plainToInstance } from "class-transformer";
@@ -31,7 +32,7 @@ export abstract class BaseTransformer<
   Query extends GetDtoOpts & PaginatedQuery = GetDtoOpts & PaginatedQuery
 > {
   protected abstract model: { new (): Model };
-  protected modelIdField: keyof Model = "id";
+  protected modelIdField = "id";
 
   protected abstract filters: Filters<FilterName>;
   /**
@@ -322,5 +323,46 @@ export abstract class BaseTransformer<
    */
   async count(auth: AuthInfo, query: Query): Promise<number> {
     return (await this.fetch(auth, { ...query, limit: 0 })).total;
+  }
+
+  /**
+   * Delete the items that match the query
+   * @param auth The contact who is requesting the results
+   * @param rules The rules to match the items to delete
+   * @returns Whether any items were deleted or not
+   */
+  async delete(auth: AuthInfo, rules: RuleGroup): Promise<boolean> {
+    const [query, filters, filterHandlers] = await this.preFetch(
+      { rules } as Query,
+      auth
+    );
+
+    const qb = createQueryBuilder(this.model, "item");
+
+    if (!query.rules) {
+      throw new Error(
+        "No rules provided to delete, this would delete all items"
+      );
+    }
+
+    qb.where(
+      ...convertRulesToWhereClause(
+        validateRuleGroup(filters, query.rules),
+        auth.contact,
+        filterHandlers,
+        "item."
+      )
+    );
+
+    const result = await qb.delete().execute();
+
+    return result.affected == null || result.affected > 0;
+  }
+
+  async deleteById(auth: AuthInfo, id: string): Promise<boolean> {
+    return await this.delete(auth, {
+      condition: "AND",
+      rules: [{ field: this.modelIdField, operator: "equal", value: [id] }]
+    });
   }
 }

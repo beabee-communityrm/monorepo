@@ -265,10 +265,11 @@ export class CalloutController {
   @Delete("/:id/tags/:tagId")
   @OnUndefined(204)
   async deleteCalloutTag(
+    @CurrentAuth({ required: true }) auth: AuthInfo,
     @CalloutId() id: string,
     @Param("tagId") tagId: string
   ): Promise<void> {
-    await calloutTagTransformer.delete(tagId);
+    await calloutTagTransformer.deleteById(auth, tagId);
   }
 
   // The same code as tags but for reviewers
@@ -316,9 +317,10 @@ export class CalloutController {
   @Delete("/:id/reviewers/:reviewerId")
   @OnUndefined(204)
   async deleteCalloutReviewer(
+    @CurrentAuth({ required: true }) auth: AuthInfo,
     @CalloutId() id: string,
     @Param("reviewerId") reviewerId: string
   ): Promise<void> {
-    await CalloutReviewerTransformer.delete(reviewerId);
+    await CalloutReviewerTransformer.deleteById(auth, reviewerId);
   }
 }
