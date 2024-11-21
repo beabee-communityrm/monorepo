@@ -11,10 +11,17 @@ import { GetCalloutTagDto } from "@api/dto/CalloutTagDto";
 import { GetContactTagDto } from "@api/dto/ContactTagDto";
 import { createQueryBuilder } from "@beabee/core/database";
 import type { TagData } from "@beabee/beabee-common";
-import type { TagAssignment, TaggableEntity } from "@beabee/core/type";
+import type {
+  FilterHandler,
+  TagAssignment,
+  TaggableEntity
+} from "@beabee/core/type";
 import { getRepository } from "@beabee/core/database";
 import { NotFoundError } from "routing-controllers";
-import { FilterHandler } from "@beabee/core/type";
+import {
+  contactTagFilterHandler,
+  calloutTagFilterHandler
+} from "@beabee/core/filter-handlers";
 
 /**
  * Generic transformer for handling tag-related operations.
@@ -43,14 +50,14 @@ export class TagTransformer<
    * @param filters - Record of filters available for this tag type
    * @param dtoType - The constructor for the DTO class
    * @param entityIdField - The name of the foreign key field in the assignment model
-   * @param tableName - The name of the tag assignment table
+   * @param tagFilterHandler - The filter handler for this tag type
    */
   constructor(
     protected model: any,
     protected filters: Record<TFilterName, any>,
     protected dtoType: new () => TDto,
     protected entityIdField: string,
-    protected tableName: string
+    public readonly tagFilterHandler: FilterHandler
   ) {
     super();
   }
@@ -270,33 +277,6 @@ export class TagTransformer<
       throw new NotFoundError();
     }
   }
-
-  /**
-   * Creates a filter handler for tag-based filtering using the transformer's configuration
-   *
-   * @returns A filter handler for tag-based queries
-   */
-  public tagFilterHandler: FilterHandler = (qb, args) => {
-    const subQb = createQueryBuilder()
-      .subQuery()
-      .select(`ta.${this.entityIdField}`)
-      .from(this.tableName, "ta");
-
-    if (args.operator === "contains" || args.operator === "not_contains") {
-      subQb.where(args.addParamSuffix("ta.tagId = :valueA"));
-    }
-
-    const inOp =
-      args.operator === "not_contains" || args.operator === "is_empty"
-        ? "NOT IN"
-        : "IN";
-
-    qb.where(`${args.fieldPrefix}id ${inOp} ${subQb.getQuery()}`);
-
-    return args.operator === "contains" || args.operator === "not_contains"
-      ? { valueA: args.value[0] }
-      : {};
-  };
 }
 
 export const calloutTagTransformer = new TagTransformer(
@@ -304,7 +284,7 @@ export const calloutTagTransformer = new TagTransformer(
   calloutTagFilters,
   GetCalloutTagDto,
   "responseId",
-  "callout_response_tag"
+  calloutTagFilterHandler
 );
 
 export const contactTagTransformer = new TagTransformer(
@@ -312,5 +292,5 @@ export const contactTagTransformer = new TagTransformer(
   contactTagFilters,
   GetContactTagDto,
   "contactId",
-  "contact_tag_assignments"
+  contactTagFilterHandler
 );
