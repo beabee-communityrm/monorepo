@@ -23,7 +23,7 @@ meta:
         <AppSelect
           v-model="currentAssignee"
           :placeholder="t('calloutResponsesPage.searchAssignee')"
-          :items="adminItems"
+          :items="reviewerItems"
         />
       </AppSearch>
       <p class="text-sm font-semibold text-body-80">{{ t('common.show') }}</p>
@@ -85,6 +85,7 @@ meta:
               "
             />
             <SetAssigneeButton
+              :reviewer-items="reviewerItems"
               :disabled="selectedCount === 0"
               :loading="doingAction"
               :current-assignee-id="selectedAssigneeId"
@@ -204,7 +205,7 @@ import {
   stringifyAnswer,
   type UpdateCalloutResponseData,
 } from '@beabee/beabee-common';
-import { computed, onBeforeMount, ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import AppButton from '@components/button/AppButton.vue';
@@ -223,7 +224,6 @@ import MoveBucketButton from '@components/pages/admin/callouts/MoveBucketButton.
 import ToggleTagButton from '@components/tag/ToggleTagButton.vue';
 import { buckets } from '@components/pages/admin/callouts/callouts.interface';
 import SetAssigneeButton from '@components/pages/admin/callouts/SetAssigneeButton.vue';
-import { fetchContacts } from '@utils/api/contact';
 import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
 import {
   definePaginatedQuery,
@@ -308,7 +308,6 @@ const selectedTags = computed(() => {
  * Assignee Management
  * @description Handles assignee filtering and selection state
  */
-const adminItems = ref<{ id: string; label: string }[]>([]);
 const currentAssignee = defineParam('assignee', (v) => v || '');
 
 const selectedAssigneeId = computed(() => {
@@ -358,7 +357,7 @@ const showLatestComment = ref(false);
  */
 const currentPaginatedQuery = definePaginatedQuery('createdAt');
 const currentRules = defineRulesParam();
-const { formComponents, answerItems, filterGroups, tagItems } =
+const { formComponents, answerItems, filterGroups, reviewerItems, tagItems } =
   useCalloutResponseFilters(toRef(props, 'callout'));
 
 /**
@@ -369,22 +368,6 @@ const doingAction = ref(false);
 /**
  * Lifecycle Hooks
  */
-onBeforeMount(async () => {
-  const admins = await fetchContacts({
-    rules: {
-      condition: 'AND',
-      rules: [
-        { field: 'activePermission', operator: 'equal', value: ['admin'] },
-      ],
-    },
-  });
-
-  adminItems.value = admins.items.map((admin) => ({
-    id: admin.id,
-    label: admin.displayName,
-  }));
-});
-
 addBreadcrumb(
   computed(() => [
     {

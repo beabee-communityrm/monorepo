@@ -109,6 +109,7 @@ meta:
       <SetAssigneeButton
         size="sm"
         with-text
+        :reviewer-items="reviewerItems"
         :current-assignee-id="response.assignee?.id"
         :disabled="doingAction"
         :loading="doingAction"
@@ -162,7 +163,7 @@ meta:
   </div>
 </template>
 <script lang="ts" setup>
-import { computed, onBeforeMount, ref, watchEffect } from 'vue';
+import { computed, ref, toRef, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 import type {
   CalloutResponseAnswersSlide,
@@ -197,11 +198,12 @@ import TagList from '@components/tag/TagList.vue';
 import { addNotification } from '@store/notifications';
 
 import { formatLocale } from '@utils/dates';
-import { fetchResponses, calloutTagOperations } from '@utils/api/callout';
+import { fetchResponses } from '@utils/api/callout';
 import {
   fetchCalloutResponse,
   updateCalloutResponse,
 } from '@utils/api/callout-response';
+import { useCalloutResponseFilters } from '@components/pages/admin/callout-responses.interface';
 
 const props = defineProps<{
   rid: string;
@@ -237,8 +239,6 @@ const nextResponse = ref<GetCalloutResponseData>();
 const responseNo = ref(0);
 const totalResponses = ref(0);
 
-const tagItems = ref<{ id: string; label: string }[]>([]);
-
 const editMode = ref(false);
 const doingAction = ref(false);
 
@@ -247,6 +247,10 @@ const bucketName = computed(() =>
     ? buckets.value.find((bucket) => bucket.id === response.value?.bucket)
         ?.label || response.value.bucket
     : ''
+);
+
+const { reviewerItems, tagItems } = useCalloutResponseFilters(
+  toRef(props, 'callout')
 );
 
 async function handleUpdate(
@@ -275,11 +279,6 @@ async function handleEditResponse(answers: CalloutResponseAnswersSlide) {
   await handleUpdate({ answers }, t('form.saved'));
   editMode.value = false;
 }
-
-onBeforeMount(async () => {
-  const tags = await calloutTagOperations.fetchTags(props.callout.slug);
-  tagItems.value = tags.map((tag) => ({ id: tag.id, label: tag.name }));
-});
 
 async function refreshResponse() {
   const newResponse = await fetchCalloutResponse(props.rid, [

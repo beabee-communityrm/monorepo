@@ -118,6 +118,7 @@ export * from "./get-callout-response-data.ts";
 export * from "./get-callout-response-map-data.ts";
 export * from "./get-callout-response-with.ts";
 export * from "./get-callout-responses-query.ts";
+export * from "./get-callout-reviewer-data.ts";
 export * from "./get-callout-slide-schema.ts";
 export * from "./get-callout-with.ts";
 export * from "./get-callouts-query.ts";
