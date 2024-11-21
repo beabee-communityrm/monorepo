@@ -1,5 +1,11 @@
 <template>
-  <a v-if="href" :href="href" :class="buttonClasses">
+  <a
+    v-if="href"
+    :href="href"
+    :target="external ? '_blank' : undefined"
+    :rel="external ? 'noopener noreferrer' : undefined"
+    :class="buttonClasses"
+  >
     <font-awesome-icon v-if="icon" :icon="icon" /><slot />
   </a>
   <router-link v-else-if="to" :to="to" :class="buttonClasses">
@@ -28,6 +34,40 @@
 </template>
 
 <script lang="ts" setup>
+/**
+ * A versatile button component that can render as a button, link, or router-link
+ * with various styles and states.
+ *
+ * @component AppButton
+ *
+ * @example
+ * // Basic button
+ * <AppButton>Click me</AppButton>
+ *
+ * // Primary button with loading state
+ * <AppButton variant="primary" :loading="true">Loading...</AppButton>
+ *
+ * // External link button
+ * <AppButton href="https://example.com" external>External Link</AppButton>
+ *
+ * // Router link button
+ * <AppButton :to="{ name: 'home' }">Go Home</AppButton>
+ *
+ * @props {boolean} [disabled=false] - Disables the button
+ * @props {boolean} [loading=false] - Shows a loading spinner
+ * @props {('button'|'submit')} [type='button'] - HTML button type
+ * @props {string} [href] - URL for anchor tag
+ * @props {boolean} [external=false] - Opens link in new tab if true
+ * @props {RouteLocationRaw} [to] - Vue Router destination
+ * @props {string} [variant='primary'] - Button style variant
+ * @props {('xs'|'sm'|'md'|'lg')} [size='md'] - Button size
+ * @props {IconDefinition} [icon] - FontAwesome icon
+ * @props {('button'|'label')} [is='button'] - Component element type
+ *
+ * @exposes {Function} focus - Focuses the button element
+ * @exposes {Ref<HTMLElement>} innerButton - Reference to the button element
+ */
+
 import {
   faCircleNotch,
   type IconDefinition,
@@ -85,6 +125,7 @@ const props = withDefaults(
     loading?: boolean;
     type?: 'button' | 'submit';
     href?: string;
+    external?: boolean;
     to?: RouteLocationRaw;
     variant?: keyof typeof variantClasses;
     size?: 'xs' | 'sm' | 'md' | 'lg';
@@ -94,6 +135,7 @@ const props = withDefaults(
   {
     type: 'button',
     href: undefined,
+    external: false,
     to: undefined,
     variant: 'primary',
     size: 'md',

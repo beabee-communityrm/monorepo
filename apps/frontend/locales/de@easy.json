@@ -19,7 +19,8 @@
     "getStarted": "Hier kannst du starten.",
     "next": "Hier kommst du auf die nächste Seite.",
     "share": "Hier schickst du den Text / die Datei / das Bild an andere.",
-    "submit": "Hier wird deine Meldung weg-geschickt."
+    "submit": "Hier wird deine Meldung weg-geschickt.",
+    "sendEmails": "E-Mails schicken"
   },
   "addContact": {
     "errors": {}

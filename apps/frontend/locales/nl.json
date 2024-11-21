@@ -22,7 +22,8 @@
     "getStarted": "Start",
     "next": "Volgende",
     "share": "Delen",
-    "submit": "Indienen"
+    "submit": "Indienen",
+    "sendEmails": "E-Mails versturen"
   },
   "addContact": {
     "errors": {}

@@ -18,6 +18,14 @@
   ],
   "imports": {
     "#locale": "./dist/locales/current.js",
+    "#filter-handlers": "./dist/filter-handlers/index.js",
+    "#filter-handlers/*": "./dist/filter-handlers/*.js",
+    "#lib": "./dist/lib/index.js",
+    "#lib/*": "./dist/lib/*.js",
+    "#models": "./dist/models/index.js",
+    "#models/*": "./dist/models/*.js",
+    "#services": "./dist/services/index.js",
+    "#services/*": "./dist/services/*.js",
     "#*": "./dist/*.js"
   },
   "exports": {
@@ -29,6 +37,7 @@
     "./locale": "./dist/locales/current.js",
     "./logging": "./dist/logging.js",
     "./models": "./dist/models/index.js",
+    "./models/*": "./dist/models/*.js",
     "./type": "./dist/type/index.js",
     "./server": "./dist/server.js",
     "./lib/*": "./dist/lib/*.js",

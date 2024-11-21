@@ -102,7 +102,8 @@
     "view": "Ver",
     "yesDelete": "Sim, apagar",
     "yesDisable": "Sim, desactivar",
-    "yesRemove": "Sim, remover"
+    "yesRemove": "Sim, remover",
+    "emails": "Enviar e-mails"
   },
   "addContact": {
     "contactSaved": "Contacto gravado",
