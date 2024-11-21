@@ -227,7 +227,7 @@ abstract class TagTransformer<
    * });
    */
   async update(id: string, data: Partial<TModel>): Promise<void> {
-    const result = await getRepository(this.model).update(id, data);
+    const result = await getRepository(this.model).update(id, data as any);
     if (result.affected === 0) {
       throw new NotFoundError();
     }

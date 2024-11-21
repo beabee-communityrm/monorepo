@@ -294,7 +294,9 @@ export class CalloutController {
   async createCalloutReviewer(
     @CalloutId() id: string,
     @Body() data: CreateCalloutTagDto
-  ): Promise<GetCalloutReviewerDto> {}
+  ): Promise<GetCalloutReviewerDto> {
+    throw new Error("Not implemented");
+  }
 
   @Get("/:id/reviewers/:reviewerId")
   async getCalloutReviewer(
