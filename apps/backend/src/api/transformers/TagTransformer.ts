@@ -5,7 +5,12 @@ import {
   contactTagFilters,
   RoleType
 } from "@beabee/beabee-common";
-import { ContactTag, CalloutTag } from "@beabee/core/models";
+import {
+  ContactTag,
+  CalloutTag,
+  CalloutResponseTag,
+  ContactTagAssignment
+} from "@beabee/core/models";
 import { GetTagDto } from "@api/dto/TagDto";
 import { GetCalloutTagDto } from "@api/dto/CalloutTagDto";
 import { GetContactTagDto } from "@api/dto/ContactTagDto";
@@ -48,10 +53,10 @@ abstract class TagTransformer<
 > extends BaseTransformer<TModel, TDto, TFilterName> {
   /** The constructor for the DTO class */
   protected abstract dtoType: new () => TDto;
+  /** The tag assignment table */
+  protected abstract assignmentModel: new () => TagAssignment<TModel>;
   /** The name of the foreign key field in the assignment model */
-  protected abstract entityIdField: string;
-  /** The name of the tag assignment table */
-  protected abstract tableName: string;
+  protected abstract entityIdField: keyof TagAssignment<TModel>;
 
   /**
    * Converts a tag model instance to its DTO representation.
@@ -76,11 +81,8 @@ abstract class TagTransformer<
    * This method efficiently loads all tags for multiple entities in a single query.
    *
    * @template TEntity - The type of the entity that has tags
-   * @template TAssignment - The type of the tag assignment
    *
    * @param entities - Array of entities to load tags for
-   * @param AssignmentModel - The constructor for the tag assignment model
-   * @param entityIdField - The name of the foreign key field in the assignment model
    *
    * @example
    * // Loading tags for callout responses
@@ -93,26 +95,21 @@ abstract class TagTransformer<
    * // After loading, each entity will have its tags property populated
    * console.log(responses[0].tags); // [{ tag: { id: "...", name: "..." }, responseId: "..." }]
    */
-  async loadEntityTags<
-    TEntity extends TaggableEntity<TModel>,
-    TAssignment extends TagAssignment<TModel>
-  >(
-    entities: TEntity[],
-    AssignmentModel: new () => TAssignment,
-    entityIdField: string
-  ): Promise<void> {
+  async loadEntityTags(entities: TaggableEntity<TModel>[]): Promise<void> {
     if (entities.length === 0) return;
 
     const entityIds = entities.map((e) => e.id);
 
-    const entityTags = (await createQueryBuilder(AssignmentModel, "et")
-      .where(`et.${entityIdField} IN (:...ids)`, { ids: entityIds })
+    const entityTags = (await createQueryBuilder(this.assignmentModel, "et")
+      .where(`et.${this.entityIdField} IN (:...ids)`, { ids: entityIds })
       .innerJoinAndSelect("et.tag", "tag")
       .orderBy("tag.name", "ASC")
-      .getMany()) as TAssignment[];
+      .getMany()) as TagAssignment<TModel>[];
 
     for (const entity of entities) {
-      entity.tags = entityTags.filter((et) => et[entityIdField] === entity.id);
+      entity.tags = entityTags.filter(
+        (et) => et[this.entityIdField] === entity.id
+      );
     }
   }
 
@@ -122,8 +119,6 @@ abstract class TagTransformer<
    *
    * @param entityIds - Array of entity IDs to update tags for
    * @param tagUpdates - Array of tag updates (e.g., ["+tagId1", "-tagId2"])
-   * @param AssignmentModel - The constructor for the tag assignment model
-   * @param entityField - The name of the entity field in the assignment
    *
    * @example
    * await calloutTagTransformer.updateEntityTags(
@@ -226,7 +221,7 @@ abstract class TagTransformer<
    * });
    */
   async update(id: string, data: Partial<TModel>): Promise<void> {
-    const result = await getRepository(this.model).update(id, data as any);
+    const result = await getRepository(this.model).update(id, data);
     if (result.affected === 0) {
       throw new NotFoundError();
     }
@@ -242,22 +237,15 @@ abstract class TagTransformer<
    * @example
    * await contactTagTransformer.delete(tagId, ContactTagAssignment);
    */
-  async delete(id: string, AssignmentModel: new () => any): Promise<void> {
+  async delete(id: string): Promise<void> {
     // Check if tag exists
-    const tag = await getRepository(this.model).findOneBy({ id } as any);
+    const tag = await getRepository(this.model).findOneBy({ id });
     if (!tag) {
       throw new NotFoundError();
     }
 
-    // Check if tag is still assigned to any entities
-    const assignments = await getRepository(AssignmentModel).count({
-      where: { tag: { id } }
-    });
-
-    if (assignments > 0) {
-      // Delete all assignments first
-      await getRepository(AssignmentModel).delete({ tag: { id } });
-    }
+    // Delete any assignments first
+    await getRepository(this.assignmentModel).delete({ tag: { id } });
 
     // Delete tag
     const result = await getRepository(this.model).delete(id);
@@ -275,7 +263,7 @@ abstract class TagTransformer<
     const subQb = createQueryBuilder()
       .subQuery()
       .select(`ta.${this.entityIdField}`)
-      .from(this.tableName, "ta");
+      .from(this.assignmentModel, "ta");
 
     if (args.operator === "contains" || args.operator === "not_contains") {
       subQb.where(args.addParamSuffix("ta.tagId = :valueA"));
@@ -302,8 +290,8 @@ class CalloutTagTransformer extends TagTransformer<
   protected model = CalloutTag;
   protected filters: Filters<CalloutTagFilterName> = calloutTagFilters;
   protected dtoType = GetCalloutTagDto;
-  protected entityIdField = "calloutId";
-  protected tableName = "callout_response_tags";
+  protected assignmentModel = CalloutResponseTag;
+  protected entityIdField = "responseId";
 
   protected async transformQuery<T extends PaginatedQuery>(
     query: T,
@@ -344,8 +332,8 @@ class ContactTagTransformer extends TagTransformer<
   protected model = ContactTag;
   protected filters: Filters<ContactTagFilterName> = contactTagFilters;
   protected dtoType = GetContactTagDto;
+  protected assignmentModel = ContactTagAssignment;
   protected entityIdField = "contactId";
-  protected tableName = "contact_tag_assignments";
 
   protected allowedRoles: RoleType[] = ["admin"];
 }

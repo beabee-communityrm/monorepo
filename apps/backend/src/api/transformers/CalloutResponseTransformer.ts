@@ -140,11 +140,7 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
 
       if (query.with?.includes(GetCalloutResponseWith.Tags)) {
         // Load tags after to ensure offset/limit work
-        await calloutTagTransformer.loadEntityTags(
-          responses,
-          CalloutResponseTag,
-          "responseId"
-        );
+        await calloutTagTransformer.loadEntityTags(responses);
       }
     }
   }

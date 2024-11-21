@@ -31,7 +31,7 @@ export abstract class BaseTransformer<
   Query extends GetDtoOpts & PaginatedQuery = GetDtoOpts & PaginatedQuery
 > {
   protected abstract model: { new (): Model };
-  protected modelIdField = "id";
+  protected modelIdField: keyof Model = "id";
 
   protected abstract filters: Filters<FilterName>;
   /**

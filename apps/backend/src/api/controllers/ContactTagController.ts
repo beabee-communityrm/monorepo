@@ -16,7 +16,6 @@ import { CreateContactTagDto, GetContactTagDto, ListTagsDto } from "@api/dto";
 import { CurrentAuth } from "@api/decorators/CurrentAuth";
 import { AuthInfo } from "@type/auth-info";
 import { contactTagTransformer } from "@api/transformers/TagTransformer";
-import { ContactTagAssignment } from "@beabee/core/models";
 import { DuplicateTagNameError } from "@beabee/core/errors";
 
 /**
@@ -117,6 +116,6 @@ export class ContactTagController {
   @OnUndefined(204)
   @Delete("/:tagId")
   async deleteContactTag(@Param("tagId") tagId: string): Promise<void> {
-    await contactTagTransformer.delete(tagId, ContactTagAssignment);
+    await contactTagTransformer.delete(tagId);
   }
 }

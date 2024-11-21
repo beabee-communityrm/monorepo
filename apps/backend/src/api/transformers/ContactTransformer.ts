@@ -188,11 +188,7 @@ class ContactTransformer extends BaseContactTransformer<
 
       if (query.with?.includes(GetContactWith.Tags)) {
         // Load tags after to ensure offset/limit work
-        await contactTagTransformer.loadEntityTags(
-          contacts,
-          ContactTagAssignment,
-          "contactId"
-        );
+        await contactTagTransformer.loadEntityTags(contacts);
       }
     }
   }

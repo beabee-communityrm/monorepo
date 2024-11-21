@@ -49,12 +49,7 @@ import CalloutResponseMapTransformer from "@api/transformers/CalloutResponseMapT
 import CalloutResponseTransformer from "@api/transformers/CalloutResponseTransformer";
 import { validateOrReject } from "@api/utils";
 
-import {
-  Callout,
-  CalloutResponseTag,
-  CalloutTag,
-  Contact
-} from "@beabee/core/models";
+import { Callout, CalloutTag, Contact } from "@beabee/core/models";
 
 import { CalloutCaptcha } from "@beabee/beabee-common";
 
@@ -273,7 +268,7 @@ export class CalloutController {
     @CalloutId() id: string,
     @Param("tagId") tagId: string
   ): Promise<void> {
-    await calloutTagTransformer.delete(tagId, CalloutResponseTag);
+    await calloutTagTransformer.delete(tagId);
   }
 
   // The same code as tags but for reviewers
