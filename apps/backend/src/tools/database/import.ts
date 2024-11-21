@@ -3,7 +3,7 @@ import "module-alias/register";
 import readline from "readline";
 
 import { dataSource } from "@beabee/core/database";
-import { runApp } from "@core/server";
+import { runApp } from "@beabee/core/server";
 
 import config from "@beabee/core/config";
 

@@ -5,7 +5,7 @@ import { Between } from "typeorm";
 
 import { getRepository } from "@beabee/core/database";
 import { log as mainLogger } from "@beabee/core/logging";
-import { runApp } from "@core/server";
+import { runApp } from "@beabee/core/server";
 
 import GiftService from "@beabee/core/services/GiftService";
 

@@ -28,6 +28,7 @@
     "./logging": "./dist/logging.js",
     "./models": "./dist/models/index.js",
     "./type": "./dist/type/index.js",
+    "./server": "./dist/server.js",
     "./lib/*": "./dist/lib/*.js",
     "./services/*": "./dist/services/*.js",
     "./utils/*": "./dist/utils/*.js"

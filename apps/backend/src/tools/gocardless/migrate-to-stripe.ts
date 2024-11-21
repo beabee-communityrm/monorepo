@@ -7,7 +7,7 @@ import Stripe from "stripe";
 import { Equal, In } from "typeorm";
 
 import { createQueryBuilder, getRepository } from "@beabee/core/database";
-import { runApp } from "@core/server";
+import { runApp } from "@beabee/core/server";
 import { stripe, stripeTypeToPaymentMethod } from "@beabee/core/lib/stripe";
 
 import PaymentService from "@beabee/core/services/PaymentService";

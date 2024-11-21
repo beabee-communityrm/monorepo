@@ -14,19 +14,23 @@ RUN apt-get update && apt-get install -y tini
 COPY --chown=node:node package.json yarn.lock deno.jsonc deno.lock .yarnrc.yml /opt/
 COPY --chown=node:node .yarn /opt/.yarn
 
-# Copy dependencies info
+# Copy dependencies info from packages
 COPY --chown=node:node packages/common/package.json /opt/packages/common/package.json
 COPY --chown=node:node packages/core/package.json /opt/packages/core/package.json
+COPY --chown=node:node packages/docker/package.json /opt/packages/docker/package.json
+
+# Copy dependencies info from apps
 COPY --chown=node:node apps/backend/package.json /opt/apps/backend/package.json
+COPY --chown=node:node apps/webhooks/package.json /opt/apps/webhooks/package.json
 
 # Copy config files with dependencies info
-COPY packages/prettier-config /opt/packages/prettier-config
-COPY packages/tsconfig /opt/packages/tsconfig
+COPY --chown=node:node packages/prettier-config /opt/packages/prettier-config
+COPY --chown=node:node packages/tsconfig /opt/packages/tsconfig
 
 ENV NODE_ENV=production
 ENV NODE_OPTIONS=--enable-source-maps
 
-WORKDIR /opt/apps/backend
+WORKDIR /opt
 
 ##################################
 # The builder stage
@@ -52,53 +56,60 @@ RUN npm --version
 RUN yarn --version
 RUN deno --version
 
-# Install dependencies
-RUN yarn workspaces focus
 
-# Copy source and build
+# Install dependencies
+RUN yarn workspaces focus -A
+
+# Copy source files
 COPY packages /opt/packages
 COPY apps/backend /opt/apps/backend
-RUN yarn workspaces foreach --recursive --topological-dev --parallel --verbose --from @beabee/backend run build
+COPY apps/webhooks /opt/apps/webhooks
 
-ARG REVISION=DEV
-RUN echo -n ${REVISION} > /opt/apps/backend/built/revision.txt
+# Build the applications
+RUN yarn workspaces foreach -pv --worktree --topological-dev run build
 
 # Prune non-production dependencies
-RUN yarn workspaces focus --production
+RUN yarn workspaces focus -A --production
 
 ##################################
-# Distribution stage
-# The main image with the built application
+# Distribution stages
+# The images containing the built application
 ##################################
-FROM base AS dist
 
-# Copy built files and dependencies
+# Common distribution base
+FROM base AS dist-common
+
 COPY --chown=node:node --from=builder /opt/node_modules /opt/node_modules
-COPY --chown=node:node --from=builder /opt/apps/backend/built /opt/apps/backend/built
 COPY --chown=node:node --from=builder /opt/packages/core/dist /opt/packages/core/dist
 COPY --chown=node:node --from=builder /opt/packages/common/dist /opt/packages/common/dist
 
 ENTRYPOINT [ "tini", "--" ]
 
+# Backend distribution base
+FROM dist-common AS dist-backend
+
+COPY --chown=node:node --from=builder /opt/apps/backend/built /opt/apps/backend/built
+
+ARG REVISION=DEV
+RUN echo -n ${REVISION} > /opt/apps/backend/built/revision.txt && chown node:node /opt/apps/backend/built/revision.txt
+
+WORKDIR /opt/apps/backend
+
 ##################################
 # Output stages
 ##################################
 
-## Application images
-FROM dist AS legacy_app
+## Backend images
+FROM dist-backend AS legacy_app
 USER node
 CMD [ "node", "./built/app.js" ]
 
-FROM dist AS api_app
+FROM dist-backend AS api_app
 USER node
 CMD [ "node", "./built/api/app.js" ]
 
-FROM dist AS webhook_app
-USER node
-CMD [ "node", "./built/webhooks/app.js" ]
-
 ## Cron image
-FROM dist AS cron_app
+FROM dist-backend AS cron_app
 
 RUN apt-get install -y cron rsyslog && rm -rf /var/lib/apt/lists/*
 
@@ -115,3 +126,10 @@ RUN crontab ./crontab
 # 2. Start the syslog daemon
 # 3. Start cron in the foreground with log level 15
 CMD [ "sh", "-c", "env > /etc/environment; rsyslogd; exec cron -fL 15" ]
+
+# Webhooks image
+FROM dist-common AS webhook_app
+COPY --chown=node:node --from=builder /opt/apps/webhooks/dist /opt/apps/webhooks/dist
+WORKDIR /opt/apps/webhooks
+USER node
+CMD [ "node", "./dist/app.js" ]

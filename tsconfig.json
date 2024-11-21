@@ -2,6 +2,7 @@
   "files": [],
   "references": [
     { "path": "./packages/core" },
-    { "path": "./apps/backend" }
+    { "path": "./apps/backend" },
+    { "path": "./apps/webhooks" }
   ]
 }
