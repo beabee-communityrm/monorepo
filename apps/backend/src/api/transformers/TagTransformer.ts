@@ -3,7 +3,8 @@ import { TransformPlainToInstance } from "class-transformer";
 import {
   calloutTagFilters,
   contactTagFilters,
-  RoleType
+  RoleType,
+  validateRuleGroup
 } from "@beabee/beabee-common";
 import {
   ContactTag,
@@ -20,6 +21,7 @@ import type {
   ContactTagFilterName,
   Filters,
   PaginatedQuery,
+  RuleGroup,
   TagData
 } from "@beabee/beabee-common";
 import type { TagAssignment, TaggableEntity } from "@beabee/core/type";
@@ -28,7 +30,11 @@ import { NotFoundError } from "routing-controllers";
 import { FilterHandler } from "@type/filter-handlers";
 import { AuthInfo } from "@type/auth-info";
 import { getReviewerRules } from "./BaseCalloutResponseTransformer";
-import { mergeRules } from "@api/utils";
+import {
+  buildSelectQuery,
+  convertRulesToWhereClause,
+  mergeRules
+} from "@api/utils";
 import { UnauthorizedError } from "@beabee/core/errors";
 
 /**
@@ -230,28 +236,42 @@ abstract class TagTransformer<
   /**
    * Deletes a tag and its assignments
    *
-   * @param id - Tag ID
-   * @param AssignmentModel - The tag assignment model to clean up
-   * @throws NotFoundError if tag doesn't exist
+   * @param auth - The authentication info
+   * @param rules - Rules to filter what to delete
+   * @returns Whether or not any tags were deleted
    *
    * @example
    * await contactTagTransformer.delete(tagId, ContactTagAssignment);
    */
-  async delete(auth: AuthInfo, id: string): Promise<void> {
-    // Check if tag exists
-    const tag = await getRepository(this.model).findOneBy({ id });
-    if (!tag) {
-      throw new NotFoundError();
-    }
+  async delete(auth: AuthInfo, rules: RuleGroup): Promise<boolean> {
+    const { query, filters, filterHandlers } = await this.preFetch(
+      { rules },
+      auth
+    );
 
-    // Delete any assignments first
-    await getRepository(this.assignmentModel).delete({ tag: { id } });
+    // Delete any matching tag assignments first
+    await createQueryBuilder()
+      .delete()
+      .from(this.assignmentModel, "ta")
+      .where((qb) => {
+        const subQb = createQueryBuilder()
+          .subQuery()
+          .select("item.tagId")
+          .from(this.model, "item")
+          .where(
+            ...convertRulesToWhereClause(
+              validateRuleGroup(filters, query.rules),
+              auth.contact,
+              filterHandlers,
+              "item."
+            )
+          );
 
-    // Delete tag
-    const result = await getRepository(this.model).delete(id);
-    if (!result.affected) {
-      throw new NotFoundError();
-    }
+        qb.where("ta.tagId IN " + subQb.getQuery());
+      })
+      .execute();
+
+    return await super.delete(auth, rules);
   }
 
   /**

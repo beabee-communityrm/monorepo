@@ -339,12 +339,10 @@ export abstract class BaseTransformer<
    * @returns Whether any items were deleted or not
    */
   async delete(auth: AuthInfo, rules: RuleGroup): Promise<boolean> {
-    const [query, filters, filterHandlers] = await this.preFetch(
+    const { query, filters, filterHandlers } = await this.preFetch(
       { rules } as Query,
       auth
     );
-
-    const qb = createQueryBuilder(this.model, "item");
 
     if (!query.rules) {
       throw new Error(
@@ -352,16 +350,18 @@ export abstract class BaseTransformer<
       );
     }
 
-    qb.where(
-      ...convertRulesToWhereClause(
-        validateRuleGroup(filters, query.rules),
-        auth.contact,
-        filterHandlers,
-        "item."
+    const result = await createQueryBuilder()
+      .delete()
+      .from(this.model, "item")
+      .where(
+        ...convertRulesToWhereClause(
+          validateRuleGroup(filters, query.rules),
+          auth.contact,
+          filterHandlers,
+          "item."
+        )
       )
-    );
-
-    const result = await qb.delete().execute();
+      .execute();
 
     return result.affected == null || result.affected > 0;
   }
