@@ -159,15 +159,18 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
 
   async update(
     auth: AuthInfo,
-    query: BatchUpdateCalloutResponseDto
+    query_: BatchUpdateCalloutResponseDto
   ): Promise<number> {
-    const [query2, filters, filterHandlers] = await this.preFetch(query, auth);
+    const { query, filters, filterHandlers } = await this.preFetch(
+      query_,
+      auth
+    );
 
-    const { tagUpdates, responseUpdates } = getUpdateData(query2.updates);
+    const { tagUpdates, responseUpdates } = getUpdateData(query.updates);
     const result = await batchUpdate(
       this.model,
       filters,
-      query2.rules,
+      query.rules,
       responseUpdates,
       auth.contact,
       filterHandlers,

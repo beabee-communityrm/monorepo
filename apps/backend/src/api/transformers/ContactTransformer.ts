@@ -240,7 +240,7 @@ class ContactTransformer extends BaseContactTransformer<
    * Currently supports tag updates and basic contact field updates.
    *
    * @param auth - Auth info for permission checks
-   * @param query - The batch update query containing rules and updates
+   * @param query_ - The batch update query containing rules and updates
    * @returns Number of affected contacts
    *
    * @example
@@ -249,10 +249,13 @@ class ContactTransformer extends BaseContactTransformer<
    *   updates: { tags: ["+tag1", "-tag2"] }
    * });
    */
-  async update(auth: AuthInfo, query: BatchUpdateContactDto): Promise<number> {
-    const [query2, filters, filterHandlers] = await this.preFetch(query, auth);
+  async update(auth: AuthInfo, query_: BatchUpdateContactDto): Promise<number> {
+    const { query, filters, filterHandlers } = await this.preFetch(
+      query_,
+      auth
+    );
 
-    const { tagUpdates, contactUpdates } = this.getUpdateData(query2.updates);
+    const { tagUpdates, contactUpdates } = this.getUpdateData(query.updates);
     const hasContactUpdates = Object.keys(contactUpdates).length > 0;
 
     // Choose the appropriate batch operation:
@@ -263,7 +266,7 @@ class ContactTransformer extends BaseContactTransformer<
       ? await batchUpdate(
           this.model,
           filters,
-          query2.rules,
+          query.rules,
           contactUpdates,
           auth.contact,
           filterHandlers,
@@ -272,7 +275,7 @@ class ContactTransformer extends BaseContactTransformer<
       : await batchSelect(
           this.model,
           filters,
-          query2.rules,
+          query.rules,
           auth.contact,
           filterHandlers
         );

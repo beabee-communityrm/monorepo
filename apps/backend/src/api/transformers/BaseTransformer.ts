@@ -154,7 +154,11 @@ export abstract class BaseTransformer<
   protected async preFetch<T extends Query>(
     query: T,
     auth: AuthInfo
-  ): Promise<[T, Filters<FilterName>, FilterHandlers<FilterName>]> {
+  ): Promise<{
+    query: T;
+    filters: Filters<FilterName>;
+    filterHandlers: FilterHandlers<FilterName>;
+  }> {
     if (
       this.allowedRoles &&
       !this.allowedRoles.some((r) => auth.roles.includes(r))
@@ -164,11 +168,11 @@ export abstract class BaseTransformer<
 
     const [filters, filterHandlers] = await this.transformFilters(query, auth);
 
-    return [
-      await this.transformQuery(query, auth),
-      { ...this.filters, ...filters },
-      { ...this.filterHandlers, ...filterHandlers }
-    ];
+    return {
+      query: await this.transformQuery(query, auth),
+      filters: { ...this.filters, ...filters },
+      filterHandlers: { ...this.filterHandlers, ...filterHandlers }
+    };
   }
 
   /**
@@ -182,7 +186,10 @@ export abstract class BaseTransformer<
     auth: AuthInfo,
     query_: Query
   ): Promise<FetchRawResult<Model, Query>> {
-    const [query, filters, filterHandlers] = await this.preFetch(query_, auth);
+    const { query, filters, filterHandlers } = await this.preFetch(
+      query_,
+      auth
+    );
 
     const limit = query.limit || 50;
     const offset = query.offset || 0;
