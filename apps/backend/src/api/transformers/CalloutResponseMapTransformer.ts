@@ -114,6 +114,15 @@ class CalloutResponseMapTransformer extends BaseCalloutResponseTransformer<
     };
   }
 
+  /**
+   * Fetch the responses for a specific callout. The transformer needs the
+   * callout's response view schema to determine how to transform the responses.
+   *
+   * @param auth The authentication info
+   * @param calloutId The ID of the callout to fetch responses for
+   * @param query The query
+   * @returns The paginated responses
+   */
   async fetchForCallout(
     auth: AuthInfo,
     calloutId: string,

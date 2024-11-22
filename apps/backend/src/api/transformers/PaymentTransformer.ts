@@ -50,6 +50,7 @@ class PaymentTransformer extends BaseTransformer<
   protected async getNonAdminAuthRules(): Promise<RuleGroup> {
     return {
       condition: "AND",
+      // Non-admins can only see their own payments
       rules: [{ field: "contact", operator: "equal", value: ["me"] }]
     };
   }

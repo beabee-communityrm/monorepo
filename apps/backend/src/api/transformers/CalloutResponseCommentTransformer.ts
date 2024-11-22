@@ -84,6 +84,14 @@ class CalloutResponseCommentTransformer extends BaseTransformer<
     await loadContactRoles(comments.map((c) => c.contact));
   }
 
+  /**
+   * Checks if the user can create a comment by checking if they are a reviewer
+   * for the callout
+   *
+   * @param auth The authentication info
+   * @param data The comment data
+   * @returns
+   */
   protected async canCreate(
     auth: AuthInfo,
     data: Partial<CalloutResponseComment>

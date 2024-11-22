@@ -50,8 +50,6 @@ abstract class BaseTagTransformer<
    * Loads tags for a collection of entities using their assignment model.
    * This method efficiently loads all tags for multiple entities in a single query.
    *
-   * @template TEntity - The type of the entity that has tags
-   *
    * @param entities - Array of entities to load tags for
    *
    * @example

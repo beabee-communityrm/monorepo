@@ -41,6 +41,14 @@ class CalloutTagTransformer extends BaseTagTransformer<
     return false;
   }
 
+  /**
+   * Checks if the user can create a new tag. Callout reviewers can create tags
+   * for the callouts they are reviewing.
+   *
+   * @param auth
+   * @param data
+   * @returns
+   */
   protected async canCreate(
     auth: AuthInfo,
     data: Partial<CalloutTag>

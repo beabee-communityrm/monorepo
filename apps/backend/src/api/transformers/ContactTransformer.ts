@@ -87,6 +87,7 @@ class ContactTransformer extends BaseContactTransformer<
   protected async getNonAdminAuthRules(): Promise<RuleGroup> {
     return {
       condition: "AND",
+      // Non-admins can only see themselves
       rules: [{ field: "id", operator: "equal", value: ["me"] }]
     };
   }

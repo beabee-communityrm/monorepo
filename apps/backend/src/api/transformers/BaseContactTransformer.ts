@@ -46,12 +46,22 @@ export abstract class BaseContactTransformer<
 
   filterHandlers: FilterHandlers<string> = contactFilterHandlers;
 
+  /**
+   * Loads callouts referenced in a filter and adds their filters to the list.
+   * Callout filters are prefixed with `callouts.<id>.`
+   *
+   * Callout response filters are also added under `callouts.<id>.responses.`,
+   * they provide exactly the same filters as the callout responses endpoint.
+   *
+   * @param query
+   * @returns
+   */
   protected async transformFilters(
     query: GetOptsDto & PaginatedQuery
   ): Promise<[Partial<Filters<ContactFilterName>>, FilterHandlers<string>]> {
     const rules = query.rules ? flattenRules(query.rules) : [];
 
-    // Load callouts referenced in a filter
+    // Get callout IDs referenced in the rules
     const calloutIds = rules
       .filter((r) => r.field.startsWith("callouts."))
       .map((r) => {
@@ -80,8 +90,12 @@ export abstract class BaseContactTransformer<
   }
 }
 
-// Field handlers
-
+/**
+ * Creates a filter handler for a contact membership role field
+ *
+ * @param field The contact role field
+ * @returns The filter handler
+ */
 function membershipField(field: keyof ContactRole): FilterHandler {
   return (qb, { fieldPrefix, convertToWhereClause }) => {
     const subQb = createQueryBuilder()
@@ -95,6 +109,12 @@ function membershipField(field: keyof ContactRole): FilterHandler {
   };
 }
 
+/**
+ * Creates a filter handler for a contact profile field
+ *
+ * @param field The contact profile field
+ * @returns The filter handler
+ */
 function profileField(field: keyof ContactProfile): FilterHandler {
   return (qb, { fieldPrefix, convertToWhereClause }) => {
     const subQb = createQueryBuilder()
@@ -107,6 +127,12 @@ function profileField(field: keyof ContactProfile): FilterHandler {
   };
 }
 
+/**
+ * Creates a filter handler for a contact contribution field
+ *
+ * @param field The contact contribution field
+ * @returns The filter handler
+ */
 function contributionField(field: keyof ContactContribution): FilterHandler {
   return (qb, { fieldPrefix, convertToWhereClause }) => {
     const subQb = createQueryBuilder()
@@ -119,6 +145,14 @@ function contributionField(field: keyof ContactContribution): FilterHandler {
   };
 }
 
+/**
+ * A filter handler that checks if a contact has an active permission.
+ *
+ * This handler is used for both activeMembership and activePermission filters.
+ *
+ * @param qb
+ * @param args
+ */
 const activePermission: FilterHandler = (qb, args) => {
   const roleType = args.field === "activeMembership" ? "member" : args.value[0];
 
@@ -146,6 +180,9 @@ const activePermission: FilterHandler = (qb, args) => {
   }
 };
 
+/**
+ * The filter handler for the `callouts.<id>.<filterName...>` filters
+ */
 const calloutsFilterHandler: FilterHandler = (qb, args) => {
   // Split out callouts.<id>.<filterName>[.<restFields...>]
   const [, calloutId, subField, ...restFields] = args.field.split(".");

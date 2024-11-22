@@ -81,7 +81,8 @@ export abstract class BaseTransformer<
   abstract convert(model: Model, auth: AuthInfo, opts?: GetDtoOpts): GetDto;
 
   /**
-   * Get the authentication rules for the given operation.
+   * Get the authentication rules for the given operation. By default non-admins
+   * are denied all operations.
    *
    * @param auth The authentication info
    * @param operation The operation being performed
@@ -115,10 +116,8 @@ export abstract class BaseTransformer<
   }
 
   /**
-   * Transform the query before the results are fetched.
-   *
-   * This is typically used to add extra rules that limit the results returned
-   * based on the query or auth.
+   * Transform the query before the results are fetched. This is typically used
+   * to add extra rules that limit the results returned
    *
    * @param query The query
    * @param auth The authentication info
@@ -168,6 +167,7 @@ export abstract class BaseTransformer<
    *
    * Use this method to add extra data to the items. Typically used to add
    * related entities to the items, or load additional data or relations which
+   * are not loaded by the initial query
    *
    * @param items The list of items
    * @param query The query
@@ -241,8 +241,7 @@ export abstract class BaseTransformer<
       return {
         query: finalQuery,
         db,
-        // TODO: Remove once contact and callout response transformers have been
-        // updated
+        // TODO: Remove once contact and callout response transformers have been updated
         filters: finalFilters,
         filterHandlers: finalFilterHandlers
       };
@@ -434,6 +433,13 @@ export abstract class BaseTransformer<
     return result.affected == null || result.affected > 0;
   }
 
+  /**
+   * Delete an item by it's primary key
+
+   * @param auth The authentication info
+   * @param id The primary key of the item
+   * @returns Whether the item was deleted or not
+   */
   async deleteById(auth: AuthInfo, id: string): Promise<boolean> {
     return await this.delete(auth, {
       condition: "AND",
