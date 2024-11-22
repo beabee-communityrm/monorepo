@@ -4,11 +4,7 @@ import { SelectQueryBuilder } from "typeorm";
 
 import { createQueryBuilder } from "@beabee/core/database";
 import PaymentService from "@beabee/core/services/PaymentService";
-import {
-  Contact,
-  ContactRole,
-  ContactTagAssignment
-} from "@beabee/core/models";
+import { Contact, ContactRole } from "@beabee/core/models";
 
 import {
   GetContactDto,
@@ -288,9 +284,7 @@ class ContactTransformer extends BaseContactTransformer<
     if (tagUpdates && contacts.length > 0) {
       await contactTagTransformer.updateEntityTags(
         contacts.map((c) => c.id),
-        tagUpdates,
-        ContactTagAssignment,
-        "contact"
+        tagUpdates
       );
     }
 

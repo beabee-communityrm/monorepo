@@ -15,7 +15,6 @@ import PaymentService from "@beabee/core/services/PaymentService";
 
 import { Contact, ResetSecurityFlow } from "@beabee/core/models";
 import contactTagTransformer from "@api/transformers/ContactTagTransformer";
-import { ContactTagAssignment } from "@beabee/core/models";
 
 const app: Express = express();
 
@@ -99,9 +98,7 @@ app.post(
         if (tagUpdates.length > 0) {
           await contactTagTransformer.updateEntityTags(
             [contact.id],
-            tagUpdates,
-            ContactTagAssignment,
-            "contact"
+            tagUpdates
           );
         }
 

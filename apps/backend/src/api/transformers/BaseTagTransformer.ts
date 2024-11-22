@@ -102,15 +102,13 @@ abstract class BaseTagTransformer<
    */
   async updateEntityTags(
     entityIds: string[],
-    tagUpdates: string[],
-    AssignmentModel: new () => any,
-    entityField: string
+    tagUpdates: string[]
   ): Promise<void> {
     const addTags = tagUpdates
       .filter((tag) => tag.startsWith("+"))
       .flatMap((tag) =>
         entityIds.map((id) => ({
-          [entityField]: { id },
+          [this.entityIdField]: id,
           tag: { id: tag.slice(1) }
         }))
       );
@@ -119,7 +117,7 @@ abstract class BaseTagTransformer<
       .filter((tag) => tag.startsWith("-"))
       .flatMap((tag) =>
         entityIds.map((id) => ({
-          [entityField]: { id },
+          [this.entityIdField]: id,
           tag: { id: tag.slice(1) }
         }))
       );
@@ -127,7 +125,7 @@ abstract class BaseTagTransformer<
     if (addTags.length > 0) {
       await createQueryBuilder()
         .insert()
-        .into(AssignmentModel)
+        .into(this.assignmentModel)
         .values(addTags)
         .orIgnore()
         .execute();
@@ -135,7 +133,7 @@ abstract class BaseTagTransformer<
     if (removeTags.length > 0) {
       await createQueryBuilder()
         .delete()
-        .from(AssignmentModel)
+        .from(this.assignmentModel)
         .where(removeTags)
         .execute();
     }

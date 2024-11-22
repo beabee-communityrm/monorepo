@@ -191,9 +191,7 @@ async function updateExistingContact(contact: Contact, row: SteadyRow) {
   // Add Steady tag
   await contactTagTransformer.updateEntityTags(
     [contact.id],
-    ["+steady"], // Add the "steady" tag
-    ContactTagAssignment,
-    "contact"
+    ["+steady"] // Add the "steady" tag
   );
 
   await setContributionData(contact, row);
@@ -232,9 +230,7 @@ async function addNewContact(row: SteadyRow) {
   // Add Steady tag
   await contactTagTransformer.updateEntityTags(
     [contact.id],
-    ["+steady"], // Add the "steady" tag
-    ContactTagAssignment,
-    "contact"
+    ["+steady"] // Add the "steady" tag
   );
 
   await setContributionData(contact, row);

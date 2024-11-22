@@ -26,7 +26,6 @@ import {
   Callout,
   CalloutResponse,
   CalloutResponseComment,
-  CalloutResponseTag,
   Contact
 } from "@beabee/core/models";
 
@@ -182,9 +181,7 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
     if (tagUpdates) {
       await calloutTagTransformer.updateEntityTags(
         responses.map((r) => r.id),
-        tagUpdates,
-        CalloutResponseTag,
-        "response"
+        tagUpdates
       );
     }
 
