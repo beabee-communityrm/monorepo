@@ -1,5 +1,4 @@
 import {
-  Authorized,
   Body,
   Get,
   JsonController,

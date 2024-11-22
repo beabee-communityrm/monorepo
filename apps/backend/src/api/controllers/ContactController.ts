@@ -117,7 +117,6 @@ export class ContactController {
     });
   }
 
-  @Authorized("admin")
   @Get("/")
   async getContacts(
     @CurrentAuth({ required: true }) auth: AuthInfo,
@@ -158,7 +157,6 @@ export class ContactController {
     return plainToInstance(BatchUpdateContactResultDto, { affected });
   }
 
-  @Authorized("admin")
   @Get(".csv")
   async exportContacts(
     @CurrentAuth({ required: true }) auth: AuthInfo,

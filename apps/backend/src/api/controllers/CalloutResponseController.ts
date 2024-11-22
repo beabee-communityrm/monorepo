@@ -1,6 +1,5 @@
 import { plainToInstance } from "class-transformer";
 import {
-  Authorized,
   Get,
   JsonController,
   Params,
