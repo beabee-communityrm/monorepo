@@ -156,28 +156,6 @@ abstract class BaseTagTransformer<
   }
 
   /**
-   * Creates a new tag
-   *
-   * @param data - Tag creation data containing name and optional description
-   * @returns Created tag
-   *
-   * @example
-   * const tag = await contactTagTransformer.create({
-   *   name: "Important",
-   *   description: "For important contacts"
-   * });
-   */
-  async create(data: Partial<TModel>): Promise<TModel> {
-    const { name, description, ...rest } = data;
-    const tag = await getRepository(this.model).save({
-      ...rest,
-      name,
-      description: description || ""
-    } as TModel);
-    return tag;
-  }
-
-  /**
    * Deletes a tag and its assignments
    *
    * @param auth - The authentication info

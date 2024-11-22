@@ -229,11 +229,12 @@ export class CalloutController {
   // TODO: move to CalloutTagController like we did for contact tags?
   @Post("/:id/tags")
   async createCalloutTag(
+    @CurrentAuth({ required: true }) auth: AuthInfo,
     @CalloutId() id: string,
     @Body() data: CreateCalloutTagDto
   ): Promise<GetCalloutTagDto> {
     // TODO: handle foreign key error
-    return calloutTagTransformer.create(data);
+    return calloutTagTransformer.create(auth, data);
   }
 
   // TODO: move to CalloutTagController like we did for contact tags?

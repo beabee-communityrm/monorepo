@@ -15,7 +15,7 @@ import PartialBody from "@api/decorators/PartialBody";
 import { CreateContactTagDto, GetContactTagDto, ListTagsDto } from "@api/dto";
 import { CurrentAuth } from "@api/decorators/CurrentAuth";
 import { AuthInfo } from "@type/auth-info";
-import { DuplicateTagNameError } from "@beabee/core/errors";
+import { DuplicateTagNameError, NotFoundError } from "@beabee/core/errors";
 import contactTagTransformer from "@api/transformers/ContactTagTransformer";
 
 /**
@@ -67,11 +67,11 @@ export class ContactTagController {
   @Authorized("admin")
   @Post("/")
   async createGlobalContactTag(
+    @CurrentAuth({ required: true }) auth: AuthInfo,
     @Body() data: CreateContactTagDto
   ): Promise<GetContactTagDto> {
     try {
-      const tag = await contactTagTransformer.create(data);
-      return contactTagTransformer.convert(tag);
+      return await contactTagTransformer.create(auth, data);
     } catch (error) {
       if (DuplicateTagNameError.isPostgresError(error)) {
         throw new DuplicateTagNameError(data.name);
@@ -99,7 +99,9 @@ export class ContactTagController {
     @Param("tagId") tagId: string,
     @PartialBody() data: CreateContactTagDto
   ): Promise<GetContactTagDto | undefined> {
-    await contactTagTransformer.updateById(auth, tagId, data);
+    if (!(await contactTagTransformer.updateById(auth, tagId, data))) {
+      throw new NotFoundError();
+    }
     return contactTagTransformer.fetchOneById(auth, tagId);
   }
 
@@ -119,6 +121,8 @@ export class ContactTagController {
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @Param("tagId") tagId: string
   ): Promise<void> {
-    await contactTagTransformer.deleteById(auth, tagId);
+    if (!(await contactTagTransformer.deleteById(auth, tagId))) {
+      throw new NotFoundError();
+    }
   }
 }

@@ -253,10 +253,13 @@ async function processRows(rows: SteadyRow[]) {
     .getOne();
 
   if (!steadyTag) {
-    await contactTagTransformer.create({
-      name: "Steady",
-      description: "Imported from Steady"
-    });
+    await contactTagTransformer.create(
+      { method: "internal", roles: ["admin"] },
+      {
+        name: "Steady",
+        description: "Imported from Steady"
+      }
+    );
   }
 
   const existingContacts = await getRepository(Contact).find({
