@@ -1,5 +1,4 @@
 import {
-  Authorized,
   BadRequestError,
   Body,
   Delete,
@@ -12,8 +11,6 @@ import {
   Post,
   QueryParams
 } from "routing-controllers";
-
-import { getRepository } from "@beabee/core/database";
 
 import { CurrentAuth } from "@api/decorators/CurrentAuth";
 import PartialBody from "@api/decorators/PartialBody";
@@ -41,8 +38,8 @@ export class CalloutResponseCommentController {
     }
 
     return await CalloutResponseCommentTransformer.create(auth, {
-      contact: auth.contact,
       text: data.text,
+      contactId: auth.contact.id,
       responseId: data.responseId
     });
   }

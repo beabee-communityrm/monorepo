@@ -16,11 +16,17 @@ import ContactTransformer, {
 } from "@api/transformers/ContactTransformer";
 import { mergeRules } from "@api/utils/rules";
 
-import { CalloutResponseComment } from "@beabee/core/models";
+import {
+  CalloutResponse,
+  CalloutResponseComment,
+  CalloutReviewer
+} from "@beabee/core/models";
 
 import { AuthInfo } from "@type/auth-info";
 import { getReviewerRules } from "@api/utils/callouts";
 import { FilterHandlers } from "@type/filter-handlers";
+import { BadRequestError } from "routing-controllers";
+import { createQueryBuilder } from "@beabee/core/database";
 
 class CalloutResponseCommentTransformer extends BaseTransformer<
   CalloutResponseComment,
@@ -79,6 +85,36 @@ class CalloutResponseCommentTransformer extends BaseTransformer<
     comments: CalloutResponseComment[]
   ): Promise<void> {
     await loadContactRoles(comments.map((c) => c.contact));
+  }
+
+  protected async canCreate(
+    auth: AuthInfo,
+    data: Partial<CalloutResponseComment>
+  ): Promise<boolean> {
+    if (auth.roles.includes("admin")) {
+      return true;
+    }
+
+    if (!data.responseId || !auth.contact) {
+      throw new BadRequestError("Response ID and contact required");
+    }
+
+    const reviewer = await createQueryBuilder(CalloutReviewer, "reviewer")
+      .select("1")
+      .innerJoin(
+        CalloutResponse,
+        "response",
+        "reviewer.calloutId = response.calloutId"
+      )
+      .where("reviewer.contactId = :contactId")
+      .andWhere("response.id = :responseId")
+      .setParameters({
+        contactId: auth.contact.id,
+        responseId: data.responseId
+      })
+      .getOne();
+
+    return !!reviewer;
   }
 }
 

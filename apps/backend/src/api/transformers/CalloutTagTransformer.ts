@@ -1,4 +1,4 @@
-import { UnauthorizedError } from "routing-controllers";
+import { BadRequestError, UnauthorizedError } from "routing-controllers";
 import { GetCalloutTagDto } from "@api/dto";
 import { mergeRules } from "@api/utils";
 import {
@@ -7,10 +7,15 @@ import {
   calloutTagFilters,
   PaginatedQuery
 } from "@beabee/beabee-common";
-import { CalloutTag, CalloutResponseTag } from "@beabee/core/models";
+import {
+  CalloutTag,
+  CalloutResponseTag,
+  CalloutReviewer
+} from "@beabee/core/models";
 import { AuthInfo } from "@type/auth-info";
 import { getReviewerRules } from "@api/utils/callouts";
 import BaseTagTransformer from "./BaseTagTransformer";
+import { getRepository } from "@beabee/core/database";
 
 class CalloutTagTransformer extends BaseTagTransformer<
   CalloutTag,
@@ -49,6 +54,26 @@ class CalloutTagTransformer extends BaseTagTransformer<
         }
       ])
     };
+  }
+
+  protected async canCreate(
+    auth: AuthInfo,
+    data: Partial<CalloutTag>
+  ): Promise<boolean> {
+    if (auth.roles.includes("admin")) {
+      return true;
+    }
+
+    if (!data.calloutId || !auth.contact) {
+      throw new BadRequestError("Callout ID and contact required");
+    }
+
+    const reviewer = await getRepository(CalloutReviewer).findOneBy({
+      contactId: auth.contact.id,
+      calloutId: data.calloutId
+    });
+
+    return !!reviewer;
   }
 }
 

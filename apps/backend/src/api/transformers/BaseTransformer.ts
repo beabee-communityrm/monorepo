@@ -465,16 +465,35 @@ export abstract class BaseTransformer<
   }
 
   /**
+   * Temporary method to check the authentication before creating
+   * TODO: this method should use the same query building logic as the fetch,
+   * update and delete methods. This is possible!
+   * https://brunoscheufler.com/blog/2020-02-08-conditional-inserts-in-postgres
+   *
+   * @param auth
+   * @param data
+   * @returns Whether the item can be created or not
+   */
+  protected async canCreate(
+    auth: AuthInfo,
+    data: Partial<Model>
+  ): Promise<boolean> {
+    // Default to false for now as creating isn't yet secured
+    return false;
+  }
+
+  /**
    * Create a new item
    *
    * @param data The data to create the item with
    * @returns The created item
    */
   async create(auth: AuthInfo, data: Partial<Model>): Promise<GetDto> {
-    // TODO: this method should use the same query building logic as the fetch,
-    // update and delete methods. This is possible!
-    // https://brunoscheufler.com/blog/2020-02-08-conditional-inserts-in-postgres
+    if (!this.canCreate(auth, data)) {
+      throw new UnauthorizedError();
+    }
+
     const item = await getRepository(this.model).save(data as Model);
-    return this.convert(item, auth);
+    return this.fetchOneByIdOrFail(auth, item[this.modelIdField]);
   }
 }

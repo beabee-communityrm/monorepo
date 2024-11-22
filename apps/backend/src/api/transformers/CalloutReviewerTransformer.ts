@@ -54,6 +54,10 @@ class CalloutReviewerTransformer extends BaseTransformer<
   protected async modifyItems(items: CalloutReviewer[]): Promise<void> {
     await loadContactRoles(items.map((i) => i.contact));
   }
+
+  protected async canCreate(auth: AuthInfo): Promise<boolean> {
+    return auth.roles.includes("admin");
+  }
 }
 
 async function getAuthRules(auth: AuthInfo): Promise<RuleGroup | undefined> {
