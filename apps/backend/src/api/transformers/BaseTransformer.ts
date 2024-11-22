@@ -370,6 +370,9 @@ export abstract class BaseTransformer<
 
         this.modifyQueryBuilder(subQb, "item.", query, auth);
 
+        // Override select to only select the primary key
+        subQb.select("item." + this.modelIdField);
+
         qb.where(this.modelIdField + " IN " + subQb.getQuery());
       })
       .setParameters(params)
@@ -425,6 +428,8 @@ export abstract class BaseTransformer<
           .where(where);
 
         this.modifyQueryBuilder(subQb, "item.", query, auth);
+
+        // Override select to only select the primary key
         subQb.select("item." + this.modelIdField);
 
         qb.where(this.modelIdField + " IN " + subQb.getQuery());
