@@ -1,0 +1,70 @@
+name: E2E API Tests
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: docker/setup-buildx-action@v3
+      
+      - name: Build test image
+        uses: docker/build-push-action@v5
+        with:
+          file: ./packages/docker/base.dockerfile
+          load: true
+          target: api_app
+          tags: beabee-api-test:latest
+          build-args: |
+            REVISION=${{ github.sha }}
+      
+      - uses: ./.github/actions/setup
+      
+      # Start Postgres container
+      - name: Start Database
+        run: |
+          docker run -d \
+            --name db \
+            -p 5432:5432 \
+            -e POSTGRES_USER=membership_system \
+            -e POSTGRES_PASSWORD=membership_system \
+            -e POSTGRES_DB=membership_system \
+            postgres:14
+
+      # Create Docker network
+      - name: Create network
+        run: docker network create beabee-test
+      
+      # Connect containers to network
+      - name: Connect containers to network
+        run: |
+          docker network connect beabee-test db
+      
+      - name: Start API container
+        run: |
+          docker run -d \
+            --name beabee-api-test \
+            --network beabee-test \
+            -p 3002:3002 \
+            -e NODE_ENV=test \
+            -e BEABEE_DATABASE_URL=postgres://membership_system:membership_system@db/membership_system \
+            beabee-api-test:latest
+
+      - name: Wait for API to be ready
+        run: |
+          timeout 30 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' localhost:3002/health)" != "200" ]]; do sleep 1; done'
+          
+      - name: Run E2E tests
+        run: yarn workspace @beabee/e2e-api-tests test
+        env:
+          APP_BASE_URL: http://localhost:3002
+
+      # Cleanup all containers
+      - name: Cleanup
+        if: always()
+        run: |
+          docker rm -f beabee-api-test db
+          docker network rm beabee-test
