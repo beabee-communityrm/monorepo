@@ -17,7 +17,7 @@ import {
   InvalidRuleError,
   UnauthorizedError
 } from "@beabee/core/errors";
-import { batchUpdate, convertRulesToWhereClause } from "@api/utils/rules";
+import { convertRulesToWhereClause } from "@api/utils/rules";
 
 import { AuthInfo, FetchRawResult, FilterHandlers } from "@type/index";
 import { BadRequestError } from "routing-controllers";
@@ -350,18 +350,28 @@ export abstract class BaseTransformer<
         "No rules provided to delete, this would delete all items"
       );
     }
+    const [where, params] = convertRulesToWhereClause(
+      validateRuleGroup(filters, query.rules),
+      auth.contact,
+      filterHandlers,
+      "item."
+    );
 
     const result = await createQueryBuilder()
       .delete()
       .from(this.model)
-      .where(
-        ...convertRulesToWhereClause(
-          validateRuleGroup(filters, query.rules),
-          auth.contact,
-          filterHandlers,
-          ""
-        )
-      )
+      .where((qb) => {
+        const subQb = createQueryBuilder()
+          .subQuery()
+          .select("item." + this.modelIdField)
+          .from(this.model, "item")
+          .where(where);
+
+        this.modifyQueryBuilder(subQb, "item.", query, auth);
+
+        qb.where(this.modelIdField + " IN " + subQb.getQuery());
+      })
+      .setParameters(params)
       .execute();
 
     return result.affected == null || result.affected > 0;
@@ -389,14 +399,29 @@ export abstract class BaseTransformer<
       );
     }
 
-    const res = await batchUpdate(
-      this.model,
-      filters,
-      query.rules,
-      opts.updates,
+    const [where, params] = convertRulesToWhereClause(
+      validateRuleGroup(filters, query.rules),
       auth.contact,
-      filterHandlers
+      filterHandlers,
+      "item."
     );
+
+    const res = await createQueryBuilder()
+      .update(this.model)
+      .set(opts.updates)
+      .where((qb) => {
+        const subQb = createQueryBuilder()
+          .subQuery()
+          .from(this.model, "item")
+          .where(where);
+
+        this.modifyQueryBuilder(subQb, "item.", query, auth);
+        subQb.select("item." + this.modelIdField);
+
+        qb.where(this.modelIdField + " IN " + subQb.getQuery());
+      })
+      .setParameters(params)
+      .execute();
 
     return res.affected || -1;
   }
