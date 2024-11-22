@@ -14,7 +14,7 @@ import OptionsService from "@beabee/core/services/OptionsService";
 import PaymentService from "@beabee/core/services/PaymentService";
 
 import { Contact, ResetSecurityFlow } from "@beabee/core/models";
-import { contactTagTransformer } from "@api/transformers/TagTransformer";
+import contactTagTransformer from "@api/transformers/ContactTagTransformer";
 import { ContactTagAssignment } from "@beabee/core/models";
 
 const app: Express = express();

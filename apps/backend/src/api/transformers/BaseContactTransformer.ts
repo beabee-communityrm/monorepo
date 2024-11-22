@@ -29,7 +29,7 @@ import {
 } from "@beabee/core/models";
 
 import { FilterHandler, FilterHandlers } from "@type/filter-handlers";
-import { contactTagTransformer } from "./TagTransformer";
+import contactTagTransformer from "./ContactTagTransformer";
 
 function flattenRules(rules: RuleGroup): Rule[] {
   return rules.rules.flatMap((rule) =>

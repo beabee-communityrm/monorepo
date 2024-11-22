@@ -32,7 +32,7 @@ import { Callout, CalloutResponse, CalloutVariant } from "@beabee/core/models";
 
 import { AuthInfo } from "@type/auth-info";
 import { FilterHandlers } from "@type/filter-handlers";
-import { getReviewerRules } from "./BaseCalloutResponseTransformer";
+import { getReviewerRules } from "@api/utils/callouts";
 
 class CalloutTransformer extends BaseTransformer<
   Callout,

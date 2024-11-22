@@ -1,41 +1,14 @@
 import { BaseTransformer } from "./BaseTransformer";
 import { TransformPlainToInstance } from "class-transformer";
-import {
-  calloutTagFilters,
-  contactTagFilters,
-  RoleType,
-  validateRuleGroup
-} from "@beabee/beabee-common";
-import {
-  ContactTag,
-  CalloutTag,
-  CalloutResponseTag,
-  ContactTagAssignment
-} from "@beabee/core/models";
+import { validateRuleGroup } from "@beabee/beabee-common";
 import { GetTagDto } from "@api/dto/TagDto";
-import { GetCalloutTagDto } from "@api/dto/CalloutTagDto";
-import { GetContactTagDto } from "@api/dto/ContactTagDto";
 import { createQueryBuilder } from "@beabee/core/database";
-import type {
-  CalloutTagFilterName,
-  ContactTagFilterName,
-  Filters,
-  PaginatedQuery,
-  RuleGroup,
-  TagData
-} from "@beabee/beabee-common";
+import type { RuleGroup, TagData } from "@beabee/beabee-common";
 import type { TagAssignment, TaggableEntity } from "@beabee/core/type";
 import { getRepository } from "@beabee/core/database";
-import { NotFoundError } from "routing-controllers";
 import { FilterHandler } from "@type/filter-handlers";
 import { AuthInfo } from "@type/auth-info";
-import { getReviewerRules } from "./BaseCalloutResponseTransformer";
-import {
-  buildSelectQuery,
-  convertRulesToWhereClause,
-  mergeRules
-} from "@api/utils";
-import { UnauthorizedError } from "@beabee/core/errors";
+import { convertRulesToWhereClause } from "@api/utils";
 
 /**
  * Generic transformer for handling tag-related operations.
@@ -44,15 +17,8 @@ import { UnauthorizedError } from "@beabee/core/errors";
  * @template TModel - The tag model type extending TagData
  * @template TDto - The DTO type for tag responses, extending GetTagDto
  * @template TFilterName - The type for filter names
- *
- * @example
- * const calloutTagTransformer = new TagTransformer(
- *   CalloutTag,
- *   calloutTagFilters,
- *   GetCalloutTagDto
- * );
  */
-abstract class TagTransformer<
+abstract class BaseTagTransformer<
   TModel extends TagData,
   TDto extends GetTagDto,
   TFilterName extends string
@@ -283,60 +249,4 @@ abstract class TagTransformer<
   };
 }
 
-class CalloutTagTransformer extends TagTransformer<
-  CalloutTag,
-  GetCalloutTagDto,
-  CalloutTagFilterName
-> {
-  protected model = CalloutTag;
-  protected filters: Filters<CalloutTagFilterName> = calloutTagFilters;
-  protected dtoType = GetCalloutTagDto;
-  protected assignmentModel = CalloutResponseTag;
-  protected entityIdField = "responseId";
-
-  protected async transformQuery<T extends PaginatedQuery>(
-    query: T,
-    auth: AuthInfo
-  ): Promise<T> {
-    if (auth.roles.includes("admin")) {
-      return query;
-    }
-
-    const reviewerRules = auth.contact
-      ? await getReviewerRules(auth.contact, "calloutId")
-      : [];
-
-    if (reviewerRules.length === 0) {
-      throw new UnauthorizedError();
-    }
-
-    return {
-      ...query,
-      rules: mergeRules([
-        query.rules,
-        {
-          condition: "OR",
-          rules: reviewerRules
-        }
-      ])
-    };
-  }
-}
-
-export const calloutTagTransformer = new CalloutTagTransformer();
-
-class ContactTagTransformer extends TagTransformer<
-  ContactTag,
-  GetContactTagDto,
-  ContactTagFilterName
-> {
-  protected model = ContactTag;
-  protected filters: Filters<ContactTagFilterName> = contactTagFilters;
-  protected dtoType = GetContactTagDto;
-  protected assignmentModel = ContactTagAssignment;
-  protected entityIdField = "contactId";
-
-  protected allowedRoles: RoleType[] = ["admin"];
-}
-
-export const contactTagTransformer = new ContactTagTransformer();
+export default BaseTagTransformer;

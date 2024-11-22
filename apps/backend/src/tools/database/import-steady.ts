@@ -16,7 +16,7 @@ import { normalizeEmailAddress } from "@beabee/core/utils/index";
 import ContactsService from "@beabee/core/services/ContactsService";
 
 import { Contact, ContactRole } from "@beabee/core/models";
-import { contactTagTransformer } from "@api/transformers/TagTransformer";
+import contactTagTransformer from "@api/transformers/ContactTagTransformer";
 import { ContactTagAssignment } from "@beabee/core/models";
 
 const headers = [

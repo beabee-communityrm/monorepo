@@ -4,7 +4,6 @@ import {
   Filters,
   getCalloutFilters,
   PaginatedQuery,
-  Rule,
   RuleGroup,
   RuleOperator
 } from "@beabee/beabee-common";
@@ -13,13 +12,12 @@ import { BaseGetCalloutResponseOptsDto } from "@api/dto/CalloutResponseDto";
 import { BaseTransformer } from "@api/transformers/BaseTransformer";
 import { mergeRules } from "@api/utils/rules";
 
-import { CalloutResponse, CalloutReviewer, Contact } from "@beabee/core/models";
+import { CalloutResponse } from "@beabee/core/models";
 
 import { AuthInfo } from "@type/auth-info";
 import { FilterHandlers } from "@type/filter-handlers";
-import { calloutTagTransformer } from "./TagTransformer";
-import { UnauthorizedError } from "@beabee/core/errors";
-import { getRepository } from "@beabee/core/database";
+import calloutTagTransformer from "./CalloutTagTransformer";
+import { getReviewerRules } from "@api/utils/callouts";
 
 export abstract class BaseCalloutResponseTransformer<
   GetDto,
@@ -89,21 +87,6 @@ async function getAuthRules(auth: AuthInfo): Promise<RuleGroup | undefined> {
       ...(auth.contact ? await getReviewerRules(auth.contact, "calloutId") : [])
     ]
   };
-}
-
-export async function getReviewerRules(
-  contact: Contact,
-  field: "id" | "calloutId"
-): Promise<Rule[]> {
-  const reviewer = await getRepository(CalloutReviewer).findBy({
-    contactId: contact.id
-  });
-
-  return reviewer.map((r) => ({
-    field,
-    operator: "equal",
-    value: [r.calloutId]
-  }));
 }
 
 // Arrays are actually {a: true, b: false} type objects in answers

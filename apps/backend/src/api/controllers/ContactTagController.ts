@@ -15,8 +15,8 @@ import PartialBody from "@api/decorators/PartialBody";
 import { CreateContactTagDto, GetContactTagDto, ListTagsDto } from "@api/dto";
 import { CurrentAuth } from "@api/decorators/CurrentAuth";
 import { AuthInfo } from "@type/auth-info";
-import { contactTagTransformer } from "@api/transformers/TagTransformer";
 import { DuplicateTagNameError } from "@beabee/core/errors";
+import contactTagTransformer from "@api/transformers/ContactTagTransformer";
 
 /**
  * Controller for managing contact tags.

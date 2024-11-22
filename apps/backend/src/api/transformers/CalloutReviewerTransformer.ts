@@ -12,7 +12,7 @@ import {
   ListCalloutReviewersDto
 } from "@api/dto/CalloutReviewerDto";
 import ContactTransformer, { loadContactRoles } from "./ContactTransformer";
-import { getReviewerRules } from "./BaseCalloutResponseTransformer";
+import { getReviewerRules } from "@api/utils/callouts";
 import { UnauthorizedError } from "@beabee/core/errors";
 import { mergeRules } from "@api/utils";
 import { SelectQueryBuilder } from "typeorm";

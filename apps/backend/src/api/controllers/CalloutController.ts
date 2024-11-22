@@ -42,7 +42,6 @@ import { CalloutId } from "@api/decorators/CalloutId";
 import { CurrentAuth } from "@api/decorators/CurrentAuth";
 import PartialBody from "@api/decorators/PartialBody";
 import { InvalidCalloutResponse, UnauthorizedError } from "@beabee/core/errors";
-import { calloutTagTransformer } from "@api/transformers/TagTransformer";
 import CalloutTransformer from "@api/transformers/CalloutTransformer";
 import CalloutResponseExporter from "@api/transformers/CalloutResponseExporter";
 import CalloutResponseMapTransformer from "@api/transformers/CalloutResponseMapTransformer";
@@ -60,6 +59,7 @@ import {
   CreateCalloutReviewerDto,
   GetCalloutReviewerDto
 } from "@api/dto/CalloutReviewerDto";
+import calloutTagTransformer from "@api/transformers/CalloutTagTransformer";
 
 @JsonController("/callout")
 export class CalloutController {

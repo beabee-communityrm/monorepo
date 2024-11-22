@@ -19,7 +19,7 @@ import { mergeRules } from "@api/utils/rules";
 import { CalloutResponseComment } from "@beabee/core/models";
 
 import { AuthInfo } from "@type/auth-info";
-import { getReviewerRules } from "./BaseCalloutResponseTransformer";
+import { getReviewerRules } from "@api/utils/callouts";
 import { FilterHandlers } from "@type/filter-handlers";
 
 class CalloutResponseCommentTransformer extends BaseTransformer<
