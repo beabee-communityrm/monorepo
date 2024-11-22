@@ -117,7 +117,7 @@ class CalloutResponseCommentTransformer extends BaseTransformer<
         contactId: auth.contact.id,
         responseId: data.responseId
       })
-      .getOne();
+      .getRawOne();
 
     return !!reviewer;
   }
