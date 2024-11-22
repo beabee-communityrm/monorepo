@@ -6,7 +6,7 @@ import type { BaseClientOptions } from "../types/index.ts";
 import type { CreateCalloutResponseData } from "../deps.ts";
 
 export class CalloutResponseClient extends BaseClient {
-  constructor(protected readonly options: BaseClientOptions) {
+  constructor(protected override readonly options: BaseClientOptions) {
     // e.g. `/api/1.0/callout`
     options.path = cleanUrl(options.path + "/callout");
     super(options);

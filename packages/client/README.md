@@ -5,12 +5,6 @@ with the Beabee API. Initially developed in Deno, the library is being crafted
 with a vision to support multiple platforms including Deno, Node.js, and browser
 environments.
 
-## Development Status
-
-Currently, the primary focus is on developing the client in Deno. Future updates
-will include porting the library to Node.js and browser environments, enhancing
-its versatility and accessibility.
-
 ## Getting Started
 
 To begin working with the Beabee Client in Deno:

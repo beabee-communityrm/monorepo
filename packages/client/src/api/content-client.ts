@@ -5,7 +5,7 @@ import type { BaseClientOptions } from "../types/index.ts";
 import type { ContentData, ContentId } from "../deps.ts";
 
 export class ContentClient extends BaseClient {
-  constructor(protected readonly options: BaseClientOptions) {
+  constructor(protected override readonly options: BaseClientOptions) {
     // e.g. `/api/1.0/content`
     options.path = cleanUrl(options.path + "/content");
     super(options);
