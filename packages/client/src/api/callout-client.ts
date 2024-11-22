@@ -1,8 +1,8 @@
 import { BaseClient } from "./base-client.ts";
 import { cleanUrl } from "../utils/index.ts";
+import { CalloutResponseClient } from "./callout-response-client.ts";
 
 import type { BaseClientOptions } from "../types/index.ts";
-
 import type {
   CreateCalloutData,
   GetCalloutData,
@@ -15,10 +15,14 @@ import type {
 } from "../deps.ts";
 
 export class CalloutClient extends BaseClient {
+
+  response: CalloutResponseClient;
+
   constructor(protected override readonly options: BaseClientOptions) {
     // e.g. `/api/1.0/callout`
     options.path = cleanUrl(options.path + "/callout");
     super(options);
+    this.response = new CalloutResponseClient(options);
   }
 
   protected deserialize<With extends GetCalloutWith = void>(
