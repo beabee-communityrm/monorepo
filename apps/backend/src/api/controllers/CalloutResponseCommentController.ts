@@ -75,17 +75,20 @@ export class CalloutResponseCommentController {
     @Params() { id }: UUIDParams,
     @PartialBody() data: CreateCalloutResponseCommentDto
   ): Promise<GetCalloutResponseCommentDto | undefined> {
-    await getRepository(CalloutResponseComment).update(id, data);
+    if (!(await CalloutResponseCommentTransformer.updateById(auth, id, data))) {
+      throw new NotFoundError();
+    }
     return await CalloutResponseCommentTransformer.fetchOneById(auth, id);
   }
 
   @OnUndefined(204)
   @Delete("/:id")
   async deleteCalloutResponseComment(
+    @CurrentAuth({ required: true }) auth: AuthInfo,
     @Params() { id }: UUIDParams
   ): Promise<void> {
-    // TODO: check auth here
-    const result = await getRepository(CalloutResponseComment).delete(id);
-    if (!result.affected) throw new NotFoundError();
+    if (!(await CalloutResponseCommentTransformer.deleteById(auth, id))) {
+      throw new NotFoundError();
+    }
   }
 }

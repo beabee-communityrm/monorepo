@@ -255,11 +255,13 @@ export class CalloutController {
   @Patch("/:id/tags/:tagId")
   async updateCalloutTag(
     @CurrentAuth({ required: true }) auth: AuthInfo,
-    @CalloutId() id: string,
     @Param("tagId") tagId: string,
     @PartialBody() data: CreateCalloutTagDto // Partial<TagCreateData>
   ): Promise<GetCalloutTagDto | undefined> {
-    await calloutTagTransformer.updateById(auth, tagId, data);
+    if (!(await calloutTagTransformer.updateById(auth, tagId, data))) {
+      throw new NotFoundError();
+    }
+
     return calloutTagTransformer.fetchOneById(auth, tagId);
   }
 
@@ -268,13 +270,13 @@ export class CalloutController {
   @OnUndefined(204)
   async deleteCalloutTag(
     @CurrentAuth({ required: true }) auth: AuthInfo,
-    @CalloutId() id: string,
     @Param("tagId") tagId: string
   ): Promise<void> {
-    await calloutTagTransformer.deleteById(auth, tagId);
+    if (!(await calloutTagTransformer.deleteById(auth, tagId))) {
+      throw new NotFoundError();
+    }
   }
 
-  // The same code as tags but for reviewers
   @Get("/:id/reviewers")
   async getCalloutReviewers(
     @CurrentAuth({ required: true }) auth: AuthInfo,
@@ -312,9 +314,10 @@ export class CalloutController {
   @OnUndefined(204)
   async deleteCalloutReviewer(
     @CurrentAuth({ required: true }) auth: AuthInfo,
-    @CalloutId() id: string,
     @Param("reviewerId") reviewerId: string
   ): Promise<void> {
-    await CalloutReviewerTransformer.deleteById(auth, reviewerId);
+    if (!(await CalloutReviewerTransformer.deleteById(auth, reviewerId))) {
+      throw new NotFoundError();
+    }
   }
 }
