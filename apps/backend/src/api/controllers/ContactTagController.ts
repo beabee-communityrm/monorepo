@@ -21,14 +21,12 @@ import contactTagTransformer from "@api/transformers/ContactTagTransformer";
 /**
  * Controller for managing contact tags.
  * Provides CRUD operations for global contact tags.
- * All operations require admin privileges.
  *
  * @remarks
  * Contact tags can be assigned to contacts to categorize and group them.
  * Tags are managed globally and can be assigned to multiple contacts.
  */
 @JsonController("/contact-tags")
-@Authorized()
 export class ContactTagController {
   /**
    * Retrieves all contact tags.
@@ -40,7 +38,6 @@ export class ContactTagController {
    * GET /contact-tags
    * Returns: [{ id: "...", name: "Important", description: "..." }, ...]
    */
-  @Authorized("admin")
   @Get("/")
   async getAllContactTags(
     @CurrentAuth({ required: true }) auth: AuthInfo,
@@ -64,7 +61,6 @@ export class ContactTagController {
    * POST /contact-tags
    * Body: { name: "VIP", description: "Very important contacts" }
    */
-  @Authorized("admin")
   @Post("/")
   async createGlobalContactTag(
     @CurrentAuth({ required: true }) auth: AuthInfo,
@@ -92,7 +88,6 @@ export class ContactTagController {
    * PATCH /contact-tags/:tagId
    * Body: { name: "Updated Name", description: "Updated description" }
    */
-  @Authorized("admin")
   @Patch("/:tagId")
   async updateContactTag(
     @CurrentAuth({ required: true }) auth: AuthInfo,
@@ -114,7 +109,6 @@ export class ContactTagController {
    * @example
    * DELETE /contact-tags/:tagId
    */
-  @Authorized("admin")
   @OnUndefined(204)
   @Delete("/:tagId")
   async deleteContactTag(
