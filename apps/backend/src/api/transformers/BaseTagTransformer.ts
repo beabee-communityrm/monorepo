@@ -109,7 +109,7 @@ abstract class BaseTagTransformer<
       .flatMap((tag) =>
         entityIds.map((id) => ({
           [this.entityIdField]: id,
-          tag: { id: tag.slice(1) }
+          tagId: tag.slice(1)
         }))
       );
 
@@ -118,7 +118,7 @@ abstract class BaseTagTransformer<
       .flatMap((tag) =>
         entityIds.map((id) => ({
           [this.entityIdField]: id,
-          tag: { id: tag.slice(1) }
+          tagId: tag.slice(1)
         }))
       );
 
@@ -126,7 +126,7 @@ abstract class BaseTagTransformer<
       await createQueryBuilder()
         .insert()
         .into(this.assignmentModel)
-        .values(addTags)
+        .values(addTags as any) // TODO: fix properly
         .orIgnore()
         .execute();
     }
