@@ -294,7 +294,7 @@ export class CalloutController {
 
   @Post("/:id/reviewers")
   async createCalloutReviewer(
-    @Authorized("admin") auth: AuthInfo,
+    @CurrentAuth({ required: true }) auth: AuthInfo,
     @CalloutId() id: string,
     @Body() data: CreateCalloutReviewerDto
   ): Promise<GetCalloutReviewerDto> {
