@@ -21,10 +21,6 @@ class ContactTagTransformer extends BaseTagTransformer<
   protected entityIdField = "contactId";
 
   protected allowedRoles: RoleType[] = ["admin"];
-
-  protected async canCreate(auth: AuthInfo): Promise<boolean> {
-    return auth.roles.includes("admin");
-  }
 }
 
 export default new ContactTagTransformer();

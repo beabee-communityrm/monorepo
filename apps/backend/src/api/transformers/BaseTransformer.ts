@@ -478,8 +478,9 @@ export abstract class BaseTransformer<
     auth: AuthInfo,
     data: Partial<Model>
   ): Promise<boolean> {
-    // Default to false for now as creating isn't yet secured
-    return false;
+    // Default to only admins for now as creating doesn't yet implement the
+    // query building logic
+    return auth.roles.includes("admin");
   }
 
   /**
