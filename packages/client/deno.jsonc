@@ -8,7 +8,7 @@
     "clear": "rm -rf ./dist/",
     "dev": "deno run --allow-net --allow-read --allow-write --allow-env --allow-ffi --watch ./mod.ts",
     "build": "deno task clear && deno task generate:index && deno task format && deno task build:types && deno task build:node",
-    "build:node": "deno task build:node:esm && deno task build:node:cjs",
+    "build:node": "deno task build:node:esm && deno task build:node:cjs && deno task build:browser",
     "build:node:esm": "deno run --allow-read --allow-write --allow-env --allow-run --allow-net ./scripts/esbuild.esm.ts",
     "build:node:cjs": "deno run --allow-read --allow-write --allow-env --allow-run --allow-net ./scripts/esbuild.cjs.ts",
     "build:browser": "deno run --allow-read --allow-write --allow-env --allow-run --allow-net ./scripts/esbuild.browser.ts",
@@ -26,8 +26,5 @@
     "cache:deno": "deno cache --reload mod.ts",
     "cache:node": "npm install",
     "generate:index": "deno run --allow-read --allow-write scripts/generate-index.ts && deno task format"
-  },
-  "imports": {
-    "@beabee/client": "./mod.ts"
   }
 }

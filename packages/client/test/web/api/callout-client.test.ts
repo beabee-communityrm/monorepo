@@ -1,14 +1,14 @@
-import { CalloutClient } from "@beabee/client";
+import "@beabee/client";
 import { describe, expect, test } from "@jest/globals";
 
 describe("CalloutClient", () => {
-  const calloutClient = new CalloutClient({
+  const calloutClient = new Beabee.Client.CalloutClient({
     host: "http://localhost:8080",
     token: "test",
   });
 
   test("is a class", () => {
-    expect(typeof CalloutClient).toBe("function");
+    expect(typeof Beabee.Client.CalloutClient).toBe("function");
   });
 
   test("has a get method", () => {

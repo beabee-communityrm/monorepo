@@ -2,7 +2,7 @@
 import { build, stop } from "esbuild";
 
 await build({
-  entryPoints: ["./src/index.ts"],
+  entryPoints: ["./src/index.browser.ts"],
   outdir: "./dist/browser",
   bundle: true,
   sourcemap: true,
