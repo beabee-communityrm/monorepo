@@ -30,8 +30,6 @@ class CalloutResponseExporter extends BaseCalloutResponseTransformer<
   ExportCalloutResponseDto,
   ExportCalloutResponsesOptsDto
 > {
-  protected allowedRoles: RoleType[] = ["admin"];
-
   convert(
     response: CalloutResponse,
     auth: AuthInfo,
