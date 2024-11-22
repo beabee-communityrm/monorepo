@@ -4,6 +4,7 @@ import {
   CalloutResponseAnswerFileUpload,
   CalloutResponseAnswersSlide,
   getCalloutComponents,
+  RuleGroup,
   stringifyAnswer
 } from "@beabee/beabee-common";
 import { TransformPlainToInstance } from "class-transformer";
@@ -19,12 +20,12 @@ import {
 import { PaginatedDto } from "@api/dto/PaginatedDto";
 import { NotFoundError } from "@beabee/core/errors";
 import { BaseCalloutResponseTransformer } from "@api/transformers/BaseCalloutResponseTransformer";
-import { mergeRules } from "@api/utils/rules";
 
 import { Callout, CalloutResponse } from "@beabee/core/models";
 
 import { AuthInfo } from "@type/auth-info";
 import { CalloutResponseViewSchema } from "@type/callout-response-view-schema";
+import { mergeRules } from "@api/utils";
 
 class CalloutResponseMapTransformer extends BaseCalloutResponseTransformer<
   GetCalloutResponseMapDto,
@@ -83,22 +84,26 @@ class CalloutResponseMapTransformer extends BaseCalloutResponseTransformer<
     };
   }
 
-  protected async transformQuery<T extends ListCalloutResponseMapDto>(
-    query: T
-  ): Promise<T> {
+  protected async getNonAdminAuthRules(
+    auth: AuthInfo,
+    query: GetCalloutResponseMapOptsDto
+  ): Promise<RuleGroup> {
+    return {
+      // Only show results from relevant buckets
+      condition: "OR",
+      rules: query.callout.responseViewSchema.buckets.map((bucket) => ({
+        field: "bucket",
+        operator: "equal",
+        value: [bucket]
+      }))
+    };
+  }
+
+  protected transformQuery<T extends ListCalloutResponseMapDto>(query: T): T {
     return {
       ...query,
       rules: mergeRules([
         query.rules,
-        // Only show results from relevant buckets
-        {
-          condition: "OR",
-          rules: query.callout.responseViewSchema.buckets.map((bucket) => ({
-            field: "bucket",
-            operator: "equal",
-            value: [bucket]
-          }))
-        },
         // Only load responses for the given callout
         {
           field: "calloutId",

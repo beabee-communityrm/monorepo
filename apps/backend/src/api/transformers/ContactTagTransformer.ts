@@ -7,7 +7,6 @@ import {
 } from "@beabee/beabee-common";
 import { ContactTag, ContactTagAssignment } from "@beabee/core/models";
 import BaseTagTransformer from "./BaseTagTransformer";
-import { AuthInfo } from "@type/auth-info";
 
 class ContactTagTransformer extends BaseTagTransformer<
   ContactTag,
@@ -19,8 +18,6 @@ class ContactTagTransformer extends BaseTagTransformer<
   protected dtoType = GetContactTagDto;
   protected assignmentModel = ContactTagAssignment;
   protected entityIdField = "contactId";
-
-  protected allowedRoles: RoleType[] = ["admin"];
 }
 
 export default new ContactTagTransformer();

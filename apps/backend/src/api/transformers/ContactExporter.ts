@@ -16,8 +16,6 @@ class ContactExporter extends BaseContactTransformer<
   ExportContactDto,
   GetExportQuery
 > {
-  protected allowedRoles: RoleType[] = ["admin"];
-
   convert(contact: Contact): ExportContactDto {
     const tagNames =
       contact.tags?.map((assignment) => assignment.tag.name) || [];

@@ -7,3 +7,4 @@ export * from "./passport-local-done-callback.js";
 export * from "./passport-local-strategy-options.js";
 export * from "./passport-local-verify-options.js";
 export * from "./passport-login-info.js";
+export * from "./transformer-operation.js";

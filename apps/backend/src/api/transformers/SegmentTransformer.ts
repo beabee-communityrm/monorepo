@@ -27,8 +27,6 @@ class SegmentTransformer extends BaseTransformer<
   protected model = Segment;
   protected filters = segmentFilters;
 
-  protected allowedRoles: RoleType[] = ["admin"];
-
   @TransformPlainToInstance(GetSegmentDto)
   convert(
     segment: Segment,

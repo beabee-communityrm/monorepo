@@ -44,17 +44,26 @@ export abstract class BaseCalloutResponseTransformer<
     ];
   }
 
-  protected async transformQuery<T extends GetOptsDto & PaginatedQuery>(
-    query: T,
-    auth: AuthInfo
-  ): Promise<T> {
-    const authRules = await getAuthRules(auth);
+  protected async getNonAdminAuthRules(
+    auth: AuthInfo,
+    query: GetOptsDto
+  ): Promise<RuleGroup> {
+    return {
+      condition: "OR",
+      rules: [
+        // User's can always see their own responses
+        { field: "contact", operator: "equal", value: ["me"] },
+        // And any responses for callouts they are reviewers for
+        ...(await getReviewerRules(auth.contact, "calloutId"))
+      ]
+    };
+  }
 
+  protected transformQuery<T extends GetOptsDto & PaginatedQuery>(query: T): T {
     return {
       ...query,
       rules: mergeRules([
         query.rules,
-        authRules,
         // Only load responses for the given callout
         !!query.callout && {
           field: "calloutId",
@@ -64,29 +73,6 @@ export abstract class BaseCalloutResponseTransformer<
       ])
     };
   }
-}
-
-/**
- * Get the rules for filtering responses based on the user's role
- *
- * @param auth The authentication info
- * @returns The rules
- */
-async function getAuthRules(auth: AuthInfo): Promise<RuleGroup | undefined> {
-  // Admins can see all responses, no restrictions needed
-  if (auth.roles.includes("admin")) {
-    return;
-  }
-
-  return {
-    condition: "OR",
-    rules: [
-      // User's can always see their own responses
-      { field: "contact", operator: "equal", value: ["me"] },
-      // And any responses for callouts they are reviewers for
-      ...(auth.contact ? await getReviewerRules(auth.contact, "calloutId") : [])
-    ]
-  };
 }
 
 // Arrays are actually {a: true, b: false} type objects in answers

@@ -22,8 +22,6 @@ class ApiKeyTransformer extends BaseTransformer<
   protected model = ApiKey;
   protected filters = apiKeyFilters;
 
-  protected allowedRoles: RoleType[] = ["admin"];
-
   @TransformPlainToInstance(GetApiKeyDto)
   convert(key: ApiKey, auth: AuthInfo): GetApiKeyDto {
     return {

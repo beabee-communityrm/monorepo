@@ -1,21 +1,16 @@
 import {
   CalloutReviewerFilterName,
   calloutReviewerFilters,
-  PaginatedQuery,
   RuleGroup
 } from "@beabee/beabee-common";
 import { CalloutReviewer } from "@beabee/core/models";
 import { BaseTransformer } from "./BaseTransformer";
 import { AuthInfo } from "@type/auth-info";
-import {
-  GetCalloutReviewerDto,
-  ListCalloutReviewersDto
-} from "@api/dto/CalloutReviewerDto";
+import { GetCalloutReviewerDto } from "@api/dto/CalloutReviewerDto";
 import ContactTransformer, { loadContactRoles } from "./ContactTransformer";
 import { getReviewerRules } from "@api/utils/callouts";
-import { UnauthorizedError } from "@beabee/core/errors";
-import { mergeRules } from "@api/utils";
 import { SelectQueryBuilder } from "typeorm";
+import { TransformerOperation } from "@type/transformer-operation";
 
 class CalloutReviewerTransformer extends BaseTransformer<
   CalloutReviewer,
@@ -32,16 +27,19 @@ class CalloutReviewerTransformer extends BaseTransformer<
     };
   }
 
-  protected async transformQuery<T extends ListCalloutReviewersDto>(
-    query: T,
-    auth: AuthInfo
-  ): Promise<T> {
-    const authRules = await getAuthRules(auth);
+  protected async getNonAdminAuthRules(
+    auth: AuthInfo,
+    query: unknown,
+    operation: TransformerOperation
+  ): Promise<RuleGroup | false> {
+    if (operation === "read") {
+      const reviewerRules = await getReviewerRules(auth.contact, "calloutId");
+      if (reviewerRules.length) {
+        return { condition: "OR", rules: reviewerRules };
+      }
+    }
 
-    return {
-      ...query,
-      rules: mergeRules([query.rules, authRules])
-    };
+    return false;
   }
 
   protected modifyQueryBuilder(
@@ -54,22 +52,6 @@ class CalloutReviewerTransformer extends BaseTransformer<
   protected async modifyItems(items: CalloutReviewer[]): Promise<void> {
     await loadContactRoles(items.map((i) => i.contact));
   }
-}
-
-async function getAuthRules(auth: AuthInfo): Promise<RuleGroup | undefined> {
-  if (auth.roles.includes("admin")) {
-    return;
-  }
-
-  const reviewerRules = auth.contact
-    ? await getReviewerRules(auth.contact, "calloutId")
-    : [];
-
-  if (!reviewerRules.length) {
-    throw new UnauthorizedError();
-  }
-
-  return { condition: "OR", rules: reviewerRules };
 }
 
 export default new CalloutReviewerTransformer();

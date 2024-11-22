@@ -1,17 +1,16 @@
 import {
   ItemStatus,
   NoticeFilterName,
-  noticeFilters
+  noticeFilters,
+  RuleGroup
 } from "@beabee/beabee-common";
 import { TransformPlainToInstance } from "class-transformer";
 
 import { BaseTransformer } from "@api/transformers/BaseTransformer";
-import { GetNoticeDto, ListNoticesDto } from "@api/dto/NoticeDto";
-import { mergeRules, statusFilterHandler } from "@api/utils/rules";
+import { GetNoticeDto } from "@api/dto/NoticeDto";
+import { statusFilterHandler } from "@api/utils/rules";
 
 import { Notice } from "@beabee/core/models";
-
-import { AuthInfo } from "@type/auth-info";
 
 export class NoticeTransformer extends BaseTransformer<
   Notice,
@@ -38,21 +37,10 @@ export class NoticeTransformer extends BaseTransformer<
     };
   }
 
-  protected transformQuery<T extends ListNoticesDto>(
-    query: T,
-    auth: AuthInfo | undefined
-  ): T {
+  protected async getNonAdminAuthRules(): Promise<RuleGroup> {
     return {
-      ...query,
-      rules: mergeRules([
-        query.rules,
-        // Non-admins can only see open notices
-        !auth?.roles.includes("admin") && {
-          field: "status",
-          operator: "equal",
-          value: [ItemStatus.Open]
-        }
-      ])
+      condition: "AND",
+      rules: [{ field: "status", operator: "equal", value: [ItemStatus.Open] }]
     };
   }
 }

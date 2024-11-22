@@ -1,11 +1,10 @@
 import { BadRequestError, UnauthorizedError } from "routing-controllers";
 import { GetCalloutTagDto } from "@api/dto";
-import { mergeRules } from "@api/utils";
 import {
   CalloutTagFilterName,
   Filters,
   calloutTagFilters,
-  PaginatedQuery
+  RuleGroup
 } from "@beabee/beabee-common";
 import {
   CalloutTag,
@@ -28,32 +27,18 @@ class CalloutTagTransformer extends BaseTagTransformer<
   protected assignmentModel = CalloutResponseTag;
   protected entityIdField = "responseId";
 
-  protected async transformQuery<T extends PaginatedQuery>(
-    query: T,
+  protected async getNonAdminAuthRules(
     auth: AuthInfo
-  ): Promise<T> {
-    if (auth.roles.includes("admin")) {
-      return query;
+  ): Promise<RuleGroup | false> {
+    const reviewerRules = await getReviewerRules(auth.contact, "calloutId");
+    if (reviewerRules.length) {
+      return {
+        condition: "OR",
+        rules: reviewerRules
+      };
     }
 
-    const reviewerRules = auth.contact
-      ? await getReviewerRules(auth.contact, "calloutId")
-      : [];
-
-    if (reviewerRules.length === 0) {
-      throw new UnauthorizedError();
-    }
-
-    return {
-      ...query,
-      rules: mergeRules([
-        query.rules,
-        {
-          condition: "OR",
-          rules: reviewerRules
-        }
-      ])
-    };
+    return false;
   }
 
   protected async canCreate(

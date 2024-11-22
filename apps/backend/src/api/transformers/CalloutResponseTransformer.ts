@@ -162,7 +162,8 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
   ): Promise<number> {
     const { query, filters, filterHandlers } = await this.prepareQuery(
       query_,
-      auth
+      auth,
+      "update"
     );
 
     const { tagUpdates, responseUpdates } = getUpdateData(query.updates);

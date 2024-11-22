@@ -6,15 +6,11 @@ import {
 import { TransformPlainToInstance } from "class-transformer";
 import { SelectQueryBuilder } from "typeorm";
 
-import {
-  GetCalloutResponseCommentDto,
-  ListCalloutResponseCommentsDto
-} from "@api/dto/CalloutResponseCommentDto";
+import { GetCalloutResponseCommentDto } from "@api/dto/CalloutResponseCommentDto";
 import { BaseTransformer } from "@api/transformers/BaseTransformer";
 import ContactTransformer, {
   loadContactRoles
 } from "@api/transformers/ContactTransformer";
-import { mergeRules } from "@api/utils/rules";
 
 import {
   CalloutResponse,
@@ -57,14 +53,15 @@ class CalloutResponseCommentTransformer extends BaseTransformer<
     };
   }
 
-  protected async transformQuery<T extends ListCalloutResponseCommentsDto>(
-    query: T,
-    auth: AuthInfo
-  ): Promise<T> {
-    const authRules = await getAuthRules(auth);
+  protected async getNonAdminAuthRules(auth: AuthInfo): Promise<RuleGroup> {
     return {
-      ...query,
-      rules: mergeRules([query.rules, authRules])
+      condition: "OR",
+      rules: [
+        // User's can always see their own response comments
+        { field: "contact", operator: "equal", value: ["me"] },
+        // And any comments for callouts they are reviewers for
+        ...(await getReviewerRules(auth.contact, "calloutId"))
+      ]
     };
   }
 
@@ -116,22 +113,6 @@ class CalloutResponseCommentTransformer extends BaseTransformer<
 
     return !!reviewer;
   }
-}
-
-async function getAuthRules(auth: AuthInfo): Promise<RuleGroup | undefined> {
-  if (auth.roles.includes("admin")) {
-    return;
-  }
-
-  return {
-    condition: "OR",
-    rules: [
-      // User's can always see their own response comments
-      { field: "contact", operator: "equal", value: ["me"] },
-      // And any comments for callouts they are reviewers for
-      ...(auth.contact ? await getReviewerRules(auth.contact, "calloutId") : [])
-    ]
-  };
 }
 
 export default new CalloutResponseCommentTransformer();

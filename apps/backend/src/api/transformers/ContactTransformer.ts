@@ -1,4 +1,4 @@
-import { GetContactWith } from "@beabee/beabee-common";
+import { GetContactWith, RuleGroup } from "@beabee/beabee-common";
 import { TransformPlainToInstance } from "class-transformer";
 import { SelectQueryBuilder } from "typeorm";
 
@@ -17,7 +17,7 @@ import {
 import { BaseContactTransformer } from "@api/transformers/BaseContactTransformer";
 import ContactRoleTransformer from "@api/transformers/ContactRoleTransformer";
 import ContactProfileTransformer from "@api/transformers/ContactProfileTransformer";
-import { batchSelect, mergeRules } from "@api/utils";
+import { batchSelect } from "@api/utils";
 
 import { AuthInfo } from "@type/auth-info";
 import contactTagTransformer from "./ContactTagTransformer";
@@ -84,28 +84,10 @@ class ContactTransformer extends BaseContactTransformer<
     };
   }
 
-  /**
-   * Transforms the query to enforce access control based on auth info.
-   * Non-admin users can only access their own contact.
-   *
-   * @param query - The original query
-   * @param auth - Auth info for permission checks
-   * @returns The transformed query with additional access control rules
-   */
-  protected transformQuery<T extends ListContactsDto>(
-    query: T,
-    auth: AuthInfo
-  ): T {
+  protected async getNonAdminAuthRules(): Promise<RuleGroup> {
     return {
-      ...query,
-      rules: mergeRules([
-        query.rules,
-        !auth.roles.includes("admin") && {
-          field: "id",
-          operator: "equal",
-          value: ["me"]
-        }
-      ])
+      condition: "AND",
+      rules: [{ field: "id", operator: "equal", value: ["me"] }]
     };
   }
 
@@ -251,7 +233,8 @@ class ContactTransformer extends BaseContactTransformer<
   ): Promise<number> {
     const { query, filters, filterHandlers } = await this.prepareQuery(
       query_,
-      auth
+      auth,
+      "update"
     );
 
     const { tagUpdates, contactUpdates } = this.getUpdateData(query.updates);

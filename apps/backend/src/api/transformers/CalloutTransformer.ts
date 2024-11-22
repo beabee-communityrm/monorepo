@@ -15,7 +15,7 @@ import {
 } from "routing-controllers";
 import { SelectQueryBuilder } from "typeorm";
 
-import { createQueryBuilder, getRepository } from "@beabee/core/database";
+import { createQueryBuilder } from "@beabee/core/database";
 
 import {
   GetCalloutWith,
@@ -165,33 +165,53 @@ class CalloutTransformer extends BaseTransformer<
     };
   }
 
-  protected async transformQuery<T extends ListCalloutsDto>(
-    query: T,
-    auth: AuthInfo
-  ): Promise<T> {
-    const authRules = await getAuthRules(auth, query.showHiddenForAll);
-
-    if (auth.roles.includes("admin")) {
-      return query;
-    }
-
-    // TODO: Non-admins can't see response counts
-    // if (query.with?.includes(GetCalloutWith.ResponseCount)) {
-    //   throw new UnauthorizedError();
-    // }
-
+  protected async getNonAdminAuthRules(
+    auth: AuthInfo,
+    query: GetCalloutOptsDto
+  ): Promise<RuleGroup> {
     return {
-      ...query,
-      rules: mergeRules([query.rules, authRules])
+      condition: "OR",
+      rules: [
+        // Reviewers can see all the callouts they are reviewers for
+        ...(await getReviewerRules(auth.contact, "id")),
+
+        // Non-admins can only see open or ended non-hidden callouts
+        mergeRules([
+          {
+            condition: "OR",
+            rules: [
+              {
+                field: "status",
+                operator: "equal",
+                value: [ItemStatus.Open]
+              },
+              {
+                field: "status",
+                operator: "equal",
+                value: [ItemStatus.Ended]
+              }
+            ]
+          },
+          !query.showHiddenForAll && {
+            field: "hidden",
+            operator: "equal",
+            value: [false]
+          }
+        ])
+      ]
     };
   }
 
   protected modifyQueryBuilder(
     qb: SelectQueryBuilder<Callout>,
     fieldPrefix: string,
-    query: ListCalloutsDto
+    query: ListCalloutsDto,
+    auth: AuthInfo
   ): void {
-    if (query.with?.includes(GetCalloutWith.ResponseCount)) {
+    if (
+      query.with?.includes(GetCalloutWith.ResponseCount) &&
+      auth.roles.includes("admin")
+    ) {
       qb.loadRelationCountAndMap(
         `${fieldPrefix}responseCount`,
         `${fieldPrefix}responses`
@@ -265,59 +285,6 @@ class CalloutTransformer extends BaseTransformer<
       }
     }
   }
-}
-
-/**
- * Get the rules for filtering callouts based on the user's role
- *
- * @param auth The authentication info
- * @param showHiddenForAll Whether to show hidden callouts to non-admins
- * @returns
- */
-async function getAuthRules(
-  auth: AuthInfo,
-  showHiddenForAll: boolean
-): Promise<RuleGroup | undefined> {
-  // Admins can see all callouts, no restrictions needed
-  if (auth.roles.includes("admin")) {
-    return;
-  }
-
-  const reviewerRules = auth.contact
-    ? await getReviewerRules(auth.contact, "id")
-    : [];
-
-  return {
-    condition: "OR",
-    rules: [
-      // Reviewers can see all the callouts they are reviewers for
-      ...reviewerRules,
-
-      // Non-admins can only see open or ended non-hidden callouts
-      mergeRules([
-        {
-          condition: "OR",
-          rules: [
-            {
-              field: "status",
-              operator: "equal",
-              value: [ItemStatus.Open]
-            },
-            {
-              field: "status",
-              operator: "equal",
-              value: [ItemStatus.Ended]
-            }
-          ]
-        },
-        !showHiddenForAll && {
-          field: "hidden",
-          operator: "equal",
-          value: [false]
-        }
-      ])
-    ]
-  };
 }
 
 export default new CalloutTransformer();

@@ -17,9 +17,14 @@ import {
   InvalidRuleError,
   UnauthorizedError
 } from "@beabee/core/errors";
-import { convertRulesToWhereClause } from "@api/utils/rules";
+import { convertRulesToWhereClause, mergeRules } from "@api/utils/rules";
 
-import { AuthInfo, FetchRawResult, FilterHandlers } from "@type/index";
+import {
+  AuthInfo,
+  FetchRawResult,
+  FilterHandlers,
+  TransformerOperation
+} from "@type/index";
 import { BadRequestError } from "routing-controllers";
 
 /**
@@ -73,9 +78,41 @@ export abstract class BaseTransformer<
    */
   protected filterHandlers: FilterHandlers<FilterName> = {};
 
-  protected allowedRoles: RoleType[] | undefined;
-
   abstract convert(model: Model, auth: AuthInfo, opts?: GetDtoOpts): GetDto;
+
+  /**
+   * Get the authentication rules for the given operation.
+   *
+   * @param auth The authentication info
+   * @param operation The operation being performed
+   * @returns The authentication rules, or false to deny all
+   */
+  protected async getNonAdminAuthRules(
+    auth: AuthInfo,
+    query: Query,
+    operation: TransformerOperation
+  ): Promise<RuleGroup | false> {
+    return false;
+  }
+
+  /**
+   * Temporary method to check the authentication before creating
+   * TODO: this method should use the same query building logic as the fetch,
+   * update and delete methods. This is possible!
+   * https://brunoscheufler.com/blog/2020-02-08-conditional-inserts-in-postgres
+   *
+   * @param auth
+   * @param data
+   * @returns Whether the item can be created or not
+   */
+  protected async canCreate(
+    auth: AuthInfo,
+    data: Partial<Model>
+  ): Promise<boolean> {
+    // Default to only admins for now as creating doesn't yet implement the
+    // query building logic
+    return auth.roles.includes("admin");
+  }
 
   /**
    * Transform the query before the results are fetched.
@@ -87,10 +124,7 @@ export abstract class BaseTransformer<
    * @param auth The authentication info
    * @returns A new query
    */
-  protected transformQuery<T extends Query>(
-    query: T,
-    auth: AuthInfo
-  ): T | Promise<T> {
+  protected transformQuery<T extends Query>(query: T): T {
     return query;
   }
 
@@ -154,23 +188,29 @@ export abstract class BaseTransformer<
    */
   protected async prepareQuery<T extends Query>(
     query: T,
-    auth: AuthInfo
+    auth: AuthInfo,
+    operation: "create" | "read" | "update" | "delete"
   ): Promise<{
     query: T;
     filters: Filters<FilterName>;
     filterHandlers: FilterHandlers<FilterName>;
     db: { where: Brackets; params: Record<string, unknown> } | undefined;
   }> {
-    // Check if the user has the required roles
-    if (
-      this.allowedRoles &&
-      !this.allowedRoles.some((r) => auth.roles.includes(r))
-    ) {
-      throw new UnauthorizedError();
-    }
-
     // Apply any transformations to the query
-    const finalQuery = await this.transformQuery(query, auth);
+    const finalQuery = this.transformQuery(query);
+
+    // Apply the authentication rules if not an admin
+    if (!auth.roles.includes("admin")) {
+      const authRules = await this.getNonAdminAuthRules(
+        auth,
+        finalQuery,
+        operation
+      );
+      if (!authRules) {
+        throw new UnauthorizedError();
+      }
+      finalQuery.rules = mergeRules([finalQuery.rules, authRules]);
+    }
 
     // Convert the query filters to a WHERE clause
     const [filters, filterHandlers] = await this.transformFilters(
@@ -224,7 +264,7 @@ export abstract class BaseTransformer<
     auth: AuthInfo,
     query_: Query
   ): Promise<FetchRawResult<Model, Query>> {
-    const { query, db } = await this.prepareQuery(query_, auth);
+    const { query, db } = await this.prepareQuery(query_, auth, "read");
 
     const limit = query.limit || 50;
     const offset = query.offset || 0;
@@ -361,7 +401,8 @@ export abstract class BaseTransformer<
   async delete(auth: AuthInfo, rules: RuleGroup): Promise<boolean> {
     const { query, db } = await this.prepareQuery(
       { rules } as Query, // TODO: why casting?
-      auth
+      auth,
+      "delete"
     );
 
     if (!db) {
@@ -414,7 +455,8 @@ export abstract class BaseTransformer<
   ): Promise<number> {
     const { query, db } = await this.prepareQuery(
       { rules } as Query, // TODO: why casting?
-      auth
+      auth,
+      "update"
     );
 
     if (!db) {
@@ -467,25 +509,6 @@ export abstract class BaseTransformer<
       updates
     );
     return updated > 0;
-  }
-
-  /**
-   * Temporary method to check the authentication before creating
-   * TODO: this method should use the same query building logic as the fetch,
-   * update and delete methods. This is possible!
-   * https://brunoscheufler.com/blog/2020-02-08-conditional-inserts-in-postgres
-   *
-   * @param auth
-   * @param data
-   * @returns Whether the item can be created or not
-   */
-  protected async canCreate(
-    auth: AuthInfo,
-    data: Partial<Model>
-  ): Promise<boolean> {
-    // Default to only admins for now as creating doesn't yet implement the
-    // query building logic
-    return auth.roles.includes("admin");
   }
 
   /**

@@ -164,7 +164,7 @@ abstract class BaseTagTransformer<
    * await contactTagTransformer.delete(tagId, ContactTagAssignment);
    */
   async delete(auth: AuthInfo, rules: RuleGroup): Promise<boolean> {
-    const { db } = await this.prepareQuery({ rules }, auth);
+    const { db } = await this.prepareQuery({ rules }, auth, "delete");
 
     if (!db) {
       throw new BadRequestError("No rules provided");
