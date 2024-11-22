@@ -1,0 +1,39 @@
+import { describe, expect, it, beforeAll } from "@jest/globals";
+import request from 'supertest';
+import { ContentClient, ClientApiError } from '@beabee/client';
+import { ContentId } from '@beabee/beabee-common';
+
+import dotenv from 'dotenv';
+
+const HOST = process.env.APP_BASE_URL || 'http://localhost:3002';
+const PATH = process.env.APP_BASE_URL || '/api/1.0';
+
+dotenv.config({ path: ['.env', '.env.example'] });
+
+describe('Content API', () => {
+  let contentClient: ContentClient;
+
+  beforeAll(() => {
+    contentClient = new ContentClient({
+      host: HOST,
+      path: PATH,
+      token: 'test-token'
+    });
+  });
+
+  it('should return 400 for non-existing content id with request', async () => {
+    await request(HOST)
+      .get(`${PATH}/content/non-existing-id`)
+      .expect(400);
+  });
+
+  it('should return 400 for non-existing content id with client', async () => {
+    try {
+      await contentClient.get('non-existing-id' as ContentId);
+    } catch (error) {
+      if (error instanceof ClientApiError) {
+        expect(error.httpCode).toBe(400);
+      }
+    }
+  });
+});

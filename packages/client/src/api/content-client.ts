@@ -18,10 +18,17 @@ export class ContentClient extends BaseClient {
   async get<Id extends ContentId>(
     id: Id,
   ) {
-    const { data } = await this.fetch.get<ContentData<Id>>(
+    const { data, status, ok, statusText } = await this.fetch.get<
+      ContentData<Id>
+    >(
       `/${id}`,
     );
-    return this.deserialize(data);
+    return {
+      data,
+      status,
+      ok,
+      statusText,
+    };
   }
 
   async update<Id extends ContentId>(

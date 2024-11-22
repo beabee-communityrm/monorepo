@@ -15,7 +15,6 @@ import type {
 } from "../deps.ts";
 
 export class CalloutClient extends BaseClient {
-
   response: CalloutResponseClient;
 
   constructor(protected override readonly options: BaseClientOptions) {

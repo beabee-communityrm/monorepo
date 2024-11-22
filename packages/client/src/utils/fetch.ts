@@ -235,7 +235,7 @@ export class Fetch {
         }
         throw new ClientApiError(
           data.message || data.name || "Unknown error",
-          data,
+          { ...data, status: response.status },
         );
       }
       throw result;

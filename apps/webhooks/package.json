@@ -36,7 +36,7 @@
     "@beabee/tsconfig": "workspace:^",
     "@tsconfig/node20": "^20.1.4",
     "@types/express": "^4.17.21",
-    "@types/node": "^20.14.1",
+    "@types/node": "^22.9.1",
     "barrelsby": "^2.8.1",
     "concurrently": "^9.1.0",
     "dotenv": "^16.4.5",
