@@ -524,7 +524,7 @@ export abstract class BaseTransformer<
    * @returns The created item
    */
   async create(auth: AuthInfo, data: Partial<Model>): Promise<GetDto> {
-    if (!this.canCreate(auth, data)) {
+    if (!(await this.canCreate(auth, data))) {
       throw new UnauthorizedError();
     }
 
