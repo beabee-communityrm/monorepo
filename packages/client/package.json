@@ -1,0 +1,66 @@
+{
+  "name": "@beabee/client",
+  "description": "The Beabee API Client for Deno, Node.js, and the browser",
+  "version": "0.3.3",
+  "license": "Apache-2.0",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "homepage": "https://github.com/beabee-communityrm/monorepo/tree/main/packages/client",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/beabee-communityrm/monorepo/tree/main/packages/client"
+  },
+  "scripts": {
+    "prepare": "yarn build",
+    "lint": "deno task lint",
+    "format": "deno task format",
+    "build": "deno task build",
+    "build:node": "deno task build:node",
+    "build:node:esm": "deno task build:node:esm",
+    "build:node:cjs": "deno task build:node:cjs",
+    "build:types": "tsc",
+    "test": "yarn test:deno && yarn test:node && yarn test:web",
+    "test:deno": "deno task test:deno",
+    "test:web": "NODE_OPTIONS=--experimental-vm-modules jest --config jest.config.web.js",
+    "test:node": "NODE_OPTIONS=--experimental-vm-modules jest --config jest.config.node.js"
+  },
+  "dependencies": {
+    "@beabee/beabee-common": "workspace:^",
+    "node-fetch": "^2.7.0"
+  },
+  "devDependencies": {
+    "@gjsify/esbuild-plugin-transform-ext": "^0.0.4",
+    "@tsconfig/recommended": "^1.0.3",
+    "@types/node": "^22.9.1",
+    "@types/node-fetch": "2.6.12",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "jest-environment-node": "^29.7.0",
+    "jsdom": "^25.0.1",
+    "ts-jest": "^29.2.5",
+    "typescript": "^5.6.3",
+    "whatwg-fetch": "^3.6.20"
+  },
+  "files": [
+    "dist/"
+  ],
+  "main": "./out/mod.js",
+  "types": "./out/mod.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.cjs",
+      "types": "./dist/types/index.d.ts"
+    },
+    "./package.json": "./package.json"
+  },
+  "keywords": [
+    "beabee",
+    "client",
+    "framework",
+    "library",
+    "api"
+  ]
+}

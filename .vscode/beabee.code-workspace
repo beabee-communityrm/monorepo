@@ -29,6 +29,10 @@
       "path": "../packages/core",
     },
     {
+      "name": "packages/client",
+      "path": "../packages/client",
+    },
+    {
       "name": "packages/prettier-config",
       "path": "../packages/prettier-config",
     },
