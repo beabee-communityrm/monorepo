@@ -234,7 +234,10 @@ export class CalloutController {
     @Body() data: CreateCalloutTagDto
   ): Promise<GetCalloutTagDto> {
     // TODO: handle foreign key error
-    return calloutTagTransformer.create(auth, data);
+    return calloutTagTransformer.create(auth, {
+      ...data,
+      calloutId: id
+    });
   }
 
   // TODO: move to CalloutTagController like we did for contact tags?
