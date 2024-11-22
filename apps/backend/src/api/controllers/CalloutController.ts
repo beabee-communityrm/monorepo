@@ -48,7 +48,7 @@ import CalloutResponseMapTransformer from "@api/transformers/CalloutResponseMapT
 import CalloutResponseTransformer from "@api/transformers/CalloutResponseTransformer";
 import { validateOrReject } from "@api/utils";
 
-import { Callout, CalloutTag, Contact } from "@beabee/core/models";
+import { Callout, Contact } from "@beabee/core/models";
 
 import { CalloutCaptcha } from "@beabee/beabee-common";
 
@@ -233,13 +233,7 @@ export class CalloutController {
     @Body() data: CreateCalloutTagDto
   ): Promise<GetCalloutTagDto> {
     // TODO: handle foreign key error
-    // TODO: move to transformer
-    const tag = await getRepository(CalloutTag).save({
-      name: data.name,
-      description: data.description,
-      calloutId: id
-    });
-    return calloutTagTransformer.convert(tag);
+    return calloutTagTransformer.create(data);
   }
 
   // TODO: move to CalloutTagController like we did for contact tags?
@@ -296,10 +290,14 @@ export class CalloutController {
 
   @Post("/:id/reviewers")
   async createCalloutReviewer(
+    @Authorized("admin") auth: AuthInfo,
     @CalloutId() id: string,
     @Body() data: CreateCalloutReviewerDto
   ): Promise<GetCalloutReviewerDto> {
-    throw new Error("Not implemented");
+    return CalloutReviewerTransformer.create(auth, {
+      calloutId: id,
+      ...data
+    });
   }
 
   @Get("/:id/reviewers/:reviewerId")

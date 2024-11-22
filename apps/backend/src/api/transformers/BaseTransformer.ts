@@ -9,7 +9,7 @@ import {
 import { plainToInstance } from "class-transformer";
 import { ObjectLiteral, SelectQueryBuilder } from "typeorm";
 
-import { createQueryBuilder } from "@beabee/core/database";
+import { createQueryBuilder, getRepository } from "@beabee/core/database";
 
 import { PaginatedDto } from "@api/dto/PaginatedDto";
 import {
@@ -335,6 +335,7 @@ export abstract class BaseTransformer<
 
   /**
    * Delete the items that match the query
+   *
    * @param auth The contact who is requesting the results
    * @param rules The rules to match the items to delete
    * @returns Whether any items were deleted or not
@@ -384,12 +385,20 @@ export abstract class BaseTransformer<
     });
   }
 
+  /**
+   * Update items that match the given query
+   *
+   * @param auth The authentication info
+   * @param opts
+   * @returns How many items were updated
+   */
   async update(
     auth: AuthInfo,
-    opts: { rules: RuleGroup; updates: Partial<Model> }
+    rules: RuleGroup,
+    updates: Partial<Model>
   ): Promise<number> {
     const { query, filters, filterHandlers } = await this.preFetch(
-      { rules: opts.rules } as Query, // TODO: why casting?
+      { rules } as Query, // TODO: why casting?
       auth
     );
 
@@ -408,7 +417,7 @@ export abstract class BaseTransformer<
 
     const res = await createQueryBuilder()
       .update(this.model)
-      .set(opts.updates)
+      .set(updates)
       .where((qb) => {
         const subQb = createQueryBuilder()
           .subQuery()
@@ -426,18 +435,41 @@ export abstract class BaseTransformer<
     return res.affected || -1;
   }
 
+  /**
+   * Update an item by it's primary key
+   *
+   * @param auth The authentication info
+   * @param id The primary key of the item
+   * @param updates The updates to apply
+   * @returns Whether the item was updated or not
+   */
   async updateById(
     auth: AuthInfo,
     id: string,
     updates: Partial<Model>
   ): Promise<boolean> {
-    const updated = await this.update(auth, {
-      rules: {
+    const updated = await this.update(
+      auth,
+      {
         condition: "AND",
         rules: [{ field: this.modelIdField, operator: "equal", value: [id] }]
       },
       updates
-    });
+    );
     return updated > 0;
+  }
+
+  /**
+   * Create a new item
+   *
+   * @param data The data to create the item with
+   * @returns The created item
+   */
+  async create(auth: AuthInfo, data: Partial<Model>): Promise<GetDto> {
+    // TODO: this method should use the same query building logic as the fetch,
+    // update and delete methods. This is possible!
+    // https://brunoscheufler.com/blog/2020-02-08-conditional-inserts-in-postgres
+    const item = await getRepository(this.model).save(data as Model);
+    return this.convert(item, auth);
   }
 }

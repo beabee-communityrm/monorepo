@@ -27,8 +27,6 @@ import { UUIDParams } from "@api/params/UUIDParams";
 
 import CalloutResponseCommentTransformer from "@api/transformers/CalloutResponseCommentTransformer";
 
-import { CalloutResponseComment } from "@beabee/core/models";
-
 import { AuthInfo } from "@type/auth-info";
 
 @JsonController("/callout-response-comments")
@@ -42,15 +40,11 @@ export class CalloutResponseCommentController {
       throw new BadRequestError("Authentication with contact required");
     }
 
-    // TODO: check auth here
-    const comment: CalloutResponseComment = await getRepository(
-      CalloutResponseComment
-    ).save({
+    return await CalloutResponseCommentTransformer.create(auth, {
       contact: auth.contact,
       text: data.text,
-      response: { id: data.responseId }
+      responseId: data.responseId
     });
-    return CalloutResponseCommentTransformer.convert(comment, auth);
   }
 
   @Get("/")
