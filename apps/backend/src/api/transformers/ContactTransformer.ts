@@ -249,7 +249,7 @@ class ContactTransformer extends BaseContactTransformer<
     auth: AuthInfo,
     query_: BatchUpdateContactDto
   ): Promise<number> {
-    const { query, filters, filterHandlers } = await this.preFetch(
+    const { query, filters, filterHandlers } = await this.prepareQuery(
       query_,
       auth
     );

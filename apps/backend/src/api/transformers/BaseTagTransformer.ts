@@ -1,14 +1,12 @@
 import { BaseTransformer } from "./BaseTransformer";
 import { TransformPlainToInstance } from "class-transformer";
-import { validateRuleGroup } from "@beabee/beabee-common";
 import { GetTagDto } from "@api/dto/TagDto";
 import { createQueryBuilder } from "@beabee/core/database";
 import type { RuleGroup, TagData } from "@beabee/beabee-common";
 import type { TagAssignment, TaggableEntity } from "@beabee/core/type";
-import { getRepository } from "@beabee/core/database";
 import { FilterHandler } from "@type/filter-handlers";
 import { AuthInfo } from "@type/auth-info";
-import { convertRulesToWhereClause } from "@api/utils";
+import { BadRequestError } from "routing-controllers";
 
 /**
  * Generic transformer for handling tag-related operations.
@@ -166,17 +164,11 @@ abstract class BaseTagTransformer<
    * await contactTagTransformer.delete(tagId, ContactTagAssignment);
    */
   async delete(auth: AuthInfo, rules: RuleGroup): Promise<boolean> {
-    const { query, filters, filterHandlers } = await this.preFetch(
-      { rules },
-      auth
-    );
+    const { db } = await this.prepareQuery({ rules }, auth);
 
-    const [whereClause, params] = convertRulesToWhereClause(
-      validateRuleGroup(filters, query.rules),
-      auth.contact,
-      filterHandlers,
-      "item."
-    );
+    if (!db) {
+      throw new BadRequestError("No rules provided");
+    }
 
     // Delete any matching tag assignments first
     await createQueryBuilder()
@@ -187,11 +179,11 @@ abstract class BaseTagTransformer<
           .subQuery()
           .select("item.id")
           .from(this.model, "item")
-          .where(whereClause);
+          .where(db.where);
 
         qb.where("tagId IN " + subQb.getQuery());
       })
-      .setParameters(params)
+      .setParameters(db.params)
       .execute();
 
     return await super.delete(auth, rules);

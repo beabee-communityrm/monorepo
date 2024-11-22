@@ -160,7 +160,7 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
     auth: AuthInfo,
     query_: BatchUpdateCalloutResponseDto
   ): Promise<number> {
-    const { query, filters, filterHandlers } = await this.preFetch(
+    const { query, filters, filterHandlers } = await this.prepareQuery(
       query_,
       auth
     );

@@ -7,7 +7,7 @@ import {
   validateRuleGroup
 } from "@beabee/beabee-common";
 import { plainToInstance } from "class-transformer";
-import { ObjectLiteral, SelectQueryBuilder } from "typeorm";
+import { Brackets, ObjectLiteral, SelectQueryBuilder } from "typeorm";
 
 import { createQueryBuilder, getRepository } from "@beabee/core/database";
 
@@ -152,14 +152,16 @@ export abstract class BaseTransformer<
    * @param query The query
    * @param auth The contact who is requesting the results
    */
-  protected async preFetch<T extends Query>(
+  protected async prepareQuery<T extends Query>(
     query: T,
     auth: AuthInfo
   ): Promise<{
     query: T;
     filters: Filters<FilterName>;
     filterHandlers: FilterHandlers<FilterName>;
+    db: { where: Brackets; params: Record<string, unknown> } | undefined;
   }> {
+    // Check if the user has the required roles
     if (
       this.allowedRoles &&
       !this.allowedRoles.some((r) => auth.roles.includes(r))
@@ -167,13 +169,48 @@ export abstract class BaseTransformer<
       throw new UnauthorizedError();
     }
 
-    const [filters, filterHandlers] = await this.transformFilters(query, auth);
+    // Apply any transformations to the query
+    const finalQuery = await this.transformQuery(query, auth);
 
-    return {
-      query: await this.transformQuery(query, auth),
-      filters: { ...this.filters, ...filters },
-      filterHandlers: { ...this.filterHandlers, ...filterHandlers }
-    };
+    // Convert the query filters to a WHERE clause
+    const [filters, filterHandlers] = await this.transformFilters(
+      finalQuery,
+      auth
+    );
+    const finalFilters = { ...this.filters, ...filters };
+    const finalFilterHandlers = { ...this.filterHandlers, ...filterHandlers };
+
+    try {
+      let db;
+      if (finalQuery.rules) {
+        const validatedRules = validateRuleGroup(
+          finalFilters,
+          finalQuery.rules
+        );
+
+        const [where, params] = convertRulesToWhereClause(
+          validatedRules,
+          auth.contact,
+          finalFilterHandlers,
+          "item."
+        );
+
+        db = { where, params };
+      }
+
+      return {
+        query: finalQuery,
+        db,
+        // TODO: Remove once contact and callout response transformers have been
+        // updated
+        filters: finalFilters,
+        filterHandlers: finalFilterHandlers
+      };
+    } catch (err) {
+      throw err instanceof InvalidRule
+        ? new InvalidRuleError(err.rule, err.message)
+        : err;
+    }
   }
 
   /**
@@ -187,22 +224,10 @@ export abstract class BaseTransformer<
     auth: AuthInfo,
     query_: Query
   ): Promise<FetchRawResult<Model, Query>> {
-    const { query, filters, filterHandlers } = await this.preFetch(
-      query_,
-      auth
-    );
+    const { query, db } = await this.prepareQuery(query_, auth);
 
     const limit = query.limit || 50;
     const offset = query.offset || 0;
-
-    let ruleGroup;
-    try {
-      ruleGroup = query.rules && validateRuleGroup(filters, query.rules);
-    } catch (err) {
-      throw err instanceof InvalidRule
-        ? new InvalidRuleError(err.rule, err.message)
-        : err;
-    }
 
     const qb = createQueryBuilder(this.model, "item").offset(offset);
 
@@ -210,15 +235,8 @@ export abstract class BaseTransformer<
       qb.limit(limit);
     }
 
-    if (ruleGroup) {
-      qb.where(
-        ...convertRulesToWhereClause(
-          ruleGroup,
-          auth.contact,
-          filterHandlers,
-          "item."
-        )
-      );
+    if (db) {
+      qb.where(db.where, db.params);
     }
 
     if (query.sort) {
@@ -341,22 +359,16 @@ export abstract class BaseTransformer<
    * @returns Whether any items were deleted or not
    */
   async delete(auth: AuthInfo, rules: RuleGroup): Promise<boolean> {
-    const { query, filters, filterHandlers } = await this.preFetch(
+    const { query, db } = await this.prepareQuery(
       { rules } as Query, // TODO: why casting?
       auth
     );
 
-    if (!query.rules) {
+    if (!db) {
       throw new BadRequestError(
         "No rules provided to delete, this would delete all items"
       );
     }
-    const [where, params] = convertRulesToWhereClause(
-      validateRuleGroup(filters, query.rules),
-      auth.contact,
-      filterHandlers,
-      "item."
-    );
 
     const result = await createQueryBuilder()
       .delete()
@@ -366,7 +378,7 @@ export abstract class BaseTransformer<
           .subQuery()
           .select("item." + this.modelIdField)
           .from(this.model, "item")
-          .where(where);
+          .where(db.where);
 
         this.modifyQueryBuilder(subQb, "item.", query, auth);
 
@@ -375,7 +387,7 @@ export abstract class BaseTransformer<
 
         qb.where(this.modelIdField + " IN " + subQb.getQuery());
       })
-      .setParameters(params)
+      .setParameters(db.params)
       .execute();
 
     return result.affected == null || result.affected > 0;
@@ -400,23 +412,16 @@ export abstract class BaseTransformer<
     rules: RuleGroup,
     updates: Partial<Model>
   ): Promise<number> {
-    const { query, filters, filterHandlers } = await this.preFetch(
+    const { query, db } = await this.prepareQuery(
       { rules } as Query, // TODO: why casting?
       auth
     );
 
-    if (!query.rules) {
+    if (!db) {
       throw new BadRequestError(
         "No rules provided to update, this would update all items"
       );
     }
-
-    const [where, params] = convertRulesToWhereClause(
-      validateRuleGroup(filters, query.rules),
-      auth.contact,
-      filterHandlers,
-      "item."
-    );
 
     const res = await createQueryBuilder()
       .update(this.model)
@@ -425,7 +430,7 @@ export abstract class BaseTransformer<
         const subQb = createQueryBuilder()
           .subQuery()
           .from(this.model, "item")
-          .where(where);
+          .where(db.where);
 
         this.modifyQueryBuilder(subQb, "item.", query, auth);
 
@@ -434,7 +439,7 @@ export abstract class BaseTransformer<
 
         qb.where(this.modelIdField + " IN " + subQb.getQuery());
       })
-      .setParameters(params)
+      .setParameters(db.params)
       .execute();
 
     return res.affected || -1;
