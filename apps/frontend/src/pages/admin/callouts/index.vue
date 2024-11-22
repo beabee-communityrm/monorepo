@@ -179,6 +179,11 @@ watchEffect(async () => {
   const rules: GetCalloutsQuery['rules'] = {
     condition: 'AND',
     rules: [
+      {
+        field: 'canReview',
+        operator: 'equal',
+        value: [true],
+      },
       ...(currentStatus.value
         ? [
             {

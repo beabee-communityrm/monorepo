@@ -38,6 +38,9 @@ export const calloutFilters = {
   channels: {
     type: "array",
   },
+  canReview: {
+    type: "boolean",
+  },
 } as const;
 calloutFilters satisfies Filters;
 

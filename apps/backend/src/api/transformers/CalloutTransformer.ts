@@ -28,7 +28,12 @@ import CalloutVariantTransformer from "@api/transformers/CalloutVariantTransform
 import { groupBy } from "@api/utils";
 import { mergeRules, statusFilterHandler } from "@api/utils/rules";
 
-import { Callout, CalloutResponse, CalloutVariant } from "@beabee/core/models";
+import {
+  Callout,
+  CalloutResponse,
+  CalloutReviewer,
+  CalloutVariant
+} from "@beabee/core/models";
 
 import { AuthInfo } from "@type/auth-info";
 import { FilterHandlers } from "@type/filter-handlers";
@@ -84,6 +89,25 @@ class CalloutTransformer extends BaseTransformer<
             .orderBy("cr.calloutId");
 
           qb.where(`${args.fieldPrefix}id IN ${subQb.getQuery()}`);
+        },
+        canReview: (qb, args) => {
+          if (!auth.contact) {
+            throw new BadRequestError("canReview requires contact");
+          }
+
+          if (!auth.roles.includes("admin")) {
+            const subQb = createQueryBuilder()
+              .subQuery()
+              .select("cr.calloutId")
+              .from(CalloutReviewer, "cr")
+              .where(args.addParamSuffix("cr.contactId = :contactId"));
+
+            const operator = args.value[0] ? "IN" : "NOT IN";
+
+            qb.where(`${args.fieldPrefix}id ${operator} ${subQb.getQuery()}`);
+
+            return { contactId: auth.contact.id };
+          }
         }
       }
     ];
