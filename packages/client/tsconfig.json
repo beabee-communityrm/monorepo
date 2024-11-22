@@ -11,9 +11,6 @@
     "declaration": true,
     "emitDeclarationOnly": true,
     "isolatedModules": true,
-    "diagnostics": true,
-    "paths": {
-      "@beabee/client": ["."]
-    }
+    "diagnostics": true
   }
 }

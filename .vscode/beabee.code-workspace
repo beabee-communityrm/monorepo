@@ -2,43 +2,43 @@
   "folders": [
     {
       "name": "ROOT",
-      "path": "../",
+      "path": ".."
     },
     {
       "name": "apps/backend",
-      "path": "../apps/backend",
+      "path": "../apps/backend"
     },
     {
       "name": "apps/frontend",
-      "path": "../apps/frontend",
+      "path": "../apps/frontend"
     },
     {
       "name": "apps/router",
-      "path": "../apps/router",
+      "path": "../apps/router"
     },
     {
       "name": "apps/webhooks",
-      "path": "../apps/webhooks",
+      "path": "../apps/webhooks"
     },
     {
       "name": "packages/common",
-      "path": "../packages/common",
+      "path": "../packages/common"
     },
     {
       "name": "packages/core",
-      "path": "../packages/core",
+      "path": "../packages/core"
     },
     {
       "name": "packages/client",
-      "path": "../packages/client",
+      "path": "../packages/client"
     },
     {
       "name": "packages/prettier-config",
-      "path": "../packages/prettier-config",
+      "path": "../packages/prettier-config"
     },
     {
       "name": "packages/tsconfig",
-      "path": "../packages/tsconfig",
+      "path": "../packages/tsconfig"
     }
   ],
   "settings": {

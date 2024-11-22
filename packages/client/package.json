@@ -53,10 +53,6 @@
   "types": "./dist/types/index.d.ts",
   "exports": {
     ".": {
-      "browser": {
-        "types": "./dist/types/index.browser.d.ts",
-        "default": "./dist/browser/index.browser.js"
-      },
       "import": {
         "types": "./dist/types/index.d.ts",
         "default": "./dist/esm/index.js"

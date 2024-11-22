@@ -5,7 +5,7 @@ with the Beabee API. Initially developed in Deno, the library is being crafted
 with a vision to support multiple platforms including Deno, Node.js, and browser
 environments.
 
-## Getting Started
+## Development
 
 To begin working with the Beabee Client in Deno:
 
