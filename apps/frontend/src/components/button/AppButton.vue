@@ -1,7 +1,7 @@
 <template>
   <a
     v-if="href"
-    :href="href"
+    :href="!disabled ? href : undefined"
     :target="external ? '_blank' : undefined"
     :rel="external ? 'noopener noreferrer' : undefined"
     :class="buttonClasses"
