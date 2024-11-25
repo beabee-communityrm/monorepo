@@ -37,13 +37,13 @@ docker compose up -d
 #### Create a new super admin
 
 ```bash
-docker compose exec api_app node built/tools/new-user
+docker compose run --rm api_app node built/tools/new-user
 ```
 
 #### Payment methods and email domain
 
 ```bash
-docker compose exec api_app node built/tools/configure
+docker compose run --rm api_app node built/tools/configure
 ```
 
 > ⚠️ If you only set up the system locally, it doesn't matter what email domain you specify, but it still has to be valid, e.g. `example.org`.
