@@ -22,14 +22,14 @@ create a sandbox GoCardless account to test any payment flows.
 ```bash
 yarn install
 yarn build
-docker compose -f ../../docker-compose.yml build
+docker compose build
 
 # Initialise database
-docker compose -f ../../docker-compose.yml up -d db
-docker compose -f ../../docker-compose.yml run --rm app yarn typeorm migration:run
+docker compose up -d db
+docker compose run --rm app yarn typeorm migration:run
 
 # Do the rest
-docker compose -f ../../docker-compose.yml up -d
+docker compose up -d
 ```
 
 ### To get started
@@ -37,13 +37,13 @@ docker compose -f ../../docker-compose.yml up -d
 #### Create a new super admin
 
 ```bash
-docker compose -f ../../docker-compose.yml run --rm app node built/tools/new-user
+docker compose run --rm api_app node built/tools/new-user
 ```
 
 #### Payment methods and email domain
 
 ```bash
-docker compose -f ../../docker-compose.yml exec app node built/tools/configure
+docker compose exec api_app node built/tools/configure
 ```
 
 > ⚠️ If you only set up the system locally, it doesn't matter what email domain you specify, but it still has to be valid, e.g. `example.org`.
@@ -53,7 +53,7 @@ docker compose -f ../../docker-compose.yml exec app node built/tools/configure
 Need some test data? Download it here: coming soon
 
 ```bash
-docker compose -f ../../docker-compose.yml run --rm -T app node built/tools/database/import.js < <import file>
+docker compose run --rm -T api_app node built/tools/database/import.js < <import file>
 ```
 
 #### Go to the frontend
