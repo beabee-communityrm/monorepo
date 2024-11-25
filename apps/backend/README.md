@@ -26,7 +26,7 @@ docker compose build
 
 # Initialise database
 docker compose up -d db
-docker compose run --rm app yarn typeorm migration:run
+docker compose run --rm api_app npm typeorm migration:run
 
 # Do the rest
 docker compose up -d
@@ -37,7 +37,7 @@ docker compose up -d
 #### Create a new super admin
 
 ```bash
-docker compose run --rm api_app node built/tools/new-user
+docker compose exec api_app node built/tools/new-user
 ```
 
 #### Payment methods and email domain

@@ -35,9 +35,9 @@
     "setup:payment": "docker compose exec api_app node built/tools/configure",
     "setup:db": "yarn typeorm:migrate",
     "typeorm": "typeorm -d ./built/core/lib/typeorm.js",
-    "typeorm:migrate": "docker compose up -d db api_app && docker compose run --rm api_app npm run typeorm migration:run",
-    "typeorm:revert": "docker compose up -d db api_app && docker compose run --rm api_app npm run typeorm migration:revert",
-    "typeorm:generate": "docker compose up -d db api_app && docker compose run --rm api_app npm run typeorm migration:generate --check"
+    "typeorm:migrate": "docker compose up -d db api_app && docker compose exec api_app npm run typeorm migration:run",
+    "typeorm:revert": "docker compose up -d db api_app && docker compose exec api_app npm run typeorm migration:revert",
+    "typeorm:generate": "docker compose up -d db api_app && docker compose exec api_app npm run typeorm migration:generate --check"
   },
   "dependencies": {
     "@beabee/beabee-common": "workspace:^",
