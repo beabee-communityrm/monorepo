@@ -23,6 +23,7 @@ import { useI18n } from 'vue-i18n';
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import TagManager from '@components/tag/TagManager.vue';
 import { contactTagOperations } from '@utils/api/contact';
+import App2ColGrid from '@components/App2ColGrid.vue';
 
 const { t } = useI18n();
 
