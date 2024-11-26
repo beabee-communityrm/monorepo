@@ -7,6 +7,7 @@
       :item-to-data="itemToData"
       :delete-title="deleteTitle"
       :delete-text="deleteText(item)"
+      :no-update="!!noUpdate"
       @update="(data) => onUpdate?.(item, data)"
       @delete="() => onDelete?.(item)"
     >
@@ -55,6 +56,7 @@ const props = defineProps<{
   addButtonText: string;
   deleteTitle: string;
   deleteText: (item: T) => string;
+  noUpdate?: boolean;
   onAdd?: (data: D) => Promise<void>;
   onUpdate?: (item: T, data: D) => Promise<void> | undefined;
   onDelete?: (item: T) => Promise<void> | undefined;

@@ -4,6 +4,7 @@
       <slot name="view" />
       <AppButtonGroup class="-mr-2 ml-auto">
         <AppButton
+          v-if="!noUpdate"
           size="sm"
           variant="text"
           @click="formVisible = !formVisible"
@@ -57,6 +58,7 @@ const props = defineProps<{
   item: T;
   deleteTitle: string;
   deleteText: string;
+  noUpdate: boolean;
   itemToData: (item: T | undefined) => D;
   onUpdate?: (data: D) => Promise<void> | undefined;
   onDelete?: () => Promise<void> | undefined;
