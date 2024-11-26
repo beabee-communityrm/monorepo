@@ -67,7 +67,7 @@ COPY apps/legacy /opt/apps/legacy
 COPY apps/webhooks /opt/apps/webhooks
 
 # Build the applications
-RUN yarn workspaces foreach -pv --worktree --topological-dev run build
+RUN yarn build
 
 # Prune non-production dependencies
 RUN yarn workspaces focus -A --production
