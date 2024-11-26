@@ -328,6 +328,11 @@ class CalloutsService {
       { contactId: contact.id },
       { contactId: null }
     );
+
+    await getRepository(CalloutResponse).update(
+      { assigneeId: contact.id },
+      { assigneeId: null }
+    );
   }
 
   /**
