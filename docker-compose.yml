@@ -80,11 +80,6 @@ services:
         - REVISION=${REVISION}
     env_file:
       - ./apps/frontend/.env
-    volumes:
-      # Used for local development
-      - ./apps/frontend/docker-entrypoint.sh:/docker-entrypoint.d/30-beabee-frontend.sh
-      - ./apps/frontend/nginx.conf:/etc/nginx/conf.d/default.conf
-      - ./apps/frontend/dist:/usr/share/nginx/html
 
   # Application router
   app_router:
@@ -94,12 +89,6 @@ services:
     environment:
       LEGACY_APP_COOKIE_DOMAIN: ${BEABEE_COOKIE_DOMAIN}
       TRUSTED_ORIGINS: ${BEABEE_TRUSTEDORIGINS-}
-    volumes:
-      # Used for local development
-      - ./apps/router/15-trusted-origins.envsh:/docker-entrypoint.d/15-trusted-origins.envsh
-      - ./apps/router/sec_headers:/etc/nginx/sec_headers
-      - ./apps/router/nginx.conf:/etc/nginx/templates/default.conf.template
-      - ./apps/router/.well-known:/usr/share/nginx/html/.well-known
     ports:
       - 3002:80
 
