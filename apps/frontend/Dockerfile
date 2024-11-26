@@ -42,11 +42,9 @@ RUN yarn workspaces focus
 
 # Build common
 COPY packages/common /opt/packages/common
-RUN NODE_ENV=production yarn build:common
-
-# Build frontend
 COPY apps/frontend /opt/apps/frontend
-RUN NODE_ENV=production yarn build:frontend
+RUN yarn workspace @beabee/beabee-common run build
+RUN yarn workspace @beabee/frontend run build
 
 FROM nginx:1.27-alpine
 

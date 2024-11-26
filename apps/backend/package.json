@@ -22,8 +22,7 @@
     "dev:watch": "tsc-watch -p tsconfig.build.json --noClear --onSuccess 'docker compose restart api_app'",
     "dev:logs": "yarn exec bash -c 'while true; do docker compose logs -f --tail=0 api_app; sleep 1; done'",
     "build": "rimraf built/ && tsc -p ./tsconfig.build.json",
-    "build:core": "yarn workspace @beabee/core run build",
-    "generate:index": "ts-node scripts/generate-index.ts",
+    "generate:index": "node scripts/generate-index.mjs",
     "watch": "tsc-watch -p tsconfig.build.json --noClear",
     "check": "concurrently 'yarn:check:*'",
     "check:tsc": "tsc -p ./tsconfig.build.json --noEmit",
@@ -88,7 +87,6 @@
     "prettier": "3.3.3",
     "rimraf": "^6.0.1",
     "ts-jest": "^29.2.5",
-    "ts-node": "^10.9.2",
     "tsc-watch": "^6.3.0",
     "tsconfig": "^7.0.0",
     "typescript": "^5.6.3"

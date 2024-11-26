@@ -4,15 +4,12 @@ const PATHS = [
   "./src/api/controllers",
   "./src/api/decorators",
   "./src/api/dto",
-  "./src/api/errors",
   "./src/api/interceptors",
   "./src/api/middlewares",
   "./src/api/params",
   "./src/api/transformers",
   "./src/api/utils",
   "./src/api/validators",
-  "./src/enums",
-  "./src/models",
   "./src/type"
 ];
 
@@ -20,7 +17,7 @@ import { readdirSync, writeFileSync } from "fs";
 
 const encoder = new TextEncoder();
 
-const generateIndex = (paths: string[]) => {
+const generateIndex = (paths) => {
   for (const path of paths) {
     const files = readdirSync(path);
     // Sort files by file name

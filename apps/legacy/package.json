@@ -13,7 +13,6 @@
     "dev": "tsc-watch -p tsconfig.build.json --noClear --onSuccess 'docker compose restart app'",
     "watch": "tsc-watch -p tsconfig.build.json --noClear",
     "format": "prettier --write .",
-    "generate:index": "barrelsby -c barrelsby.json",
     "test": "jest --setupFiles dotenv/config --passWithNoTests",
     "check": "concurrently 'yarn:check:*'",
     "check:tsc": "tsc --noEmit",
