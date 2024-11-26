@@ -3,6 +3,7 @@ import {
   CalloutResponseAnswerAddress,
   CalloutResponseAnswerFileUpload,
   CalloutResponseAnswersSlide,
+  CalloutResponseViewSchema,
   getCalloutComponents,
   stringifyAnswer
 } from "@beabee/beabee-common";
@@ -19,12 +20,11 @@ import {
 import { PaginatedDto } from "@api/dto/PaginatedDto";
 import { NotFoundError } from "@beabee/core/errors";
 import { BaseCalloutResponseTransformer } from "@api/transformers/BaseCalloutResponseTransformer";
-import { mergeRules } from "@api/utils/rules";
+import { mergeRules } from "@beabee/core/utils/rules";
 
 import { Callout, CalloutResponse } from "@beabee/core/models";
 
-import { AuthInfo } from "@type/auth-info";
-import { CalloutResponseViewSchema } from "@type/callout-response-view-schema";
+import { AuthInfo } from "@beabee/core/type";
 
 class CalloutResponseMapTransformer extends BaseCalloutResponseTransformer<
   GetCalloutResponseMapDto,

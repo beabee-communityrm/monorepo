@@ -1,0 +1,81 @@
+extend /views/notrack
+
+block prepend title
+	- title = segment.name
+
+block prepend js
+	script(src='/static/js/lib/quill.min.js')
+	script(src='/static/js/lib/quill-paste-smart.js')
+
+block append css
+	link(rel='stylesheet' href='/static/css/lib/quill.snow.css')
+
+block contents
+	.row
+		.col-md-12
+			+page_header(segment.name)
+
+	.row
+		.col-md-8
+			h4 Send an email
+
+			form(method='POST').form-horizontal
+				+csrf
+				.js-reveal
+					.form-group
+						label.control-label.col-md-3 Type
+						.col-md-9
+							label.radio-inline
+								input( type='radio' name='type' value='one-off' required).js-reveal-types
+								| One-off
+							|
+							label.radio-inline
+								input(type='radio' name='type' value='ongoing' required checked).js-reveal-types
+								| Ongoing
+
+					.hidden.js-reveal-type(data-type='ongoing')
+						.js-reveal
+							.form-group
+								label.control-label.col-md-3 Send when
+								.col-md-9
+									.radio
+										label
+											input(type='radio' name='trigger' value='onJoin' required).js-reveal-types
+											| Contact joins segment
+									.radio
+										label
+											input(type='radio' name='trigger' value='onLeave' required).js-reveal-types
+											| Contact leaves segment
+									p.help-block Ongoing emails are triggered once per day
+						
+							.hidden.js-reveal-type(data-type='onJoin')
+								.form-group
+									.col-md-offset-3.col-md-9
+										p.
+											Do you want to send the email immediately to all contacts
+											who are currently in the segment?
+										.checkbox
+											label
+												input(type='checkbox' name='sendNow' value='true')
+												| Yes, send now
+
+					.row: .col-md-offset-3.col-md-9: h5 Email
+
+					.js-reveal
+						.form-group
+							label(for='email').control-label.col-md-3 Template
+							.col-md-9
+								select(name='email' required).form-control.js-reveal-types#email
+									option(value='' selected disabled) Select one
+									option(value='__new__') -- New email --
+										each email in emails
+											option(value=email.id)= email.name
+
+						.js-reveal-type(data-type='__new__')
+							include /apps/tools/apps/emails/views/partials/email-fields
+
+					.form-group
+						.col-md-offset-3.col-md-9
+							button.btn.btn-success
+								span.js-reveal-type(data-type='one-off') Preview
+								span.hidden.js-reveal-type(data-type='ongoing') Create

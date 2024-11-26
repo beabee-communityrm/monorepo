@@ -24,7 +24,7 @@ import {
   Callout
 } from "@beabee/core/models";
 
-import { AuthInfo } from "@type/auth-info";
+import { AuthInfo } from "@beabee/core/type";
 
 class CalloutResponseExporter extends BaseCalloutResponseTransformer<
   ExportCalloutResponseDto,

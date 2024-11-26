@@ -16,7 +16,7 @@ import ContactTransformer from "@api/transformers/ContactTransformer";
 
 import { Segment } from "@beabee/core/models";
 
-import { AuthInfo } from "@type/auth-info";
+import { AuthInfo } from "@beabee/core/type";
 
 class SegmentTransformer extends BaseTransformer<
   Segment,

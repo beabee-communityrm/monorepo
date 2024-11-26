@@ -1,4 +1,4 @@
-ARG DENO_VERSION=2.0.4
+ARG DENO_VERSION=2.1.1
 ARG NODE_VERSION=22-bookworm-slim
 
 ##################################
@@ -21,6 +21,7 @@ COPY --chown=node:node packages/docker/package.json /opt/packages/docker/package
 
 # Copy dependencies info from apps
 COPY --chown=node:node apps/backend/package.json /opt/apps/backend/package.json
+COPY --chown=node:node apps/legacy/package.json /opt/apps/legacy/package.json
 COPY --chown=node:node apps/webhooks/package.json /opt/apps/webhooks/package.json
 
 # Copy config files with dependencies info
@@ -56,17 +57,17 @@ RUN npm --version
 RUN yarn --version
 RUN deno --version
 
-
 # Install dependencies
 RUN yarn workspaces focus -A
 
 # Copy source files
 COPY packages /opt/packages
 COPY apps/backend /opt/apps/backend
+COPY apps/legacy /opt/apps/legacy
 COPY apps/webhooks /opt/apps/webhooks
 
 # Build the applications
-RUN yarn workspaces foreach -pv --worktree --topological-dev run build
+RUN yarn build
 
 # Prune non-production dependencies
 RUN yarn workspaces focus -A --production
@@ -84,15 +85,12 @@ COPY --chown=node:node --from=builder /opt/packages/core/dist /opt/packages/core
 COPY --chown=node:node --from=builder /opt/packages/common/dist /opt/packages/common/dist
 
 ENTRYPOINT [ "tini", "--" ]
+CMD [ "node", "./dist/app.js" ]
 
 # Backend distribution base
 FROM dist-common AS dist-backend
 
 COPY --chown=node:node --from=builder /opt/apps/backend/built /opt/apps/backend/built
-
-ARG REVISION=DEV
-RUN echo -n ${REVISION} > /opt/apps/backend/built/revision.txt && chown node:node /opt/apps/backend/built/revision.txt
-
 WORKDIR /opt/apps/backend
 
 ##################################
@@ -100,12 +98,9 @@ WORKDIR /opt/apps/backend
 ##################################
 
 ## Backend images
-FROM dist-backend AS legacy_app
-USER node
-CMD [ "node", "./built/app.js" ]
-
 FROM dist-backend AS api_app
 USER node
+# TODO: use standard dist folder
 CMD [ "node", "./built/api/app.js" ]
 
 ## Cron image
@@ -127,9 +122,21 @@ RUN crontab ./crontab
 # 3. Start cron in the foreground with log level 15
 CMD [ "sh", "-c", "env > /etc/environment; rsyslogd; exec cron -fL 15" ]
 
-# Webhooks image
+## Legacy image
+FROM dist-common AS legacy_app
+
+COPY --chown=node:node --from=builder /opt/apps/legacy/dist /opt/apps/legacy/dist
+
+ARG REVISION=DEV
+RUN echo -n ${REVISION} > /opt/apps/legacy/dist/revision.txt && chown node:node /opt/apps/legacy/dist/revision.txt
+
+WORKDIR /opt/apps/legacy
+USER node
+
+## Webhooks image
 FROM dist-common AS webhook_app
+
 COPY --chown=node:node --from=builder /opt/apps/webhooks/dist /opt/apps/webhooks/dist
+
 WORKDIR /opt/apps/webhooks
 USER node
-CMD [ "node", "./dist/app.js" ]
