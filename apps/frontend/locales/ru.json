@@ -94,6 +94,7 @@
     "saveDraft": "Сохранить черновик",
     "schedule": "Запланировать",
     "search": "Искать",
+    "sendEmails": "Отправить e-mails",
     "share": "Поделиться",
     "skip": "Пропустить",
     "submit": "Отправить",
@@ -202,7 +203,6 @@
       "gallery": "Галерея",
       "map": "Карта"
     },
-    "youResponded": "Вы ответили на этот опрос ♥",
     "yourResponse": "Ваш ответ"
   },
   "calloutAdmin": {},
@@ -265,6 +265,9 @@
     "showAnswer": "Ответ",
     "showLatestComment": "Последний комментарий",
     "showingOf": "Показать ответы с {start} по {end} из общего количества {total}"
+  },
+  "calloutReviewerManager": {
+    "confirmDelete": {}
   },
   "callouts": {
     "archive": "Архив",
@@ -786,18 +789,14 @@
     "error": "Что-то пошло не так. Перезагрузите страницу"
   },
   "pageTitle": {
-    "confirmEmail": "Подтвердить почту",
     "duplicateEmail": "Скопировать почту",
-    "failed": "Ошибка",
     "forgotPassword": "Не помню пароль",
-    "join": "Стать участником",
     "login": "Войти",
     "lostDevice": "Вы потеряли своё устройство для двухфакторной аутентификации?",
     "notFound": "Страница не найдена",
     "resetDevice": "Сброс устройства для двухфакторной аутентификации",
     "resetPassword": "Сбросить пароль",
-    "setPassword": "Установить пароль",
-    "setup": "Создать аккаунт"
+    "setPassword": "Установить пароль"
   },
   "paymentMethods": {
     "gc_direct-debit": {
@@ -859,6 +858,9 @@
   },
   "tagEditor": {
     "confirmDelete": {}
+  },
+  "tags": {
+    "notifications": {}
   },
   "taxRate": {
     "invoiceName": "???"

@@ -8,7 +8,7 @@
       :delete-title="t('calloutReviewerManager.confirmDelete.title')"
       :delete-text="
         (reviewer) =>
-          t('calloutReveiwerManager.confirmDelete.text', {
+          t('calloutReviewerManager.confirmDelete.text', {
             reviewerName: reviewer.contact.displayName,
           })
       "

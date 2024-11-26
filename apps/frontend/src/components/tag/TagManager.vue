@@ -29,11 +29,11 @@ const tags = ref<TagData[]>([]);
 const deleteText = computed(() => {
   switch (props.type) {
     case 'contact':
-      return t('tagEditor.deleteContactTagText');
+      return 'tagEditor.confirmDelete.text_contact';
     case 'response':
-      return t('tagEditor.deleteResponseTagText');
+      return 'tagEditor.confirmDelete.text_response';
     default:
-      return t('tagEditor.deleteTagText');
+      return 'tagEditor.confirmDelete.text_global';
   }
 });
 

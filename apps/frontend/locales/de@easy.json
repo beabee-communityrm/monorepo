@@ -18,6 +18,7 @@
     "copy": "Hier kannst du es kopieren.",
     "getStarted": "Hier kannst du starten.",
     "next": "Hier kommst du auf die nächste Seite.",
+    "sendEmails": "E-Mails schicken",
     "share": "Hier schickst du den Text / die Datei / das Bild an andere.",
     "submit": "Hier wird deine Meldung weg-geschickt."
   },
@@ -76,7 +77,6 @@
     "actions": {},
     "addAPoint": "Hier kannst du einen Ort rein-schreiben.",
     "addLocation": "Hier kannst du einen neuen Ort rein-schreiben.",
-    "confirmHuman": "Du musst hier klicken. Dann weiß der Computer: Dass du ein Mensch bist. Und keine Maschine.",
     "ended": "Den Aufruf gibt es nicht mehr.",
     "form": {
       "submittingResponseError": "Das hat nicht geklappt. Versuche es noch mal."
@@ -126,6 +126,9 @@
     "notifications": {}
   },
   "calloutResponsesPage": {},
+  "calloutReviewerManager": {
+    "confirmDelete": {}
+  },
   "callouts": {
     "data": {}
   },
@@ -278,7 +281,7 @@
     "email": "E-Mail",
     "errorMessages": {
       "api": {
-        "duplicate-tag-name": "Diesen Tag gibt es schon."
+        "duplicate-tag-name": "Diesen Tag gibt es schon"
       },
       "generic": "Das ist nicht richtig. Hol dir Hilfe.",
       "validation": "Das ist nicht richtig. Du hast ein Feld nicht richtig ausgefüllt. Suche das Feld. Versuche es noch mal."
@@ -401,11 +404,14 @@
   "setPassword": {},
   "tagEditor": {
     "confirmDelete": {
-      "text_contact": "Willst du den Tag wirklich weg machen? Der Tag \"{tagName}\" ist dann auch bei den Menschen weg.",
-      "text_response": "Willst du den Tag wirklich weg machen? Der Tag \"{tagName}\" ist dann auch bei den Antworten weg.",
+      "text_contact": "illst du den Tag wirklich weg machen? Der Tag \"{tagName}\" ist dann auch bei den Menschen weg.",
       "text_global": "Willst du den Tag \"{tagName}\" wirklich weg machen?",
+      "text_response": "Willst du den Tag \"{tagName}\" wirklich weg machen?",
       "title": "Tag weg machen"
-    },
+    }
+  },
+  "tags": {
+    "notifications": {}
   },
   "taxRate": {
     "invoiceName": "MwSt"
