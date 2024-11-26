@@ -6,7 +6,7 @@
       :item="item"
       :item-to-data="itemToData"
       :delete-title="deleteTitle"
-      :delete-text="deleteText"
+      :delete-text="deleteText(item)"
       @update="(data) => onUpdate?.(item, data)"
       @delete="() => onDelete?.(item)"
     >
@@ -26,7 +26,7 @@
         mode="add"
         :data="itemToData(undefined)"
         @cancel="formVisible = false"
-        @save="onAdd"
+        @save="handleAdd"
       >
         <template #default="{ data, mode }">
           <slot name="form" :data="data" :mode="mode" />
@@ -49,16 +49,21 @@ import { ref } from 'vue';
 import ItemManagerItem from './ItemManagerItem.vue';
 import ItemManagerForm from './ItemManagerForm.vue';
 
-defineProps<{
+const props = defineProps<{
   items: T[];
   itemToData: (item: T | undefined) => D;
   addButtonText: string;
   deleteTitle: string;
-  deleteText: string;
+  deleteText: (item: T) => string;
   onAdd?: (data: D) => Promise<void>;
   onUpdate?: (item: T, data: D) => Promise<void> | undefined;
   onDelete?: (item: T) => Promise<void> | undefined;
 }>();
 
 const formVisible = ref(false);
+
+async function handleAdd(data: D) {
+  await props.onAdd?.(data);
+  formVisible.value = false;
+}
 </script>

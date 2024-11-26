@@ -4,7 +4,7 @@
     :item-to-data="roleToFormData"
     :add-button-text="t('roleEditor.add')"
     :delete-title="t('roleEditor.confirmDelete.title')"
-    :delete-text="t('roleEditor.confirmDelete.text')"
+    :delete-text="() => t('roleEditor.confirmDelete.text')"
     @add="handleUpsert"
     @update="(item, data) => handleUpsert(data)"
     @delete="(role) => onDelete?.(role.role)"

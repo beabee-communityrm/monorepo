@@ -6,11 +6,15 @@ meta:
 </route>
 
 <template>
-  <TagManager
-    :operations="contactTagOperations"
-    :breadcrumbs="breadcrumbs"
-    type="contact"
-  />
+  <App2ColGrid>
+    <template #col1>
+      <TagManager
+        :operations="contactTagOperations"
+        :breadcrumbs="breadcrumbs"
+        type="contact"
+      />
+    </template>
+  </App2ColGrid>
 </template>
 
 <script lang="ts" setup>

@@ -24,7 +24,7 @@
       mode="update"
       class="p-4"
       :data="itemToData(item)"
-      @save="onUpdate"
+      @save="handleUpdate"
       @cancel="formVisible = false"
     >
       <template #default="{ data, mode }">
@@ -53,7 +53,7 @@ import { useI18n } from 'vue-i18n';
 import ItemManagerForm from './ItemManagerForm.vue';
 import AppConfirmDialog from '@components/AppConfirmDialog.vue';
 
-defineProps<{
+const props = defineProps<{
   item: T;
   deleteTitle: string;
   deleteText: string;
@@ -66,4 +66,9 @@ const { t } = useI18n();
 
 const formVisible = ref(false);
 const showDeleteModal = ref(false);
+
+async function handleUpdate(data: D) {
+  await props.onUpdate?.(data);
+  formVisible.value = false;
+}
 </script>
