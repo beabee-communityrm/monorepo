@@ -17,8 +17,6 @@
     "check:prettier": "prettier -c .",
     "format": "prettier --write .",
     "generate:index": "barrelsby --config barrelsby.json",
-    "docker:build:latest": "docker build --build-arg REVISION=$(git rev-parse --short HEAD) --build-arg VERSION=latest -t beabee/frontend:latest -f ./Dockerfile ../../",
-    "docker:restart": "docker restart $(docker ps -a | grep beabee/frontend | awk '{print $1}')",
     "presetup": "yarn presetup:env",
     "presetup:env": "cp -n .env.example .env 2>/dev/null || true"
   },
