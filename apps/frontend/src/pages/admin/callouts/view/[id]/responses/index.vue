@@ -532,6 +532,7 @@ async function handleUpdateAction(
       variant: 'success',
       title: successText,
     });
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (err) {
     addNotification({
       variant: 'error',
