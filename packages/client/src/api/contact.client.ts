@@ -1,4 +1,4 @@
-import { BaseClient } from "./base-client.ts";
+import { BaseClient } from "./base.client.ts";
 import { cleanUrl } from "../utils/index.ts";
 
 import type { BaseClientOptions } from "../types/index.ts";

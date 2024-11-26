@@ -1,4 +1,4 @@
-import { CalloutClient } from "../../../src/api/callout-client.ts";
+import { CalloutClient } from "../../../src/api/callout.client.ts";
 import { assert, assertEquals } from "std/assert/mod.ts";
 
 Deno.test("CalloutClient is a class and has a get method", () => {

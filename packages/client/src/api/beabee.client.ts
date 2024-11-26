@@ -1,7 +1,7 @@
-import { BaseClient } from "./base-client.ts";
-import { CalloutClient } from "./callout-client.ts";
-import { ContentClient } from "./content-client.ts";
-import { ContactClient } from "./contact.ts";
+import { BaseClient } from "./base.client.ts";
+import { CalloutClient } from "./callout.client.ts";
+import { ContentClient } from "./content.client.ts";
+import { ContactClient } from "./contact.client.ts";
 
 import type { BaseClientOptions } from "../types/index.ts";
 
