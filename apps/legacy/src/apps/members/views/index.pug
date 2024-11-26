@@ -39,8 +39,6 @@ block contents
 			if activeSegment && activeSegment.description
 				p= activeSegment.description
 
-			include partials/search.pug
-
 			.members-table-actions
 				form(method='POST')
 					+csrf
@@ -68,4 +66,4 @@ block contents
 				include partials/table.pug
 				include partials/pagination.pug
 			else
-				+messageBlock( 'info', 'There are no members to display.' )
+				+messageBlock( 'info', 'The members list is no longer visible here. Please use the new frontend instead.' )
