@@ -37,6 +37,10 @@
       "path": "../packages/client"
     },
     {
+      "name": "packages/e2e-api-tests",
+      "path": "../packages/e2e-api-tests"
+    },
+    {
       "name": "packages/prettier-config",
       "path": "../packages/prettier-config"
     },

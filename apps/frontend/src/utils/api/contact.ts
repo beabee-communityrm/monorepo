@@ -20,12 +20,12 @@ import {
   type StartContributionData,
   type UpdateContactData,
   type UpdateContactRoleData,
+  type PaymentFlowParams,
 } from '@beabee/beabee-common';
 
 import { deserializeDate, instance } from '.';
 import env from '../../env';
 
-import type { PaymentFlowParams } from '@type';
 import { TagOperations } from './tag-operations';
 
 // TODO: how to make this type safe?

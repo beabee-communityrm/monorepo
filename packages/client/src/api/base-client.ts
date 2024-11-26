@@ -12,13 +12,16 @@ export abstract class BaseClient {
     });
   }
 
-  protected deserializeDate(s: string): Date;
+  protected deserializeDate(s: string | Date): Date;
   protected deserializeDate<T extends null | undefined>(
-    s: string | T,
+    s: string | Date | T,
   ): Date | T;
   protected deserializeDate<T extends null | undefined>(
-    s: string | T,
+    s: string | Date | T,
   ): Date | T {
+    if (s instanceof Date) {
+      return s;
+    }
     return s == null ? s : parseISO(s);
   }
 }

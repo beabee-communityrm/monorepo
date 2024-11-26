@@ -147,6 +147,7 @@ export * from "./paginated-query.ts";
 export * from "./paginated.ts";
 export * from "./parse-iso-options.ts";
 export * from "./payment-filter-name.ts";
+export * from "./payment-flow-params.ts";
 export * from "./payment-form.ts";
 export * from "./payment-source-base.ts";
 export * from "./payment-source-go-cardless-direct-debit.ts";

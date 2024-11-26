@@ -1,5 +1,4 @@
 import { describe, expect, it, beforeAll } from "@jest/globals";
-import request from 'supertest';
 import { ContentClient, ClientApiError } from '@beabee/client';
 import { ContentId } from '@beabee/beabee-common';
 
@@ -20,12 +19,6 @@ describe('Content API', () => {
       path: PATH,
       token: 'test-token'
     });
-  });
-
-  it('should return 400 for non-existing content id with request', async () => {
-    await request(HOST)
-      .get(`${PATH}/content/non-existing-id`)
-      .expect(400);
   });
 
   it('should return 400 for non-existing content id with client', async () => {
