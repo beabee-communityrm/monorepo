@@ -37,9 +37,7 @@ export class GetPaginatedRule implements Rule {
   value!: RuleValue[];
 }
 
-export type GetPaginatedRuleGroupRule =
-  | GetPaginatedRuleGroup
-  | GetPaginatedRule;
+type GetPaginatedRuleGroupRule = GetPaginatedRuleGroup | GetPaginatedRule;
 
 function transformRules(params: TransformFnParams): GetPaginatedRuleGroupRule {
   return params.value.map((v: GetPaginatedRuleGroupRule) =>

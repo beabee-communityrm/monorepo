@@ -3,7 +3,7 @@ import { createParamDecorator } from "routing-controllers";
 
 import { UnauthorizedError } from "@beabee/core/errors";
 
-import { AuthInfo } from "@type/auth-info";
+import { AuthInfo } from "@beabee/core/type";
 
 export function CurrentAuth(options?: { required?: boolean }) {
   return createParamDecorator({

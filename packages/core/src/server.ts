@@ -4,7 +4,7 @@ import * as db from "#database";
 import { log as mainLogger } from "#logging";
 
 import OptionsService from "#services/OptionsService";
-import NetworkCommunicatorService from "#services/NetworkCommunicatorService";
+import { networkCommunicatorService } from "#services/NetworkCommunicatorService";
 
 const log = mainLogger.child({ app: "server" });
 
@@ -20,7 +20,7 @@ export function startServer(app: Express) {
   app.set("trust proxy", true);
 
   const server = app.listen(3000);
-  NetworkCommunicatorService.startServer();
+  networkCommunicatorService.startServer();
 
   process.on("SIGTERM", () => {
     log.debug("Waiting for server to shutdown");

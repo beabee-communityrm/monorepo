@@ -35,7 +35,7 @@ import {
   SegmentOngoingEmail
 } from "@beabee/core/models";
 
-import { AuthInfo } from "@type/auth-info";
+import { AuthInfo } from "@beabee/core/type";
 
 @JsonController("/segments")
 @Authorized("admin")

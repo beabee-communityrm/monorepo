@@ -52,7 +52,7 @@ import { Callout, Contact } from "@beabee/core/models";
 
 import { CalloutCaptcha } from "@beabee/beabee-common";
 
-import { AuthInfo } from "@type/auth-info";
+import { AuthInfo } from "@beabee/core/type";
 import { ListTagsDto } from "@api/dto";
 import CalloutReviewerTransformer from "@api/transformers/CalloutReviewerTransformer";
 import {

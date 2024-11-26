@@ -11,7 +11,7 @@ import {
   CalloutResponseTag,
   CalloutReviewer
 } from "@beabee/core/models";
-import { AuthInfo } from "@type/auth-info";
+import { AuthInfo } from "@beabee/core/type";
 import { getReviewerRules } from "@api/utils/callouts";
 import BaseTagTransformer from "./BaseTagTransformer";
 import { getRepository } from "@beabee/core/database";

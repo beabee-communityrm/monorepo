@@ -6,7 +6,7 @@ import { BaseTransformer } from "@api/transformers/BaseTransformer";
 
 import { ContactProfile } from "@beabee/core/models";
 
-import { AuthInfo } from "@type/auth-info";
+import { AuthInfo } from "@beabee/core/type";
 
 class ContactProfileTransformer extends BaseTransformer<
   ContactProfile,

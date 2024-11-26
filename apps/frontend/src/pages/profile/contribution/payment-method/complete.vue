@@ -28,8 +28,8 @@ onBeforeMount(async () => {
         query: { updatedPaymentSource: null },
       });
       return;
-      // eslint-disable-next-line no-empty
-    } catch (err) {}
+      // eslint-disable-next-line no-empty, @typescript-eslint/no-unused-vars
+    } catch (_err) {}
   }
 
   router.replace('/profile/contribution');

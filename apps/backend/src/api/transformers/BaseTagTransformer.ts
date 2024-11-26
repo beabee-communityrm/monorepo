@@ -3,9 +3,12 @@ import { TransformPlainToInstance } from "class-transformer";
 import { GetTagDto } from "@api/dto/TagDto";
 import { createQueryBuilder } from "@beabee/core/database";
 import type { RuleGroup, TagData } from "@beabee/beabee-common";
-import type { TagAssignment, TaggableEntity } from "@beabee/core/type";
-import { FilterHandler } from "@type/filter-handlers";
-import { AuthInfo } from "@type/auth-info";
+import type {
+  AuthInfo,
+  FilterHandler,
+  TagAssignment,
+  TaggableEntity
+} from "@beabee/core/type";
 import { BadRequestError } from "routing-controllers";
 
 /**

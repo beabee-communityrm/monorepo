@@ -5,7 +5,7 @@ import {
 } from "@beabee/beabee-common";
 import { CalloutReviewer } from "@beabee/core/models";
 import { BaseTransformer } from "./BaseTransformer";
-import { AuthInfo } from "@type/auth-info";
+import { AuthInfo } from "@beabee/core/type";
 import { GetCalloutReviewerDto } from "@api/dto/CalloutReviewerDto";
 import ContactTransformer, { loadContactRoles } from "./ContactTransformer";
 import { getReviewerRules } from "@api/utils/callouts";

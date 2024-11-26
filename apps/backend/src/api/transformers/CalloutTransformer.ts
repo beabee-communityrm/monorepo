@@ -26,7 +26,7 @@ import {
 import { BaseTransformer } from "@api/transformers/BaseTransformer";
 import CalloutVariantTransformer from "@api/transformers/CalloutVariantTransformer";
 import { groupBy } from "@api/utils";
-import { mergeRules, statusFilterHandler } from "@api/utils/rules";
+import { mergeRules } from "@beabee/core/utils/rules";
 
 import {
   Callout,
@@ -35,10 +35,10 @@ import {
   CalloutVariant
 } from "@beabee/core/models";
 
-import { AuthInfo } from "@type/auth-info";
-import { FilterHandlers } from "@type/filter-handlers";
-import { getReviewerRules } from "@api/utils/callouts";
+import { AuthInfo, FilterHandlers } from "@beabee/core/type";
 
+import { calloutFilterHandlers } from "@beabee/core/filter-handlers";
+import { getReviewerRules } from "@api/utils/callouts";
 class CalloutTransformer extends BaseTransformer<
   Callout,
   GetCalloutDto,
@@ -47,13 +47,8 @@ class CalloutTransformer extends BaseTransformer<
 > {
   protected model = Callout;
   protected filters = calloutFilters;
-  protected filterHandlers: FilterHandlers<CalloutFilterName> = {
-    status: statusFilterHandler,
-    title: (qb, args) => {
-      // Filter by variant title
-      qb.where(args.convertToWhereClause("cvd.title"));
-    }
-  };
+  protected filterHandlers: FilterHandlers<CalloutFilterName> =
+    calloutFilterHandlers;
 
   protected async transformFilters(
     query: GetCalloutOptsDto & PaginatedQuery,

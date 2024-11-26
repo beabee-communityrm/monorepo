@@ -73,6 +73,19 @@ meta:
                 handleUpdateAction({ tags: [tagId] }, successText)
             "
           />
+          <!--
+          TODO:
+           * Add support for emailing selected contacts (instead of all contacts)
+           * This redirects to the legacy members app, we need to implement this in the new frontend
+          -->
+          <AppButton
+            :icon="faMailBulk"
+            variant="primaryOutlined"
+            :title="t('actions.sendEmails')"
+            :disabled="!currentSegment || selectedCount > 0"
+            :href="`/members/segments/${currentSegment?.id}/email`"
+            external
+          />
         </AppButtonGroup>
         <p v-if="selectedCount > 0" class="self-center text-sm">
           <i18n-t keypath="contacts.selectedCount" :plural="selectedCount">
@@ -153,7 +166,12 @@ import {
 import { computed, onBeforeMount, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
-import { faPlus, faDownload, faUsers } from '@fortawesome/free-solid-svg-icons';
+import {
+  faPlus,
+  faDownload,
+  faUsers,
+  faMailBulk,
+} from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { addNotification } from '@store/notifications';
 

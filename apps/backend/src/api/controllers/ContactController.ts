@@ -66,14 +66,14 @@ import {
   UnauthorizedError
 } from "@beabee/core/errors";
 import { ContactRoleParams } from "@api/params/ContactRoleParams";
-import { mergeRules } from "@api/utils/rules";
+import { mergeRules } from "@beabee/core/utils/rules";
 
 import ContactExporter from "@api/transformers/ContactExporter";
 import ContactTransformer from "@api/transformers/ContactTransformer";
 import ContactRoleTransformer from "@api/transformers/ContactRoleTransformer";
 import PaymentTransformer from "@api/transformers/PaymentTransformer";
 
-import { AuthInfo } from "@type/auth-info";
+import { AuthInfo } from "@beabee/core/type";
 
 @JsonController("/contact")
 @Authorized()
@@ -203,7 +203,7 @@ export class ContactController {
   async updateContact(
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @TargetUser() target: Contact,
-    @PartialBody() data: Partial<UpdateContactDto>
+    @PartialBody() data: UpdateContactDto // Should be Partial<UpdateContactDto>
   ): Promise<GetContactDto | undefined> {
     return await ContactTransformer.updateOneByContact(auth, target, data);
   }

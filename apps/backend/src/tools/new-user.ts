@@ -9,7 +9,6 @@ import moment from "moment";
 
 import { getRepository } from "@beabee/core/database";
 import { runApp } from "@beabee/core/server";
-import { passwordRequirements } from "@core/utils/auth";
 import { generatePassword } from "@beabee/core/utils/auth";
 
 import ContactsService from "@beabee/core/services/ContactsService";
@@ -30,9 +29,7 @@ runApp(async () => {
     email: await input({ message: "Email Address", validate: notEmpty }),
     password: await password({
       message: "Password (leave empty to generate reset password link)",
-      validate: (s: string) => {
-        return !s.trim() || passwordRequirements(s);
-      }
+      validate: (s: string) => !s.trim()
     }),
     membership: await select({
       message: "Would you like to grant membership to the user?",

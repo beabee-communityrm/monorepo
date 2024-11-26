@@ -3,6 +3,7 @@ import {
   CalloutResponseAnswerAddress,
   CalloutResponseAnswerFileUpload,
   CalloutResponseAnswersSlide,
+  CalloutResponseViewSchema,
   getCalloutComponents,
   RuleGroup,
   stringifyAnswer
@@ -23,9 +24,9 @@ import { BaseCalloutResponseTransformer } from "@api/transformers/BaseCalloutRes
 
 import { Callout, CalloutResponse } from "@beabee/core/models";
 
-import { AuthInfo } from "@type/auth-info";
-import { CalloutResponseViewSchema } from "@type/callout-response-view-schema";
-import { mergeRules } from "@api/utils";
+import { mergeRules } from "@beabee/core/utils/rules";
+
+import { AuthInfo } from "@beabee/core/type";
 
 class CalloutResponseMapTransformer extends BaseCalloutResponseTransformer<
   GetCalloutResponseMapDto,

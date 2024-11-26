@@ -1,5 +1,11 @@
 {
   "delete": true,
   "local": true,
-  "directory": ["./src/errors", "./src/models", "./src/services", "./src/type"]
+  "directory": [
+    "./src/errors",
+    "./src/models",
+    "./src/services",
+    "./src/type",
+    "./src/filter-handlers"
+  ]
 }

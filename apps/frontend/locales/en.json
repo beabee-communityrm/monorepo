@@ -102,7 +102,8 @@
     "view": "View",
     "yesDelete": "Yes, delete it",
     "yesDisable": "Yes, disable it",
-    "yesRemove": "Yes, remove it"
+    "yesRemove": "Yes, remove it",
+    "sendEmails": "Send emails"
   },
   "addContact": {
     "contactSaved": "Contact saved",
