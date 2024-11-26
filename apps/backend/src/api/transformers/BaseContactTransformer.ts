@@ -37,12 +37,22 @@ export abstract class BaseContactTransformer<
 
   filterHandlers: FilterHandlers<string> = contactFilterHandlers;
 
+  /**
+   * Loads callouts referenced in a filter and adds their filters to the list.
+   * Callout filters are prefixed with `callouts.<id>.`
+   *
+   * Callout response filters are also added under `callouts.<id>.responses.`,
+   * they provide exactly the same filters as the callout responses endpoint.
+   *
+   * @param query
+   * @returns
+   */
   protected async transformFilters(
     query: GetOptsDto & PaginatedQuery
   ): Promise<[Partial<Filters<ContactFilterName>>, FilterHandlers<string>]> {
     const rules = query.rules ? flattenRules(query.rules) : [];
 
-    // Load callouts referenced in a filter
+    // Get callout IDs referenced in the rules
     const calloutIds = rules
       .filter((r) => r.field.startsWith("callouts."))
       .map((r) => {

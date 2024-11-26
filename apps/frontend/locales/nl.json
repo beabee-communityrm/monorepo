@@ -21,9 +21,9 @@
     "copy": "Kopiëren",
     "getStarted": "Start",
     "next": "Volgende",
+    "sendEmails": "E-Mails versturen",
     "share": "Delen",
-    "submit": "Indienen",
-    "sendEmails": "E-Mails versturen"
+    "submit": "Indienen"
   },
   "addContact": {
     "errors": {}
@@ -132,6 +132,9 @@
     "notifications": {}
   },
   "calloutResponsesPage": {},
+  "calloutReviewerManager": {
+    "confirmDelete": {}
+  },
   "callouts": {
     "data": {}
   },
@@ -423,6 +426,9 @@
   "setPassword": {},
   "tagEditor": {
     "confirmDelete": {}
+  },
+  "tags": {
+    "notifications": {}
   },
   "taxRate": {
     "invoiceName": "???"

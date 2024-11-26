@@ -2,7 +2,6 @@
 name: adminCallouts
 meta:
   pageTitle: menu.callouts
-  role: admin
 </route>
 <template>
   <PageTitle :title="t('menu.callouts')" border>
@@ -180,6 +179,11 @@ watchEffect(async () => {
   const rules: GetCalloutsQuery['rules'] = {
     condition: 'AND',
     rules: [
+      {
+        field: 'canReview',
+        operator: 'equal',
+        value: [true],
+      },
       ...(currentStatus.value
         ? [
             {

@@ -42,30 +42,30 @@ import { CalloutId } from "@api/decorators/CalloutId";
 import { CurrentAuth } from "@api/decorators/CurrentAuth";
 import PartialBody from "@api/decorators/PartialBody";
 import { InvalidCalloutResponse, UnauthorizedError } from "@beabee/core/errors";
-import { calloutTagTransformer } from "@api/transformers/TagTransformer";
 import CalloutTransformer from "@api/transformers/CalloutTransformer";
 import CalloutResponseExporter from "@api/transformers/CalloutResponseExporter";
 import CalloutResponseMapTransformer from "@api/transformers/CalloutResponseMapTransformer";
 import CalloutResponseTransformer from "@api/transformers/CalloutResponseTransformer";
 import { validateOrReject } from "@api/utils";
 
-import {
-  Callout,
-  CalloutResponseTag,
-  CalloutTag,
-  Contact
-} from "@beabee/core/models";
+import { Callout, Contact } from "@beabee/core/models";
 
 import { CalloutCaptcha } from "@beabee/beabee-common";
 
 import { AuthInfo } from "@beabee/core/type";
 import { ListTagsDto } from "@api/dto";
+import CalloutReviewerTransformer from "@api/transformers/CalloutReviewerTransformer";
+import {
+  CreateCalloutReviewerDto,
+  GetCalloutReviewerDto
+} from "@api/dto/CalloutReviewerDto";
+import calloutTagTransformer from "@api/transformers/CalloutTagTransformer";
 
 @JsonController("/callout")
 export class CalloutController {
   @Get("/")
   async getCallouts(
-    @CurrentAuth() auth: AuthInfo | undefined,
+    @CurrentAuth() auth: AuthInfo,
     @QueryParams() query: ListCalloutsDto
   ): Promise<PaginatedDto<GetCalloutDto>> {
     return CalloutTransformer.fetch(auth, query);
@@ -96,7 +96,7 @@ export class CalloutController {
 
   @Get("/:id")
   async getCallout(
-    @CurrentAuth() auth: AuthInfo | undefined,
+    @CurrentAuth() auth: AuthInfo,
     @CalloutId() id: string,
     @QueryParams() query: GetCalloutOptsDto
   ): Promise<GetCalloutDto | undefined> {
@@ -154,7 +154,7 @@ export class CalloutController {
 
   @Get("/:id/responses/map")
   async getCalloutResponsesMap(
-    @CurrentAuth() auth: AuthInfo | undefined,
+    @CurrentAuth() auth: AuthInfo,
     @CalloutId() id: string,
     @QueryParams() query: ListCalloutResponsesDto
   ): Promise<PaginatedDto<GetCalloutResponseMapDto>> {
@@ -209,7 +209,6 @@ export class CalloutController {
   }
 
   // TODO: move to CalloutTagController like we did for contact tags?
-  @Authorized("admin")
   @Get("/:id/tags")
   async getCalloutTags(
     @CurrentAuth({ required: true }) auth: AuthInfo,
@@ -228,23 +227,20 @@ export class CalloutController {
   }
 
   // TODO: move to CalloutTagController like we did for contact tags?
-  @Authorized("admin")
   @Post("/:id/tags")
   async createCalloutTag(
+    @CurrentAuth({ required: true }) auth: AuthInfo,
     @CalloutId() id: string,
     @Body() data: CreateCalloutTagDto
   ): Promise<GetCalloutTagDto> {
     // TODO: handle foreign key error
-    const tag = await getRepository(CalloutTag).save({
-      name: data.name,
-      description: data.description,
+    return calloutTagTransformer.create(auth, {
+      ...data,
       calloutId: id
     });
-    return calloutTagTransformer.convert(tag);
   }
 
   // TODO: move to CalloutTagController like we did for contact tags?
-  @Authorized("admin")
   @Get("/:id/tags/:tagId")
   async getCalloutTag(
     @CurrentAuth({ required: true }) auth: AuthInfo,
@@ -254,27 +250,76 @@ export class CalloutController {
   }
 
   // TODO: move to CalloutTagController like we did for contact tags?
-  @Authorized("admin")
   @Patch("/:id/tags/:tagId")
   async updateCalloutTag(
     @CurrentAuth({ required: true }) auth: AuthInfo,
-    @CalloutId() id: string,
     @Param("tagId") tagId: string,
     @PartialBody() data: CreateCalloutTagDto // Partial<TagCreateData>
   ): Promise<GetCalloutTagDto | undefined> {
-    await getRepository(CalloutTag).update({ id: tagId, calloutId: id }, data);
+    if (!(await calloutTagTransformer.updateById(auth, tagId, data))) {
+      throw new NotFoundError();
+    }
 
     return calloutTagTransformer.fetchOneById(auth, tagId);
   }
 
   // TODO: move to CalloutTagController like we did for contact tags?
-  @Authorized("admin")
   @Delete("/:id/tags/:tagId")
   @OnUndefined(204)
   async deleteCalloutTag(
-    @CalloutId() id: string,
+    @CurrentAuth({ required: true }) auth: AuthInfo,
     @Param("tagId") tagId: string
   ): Promise<void> {
-    await calloutTagTransformer.delete(tagId, CalloutResponseTag);
+    if (!(await calloutTagTransformer.deleteById(auth, tagId))) {
+      throw new NotFoundError();
+    }
+  }
+
+  @Get("/:id/reviewers")
+  async getCalloutReviewers(
+    @CurrentAuth({ required: true }) auth: AuthInfo,
+    @CalloutId() id: string,
+    @QueryParams() query: ListCalloutResponsesDto
+  ): Promise<GetCalloutReviewerDto[]> {
+    const result = await CalloutReviewerTransformer.fetch(auth, {
+      ...query,
+      rules: {
+        condition: "AND",
+        rules: [{ field: "calloutId", operator: "equal", value: [id] }]
+      }
+    });
+
+    return result.items;
+  }
+
+  @Post("/:id/reviewers")
+  async createCalloutReviewer(
+    @CurrentAuth({ required: true }) auth: AuthInfo,
+    @CalloutId() id: string,
+    @Body() data: CreateCalloutReviewerDto
+  ): Promise<GetCalloutReviewerDto> {
+    return CalloutReviewerTransformer.create(auth, {
+      calloutId: id,
+      ...data
+    });
+  }
+
+  @Get("/:id/reviewers/:reviewerId")
+  async getCalloutReviewer(
+    @CurrentAuth({ required: true }) auth: AuthInfo,
+    @Param("reviewerId") reviewerId: string
+  ): Promise<GetCalloutReviewerDto | undefined> {
+    return CalloutReviewerTransformer.fetchOneById(auth, reviewerId);
+  }
+
+  @Delete("/:id/reviewers/:reviewerId")
+  @OnUndefined(204)
+  async deleteCalloutReviewer(
+    @CurrentAuth({ required: true }) auth: AuthInfo,
+    @Param("reviewerId") reviewerId: string
+  ): Promise<void> {
+    if (!(await CalloutReviewerTransformer.deleteById(auth, reviewerId))) {
+      throw new NotFoundError();
+    }
   }
 }

@@ -1,14 +1,10 @@
-import { GetContactWith } from "@beabee/beabee-common";
+import { GetContactWith, RuleGroup } from "@beabee/beabee-common";
 import { TransformPlainToInstance } from "class-transformer";
 import { SelectQueryBuilder } from "typeorm";
 
 import { createQueryBuilder } from "@beabee/core/database";
 import PaymentService from "@beabee/core/services/PaymentService";
-import {
-  Contact,
-  ContactRole,
-  ContactTagAssignment
-} from "@beabee/core/models";
+import { Contact, ContactRole } from "@beabee/core/models";
 
 import {
   GetContactDto,
@@ -21,10 +17,11 @@ import {
 import { BaseContactTransformer } from "@api/transformers/BaseContactTransformer";
 import ContactRoleTransformer from "@api/transformers/ContactRoleTransformer";
 import ContactProfileTransformer from "@api/transformers/ContactProfileTransformer";
-import { batchSelect, mergeRules, batchUpdate } from "@beabee/core/utils/rules";
+
+import contactTagTransformer from "./ContactTagTransformer";
+import { batchSelect, batchUpdate } from "@beabee/core/utils/rules";
 
 import { AuthInfo } from "@beabee/core/type";
-import { contactTagTransformer } from "./TagTransformer";
 import ContactsService from "@beabee/core/services/ContactsService";
 import { generatePassword } from "@beabee/core/utils/auth";
 import { UnauthorizedError } from "@beabee/core/errors";
@@ -45,15 +42,15 @@ class ContactTransformer extends BaseContactTransformer<
    * Includes optional related data based on the provided options.
    *
    * @param contact - The contact entity to convert
+   * @param auth - Auth info for permission checks
    * @param opts - Optional parameters to control included data
-   * @param auth - Optional auth info for permission checks
    * @returns The converted contact DTO
    */
   @TransformPlainToInstance(GetContactDto)
   convert(
     contact: Contact,
-    opts?: GetContactOptsDto,
-    auth?: AuthInfo | undefined
+    auth: AuthInfo,
+    opts?: GetContactOptsDto
   ): GetContactDto {
     return {
       id: contact.id,
@@ -73,11 +70,7 @@ class ContactTransformer extends BaseContactTransformer<
       }),
       ...(opts?.with?.includes(GetContactWith.Profile) &&
         contact.profile && {
-          profile: ContactProfileTransformer.convert(
-            contact.profile,
-            undefined,
-            auth
-          )
+          profile: ContactProfileTransformer.convert(contact.profile, auth)
         }),
       ...(opts?.with?.includes(GetContactWith.Roles) && {
         roles: contact.roles.map(ContactRoleTransformer.convert)
@@ -91,28 +84,11 @@ class ContactTransformer extends BaseContactTransformer<
     };
   }
 
-  /**
-   * Transforms the query to enforce access control based on auth info.
-   * Non-admin users can only access their own contact.
-   *
-   * @param query - The original query
-   * @param auth - Auth info for permission checks
-   * @returns The transformed query with additional access control rules
-   */
-  protected transformQuery<T extends ListContactsDto>(
-    query: T,
-    auth: AuthInfo | undefined
-  ): T {
+  protected async getNonAdminAuthRules(): Promise<RuleGroup> {
     return {
-      ...query,
-      rules: mergeRules([
-        query.rules,
-        !auth?.roles.includes("admin") && {
-          field: "id",
-          operator: "equal",
-          value: ["me"]
-        }
-      ])
+      condition: "AND",
+      // Non-admins can only see themselves
+      rules: [{ field: "id", operator: "equal", value: ["me"] }]
     };
   }
 
@@ -191,11 +167,7 @@ class ContactTransformer extends BaseContactTransformer<
 
       if (query.with?.includes(GetContactWith.Tags)) {
         // Load tags after to ensure offset/limit work
-        await contactTagTransformer.loadEntityTags(
-          contacts,
-          ContactTagAssignment,
-          "contactId"
-        );
+        await contactTagTransformer.loadEntityTags(contacts);
       }
     }
   }
@@ -247,7 +219,7 @@ class ContactTransformer extends BaseContactTransformer<
    * Currently supports tag updates and basic contact field updates.
    *
    * @param auth - Auth info for permission checks
-   * @param query - The batch update query containing rules and updates
+   * @param query_ - The batch update query containing rules and updates
    * @returns Number of affected contacts
    *
    * @example
@@ -256,13 +228,17 @@ class ContactTransformer extends BaseContactTransformer<
    *   updates: { tags: ["+tag1", "-tag2"] }
    * });
    */
-  async update(
-    auth: AuthInfo | undefined,
-    query: BatchUpdateContactDto
+  async updateWithTags(
+    auth: AuthInfo,
+    query_: BatchUpdateContactDto
   ): Promise<number> {
-    const [query2, filters, filterHandlers] = await this.preFetch(query, auth);
+    const { query, filters, filterHandlers } = await this.prepareQuery(
+      query_,
+      auth,
+      "update"
+    );
 
-    const { tagUpdates, contactUpdates } = this.getUpdateData(query2.updates);
+    const { tagUpdates, contactUpdates } = this.getUpdateData(query.updates);
     const hasContactUpdates = Object.keys(contactUpdates).length > 0;
 
     // Choose the appropriate batch operation:
@@ -273,17 +249,17 @@ class ContactTransformer extends BaseContactTransformer<
       ? await batchUpdate(
           this.model,
           filters,
-          query2.rules,
+          query.rules,
           contactUpdates,
-          auth?.contact,
+          auth.contact,
           filterHandlers,
           (qb) => qb.returning(["id"])
         )
       : await batchSelect(
           this.model,
           filters,
-          query2.rules,
-          auth?.contact,
+          query.rules,
+          auth.contact,
           filterHandlers
         );
 
@@ -292,9 +268,7 @@ class ContactTransformer extends BaseContactTransformer<
     if (tagUpdates && contacts.length > 0) {
       await contactTagTransformer.updateEntityTags(
         contacts.map((c) => c.id),
-        tagUpdates,
-        ContactTagAssignment,
-        "contact"
+        tagUpdates
       );
     }
 

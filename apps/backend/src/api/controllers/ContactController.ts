@@ -109,19 +109,14 @@ export class ContactController {
       );
     }
 
-    return ContactTransformer.convert(
-      contact,
-      {
-        with: [
-          ...(data.profile ? [GetContactWith.Profile] : []),
-          ...(data.roles ? [GetContactWith.Roles] : [])
-        ]
-      },
-      auth
-    );
+    return ContactTransformer.convert(contact, auth, {
+      with: [
+        ...(data.profile ? [GetContactWith.Profile] : []),
+        ...(data.roles ? [GetContactWith.Roles] : [])
+      ]
+    });
   }
 
-  @Authorized("admin")
   @Get("/")
   async getContacts(
     @CurrentAuth({ required: true }) auth: AuthInfo,
@@ -158,11 +153,10 @@ export class ContactController {
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @PartialBody() data: BatchUpdateContactDto
   ): Promise<BatchUpdateContactResultDto> {
-    const affected = await ContactTransformer.update(auth, data);
+    const affected = await ContactTransformer.updateWithTags(auth, data);
     return plainToInstance(BatchUpdateContactResultDto, { affected });
   }
 
-  @Authorized("admin")
   @Get(".csv")
   async exportContacts(
     @CurrentAuth({ required: true }) auth: AuthInfo,

@@ -3,7 +3,9 @@ import {
   calloutFilters,
   Filters,
   ItemStatus,
-  PaginatedQuery
+  PaginatedQuery,
+  Rule,
+  RuleGroup
 } from "@beabee/beabee-common";
 import { TransformPlainToInstance } from "class-transformer";
 import {
@@ -26,11 +28,17 @@ import CalloutVariantTransformer from "@api/transformers/CalloutVariantTransform
 import { groupBy } from "@api/utils";
 import { mergeRules } from "@beabee/core/utils/rules";
 
-import { Callout, CalloutResponse, CalloutVariant } from "@beabee/core/models";
+import {
+  Callout,
+  CalloutResponse,
+  CalloutReviewer,
+  CalloutVariant
+} from "@beabee/core/models";
 
 import { AuthInfo, FilterHandlers } from "@beabee/core/type";
 
 import { calloutFilterHandlers } from "@beabee/core/filter-handlers";
+import { getReviewerRules } from "@api/utils/callouts";
 class CalloutTransformer extends BaseTransformer<
   Callout,
   GetCalloutDto,
@@ -38,14 +46,13 @@ class CalloutTransformer extends BaseTransformer<
   GetCalloutOptsDto
 > {
   protected model = Callout;
-  protected modelIdField = "id";
   protected filters = calloutFilters;
   protected filterHandlers: FilterHandlers<CalloutFilterName> =
     calloutFilterHandlers;
 
   protected async transformFilters(
     query: GetCalloutOptsDto & PaginatedQuery,
-    auth: AuthInfo | undefined
+    auth: AuthInfo
   ): Promise<
     [Partial<Filters<CalloutFilterName>>, FilterHandlers<CalloutFilterName>]
   > {
@@ -60,7 +67,7 @@ class CalloutTransformer extends BaseTransformer<
 
           // Non-admins can only query for their own responses
           if (
-            auth?.contact &&
+            auth.contact &&
             !auth.roles.includes("admin") &&
             args.value[0] !== auth.contact.id
           ) {
@@ -77,13 +84,36 @@ class CalloutTransformer extends BaseTransformer<
             .orderBy("cr.calloutId");
 
           qb.where(`${args.fieldPrefix}id IN ${subQb.getQuery()}`);
+        },
+        canReview: (qb, args) => {
+          if (!auth.contact) {
+            throw new BadRequestError("canReview requires contact");
+          }
+
+          if (!auth.roles.includes("admin")) {
+            const subQb = createQueryBuilder()
+              .subQuery()
+              .select("cr.calloutId")
+              .from(CalloutReviewer, "cr")
+              .where(args.addParamSuffix("cr.contactId = :contactId"));
+
+            const operator = args.value[0] ? "IN" : "NOT IN";
+
+            qb.where(`${args.fieldPrefix}id ${operator} ${subQb.getQuery()}`);
+
+            return { contactId: auth.contact.id };
+          }
         }
       }
     ];
   }
 
   @TransformPlainToInstance(GetCalloutDto)
-  convert(callout: Callout, opts?: GetCalloutOptsDto): GetCalloutDto {
+  convert(
+    callout: Callout,
+    auth: AuthInfo,
+    opts?: GetCalloutOptsDto
+  ): GetCalloutDto {
     const variants = Object.fromEntries(
       callout.variants.map((variant) => [
         variant.name,
@@ -154,54 +184,53 @@ class CalloutTransformer extends BaseTransformer<
     };
   }
 
-  protected transformQuery<T extends ListCalloutsDto>(
-    query: T,
-    auth: AuthInfo | undefined
-  ): T {
-    if (auth?.roles.includes("admin")) {
-      return query;
-    }
-
-    // Non-admins can't see response counts
-    if (query.with?.includes(GetCalloutWith.ResponseCount)) {
-      throw new UnauthorizedError();
-    }
-
+  protected async getNonAdminAuthRules(
+    auth: AuthInfo,
+    query: GetCalloutOptsDto
+  ): Promise<RuleGroup> {
     return {
-      ...query,
-      // Non-admins can only query for open or ended non-hidden callouts
-      rules: mergeRules([
-        query.rules,
-        {
-          condition: "OR",
-          rules: [
-            {
-              field: "status",
-              operator: "equal",
-              value: [ItemStatus.Open]
-            },
-            {
-              field: "status",
-              operator: "equal",
-              value: [ItemStatus.Ended]
-            }
-          ]
-        },
-        !query.showHiddenForAll && {
-          field: "hidden",
-          operator: "equal",
-          value: [false]
-        }
-      ])
+      condition: "OR",
+      rules: [
+        // Reviewers can see all the callouts they are reviewers for
+        ...(await getReviewerRules(auth.contact, "id")),
+
+        // Non-admins can only see open or ended non-hidden callouts
+        mergeRules([
+          {
+            condition: "OR",
+            rules: [
+              {
+                field: "status",
+                operator: "equal",
+                value: [ItemStatus.Open]
+              },
+              {
+                field: "status",
+                operator: "equal",
+                value: [ItemStatus.Ended]
+              }
+            ]
+          },
+          !query.showHiddenForAll && {
+            field: "hidden",
+            operator: "equal",
+            value: [false]
+          }
+        ])
+      ]
     };
   }
 
   protected modifyQueryBuilder(
     qb: SelectQueryBuilder<Callout>,
     fieldPrefix: string,
-    query: ListCalloutsDto
+    query: ListCalloutsDto,
+    auth: AuthInfo
   ): void {
-    if (query.with?.includes(GetCalloutWith.ResponseCount)) {
+    if (
+      query.with?.includes(GetCalloutWith.ResponseCount) &&
+      auth.roles.includes("admin")
+    ) {
       qb.loadRelationCountAndMap(
         `${fieldPrefix}responseCount`,
         `${fieldPrefix}responses`
@@ -221,7 +250,7 @@ class CalloutTransformer extends BaseTransformer<
   protected async modifyItems(
     callouts: Callout[],
     query: ListCalloutsDto,
-    auth: AuthInfo | undefined
+    auth: AuthInfo
   ): Promise<void> {
     if (callouts.length > 0) {
       const calloutIds = callouts.map((c) => c.id);
@@ -256,7 +285,7 @@ class CalloutTransformer extends BaseTransformer<
         }
       }
 
-      if (auth?.contact && query.with?.includes(GetCalloutWith.HasAnswered)) {
+      if (auth.contact && query.with?.includes(GetCalloutWith.HasAnswered)) {
         const answeredCallouts = await createQueryBuilder(CalloutResponse, "cr")
           .select("cr.calloutId", "id")
           .distinctOn(["cr.calloutId"])

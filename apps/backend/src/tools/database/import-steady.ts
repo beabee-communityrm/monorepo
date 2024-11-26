@@ -16,7 +16,7 @@ import { normalizeEmailAddress } from "@beabee/core/utils/index";
 import ContactsService from "@beabee/core/services/ContactsService";
 
 import { Contact, ContactRole } from "@beabee/core/models";
-import { contactTagTransformer } from "@api/transformers/TagTransformer";
+import contactTagTransformer from "@api/transformers/ContactTagTransformer";
 import { ContactTagAssignment } from "@beabee/core/models";
 
 const headers = [
@@ -191,9 +191,7 @@ async function updateExistingContact(contact: Contact, row: SteadyRow) {
   // Add Steady tag
   await contactTagTransformer.updateEntityTags(
     [contact.id],
-    ["+steady"], // Add the "steady" tag
-    ContactTagAssignment,
-    "contact"
+    ["+steady"] // Add the "steady" tag
   );
 
   await setContributionData(contact, row);
@@ -232,9 +230,7 @@ async function addNewContact(row: SteadyRow) {
   // Add Steady tag
   await contactTagTransformer.updateEntityTags(
     [contact.id],
-    ["+steady"], // Add the "steady" tag
-    ContactTagAssignment,
-    "contact"
+    ["+steady"] // Add the "steady" tag
   );
 
   await setContributionData(contact, row);
@@ -257,10 +253,13 @@ async function processRows(rows: SteadyRow[]) {
     .getOne();
 
   if (!steadyTag) {
-    await contactTagTransformer.create({
-      name: "Steady",
-      description: "Imported from Steady"
-    });
+    await contactTagTransformer.create(
+      { method: "internal", roles: ["admin"] },
+      {
+        name: "Steady",
+        description: "Imported from Steady"
+      }
+    );
   }
 
   const existingContacts = await getRepository(Contact).find({
