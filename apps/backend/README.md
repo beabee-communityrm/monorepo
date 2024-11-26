@@ -100,7 +100,7 @@ changes
 ```bash
 yarn typeorm:generate /opt/packages/core/src/migrations/<MigrationName> # The migration file is generated inside the docker container
 yarn format # Formats the migration file
-yarn build:core # Necessary for the new migration .js files to be found
+yarn workspace @beabee/core build # Necessary for the new migration .js files to be found
 yarn typeorm:migrate # Runs the migration
 ```
 

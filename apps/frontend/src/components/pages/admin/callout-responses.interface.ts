@@ -5,14 +5,17 @@ import {
   type GetCalloutDataWith,
 } from '@beabee/beabee-common';
 import { computed, ref, watchEffect, type Ref } from 'vue';
-import type { FilterItems } from '@type';
+import { type FilterGroups, type FilterItems } from '@type';
 import type { Header } from '@components/table/table.interface';
 import type { SelectItem } from '@components/forms/form.interface';
 
 import i18n from '@lib/i18n';
 import env from '@env';
 import { withLabel } from '@utils/rules';
-import { calloutTagOperations } from '@utils/api/callout';
+import {
+  calloutTagOperations,
+  fetchCalloutReviewers,
+} from '@utils/api/callout';
 import { convertComponentsToFilters } from '@utils/callouts';
 
 const { t } = i18n.global;
@@ -137,6 +140,21 @@ export function useCalloutResponseFilters(
   );
 
   /**
+   * Reviewer Management
+   * @description Fetches and manages available callout reviewers
+   */
+  const reviewerItems = ref<SelectItem<string>[]>([]);
+  watchEffect(async () => {
+    const reviewers = callout.value
+      ? await fetchCalloutReviewers(callout.value.slug)
+      : [];
+    reviewerItems.value = reviewers.map((reviewer) => ({
+      id: reviewer.contact.id,
+      label: reviewer.contact.displayName,
+    }));
+  });
+
+  /**
    * Tag Management
    * @description Fetches and manages available callout tags
    */
@@ -152,12 +170,17 @@ export function useCalloutResponseFilters(
    * Filter Groups Configuration
    * @description Organizes filters into logical groups
    */
-  const filterGroups = computed(() => [
+  const filterGroups = computed<FilterGroups>(() => [
     {
       id: 'response',
       label: t('calloutResponse.dataGroup.response'),
       items: {
         [prefix.value + 'createdAt']: filterItems.value.createdAt,
+        [prefix.value + 'assignee']: {
+          ...filterItems.value.assignee,
+          type: 'enum',
+          options: reviewerItems.value,
+        },
         [prefix.value + 'tags']: {
           ...filterItems.value.tags,
           options: tagItems.value,
@@ -172,5 +195,5 @@ export function useCalloutResponseFilters(
     },
   ]);
 
-  return { formComponents, filterGroups, answerItems, tagItems };
+  return { formComponents, filterGroups, answerItems, reviewerItems, tagItems };
 }

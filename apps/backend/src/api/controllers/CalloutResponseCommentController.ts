@@ -1,7 +1,6 @@
 import {
-  Authorized,
+  BadRequestError,
   Body,
-  CurrentUser,
   Delete,
   Get,
   JsonController,
@@ -12,8 +11,6 @@ import {
   Post,
   QueryParams
 } from "routing-controllers";
-
-import { getRepository } from "@beabee/core/database";
 
 import { CurrentAuth } from "@api/decorators/CurrentAuth";
 import PartialBody from "@api/decorators/PartialBody";
@@ -27,26 +24,24 @@ import { UUIDParams } from "@api/params/UUIDParams";
 
 import CalloutResponseCommentTransformer from "@api/transformers/CalloutResponseCommentTransformer";
 
-import { CalloutResponseComment, Contact } from "@beabee/core/models";
-
 import { AuthInfo } from "@beabee/core/type";
 
 @JsonController("/callout-response-comments")
-@Authorized("admin")
 export class CalloutResponseCommentController {
   @Post("/")
   async createCalloutReponseComment(
-    @Body() data: CreateCalloutResponseCommentDto,
-    @CurrentUser({ required: true }) contact: Contact
+    @CurrentAuth({ required: true }) auth: AuthInfo,
+    @Body() data: CreateCalloutResponseCommentDto
   ): Promise<GetCalloutResponseCommentDto> {
-    const comment: CalloutResponseComment = await getRepository(
-      CalloutResponseComment
-    ).save({
-      contact,
+    if (!auth.contact) {
+      throw new BadRequestError("Authentication with contact required");
+    }
+
+    return await CalloutResponseCommentTransformer.create(auth, {
       text: data.text,
-      response: { id: data.responseId }
+      contactId: auth.contact.id,
+      responseId: data.responseId
     });
-    return CalloutResponseCommentTransformer.convert(comment);
   }
 
   @Get("/")
@@ -71,16 +66,20 @@ export class CalloutResponseCommentController {
     @Params() { id }: UUIDParams,
     @PartialBody() data: CreateCalloutResponseCommentDto
   ): Promise<GetCalloutResponseCommentDto | undefined> {
-    await getRepository(CalloutResponseComment).update(id, data);
+    if (!(await CalloutResponseCommentTransformer.updateById(auth, id, data))) {
+      throw new NotFoundError();
+    }
     return await CalloutResponseCommentTransformer.fetchOneById(auth, id);
   }
 
   @OnUndefined(204)
   @Delete("/:id")
   async deleteCalloutResponseComment(
+    @CurrentAuth({ required: true }) auth: AuthInfo,
     @Params() { id }: UUIDParams
   ): Promise<void> {
-    const result = await getRepository(CalloutResponseComment).delete(id);
-    if (!result.affected) throw new NotFoundError();
+    if (!(await CalloutResponseCommentTransformer.deleteById(auth, id))) {
+      throw new NotFoundError();
+    }
   }
 }

@@ -93,6 +93,10 @@ export class SignupController {
     const contact = await PaymentFlowService.completeConfirmEmail(joinFlow);
     await login(req, contact);
 
-    return ContactTransformer.convert(contact);
+    return ContactTransformer.convert(contact, {
+      method: "user",
+      contact,
+      roles: contact.activeRoles
+    });
   }
 }

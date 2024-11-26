@@ -7,13 +7,14 @@ import type {
   GetCalloutResponseMapData,
   GetCalloutResponsesQuery,
   GetCalloutResponseWith,
+  GetCalloutReviewerData,
   GetCalloutsQuery,
   GetCalloutWith,
   Paginated,
   Serial,
   UpdateCalloutData,
 } from '@beabee/beabee-common';
-import { deserializeDate, instance } from '.';
+import { deserializeContact, deserializeDate, instance } from '.';
 import { deserializeCalloutResponse } from './callout-response';
 import { TagOperations } from './tag-operations';
 
@@ -24,6 +25,15 @@ function deserializeCallout(callout: any): any {
     ...callout,
     starts: deserializeDate(callout.starts),
     expires: deserializeDate(callout.expires),
+  };
+}
+
+function deserializeCalloutReviewer(
+  data: Serial<GetCalloutReviewerData>
+): GetCalloutReviewerData {
+  return {
+    ...data,
+    contact: deserializeContact(data.contact),
   };
 }
 
@@ -130,6 +140,29 @@ export async function createResponse(
     },
     { params: { captchaToken } }
   );
+}
+
+export async function fetchCalloutReviewers(
+  slug: string
+): Promise<GetCalloutReviewerData[]> {
+  const { data } = await instance.get<Serial<GetCalloutReviewerData[]>>(
+    `/callout/${slug}/reviewers`
+  );
+  return data.map(deserializeCalloutReviewer);
+}
+
+export async function addCalloutReviewer(
+  slug: string,
+  contactId: string
+): Promise<void> {
+  await instance.post(`/callout/${slug}/reviewers`, { contactId });
+}
+
+export async function removeCalloutReviewer(
+  slug: string,
+  reviewerId: string
+): Promise<void> {
+  await instance.delete(`/callout/${slug}/reviewers/${reviewerId}`);
 }
 
 class CalloutTagOperations extends TagOperations {

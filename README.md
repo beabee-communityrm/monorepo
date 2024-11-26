@@ -64,19 +64,7 @@ You need the following tools installed on your machine:
    yarn build
    ```
 
-5. Build the Docker Compose stack:
-
-   ```bash
-   yarn docker:compose:build
-   ```
-
-6. Start the Docker Compose stack:
-
-   ```bash
-   yarn docker:compose:up
-   ```
-
-7. Run the setup script to create a new user and configure the payment method and email domain:
+5. Run the setup script to create a new user and configure the payment method and email domain:
 
    ```bash
    yarn setup
@@ -84,7 +72,13 @@ You need the following tools installed on your machine:
 
    Open your browser and navigate to http://localhost:3025 to access MailDev to confirm the email address you used for the setup script.
 
-8. Run the development mode to watch for changes on all packages:
+6. Start the Docker Compose stack:
+
+   ```bash
+   docker compose up -d
+   ```
+
+7. Run the development mode to watch for changes on all packages:
 
    ```bash
    yarn dev
@@ -92,7 +86,7 @@ You need the following tools installed on your machine:
 
    Open your browser and navigate to http://localhost:3000 to access the frontend.
 
-9. Happy coding!
+8. Happy coding!
 
 ### Visual Studio Code Workspace
 

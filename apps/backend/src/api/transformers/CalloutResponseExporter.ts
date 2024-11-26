@@ -30,10 +30,9 @@ class CalloutResponseExporter extends BaseCalloutResponseTransformer<
   ExportCalloutResponseDto,
   ExportCalloutResponsesOptsDto
 > {
-  protected allowedRoles: RoleType[] = ["admin"];
-
   convert(
     response: CalloutResponse,
+    auth: AuthInfo,
     opts: ExportCalloutResponsesOptsDto
   ): ExportCalloutResponseDto {
     const contact: [string, string, string, string] = response.contact
@@ -89,7 +88,7 @@ class CalloutResponseExporter extends BaseCalloutResponseTransformer<
   }
 
   async export(
-    auth: AuthInfo | undefined,
+    auth: AuthInfo,
     calloutId: string,
     query: GetExportQuery
   ): Promise<[string, string]> {
