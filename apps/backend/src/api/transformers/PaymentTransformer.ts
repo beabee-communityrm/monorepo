@@ -1,4 +1,8 @@
-import { PaymentFilterName, paymentFilters } from "@beabee/beabee-common";
+import {
+  PaymentFilterName,
+  paymentFilters,
+  RuleGroup
+} from "@beabee/beabee-common";
 import { TransformPlainToInstance } from "class-transformer";
 import { SelectQueryBuilder } from "typeorm";
 
@@ -12,7 +16,6 @@ import ContactTransformer, {
   loadContactRoles
 } from "@api/transformers/ContactTransformer";
 import { BaseTransformer } from "@api/transformers/BaseTransformer";
-import { mergeRules } from "@beabee/core/utils/rules";
 
 import { Contact, Payment } from "@beabee/core/models";
 
@@ -28,31 +31,27 @@ class PaymentTransformer extends BaseTransformer<
   protected filters = paymentFilters;
 
   @TransformPlainToInstance(GetPaymentDto)
-  convert(payment: Payment, opts: GetPaymentOptsDto): GetPaymentDto {
+  convert(
+    payment: Payment,
+    auth: AuthInfo,
+    opts: GetPaymentOptsDto
+  ): GetPaymentDto {
     return {
       amount: payment.amount,
       chargeDate: payment.chargeDate,
       status: payment.status,
       ...(opts.with?.includes(GetPaymentWith.Contact) && {
-        contact: payment.contact && ContactTransformer.convert(payment.contact)
+        contact:
+          payment.contact && ContactTransformer.convert(payment.contact, auth)
       })
     };
   }
 
-  protected transformQuery<T extends ListPaymentsDto>(
-    query: T,
-    auth: AuthInfo | undefined
-  ): T {
+  protected async getNonAdminAuthRules(): Promise<RuleGroup> {
     return {
-      ...query,
-      rules: mergeRules([
-        query.rules,
-        !auth?.roles.includes("admin") && {
-          field: "contact",
-          operator: "equal",
-          value: ["me"]
-        }
-      ])
+      condition: "AND",
+      // Non-admins can only see their own payments
+      rules: [{ field: "contact", operator: "equal", value: ["me"] }]
     };
   }
 

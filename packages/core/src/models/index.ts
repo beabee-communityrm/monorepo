@@ -7,6 +7,7 @@ export * from "./Callout";
 export * from "./CalloutResponse";
 export * from "./CalloutResponseComment";
 export * from "./CalloutResponseTag";
+export * from "./CalloutReviewer";
 export * from "./CalloutTag";
 export * from "./CalloutVariant";
 export * from "./Contact";

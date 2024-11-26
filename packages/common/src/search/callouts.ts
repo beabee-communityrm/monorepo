@@ -38,6 +38,9 @@ export const calloutFilters = {
   channels: {
     type: "array",
   },
+  canReview: {
+    type: "boolean",
+  },
 } as const;
 calloutFilters satisfies Filters;
 
@@ -77,6 +80,9 @@ calloutResponseFilters satisfies Filters;
 
 export const calloutResponseCommentFilters = {
   id: {
+    type: "text",
+  },
+  calloutId: {
     type: "text",
   },
   responseId: {
@@ -129,3 +135,16 @@ export const calloutChannelFilters = {
   },
 } as const;
 calloutChannelFilters satisfies Filters;
+
+export const calloutReviewerFilters = {
+  id: {
+    type: "text",
+  },
+  contact: {
+    type: "contact",
+  },
+  calloutId: {
+    type: "text",
+  },
+} as const;
+calloutReviewerFilters satisfies Filters;

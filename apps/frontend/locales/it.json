@@ -34,8 +34,8 @@
     "continue": "Prosegui",
     "disable": "Disattiva",
     "enable": "Attiva",
-    "update": "Aggiorna",
-    "sendEmails": "Invia e-mail"
+    "sendEmails": "Invia e-mail",
+    "update": "Aggiorna"
   },
   "addContact": {
     "errors": {}
@@ -129,6 +129,9 @@
     "notifications": {}
   },
   "calloutResponsesPage": {},
+  "calloutReviewerManager": {
+    "confirmDelete": {}
+  },
   "callouts": {
     "archive": "Archivio",
     "data": {
@@ -523,6 +526,9 @@
   },
   "tagEditor": {
     "confirmDelete": {}
+  },
+  "tags": {
+    "notifications": {}
   },
   "taxRate": {
     "invoiceName": "VAT"

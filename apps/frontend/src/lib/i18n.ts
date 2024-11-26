@@ -4,12 +4,14 @@ import {
   type LocaleMessages,
   createI18n,
 } from 'vue-i18n';
-import { generalContent } from '../store';
+import { currentUser, generalContent, initStore, isEmbed } from '../store';
 import router from '@lib/router';
 
 import i18nConfig from './i18n-config.json';
 
 import en from '../../locales/en.json';
+import env from '@env';
+import { addNotification } from '@store/notifications';
 
 type Diff<T, U> = T extends U ? never : T;
 
@@ -103,5 +105,34 @@ watch(
     document.documentElement.setAttribute('lang', justLocale);
   }
 );
+
+router.beforeEach(async (to) => {
+  // Block route for initial store load, this will only happen once
+  await initStore;
+
+  // Ensure route is embeddable if we are embedded
+  if (isEmbed && !to.meta.embeddable) {
+    return false;
+  }
+
+  // Don't load routes that are not available in CNR mode
+  if (env.cnrMode && to.meta.noCnrMode) {
+    return false;
+  }
+
+  const user = currentUser.value;
+  // Route requires authentication
+  if (user == null && !to.meta.noAuth) {
+    return { path: '/auth/login', query: { next: to.path } };
+  }
+  // Route requires a specific role
+  if (to.meta.role && !user?.activeRoles.includes(to.meta.role)) {
+    addNotification({
+      variant: 'error',
+      title: i18n.global.t('form.errorMessages.unauthorized'),
+    });
+    return false;
+  }
+});
 
 export default i18n;

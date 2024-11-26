@@ -4,6 +4,7 @@ import {
   Filters,
   getCalloutFilters,
   PaginatedQuery,
+  RuleGroup,
   RuleOperator
 } from "@beabee/beabee-common";
 
@@ -15,6 +16,7 @@ import { CalloutResponse } from "@beabee/core/models";
 
 import { AuthInfo, FilterHandlers } from "@beabee/core/type";
 import { calloutResponseFilterHandlers } from "@beabee/core/filter-handlers";
+import { getReviewerRules } from "@api/utils/callouts";
 
 export abstract class BaseCalloutResponseTransformer<
   GetDto,
@@ -41,20 +43,26 @@ export abstract class BaseCalloutResponseTransformer<
     ];
   }
 
-  protected transformQuery<T extends GetOptsDto & PaginatedQuery>(
-    query: T,
-    auth: AuthInfo | undefined
-  ): T {
+  protected async getNonAdminAuthRules(
+    auth: AuthInfo,
+    query: GetOptsDto
+  ): Promise<RuleGroup> {
+    return {
+      condition: "OR",
+      rules: [
+        // User's can always see their own responses
+        { field: "contact", operator: "equal", value: ["me"] },
+        // And any responses for callouts they are reviewers for
+        ...(await getReviewerRules(auth.contact, "calloutId"))
+      ]
+    };
+  }
+
+  protected transformQuery<T extends GetOptsDto & PaginatedQuery>(query: T): T {
     return {
       ...query,
       rules: mergeRules([
         query.rules,
-        // Non admins can only see their own responses
-        !auth?.roles.includes("admin") && {
-          field: "contact",
-          operator: "equal",
-          value: ["me"]
-        },
         // Only load responses for the given callout
         !!query.callout && {
           field: "calloutId",

@@ -1,6 +1,5 @@
 import { plainToInstance } from "class-transformer";
 import {
-  Authorized,
   Get,
   JsonController,
   Params,
@@ -29,38 +28,39 @@ import { AuthInfo } from "@beabee/core/type";
 export class CalloutResponseController {
   @Get("/")
   async getCalloutResponses(
-    @CurrentAuth() auth: AuthInfo | undefined,
+    @CurrentAuth() auth: AuthInfo,
     @QueryParams() query: ListCalloutResponsesDto
   ): Promise<PaginatedDto<GetCalloutResponseDto>> {
     return CalloutResponseTransformer.fetch(auth, query);
   }
 
-  @Authorized("admin")
   @Patch("/")
   async updateCalloutResponses(
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @PartialBody() data: BatchUpdateCalloutResponseDto
   ): Promise<BatchUpdateCalloutResponseResultDto> {
-    const affected = await CalloutResponseTransformer.update(auth, data);
+    const affected = await CalloutResponseTransformer.updateWithTags(
+      auth,
+      data
+    );
     return plainToInstance(BatchUpdateCalloutResponseResultDto, { affected });
   }
 
   @Get("/:id")
   async getCalloutResponse(
-    @CurrentAuth() auth: AuthInfo | undefined,
+    @CurrentAuth() auth: AuthInfo,
     @Params() { id }: UUIDParams,
     @QueryParams() query: GetCalloutResponseOptsDto
   ): Promise<GetCalloutResponseDto | undefined> {
     return await CalloutResponseTransformer.fetchOneById(auth, id, query);
   }
-  @Authorized("admin")
   @Patch("/:id")
   async updateCalloutResponse(
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @Params() { id }: UUIDParams,
     @PartialBody() data: UpdateCalloutResponseDto
   ): Promise<GetCalloutResponseDto | undefined> {
-    await CalloutResponseTransformer.updateOneById(auth, id, data);
+    await CalloutResponseTransformer.updateWithTagsById(auth, id, data);
     return await CalloutResponseTransformer.fetchOneById(auth, id);
   }
 }

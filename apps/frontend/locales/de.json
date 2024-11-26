@@ -94,6 +94,7 @@
     "saveDraft": "Entwurf speichern",
     "schedule": "Planen",
     "search": "Suchen",
+    "sendEmails": "E-Mails senden",
     "share": "Teilen",
     "skip": "Überspringen",
     "submit": "Abschicken",
@@ -102,8 +103,7 @@
     "view": "Anzeigen",
     "yesDelete": "Ja, löschen",
     "yesDisable": "Ja, deaktivieren",
-    "yesRemove": "Ja, entfernen",
-    "sendEmails": "E-Mails senden"
+    "yesRemove": "Ja, entfernen"
   },
   "addContact": {
     "contactSaved": "Kontakt gespeichert",
@@ -330,7 +330,6 @@
     },
     "addAPoint": "Klicken Sie dort auf die Karte, wo Sie einen Ort ergänzen möchten",
     "addLocation": "Neuen Ort eingeben",
-    "confirmHuman": "Bitte bestätigen Sie, dass Sie ein Mensch sind",
     "contactDetails": "Kontaktdaten",
     "ended": "Dieser Callout ist seit dem {date} beendet.",
     "form": {
@@ -355,7 +354,6 @@
       "gallery": "Galerie",
       "map": "Karte"
     },
-    "youResponded": "Sie haben geantwortet ♥",
     "yourResponse": "Ihre Antwort"
   },
   "calloutAdmin": {
@@ -463,27 +461,36 @@
     "actions": {
       "assignTo": "Zuweisen",
       "moveBucket": "Antwort verschieben",
+      "toggleTag": "Tag hinzufügen / entfernen",
       "viewOnMap": "Auf Karte anzeigen"
     },
     "editMode": "Vorsicht, du befindest dich im Bearbeitungsmodus!",
     "manageFolders": "Ordner bearbeiten",
     "manageReviewers": "Auswerter bearbeiten",
+    "manageTags": "Tags bearbeiten",
     "notifications": {
       "addedAssignee": "\"{assignee}\" zugewiesen",
+      "addedTag": "Tag \"{tag}\" hinzugefügt",
       "movedToBucket": "Verschoben in {bucket}",
-      "removedAssignee": "Nicht mehr \"{assignee}\" zugewiesen"
+      "removedAssignee": "Nicht mehr \"{assignee}\" zugewiesen",
+      "removedTag": "Tag \"{tag}\" entfernt"
     },
     "responseOf": "Antwort {no} von {total} in {bucket}",
     "selectedCount": "{n} Antwort ausgewählt | {n} Antworten ausgewählt"
   },
   "calloutResponsesPage": {
     "moveToBucket": "Nach {bucket} verschieben",
+    "noTags": "Keine Tags",
     "response": "Antwort",
     "responseNo": "Antwort {no}",
     "searchAssignee": "Zugewiesen an...",
+    "searchTag": "Getaggt mit...",
     "showAnswer": "Antwort",
     "showLatestComment": "Letzter Kommentar",
     "showingOf": "Antworten {start} bis {end} von {total} werden angezeigt"
+  },
+  "calloutReviewerManager": {
+    "confirmDelete": {}
   },
   "callouts": {
     "archive": "Archiv",
@@ -675,8 +682,8 @@
     "noResults": "Keine Kontakte gefunden",
     "numResults": "{n} Kontakt gefunden | {n} Kontakte gefunden",
     "search": "Kontakte durchsuchen...",
-    "showingOf": "{start} to {end} von {total} Kontakten werden angezeigt.",
-    "selectedCount": "{n} Kontakt ausgewählt | {n} Kontakte ausgewählt"
+    "selectedCount": "{n} Kontakt ausgewählt | {n} Kontakte ausgewählt",
+    "showingOf": "{start} to {end} von {total} Kontakten werden angezeigt."
   },
   "contribution": {
     "adminCancelDescription": "Wenn du die Mitgliedschaft des Kontakts kündigst, endet sie am Ende des aktuellen Zahlungszyklus am {date}.",
@@ -983,10 +990,10 @@
       "api": {
         "account-locked": "Konto wegen zu vieler fehlgeschlagener Anmeldeversuche gesperrt. Bitte Passwort zurücksetzen oder an den Support wenden, um Hilfe zu erhalten.",
         "duplicate-email": "Diese E-Mail-Adresse existiert bereits.",
+        "duplicate-tag-name": "Ein Tag mit diesem Namen existiert bereits",
         "invalid-token": "Der von Ihnen eingegebene 2FA Token ist nicht korrekt.",
         "login-failed": "Falsche Kombination von Passwort und E-Mail.",
-        "mfa-token-required": "Bitte geben Sie den Code Ihrer Authentifizierungs-App ein.",
-        "duplicate-tag-name": "Ein Tag mit diesem Namen existiert bereits."
+        "mfa-token-required": "Bitte geben Sie den Code Ihrer Authentifizierungs-App ein."
       },
       "generic": "Upps! Etwas ist schiefgelaufen. Bitte wenden Sie sich an den Support, sollte das erneut passieren.",
       "validation": "Es fehlt etwas! Bitte kontrollieren Sie die obigen Felder."
@@ -1274,18 +1281,14 @@
     "error": "Da ist etwas schiefgelaufen!"
   },
   "pageTitle": {
-    "confirmEmail": "E-Mail-Adresse bestätigen",
     "duplicateEmail": "E-Mail-Adresse duplizieren",
-    "failed": "Fehler",
     "forgotPassword": "Passwort vergessen",
-    "join": "Mitglied werden",
     "login": "Login",
     "lostDevice": "Haben Sie Ihr 2FA-Gerät verloren?",
     "notFound": "Seite nicht gefunden",
     "resetDevice": "Zweitgerät zurücksetzen",
     "resetPassword": "Passwort zurücksetzen",
-    "setPassword": "Passwort vergeben",
-    "setup": "Account fertigstellen"
+    "setPassword": "Passwort vergeben"
   },
   "paymentMethods": {
     "gc_direct-debit": {
@@ -1352,7 +1355,6 @@
   },
   "roleEditor": {
     "add": "Rolle hinzufügen",
-    "addNewRole": "Neue Rolle hinzufügen",
     "confirmDelete": {
       "text": "Bist Du sicher, dass Du diese Rolle entfernen willst?",
       "title": "Rolle entfernen"
@@ -1379,26 +1381,25 @@
     "description": "Neues Passwort eingeben, um fortzufahren.",
     "title": "Passwort vergeben"
   },
-  "tags": {
-    "manageTags": "Tags bearbeiten",
-    "toggleTag": "Tag hinzufügen / entfernen",
-    "noTags": "Keine Tags",
-    "searchTag": "Getaggt mit...",
-    "notifications": {
-      "addedTag": "Tag \"{tag}\" hinzugefügt",
-      "removedTag": "Tag \"{tag}\" entfernt",
-    }
-  },
   "tagEditor": {
     "add": "Tag hinzufügen",
-    "addNewTag": "Tag hinzufügen",
     "confirmDelete": {
       "text_contact": "Sind Sie sicher, dass Sie diesen Tag entfernen wollen? Jeder Kontakt mit dem Tag \"{tagName}\" wird den Tag verlieren.",
-      "text_response": "Sind Sie sicher, dass Sie diesen Tag entfernen wollen? Jede Antwort mit dem Tag \"{tagName}\" wird den Tag verlieren.",
       "text_global": "Sind Sie sicher, dass Sie den Tag \"{tagName}\" entfernen wollen?",
+      "text_response": "Sind Sie sicher, dass Sie diesen Tag entfernen wollen? Jede Antwort mit dem Tag \"{tagName}\" wird den Tag verlieren.",
       "title": "Tag entfernen"
     },
     "name": "Name"
+  },
+  "tags": {
+    "manageTags": "Tags bearbeiten",
+    "noTags": "Keine Tags",
+    "notifications": {
+      "addedTag": "Tag \"{tag}\" hinzugefügt",
+      "removedTag": "Tag \"{tag}\" entfernt"
+    },
+    "searchTag": "Getaggt mit...",
+    "toggleTag": "Tag hinzufügen / entfernen"
   },
   "taxRate": {
     "invoiceName": "MwSt"

@@ -20,14 +20,13 @@ import ContactTransformer, {
 import { BaseCalloutResponseTransformer } from "@api/transformers/BaseCalloutResponseTransformer";
 import CalloutTransformer from "@api/transformers/CalloutTransformer";
 import CalloutResponseCommentTransformer from "@api/transformers/CalloutResponseCommentTransformer";
-import { calloutTagTransformer } from "@api/transformers/TagTransformer";
+import calloutTagTransformer from "@api/transformers/CalloutTagTransformer";
 import { batchUpdate } from "@beabee/core/utils/rules";
 
 import {
   Callout,
   CalloutResponse,
   CalloutResponseComment,
-  CalloutResponseTag,
   Contact
 } from "@beabee/core/models";
 
@@ -40,6 +39,7 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
   @TransformPlainToInstance(GetCalloutResponseDto)
   convert(
     response: CalloutResponse,
+    auth: AuthInfo,
     opts: GetCalloutResponseOptsDto
   ): GetCalloutResponseDto {
     return {
@@ -55,19 +55,23 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
       }),
       ...(opts.with?.includes(GetCalloutResponseWith.Assignee) && {
         assignee:
-          response.assignee && ContactTransformer.convert(response.assignee)
+          response.assignee &&
+          ContactTransformer.convert(response.assignee, auth)
       }),
       ...(opts.with?.includes(GetCalloutResponseWith.Callout) && {
-        callout: CalloutTransformer.convert(response.callout)
+        callout: CalloutTransformer.convert(response.callout, auth)
       }),
       ...(opts.with?.includes(GetCalloutResponseWith.Contact) && {
         contact:
-          response.contact && ContactTransformer.convert(response.contact)
+          response.contact && ContactTransformer.convert(response.contact, auth)
       }),
       ...(opts.with?.includes(GetCalloutResponseWith.LatestComment) && {
         latestComment:
           response.latestComment &&
-          CalloutResponseCommentTransformer.convert(response.latestComment)
+          CalloutResponseCommentTransformer.convert(
+            response.latestComment,
+            auth
+          )
       }),
       ...(opts.with?.includes(GetCalloutResponseWith.Tags) &&
         response.tags && {
@@ -79,8 +83,10 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
   protected modifyQueryBuilder(
     qb: SelectQueryBuilder<CalloutResponse>,
     fieldPrefix: string,
-    query: ListCalloutResponsesDto
+    query: ListCalloutResponsesDto,
+    auth: AuthInfo
   ): void {
+    // TODO: Add auth check for assignee
     if (query.with?.includes(GetCalloutResponseWith.Assignee)) {
       qb.leftJoinAndSelect(`${fieldPrefix}assignee`, "assignee");
     }
@@ -92,7 +98,10 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
         "variant.name = 'default'"
       );
     }
-    if (query.with?.includes(GetCalloutResponseWith.Contact)) {
+    if (
+      query.with?.includes(GetCalloutResponseWith.Contact) &&
+      auth.roles.includes("admin")
+    ) {
       qb.leftJoinAndSelect(`${fieldPrefix}contact`, "contact");
     }
   }
@@ -130,17 +139,13 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
 
       if (query.with?.includes(GetCalloutResponseWith.Tags)) {
         // Load tags after to ensure offset/limit work
-        await calloutTagTransformer.loadEntityTags(
-          responses,
-          CalloutResponseTag,
-          "responseId"
-        );
+        await calloutTagTransformer.loadEntityTags(responses);
       }
     }
   }
 
   async fetchForCallout(
-    auth: AuthInfo | undefined,
+    auth: AuthInfo,
     calloutId: string,
     query: ListCalloutResponsesDto
   ): Promise<PaginatedDto<GetCalloutResponseDto>> {
@@ -151,19 +156,23 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
     return await this.fetch(auth, { ...query, callout });
   }
 
-  async update(
-    auth: AuthInfo | undefined,
-    query: BatchUpdateCalloutResponseDto
+  async updateWithTags(
+    auth: AuthInfo,
+    query_: BatchUpdateCalloutResponseDto
   ): Promise<number> {
-    const [query2, filters, filterHandlers] = await this.preFetch(query, auth);
+    const { query, filters, filterHandlers } = await this.prepareQuery(
+      query_,
+      auth,
+      "update"
+    );
 
-    const { tagUpdates, responseUpdates } = getUpdateData(query2.updates);
+    const { tagUpdates, responseUpdates } = getUpdateData(query.updates);
     const result = await batchUpdate(
       this.model,
       filters,
-      query2.rules,
+      query.rules,
       responseUpdates,
-      auth?.contact,
+      auth.contact,
       filterHandlers,
       (qb) => qb.returning(["id"])
     );
@@ -173,17 +182,15 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
     if (tagUpdates) {
       await calloutTagTransformer.updateEntityTags(
         responses.map((r) => r.id),
-        tagUpdates,
-        CalloutResponseTag,
-        "response"
+        tagUpdates
       );
     }
 
     return result.affected || -1;
   }
 
-  async updateOneById(
-    auth: AuthInfo | undefined,
+  async updateWithTagsById(
+    auth: AuthInfo,
     id: string,
     updates: UpdateCalloutResponseDto
   ): Promise<boolean> {
@@ -194,7 +201,7 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
       },
       updates
     };
-    const affected = await this.update(auth, query);
+    const affected = await this.updateWithTags(auth, query);
     return affected !== 0;
   }
 }
