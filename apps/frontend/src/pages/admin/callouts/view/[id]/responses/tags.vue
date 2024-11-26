@@ -10,7 +10,6 @@ meta:
       <TagManager
         :entity-id="callout.id"
         :operations="calloutTagOperations"
-        :breadcrumbs="breadcrumbs"
         type="response"
       />
     </template>
@@ -28,6 +27,7 @@ import { calloutTagOperations } from '@utils/api/callout';
 import type { GetCalloutDataWith } from '@beabee/beabee-common';
 import App2ColGrid from '@components/App2ColGrid.vue';
 import CalloutReviewerManager from '@components/callout/CalloutReviewerManager.vue';
+import { addBreadcrumb } from '@store/breadcrumb';
 
 defineProps<{
   callout: GetCalloutDataWith<'form'>;
@@ -35,5 +35,5 @@ defineProps<{
 
 const { t } = useI18n();
 
-const breadcrumbs = computed(() => [{ title: t('tags.manageTags') }]);
+addBreadcrumb(computed(() => [{ title: t('tags.manageTags') }]));
 </script>

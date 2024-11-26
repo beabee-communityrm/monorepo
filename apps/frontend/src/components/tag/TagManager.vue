@@ -2,8 +2,6 @@
 import { computed, onBeforeMount, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import AppHeading from '@components/AppHeading.vue';
-import { addBreadcrumb } from '@store/breadcrumb';
-import type { BreadcrumbItem } from '@type';
 import { TagOperations } from '@utils/api';
 import type { TagData, TagUpdateData } from '@beabee/beabee-common';
 import ItemManager from '@components/item-manager/ItemManager.vue';
@@ -17,7 +15,6 @@ interface Props {
    */
   entityId?: string | undefined;
   operations: TagOperations;
-  breadcrumbs?: BreadcrumbItem[];
   type?: 'contact' | 'response';
 }
 
@@ -36,11 +33,6 @@ const deleteText = computed(() => {
       return 'tagEditor.confirmDelete.text_global';
   }
 });
-
-// Wenn Breadcrumbs übergeben wurden, füge sie hinzu
-if (props.breadcrumbs) {
-  addBreadcrumb(computed(() => props.breadcrumbs!));
-}
 
 async function handleUpdateTag(tag: TagData, data: TagUpdateData) {
   const updatedTag = await props.operations.updateTag(
