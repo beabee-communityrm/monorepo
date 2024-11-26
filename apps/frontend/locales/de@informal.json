@@ -102,7 +102,8 @@
     "view": "Anzeigen",
     "yesDelete": "Ja, löschen",
     "yesDisable": "Ja, deaktivieren",
-    "yesRemove": "Ja, entfernen"
+    "yesRemove": "Ja, entfernen",
+    "sendEmails": "E-Mails senden"
   },
   "addContact": {
     "contactSaved": "Kontakt gespeichert",
@@ -1385,8 +1386,8 @@
     "searchTag": "Getaggt mit...",
     "notifications": {
       "addedTag": "Tag \"{tag}\" hinzugefügt",
-      "removedTag": "Tag \"{tag}\" entfernt",
-    },
+      "removedTag": "Tag \"{tag}\" entfernt"
+    }
   },
   "tagEditor": {
     "add": "Tag hinzufügen",

@@ -21,7 +21,7 @@ import { BaseCalloutResponseTransformer } from "@api/transformers/BaseCalloutRes
 import CalloutTransformer from "@api/transformers/CalloutTransformer";
 import CalloutResponseCommentTransformer from "@api/transformers/CalloutResponseCommentTransformer";
 import { calloutTagTransformer } from "@api/transformers/TagTransformer";
-import { batchUpdate } from "@api/utils";
+import { batchUpdate } from "@beabee/core/utils/rules";
 
 import {
   Callout,
@@ -31,7 +31,7 @@ import {
   Contact
 } from "@beabee/core/models";
 
-import { AuthInfo } from "@type/auth-info";
+import { AuthInfo } from "@beabee/core/type";
 
 export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
   GetCalloutResponseDto,

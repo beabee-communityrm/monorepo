@@ -162,7 +162,7 @@ meta:
       v-if="!isEmbed || route.query.intro !== undefined"
       :callout="callout"
       :show="introOpen"
-      @close="introOpen = false"
+      @close="(introOpen = false)"
     />
 
     <CalloutAddResponsePanel

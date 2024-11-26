@@ -31,6 +31,7 @@ COPY .yarn /opt/.yarn
 
 # Copy dependencies info
 COPY packages/common/package.json /opt/packages/common/package.json
+COPY packages/client/package.json /opt/packages/client/package.json
 COPY apps/frontend/package.json /opt/apps/frontend/package.json
 
 # Copy config files with dependencies info

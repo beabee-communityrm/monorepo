@@ -13,11 +13,11 @@ import { BaseTransformer } from "@api/transformers/BaseTransformer";
 import ContactTransformer, {
   loadContactRoles
 } from "@api/transformers/ContactTransformer";
-import { mergeRules } from "@api/utils/rules";
+import { mergeRules } from "@beabee/core/utils/rules";
 
 import { CalloutResponseComment } from "@beabee/core/models";
 
-import { AuthInfo } from "@type/auth-info";
+import { AuthInfo } from "@beabee/core/type";
 
 class CalloutResponseCommentTransformer extends BaseTransformer<
   CalloutResponseComment,

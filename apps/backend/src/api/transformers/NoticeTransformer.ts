@@ -7,11 +7,12 @@ import { TransformPlainToInstance } from "class-transformer";
 
 import { BaseTransformer } from "@api/transformers/BaseTransformer";
 import { GetNoticeDto, ListNoticesDto } from "@api/dto/NoticeDto";
-import { mergeRules, statusFilterHandler } from "@api/utils/rules";
+import { mergeRules } from "@beabee/core/utils/rules";
+import { statusFilterHandler } from "@beabee/core/filter-handlers";
 
 import { Notice } from "@beabee/core/models";
 
-import { AuthInfo } from "@type/auth-info";
+import { AuthInfo } from "@beabee/core/type";
 
 export class NoticeTransformer extends BaseTransformer<
   Notice,

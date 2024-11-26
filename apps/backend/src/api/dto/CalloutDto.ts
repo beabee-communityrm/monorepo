@@ -3,7 +3,9 @@ import {
   CalloutAccess,
   CalloutCaptcha,
   CalloutChannel,
-  CalloutData
+  CalloutData,
+  CalloutMapSchema,
+  CalloutResponseViewSchema
 } from "@beabee/beabee-common";
 import {
   Transform,
@@ -35,9 +37,6 @@ import IsUrl from "@api/validators/IsUrl";
 import IsMapBounds from "@api/validators/IsMapBounds";
 import IsLngLat from "@api/validators/IsLngLat";
 import IsVariantsObject from "@api/validators/IsVariantsObject";
-
-import { CalloutMapSchema } from "@type/callout-map-schema";
-import { CalloutResponseViewSchema } from "@type/callout-response-view-schema";
 
 export enum GetCalloutWith {
   Form = "form",

@@ -15,7 +15,7 @@ import {
 } from "@api/dto/PaymentDto";
 import PaymentTransformer from "@api/transformers/PaymentTransformer";
 
-import { AuthInfo } from "@type/auth-info";
+import { AuthInfo } from "@beabee/core/type";
 
 @JsonController("/payment")
 @Authorized()

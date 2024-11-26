@@ -18,7 +18,7 @@
         </AppSubHeading>
         <RoleEditorForm
           :available-roles="availableRoles"
-          @cancel="formVisible = false"
+          @cancel="(formVisible = false)"
           @save="handleSaveNew"
         />
       </div>
@@ -26,7 +26,7 @@
         v-else
         class="w-full"
         variant="primaryOutlined"
-        @click="formVisible = true"
+        @click="(formVisible = true)"
       >
         {{ t('roleEditor.add') }}
       </AppButton>

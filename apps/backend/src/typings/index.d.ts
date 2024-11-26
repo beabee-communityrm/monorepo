@@ -3,7 +3,7 @@ import { ParamsDictionary } from "express-serve-static-core";
 import { CalloutResponseAnswersSlide } from "@beabee/beabee-common";
 import { ApiKey, Contact } from "@beabee/core/models";
 
-import { AuthInfo as AuthInfo2 } from "@type/auth-info";
+import { AuthInfo as AuthInfo2 } from "@beabee/core/type";
 
 declare global {
   type HTMLElement = never;
@@ -15,21 +15,9 @@ declare global {
     export interface User extends Contact {}
 
     export interface Request {
-      flash(
-        level: "info" | "success" | "warning" | "error" | "danger",
-        message: string
-      ): void;
-      model: unknown;
-      allParams: ParamsDictionary;
-      answers?: CalloutResponseAnswersSlide;
       auth: AuthInfo2 | undefined;
     }
   }
-}
-
-declare module "papaparse" {
-  // eslint-disable-next-line @typescript-eslint/no-empty-interface
-  interface File {}
 }
 
 declare module "express-session" {

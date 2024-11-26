@@ -79,7 +79,8 @@ onBeforeMount(async () => {
     joinSurvey.value = await fetchCallout(setupContent.value.surveySlug, [
       'form',
     ]);
-  } catch (e) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (_err) {
     // Fail silently as a failing join survey shouldn't stop the user completing the join flow
     goToProfile();
   }

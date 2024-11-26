@@ -102,7 +102,8 @@
     "view": "Ver",
     "yesDelete": "Sim, apagar",
     "yesDisable": "Sim, desactivar",
-    "yesRemove": "Sim, remover"
+    "yesRemove": "Sim, remover",
+    "emails": "Enviar e-mails"
   },
   "addContact": {
     "contactSaved": "Contacto gravado",
@@ -268,13 +269,13 @@
   "calloutResponsePage": {
     "actions": {
       "assignTo": "Atribuir a",
-      "moveBucket": "Mover balde",
+      "moveBucket": "Mover balde"
     },
     "editMode": "Está no modo de edição, cuidado!",
     "notifications": {
       "addedAssignee": "Atribuída a {assignee}",
       "movedToBucket": "Movida para {bucket}",
-      "removedAssignee": "Atribuição a {assignee} removida",
+      "removedAssignee": "Atribuição a {assignee} removida"
     },
     "responseOf": "Resposta {no} de um total de {total} em {bucket}",
     "selectedCount": "{n} resposta selecionada | {n} respostas selecionadas"
@@ -907,7 +908,7 @@
     "notifications": {
       "addedTag": "Etiqueta \"{tag}\" acrescentada",
       "removedTag": "Etiqueta \"{tag}\" removida"
-    },
+    }
   },
   "tagEditor": {
     "add": "Adicionar etiqueta",

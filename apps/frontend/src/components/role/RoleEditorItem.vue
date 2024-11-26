@@ -14,13 +14,13 @@
         }}
       </span>
       <div class="-mr-3 ml-auto">
-        <AppButton variant="text" size="sm" @click="formVisible = true">{{
+        <AppButton variant="text" size="sm" @click="(formVisible = true)">{{
           t('actions.edit')
         }}</AppButton>
         <AppButton
           variant="dangerText"
           size="sm"
-          @click="showDeleteModal = true"
+          @click="(showDeleteModal = true)"
         >
           {{ t('actions.delete') }}
         </AppButton>
@@ -31,7 +31,7 @@
           :cancel="t('actions.noBack')"
           :confirm="t('actions.yesRemove')"
           variant="danger"
-          @close="showDeleteModal = false"
+          @close="(showDeleteModal = false)"
           @confirm="emit('delete', role.role)"
         >
           <p>{{ t('roleEditor.confirmDelete.text') }}</p>
@@ -44,7 +44,7 @@
       class="p-4"
       :role="role"
       @save="emit('update', $event)"
-      @cancel="formVisible = false"
+      @cancel="(formVisible = false)"
     />
   </div>
 </template>
