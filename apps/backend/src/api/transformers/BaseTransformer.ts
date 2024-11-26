@@ -2,7 +2,6 @@ import {
   Filters,
   InvalidRule,
   PaginatedQuery,
-  RoleType,
   RuleGroup,
   validateRuleGroup
 } from "@beabee/beabee-common";
@@ -17,15 +16,14 @@ import {
   InvalidRuleError,
   UnauthorizedError
 } from "@beabee/core/errors";
-import { convertRulesToWhereClause, mergeRules } from "@api/utils/rules";
+import { mergeRules } from "@beabee/core/utils/rules";
 
-import {
-  AuthInfo,
-  FetchRawResult,
-  FilterHandlers,
-  TransformerOperation
-} from "@type/index";
+import { TransformerOperation } from "@type/index";
 import { BadRequestError } from "routing-controllers";
+import { convertRulesToWhereClause } from "@beabee/core/utils/rules";
+
+import { FetchRawResult } from "@type/index";
+import { AuthInfo, FilterHandlers } from "@beabee/core/type";
 
 /**
  * Base transformer for querying and converting models to DTOs

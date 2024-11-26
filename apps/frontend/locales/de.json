@@ -1392,6 +1392,7 @@
     "name": "Name"
   },
   "tags": {
+    "manageTags": "Tags bearbeiten",
     "noTags": "Keine Tags",
     "notifications": {
       "addedTag": "Tag \"{tag}\" hinzugefügt",

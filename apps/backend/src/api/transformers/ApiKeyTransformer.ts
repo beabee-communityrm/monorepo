@@ -12,7 +12,7 @@ import { ApiKey } from "@beabee/core/models";
 
 import { BaseTransformer } from "./BaseTransformer";
 import ContactTransformer, { loadContactRoles } from "./ContactTransformer";
-import { AuthInfo } from "@type/auth-info";
+import { AuthInfo } from "@beabee/core/type";
 
 class ApiKeyTransformer extends BaseTransformer<
   ApiKey,

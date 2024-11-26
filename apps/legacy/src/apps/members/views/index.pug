@@ -1,0 +1,69 @@
+extends /views/notrack.pug
+
+block prepend title
+	- title = app.title
+
+block append css
+	link( rel='stylesheet', href='/static/css/lib/query-builder.default.css' )
+
+block append js
+	script( src='/static/js/lib/query-builder.standalone.js' )
+	script
+		if searchRuleGroup
+			| var searchRuleGroup = !{JSON.stringify(searchRuleGroup)};
+	script( src='/static/js/search.js?v=' + git)
+
+block contents
+	.row
+		.col-md-3
+			.page-header: h3 &nbsp;
+			ul(role="navigation").nav.nav-pills.nav-stacked
+				li(class=!activeSegment && 'active'): a( href="/members" ).
+					All contacts #[small (#{totalMembers.toLocaleString()})]
+				each segment in segments
+					li(
+						class=(activeSegment && segment.id === activeSegment.id && 'active')
+					): a(href="/members?segment=" + segment.id)
+						= segment.name
+
+		.col-md-9
+			.page-header
+				if activeSegment
+					.pull-right
+						a(href='/members/segments/' + activeSegment.id).btn.btn-default
+							i.glyphicon.glyphicon-pencil
+					h3= activeSegment.name
+				else
+					h3 All contacts
+
+			if activeSegment && activeSegment.description
+				p= activeSegment.description
+
+			.members-table-actions
+				form(method='POST')
+					+csrf
+					if activeSegment
+						if searchQuery.rules
+							button(name='action' value='update-segment').btn.btn-xs.btn-warning
+								i.glyphicon.glyphicon-floppy-disk
+								span Update segment
+					else if searchRuleGroup
+						button(name='action' value='save-segment').btn.btn-xs.btn-primary
+							i.glyphicon.glyphicon-floppy-disk
+							span Save segment
+				if activeSegment
+					a(href='/members/segments/' + activeSegment.id + '/email').btn.btn-xs.btn-default
+						i.glyphicon.glyphicon-send
+						span New email
+				if members.length > 0
+					if 0
+						form(method='POST')
+							+csrf
+							button(name='action' value='add-tag').btn.btn-xs.btn-default Add tag
+					include partials/pagination.pug
+
+			if members.length > 0
+				include partials/table.pug
+				include partials/pagination.pug
+			else
+				+messageBlock( 'info', 'The members list is no longer visible here. Please use the new frontend instead.' )

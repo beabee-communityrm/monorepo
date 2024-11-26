@@ -350,7 +350,8 @@ const disableMfa = async () => {
     await deleteContactMfa(props.contact.id, {
       type: CONTACT_MFA_TYPE.TOTP,
     });
-  } catch (error) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (_err) {
     onDeleteMfaError();
     return false;
   }

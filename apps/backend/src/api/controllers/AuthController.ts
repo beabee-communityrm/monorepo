@@ -17,7 +17,7 @@ import {
 import { UnauthorizedError } from "@beabee/core/errors";
 
 import { getRepository } from "@beabee/core/database";
-import passport from "@core/lib/passport";
+import passport from "@beabee/core/lib/passport";
 
 import ContactsService from "@beabee/core/services/ContactsService";
 
@@ -26,7 +26,7 @@ import { login } from "@api/utils";
 
 import { Contact, ContactRole } from "@beabee/core/models";
 
-import { PassportLoginInfo } from "@type/passport-login-info";
+import { PassportLoginInfo } from "@beabee/core/type";
 
 import config from "@beabee/core/config";
 

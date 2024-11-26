@@ -9,7 +9,7 @@ import { ExportContactDto } from "@api/dto/ContactDto";
 
 import { Contact } from "@beabee/core/models";
 
-import { AuthInfo } from "@type/auth-info";
+import { AuthInfo } from "@beabee/core/type";
 import { BaseContactTransformer } from "./BaseContactTransformer";
 
 class ContactExporter extends BaseContactTransformer<

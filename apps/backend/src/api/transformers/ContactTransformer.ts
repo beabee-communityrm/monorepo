@@ -17,14 +17,14 @@ import {
 import { BaseContactTransformer } from "@api/transformers/BaseContactTransformer";
 import ContactRoleTransformer from "@api/transformers/ContactRoleTransformer";
 import ContactProfileTransformer from "@api/transformers/ContactProfileTransformer";
-import { batchSelect } from "@api/utils";
 
-import { AuthInfo } from "@type/auth-info";
 import contactTagTransformer from "./ContactTagTransformer";
+import { batchSelect, batchUpdate } from "@beabee/core/utils/rules";
+
+import { AuthInfo } from "@beabee/core/type";
 import ContactsService from "@beabee/core/services/ContactsService";
 import { generatePassword } from "@beabee/core/utils/auth";
 import { UnauthorizedError } from "@beabee/core/errors";
-import { batchUpdate } from "@api/utils";
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
 
 /**

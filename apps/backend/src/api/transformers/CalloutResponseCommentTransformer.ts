@@ -18,11 +18,10 @@ import {
   CalloutReviewer
 } from "@beabee/core/models";
 
-import { AuthInfo } from "@type/auth-info";
 import { getReviewerRules } from "@api/utils/callouts";
-import { FilterHandlers } from "@type/filter-handlers";
 import { BadRequestError } from "routing-controllers";
 import { createQueryBuilder } from "@beabee/core/database";
+import { AuthInfo, FilterHandlers } from "@beabee/core/type";
 
 class CalloutResponseCommentTransformer extends BaseTransformer<
   CalloutResponseComment,

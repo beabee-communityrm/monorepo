@@ -158,4 +158,4 @@ class NetworkCommunicatorService {
   }
 }
 
-export default new NetworkCommunicatorService();
+export const networkCommunicatorService = new NetworkCommunicatorService();

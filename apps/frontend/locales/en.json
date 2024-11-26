@@ -1405,6 +1405,7 @@
     "name": "Name"
   },
   "tags": {
+    "manageTags": "Manage tags",
     "noTags": "No tags",
     "notifications": {
       "addedTag": "Added tag \"{tag}\"",
