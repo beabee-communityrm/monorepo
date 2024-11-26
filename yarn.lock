@@ -817,7 +817,6 @@ __metadata:
     "@beabee/tsconfig": "workspace:^"
     "@types/express": "npm:^4.17.21"
     "@types/node": "npm:^22.9.1"
-    barrelsby: "npm:^2.8.1"
     body-parser: "npm:^1.20.2"
     concurrently: "npm:^9.1.0"
     date-fns: "npm:^4.1.0"
