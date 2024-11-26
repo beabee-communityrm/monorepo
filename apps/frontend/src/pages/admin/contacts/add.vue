@@ -111,7 +111,7 @@ const addAnother = ref(false);
 
 const validation = useVuelidate();
 
-function handleUpdateRole(role: ContactRoleData) {
+async function handleUpdateRole(roleName: RoleType, role: ContactRoleData) {
   const existingRole = data.roles.find((r) => r.role === role.role);
   if (existingRole) {
     existingRole.dateAdded = role.dateAdded;
@@ -121,7 +121,7 @@ function handleUpdateRole(role: ContactRoleData) {
   }
 }
 
-function handleDeleteRole(roleName: RoleType) {
+async function handleDeleteRole(roleName: RoleType) {
   data.roles = data.roles.filter((role) => role.role !== roleName);
 }
 

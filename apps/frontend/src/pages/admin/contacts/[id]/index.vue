@@ -381,8 +381,8 @@ async function handleSecurityAction() {
   securityLink.value = response;
 }
 
-async function handleUpdateRole(role: ContactRoleData) {
-  await handleChangedRoles(() => updateRole(props.contact.id, role.role, role));
+async function handleUpdateRole(roleName: RoleType, role: ContactRoleData) {
+  await handleChangedRoles(() => updateRole(props.contact.id, roleName, role));
 }
 
 async function handleDeleteRole(roleName: RoleType) {
