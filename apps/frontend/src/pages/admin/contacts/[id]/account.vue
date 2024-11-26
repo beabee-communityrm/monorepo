@@ -17,7 +17,7 @@ meta:
         <ActionButton
           :icon="faTrash"
           variant="danger"
-          @click="showDeleteModal = true"
+          @click="(showDeleteModal = true)"
         >
           {{ t('contactAccount.confirmDelete.title') }}
         </ActionButton>
@@ -28,7 +28,7 @@ meta:
         :cancel="t('actions.noBack')"
         :confirm="t('actions.yesDelete')"
         variant="danger"
-        @close="showDeleteModal = false"
+        @close="(showDeleteModal = false)"
         @confirm="handleDelete"
       >
         <i18n-t

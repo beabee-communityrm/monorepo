@@ -8,13 +8,13 @@
         <AppButton
           size="sm"
           variant="text"
-          @click="formVisible = !formVisible"
+          @click="(formVisible = !formVisible)"
           >{{ t('actions.edit') }}</AppButton
         >
         <AppButton
           size="sm"
           variant="dangerText"
-          @click="showDeleteModal = true"
+          @click="(showDeleteModal = true)"
         >
           {{ t('actions.delete') }}
         </AppButton>
@@ -26,7 +26,7 @@
       class="p-4"
       :tag="tag"
       @save="handleSave"
-      @cancel="formVisible = false"
+      @cancel="(formVisible = false)"
     />
     <AppConfirmDialog
       :open="showDeleteModal"
@@ -34,7 +34,7 @@
       :cancel="t('actions.noBack')"
       :confirm="t('actions.yesRemove')"
       variant="danger"
-      @close="showDeleteModal = false"
+      @close="(showDeleteModal = false)"
       @confirm="$emit('delete', tag.id)"
     >
       <p>

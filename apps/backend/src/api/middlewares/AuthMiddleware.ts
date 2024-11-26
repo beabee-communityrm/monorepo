@@ -10,7 +10,7 @@ import { extractToken } from "@beabee/core/utils/auth";
 
 import { ApiKey } from "@beabee/core/models";
 
-import { AuthInfo } from "@type/auth-info";
+import { AuthInfo } from "@beabee/core/type";
 
 @Middleware({ type: "before" })
 export class AuthMiddleware implements ExpressMiddlewareInterface {

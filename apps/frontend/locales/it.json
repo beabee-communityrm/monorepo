@@ -34,7 +34,8 @@
     "continue": "Prosegui",
     "disable": "Disattiva",
     "enable": "Attiva",
-    "update": "Aggiorna"
+    "update": "Aggiorna",
+    "sendEmails": "Invia e-mail"
   },
   "addContact": {
     "errors": {}

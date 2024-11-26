@@ -27,7 +27,7 @@ import ApiKeyTransformer from "@api/transformers/ApiKeyTransformer";
 
 import { Contact } from "@beabee/core/models";
 
-import { AuthInfo } from "@type/auth-info";
+import { AuthInfo } from "@beabee/core/type";
 
 @JsonController("/api-key")
 @Authorized("admin")

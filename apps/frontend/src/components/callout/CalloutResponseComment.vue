@@ -19,14 +19,14 @@
           :icon="faPencil"
           variant="primaryOutlined"
           :title="t('actions.edit')"
-          @click="formVisible = !formVisible"
+          @click="(formVisible = !formVisible)"
         />
         <AppButton
           size="sm"
           :icon="faTrash"
           variant="danger"
           :title="t('actions.delete')"
-          @click="showDeleteModal = true"
+          @click="(showDeleteModal = true)"
         />
       </AppButtonGroup>
     </div>
@@ -35,7 +35,7 @@
       v-if="formVisible"
       :comment="currentComment"
       @submit="handleEditSubmit"
-      @cancel="formVisible = false"
+      @cancel="(formVisible = false)"
     />
     <div v-else class="content-message" v-html="currentComment.text" />
 
@@ -45,7 +45,7 @@
       :cancel="t('actions.noBack')"
       :confirm="t('actions.yesDelete')"
       variant="danger"
-      @close="showDeleteModal = false"
+      @close="(showDeleteModal = false)"
       @confirm="handleDelete"
     >
       <p>{{ t('calloutResponseComments.confirmDelete.text') }}</p>

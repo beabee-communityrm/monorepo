@@ -27,7 +27,7 @@ meta:
       v-model="currentRules"
       :filter-groups="filterGroups"
       :has-changed="hasUnsavedSegment"
-      @reset="currentRules = undefined"
+      @reset="(currentRules = undefined)"
     >
       <AppSearchInput
         v-model="currentSearch"
@@ -72,6 +72,19 @@ meta:
               (tagId, successText) =>
                 handleUpdateAction({ tags: [tagId] }, successText)
             "
+          />
+          <!--
+          TODO:
+           * Add support for emailing selected contacts (instead of all contacts)
+           * This redirects to the legacy members app, we need to implement this in the new frontend
+          -->
+          <AppButton
+            :icon="faMailBulk"
+            variant="primaryOutlined"
+            :title="t('actions.sendEmails')"
+            :disabled="!currentSegment || selectedCount > 0"
+            :href="`/members/segments/${currentSegment?.id}/email`"
+            external
           />
         </AppButtonGroup>
         <p v-if="selectedCount > 0" class="self-center text-sm">
@@ -133,7 +146,7 @@ meta:
           v-if="item.tags && item.tags.length > 0"
           :class="item.profile.description && 'mt-2'"
         >
-          <TagList :tags="item.tags" @select="currentTag = $event" />
+          <TagList :tags="item.tags" @select="(currentTag = $event)" />
         </div>
       </template>
     </AppPaginatedTable>
@@ -153,7 +166,12 @@ import {
 import { computed, onBeforeMount, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
-import { faPlus, faDownload, faUsers } from '@fortawesome/free-solid-svg-icons';
+import {
+  faPlus,
+  faDownload,
+  faUsers,
+  faMailBulk,
+} from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { addNotification } from '@store/notifications';
 

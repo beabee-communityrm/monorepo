@@ -85,13 +85,13 @@ onBeforeMount(async () => {
         <AppSubHeading>
           {{ t('tagEditor.addNewTag') }}
         </AppSubHeading>
-        <TagEditorForm @cancel="formVisible = false" @save="handleNewTag" />
+        <TagEditorForm @cancel="(formVisible = false)" @save="handleNewTag" />
       </div>
       <AppButton
         v-else
         class="w-full"
         variant="primaryOutlined"
-        @click="formVisible = true"
+        @click="(formVisible = true)"
       >
         {{ t('tagEditor.add') }}
       </AppButton>

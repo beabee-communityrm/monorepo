@@ -12,7 +12,7 @@ meta:
     <AppSearch
       v-model="currentRules"
       :filter-groups="filterGroups"
-      @reset="currentRules = undefined"
+      @reset="(currentRules = undefined)"
     />
     <AppPaginatedTable
       v-model:query="currentPaginatedQuery"
