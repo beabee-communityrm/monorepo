@@ -94,6 +94,7 @@
     "saveDraft": "Save draft",
     "schedule": "Schedule",
     "search": "Search",
+    "sendEmails": "Send emails",
     "share": "Share",
     "skip": "Skip",
     "submit": "Submit",
@@ -102,8 +103,7 @@
     "view": "View",
     "yesDelete": "Yes, delete it",
     "yesDisable": "Yes, disable it",
-    "yesRemove": "Yes, remove it",
-    "sendEmails": "Send emails"
+    "yesRemove": "Yes, remove it"
   },
   "addContact": {
     "contactSaved": "Contact saved",
@@ -330,7 +330,6 @@
     },
     "addAPoint": "Click on the map where you want to add a point",
     "addLocation": "Add a new entry",
-    "confirmHuman": "Please confirm you are human",
     "contactDetails": "Contact details",
     "ended": "This callout ended on {date}",
     "form": {
@@ -357,7 +356,6 @@
       "gallery": "Gallery",
       "map": "Map"
     },
-    "youResponded": "You replied to this callout ♥",
     "yourResponse": "Your response"
   },
   "calloutAdmin": {
@@ -467,27 +465,42 @@
     "actions": {
       "assignTo": "Assign to",
       "moveBucket": "Move bucket",
+      "toggleTag": "Toggle tag",
       "viewOnMap": "View on map"
     },
     "editMode": "You are in edit mode, be careful!",
     "manageFolders": "Manage folders",
     "manageReviewers": "Manage reviewers",
+    "manageTags": "Manage tags",
     "notifications": {
       "addedAssignee": "Assigned to \"{assignee}\"",
+      "addedTag": "Added tag \"{tag}\"",
       "movedToBucket": "Moved to {bucket}",
-      "removedAssignee": "Unassigned from \"{assignee}\""
+      "removedAssignee": "Unassigned from \"{assignee}\"",
+      "removedTag": "Removed tag \"{tag}\" "
     },
     "responseOf": "Response {no} out of {total} in {bucket}",
     "selectedCount": "{n} response selected | {n} responses selected"
   },
   "calloutResponsesPage": {
     "moveToBucket": "Move to {bucket}",
+    "noTags": "No tags",
     "response": "Response",
     "responseNo": "Response {no}",
     "searchAssignee": "Assigned to...",
+    "searchTag": "Tagged with...",
     "showAnswer": "Answer",
     "showLatestComment": "Latest comment",
     "showingOf": "Showing {start} to {end} responses out of {total}"
+  },
+  "calloutReviewerManager": {
+    "add": "Add reviewer",
+    "confirmDelete": {
+      "text": "Are you sure you want to remove {reviewerName}? They will no longer be able to review this callout.",
+      "title": "Remove reviewer"
+    },
+    "contact": "Contact ID",
+    "title": "Callout reviewers"
   },
   "callouts": {
     "archive": "Archive",
@@ -679,8 +692,8 @@
     "noResults": "No contacts found",
     "numResults": "{n} contact found | {n} contacts found",
     "search": "Search contacts...",
-    "showingOf": "Showing {start} to {end} contacts out of {total}",
-    "selectedCount": "{n} contact selected | {n} contacts selected"
+    "selectedCount": "{n} contact selected | {n} contacts selected",
+    "showingOf": "Showing {start} to {end} contacts out of {total}"
   },
   "contribution": {
     "adminCancelDescription": "If you cancel the contact's contribution their membership will finish at the end of their current payment cycle on {date}.",
@@ -989,10 +1002,10 @@
       "api": {
         "account-locked": "Account locked due to too many failed login attempts. Please reset your password or contact support for help.",
         "duplicate-email": "Email address already exists",
+        "duplicate-tag-name": "A tag with this name already exists",
         "invalid-token": "Invalid 2FA token",
         "login-failed": "Invalid password/email combination",
-        "mfa-token-required": "You have 2FA enabled, enter the token from your authenticator app to proceed",
-        "duplicate-tag-name": "A tag with this name already exists"
+        "mfa-token-required": "You have 2FA enabled, enter the token from your authenticator app to proceed"
       },
       "generic": "Oops, something went wrong! Contact support if this happens again.",
       "unauthorized": "You don't have access to that.",
@@ -1281,18 +1294,14 @@
     "error": "Something went wrong. Try reloading the page."
   },
   "pageTitle": {
-    "confirmEmail": "Confirm email",
     "duplicateEmail": "Duplicate email",
-    "failed": "Failed",
     "forgotPassword": "Forgot password",
-    "join": "Join",
     "login": "Login",
     "lostDevice": "Lost your 2FA device?",
     "notFound": "Page not found",
     "resetDevice": "Reset 2FA device",
     "resetPassword": "Reset password",
-    "setPassword": "Set password",
-    "setup": "Setup"
+    "setPassword": "Set password"
   },
   "paymentMethods": {
     "gc_direct-debit": {
@@ -1359,7 +1368,6 @@
   },
   "roleEditor": {
     "add": "Add role",
-    "addNewRole": "Add a new role",
     "confirmDelete": {
       "text": "Are you sure you want to remove this role?",
       "title": "Remove role"
@@ -1386,26 +1394,25 @@
     "description": "Set a new password to login.",
     "title": "Set a password"
   },
-  "tags": {
-    "manageTags": "Manage tags",
-    "toggleTag": "Toggle tag",
-    "noTags": "No tags",
-    "searchTag": "Tagged with...",
-    "notifications": {
-      "addedTag": "Added tag \"{tag}\"",
-      "removedTag": "Removed tag \"{tag}\""
-    },
-  },
   "tagEditor": {
     "add": "Add tag",
-    "addNewTag": "Add a tag",
     "confirmDelete": {
-      "text_contact": "Are you sure you want to remove this tag? Every contact that is tagged with \"{tagName}\" will loose the tag.",
-      "text_response": "Are you sure you want to remove this tag? Every response that is tagged with \"{tagName}\" will loose the tag.",
+      "text_contact": "Are you sure you want to remove this tag? Every contact that is tagged with \"{tagName}\" will lose the tag.",
       "text_global": "Are you sure you want to remove the tag \"{tagName}\"?",
+      "text_response": "Are you sure you want to remove this tag? Every response that is tagged with \"{tagName}\" will lose the tag",
       "title": "Remove tag"
     },
     "name": "Name"
+  },
+  "tags": {
+    "manageTags": "Manage tags",
+    "noTags": "No tags",
+    "notifications": {
+      "addedTag": "Added tag \"{tag}\"",
+      "removedTag": "Removed tag \"{tag}\" "
+    },
+    "searchTag": "Tagged with...",
+    "toggleTag": "Toggle tag"
   },
   "taxRate": {
     "invoiceName": "VAT"

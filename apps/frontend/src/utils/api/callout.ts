@@ -151,6 +151,20 @@ export async function fetchCalloutReviewers(
   return data.map(deserializeCalloutReviewer);
 }
 
+export async function addCalloutReviewer(
+  slug: string,
+  contactId: string
+): Promise<void> {
+  await instance.post(`/callout/${slug}/reviewers`, { contactId });
+}
+
+export async function removeCalloutReviewer(
+  slug: string,
+  reviewerId: string
+): Promise<void> {
+  await instance.delete(`/callout/${slug}/reviewers/${reviewerId}`);
+}
+
 class CalloutTagOperations extends TagOperations {
   getBasePath(entityId: string | undefined): string {
     return `/callout/${entityId}/tags`;
