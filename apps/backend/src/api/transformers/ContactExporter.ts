@@ -16,8 +16,6 @@ class ContactExporter extends BaseContactTransformer<
   ExportContactDto,
   GetExportQuery
 > {
-  protected allowedRoles: RoleType[] = ["admin"];
-
   convert(contact: Contact): ExportContactDto {
     const tagNames =
       contact.tags?.map((assignment) => assignment.tag.name) || [];
@@ -62,7 +60,7 @@ class ContactExporter extends BaseContactTransformer<
   }
 
   async export(
-    auth: AuthInfo | undefined,
+    auth: AuthInfo,
     query?: GetExportQuery
   ): Promise<[string, string]> {
     const result = await this.fetch(auth, { limit: -1, ...query });

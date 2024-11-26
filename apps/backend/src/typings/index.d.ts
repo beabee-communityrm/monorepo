@@ -15,7 +15,7 @@ declare global {
     export interface User extends Contact {}
 
     export interface Request {
-      auth: AuthInfo2 | undefined;
+      auth: AuthInfo2;
     }
   }
 }

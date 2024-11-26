@@ -16,11 +16,7 @@ class ContactProfileTransformer extends BaseTransformer<
   protected filters = {};
 
   @TransformPlainToInstance(GetContactProfileDto)
-  convert(
-    profile: ContactProfile,
-    opts: unknown,
-    auth: AuthInfo | undefined
-  ): GetContactProfileDto {
+  convert(profile: ContactProfile, auth: AuthInfo): GetContactProfileDto {
     return {
       telephone: profile.telephone,
       twitter: profile.twitter,
@@ -31,7 +27,7 @@ class ContactProfileTransformer extends BaseTransformer<
         AddressTransformer.convert(profile.deliveryAddress),
       newsletterStatus: profile.newsletterStatus,
       newsletterGroups: profile.newsletterGroups,
-      ...(auth?.roles.includes("admin") && {
+      ...(auth.roles.includes("admin") && {
         notes: profile.notes,
         description: profile.description
       })

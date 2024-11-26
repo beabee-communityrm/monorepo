@@ -1,19 +1,12 @@
 <script lang="ts" setup>
-import { computed, onBeforeMount, ref } from 'vue';
+import { computed, onBeforeMount, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import AppHeading from '@components/AppHeading.vue';
-import AppSubHeading from '@components/AppSubHeading.vue';
-import AppButton from '@components/button/AppButton.vue';
-import TagEditorForm from '@components/tag/TagEditorForm.vue';
-import TagEditorItem from '@components/tag/TagEditorItem.vue';
-import { addBreadcrumb } from '@store/breadcrumb';
-import type { BreadcrumbItem } from '@type';
 import { TagOperations } from '@utils/api';
-import type {
-  TagData,
-  TagCreateData,
-  TagUpdateData,
-} from '@beabee/beabee-common';
+import type { TagData, TagUpdateData } from '@beabee/beabee-common';
+import ItemManager from '@components/item-manager/ItemManager.vue';
+import { faTag } from '@fortawesome/free-solid-svg-icons';
+import AppInput from '@components/forms/AppInput.vue';
 
 interface Props {
   /**
@@ -22,7 +15,6 @@ interface Props {
    */
   entityId?: string | undefined;
   operations: TagOperations;
-  breadcrumbs?: BreadcrumbItem[];
   type?: 'contact' | 'response';
 }
 
@@ -30,31 +22,46 @@ const props = defineProps<Props>();
 const { t } = useI18n();
 
 const tags = ref<TagData[]>([]);
-const formVisible = ref(false);
 
-// Wenn Breadcrumbs übergeben wurden, füge sie hinzu
-if (props.breadcrumbs) {
-  addBreadcrumb(computed(() => props.breadcrumbs!));
-}
+const deleteText = computed(() => {
+  switch (props.type) {
+    case 'contact':
+      return 'tagEditor.confirmDelete.text_contact';
+    case 'response':
+      return 'tagEditor.confirmDelete.text_response';
+    default:
+      return 'tagEditor.confirmDelete.text_global';
+  }
+});
 
-async function handleUpdateTag(tagId: string, data: TagUpdateData) {
+async function handleUpdateTag(tag: TagData, data: TagUpdateData) {
   const updatedTag = await props.operations.updateTag(
     props.entityId,
-    tagId,
+    tag.id,
     data
   );
-  tags.value = tags.value.map((tag) => (tag.id === tagId ? updatedTag : tag));
+  tags.value = tags.value.map((tag2) =>
+    tag2.id === tag.id ? updatedTag : tag2
+  );
 }
 
-async function handleDeleteTag(tagId: string) {
-  await props.operations.deleteTag(props.entityId, tagId);
-  tags.value = tags.value.filter((tag) => tag.id !== tagId);
+async function handleDeleteTag(tag: TagData) {
+  await props.operations.deleteTag(props.entityId, tag.id);
+  tags.value = tags.value.filter((tag2) => tag2.id !== tag.id);
 }
 
-async function handleNewTag(data: TagCreateData) {
-  const tag = await props.operations.createTag(props.entityId, data);
+async function handleNewTag(data: TagUpdateData) {
+  const tag = await props.operations.createTag(props.entityId, {
+    name: data.name,
+    description: '',
+  });
   tags.value.push(tag);
-  formVisible.value = false;
+}
+
+function tagToFormData(tag?: TagData): TagUpdateData {
+  return reactive({
+    name: tag?.name || '',
+  });
 }
 
 onBeforeMount(async () => {
@@ -63,38 +70,32 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <div class="grid gap-8 lg:grid-cols-2 xl:grid-cols-3">
-    <div>
-      <AppHeading>
-        {{ t('tags.manageTags') }}
-      </AppHeading>
+  <div>
+    <AppHeading>
+      {{ t('tags.manageTags') }}
+    </AppHeading>
 
-      <TagEditorItem
-        v-for="tag in tags"
-        :key="tag.id"
-        :tag="tag"
-        :type="props.type"
-        @update="(data: TagUpdateData) => handleUpdateTag(tag.id, data)"
-        @delete="handleDeleteTag"
-      />
+    <ItemManager
+      :items="tags"
+      :item-to-data="tagToFormData"
+      :add-button-text="t('tagEditor.add')"
+      :delete-title="t('tagEditor.confirmDelete.title')"
+      :delete-text="(tag) => t(deleteText, { tagName: tag.name })"
+      @add="handleNewTag"
+      @update="handleUpdateTag"
+      @delete="handleDeleteTag"
+    >
+      <template #view="{ item }">
+        <strong class="font-bold text-body-80">
+          <font-awesome-icon :icon="faTag" class="mr-2" />{{ item.name }}
+        </strong>
+      </template>
 
-      <div
-        v-if="formVisible"
-        class="rounded rounded-t-none border border-primary-20 bg-primary-10 p-4"
-      >
-        <AppSubHeading>
-          {{ t('tagEditor.addNewTag') }}
-        </AppSubHeading>
-        <TagEditorForm @cancel="formVisible = false" @save="handleNewTag" />
-      </div>
-      <AppButton
-        v-else
-        class="w-full"
-        variant="primaryOutlined"
-        @click="formVisible = true"
-      >
-        {{ t('tagEditor.add') }}
-      </AppButton>
-    </div>
+      <template #form="{ data }">
+        <div class="mb-4">
+          <AppInput v-model="data.name" :label="t('tagEditor.name')" required />
+        </div>
+      </template>
+    </ItemManager>
   </div>
 </template>

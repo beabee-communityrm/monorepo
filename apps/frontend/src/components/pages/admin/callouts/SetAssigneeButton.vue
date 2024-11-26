@@ -7,63 +7,45 @@
   >
     <AppSelectableList
       v-slot="{ item }"
-      :items="admins"
+      :items="reviewerItems"
       :selected-item-ids="currentAssigneeId ? [currentAssigneeId] : []"
       @click="handleAssign"
     >
-      {{ item.displayName }}
+      {{ item.label }}
     </AppSelectableList>
   </AppDropdownButton>
 </template>
 
 <script lang="ts" setup>
-import type { GetContactData } from '@beabee/beabee-common';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
-import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import AppSelectableList from '@components/AppSelectableList.vue';
 import AppDropdownButton from '@components/button/AppDropdownButton.vue';
 
-import { fetchContacts } from '@utils/api/contact';
+import type { SelectItem } from '@components/forms/form.interface';
 
 const emit = defineEmits<{
   (event: 'assign', id: string | null, successText: string): void;
 }>();
-defineProps<{ currentAssigneeId?: string; withText?: boolean }>();
+defineProps<{
+  reviewerItems: SelectItem<string>[];
+  currentAssigneeId?: string;
+  withText?: boolean;
+}>();
 
 const { t } = useI18n();
 
-const admins = ref<GetContactData[]>([]);
-
-function handleAssign(item: unknown, selected: boolean) {
-  const assignee = item as GetContactData;
-
+function handleAssign(item: SelectItem<string>, selected: boolean) {
   emit(
     'assign',
-    selected ? null : assignee.id,
+    selected ? null : item.id,
     t(
       selected
         ? 'calloutResponsePage.notifications.removedAssignee'
         : 'calloutResponsePage.notifications.addedAssignee',
-      {
-        assignee: assignee.displayName,
-      }
+      { assignee: item.label }
     )
   );
 }
-
-onBeforeMount(async () => {
-  // TODO: should paginate
-  const results = await fetchContacts({
-    rules: {
-      condition: 'AND',
-      rules: [
-        { field: 'activePermission', operator: 'equal', value: ['admin'] },
-      ],
-    },
-  });
-
-  admins.value = results.items;
-});
 </script>

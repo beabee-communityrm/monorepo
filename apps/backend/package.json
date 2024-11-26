@@ -25,7 +25,7 @@
     "generate:index": "node scripts/generate-index.mjs",
     "watch": "tsc-watch -p tsconfig.build.json --noClear",
     "check": "concurrently 'yarn:check:*'",
-    "check:tsc": "tsc --noEmit",
+    "check:tsc": "tsc -p ./tsconfig.build.json --noEmit",
     "check:prettier": "prettier -c .",
     "check:dependencies": "dpdm -T --no-warning --no-tree --exit-code circular:1 src/api/app.ts",
     "format": "prettier --write .",

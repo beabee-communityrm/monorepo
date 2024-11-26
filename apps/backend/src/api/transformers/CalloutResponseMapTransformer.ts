@@ -5,6 +5,7 @@ import {
   CalloutResponseAnswersSlide,
   CalloutResponseViewSchema,
   getCalloutComponents,
+  RuleGroup,
   stringifyAnswer
 } from "@beabee/beabee-common";
 import { TransformPlainToInstance } from "class-transformer";
@@ -20,9 +21,10 @@ import {
 import { PaginatedDto } from "@api/dto/PaginatedDto";
 import { NotFoundError } from "@beabee/core/errors";
 import { BaseCalloutResponseTransformer } from "@api/transformers/BaseCalloutResponseTransformer";
-import { mergeRules } from "@beabee/core/utils/rules";
 
 import { Callout, CalloutResponse } from "@beabee/core/models";
+
+import { mergeRules } from "@beabee/core/utils/rules";
 
 import { AuthInfo } from "@beabee/core/type";
 
@@ -33,6 +35,7 @@ class CalloutResponseMapTransformer extends BaseCalloutResponseTransformer<
   @TransformPlainToInstance(GetCalloutResponseMapDto)
   convert(
     response: CalloutResponse,
+    auth: AuthInfo,
     opts: GetCalloutResponseMapOptsDto
   ): GetCalloutResponseMapDto {
     let title = "",
@@ -82,20 +85,26 @@ class CalloutResponseMapTransformer extends BaseCalloutResponseTransformer<
     };
   }
 
+  protected async getNonAdminAuthRules(
+    auth: AuthInfo,
+    query: GetCalloutResponseMapOptsDto
+  ): Promise<RuleGroup> {
+    return {
+      // Only show results from relevant buckets
+      condition: "OR",
+      rules: query.callout.responseViewSchema.buckets.map((bucket) => ({
+        field: "bucket",
+        operator: "equal",
+        value: [bucket]
+      }))
+    };
+  }
+
   protected transformQuery<T extends ListCalloutResponseMapDto>(query: T): T {
     return {
       ...query,
       rules: mergeRules([
         query.rules,
-        // Only show results from relevant buckets
-        {
-          condition: "OR",
-          rules: query.callout.responseViewSchema.buckets.map((bucket) => ({
-            field: "bucket",
-            operator: "equal",
-            value: [bucket]
-          }))
-        },
         // Only load responses for the given callout
         {
           field: "calloutId",
@@ -106,8 +115,17 @@ class CalloutResponseMapTransformer extends BaseCalloutResponseTransformer<
     };
   }
 
+  /**
+   * Fetch the responses for a specific callout. The transformer needs the
+   * callout's response view schema to determine how to transform the responses.
+   *
+   * @param auth The authentication info
+   * @param calloutId The ID of the callout to fetch responses for
+   * @param query The query
+   * @returns The paginated responses
+   */
   async fetchForCallout(
-    auth: AuthInfo | undefined,
+    auth: AuthInfo,
     calloutId: string,
     query: ListCalloutResponsesDto
   ): Promise<PaginatedDto<GetCalloutResponseMapDto>> {

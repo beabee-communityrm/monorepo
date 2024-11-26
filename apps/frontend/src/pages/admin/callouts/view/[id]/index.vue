@@ -2,7 +2,6 @@
 name: adminCalloutViewOverview
 meta:
   pageTitle: menu.callouts
-  role: admin
 </route>
 
 <template>

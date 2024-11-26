@@ -1,5 +1,4 @@
 import {
-  Authorized,
   Body,
   Get,
   JsonController,
@@ -15,21 +14,18 @@ import PartialBody from "@api/decorators/PartialBody";
 import { CreateContactTagDto, GetContactTagDto, ListTagsDto } from "@api/dto";
 import { CurrentAuth } from "@api/decorators/CurrentAuth";
 import { AuthInfo } from "@beabee/core/type";
-import { contactTagTransformer } from "@api/transformers/TagTransformer";
-import { ContactTagAssignment } from "@beabee/core/models";
-import { DuplicateTagNameError } from "@beabee/core/errors";
+import contactTagTransformer from "@api/transformers/ContactTagTransformer";
+import { DuplicateTagNameError, NotFoundError } from "@beabee/core/errors";
 
 /**
  * Controller for managing contact tags.
  * Provides CRUD operations for global contact tags.
- * All operations require admin privileges.
  *
  * @remarks
  * Contact tags can be assigned to contacts to categorize and group them.
  * Tags are managed globally and can be assigned to multiple contacts.
  */
 @JsonController("/contact-tags")
-@Authorized()
 export class ContactTagController {
   /**
    * Retrieves all contact tags.
@@ -41,7 +37,6 @@ export class ContactTagController {
    * GET /contact-tags
    * Returns: [{ id: "...", name: "Important", description: "..." }, ...]
    */
-  @Authorized("admin")
   @Get("/")
   async getAllContactTags(
     @CurrentAuth({ required: true }) auth: AuthInfo,
@@ -65,14 +60,13 @@ export class ContactTagController {
    * POST /contact-tags
    * Body: { name: "VIP", description: "Very important contacts" }
    */
-  @Authorized("admin")
   @Post("/")
   async createGlobalContactTag(
+    @CurrentAuth({ required: true }) auth: AuthInfo,
     @Body() data: CreateContactTagDto
   ): Promise<GetContactTagDto> {
     try {
-      const tag = await contactTagTransformer.create(data);
-      return contactTagTransformer.convert(tag);
+      return await contactTagTransformer.create(auth, data);
     } catch (error) {
       if (DuplicateTagNameError.isPostgresError(error)) {
         throw new DuplicateTagNameError(data.name);
@@ -93,14 +87,15 @@ export class ContactTagController {
    * PATCH /contact-tags/:tagId
    * Body: { name: "Updated Name", description: "Updated description" }
    */
-  @Authorized("admin")
   @Patch("/:tagId")
   async updateContactTag(
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @Param("tagId") tagId: string,
     @PartialBody() data: CreateContactTagDto
   ): Promise<GetContactTagDto | undefined> {
-    await contactTagTransformer.update(tagId, data);
+    if (!(await contactTagTransformer.updateById(auth, tagId, data))) {
+      throw new NotFoundError();
+    }
     return contactTagTransformer.fetchOneById(auth, tagId);
   }
 
@@ -113,10 +108,14 @@ export class ContactTagController {
    * @example
    * DELETE /contact-tags/:tagId
    */
-  @Authorized("admin")
   @OnUndefined(204)
   @Delete("/:tagId")
-  async deleteContactTag(@Param("tagId") tagId: string): Promise<void> {
-    await contactTagTransformer.delete(tagId, ContactTagAssignment);
+  async deleteContactTag(
+    @CurrentAuth({ required: true }) auth: AuthInfo,
+    @Param("tagId") tagId: string
+  ): Promise<void> {
+    if (!(await contactTagTransformer.deleteById(auth, tagId))) {
+      throw new NotFoundError();
+    }
   }
 }
