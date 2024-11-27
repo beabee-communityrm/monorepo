@@ -1,4 +1,5 @@
 export * from "./api-key.client.ts";
+export * from "./auth.client.ts";
 export * from "./base.client.ts";
 export * from "./beabee.client.ts";
 export * from "./callout-response-comment.client.ts";

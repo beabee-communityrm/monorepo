@@ -1,6 +1,7 @@
-import type { LoginData } from '@type';
+import type { LoginData } from '@beabee/beabee-common';
 import { instance } from '.';
 
+/** @deprecated Use the client instead */
 export async function login(data: LoginData): Promise<void> {
   await instance.post('auth/login', {
     email: data.email,
@@ -9,6 +10,7 @@ export async function login(data: LoginData): Promise<void> {
   });
 }
 
+/** @deprecated Use the client instead */
 export async function logout(): Promise<void> {
   await instance.post('auth/logout');
 }

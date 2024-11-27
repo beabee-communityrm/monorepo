@@ -3,6 +3,7 @@ import { CalloutClient } from "./callout.client.ts";
 import { ContentClient } from "./content.client.ts";
 import { ContactClient } from "./contact.client.ts";
 import { ApiKeyClient } from "./api-key.client.ts";
+import { AuthClient } from "./auth.client.ts";
 
 import type { BaseClientOptions } from "../types/index.ts";
 
@@ -35,6 +36,9 @@ export class BeabeeClient extends BaseClient {
   /** Client for managing API keys */
   readonly apiKey: ApiKeyClient;
 
+  /** Client for managing authentication */
+  readonly auth: AuthClient;
+
   /**
    * Creates a new Beabee API client instance
    * @param options - Configuration options for the client
@@ -48,5 +52,6 @@ export class BeabeeClient extends BaseClient {
     this.callout = new CalloutClient(options);
     this.contact = new ContactClient(options);
     this.apiKey = new ApiKeyClient(options);
+    this.auth = new AuthClient(options);
   }
 }

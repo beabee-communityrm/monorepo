@@ -21,7 +21,6 @@ export * from './get-segments-query';
 export * from './item-with-status';
 export * from './locale-input-props';
 export * from './locale-prop';
-export * from './login-data';
 export * from './rule-group-with-empty';
 export * from './set-mfa-steps';
 export * from './set-mfa-totp-identity';
