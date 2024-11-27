@@ -15,4 +15,5 @@ export * from "./contact-tag.client.ts";
 export * from "./contact.client.ts";
 export * from "./content.client.ts";
 export * from "./email.client.ts";
+export * from "./notice.client.ts";
 export * from "./tag.client.ts";

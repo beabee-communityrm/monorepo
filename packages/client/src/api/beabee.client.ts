@@ -5,6 +5,7 @@ import { ContactClient } from "./contact.client.ts";
 import { ApiKeyClient } from "./api-key.client.ts";
 import { AuthClient } from "./auth.client.ts";
 import { EmailClient } from "./email.client.ts";
+import { NoticeClient } from "./notice.client.ts";
 
 import type { BaseClientOptions } from "../types/index.ts";
 
@@ -43,6 +44,9 @@ export class BeabeeClient extends BaseClient {
   /** Client for managing emails */
   readonly email: EmailClient;
 
+  /** Client for managing system notices */
+  readonly notice: NoticeClient;
+
   /**
    * Creates a new Beabee API client instance
    * @param options - Configuration options for the client
@@ -58,5 +62,6 @@ export class BeabeeClient extends BaseClient {
     this.apiKey = new ApiKeyClient(options);
     this.auth = new AuthClient(options);
     this.email = new EmailClient(options);
+    this.notice = new NoticeClient(options);
   }
 }
