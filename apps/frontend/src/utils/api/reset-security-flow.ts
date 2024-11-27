@@ -2,14 +2,14 @@ import env from '@env';
 
 import { instance } from '.';
 
-import { RESET_SECURITY_FLOW_TYPE } from '@enums/reset-security-flow-type';
+import { RESET_SECURITY_FLOW_TYPE } from '@beabee/beabee-common';
 
 import type {
   CreateResetPasswordData,
   CreateResetDeviceData,
   UpdateResetDeviceData,
-} from '@type';
-import type { UpdateResetPasswordData } from '@beabee/beabee-common';
+  UpdateResetPasswordData,
+} from '@beabee/beabee-common';
 
 /**
  * Starts the reset password flow.

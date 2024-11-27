@@ -55,7 +55,7 @@ import { resetDeviceComplete } from '@utils/api/reset-security-flow';
 import { isInternalUrl } from '@utils/index';
 
 import { updateCurrentUser } from '@store/index';
-import { LOGIN_CODES } from '@enums/login-codes';
+import { LOGIN_CODES } from '@beabee/beabee-common';
 
 const props = defineProps<{ id: string }>();
 

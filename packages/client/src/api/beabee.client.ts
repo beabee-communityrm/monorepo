@@ -7,6 +7,7 @@ import { AuthClient } from "./auth.client.ts";
 import { EmailClient } from "./email.client.ts";
 import { NoticeClient } from "./notice.client.ts";
 import { PaymentClient } from "./payment.client.ts";
+import { ResetSecurityClient } from "./reset-security.client.ts";
 
 import type { BaseClientOptions } from "../types/index.ts";
 
@@ -51,6 +52,9 @@ export class BeabeeClient extends BaseClient {
   /** Client for managing payments */
   payment: PaymentClient;
 
+  /** Client for managing security reset flows */
+  resetSecurity: ResetSecurityClient;
+
   /**
    * Creates a new Beabee API client instance
    * @param options - Configuration options for the client
@@ -68,5 +72,6 @@ export class BeabeeClient extends BaseClient {
     this.email = new EmailClient(options);
     this.notice = new NoticeClient(options);
     this.payment = new PaymentClient(options);
+    this.resetSecurity = new ResetSecurityClient(options);
   }
 }

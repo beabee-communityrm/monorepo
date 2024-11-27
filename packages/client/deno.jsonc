@@ -1,6 +1,9 @@
 {
   "name": "@beabee/client",
   "version": "0.3.3",
+  "imports": {
+    "@beabee/beabee-common": "../common/src/index.ts"
+  },
   "exports": {
     ".": "./mod.ts"
   },

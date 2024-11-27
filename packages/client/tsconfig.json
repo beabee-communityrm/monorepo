@@ -1,17 +1,6 @@
 {
-  "extends": "@tsconfig/recommended",
-  "include": ["./src"],
-  "exclude": ["src/**/*.test.ts"],
+  "extends": "./tsconfig.build.json",
   "compilerOptions": {
-    "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "declarationDir": "./dist/types",
-    "allowImportingTsExtensions": true,
-    "declaration": true,
-    "emitDeclarationOnly": true,
-    "isolatedModules": true,
-    "diagnostics": true,
     "composite": true
   },
   "references": [

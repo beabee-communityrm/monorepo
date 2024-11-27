@@ -1,4 +1,4 @@
-import type { RESET_SECURITY_FLOW_TYPE } from '@enums/reset-security-flow-type';
+import type { RESET_SECURITY_FLOW_TYPE } from "../data/reset-security-flow-type.ts";
 
 export interface CreateResetDeviceData {
   email: string;

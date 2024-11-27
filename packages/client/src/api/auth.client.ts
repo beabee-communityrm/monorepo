@@ -5,7 +5,7 @@ import type { LoginData } from "@beabee/beabee-common";
 
 /**
  * Client for managing authentication operations
- * Handles login, logout, and session management
+ * Handles login and logout
  * @extends BaseClient
  */
 export class AuthClient extends BaseClient {
