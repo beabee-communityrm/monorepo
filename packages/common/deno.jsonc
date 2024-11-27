@@ -44,7 +44,11 @@
     "sync": "deno task cli sync"
   },
   "references": [
-    { "path": "../core" },
-    { "path": "../client" }
+    {
+      "path": "../core"
+    },
+    {
+      "path": "../client"
+    }
   ]
 }

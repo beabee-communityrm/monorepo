@@ -14,7 +14,8 @@
     "isolatedDeclarations": true,
     "skipLibCheck": true,
     "preserveWatchOutput": true,
-    "diagnostics": true
+    "diagnostics": true,
+    "composite": true
   },
   "references": [
     { "path": "../core" },

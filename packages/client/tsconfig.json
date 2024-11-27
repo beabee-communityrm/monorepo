@@ -11,7 +11,8 @@
     "declaration": true,
     "emitDeclarationOnly": true,
     "isolatedModules": true,
-    "diagnostics": true
+    "diagnostics": true,
+    "composite": true
   },
   "references": [
     { "path": "../core" },
