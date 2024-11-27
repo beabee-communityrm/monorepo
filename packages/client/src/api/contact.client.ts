@@ -3,6 +3,7 @@ import { cleanUrl } from "../utils/index.ts";
 import { ContactMfaClient } from "./client-mfa.client.ts";
 import { ContactContributionClient } from "./contact-contribution.client.ts";
 import { ContactRoleClient } from "./contact-role.client.ts";
+import { ContactTagClient } from "./contact-tag.client.ts";
 
 import type { BaseClientOptions } from "../types/index.ts";
 import type {
@@ -22,6 +23,7 @@ export class ContactClient extends BaseClient {
   mfa: ContactMfaClient;
   contribution: ContactContributionClient;
   role: ContactRoleClient;
+  tag: ContactTagClient;
 
   constructor(protected override readonly options: BaseClientOptions) {
     options.path = cleanUrl(options.path + "/contact");
@@ -29,6 +31,7 @@ export class ContactClient extends BaseClient {
     this.mfa = new ContactMfaClient(options);
     this.contribution = new ContactContributionClient(options);
     this.role = new ContactRoleClient(options);
+    this.tag = new ContactTagClient(options);
   }
 
   protected deserialize<

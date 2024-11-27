@@ -165,10 +165,12 @@ export async function removeCalloutReviewer(
   await instance.delete(`/callout/${slug}/reviewers/${reviewerId}`);
 }
 
+/** @deprecated Use the CalloutTagClient from the @beabee/client package instead */
 class CalloutTagOperations extends TagOperations {
   getBasePath(entityId: string | undefined): string {
     return `/callout/${entityId}/tags`;
   }
 }
 
+/** @deprecated Use the CalloutTagClient from the @beabee/client package instead */
 export const calloutTagOperations = new CalloutTagOperations();

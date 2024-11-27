@@ -6,6 +6,10 @@ import type {
   TagUpdateData,
 } from '@beabee/beabee-common';
 
+/**
+ * Abstract class for tag operations
+ * @deprecated Use the TagClient from the @beabee/client package instead
+ */
 export abstract class TagOperations {
   abstract getBasePath(entityId: string | undefined): string;
 
