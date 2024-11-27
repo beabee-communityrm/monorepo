@@ -14,4 +14,5 @@ export * from "./contact-role.client.ts";
 export * from "./contact-tag.client.ts";
 export * from "./contact.client.ts";
 export * from "./content.client.ts";
+export * from "./email.client.ts";
 export * from "./tag.client.ts";
