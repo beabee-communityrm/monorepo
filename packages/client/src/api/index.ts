@@ -8,7 +8,7 @@ export * from "./callout-tag.client.ts";
 export * from "./callout.client.ts";
 export * from "./client-mfa.client.ts";
 export * from "./contact-contribution.client.ts";
-export * from "./contact-payment.ts";
+export * from "./contact-payment.client.ts";
 export * from "./contact-role.client.ts";
 export * from "./contact-tag.client.ts";
 export * from "./contact.client.ts";

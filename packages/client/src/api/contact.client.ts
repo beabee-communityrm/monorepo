@@ -19,12 +19,28 @@ import type {
   UpdateContactData,
 } from "../deps.ts";
 
+/**
+ * Client for managing contacts (users) in the Beabee system
+ * Provides comprehensive contact management including roles, contributions, MFA, and tags
+ * @extends BaseClient
+ */
 export class ContactClient extends BaseClient {
-  mfa: ContactMfaClient;
-  contribution: ContactContributionClient;
-  role: ContactRoleClient;
-  tag: ContactTagClient;
+  /** Client for managing multi-factor authentication */
+  readonly mfa: ContactMfaClient;
 
+  /** Client for managing contact contributions */
+  readonly contribution: ContactContributionClient;
+
+  /** Client for managing contact roles */
+  readonly role: ContactRoleClient;
+
+  /** Client for managing contact tags */
+  readonly tag: ContactTagClient;
+
+  /**
+   * Creates a new contact client with all sub-clients
+   * @param options - The client options
+   */
   constructor(protected override readonly options: BaseClientOptions) {
     options.path = cleanUrl(options.path + "/contact");
     super(options);
@@ -34,9 +50,13 @@ export class ContactClient extends BaseClient {
     this.tag = new ContactTagClient(options);
   }
 
-  static deserialize<
-    With extends GetContactWith | void = void,
-  >(
+  /**
+   * Deserializes contact data from the server response
+   * Handles dates, nested objects, and computes display name
+   * @param contact - The serialized contact data
+   * @returns Deserialized contact with computed fields
+   */
+  static deserialize<With extends GetContactWith | void = void>(
     // TODO: fix type safety
     // deno-lint-ignore no-explicit-any
     contact: any, // Serial<GetContactDataWith<With>>,
@@ -60,12 +80,16 @@ export class ContactClient extends BaseClient {
     };
   }
 
+  /**
+   * Lists contacts with optional filtering and relations
+   * @param query - Query parameters for filtering contacts
+   * @param _with - Optional relations to include
+   * @returns Paginated list of contacts
+   */
   async list<With extends GetContactWith | void = void>(
     query: GetContactsQuery,
     _with?: readonly With[],
   ): Promise<Paginated<GetContactDataWith<With>>> {
-    // TODO: fix type safety
-    // deno-lint-ignore no-explicit-any
     const { data } = await this.fetch.get<any>("/", {
       params: { with: _with, ...query },
     });
@@ -77,11 +101,22 @@ export class ContactClient extends BaseClient {
     };
   }
 
+  /**
+   * Creates a new contact
+   * @param newData - The contact data to create
+   * @returns The created contact
+   */
   async create(newData: CreateContactData): Promise<GetContactData> {
     const { data } = await this.fetch.post("/", newData);
     return ContactClient.deserialize(data);
   }
 
+  /**
+   * Gets a single contact by ID
+   * @param id - The contact ID
+   * @param _with - Optional relations to include
+   * @returns The contact data with requested relations
+   */
   async get<With extends GetContactWith | void = void>(
     id: string,
     _with?: readonly With[],
@@ -92,6 +127,12 @@ export class ContactClient extends BaseClient {
     return ContactClient.deserialize<With>(data);
   }
 
+  /**
+   * Updates a contact's information
+   * @param id - The contact ID
+   * @param updateData - The data to update
+   * @returns The updated contact
+   */
   async update(
     id: string,
     updateData: UpdateContactData,
@@ -103,6 +144,12 @@ export class ContactClient extends BaseClient {
     return ContactClient.deserialize(data);
   }
 
+  /**
+   * Updates multiple contacts based on rules
+   * @param rules - Rules to select which contacts to update
+   * @param updates - The update data to apply
+   * @returns Number of affected contacts
+   */
   async updateMany(
     rules: RuleGroup,
     updates: UpdateContactData,
@@ -114,6 +161,10 @@ export class ContactClient extends BaseClient {
     return data;
   }
 
+  /**
+   * Deletes a contact
+   * @param id - The contact ID to delete
+   */
   async delete(id: string): Promise<void> {
     await this.fetch.delete(`/${id}`);
   }
