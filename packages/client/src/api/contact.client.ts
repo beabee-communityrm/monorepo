@@ -34,7 +34,7 @@ export class ContactClient extends BaseClient {
     this.tag = new ContactTagClient(options);
   }
 
-  protected deserialize<
+  static deserialize<
     With extends GetContactWith | void = void,
   >(
     // TODO: fix type safety
@@ -72,14 +72,14 @@ export class ContactClient extends BaseClient {
     return {
       ...data,
       items: data.items.map((item: Serial<GetContactData>) =>
-        this.deserialize<With>(item)
+        ContactClient.deserialize<With>(item)
       ),
     };
   }
 
   async create(newData: CreateContactData): Promise<GetContactData> {
     const { data } = await this.fetch.post("/", newData);
-    return this.deserialize(data);
+    return ContactClient.deserialize(data);
   }
 
   async get<With extends GetContactWith | void = void>(
@@ -89,7 +89,7 @@ export class ContactClient extends BaseClient {
     const { data } = await this.fetch.get(`/${id}`, {
       params: { with: _with },
     });
-    return this.deserialize<With>(data);
+    return ContactClient.deserialize<With>(data);
   }
 
   async update(
@@ -100,7 +100,7 @@ export class ContactClient extends BaseClient {
       `/${id}`,
       updateData,
     );
-    return this.deserialize(data);
+    return ContactClient.deserialize(data);
   }
 
   async updateMany(

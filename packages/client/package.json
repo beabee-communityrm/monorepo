@@ -22,6 +22,7 @@
     "build:node:cjs": "deno task build:node:cjs",
     "build:browser": "deno task build:browser",
     "build:types": "tsc",
+    "generate:index": "deno task generate:index",
     "test": "yarn test:deno && yarn test:node && yarn test:web",
     "test:deno": "deno task test:deno",
     "test:web": "NODE_OPTIONS=--experimental-vm-modules jest --config jest.config.web.js",

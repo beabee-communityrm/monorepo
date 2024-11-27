@@ -5,8 +5,13 @@ import { CalloutResponseClient } from "./callout-response.client.ts";
 import type { BaseClientOptions } from "../types/index.ts";
 import type {
   CreateCalloutData,
+  CreateCalloutResponseData,
   GetCalloutData,
   GetCalloutDataWith,
+  GetCalloutResponseDataWith,
+  GetCalloutResponseMapData,
+  GetCalloutResponsesQuery,
+  GetCalloutResponseWith,
   GetCalloutsQuery,
   GetCalloutWith,
   Paginated,
@@ -24,7 +29,7 @@ export class CalloutClient extends BaseClient {
     this.response = new CalloutResponseClient(options);
   }
 
-  protected deserialize<With extends GetCalloutWith = void>(
+  static deserialize<With extends GetCalloutWith = void>(
     _callout: Serial<GetCalloutDataWith<With>>,
   ): GetCalloutDataWith<With>;
 
@@ -33,7 +38,7 @@ export class CalloutClient extends BaseClient {
    * @param callout The callout to deserialize
    * @returns The deserialized callout
    */
-  protected deserialize(_callout: Serial<GetCalloutData>): GetCalloutData {
+  static deserialize(_callout: Serial<GetCalloutData>): GetCalloutData {
     const callout: GetCalloutData = {
       ..._callout,
       starts: CalloutClient.deserializeDate(_callout.starts),
@@ -57,7 +62,7 @@ export class CalloutClient extends BaseClient {
       `/${slugOrId}`,
       { with: _with },
     );
-    return this.deserialize(data);
+    return CalloutClient.deserialize(data);
   }
 
   /**
@@ -75,7 +80,7 @@ export class CalloutClient extends BaseClient {
       "/",
       { with: _with, ...query },
     );
-    const items = data.items.map((item) => this.deserialize(item));
+    const items = data.items.map((item) => CalloutClient.deserialize(item));
     const callouts: Paginated<GetCalloutDataWith<With>> = {
       ...data,
       items,
@@ -108,7 +113,7 @@ export class CalloutClient extends BaseClient {
       "/" + slug,
       updateData,
     );
-    return this.deserialize(data);
+    return CalloutClient.deserialize(data);
   }
 
   /**
@@ -118,6 +123,72 @@ export class CalloutClient extends BaseClient {
   async delete(slug: string) {
     await this.fetch.delete(
       "/" + slug,
+    );
+  }
+
+  /**
+   * List responses for a callout
+   * @param slug The slug of the callout
+   * @param query Optional query parameters
+   * @param _with Optional relations to include
+   */
+  async listResponses<With extends GetCalloutResponseWith = void>(
+    slug: string,
+    query?: GetCalloutResponsesQuery,
+    _with?: readonly With[],
+  ): Promise<Paginated<GetCalloutResponseDataWith<With>>> {
+    const { data } = await this.fetch.get<
+      Paginated<Serial<GetCalloutResponseDataWith<With>>>
+    >(
+      `/${slug}/responses`,
+      { params: { with: _with, ...query } },
+    );
+    return {
+      ...data,
+      items: data.items.map((item) => CalloutResponseClient.deserialize(item)),
+    };
+  }
+
+  /**
+   * Get responses for map visualization
+   * @param slug The slug of the callout
+   * @param query Optional query parameters
+   */
+  async listResponsesForMap(
+    slug: string,
+    query?: GetCalloutResponsesQuery,
+  ): Promise<Paginated<GetCalloutResponseMapData>> {
+    const { data } = await this.fetch.get<
+      Paginated<Serial<GetCalloutResponseMapData>>
+    >(
+      `/${slug}/responses/map`,
+      { params: query },
+    );
+    return data;
+  }
+
+  /**
+   * Create a callout response
+   * @param slug The slug of the callout
+   * @param newData The response data
+   * @param captchaToken Optional captcha token
+   */
+  async createResponse(
+    slug: string,
+    newData: Pick<
+      CreateCalloutResponseData,
+      "answers" | "guestEmail" | "guestName"
+    >,
+    captchaToken?: string,
+  ): Promise<void> {
+    await this.fetch.post(
+      `/${slug}/responses`,
+      {
+        answers: newData.answers,
+        guestName: newData.guestName,
+        guestEmail: newData.guestEmail,
+      },
+      { params: { captchaToken } },
     );
   }
 }

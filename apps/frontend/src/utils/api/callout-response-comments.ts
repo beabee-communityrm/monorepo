@@ -9,6 +9,7 @@ import type {
   UpdateCalloutResponseCommentData,
 } from '@beabee/beabee-common';
 
+/** @deprecated Use the CalloutResponseCommentClient from the @beabee/client package instead */
 export async function fetchCalloutResponseComments(
   query: GetCalloutResponseCommentsQuery
 ): Promise<Paginated<GetCalloutResponseCommentData>> {
@@ -21,6 +22,7 @@ export async function fetchCalloutResponseComments(
   };
 }
 
+/** @deprecated Use the CalloutResponseCommentClient from the @beabee/client package instead */
 export async function createCalloutResponseComment(
   dataIn: CreateCalloutResponseCommentData
 ): Promise<GetCalloutResponseCommentData> {
@@ -31,10 +33,12 @@ export async function createCalloutResponseComment(
   return deserializeComment(data);
 }
 
+/** @deprecated Use the CalloutResponseCommentClient from the @beabee/client package instead */
 export async function deleteCalloutResponseComment(id: string): Promise<void> {
   await instance.delete('/callout-response-comments/' + id);
 }
 
+/** @deprecated Use the CalloutResponseCommentClient from the @beabee/client package instead */
 export async function updateCalloutResponseComment(
   id: string,
   dataIn: UpdateCalloutResponseCommentData
@@ -46,6 +50,7 @@ export async function updateCalloutResponseComment(
   return deserializeComment(data);
 }
 
+/** @deprecated Use the CalloutResponseCommentClient from the @beabee/client package instead */
 export function deserializeComment(
   comment: Serial<GetCalloutResponseCommentData>
 ): GetCalloutResponseCommentData {

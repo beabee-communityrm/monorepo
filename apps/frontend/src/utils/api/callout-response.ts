@@ -12,7 +12,7 @@ import { deserializeDate, instance } from '.';
 import { deserializeContact } from './contact';
 import { deserializeComment } from './callout-response-comments';
 
-// TODO: how to make this type safe?
+/** @deprecated Use the CalloutResponseClient from the @beabee/client package instead */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function deserializeCalloutResponse(response: any): any {
   return {
@@ -29,6 +29,7 @@ export function deserializeCalloutResponse(response: any): any {
   };
 }
 
+/** @deprecated Use the CalloutResponseClient from the @beabee/client package instead */
 export async function fetchCalloutResponses<
   With extends GetCalloutResponseWith = void,
 >(
@@ -44,6 +45,7 @@ export async function fetchCalloutResponses<
   };
 }
 
+/** @deprecated Use the CalloutResponseClient from the @beabee/client package instead */
 export async function updateCalloutResponses(
   rules: RuleGroup,
   updates: UpdateCalloutResponseData
@@ -58,6 +60,7 @@ export async function updateCalloutResponses(
   return data;
 }
 
+/** @deprecated Use the CalloutResponseClient from the @beabee/client package instead */
 export async function fetchCalloutResponse<
   With extends GetCalloutResponseWith = void,
 >(
@@ -71,6 +74,7 @@ export async function fetchCalloutResponse<
   return deserializeCalloutResponse(data);
 }
 
+/** @deprecated Use the CalloutResponseClient from the @beabee/client package instead */
 export async function updateCalloutResponse(
   id: string,
   dataIn: UpdateCalloutResponseData
