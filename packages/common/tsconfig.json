@@ -15,5 +15,9 @@
     "skipLibCheck": true,
     "preserveWatchOutput": true,
     "diagnostics": true
-  }
+  },
+  "references": [
+    { "path": "../core" },
+    { "path": "../client" }
+  ]
 }

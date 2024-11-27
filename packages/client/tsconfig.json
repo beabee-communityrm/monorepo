@@ -12,5 +12,9 @@
     "emitDeclarationOnly": true,
     "isolatedModules": true,
     "diagnostics": true
-  }
+  },
+  "references": [
+    { "path": "../core" },
+    { "path": "../common" }
+  ]
 }

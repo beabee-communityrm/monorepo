@@ -25,5 +25,9 @@
     "cache:deno": "deno cache --reload mod.ts",
     "cache:node": "npm install",
     "generate:index": "deno run --allow-read --allow-write scripts/generate-index.ts && deno task format"
-  }
+  },
+  "references": [
+    { "path": "../core" },
+    { "path": "../common" }
+  ]
 }

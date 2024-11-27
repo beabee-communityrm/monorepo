@@ -42,5 +42,9 @@
     "cache:deno": "deno cache --reload mod.ts",
     "generate:index": "deno task cli generate-index ./src/data ./src/error ./src/search ./src/types ./src/utils ./src/validators ./test/deno/data ./test/deno/data/components ./test/deno/data/components/validate-rules ./cli/actions ./cli/plugins",
     "sync": "deno task cli sync"
-  }
+  },
+  "references": [
+    { "path": "../core" },
+    { "path": "../client" }
+  ]
 }
