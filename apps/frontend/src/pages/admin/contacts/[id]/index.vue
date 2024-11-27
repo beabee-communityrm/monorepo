@@ -195,7 +195,7 @@ meta:
             variant="primaryOutlined"
             class="mt-4"
             :icon="faMobileAlt"
-            @click="(mfa.showDisableConfirmModal = true)"
+            @click="mfa.showDisableConfirmModal = true"
           >
             {{ t(`actions.disable`) }}
           </AppButton>
@@ -249,7 +249,7 @@ meta:
     :cancel="t('actions.noBack')"
     :confirm="t('actions.yesDisable')"
     variant="danger"
-    @close="(mfa.showDisableConfirmModal = false)"
+    @close="mfa.showDisableConfirmModal = false"
     @confirm="disableMfaAndNotify"
   >
     <p>{{ t('accountPage.mfa.confirmDelete.desc') }}</p>

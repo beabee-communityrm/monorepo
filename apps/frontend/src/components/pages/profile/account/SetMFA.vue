@@ -21,7 +21,7 @@
     v-if="isEnabled"
     variant="primaryOutlined"
     :icon="faMobileAlt"
-    @click="(showDisableConfirmModal = true)"
+    @click="showDisableConfirmModal = true"
   >
     {{ t(`actions.disable`) }}
   </AppButton>
@@ -30,7 +30,7 @@
     v-else
     variant="primaryOutlined"
     :icon="faMobileAlt"
-    @click="(showMFASettingsModal = !showMFASettingsModal)"
+    @click="showMFASettingsModal = !showMFASettingsModal"
   >
     {{ t(`actions.enable`) }}
   </AppButton>

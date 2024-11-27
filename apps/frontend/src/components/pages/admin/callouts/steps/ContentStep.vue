@@ -23,7 +23,7 @@
               :slide-no="index"
               :slides="slides"
               :active="currentSlideId === element.id"
-              @select="(currentSlideId = $event)"
+              @select="currentSlideId = $event"
             />
           </template>
         </Draggable>

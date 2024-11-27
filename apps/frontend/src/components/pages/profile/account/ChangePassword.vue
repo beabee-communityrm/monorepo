@@ -21,7 +21,7 @@
     :button-text="t('actions.changePassword')"
     :reset-button-text="t('form.cancel')"
     @submit="handleFormSubmit"
-    @reset="(showForm = false)"
+    @reset="showForm = false"
   >
     <div class="mb-4">
       <AppInput

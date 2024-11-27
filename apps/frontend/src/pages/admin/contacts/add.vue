@@ -44,7 +44,7 @@ meta:
             type="submit"
             variant="linkOutlined"
             :disabled="disabled"
-            @click="(addAnother = true)"
+            @click="addAnother = true"
           >
             {{ t('actions.saveAndAnother') }}
           </AppButton>

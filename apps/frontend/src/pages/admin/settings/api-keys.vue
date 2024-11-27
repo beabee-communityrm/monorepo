@@ -12,7 +12,7 @@ meta:
     :cancel="t('actions.noBack')"
     :confirm="t('actions.yesDelete')"
     variant="danger"
-    @close="(apiKeyToDelete = '')"
+    @close="apiKeyToDelete = ''"
     @confirm="confirmDeleteApiKey"
   >
     <p>{{ t('adminSettings.apikey.confirmDelete.text') }}</p>
@@ -22,8 +22,8 @@ meta:
     :open="!!newApiKeySecret"
     :title="t('adminSettings.apikey.confirmCreate.title')"
     :confirm="t('actions.continue')"
-    @close="(newApiKeySecret = '')"
-    @confirm="(newApiKeySecret = '')"
+    @close="newApiKeySecret = ''"
+    @confirm="newApiKeySecret = ''"
   >
     <p class="mb-4">{{ t('adminSettings.apikey.confirmCreate.text') }}</p>
     <div class="flex gap-2">
@@ -67,7 +67,7 @@ meta:
         :icon="faTrash"
         variant="dangerOutlined"
         size="sm"
-        @click="(apiKeyToDelete = item.id)"
+        @click="apiKeyToDelete = item.id"
       />
     </template>
   </AppPaginatedTable>
