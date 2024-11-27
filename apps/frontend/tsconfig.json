@@ -30,5 +30,10 @@
     "src/**/*.tsx",
     "src/**/*.vue",
     "../../packages/common/src/types/payment-flow-params.ts"
-  ]
+  ],
+  "references": [
+    { "path": "../../packages/core" },
+    { "path": "../../packages/common" },
+    { "path": "../../packages/client" }
+  ],
 }
