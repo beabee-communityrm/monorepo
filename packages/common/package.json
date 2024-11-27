@@ -43,7 +43,7 @@
     "build:browser": "yarn exec 'deno task build:browser'",
     "build:browser:cdn": "yarn exec 'deno task build:browser:cdn'",
     "build:browser:esm": "yarn exec 'deno task build:browser:esm'",
-    "build:types": "tsc --project ./tsconfig.json",
+    "build:types": "tsc --project ./tsconfig.build.json",
     "generate:index": "yarn exec 'deno task generate:index'",
     "sync": "yarn exec 'deno task sync'",
     "cache:deno": "yarn exec 'deno task cache:deno'",
