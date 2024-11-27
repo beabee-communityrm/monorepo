@@ -15,6 +15,7 @@ import type {
  * Starts the reset password flow.
  * This is mostly used if the user has clicked on the forgot password the link on the login page.
  * @param email The email of the user.
+ * @deprecated use the client instead
  */
 export async function resetPasswordBegin(email: string): Promise<void> {
   const data: CreateResetPasswordData = {
@@ -29,6 +30,7 @@ export async function resetPasswordBegin(email: string): Promise<void> {
  * This is mostly used if the user has clicked the link in the email.
  * @param password The new password.
  * @param resetPasswordFlowId The id of the reset password flow.
+ * @deprecated use the client instead
  */
 export async function resetPasswordComplete(
   resetPasswordFlowId: string,
@@ -46,6 +48,7 @@ export async function resetPasswordComplete(
  * Starts the reset device flow.
  * This is mostly used if the user has clicked on the lost device the link on the login page.
  * @param email The email of the user.
+ * @deprecated use the client instead
  */
 export async function resetDeviceBegin(email: string): Promise<void> {
   const data: CreateResetDeviceData = {
@@ -61,6 +64,7 @@ export async function resetDeviceBegin(email: string): Promise<void> {
  * This is mostly used if the user has clicked the link in the email.
  * @param resetMfaFlowId The id of the reset device flow.
  * @param password The old password of the user for verification.
+ * @deprecated use the client instead
  */
 export async function resetDeviceComplete(
   resetMfaFlowId: string,
