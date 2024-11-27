@@ -1,38 +1,34 @@
 import { BaseClient } from "./base.client.ts";
 import { cleanUrl } from "../utils/index.ts";
+import { ContactMfaClient } from "./client-mfa.client.ts";
+import { ContactContributionClient } from "./contact-contribution.client.ts";
+import { ContactRoleClient } from "./contact-role.client.ts";
 
 import type { BaseClientOptions } from "../types/index.ts";
-import {
-  type ContactRoleData,
-  type ContributionInfo,
-  ContributionPeriod,
-  type CreateContactData,
-  type ForceUpdateContributionData,
-  type GetContactData,
-  type GetContactDataWith,
-  type GetContactsQuery,
-  type GetContactWith,
-  type GetPaymentData,
-  type GetPaymentsQuery,
-  type Paginated,
-  type PaymentFlowParams,
-  type RoleType,
-  type RuleGroup,
-  type Serial,
-  type SetContributionData,
-  type StartContributionData,
-  type UpdateContactData,
-  type UpdateContactRoleData,
+import type {
+  ContactRoleData,
+  CreateContactData,
+  GetContactData,
+  GetContactDataWith,
+  GetContactsQuery,
+  GetContactWith,
+  Paginated,
+  RuleGroup,
+  Serial,
+  UpdateContactData,
 } from "../deps.ts";
 
-// TODO: Add support for `env.appUrl`
-export const START_CONTRIBUTION_COMPLETE_URL = "__appUrl__" +
-  "/profile/contribution/complete";
-
 export class ContactClient extends BaseClient {
+  mfa: ContactMfaClient;
+  contribution: ContactContributionClient;
+  role: ContactRoleClient;
+
   constructor(protected override readonly options: BaseClientOptions) {
     options.path = cleanUrl(options.path + "/contact");
     super(options);
+    this.mfa = new ContactMfaClient(options);
+    this.contribution = new ContactContributionClient(options);
+    this.role = new ContactRoleClient(options);
   }
 
   protected deserialize<
@@ -46,37 +42,18 @@ export class ContactClient extends BaseClient {
       ...contact,
       displayName: `${contact.firstname} ${contact.lastname}`.trim() ||
         contact.email,
-      joined: this.deserializeDate(contact.joined),
-      lastSeen: this.deserializeDate(contact.lastSeen),
+      joined: ContactClient.deserializeDate(contact.joined),
+      lastSeen: ContactClient.deserializeDate(contact.lastSeen),
       ...(contact.contribution && {
-        contribution: this.deserializeContribution(contact.contribution),
+        contribution: ContactContributionClient.deserialize(
+          contact.contribution,
+        ),
       }),
       ...(contact.roles && {
         roles: contact.roles.map((role: Serial<ContactRoleData>) =>
-          this.deserializeRole(role)
+          ContactRoleClient.deserialize(role)
         ),
       }),
-    };
-  }
-
-  protected deserializeRole(data: Serial<ContactRoleData>): ContactRoleData {
-    return {
-      role: data.role,
-      dateAdded: this.deserializeDate(data.dateAdded),
-      dateExpires: data.dateExpires
-        ? this.deserializeDate(data.dateExpires)
-        : null,
-    };
-  }
-
-  protected deserializeContribution(
-    data: Serial<ContributionInfo>,
-  ): ContributionInfo {
-    return {
-      ...data,
-      cancellationDate: this.deserializeDate(data.cancellationDate),
-      membershipExpiryDate: this.deserializeDate(data.membershipExpiryDate),
-      renewalDate: this.deserializeDate(data.renewalDate),
     };
   }
 
@@ -136,126 +113,5 @@ export class ContactClient extends BaseClient {
 
   async delete(id: string): Promise<void> {
     await this.fetch.delete(`/${id}`);
-  }
-
-  // Contribution methods
-  async getContribution(): Promise<ContributionInfo> {
-    const { data } = await this.fetch.get<Serial<ContributionInfo>>(
-      "/me/contribution",
-    );
-    return this.deserializeContribution(data);
-  }
-
-  async updateContribution(
-    updateData: SetContributionData,
-  ): Promise<ContributionInfo> {
-    const { data } = await this.fetch.patch<Serial<ContributionInfo>>(
-      "/me/contribution",
-      {
-        amount: updateData.amount,
-        period: updateData.period,
-        payFee: updateData.payFee &&
-          updateData.period === ContributionPeriod.Monthly,
-        prorate: updateData.prorate &&
-          updateData.period === ContributionPeriod.Annually,
-      },
-    );
-    return this.deserializeContribution(data);
-  }
-
-  async forceUpdateContribution(
-    id: string,
-    updateData: ForceUpdateContributionData,
-  ): Promise<ContributionInfo> {
-    const { data } = await this.fetch.patch(
-      `/${id}/contribution/force`,
-      updateData,
-    );
-    return this.deserializeContribution(data);
-  }
-
-  async startContribution(
-    startData: StartContributionData,
-  ): Promise<PaymentFlowParams> {
-    const { data } = await this.fetch.post("/me/contribution", {
-      amount: startData.amount,
-      period: startData.period,
-      payFee: startData.payFee &&
-        startData.period === ContributionPeriod.Monthly,
-      prorate: startData.prorate &&
-        startData.period === ContributionPeriod.Annually,
-      paymentMethod: startData.paymentMethod,
-      completeUrl: START_CONTRIBUTION_COMPLETE_URL,
-    });
-    return data;
-  }
-
-  async completeStartContribution(
-    paymentFlowId: string,
-  ): Promise<ContributionInfo> {
-    const { data } = await this.fetch.post("/me/contribution/complete", {
-      paymentFlowId,
-    });
-    return this.deserializeContribution(data);
-  }
-
-  async cancelContribution(id: string): Promise<void> {
-    await this.fetch.post(`/${id}/contribution/cancel`);
-  }
-
-  // Payment methods
-  async updatePaymentMethod(
-    paymentMethod: string | undefined,
-    completeUrl: string,
-  ): Promise<PaymentFlowParams> {
-    const { data } = await this.fetch.put("/me/payment-method", {
-      paymentMethod,
-      completeUrl,
-    });
-    return data;
-  }
-
-  async completeUpdatePaymentMethod(
-    paymentFlowId: string,
-  ): Promise<ContributionInfo> {
-    const { data } = await this.fetch.post("/me/payment-method/complete", {
-      paymentFlowId,
-    });
-    return this.deserializeContribution(data);
-  }
-
-  async getPayments(
-    id: string,
-    query: GetPaymentsQuery,
-  ): Promise<Paginated<GetPaymentData>> {
-    const { data } = await this.fetch.get<Serial<Paginated<GetPaymentData>>>(
-      `/${id}/payment`,
-      { params: query },
-    );
-    return {
-      ...data,
-      items: data.items.map((item) => ({
-        chargeDate: this.deserializeDate(item.chargeDate),
-        amount: item.amount,
-        status: item.status,
-      })),
-    };
-  }
-
-  // Role methods
-  async updateRole(
-    id: string,
-    role: RoleType,
-    updateData: UpdateContactRoleData,
-  ): Promise<ContactRoleData> {
-    const { data } = await this.fetch.put(`/${id}/role/${role}`, {
-      dateAdded: updateData.dateAdded,
-      dateExpires: updateData.dateExpires,
-    });
-    return this.deserializeRole(data);
-  }
-
-  async deleteRole(id: string, role: RoleType): Promise<void> {
-    await this.fetch.delete(`/${id}/role/${role}`);
   }
 }

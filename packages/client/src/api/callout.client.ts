@@ -36,8 +36,8 @@ export class CalloutClient extends BaseClient {
   protected deserialize(_callout: Serial<GetCalloutData>): GetCalloutData {
     const callout: GetCalloutData = {
       ..._callout,
-      starts: this.deserializeDate(_callout.starts),
-      expires: this.deserializeDate(_callout.expires),
+      starts: CalloutClient.deserializeDate(_callout.starts),
+      expires: CalloutClient.deserializeDate(_callout.expires),
     };
 
     return callout;

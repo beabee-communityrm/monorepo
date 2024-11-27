@@ -1,4 +1,4 @@
-import { CONTACT_MFA_TYPE } from '@enums/contact-mfa-type';
+import { CONTACT_MFA_TYPE } from "../data/contact-mfa-type.ts";
 
 /**
  * Contact multi factor authentication data

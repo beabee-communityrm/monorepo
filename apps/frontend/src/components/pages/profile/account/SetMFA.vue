@@ -232,7 +232,7 @@ import {
   fetchContactMfa,
   deleteContactMfa,
 } from '@utils/api/contact-mfa';
-import { CONTACT_MFA_TYPE } from '@enums/contact-mfa-type';
+import { CONTACT_MFA_TYPE } from '@beabee/beabee-common';
 import { isRequestError } from '@utils/api/index';
 import { LOGIN_CODES } from '@enums/login-codes';
 

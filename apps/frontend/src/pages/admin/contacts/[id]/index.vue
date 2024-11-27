@@ -298,7 +298,7 @@ import {
 import { formatLocale } from '@utils/dates';
 import { fetchContent } from '@utils/api/content';
 import { fetchContactMfa, deleteContactMfa } from '@utils/api/contact-mfa';
-import { CONTACT_MFA_TYPE } from '@enums/contact-mfa-type';
+import { CONTACT_MFA_TYPE } from '@beabee/beabee-common';
 import { fetchCallout, fetchResponses } from '@utils/api/callout';
 
 import { addNotification } from '@store/notifications';

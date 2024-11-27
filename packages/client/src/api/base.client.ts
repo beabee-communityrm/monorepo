@@ -12,11 +12,11 @@ export abstract class BaseClient {
     });
   }
 
-  protected deserializeDate(s: string | Date): Date;
-  protected deserializeDate<T extends null | undefined>(
+  static deserializeDate(s: string | Date): Date;
+  static deserializeDate<T extends null | undefined>(
     s: string | Date | T,
   ): Date | T;
-  protected deserializeDate<T extends null | undefined>(
+  static deserializeDate<T extends null | undefined>(
     s: string | Date | T,
   ): Date | T {
     if (s instanceof Date) {
