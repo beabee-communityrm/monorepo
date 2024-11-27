@@ -16,4 +16,5 @@ export * from "./contact.client.ts";
 export * from "./content.client.ts";
 export * from "./email.client.ts";
 export * from "./notice.client.ts";
+export * from "./payment.client.ts";
 export * from "./tag.client.ts";
