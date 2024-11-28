@@ -9,6 +9,7 @@ import type {
 } from '@beabee/beabee-common';
 import { instance } from '.';
 
+/** @deprecated please use the client instead */
 export async function fetchSegments<With extends GetSegmentWith = void>(
   query?: GetSegmentsQuery,
   _with?: readonly With[]
@@ -23,6 +24,7 @@ export async function fetchSegments<With extends GetSegmentWith = void>(
   return data as GetSegmentDataWith<With>[];
 }
 
+/** @deprecated please use the client instead */
 export async function fetchSegment<With extends GetSegmentWith = void>(
   id: string,
   _with?: readonly With[]
@@ -37,6 +39,7 @@ export async function fetchSegment<With extends GetSegmentWith = void>(
   return data as GetSegmentDataWith<With>;
 }
 
+/** @deprecated please use the client instead */
 export async function createSegment(
   dataIn: CreateSegmentData
 ): Promise<GetSegmentDataWith<'contactCount'>> {
@@ -51,6 +54,7 @@ export async function createSegment(
   return data;
 }
 
+/** @deprecated please use the client instead */
 export async function updateSegment(
   id: string,
   dataIn: UpdateSegmentData
@@ -65,6 +69,7 @@ export async function updateSegment(
   return data;
 }
 
+/** @deprecated please use the client instead */
 export async function deleteSegment(id: string): Promise<void> {
   await instance.delete('/segments/' + id);
 }

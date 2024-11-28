@@ -15,7 +15,6 @@ export * from './complete-signup-data';
 export * from './content';
 export * from './filter-group';
 export * from './filter-item';
-export * from './get-segments-query';
 export * from './item-with-status';
 export * from './locale-input-props';
 export * from './locale-prop';
