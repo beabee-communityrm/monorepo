@@ -11,6 +11,7 @@ import { ResetSecurityClient } from "./reset-security.client.ts";
 import { SegmentsClient } from "./segments.client.ts";
 import { SignupClient } from "./signup.client.ts";
 import { StatsClient } from "./stats.client.ts";
+import { UploadClient } from "./upload.client.ts";
 import type { BaseClientOptions } from "../types/index.ts";
 
 /**
@@ -66,6 +67,9 @@ export class BeabeeClient extends BaseClient {
   /** Client for fetching statistics */
   readonly stats: StatsClient;
 
+  /** Client for managing file uploads */
+  readonly upload: UploadClient;
+
   /**
    * Creates a new Beabee API client instance
    * @param options - Configuration options for the client
@@ -87,5 +91,6 @@ export class BeabeeClient extends BaseClient {
     this.segments = new SegmentsClient(options);
     this.signup = new SignupClient(options);
     this.stats = new StatsClient(options);
+    this.upload = new UploadClient(options);
   }
 }
