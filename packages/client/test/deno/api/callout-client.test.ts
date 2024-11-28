@@ -5,6 +5,7 @@ Deno.test("CalloutClient is a class and has a get method", () => {
   const calloutClient = new CalloutClient({
     host: "http://localhost:8080",
     token: "test",
+    path: "/api/1.0",
   });
 
   // Check if CalloutClient is a class

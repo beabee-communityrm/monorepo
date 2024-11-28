@@ -25,7 +25,7 @@ export class SignupClient extends BaseClient {
   constructor(protected override readonly options: BaseClientOptions) {
     options.path = cleanUrl(options.path + "/signup");
     super(options);
-    this.completeUrl = this.options.appUrl + "/join/complete";
+    this.completeUrl = this.options.host + "/join/complete";
   }
 
   /**
@@ -40,9 +40,9 @@ export class SignupClient extends BaseClient {
       "",
       {
         email: data.email,
-        loginUrl: this.options.appUrl + "/auth/login",
-        setPasswordUrl: this.options.appUrl + "/auth/set-password",
-        confirmUrl: this.options.appUrl + "/join/confirm-email",
+        loginUrl: this.options.host + "/auth/login",
+        setPasswordUrl: this.options.host + "/auth/set-password",
+        confirmUrl: this.options.host + "/join/confirm-email",
         ...(!data.noContribution && {
           contribution: {
             amount: data.amount,

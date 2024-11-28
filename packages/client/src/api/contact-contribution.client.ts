@@ -88,7 +88,7 @@ export class ContactContributionClient extends BaseClient {
       prorate: startData.prorate &&
         startData.period === ContributionPeriod.Annually,
       paymentMethod: startData.paymentMethod,
-      completeUrl: this.options.appUrl + "/profile/contribution/complete",
+      completeUrl: this.options.host + "/profile/contribution/complete",
     });
     return data;
   }

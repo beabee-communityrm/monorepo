@@ -26,6 +26,7 @@ export abstract class TagOperations {
     return data;
   }
 
+  /** @deprecated Use the '@beabee/client' package instead */
   async createTag(
     entityId: string | undefined,
     dataIn: TagCreateData
@@ -40,6 +41,7 @@ export abstract class TagOperations {
     return data;
   }
 
+  /** @deprecated Use the '@beabee/client' package instead */
   async updateTag(
     entityId: string | undefined,
     tagId: string,
@@ -55,6 +57,7 @@ export abstract class TagOperations {
     return data;
   }
 
+  /** @deprecated Use the '@beabee/client' package instead */
   async deleteTag(entityId: string | undefined, tagId: string): Promise<void> {
     await instance.delete(`${this.getBasePath(entityId)}/${tagId}`);
   }

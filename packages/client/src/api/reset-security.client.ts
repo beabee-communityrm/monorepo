@@ -30,7 +30,7 @@ export class ResetSecurityClient extends BaseClient {
   async resetPasswordBegin(email: string): Promise<void> {
     const data: CreateResetPasswordData = {
       email,
-      resetUrl: this.options.appUrl + "/auth/reset-password",
+      resetUrl: this.options.host + "/auth/reset-password",
     };
     await this.fetch.post("reset-password", data);
   }
@@ -62,7 +62,7 @@ export class ResetSecurityClient extends BaseClient {
   async resetDeviceBegin(email: string): Promise<void> {
     const data: CreateResetDeviceData = {
       email,
-      resetUrl: this.options.appUrl + "/auth/reset-device",
+      resetUrl: this.options.host + "/auth/reset-device",
       type: RESET_SECURITY_FLOW_TYPE.TOTP,
     };
     await this.fetch.post("reset-device", data);

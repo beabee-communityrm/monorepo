@@ -37,7 +37,7 @@ export class ContactPaymentClient extends BaseClient {
   ): Promise<PaymentFlowParams> {
     const { data } = await this.fetch.put("/me/payment-method", {
       paymentMethod,
-      completeUrl: this.options.appUrl +
+      completeUrl: this.options.host +
         "/profile/contribution/payment-method/complete",
     });
     return data;
