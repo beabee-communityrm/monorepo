@@ -160,15 +160,6 @@ export class Fetch {
 
     url = new URL(url, this.baseUrl);
 
-    // Add query parameters from options.params
-    if (options.params) {
-      Object.entries(options.params).forEach(([key, value]) => {
-        if (value != null) {
-          url.searchParams.append(key, value.toString());
-        }
-      });
-    }
-
     const headers: Record<string, string> = {
       ...this._requestHeadersEachRequest,
       ...options.headers,
@@ -183,15 +174,14 @@ export class Fetch {
 
     let body = options.body;
 
+    // Add query parameters from options.params
+    if (options.params) {
+      url = objToQueryString(options.params, url);
+    }
+
     // If this is a GET request and there is data, add query string to url
     if (method === "GET" && data) {
-      // Merge existing search params with data
-      const searchParams = new URLSearchParams(url.search);
-      Object.entries(objToQueryString(data)).forEach(([key, value]) => {
-        searchParams.append(key, value);
-      });
-      url.search = searchParams.toString();
-      console.debug("GET", url.href);
+      url = objToQueryString(data, url);
     } else if (data) {
       if (options.dataType === "form") {
         body = new URLSearchParams(data);

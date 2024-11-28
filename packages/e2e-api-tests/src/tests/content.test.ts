@@ -17,7 +17,8 @@ describe('Content API', () => {
     contentClient = new ContentClient({
       host: HOST,
       path: PATH,
-      token: 'test-token'
+      token: 'test-token',
+      appUrl: HOST
     });
   });
 

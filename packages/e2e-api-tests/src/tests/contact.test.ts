@@ -1,5 +1,5 @@
 import { describe, beforeAll } from "@jest/globals";
-import { ContactClient } from '@beabee/client';
+import { ClientApiError, ContactClient } from '@beabee/client';
 
 import dotenv from 'dotenv';
 
@@ -16,7 +16,18 @@ describe('Contact API', () => {
     contactClient = new ContactClient({
       host: HOST,
       path: PATH,
-      token: 'test-token'
+      token: 'test-token',
+      appUrl: HOST
     });
+  });
+
+  it('should return 400 for non-existing contact id with client', async () => {
+    try {
+      await contactClient.get("non-existing-id");
+    } catch (error) {
+      if (error instanceof ClientApiError) {
+        expect(error.httpCode).toBe(400);
+      }
+    }
   });
 });

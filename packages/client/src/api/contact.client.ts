@@ -90,9 +90,12 @@ export class ContactClient extends BaseClient {
     query: GetContactsQuery,
     _with?: readonly With[],
   ): Promise<Paginated<GetContactDataWith<With>>> {
-    const { data } = await this.fetch.get<any>("/", {
-      params: { with: _with, ...query },
-    });
+    const { data } = await this.fetch.get<Paginated<Serial<GetContactData>>>(
+      "/",
+      {
+        params: { with: _with, ...query },
+      },
+    );
     return {
       ...data,
       items: data.items.map((item: Serial<GetContactData>) =>

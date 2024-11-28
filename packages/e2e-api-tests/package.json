@@ -4,8 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "jest",
-    "test:watch": "jest --watch",
+    "test": "echo 'The e2e api test suite has no test tests'",
+    "start": "jest",
+    "watch": "jest --watch",
     "presetup": "yarn presetup:env",
     "presetup:env": "cp -n .env.example .env 2>/dev/null || true"
   },

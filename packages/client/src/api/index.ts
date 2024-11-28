@@ -20,4 +20,6 @@ export * from "./payment.client.ts";
 export * from "./reset-security.client.ts";
 export * from "./segments.client.ts";
 export * from "./signup.client.ts";
+export * from "./stats.client.ts";
 export * from "./tag.client.ts";
+export * from "./upload.client.ts";
