@@ -76,7 +76,7 @@ async function handleSubmitSetup(data: SetupContactData) {
     }),
   };
 
-  const updatedContact = await updateContact('me', {
+  await updateContact('me', {
     email: data.email,
     firstname: data.firstName,
     lastname: data.lastName,
@@ -84,7 +84,7 @@ async function handleSubmitSetup(data: SetupContactData) {
     ...(Object.keys(profile).length > 0 && { profile }),
   });
 
-  await updateCurrentUser(updatedContact);
+  await updateCurrentUser();
 
   if (setupContent.value.surveySlug) {
     router.push({ path: '/join/survey' });

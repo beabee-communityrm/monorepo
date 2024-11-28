@@ -6,14 +6,14 @@
       :section="section"
       :is-first="index === 0"
     />
-    <div v-if="canAdmin" class="mt-2 bg-primary-10 py-2">
+    <div v-if="adminMenuVisible" class="mt-2 bg-primary-10 py-2">
       <TheMenuListSection
         v-for="(section, index) in adminMenu"
         :key="index"
         :section="section"
         :is-first="index === 0"
       />
-      <div v-if="!env.cnrMode" class="px-2 lg:px-4">
+      <div v-if="canAdmin && !env.cnrMode" class="px-2 lg:px-4">
         <div class="my-2 border-t border-primary-40" />
         <a href="/members" class="block text-body-80">
           <TheMenuListItem
@@ -42,11 +42,12 @@ import { canAdmin } from '../../store';
 import { logout } from '../../utils/api/auth';
 import env from '../../env';
 
-import { menu, adminMenu } from './menu-list';
+import { adminMenu, menu } from './menu-list';
 import {
   faSignInAlt,
   faWindowRestore,
 } from '@fortawesome/free-solid-svg-icons';
+import { computed } from 'vue';
 
 const { t } = useI18n();
 
@@ -55,4 +56,8 @@ const doLogout = () => {
   logout();
   router.push('/auth/login');
 };
+
+const adminMenuVisible = computed(() =>
+  adminMenu.value.some((section) => section.items.some((item) => item.visible))
+);
 </script>

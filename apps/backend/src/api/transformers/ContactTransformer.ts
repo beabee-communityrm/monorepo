@@ -1,10 +1,10 @@
 import { GetContactWith, RuleGroup } from "@beabee/beabee-common";
 import { TransformPlainToInstance } from "class-transformer";
-import { SelectQueryBuilder } from "typeorm";
+import { In, SelectQueryBuilder } from "typeorm";
 
-import { createQueryBuilder } from "@beabee/core/database";
+import { createQueryBuilder, getRepository } from "@beabee/core/database";
 import PaymentService from "@beabee/core/services/PaymentService";
-import { Contact, ContactRole } from "@beabee/core/models";
+import { CalloutReviewer, Contact, ContactRole } from "@beabee/core/models";
 
 import {
   GetContactDto,
@@ -80,6 +80,9 @@ class ContactTransformer extends BaseContactTransformer<
       }),
       ...(opts?.with?.includes(GetContactWith.Tags) && {
         tags: contact.tags.map((ct) => contactTagTransformer.convert(ct.tag))
+      }),
+      ...(opts?.with?.includes(GetContactWith.IsReviewer) && {
+        isReviewer: !!contact.isReviewer
       })
     };
   }
@@ -168,6 +171,26 @@ class ContactTransformer extends BaseContactTransformer<
       if (query.with?.includes(GetContactWith.Tags)) {
         // Load tags after to ensure offset/limit work
         await contactTagTransformer.loadEntityTags(contacts);
+      }
+
+      // Check if the user is a reviewer
+      // This is a bit hacky at the moment as it hard codes the logic of admins
+      // always being reviewers, this should be revisted in the future
+      if (query.with?.includes(GetContactWith.IsReviewer)) {
+        // Optimise to not run the query for non-admins
+        const nonAdmins = contacts.filter((c) => !c.hasRole("admin"));
+        const reviewers =
+          nonAdmins.length > 0
+            ? await getRepository(CalloutReviewer).find({
+                where: { contactId: In(nonAdmins.map((c) => c.id)) },
+                select: { contactId: true }
+              })
+            : [];
+        for (const contact of contacts) {
+          contact.isReviewer =
+            contact.hasRole("admin") ||
+            reviewers.some((r) => r.contactId === contact.id);
+        }
       }
     }
   }
