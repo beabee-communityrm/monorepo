@@ -83,6 +83,8 @@ export class Contact implements TaggableEntity<TagData> {
   @OneToMany("ContactTagAssignment", "contact")
   tags!: ContactTagAssignment[];
 
+  isReviewer?: boolean;
+
   get activeRoles(): RoleType[] {
     const ret = this.roles.filter((p) => p.isActive).map((p) => p.type);
     if (ret.includes("superadmin")) {
