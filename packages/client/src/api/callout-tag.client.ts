@@ -19,7 +19,7 @@ export class CalloutTagClient extends TagClient {
    * @param entityId - The ID or slug of the callout
    * @returns The API path for callout tag operations
    */
-  protected getBasePath(entityId: string | undefined): string {
+  protected override getBasePath(entityId: string | undefined): string {
     return `/callout/${entityId}/tags`;
   }
 }

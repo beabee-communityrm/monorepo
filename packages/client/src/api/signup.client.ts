@@ -33,7 +33,7 @@ export class SignupClient extends BaseClient {
    * @param data - The signup data including email and contribution details
    * @returns Payment flow parameters for completing signup
    */
-  async signUp(data: SignupData): Promise<PaymentFlowParams> {
+  async start(data: SignupData): Promise<PaymentFlowParams> {
     const { data: responseData } = await this.fetch.post<
       Serial<PaymentFlowParams>
     >(
@@ -62,7 +62,7 @@ export class SignupClient extends BaseClient {
    * Completes the signup process with user details
    * @param data - The completion data including name and payment details
    */
-  async completeSignUp(data: CompleteSignupData): Promise<void> {
+  async complete(data: CompleteSignupData): Promise<void> {
     await this.fetch.post("/complete", {
       paymentFlowId: data.paymentFlowId,
       firstname: data.firstname,

@@ -20,9 +20,9 @@ export class ContactTagClient extends TagClient {
    * @throws {Error} If contactId is provided, as contact tags are global
    * @returns The API path for contact tag operations
    */
-  protected getBasePath(contactId: string | undefined): string {
+  protected override getBasePath(contactId: string | undefined): string {
     if (contactId) {
-      throw new Error("Contact ID is not supported");
+      throw new Error("Contact ID is not supported for contact tags");
     }
     return "/contact-tags";
   }

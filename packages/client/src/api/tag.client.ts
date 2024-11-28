@@ -6,11 +6,13 @@ import type { TagCreateData, TagGetData, TagUpdateData } from "../deps.ts";
 /**
  * Client for managing tag operations
  */
-export class TagClient extends BaseClient {
+export abstract class TagClient extends BaseClient {
   constructor(protected override readonly options: BaseClientOptions) {
-    options.path = cleanUrl(options.path + "/tag");
+    options.path = cleanUrl(options.path ?? "");
     super(options);
   }
+
+  protected abstract getBasePath(entityId: string | undefined): string;
 
   /**
    * Fetch all tags
@@ -19,7 +21,7 @@ export class TagClient extends BaseClient {
    */
   async list(entityId?: string): Promise<TagGetData[]> {
     const { data } = await this.fetch.get<TagGetData[]>(
-      entityId ? `/${entityId}` : "/",
+      this.getBasePath(entityId),
       {
         params: {
           sort: "name",
@@ -32,30 +34,46 @@ export class TagClient extends BaseClient {
 
   /**
    * Create a new tag
+   * @param entityId Optional entity ID
    * @param tagData The tag data to create
    * @returns The created tag
    */
-  async create(tagData: TagCreateData): Promise<TagGetData> {
-    const { data } = await this.fetch.post<TagGetData>("/", tagData);
+  async create(
+    entityId: string | undefined,
+    tagData: TagCreateData,
+  ): Promise<TagGetData> {
+    const { data } = await this.fetch.post<TagGetData>(
+      this.getBasePath(entityId),
+      tagData,
+    );
     return data;
   }
 
   /**
    * Update an existing tag
-   * @param id The ID of the tag to update
+   * @param entityId Optional entity ID
+   * @param tagId The ID of the tag to update
    * @param tagData The updated tag data
    * @returns The updated tag
    */
-  async update(id: string, tagData: TagUpdateData): Promise<TagGetData> {
-    const { data } = await this.fetch.patch<TagGetData>(`/${id}`, tagData);
+  async update(
+    entityId: string | undefined,
+    tagId: string,
+    tagData: TagUpdateData,
+  ): Promise<TagGetData> {
+    const { data } = await this.fetch.patch<TagGetData>(
+      `${this.getBasePath(entityId)}/${tagId}`,
+      tagData,
+    );
     return data;
   }
 
   /**
    * Delete a tag
-   * @param id The ID of the tag to delete
+   * @param entityId Optional entity ID
+   * @param tagId The ID of the tag to delete
    */
-  async delete(id: string): Promise<void> {
-    await this.fetch.delete(`/${id}`);
+  async delete(entityId: string | undefined, tagId: string): Promise<void> {
+    await this.fetch.delete(`${this.getBasePath(entityId)}/${tagId}`);
   }
 }
