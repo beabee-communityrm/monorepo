@@ -79,7 +79,6 @@ export class ContactContributionClient extends BaseClient {
    */
   async start(
     startData: StartContributionData,
-    completeUrl: string,
   ): Promise<PaymentFlowParams> {
     const { data } = await this.fetch.post("/me/contribution", {
       amount: startData.amount,
@@ -89,7 +88,7 @@ export class ContactContributionClient extends BaseClient {
       prorate: startData.prorate &&
         startData.period === ContributionPeriod.Annually,
       paymentMethod: startData.paymentMethod,
-      completeUrl,
+      completeUrl: this.options.appUrl + "/profile/contribution/complete",
     });
     return data;
   }

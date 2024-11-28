@@ -1,12 +1,12 @@
 import { BaseClient } from "./base.client.ts";
 import type { BaseClientOptions } from "../types/index.ts";
-import type {
-  CreateResetDeviceData,
-  CreateResetPasswordData,
-  UpdateResetDeviceData,
-  UpdateResetPasswordData,
+import {
+  type CreateResetDeviceData,
+  type CreateResetPasswordData,
+  RESET_SECURITY_FLOW_TYPE,
+  type UpdateResetDeviceData,
+  type UpdateResetPasswordData,
 } from "@beabee/beabee-common";
-import { RESET_SECURITY_FLOW_TYPE } from "@beabee/beabee-common";
 
 /**
  * Client for managing security reset flows
@@ -26,12 +26,11 @@ export class ResetSecurityClient extends BaseClient {
    * Starts the reset password flow
    * Used when a user has forgotten their password
    * @param email - The email of the user
-   * @param resetUrl - The URL to redirect to after email verification
    */
-  async resetPasswordBegin(email: string, resetUrl: string): Promise<void> {
+  async resetPasswordBegin(email: string): Promise<void> {
     const data: CreateResetPasswordData = {
       email,
-      resetUrl,
+      resetUrl: this.options.appUrl + "/auth/reset-password",
     };
     await this.fetch.post("reset-password", data);
   }
@@ -59,12 +58,11 @@ export class ResetSecurityClient extends BaseClient {
    * Starts the reset device flow
    * Used when a user has lost access to their 2FA device
    * @param email - The email of the user
-   * @param resetUrl - The URL to redirect to after email verification
    */
-  async resetDeviceBegin(email: string, resetUrl: string): Promise<void> {
+  async resetDeviceBegin(email: string): Promise<void> {
     const data: CreateResetDeviceData = {
       email,
-      resetUrl,
+      resetUrl: this.options.appUrl + "/auth/reset-device",
       type: RESET_SECURITY_FLOW_TYPE.TOTP,
     };
     await this.fetch.post("reset-device", data);

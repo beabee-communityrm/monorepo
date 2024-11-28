@@ -30,16 +30,15 @@ export class ContactPaymentClient extends BaseClient {
    * Updates a contact's payment method
    * Initiates a payment flow for setting up a new payment method
    * @param paymentMethod - The payment method identifier, or undefined to remove
-   * @param completeUrl - URL to redirect to after payment setup is complete
    * @returns Payment flow parameters for client-side handling
    */
   async update(
     paymentMethod: string | undefined,
-    completeUrl: string,
   ): Promise<PaymentFlowParams> {
     const { data } = await this.fetch.put("/me/payment-method", {
       paymentMethod,
-      completeUrl,
+      completeUrl: this.options.appUrl +
+        "/profile/contribution/payment-method/complete",
     });
     return data;
   }

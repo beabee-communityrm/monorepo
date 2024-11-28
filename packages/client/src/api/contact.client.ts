@@ -1,6 +1,6 @@
 import { BaseClient } from "./base.client.ts";
 import { cleanUrl } from "../utils/index.ts";
-import { ContactMfaClient } from "./client-mfa.client.ts";
+import { ContactMfaClient } from "./contact-mfa.client.ts";
 import { ContactContributionClient } from "./contact-contribution.client.ts";
 import { ContactRoleClient } from "./contact-role.client.ts";
 import { ContactTagClient } from "./contact-tag.client.ts";

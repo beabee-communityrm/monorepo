@@ -8,7 +8,8 @@ import { EmailClient } from "./email.client.ts";
 import { NoticeClient } from "./notice.client.ts";
 import { PaymentClient } from "./payment.client.ts";
 import { ResetSecurityClient } from "./reset-security.client.ts";
-
+import { SegmentsClient } from "./segments.client.ts";
+import { SignupClient } from "./signup.client.ts";
 import type { BaseClientOptions } from "../types/index.ts";
 
 /**
@@ -50,10 +51,16 @@ export class BeabeeClient extends BaseClient {
   readonly notice: NoticeClient;
 
   /** Client for managing payments */
-  payment: PaymentClient;
+  readonly payment: PaymentClient;
 
   /** Client for managing security reset flows */
-  resetSecurity: ResetSecurityClient;
+  readonly resetSecurity: ResetSecurityClient;
+
+  /** Client for managing segments */
+  readonly segments: SegmentsClient;
+
+  /** Client for managing signup */
+  readonly signup: SignupClient;
 
   /**
    * Creates a new Beabee API client instance
@@ -73,5 +80,7 @@ export class BeabeeClient extends BaseClient {
     this.notice = new NoticeClient(options);
     this.payment = new PaymentClient(options);
     this.resetSecurity = new ResetSecurityClient(options);
+    this.segments = new SegmentsClient(options);
+    this.signup = new SignupClient(options);
   }
 }

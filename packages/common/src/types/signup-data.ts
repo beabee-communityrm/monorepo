@@ -1,4 +1,4 @@
-import type { StartContributionData } from '@beabee/beabee-common';
+import type { StartContributionData } from "@beabee/beabee-common";
 
 export interface SignupData extends StartContributionData {
   email: string;
