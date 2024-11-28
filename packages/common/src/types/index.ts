@@ -141,6 +141,7 @@ export * from "./get-payments-query.ts";
 export * from "./get-segment-data-with.ts";
 export * from "./get-segment-data.ts";
 export * from "./get-segment-with.ts";
+export * from "./get-segments-query.ts";
 export * from "./get-stats-data.ts";
 export * from "./get-stats-query.ts";
 export * from "./get-upload-flow-data.ts";

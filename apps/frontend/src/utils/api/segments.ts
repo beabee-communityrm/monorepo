@@ -5,9 +5,9 @@ import type {
   GetSegmentWith,
   Serial,
   UpdateSegmentData,
+  GetSegmentsQuery,
 } from '@beabee/beabee-common';
 import { instance } from '.';
-import type { GetSegmentsQuery } from '@type';
 
 export async function fetchSegments<With extends GetSegmentWith = void>(
   query?: GetSegmentsQuery,
