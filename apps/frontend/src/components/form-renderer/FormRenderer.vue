@@ -26,6 +26,7 @@ import {
   faRemove,
   faTimesCircle,
   faCamera,
+  faClock,
   type IconName,
   faPlus,
 } from '@fortawesome/free-solid-svg-icons';
@@ -96,6 +97,7 @@ onBeforeMount(() => {
     faRefresh,
 
     // Use different icon names so they match
+    { ...faClock, iconName: 'clock-o' as IconName },
     { ...faTimesCircle, iconName: 'times-circle-o' as IconName }
   );
   config.autoReplaceSvg = 'nest';
