@@ -1,45 +1,23 @@
-import { assert } from "https://deno.land/std@0.212.0/assert/assert.ts";
-import { isAmountOfMoney } from "../../mod.ts";
+import { isAmountOfMoney } from "@beabee/beabee-common";
 
-Deno.test("isAmountOfMoney", async (t) => {
-  await t.step("valid amount of money - positive integer", function () {
-    assert(
-      isAmountOfMoney(100),
-      "Expected 100 to be a valid amount of money",
-    );
+describe("isAmountOfMoney", () => {
+  test("valid amount of money - positive integer", () => {
+    expect(isAmountOfMoney(100)).toBe(true);
   });
 
-  await t.step(
-    "valid amount of money - positive float with two decimal places",
-    function () {
-      assert(
-        isAmountOfMoney(100.50),
-        "Expected 100.50 to be a valid amount of money",
-      );
-    },
-  );
-
-  await t.step("invalid amount of money - negative integer", function () {
-    assert(
-      !isAmountOfMoney(-100),
-      "Expected -100 to be an invalid amount of money",
-    );
+  test("valid amount of money - positive float with two decimal places", () => {
+    expect(isAmountOfMoney(100.5)).toBe(true);
   });
 
-  await t.step(
-    "invalid amount of money - positive float with more than two decimal places",
-    function () {
-      assert(
-        !isAmountOfMoney(100.505),
-        "Expected 100.505 to be an invalid amount of money",
-      );
-    },
-  );
+  test("invalid amount of money - negative integer", () => {
+    expect(isAmountOfMoney(-100)).toBe(false);
+  });
 
-  await t.step("invalid amount of money - non-number value", function () {
-    assert(
-      !isAmountOfMoney("100"),
-      "Expected '100' (string) to be an invalid amount of money",
-    );
+  test("invalid amount of money - positive float with more than two decimal places", () => {
+    expect(isAmountOfMoney(100.505)).toBe(false);
+  });
+
+  test("invalid amount of money - non-number value", () => {
+    expect(isAmountOfMoney("100")).toBe(false);
   });
 });

@@ -1,7 +1,8 @@
-import { CalloutComponentType } from "../../../../mod.ts";
-import { calloutComponentValidateText1 } from "./validate-rules/callout-component-validate-text-1.ts";
-
-import type { CalloutComponentInputTextAreaSchema } from "../../../../mod.ts";
+import {
+  CalloutComponentType,
+  type CalloutComponentInputTextAreaSchema
+} from "@beabee/beabee-common";
+import { calloutComponentValidateText1 } from "./validate-rules/callout-component-validate-text-1.js";
 
 export const calloutTextarea1Form: CalloutComponentInputTextAreaSchema = {
   id: "ei5n40f",
@@ -15,5 +16,5 @@ export const calloutTextarea1Form: CalloutComponentInputTextAreaSchema = {
   inputType: "text",
   displayMask: "",
   inputFormat: "html",
-  placeholder: "I get interested in software developmen, because...",
+  placeholder: "I get interested in software developmen, because..."
 };

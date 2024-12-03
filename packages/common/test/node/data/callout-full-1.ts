@@ -1,4 +1,4 @@
-import { calloutForm1Schema } from "./callout-form-1.ts";
+import { calloutForm1Schema } from "./callout-form-1.js";
 
 export const calloutFull1 = {
   slug: "test-callout",
@@ -19,5 +19,5 @@ export const calloutFull1 = {
   thanksText:
     "<p>That was very <strong>helpful</strong>, you have just successfully helped to advance the development of Telegram integration.</p>",
   thanksTitle: "Many thanks!",
-  formSchema: calloutForm1Schema,
+  formSchema: calloutForm1Schema
 };

@@ -1,4 +1,3 @@
-import { assertEquals } from "https://deno.land/std@0.212.0/assert/assert_equals.ts";
 import {
   CalloutComponentBaseNestableSchema,
   CalloutComponentInputSelectableRadioSchema,
@@ -9,15 +8,15 @@ import {
   CalloutResponseAnswersSlide,
   getCalloutComponents,
   GetCalloutFormSchema,
-  stringifyAnswer,
-} from "../../mod.ts";
+  stringifyAnswer
+} from "@beabee/beabee-common";
 
 const textComponent: CalloutComponentInputTextFieldSchema = {
   id: "myTextComponent",
   type: CalloutComponentType.INPUT_TEXT_FIELD,
   key: "myTextComponent",
   label: "My text component",
-  input: true,
+  input: true
 };
 
 const textComponent2: CalloutComponentInputTextFieldSchema = {
@@ -25,7 +24,7 @@ const textComponent2: CalloutComponentInputTextFieldSchema = {
   type: CalloutComponentType.INPUT_TEXT_FIELD,
   key: "myTextComponent2",
   label: "My text component",
-  input: true,
+  input: true
 };
 
 const radioComponent: CalloutComponentInputSelectableRadioSchema = {
@@ -37,8 +36,8 @@ const radioComponent: CalloutComponentInputSelectableRadioSchema = {
   values: [
     { value: "opt1", label: "Option 1", nextSlideId: "" },
     { value: "opt2", label: "Option 2", nextSlideId: "" },
-    { value: "opt3", label: "Option 3", nextSlideId: "" },
-  ],
+    { value: "opt3", label: "Option 3", nextSlideId: "" }
+  ]
 };
 
 const selectComponent: CalloutComponentInputSelectSchema = {
@@ -51,9 +50,9 @@ const selectComponent: CalloutComponentInputSelectSchema = {
     values: [
       { value: "opt1", label: "Option 1" },
       { value: "opt2", label: "Option 2" },
-      { value: "opt3", label: "Option 3" },
-    ],
-  },
+      { value: "opt3", label: "Option 3" }
+    ]
+  }
 };
 
 const selectBoxComponent: CalloutComponentInputSelectableSchema = {
@@ -65,8 +64,8 @@ const selectBoxComponent: CalloutComponentInputSelectableSchema = {
   values: [
     { value: "opt1", label: "Option 1", nextSlideId: "" },
     { value: "opt2", label: "Option 2", nextSlideId: "" },
-    { value: "opt3", label: "Option 3", nextSlideId: "" },
-  ],
+    { value: "opt3", label: "Option 3", nextSlideId: "" }
+  ]
 };
 
 // TODO: Add tests for nested components
@@ -76,7 +75,7 @@ const panelComponent: CalloutComponentBaseNestableSchema = {
   key: "myPanelComponent",
   label: "My panel component",
   input: false,
-  components: [textComponent, textComponent2],
+  components: [textComponent, textComponent2]
 };
 
 const answers: CalloutResponseAnswersSlide = {
@@ -88,9 +87,9 @@ const answers: CalloutResponseAnswersSlide = {
     mySelectBoxComponent: {
       opt1: true,
       opt2: false,
-      opt3: true,
-    },
-  },
+      opt3: true
+    }
+  }
 };
 
 const formSchema: GetCalloutFormSchema = {
@@ -103,58 +102,53 @@ const formSchema: GetCalloutFormSchema = {
         textComponent2,
         radioComponent,
         selectComponent,
-        selectBoxComponent,
+        selectBoxComponent
       ],
       navigation: {
         nextText: "Next",
         prevText: "Previous",
         submitText: "Submit",
-        nextSlideId: "",
-      },
-    },
+        nextSlideId: ""
+      }
+    }
   ],
-  componentText: {},
+  componentText: {}
 };
 
-Deno.test("stringifyAnswers should show a nice answer for", async (t) => {
-  await t.step("text components", () => {
-    assertEquals(
-      stringifyAnswer(textComponent, answers.slide1?.myTextComponent),
-      "Some text",
-    );
+describe("stringifyAnswers", () => {
+  test("text components", () => {
+    expect(
+      stringifyAnswer(textComponent, answers.slide1?.myTextComponent)
+    ).toBe("Some text");
   });
 
-  await t.step("radio components", () => {
-    assertEquals(
-      stringifyAnswer(radioComponent, answers.slide1?.myRadioComponent),
-      "Option 1",
-    );
+  test("radio components", () => {
+    expect(
+      stringifyAnswer(radioComponent, answers.slide1?.myRadioComponent)
+    ).toBe("Option 1");
   });
 
-  await t.step("select box components", () => {
-    assertEquals(
-      stringifyAnswer(selectBoxComponent, answers.slide1?.mySelectBoxComponent),
-      "Option 1, Option 3",
-    );
+  test("select box components", () => {
+    expect(
+      stringifyAnswer(selectBoxComponent, answers.slide1?.mySelectBoxComponent)
+    ).toBe("Option 1, Option 3");
   });
 
-  await t.step("select components", () => {
-    assertEquals(
-      stringifyAnswer(selectComponent, answers.slide1?.mySelectComponent),
-      "Option 2",
-    );
+  test("select components", () => {
+    expect(
+      stringifyAnswer(selectComponent, answers.slide1?.mySelectComponent)
+    ).toBe("Option 2");
   });
 });
 
-Deno.test("getCalloutFilters should", async (t) => {
-  await t.step("keep a flat form schema the same", () => {
-    assertEquals(
-      getCalloutComponents(formSchema),
+describe("getCalloutFilters", () => {
+  test("keep a flat form schema the same", () => {
+    expect(getCalloutComponents(formSchema)).toEqual(
       formSchema.slides[0].components.map((c) => ({
         ...c,
         slideId: "slide1",
-        fullKey: `slide1.${c.key}`,
-      })),
+        fullKey: `slide1.${c.key}`
+      }))
     );
   });
 });

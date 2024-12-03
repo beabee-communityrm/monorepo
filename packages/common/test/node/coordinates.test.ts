@@ -1,58 +1,39 @@
-import { assert } from "https://deno.land/std@0.212.0/assert/assert.ts";
-import { isLngLat } from "../../mod.ts";
+import { isLngLat } from "@beabee/beabee-common";
 
-Deno.test("isLngLat test with", async (t) => {
-  await t.step("a valid longitude/latitude pair", function () {
-    assert(isLngLat([-73.935242, 40.730610]));
+describe("isLngLat test with", () => {
+  test("a valid longitude/latitude pair", () => {
+    expect(isLngLat([-73.935242, 40.73061])).toBe(true);
   });
 
-  await t.step("a valid longitude/latitude paire", function () {
-    assert(isLngLat([-180, 90]));
+  test("a valid longitude/latitude pair", () => {
+    expect(isLngLat([-180, 90])).toBe(true);
   });
 
-  await t.step(
-    "a valid longitude/latitude pair at the edge of the valid range",
-    function () {
-      assert(isLngLat([-180, 90]));
-    },
-  );
+  test("a valid longitude/latitude pair at the edge of the valid range", () => {
+    expect(isLngLat([-180, 90])).toBe(true);
+  });
 
-  await t.step(
-    "a valid longitude/latitude pair at the other edge of the valid range",
-    function () {
-      assert(isLngLat([180, -90]));
-    },
-  );
+  test("a valid longitude/latitude pair at the other edge of the valid range", () => {
+    expect(isLngLat([180, -90])).toBe(true);
+  });
 
-  await t.step(
-    "an invalid longitude/latitude pair (longitude out of range)",
-    function () {
-      assert(!isLngLat([-181, 40]));
-    },
-  );
+  test("an invalid longitude/latitude pair (longitude out of range)", () => {
+    expect(isLngLat([-181, 40])).toBe(false);
+  });
 
-  await t.step(
-    "an invalid longitude/latitude pair (latitude out of range)",
-    function () {
-      assert(!isLngLat([-73, 91]));
-    },
-  );
+  test("an invalid longitude/latitude pair (latitude out of range)", () => {
+    expect(isLngLat([-73, 91])).toBe(false);
+  });
 
-  await t.step(
-    "an invalid longitude/latitude pair (both longitude and latitude out of range)",
-    function () {
-      assert(!isLngLat([181, -91]));
-    },
-  );
+  test("an invalid longitude/latitude pair (both longitude and latitude out of range)", () => {
+    expect(isLngLat([181, -91])).toBe(false);
+  });
 
-  await t.step(
-    "an invalid longitude/latitude pair (not a number)",
-    function () {
-      assert(!isLngLat(["not a number", 40]));
-    },
-  );
+  test("an invalid longitude/latitude pair (not a number)", () => {
+    expect(isLngLat(["not a number", 40])).toBe(false);
+  });
 
-  await t.step("an invalid longitude/latitude pair (not a pair)", function () {
-    assert(!isLngLat([-73]));
+  test("an invalid longitude/latitude pair (not a pair)", () => {
+    expect(isLngLat([-73])).toBe(false);
   });
 });

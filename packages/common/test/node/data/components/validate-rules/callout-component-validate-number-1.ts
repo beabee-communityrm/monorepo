@@ -1,4 +1,4 @@
-import type { CalloutComponentInputNumberRules } from "../../../../../mod.ts";
+import type { CalloutComponentInputNumberRules } from "@beabee/beabee-common";
 
 export const calloutComponentValidateNumber1: CalloutComponentInputNumberRules =
   {
@@ -6,5 +6,5 @@ export const calloutComponentValidateNumber1: CalloutComponentInputNumberRules =
     min: 0,
     step: "any",
     integer: "",
-    required: false,
+    required: false
   };

@@ -1,5 +1,5 @@
-import { CalloutComponentType } from "../../../../mod.ts";
-import type { CalloutComponentInputFileSchema } from "../../../../mod.ts";
+import { CalloutComponentType } from "@beabee/beabee-common";
+import type { CalloutComponentInputFileSchema } from "@beabee/beabee-common";
 
 export const calloutFile1Form: CalloutComponentInputFileSchema = {
   id: "eg74nnr",
@@ -25,7 +25,7 @@ export const calloutFile1Form: CalloutComponentInputFileSchema = {
     page: "",
     style: "",
     width: "",
-    height: "",
+    height: ""
   },
   storage: "",
   tooltip: "",
@@ -41,7 +41,7 @@ export const calloutFile1Form: CalloutComponentInputFileSchema = {
     required: false,
     customMessage: "",
     customPrivate: false,
-    strictDateValidation: false,
+    strictDateValidation: false
   },
   adminOnly: false,
   autofocus: false,
@@ -49,8 +49,8 @@ export const calloutFile1Form: CalloutComponentInputFileSchema = {
   fileTypes: [
     {
       label: "",
-      value: "",
-    },
+      value: ""
+    }
   ],
   hideLabel: false,
   imageSize: "200",
@@ -70,7 +70,7 @@ export const calloutFile1Form: CalloutComponentInputFileSchema = {
     eq: "",
     json: "",
     show: null,
-    when: null,
+    when: null
   },
   customClass: "",
   description: "",
@@ -90,5 +90,5 @@ export const calloutFile1Form: CalloutComponentInputFileSchema = {
   customConditional: "",
   allowMultipleMasks: false,
   customDefaultValue: "",
-  allowCalculateOverride: false,
+  allowCalculateOverride: false
 };

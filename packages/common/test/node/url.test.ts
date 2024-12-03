@@ -1,40 +1,41 @@
-import { assert } from "https://deno.land/std@0.212.0/assert/assert.ts";
-import { isURL } from "../../mod.ts";
+import { isURL } from "@beabee/beabee-common";
 
-Deno.test("isURL", async (t) => {
-  await t.step("valid URL", function () {
-    assert(isURL("https://beabee.io/"));
+describe("isURL", () => {
+  test("valid URL", () => {
+    expect(isURL("https://beabee.io/")).toBe(true);
   });
 
-  await t.step("valid URL with www", function () {
-    assert(isURL("https://www.beabee.io/"));
+  test("valid URL with www", () => {
+    expect(isURL("https://www.beabee.io/")).toBe(true);
   });
 
-  await t.step("valid URL with path", function () {
-    assert(isURL("https://beabee.io/path/to/resource"));
+  test("valid URL with path", () => {
+    expect(isURL("https://beabee.io/path/to/resource")).toBe(true);
   });
 
-  await t.step("valid URL with query parameters", function () {
-    assert(isURL("https://beabee.io/path?param1=value1&param2=value2"));
+  test("valid URL with query parameters", () => {
+    expect(isURL("https://beabee.io/path?param1=value1&param2=value2")).toBe(
+      true
+    );
   });
 
-  await t.step("valid URL with port", function () {
-    assert(isURL("https://beabee.io:8080"));
+  test("valid URL with port", () => {
+    expect(isURL("https://beabee.io:8080")).toBe(true);
   });
 
-  await t.step("invalid URL missing protocol", function () {
-    assert(!isURL("beabee.io"));
+  test("invalid URL missing protocol", () => {
+    expect(isURL("beabee.io")).toBe(false);
   });
 
-  await t.step("invalid URL missing domain", function () {
-    assert(!isURL("https://"));
+  test("invalid URL missing domain", () => {
+    expect(isURL("https://")).toBe(false);
   });
 
-  await t.step("invalid URL with spaces", function () {
-    assert(!isURL("https://bea bee.io"));
+  test("invalid URL with spaces", () => {
+    expect(isURL("https://bea bee.io")).toBe(false);
   });
 
-  await t.step("invalid URL with multiple periods", function () {
-    assert(!isURL("https://beabee..io"));
+  test("invalid URL with multiple periods", () => {
+    expect(isURL("https://beabee..io")).toBe(false);
   });
 });

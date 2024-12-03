@@ -1,52 +1,51 @@
-import { assert } from "https://deno.land/std@0.212.0/assert/assert.ts";
-import { isEmail } from "../../mod.ts";
+import { isEmail } from "@beabee/beabee-common";
 
-Deno.test("email", async (t) => {
-  await t.step("valid email", function () {
-    assert(isEmail("test@example.com"));
+describe("email validation", () => {
+  test("valid email", () => {
+    expect(isEmail("test@example.com")).toBe(true);
   });
 
-  await t.step("valid email with subdomain", function () {
-    assert(isEmail("test@sub.example.com"));
+  test("valid email with subdomain", () => {
+    expect(isEmail("test@sub.example.com")).toBe(true);
   });
 
-  await t.step("valid email with number", function () {
-    assert(isEmail("test123@example.com"));
+  test("valid email with number", () => {
+    expect(isEmail("test123@example.com")).toBe(true);
   });
 
-  await t.step("valid email with hyphen", function () {
-    assert(isEmail("test-test@example.com"));
+  test("valid email with hyphen", () => {
+    expect(isEmail("test-test@example.com")).toBe(true);
   });
 
-  await t.step("valid email with underscore", function () {
-    assert(isEmail("test_test@example.com"));
+  test("valid email with underscore", () => {
+    expect(isEmail("test_test@example.com")).toBe(true);
   });
 
-  await t.step("valid email with dot before @", function () {
-    assert(isEmail("test.test@example.com"));
+  test("valid email with dot before @", () => {
+    expect(isEmail("test.test@example.com")).toBe(true);
   });
 
-  await t.step("invalid email missing @", function () {
-    assert(!isEmail("testexample.com"));
+  test("invalid email missing @", () => {
+    expect(isEmail("testexample.com")).toBe(false);
   });
 
-  await t.step("invalid email missing domain", function () {
-    assert(!isEmail("test@"));
+  test("invalid email missing domain", () => {
+    expect(isEmail("test@")).toBe(false);
   });
 
-  await t.step("invalid email missing username", function () {
-    assert(!isEmail("@example.com"));
+  test("invalid email missing username", () => {
+    expect(isEmail("@example.com")).toBe(false);
   });
 
-  await t.step("invalid email missing top-level domain", function () {
-    assert(!isEmail("test@example"));
+  test("invalid email missing top-level domain", () => {
+    expect(isEmail("test@example")).toBe(false);
   });
 
-  await t.step("invalid email contains spaces", function () {
-    assert(!isEmail("test @example.com"));
+  test("invalid email contains spaces", () => {
+    expect(isEmail("test @example.com")).toBe(false);
   });
 
-  await t.step("invalid email contains multiple @", function () {
-    assert(!isEmail("test@test@example.com"));
+  test("invalid email contains multiple @", () => {
+    expect(isEmail("test@test@example.com")).toBe(false);
   });
 });

@@ -1,24 +1,23 @@
-import { assert } from "https://deno.land/std@0.212.0/assert/assert.ts";
-import { isPeriod } from "../../mod.ts";
+import { isPeriod } from "@beabee/beabee-common";
 
-Deno.test("isPeriod", async (t) => {
-  await t.step("valid period - monthly", function () {
-    assert(isPeriod("monthly"), "Expected 'monthly' to be a valid period");
+describe("isPeriod", () => {
+  test("valid period - monthly", () => {
+    expect(isPeriod("monthly")).toBe(true);
   });
 
-  await t.step("valid period - annually", function () {
-    assert(isPeriod("annually"), "Expected 'annually' to be a valid period");
+  test("valid period - annually", () => {
+    expect(isPeriod("annually")).toBe(true);
   });
 
-  await t.step("invalid period - daily", function () {
-    assert(!isPeriod("daily"), "Expected 'daily' to be an invalid period");
+  test("invalid period - daily", () => {
+    expect(isPeriod("daily")).toBe(false);
   });
 
-  await t.step("invalid period - empty string", function () {
-    assert(!isPeriod(""), "Expected empty string to be an invalid period");
+  test("invalid period - empty string", () => {
+    expect(isPeriod("")).toBe(false);
   });
 
-  await t.step("invalid period - null", function () {
-    assert(!isPeriod(null), "Expected null to be an invalid period");
+  test("invalid period - null", () => {
+    expect(isPeriod(null)).toBe(false);
   });
 });

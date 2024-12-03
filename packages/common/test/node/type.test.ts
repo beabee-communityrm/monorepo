@@ -1,50 +1,31 @@
-import { assert } from "https://deno.land/std@0.212.0/assert/assert.ts";
-import { isType } from "../../mod.ts";
+import { isType } from "@beabee/beabee-common";
 
-Deno.test("isType", async (t) => {
-  await t.step("valid type - string", function () {
-    assert(
-      isType(["string"], "string"),
-      "Expected 'string' to be a valid type",
-    );
+describe("isType", () => {
+  test("valid type - string", () => {
+    expect(isType(["string"], "string")).toBe(true);
   });
 
-  await t.step("valid type - number", function () {
-    assert(isType(["number"], 1), "Expected 'number' to be a valid type");
+  test("valid type - number", () => {
+    expect(isType(["number"], 1)).toBe(true);
   });
 
-  await t.step("valid type - object", function () {
-    assert(
-      isType(["object"], { foo: "bar" }),
-      "Expected 'object' to be an valid type",
-    );
+  test("valid type - object", () => {
+    expect(isType(["object"], { foo: "bar" })).toBe(true);
   });
 
-  await t.step("invalid type - date", function () {
-    assert(
-      !isType(["string", "number"], new Date()),
-      "Expected 'date' to be a invalid type",
-    );
+  test("invalid type - date", () => {
+    expect(isType(["string", "number"], new Date())).toBe(false);
   });
 
-  await t.step("invalid type - null", function () {
-    assert(
-      !isType(["string", "number"], null),
-      "Expected null to be an invalid type",
-    );
+  test("invalid type - null", () => {
+    expect(isType(["string", "number"], null)).toBe(false);
   });
 
-  await t.step("invalid type - undefined", function () {
-    assert(
-      !isType(["string", "number"], undefined),
-      "Expected undefined to be an invalid type",
-    );
+  test("invalid type - undefined", () => {
+    expect(isType(["string", "number"], undefined)).toBe(false);
   });
 
-  await t.step("invalid type - array", function () {
-    assert(
-      !isType(["string", "number"], ["a", "b"]),
-      "Expected 'array' to be a invalid type",
-    );
+  test("invalid type - array", () => {
+    expect(isType(["string", "number"], ["a", "b"])).toBe(false);
   });
 });
