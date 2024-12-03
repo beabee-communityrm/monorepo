@@ -4,7 +4,6 @@
     "composite": true
   },
   "references": [
-    { "path": "../core" },
     { "path": "../common" }
   ]
 }

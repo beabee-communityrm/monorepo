@@ -1,4 +1,4 @@
-ARG DENO_VERSION=2.1.1
+ARG DENO_VERSION=2.1.2
 ARG NODE_VERSION=22-bookworm-slim
 
 ##################################
@@ -19,6 +19,7 @@ COPY --chown=node:node packages/common/package.json /opt/packages/common/package
 COPY --chown=node:node packages/core/package.json /opt/packages/core/package.json
 COPY --chown=node:node packages/docker/package.json /opt/packages/docker/package.json
 COPY --chown=node:node packages/client/package.json /opt/packages/client/package.json
+COPY --chown=node:node packages/e2e-api-tests/package.json /opt/packages/e2e-api-tests/package.json
 
 # Copy dependencies info from apps
 COPY --chown=node:node apps/backend/package.json /opt/apps/backend/package.json

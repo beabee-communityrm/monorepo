@@ -1,4 +1,4 @@
-ARG DENO_VERSION=2.1.1
+ARG DENO_VERSION=2.1.2
 ARG NODE_VERSION=22
 
 FROM node:${NODE_VERSION}-bookworm-slim AS builder
@@ -26,13 +26,21 @@ RUN deno --version
 WORKDIR /opt/apps/frontend
 
 # Copy the workspace configuration
-COPY package.json yarn.lock deno.lock deno.jsonc .yarnrc.yml /opt/
+COPY package.json yarn.lock deno.jsonc deno.lock .yarnrc.yml /opt/
 COPY .yarn /opt/.yarn
 
-# Copy dependencies info
+# Copy dependencies info from packages
 COPY packages/common/package.json /opt/packages/common/package.json
+COPY packages/core/package.json /opt/packages/core/package.json
+COPY packages/docker/package.json /opt/packages/docker/package.json
 COPY packages/client/package.json /opt/packages/client/package.json
+COPY packages/e2e-api-tests/package.json /opt/packages/e2e-api-tests/package.json
+
+# Copy dependencies info from apps
+COPY apps/backend/package.json /opt/apps/backend/package.json
 COPY apps/frontend/package.json /opt/apps/frontend/package.json
+COPY apps/legacy/package.json /opt/apps/legacy/package.json
+COPY apps/webhooks/package.json /opt/apps/webhooks/package.json
 
 # Copy config files with dependencies info
 COPY packages/prettier-config /opt/packages/prettier-config
@@ -41,11 +49,13 @@ COPY packages/tsconfig /opt/packages/tsconfig
 # Install dependencies
 RUN yarn workspaces focus
 
-# Build common
+# Copy frontend dependencies
 COPY packages/common /opt/packages/common
+COPY packages/client /opt/packages/client
+
+# Copy and build frontend and dependencies
 COPY apps/frontend /opt/apps/frontend
-RUN yarn workspace @beabee/beabee-common run build
-RUN yarn workspace @beabee/frontend run build
+RUN yarn workspaces foreach --recursive --topological-dev --from @beabee/frontend run build
 
 FROM nginx:1.27-alpine
 

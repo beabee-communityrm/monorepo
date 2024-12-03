@@ -2,9 +2,5 @@
   "extends": "./tsconfig.build.json",
   "compilerOptions": {
     "composite": true
-  },
-  "references": [
-    { "path": "../core" },
-    { "path": "../client" }
-  ]
+  }
 }

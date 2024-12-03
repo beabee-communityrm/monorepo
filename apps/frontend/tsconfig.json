@@ -28,11 +28,9 @@
     "src/**/*.ts",
     "src/**/*.d.ts",
     "src/**/*.tsx",
-    "src/**/*.vue",
-    "../../packages/common/src/types/payment-flow-params.ts"
+    "src/**/*.vue"
   ],
   "references": [
-    { "path": "../../packages/core" },
     { "path": "../../packages/common" },
     { "path": "../../packages/client" }
   ]
