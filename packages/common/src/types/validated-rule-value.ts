@@ -1,4 +1,4 @@
-import type { FilterType } from "../types/index.ts";
+import type { FilterType } from "../types/index.js";
 
 export type ValidatedRuleValue<T extends FilterType> = T extends "number"
   ? number

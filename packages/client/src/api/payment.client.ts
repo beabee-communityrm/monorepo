@@ -1,15 +1,15 @@
-import { BaseClient } from "./base.client.ts";
-import { cleanUrl } from "../utils/index.ts";
-import { ContactClient } from "./contact.client.ts";
+import { BaseClient } from "./base.client.js";
+import { cleanUrl } from "../utils/index.js";
+import { ContactClient } from "./contact.client.js";
 
-import type { BaseClientOptions } from "../types/index.ts";
+import type { BaseClientOptions } from "../types/index.js";
 import type {
   GetPaymentDataWith,
   GetPaymentsQuery,
   GetPaymentWith,
   Paginated,
   Serial,
-} from "../deps.ts";
+} from "../deps.js";
 
 /**
  * Client for managing payments

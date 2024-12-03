@@ -1,7 +1,7 @@
-export * from "./data/index.ts";
-export * from "./error/index.ts";
-export * from "./search/index.ts";
-export * from "./utils/index.ts";
-export * from "./validators/index.ts";
+export * from "./data/index.js";
+export * from "./error/index.js";
+export * from "./search/index.js";
+export * from "./utils/index.js";
+export * from "./validators/index.js";
 
-export type * from "./types/index.ts";
+export type * from "./types/index.js";

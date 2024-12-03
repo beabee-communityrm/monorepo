@@ -1,22 +1,13 @@
-import { transformExtPlugin } from "@gjsify/esbuild-plugin-transform-ext";
-import { denoPlugins as DenoPlugins } from "@luca/esbuild-deno-loader";
-import { renameExtPlugin } from "./plugins/rename.ts";
+import { renameExtPlugin } from "./plugins/rename.js";
 import type { Plugin } from "esbuild";
 
-import type { EsbuildConfigs } from "./types.ts";
-
-const denoPlugins = DenoPlugins({
-  nodeModulesDir: "auto"
-});
+import type { EsbuildConfigs } from "./types.js";
 
 export const esbuildConfigs: EsbuildConfigs = {
   node: {
     esm: {
-      plugins: [
-        transformExtPlugin({ outExtension: { ".ts": ".js" } }) as Plugin, // TODO: Upgrade plugin type
-        ...denoPlugins,
-      ],
-      entryPoints: ["./src/index.ts", "./src/**/*.ts"],
+      plugins: [],
+      entryPoints: ["./src/index.js", "./src/**/*.js"],
       outdir: "./dist/esm",
       bundle: false,
       platform: "node",
@@ -25,13 +16,9 @@ export const esbuildConfigs: EsbuildConfigs = {
     },
     cjs: {
       plugins: [
-        // Rename imports
-        transformExtPlugin({ outExtension: { ".ts": ".cjs", ".js": ".cjs" } }) as Plugin, // TODO: Upgrade plugin type
-        ...denoPlugins,
-        // Rename files
         renameExtPlugin(".js", ".cjs"),
       ],
-      entryPoints: ["./src/index.ts", "./src/**/*.ts"],
+      entryPoints: ["./src/index.js", "./src/**/*.js"],
       outdir: "./dist/cjs",
       bundle: false,
       platform: "node",
@@ -43,10 +30,8 @@ export const esbuildConfigs: EsbuildConfigs = {
 
   browser: {
     cdn: {
-      plugins: [
-        ...denoPlugins,
-      ],
-      entryPoints: ["./src/index.browser.ts"],
+      plugins: [],
+      entryPoints: ["./src/index.browser.js"],
       outfile: "./dist/browser/beabee-common.js",
       bundle: true,
       sourcemap: true,
@@ -54,10 +39,8 @@ export const esbuildConfigs: EsbuildConfigs = {
       minify: true,
     },
     esm: {
-      plugins: [
-        ...denoPlugins,
-      ],
-      entryPoints: ["./src/index.ts"],
+      plugins: [],
+      entryPoints: ["./src/index.js"],
       outfile: "./dist/browser/index.js",
       bundle: true,
       platform: "browser",

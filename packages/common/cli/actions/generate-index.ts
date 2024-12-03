@@ -1,4 +1,4 @@
-import type { GenerateIndexArguments } from "../types.ts";
+import type { GenerateIndexArguments } from "../types.js";
 
 const encoder = new TextEncoder();
 
@@ -12,8 +12,8 @@ const generateIndex = async (paths: string[]) => {
 
     for (const file of files) {
       if (
-        (file.name.endsWith(".ts") || file.name.endsWith(".tsx")) &&
-        file.name !== "index.ts"
+        (file.name.endsWith(".js") || file.name.endsWith(".tsx")) &&
+        file.name !== "index.js"
       ) {
         indexContent += `export * from "./${file.name}";\n`;
       }

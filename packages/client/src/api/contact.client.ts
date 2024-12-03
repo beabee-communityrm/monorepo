@@ -1,11 +1,11 @@
-import { BaseClient } from "./base.client.ts";
-import { cleanUrl } from "../utils/index.ts";
-import { ContactMfaClient } from "./contact-mfa.client.ts";
-import { ContactContributionClient } from "./contact-contribution.client.ts";
-import { ContactRoleClient } from "./contact-role.client.ts";
-import { ContactTagClient } from "./contact-tag.client.ts";
+import { BaseClient } from "./base.client.js";
+import { cleanUrl } from "../utils/index.js";
+import { ContactMfaClient } from "./contact-mfa.client.js";
+import { ContactContributionClient } from "./contact-contribution.client.js";
+import { ContactRoleClient } from "./contact-role.client.js";
+import { ContactTagClient } from "./contact-tag.client.js";
 
-import type { BaseClientOptions } from "../types/index.ts";
+import type { BaseClientOptions } from "../types/index.js";
 import type {
   ContactRoleData,
   CreateContactData,
@@ -17,7 +17,7 @@ import type {
   RuleGroup,
   Serial,
   UpdateContactData,
-} from "../deps.ts";
+} from "../deps.js";
 
 /**
  * Client for managing contacts (users) in the Beabee system

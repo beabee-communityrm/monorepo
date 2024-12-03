@@ -1,10 +1,10 @@
-import { isAmountOfMoney } from "../utils/index.ts";
+import { isAmountOfMoney } from "../utils/index.js";
 
 import type {
   CalloutComponentInputCurrencySchema,
   CalloutResponseAnswer,
   ValidatorCalloutComponent,
-} from "../types/index.ts";
+} from "../types/index.js";
 
 export const calloutComponentInputCurrencyValidator: ValidatorCalloutComponent<
   CalloutComponentInputCurrencySchema

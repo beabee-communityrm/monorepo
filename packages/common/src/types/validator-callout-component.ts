@@ -1,7 +1,7 @@
 import type {
   CalloutComponentBaseSchema,
   CalloutResponseAnswer,
-} from "./index.ts";
+} from "./index.js";
 
 export type ValidatorCalloutComponent<
   S extends CalloutComponentBaseSchema,

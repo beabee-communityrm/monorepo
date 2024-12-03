@@ -1,10 +1,10 @@
-import { isDateBetween } from "../utils/index.ts";
+import { isDateBetween } from "../utils/index.js";
 
 import type {
   CalloutComponentInputDateTimeSchema,
   CalloutResponseAnswer,
   ValidatorCalloutComponent,
-} from "../types/index.ts";
+} from "../types/index.js";
 
 export const calloutComponentInputDateTimeValidator: ValidatorCalloutComponent<
   CalloutComponentInputDateTimeSchema

@@ -4,9 +4,9 @@ import { transformExtPlugin } from "@gjsify/esbuild-plugin-transform-ext";
 
 await build({
   plugins: [
-    transformExtPlugin({ outExtension: { ".ts": ".js" } }) as Plugin, // TODO: Upgrade plugin type
+    transformExtPlugin({ outExtension: { ".js": ".js" } }) as Plugin, // TODO: Upgrade plugin type
   ],
-  entryPoints: ["./src/index.ts", "./src/**/*.ts"],
+  entryPoints: ["./src/index.js", "./src/**/*.js"],
   outdir: "./dist/esm",
   bundle: false,
   platform: "node",

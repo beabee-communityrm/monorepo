@@ -1,4 +1,4 @@
-import { isPhoneNumber } from "./validations.ts";
+import { isPhoneNumber } from "./validations.js";
 
 /**
  * Convert the value to a valid phone number

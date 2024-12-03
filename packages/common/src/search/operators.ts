@@ -1,4 +1,4 @@
-import type { OperatorsByType } from "../types/index.ts";
+import type { OperatorsByType } from "../types/index.js";
 
 const equalityOperators = {
   equal: { args: 1 },

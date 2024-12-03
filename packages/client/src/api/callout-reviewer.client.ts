@@ -1,7 +1,7 @@
-import { BaseClient } from "./base.client.ts";
-import { cleanUrl } from "../utils/index.ts";
-import type { BaseClientOptions } from "../types/index.ts";
-import type { GetCalloutReviewerData, Serial } from "../deps.ts";
+import { BaseClient } from "./base.client.js";
+import { cleanUrl } from "../utils/index.js";
+import type { BaseClientOptions } from "../types/index.js";
+import type { GetCalloutReviewerData, Serial } from "../deps.js";
 
 /**
  * Client for managing callout reviewer operations

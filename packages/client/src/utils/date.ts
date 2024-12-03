@@ -1,9 +1,9 @@
 // Copyright by https://github.com/date-fns/date-fns/blob/main/src/parseISO/index.ts
 // MIT License
 
-import { millisecondsInHour, millisecondsInMinute } from "../constants.ts";
+import { millisecondsInHour, millisecondsInMinute } from "../constants.js";
 
-import type { ParseISOOptions } from "../deps.ts";
+import type { ParseISOOptions } from "../deps.js";
 
 /**
  * @name parseISO

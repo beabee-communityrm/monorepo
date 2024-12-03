@@ -5,17 +5,17 @@ import {
   stop,
 } from "https://deno.land/x/esbuild@v0.20.0/mod.js";
 import { transformExtPlugin } from "npm:@gjsify/esbuild-plugin-transform-ext@0.0.4";
-import { extname, join } from "https://deno.land/std@0.212.0/path/mod.ts";
+import { extname, join } from "https://deno.land/std@0.212.0/path/mod.js";
 
 const OUTDIR = "./dist/cjs";
 
 await build({
   plugins: [
     transformExtPlugin({
-      outExtension: { ".ts": ".cjs", ".js": ".cjs" },
+      outExtension: { ".js": ".cjs", ".js": ".cjs" },
     }) as Plugin, // TODO: Upgrade plugin type
   ],
-  entryPoints: ["./src/index.ts", "./src/**/*.ts"],
+  entryPoints: ["./src/index.js", "./src/**/*.js"],
   outdir: OUTDIR,
   bundle: false,
   platform: "node",

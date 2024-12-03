@@ -1,5 +1,5 @@
-import type { Filters } from "../types/index.ts";
-import { PaymentStatus } from "../data/index.ts";
+import type { Filters } from "../types/index.js";
+import { PaymentStatus } from "../data/index.js";
 
 export const paymentFilters = {
   id: {

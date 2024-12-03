@@ -1,4 +1,4 @@
-import type { Filters } from "../types/index.ts";
+import type { Filters } from "../types/index.js";
 
 export const tagFilters = {
   id: {

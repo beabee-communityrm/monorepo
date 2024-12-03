@@ -5,7 +5,7 @@ import {
   calloutComponentInputTypes,
   calloutComponentNestableTypes,
   CalloutComponentType,
-} from "../data/index.ts";
+} from "../data/index.js";
 
 import type {
   CalloutComponentBaseMap,
@@ -17,7 +17,7 @@ import type {
   CalloutResponseAnswerFileUpload,
   FilterArgs,
   SetCalloutFormSchema,
-} from "../types/index.ts";
+} from "../types/index.js";
 
 function convertValuesToOptions(
   values: { value: string; label: string }[],

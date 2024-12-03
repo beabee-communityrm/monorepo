@@ -1,4 +1,3 @@
-ARG DENO_VERSION=2.1.2
 ARG NODE_VERSION=22-bookworm-slim
 
 ##################################
@@ -11,7 +10,7 @@ FROM node:${NODE_VERSION} AS base
 RUN apt-get update && apt-get install -y tini
 
 # Copy the workspace configuration
-COPY --chown=node:node package.json yarn.lock deno.jsonc deno.lock .yarnrc.yml /opt/
+COPY --chown=node:node package.json yarn.lock .yarnrc.yml /opt/
 COPY --chown=node:node .yarn /opt/.yarn
 
 # Copy dependencies info from packages
@@ -41,23 +40,10 @@ WORKDIR /opt
 ##################################
 FROM base AS builder
 
-# Install dependencies
-RUN apt-get install -y \
-    # for installing Deno
-    curl \
-    # for extracting the Deno archive
-    p7zip-full
-
-# Install Deno
-ENV DENO_INSTALL="/root/.deno"
-RUN curl -fsSL https://deno.land/install.sh | sh -s ${DENO_VERSION}
-ENV PATH="${DENO_INSTALL}/bin:${PATH}"
-
 # Check versions
 RUN node --version
 RUN npm --version
 RUN yarn --version
-RUN deno --version
 
 # Install dependencies
 RUN yarn workspaces focus -A

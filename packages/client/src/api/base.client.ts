@@ -1,5 +1,5 @@
-import { Fetch, parseISO } from "../utils/index.ts";
-import type { BaseClientOptions } from "../types/index.ts";
+import { Fetch, parseISO } from "../utils/index.js";
+import type { BaseClientOptions } from "../types/index.js";
 
 /**
  * Abstract base class for all API clients

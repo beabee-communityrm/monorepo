@@ -6,9 +6,9 @@ import type {
   Serial,
   UpdateSegmentData,
 } from "@beabee/beabee-common";
-import type { BaseClientOptions } from "../types/index.ts";
-import { BaseClient } from "./base.client.ts";
-import { cleanUrl } from "../utils/index.ts";
+import type { BaseClientOptions } from "../types/index.js";
+import { BaseClient } from "./base.client.js";
+import { cleanUrl } from "../utils/index.js";
 
 /**
  * Client for managing contact segments.

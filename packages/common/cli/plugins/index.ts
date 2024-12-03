@@ -1,1 +1,1 @@
-export * from "./rename.ts";
+export * from "./rename.js";

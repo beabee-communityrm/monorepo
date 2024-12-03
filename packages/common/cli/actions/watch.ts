@@ -1,7 +1,7 @@
 import { context } from "esbuild";
-import { esbuildConfigs } from "../esbuild.ts";
+import { esbuildConfigs } from "../esbuild.js";
 
-import type { BuildArguments, BuildPlatform, BuildType } from "../types.ts";
+import type { BuildArguments, BuildPlatform, BuildType } from "../types.js";
 
 export const watchAction = async (argv: BuildArguments) => {
   // Watch for specific platform and type

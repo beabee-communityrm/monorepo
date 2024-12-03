@@ -2,7 +2,7 @@ import type {
   CalloutComponentInputCheckboxSchema,
   CalloutResponseAnswer,
   ValidatorCalloutComponent,
-} from "../types/index.ts";
+} from "../types/index.js";
 
 export const calloutComponentInputCheckboxValidator: ValidatorCalloutComponent<
   CalloutComponentInputCheckboxSchema

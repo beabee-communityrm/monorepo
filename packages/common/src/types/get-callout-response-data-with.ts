@@ -1,4 +1,4 @@
-import { CalloutResponseAnswersSlide } from "../index.ts";
+import { CalloutResponseAnswersSlide } from "../index.js";
 import type {
   GetCalloutData,
   GetCalloutResponseCommentData,
@@ -6,7 +6,7 @@ import type {
   GetCalloutResponseWith,
   GetContactData,
   Noop,
-} from "./index.ts";
+} from "./index.js";
 
 export type GetCalloutResponseDataWith<With extends GetCalloutResponseWith> =
   & GetCalloutResponseData

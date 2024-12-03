@@ -4,7 +4,7 @@ import type {
   PluginBuild,
 } from "esbuild";
 
-import { extname, join } from "https://deno.land/std@0.212.0/path/mod.ts";
+import { extname, join } from "https://deno.land/std@0.212.0/path/mod.js";
 
 const renameExtensions = async (
   from: string,

@@ -2,7 +2,7 @@ import type {
   ValidatedBooleanRule,
   ValidatedNumberRule,
   ValidatedStringRule,
-} from "../types/index.ts";
+} from "../types/index.js";
 
 export type ValidatedRule<Field extends string> =
   | ValidatedNumberRule<Field>

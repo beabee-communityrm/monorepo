@@ -9,7 +9,7 @@ import type {
   ContentProfileData,
   ContentShareData,
   ContentTelegramData,
-} from "./index.ts";
+} from "./index.js";
 
 export type ContentData<Id extends ContentId = ContentId> = Id extends
   "contacts" ? ContentContactsData

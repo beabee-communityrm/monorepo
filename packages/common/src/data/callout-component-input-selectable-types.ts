@@ -1,6 +1,6 @@
-import { CalloutComponentType } from "./callout-component-type.ts";
+import { CalloutComponentType } from "./callout-component-type.js";
 
-import type { CalloutComponentBaseInputSelectableSchema } from "../types/index.ts";
+import type { CalloutComponentBaseInputSelectableSchema } from "../types/index.js";
 
 /** Array of all possible callout nestable component types */
 export const calloutComponentInputSelectableTypes: Array<

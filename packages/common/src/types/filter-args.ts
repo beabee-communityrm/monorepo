@@ -2,7 +2,7 @@ import type {
   ArrayFilterArgs,
   EnumFilterArgs,
   OtherFilterArgs,
-} from "./index.ts";
+} from "./index.js";
 
 export type FilterArgs =
   | ArrayFilterArgs<readonly string[] | undefined>

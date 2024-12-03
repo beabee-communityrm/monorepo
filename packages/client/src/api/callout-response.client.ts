@@ -1,9 +1,9 @@
-import { BaseClient } from "./base.client.ts";
-import { cleanUrl } from "../utils/index.ts";
-import { ContactClient } from "./contact.client.ts";
-import { CalloutResponseCommentClient } from "./callout-response-comment.client.ts";
+import { BaseClient } from "./base.client.js";
+import { cleanUrl } from "../utils/index.js";
+import { ContactClient } from "./contact.client.js";
+import { CalloutResponseCommentClient } from "./callout-response-comment.client.js";
 
-import type { BaseClientOptions } from "../types/index.ts";
+import type { BaseClientOptions } from "../types/index.js";
 import type {
   GetCalloutResponseData,
   GetCalloutResponseDataWith,
@@ -13,7 +13,7 @@ import type {
   RuleGroup,
   Serial,
   UpdateCalloutResponseData,
-} from "../deps.ts";
+} from "../deps.js";
 
 /**
  * Client for managing callout responses

@@ -5,7 +5,7 @@ import type {
   GetCalloutFormData,
   GetCalloutWith,
   Noop,
-} from "./index.ts";
+} from "./index.js";
 
 export type GetCalloutDataWith<With extends GetCalloutWith> =
   & GetCalloutData

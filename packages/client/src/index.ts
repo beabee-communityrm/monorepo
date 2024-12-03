@@ -1,3 +1,3 @@
-export * from "./types/index.ts";
-export * from "./api/index.ts";
-export * from "./utils/index.ts";
+export * from "./types/index.js";
+export * from "./api/index.js";
+export * from "./utils/index.js";

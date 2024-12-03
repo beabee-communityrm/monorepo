@@ -1,8 +1,8 @@
-import { BaseClient } from "./base.client.ts";
-import { cleanUrl } from "../utils/index.ts";
-import { ContactContributionClient } from "./contact-contribution.client.ts";
+import { BaseClient } from "./base.client.js";
+import { cleanUrl } from "../utils/index.js";
+import { ContactContributionClient } from "./contact-contribution.client.js";
 
-import type { BaseClientOptions } from "../types/index.ts";
+import type { BaseClientOptions } from "../types/index.js";
 import type {
   ContributionInfo,
   GetPaymentData,
@@ -10,7 +10,7 @@ import type {
   Paginated,
   PaymentFlowParams,
   Serial,
-} from "../deps.ts";
+} from "../deps.js";
 
 /**
  * Client for managing contact payment operations

@@ -1,4 +1,4 @@
-import type { ContactMfaData } from "./contact-mfa-data.ts";
+import type { ContactMfaData } from "./contact-mfa-data.js";
 
 export interface CreateContactMfaData extends ContactMfaData {
   secret: string;

@@ -1,18 +1,18 @@
-import { BaseClient } from "./base.client.ts";
-import { CalloutClient } from "./callout.client.ts";
-import { ContentClient } from "./content.client.ts";
-import { ContactClient } from "./contact.client.ts";
-import { ApiKeyClient } from "./api-key.client.ts";
-import { AuthClient } from "./auth.client.ts";
-import { EmailClient } from "./email.client.ts";
-import { NoticeClient } from "./notice.client.ts";
-import { PaymentClient } from "./payment.client.ts";
-import { ResetSecurityClient } from "./reset-security.client.ts";
-import { SegmentsClient } from "./segments.client.ts";
-import { SignupClient } from "./signup.client.ts";
-import { StatsClient } from "./stats.client.ts";
-import { UploadClient } from "./upload.client.ts";
-import type { BaseClientOptions } from "../types/index.ts";
+import { BaseClient } from "./base.client.js";
+import { CalloutClient } from "./callout.client.js";
+import { ContentClient } from "./content.client.js";
+import { ContactClient } from "./contact.client.js";
+import { ApiKeyClient } from "./api-key.client.js";
+import { AuthClient } from "./auth.client.js";
+import { EmailClient } from "./email.client.js";
+import { NoticeClient } from "./notice.client.js";
+import { PaymentClient } from "./payment.client.js";
+import { ResetSecurityClient } from "./reset-security.client.js";
+import { SegmentsClient } from "./segments.client.js";
+import { SignupClient } from "./signup.client.js";
+import { StatsClient } from "./stats.client.js";
+import { UploadClient } from "./upload.client.js";
+import type { BaseClientOptions } from "../types/index.js";
 
 /**
  * Main client for interacting with the Beabee API

@@ -1,11 +1,11 @@
 // deno-lint-ignore-file no-explicit-any
-import { cleanUrl, ClientApiError, isJson, objToQueryString } from "./index.ts";
+import { cleanUrl, ClientApiError, isJson, objToQueryString } from "./index.js";
 
 import type {
   FetchOptions,
   FetchResponse,
   HttpMethod,
-} from "../types/index.ts";
+} from "../types/index.js";
 
 /**
  * A wrapper for the fetch API with some additional features.

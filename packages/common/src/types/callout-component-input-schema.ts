@@ -13,7 +13,7 @@ import type {
   CalloutComponentInputTextSchema,
   CalloutComponentInputTimeSchema,
   CalloutComponentInputUrlSchema,
-} from "./index.ts";
+} from "./index.js";
 
 /** Any callout input component schema */
 export type CalloutComponentInputSchema =

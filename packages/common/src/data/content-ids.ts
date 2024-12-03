@@ -1,4 +1,4 @@
-import type { ContentId } from "../types/index.ts";
+import type { ContentId } from "../types/index.js";
 
 /** All possible strings that can be passed to the content get controller to retrieve Beabee content data */
 export const contentIds = [

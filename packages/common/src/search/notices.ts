@@ -1,5 +1,5 @@
-import type { Filters } from "../types/index.ts";
-import { ItemStatus } from "../data/index.ts";
+import type { Filters } from "../types/index.js";
+import { ItemStatus } from "../data/index.js";
 
 export const noticeFilters = {
   id: {

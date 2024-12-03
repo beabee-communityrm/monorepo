@@ -3,7 +3,7 @@ import type {
   GetPaymentData,
   GetPaymentWith,
   Noop,
-} from "./index.ts";
+} from "./index.js";
 
 export type GetPaymentDataWith<With extends GetPaymentWith> =
   & GetPaymentData

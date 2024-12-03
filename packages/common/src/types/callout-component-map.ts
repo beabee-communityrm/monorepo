@@ -1,4 +1,4 @@
-import type { CalloutComponentType } from "../data/index.ts";
+import type { CalloutComponentType } from "../data/index.js";
 
 import type {
   CalloutComponentContentSchema,
@@ -21,7 +21,7 @@ import type {
   CalloutComponentNestablePanelSchema,
   CalloutComponentNestableTabsSchema,
   CalloutComponentNestableWellSchema,
-} from "./index.ts";
+} from "./index.js";
 
 type CalloutComponentSchemas = {
   [CalloutComponentType.CONTENT]: CalloutComponentContentSchema;

@@ -1,4 +1,4 @@
-import type { GetSegmentData, GetSegmentWith, Noop } from "./index.ts";
+import type { GetSegmentData, GetSegmentWith, Noop } from "./index.js";
 
 export type GetSegmentDataWith<With extends GetSegmentWith> =
   & GetSegmentData

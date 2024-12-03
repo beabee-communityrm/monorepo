@@ -2,7 +2,7 @@ import type {
   CalloutComponentInputSignatureSchema,
   CalloutResponseAnswer,
   ValidatorCalloutComponent,
-} from "../types/index.ts";
+} from "../types/index.js";
 
 export const calloutComponentInputSignatureValidator: ValidatorCalloutComponent<
   CalloutComponentInputSignatureSchema

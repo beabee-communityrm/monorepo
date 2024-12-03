@@ -11,10 +11,9 @@
     "generate:index": "yarn workspaces foreach -v -W -p run generate:index",
     "publish:next": "yarn workspaces foreach -v -W --no-private npm publish --tolerate-republish --tag next --access public",
     "publish:latest": "yarn workspaces foreach -v -W --no-private npm publish --tolerate-republish --tag latest --access public",
-    "cache:deno": "yarn workspaces foreach -v -W -p run cache:deno",
     "setup": "yarn workspace @beabee/backend run setup",
     "typeorm": "yarn workspace @beabee/backend run typeorm",
-    "presetup": "yarn workspaces foreach -v -W -p -i run presetup && yarn presetup:env && yarn cache:deno",
+    "presetup": "yarn workspaces foreach -v -W -p -i run presetup && yarn presetup:env",
     "presetup:env": "cp -n .env.example .env 2>/dev/null || true"
   },
   "workspaces": [

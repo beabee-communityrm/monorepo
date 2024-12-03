@@ -2,7 +2,7 @@ import type {
   CalloutComponentNestablePanelSchema,
   CalloutComponentNestableTabsSchema,
   CalloutComponentNestableWellSchema,
-} from "./index.ts";
+} from "./index.js";
 
 export type CalloutComponentNestableSchema =
   | CalloutComponentNestablePanelSchema

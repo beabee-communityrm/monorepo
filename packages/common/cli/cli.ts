@@ -1,7 +1,7 @@
-import yargs from "https://deno.land/x/yargs@v17.7.2-deno/deno.ts";
-import { buildAction, syncAction, watchAction, generateIndexAction } from "./actions/index.ts";
+import yargs from "https://deno.land/x/yargs@v17.7.2-deno/deno.js";
+import { buildAction, syncAction, watchAction, generateIndexAction } from "./actions/index.js";
 
-import type { BuildPlatform, BuildType } from "./types.ts";
+import type { BuildPlatform, BuildType } from "./types.js";
 import type { YargsInstance } from "https://deno.land/x/yargs@v17.7.2-deno/build/lib/yargs-factory.js";
 
 yargs(Deno.args)

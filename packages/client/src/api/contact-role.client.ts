@@ -1,13 +1,13 @@
-import { BaseClient } from "./base.client.ts";
-import { cleanUrl } from "../utils/index.ts";
-import type { BaseClientOptions } from "../types/index.ts";
+import { BaseClient } from "./base.client.js";
+import { cleanUrl } from "../utils/index.js";
+import type { BaseClientOptions } from "../types/index.js";
 
 import type {
   ContactRoleData,
   RoleType,
   Serial,
   UpdateContactRoleData,
-} from "../deps.ts";
+} from "../deps.js";
 
 export class ContactRoleClient extends BaseClient {
   static deserialize(data: Serial<ContactRoleData>): ContactRoleData {

@@ -1,5 +1,5 @@
-import { BaseClient } from "./base.client.ts";
-import type { BaseClientOptions } from "../types/index.ts";
+import { BaseClient } from "./base.client.js";
+import type { BaseClientOptions } from "../types/index.js";
 import {
   type CreateResetDeviceData,
   type CreateResetPasswordData,

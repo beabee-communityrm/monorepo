@@ -1,8 +1,8 @@
-import { BaseClient } from "./base.client.ts";
-import { cleanUrl } from "../utils/index.ts";
-import { CalloutResponseClient } from "./callout-response.client.ts";
-import { CalloutTagClient } from "./callout-tag.client.ts";
-import type { BaseClientOptions } from "../types/index.ts";
+import { BaseClient } from "./base.client.js";
+import { cleanUrl } from "../utils/index.js";
+import { CalloutResponseClient } from "./callout-response.client.js";
+import { CalloutTagClient } from "./callout-tag.client.js";
+import type { BaseClientOptions } from "../types/index.js";
 import type {
   CreateCalloutData,
   CreateCalloutResponseData,
@@ -17,7 +17,7 @@ import type {
   Paginated,
   Serial,
   UpdateCalloutData,
-} from "../deps.ts";
+} from "../deps.js";
 
 export class CalloutClient extends BaseClient {
   /** Client for managing callout responses */
