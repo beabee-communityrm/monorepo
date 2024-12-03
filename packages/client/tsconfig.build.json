@@ -1,5 +1,4 @@
 {
-  "extends": "@tsconfig/recommended",
   "include": ["./src"],
   "exclude": ["src/**/*.test.ts"],
   "compilerOptions": {
@@ -7,10 +6,14 @@
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "declarationDir": "./dist/types",
+    "esModuleInterop": true,
     "allowImportingTsExtensions": true,
     "declaration": true,
     "emitDeclarationOnly": true,
     "isolatedModules": true,
-    "diagnostics": true
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "diagnostics": true,
+    "skipLibCheck": true
   }
 }
