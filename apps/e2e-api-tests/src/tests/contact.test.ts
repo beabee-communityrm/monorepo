@@ -23,4 +23,29 @@ describe('Contact API', () => {
       }
     }
   });
+
+  it('should successfully list contacts', async () => {
+    const response = await contactClient.list({});
+    
+    // Check response structure
+    expect(response).toBeDefined();
+    expect(response).toHaveProperty('total');
+    expect(response).toHaveProperty('offset');
+    expect(response).toHaveProperty('count');
+    expect(response).toHaveProperty('items');
+    expect(Array.isArray(response.items)).toBe(true);
+
+    // Check first item properties if exists
+    if (response.items.length > 0) {
+      const firstContact = response.items[0];
+      expect(firstContact).toHaveProperty('id');
+      expect(firstContact).toHaveProperty('email');
+      expect(firstContact).toHaveProperty('firstname');
+      expect(firstContact).toHaveProperty('lastname');
+      expect(firstContact).toHaveProperty('joined');
+      expect(firstContact).toHaveProperty('activeRoles');
+      expect(firstContact).toHaveProperty('displayName');
+      expect(Array.isArray(firstContact.activeRoles)).toBe(true);
+    }
+  });
 });

@@ -76,7 +76,7 @@ export class CalloutResponseClient extends BaseClient {
   ): Promise<Paginated<GetCalloutResponseDataWith<With>>> {
     const { data } = await this.fetch.get<
       Paginated<Serial<GetCalloutResponseDataWith<With>>>
-    >("", { params: { with: _with, ...query } });
+    >("", { with: _with, ...query });
 
     return {
       ...data,

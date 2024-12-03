@@ -36,9 +36,7 @@ export class SegmentsClient extends BaseClient {
   ): Promise<GetSegmentDataWith<With>[]> {
     const { data } = await this.fetch.get<Serial<GetSegmentDataWith<With>>[]>(
       "",
-      {
-        params: { with: _with, ...query }
-      }
+      { with: _with, ...query }
     );
     // TODO: needs Serial type guard
     return data as GetSegmentDataWith<With>[];
