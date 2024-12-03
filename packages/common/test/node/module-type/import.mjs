@@ -1,4 +1,4 @@
-import { parseDate } from "../../dist/esm/index.js";
+import { parseDate } from "../../../dist/esm/index.js";
 import { deepEqual, strictEqual } from "assert";
 
 const green = (str) => "\x1b[32m" + str + "\x1b[0m";

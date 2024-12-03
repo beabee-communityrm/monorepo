@@ -1,4 +1,4 @@
-const { parseDate } = require("../../dist/cjs/index.cjs");
+const { parseDate } = require("../../../dist/cjs/index.cjs");
 const { strictEqual, deepEqual } = require("assert");
 
 const green = (str) => "\x1b[32m" + str + "\x1b[0m";
