@@ -6,6 +6,8 @@
   "exclude": [], // Override tsconfig.build.json exclude
   "include": ["src/**/*.ts"],
   "compilerOptions": {
-    "noEmit": true
+    "noEmit": true,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext"
   }
 }
