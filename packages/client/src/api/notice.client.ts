@@ -45,7 +45,7 @@ export class NoticeClient extends BaseClient {
    * @param query - Optional query parameters for filtering notices
    * @returns A paginated list of notices
    */
-  async list(query?: GetNoticesQuery): Promise<Paginated<GetNoticeData>> {
+  async list(query: GetNoticesQuery = {}): Promise<Paginated<GetNoticeData>> {
     const { data } = await this.fetch.get<Paginated<Serial<GetNoticeData>>>(
       "",
       {

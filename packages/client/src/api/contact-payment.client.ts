@@ -63,7 +63,7 @@ export class ContactPaymentClient extends BaseClient {
    */
   async list(
     id: string,
-    query: GetPaymentsQuery
+    query: GetPaymentsQuery = {}
   ): Promise<Paginated<GetPaymentData>> {
     const { data } = await this.fetch.get<Serial<Paginated<GetPaymentData>>>(
       `/${id}/payment`,

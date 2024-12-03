@@ -54,7 +54,7 @@ export class PaymentClient extends BaseClient {
    * @returns A paginated list of payments
    */
   async list<With extends GetPaymentWith = void>(
-    query: GetPaymentsQuery,
+    query: GetPaymentsQuery = {},
     _with?: readonly With[]
   ): Promise<Paginated<GetPaymentDataWith<With>>> {
     const { data } = await this.fetch.get<

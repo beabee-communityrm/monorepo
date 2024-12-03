@@ -87,7 +87,7 @@ export class ContactClient extends BaseClient {
    * @returns Paginated list of contacts
    */
   async list<With extends GetContactWith | void = void>(
-    query: GetContactsQuery,
+    query: GetContactsQuery = {},
     _with?: readonly With[]
   ): Promise<Paginated<GetContactDataWith<With>>> {
     const { data } = await this.fetch.get<Paginated<Serial<GetContactData>>>(

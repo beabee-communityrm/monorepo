@@ -76,7 +76,7 @@ export class CalloutClient extends BaseClient {
    * @returns A paginated list of callouts
    */
   async list<With extends GetCalloutWith = void>(
-    query?: GetCalloutsQuery,
+    query: GetCalloutsQuery = {},
     _with?: readonly With[]
   ): Promise<Paginated<GetCalloutDataWith<With>>> {
     const { data } = await this.fetch.get<
