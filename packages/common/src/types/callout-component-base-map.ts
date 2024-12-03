@@ -5,7 +5,7 @@ import type {
   CalloutComponentInputSchema,
   CalloutComponentInputSelectableSchema,
   CalloutComponentInputTextSchema,
-  CalloutComponentNestableSchema,
+  CalloutComponentNestableSchema
 } from "./index.js";
 
 type CalloutComponentBaseSchemas = {
@@ -13,8 +13,7 @@ type CalloutComponentBaseSchemas = {
 
   [CalloutComponentBaseType.INPUT]: CalloutComponentInputSchema;
   [CalloutComponentBaseType.INPUT_TEXT]: CalloutComponentInputTextSchema;
-  [CalloutComponentBaseType.INPUT_SELECTABLE]:
-    CalloutComponentInputSelectableSchema;
+  [CalloutComponentBaseType.INPUT_SELECTABLE]: CalloutComponentInputSelectableSchema;
   [CalloutComponentBaseType.NESTABLE]: CalloutComponentNestableSchema;
 };
 

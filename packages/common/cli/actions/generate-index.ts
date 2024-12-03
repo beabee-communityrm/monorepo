@@ -25,7 +25,7 @@ const generateIndex = async (paths: string[]) => {
 
 /**
  * Generate index.ts files for specific paths.
- * @param argv 
+ * @param argv
  */
 export const generateIndexAction = async (argv: GenerateIndexArguments) => {
   await generateIndex(argv.paths);

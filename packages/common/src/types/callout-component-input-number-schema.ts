@@ -1,7 +1,7 @@
 import type { CalloutComponentType } from "../data/index.js";
 import type {
   CalloutComponentBaseInputSchema,
-  CalloutComponentInputNumberRules,
+  CalloutComponentInputNumberRules
 } from "./index.js";
 
 export interface CalloutComponentInputNumberSchema

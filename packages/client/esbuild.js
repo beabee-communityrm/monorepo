@@ -41,7 +41,7 @@ await build({
   platform: "browser",
   target: "es2020",
   format: "iife",
-  globalName: "BeabeeCommon"
+  globalName: "BeabeeClient"
 });
 
 async function renameExtensions(directory) {

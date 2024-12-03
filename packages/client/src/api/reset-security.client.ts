@@ -5,7 +5,7 @@ import {
   type CreateResetPasswordData,
   RESET_SECURITY_FLOW_TYPE,
   type UpdateResetDeviceData,
-  type UpdateResetPasswordData,
+  type UpdateResetPasswordData
 } from "@beabee/beabee-common";
 
 /**
@@ -30,7 +30,7 @@ export class ResetSecurityClient extends BaseClient {
   async resetPasswordBegin(email: string): Promise<void> {
     const data: CreateResetPasswordData = {
       email,
-      resetUrl: this.options.host + "/auth/reset-password",
+      resetUrl: this.options.host + "/auth/reset-password"
     };
     await this.fetch.post("reset-password", data);
   }
@@ -45,11 +45,11 @@ export class ResetSecurityClient extends BaseClient {
   async resetPasswordComplete(
     resetPasswordFlowId: string,
     password: string,
-    token?: string,
+    token?: string
   ): Promise<void> {
     const data: UpdateResetPasswordData = {
       password,
-      token,
+      token
     };
     await this.fetch.put(`reset-password/${resetPasswordFlowId}`, data);
   }
@@ -63,7 +63,7 @@ export class ResetSecurityClient extends BaseClient {
     const data: CreateResetDeviceData = {
       email,
       resetUrl: this.options.host + "/auth/reset-device",
-      type: RESET_SECURITY_FLOW_TYPE.TOTP,
+      type: RESET_SECURITY_FLOW_TYPE.TOTP
     };
     await this.fetch.post("reset-device", data);
   }
@@ -76,11 +76,11 @@ export class ResetSecurityClient extends BaseClient {
    */
   async resetDeviceComplete(
     resetMfaFlowId: string,
-    password: string,
+    password: string
   ): Promise<void> {
     const data: UpdateResetDeviceData = {
       password,
-      type: RESET_SECURITY_FLOW_TYPE.TOTP,
+      type: RESET_SECURITY_FLOW_TYPE.TOTP
     };
     await this.fetch.put(`reset-device/${resetMfaFlowId}`, data);
   }

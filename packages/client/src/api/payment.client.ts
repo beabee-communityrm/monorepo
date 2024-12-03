@@ -8,7 +8,7 @@ import type {
   GetPaymentsQuery,
   GetPaymentWith,
   Paginated,
-  Serial,
+  Serial
 } from "../deps.js";
 
 /**
@@ -34,7 +34,7 @@ export class PaymentClient extends BaseClient {
   static deserialize<With extends GetPaymentWith = void>(
     // TODO: how to make this type safe?
     // deno-lint-ignore no-explicit-any
-    payment: Serial<GetPaymentDataWith<With>> | any,
+    payment: Serial<GetPaymentDataWith<With>> | any
   ): GetPaymentDataWith<With> {
     return {
       ...payment,
@@ -42,8 +42,8 @@ export class PaymentClient extends BaseClient {
       amount: payment.amount,
       status: payment.status,
       ...(payment.contact !== undefined && {
-        contact: payment.contact && ContactClient.deserialize(payment.contact),
-      }),
+        contact: payment.contact && ContactClient.deserialize(payment.contact)
+      })
     };
   }
 
@@ -55,18 +55,15 @@ export class PaymentClient extends BaseClient {
    */
   async list<With extends GetPaymentWith = void>(
     query: GetPaymentsQuery,
-    _with?: readonly With[],
+    _with?: readonly With[]
   ): Promise<Paginated<GetPaymentDataWith<With>>> {
     const { data } = await this.fetch.get<
       Paginated<Serial<GetPaymentDataWith<With>>>
-    >(
-      "",
-      { params: { with: _with, ...query } },
-    );
+    >("", { params: { with: _with, ...query } });
 
     return {
       ...data,
-      items: data.items.map((item) => PaymentClient.deserialize(item)),
+      items: data.items.map((item) => PaymentClient.deserialize(item))
     };
   }
 }

@@ -534,11 +534,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@beabee/beabee-common@workspace:packages/common"
   dependencies:
+    "@beabee/prettier-config": "workspace:^"
     "@gjsify/esbuild-plugin-transform-ext": "npm:^0.0.4"
     cacheable-request: "npm:^12.0.1"
     concurrently: "npm:^9.1.0"
     date-fns: "npm:^4.1.0"
     esbuild: "npm:^0.24.0"
+    prettier: "npm:^3.4.1"
     typescript: "npm:^5.6.3"
   languageName: unknown
   linkType: soft
@@ -548,6 +550,7 @@ __metadata:
   resolution: "@beabee/client@workspace:packages/client"
   dependencies:
     "@beabee/beabee-common": "workspace:^"
+    "@beabee/prettier-config": "workspace:^"
     "@gjsify/esbuild-plugin-transform-ext": "npm:^0.0.4"
     "@jest/globals": "npm:^29.7.0"
     "@tsconfig/recommended": "npm:^1.0.3"
@@ -558,6 +561,7 @@ __metadata:
     jest-environment-node: "npm:^29.7.0"
     jsdom: "npm:^25.0.1"
     node-fetch: "npm:^2.7.0"
+    prettier: "npm:^3.4.1"
     ts-jest: "npm:^29.2.5"
     typescript: "npm:^5.6.3"
     whatwg-fetch: "npm:^3.6.20"
@@ -13170,7 +13174,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:*, prettier@npm:^3.3.3":
+"prettier@npm:*, prettier@npm:^3.3.3, prettier@npm:^3.4.1":
   version: 3.4.1
   resolution: "prettier@npm:3.4.1"
   bin:

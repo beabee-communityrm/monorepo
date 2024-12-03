@@ -3,7 +3,7 @@ import type { CalloutResponseViewSchema } from "./index.js";
 import type {
   CalloutAccess,
   CalloutCaptcha,
-  CalloutChannel,
+  CalloutChannel
 } from "../data/index.js";
 
 export interface CalloutData {

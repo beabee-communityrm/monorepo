@@ -20,7 +20,7 @@ import type {
   CalloutComponentInputUrlSchema,
   CalloutComponentNestablePanelSchema,
   CalloutComponentNestableTabsSchema,
-  CalloutComponentNestableWellSchema,
+  CalloutComponentNestableWellSchema
 } from "./index.js";
 
 type CalloutComponentSchemas = {
@@ -33,13 +33,10 @@ type CalloutComponentSchemas = {
   [CalloutComponentType.INPUT_EMAIL]: CalloutComponentInputEmailSchema;
   [CalloutComponentType.INPUT_FILE]: CalloutComponentInputFileSchema;
   [CalloutComponentType.INPUT_NUMBER]: CalloutComponentInputNumberSchema;
-  [CalloutComponentType.INPUT_PHONE_NUMBER]:
-    CalloutComponentInputPhoneNumberSchema;
+  [CalloutComponentType.INPUT_PHONE_NUMBER]: CalloutComponentInputPhoneNumberSchema;
   [CalloutComponentType.INPUT_SELECT]: CalloutComponentInputSelectSchema;
-  [CalloutComponentType.INPUT_SELECTABLE_RADIO]:
-    CalloutComponentInputSelectableRadioSchema;
-  [CalloutComponentType.INPUT_SELECTABLE_SELECTBOXES]:
-    CalloutComponentInputSelectableSelectboxesSchema;
+  [CalloutComponentType.INPUT_SELECTABLE_RADIO]: CalloutComponentInputSelectableRadioSchema;
+  [CalloutComponentType.INPUT_SELECTABLE_SELECTBOXES]: CalloutComponentInputSelectableSelectboxesSchema;
   [CalloutComponentType.INPUT_SIGNATURE]: CalloutComponentInputSignatureSchema;
   [CalloutComponentType.INPUT_TEXT_AREA]: CalloutComponentInputTextAreaSchema;
   [CalloutComponentType.INPUT_TEXT_FIELD]: CalloutComponentInputTextFieldSchema;

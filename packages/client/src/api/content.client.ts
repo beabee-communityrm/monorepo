@@ -37,19 +37,15 @@ export class ContentClient extends BaseClient {
    * @param id - The content identifier (slug or ID)
    * @returns The content data and response metadata
    */
-  async get<Id extends ContentId>(
-    id: Id,
-  ) {
+  async get<Id extends ContentId>(id: Id) {
     const { data, status, ok, statusText } = await this.fetch.get<
       ContentData<Id>
-    >(
-      `/${id}`,
-    );
+    >(`/${id}`);
     return {
       data,
       status,
       ok,
-      statusText,
+      statusText
     };
   }
 
@@ -62,11 +58,8 @@ export class ContentClient extends BaseClient {
    */
   async update<Id extends ContentId>(
     id: Id,
-    content: Partial<ContentData<Id>>,
+    content: Partial<ContentData<Id>>
   ) {
-    return await this.fetch.patch(
-      `/${id}`,
-      content,
-    );
+    return await this.fetch.patch(`/${id}`, content);
   }
 }

@@ -1,7 +1,7 @@
 import type {
   ArrayFilterArgs,
   EnumFilterArgs,
-  OtherFilterArgs,
+  OtherFilterArgs
 } from "./index.js";
 
 export type FilterArgs =

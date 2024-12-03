@@ -2,11 +2,11 @@ import type { Filters } from "../types/index.js";
 
 export const apiKeyFilters = {
   id: {
-    type: "text",
+    type: "text"
   },
   createdAt: {
-    type: "date",
-  },
+    type: "date"
+  }
 } as const;
 
 apiKeyFilters satisfies Filters;

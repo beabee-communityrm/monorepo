@@ -12,7 +12,7 @@ import type {
   CalloutComponentInputSignatureSchema,
   CalloutComponentInputTextSchema,
   CalloutComponentInputTimeSchema,
-  CalloutComponentInputUrlSchema,
+  CalloutComponentInputUrlSchema
 } from "./index.js";
 
 /** Any callout input component schema */

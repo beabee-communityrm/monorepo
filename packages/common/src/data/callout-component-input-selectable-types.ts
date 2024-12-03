@@ -7,5 +7,5 @@ export const calloutComponentInputSelectableTypes: Array<
   CalloutComponentBaseInputSelectableSchema["type"]
 > = [
   CalloutComponentType.INPUT_SELECTABLE_RADIO,
-  CalloutComponentType.INPUT_SELECTABLE_SELECTBOXES,
+  CalloutComponentType.INPUT_SELECTABLE_SELECTBOXES
 ];

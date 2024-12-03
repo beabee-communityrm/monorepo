@@ -9,7 +9,7 @@ export const buildAction = async (argv: BuildArguments) => {
     const config = esbuildConfigs[argv.platform][argv.type];
     if (!config) {
       throw new Error(
-        `Invalid platform and type combination: ${argv.platform}, ${argv.type}`,
+        `Invalid platform and type combination: ${argv.platform}, ${argv.type}`
       );
     }
     await build(config);
@@ -17,9 +17,9 @@ export const buildAction = async (argv: BuildArguments) => {
 
   // Build for specific platform for all types
   if (argv.platform) {
-    for (
-      const types of Object.keys(esbuildConfigs[argv.platform]) as BuildType[]
-    ) {
+    for (const types of Object.keys(
+      esbuildConfigs[argv.platform]
+    ) as BuildType[]) {
       const config = esbuildConfigs[argv.platform][types];
       if (!config) continue;
       console.info(`Building ${argv.platform} ${types}`);

@@ -7,5 +7,5 @@ export const calloutComponentInputTextTypes: Array<
   CalloutComponentBaseInputTextSchema["type"]
 > = [
   CalloutComponentType.INPUT_TEXT_AREA,
-  CalloutComponentType.INPUT_TEXT_FIELD,
+  CalloutComponentType.INPUT_TEXT_FIELD
 ];

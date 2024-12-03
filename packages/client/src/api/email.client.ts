@@ -37,7 +37,7 @@ export class EmailClient extends BaseClient {
   async update(id: string, data: UpdateEmailData): Promise<GetEmailData> {
     const { data: responseData } = await this.fetch.put<GetEmailData>(
       `/${id}`,
-      data,
+      data
     );
     return responseData;
   }

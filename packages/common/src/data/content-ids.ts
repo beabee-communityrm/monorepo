@@ -10,6 +10,6 @@ export const contentIds = [
   "profile",
   "share",
   "payment",
-  "telegram",
+  "telegram"
 ] as const;
 contentIds satisfies readonly ContentId[];

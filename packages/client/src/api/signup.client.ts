@@ -3,7 +3,7 @@ import {
   ContributionPeriod,
   type PaymentFlowParams,
   type Serial,
-  type SignupData,
+  type SignupData
 } from "@beabee/beabee-common";
 import type { BaseClientOptions } from "../types/index.js";
 import { BaseClient } from "./base.client.js";
@@ -36,25 +36,22 @@ export class SignupClient extends BaseClient {
   async start(data: SignupData): Promise<PaymentFlowParams> {
     const { data: responseData } = await this.fetch.post<
       Serial<PaymentFlowParams>
-    >(
-      "",
-      {
-        email: data.email,
-        loginUrl: this.options.host + "/auth/login",
-        setPasswordUrl: this.options.host + "/auth/set-password",
-        confirmUrl: this.options.host + "/join/confirm-email",
-        ...(!data.noContribution && {
-          contribution: {
-            amount: data.amount,
-            period: data.period,
-            payFee: data.payFee && data.period === ContributionPeriod.Monthly,
-            prorate: false,
-            paymentMethod: data.paymentMethod,
-            completeUrl: this.completeUrl,
-          },
-        }),
-      },
-    );
+    >("", {
+      email: data.email,
+      loginUrl: this.options.host + "/auth/login",
+      setPasswordUrl: this.options.host + "/auth/set-password",
+      confirmUrl: this.options.host + "/join/confirm-email",
+      ...(!data.noContribution && {
+        contribution: {
+          amount: data.amount,
+          period: data.period,
+          payFee: data.payFee && data.period === ContributionPeriod.Monthly,
+          prorate: false,
+          paymentMethod: data.paymentMethod,
+          completeUrl: this.completeUrl
+        }
+      })
+    });
     return responseData;
   }
 
@@ -67,7 +64,7 @@ export class SignupClient extends BaseClient {
       paymentFlowId: data.paymentFlowId,
       firstname: data.firstname,
       lastname: data.lastname,
-      vatNumber: data.vatNumber,
+      vatNumber: data.vatNumber
     });
   }
 

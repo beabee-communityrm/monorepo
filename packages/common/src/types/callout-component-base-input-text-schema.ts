@@ -2,7 +2,7 @@ import type { CalloutComponentType } from "../data/index.js";
 import type {
   CalloutComponentBaseInputSchema,
   CalloutComponentInputTextRules,
-  TextCase,
+  TextCase
 } from "./index.js";
 
 /** The schema for input text forms */

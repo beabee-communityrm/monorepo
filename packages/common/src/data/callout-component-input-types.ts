@@ -21,5 +21,5 @@ export const calloutComponentInputTypes: Array<
   CalloutComponentType.INPUT_SELECT,
   CalloutComponentType.INPUT_SIGNATURE,
   CalloutComponentType.INPUT_TIME,
-  CalloutComponentType.INPUT_URL,
+  CalloutComponentType.INPUT_URL
 ];

@@ -27,13 +27,15 @@
     "build": "yarn clear && yarn build:types && yarn build:platforms",
     "build:platforms": "node esbuild.js",
     "build:types": "tsc --project ./tsconfig.build.json",
-    "format": "prettier --write .",
-    "lint": "eslint .",
     "test": "yarn test:types && yarn test:esm && yarn test:cjs",
     "test:types": "tsc --noEmit",
     "test:esm": "node test/node/import.mjs",
     "test:cjs": "node test/node/require.cjs",
-    "generate:index": "node generate-index.js"
+    "generate:index": "node generate-index.js",
+    "format": "prettier --write .",
+    "check": "yarn check:tsc && yarn check:prettier",
+    "check:tsc": "tsc --project ./tsconfig.build.json --noEmit",
+    "check:prettier": "prettier -c ."
   },
   "repository": {
     "type": "git",
@@ -46,10 +48,12 @@
   },
   "homepage": "https://github.com/beabee-communityrm/monorepo/blob/main/packages/common/README.md",
   "devDependencies": {
+    "@beabee/prettier-config": "workspace:^",
     "@gjsify/esbuild-plugin-transform-ext": "^0.0.4",
     "cacheable-request": "^12.0.1",
     "concurrently": "^9.1.0",
     "esbuild": "^0.24.0",
+    "prettier": "^3.4.1",
     "typescript": "^5.6.3"
   },
   "dependencies": {

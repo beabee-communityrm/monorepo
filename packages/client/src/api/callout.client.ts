@@ -16,7 +16,7 @@ import type {
   GetCalloutWith,
   Paginated,
   Serial,
-  UpdateCalloutData,
+  UpdateCalloutData
 } from "../deps.js";
 
 export class CalloutClient extends BaseClient {
@@ -35,7 +35,7 @@ export class CalloutClient extends BaseClient {
   }
 
   static deserialize<With extends GetCalloutWith = void>(
-    _callout: Serial<GetCalloutDataWith<With>>,
+    _callout: Serial<GetCalloutDataWith<With>>
   ): GetCalloutDataWith<With>;
 
   /**
@@ -47,7 +47,7 @@ export class CalloutClient extends BaseClient {
     const callout: GetCalloutData = {
       ..._callout,
       starts: CalloutClient.deserializeDate(_callout.starts),
-      expires: CalloutClient.deserializeDate(_callout.expires),
+      expires: CalloutClient.deserializeDate(_callout.expires)
     };
 
     return callout;
@@ -61,11 +61,11 @@ export class CalloutClient extends BaseClient {
    */
   async get<With extends GetCalloutWith = void>(
     slugOrId: string,
-    _with?: readonly With[],
+    _with?: readonly With[]
   ) {
     const { data } = await this.fetch.get<Serial<GetCalloutDataWith<With>>>(
       `/${slugOrId}`,
-      { with: _with },
+      { with: _with }
     );
     return CalloutClient.deserialize(data);
   }
@@ -77,18 +77,15 @@ export class CalloutClient extends BaseClient {
    */
   async list<With extends GetCalloutWith = void>(
     query?: GetCalloutsQuery,
-    _with?: readonly With[],
+    _with?: readonly With[]
   ): Promise<Paginated<GetCalloutDataWith<With>>> {
     const { data } = await this.fetch.get<
       Paginated<Serial<GetCalloutDataWith<With>>>
-    >(
-      "/",
-      { with: _with, ...query },
-    );
+    >("/", { with: _with, ...query });
     const items = data.items.map((item) => CalloutClient.deserialize(item));
     const callouts: Paginated<GetCalloutDataWith<With>> = {
       ...data,
-      items,
+      items
     };
 
     return callouts;
@@ -102,7 +99,7 @@ export class CalloutClient extends BaseClient {
   async create(newData: CreateCalloutData) {
     const { data } = await this.fetch.post<Serial<GetCalloutData>>(
       "/",
-      newData,
+      newData
     );
     return data;
   }
@@ -116,7 +113,7 @@ export class CalloutClient extends BaseClient {
   async update(slug: string, updateData: UpdateCalloutData) {
     const { data } = await this.fetch.patch<Serial<GetCalloutData>>(
       "/" + slug,
-      updateData,
+      updateData
     );
     return CalloutClient.deserialize(data);
   }
@@ -126,9 +123,7 @@ export class CalloutClient extends BaseClient {
    * @param slug The slug of the callout to delete
    */
   async delete(slug: string) {
-    await this.fetch.delete(
-      "/" + slug,
-    );
+    await this.fetch.delete("/" + slug);
   }
 
   /**
@@ -140,17 +135,14 @@ export class CalloutClient extends BaseClient {
   async listResponses<With extends GetCalloutResponseWith = void>(
     slug: string,
     query?: GetCalloutResponsesQuery,
-    _with?: readonly With[],
+    _with?: readonly With[]
   ): Promise<Paginated<GetCalloutResponseDataWith<With>>> {
     const { data } = await this.fetch.get<
       Paginated<Serial<GetCalloutResponseDataWith<With>>>
-    >(
-      `/${slug}/responses`,
-      { params: { with: _with, ...query } },
-    );
+    >(`/${slug}/responses`, { params: { with: _with, ...query } });
     return {
       ...data,
-      items: data.items.map((item) => CalloutResponseClient.deserialize(item)),
+      items: data.items.map((item) => CalloutResponseClient.deserialize(item))
     };
   }
 
@@ -161,14 +153,11 @@ export class CalloutClient extends BaseClient {
    */
   async listResponsesForMap(
     slug: string,
-    query?: GetCalloutResponsesQuery,
+    query?: GetCalloutResponsesQuery
   ): Promise<Paginated<GetCalloutResponseMapData>> {
     const { data } = await this.fetch.get<
       Paginated<Serial<GetCalloutResponseMapData>>
-    >(
-      `/${slug}/responses/map`,
-      { params: query },
-    );
+    >(`/${slug}/responses/map`, { params: query });
     return data;
   }
 
@@ -184,16 +173,16 @@ export class CalloutClient extends BaseClient {
       CreateCalloutResponseData,
       "answers" | "guestEmail" | "guestName"
     >,
-    captchaToken?: string,
+    captchaToken?: string
   ): Promise<void> {
     await this.fetch.post(
       `/${slug}/responses`,
       {
         answers: newData.answers,
         guestName: newData.guestName,
-        guestEmail: newData.guestEmail,
+        guestEmail: newData.guestEmail
       },
-      { params: { captchaToken } },
+      { params: { captchaToken } }
     );
   }
 }

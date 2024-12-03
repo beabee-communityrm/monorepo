@@ -1,7 +1,7 @@
 import type {
   CalloutComponentContentSchema,
   CalloutComponentInputSchema,
-  CalloutComponentNestableSchema,
+  CalloutComponentNestableSchema
 } from "./index.js";
 
 /** Any callout component schema */

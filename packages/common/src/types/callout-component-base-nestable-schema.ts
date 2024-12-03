@@ -1,7 +1,7 @@
 import type { CalloutComponentType } from "../data/index.js";
 import type {
   CalloutComponentBaseSchema,
-  CalloutComponentSchema,
+  CalloutComponentSchema
 } from "./index.js";
 
 export interface CalloutComponentBaseNestableSchema

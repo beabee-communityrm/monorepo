@@ -37,10 +37,7 @@ import type { ParseISOOptions } from "../deps.js";
  * const result = parseISO('+02014101', { additionalDigits: 1 })
  * //=> Fri Apr 11 2014 00:00:00
  */
-export function parseISO(
-  argument: string,
-  options?: ParseISOOptions,
-): Date {
+export function parseISO(argument: string, options?: ParseISOOptions): Date {
   const additionalDigits = options?.additionalDigits ?? 2;
   const dateStrings = splitDateString(argument);
 
@@ -81,13 +78,13 @@ export function parseISO(
     result.setFullYear(
       dirtyDate.getUTCFullYear(),
       dirtyDate.getUTCMonth(),
-      dirtyDate.getUTCDate(),
+      dirtyDate.getUTCDate()
     );
     result.setHours(
       dirtyDate.getUTCHours(),
       dirtyDate.getUTCMinutes(),
       dirtyDate.getUTCSeconds(),
-      dirtyDate.getUTCMilliseconds(),
+      dirtyDate.getUTCMilliseconds()
     );
     return result;
   }
@@ -109,7 +106,7 @@ interface ParsedYear {
 const patterns = {
   dateTimeDelimiter: /[T ]/,
   timeZoneDelimiter: /[Z ]/i,
-  timezone: /([Z+-].*)$/,
+  timezone: /([Z+-].*)$/
 };
 
 const dateRegex =
@@ -138,7 +135,7 @@ function splitDateString(dateString: string): DateString {
       dateStrings.date = dateString.split(patterns.timeZoneDelimiter)[0];
       timeString = dateString.substr(
         dateStrings.date.length,
-        dateString.length,
+        dateString.length
       );
     }
   }
@@ -162,7 +159,7 @@ function parseYear(dateString: string, additionalDigits: number): ParsedYear {
       (4 + additionalDigits) +
       "})|(\\d{2}|[+-]\\d{" +
       (2 + additionalDigits) +
-      "})$)",
+      "})$)"
   );
 
   const captures = dateString.match(regex);
@@ -175,7 +172,7 @@ function parseYear(dateString: string, additionalDigits: number): ParsedYear {
   // either year or century is null, not both
   return {
     year: century === null ? (year as number) : century * 100,
-    restDateString: dateString.slice((captures[1] || captures[2]).length),
+    restDateString: dateString.slice((captures[1] || captures[2]).length)
   };
 }
 
@@ -257,7 +254,7 @@ function parseTimezone(timezoneString: string): number {
 function dayOfISOWeekYear(
   isoWeekYear: number,
   week: number,
-  day: number,
+  day: number
 ): Date {
   const date = new Date(0);
   date.setUTCFullYear(isoWeekYear, 0, 4);
@@ -296,7 +293,7 @@ function validateWeekDate(_year: number, week: number, day: number): boolean {
 function validateTime(
   hours: number,
   minutes: number,
-  seconds: number,
+  seconds: number
 ): boolean {
   if (hours === 24) {
     return minutes === 0 && seconds === 0;

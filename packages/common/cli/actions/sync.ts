@@ -66,7 +66,7 @@ const syncScripts = () => {
 
   // Array of script names without duplicates
   const scriptNames = [
-    ...new Set([...Object.keys(nodeScripts), ...Object.keys(denoScripts)]),
+    ...new Set([...Object.keys(nodeScripts), ...Object.keys(denoScripts)])
   ];
 
   for (const scriptName of scriptNames) {

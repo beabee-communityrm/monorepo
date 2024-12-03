@@ -9,7 +9,7 @@ import type {
   GetCalloutResponseCommentsQuery,
   Paginated,
   Serial,
-  UpdateCalloutResponseCommentData,
+  UpdateCalloutResponseCommentData
 } from "../deps.js";
 
 /**
@@ -34,17 +34,17 @@ export class CalloutResponseCommentClient extends BaseClient {
    * @returns The deserialized comment with proper date objects
    */
   static deserialize(
-    comment: Serial<GetCalloutResponseCommentData>,
+    comment: Serial<GetCalloutResponseCommentData>
   ): GetCalloutResponseCommentData {
     return {
       ...comment,
       createdAt: CalloutResponseCommentClient.deserializeDate(
-        comment.createdAt,
+        comment.createdAt
       ),
       updatedAt: CalloutResponseCommentClient.deserializeDate(
-        comment.updatedAt,
+        comment.updatedAt
       ),
-      contact: ContactClient.deserialize(comment.contact),
+      contact: ContactClient.deserialize(comment.contact)
     };
   }
 
@@ -55,7 +55,7 @@ export class CalloutResponseCommentClient extends BaseClient {
    * @returns A paginated list of comments
    */
   async list(
-    query: GetCalloutResponseCommentsQuery,
+    query: GetCalloutResponseCommentsQuery
   ): Promise<Paginated<GetCalloutResponseCommentData>> {
     const { data } = await this.fetch.get<
       Paginated<Serial<GetCalloutResponseCommentData>>
@@ -65,7 +65,7 @@ export class CalloutResponseCommentClient extends BaseClient {
       ...data,
       items: data.items.map((item) =>
         CalloutResponseCommentClient.deserialize(item)
-      ),
+      )
     };
   }
 
@@ -75,14 +75,11 @@ export class CalloutResponseCommentClient extends BaseClient {
    * @returns The created comment
    */
   async create(
-    newData: CreateCalloutResponseCommentData,
+    newData: CreateCalloutResponseCommentData
   ): Promise<GetCalloutResponseCommentData> {
     const { data } = await this.fetch.post<
       Serial<GetCalloutResponseCommentData>
-    >(
-      "",
-      newData,
-    );
+    >("", newData);
     return CalloutResponseCommentClient.deserialize(data);
   }
 
@@ -104,14 +101,11 @@ export class CalloutResponseCommentClient extends BaseClient {
    */
   async update(
     id: string,
-    updateData: UpdateCalloutResponseCommentData,
+    updateData: UpdateCalloutResponseCommentData
   ): Promise<GetCalloutResponseCommentData> {
     const { data } = await this.fetch.patch<
       Serial<GetCalloutResponseCommentData>
-    >(
-      `/${id}`,
-      updateData,
-    );
+    >(`/${id}`, updateData);
     return CalloutResponseCommentClient.deserialize(data);
   }
 }

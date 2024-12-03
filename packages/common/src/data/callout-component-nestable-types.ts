@@ -8,5 +8,5 @@ export const calloutComponentNestableTypes: Array<
 > = [
   CalloutComponentType.NESTABLE_PANEL,
   CalloutComponentType.NESTABLE_WELL,
-  CalloutComponentType.NESTABLE_TABS,
+  CalloutComponentType.NESTABLE_TABS
 ];

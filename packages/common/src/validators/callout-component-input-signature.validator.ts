@@ -1,16 +1,16 @@
 import type {
   CalloutComponentInputSignatureSchema,
   CalloutResponseAnswer,
-  ValidatorCalloutComponent,
+  ValidatorCalloutComponent
 } from "../types/index.js";
 
 export const calloutComponentInputSignatureValidator: ValidatorCalloutComponent<
   CalloutComponentInputSignatureSchema
 > = (
   _: CalloutComponentInputSignatureSchema,
-  _answer: CalloutResponseAnswer,
+  _answer: CalloutResponseAnswer
 ): boolean => {
   throw new Error(
-    `[calloutComponentInputSignatureValidator] Not implemented yet`,
+    `[calloutComponentInputSignatureValidator] Not implemented yet`
   );
 };

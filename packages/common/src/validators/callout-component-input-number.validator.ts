@@ -3,14 +3,14 @@ import { isNumber, isNumberInRange } from "../utils/index.js";
 import type {
   CalloutComponentInputNumberSchema,
   CalloutResponseAnswer,
-  ValidatorCalloutComponent,
+  ValidatorCalloutComponent
 } from "../types/index.js";
 
 export const calloutComponentInputNumberValidator: ValidatorCalloutComponent<
   CalloutComponentInputNumberSchema
 > = (
   schema: CalloutComponentInputNumberSchema,
-  answer: CalloutResponseAnswer,
+  answer: CalloutResponseAnswer
 ): boolean => {
   if (
     schema.validate &&

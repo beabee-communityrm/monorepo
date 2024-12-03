@@ -27,7 +27,7 @@ export class AuthClient extends BaseClient {
     await this.fetch.post("login", {
       email: data.email,
       password: data.password,
-      token: data.token,
+      token: data.token
     });
   }
 

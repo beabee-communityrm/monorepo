@@ -6,7 +6,7 @@ import type {
   GetNoticeData,
   GetNoticesQuery,
   Paginated,
-  Serial,
+  Serial
 } from "../deps.js";
 
 /**
@@ -36,7 +36,7 @@ export class NoticeClient extends BaseClient {
       createdAt: NoticeClient.deserializeDate(notice.createdAt),
       updatedAt: NoticeClient.deserializeDate(notice.updatedAt),
       starts: NoticeClient.deserializeDate(notice.starts),
-      expires: NoticeClient.deserializeDate(notice.expires),
+      expires: NoticeClient.deserializeDate(notice.expires)
     };
   }
 
@@ -49,13 +49,13 @@ export class NoticeClient extends BaseClient {
     const { data } = await this.fetch.get<Paginated<Serial<GetNoticeData>>>(
       "",
       {
-        params: query,
-      },
+        params: query
+      }
     );
 
     return {
       ...data,
-      items: data.items.map((notice) => this.deserialize(notice)),
+      items: data.items.map((notice) => this.deserialize(notice))
     };
   }
 
@@ -77,7 +77,7 @@ export class NoticeClient extends BaseClient {
   async create(data: CreateNoticeData): Promise<GetNoticeData> {
     const { data: responseData } = await this.fetch.post<Serial<GetNoticeData>>(
       "",
-      data,
+      data
     );
     return this.deserialize(responseData);
   }

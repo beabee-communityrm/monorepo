@@ -9,7 +9,7 @@ import type {
   GetPaymentsQuery,
   Paginated,
   PaymentFlowParams,
-  Serial,
+  Serial
 } from "../deps.js";
 
 /**
@@ -32,13 +32,11 @@ export class ContactPaymentClient extends BaseClient {
    * @param paymentMethod - The payment method identifier, or undefined to remove
    * @returns Payment flow parameters for client-side handling
    */
-  async update(
-    paymentMethod: string | undefined,
-  ): Promise<PaymentFlowParams> {
+  async update(paymentMethod: string | undefined): Promise<PaymentFlowParams> {
     const { data } = await this.fetch.put("/me/payment-method", {
       paymentMethod,
-      completeUrl: this.options.host +
-        "/profile/contribution/payment-method/complete",
+      completeUrl:
+        this.options.host + "/profile/contribution/payment-method/complete"
     });
     return data;
   }
@@ -49,11 +47,9 @@ export class ContactPaymentClient extends BaseClient {
    * @param paymentFlowId - The ID of the payment flow to complete
    * @returns Updated contribution information
    */
-  async completeUpdate(
-    paymentFlowId: string,
-  ): Promise<ContributionInfo> {
+  async completeUpdate(paymentFlowId: string): Promise<ContributionInfo> {
     const { data } = await this.fetch.post("/me/payment-method/complete", {
-      paymentFlowId,
+      paymentFlowId
     });
     return ContactContributionClient.deserialize(data);
   }
@@ -67,19 +63,19 @@ export class ContactPaymentClient extends BaseClient {
    */
   async list(
     id: string,
-    query: GetPaymentsQuery,
+    query: GetPaymentsQuery
   ): Promise<Paginated<GetPaymentData>> {
     const { data } = await this.fetch.get<Serial<Paginated<GetPaymentData>>>(
       `/${id}/payment`,
-      { params: query },
+      { params: query }
     );
     return {
       ...data,
       items: data.items.map((item) => ({
         chargeDate: ContactPaymentClient.deserializeDate(item.chargeDate),
         amount: item.amount,
-        status: item.status,
-      })),
+        status: item.status
+      }))
     };
   }
 }

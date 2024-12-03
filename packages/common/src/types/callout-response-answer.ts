@@ -1,6 +1,6 @@
 import type {
   CalloutResponseAnswerAddress,
-  CalloutResponseAnswerFileUpload,
+  CalloutResponseAnswerFileUpload
 } from "./index.js";
 
 export type CalloutResponseAnswer =

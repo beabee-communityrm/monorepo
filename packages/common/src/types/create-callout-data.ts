@@ -1,7 +1,7 @@
 import type {
   CalloutData,
   CalloutVariantData,
-  SetCalloutFormSchema,
+  SetCalloutFormSchema
 } from "./index.js";
 
 export interface CreateCalloutData extends CalloutData {

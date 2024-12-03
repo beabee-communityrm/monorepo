@@ -4,12 +4,12 @@ import type {
   CalloutComponentInputTextRules,
   CalloutComponentInputTextSchema,
   CalloutResponseAnswer,
-  ValidatorCalloutComponent,
+  ValidatorCalloutComponent
 } from "../types/index.js";
 
 const validateRules = (
   rules: CalloutComponentInputTextRules | undefined,
-  answer: string | undefined,
+  answer: string | undefined
 ): boolean => {
   // Nothing to do..
   if (!rules) {
@@ -22,23 +22,20 @@ const validateRules = (
 
   // Check if the answer matches the provided pattern
   if (
-    typeof rules.pattern === "string" && rules.pattern.length &&
+    typeof rules.pattern === "string" &&
+    rules.pattern.length &&
     !new RegExp(rules.pattern).test(answer || "")
   ) {
     return false;
   }
 
   // Check word range if defined
-  if (
-    !isTextInWordRange(answer, rules.minWords, rules.maxWords)
-  ) {
+  if (!isTextInWordRange(answer, rules.minWords, rules.maxWords)) {
     return false;
   }
 
   // Check length range if defined
-  if (
-    !isTextInRange(answer, rules.minLength, rules.maxLength)
-  ) {
+  if (!isTextInRange(answer, rules.minLength, rules.maxLength)) {
     return false;
   }
 
@@ -50,7 +47,7 @@ export const calloutComponentInputTextValidator: ValidatorCalloutComponent<
   CalloutComponentInputTextSchema
 > = (
   schema: CalloutComponentInputTextSchema,
-  answer: CalloutResponseAnswer,
+  answer: CalloutResponseAnswer
 ): boolean => {
   if (typeof answer !== "string") {
     return false;

@@ -2,14 +2,7 @@
 import { readdir, writeFile } from "node:fs/promises";
 import { basename } from "node:path";
 
-const paths = [
-  "./src/data",
-  "./src/error",
-  "./src/search",
-  "./src/types",
-  "./src/utils",
-  "./src/validators"
-];
+const paths = ["./src/types", "./src/api", "./src/utils"];
 
 const generateIndex = async (paths) => {
   for (const path of paths) {

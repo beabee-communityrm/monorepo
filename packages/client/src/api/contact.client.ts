@@ -16,7 +16,7 @@ import type {
   Paginated,
   RuleGroup,
   Serial,
-  UpdateContactData,
+  UpdateContactData
 } from "../deps.js";
 
 /**
@@ -59,24 +59,24 @@ export class ContactClient extends BaseClient {
   static deserialize<With extends GetContactWith | void = void>(
     // TODO: fix type safety
     // deno-lint-ignore no-explicit-any
-    contact: any, // Serial<GetContactDataWith<With>>,
+    contact: any // Serial<GetContactDataWith<With>>,
   ): GetContactDataWith<With> {
     return {
       ...contact,
-      displayName: `${contact.firstname} ${contact.lastname}`.trim() ||
-        contact.email,
+      displayName:
+        `${contact.firstname} ${contact.lastname}`.trim() || contact.email,
       joined: ContactClient.deserializeDate(contact.joined),
       lastSeen: ContactClient.deserializeDate(contact.lastSeen),
       ...(contact.contribution && {
         contribution: ContactContributionClient.deserialize(
-          contact.contribution,
-        ),
+          contact.contribution
+        )
       }),
       ...(contact.roles && {
         roles: contact.roles.map((role: Serial<ContactRoleData>) =>
           ContactRoleClient.deserialize(role)
-        ),
-      }),
+        )
+      })
     };
   }
 
@@ -88,19 +88,19 @@ export class ContactClient extends BaseClient {
    */
   async list<With extends GetContactWith | void = void>(
     query: GetContactsQuery,
-    _with?: readonly With[],
+    _with?: readonly With[]
   ): Promise<Paginated<GetContactDataWith<With>>> {
     const { data } = await this.fetch.get<Paginated<Serial<GetContactData>>>(
       "/",
       {
-        params: { with: _with, ...query },
-      },
+        params: { with: _with, ...query }
+      }
     );
     return {
       ...data,
       items: data.items.map((item: Serial<GetContactData>) =>
         ContactClient.deserialize<With>(item)
-      ),
+      )
     };
   }
 
@@ -122,10 +122,10 @@ export class ContactClient extends BaseClient {
    */
   async get<With extends GetContactWith | void = void>(
     id: string,
-    _with?: readonly With[],
+    _with?: readonly With[]
   ): Promise<GetContactDataWith<With>> {
     const { data } = await this.fetch.get(`/${id}`, {
-      params: { with: _with },
+      params: { with: _with }
     });
     return ContactClient.deserialize<With>(data);
   }
@@ -138,11 +138,11 @@ export class ContactClient extends BaseClient {
    */
   async update(
     id: string,
-    updateData: UpdateContactData,
+    updateData: UpdateContactData
   ): Promise<GetContactData> {
     const { data } = await this.fetch.patch<Serial<GetContactData>>(
       `/${id}`,
-      updateData,
+      updateData
     );
     return ContactClient.deserialize(data);
   }
@@ -155,11 +155,11 @@ export class ContactClient extends BaseClient {
    */
   async updateMany(
     rules: RuleGroup,
-    updates: UpdateContactData,
+    updates: UpdateContactData
   ): Promise<{ affected: number }> {
     const { data } = await this.fetch.patch("/", {
       rules,
-      updates,
+      updates
     });
     return data;
   }

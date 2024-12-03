@@ -1,7 +1,7 @@
 import type {
   GetStatsData,
   GetStatsQuery,
-  Serial,
+  Serial
 } from "@beabee/beabee-common";
 import type { BaseClientOptions } from "../types/index.js";
 import { BaseClient } from "./base.client.js";
@@ -27,7 +27,7 @@ export class StatsClient extends BaseClient {
    */
   async get(query: GetStatsQuery): Promise<GetStatsData> {
     const { data } = await this.fetch.get<Serial<GetStatsData>>("", {
-      params: query,
+      params: query
     });
     return data;
   }

@@ -25,9 +25,9 @@ export abstract class TagClient extends BaseClient {
       {
         params: {
           sort: "name",
-          order: "ASC",
-        },
-      },
+          order: "ASC"
+        }
+      }
     );
     return data;
   }
@@ -40,11 +40,11 @@ export abstract class TagClient extends BaseClient {
    */
   async create(
     entityId: string | undefined,
-    tagData: TagCreateData,
+    tagData: TagCreateData
   ): Promise<TagGetData> {
     const { data } = await this.fetch.post<TagGetData>(
       this.getBasePath(entityId),
-      tagData,
+      tagData
     );
     return data;
   }
@@ -59,11 +59,11 @@ export abstract class TagClient extends BaseClient {
   async update(
     entityId: string | undefined,
     tagId: string,
-    tagData: TagUpdateData,
+    tagData: TagUpdateData
   ): Promise<TagGetData> {
     const { data } = await this.fetch.patch<TagGetData>(
       `${this.getBasePath(entityId)}/${tagId}`,
-      tagData,
+      tagData
     );
     return data;
   }

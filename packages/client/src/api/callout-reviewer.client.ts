@@ -16,15 +16,15 @@ export class CalloutReviewerClient extends BaseClient {
    * Deserialize a reviewer
    */
   protected deserialize(
-    data: Serial<GetCalloutReviewerData>,
+    data: Serial<GetCalloutReviewerData>
   ): GetCalloutReviewerData {
     return {
       ...data,
       contact: {
         ...data.contact,
         joined: CalloutReviewerClient.deserializeDate(data.contact.joined),
-        lastSeen: CalloutReviewerClient.deserializeDate(data.contact.lastSeen),
-      },
+        lastSeen: CalloutReviewerClient.deserializeDate(data.contact.lastSeen)
+      }
     };
   }
 
@@ -35,7 +35,7 @@ export class CalloutReviewerClient extends BaseClient {
    */
   async list(calloutId: string): Promise<GetCalloutReviewerData[]> {
     const { data } = await this.fetch.get<Serial<GetCalloutReviewerData[]>>(
-      `/${calloutId}/reviewers`,
+      `/${calloutId}/reviewers`
     );
     return data.map((reviewer) => this.deserialize(reviewer));
   }
@@ -46,10 +46,7 @@ export class CalloutReviewerClient extends BaseClient {
    * @param contactId The ID of the contact to add as reviewer
    */
   async add(calloutId: string, contactId: string): Promise<void> {
-    await this.fetch.post(
-      `/${calloutId}/reviewers`,
-      { contactId },
-    );
+    await this.fetch.post(`/${calloutId}/reviewers`, { contactId });
   }
 
   /**

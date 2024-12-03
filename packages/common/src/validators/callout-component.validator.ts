@@ -16,7 +16,7 @@ import { calloutComponentInputUrlValidator } from "./callout-component-input-url
 
 import {
   CalloutComponentBaseType,
-  CalloutComponentType,
+  CalloutComponentType
 } from "../data/index.js";
 import { isCalloutComponentOfBaseType } from "../utils/callouts.js";
 
@@ -26,18 +26,15 @@ import type {
   CalloutComponentSchema,
   CalloutResponseAnswer,
   CalloutResponseAnswers,
-  ValidatorCalloutComponent,
+  ValidatorCalloutComponent
 } from "../types/index.js";
 
 export const calloutComponentNestableValidator = (
   schema: CalloutComponentNestableSchema,
-  answers: CalloutResponseAnswers,
+  answers: CalloutResponseAnswers
 ): boolean => {
   for (const component of schema.components) {
-    const valid = calloutComponentValidator(
-      component,
-      answers[component.key],
-    );
+    const valid = calloutComponentValidator(component, answers[component.key]);
     if (!valid) {
       return false;
     }
@@ -78,14 +75,11 @@ const calloutInputValidatorsMap: Record<
   [CalloutComponentType.INPUT_SELECTABLE_RADIO]:
     calloutComponentInputSelectableValidator,
   [CalloutComponentType.INPUT_SELECTABLE_SELECTBOXES]:
-    calloutComponentInputSelectableValidator,
+    calloutComponentInputSelectableValidator
 };
 export function calloutComponentInputValidator(
   schema: CalloutComponentInputSchema,
-  answer:
-    | CalloutResponseAnswer
-    | CalloutResponseAnswer[]
-    | undefined,
+  answer: CalloutResponseAnswer | CalloutResponseAnswer[] | undefined
 ): boolean {
   const validator = calloutInputValidatorsMap[schema.type];
   if (!validator) {
@@ -110,15 +104,12 @@ export function calloutComponentInputValidator(
 
 export function calloutComponentValidator(
   schema: CalloutComponentSchema,
-  answer:
-    | CalloutResponseAnswer
-    | CalloutResponseAnswer[]
-    | undefined,
+  answer: CalloutResponseAnswer | CalloutResponseAnswer[] | undefined
 ): boolean;
 
 export function calloutComponentValidator(
   schema: CalloutComponentNestableSchema,
-  answer: CalloutResponseAnswers,
+  answer: CalloutResponseAnswers
 ): boolean;
 
 export function calloutComponentValidator(
@@ -127,19 +118,19 @@ export function calloutComponentValidator(
     | CalloutResponseAnswer
     | CalloutResponseAnswer[]
     | undefined
-    | CalloutResponseAnswers,
+    | CalloutResponseAnswers
 ): boolean {
   if (isCalloutComponentOfBaseType(schema, CalloutComponentBaseType.NESTABLE)) {
     return calloutComponentNestableValidator(
       schema,
-      answer as CalloutResponseAnswers,
+      answer as CalloutResponseAnswers
     );
   }
 
   if (isCalloutComponentOfBaseType(schema, CalloutComponentBaseType.INPUT)) {
     return calloutComponentInputValidator(
       schema,
-      answer as CalloutResponseAnswer | CalloutResponseAnswer[] | undefined,
+      answer as CalloutResponseAnswer | CalloutResponseAnswer[] | undefined
     );
   }
 

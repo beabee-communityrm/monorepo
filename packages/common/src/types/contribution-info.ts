@@ -1,7 +1,7 @@
 import type {
   ContributionPeriod,
   ContributionType,
-  MembershipStatus,
+  MembershipStatus
 } from "../data/index.js";
 
 import type { PaymentSource } from "./index.js";

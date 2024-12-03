@@ -12,20 +12,18 @@ export const esbuildConfigs: EsbuildConfigs = {
       bundle: false,
       platform: "node",
       target: "es2020",
-      format: "esm",
+      format: "esm"
     },
     cjs: {
-      plugins: [
-        renameExtPlugin(".js", ".cjs"),
-      ],
+      plugins: [renameExtPlugin(".js", ".cjs")],
       entryPoints: ["./src/index.js", "./src/**/*.js"],
       outdir: "./dist/cjs",
       bundle: false,
       platform: "node",
       target: "node16",
-      format: "cjs",
+      format: "cjs"
     },
-    cdn: null,
+    cdn: null
   },
 
   browser: {
@@ -36,7 +34,7 @@ export const esbuildConfigs: EsbuildConfigs = {
       bundle: true,
       sourcemap: true,
       platform: "browser",
-      minify: true,
+      minify: true
     },
     esm: {
       plugins: [],
@@ -45,8 +43,8 @@ export const esbuildConfigs: EsbuildConfigs = {
       bundle: true,
       platform: "browser",
       minify: false,
-      format: "esm",
+      format: "esm"
     },
-    cjs: null,
-  },
+    cjs: null
+  }
 };

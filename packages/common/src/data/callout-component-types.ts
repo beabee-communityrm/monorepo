@@ -6,5 +6,5 @@ import { CalloutComponentType } from "./callout-component-type.js";
 export const calloutComponentTypes: CalloutComponentType[] = [
   ...calloutComponentNestableTypes,
   ...calloutComponentInputTypes,
-  CalloutComponentType.CONTENT,
+  CalloutComponentType.CONTENT
 ];

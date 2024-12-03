@@ -1,6 +1,6 @@
 import type {
   CalloutComponentInputSelectableRadioSchema,
-  CalloutComponentInputSelectableSelectboxesSchema,
+  CalloutComponentInputSelectableSelectboxesSchema
 } from "./index.js";
 
 /** Any callout input selectable component schema */
