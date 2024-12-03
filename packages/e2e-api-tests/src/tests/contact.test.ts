@@ -1,12 +1,7 @@
 import { describe, beforeAll } from "@jest/globals";
 import { ClientApiError, ContactClient } from '@beabee/client';
 
-import dotenv from 'dotenv';
-
-const HOST = process.env.APP_BASE_URL || 'http://localhost:3002';
-const PATH = process.env.API_BASE_URL || '/api/1.0';
-
-dotenv.config({ path: ['.env', '.env.example'] });
+import { API_KEY, HOST, PATH } from './utils/env.js';
 
 describe('Contact API', () => {
   let contactClient: ContactClient;
@@ -15,7 +10,7 @@ describe('Contact API', () => {
     contactClient = new ContactClient({
       host: HOST,
       path: PATH,
-      token: 'test-token',
+      token: API_KEY,
     });
   });
 

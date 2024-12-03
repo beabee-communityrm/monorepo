@@ -13,14 +13,9 @@ export default {
     "^.+\\.tsx?$": [
       "ts-jest",
       {
-        useESM: true
+        useESM: true,
+        tsconfig: "./tsconfig.json"
       }
     ]
-  },
-  // Use tsconfig.test.json
-  globals: {
-    "ts-jest": {
-      tsconfig: "./tsconfig.test.json"
-    }
   }
 };

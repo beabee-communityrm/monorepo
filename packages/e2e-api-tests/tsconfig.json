@@ -4,6 +4,7 @@
     "@beabee/tsconfig/tsconfig.options.json"
   ],
   "exclude": [], // Override tsconfig.build.json exclude
+  "include": ["src/**/*.ts"],
   "compilerOptions": {
     "noEmit": true
   }
