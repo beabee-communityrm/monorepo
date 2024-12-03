@@ -19,13 +19,13 @@ COPY packages/common/package.json /opt/packages/common/package.json
 COPY packages/core/package.json /opt/packages/core/package.json
 COPY packages/docker/package.json /opt/packages/docker/package.json
 COPY packages/client/package.json /opt/packages/client/package.json
-COPY packages/e2e-api-tests/package.json /opt/packages/e2e-api-tests/package.json
 
 # Copy dependencies info from apps
 COPY apps/backend/package.json /opt/apps/backend/package.json
 COPY apps/frontend/package.json /opt/apps/frontend/package.json
 COPY apps/legacy/package.json /opt/apps/legacy/package.json
 COPY apps/webhooks/package.json /opt/apps/webhooks/package.json
+COPY apps/e2e-api-tests/package.json /opt/apps/e2e-api-tests/package.json
 
 # Copy config files with dependencies info
 COPY packages/prettier-config /opt/packages/prettier-config
