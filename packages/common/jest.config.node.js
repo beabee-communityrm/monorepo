@@ -14,7 +14,7 @@ export default {
       "ts-jest",
       {
         useESM: true,
-        tsconfig: "./tsconfig.json"
+        tsconfig: "./tsconfig.test.json"
       }
     ]
   }
