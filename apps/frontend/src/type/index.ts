@@ -31,4 +31,5 @@ export * from './rule-group-with-empty';
 export * from './set-mfa-steps';
 export * from './set-mfa-totp-identity';
 export * from './signup-data';
+export * from './stripe-payment-data';
 export * from './update-reset-device-data';
