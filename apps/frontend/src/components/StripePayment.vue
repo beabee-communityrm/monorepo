@@ -115,10 +115,10 @@ const appearance: Appearance = {
 
 const appleRecurringPaymentRequest = computed<ApplePayRecurringPaymentRequest>(
   () => ({
-    paymentDescription: 'Membership',
+    paymentDescription: t('joinPayment.applePay.description'),
     managementURL: env.appUrl + '/profile/contribution',
     regularBilling: {
-      label: 'Membership payment',
+      label: t('joinPayment.applePay.recurringLabel'),
       amount: props.paymentData.amount * 100,
       recurringPaymentIntervalUnit:
         props.paymentData.period === ContributionPeriod.Monthly

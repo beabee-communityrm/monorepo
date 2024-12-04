@@ -1159,6 +1159,10 @@
     }
   },
   "joinPayment": {
+    "applePay": {
+      "description": "Membership",
+      "recurringLabel": "Recurring contribution"
+    },
     "genericError": "Oops, something went wrong! Contact support if this happens again.",
     "goBack": "Did you miss something? {back}",
     "goBackButton": "Back to the previous screen",
