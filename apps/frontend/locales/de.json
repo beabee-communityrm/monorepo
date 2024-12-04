@@ -996,6 +996,7 @@
         "mfa-token-required": "Bitte geben Sie den Code Ihrer Authentifizierungs-App ein."
       },
       "generic": "Upps! Etwas ist schiefgelaufen. Bitte wenden Sie sich an den Support, sollte das erneut passieren.",
+      "unauthorized": "Sie haben daruf keinen Zugriff.",
       "validation": "Es fehlt etwas! Bitte kontrollieren Sie die obigen Felder."
     },
     "errors": {
@@ -1281,14 +1282,18 @@
     "error": "Da ist etwas schiefgelaufen!"
   },
   "pageTitle": {
+    "confirmEmail": "E-Mail-Adresse bestätigen",
     "duplicateEmail": "E-Mail-Adresse duplizieren",
+    "failed": "Fehler",
     "forgotPassword": "Passwort vergessen",
+    "join": "Mitglied werden",
     "login": "Login",
     "lostDevice": "Haben Sie Ihr 2FA-Gerät verloren?",
     "notFound": "Seite nicht gefunden",
     "resetDevice": "Zweitgerät zurücksetzen",
     "resetPassword": "Passwort zurücksetzen",
-    "setPassword": "Passwort vergeben"
+    "setPassword": "Passwort vergeben",
+    "setup": "Account fertigstellen"
   },
   "paymentMethods": {
     "gc_direct-debit": {

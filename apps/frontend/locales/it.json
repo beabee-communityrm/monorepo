@@ -494,7 +494,9 @@
       "changeLabel": "Modifica i dettagli della carta",
       "label": "Carta di credito"
     },
-    "s_paypal": {},
+    "s_paypal": {
+      "label": "PayPal"
+    },
     "s_sepa": {
       "label": "Addebito diretto"
     }
