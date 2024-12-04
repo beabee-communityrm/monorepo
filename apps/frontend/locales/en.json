@@ -338,8 +338,6 @@
       "name": "Your name",
       "submittingResponseError": "There was a problem submitting your response, please try again"
     },
-    "fromMap": "From a point in the map",
-    "fromMyLocation": "From my location",
     "getStarted": "Get started",
     "joinNow": "Join now",
     "loginToYourAccount": "Login to your account",
@@ -1294,14 +1292,18 @@
     "error": "Something went wrong. Try reloading the page."
   },
   "pageTitle": {
+    "confirmEmail": "Confirm email",
     "duplicateEmail": "Duplicate email",
+    "failed": "Failed",
     "forgotPassword": "Forgot password",
+    "join": "Join",
     "login": "Login",
     "lostDevice": "Lost your 2FA device?",
     "notFound": "Page not found",
     "resetDevice": "Reset 2FA device",
     "resetPassword": "Reset password",
-    "setPassword": "Set password"
+    "setPassword": "Set password",
+    "setup": "Setup"
   },
   "paymentMethods": {
     "gc_direct-debit": {

@@ -17,6 +17,12 @@
     "displayName": "Deutsch",
     "adminLocale": "de@informal"
   },
+  "pt": {
+    "baseLocale": "pt",
+    "name": "Português",
+    "displayName": "Português",
+    "adminLocale": "en"
+  },
   "it": {
     "baseLocale": "it",
     "name": "Italiano",
@@ -27,12 +33,6 @@
     "baseLocale": "ru",
     "name": "Русский",
     "displayName": "Русский",
-    "adminLocale": "en"
-  },
-  "pt": {
-    "baseLocale": "pt",
-    "name": "Português",
-    "displayName": "Português",
     "adminLocale": "en"
   },
   "nl": {

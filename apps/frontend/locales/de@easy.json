@@ -81,8 +81,6 @@
     "form": {
       "submittingResponseError": "Das hat nicht geklappt. Versuche es noch mal."
     },
-    "fromMap": "Suche dir einen Punkt auf der Karte. Dann ziehe den Pfeil mit der Mouse.",
-    "fromMyLocation": "Das ist der Ort: Wo ich gerade bin.",
     "getStarted": "Hier geht es los.",
     "responseSubmitted": "Dein Brief / Deine Mail wurde weg-geschickt.",
     "share": {

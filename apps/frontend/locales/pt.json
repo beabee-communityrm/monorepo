@@ -819,14 +819,18 @@
     "error": "Houve aqui um erro. Experimenta recarregar a página."
   },
   "pageTitle": {
+    "confirmEmail": "Confirma o email",
     "duplicateEmail": "Email duplicado",
+    "failed": "Falhou",
     "forgotPassword": "Esqueceste-te da palavra-passe",
+    "join": "Junta-te",
     "login": "Login",
     "lostDevice": "Perdeste o seu dispositivo 2FA?",
     "notFound": "Página não encontrada",
     "resetDevice": "Redefinir dispositivo secundário",
     "resetPassword": "Redefinir palavra-passe",
-    "setPassword": "Definir uma palavra-passe"
+    "setPassword": "Definir uma palavra-passe",
+    "setup": "Setup"
   },
   "paymentMethods": {
     "gc_direct-debit": {
@@ -844,7 +848,9 @@
       "label": "Cartão",
       "setLabel": "Detalhes do teu cartão"
     },
-    "s_paypal": {},
+    "s_paypal": {
+      "label": "PayPal"
+    },
     "s_sepa": {
       "changeLabel": "Alterar débito direto",
       "label": "Débito direto",
