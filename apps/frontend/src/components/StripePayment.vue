@@ -27,7 +27,7 @@
 </template>
 <script lang="ts" setup>
 import useVuelidate from '@vuelidate/core';
-import { type Appearance } from '@stripe/stripe-js';
+import type { Appearance } from '@stripe/stripe-js';
 import type { ApplePayRecurringPaymentRequest } from '@stripe/stripe-js/dist/stripe-js/elements/apple-pay';
 import { loadStripe } from '@stripe/stripe-js/pure';
 import { computed, onBeforeMount, ref } from 'vue';
