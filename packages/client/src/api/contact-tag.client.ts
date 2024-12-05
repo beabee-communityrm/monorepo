@@ -1,5 +1,5 @@
-import { TagClient } from "./tag.client.ts";
-import type { BaseClientOptions } from "../types/index.ts";
+import { TagClient } from "./tag.client.js";
+import type { BaseClientOptions } from "../types/index.js";
 
 /**
  * Client for managing contact tags

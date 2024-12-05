@@ -3,7 +3,5 @@
   "compilerOptions": {
     "composite": true
   },
-  "references": [
-    { "path": "../common" }
-  ]
+  "references": [{ "path": "../common" }]
 }

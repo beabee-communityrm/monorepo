@@ -1,7 +1,7 @@
-import { BaseClient } from "./base.client.ts";
-import { cleanUrl } from "../utils/index.ts";
-import type { BaseClientOptions } from "../types/index.ts";
-import type { GetEmailData, UpdateEmailData } from "../deps.ts";
+import { BaseClient } from "./base.client.js";
+import { cleanUrl } from "../utils/index.js";
+import type { BaseClientOptions } from "../types/index.js";
+import type { GetEmailData, UpdateEmailData } from "../deps.js";
 
 /**
  * Client for managing email operations
@@ -37,7 +37,7 @@ export class EmailClient extends BaseClient {
   async update(id: string, data: UpdateEmailData): Promise<GetEmailData> {
     const { data: responseData } = await this.fetch.put<GetEmailData>(
       `/${id}`,
-      data,
+      data
     );
     return responseData;
   }

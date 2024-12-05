@@ -1,4 +1,4 @@
-import type { BaseFilterArgs } from "./index.ts";
+import type { BaseFilterArgs } from "./index.js";
 
 export interface EnumFilterArgs<T extends readonly string[]>
   extends BaseFilterArgs {

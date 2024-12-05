@@ -1,4 +1,4 @@
-import type { GetCalloutSlideSchema, SetCalloutFormSchema } from "./index.ts";
+import type { GetCalloutSlideSchema, SetCalloutFormSchema } from "./index.js";
 
 export interface GetCalloutFormSchema extends SetCalloutFormSchema {
   slides: GetCalloutSlideSchema[];

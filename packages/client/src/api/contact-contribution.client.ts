@@ -1,6 +1,6 @@
-import { BaseClient } from "./base.client.ts";
-import { cleanUrl } from "../utils/index.ts";
-import type { BaseClientOptions } from "../types/index.ts";
+import { BaseClient } from "./base.client.js";
+import { cleanUrl } from "../utils/index.js";
+import type { BaseClientOptions } from "../types/index.js";
 import {
   type ContributionInfo,
   ContributionPeriod,
@@ -8,8 +8,8 @@ import {
   type PaymentFlowParams,
   type Serial,
   type SetContributionData,
-  type StartContributionData,
-} from "../deps.ts";
+  type StartContributionData
+} from "../deps.js";
 
 /**
  * Client for managing contribution operations
@@ -28,7 +28,7 @@ export class ContactContributionClient extends BaseClient {
       ...data,
       cancellationDate: this.deserializeDate(data.cancellationDate),
       membershipExpiryDate: this.deserializeDate(data.membershipExpiryDate),
-      renewalDate: this.deserializeDate(data.renewalDate),
+      renewalDate: this.deserializeDate(data.renewalDate)
     };
   }
 
@@ -36,9 +36,8 @@ export class ContactContributionClient extends BaseClient {
    * Get the current user's contribution information
    */
   async get(): Promise<ContributionInfo> {
-    const { data } = await this.fetch.get<Serial<ContributionInfo>>(
-      "/me/contribution",
-    );
+    const { data } =
+      await this.fetch.get<Serial<ContributionInfo>>("/me/contribution");
     return ContactContributionClient.deserialize(data);
   }
 
@@ -51,11 +50,12 @@ export class ContactContributionClient extends BaseClient {
       {
         amount: updateData.amount,
         period: updateData.period,
-        payFee: updateData.payFee &&
-          updateData.period === ContributionPeriod.Monthly,
-        prorate: updateData.prorate &&
-          updateData.period === ContributionPeriod.Annually,
-      },
+        payFee:
+          updateData.payFee && updateData.period === ContributionPeriod.Monthly,
+        prorate:
+          updateData.prorate &&
+          updateData.period === ContributionPeriod.Annually
+      }
     );
     return ContactContributionClient.deserialize(data);
   }
@@ -65,11 +65,11 @@ export class ContactContributionClient extends BaseClient {
    */
   async forceUpdate(
     id: string,
-    updateData: ForceUpdateContributionData,
+    updateData: ForceUpdateContributionData
   ): Promise<ContributionInfo> {
     const { data } = await this.fetch.patch(
       `/${id}/contribution/force`,
-      updateData,
+      updateData
     );
     return ContactContributionClient.deserialize(data);
   }
@@ -77,18 +77,16 @@ export class ContactContributionClient extends BaseClient {
   /**
    * Start a new contribution
    */
-  async start(
-    startData: StartContributionData,
-  ): Promise<PaymentFlowParams> {
+  async start(startData: StartContributionData): Promise<PaymentFlowParams> {
     const { data } = await this.fetch.post("/me/contribution", {
       amount: startData.amount,
       period: startData.period,
-      payFee: startData.payFee &&
-        startData.period === ContributionPeriod.Monthly,
-      prorate: startData.prorate &&
-        startData.period === ContributionPeriod.Annually,
+      payFee:
+        startData.payFee && startData.period === ContributionPeriod.Monthly,
+      prorate:
+        startData.prorate && startData.period === ContributionPeriod.Annually,
       paymentMethod: startData.paymentMethod,
-      completeUrl: this.options.host + "/profile/contribution/complete",
+      completeUrl: this.options.host + "/profile/contribution/complete"
     });
     return data;
   }
@@ -100,8 +98,8 @@ export class ContactContributionClient extends BaseClient {
     const { data } = await this.fetch.post<Serial<ContributionInfo>>(
       "/me/contribution/complete",
       {
-        paymentFlowId,
-      },
+        paymentFlowId
+      }
     );
     return ContactContributionClient.deserialize(data);
   }

@@ -1,14 +1,14 @@
-import { BaseClient } from "./base.client.ts";
-import { cleanUrl } from "../utils/index.ts";
+import { BaseClient } from "./base.client.js";
+import { cleanUrl } from "../utils/index.js";
 
-import type { BaseClientOptions } from "../types/index.ts";
+import type { BaseClientOptions } from "../types/index.js";
 import type {
   CreateApiKeyData,
   GetApiKeyData,
   GetApiKeysQuery,
   Paginated,
-  Serial,
-} from "../deps.ts";
+  Serial
+} from "../deps.js";
 
 export class ApiKeyClient extends BaseClient {
   /**
@@ -29,7 +29,7 @@ export class ApiKeyClient extends BaseClient {
     return {
       ...apiKey,
       createdAt: this.deserializeDate(apiKey.createdAt),
-      expires: this.deserializeDate(apiKey.expires),
+      expires: this.deserializeDate(apiKey.expires)
     };
   }
 
@@ -41,7 +41,7 @@ export class ApiKeyClient extends BaseClient {
   async create(newData: CreateApiKeyData): Promise<{ token: string }> {
     const { data } = await this.fetch.post<Serial<{ token: string }>>(
       "",
-      newData,
+      newData
     );
     return data;
   }
@@ -54,12 +54,12 @@ export class ApiKeyClient extends BaseClient {
   async list(query?: GetApiKeysQuery): Promise<Paginated<GetApiKeyData>> {
     const { data } = await this.fetch.get<Paginated<Serial<GetApiKeyData>>>(
       "",
-      { params: query },
+      { params: query }
     );
 
     return {
       ...data,
-      items: data.items.map((item) => ApiKeyClient.deserialize(item)),
+      items: data.items.map((item) => ApiKeyClient.deserialize(item))
     };
   }
 

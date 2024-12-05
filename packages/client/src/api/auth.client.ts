@@ -1,6 +1,6 @@
-import { BaseClient } from "./base.client.ts";
-import { cleanUrl } from "../utils/index.ts";
-import type { BaseClientOptions } from "../types/index.ts";
+import { BaseClient } from "./base.client.js";
+import { cleanUrl } from "../utils/index.js";
+import type { BaseClientOptions } from "../types/index.js";
 import type { LoginData } from "@beabee/beabee-common";
 
 /**
@@ -27,7 +27,7 @@ export class AuthClient extends BaseClient {
     await this.fetch.post("login", {
       email: data.email,
       password: data.password,
-      token: data.token,
+      token: data.token
     });
   }
 

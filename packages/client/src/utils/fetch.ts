@@ -1,11 +1,11 @@
 // deno-lint-ignore-file no-explicit-any
-import { cleanUrl, ClientApiError, isJson, objToQueryString } from "./index.ts";
+import { cleanUrl, ClientApiError, isJson, objToQueryString } from "./index.js";
 
 import type {
   FetchOptions,
   FetchResponse,
-  HttpMethod,
-} from "../types/index.ts";
+  HttpMethod
+} from "../types/index.js";
 
 /**
  * A wrapper for the fetch API with some additional features.
@@ -19,7 +19,7 @@ export class Fetch {
     if (options.token) {
       this.setRequestHeaderEachRequest(
         "Authorization",
-        `Bearer ${options.token}`,
+        `Bearer ${options.token}`
       );
     }
 
@@ -29,9 +29,8 @@ export class Fetch {
     options.credentials ||= "same-origin";
     options.method ||= "GET";
     options.mode ||= "cors";
-    options.isAjax ||= typeof options.isAjax === "boolean"
-      ? options.isAjax
-      : true;
+    options.isAjax ||=
+      typeof options.isAjax === "boolean" ? options.isAjax : true;
     options.basePath ||= "/";
 
     this.baseUrl = new URL(options.basePath, options.host);
@@ -57,7 +56,7 @@ export class Fetch {
   public post<T = any, D = any>(
     url: string | URL,
     data?: D,
-    options: FetchOptions = {},
+    options: FetchOptions = {}
   ) {
     return this.fetch<T>(url, "POST", data, options);
   }
@@ -65,7 +64,7 @@ export class Fetch {
   public delete<T = any, D = any>(
     url: string | URL,
     data?: D,
-    options: FetchOptions = {},
+    options: FetchOptions = {}
   ) {
     return this.fetch<T>(url, "DELETE", data, options);
   }
@@ -73,7 +72,7 @@ export class Fetch {
   public put<T = any, D = any>(
     url: string | URL,
     data?: D,
-    options: FetchOptions = {},
+    options: FetchOptions = {}
   ) {
     return this.fetch<T>(url, "PUT", data, options);
   }
@@ -81,7 +80,7 @@ export class Fetch {
   public patch<T = any, D = any>(
     url: string | URL,
     data?: D,
-    options: FetchOptions = {},
+    options: FetchOptions = {}
   ) {
     return this.fetch<T>(url, "PATCH", data, options);
   }
@@ -96,7 +95,7 @@ export class Fetch {
   public get<T = unknown, D = any>(
     url: string | URL,
     data?: D,
-    options: FetchOptions = {},
+    options: FetchOptions = {}
   ) {
     return this.fetch<T>(url, "GET", data, options);
   }
@@ -144,11 +143,11 @@ export class Fetch {
     url: string | URL,
     method: HttpMethod = "GET",
     data: D,
-    options: FetchOptions = {},
+    options: FetchOptions = {}
   ): Promise<FetchResponse<T>> {
     if (!fetch) {
       throw new Error(
-        "Your platform does not support the fetch API, use xhr instead or install a polyfill.",
+        "Your platform does not support the fetch API, use xhr instead or install a polyfill."
       );
     }
 
@@ -163,7 +162,7 @@ export class Fetch {
     const headers: Record<string, string> = {
       ...this._requestHeadersEachRequest,
       ...options.headers,
-      ...this.parseDataType(options.dataType),
+      ...this.parseDataType(options.dataType)
     };
 
     // This is a common technique used to identify Ajax requests.
@@ -194,7 +193,7 @@ export class Fetch {
       ...options,
       method,
       body,
-      headers,
+      headers
     });
 
     // Automatically parse json response
@@ -224,7 +223,7 @@ export class Fetch {
       ...response,
       data: bodyResult,
       // WORKAROUND:
-      ok: response.status >= 200 && response.status < 300,
+      ok: response.status >= 200 && response.status < 300
     };
 
     // Makes it sense to throw an error if the response is not ok?
@@ -237,10 +236,10 @@ export class Fetch {
             console.error(JSON.stringify(error, null, 2));
           }
         }
-        throw new ClientApiError(
-          data.message || data.name || "Unknown error",
-          { ...data, status: response.status },
-        );
+        throw new ClientApiError(data.message || data.name || "Unknown error", {
+          ...data,
+          status: response.status
+        });
       }
       throw result;
     }

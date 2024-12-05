@@ -4,11 +4,11 @@ import type {
   GetSegmentsQuery,
   GetSegmentWith,
   Serial,
-  UpdateSegmentData,
+  UpdateSegmentData
 } from "@beabee/beabee-common";
-import type { BaseClientOptions } from "../types/index.ts";
-import { BaseClient } from "./base.client.ts";
-import { cleanUrl } from "../utils/index.ts";
+import type { BaseClientOptions } from "../types/index.js";
+import { BaseClient } from "./base.client.js";
+import { cleanUrl } from "../utils/index.js";
 
 /**
  * Client for managing contact segments.
@@ -31,14 +31,12 @@ export class SegmentsClient extends BaseClient {
    * @returns Array of segments matching the query
    */
   async list<With extends GetSegmentWith = void>(
-    query?: GetSegmentsQuery,
-    _with?: readonly With[],
+    query: GetSegmentsQuery = {},
+    _with?: readonly With[]
   ): Promise<GetSegmentDataWith<With>[]> {
     const { data } = await this.fetch.get<Serial<GetSegmentDataWith<With>>[]>(
       "",
-      {
-        params: { with: _with, ...query },
-      },
+      { with: _with, ...query }
     );
     // TODO: needs Serial type guard
     return data as GetSegmentDataWith<With>[];
@@ -52,13 +50,13 @@ export class SegmentsClient extends BaseClient {
    */
   async get<With extends GetSegmentWith = void>(
     id: string,
-    _with?: readonly With[],
+    _with?: readonly With[]
   ): Promise<GetSegmentDataWith<With>> {
     const { data } = await this.fetch.get<Serial<GetSegmentDataWith<With>>>(
       `/${id}`,
       {
-        params: { with: _with },
-      },
+        params: { with: _with }
+      }
     );
     // TODO: needs Serial type guard
     return data as GetSegmentDataWith<With>;
@@ -83,7 +81,7 @@ export class SegmentsClient extends BaseClient {
    * ```
    */
   async create(
-    input: CreateSegmentData,
+    input: CreateSegmentData
   ): Promise<GetSegmentDataWith<"contactCount">> {
     const { data } = await this.fetch.post<
       Serial<GetSegmentDataWith<"contactCount">>
@@ -91,7 +89,7 @@ export class SegmentsClient extends BaseClient {
       name: input.name,
       order: input.order,
       ruleGroup: input.ruleGroup,
-      description: "", // TODO: deprecated from API
+      description: "" // TODO: deprecated from API
     });
     return data;
   }
@@ -114,14 +112,14 @@ export class SegmentsClient extends BaseClient {
    */
   async update(
     id: string,
-    input: UpdateSegmentData,
+    input: UpdateSegmentData
   ): Promise<GetSegmentDataWith<"contactCount">> {
     const { data } = await this.fetch.patch<
       Serial<GetSegmentDataWith<"contactCount">>
     >(`/${id}`, {
       name: input.name,
       order: input.order,
-      ruleGroup: input.ruleGroup,
+      ruleGroup: input.ruleGroup
     });
     return data;
   }

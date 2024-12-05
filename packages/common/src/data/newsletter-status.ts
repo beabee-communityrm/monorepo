@@ -3,5 +3,5 @@ export enum NewsletterStatus {
   Unsubscribed = "unsubscribed",
   Cleaned = "cleaned",
   Pending = "pending",
-  None = "none",
+  None = "none"
 }

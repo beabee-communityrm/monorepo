@@ -1,4 +1,4 @@
-import { SetCalloutNavigationSchema } from "../index.ts";
+import { SetCalloutNavigationSchema } from "../index.js";
 
 export interface GetCalloutNavigationSchema extends SetCalloutNavigationSchema {
   prevText: string;

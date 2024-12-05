@@ -1,14 +1,14 @@
-import type { Filters } from "../types/index.ts";
+import type { Filters } from "../types/index.js";
 
 export const segmentFilters = {
   id: {
-    type: "text",
+    type: "text"
   },
   name: {
-    type: "text",
+    type: "text"
   },
   description: {
-    type: "text",
-  },
+    type: "text"
+  }
 } as const;
 segmentFilters satisfies Filters;

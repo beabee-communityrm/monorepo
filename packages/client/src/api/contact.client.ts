@@ -1,11 +1,11 @@
-import { BaseClient } from "./base.client.ts";
-import { cleanUrl } from "../utils/index.ts";
-import { ContactMfaClient } from "./contact-mfa.client.ts";
-import { ContactContributionClient } from "./contact-contribution.client.ts";
-import { ContactRoleClient } from "./contact-role.client.ts";
-import { ContactTagClient } from "./contact-tag.client.ts";
+import { BaseClient } from "./base.client.js";
+import { cleanUrl } from "../utils/index.js";
+import { ContactMfaClient } from "./contact-mfa.client.js";
+import { ContactContributionClient } from "./contact-contribution.client.js";
+import { ContactRoleClient } from "./contact-role.client.js";
+import { ContactTagClient } from "./contact-tag.client.js";
 
-import type { BaseClientOptions } from "../types/index.ts";
+import type { BaseClientOptions } from "../types/index.js";
 import type {
   ContactRoleData,
   CreateContactData,
@@ -16,8 +16,8 @@ import type {
   Paginated,
   RuleGroup,
   Serial,
-  UpdateContactData,
-} from "../deps.ts";
+  UpdateContactData
+} from "../deps.js";
 
 /**
  * Client for managing contacts (users) in the Beabee system
@@ -59,24 +59,24 @@ export class ContactClient extends BaseClient {
   static deserialize<With extends GetContactWith | void = void>(
     // TODO: fix type safety
     // deno-lint-ignore no-explicit-any
-    contact: any, // Serial<GetContactDataWith<With>>,
+    contact: any // Serial<GetContactDataWith<With>>,
   ): GetContactDataWith<With> {
     return {
       ...contact,
-      displayName: `${contact.firstname} ${contact.lastname}`.trim() ||
-        contact.email,
+      displayName:
+        `${contact.firstname} ${contact.lastname}`.trim() || contact.email,
       joined: ContactClient.deserializeDate(contact.joined),
       lastSeen: ContactClient.deserializeDate(contact.lastSeen),
       ...(contact.contribution && {
         contribution: ContactContributionClient.deserialize(
-          contact.contribution,
-        ),
+          contact.contribution
+        )
       }),
       ...(contact.roles && {
         roles: contact.roles.map((role: Serial<ContactRoleData>) =>
           ContactRoleClient.deserialize(role)
-        ),
-      }),
+        )
+      })
     };
   }
 
@@ -87,20 +87,18 @@ export class ContactClient extends BaseClient {
    * @returns Paginated list of contacts
    */
   async list<With extends GetContactWith | void = void>(
-    query: GetContactsQuery,
-    _with?: readonly With[],
+    query: GetContactsQuery = {},
+    _with?: readonly With[]
   ): Promise<Paginated<GetContactDataWith<With>>> {
     const { data } = await this.fetch.get<Paginated<Serial<GetContactData>>>(
       "/",
-      {
-        params: { with: _with, ...query },
-      },
+      { with: _with, ...query }
     );
     return {
       ...data,
       items: data.items.map((item: Serial<GetContactData>) =>
         ContactClient.deserialize<With>(item)
-      ),
+      )
     };
   }
 
@@ -122,11 +120,9 @@ export class ContactClient extends BaseClient {
    */
   async get<With extends GetContactWith | void = void>(
     id: string,
-    _with?: readonly With[],
+    _with?: readonly With[]
   ): Promise<GetContactDataWith<With>> {
-    const { data } = await this.fetch.get(`/${id}`, {
-      params: { with: _with },
-    });
+    const { data } = await this.fetch.get(`/${id}`, { with: _with });
     return ContactClient.deserialize<With>(data);
   }
 
@@ -138,11 +134,11 @@ export class ContactClient extends BaseClient {
    */
   async update(
     id: string,
-    updateData: UpdateContactData,
+    updateData: UpdateContactData
   ): Promise<GetContactData> {
     const { data } = await this.fetch.patch<Serial<GetContactData>>(
       `/${id}`,
-      updateData,
+      updateData
     );
     return ContactClient.deserialize(data);
   }
@@ -155,11 +151,11 @@ export class ContactClient extends BaseClient {
    */
   async updateMany(
     rules: RuleGroup,
-    updates: UpdateContactData,
+    updates: UpdateContactData
   ): Promise<{ affected: number }> {
     const { data } = await this.fetch.patch("/", {
       rules,
-      updates,
+      updates
     });
     return data;
   }

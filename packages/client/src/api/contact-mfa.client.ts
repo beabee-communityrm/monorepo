@@ -1,13 +1,13 @@
-import { BaseClient } from "./base.client.ts";
-import { cleanUrl } from "../utils/index.ts";
+import { BaseClient } from "./base.client.js";
+import { cleanUrl } from "../utils/index.js";
 
-import type { BaseClientOptions } from "../types/index.ts";
+import type { BaseClientOptions } from "../types/index.js";
 import type {
   CreateContactMfaData,
   DeleteContactMfaData,
   GetContactMfaData,
-  Serial,
-} from "../deps.ts";
+  Serial
+} from "../deps.js";
 
 /**
  * Client for managing contact MFA operations.
@@ -35,7 +35,7 @@ export class ContactMfaClient extends BaseClient {
    */
   async get(contactId: string): Promise<GetContactMfaData> {
     const { data } = await this.fetch.get<Serial<GetContactMfaData>>(
-      `/${contactId}/mfa`,
+      `/${contactId}/mfa`
     );
     return this.deserialize(data);
   }
@@ -48,12 +48,9 @@ export class ContactMfaClient extends BaseClient {
    */
   async create(
     contactId: string,
-    newData: CreateContactMfaData,
+    newData: CreateContactMfaData
   ): Promise<void> {
-    await this.fetch.post<undefined>(
-      `/${contactId}/mfa`,
-      newData,
-    );
+    await this.fetch.post<undefined>(`/${contactId}/mfa`, newData);
   }
 
   /**
@@ -64,11 +61,8 @@ export class ContactMfaClient extends BaseClient {
    */
   async delete(
     contactId: string,
-    deleteData: DeleteContactMfaData,
+    deleteData: DeleteContactMfaData
   ): Promise<void> {
-    await this.fetch.delete(
-      `/${contactId}/mfa`,
-      { data: deleteData },
-    );
+    await this.fetch.delete(`/${contactId}/mfa`, { data: deleteData });
   }
 }

@@ -1,9 +1,9 @@
-import { BaseClient } from "./base.client.ts";
-import { cleanUrl } from "../utils/index.ts";
-import { ContactClient } from "./contact.client.ts";
-import { CalloutResponseCommentClient } from "./callout-response-comment.client.ts";
+import { BaseClient } from "./base.client.js";
+import { cleanUrl } from "../utils/index.js";
+import { ContactClient } from "./contact.client.js";
+import { CalloutResponseCommentClient } from "./callout-response-comment.client.js";
 
-import type { BaseClientOptions } from "../types/index.ts";
+import type { BaseClientOptions } from "../types/index.js";
 import type {
   GetCalloutResponseData,
   GetCalloutResponseDataWith,
@@ -12,8 +12,8 @@ import type {
   Paginated,
   RuleGroup,
   Serial,
-  UpdateCalloutResponseData,
-} from "../deps.ts";
+  UpdateCalloutResponseData
+} from "../deps.js";
 
 /**
  * Client for managing callout responses
@@ -43,23 +43,23 @@ export class CalloutResponseClient extends BaseClient {
   static deserialize<With extends GetCalloutResponseWith = void>(
     // TODO: how to make this type safe like Serial<GetCalloutResponseDataWith<With>>
     // deno-lint-ignore no-explicit-any
-    response: any,
+    response: any
   ): GetCalloutResponseDataWith<With> {
     return {
       ...response,
       createdAt: CalloutResponseClient.deserializeDate(response.createdAt),
       updatedAt: CalloutResponseClient.deserializeDate(response.updatedAt),
       ...(response.assignee && {
-        assignee: ContactClient.deserialize(response.assignee),
+        assignee: ContactClient.deserialize(response.assignee)
       }),
       ...(response.contact && {
-        contact: ContactClient.deserialize(response.contact),
+        contact: ContactClient.deserialize(response.contact)
       }),
       ...(response.latestComment && {
         latestComment: CalloutResponseCommentClient.deserialize(
-          response.latestComment,
-        ),
-      }),
+          response.latestComment
+        )
+      })
     };
   }
 
@@ -71,16 +71,16 @@ export class CalloutResponseClient extends BaseClient {
    * @returns A paginated list of responses
    */
   async list<With extends GetCalloutResponseWith = void>(
-    query?: GetCalloutResponsesQuery,
-    _with?: readonly With[],
+    query: GetCalloutResponsesQuery = {},
+    _with?: readonly With[]
   ): Promise<Paginated<GetCalloutResponseDataWith<With>>> {
     const { data } = await this.fetch.get<
       Paginated<Serial<GetCalloutResponseDataWith<With>>>
-    >("", { params: { with: _with, ...query } });
+    >("", { with: _with, ...query });
 
     return {
       ...data,
-      items: data.items.map((item) => CalloutResponseClient.deserialize(item)),
+      items: data.items.map((item) => CalloutResponseClient.deserialize(item))
     };
   }
 
@@ -93,11 +93,11 @@ export class CalloutResponseClient extends BaseClient {
    */
   async updates(
     rules: RuleGroup,
-    updates: UpdateCalloutResponseData,
+    updates: UpdateCalloutResponseData
   ): Promise<{ affected: number }> {
     const { data } = await this.fetch.patch<Serial<{ affected: number }>>("", {
       rules,
-      updates,
+      updates
     });
     return data;
   }
@@ -110,15 +110,11 @@ export class CalloutResponseClient extends BaseClient {
    */
   async get<With extends GetCalloutResponseWith = void>(
     id: string,
-    _with?: readonly With[],
+    _with?: readonly With[]
   ): Promise<GetCalloutResponseDataWith<With>> {
     const { data } = await this.fetch.get<
       Serial<GetCalloutResponseDataWith<With>>
-    >(
-      `/${id}`,
-      undefined,
-      { params: { with: _with } },
-    );
+    >(`/${id}`, undefined, { params: { with: _with } });
     return CalloutResponseClient.deserialize<With>(data);
   }
 
@@ -131,11 +127,11 @@ export class CalloutResponseClient extends BaseClient {
    */
   async update(
     id: string,
-    dataIn: UpdateCalloutResponseData,
+    dataIn: UpdateCalloutResponseData
   ): Promise<GetCalloutResponseData> {
     const { data } = await this.fetch.patch<Serial<GetCalloutResponseData>>(
       `/${id}`,
-      dataIn,
+      dataIn
     );
     return CalloutResponseClient.deserialize(data);
   }

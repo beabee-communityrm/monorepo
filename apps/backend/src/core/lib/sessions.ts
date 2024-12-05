@@ -1,5 +1,5 @@
 import _pgSession from "connect-pg-simple";
-import express from "express";
+import express, { RequestHandler } from "express";
 import session from "express-session";
 import { PostgresDriver } from "typeorm/driver/postgres/PostgresDriver";
 
@@ -27,10 +27,10 @@ export default (app: express.Express): void => {
       }),
       resave: false,
       rolling: true
-    })
+    }) as unknown as RequestHandler // TODO: Fix this
   );
 
   // Passport
-  app.use(passport.initialize());
+  app.use(passport.initialize() as unknown as RequestHandler); // TODO: Fix this
   app.use(passport.session());
 };

@@ -1,4 +1,4 @@
-import { CONTACT_MFA_TYPE } from "../data/contact-mfa-type.ts";
+import { CONTACT_MFA_TYPE } from "../data/contact-mfa-type.js";
 
 /**
  * Contact multi factor authentication data

@@ -1,13 +1,13 @@
-import { BaseClient } from "./base.client.ts";
-import { cleanUrl } from "../utils/index.ts";
-import type { BaseClientOptions } from "../types/index.ts";
+import { BaseClient } from "./base.client.js";
+import { cleanUrl } from "../utils/index.js";
+import type { BaseClientOptions } from "../types/index.js";
 
 import type {
   ContactRoleData,
   RoleType,
   Serial,
-  UpdateContactRoleData,
-} from "../deps.ts";
+  UpdateContactRoleData
+} from "../deps.js";
 
 export class ContactRoleClient extends BaseClient {
   static deserialize(data: Serial<ContactRoleData>): ContactRoleData {
@@ -16,7 +16,7 @@ export class ContactRoleClient extends BaseClient {
       dateAdded: this.deserializeDate(data.dateAdded),
       dateExpires: data.dateExpires
         ? this.deserializeDate(data.dateExpires)
-        : null,
+        : null
     };
   }
 
@@ -29,11 +29,11 @@ export class ContactRoleClient extends BaseClient {
   async update(
     id: string,
     role: RoleType,
-    updateData: UpdateContactRoleData,
+    updateData: UpdateContactRoleData
   ): Promise<ContactRoleData> {
     const { data } = await this.fetch.put(`/${id}/role/${role}`, {
       dateAdded: updateData.dateAdded,
-      dateExpires: updateData.dateExpires,
+      dateExpires: updateData.dateExpires
     });
     return ContactRoleClient.deserialize(data);
   }

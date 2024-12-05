@@ -1,24 +1,24 @@
-import { InvalidRule } from "../error/index.ts";
-import { nullableOperators, operatorsByTypeMap } from "../search/index.ts";
-import { isValidDate } from "./date.ts";
+import { InvalidRule } from "../error/index.js";
+import { nullableOperators, operatorsByTypeMap } from "../search/index.js";
+import { isValidDate } from "./date.js";
 
 import type {
   Filters,
   Rule,
   RuleGroup,
   ValidatedRule,
-  ValidatedRuleGroup,
-} from "../types/index.ts";
+  ValidatedRuleGroup
+} from "../types/index.js";
 
 export function isRuleGroup(
-  ruleOrGroup: Rule | RuleGroup,
+  ruleOrGroup: Rule | RuleGroup
 ): ruleOrGroup is RuleGroup {
   return "condition" in ruleOrGroup;
 }
 
 export function validateRule<Field extends string>(
   filters: Filters<Field>,
-  rule: Rule,
+  rule: Rule
 ): ValidatedRule<Field> {
   const filter = filters[rule.field as Field];
   if (!filter) {
@@ -28,12 +28,10 @@ export function validateRule<Field extends string>(
   let expectedArgs = 0;
   if (rule.operator in nullableOperators) {
     // Field cannot be empty (except text which can always be empty)
-    if (
-      !filter.nullable && filter.type !== "text" && filter.type !== "array"
-    ) {
+    if (!filter.nullable && filter.type !== "text" && filter.type !== "array") {
       throw new InvalidRule(
         rule,
-        `Invalid nullable operator: field is not nullable`,
+        `Invalid nullable operator: field is not nullable`
       );
     }
   } else {
@@ -41,7 +39,7 @@ export function validateRule<Field extends string>(
     if (!operator) {
       throw new InvalidRule(
         rule,
-        `Invalid operator for type: ${filter.type} type doesn't define ${rule.operator}`,
+        `Invalid operator for type: ${filter.type} type doesn't define ${rule.operator}`
       );
     }
     expectedArgs = operator.args;
@@ -50,23 +48,22 @@ export function validateRule<Field extends string>(
   if (expectedArgs !== rule.value.length) {
     throw new InvalidRule(
       rule,
-      `Invalid operator argument count: ${rule.operator} needs ${expectedArgs}, ${rule.value.length} given`,
+      `Invalid operator argument count: ${rule.operator} needs ${expectedArgs}, ${rule.value.length} given`
     );
   }
 
-  const expectedType = filter.type === "boolean" || filter.type === "number"
-    ? filter.type
-    : "string";
+  const expectedType =
+    filter.type === "boolean" || filter.type === "number"
+      ? filter.type
+      : "string";
 
   // deno-lint-ignore valid-typeof
   if (rule.value.some((v) => typeof v !== expectedType)) {
     throw new InvalidRule(
       rule,
-      `Invalid operator argument type: ${rule.operator} needs ${expectedType}, ${
-        rule.value.map(
-          (v) => typeof v,
-        )
-      } given`,
+      `Invalid operator argument type: ${rule.operator} needs ${expectedType}, ${rule.value.map(
+        (v) => typeof v
+      )} given`
     );
   }
   if (
@@ -75,7 +72,7 @@ export function validateRule<Field extends string>(
   ) {
     throw new InvalidRule(
       rule,
-      `Invalid operator argument: date type needs valid absolute or relative date, ${rule.value} given`,
+      `Invalid operator argument: date type needs valid absolute or relative date, ${rule.value} given`
     );
   }
 
@@ -85,7 +82,7 @@ export function validateRule<Field extends string>(
   ) {
     throw new InvalidRule(
       rule,
-      `Invalid operator argument: ${filter.type} type expected ${filter.options}, ${rule.value} given`,
+      `Invalid operator argument: ${filter.type} type expected ${filter.options}, ${rule.value} given`
     );
   }
 
@@ -94,17 +91,17 @@ export function validateRule<Field extends string>(
     type: filter.type,
     nullable: !!filter.nullable,
     operator: rule.operator,
-    value: rule.value,
+    value: rule.value
   } as ValidatedRule<Field>;
 }
 
 export function validateRuleGroup<Field extends string>(
   filters: Filters<Field>,
-  ruleGroup: RuleGroup,
+  ruleGroup: RuleGroup
 ): ValidatedRuleGroup<Field> {
   const validatedRuleGroup: ValidatedRuleGroup<Field> = {
     condition: ruleGroup.condition,
-    rules: [],
+    rules: []
   };
 
   for (const rule of ruleGroup.rules) {

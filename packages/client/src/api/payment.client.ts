@@ -1,15 +1,15 @@
-import { BaseClient } from "./base.client.ts";
-import { cleanUrl } from "../utils/index.ts";
-import { ContactClient } from "./contact.client.ts";
+import { BaseClient } from "./base.client.js";
+import { cleanUrl } from "../utils/index.js";
+import { ContactClient } from "./contact.client.js";
 
-import type { BaseClientOptions } from "../types/index.ts";
+import type { BaseClientOptions } from "../types/index.js";
 import type {
   GetPaymentDataWith,
   GetPaymentsQuery,
   GetPaymentWith,
   Paginated,
-  Serial,
-} from "../deps.ts";
+  Serial
+} from "../deps.js";
 
 /**
  * Client for managing payments
@@ -34,7 +34,7 @@ export class PaymentClient extends BaseClient {
   static deserialize<With extends GetPaymentWith = void>(
     // TODO: how to make this type safe?
     // deno-lint-ignore no-explicit-any
-    payment: Serial<GetPaymentDataWith<With>> | any,
+    payment: Serial<GetPaymentDataWith<With>> | any
   ): GetPaymentDataWith<With> {
     return {
       ...payment,
@@ -42,8 +42,8 @@ export class PaymentClient extends BaseClient {
       amount: payment.amount,
       status: payment.status,
       ...(payment.contact !== undefined && {
-        contact: payment.contact && ContactClient.deserialize(payment.contact),
-      }),
+        contact: payment.contact && ContactClient.deserialize(payment.contact)
+      })
     };
   }
 
@@ -54,19 +54,16 @@ export class PaymentClient extends BaseClient {
    * @returns A paginated list of payments
    */
   async list<With extends GetPaymentWith = void>(
-    query: GetPaymentsQuery,
-    _with?: readonly With[],
+    query: GetPaymentsQuery = {},
+    _with?: readonly With[]
   ): Promise<Paginated<GetPaymentDataWith<With>>> {
     const { data } = await this.fetch.get<
       Paginated<Serial<GetPaymentDataWith<With>>>
-    >(
-      "",
-      { params: { with: _with, ...query } },
-    );
+    >("", { params: { with: _with, ...query } });
 
     return {
       ...data,
-      items: data.items.map((item) => PaymentClient.deserialize(item)),
+      items: data.items.map((item) => PaymentClient.deserialize(item))
     };
   }
 }

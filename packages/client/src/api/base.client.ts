@@ -1,5 +1,5 @@
-import { Fetch, parseISO } from "../utils/index.ts";
-import type { BaseClientOptions } from "../types/index.ts";
+import { Fetch, parseISO } from "../utils/index.js";
+import type { BaseClientOptions } from "../types/index.js";
 
 /**
  * Abstract base class for all API clients
@@ -20,7 +20,7 @@ export abstract class BaseClient {
     this.fetch = new Fetch({
       basePath: options.path,
       host: options.host,
-      token: options.token,
+      token: options.token
     });
   }
 
@@ -32,10 +32,10 @@ export abstract class BaseClient {
    */
   static deserializeDate(s: string | Date): Date;
   static deserializeDate<T extends null | undefined>(
-    s: string | Date | T,
+    s: string | Date | T
   ): Date | T;
   static deserializeDate<T extends null | undefined>(
-    s: string | Date | T,
+    s: string | Date | T
   ): Date | T {
     if (s instanceof Date) {
       return s;
