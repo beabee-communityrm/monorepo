@@ -1,0 +1,82 @@
+import { CalloutComponentType } from "@beabee/beabee-common";
+import { calloutComponentValidateNumber1 } from "./validate-rules/callout-component-validate-number-1.js";
+
+import type { CalloutComponentInputNumberSchema } from "@beabee/beabee-common";
+
+export const calloutNumber2Form: CalloutComponentInputNumberSchema = {
+  id: "ezq1fjv",
+  key: "number1",
+  mask: false,
+  tags: [],
+  type: CalloutComponentType.INPUT_NUMBER,
+  input: true,
+  label: "Number with settings",
+  logic: [],
+  addons: [],
+  errors: "",
+  hidden: false,
+  prefix: "",
+  suffix: "",
+  unique: false,
+  widget: {
+    type: "input"
+  },
+  dbIndex: false,
+  overlay: {
+    top: "",
+    left: "",
+    page: "",
+    style: "",
+    width: "",
+    height: ""
+  },
+  tooltip: "",
+  disabled: false,
+  multiple: false,
+  redrawOn: "",
+  tabindex: "",
+  validate: calloutComponentValidateNumber1,
+  adminOnly: false,
+  autofocus: false,
+  delimiter: true,
+  encrypted: false,
+  hideLabel: false,
+  modalEdit: false,
+  protected: false,
+  refreshOn: "",
+  tableView: false,
+  attributes: {},
+  errorLabel: "",
+  persistent: true,
+  properties: {},
+  validateOn: "change",
+  applyMaskOn: "change",
+  clearOnHide: true,
+  conditional: {
+    eq: "",
+    json: "",
+    show: null,
+    when: null
+  },
+  customClass: "",
+  description:
+    "Here we are testing the input of a number with various settings.",
+  displayMask: "",
+  inputFormat: "plain",
+  placeholder: "Number inputs can also have placeholders.",
+  autocomplete: "",
+  decimalLimit: 2,
+  defaultValue: 10,
+  dataGridLabel: false,
+  labelPosition: "top",
+  showCharCount: false,
+  showWordCount: false,
+  calculateValue: "",
+  requireDecimal: true,
+  calculateServer: false,
+  customConditional: "",
+  allowMultipleMasks: false,
+  customDefaultValue: "",
+  allowCalculateOverride: false,
+  truncateMultipleSpaces: true
+};

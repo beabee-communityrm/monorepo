@@ -1,4 +1,4 @@
-import { CalloutComponentSchema, SetCalloutNavigationSchema } from "./index.ts";
+import { CalloutComponentSchema, SetCalloutNavigationSchema } from "./index.js";
 
 export interface SetCalloutSlideSchema {
   id: string;

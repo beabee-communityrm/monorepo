@@ -35,7 +35,7 @@ function getWholeCharAndI(str: string, i: number): [string, number] {
         i +
         ' out of range for string "' +
         str +
-        '"; please open an issue at https://github.com/Trott/slug/issues/new',
+        '"; please open an issue at https://github.com/Trott/slug/issues/new'
     );
   }
   if (code < 0xd800 || code > 0xdfff) {
@@ -74,7 +74,7 @@ function getWholeCharAndI(str: string, i: number): [string, number] {
   throw new Error(
     'String "' +
       str +
-      '" reaches code believed to be unreachable; please open an issue at https://github.com/Trott/slug/issues/new',
+      '" reaches code believed to be unreachable; please open an issue at https://github.com/Trott/slug/issues/new'
   );
 }
 
@@ -84,9 +84,8 @@ function base64(input: string) {
 
 export function slug(s: string, opts?: Partial<Options & Mode>): string {
   let result = slugify(s, opts);
-  const fallback = opts && opts.fallback !== undefined
-    ? opts.fallback
-    : defaults.fallback;
+  const fallback =
+    opts && opts.fallback !== undefined ? opts.fallback : defaults.fallback;
   // If output is an empty string, try slug for base64 of string.
   if (fallback === true && result === "") {
     // Get rid of lone surrogates.
@@ -115,7 +114,7 @@ const locales: Record<string, CharMap | undefined> = {
     Ъ: "A",
     ъ: "a",
     Ь: "Y",
-    ь: "y",
+    ь: "y"
   },
   // Need a reference URL for German, although this is pretty well-known.
   de: { Ä: "AE", ä: "ae", Ö: "OE", ö: "oe", Ü: "UE", ü: "ue" },
@@ -134,8 +133,8 @@ const locales: Record<string, CharMap | undefined> = {
     Щ: "Shch",
     щ: "shch",
     Г: "H",
-    г: "h",
-  },
+    г: "h"
+  }
 };
 
 function slugify(str: string, partialOpts?: Partial<Options & Mode>) {
@@ -161,9 +160,8 @@ function slugify(str: string, partialOpts?: Partial<Options & Mode>) {
     return b - a;
   });
 
-  const disallowedChars = opts.mode === "rfc3986"
-    ? /[^\w\s\-.~]/
-    : /[^A-Za-z0-9\s]/;
+  const disallowedChars =
+    opts.mode === "rfc3986" ? /[^\w\s\-.~]/ : /[^A-Za-z0-9\s]/;
 
   let result = "";
   for (let char, i = 0, l = str.length; i < l; i++) {
@@ -240,7 +238,7 @@ const initialMulticharmap: CharMap = {
   חֱ: "e",
   חֲ: "a",
   חֳ: "o",
-  בִ: "i",
+  בִ: "i"
 };
 
 // https://github.com/django/django/blob/master/django/contrib/admin/static/admin/js/urlify.js
@@ -850,7 +848,7 @@ const initialCharmap: CharMap = {
   ק: "k",
   ר: "r",
   תּ: "t",
-  ת: "t",
+  ת: "t"
 };
 
 const defaults: Options & { modes: Record<string, Mode> } = {
@@ -864,7 +862,7 @@ const defaults: Options & { modes: Record<string, Mode> } = {
       charmap: initialCharmap,
       multicharmap: initialMulticharmap,
       remove: null,
-      trim: true,
+      trim: true
     },
     pretty: {
       replacement: "-",
@@ -872,7 +870,7 @@ const defaults: Options & { modes: Record<string, Mode> } = {
       charmap: initialCharmap,
       multicharmap: initialMulticharmap,
       remove: null,
-      trim: true,
-    },
-  },
+      trim: true
+    }
+  }
 };

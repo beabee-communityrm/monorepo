@@ -104,9 +104,8 @@ import { isRequestError } from '@utils/api/index';
 
 import { updateCurrentUser } from '@store/index';
 
-import { LOGIN_CODES } from '@enums/login-codes';
-
-import { type LoginData } from '@type';
+import { LOGIN_CODES } from '@beabee/beabee-common';
+import type { LoginData } from '@beabee/beabee-common';
 import env from '@env';
 
 const { t } = useI18n();

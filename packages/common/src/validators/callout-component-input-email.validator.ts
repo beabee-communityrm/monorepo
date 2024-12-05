@@ -1,16 +1,16 @@
-import { isEmail } from "../utils/index.ts";
+import { isEmail } from "../utils/index.js";
 
 import type {
   CalloutComponentInputEmailSchema,
   CalloutResponseAnswer,
-  ValidatorCalloutComponent,
-} from "../types/index.ts";
+  ValidatorCalloutComponent
+} from "../types/index.js";
 
 export const calloutComponentInputEmailValidator: ValidatorCalloutComponent<
   CalloutComponentInputEmailSchema
 > = (
   _schema: CalloutComponentInputEmailSchema,
-  answer: CalloutResponseAnswer,
+  answer: CalloutResponseAnswer
 ): boolean => {
   return isEmail(answer);
 };

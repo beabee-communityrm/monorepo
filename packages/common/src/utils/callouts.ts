@@ -4,8 +4,8 @@ import {
   calloutComponentInputTextTypes,
   calloutComponentInputTypes,
   calloutComponentNestableTypes,
-  CalloutComponentType,
-} from "../data/index.ts";
+  CalloutComponentType
+} from "../data/index.js";
 
 import type {
   CalloutComponentBaseMap,
@@ -16,21 +16,21 @@ import type {
   CalloutResponseAnswerAddress,
   CalloutResponseAnswerFileUpload,
   FilterArgs,
-  SetCalloutFormSchema,
-} from "../types/index.ts";
+  SetCalloutFormSchema
+} from "../types/index.js";
 
 function convertValuesToOptions(
-  values: { value: string; label: string }[],
+  values: { value: string; label: string }[]
 ): string[] {
   return values.map(({ value }) => value);
 }
 
 function convertComponentToFilter(
-  component: CalloutComponentSchema & { fullKey: string },
+  component: CalloutComponentSchema & { fullKey: string }
 ): FilterArgs & { label: string } {
   const baseItem = {
     label: component.label || component.fullKey,
-    nullable: true,
+    nullable: true
   };
 
   if (
@@ -43,31 +43,27 @@ function convertComponentToFilter(
     return { ...baseItem, type: "number" };
   }
 
-  if (
-    isCalloutComponentOfType(
-      component,
-      CalloutComponentType.INPUT_SELECT,
-    )
-  ) {
+  if (isCalloutComponentOfType(component, CalloutComponentType.INPUT_SELECT)) {
     return {
       ...baseItem,
       type: "enum",
-      options: convertValuesToOptions(component.data.values),
+      options: convertValuesToOptions(component.data.values)
     };
   }
 
   if (
     isCalloutComponentOfBaseType(
       component,
-      CalloutComponentBaseType.INPUT_SELECTABLE,
+      CalloutComponentBaseType.INPUT_SELECTABLE
     )
   ) {
     return {
       ...baseItem,
-      type: component.type === CalloutComponentType.INPUT_SELECTABLE_RADIO
-        ? "enum"
-        : "array",
-      options: convertValuesToOptions(component.values),
+      type:
+        component.type === CalloutComponentType.INPUT_SELECTABLE_RADIO
+          ? "enum"
+          : "array",
+      options: convertValuesToOptions(component.values)
     };
   }
 
@@ -82,21 +78,19 @@ function convertComponentToFilter(
 
 function getSelectableLabelFromValue(
   component: CalloutComponentSchema,
-  value: string,
+  value: string
 ): string {
   if (
     isCalloutComponentOfBaseType(
       component,
-      CalloutComponentBaseType.INPUT_SELECTABLE,
+      CalloutComponentBaseType.INPUT_SELECTABLE
     )
   ) {
     return component.values.find((v) => v.value === value)?.label || value;
   }
 
   if (isCalloutComponentOfType(component, CalloutComponentType.INPUT_SELECT)) {
-    return (
-      component.data.values.find((v) => v.value === value)?.label || value
-    );
+    return component.data.values.find((v) => v.value === value)?.label || value;
   }
 
   return value;
@@ -111,10 +105,9 @@ function getSelectableLabelFromValue(
  */
 export function isCalloutComponentOfType<T extends CalloutComponentType>(
   component: CalloutComponentBaseSchema,
-  type: T,
+  type: T
 ): component is CalloutComponentMap[T] {
-  return "type" in component &&
-    component.type === type;
+  return "type" in component && component.type === type;
 }
 
 /**
@@ -125,10 +118,10 @@ export function isCalloutComponentOfType<T extends CalloutComponentType>(
  * @returns Ensure that the component is of the specific base type
  */
 export function isCalloutComponentOfBaseType<
-  T extends CalloutComponentBaseType,
+  T extends CalloutComponentBaseType
 >(
   component: CalloutComponentBaseSchema,
-  type: T,
+  type: T
 ): component is CalloutComponentBaseMap[T] {
   if (!("type" in component)) {
     return false;
@@ -136,41 +129,34 @@ export function isCalloutComponentOfBaseType<
 
   // `content` has only one schema
   if (type === CalloutComponentBaseType.CONTENT) {
-    return isCalloutComponentOfType(
-      component,
-      CalloutComponentType.CONTENT,
-    );
+    return isCalloutComponentOfType(component, CalloutComponentType.CONTENT);
   }
 
   if (type === CalloutComponentBaseType.INPUT) {
-    return (calloutComponentInputTypes as string[]).includes(
-      component.type,
-    );
+    return (calloutComponentInputTypes as string[]).includes(component.type);
   }
 
   if (type === CalloutComponentBaseType.INPUT_TEXT) {
     return (calloutComponentInputTextTypes as string[]).includes(
-      component.type,
+      component.type
     );
   }
 
   if (type === CalloutComponentBaseType.INPUT_SELECTABLE) {
     return (calloutComponentInputSelectableTypes as string[]).includes(
-      component.type,
+      component.type
     );
   }
 
   if (type === CalloutComponentBaseType.NESTABLE) {
-    return (calloutComponentNestableTypes as string[]).includes(
-      component.type,
-    );
+    return (calloutComponentNestableTypes as string[]).includes(component.type);
   }
 
   return false;
 }
 
 export function flattenComponents(
-  components: CalloutComponentSchema[],
+  components: CalloutComponentSchema[]
 ): CalloutComponentSchema[] {
   return components.flatMap((component) =>
     isCalloutComponentOfBaseType(component, CalloutComponentBaseType.NESTABLE)
@@ -181,35 +167,35 @@ export function flattenComponents(
 
 export function filterComponents(
   components: CalloutComponentSchema[],
-  filterFn: (component: CalloutComponentSchema) => boolean,
+  filterFn: (component: CalloutComponentSchema) => boolean
 ): CalloutComponentSchema[] {
   return components.filter(filterFn).map((component) => {
     return {
       ...component,
       ...(isCalloutComponentOfBaseType(
         component,
-        CalloutComponentBaseType.NESTABLE,
+        CalloutComponentBaseType.NESTABLE
       ) && {
-        components: filterComponents(component.components, filterFn),
-      }),
+        components: filterComponents(component.components, filterFn)
+      })
     };
   });
 }
 
 export function getCalloutComponents(
-  formSchema: SetCalloutFormSchema,
+  formSchema: SetCalloutFormSchema
 ): (CalloutComponentSchema & { slideId: string; fullKey: string })[] {
   return formSchema.slides.flatMap((slide) =>
     flattenComponents(slide.components).map((component) => ({
       ...component,
       slideId: slide.id,
-      fullKey: `${slide.id}.${component.key}`,
+      fullKey: `${slide.id}.${component.key}`
     }))
   );
 }
 
 export function getCalloutFilters(
-  formSchema: SetCalloutFormSchema,
+  formSchema: SetCalloutFormSchema
 ): Record<string, FilterArgs & { label: string }> {
   const items = getCalloutComponents(formSchema)
     .filter((c) => c.input)
@@ -219,20 +205,20 @@ export function getCalloutFilters(
 }
 
 export function isAddressAnswer(
-  answer: CalloutResponseAnswer,
+  answer: CalloutResponseAnswer
 ): answer is CalloutResponseAnswerAddress {
   return !!answer && typeof answer === "object" && "geometry" in answer;
 }
 
 export function isFileUploadAnswer(
-  answer: CalloutResponseAnswer | undefined,
+  answer: CalloutResponseAnswer | undefined
 ): answer is CalloutResponseAnswerFileUpload {
   return !!answer && typeof answer === "object" && "url" in answer;
 }
 
 export function stringifyAnswer(
   component: CalloutComponentSchema,
-  answer: CalloutResponseAnswer | CalloutResponseAnswer[] | undefined,
+  answer: CalloutResponseAnswer | CalloutResponseAnswer[] | undefined
 ): string {
   if (Array.isArray(answer)) {
     return answer.map((a) => stringifyAnswer(component, a)).join(", ");

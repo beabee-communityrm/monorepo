@@ -21,7 +21,7 @@
       <AppSelectableList
         v-slot="{ item }"
         :items="variantItems"
-        @click="(currentVariant = $event.id)"
+        @click="currentVariant = $event.id"
       >
         <font-awesome-icon :icon="faGlobe" class="mr-2" />{{ item.label }}
       </AppSelectableList>

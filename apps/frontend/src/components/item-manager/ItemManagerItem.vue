@@ -7,13 +7,13 @@
           v-if="!noUpdate"
           size="sm"
           variant="text"
-          @click="(formVisible = !formVisible)"
+          @click="formVisible = !formVisible"
           >{{ t('actions.edit') }}</AppButton
         >
         <AppButton
           size="sm"
           variant="dangerText"
-          @click="(showDeleteModal = true)"
+          @click="showDeleteModal = true"
         >
           {{ t('actions.delete') }}
         </AppButton>
@@ -26,7 +26,7 @@
       class="p-4"
       :data="itemToData(item)"
       @save="handleUpdate"
-      @cancel="(formVisible = false)"
+      @cancel="formVisible = false"
     >
       <template #default="{ data, mode }">
         <slot name="form" :data="data" :mode="mode" />
@@ -39,7 +39,7 @@
       :cancel="t('actions.noBack')"
       :confirm="t('actions.yesRemove')"
       variant="danger"
-      @close="(showDeleteModal = false)"
+      @close="showDeleteModal = false"
       @confirm="onDelete"
     >
       <p>{{ deleteText }}</p>

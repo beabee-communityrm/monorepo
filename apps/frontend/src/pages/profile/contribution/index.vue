@@ -15,7 +15,7 @@ meta:
         variant="success"
         :title="t('contribution.updatedPaymentSource')"
         removeable
-        @remove="(updatedPaymentSource = false)"
+        @remove="updatedPaymentSource = false"
       />
       <AppNotification
         v-if="startedContribution"
@@ -23,7 +23,7 @@ meta:
         variant="success"
         :title="t('contribution.startedContribution')"
         removeable
-        @remove="(startedContribution = false)"
+        @remove="startedContribution = false"
       />
       <AppNotification
         v-if="cancelledContribution"
@@ -31,7 +31,7 @@ meta:
         variant="error"
         :title="t('contribution.cancelledContribution')"
         removeable
-        @remove="(cancelledContribution = false)"
+        @remove="cancelledContribution = false"
       />
 
       <ContributionBox :contribution="contribution" class="mb-9" />

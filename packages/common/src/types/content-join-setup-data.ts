@@ -1,4 +1,4 @@
-import type { ContentJoinSetupNewsletterGroupData } from "./content-join-setup-newsletter-group-data.ts";
+import type { ContentJoinSetupNewsletterGroupData } from "./content-join-setup-newsletter-group-data.js";
 
 export interface ContentJoinSetupData {
   welcome: string;

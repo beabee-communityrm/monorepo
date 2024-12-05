@@ -12,8 +12,8 @@ import type {
   CalloutComponentInputSignatureSchema,
   CalloutComponentInputTextSchema,
   CalloutComponentInputTimeSchema,
-  CalloutComponentInputUrlSchema,
-} from "./index.ts";
+  CalloutComponentInputUrlSchema
+} from "./index.js";
 
 /** Any callout input component schema */
 export type CalloutComponentInputSchema =

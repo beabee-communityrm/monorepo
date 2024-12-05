@@ -1,3 +1,3 @@
-import { GetEmailData } from "./index.ts";
+import { GetEmailData } from "./index.js";
 
 export type UpdateEmailData = GetEmailData;

@@ -1,0 +1,19 @@
+{
+  "include": ["./src"],
+  "exclude": ["src/**/*.test.ts"],
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "declarationDir": "./dist/types",
+    "esModuleInterop": true,
+    "allowImportingTsExtensions": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "isolatedModules": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "diagnostics": true,
+    "skipLibCheck": true
+  }
+}

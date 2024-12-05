@@ -26,7 +26,7 @@ meta:
         >
           <router-link
             :to="{ ...route, hash: HASH_PREFIX + response.number }"
-            @click="(introOpen = false)"
+            @click="introOpen = false"
           >
             <img
               class="mb-2 aspect-video w-full object-cover"
@@ -62,7 +62,7 @@ meta:
       v-if="!isEmbed || route.query.intro !== undefined"
       :callout="callout"
       :show="introOpen && !selectedResponse"
-      @close="(introOpen = false)"
+      @close="introOpen = false"
     />
   </div>
 </template>

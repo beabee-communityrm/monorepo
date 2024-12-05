@@ -26,7 +26,7 @@
       <ItemManagerForm
         mode="add"
         :data="itemToData(undefined)"
-        @cancel="(formVisible = false)"
+        @cancel="formVisible = false"
         @save="handleAdd"
       >
         <template #default="{ data, mode }">
@@ -38,7 +38,7 @@
       v-else
       class="w-full"
       variant="primaryOutlined"
-      @click="(formVisible = true)"
+      @click="formVisible = true"
     >
       {{ addButtonText }}
     </AppButton>

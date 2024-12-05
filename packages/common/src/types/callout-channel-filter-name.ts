@@ -1,3 +1,3 @@
-import type { calloutChannelFilters } from "../search/callouts.ts";
+import type { calloutChannelFilters } from "../search/callouts.js";
 
 export type CalloutChannelFilterName = keyof typeof calloutChannelFilters;

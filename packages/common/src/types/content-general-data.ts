@@ -1,4 +1,4 @@
-import type { FooterLink } from "./index.ts";
+import type { FooterLink } from "./index.js";
 
 export interface ContentGeneralData<L = string> {
   organisationName: string;

@@ -1,8 +1,8 @@
 import type {
   ArrayFilterArgs,
   EnumFilterArgs,
-  OtherFilterArgs,
-} from "./index.ts";
+  OtherFilterArgs
+} from "./index.js";
 
 export type FilterArgs =
   | ArrayFilterArgs<readonly string[] | undefined>

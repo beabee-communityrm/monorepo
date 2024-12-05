@@ -1,4 +1,4 @@
-import type { CalloutResponseAnswersSlide } from "./index.ts";
+import type { CalloutResponseAnswersSlide } from "./index.js";
 
 export interface CreateCalloutResponseData {
   guestName?: string;

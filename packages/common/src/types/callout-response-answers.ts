@@ -1,4 +1,4 @@
-import type { CalloutResponseAnswer } from "./index.ts";
+import type { CalloutResponseAnswer } from "./index.js";
 
 /**
  * Answers are grouped by component key: `{[componentKey]: answer | answer[]}`

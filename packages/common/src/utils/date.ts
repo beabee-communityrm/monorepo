@@ -7,10 +7,10 @@ import {
   startOfMinute,
   startOfMonth,
   startOfSecond,
-  startOfYear,
+  startOfYear
 } from "date-fns";
 
-import type { DateUnit, Duration, UnitMatches } from "../types/index.ts";
+import type { DateUnit, Duration, UnitMatches } from "../types/index.js";
 
 // Must be ordered from highest resolution to lowest (seconds to years)
 export const dateUnits = ["s", "m", "h", "d", "M", "y"] as const;
@@ -21,7 +21,7 @@ export const dateUnitMap: Record<DateUnit, keyof Duration> = {
   d: "days",
   h: "hours",
   m: "minutes",
-  s: "seconds",
+  s: "seconds"
 };
 
 const startOf: Record<DateUnit, (d: Date) => Date> = {
@@ -30,7 +30,7 @@ const startOf: Record<DateUnit, (d: Date) => Date> = {
   d: startOfDay,
   h: startOfHour,
   m: startOfMinute,
-  s: startOfSecond,
+  s: startOfSecond
 };
 
 const relativeDate = /^\$now(?<units>\(((y|M|d|h|m|s):(-?\d+),?)+\))?$/;
@@ -45,7 +45,7 @@ const absoluteDate =
 // Convert relative dates and returns the minimum date unit specified
 export function parseDate(
   value: string,
-  now: Date = new Date(),
+  now: Date = new Date()
 ): [Date, DateUnit] {
   let date: Date;
   let units: DateUnit[];
@@ -55,9 +55,7 @@ export function parseDate(
     date = now;
     const unitsGroup = relativeMatch.groups?.units;
     if (unitsGroup) {
-      const unitMatches = unitsGroup.matchAll(
-        relativeUnit,
-      ) as UnitMatches;
+      const unitMatches = unitsGroup.matchAll(relativeUnit) as UnitMatches;
       units = [];
       for (const [_, unit, delta] of unitMatches) {
         date = add(date, { [dateUnitMap[unit]]: Number(delta) });
@@ -93,7 +91,7 @@ export function isValidDate(s: string | Date): boolean {
 export function isDateBetween(
   date: string | Date,
   start?: string | Date | null,
-  end?: string | Date | null,
+  end?: string | Date | null
 ): boolean {
   let valid = isValidDate(date);
   if (start) {

@@ -20,15 +20,16 @@ import {
   type StartContributionData,
   type UpdateContactData,
   type UpdateContactRoleData,
+  type PaymentFlowParams,
 } from '@beabee/beabee-common';
 
 import { deserializeDate, instance } from '.';
 import env from '../../env';
 
-import type { PaymentFlowParams } from '@type';
 import { TagOperations } from './tag-operations';
 
 // TODO: how to make this type safe?
+/** @deprecated Use the '@beabee/client' package instead */
 export function deserializeContact(data: any): any {
   return {
     ...data,
@@ -44,6 +45,7 @@ export function deserializeContact(data: any): any {
   };
 }
 
+/** @deprecated Use the '@beabee/client' package instead */
 function deserializeRole(data: Serial<ContactRoleData>): ContactRoleData {
   return {
     role: data.role,
@@ -52,6 +54,7 @@ function deserializeRole(data: Serial<ContactRoleData>): ContactRoleData {
   };
 }
 
+/** @deprecated Use the '@beabee/client' package instead */
 function deserializeContribution(
   data: Serial<ContributionInfo>
 ): ContributionInfo {
@@ -63,6 +66,7 @@ function deserializeContribution(
   };
 }
 
+/** @deprecated Use the '@beabee/client' package instead */
 export async function fetchContacts<With extends GetContactWith | void = void>(
   query: GetContactsQuery,
   _with?: readonly With[]
@@ -77,6 +81,7 @@ export async function fetchContacts<With extends GetContactWith | void = void>(
   };
 }
 
+/** @deprecated Use the '@beabee/client' package instead */
 export async function createContact(
   dataIn: CreateContactData
 ): Promise<GetContactData> {
@@ -87,6 +92,7 @@ export async function createContact(
   return deserializeContact(data);
 }
 
+/** @deprecated Use the '@beabee/client' package instead */
 export async function fetchContact<With extends GetContactWith | void = void>(
   id: string,
   _with?: readonly With[]
@@ -100,6 +106,7 @@ export async function fetchContact<With extends GetContactWith | void = void>(
   return deserializeContact(data);
 }
 
+/** @deprecated Use the '@beabee/client' package instead */
 export async function updateContact(
   id: string,
   dataIn: UpdateContactData
@@ -112,6 +119,7 @@ export async function updateContact(
   return deserializeContact(data);
 }
 
+/** @deprecated Use the '@beabee/client' package instead */
 export async function updateContacts(
   rules: RuleGroup,
   updates: UpdateContactData
@@ -126,10 +134,12 @@ export async function updateContacts(
   return data;
 }
 
+/** @deprecated Use the '@beabee/client' package instead */
 export async function deleteContact(id: string): Promise<void> {
   await instance.delete(`/contact/${id}`);
 }
 
+/** @deprecated Use the '@beabee/client' package instead */
 export async function fetchContribution(): Promise<ContributionInfo> {
   const { data } = await instance.get<Serial<ContributionInfo>>(
     '/contact/me/contribution'
@@ -137,6 +147,7 @@ export async function fetchContribution(): Promise<ContributionInfo> {
   return deserializeContribution(data);
 }
 
+/** @deprecated Use the '@beabee/client' package instead */
 export async function updateContribution(
   dataIn: SetContributionData
 ): Promise<ContributionInfo> {
@@ -152,6 +163,7 @@ export async function updateContribution(
   return deserializeContribution(data);
 }
 
+/** @deprecated Use the '@beabee/client' package instead */
 export async function forceUpdateContribution(
   id: string,
   dataIn: ForceUpdateContributionData
@@ -172,6 +184,7 @@ export async function forceUpdateContribution(
 export const startContributionCompleteUrl =
   env.appUrl + '/profile/contribution/complete';
 
+/** @deprecated Use the '@beabee/client' package instead */
 export async function startContribution(
   dataIn: StartContributionData
 ): Promise<PaymentFlowParams> {
@@ -189,6 +202,7 @@ export async function startContribution(
   return data;
 }
 
+/** @deprecated Use the '@beabee/client' package instead */
 export async function completeStartContribution(
   paymentFlowId: string
 ): Promise<ContributionInfo> {
@@ -198,6 +212,8 @@ export async function completeStartContribution(
   );
   return deserializeContribution(data);
 }
+
+/** @deprecated Use the '@beabee/client' package instead */
 export async function cancelContribution(id: string): Promise<void> {
   await instance.post(`/contact/${id}/contribution/cancel`);
 }
@@ -205,6 +221,7 @@ export async function cancelContribution(id: string): Promise<void> {
 export const updatePaymentMethodCompleteUrl =
   env.appUrl + '/profile/contribution/payment-method/complete';
 
+/** @deprecated Use the '@beabee/client' package instead */
 export async function updatePaymentMethod(
   paymentMethod?: PaymentMethod
 ): Promise<PaymentFlowParams> {
@@ -215,6 +232,7 @@ export async function updatePaymentMethod(
   return data;
 }
 
+/** @deprecated Use the '@beabee/client' package instead */
 export async function completeUpdatePaymentMethod(
   paymentFlowId: string
 ): Promise<ContributionInfo> {
@@ -225,6 +243,7 @@ export async function completeUpdatePaymentMethod(
   return deserializeContribution(data);
 }
 
+/** @deprecated Use the '@beabee/client' package instead */
 export async function fetchContactPayments(
   id: string,
   query: GetPaymentsQuery
@@ -243,6 +262,7 @@ export async function fetchContactPayments(
   };
 }
 
+/** @deprecated Use the '@beabee/client' package instead */
 export async function updateRole(
   id: string,
   role: RoleType,
@@ -258,6 +278,7 @@ export async function updateRole(
   return deserializeRole(data);
 }
 
+/** @deprecated Use the '@beabee/client' package instead */
 export async function deleteRole(id: string, role: RoleType): Promise<void> {
   await instance.delete(`/contact/${id}/role/${role}`);
 }
@@ -270,4 +291,5 @@ class ContactTagOperations extends TagOperations {
     return '/contact-tags';
   }
 }
+
 export const contactTagOperations = new ContactTagOperations();

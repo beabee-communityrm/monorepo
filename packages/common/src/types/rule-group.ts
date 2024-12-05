@@ -1,4 +1,4 @@
-import type { Rule } from "./index.ts";
+import type { Rule } from "./index.js";
 
 export interface RuleGroup {
   condition: "AND" | "OR";

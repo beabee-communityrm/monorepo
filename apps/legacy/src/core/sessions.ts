@@ -1,6 +1,6 @@
 import { RoleType } from "@beabee/beabee-common";
 import _pgSession from "connect-pg-simple";
-import express, { Response } from "express";
+import express, { RequestHandler, Response } from "express";
 import session from "express-session";
 import { PostgresDriver } from "typeorm/driver/postgres/PostgresDriver";
 
@@ -37,11 +37,11 @@ export default (app: express.Express): void => {
       }),
       resave: false,
       rolling: true
-    })
+    }) as unknown as RequestHandler // TODO: Fix this
   );
 
   // Passport
-  app.use(passport.initialize());
+  app.use(passport.initialize() as unknown as RequestHandler); // TODO: Fix this
   app.use(passport.session());
 
   app.use((req, res, next) => {

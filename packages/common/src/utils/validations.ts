@@ -1,12 +1,12 @@
-import { slug } from "./slug.ts";
-import { ContributionPeriod } from "../data/index.ts";
+import { slug } from "./slug.js";
+import { ContributionPeriod } from "../data/index.js";
 
 /**
  * Check if the value is a valid angle.
  * @param value The value to check
  */
 export const isAngle = (value: unknown, span = 180): value is number => {
-  return typeof value === "number" && value >= (span * -1) && value <= span;
+  return typeof value === "number" && value >= span * -1 && value <= span;
 };
 
 /**
@@ -45,7 +45,7 @@ export const isLngLat = (value: unknown): value is [number, number] => {
  * @param value The value to check
  */
 export const isMapBounds = (
-  value: unknown,
+  value: unknown
 ): value is [[number, number], [number, number]] => {
   return Array.isArray(value) && value.length === 2 && value.every(isLngLat);
 };
@@ -100,7 +100,7 @@ export function isType(
     | "object"
     | "function"
   >,
-  value: unknown,
+  value: unknown
 ): boolean {
   return types.includes(typeof value);
 }
@@ -172,7 +172,7 @@ export const isPhoneNumber = (value: unknown): value is string => {
 export const isValidPayFee = (
   value: unknown,
   amount: unknown,
-  period: unknown,
+  period: unknown
 ): value is boolean => {
   if (
     typeof value !== "boolean" ||
@@ -197,7 +197,7 @@ export const isValidPayFee = (
 export const isNumberInRange = (
   value: unknown,
   min?: number,
-  max?: number,
+  max?: number
 ): boolean => {
   if (!isNumber(value)) {
     return false;
@@ -227,7 +227,7 @@ export const isNumberInRange = (
 export const isTextInRange = (
   value: unknown,
   minLength = 0,
-  maxLength?: number,
+  maxLength?: number
 ): boolean => {
   if (typeof value !== "string") {
     return false;
@@ -253,7 +253,7 @@ export const isTextInRange = (
 export const isTextInWordRange = (
   value: unknown,
   minWordLength = 0,
-  maxWordLength?: number,
+  maxWordLength?: number
 ): boolean => {
   if (typeof value !== "string") {
     return false;

@@ -1,1 +1,1 @@
-export * from "./InvalidRule.ts";
+export * from "./InvalidRule.js";

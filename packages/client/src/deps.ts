@@ -1,1 +1,1 @@
-export type * from "@beabee/beabee-common";
+export * from "@beabee/beabee-common";

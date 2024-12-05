@@ -1,11 +1,16 @@
-import { ContributionPeriod, type Serial } from '@beabee/beabee-common';
+import {
+  ContributionPeriod,
+  type Serial,
+  type PaymentFlowParams,
+  type CompleteSignupData,
+  type SignupData,
+} from '@beabee/beabee-common';
 import env from '../../env';
 import { instance } from '.';
 
-import type { CompleteSignupData, PaymentFlowParams, SignupData } from '@type';
-
 export const completeUrl = env.appUrl + '/join/complete';
 
+/** @deprecated use the client instead */
 export async function signUp(data: SignupData): Promise<PaymentFlowParams> {
   return (
     await instance.post<Serial<PaymentFlowParams>>('/signup', {
@@ -27,6 +32,7 @@ export async function signUp(data: SignupData): Promise<PaymentFlowParams> {
   ).data;
 }
 
+/** @deprecated use the client instead */
 export async function completeSignUp(data: CompleteSignupData): Promise<void> {
   await instance.post('/signup/complete', {
     paymentFlowId: data.paymentFlowId,
@@ -36,6 +42,7 @@ export async function completeSignUp(data: CompleteSignupData): Promise<void> {
   });
 }
 
+/** @deprecated use the client instead */
 export async function confirmEmail(
   joinFlowId: string | string[]
 ): Promise<void> {

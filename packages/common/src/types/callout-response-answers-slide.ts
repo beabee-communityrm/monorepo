@@ -1,4 +1,4 @@
-import type { CalloutResponseAnswers } from "./index.ts";
+import type { CalloutResponseAnswers } from "./index.js";
 
 /**
  * Answers are grouped by slide key: `{[slideId]: {[componentKey]: answer | answer[]}}`

@@ -4,7 +4,10 @@
     "@beabee/tsconfig/tsconfig.options.json"
   ],
   "exclude": [], // Override tsconfig.build.json exclude
-  "references": [{ "path": "../../packages/core" }],
+  "references": [
+    { "path": "../../packages/core" },
+    { "path": "../../packages/common" }
+  ],
   "compilerOptions": {
     "noEmit": true
   }

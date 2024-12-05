@@ -1,4 +1,4 @@
-import type { ClientApiErrorData } from "../deps.ts";
+import type { ClientApiErrorData } from "../deps.js";
 
 export class ClientApiError extends Error implements ClientApiErrorData {
   code?: string;

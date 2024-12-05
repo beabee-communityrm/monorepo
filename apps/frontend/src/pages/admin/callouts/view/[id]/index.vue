@@ -82,7 +82,7 @@ meta:
       >
         {{ t('actions.reopen') }}
       </ActionButton>
-      <ActionButton :icon="faTrash" @click="(showDeleteModal = true)">
+      <ActionButton :icon="faTrash" @click="showDeleteModal = true">
         {{ t('actions.delete') }}
       </ActionButton>
       <AppConfirmDialog
@@ -91,7 +91,7 @@ meta:
         :cancel="t('actions.noBack')"
         :confirm="t('actions.yesDelete')"
         variant="danger"
-        @close="(showDeleteModal = false)"
+        @close="showDeleteModal = false"
         @confirm="confirmDeleteCallout"
       >
         <p>{{ t('calloutAdminOverview.actions.confirmDelete.text') }}</p>

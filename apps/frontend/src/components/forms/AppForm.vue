@@ -41,7 +41,7 @@ import { addNotification } from '../../store/notifications';
 import { isRequestError } from '../../utils/api';
 import AppNotification from '../AppNotification.vue';
 import AppButton from '../button/AppButton.vue';
-import { LOGIN_CODES } from '@enums/login-codes';
+import { LOGIN_CODES } from '@beabee/beabee-common';
 
 const emit = defineEmits(['reset']);
 const props = defineProps<{

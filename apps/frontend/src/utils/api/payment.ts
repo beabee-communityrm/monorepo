@@ -25,6 +25,7 @@ export function deserializePayment(
   };
 }
 
+/** @deprecated use the client instead */
 export async function fetchPayments<With extends GetPaymentWith = void>(
   query: GetPaymentsQuery,
   _with?: readonly With[]

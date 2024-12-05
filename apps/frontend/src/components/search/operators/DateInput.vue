@@ -5,7 +5,7 @@
     <button
       type="button"
       class="flex-0 bg-primary-20 px-2"
-      @click="(isRelative = !isRelative)"
+      @click="isRelative = !isRelative"
     >
       <font-awesome-icon
         :icon="isRelative ? faCircleArrowRight : faCircleDot"

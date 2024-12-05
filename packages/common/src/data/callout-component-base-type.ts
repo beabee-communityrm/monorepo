@@ -4,5 +4,5 @@ export enum CalloutComponentBaseType {
   INPUT,
   INPUT_TEXT,
   INPUT_SELECTABLE,
-  NESTABLE,
+  NESTABLE
 }

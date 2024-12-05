@@ -1,4 +1,4 @@
-import type { CalloutComponentType } from "../data/index.ts";
+import type { CalloutComponentType } from "../data/index.js";
 
 import type {
   CalloutComponentContentSchema,
@@ -20,8 +20,8 @@ import type {
   CalloutComponentInputUrlSchema,
   CalloutComponentNestablePanelSchema,
   CalloutComponentNestableTabsSchema,
-  CalloutComponentNestableWellSchema,
-} from "./index.ts";
+  CalloutComponentNestableWellSchema
+} from "./index.js";
 
 type CalloutComponentSchemas = {
   [CalloutComponentType.CONTENT]: CalloutComponentContentSchema;
@@ -33,13 +33,10 @@ type CalloutComponentSchemas = {
   [CalloutComponentType.INPUT_EMAIL]: CalloutComponentInputEmailSchema;
   [CalloutComponentType.INPUT_FILE]: CalloutComponentInputFileSchema;
   [CalloutComponentType.INPUT_NUMBER]: CalloutComponentInputNumberSchema;
-  [CalloutComponentType.INPUT_PHONE_NUMBER]:
-    CalloutComponentInputPhoneNumberSchema;
+  [CalloutComponentType.INPUT_PHONE_NUMBER]: CalloutComponentInputPhoneNumberSchema;
   [CalloutComponentType.INPUT_SELECT]: CalloutComponentInputSelectSchema;
-  [CalloutComponentType.INPUT_SELECTABLE_RADIO]:
-    CalloutComponentInputSelectableRadioSchema;
-  [CalloutComponentType.INPUT_SELECTABLE_SELECTBOXES]:
-    CalloutComponentInputSelectableSelectboxesSchema;
+  [CalloutComponentType.INPUT_SELECTABLE_RADIO]: CalloutComponentInputSelectableRadioSchema;
+  [CalloutComponentType.INPUT_SELECTABLE_SELECTBOXES]: CalloutComponentInputSelectableSelectboxesSchema;
   [CalloutComponentType.INPUT_SIGNATURE]: CalloutComponentInputSignatureSchema;
   [CalloutComponentType.INPUT_TEXT_AREA]: CalloutComponentInputTextAreaSchema;
   [CalloutComponentType.INPUT_TEXT_FIELD]: CalloutComponentInputTextFieldSchema;

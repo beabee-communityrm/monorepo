@@ -1,8 +1,8 @@
 import type {
   ContactRoleData,
   ForceUpdateContributionData,
-  UpdateContactData,
-} from "./index.ts";
+  UpdateContactData
+} from "./index.js";
 
 export interface CreateContactData extends UpdateContactData {
   email: string;

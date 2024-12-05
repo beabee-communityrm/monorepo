@@ -7,6 +7,7 @@ import type {
 } from '@beabee/beabee-common';
 import { deserializeDate, instance } from '.';
 
+/** @deprecated Use the ApiKeyClient from the @beabee/client package instead */
 function deserializeApiKey(apiKey: Serial<GetApiKeyData>): GetApiKeyData {
   return {
     ...apiKey,
@@ -15,6 +16,7 @@ function deserializeApiKey(apiKey: Serial<GetApiKeyData>): GetApiKeyData {
   };
 }
 
+/** @deprecated Use the ApiKeyClient from the @beabee/client package instead */
 export async function createApiKey(
   dataIn: CreateApiKeyData
 ): Promise<{ token: string }> {
@@ -25,6 +27,7 @@ export async function createApiKey(
   return data;
 }
 
+/** @deprecated Use the ApiKeyClient from the @beabee/client package instead */
 export async function fetchApiKeys(
   query?: GetApiKeysQuery
 ): Promise<Paginated<GetApiKeyData>> {
@@ -36,6 +39,7 @@ export async function fetchApiKeys(
   return { ...data, items: data.items.map(deserializeApiKey) };
 }
 
+/** @deprecated Use the ApiKeyClient from the @beabee/client package instead */
 export async function deleteApiKey(id: string) {
   await instance.delete('/api-key/' + id);
 }

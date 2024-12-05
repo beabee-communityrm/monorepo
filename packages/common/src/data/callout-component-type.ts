@@ -19,5 +19,5 @@ export enum CalloutComponentType {
   INPUT_URL = "url",
   NESTABLE_PANEL = "panel",
   NESTABLE_TABS = "tabs",
-  NESTABLE_WELL = "well",
+  NESTABLE_WELL = "well"
 }

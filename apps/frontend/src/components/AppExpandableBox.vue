@@ -8,7 +8,7 @@
       :class="
         expanded ? 'relative rounded-b-none hover:bg-white' : 'bg-white/0'
       "
-      @click="(expanded = !expanded)"
+      @click="expanded = !expanded"
     >
       {{ buttonText }}
       <font-awesome-icon :icon="expanded ? faCaretUp : faCaretDown" />

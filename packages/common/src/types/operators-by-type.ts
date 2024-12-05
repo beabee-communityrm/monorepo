@@ -1,4 +1,4 @@
-import type { FilterType, RuleOperator, RuleOperatorParams } from "./index.ts";
+import type { FilterType, RuleOperator, RuleOperatorParams } from "./index.js";
 
 export type OperatorsByType = Record<
   FilterType,

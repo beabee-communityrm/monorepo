@@ -1,4 +1,4 @@
-import type { CalloutComponentBaseRules } from "./index.ts";
+import type { CalloutComponentBaseRules } from "./index.js";
 
 export interface CalloutComponentInputNumberRules
   extends CalloutComponentBaseRules {

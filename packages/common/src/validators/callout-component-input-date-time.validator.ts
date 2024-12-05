@@ -1,16 +1,16 @@
-import { isDateBetween } from "../utils/index.ts";
+import { isDateBetween } from "../utils/index.js";
 
 import type {
   CalloutComponentInputDateTimeSchema,
   CalloutResponseAnswer,
-  ValidatorCalloutComponent,
-} from "../types/index.ts";
+  ValidatorCalloutComponent
+} from "../types/index.js";
 
 export const calloutComponentInputDateTimeValidator: ValidatorCalloutComponent<
   CalloutComponentInputDateTimeSchema
 > = (
   schema: CalloutComponentInputDateTimeSchema,
-  answer: CalloutResponseAnswer,
+  answer: CalloutResponseAnswer
 ): boolean => {
   if (typeof answer !== "string") {
     return false;

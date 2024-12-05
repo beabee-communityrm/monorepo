@@ -1,5 +1,5 @@
-import { ItemStatus } from "../data/index.ts";
-import { NoticeData } from "./index.ts";
+import { ItemStatus } from "../data/index.js";
+import { NoticeData } from "./index.js";
 
 export interface GetNoticeData extends NoticeData {
   id: string;
