@@ -7,7 +7,7 @@
     :class="open ? '!rounded-b-none !bg-white' : ''"
     :disabled="disabled"
     :title="title"
-    @click="open = !open"
+    @click="(open = !open)"
   >
     <span v-if="showTitle">{{ title }} </span>
 

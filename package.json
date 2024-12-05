@@ -8,6 +8,7 @@
     "format": "yarn workspaces foreach -v -W -p run format",
     "test": "yarn workspaces foreach -v -W -p run test",
     "check": "yarn workspaces foreach -v -W -p run check",
+    "generate:index": "yarn workspaces foreach -v -W -p run generate:index",
     "publish:next": "yarn workspaces foreach -v -W --no-private npm publish --tolerate-republish --tag next --access public",
     "publish:latest": "yarn workspaces foreach -v -W --no-private npm publish --tolerate-republish --tag latest --access public",
     "cache:deno": "yarn workspaces foreach -v -W -p run cache:deno",

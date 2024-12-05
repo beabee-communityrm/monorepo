@@ -5,7 +5,7 @@
     <div
       class="fixed bottom-0 left-menu right-0 top-0 z-30 h-full w-full cursor-pointer bg-black opacity-30"
       :class="isMenuVisible ? 'block' : 'hidden'"
-      @click="isMenuVisible = false"
+      @click="(isMenuVisible = false)"
     />
 
     <div class="flex cursor-pointer items-center" @click="toggleMenu">

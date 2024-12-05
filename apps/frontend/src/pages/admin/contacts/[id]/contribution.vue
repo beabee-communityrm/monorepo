@@ -35,14 +35,14 @@ meta:
           <ContactCancelContribution
             :id="contact.id"
             :contribution="contributionInfo"
-            @cancel="showCancelDialog = true"
+            @cancel="(showCancelDialog = true)"
           />
           <AppConfirmDialog
             :open="showCancelDialog"
             :title="t('contactContribution.confirmCancel.title')"
             :confirm="t('contactContribution.confirmCancel.confirm')"
             :cancel="t('actions.noBack')"
-            @close="showCancelDialog = false"
+            @close="(showCancelDialog = false)"
             @confirm="handleCancelContribution"
           >
             <p>{{ t('contactContribution.confirmCancel.text') }}</p>

@@ -136,7 +136,7 @@ meta:
         size="sm"
         variant="primaryOutlined"
         class="ml-auto"
-        @click="editMode = !editMode"
+        @click="(editMode = !editMode)"
       >
         {{ t('actions.edit') }}
       </AppButton>

@@ -24,7 +24,7 @@ meta:
           {{ t('actions.edit') }}
         </ActionButton>
 
-        <ActionButton :icon="faTrash" @click="showDeleteModal = true">
+        <ActionButton :icon="faTrash" @click="(showDeleteModal = true)">
           {{ t('actions.delete') }}
         </ActionButton>
 
@@ -34,7 +34,7 @@ meta:
           :cancel="t('actions.noBack')"
           :confirm="t('actions.yesDelete')"
           variant="danger"
-          @close="showDeleteModal = false"
+          @close="(showDeleteModal = false)"
           @confirm="confirmDeleteNotice"
         >
           <p>{{ t('noticeAdminOverview.actions.confirmDelete.text') }}</p>

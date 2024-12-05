@@ -1,5 +1,12 @@
-// deno-lint-ignore-file
 import * as BeabeeCommon from "./index.ts";
 
-(globalThis as any).Beabee ||= {};
-(globalThis as any).Beabee.Common = BeabeeCommon;
+declare global {
+  interface Window {
+    Beabee: {
+      Common?: typeof BeabeeCommon;
+    };
+  }
+}
+
+(globalThis as unknown as Window).Beabee ||= {};
+(globalThis as unknown as Window).Beabee.Common = BeabeeCommon;

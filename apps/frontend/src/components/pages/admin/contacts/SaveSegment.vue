@@ -5,7 +5,7 @@
   <AppModal
     :open="showModal"
     :title="t('advancedSearch.saveSegment.title')"
-    @close="showModal = false"
+    @close="(showModal = false)"
   >
     <p class="mb-4">
       {{ t('advancedSearch.saveSegment.text') }}

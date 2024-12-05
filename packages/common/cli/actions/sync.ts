@@ -1,6 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
 
-import { parse } from "https://deno.land/std@0.212.0/jsonc/mod.ts";
+import { parse } from "std/jsonc/mod.ts";
 
 // Load package.json
 const packageJson = await Deno.readTextFile("./package.json");
