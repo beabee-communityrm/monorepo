@@ -31,6 +31,8 @@ import {
 } from "@beabee/core/models";
 
 import { AuthInfo } from "@beabee/core/type";
+import { RuleGroup } from "@beabee/beabee-common";
+import { getReviewerRules } from "@api/utils";
 
 export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
   GetCalloutResponseDto,
@@ -77,6 +79,21 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
         response.tags && {
           tags: response.tags.map((rt) => calloutTagTransformer.convert(rt.tag))
         })
+    };
+  }
+
+  protected async getNonAdminAuthRules(
+    auth: AuthInfo,
+    query: GetCalloutResponseOptsDto
+  ): Promise<RuleGroup> {
+    return {
+      condition: "OR",
+      rules: [
+        // User's can always see their own responses
+        { field: "contact", operator: "equal", value: ["me"] },
+        // And any responses for callouts they are reviewers for
+        ...(await getReviewerRules(auth.contact, "calloutId"))
+      ]
     };
   }
 

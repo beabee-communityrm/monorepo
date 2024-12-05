@@ -1,5 +1,6 @@
 import {
   RoleType,
+  RuleGroup,
   getCalloutComponents,
   stringifyAnswer
 } from "@beabee/beabee-common";
@@ -16,7 +17,7 @@ import {
 } from "@api/dto/CalloutResponseDto";
 import { BaseCalloutResponseTransformer } from "@api/transformers/BaseCalloutResponseTransformer";
 import { NotFoundError } from "@beabee/core/errors";
-import { groupBy } from "@api/utils";
+import { getReviewerRules, groupBy } from "@api/utils";
 
 import {
   CalloutResponse,
@@ -57,6 +58,16 @@ class CalloutResponseExporter extends BaseCalloutResponseTransformer<
         stringifyAnswer(c, response.answers[c.slideId]?.[c.key])
       )
     ];
+  }
+
+  protected async getNonAdminAuthRules(
+    auth: AuthInfo,
+    query: ExportCalloutResponsesOptsDto
+  ): Promise<RuleGroup | false> {
+    const reviewerRules = await getReviewerRules(auth.contact, "calloutId");
+    return reviewerRules.length
+      ? { condition: "OR", rules: reviewerRules }
+      : false;
   }
 
   protected modifyQueryBuilder(
