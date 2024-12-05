@@ -36,6 +36,7 @@ import { Callout } from "@beabee/core/models";
 
 export interface BaseGetCalloutResponseOptsDto {
   callout?: Callout;
+  isReviewer?: boolean;
 }
 
 export enum GetCalloutResponseWith {

@@ -15,7 +15,6 @@ import { getRepository } from "@beabee/core/database";
 import {
   GetCalloutResponseMapDto,
   GetCalloutResponseMapOptsDto,
-  ListCalloutResponseMapDto,
   ListCalloutResponsesDto
 } from "@api/dto/CalloutResponseDto";
 import { PaginatedDto } from "@api/dto/PaginatedDto";
@@ -23,8 +22,6 @@ import { NotFoundError } from "@beabee/core/errors";
 import { BaseCalloutResponseTransformer } from "@api/transformers/BaseCalloutResponseTransformer";
 
 import { Callout, CalloutResponse } from "@beabee/core/models";
-
-import { mergeRules } from "@beabee/core/utils/rules";
 
 import { AuthInfo } from "@beabee/core/type";
 
@@ -97,21 +94,6 @@ class CalloutResponseMapTransformer extends BaseCalloutResponseTransformer<
         operator: "equal",
         value: [bucket]
       }))
-    };
-  }
-
-  protected transformQuery<T extends ListCalloutResponseMapDto>(query: T): T {
-    return {
-      ...query,
-      rules: mergeRules([
-        query.rules,
-        // Only load responses for the given callout
-        {
-          field: "calloutId",
-          operator: "equal",
-          value: [query.callout.id]
-        }
-      ])
     };
   }
 
