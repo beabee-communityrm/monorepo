@@ -87,14 +87,12 @@ export class ContactClient extends BaseClient {
    * @returns Paginated list of contacts
    */
   async list<With extends GetContactWith | void = void>(
-    query: GetContactsQuery,
+    query: GetContactsQuery = {},
     _with?: readonly With[]
   ): Promise<Paginated<GetContactDataWith<With>>> {
     const { data } = await this.fetch.get<Paginated<Serial<GetContactData>>>(
       "/",
-      {
-        params: { with: _with, ...query }
-      }
+      { with: _with, ...query }
     );
     return {
       ...data,
@@ -124,9 +122,7 @@ export class ContactClient extends BaseClient {
     id: string,
     _with?: readonly With[]
   ): Promise<GetContactDataWith<With>> {
-    const { data } = await this.fetch.get(`/${id}`, {
-      params: { with: _with }
-    });
+    const { data } = await this.fetch.get(`/${id}`, { with: _with });
     return ContactClient.deserialize<With>(data);
   }
 

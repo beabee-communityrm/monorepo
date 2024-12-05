@@ -31,14 +31,12 @@ export class SegmentsClient extends BaseClient {
    * @returns Array of segments matching the query
    */
   async list<With extends GetSegmentWith = void>(
-    query?: GetSegmentsQuery,
+    query: GetSegmentsQuery = {},
     _with?: readonly With[]
   ): Promise<GetSegmentDataWith<With>[]> {
     const { data } = await this.fetch.get<Serial<GetSegmentDataWith<With>>[]>(
       "",
-      {
-        params: { with: _with, ...query }
-      }
+      { with: _with, ...query }
     );
     // TODO: needs Serial type guard
     return data as GetSegmentDataWith<With>[];

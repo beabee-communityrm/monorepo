@@ -31,7 +31,7 @@
     "test:types": "tsc --noEmit",
     "test:esm": "node test/node/module-type/import.mjs",
     "test:cjs": "node test/node/module-type/require.cjs",
-    "test:jest": "jest --config jest.config.node.js",
+    "test:jest": "NODE_OPTIONS=--experimental-vm-modules jest --config jest.config.node.js",
     "generate:index": "node generate-index.js",
     "format": "prettier --write .",
     "check": "yarn check:tsc && yarn check:prettier",

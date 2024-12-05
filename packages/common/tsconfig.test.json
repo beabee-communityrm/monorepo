@@ -2,7 +2,10 @@
   "extends": "./tsconfig.build.json",
   "compilerOptions": {
     "rootDir": "./",
-    "types": ["jest", "node"]
+    "types": ["jest", "node"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "esModuleInterop": true
   },
   "include": ["src/**/*", "test/**/*"]
 }

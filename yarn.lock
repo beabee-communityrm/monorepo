@@ -629,9 +629,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@beabee/e2e-api-tests@workspace:packages/e2e-api-tests":
+"@beabee/e2e-api-tests@workspace:apps/e2e-api-tests":
   version: 0.0.0-use.local
-  resolution: "@beabee/e2e-api-tests@workspace:packages/e2e-api-tests"
+  resolution: "@beabee/e2e-api-tests@workspace:apps/e2e-api-tests"
   dependencies:
     "@beabee/client": "workspace:*"
     "@beabee/tsconfig": "workspace:^"

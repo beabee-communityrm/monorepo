@@ -21,6 +21,10 @@
       "path": "../apps/router"
     },
     {
+      "name": "apps/e2e-api-tests",
+      "path": "../apps/e2e-api-tests"
+    },
+    {
       "name": "apps/webhooks",
       "path": "../apps/webhooks"
     },
@@ -35,10 +39,6 @@
     {
       "name": "packages/client",
       "path": "../packages/client"
-    },
-    {
-      "name": "packages/e2e-api-tests",
-      "path": "../packages/e2e-api-tests"
     },
     {
       "name": "packages/prettier-config",

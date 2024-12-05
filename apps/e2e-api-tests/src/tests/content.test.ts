@@ -1,14 +1,7 @@
 import { describe, expect, it, beforeAll } from "@jest/globals";
 import { ContentClient, ClientApiError } from '@beabee/client';
 import { ContentId } from '@beabee/beabee-common';
-
-import dotenv from 'dotenv';
-
-const HOST = process.env.APP_BASE_URL || 'http://localhost:3002';
-const PATH = process.env.API_BASE_URL || '/api/1.0';
-const IS_GITHUB_ACTIONS = process.env.GITHUB_ACTIONS === 'true';
-
-dotenv.config({ path: ['.env', '.env.example'] });
+import { API_KEY, HOST, PATH } from './utils/env.js';
 
 describe('Content API', () => {
   let contentClient: ContentClient;
@@ -17,7 +10,7 @@ describe('Content API', () => {
     contentClient = new ContentClient({
       host: HOST,
       path: PATH,
-      token: 'test-token',
+      token: API_KEY,
     });
   });
 

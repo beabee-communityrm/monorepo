@@ -18,12 +18,12 @@ COPY --chown=node:node packages/common/package.json /opt/packages/common/package
 COPY --chown=node:node packages/core/package.json /opt/packages/core/package.json
 COPY --chown=node:node packages/docker/package.json /opt/packages/docker/package.json
 COPY --chown=node:node packages/client/package.json /opt/packages/client/package.json
-COPY --chown=node:node packages/e2e-api-tests/package.json /opt/packages/e2e-api-tests/package.json
 
 # Copy dependencies info from apps
 COPY --chown=node:node apps/backend/package.json /opt/apps/backend/package.json
 COPY --chown=node:node apps/legacy/package.json /opt/apps/legacy/package.json
 COPY --chown=node:node apps/webhooks/package.json /opt/apps/webhooks/package.json
+COPY --chown=node:node apps/e2e-api-tests/package.json /opt/apps/e2e-api-tests/package.json
 
 # Copy config files with dependencies info
 COPY --chown=node:node packages/prettier-config /opt/packages/prettier-config
