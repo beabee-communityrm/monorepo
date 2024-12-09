@@ -335,7 +335,9 @@
     },
     "tax": {}
   },
-  "joinPayment": {},
+  "joinPayment": {
+    "applePay": {}
+  },
   "joinSetup": {},
   "login": {},
   "lostDevice": {},
