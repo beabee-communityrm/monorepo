@@ -417,7 +417,10 @@
     "tax": {}
   },
   "joinPayment": {
-    "applePay": {},
+    "applePay": {
+      "description": "Membership",
+      "recurringLabel": "Donazione ricorrente"
+    },
     "genericError": "Ops! Qualcosa è andato storto",
     "goBack": "Ti sei perso qualcosa? {back}",
     "goBackButton": "Torna alla schermata precedente",
