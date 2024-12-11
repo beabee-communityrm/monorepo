@@ -241,12 +241,38 @@ export default class MailchimpProvider implements NewsletterProvider {
   async upsertContact(
     member: UpdateNewsletterContact,
     oldEmail = member.email
-  ): Promise<void> {
-    await this.instance.put(
-      this.emailUrl(oldEmail),
-      nlContactToMCMember(member),
-      { params: { skip_merge_validation: true } }
-    );
+  ): Promise<NewsletterStatus> {
+    const url = this.emailUrl(oldEmail);
+    const mcMember = nlContactToMCMember(member);
+
+    const resp = await this.instance.put(url, mcMember, {
+      // Don't error on 400s, we'll try to recover
+      validateStatus: (status) => status <= 400,
+      params: { skip_merge_validation: true }
+    });
+
+    if (resp.status === 200) {
+      return member.status;
+
+      // Try to put the user into pending state if they're in a compliance state
+      // This can happen if they previously unsubscribed or were cleaned
+    } else if (
+      resp.status === 400 &&
+      resp.data?.title === "Member In Compliance State"
+    ) {
+      await this.instance.put(
+        url,
+        { ...mcMember, status: "pending" },
+        { params: { skip_merge_validation: true } }
+      );
+      return NewsletterStatus.Pending;
+    } else {
+      log.error("Unexpected response from upsert", {
+        status: resp.status,
+        data: resp.data
+      });
+      throw new Error("Unexpected response from upsert");
+    }
   }
 
   async upsertContacts(nlContacts: UpdateNewsletterContact[]): Promise<void> {

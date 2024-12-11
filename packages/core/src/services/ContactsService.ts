@@ -293,34 +293,33 @@ class ContactsService {
     opts = { sync: true }
   ): Promise<void> {
     log.info("Update contact profile for " + contact.id, { updates });
-    const shouldSync =
-      opts.sync && (updates.newsletterStatus || updates.newsletterGroups);
-    let isFirstSync = false;
+    if (opts.sync) {
+      try {
+        const res = await NewsletterService.upsertContact(contact, {
+          profile: updates
+        });
 
-    if (shouldSync) {
-      contact.profile = await getRepository(ContactProfile).findOneByOrFail({
-        contactId: contact.id
-      });
-      // If this is the first time the contact is being synced to the newsletter
-      // then we need to set the active member tag
-      isFirstSync = contact.profile.newsletterStatus === NewsletterStatus.None;
+        updates.newsletterStatus = res.status;
+
+        // TODO: move this logic to the newsletter service
+        if (res.wasInsert) {
+          await NewsletterService.addTagToContacts(
+            [contact],
+            OptionsService.getText("newsletter-active-member-tag")
+          );
+        }
+      } catch (err) {
+        log.error(
+          "Error updating contact profile on newsletter provider for " +
+            contact.id,
+          err
+        );
+      }
     }
 
     await getRepository(ContactProfile).update(contact.id, updates);
-
     if (contact.profile) {
       Object.assign(contact.profile, updates);
-    }
-
-    if (shouldSync) {
-      await NewsletterService.upsertContact(contact);
-      // Add the active member tag
-      if (isFirstSync && contact.membership?.isActive) {
-        await NewsletterService.addTagToContacts(
-          [contact],
-          OptionsService.getText("newsletter-active-member-tag")
-        );
-      }
     }
   }
 

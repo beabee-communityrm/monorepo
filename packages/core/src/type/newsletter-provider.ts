@@ -1,3 +1,4 @@
+import { NewsletterStatus } from "@beabee/beabee-common";
 import { NewsletterContact } from "./newsletter-contact";
 import { UpdateNewsletterContact } from "./update-newsletter-contact";
 
