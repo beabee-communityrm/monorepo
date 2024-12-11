@@ -511,6 +511,7 @@ __metadata:
     express-session: "npm:^1.18.0"
     gocardless-nodejs: "npm:^3.25.0"
     jest: "npm:^29.7.0"
+    jsvat-next: "npm:^3.0.4"
     module-alias: "npm:^2.2.3"
     moment: "npm:^2.30.1"
     passport: "npm:^0.7.0"
@@ -9886,6 +9887,13 @@ __metadata:
     is-promise: "npm:^2.0.0"
     promise: "npm:^7.0.1"
   checksum: 10c0/11f9b4f368a55878dd7973154cd83b0adca27f974d21217728652530775b2bec281e92109de66f0c9e37c76af796d5b76b33f3e38363214a83d102d523a7285b
+  languageName: node
+  linkType: hard
+
+"jsvat-next@npm:^3.0.4":
+  version: 3.0.4
+  resolution: "jsvat-next@npm:3.0.4"
+  checksum: 10c0/8c6a02ddfaaf6c912358626b510d59551eadb08224a2b394ce474bc2742ce1c3af09ab131acb739b38ca8e47a3a71943204da81f8bb4cc8893c206fc2a14a745
   languageName: node
   linkType: hard
 
