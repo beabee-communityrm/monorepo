@@ -308,6 +308,7 @@ class ContactsService {
     opts = { sync: true }
   ): Promise<void> {
     log.info("Update contact profile for " + contact.id, { updates });
+
     if (opts.sync) {
       try {
         const res = await NewsletterService.upsertContact(contact, {

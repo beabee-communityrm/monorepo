@@ -401,6 +401,8 @@ export default class MailchimpProvider implements NewsletterProvider {
   }
 
   private async dispatchOperations(operations: Operation[]): Promise<void> {
+    log.info(`Dispatching ${operations.length} operations`);
+
     if (operations.length > 20) {
       const batch = await this.createBatch(operations);
       const finishedBatch = await this.waitForBatch(batch);
