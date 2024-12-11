@@ -238,7 +238,7 @@ export default class MailchimpProvider implements NewsletterProvider {
     return responses.flatMap((r) => r.members).map(mcMemberToNlContact);
   }
 
-  async updateContact(
+  async upsertContact(
     member: UpdateNewsletterContact,
     oldEmail = member.email
   ): Promise<void> {

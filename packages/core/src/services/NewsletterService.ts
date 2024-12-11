@@ -122,7 +122,8 @@ class NewsletterService {
     log.info(`Update contact fields for ${contact.id}`, fields);
     const nlUpdate = await contactToNlUpdate(contact);
     if (nlUpdate) {
-      await this.provider.updateContact({
+      // TODO: should be an update without status
+      await this.provider.upsertContact({
         email: nlUpdate.email,
         status: nlUpdate.status,
         fields

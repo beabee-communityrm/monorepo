@@ -13,7 +13,7 @@ export default class NoneProvider implements NewsletterProvider {
   async getContacts(): Promise<NewsletterContact[]> {
     return [];
   }
-  async updateContact(
+  async upsertContact(
     contact: UpdateNewsletterContact,
     oldEmail?: string
   ): Promise<void> {}
