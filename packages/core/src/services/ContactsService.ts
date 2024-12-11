@@ -131,7 +131,11 @@ class ContactsService {
       await PaymentService.createContact(contact);
 
       if (opts.sync) {
-        await NewsletterService.upsertContact(contact);
+        const res = await NewsletterService.upsertContact(contact);
+        if (res.newStatus !== res.oldStatus) {
+          contact.profile.newsletterStatus = res.newStatus;
+          await getRepository(ContactProfile).save(contact.profile);
+        }
       }
 
       await EmailService.sendTemplateToAdmin("new-member", { contact });
@@ -183,7 +187,17 @@ class ContactsService {
     Object.assign(contact, updates);
 
     if (opts.sync) {
-      await NewsletterService.upsertContact(contact, updates, oldEmail);
+      const res = await NewsletterService.upsertContact(
+        contact,
+        updates,
+        oldEmail
+      );
+      if (res.newStatus !== res.oldStatus) {
+        // TODO: this should be done in the newsletter service
+        // This only works because upsertContact always loads the profile!
+        contact.profile.newsletterStatus = res.newStatus;
+        await getRepository(ContactProfile).save(contact.profile);
+      }
     }
 
     await PaymentService.updateContact(contact, updates);
@@ -301,10 +315,13 @@ class ContactsService {
           newsletterGroups: updates.newsletterGroups
         });
 
-        updates.newsletterStatus = res.status;
+        updates.newsletterStatus = res.newStatus;
 
         // TODO: move this logic to the newsletter service
-        if (res.wasInsert) {
+        if (
+          res.oldStatus === NewsletterStatus.None &&
+          res.newStatus !== NewsletterStatus.None
+        ) {
           await NewsletterService.addTagToContacts(
             [contact],
             OptionsService.getText("newsletter-active-member-tag")

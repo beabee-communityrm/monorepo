@@ -36,7 +36,7 @@ function shouldUpdate(updates: ContactNewsletterUpdates): boolean {
 async function contactToNlUpdate(
   contact: Contact,
   updates?: ContactNewsletterUpdates
-): Promise<UpdateNewsletterContact | undefined> {
+): Promise<[NewsletterStatus, UpdateNewsletterContact | undefined]> {
   // TODO: Fix that it relies on contact.profile being loaded
   if (!contact.profile) {
     contact.profile = await getRepository(ContactProfile).findOneByOrFail({
@@ -66,7 +66,9 @@ async function contactToNlUpdate(
     }
   };
 
-  return nlContact.status !== NewsletterStatus.None ? nlContact : undefined;
+  return nlContact.status !== NewsletterStatus.None
+    ? [contact.profile.newsletterStatus, nlContact]
+    : [NewsletterStatus.None, undefined];
 }
 
 async function getValidNlUpdates(
@@ -74,7 +76,7 @@ async function getValidNlUpdates(
 ): Promise<UpdateNewsletterContact[]> {
   const nlUpdates = [];
   for (const contact of contacts) {
-    const nlUpdate = await contactToNlUpdate(contact);
+    const [, nlUpdate] = await contactToNlUpdate(contact);
     if (nlUpdate) {
       nlUpdates.push(nlUpdate);
     }
@@ -108,26 +110,27 @@ class NewsletterService {
     contact: Contact,
     updates?: ContactNewsletterUpdates,
     oldEmail?: string
-  ): Promise<{ status: NewsletterStatus; wasInsert: boolean }> {
+  ): Promise<{
+    oldStatus: NewsletterStatus;
+    newStatus: NewsletterStatus;
+  }> {
     const willUpdate = !updates || shouldUpdate(updates);
 
     if (willUpdate) {
-      const nlUpdate = await contactToNlUpdate(contact, updates);
+      const [oldStatus, nlUpdate] = await contactToNlUpdate(contact, updates);
       if (nlUpdate) {
         log.info("Upsert contact " + contact.id);
         const newStatus = await this.provider.upsertContact(nlUpdate, oldEmail);
-        return {
-          status: newStatus,
-          wasInsert:
-            newStatus !== NewsletterStatus.None &&
-            contact.profile?.newsletterStatus === NewsletterStatus.None
-        };
+        return { oldStatus, newStatus };
       } else {
         log.info("Ignoring contact update for " + contact.id);
       }
     }
 
-    return { status: NewsletterStatus.None, wasInsert: false };
+    return {
+      oldStatus: NewsletterStatus.None,
+      newStatus: NewsletterStatus.None
+    };
   }
 
   async upsertContacts(contacts: Contact[]): Promise<void> {
@@ -140,7 +143,7 @@ class NewsletterService {
     fields: Record<string, string>
   ): Promise<void> {
     log.info(`Update contact fields for ${contact.id}`, fields);
-    const nlUpdate = await contactToNlUpdate(contact);
+    const [, nlUpdate] = await contactToNlUpdate(contact);
     if (nlUpdate) {
       // TODO: should be an update without status
       await this.provider.upsertContact({
