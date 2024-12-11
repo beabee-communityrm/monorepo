@@ -242,36 +242,49 @@ export default class MailchimpProvider implements NewsletterProvider {
     member: UpdateNewsletterContact,
     oldEmail = member.email
   ): Promise<NewsletterStatus> {
-    const url = this.emailUrl(oldEmail);
+    const req = {
+      method: "PUT",
+      url: this.emailUrl(oldEmail),
+      params: { skip_merge_validation: true }
+    };
+
     const mcMember = nlContactToMCMember(member);
 
-    const resp = await this.instance.put(url, mcMember, {
+    const resp = await this.instance.request({
+      ...req,
+      data: mcMember,
       // Don't error on 400s, we'll try to recover
-      validateStatus: (status) => status <= 400,
-      params: { skip_merge_validation: true }
+      validateStatus: (status) => status <= 400
     });
 
     if (resp.status === 200) {
+      log.info("Updated member " + member.email);
       return member.status;
 
       // Try to put the user into pending state if they're in a compliance state
       // This can happen if they previously unsubscribed or were cleaned
     } else if (
+      member.status === NewsletterStatus.Subscribed &&
       resp.status === 400 &&
       resp.data?.title === "Member In Compliance State"
     ) {
-      await this.instance.put(
-        url,
-        { ...mcMember, status: "pending" },
-        { params: { skip_merge_validation: true } }
+      log.info(
+        `Member ${member.email} had status ${resp.data.title}, trying to re-add them`
       );
+      await this.instance.request({
+        ...req,
+        data: { ...mcMember, status: "pending" }
+      });
       return NewsletterStatus.Pending;
+
+      // Fail gracefully, just remove the member from the newsletter
     } else {
-      log.error("Unexpected response from upsert", {
+      log.error("Couldn't update member " + member.email, {
         status: resp.status,
         data: resp.data
       });
-      throw new Error("Unexpected response from upsert");
+
+      return NewsletterStatus.None;
     }
   }
 
