@@ -15,6 +15,7 @@ import NoneProvider from "#providers/newsletter/NoneProvider";
 import { Contact, ContactProfile } from "#models/index";
 
 import config from "#config/config";
+import { getContributionDescription } from "#utils/contact";
 
 const log = mainLogger.child({ app: "newsletter-service" });
 
@@ -52,7 +53,11 @@ async function contactToNlUpdate(
     fields: {
       REFCODE: updates?.referralCode || contact.referralCode || "",
       POLLSCODE: updates?.pollsCode || contact.pollsCode || "",
-      C_DESC: contact.contributionDescription, // TODO
+      C_DESC: getContributionDescription(
+        contact.contributionType,
+        updates?.contributionMonthlyAmount || contact.contributionMonthlyAmount,
+        updates?.contributionPeriod || contact.contributionPeriod
+      ),
       C_MNTHAMT:
         updates?.contributionMonthlyAmount?.toFixed(2) ||
         contact.contributionMonthlyAmount?.toFixed(2) ||
