@@ -1,5 +1,13 @@
-import { Contact, ContactProfile } from "#models";
+import { ContributionPeriod, NewsletterStatus } from "@beabee/beabee-common";
 
-export type ContactNewsletterUpdates = Partial<Omit<Contact, "profile">> & {
-  profile?: Partial<ContactProfile>;
-};
+export interface ContactNewsletterUpdates {
+  email?: string | undefined;
+  firstname?: string;
+  lastname?: string;
+  referralCode?: string | null;
+  pollsCode?: string | null;
+  contributionPeriod?: ContributionPeriod | null;
+  contributionMonthlyAmount?: number | null;
+  newsletterStatus?: NewsletterStatus | undefined;
+  newsletterGroups?: string[] | undefined;
+}

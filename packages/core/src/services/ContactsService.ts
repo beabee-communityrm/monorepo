@@ -297,7 +297,8 @@ class ContactsService {
     if (opts.sync) {
       try {
         const res = await NewsletterService.upsertContact(contact, {
-          profile: updates
+          newsletterStatus: updates.newsletterStatus,
+          newsletterGroups: updates.newsletterGroups
         });
 
         updates.newsletterStatus = res.status;

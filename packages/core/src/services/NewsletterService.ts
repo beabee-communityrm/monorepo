@@ -26,7 +26,9 @@ function shouldUpdate(updates: ContactNewsletterUpdates): boolean {
     updates.referralCode ||
     updates.pollsCode ||
     updates.contributionPeriod ||
-    updates.contributionMonthlyAmount
+    updates.contributionMonthlyAmount ||
+    updates.newsletterStatus ||
+    updates.newsletterGroups
   );
 }
 
@@ -43,10 +45,8 @@ async function contactToNlUpdate(
 
   const nlContact = {
     email: updates?.email || contact.email,
-    status:
-      updates?.profile?.newsletterStatus || contact.profile.newsletterStatus,
-    groups:
-      updates?.profile?.newsletterGroups || contact.profile.newsletterGroups,
+    status: updates?.newsletterStatus || contact.profile.newsletterStatus,
+    groups: updates?.newsletterGroups || contact.profile.newsletterGroups,
     firstname: updates?.firstname || contact.firstname,
     lastname: updates?.lastname || contact.lastname,
     fields: {
