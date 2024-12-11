@@ -174,12 +174,13 @@ class ContactsService {
 
     const oldEmail = updates.email && contact.email;
 
-    Object.assign(contact, updates);
     try {
       await getRepository(Contact).update(contact.id, updates);
     } catch (err) {
       throw isDuplicateIndex(err, "email") ? new DuplicateEmailError() : err;
     }
+
+    Object.assign(contact, updates);
 
     if (opts.sync) {
       await NewsletterService.upsertContact(contact, updates, oldEmail);
