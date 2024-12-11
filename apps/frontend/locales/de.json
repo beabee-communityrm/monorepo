@@ -1149,6 +1149,10 @@
     }
   },
   "joinPayment": {
+    "applePay": {
+      "description": "Mitgliedschaft",
+      "recurringLabel": "Regelmäßiger Beitrag"
+    },
     "genericError": "Upps! Etwas ist schiefgelaufen. Bitte wenden Sie sich an den Support, sollte das erneut passieren.",
     "goBack": "Möchten Sie etwas ändern? {back}",
     "goBackButton": "Zurück zum letzten Schritt",

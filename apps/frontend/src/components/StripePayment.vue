@@ -27,9 +27,10 @@
 </template>
 <script lang="ts" setup>
 import useVuelidate from '@vuelidate/core';
-import { type Appearance } from '@stripe/stripe-js';
+import type { Appearance } from '@stripe/stripe-js';
+import type { ApplePayRecurringPaymentRequest } from '@stripe/stripe-js/dist/stripe-js/elements/apple-pay';
 import { loadStripe } from '@stripe/stripe-js/pure';
-import { onBeforeMount, ref } from 'vue';
+import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import AppButton from './button/AppButton.vue';
 import AppInput from './forms/AppInput.vue';
@@ -37,13 +38,16 @@ import AppLabel from './forms/AppLabel.vue';
 
 import theme from 'virtual:theme';
 import AppNotification from './AppNotification.vue';
+import { ContributionPeriod } from '@beabee/beabee-common';
+import env from '@env';
+import type { StripePaymentData } from '@type';
 
 const emit = defineEmits(['loaded']);
 
 const props = defineProps<{
   clientSecret: string;
   publicKey: string;
-  email: string;
+  paymentData: StripePaymentData;
   returnUrl: string;
   showNameFields?: boolean;
 }>();
@@ -109,6 +113,22 @@ const appearance: Appearance = {
   },
 };
 
+const appleRecurringPaymentRequest = computed<ApplePayRecurringPaymentRequest>(
+  () => ({
+    paymentDescription: t('joinPayment.applePay.description'),
+    managementURL: env.appUrl + '/profile/contribution',
+    regularBilling: {
+      label: t('joinPayment.applePay.recurringLabel'),
+      amount: props.paymentData.amount * 100,
+      recurringPaymentIntervalUnit:
+        props.paymentData.period === ContributionPeriod.Monthly
+          ? 'month'
+          : 'year',
+      recurringPaymentIntervalCount: 1,
+    },
+  })
+);
+
 onBeforeMount(async () => {
   const stripe = await loadStripe(props.publicKey);
   if (stripe && divRef.value) {
@@ -120,11 +140,10 @@ onBeforeMount(async () => {
       fields: {
         billingDetails: {
           email: 'never',
-          ...(props.showNameFields && {
-            name: 'never',
-          }),
+          ...(props.showNameFields && { name: 'never' }),
         },
       },
+      applePay: { recurringPaymentRequest: appleRecurringPaymentRequest.value },
     });
     paymentElement.mount(divRef.value);
     paymentElement.on('ready', () => emit('loaded'));
@@ -147,7 +166,7 @@ onBeforeMount(async () => {
           return_url: returnUrl,
           payment_method_data: {
             billing_details: {
-              email: props.email,
+              email: props.paymentData.email,
               ...(props.showNameFields && {
                 name: `${firstName.value} ${lastName.value}`,
               }),

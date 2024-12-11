@@ -750,6 +750,10 @@
     "tax": {}
   },
   "joinPayment": {
+    "applePay": {
+      "description": "Assinatura",
+      "recurringLabel": "Contribuição recorrente"
+    },
     "genericError": "Ups, houve aqui um erro. Fala connosco se isto voltar a acontecer.",
     "goBack": "Esqueceste-te de alguma coisa? {back}",
     "goBackButton": "Voltar ao passo anterior",

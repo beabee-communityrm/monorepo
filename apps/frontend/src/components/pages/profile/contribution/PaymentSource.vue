@@ -30,7 +30,7 @@
       <StripePayment
         :client-secret="stripeClientSecret"
         :public-key="stripePublicKey"
-        :email="email"
+        :payment-data="paymentData"
         :return-url="updatePaymentMethodCompleteUrl"
         @loaded="onStripeLoaded"
       />
@@ -56,13 +56,14 @@ import {
 import { isRequestError } from '@utils/api';
 
 import type { PaymentSourceManual, PaymentSource } from '@beabee/beabee-common';
+import type { StripePaymentData } from '@type/stripe-payment-data';
 
 const { t } = useI18n();
 
 const props = defineProps<{
   stripePublicKey: string;
   paymentSource: Exclude<PaymentSource, PaymentSourceManual>;
-  email: string;
+  paymentData: StripePaymentData;
 }>();
 
 const loading = ref(false);
