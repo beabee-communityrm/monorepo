@@ -54,6 +54,8 @@
       "title": "Newsletter",
       "unsubscribe": "Unsubscribe them from the newsletter"
     },
+    "phoneInfo": "By providing your phone number you are consenting to being contacted by phone",
+    "phoneInfoAdmin": "You must have the person's consent before adding their phone number to the system",
     "savedPassword": "New password saved",
     "subTitle": "Required fields are marked with an asterisk. All information submitted here is private.",
     "title": "Account"
@@ -676,7 +678,7 @@
       "paymentReference": "Payment reference",
       "paymentSource": "Payment source",
       "period": "Period",
-      "phone": "Phone",
+      "phone": "Phone number",
       "preferredChannel": "Preferred channel",
       "tags": "Tags"
     },

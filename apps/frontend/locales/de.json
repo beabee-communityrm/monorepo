@@ -54,6 +54,8 @@
       "title": "Newsletter",
       "unsubscribe": "Vom Newsletter abmelden"
     },
+    "phoneInfo": "Mit der Angabe Ihrer Telefonnummer erklären Sie sich damit einverstanden, telefonisch kontaktiert zu werden.",
+    "phoneInfoAdmin": "Sie müssen die Zustimmung der Person einholen, bevor Sie ihre Telefonnummer in das System eingeben.",
     "savedPassword": "Das neue Passwort wurde gespeichert.",
     "subTitle": "Alle benötigten Felder sind mit * markiert. Alle Informationen werden vertraulich behandelt.",
     "title": "Account"
