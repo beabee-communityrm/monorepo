@@ -321,8 +321,10 @@ class ContactsService {
         // TODO: move this logic to the newsletter service
         if (
           res.oldStatus === NewsletterStatus.None &&
-          res.newStatus !== NewsletterStatus.None
+          res.newStatus !== NewsletterStatus.None &&
+          contact.membership?.isActive
         ) {
+          log.info("First newsletter signup for " + contact.id);
           await NewsletterService.addTagToContacts(
             [contact],
             OptionsService.getText("newsletter-active-member-tag")

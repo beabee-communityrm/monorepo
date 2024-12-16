@@ -66,9 +66,9 @@ async function contactToNlUpdate(
     }
   };
 
-  return nlContact.status !== NewsletterStatus.None
-    ? [contact.profile.newsletterStatus, nlContact]
-    : [NewsletterStatus.None, undefined];
+  return nlContact.status === NewsletterStatus.None
+    ? [NewsletterStatus.None, undefined]
+    : [contact.profile.newsletterStatus, nlContact];
 }
 
 async function getValidNlUpdates(
