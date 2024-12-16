@@ -1,8 +1,7 @@
 import express, { type Express, type Request, type Response } from "express";
 import moment from "moment";
-import { createQueryBuilder } from "typeorm";
 
-import { getRepository } from "@beabee/core/database";
+import { createQueryBuilder, getRepository } from "@beabee/core/database";
 import { hasNewModel, isAdmin } from "#core/middleware";
 import { wrapAsync } from "@beabee/core/utils/index";
 
