@@ -110,27 +110,26 @@ class NewsletterService {
     contact: Contact,
     updates?: ContactNewsletterUpdates,
     oldEmail?: string
-  ): Promise<{
-    oldStatus: NewsletterStatus;
-    newStatus: NewsletterStatus;
-  }> {
-    const willUpdate = !updates || shouldUpdate(updates);
-
-    if (willUpdate) {
-      const [oldStatus, nlUpdate] = await contactToNlUpdate(contact, updates);
-      if (nlUpdate) {
-        log.info("Upsert contact " + contact.id);
-        const newStatus = await this.provider.upsertContact(nlUpdate, oldEmail);
-        return { oldStatus, newStatus };
-      } else {
-        log.info("Ignoring contact update for " + contact.id);
+  ): Promise<
+    | {
+        oldStatus: NewsletterStatus;
+        newStatus: NewsletterStatus;
       }
+    | undefined
+  > {
+    const willUpdate = !updates || shouldUpdate(updates);
+    if (!willUpdate) {
+      return;
     }
 
-    return {
-      oldStatus: NewsletterStatus.None,
-      newStatus: NewsletterStatus.None
-    };
+    const [oldStatus, nlUpdate] = await contactToNlUpdate(contact, updates);
+    if (nlUpdate) {
+      log.info("Upsert contact " + contact.id);
+      const newStatus = await this.provider.upsertContact(nlUpdate, oldEmail);
+      return { oldStatus, newStatus };
+    } else {
+      log.info("Ignoring contact update for " + contact.id);
+    }
   }
 
   async upsertContacts(contacts: Contact[]): Promise<void> {

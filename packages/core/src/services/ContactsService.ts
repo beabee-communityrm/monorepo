@@ -132,7 +132,7 @@ class ContactsService {
 
       if (opts.sync) {
         const res = await NewsletterService.upsertContact(contact);
-        if (res.newStatus !== res.oldStatus) {
+        if (res && res.newStatus !== res.oldStatus) {
           contact.profile.newsletterStatus = res.newStatus;
           await getRepository(ContactProfile).save(contact.profile);
         }
@@ -192,7 +192,7 @@ class ContactsService {
         updates,
         oldEmail
       );
-      if (res.newStatus !== res.oldStatus) {
+      if (res && res.newStatus !== res.oldStatus) {
         // TODO: this should be done in the newsletter service
         // This only works because upsertContact always loads the profile!
         contact.profile.newsletterStatus = res.newStatus;
@@ -316,19 +316,21 @@ class ContactsService {
           newsletterGroups: updates.newsletterGroups
         });
 
-        updates.newsletterStatus = res.newStatus;
+        if (res) {
+          updates.newsletterStatus = res.newStatus;
 
-        // TODO: move this logic to the newsletter service
-        if (
-          res.oldStatus === NewsletterStatus.None &&
-          res.newStatus !== NewsletterStatus.None &&
-          contact.membership?.isActive
-        ) {
-          log.info("First newsletter signup for " + contact.id);
-          await NewsletterService.addTagToContacts(
-            [contact],
-            OptionsService.getText("newsletter-active-member-tag")
-          );
+          // TODO: move this logic to the newsletter service
+          if (
+            res.oldStatus === NewsletterStatus.None &&
+            res.newStatus !== NewsletterStatus.None &&
+            contact.membership?.isActive
+          ) {
+            log.info("First newsletter signup for " + contact.id);
+            await NewsletterService.addTagToContacts(
+              [contact],
+              OptionsService.getText("newsletter-active-member-tag")
+            );
+          }
         }
       } catch (err) {
         log.error(
