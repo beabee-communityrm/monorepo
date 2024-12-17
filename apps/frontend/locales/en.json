@@ -332,6 +332,7 @@
     },
     "addAPoint": "Click on the map where you want to add a point",
     "addLocation": "Add a new entry",
+    "confirmHuman": "Please confirm you are human",
     "contactDetails": "Contact details",
     "ended": "This callout ended on {date}",
     "form": {
@@ -356,6 +357,7 @@
       "gallery": "Gallery",
       "map": "Map"
     },
+    "youResponded": "You replied to this callout ♥",
     "yourResponse": "Your response"
   },
   "calloutAdmin": {

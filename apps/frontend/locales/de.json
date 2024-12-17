@@ -332,6 +332,7 @@
     },
     "addAPoint": "Klicken Sie dort auf die Karte, wo Sie einen Ort ergänzen möchten",
     "addLocation": "Neuen Ort eingeben",
+    "confirmHuman": "Bitte bestätigen Sie, dass Sie ein Mensch sind",
     "contactDetails": "Kontaktdaten",
     "ended": "Dieser Callout ist seit dem {date} beendet.",
     "form": {
@@ -356,6 +357,7 @@
       "gallery": "Galerie",
       "map": "Karte"
     },
+    "youResponded": "Sie haben geantwortet ♥",
     "yourResponse": "Ihre Antwort"
   },
   "calloutAdmin": {

@@ -77,6 +77,7 @@
     "actions": {},
     "addAPoint": "Hier kannst du einen Ort rein-schreiben.",
     "addLocation": "Hier kannst du einen neuen Ort rein-schreiben.",
+    "confirmHuman": "Du musst hier klicken. Dann weiß der Computer: Dass du ein Mensch bist. Und keine Maschine.",
     "ended": "Den Aufruf gibt es nicht mehr.",
     "form": {
       "submittingResponseError": "Das hat nicht geklappt. Versuche es noch mal."
