@@ -12,6 +12,7 @@
     "npm:@captchafox/vue@^1.1.0": "1.3.0_vue@3.5.13__typescript@5.6.3_typescript@5.6.3",
     "npm:@fontsource/fira-sans-condensed@^5.0.13": "5.1.0",
     "npm:@fontsource/fira-sans@^5.0.20": "5.1.0",
+    "npm:@fontsource/libre-franklin@^5.1.1": "5.1.1",
     "npm:@fontsource/nunito-sans@^5.0.13": "5.1.0",
     "npm:@fontsource/open-sans@^5.0.28": "5.1.0",
     "npm:@fontsource/roboto-slab@^5.0.20": "5.1.0",
@@ -676,6 +677,9 @@
     },
     "@fontsource/fira-sans@5.1.0": {
       "integrity": "sha512-qfAjF5WcrL6qQh9eIWLK7lOh9wbCgCnVWh2Nu2gozrTgsUgYBLR8sbCGYwlK1K0yZoQsR2i9VSiQ16wwPCBkSw=="
+    },
+    "@fontsource/libre-franklin@5.1.1": {
+      "integrity": "sha512-g1B6/XkyYM46Lhm2AIBF5EgQE6sx381uJnuEh2OInfkvHEgl7jOGF48k4rtjlg5Lt0r5spI9ZCTxm6teXcF1Qg=="
     },
     "@fontsource/nunito-sans@5.1.0": {
       "integrity": "sha512-QgLUvVj8ulkkdfpbjQajH1ijPcQwnDWWKcky71bgoSrQLiGEtqjxH4SqkM+si9a6VvzXyqbXWk0ozOEIcG+QMw=="
@@ -9677,6 +9681,7 @@
             "npm:@captchafox/vue@^1.1.0",
             "npm:@fontsource/fira-sans-condensed@^5.0.13",
             "npm:@fontsource/fira-sans@^5.0.20",
+            "npm:@fontsource/libre-franklin@^5.1.1",
             "npm:@fontsource/nunito-sans@^5.0.13",
             "npm:@fontsource/open-sans@^5.0.28",
             "npm:@fontsource/roboto-slab@^5.0.20",

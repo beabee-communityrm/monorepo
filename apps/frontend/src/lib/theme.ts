@@ -6,6 +6,7 @@ import { generalContent } from '../store';
 export const validFonts = {
   'fira-sans': ['Fira Sans', 'sans-serif'],
   'fira-sans-condensed': ['Fira Sans Condensed', 'sans-serif'],
+  'libre-franklin': ['Libre Franklin', 'sans-serif'],
   'nunito-sans': ['Nunito Sans', 'sans-serif'],
   'open-sans': ['Open Sans', 'sans-serif'],
   roboto: ['Roboto', 'sans-serif'],
