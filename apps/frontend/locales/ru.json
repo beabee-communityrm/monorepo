@@ -179,6 +179,7 @@
     },
     "addAPoint": "Кликните, чтобы добавить отметку на карту",
     "addLocation": "Добавить новую локацию",
+    "confirmHuman": "Confirma por favor que és um humano",
     "contactDetails": "Контакты",
     "ended": "Этот опрос закончился {date}",
     "form": {
@@ -203,6 +204,7 @@
       "gallery": "Галерея",
       "map": "Карта"
     },
+    "youResponded": "Вы ответили на этот опрос ♥",
     "yourResponse": "Ваш ответ"
   },
   "calloutAdmin": {},
