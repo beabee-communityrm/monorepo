@@ -37,11 +37,11 @@ export default (app: express.Express): void => {
       }),
       resave: false,
       rolling: true
-    }) as unknown as RequestHandler // TODO: Fix this
+    })
   );
 
   // Passport
-  app.use(passport.initialize() as unknown as RequestHandler); // TODO: Fix this
+  app.use(passport.initialize());
   app.use(passport.session());
 
   app.use((req, res, next) => {

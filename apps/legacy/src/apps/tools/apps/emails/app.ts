@@ -1,5 +1,5 @@
 import busboy from "connect-busboy";
-import express, { RequestHandler, type Express } from "express";
+import express, { type Express } from "express";
 import _ from "lodash";
 import Papa from "papaparse";
 
@@ -155,33 +155,28 @@ app.post(
   })
 );
 
-app.post(
-  "/:id/mailings",
-  hasNewModel(Email, "id"),
-  busboy() as unknown as RequestHandler, // TODO: Fix this
-  (req, res) => {
-    const email = req.model as Email;
-    let recipients: EmailMailingRecipient[];
+app.post("/:id/mailings", hasNewModel(Email, "id"), busboy(), (req, res) => {
+  const email = req.model as Email;
+  let recipients: EmailMailingRecipient[];
 
-    req.busboy.on("file", (fieldname, file) => {
-      Papa.parse(file, {
-        header: true,
-        complete: function (results) {
-          recipients = results.data as EmailMailingRecipient[];
-        }
-      });
+  req.busboy.on("file", (fieldname, file) => {
+    Papa.parse(file, {
+      header: true,
+      complete: function (results) {
+        recipients = results.data as EmailMailingRecipient[];
+      }
     });
-    req.busboy.on("finish", async () => {
-      const mailing = new EmailMailing();
-      mailing.email = email;
-      mailing.recipients = recipients;
-      const savedMailing = await getRepository(EmailMailing).save(mailing);
-      res.redirect(`/tools/emails/${email.id}/mailings/${savedMailing.id}`);
-    });
+  });
+  req.busboy.on("finish", async () => {
+    const mailing = new EmailMailing();
+    mailing.email = email;
+    mailing.recipients = recipients;
+    const savedMailing = await getRepository(EmailMailing).save(mailing);
+    res.redirect(`/tools/emails/${email.id}/mailings/${savedMailing.id}`);
+  });
 
-    req.pipe(req.busboy);
-  }
-);
+  req.pipe(req.busboy);
+});
 
 app.get(
   "/:id/mailings/:mailingId",
