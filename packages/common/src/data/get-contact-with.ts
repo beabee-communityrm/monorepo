@@ -3,4 +3,5 @@ export enum GetContactWith {
   Profile = "profile",
   Roles = "roles",
   Tags = "tags",
+  IsReviewer = "isReviewer",
 }

@@ -24,7 +24,8 @@ import {
   CalloutResponseComment,
   CalloutResponseTag,
   CalloutTag,
-  CalloutVariant
+  CalloutVariant,
+  CalloutReviewer
 } from "#models/index";
 
 import {
@@ -170,6 +171,7 @@ class CalloutsService {
         .setParameters({ id })
         .execute();
 
+      await em.getRepository(CalloutReviewer).delete({ calloutId: id });
       await em.getRepository(CalloutResponse).delete({ calloutId: id });
       await em.getRepository(CalloutVariant).delete({ calloutId: id });
       await em.getRepository(CalloutTag).delete({ calloutId: id });
@@ -321,12 +323,18 @@ class CalloutsService {
   public async permanentlyDeleteContact(contact: Contact): Promise<void> {
     log.info("Permanently delete callout data for contact " + contact.id);
 
+    await getRepository(CalloutReviewer).delete({ contactId: contact.id });
     await getRepository(CalloutResponseComment).delete({
       contactId: contact.id
     });
     await getRepository(CalloutResponse).update(
       { contactId: contact.id },
       { contactId: null }
+    );
+
+    await getRepository(CalloutResponse).update(
+      { assigneeId: contact.id },
+      { assigneeId: null }
     );
   }
 

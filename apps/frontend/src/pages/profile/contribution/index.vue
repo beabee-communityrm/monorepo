@@ -46,7 +46,7 @@ meta:
       <PaymentSource
         v-if="contribution.paymentSource?.method"
         class="mb-7 md:mb-9"
-        :email="email"
+        :payment-data="paymentSourceData"
         :payment-source="contribution.paymentSource"
         :stripe-public-key="paymentContent.stripePublicKey"
       />
@@ -117,15 +117,17 @@ const paymentContent = ref<ContentPaymentData>({
   taxRateEnabled: false,
 });
 
-const email = computed(() =>
-  currentUser.value ? currentUser.value.email : ''
-);
-
 const isIniting = ref(true);
 const contribution = ref<ContributionInfo>({
   type: ContributionType.None,
   membershipStatus: MembershipStatus.None,
 });
+
+const paymentSourceData = computed(() => ({
+  email: currentUser.value ? currentUser.value.email : '',
+  amount: contribution.value.amount || 0,
+  period: contribution.value.period || ContributionPeriod.Monthly,
+}));
 
 onBeforeMount(async () => {
   isIniting.value = true;

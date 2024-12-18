@@ -350,7 +350,9 @@
     },
     "tax": {}
   },
-  "joinPayment": {},
+  "joinPayment": {
+    "applePay": {}
+  },
   "joinSetup": {},
   "login": {
     "lostMfaDevice": "2FA-apparaat kwijt?"

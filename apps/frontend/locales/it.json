@@ -417,6 +417,10 @@
     "tax": {}
   },
   "joinPayment": {
+    "applePay": {
+      "description": "Membership",
+      "recurringLabel": "Donazione ricorrente"
+    },
     "genericError": "Ops! Qualcosa è andato storto",
     "goBack": "Ti sei perso qualcosa? {back}",
     "goBackButton": "Torna alla schermata precedente",
@@ -494,7 +498,9 @@
       "changeLabel": "Modifica i dettagli della carta",
       "label": "Carta di credito"
     },
-    "s_paypal": {},
+    "s_paypal": {
+      "label": "PayPal"
+    },
     "s_sepa": {
       "label": "Addebito diretto"
     }

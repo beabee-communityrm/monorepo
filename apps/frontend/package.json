@@ -26,6 +26,7 @@
     "@captchafox/vue": "^1.1.0",
     "@fontsource/fira-sans": "^5.0.20",
     "@fontsource/fira-sans-condensed": "^5.0.13",
+    "@fontsource/libre-franklin": "^5.1.1",
     "@fontsource/nunito-sans": "^5.0.13",
     "@fontsource/open-sans": "^5.0.28",
     "@fontsource/roboto": "^5.0.13",

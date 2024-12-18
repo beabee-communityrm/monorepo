@@ -7,7 +7,6 @@ import {
   IsString
 } from "class-validator";
 
-import { UpdateAddressDto } from "@api/dto/AddressDto";
 import { StartContributionDto } from "@api/dto/ContributionDto";
 import { CompleteJoinFlowDto } from "@api/dto/JoinFlowDto";
 import IsPassword from "@api/validators/IsPassword";
@@ -16,6 +15,7 @@ import IsUrl from "@api/validators/IsUrl";
 import type { JoinForm } from "@beabee/core/models";
 
 import { CompleteUrls } from "@beabee/core/type";
+import IsVatNumber from "@api/validators/IsVatNumber";
 
 export class StartSignupFlowDto implements CompleteUrls {
   @IsUrl()
@@ -53,6 +53,6 @@ export class CompleteSignupFlowDto
   lastname?: string;
 
   @IsOptional()
-  @IsString()
+  @IsVatNumber()
   vatNumber?: string;
 }

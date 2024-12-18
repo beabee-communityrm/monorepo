@@ -216,6 +216,7 @@ export class CalloutController {
     @QueryParams() query: ListTagsDto
   ): Promise<GetCalloutTagDto[]> {
     const result = await calloutTagTransformer.fetch(auth, {
+      limit: -1,
       ...query,
       rules: {
         condition: "AND",

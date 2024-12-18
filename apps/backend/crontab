@@ -1,7 +1,7 @@
 # Add node to the PATH
 PATH=/usr/local/bin:/usr/bin:/bin
 
-# min hour day month weekday command
-0 1 * * * su node -c 'cd /opt/apps/backend/ && node ./built/tools/mailchimp/sync.js' > /proc/1/fd/1 2>&1
-0 1 * * * su node -c 'cd /opt/apps/backend/ && node ./built/tools/start-gifts.js' > /proc/1/fd/1 2>&1
-0 1 * * * su node -c 'cd /opt/apps/backend/ && node ./built/tools/process-segments.js' > /proc/1/fd/1 2>&1
+# Spread the jobs out over a few minutes to avoid overloading the server
+0 1 * * * su node -c 'cd /opt/apps/backend/ && sleep $((RANDOM \% 120)) && node ./built/tools/mailchimp/sync.js' > /proc/1/fd/1 2>&1
+5 1 * * * su node -c 'cd /opt/apps/backend/ && sleep $((RANDOM \% 120)) && node ./built/tools/start-gifts.js' > /proc/1/fd/1 2>&1
+10 1 * * * su node -c 'cd /opt/apps/backend/ && sleep $((RANDOM \% 120)) && node ./built/tools/process-segments.js' > /proc/1/fd/1 2>&1

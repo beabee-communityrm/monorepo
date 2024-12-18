@@ -31,6 +31,8 @@ import {
 } from "@beabee/core/models";
 
 import { AuthInfo } from "@beabee/core/type";
+import { RuleGroup } from "@beabee/beabee-common";
+import { getReviewerRules } from "@api/utils";
 
 export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
   GetCalloutResponseDto,
@@ -80,14 +82,36 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
     };
   }
 
+  protected async getNonAdminAuthRules(
+    auth: AuthInfo,
+    query: GetCalloutResponseOptsDto
+  ): Promise<RuleGroup> {
+    const reviewerRules = await getReviewerRules(auth.contact, "calloutId");
+
+    // This is a hacky way to pass the reviewer status to modifyQueryBuilder
+    query.isReviewer = reviewerRules.length > 0;
+
+    return {
+      condition: "OR",
+      rules: [
+        // User's can always see their own responses
+        { field: "contact", operator: "equal", value: ["me"] },
+        // And any responses for callouts they are reviewers for
+        ...reviewerRules
+      ]
+    };
+  }
+
   protected modifyQueryBuilder(
     qb: SelectQueryBuilder<CalloutResponse>,
     fieldPrefix: string,
     query: ListCalloutResponsesDto,
     auth: AuthInfo
   ): void {
-    // TODO: Add auth check for assignee
-    if (query.with?.includes(GetCalloutResponseWith.Assignee)) {
+    if (
+      query.with?.includes(GetCalloutResponseWith.Assignee) &&
+      (query.isReviewer || auth.roles.includes("admin"))
+    ) {
       qb.leftJoinAndSelect(`${fieldPrefix}assignee`, "assignee");
     }
     if (query.with?.includes(GetCalloutResponseWith.Callout)) {
