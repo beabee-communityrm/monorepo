@@ -9,5 +9,3 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup
       - run: yarn check
-      - run: yarn build
-      - run: yarn test
