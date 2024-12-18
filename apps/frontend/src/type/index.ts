@@ -20,3 +20,4 @@ export * from './locale-prop';
 export * from './rule-group-with-empty';
 export * from './set-mfa-steps';
 export * from './set-mfa-totp-identity';
+export * from './stripe-payment-data';

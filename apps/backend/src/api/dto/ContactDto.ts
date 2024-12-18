@@ -163,6 +163,10 @@ export class GetContactDto extends BaseContactDto {
   @IsOptional()
   @ValidateNested({ each: true })
   tags?: GetContactTagDto[];
+
+  @IsOptional()
+  @IsBoolean()
+  isReviewer?: boolean;
 }
 
 export class UpdateContactDto extends BaseContactDto {

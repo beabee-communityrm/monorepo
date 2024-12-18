@@ -1,22 +1,25 @@
-import type { GetContactData, RoleType } from '@beabee/beabee-common';
+import {
+  GetContactWith,
+  type GetContactDataWith,
+  type RoleType,
+} from '@beabee/beabee-common';
 import { computed, type ComputedRef, ref } from 'vue';
 
 import { instance } from '@utils/api';
 
 import { fetchContact } from '@utils/api/contact';
 
-export async function updateCurrentUser(
-  contact?: GetContactData
-): Promise<void> {
+export async function updateCurrentUser(): Promise<void> {
   try {
-    currentUser.value = contact || (await fetchContact('me'));
+    currentUser.value = await fetchContact('me', [GetContactWith.IsReviewer]);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (_err) {
     currentUser.value = null;
   }
 }
 
-export const currentUser = ref<GetContactData | null>(null);
+export const currentUser =
+  ref<GetContactDataWith<GetContactWith.IsReviewer> | null>(null);
 export const initCurrentUser = updateCurrentUser();
 
 instance.interceptors.response.use(

@@ -52,7 +52,7 @@ meta:
     <StripePayment
       :client-secret="stripeClientSecret"
       :public-key="paymentContent.stripePublicKey"
-      :email="signUpData.email"
+      :payment-data="signUpData"
       :return-url="completeUrl"
       show-name-fields
     />

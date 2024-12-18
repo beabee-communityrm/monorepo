@@ -85,7 +85,7 @@
       <StripePayment
         :client-secret="stripeClientSecret"
         :public-key="paymentContent.stripePublicKey"
-        :email="email"
+        :payment-data="paymentData"
         :return-url="startContributionCompleteUrl"
         @loaded="onStripeLoaded"
       />
@@ -151,9 +151,11 @@ const loading = ref(false);
 const stripeClientSecret = ref('');
 const stripePaymentLoaded = ref(false);
 
-const email = computed(() =>
-  currentUser.value ? currentUser.value.email : ''
-);
+const paymentData = computed(() => ({
+  email: currentUser.value ? currentUser.value.email : '',
+  amount: newContribution.amount,
+  period: newContribution.period,
+}));
 
 const isActiveMember = computed(
   () => props.modelValue.membershipStatus === MembershipStatus.Active

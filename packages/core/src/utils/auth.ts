@@ -124,6 +124,11 @@ export async function isValidPassword(
     return LOGIN_CODES.LOCKED;
   }
 
+  // No password set
+  if (passwordData.iterations === 0) {
+    return LOGIN_CODES.LOGIN_FAILED;
+  }
+
   const hash = await hashPassword(
     passwordRaw,
     passwordData.salt,

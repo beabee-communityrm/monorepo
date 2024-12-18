@@ -54,6 +54,7 @@
       "title": "Newsletter",
       "unsubscribe": "Suspender inscrição na newsletter"
     },
+    "phoneInfo": "Ao fornecer o seu número de telefone, está a consentir ser contactado por telefone.",
     "savedPassword": "Nova palavra-passe gravada",
     "subTitle": "Os campos obrigatórios estão marcados com asteriscos. Toda a informação enviada por aqui é privada.",
     "title": "Conta"
@@ -209,6 +210,7 @@
       "gallery": "Galeria",
       "map": "Mapa"
     },
+    "youResponded": "Já respondeste a esta chamada ♥",
     "yourResponse": "A tua resposta"
   },
   "calloutAdmin": {},
@@ -733,7 +735,7 @@
       },
       "failed": {
         "backToJoin": "Voltar à página de registo",
-        "message": "Houve um problema ao criar a tua conta e a nossa equipa já foi avisada. Entra em contacto connosco se o problema continuar.",
+        "message": "Houve um problema inesperado ao criar a tua conta. Entra em contacto connosco se o problema continuar, e diz-nos com detalhe o que aconteceu.",
         "title": "Houve aqui um problema."
       }
     },
@@ -750,6 +752,10 @@
     "tax": {}
   },
   "joinPayment": {
+    "applePay": {
+      "description": "Assinatura",
+      "recurringLabel": "Contribuição recorrente"
+    },
     "genericError": "Ups, houve aqui um erro. Fala connosco se isto voltar a acontecer.",
     "goBack": "Esqueceste-te de alguma coisa? {back}",
     "goBackButton": "Voltar ao passo anterior",
@@ -819,14 +825,18 @@
     "error": "Houve aqui um erro. Experimenta recarregar a página."
   },
   "pageTitle": {
+    "confirmEmail": "Confirma o email",
     "duplicateEmail": "Email duplicado",
+    "failed": "Falhou",
     "forgotPassword": "Esqueceste-te da palavra-passe",
+    "join": "Junta-te",
     "login": "Login",
     "lostDevice": "Perdeste o seu dispositivo 2FA?",
     "notFound": "Página não encontrada",
     "resetDevice": "Redefinir dispositivo secundário",
     "resetPassword": "Redefinir palavra-passe",
-    "setPassword": "Definir uma palavra-passe"
+    "setPassword": "Definir uma palavra-passe",
+    "setup": "Setup"
   },
   "paymentMethods": {
     "gc_direct-debit": {
@@ -844,7 +854,9 @@
       "label": "Cartão",
       "setLabel": "Detalhes do teu cartão"
     },
-    "s_paypal": {},
+    "s_paypal": {
+      "label": "PayPal"
+    },
     "s_sepa": {
       "changeLabel": "Alterar débito direto",
       "label": "Débito direto",

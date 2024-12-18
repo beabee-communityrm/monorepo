@@ -9,5 +9,6 @@ export interface MenuItem {
   title: string;
   href: string;
   icon: IconDefinition;
+  visible: boolean;
   isActive?: RegExp;
 }

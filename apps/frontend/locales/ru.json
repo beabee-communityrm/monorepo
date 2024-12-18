@@ -179,6 +179,7 @@
     },
     "addAPoint": "Кликните, чтобы добавить отметку на карту",
     "addLocation": "Добавить новую локацию",
+    "confirmHuman": "Confirma por favor que és um humano",
     "contactDetails": "Контакты",
     "ended": "Этот опрос закончился {date}",
     "form": {
@@ -203,6 +204,7 @@
       "gallery": "Галерея",
       "map": "Карта"
     },
+    "youResponded": "Вы ответили на этот опрос ♥",
     "yourResponse": "Ваш ответ"
   },
   "calloutAdmin": {},
@@ -712,6 +714,7 @@
     "tax": {}
   },
   "joinPayment": {
+    "applePay": {},
     "genericError": "Что-то пошло не так! Если эта проблема возникнет снова, свяжитесь со службой поддержки.",
     "goBack": "Что-то пропустили? {back}",
     "goBackButton": "Назад",
@@ -789,14 +792,18 @@
     "error": "Что-то пошло не так. Перезагрузите страницу"
   },
   "pageTitle": {
+    "confirmEmail": "Подтвердить почту",
     "duplicateEmail": "Скопировать почту",
+    "failed": "Ошибка",
     "forgotPassword": "Не помню пароль",
+    "join": "Стать участником",
     "login": "Войти",
     "lostDevice": "Вы потеряли своё устройство для двухфакторной аутентификации?",
     "notFound": "Страница не найдена",
     "resetDevice": "Сброс устройства для двухфакторной аутентификации",
     "resetPassword": "Сбросить пароль",
-    "setPassword": "Установить пароль"
+    "setPassword": "Установить пароль",
+    "setup": "Создать аккаунт"
   },
   "paymentMethods": {
     "gc_direct-debit": {
@@ -814,7 +821,9 @@
       "label": "Карта",
       "setLabel": "Данные вашей карты"
     },
-    "s_paypal": {},
+    "s_paypal": {
+      "label": "PayPal"
+    },
     "s_sepa": {
       "changeLabel": "Поменять данные счёта",
       "label": "Оплата со счёта",

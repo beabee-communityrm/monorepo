@@ -34,6 +34,7 @@ import {
   Contact,
   ContactProfile,
   ContactRole,
+  ContactTagAssignment,
   GiftFlow,
   Password,
   Project,
@@ -421,6 +422,9 @@ class ContactsService {
         .getRepository(GiftFlow)
         .update({ gifteeId: contact.id }, { gifteeId: null });
 
+      await em
+        .getRepository(ContactTagAssignment)
+        .delete({ contactId: contact.id });
       await em.getRepository(ContactRole).delete({ contactId: contact.id });
       await em.getRepository(ContactProfile).delete({ contactId: contact.id });
       await em.getRepository(Contact).delete(contact.id);
