@@ -30,5 +30,9 @@
     "@type": "./apps/backend/built/type",
     "@enums": "./apps/backend/built/enums"
   },
+  "resolutions": {
+    "@types/express": "^4.17.21",
+    "@types/express-serve-static-core": "^4.17.33"
+  },
   "packageManager": "yarn@4.5.3"
 }
