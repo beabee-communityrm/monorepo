@@ -1,4 +1,4 @@
-import type { HttpMethod } from "./index.ts";
+import type { HttpMethod } from "./index.js";
 
 export interface FetchOptions extends RequestInit {
   headers?: Record<string, string>;
@@ -9,4 +9,6 @@ export interface FetchOptions extends RequestInit {
   token?: string;
   host?: string;
   basePath?: string;
+  // deno-lint-ignore no-explicit-any
+  params?: Record<string, any>;
 }

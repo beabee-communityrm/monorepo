@@ -104,7 +104,7 @@ import { isRequestError } from '@utils/api';
 
 import { updateCurrentUser } from '@store/index';
 
-import { RESET_SECURITY_FLOW_ERROR_CODE } from '@enums/reset-security-flow-error-code';
+import { RESET_SECURITY_FLOW_ERROR_CODE } from '@beabee/beabee-common';
 
 const props = withDefaults(
   defineProps<{

@@ -6,6 +6,10 @@ import type {
   TagUpdateData,
 } from '@beabee/beabee-common';
 
+/**
+ * Abstract class for tag operations
+ * @deprecated Use the TagClient from the @beabee/client package instead
+ */
 export abstract class TagOperations {
   abstract getBasePath(entityId: string | undefined): string;
 
@@ -22,6 +26,7 @@ export abstract class TagOperations {
     return data;
   }
 
+  /** @deprecated Use the '@beabee/client' package instead */
   async createTag(
     entityId: string | undefined,
     dataIn: TagCreateData
@@ -36,6 +41,7 @@ export abstract class TagOperations {
     return data;
   }
 
+  /** @deprecated Use the '@beabee/client' package instead */
   async updateTag(
     entityId: string | undefined,
     tagId: string,
@@ -51,6 +57,7 @@ export abstract class TagOperations {
     return data;
   }
 
+  /** @deprecated Use the '@beabee/client' package instead */
   async deleteTag(entityId: string | undefined, tagId: string): Promise<void> {
     await instance.delete(`${this.getBasePath(entityId)}/${tagId}`);
   }

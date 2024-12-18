@@ -1,12 +1,15 @@
 import { instance } from '.';
 
-import type { GetContactMfaData } from '@type/get-contact-mfa-data';
-import type { CreateContactMfaData } from '@type/create-contact-mfa-data';
-import type { DeleteContactMfaData } from '@type/delete-contact-mfa-data';
-import type { Serial } from '@beabee/beabee-common';
+import type {
+  GetContactMfaData,
+  CreateContactMfaData,
+  DeleteContactMfaData,
+  Serial,
+} from '@beabee/beabee-common';
 
 /**
  * Deserialize a contact MFA
+ * @deprecated Use the '@beabee/client' package instead
  * @param data The data to deserialize
  * @returns The deserialized data
  */
@@ -19,6 +22,7 @@ export function deserializeContactMfa(
 
 /**
  * Create a new contact MFA
+ * @deprecated Use the '@beabee/client' package instead
  * @param contactId The contact id
  * @param dataIn The data to create the contact MFA
  * @returns
@@ -32,6 +36,7 @@ export async function createContactMfa(
 
 /**
  * Fetch a contact MFA
+ * @deprecated Use the '@beabee/client' package instead
  * @param contactId The contact id
  * @returns
  */
@@ -46,6 +51,7 @@ export async function fetchContactMfa(
 
 /**
  * Delete a contact MFA
+ * @deprecated Use the '@beabee/client' package instead
  * @param id The contact id
  */
 export async function deleteContactMfa(

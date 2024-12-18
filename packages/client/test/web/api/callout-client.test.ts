@@ -5,6 +5,7 @@ describe("CalloutClient", () => {
   const calloutClient = new CalloutClient({
     host: "http://localhost:8080",
     token: "test",
+    path: "/api/1.0"
   });
 
   test("is a class", () => {

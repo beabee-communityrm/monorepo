@@ -27,7 +27,7 @@ meta:
       v-model="currentRules"
       :filter-groups="filterGroups"
       :has-changed="hasUnsavedSegment"
-      @reset="(currentRules = undefined)"
+      @reset="currentRules = undefined"
     >
       <AppSearchInput
         v-model="currentSearch"
@@ -146,7 +146,7 @@ meta:
           v-if="item.tags && item.tags.length > 0"
           :class="item.profile.description && 'mt-2'"
         >
-          <TagList :tags="item.tags" @select="(currentTag = $event)" />
+          <TagList :tags="item.tags" @select="currentTag = $event" />
         </div>
       </template>
     </AppPaginatedTable>

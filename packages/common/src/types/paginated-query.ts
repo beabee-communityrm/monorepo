@@ -1,4 +1,4 @@
-import type { RuleGroup } from "./index.ts";
+import type { RuleGroup } from "./index.js";
 
 export interface PaginatedQuery {
   limit?: number;

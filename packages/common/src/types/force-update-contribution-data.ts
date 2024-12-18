@@ -1,4 +1,4 @@
-import type { ContributionPeriod, ContributionType } from "../data/index.ts";
+import type { ContributionPeriod, ContributionType } from "../data/index.js";
 
 export interface ForceUpdateContributionData {
   type: ContributionType.Manual | ContributionType.None;

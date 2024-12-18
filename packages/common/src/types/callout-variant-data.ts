@@ -1,4 +1,4 @@
-import type { CalloutVariantNavigationData } from "./index.ts";
+import type { CalloutVariantNavigationData } from "./index.js";
 
 export interface CalloutVariantData {
   title: string;

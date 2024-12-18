@@ -13,7 +13,7 @@ meta:
       <AppSearch
         v-model="currentRules"
         :filter-groups="filterGroups"
-        @reset="(currentRules = undefined)"
+        @reset="currentRules = undefined"
       >
         <AppSelect
           v-model="currentTag"
@@ -161,7 +161,7 @@ meta:
             "
             class="flex flex-col gap-2"
           >
-            <TagList :tags="item.tags" @select="(currentTag = $event)" />
+            <TagList :tags="item.tags" @select="currentTag = $event" />
             <p v-if="currentInlineComponent && item.answers">
               <font-awesome-icon :icon="faUserPen" class="mr-2" />
               <b>{{ t('calloutResponsesPage.showAnswer') }}:{{ ' ' }}</b>

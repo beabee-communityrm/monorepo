@@ -1,16 +1,16 @@
-import { isNumber, isNumberInRange } from "../utils/index.ts";
+import { isNumber, isNumberInRange } from "../utils/index.js";
 
 import type {
   CalloutComponentInputNumberSchema,
   CalloutResponseAnswer,
-  ValidatorCalloutComponent,
-} from "../types/index.ts";
+  ValidatorCalloutComponent
+} from "../types/index.js";
 
 export const calloutComponentInputNumberValidator: ValidatorCalloutComponent<
   CalloutComponentInputNumberSchema
 > = (
   schema: CalloutComponentInputNumberSchema,
-  answer: CalloutResponseAnswer,
+  answer: CalloutResponseAnswer
 ): boolean => {
   if (
     schema.validate &&

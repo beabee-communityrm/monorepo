@@ -41,7 +41,7 @@ meta:
         <template #back>
           <a
             class="cursor-pointer text-link underline"
-            @click="(stripeClientSecret = '')"
+            @click="stripeClientSecret = ''"
           >
             {{ t('joinPayment.goBackButton') }}
           </a>

@@ -4,5 +4,5 @@
   "verbose": false,
   "delete": true,
   "local": true,
-  "directory": ["./src/type", "./src/enums", "./src/lib", "./src/utils/api"]
+  "directory": ["./src/type", "./src/lib", "./src/utils/api"]
 }

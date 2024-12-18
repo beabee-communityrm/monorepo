@@ -5,8 +5,8 @@ import path from "path";
 import cleanDeep from "clean-deep";
 import cookie from "cookie-parser";
 import csrf from "csurf"; // TODO: This package is deprecated, see https://www.npmjs.com/package/csurf
-import express, { ErrorRequestHandler } from "express";
-import flash from "express-flash";
+import express, { ErrorRequestHandler, RequestHandler } from "express";
+import flash from "express-flash"; // TODO: Last release was 2013
 import helmet from "helmet";
 
 import appLoader from "#core/app-loader";
@@ -97,7 +97,7 @@ initApp()
     sessions(app);
 
     // CSRF
-    app.use(csrf());
+    app.use(csrf() as unknown as RequestHandler); // TODO: This is a deprecated package, see https://www.npmjs.com/package/csurf
 
     app.use(function (err, req, res, next) {
       if (err.code == "EBADCSRFTOKEN") {
@@ -111,7 +111,7 @@ initApp()
     } as ErrorRequestHandler);
 
     // Include support for notifications
-    app.use(flash());
+    app.use(flash() as unknown as RequestHandler); // TODO: Last release was 2013
     app.use(quickflash);
 
     // Load apps
