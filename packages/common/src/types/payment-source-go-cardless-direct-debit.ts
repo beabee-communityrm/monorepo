@@ -1,5 +1,5 @@
-import type { PaymentSourceBase } from "./index.ts";
-import type { PaymentMethod } from "../data/index.ts";
+import type { PaymentSourceBase } from "./index.js";
+import type { PaymentMethod } from "../data/index.js";
 
 export interface PaymentSourceGoCardlessDirectDebit extends PaymentSourceBase {
   method: PaymentMethod.GoCardlessDirectDebit;

@@ -19,6 +19,7 @@ import { deserializeCalloutResponse } from './callout-response';
 import { TagOperations } from './tag-operations';
 
 // TODO: how to make this type safe?
+/** @deprecated Use the CalloutClient from the @beabee/client package instead */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function deserializeCallout(callout: any): any {
   return {
@@ -28,6 +29,7 @@ function deserializeCallout(callout: any): any {
   };
 }
 
+/** @deprecated Use the CalloutClient from the @beabee/client package instead */
 function deserializeCalloutReviewer(
   data: Serial<GetCalloutReviewerData>
 ): GetCalloutReviewerData {
@@ -37,6 +39,7 @@ function deserializeCalloutReviewer(
   };
 }
 
+/** @deprecated Use the CalloutClient from the @beabee/client package instead */
 export async function fetchCallouts<With extends GetCalloutWith = void>(
   query?: GetCalloutsQuery,
   _with?: readonly With[]
@@ -50,6 +53,7 @@ export async function fetchCallouts<With extends GetCalloutWith = void>(
   };
 }
 
+/** @deprecated Use the CalloutClient from the @beabee/client package instead */
 export async function fetchCallout<With extends GetCalloutWith = void>(
   slug: string,
   _with?: readonly With[],
@@ -62,6 +66,7 @@ export async function fetchCallout<With extends GetCalloutWith = void>(
   return deserializeCallout(data);
 }
 
+/** @deprecated Use the CalloutClient from the @beabee/client package instead */
 export async function createCallout(
   calloutData: CreateCalloutData
 ): Promise<GetCalloutData> {
@@ -73,6 +78,7 @@ export async function createCallout(
   return deserializeCallout(data);
 }
 
+/** @deprecated Use the CalloutClient from the @beabee/client package instead */
 export async function replicateCallout(
   fromId: string,
   calloutData: UpdateCalloutData
@@ -85,6 +91,7 @@ export async function replicateCallout(
   return deserializeCallout(data);
 }
 
+/** @deprecated Use the CalloutClient from the @beabee/client package instead */
 export async function updateCallout(
   slug: string,
   calloutData: UpdateCalloutData
@@ -96,10 +103,12 @@ export async function updateCallout(
   return deserializeCallout(data);
 }
 
+/** @deprecated Use the CalloutClient from the @beabee/client package instead */
 export async function deleteCallout(slug: string): Promise<void> {
   await instance.delete('/callout/' + slug);
 }
 
+/** @deprecated Use the CalloutClient from the @beabee/client package instead */
 export async function fetchResponses<
   With extends GetCalloutResponseWith = void,
 >(
@@ -116,6 +125,7 @@ export async function fetchResponses<
   };
 }
 
+/** @deprecated Use the CalloutReviewerClient from the @beabee/client package instead */
 export async function fetchResponsesForMap(
   slug: string,
   query?: GetCalloutResponsesQuery
@@ -126,6 +136,7 @@ export async function fetchResponsesForMap(
   return data;
 }
 
+/** @deprecated Use the CalloutClient from the @beabee/client package instead */
 export async function createResponse(
   slug: string,
   data: CreateCalloutResponseData,
@@ -142,6 +153,7 @@ export async function createResponse(
   );
 }
 
+/** @deprecated Use the CalloutReviewerClient from the @beabee/client package instead */
 export async function fetchCalloutReviewers(
   slug: string
 ): Promise<GetCalloutReviewerData[]> {
@@ -151,6 +163,7 @@ export async function fetchCalloutReviewers(
   return data.map(deserializeCalloutReviewer);
 }
 
+/** @deprecated Use the CalloutReviewerClient from the @beabee/client package instead */
 export async function addCalloutReviewer(
   slug: string,
   contactId: string
@@ -158,6 +171,7 @@ export async function addCalloutReviewer(
   await instance.post(`/callout/${slug}/reviewers`, { contactId });
 }
 
+/** @deprecated Use the CalloutReviewerClient from the @beabee/client package instead */
 export async function removeCalloutReviewer(
   slug: string,
   reviewerId: string
@@ -165,10 +179,12 @@ export async function removeCalloutReviewer(
   await instance.delete(`/callout/${slug}/reviewers/${reviewerId}`);
 }
 
+/** @deprecated Use the CalloutTagClient from the @beabee/client package instead */
 class CalloutTagOperations extends TagOperations {
   getBasePath(entityId: string | undefined): string {
     return `/callout/${entityId}/tags`;
   }
 }
 
+/** @deprecated Use the CalloutTagClient from the @beabee/client package instead */
 export const calloutTagOperations = new CalloutTagOperations();

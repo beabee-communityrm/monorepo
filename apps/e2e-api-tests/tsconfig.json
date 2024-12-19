@@ -1,0 +1,14 @@
+{
+  "extends": [
+    "@beabee/tsconfig/tsconfig.server.json",
+    "@beabee/tsconfig/tsconfig.options.json"
+  ],
+  "exclude": [], // Override tsconfig.build.json exclude
+  "include": ["src/**/*.ts"],
+  "compilerOptions": {
+    "noEmit": true,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "esModuleInterop": true
+  }
+}

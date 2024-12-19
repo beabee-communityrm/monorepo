@@ -7,6 +7,7 @@ import type {
 } from '@beabee/beabee-common';
 import { deserializeDate, instance } from '.';
 
+/** @deprecated use the client instead */
 function deserializeNotice(notice: Serial<GetNoticeData>): GetNoticeData {
   return {
     ...notice,
@@ -17,6 +18,7 @@ function deserializeNotice(notice: Serial<GetNoticeData>): GetNoticeData {
   };
 }
 
+/** @deprecated use the client instead */
 export async function fetchNotices(
   query?: GetNoticesQuery
 ): Promise<Paginated<GetNoticeData>> {
@@ -39,11 +41,13 @@ export async function fetchNotices(
   };
 }
 
+/** @deprecated use the client instead */
 export async function fetchNotice(id: string): Promise<GetNoticeData> {
   const { data } = await instance.get<Serial<GetNoticeData>>('/notice/' + id);
   return deserializeNotice(data);
 }
 
+/** @deprecated use the client instead */
 export async function createNotice(
   dataIn: CreateNoticeData
 ): Promise<GetNoticeData> {
@@ -54,10 +58,12 @@ export async function createNotice(
   return deserializeNotice(data);
 }
 
+/** @deprecated use the client instead */
 export async function deleteNotice(id: string): Promise<void> {
   await instance.delete('/notice/' + id);
 }
 
+/** @deprecated use the client instead */
 export async function updateNotice(
   id: string,
   noticeData: CreateNoticeData

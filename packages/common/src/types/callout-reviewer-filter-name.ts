@@ -1,3 +1,3 @@
-import type { calloutReviewerFilters } from "../search/callouts.ts";
+import type { calloutReviewerFilters } from "../search/callouts.js";
 
 export type CalloutReviewerFilterName = keyof typeof calloutReviewerFilters;

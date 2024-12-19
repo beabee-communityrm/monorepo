@@ -1,24 +1,24 @@
-import { calloutComponentContentValidator } from "./callout-component-content.validator.ts";
-import { calloutComponentInputAddressValidator } from "./callout-component-input-address.validator.ts";
-import { calloutComponentInputCheckboxValidator } from "./callout-component-input-checkbox.validator.ts";
-import { calloutComponentInputCurrencyValidator } from "./callout-component-input-currency.validator.ts";
-import { calloutComponentInputDateTimeValidator } from "./callout-component-input-date-time.validator.ts";
-import { calloutComponentInputEmailValidator } from "./callout-component-input-email.validator.ts";
-import { calloutComponentInputFileValidator } from "./callout-component-input-file.validator.ts";
-import { calloutComponentInputNumberValidator } from "./callout-component-input-number.validator.ts";
-import { calloutComponentInputSelectValidator } from "./callout-component-input-select.validator.ts";
-import { calloutComponentInputPhoneNumberValidator } from "./callout-component-input-phone-number.validator.ts";
-import { calloutComponentInputSelectableValidator } from "./callout-component-input-selectable.validator.ts";
-import { calloutComponentInputSignatureValidator } from "./callout-component-input-signature.validator.ts";
-import { calloutComponentInputTextValidator } from "./callout-component-input-text.validator.ts";
-import { calloutComponentInputTimeValidator } from "./callout-component-input-time.validator.ts";
-import { calloutComponentInputUrlValidator } from "./callout-component-input-url.validator.ts";
+import { calloutComponentContentValidator } from "./callout-component-content.validator.js";
+import { calloutComponentInputAddressValidator } from "./callout-component-input-address.validator.js";
+import { calloutComponentInputCheckboxValidator } from "./callout-component-input-checkbox.validator.js";
+import { calloutComponentInputCurrencyValidator } from "./callout-component-input-currency.validator.js";
+import { calloutComponentInputDateTimeValidator } from "./callout-component-input-date-time.validator.js";
+import { calloutComponentInputEmailValidator } from "./callout-component-input-email.validator.js";
+import { calloutComponentInputFileValidator } from "./callout-component-input-file.validator.js";
+import { calloutComponentInputNumberValidator } from "./callout-component-input-number.validator.js";
+import { calloutComponentInputSelectValidator } from "./callout-component-input-select.validator.js";
+import { calloutComponentInputPhoneNumberValidator } from "./callout-component-input-phone-number.validator.js";
+import { calloutComponentInputSelectableValidator } from "./callout-component-input-selectable.validator.js";
+import { calloutComponentInputSignatureValidator } from "./callout-component-input-signature.validator.js";
+import { calloutComponentInputTextValidator } from "./callout-component-input-text.validator.js";
+import { calloutComponentInputTimeValidator } from "./callout-component-input-time.validator.js";
+import { calloutComponentInputUrlValidator } from "./callout-component-input-url.validator.js";
 
 import {
   CalloutComponentBaseType,
-  CalloutComponentType,
-} from "../data/index.ts";
-import { isCalloutComponentOfBaseType } from "../utils/callouts.ts";
+  CalloutComponentType
+} from "../data/index.js";
+import { isCalloutComponentOfBaseType } from "../utils/callouts.js";
 
 import type {
   CalloutComponentInputSchema,
@@ -26,18 +26,15 @@ import type {
   CalloutComponentSchema,
   CalloutResponseAnswer,
   CalloutResponseAnswers,
-  ValidatorCalloutComponent,
-} from "../types/index.ts";
+  ValidatorCalloutComponent
+} from "../types/index.js";
 
 export const calloutComponentNestableValidator = (
   schema: CalloutComponentNestableSchema,
-  answers: CalloutResponseAnswers,
+  answers: CalloutResponseAnswers
 ): boolean => {
   for (const component of schema.components) {
-    const valid = calloutComponentValidator(
-      component,
-      answers[component.key],
-    );
+    const valid = calloutComponentValidator(component, answers[component.key]);
     if (!valid) {
       return false;
     }
@@ -78,14 +75,11 @@ const calloutInputValidatorsMap: Record<
   [CalloutComponentType.INPUT_SELECTABLE_RADIO]:
     calloutComponentInputSelectableValidator,
   [CalloutComponentType.INPUT_SELECTABLE_SELECTBOXES]:
-    calloutComponentInputSelectableValidator,
+    calloutComponentInputSelectableValidator
 };
 export function calloutComponentInputValidator(
   schema: CalloutComponentInputSchema,
-  answer:
-    | CalloutResponseAnswer
-    | CalloutResponseAnswer[]
-    | undefined,
+  answer: CalloutResponseAnswer | CalloutResponseAnswer[] | undefined
 ): boolean {
   const validator = calloutInputValidatorsMap[schema.type];
   if (!validator) {
@@ -110,15 +104,12 @@ export function calloutComponentInputValidator(
 
 export function calloutComponentValidator(
   schema: CalloutComponentSchema,
-  answer:
-    | CalloutResponseAnswer
-    | CalloutResponseAnswer[]
-    | undefined,
+  answer: CalloutResponseAnswer | CalloutResponseAnswer[] | undefined
 ): boolean;
 
 export function calloutComponentValidator(
   schema: CalloutComponentNestableSchema,
-  answer: CalloutResponseAnswers,
+  answer: CalloutResponseAnswers
 ): boolean;
 
 export function calloutComponentValidator(
@@ -127,19 +118,19 @@ export function calloutComponentValidator(
     | CalloutResponseAnswer
     | CalloutResponseAnswer[]
     | undefined
-    | CalloutResponseAnswers,
+    | CalloutResponseAnswers
 ): boolean {
   if (isCalloutComponentOfBaseType(schema, CalloutComponentBaseType.NESTABLE)) {
     return calloutComponentNestableValidator(
       schema,
-      answer as CalloutResponseAnswers,
+      answer as CalloutResponseAnswers
     );
   }
 
   if (isCalloutComponentOfBaseType(schema, CalloutComponentBaseType.INPUT)) {
     return calloutComponentInputValidator(
       schema,
-      answer as CalloutResponseAnswer | CalloutResponseAnswer[] | undefined,
+      answer as CalloutResponseAnswer | CalloutResponseAnswer[] | undefined
     );
   }
 

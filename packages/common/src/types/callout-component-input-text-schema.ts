@@ -1,7 +1,7 @@
 import type {
   CalloutComponentInputTextAreaSchema,
-  CalloutComponentInputTextFieldSchema,
-} from "./index.ts";
+  CalloutComponentInputTextFieldSchema
+} from "./index.js";
 
 /** Any callout input text component schema */
 export type CalloutComponentInputTextSchema =
