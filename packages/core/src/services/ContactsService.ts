@@ -131,7 +131,11 @@ class ContactsService {
       await PaymentService.createContact(contact);
 
       if (opts.sync) {
-        await NewsletterService.upsertContact(contact);
+        const res = await NewsletterService.upsertContact(contact);
+        if (res && res.newStatus !== res.oldStatus) {
+          contact.profile.newsletterStatus = res.newStatus;
+          await getRepository(ContactProfile).save(contact.profile);
+        }
       }
 
       await EmailService.sendTemplateToAdmin("new-member", { contact });
@@ -174,15 +178,26 @@ class ContactsService {
 
     const oldEmail = updates.email && contact.email;
 
-    Object.assign(contact, updates);
     try {
       await getRepository(Contact).update(contact.id, updates);
     } catch (err) {
       throw isDuplicateIndex(err, "email") ? new DuplicateEmailError() : err;
     }
 
+    Object.assign(contact, updates);
+
     if (opts.sync) {
-      await NewsletterService.upsertContact(contact, updates, oldEmail);
+      const res = await NewsletterService.upsertContact(
+        contact,
+        updates,
+        oldEmail
+      );
+      if (res && res.newStatus !== res.oldStatus) {
+        // TODO: this should be done in the newsletter service
+        // This only works because upsertContact always loads the profile!
+        contact.profile.newsletterStatus = res.newStatus;
+        await getRepository(ContactProfile).save(contact.profile);
+      }
     }
 
     await PaymentService.updateContact(contact, updates);
@@ -293,34 +308,42 @@ class ContactsService {
     opts = { sync: true }
   ): Promise<void> {
     log.info("Update contact profile for " + contact.id, { updates });
-    const shouldSync =
-      opts.sync && (updates.newsletterStatus || updates.newsletterGroups);
-    let isFirstSync = false;
 
-    if (shouldSync) {
-      contact.profile = await getRepository(ContactProfile).findOneByOrFail({
-        contactId: contact.id
-      });
-      // If this is the first time the contact is being synced to the newsletter
-      // then we need to set the active member tag
-      isFirstSync = contact.profile.newsletterStatus === NewsletterStatus.None;
+    if (opts.sync) {
+      try {
+        const res = await NewsletterService.upsertContact(contact, {
+          newsletterStatus: updates.newsletterStatus,
+          newsletterGroups: updates.newsletterGroups
+        });
+
+        if (res) {
+          updates.newsletterStatus = res.newStatus;
+
+          // TODO: move this logic to the newsletter service
+          if (
+            res.oldStatus === NewsletterStatus.None &&
+            res.newStatus !== NewsletterStatus.None &&
+            contact.membership?.isActive
+          ) {
+            log.info("First newsletter signup for " + contact.id);
+            await NewsletterService.addTagToContacts(
+              [contact],
+              OptionsService.getText("newsletter-active-member-tag")
+            );
+          }
+        }
+      } catch (err) {
+        log.error(
+          "Error updating contact profile on newsletter provider for " +
+            contact.id,
+          err
+        );
+      }
     }
 
     await getRepository(ContactProfile).update(contact.id, updates);
-
     if (contact.profile) {
       Object.assign(contact.profile, updates);
-    }
-
-    if (shouldSync) {
-      await NewsletterService.upsertContact(contact);
-      // Add the active member tag
-      if (isFirstSync && contact.membership?.isActive) {
-        await NewsletterService.addTagToContacts(
-          [contact],
-          OptionsService.getText("newsletter-active-member-tag")
-        );
-      }
     }
   }
 
