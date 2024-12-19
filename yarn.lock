@@ -526,7 +526,7 @@ __metadata:
     tsc-watch: "npm:^6.3.0"
     tsconfig: "npm:^7.0.0"
     typeorm: "npm:^0.3.20"
-    typescript: "npm:^5.6.3"
+    typescript: "npm:~5.6.3"
     uuid: "npm:^9.0.1"
   languageName: unknown
   linkType: soft
@@ -544,7 +544,7 @@ __metadata:
     jest: "npm:^29.7.0"
     prettier: "npm:3.4.1"
     ts-jest: "npm:^29.2.5"
-    typescript: "npm:^5.6.3"
+    typescript: "npm:~5.6.3"
   languageName: unknown
   linkType: soft
 
@@ -565,7 +565,7 @@ __metadata:
     node-fetch: "npm:^2.7.0"
     prettier: "npm:3.4.1"
     ts-jest: "npm:^29.2.5"
-    typescript: "npm:^5.6.3"
+    typescript: "npm:~5.6.3"
     whatwg-fetch: "npm:^3.6.20"
   languageName: unknown
   linkType: soft
@@ -617,7 +617,7 @@ __metadata:
     tsc-watch: "npm:^6.3.0"
     tsconfig: "npm:^7.0.0"
     typeorm: "npm:^0.3.20"
-    typescript: "npm:^5.6.3"
+    typescript: "npm:~5.6.3"
     uuid: "npm:^9.0.1"
     winston: "npm:^3.13.0"
     yaml-front-matter: "npm:^4.1.1"
@@ -643,7 +643,7 @@ __metadata:
     jest: "npm:^29.7.0"
     supertest: "npm:^7.0.0"
     ts-jest: "npm:^29.2.5"
-    typescript: "npm:^5.6.3"
+    typescript: "npm:~5.6.3"
   languageName: unknown
   linkType: soft
 
@@ -720,7 +720,7 @@ __metadata:
     qrcode-generator: "npm:^1.4.4"
     slugify: "npm:^1.6.6"
     tailwindcss: "npm:^3.4.3"
-    typescript: "npm:^5.6.3"
+    typescript: "npm:~5.6.3"
     vite: "npm:^5.4.11"
     vite-plugin-pages: "npm:^0.32.3"
     vue: "npm:^3.5.13"
@@ -818,7 +818,7 @@ __metadata:
     tsc-watch: "npm:^6.3.0"
     tsconfig: "npm:^7.0.0"
     typeorm: "npm:^0.3.20"
-    typescript: "npm:^5.6.3"
+    typescript: "npm:~5.6.3"
     uuid: "npm:^9.0.1"
   languageName: unknown
   linkType: soft
@@ -847,9 +847,9 @@ __metadata:
   dependencies:
     "@tsconfig/node22": "npm:^22.0.0"
     "@vue/tsconfig": "npm:^0.6.0"
-    typescript: "npm:^5.6.3"
+    typescript: "npm:~5.6.3"
   peerDependencies:
-    typescript: ^5.x.x
+    typescript: ~5.6.3
   languageName: unknown
   linkType: soft
 
@@ -879,7 +879,7 @@ __metadata:
     ts-node: "npm:^10.9.2"
     tsc-watch: "npm:^6.3.0"
     typeorm: "npm:^0.3.20"
-    typescript: "npm:^5.6.3"
+    typescript: "npm:~5.6.3"
   languageName: unknown
   linkType: soft
 
@@ -15926,7 +15926,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^5.2.2, typescript@npm:^5.6.3":
+"typescript@npm:^5.2.2":
   version: 5.7.2
   resolution: "typescript@npm:5.7.2"
   bin:
@@ -15936,13 +15936,33 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A^5.2.2#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.6.3#optional!builtin<compat/typescript>":
+"typescript@npm:~5.6.3":
+  version: 5.6.3
+  resolution: "typescript@npm:5.6.3"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10c0/44f61d3fb15c35359bc60399cb8127c30bae554cd555b8e2b46d68fa79d680354b83320ad419ff1b81a0bdf324197b29affe6cc28988cd6a74d4ac60c94f9799
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@npm%3A^5.2.2#optional!builtin<compat/typescript>":
   version: 5.7.2
   resolution: "typescript@patch:typescript@npm%3A5.7.2#optional!builtin<compat/typescript>::version=5.7.2&hash=5786d5"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 10c0/f3b8082c9d1d1629a215245c9087df56cb784f9fb6f27b5d55577a20e68afe2a889c040aacff6d27e35be165ecf9dca66e694c42eb9a50b3b2c451b36b5675cb
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@npm%3A~5.6.3#optional!builtin<compat/typescript>":
+  version: 5.6.3
+  resolution: "typescript@patch:typescript@npm%3A5.6.3#optional!builtin<compat/typescript>::version=5.6.3&hash=8c6c40"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10c0/7c9d2e07c81226d60435939618c91ec2ff0b75fbfa106eec3430f0fcf93a584bc6c73176676f532d78c3594fe28a54b36eb40b3d75593071a7ec91301533ace7
   languageName: node
   linkType: hard
 
