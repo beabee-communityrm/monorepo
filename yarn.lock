@@ -487,7 +487,7 @@ __metadata:
     class-transformer: "npm:^0.5.1"
     class-validator: "npm:^0.14.1"
     concurrently: "npm:^9.1.0"
-    connect-pg-simple: "npm:^9.0.1"
+    connect-pg-simple: "npm:^10.0.0"
     cookie-parser: "npm:^1.4.7"
     cors: "npm:^2.8.5"
     csv-parse: "npm:^5.6.0"
@@ -497,7 +497,7 @@ __metadata:
     dpdm: "npm:^3.14.0"
     express: "npm:^4.21.2"
     express-session: "npm:^1.18.1"
-    gocardless-nodejs: "npm:^3.25.0"
+    gocardless-nodejs: "npm:^4.3.0"
     jest: "npm:^29.7.0"
     jsvat-next: "npm:^3.0.4"
     module-alias: "npm:^2.2.3"
@@ -583,7 +583,7 @@ __metadata:
     dotenv: "npm:^16.4.7"
     express: "npm:^4.21.2"
     express-winston: "npm:^4.2.0"
-    gocardless-nodejs: "npm:^3.25.0"
+    gocardless-nodejs: "npm:^4.3.0"
     gunzip-maybe: "npm:^1.4.2"
     jest: "npm:^29.7.0"
     jsonwebtoken: "npm:^9.0.2"
@@ -755,7 +755,7 @@ __metadata:
     clean-deep: "npm:^3.4.0"
     concurrently: "npm:^9.1.0"
     connect-busboy: "npm:^1.0.0"
-    connect-pg-simple: "npm:^9.0.1"
+    connect-pg-simple: "npm:^10.0.0"
     cookie-parser: "npm:^1.4.7"
     cors: "npm:^2.8.5"
     csurf: "npm:^1.11.0"
@@ -770,7 +770,7 @@ __metadata:
     express: "npm:^4.21.2"
     express-flash: "npm:0.0.2"
     express-session: "npm:^1.18.1"
-    gocardless-nodejs: "npm:^3.25.0"
+    gocardless-nodejs: "npm:^4.3.0"
     gulp: "npm:^4.0.2"
     gulp-postcss: "npm:^9.0.1"
     gulp-sass: "npm:^5.1.0"
@@ -849,7 +849,7 @@ __metadata:
     dotenv: "npm:^16.4.7"
     dpdm: "npm:^3.14.0"
     express: "npm:^4.21.2"
-    gocardless-nodejs: "npm:^3.25.0"
+    gocardless-nodejs: "npm:^4.3.0"
     jest: "npm:^29.7.0"
     moment: "npm:^2.30.1"
     prettier: "npm:^3.4.2"
@@ -5980,12 +5980,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"connect-pg-simple@npm:^9.0.1":
-  version: 9.0.1
-  resolution: "connect-pg-simple@npm:9.0.1"
+"connect-pg-simple@npm:^10.0.0":
+  version: 10.0.0
+  resolution: "connect-pg-simple@npm:10.0.0"
   dependencies:
-    pg: "npm:^8.8.0"
-  checksum: 10c0/fb342309db16ba5191a07781e5e428158bfe473ce819bde2c982aaabf26d47400aed35ee5d688d73267286743b8088968ebf47a624e8b9d3d59a9a0c6a7907af
+    pg: "npm:^8.12.0"
+  checksum: 10c0/98ec0af49757e3ae9e44fc16693f21344aca7f155ecfc881b1d396c2a851f23fdf46d53b1416a07b3ffeeb13542b0e8cfa677a99b7482080fb916eb3f5b1cdde
   languageName: node
   linkType: hard
 
@@ -8716,15 +8716,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"gocardless-nodejs@npm:^3.25.0":
-  version: 3.28.0
-  resolution: "gocardless-nodejs@npm:3.28.0"
+"gocardless-nodejs@npm:^4.3.0":
+  version: 4.3.0
+  resolution: "gocardless-nodejs@npm:4.3.0"
   dependencies:
     got: "npm:^11.8.5"
     lodash: "npm:^4.17.15"
     qs: "npm:^6.9.1"
     uuid: "npm:^7.0.2"
-  checksum: 10c0/003cfe2ab058a432c5b5d3e440c65dcd28c0314015069065318018ff3385cf7cfef42777dc7b0e538f2e7fe05685b8ae9fb647a13c8a3b71c495a200dbc1282c
+  checksum: 10c0/ee1d227aed9333e3b846a8b8ac060a42d69f90b0a7cf245733265090256f7afe4acf0cd7a7bb2f52357b8c39a31efc89bf72ab489e09473ed6af07b2fcde0fdf
   languageName: node
   linkType: hard
 
@@ -12749,7 +12749,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pg@npm:^8.8.0":
+"pg@npm:^8.12.0":
   version: 8.13.1
   resolution: "pg@npm:8.13.1"
   dependencies:
