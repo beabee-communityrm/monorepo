@@ -64,7 +64,6 @@ const lastName = ref('');
 
 const validation = useVuelidate();
 
- 
 const completePayment = ref(() => {});
 
 // Fetch dynamic theming options, tailwind wraps colours in rgb()

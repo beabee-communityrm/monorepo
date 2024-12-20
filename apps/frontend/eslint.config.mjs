@@ -27,7 +27,7 @@ export default typescriptEslint.config(
   {
     files: ['src/pages/**/*.vue'],
     rules: {
-      'vue/multi-word-component-names': 'off'
+      'vue/multi-word-component-names': 'off',
     },
   },
   eslintConfigPrettier
