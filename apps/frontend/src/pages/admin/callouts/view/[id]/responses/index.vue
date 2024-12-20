@@ -311,7 +311,7 @@ const selectedTags = computed(() => {
 const currentAssignee = defineParam('assignee', (v) => v || '');
 
 const selectedAssigneeId = computed(() => {
-  let assigneeId = selectedResponseItems.value[0]?.assignee?.id;
+  const assigneeId = selectedResponseItems.value[0]?.assignee?.id;
   for (const item of selectedResponseItems.value) {
     if (assigneeId !== item.assignee?.id) {
       return '';

@@ -8,8 +8,8 @@
 
     <ContactBasicFields
       v-model:email="data.emailAddress"
-      v-model:firstName="data.firstName"
-      v-model:lastName="data.lastName"
+      v-model:first-name="data.firstName"
+      v-model:last-name="data.lastName"
       :optional-names="isAdmin"
     />
 
@@ -82,8 +82,8 @@
     <AppAddress
       v-model:line1="data.addressLine1"
       v-model:line2="data.addressLine2"
-      v-model:postCode="data.postCode"
-      v-model:cityOrTown="data.cityOrTown"
+      v-model:post-code="data.postCode"
+      v-model:city-or-town="data.cityOrTown"
       :required="data.deliveryOptIn"
     />
   </AppForm>
