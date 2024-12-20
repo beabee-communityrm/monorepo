@@ -24,7 +24,7 @@
     "@beabee/beabee-common": "workspace:^",
     "@beabee/core": "workspace:^",
     "@captchafox/node": "^1.2.0",
-    "@inquirer/prompts": "^3.3.2",
+    "@inquirer/prompts": "^7.2.0",
     "ajv": "^8.17.1",
     "ajv-formats": "^2.1.1",
     "axios": "^1.7.9",
