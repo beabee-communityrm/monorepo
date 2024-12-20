@@ -1,3 +1,4 @@
+import { NewsletterStatus } from "@beabee/beabee-common";
 import { NewsletterContact } from "./newsletter-contact";
 import { UpdateNewsletterContact } from "./update-newsletter-contact";
 
@@ -6,10 +7,10 @@ export interface NewsletterProvider {
   removeTagFromContacts(emails: string[], tag: string): Promise<void>;
   getContact(email: string): Promise<NewsletterContact | undefined>;
   getContacts(): Promise<NewsletterContact[]>;
-  updateContact(
+  upsertContact(
     contact: UpdateNewsletterContact,
     oldEmail?: string
-  ): Promise<void>;
+  ): Promise<NewsletterStatus>;
   upsertContacts(contacts: UpdateNewsletterContact[]): Promise<void>;
   archiveContacts(emails: string[]): Promise<void>;
   permanentlyDeleteContacts(emails: string[]): Promise<void>;

@@ -7,6 +7,7 @@ export * from "./complete-urls";
 export * from "./completed-payment-flow-data";
 export * from "./completed-payment-flow";
 export * from "./contact-mfa-secure";
+export * from "./contact-newsletter-updates";
 export * from "./contribution-info";
 export * from "./create-contact-mfa-data";
 export * from "./delete-contact-mfa-data";

@@ -238,15 +238,54 @@ export default class MailchimpProvider implements NewsletterProvider {
     return responses.flatMap((r) => r.members).map(mcMemberToNlContact);
   }
 
-  async updateContact(
+  async upsertContact(
     member: UpdateNewsletterContact,
     oldEmail = member.email
-  ): Promise<void> {
-    await this.instance.put(
-      this.emailUrl(oldEmail),
-      nlContactToMCMember(member),
-      { params: { skip_merge_validation: true } }
-    );
+  ): Promise<NewsletterStatus> {
+    const req = {
+      method: "PUT",
+      url: this.emailUrl(oldEmail),
+      params: { skip_merge_validation: true }
+    };
+
+    const mcMember = nlContactToMCMember(member);
+
+    const resp = await this.instance.request({
+      ...req,
+      data: mcMember,
+      // Don't error on 400s, we'll try to recover
+      validateStatus: (status) => status <= 400
+    });
+
+    if (resp.status === 200) {
+      log.info("Updated member " + member.email);
+      return member.status;
+
+      // Try to put the user into pending state if they're in a compliance state
+      // This can happen if they previously unsubscribed or were cleaned
+    } else if (
+      member.status === NewsletterStatus.Subscribed &&
+      resp.status === 400 &&
+      resp.data?.title === "Member In Compliance State"
+    ) {
+      log.info(
+        `Member ${member.email} had status ${resp.data.title}, trying to re-add them`
+      );
+      await this.instance.request({
+        ...req,
+        data: { ...mcMember, status: "pending" }
+      });
+      return NewsletterStatus.Pending;
+
+      // Fail gracefully, just remove the member from the newsletter
+    } else {
+      log.error("Couldn't update member " + member.email, {
+        status: resp.status,
+        data: resp.data
+      });
+
+      return NewsletterStatus.None;
+    }
   }
 
   async upsertContacts(nlContacts: UpdateNewsletterContact[]): Promise<void> {
@@ -362,6 +401,8 @@ export default class MailchimpProvider implements NewsletterProvider {
   }
 
   private async dispatchOperations(operations: Operation[]): Promise<void> {
+    log.info(`Dispatching ${operations.length} operations`);
+
     if (operations.length > 20) {
       const batch = await this.createBatch(operations);
       const finishedBatch = await this.waitForBatch(batch);
