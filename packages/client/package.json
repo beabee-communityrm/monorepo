@@ -42,7 +42,7 @@
     "jsdom": "^25.0.1",
     "prettier": "3.4.1",
     "ts-jest": "^29.2.5",
-    "typescript": "^5.6.3",
+    "typescript": "~5.6.3",
     "whatwg-fetch": "^3.6.20"
   },
   "files": [

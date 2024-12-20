@@ -104,7 +104,7 @@
     "ts-node": "^10.9.2",
     "tsc-watch": "^6.3.0",
     "tsconfig": "^7.0.0",
-    "typescript": "^5.6.3"
+    "typescript": "~5.6.3"
   },
   "overrides": {
     "gulp-sourcemaps": {

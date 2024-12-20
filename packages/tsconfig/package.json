@@ -8,10 +8,10 @@
     "tsconfig.server.json"
   ],
   "peerDependencies": {
-    "typescript": "^5.x.x"
+    "typescript": "~5.6.3"
   },
   "devDependencies": {
-    "typescript": "^5.6.3"
+    "typescript": "~5.6.3"
   },
   "dependencies": {
     "@tsconfig/node22": "^22.0.0",
