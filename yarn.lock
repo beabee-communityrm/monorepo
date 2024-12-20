@@ -824,7 +824,7 @@ __metadata:
   resolution: "@beabee/tsconfig@workspace:packages/tsconfig"
   dependencies:
     "@tsconfig/node22": "npm:^22.0.0"
-    "@vue/tsconfig": "npm:^0.6.0"
+    "@vue/tsconfig": "npm:^0.7.0"
     typescript: "npm:~5.6.3"
   peerDependencies:
     typescript: ~5.6.3
@@ -4202,18 +4202,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/tsconfig@npm:^0.6.0":
-  version: 0.6.0
-  resolution: "@vue/tsconfig@npm:0.6.0"
+"@vue/tsconfig@npm:^0.7.0":
+  version: 0.7.0
+  resolution: "@vue/tsconfig@npm:0.7.0"
   peerDependencies:
     typescript: 5.x
-    vue: ^3.3.0
+    vue: ^3.4.0
   peerDependenciesMeta:
     typescript:
       optional: true
     vue:
       optional: true
-  checksum: 10c0/ed471e7aaf0d476e667e497a83ea6bf5dc25ce671d7be8876cb94225e3598e53c8cc7f170e9ec6c57b5fde6443353ed90271ac1b17bca911f923c65369d0ecf8
+  checksum: 10c0/5b36db5ee9e14b47e516164a21ebbf24e558042a16162a69291fe3dc0dcdf598bc0d9dada1b1008d95afab97a22396e8579e4f0df141a015ffa0837bf6ccbf2f
   languageName: node
   linkType: hard
 
