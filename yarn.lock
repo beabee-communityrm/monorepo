@@ -32,7 +32,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@appsignal/javascript@npm:^1.3.30":
+"@appsignal/javascript@npm:^1.5.0":
   version: 1.5.0
   resolution: "@appsignal/javascript@npm:1.5.0"
   dependencies:
@@ -446,7 +446,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/types@npm:^7.0.0, @babel/types@npm:^7.20.7, @babel/types@npm:^7.24.6, @babel/types@npm:^7.25.9, @babel/types@npm:^7.26.0, @babel/types@npm:^7.26.3, @babel/types@npm:^7.3.3, @babel/types@npm:^7.6.1, @babel/types@npm:^7.9.6":
+"@babel/types@npm:^7.0.0, @babel/types@npm:^7.20.7, @babel/types@npm:^7.25.9, @babel/types@npm:^7.26.0, @babel/types@npm:^7.26.3, @babel/types@npm:^7.3.3, @babel/types@npm:^7.6.1, @babel/types@npm:^7.9.6":
   version: 7.26.3
   resolution: "@babel/types@npm:7.26.3"
   dependencies:
@@ -475,28 +475,27 @@ __metadata:
     "@inquirer/prompts": "npm:^3.3.2"
     "@types/chance": "npm:^1.1.6"
     "@types/connect-pg-simple": "npm:^7.0.3"
-    "@types/cookie-parser": "npm:^1.4.7"
+    "@types/cookie-parser": "npm:^1.4.8"
     "@types/cors": "npm:^2.8.17"
     "@types/express": "npm:^4.17.21"
     "@types/express-session": "npm:^1.18.1"
     "@types/module-alias": "npm:^2.0.4"
-    "@types/node": "npm:^22.9.1"
-    "@types/passport": "npm:^1.0.16"
+    "@types/node": "npm:^22.10.2"
+    "@types/passport": "npm:^1.0.17"
     "@types/passport-local": "npm:^1.0.38"
-    "@types/uuid": "npm:^9.0.8"
-    chance: "npm:^1.1.11"
+    chance: "npm:^1.1.12"
     class-transformer: "npm:^0.5.1"
     class-validator: "npm:^0.14.1"
     concurrently: "npm:^9.1.0"
     connect-pg-simple: "npm:^9.0.1"
-    cookie-parser: "npm:^1.4.6"
+    cookie-parser: "npm:^1.4.7"
     cors: "npm:^2.8.5"
-    csv-parse: "npm:^5.5.6"
-    csv-stringify: "npm:^6.5.0"
+    csv-parse: "npm:^5.6.0"
+    csv-stringify: "npm:^6.5.2"
     date-fns: "npm:^4.1.0"
-    dotenv: "npm:^16.4.5"
+    dotenv: "npm:^16.4.7"
     dpdm: "npm:^3.14.0"
-    express: "npm:^4.21.1"
+    express: "npm:^4.21.2"
     express-session: "npm:^1.18.1"
     gocardless-nodejs: "npm:^3.25.0"
     jest: "npm:^29.7.0"
@@ -505,7 +504,7 @@ __metadata:
     moment: "npm:^2.30.1"
     passport: "npm:^0.7.0"
     passport-local: "npm:^1.0.0"
-    prettier: "npm:3.4.1"
+    prettier: "npm:^3.4.2"
     reflect-metadata: "npm:^0.2.2"
     rimraf: "npm:^6.0.1"
     routing-controllers: "npm:^0.10.4"
@@ -516,7 +515,7 @@ __metadata:
     tsconfig: "npm:^7.0.0"
     typeorm: "npm:^0.3.20"
     typescript: "npm:~5.6.3"
-    uuid: "npm:^9.0.1"
+    uuid: "npm:^11.0.3"
   languageName: unknown
   linkType: soft
 
@@ -529,9 +528,9 @@ __metadata:
     cacheable-request: "npm:^12.0.1"
     concurrently: "npm:^9.1.0"
     date-fns: "npm:^4.1.0"
-    esbuild: "npm:^0.24.0"
+    esbuild: "npm:^0.24.1"
     jest: "npm:^29.7.0"
-    prettier: "npm:3.4.1"
+    prettier: "npm:^3.4.2"
     ts-jest: "npm:^29.2.5"
     typescript: "npm:~5.6.3"
   languageName: unknown
@@ -545,14 +544,14 @@ __metadata:
     "@beabee/prettier-config": "workspace:^"
     "@gjsify/esbuild-plugin-transform-ext": "npm:^0.0.4"
     "@jest/globals": "npm:^29.7.0"
-    "@types/node": "npm:^22.9.1"
+    "@types/node": "npm:^22.10.2"
     "@types/node-fetch": "npm:2.6.12"
     jest: "npm:^29.7.0"
     jest-environment-jsdom: "npm:^29.7.0"
     jest-environment-node: "npm:^29.7.0"
     jsdom: "npm:^25.0.1"
     node-fetch: "npm:^2.7.0"
-    prettier: "npm:3.4.1"
+    prettier: "npm:^3.4.2"
     ts-jest: "npm:^29.2.5"
     typescript: "npm:~5.6.3"
     whatwg-fetch: "npm:^3.6.20"
@@ -566,36 +565,35 @@ __metadata:
     "@beabee/beabee-common": "workspace:^"
     "@beabee/prettier-config": "workspace:^"
     "@beabee/tsconfig": "workspace:^"
-    "@sendgrid/mail": "npm:^8.1.3"
+    "@sendgrid/mail": "npm:^8.1.4"
     "@types/gunzip-maybe": "npm:^1.4.2"
-    "@types/jsonwebtoken": "npm:^9.0.6"
-    "@types/nodemailer": "npm:^6.4.15"
-    "@types/passport": "npm:^1.0.16"
+    "@types/jsonwebtoken": "npm:^9.0.7"
+    "@types/nodemailer": "npm:^6.4.17"
+    "@types/passport": "npm:^1.0.17"
     "@types/passport-local": "npm:^1.0.38"
     "@types/tar-stream": "npm:^3.1.3"
-    "@types/uuid": "npm:^9.0.8"
     "@types/yaml-front-matter": "npm:^4.1.3"
     JSONStream: "npm:^1.3.5"
-    axios: "npm:^1.7.2"
+    axios: "npm:^1.7.9"
     barrelsby: "npm:^2.8.1"
     class-transformer: "npm:^0.5.1"
     class-validator: "npm:^0.14.1"
     concurrently: "npm:^9.1.0"
     date-fns: "npm:^4.1.0"
-    dotenv: "npm:^16.4.5"
-    express: "npm:^4.21.1"
+    dotenv: "npm:^16.4.7"
+    express: "npm:^4.21.2"
     express-winston: "npm:^4.2.0"
     gocardless-nodejs: "npm:^3.25.0"
     gunzip-maybe: "npm:^1.4.2"
     jest: "npm:^29.7.0"
     jsonwebtoken: "npm:^9.0.2"
-    juice: "npm:^10.0.0"
+    juice: "npm:^11.0.0"
     moment: "npm:^2.30.1"
-    nodemailer: "npm:^6.9.13"
-    otpauth: "npm:^9.3.1"
+    nodemailer: "npm:^6.9.16"
+    otpauth: "npm:^9.3.6"
     passport: "npm:^0.7.0"
     passport-local: "npm:^1.0.0"
-    prettier: "npm:3.4.1"
+    prettier: "npm:^3.4.2"
     reflect-metadata: "npm:^0.2.2"
     rimraf: "npm:^6.0.1"
     routing-controllers: "npm:^0.10.4"
@@ -607,8 +605,8 @@ __metadata:
     tsconfig: "npm:^7.0.0"
     typeorm: "npm:^0.3.20"
     typescript: "npm:~5.6.3"
-    uuid: "npm:^9.0.1"
-    winston: "npm:^3.13.0"
+    uuid: "npm:^11.0.3"
+    winston: "npm:^3.17.0"
     yaml-front-matter: "npm:^4.1.1"
   languageName: unknown
   linkType: soft
@@ -628,7 +626,7 @@ __metadata:
     "@jest/globals": "npm:^29.7.0"
     "@types/jest": "npm:^29.5.14"
     "@types/supertest": "npm:^2.0.0"
-    dotenv: "npm:^16.4.5"
+    dotenv: "npm:^16.4.7"
     jest: "npm:^29.7.0"
     supertest: "npm:^7.0.0"
     ts-jest: "npm:^29.2.5"
@@ -640,50 +638,50 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@beabee/frontend@workspace:apps/frontend"
   dependencies:
-    "@appsignal/javascript": "npm:^1.3.30"
-    "@babel/types": "npm:^7.24.6"
+    "@appsignal/javascript": "npm:^1.5.0"
+    "@babel/types": "npm:^7.26.3"
     "@beabee/beabee-common": "workspace:^"
     "@beabee/prettier-config": "workspace:^"
     "@beabee/tsconfig": "workspace:^"
-    "@captchafox/vue": "npm:^1.1.0"
+    "@captchafox/vue": "npm:^1.3.0"
     "@eslint/js": "npm:^9.17.0"
-    "@fontsource/fira-sans": "npm:^5.0.20"
-    "@fontsource/fira-sans-condensed": "npm:^5.0.13"
+    "@fontsource/fira-sans": "npm:^5.1.0"
+    "@fontsource/fira-sans-condensed": "npm:^5.1.0"
     "@fontsource/libre-franklin": "npm:^5.1.1"
-    "@fontsource/nunito-sans": "npm:^5.0.13"
-    "@fontsource/open-sans": "npm:^5.0.28"
-    "@fontsource/roboto": "npm:^5.0.13"
-    "@fontsource/roboto-slab": "npm:^5.0.20"
-    "@fontsource/rubik": "npm:^5.0.20"
-    "@fontsource/ubuntu": "npm:^5.0.13"
-    "@fontsource/work-sans": "npm:^5.0.18"
+    "@fontsource/nunito-sans": "npm:^5.1.0"
+    "@fontsource/open-sans": "npm:^5.1.0"
+    "@fontsource/roboto": "npm:^5.1.0"
+    "@fontsource/roboto-slab": "npm:^5.1.0"
+    "@fontsource/rubik": "npm:^5.1.0"
+    "@fontsource/ubuntu": "npm:^5.1.0"
+    "@fontsource/work-sans": "npm:^5.1.0"
     "@formio/vue": "npm:5.0.0"
-    "@fortawesome/fontawesome-svg-core": "npm:^6.6.0"
-    "@fortawesome/free-brands-svg-icons": "npm:^6.6.0"
-    "@fortawesome/free-regular-svg-icons": "npm:^6.6.0"
-    "@fortawesome/free-solid-svg-icons": "npm:^6.6.0"
+    "@fortawesome/fontawesome-svg-core": "npm:^6.7.2"
+    "@fortawesome/free-brands-svg-icons": "npm:^6.7.2"
+    "@fortawesome/free-regular-svg-icons": "npm:^6.7.2"
+    "@fortawesome/free-solid-svg-icons": "npm:^6.7.2"
     "@fortawesome/vue-fontawesome": "npm:^3.0.8"
-    "@iframe-resizer/child": "npm:^5.1.4"
-    "@iframe-resizer/parent": "npm:^5.1.4"
+    "@iframe-resizer/child": "npm:^5.3.2"
+    "@iframe-resizer/parent": "npm:^5.3.2"
     "@intlify/unplugin-vue-i18n": "npm:^1.6.0"
-    "@maptiler/client": "npm:^1.8.1"
+    "@maptiler/client": "npm:^2.2.0"
     "@maptiler/geocoding-control": "npm:^1.2.4"
-    "@rollup/plugin-replace": "npm:^6.0.1"
+    "@rollup/plugin-replace": "npm:^6.0.2"
     "@stripe/stripe-js": "npm:^3.5.0"
-    "@tiptap/core": "npm:^2.10.0"
-    "@tiptap/extension-link": "npm:^2.10.0"
-    "@tiptap/extension-typography": "npm:^2.10.0"
-    "@tiptap/extension-underline": "npm:^2.10.0"
-    "@tiptap/pm": "npm:^2.10.0"
-    "@tiptap/starter-kit": "npm:^2.10.0"
-    "@tiptap/vue-3": "npm:^2.10.0"
+    "@tiptap/core": "npm:^2.10.4"
+    "@tiptap/extension-link": "npm:^2.10.4"
+    "@tiptap/extension-typography": "npm:^2.10.4"
+    "@tiptap/extension-underline": "npm:^2.10.4"
+    "@tiptap/pm": "npm:^2.10.4"
+    "@tiptap/starter-kit": "npm:^2.10.4"
+    "@tiptap/vue-3": "npm:^2.10.4"
     "@types/body-scroll-lock": "npm:^3.1.2"
-    "@types/cacheable-request": "npm:^8.3.2"
-    "@vitejs/plugin-vue": "npm:^5.2.0"
+    "@types/cacheable-request": "npm:^8.3.6"
+    "@vitejs/plugin-vue": "npm:^5.2.1"
     "@vuelidate/core": "npm:^2.0.3"
     "@vuelidate/validators": "npm:^2.0.4"
     autoprefixer: "npm:^10.4.20"
-    axios: "npm:^1.7.2"
+    axios: "npm:^1.7.9"
     barrelsby: "npm:^2.8.1"
     body-scroll-lock: "npm:^4.0.0-beta.0"
     color2k: "npm:^2.0.3"
@@ -692,26 +690,26 @@ __metadata:
     eslint-config-prettier: "npm:^9.1.0"
     eslint-plugin-vue: "npm:^9.32.0"
     formiojs: "npm:@beabee/formiojs@^4.15.11"
-    googleapis: "npm:^129.0.0"
+    googleapis: "npm:^144.0.0"
     maplibre-gl: "npm:^3.6.2"
     markdown-it: "npm:^14.1.0"
     mitt: "npm:^3.0.1"
-    otpauth: "npm:^9.3.1"
+    otpauth: "npm:^9.3.6"
     postcss: "npm:^8.4.49"
-    prettier: "npm:3.4.1"
+    prettier: "npm:^3.4.2"
     qrcode-generator: "npm:^1.4.4"
     slugify: "npm:^1.6.6"
-    tailwindcss: "npm:^3.4.3"
+    tailwindcss: "npm:^3.4.17"
     typescript: "npm:~5.6.3"
     typescript-eslint: "npm:^8.18.1"
     vite: "npm:^5.4.11"
-    vite-plugin-pages: "npm:^0.32.3"
+    vite-plugin-pages: "npm:^0.32.4"
     vue: "npm:^3.5.13"
-    vue-accessible-color-picker: "npm:^5.1.0"
+    vue-accessible-color-picker: "npm:^5.1.1"
     vue-i18n: "npm:^9.14.1"
     vue-maplibre-gl: "npm:^3.1.3"
     vue-multiselect: "npm:^3.1.0"
-    vue-router: "npm:^4.4.5"
+    vue-router: "npm:^4.5.0"
     vue-tsc: "npm:^2.1.10"
     vuedraggable: "npm:^4.1.0"
   languageName: unknown
@@ -730,47 +728,46 @@ __metadata:
     "@types/chance": "npm:^1.1.6"
     "@types/connect-busboy": "npm:^1.0.3"
     "@types/connect-pg-simple": "npm:^7.0.3"
-    "@types/cookie-parser": "npm:^1.4.7"
+    "@types/cookie-parser": "npm:^1.4.8"
     "@types/cors": "npm:^2.8.17"
     "@types/csurf": "npm:^1.11.5"
-    "@types/discourse-sso": "npm:^1.0.3"
+    "@types/discourse-sso": "npm:^1.0.4"
     "@types/dot": "npm:^1.1.7"
     "@types/express": "npm:^4.17.21"
     "@types/express-flash": "npm:0.0.5"
     "@types/express-session": "npm:^1.18.1"
-    "@types/lodash": "npm:^4.17.4"
+    "@types/lodash": "npm:^4.17.13"
     "@types/module-alias": "npm:^2.0.4"
-    "@types/node": "npm:^22.9.1"
-    "@types/papaparse": "npm:^5.3.14"
-    "@types/passport": "npm:^1.0.16"
+    "@types/node": "npm:^22.10.2"
+    "@types/papaparse": "npm:^5.3.15"
+    "@types/passport": "npm:^1.0.17"
     "@types/passport-local": "npm:^1.0.38"
     "@types/pug": "npm:^2.0.10"
-    "@types/uuid": "npm:^9.0.8"
-    ajv: "npm:^8.15.0"
+    ajv: "npm:^8.17.1"
     ajv-formats: "npm:^2.1.1"
     autoprefixer: "npm:^10.4.20"
-    axios: "npm:^1.7.2"
-    body-parser: "npm:^1.20.2"
+    axios: "npm:^1.7.9"
+    body-parser: "npm:^1.20.3"
     bootstrap-sass: "npm:^3.4.3"
-    chance: "npm:^1.1.11"
+    chance: "npm:^1.1.12"
     class-transformer: "npm:^0.5.1"
     class-validator: "npm:^0.14.1"
     clean-deep: "npm:^3.4.0"
     concurrently: "npm:^9.1.0"
     connect-busboy: "npm:^1.0.0"
     connect-pg-simple: "npm:^9.0.1"
-    cookie-parser: "npm:^1.4.6"
+    cookie-parser: "npm:^1.4.7"
     cors: "npm:^2.8.5"
     csurf: "npm:^1.11.0"
-    csv-parse: "npm:^5.5.6"
-    csv-stringify: "npm:^6.5.0"
+    csv-parse: "npm:^5.6.0"
+    csv-stringify: "npm:^6.5.2"
     date-fns: "npm:^4.1.0"
     discourse-sso: "npm:^1.0.5"
     dot: "npm:^1.1.3"
-    dotenv: "npm:^16.4.5"
+    dotenv: "npm:^16.4.7"
     dpdm: "npm:^3.14.0"
     escape-string-regexp: "npm:^5.0.0"
-    express: "npm:^4.21.1"
+    express: "npm:^4.21.2"
     express-flash: "npm:0.0.2"
     express-session: "npm:^1.18.1"
     gocardless-nodejs: "npm:^3.25.0"
@@ -787,7 +784,7 @@ __metadata:
     passport: "npm:^0.7.0"
     passport-local: "npm:^1.0.0"
     postcss: "npm:^8.4.49"
-    prettier: "npm:3.4.1"
+    prettier: "npm:^3.4.2"
     pug: "npm:^3.0.3"
     query-string: "npm:^7.1.3"
     reflect-metadata: "npm:^0.2.2"
@@ -802,7 +799,7 @@ __metadata:
     tsconfig: "npm:^7.0.0"
     typeorm: "npm:^0.3.20"
     typescript: "npm:~5.6.3"
-    uuid: "npm:^9.0.1"
+    uuid: "npm:^11.0.3"
   languageName: unknown
   linkType: soft
 
@@ -811,7 +808,7 @@ __metadata:
   resolution: "@beabee/prettier-config@workspace:packages/prettier-config"
   dependencies:
     "@types/prettier": "npm:^3.0.0"
-    prettier: "npm:3.4.1"
+    prettier: "npm:^3.4.2"
     prettier-plugin-tailwindcss: "npm:^0.6.9"
   peerDependencies:
     prettier: ^3.x
@@ -845,17 +842,17 @@ __metadata:
     "@beabee/prettier-config": "workspace:^"
     "@beabee/tsconfig": "workspace:^"
     "@types/express": "npm:^4.17.21"
-    "@types/node": "npm:^22.9.1"
-    body-parser: "npm:^1.20.2"
+    "@types/node": "npm:^22.10.2"
+    body-parser: "npm:^1.20.3"
     concurrently: "npm:^9.1.0"
     date-fns: "npm:^4.1.0"
-    dotenv: "npm:^16.4.5"
+    dotenv: "npm:^16.4.7"
     dpdm: "npm:^3.14.0"
-    express: "npm:^4.21.1"
+    express: "npm:^4.21.2"
     gocardless-nodejs: "npm:^3.25.0"
     jest: "npm:^29.7.0"
     moment: "npm:^2.30.1"
-    prettier: "npm:3.4.1"
+    prettier: "npm:^3.4.2"
     rimraf: "npm:^6.0.1"
     stripe: "npm:^15.9.0"
     ts-jest: "npm:^29.2.5"
@@ -880,7 +877,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@captchafox/vue@npm:^1.1.0":
+"@captchafox/vue@npm:^1.3.0":
   version: 1.3.0
   resolution: "@captchafox/vue@npm:1.3.0"
   dependencies:
@@ -1332,14 +1329,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fontsource/fira-sans-condensed@npm:^5.0.13":
+"@fontsource/fira-sans-condensed@npm:^5.1.0":
   version: 5.1.0
   resolution: "@fontsource/fira-sans-condensed@npm:5.1.0"
   checksum: 10c0/21b9c137a899e6398545e5904ee237c05e9f3d3980d174851215e6755af555e8c8dce60c7daf0eb905354393967cc76bf4c0e97bd738fb77690cf6424b900db6
   languageName: node
   linkType: hard
 
-"@fontsource/fira-sans@npm:^5.0.20":
+"@fontsource/fira-sans@npm:^5.1.0":
   version: 5.1.0
   resolution: "@fontsource/fira-sans@npm:5.1.0"
   checksum: 10c0/89fe8109342d43b4fd79c6fffb64eb68cf716c9cb0ed248a1f962bda694b8d4b9215871ecec93ed381e4bb74fe1b524a611f5952c82d73abd49a470196fbe690
@@ -1353,49 +1350,49 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fontsource/nunito-sans@npm:^5.0.13":
+"@fontsource/nunito-sans@npm:^5.1.0":
   version: 5.1.0
   resolution: "@fontsource/nunito-sans@npm:5.1.0"
   checksum: 10c0/2704ee65103d3d696d1deb8004a8e4e9758c91c8cc2a5fb1e7c14dd894acbe2678f4301e149f05c1e4ff703030ebaa010684ebb28d11299554750152702d5f78
   languageName: node
   linkType: hard
 
-"@fontsource/open-sans@npm:^5.0.28":
+"@fontsource/open-sans@npm:^5.1.0":
   version: 5.1.0
   resolution: "@fontsource/open-sans@npm:5.1.0"
   checksum: 10c0/024ed724e45db2219383a919a55ccd8e2f1008ded3a706d0068caa827574147674e9ebb7e47b6de154f1dec330036c10bad0ac1078d25718bf396af517b1a0ed
   languageName: node
   linkType: hard
 
-"@fontsource/roboto-slab@npm:^5.0.20":
+"@fontsource/roboto-slab@npm:^5.1.0":
   version: 5.1.0
   resolution: "@fontsource/roboto-slab@npm:5.1.0"
   checksum: 10c0/df7e810d8736536675e112df5eca96d2c6905b1a2ebadbf3a59a774bb4c1e7cd3f6a6012dd2456c27a5a7ab5e4abee5d55b91dd1fa8e76869edf814a03dee901
   languageName: node
   linkType: hard
 
-"@fontsource/roboto@npm:^5.0.13":
+"@fontsource/roboto@npm:^5.1.0":
   version: 5.1.0
   resolution: "@fontsource/roboto@npm:5.1.0"
   checksum: 10c0/e424fec92e5cb89a466f271d4a1cd335b4fd8406411a7eaad5b79e9eb4cc61f6258000b1d24444cadbf1f8a06e9ddcdd30a2990b61874978e34fc357d003cba5
   languageName: node
   linkType: hard
 
-"@fontsource/rubik@npm:^5.0.20":
+"@fontsource/rubik@npm:^5.1.0":
   version: 5.1.0
   resolution: "@fontsource/rubik@npm:5.1.0"
   checksum: 10c0/0ead3a6854cd55706adbbdd93bfbbddc4539771ed70a3f60cc9eba17c5015b90d311897b37e8d4cb947491490d8a3a93aedaf34b533909875ef7c22404c0b8d1
   languageName: node
   linkType: hard
 
-"@fontsource/ubuntu@npm:^5.0.13":
+"@fontsource/ubuntu@npm:^5.1.0":
   version: 5.1.0
   resolution: "@fontsource/ubuntu@npm:5.1.0"
   checksum: 10c0/f2583ab28e6a26dcbec44d3fc1edf251ad25fd4377d3b028b78660f60778c41e01b85598bd300eeed2d4766d87eab5e244a0c3660f4cd2c215807df257cee542
   languageName: node
   linkType: hard
 
-"@fontsource/work-sans@npm:^5.0.18":
+"@fontsource/work-sans@npm:^5.1.0":
   version: 5.1.0
   resolution: "@fontsource/work-sans@npm:5.1.0"
   checksum: 10c0/f4a966c8354c80fc442c706ca4f1953df8c62179249862cd4e85589d79e9f8e28084efb8d8f921d65bc4a35de08c1a4e93569128922b369453139a5d15875937
@@ -1460,7 +1457,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fortawesome/fontawesome-svg-core@npm:^6.6.0":
+"@fortawesome/fontawesome-svg-core@npm:^6.7.2":
   version: 6.7.2
   resolution: "@fortawesome/fontawesome-svg-core@npm:6.7.2"
   dependencies:
@@ -1469,7 +1466,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fortawesome/free-brands-svg-icons@npm:^6.6.0":
+"@fortawesome/free-brands-svg-icons@npm:^6.7.2":
   version: 6.7.2
   resolution: "@fortawesome/free-brands-svg-icons@npm:6.7.2"
   dependencies:
@@ -1478,7 +1475,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fortawesome/free-regular-svg-icons@npm:^6.6.0":
+"@fortawesome/free-regular-svg-icons@npm:^6.7.2":
   version: 6.7.2
   resolution: "@fortawesome/free-regular-svg-icons@npm:6.7.2"
   dependencies:
@@ -1487,7 +1484,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fortawesome/free-solid-svg-icons@npm:^6.6.0":
+"@fortawesome/free-solid-svg-icons@npm:^6.7.2":
   version: 6.7.2
   resolution: "@fortawesome/free-solid-svg-icons@npm:6.7.2"
   dependencies:
@@ -1581,7 +1578,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@iframe-resizer/child@npm:^5.1.4":
+"@iframe-resizer/child@npm:^5.3.2":
   version: 5.3.2
   resolution: "@iframe-resizer/child@npm:5.3.2"
   checksum: 10c0/00fa7be9f7fe5e86be74dfa119a66f8b8cf5aff3ede36a2fcad6265a785beb3bbdefe57d0b1ab61d59576136d789875a29bb0c5e45bbcb561a39d94bcfba5d19
@@ -1595,7 +1592,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@iframe-resizer/parent@npm:^5.1.4":
+"@iframe-resizer/parent@npm:^5.3.2":
   version: 5.3.2
   resolution: "@iframe-resizer/parent@npm:5.3.2"
   dependencies:
@@ -2260,12 +2257,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@maptiler/client@npm:^1.8.1":
-  version: 1.8.1
-  resolution: "@maptiler/client@npm:1.8.1"
+"@maptiler/client@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "@maptiler/client@npm:2.2.0"
   dependencies:
     quick-lru: "npm:^7.0.0"
-  checksum: 10c0/a74de1ba1df237a6bdd3af383fa9014bd52c20d995323a6a0b9565ed5c2c8dd79e6d36f076e6daee20ab1c7ad4a6105fa1844a4937c076c9c9f403b34f001418
+  checksum: 10c0/3c06c88f10e370d7528ae04f6ceaf919df9e34c9e0c97fe75a37bbb90f3b1361d7478248a1f5118b38b4bee5c8738e55faf60997d1ee8765385dbf24e97938cc
   languageName: node
   linkType: hard
 
@@ -2524,7 +2521,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/plugin-replace@npm:^6.0.1":
+"@rollup/plugin-replace@npm:^6.0.2":
   version: 6.0.2
   resolution: "@rollup/plugin-replace@npm:6.0.2"
   dependencies:
@@ -2714,7 +2711,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sendgrid/mail@npm:^8.1.3":
+"@sendgrid/mail@npm:^8.1.4":
   version: 8.1.4
   resolution: "@sendgrid/mail@npm:8.1.4"
   dependencies:
@@ -2786,7 +2783,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tiptap/core@npm:^2.10.0, @tiptap/core@npm:^2.10.4":
+"@tiptap/core@npm:^2.10.4":
   version: 2.10.4
   resolution: "@tiptap/core@npm:2.10.4"
   peerDependencies:
@@ -2941,7 +2938,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tiptap/extension-link@npm:^2.10.0":
+"@tiptap/extension-link@npm:^2.10.4":
   version: 2.10.4
   resolution: "@tiptap/extension-link@npm:2.10.4"
   dependencies:
@@ -3007,7 +3004,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tiptap/extension-typography@npm:^2.10.0":
+"@tiptap/extension-typography@npm:^2.10.4":
   version: 2.10.4
   resolution: "@tiptap/extension-typography@npm:2.10.4"
   peerDependencies:
@@ -3016,7 +3013,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tiptap/extension-underline@npm:^2.10.0":
+"@tiptap/extension-underline@npm:^2.10.4":
   version: 2.10.4
   resolution: "@tiptap/extension-underline@npm:2.10.4"
   peerDependencies:
@@ -3025,7 +3022,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tiptap/pm@npm:^2.10.0, @tiptap/pm@npm:^2.10.4":
+"@tiptap/pm@npm:^2.10.4":
   version: 2.10.4
   resolution: "@tiptap/pm@npm:2.10.4"
   dependencies:
@@ -3051,7 +3048,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tiptap/starter-kit@npm:^2.10.0":
+"@tiptap/starter-kit@npm:^2.10.4":
   version: 2.10.4
   resolution: "@tiptap/starter-kit@npm:2.10.4"
   dependencies:
@@ -3080,7 +3077,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tiptap/vue-3@npm:^2.10.0":
+"@tiptap/vue-3@npm:^2.10.4":
   version: 2.10.4
   resolution: "@tiptap/vue-3@npm:2.10.4"
   dependencies:
@@ -3296,7 +3293,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/cacheable-request@npm:^8.3.2":
+"@types/cacheable-request@npm:^8.3.6":
   version: 8.3.6
   resolution: "@types/cacheable-request@npm:8.3.6"
   dependencies:
@@ -3343,7 +3340,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/cookie-parser@npm:^1.4.7":
+"@types/cookie-parser@npm:^1.4.8":
   version: 1.4.8
   resolution: "@types/cookie-parser@npm:1.4.8"
   peerDependencies:
@@ -3386,7 +3383,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/discourse-sso@npm:^1.0.3":
+"@types/discourse-sso@npm:^1.0.4":
   version: 1.0.4
   resolution: "@types/discourse-sso@npm:1.0.4"
   checksum: 10c0/aed931af550a1cfff78a4c3a9c149bf9746f566580ab8a6cca44acebf321b24ca4ff35623dc19d65d8725cf7b84d88f532a019f52e73b1e37baaf98618710504
@@ -3548,7 +3545,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jsonwebtoken@npm:^9.0.6":
+"@types/jsonwebtoken@npm:^9.0.7":
   version: 9.0.7
   resolution: "@types/jsonwebtoken@npm:9.0.7"
   dependencies:
@@ -3573,7 +3570,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/lodash@npm:^4.17.4":
+"@types/lodash@npm:^4.17.13":
   version: 4.17.13
   resolution: "@types/lodash@npm:4.17.13"
   checksum: 10c0/c3d0b7efe7933ac0369b99f2f7bff9240d960680fdb74b41ed4bd1b3ca60cca1e31fe4046d9abbde778f941a41bc2a75eb629abf8659fa6c27b66efbbb0802a9
@@ -3662,7 +3659,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:>=8.1.0, @types/node@npm:^22.9.1":
+"@types/node@npm:*, @types/node@npm:>=8.1.0, @types/node@npm:^22.10.2":
   version: 22.10.2
   resolution: "@types/node@npm:22.10.2"
   dependencies:
@@ -3680,7 +3677,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/nodemailer@npm:^6.4.15":
+"@types/nodemailer@npm:^6.4.17":
   version: 6.4.17
   resolution: "@types/nodemailer@npm:6.4.17"
   dependencies:
@@ -3689,7 +3686,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/papaparse@npm:^5.3.14":
+"@types/papaparse@npm:^5.3.15":
   version: 5.3.15
   resolution: "@types/papaparse@npm:5.3.15"
   dependencies:
@@ -3719,7 +3716,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/passport@npm:*, @types/passport@npm:^1.0.16":
+"@types/passport@npm:*, @types/passport@npm:^1.0.17":
   version: 1.0.17
   resolution: "@types/passport@npm:1.0.17"
   dependencies:
@@ -3880,13 +3877,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/uuid@npm:^9.0.8":
-  version: 9.0.8
-  resolution: "@types/uuid@npm:9.0.8"
-  checksum: 10c0/b411b93054cb1d4361919579ef3508a1f12bf15b5fdd97337d3d351bece6c921b52b6daeef89b62340fd73fd60da407878432a1af777f40648cbe53a01723489
-  languageName: node
-  linkType: hard
-
 "@types/validator@npm:^13.11.8":
   version: 13.12.2
   resolution: "@types/validator@npm:13.12.2"
@@ -4039,7 +4029,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitejs/plugin-vue@npm:^5.2.0":
+"@vitejs/plugin-vue@npm:^5.2.1":
   version: 5.2.1
   resolution: "@vitejs/plugin-vue@npm:5.2.1"
   peerDependencies:
@@ -4392,7 +4382,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ajv@npm:^8.0.0, ajv@npm:^8.15.0":
+"ajv@npm:^8.0.0, ajv@npm:^8.17.1":
   version: 8.17.1
   resolution: "ajv@npm:8.17.1"
   dependencies:
@@ -4807,7 +4797,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.7.2, axios@npm:^1.7.4":
+"axios@npm:^1.7.4, axios@npm:^1.7.9":
   version: 1.7.9
   resolution: "axios@npm:1.7.9"
   dependencies:
@@ -5026,7 +5016,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"body-parser@npm:1.20.3, body-parser@npm:^1.20.2":
+"body-parser@npm:1.20.3, body-parser@npm:^1.20.2, body-parser@npm:^1.20.3":
   version: 1.20.3
   resolution: "body-parser@npm:1.20.3"
   dependencies:
@@ -5440,7 +5430,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chance@npm:^1.1.11":
+"chance@npm:^1.1.12":
   version: 1.1.12
   resolution: "chance@npm:1.1.12"
   checksum: 10c0/96686a72df9077852993476dc4a16ec7afb797bb26d74caf4a5c6f6786d73fcd3c821ededb88b23a5c7b8762718b5cc43ce07fdd1ea3f508826ba88b57c36329
@@ -5484,18 +5474,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cheerio@npm:1.0.0-rc.12":
-  version: 1.0.0-rc.12
-  resolution: "cheerio@npm:1.0.0-rc.12"
+"cheerio@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "cheerio@npm:1.0.0"
   dependencies:
     cheerio-select: "npm:^2.1.0"
     dom-serializer: "npm:^2.0.0"
     domhandler: "npm:^5.0.3"
-    domutils: "npm:^3.0.1"
-    htmlparser2: "npm:^8.0.1"
-    parse5: "npm:^7.0.0"
+    domutils: "npm:^3.1.0"
+    encoding-sniffer: "npm:^0.2.0"
+    htmlparser2: "npm:^9.1.0"
+    parse5: "npm:^7.1.2"
     parse5-htmlparser2-tree-adapter: "npm:^7.0.0"
-  checksum: 10c0/c85d2f2461e3f024345b78e0bb16ad8e41492356210470dd1e7d5a91391da9fcf6c0a7cb48a9ba8820330153f0cedb4d0a60c7af15d96ecdb3092299b9d9c0cc
+    parse5-parser-stream: "npm:^7.1.2"
+    undici: "npm:^6.19.5"
+    whatwg-mimetype: "npm:^4.0.0"
+  checksum: 10c0/d0e16925d9c36c879edfaef1c0244c866375a4c7b8d6ccd7ae0ad42da7d26263ea1a3c17b9a1aa5965918deeff2d40ac2e7223824f8e6eca972df3b81316a09f
   languageName: node
   linkType: hard
 
@@ -5874,6 +5868,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"commander@npm:^12.1.0":
+  version: 12.1.0
+  resolution: "commander@npm:12.1.0"
+  checksum: 10c0/6e1996680c083b3b897bfc1cfe1c58dfbcd9842fd43e1aaf8a795fbc237f65efcc860a3ef457b318e73f29a4f4a28f6403c3d653d021d960e4632dd45bde54a9
+  languageName: node
+  linkType: hard
+
 "commander@npm:^4.0.0":
   version: 4.1.1
   resolution: "commander@npm:4.1.1"
@@ -5881,7 +5882,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commander@npm:^6.1.0, commander@npm:^6.2.0":
+"commander@npm:^6.2.0":
   version: 6.2.1
   resolution: "commander@npm:6.2.1"
   checksum: 10c0/85748abd9d18c8bc88febed58b98f66b7c591d9b5017cad459565761d7b29ca13b7783ea2ee5ce84bf235897333706c4ce29adf1ce15c8252780e7000e2ce9ea
@@ -6021,7 +6022,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cookie-parser@npm:^1.4.6":
+"cookie-parser@npm:^1.4.7":
   version: 1.4.7
   resolution: "cookie-parser@npm:1.4.7"
   dependencies:
@@ -6300,14 +6301,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"csv-parse@npm:^5.5.6":
+"csv-parse@npm:^5.6.0":
   version: 5.6.0
   resolution: "csv-parse@npm:5.6.0"
   checksum: 10c0/52f5e6c45359902e0c8e57fc2eeed41366dc6b6d283b495b538dd50c8e8510413d6f924096ea056319cbbb8ed26e111c3a3485d7985c021bcf5abaa9e92425c7
   languageName: node
   linkType: hard
 
-"csv-stringify@npm:^6.5.0":
+"csv-stringify@npm:^6.5.2":
   version: 6.5.2
   resolution: "csv-stringify@npm:6.5.2"
   checksum: 10c0/8d2c601ce99c4baf5009abb16a9021cfd8d91a7be660f54343cba566ee5057d0ef517e0afde91e7e8803aeafb81268f6f04e47cb272462553b12f8e65c9c0674
@@ -6821,7 +6822,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"domutils@npm:^3.0.1":
+"domutils@npm:^3.0.1, domutils@npm:^3.1.0":
   version: 3.1.0
   resolution: "domutils@npm:3.1.0"
   dependencies:
@@ -6841,7 +6842,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:^16.0.3, dotenv@npm:^16.4.5":
+"dotenv@npm:^16.0.3, dotenv@npm:^16.4.7":
   version: 16.4.7
   resolution: "dotenv@npm:16.4.7"
   checksum: 10c0/be9f597e36a8daf834452daa1f4cc30e5375a5968f98f46d89b16b983c567398a330580c88395069a77473943c06b877d1ca25b4afafcdd6d4adb549e8293462
@@ -7009,6 +7010,16 @@ __metadata:
   version: 2.0.0
   resolution: "encodeurl@npm:2.0.0"
   checksum: 10c0/5d317306acb13e6590e28e27924c754163946a2480de11865c991a3a7eed4315cd3fba378b543ca145829569eefe9b899f3d84bb09870f675ae60bc924b01ceb
+  languageName: node
+  linkType: hard
+
+"encoding-sniffer@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "encoding-sniffer@npm:0.2.0"
+  dependencies:
+    iconv-lite: "npm:^0.6.3"
+    whatwg-encoding: "npm:^3.1.1"
+  checksum: 10c0/b312e0d67f339bec44e021e5210ee8ee90d7b8f9975eb2c79a36fd467eb07709e88dcf62ee20f62ee0d74a13874307d99557852a2de9b448f1e3fb991fc68257
   languageName: node
   linkType: hard
 
@@ -7215,7 +7226,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild@npm:^0.24.0":
+"esbuild@npm:^0.24.1":
   version: 0.24.1
   resolution: "esbuild@npm:0.24.1"
   dependencies:
@@ -7723,7 +7734,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express@npm:^4.18.2, express@npm:^4.21.1":
+"express@npm:^4.18.2, express@npm:^4.21.2":
   version: 4.21.2
   resolution: "express@npm:4.21.2"
   dependencies:
@@ -8737,13 +8748,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"googleapis@npm:^129.0.0":
-  version: 129.0.0
-  resolution: "googleapis@npm:129.0.0"
+"googleapis@npm:^144.0.0":
+  version: 144.0.0
+  resolution: "googleapis@npm:144.0.0"
   dependencies:
     google-auth-library: "npm:^9.0.0"
     googleapis-common: "npm:^7.0.0"
-  checksum: 10c0/a1e078b2c3da1a1fe3ba1de1233700872c973fb49a6254c59a83c2c1884f4493b059fe43e7bb65226b9493c429da69e09e842368c82abb8c52118d2dbc657da3
+  checksum: 10c0/a5ad4c5be32817f7960fac2aa52b1bbc658242ed1874fb08ed84dbdf36b9fa401077e6e425928e453629d14b1f0d54ee31a1dc0959705465b489f31bd3f36f4a
   languageName: node
   linkType: hard
 
@@ -9081,15 +9092,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"htmlparser2@npm:^8.0.1":
-  version: 8.0.2
-  resolution: "htmlparser2@npm:8.0.2"
+"htmlparser2@npm:^9.1.0":
+  version: 9.1.0
+  resolution: "htmlparser2@npm:9.1.0"
   dependencies:
     domelementtype: "npm:^2.3.0"
     domhandler: "npm:^5.0.3"
-    domutils: "npm:^3.0.1"
-    entities: "npm:^4.4.0"
-  checksum: 10c0/609cca85886d0bf2c9a5db8c6926a89f3764596877492e2caa7a25a789af4065bc6ee2cdc81807fe6b1d03a87bf8a373b5a754528a4cc05146b713c20575aab4
+    domutils: "npm:^3.1.0"
+    entities: "npm:^4.5.0"
+  checksum: 10c0/394f6323efc265bbc791d8c0d96bfe95984e0407565248521ab92e2dc7668e5ceeca7bc6ed18d408b9ee3b25032c5743368a4280d280332d782821d5d467ad8f
   languageName: node
   linkType: hard
 
@@ -9225,7 +9236,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"iconv-lite@npm:0.6.3, iconv-lite@npm:^0.6.2":
+"iconv-lite@npm:0.6.3, iconv-lite@npm:^0.6.2, iconv-lite@npm:^0.6.3":
   version: 0.6.3
   resolution: "iconv-lite@npm:0.6.3"
   dependencies:
@@ -10587,18 +10598,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"juice@npm:^10.0.0":
-  version: 10.0.1
-  resolution: "juice@npm:10.0.1"
+"juice@npm:^11.0.0":
+  version: 11.0.0
+  resolution: "juice@npm:11.0.0"
   dependencies:
-    cheerio: "npm:1.0.0-rc.12"
-    commander: "npm:^6.1.0"
+    cheerio: "npm:^1.0.0"
+    commander: "npm:^12.1.0"
     mensch: "npm:^0.3.4"
     slick: "npm:^1.12.2"
-    web-resource-inliner: "npm:^6.0.1"
+    web-resource-inliner: "npm:^7.0.0"
   bin:
     juice: bin/juice
-  checksum: 10c0/10265610aea6b50a382313f95e2e7e130a8476a727ebbc956ab34dd413b1b8f54a26e81b37e528f4cef248f8d20a776dac0e61fa0f13ce6d853a17ca2b384228
+  checksum: 10c0/87fceac7287951e4d2c83774cb36de5a1ed3e8ae56e95d9f62801720e3a1bdf2fe07f0d680103590b0fba1166401305c03ba9ecdbaed9bc439a000c0770d17a0
   languageName: node
   linkType: hard
 
@@ -11817,7 +11828,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-fetch@npm:^2.6.0, node-fetch@npm:^2.6.9, node-fetch@npm:^2.7.0":
+"node-fetch@npm:^2.6.9, node-fetch@npm:^2.7.0":
   version: 2.7.0
   resolution: "node-fetch@npm:2.7.0"
   dependencies:
@@ -11879,7 +11890,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nodemailer@npm:^6.9.13":
+"nodemailer@npm:^6.9.16":
   version: 6.9.16
   resolution: "nodemailer@npm:6.9.16"
   checksum: 10c0/9fd73ab4ab5b81544c3c9820afbe386369aba442f997b2f58d171222a898a7aed580fc100bfe6eebc194f18ba6e169d67ee40ca64d32d69022d89e575cef97a4
@@ -12210,7 +12221,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"otpauth@npm:^9.3.1":
+"otpauth@npm:^9.3.6":
   version: 9.3.6
   resolution: "otpauth@npm:9.3.6"
   dependencies:
@@ -12417,6 +12428,15 @@ __metadata:
     domhandler: "npm:^5.0.3"
     parse5: "npm:^7.0.0"
   checksum: 10c0/e5a4e0b834c84c9e244b5749f8d007f4baaeafac7a1da2c54be3421ffd9ef8fdec4f198bf55cda22e88e6ba95e9943f6ed5aa3ae5900b39972ebf5dc8c3f4722
+  languageName: node
+  linkType: hard
+
+"parse5-parser-stream@npm:^7.1.2":
+  version: 7.1.2
+  resolution: "parse5-parser-stream@npm:7.1.2"
+  dependencies:
+    parse5: "npm:^7.0.0"
+  checksum: 10c0/e236c61000d38ecad369e725a48506b051cebad8abb00e6d4e8bff7aa85c183820fcb45db1559cc90955bdbbdbd665ea94c41259594e74566fff411478dc7fcb
   languageName: node
   linkType: hard
 
@@ -13124,21 +13144,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:*":
+"prettier@npm:*, prettier@npm:^3.4.2":
   version: 3.4.2
   resolution: "prettier@npm:3.4.2"
   bin:
     prettier: bin/prettier.cjs
   checksum: 10c0/99e076a26ed0aba4ebc043880d0f08bbb8c59a4c6641cdee6cdadf2205bdd87aa1d7823f50c3aea41e015e99878d37c58d7b5f0e663bba0ef047f94e36b96446
-  languageName: node
-  linkType: hard
-
-"prettier@npm:3.4.1":
-  version: 3.4.1
-  resolution: "prettier@npm:3.4.1"
-  bin:
-    prettier: bin/prettier.cjs
-  checksum: 10c0/2d6cc3101ad9de72b49c59339480b0983e6ff6742143da0c43f476bf3b5ef88ede42ebd9956d7a0a8fa59f7a5990e8ef03c9ad4c37f7e4c9e5db43ee0853156c
   languageName: node
   linkType: hard
 
@@ -15292,7 +15303,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tailwindcss@npm:^3.4.3":
+"tailwindcss@npm:^3.4.17":
   version: 3.4.17
   resolution: "tailwindcss@npm:3.4.17"
   dependencies:
@@ -16068,6 +16079,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"undici@npm:^6.19.5":
+  version: 6.21.0
+  resolution: "undici@npm:6.21.0"
+  checksum: 10c0/afa9bde6dcf8e0f5cf1ff2fa977ba73dd5510299ddfca0e1f37ff326554172ae31cb3d4a40b5a729601be1f21b96a2684f974d74dab53f9b6930fd47d1949246
+  languageName: node
+  linkType: hard
+
 "union-value@npm:^1.0.0, union-value@npm:^1.0.1":
   version: 1.0.1
   resolution: "union-value@npm:1.0.1"
@@ -16221,6 +16239,15 @@ __metadata:
   version: 1.0.1
   resolution: "utils-merge@npm:1.0.1"
   checksum: 10c0/02ba649de1b7ca8854bfe20a82f1dfbdda3fb57a22ab4a8972a63a34553cf7aa51bc9081cf7e001b035b88186d23689d69e71b510e610a09a4c66f68aa95b672
+  languageName: node
+  linkType: hard
+
+"uuid@npm:^11.0.3":
+  version: 11.0.3
+  resolution: "uuid@npm:11.0.3"
+  bin:
+    uuid: dist/esm/bin/uuid
+  checksum: 10c0/cee762fc76d949a2ff9205770334699e0043d52bb766472593a25f150077c9deed821230251ea3d6ab3943a5ea137d2826678797f1d5f6754c7ce5ce27e9f7a6
   languageName: node
   linkType: hard
 
@@ -16379,7 +16406,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-pages@npm:^0.32.3":
+"vite-plugin-pages@npm:^0.32.4":
   version: 0.32.4
   resolution: "vite-plugin-pages@npm:0.32.4"
   dependencies:
@@ -16476,12 +16503,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-accessible-color-picker@npm:^5.1.0":
-  version: 5.1.0
-  resolution: "vue-accessible-color-picker@npm:5.1.0"
+"vue-accessible-color-picker@npm:^5.1.1":
+  version: 5.1.1
+  resolution: "vue-accessible-color-picker@npm:5.1.1"
   peerDependencies:
     vue: ^3.2.x
-  checksum: 10c0/3df4e37ab36efda97abaae246e40fb7f8aaf8eff5decb77bfc19989571e6b2a96d78c5797c76e282386c639485b9c8835042694f70bcaf23146cb9c731ef22c4
+  checksum: 10c0/4793c2c6c9697f26645be38ee4e0197b2420fef4e9b84b27a31b87ccf51702eb6ea37d85763830e3bf0860550719aa5f8ea2df5e395966d67add412f3e43a247
   languageName: node
   linkType: hard
 
@@ -16549,7 +16576,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-router@npm:^4.4.5":
+"vue-router@npm:^4.5.0":
   version: 4.5.0
   resolution: "vue-router@npm:4.5.0"
   dependencies:
@@ -16647,17 +16674,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"web-resource-inliner@npm:^6.0.1":
-  version: 6.0.1
-  resolution: "web-resource-inliner@npm:6.0.1"
+"web-resource-inliner@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "web-resource-inliner@npm:7.0.0"
   dependencies:
     ansi-colors: "npm:^4.1.1"
     escape-goat: "npm:^3.0.0"
     htmlparser2: "npm:^5.0.0"
     mime: "npm:^2.4.6"
-    node-fetch: "npm:^2.6.0"
     valid-data-url: "npm:^3.0.0"
-  checksum: 10c0/b4b457de2448255100797b1eaefa0f62a8846b2452de8495b9ec17d3e223ebb4848a31b11a645e3541a5b114eb9f201219cda2f99d1b513631777f8c89d1c8a6
+  checksum: 10c0/b657665c31030e5c001bab02493d5241302b5fa80f0a4985d532b4dcb9358bb0b141321e4e03a765058c40934e2c7e2ff2be333477af42bcc3dab30d60d17d14
   languageName: node
   linkType: hard
 
@@ -16802,7 +16828,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"winston@npm:^3.13.0":
+"winston@npm:^3.17.0":
   version: 3.17.0
   resolution: "winston@npm:3.17.0"
   dependencies:
