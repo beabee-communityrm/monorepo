@@ -11,11 +11,13 @@ import { Contact } from "#models/index";
 import config from "#config/config";
 
 export function getActualAmount(
-  amount: number,
+  monthlyAmount: number,
   period: ContributionPeriod
 ): number {
   // TODO: fix this properly
-  return Math.round(amount * (period === ContributionPeriod.Annually ? 12 : 1));
+  return Math.round(
+    monthlyAmount * (period === ContributionPeriod.Annually ? 12 : 1)
+  );
 }
 
 /**

@@ -22,6 +22,7 @@ import type { ContactContribution, ContactProfile, ContactRole } from "./index";
 import { ContactTagAssignment } from "./ContactTagAssignment";
 import type { TagData } from "@beabee/beabee-common";
 import type { TaggableEntity } from "#type";
+import { getContributionDescription } from "#utils/contact";
 
 interface LoginOverride {
   code: string;
@@ -115,20 +116,15 @@ export class Contact implements TaggableEntity<TagData> {
         );
   }
 
+  /**
+   * @deprecated Remove once legacy app no longer uses it
+   */
   get contributionDescription(): string {
-    if (this.contributionType === "Gift") {
-      return "Gift";
-    } else if (
-      this.contributionType === "None" ||
-      !this.contributionPeriod ||
-      !this.contributionMonthlyAmount
-    ) {
-      return "None";
-    } else {
-      return `${config.currencySymbol}${this.contributionAmount}/${
-        this.contributionPeriod === "monthly" ? "month" : "year"
-      }`;
-    }
+    return getContributionDescription(
+      this.contributionType,
+      this.contributionMonthlyAmount,
+      this.contributionPeriod
+    );
   }
 
   get membership(): ContactRole | undefined {
