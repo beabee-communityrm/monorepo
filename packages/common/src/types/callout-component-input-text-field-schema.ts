@@ -1,5 +1,5 @@
-import type { CalloutComponentType } from "../data/index.ts";
-import type { CalloutComponentBaseInputTextSchema } from "./index.ts";
+import type { CalloutComponentType } from "../data/index.js";
+import type { CalloutComponentBaseInputTextSchema } from "./index.js";
 
 export interface CalloutComponentInputTextFieldSchema
   extends CalloutComponentBaseInputTextSchema {

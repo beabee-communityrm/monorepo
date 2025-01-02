@@ -54,6 +54,8 @@
       "title": "Newsletter",
       "unsubscribe": "Vom Newsletter abmelden"
     },
+    "phoneInfo": "Mit der Angabe deiner Telefonnummer erklärst du dich damit einverstanden, telefonisch kontaktiert zu werden.",
+    "phoneInfoAdmin": "Du musst die Zustimmung der Person einholen, bevor du ihre Telefonnummer in das System eingibst.",
     "savedPassword": "Das neue Passwort wurde gespeichert. ",
     "subTitle": "Alle benötigten Felder sind mit * markiert. Alle Informationen werden vertraulich behandelt.",
     "title": "Account"
@@ -330,6 +332,7 @@
     },
     "addAPoint": "Klicken Sie dort auf die Karte, wo Sie einen Ort ergänzen möchten",
     "addLocation": "Neuen Ort eingeben",
+    "confirmHuman": "Bitte bestätige, dass du ein Mensch bist",
     "contactDetails": "Kontaktdaten",
     "ended": "Dieser Callout ist seit dem {date} beendet.",
     "form": {
@@ -354,6 +357,7 @@
       "gallery": "Galerie",
       "map": "Karte"
     },
+    "youResponded": "Du hast geantwortet ♥",
     "yourResponse": "Deine Antwort"
   },
   "calloutAdmin": {

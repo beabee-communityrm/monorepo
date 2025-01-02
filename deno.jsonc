@@ -1,6 +1,0 @@
-{
-  "nodeModulesDir": "none",
-  "workspace": [
-    "./packages/common"
-  ]
-}

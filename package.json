@@ -8,12 +8,12 @@
     "format": "yarn workspaces foreach -v -W -p run format",
     "test": "yarn workspaces foreach -v -W -p run test",
     "check": "yarn workspaces foreach -v -W -p run check",
+    "generate:index": "yarn workspaces foreach -v -W -p run generate:index",
     "publish:next": "yarn workspaces foreach -v -W --no-private npm publish --tolerate-republish --tag next --access public",
     "publish:latest": "yarn workspaces foreach -v -W --no-private npm publish --tolerate-republish --tag latest --access public",
-    "cache:deno": "yarn workspaces foreach -v -W -p run cache:deno",
     "setup": "yarn workspace @beabee/backend run setup",
     "typeorm": "yarn workspace @beabee/backend run typeorm",
-    "presetup": "yarn workspaces foreach -v -W -p -i run presetup && yarn presetup:env && yarn cache:deno",
+    "presetup": "yarn workspaces foreach -v -W -p -i run presetup && yarn presetup:env",
     "presetup:env": "cp -n .env.example .env 2>/dev/null || true"
   },
   "workspaces": [
@@ -30,5 +30,9 @@
     "@type": "./apps/backend/built/type",
     "@enums": "./apps/backend/built/enums"
   },
-  "packageManager": "yarn@4.5.1"
+  "resolutions": {
+    "@types/express": "^4.17.21",
+    "@types/express-serve-static-core": "^4.17.33"
+  },
+  "packageManager": "yarn@4.5.3"
 }

@@ -54,6 +54,8 @@
       "title": "Newsletter",
       "unsubscribe": "Unsubscribe them from the newsletter"
     },
+    "phoneInfo": "By providing your phone number you are consenting to being contacted by phone",
+    "phoneInfoAdmin": "You must have the person's consent before adding their phone number to the system",
     "savedPassword": "New password saved",
     "subTitle": "Required fields are marked with an asterisk. All information submitted here is private.",
     "title": "Account"
@@ -330,6 +332,7 @@
     },
     "addAPoint": "Click on the map where you want to add a point",
     "addLocation": "Add a new entry",
+    "confirmHuman": "Please confirm you are human",
     "contactDetails": "Contact details",
     "ended": "This callout ended on {date}",
     "form": {
@@ -354,6 +357,7 @@
       "gallery": "Gallery",
       "map": "Map"
     },
+    "youResponded": "You replied to this callout ♥",
     "yourResponse": "Your response"
   },
   "calloutAdmin": {
@@ -676,7 +680,7 @@
       "paymentReference": "Payment reference",
       "paymentSource": "Payment source",
       "period": "Period",
-      "phone": "Phone",
+      "phone": "Phone number",
       "preferredChannel": "Preferred channel",
       "tags": "Tags"
     },

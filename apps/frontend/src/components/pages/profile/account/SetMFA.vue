@@ -232,9 +232,9 @@ import {
   fetchContactMfa,
   deleteContactMfa,
 } from '@utils/api/contact-mfa';
-import { CONTACT_MFA_TYPE } from '@enums/contact-mfa-type';
+import { CONTACT_MFA_TYPE } from '@beabee/beabee-common';
 import { isRequestError } from '@utils/api/index';
-import { LOGIN_CODES } from '@enums/login-codes';
+import { LOGIN_CODES } from '@beabee/beabee-common';
 
 import AppButton from '@components/button/AppButton.vue';
 import AppModal from '@components/AppModal.vue';

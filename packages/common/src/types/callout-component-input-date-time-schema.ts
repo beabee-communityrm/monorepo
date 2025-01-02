@@ -1,9 +1,9 @@
-import type { CalloutComponentType } from "../data/index.ts";
+import type { CalloutComponentType } from "../data/index.js";
 import type {
   CalloutComponentBaseInputSchema,
   CalloutComponentInputDateTimeRules,
-  TextCase,
-} from "./index.ts";
+  TextCase
+} from "./index.js";
 
 export interface CalloutComponentInputDateTimeSchema
   extends CalloutComponentBaseInputSchema {

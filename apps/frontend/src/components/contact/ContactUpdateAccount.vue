@@ -8,10 +8,20 @@
 
     <ContactBasicFields
       v-model:email="data.emailAddress"
-      v-model:firstName="data.firstName"
-      v-model:lastName="data.lastName"
+      v-model:first-name="data.firstName"
+      v-model:last-name="data.lastName"
       :optional-names="isAdmin"
     />
+
+    <div class="mb-3">
+      <AppInput
+        v-model="data.telephone"
+        :label="t('form.phone')"
+        :info-message="
+          isAdmin ? t('accountPage.phoneInfoAdmin') : t('accountPage.phoneInfo')
+        "
+      />
+    </div>
 
     <template v-if="accountContent.showNewsletterOptIn && isAdmin">
       <AppHeading class="mt-6">
@@ -72,8 +82,8 @@
     <AppAddress
       v-model:line1="data.addressLine1"
       v-model:line2="data.addressLine2"
-      v-model:postCode="data.postCode"
-      v-model:cityOrTown="data.cityOrTown"
+      v-model:post-code="data.postCode"
+      v-model:city-or-town="data.cityOrTown"
       :required="data.deliveryOptIn"
     />
   </AppForm>
@@ -92,6 +102,7 @@ import AppRadioGroup from '../forms/AppRadioGroup.vue';
 import AppForm from '../forms/AppForm.vue';
 import AppNotification from '../AppNotification.vue';
 import AppCheckbox from '../forms/AppCheckbox.vue';
+import AppInput from '@components/forms/AppInput.vue';
 
 const props = defineProps<{
   id: string;
@@ -109,6 +120,7 @@ const data = reactive({
   emailAddress: '',
   firstName: '',
   lastName: '',
+  telephone: '',
   newsletterToggle: false,
   deliveryOptIn: false,
   addressLine1: '',
@@ -125,6 +137,7 @@ watch(
     data.emailAddress = contact.email;
     data.firstName = contact.firstname;
     data.lastName = contact.lastname;
+    data.telephone = contact.profile.telephone;
     data.newsletterToggle = false;
     data.deliveryOptIn = contact.profile.deliveryOptIn;
 
@@ -151,6 +164,7 @@ async function handleSubmit() {
     firstname: data.firstName,
     lastname: data.lastName,
     profile: {
+      telephone: data.telephone,
       // Only update newsletter status if the checkbox was ticked
       ...(newNewsletterStatus && {
         newsletterStatus: newNewsletterStatus,

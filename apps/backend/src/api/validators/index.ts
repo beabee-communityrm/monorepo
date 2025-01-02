@@ -6,4 +6,5 @@ export * from "./IsType.js";
 export * from "./IsUrl.js";
 export * from "./IsValidPayFee.js";
 export * from "./IsVariantsObject.js";
+export * from "./IsVatNumber.js";
 export * from "./MinContributionAmount.js";

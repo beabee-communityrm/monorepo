@@ -1,4 +1,4 @@
 export enum ContributionPeriod {
   Monthly = "monthly",
-  Annually = "annually",
+  Annually = "annually"
 }

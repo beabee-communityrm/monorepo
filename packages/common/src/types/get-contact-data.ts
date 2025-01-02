@@ -1,5 +1,5 @@
-import type { ContributionPeriod } from "../data/index.ts";
-import type { ContactData, RoleType } from "./index.ts";
+import type { ContributionPeriod } from "../data/index.js";
+import type { ContactData, RoleType } from "./index.js";
 
 export interface GetContactData extends ContactData {
   id: string;

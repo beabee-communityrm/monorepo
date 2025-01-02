@@ -1,4 +1,3 @@
-ARG DENO_VERSION=2.1.1
 ARG NODE_VERSION=22-bookworm-slim
 
 ##################################
@@ -11,18 +10,20 @@ FROM node:${NODE_VERSION} AS base
 RUN apt-get update && apt-get install -y tini
 
 # Copy the workspace configuration
-COPY --chown=node:node package.json yarn.lock deno.jsonc deno.lock .yarnrc.yml /opt/
+COPY --chown=node:node package.json yarn.lock .yarnrc.yml /opt/
 COPY --chown=node:node .yarn /opt/.yarn
 
 # Copy dependencies info from packages
 COPY --chown=node:node packages/common/package.json /opt/packages/common/package.json
 COPY --chown=node:node packages/core/package.json /opt/packages/core/package.json
 COPY --chown=node:node packages/docker/package.json /opt/packages/docker/package.json
+COPY --chown=node:node packages/client/package.json /opt/packages/client/package.json
 
 # Copy dependencies info from apps
 COPY --chown=node:node apps/backend/package.json /opt/apps/backend/package.json
 COPY --chown=node:node apps/legacy/package.json /opt/apps/legacy/package.json
 COPY --chown=node:node apps/webhooks/package.json /opt/apps/webhooks/package.json
+COPY --chown=node:node apps/e2e-api-tests/package.json /opt/apps/e2e-api-tests/package.json
 
 # Copy config files with dependencies info
 COPY --chown=node:node packages/prettier-config /opt/packages/prettier-config
@@ -39,23 +40,10 @@ WORKDIR /opt
 ##################################
 FROM base AS builder
 
-# Install dependencies
-RUN apt-get install -y \
-    # for installing Deno
-    curl \
-    # for extracting the Deno archive
-    p7zip-full
-
-# Install Deno
-ENV DENO_INSTALL="/root/.deno"
-RUN curl -fsSL https://deno.land/install.sh | sh -s ${DENO_VERSION}
-ENV PATH="${DENO_INSTALL}/bin:${PATH}"
-
 # Check versions
 RUN node --version
 RUN npm --version
 RUN yarn --version
-RUN deno --version
 
 # Install dependencies
 RUN yarn workspaces focus -A

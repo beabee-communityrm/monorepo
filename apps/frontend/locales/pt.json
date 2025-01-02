@@ -54,6 +54,7 @@
       "title": "Newsletter",
       "unsubscribe": "Suspender inscrição na newsletter"
     },
+    "phoneInfo": "Ao fornecer o seu número de telefone, está a consentir ser contactado por telefone.",
     "savedPassword": "Nova palavra-passe gravada",
     "subTitle": "Os campos obrigatórios estão marcados com asteriscos. Toda a informação enviada por aqui é privada.",
     "title": "Conta"
@@ -209,6 +210,7 @@
       "gallery": "Galeria",
       "map": "Mapa"
     },
+    "youResponded": "Já respondeste a esta chamada ♥",
     "yourResponse": "A tua resposta"
   },
   "calloutAdmin": {},
@@ -733,7 +735,7 @@
       },
       "failed": {
         "backToJoin": "Voltar à página de registo",
-        "message": "Houve um problema ao criar a tua conta e a nossa equipa já foi avisada. Entra em contacto connosco se o problema continuar.",
+        "message": "Houve um problema inesperado ao criar a tua conta. Entra em contacto connosco se o problema continuar, e diz-nos com detalhe o que aconteceu.",
         "title": "Houve aqui um problema."
       }
     },
