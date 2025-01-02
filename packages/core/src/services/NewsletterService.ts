@@ -121,15 +121,26 @@ class NewsletterService {
    * @param newStatus - New newsletter status being set for the contact
    *
    * @remarks
-   * This method specifically handles the case when a contact moves from having no
-   * newsletter subscription (None) to any other status. If they are an active member,
-   * they will be tagged with the activeMemberTag in the newsletter provider.
+   * This method:
+   * 1. Updates the newsletter status in the database if changed
+   * 2. Adds the active member tag if this is the first newsletter signup
    */
   private async handleNewsletterStatusChange(
     contact: Contact,
     oldStatus: NewsletterStatus,
     newStatus: NewsletterStatus
   ): Promise<void> {
+    // Update newsletter status in database if changed
+    if (newStatus !== oldStatus) {
+      if (!contact.profile) {
+        contact.profile = await getRepository(ContactProfile).findOneByOrFail({
+          contactId: contact.id
+        });
+      }
+      contact.profile.newsletterStatus = newStatus;
+      await getRepository(ContactProfile).save(contact.profile);
+    }
+
     // Only add tag if moving from no newsletter to having newsletter
     if (
       oldStatus === NewsletterStatus.None &&
@@ -157,6 +168,7 @@ class NewsletterService {
    * 2. Convert the contact to newsletter format
    * 3. Sync with the newsletter provider
    * 4. Handle any status changes (e.g., adding active member tag)
+   * 5. Update the contact's newsletter status in the database if changed
    */
   async upsertContact(
     contact: Contact,
@@ -178,7 +190,10 @@ class NewsletterService {
     if (nlUpdate) {
       log.info("Upsert contact " + contact.id);
       const newStatus = await this.provider.upsertContact(nlUpdate, oldEmail);
+
+      // Handle newsletter status changes
       await this.handleNewsletterStatusChange(contact, oldStatus, newStatus);
+
       return { oldStatus, newStatus };
     } else {
       log.info("Ignoring contact update for " + contact.id);

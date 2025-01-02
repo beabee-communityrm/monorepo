@@ -192,12 +192,6 @@ class ContactsService {
         updates,
         oldEmail
       );
-      if (res && res.newStatus !== res.oldStatus) {
-        // TODO: this should be done in the newsletter service
-        // This only works because upsertContact always loads the profile!
-        contact.profile.newsletterStatus = res.newStatus;
-        await getRepository(ContactProfile).save(contact.profile);
-      }
     }
 
     await PaymentService.updateContact(contact, updates);
