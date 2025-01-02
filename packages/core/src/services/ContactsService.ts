@@ -238,12 +238,12 @@ class ContactsService {
     if (!wasActive && contact.membership?.isActive) {
       await NewsletterService.addTagToContacts(
         [contact],
-        OptionsService.getText("newsletter-active-member-tag")
+        NewsletterService.ACTIVE_MEMBER_TAG
       );
     } else if (wasActive && !contact.membership.isActive) {
       await NewsletterService.removeTagFromContacts(
         [contact],
-        OptionsService.getText("newsletter-active-member-tag")
+        NewsletterService.ACTIVE_MEMBER_TAG
       );
     }
 
@@ -295,7 +295,7 @@ class ContactsService {
     if (!contact.membership?.isActive) {
       await NewsletterService.removeTagFromContacts(
         [contact],
-        OptionsService.getText("newsletter-active-member-tag")
+        NewsletterService.ACTIVE_MEMBER_TAG
       );
     }
 
@@ -318,19 +318,6 @@ class ContactsService {
 
         if (res) {
           updates.newsletterStatus = res.newStatus;
-
-          // TODO: move this logic to the newsletter service
-          if (
-            res.oldStatus === NewsletterStatus.None &&
-            res.newStatus !== NewsletterStatus.None &&
-            contact.membership?.isActive
-          ) {
-            log.info("First newsletter signup for " + contact.id);
-            await NewsletterService.addTagToContacts(
-              [contact],
-              OptionsService.getText("newsletter-active-member-tag")
-            );
-          }
         }
       } catch (err) {
         log.error(

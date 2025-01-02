@@ -17,6 +17,8 @@ import { Contact, ContactProfile } from "#models/index";
 import config from "#config/config";
 import { getContributionDescription } from "#utils/contact";
 
+import OptionsService from "#services/OptionsService";
+
 const log = mainLogger.child({ app: "newsletter-service" });
 
 function shouldUpdate(updates: ContactNewsletterUpdates): boolean {
@@ -85,6 +87,11 @@ async function getValidNlUpdates(
 }
 
 class NewsletterService {
+  /** Tag used to identify active members in the newsletter system */
+  get ACTIVE_MEMBER_TAG(): string {
+    return OptionsService.getText("newsletter-active-member-tag");
+  }
+
   private readonly provider: NewsletterProvider =
     config.newsletter.provider === "mailchimp"
       ? new MailchimpProvider(config.newsletter.settings)
@@ -106,6 +113,51 @@ class NewsletterService {
     );
   }
 
+  /**
+   * Handles status changes in newsletter subscriptions and manages member tags
+   *
+   * @param contact - The contact whose newsletter status is changing
+   * @param oldStatus - Previous newsletter status of the contact
+   * @param newStatus - New newsletter status being set for the contact
+   *
+   * @remarks
+   * This method specifically handles the case when a contact moves from having no
+   * newsletter subscription (None) to any other status. If they are an active member,
+   * they will be tagged with the activeMemberTag in the newsletter provider.
+   */
+  private async handleNewsletterStatusChange(
+    contact: Contact,
+    oldStatus: NewsletterStatus,
+    newStatus: NewsletterStatus
+  ): Promise<void> {
+    // Only add tag if moving from no newsletter to having newsletter
+    if (
+      oldStatus === NewsletterStatus.None &&
+      newStatus !== NewsletterStatus.None &&
+      contact.membership?.isActive
+    ) {
+      log.info("First newsletter signup for " + contact.id);
+      await this.addTagToContacts([contact], this.ACTIVE_MEMBER_TAG);
+    }
+  }
+
+  /**
+   * Updates or inserts a contact in the newsletter provider and handles status changes
+   *
+   * @param contact - The contact to update or insert
+   * @param updates - Optional updates to apply to the contact before syncing
+   * @param oldEmail - Previous email address if the email is being updated
+   *
+   * @returns Object containing old and new newsletter status if contact was updated,
+   *          undefined if no update was needed
+   *
+   * @remarks
+   * This method will:
+   * 1. Check if updates are needed based on the provided changes
+   * 2. Convert the contact to newsletter format
+   * 3. Sync with the newsletter provider
+   * 4. Handle any status changes (e.g., adding active member tag)
+   */
   async upsertContact(
     contact: Contact,
     updates?: ContactNewsletterUpdates,
@@ -126,6 +178,7 @@ class NewsletterService {
     if (nlUpdate) {
       log.info("Upsert contact " + contact.id);
       const newStatus = await this.provider.upsertContact(nlUpdate, oldEmail);
+      await this.handleNewsletterStatusChange(contact, oldStatus, newStatus);
       return { oldStatus, newStatus };
     } else {
       log.info("Ignoring contact update for " + contact.id);
