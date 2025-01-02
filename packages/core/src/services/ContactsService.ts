@@ -131,11 +131,7 @@ class ContactsService {
       await PaymentService.createContact(contact);
 
       if (opts.sync) {
-        const res = await NewsletterService.upsertContact(contact);
-        if (res && res.newStatus !== res.oldStatus) {
-          contact.profile.newsletterStatus = res.newStatus;
-          await getRepository(ContactProfile).save(contact.profile);
-        }
+        await NewsletterService.upsertContact(contact);
       }
 
       await EmailService.sendTemplateToAdmin("new-member", { contact });
