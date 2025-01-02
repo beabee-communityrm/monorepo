@@ -64,8 +64,7 @@ const lastName = ref('');
 
 const validation = useVuelidate();
 
-// eslint-disable-next-line @typescript-eslint/no-empty-function
-let completePayment = ref(() => {});
+const completePayment = ref(() => {});
 
 // Fetch dynamic theming options, tailwind wraps colours in rgb()
 const style = getComputedStyle(document.body);
