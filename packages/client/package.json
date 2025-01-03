@@ -36,7 +36,7 @@
     "@beabee/prettier-config": "workspace:^",
     "@gjsify/esbuild-plugin-transform-ext": "^0.0.4",
     "@jest/globals": "^29.7.0",
-    "@types/node": "^22.10.2",
+    "@types/jest": "^29.5.14",
     "@types/node-fetch": "2.6.12",
     "dotenv": "^16.4.7",
     "jest": "^29.7.0",
