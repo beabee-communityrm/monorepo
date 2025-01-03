@@ -1,0 +1,49 @@
+# version: "3.4"
+
+# Backend app and legacy frontend
+x-base-app: &base-app
+  build: &base-app-build
+    context: .
+    dockerfile: ./packages/docker/base.dockerfile
+  volumes:
+    - ./apps/backend/built:/opt/apps/backend/built
+    - ./apps/webhooks/dist:/opt/apps/webhooks/dist
+    - ./packages/common/dist:/opt/packages/common/dist
+    - ./packages/core/dist:/opt/packages/core/dist
+  env_file:
+    - .env
+  environment:
+    NODE_ENV: development
+
+services:
+  db:
+    image: postgres:13.9
+    volumes:
+      - db_data_test:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: membership_system
+      POSTGRES_PASSWORD: membership_system
+      POSTGRES_DB: membership_system
+    ports:
+      - 6543:5432
+
+  # API app
+  api_app:
+    <<: *base-app
+    build:
+      <<: *base-app-build
+      target: api_app
+
+  # Application router
+  app_router:
+    build:
+      context: .
+      dockerfile: ./apps/router/Dockerfile
+    environment:
+      LEGACY_APP_COOKIE_DOMAIN: ${BEABEE_COOKIE_DOMAIN}
+      TRUSTED_ORIGINS: ${BEABEE_TRUSTEDORIGINS-}
+    ports:
+      - 3002:80
+
+volumes:
+  db_data_test:
