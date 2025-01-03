@@ -545,6 +545,7 @@ __metadata:
     "@jest/globals": "npm:^29.7.0"
     "@types/node": "npm:^22.10.2"
     "@types/node-fetch": "npm:2.6.12"
+    dotenv: "npm:^16.4.7"
     jest: "npm:^29.7.0"
     jest-environment-jsdom: "npm:^29.7.0"
     jest-environment-node: "npm:^29.7.0"
