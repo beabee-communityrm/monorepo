@@ -1,11 +1,13 @@
-import { CalloutClient } from "@beabee/client";
 import { describe, expect, test } from "@jest/globals";
+import { CalloutClient } from "@beabee/client";
+
+import { API_KEY, HOST, PATH } from "./utils/env.js";
 
 describe("CalloutClient", () => {
   const calloutClient = new CalloutClient({
-    host: "http://localhost:8080",
-    token: "test",
-    path: "/api/1.0"
+    host: HOST,
+    path: PATH,
+    token: API_KEY
   });
 
   test("is a class", () => {
