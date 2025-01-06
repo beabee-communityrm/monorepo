@@ -184,17 +184,17 @@ import {
   MglGeoJsonSource,
   MglCircleLayer,
   MglSymbolLayer,
-  useMap,
   MglMarker,
   MglNavigationControl,
   MglScaleControl,
   MglGeolocationControl,
 } from 'vue-maplibre-gl';
-import type {
-  GeoJSONSource,
-  LngLatLike,
+import {
   Map,
-  MapMouseEvent,
+  type GeoJSONSource,
+  type LngLatLike,
+  type MapMouseEvent,
+  type MapSourceDataEvent,
 } from 'maplibre-gl';
 import type GeoJSON from 'geojson';
 
@@ -248,7 +248,7 @@ const props = defineProps<{
   id: string;
 }>();
 
-const map = useMap();
+const map = ref<Map>();
 const route = useRoute();
 const router = useRouter();
 const { t } = useI18n();
@@ -315,15 +315,11 @@ const responsesCollecton = computed<
 
 // The currently selected response or cluster GeoJSON Feature
 const selectedFeature = computed(() => {
-  if (!route.hash.startsWith(HASH_PREFIX)) return undefined;
-
-  // Map hasn't finished loading yet
-  if (!map.map?.getLayer('clusters')) return;
-  // TODO: go again when it has loaded
+  if (!map.value || !route.hash.startsWith(HASH_PREFIX)) return;
 
   const responseNumber = Number(route.hash.slice(HASH_PREFIX.length));
 
-  return map.map.queryRenderedFeatures({
+  return map.value.queryRenderedFeatures({
     layers: ['unclustered-points', 'clusters'],
     filter: ['in', `<${responseNumber}>`, ['get', 'all_responses']],
   })[0] as unknown as PointFeature | undefined;
@@ -350,11 +346,11 @@ const selectedResponses = computed(() => {
  * Centre the map on the selected feature when it changes
  */
 watch(selectedFeature, (newFeature) => {
-  if (!map.map || !newFeature) return;
+  if (!map.value || !newFeature) return;
 
   introOpen.value = false;
 
-  map.map.easeTo({
+  map.value.easeTo({
     center: newFeature.geometry.coordinates as LngLatLike,
     padding: { left: sidePanelRef.value?.offsetWidth || 0 },
   });
@@ -366,14 +362,14 @@ watch(selectedFeature, (newFeature) => {
  *
  * @param e The click event
  */
-async function handleAddClick(e: { event: MapMouseEvent; map: Map }) {
+async function handleAddClick(event: MapMouseEvent) {
   const mapSchema = props.callout.responseViewSchema?.map;
-  if (!mapSchema) return; // Can't actually happen
+  if (!map.value || !mapSchema) return; // Can't actually happen
 
-  const coords = e.event.lngLat;
-  e.map.getCanvas().style.cursor = '';
+  const coords = event.lngLat;
+  map.value.getCanvas().style.cursor = '';
 
-  e.map.easeTo({
+  map.value.easeTo({
     center: coords,
     padding: { left: sidePanelRef.value?.offsetWidth || 0 },
   });
@@ -409,11 +405,11 @@ async function handleAddClick(e: { event: MapMouseEvent; map: Map }) {
  * @param cluster The cluster
  * @param map The map object
  */
-function handleClusterClick(cluster: ClusterFeature, map: Map) {
+function handleClusterClick(cluster: ClusterFeature) {
   const mapSchema = props.callout.responseViewSchema?.map;
-  if (!mapSchema) return; // Can't actually happen
+  if (!map.value || !mapSchema) return; // Can't actually happen
 
-  const source = map.getSource('responses') as GeoJSONSource;
+  const source = map.value.getSource('responses') as GeoJSONSource;
   source.getClusterExpansionZoom(cluster.properties.cluster_id, (err, zoom) => {
     if (err || zoom == null) return;
 
@@ -425,7 +421,7 @@ function handleClusterClick(cluster: ClusterFeature, map: Map) {
       });
       // Zoom to the cluster
     } else {
-      map.easeTo({
+      map.value!.easeTo({
         center: cluster.geometry.coordinates as LngLatLike,
         zoom: zoom + 1,
       });
@@ -439,21 +435,20 @@ function handleClusterClick(cluster: ClusterFeature, map: Map) {
  *
  * @param e The click event
  */
-function handleClick(e: { event: MapMouseEvent; map: Map }) {
+function handleClick(e: { event: MapMouseEvent }) {
+  if (!map.value) return;
+
   if (isAddMode.value) {
     if (!newResponseAnswers.value) {
-      handleAddClick(e);
+      handleAddClick(e.event);
     }
   } else {
-    // Map not loaded yet
-    if (!e.map.getLayer('clusters')) return;
-
-    const [point] = e.map.queryRenderedFeatures(e.event.point, {
+    const [point] = map.value.queryRenderedFeatures(e.event.point, {
       layers: ['clusters', 'unclustered-points'],
     });
 
     if (point?.layer.id === 'clusters') {
-      handleClusterClick(point as unknown as ClusterFeature, e.map);
+      handleClusterClick(point as unknown as ClusterFeature);
     } else {
       // Open the response or clear the hash
       router.push({
@@ -489,11 +484,26 @@ function handleCancelAddMode() {
 }
 
 /**
- * Handle map load. Add a geocoding control to the map if a key is available
+ * Handle map load. Attach a listener to wait until the source data is loaded.
+ * Add a geocoding control to the map if a key is available
  *
  * @param e The map load event
  */
-function handleLoad(e: { map: Map }) {
+function handleLoad({ map: mapInstance }: { map: Map }) {
+  function handleSourceData(sourceDataEvent: MapSourceDataEvent) {
+    if (
+      sourceDataEvent.sourceId === 'responses' &&
+      sourceDataEvent.isSourceLoaded
+    ) {
+      // Only set the map reference when responses are loaded. This means other
+      // watchers can rely on the map being loaded
+      map.value = mapInstance;
+      mapInstance.off('sourcedata', handleSourceData);
+    }
+  }
+
+  mapInstance.on('sourcedata', handleSourceData);
+
   if (env.maptilerKey) {
     const geocodeControl = new GeocodingControl({
       apiKey: env.maptilerKey,
@@ -519,19 +529,19 @@ function handleLoad(e: { map: Map }) {
         : undefined;
     });
 
-    e.map.addControl(geocodeControl, 'top-left');
+    mapInstance.addControl(geocodeControl, 'top-left');
   }
 }
 
 // Toggle add mode
 watch(isAddMode, (v) => {
-  if (!map.map) return;
+  if (!map.value) return;
   if (v) {
     introOpen.value = false;
-    map.map.getCanvas().style.cursor = 'crosshair';
+    map.value.getCanvas().style.cursor = 'crosshair';
   } else {
     newResponseAnswers.value = undefined;
-    map.map.getCanvas().style.cursor = '';
+    map.value.getCanvas().style.cursor = '';
   }
 });
 

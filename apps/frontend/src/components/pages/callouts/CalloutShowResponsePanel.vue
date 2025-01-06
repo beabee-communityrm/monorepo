@@ -1,6 +1,6 @@
 <template>
   <CalloutSidePanel :show="responses.length > 0" @close="$emit('close')">
-    <div v-if="responses.length > 1" class="flex items-center gap-4 mb-4">
+    <div v-if="responses.length > 1" class="mb-4 flex items-center gap-4">
       <AppButtonGroup>
         <AppButton
           variant="primaryOutlined"
