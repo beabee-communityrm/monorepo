@@ -14,6 +14,7 @@ export * from './breadcrumb-item';
 export * from './content';
 export * from './filter-group';
 export * from './filter-item';
+export * from './geocode-pick-event';
 export * from './item-with-status';
 export * from './locale-input-props';
 export * from './locale-prop';

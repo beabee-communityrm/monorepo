@@ -40,7 +40,10 @@ meta:
           source-id="responses"
           :data="responsesCollecton"
           cluster
-          :cluster-max-zoom="12"
+          :cluster-properties="{
+            all_responses: ['concat', ['get', 'all_responses']],
+            first_response: ['min', ['get', 'first_response']],
+          }"
         >
           <MglCircleLayer
             layer-id="clusters"
@@ -78,9 +81,9 @@ meta:
           />
         </MglGeoJsonSource>
         <MglGeoJsonSource
-          v-if="selectedResponseFeature"
+          v-if="selectedFeature"
           source-id="selected-response"
-          :data="selectedResponseFeature"
+          :data="selectedFeature"
         >
           <MglCircleLayer
             layer-id="selected-response"
@@ -154,7 +157,7 @@ meta:
 
     <CalloutShowResponsePanel
       :callout="callout"
-      :response="selectedResponseFeature?.properties"
+      :responses="selectedResponses"
       @close="router.push({ ...route, hash: '' })"
     />
 
@@ -208,7 +211,6 @@ import { faInfoCircle, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useI18n } from 'vue-i18n';
 import { GeocodingControl } from '@maptiler/geocoding-control/maplibregl';
 import '@maptiler/geocoding-control/style.css';
-import { type GeocodingFeature } from '@maptiler/client';
 
 import CalloutShowResponsePanel from '@components/pages/callouts/CalloutShowResponsePanel.vue';
 import CalloutIntroPanel from '@components/pages/callouts/CalloutIntroPanel.vue';
@@ -234,6 +236,7 @@ import { isEmbed } from '@store';
 
 import { currentLocaleConfig } from '@lib/i18n';
 import CalloutMapHeader from '@components/pages/callouts/CalloutMapHeader.vue';
+import type { GeocodePickEvent } from '@type';
 
 type GetCalloutResponseMapDataWithAddress = GetCalloutResponseMapData & {
   address: CalloutResponseAnswerAddress;
@@ -262,16 +265,6 @@ const geocodeAddress = ref<CalloutResponseAnswerAddress>();
 
 const isAddMode = computed(() => route.hash === '#add');
 
-// Start add response mode
-function handleStartAddMode() {
-  router.push({ ...route, hash: '#add' });
-}
-
-// Cancel add response mode, clearing any state that is left over
-function handleCancelAddMode() {
-  router.push({ ...route, hash: '' });
-}
-
 // Use the address from the new response to show a marker on the map
 const newResponseAddress = computed(() => {
   const addressProp = props.callout.responseViewSchema?.map?.addressProp;
@@ -284,108 +277,98 @@ const newResponseAddress = computed(() => {
   return undefined;
 });
 
+interface PointProps {
+  all_responses: string;
+  first_response: number;
+}
+
+interface ClusterProps extends PointProps {
+  cluster_id: number;
+}
+
+type PointFeature = GeoJSON.Feature<GeoJSON.Point, PointProps>;
+type ClusterFeature = GeoJSON.Feature<GeoJSON.Point, ClusterProps>;
+
 // A GeoJSON FeatureCollection of all the responses
 const responsesCollecton = computed<
-  GeoJSON.FeatureCollection<GeoJSON.Point, GetCalloutResponseMapData>
+  GeoJSON.FeatureCollection<GeoJSON.Point, PointProps>
 >(() => {
-  const mapSchema = props.callout.responseViewSchema?.map;
   return {
     type: 'FeatureCollection',
-    features: mapSchema
-      ? responses.value.map((response) => {
-          const { lat, lng } = response.address.geometry.location;
+    features: responses.value.map((response) => {
+      const { lat, lng } = response.address.geometry.location;
 
-          return {
-            type: 'Feature',
-            geometry: {
-              type: 'Point',
-              coordinates: [lng, lat],
-            },
-            properties: response,
-          };
-        })
-      : [],
+      return {
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: [lng, lat],
+        },
+        properties: {
+          all_responses: `<${response.number}>`,
+          first_response: response.number,
+        },
+      };
+    }),
   };
 });
 
-// A GeoJSON Feature of the currently selected response
-const selectedResponseFeature = computed(() => {
-  if (route.hash.startsWith(HASH_PREFIX)) {
-    const responseNumber = Number(route.hash.slice(HASH_PREFIX.length));
-    return responsesCollecton.value.features.find(
-      (f) => f.properties.number === responseNumber
-    );
-  } else {
-    return undefined;
-  }
+// The currently selected response or cluster GeoJSON Feature
+const selectedFeature = computed(() => {
+  if (!route.hash.startsWith(HASH_PREFIX)) return undefined;
+
+  // Map hasn't finished loading yet
+  if (!map.map?.getLayer('clusters')) return;
+  // TODO: go again when it has loaded
+
+  const responseNumber = Number(route.hash.slice(HASH_PREFIX.length));
+
+  return map.map.queryRenderedFeatures({
+    layers: ['unclustered-points', 'clusters'],
+    filter: ['in', `<${responseNumber}>`, ['get', 'all_responses']],
+  })[0] as unknown as PointFeature | undefined;
 });
 
-// Zoom to a cluster or open a response
-function handleClick(e: { event: MapMouseEvent; map: Map }) {
-  if (isAddMode.value) {
-    if (!newResponseAnswers.value) {
-      handleAddClick(e);
-    }
-    return;
-  }
+const selectedResponses = computed(() => {
+  if (!selectedFeature.value) return [];
 
-  // Not loaded yet
-  if (!e.map.getLayer('clusters')) return;
+  const responseNumbers = selectedFeature.value.properties.all_responses;
 
-  const clusterPoints = e.map.queryRenderedFeatures(e.event.point, {
-    layers: ['clusters'],
-  }) as GeoJSON.Feature<GeoJSON.Point>[];
+  return (
+    responseNumbers
+      // Remove first < and last >
+      .substring(1, responseNumbers.length - 1)
+      // Split each response number
+      .split('><')
+      .map(Number)
+      .map((n) => responses.value.find((r) => r.number === n))
+      .filter((r): r is GetCalloutResponseMapDataWithAddress => !!r)
+  );
+});
 
-  if (clusterPoints.length > 0) {
-    // Zoom to the cluster
-    const firstPoint = clusterPoints[0] as GeoJSON.Feature<GeoJSON.Point>;
-    const source = e.map.getSource('responses') as GeoJSONSource;
+/**
+ * Centre the map on the selected feature when it changes
+ */
+watch(selectedFeature, (newFeature) => {
+  if (!map.map || !newFeature) return;
 
-    source.getClusterExpansionZoom(
-      firstPoint.properties?.cluster_id,
-      (err, zoom) => {
-        if (err || zoom == null) return;
+  introOpen.value = false;
 
-        e.map.easeTo({
-          center: firstPoint.geometry.coordinates as LngLatLike,
-          zoom: zoom + 1,
-        });
-      }
-    );
-  } else {
-    const pointFeatures = e.map.queryRenderedFeatures(e.event.point, {
-      layers: ['unclustered-points'],
-    });
-
-    // Open the response or clear the hash
-    router.push({
-      ...route,
-      hash:
-        pointFeatures.length > 0
-          ? HASH_PREFIX + pointFeatures[0].properties.number
-          : '',
-    });
-  }
-}
-
-// Add a cursor when hovering over a cluster or a point
-function handleMouseOver(e: { event: MapMouseEvent; map: Map }) {
-  if (isAddMode.value) return;
-
-  // Not loaded yet
-  if (!e.map.getLayer('clusters')) return;
-
-  const features = e.map.queryRenderedFeatures(e.event.point, {
-    layers: ['clusters', 'unclustered-points'],
+  map.map.easeTo({
+    center: newFeature.geometry.coordinates as LngLatLike,
+    padding: { left: sidePanelRef.value?.offsetWidth || 0 },
   });
+});
 
-  e.map.getCanvas().style.cursor = features.length > 0 ? 'pointer' : '';
-}
-
-// Geolocate where the user has clicked
+/**
+ * Handle clicking on the map to add a new response. This will set the new response
+ * address and geocode it to get a formatted address
+ *
+ * @param e The click event
+ */
 async function handleAddClick(e: { event: MapMouseEvent; map: Map }) {
   const mapSchema = props.callout.responseViewSchema?.map;
-  if (!mapSchema) return;
+  if (!mapSchema) return; // Can't actually happen
 
   const coords = e.event.lngLat;
   e.map.getCanvas().style.cursor = '';
@@ -420,17 +403,125 @@ async function handleAddClick(e: { event: MapMouseEvent; map: Map }) {
   newResponseAnswers.value = responseAnswers;
 }
 
-// Centre map on selected feature when it changes
-watch(selectedResponseFeature, (newFeature) => {
-  if (!map.map || !newFeature) return;
+/**
+ * Handle clicking on a cluster, either zooming in or opening the first response
+ *
+ * @param cluster The cluster
+ * @param map The map object
+ */
+function handleClusterClick(cluster: ClusterFeature, map: Map) {
+  const mapSchema = props.callout.responseViewSchema?.map;
+  if (!mapSchema) return; // Can't actually happen
 
-  introOpen.value = false;
+  const source = map.getSource('responses') as GeoJSONSource;
+  source.getClusterExpansionZoom(cluster.properties.cluster_id, (err, zoom) => {
+    if (err || zoom == null) return;
 
-  map.map.easeTo({
-    center: newFeature.geometry.coordinates as LngLatLike,
-    padding: { left: sidePanelRef.value?.offsetWidth || 0 },
+    // Maximum zoom level, open first response
+    if (zoom >= mapSchema.maxZoom) {
+      router.push({
+        ...route,
+        hash: HASH_PREFIX + cluster.properties.first_response,
+      });
+      // Zoom to the cluster
+    } else {
+      map.easeTo({
+        center: cluster.geometry.coordinates as LngLatLike,
+        zoom: zoom + 1,
+      });
+    }
   });
-});
+}
+
+/**
+ * Handle a map click. This could happen when clicking on a cluster, a point, or
+ * when adding a new response. This handler delegates accordingly.
+ *
+ * @param e The click event
+ */
+function handleClick(e: { event: MapMouseEvent; map: Map }) {
+  if (isAddMode.value) {
+    if (!newResponseAnswers.value) {
+      handleAddClick(e);
+    }
+  } else {
+    // Map not loaded yet
+    if (!e.map.getLayer('clusters')) return;
+
+    const [point] = e.map.queryRenderedFeatures(e.event.point, {
+      layers: ['clusters', 'unclustered-points'],
+    });
+
+    if (point?.layer.id === 'clusters') {
+      handleClusterClick(point as unknown as ClusterFeature, e.map);
+    } else {
+      // Open the response or clear the hash
+      router.push({
+        ...route,
+        hash: point ? HASH_PREFIX + point.properties.first_response : '',
+      });
+    }
+  }
+}
+
+// Add a cursor when hovering over a cluster or a point
+function handleMouseOver(e: { event: MapMouseEvent; map: Map }) {
+  if (isAddMode.value) return;
+
+  // Map not loaded yet
+  if (!e.map.getLayer('clusters')) return;
+
+  const features = e.map.queryRenderedFeatures(e.event.point, {
+    layers: ['clusters', 'unclustered-points'],
+  });
+
+  e.map.getCanvas().style.cursor = features.length > 0 ? 'pointer' : '';
+}
+
+// Start add response mode
+function handleStartAddMode() {
+  router.push({ ...route, hash: '#add' });
+}
+
+// Cancel add response mode, clearing any state that is left over
+function handleCancelAddMode() {
+  router.push({ ...route, hash: '' });
+}
+
+/**
+ * Handle map load. Add a geocoding control to the map if a key is available
+ *
+ * @param e The map load event
+ */
+function handleLoad(e: { map: Map }) {
+  if (env.maptilerKey) {
+    const geocodeControl = new GeocodingControl({
+      apiKey: env.maptilerKey,
+      language: currentLocaleConfig.value.baseLocale,
+      proximity: [{ type: 'map-center' }],
+      country: props.callout.responseViewSchema?.map?.geocodeCountries,
+    });
+
+    watch(
+      () => currentLocaleConfig.value.baseLocale,
+      (newLocale) => {
+        geocodeControl.setOptions({
+          apiKey: env.maptilerKey, // Incorrect type means we have to pass this again
+          language: newLocale,
+        });
+      }
+    );
+
+    geocodeControl.addEventListener('pick', (e: Event) => {
+      const event = e as GeocodePickEvent;
+      geocodeAddress.value = event.detail
+        ? featureToAddress(event.detail)
+        : undefined;
+    });
+
+    e.map.addControl(geocodeControl, 'top-left');
+  }
+}
 
 // Toggle add mode
 watch(isAddMode, (v) => {
@@ -463,40 +554,6 @@ onMounted(async () => {
     introOpen.value = true;
   }
 });
-
-interface GeocodePickEvent extends Event {
-  detail: GeocodingFeature | null;
-}
-
-function handleLoad(e: { map: Map }) {
-  if (env.maptilerKey) {
-    const geocodeControl = new GeocodingControl({
-      apiKey: env.maptilerKey,
-      language: currentLocaleConfig.value.baseLocale,
-      proximity: [{ type: 'map-center' }],
-      country: props.callout.responseViewSchema?.map?.geocodeCountries,
-    });
-
-    watch(
-      () => currentLocaleConfig.value.baseLocale,
-      (newLocale) => {
-        geocodeControl.setOptions({
-          apiKey: env.maptilerKey, // Incorrect type means we have to pass this again
-          language: newLocale,
-        });
-      }
-    );
-
-    geocodeControl.addEventListener('pick', (e: Event) => {
-      const event = e as GeocodePickEvent;
-      geocodeAddress.value = event.detail
-        ? featureToAddress(event.detail)
-        : undefined;
-    });
-
-    e.map.addControl(geocodeControl, 'top-left');
-  }
-}
 </script>
 
 <style lang="postcss" scoped>
