@@ -332,35 +332,41 @@ const selectedResponseNumber = ref(-1);
 const clusterCount = ref(0);
 
 const selectedResponses = computed(() => {
-  const responseNumbers = selectedFeature.value?.properties.all_responses;
+  const selectedFeatureResponses =
+    selectedFeature.value?.properties.all_responses;
 
-  if (!responseNumbers) return [];
+  if (!selectedFeatureResponses) return [];
 
-  return (
-    responseNumbers
-      // Remove first < and last >
-      .substring(1, responseNumbers.length - 1)
-      // Split each response number
-      .split('><')
-      .map(Number)
-      .map((n) => responses.value.find((r) => r.number === n))
-      .filter((r): r is GetCalloutResponseMapDataWithAddress => !!r)
-  );
+  const responseNumbers = selectedFeatureResponses
+    // Remove first < and last >
+    .substring(1, selectedFeatureResponses.length - 1)
+    // Split each response number
+    .split('><')
+    .map(Number);
+
+  return responses.value.filter((r) => responseNumbers.includes(r.number));
 });
 
-/**
- * Centre the map on the selected response when it changes
- */
-watch(selectedResponseNumber, () => {
-  if (!map.value || !selectedFeature.value) return;
+function findSelectedFeature(responseNo: number) {
+  if (!map.value) return;
 
-  introOpen.value = false;
+  const feature = map.value.queryRenderedFeatures({
+    layers: ['unclustered-points', 'clusters'],
+    filter: ['in', `<${responseNo}>`, ['get', 'all_responses']],
+  })[0] as unknown as PointFeature | undefined;
 
-  map.value.easeTo({
-    center: selectedFeature.value.geometry.coordinates as LngLatLike,
-    padding: { left: sidePanelRef.value?.offsetWidth || 0 },
-  });
-});
+  if (
+    // If feature wasn't found, it probably just isn't in the map's viewport,
+    // don't clear the selected feature
+    feature &&
+    // Only update selectedFeature if it has changed, as queryRenderedFeature
+    // doesn't have stable object references
+    feature.properties.all_responses !==
+      selectedFeature.value?.properties.all_responses
+  ) {
+    selectedFeature.value = feature;
+  }
+}
 
 /**
  * Whenever the hash or cluster count changes check. The selected feature can
@@ -368,38 +374,56 @@ watch(selectedResponseNumber, () => {
  * the response is part of different clusters
  * feature
  */
-watchEffect(() => {
-  if (!map.value || !route.hash.startsWith(HASH_PREFIX)) {
-    selectedFeature.value = undefined;
-    selectedResponseNumber.value = -1;
-    return;
+watch(
+  [clusterCount, toRef(route, 'hash')],
+  () => {
+    // This can't be a computed because we need to also compute the value of selectedFeature
+    // in the same event loop, so they are both available to the next watcher
+    selectedResponseNumber.value = route.hash.startsWith(HASH_PREFIX)
+      ? Number(route.hash.slice(HASH_PREFIX.length))
+      : -1;
+
+    if (selectedResponseNumber.value === -1) {
+      selectedFeature.value = undefined;
+    } else {
+      findSelectedFeature(selectedResponseNumber.value);
+    }
+  },
+  { immediate: true }
+);
+
+/**
+ * Centre the map on the selected response when it changes
+ */
+watch(selectedResponseNumber, (responseNo) => {
+  if (!map.value) return;
+
+  introOpen.value = false;
+
+  let center: LngLatLike | undefined;
+
+  if (selectedFeature.value) {
+    center = selectedFeature.value.geometry.coordinates as LngLatLike;
+  } else {
+    const response = responses.value.find((r) => r.number === responseNo);
+    // It could be that the response isn't in a visible cluster, so hasn't been
+    // found by queryRenderedFeatures. If this is the case then move to
+    // where the response is, then look again for the response once it's in view
+    if (response) {
+      center = [
+        response.address.geometry.location.lng,
+        response.address.geometry.location.lat,
+      ];
+      map.value.once('moveend', () => findSelectedFeature(responseNo));
+    }
   }
 
-  // We need to trigger this watcher when the cluster count changes as this
-  // indicates that the map has been zoomed in or out, but we don't actually
-  // need the value
-  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-  clusterCount.value;
-
-  const responseNumber = Number(route.hash.slice(HASH_PREFIX.length));
-
-  const feature = map.value.queryRenderedFeatures({
-    layers: ['unclustered-points', 'clusters'],
-    filter: ['in', `<${responseNumber}>`, ['get', 'all_responses']],
-  })[0] as unknown as PointFeature | undefined;
-
-  // Only update selectedFeature if it has changed, as queryRenderedFeature
-  // doesn't have stable object references
-  if (
-    feature?.properties.all_responses !==
-    selectedFeature.value?.properties.all_responses
-  ) {
-    selectedFeature.value = feature;
+  if (center) {
+    map.value.easeTo({
+      center,
+      padding: { left: sidePanelRef.value?.offsetWidth || 0 },
+    });
   }
-
-  // This should really be a computed property on the route hash, but we need to
-  // respond to it after the selected feature has been updated
-  selectedResponseNumber.value = responseNumber;
 });
 
 /**
