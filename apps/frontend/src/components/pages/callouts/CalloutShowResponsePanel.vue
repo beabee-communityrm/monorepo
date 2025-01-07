@@ -3,20 +3,29 @@
     <div v-if="responses.length > 1" class="mb-4 flex items-center gap-4">
       <AppButtonGroup>
         <AppButton
-          variant="primaryOutlined"
+          variant="link"
           :icon="faArrowLeft"
           :disabled="responseIndex === 0"
           @click="changeResponse(-1)"
         />
         <AppButton
-          variant="primaryOutlined"
+          variant="link"
           :icon="faArrowRight"
           :disabled="responseIndex === responses.length - 1"
           @click="changeResponse(1)"
         />
       </AppButtonGroup>
-      <span> Response {{ responseIndex + 1 }} of {{ responses.length }} </span>
+
+      <i18n-t keypath="callout.entryOf" tag="span">
+        <template #no>
+          <b>{{ n(responseIndex + 1) }}</b>
+        </template>
+        <template #total>
+          <b>{{ n(responses.length) }}</b>
+        </template>
+      </i18n-t>
     </div>
+
     <CalloutResponse :callout="callout" :response="responses[responseIndex]" />
   </CalloutSidePanel>
 </template>
@@ -33,6 +42,7 @@ import {
 import CalloutResponse from './CalloutResponse.vue';
 import AppButton from '@components/button/AppButton.vue';
 import AppButtonGroup from '@components/button/AppButtonGroup.vue';
+import { useI18n } from 'vue-i18n';
 
 const emit = defineEmits<{
   (e: 'close'): void;
@@ -42,6 +52,8 @@ const props = defineProps<{
   callout: GetCalloutDataWith<'form' | 'responseViewSchema'>;
   responses: GetCalloutResponseMapData[];
 }>();
+
+const { n } = useI18n();
 
 const responseIndex = ref(0);
 
