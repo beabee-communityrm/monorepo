@@ -1,5 +1,3 @@
-import * as tailwindPlugin from 'prettier-plugin-tailwindcss';
-
 // Base configuration that can be extended
 export const baseConfig = {
     trailingComma: 'none',
@@ -16,5 +14,5 @@ export const frontendConfig = {
     ...baseConfig,
     singleQuote: true,
     trailingComma: 'es5',
-    plugins: [tailwindPlugin]
+    plugins: ['prettier-plugin-tailwindcss']
 };
