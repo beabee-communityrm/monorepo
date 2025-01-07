@@ -31,6 +31,7 @@ meta:
         @map:load="handleLoad"
         @map:click="handleClick"
         @map:mousemove="handleMouseOver"
+        @map:zoom="handleZoom"
       >
         <MglNavigationControl />
         <MglScaleControl />
@@ -158,7 +159,11 @@ meta:
     <CalloutShowResponsePanel
       :callout="callout"
       :responses="selectedResponses"
+      :current-response-number="selectedResponseNumber"
       @close="router.push({ ...route, hash: '' })"
+      @update:current-response-number="
+        router.push({ ...route, hash: HASH_PREFIX + $event })
+      "
     />
 
     <CalloutIntroPanel
@@ -177,7 +182,15 @@ meta:
 </template>
 
 <script lang="ts" setup>
-import { computed, onBeforeMount, onMounted, ref, toRef, watch } from 'vue';
+import {
+  computed,
+  onBeforeMount,
+  onMounted,
+  ref,
+  toRef,
+  watch,
+  watchEffect,
+} from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import {
   MglMap,
@@ -314,21 +327,14 @@ const responsesCollecton = computed<
 });
 
 // The currently selected response or cluster GeoJSON Feature
-const selectedFeature = computed(() => {
-  if (!map.value || !route.hash.startsWith(HASH_PREFIX)) return;
-
-  const responseNumber = Number(route.hash.slice(HASH_PREFIX.length));
-
-  return map.value.queryRenderedFeatures({
-    layers: ['unclustered-points', 'clusters'],
-    filter: ['in', `<${responseNumber}>`, ['get', 'all_responses']],
-  })[0] as unknown as PointFeature | undefined;
-});
+const selectedFeature = ref<PointFeature>();
+const selectedResponseNumber = ref(-1);
+const clusterCount = ref(0);
 
 const selectedResponses = computed(() => {
-  if (!selectedFeature.value) return [];
+  const responseNumbers = selectedFeature.value?.properties.all_responses;
 
-  const responseNumbers = selectedFeature.value.properties.all_responses;
+  if (!responseNumbers) return [];
 
   return (
     responseNumbers
@@ -343,18 +349,70 @@ const selectedResponses = computed(() => {
 });
 
 /**
- * Centre the map on the selected feature when it changes
+ * Centre the map on the selected response when it changes
  */
-watch(selectedFeature, (newFeature) => {
-  if (!map.value || !newFeature) return;
+watch(selectedResponseNumber, () => {
+  if (!map.value || !selectedFeature.value) return;
 
   introOpen.value = false;
 
   map.value.easeTo({
-    center: newFeature.geometry.coordinates as LngLatLike,
+    center: selectedFeature.value.geometry.coordinates as LngLatLike,
     padding: { left: sidePanelRef.value?.offsetWidth || 0 },
   });
 });
+
+/**
+ * Whenever the hash or cluster count changes check. The selected feature can
+ * change even if the response number doesn't, because at different zooms levels
+ * the response is part of different clusters
+ * feature
+ */
+watchEffect(() => {
+  if (!map.value || !route.hash.startsWith(HASH_PREFIX)) {
+    selectedFeature.value = undefined;
+    selectedResponseNumber.value = -1;
+    return;
+  }
+
+  // We need to trigger this watcher when the cluster count changes as this
+  // indicates that the map has been zoomed in or out, but we don't actually
+  // need the value
+  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+  clusterCount.value;
+
+  const responseNumber = Number(route.hash.slice(HASH_PREFIX.length));
+
+  const feature = map.value.queryRenderedFeatures({
+    layers: ['unclustered-points', 'clusters'],
+    filter: ['in', `<${responseNumber}>`, ['get', 'all_responses']],
+  })[0] as unknown as PointFeature | undefined;
+
+  // Only update selectedFeature if it has changed, as queryRenderedFeature
+  // doesn't have stable object references
+  if (
+    feature?.properties.all_responses !==
+    selectedFeature.value?.properties.all_responses
+  ) {
+    selectedFeature.value = feature;
+  }
+
+  // This should really be a computed property on the route hash, but we need to
+  // respond to it after the selected feature has been updated
+  selectedResponseNumber.value = responseNumber;
+});
+
+/**
+ * Handle zoom events. This just keeps track of the number of clusters on the
+ * map so we can identify when the clusters are reclustered
+ * https://stackoverflow.com/questions/58768283/detect-when-map-reclusters-features
+ */
+function handleZoom() {
+  if (!map.value) return;
+
+  const clusters = map.value.queryRenderedFeatures({ layers: ['clusters'] });
+  clusterCount.value = clusters.length;
+}
 
 /**
  * Handle clicking on the map to add a new response. This will set the new response
@@ -473,16 +531,6 @@ function handleMouseOver(e: { event: MapMouseEvent; map: Map }) {
   e.map.getCanvas().style.cursor = features.length > 0 ? 'pointer' : '';
 }
 
-// Start add response mode
-function handleStartAddMode() {
-  router.push({ ...route, hash: '#add' });
-}
-
-// Cancel add response mode, clearing any state that is left over
-function handleCancelAddMode() {
-  router.push({ ...route, hash: '' });
-}
-
 /**
  * Handle map load. Attach a listener to wait until the source data is loaded.
  * Add a geocoding control to the map if a key is available
@@ -531,6 +579,16 @@ function handleLoad({ map: mapInstance }: { map: Map }) {
 
     mapInstance.addControl(geocodeControl, 'top-left');
   }
+}
+
+// Start add response mode
+function handleStartAddMode() {
+  router.push({ ...route, hash: '#add' });
+}
+
+// Cancel add response mode, clearing any state that is left over
+function handleCancelAddMode() {
+  router.push({ ...route, hash: '' });
 }
 
 // Toggle add mode

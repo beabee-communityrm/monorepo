@@ -32,7 +32,7 @@
 
 <script lang="ts" setup>
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import { ref, watch } from 'vue';
+import { computed } from 'vue';
 
 import CalloutSidePanel from './CalloutSidePanel.vue';
 import {
@@ -44,31 +44,24 @@ import AppButton from '@components/button/AppButton.vue';
 import AppButtonGroup from '@components/button/AppButtonGroup.vue';
 import { useI18n } from 'vue-i18n';
 
-const emit = defineEmits<{
-  (e: 'close'): void;
-  (e: 'change', responseNumber: number): void;
-}>();
+defineEmits<{ (e: 'close'): void }>();
 const props = defineProps<{
   callout: GetCalloutDataWith<'form' | 'responseViewSchema'>;
   responses: GetCalloutResponseMapData[];
 }>();
 
+const currentResponseNumber = defineModel<number>('currentResponseNumber', {
+  default: 0,
+});
+
 const { n } = useI18n();
 
-const responseIndex = ref(0);
+const responseIndex = computed(() =>
+  props.responses.findIndex((r) => r.number === currentResponseNumber.value)
+);
 
 function changeResponse(inc: number) {
-  responseIndex.value = Math.max(
-    0,
-    Math.min(props.responses.length - 1, responseIndex.value + inc)
-  );
-  emit('change', props.responses[responseIndex.value].number);
+  const newIndex = responseIndex.value + inc;
+  currentResponseNumber.value = props.responses[newIndex].number;
 }
-
-watch(
-  () => props.responses,
-  () => {
-    responseIndex.value = 0;
-  }
-);
 </script>
