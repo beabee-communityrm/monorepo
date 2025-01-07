@@ -182,7 +182,15 @@ meta:
 </template>
 
 <script lang="ts" setup>
-import { computed, onBeforeMount, onMounted, ref, toRef, watch } from 'vue';
+import {
+  computed,
+  onBeforeMount,
+  onMounted,
+  ref,
+  toRef,
+  watch,
+  watchEffect,
+} from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import {
   MglMap,
@@ -360,23 +368,25 @@ function findSelectedFeature(responseNo: number) {
  * the response is part of different clusters
  * feature
  */
-watch(
-  [clusterCount, toRef(route, 'hash')],
-  () => {
-    // This can't be a computed because we need to also compute the value of selectedFeature
-    // in the same event loop, so they are both available to the next watcher
-    selectedResponseNumber.value = route.hash.startsWith(HASH_PREFIX)
-      ? Number(route.hash.slice(HASH_PREFIX.length))
-      : -1;
+watchEffect(() => {
+  if (!map.value) return;
 
-    if (selectedResponseNumber.value === -1) {
-      selectedFeature.value = undefined;
-    } else {
-      findSelectedFeature(selectedResponseNumber.value);
-    }
-  },
-  { immediate: true }
-);
+  // Force cluster count to be a dependency
+  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+  clusterCount.value;
+
+  // This can't be a computed because we need to also compute the value of selectedFeature
+  // in the same event loop, so they are both available to the next watcher
+  selectedResponseNumber.value = route.hash.startsWith(HASH_PREFIX)
+    ? Number(route.hash.slice(HASH_PREFIX.length))
+    : -1;
+
+  if (selectedResponseNumber.value === -1) {
+    selectedFeature.value = undefined;
+  } else {
+    findSelectedFeature(selectedResponseNumber.value);
+  }
+});
 
 /**
  * Centre the map on the selected response
