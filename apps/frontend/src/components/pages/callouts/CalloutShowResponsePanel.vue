@@ -1,5 +1,5 @@
 <template>
-  <CalloutSidePanel :show="responses.length > 0" @close="$emit('close')">
+  <CalloutSidePanel :show="!!currentResponse" @close="$emit('close')">
     <div v-if="responses.length > 1" class="mb-4 flex items-center gap-4">
       <AppButtonGroup>
         <AppButton
@@ -26,7 +26,11 @@
       </i18n-t>
     </div>
 
-    <CalloutResponse :callout="callout" :response="responses[responseIndex]" />
+    <CalloutResponse
+      v-if="currentResponse"
+      :callout="callout"
+      :response="currentResponse"
+    />
   </CalloutSidePanel>
 </template>
 
@@ -59,6 +63,7 @@ const { n } = useI18n();
 const responseIndex = computed(() =>
   props.responses.findIndex((r) => r.number === currentResponseNumber.value)
 );
+const currentResponse = computed(() => props.responses[responseIndex.value]);
 
 function changeResponse(inc: number) {
   const newIndex = responseIndex.value + inc;
