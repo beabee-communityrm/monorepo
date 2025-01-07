@@ -335,6 +335,7 @@
     "confirmHuman": "Bitte bestätige, dass du ein Mensch bist",
     "contactDetails": "Kontaktdaten",
     "ended": "Dieser Callout ist seit dem {date} beendet.",
+    "entryOf": "Eintrag {no} von {total}",
     "form": {
       "email": "Deine E-Mail-Adresse",
       "guestFieldsMissing": "Bitte gib' uns Deine Kontaktdaten. ",
