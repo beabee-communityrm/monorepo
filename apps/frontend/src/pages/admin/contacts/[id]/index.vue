@@ -111,16 +111,16 @@ meta:
       <AppForm
         :button-text="t('form.saveChanges')"
         :success-text="t('contacts.data.annotationsCopy')"
-        @submit.prevent="handleFormSubmit"
+        @submit.prevent="handleUpdateAbout"
       >
         <div class="mb-4">
           <AppInput
-            v-model="contactAnnotations.description"
+            v-model="contactAbout.description"
             :label="t('contacts.data.description')"
           />
         </div>
         <RichTextEditor
-          v-model="contactAnnotations.notes"
+          v-model="contactAbout.notes"
           :label="t('contacts.data.notes')"
           class="mb-4"
         />
@@ -320,10 +320,7 @@ const contact = ref<GetContactDataWith<
   | GetContactWith.Tags
 > | null>(null);
 const contactTags = ref<string[]>([]);
-const contactAnnotations = reactive({
-  notes: '',
-  description: '',
-});
+const contactAbout = reactive({ notes: '', description: '' });
 const securityLink = ref('');
 const changingRoles = ref(false);
 
@@ -370,10 +367,8 @@ const onDeleteMfaError = () => {
 const joinSurvey = ref<GetCalloutDataWith<'form'>>();
 const joinSurveyResponse = ref<GetCalloutResponseDataWith<'answers'>>();
 
-async function handleFormSubmit() {
-  await updateContact(props.contact.id, {
-    profile: { ...contactAnnotations },
-  });
+async function handleUpdateAbout() {
+  await updateContact(props.contact.id, { profile: contactAbout });
 }
 
 async function handleSecurityAction() {
@@ -440,8 +435,8 @@ onBeforeMount(async () => {
     GetContactWith.Roles,
     GetContactWith.Tags,
   ]);
-  contactAnnotations.notes = contact.value.profile.notes || '';
-  contactAnnotations.description = contact.value.profile.description || '';
+  contactAbout.notes = contact.value.profile.notes || '';
+  contactAbout.description = contact.value.profile.description || '';
 
   contactTags.value = (await fetchContent('contacts')).tags;
 
