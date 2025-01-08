@@ -323,7 +323,6 @@ const contactTags = ref<string[]>([]);
 const contactAnnotations = reactive({
   notes: '',
   description: '',
-  tags: [] as string[],
 });
 const securityLink = ref('');
 const changingRoles = ref(false);
@@ -443,7 +442,6 @@ onBeforeMount(async () => {
   ]);
   contactAnnotations.notes = contact.value.profile.notes || '';
   contactAnnotations.description = contact.value.profile.description || '';
-  contactAnnotations.tags = contact.value.tags.map((tag) => tag.name);
 
   contactTags.value = (await fetchContent('contacts')).tags;
 
