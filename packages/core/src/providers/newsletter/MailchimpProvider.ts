@@ -35,6 +35,12 @@ export default class MailchimpProvider implements NewsletterProvider {
     this.listId = settings.listId;
   }
 
+  /**
+   * Add the given tag to the list of email addresses
+   *
+   * @param emails List of email addresses
+   * @param tag The tag to add
+   */
   async addTagToContacts(emails: string[], tag: string): Promise<void> {
     const operations: MCOperation[] = emails.map((email) => ({
       path: getMCMemberUrl(this.listId, email) + "/tags",
@@ -47,6 +53,12 @@ export default class MailchimpProvider implements NewsletterProvider {
     await this.api.dispatchOperations(operations);
   }
 
+  /**
+   * Remove the given tag from the list of email addresses
+   *
+   * @param emails List of email addresses
+   * @param tag The tag to remove
+   */
   async removeTagFromContacts(emails: string[], tag: string): Promise<void> {
     const operations: MCOperation[] = emails.map((email) => ({
       path: getMCMemberUrl(this.listId, email) + "/tags",
@@ -59,6 +71,12 @@ export default class MailchimpProvider implements NewsletterProvider {
     await this.api.dispatchOperations(operations);
   }
 
+  /**
+   * Get the newsletter contact with the given email address
+   *
+   * @param email The email address of the contact
+   * @returns The contact or undefined if not found
+   */
   async getContact(email: string): Promise<NewsletterContact | undefined> {
     try {
       const resp = await this.api.instance.get(
@@ -68,6 +86,11 @@ export default class MailchimpProvider implements NewsletterProvider {
     } catch (err) {}
   }
 
+  /**
+   * Get all the contacts in the newsletter list
+   *
+   * @returns The list of newsletter contacts
+   */
   async getContacts(): Promise<NewsletterContact[]> {
     const operation: MCOperation = {
       path: `lists/${this.listId}/members`,
@@ -84,9 +107,18 @@ export default class MailchimpProvider implements NewsletterProvider {
     return responses.flatMap((r) => r.members).map(mcMemberToNlContact);
   }
 
-  private async upsertMemberOrTryPending(
-    member: UpdateNewsletterContact,
-    oldEmail = member.email
+  /**
+   * Upsert a newsletter contact to Mailchimp. If the contact has been unsubscribed or cleaned
+   * then it get be automatically re-subscribed. In this case we attempt to set the status to
+   * pending which will trigger a double opt-in email.
+   *
+   * @param contact The newsletter contact to upsert
+   * @param oldEmail The old email address of the contact, if it has changed
+   * @returns The updated newsletter contact
+   */
+  private async upsertContactOrTryPending(
+    contact: UpdateNewsletterContact,
+    oldEmail = contact.email
   ): Promise<NewsletterContact> {
     const baseReq = {
       method: "PUT",
@@ -94,7 +126,7 @@ export default class MailchimpProvider implements NewsletterProvider {
       params: { skip_merge_validation: true }
     };
 
-    const mcMember = nlContactToMCMember(member);
+    const mcMember = nlContactToMCMember(contact);
 
     const resp = await this.api.instance.request<any, UpsertMCMemberResponse>({
       ...baseReq,
@@ -104,18 +136,18 @@ export default class MailchimpProvider implements NewsletterProvider {
     });
 
     if (resp.status === 200) {
-      log.info("Updated member " + member.email);
+      log.info("Updated member " + contact.email);
       return mcMemberToNlContact(resp.data);
 
       // Try to put the user into pending state if they're in a compliance state
       // This can happen if they previously unsubscribed or were cleaned
     } else if (
-      member.status === NewsletterStatus.Subscribed &&
+      contact.status === NewsletterStatus.Subscribed &&
       resp.status === 400 &&
       resp.data?.title === "Member In Compliance State"
     ) {
       log.info(
-        `Member ${member.email} had status ${resp.data.title}, trying to re-add them`
+        `Member ${contact.email} had status ${resp.data.title}, trying to re-add them`
       );
       const resp2 = await this.api.instance.request<
         any,
@@ -130,34 +162,44 @@ export default class MailchimpProvider implements NewsletterProvider {
       }
     }
 
-    throw new CantUpdateMCMember(member.email, resp.status, resp.data);
+    throw new CantUpdateMCMember(contact.email, resp.status, resp.data);
   }
 
+  /**
+   * Upsert a contact and synchronise their active member status
+   *
+   * @param contact The newsletter contact to upsert
+   * @param oldEmail The old email address of the contact, if it has changed
+   * @returns The newsletter contact's new newsletter status
+   */
   async upsertContact(
-    member: UpdateNewsletterContact,
-    oldEmail = member.email
+    contact: UpdateNewsletterContact,
+    oldEmail = contact.email
   ): Promise<NewsletterStatus> {
     try {
-      const updatedMember = await this.upsertMemberOrTryPending(
-        member,
+      const updatedContact = await this.upsertContactOrTryPending(
+        contact,
         oldEmail
       );
 
-      if (updatedMember.isActiveMember !== member.isActiveMember) {
-        log.info("Updating active member tag for " + member.email);
-        const tagOp = member.isActiveMember
+      // Add/remove the active member tag if the statuses don't match
+      if (updatedContact.isActiveMember !== contact.isActiveMember) {
+        log.info("Updating active member tag for " + contact.email);
+        const tagOp = contact.isActiveMember
           ? "addTagToContacts"
           : "removeTagFromContacts";
         await this[tagOp](
-          [updatedMember.email],
+          [updatedContact.email],
           OptionsService.getText("newsletter-active-member-tag")
         );
       }
 
-      return updatedMember.status;
+      // TODO: Update newsletter status?
+
+      return updatedContact.status;
     } catch (err) {
       if (err instanceof CantUpdateMCMember) {
-        log.error("Couldn't update member " + member.email, err);
+        log.error("Couldn't update newsletter contact " + contact.email, err);
         return NewsletterStatus.None;
       } else {
         throw err;
@@ -165,6 +207,13 @@ export default class MailchimpProvider implements NewsletterProvider {
     }
   }
 
+  /**
+   * Update a contact with the given fields. This will overwrite any existing fields
+   * but will not remove any fields that are not provided.
+   *
+   * @param email The email address of the contact
+   * @param fields The fields to update
+   */
   async updateContactFields(
     email: string,
     fields: Record<string, string>
@@ -180,6 +229,13 @@ export default class MailchimpProvider implements NewsletterProvider {
     ]);
   }
 
+  /**
+   * Upserts the list of contacts to the newsletter provider. This method does
+   * not give any guarantees about the active member tag.
+   *
+   * @deprecated Only used by legacy app newsletter sync, do not use.
+   * @param nlContacts
+   */
   async upsertContacts(nlContacts: UpdateNewsletterContact[]): Promise<void> {
     const operations: MCOperation[] = nlContacts.map((contact) => {
       const mcMember = nlContactToMCMember(contact);
@@ -195,6 +251,11 @@ export default class MailchimpProvider implements NewsletterProvider {
     await this.api.dispatchOperations(operations);
   }
 
+  /**
+   * Archive the list of contact emails, ignoring any not found errors
+   *
+   * @param emails The list of email addresses to archive
+   */
   async archiveContacts(emails: string[]): Promise<void> {
     const operations: MCOperation[] = emails.map((email) => ({
       path: getMCMemberUrl(this.listId, email),
@@ -208,6 +269,12 @@ export default class MailchimpProvider implements NewsletterProvider {
     );
   }
 
+  /**
+   * Permanently delete the contacts with the given email addresses, ignoring
+   * any not found errors
+   *
+   * @param emails The list of email addresses to delete
+   */
   async permanentlyDeleteContacts(emails: string[]): Promise<void> {
     const operations: MCOperation[] = emails.map((email) => ({
       path: getMCMemberUrl(this.listId, email) + "/actions/permanently-delete",
