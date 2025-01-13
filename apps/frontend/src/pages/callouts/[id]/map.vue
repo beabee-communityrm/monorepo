@@ -331,7 +331,8 @@ const selectedResponses = computed(() => {
     .substring(1, selectedFeatureResponses.length - 1)
     // Split each response number
     .split('><')
-    .map(Number);
+    .map(Number)
+    .sort();
 
   return responses.value.filter((r) => responseNumbers.includes(r.number));
 });
