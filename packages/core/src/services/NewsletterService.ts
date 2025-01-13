@@ -97,6 +97,12 @@ class NewsletterService {
       ? new MailchimpProvider(config.newsletter.settings)
       : new NoneProvider();
 
+  /**
+   * Add the given tag to the list of contacts
+   *
+   * @param contacts List of contacts
+   * @param tag The tag to add
+   */
   async addTagToContacts(contacts: Contact[], tag: string): Promise<void> {
     log.info(`Add tag ${tag} to ${contacts.length} contacts`);
     await this.provider.addTagToContacts(
@@ -105,6 +111,13 @@ class NewsletterService {
     );
   }
 
+  /**
+   * Remove the given tag from the list of contacts. Any contacts that don't
+   * have the tag will be ignored.
+   *
+   * @param contacts  List of contacts
+   * @param tag The tag to remove
+   */
   async removeTagFromContacts(contacts: Contact[], tag: string): Promise<void> {
     log.info(`Remove tag ${tag} from ${contacts.length} contacts`);
     await this.provider.removeTagFromContacts(
@@ -200,11 +213,28 @@ class NewsletterService {
     }
   }
 
+  /**
+   * Upserts the list of contacts to the newsletter provider. This method is
+   * used for bulk operations but unlike upsertContact does not give any
+   * guarantees about the active member tag.
+   *
+   * @deprecated Only used by legacy app newsletter sync, do not use.
+   * @param contacts
+   */
   async upsertContacts(contacts: Contact[]): Promise<void> {
     log.info(`Upsert ${contacts.length} contacts`);
     await this.provider.upsertContacts(await getValidNlUpdates(contacts));
   }
 
+  /**
+   * Update the merge fields of a contact in the newsletter provider. This
+   * method merges the field updates with the contact's current fields, so it
+   * overwrites any existing fields with the new values, but does not remove any
+   * fields that are not included in the update.
+   *
+   * @param contact The contact to update
+   * @param fields The fields to set
+   */
   async updateContactFields(
     contact: Contact,
     fields: Record<string, string>
@@ -218,6 +248,11 @@ class NewsletterService {
     }
   }
 
+  /**
+   * Archive a list of contacts in the newsletter provider
+   *
+   * @param contacts The contacts to archive
+   */
   async archiveContacts(contacts: Contact[]): Promise<void> {
     log.info(`Archive ${contacts.length} contacts`);
     await this.provider.archiveContacts(
@@ -237,12 +272,23 @@ class NewsletterService {
     );
   }
 
+  /**
+   * Get a single newsletter contact from the newsletter provider
+   *
+   * @param email The contact's email address
+   * @returns The newsletter contact
+   */
   async getNewsletterContact(
     email: string
   ): Promise<NewsletterContact | undefined> {
     return await this.provider.getContact(email);
   }
 
+  /**
+   * Get all contacts from the newsletter provider
+   *
+   * @returns List of newsletter contacts
+   */
   async getNewsletterContacts(): Promise<NewsletterContact[]> {
     return await this.provider.getContacts();
   }
