@@ -4,11 +4,15 @@ export default {
   testEnvironment: "node",
   testMatch: ["<rootDir>/test/node/**/*.test.ts"],
   extensionsToTreatAsEsm: [".ts"],
+  moduleNameMapper: {
+    "^(\\.{1,2}/.*)\\.js$": "$1"
+  },
   transform: {
     "^.+\\.tsx?$": [
       "ts-jest",
       {
-        useESM: true
+        useESM: true,
+        tsconfig: "./tsconfig.build.json"
       }
     ]
   }
