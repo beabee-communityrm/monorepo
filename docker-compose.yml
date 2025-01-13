@@ -2,16 +2,6 @@
 
 # Backend app and legacy frontend
 x-base-app: &base-app
-  build: &base-app-build
-    context: .
-    dockerfile: ./packages/docker/base.dockerfile
-  volumes:
-    - ./apps/backend/built:/opt/apps/backend/built
-    - ./apps/webhooks/dist:/opt/apps/webhooks/dist
-    - ./packages/common/dist:/opt/packages/common/dist
-    - ./packages/core/dist:/opt/packages/core/dist
-    # Allow migrations to be written out from the container
-    - ./packages/core/src/migrations:/opt/packages/core/src/migrations
   env_file:
     - .env
   environment:
@@ -38,28 +28,43 @@ services:
   app:
     <<: *base-app
     build:
-      <<: *base-app-build
+      context: .
+      dockerfile: ./packages/docker/base.dockerfile
       target: legacy_app
+    volumes:
+      - ./packages:/opt/packages
+      - ./apps/legacy/dist:/opt/apps/legacy/dist
 
   # API app
   api_app:
     <<: *base-app
     build:
-      <<: *base-app-build
+      context: .
+      dockerfile: ./packages/docker/base.dockerfile
       target: api_app
+    volumes:
+      - ./packages:/opt/packages
+      - ./apps/backend/built:/opt/apps/backend/built
+      # Allow migrations to be written out from the container
+      - ./packages/core/src/migrations:/opt/packages/core/src/migrations
 
   # Webhook app
   webhook_app:
     <<: *base-app
     build:
-      <<: *base-app-build
+      context: .
+      dockerfile: ./packages/docker/base.dockerfile
       target: webhook_app
+    volumes:
+      - ./packages:/opt/packages
+      - ./apps/webhooks/dist:/opt/apps/webhooks/dist
 
   # Cron app
   cron_app:
     <<: *base-app
     build:
-      <<: *base-app-build
+      context: .
+      dockerfile: ./packages/docker/base.dockerfile
       target: cron_app
 
   # Image upload handler
