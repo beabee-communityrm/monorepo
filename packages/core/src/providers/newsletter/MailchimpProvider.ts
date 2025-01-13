@@ -7,6 +7,7 @@ import {
   mcMemberToNlContact,
   nlContactToMCMember
 } from "#lib/mailchimp";
+import OptionsService from "#services/OptionsService";
 import {
   MCMember,
   MCOperation,
@@ -83,11 +84,11 @@ export default class MailchimpProvider implements NewsletterProvider {
     return responses.flatMap((r) => r.members).map(mcMemberToNlContact);
   }
 
-  async upsertContact(
+  private async upsertMemberOrTryPending(
     member: UpdateNewsletterContact,
     oldEmail = member.email
-  ): Promise<NewsletterStatus> {
-    const req = {
+  ): Promise<NewsletterContact> {
+    const baseReq = {
       method: "PUT",
       url: getMCMemberUrl(this.listId, oldEmail),
       params: { skip_merge_validation: true }
@@ -95,8 +96,8 @@ export default class MailchimpProvider implements NewsletterProvider {
 
     const mcMember = nlContactToMCMember(member);
 
-    const resp = await this.instance.request({
-      ...req,
+    const resp = await this.api.instance.request<any, UpsertMCMemberResponse>({
+      ...baseReq,
       data: mcMember,
       // Don't error on 400s, we'll try to recover
       validateStatus: (status) => status <= 400
@@ -104,7 +105,7 @@ export default class MailchimpProvider implements NewsletterProvider {
 
     if (resp.status === 200) {
       log.info("Updated member " + member.email);
-      return member.status;
+      return mcMemberToNlContact(resp.data);
 
       // Try to put the user into pending state if they're in a compliance state
       // This can happen if they previously unsubscribed or were cleaned
@@ -116,20 +117,51 @@ export default class MailchimpProvider implements NewsletterProvider {
       log.info(
         `Member ${member.email} had status ${resp.data.title}, trying to re-add them`
       );
-      await this.instance.request({
-        ...req,
+      const resp2 = await this.api.instance.request<
+        any,
+        UpsertMCMemberResponse
+      >({
+        ...baseReq,
         data: { ...mcMember, status: "pending" }
       });
-      return NewsletterStatus.Pending;
 
-      // Fail gracefully, just remove the member from the newsletter
-    } else {
-      log.error("Couldn't update member " + member.email, {
-        status: resp.status,
-        data: resp.data
-      });
+      if (resp2.status === 200) {
+        return mcMemberToNlContact(resp2.data);
+      }
+    }
 
-      return NewsletterStatus.None;
+    throw new CantUpdateMCMember(member.email, resp.status, resp.data);
+  }
+
+  async upsertContact(
+    member: UpdateNewsletterContact,
+    oldEmail = member.email
+  ): Promise<NewsletterStatus> {
+    try {
+      const updatedMember = await this.upsertMemberOrTryPending(
+        member,
+        oldEmail
+      );
+
+      if (updatedMember.isActiveMember !== member.isActiveMember) {
+        log.info("Updating active member tag for " + member.email);
+        const tagOp = member.isActiveMember
+          ? "addTagToContacts"
+          : "removeTagFromContacts";
+        await this[tagOp](
+          [updatedMember.email],
+          OptionsService.getText("newsletter-active-member-tag")
+        );
+      }
+
+      return updatedMember.status;
+    } catch (err) {
+      if (err instanceof CantUpdateMCMember) {
+        log.error("Couldn't update member " + member.email, err);
+        return NewsletterStatus.None;
+      } else {
+        throw err;
+      }
     }
   }
 

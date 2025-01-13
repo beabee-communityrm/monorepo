@@ -46,7 +46,7 @@ async function contactToNlUpdate(
     });
   }
 
-  const nlContact = {
+  const nlContact: UpdateNewsletterContact = {
     email: updates?.email || contact.email,
     status: updates?.newsletterStatus || contact.profile.newsletterStatus,
     groups: updates?.newsletterGroups || contact.profile.newsletterGroups,
@@ -65,7 +65,8 @@ async function contactToNlUpdate(
         contact.contributionMonthlyAmount?.toFixed(2) ||
         "",
       C_PERIOD: updates?.contributionPeriod || contact.contributionPeriod || ""
-    }
+    },
+    isActiveMember: contact.membership?.isActive || false
   };
 
   return nlContact.status === NewsletterStatus.None
