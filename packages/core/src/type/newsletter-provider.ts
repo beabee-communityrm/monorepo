@@ -11,6 +11,10 @@ export interface NewsletterProvider {
     contact: UpdateNewsletterContact,
     oldEmail?: string
   ): Promise<NewsletterStatus>;
+  updateContactFields(
+    email: string,
+    fields: Record<string, string>
+  ): Promise<void>;
   upsertContacts(contacts: UpdateNewsletterContact[]): Promise<void>;
   archiveContacts(emails: string[]): Promise<void>;
   permanentlyDeleteContacts(emails: string[]): Promise<void>;

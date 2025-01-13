@@ -288,6 +288,21 @@ export default class MailchimpProvider implements NewsletterProvider {
     }
   }
 
+  async updateContactFields(
+    email: string,
+    fields: Record<string, string>
+  ): Promise<void> {
+    await this.dispatchOperations([
+      {
+        method: "PATCH",
+        path: this.emailUrl(email),
+        params: { skip_merge_validation: "true" },
+        body: JSON.stringify({ merge_fields: fields }),
+        operation_id: `update_fields_${email}`
+      }
+    ]);
+  }
+
   async upsertContacts(nlContacts: UpdateNewsletterContact[]): Promise<void> {
     const operations: Operation[] = nlContacts.map((contact) => {
       const mcMember = nlContactToMCMember(contact);

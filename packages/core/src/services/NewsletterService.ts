@@ -212,13 +212,7 @@ class NewsletterService {
     log.info(`Update contact fields for ${contact.id}`, fields);
     const [, nlUpdate] = await contactToNlUpdate(contact);
     if (nlUpdate) {
-      // TODO: should be an update without status
-      //       currently we're sending the status unnecessarily when only updating fields
-      await this.provider.upsertContact({
-        email: nlUpdate.email,
-        status: nlUpdate.status,
-        fields
-      });
+      await this.provider.updateContactFields(nlUpdate.email, fields);
     } else {
       log.info("Ignoring contact field update for " + contact.id);
     }

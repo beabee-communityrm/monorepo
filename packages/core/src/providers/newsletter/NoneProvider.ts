@@ -23,4 +23,8 @@ export default class NoneProvider implements NewsletterProvider {
   async upsertContacts(contacts: UpdateNewsletterContact[]): Promise<void> {}
   async archiveContacts(emails: string[]): Promise<void> {}
   async permanentlyDeleteContacts(emails: string[]): Promise<void> {}
+  async updateContactFields(
+    email: string,
+    fields: Record<string, string>
+  ): Promise<void> {}
 }
