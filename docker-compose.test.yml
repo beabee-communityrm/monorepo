@@ -1,49 +1,82 @@
-# version: "3.4"
-
-# Backend app and legacy frontend
-x-base-app: &base-app
-  build: &base-app-build
-    context: .
-    dockerfile: ./packages/docker/base.dockerfile
-  volumes:
-    - ./apps/backend/built:/opt/apps/backend/built
-    - ./apps/webhooks/dist:/opt/apps/webhooks/dist
-    - ./packages/common/dist:/opt/packages/common/dist
-    - ./packages/core/dist:/opt/packages/core/dist
-  env_file:
-    - .env
-  environment:
-    NODE_ENV: development
-
 services:
   db:
-    image: postgres:13.9
-    volumes:
-      - db_data_test:/var/lib/postgresql/data
+    extends:
+      file: docker-compose.yml
+      service: db
     environment:
       POSTGRES_USER: membership_system
       POSTGRES_PASSWORD: membership_system
       POSTGRES_DB: membership_system
+    ports: []
+    volumes:
+      - db_test_data:/var/lib/postgresql/data    # Separate volume for tests
+
+  mail:
+    extends:
+      file: docker-compose.yml
+      service: mail
     ports:
-      - 6543:5432
+      - ${TEST_MAIL_PORT:-4025}:1080
 
-  # API app
-  api_app:
-    <<: *base-app
-    build:
-      <<: *base-app-build
-      target: api_app
-
-  # Application router
-  app_router:
-    build:
-      context: .
-      dockerfile: ./apps/router/Dockerfile
+  app:
+    extends:
+      file: docker-compose.yml
+      service: app
     environment:
+      BEABEE_AUDIENCE: http://localhost:4002
+
+  api_app:
+    extends:
+      file: docker-compose.yml
+      service: api_app
+    environment:
+      BEABEE_AUDIENCE: http://localhost:4002
+
+  webhook_app:
+    extends:
+      file: docker-compose.yml
+      service: webhook_app
+    environment:
+      BEABEE_AUDIENCE: http://localhost:4002
+
+  cron_app:
+    extends:
+      file: docker-compose.yml
+      service: cron_app
+    environment:
+      BEABEE_AUDIENCE: http://localhost:4002
+
+  img_upload_app:
+    extends:
+      file: docker-compose.yml
+      service: img_upload_app
+    environment:
+      BEABEE_AUDIENCE: http://localhost:4002
+      URL: ${BEABEE_AUDIENCE}/uploads/
+    volumes:
+      - upload_test_data:/var/www/data    # Separate volume for test uploads
+
+  frontend:
+    extends:
+      file: docker-compose.yml
+      service: frontend
+
+  app_router:
+    extends:
+      file: docker-compose.yml
+      service: app_router
+    environment:
+      BEABEE_AUDIENCE: http://localhost:4002
       LEGACY_APP_COOKIE_DOMAIN: ${BEABEE_COOKIE_DOMAIN}
       TRUSTED_ORIGINS: ${BEABEE_TRUSTEDORIGINS-}
     ports:
-      - 3002:80
+      - 4002:80    # Another port for the test environment
+
+  migration:
+    extends:
+      file: docker-compose.yml
+      service: migration
 
 volumes:
-  db_data_test:
+  db_test_data:    # Separate volume for the test database
+  upload_test_data:    # Separate volume for test uploads
