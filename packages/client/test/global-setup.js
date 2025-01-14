@@ -3,7 +3,8 @@ import path from "node:path";
 
 const composeFilePath = path.resolve(process.cwd() + "/../..");
 const testUserEmail = "test@beabee.io";
-const testUserCommand = `yarn backend-cli user create --firstname Test --lastname Test --email ${testUserEmail}`;
+const createTestUserCommand = `yarn backend-cli user create --firstname Test --lastname Test --email ${testUserEmail}`;
+const createTestApiKeyCommand = `yarn backend-cli api-key create --description api-tests --email ${testUserEmail}`;
 
 export default async () => {
   console.log("Starting Docker Compose environment...");
@@ -23,9 +24,19 @@ export default async () => {
     )
     .up(["db", "migration", "api_app", "app_router"]);
 
-  // Create test user
   const apiApp = environment.getContainer("api_app-1");
-  await apiApp.exec(testUserCommand.split(" "));
+
+  // Create test user
+  await apiApp.exec(createTestUserCommand.split(" "));
+
+  // Create test API key
+  const apiKeyOutput = await apiApp.exec(createTestApiKeyCommand.split(" "));
+
+  const token = apiKeyOutput.output.match(/Token: (.+)/)?.[1];
+  if (token) {
+    console.log("Test API key created:", token);
+    process.env.API_KEY = token.trim();
+  }
 
   // Store the environment variable for the global teardown
   globalThis.__DOCKER_ENV__ = environment;
