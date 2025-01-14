@@ -95,9 +95,6 @@ USER node
 
 COPY --chown=node:node --from=builder /opt/apps/backend-cli/dist /opt/apps/backend-cli/dist
 
-# Install backend-cli globally
-RUN cd /opt/apps/backend-cli && yarn link
-
 # TODO: use standard dist folder
 CMD [ "node", "./built/api/app.js" ]
 
