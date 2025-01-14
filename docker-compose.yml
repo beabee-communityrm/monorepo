@@ -17,6 +17,16 @@ x-base-app: &base-app
   environment:
     NODE_ENV: development
 
+x-service-app: &service-app
+  <<: *base-app
+  depends_on:
+    # Wait for the database to be ready
+    db:
+      condition: service_healthy
+    # Wait for the migration to be completed
+    migration:
+      condition: service_completed_successfully
+
 services:
   db:
     image: postgres:13.9
@@ -26,6 +36,12 @@ services:
       POSTGRES_USER: membership_system
       POSTGRES_PASSWORD: membership_system
       POSTGRES_DB: membership_system
+    # Healthcheck for the database
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U membership_system"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     ports:
       - 6543:5432
 
@@ -36,28 +52,28 @@ services:
 
   # Legacy app
   app:
-    <<: *base-app
+    <<: *service-app
     build:
       <<: *base-app-build
       target: legacy_app
 
   # API app
   api_app:
-    <<: *base-app
+    <<: *service-app
     build:
       <<: *base-app-build
       target: api_app
 
   # Webhook app
   webhook_app:
-    <<: *base-app
+    <<: *service-app
     build:
       <<: *base-app-build
       target: webhook_app
 
   # Cron app
   cron_app:
-    <<: *base-app
+    <<: *service-app
     build:
       <<: *base-app-build
       target: cron_app
@@ -91,6 +107,18 @@ services:
       TRUSTED_ORIGINS: ${BEABEE_TRUSTEDORIGINS-}
     ports:
       - 3002:80
+
+  # Database migration service
+  migration:
+    <<: *base-app
+    build:
+      <<: *base-app-build
+      target: api_app
+    command: 'npm run typeorm migration:run'
+    # Wait for the database to be ready
+    depends_on:
+      db:
+        condition: service_healthy
 
 volumes:
   db_data:
