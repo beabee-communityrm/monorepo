@@ -34,7 +34,7 @@ export const apiKeyCommand: CommandModule = {
             });
         },
         handler: (argv: ArgumentsCamelCase<CreateApiKeyArgs>) =>
-          createApiKey(argv)
+          createApiKey(argv) // Call the function instead of just returning argv
       })
       .command({
         command: "delete <id>",
