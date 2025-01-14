@@ -79,4 +79,5 @@ class UploadFlowService {
   }
 }
 
-export default new UploadFlowService();
+export const uploadFlowService = new UploadFlowService();
+export default uploadFlowService;

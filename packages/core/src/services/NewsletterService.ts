@@ -254,4 +254,5 @@ class NewsletterService {
   }
 }
 
-export default new NewsletterService();
+export const newsletterService = new NewsletterService();
+export default newsletterService;

@@ -10,7 +10,7 @@ interface PageSettingsCache extends PageSettings {
 
 export type JustPageSettings = Omit<PageSettings, "id" | "pattern">;
 
-export default class PageSettingsService {
+export class PageSettingsService {
   private static pathCache: Record<string, JustPageSettings | "default"> = {};
   private static psCache: PageSettingsCache[] = [];
 
@@ -57,3 +57,5 @@ export default class PageSettingsService {
     await this.reload();
   }
 }
+
+export default PageSettingsService

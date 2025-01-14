@@ -184,4 +184,5 @@ class ContactMfaService {
   }
 }
 
-export default new ContactMfaService();
+export const contactMfaService = new ContactMfaService();
+export default contactMfaService;

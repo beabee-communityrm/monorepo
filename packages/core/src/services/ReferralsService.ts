@@ -8,7 +8,7 @@ import { ReferralGiftForm } from "#type/index";
 
 const log = mainLogger.child({ app: "referrals-service" });
 
-export default class ReferralsService {
+export class ReferralsService {
   static async getGifts(): Promise<ReferralGift[]> {
     return await getRepository(ReferralGift).find();
   }
@@ -140,3 +140,5 @@ export default class ReferralsService {
     );
   }
 }
+
+export default ReferralsService;

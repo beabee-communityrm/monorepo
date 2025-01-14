@@ -1,7 +1,6 @@
 import {
   Address,
   ContributionPeriod,
-  NewsletterStatus,
   PaymentMethod,
   RESET_SECURITY_FLOW_TYPE
 } from "@beabee/beabee-common";
@@ -231,4 +230,5 @@ class PaymentFlowService implements PaymentFlowProvider {
   }
 }
 
-export default new PaymentFlowService();
+export const paymentFlowService = new PaymentFlowService();
+export default paymentFlowService;
