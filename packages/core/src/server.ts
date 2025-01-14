@@ -23,7 +23,7 @@ export function startServer(app: Express) {
   const server = app.listen(PORT, () => {
     log.info(`Server is ready and listening on port ${PORT}`);
   });
-  
+
   networkCommunicatorService.startServer();
 
   process.on("SIGTERM", () => {
