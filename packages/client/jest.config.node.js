@@ -15,5 +15,7 @@ export default {
         tsconfig: "./tsconfig.build.json"
       }
     ]
-  }
+  },
+  globalSetup: "<rootDir>/test/global-setup.js", 
+  globalTeardown: "<rootDir>/test/global-teardown.js"
 };
