@@ -21,6 +21,7 @@ COPY --chown=node:node packages/client/package.json /opt/packages/client/package
 
 # Copy dependencies info from apps
 COPY --chown=node:node apps/backend/package.json /opt/apps/backend/package.json
+COPY --chown=node:node apps/backend-cli/package.json /opt/apps/backend-cli/package.json
 COPY --chown=node:node apps/legacy/package.json /opt/apps/legacy/package.json
 COPY --chown=node:node apps/webhooks/package.json /opt/apps/webhooks/package.json
 COPY --chown=node:node apps/e2e-api-tests/package.json /opt/apps/e2e-api-tests/package.json
@@ -51,6 +52,7 @@ RUN yarn workspaces focus -A
 # Copy source files
 COPY packages /opt/packages
 COPY apps/backend /opt/apps/backend
+COPY apps/backend-cli /opt/apps/backend-cli
 COPY apps/legacy /opt/apps/legacy
 COPY apps/webhooks /opt/apps/webhooks
 
@@ -79,6 +81,7 @@ CMD [ "node", "./dist/app.js" ]
 FROM dist-common AS dist-backend
 
 COPY --chown=node:node --from=builder /opt/apps/backend/built /opt/apps/backend/built
+
 WORKDIR /opt/apps/backend
 
 ##################################
@@ -87,7 +90,14 @@ WORKDIR /opt/apps/backend
 
 ## Backend images
 FROM dist-backend AS api_app
+
 USER node
+
+COPY --chown=node:node --from=builder /opt/apps/backend-cli/dist /opt/apps/backend-cli/dist
+
+# Install backend-cli globally
+RUN cd /opt/apps/backend-cli && yarn link
+
 # TODO: use standard dist folder
 CMD [ "node", "./built/api/app.js" ]
 

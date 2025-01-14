@@ -22,6 +22,7 @@ COPY packages/client/package.json /opt/packages/client/package.json
 
 # Copy dependencies info from apps
 COPY apps/backend/package.json /opt/apps/backend/package.json
+COPY apps/backend-cli/package.json /opt/apps/backend-cli/package.json
 COPY apps/frontend/package.json /opt/apps/frontend/package.json
 COPY apps/legacy/package.json /opt/apps/legacy/package.json
 COPY apps/webhooks/package.json /opt/apps/webhooks/package.json

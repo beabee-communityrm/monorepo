@@ -39,6 +39,7 @@
     "typeorm:generate": "docker compose up -d db && docker compose run --rm api_app npm run typeorm migration:generate --check"
   },
   "dependencies": {
+    "@beabee/backend-cli": "workspace:^",
     "@beabee/beabee-common": "workspace:^",
     "@beabee/core": "workspace:^",
     "@captchafox/node": "^1.2.0",

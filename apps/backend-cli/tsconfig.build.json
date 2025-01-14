@@ -1,0 +1,19 @@
+{
+  "extends": "@beabee/tsconfig/tsconfig.server.json",
+  "include": ["./src/**/*"],
+  "exclude": ["./**/*.test.ts"],
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "paths": {
+      "@core/*": ["./src/core/*"],
+      "@apps/*": ["./src/apps/*"],
+      "@api/*": ["./src/api/*"],
+      "@type/*": ["./src/type/*"]
+    },
+    "typeRoots": ["./src/typings", "./node_modules/@types/"]
+  }
+}

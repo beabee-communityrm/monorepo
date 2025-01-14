@@ -187,4 +187,4 @@ export class GiftService {
   }
 }
 
-export default GiftService
+export default GiftService;

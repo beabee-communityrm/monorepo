@@ -1,0 +1,28 @@
+{
+  "name": "@beabee/backend-cli",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "bin": "./dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc --project tsconfig.build.json",
+    "start": "node dist/index.js",
+    "check": "concurrently 'yarn:check:*'",
+    "check:tsc": "tsc -p ./tsconfig.build.json --noEmit",
+    "check:prettier": "prettier -c .",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "@beabee/core": "workspace:*",
+    "@inquirer/prompts": "^3.3.0",
+    "dotenv": "^16.4.7",
+    "yargs": "^17.7.2"
+  },
+  "devDependencies": {
+    "@beabee/prettier-config": "workspace:^",
+    "@beabee/tsconfig": "workspace:^",
+    "concurrently": "^9.1.2",
+    "prettier": "^3.4.2",
+    "typescript": "~5.6.3"
+  }
+}

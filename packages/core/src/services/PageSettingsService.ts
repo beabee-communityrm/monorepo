@@ -58,4 +58,4 @@ export class PageSettingsService {
   }
 }
 
-export default PageSettingsService
+export default PageSettingsService;

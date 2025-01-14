@@ -9,6 +9,10 @@
       "path": "../apps/backend"
     },
     {
+      "name": "apps/backend-cli",
+      "path": "../apps/backend-cli"
+    },
+    {
       "name": "apps/frontend",
       "path": "../apps/frontend"
     },
