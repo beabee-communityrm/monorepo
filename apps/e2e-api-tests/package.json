@@ -15,6 +15,7 @@
     "dotenv": "^16.4.7"
   },
   "devDependencies": {
+    "@beabee/test-utils": "workspace:^",
     "@beabee/tsconfig": "workspace:^",
     "@jest/globals": "^29.7.0",
     "@types/jest": "^29.5.14",

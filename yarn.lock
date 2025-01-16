@@ -650,6 +650,7 @@ __metadata:
   resolution: "@beabee/e2e-api-tests@workspace:apps/e2e-api-tests"
   dependencies:
     "@beabee/client": "workspace:*"
+    "@beabee/test-utils": "workspace:^"
     "@beabee/tsconfig": "workspace:^"
     "@jest/globals": "npm:^29.7.0"
     "@types/jest": "npm:^29.5.14"

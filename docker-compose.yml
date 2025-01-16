@@ -117,7 +117,8 @@ services:
   migration:
     <<: *base-app
     build:
-      <<: *base-app-build
+      context: .
+      dockerfile: ./packages/docker/base.dockerfile
       target: api_app
     command: 'npm run typeorm migration:run'
     # Wait for the database to be ready
