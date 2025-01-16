@@ -553,10 +553,9 @@ __metadata:
     concurrently: "npm:^9.1.0"
     date-fns: "npm:^4.1.0"
     esbuild: "npm:^0.24.1"
-    jest: "npm:^29.7.0"
     prettier: "npm:^3.4.2"
-    ts-jest: "npm:^29.2.5"
     typescript: "npm:~5.6.3"
+    vitest: "npm:^2.1.8"
   languageName: unknown
   linkType: soft
 
