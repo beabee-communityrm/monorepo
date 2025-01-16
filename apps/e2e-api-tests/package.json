@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "echo 'The e2e api test suite has no test tests'",
+    "test": "yarn start",
     "start": "vitest run",
     "watch": "vitest",
     "presetup": "yarn presetup:env",
