@@ -1,4 +1,4 @@
-/** @type {import('jest').Config} */
+/** @type {import('ts-jest').JestConfigWithTsJest} */
 export default {
   preset: 'ts-jest',
   testEnvironment: 'node',
@@ -16,5 +16,7 @@ export default {
         tsconfig: "./tsconfig.json"
       }
     ]
-  }
+  },
+  globalSetup: "@beabee/test-utils/jest/docker-compose-setup",
+  globalTeardown: "@beabee/test-utils/jest/docker-compose-teardown"
 };
