@@ -568,6 +568,7 @@ __metadata:
   dependencies:
     "@beabee/beabee-common": "workspace:^"
     "@beabee/prettier-config": "workspace:^"
+    "@beabee/test-utils": "workspace:^"
     "@gjsify/esbuild-plugin-transform-ext": "npm:^0.0.4"
     "@jest/globals": "npm:^29.7.0"
     "@types/jest": "npm:^29.5.14"
@@ -579,7 +580,6 @@ __metadata:
     jsdom: "npm:^25.0.1"
     node-fetch: "npm:^2.7.0"
     prettier: "npm:^3.4.2"
-    testcontainers: "npm:^10.16.0"
     ts-jest: "npm:^29.2.5"
     typescript: "npm:~5.6.3"
     whatwg-fetch: "npm:^3.6.20"
@@ -843,6 +843,14 @@ __metadata:
 "@beabee/router@workspace:apps/router":
   version: 0.0.0-use.local
   resolution: "@beabee/router@workspace:apps/router"
+  languageName: unknown
+  linkType: soft
+
+"@beabee/test-utils@workspace:^, @beabee/test-utils@workspace:packages/test-utils":
+  version: 0.0.0-use.local
+  resolution: "@beabee/test-utils@workspace:packages/test-utils"
+  dependencies:
+    testcontainers: "npm:^10.16.0"
   languageName: unknown
   linkType: soft
 

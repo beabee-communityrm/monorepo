@@ -1,0 +1,14 @@
+{
+  "name": "@beabee/test-utils",
+  "version": "1.0.0",
+  "type": "module",
+  "exports": {
+    "./jest/*": "./jest/*.js"
+  },
+  "files": [
+    "jest"
+  ],
+  "dependencies": {
+    "testcontainers": "^10.16.0"
+  }
+}

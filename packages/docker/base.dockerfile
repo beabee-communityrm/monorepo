@@ -18,6 +18,7 @@ COPY --chown=node:node packages/common/package.json /opt/packages/common/package
 COPY --chown=node:node packages/core/package.json /opt/packages/core/package.json
 COPY --chown=node:node packages/docker/package.json /opt/packages/docker/package.json
 COPY --chown=node:node packages/client/package.json /opt/packages/client/package.json
+COPY --chown=node:node packages/test-utils/package.json /opt/packages/test-utils/package.json
 
 # Copy dependencies info from apps
 COPY --chown=node:node apps/backend/package.json /opt/apps/backend/package.json

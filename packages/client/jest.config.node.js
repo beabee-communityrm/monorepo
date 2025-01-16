@@ -16,6 +16,6 @@ export default {
       }
     ]
   },
-  globalSetup: "<rootDir>/test/global-setup.js",
-  globalTeardown: "<rootDir>/test/global-teardown.js"
+  globalSetup: "@beabee/test-utils/jest/docker-compose-setup",
+  globalTeardown: "@beabee/test-utils/jest/docker-compose-teardown"
 };
