@@ -3,10 +3,12 @@
   "version": "1.0.0",
   "type": "module",
   "exports": {
-    "./jest/*": "./jest/*.js"
+    "./jest/*": "./jest/*.js",
+    "./vitest/*": "./vitest/*.ts"
   },
   "files": [
-    "jest"
+    "jest",
+    "vitest"
   ],
   "dependencies": {
     "testcontainers": "^10.16.0"
