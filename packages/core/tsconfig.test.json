@@ -1,7 +1,0 @@
-{
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    // https://github.com/kulshekhar/ts-jest/issues/4207#issuecomment-1827413759
-    "noEmitOnError": false
-  }
-}
