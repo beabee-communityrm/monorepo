@@ -23,9 +23,7 @@
     "format": "prettier --write .",
     "check": "yarn check:tsc && yarn check:prettier",
     "check:tsc": "tsc --project ./tsconfig.build.json --noEmit",
-    "check:prettier": "prettier -c .",
-    "presetup": "yarn presetup:env",
-    "presetup:env": "cp -n .env.example .env 2>/dev/null || true"
+    "check:prettier": "prettier -c ."
   },
   "dependencies": {
     "@beabee/beabee-common": "workspace:^",

@@ -1,7 +1,3 @@
-import dotenv from 'dotenv';
-
-dotenv.config({ path: ['.env', '.env.example'] });
-
 const env = process.env;
 
 if(!env.API_KEY) {
@@ -9,5 +5,5 @@ if(!env.API_KEY) {
 }
 
 export const API_KEY = env.API_KEY;
-export const HOST = env.APP_BASE_URL || 'http://localhost:3002';
+export const HOST = env.BEABEE_AUDIENCE || 'http://localhost:4002';
 export const PATH = env.API_BASE_URL || '/api/1.0';
