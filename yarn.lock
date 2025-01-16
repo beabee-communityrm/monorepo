@@ -446,7 +446,6 @@ __metadata:
     "@beabee/client": "workspace:*"
     "@beabee/test-utils": "workspace:^"
     "@beabee/tsconfig": "workspace:^"
-    dotenv: "npm:^16.4.7"
     typescript: "npm:~5.6.3"
     vitest: "npm:^2.1.8"
   languageName: unknown
