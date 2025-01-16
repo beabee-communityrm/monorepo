@@ -11,8 +11,7 @@
     "presetup:env": "cp -n .env.example .env 2>/dev/null || true"
   },
   "dependencies": {
-    "@beabee/client": "workspace:*",
-    "dotenv": "^16.4.7"
+    "@beabee/client": "workspace:*"
   },
   "devDependencies": {
     "@beabee/test-utils": "workspace:^",

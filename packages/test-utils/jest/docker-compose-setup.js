@@ -1,5 +1,9 @@
 import { DockerComposeEnvironment, Wait } from "testcontainers";
 import path from "node:path";
+import dotenv from "dotenv";
+
+const envDev = dotenv.config({ path: ["../../.env"] });
+const envTest = dotenv.config({ path: ["../../.env.test"] });
 
 const composeFilePath = path.resolve(process.cwd() + "/../..");
 const testUserEmail = "test@beabee.io";
@@ -14,6 +18,7 @@ export default async () => {
     composeFilePath,
     "docker-compose.test.yml"
   )
+    .withEnvironment({ ...envDev.parsed, ...envTest.parsed })
     .withWaitStrategy(
       "db",
       Wait.forLogMessage(/database system is ready to accept connections/)
