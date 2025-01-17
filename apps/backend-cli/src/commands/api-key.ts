@@ -1,5 +1,6 @@
 import { createApiKey } from "../actions/api-key/create.js";
 import { deleteApiKey } from "../actions/api-key/delete.js";
+import { listApiKeys } from "../actions/api-key/list.js";
 
 import type { ArgumentsCamelCase, CommandModule } from "yargs";
 import type { CreateApiKeyArgs, DeleteApiKeyArgs } from "../types/index.js";
@@ -9,6 +10,11 @@ export const apiKeyCommand: CommandModule = {
   describe: "Manage API keys",
   builder: (yargs) => {
     return yargs
+      .command({
+        command: "list",
+        describe: "List all API keys",
+        handler: () => listApiKeys()
+      })
       .command({
         command: "create",
         describe: "Create a new API key",

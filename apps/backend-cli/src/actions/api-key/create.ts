@@ -7,15 +7,20 @@ import type { CreateApiKeyArgs } from "../../types/index.js";
 
 export const createApiKey = async (argv: CreateApiKeyArgs): Promise<void> => {
   await runApp(async () => {
-    // Create a system user for API key creation
-    const systemUser = await getRepository(Contact).findOneOrFail({
-      where: { email: argv.email }
+    // Get user for API key creation
+    const apiUser = await getRepository(Contact).findOneOrFail({
+      where: { email: argv.email },
+      select: ['id', 'email', 'firstname', 'lastname', 'roles']
     });
+
+    if (!apiUser) {
+      throw new Error(`No user found with email ${argv.email}`);
+    }
 
     const expiryDate = argv.expires === "never" ? null : new Date(argv.expires);
 
     const token = await apiKeyService.create(
-      systemUser,
+      apiUser,
       argv.description,
       expiryDate
     );
