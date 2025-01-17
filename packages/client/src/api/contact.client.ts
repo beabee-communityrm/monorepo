@@ -42,8 +42,10 @@ export class ContactClient extends BaseClient {
    * @param options - The client options
    */
   constructor(protected override readonly options: BaseClientOptions) {
-    options.path = cleanUrl(options.path + "/contact");
-    super(options);
+    super({
+      ...options,
+      path: cleanUrl(options.path + "/contact")
+    });
     this.mfa = new ContactMfaClient(options);
     this.contribution = new ContactContributionClient(options);
     this.role = new ContactRoleClient(options);

@@ -27,9 +27,10 @@ export class CalloutClient extends BaseClient {
   tag: CalloutTagClient;
 
   constructor(protected override readonly options: BaseClientOptions) {
-    // e.g. `/api/1.0/callout`
-    options.path = cleanUrl(options.path + "/callout");
-    super(options);
+    super({
+      ...options,
+      path: cleanUrl(options.path + "/callout")
+    });
     this.response = new CalloutResponseClient(options);
     this.tag = new CalloutTagClient(options);
   }

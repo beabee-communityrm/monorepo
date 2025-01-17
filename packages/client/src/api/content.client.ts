@@ -16,9 +16,10 @@ export class ContentClient extends BaseClient {
    * @param options - The client options
    */
   constructor(protected override readonly options: BaseClientOptions) {
-    // e.g. `/api/1.0/content`
-    options.path = cleanUrl(options.path + "/content");
-    super(options);
+    super({
+      ...options,
+      path: cleanUrl(options.path + "/content")
+    });
   }
 
   /**

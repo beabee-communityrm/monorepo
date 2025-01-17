@@ -20,8 +20,10 @@ export class SegmentsClient extends BaseClient {
    * @param options - The client options
    */
   constructor(protected override readonly options: BaseClientOptions) {
-    options.path = cleanUrl(options.path + "/segments");
-    super(options);
+    super({
+      ...options,
+      path: cleanUrl(options.path + "/segments")
+    });
   }
 
   /**

@@ -3,7 +3,8 @@ services:
     extends:
       file: docker-compose.yml
       service: db
-    ports: []
+    ports:
+      - ${DB_PORT}:5432
     volumes:
       - db_test_data:/var/lib/postgresql/data    # Separate volume for tests
 

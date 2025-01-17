@@ -23,8 +23,10 @@ export class CalloutResponseCommentClient extends BaseClient {
    * @param options - The client options including API path
    */
   constructor(protected override readonly options: BaseClientOptions) {
-    options.path = cleanUrl(options.path + "/callout-response-comments");
-    super(options);
+    super({
+      ...options,
+      path: cleanUrl(options.path + "/callout-response-comments")
+    });
   }
 
   /**

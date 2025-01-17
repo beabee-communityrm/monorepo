@@ -8,8 +8,10 @@ import type { TagCreateData, TagGetData, TagUpdateData } from "../deps.js";
  */
 export abstract class TagClient extends BaseClient {
   constructor(protected override readonly options: BaseClientOptions) {
-    options.path = cleanUrl(options.path ?? "");
-    super(options);
+    super({
+      ...options,
+      path: cleanUrl(options.path ?? "")
+    });
   }
 
   protected abstract getBasePath(entityId: string | undefined): string;

@@ -14,8 +14,10 @@ export class AuthClient extends BaseClient {
    * @param options - The client options
    */
   constructor(protected override readonly options: BaseClientOptions) {
-    options.path = cleanUrl(options.path + "/auth");
-    super(options);
+    super({
+      ...options,
+      path: cleanUrl(options.path + "/auth")
+    });
   }
 
   /**

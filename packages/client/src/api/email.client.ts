@@ -14,8 +14,10 @@ export class EmailClient extends BaseClient {
    * @param options - The client options
    */
   constructor(protected override readonly options: BaseClientOptions) {
-    options.path = cleanUrl(options.path + "/email");
-    super(options);
+    super({
+      ...options,
+      path: cleanUrl(options.path + "/email")
+    });
   }
 
   /**

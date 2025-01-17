@@ -23,7 +23,7 @@ services:
       timeout: 5s
       retries: 5
     ports:
-      - 6543:5432
+      - ${DB_PORT}:5432
 
   mail:
     image: maildev/maildev:2.1.0
@@ -55,6 +55,7 @@ services:
     volumes:
       - ./packages:/opt/packages
       - ./apps/backend/built:/opt/apps/backend/built
+      - ./apps/backend-cli/dist:/opt/apps/backend-cli/dist
       # Allow migrations to be written out from the container
       - ./packages/core/src/migrations:/opt/packages/core/src/migrations
 

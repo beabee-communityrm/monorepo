@@ -16,8 +16,10 @@ export class ApiKeyClient extends BaseClient {
    * @param options - The client options
    */
   constructor(protected override readonly options: BaseClientOptions) {
-    options.path = cleanUrl(options.path + "/api-key");
-    super(options);
+    super({
+      ...options,
+      path: cleanUrl(options.path + "/api-key")
+    });
   }
 
   /**

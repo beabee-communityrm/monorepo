@@ -8,8 +8,10 @@ import type { GetCalloutReviewerData, Serial } from "../deps.js";
  */
 export class CalloutReviewerClient extends BaseClient {
   constructor(protected override readonly options: BaseClientOptions) {
-    options.path = cleanUrl(options.path + "/callout");
-    super(options);
+    super({
+      ...options,
+      path: cleanUrl(options.path + "/callout")
+    });
   }
 
   /**
