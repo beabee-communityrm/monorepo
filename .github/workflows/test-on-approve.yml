@@ -1,20 +1,13 @@
 name: Test on Approval
 
-# on:
-#   pull_request_review:
-#     types: [submitted]
-
-# Only for testing the workflow
 on:
-  pull_request:
-    types: [opened, synchronize]
-  push:
-    branches: [main]
+  pull_request_review:
+    types: [submitted]
 
 jobs:
   test:
     # Only run if the review was approved
-    # if: github.event.review.state == 'approved'
+    if: github.event.review.state == 'approved'
     runs-on: ubuntu-latest
     
     steps:

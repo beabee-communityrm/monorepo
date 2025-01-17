@@ -7,8 +7,6 @@ const envDev = dotenv.config({ path: [rootPath + "/.env"], override: false });
 const envTest = dotenv.config({ path: [rootPath + "/.env.test"], override: true });
 const env = { ...envDev.parsed, ...envTest.parsed };
 
-console.log("env", env);
-
 const testUserEmail = "test@beabee.io";
 const createTestUserCommand = `yarn backend-cli user create --firstname Test --lastname Test --email ${testUserEmail}`;
 const createTestApiKeyCommand = `yarn backend-cli api-key create --description api-tests --email ${testUserEmail}`;
