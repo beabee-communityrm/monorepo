@@ -1,0 +1,23 @@
+name: Test on Approval
+
+on:
+  pull_request_review:
+    types: [submitted]
+
+jobs:
+  build-and-test:
+    # Only run if the review was approved
+    if: github.event.review.state == 'approved'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - uses: ./.github/actions/setup
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Run tests
+        run: yarn test 
