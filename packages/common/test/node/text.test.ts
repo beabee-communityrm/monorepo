@@ -1,3 +1,4 @@
+import { describe, expect, test } from "vitest";
 import { isTextInRange, isTextInWordRange } from "@beabee/beabee-common";
 
 describe("isTextInRange", () => {

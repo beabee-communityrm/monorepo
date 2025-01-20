@@ -27,11 +27,12 @@
     "build": "yarn clear && yarn build:types && yarn build:platforms",
     "build:platforms": "node esbuild.js",
     "build:types": "tsc --project ./tsconfig.build.json",
-    "test": "yarn test:types && yarn test:esm && yarn test:cjs && yarn test:jest",
+    "test": "yarn test:types && yarn test:esm && yarn test:cjs && yarn test:vitest",
     "test:types": "tsc --noEmit",
     "test:esm": "node test/node/module-type/import.mjs",
     "test:cjs": "node test/node/module-type/require.cjs",
-    "test:jest": "NODE_OPTIONS=--experimental-vm-modules jest --config jest.config.node.js",
+    "test:vitest": "vitest run",
+    "test:vitest:watch": "vitest",
     "generate:index": "node generate-index.js",
     "format": "prettier --write .",
     "check": "yarn check:tsc && yarn check:prettier",
@@ -53,10 +54,9 @@
     "@gjsify/esbuild-plugin-transform-ext": "^0.0.4",
     "concurrently": "^9.1.0",
     "esbuild": "^0.24.1",
-    "jest": "^29.7.0",
     "prettier": "^3.4.2",
-    "ts-jest": "^29.2.5",
-    "typescript": "~5.6.3"
+    "typescript": "~5.6.3",
+    "vitest": "^2.1.8"
   },
   "dependencies": {
     "date-fns": "^4.1.0"

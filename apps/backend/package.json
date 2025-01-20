@@ -16,7 +16,7 @@
   },
   "homepage": "https://github.com/beabee-communityrm/monorepo/blob/main/apps/backend/README.md",
   "scripts": {
-    "test": "jest --setupFiles dotenv/config --passWithNoTests",
+    "test": "echo 'The backend test suite has no tests yet'",
     "start": "node built/api/app.js",
     "dev": "yarn build && docker compose restart && concurrently -c red,green,blue 'yarn:dev:*'",
     "dev:watch": "tsc-watch -p tsconfig.build.json --noClear --onSuccess 'docker compose restart api_app'",
@@ -84,10 +84,8 @@
     "concurrently": "^9.1.0",
     "dotenv": "^16.4.7",
     "dpdm": "^3.14.0",
-    "jest": "^29.7.0",
     "prettier": "^3.4.2",
     "rimraf": "^6.0.1",
-    "ts-jest": "^29.2.5",
     "tsc-watch": "^6.3.0",
     "tsconfig": "^7.0.0",
     "typescript": "~5.6.3"

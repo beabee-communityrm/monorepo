@@ -1,3 +1,4 @@
+import { describe, expect, test } from "vitest";
 import { isValidPayFee } from "@beabee/beabee-common";
 
 describe("isValidPayFee", () => {

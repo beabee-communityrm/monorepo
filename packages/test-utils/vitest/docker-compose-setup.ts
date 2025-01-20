@@ -1,4 +1,4 @@
-import { DockerComposeEnvironment, Wait } from "testcontainers";
+import { DockerComposeEnvironment, type StartedDockerComposeEnvironment, Wait } from "testcontainers";
 import path from "node:path";
 import dotenv from "dotenv";
 
@@ -10,11 +10,12 @@ const testUserEmail = "test@beabee.io";
 const createTestUserCommand = `yarn backend-cli user create --firstname Test --lastname Test --email ${testUserEmail}`;
 const createTestApiKeyCommand = `yarn backend-cli api-key create --description api-tests --email ${testUserEmail}`;
 
-export default async () => {
+let startedDockerComposeEnvironment: StartedDockerComposeEnvironment | null = null;
+
+export async function setup() {
   console.log("Starting Docker Compose environment...");
 
-  // Start Docker Compose Stack
-  const environment = await new DockerComposeEnvironment(
+  startedDockerComposeEnvironment = await new DockerComposeEnvironment(
     composeFilePath,
     "docker-compose.test.yml"
   )
@@ -29,12 +30,10 @@ export default async () => {
     )
     .up(["db", "migration", "api_app", "app_router"]);
 
-  const apiApp = environment.getContainer("api_app-1");
+  const apiApp = startedDockerComposeEnvironment.getContainer("api_app-1");
 
-  // Create test user
   await apiApp.exec(createTestUserCommand.split(" "));
 
-  // Create test API key
   const apiKeyOutput = await apiApp.exec(createTestApiKeyCommand.split(" "));
 
   const token = apiKeyOutput.output.match(/Token: (.+)/)?.[1];
@@ -43,6 +42,11 @@ export default async () => {
     process.env.API_KEY = token.trim();
   }
 
-  // Store the environment variable for the global teardown
-  globalThis.__DOCKER_ENV__ = environment;
-};
+} 
+
+export async function teardown() {
+    console.log("Tearing down Docker Compose environment...");
+    if (startedDockerComposeEnvironment) {
+      await startedDockerComposeEnvironment.down();
+    }
+  }
