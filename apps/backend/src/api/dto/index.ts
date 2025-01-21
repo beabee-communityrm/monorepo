@@ -1,5 +1,6 @@
 export * from "./AddressDto.js";
 export * from "./ApiKeyDto.js";
+export * from "./AuthInfoDto.js";
 export * from "./BaseDto.js";
 export * from "./CalloutDto.js";
 export * from "./CalloutFormDto.js";

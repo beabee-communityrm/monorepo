@@ -1,7 +1,8 @@
 import { BaseClient } from "./base.client.js";
+import { ContactClient } from "./contact.client.js";
 import { cleanUrl } from "../utils/index.js";
 import type { BaseClientOptions } from "../types/index.js";
-import type { LoginData } from "@beabee/beabee-common";
+import type { AuthInfoData, LoginData } from "@beabee/beabee-common";
 
 /**
  * Client for managing authentication operations
@@ -11,7 +12,7 @@ import type { LoginData } from "@beabee/beabee-common";
 export class AuthClient extends BaseClient {
   /**
    * Creates a new authentication client
-   * @param options - The client options
+   * @param options The client options
    */
   constructor(protected override readonly options: BaseClientOptions) {
     super({
@@ -22,15 +23,34 @@ export class AuthClient extends BaseClient {
 
   /**
    * Authenticates a user with credentials
-   * @param data - Login credentials including email, password and optional 2FA token
+   * @param data Login credentials including email, password and optional 2FA token
    * @returns Promise that resolves when login is successful
+   * @throws ClientApiError with code REQUIRES_2FA if 2FA is required
    */
   async login(data: LoginData): Promise<void> {
     await this.fetch.post("login", {
       email: data.email,
       password: data.password,
       token: data.token
+    }, {
+      // Ensure credentials are included for session cookie
+      credentials: 'include'
     });
+  }
+
+  /**
+   * Gets the current authentication information
+   * @returns Promise that resolves with the auth info
+   */
+  async info(): Promise<AuthInfoData> {
+    const { data } = await this.fetch.get<AuthInfoData>("info", {
+      // Include credentials to get current session info
+      credentials: 'include'
+    });
+    if (data.contact) {
+      data.contact = ContactClient.deserialize(data.contact);
+    }
+    return data;
   }
 
   /**
@@ -39,6 +59,9 @@ export class AuthClient extends BaseClient {
    * @returns Promise that resolves when logout is complete
    */
   async logout(): Promise<void> {
-    await this.fetch.post("logout");
+    await this.fetch.post("logout", undefined, {
+      // Ensure credentials are included to clear session cookie
+      credentials: 'include'
+    });
   }
 }

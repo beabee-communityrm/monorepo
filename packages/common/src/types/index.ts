@@ -2,6 +2,7 @@ export * from "./address.js";
 export * from "./allow-null.js";
 export * from "./api-key-filter-name.js";
 export * from "./array-filter-args.js";
+export * from "./auth-info-data.js";
 export * from "./base-filter-args.js";
 export * from "./base-validated-rule.js";
 export * from "./callout-channel-filter-name.js";
