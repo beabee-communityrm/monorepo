@@ -4,8 +4,6 @@ services:
       file: docker-compose.yml
       service: db
     ports: []
-    volumes:
-      - db_test_data:/var/lib/postgresql/data    # Separate volume for tests
 
   mail:
     extends:
@@ -52,8 +50,6 @@ services:
       service: img_upload_app
     environment:
       URL: ${BEABEE_AUDIENCE}/uploads/
-    volumes:
-      - upload_test_data:/var/www/data    # Separate volume for test uploads
 
   frontend:
     extends:
@@ -82,5 +78,5 @@ services:
       - .env.test
 
 volumes:
-  db_test_data:    # Separate volume for the test database
-  upload_test_data:    # Separate volume for test uploads
+  db_data:
+  upload_data:

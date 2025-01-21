@@ -21,6 +21,7 @@ export async function setup() {
     "docker-compose.test.yml"
   )
     .withEnvironment(env)
+    .withProjectName(env.COMPOSE_PROJECT_NAME || "beabee-test")
     .withWaitStrategy(
       "db",
       Wait.forLogMessage(/database system is ready to accept connections/)
@@ -42,12 +43,11 @@ export async function setup() {
     console.log("Test API key created:", token);
     process.env.API_KEY = token.trim();
   }
-
 } 
 
 export async function teardown() {
-    console.log("Tearing down Docker Compose environment...");
-    if (startedDockerComposeEnvironment) {
-      await startedDockerComposeEnvironment.down();
-    }
+  console.log("Tearing down Docker Compose environment...");
+  if (startedDockerComposeEnvironment) {
+    await startedDockerComposeEnvironment.down();
   }
+}
