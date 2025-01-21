@@ -2,10 +2,11 @@ import { DockerComposeEnvironment, type StartedDockerComposeEnvironment, Wait } 
 import path from "node:path";
 import dotenv from "dotenv";
 
-const envDev = dotenv.config({ path: ["../../.env"] });
-const envTest = dotenv.config({ path: ["../../.env.test"] });
+const rootPath = path.resolve(process.cwd() + "/../..");
+const envDev = dotenv.config({ path: [rootPath + "/.env"], override: false });
+const envTest = dotenv.config({ path: [rootPath + "/.env.test"], override: true });
+const env = { ...envDev.parsed, ...envTest.parsed };
 
-const composeFilePath = path.resolve(process.cwd() + "/../..");
 const testUserEmail = "test@beabee.io";
 const createTestUserCommand = `yarn backend-cli user create --firstname Test --lastname Test --email ${testUserEmail}`;
 const createTestApiKeyCommand = `yarn backend-cli api-key create --description api-tests --email ${testUserEmail}`;
@@ -16,10 +17,10 @@ export async function setup() {
   console.log("Starting Docker Compose environment...");
 
   startedDockerComposeEnvironment = await new DockerComposeEnvironment(
-    composeFilePath,
+    rootPath,
     "docker-compose.test.yml"
   )
-    .withEnvironment({ ...envDev.parsed, ...envTest.parsed })
+    .withEnvironment(env)
     .withWaitStrategy(
       "db",
       Wait.forLogMessage(/database system is ready to accept connections/)
