@@ -1,19 +1,40 @@
-import { describe, expect, it, beforeAll } from "vitest";
-import { ApiKeyClient } from "@beabee/client";
-import type { CreateApiKeyData, GetApiKeyData, Paginated } from "@beabee/beabee-common";
+import { describe, expect, it, beforeAll, afterAll } from "vitest";
+import { ApiKeyClient, AuthClient } from "@beabee/client";
+import type {
+  CreateApiKeyData,
+  GetApiKeyData,
+  Paginated
+} from "@beabee/beabee-common";
 import { addDays } from "date-fns";
 
-import { API_KEY, HOST, PATH } from "./utils/env.js";
+import {
+  HOST,
+  PATH,
+  TEST_USER_EMAIL,
+  TEST_USER_PASSWORD
+} from "./utils/env.js";
 
 describe("ApiKey API", () => {
   let apiKeyClient: ApiKeyClient;
-
-  beforeAll(() => {
+  let authUserClient: AuthClient;
+  beforeAll(async () => {
+    authUserClient = new AuthClient({
+      host: HOST,
+      path: PATH
+    });
+    // For testing api keys we need to login as user
+    await authUserClient.login({
+      email: TEST_USER_EMAIL,
+      password: TEST_USER_PASSWORD
+    });
     apiKeyClient = new ApiKeyClient({
       host: HOST,
-      path: PATH,
-      token: API_KEY
+      path: PATH
     });
+  });
+
+  afterAll(async () => {
+    await authUserClient.logout();
   });
 
   it("should create an API key with expiration", async () => {
@@ -21,7 +42,6 @@ describe("ApiKey API", () => {
       description: "Test API Key",
       expires: addDays(new Date(), 30)
     };
-
     const response = await apiKeyClient.create(newKeyData);
     expect(response).toBeDefined();
     expect(response.token).toBeDefined();
@@ -44,11 +64,11 @@ describe("ApiKey API", () => {
     let response: Paginated<GetApiKeyData>;
     try {
       response = await apiKeyClient.list({
-            limit: 10,
-            offset: 0,
-            order: "DESC",
-            sort: "createdAt"
-        });
+        limit: 10,
+        offset: 0,
+        order: "DESC",
+        sort: "createdAt"
+      });
     } catch (error) {
       console.error("Error listing API keys", error);
       throw error;
@@ -82,15 +102,17 @@ describe("ApiKey API", () => {
       description: "Test API Key to Delete",
       expires: addDays(new Date(), 1)
     };
-    
+
     // Create new key
     const { token } = await apiKeyClient.create(newKeyData);
     expect(token).toBeDefined();
-    
+
     // Get list to find the ID of the new key
     const { items } = await apiKeyClient.list({});
-    const keyToDelete = items.find(key => key.description === newKeyData.description);
-    
+    const keyToDelete = items.find(
+      (key) => key.description === newKeyData.description
+    );
+
     if (!keyToDelete) {
       throw new Error("Could not find created key");
     }
@@ -100,7 +122,7 @@ describe("ApiKey API", () => {
 
     // Verify key is deleted by checking the list
     const { items: updatedItems } = await apiKeyClient.list({});
-    const deletedKey = updatedItems.find(key => key.id === keyToDelete.id);
+    const deletedKey = updatedItems.find((key) => key.id === keyToDelete.id);
     expect(deletedKey).toBeUndefined();
   });
-}); 
+});

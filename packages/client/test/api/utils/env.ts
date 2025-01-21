@@ -13,4 +13,5 @@ export const TEST_USER_FIRSTNAME = env.TEST_USER_FIRSTNAME || "Test";
 export const TEST_USER_LASTNAME = env.TEST_USER_LASTNAME || "Test";
 export const TEST_USER_PASSWORD = env.TEST_USER_PASSWORD || "test1234";
 export const TEST_USER_ROLE = env.TEST_USER_ROLE || "superadmin";
-export const TEST_API_KEY_DESCRIPTION = env.TEST_API_KEY_DESCRIPTION || "api-tests";
+export const TEST_API_KEY_DESCRIPTION =
+  env.TEST_API_KEY_DESCRIPTION || "api-tests";

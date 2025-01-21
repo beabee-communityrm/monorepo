@@ -1,58 +1,117 @@
-import { describe, expect, it, beforeAll } from "vitest";
+import { describe, expect, it, beforeAll, beforeEach, afterEach } from "vitest";
 import { AuthClient, ClientApiError } from "@beabee/client";
 import type { LoginData } from "@beabee/beabee-common";
 
-import { API_KEY, HOST, PATH, TEST_USER_EMAIL, TEST_USER_FIRSTNAME, TEST_USER_LASTNAME, TEST_USER_PASSWORD, TEST_USER_ROLE } from "./utils/env.js";
+import {
+  API_KEY,
+  HOST,
+  PATH,
+  TEST_USER_EMAIL,
+  TEST_USER_PASSWORD
+} from "./utils/env.js";
 
 describe("Auth API", () => {
-  let authClient: AuthClient;
+  let authTokenClient: AuthClient;
+  let authUserClient: AuthClient;
 
   beforeAll(() => {
-    console.log("HOST", HOST);
-    console.log("PATH", PATH);
-    console.log("API_KEY", API_KEY);
-    authClient = new AuthClient({
+    authTokenClient = new AuthClient({
       host: HOST,
       path: PATH,
       token: API_KEY
     });
+
+    authUserClient = new AuthClient({
+      host: HOST,
+      path: PATH
+    });
   });
 
-  it("should login with test user credentials", async () => {
-    const validLoginData: LoginData = {
-      email: TEST_USER_EMAIL,
-      password: TEST_USER_PASSWORD,
-    };
-    await authClient.login(validLoginData);
-  });
-
-  it("should fail login with invalid credentials", async () => {
-    const invalidLoginData: LoginData = {
-      email: "nonexistent@example.com",
-      password: "wrongpassword",
-      token: ""
-    };
-
+  // Cleanup after each test
+  afterEach(async () => {
     try {
-      await authClient.login(invalidLoginData);
-      // If we reach this point, the test should fail
-      expect(true).toBe(false);
+      await authUserClient.logout();
     } catch (error) {
-      expect(error).toBeInstanceOf(ClientApiError);
-      if (error instanceof ClientApiError) {
-        expect(error.httpCode).toBe(404);
+      // Ignore logout errors in afterEach
+    }
+  });
+
+  describe("login (user authentication)", () => {
+    it("should successfully login with user credentials", async () => {
+      const validLoginData: LoginData = {
+        email: TEST_USER_EMAIL,
+        password: TEST_USER_PASSWORD
+      };
+      await authUserClient.login(validLoginData);
+
+      // Verify login was successful by checking auth info
+      const authInfo = await authUserClient.info();
+      expect(authInfo.contact?.email).toBe(TEST_USER_EMAIL);
+      expect(authInfo.method).toBe("user");
+    });
+
+    it("should reject invalid user credentials", async () => {
+      const invalidLoginData: LoginData = {
+        email: "nonexistent@example.com",
+        password: "wrongpassword",
+        token: ""
+      };
+
+      try {
+        await authUserClient.login(invalidLoginData);
+        // If we reach this point, the test should fail
+        expect(true).toBe(false);
+      } catch (error) {
+        expect(error).toBeInstanceOf(ClientApiError);
+        if (error instanceof ClientApiError) {
+          expect(error.httpCode).toBe(401);
+        }
       }
-    }
+    });
   });
 
-  it("should successfully logout", async () => {
-    try {
-      await authClient.logout();
-      expect(true).toBe(true); // If we reach this point without error, the test passes
-    } catch (error) {
-      console.log(error);
-      // If we reach this point, the test should fail
-      expect(true).toBe(false);
-    }
+  describe("info (authentication status)", () => {
+    it("should return api-key authentication status for token client", async () => {
+      const authInfo = await authTokenClient.info();
+      expect(authInfo.method).toBe("api-key");
+      expect(authInfo.contact).toBeUndefined();
+    });
+
+    it("should return user authentication status after login", async () => {
+      // Login first
+      await authUserClient.login({
+        email: TEST_USER_EMAIL,
+        password: TEST_USER_PASSWORD
+      });
+
+      const authInfo = await authUserClient.info();
+      expect(authInfo.method).toBe("user");
+      expect(authInfo.contact).toBeDefined();
+      expect(authInfo.contact?.email).toBe(TEST_USER_EMAIL);
+      expect(authInfo.roles).toBeDefined();
+      expect(Array.isArray(authInfo.roles)).toBe(true);
+    });
   });
-}); 
+
+  describe("logout (user session)", () => {
+    it("should clear user authentication state after logout", async () => {
+      // First login
+      await authUserClient.login({
+        email: TEST_USER_EMAIL,
+        password: TEST_USER_PASSWORD
+      });
+
+      // Verify logged in state
+      let authInfo = await authUserClient.info();
+      expect(authInfo.method).toBe("user");
+
+      // Logout
+      await authUserClient.logout();
+
+      // Verify logged out state
+      authInfo = await authUserClient.info();
+      expect(authInfo.method).toBe("none");
+      expect(authInfo.contact).toBeUndefined();
+    });
+  });
+});

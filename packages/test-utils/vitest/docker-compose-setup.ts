@@ -63,10 +63,10 @@ export async function teardown() {
     await startedDockerComposeEnvironment.down();
   }
 
-  if (apiAppLogs.data.length > 0) {
-    console.log("API App data logs:", apiAppLogs.data);
-  }
-  if (apiAppLogs.err.length > 0) {
-    console.log("API App error logs:", apiAppLogs.err);
-  }
+  // if (apiAppLogs.data.length > 0) {
+  //   console.log("API App data logs:", apiAppLogs.data);
+  // }
+  // if (apiAppLogs.err.length > 0) {
+  //   console.log("API App error logs:", apiAppLogs.err);
+  // }
 }
