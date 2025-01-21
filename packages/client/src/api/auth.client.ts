@@ -33,7 +33,6 @@ export class AuthClient extends BaseClient {
       password: data.password,
       token: data.token
     }, {
-      // Ensure credentials are included for session cookie
       credentials: 'include'
     });
   }
@@ -44,9 +43,9 @@ export class AuthClient extends BaseClient {
    */
   async info(): Promise<AuthInfoData> {
     const { data } = await this.fetch.get<AuthInfoData>("info", {
-      // Include credentials to get current session info
       credentials: 'include'
     });
+    
     if (data.contact) {
       data.contact = ContactClient.deserialize(data.contact);
     }
@@ -60,8 +59,9 @@ export class AuthClient extends BaseClient {
    */
   async logout(): Promise<void> {
     await this.fetch.post("logout", undefined, {
-      // Ensure credentials are included to clear session cookie
       credentials: 'include'
     });
+    // Clear stored cookies after logout
+    this.fetch.clearCookies();
   }
 }

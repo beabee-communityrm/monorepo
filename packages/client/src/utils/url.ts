@@ -19,7 +19,7 @@ export const cleanUrl = (url: string): string => {
  */
 // deno-lint-ignore no-explicit-any
 export function objToQueryString(obj: Record<string, any>, url: URL): URL {
-  const params = new URLSearchParams(url.search);
+  const params = new URLSearchParams();
 
   Object.entries(obj).forEach(([key, value]) => {
     if (Array.isArray(value)) {
@@ -31,7 +31,9 @@ export function objToQueryString(obj: Record<string, any>, url: URL): URL {
     } else if (value === null) {
       params.append(key, "null");
     } else if (typeof value === "object") {
-      params.append(key, JSON.stringify(value));
+      Object.entries(value).forEach(([subKey, subValue]) => {
+        params.append(subKey, subValue?.toString() ?? '');
+      });
     } else {
       if (value !== undefined) {
         params.append(key, value.toString());
@@ -42,3 +44,15 @@ export function objToQueryString(obj: Record<string, any>, url: URL): URL {
   url.search = params.toString();
   return url;
 }
+
+/**
+ * Checks if a URL string starts with a protocol (e.g., http://, https://, ws://)
+ * @param url - The URL string to check
+ * @returns boolean indicating if the URL starts with a protocol
+ * @example
+ * hasProtocol('http://example.com') // Returns true
+ * hasProtocol('/api/users') // Returns false
+ */
+export const hasProtocol = (url: string): boolean => {
+  return Boolean(url.match(/^[a-z]+:\/\//));
+};

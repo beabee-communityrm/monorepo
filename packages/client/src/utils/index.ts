@@ -1,3 +1,4 @@
+import "./cookie-polyfill.js";
 export * from "./date.js";
 export * from "./error.js";
 export * from "./fetch.js";

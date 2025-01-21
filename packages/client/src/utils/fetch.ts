@@ -1,5 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
-import { cleanUrl, ClientApiError, isJson, objToQueryString } from "./index.js";
+import { cleanUrl, ClientApiError, isJson, objToQueryString, hasProtocol } from "./index.js";
+import { CookiePolyfill } from './cookie-polyfill.js';
 
 import type {
   FetchOptions,
@@ -12,7 +13,6 @@ import type {
  */
 export class Fetch {
   protected readonly options: FetchOptions;
-
   protected readonly baseUrl: URL;
 
   constructor(options: FetchOptions = {}) {
@@ -21,20 +21,20 @@ export class Fetch {
         "Authorization",
         `Bearer ${options.token}`
       );
+      options.credentials ||= "same-origin";
+    } else {
+      options.credentials ||= "include";
     }
 
     // Set default options
     options.dataType ||= "json";
     options.cache ||= "default";
-    options.credentials ||= "same-origin";
     options.method ||= "GET";
     options.mode ||= "cors";
-    options.isAjax ||=
-      typeof options.isAjax === "boolean" ? options.isAjax : true;
+    options.isAjax ||= typeof options.isAjax === "boolean" ? options.isAjax : true;
     options.basePath ||= "/";
 
     this.baseUrl = new URL(options.basePath, options.host);
-
     this.options = options;
   }
 
@@ -50,8 +50,10 @@ export class Fetch {
   /**
    * Load data from the server using a HTTP POST request.
    * @param url A string containing the URL to which the request is sent.
-   * @param data A plain object or string that is sent to the server with the request.
-   * @param options Options for the request
+   * @param data The data to be sent in the request body
+   * @param options Additional options for the request
+   * @param options.params Object containing URL query parameters. These are always converted to URL query parameters,
+   *                      while data goes into the request body.
    */
   public post<T = any, D = any>(
     url: string | URL,
@@ -61,6 +63,14 @@ export class Fetch {
     return this.fetch<T>(url, "POST", data, options);
   }
 
+  /**
+   * Delete a resource on the server using a HTTP DELETE request.
+   * @param url A string containing the URL to which the request is sent.
+   * @param data The data to be sent in the request body
+   * @param options Additional options for the request
+   * @param options.params Object containing URL query parameters. These are always converted to URL query parameters,
+   *                      while data goes into the request body.
+   */
   public delete<T = any, D = any>(
     url: string | URL,
     data?: D,
@@ -69,6 +79,15 @@ export class Fetch {
     return this.fetch<T>(url, "DELETE", data, options);
   }
 
+  /**
+   * Update a resource on the server using a HTTP PUT request.
+   * Use this when you want to replace an entire resource.
+   * @param url A string containing the URL to which the request is sent.
+   * @param data The data to be sent in the request body
+   * @param options Additional options for the request
+   * @param options.params Object containing URL query parameters. These are always converted to URL query parameters,
+   *                      while data goes into the request body.
+   */
   public put<T = any, D = any>(
     url: string | URL,
     data?: D,
@@ -77,6 +96,15 @@ export class Fetch {
     return this.fetch<T>(url, "PUT", data, options);
   }
 
+  /**
+   * Update a resource on the server using a HTTP PATCH request.
+   * Use this when you want to apply partial modifications to a resource.
+   * @param url A string containing the URL to which the request is sent.
+   * @param data The data to be sent in the request body
+   * @param options Additional options for the request
+   * @param options.params Object containing URL query parameters. These are always converted to URL query parameters,
+   *                      while data goes into the request body.
+   */
   public patch<T = any, D = any>(
     url: string | URL,
     data?: D,
@@ -88,9 +116,12 @@ export class Fetch {
   /**
    * Load data from the server using a HTTP GET request.
    * @param url A string containing the URL to which the request is sent.
-   * @param data A plain object or string that is sent to the server with the request.
-   * @param dataType The type of data expected from the server. Default: Intelligent Guess (xml, json, script, text, html).
+   * @param data For GET requests, this will be converted to URL query parameters along with options.params.
+   *             This is useful for backward compatibility and convenience, since GET requests cannot have a body.
    * @param options Additional options for the request
+   * @param options.params Object containing URL query parameters. These are always converted to URL query parameters
+   *                      regardless of the HTTP method. For non-GET requests, only options.params are added to the URL,
+   *                      while data goes into the request body.
    */
   public get<T = unknown, D = any>(
     url: string | URL,
@@ -139,21 +170,40 @@ export class Fetch {
     return headers;
   }
 
+  /**
+   * Core fetch method that handles all HTTP requests
+   * @param url The URL to which the request is sent
+   * @param method The HTTP method to use (GET, POST, PUT, DELETE, etc.)
+   * @param data The data to be processed:
+   *        - For GET requests: Converted to URL parameters along with options.params
+   *          since GET requests cannot have a body
+   *        - For other methods: Sent as request body, while only options.params
+   *          are converted to URL parameters
+   * @param options Additional options for the request
+   * @param options.params Object containing URL query parameters. These are always
+   *                      converted to URL parameters regardless of HTTP method.
+   *                      This separation allows for consistent URL parameter handling
+   *                      across all HTTP methods.
+   * @returns Promise resolving to the fetch response with parsed data
+   * @template T Type of the expected response data
+   * @template D Type of the request data
+   */
   protected async fetch<T = unknown, D = any>(
     url: string | URL,
     method: HttpMethod = "GET",
-    data: D,
+    data?: D,
     options: FetchOptions = {}
   ): Promise<FetchResponse<T>> {
     if (!fetch) {
       throw new Error(
-        "Your platform does not support the fetch API, use xhr instead or install a polyfill."
+        "Your platform does not support the fetch API, please install a polyfill."
       );
     }
 
     options = { ...this.options, ...options };
 
-    if (typeof url === "string" && url.startsWith("/")) {
+    // Use basePath if url does not have a protocol
+    if (typeof url === "string" && !hasProtocol(url)) {
       url = cleanUrl(this.options.basePath + "/" + url);
     }
 
@@ -165,6 +215,14 @@ export class Fetch {
       ...this.parseDataType(options.dataType)
     };
 
+    // Handle cookies with polyfill
+    if (CookiePolyfill.shouldBeUsed(options.credentials)) {
+      const cookies = CookiePolyfill.get();
+      if (cookies.length > 0) {
+        headers['Cookie'] = cookies.join('; ');
+      }
+    }
+
     // This is a common technique used to identify Ajax requests.
     // The `X-Requested-With` header is not a standard HTTP header, but it is commonly used in the context of web development.
     if (!options.isAjax && !headers["X-Requested-With"]) {
@@ -173,19 +231,36 @@ export class Fetch {
 
     let body = options.body;
 
-    // Add query parameters from options.params
-    if (options.params) {
-      url = objToQueryString(options.params, url);
-    }
-
-    // If this is a GET request and there is data, add query string to url
-    if (method === "GET" && data) {
-      url = objToQueryString(data, url);
-    } else if (data) {
-      if (options.dataType === "form") {
-        body = new URLSearchParams(data);
-      } else {
-        body = JSON.stringify(data);
+    /**
+     * Handle query parameters:
+     * - For GET requests: Both options.params and data are converted to URL parameters
+     *   since GET requests cannot have a body, and this provides a consistent API
+     *   with other HTTP methods while maintaining backward compatibility.
+     * - For other HTTP methods: Only options.params are added to URL parameters,
+     *   while data goes into the request body.
+     */
+    if (method === "GET") {
+      // For GET requests, merge options.params and data into query string
+      const queryParams = {
+        ...(options.params || {}),
+        ...(data || {})
+      };
+      if (Object.keys(queryParams).length > 0) {
+        url = objToQueryString(queryParams, url);
+      }
+    } else {
+      // For non-GET requests
+      // Add query parameters from options.params if any
+      if (options.params) {
+        url = objToQueryString(options.params, url);
+      }
+      // Handle body data
+      if (data) {
+        if (options.dataType === "form") {
+          body = new URLSearchParams(data);
+        } else {
+          body = JSON.stringify(data);
+        }
       }
     }
 
@@ -195,6 +270,14 @@ export class Fetch {
       body,
       headers
     });
+
+    // Store cookies from response
+    if (CookiePolyfill.shouldBeUsed(options.credentials)) {
+      const setCookieHeaders = response.headers.getSetCookie();
+      if (setCookieHeaders?.length > 0) {
+        CookiePolyfill.store(setCookieHeaders);
+      }
+    }
 
     // Automatically parse json response
     let bodyResult = (await response.text()) as unknown as T;
@@ -245,6 +328,15 @@ export class Fetch {
     }
 
     return result;
+  }
+
+  /**
+   * Clear stored cookies
+   */
+  public clearCookies(): void {
+    if (CookiePolyfill.shouldBeUsed(this.options.credentials)) {
+      CookiePolyfill.clear();
+    }
   }
 
   /**
