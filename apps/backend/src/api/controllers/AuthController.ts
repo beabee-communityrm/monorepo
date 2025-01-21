@@ -123,7 +123,7 @@ export class AuthController {
 
   @Get("/info")
   async getAuthInfo(
-    @CurrentAuth({ required: true }) auth: AuthInfo
+    @CurrentAuth({ required: false }) auth: AuthInfo
   ): Promise<GetAuthInfoDto> {
     return authTransformer.convert(auth);
   }
