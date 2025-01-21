@@ -1,5 +1,11 @@
 import { Type } from "class-transformer";
-import { IsArray, IsIn, IsOptional, IsString, ValidateNested } from "class-validator";
+import {
+  IsArray,
+  IsIn,
+  IsOptional,
+  IsString,
+  ValidateNested
+} from "class-validator";
 import { GetContactDto } from "./ContactDto";
 import { RoleType } from "@beabee/beabee-common";
 
@@ -19,4 +25,4 @@ export class GetAuthInfoDto {
   @IsArray()
   @IsString({ each: true })
   roles!: RoleType[];
-} 
+}

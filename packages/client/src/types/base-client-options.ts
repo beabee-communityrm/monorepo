@@ -8,4 +8,3 @@ export interface BaseClientOptions {
    */
   token?: string;
 }
-

@@ -10,7 +10,7 @@ export class CookiePolyfill {
    * Checks if we're in a browser-like environment with proper cookie handling
    */
   protected static readonly hasNativeCookieSupport: boolean = !!(
-    typeof globalThis !== 'undefined' && 
+    typeof globalThis !== "undefined" &&
     globalThis.document?.cookie !== undefined
   );
 
@@ -18,23 +18,25 @@ export class CookiePolyfill {
    * Check if cookies should be used
    */
   static shouldBeUsed(credentials?: RequestCredentials): boolean {
-    return !this.hasNativeCookieSupport && 
-           (credentials === 'include' || credentials === 'same-origin');
+    return (
+      !this.hasNativeCookieSupport &&
+      (credentials === "include" || credentials === "same-origin")
+    );
   }
 
   /**
    * Parse and validate a cookie string
    */
   private static parseCookie(cookie: string): string | null {
-    if (!cookie || typeof cookie !== 'string') return null;
+    if (!cookie || typeof cookie !== "string") return null;
 
     try {
       // Basic validation that it's a key=value format
-      if (!cookie.includes('=')) return null;
+      if (!cookie.includes("=")) return null;
 
       // Check expiration
       const lowerCookie = cookie.toLowerCase();
-      if (lowerCookie.includes('expires=')) {
+      if (lowerCookie.includes("expires=")) {
         const match = /expires=([^;]+)/.exec(lowerCookie);
         if (match) {
           const expiresDate = new Date(match[1]);
@@ -46,7 +48,7 @@ export class CookiePolyfill {
 
       return cookie;
     } catch (error) {
-      console.warn('Failed to parse cookie:', error);
+      console.warn("Failed to parse cookie:", error);
       return null;
     }
   }
@@ -78,4 +80,4 @@ export class CookiePolyfill {
   static clear(): void {
     this.cookies.clear();
   }
-} 
+}

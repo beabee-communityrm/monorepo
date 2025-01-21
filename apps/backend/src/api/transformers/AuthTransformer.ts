@@ -13,7 +13,7 @@ class AuthTransformer {
     if (!auth.contact) {
       return {
         method: auth.method,
-        roles: auth.roles,
+        roles: auth.roles
       };
     }
     return {

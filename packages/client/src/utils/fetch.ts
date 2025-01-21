@@ -1,6 +1,12 @@
 // deno-lint-ignore-file no-explicit-any
-import { cleanUrl, ClientApiError, isJson, objToQueryString, hasProtocol } from "./index.js";
-import { CookiePolyfill } from './cookie-polyfill.js';
+import {
+  cleanUrl,
+  ClientApiError,
+  isJson,
+  objToQueryString,
+  hasProtocol
+} from "./index.js";
+import { CookiePolyfill } from "./cookie-polyfill.js";
 
 import type {
   FetchOptions,
@@ -31,7 +37,8 @@ export class Fetch {
     options.cache ||= "default";
     options.method ||= "GET";
     options.mode ||= "cors";
-    options.isAjax ||= typeof options.isAjax === "boolean" ? options.isAjax : true;
+    options.isAjax ||=
+      typeof options.isAjax === "boolean" ? options.isAjax : true;
     options.basePath ||= "/";
 
     this.baseUrl = new URL(options.basePath, options.host);
@@ -219,7 +226,7 @@ export class Fetch {
     if (CookiePolyfill.shouldBeUsed(options.credentials)) {
       const cookies = CookiePolyfill.get();
       if (cookies.length > 0) {
-        headers['Cookie'] = cookies.join('; ');
+        headers["Cookie"] = cookies.join("; ");
       }
     }
 

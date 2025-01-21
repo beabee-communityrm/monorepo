@@ -32,7 +32,7 @@ import config from "@beabee/core/config";
 
 import { CurrentAuth } from "@api/decorators/CurrentAuth";
 
-import { authTransformer } from "@api/transformers"
+import { authTransformer } from "@api/transformers";
 
 @JsonController("/auth")
 export class AuthController {

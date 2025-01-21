@@ -28,13 +28,17 @@ export class AuthClient extends BaseClient {
    * @throws ClientApiError with code REQUIRES_2FA if 2FA is required
    */
   async login(data: LoginData): Promise<void> {
-    await this.fetch.post("login", {
-      email: data.email,
-      password: data.password,
-      token: data.token
-    }, {
-      credentials: 'include'
-    });
+    await this.fetch.post(
+      "login",
+      {
+        email: data.email,
+        password: data.password,
+        token: data.token
+      },
+      {
+        credentials: "include"
+      }
+    );
   }
 
   /**
@@ -43,9 +47,9 @@ export class AuthClient extends BaseClient {
    */
   async info(): Promise<AuthInfoData> {
     const { data } = await this.fetch.get<AuthInfoData>("info", {
-      credentials: 'include'
+      credentials: "include"
     });
-    
+
     if (data.contact) {
       data.contact = ContactClient.deserialize(data.contact);
     }
@@ -59,7 +63,7 @@ export class AuthClient extends BaseClient {
    */
   async logout(): Promise<void> {
     await this.fetch.post("logout", undefined, {
-      credentials: 'include'
+      credentials: "include"
     });
     // Clear stored cookies after logout
     this.fetch.clearCookies();

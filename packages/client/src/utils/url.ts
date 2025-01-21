@@ -32,7 +32,7 @@ export function objToQueryString(obj: Record<string, any>, url: URL): URL {
       params.append(key, "null");
     } else if (typeof value === "object") {
       Object.entries(value).forEach(([subKey, subValue]) => {
-        params.append(subKey, subValue?.toString() ?? '');
+        params.append(subKey, subValue?.toString() ?? "");
       });
     } else {
       if (value !== undefined) {
