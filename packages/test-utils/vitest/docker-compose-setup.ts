@@ -28,6 +28,7 @@ export async function setup() {
     "docker-compose.test.yml"
   )
     .withEnvironment(env)
+    .withProjectName(env.COMPOSE_PROJECT_NAME || "beabee-test")
     .withWaitStrategy(
       "db",
       Wait.forLogMessage(/database system is ready to accept connections/)
@@ -63,10 +64,13 @@ export async function teardown() {
     await startedDockerComposeEnvironment.down();
   }
 
-  // if (apiAppLogs.data.length > 0) {
-  //   console.log("API App data logs:", apiAppLogs.data);
-  // }
-  // if (apiAppLogs.err.length > 0) {
-  //   console.log("API App error logs:", apiAppLogs.err);
-  // }
+  // Log the apiApp logs, not set by default
+  if(env.DEBUG_LOGS) {
+    if (apiAppLogs.data.length > 0) {
+      console.log("API App data logs:", apiAppLogs.data);
+    }
+    if (apiAppLogs.err.length > 0) {
+      console.log("API App error logs:", apiAppLogs.err);
+    }
+  }
 }
