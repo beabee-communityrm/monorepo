@@ -638,7 +638,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@beabee/test-utils@workspace:packages/test-utils"
   dependencies:
-    testcontainers: "npm:^10.16.0"
+    testcontainers: "npm:^10.17.1"
   languageName: unknown
   linkType: soft
 
@@ -13992,9 +13992,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"testcontainers@npm:^10.16.0":
-  version: 10.16.0
-  resolution: "testcontainers@npm:10.16.0"
+"testcontainers@npm:^10.17.1":
+  version: 10.17.1
+  resolution: "testcontainers@npm:10.17.1"
   dependencies:
     "@balena/dockerignore": "npm:^1.0.2"
     "@types/dockerode": "npm:^3.3.29"
@@ -14011,7 +14011,7 @@ __metadata:
     tar-fs: "npm:^3.0.6"
     tmp: "npm:^0.2.3"
     undici: "npm:^5.28.4"
-  checksum: 10c0/17f748927d484e63718e2a745c776d54a893eba08c4fa20b84e5056f2ef45f585e39c7a1ffebea37ec63ae96e71dd50de5a611d4d313f63380bacca52b12737a
+  checksum: 10c0/7707790330385db82ef8f9abee052b7830c7cfce1166db4154626d09611698958568650db189eadd5e8c58e264bce36c71ce46002e04eb7ecd3dab48c70b436a
   languageName: node
   linkType: hard
 
