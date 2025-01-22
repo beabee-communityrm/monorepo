@@ -9,7 +9,7 @@ meta:
   <CalloutVariantsBox :callout="callout" />
   <AppTitle v-if="!isEmbed" big>{{ callout.title }}</AppTitle>
   <CalloutThanksBox :callout="callout" class="mb-6" />
-  <div class="md:max-w-2xl">
+  <div class="w-full md:max-w-2xl">
     <AppShareBox
       :address-text="t('callout.share.address')"
       :services-text="t('callout.share.services')"

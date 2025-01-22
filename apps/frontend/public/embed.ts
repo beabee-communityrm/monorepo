@@ -11,6 +11,7 @@ if (document.currentScript?.parentNode) {
   iframe.setAttribute('mozallowfullscreen', '');
   iframe.setAttribute('allowfullscreen', '');
   iframe.setAttribute('id', id);
+  iframe.style.width = '100%';
   document.currentScript.parentNode.insertBefore(
     iframe,
     document.currentScript
