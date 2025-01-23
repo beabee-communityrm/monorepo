@@ -61,7 +61,7 @@ export class CalloutResponseCommentClient extends BaseClient {
   ): Promise<Paginated<GetCalloutResponseCommentData>> {
     const { data } = await this.fetch.get<
       Paginated<Serial<GetCalloutResponseCommentData>>
-    >("", { params: query });
+    >("", query);
 
     return {
       ...data,

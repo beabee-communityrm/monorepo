@@ -50,9 +50,7 @@ export class NoticeClient extends BaseClient {
   async list(query: GetNoticesQuery = {}): Promise<Paginated<GetNoticeData>> {
     const { data } = await this.fetch.get<Paginated<Serial<GetNoticeData>>>(
       "",
-      {
-        params: query
-      }
+      query
     );
 
     return {

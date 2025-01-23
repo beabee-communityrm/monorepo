@@ -61,7 +61,7 @@ export class PaymentClient extends BaseClient {
   ): Promise<Paginated<GetPaymentDataWith<With>>> {
     const { data } = await this.fetch.get<
       Paginated<Serial<GetPaymentDataWith<With>>>
-    >("", { params: { with: _with, ...query } });
+    >("", { with: _with, ...query });
 
     return {
       ...data,

@@ -1,12 +1,12 @@
-// deno-lint-ignore-file no-explicit-any
+
 import {
   cleanUrl,
   ClientApiError,
   isJson,
-  objToQueryString,
-  hasProtocol
+  hasProtocol,
+  CookiePolyfill,
+  queryStringify
 } from "./index.js";
-import { CookiePolyfill } from "./cookie-polyfill.js";
 
 import type {
   FetchOptions,
@@ -198,7 +198,7 @@ export class Fetch {
   protected async fetch<T = unknown, D = any>(
     url: string | URL,
     method: HttpMethod = "GET",
-    data?: D,
+    data: D | {} = {},
     options: FetchOptions = {}
   ): Promise<FetchResponse<T>> {
     if (!fetch) {
@@ -208,6 +208,7 @@ export class Fetch {
     }
 
     options = { ...this.options, ...options };
+    options.params ||= {};
 
     // Use basePath if url does not have a protocol
     if (typeof url === "string" && !hasProtocol(url)) {
@@ -249,17 +250,17 @@ export class Fetch {
     if (method === "GET") {
       // For GET requests, merge options.params and data into query string
       const queryParams = {
-        ...(options.params || {}),
-        ...(data || {})
+        ...options.params,
+        ...data
       };
       if (Object.keys(queryParams).length > 0) {
-        url = objToQueryString(queryParams, url);
+        url.search = queryStringify(queryParams, );
       }
     } else {
       // For non-GET requests
       // Add query parameters from options.params if any
-      if (options.params) {
-        url = objToQueryString(options.params, url);
+      if (Object.keys(options.params).length > 0) {
+        url.search = queryStringify(options.params);
       }
       // Handle body data
       if (data) {

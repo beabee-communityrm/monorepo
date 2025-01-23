@@ -159,7 +159,7 @@ export class CalloutClient extends BaseClient {
   ): Promise<Paginated<GetCalloutResponseMapData>> {
     const { data } = await this.fetch.get<
       Paginated<Serial<GetCalloutResponseMapData>>
-    >(`/${slug}/responses/map`, { params: query });
+    >(`/${slug}/responses/map`, query);
     return data;
   }
 

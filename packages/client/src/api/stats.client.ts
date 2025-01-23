@@ -28,9 +28,7 @@ export class StatsClient extends BaseClient {
    * @returns The statistics data
    */
   async get(query: GetStatsQuery): Promise<GetStatsData> {
-    const { data } = await this.fetch.get<Serial<GetStatsData>>("", {
-      params: query
-    });
+    const { data } = await this.fetch.get<Serial<GetStatsData>>("", query);
     return data;
   }
 }

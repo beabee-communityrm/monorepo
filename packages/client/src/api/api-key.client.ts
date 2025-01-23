@@ -56,7 +56,7 @@ export class ApiKeyClient extends BaseClient {
   async list(query?: GetApiKeysQuery): Promise<Paginated<GetApiKeyData>> {
     const { data } = await this.fetch.get<Paginated<Serial<GetApiKeyData>>>(
       "",
-      { params: query }
+      query
     );
 
     return {

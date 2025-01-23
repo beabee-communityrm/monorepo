@@ -25,10 +25,8 @@ export abstract class TagClient extends BaseClient {
     const { data } = await this.fetch.get<TagGetData[]>(
       this.getBasePath(entityId),
       {
-        params: {
-          sort: "name",
-          order: "ASC"
-        }
+        sort: "name",
+        order: "ASC"
       }
     );
     return data;
