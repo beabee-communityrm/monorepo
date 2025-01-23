@@ -10,6 +10,7 @@ if (document.currentScript?.parentNode) {
   iframe.setAttribute('webkitallowfullscreen', '');
   iframe.setAttribute('mozallowfullscreen', '');
   iframe.setAttribute('allowfullscreen', '');
+  iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin');
   iframe.setAttribute('id', id);
   iframe.style.width = '100%';
   document.currentScript.parentNode.insertBefore(
