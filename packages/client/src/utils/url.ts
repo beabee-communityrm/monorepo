@@ -1,5 +1,3 @@
-import { stringify as _queryStringify } from 'qs';
-
 /**
  * Removes duplicate forward slashes from a URL path
  * @param url - The URL string to clean
@@ -26,12 +24,22 @@ export const hasProtocol = (url: string): boolean => {
  * @param params The query parameters to stringify
  * @returns The stringified query parameters
  */
-export const queryStringify = (params: Record<string, any>): string => {
-  return _queryStringify(params, {
-    arrayFormat: 'brackets',
-    encode: true,
-    encodeValuesOnly: true,
-    strictNullHandling: true,
-    skipNulls: false,
+export const queryStringify = (obj: Record<string, any>): string => {
+  const params = new URLSearchParams();
+
+  Object.entries(obj).forEach(([key, value]) => {
+    if (Array.isArray(value)) {
+      value.forEach((item) => {
+        params.append(key, item);
+      });
+    } else if (value instanceof Date) {
+      params.append(key, value.toISOString());
+    } else if (typeof value === "object") {
+      params.append(key, JSON.stringify(value));
+    } else if (value !== undefined) {
+      params.append(key, value.toString());
+    }
   });
+
+  return params.toString();
 };

@@ -1,4 +1,3 @@
-
 import {
   cleanUrl,
   ClientApiError,
@@ -254,7 +253,7 @@ export class Fetch {
         ...data
       };
       if (Object.keys(queryParams).length > 0) {
-        url.search = queryStringify(queryParams, );
+        url.search = queryStringify(queryParams);
       }
     } else {
       // For non-GET requests
