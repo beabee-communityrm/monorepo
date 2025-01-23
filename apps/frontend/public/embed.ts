@@ -17,5 +17,5 @@ if (document.currentScript?.parentNode) {
     document.currentScript
   );
 
-  iframeResize({ license: 'GPLv3' }, '#' + id);
+  iframeResize({ license: 'GPLv3', log: true } as any, '#' + id);
 }
