@@ -8,6 +8,7 @@ import type {
   CreateCalloutResponseData,
   GetCalloutData,
   GetCalloutDataWith,
+  GetCalloutResponseData,
   GetCalloutResponseDataWith,
   GetCalloutResponseMapData,
   GetCalloutResponsesQuery,
@@ -175,8 +176,8 @@ export class CalloutClient extends BaseClient {
       "answers" | "guestEmail" | "guestName"
     >,
     captchaToken?: string
-  ): Promise<void> {
-    await this.fetch.post(
+  ): Promise<GetCalloutResponseData> {
+    const { data } = await this.fetch.post<Serial<GetCalloutResponseData>>(
       `/${slug}/responses`,
       {
         answers: newData.answers,
@@ -185,5 +186,6 @@ export class CalloutClient extends BaseClient {
       },
       { params: { captchaToken } }
     );
+    return CalloutResponseClient.deserialize(data);
   }
 }
