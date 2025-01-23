@@ -75,4 +75,5 @@ class ResetSecurityFlowService {
   }
 }
 
-export default new ResetSecurityFlowService();
+export const resetSecurityFlowService = new ResetSecurityFlowService();
+export default resetSecurityFlowService;

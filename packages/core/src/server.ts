@@ -7,6 +7,7 @@ import OptionsService from "#services/OptionsService";
 import { networkCommunicatorService } from "#services/NetworkCommunicatorService";
 
 const log = mainLogger.child({ app: "server" });
+const PORT = 3000;
 
 export async function initApp() {
   log.info("Initializing app...");
@@ -15,11 +16,14 @@ export async function initApp() {
 }
 
 export function startServer(app: Express) {
-  log.info("Starting server...");
+  log.info(`Starting server...`);
 
   app.set("trust proxy", true);
 
-  const server = app.listen(3000);
+  const server = app.listen(PORT, () => {
+    log.info(`Server is ready and listening on port ${PORT}`);
+  });
+
   networkCommunicatorService.startServer();
 
   process.on("SIGTERM", () => {

@@ -18,35 +18,24 @@
     "build:platforms": "node esbuild.js",
     "build:types": "tsc --project ./tsconfig.build.json",
     "generate:index": "node generate-index.js",
-    "test": "yarn test:node && yarn test:web",
-    "test:web": "NODE_OPTIONS=--experimental-vm-modules jest --config jest.config.web.js",
-    "test:node": "NODE_OPTIONS=--experimental-vm-modules jest --config jest.config.node.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "format": "prettier --write .",
     "check": "yarn check:tsc && yarn check:prettier",
     "check:tsc": "tsc --project ./tsconfig.build.json --noEmit",
-    "check:prettier": "prettier -c .",
-    "presetup": "yarn presetup:env",
-    "presetup:env": "cp -n .env.example .env 2>/dev/null || true"
+    "check:prettier": "prettier -c ."
   },
   "dependencies": {
-    "@beabee/beabee-common": "workspace:^",
-    "node-fetch": "^2.7.0"
+    "@beabee/beabee-common": "workspace:^"
   },
   "devDependencies": {
     "@beabee/prettier-config": "workspace:^",
+    "@beabee/test-utils": "workspace:^",
     "@gjsify/esbuild-plugin-transform-ext": "^0.0.4",
-    "@jest/globals": "^29.7.0",
-    "@types/jest": "^29.5.14",
-    "@types/node-fetch": "2.6.12",
     "dotenv": "^16.4.7",
-    "jest": "^29.7.0",
-    "jest-environment-jsdom": "^29.7.0",
-    "jest-environment-node": "^29.7.0",
-    "jsdom": "^25.0.1",
     "prettier": "^3.4.2",
-    "ts-jest": "^29.2.5",
     "typescript": "~5.6.3",
-    "whatwg-fetch": "^3.6.20"
+    "vitest": "^3.0.3"
   },
   "files": [
     "dist/"

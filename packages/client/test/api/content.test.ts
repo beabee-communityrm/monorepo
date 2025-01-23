@@ -1,4 +1,4 @@
-import { describe, expect, it, beforeAll } from "@jest/globals";
+import { describe, expect, it, beforeAll } from "vitest";
 import { ContentClient, ClientApiError } from "@beabee/client";
 import { ContentId } from "@beabee/beabee-common";
 import { API_KEY, HOST, PATH } from "./utils/env.js";

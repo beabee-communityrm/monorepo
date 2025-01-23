@@ -127,4 +127,5 @@ class OptionsService {
   }
 }
 
-export default new OptionsService();
+export const optionsService = new OptionsService();
+export default optionsService;

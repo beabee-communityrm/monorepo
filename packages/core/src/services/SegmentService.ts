@@ -29,4 +29,5 @@ class SegmentService {
   }
 }
 
-export default new SegmentService();
+export const segmentService = new SegmentService();
+export default segmentService;

@@ -1,3 +1,4 @@
+import { describe, expect, test } from "vitest";
 import { isEmail } from "@beabee/beabee-common";
 
 describe("email validation", () => {

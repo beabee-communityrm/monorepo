@@ -1,0 +1,82 @@
+services:
+  db:
+    extends:
+      file: docker-compose.yml
+      service: db
+    ports: []
+
+  mail:
+    extends:
+      file: docker-compose.yml
+      service: mail
+    ports:
+      - ${MAIL_PORT}:1080
+
+  app:
+    extends:
+      file: docker-compose.yml
+      service: app
+    env_file:
+      - .env
+      - .env.test
+
+  api_app:
+    extends:
+      file: docker-compose.yml
+      service: api_app
+    env_file:
+      - .env
+      - .env.test
+
+  webhook_app:
+    extends:
+      file: docker-compose.yml
+      service: webhook_app
+    env_file:
+      - .env
+      - .env.test
+
+  cron_app:
+    extends:
+      file: docker-compose.yml
+      service: cron_app
+    env_file:
+      - .env
+      - .env.test
+
+  img_upload_app:
+    extends:
+      file: docker-compose.yml
+      service: img_upload_app
+    environment:
+      URL: ${BEABEE_AUDIENCE}/uploads/
+
+  frontend:
+    extends:
+      file: docker-compose.yml
+      service: frontend
+    env_file:
+      - ./apps/frontend/.env
+      - ./apps/frontend/.env.test
+
+  app_router:
+    extends:
+      file: docker-compose.yml
+      service: app_router
+    environment:
+      LEGACY_APP_COOKIE_DOMAIN: ${BEABEE_COOKIE_DOMAIN}
+      TRUSTED_ORIGINS: ${BEABEE_TRUSTEDORIGINS-}
+    ports:
+      - ${ROUTER_PORT}:80
+
+  migration:
+    extends:
+      file: docker-compose.yml
+      service: migration
+    env_file:
+      - .env
+      - .env.test
+
+volumes:
+  db_data:
+  upload_data:

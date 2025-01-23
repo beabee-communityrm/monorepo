@@ -1,4 +1,4 @@
-import { describe, expect, test } from "@jest/globals";
+import { describe, expect, test } from "vitest";
 import { CalloutClient } from "@beabee/client";
 
 import { API_KEY, HOST, PATH } from "./utils/env.js";

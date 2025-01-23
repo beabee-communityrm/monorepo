@@ -1,0 +1,14 @@
+{
+  "name": "@beabee/test-utils",
+  "version": "1.0.0",
+  "type": "module",
+  "exports": {
+    "./vitest/*": "./vitest/*.ts"
+  },
+  "files": [
+    "vitest"
+  ],
+  "dependencies": {
+    "testcontainers": "^10.17.1"
+  }
+}
