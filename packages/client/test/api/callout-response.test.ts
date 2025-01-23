@@ -1,13 +1,21 @@
 import { describe, expect, it } from "vitest";
 import { CalloutResponseClient } from "@beabee/client";
-import { GetCalloutResponseDataWith, Serial, CalloutAccess, CalloutCaptcha, ItemStatus } from "@beabee/beabee-common";
+import {
+  GetCalloutResponseDataWith,
+  Serial,
+  CalloutAccess,
+  CalloutCaptcha,
+  ItemStatus
+} from "@beabee/beabee-common";
 import { createTestCalloutResponseAnswers } from "./data/callouts.js";
 
 describe("CalloutResponse API", () => {
   describe("deserialize", () => {
     it("should correctly deserialize response data with all relations", () => {
       const now = new Date();
-      const serializedData: Serial<GetCalloutResponseDataWith<"answers" | "callout" | "contact" | "tags">> = {
+      const serializedData: Serial<
+        GetCalloutResponseDataWith<"answers" | "callout" | "contact" | "tags">
+      > = {
         id: "test-id",
         createdAt: now.toISOString(),
         updatedAt: now.toISOString(),
@@ -31,7 +39,7 @@ describe("CalloutResponse API", () => {
           hidden: false,
           captcha: CalloutCaptcha.None,
           channels: [],
-          excerpt: "Test Callout Excerpt",
+          excerpt: "Test Callout Excerpt"
         },
         contact: {
           id: "contact-id",
@@ -44,7 +52,9 @@ describe("CalloutResponse API", () => {
         }
       };
 
-      const result = CalloutResponseClient.deserialize<"answers" | "callout" | "contact" | "tags">(serializedData);
+      const result = CalloutResponseClient.deserialize<
+        "answers" | "callout" | "contact" | "tags"
+      >(serializedData);
 
       expect(result.id).toBe(serializedData.id);
       expect(result.createdAt).toBeInstanceOf(Date);
@@ -55,4 +65,4 @@ describe("CalloutResponse API", () => {
       expect(result.tags).toEqual(serializedData.tags);
     });
   });
-}); 
+});

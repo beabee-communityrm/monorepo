@@ -3,7 +3,6 @@ import { CalloutResponseCommentClient } from "@beabee/client";
 import { GetCalloutResponseCommentData, Serial } from "@beabee/beabee-common";
 
 describe("CalloutResponseComment API", () => {
-
   describe("deserialize", () => {
     it("should correctly deserialize comment data", () => {
       const now = new Date();
@@ -36,4 +35,4 @@ describe("CalloutResponseComment API", () => {
       expect(result.contact.id).toBe(serializedData.contact.id);
     });
   });
-}); 
+});

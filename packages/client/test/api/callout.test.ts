@@ -1,9 +1,22 @@
 import { describe, expect, it, beforeAll, afterAll } from "vitest";
 import { BeabeeClient } from "@beabee/client";
-import { ItemStatus, type GetCalloutsQuery, type CreateCalloutResponseCommentData } from "@beabee/beabee-common";
-import { API_KEY, HOST, PATH, TEST_USER_EMAIL, TEST_USER_PASSWORD } from "./utils/env.js";
+import {
+  ItemStatus,
+  type GetCalloutsQuery,
+  type CreateCalloutResponseCommentData
+} from "@beabee/beabee-common";
+import {
+  API_KEY,
+  HOST,
+  PATH,
+  TEST_USER_EMAIL,
+  TEST_USER_PASSWORD
+} from "./utils/env.js";
 import { createTestCallout } from "./data/callouts";
-import { createTestCalloutResponseAnswers, createMinimalTestCalloutResponseAnswers } from "./data/callouts";
+import {
+  createTestCalloutResponseAnswers,
+  createMinimalTestCalloutResponseAnswers
+} from "./data/callouts";
 
 describe("Callout API", () => {
   let client: BeabeeClient;
@@ -41,9 +54,9 @@ describe("Callout API", () => {
     // Create user client (requires login)
     userClient = new BeabeeClient({
       host: HOST,
-      path: PATH,
+      path: PATH
     });
-    
+
     // Login for comment operations
     await userClient.auth.login({
       email: TEST_USER_EMAIL,
@@ -71,12 +84,11 @@ describe("Callout API", () => {
                 operator: "equal",
                 value: [ItemStatus.Open]
               },
-              // TODO: There seem to be problems with arrays with multiple entries in a query string, see packages/client/src/utils/url.ts
-              // {
-              //   field: "hidden",
-              //   operator: "equal",
-              //   value: [false]
-              // }
+              {
+                field: "hidden",
+                operator: "equal",
+                value: [false]
+              }
             ]
           }
         };
@@ -99,7 +111,9 @@ describe("Callout API", () => {
 
     describe("get", () => {
       it("should get a callout by slug with form data", async () => {
-        const response = await client.callout.get(testCalloutSlug, ["form"] as const);
+        const response = await client.callout.get(testCalloutSlug, [
+          "form"
+        ] as const);
 
         expect(response).toBeDefined();
         expect(response.slug).toBe(testCalloutSlug);
@@ -111,7 +125,11 @@ describe("Callout API", () => {
   describe("Callout Responses", () => {
     describe("list", () => {
       it("should list responses with pagination and filtering", async () => {
-        const { items } = await client.callout.listResponses(testCalloutSlug, {}, ["answers"] as const);
+        const { items } = await client.callout.listResponses(
+          testCalloutSlug,
+          {},
+          ["answers"] as const
+        );
 
         expect(Array.isArray(items)).toBe(true);
         expect(items.length).toBeGreaterThan(0);
@@ -147,7 +165,10 @@ describe("Callout API", () => {
           guestName: "Updated Guest Name"
         };
 
-        const response = await client.callout.response.update(testResponseId, updateData);
+        const response = await client.callout.response.update(
+          testResponseId,
+          updateData
+        );
 
         expect(response).toBeDefined();
         expect(response.id).toBe(testResponseId);
@@ -167,7 +188,8 @@ describe("Callout API", () => {
         };
 
         // Create comment with user logged in client
-        const response = await userClient.callout.response.comment.create(newComment);
+        const response =
+          await userClient.callout.response.comment.create(newComment);
         testCommentId = response.id;
 
         expect(response).toBeDefined();
@@ -183,7 +205,10 @@ describe("Callout API", () => {
           text: "Updated comment"
         };
 
-        const response = await client.callout.response.comment.update(testCommentId, updateData);
+        const response = await client.callout.response.comment.update(
+          testCommentId,
+          updateData
+        );
 
         expect(response).toBeDefined();
         expect(response.text).toBe(updateData.text);
@@ -195,7 +220,13 @@ describe("Callout API", () => {
       it("should list comments for a response", async () => {
         const response = await client.callout.response.comment.list({
           rules: {
-            rules: [{ field: "responseId", operator: "equal", value: [testResponseId] }],
+            rules: [
+              {
+                field: "responseId",
+                operator: "equal",
+                value: [testResponseId]
+              }
+            ],
             condition: "AND"
           }
         });

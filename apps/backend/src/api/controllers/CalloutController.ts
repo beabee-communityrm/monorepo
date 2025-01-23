@@ -207,7 +207,11 @@ export class CalloutController {
         data.answers
       );
     } else {
-      response = await CalloutsService.setResponse(callout, caller, data.answers);
+      response = await CalloutsService.setResponse(
+        callout,
+        caller,
+        data.answers
+      );
     }
 
     return CalloutResponseTransformer.convert(response, auth, {});
