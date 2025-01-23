@@ -25,7 +25,9 @@ export class ContactMfaClient extends BaseClient {
    * @param data - The serialized MFA data.
    * @returns The deserialized MFA data.
    */
-  protected deserialize(data: Serial<GetContactMfaData>): GetContactMfaData {
+  public static deserialize(
+    data: Serial<GetContactMfaData>
+  ): GetContactMfaData {
     // Nothing to do for now
     return data;
   }
@@ -39,7 +41,7 @@ export class ContactMfaClient extends BaseClient {
     const { data } = await this.fetch.get<Serial<GetContactMfaData>>(
       `/${contactId}/mfa`
     );
-    return this.deserialize(data);
+    return ContactMfaClient.deserialize(data);
   }
 
   /**
