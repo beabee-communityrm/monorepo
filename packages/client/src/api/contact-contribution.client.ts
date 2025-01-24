@@ -9,7 +9,7 @@ import {
   type Serial,
   type SetContributionData,
   type StartContributionData
-} from "../deps.js";
+} from "@beabee/beabee-common";
 
 /**
  * Client for managing contribution operations

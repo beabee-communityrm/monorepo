@@ -7,7 +7,7 @@ import type {
   DeleteContactMfaData,
   GetContactMfaData,
   Serial
-} from "../deps.js";
+} from "@beabee/beabee-common";
 
 /**
  * Client for managing contact MFA operations.

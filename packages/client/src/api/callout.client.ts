@@ -18,7 +18,7 @@ import type {
   Paginated,
   Serial,
   UpdateCalloutData
-} from "../deps.js";
+} from "@beabee/beabee-common";
 
 export class CalloutClient extends BaseClient {
   /** Client for managing callout responses */

@@ -326,7 +326,7 @@ export class Fetch {
             console.error(JSON.stringify(error, null, 2));
           }
         }
-        throw new ClientApiError(data.message || data.name || "Unknown error", {
+        throw new ClientApiError(data.message || "Unknown error", {
           ...data,
           status: response.status
         });

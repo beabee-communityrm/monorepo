@@ -13,7 +13,7 @@ import type {
   RuleGroup,
   Serial,
   UpdateCalloutResponseData
-} from "../deps.js";
+} from "@beabee/beabee-common";
 
 /**
  * Client for managing callout responses

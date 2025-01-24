@@ -1,7 +1,7 @@
 import { BaseClient } from "./base.client.js";
 import { cleanUrl } from "../utils/index.js";
 import type { BaseClientOptions } from "../types/index.js";
-import type { GetEmailData, UpdateEmailData } from "../deps.js";
+import type { GetEmailData, UpdateEmailData } from "@beabee/beabee-common";
 
 /**
  * Client for managing email operations
@@ -23,9 +23,9 @@ export class EmailClient extends BaseClient {
   /**
    * Retrieves email data by ID
    * @param id - The email ID to fetch
-   * @returns The email data or false if not found
+   * @returns The email data
    */
-  async get(id: string): Promise<GetEmailData | false> {
+  async get(id: string): Promise<GetEmailData> {
     const { data } = await this.fetch.get<GetEmailData>(`/${id}`);
     return data;
   }

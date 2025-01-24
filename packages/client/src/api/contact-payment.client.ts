@@ -10,7 +10,7 @@ import type {
   Paginated,
   PaymentFlowParams,
   Serial
-} from "../deps.js";
+} from "@beabee/beabee-common";
 
 /**
  * Client for managing contact payment operations

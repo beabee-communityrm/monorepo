@@ -8,7 +8,7 @@ import type {
   GetApiKeysQuery,
   Paginated,
   Serial
-} from "../deps.js";
+} from "@beabee/beabee-common";
 
 export class ApiKeyClient extends BaseClient {
   /**

@@ -7,7 +7,7 @@ import type {
   GetNoticesQuery,
   Paginated,
   Serial
-} from "../deps.js";
+} from "@beabee/beabee-common";
 
 /**
  * Client for managing dashboard notices

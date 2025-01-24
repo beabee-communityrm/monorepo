@@ -10,7 +10,7 @@ import type {
   Paginated,
   Serial,
   UpdateCalloutResponseCommentData
-} from "../deps.js";
+} from "@beabee/beabee-common";
 
 /**
  * Client for managing comments on callout responses

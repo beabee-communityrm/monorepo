@@ -2,7 +2,7 @@ import { BaseClient } from "./base.client.js";
 import { cleanUrl } from "../utils/index.js";
 
 import type { BaseClientOptions } from "../types/index.js";
-import type { ContentData, ContentId } from "../deps.js";
+import type { ContentData, ContentId } from "@beabee/beabee-common";
 
 /**
  * Client for managing content pages and blocks

@@ -17,7 +17,7 @@ import type {
   RuleGroup,
   Serial,
   UpdateContactData
-} from "../deps.js";
+} from "@beabee/beabee-common";
 
 /**
  * Client for managing contacts (users) in the Beabee system

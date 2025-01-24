@@ -9,7 +9,7 @@ import type {
   GetPaymentWith,
   Paginated,
   Serial
-} from "../deps.js";
+} from "@beabee/beabee-common";
 
 /**
  * Client for managing payments

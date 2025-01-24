@@ -7,7 +7,7 @@ import type {
   RoleType,
   Serial,
   UpdateContactRoleData
-} from "../deps.js";
+} from "@beabee/beabee-common";
 
 export class ContactRoleClient extends BaseClient {
   static deserialize(data: Serial<ContactRoleData>): ContactRoleData {
