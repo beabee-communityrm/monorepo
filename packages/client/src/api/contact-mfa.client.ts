@@ -67,6 +67,6 @@ export class ContactMfaClient extends BaseClient {
     contactId: string,
     deleteData: DeleteContactMfaData
   ): Promise<void> {
-    await this.fetch.delete(`/${contactId}/mfa`, { data: deleteData });
+    await this.fetch.delete(`/${contactId}/mfa`, deleteData);
   }
 }

@@ -287,7 +287,7 @@ export class Fetch {
     }
 
     // Automatically parse json response
-    let bodyResult = (await response.text()) as unknown as T;
+    let bodyResult = (await response.text()) as unknown;
     if (typeof bodyResult === "string" && isJson(bodyResult)) {
       bodyResult = JSON.parse(bodyResult);
     }
@@ -295,28 +295,28 @@ export class Fetch {
     if (typeof bodyResult === "string") {
       switch (bodyResult) {
         case "null":
-          bodyResult = null as unknown as T;
+        case "": // FIXME: Does the server interpret `null` as an empty string?
+          bodyResult = null;
           break;
         case "true":
-          bodyResult = true as unknown as T;
+          bodyResult = true;
           break;
         case "false":
-          bodyResult = false as unknown as T;
+          bodyResult = false;
           break;
         case "undefined":
-          bodyResult = undefined as unknown as T;
+          bodyResult = undefined;
           break;
       }
     }
 
     const result: FetchResponse<T> = {
       ...response,
-      data: bodyResult,
-      // WORKAROUND:
+      data: bodyResult as T,
       ok: response.status >= 200 && response.status < 300
     };
 
-    // Makes it sense to throw an error if the response is not ok?
+    // Makes it sense to throw an error if the response is not ok
     if (!result.ok) {
       if (result.data) {
         const data = result.data as any;
