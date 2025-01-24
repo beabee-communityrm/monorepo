@@ -1,6 +1,6 @@
 import { describe, expect, it, beforeAll } from "vitest";
 import { ContentClient, ClientApiError } from "@beabee/client";
-import { ContentId } from "@beabee/beabee-common";
+import { ContentId, ContentJoinData } from "@beabee/beabee-common";
 import { API_KEY, HOST, PATH } from "./utils/env.js";
 
 describe("Content API", () => {
@@ -22,5 +22,25 @@ describe("Content API", () => {
         expect(error.httpCode).toBe(400);
       }
     }
+  });
+
+  it("should fetch content by profile id", async () => {
+    const contentId: ContentId = "profile";
+    const content = await contentClient.get(contentId);
+
+    expect(content).toBeDefined();
+    expect(content.introMessage).toBeDefined();
+  });
+
+  it("should update content", async () => {
+    const contentId: ContentId = "join";
+    const updateData: Partial<ContentJoinData> = {
+      title: "Updated join title"
+    };
+
+    const updatedContent = await contentClient.update(contentId, updateData);
+
+    expect(updatedContent).toBeDefined();
+    expect(updatedContent.title).toBe(updateData.title);
   });
 });
