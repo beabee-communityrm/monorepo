@@ -503,7 +503,11 @@ function handleClusterClick(cluster: MapClusterFeature) {
 
   const source = map.value.getSource(SOURCE_IDS.RESPONSES) as GeoJSONSource;
   source.getClusterExpansionZoom(cluster.properties.cluster_id, (err, zoom) => {
-    if (err || zoom == null) return;
+    if (err || zoom == null) {
+      // eslint-disable-next-line no-console
+      console.error('Failed to get cluster expansion zoom:', err);
+      return;
+    }
 
     // Maximum zoom level, open first response
     if (zoom >= mapSchema.maxZoom) {
