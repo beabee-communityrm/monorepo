@@ -7,6 +7,10 @@ x-service-app: &service-app
     migration:
       condition: service_completed_successfully
 
+x-backend-app: &backend-app
+  <<: *service-app
+  command: ['node', '--watch', './dist/app.js']
+
 services:
   db:
     image: postgres:13.9
@@ -32,7 +36,7 @@ services:
 
   # Legacy app
   app:
-    <<: *service-app
+    <<: *backend-app
     build:
       context: .
       dockerfile: ./packages/docker/base.dockerfile
@@ -45,7 +49,7 @@ services:
 
   # API app
   api_app:
-    <<: *service-app
+    <<: *backend-app
     build:
       context: .
       dockerfile: ./packages/docker/base.dockerfile
@@ -57,10 +61,12 @@ services:
       - ./apps/backend/built:/opt/apps/backend/built
       # Allow migrations to be written out from the container
       - ./packages/core/src/migrations:/opt/packages/core/src/migrations
+    # TODO: Use standard dist folder
+    command: ['node', '--watch', './built/api/app.js']
 
   # Webhook app
   webhook_app:
-    <<: *service-app
+    <<: *backend-app
     build:
       context: .
       dockerfile: ./packages/docker/base.dockerfile
