@@ -279,6 +279,15 @@ const { t } = useI18n();
 
 // The list of responses for this callout
 const responses = ref<GetCalloutResponseMapDataWithAddress[]>([]);
+const responsesByNumber = computed(() =>
+  responses.value.reduce(
+    (acc, r) => {
+      acc[r.number] = r;
+      return acc;
+    },
+    {} as Record<number, GetCalloutResponseMapDataWithAddress>
+  )
+);
 
 // Used to adjust map view based on the side panel width
 const sidePanelRef = ref<HTMLElement>();
@@ -345,7 +354,7 @@ const selectedResponses = computed(() => {
     .map(Number)
     .sort();
 
-  return responses.value.filter((r) => responseNumbers.includes(r.number));
+  return responseNumbers.map((r) => responsesByNumber.value[r]);
 });
 
 /**
@@ -413,10 +422,10 @@ watch(selectedResponseNumber, (responseNo) => {
   if (selectedFeature.value) {
     center = selectedFeature.value.geometry.coordinates as LngLatLike;
   } else {
-    const response = responses.value.find((r) => r.number === responseNo);
     // It could be that the response isn't in a visible cluster, so hasn't been
     // found by queryRenderedFeatures. If this is the case then move to
     // where the response is, then look again for the response once it's in view
+    const response = responsesByNumber.value[responseNo];
     if (response) {
       center = [
         response.address.geometry.location.lng,
