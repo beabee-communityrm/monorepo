@@ -38,7 +38,7 @@ meta:
         <MglGeolocationControl />
 
         <MglGeoJsonSource
-          source-id="responses"
+          :source-id="SOURCE_IDS.RESPONSES"
           :data="responsesCollecton"
           cluster
           :cluster-properties="{
@@ -47,7 +47,7 @@ meta:
           }"
         >
           <MglCircleLayer
-            layer-id="clusters"
+            :layer-id="LAYER_IDS.CLUSTERS"
             :filter="['has', 'point_count']"
             :paint="{
               'circle-color': 'black',
@@ -73,7 +73,7 @@ meta:
             }"
           />
           <MglCircleLayer
-            layer-id="unclustered-points"
+            :layer-id="LAYER_IDS.UNCLUSTERED_POINTS"
             :filter="['!', ['has', 'point_count']]"
             :paint="{
               'circle-color': 'black',
@@ -83,11 +83,11 @@ meta:
         </MglGeoJsonSource>
         <MglGeoJsonSource
           v-if="selectedFeature"
-          source-id="selected-response"
+          :source-id="SOURCE_IDS.SELECTED_RESPONSE"
           :data="selectedFeature"
         >
           <MglCircleLayer
-            layer-id="selected-response"
+            :layer-id="LAYER_IDS.SELECTED_RESPONSE"
             :paint="{
               'circle-stroke-color': 'red',
               'circle-stroke-width': 2,
@@ -255,6 +255,17 @@ import type {
   MapPointFeatureCollection,
 } from '@type';
 
+const LAYER_IDS = {
+  CLUSTERS: 'clusters',
+  UNCLUSTERED_POINTS: 'unclustered-points',
+  SELECTED_RESPONSE: 'selected-response',
+} as const;
+
+const SOURCE_IDS = {
+  RESPONSES: 'responses',
+  SELECTED_RESPONSE: 'selected-response',
+} as const;
+
 const props = defineProps<{
   callout: GetCalloutDataWith<'form' | 'responseViewSchema' | 'variantNames'>;
   // Suppress the warning about the ID prop being passed by the router
@@ -346,7 +357,7 @@ function findSelectedFeature(responseNo: number) {
   if (!map.value) return;
 
   const feature = map.value.queryRenderedFeatures({
-    layers: ['unclustered-points', 'clusters'],
+    layers: [LAYER_IDS.UNCLUSTERED_POINTS, LAYER_IDS.CLUSTERS],
     filter: ['in', `<${responseNo}>`, ['get', 'all_responses']],
   })[0] as unknown as MapPointFeature | undefined;
 
@@ -431,7 +442,9 @@ watch(selectedResponseNumber, (responseNo) => {
 function handleZoom() {
   if (!map.value) return;
 
-  const clusters = map.value.queryRenderedFeatures({ layers: ['clusters'] });
+  const clusters = map.value.queryRenderedFeatures({
+    layers: [LAYER_IDS.CLUSTERS],
+  });
   clusterCount.value = clusters.length;
 }
 
@@ -488,7 +501,7 @@ function handleClusterClick(cluster: MapClusterFeature) {
   const mapSchema = props.callout.responseViewSchema?.map;
   if (!map.value || !mapSchema) return; // Can't actually happen
 
-  const source = map.value.getSource('responses') as GeoJSONSource;
+  const source = map.value.getSource(SOURCE_IDS.RESPONSES) as GeoJSONSource;
   source.getClusterExpansionZoom(cluster.properties.cluster_id, (err, zoom) => {
     if (err || zoom == null) return;
 
@@ -523,10 +536,10 @@ function handleClick(e: { event: MapMouseEvent }) {
     }
   } else {
     const [point] = map.value.queryRenderedFeatures(e.event.point, {
-      layers: ['clusters', 'unclustered-points'],
+      layers: [LAYER_IDS.CLUSTERS, LAYER_IDS.UNCLUSTERED_POINTS],
     });
 
-    if (point?.layer.id === 'clusters') {
+    if (point?.layer.id === LAYER_IDS.CLUSTERS) {
       handleClusterClick(point as unknown as MapClusterFeature);
     } else {
       // Open the response or clear the hash
@@ -546,7 +559,7 @@ function handleMouseOver(e: { event: MapMouseEvent }) {
   if (!map.value || isAddMode.value) return;
 
   const features = map.value.queryRenderedFeatures(e.event.point, {
-    layers: ['clusters', 'unclustered-points'],
+    layers: [LAYER_IDS.CLUSTERS, LAYER_IDS.UNCLUSTERED_POINTS],
   });
 
   map.value.getCanvas().style.cursor = features.length > 0 ? 'pointer' : '';
@@ -565,7 +578,7 @@ function handleLoad({ map: mapInstance }: { map: Map }) {
    */
   function handleSourceData(sourceDataEvent: MapSourceDataEvent) {
     if (
-      sourceDataEvent.sourceId === 'responses' &&
+      sourceDataEvent.sourceId === SOURCE_IDS.RESPONSES &&
       sourceDataEvent.isSourceLoaded
     ) {
       // Only set the map reference when responses are loaded. This means other
