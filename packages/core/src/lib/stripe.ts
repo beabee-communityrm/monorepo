@@ -295,10 +295,10 @@ export function paymentMethodToStripeType(
       return "bacs_debit";
     case PaymentMethod.StripePayPal:
       return "paypal";
+    case PaymentMethod.StripeIdeal:
+      return "ideal";
     case PaymentMethod.GoCardlessDirectDebit:
       return "bacs_debit";
-    default:
-      throw new Error("Unexpected payment method");
   }
 }
 
@@ -321,6 +321,8 @@ export function stripeTypeToPaymentMethod(
       return PaymentMethod.StripeBACS;
     case "paypal":
       return PaymentMethod.StripePayPal;
+    case "ideal":
+      return PaymentMethod.StripeIdeal;
     default:
       throw new Error("Unexpected Stripe payment type");
   }

@@ -1,6 +1,6 @@
-import { stripe, paymentMethodToStripeType } from "#lib/stripe";
+import { stripe, paymentMethodToStripeType, Stripe } from "#lib/stripe";
 import { log as mainLogger } from "#logging";
-import { JoinFlow } from "#models/index";
+import { JoinFlow, Payment } from "#models/index";
 
 import { PaymentFlowProvider } from ".";
 
@@ -9,6 +9,8 @@ import {
   CompletedPaymentFlowData,
   PaymentFlow
 } from "#type/index";
+import { PaymentMethod } from "@beabee/beabee-common";
+import { BadRequestError } from "#errors/BadRequestError";
 
 const log = mainLogger.child({ app: "stripe-payment-flow-provider" });
 
@@ -32,16 +34,38 @@ class StripeProvider implements PaymentFlowProvider {
 
   async completePaymentFlow(joinFlow: JoinFlow): Promise<CompletedPaymentFlow> {
     const setupIntent = await stripe.setupIntents.retrieve(
-      joinFlow.paymentFlowId
+      joinFlow.paymentFlowId,
+      { expand: ["latest_attempt"] }
     );
+    let paymentMethod = joinFlow.joinForm.paymentMethod;
+    let siPaymentMethodId: string | null;
 
     log.info("Fetched setup intent " + setupIntent.id);
 
-    const siPaymentMethodId = setupIntent.payment_method as string;
+    // iDEAL is a one time payment method, use setup intent to retrieve the SEPA
+    // debit payment method instead
+    // https://docs.stripe.com/payments/ideal/set-up-payment
+    if (paymentMethod === PaymentMethod.StripeIdeal) {
+      const latestAttempt =
+        setupIntent.latest_attempt as Stripe.SetupAttempt | null;
+
+      paymentMethod = PaymentMethod.StripeSEPA;
+      siPaymentMethodId = latestAttempt?.payment_method_details.ideal
+        ?.generated_sepa_debit as string | null;
+    } else {
+      siPaymentMethodId = setupIntent.payment_method as string | null;
+    }
+
+    if (!siPaymentMethodId) {
+      log.error("No valid payment setup intent payment method", {
+        joinFlow,
+        setupIntent
+      });
+      throw new BadRequestError({ message: "Failed to complete payment flow" });
+    }
 
     return {
-      // paymentMethod: joinFlow.joinForm.paymentMethod,
-      joinForm: joinFlow.joinForm,
+      joinForm: { ...joinFlow.joinForm, paymentMethod },
       customerId: "", // Not needed
       mandateId: siPaymentMethodId
     };
