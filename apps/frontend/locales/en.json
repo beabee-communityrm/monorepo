@@ -1329,6 +1329,11 @@
       "label": "Card",
       "setLabel": "Your card details"
     },
+    "s_ideal": {
+      "changeLabel": "Change iDEAL details",
+      "label": "iDEAL",
+      "setLabel": "Your iDEAL details"
+    },
     "s_paypal": {
       "changeLabel": "Change PayPal details",
       "label": "PayPal",

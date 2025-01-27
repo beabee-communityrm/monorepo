@@ -1319,6 +1319,11 @@
       "label": "Kreditkarte",
       "setLabel": "Ihre Kreditkartendetails"
     },
+    "s_ideal": {
+      "changeLabel": "iDEAL ändern",
+      "label": "iDEAL",
+      "setLabel": "Ihre iDEAL-Daten"
+    },
     "s_paypal": {
       "changeLabel": "PayPal ändern",
       "label": "PayPal",

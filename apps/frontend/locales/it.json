@@ -498,6 +498,7 @@
       "changeLabel": "Modifica i dettagli della carta",
       "label": "Carta di credito"
     },
+    "s_ideal": {},
     "s_paypal": {
       "label": "PayPal"
     },
