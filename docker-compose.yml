@@ -1,11 +1,15 @@
-# version: "3.4"
+x-service-app: &service-app
+  depends_on:
+    # Wait for the database to be ready
+    db:
+      condition: service_healthy
+    # Wait for the migration to be completed
+    migration:
+      condition: service_completed_successfully
 
-# Backend app and legacy frontend
-x-base-app: &base-app
-  env_file:
-    - .env
-  environment:
-    NODE_ENV: development
+x-backend-app: &backend-app
+  <<: *service-app
+  command: ['node', '--watch', './dist/app.js']
 
 services:
   db:
@@ -16,6 +20,12 @@ services:
       POSTGRES_USER: membership_system
       POSTGRES_PASSWORD: membership_system
       POSTGRES_DB: membership_system
+    # Healthcheck for the database
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U membership_system"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     ports:
       - 6543:5432
 
@@ -26,46 +36,56 @@ services:
 
   # Legacy app
   app:
-    <<: *base-app
+    <<: *backend-app
     build:
       context: .
       dockerfile: ./packages/docker/base.dockerfile
       target: legacy_app
+    env_file:
+      - .env
     volumes:
       - ./packages:/opt/packages
       - ./apps/legacy/dist:/opt/apps/legacy/dist
 
   # API app
   api_app:
-    <<: *base-app
+    <<: *backend-app
     build:
       context: .
       dockerfile: ./packages/docker/base.dockerfile
       target: api_app
+    env_file:
+      - .env
     volumes:
       - ./packages:/opt/packages
       - ./apps/backend/built:/opt/apps/backend/built
       # Allow migrations to be written out from the container
       - ./packages/core/src/migrations:/opt/packages/core/src/migrations
+    # TODO: Use standard dist folder
+    command: ['node', '--watch', './built/api/app.js']
 
   # Webhook app
   webhook_app:
-    <<: *base-app
+    <<: *backend-app
     build:
       context: .
       dockerfile: ./packages/docker/base.dockerfile
       target: webhook_app
+    env_file:
+      - .env
     volumes:
       - ./packages:/opt/packages
       - ./apps/webhooks/dist:/opt/apps/webhooks/dist
 
   # Cron app
   cron_app:
-    <<: *base-app
+    <<: *service-app
     build:
       context: .
       dockerfile: ./packages/docker/base.dockerfile
       target: cron_app
+    env_file:
+      - .env
 
   # Image upload handler
   img_upload_app:
@@ -95,7 +115,21 @@ services:
       LEGACY_APP_COOKIE_DOMAIN: ${BEABEE_COOKIE_DOMAIN}
       TRUSTED_ORIGINS: ${BEABEE_TRUSTEDORIGINS-}
     ports:
-      - 3002:80
+      - ${ROUTER_PORT}:80
+
+  # Database migration service
+  migration:
+    build:
+      context: .
+      dockerfile: ./packages/docker/base.dockerfile
+      target: api_app
+    command: 'npm run typeorm migration:run'
+    # Wait for the database to be ready
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - .env
 
 volumes:
   db_data:

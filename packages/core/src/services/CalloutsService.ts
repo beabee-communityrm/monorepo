@@ -454,4 +454,5 @@ class CalloutsService {
   }
 }
 
-export default new CalloutsService();
+export const calloutsService = new CalloutsService();
+export default calloutsService;

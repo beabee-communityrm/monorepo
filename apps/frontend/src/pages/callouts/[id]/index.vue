@@ -23,7 +23,7 @@ meta:
       variant="info"
     />
 
-    <div class="md:max-w-2xl">
+    <div class="w-full md:max-w-2xl">
       <template v-if="!isRespondPage">
         <div v-if="callout.status === ItemStatus.Open" class="mb-6">
           <AppShareBox

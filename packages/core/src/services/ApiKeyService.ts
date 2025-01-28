@@ -51,4 +51,5 @@ class ApiKeyService {
   }
 }
 
-export default new ApiKeyService();
+export const apiKeyService = new ApiKeyService();
+export default apiKeyService;

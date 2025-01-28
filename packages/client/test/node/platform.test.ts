@@ -1,4 +1,4 @@
-import { expect, test } from "@jest/globals";
+import { expect, test } from "vitest";
 
 test("global fetch method is available and working", async () => {
   const response = await fetch("https://jsonplaceholder.typicode.com/posts/1");

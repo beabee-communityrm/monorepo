@@ -21,7 +21,7 @@ import config from "#config/config";
 
 const log = mainLogger.child({ app: "gift-service" });
 
-export default class GiftService {
+export class GiftService {
   private static readonly giftMonthlyAmount = 3;
 
   /**
@@ -186,3 +186,5 @@ export default class GiftService {
     }
   }
 }
+
+export default GiftService;

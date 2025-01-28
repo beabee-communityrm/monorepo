@@ -23,6 +23,9 @@ function notEmpty(s: string) {
 }
 
 runApp(async () => {
+  console.log(
+    "Warning: This script is deprecated. Use the 'backend-cli user create' command instead."
+  );
   const answers = {
     firstname: await input({ message: "First Name", validate: notEmpty }),
     lastname: await input({ message: "Last Name", validate: notEmpty }),

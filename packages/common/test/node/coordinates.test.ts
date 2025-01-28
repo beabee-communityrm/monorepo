@@ -1,3 +1,4 @@
+import { describe, expect, test } from "vitest";
 import { isLngLat } from "@beabee/beabee-common";
 
 describe("isLngLat test with", () => {

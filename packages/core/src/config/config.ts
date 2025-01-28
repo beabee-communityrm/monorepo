@@ -81,7 +81,7 @@ export interface AppConfigOverride {
   subApps?: AppConfigOverrides;
 }
 
-export default {
+export const config = {
   audience: env.s("BEABEE_AUDIENCE"),
   dev: env.b("BEABEE_DEV"),
   secret: env.s("BEABEE_SECRET"),
@@ -158,3 +158,5 @@ export default {
   logFormat: env.e("BEABEE_LOGFORMAT", ["json", "simple"] as const, "json"),
   appOverrides: env.json("BEABEE_APPOVERRIDES", {}) as AppConfigOverrides
 };
+
+export default config;

@@ -1,4 +1,4 @@
-import { describe, expect, test } from "@jest/globals";
+import { describe, expect, test } from "vitest";
 
 import { ContributionPeriod, ContributionType } from "@beabee/beabee-common";
 import { add, sub } from "date-fns";
