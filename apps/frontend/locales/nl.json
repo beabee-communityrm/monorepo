@@ -402,6 +402,7 @@
     "gc_direct-debit": {},
     "s_bacs": {},
     "s_card": {},
+    "s_ideal": {},
     "s_paypal": {},
     "s_sepa": {}
   },

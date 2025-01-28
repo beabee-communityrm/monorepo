@@ -1320,6 +1320,11 @@
       "label": "Kreditkarte",
       "setLabel": "Deine Kreditkartendetails"
     },
+    "s_ideal": {
+      "changeLabel": "iDEAL ändern",
+      "label": "iDEAL",
+      "setLabel": "Deine iDEAL-Daten"
+    },
     "s_paypal": {
       "changeLabel": "PayPal ändern",
       "label": "PayPal",

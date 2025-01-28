@@ -8,19 +8,22 @@ const stripeFees = {
     [PaymentMethod.StripeSEPA]: () => 0.3,
     [PaymentMethod.StripeBACS]: (amount: number) =>
       Math.min(2, Math.max(0.2, 0.01 * amount)),
-    [PaymentMethod.StripePayPal]: (amount: number) => 0.1 + 0.02 * amount
+    [PaymentMethod.StripePayPal]: (amount: number) => 0.1 + 0.02 * amount,
+    [PaymentMethod.StripeIdeal]: () => 0.3 // Becomes a SEPA so same fee
   },
   eu: {
     [PaymentMethod.StripeCard]: (amount: number) => 0.25 + 0.015 * amount,
     [PaymentMethod.StripeSEPA]: () => 0.35,
     [PaymentMethod.StripeBACS]: () => 0, // Not available
-    [PaymentMethod.StripePayPal]: (amount: number) => 0.1 + 0.02 * amount
+    [PaymentMethod.StripePayPal]: (amount: number) => 0.1 + 0.02 * amount,
+    [PaymentMethod.StripeIdeal]: () => 0.35 // Becomes a SEPA so same fee
   },
   ca: {
     [PaymentMethod.StripeCard]: (amount: number) => 0.3 + 0.029 * amount,
     [PaymentMethod.StripeSEPA]: () => 0, // Not available
     [PaymentMethod.StripeBACS]: () => 0, // Not available
-    [PaymentMethod.StripePayPal]: () => 0 // Not available
+    [PaymentMethod.StripePayPal]: () => 0, // Not available
+    [PaymentMethod.StripeIdeal]: () => 0 // Not available
   }
 } as const;
 

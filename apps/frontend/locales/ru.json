@@ -821,6 +821,7 @@
       "label": "Карта",
       "setLabel": "Данные вашей карты"
     },
+    "s_ideal": {},
     "s_paypal": {
       "label": "PayPal"
     },
