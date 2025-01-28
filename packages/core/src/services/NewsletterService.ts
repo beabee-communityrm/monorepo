@@ -20,6 +20,13 @@ import { CantUpdateNewsletterContact } from "#errors/CantUpdateNewsletterContact
 
 const log = mainLogger.child({ app: "newsletter-service" });
 
+/**
+ * A guard to check if the given updates object contains any changes that should
+ * be synced to the newsletter provider
+ *
+ * @param updates The updates to check
+ * @returns Whether the updates contain any changes that should be synced
+ */
 function shouldUpdate(updates: ContactNewsletterUpdates): boolean {
   return !!(
     updates.email ||
@@ -34,6 +41,15 @@ function shouldUpdate(updates: ContactNewsletterUpdates): boolean {
   );
 }
 
+/**
+ * Convert a contact and optional updates to a newsletter update object that can
+ * be sent to the newsletter provider
+ *
+ * @param contact The contact
+ * @param updates The updates to the contact
+ * @returns A tuple with the contact's current newsletter status and the update
+ *          object
+ */
 async function contactToNlUpdate(
   contact: Contact,
   updates?: ContactNewsletterUpdates
@@ -73,6 +89,13 @@ async function contactToNlUpdate(
     : [contact.profile.newsletterStatus, nlContact];
 }
 
+/**
+ * Convert a list of contacts to a list of newsletter updates that can be sent
+ * to the newsletter provider, ignoring any contacts that shouldn't be synced
+ *
+ * @param contacts The list of contacts
+ * @returns A list of valid newsletter updates
+ */
 async function getValidNlUpdates(
   contacts: Contact[]
 ): Promise<UpdateNewsletterContact[]> {
