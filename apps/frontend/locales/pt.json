@@ -854,6 +854,7 @@
       "label": "Cartão",
       "setLabel": "Detalhes do teu cartão"
     },
+    "s_ideal": {},
     "s_paypal": {
       "label": "PayPal"
     },
