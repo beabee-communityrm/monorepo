@@ -18,7 +18,7 @@ import {
 } from "#type/index";
 
 import { MailchimpNewsletterConfig } from "#config/config";
-import { CantUpdateMCMember } from "#errors/CantUpdateMCMember";
+import { CantUpdateNewsletterContact } from "#errors/CantUpdateNewsletterContact";
 
 const log = mainLogger.child({ app: "mailchimp-provider" });
 
@@ -162,7 +162,11 @@ export default class MailchimpProvider implements NewsletterProvider {
       }
     }
 
-    throw new CantUpdateMCMember(contact.email, resp.status, resp.data);
+    throw new CantUpdateNewsletterContact(
+      contact.email,
+      resp.status,
+      resp.data
+    );
   }
 
   /**
@@ -175,36 +179,25 @@ export default class MailchimpProvider implements NewsletterProvider {
   async upsertContact(
     contact: UpdateNewsletterContact,
     oldEmail = contact.email
-  ): Promise<NewsletterStatus> {
-    try {
-      const updatedContact = await this.upsertContactOrTryPending(
-        contact,
-        oldEmail
+  ): Promise<NewsletterContact> {
+    const updatedContact = await this.upsertContactOrTryPending(
+      contact,
+      oldEmail
+    );
+
+    // Add/remove the active member tag if the statuses don't match
+    if (updatedContact.isActiveMember !== contact.isActiveMember) {
+      log.info("Updating active member tag for " + contact.email);
+      const tagOp = contact.isActiveMember
+        ? "addTagToContacts"
+        : "removeTagFromContacts";
+      await this[tagOp](
+        [updatedContact.email],
+        OptionsService.getText("newsletter-active-member-tag")
       );
-
-      // Add/remove the active member tag if the statuses don't match
-      if (updatedContact.isActiveMember !== contact.isActiveMember) {
-        log.info("Updating active member tag for " + contact.email);
-        const tagOp = contact.isActiveMember
-          ? "addTagToContacts"
-          : "removeTagFromContacts";
-        await this[tagOp](
-          [updatedContact.email],
-          OptionsService.getText("newsletter-active-member-tag")
-        );
-      }
-
-      // TODO: Update newsletter status?
-
-      return updatedContact.status;
-    } catch (err) {
-      if (err instanceof CantUpdateMCMember) {
-        log.error("Couldn't update newsletter contact " + contact.email, err);
-        return NewsletterStatus.None;
-      } else {
-        throw err;
-      }
     }
+
+    return updatedContact;
   }
 
   /**

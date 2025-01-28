@@ -285,16 +285,13 @@ class ContactsService {
   ): Promise<void> {
     log.info("Update contact profile for " + contact.id, { updates });
 
-    if (opts.sync) {
+    const { newsletterStatus, newsletterGroups, ...profileUpdates } = updates;
+    if (opts.sync && (newsletterStatus || newsletterGroups)) {
       try {
-        const res = await NewsletterService.upsertContact(contact, {
-          newsletterStatus: updates.newsletterStatus,
-          newsletterGroups: updates.newsletterGroups
+        await NewsletterService.upsertContact(contact, {
+          newsletterStatus,
+          newsletterGroups
         });
-
-        if (res) {
-          updates.newsletterStatus = res.newStatus;
-        }
       } catch (err) {
         log.error(
           "Error updating contact profile on newsletter provider for " +
@@ -304,9 +301,9 @@ class ContactsService {
       }
     }
 
-    await getRepository(ContactProfile).update(contact.id, updates);
+    await getRepository(ContactProfile).update(contact.id, profileUpdates);
     if (contact.profile) {
-      Object.assign(contact.profile, updates);
+      Object.assign(contact.profile, profileUpdates);
     }
   }
 
