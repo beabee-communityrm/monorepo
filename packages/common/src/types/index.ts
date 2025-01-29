@@ -195,6 +195,7 @@ export * from "./update-contact-data.js";
 export * from "./update-contact-profile-data.js";
 export * from "./update-contact-role-data.js";
 export * from "./update-email-data.js";
+export * from "./update-notice-data.js";
 export * from "./update-reset-device-data.js";
 export * from "./update-reset-password-data.js";
 export * from "./update-segment-data.js";

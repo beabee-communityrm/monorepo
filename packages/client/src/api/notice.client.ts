@@ -6,7 +6,8 @@ import type {
   GetNoticeData,
   GetNoticesQuery,
   Paginated,
-  Serial
+  Serial,
+  UpdateNoticeData
 } from "@beabee/beabee-common";
 
 /**
@@ -88,7 +89,7 @@ export class NoticeClient extends BaseClient {
    * @param data - The update data
    * @returns The updated notice
    */
-  async update(id: string, data: CreateNoticeData): Promise<GetNoticeData> {
+  async update(id: string, data: UpdateNoticeData): Promise<GetNoticeData> {
     const { data: responseData } = await this.fetch.patch<
       Serial<GetNoticeData>
     >(`/${id}`, data);
