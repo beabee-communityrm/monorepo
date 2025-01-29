@@ -11,8 +11,7 @@
   "scripts": {
     "clean": "rimraf dist/ tsconfig.tsbuildinfo",
     "build": "yarn clean && gulp build && tsc -p ./tsconfig.build.json",
-    "dev": "tsc-watch -p tsconfig.build.json --noClear --onSuccess 'docker compose restart app'",
-    "watch": "tsc-watch -p tsconfig.build.json --noClear",
+    "dev": "tsc --watch --preserveWatchOutput -p tsconfig.build.json",
     "format": "prettier --write .",
     "test": "echo 'The legacy test suite has no tests yet'",
     "check": "concurrently 'yarn:check:*'",
@@ -98,7 +97,6 @@
     "prettier": "^3.4.2",
     "rimraf": "^6.0.1",
     "sass": "^1.77.4",
-    "tsc-watch": "^6.3.0",
     "tsconfig": "^7.0.0",
     "typescript": "~5.6.3"
   },

@@ -50,7 +50,7 @@ meta:
 
     <CalloutShowResponsePanel
       :callout="callout"
-      :response="selectedResponse"
+      :responses="selectedResponse ? [selectedResponse] : []"
       @close="
         router.push({ ...route, hash: '' });
         introOpen = false;

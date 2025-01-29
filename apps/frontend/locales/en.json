@@ -335,6 +335,7 @@
     "confirmHuman": "Please confirm you are human",
     "contactDetails": "Contact details",
     "ended": "This callout ended on {date}",
+    "entryOf": "Entry {no} of {total}",
     "form": {
       "email": "Your email",
       "guestFieldsMissing": "Please tell us your contact details",
@@ -1328,6 +1329,11 @@
       "changeLabel": "Change card details",
       "label": "Card",
       "setLabel": "Your card details"
+    },
+    "s_ideal": {
+      "changeLabel": "Change iDEAL details",
+      "label": "iDEAL",
+      "setLabel": "Your iDEAL details"
     },
     "s_paypal": {
       "changeLabel": "Change PayPal details",

@@ -35,6 +35,7 @@ const paymentProviders = {
   [PaymentMethod.StripeSEPA]: StripeProvider,
   [PaymentMethod.StripeBACS]: StripeProvider,
   [PaymentMethod.StripePayPal]: StripeProvider,
+  [PaymentMethod.StripeIdeal]: StripeProvider,
   [PaymentMethod.GoCardlessDirectDebit]: GCProvider
 };
 

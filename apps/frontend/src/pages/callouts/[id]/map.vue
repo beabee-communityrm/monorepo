@@ -31,19 +31,23 @@ meta:
         @map:load="handleLoad"
         @map:click="handleClick"
         @map:mousemove="handleMouseOver"
+        @map:zoom="handleZoom"
       >
         <MglNavigationControl />
         <MglScaleControl />
         <MglGeolocationControl />
 
         <MglGeoJsonSource
-          source-id="responses"
+          :source-id="SOURCE_IDS.RESPONSES"
           :data="responsesCollecton"
           cluster
-          :cluster-max-zoom="12"
+          :cluster-properties="{
+            all_responses: ['concat', ['get', 'all_responses']],
+            first_response: ['min', ['get', 'first_response']],
+          }"
         >
           <MglCircleLayer
-            layer-id="clusters"
+            :layer-id="LAYER_IDS.CLUSTERS"
             :filter="['has', 'point_count']"
             :paint="{
               'circle-color': 'black',
@@ -69,7 +73,7 @@ meta:
             }"
           />
           <MglCircleLayer
-            layer-id="unclustered-points"
+            :layer-id="LAYER_IDS.UNCLUSTERED_POINTS"
             :filter="['!', ['has', 'point_count']]"
             :paint="{
               'circle-color': 'black',
@@ -78,12 +82,12 @@ meta:
           />
         </MglGeoJsonSource>
         <MglGeoJsonSource
-          v-if="selectedResponseFeature"
-          source-id="selected-response"
-          :data="selectedResponseFeature"
+          v-if="selectedFeature"
+          :source-id="SOURCE_IDS.SELECTED_RESPONSE"
+          :data="selectedFeature"
         >
           <MglCircleLayer
-            layer-id="selected-response"
+            :layer-id="LAYER_IDS.SELECTED_RESPONSE"
             :paint="{
               'circle-stroke-color': 'red',
               'circle-stroke-width': 2,
@@ -154,15 +158,19 @@ meta:
 
     <CalloutShowResponsePanel
       :callout="callout"
-      :response="selectedResponseFeature?.properties"
+      :responses="selectedResponses"
+      :current-response-number="selectedResponseNumber"
       @close="router.push({ ...route, hash: '' })"
+      @update:current-response-number="
+        router.push({ ...route, hash: HASH_PREFIX + $event })
+      "
     />
 
     <CalloutIntroPanel
       v-if="!isEmbed || route.query.intro !== undefined"
       :callout="callout"
-      :show="introOpen"
-      @close="introOpen = false"
+      :show="showIntroPanel"
+      @close="showIntroPanel = false"
     />
 
     <CalloutAddResponsePanel
@@ -174,26 +182,33 @@ meta:
 </template>
 
 <script lang="ts" setup>
-import { computed, onBeforeMount, onMounted, ref, toRef, watch } from 'vue';
+import {
+  computed,
+  onBeforeMount,
+  onMounted,
+  ref,
+  toRef,
+  watch,
+  watchEffect,
+} from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import {
   MglMap,
   MglGeoJsonSource,
   MglCircleLayer,
   MglSymbolLayer,
-  useMap,
   MglMarker,
   MglNavigationControl,
   MglScaleControl,
   MglGeolocationControl,
 } from 'vue-maplibre-gl';
-import type {
-  GeoJSONSource,
-  LngLatLike,
+import {
   Map,
-  MapMouseEvent,
+  type GeoJSONSource,
+  type LngLatLike,
+  type MapMouseEvent,
+  type MapSourceDataEvent,
 } from 'maplibre-gl';
-import type GeoJSON from 'geojson';
 
 import 'maplibre-gl/dist/maplibre-gl.css';
 import 'vue-maplibre-gl/dist/vue-maplibre-gl.css';
@@ -202,13 +217,11 @@ import type {
   CalloutResponseAnswerAddress,
   CalloutResponseAnswersSlide,
   GetCalloutDataWith,
-  GetCalloutResponseMapData,
 } from '@beabee/beabee-common';
 import { faInfoCircle, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useI18n } from 'vue-i18n';
 import { GeocodingControl } from '@maptiler/geocoding-control/maplibregl';
 import '@maptiler/geocoding-control/style.css';
-import { type GeocodingFeature } from '@maptiler/client';
 
 import CalloutShowResponsePanel from '@components/pages/callouts/CalloutShowResponsePanel.vue';
 import CalloutIntroPanel from '@components/pages/callouts/CalloutIntroPanel.vue';
@@ -234,10 +247,24 @@ import { isEmbed } from '@store';
 
 import { currentLocaleConfig } from '@lib/i18n';
 import CalloutMapHeader from '@components/pages/callouts/CalloutMapHeader.vue';
+import type {
+  GeocodePickEvent,
+  GetCalloutResponseMapDataWithAddress,
+  MapClusterFeature,
+  MapPointFeature,
+  MapPointFeatureCollection,
+} from '@type';
 
-type GetCalloutResponseMapDataWithAddress = GetCalloutResponseMapData & {
-  address: CalloutResponseAnswerAddress;
-};
+const LAYER_IDS = {
+  CLUSTERS: 'clusters',
+  UNCLUSTERED_POINTS: 'unclustered-points',
+  SELECTED_RESPONSE: 'selected-response',
+} as const;
+
+const SOURCE_IDS = {
+  RESPONSES: 'responses',
+  SELECTED_RESPONSE: 'selected-response',
+} as const;
 
 const props = defineProps<{
   callout: GetCalloutDataWith<'form' | 'responseViewSchema' | 'variantNames'>;
@@ -245,32 +272,34 @@ const props = defineProps<{
   id: string;
 }>();
 
-const map = useMap();
+const map = ref<Map>();
 const route = useRoute();
 const router = useRouter();
 const { t } = useI18n();
 
+// The list of responses for this callout
+const responses = ref<GetCalloutResponseMapDataWithAddress[]>([]);
+const responsesByNumber = computed(() =>
+  responses.value.reduce(
+    (acc, r) => {
+      acc[r.number] = r;
+      return acc;
+    },
+    {} as Record<number, GetCalloutResponseMapDataWithAddress>
+  )
+);
+
+// Used to adjust map view based on the side panel width
 const sidePanelRef = ref<HTMLElement>();
 
-const responses = ref<GetCalloutResponseMapDataWithAddress[]>([]);
-
+const showIntroPanel = ref(false);
 const { isOpen } = useCallout(toRef(props, 'callout'));
-
-const introOpen = ref(false);
-const newResponseAnswers = ref<CalloutResponseAnswersSlide>();
-const geocodeAddress = ref<CalloutResponseAnswerAddress>();
-
 const isAddMode = computed(() => route.hash === '#add');
 
-// Start add response mode
-function handleStartAddMode() {
-  router.push({ ...route, hash: '#add' });
-}
+const newResponseAnswers = ref<CalloutResponseAnswersSlide>();
 
-// Cancel add response mode, clearing any state that is left over
-function handleCancelAddMode() {
-  router.push({ ...route, hash: '' });
-}
+// Use the geocoding address to show a marker on the map
+const geocodeAddress = ref<CalloutResponseAnswerAddress>();
 
 // Use the address from the new response to show a marker on the map
 const newResponseAddress = computed(() => {
@@ -285,112 +314,163 @@ const newResponseAddress = computed(() => {
 });
 
 // A GeoJSON FeatureCollection of all the responses
-const responsesCollecton = computed<
-  GeoJSON.FeatureCollection<GeoJSON.Point, GetCalloutResponseMapData>
->(() => {
-  const mapSchema = props.callout.responseViewSchema?.map;
+const responsesCollecton = computed<MapPointFeatureCollection>(() => {
   return {
     type: 'FeatureCollection',
-    features: mapSchema
-      ? responses.value.map((response) => {
-          const { lat, lng } = response.address.geometry.location;
+    features: responses.value.map((response) => {
+      const { lat, lng } = response.address.geometry.location;
 
-          return {
-            type: 'Feature',
-            geometry: {
-              type: 'Point',
-              coordinates: [lng, lat],
-            },
-            properties: response,
-          };
-        })
-      : [],
+      return {
+        type: 'Feature',
+        geometry: { type: 'Point', coordinates: [lng, lat] },
+        properties: {
+          all_responses: `<${response.number}>`,
+          first_response: response.number,
+        },
+      };
+    }),
   };
 });
 
-// A GeoJSON Feature of the currently selected response
-const selectedResponseFeature = computed(() => {
-  if (route.hash.startsWith(HASH_PREFIX)) {
-    const responseNumber = Number(route.hash.slice(HASH_PREFIX.length));
-    return responsesCollecton.value.features.find(
-      (f) => f.properties.number === responseNumber
-    );
+// The selected response or cluster GeoJSON Feature
+const selectedFeature = ref<MapPointFeature>();
+// The selected response number (from the hash)
+const selectedResponseNumber = ref(-1);
+// The number of clusters in view. Just used to detect when the clusters are reclustered
+const clusterCount = ref(0);
+
+// The responses that are part of the selected cluster or point
+const selectedResponses = computed(() => {
+  const selectedFeatureResponses =
+    selectedFeature.value?.properties.all_responses;
+
+  if (!selectedFeatureResponses) return [];
+
+  const responseNumbers = selectedFeatureResponses
+    // Remove first < and last >
+    .substring(1, selectedFeatureResponses.length - 1)
+    // Split each response number
+    .split('><')
+    .map(Number)
+    .sort();
+
+  return responseNumbers.map((r) => responsesByNumber.value[r]);
+});
+
+/**
+ * Find the cluster or point that corresponds to the selected response number
+ *
+ * @param responseNo The response number
+ */
+function findSelectedFeature(responseNo: number) {
+  if (!map.value) return;
+
+  const feature = map.value.queryRenderedFeatures({
+    layers: [LAYER_IDS.UNCLUSTERED_POINTS, LAYER_IDS.CLUSTERS],
+    filter: ['in', `<${responseNo}>`, ['get', 'all_responses']],
+  })[0] as unknown as MapPointFeature | undefined;
+
+  if (
+    // If feature wasn't found, it probably just isn't in the map's viewport,
+    // don't clear the selected feature
+    feature &&
+    // Only update selectedFeature if it has changed, as queryRenderedFeature
+    // doesn't have stable object references
+    feature.properties.all_responses !==
+      selectedFeature.value?.properties.all_responses
+  ) {
+    selectedFeature.value = feature;
+  }
+}
+
+/**
+ * Whenever the hash or cluster count changes check. The selected feature can
+ * change even if the response number doesn't, because at different zooms levels
+ * the response is part of different clusters
+ * feature
+ */
+watchEffect(() => {
+  if (!map.value) return;
+
+  // Force cluster count to be a dependency
+  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+  clusterCount.value;
+
+  // This can't be a computed because we need to also compute the value of selectedFeature
+  // in the same event loop, so they are both available to the next watcher
+  selectedResponseNumber.value = route.hash.startsWith(HASH_PREFIX)
+    ? Number(route.hash.slice(HASH_PREFIX.length))
+    : -1;
+
+  if (selectedResponseNumber.value === -1) {
+    selectedFeature.value = undefined;
   } else {
-    return undefined;
+    findSelectedFeature(selectedResponseNumber.value);
   }
 });
 
-// Zoom to a cluster or open a response
-function handleClick(e: { event: MapMouseEvent; map: Map }) {
-  if (isAddMode.value) {
-    if (!newResponseAnswers.value) {
-      handleAddClick(e);
-    }
-    return;
-  }
+/**
+ * Centre the map on the selected response
+ */
+watch(selectedResponseNumber, (responseNo) => {
+  if (!map.value) return;
 
-  // Not loaded yet
-  if (!e.map.getLayer('clusters')) return;
+  showIntroPanel.value = false;
 
-  const clusterPoints = e.map.queryRenderedFeatures(e.event.point, {
-    layers: ['clusters'],
-  }) as GeoJSON.Feature<GeoJSON.Point>[];
+  let center: LngLatLike | undefined;
 
-  if (clusterPoints.length > 0) {
-    // Zoom to the cluster
-    const firstPoint = clusterPoints[0] as GeoJSON.Feature<GeoJSON.Point>;
-    const source = e.map.getSource('responses') as GeoJSONSource;
-
-    source.getClusterExpansionZoom(
-      firstPoint.properties?.cluster_id,
-      (err, zoom) => {
-        if (err || zoom == null) return;
-
-        e.map.easeTo({
-          center: firstPoint.geometry.coordinates as LngLatLike,
-          zoom: zoom + 1,
-        });
-      }
-    );
+  if (selectedFeature.value) {
+    center = selectedFeature.value.geometry.coordinates as LngLatLike;
   } else {
-    const pointFeatures = e.map.queryRenderedFeatures(e.event.point, {
-      layers: ['unclustered-points'],
-    });
+    // It could be that the response isn't in a visible cluster, so hasn't been
+    // found by queryRenderedFeatures. If this is the case then move to
+    // where the response is, then look again for the response once it's in view
+    const response = responsesByNumber.value[responseNo];
+    if (response) {
+      center = [
+        response.address.geometry.location.lng,
+        response.address.geometry.location.lat,
+      ];
+      map.value.once('moveend', () => findSelectedFeature(responseNo));
+    }
+  }
 
-    // Open the response or clear the hash
-    router.push({
-      ...route,
-      hash:
-        pointFeatures.length > 0
-          ? HASH_PREFIX + pointFeatures[0].properties.number
-          : '',
+  if (center) {
+    map.value.easeTo({
+      center,
+      padding: { left: sidePanelRef.value?.offsetWidth || 0 },
     });
   }
-}
+});
 
-// Add a cursor when hovering over a cluster or a point
-function handleMouseOver(e: { event: MapMouseEvent; map: Map }) {
-  if (isAddMode.value) return;
+/**
+ * Handle zoom events. This just keeps track of the number of clusters on the
+ * map so we can identify when the clusters are reclustered
+ * https://stackoverflow.com/questions/58768283/detect-when-map-reclusters-features
+ */
+function handleZoom() {
+  if (!map.value) return;
 
-  // Not loaded yet
-  if (!e.map.getLayer('clusters')) return;
-
-  const features = e.map.queryRenderedFeatures(e.event.point, {
-    layers: ['clusters', 'unclustered-points'],
+  const clusters = map.value.queryRenderedFeatures({
+    layers: [LAYER_IDS.CLUSTERS],
   });
-
-  e.map.getCanvas().style.cursor = features.length > 0 ? 'pointer' : '';
+  clusterCount.value = clusters.length;
 }
 
-// Geolocate where the user has clicked
-async function handleAddClick(e: { event: MapMouseEvent; map: Map }) {
+/**
+ * Handle clicking on the map to add a new response. This will set the new response
+ * address and geocode it to get a formatted address
+ *
+ * @param event The click event
+ */
+async function handleAddClick(event: MapMouseEvent) {
   const mapSchema = props.callout.responseViewSchema?.map;
-  if (!mapSchema) return;
+  if (!map.value || !mapSchema) return; // Can't actually happen
 
-  const coords = e.event.lngLat;
-  e.map.getCanvas().style.cursor = '';
+  const coords = event.lngLat;
+  map.value.getCanvas().style.cursor = '';
 
-  e.map.easeTo({
+  map.value.easeTo({
     center: coords,
     padding: { left: sidePanelRef.value?.offsetWidth || 0 },
   });
@@ -420,55 +500,109 @@ async function handleAddClick(e: { event: MapMouseEvent; map: Map }) {
   newResponseAnswers.value = responseAnswers;
 }
 
-// Centre map on selected feature when it changes
-watch(selectedResponseFeature, (newFeature) => {
-  if (!map.map || !newFeature) return;
+/**
+ * Handle clicking on a cluster, either zooming in or opening the first response
+ *
+ * @param cluster The cluster
+ * @param map The map object
+ */
+function handleClusterClick(cluster: MapClusterFeature) {
+  const mapSchema = props.callout.responseViewSchema?.map;
+  if (!map.value || !mapSchema) return; // Can't actually happen
 
-  introOpen.value = false;
+  const source = map.value.getSource(SOURCE_IDS.RESPONSES) as GeoJSONSource;
+  source.getClusterExpansionZoom(cluster.properties.cluster_id, (err, zoom) => {
+    if (err || zoom == null) {
+      // eslint-disable-next-line no-console
+      console.error('Failed to get cluster expansion zoom:', err);
+      return;
+    }
 
-  map.map.easeTo({
-    center: newFeature.geometry.coordinates as LngLatLike,
-    padding: { left: sidePanelRef.value?.offsetWidth || 0 },
+    // Maximum zoom level, open first response
+    if (zoom >= mapSchema.maxZoom) {
+      router.push({
+        ...route,
+        hash: HASH_PREFIX + cluster.properties.first_response,
+      });
+      // Zoom to the cluster
+    } else {
+      map.value!.easeTo({
+        center: cluster.geometry.coordinates as LngLatLike,
+        zoom: zoom + 1,
+      });
+    }
   });
-});
-
-// Toggle add mode
-watch(isAddMode, (v) => {
-  if (!map.map) return;
-  if (v) {
-    introOpen.value = false;
-    map.map.getCanvas().style.cursor = 'crosshair';
-  } else {
-    newResponseAnswers.value = undefined;
-    map.map.getCanvas().style.cursor = '';
-  }
-});
-
-// Load callout and responses
-onBeforeMount(async () => {
-  if (!props.callout.responseViewSchema?.map) {
-    throw new Error('Callout does not have a map schema');
-  }
-
-  // TODO: pagination
-  responses.value = (
-    await fetchResponsesForMap(props.callout.slug)
-  ).items.filter((r): r is GetCalloutResponseMapDataWithAddress => !!r.address);
-});
-
-onMounted(async () => {
-  // intro panel is shown by default, but not in some cases (e.g. when
-  // switching from the gallery view)
-  if (!route.query.noIntro) {
-    introOpen.value = true;
-  }
-});
-
-interface GeocodePickEvent extends Event {
-  detail: GeocodingFeature | null;
 }
 
-function handleLoad(e: { map: Map }) {
+/**
+ * Handle a map click. This could happen when clicking on a cluster, a point, or
+ * when adding a new response. This handler delegates accordingly.
+ *
+ * @param e The click event
+ */
+function handleClick(e: { event: MapMouseEvent }) {
+  if (!map.value) return;
+
+  if (isAddMode.value) {
+    if (!newResponseAnswers.value) {
+      handleAddClick(e.event);
+    }
+  } else {
+    const [point] = map.value.queryRenderedFeatures(e.event.point, {
+      layers: [LAYER_IDS.CLUSTERS, LAYER_IDS.UNCLUSTERED_POINTS],
+    });
+
+    if (point?.layer.id === LAYER_IDS.CLUSTERS) {
+      handleClusterClick(point as unknown as MapClusterFeature);
+    } else {
+      // Open the response or clear the hash
+      router.push({
+        ...route,
+        hash: point ? HASH_PREFIX + point.properties.first_response : '',
+      });
+    }
+  }
+}
+
+/**
+ * Add a cursor when hovering over a cluster or a point
+ * @param e The mouse over event
+ */
+function handleMouseOver(e: { event: MapMouseEvent }) {
+  if (!map.value || isAddMode.value) return;
+
+  const features = map.value.queryRenderedFeatures(e.event.point, {
+    layers: [LAYER_IDS.CLUSTERS, LAYER_IDS.UNCLUSTERED_POINTS],
+  });
+
+  map.value.getCanvas().style.cursor = features.length > 0 ? 'pointer' : '';
+}
+
+/**
+ * Handle map load. Attach a listener to wait until the source data is loaded.
+ * Add a geocoding control to the map if a key is available
+ *
+ * @param e The map load event
+ */
+function handleLoad({ map: mapInstance }: { map: Map }) {
+  /**
+   * Check if the responses source data is loaded
+   * @param sourceDataEvent The source data event
+   */
+  function handleSourceData(sourceDataEvent: MapSourceDataEvent) {
+    if (
+      sourceDataEvent.sourceId === SOURCE_IDS.RESPONSES &&
+      sourceDataEvent.isSourceLoaded
+    ) {
+      // Only set the map reference when responses are loaded. This means other
+      // watchers can rely on the map and map data both being loaded
+      map.value = mapInstance;
+      mapInstance.off('sourcedata', handleSourceData);
+    }
+  }
+
+  mapInstance.on('sourcedata', handleSourceData);
+
   if (env.maptilerKey) {
     const geocodeControl = new GeocodingControl({
       apiKey: env.maptilerKey,
@@ -494,9 +628,59 @@ function handleLoad(e: { map: Map }) {
         : undefined;
     });
 
-    e.map.addControl(geocodeControl, 'top-left');
+    mapInstance.addControl(geocodeControl, 'top-left');
   }
 }
+
+/**
+ * Start add response mode
+ */
+function handleStartAddMode() {
+  router.push({ ...route, hash: '#add' });
+}
+
+/**
+ * Cancel add response mode, clearing any state that is left over
+ */
+function handleCancelAddMode() {
+  router.push({ ...route, hash: '' });
+}
+
+/**
+ * Toggle the cursor when entering add mode
+ */
+watch(isAddMode, (v) => {
+  if (!map.value) return;
+  if (v) {
+    showIntroPanel.value = false;
+    map.value.getCanvas().style.cursor = 'crosshair';
+  } else {
+    newResponseAnswers.value = undefined;
+    map.value.getCanvas().style.cursor = '';
+  }
+});
+
+/**
+ * Load callout and responses
+ */
+onBeforeMount(async () => {
+  if (!props.callout.responseViewSchema?.map) {
+    throw new Error('Callout does not have a map schema');
+  }
+
+  // TODO: pagination
+  responses.value = (
+    await fetchResponsesForMap(props.callout.slug)
+  ).items.filter((r): r is GetCalloutResponseMapDataWithAddress => !!r.address);
+});
+
+onMounted(async () => {
+  // intro panel is shown by default, but not in some cases (e.g. when
+  // switching from the gallery view)
+  if (!route.query.noIntro) {
+    showIntroPanel.value = true;
+  }
+});
 </script>
 
 <style lang="postcss" scoped>
