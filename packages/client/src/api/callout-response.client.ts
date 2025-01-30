@@ -44,7 +44,6 @@ export class CalloutResponseClient extends BaseClient {
    */
   static deserialize<With extends GetCalloutResponseWith = void>(
     // TODO: how to make this type safe like Serial<GetCalloutResponseDataWith<With>>
-    // deno-lint-ignore no-explicit-any
     response: any
   ): GetCalloutResponseDataWith<With> {
     return {

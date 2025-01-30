@@ -35,7 +35,6 @@ export class PaymentClient extends BaseClient {
    */
   static deserialize<With extends GetPaymentWith = void>(
     // TODO: how to make this type safe?
-    // deno-lint-ignore no-explicit-any
     payment: Serial<GetPaymentDataWith<With>> | any
   ): GetPaymentDataWith<With> {
     return {

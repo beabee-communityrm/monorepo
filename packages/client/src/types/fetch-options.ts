@@ -9,6 +9,5 @@ export interface FetchOptions extends RequestInit {
   token?: string;
   host?: string;
   basePath?: string;
-  // deno-lint-ignore no-explicit-any
   params?: Record<string, any>;
 }

@@ -60,7 +60,6 @@ export class ContactClient extends BaseClient {
    */
   static deserialize<With extends GetContactWith | void = void>(
     // TODO: fix type safety
-    // deno-lint-ignore no-explicit-any
     contact: any // Serial<GetContactDataWith<With>>,
   ): GetContactDataWith<With> {
     return {
