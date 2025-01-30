@@ -4,10 +4,15 @@ import { hideBin } from "yargs/helpers";
 import { apiKeyCommand } from "./commands/api-key.js";
 import { userCommand } from "./commands/user.js";
 import { configureCommand } from "./commands/configure.js";
-
+import { paymentCommand } from "./commands/payment.js";
+import pkg from "../package.json" assert { type: "json" };
 yargs(hideBin(process.argv))
   .command(apiKeyCommand)
   .command(userCommand)
   .command(configureCommand)
+  .command(paymentCommand)
   .demandCommand(1, "You need at least one command before moving on")
-  .help().argv;
+  .version(pkg.version)
+  .scriptName("yarn backend-cli")
+  .help()
+  .parse();
