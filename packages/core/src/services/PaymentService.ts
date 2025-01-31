@@ -142,7 +142,7 @@ class PaymentService {
   }
 
   async createContact(contact: Contact): Promise<void> {
-    log.info("Create contact for contact " + contact.id);
+    log.info("Create contact for contribution with ID " + contact.id);
     await getRepository(ContactContribution).save({ contact });
   }
 
