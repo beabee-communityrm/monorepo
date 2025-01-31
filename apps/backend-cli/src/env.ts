@@ -13,13 +13,41 @@ const workspaceRootPath = resolve(process.cwd() + "/../..");
 let env = { ...process.env };
 
 if (!isRunningInDocker()) {
-  env = { ...env, ...dotenv.config({ path: [workspaceRootPath + "/.env.cli"], override: false }).parsed };
-  env = { ...env, ...dotenv.config({ path: [workspaceRootPath + "/packages/core/.env"], override: false }).parsed };
-  env = { ...env, ...dotenv.config({ path: [workspaceRootPath + "/.env"], override: false }).parsed };
+  env = {
+    ...env,
+    ...dotenv.config({
+      path: [workspaceRootPath + "/.env.cli"],
+      override: false
+    }).parsed
+  };
+  env = {
+    ...env,
+    ...dotenv.config({
+      path: [workspaceRootPath + "/packages/core/.env"],
+      override: false
+    }).parsed
+  };
+  env = {
+    ...env,
+    ...dotenv.config({ path: [workspaceRootPath + "/.env"], override: false })
+      .parsed
+  };
 
   if (process.env.NODE_ENV === "test") {
-    env = { ...env, ...dotenv.config({ path: [workspaceRootPath + "/.env.test"], override: true }).parsed };
-    env = { ...env, ...dotenv.config({ path: [workspaceRootPath + "/.env.cli-test"], override: true }).parsed };
+    env = {
+      ...env,
+      ...dotenv.config({
+        path: [workspaceRootPath + "/.env.test"],
+        override: true
+      }).parsed
+    };
+    env = {
+      ...env,
+      ...dotenv.config({
+        path: [workspaceRootPath + "/.env.cli-test"],
+        override: true
+      }).parsed
+    };
   }
 }
 

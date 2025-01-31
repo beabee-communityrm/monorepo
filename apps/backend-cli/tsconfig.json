@@ -1,7 +1,7 @@
 {
   "extends": [
-    "@beabee/tsconfig/tsconfig.options.json",
     "./tsconfig.build.json",
+    "@beabee/tsconfig/tsconfig.options.json"
   ],
   "exclude": [], // Override tsconfig.build.json exclude
   "references": [
@@ -9,6 +9,6 @@
     { "path": "../../packages/common" }
   ],
   "compilerOptions": {
-    "noEmit": true,
+    "noEmit": true
   }
 }

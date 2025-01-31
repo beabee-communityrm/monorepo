@@ -9,7 +9,9 @@ import { userCommand } from "./commands/user.js";
 import { configureCommand } from "./commands/configure.js";
 import { paymentCommand } from "./commands/payment.js";
 
-const pkg = JSON.parse(readFileSync(resolve(process.cwd(), "./package.json"), "utf8"));
+const pkg = JSON.parse(
+  readFileSync(resolve(process.cwd(), "./package.json"), "utf8")
+);
 
 yargs(hideBin(process.argv))
   .command(apiKeyCommand)
