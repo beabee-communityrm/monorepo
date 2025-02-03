@@ -8,4 +8,5 @@ export interface UpdateNewsletterContact {
   groups: string[];
   fields: Record<string, string>;
   isActiveMember: boolean;
+  isActiveUser: boolean;
 }
