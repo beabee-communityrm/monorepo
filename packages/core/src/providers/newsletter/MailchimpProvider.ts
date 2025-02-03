@@ -235,15 +235,11 @@ export default class MailchimpProvider implements NewsletterProvider {
     email: string,
     fields: Record<string, string>
   ): Promise<void> {
-    await this.api.dispatchOperations([
-      {
-        method: "PATCH",
-        path: getMCMemberUrl(this.listId, email),
-        params: { skip_merge_validation: "true" },
-        body: JSON.stringify({ merge_fields: fields }),
-        operation_id: `update_fields_${email}`
-      }
-    ]);
+    await this.api.instance.patch(
+      getMCMemberUrl(this.listId, email),
+      { merge_fields: fields },
+      { params: { skip_merge_validation: "true" } }
+    );
   }
 
   /**
