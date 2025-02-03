@@ -284,12 +284,6 @@ class ContactsService {
     opts = { sync: true }
   ): Promise<void> {
     const { newsletterStatus, newsletterGroups, ...profileUpdates } = updates;
-    if (opts.sync && (newsletterStatus || newsletterGroups)) {
-      await NewsletterService.upsertContact(contact, {
-        newsletterStatus,
-        newsletterGroups
-      });
-    }
 
     if (Object.keys(profileUpdates).length > 0) {
       log.info("Update contact profile for " + contact.id, { profileUpdates });
@@ -298,6 +292,13 @@ class ContactsService {
       if (contact.profile) {
         Object.assign(contact.profile, profileUpdates);
       }
+    }
+
+    if (opts.sync && (newsletterStatus || newsletterGroups)) {
+      await NewsletterService.upsertContact(contact, {
+        newsletterStatus,
+        newsletterGroups
+      });
     }
   }
 

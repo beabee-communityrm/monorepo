@@ -42,18 +42,19 @@ function shouldUpdate(updates: ContactNewsletterUpdates): boolean {
 }
 
 /**
- * Convert a contact and optional updates to a newsletter update object that can
- * be sent to the newsletter provider
+ * Convert a contact to a newsletter update object that can be sent to the
+ * newsletter provider
  *
  * @param contact The contact
- * @param updates The updates to the contact
- * @returns A tuple with the contact's current newsletter status and the update
- *          object
+ * @returns A newsletter contact update
  */
 async function contactToNlUpdate(
   contact: Contact,
-  updates?: ContactNewsletterUpdates
-): Promise<[NewsletterStatus, UpdateNewsletterContact | undefined]> {
+  updates?: {
+    newsletterStatus: NewsletterStatus | undefined;
+    newsletterGroups: string[] | undefined;
+  }
+): Promise<UpdateNewsletterContact | undefined> {
   // TODO: Fix that it relies on contact.profile being loaded
   if (!contact.profile) {
     contact.profile = await getRepository(ContactProfile).findOneByOrFail({
@@ -61,32 +62,30 @@ async function contactToNlUpdate(
     });
   }
 
-  const nlContact: UpdateNewsletterContact = {
-    email: updates?.email || contact.email,
-    status: updates?.newsletterStatus || contact.profile.newsletterStatus,
+  const status = updates?.newsletterStatus || contact.profile.newsletterStatus;
+  if (status === NewsletterStatus.None) {
+    return undefined;
+  }
+
+  return {
+    email: contact.email,
+    status,
     groups: updates?.newsletterGroups || contact.profile.newsletterGroups,
-    firstname: updates?.firstname || contact.firstname,
-    lastname: updates?.lastname || contact.lastname,
+    firstname: contact.firstname,
+    lastname: contact.lastname,
     fields: {
-      REFCODE: updates?.referralCode || contact.referralCode || "",
-      POLLSCODE: updates?.pollsCode || contact.pollsCode || "",
+      REFCODE: contact.referralCode || "",
+      POLLSCODE: contact.pollsCode || "",
       C_DESC: getContributionDescription(
         contact.contributionType,
-        updates?.contributionMonthlyAmount || contact.contributionMonthlyAmount,
-        updates?.contributionPeriod || contact.contributionPeriod
+        contact.contributionMonthlyAmount,
+        contact.contributionPeriod
       ),
-      C_MNTHAMT:
-        updates?.contributionMonthlyAmount?.toFixed(2) ||
-        contact.contributionMonthlyAmount?.toFixed(2) ||
-        "",
-      C_PERIOD: updates?.contributionPeriod || contact.contributionPeriod || ""
+      C_MNTHAMT: contact.contributionMonthlyAmount?.toFixed(2) || "",
+      C_PERIOD: contact.contributionPeriod || ""
     },
     isActiveMember: contact.membership?.isActive || false
   };
-
-  return nlContact.status === NewsletterStatus.None
-    ? [NewsletterStatus.None, undefined]
-    : [contact.profile.newsletterStatus, nlContact];
 }
 
 /**
@@ -101,7 +100,7 @@ async function getValidNlUpdates(
 ): Promise<UpdateNewsletterContact[]> {
   const nlUpdates = [];
   for (const contact of contacts) {
-    const [, nlUpdate] = await contactToNlUpdate(contact);
+    const nlUpdate = await contactToNlUpdate(contact);
     if (nlUpdate) {
       nlUpdates.push(nlUpdate);
     }
@@ -145,7 +144,9 @@ class NewsletterService {
   }
 
   /**
-   * Updates or inserts a contact in the newsletter provider and handles status changes
+   * Updates or inserts a contact in the newsletter provider and handles status
+   * changes. The contact should have already been updated before calling this
+   * method, the updates parameter is just a way to flag the relevant changes
    *
    * @param contact The contact to update or insert
    * @param updates Optional updates to apply to the contact before syncing
@@ -156,47 +157,50 @@ class NewsletterService {
     updates?: ContactNewsletterUpdates,
     oldEmail?: string
   ): Promise<void> {
-    const willUpdate = !updates || shouldUpdate(updates);
-    if (!willUpdate) {
+    if (updates && !shouldUpdate(updates)) {
       return;
     }
 
-    const [oldStatus, nlUpdate] = await contactToNlUpdate(contact, updates);
-    if (nlUpdate) {
-      try {
-        log.info("Upsert contact " + contact.id);
-        const nlContact = await this.provider.upsertContact(nlUpdate, oldEmail);
-
-        log.info(
-          `Got newsletter groups and status ${oldStatus} to ${nlContact.status} for contact ${contact.id}`,
-          { groups: nlContact.groups }
-        );
-
-        // TODO: remove dependency on ContactProfile
-        await getRepository(ContactProfile).update(contact.id, {
-          newsletterStatus: nlContact.status,
-          newsletterGroups: nlContact.groups
-        });
-        contact.profile.newsletterStatus = nlContact.status;
-        contact.profile.newsletterGroups = nlContact.groups;
-      } catch (err) {
-        // The newsletter provider rejected the update, set this contact's
-        // newsletter status to None to prevent further updates
-        if (err instanceof CantUpdateNewsletterContact) {
-          log.error(
-            `Newsletter upsert failed, setting status to none for contact ${contact.id}`,
-            err
-          );
-          await getRepository(ContactProfile).update(contact.id, {
-            newsletterStatus: NewsletterStatus.None
-          });
-          contact.profile.newsletterStatus = NewsletterStatus.None;
-        } else {
-          throw err;
-        }
-      }
-    } else {
+    const nlUpdate = await contactToNlUpdate(contact, {
+      newsletterStatus: updates?.newsletterStatus,
+      newsletterGroups: updates?.newsletterGroups
+    });
+    if (!nlUpdate) {
       log.info("Ignoring contact update for " + contact.id);
+      return;
+    }
+
+    try {
+      log.info("Upsert contact " + contact.id);
+      const nlContact = await this.provider.upsertContact(nlUpdate, oldEmail);
+
+      log.info(
+        `Got newsletter groups and status ${nlContact.status} for contact ${contact.id}`,
+        { groups: nlContact.groups }
+      );
+
+      // TODO: remove dependency on ContactProfile
+      await getRepository(ContactProfile).update(contact.id, {
+        newsletterStatus: nlContact.status,
+        newsletterGroups: nlContact.groups
+      });
+      contact.profile.newsletterStatus = nlContact.status;
+      contact.profile.newsletterGroups = nlContact.groups;
+    } catch (err) {
+      // The newsletter provider rejected the update, set this contact's
+      // newsletter status to None to prevent further updates
+      if (err instanceof CantUpdateNewsletterContact) {
+        log.error(
+          `Newsletter upsert failed, setting status to none for contact ${contact.id}`,
+          err
+        );
+        await getRepository(ContactProfile).update(contact.id, {
+          newsletterStatus: NewsletterStatus.None
+        });
+        contact.profile.newsletterStatus = NewsletterStatus.None;
+      } else {
+        throw err;
+      }
     }
   }
 
@@ -227,7 +231,7 @@ class NewsletterService {
     fields: Record<string, string>
   ): Promise<void> {
     log.info(`Update contact fields for ${contact.id}`, fields);
-    const [, nlUpdate] = await contactToNlUpdate(contact);
+    const nlUpdate = await contactToNlUpdate(contact);
     if (nlUpdate) {
       await this.provider.updateContactFields(nlUpdate.email, fields);
     } else {
