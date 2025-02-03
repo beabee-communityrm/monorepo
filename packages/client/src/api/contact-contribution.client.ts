@@ -9,15 +9,17 @@ import {
   type Serial,
   type SetContributionData,
   type StartContributionData
-} from "../deps.js";
+} from "@beabee/beabee-common";
 
 /**
  * Client for managing contribution operations
  */
 export class ContactContributionClient extends BaseClient {
   constructor(protected override readonly options: BaseClientOptions) {
-    options.path = cleanUrl(options.path + "/contact");
-    super(options);
+    super({
+      ...options,
+      path: cleanUrl(options.path + "/contact")
+    });
   }
 
   /**

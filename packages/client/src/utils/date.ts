@@ -3,7 +3,7 @@
 
 import { millisecondsInHour, millisecondsInMinute } from "../constants.js";
 
-import type { ParseISOOptions } from "../deps.js";
+import type { ParseISOOptions } from "@beabee/beabee-common";
 
 /**
  * @name parseISO

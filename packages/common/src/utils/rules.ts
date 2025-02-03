@@ -57,7 +57,6 @@ export function validateRule<Field extends string>(
       ? filter.type
       : "string";
 
-  // deno-lint-ignore valid-typeof
   if (rule.value.some((v) => typeof v !== expectedType)) {
     throw new InvalidRule(
       rule,

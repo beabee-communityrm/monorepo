@@ -47,7 +47,6 @@ export const calloutComponentNestableValidator = (
  */
 const calloutInputValidatorsMap: Record<
   CalloutComponentInputSchema["type"],
-  // deno-lint-ignore no-explicit-any
   ValidatorCalloutComponent<any>
 > = {
   // Input

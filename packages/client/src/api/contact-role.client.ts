@@ -7,7 +7,7 @@ import type {
   RoleType,
   Serial,
   UpdateContactRoleData
-} from "../deps.js";
+} from "@beabee/beabee-common";
 
 export class ContactRoleClient extends BaseClient {
   static deserialize(data: Serial<ContactRoleData>): ContactRoleData {
@@ -21,8 +21,10 @@ export class ContactRoleClient extends BaseClient {
   }
 
   constructor(protected override readonly options: BaseClientOptions) {
-    options.path = cleanUrl(options.path + "/contact");
-    super(options);
+    super({
+      ...options,
+      path: cleanUrl(options.path + "/contact")
+    });
   }
 
   // Role methods

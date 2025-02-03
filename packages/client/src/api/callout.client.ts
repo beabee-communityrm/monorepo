@@ -8,6 +8,7 @@ import type {
   CreateCalloutResponseData,
   GetCalloutData,
   GetCalloutDataWith,
+  GetCalloutResponseData,
   GetCalloutResponseDataWith,
   GetCalloutResponseMapData,
   GetCalloutResponsesQuery,
@@ -17,7 +18,7 @@ import type {
   Paginated,
   Serial,
   UpdateCalloutData
-} from "../deps.js";
+} from "@beabee/beabee-common";
 
 export class CalloutClient extends BaseClient {
   /** Client for managing callout responses */
@@ -27,9 +28,10 @@ export class CalloutClient extends BaseClient {
   tag: CalloutTagClient;
 
   constructor(protected override readonly options: BaseClientOptions) {
-    // e.g. `/api/1.0/callout`
-    options.path = cleanUrl(options.path + "/callout");
-    super(options);
+    super({
+      ...options,
+      path: cleanUrl(options.path + "/callout")
+    });
     this.response = new CalloutResponseClient(options);
     this.tag = new CalloutTagClient(options);
   }
@@ -157,7 +159,7 @@ export class CalloutClient extends BaseClient {
   ): Promise<Paginated<GetCalloutResponseMapData>> {
     const { data } = await this.fetch.get<
       Paginated<Serial<GetCalloutResponseMapData>>
-    >(`/${slug}/responses/map`, { params: query });
+    >(`/${slug}/responses/map`, query);
     return data;
   }
 
@@ -174,8 +176,8 @@ export class CalloutClient extends BaseClient {
       "answers" | "guestEmail" | "guestName"
     >,
     captchaToken?: string
-  ): Promise<void> {
-    await this.fetch.post(
+  ): Promise<GetCalloutResponseData> {
+    const { data } = await this.fetch.post<Serial<GetCalloutResponseData>>(
       `/${slug}/responses`,
       {
         answers: newData.answers,
@@ -184,5 +186,6 @@ export class CalloutClient extends BaseClient {
       },
       { params: { captchaToken } }
     );
+    return CalloutResponseClient.deserialize(data);
   }
 }

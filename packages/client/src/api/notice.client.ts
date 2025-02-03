@@ -6,8 +6,9 @@ import type {
   GetNoticeData,
   GetNoticesQuery,
   Paginated,
-  Serial
-} from "../deps.js";
+  Serial,
+  UpdateNoticeData
+} from "@beabee/beabee-common";
 
 /**
  * Client for managing dashboard notices
@@ -20,8 +21,10 @@ export class NoticeClient extends BaseClient {
    * @param options - The client options
    */
   constructor(protected override readonly options: BaseClientOptions) {
-    options.path = cleanUrl(options.path + "/notice");
-    super(options);
+    super({
+      ...options,
+      path: cleanUrl(options.path + "/notice")
+    });
   }
 
   /**
@@ -48,9 +51,7 @@ export class NoticeClient extends BaseClient {
   async list(query: GetNoticesQuery = {}): Promise<Paginated<GetNoticeData>> {
     const { data } = await this.fetch.get<Paginated<Serial<GetNoticeData>>>(
       "",
-      {
-        params: query
-      }
+      query
     );
 
     return {
@@ -88,7 +89,7 @@ export class NoticeClient extends BaseClient {
    * @param data - The update data
    * @returns The updated notice
    */
-  async update(id: string, data: CreateNoticeData): Promise<GetNoticeData> {
+  async update(id: string, data: UpdateNoticeData): Promise<GetNoticeData> {
     const { data: responseData } = await this.fetch.patch<
       Serial<GetNoticeData>
     >(`/${id}`, data);

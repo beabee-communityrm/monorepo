@@ -17,7 +17,7 @@ import type {
   RuleGroup,
   Serial,
   UpdateContactData
-} from "../deps.js";
+} from "@beabee/beabee-common";
 
 /**
  * Client for managing contacts (users) in the Beabee system
@@ -42,8 +42,10 @@ export class ContactClient extends BaseClient {
    * @param options - The client options
    */
   constructor(protected override readonly options: BaseClientOptions) {
-    options.path = cleanUrl(options.path + "/contact");
-    super(options);
+    super({
+      ...options,
+      path: cleanUrl(options.path + "/contact")
+    });
     this.mfa = new ContactMfaClient(options);
     this.contribution = new ContactContributionClient(options);
     this.role = new ContactRoleClient(options);
@@ -58,7 +60,6 @@ export class ContactClient extends BaseClient {
    */
   static deserialize<With extends GetContactWith | void = void>(
     // TODO: fix type safety
-    // deno-lint-ignore no-explicit-any
     contact: any // Serial<GetContactDataWith<With>>,
   ): GetContactDataWith<With> {
     return {

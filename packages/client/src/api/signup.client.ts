@@ -23,8 +23,10 @@ export class SignupClient extends BaseClient {
    * @param options - The client options
    */
   constructor(protected override readonly options: BaseClientOptions) {
-    options.path = cleanUrl(options.path + "/signup");
-    super(options);
+    super({
+      ...options,
+      path: cleanUrl(options.path + "/signup")
+    });
     this.completeUrl = this.options.host + "/join/complete";
   }
 

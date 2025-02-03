@@ -3,7 +3,7 @@
  * @param str
  * @returns
  */
-export const maybeJson = (str?: string | null) => {
+export const maybeJsonString = (str?: string | null): str is string => {
   if (!str || typeof str !== "string") {
     return false;
   }
@@ -19,7 +19,7 @@ export const maybeJson = (str?: string | null) => {
  * @param str
  */
 export const isJson = (str?: string | null) => {
-  if (!str || !maybeJson(str)) {
+  if (!maybeJsonString(str)) {
     return false;
   }
   try {

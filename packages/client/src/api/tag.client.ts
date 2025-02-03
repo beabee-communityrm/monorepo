@@ -1,15 +1,21 @@
 import { BaseClient } from "./base.client.js";
 import { cleanUrl } from "../utils/index.js";
 import type { BaseClientOptions } from "../types/index.js";
-import type { TagCreateData, TagGetData, TagUpdateData } from "../deps.js";
+import type {
+  TagCreateData,
+  TagGetData,
+  TagUpdateData
+} from "@beabee/beabee-common";
 
 /**
  * Client for managing tag operations
  */
 export abstract class TagClient extends BaseClient {
   constructor(protected override readonly options: BaseClientOptions) {
-    options.path = cleanUrl(options.path ?? "");
-    super(options);
+    super({
+      ...options,
+      path: cleanUrl(options.path ?? "")
+    });
   }
 
   protected abstract getBasePath(entityId: string | undefined): string;
@@ -23,10 +29,8 @@ export abstract class TagClient extends BaseClient {
     const { data } = await this.fetch.get<TagGetData[]>(
       this.getBasePath(entityId),
       {
-        params: {
-          sort: "name",
-          order: "ASC"
-        }
+        sort: "name",
+        order: "ASC"
       }
     );
     return data;

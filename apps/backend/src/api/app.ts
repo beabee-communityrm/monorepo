@@ -12,11 +12,11 @@ import {
   useExpressServer
 } from "routing-controllers";
 
-import * as Controllers from "./controllers/index";
+import * as Controllers from "./controllers";
 
 import { ValidateResponseInterceptor } from "./interceptors/ValidateResponseInterceptor";
 
-import { AuthMiddleware } from "./middlewares/AuthMiddleware";
+import { AuthMiddleware } from "./middlewares";
 
 import {
   log as mainLogger,

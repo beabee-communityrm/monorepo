@@ -10,7 +10,7 @@ import type {
   Paginated,
   PaymentFlowParams,
   Serial
-} from "../deps.js";
+} from "@beabee/beabee-common";
 
 /**
  * Client for managing contact payment operations
@@ -22,8 +22,10 @@ export class ContactPaymentClient extends BaseClient {
    * @param options - The client options
    */
   constructor(protected override readonly options: BaseClientOptions) {
-    options.path = cleanUrl(options.path + "/contact");
-    super(options);
+    super({
+      ...options,
+      path: cleanUrl(options.path + "/contact")
+    });
   }
 
   /**
@@ -67,7 +69,7 @@ export class ContactPaymentClient extends BaseClient {
   ): Promise<Paginated<GetPaymentData>> {
     const { data } = await this.fetch.get<Serial<Paginated<GetPaymentData>>>(
       `/${id}/payment`,
-      { params: query }
+      query
     );
     return {
       ...data,

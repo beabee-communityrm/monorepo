@@ -3,7 +3,8 @@ services:
     extends:
       file: docker-compose.yml
       service: db
-    ports: []
+    ports:
+      - ${DB_PORT}:5432
 
   mail:
     extends:
