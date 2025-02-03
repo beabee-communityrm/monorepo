@@ -187,14 +187,14 @@ export default class MailchimpProvider implements NewsletterProvider {
 
     // Add/remove the active member tag if the statuses don't match
     if (updatedContact.isActiveMember !== contact.isActiveMember) {
-      log.info("Updating active member tag for " + contact.email);
-      const tagOp = contact.isActiveMember
-        ? "addTagToContacts"
-        : "removeTagFromContacts";
-      await this[tagOp](
-        [updatedContact.email],
-        OptionsService.getText("newsletter-active-member-tag")
-      );
+      const tag = OptionsService.getText("newsletter-active-member-tag");
+      if (contact.isActiveMember) {
+        log.info(`Adding active member tag for ${contact.email}`);
+        await this.addTagToContacts([updatedContact.email], tag);
+      } else {
+        log.info(`Removing active member tag for ${contact.email}`);
+        await this.removeTagFromContacts([updatedContact.email], tag);
+      }
     }
 
     return updatedContact;
