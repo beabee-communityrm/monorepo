@@ -21,27 +21,6 @@ import { CantUpdateNewsletterContact } from "#errors/CantUpdateNewsletterContact
 const log = mainLogger.child({ app: "newsletter-service" });
 
 /**
- * A guard to check if the given updates object contains any changes that should
- * be synced to the newsletter provider
- *
- * @param updates The updates to check
- * @returns Whether the updates contain any changes that should be synced
- */
-function shouldUpdate(updates: ContactNewsletterUpdates): boolean {
-  return !!(
-    updates.email ||
-    updates.firstname ||
-    updates.lastname ||
-    updates.referralCode ||
-    updates.pollsCode ||
-    updates.contributionPeriod ||
-    updates.contributionMonthlyAmount ||
-    updates.newsletterStatus ||
-    updates.newsletterGroups
-  );
-}
-
-/**
  * Convert a contact to a newsletter update object that can be sent to the
  * newsletter provider
  *
@@ -50,10 +29,7 @@ function shouldUpdate(updates: ContactNewsletterUpdates): boolean {
  */
 async function contactToNlUpdate(
   contact: Contact,
-  updates?: {
-    newsletterStatus: NewsletterStatus | undefined;
-    newsletterGroups: string[] | undefined;
-  }
+  updates?: ContactNewsletterUpdates
 ): Promise<UpdateNewsletterContact | undefined> {
   // TODO: Fix that it relies on contact.profile being loaded
   if (!contact.profile) {
@@ -157,14 +133,7 @@ class NewsletterService {
     updates?: ContactNewsletterUpdates,
     oldEmail?: string
   ): Promise<void> {
-    if (updates && !shouldUpdate(updates)) {
-      return;
-    }
-
-    const nlUpdate = await contactToNlUpdate(contact, {
-      newsletterStatus: updates?.newsletterStatus,
-      newsletterGroups: updates?.newsletterGroups
-    });
+    const nlUpdate = await contactToNlUpdate(contact, updates);
     if (!nlUpdate) {
       log.info("Ignoring contact update for " + contact.id);
       return;

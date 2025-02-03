@@ -182,7 +182,7 @@ class ContactsService {
     Object.assign(contact, updates);
 
     if (opts.sync) {
-      await NewsletterService.upsertContact(contact, updates, oldEmail);
+      await NewsletterService.upsertContact(contact, undefined, oldEmail);
     }
 
     await PaymentService.updateContact(contact, updates);
