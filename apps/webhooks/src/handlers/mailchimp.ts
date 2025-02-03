@@ -145,12 +145,6 @@ async function handleSubscribe(data: MCProfileData) {
     await ContactsService.updateContactProfile(contact, {
       newsletterStatus: NewsletterStatus.Subscribed
     });
-    if (contact.membership?.isActive) {
-      await NewsletterService.addTagToContacts(
-        [contact],
-        OptionsService.getText("newsletter-active-member-tag")
-      );
-    }
   } else {
     const nlContact = await NewsletterService.getNewsletterContact(email);
     await ContactsService.createContact(
