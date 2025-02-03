@@ -283,27 +283,21 @@ class ContactsService {
     updates: Partial<ContactProfile>,
     opts = { sync: true }
   ): Promise<void> {
-    log.info("Update contact profile for " + contact.id, { updates });
-
     const { newsletterStatus, newsletterGroups, ...profileUpdates } = updates;
     if (opts.sync && (newsletterStatus || newsletterGroups)) {
-      try {
-        await NewsletterService.upsertContact(contact, {
-          newsletterStatus,
-          newsletterGroups
-        });
-      } catch (err) {
-        log.error(
-          "Error updating contact profile on newsletter provider for " +
-            contact.id,
-          err
-        );
-      }
+      await NewsletterService.upsertContact(contact, {
+        newsletterStatus,
+        newsletterGroups
+      });
     }
 
-    await getRepository(ContactProfile).update(contact.id, profileUpdates);
-    if (contact.profile) {
-      Object.assign(contact.profile, profileUpdates);
+    if (Object.keys(profileUpdates).length > 0) {
+      log.info("Update contact profile for " + contact.id, { profileUpdates });
+
+      await getRepository(ContactProfile).update(contact.id, profileUpdates);
+      if (contact.profile) {
+        Object.assign(contact.profile, profileUpdates);
+      }
     }
   }
 

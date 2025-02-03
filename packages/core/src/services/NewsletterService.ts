@@ -168,7 +168,8 @@ class NewsletterService {
         const nlContact = await this.provider.upsertContact(nlUpdate, oldEmail);
 
         log.info(
-          `Updating newsletter status from ${oldStatus} to ${nlContact.status} for contact ${contact.id}`
+          `Got newsletter groups and status ${oldStatus} to ${nlContact.status} for contact ${contact.id}`,
+          { groups: nlContact.groups }
         );
 
         // TODO: remove dependency on ContactProfile
