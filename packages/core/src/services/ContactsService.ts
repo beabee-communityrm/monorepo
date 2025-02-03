@@ -23,7 +23,6 @@ import CalloutsService from "#services/CalloutsService";
 import ContactMfaService from "#services/ContactMfaService";
 import EmailService from "#services/EmailService";
 import NewsletterService from "#services/NewsletterService";
-import OptionsService from "#services/OptionsService";
 import PaymentService from "#services/PaymentService";
 import ReferralsService from "#services/ReferralsService";
 import ResetSecurityFlowService from "#services/ResetSecurityFlowService";
@@ -183,11 +182,7 @@ class ContactsService {
     Object.assign(contact, updates);
 
     if (opts.sync) {
-      const res = await NewsletterService.upsertContact(
-        contact,
-        updates,
-        oldEmail
-      );
+      await NewsletterService.upsertContact(contact, updates, oldEmail);
     }
 
     await PaymentService.updateContact(contact, updates);
@@ -225,16 +220,8 @@ class ContactsService {
 
     await getRepository(Contact).save(contact);
 
-    if (!wasActive && contact.membership?.isActive) {
-      await NewsletterService.addTagToContacts(
-        [contact],
-        NewsletterService.ACTIVE_MEMBER_TAG
-      );
-    } else if (wasActive && !contact.membership.isActive) {
-      await NewsletterService.removeTagFromContacts(
-        [contact],
-        NewsletterService.ACTIVE_MEMBER_TAG
-      );
+    if (wasActive !== contact.membership?.isActive) {
+      await NewsletterService.upsertContact(contact);
     }
 
     return role;
@@ -276,17 +263,16 @@ class ContactsService {
     roleType: RoleType
   ): Promise<boolean> {
     log.info(`Revoke role ${roleType} for ${contact.id}`);
+    const wasActive = contact.membership?.isActive;
+
     contact.roles = contact.roles.filter((p) => p.type !== roleType);
     const ret = await getRepository(ContactRole).delete({
       contactId: contact.id,
       type: roleType
     });
 
-    if (!contact.membership?.isActive) {
-      await NewsletterService.removeTagFromContacts(
-        [contact],
-        NewsletterService.ACTIVE_MEMBER_TAG
-      );
+    if (wasActive !== contact.membership?.isActive) {
+      await NewsletterService.upsertContact(contact);
     }
 
     return ret.affected !== 0;
@@ -297,30 +283,21 @@ class ContactsService {
     updates: Partial<ContactProfile>,
     opts = { sync: true }
   ): Promise<void> {
-    log.info("Update contact profile for " + contact.id, { updates });
-
-    if (opts.sync) {
-      try {
-        const res = await NewsletterService.upsertContact(contact, {
-          newsletterStatus: updates.newsletterStatus,
-          newsletterGroups: updates.newsletterGroups
-        });
-
-        if (res) {
-          updates.newsletterStatus = res.newStatus;
-        }
-      } catch (err) {
-        log.error(
-          "Error updating contact profile on newsletter provider for " +
-            contact.id,
-          err
-        );
-      }
+    const { newsletterStatus, newsletterGroups, ...profileUpdates } = updates;
+    if (opts.sync && (newsletterStatus || newsletterGroups)) {
+      await NewsletterService.upsertContact(contact, {
+        newsletterStatus,
+        newsletterGroups
+      });
     }
 
-    await getRepository(ContactProfile).update(contact.id, updates);
-    if (contact.profile) {
-      Object.assign(contact.profile, updates);
+    if (Object.keys(profileUpdates).length > 0) {
+      log.info("Update contact profile for " + contact.id, { profileUpdates });
+
+      await getRepository(ContactProfile).update(contact.id, profileUpdates);
+      if (contact.profile) {
+        Object.assign(contact.profile, profileUpdates);
+      }
     }
   }
 
