@@ -182,13 +182,17 @@ class NewsletterService {
         // The newsletter provider rejected the update, set this contact's
         // newsletter status to None to prevent further updates
         if (err instanceof CantUpdateNewsletterContact) {
+          log.error(
+            `Newsletter upsert failed, setting status to none for contact ${contact.id}`,
+            err
+          );
           await getRepository(ContactProfile).update(contact.id, {
             newsletterStatus: NewsletterStatus.None
           });
           contact.profile.newsletterStatus = NewsletterStatus.None;
+        } else {
+          throw err;
         }
-
-        throw err;
       }
     } else {
       log.info("Ignoring contact update for " + contact.id);
