@@ -73,7 +73,7 @@ export const userCommand: CommandModule = {
             description: "Email of the user to delete",
             demandOption: true
           }),
-        handler: (argv) => deleteUser(argv.email as string)
+        handler: (argv) => deleteUser(argv.email)
       });
   },
   handler: () => {}
