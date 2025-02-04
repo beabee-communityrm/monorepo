@@ -3,7 +3,6 @@ import {
   NewsletterProvider,
   UpdateNewsletterContact
 } from "#type/index";
-import { NewsletterStatus } from "@beabee/beabee-common";
 
 export default class NoneProvider implements NewsletterProvider {
   async addTagToContacts(emails: string[], tag: string): Promise<void> {}
@@ -17,10 +16,14 @@ export default class NoneProvider implements NewsletterProvider {
   async upsertContact(
     contact: UpdateNewsletterContact,
     oldEmail?: string
-  ): Promise<NewsletterStatus> {
-    return contact.status;
+  ): Promise<NewsletterContact> {
+    return { ...contact, joined: new Date(), tags: [] };
   }
   async upsertContacts(contacts: UpdateNewsletterContact[]): Promise<void> {}
   async archiveContacts(emails: string[]): Promise<void> {}
   async permanentlyDeleteContacts(emails: string[]): Promise<void> {}
+  async updateContactFields(
+    email: string,
+    fields: Record<string, string>
+  ): Promise<void> {}
 }

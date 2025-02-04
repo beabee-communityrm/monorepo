@@ -38,6 +38,17 @@
     },
     {
       "name": "os"
+    },
+    {
+      "name": "issue",
+      "params": {
+        "repos": [
+          {
+            "owner": "beabee-communityrm",
+            "repo": "monorepo"
+          }
+        ]
+      }
     }
   ],
   "slashCommands": [
