@@ -16,11 +16,17 @@ import { Contact, ContactProfile } from "#models/index";
 
 import config from "#config/config";
 import { getContributionDescription } from "#utils/contact";
-
-import OptionsService from "#services/OptionsService";
+import { CantUpdateNewsletterContact } from "#errors/CantUpdateNewsletterContact";
 
 const log = mainLogger.child({ app: "newsletter-service" });
 
+/**
+ * A guard to check if the given updates object contains any changes that should
+ * be synced to the newsletter provider
+ *
+ * @param updates The updates to check
+ * @returns Whether the updates contain any changes that should be synced
+ */
 function shouldUpdate(updates: ContactNewsletterUpdates): boolean {
   return !!(
     updates.email ||
@@ -35,6 +41,15 @@ function shouldUpdate(updates: ContactNewsletterUpdates): boolean {
   );
 }
 
+/**
+ * Convert a contact and optional updates to a newsletter update object that can
+ * be sent to the newsletter provider
+ *
+ * @param contact The contact
+ * @param updates The updates to the contact
+ * @returns A tuple with the contact's current newsletter status and the update
+ *          object
+ */
 async function contactToNlUpdate(
   contact: Contact,
   updates?: ContactNewsletterUpdates
@@ -46,7 +61,7 @@ async function contactToNlUpdate(
     });
   }
 
-  const nlContact = {
+  const nlContact: UpdateNewsletterContact = {
     email: updates?.email || contact.email,
     status: updates?.newsletterStatus || contact.profile.newsletterStatus,
     groups: updates?.newsletterGroups || contact.profile.newsletterGroups,
@@ -65,7 +80,8 @@ async function contactToNlUpdate(
         contact.contributionMonthlyAmount?.toFixed(2) ||
         "",
       C_PERIOD: updates?.contributionPeriod || contact.contributionPeriod || ""
-    }
+    },
+    isActiveMember: contact.membership?.isActive || false
   };
 
   return nlContact.status === NewsletterStatus.None
@@ -73,6 +89,13 @@ async function contactToNlUpdate(
     : [contact.profile.newsletterStatus, nlContact];
 }
 
+/**
+ * Convert a list of contacts to a list of newsletter updates that can be sent
+ * to the newsletter provider, ignoring any contacts that shouldn't be synced
+ *
+ * @param contacts The list of contacts
+ * @returns A list of valid newsletter updates
+ */
 async function getValidNlUpdates(
   contacts: Contact[]
 ): Promise<UpdateNewsletterContact[]> {
@@ -87,16 +110,17 @@ async function getValidNlUpdates(
 }
 
 class NewsletterService {
-  /** Tag used to identify active members in the newsletter system */
-  get ACTIVE_MEMBER_TAG(): string {
-    return OptionsService.getText("newsletter-active-member-tag");
-  }
-
   private readonly provider: NewsletterProvider =
     config.newsletter.provider === "mailchimp"
       ? new MailchimpProvider(config.newsletter.settings)
       : new NoneProvider();
 
+  /**
+   * Add the given tag to the list of contacts
+   *
+   * @param contacts List of contacts
+   * @param tag The tag to add
+   */
   async addTagToContacts(contacts: Contact[], tag: string): Promise<void> {
     log.info(`Add tag ${tag} to ${contacts.length} contacts`);
     await this.provider.addTagToContacts(
@@ -105,6 +129,13 @@ class NewsletterService {
     );
   }
 
+  /**
+   * Remove the given tag from the list of contacts. Any contacts that don't
+   * have the tag will be ignored.
+   *
+   * @param contacts  List of contacts
+   * @param tag The tag to remove
+   */
   async removeTagFromContacts(contacts: Contact[], tag: string): Promise<void> {
     log.info(`Remove tag ${tag} from ${contacts.length} contacts`);
     await this.provider.removeTagFromContacts(
@@ -114,73 +145,17 @@ class NewsletterService {
   }
 
   /**
-   * Handles status changes in newsletter subscriptions and manages member tags
-   *
-   * @param contact - The contact whose newsletter status is changing
-   * @param oldStatus - Previous newsletter status of the contact
-   * @param newStatus - New newsletter status being set for the contact
-   *
-   * @remarks
-   * This method:
-   * 1. Updates the newsletter status in the database if changed
-   * 2. Adds the active member tag if this is the first newsletter signup
-   */
-  private async handleNewsletterStatusChange(
-    contact: Contact,
-    oldStatus: NewsletterStatus,
-    newStatus: NewsletterStatus
-  ): Promise<void> {
-    // Update newsletter status in database if changed
-    if (newStatus !== oldStatus) {
-      if (!contact.profile) {
-        contact.profile = await getRepository(ContactProfile).findOneByOrFail({
-          contactId: contact.id
-        });
-      }
-      contact.profile.newsletterStatus = newStatus;
-      await getRepository(ContactProfile).save(contact.profile);
-    }
-
-    // Only add tag if moving from no newsletter to having newsletter
-    if (
-      oldStatus === NewsletterStatus.None &&
-      newStatus !== NewsletterStatus.None &&
-      contact.membership?.isActive
-    ) {
-      log.info("First newsletter signup for " + contact.id);
-      await this.addTagToContacts([contact], this.ACTIVE_MEMBER_TAG);
-    }
-  }
-
-  /**
    * Updates or inserts a contact in the newsletter provider and handles status changes
    *
-   * @param contact - The contact to update or insert
-   * @param updates - Optional updates to apply to the contact before syncing
-   * @param oldEmail - Previous email address if the email is being updated
-   *
-   * @returns Object containing old and new newsletter status if contact was updated,
-   *          undefined if no update was needed
-   *
-   * @remarks
-   * This method will:
-   * 1. Check if updates are needed based on the provided changes
-   * 2. Convert the contact to newsletter format
-   * 3. Sync with the newsletter provider
-   * 4. Handle any status changes (e.g., adding active member tag)
-   * 5. Update the contact's newsletter status in the database if changed
+   * @param contact The contact to update or insert
+   * @param updates Optional updates to apply to the contact before syncing
+   * @param oldEmail Previous email address if the email is being updated
    */
   async upsertContact(
     contact: Contact,
     updates?: ContactNewsletterUpdates,
     oldEmail?: string
-  ): Promise<
-    | {
-        oldStatus: NewsletterStatus;
-        newStatus: NewsletterStatus;
-      }
-    | undefined
-  > {
+  ): Promise<void> {
     const willUpdate = !updates || shouldUpdate(updates);
     if (!willUpdate) {
       return;
@@ -188,23 +163,65 @@ class NewsletterService {
 
     const [oldStatus, nlUpdate] = await contactToNlUpdate(contact, updates);
     if (nlUpdate) {
-      log.info("Upsert contact " + contact.id);
-      const newStatus = await this.provider.upsertContact(nlUpdate, oldEmail);
+      try {
+        log.info("Upsert contact " + contact.id);
+        const nlContact = await this.provider.upsertContact(nlUpdate, oldEmail);
 
-      // Handle newsletter status changes
-      await this.handleNewsletterStatusChange(contact, oldStatus, newStatus);
+        log.info(
+          `Got newsletter groups and status ${oldStatus} to ${nlContact.status} for contact ${contact.id}`,
+          { groups: nlContact.groups }
+        );
 
-      return { oldStatus, newStatus };
+        // TODO: remove dependency on ContactProfile
+        await getRepository(ContactProfile).update(contact.id, {
+          newsletterStatus: nlContact.status,
+          newsletterGroups: nlContact.groups
+        });
+        contact.profile.newsletterStatus = nlContact.status;
+        contact.profile.newsletterGroups = nlContact.groups;
+      } catch (err) {
+        // The newsletter provider rejected the update, set this contact's
+        // newsletter status to None to prevent further updates
+        if (err instanceof CantUpdateNewsletterContact) {
+          log.error(
+            `Newsletter upsert failed, setting status to none for contact ${contact.id}`,
+            err
+          );
+          await getRepository(ContactProfile).update(contact.id, {
+            newsletterStatus: NewsletterStatus.None
+          });
+          contact.profile.newsletterStatus = NewsletterStatus.None;
+        } else {
+          throw err;
+        }
+      }
     } else {
       log.info("Ignoring contact update for " + contact.id);
     }
   }
 
+  /**
+   * Upserts the list of contacts to the newsletter provider. This method is
+   * used for bulk operations but unlike upsertContact does not give any
+   * guarantees about the active member tag.
+   *
+   * @deprecated Only used by legacy app newsletter sync, do not use.
+   * @param contacts
+   */
   async upsertContacts(contacts: Contact[]): Promise<void> {
     log.info(`Upsert ${contacts.length} contacts`);
     await this.provider.upsertContacts(await getValidNlUpdates(contacts));
   }
 
+  /**
+   * Update the merge fields of a contact in the newsletter provider. This
+   * method merges the field updates with the contact's current fields, so it
+   * overwrites any existing fields with the new values, but does not remove any
+   * fields that are not included in the update.
+   *
+   * @param contact The contact to update
+   * @param fields The fields to set
+   */
   async updateContactFields(
     contact: Contact,
     fields: Record<string, string>
@@ -212,18 +229,17 @@ class NewsletterService {
     log.info(`Update contact fields for ${contact.id}`, fields);
     const [, nlUpdate] = await contactToNlUpdate(contact);
     if (nlUpdate) {
-      // TODO: should be an update without status
-      //       currently we're sending the status unnecessarily when only updating fields
-      await this.provider.upsertContact({
-        email: nlUpdate.email,
-        status: nlUpdate.status,
-        fields
-      });
+      await this.provider.updateContactFields(nlUpdate.email, fields);
     } else {
       log.info("Ignoring contact field update for " + contact.id);
     }
   }
 
+  /**
+   * Archive a list of contacts in the newsletter provider
+   *
+   * @param contacts The contacts to archive
+   */
   async archiveContacts(contacts: Contact[]): Promise<void> {
     log.info(`Archive ${contacts.length} contacts`);
     await this.provider.archiveContacts(
@@ -243,12 +259,23 @@ class NewsletterService {
     );
   }
 
+  /**
+   * Get a single newsletter contact from the newsletter provider
+   *
+   * @param email The contact's email address
+   * @returns The newsletter contact
+   */
   async getNewsletterContact(
     email: string
   ): Promise<NewsletterContact | undefined> {
     return await this.provider.getContact(email);
   }
 
+  /**
+   * Get all contacts from the newsletter provider
+   *
+   * @returns List of newsletter contacts
+   */
   async getNewsletterContacts(): Promise<NewsletterContact[]> {
     return await this.provider.getContacts();
   }
