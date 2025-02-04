@@ -21,18 +21,22 @@ export const listUsers = async (email?: string): Promise<void> => {
       console.log(`Name: ${contact.fullname}`);
       console.log(`Email: ${contact.email}`);
       console.log(`Joined: ${contact.joined.toISOString()}`);
-      console.log(`Last seen: ${contact.lastSeen?.toISOString() || 'Never'}`);
-      
+      console.log(`Last seen: ${contact.lastSeen?.toISOString() || "Never"}`);
+
       if (contact.roles.length > 0) {
         console.log("Roles:");
-        contact.roles.forEach(role => {
-          console.log(`  - ${role.type}${role.dateExpires ? ` (expires: ${role.dateExpires.toISOString()})` : ''}`);
+        contact.roles.forEach((role) => {
+          console.log(
+            `  - ${role.type}${role.dateExpires ? ` (expires: ${role.dateExpires.toISOString()})` : ""}`
+          );
         });
       }
-      
+
       console.log(`Contribution Type: ${contact.contributionType}`);
       if (contact.contributionMonthlyAmount) {
-        console.log(`Monthly Amount: €${(contact.contributionMonthlyAmount).toFixed(2)}`);
+        console.log(
+          `Monthly Amount: €${contact.contributionMonthlyAmount.toFixed(2)}`
+        );
       }
       if (contact.contributionPeriod) {
         console.log(`Contribution Period: ${contact.contributionPeriod}`);
@@ -56,4 +60,4 @@ export const listUsers = async (email?: string): Promise<void> => {
       console.log("--------------------------------------------------");
     }
   });
-}; 
+};

@@ -46,7 +46,8 @@ export const userCommand: CommandModule = {
             .option("password", {
               alias: "p",
               type: "string",
-              describe: "Password (leave empty to generate reset password link)",
+              describe:
+                "Password (leave empty to generate reset password link)",
               default: ""
             })
             .option("membership", {

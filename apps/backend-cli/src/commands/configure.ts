@@ -18,13 +18,7 @@ export const configureCommand: CommandModule<{}, ConfigureArgs> = {
         alias: "p",
         type: "array",
         describe: "List of payment methods to enable",
-        choices: [
-          "s_card",
-          "s_sepa",
-          "s_bacs",
-          "s_paypal",
-          "gc_direct-debit"
-        ],
+        choices: ["s_card", "s_sepa", "s_bacs", "s_paypal", "gc_direct-debit"],
         default: ["s_card", "s_sepa", "s_bacs", "s_paypal", "gc_direct-debit"]
       });
   },

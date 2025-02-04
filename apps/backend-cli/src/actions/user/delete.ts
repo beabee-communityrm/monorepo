@@ -32,4 +32,4 @@ export const deleteUser = async (email: string): Promise<void> => {
       process.exit(1);
     }
   });
-}; 
+};

@@ -8,7 +8,6 @@ export const configure = async (argv: ConfigureArgs): Promise<void> => {
   await runApp(async () => {
     // Set support email based on email domain
     await optionsService.set("support-email", "support@" + argv.emailDomain);
-    
 
     // Update payment methods in join content
     await getRepository(Content).update("join", {
