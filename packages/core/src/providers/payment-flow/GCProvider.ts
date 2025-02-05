@@ -3,7 +3,7 @@ import { log as mainLogger } from "#logging";
 
 import { JoinFlow } from "#models/index";
 
-import { PaymentFlowProvider } from ".";
+import { PaymentFlowProvider } from "./PaymentFlowProvider";
 import {
   CompletedPaymentFlow,
   CompletedPaymentFlowData,
@@ -74,4 +74,6 @@ class GCProvider implements PaymentFlowProvider {
   }
 }
 
-export default new GCProvider();
+export const gcProvider = new GCProvider();
+/** @deprecated Use gcProvider instead */
+export default gcProvider;

@@ -15,7 +15,7 @@ import gocardless, {
 import { log as mainLogger } from "#logging";
 import { calcRenewalDate } from "#utils/payment";
 
-import { PaymentProvider } from ".";
+import { PaymentProvider } from "./PaymentProvider";
 
 import { Contact } from "#models/index";
 
@@ -31,7 +31,7 @@ import {
 
 const log = mainLogger.child({ app: "gc-payment-provider" });
 
-export default class GCProvider extends PaymentProvider {
+export class GCProvider extends PaymentProvider {
   async getContributionInfo(): Promise<Partial<ContributionInfo>> {
     let paymentSource: PaymentSource | undefined;
     let pendingPayment = false;
@@ -246,3 +246,6 @@ export default class GCProvider extends PaymentProvider {
     }
   }
 }
+
+/** @deprecated Use named import GCProvider instead */
+export default GCProvider;

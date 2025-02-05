@@ -27,6 +27,8 @@
     "#models/*": "./dist/models/*.js",
     "#services": "./dist/services/index.js",
     "#services/*": "./dist/services/*.js",
+    "#providers": "./dist/providers/index.js",
+    "#providers/*": "./dist/providers/*.js",
     "#*": "./dist/*.js"
   },
   "exports": {

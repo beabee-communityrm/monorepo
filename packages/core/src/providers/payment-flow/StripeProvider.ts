@@ -2,7 +2,7 @@ import { stripe, paymentMethodToStripeType, Stripe } from "#lib/stripe";
 import { log as mainLogger } from "#logging";
 import { JoinFlow } from "#models/index";
 
-import { PaymentFlowProvider } from ".";
+import { PaymentFlowProvider } from "./PaymentFlowProvider";
 
 import {
   CompletedPaymentFlow,
@@ -92,4 +92,6 @@ class StripeProvider implements PaymentFlowProvider {
   }
 }
 
-export default new StripeProvider();
+export const stripeProvider = new StripeProvider();
+/** @deprecated Use stripeProvider instead */
+export default stripeProvider;

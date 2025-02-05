@@ -13,10 +13,10 @@ import {
   EmailPerson,
   EmailProvider,
   EmailRecipient
-} from "#providers/email";
-import MandrillProvider from "#providers/email/MandrillProvider";
-import SendGridProvider from "#providers/email/SendGridProvider";
-import SMTPProvider from "#providers/email/SMTPProvider";
+} from "#type/index";
+import { MandrillProvider } from "#providers/email";
+import { SendGridProvider } from "#providers/email";
+import { SMTPProvider } from "#providers/email";
 
 import { Email, Contact } from "#models/index";
 

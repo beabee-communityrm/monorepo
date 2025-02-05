@@ -1,7 +1,7 @@
 import { PaymentForm } from "@beabee/beabee-common";
 
 import { Contact } from "#models/index";
-import { PaymentProvider } from ".";
+import { PaymentProvider } from "./PaymentProvider";
 
 import {
   CompletedPaymentFlow,
@@ -9,7 +9,7 @@ import {
   UpdateContributionResult
 } from "#type/index";
 
-export default class ManualProvider extends PaymentProvider {
+export class ManualProvider extends PaymentProvider {
   async canChangeContribution(useExistingMandate: boolean): Promise<boolean> {
     return !useExistingMandate;
   }
@@ -42,3 +42,6 @@ export default class ManualProvider extends PaymentProvider {
   }
   async permanentlyDeleteContact(): Promise<void> {}
 }
+
+/** @deprecated Use named import ManualProvider instead */
+export default ManualProvider;
