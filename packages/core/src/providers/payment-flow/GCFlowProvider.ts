@@ -3,7 +3,7 @@ import { log as mainLogger } from "#logging";
 
 import { JoinFlow } from "#models/index";
 
-import { PaymentFlowProvider } from ".";
+import { PaymentFlowProvider } from "./PaymentFlowProvider";
 import {
   CompletedPaymentFlow,
   CompletedPaymentFlowData,
@@ -13,7 +13,18 @@ import {
 
 const log = mainLogger.child({ app: "gc-payment-flow-provider" });
 
-class GCProvider implements PaymentFlowProvider {
+/**
+ * Implements PaymentFlowProvider for GoCardless direct debit payments.
+ * Handles the setup of direct debit mandates through the GoCardless redirect flow.
+ */
+class GCFlowProvider implements PaymentFlowProvider {
+  /**
+   * Creates a GoCardless redirect flow for direct debit setup
+   * @param joinFlow - Join flow containing user information
+   * @param completeUrl - URL to redirect after mandate setup
+   * @param data - Additional customer data
+   * @returns Promise resolving to payment flow with redirect URL
+   */
   async createPaymentFlow(
     joinFlow: JoinFlow,
     completeUrl: string,
@@ -38,6 +49,11 @@ class GCProvider implements PaymentFlowProvider {
     };
   }
 
+  /**
+   * Completes the GoCardless redirect flow and retrieves mandate
+   * @param joinFlow - Join flow to complete
+   * @returns Promise resolving to completed payment flow with mandate ID
+   */
   async completePaymentFlow(joinFlow: JoinFlow): Promise<CompletedPaymentFlow> {
     const redirectFlow = await gocardless.redirectFlows.complete(
       joinFlow.paymentFlowId,
@@ -54,6 +70,11 @@ class GCProvider implements PaymentFlowProvider {
     };
   }
 
+  /**
+   * Retrieves additional data from completed payment flow
+   * @param completedPaymentFlow - The completed flow
+   * @returns Promise resolving to payment flow data including billing address
+   */
   async getCompletedPaymentFlowData(
     completedPaymentFlow: CompletedPaymentFlow
   ): Promise<CompletedPaymentFlowData> {
@@ -74,4 +95,6 @@ class GCProvider implements PaymentFlowProvider {
   }
 }
 
-export default new GCProvider();
+export const gcFlowProvider = new GCFlowProvider();
+/** @deprecated Use gcFlowProvider instead */
+export default gcFlowProvider;
