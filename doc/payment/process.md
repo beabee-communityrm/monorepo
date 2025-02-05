@@ -133,32 +133,67 @@ const subscription = await gocardless.subscriptions.create({
 
 ### Stripe Webhooks
 
-1. **checkout.session.completed**
-   - Confirms successful payment setup
-   - Updates contact status
+1. **Webhook Endpoints**
+   - Local development: `http://localhost:3003/stripe`
+   - Testing environment: `http://localhost:4003/stripe`
+   - Production: `https://your-domain.com/stripe`
 
-2. **customer.subscription.updated**
-   - Updates subscription status
-   - Handles payment changes
+2. **Webhook Events**
+   - **checkout.session.completed**
+     - Confirms successful payment setup
+     - Updates contact status
+   - **customer.subscription.updated**
+     - Updates subscription status
+     - Handles payment changes
+   - **invoice.paid**
+     - Records successful payment
+     - Updates contribution status
+   - **payment_intent.payment_failed**
+     - Handles failed payments
+     - Triggers retry process
 
-3. **invoice.paid**
-   - Records successful payment
-   - Updates contribution status
-
-4. **payment_intent.payment_failed**
-   - Handles failed payments
-   - Triggers retry process
+3. **Local Testing**
+   ```bash
+   # Start Stripe webhook forwarding
+   stripe listen --forward-to localhost:3003/stripe
+   ```
 
 ### GoCardless Webhooks
 
-1. **mandates**
-   - `mandates.created`: Confirms setup
-   - `mandates.failed`: Handles setup failures
+1. **Webhook Endpoints**
+   - Local development: `http://localhost:3003/gc`
+   - Testing environment: `http://localhost:4003/gc`
+   - Production: `https://your-domain.com/gc`
 
-2. **payments**
-   - `payments.confirmed`: Records success
-   - `payments.failed`: Handles failures
-   - `payments.cancelled`: Updates status
+2. **Webhook Events**
+   - **mandates**
+     - `mandates.created`: Confirms setup
+     - `mandates.failed`: Handles setup failures
+     - `mandates.cancelled`: Removes mandate from system
+     - `mandates.expired`: Updates mandate status
+   
+   - **payments**
+     - `payments.confirmed`: Records successful payment
+     - `payments.failed`: Handles payment failures
+     - `payments.cancelled`: Updates payment status
+     - `payments.paid_out`: Updates payment to paid out status
+
+   - **subscriptions**
+     - `subscriptions.cancelled`: Cancels subscription
+     - `subscriptions.finished`: Handles subscription completion
+     - `subscriptions.payment_created`: Tracks new payments
+     - `subscriptions.amended`: Handles subscription changes
+
+3. **Local Testing**
+   ```bash
+   # Start GoCardless webhook forwarding
+   stripe listen --forward-to localhost:3003/gc
+   ```
+
+4. **Security**
+   - Webhooks are validated using the GoCardless webhook secret
+   - Only enabled if `switch-webhook-gc` option is true
+   - Returns 498 status for invalid signatures
 
 ## Error Handling
 
