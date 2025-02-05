@@ -1,0 +1,145 @@
+{
+  "contextProviders": [
+    {
+      "name": "code",
+      "params": {
+        "nRetrieve": 25,
+        "nFinal": 5,
+        "useReranking": true
+      }
+    },
+    {
+      "name": "docs",
+      "params": {}
+    },
+    {
+      "name": "diff",
+      "params": {}
+    },
+    {
+      "name": "terminal",
+      "params": {}
+    },
+    {
+      "name": "problems",
+      "params": {}
+    },
+    {
+      "name": "folder",
+      "params": {}
+    },
+    {
+      "name": "codebase",
+      "params": {}
+    },
+    {
+      "name": "repo-map",
+      "params": {}
+    },
+    {
+      "name": "os"
+    },
+    {
+      "name": "issue",
+      "params": {
+        "repos": [
+          {
+            "owner": "beabee-communityrm",
+            "repo": "monorepo"
+          }
+        ]
+      }
+    }
+  ],
+  "slashCommands": [
+    {
+      "name": "share",
+      "description": "Export the current chat session to markdown"
+    },
+    {
+      "name": "cmd",
+      "description": "Generate a shell command"
+    },
+    {
+      "name": "commit",
+      "description": "Generate a git commit message"
+    }
+  ],
+  "embeddingsProvider": {
+    "provider": "transformers.js"
+  },
+  "experimental": {
+    "useChromiumForDocsCrawling": true
+  },
+  "docs": [
+    {
+      "startUrl": "https://vitest.dev/",
+      "title": "Vitest",
+      "faviconUrl": "https://vitest.dev/favicon.ico"
+    },
+    {
+      "startUrl": "https://stripe.com/docs/js",
+      "title": "@stripe/stripe-js"
+    },
+    {
+      "startUrl": "https://vite.dev",
+      "title": "vite",
+      "faviconUrl": "https://vite.dev/logo.svgs"
+    },
+    {
+      "startUrl": "https://yargs.js.org/docs/",
+      "title": "yargs",
+      "faviconUrl": "https://yargs.js.org/favicon.ico"
+    },
+    {
+      "startUrl": "https://node.testcontainers.org/",
+      "title": "testcontainers (Node.js)",
+      "faviconUrl": "https://node.testcontainers.org/site/favicon.ico"
+    },
+    {
+      "startUrl": "https://prettier.io/docs/en/",
+      "title": "prettier",
+      "faviconUrl": "https://prettier.io/icon.png"
+    },
+    {
+      "startUrl": "https://date-fns.org/docs/Getting-Started",
+      "title": "date-fns",
+      "faviconUrl": "https://date-fns.org/static/apple-icon-180x180.png"
+    },
+    {
+      "startUrl": "https://github.com/typestack/class-transformer#readme",
+      "title": "class-transformer",
+      "faviconUrl": "https://avatars.githubusercontent.com/u/24602613"
+    },
+    {
+      "startUrl": "https://github.com/typestack/class-validator#readme",
+      "title": "class-validator",
+      "faviconUrl": "https://avatars.githubusercontent.com/u/24602613"
+    },
+    {
+      "startUrl": "https://www.passportjs.org/",
+      "title": "passport",
+      "faviconUrl": ""
+    },
+    {
+      "startUrl": "https://github.com/typestack/routing-controllers#readme",
+      "title": "routing-controllers",
+      "faviconUrl": ""
+    },
+    {
+      "startUrl": "https://typeorm.io",
+      "title": "typeorm",
+      "faviconUrl": ""
+    },
+    {
+      "startUrl": "https://www.typescriptlang.org/",
+      "title": "typescript",
+      "faviconUrl": "https://www.typescriptlang.org/favicon-32x32.png"
+    },
+    {
+      "startUrl": "https://dotenvx.com/docs/",
+      "title": "dotenv",
+      "faviconUrl": ""
+    }
+  ]
+}
