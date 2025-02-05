@@ -142,7 +142,7 @@ meta:
     >
       <div>
         <AppButton
-          v-if="isOpen"
+          v-if="isOpen && route.query.noadd === undefined"
           variant="link"
           class="px-2"
           @click.prevent="handleStartAddMode"
