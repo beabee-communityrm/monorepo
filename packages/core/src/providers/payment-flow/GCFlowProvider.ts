@@ -13,7 +13,7 @@ import {
 
 const log = mainLogger.child({ app: "gc-payment-flow-provider" });
 
-class GCProvider implements PaymentFlowProvider {
+class GCFlowProvider implements PaymentFlowProvider {
   async createPaymentFlow(
     joinFlow: JoinFlow,
     completeUrl: string,
@@ -74,6 +74,6 @@ class GCProvider implements PaymentFlowProvider {
   }
 }
 
-export const gcProvider = new GCProvider();
-/** @deprecated Use gcProvider instead */
-export default gcProvider;
+export const gcFlowProvider = new GCFlowProvider();
+/** @deprecated Use gcFlowProvider instead */
+export default gcFlowProvider;

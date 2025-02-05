@@ -14,7 +14,7 @@ import { BadRequestError } from "#errors/BadRequestError";
 
 const log = mainLogger.child({ app: "stripe-payment-flow-provider" });
 
-class StripeProvider implements PaymentFlowProvider {
+class StripeFlowProvider implements PaymentFlowProvider {
   async createPaymentFlow(joinFlow: JoinFlow): Promise<PaymentFlow> {
     const setupIntent = await stripe.setupIntents.create({
       payment_method_types: [
@@ -92,6 +92,6 @@ class StripeProvider implements PaymentFlowProvider {
   }
 }
 
-export const stripeProvider = new StripeProvider();
-/** @deprecated Use stripeProvider instead */
-export default stripeProvider;
+export const stripeFlowProvider = new StripeFlowProvider();
+/** @deprecated Use stripeFlowProvider instead */
+export default stripeFlowProvider;

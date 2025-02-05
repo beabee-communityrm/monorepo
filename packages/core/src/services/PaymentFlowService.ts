@@ -15,9 +15,11 @@ import PaymentService from "#services/PaymentService";
 import ResetSecurityFlowService from "./ResetSecurityFlowService";
 import { JoinFlow, JoinForm, Contact } from "#models/index";
 
-import { PaymentFlowProvider } from "#providers/payment-flow";
-import StripeProvider from "#providers/payment-flow/StripeProvider";
-import GCProvider from "#providers/payment-flow/GCProvider";
+import {
+  PaymentFlowProvider,
+  stripeFlowProvider,
+  gcFlowProvider
+} from "#providers/payment-flow";
 
 import { DuplicateEmailError } from "#errors/index";
 
@@ -31,12 +33,12 @@ import {
 } from "#type/index";
 
 const paymentProviders = {
-  [PaymentMethod.StripeCard]: StripeProvider,
-  [PaymentMethod.StripeSEPA]: StripeProvider,
-  [PaymentMethod.StripeBACS]: StripeProvider,
-  [PaymentMethod.StripePayPal]: StripeProvider,
-  [PaymentMethod.StripeIdeal]: StripeProvider,
-  [PaymentMethod.GoCardlessDirectDebit]: GCProvider
+  [PaymentMethod.StripeCard]: stripeFlowProvider,
+  [PaymentMethod.StripeSEPA]: stripeFlowProvider,
+  [PaymentMethod.StripeBACS]: stripeFlowProvider,
+  [PaymentMethod.StripePayPal]: stripeFlowProvider,
+  [PaymentMethod.StripeIdeal]: stripeFlowProvider,
+  [PaymentMethod.GoCardlessDirectDebit]: gcFlowProvider
 };
 
 const log = mainLogger.child({ app: "payment-flow-service" });
