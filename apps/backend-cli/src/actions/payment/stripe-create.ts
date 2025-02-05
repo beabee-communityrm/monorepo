@@ -1,8 +1,6 @@
 import { Contact } from "@beabee/core/models";
-import { generatePassword } from "@beabee/core/utils/auth";
 import {
   paymentService,
-  contactsService
 } from "@beabee/core/services";
 import { PaymentForm, PaymentMethod } from "@beabee/beabee-common";
 import { stripe, getPriceData } from "@beabee/core/lib/stripe";
@@ -23,6 +21,8 @@ import type { CreatePaymentArgs } from "../../types/index.js";
  * 6. Create and pay initial invoice
  */
 export async function createStripePayment(contact: Contact, argv: CreatePaymentArgs): Promise<void> {
+  console.log(`\nIMPORTANT: Make sure to run 'stripe listen --forward-to localhost:${process.env.WEBHOOK_PORT}/stripe' in parallel to receive webhooks locally\n`);
+
   try {
     // Create payment form data
     const paymentForm: PaymentForm = {
