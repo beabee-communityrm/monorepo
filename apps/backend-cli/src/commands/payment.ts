@@ -31,8 +31,8 @@ export const paymentCommand: CommandModule = {
             .option("amount", {
               alias: "a",
               type: "number",
-              description: "Monthly amount in cents",
-              default: 1000
+              description: "Monthly amount in euros",
+              default: 10
             })
             .option("period", {
               alias: "p",

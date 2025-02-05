@@ -76,6 +76,8 @@ services:
     volumes:
       - ./packages:/opt/packages
       - ./apps/webhooks/dist:/opt/apps/webhooks/dist
+    ports:
+      - ${WEBHOOK_PORT}:3000
 
   # Cron app
   cron_app:

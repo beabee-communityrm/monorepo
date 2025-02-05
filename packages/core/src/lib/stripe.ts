@@ -74,7 +74,7 @@ export async function disableSalesTaxRate(): Promise<void> {
  * @param paymentMethod The payment method
  * @returns A Stripe price data object
  */
-function getPriceData(
+export function getPriceData(
   paymentForm: PaymentForm,
   paymentMethod: PaymentMethod
 ): Stripe.SubscriptionCreateParams.Item.PriceData {
@@ -132,6 +132,25 @@ async function calculateProrationParams(
   };
 }
 
+export const getCreateSubscriptionParams = (
+  customerId: string,
+  paymentForm: PaymentForm,
+  paymentMethod: PaymentMethod,
+  renewalDate?: Date
+): Stripe.SubscriptionCreateParams => {
+  return {
+    customer: customerId,
+    items: [{ price_data: getPriceData(paymentForm, paymentMethod) }],
+    off_session: true,
+    ...(renewalDate &&
+      renewalDate > new Date() && {
+        billing_cycle_anchor: Math.floor(+renewalDate / 1000),
+        proration_behavior: "none"
+      }),
+    default_tax_rates: getSalesTaxRateObject()
+  }
+}
+
 /**
  * Create a new subscription in Stripe, optionally starting at a specific date.
  *
@@ -151,18 +170,7 @@ export async function createSubscription(
     paymentForm,
     renewalDate
   });
-
-  return await stripe.subscriptions.create({
-    customer: customerId,
-    items: [{ price_data: getPriceData(paymentForm, paymentMethod) }],
-    off_session: true,
-    ...(renewalDate &&
-      renewalDate > new Date() && {
-        billing_cycle_anchor: Math.floor(+renewalDate / 1000),
-        proration_behavior: "none"
-      }),
-    default_tax_rates: getSalesTaxRateObject()
-  });
+  return await stripe.subscriptions.create(getCreateSubscriptionParams(customerId, paymentForm, paymentMethod, renewalDate));
 }
 
 /**

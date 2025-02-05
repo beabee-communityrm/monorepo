@@ -35,6 +35,8 @@ services:
     env_file:
       - .env
       - .env.test
+    ports:
+      - ${WEBHOOK_PORT}:3000
 
   cron_app:
     extends:
