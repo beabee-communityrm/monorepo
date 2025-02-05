@@ -1,0 +1,22 @@
+---
+subject: Your first payment failed
+---
+
+<p>Hello *|FNAME|*</p>
+<p><br /></p>
+<p>
+  We're really grateful to you for starting a contribution with *|ORGNAME|*,
+  however unfortunately your first payment couldn't be processed.
+</p>
+<p><br /></p>
+<p>
+  To fix the problem you can either login using the link below to update your
+  payment method, or contact our support team on
+  <a href="mailto:*|SUPPORTEMAIL|*">*|SUPPORTEMAIL|*</a>
+</p>
+<p><br /></p>
+<p>
+  <a href="*|LOGINLINK|*"><b>Login</b></a>
+</p>
+<p><br /></p>
+<p>Best wishes</p>

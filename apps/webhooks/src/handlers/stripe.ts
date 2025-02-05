@@ -13,6 +13,7 @@ import {
 } from "@beabee/core/lib/stripe";
 import { wrapAsync } from "@beabee/core/utils/index";
 
+import EmailService from "@beabee/core/services/EmailService";
 import GiftService from "@beabee/core/services/GiftService";
 import ContactsService from "@beabee/core/services/ContactsService";
 import PaymentService from "@beabee/core/services/PaymentService";
@@ -130,6 +131,10 @@ async function handleCustomerSubscriptionUpdated(
       await PaymentService.updateData(contribution.contact, {
         subscriptionId: null
       });
+      await EmailService.sendTemplateToContact(
+        "contribution-didnt-start",
+        contribution.contact
+      );
     }
   }
 }
