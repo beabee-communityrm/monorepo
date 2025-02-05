@@ -26,7 +26,7 @@ interface GetMembersResponse {
   members: MCMember[];
 }
 
-export default class MailchimpProvider implements NewsletterProvider {
+export class MailchimpProvider implements NewsletterProvider {
   private readonly api;
   private readonly listId;
 
@@ -301,3 +301,6 @@ export default class MailchimpProvider implements NewsletterProvider {
     );
   }
 }
+
+/** @deprecated Use named import MailchimpProvider instead */
+export default MailchimpProvider;

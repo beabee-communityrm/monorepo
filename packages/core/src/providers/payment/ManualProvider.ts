@@ -1,7 +1,7 @@
 import { PaymentForm } from "@beabee/beabee-common";
 
 import { Contact } from "#models/index";
-import { PaymentProvider } from ".";
+import { PaymentProvider } from "./PaymentProvider";
 
 import {
   CompletedPaymentFlow,
@@ -9,10 +9,24 @@ import {
   UpdateContributionResult
 } from "#type/index";
 
-export default class ManualProvider extends PaymentProvider {
+/**
+ * Implements PaymentProvider for manual payment methods.
+ * Provides basic payment operations without external provider integration.
+ */
+export class ManualProvider extends PaymentProvider {
+  /**
+   * Checks if contribution changes are allowed
+   * @param useExistingMandate - Whether to use existing mandate
+   * @returns Promise resolving to true as manual payments can always be changed
+   */
   async canChangeContribution(useExistingMandate: boolean): Promise<boolean> {
     return !useExistingMandate;
   }
+
+  /**
+   * Gets current contribution information
+   * @returns Promise resolving to partial contribution info with basic payment source data
+   */
   async getContributionInfo(): Promise<Partial<ContributionInfo>> {
     return {
       paymentSource: {
@@ -27,18 +41,43 @@ export default class ManualProvider extends PaymentProvider {
     };
   }
 
+  /**
+   * Cancels contribution by updating local data
+   * @param keepMandate - Whether to keep mandate (unused in manual payments)
+   */
   async cancelContribution(keepMandate: boolean): Promise<void> {}
+
+  /**
+   * No-op as manual payments don't have external contact data
+   * @param updates - Contact fields to update
+   */
   async updateContact(updates: Partial<Contact>): Promise<void> {}
 
+  /**
+   * Updates contribution details
+   * @param paymentForm - New payment form data
+   */
   async updateContribution(
     paymentForm: PaymentForm
   ): Promise<UpdateContributionResult> {
     throw new Error("Method not implemented.");
   }
+
+  /**
+   * No-op as manual payments don't use payment methods
+   * @param completedPaymentFlow - The completed payment flow
+   */
   async updatePaymentMethod(
     completedPaymentFlow: CompletedPaymentFlow
   ): Promise<void> {
     throw new Error("Method not implemented.");
   }
+
+  /**
+   * No-op as manual payments don't store external data
+   */
   async permanentlyDeleteContact(): Promise<void> {}
 }
+
+/** @deprecated Use named import ManualProvider instead */
+export default ManualProvider;

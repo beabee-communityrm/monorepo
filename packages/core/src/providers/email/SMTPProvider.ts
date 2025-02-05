@@ -3,14 +3,14 @@ import Mail from "nodemailer/lib/mailer";
 
 import { log as mainLogger } from "#logging";
 
-import { EmailOptions, EmailRecipient, PreparedEmail } from ".";
-import BaseProvider from "./BaseProvider";
+import type { EmailOptions, EmailRecipient, PreparedEmail } from "#type/index";
+import { BaseProvider } from "./BaseProvider";
 
 import { SMTPEmailConfig } from "#config/config";
 
 const log = mainLogger.child({ app: "smtp-email-provider" });
 
-export default class SMTPProvider extends BaseProvider {
+export class SMTPProvider extends BaseProvider {
   private readonly client: Mail;
 
   constructor(settings: SMTPEmailConfig["settings"]) {
@@ -62,3 +62,6 @@ export default class SMTPProvider extends BaseProvider {
     }
   }
 }
+
+/** @deprecated Use named import SMTPProvider instead */
+export default SMTPProvider;

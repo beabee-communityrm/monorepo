@@ -6,7 +6,7 @@ import {
 import { add } from "date-fns";
 import Stripe from "stripe";
 
-import { PaymentProvider } from ".";
+import { PaymentProvider } from "./PaymentProvider";
 
 import {
   stripe,
@@ -32,7 +32,7 @@ import {
 
 const log = mainLogger.child({ app: "stripe-payment-provider" });
 
-export default class StripeProvider extends PaymentProvider {
+export class StripeProvider extends PaymentProvider {
   async canChangeContribution(useExistingMandate: boolean): Promise<boolean> {
     return !useExistingMandate || !!this.data.mandateId;
   }
@@ -227,3 +227,6 @@ export default class StripeProvider extends PaymentProvider {
     }
   }
 }
+
+/** @deprecated Use stripeProvider instead */
+export default StripeProvider;

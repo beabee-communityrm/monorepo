@@ -2,14 +2,14 @@ import sgMail from "@sendgrid/mail";
 
 import { log as mainLogger } from "#logging";
 
-import { EmailOptions, EmailRecipient, PreparedEmail } from ".";
-import BaseProvider from "./BaseProvider";
+import type { EmailOptions, EmailRecipient, PreparedEmail } from "#type/index";
+import { BaseProvider } from "./BaseProvider";
 
 import { SendGridEmailConfig } from "#config/config";
 
 const log = mainLogger.child({ app: "sendgrid-email-provider" });
 
-export default class SendGridProvider extends BaseProvider {
+export class SendGridProvider extends BaseProvider {
   private readonly testMode: boolean;
 
   constructor(settings: SendGridEmailConfig["settings"]) {

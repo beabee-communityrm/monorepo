@@ -4,8 +4,14 @@ import { log as mainLogger } from "#logging";
 
 import { Email } from "#models/index";
 
-import { EmailOptions, EmailRecipient, EmailTemplate, PreparedEmail } from ".";
-import BaseProvider from "./BaseProvider";
+import type {
+  EmailOptions,
+  EmailRecipient,
+  EmailTemplate,
+  PreparedEmail
+} from "#type/index";
+
+import { BaseProvider } from "./BaseProvider";
 
 import { MandrillEmailConfig } from "#config/config";
 
@@ -25,7 +31,7 @@ interface MandrillMessage {
   attachments?: { type: string; name: string; content: string }[];
 }
 
-export default class MandrillProvider extends BaseProvider {
+export class MandrillProvider extends BaseProvider {
   private readonly instance;
 
   constructor(settings: MandrillEmailConfig["settings"]) {
@@ -124,3 +130,6 @@ export default class MandrillProvider extends BaseProvider {
     };
   }
 }
+
+/** @deprecated Use named import MandrillProvider instead */
+export default MandrillProvider;
