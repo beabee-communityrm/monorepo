@@ -46,7 +46,7 @@ const log = mainLogger.child({ app: "payment-flow-service" });
 /**
  * Service that manages the complete payment flow process in beabee.
  * Coordinates between different payment providers and handles the setup of new payment methods.
- * 
+ *
  * The flow typically consists of these steps:
  * 1. Join flow creation
  * 2. Provider-specific setup (Stripe/GoCardless)
