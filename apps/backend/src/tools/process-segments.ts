@@ -1,3 +1,6 @@
+// TODO: Port this to apps/backend-cli/src/actions/sync/segments.ts.
+// To do that, we have to package ContactTransformer e.g. to @beabee/transformers.
+
 import "module-alias/register";
 
 import { In } from "typeorm";

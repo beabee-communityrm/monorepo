@@ -13,7 +13,16 @@ function notEmpty(s: string) {
   return s.trim() !== "";
 }
 
+/**
+ * @deprecated This tool is deprecated and will be removed in the next major version.
+ * Please use the new backend-cli configure command instead: yarn backend-cli configure
+ */
 runApp(async () => {
+  console.warn(
+    "\n⚠️  DEPRECATED: This configure tool is deprecated and will be removed in the next major version.\n" +
+      "Please use the new backend-cli configure command instead: yarn backend-cli configure\n"
+  );
+
   const answers = {
     emailDomain: await input({ message: "Email Domain", validate: notEmpty }),
     paymentProviders: await checkbox({

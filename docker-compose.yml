@@ -27,7 +27,7 @@ services:
       timeout: 5s
       retries: 5
     ports:
-      - 6543:5432
+      - ${DB_PORT}:5432
 
   mail:
     image: maildev/maildev:2.1.0

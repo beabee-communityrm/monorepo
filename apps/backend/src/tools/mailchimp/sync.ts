@@ -43,6 +43,10 @@ async function fetchContacts(
   });
 }
 
+/**
+ * @deprecated This tool is deprecated and will be removed in the next major version.
+ * Please use the new backend-cli sync mailchimp command instead: yarn backend-cli sync mailchimp
+ */
 async function processContacts(contacts: Contact[]) {
   const contactsToArchive = contacts.filter(
     (m) =>
@@ -60,6 +64,11 @@ async function processContacts(contacts: Contact[]) {
 }
 
 runApp(async () => {
+  console.warn(
+    "\n⚠️  DEPRECATED: This mailchimp sync tool is deprecated and will be removed in the next major version.\n" +
+      "Please use the new backend-cli sync mailchimp command instead: yarn backend-cli sync mailchimp\n"
+  );
+
   const isTest = process.argv[2] === "-n";
   const [startDate, endDate] = process.argv.slice(isTest ? 3 : 2);
   const contacts = await fetchContacts(startDate, endDate);
