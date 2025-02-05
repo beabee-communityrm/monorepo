@@ -43,7 +43,23 @@ const paymentProviders = {
 
 const log = mainLogger.child({ app: "payment-flow-service" });
 
+/**
+ * Service that manages the complete payment flow process in beabee.
+ * Coordinates between different payment providers and handles the setup of new payment methods.
+ * 
+ * The flow typically consists of these steps:
+ * 1. Join flow creation
+ * 2. Provider-specific setup (Stripe/GoCardless)
+ * 3. Payment completion
+ * 4. Contact and subscription setup
+ */
 class PaymentFlowService implements PaymentFlowProvider {
+  /**
+   * Creates a new join flow for user registration
+   * @param form - Basic user information (email and password)
+   * @param urls - URLs for completion and cancellation handling
+   * @returns Promise resolving to created JoinFlow
+   */
   async createJoinFlow(
     form: Pick<JoinForm, "email" | "password">,
     urls: CompleteUrls
@@ -64,6 +80,14 @@ class PaymentFlowService implements PaymentFlowProvider {
     });
   }
 
+  /**
+   * Creates a payment join flow with contribution details
+   * @param joinForm - Complete join form with payment details
+   * @param urls - Navigation URLs
+   * @param completeUrl - Provider-specific completion URL
+   * @param user - User data for the flow
+   * @returns Promise resolving to payment flow parameters
+   */
   async createPaymentJoinFlow(
     joinForm: JoinForm,
     urls: CompleteUrls,
@@ -95,6 +119,11 @@ class PaymentFlowService implements PaymentFlowProvider {
     return await getRepository(JoinFlow).findOneBy({ paymentFlowId });
   }
 
+  /**
+   * Completes a join flow after provider setup
+   * @param joinFlow - The join flow to complete
+   * @returns Promise resolving to completed payment flow or undefined
+   */
   async completeJoinFlow(
     joinFlow: JoinFlow
   ): Promise<CompletedPaymentFlow | undefined> {

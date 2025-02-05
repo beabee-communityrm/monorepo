@@ -31,7 +31,15 @@ import {
 
 const log = mainLogger.child({ app: "gc-payment-provider" });
 
+/**
+ * Implements PaymentProvider for GoCardless direct debit payments.
+ * Handles ongoing payment operations for direct debit mandates.
+ */
 export class GCProvider extends PaymentProvider {
+  /**
+   * Retrieves current contribution information including mandate and payment status
+   * @returns Promise resolving to partial contribution info
+   */
   async getContributionInfo(): Promise<Partial<ContributionInfo>> {
     let paymentSource: PaymentSource | undefined;
     let pendingPayment = false;
@@ -64,6 +72,12 @@ export class GCProvider extends PaymentProvider {
     };
   }
 
+  /**
+   * Checks if contribution changes are allowed based on mandate status
+   * @param useExistingMandate - Whether to use existing mandate
+   * @param paymentForm - New payment details
+   * @returns Promise resolving to boolean indicating if changes are allowed
+   */
   async canChangeContribution(
     useExistingMandate: boolean,
     paymentForm: PaymentForm
@@ -89,6 +103,11 @@ export class GCProvider extends PaymentProvider {
     );
   }
 
+  /**
+   * Updates contribution amount and schedule
+   * @param paymentForm - New payment form data
+   * @returns Promise resolving to update result
+   */
   async updateContribution(
     paymentForm: PaymentForm
   ): Promise<UpdateContributionResult> {
@@ -164,6 +183,10 @@ export class GCProvider extends PaymentProvider {
     return { startNow, expiryDate: moment.utc(expiryDate).toDate() };
   }
 
+  /**
+   * Cancels active subscription and optionally cancels mandate
+   * @param keepMandate - Whether to keep mandate for future use
+   */
   async cancelContribution(keepMandate: boolean): Promise<void> {
     log.info("Cancel subscription for " + this.contact.id, { keepMandate });
 
@@ -186,6 +209,10 @@ export class GCProvider extends PaymentProvider {
     }
   }
 
+  /**
+   * Updates payment method using completed payment flow
+   * @param completedPaymentFlow - The completed flow with new mandate
+   */
   async updatePaymentMethod(
     completedPaymentFlow: CompletedPaymentFlow
   ): Promise<void> {
@@ -224,6 +251,10 @@ export class GCProvider extends PaymentProvider {
     }
   }
 
+  /**
+   * Updates customer information with GoCardless
+   * @param updates - Contact fields to update
+   */
   async updateContact(updates: Partial<Contact>): Promise<void> {
     if (
       (updates.email || updates.firstname || updates.lastname) &&
@@ -237,6 +268,10 @@ export class GCProvider extends PaymentProvider {
       });
     }
   }
+
+  /**
+   * Permanently deletes customer data from GoCardless
+   */
   async permanentlyDeleteContact(): Promise<void> {
     if (this.data.mandateId) {
       await gocardless.mandates.cancel(this.data.mandateId);
