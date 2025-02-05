@@ -14,10 +14,7 @@ import {
   EmailProvider,
   EmailRecipient
 } from "#type/index";
-import { MandrillProvider } from "#providers/email";
-import { SendGridProvider } from "#providers/email";
-import { SMTPProvider } from "#providers/email";
-
+import { MandrillProvider, SendGridProvider, SMTPProvider } from "#providers";
 import { Email, Contact } from "#models/index";
 
 import config from "#config/config";
