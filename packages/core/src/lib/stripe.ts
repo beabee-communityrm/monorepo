@@ -148,8 +148,8 @@ export const getCreateSubscriptionParams = (
         proration_behavior: "none"
       }),
     default_tax_rates: getSalesTaxRateObject()
-  }
-}
+  };
+};
 
 /**
  * Create a new subscription in Stripe, optionally starting at a specific date.
@@ -170,7 +170,14 @@ export async function createSubscription(
     paymentForm,
     renewalDate
   });
-  return await stripe.subscriptions.create(getCreateSubscriptionParams(customerId, paymentForm, paymentMethod, renewalDate));
+  return await stripe.subscriptions.create(
+    getCreateSubscriptionParams(
+      customerId,
+      paymentForm,
+      paymentMethod,
+      renewalDate
+    )
+  );
 }
 
 /**

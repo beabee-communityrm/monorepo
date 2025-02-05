@@ -28,7 +28,9 @@ export const createPayment = async (argv: CreatePaymentArgs): Promise<void> => {
           await createStripePayment(contact, argv);
           break;
         default:
-          throw new Error(`Payment method ${argv.method} is currently not supported`);
+          throw new Error(
+            `Payment method ${argv.method} is currently not supported`
+          );
       }
     } catch (error) {
       console.error("Failed to create payment:", error);

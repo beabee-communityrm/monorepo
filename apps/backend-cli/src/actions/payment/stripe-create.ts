@@ -1,7 +1,5 @@
 import { Contact } from "@beabee/core/models";
-import {
-  paymentService,
-} from "@beabee/core/services";
+import { paymentService } from "@beabee/core/services";
 import { PaymentForm, PaymentMethod } from "@beabee/beabee-common";
 import { stripe, getPriceData } from "@beabee/core/lib/stripe";
 import type { CreatePaymentArgs } from "../../types/index.js";
@@ -20,8 +18,13 @@ import type { CreatePaymentArgs } from "../../types/index.js";
  * 5. Complete payment flow
  * 6. Create and pay initial invoice
  */
-export async function createStripePayment(contact: Contact, argv: CreatePaymentArgs): Promise<void> {
-  console.log(`\nIMPORTANT: Make sure to run 'stripe listen --forward-to localhost:${process.env.WEBHOOK_PORT}/stripe' in parallel to receive webhooks locally\n`);
+export async function createStripePayment(
+  contact: Contact,
+  argv: CreatePaymentArgs
+): Promise<void> {
+  console.log(
+    `\nIMPORTANT: Make sure to run 'stripe listen --forward-to localhost:${process.env.WEBHOOK_PORT}/stripe' in parallel to receive webhooks locally\n`
+  );
 
   try {
     // Create payment form data
@@ -65,15 +68,17 @@ export async function createStripePayment(contact: Contact, argv: CreatePaymentA
     // Create subscription with payment_behavior to trigger webhooks
     const subscription = await stripe.subscriptions.create({
       customer: customer.id,
-      items: [{
-        price_data: priceData
-      }],
-      payment_behavior: 'default_incomplete',
+      items: [
+        {
+          price_data: priceData
+        }
+      ],
+      payment_behavior: "default_incomplete",
       payment_settings: {
-        payment_method_types: ['card'],
-        save_default_payment_method: 'on_subscription'
+        payment_method_types: ["card"],
+        save_default_payment_method: "on_subscription"
       },
-      expand: ['latest_invoice.payment_intent']
+      expand: ["latest_invoice.payment_intent"]
     });
 
     // Update contact with Stripe data
@@ -87,9 +92,8 @@ export async function createStripePayment(contact: Contact, argv: CreatePaymentA
     console.log(`Customer ID: ${customer.id}`);
     console.log(`Payment Method ID: ${paymentMethod.id}`);
     console.log(`Subscription ID: ${subscription.id}`);
-
   } catch (error) {
     console.error("Failed to setup payment:", error);
     throw error;
   }
-} 
+}
