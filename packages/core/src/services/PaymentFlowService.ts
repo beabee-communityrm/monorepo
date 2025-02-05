@@ -19,7 +19,7 @@ import {
   PaymentFlowProvider,
   stripeFlowProvider,
   gcFlowProvider
-} from "#providers/payment-flow";
+} from "#providers";
 
 import { DuplicateEmailError } from "#errors/index";
 
