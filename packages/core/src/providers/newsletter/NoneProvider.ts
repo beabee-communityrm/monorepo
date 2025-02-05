@@ -26,4 +26,8 @@ export default class NoneProvider implements NewsletterProvider {
     email: string,
     fields: Record<string, string>
   ): Promise<void> {}
+  async updateContactTags(
+    email: string,
+    tags: Record<string, boolean>
+  ): Promise<void> {}
 }

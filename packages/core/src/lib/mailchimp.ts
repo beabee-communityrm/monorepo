@@ -232,6 +232,7 @@ export function mcMemberToNlContact(member: MCMember): NewsletterContact {
   const activeMemberTag = OptionsService.getText(
     "newsletter-active-member-tag"
   );
+  const activeUserTag = OptionsService.getText("newsletter-active-user-tag");
   return {
     email: normalizeEmailAddress(member.email_address),
     firstname: FNAME || "",
@@ -248,6 +249,7 @@ export function mcMemberToNlContact(member: MCMember): NewsletterContact {
     tags: member.tags.map((tag) => tag.name),
     fields,
     isActiveMember:
-      member.tags.findIndex((t) => t.name === activeMemberTag) !== -1
+      member.tags.findIndex((t) => t.name === activeMemberTag) !== -1,
+    isActiveUser: member.tags.findIndex((t) => t.name === activeUserTag) !== -1
   };
 }

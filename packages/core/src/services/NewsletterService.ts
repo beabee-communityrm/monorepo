@@ -60,7 +60,8 @@ async function contactToNlUpdate(
       C_MNTHAMT: contact.contributionMonthlyAmount?.toFixed(2) || "",
       C_PERIOD: contact.contributionPeriod || ""
     },
-    isActiveMember: contact.membership?.isActive || false
+    isActiveMember: contact.membership?.isActive || false,
+    isActiveUser: !!contact.password.hash
   };
 }
 
