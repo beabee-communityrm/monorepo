@@ -1,5 +1,5 @@
 import { runApp } from "@beabee/core/server";
-import { Contact, JoinForm } from "@beabee/core/models";
+import { Contact } from "@beabee/core/models";
 import { generatePassword } from "@beabee/core/utils/auth";
 import {
   paymentService,
@@ -11,48 +11,44 @@ import { PaymentMethod } from "@beabee/beabee-common";
 import type { CreatePaymentArgs } from "../../types/index.js";
 import { stripe } from "@beabee/core/lib/stripe";
 
-const completeUrl = config.audience + "/join/complete";
-const completeUrls = {
-  confirmUrl: config.audience + "/join/confirm-email",
-  loginUrl: config.audience + "/auth/login",
-  setPasswordUrl: config.audience + "/auth/set-password"
-};
-
+/**
+ * Creates a test payment by simulating the complete payment flow that would normally
+ * happen in the browser. Currently only supports Stripe card payments.
+ * 
+ * Flow:
+ * 1. Create/Get contact
+ * 2. Create join flow
+ * 3. Create payment flow with SetupIntent
+ * 4. Simulate Stripe Elements setup with test token
+ * 5. Complete payment flow
+ * 6. Create and pay initial invoice
+ */
 export const createPayment = async (argv: CreatePaymentArgs): Promise<void> => {
   await runApp(async () => {
-    // Only support Stripe payment methods for now
-    if (!argv.method.startsWith("s_")) {
-      console.error("Only Stripe payment methods are currently supported");
-      process.exit(1);
+    // Only support Stripe card payments for now
+    if (argv.method !== PaymentMethod.StripeCard) {
+      throw new Error("Only Stripe card payments are currently supported");
     }
 
-    const existingContact = await contactsService.findOneBy({
-      email: argv.email
-    });
-
-    let contact: Contact;
-    if (existingContact) {
-      contact = existingContact;
-      console.log(`Using existing contact with email ${argv.email}`);
-    } else {
+    // Get or create contact
+    let contact = await contactsService.findOneBy({ email: argv.email });
+    if (!contact) {
       contact = await contactsService.createContact({
         email: argv.email,
-        firstname: `Test_${argv.method}`,
+        firstname: "Test",
         lastname: "User",
         password: await generatePassword("testpass123")
       });
       console.log(`Created new contact with email ${argv.email}`);
+    } else {
+      console.log(`Using existing contact with email ${argv.email}`);
     }
 
     // Create initial contribution
     await paymentService.createContact(contact);
-    const contribution = await paymentService.getContribution(contact);
 
-    if (!contribution.customerId) {
-      throw new Error("Customer ID is required");
-    }
-
-    const joinForm: JoinForm = {
+    // Create join flow
+    const joinForm = {
       email: contact.email,
       password: contact.password,
       monthlyAmount: argv.amount,
@@ -62,30 +58,23 @@ export const createPayment = async (argv: CreatePaymentArgs): Promise<void> => {
       paymentMethod: argv.method
     };
 
-    // TODO: Add support for other payment methods
-    if (argv.method !== PaymentMethod.StripeCard) {
-      throw new Error("Only Stripe card is currently supported");
-    }
+    const completeUrls = {
+      confirmUrl: config.audience + "/join/confirm-email",
+      loginUrl: config.audience + "/auth/login",
+      setPasswordUrl: config.audience + "/auth/set-password"
+    };
 
     try {
-      // Create join flow first
+      // Create join flow
       const joinFlow = await paymentFlowService.createJoinFlow(
         joinForm,
         completeUrls
       );
 
-      // Create Payment Method using test token
-      const paymentMethod = await stripe.paymentMethods.create({
-        type: "card",
-        card: {
-          token: "tok_visa"
-        }
-      });
-
-      // Create payment flow with setup intent
+      // Create payment flow
       const paymentFlow = await paymentFlowService.createPaymentFlow(
         joinFlow,
-        completeUrl,
+        config.audience + "/join/complete",
         {
           email: contact.email,
           firstname: contact.firstname,
@@ -93,31 +82,20 @@ export const createPayment = async (argv: CreatePaymentArgs): Promise<void> => {
         }
       );
 
-      // Confirm the setup intent with the payment method
+      // Simulate Stripe Elements setup with test card
+      const paymentMethod = await stripe.paymentMethods.create({
+        type: "card",
+        card: {
+          token: "tok_visa" // Test token that always succeeds
+        }
+      });
+
+      // Confirm SetupIntent with payment method
       await stripe.setupIntents.confirm(paymentFlow.id, {
         payment_method: paymentMethod.id
       });
 
-      // Create a test invoice for the payment
-      const invoice = await stripe.invoices.create({
-        customer: contribution.customerId,
-        collection_method: "charge_automatically",
-        auto_advance: true
-      });
-
-      // Add invoice item
-      await stripe.invoiceItems.create({
-        customer: contribution.customerId,
-        amount: joinForm.monthlyAmount,
-        currency: invoice.currency,
-        invoice: invoice.id,
-        description: "Initial payment"
-      });
-
-      // Finalize and pay invoice
-      await stripe.invoices.pay(invoice.id);
-
-      // Complete the flow
+      // Complete the payment flow
       const completedFlow = await paymentFlowService.completePaymentFlow({
         ...joinFlow,
         paymentFlowId: paymentFlow.id
@@ -130,7 +108,6 @@ export const createPayment = async (argv: CreatePaymentArgs): Promise<void> => {
       console.log("Payment setup completed successfully!");
       console.log(`Payment Flow ID: ${paymentFlow.id}`);
       console.log(`Payment Method ID: ${paymentMethod.id}`);
-      console.log(`Invoice ID: ${invoice.id}`);
     } catch (error) {
       console.error("Failed to setup payment:", error);
       process.exit(1);
