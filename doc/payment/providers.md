@@ -1,158 +1,84 @@
-# Payment Providers Documentation
+# Payment Providers
 
 ## Overview
+beabee supports multiple payment providers to handle different payment methods and regions. Each provider implements standardized interfaces for consistent integration.
 
-The payment system in beabee uses two distinct provider types:
+## Available Providers
 
-1. **PaymentProvider**: Handles ongoing payment operations
-2. **PaymentFlowProvider**: Manages the initial payment setup flow
+### 1. Stripe
+**Capabilities:**
+- Credit/Debit Cards
+- SEPA Direct Debit
+- BACS Direct Debit
+- PayPal
+- iDEAL
 
-## Provider Structure
+**Implementation:**
+- `StripeProvider`: Handles ongoing payments
+- `StripeFlowProvider`: Manages setup flows
+- Location: `packages/core/src/providers/payment/`
 
-### Base Provider Classes
+### 2. GoCardless
+**Capabilities:**
+- Direct Debit (various regions)
+- Bank account payments
 
-1. **PaymentProvider** (`payment/PaymentProvider.ts`):
-~~~typescript
-abstract class PaymentProvider {
-  abstract canChangeContribution(useExistingMandate: boolean, paymentForm: PaymentForm): Promise<boolean>;
-  abstract cancelContribution(keepMandate: boolean): Promise<void>;
-  abstract getContributionInfo(): Promise<Partial<ContributionInfo>>;
-  abstract updateContact(updates: Partial<Contact>): Promise<void>;
-  abstract updateContribution(paymentForm: PaymentForm): Promise<UpdateContributionResult>;
-  abstract updatePaymentMethod(completedPaymentFlow: CompletedPaymentFlow): Promise<void>;
-  abstract permanentlyDeleteContact(): Promise<void>;
-}
-~~~
+**Implementation:**
+- `GCProvider`: Handles ongoing payments
+- `GCFlowProvider`: Manages setup flows
+- Location: `packages/core/src/providers/payment/`
 
-2. **PaymentFlowProvider** (`payment-flow/PaymentFlowProvider.ts`):
-~~~typescript
-abstract class PaymentFlowProvider {
-  abstract createPaymentFlow(joinFlow: JoinFlow, completeUrl: string, data: PaymentFlowData): Promise<PaymentFlow>;
-  abstract completePaymentFlow(joinFlow: JoinFlow): Promise<CompletedPaymentFlow>;
-  abstract getCompletedPaymentFlowData(completedPaymentFlow: CompletedPaymentFlow): Promise<CompletedPaymentFlowData>;
-}
-~~~
+### 3. Manual
+**Capabilities:**
+- Manual payment tracking
+- Basic payment operations
 
-### Available Providers
-
-1. **Stripe**
-   - `StripeProvider`: Handles payment operations
-   - `StripeFlowProvider`: Manages payment setup flows
-   - Supports: Card, SEPA, BACS, PayPal, iDEAL
-
-2. **GoCardless**
-   - `GCProvider`: Handles payment operations
-   - `GCFlowProvider`: Manages direct debit setup flows
-
-3. **Manual**
-   - `ManualProvider`: Basic payment operations
-   - No flow provider needed
-
-## Integration in PaymentService
-
-The `PaymentService` acts as a factory and coordinator for payment providers:
-
-~~~typescript
-const PaymentProviders = {
-  [PaymentMethod.StripeCard]: StripeProvider,
-  [PaymentMethod.StripeSEPA]: StripeProvider,
-  [PaymentMethod.StripeBACS]: StripeProvider,
-  [PaymentMethod.StripePayPal]: StripeProvider,
-  [PaymentMethod.StripeIdeal]: StripeProvider,
-  [PaymentMethod.GoCardlessDirectDebit]: GCProvider
-};
-~~~
-
-The service:
-- Creates appropriate provider instances
-- Manages contribution data
-- Coordinates payment operations
-- Handles provider-specific logic
-
-## API Integration
-
-### PaymentController
-
-The payment system is exposed through a REST API:
-
-~~~typescript
-@JsonController("/payment")
-@Authorized()
-export class PaymentController {
-  @Get("/")
-  async getPayments(...): Promise<PaginatedDto<GetPaymentDto>>
-  
-  @Get("/:id")
-  async getPayment(...): Promise<GetPaymentDto | undefined>
-}
-~~~
-
-### Data Transformation
-
-The `PaymentTransformer` handles:
-- Converting payment data for API responses
-- Filtering payments based on authorization
-- Loading related data (e.g., contacts)
-- Implementing pagination
+**Implementation:**
+- `ManualProvider`: Basic payment operations
+- No flow provider needed
+- Location: `packages/core/src/providers/payment/`
 
 ## Provider Capabilities
 
-Each provider implements these key capabilities:
-
+### Common Operations
 1. **Contribution Management**
-   - Check if contribution changes are allowed
-   - Update contribution amounts and schedules
+   - Update amounts
+   - Change schedules
    - Cancel contributions
 
 2. **Payment Method Management**
    - Update payment methods
-   - Handle payment source information
-   - Manage mandates/authorizations
+   - Handle mandates
+   - Manage authorizations
 
 3. **Contact Management**
-   - Update contact information with payment provider
+   - Update contact details
    - Handle contact deletion
-   - Sync contact data
+   - Sync provider data
 
-4. **Information Retrieval**
-   - Get contribution status
-   - Fetch payment source details
-   - Check pending payments
+### Provider-Specific Features
 
-## Usage Example
+#### Stripe Features
+- Tax rate handling
+- Multiple currency support
+- Subscription management
+- Invoice generation
 
-~~~typescript
-// Get payment provider for a contact
-const provider = PaymentService.getProvider(contact);
+#### GoCardless Features
+- Direct Debit specific flows
+- Mandate management
+- Regional payment schemes
 
-// Update contribution
-await provider.updateContribution({
-  monthlyAmount: 10,
-  period: "monthly",
-  payFee: true
-});
+## Integration Points
 
-// Cancel contribution
-await provider.cancelContribution(false);
-~~~
+### Service Layer Integration
+- `PaymentService` coordinates provider operations
+- Provider factory pattern for instantiation
+- Automatic provider selection based on payment method
 
-## Data Model
+### Data Synchronization
+- Webhook-driven updates
+- Regular sync jobs
+- Error recovery mechanisms
 
-The payment system uses these key entities:
-
-1. **ContactContribution**
-   - Stores contribution data
-   - Links contacts to payment methods
-   - Tracks subscription status
-
-2. **Payment**
-   - Records individual payments
-   - Tracks payment status
-   - Links to contacts
-
-## Security Considerations
-
-- All payment operations require authorization
-- Non-admin users can only access their own payments
-- Sensitive payment data is stored with payment providers
-- Provider operations are logged for auditing
+For implementation details, see the provider classes in `packages/core/src/providers/payment/`.
