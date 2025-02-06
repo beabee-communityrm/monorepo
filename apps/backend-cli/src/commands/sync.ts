@@ -3,6 +3,7 @@ import { syncMailchimp } from "../actions/sync/mailchimp.js";
 import { syncSegments } from "../actions/sync/segments.js";
 import type { SyncMailchimpArgs, SyncSegmentsArgs } from "../types/sync.js";
 import moment from "moment";
+import { syncStripe } from "../actions/sync/stripe.js";
 
 export const syncCommand: CommandModule = {
   command: "sync <action>",
@@ -49,6 +50,17 @@ export const syncCommand: CommandModule = {
             }),
         handler: (argv: ArgumentsCamelCase<SyncSegmentsArgs>) =>
           syncSegments(argv)
+      })
+      .command({
+        command: "stripe",
+        describe: "Sync Stripe subscriptions and payments",
+        builder: (yargs) =>
+          yargs.option("dryRun", {
+            type: "boolean",
+            description: "Run without making changes",
+            default: false
+          }),
+        handler: (argv) => syncStripe(argv.dryRun)
       }),
   handler: () => {}
 };

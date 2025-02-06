@@ -8,3 +8,7 @@ export interface SyncSegmentsArgs {
   segmentId: string;
   dryRun: boolean;
 }
+
+export interface SyncStripeArgs {
+  dryRun: boolean;
+}
