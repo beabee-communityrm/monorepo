@@ -333,7 +333,7 @@ function getMembershipStartDate(
   contact: GetContactDataWith<GetContactWith.Roles>
 ): string {
   const membership = contact.roles.find((role) => role.role === 'member');
-  return membership?.dateAdded ? formatLocale(membership.dateAdded, 'PPP') : '';
+  return membership ? formatLocale(membership.dateAdded, 'PPP') : '';
 }
 
 /**

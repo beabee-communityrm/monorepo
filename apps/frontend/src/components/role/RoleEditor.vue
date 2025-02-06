@@ -164,7 +164,7 @@ function roleToFormData(
     role: role?.role || ('' as const),
     ...(role
       ? {
-          startDate: role.dateAdded ? format(role.dateAdded, 'yyyy-MM-dd') : '',
+          startDate: format(role.dateAdded, 'yyyy-MM-dd'),
           startTime: role.dateAdded ? format(role.dateAdded, 'HH:mm') : '',
           hasStartDate: !!role.dateAdded,
         }

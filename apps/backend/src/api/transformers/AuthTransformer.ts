@@ -2,6 +2,7 @@ import { AuthInfo } from "@beabee/core/type";
 import ContactTransformer, { loadContactRoles } from "./ContactTransformer";
 import { Contact } from "@beabee/core/models";
 import { GetAuthInfoDto } from "@api/dto";
+import { TransformPlainToInstance } from "class-transformer";
 
 class AuthTransformer {
   /**
@@ -9,6 +10,7 @@ class AuthTransformer {
    * @param auth - The raw auth info
    * @returns Transformed auth info with properly converted contact data
    */
+  @TransformPlainToInstance(GetAuthInfoDto)
   convert(auth: AuthInfo): GetAuthInfoDto {
     if (!auth.contact) {
       return {
