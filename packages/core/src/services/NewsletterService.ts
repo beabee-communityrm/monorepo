@@ -9,8 +9,7 @@ import {
   NewsletterProvider,
   UpdateNewsletterContact
 } from "#type/index";
-import MailchimpProvider from "#providers/newsletter/MailchimpProvider";
-import NoneProvider from "#providers/newsletter/NoneProvider";
+import { MailchimpProvider, NoneProvider } from "#providers";
 
 import { Contact, ContactProfile } from "#models/index";
 
