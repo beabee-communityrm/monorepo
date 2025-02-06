@@ -384,7 +384,7 @@ export class ContactController {
       throw new CantUpdateContribution();
     }
 
-    const ret = await PaymentFlowService.createPaymentJoinFlow(
+    const joinFlowParams = await PaymentFlowService.createPaymentJoinFlow(
       {
         ...data,
         monthlyAmount: data.monthlyAmount,
@@ -401,7 +401,7 @@ export class ContactController {
       target
     );
 
-    return plainToInstance(GetPaymentFlowDto, ret);
+    return plainToInstance(GetPaymentFlowDto, joinFlowParams);
   }
 
   // TODO: move to PaymentTransformer or PaymentService

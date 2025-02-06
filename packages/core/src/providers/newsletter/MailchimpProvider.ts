@@ -180,24 +180,48 @@ export class MailchimpProvider implements NewsletterProvider {
     contact: UpdateNewsletterContact,
     oldEmail = contact.email
   ): Promise<NewsletterContact> {
+    log.info("Upsert contact " + contact.email);
+
     const updatedContact = await this.upsertContactOrTryPending(
       contact,
       oldEmail
     );
 
     // Add/remove the active member tag if the statuses don't match
-    if (updatedContact.isActiveMember !== contact.isActiveMember) {
-      const tag = OptionsService.getText("newsletter-active-member-tag");
-      if (contact.isActiveMember) {
-        log.info(`Adding active member tag for ${contact.email}`);
-        await this.addTagToContacts([updatedContact.email], tag);
-      } else {
-        log.info(`Removing active member tag for ${contact.email}`);
-        await this.removeTagFromContacts([updatedContact.email], tag);
-      }
+    if (
+      updatedContact.isActiveMember !== contact.isActiveMember ||
+      updatedContact.isActiveUser !== contact.isActiveUser
+    ) {
+      this.updateContactTags(updatedContact.email, {
+        [OptionsService.getText("newsletter-active-member-tag")]:
+          contact.isActiveMember,
+        [OptionsService.getText("newsletter-active-user-tag")]:
+          contact.isActiveUser
+      });
     }
 
     return updatedContact;
+  }
+
+  /**
+   * Update a contact with the given tags. This will overwrite any existing tags
+   * but will not remove any tags that are not provided.
+   *
+   * @param email The email address of the contact
+   * @param tags The tags to add or remove
+   */
+  async updateContactTags(
+    email: string,
+    tags: Record<string, boolean>
+  ): Promise<void> {
+    log.info("Update tags for " + email, { tags });
+
+    await this.api.instance.post(getMCMemberUrl(this.listId, email) + "/tags", {
+      tags: Object.entries(tags).map(([name, active]) => ({
+        name,
+        status: active ? "active" : "inactive"
+      }))
+    });
   }
 
   /**
@@ -211,15 +235,11 @@ export class MailchimpProvider implements NewsletterProvider {
     email: string,
     fields: Record<string, string>
   ): Promise<void> {
-    await this.api.dispatchOperations([
-      {
-        method: "PATCH",
-        path: getMCMemberUrl(this.listId, email),
-        params: { skip_merge_validation: "true" },
-        body: JSON.stringify({ merge_fields: fields }),
-        operation_id: `update_fields_${email}`
-      }
-    ]);
+    await this.api.instance.patch(
+      getMCMemberUrl(this.listId, email),
+      { merge_fields: fields },
+      { params: { skip_merge_validation: "true" } }
+    );
   }
 
   /**

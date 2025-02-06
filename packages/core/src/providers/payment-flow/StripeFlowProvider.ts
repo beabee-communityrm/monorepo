@@ -89,8 +89,7 @@ class StripeFlowProvider implements PaymentFlowProvider {
 
     return {
       joinForm: { ...joinFlow.joinForm, paymentMethod },
-      customerId:
-        typeof setupIntent.customer === "string" ? setupIntent.customer : "", // Only needed in the Backend CLI to create payments
+      customerId: setupIntent.customer!.toString(), // Only needed in the Backend CLI to create payments
       mandateId: siPaymentMethodId
     };
   }
