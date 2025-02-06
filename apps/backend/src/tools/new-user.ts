@@ -22,10 +22,16 @@ function notEmpty(s: string) {
   return s.trim() !== "";
 }
 
+/**
+ * @deprecated This tool is deprecated and will be removed in the next major version.
+ * Please use the new backend-cli user create command instead: yarn backend-cli user create
+ */
 runApp(async () => {
-  console.log(
-    "Warning: This script is deprecated. Use the 'backend-cli user create' command instead."
+  console.warn(
+    "\n⚠️  DEPRECATED: This new-user tool is deprecated and will be removed in the next major version.\n" +
+      "Please use the new backend-cli user create command instead: yarn backend-cli user create\n"
   );
+
   const answers = {
     firstname: await input({ message: "First Name", validate: notEmpty }),
     lastname: await input({ message: "Last Name", validate: notEmpty }),

@@ -15,9 +15,11 @@ import PaymentService from "#services/PaymentService";
 import ResetSecurityFlowService from "./ResetSecurityFlowService";
 import { JoinFlow, JoinForm, Contact } from "#models/index";
 
-import { PaymentFlowProvider } from "#providers/payment-flow";
-import StripeProvider from "#providers/payment-flow/StripeProvider";
-import GCProvider from "#providers/payment-flow/GCProvider";
+import {
+  PaymentFlowProvider,
+  stripeFlowProvider,
+  gcFlowProvider
+} from "#providers";
 
 import { DuplicateEmailError } from "#errors/index";
 
@@ -31,17 +33,33 @@ import {
 } from "#type/index";
 
 const paymentProviders = {
-  [PaymentMethod.StripeCard]: StripeProvider,
-  [PaymentMethod.StripeSEPA]: StripeProvider,
-  [PaymentMethod.StripeBACS]: StripeProvider,
-  [PaymentMethod.StripePayPal]: StripeProvider,
-  [PaymentMethod.StripeIdeal]: StripeProvider,
-  [PaymentMethod.GoCardlessDirectDebit]: GCProvider
+  [PaymentMethod.StripeCard]: stripeFlowProvider,
+  [PaymentMethod.StripeSEPA]: stripeFlowProvider,
+  [PaymentMethod.StripeBACS]: stripeFlowProvider,
+  [PaymentMethod.StripePayPal]: stripeFlowProvider,
+  [PaymentMethod.StripeIdeal]: stripeFlowProvider,
+  [PaymentMethod.GoCardlessDirectDebit]: gcFlowProvider
 };
 
 const log = mainLogger.child({ app: "payment-flow-service" });
 
+/**
+ * Service that manages the complete payment flow process in beabee.
+ * Coordinates between different payment providers and handles the setup of new payment methods.
+ *
+ * The flow typically consists of these steps:
+ * 1. Join flow creation
+ * 2. Provider-specific setup (Stripe/GoCardless)
+ * 3. Payment completion
+ * 4. Contact and subscription setup
+ */
 class PaymentFlowService implements PaymentFlowProvider {
+  /**
+   * Creates a new join flow for user registration
+   * @param form - Basic user information (email and password)
+   * @param urls - URLs for completion and cancellation handling
+   * @returns Promise resolving to created JoinFlow
+   */
   async createJoinFlow(
     form: Pick<JoinForm, "email" | "password">,
     urls: CompleteUrls
@@ -62,12 +80,20 @@ class PaymentFlowService implements PaymentFlowProvider {
     });
   }
 
+  /**
+   * Creates a payment join flow with contribution details
+   * @param joinForm - Complete join form with payment details
+   * @param urls - Navigation URLs
+   * @param completeUrl - Provider-specific completion URL
+   * @param user - User data for the flow
+   * @returns Promise resolving to payment flow parameters
+   */
   async createPaymentJoinFlow(
     joinForm: JoinForm,
     urls: CompleteUrls,
     completeUrl: string,
     user: { email: string; firstname?: string; lastname?: string }
-  ): Promise<PaymentFlowParams> {
+  ): Promise<PaymentFlow> {
     const joinFlow = await getRepository(JoinFlow).save({
       ...urls,
       joinForm,
@@ -84,7 +110,7 @@ class PaymentFlowService implements PaymentFlowProvider {
     await getRepository(JoinFlow).update(joinFlow.id, {
       paymentFlowId: paymentFlow.id
     });
-    return paymentFlow.params;
+    return paymentFlow;
   }
 
   async getJoinFlowByPaymentId(
@@ -93,6 +119,11 @@ class PaymentFlowService implements PaymentFlowProvider {
     return await getRepository(JoinFlow).findOneBy({ paymentFlowId });
   }
 
+  /**
+   * Completes a join flow after provider setup
+   * @param joinFlow - The join flow to complete
+   * @returns Promise resolving to completed payment flow or undefined
+   */
   async completeJoinFlow(
     joinFlow: JoinFlow
   ): Promise<CompletedPaymentFlow | undefined> {

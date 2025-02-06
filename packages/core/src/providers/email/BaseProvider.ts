@@ -9,13 +9,13 @@ import ResetSecurityFlowService from "#services/ResetSecurityFlowService";
 
 import { Email, Contact } from "#models/index";
 
-import {
+import type {
   EmailProvider,
   EmailRecipient,
   EmailOptions,
   EmailTemplate,
   PreparedEmail
-} from ".";
+} from "#type/index";
 
 import config from "#config/config";
 
@@ -94,7 +94,7 @@ const magicMergeFieldsProcessors = {
   }
 } as const;
 
-export default abstract class BaseProvider implements EmailProvider {
+export abstract class BaseProvider implements EmailProvider {
   protected abstract doSendEmail(
     email: PreparedEmail,
     recipients: EmailRecipient[],
@@ -146,3 +146,6 @@ export default abstract class BaseProvider implements EmailProvider {
     return emails.map((email) => ({ id: email.id, name: email.name }));
   }
 }
+
+/** @deprecated Use named import BaseProvider instead */
+export default BaseProvider;

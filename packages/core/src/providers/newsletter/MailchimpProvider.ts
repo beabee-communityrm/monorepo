@@ -1,298 +1,239 @@
 import { NewsletterStatus } from "@beabee/beabee-common";
-import axios from "axios";
-import crypto from "crypto";
-import gunzip from "gunzip-maybe";
-import JSONStream from "JSONStream";
-import tar from "tar-stream";
 
 import { log as mainLogger } from "#logging";
-import OptionsService from "#services/OptionsService";
-import { normalizeEmailAddress } from "#utils/index";
-
 import {
+  createInstance,
+  getMCMemberUrl,
+  mcMemberToNlContact,
+  nlContactToMCMember
+} from "#lib/mailchimp";
+import OptionsService from "#services/OptionsService";
+import {
+  MCMember,
+  MCOperation,
   NewsletterContact,
   NewsletterProvider,
-  UpdateNewsletterContact
+  UpdateNewsletterContact,
+  UpsertMCMemberResponse
 } from "#type/index";
 
 import { MailchimpNewsletterConfig } from "#config/config";
+import { CantUpdateNewsletterContact } from "#errors/CantUpdateNewsletterContact";
 
 const log = mainLogger.child({ app: "mailchimp-provider" });
-
-interface Batch {
-  id: string;
-  status: string;
-  finished_operations: number;
-  total_operations: number;
-  errored_operations: number;
-  response_body_url: string;
-}
-
-interface OperationNoBody {
-  method: "GET" | "DELETE" | "POST";
-  path: string;
-  params?: string;
-  operation_id: string;
-  body?: undefined;
-}
-
-interface OperationWithBody {
-  method: "POST" | "PATCH" | "PUT";
-  path: string;
-  params?: Record<string, string>;
-  body: string;
-  operation_id: string;
-}
-
-type Operation = OperationNoBody | OperationWithBody;
-
-interface OperationResponse {
-  status_code: number;
-  response: string;
-  operation_id: string;
-}
-
-type MCStatus = "subscribed" | "unsubscribed" | "pending" | "cleaned";
-
-interface MCMember {
-  email_address: string;
-  status: MCStatus;
-  interests?: { [interest: string]: boolean };
-  merge_fields: Record<string, string>;
-  tags: { id: number; name: string }[];
-  timestamp_opt?: string;
-  timestamp_signup?: string;
-  last_changed: string;
-}
 
 interface GetMembersResponse {
   members: MCMember[];
 }
 
-function createInstance(settings: MailchimpNewsletterConfig["settings"]) {
-  const instance = axios.create({
-    baseURL: `https://${settings.datacenter}.api.mailchimp.com/3.0/`,
-    auth: {
-      username: "user",
-      password: settings.apiKey
-    }
-  });
-
-  instance.interceptors.request.use((config) => {
-    log.info(`${config.method} ${config.url}`, {
-      params: config.params,
-      // Don't print all the batch operations
-      ...((config.url !== "/batches/" || config.method !== "post") && {
-        data: config.data
-      })
-    });
-
-    return config;
-  });
-
-  instance.interceptors.response.use(
-    (response) => {
-      return response;
-    },
-    (error) => {
-      log.error(
-        "MailChimp API returned with status " + error.response?.status,
-        {
-          status: error.response?.status,
-          data: error.response?.data
-        }
-      );
-      return Promise.reject(error);
-    }
-  );
-
-  return instance;
-}
-
-function mcStatusToStatus(mcStatus: MCStatus): NewsletterStatus {
-  switch (mcStatus) {
-    case "cleaned":
-      return NewsletterStatus.Cleaned;
-    case "pending":
-      return NewsletterStatus.Pending;
-    case "subscribed":
-      return NewsletterStatus.Subscribed;
-    case "unsubscribed":
-      return NewsletterStatus.Unsubscribed;
-  }
-}
-
-function nlContactToMCMember(
-  nlContact: UpdateNewsletterContact
-): Partial<MCMember> {
-  if (nlContact.status === NewsletterStatus.None) {
-    throw new Error("NewsletterStatus = None for " + nlContact.email);
-  }
-
-  const groups: { id: string; label: string }[] =
-    OptionsService.getJSON("newsletter-groups");
-
-  return {
-    email_address: nlContact.email,
-    status: nlContact.status,
-    ...((nlContact.firstname || nlContact.lastname || nlContact.fields) && {
-      merge_fields: {
-        ...(nlContact.firstname && { FNAME: nlContact.firstname }),
-        ...(nlContact.lastname && { LNAME: nlContact.lastname }),
-        ...nlContact.fields
-      }
-    }),
-    ...(nlContact.groups && {
-      interests: Object.assign(
-        {},
-        ...groups.map((group) => ({
-          [group.id]: nlContact.groups?.includes(group.id)
-        }))
-      )
-    })
-  };
-}
-
-function mcMemberToNlContact(member: MCMember): NewsletterContact {
-  const { FNAME, LNAME, ...fields } = member.merge_fields;
-  return {
-    email: normalizeEmailAddress(member.email_address),
-    firstname: FNAME || "",
-    lastname: LNAME || "",
-    joined: new Date(
-      member.timestamp_opt || member.timestamp_signup || member.last_changed
-    ),
-    status: mcStatusToStatus(member.status),
-    groups: member.interests
-      ? Object.entries(member.interests)
-          .filter(([group, isOptedIn]) => isOptedIn)
-          .map(([group]) => group)
-      : [],
-    tags: member.tags.map((tag) => tag.name),
-    fields
-  };
-}
-
-// Ignore 404/405s from delete operations
-function validateOperationStatus(statusCode: number, operationId: string) {
-  return (
-    statusCode < 400 ||
-    (operationId.startsWith("delete") &&
-      (statusCode === 404 || statusCode === 405))
-  );
-}
-
-export default class MailchimpProvider implements NewsletterProvider {
-  private readonly instance;
+export class MailchimpProvider implements NewsletterProvider {
+  private readonly api;
   private readonly listId;
 
   constructor(settings: MailchimpNewsletterConfig["settings"]) {
-    this.instance = createInstance(settings);
+    this.api = createInstance(settings);
     this.listId = settings.listId;
   }
 
+  /**
+   * Add the given tag to the list of email addresses
+   *
+   * @param emails List of email addresses
+   * @param tag The tag to add
+   */
   async addTagToContacts(emails: string[], tag: string): Promise<void> {
-    const operations: Operation[] = emails.map((email) => ({
-      path: this.emailUrl(email) + "/tags",
+    const operations: MCOperation[] = emails.map((email) => ({
+      path: getMCMemberUrl(this.listId, email) + "/tags",
       method: "POST",
       body: JSON.stringify({
         tags: [{ name: tag, status: "active" }]
       }),
       operation_id: `add_tag_${email}`
     }));
-    await this.dispatchOperations(operations);
+    await this.api.dispatchOperations(operations);
   }
 
+  /**
+   * Remove the given tag from the list of email addresses
+   *
+   * @param emails List of email addresses
+   * @param tag The tag to remove
+   */
   async removeTagFromContacts(emails: string[], tag: string): Promise<void> {
-    const operations: Operation[] = emails.map((email) => ({
-      path: this.emailUrl(email) + "/tags",
+    const operations: MCOperation[] = emails.map((email) => ({
+      path: getMCMemberUrl(this.listId, email) + "/tags",
       method: "POST",
       body: JSON.stringify({
         tags: [{ name: tag, status: "inactive" }]
       }),
       operation_id: `remove_tag_${email}`
     }));
-    await this.dispatchOperations(operations);
+    await this.api.dispatchOperations(operations);
   }
 
+  /**
+   * Get the newsletter contact with the given email address
+   *
+   * @param email The email address of the contact
+   * @returns The contact or undefined if not found
+   */
   async getContact(email: string): Promise<NewsletterContact | undefined> {
     try {
-      const resp = await this.instance.get(this.emailUrl(email));
+      const resp = await this.api.instance.get(
+        getMCMemberUrl(this.listId, email)
+      );
       return mcMemberToNlContact(resp.data);
     } catch (err) {}
   }
 
+  /**
+   * Get all the contacts in the newsletter list
+   *
+   * @returns The list of newsletter contacts
+   */
   async getContacts(): Promise<NewsletterContact[]> {
-    const operation: Operation = {
+    const operation: MCOperation = {
       path: `lists/${this.listId}/members`,
       method: "GET",
       operation_id: "get"
     };
 
-    const batch = await this.createBatch([operation]);
-    const finishedBatch = await this.waitForBatch(batch);
-    const responses = (await this.getBatchResponses(
+    const batch = await this.api.createBatch([operation]);
+    const finishedBatch = await this.api.waitForBatch(batch);
+    const responses = (await this.api.getBatchResponses(
       finishedBatch
     )) as GetMembersResponse[];
 
     return responses.flatMap((r) => r.members).map(mcMemberToNlContact);
   }
 
-  async upsertContact(
-    member: UpdateNewsletterContact,
-    oldEmail = member.email
-  ): Promise<NewsletterStatus> {
-    const req = {
+  /**
+   * Upsert a newsletter contact to Mailchimp. If the contact has been unsubscribed or cleaned
+   * then it get be automatically re-subscribed. In this case we attempt to set the status to
+   * pending which will trigger a double opt-in email.
+   *
+   * @param contact The newsletter contact to upsert
+   * @param oldEmail The old email address of the contact, if it has changed
+   * @returns The updated newsletter contact
+   */
+  private async upsertContactOrTryPending(
+    contact: UpdateNewsletterContact,
+    oldEmail = contact.email
+  ): Promise<NewsletterContact> {
+    const baseReq = {
       method: "PUT",
-      url: this.emailUrl(oldEmail),
+      url: getMCMemberUrl(this.listId, oldEmail),
       params: { skip_merge_validation: true }
     };
 
-    const mcMember = nlContactToMCMember(member);
+    const mcMember = nlContactToMCMember(contact);
 
-    const resp = await this.instance.request({
-      ...req,
+    const resp = await this.api.instance.request<any, UpsertMCMemberResponse>({
+      ...baseReq,
       data: mcMember,
       // Don't error on 400s, we'll try to recover
       validateStatus: (status) => status <= 400
     });
 
     if (resp.status === 200) {
-      log.info("Updated member " + member.email);
-      return member.status;
+      log.info("Updated member " + contact.email);
+      return mcMemberToNlContact(resp.data);
 
       // Try to put the user into pending state if they're in a compliance state
       // This can happen if they previously unsubscribed or were cleaned
     } else if (
-      member.status === NewsletterStatus.Subscribed &&
+      contact.status === NewsletterStatus.Subscribed &&
       resp.status === 400 &&
       resp.data?.title === "Member In Compliance State"
     ) {
       log.info(
-        `Member ${member.email} had status ${resp.data.title}, trying to re-add them`
+        `Member ${contact.email} had status ${resp.data.title}, trying to re-add them`
       );
-      await this.instance.request({
-        ...req,
+      const resp2 = await this.api.instance.request<
+        any,
+        UpsertMCMemberResponse
+      >({
+        ...baseReq,
         data: { ...mcMember, status: "pending" }
       });
-      return NewsletterStatus.Pending;
 
-      // Fail gracefully, just remove the member from the newsletter
-    } else {
-      log.error("Couldn't update member " + member.email, {
-        status: resp.status,
-        data: resp.data
-      });
-
-      return NewsletterStatus.None;
+      if (resp2.status === 200) {
+        return mcMemberToNlContact(resp2.data);
+      }
     }
+
+    throw new CantUpdateNewsletterContact(
+      contact.email,
+      resp.status,
+      resp.data
+    );
   }
 
+  /**
+   * Upsert a contact and synchronise their active member status
+   *
+   * @param contact The newsletter contact to upsert
+   * @param oldEmail The old email address of the contact, if it has changed
+   * @returns The newsletter contact's new newsletter status
+   */
+  async upsertContact(
+    contact: UpdateNewsletterContact,
+    oldEmail = contact.email
+  ): Promise<NewsletterContact> {
+    const updatedContact = await this.upsertContactOrTryPending(
+      contact,
+      oldEmail
+    );
+
+    // Add/remove the active member tag if the statuses don't match
+    if (updatedContact.isActiveMember !== contact.isActiveMember) {
+      const tag = OptionsService.getText("newsletter-active-member-tag");
+      if (contact.isActiveMember) {
+        log.info(`Adding active member tag for ${contact.email}`);
+        await this.addTagToContacts([updatedContact.email], tag);
+      } else {
+        log.info(`Removing active member tag for ${contact.email}`);
+        await this.removeTagFromContacts([updatedContact.email], tag);
+      }
+    }
+
+    return updatedContact;
+  }
+
+  /**
+   * Update a contact with the given fields. This will overwrite any existing fields
+   * but will not remove any fields that are not provided.
+   *
+   * @param email The email address of the contact
+   * @param fields The fields to update
+   */
+  async updateContactFields(
+    email: string,
+    fields: Record<string, string>
+  ): Promise<void> {
+    await this.api.dispatchOperations([
+      {
+        method: "PATCH",
+        path: getMCMemberUrl(this.listId, email),
+        params: { skip_merge_validation: "true" },
+        body: JSON.stringify({ merge_fields: fields }),
+        operation_id: `update_fields_${email}`
+      }
+    ]);
+  }
+
+  /**
+   * Upserts the list of contacts to the newsletter provider. This method does
+   * not give any guarantees about the active member tag.
+   *
+   * @deprecated Only used by legacy app newsletter sync, do not use.
+   * @param nlContacts
+   */
   async upsertContacts(nlContacts: UpdateNewsletterContact[]): Promise<void> {
-    const operations: Operation[] = nlContacts.map((contact) => {
+    const operations: MCOperation[] = nlContacts.map((contact) => {
       const mcMember = nlContactToMCMember(contact);
       return {
-        path: this.emailUrl(contact.email),
+        path: getMCMemberUrl(this.listId, contact.email),
         params: { skip_merge_validation: "true" },
         method: "PUT",
         body: JSON.stringify({ ...mcMember, status_if_new: mcMember.status }),
@@ -300,132 +241,46 @@ export default class MailchimpProvider implements NewsletterProvider {
       };
     });
 
-    await this.dispatchOperations(operations);
+    await this.api.dispatchOperations(operations);
   }
 
+  /**
+   * Archive the list of contact emails, ignoring any not found errors
+   *
+   * @param emails The list of email addresses to archive
+   */
   async archiveContacts(emails: string[]): Promise<void> {
-    const operations: Operation[] = emails.map((email) => ({
-      path: this.emailUrl(email),
+    const operations: MCOperation[] = emails.map((email) => ({
+      path: getMCMemberUrl(this.listId, email),
       method: "DELETE",
       operation_id: `delete_${email}`
     }));
-    await this.dispatchOperations(operations);
+    await this.api.dispatchOperations(
+      operations,
+      // Allow 404s and 405s on delete operations
+      (status) => status < 400 || status === 404 || status === 405
+    );
   }
 
+  /**
+   * Permanently delete the contacts with the given email addresses, ignoring
+   * any not found errors
+   *
+   * @param emails The list of email addresses to delete
+   */
   async permanentlyDeleteContacts(emails: string[]): Promise<void> {
-    const operations: Operation[] = emails.map((email) => ({
-      path: this.emailUrl(email) + "/actions/permanently-delete",
+    const operations: MCOperation[] = emails.map((email) => ({
+      path: getMCMemberUrl(this.listId, email) + "/actions/permanently-delete",
       method: "POST",
       operation_id: `delete-permanently_${email}`
     }));
-    await this.dispatchOperations(operations);
-  }
-
-  private emailUrl(email: string) {
-    const emailHash = crypto
-      .createHash("md5")
-      .update(normalizeEmailAddress(email))
-      .digest("hex");
-    return `lists/${this.listId}/members/${emailHash}`;
-  }
-
-  private async createBatch(operations: Operation[]): Promise<Batch> {
-    log.info(`Creating batch with ${operations.length} operations`);
-    const response = await this.instance.post("/batches/", { operations });
-    return response.data as Batch;
-  }
-
-  private async waitForBatch(batch: Batch): Promise<Batch> {
-    log.info(`Waiting for batch ${batch.id}`, {
-      finishedOperations: batch.finished_operations,
-      totalOperations: batch.total_operations,
-      erroredOperations: batch.errored_operations
-    });
-
-    if (batch.status === "finished") {
-      return batch;
-    } else {
-      await new Promise((resolve) => setTimeout(resolve, 5000));
-      return await this.waitForBatch(
-        (await this.instance.get("/batches/" + batch.id)).data
-      );
-    }
-  }
-
-  private async getBatchResponses(batch: Batch): Promise<any[]> {
-    log.info(`Getting responses for batch ${batch.id}`, {
-      finishedOperations: batch.finished_operations,
-      totalOperations: batch.total_operations,
-      erroredOperations: batch.errored_operations
-    });
-
-    const batchResponses: any[] = [];
-
-    const response = await axios({
-      method: "GET",
-      url: batch.response_body_url,
-      responseType: "stream"
-    });
-
-    const extract = tar.extract();
-
-    extract.on("entry", (header, stream, next) => {
-      stream.on("end", next);
-
-      if (header.type === "file") {
-        log.info(`Checking batch error file: ${header.name}`);
-        stream
-          .pipe(JSONStream.parse("*"))
-          .on("data", (data: OperationResponse) => {
-            if (validateOperationStatus(data.status_code, data.operation_id)) {
-              batchResponses.push(JSON.parse(data.response));
-            } else {
-              log.error(
-                `Unexpected error for ${data.operation_id}, got ${data.status_code}`,
-                data
-              );
-            }
-          });
-      } else {
-        stream.resume();
-      }
-    });
-
-    return await new Promise((resolve, reject) => {
-      response.data
-        .pipe(gunzip())
-        .pipe(extract)
-        .on("error", reject)
-        .on("finish", () => resolve(batchResponses));
-    });
-  }
-
-  private async dispatchOperations(operations: Operation[]): Promise<void> {
-    log.info(`Dispatching ${operations.length} operations`);
-
-    if (operations.length > 20) {
-      const batch = await this.createBatch(operations);
-      const finishedBatch = await this.waitForBatch(batch);
-      await this.getBatchResponses(finishedBatch); // Just check for errors
-    } else {
-      for (const operation of operations) {
-        try {
-          await this.instance({
-            method: operation.method,
-            params: operation.params,
-            url: operation.path,
-            ...(operation.body && { data: JSON.parse(operation.body) }),
-            validateStatus: (status: number) =>
-              validateOperationStatus(status, operation.operation_id)
-          });
-        } catch (err) {
-          log.error(
-            `Error in operation ${operation.operation_id}`,
-            err,
-            operation
-          );
-        }
-      }
-    }
+    await this.api.dispatchOperations(
+      operations,
+      // Allow 404s and 405s on delete operations
+      (status) => status < 400 || status === 404 || status === 405
+    );
   }
 }
+
+/** @deprecated Use named import MailchimpProvider instead */
+export default MailchimpProvider;

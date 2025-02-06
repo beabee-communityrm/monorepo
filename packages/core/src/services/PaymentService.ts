@@ -10,10 +10,12 @@ import { calcRenewalDate, getActualAmount } from "#utils/payment";
 
 import { Contact, Payment, ContactContribution } from "#models/index";
 
-import { PaymentProvider } from "#providers/payment";
-import GCProvider from "#providers/payment/GCProvider";
-import ManualProvider from "#providers/payment/ManualProvider";
-import StripeProvider from "#providers/payment/StripeProvider";
+import {
+  PaymentProvider,
+  GCProvider,
+  ManualProvider,
+  StripeProvider
+} from "#providers";
 
 import {
   CompletedPaymentFlow,
@@ -142,7 +144,7 @@ class PaymentService {
   }
 
   async createContact(contact: Contact): Promise<void> {
-    log.info("Create contact for contact " + contact.id);
+    log.info("Create contact for contribution with ID " + contact.id);
     await getRepository(ContactContribution).save({ contact });
   }
 
