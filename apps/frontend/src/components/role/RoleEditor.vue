@@ -15,7 +15,7 @@
         {{ t(`common.role.${item.role}`) }}
       </strong>
       <span>
-        {{ formatLocale(item.dateAdded, 'P') + ' → ' }}
+        {{ item.dateAdded ? formatLocale(item.dateAdded, 'P') + ' → ' : '' }}
         {{
           item.dateExpires
             ? formatLocale(item.dateExpires, 'P')
@@ -129,6 +129,7 @@ const roleItems = computed(() => {
 
 function isRoleCurrent(role: ContactRoleData): boolean {
   const now = new Date();
+  if (!role.dateAdded) return false;
   return role.dateAdded < now && (!role.dateExpires || role.dateExpires > now);
 }
 
@@ -163,9 +164,9 @@ function roleToFormData(
     role: role?.role || ('' as const),
     ...(role
       ? {
-          startDate: format(role.dateAdded, 'yyyy-MM-dd'),
-          startTime: format(role.dateAdded, 'HH:mm'),
-          hasStartDate: true,
+          startDate: role.dateAdded ? format(role.dateAdded, 'yyyy-MM-dd') : '',
+          startTime: role.dateAdded ? format(role.dateAdded, 'HH:mm') : '',
+          hasStartDate: !!role.dateAdded,
         }
       : { startDate: '', startTime: '', hasStartDate: false }),
     ...(role?.dateExpires

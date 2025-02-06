@@ -60,14 +60,36 @@ describe("ContactRole API", () => {
       expect(result.dateExpires).toBeInstanceOf(Date);
     });
 
-    it("should keep existing expiration when dateExpires is null", async () => {
-      // TODO: @wpf500 Review this behavior
-      // Currently, null and undefined keeps the existing expiration date.
-      // This might be counterintuitive as one would expect:
-      // - undefined: keep existing value
-      // - null: remove the value
-      // - empty string: should probably be treated as invalid
+    it("should keep existing expiration when dateExpires is undefined", async () => {
+      const role = RoleTypeData.ADMIN;
 
+      // First set an expiration date
+      const initialExpiry = addDays(new Date(), 30);
+      await contactClient.role.update(testContactId, role, {
+        dateAdded: new Date(),
+        dateExpires: initialExpiry
+      });
+
+      // Then update with undefined dateExpires
+      const updateData: UpdateContactRoleData = {
+        dateAdded: new Date()
+      };
+
+      const result = await contactClient.role.update(
+        testContactId,
+        role,
+        updateData
+      );
+
+      expect(result).toBeDefined();
+      expect(result.role).toBe(role);
+      expect(result.dateAdded).toBeInstanceOf(Date);
+      expect(result.dateExpires).toBeInstanceOf(Date);
+      // The expiration date should still be set
+      expect(result.dateExpires).not.toBeNull();
+    });
+
+    it("should remove expiration when dateExpires is null", async () => {
       const role = RoleTypeData.ADMIN;
 
       // First set an expiration date
@@ -92,9 +114,8 @@ describe("ContactRole API", () => {
       expect(result).toBeDefined();
       expect(result.role).toBe(role);
       expect(result.dateAdded).toBeInstanceOf(Date);
-      expect(result.dateExpires).toBeInstanceOf(Date);
-      // The expiration date should still be set (not null)
-      expect(result.dateExpires).not.toBeNull();
+      // The expiration date should be null
+      expect(result.dateExpires).toBeNull();
     });
 
     it("should reject empty string as invalid dateExpires value", async () => {
@@ -135,7 +156,7 @@ describe("ContactRole API", () => {
       expect(result.role).toBe(RoleTypeData.ADMIN);
       expect(result.dateAdded).toBeInstanceOf(Date);
       expect(result.dateExpires).toBeInstanceOf(Date);
-      expect(result.dateAdded.toISOString()).toBe(now.toISOString());
+      expect(result.dateAdded?.toISOString()).toBe(now.toISOString());
       expect(result.dateExpires?.toISOString()).toBe(expires.toISOString());
     });
 
@@ -153,7 +174,7 @@ describe("ContactRole API", () => {
       expect(result.role).toBe(RoleTypeData.ADMIN);
       expect(result.dateAdded).toBeInstanceOf(Date);
       expect(result.dateExpires).toBeNull();
-      expect(result.dateAdded.toISOString()).toBe(now.toISOString());
+      expect(result.dateAdded?.toISOString()).toBe(now.toISOString());
     });
   });
 });
