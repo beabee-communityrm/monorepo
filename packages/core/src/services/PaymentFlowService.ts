@@ -93,7 +93,7 @@ class PaymentFlowService implements PaymentFlowProvider {
     urls: CompleteUrls,
     completeUrl: string,
     user: { email: string; firstname?: string; lastname?: string }
-  ): Promise<PaymentFlow> {
+  ): Promise<PaymentFlowParams> {
     const joinFlow = await getRepository(JoinFlow).save({
       ...urls,
       joinForm,
@@ -110,7 +110,7 @@ class PaymentFlowService implements PaymentFlowProvider {
     await getRepository(JoinFlow).update(joinFlow.id, {
       paymentFlowId: paymentFlow.id
     });
-    return paymentFlow;
+    return paymentFlow.params;
   }
 
   async getJoinFlowByPaymentId(
