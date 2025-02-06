@@ -35,8 +35,6 @@ services:
     env_file:
       - .env
       - .env.test
-    ports:
-      - ${WEBHOOK_PORT}:3000
 
   cron_app:
     extends:
@@ -78,6 +76,14 @@ services:
     env_file:
       - .env
       - .env.test
+
+  stripe_cli:
+    extends:
+      file: docker-compose.yml
+      service: stripe_cli
+    environment:
+      - STRIPE_API_KEY=${BEABEE_STRIPE_SECRETKEY}
+      - STRIPE_DEVICE_NAME=beabee-test-docker-container
 
 volumes:
   db_data:

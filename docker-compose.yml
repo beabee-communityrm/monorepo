@@ -76,8 +76,6 @@ services:
     volumes:
       - ./packages:/opt/packages
       - ./apps/webhooks/dist:/opt/apps/webhooks/dist
-    ports:
-      - ${WEBHOOK_PORT}:3000
 
   # Cron app
   cron_app:
@@ -132,6 +130,17 @@ services:
         condition: service_healthy
     env_file:
       - .env
+
+  # Stripe CLI for webhook forwarding
+  # Only used in local development
+  stripe_cli:
+    image: stripe/stripe-cli:latest
+    command: "listen --api-key ${BEABEE_STRIPE_SECRETKEY} --forward-to webhook_app:3000/stripe"
+    depends_on:
+      - webhook_app
+    environment:
+      - STRIPE_API_KEY=${BEABEE_STRIPE_SECRETKEY}
+      - STRIPE_DEVICE_NAME=beabee-dev-docker-container
 
 volumes:
   db_data:

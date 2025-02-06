@@ -27,7 +27,7 @@ export const listPayments = async (email?: string): Promise<void> => {
     console.log("--------------------------------------------------");
     for (const payment of payments) {
       console.log(`ID: ${payment.id}`);
-      console.log(`Amount: €${(payment.amount / 100).toFixed(2)}`);
+      console.log(`Amount: €${payment.amount}`);
       console.log(`Status: ${payment.status}`);
       console.log(`Charge Date: ${payment.chargeDate.toISOString()}`);
       if (payment.contact) {
@@ -39,7 +39,7 @@ export const listPayments = async (email?: string): Promise<void> => {
         console.log(`Description: ${payment.description}`);
       }
       if (payment.amountRefunded) {
-        console.log(`Refunded: €${(payment.amountRefunded / 100).toFixed(2)}`);
+        console.log(`Refunded: €${payment.amountRefunded}`);
       }
       console.log("--------------------------------------------------");
     }
