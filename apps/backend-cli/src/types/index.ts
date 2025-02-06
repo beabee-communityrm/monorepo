@@ -3,4 +3,5 @@ export * from "./configure.js";
 export * from "./payment.js";
 export * from "./process.js";
 export * from "./sync.js";
+export * from "./test.js";
 export * from "./user.js";
