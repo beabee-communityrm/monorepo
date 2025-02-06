@@ -1,4 +1,4 @@
-import express, { Handler } from "express";
+import express, { Handler, Request, Response } from "express";
 
 import { log, requestErrorLogger, requestLogger } from "@beabee/core/logging";
 import { initApp, startServer } from "@beabee/core/server";
@@ -7,9 +7,9 @@ import OptionsService, {
   OptionKey
 } from "@beabee/core/services/OptionsService";
 
-import gocardlessApp from "#handlers/gocardless";
-import mailchimpApp from "#handlers/mailchimp";
-import stripeApp from "#handlers/stripe";
+import { gocardlessWebhookApp } from "#handlers/gocardless";
+import { mailchimpWebhookApp } from "#handlers/mailchimp";
+import { stripeWebhookApp } from "#handlers/stripe";
 
 function checkOpt(key: OptionKey): Handler {
   return (req, res, next) => {
@@ -25,13 +25,17 @@ const app = express();
 
 app.use(requestLogger);
 
-app.get("/ping", function (req, res) {
+app.get("/ping", function (req: Request, res: Response) {
   res.sendStatus(200);
 });
 
-app.use("/gc", checkOpt("switch-webhook-gc"), gocardlessApp);
-app.use("/mailchimp", checkOpt("switch-webhook-mailchimp"), mailchimpApp);
-app.use("/stripe", checkOpt("switch-webhook-stripe"), stripeApp);
+app.use("/gc", checkOpt("switch-webhook-gc"), gocardlessWebhookApp);
+app.use(
+  "/mailchimp",
+  checkOpt("switch-webhook-mailchimp"),
+  mailchimpWebhookApp
+);
+app.use("/stripe", checkOpt("switch-webhook-stripe"), stripeWebhookApp);
 
 app.use(requestErrorLogger);
 

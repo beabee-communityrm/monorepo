@@ -8,7 +8,7 @@ import ContactsService from "@beabee/core/services/ContactsService";
 
 import { ContactContribution } from "@beabee/core/models";
 
-import { handleInvoicePaid, handleInvoiceUpdated } from "#handlers/stripe";
+import { StripeWebhookEventHandler } from "@beabee/core/lib/stripe-webhook-event-handler";
 
 const isDangerMode = process.argv.includes("--danger");
 
@@ -98,9 +98,9 @@ runApp(async () => {
       // Update list of invoices
       for await (const invoice of fetchInvoices(contribution.customerId)) {
         if (isDangerMode) {
-          await handleInvoiceUpdated(invoice);
+          await StripeWebhookEventHandler.handleInvoiceUpdated(invoice);
           if (invoice.paid) {
-            await handleInvoicePaid(invoice);
+            await StripeWebhookEventHandler.handleInvoicePaid(invoice);
           }
         } else {
           console.log(invoice.id);
