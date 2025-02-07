@@ -18,7 +18,6 @@ import type {
  */
 export class Fetch {
   protected readonly options: FetchOptions;
-  protected readonly baseUrl: URL;
   protected errorHandlers: ((error: ClientApiError) => void)[] = [];
 
   constructor(options: FetchOptions = {}) {
@@ -41,7 +40,6 @@ export class Fetch {
       typeof options.isAjax === "boolean" ? options.isAjax : true;
     options.basePath ||= "/";
 
-    this.baseUrl = new URL(options.basePath, options.host);
     this.options = options;
   }
 
@@ -158,13 +156,12 @@ export class Fetch {
         accept = "text/html";
         break;
       case "form":
+      case "multipart":
         // Remove Content-Type so browser can set it with boundary
         contentType = undefined;
         break;
-      case "multipart":
-        contentType = "multipart/form-data";
-        break;
     }
+
     if (contentType) {
       headers["Content-Type"] = contentType;
     }
@@ -235,10 +232,10 @@ export class Fetch {
 
     // Use basePath if url does not have a protocol
     if (typeof url === "string" && !hasProtocol(url)) {
-      url = cleanUrl(this.options.basePath + "/" + url);
+      url = cleanUrl(options.basePath + "/" + url);
     }
 
-    url = new URL(url, this.baseUrl);
+    url = new URL(url, this.options.host);
 
     const headers: Record<string, string> = {
       ...this.options.headers,
@@ -256,7 +253,7 @@ export class Fetch {
 
     // This is a common technique used to identify Ajax requests.
     // The `X-Requested-With` header is not a standard HTTP header, but it is commonly used in the context of web development.
-    if (!options.isAjax && !headers["X-Requested-With"]) {
+    if (options.isAjax && !headers["X-Requested-With"]) {
       headers["X-Requested-With"] = "XMLHttpRequest";
     }
 
@@ -287,8 +284,12 @@ export class Fetch {
       }
       // Handle body data
       if (data) {
-        if (options.dataType === "form") {
-          body = new URLSearchParams(data);
+        if (options.dataType === "form" || options.dataType === "multipart") {
+          if (data instanceof FormData) {
+            body = data;
+          } else {
+            body = new URLSearchParams(data as any);
+          }
         } else {
           body = JSON.stringify(data);
         }
@@ -337,7 +338,7 @@ export class Fetch {
     const result: FetchResponse<T> = {
       ...response,
       data: bodyResult as T,
-      ok: response.status >= 200 && response.status < 300
+      ok: response.status >= 200 && response.status < 400
     };
 
     // Makes it sense to throw an error if the response is not ok

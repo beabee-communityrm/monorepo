@@ -49,12 +49,17 @@ export class UploadClient extends BaseClient {
     formData.append("file", file);
 
     try {
-      const { data } = await this.fetch.post<{ url: string }>("", formData, {
-        params: {
-          token: flowId
-        },
-        dataType: "form" // This ensures correct Content-Type header
-      });
+      const { data } = await this.fetch.post<{ url: string }>(
+        "upload/",
+        formData,
+        {
+          params: {
+            token: flowId
+          },
+          basePath: "/", // This removes the /api/1.0/upload prefix from the URL
+          dataType: "multipart"
+        }
+      );
 
       return data;
     } catch (error) {
