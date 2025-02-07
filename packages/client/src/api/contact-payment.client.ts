@@ -34,7 +34,7 @@ export class ContactPaymentClient extends BaseClient {
    * @param paymentMethod - The payment method identifier, or undefined to remove
    * @returns Payment flow parameters for client-side handling
    */
-  async update(paymentMethod: string | undefined): Promise<PaymentFlowParams> {
+  async update(paymentMethod?: string): Promise<PaymentFlowParams> {
     const { data } = await this.fetch.put("/me/payment-method", {
       paymentMethod,
       completeUrl:

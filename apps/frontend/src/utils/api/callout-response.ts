@@ -31,7 +31,7 @@ export function deserializeCalloutResponse(response: any): any {
 
 /** @deprecated Use the CalloutResponseClient from the @beabee/client package instead */
 export async function fetchCalloutResponses<
-  With extends GetCalloutResponseWith = void,
+  With extends GetCalloutResponseWith | void = void,
 >(
   query?: GetCalloutResponsesQuery,
   _with?: readonly With[]
@@ -62,7 +62,7 @@ export async function updateCalloutResponses(
 
 /** @deprecated Use the CalloutResponseClient from the @beabee/client package instead */
 export async function fetchCalloutResponse<
-  With extends GetCalloutResponseWith = void,
+  With extends GetCalloutResponseWith | void = void,
 >(
   id: string,
   _with?: readonly With[]

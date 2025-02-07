@@ -51,7 +51,7 @@ import AppTitle from '@components/AppTitle.vue';
 import AuthBox from '@components/AuthBox.vue';
 import AppForm from '@components/forms/AppForm.vue';
 
-import { resetDeviceComplete } from '@utils/api/reset-security-flow';
+import { client } from '@utils/api';
 import { isInternalUrl } from '@utils/index';
 
 import { updateCurrentUser } from '@store/index';
@@ -69,7 +69,7 @@ const redirectTo = route.query.next as string | undefined;
 const data = reactive({ password: '' });
 
 async function handleSubmit() {
-  await resetDeviceComplete(props.id, data.password);
+  await client.resetSecurity.resetDeviceComplete(props.id, data.password);
   await updateCurrentUser();
   if (isInternalUrl(redirectTo)) {
     // TODO: use router when legacy app is gone

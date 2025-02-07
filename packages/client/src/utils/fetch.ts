@@ -19,13 +19,14 @@ import type {
 export class Fetch {
   protected readonly options: FetchOptions;
   protected readonly baseUrl: URL;
+  protected errorHandlers: ((error: ClientApiError) => void)[] = [];
 
   constructor(options: FetchOptions = {}) {
     if (options.token) {
-      this.setRequestHeaderEachRequest(
-        "Authorization",
-        `Bearer ${options.token}`
-      );
+      options.headers = {
+        ...options.headers,
+        Authorization: `Bearer ${options.token}`
+      };
       options.credentials ||= "same-origin";
     } else {
       options.credentials ||= "include";
@@ -42,15 +43,6 @@ export class Fetch {
 
     this.baseUrl = new URL(options.basePath, options.host);
     this.options = options;
-  }
-
-  /**
-   * Set header for each request
-   * @param name Header name
-   * @param value Header value
-   */
-  public setRequestHeaderEachRequest(name: string, value: string) {
-    this._requestHeadersEachRequest[name] = value;
   }
 
   /**
@@ -143,7 +135,7 @@ export class Fetch {
    */
   protected parseDataType(dataType?: string) {
     const headers: Record<string, string> = {};
-    let contentType = "application/x-www-form-urlencoded";
+    let contentType: string | undefined = undefined;
     let accept = "*/*";
     switch (dataType) {
       case "script":
@@ -166,14 +158,28 @@ export class Fetch {
         accept = "text/html";
         break;
       case "form":
-        contentType = "application/x-www-form-urlencoded";
+        // Remove Content-Type so browser can set it with boundary
+        contentType = undefined;
+        break;
+      case "multipart":
+        contentType = "multipart/form-data";
         break;
     }
     if (contentType) {
       headers["Content-Type"] = contentType;
+    }
+    if (accept) {
       headers["Accept"] = accept;
     }
     return headers;
+  }
+
+  /**
+   * Add a global error handler
+   * @param handler Function to handle errors
+   */
+  public onError(handler: (error: ClientApiError) => void): void {
+    this.errorHandlers.push(handler);
   }
 
   /**
@@ -200,6 +206,24 @@ export class Fetch {
     data: D | {} = {},
     options: FetchOptions = {}
   ): Promise<FetchResponse<T>> {
+    try {
+      return await this.performFetch<T, D>(url, method, data, options);
+    } catch (error) {
+      if (error instanceof ClientApiError) {
+        // Notify all error handlers
+        this.errorHandlers.forEach((handler) => handler(error));
+      }
+      throw error;
+    }
+  }
+
+  // Rename existing fetch implementation to performFetch
+  protected async performFetch<T = unknown, D = any>(
+    url: string | URL,
+    method: HttpMethod = "GET",
+    data: D | {} = {},
+    options: FetchOptions = {}
+  ): Promise<FetchResponse<T>> {
     if (!fetch) {
       throw new Error(
         "Your platform does not support the fetch API, please install a polyfill."
@@ -217,7 +241,7 @@ export class Fetch {
     url = new URL(url, this.baseUrl);
 
     const headers: Record<string, string> = {
-      ...this._requestHeadersEachRequest,
+      ...this.options.headers,
       ...options.headers,
       ...this.parseDataType(options.dataType)
     };

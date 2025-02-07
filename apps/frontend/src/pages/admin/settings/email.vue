@@ -47,7 +47,7 @@ import AppHeading from '@components/AppHeading.vue';
 import AppForm from '@components/forms/AppForm.vue';
 import AppInput from '@components/forms/AppInput.vue';
 
-import { fetchContent, updateContent } from '@utils/api/content';
+import { client } from '@utils/api';
 import type { ContentEmailData } from '@beabee/beabee-common';
 
 const { t } = useI18n();
@@ -74,10 +74,10 @@ const fromEmailDomain = computed(() => {
 });
 
 async function handleSubmit() {
-  await updateContent('email', emailContent.value);
+  await client.content.update('email', emailContent.value);
 }
 
 onBeforeMount(async () => {
-  emailContent.value = await fetchContent('email');
+  emailContent.value = await client.content.get('email');
 });
 </script>

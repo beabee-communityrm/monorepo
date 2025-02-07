@@ -78,8 +78,7 @@ import AppButton from '@components/button/AppButton.vue';
 import CalloutCard from '@components/callout/CalloutCard.vue';
 import WelcomeMessage from '@components/welcome-message/WelcomeMessage.vue';
 
-import { fetchContent } from '@utils/api/content';
-import { fetchCallouts } from '@utils/api/callout';
+import { client } from '@utils/api';
 
 import { currentUser, generalContent } from '@store';
 
@@ -104,9 +103,9 @@ const callouts = ref<GetCalloutData[]>([]);
 const user = currentUser as Ref<GetContactData>;
 
 onBeforeMount(async () => {
-  profileContent.value = await fetchContent('profile');
+  profileContent.value = await client.content.get('profile');
   callouts.value = (
-    await fetchCallouts({
+    await client.callout.list({
       order: 'DESC',
       sort: 'starts',
       limit: 3,

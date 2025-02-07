@@ -53,7 +53,7 @@ meta:
       :client-secret="stripeClientSecret"
       :public-key="paymentContent.stripePublicKey"
       :payment-data="signUpData"
-      :return-url="completeUrl"
+      :return-url="client.signup.completeUrl"
       show-name-fields
     />
   </AuthBox>
@@ -76,8 +76,7 @@ import { faHandSparkles } from '@fortawesome/free-solid-svg-icons';
 import AppNotification from '@components/AppNotification.vue';
 import AuthBox from '@components/AuthBox.vue';
 
-import { fetchContent } from '@utils/api/content';
-import { signUp, completeUrl } from '@utils/api/signup';
+import { client } from '@utils/api';
 
 import { generalContent, isEmbed } from '@store';
 
@@ -112,7 +111,7 @@ const paymentContent = ref<ContentPaymentData>({
 const { signUpData, signUpDescription } = useJoin(paymentContent);
 
 async function submitSignUp() {
-  const data = await signUp(signUpData);
+  const data = await client.signup.start(signUpData);
   const topWindow = window.top || window;
   if (data.redirectUrl) {
     topWindow.location.href = data.redirectUrl;
@@ -130,9 +129,9 @@ async function submitSignUp() {
 onBeforeMount(async () => {
   stripeClientSecret.value = '';
 
-  joinContent.value = await fetchContent('join');
+  joinContent.value = await client.content.get('join');
 
-  paymentContent.value = await fetchContent('payment');
+  paymentContent.value = await client.content.get('payment');
 
   signUpData.amount =
     (route.query.amount && Number(route.query.amount)) ||

@@ -1,10 +1,5 @@
-export interface BaseClientOptions {
-  host: string;
+import type { FetchOptions } from "./fetch-options";
+
+export interface BaseClientOptions extends FetchOptions {
   path?: string;
-  /**
-   * Optional token for authentication
-   * If provided, the client will use the API key authentication method,
-   * otherwise it will use the user authentication method
-   */
-  token?: string;
 }

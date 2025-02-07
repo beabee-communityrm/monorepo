@@ -7,6 +7,7 @@ export * from './auth';
 export * from './callout-response-comments';
 export * from './callout-response';
 export * from './callout';
+export * from './client';
 export * from './contact-mfa';
 export * from './contact';
 export * from './content';

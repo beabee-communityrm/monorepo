@@ -189,7 +189,7 @@ import AppSubHeading from '@components/AppSubHeading.vue';
 import AppLinkList from '@components/forms/AppLinkList.vue';
 import AppCheckbox from '@components/forms/AppCheckbox.vue';
 
-import { fetchContent, updateContent } from '@utils/api/content';
+import { client } from '@utils/api';
 
 import { generalContent as storeGeneralContent } from '@store';
 
@@ -224,7 +224,10 @@ const paymentData = ref<Pick<ContentPaymentData, 'taxRateEnabled' | 'taxRate'>>(
 const shareContent = ref<ContentShareData>();
 
 async function handleSaveGeneral() {
-  storeGeneralContent.value = await updateContent('general', generalData);
+  storeGeneralContent.value = await client.content.update(
+    'general',
+    generalData
+  );
 
   // Refresh the favicon
   await axios.get('/favicon.png');
@@ -236,14 +239,18 @@ async function handleSaveGeneral() {
 
 async function handleSaveShare() {
   if (!shareContent.value) return; // Can't submit without shareContent being loaded
-  await updateContent('share', shareContent.value);
+  await client.content.update('share', shareContent.value);
 }
 
 async function handleSaveFooter() {
-  storeGeneralContent.value = await updateContent('general', footerData);
+  storeGeneralContent.value = await client.content.update(
+    'general',
+    footerData
+  );
 }
+
 async function handleSavePayment() {
-  await updateContent('payment', paymentData.value);
+  await client.content.update('payment', paymentData.value);
 }
 
 onBeforeMount(async () => {
@@ -258,9 +265,9 @@ onBeforeMount(async () => {
   footerData.footerLinks =
     storeGeneralContent.value.footerLinks?.map((l) => ({ ...l })) || [];
 
-  shareContent.value = await fetchContent('share');
+  shareContent.value = await client.content.get('share');
 
-  const paymentContent = await fetchContent('payment');
+  const paymentContent = await client.content.get('payment');
   paymentData.value = {
     taxRateEnabled: paymentContent.taxRateEnabled,
     taxRate: paymentContent.taxRate,

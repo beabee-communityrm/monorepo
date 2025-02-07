@@ -64,7 +64,7 @@ import ItemDateRange from '@components/item/ItemDateRange.vue';
 
 import { addBreadcrumb } from '@store/breadcrumb';
 
-import { deleteNotice, fetchNotice } from '@utils/api/notice';
+import { client } from '@utils/api';
 import type { GetNoticeData } from '@beabee/beabee-common';
 
 const props = defineProps<{ id: string }>();
@@ -83,11 +83,11 @@ addBreadcrumb(
 const showDeleteModal = ref(false);
 
 onBeforeMount(async () => {
-  notice.value = await fetchNotice(props.id as string);
+  notice.value = await client.notice.get(props.id);
 });
 
 async function confirmDeleteNotice() {
-  await deleteNotice(props.id);
+  await client.notice.delete(props.id);
   router.push({
     path: '/admin/notices',
     query: { deleted: null },

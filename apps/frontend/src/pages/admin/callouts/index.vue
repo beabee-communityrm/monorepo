@@ -91,7 +91,7 @@ import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
 
 import { definePaginatedQuery, defineParam } from '@utils/pagination';
 import { formatLocale } from '@utils/dates';
-import { fetchCallouts } from '@utils/api/callout';
+import { client } from '@utils/api';
 
 import { addBreadcrumb } from '@store/breadcrumb';
 
@@ -204,7 +204,7 @@ watchEffect(async () => {
         : []),
     ],
   };
-  calloutsTable.value = await fetchCallouts(
+  calloutsTable.value = await client.callout.list(
     {
       ...currentPaginatedQuery.query,
       rules: rules.rules.length > 0 ? rules : undefined,

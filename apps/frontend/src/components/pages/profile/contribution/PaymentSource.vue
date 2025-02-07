@@ -31,7 +31,7 @@
         :client-secret="stripeClientSecret"
         :public-key="stripePublicKey"
         :payment-data="paymentData"
-        :return-url="updatePaymentMethodCompleteUrl"
+        :return-url="client.contact.contribution.completeUrl"
         @loaded="onStripeLoaded"
       />
     </AppModal>
@@ -49,11 +49,7 @@ import AppHeading from '@components/AppHeading.vue';
 import PaymentMethod from '@components/payment-method/PaymentMethod.vue';
 import AppNotification from '@components/AppNotification.vue';
 
-import {
-  updatePaymentMethod,
-  updatePaymentMethodCompleteUrl,
-} from '@utils/api/contact';
-import { isRequestError } from '@utils/api';
+import { client, isApiError } from '@utils/api';
 
 import type { PaymentSourceManual, PaymentSource } from '@beabee/beabee-common';
 import type { StripePaymentData } from '@type/stripe-payment-data';
@@ -90,7 +86,7 @@ async function handleUpdate() {
   cantUpdate.value = false;
   loading.value = true;
   try {
-    const data = await updatePaymentMethod();
+    const data = await client.contact.payment.update();
     if (data.redirectUrl) {
       window.location.href = data.redirectUrl;
     } else if (data.clientSecret) {
@@ -98,7 +94,7 @@ async function handleUpdate() {
     }
   } catch (err) {
     loading.value = false;
-    if (isRequestError(err, ['cant-update-contribution'])) {
+    if (isApiError(err, ['cant-update-contribution'])) {
       cantUpdate.value = true;
     }
   }

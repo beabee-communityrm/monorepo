@@ -110,7 +110,7 @@ export async function deleteCallout(slug: string): Promise<void> {
 
 /** @deprecated Use the CalloutClient from the @beabee/client package instead */
 export async function fetchResponses<
-  With extends GetCalloutResponseWith = void,
+  With extends GetCalloutResponseWith | void = void,
 >(
   slug: string,
   query?: GetCalloutResponsesQuery,

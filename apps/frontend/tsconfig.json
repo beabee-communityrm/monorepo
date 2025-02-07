@@ -21,7 +21,7 @@
       "@enums": ["./src/enums/index"],
 
       "@env": ["./src/env"],
-      "@assets/*": ["./src/assets/*"]
+      "@assets/*": ["./src/assets/*"],
     }
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],

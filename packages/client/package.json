@@ -41,7 +41,6 @@
   "files": [
     "dist/"
   ],
-  "types": "./dist/types/index.d.ts",
   "exports": {
     ".": {
       "import": {

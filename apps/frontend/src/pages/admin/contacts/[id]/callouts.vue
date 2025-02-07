@@ -35,17 +35,18 @@ meta:
   </div>
 </template>
 <script lang="ts" setup>
-import type {
-  GetCalloutResponseDataWith,
-  GetContactData,
-  Paginated,
+import {
+  type GetCalloutResponseDataWith,
+  GetCalloutResponseWith,
+  type GetContactData,
+  type Paginated,
 } from '@beabee/beabee-common';
 import { ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import type { Header } from '@components/table/table.interface';
 import { formatLocale } from '@utils/dates';
-import { fetchCalloutResponses } from '@utils/api/callout-response';
+import { client } from '@utils/api';
 import { definePaginatedQuery } from '@utils/pagination';
 import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
 
@@ -76,12 +77,13 @@ const headers: Header[] = [
   },
 ];
 
-const responses = ref<Paginated<GetCalloutResponseDataWith<'callout'>>>();
+const responses =
+  ref<Paginated<GetCalloutResponseDataWith<GetCalloutResponseWith.Callout>>>();
 
 const currentPaginatedQuery = definePaginatedQuery('createdAt');
 
 watchEffect(async () => {
-  responses.value = await fetchCalloutResponses(
+  responses.value = await client.callout.response.list(
     {
       ...currentPaginatedQuery.query,
       rules: {
@@ -91,7 +93,7 @@ watchEffect(async () => {
         ],
       },
     },
-    ['callout']
+    [GetCalloutResponseWith.Callout]
   );
 });
 </script>

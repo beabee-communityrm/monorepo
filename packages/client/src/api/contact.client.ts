@@ -4,6 +4,7 @@ import { ContactMfaClient } from "./contact-mfa.client.js";
 import { ContactContributionClient } from "./contact-contribution.client.js";
 import { ContactRoleClient } from "./contact-role.client.js";
 import { ContactTagClient } from "./contact-tag.client.js";
+import { ContactPaymentClient } from "./contact-payment.client.js";
 
 import type { BaseClientOptions } from "../types/index.js";
 import type {
@@ -37,6 +38,9 @@ export class ContactClient extends BaseClient {
   /** Client for managing contact tags */
   readonly tag: ContactTagClient;
 
+  /** Client for managing contact payments */
+  readonly payment: ContactPaymentClient;
+
   /**
    * Creates a new contact client with all sub-clients
    * @param options - The client options
@@ -50,6 +54,7 @@ export class ContactClient extends BaseClient {
     this.contribution = new ContactContributionClient(options);
     this.role = new ContactRoleClient(options);
     this.tag = new ContactTagClient(options);
+    this.payment = new ContactPaymentClient(options);
   }
 
   /**

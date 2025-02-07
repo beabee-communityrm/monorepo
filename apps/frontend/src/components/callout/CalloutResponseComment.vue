@@ -67,10 +67,7 @@ import AppButtonGroup from '@components/button/AppButtonGroup.vue';
 import AppConfirmDialog from '@components/AppConfirmDialog.vue';
 import CalloutResponseCommentForm from './CalloutResponseCommentForm.vue';
 
-import {
-  deleteCalloutResponseComment,
-  updateCalloutResponseComment,
-} from '@utils/api/callout-response-comments';
+import { client } from '@utils/api';
 import { formatLocale } from '@utils/dates';
 
 const { t } = useI18n();
@@ -89,14 +86,17 @@ onBeforeMount(() => {
 });
 
 async function handleEditSubmit(data: UpdateCalloutResponseCommentData) {
-  currentComment.value = await updateCalloutResponseComment(props.comment.id, {
-    text: data.text,
-  });
+  currentComment.value = await client.callout.response.comment.update(
+    props.comment.id,
+    {
+      text: data.text,
+    }
+  );
   formVisible.value = false;
 }
 
 async function handleDelete() {
-  await deleteCalloutResponseComment(currentComment.value.id);
+  await client.callout.response.comment.delete(currentComment.value.id);
   await props.onDelete?.();
 }
 </script>

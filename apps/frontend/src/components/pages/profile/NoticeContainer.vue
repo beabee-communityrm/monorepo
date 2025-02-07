@@ -8,19 +8,22 @@
 import { ItemStatus, type GetNoticeData } from '@beabee/beabee-common';
 import { onBeforeMount, ref } from 'vue';
 import AppNotice from '@components/AppNotice.vue';
-import { fetchNotices } from '@utils/api/notice';
+import { client } from '@utils/api';
 
 const notices = ref<GetNoticeData[]>([]);
 const loading = ref(false);
 
 onBeforeMount(() => {
   loading.value = true;
-  fetchNotices({
-    rules: {
-      condition: 'AND',
-      rules: [{ field: 'status', operator: 'equal', value: [ItemStatus.Open] }],
-    },
-  })
+  client.notice
+    .list({
+      rules: {
+        condition: 'AND',
+        rules: [
+          { field: 'status', operator: 'equal', value: [ItemStatus.Open] },
+        ],
+      },
+    })
     .then((data) => {
       notices.value = data.items;
     })

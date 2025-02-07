@@ -90,7 +90,7 @@ import type { Header } from '@components/table/table.interface';
 import AppTable from '@components/table/AppTable.vue';
 import AppTime from '@components/AppTime.vue';
 
-import { fetchCallouts } from '@utils/api/callout';
+import { client } from '@utils/api';
 import { defineParam } from '@utils/pagination';
 
 const { t } = useI18n();
@@ -122,7 +122,7 @@ watch(totalPages, (value) => {
 });
 
 onBeforeMount(async () => {
-  activeCallouts.value = await fetchCallouts({
+  activeCallouts.value = await client.callout.list({
     sort: 'starts',
     order: 'DESC',
     rules: {
@@ -182,6 +182,6 @@ watchEffect(async () => {
     },
   };
 
-  archivedCallouts.value = await fetchCallouts(query, ['hasAnswered']);
+  archivedCallouts.value = await client.callout.list(query, ['hasAnswered']);
 });
 </script>
