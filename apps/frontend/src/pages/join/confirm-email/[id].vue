@@ -11,14 +11,15 @@ meta:
 import { onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router';
 import { updateCurrentUser } from '../../../store';
-import { confirmEmail } from '../../../utils/api/signup';
+import { client } from '@utils/api';
 
 const props = defineProps<{ id: string }>();
 
 const router = useRouter();
 
 onBeforeMount(() => {
-  confirmEmail(props.id)
+  client.signup
+    .confirmEmail(props.id)
     .then(() => updateCurrentUser())
     .then(() => router.replace('/join/setup'))
     .catch(() => {
