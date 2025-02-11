@@ -99,8 +99,7 @@ import AppTitle from '@components/AppTitle.vue';
 import AuthBox from '@components/AuthBox.vue';
 
 import { isInternalUrl } from '@utils/index';
-import { login } from '@utils/api/auth';
-import { isRequestError } from '@utils/api/index';
+import { client, isApiError } from '@utils/api';
 
 import { updateCurrentUser } from '@store/index';
 
@@ -123,12 +122,12 @@ const hasMFAEnabled = ref(false);
 
 async function submitLogin() {
   try {
-    await login(data);
+    await client.auth.login(data);
     await updateCurrentUser();
     // TODO: use router when legacy app is gone
     window.location.href = isInternalUrl(redirectTo) ? redirectTo : '/';
   } catch (err) {
-    if (isRequestError(err, [LOGIN_CODES.REQUIRES_2FA], [401])) {
+    if (isApiError(err, [LOGIN_CODES.REQUIRES_2FA], [401])) {
       hasMFAEnabled.value = true;
     } else {
       throw err;

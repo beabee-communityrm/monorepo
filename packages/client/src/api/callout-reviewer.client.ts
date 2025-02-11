@@ -56,7 +56,7 @@ export class CalloutReviewerClient extends BaseClient {
    * @param calloutId The ID or slug of the callout
    * @param reviewerId The ID of the reviewer to remove
    */
-  async remove(calloutId: string, reviewerId: string): Promise<void> {
+  async delete(calloutId: string, reviewerId: string): Promise<void> {
     await this.fetch.delete(`/${calloutId}/reviewers/${reviewerId}`);
   }
 }

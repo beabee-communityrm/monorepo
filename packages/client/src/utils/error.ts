@@ -47,3 +47,33 @@ export class ClientApiError extends Error implements ClientApiErrorData {
       (this.httpCode ? getErrorNameFromStatus(this.httpCode) : "UnknownError");
   }
 }
+
+/**
+ * Type guard to check if an error is a ClientApiError with specific status and/or error codes
+ * @param err - The error to check
+ * @param codes - Optional array of error codes to match against
+ * @param status - Optional array of HTTP status codes to match against
+ */
+export function isApiError(
+  err: unknown,
+  codes?: string[]
+): err is ClientApiError;
+export function isApiError(
+  err: unknown,
+  codes: string[] | undefined,
+  status: number[]
+): err is ClientApiError;
+export function isApiError(
+  err: unknown,
+  codes: string[] = [],
+  status: number[] = [400]
+): err is ClientApiError {
+  if (err instanceof ClientApiError) {
+    const hasMatchingStatus =
+      !status.length || (!!err.httpCode && status.includes(err.httpCode));
+    const hasMatchingCode =
+      !codes.length || (!!err.code && codes.includes(err.code));
+    return hasMatchingStatus && hasMatchingCode;
+  }
+  return false;
+}

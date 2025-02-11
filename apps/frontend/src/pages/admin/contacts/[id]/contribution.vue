@@ -74,11 +74,9 @@ import ContactContributionFields from '@components/contact/ContactContributionFi
 import App2ColGrid from '@components/App2ColGrid.vue';
 import ContactCancelContribution from '@components/contact/ContactCancelContribution.vue';
 import AppConfirmDialog from '@components/AppConfirmDialog.vue';
-import { cancelContribution } from '@utils/api/contact';
+import { client } from '@utils/api';
 
 import AppNotification from '@components/AppNotification.vue';
-
-import { fetchContact, forceUpdateContribution } from '@utils/api/contact';
 
 const { t } = useI18n();
 
@@ -91,7 +89,7 @@ const contributionData = ref<UpdateContribution>();
 const showCancelDialog = ref(false);
 
 onBeforeMount(async () => {
-  const contact = await fetchContact(props.contact.id, [
+  const contact = await client.contact.get(props.contact.id, [
     GetContactWith.Contribution,
   ]);
 
@@ -117,13 +115,13 @@ async function handleUpdateContribution() {
 
   if (contributionData.value.type === ContributionType.None) {
     // Save empty values, not what is currently in the form
-    await forceUpdateContribution(props.contact.id, {
+    await client.contact.contribution.forceUpdate(props.contact.id, {
       type: ContributionType.None,
       amount: undefined,
       period: undefined,
     });
   } else if (contributionData.value.type === ContributionType.Manual) {
-    await forceUpdateContribution(props.contact.id, {
+    await client.contact.contribution.forceUpdate(props.contact.id, {
       ...contributionData.value,
       type: ContributionType.Manual, // Why doesn't TS narrow this type?
     });
@@ -131,7 +129,7 @@ async function handleUpdateContribution() {
 }
 
 async function handleCancelContribution() {
-  await cancelContribution(props.contact.id);
+  await client.contact.contribution.cancel(props.contact.id);
   showCancelDialog.value = false;
   router.push({ path: '/admin/contacts/' + props.contact.id });
 }

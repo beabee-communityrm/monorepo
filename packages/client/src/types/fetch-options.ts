@@ -6,6 +6,11 @@ export interface FetchOptions extends RequestInit {
   dataType?: string;
   isAjax?: boolean;
   method?: HttpMethod;
+  /**
+   * Optional token for authentication
+   * If provided, the client will use the API key authentication method,
+   * otherwise it will use the user authentication method
+   */
   token?: string;
   host?: string;
   basePath?: string;

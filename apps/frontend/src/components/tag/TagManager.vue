@@ -2,7 +2,7 @@
 import { computed, onBeforeMount, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import AppHeading from '@components/AppHeading.vue';
-import { TagOperations } from '@utils/api';
+import type { TagClient } from '@beabee/client';
 import type { TagData, TagUpdateData } from '@beabee/beabee-common';
 import ItemManager from '@components/item-manager/ItemManager.vue';
 import { faTag } from '@fortawesome/free-solid-svg-icons';
@@ -14,7 +14,7 @@ interface Props {
    * If not provided, the tags will be fetched from the root level (e.g. all contact tags).
    */
   entityId?: string | undefined;
-  operations: TagOperations;
+  operations: TagClient;
   type?: 'contact' | 'response';
 }
 
@@ -35,7 +35,7 @@ const deleteText = computed(() => {
 });
 
 async function handleUpdateTag(tag: TagData, data: TagUpdateData) {
-  const updatedTag = await props.operations.updateTag(
+  const updatedTag = await props.operations.update(
     props.entityId,
     tag.id,
     data
@@ -46,12 +46,12 @@ async function handleUpdateTag(tag: TagData, data: TagUpdateData) {
 }
 
 async function handleDeleteTag(tag: TagData) {
-  await props.operations.deleteTag(props.entityId, tag.id);
+  await props.operations.delete(props.entityId, tag.id);
   tags.value = tags.value.filter((tag2) => tag2.id !== tag.id);
 }
 
 async function handleNewTag(data: TagUpdateData) {
-  const tag = await props.operations.createTag(props.entityId, {
+  const tag = await props.operations.create(props.entityId, {
     name: data.name,
     description: '',
   });
@@ -65,7 +65,7 @@ function tagToFormData(tag?: TagData): TagUpdateData {
 }
 
 onBeforeMount(async () => {
-  tags.value = await props.operations.fetchTags(props.entityId);
+  tags.value = await props.operations.list(props.entityId);
 });
 </script>
 

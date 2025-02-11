@@ -40,9 +40,7 @@ import AppForm from '@components/forms/AppForm.vue';
 import EmailEditor from '@components/pages/admin/membership-builder/EmailEditor.vue';
 import App2ColGrid from '@components/App2ColGrid.vue';
 
-import { fetchContent } from '@utils/api/content';
-import { fetchEmail, updateEmail } from '@utils/api/email';
-import { isRequestError } from '@utils/api';
+import { client, isApiError } from '@utils/api';
 import type { GetEmailData } from '@beabee/beabee-common';
 
 const { t } = useI18n();
@@ -54,9 +52,9 @@ const emailFooter = ref('');
 
 async function loadEmail(id: string): Promise<GetEmailData | false> {
   try {
-    return await fetchEmail(id);
+    return await client.email.get(id);
   } catch (err) {
-    if (isRequestError(err, ['external-email-template'])) {
+    if (isApiError(err, ['external-email-template'])) {
       return false;
     }
     return { body: '', subject: '' };
@@ -65,16 +63,19 @@ async function loadEmail(id: string): Promise<GetEmailData | false> {
 
 async function handleUpdate() {
   if (welcomeEmail.value) {
-    await updateEmail('welcome', welcomeEmail.value);
+    await client.email.update('welcome', welcomeEmail.value);
   }
   if (cancellationEmail.value) {
-    await updateEmail('cancelled-contribution', cancellationEmail.value);
+    await client.email.update(
+      'cancelled-contribution',
+      cancellationEmail.value
+    );
   }
 }
 
 onBeforeMount(async () => {
   welcomeEmail.value = await loadEmail('welcome');
   cancellationEmail.value = await loadEmail('cancelled-contribution');
-  emailFooter.value = (await fetchContent('email')).footer;
+  emailFooter.value = (await client.content.get('email')).footer;
 });
 </script>

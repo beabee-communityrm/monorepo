@@ -4,7 +4,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { fetchCallout } from '@utils/api/callout';
+import { client } from '@utils/api';
 import { watch } from 'vue';
 import type { GetCalloutDataWith } from '@beabee/beabee-common';
 
@@ -18,7 +18,7 @@ watch(
   [() => props.id, () => route.query.lang],
   async () => {
     // callout.value = undefined;
-    callout.value = await fetchCallout(
+    callout.value = await client.callout.get(
       props.id,
       ['form', 'responseViewSchema', 'variantNames'],
       route.query.lang ? route.query.lang.toString() : undefined

@@ -7,7 +7,7 @@ import type { BaseClientOptions } from "../types/index.js";
  */
 export abstract class BaseClient {
   /** Instance of the Fetch utility for making HTTP requests */
-  protected readonly fetch: Fetch;
+  readonly fetch: Fetch;
 
   /**
    * Creates a new base client instance
@@ -18,9 +18,8 @@ export abstract class BaseClient {
    */
   constructor(protected readonly options: BaseClientOptions) {
     this.fetch = new Fetch({
-      basePath: options.path,
-      host: options.host,
-      token: options.token
+      ...options,
+      basePath: options.path
     });
   }
 

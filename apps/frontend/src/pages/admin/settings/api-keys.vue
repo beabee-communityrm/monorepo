@@ -126,7 +126,7 @@ import { addNotification } from '@store/notifications';
 
 import { formatLocale } from '@utils/dates';
 import { definePaginatedQuery } from '@utils/pagination';
-import { createApiKey, fetchApiKeys, deleteApiKey } from '@utils/api/api-key';
+import { client } from '@utils/api';
 
 const { n, t } = useI18n();
 
@@ -188,7 +188,7 @@ async function generateApiKey() {
     description,
     expires: expiresInDays === 0 ? null : addDays(new Date(), expiresInDays),
   };
-  newApiKeySecret.value = (await createApiKey(data)).token;
+  newApiKeySecret.value = (await client.apiKey.create(data)).token;
 
   newApiKeyData.value = initialData();
   validation.value.$reset();
@@ -196,11 +196,11 @@ async function generateApiKey() {
 }
 
 async function refreshApiKeys() {
-  apiKeyTable.value = await fetchApiKeys(currentPaginatedQuery.query);
+  apiKeyTable.value = await client.apiKey.list(currentPaginatedQuery.query);
 }
 
 async function confirmDeleteApiKey() {
-  await deleteApiKey(apiKeyToDelete.value);
+  await client.apiKey.delete(apiKeyToDelete.value);
   apiKeyToDelete.value = '';
   await refreshApiKeys();
 }

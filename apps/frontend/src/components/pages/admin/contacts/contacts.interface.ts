@@ -16,8 +16,7 @@ import type { SelectItem } from '@components/forms/form.interface';
 import { withItems, withLabel } from '@utils/rules';
 
 import type { FilterItems, FilterGroups } from '@type';
-import { fetchContent } from '@utils/api/content';
-import { contactTagOperations } from '@utils/api/contact';
+import { client } from '@utils/api';
 
 import CalloutResponseFilterGroup from './CalloutResponseFilterGroup.vue';
 
@@ -172,7 +171,7 @@ export function useContactFilters() {
    */
   const setupContent = ref<ContentJoinSetupData | null>(null);
   (async () => {
-    setupContent.value = await fetchContent('join/setup');
+    setupContent.value = await client.content.get('join/setup');
   })();
 
   /**
@@ -181,7 +180,7 @@ export function useContactFilters() {
    */
   const tagItems = ref<SelectItem<string>[]>([]);
   watchEffect(async () => {
-    const tags = await contactTagOperations.fetchTags();
+    const tags = await client.contact.tag.list();
     // TODO: Use tag id
     tagItems.value = tags.map((tag) => ({ id: tag.id, label: tag.name }));
   });

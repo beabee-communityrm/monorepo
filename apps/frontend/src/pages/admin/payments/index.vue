@@ -56,7 +56,7 @@ import {
   defineParam,
   defineRulesParam,
 } from '@utils/pagination';
-import { fetchPayments } from '@utils/api/payment';
+import { client } from '@utils/api';
 import { formatLocale } from '@utils/dates';
 
 import PageTitle from '@components/PageTitle.vue';
@@ -96,7 +96,7 @@ watchEffect(async () => {
     rules.rules.push(currentRules.value);
   }
 
-  paymentsTable.value = await fetchPayments(
+  paymentsTable.value = await client.payment.list(
     {
       ...currentPaginatedQuery.query,
       rules,

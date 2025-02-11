@@ -80,7 +80,7 @@ import RoleEditor from '@components/role/RoleEditor.vue';
 
 import { addBreadcrumb } from '@store/breadcrumb';
 
-import { createContact } from '@utils/api/contact';
+import { client } from '@utils/api';
 
 const { t } = useI18n();
 const router = useRouter();
@@ -137,7 +137,7 @@ async function saveContact() {
         ? { ...data.contribution, type: ContributionType.Manual as const }
         : undefined;
 
-  return await createContact({
+  return await client.contact.create({
     email: data.email,
     firstname: data.firstname,
     lastname: data.lastname,

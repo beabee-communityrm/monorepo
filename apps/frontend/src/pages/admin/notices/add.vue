@@ -24,7 +24,7 @@ import PageTitle from '@components/PageTitle.vue';
 import NoticeForm from '@components/notice/NoticeForm.vue';
 import App2ColGrid from '@components/App2ColGrid.vue';
 
-import { createNotice } from '@utils/api/notice';
+import { client } from '@utils/api';
 
 import { addBreadcrumb } from '@store/breadcrumb';
 import { addNotification } from '@store/notifications';
@@ -41,7 +41,7 @@ addBreadcrumb(
 );
 
 async function handleSubmit(noticeData: CreateNoticeData) {
-  const notice: GetNoticeData = await createNotice(noticeData);
+  const notice: GetNoticeData = await client.notice.create(noticeData);
   addNotification({
     variant: 'success',
     title: t('noticeAdminOverview.created'),

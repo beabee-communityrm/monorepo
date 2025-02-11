@@ -10,7 +10,7 @@ meta:
 <script lang="ts" setup>
 import { onBeforeMount } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { completeStartContribution } from '../../../utils/api/contact';
+import { client } from '@utils/api';
 
 const route = useRoute();
 const router = useRouter();
@@ -22,7 +22,7 @@ onBeforeMount(async () => {
 
   if (paymentFlowId) {
     try {
-      await completeStartContribution(paymentFlowId);
+      await client.contact.contribution.completeStart(paymentFlowId);
       router.replace({
         path: '/profile/contribution',
         query: { startedContribution: null },

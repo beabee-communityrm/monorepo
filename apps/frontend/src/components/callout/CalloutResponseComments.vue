@@ -18,10 +18,7 @@
 </template>
 
 <script lang="ts" setup>
-import {
-  createCalloutResponseComment,
-  fetchCalloutResponseComments,
-} from '../../utils/api/callout-response-comments';
+import { client } from '@utils/api';
 import AppHeading from '../AppHeading.vue';
 import AppSubHeading from '../AppSubHeading.vue';
 import CalloutResponseComment from './CalloutResponseComment.vue';
@@ -60,7 +57,7 @@ async function refreshComments() {
     order: 'ASC',
     sort: 'createdAt',
   };
-  comments.value = await fetchCalloutResponseComments(query);
+  comments.value = await client.callout.response.comment.list(query);
 }
 
 watch(toRef(props, 'responseId'), refreshComments);
@@ -68,7 +65,7 @@ watch(toRef(props, 'responseId'), refreshComments);
 onBeforeMount(refreshComments);
 
 async function handleSubmit(commentData: CommentFormData) {
-  await createCalloutResponseComment({
+  await client.callout.response.comment.create({
     text: commentData.text,
     responseId: props.responseId,
   });

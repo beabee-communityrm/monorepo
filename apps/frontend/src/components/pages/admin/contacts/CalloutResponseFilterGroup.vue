@@ -32,7 +32,7 @@ import { useI18n } from 'vue-i18n';
 
 import AppSelect from '@components/forms/AppSelect.vue';
 
-import { fetchCallout, fetchCallouts } from '@utils/api/callout';
+import { client } from '@utils/api';
 
 import type {
   SearchRuleEmits,
@@ -90,14 +90,14 @@ watchEffect(() => {
 // Load the selected callout
 watchEffect(async () => {
   selectedCallout.value = selectedCalloutId.value
-    ? await fetchCallout(selectedCalloutId.value, ['form'])
+    ? await client.callout.get(selectedCalloutId.value, ['form'])
     : undefined;
 });
 
 onBeforeMount(async () => {
   // TODO: handle pagination
   callouts.value = (
-    await fetchCallouts({
+    await client.callout.list({
       rules: {
         condition: 'OR',
         rules: [

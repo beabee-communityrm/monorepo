@@ -8,7 +8,7 @@ meta:
 <template>
   <App2ColGrid>
     <template #col1>
-      <TagManager :operations="contactTagOperations" type="contact" />
+      <TagManager :operations="client.contact.tag" type="contact" />
     </template>
   </App2ColGrid>
 </template>
@@ -18,7 +18,7 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import TagManager from '@components/tag/TagManager.vue';
-import { contactTagOperations } from '@utils/api/contact';
+import { client } from '@utils/api';
 import App2ColGrid from '@components/App2ColGrid.vue';
 import { addBreadcrumb } from '@store/breadcrumb';
 

@@ -98,9 +98,8 @@ import AppTitle from '@components/AppTitle.vue';
 import AuthBox from '@components/AuthBox.vue';
 import AppForm from '@components/forms/AppForm.vue';
 
-import { resetPasswordComplete } from '@utils/api/reset-security-flow';
+import { client, isApiError } from '@utils/api';
 import { isInternalUrl } from '@utils/index';
-import { isRequestError } from '@utils/api';
 
 import { updateCurrentUser } from '@store/index';
 
@@ -126,7 +125,7 @@ const data = reactive({ password: '', repeatPassword: '', token: '' });
 
 async function handleSubmit() {
   try {
-    await resetPasswordComplete(
+    await client.resetSecurity.resetPasswordComplete(
       props.id,
       data.password,
       data.token || undefined
@@ -141,7 +140,7 @@ async function handleSubmit() {
     }
   } catch (err) {
     if (
-      isRequestError(
+      isApiError(
         err,
         [RESET_SECURITY_FLOW_ERROR_CODE.MFA_TOKEN_REQUIRED],
         [400]

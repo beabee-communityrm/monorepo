@@ -77,8 +77,7 @@ import AppButton from '@components/button/AppButton.vue';
 
 import { currentUser } from '@store';
 
-import { createResponse } from '@utils/api/callout';
-import { isRequestError } from '@utils/api';
+import { client, isApiError } from '@utils/api';
 import { getDecisionComponent } from '@utils/callouts';
 
 import CalloutFormCaptcha from './CalloutFormCaptcha.vue';
@@ -172,7 +171,7 @@ async function handleSubmit() {
   formError.value = '';
   isLoading.value = true;
   try {
-    await createResponse(
+    await client.callout.createResponse(
       props.callout.slug,
       {
         ...(!currentUser.value &&
@@ -187,7 +186,7 @@ async function handleSubmit() {
     emit('submitted');
   } catch (err) {
     formError.value = t('callout.form.submittingResponseError');
-    if (!isRequestError(err)) throw err;
+    if (!isApiError(err)) throw err;
   } finally {
     isLoading.value = false;
   }

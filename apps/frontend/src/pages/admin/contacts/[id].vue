@@ -32,7 +32,7 @@ import { addBreadcrumb } from '@store/breadcrumb';
 
 import env from '../../../env';
 
-import { fetchContact } from '@utils/api/contact';
+import { client } from '@utils/api';
 
 const props = defineProps<{ id: string }>();
 
@@ -100,6 +100,6 @@ addBreadcrumb(
 );
 
 onBeforeMount(async () => {
-  contact.value = await fetchContact(props.id as string);
+  contact.value = await client.contact.get(props.id);
 });
 </script>

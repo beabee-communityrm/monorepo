@@ -12,10 +12,7 @@ import type { SelectItem } from '@components/forms/form.interface';
 import i18n from '@lib/i18n';
 import env from '@env';
 import { withLabel } from '@utils/rules';
-import {
-  calloutTagOperations,
-  fetchCalloutReviewers,
-} from '@utils/api/callout';
+import { client } from '@utils/api';
 import { convertComponentsToFilters } from '@utils/callouts';
 
 const { t } = i18n.global;
@@ -146,7 +143,7 @@ export function useCalloutResponseFilters(
   const reviewerItems = ref<SelectItem<string>[]>([]);
   watchEffect(async () => {
     const reviewers = callout.value
-      ? await fetchCalloutReviewers(callout.value.slug)
+      ? await client.callout.reviewer.list(callout.value.slug)
       : [];
     reviewerItems.value = reviewers.map((reviewer) => ({
       id: reviewer.contact.id,
@@ -161,7 +158,7 @@ export function useCalloutResponseFilters(
   const tagItems = ref<SelectItem<string>[]>([]);
   watchEffect(async () => {
     const tags = callout.value
-      ? await calloutTagOperations.fetchTags(callout.value.slug)
+      ? await client.callout.tag.list(callout.value.slug)
       : [];
     tagItems.value = tags.map((tag) => ({ id: tag.id, label: tag.name }));
   });
