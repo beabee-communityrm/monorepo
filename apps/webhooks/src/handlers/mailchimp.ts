@@ -1,6 +1,11 @@
 import { NewsletterStatus, ContributionType } from "@beabee/beabee-common";
 import bodyParser from "body-parser";
-import express, { type Express, type Request, type Response } from "express";
+import express, {
+  NextFunction,
+  type Express,
+  type Request,
+  type Response
+} from "express";
 
 import { log as mainLogger } from "@beabee/core/logging";
 import { normalizeEmailAddress, wrapAsync } from "@beabee/core/utils/index";
@@ -13,7 +18,7 @@ import config from "@beabee/core/config";
 
 const log = mainLogger.child({ app: "webhook-mailchimp" });
 
-const app: Express = express();
+const mailchimpWebhookApp: Express = express();
 
 interface MCProfileData {
   email: string;
@@ -54,13 +59,13 @@ type MCWebhook =
 // Mailchimp pings this endpoint when you first add the webhook
 // Don't check for newsletter provider here as the webhook can be set
 // before Mailchimp has been enabled
-app.get("/", (req: Request, res: Response) => {
+mailchimpWebhookApp.get("/", (req: Request, res: Response) => {
   res.sendStatus(
     req.query.secret === config.newsletter.settings.webhookSecret ? 200 : 404
   );
 });
 
-app.use((req, res, next) => {
+mailchimpWebhookApp.use((req: Request, res: Response, next: NextFunction) => {
   if (
     config.newsletter.provider === "mailchimp" &&
     req.query["secret"] === config.newsletter.settings.webhookSecret
@@ -71,12 +76,12 @@ app.use((req, res, next) => {
   }
 });
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+mailchimpWebhookApp.use(bodyParser.json());
+mailchimpWebhookApp.use(bodyParser.urlencoded({ extended: true }));
 
-app.post(
+mailchimpWebhookApp.post(
   "/",
-  wrapAsync(async (req, res) => {
+  wrapAsync(async (req: Request, res: Response) => {
     const body = req.body as MCWebhook;
 
     log.info("Got webhook " + body.type);
@@ -210,4 +215,4 @@ async function handleUpdateProfile(data: MCProfileData): Promise<boolean> {
   }
 }
 
-export default app;
+export { mailchimpWebhookApp };
