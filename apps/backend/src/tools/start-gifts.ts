@@ -13,6 +13,10 @@ import { GiftFlow } from "@beabee/core/models";
 
 const log = mainLogger.child({ app: "start-gifts" });
 
+/**
+ * @deprecated This tool is deprecated and will be removed in the next major version.
+ * Please use the new backend-cli process gifts command instead: yarn backend-cli process gifts
+ */
 async function main(date: string | undefined) {
   const fromDate = moment.utc(date).startOf("day");
   const toDate = moment.utc(date).endOf("day");
@@ -43,5 +47,10 @@ async function main(date: string | undefined) {
 }
 
 runApp(async () => {
+  console.warn(
+    "\n⚠️  DEPRECATED: This start-gifts tool is deprecated and will be removed in the next major version.\n" +
+      "Please use the new backend-cli process gifts command instead: yarn backend-cli process gifts\n"
+  );
+
   await main(process.argv[2]);
 });

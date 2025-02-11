@@ -27,7 +27,7 @@ services:
       timeout: 5s
       retries: 5
     ports:
-      - 6543:5432
+      - ${DB_PORT}:5432
 
   mail:
     image: maildev/maildev:2.1.0
@@ -59,6 +59,7 @@ services:
     volumes:
       - ./packages:/opt/packages
       - ./apps/backend/built:/opt/apps/backend/built
+      - ./apps/backend-cli/dist:/opt/apps/backend-cli/dist
       # Allow migrations to be written out from the container
       - ./packages/core/src/migrations:/opt/packages/core/src/migrations
     # TODO: Use standard dist folder
@@ -130,6 +131,17 @@ services:
         condition: service_healthy
     env_file:
       - .env
+
+  # Stripe CLI for webhook forwarding
+  # Only used in local development
+  stripe_cli:
+    image: stripe/stripe-cli:latest
+    command: "listen --api-key ${BEABEE_STRIPE_SECRETKEY} --forward-to webhook_app:3000/stripe"
+    depends_on:
+      - webhook_app
+    environment:
+      - STRIPE_API_KEY=${BEABEE_STRIPE_SECRETKEY}
+      - STRIPE_DEVICE_NAME=beabee-dev-docker-container
 
 volumes:
   db_data:

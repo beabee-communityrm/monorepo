@@ -41,7 +41,7 @@ export class SignupController {
     };
 
     if (data.contribution) {
-      const flow = await PaymentFlowService.createPaymentJoinFlow(
+      const joinFlowParams = await PaymentFlowService.createPaymentJoinFlow(
         {
           ...baseForm,
           ...data.contribution,
@@ -52,7 +52,7 @@ export class SignupController {
         { email: data.email }
       );
 
-      return plainToInstance(GetPaymentFlowDto, flow);
+      return plainToInstance(GetPaymentFlowDto, joinFlowParams);
     } else {
       const joinFlow = await PaymentFlowService.createJoinFlow(baseForm, data);
       await PaymentFlowService.sendConfirmEmail(joinFlow);

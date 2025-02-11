@@ -1,13 +1,33 @@
 #!/usr/bin/env node
+import "./env.js";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
-import { apiKeyCommand } from "./commands/api-key.js";
-import { userCommand } from "./commands/user.js";
-import { configureCommand } from "./commands/configure.js";
+import {
+  apiKeyCommand,
+  userCommand,
+  configureCommand,
+  paymentCommand,
+  processCommand,
+  syncCommand,
+  testCommand
+} from "./commands/index.js";
+
+const pkg = JSON.parse(
+  readFileSync(resolve(process.cwd(), "./package.json"), "utf8")
+);
 
 yargs(hideBin(process.argv))
   .command(apiKeyCommand)
   .command(userCommand)
   .command(configureCommand)
+  .command(paymentCommand)
+  .command(processCommand)
+  .command(syncCommand)
+  .command(testCommand)
   .demandCommand(1, "You need at least one command before moving on")
-  .help().argv;
+  .version(pkg.version)
+  .scriptName("yarn backend-cli")
+  .help()
+  .parse();

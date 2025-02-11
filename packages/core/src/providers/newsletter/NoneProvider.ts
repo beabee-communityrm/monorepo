@@ -4,7 +4,7 @@ import {
   UpdateNewsletterContact
 } from "#type/index";
 
-export default class NoneProvider implements NewsletterProvider {
+export class NoneProvider implements NewsletterProvider {
   async addTagToContacts(emails: string[], tag: string): Promise<void> {}
   async removeTagFromContacts(emails: string[], tag: string): Promise<void> {}
   async getContact(email: string): Promise<NewsletterContact | undefined> {
@@ -26,4 +26,11 @@ export default class NoneProvider implements NewsletterProvider {
     email: string,
     fields: Record<string, string>
   ): Promise<void> {}
+  async updateContactTags(
+    email: string,
+    tags: Record<string, boolean>
+  ): Promise<void> {}
 }
+
+/** @deprecated Use named import NoneProvider instead */
+export default NoneProvider;

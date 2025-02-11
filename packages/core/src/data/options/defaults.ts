@@ -38,6 +38,7 @@ export default {
   "footer-twitter-link-url": "",
   "email-templates": "{}",
   "newsletter-active-member-tag": "Active member",
+  "newsletter-active-user-tag": "Active user",
   "newsletter-default-status": NewsletterStatus.None,
   "newsletter-groups": "[]",
   "newsletter-resync-status": "",

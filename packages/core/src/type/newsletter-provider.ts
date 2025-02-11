@@ -10,6 +10,10 @@ export interface NewsletterProvider {
     contact: UpdateNewsletterContact,
     oldEmail?: string
   ): Promise<NewsletterContact>;
+  updateContactTags(
+    email: string,
+    tags: Record<string, boolean>
+  ): Promise<void>;
   updateContactFields(
     email: string,
     fields: Record<string, string>
