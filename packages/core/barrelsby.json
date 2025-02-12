@@ -6,6 +6,10 @@
     "./src/models",
     "./src/services",
     "./src/type",
-    "./src/filter-handlers"
+    "./src/filter-handlers",
+    "./src/api/dto",
+    "./src/api/transformers",
+    "./src/api/validators",
+    "./src/utils"
   ]
 }

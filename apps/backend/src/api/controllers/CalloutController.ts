@@ -21,45 +21,44 @@ import CalloutsService from "@beabee/core/services/CalloutsService";
 import { getRepository } from "@beabee/core/database";
 import { verify } from "@core/lib/captchafox";
 
-import { GetExportQuery } from "@api/dto/BaseDto";
+import { GetExportQuery } from "@beabee/core/api/dto/BaseDto";
 
 import {
   CreateCalloutDto,
   GetCalloutDto,
   GetCalloutOptsDto,
-  ListCalloutsDto
-} from "@api/dto/CalloutDto";
-import {
+  ListCalloutsDto,
   CreateCalloutResponseDto,
   GetCalloutResponseDto,
   GetCalloutResponseMapDto,
-  ListCalloutResponsesDto
-} from "@api/dto/CalloutResponseDto";
-import { CreateCalloutTagDto, GetCalloutTagDto } from "@api/dto/CalloutTagDto";
-import { PaginatedDto } from "@api/dto/PaginatedDto";
+  ListCalloutResponsesDto,
+  CreateCalloutTagDto,
+  GetCalloutTagDto,
+  PaginatedDto,
+  ListTagsDto
+} from "@beabee/core/api/dto";
 
 import { CalloutId } from "@api/decorators/CalloutId";
 import { CurrentAuth } from "@api/decorators/CurrentAuth";
 import PartialBody from "@api/decorators/PartialBody";
 import { InvalidCalloutResponse, UnauthorizedError } from "@beabee/core/errors";
-import CalloutTransformer from "@api/transformers/CalloutTransformer";
-import CalloutResponseExporter from "@api/transformers/CalloutResponseExporter";
-import CalloutResponseMapTransformer from "@api/transformers/CalloutResponseMapTransformer";
-import CalloutResponseTransformer from "@api/transformers/CalloutResponseTransformer";
-import { validateOrReject } from "@api/utils";
+import CalloutTransformer from "@beabee/core/api/transformers/CalloutTransformer";
+import CalloutResponseExporter from "@beabee/core/api/transformers/CalloutResponseExporter";
+import CalloutResponseMapTransformer from "@beabee/core/api/transformers/CalloutResponseMapTransformer";
+import CalloutResponseTransformer from "@beabee/core/api/transformers/CalloutResponseTransformer";
+import { validateOrReject } from "@beabee/core/utils";
 
 import { Callout, Contact } from "@beabee/core/models";
 
 import { CalloutCaptcha } from "@beabee/beabee-common";
 
 import { AuthInfo } from "@beabee/core/type";
-import { ListTagsDto } from "@api/dto";
-import CalloutReviewerTransformer from "@api/transformers/CalloutReviewerTransformer";
+import CalloutReviewerTransformer from "@beabee/core/api/transformers/CalloutReviewerTransformer";
 import {
   CreateCalloutReviewerDto,
   GetCalloutReviewerDto
-} from "@api/dto/CalloutReviewerDto";
-import calloutTagTransformer from "@api/transformers/CalloutTagTransformer";
+} from "@beabee/core/api/dto/CalloutReviewerDto";
+import calloutTagTransformer from "@beabee/core/api/transformers/CalloutTagTransformer";
 
 @JsonController("/callout")
 export class CalloutController {

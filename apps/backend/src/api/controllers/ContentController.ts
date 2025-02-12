@@ -20,9 +20,9 @@ import {
   GetContentShareDto,
   GetContentPaymentDto,
   GetContentTelegramDto
-} from "@api/dto";
+} from "@beabee/core/api/dto";
 import { ContentParams } from "@api/params/ContentParams";
-import ContentTransformer from "@api/transformers/ContentTransformer";
+import ContentTransformer from "@beabee/core/api/transformers/ContentTransformer";
 import {
   disableSalesTaxRate,
   updateSalesTaxRate

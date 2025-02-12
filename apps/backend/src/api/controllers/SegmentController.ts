@@ -16,18 +16,19 @@ import { getRepository } from "@beabee/core/database";
 
 import { CurrentAuth } from "@api/decorators/CurrentAuth";
 import PartialBody from "@api/decorators/PartialBody";
-import { GetContactDto, ListContactsDto } from "@api/dto/ContactDto";
 import {
+  GetContactDto,
+  ListContactsDto,
   GetSegmentDto,
   ListSegmentsDto,
   CreateSegmentDto,
   GetSegmentWith,
-  GetSegmentOptsDto
-} from "@api/dto/SegmentDto";
-import { PaginatedDto } from "@api/dto/PaginatedDto";
+  GetSegmentOptsDto,
+  PaginatedDto
+} from "@beabee/core/api/dto";
 import { UUIDParams } from "@api/params/UUIDParams";
-import ContactTransformer from "@api/transformers/ContactTransformer";
-import SegmentTransformer from "@api/transformers/SegmentTransformer";
+import ContactTransformer from "@beabee/core/api/transformers/ContactTransformer";
+import SegmentTransformer from "@beabee/core/api/transformers/SegmentTransformer";
 
 import {
   Segment,

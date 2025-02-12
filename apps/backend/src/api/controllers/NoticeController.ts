@@ -19,11 +19,11 @@ import PartialBody from "@api/decorators/PartialBody";
 import {
   CreateNoticeDto,
   GetNoticeDto,
-  ListNoticesDto
-} from "@api/dto/NoticeDto";
-import { PaginatedDto } from "@api/dto/PaginatedDto";
+  ListNoticesDto,
+  PaginatedDto
+} from "@beabee/core/api/dto";
 import { UUIDParams } from "@api/params/UUIDParams";
-import NoticeTransformer from "@api/transformers/NoticeTransformer";
+import NoticeTransformer from "@beabee/core/api/transformers/NoticeTransformer";
 
 import { Notice } from "@beabee/core/models";
 

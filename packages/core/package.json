@@ -48,7 +48,13 @@
     "./services/*": "./dist/services/*.js",
     "./providers": "./dist/providers/index.js",
     "./providers/*": "./dist/providers/*.js",
-    "./utils/*": "./dist/utils/*.js"
+    "./utils": "./dist/utils/index.js",
+    "./utils/*": "./dist/utils/*.js",
+    "./api": "./dist/api/index.js",
+    "./api/*": "./dist/api/*.js",
+    "./api/dto": "./dist/api/dto/index.js",
+    "./api/transformers": "./dist/api/transformers/index.js",
+    "./api/validators": "./dist/api/validators/index.js"
   },
   "dependencies": {
     "@beabee/beabee-common": "workspace:^",

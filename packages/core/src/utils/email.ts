@@ -43,3 +43,14 @@ export function formatEmailBody(body: string): string {
   body = body.replace(/<p><\/p>/g, "<p><br></p>");
   return juice(styles + body + getEmailFooter());
 }
+
+/**
+ * Normalize an email address to ensure emails are compared in a
+ * case-insensitive way
+ *
+ * @param email
+ * @returns Normalized email address
+ */
+export function normalizeEmailAddress(email: string): string {
+  return email.trim().toLowerCase();
+}

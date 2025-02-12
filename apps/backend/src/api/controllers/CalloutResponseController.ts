@@ -17,10 +17,10 @@ import {
   UpdateCalloutResponseDto,
   GetCalloutResponseDto,
   GetCalloutResponseOptsDto,
-  ListCalloutResponsesDto
-} from "@api/dto/CalloutResponseDto";
-import { PaginatedDto } from "@api/dto/PaginatedDto";
-import CalloutResponseTransformer from "@api/transformers/CalloutResponseTransformer";
+  ListCalloutResponsesDto,
+  PaginatedDto
+} from "@beabee/core/api/dto";
+import CalloutResponseTransformer from "@beabee/core/api/transformers/CalloutResponseTransformer";
 
 import { AuthInfo } from "@beabee/core/type";
 

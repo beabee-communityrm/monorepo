@@ -9,7 +9,7 @@ import {
 } from "routing-controllers";
 
 import { log as mainLogger } from "@beabee/core/logging";
-import { validateOrReject } from "@api/utils";
+import { validateOrReject } from "@beabee/core/utils";
 
 const log = mainLogger.child({ app: "validate-response-interceptor" });
 

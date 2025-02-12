@@ -3,14 +3,9 @@
 const PATHS = [
   "./src/api/controllers",
   "./src/api/decorators",
-  "./src/api/dto",
   "./src/api/interceptors",
   "./src/api/middlewares",
-  "./src/api/params",
-  "./src/api/transformers",
-  "./src/api/utils",
-  "./src/api/validators",
-  "./src/type"
+  "./src/api/params"
 ];
 
 import { readdirSync, writeFileSync } from "fs";

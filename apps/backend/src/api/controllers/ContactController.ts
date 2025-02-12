@@ -27,7 +27,7 @@ import { generatePassword } from "@beabee/core/utils/auth";
 
 import { Contact, JoinFlow } from "@beabee/core/models";
 
-import { GetExportQuery } from "@api/dto/BaseDto";
+import { GetExportQuery } from "@beabee/core/api/dto/BaseDto";
 import {
   CreateContactDto,
   GetContactDto,
@@ -36,26 +36,22 @@ import {
   ListContactsDto,
   UpdateContactDto,
   BatchUpdateContactDto,
-  BatchUpdateContactResultDto
-} from "@api/dto/ContactDto";
-import {
+  BatchUpdateContactResultDto,
   CreateContactMfaDto,
   DeleteContactMfaDto,
-  GetContactMfaDto
-} from "@api/dto/ContactMfaDto";
-import {
+  GetContactMfaDto,
   GetContactRoleDto,
-  UpdateContactRoleDto
-} from "@api/dto/ContactRoleDto";
-import {
+  UpdateContactRoleDto,
   StartContributionDto,
   ForceUpdateContributionDto,
-  UpdateContributionDto
-} from "@api/dto/ContributionDto";
-import { CompleteJoinFlowDto, StartJoinFlowDto } from "@api/dto/JoinFlowDto";
-import { PaginatedDto } from "@api/dto/PaginatedDto";
-import { GetPaymentDto, ListPaymentsDto } from "@api/dto/PaymentDto";
-import { GetPaymentFlowDto } from "@api/dto/PaymentFlowDto";
+  UpdateContributionDto,
+  CompleteJoinFlowDto,
+  StartJoinFlowDto,
+  PaginatedDto,
+  GetPaymentDto,
+  ListPaymentsDto,
+  GetPaymentFlowDto
+} from "@beabee/core/api/dto";
 
 import { CurrentAuth } from "@api/decorators/CurrentAuth";
 import PartialBody from "@api/decorators/PartialBody";
@@ -68,10 +64,10 @@ import {
 import { ContactRoleParams } from "@api/params/ContactRoleParams";
 import { mergeRules } from "@beabee/core/utils/rules";
 
-import ContactExporter from "@api/transformers/ContactExporter";
-import ContactTransformer from "@api/transformers/ContactTransformer";
-import ContactRoleTransformer from "@api/transformers/ContactRoleTransformer";
-import PaymentTransformer from "@api/transformers/PaymentTransformer";
+import ContactExporter from "@beabee/core/api/transformers/ContactExporter";
+import ContactTransformer from "@beabee/core/api/transformers/ContactTransformer";
+import ContactRoleTransformer from "@beabee/core/api/transformers/ContactRoleTransformer";
+import PaymentTransformer from "@beabee/core/api/transformers/PaymentTransformer";
 
 import { AuthInfo } from "@beabee/core/type";
 

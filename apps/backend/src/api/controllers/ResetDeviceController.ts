@@ -11,11 +11,11 @@ import {
 
 import ContactsService from "@beabee/core/services/ContactsService";
 
-import { login } from "@api/utils";
+import { login } from "@beabee/core/utils";
 import {
   CreateResetDeviceDto,
   UpdateResetDeviceDto
-} from "@api/dto/ResetDeviceDto";
+} from "@beabee/core/api/dto";
 import { UUIDParams } from "@api/params/UUIDParams";
 
 @JsonController("/reset-device")

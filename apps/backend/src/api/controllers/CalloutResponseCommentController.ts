@@ -18,11 +18,11 @@ import {
   CreateCalloutResponseCommentDto,
   GetCalloutResponseCommentDto,
   ListCalloutResponseCommentsDto
-} from "@api/dto/CalloutResponseCommentDto";
-import { PaginatedDto } from "@api/dto/PaginatedDto";
+} from "@beabee/core/api/dto/CalloutResponseCommentDto";
+import { PaginatedDto } from "@beabee/core/api/dto/PaginatedDto";
 import { UUIDParams } from "@api/params/UUIDParams";
 
-import CalloutResponseCommentTransformer from "@api/transformers/CalloutResponseCommentTransformer";
+import CalloutResponseCommentTransformer from "@beabee/core/api/transformers/CalloutResponseCommentTransformer";
 
 import { AuthInfo } from "@beabee/core/type";
 

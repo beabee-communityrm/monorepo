@@ -18,7 +18,7 @@ import {
   SegmentOngoingEmail,
   SegmentContact
 } from "@beabee/core/models";
-import ContactTransformer from "@api/transformers/ContactTransformer";
+import ContactTransformer from "@beabee/core/api/transformers/ContactTransformer";
 import { GetContactWith } from "@beabee/beabee-common";
 
 const log = mainLogger.child({ app: "process-segments" });

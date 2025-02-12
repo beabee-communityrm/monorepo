@@ -7,13 +7,13 @@ import {
 } from "routing-controllers";
 
 import { CurrentAuth } from "@api/decorators/CurrentAuth";
-import { PaginatedDto } from "@api/dto/PaginatedDto";
 import {
   GetPaymentDto,
   GetPaymentOptsDto,
-  ListPaymentsDto
-} from "@api/dto/PaymentDto";
-import PaymentTransformer from "@api/transformers/PaymentTransformer";
+  ListPaymentsDto,
+  PaginatedDto
+} from "@beabee/core/api/dto";
+import PaymentTransformer from "@beabee/core/api/transformers/PaymentTransformer";
 
 import { AuthInfo } from "@beabee/core/type";
 
