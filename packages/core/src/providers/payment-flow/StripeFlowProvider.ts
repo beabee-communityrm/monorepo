@@ -60,8 +60,11 @@ class StripeFlowProvider implements PaymentFlowProvider {
       joinFlow.paymentFlowId,
       { expand: ["latest_attempt"] }
     );
+
+    const customerId = setupIntent.customer as string | null;
+
     let paymentMethod = joinFlow.joinForm.paymentMethod;
-    let siPaymentMethodId: string | null;
+    let mandateId: string | null;
 
     log.info("Fetched setup intent " + setupIntent.id);
 
@@ -73,14 +76,14 @@ class StripeFlowProvider implements PaymentFlowProvider {
         setupIntent.latest_attempt as Stripe.SetupAttempt | null;
 
       paymentMethod = PaymentMethod.StripeSEPA;
-      siPaymentMethodId = latestAttempt?.payment_method_details.ideal
+      mandateId = latestAttempt?.payment_method_details.ideal
         ?.generated_sepa_debit as string | null;
     } else {
-      siPaymentMethodId = setupIntent.payment_method as string | null;
+      mandateId = setupIntent.payment_method as string | null;
     }
 
-    if (!siPaymentMethodId) {
-      log.error("No valid payment setup intent payment method", {
+    if (!mandateId || !customerId) {
+      log.error("Setup intent missing mandate or customer ID", {
         joinFlow,
         setupIntent
       });
@@ -89,8 +92,8 @@ class StripeFlowProvider implements PaymentFlowProvider {
 
     return {
       joinForm: { ...joinFlow.joinForm, paymentMethod },
-      customerId: setupIntent.customer!.toString(), // Only needed in the Backend CLI to create payments
-      mandateId: siPaymentMethodId
+      customerId, // Only needed in the Backend CLI to create payments
+      mandateId
     };
   }
 
