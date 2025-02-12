@@ -1,3 +1,20 @@
+name: 'Setup'
+description: 'Setup the repository'
+
+inputs:
+  stripe_public_key:
+    description: 'Stripe public key'
+    required: true
+  stripe_secret_key:
+    description: 'Stripe secret key'
+    required: true
+  stripe_webhook_secret:
+    description: 'Stripe webhook secret'
+    required: true
+  stripe_membership_product_id:
+    description: 'Stripe membership product ID'
+    required: true
+
 runs:
   using: composite
   steps:
@@ -20,8 +37,9 @@ runs:
       run: yarn presetup
       shell: bash
     - name: Update env variables
+      shell: bash
       run: |
-        sed -i "s|BEABEE_STRIPE_PUBLICKEY=|BEABEE_STRIPE_PUBLICKEY=${{ secrets.BEABEE_STRIPE_PUBLICKEY }}|" .env
-        sed -i "s|BEABEE_STRIPE_SECRETKEY=|BEABEE_STRIPE_SECRETKEY=${{ secrets.BEABEE_STRIPE_SECRETKEY }}|" .env
-        sed -i "s|BEABEE_STRIPE_WEBHOOKSECRET=|BEABEE_STRIPE_WEBHOOKSECRET=${{ secrets.BEABEE_STRIPE_WEBHOOKSECRET }}|" .env
-        sed -i "s|BEABEE_STRIPE_MEMBERSHIPPRODUCTID=|BEABEE_STRIPE_MEMBERSHIPPRODUCTID=${{ secrets.BEABEE_STRIPE_MEMBERSHIPPRODUCTID }}|" .env
+        sed -i "s|BEABEE_STRIPE_PUBLICKEY=|BEABEE_STRIPE_PUBLICKEY=${{ inputs.stripe_public_key }}|" .env
+        sed -i "s|BEABEE_STRIPE_SECRETKEY=|BEABEE_STRIPE_SECRETKEY=${{ inputs.stripe_secret_key }}|" .env
+        sed -i "s|BEABEE_STRIPE_WEBHOOKSECRET=|BEABEE_STRIPE_WEBHOOKSECRET=${{ inputs.stripe_webhook_secret }}|" .env
+        sed -i "s|BEABEE_STRIPE_MEMBERSHIPPRODUCTID=|BEABEE_STRIPE_MEMBERSHIPPRODUCTID=${{ inputs.stripe_membership_product_id }}|" .env

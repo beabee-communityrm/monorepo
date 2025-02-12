@@ -15,6 +15,11 @@ jobs:
         uses: actions/checkout@v4
 
       - uses: ./.github/actions/setup
+        with:
+          stripe_public_key: ${{ secrets.BEABEE_STRIPE_PUBLICKEY }}
+          stripe_secret_key: ${{ secrets.BEABEE_STRIPE_SECRETKEY }}
+          stripe_webhook_secret: ${{ secrets.BEABEE_STRIPE_WEBHOOKSECRET }}
+          stripe_membership_product_id: ${{ secrets.BEABEE_STRIPE_MEMBERSHIPPRODUCTID }}
 
       - name: Run tests
         run: yarn test
