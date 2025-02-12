@@ -12,7 +12,7 @@ import {
   GetPaymentWith,
   ListPaymentsDto
 } from "../dto/PaymentDto";
-import ContactTransformer, { loadContactRoles } from "./ContactTransformer";
+import { contactTransformer, loadContactRoles } from "./ContactTransformer";
 import { BaseTransformer } from "./BaseTransformer";
 
 import { Contact, Payment } from "@beabee/core/models";
@@ -40,7 +40,7 @@ class PaymentTransformer extends BaseTransformer<
       status: payment.status,
       ...(opts.with?.includes(GetPaymentWith.Contact) && {
         contact:
-          payment.contact && ContactTransformer.convert(payment.contact, auth)
+          payment.contact && contactTransformer.convert(payment.contact, auth)
       })
     };
   }
@@ -77,4 +77,4 @@ class PaymentTransformer extends BaseTransformer<
   }
 }
 
-export default new PaymentTransformer();
+export const paymentTransformer = new PaymentTransformer();

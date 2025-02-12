@@ -27,4 +27,4 @@ class CalloutVariantTransformer extends BaseTransformer<
   }
 }
 
-export default new CalloutVariantTransformer();
+export const calloutVariantTransformer = new CalloutVariantTransformer();

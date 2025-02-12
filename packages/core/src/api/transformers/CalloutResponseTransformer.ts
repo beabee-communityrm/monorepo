@@ -14,11 +14,11 @@ import {
 } from "../dto/CalloutResponseDto";
 import { PaginatedDto } from "../dto/PaginatedDto";
 import { NotFoundError } from "@beabee/core/errors";
-import ContactTransformer, { loadContactRoles } from "./ContactTransformer";
+import { contactTransformer, loadContactRoles } from "./ContactTransformer";
 import { BaseCalloutResponseTransformer } from "./BaseCalloutResponseTransformer";
-import CalloutTransformer from "./CalloutTransformer";
-import CalloutResponseCommentTransformer from "./CalloutResponseCommentTransformer";
-import calloutTagTransformer from "./CalloutTagTransformer";
+import { calloutTransformer } from "./CalloutTransformer";
+import { calloutResponseCommentTransformer } from "./CalloutResponseCommentTransformer";
+import { calloutTagTransformer } from "./CalloutTagTransformer";
 import { batchUpdate } from "@beabee/core/utils/rules";
 
 import {
@@ -56,19 +56,19 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
       ...(opts.with?.includes(GetCalloutResponseWith.Assignee) && {
         assignee:
           response.assignee &&
-          ContactTransformer.convert(response.assignee, auth)
+          contactTransformer.convert(response.assignee, auth)
       }),
       ...(opts.with?.includes(GetCalloutResponseWith.Callout) && {
-        callout: CalloutTransformer.convert(response.callout, auth)
+        callout: calloutTransformer.convert(response.callout, auth)
       }),
       ...(opts.with?.includes(GetCalloutResponseWith.Contact) && {
         contact:
-          response.contact && ContactTransformer.convert(response.contact, auth)
+          response.contact && contactTransformer.convert(response.contact, auth)
       }),
       ...(opts.with?.includes(GetCalloutResponseWith.LatestComment) && {
         latestComment:
           response.latestComment &&
-          CalloutResponseCommentTransformer.convert(
+          calloutResponseCommentTransformer.convert(
             response.latestComment,
             auth
           )
@@ -245,4 +245,4 @@ function getUpdateData(data: UpdateCalloutResponseDto): {
   };
 }
 
-export default new CalloutResponseTransformer();
+export const calloutResponseTransformer = new CalloutResponseTransformer();

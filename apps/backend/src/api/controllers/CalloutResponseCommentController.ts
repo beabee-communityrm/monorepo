@@ -22,7 +22,7 @@ import {
 import { PaginatedDto } from "@beabee/core/api/dto/PaginatedDto";
 import { UUIDParams } from "@api/params/UUIDParams";
 
-import CalloutResponseCommentTransformer from "@beabee/core/api/transformers/CalloutResponseCommentTransformer";
+import { calloutResponseCommentTransformer } from "@beabee/core/api/transformers";
 
 import { AuthInfo } from "@beabee/core/type";
 
@@ -37,7 +37,7 @@ export class CalloutResponseCommentController {
       throw new BadRequestError("Authentication with contact required");
     }
 
-    return await CalloutResponseCommentTransformer.create(auth, {
+    return await calloutResponseCommentTransformer.create(auth, {
       text: data.text,
       contactId: auth.contact.id,
       responseId: data.responseId
@@ -49,7 +49,7 @@ export class CalloutResponseCommentController {
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @QueryParams() query: ListCalloutResponseCommentsDto
   ): Promise<PaginatedDto<GetCalloutResponseCommentDto>> {
-    return await CalloutResponseCommentTransformer.fetch(auth, query);
+    return await calloutResponseCommentTransformer.fetch(auth, query);
   }
 
   @Get("/:id")
@@ -57,7 +57,7 @@ export class CalloutResponseCommentController {
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @Params() { id }: UUIDParams
   ): Promise<GetCalloutResponseCommentDto | undefined> {
-    return await CalloutResponseCommentTransformer.fetchOneById(auth, id);
+    return await calloutResponseCommentTransformer.fetchOneById(auth, id);
   }
 
   @Patch("/:id")
@@ -66,10 +66,10 @@ export class CalloutResponseCommentController {
     @Params() { id }: UUIDParams,
     @PartialBody() data: CreateCalloutResponseCommentDto
   ): Promise<GetCalloutResponseCommentDto | undefined> {
-    if (!(await CalloutResponseCommentTransformer.updateById(auth, id, data))) {
+    if (!(await calloutResponseCommentTransformer.updateById(auth, id, data))) {
       throw new NotFoundError();
     }
-    return await CalloutResponseCommentTransformer.fetchOneById(auth, id);
+    return await calloutResponseCommentTransformer.fetchOneById(auth, id);
   }
 
   @OnUndefined(204)
@@ -78,7 +78,7 @@ export class CalloutResponseCommentController {
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @Params() { id }: UUIDParams
   ): Promise<void> {
-    if (!(await CalloutResponseCommentTransformer.deleteById(auth, id))) {
+    if (!(await calloutResponseCommentTransformer.deleteById(auth, id))) {
       throw new NotFoundError();
     }
   }

@@ -222,4 +222,4 @@ const contentData = {
   })
 } as const;
 
-export default new ContentTransformer();
+export const contentTransformer = new ContentTransformer();

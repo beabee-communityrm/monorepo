@@ -22,7 +22,7 @@ import {
   GetContentTelegramDto
 } from "@beabee/core/api/dto";
 import { ContentParams } from "@api/params/ContentParams";
-import ContentTransformer from "@beabee/core/api/transformers/ContentTransformer";
+import { contentTransformer } from "@beabee/core/api/transformers";
 import {
   disableSalesTaxRate,
   updateSalesTaxRate
@@ -32,7 +32,7 @@ import {
 export class ContentController {
   @Get("/:id(?:*)")
   async get(@Params() { id }: ContentParams): Promise<GetContentDto> {
-    return await ContentTransformer.fetchOne(id);
+    return await contentTransformer.fetchOne(id);
   }
 
   @Authorized("admin")
@@ -40,8 +40,8 @@ export class ContentController {
   async updateContacts(
     @PartialBody() data: GetContentContactsDto
   ): Promise<GetContentContactsDto> {
-    await ContentTransformer.updateOne("contacts", data);
-    return ContentTransformer.fetchOne("contacts");
+    await contentTransformer.updateOne("contacts", data);
+    return contentTransformer.fetchOne("contacts");
   }
 
   @Authorized("admin")
@@ -49,8 +49,8 @@ export class ContentController {
   async updateEmail(
     @PartialBody() data: GetContentEmailDto
   ): Promise<GetContentEmailDto> {
-    await ContentTransformer.updateOne("email", data);
-    return ContentTransformer.fetchOne("email");
+    await contentTransformer.updateOne("email", data);
+    return contentTransformer.fetchOne("email");
   }
 
   @Authorized("admin")
@@ -58,8 +58,8 @@ export class ContentController {
   async updateGeneral(
     @PartialBody() data: GetContentGeneralDto
   ): Promise<GetContentGeneralDto> {
-    await ContentTransformer.updateOne("general", data);
-    return ContentTransformer.fetchOne("general");
+    await contentTransformer.updateOne("general", data);
+    return contentTransformer.fetchOne("general");
   }
 
   @Authorized("admin")
@@ -67,8 +67,8 @@ export class ContentController {
   async updateJoin(
     @PartialBody() data: GetContentJoinDto
   ): Promise<GetContentJoinDto> {
-    await ContentTransformer.updateOne("join", data);
-    return ContentTransformer.fetchOne("join");
+    await contentTransformer.updateOne("join", data);
+    return contentTransformer.fetchOne("join");
   }
 
   @Authorized("admin")
@@ -76,8 +76,8 @@ export class ContentController {
   async updateJoinSetup(
     @PartialBody() data: GetContentJoinSetupDto
   ): Promise<GetContentJoinSetupDto> {
-    await ContentTransformer.updateOne("join/setup", data);
-    return ContentTransformer.fetchOne("join/setup");
+    await contentTransformer.updateOne("join/setup", data);
+    return contentTransformer.fetchOne("join/setup");
   }
 
   @Authorized("admin")
@@ -85,8 +85,8 @@ export class ContentController {
   async updateProfile(
     @PartialBody() data: GetContentProfileDto
   ): Promise<GetContentProfileDto> {
-    await ContentTransformer.updateOne("profile", data);
-    return ContentTransformer.fetchOne("profile");
+    await contentTransformer.updateOne("profile", data);
+    return contentTransformer.fetchOne("profile");
   }
 
   @Authorized("admin")
@@ -94,8 +94,8 @@ export class ContentController {
   async updateShare(
     @PartialBody() data: GetContentShareDto
   ): Promise<GetContentShareDto> {
-    await ContentTransformer.updateOne("share", data);
-    return ContentTransformer.fetchOne("share");
+    await contentTransformer.updateOne("share", data);
+    return contentTransformer.fetchOne("share");
   }
 
   @Authorized("admin")
@@ -114,8 +114,8 @@ export class ContentController {
       await updateSalesTaxRate(data.taxRate);
     }
 
-    await ContentTransformer.updateOne("payment", data);
-    return ContentTransformer.fetchOne("payment");
+    await contentTransformer.updateOne("payment", data);
+    return contentTransformer.fetchOne("payment");
   }
 
   @Authorized("admin")
@@ -123,7 +123,7 @@ export class ContentController {
   async updateTelegram(
     @PartialBody() data: GetContentTelegramDto
   ): Promise<GetContentTelegramDto> {
-    await ContentTransformer.updateOne("telegram", data);
-    return ContentTransformer.fetchOne("telegram");
+    await contentTransformer.updateOne("telegram", data);
+    return contentTransformer.fetchOne("telegram");
   }
 }

@@ -21,7 +21,7 @@ import {
   CompleteSignupFlowDto
 } from "@beabee/core/api/dto";
 import { SignupConfirmEmailParams } from "@api/params/SignupConfirmEmailParams";
-import ContactTransformer from "@beabee/core/api/transformers/ContactTransformer";
+import { contactTransformer } from "@beabee/core/api/transformers";
 import { login } from "@beabee/core/utils";
 
 import { JoinFlow, Password } from "@beabee/core/models";
@@ -93,7 +93,7 @@ export class SignupController {
     const contact = await PaymentFlowService.completeConfirmEmail(joinFlow);
     await login(req, contact);
 
-    return ContactTransformer.convert(contact, {
+    return contactTransformer.convert(contact, {
       method: "user",
       contact,
       roles: contact.activeRoles

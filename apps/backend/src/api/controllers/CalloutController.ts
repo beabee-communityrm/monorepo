@@ -42,10 +42,12 @@ import { CalloutId } from "@api/decorators/CalloutId";
 import { CurrentAuth } from "@api/decorators/CurrentAuth";
 import PartialBody from "@api/decorators/PartialBody";
 import { InvalidCalloutResponse, UnauthorizedError } from "@beabee/core/errors";
-import CalloutTransformer from "@beabee/core/api/transformers/CalloutTransformer";
-import CalloutResponseExporter from "@beabee/core/api/transformers/CalloutResponseExporter";
-import CalloutResponseMapTransformer from "@beabee/core/api/transformers/CalloutResponseMapTransformer";
-import CalloutResponseTransformer from "@beabee/core/api/transformers/CalloutResponseTransformer";
+import {
+  calloutTransformer,
+  calloutResponseExporter,
+  calloutResponseMapTransformer,
+  calloutResponseTransformer
+} from "@beabee/core/api/transformers";
 import { validateOrReject } from "@beabee/core/utils";
 
 import { Callout, Contact } from "@beabee/core/models";
@@ -53,12 +55,14 @@ import { Callout, Contact } from "@beabee/core/models";
 import { CalloutCaptcha } from "@beabee/beabee-common";
 
 import { AuthInfo } from "@beabee/core/type";
-import CalloutReviewerTransformer from "@beabee/core/api/transformers/CalloutReviewerTransformer";
 import {
   CreateCalloutReviewerDto,
   GetCalloutReviewerDto
 } from "@beabee/core/api/dto/CalloutReviewerDto";
-import calloutTagTransformer from "@beabee/core/api/transformers/CalloutTagTransformer";
+import {
+  calloutReviewerTransformer,
+  calloutTagTransformer
+} from "@beabee/core/api/transformers";
 
 @JsonController("/callout")
 export class CalloutController {
@@ -67,7 +71,7 @@ export class CalloutController {
     @CurrentAuth() auth: AuthInfo,
     @QueryParams() query: ListCalloutsDto
   ): Promise<PaginatedDto<GetCalloutDto>> {
-    return CalloutTransformer.fetch(auth, query);
+    return calloutTransformer.fetch(auth, query);
   }
 
   @Authorized("admin")
@@ -90,7 +94,7 @@ export class CalloutController {
       id = await CalloutsService.createCallout(data, data.slug ? false : 0);
     }
 
-    return CalloutTransformer.fetchOneByIdOrFail(auth, id);
+    return calloutTransformer.fetchOneByIdOrFail(auth, id);
   }
 
   @Get("/:id")
@@ -99,7 +103,7 @@ export class CalloutController {
     @CalloutId() id: string,
     @QueryParams() query: GetCalloutOptsDto
   ): Promise<GetCalloutDto | undefined> {
-    return CalloutTransformer.fetchOneById(auth, id, {
+    return calloutTransformer.fetchOneById(auth, id, {
       ...query,
       showHiddenForAll: true
     });
@@ -113,7 +117,7 @@ export class CalloutController {
     @PartialBody() data: CreateCalloutDto // Actually Partial<CreateCalloutDto>
   ): Promise<GetCalloutDto | undefined> {
     await CalloutsService.updateCallout(id, data);
-    return CalloutTransformer.fetchOneById(auth, id);
+    return calloutTransformer.fetchOneById(auth, id);
   }
 
   @Authorized("admin")
@@ -132,7 +136,7 @@ export class CalloutController {
     @CalloutId() id: string,
     @QueryParams() query: ListCalloutResponsesDto
   ): Promise<PaginatedDto<GetCalloutResponseDto>> {
-    return await CalloutResponseTransformer.fetchForCallout(auth, id, query);
+    return await calloutResponseTransformer.fetchForCallout(auth, id, query);
   }
 
   @Get("/:id/responses.csv")
@@ -142,7 +146,7 @@ export class CalloutController {
     @QueryParams() query: GetExportQuery,
     @Res() res: Response
   ): Promise<Response> {
-    const [exportName, exportData] = await CalloutResponseExporter.export(
+    const [exportName, exportData] = await calloutResponseExporter.export(
       auth,
       id,
       query
@@ -157,7 +161,7 @@ export class CalloutController {
     @CalloutId() id: string,
     @QueryParams() query: ListCalloutResponsesDto
   ): Promise<PaginatedDto<GetCalloutResponseMapDto>> {
-    return await CalloutResponseMapTransformer.fetchForCallout(auth, id, query);
+    return await calloutResponseMapTransformer.fetchForCallout(auth, id, query);
   }
 
   @Post("/:id/responses")
@@ -281,7 +285,7 @@ export class CalloutController {
     @CalloutId() id: string,
     @QueryParams() query: ListCalloutResponsesDto
   ): Promise<GetCalloutReviewerDto[]> {
-    const result = await CalloutReviewerTransformer.fetch(auth, {
+    const result = await calloutReviewerTransformer.fetch(auth, {
       ...query,
       rules: {
         condition: "AND",
@@ -298,7 +302,7 @@ export class CalloutController {
     @CalloutId() id: string,
     @Body() data: CreateCalloutReviewerDto
   ): Promise<GetCalloutReviewerDto> {
-    return CalloutReviewerTransformer.create(auth, {
+    return calloutReviewerTransformer.create(auth, {
       calloutId: id,
       ...data
     });
@@ -309,7 +313,7 @@ export class CalloutController {
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @Param("reviewerId") reviewerId: string
   ): Promise<GetCalloutReviewerDto | undefined> {
-    return CalloutReviewerTransformer.fetchOneById(auth, reviewerId);
+    return calloutReviewerTransformer.fetchOneById(auth, reviewerId);
   }
 
   @Delete("/:id/reviewers/:reviewerId")
@@ -318,7 +322,7 @@ export class CalloutController {
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @Param("reviewerId") reviewerId: string
   ): Promise<void> {
-    if (!(await CalloutReviewerTransformer.deleteById(auth, reviewerId))) {
+    if (!(await calloutReviewerTransformer.deleteById(auth, reviewerId))) {
       throw new NotFoundError();
     }
   }

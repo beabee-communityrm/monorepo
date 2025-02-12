@@ -15,10 +15,10 @@ import {
   BatchUpdateContactUpdatesDto
 } from "../dto/ContactDto";
 import { BaseContactTransformer } from "./BaseContactTransformer";
-import ContactRoleTransformer from "./ContactRoleTransformer";
-import ContactProfileTransformer from "./ContactProfileTransformer";
+import { contactRoleTransformer } from "./ContactRoleTransformer";
+import { contactProfileTransformer } from "./ContactProfileTransformer";
 
-import contactTagTransformer from "./ContactTagTransformer";
+import { contactTagTransformer } from "./ContactTagTransformer";
 import { batchSelect, batchUpdate } from "@beabee/core/utils/rules";
 
 import { AuthInfo } from "@beabee/core/type";
@@ -70,10 +70,10 @@ class ContactTransformer extends BaseContactTransformer<
       }),
       ...(opts?.with?.includes(GetContactWith.Profile) &&
         contact.profile && {
-          profile: ContactProfileTransformer.convert(contact.profile, auth)
+          profile: contactProfileTransformer.convert(contact.profile, auth)
         }),
       ...(opts?.with?.includes(GetContactWith.Roles) && {
-        roles: contact.roles.map(ContactRoleTransformer.convert)
+        roles: contact.roles.map(contactRoleTransformer.convert)
       }),
       ...(opts?.with?.includes(GetContactWith.Contribution) && {
         contribution: contact.contributionInfo
@@ -338,4 +338,4 @@ export async function loadContactRoles(contacts: Contact[]): Promise<void> {
   }
 }
 
-export default new ContactTransformer();
+export const contactTransformer = new ContactTransformer();

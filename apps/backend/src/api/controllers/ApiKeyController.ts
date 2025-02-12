@@ -23,7 +23,7 @@ import {
   NewApiKeyDto
 } from "@beabee/core/api/dto/ApiKeyDto";
 import { PaginatedDto } from "@beabee/core/api/dto/PaginatedDto";
-import ApiKeyTransformer from "@beabee/core/api/transformers/ApiKeyTransformer";
+import { apiKeyTransformer } from "@beabee/core/api/transformers";
 
 import { Contact } from "@beabee/core/models";
 
@@ -37,7 +37,7 @@ export class ApiKeyController {
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @QueryParams() query: ListApiKeysDto
   ): Promise<PaginatedDto<GetApiKeyDto>> {
-    return await ApiKeyTransformer.fetch(auth, query);
+    return await apiKeyTransformer.fetch(auth, query);
   }
 
   @Get("/:id")
@@ -45,7 +45,7 @@ export class ApiKeyController {
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @Param("id") id: string
   ): Promise<GetApiKeyDto | undefined> {
-    return await ApiKeyTransformer.fetchOneById(auth, id);
+    return await apiKeyTransformer.fetchOneById(auth, id);
   }
 
   @Post("/")

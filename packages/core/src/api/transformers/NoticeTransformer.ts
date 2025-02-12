@@ -46,4 +46,4 @@ export class NoticeTransformer extends BaseTransformer<
   }
 }
 
-export default new NoticeTransformer();
+export const noticeTransformer = new NoticeTransformer();

@@ -7,7 +7,7 @@ import { CalloutReviewer } from "@beabee/core/models";
 import { BaseTransformer } from "./BaseTransformer";
 import { AuthInfo } from "@beabee/core/type";
 import { GetCalloutReviewerDto } from "../dto/CalloutReviewerDto";
-import ContactTransformer, { loadContactRoles } from "./ContactTransformer";
+import { contactTransformer, loadContactRoles } from "./ContactTransformer";
 import { getReviewerRules } from "@beabee/core/utils/callouts";
 import { SelectQueryBuilder } from "typeorm";
 import { TransformerOperation } from "@beabee/core/type";
@@ -23,7 +23,7 @@ class CalloutReviewerTransformer extends BaseTransformer<
   convert(reviewer: CalloutReviewer, auth: AuthInfo): GetCalloutReviewerDto {
     return {
       id: reviewer.id,
-      contact: ContactTransformer.convert(reviewer.contact, auth)
+      contact: contactTransformer.convert(reviewer.contact, auth)
     };
   }
 
@@ -54,4 +54,4 @@ class CalloutReviewerTransformer extends BaseTransformer<
   }
 }
 
-export default new CalloutReviewerTransformer();
+export const calloutReviewerTransformer = new CalloutReviewerTransformer();

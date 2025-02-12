@@ -5,7 +5,7 @@ import {
   contactTagFilters
 } from "@beabee/beabee-common";
 import { ContactTag, ContactTagAssignment } from "@beabee/core/models";
-import BaseTagTransformer from "./BaseTagTransformer";
+import { BaseTagTransformer } from "./BaseTagTransformer";
 
 class ContactTagTransformer extends BaseTagTransformer<
   ContactTag,
@@ -19,4 +19,4 @@ class ContactTagTransformer extends BaseTagTransformer<
   protected entityIdField = "contactId";
 }
 
-export default new ContactTagTransformer();
+export const contactTagTransformer = new ContactTagTransformer();

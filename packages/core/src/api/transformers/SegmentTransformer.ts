@@ -12,7 +12,7 @@ import {
   ListSegmentsDto
 } from "../dto/SegmentDto";
 import { BaseTransformer } from "./BaseTransformer";
-import ContactTransformer from "./ContactTransformer";
+import { contactTransformer } from "./ContactTransformer";
 
 import { Segment } from "@beabee/core/models";
 
@@ -52,7 +52,7 @@ class SegmentTransformer extends BaseTransformer<
   ): Promise<void> {
     if (query.with?.includes(GetSegmentWith.contactCount)) {
       for (const segment of segments) {
-        const result = await ContactTransformer.fetch(auth, {
+        const result = await contactTransformer.fetch(auth, {
           limit: 0,
           rules: segment.ruleGroup
         });
@@ -62,4 +62,4 @@ class SegmentTransformer extends BaseTransformer<
   }
 }
 
-export default new SegmentTransformer();
+export const segmentTransformer = new SegmentTransformer();

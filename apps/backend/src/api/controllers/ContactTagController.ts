@@ -18,7 +18,7 @@ import {
 } from "@beabee/core/api/dto";
 import { CurrentAuth } from "@api/decorators/CurrentAuth";
 import { AuthInfo } from "@beabee/core/type";
-import contactTagTransformer from "@beabee/core/api/transformers/ContactTagTransformer";
+import { contactTagTransformer } from "@beabee/core/api/transformers";
 import { DuplicateTagNameError, NotFoundError } from "@beabee/core/errors";
 
 /**

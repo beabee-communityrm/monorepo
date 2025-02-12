@@ -18,7 +18,7 @@ import {
   SegmentOngoingEmail,
   SegmentContact
 } from "@beabee/core/models";
-import ContactTransformer from "@beabee/core/api/transformers/ContactTransformer";
+import { contactTransformer } from "@beabee/core/api/transformers";
 import { GetContactWith } from "@beabee/beabee-common";
 
 const log = mainLogger.child({ app: "process-segments" });
@@ -26,7 +26,7 @@ const log = mainLogger.child({ app: "process-segments" });
 async function processSegment(segment: Segment) {
   log.info("Process segment " + segment.name);
 
-  const { items: matchedContacts } = await ContactTransformer.fetchRaw(
+  const { items: matchedContacts } = await contactTransformer.fetchRaw(
     { method: "internal", roles: ["admin"] },
     {
       limit: -1,

@@ -129,4 +129,5 @@ class CalloutResponseMapTransformer extends BaseCalloutResponseTransformer<
   }
 }
 
-export default new CalloutResponseMapTransformer();
+export const calloutResponseMapTransformer =
+  new CalloutResponseMapTransformer();

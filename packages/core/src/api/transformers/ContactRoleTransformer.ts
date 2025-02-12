@@ -22,4 +22,4 @@ class ContactRoleTransformer extends BaseTransformer<
   }
 }
 
-export default new ContactRoleTransformer();
+export const contactRoleTransformer = new ContactRoleTransformer();

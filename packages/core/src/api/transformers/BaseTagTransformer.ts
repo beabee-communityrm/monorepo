@@ -19,7 +19,7 @@ import { BadRequestError } from "routing-controllers";
  * @template TDto - The DTO type for tag responses, extending GetTagDto
  * @template TFilterName - The type for filter names
  */
-abstract class BaseTagTransformer<
+export abstract class BaseTagTransformer<
   TModel extends TagData,
   TDto extends GetTagDto,
   TFilterName extends string
@@ -217,5 +217,3 @@ abstract class BaseTagTransformer<
       : {};
   };
 }
-
-export default BaseTagTransformer;

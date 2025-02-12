@@ -154,4 +154,4 @@ function commentText(comment: CalloutResponseComment) {
   return `${comment.contact.fullname} (${date}): ${comment.text}`;
 }
 
-export default new CalloutResponseExporter();
+export const calloutResponseExporter = new CalloutResponseExporter();

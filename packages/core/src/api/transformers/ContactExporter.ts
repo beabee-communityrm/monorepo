@@ -69,4 +69,4 @@ class ContactExporter extends BaseContactTransformer<
   }
 }
 
-export default new ContactExporter();
+export const contactExporter = new ContactExporter();

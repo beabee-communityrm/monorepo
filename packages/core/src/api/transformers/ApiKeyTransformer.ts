@@ -7,7 +7,7 @@ import { GetApiKeyDto } from "../dto/ApiKeyDto";
 import { ApiKey } from "@beabee/core/models";
 
 import { BaseTransformer } from "./BaseTransformer";
-import ContactTransformer, { loadContactRoles } from "./ContactTransformer";
+import { contactTransformer, loadContactRoles } from "./ContactTransformer";
 import { AuthInfo } from "@beabee/core/type";
 
 class ApiKeyTransformer extends BaseTransformer<
@@ -24,7 +24,7 @@ class ApiKeyTransformer extends BaseTransformer<
       id: key.id,
       description: key.description,
       expires: key.expires,
-      creator: ContactTransformer.convert(key.creator, auth),
+      creator: contactTransformer.convert(key.creator, auth),
       createdAt: key.createdAt
     };
   }
@@ -41,4 +41,4 @@ class ApiKeyTransformer extends BaseTransformer<
   }
 }
 
-export default new ApiKeyTransformer();
+export const apiKeyTransformer = new ApiKeyTransformer();

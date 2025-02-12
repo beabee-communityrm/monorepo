@@ -1,7 +1,7 @@
 import { TransformPlainToInstance } from "class-transformer";
 
 import { GetContactProfileDto } from "../dto/ContactProfileDto";
-import AddressTransformer from "./AddressTransformer";
+import { addressTransformer } from "./AddressTransformer";
 import { BaseTransformer } from "./BaseTransformer";
 
 import { ContactProfile } from "@beabee/core/models";
@@ -24,7 +24,7 @@ class ContactProfileTransformer extends BaseTransformer<
       deliveryOptIn: profile.deliveryOptIn,
       deliveryAddress:
         profile.deliveryAddress &&
-        AddressTransformer.convert(profile.deliveryAddress),
+        addressTransformer.convert(profile.deliveryAddress),
       newsletterStatus: profile.newsletterStatus,
       newsletterGroups: profile.newsletterGroups,
       ...(auth.roles.includes("admin") && {
@@ -35,4 +35,4 @@ class ContactProfileTransformer extends BaseTransformer<
   }
 }
 
-export default new ContactProfileTransformer();
+export const contactProfileTransformer = new ContactProfileTransformer();

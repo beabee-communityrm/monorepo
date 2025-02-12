@@ -8,7 +8,7 @@ import { SelectQueryBuilder } from "typeorm";
 
 import { GetCalloutResponseCommentDto } from "../dto/CalloutResponseCommentDto";
 import { BaseTransformer } from "./BaseTransformer";
-import ContactTransformer, { loadContactRoles } from "./ContactTransformer";
+import { contactTransformer, loadContactRoles } from "./ContactTransformer";
 
 import {
   CalloutResponse,
@@ -42,7 +42,7 @@ class CalloutResponseCommentTransformer extends BaseTransformer<
   ): GetCalloutResponseCommentDto {
     return {
       id: comment.id,
-      contact: ContactTransformer.convert(comment.contact, auth),
+      contact: contactTransformer.convert(comment.contact, auth),
       createdAt: comment.createdAt,
       updatedAt: comment.updatedAt,
       responseId: comment.responseId,
@@ -120,4 +120,5 @@ class CalloutResponseCommentTransformer extends BaseTransformer<
   }
 }
 
-export default new CalloutResponseCommentTransformer();
+export const calloutResponseCommentTransformer =
+  new CalloutResponseCommentTransformer();

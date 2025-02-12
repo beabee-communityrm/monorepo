@@ -16,4 +16,4 @@ class AddressTransformer {
   }
 }
 
-export default new AddressTransformer();
+export const addressTransformer = new AddressTransformer();

@@ -24,7 +24,7 @@ import {
   GetCalloutOptsDto
 } from "../dto/CalloutDto";
 import { BaseTransformer } from "./BaseTransformer";
-import CalloutVariantTransformer from "./CalloutVariantTransformer";
+import { calloutVariantTransformer } from "./CalloutVariantTransformer";
 import { groupBy } from "@beabee/core/utils";
 import { mergeRules } from "@beabee/core/utils/rules";
 
@@ -117,7 +117,7 @@ class CalloutTransformer extends BaseTransformer<
     const variants = Object.fromEntries(
       callout.variants.map((variant) => [
         variant.name,
-        CalloutVariantTransformer.convert(variant)
+        calloutVariantTransformer.convert(variant)
       ])
     );
 
@@ -306,4 +306,4 @@ class CalloutTransformer extends BaseTransformer<
   }
 }
 
-export default new CalloutTransformer();
+export const calloutTransformer = new CalloutTransformer();

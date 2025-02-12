@@ -23,7 +23,7 @@ import {
   PaginatedDto
 } from "@beabee/core/api/dto";
 import { UUIDParams } from "@api/params/UUIDParams";
-import NoticeTransformer from "@beabee/core/api/transformers/NoticeTransformer";
+import { noticeTransformer } from "@beabee/core/api/transformers";
 
 import { Notice } from "@beabee/core/models";
 
@@ -37,7 +37,7 @@ export class NoticeController {
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @QueryParams() query: ListNoticesDto
   ): Promise<PaginatedDto<GetNoticeDto>> {
-    return await NoticeTransformer.fetch(auth, query);
+    return await noticeTransformer.fetch(auth, query);
   }
 
   @Get("/:id")
@@ -45,14 +45,14 @@ export class NoticeController {
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @Params() { id }: UUIDParams
   ): Promise<GetNoticeDto | undefined> {
-    return await NoticeTransformer.fetchOneById(auth, id);
+    return await noticeTransformer.fetchOneById(auth, id);
   }
 
   @Post("/")
   @Authorized("admin")
   async createNotice(@Body() data: CreateNoticeDto): Promise<GetNoticeDto> {
     const notice = await getRepository(Notice).save(data);
-    return NoticeTransformer.convert(notice);
+    return noticeTransformer.convert(notice);
   }
 
   @Patch("/:id")
@@ -63,7 +63,7 @@ export class NoticeController {
     @PartialBody() data: CreateNoticeDto
   ): Promise<GetNoticeDto | undefined> {
     await getRepository(Notice).update(id, data);
-    return await NoticeTransformer.fetchOneById(auth, id);
+    return await noticeTransformer.fetchOneById(auth, id);
   }
 
   @OnUndefined(204)

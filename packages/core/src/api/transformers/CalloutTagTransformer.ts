@@ -13,7 +13,7 @@ import {
 } from "@beabee/core/models";
 import { AuthInfo } from "@beabee/core/type";
 import { getReviewerRules } from "@beabee/core/utils/callouts";
-import BaseTagTransformer from "./BaseTagTransformer";
+import { BaseTagTransformer } from "./BaseTagTransformer";
 import { getRepository } from "@beabee/core/database";
 
 class CalloutTagTransformer extends BaseTagTransformer<
@@ -70,4 +70,4 @@ class CalloutTagTransformer extends BaseTagTransformer<
   }
 }
 
-export default new CalloutTagTransformer();
+export const calloutTagTransformer = new CalloutTagTransformer();

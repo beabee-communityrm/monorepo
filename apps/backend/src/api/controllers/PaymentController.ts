@@ -13,7 +13,7 @@ import {
   ListPaymentsDto,
   PaginatedDto
 } from "@beabee/core/api/dto";
-import PaymentTransformer from "@beabee/core/api/transformers/PaymentTransformer";
+import { paymentTransformer } from "@beabee/core/api/transformers";
 
 import { AuthInfo } from "@beabee/core/type";
 
@@ -25,7 +25,7 @@ export class PaymentController {
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @QueryParams() query: ListPaymentsDto
   ): Promise<PaginatedDto<GetPaymentDto>> {
-    return await PaymentTransformer.fetch(auth, query);
+    return await paymentTransformer.fetch(auth, query);
   }
 
   @Get("/:id")
@@ -34,6 +34,6 @@ export class PaymentController {
     @Param("id") id: string,
     @QueryParams() query: GetPaymentOptsDto
   ): Promise<GetPaymentDto | undefined> {
-    return await PaymentTransformer.fetchOneById(auth, id, query);
+    return await paymentTransformer.fetchOneById(auth, id, query);
   }
 }

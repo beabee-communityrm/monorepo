@@ -27,8 +27,10 @@ import {
   PaginatedDto
 } from "@beabee/core/api/dto";
 import { UUIDParams } from "@api/params/UUIDParams";
-import ContactTransformer from "@beabee/core/api/transformers/ContactTransformer";
-import SegmentTransformer from "@beabee/core/api/transformers/SegmentTransformer";
+import {
+  contactTransformer,
+  segmentTransformer
+} from "@beabee/core/api/transformers";
 
 import {
   Segment,
@@ -46,7 +48,7 @@ export class SegmentController {
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @QueryParams() query: ListSegmentsDto
   ): Promise<GetSegmentDto[]> {
-    const result = await SegmentTransformer.fetch(auth, query);
+    const result = await segmentTransformer.fetch(auth, query);
     return result.items; // TODO: return paginated
   }
 
@@ -67,7 +69,7 @@ export class SegmentController {
     const segment = await getRepository(Segment).save(data);
 
     // Use fetchOne to ensure that the segment has a contactCount
-    return await SegmentTransformer.fetchOneByIdOrFail(auth, segment.id, {
+    return await segmentTransformer.fetchOneByIdOrFail(auth, segment.id, {
       with: [GetSegmentWith.contactCount]
     });
   }
@@ -78,7 +80,7 @@ export class SegmentController {
     @Params() { id }: UUIDParams,
     @QueryParams() opts: GetSegmentOptsDto
   ): Promise<GetSegmentDto | undefined> {
-    return await SegmentTransformer.fetchOneById(auth, id, opts);
+    return await segmentTransformer.fetchOneById(auth, id, opts);
   }
 
   @Patch("/:id")
@@ -88,7 +90,7 @@ export class SegmentController {
     @PartialBody() data: CreateSegmentDto
   ): Promise<GetSegmentDto | undefined> {
     await getRepository(Segment).update(id, data);
-    return await SegmentTransformer.fetchOneById(auth, id, {
+    return await segmentTransformer.fetchOneById(auth, id, {
       with: [GetSegmentWith.contactCount]
     });
   }
@@ -112,7 +114,7 @@ export class SegmentController {
   ): Promise<PaginatedDto<GetContactDto> | undefined> {
     const segment = await getRepository(Segment).findOneBy({ id });
     if (segment) {
-      return await ContactTransformer.fetch(auth, {
+      return await contactTransformer.fetch(auth, {
         ...query,
         rules: query.rules
           ? {

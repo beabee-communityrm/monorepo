@@ -20,7 +20,10 @@ import {
   ListCalloutResponsesDto,
   PaginatedDto
 } from "@beabee/core/api/dto";
-import CalloutResponseTransformer from "@beabee/core/api/transformers/CalloutResponseTransformer";
+import {
+  CalloutResponseTransformer,
+  calloutResponseTransformer
+} from "@beabee/core/api/transformers";
 
 import { AuthInfo } from "@beabee/core/type";
 
@@ -31,7 +34,7 @@ export class CalloutResponseController {
     @CurrentAuth() auth: AuthInfo,
     @QueryParams() query: ListCalloutResponsesDto
   ): Promise<PaginatedDto<GetCalloutResponseDto>> {
-    return CalloutResponseTransformer.fetch(auth, query);
+    return calloutResponseTransformer.fetch(auth, query);
   }
 
   @Patch("/")
@@ -39,7 +42,7 @@ export class CalloutResponseController {
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @PartialBody() data: BatchUpdateCalloutResponseDto
   ): Promise<BatchUpdateCalloutResponseResultDto> {
-    const affected = await CalloutResponseTransformer.updateWithTags(
+    const affected = await calloutResponseTransformer.updateWithTags(
       auth,
       data
     );
@@ -52,7 +55,7 @@ export class CalloutResponseController {
     @Params() { id }: UUIDParams,
     @QueryParams() query: GetCalloutResponseOptsDto
   ): Promise<GetCalloutResponseDto | undefined> {
-    return await CalloutResponseTransformer.fetchOneById(auth, id, query);
+    return await calloutResponseTransformer.fetchOneById(auth, id, query);
   }
   @Patch("/:id")
   async updateCalloutResponse(
@@ -60,7 +63,7 @@ export class CalloutResponseController {
     @Params() { id }: UUIDParams,
     @PartialBody() data: UpdateCalloutResponseDto
   ): Promise<GetCalloutResponseDto | undefined> {
-    await CalloutResponseTransformer.updateWithTagsById(auth, id, data);
-    return await CalloutResponseTransformer.fetchOneById(auth, id);
+    await calloutResponseTransformer.updateWithTagsById(auth, id, data);
+    return await calloutResponseTransformer.fetchOneById(auth, id);
   }
 }
