@@ -3,11 +3,12 @@ name: Test on Approval
 on:
   pull_request_review:
     types: [submitted]
+  push: # Temporarily added for tests
 
 jobs:
   test:
-    # Only run if the review was approved
-    if: github.event.review.state == 'approved'
+    # Temporarily commented out for tests
+    # if: github.event.review.state == 'approved'
     runs-on: ubuntu-latest
 
     steps:
