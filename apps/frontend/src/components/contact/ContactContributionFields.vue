@@ -51,7 +51,7 @@ import { useI18n } from 'vue-i18n';
 import AppInput from '../forms/AppInput.vue';
 import AppSelect from '../forms/AppSelect.vue';
 import AppRadioGroup from '../forms/AppRadioGroup.vue';
-import { fetchContent } from '../../utils/api/content';
+import { client } from '@utils/api';
 import { generalContent } from '../../store';
 import { type UpdateContribution } from './contact.interface';
 import { type SelectItem } from '../forms/form.interface';
@@ -79,7 +79,7 @@ onBeforeMount(async () => {
       id: '',
       label: '',
     },
-    ...(await fetchContent('contacts')).manualPaymentSources.map((x) => {
+    ...(await client.content.get('contacts')).manualPaymentSources.map((x) => {
       return { id: x, label: x };
     }),
   ];

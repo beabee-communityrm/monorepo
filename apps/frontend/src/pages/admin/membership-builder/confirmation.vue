@@ -184,8 +184,7 @@ import AppSelect from '@components/forms/AppSelect.vue';
 import AppInputHelp from '@components/forms/AppInputHelp.vue';
 import AppSubHeading from '@components/AppSubHeading.vue';
 
-import { fetchCallouts } from '@utils/api/callout';
-import { fetchContent, updateContent } from '@utils/api/content';
+import { client } from '@utils/api';
 
 import AppRepeatable from '@components/forms/AppRepeatable.vue';
 import AppSectionHeading from '@components/AppSectionHeading.vue';
@@ -200,15 +199,15 @@ const stepT = (key: string) =>
 
 async function handleUpdate() {
   if (setupContent.value) {
-    await updateContent('join/setup', setupContent.value);
+    await client.content.update('join/setup', setupContent.value);
   }
 }
 
 onBeforeMount(async () => {
-  setupContent.value = await fetchContent('join/setup');
+  setupContent.value = await client.content.get('join/setup');
 
   openCallouts.value = (
-    await fetchCallouts({
+    await client.callout.list({
       limit: 100,
       rules: {
         condition: 'AND',

@@ -218,6 +218,7 @@ import type {
   CalloutResponseAnswersSlide,
   GetCalloutDataWith,
 } from '@beabee/beabee-common';
+
 import { faInfoCircle, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useI18n } from 'vue-i18n';
 import { GeocodingControl } from '@maptiler/geocoding-control/maplibregl';
@@ -238,7 +239,7 @@ import {
   reverseGeocode,
   formatGeocodeResult,
 } from '@utils/geocode';
-import { fetchResponsesForMap } from '@utils/api/callout';
+import { client } from '@utils/api';
 
 import env from '../../../env';
 import AppButton from '@components/button/AppButton.vue';
@@ -670,7 +671,7 @@ onBeforeMount(async () => {
 
   // TODO: pagination
   responses.value = (
-    await fetchResponsesForMap(props.callout.slug)
+    await client.callout.listResponsesForMap(props.callout.slug)
   ).items.filter((r): r is GetCalloutResponseMapDataWithAddress => !!r.address);
 });
 

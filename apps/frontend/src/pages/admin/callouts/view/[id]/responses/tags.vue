@@ -9,7 +9,7 @@ meta:
     <template #col1>
       <TagManager
         :entity-id="callout.id"
-        :operations="calloutTagOperations"
+        :operations="client.callout.tag"
         type="response"
       />
     </template>
@@ -23,7 +23,7 @@ meta:
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import TagManager from '@components/tag/TagManager.vue';
-import { calloutTagOperations } from '@utils/api/callout';
+import { client } from '@utils/api';
 import type { GetCalloutDataWith } from '@beabee/beabee-common';
 import App2ColGrid from '@components/App2ColGrid.vue';
 import CalloutReviewerManager from '@components/callout/CalloutReviewerManager.vue';

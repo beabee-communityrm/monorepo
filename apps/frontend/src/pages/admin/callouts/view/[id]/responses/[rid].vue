@@ -165,12 +165,13 @@ meta:
 <script lang="ts" setup>
 import { computed, ref, toRef, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
-import type {
-  CalloutResponseAnswersSlide,
-  GetCalloutDataWith,
-  GetCalloutResponseData,
-  GetCalloutResponseDataWith,
-  UpdateCalloutResponseData,
+import {
+  type CalloutResponseAnswersSlide,
+  type GetCalloutDataWith,
+  type GetCalloutResponseData,
+  type GetCalloutResponseDataWith,
+  GetCalloutResponseWith,
+  type UpdateCalloutResponseData,
 } from '@beabee/beabee-common';
 import {
   faCaretLeft,
@@ -198,11 +199,7 @@ import TagList from '@components/tag/TagList.vue';
 import { addNotification } from '@store/notifications';
 
 import { formatLocale } from '@utils/dates';
-import { fetchResponses } from '@utils/api/callout';
-import {
-  fetchCalloutResponse,
-  updateCalloutResponse,
-} from '@utils/api/callout-response';
+import { client } from '@utils/api';
 import { useCalloutResponseFilters } from '@components/pages/admin/callout-responses.interface';
 
 const props = defineProps<{
@@ -232,7 +229,12 @@ addBreadcrumb(
 
 const response =
   ref<
-    GetCalloutResponseDataWith<'answers' | 'assignee' | 'contact' | 'tags'>
+    GetCalloutResponseDataWith<
+      | GetCalloutResponseWith.Answers
+      | GetCalloutResponseWith.Assignee
+      | GetCalloutResponseWith.Contact
+      | GetCalloutResponseWith.Tags
+    >
   >();
 const prevResponse = ref<GetCalloutResponseData>();
 const nextResponse = ref<GetCalloutResponseData>();
@@ -261,7 +263,7 @@ async function handleUpdate(
 
   doingAction.value = true;
   try {
-    await updateCalloutResponse(response.value.id, data);
+    await client.callout.response.update(response.value.id, data);
     await refreshResponse();
 
     addNotification({ variant: 'success', title: successText });
@@ -282,46 +284,52 @@ async function handleEditResponse(answers: CalloutResponseAnswersSlide) {
 }
 
 async function refreshResponse() {
-  const newResponse = await fetchCalloutResponse(props.rid, [
-    'answers',
-    'assignee',
-    'contact',
-    'tags',
+  const newResponse = await client.callout.response.get(props.rid, [
+    GetCalloutResponseWith.Answers,
+    GetCalloutResponseWith.Assignee,
+    GetCalloutResponseWith.Contact,
+    GetCalloutResponseWith.Tags,
   ]);
 
-  const olderResponses = await fetchResponses(props.callout.slug, {
-    limit: 1,
-    sort: 'createdAt',
-    order: 'DESC',
-    rules: {
-      condition: 'AND',
-      rules: [
-        { field: 'bucket', operator: 'equal', value: [newResponse.bucket] },
-        {
-          field: 'createdAt',
-          operator: 'less',
-          value: [newResponse.createdAt.toISOString()],
-        },
-      ],
-    },
-  });
+  const olderResponses = await client.callout.listResponses(
+    props.callout.slug,
+    {
+      limit: 1,
+      sort: 'createdAt',
+      order: 'DESC',
+      rules: {
+        condition: 'AND',
+        rules: [
+          { field: 'bucket', operator: 'equal', value: [newResponse.bucket] },
+          {
+            field: 'createdAt',
+            operator: 'less',
+            value: [newResponse.createdAt.toISOString()],
+          },
+        ],
+      },
+    }
+  );
 
-  const newerResponses = await fetchResponses(props.callout.slug, {
-    limit: 1,
-    sort: 'createdAt',
-    order: 'ASC',
-    rules: {
-      condition: 'AND',
-      rules: [
-        { field: 'bucket', operator: 'equal', value: [newResponse.bucket] },
-        {
-          field: 'createdAt',
-          operator: 'greater',
-          value: [newResponse.createdAt.toISOString()],
-        },
-      ],
-    },
-  });
+  const newerResponses = await client.callout.listResponses(
+    props.callout.slug,
+    {
+      limit: 1,
+      sort: 'createdAt',
+      order: 'ASC',
+      rules: {
+        condition: 'AND',
+        rules: [
+          { field: 'bucket', operator: 'equal', value: [newResponse.bucket] },
+          {
+            field: 'createdAt',
+            operator: 'greater',
+            value: [newResponse.createdAt.toISOString()],
+          },
+        ],
+      },
+    }
+  );
 
   response.value = newResponse;
   prevResponse.value =

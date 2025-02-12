@@ -4,6 +4,7 @@ import { ContactMfaClient } from "./contact-mfa.client.js";
 import { ContactContributionClient } from "./contact-contribution.client.js";
 import { ContactRoleClient } from "./contact-role.client.js";
 import { ContactTagClient } from "./contact-tag.client.js";
+import { ContactPaymentClient } from "./contact-payment.client.js";
 
 import type { BaseClientOptions } from "../types/index.js";
 import type {
@@ -17,7 +18,7 @@ import type {
   RuleGroup,
   Serial,
   UpdateContactData
-} from "../deps.js";
+} from "@beabee/beabee-common";
 
 /**
  * Client for managing contacts (users) in the Beabee system
@@ -37,17 +38,23 @@ export class ContactClient extends BaseClient {
   /** Client for managing contact tags */
   readonly tag: ContactTagClient;
 
+  /** Client for managing contact payments */
+  readonly payment: ContactPaymentClient;
+
   /**
    * Creates a new contact client with all sub-clients
    * @param options - The client options
    */
   constructor(protected override readonly options: BaseClientOptions) {
-    options.path = cleanUrl(options.path + "/contact");
-    super(options);
+    super({
+      ...options,
+      path: cleanUrl(options.path + "/contact")
+    });
     this.mfa = new ContactMfaClient(options);
     this.contribution = new ContactContributionClient(options);
     this.role = new ContactRoleClient(options);
     this.tag = new ContactTagClient(options);
+    this.payment = new ContactPaymentClient(options);
   }
 
   /**
@@ -58,7 +65,6 @@ export class ContactClient extends BaseClient {
    */
   static deserialize<With extends GetContactWith | void = void>(
     // TODO: fix type safety
-    // deno-lint-ignore no-explicit-any
     contact: any // Serial<GetContactDataWith<With>>,
   ): GetContactDataWith<With> {
     return {

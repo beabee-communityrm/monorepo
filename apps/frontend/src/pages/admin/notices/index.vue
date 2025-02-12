@@ -58,7 +58,7 @@ import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
 
 import { addBreadcrumb } from '@store/breadcrumb';
 
-import { fetchNotices } from '@utils/api/notice';
+import { client } from '@utils/api';
 import { formatLocale } from '@utils/dates';
 import { definePaginatedQuery } from '@utils/pagination';
 
@@ -92,6 +92,6 @@ const currentPaginatedQuery = definePaginatedQuery('createdAt');
 const noticesTable = ref<Paginated<GetNoticeData>>();
 
 watchEffect(async () => {
-  noticesTable.value = await fetchNotices(currentPaginatedQuery.query);
+  noticesTable.value = await client.notice.list(currentPaginatedQuery.query);
 });
 </script>

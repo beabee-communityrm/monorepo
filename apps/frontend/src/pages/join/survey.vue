@@ -43,8 +43,7 @@ import AuthBox from '@components/AuthBox.vue';
 import CalloutForm from '@components/pages/callouts/CalloutForm.vue';
 import AppButton from '@components/button/AppButton.vue';
 
-import { fetchContent } from '@utils/api/content';
-import { fetchCallout } from '@utils/api/callout';
+import { client } from '@utils/api';
 
 import { currentUser } from '@store';
 
@@ -75,8 +74,8 @@ function goToProfile() {
 
 onBeforeMount(async () => {
   try {
-    setupContent.value = await fetchContent('join/setup');
-    joinSurvey.value = await fetchCallout(setupContent.value.surveySlug, [
+    setupContent.value = await client.content.get('join/setup');
+    joinSurvey.value = await client.callout.get(setupContent.value.surveySlug, [
       'form',
     ]);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

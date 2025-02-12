@@ -61,8 +61,6 @@ class StripeFlowProvider implements PaymentFlowProvider {
       { expand: ["latest_attempt"] }
     );
 
-    const customerId = setupIntent.customer as string | null;
-
     let paymentMethod = joinFlow.joinForm.paymentMethod;
     let mandateId: string | null;
 
@@ -82,7 +80,7 @@ class StripeFlowProvider implements PaymentFlowProvider {
       mandateId = setupIntent.payment_method as string | null;
     }
 
-    if (!mandateId || !customerId) {
+    if (!mandateId) {
       log.error("Setup intent missing mandate or customer ID", {
         joinFlow,
         setupIntent
@@ -92,7 +90,7 @@ class StripeFlowProvider implements PaymentFlowProvider {
 
     return {
       joinForm: { ...joinFlow.joinForm, paymentMethod },
-      customerId, // Only needed in the Backend CLI to create payments
+      customerId: "", // Unused in the Stripe flow
       mandateId
     };
   }

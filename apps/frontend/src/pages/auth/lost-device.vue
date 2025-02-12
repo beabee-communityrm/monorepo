@@ -60,7 +60,7 @@ import AppTitle from '@components/AppTitle.vue';
 import AuthBox from '@components/AuthBox.vue';
 import AppForm from '@components/forms/AppForm.vue';
 
-import { resetDeviceBegin } from '@utils/api/reset-security-flow';
+import { client } from '@utils/api';
 
 const { t } = useI18n();
 const route = useRoute();
@@ -70,7 +70,7 @@ const isRequestSuccessful = ref(false);
 const email = ref(route.query.email?.toString() || '');
 
 const submitLostDevice = async () => {
-  await resetDeviceBegin(email.value);
+  await client.resetSecurity.resetDeviceBegin(email.value);
   isRequestSuccessful.value = true;
 };
 </script>

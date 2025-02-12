@@ -1,5 +1,6 @@
 export * from "./AddressTransformer.js";
 export * from "./ApiKeyTransformer.js";
+export * from "./AuthTransformer.js";
 export * from "./BaseCalloutResponseTransformer.js";
 export * from "./BaseContactTransformer.js";
 export * from "./BaseTagTransformer.js";

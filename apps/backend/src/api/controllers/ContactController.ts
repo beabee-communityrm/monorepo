@@ -444,7 +444,13 @@ export class ContactController {
     @Params() { roleType }: ContactRoleParams,
     @Body() data: UpdateContactRoleDto
   ): Promise<GetContactRoleDto> {
-    if (data.dateExpires && data.dateAdded >= data.dateExpires) {
+    // Validate dates if both are provided
+    if (
+      data.dateExpires !== undefined &&
+      data.dateExpires !== null &&
+      data.dateAdded &&
+      data.dateAdded >= data.dateExpires
+    ) {
       throw new BadRequestError();
     }
 

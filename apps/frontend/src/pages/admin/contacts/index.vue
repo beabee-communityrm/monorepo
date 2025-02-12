@@ -194,9 +194,8 @@ import {
   defineParam,
   defineRulesParam,
 } from '@utils/pagination';
-import { fetchContacts, updateContacts } from '@utils/api/contact';
+import { client } from '@utils/api';
 import { formatLocale } from '@utils/dates';
-import { fetchSegments } from '@utils/api/segments';
 import AppSelect from '@components/forms/AppSelect.vue';
 import { useTagFilter } from '../../../composables/useTagFilter';
 
@@ -312,8 +311,10 @@ const doingAction = ref(false);
  * Lifecycle hooks
  */
 onBeforeMount(async () => {
-  contactsTotal.value = (await fetchContacts({ limit: 1 })).total;
-  segments.value = await fetchSegments({ sort: 'order' }, ['contactCount']);
+  contactsTotal.value = (await client.contact.list({ limit: 1 })).total;
+  segments.value = await client.segments.list({ sort: 'order' }, [
+    'contactCount',
+  ]);
 });
 
 addBreadcrumb(
@@ -396,7 +397,7 @@ async function refreshResponses() {
     );
 
     const query = { ...currentPaginatedQuery.query, rules: getSearchRules() };
-    const newContacts = await fetchContacts(query, [
+    const newContacts = await client.contact.list(query, [
       GetContactWith.Profile,
       GetContactWith.Roles,
       GetContactWith.Tags,
@@ -453,7 +454,7 @@ async function handleUpdateAction(
   successText: string
 ): Promise<void> {
   doingAction.value = true;
-  await updateContacts(getSelectedContactsRules(), updates);
+  await client.contact.updateMany(getSelectedContactsRules(), updates);
   await refreshResponses();
   addNotification({ variant: 'success', title: successText });
   doingAction.value = false;

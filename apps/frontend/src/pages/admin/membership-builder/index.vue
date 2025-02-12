@@ -121,7 +121,7 @@ import PeriodAmounts from '@components/pages/admin/membership-builder/PeriodAmou
 import App2ColGrid from '@components/App2ColGrid.vue';
 import AppSubHeading from '@components/AppSubHeading.vue';
 
-import { fetchContent, updateContent } from '@utils/api/content';
+import { client } from '@utils/api';
 
 import { generalContent } from '@store';
 
@@ -172,8 +172,8 @@ const validation = useVuelidate(
 async function handleUpdate() {
   if (joinContent.value) {
     await Promise.all([
-      updateContent('join', joinContent.value),
-      updateContent('general', {
+      client.content.update('join', joinContent.value),
+      client.content.update('general', {
         backgroundUrl: backgroundUrl.value || '',
       }),
     ]);
@@ -181,8 +181,8 @@ async function handleUpdate() {
 }
 
 onBeforeMount(async () => {
-  joinContent.value = await fetchContent('join');
-  paymentContent.value = await fetchContent('payment');
+  joinContent.value = await client.content.get('join');
+  paymentContent.value = await client.content.get('payment');
   backgroundUrl.value = generalContent.value.backgroundUrl || '';
 });
 </script>

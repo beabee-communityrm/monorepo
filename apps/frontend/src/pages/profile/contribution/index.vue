@@ -83,8 +83,7 @@ import ContactPaymentsHistory from '@components/contact/ContactPaymentsHistory.v
 import UpdateContribution from '@components/pages/profile/contribution/UpdateContribution.vue';
 import type { ContributionContent } from '@components/contribution/contribution.interface';
 
-import { fetchContribution } from '@utils/api/contact';
-import { fetchContent } from '@utils/api/content';
+import { client } from '@utils/api';
 
 import App2ColGrid from '@components/App2ColGrid.vue';
 import AppNotification from '@components/AppNotification.vue';
@@ -132,10 +131,10 @@ const paymentSourceData = computed(() => ({
 onBeforeMount(async () => {
   isIniting.value = true;
 
-  content.value = await fetchContent('join');
-  paymentContent.value = await fetchContent('payment');
+  content.value = await client.content.get('join');
+  paymentContent.value = await client.content.get('payment');
 
-  contribution.value = await fetchContribution();
+  contribution.value = await client.contact.contribution.get();
   isIniting.value = false;
 });
 </script>

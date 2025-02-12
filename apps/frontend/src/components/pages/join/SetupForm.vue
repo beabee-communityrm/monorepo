@@ -91,7 +91,7 @@ import AppCheckboxGroup from '@components/forms/AppCheckboxGroup.vue';
 
 import { type SetupContactData } from './join.interface';
 
-import { fetchContact } from '@utils/api/contact';
+import { client } from '@utils/api';
 import AppInput from '@components/forms/AppInput.vue';
 
 const props = defineProps<{
@@ -104,7 +104,7 @@ const { t } = useI18n();
 
 useVuelidate({ $stopPropagation: true });
 
-const contact = await fetchContact('me', [GetContactWith.Profile]);
+const contact = await client.contact.get('me', [GetContactWith.Profile]);
 
 const data = reactive<SetupContactData>({
   email: contact.email,

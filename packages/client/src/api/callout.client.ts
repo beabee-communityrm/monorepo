@@ -2,12 +2,14 @@ import { BaseClient } from "./base.client.js";
 import { cleanUrl } from "../utils/index.js";
 import { CalloutResponseClient } from "./callout-response.client.js";
 import { CalloutTagClient } from "./callout-tag.client.js";
+import { CalloutReviewerClient } from "./callout-reviewer.client.js";
 import type { BaseClientOptions } from "../types/index.js";
 import type {
   CreateCalloutData,
   CreateCalloutResponseData,
   GetCalloutData,
   GetCalloutDataWith,
+  GetCalloutResponseData,
   GetCalloutResponseDataWith,
   GetCalloutResponseMapData,
   GetCalloutResponsesQuery,
@@ -17,7 +19,7 @@ import type {
   Paginated,
   Serial,
   UpdateCalloutData
-} from "../deps.js";
+} from "@beabee/beabee-common";
 
 export class CalloutClient extends BaseClient {
   /** Client for managing callout responses */
@@ -26,12 +28,17 @@ export class CalloutClient extends BaseClient {
   /** Client for managing callout tags */
   tag: CalloutTagClient;
 
+  /** Client for managing callout reviewers */
+  reviewer: CalloutReviewerClient;
+
   constructor(protected override readonly options: BaseClientOptions) {
-    // e.g. `/api/1.0/callout`
-    options.path = cleanUrl(options.path + "/callout");
-    super(options);
+    super({
+      ...options,
+      path: cleanUrl(options.path + "/callout")
+    });
     this.response = new CalloutResponseClient(options);
     this.tag = new CalloutTagClient(options);
+    this.reviewer = new CalloutReviewerClient(options);
   }
 
   static deserialize<With extends GetCalloutWith = void>(
@@ -61,11 +68,12 @@ export class CalloutClient extends BaseClient {
    */
   async get<With extends GetCalloutWith = void>(
     slugOrId: string,
-    _with?: readonly With[]
+    _with?: readonly With[],
+    variant?: string
   ) {
     const { data } = await this.fetch.get<Serial<GetCalloutDataWith<With>>>(
       `/${slugOrId}`,
-      { with: _with }
+      { with: _with, variant }
     );
     return CalloutClient.deserialize(data);
   }
@@ -132,7 +140,7 @@ export class CalloutClient extends BaseClient {
    * @param query Optional query parameters
    * @param _with Optional relations to include
    */
-  async listResponses<With extends GetCalloutResponseWith = void>(
+  async listResponses<With extends GetCalloutResponseWith | void = void>(
     slug: string,
     query?: GetCalloutResponsesQuery,
     _with?: readonly With[]
@@ -157,7 +165,7 @@ export class CalloutClient extends BaseClient {
   ): Promise<Paginated<GetCalloutResponseMapData>> {
     const { data } = await this.fetch.get<
       Paginated<Serial<GetCalloutResponseMapData>>
-    >(`/${slug}/responses/map`, { params: query });
+    >(`/${slug}/responses/map`, query);
     return data;
   }
 
@@ -174,8 +182,8 @@ export class CalloutClient extends BaseClient {
       "answers" | "guestEmail" | "guestName"
     >,
     captchaToken?: string
-  ): Promise<void> {
-    await this.fetch.post(
+  ): Promise<GetCalloutResponseData> {
+    const { data } = await this.fetch.post<Serial<GetCalloutResponseData>>(
       `/${slug}/responses`,
       {
         answers: newData.answers,
@@ -184,5 +192,26 @@ export class CalloutClient extends BaseClient {
       },
       { params: { captchaToken } }
     );
+    return CalloutResponseClient.deserialize(data);
+  }
+
+  /**
+   * Creates a new callout based on an existing one
+   * @param fromId - ID of the callout to replicate from
+   * @param updateData - Data to update in the new callout
+   * @returns The created callout
+   */
+  async clone(
+    fromId: string,
+    updateData: UpdateCalloutData
+  ): Promise<GetCalloutData> {
+    const { data } = await this.fetch.post<Serial<GetCalloutData>>(
+      "",
+      updateData,
+      {
+        params: { fromId }
+      }
+    );
+    return CalloutClient.deserialize(data);
   }
 }

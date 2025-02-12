@@ -8,7 +8,6 @@ import {
   BatchUpdateCalloutResponseDto,
   GetCalloutResponseDto,
   GetCalloutResponseOptsDto,
-  GetCalloutResponseWith,
   ListCalloutResponsesDto,
   UpdateCalloutResponseDto
 } from "@api/dto/CalloutResponseDto";
@@ -22,6 +21,7 @@ import CalloutTransformer from "@api/transformers/CalloutTransformer";
 import CalloutResponseCommentTransformer from "@api/transformers/CalloutResponseCommentTransformer";
 import calloutTagTransformer from "@api/transformers/CalloutTagTransformer";
 import { batchUpdate } from "@beabee/core/utils/rules";
+import { GetCalloutResponseWith } from "@beabee/beabee-common";
 
 import {
   Callout,

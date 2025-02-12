@@ -67,7 +67,7 @@ import AppButton from '@components/button/AppButton.vue';
 import AppInput from '@components/forms/AppInput.vue';
 import AppRadioGroup from '@components/forms/AppRadioGroup.vue';
 
-import { createSegment, updateSegment } from '@utils/api/segments';
+import { client } from '@utils/api';
 
 import { addNotification } from '@store/notifications';
 
@@ -99,7 +99,7 @@ async function handleSubmit() {
   if (shouldUpdate.value) {
     if (!props.segment) return; // Not possible, can't choose to update without a segment
 
-    segment = await updateSegment(props.segment.id, {
+    segment = await client.segments.update(props.segment.id, {
       ruleGroup: props.rules,
     });
     addNotification({
@@ -107,7 +107,7 @@ async function handleSubmit() {
       title: t('advancedSearch.updatedSegment', { segment: segment.name }),
     });
   } else {
-    segment = await createSegment({
+    segment = await client.segments.create({
       name: newSegmentName.value,
       ruleGroup: props.rules,
     });

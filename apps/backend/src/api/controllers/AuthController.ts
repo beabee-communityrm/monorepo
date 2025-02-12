@@ -21,14 +21,18 @@ import passport from "@beabee/core/lib/passport";
 
 import ContactsService from "@beabee/core/services/ContactsService";
 
-import { LoginDto } from "@api/dto/LoginDto";
+import { LoginDto, GetAuthInfoDto } from "@api/dto";
 import { login } from "@api/utils";
 
 import { Contact, ContactRole } from "@beabee/core/models";
 
-import { PassportLoginInfo } from "@beabee/core/type";
+import { PassportLoginInfo, AuthInfo } from "@beabee/core/type";
 
 import config from "@beabee/core/config";
+
+import { CurrentAuth } from "@api/decorators/CurrentAuth";
+
+import { authTransformer } from "@api/transformers";
 
 @JsonController("/auth")
 export class AuthController {
@@ -83,6 +87,7 @@ export class AuthController {
   @OnUndefined(204)
   @Get("/login/as/:id")
   async loginAs(@Req() req: Request, @Param("id") id: string): Promise<void> {
+    // IMPORTANT: This is only available in dev mode
     if (!config.dev) {
       throw new NotFoundError();
     }
@@ -114,5 +119,12 @@ export class AuthController {
         else resolve();
       })
     );
+  }
+
+  @Get("/info")
+  async getAuthInfo(
+    @CurrentAuth({ required: false }) auth: AuthInfo
+  ): Promise<GetAuthInfoDto> {
+    return authTransformer.convert(auth);
   }
 }

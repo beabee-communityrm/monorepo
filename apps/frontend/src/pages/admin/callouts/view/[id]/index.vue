@@ -105,11 +105,7 @@ import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 
-import {
-  deleteCallout,
-  replicateCallout,
-  updateCallout,
-} from '@utils/api/callout';
+import { client } from '@utils/api';
 import AppHeading from '@components/AppHeading.vue';
 import AppInfoList from '@components/AppInfoList.vue';
 import AppInfoListItem from '@components/AppInfoListItem.vue';
@@ -136,7 +132,7 @@ const router = useRouter();
 const showDeleteModal = ref(false);
 
 async function confirmDeleteCallout() {
-  await deleteCallout(props.callout.slug);
+  await client.callout.delete(props.callout.slug);
   addNotification({
     title: t('calloutAdmin.deleted'),
     variant: 'error',
@@ -145,7 +141,7 @@ async function confirmDeleteCallout() {
 }
 
 async function endThisCallout() {
-  await updateCallout(props.callout.slug, { expires: new Date() });
+  await client.callout.update(props.callout.slug, { expires: new Date() });
   addNotification({
     title: t('calloutAdmin.ended'),
     variant: 'success',
@@ -154,7 +150,7 @@ async function endThisCallout() {
 }
 
 async function reopenThisCallout() {
-  await updateCallout(props.callout.slug, { expires: null });
+  await client.callout.update(props.callout.slug, { expires: null });
   addNotification({
     title: t('calloutAdmin.reopened'),
     variant: 'success',
@@ -163,7 +159,7 @@ async function reopenThisCallout() {
 }
 
 async function replicateThisCallout() {
-  const newCallout = await replicateCallout(props.callout.id, {
+  const newCallout = await client.callout.clone(props.callout.id, {
     starts: null,
     expires: null,
   });

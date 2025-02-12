@@ -47,10 +47,9 @@ import { useI18n } from 'vue-i18n';
 import AppForm from '../../../components/forms/AppForm.vue';
 import AppCheckbox from '../../../components/forms/AppCheckbox.vue';
 import RichTextEditor from '../../../components/rte/RichTextEditor.vue';
-import { fetchContent } from '../../../utils/api/content';
 import WelcomeMessage from '../../../components/welcome-message/WelcomeMessage.vue';
 import { currentUser } from '../../../store';
-import { updateContent } from '../../../utils/api/content';
+import { client } from '@utils/api';
 import App2ColGrid from '../../../components/App2ColGrid.vue';
 
 const { t } = useI18n();
@@ -60,13 +59,13 @@ const introMessage = ref('');
 const showIntroMessage = ref(false);
 
 async function handleUpdate() {
-  await updateContent('profile', {
+  await client.content.update('profile', {
     introMessage: showIntroMessage.value ? introMessage.value : '',
   });
 }
 
 onBeforeMount(async () => {
-  introMessage.value = (await fetchContent('profile')).introMessage;
+  introMessage.value = (await client.content.get('profile')).introMessage;
   showIntroMessage.value = !!introMessage.value;
 });
 </script>

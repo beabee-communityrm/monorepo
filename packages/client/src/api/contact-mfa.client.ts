@@ -7,15 +7,17 @@ import type {
   DeleteContactMfaData,
   GetContactMfaData,
   Serial
-} from "../deps.js";
+} from "@beabee/beabee-common";
 
 /**
  * Client for managing contact MFA operations.
  */
 export class ContactMfaClient extends BaseClient {
   constructor(protected override readonly options: BaseClientOptions) {
-    options.path = cleanUrl(options.path + "/contact");
-    super(options);
+    super({
+      ...options,
+      path: cleanUrl(options.path + "/contact")
+    });
   }
 
   /**
@@ -23,7 +25,9 @@ export class ContactMfaClient extends BaseClient {
    * @param data - The serialized MFA data.
    * @returns The deserialized MFA data.
    */
-  protected deserialize(data: Serial<GetContactMfaData>): GetContactMfaData {
+  public static deserialize(
+    data: Serial<GetContactMfaData>
+  ): GetContactMfaData {
     // Nothing to do for now
     return data;
   }
@@ -37,7 +41,7 @@ export class ContactMfaClient extends BaseClient {
     const { data } = await this.fetch.get<Serial<GetContactMfaData>>(
       `/${contactId}/mfa`
     );
-    return this.deserialize(data);
+    return ContactMfaClient.deserialize(data);
   }
 
   /**
@@ -63,6 +67,6 @@ export class ContactMfaClient extends BaseClient {
     contactId: string,
     deleteData: DeleteContactMfaData
   ): Promise<void> {
-    await this.fetch.delete(`/${contactId}/mfa`, { data: deleteData });
+    await this.fetch.delete(`/${contactId}/mfa`, deleteData);
   }
 }

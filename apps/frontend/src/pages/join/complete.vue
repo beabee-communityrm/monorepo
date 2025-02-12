@@ -11,7 +11,7 @@ meta:
 <script lang="ts" setup>
 import { onBeforeMount } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { completeSignUp } from '../../utils/api/signup';
+import { client } from '@utils/api';
 
 const route = useRoute();
 const router = useRouter();
@@ -23,7 +23,7 @@ onBeforeMount(async () => {
 
   if (paymentFlowId) {
     try {
-      await completeSignUp({
+      await client.signup.complete({
         paymentFlowId,
         firstname: route.query.firstName?.toString(),
         lastname: route.query.lastName?.toString(),

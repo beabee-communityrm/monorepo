@@ -86,7 +86,7 @@
         :client-secret="stripeClientSecret"
         :public-key="paymentContent.stripePublicKey"
         :payment-data="paymentData"
-        :return-url="startContributionCompleteUrl"
+        :return-url="client.contact.contribution.completeUrl"
         @loaded="onStripeLoaded"
       />
     </AppModal>
@@ -115,15 +115,10 @@ import StripePayment from '@components/StripePayment.vue';
 import AppHeading from '@components/AppHeading.vue';
 import AppNotification from '@components/AppNotification.vue';
 
-import {
-  startContribution,
-  startContributionCompleteUrl,
-  updateContribution,
-} from '@utils/api/contact';
+import { client, isApiError } from '@utils/api';
 
 import { currentUser } from '@store/currentUser';
 import { formatLocale } from '@utils/dates';
-import { isRequestError } from '@utils/api';
 
 import { addNotification } from '@store/notifications';
 
@@ -200,7 +195,7 @@ const buttonText = computed(() =>
 );
 
 async function handleCreate() {
-  const data = await startContribution(newContribution);
+  const data = await client.contact.contribution.start(newContribution);
   if (data.redirectUrl) {
     window.location.href = data.redirectUrl;
   } else if (data.clientSecret) {
@@ -210,7 +205,7 @@ async function handleCreate() {
 
 async function handleUpdate() {
   try {
-    const data = await updateContribution(newContribution);
+    const data = await client.contact.contribution.update(newContribution);
     emit('update:modelValue', data);
 
     addNotification({
@@ -218,7 +213,7 @@ async function handleUpdate() {
       title: t('contribution.updatedContribution'),
     });
   } catch (err) {
-    if (isRequestError(err, ['cant-update-contribution'])) {
+    if (isApiError(err, ['cant-update-contribution'])) {
       cantUpdate.value = true;
     }
   }

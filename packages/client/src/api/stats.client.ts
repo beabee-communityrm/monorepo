@@ -16,8 +16,10 @@ export class StatsClient extends BaseClient {
    * @param options - The client options
    */
   constructor(protected override readonly options: BaseClientOptions) {
-    options.path = cleanUrl(options.path + "/stats");
-    super(options);
+    super({
+      ...options,
+      path: cleanUrl(options.path + "/stats")
+    });
   }
 
   /**
@@ -25,10 +27,8 @@ export class StatsClient extends BaseClient {
    * @param query - The query parameters for filtering stats
    * @returns The statistics data
    */
-  async get(query: GetStatsQuery): Promise<GetStatsData> {
-    const { data } = await this.fetch.get<Serial<GetStatsData>>("", {
-      params: query
-    });
+  async list(query: GetStatsQuery): Promise<GetStatsData> {
+    const { data } = await this.fetch.get<Serial<GetStatsData>>("", query);
     return data;
   }
 }
