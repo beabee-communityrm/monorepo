@@ -15,7 +15,7 @@ import { isUUID } from "class-validator";
 import { getRepository } from "@beabee/core/database";
 
 import { BaseTransformer } from "./BaseTransformer";
-import { prefixKeys } from "@beabee/core/utils";
+import { prefixKeys } from "@beabee/core/utils/objects";
 
 import { Callout, Contact } from "@beabee/core/models";
 import { contactFilterHandlers } from "@beabee/core/filter-handlers";

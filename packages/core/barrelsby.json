@@ -9,7 +9,6 @@
     "./src/filter-handlers",
     "./src/api/dto",
     "./src/api/transformers",
-    "./src/api/validators",
-    "./src/utils"
+    "./src/api/validators"
   ]
 }

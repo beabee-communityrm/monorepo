@@ -6,7 +6,7 @@ import config from "@beabee/core/config";
 
 import { getRepository } from "@beabee/core/database";
 import { isAdmin } from "#core/middleware";
-import { wrapAsync } from "@beabee/core/utils/index";
+import { wrapAsync } from "@beabee/core/utils/async";
 import { canSuperAdmin, generateCode } from "#core/utils/auth";
 
 import ContactsService from "@beabee/core/services/ContactsService";

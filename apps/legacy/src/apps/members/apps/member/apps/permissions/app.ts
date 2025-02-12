@@ -8,7 +8,7 @@ import express, {
 
 import { hasSchema } from "#core/middleware";
 import { createDateTime } from "#core/utils/index";
-import { wrapAsync } from "@beabee/core/utils/index";
+import { wrapAsync } from "@beabee/core/utils/async";
 
 import ContactsService from "@beabee/core/services/ContactsService";
 

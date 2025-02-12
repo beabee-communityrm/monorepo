@@ -8,11 +8,11 @@ import express, {
 } from "express";
 
 import { log as mainLogger } from "@beabee/core/logging";
-import { normalizeEmailAddress, wrapAsync } from "@beabee/core/utils/index";
+import { normalizeEmailAddress } from "@beabee/core/utils/email";
+import { wrapAsync } from "@beabee/core/utils/async";
 
 import ContactsService from "@beabee/core/services/ContactsService";
 import NewsletterService from "@beabee/core/services/NewsletterService";
-import OptionsService from "@beabee/core/services/OptionsService";
 
 import config from "@beabee/core/config";
 

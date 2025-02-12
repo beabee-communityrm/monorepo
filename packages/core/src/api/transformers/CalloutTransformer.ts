@@ -25,7 +25,7 @@ import {
 } from "../dto/CalloutDto";
 import { BaseTransformer } from "./BaseTransformer";
 import { calloutVariantTransformer } from "./CalloutVariantTransformer";
-import { groupBy } from "@beabee/core/utils";
+import { groupBy } from "@beabee/core/utils/objects";
 import { mergeRules } from "@beabee/core/utils/rules";
 
 import {

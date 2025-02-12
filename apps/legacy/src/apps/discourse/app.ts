@@ -6,7 +6,7 @@ import config from "@beabee/core/config";
 import { getRepository } from "@beabee/core/database";
 import { isLoggedIn } from "#core/middleware";
 import { hasUser } from "#core/utils/index";
-import { wrapAsync } from "@beabee/core/utils/index";
+import { wrapAsync } from "@beabee/core/utils/async";
 
 import { ProjectContact } from "@beabee/core/models";
 

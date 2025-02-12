@@ -30,7 +30,7 @@ import {
 
 import { AuthInfo } from "@beabee/core/type";
 import { RuleGroup } from "@beabee/beabee-common";
-import { getReviewerRules } from "@beabee/core/utils";
+import { getReviewerRules } from "@beabee/core/utils/callouts";
 
 export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
   GetCalloutResponseDto,

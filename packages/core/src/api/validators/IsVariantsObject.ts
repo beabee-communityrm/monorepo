@@ -1,6 +1,6 @@
 import { ValidateBy, ValidationOptions, buildMessage } from "class-validator";
 
-import { validateOrReject } from "@beabee/core/utils";
+import { validateOrReject } from "@beabee/core/utils/validation";
 
 async function isVariantsObject(value: unknown): Promise<boolean> {
   if (typeof value !== "object" || value === null) {

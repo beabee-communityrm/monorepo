@@ -16,7 +16,8 @@ import {
 } from "../dto/CalloutResponseDto";
 import { BaseCalloutResponseTransformer } from "./BaseCalloutResponseTransformer";
 import { NotFoundError } from "@beabee/core/errors";
-import { getReviewerRules, groupBy } from "@beabee/core/utils";
+import { getReviewerRules } from "@beabee/core/utils/callouts";
+import { groupBy } from "@beabee/core/utils/objects";
 
 import {
   CalloutResponse,

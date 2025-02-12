@@ -9,7 +9,7 @@ import * as auth from "#core/utils/auth";
 import OptionsService from "@beabee/core/services/OptionsService";
 
 import config from "@beabee/core/config";
-import { wrapAsync } from "@beabee/core/utils/index";
+import { wrapAsync } from "@beabee/core/utils/async";
 import { isInvalidType } from "@beabee/core/utils/db";
 
 interface OnErrorHandler {

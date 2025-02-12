@@ -11,13 +11,13 @@ import { In } from "typeorm";
 
 import { getRepository } from "@beabee/core/database";
 import { runApp } from "@beabee/core/server";
-import { normalizeEmailAddress } from "@beabee/core/utils/index";
 
 import ContactsService from "@beabee/core/services/ContactsService";
 
 import { Contact, ContactRole } from "@beabee/core/models";
 import { contactTagTransformer } from "@beabee/core/api/transformers";
 import { ContactTagAssignment } from "@beabee/core/models";
+import { normalizeEmailAddress } from "@beabee/core/utils/email";
 
 const headers = [
   "first_name",

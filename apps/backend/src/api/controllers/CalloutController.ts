@@ -48,7 +48,7 @@ import {
   calloutResponseMapTransformer,
   calloutResponseTransformer
 } from "@beabee/core/api/transformers";
-import { validateOrReject } from "@beabee/core/utils";
+import { validateOrReject } from "@beabee/core/utils/validation";
 
 import { Callout, Contact } from "@beabee/core/models";
 

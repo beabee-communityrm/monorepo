@@ -4,7 +4,7 @@ import moment from "moment";
 
 import { log as mainLogger } from "@beabee/core/logging";
 import { isSuperAdmin } from "#core/middleware";
-import { wrapAsync } from "@beabee/core/utils/index";
+import { wrapAsync } from "@beabee/core/utils/async";
 
 import ContactsService from "@beabee/core/services/ContactsService";
 import NewsletterService from "@beabee/core/services/NewsletterService";

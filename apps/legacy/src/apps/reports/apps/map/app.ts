@@ -5,7 +5,7 @@ import { Brackets } from "typeorm";
 import { createQueryBuilder } from "@beabee/core/database";
 import { log } from "@beabee/core/logging";
 import { isAdmin } from "#core/middleware";
-import { wrapAsync } from "@beabee/core/utils/index";
+import { wrapAsync } from "@beabee/core/utils/async";
 
 import { ContactRole, ContactProfile } from "@beabee/core/models";
 

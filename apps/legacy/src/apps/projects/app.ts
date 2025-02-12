@@ -4,7 +4,7 @@ import moment from "moment";
 
 import { createQueryBuilder, getRepository } from "@beabee/core/database";
 import { hasNewModel, hasSchema, isAdmin } from "#core/middleware";
-import { wrapAsync } from "@beabee/core/utils/index";
+import { wrapAsync } from "@beabee/core/utils/async";
 
 import {
   Contact,

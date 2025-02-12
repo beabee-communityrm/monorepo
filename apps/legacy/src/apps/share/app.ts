@@ -1,7 +1,7 @@
 import express, { type Express, type Request, type Response } from "express";
 
 import { createQueryBuilder } from "@beabee/core/database";
-import { wrapAsync } from "@beabee/core/utils/index";
+import { wrapAsync } from "@beabee/core/utils/async";
 
 import PageSettingsService, {
   JustPageSettings

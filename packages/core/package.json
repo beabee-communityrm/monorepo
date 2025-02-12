@@ -48,7 +48,6 @@
     "./services/*": "./dist/services/*.js",
     "./providers": "./dist/providers/index.js",
     "./providers/*": "./dist/providers/*.js",
-    "./utils": "./dist/utils/index.js",
     "./utils/*": "./dist/utils/*.js",
     "./api": "./dist/api/index.js",
     "./api/*": "./dist/api/*.js",

@@ -5,11 +5,11 @@ import Papa from "papaparse";
 
 import { createQueryBuilder, getRepository } from "@beabee/core/database";
 import { hasNewModel, isAdmin } from "#core/middleware";
-import { wrapAsync } from "@beabee/core/utils/index";
-import { formatEmailBody } from "@beabee/core/utils/email";
+import { wrapAsync } from "@beabee/core/utils/async";
 
-import EmailService from "@beabee/core/services/EmailService";
+import emailService from "@beabee/core/services/EmailService";
 import OptionsService from "@beabee/core/services/OptionsService";
+import { formatEmailBody } from "@beabee/core/utils/email";
 
 import { Email, EmailMailing, SegmentOngoingEmail } from "@beabee/core/models";
 import { EmailMailingRecipient } from "@beabee/core/type";
@@ -232,7 +232,7 @@ app.post(
       )
     }));
 
-    await EmailService.sendEmail(email, recipients);
+    await emailService.sendEmail(email, recipients);
 
     await getRepository(EmailMailing).update(mailing.id, {
       sentDate: new Date(),

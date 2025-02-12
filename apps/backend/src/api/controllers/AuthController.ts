@@ -22,7 +22,7 @@ import passport from "@beabee/core/lib/passport";
 import ContactsService from "@beabee/core/services/ContactsService";
 
 import { LoginDto } from "@beabee/core/api/dto/LoginDto";
-import { login } from "@beabee/core/utils";
+import { login } from "@beabee/core/utils/auth";
 
 import { Contact, ContactRole } from "@beabee/core/models";
 
