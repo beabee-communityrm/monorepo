@@ -19,3 +19,9 @@ runs:
     - name: Presetup
       run: yarn presetup
       shell: bash
+    - name: Update env variables
+      run: |
+        sed -i "s|BEABEE_STRIPE_PUBLICKEY=|BEABEE_STRIPE_PUBLICKEY=${{ secrets.BEABEE_STRIPE_PUBLICKEY }}|" .env
+        sed -i "s|BEABEE_STRIPE_SECRETKEY=|BEABEE_STRIPE_SECRETKEY=${{ secrets.BEABEE_STRIPE_SECRETKEY }}|" .env
+        sed -i "s|BEABEE_STRIPE_WEBHOOKSECRET=|BEABEE_STRIPE_WEBHOOKSECRET=${{ secrets.BEABEE_STRIPE_WEBHOOKSECRET }}|" .env
+        sed -i "s|BEABEE_STRIPE_MEMBERSHIPPRODUCTID=|BEABEE_STRIPE_MEMBERSHIPPRODUCTID=${{ secrets.BEABEE_STRIPE_MEMBERSHIPPRODUCTID }}|" .env

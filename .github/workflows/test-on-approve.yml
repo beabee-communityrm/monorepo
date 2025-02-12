@@ -9,7 +9,7 @@ jobs:
     # Only run if the review was approved
     if: github.event.review.state == 'approved'
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -17,4 +17,4 @@ jobs:
       - uses: ./.github/actions/setup
 
       - name: Run tests
-        run: yarn test 
+        run: yarn test
