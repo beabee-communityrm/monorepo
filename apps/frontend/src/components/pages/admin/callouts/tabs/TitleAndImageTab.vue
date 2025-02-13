@@ -4,7 +4,7 @@
     <AppFormSection :help="inputT('title.help')">
       <LocaleInput
         v-model="data.title"
-        :locales="steps.settings.data.locales"
+        :locales="tabs.settings.data.locales"
         :label="inputT('title.label')"
         :placeholder="inputT('title.placeholder')"
         required
@@ -13,7 +13,7 @@
     <AppFormSection :help="inputT('description.help')">
       <LocaleTextArea
         v-model="data.description"
-        :locales="steps.settings.data.locales"
+        :locales="tabs.settings.data.locales"
         :label="inputT('description.label')"
         :placeholder="inputT('description.placeholder')"
         required
@@ -31,7 +31,7 @@
     <AppFormSection :help="inputT('intro.help')">
       <LocaleRichTextEditor
         v-model="data.introText"
-        :locales="steps.settings.data.locales"
+        :locales="tabs.settings.data.locales"
         :label="inputT('intro.label')"
         required
       />
@@ -52,7 +52,7 @@
         <template #before> {{ env.appUrl }}/callouts/ </template>
       </AppInput>
       <p v-else class="mt-2 text-sm">
-        {{ t('createCallout.steps.titleAndImage.urlWillBe') }}
+        {{ t('createCallout.tabs.titleAndImage.urlWillBe') }}
         {{ env.appUrl }}/callouts/{{ slug || '???' }}
       </p>
     </AppFormSection>
@@ -72,7 +72,7 @@
       <AppFormSection :help="inputT('shareTitle.help')">
         <LocaleInput
           v-model="data.shareTitle"
-          :locales="steps.settings.data.locales"
+          :locales="tabs.settings.data.locales"
           :label="inputT('shareTitle.label')"
           :placeholder="inputT('shareTitle.placeholder')"
           required
@@ -81,7 +81,7 @@
       <AppFormSection :help="inputT('shareDescription.help')">
         <LocaleTextArea
           v-model="data.shareDescription"
-          :locales="steps.settings.data.locales"
+          :locales="tabs.settings.data.locales"
           :label="inputT('shareDescription.label')"
           :placeholder="inputT('shareDescription.placeholder')"
           required
@@ -99,7 +99,7 @@ import AppInput from '../../../../forms/AppInput.vue';
 import AppImageUpload from '../../../../forms/AppImageUpload.vue';
 import useVuelidate from '@vuelidate/core';
 import type {
-  CalloutSteps,
+  CalloutTabs,
   TitleAndImageStepProps,
 } from '../callouts.interface';
 import AppRadioGroup from '../../../../forms/AppRadioGroup.vue';
@@ -114,13 +114,13 @@ import LocaleRichTextEditor from '@components/forms/LocaleRichTextEditor.vue';
 const emit = defineEmits(['update:error', 'update:validated']);
 const props = defineProps<{
   data: TitleAndImageStepProps;
-  steps: CalloutSteps;
+  tabs: CalloutTabs;
   status: ItemStatus | undefined;
 }>();
 
 const { t } = useI18n();
 const inputT = (key: string) =>
-  t('createCallout.steps.titleAndImage.inputs.' + key);
+  t('createCallout.tabs.titleAndImage.inputs.' + key);
 
 const slug = computed(() =>
   props.data.useCustomSlug ? props.data.slug : props.data.autoSlug

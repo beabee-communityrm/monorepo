@@ -80,7 +80,7 @@ export interface DateAndDurationStepProps {
   endTime: string;
 }
 
-export interface CalloutStepsProps {
+export interface CalloutTabsProps {
   content: ContentStepProps;
   titleAndImage: TitleAndImageStepProps;
   settings: SettingsStepProps;
@@ -96,6 +96,6 @@ export interface CalloutStep<T> extends AppStepperStep {
   component: Raw<Component>;
 }
 
-export type CalloutSteps = {
-  [P in keyof CalloutStepsProps]: CalloutStep<CalloutStepsProps[P]>;
+export type CalloutTabs = {
+  [P in keyof CalloutTabsProps]: CalloutStep<CalloutTabsProps[P]>;
 };
