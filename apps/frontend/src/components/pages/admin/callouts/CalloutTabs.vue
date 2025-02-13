@@ -1,6 +1,10 @@
 <template>
   <div>
-    <AppStepper v-model="selectedStepIndex" :steps="stepsInOrder" />
+    <AppTabs
+      :items="tabItems"
+      :selected="selectedStep.name"
+      @tab-click="handleTabClick"
+    />
     <component
       :is="step.component"
       v-for="step in stepsInOrder"
@@ -20,13 +24,13 @@
 import { ItemStatus } from '@beabee/beabee-common';
 import { ref, computed, markRaw, reactive } from 'vue';
 import { useI18n } from 'vue-i18n';
-import AppStepper from '../../../stepper/AppStepper.vue';
+import AppTabs from '../../../tabs/AppTabs.vue';
 import type { CalloutStepsProps, CalloutSteps } from './callouts.interface';
+import type { TabItem } from '../../../tabs/tabs.interface';
 
 import StepSettings from './steps/SettingsStep.vue';
 import StepTitleAndImage from './steps/TitleAndImage.vue';
 import StepEndMessage from './steps/EndMessage.vue';
-// import StepMailchimpSync from './steps/MailchimpSync.vue';
 import StepDatesAndDuration from './steps/DatesAndDuration.vue';
 import StepContent from './steps/ContentStep.vue';
 
@@ -66,12 +70,6 @@ const steps = reactive<CalloutSteps>({
     component: markRaw(StepEndMessage),
     data: props.stepsProps.endMessage,
   },
-  /*mailchimp: {
-    name: t('createCallout.steps.mailchimp.title'),
-    validated: !props.status,
-    error: false,
-    component: markRaw(StepMailchimpSync),
-  },*/
   dates: {
     name: t('createCallout.steps.dates.title'),
     validated: false,
@@ -86,9 +84,27 @@ const stepsInOrder = [
   steps.titleAndImage,
   steps.endMessage,
   steps.settings,
-  //steps.mailchimp,
   steps.dates,
 ];
-const selectedStepIndex = ref(0);
-const selectedStep = computed(() => stepsInOrder[selectedStepIndex.value]);
+
+const selectedStepName = ref(stepsInOrder[0].name);
+
+const selectedStep = computed(
+  () =>
+    stepsInOrder.find((step) => step.name === selectedStepName.value) ||
+    stepsInOrder[0]
+);
+
+const handleTabClick = (tabId: string) => {
+  selectedStepName.value = tabId;
+};
+
+const tabItems = computed<TabItem[]>(() =>
+  stepsInOrder.map((step) => ({
+    id: step.name,
+    label: step.name,
+    to: '',
+    // count: step.validated ? '✓' : undefined,
+  }))
+);
 </script>
