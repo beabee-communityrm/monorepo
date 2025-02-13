@@ -1,39 +1,45 @@
 <template>
-  <ul class="mb-4 flex border-b border-primary-40 text-sm md:mb-6 xl:text-base">
-    <li v-for="item in items" :key="item.id">
-      <router-link
-        v-if="item.to"
-        :to="item.to"
-        class="relative inline-block p-2"
-        :class="
-          selected === item.id && 'border-text border-b-2 font-bold text-body'
-        "
-      >
-        <span class="text-body-80 hover:text-body">
-          {{ item.label }}
-          <span v-if="item.count !== undefined" class="ml-1">
-            ({{ item.count }})
+  <div class="mb-2 rounded-lg border border-white p-1">
+    <ul class="flex gap-1">
+      <li v-for="item in items" :key="item.id">
+        <router-link
+          v-if="item.to"
+          :to="item.to"
+          class="relative mx-1 my-2 inline-block rounded-md px-4 py-2 font-semibold transition-colors"
+          :class="[
+            selected === item.id
+              ? 'bg-white text-body shadow-sm'
+              : 'text-body-80 hover:bg-primary-5 hover:text-body',
+          ]"
+        >
+          <span>
+            {{ item.label }}
+            <span v-if="item.count !== undefined" class="ml-1">
+              ({{ item.count }})
+            </span>
           </span>
-        </span>
-      </router-link>
-      <button
-        v-else
-        type="button"
-        class="relative inline-block p-2"
-        :class="
-          selected === item.id && 'border-text border-b-2 font-bold text-body'
-        "
-        @click="$emit('tab-click', item.id)"
-      >
-        <span class="text-body-80 hover:text-body">
-          {{ item.label }}
-          <span v-if="item.count !== undefined" class="ml-1">
-            ({{ item.count }})
+        </router-link>
+        <button
+          v-else
+          type="button"
+          class="relative mx-1 my-2 inline-block rounded-md px-4 py-2 font-semibold transition-colors"
+          :class="[
+            selected === item.id
+              ? 'bg-white text-body shadow-sm'
+              : 'text-body-80 hover:bg-primary-5 hover:text-body',
+          ]"
+          @click="$emit('tab-click', item.id)"
+        >
+          <span>
+            {{ item.label }}
+            <span v-if="item.count !== undefined" class="ml-1">
+              ({{ item.count }})
+            </span>
           </span>
-        </span>
-      </button>
-    </li>
-  </ul>
+        </button>
+      </li>
+    </ul>
+  </div>
 </template>
 
 <script lang="ts">
