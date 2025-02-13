@@ -54,8 +54,6 @@
       "title": "Newsletter",
       "unsubscribe": "Vom Newsletter abmelden"
     },
-    "phoneInfo": "Mit der Angabe Ihrer Telefonnummer erklären Sie sich damit einverstanden, telefonisch kontaktiert zu werden.",
-    "phoneInfoAdmin": "Sie müssen die Zustimmung der Person einholen, bevor Sie ihre Telefonnummer in das System eingeben.",
     "savedPassword": "Das neue Passwort wurde gespeichert.",
     "subTitle": "Alle benötigten Felder sind mit * markiert. Alle Informationen werden vertraulich behandelt.",
     "title": "Account"
@@ -96,7 +94,6 @@
     "saveDraft": "Entwurf speichern",
     "schedule": "Planen",
     "search": "Suchen",
-    "sendEmails": "E-Mails senden",
     "share": "Teilen",
     "skip": "Überspringen",
     "submit": "Abschicken",
@@ -210,9 +207,7 @@
       }
     },
     "payment": {
-      "paymentTitle": "Zahlungen",
-      "taxRate": "Mehrwertsteuersatz",
-      "taxRateEnabled": "Mehrwertsteuer aktivieren"
+      "paymentTitle": "Zahlungen"
     },
     "theme": {
       "bodyFont": "Text",
@@ -239,13 +234,14 @@
   "advancedSearch": {
     "addRule": "Filter hinzufügen",
     "button": "Filter",
-    "createFiltersAfter": "Regeln entsprechen",
-    "createFiltersBefore": "Nur Ergebnisse anzeigen, die",
-    "createFiltersType": {
-      "all": "allen",
-      "any": "einer dieser"
-    },
+    "createFilters": "Filter für die Suche erstellen",
     "createdSegment": "Erstelltes Segment \"{segment}\"",
+    "matchAfter": "der folgenden Filter enthalten",
+    "matchBefore": "Ergebnisse sollen",
+    "matchType": {
+      "AND": "alle",
+      "OR": "mindestens einen"
+    },
     "matchWord": {
       "AND": "und",
       "OR": "oder"
@@ -331,11 +327,10 @@
       "updateResponse": "Antwort bearbeiten"
     },
     "addAPoint": "Klicken Sie dort auf die Karte, wo Sie einen Ort ergänzen möchten",
-    "addLocation": "Neuen Eintrag eingeben",
+    "addLocation": "Neuen Ort eingeben",
     "confirmHuman": "Bitte bestätigen Sie, dass Sie ein Mensch sind",
     "contactDetails": "Kontaktdaten",
     "ended": "Dieser Callout ist seit dem {date} beendet.",
-    "entryOf": "Eintrag {no} von {total}",
     "form": {
       "email": "Ihre E-Mail-Adresse",
       "guestFieldsMissing": "Bitte geben Sie uns Ihre Kontaktdaten.",
@@ -436,13 +431,13 @@
       "bucket": "Ordner",
       "callout": "Callout",
       "contact": "Kontakt",
-      "createdAt": "Teilgenommen am",
+      "createdAt": "Beantwortet am",
       "tags": "Tags",
       "updatedAt": "Geändert am"
     },
     "dataGroup": {
-      "answers": "Antworten",
-      "response": "Informationen"
+      "answers": "Fragen",
+      "response": "Antwort"
     }
   },
   "calloutResponseBuckets": {
@@ -494,9 +489,6 @@
     "showLatestComment": "Letzter Kommentar",
     "showingOf": "Antworten {start} bis {end} von {total} werden angezeigt"
   },
-  "calloutReviewerManager": {
-    "confirmDelete": {}
-  },
   "callouts": {
     "archive": "Archiv",
     "data": {
@@ -540,10 +532,8 @@
       "none": "None"
     },
     "hello": "Hallo",
-    "id": "ID",
     "itemsPerPage": "{items} Einträge pro Seite",
     "joined": "Mitglied seit",
-    "label": "Label",
     "loading": "Lädt...",
     "login": "Login",
     "newsletterStatus": {
@@ -587,14 +577,6 @@
     "until": "bis",
     "yes": "Ja"
   },
-  "contactAccount": {
-    "confirmDelete": {
-      "text": "Dadurch werden alle mit der Email-Adresse {email} verbundenen Daten gelöscht. Aktive Mitgliedschaften werden dadurch beendet.",
-      "title": "Kontakt löschen",
-      "warning": "Dieser Schritt kann nicht rückgängig gemacht werden. Sicher, dass du fortfahren möchtest?"
-    },
-    "contactDeleted": "Kontakt gelöscht."
-  },
   "contactContribution": {
     "confirmCancel": {
       "confirm": "Ja, Mitgliedschaft kündigen",
@@ -617,11 +599,7 @@
     "contribution": "Beitrag",
     "contributionType": "Zahlungsart",
     "joinSurvey": "Anmelde-Fragebogen",
-    "newsletter": {
-      "groups": "Gruppe",
-      "status": "Status",
-      "title": "Newsletter"
-    },
+    "newsletter": "Newsletter",
     "overview": "Überblick",
     "pickTag": "Tag aus der Liste wählen",
     "profile": "Profil",
@@ -640,10 +618,6 @@
   },
   "contacts": {
     "addContact": "Kontakt hinzufügen",
-    "advancedSearch": {
-      "hasAnswered": "Hat teilgenommen?",
-      "selectCallout": "Callout auswählen..."
-    },
     "allContacts": "Alle Kontakte",
     "data": {
       "activeMembership": "Aktive Mitgliedschaft",
@@ -659,6 +633,7 @@
       "description": "Beschreibung",
       "email": "E-Mail",
       "firstname": "Vorname",
+      "groups": "Gruppe",
       "joined": "Kontakt seit",
       "lastSeen": "Zuletzt angemeldet",
       "lastname": "Nachname",
@@ -666,7 +641,7 @@
       "membershipExpires": "Mitglied bis",
       "membershipStarts": "Mitglied seit",
       "name": "Name",
-      "newsletterGroups": "Newsletter groups",
+      "newsletter": "Newsletter",
       "newsletterStatus": "Newsletter-Status",
       "notes": "Notizen",
       "payingFee": "Übernimmt Transaktionskosten?",
@@ -678,8 +653,7 @@
       "tags": "Tags"
     },
     "dataGroup": {
-      "callout": "Callout",
-      "contact": "Kontaktdaten",
+      "contact": "Kontakt",
       "contribution": "Beitrag",
       "role": "Rolle"
     },
@@ -687,7 +661,6 @@
     "noResults": "Keine Kontakte gefunden",
     "numResults": "{n} Kontakt gefunden | {n} Kontakte gefunden",
     "search": "Kontakte durchsuchen...",
-    "selectedCount": "{n} Kontakt ausgewählt | {n} Kontakte ausgewählt",
     "showingOf": "{start} to {end} von {total} Kontakten werden angezeigt."
   },
   "contribution": {
@@ -995,13 +968,11 @@
       "api": {
         "account-locked": "Konto wegen zu vieler fehlgeschlagener Anmeldeversuche gesperrt. Bitte Passwort zurücksetzen oder an den Support wenden, um Hilfe zu erhalten.",
         "duplicate-email": "Diese E-Mail-Adresse existiert bereits.",
-        "duplicate-tag-name": "Ein Tag mit diesem Namen existiert bereits",
         "invalid-token": "Der von Ihnen eingegebene 2FA Token ist nicht korrekt.",
         "login-failed": "Falsche Kombination von Passwort und E-Mail.",
         "mfa-token-required": "Bitte geben Sie den Code Ihrer Authentifizierungs-App ein."
       },
       "generic": "Upps! Etwas ist schiefgelaufen. Bitte wenden Sie sich an den Support, sollte das erneut passieren.",
-      "unauthorized": "Sie haben daruf keinen Zugriff.",
       "validation": "Es fehlt etwas! Bitte kontrollieren Sie die obigen Felder."
     },
     "errors": {
@@ -1139,7 +1110,7 @@
         "title": "Etwas ist schief gelaufen"
       }
     },
-    "login": "Anmelden",
+    "login": "Log in",
     "memberAccount": "Mitglieder-Account",
     "memberAlready": "Sind Sie bereits Mitglied?",
     "minimumContribution": "Der minimale Beitrag ist",
@@ -1154,10 +1125,6 @@
     }
   },
   "joinPayment": {
-    "applePay": {
-      "description": "Mitgliedschaft",
-      "recurringLabel": "Regelmäßiger Beitrag"
-    },
     "genericError": "Upps! Etwas ist schiefgelaufen. Bitte wenden Sie sich an den Support, sollte das erneut passieren.",
     "goBack": "Möchten Sie etwas ändern? {back}",
     "goBackButton": "Zurück zum letzten Schritt",
@@ -1185,10 +1152,6 @@
   "membershipBuilder": {
     "steps": {
       "accountConfirmation": {
-        "deliveryAddress": {
-          "showOptIn": "Nach Adresse fragen",
-          "title": "Adresse"
-        },
         "description": "Stelle ein, welche persönlichen Informationen Du über deine Mitglieder sammeln willst.",
         "joinSurvey": {
           "required": "Die Mitglieder müssen den Fragebogen ausfüllen, ehe sie fortfahren können.",
@@ -1198,19 +1161,11 @@
           "textIntro": "Erkläre deinen Mitgliedern kurz, warum du weitere Informationen von ihnen haben möchtest.",
           "title": "Anmelde-Fragebogen"
         },
-        "newsletter": {
-          "groups": {
-            "add": "Neue Gruppe hinzufügen",
-            "help": "<p>Du kannst Nutzer entscheiden lassen, welche Newsletter-Gruppe sie abonnieren möchten. Die Gruppen müssen zuvor in Mailchimp eingerichtet werden. Wende dich an <a href=\"mailto:support{'@'}beabee.io\">support{'@'}beabee.io</a>, wenn du dabei Hilfe benötigst.</p>\n",
-            "title": "Newsletter-Gruppe"
-          },
-          "optInDisabled": "Der Text wird nicht genutzt, wenn die Newsletter-Gruppen sichtbar sind.",
-          "showOptIn": "Nach Newsletterabonnement fragen",
-          "title": "Newsletter"
-        },
         "optInLabel": "Beschriftung Kontrollkästchen ",
         "optInText": "Text",
         "optInTitle": "Überschrift",
+        "showMailOptIn": "Nach Adresse fragen",
+        "showNewsletterOptIn": "Nach Newsletterabonnement fragen",
         "text": "Neue Mitglieder müssen ihre Registrierung in folgendem Bildschirm bestätigen. Außerdem werden hier persönliche Informationen abgefragt.",
         "title": "Persönliche Informationen abfragen",
         "welcomeMessage": "Willkommensnachricht"
@@ -1320,11 +1275,6 @@
       "label": "Kreditkarte",
       "setLabel": "Ihre Kreditkartendetails"
     },
-    "s_ideal": {
-      "changeLabel": "iDEAL ändern",
-      "label": "iDEAL",
-      "setLabel": "Ihre iDEAL-Daten"
-    },
     "s_paypal": {
       "changeLabel": "PayPal ändern",
       "label": "PayPal",
@@ -1374,6 +1324,7 @@
   },
   "roleEditor": {
     "add": "Rolle hinzufügen",
+    "addNewRole": "Neue Rolle hinzufügen",
     "confirmDelete": {
       "text": "Bist Du sicher, dass Du diese Rolle entfernen willst?",
       "title": "Rolle entfernen"
@@ -1402,23 +1353,12 @@
   },
   "tagEditor": {
     "add": "Tag hinzufügen",
+    "addNewTag": "Tag hinzufügen",
     "confirmDelete": {
-      "text_contact": "Sind Sie sicher, dass Sie diesen Tag entfernen wollen? Jeder Kontakt mit dem Tag \"{tagName}\" wird den Tag verlieren.",
-      "text_global": "Sind Sie sicher, dass Sie den Tag \"{tagName}\" entfernen wollen?",
-      "text_response": "Sind Sie sicher, dass Sie diesen Tag entfernen wollen? Jede Antwort mit dem Tag \"{tagName}\" wird den Tag verlieren.",
+      "text": "Bist du sicher, dass du diesen Tag entfernen willst? Die damit getaggten Antworten werden nicht gelöscht.",
       "title": "Tag entfernen"
     },
     "name": "Name"
-  },
-  "tags": {
-    "manageTags": "Tags bearbeiten",
-    "noTags": "Keine Tags",
-    "notifications": {
-      "addedTag": "Tag \"{tag}\" hinzugefügt",
-      "removedTag": "Tag \"{tag}\" entfernt"
-    },
-    "searchTag": "Getaggt mit...",
-    "toggleTag": "Tag hinzufügen / entfernen"
   },
   "taxRate": {
     "invoiceName": "MwSt"

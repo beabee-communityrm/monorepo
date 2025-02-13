@@ -90,7 +90,7 @@
                 :current-slide-no="currentSlideNo"
                 :is-first="isFirstSlide"
                 :is-last="isLastSlide"
-                :locales="steps.settings.data.locales"
+                :locales="tabs.settings.data.locales"
               />
             </div>
             <div class="flex justify-between">
@@ -109,7 +109,7 @@
               </AppButton>
             </div>
             <div
-              v-if="steps.settings.data.locales.length > 0"
+              v-if="tabs.settings.data.locales.length > 0"
               class="my-4 bg-white p-6 shadow-md"
             >
               <AppSubHeading>
@@ -122,7 +122,7 @@
               <FormBuilderTranslations
                 v-model="data.componentText"
                 :components="currentSlide.components"
-                :locales="steps.settings.data.locales"
+                :locales="tabs.settings.data.locales"
               />
             </div>
           </div>
@@ -138,7 +138,7 @@ import useVuelidate from '@vuelidate/core';
 import { ref, watch } from 'vue';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import type { CalloutSteps, ContentStepProps } from '../callouts.interface';
+import type { CalloutTabs, ContentStepProps } from '../callouts.interface';
 import { AppNotification, AppCheckbox } from '@beabee/vue/components';
 import FormBuilder from '../../../../form-builder/FormBuilder.vue';
 import {
@@ -161,7 +161,7 @@ import AppSubHeading from '@components/AppSubHeading.vue';
 const emit = defineEmits(['update:error', 'update:validated']);
 const props = defineProps<{
   data: ContentStepProps;
-  steps: CalloutSteps;
+  tabs: CalloutTabs;
   status: ItemStatus | undefined;
 }>();
 

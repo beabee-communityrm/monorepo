@@ -737,7 +737,7 @@
   "createCallout": {
     "lastSaved": "Zuletzt vor {duration} gespeichert.",
     "lastSavedNow": "Zuletzt vor wenigen Augenblicken gespeichert.",
-    "steps": {
+    "tabs": {
       "content": {
         "title": "Inhalt"
       },

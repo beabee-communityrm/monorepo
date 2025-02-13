@@ -268,7 +268,7 @@ import {
 } from '@beabee/vue/components';
 import AppFormSection from '../../../../forms/AppFormSection.vue';
 import {
-  type CalloutSteps,
+  type CalloutTabs,
   type SettingsStepProps,
   buckets,
 } from '../callouts.interface';
@@ -285,18 +285,18 @@ const props = defineProps<{
   data: SettingsStepProps;
   status: ItemStatus | undefined;
   isActive: boolean;
-  steps: CalloutSteps;
+  tabs: CalloutTabs;
 }>();
 
 const { t } = useI18n();
-const inputT = (key: string) => t('createCallout.steps.settings.inputs.' + key);
+const inputT = (key: string) => t('createCallout.tabs.settings.inputs.' + key);
 
 // Force step to stay unvalidated until it is visited for new callouts
 const hasVisited = ref(!!props.status);
 watch(toRef(props, 'isActive'), (active) => (hasVisited.value ||= active));
 
 const formComponentItems = computed(() =>
-  getCalloutComponents(props.steps.content.data)
+  getCalloutComponents(props.tabs.content.data)
     .filter((c) => c.input)
     .map((c) => ({
       id: c.fullKey,

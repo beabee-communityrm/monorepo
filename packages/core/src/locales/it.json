@@ -6,16 +6,10 @@
     "mfa": {
       "codeInput": {},
       "confirmDelete": {},
-      "createUnknownErrorNotification": "L'autenticazione a 2 fattori non è stata attivata a causa di un errore sconosciuto. Prova di nuovo o contatta il supporto",
-      "deleteUnknownErrorNotification": "L'autenticazione a 2 fattori non è stata rimossa a causa di un errore sconosciuto. Prova di nuovo o contatta il supporto",
       "enterCode": {},
-      "modalTitle": "Attiva autenticazione a 2 fattori",
-      "result": {
-        "successful": "L'autenticazione a 2 fattori è stata attivata"
-      },
+      "result": {},
       "scan": {},
       "secretInput": {},
-      "title": "Autenticazione a 2 fattori",
       "validateButton": {}
     },
     "newsletter": {
@@ -29,12 +23,7 @@
   "actions": {
     "add": "Aggiungi",
     "back": "Indietro",
-    "changePassword": "Modifica la password",
-    "close": "Chiudi",
     "continue": "Prosegui",
-    "disable": "Disattiva",
-    "enable": "Attiva",
-    "sendEmails": "Invia e-mail",
     "update": "Aggiorna"
   },
   "addContact": {
@@ -72,7 +61,7 @@
     }
   },
   "advancedSearch": {
-    "createFiltersType": {},
+    "matchType": {},
     "matchWord": {},
     "operators": {
       "all": {},
@@ -129,9 +118,6 @@
     "notifications": {}
   },
   "calloutResponsesPage": {},
-  "calloutReviewerManager": {
-    "confirmDelete": {}
-  },
   "callouts": {
     "archive": "Archivio",
     "data": {
@@ -139,9 +125,7 @@
       "endDate": "Data fine"
     },
     "noArchivedCallouts": "Nessuna callout",
-    "search": "Cerca un callout",
-    "showAll": "Tutti",
-    "showAnswered": "Completati"
+    "search": "Cerca un callout"
   },
   "calloutsAdmin": {
     "data": {},
@@ -149,7 +133,7 @@
   },
   "common": {
     "backToHome": "Torna alla home",
-    "contributing": "Il tuo contributo",
+    "contributing": "Contribuire a",
     "contributionPeriod": {
       "annually": "all'anno",
       "monthly": "al mese"
@@ -161,7 +145,6 @@
       "none": "Nessuno"
     },
     "hello": "Ciao",
-    "id": "ID",
     "joined": "Iscritto",
     "loading": "Caricamento...",
     "login": "Login",
@@ -202,9 +185,6 @@
     "until": "fino",
     "yes": "Sì"
   },
-  "contactAccount": {
-    "confirmDelete": {}
-  },
   "contactContribution": {
     "confirmCancel": {
       "confirm": "Sì, sono sicuro",
@@ -215,26 +195,17 @@
   },
   "contactOverview": {
     "annotation": {},
-    "newsletter": {},
     "security": {
       "mfa": {}
     }
   },
   "contacts": {
-    "advancedSearch": {},
     "data": {},
-    "dataGroup": {
-      "callout": "Callout",
-      "contact": "Informazioni di contatto"
-    }
+    "dataGroup": {}
   },
   "contribution": {
-    "cancelContribution": "Cancella il tuo contributo",
-    "cancelDescription": "Cancellando il tuo contributo, la tua membership terminerà alla fine del ciclo di pagamento, il {date}.",
     "contributing": "Il tuo contributo è",
-    "paymentHistory": {
-      "title": "Cronologia dei pagamenti"
-    },
+    "paymentHistory": {},
     "paymentMethod": "Metodo di pagamento",
     "restartContribution": "Ripristina contributo",
     "startContribution": "Avvia contirbuto",
@@ -389,7 +360,7 @@
     "title": "Home",
     "viewAllCallouts": "Vedi tutte le callout",
     "viewOpenCallouts": "Vedi le callout in corso",
-    "welcome": "Ben fatto {firstName}!",
+    "welcome": "Benvenutə!",
     "yourProfile": "Il tuo profilo"
   },
   "item": {
@@ -417,10 +388,6 @@
     "tax": {}
   },
   "joinPayment": {
-    "applePay": {
-      "description": "Membership",
-      "recurringLabel": "Donazione ricorrente"
-    },
     "genericError": "Ops! Qualcosa è andato storto",
     "goBack": "Ti sei perso qualcosa? {back}",
     "goBackButton": "Torna alla schermata precedente",
@@ -448,12 +415,7 @@
   "membershipBuilder": {
     "steps": {
       "accountConfirmation": {
-        "deliveryAddress": {},
-        "joinSurvey": {},
-        "newsletter": {
-          "groups": {},
-          "title": "Newsletter"
-        }
+        "joinSurvey": {}
       },
       "emails": {},
       "intro": {},
@@ -466,7 +428,7 @@
     "adminSettings": "Impostazioni",
     "callouts": "Callout",
     "contacts": "Contatti",
-    "contribution": "Il tuo contributo",
+    "contribution": "Contribuisci",
     "dashboard": "Dashboard",
     "home": "Home",
     "legacyApp": "Vecchia dashboard",
@@ -495,13 +457,9 @@
       "label": "Addebito diretto"
     },
     "s_card": {
-      "changeLabel": "Modifica i dettagli della carta",
       "label": "Carta di credito"
     },
-    "s_ideal": {},
-    "s_paypal": {
-      "label": "PayPal"
-    },
+    "s_paypal": {},
     "s_sepa": {
       "label": "Addebito diretto"
     }
@@ -533,9 +491,6 @@
   },
   "tagEditor": {
     "confirmDelete": {}
-  },
-  "tags": {
-    "notifications": {}
   },
   "taxRate": {
     "invoiceName": "VAT"

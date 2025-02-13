@@ -17,7 +17,7 @@
       <AppFormSection :help="inputT('title.help')">
         <LocaleInput
           v-model="data.thankYouTitle"
-          :locales="steps.settings.data.locales"
+          :locales="tabs.settings.data.locales"
           :label="inputT('title.label')"
           :placeholder="inputT('title.placeholder')"
           required
@@ -27,7 +27,7 @@
       <AppFormSection :help="inputT('text.help')">
         <LocaleRichTextEditor
           v-model="data.thankYouText"
-          :locales="steps.settings.data.locales"
+          :locales="tabs.settings.data.locales"
           :label="inputT('text.label')"
           :placeholder="inputT('text.placeholder')"
           required
@@ -37,7 +37,7 @@
     <AppFormSection v-else :help="inputT('url.help')">
       <LocaleInput
         v-model="data.thankYouRedirect"
-        :locales="steps.settings.data.locales"
+        :locales="tabs.settings.data.locales"
         :label="inputT('url.label')"
         :placeholder="inputT('url.placeholder')"
         type="url"
@@ -52,17 +52,17 @@ import useVuelidate from '@vuelidate/core';
 import { watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { AppRadioGroup } from '@beabee/vue/components';
-import type { CalloutSteps, EndMessageStepProps } from '../callouts.interface';
+import type { CalloutTabs, EndMessageStepProps } from '../callouts.interface';
 import AppFormSection from '../../../../forms/AppFormSection.vue';
 import LocaleRichTextEditor from '@components/forms/LocaleRichTextEditor.vue';
 import LocaleInput from '@components/forms/LocaleInput.vue';
 
 const emit = defineEmits(['update:error', 'update:validated']);
-defineProps<{ data: EndMessageStepProps; steps: CalloutSteps }>();
+defineProps<{ data: EndMessageStepProps; tabs: CalloutTabs }>();
 
 const { t } = useI18n();
 const inputT = (key: string) =>
-  t('createCallout.steps.endMessage.inputs.' + key);
+  t('createCallout.tabs.endMessage.inputs.' + key);
 
 const validation = useVuelidate();
 
