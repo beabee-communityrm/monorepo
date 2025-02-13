@@ -6,11 +6,11 @@ meta:
 </route>
 
 <template>
-  <div v-if="steps">
+  <div v-if="tabs">
     <PageTitle
       :title="
         status
-          ? t('editCallout.title', { title: steps.titleAndImage.title.default })
+          ? t('editCallout.title', { title: tabs.titleAndImage.title.default })
           : t('createCallout.title')
       "
       border
@@ -37,7 +37,7 @@ meta:
         </AppAsyncButton>
       </div>
     </PageTitle>
-    <CalloutTabs :steps-props="steps" :status="status" />
+    <CalloutTabs :tabs-props="tabs" :status="status" />
   </div>
 </template>
 
@@ -47,7 +47,7 @@ import { ref, onBeforeMount, computed, onBeforeUnmount } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import { client } from '@utils/api';
-import type { CalloutStepsProps } from '../../../components/pages/admin/callouts/callouts.interface';
+import type { CalloutTabsProps } from '../../../components/pages/admin/callouts/callouts.interface';
 import CalloutTabs from '../../../components/pages/admin/callouts/CalloutTabs.vue';
 import {
   convertCalloutToSteps,
@@ -68,7 +68,7 @@ const validation = useVuelidate();
 
 addBreadcrumb(
   computed(() =>
-    steps.value
+    tabs.value
       ? [
           {
             title: t('menu.callouts'),
@@ -78,7 +78,7 @@ addBreadcrumb(
           ...(props.id
             ? [
                 {
-                  title: steps.value.titleAndImage.title.default,
+                  title: tabs.value.titleAndImage.title.default,
                   to: '/admin/callouts/view/' + props.id,
                 },
                 {
@@ -97,7 +97,7 @@ addBreadcrumb(
   )
 );
 
-const steps = ref<CalloutStepsProps>();
+const tabs = ref<CalloutTabsProps>();
 const status = ref<ItemStatus>();
 const lastSaved = ref<Date>();
 
@@ -105,11 +105,10 @@ const now = ref(new Date());
 
 const canStartNow = computed(
   () =>
-    steps.value &&
-    (steps.value.dates.startNow ||
-      new Date(
-        steps.value.dates.startDate + 'T' + steps.value.dates.startTime
-      ) <= now.value)
+    tabs.value &&
+    (tabs.value.dates.startNow ||
+      new Date(tabs.value.dates.startDate + 'T' + tabs.value.dates.startTime) <=
+        now.value)
 );
 
 const isLive = computed(
@@ -135,10 +134,10 @@ const updateAction = computed(() =>
 );
 
 async function saveCallout(asDraft = false) {
-  // Handler can't be called if steps aren't set
-  if (!steps.value) throw new Error('Steps are not set');
+  // Handler can't be called if tabs aren't set
+  if (!tabs.value) throw new Error('Steps are not set');
 
-  const data = convertStepsToCallout(steps.value);
+  const data = convertStepsToCallout(tabs.value);
 
   if (!data.variants.default.title) {
     data.variants.default.title = t('createCallout.untitledCallout');
@@ -194,8 +193,8 @@ async function handlePreview() {
 }
 
 async function reset() {
-  // Clear any existing steps data to force form reset
-  steps.value = undefined;
+  // Clear any existing tabs data to force form reset
+  tabs.value = undefined;
 
   const callout = props.id
     ? await client.callout.get(props.id, [
@@ -204,7 +203,7 @@ async function reset() {
         'variants',
       ])
     : undefined;
-  steps.value = convertCalloutToSteps(callout);
+  tabs.value = convertCalloutToSteps(callout);
   status.value = callout?.status;
 }
 

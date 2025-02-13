@@ -484,7 +484,7 @@
     "willRenewWithNewAmount": "A tua contribuição vai renovar automaticamente a {renewalDate}, passando para a nova quantia de {nextAmount}."
   },
   "createCallout": {
-    "steps": {
+    "tabs": {
       "content": {},
       "dates": {
         "inputs": {
