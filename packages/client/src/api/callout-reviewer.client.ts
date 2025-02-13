@@ -1,15 +1,17 @@
 import { BaseClient } from "./base.client.js";
 import { cleanUrl } from "../utils/index.js";
 import type { BaseClientOptions } from "../types/index.js";
-import type { GetCalloutReviewerData, Serial } from "../deps.js";
+import type { GetCalloutReviewerData, Serial } from "@beabee/beabee-common";
 
 /**
  * Client for managing callout reviewer operations
  */
 export class CalloutReviewerClient extends BaseClient {
   constructor(protected override readonly options: BaseClientOptions) {
-    options.path = cleanUrl(options.path + "/callout");
-    super(options);
+    super({
+      ...options,
+      path: cleanUrl(options.path + "/callout")
+    });
   }
 
   /**
@@ -54,7 +56,7 @@ export class CalloutReviewerClient extends BaseClient {
    * @param calloutId The ID or slug of the callout
    * @param reviewerId The ID of the reviewer to remove
    */
-  async remove(calloutId: string, reviewerId: string): Promise<void> {
+  async delete(calloutId: string, reviewerId: string): Promise<void> {
     await this.fetch.delete(`/${calloutId}/reviewers/${reviewerId}`);
   }
 }

@@ -103,11 +103,9 @@ import AppHeading from '@components/AppHeading.vue';
 import KeyStat from '@components/pages/admin/KeyStat.vue';
 import { computed, onBeforeMount, ref } from 'vue';
 
-import { fetchContacts } from '@utils/api/contact';
+import { client } from '@utils/api';
 import HintBox from '@components/pages/admin/HintBox.vue';
-import { fetchCallouts } from '@utils/api/callout';
 import CalloutSummary from '@components/callout/CalloutSummary.vue';
-import { fetchStats } from '@utils/api/stats';
 import { subDays } from 'date-fns';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { faChartLine } from '@fortawesome/free-solid-svg-icons';
@@ -131,13 +129,13 @@ const recentMembers = ref<GetContactData[]>([]);
 const latestCallout = ref<GetCalloutDataWith<'responseCount'> | null>();
 
 onBeforeMount(async () => {
-  stats.value = await fetchStats({
+  stats.value = await client.stats.list({
     from: subDays(new Date(), 30),
     to: new Date(),
   });
 
   recentMembers.value = (
-    await fetchContacts({
+    await client.contact.list({
       limit: 5,
       sort: 'joined',
       order: 'DESC',
@@ -150,7 +148,7 @@ onBeforeMount(async () => {
     })
   ).items;
 
-  const callouts = await fetchCallouts(
+  const callouts = await client.callout.list(
     {
       limit: 1,
       sort: 'starts',

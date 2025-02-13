@@ -33,19 +33,10 @@ import { GetCalloutResponseCommentDto } from "../dto/CalloutResponseCommentDto";
 import { GetCalloutTagDto } from "../dto/CalloutTagDto";
 
 import { Callout } from "@beabee/core/models";
-
+import { GetCalloutResponseWith } from "@beabee/beabee-common";
 export interface BaseGetCalloutResponseOptsDto {
   callout?: Callout;
   isReviewer?: boolean;
-}
-
-export enum GetCalloutResponseWith {
-  Answers = "answers",
-  Assignee = "assignee",
-  Callout = "callout",
-  Contact = "contact",
-  LatestComment = "latestComment",
-  Tags = "tags"
 }
 
 export class GetCalloutResponseOptsDto {

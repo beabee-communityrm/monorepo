@@ -9,7 +9,7 @@ import type {
   GetPaymentWith,
   Paginated,
   Serial
-} from "../deps.js";
+} from "@beabee/beabee-common";
 
 /**
  * Client for managing payments
@@ -22,8 +22,10 @@ export class PaymentClient extends BaseClient {
    * @param options - The client options
    */
   constructor(protected override readonly options: BaseClientOptions) {
-    options.path = cleanUrl(options.path + "/payment");
-    super(options);
+    super({
+      ...options,
+      path: cleanUrl(options.path + "/payment")
+    });
   }
 
   /**
@@ -33,7 +35,6 @@ export class PaymentClient extends BaseClient {
    */
   static deserialize<With extends GetPaymentWith = void>(
     // TODO: how to make this type safe?
-    // deno-lint-ignore no-explicit-any
     payment: Serial<GetPaymentDataWith<With>> | any
   ): GetPaymentDataWith<With> {
     return {
@@ -59,7 +60,7 @@ export class PaymentClient extends BaseClient {
   ): Promise<Paginated<GetPaymentDataWith<With>>> {
     const { data } = await this.fetch.get<
       Paginated<Serial<GetPaymentDataWith<With>>>
-    >("", { params: { with: _with, ...query } });
+    >("", { with: _with, ...query });
 
     return {
       ...data,

@@ -13,7 +13,7 @@ import type {
   RuleGroup,
   Serial,
   UpdateCalloutResponseData
-} from "../deps.js";
+} from "@beabee/beabee-common";
 
 /**
  * Client for managing callout responses
@@ -29,8 +29,10 @@ export class CalloutResponseClient extends BaseClient {
    * @param options - The client options including API path
    */
   constructor(protected override readonly options: BaseClientOptions) {
-    options.path = cleanUrl(options.path + "/callout-responses");
-    super(options);
+    super({
+      ...options,
+      path: cleanUrl(options.path + "/callout-responses")
+    });
     this.comment = new CalloutResponseCommentClient(options);
   }
 
@@ -40,9 +42,8 @@ export class CalloutResponseClient extends BaseClient {
    * @param response - The serialized response data
    * @returns The deserialized response with proper date objects and nested entities
    */
-  static deserialize<With extends GetCalloutResponseWith = void>(
+  static deserialize<With extends GetCalloutResponseWith | void = void>(
     // TODO: how to make this type safe like Serial<GetCalloutResponseDataWith<With>>
-    // deno-lint-ignore no-explicit-any
     response: any
   ): GetCalloutResponseDataWith<With> {
     return {
@@ -70,7 +71,7 @@ export class CalloutResponseClient extends BaseClient {
    * @param _with - Optional relations to include in the response
    * @returns A paginated list of responses
    */
-  async list<With extends GetCalloutResponseWith = void>(
+  async list<With extends GetCalloutResponseWith | void = void>(
     query: GetCalloutResponsesQuery = {},
     _with?: readonly With[]
   ): Promise<Paginated<GetCalloutResponseDataWith<With>>> {
@@ -108,7 +109,7 @@ export class CalloutResponseClient extends BaseClient {
    * @param _with - Optional relations to include
    * @returns The response data with requested relations
    */
-  async get<With extends GetCalloutResponseWith = void>(
+  async get<With extends GetCalloutResponseWith | void = void>(
     id: string,
     _with?: readonly With[]
   ): Promise<GetCalloutResponseDataWith<With>> {

@@ -96,8 +96,7 @@ import AppAddress from '../AppAddress.vue';
 import ContactBasicFields from './ContactBasicFields.vue';
 import ContactMailOptIn from './ContactMailOptIn.vue';
 import AppHeading from '../AppHeading.vue';
-import { fetchContent } from '../../utils/api/content';
-import { fetchContact, updateContact } from '../../utils/api/contact';
+import { client } from '@utils/api';
 import AppRadioGroup from '../forms/AppRadioGroup.vue';
 import AppForm from '../forms/AppForm.vue';
 import AppNotification from '../AppNotification.vue';
@@ -112,7 +111,7 @@ const { t } = useI18n();
 
 const isAdmin = computed(() => props.id !== 'me');
 
-const accountContent = await fetchContent('join/setup');
+const accountContent = await client.content.get('join/setup');
 
 const currentNewsletterStatus = ref(NewsletterStatus.None);
 
@@ -132,7 +131,7 @@ const data = reactive({
 watch(
   toRef(props, 'id'),
   async (id) => {
-    const contact = await fetchContact(id, [GetContactWith.Profile]);
+    const contact = await client.contact.get(id, [GetContactWith.Profile]);
 
     data.emailAddress = contact.email;
     data.firstName = contact.firstname;
@@ -159,7 +158,7 @@ async function handleSubmit() {
       ? NewsletterStatus.Unsubscribed
       : NewsletterStatus.Subscribed);
 
-  await updateContact(props.id, {
+  await client.contact.update(props.id, {
     email: data.emailAddress,
     firstname: data.firstName,
     lastname: data.lastName,

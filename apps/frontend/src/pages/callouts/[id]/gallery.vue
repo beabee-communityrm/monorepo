@@ -74,7 +74,7 @@ import CalloutShowResponsePanel from '@components/pages/callouts/CalloutShowResp
 import CalloutIntroPanel from '@components/pages/callouts/CalloutIntroPanel.vue';
 import CalloutMapHeader from '@components/pages/callouts/CalloutMapHeader.vue';
 
-import { fetchResponsesForMap } from '@utils/api/callout';
+import { client } from '@utils/api';
 
 import { isEmbed } from '@store';
 import type {
@@ -113,7 +113,7 @@ onBeforeMount(async () => {
 
   // TODO: pagination
   responses.value = (
-    await fetchResponsesForMap(props.callout.slug)
+    await client.callout.listResponsesForMap(props.callout.slug)
   ).items.filter((i) => i.photos.length > 0);
 
   if (!route.query.noIntro) {

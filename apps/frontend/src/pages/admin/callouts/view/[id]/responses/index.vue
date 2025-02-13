@@ -149,7 +149,11 @@ meta:
             item,
           }: {
             item: GetCalloutResponseDataWith<
-              'answers' | 'assignee' | 'contact' | 'latestComment' | 'tags'
+              | GetCalloutResponseWith.Answers
+              | GetCalloutResponseWith.Assignee
+              | GetCalloutResponseWith.Contact
+              | GetCalloutResponseWith.LatestComment
+              | GetCalloutResponseWith.Tags
             >;
           }"
         >
@@ -198,12 +202,12 @@ meta:
 import {
   type GetCalloutDataWith,
   type GetCalloutResponseDataWith,
-  type GetCalloutResponseWith,
   type Paginated,
   type Rule,
   type RuleGroup,
   stringifyAnswer,
   type UpdateCalloutResponseData,
+  GetCalloutResponseWith,
 } from '@beabee/beabee-common';
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -217,9 +221,8 @@ import {
 } from '@components/pages/admin/callout-responses.interface';
 import AppSearch from '@components/search/AppSearch.vue';
 
-import { fetchResponses } from '@utils/api/callout';
+import { client } from '@utils/api';
 import AppButtonGroup from '@components/button/AppButtonGroup.vue';
-import { updateCalloutResponses } from '@utils/api/callout-response';
 import MoveBucketButton from '@components/pages/admin/callouts/MoveBucketButton.vue';
 import ToggleTagButton from '@components/tag/ToggleTagButton.vue';
 import { buckets } from '@components/pages/admin/callouts/callouts.interface';
@@ -270,7 +273,11 @@ const route = useRoute();
 const responses = ref<
   Paginated<
     GetCalloutResponseDataWith<
-      'answers' | 'assignee' | 'contact' | 'latestComment' | 'tags'
+      | GetCalloutResponseWith.Answers
+      | GetCalloutResponseWith.Assignee
+      | GetCalloutResponseWith.Contact
+      | GetCalloutResponseWith.LatestComment
+      | GetCalloutResponseWith.Tags
     > & {
       selected: boolean;
     }
@@ -449,12 +456,16 @@ async function refreshResponses() {
 
   isRefreshing.value = true;
   try {
-    const _with: GetCalloutResponseWith[] = ['assignee', 'contact', 'tags'];
+    const _with: GetCalloutResponseWith[] = [
+      GetCalloutResponseWith.Assignee,
+      GetCalloutResponseWith.Contact,
+      GetCalloutResponseWith.Tags,
+    ];
     if (showLatestComment.value) {
-      _with.push('latestComment');
+      _with.push(GetCalloutResponseWith.LatestComment);
     }
     if (showInlineAnswer.value) {
-      _with.push('answers');
+      _with.push(GetCalloutResponseWith.Answers);
     }
 
     // Store currently selected IDs before refresh
@@ -462,7 +473,7 @@ async function refreshResponses() {
       selectedResponseItems.value.map((item) => item.id)
     );
 
-    const newResponses = await fetchResponses(
+    const newResponses = await client.callout.listResponses(
       props.callout.slug,
       {
         ...currentPaginatedQuery.query,
@@ -526,7 +537,7 @@ async function handleUpdateAction(
 ): Promise<void> {
   doingAction.value = true;
   try {
-    await updateCalloutResponses(getSelectedResponseRules(), updates);
+    await client.callout.response.updates(getSelectedResponseRules(), updates);
     await refreshResponses();
     addNotification({
       variant: 'success',

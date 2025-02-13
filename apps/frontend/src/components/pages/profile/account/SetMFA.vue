@@ -226,14 +226,8 @@ import { useI18n } from 'vue-i18n';
 import { faMobileAlt } from '@fortawesome/free-solid-svg-icons';
 import { TOTP, Secret } from 'otpauth';
 
-import { fetchContact } from '@utils/api/contact';
-import {
-  createContactMfa,
-  fetchContactMfa,
-  deleteContactMfa,
-} from '@utils/api/contact-mfa';
+import { client, isApiError } from '@utils/api';
 import { CONTACT_MFA_TYPE } from '@beabee/beabee-common';
-import { isRequestError } from '@utils/api/index';
 import { LOGIN_CODES } from '@beabee/beabee-common';
 
 import AppButton from '@components/button/AppButton.vue';
@@ -358,7 +352,7 @@ const closeMFAModal = () => {
  */
 const createMfa = async () => {
   try {
-    await createContactMfa(props.contactId, {
+    await client.contact.mfa.create(props.contactId, {
       secret: totpSecret.value.base32,
       token: userToken.value,
       type: CONTACT_MFA_TYPE.TOTP,
@@ -377,7 +371,7 @@ const createMfa = async () => {
 const disableMfa = async () => {
   disableMfaValidated.value = true;
   try {
-    await deleteContactMfa(props.contactId, {
+    await client.contact.mfa.delete(props.contactId, {
       type: CONTACT_MFA_TYPE.TOTP,
       token: userToken.value,
     });
@@ -425,8 +419,8 @@ const disableMfaAndNotify = async () => {
 /** Called when an error occurs while creating MFA */
 const onCreateError = (error: unknown) => {
   if (
-    isRequestError(error, undefined, [401]) &&
-    error.response.data.code === LOGIN_CODES.INVALID_TOKEN
+    isApiError(error, undefined, [401]) &&
+    error.code === LOGIN_CODES.INVALID_TOKEN
   ) {
     // If server says the token is invalid, set the token as invalid and go to the previous slide
     setValidationStates(false);
@@ -444,7 +438,7 @@ const onCreateError = (error: unknown) => {
 
 const onDeleteError = (error: unknown) => {
   if (
-    isRequestError(
+    isApiError(
       error,
       [LOGIN_CODES.INVALID_TOKEN, LOGIN_CODES.MISSING_TOKEN],
       [400, 401]
@@ -587,12 +581,14 @@ const validationStepsDone = computed(() => {
 watch(
   toRef(props, 'contactId'),
   async (contactId) => {
-    const contact = await fetchContact(contactId, [GetContactWith.Profile]);
+    const contact = await client.contact.get(contactId, [
+      GetContactWith.Profile,
+    ]);
     totpIdentity.value.issuer =
       generalContent.value.organisationName || 'beabee';
     totpIdentity.value.label = contact.email;
 
-    const contactMfa = await fetchContactMfa(contactId);
+    const contactMfa = await client.contact.mfa.get(contactId);
     if (contactMfa && contactMfa.type === CONTACT_MFA_TYPE.TOTP) {
       isEnabled.value = true;
     }

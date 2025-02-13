@@ -26,8 +26,7 @@ import { useRouter } from 'vue-router';
 
 import SetupForm from '@components/pages/join/SetupForm.vue';
 
-import { fetchContent } from '@utils/api/content';
-import { updateContact } from '@utils/api/contact';
+import { client } from '@utils/api';
 
 import { updateCurrentUser } from '@store';
 
@@ -76,7 +75,7 @@ async function handleSubmitSetup(data: SetupContactData) {
     }),
   };
 
-  await updateContact('me', {
+  await client.contact.update('me', {
     email: data.email,
     firstname: data.firstName,
     lastname: data.lastName,
@@ -94,6 +93,6 @@ async function handleSubmitSetup(data: SetupContactData) {
 }
 
 onBeforeMount(async () => {
-  setupContent.value = await fetchContent('join/setup');
+  setupContent.value = await client.content.get('join/setup');
 });
 </script>

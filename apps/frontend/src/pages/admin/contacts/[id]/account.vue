@@ -55,7 +55,7 @@ import { useRouter } from 'vue-router';
 import ContactUpdateAccount from '@components/contact/ContactUpdateAccount.vue';
 import App2ColGrid from '@components/App2ColGrid.vue';
 import AppConfirmDialog from '@components/AppConfirmDialog.vue';
-import { deleteContact } from '@utils/api/contact';
+import { client } from '@utils/api';
 import ActionButton from '@components/button/ActionButton.vue';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { addNotification } from '@store/notifications';
@@ -69,7 +69,7 @@ const router = useRouter();
 const showDeleteModal = ref(false);
 
 async function handleDelete() {
-  await deleteContact(props.contact.id);
+  await client.contact.delete(props.contact.id);
   addNotification({
     variant: 'success',
     title: t('contactAccount.contactDeleted'),

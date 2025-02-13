@@ -27,7 +27,7 @@ import { useRouter } from 'vue-router';
 import NoticeForm from '@components/notice/NoticeForm.vue';
 import PageTitle from '@components/PageTitle.vue';
 
-import { updateNotice, fetchNotice } from '@utils/api/notice';
+import { client } from '@utils/api';
 
 import { addBreadcrumb } from '@store/breadcrumb';
 import { addNotification } from '@store/notifications';
@@ -55,12 +55,12 @@ addBreadcrumb(
 );
 
 onBeforeMount(async () => {
-  notice.value = await fetchNotice(props.id as string);
+  notice.value = await client.notice.get(props.id);
 });
 
 async function handleSubmit(formData: CreateNoticeData) {
   if (!notice.value) return; // ToDo: Redirect to 404 if notice could not be fetched
-  await updateNotice(notice.value.id, formData);
+  await client.notice.update(notice.value.id, formData);
   addNotification({
     variant: 'success',
     title: t('noticeAdminOverview.updated'),

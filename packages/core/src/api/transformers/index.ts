@@ -4,6 +4,7 @@
 
 export * from "./AddressTransformer";
 export * from "./ApiKeyTransformer";
+export * from "./AuthTransformer";
 export * from "./BaseCalloutResponseTransformer";
 export * from "./BaseContactTransformer";
 export * from "./BaseTagTransformer";

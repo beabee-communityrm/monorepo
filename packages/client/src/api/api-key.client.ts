@@ -8,7 +8,7 @@ import type {
   GetApiKeysQuery,
   Paginated,
   Serial
-} from "../deps.js";
+} from "@beabee/beabee-common";
 
 export class ApiKeyClient extends BaseClient {
   /**
@@ -16,8 +16,10 @@ export class ApiKeyClient extends BaseClient {
    * @param options - The client options
    */
   constructor(protected override readonly options: BaseClientOptions) {
-    options.path = cleanUrl(options.path + "/api-key");
-    super(options);
+    super({
+      ...options,
+      path: cleanUrl(options.path + "/api-key")
+    });
   }
 
   /**
@@ -54,7 +56,7 @@ export class ApiKeyClient extends BaseClient {
   async list(query?: GetApiKeysQuery): Promise<Paginated<GetApiKeyData>> {
     const { data } = await this.fetch.get<Paginated<Serial<GetApiKeyData>>>(
       "",
-      { params: query }
+      query
     );
 
     return {

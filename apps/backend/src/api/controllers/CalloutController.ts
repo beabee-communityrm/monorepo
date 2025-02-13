@@ -50,7 +50,7 @@ import {
 } from "@beabee/core/api/transformers";
 import { validateOrReject } from "@beabee/core/utils/validation";
 
-import { Callout, Contact } from "@beabee/core/models";
+import { Callout, CalloutResponse, Contact } from "@beabee/core/models";
 
 import { CalloutCaptcha } from "@beabee/beabee-common";
 
@@ -168,10 +168,11 @@ export class CalloutController {
   @OnUndefined(204)
   async createCalloutResponse(
     @CurrentUser({ required: false }) caller: Contact | undefined,
+    @CurrentAuth() auth: AuthInfo,
     @CalloutId() id: string,
     @Body() data: CreateCalloutResponseDto,
     @QueryParam("captchaToken", { required: false }) captchaToken: string
-  ): Promise<void> {
+  ): Promise<GetCalloutResponseDto> {
     const callout = await getRepository(Callout).findOneBy({ id });
     if (!callout) {
       throw new NotFoundError();
@@ -198,17 +199,25 @@ export class CalloutController {
       }
     }
 
+    let response: CalloutResponse;
+
     // TODO: support assignee/bucket/tags on create
     if (!caller || callout.access === "only-anonymous") {
-      await CalloutsService.setGuestResponse(
+      response = await CalloutsService.setGuestResponse(
         callout,
         data.guestName,
         data.guestEmail,
         data.answers
       );
     } else {
-      await CalloutsService.setResponse(callout, caller, data.answers);
+      response = await CalloutsService.setResponse(
+        callout,
+        caller,
+        data.answers
+      );
     }
+
+    return calloutResponseTransformer.convert(response, auth, {});
   }
 
   // TODO: move to CalloutTagController like we did for contact tags?

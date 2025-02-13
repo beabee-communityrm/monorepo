@@ -40,12 +40,10 @@ import useVuelidate from '@vuelidate/core';
 import { helpers, requiredIf, sameAs } from '@vuelidate/validators';
 import { computed, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { instance, isRequestError } from '@utils/api';
-import env from '../../env';
+import { client, ClientApiError } from '@utils/api';
 import AppButton from '../button/AppButton.vue';
 import AppLabel from './AppLabel.vue';
 import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
-import { createUploadFlow } from '../../utils/api/upload';
 import AppInputError from './AppInputError.vue';
 
 const emit = defineEmits(['update:modelValue']);
@@ -85,45 +83,28 @@ watch(toRef(props, 'modelValue'), (newModelValue) => {
 
 async function handleChange() {
   const file = inputRef.value?.files?.item(0);
-
-  if (!file) {
-    return;
-  }
-
-  if (file.size > 20 * 1024 * 1024) {
-    formError.value = t('form.errors.file.tooBig');
-    return;
-  }
-
-  const data = new FormData();
-  data.append('file', file);
+  if (!file) return;
 
   uploading.value = true;
   formError.value = '';
 
   try {
-    const uploadFlow = await createUploadFlow();
-
-    const resp = await instance.post('/upload/', data, {
-      baseURL: env.appUrl,
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-      params: {
-        token: uploadFlow.id,
-      },
-    });
+    const flow = await client.upload.createFlow();
+    const { url } = await client.upload.uploadFile(file, flow.id);
 
     imageUrl.value = URL.createObjectURL(file);
-
-    emit(
-      'update:modelValue',
-      `${resp.data.url}?w=${props.width}&h=${props.height}`
-    );
-  } catch (err) {
-    formError.value = isRequestError(err, undefined, [429])
-      ? t('form.errors.file.rateLimited')
-      : t('form.errorMessages.generic');
+    emit('update:modelValue', `${url}?w=${props.width}&h=${props.height}`);
+  } catch (error) {
+    if (error instanceof ClientApiError) {
+      formError.value =
+        error.code === 'RATE_LIMIT_EXCEEDED'
+          ? t('form.errors.file.rateLimited')
+          : error.code === 'FILE_TOO_LARGE'
+            ? t('form.errors.file.tooBig')
+            : t('form.errorMessages.generic');
+    } else {
+      formError.value = t('form.errorMessages.generic');
+    }
   }
 
   uploading.value = false;

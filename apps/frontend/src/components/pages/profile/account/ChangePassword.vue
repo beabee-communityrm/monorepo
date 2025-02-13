@@ -50,7 +50,7 @@
 <script lang="ts" setup>
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { updateContact } from '../../../../utils/api/contact';
+import { client } from '@utils/api';
 import AppButton from '../../../button/AppButton.vue';
 import AppInput from '../../../forms/AppInput.vue';
 import AppHeading from '../../../AppHeading.vue';
@@ -65,7 +65,7 @@ const password = ref('');
 const confirmPassword = ref('');
 
 async function handleFormSubmit() {
-  await updateContact('me', { password: password.value });
+  await client.contact.update('me', { password: password.value });
   saved.value = true;
   showForm.value = false;
 }

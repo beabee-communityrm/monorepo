@@ -4,6 +4,7 @@
 
 export * from "./AddressDto";
 export * from "./ApiKeyDto";
+export * from "./AuthInfoDto";
 export * from "./BaseDto";
 export * from "./CalloutDto";
 export * from "./CalloutFormDto";

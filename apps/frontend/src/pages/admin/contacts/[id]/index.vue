@@ -287,19 +287,12 @@ import CalloutForm from '@components/pages/callouts/CalloutForm.vue';
 import ToggleTagButton from '@components/tag/ToggleTagButton.vue';
 import TagList from '@components/tag/TagList.vue';
 
-import {
-  deleteRole,
-  fetchContact,
-  updateContact,
-  updateRole,
-  contactTagOperations,
-  updateContacts,
-} from '@utils/api/contact';
+import { client } from '@utils/api';
 import { formatLocale } from '@utils/dates';
-import { fetchContent } from '@utils/api/content';
-import { fetchContactMfa, deleteContactMfa } from '@utils/api/contact-mfa';
-import { CONTACT_MFA_TYPE } from '@beabee/beabee-common';
-import { fetchCallout, fetchResponses } from '@utils/api/callout';
+import {
+  CONTACT_MFA_TYPE,
+  GetCalloutResponseWith,
+} from '@beabee/beabee-common';
 
 import { addNotification } from '@store/notifications';
 
@@ -343,7 +336,7 @@ const disableMfaAndNotify = async () => {
 /** Disable MFA for the contact by the admin */
 const disableMfa = async () => {
   try {
-    await deleteContactMfa(props.contact.id, {
+    await client.contact.mfa.delete(props.contact.id, {
       type: CONTACT_MFA_TYPE.TOTP,
     });
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -365,10 +358,11 @@ const onDeleteMfaError = () => {
 };
 
 const joinSurvey = ref<GetCalloutDataWith<'form'>>();
-const joinSurveyResponse = ref<GetCalloutResponseDataWith<'answers'>>();
+const joinSurveyResponse =
+  ref<GetCalloutResponseDataWith<GetCalloutResponseWith.Answers>>();
 
 async function handleUpdateAbout() {
-  await updateContact(props.contact.id, { profile: contactAbout });
+  await client.contact.update(props.contact.id, { profile: contactAbout });
 }
 
 async function handleSecurityAction() {
@@ -377,17 +371,21 @@ async function handleSecurityAction() {
 }
 
 async function handleUpdateRole(roleName: RoleType, role: ContactRoleData) {
-  await handleChangedRoles(() => updateRole(props.contact.id, roleName, role));
+  await handleChangedRoles(() =>
+    client.contact.role.update(props.contact.id, roleName, role)
+  );
 }
 
 async function handleDeleteRole(roleName: RoleType) {
-  await handleChangedRoles(() => deleteRole(props.contact.id, roleName));
+  await handleChangedRoles(() =>
+    client.contact.role.delete(props.contact.id, roleName)
+  );
 }
 
 async function handleChangedRoles(cb: () => Promise<unknown>) {
   changingRoles.value = true;
   await cb();
-  contact.value = await fetchContact(props.contact.id, [
+  contact.value = await client.contact.get(props.contact.id, [
     GetContactWith.Profile,
     GetContactWith.Contribution,
     GetContactWith.Roles,
@@ -406,7 +404,7 @@ async function handleToggleTag(tagId: string, successText: string) {
 
   changingTags.value = true;
   try {
-    await updateContacts(
+    await client.contact.updateMany(
       {
         condition: 'AND',
         rules: [{ field: 'id', operator: 'equal', value: [contact.value.id] }],
@@ -415,7 +413,7 @@ async function handleToggleTag(tagId: string, successText: string) {
     );
 
     // Refresh contact data
-    contact.value = await fetchContact(props.contact.id, [
+    contact.value = await client.contact.get(props.contact.id, [
       GetContactWith.Profile,
       GetContactWith.Contribution,
       GetContactWith.Roles,
@@ -429,7 +427,7 @@ async function handleToggleTag(tagId: string, successText: string) {
 }
 
 onBeforeMount(async () => {
-  contact.value = await fetchContact(props.contact.id, [
+  contact.value = await client.contact.get(props.contact.id, [
     GetContactWith.Profile,
     GetContactWith.Contribution,
     GetContactWith.Roles,
@@ -438,19 +436,19 @@ onBeforeMount(async () => {
   contactAbout.notes = contact.value.profile.notes || '';
   contactAbout.description = contact.value.profile.description || '';
 
-  contactTags.value = (await fetchContent('contacts')).tags;
+  contactTags.value = (await client.content.get('contacts')).tags;
 
   // Fetch MFA information
-  const contactMfa = await fetchContactMfa(props.contact.id);
+  const contactMfa = await client.contact.mfa.get(props.contact.id);
   if (contactMfa && contactMfa.type === CONTACT_MFA_TYPE.TOTP) {
     mfa.value.isEnabled = true;
   }
 
-  setupContent.value = await fetchContent('join/setup');
+  setupContent.value = await client.content.get('join/setup');
   const joinSurveySlug = setupContent.value.surveySlug;
   if (joinSurveySlug) {
-    joinSurvey.value = await fetchCallout(joinSurveySlug, ['form']);
-    const responses = await fetchResponses(
+    joinSurvey.value = await client.callout.get(joinSurveySlug, ['form']);
+    const responses = await client.callout.listResponses(
       joinSurveySlug,
       {
         limit: 1,
@@ -463,12 +461,12 @@ onBeforeMount(async () => {
           ],
         },
       },
-      ['answers']
+      [GetCalloutResponseWith.Answers]
     );
     joinSurveyResponse.value = responses.items[0];
   }
 
-  const tags = await contactTagOperations.fetchTags();
+  const tags = await client.contact.tag.list();
   tagItems.value = tags.map((tag) => ({
     id: tag.id,
     label: tag.name,

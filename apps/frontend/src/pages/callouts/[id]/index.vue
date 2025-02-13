@@ -104,7 +104,8 @@ import AppMessageBox from '@components/AppMessageBox.vue';
 import AppHeading from '@components/AppHeading.vue';
 import AppTitle from '@components/AppTitle.vue';
 
-import { fetchResponses } from '@utils/api/callout';
+import { client } from '@utils/api';
+import { GetCalloutResponseWith } from '@beabee/beabee-common';
 import { formatLocale } from '@utils/dates';
 
 import { currentUser, canAdmin, isEmbed } from '@store';
@@ -166,7 +167,8 @@ const { isOpen, showLoginPrompt, showMemberOnlyPrompt } = useCallout(
   toRef(props, 'callout')
 );
 
-const responses = ref<Paginated<GetCalloutResponseDataWith<'answers'>>>();
+const responses =
+  ref<Paginated<GetCalloutResponseDataWith<GetCalloutResponseWith.Answers>>>();
 const latestResponse = computed(() =>
   props.callout.allowMultiple ? undefined : responses.value?.items?.[0]
 );
@@ -210,7 +212,7 @@ function handleSubmitResponse() {
 onBeforeMount(async () => {
   responses.value =
     !isPreview.value && currentUser.value
-      ? await fetchResponses(
+      ? await client.callout.listResponses(
           props.callout.slug,
           {
             rules: {
@@ -220,7 +222,7 @@ onBeforeMount(async () => {
             sort: 'createdAt',
             order: 'DESC',
           },
-          ['answers']
+          [GetCalloutResponseWith.Answers]
         )
       : { total: 0, count: 0, offset: 0, items: [] };
 });

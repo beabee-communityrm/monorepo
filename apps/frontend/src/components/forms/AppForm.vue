@@ -38,7 +38,7 @@ import useVuelidate from '@vuelidate/core';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { addNotification } from '../../store/notifications';
-import { isRequestError } from '../../utils/api';
+import { isApiError } from '@utils/api';
 import AppNotification from '../AppNotification.vue';
 import AppButton from '../button/AppButton.vue';
 import { LOGIN_CODES } from '@beabee/beabee-common';
@@ -84,11 +84,13 @@ async function handleSubmit(evt: Event) {
       });
     }
   } catch (err) {
-    const errorCode = isRequestError(err, undefined, [400, 401])
-      ? err.response.data.code
+    const errorCode = isApiError(err, undefined, [400, 401])
+      ? err.code
       : 'unknown';
     const errorText =
-      errorMessages.value[errorCode] || errorMessages.value.unknown;
+      errorCode && errorMessages.value[errorCode]
+        ? errorMessages.value[errorCode]
+        : errorMessages.value.unknown;
     if (props.inlineError) {
       inlineErrorText.value = errorText;
     } else {

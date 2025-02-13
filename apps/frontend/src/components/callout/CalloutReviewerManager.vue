@@ -43,11 +43,7 @@ import AppHeading from '@components/AppHeading.vue';
 import AppInput from '@components/forms/AppInput.vue';
 import ItemManager from '@components/item-manager/ItemManager.vue';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
-import {
-  addCalloutReviewer,
-  fetchCalloutReviewers,
-  removeCalloutReviewer,
-} from '@utils/api';
+import { client } from '@utils/api';
 import { reactive, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -64,13 +60,13 @@ const { t } = useI18n();
 const reviewers = ref<GetCalloutReviewerData[]>([]);
 
 async function handleAddReviewer(data: CalloutReviewerFormData) {
-  await addCalloutReviewer(props.calloutId, data.contactId);
-  reviewers.value = await fetchCalloutReviewers(props.calloutId);
+  await client.callout.reviewer.add(props.calloutId, data.contactId);
+  reviewers.value = await client.callout.reviewer.list(props.calloutId);
 }
 
 async function handleDeleteReviewer(reviewer: GetCalloutReviewerData) {
-  await removeCalloutReviewer(props.calloutId, reviewer.id);
-  reviewers.value = await fetchCalloutReviewers(props.calloutId);
+  await client.callout.reviewer.delete(props.calloutId, reviewer.id);
+  reviewers.value = await client.callout.reviewer.list(props.calloutId);
 }
 
 function reviewerToFormData(
@@ -82,6 +78,6 @@ function reviewerToFormData(
 }
 
 watchEffect(async () => {
-  reviewers.value = await fetchCalloutReviewers(props.calloutId);
+  reviewers.value = await client.callout.reviewer.list(props.calloutId);
 });
 </script>

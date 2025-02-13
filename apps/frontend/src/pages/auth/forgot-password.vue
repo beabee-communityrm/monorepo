@@ -60,7 +60,7 @@ import AppButton from '@components/button/AppButton.vue';
 import AppTitle from '@components/AppTitle.vue';
 import AuthBox from '@components/AuthBox.vue';
 
-import { resetPasswordBegin } from '@utils/api/reset-security-flow';
+import { client } from '@utils/api';
 
 const { t } = useI18n();
 const route = useRoute();
@@ -70,7 +70,7 @@ const isRequestSuccessful = ref(false);
 const email = ref(route.query.email?.toString() || '');
 
 const submitForgotPassword = async () => {
-  await resetPasswordBegin(email.value);
+  await client.resetSecurity.resetPasswordBegin(email.value);
   isRequestSuccessful.value = true;
 };
 </script>

@@ -39,7 +39,7 @@ import { useRouter } from 'vue-router';
 import TheMenuListItem from './TheMenuListItem.vue';
 import TheMenuListSection from './TheMenuListSection.vue';
 import { canAdmin } from '../../store';
-import { logout } from '../../utils/api/auth';
+import { client } from '@utils/api';
 import env from '../../env';
 
 import { adminMenu, menu } from './menu-list';
@@ -53,7 +53,7 @@ const { t } = useI18n();
 
 const router = useRouter();
 const doLogout = () => {
-  logout();
+  client.auth.logout();
   router.push('/auth/login');
 };
 

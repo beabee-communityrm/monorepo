@@ -51,7 +51,7 @@ import { type Header, SortType } from '@components/table/table.interface';
 import AppHeading from '@components/AppHeading.vue';
 
 import { formatLocale } from '@utils/dates';
-import { fetchContactPayments } from '@utils/api/contact';
+import { client } from '@utils/api';
 
 const { t, n } = useI18n();
 
@@ -100,6 +100,9 @@ watchEffect(async () => {
       rules: [{ field: 'status', operator: 'not_equal', value: ['draft'] }],
     },
   };
-  paymentsHistoryTable.value = await fetchContactPayments(props.id, query);
+  paymentsHistoryTable.value = await client.contact.payment.list(
+    props.id,
+    query
+  );
 });
 </script>

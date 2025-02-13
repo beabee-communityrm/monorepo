@@ -207,13 +207,19 @@ class ContactsService {
 
     let role = contact.roles.find((p) => p.type === roleType);
     if (role) {
-      role.dateAdded = updates.dateAdded || role.dateAdded;
-      role.dateExpires = updates.dateExpires || role.dateExpires;
+      // Only update dateAdded if explicitly provided
+      if (updates.dateAdded !== undefined) {
+        role.dateAdded = updates.dateAdded;
+      }
+      // Only update dateExpires if explicitly provided (including null to remove it)
+      if (updates.dateExpires !== undefined) {
+        role.dateExpires = updates.dateExpires;
+      }
     } else {
       role = getRepository(ContactRole).create({
         type: roleType,
-        dateAdded: updates?.dateAdded || new Date(),
-        dateExpires: updates?.dateExpires || null
+        dateAdded: updates.dateAdded || new Date(),
+        dateExpires: updates.dateExpires ?? null
       });
       contact.roles.push(role);
     }

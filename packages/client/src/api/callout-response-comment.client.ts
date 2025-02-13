@@ -10,7 +10,7 @@ import type {
   Paginated,
   Serial,
   UpdateCalloutResponseCommentData
-} from "../deps.js";
+} from "@beabee/beabee-common";
 
 /**
  * Client for managing comments on callout responses
@@ -23,8 +23,10 @@ export class CalloutResponseCommentClient extends BaseClient {
    * @param options - The client options including API path
    */
   constructor(protected override readonly options: BaseClientOptions) {
-    options.path = cleanUrl(options.path + "/callout-response-comments");
-    super(options);
+    super({
+      ...options,
+      path: cleanUrl(options.path + "/callout-response-comments")
+    });
   }
 
   /**
@@ -59,7 +61,7 @@ export class CalloutResponseCommentClient extends BaseClient {
   ): Promise<Paginated<GetCalloutResponseCommentData>> {
     const { data } = await this.fetch.get<
       Paginated<Serial<GetCalloutResponseCommentData>>
-    >("", { params: query });
+    >("", query);
 
     return {
       ...data,

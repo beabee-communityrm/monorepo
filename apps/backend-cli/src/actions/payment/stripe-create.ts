@@ -14,8 +14,8 @@ function createPaymentFormData(argv: CreatePaymentArgs): PaymentForm {
   return {
     monthlyAmount: argv.amount,
     period: argv.period,
-    payFee: false,
-    prorate: false
+    payFee: argv.payFee,
+    prorate: argv.prorate
   };
 }
 

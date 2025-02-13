@@ -46,11 +46,7 @@ import { ItemStatus } from '@beabee/beabee-common';
 import { ref, onBeforeMount, computed, onBeforeUnmount } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
-import {
-  createCallout,
-  fetchCallout,
-  updateCallout,
-} from '../../../utils/api/callout';
+import { client } from '@utils/api';
 import type { CalloutStepsProps } from '../../../components/pages/admin/callouts/callouts.interface';
 import CalloutStepper from '../../../components/pages/admin/callouts/CalloutStepper.vue';
 import {
@@ -154,8 +150,8 @@ async function saveCallout(asDraft = false) {
   }
 
   const callout = props.id
-    ? await updateCallout(props.id, data)
-    : await createCallout(data);
+    ? await client.callout.update(props.id, data)
+    : await client.callout.create(data);
 
   lastSaved.value = new Date();
   return callout;
@@ -202,7 +198,11 @@ async function reset() {
   steps.value = undefined;
 
   const callout = props.id
-    ? await fetchCallout(props.id, ['form', 'responseViewSchema', 'variants'])
+    ? await client.callout.get(props.id, [
+        'form',
+        'responseViewSchema',
+        'variants',
+      ])
     : undefined;
   steps.value = convertCalloutToSteps(callout);
   status.value = callout?.status;
