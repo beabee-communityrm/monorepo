@@ -6,16 +6,16 @@
       @tab-click="handleTabClick"
     />
     <component
-      :is="step.component"
-      v-for="step in stepsInOrder"
-      v-show="selectedStep === step"
-      :key="step.name"
-      v-model:data="step.data"
-      v-model:validated="step.validated"
-      v-model:error="step.error"
-      :is-active="selectedStep === step"
+      :is="tab.component"
+      v-for="tab in tabsInOrder"
+      v-show="selectedStep === tab"
+      :key="tab.name"
+      v-model:data="tab.data"
+      v-model:validated="tab.validated"
+      v-model:error="tab.error"
+      :is-active="selectedStep === tab"
       :status="status"
-      :steps="steps"
+      :tabs="tabs"
     />
   </div>
 </template>
@@ -25,74 +25,74 @@ import { ItemStatus } from '@beabee/beabee-common';
 import { ref, computed, markRaw, reactive } from 'vue';
 import { useI18n } from 'vue-i18n';
 import AppTabs from '../../../tabs/AppTabs.vue';
-import type { CalloutStepsProps, CalloutSteps } from './callouts.interface';
+import type { CalloutTabsProps, CalloutTabs } from './callouts.interface';
 import type { TabItem } from '../../../tabs/tabs.interface';
 
-import StepSettings from './steps/SettingsStep.vue';
-import StepTitleAndImage from './steps/TitleAndImage.vue';
-import StepEndMessage from './steps/EndMessage.vue';
-import StepDatesAndDuration from './steps/DatesAndDuration.vue';
-import StepContent from './steps/ContentStep.vue';
+import StepSettings from './tabs/SettingsTab.vue';
+import StepTitleAndImage from './tabs/TitleAndImageTab.vue';
+import StepEndMessage from './tabs/EndMessageTab.vue';
+import StepDatesAndDuration from './tabs/DatesAndDurationTab.vue';
+import StepContent from './tabs/ContentTab.vue';
 
 const props = defineProps<{
-  stepsProps: CalloutStepsProps;
+  tabsProps: CalloutTabsProps;
   status: ItemStatus | undefined;
 }>();
 
 const { t } = useI18n();
 
-const steps = reactive<CalloutSteps>({
+const tabs = reactive<CalloutTabs>({
   content: {
-    name: t('createCallout.steps.content.title'),
+    name: t('createCallout.tabs.content.title'),
     validated: false,
     error: false,
     component: markRaw(StepContent),
-    data: props.stepsProps.content,
+    data: props.tabsProps.content,
   },
   titleAndImage: {
-    name: t('createCallout.steps.titleAndImage.title'),
+    name: t('createCallout.tabs.titleAndImage.title'),
     validated: false,
     error: false,
     component: markRaw(StepTitleAndImage),
-    data: props.stepsProps.titleAndImage,
+    data: props.tabsProps.titleAndImage,
   },
   settings: {
-    name: t('createCallout.steps.settings.title'),
+    name: t('createCallout.tabs.settings.title'),
     validated: false,
     error: false,
     component: markRaw(StepSettings),
-    data: props.stepsProps.settings,
+    data: props.tabsProps.settings,
   },
   endMessage: {
-    name: t('createCallout.steps.endMessage.title'),
+    name: t('createCallout.tabs.endMessage.title'),
     validated: false,
     error: false,
     component: markRaw(StepEndMessage),
-    data: props.stepsProps.endMessage,
+    data: props.tabsProps.endMessage,
   },
   dates: {
-    name: t('createCallout.steps.dates.title'),
+    name: t('createCallout.tabs.dates.title'),
     validated: false,
     error: false,
     component: markRaw(StepDatesAndDuration),
-    data: props.stepsProps.dates,
+    data: props.tabsProps.dates,
   },
 });
 
-const stepsInOrder = [
-  steps.content,
-  steps.titleAndImage,
-  steps.endMessage,
-  steps.settings,
-  steps.dates,
+const tabsInOrder = [
+  tabs.content,
+  tabs.titleAndImage,
+  tabs.endMessage,
+  tabs.settings,
+  tabs.dates,
 ];
 
-const selectedStepName = ref(stepsInOrder[0].name);
+const selectedStepName = ref(tabsInOrder[0].name);
 
 const selectedStep = computed(
   () =>
-    stepsInOrder.find((step) => step.name === selectedStepName.value) ||
-    stepsInOrder[0]
+    tabsInOrder.find((step) => step.name === selectedStepName.value) ||
+    tabsInOrder[0]
 );
 
 const handleTabClick = (tabId: string) => {
@@ -100,7 +100,7 @@ const handleTabClick = (tabId: string) => {
 };
 
 const tabItems = computed<TabItem[]>(() =>
-  stepsInOrder.map((step) => ({
+  tabsInOrder.map((step) => ({
     id: step.name,
     label: step.name,
     to: '',

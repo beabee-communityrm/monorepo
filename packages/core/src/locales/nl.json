@@ -2,7 +2,10 @@
   "accountPage": {
     "mfa": {
       "codeInput": {},
-      "confirmDelete": {},
+      "confirmDelete": {
+        "descToken": "Om 2FA te deactiveren, voer alstublieft uw huidige 2FA-code in:"
+      },
+      "createUnknownErrorNotification": "De 2-factor authenticatie kon niet worden opgeslagen vanwege een \nonbekende fout. Probeer het opnieuw of neem contact op met de \nondersteuning.",
       "enterCode": {},
       "result": {},
       "scan": {},
@@ -14,13 +17,12 @@
     }
   },
   "actions": {
-    "back": "Hier kommst du zu deiner letzten Seite.",
-    "copy": "Hier kannst du es kopieren.",
-    "getStarted": "Hier kannst du starten.",
-    "next": "Hier kommst du auf die nächste Seite.",
-    "sendEmails": "E-Mails schicken",
-    "share": "Hier schickst du den Text / die Datei / das Bild an andere.",
-    "submit": "Hier wird deine Meldung weg-geschickt."
+    "back": "Terug",
+    "copy": "Kopiëren",
+    "getStarted": "Start",
+    "next": "Volgende",
+    "share": "Delen",
+    "submit": "Indienen"
   },
   "addContact": {
     "errors": {}
@@ -54,7 +56,7 @@
     }
   },
   "advancedSearch": {
-    "createFiltersType": {},
+    "matchType": {},
     "matchWord": {},
     "operators": {
       "all": {},
@@ -75,22 +77,21 @@
   },
   "callout": {
     "actions": {},
-    "addAPoint": "Hier kannst du einen Ort rein-schreiben.",
-    "addLocation": "Hier kannst du einen neuen Ort rein-schreiben.",
-    "confirmHuman": "Du musst hier klicken. Dann weiß der Computer: Dass du ein Mensch bist. Und keine Maschine.",
-    "ended": "Den Aufruf gibt es nicht mehr.",
+    "addAPoint": "Klik op de kaart als je een punt wilt toevoegen",
+    "addLocation": "Voeg een locatie toe",
+    "ended": "Deze oproep is geëindigd op {date}",
     "form": {
-      "submittingResponseError": "Das hat nicht geklappt. Versuche es noch mal."
+      "submittingResponseError": "er was een probleem om je antwoord te verwerken, probeer het opnieuw"
     },
-    "getStarted": "Hier geht es los.",
-    "responseSubmitted": "Dein Brief / Deine Mail wurde weg-geschickt.",
+    "getStarted": "Start",
+    "responseSubmitted": "Antwoord ingediend",
     "share": {
-      "address": "Hier kannst du den Aufruf an andere schicken. Drücke dazu hier.",
-      "services": "Diesen Aufruf kannst du hier auch an andere Menschen schicken. Zum Beispiel über Facebook oder über TikTok oder über Instagram."
+      "address": "Deel deze oproep met het volgende adres:",
+      "services": "Of deel snel via een van deze diensten:"
     },
     "views": {
-      "gallery": "Bild-Sammlung / Galerie",
-      "map": "Karte"
+      "gallery": "Gallerij",
+      "map": "Kaart"
     }
   },
   "calloutAdmin": {},
@@ -109,7 +110,12 @@
   "calloutBuilder": {
     "actions": {},
     "nextSlide": {},
-    "translationFields": {}
+    "translationFields": {
+      "description": "Description",
+      "label": "Label",
+      "option": "Option {n}",
+      "placeholder": "Placeholder"
+    }
   },
   "calloutResponse": {
     "data": {},
@@ -125,9 +131,6 @@
     "notifications": {}
   },
   "calloutResponsesPage": {},
-  "calloutReviewerManager": {
-    "confirmDelete": {}
-  },
   "callouts": {
     "data": {}
   },
@@ -138,29 +141,26 @@
   "common": {
     "contributionPeriod": {},
     "contributionType": {},
-    "hello": "Hallo.",
-    "loading": "Der Computer arbeitet.",
+    "hello": "Hallo",
+    "loading": "Ladt...",
     "newsletterStatus": {},
-    "noResults": "Der Computer hat keine Ergebnisse gefunden.",
+    "noResults": "Geen resultaten gevonden",
     "paymentStatus": {
-      "draft": "Hier ist ein erster Vorschlag."
+      "draft": "Ontwerp"
     },
     "role": {},
-    "selectNone": "keine",
-    "selectOne": "Hier kannst du ein Bild / eine Unterschrift / … aus-suchen",
-    "show": "Hier wird das Bild / der Text gezeigt.",
+    "selectNone": "Geen",
+    "selectOne": "Kiies er één",
+    "show": "Laat zien",
     "status": {
-      "draft": "Hier ist ein erster Vorschlag.",
-      "ended": "… ist zu Ende.",
+      "draft": "Ontwerp",
+      "ended": "Beëindigd",
       "open": "Open",
-      "scheduled": "Scheduled"
+      "scheduled": "Gepland"
     },
-    "thankYou": "Vielen Dank.",
-    "timeAgo": "vor",
-    "timeIn": "in"
-  },
-  "contactAccount": {
-    "confirmDelete": {}
+    "thankYou": "Dankjewel",
+    "timeAgo": "{time} geleden",
+    "timeIn": "in {time}"
   },
   "contactContribution": {
     "confirmCancel": {},
@@ -168,13 +168,13 @@
   },
   "contactOverview": {
     "annotation": {},
-    "newsletter": {},
     "security": {
-      "mfa": {}
+      "mfa": {
+        "disabledDesc": "Deze contactpersoon heeft geen 2FA geactiveerd."
+      }
     }
   },
   "contacts": {
-    "advancedSearch": {},
     "data": {},
     "dataGroup": {}
   },
@@ -269,21 +269,21 @@
   "editCallout": {},
   "editNotice": {},
   "footer": {
-    "contactUs": "Schreibe uns. Nutze diese Adresse:",
+    "contactUs": "Neem contact met ons op",
     "impressum": "Impressum",
-    "poweredBy": "Wir machen einige Journalisten stark. Diese Journalisten gehören zu keiner Organisation. Dazu sagt man auch: Sie sind un-abhängig.",
-    "privacyPolicy": "Datenschutzerklärung",
-    "terms": "Allgemeine Geschäftsbedingungen"
+    "poweredBy": "We versterken onafhankelijk lokale redacties",
+    "privacyPolicy": "Privacy verklaring",
+    "terms": "Algemene voorwaarden"
   },
   "forgotPassword": {},
   "form": {
-    "email": "E-Mail",
+    "email": "E-mail",
     "errorMessages": {
       "api": {
-        "duplicate-tag-name": "Diesen Tag gibt es schon"
+        "mfa-token-required": "U heeft tweefactorauthenticatie ingeschakeld, dus u heeft de token uit \nuw authenticatie-app nodig om uw wachtwoord te resetten. Voer deze \nalstublieft in."
       },
-      "generic": "Das ist nicht richtig. Hol dir Hilfe.",
-      "validation": "Das ist nicht richtig. Du hast ein Feld nicht richtig ausgefüllt. Suche das Feld. Versuche es noch mal."
+      "generic": "Oeps, er ging iets fout! Neem contact op met support als het nog een keer gebeurd.",
+      "validation": "Er ontbreekt iets. Bekijk de velden hierboven."
     },
     "errors": {
       "address": {},
@@ -293,8 +293,8 @@
       "confirmPassword": {},
       "email": {},
       "file": {
-        "rateLimited": "Das war nicht richtig. Das waren zu viele Sachen auf einmal. Du musst etwas warten. Dann versuche es noch mal.",
-        "tooBig": "Das war nicht richtig. Dein Text ist zu lang. Oder dein Bild ist zu groß. Man darf nur 20 MB hoch-laden."
+        "rateLimited": "Upload mislukt: je hebt te veel bestanden geupload, wacht een paar minuten en probeer het opnieuw",
+        "tooBig": "Upload mislukt: het bestand mag niet groter zijn dan 20Mb"
       },
       "firstName": {},
       "lastName": {},
@@ -303,30 +303,33 @@
       "postCode": {},
       "unknown": {},
       "url": {},
-      "verifyCode": {}
+      "verifyCode": {
+        "max": "De code mag maximaal {max} tekens lang zijn.",
+        "min": "De code moet minimaal {min} tekens lang zijn."
+      }
     },
     "richtext": {}
   },
   "formRenderer": {
     "components": {
       "file": {
-        "browse": "Du musst warten: Bis sich das Rädchen nicht mehr dreht./ Bis der Balken blau ist.",
-        "dropFiles": "Du musst die Datei mit dem Pfeil von der Mouse hier her ziehen.",
-        "or": "oder",
-        "switchToFileUpload": "Hier wird dein Foto hoch-geladen.",
-        "takePicture": "Hier machst du ein Foto.",
-        "useCamera": "Du musst die Kamera an-machen."
+        "browse": "Upload van je apparaat",
+        "dropFiles": "Plaats het bestand hier",
+        "or": "of",
+        "switchToFileUpload": "Verander naar bestand upload",
+        "takePicture": "Neem een foto",
+        "useCamera": "gebruik je camera"
       },
       "multiple": {
-        "addAnother": "Hier kannst du ein neues Foto hoch-laden./ Hier kannst du eine neue Datei hoch-laden."
+        "addAnother": "Een andere toevoegen"
       }
     }
   },
   "homePage": {},
   "item": {
     "status": {
-      "endsIn": "Das Hoch-laden ist gleich zu Ende.",
-      "startsIn": "Das Hoch-laden beginnt gleich."
+      "endsIn": "Beëindigd op {duration}",
+      "startsIn": "Gestart in {duration}"
     }
   },
   "join": {
@@ -336,20 +339,19 @@
     },
     "tax": {}
   },
-  "joinPayment": {
-    "applePay": {}
-  },
+  "joinPayment": {},
   "joinSetup": {},
-  "login": {},
-  "lostDevice": {},
+  "login": {
+    "lostMfaDevice": "2FA-apparaat kwijt?"
+  },
+  "lostDevice": {
+    "description": "Voer uw e-mailadres in, dan sturen we u instructies om uw 2FA te resetten.",
+    "title": "Bent u uw 2FA-apparaat kwijt?"
+  },
   "membershipBuilder": {
     "steps": {
       "accountConfirmation": {
-        "deliveryAddress": {},
-        "joinSurvey": {},
-        "newsletter": {
-          "groups": {}
-        }
+        "joinSurvey": {}
       },
       "emails": {},
       "intro": {},
@@ -357,11 +359,11 @@
     }
   },
   "menu": {
-    "callouts": "Aufruf"
+    "callouts": "Oproepen"
   },
   "notFound": {
-    "goBack": "Hier geht es zu einer neuen Seite. Die gibt dir eine Übersicht.",
-    "text": "Die Internet-Seite gibt es nicht mehr. Hol dir Hilfe."
+    "goBack": "Ga terug naar home",
+    "text": "Deze pagina bestaat niet. Als u denkt dat dit een vergissing is, neem dan contact op met {support}."
   },
   "noticeAdminOverview": {
     "actions": {
@@ -372,16 +374,17 @@
     "data": {}
   },
   "notification": {
-    "error": "Das war nicht richtig. Probiere es noch mal."
+    "error": "Er ging iets fout. Probeer de pagina te herladen"
   },
   "pageTitle": {
-    "notFound": "Der Computer hat die Seite nicht gefunden."
+    "lostDevice": "Bent u uw 2FA-apparaat kwijt?",
+    "notFound": "Pagina niet gevonden",
+    "resetDevice": "Secundair Apparaat Resetten"
   },
   "paymentMethods": {
     "gc_direct-debit": {},
     "s_bacs": {},
     "s_card": {},
-    "s_ideal": {},
     "s_paypal": {},
     "s_sepa": {}
   },
@@ -392,7 +395,9 @@
   "paymentsAdmin": {
     "filter": {}
   },
-  "resetDevice": {},
+  "resetDevice": {
+    "success": "Het resetten van het 2FA-apparaat is gelukt."
+  },
   "resetPassword": {},
   "roleEditor": {
     "confirmDelete": {},
@@ -405,17 +410,9 @@
   },
   "setPassword": {},
   "tagEditor": {
-    "confirmDelete": {
-      "text_contact": "illst du den Tag wirklich weg machen? Der Tag \"{tagName}\" ist dann auch bei den Menschen weg.",
-      "text_global": "Willst du den Tag \"{tagName}\" wirklich weg machen?",
-      "text_response": "Willst du den Tag \"{tagName}\" wirklich weg machen?",
-      "title": "Tag weg machen"
-    }
-  },
-  "tags": {
-    "notifications": {}
+    "confirmDelete": {}
   },
   "taxRate": {
-    "invoiceName": "MwSt"
+    "invoiceName": "???"
   }
 }

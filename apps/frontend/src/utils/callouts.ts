@@ -13,7 +13,7 @@ import {
   type CreateCalloutData,
 } from '@beabee/beabee-common';
 import { format } from 'date-fns';
-import type { CalloutStepsProps } from '@components/pages/admin/callouts/callouts.interface';
+import type { CalloutTabsProps } from '@components/pages/admin/callouts/callouts.interface';
 
 import type { FilterItem, FilterItems } from '@type';
 
@@ -113,7 +113,7 @@ function convertSlidesForSteps(
 
 export function convertCalloutToSteps(
   callout?: GetCalloutDataWith<'form' | 'responseViewSchema' | 'variants'>
-): CalloutStepsProps {
+): CalloutTabsProps {
   const settings = env.cnrMode
     ? ({
         whoCanTakePart: 'everyone',
@@ -210,7 +210,7 @@ export function convertCalloutToSteps(
 }
 
 function convertVariantsForCallout(
-  steps: CalloutStepsProps
+  steps: CalloutTabsProps
 ): Record<string, CalloutVariantData> {
   const variants: Record<string, CalloutVariantData> = {};
   for (const variant of [...steps.settings.locales, 'default']) {
@@ -263,7 +263,7 @@ function convertVariantsForCallout(
 }
 
 function convertSlidesForCallout(
-  steps: CalloutStepsProps
+  steps: CalloutTabsProps
 ): SetCalloutSlideSchema[] {
   return steps.content.slides.map((slide) => ({
     ...slide,
@@ -274,7 +274,7 @@ function convertSlidesForCallout(
 }
 
 export function convertStepsToCallout(
-  steps: CalloutStepsProps
+  steps: CalloutTabsProps
 ): CreateCalloutData {
   const slug = steps.titleAndImage.useCustomSlug
     ? steps.titleAndImage.slug
