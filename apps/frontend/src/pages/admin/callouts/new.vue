@@ -37,7 +37,7 @@ meta:
         </AppAsyncButton>
       </div>
     </PageTitle>
-    <CalloutStepper :steps-props="steps" :status="status" />
+    <CalloutTabs :steps-props="steps" :status="status" />
   </div>
 </template>
 
@@ -48,7 +48,7 @@ import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import { client } from '@utils/api';
 import type { CalloutStepsProps } from '../../../components/pages/admin/callouts/callouts.interface';
-import CalloutStepper from '../../../components/pages/admin/callouts/CalloutStepper.vue';
+import CalloutTabs from '../../../components/pages/admin/callouts/CalloutTabs.vue';
 import {
   convertCalloutToSteps,
   convertStepsToCallout,
