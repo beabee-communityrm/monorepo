@@ -48,7 +48,7 @@ import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import { client } from '@utils/api';
 import type { CalloutTabsProps } from '../../../components/pages/admin/callouts/callouts.interface';
-import CalloutTabs from '../../../components/pages/admin/callouts/CalloutTabs.vue';
+import CalloutTabs from '../../../components/pages/admin/callouts/CalloutHorizontalTabs.vue';
 import {
   convertCalloutToSteps,
   convertStepsToCallout,

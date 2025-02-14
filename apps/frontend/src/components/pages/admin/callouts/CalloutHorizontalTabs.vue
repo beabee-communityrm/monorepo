@@ -3,18 +3,18 @@
     <AppTabs
       class="flex-none"
       :items="tabItems"
-      :selected="selectedStep.name"
+      :selected="selectedTab.name"
       @tab-click="handleTabClick"
     />
     <component
       :is="tab.component"
       v-for="tab in tabsInOrder"
-      v-show="selectedStep === tab"
+      v-show="selectedTab === tab"
       :key="tab.name"
       v-model:data="tab.data"
       v-model:validated="tab.validated"
       v-model:error="tab.error"
-      :is-active="selectedStep === tab"
+      :is-active="selectedTab === tab"
       :status="status"
       :tabs="tabs"
     />
@@ -31,9 +31,8 @@ import type { TabItem } from '../../../tabs/tabs.interface';
 
 import StepSettings from './tabs/SettingsTab.vue';
 import StepTitleAndImage from './tabs/TitleAndImageTab.vue';
-import StepEndMessage from './tabs/EndMessageTab.vue';
 import StepDatesAndDuration from './tabs/DatesAndDurationTab.vue';
-import StepContent from './tabs/ContentTab.vue';
+import StepContent from './tabs/ContentTab/ContentTab.vue';
 
 const props = defineProps<{
   tabsProps: CalloutTabsProps;
@@ -64,13 +63,6 @@ const tabs = reactive<CalloutTabs>({
     component: markRaw(StepSettings),
     data: props.tabsProps.settings,
   },
-  endMessage: {
-    name: t('createCallout.tabs.endMessage.title'),
-    validated: false,
-    error: false,
-    component: markRaw(StepEndMessage),
-    data: props.tabsProps.endMessage,
-  },
   dates: {
     name: t('createCallout.tabs.dates.title'),
     validated: false,
@@ -83,21 +75,20 @@ const tabs = reactive<CalloutTabs>({
 const tabsInOrder = [
   tabs.content,
   tabs.titleAndImage,
-  tabs.endMessage,
   tabs.settings,
   tabs.dates,
 ];
 
-const selectedStepName = ref(tabsInOrder[0].name);
+const selectedTabName = ref(tabsInOrder[0].name);
 
-const selectedStep = computed(
+const selectedTab = computed(
   () =>
-    tabsInOrder.find((step) => step.name === selectedStepName.value) ||
+    tabsInOrder.find((step) => step.name === selectedTabName.value) ||
     tabsInOrder[0]
 );
 
 const handleTabClick = (tabId: string) => {
-  selectedStepName.value = tabId;
+  selectedTabName.value = tabId;
 };
 
 const tabItems = computed<TabItem[]>(() =>
@@ -105,7 +96,6 @@ const tabItems = computed<TabItem[]>(() =>
     id: step.name,
     label: step.name,
     to: '',
-    // count: step.validated ? '✓' : undefined,
   }))
 );
 </script>
