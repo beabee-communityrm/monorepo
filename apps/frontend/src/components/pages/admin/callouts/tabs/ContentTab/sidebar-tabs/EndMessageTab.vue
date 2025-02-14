@@ -52,13 +52,14 @@ import useVuelidate from '@vuelidate/core';
 import { watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { AppRadioGroup } from '@beabee/vue/components';
-import type { CalloutTabs, EndMessageStepProps } from '../callouts.interface';
-import AppFormSection from '../../../../forms/AppFormSection.vue';
+import type { CalloutTabs } from '../../../callouts.interface';
+import type { EndMessageTabProps } from '../sidebar-tabs.interface';
+import AppFormSection from '../../../../../../forms/AppFormSection.vue';
 import LocaleRichTextEditor from '@components/forms/LocaleRichTextEditor.vue';
 import LocaleInput from '@components/forms/LocaleInput.vue';
 
 const emit = defineEmits(['update:error', 'update:validated']);
-defineProps<{ data: EndMessageStepProps; tabs: CalloutTabs }>();
+defineProps<{ data: EndMessageTabProps; tabs: CalloutTabs }>();
 
 const { t } = useI18n();
 const inputT = (key: string) =>

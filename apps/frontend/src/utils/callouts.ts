@@ -25,7 +25,7 @@ import type {
   FormBuilderNavigation,
   FormBuilderSlide,
 } from '@components/form-builder/form-builder.interface';
-
+import type { ContentTabProps } from '@components/pages/admin/callouts/callouts.interface';
 const { t } = i18n.global;
 
 export function getSlideSchema(no: number): FormBuilderSlide {
@@ -138,10 +138,18 @@ export function convertCalloutToSteps(
 
   const variants = convertVariantsForSteps(callout?.variants);
 
-  const content = convertSlidesForSteps(
-    callout?.formSchema.slides,
-    callout?.variants
-  );
+  const content: ContentTabProps = {
+    ...convertSlidesForSteps(callout?.formSchema.slides, callout?.variants),
+    sidebarTabs: {
+      content: {},
+      endMessage: {
+        whenFinished: callout?.thanksRedirect ? 'redirect' : 'message',
+        thankYouTitle: variants.thanksTitle,
+        thankYouText: variants.thanksText,
+        thankYouRedirect: variants.thanksRedirect,
+      },
+    },
+  };
 
   return {
     content,
@@ -189,12 +197,6 @@ export function convertCalloutToSteps(
         : [],
       channels: callout?.channels || null,
     },
-    endMessage: {
-      whenFinished: callout?.thanksRedirect ? 'redirect' : 'message',
-      thankYouTitle: variants.thanksTitle,
-      thankYouText: variants.thanksText,
-      thankYouRedirect: variants.thanksRedirect,
-    },
     /*mailchimp: {
       useMailchimpSync: false,
     },*/
@@ -233,15 +235,19 @@ function convertVariantsForCallout(
       title: steps.titleAndImage.title[variant] || '',
       excerpt: steps.titleAndImage.description[variant] || '',
       intro: steps.titleAndImage.introText[variant] || '',
-      ...(steps.endMessage.whenFinished === 'redirect'
+      ...(steps.content.sidebarTabs.endMessage.whenFinished === 'redirect'
         ? {
             thanksText: '',
             thanksTitle: '',
-            thanksRedirect: steps.endMessage.thankYouRedirect[variant] || '',
+            thanksRedirect:
+              steps.content.sidebarTabs.endMessage.thankYouRedirect[variant] ||
+              '',
           }
         : {
-            thanksText: steps.endMessage.thankYouText[variant] || '',
-            thanksTitle: steps.endMessage.thankYouTitle[variant] || '',
+            thanksText:
+              steps.content.sidebarTabs.endMessage.thankYouText[variant] || '',
+            thanksTitle:
+              steps.content.sidebarTabs.endMessage.thankYouTitle[variant] || '',
             thanksRedirect: null,
           }),
       ...(steps.titleAndImage.overrideShare
