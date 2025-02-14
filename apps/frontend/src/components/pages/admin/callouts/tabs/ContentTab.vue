@@ -1,9 +1,23 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
   <div class="flex h-full flex-col overflow-y-hidden">
-    <div class="flex h-full gap-8">
+    <div class="flex h-full gap-4">
       <!-- Left Sidebar -->
       <div class="flex-0 basis-menu">
+        <div class="mb-4 flex items-center justify-between">
+          <h2 class="text-lg font-semibold">
+            {{ t('calloutBuilder.slidesTitle') }}
+          </h2>
+          <AppButton
+            variant="primary"
+            size="sm"
+            :icon="faPlus"
+            @click="handleAddSlide"
+          >
+            {{ t('calloutBuilder.actions.addSlide') }}
+          </AppButton>
+        </div>
+
         <Draggable v-model="slides" item-key="id">
           <template #item="{ element, index }">
             <CalloutSlideItem
@@ -11,18 +25,20 @@
               :slides="slides"
               :active="currentSlideId === element.id"
               @select="currentSlideId = $event"
+              @remove="handleRemoveSlide"
             />
           </template>
         </Draggable>
 
-        <AppButton
-          variant="primary"
-          :icon="faPlus"
-          class="w-full"
-          @click="handleAddSlide"
-        >
-          {{ t('calloutBuilder.actions.addSlide') }}
-        </AppButton>
+        <!-- TODO: Move this to the form.io navigation -->
+        <FormBuilderNavigation
+          v-model="currentSlide.navigation"
+          :slides="slides"
+          :current-slide-no="currentSlideNo"
+          :is-first="isFirstSlide"
+          :is-last="isLastSlide"
+          :locales="tabs.settings.data.locales"
+        />
       </div>
 
       <!-- Main Content -->
@@ -65,32 +81,14 @@
         />
 
         <!-- These styles replicate the FormBuilder layout -->
-        <div class="flex gap-8">
+        <div class="flex gap-4">
           <div class="max-w-2xl flex-1">
-            <div class="relative -mt-6 mb-4 bg-white p-6 pt-0 shadow-md">
-              <FormBuilderNavigation
-                v-model="currentSlide.navigation"
-                :slides="slides"
-                :current-slide-no="currentSlideNo"
-                :is-first="isFirstSlide"
-                :is-last="isLastSlide"
-                :locales="tabs.settings.data.locales"
-              />
-            </div>
             <div class="flex justify-between">
               <div>
                 <p v-if="showAdvancedOptions" class="text-sm text-grey">
                   {{ t('common.id') }}: {{ currentSlide.id }}
                 </p>
               </div>
-              <AppButton
-                variant="dangerOutlined"
-                :icon="faTrash"
-                :disabled="totalSlides === 1"
-                @click="handleRemoveSlide"
-              >
-                {{ t('calloutBuilder.actions.removeSlide') }}
-              </AppButton>
             </div>
             <div
               v-if="tabs.settings.data.locales.length > 0"
@@ -125,7 +123,7 @@ import { useI18n } from 'vue-i18n';
 import type { CalloutTabs, ContentStepProps } from '../callouts.interface';
 import { AppNotification, AppCheckbox } from '@beabee/vue/components';
 import FormBuilder from '../../../../form-builder/FormBuilder.vue';
-import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { getSlideSchema } from '../../../../../utils/callouts';
 import { AppButton } from '@beabee/vue/components';
 import FormBuilderNavigation from '../../../../form-builder/FormBuilderNavigation.vue';
@@ -179,8 +177,8 @@ function handleAddSlide() {
   currentSlideNo.value = slides.value.length - 1;
 }
 
-function handleRemoveSlide() {
-  slides.value.splice(currentSlideNo.value, 1);
+function handleRemoveSlide(slideNo: number) {
+  slides.value.splice(slideNo, 1);
   currentSlideNo.value = Math.max(0, currentSlideNo.value - 1);
 }
 

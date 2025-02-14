@@ -1,6 +1,6 @@
 <template>
   <div
-    class="mb-4 flex gap-2 rounded p-4"
+    class="mb-4 flex gap-2 rounded p-3"
     :class="active ? 'bg-white' : 'cursor-pointer bg-primary-10'"
     @click="emit('select', slide.id)"
   >
@@ -10,9 +10,15 @@
         class="cursor-grab text-body-60 hover:text-body"
       />
     </div>
-    <div class="flex-1">
-      <p class="font-semibold">{{ slideNo + 1 }}: {{ slide.title }}</p>
-      <p v-for="[no, nextSlide] in nextSlides" :key="no" class="mt-1 text-xs">
+    <div class="flex min-w-0 flex-1 flex-col justify-center">
+      <p class="text-light truncate text-sm">
+        {{ slideNo + 1 }}: {{ slide.title }}
+      </p>
+      <p
+        v-for="[no, nextSlide] in nextSlides"
+        :key="no"
+        class="mt-1 truncate text-xs"
+      >
         ↳
         <a
           v-if="active"
@@ -24,16 +30,34 @@
         <span v-else>{{ no + 1 }}: {{ nextSlide.title }}</span>
       </p>
     </div>
+    <div class="flex items-start">
+      <AppButton
+        variant="dangerGhost"
+        :icon="faTrash"
+        :disabled="slides.length === 1"
+        :title="t('calloutBuilder.actions.removeSlide')"
+        class="!p-1"
+        @click.stop="handleRemoveSlide"
+      />
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { faGripVertical } from '@fortawesome/free-solid-svg-icons';
+import { faGripVertical, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { computed } from 'vue';
 import { getDecisionComponent } from '../../../../utils/callouts';
 import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
+import AppButton from '@components/button/AppButton.vue';
+import { useI18n } from 'vue-i18n';
 
-const emit = defineEmits<{ (e: 'select', id: string): void }>();
+const { t } = useI18n();
+
+const emit = defineEmits<{
+  (e: 'select', id: string): void;
+  (e: 'remove', slideNo: number): void;
+}>();
+
 const props = defineProps<{
   slideNo: number;
   slides: FormBuilderSlide[];
@@ -57,4 +81,8 @@ const nextSlides = computed<[number, FormBuilderSlide][]>(() => {
     .sort()
     .map((no) => [no, props.slides[no]]);
 });
+
+function handleRemoveSlide() {
+  emit('remove', props.slideNo);
+}
 </script>
