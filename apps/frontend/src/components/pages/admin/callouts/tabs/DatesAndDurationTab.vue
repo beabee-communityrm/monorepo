@@ -54,12 +54,12 @@ import AppInput from '../../../../forms/AppInput.vue';
 import AppLabel from '../../../../forms/AppLabel.vue';
 import AppRadioGroup from '../../../../forms/AppRadioGroup.vue';
 import AppFormSection from '../../../../forms/AppFormSection.vue';
-import type { DateAndDurationStepProps } from '../callouts.interface';
+import type { DateAndDurationTabProps } from '../callouts.interface';
 import { sameAs } from '@vuelidate/validators';
 
 const emit = defineEmits(['update:error', 'update:validated']);
 const props = defineProps<{
-  data: DateAndDurationStepProps;
+  data: DateAndDurationTabProps;
   status: ItemStatus | undefined;
   isActive: boolean;
 }>();

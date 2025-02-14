@@ -265,7 +265,7 @@ import AppRadioGroup from '../../../../forms/AppRadioGroup.vue';
 import AppFormSection from '../../../../forms/AppFormSection.vue';
 import {
   type CalloutTabs,
-  type SettingsStepProps,
+  type SettingsTabProps,
   buckets,
 } from '../callouts.interface';
 import { sameAs } from '@vuelidate/validators';
@@ -280,7 +280,7 @@ import { localeItems } from '@lib/i18n';
 
 const emit = defineEmits(['update:error', 'update:validated']);
 const props = defineProps<{
-  data: SettingsStepProps;
+  data: SettingsTabProps;
   status: ItemStatus | undefined;
   isActive: boolean;
   tabs: CalloutTabs;

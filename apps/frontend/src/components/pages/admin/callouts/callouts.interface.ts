@@ -1,14 +1,13 @@
 import { computed, type Raw, type Component } from 'vue';
 import i18n from '../../../../lib/i18n';
-import { type AppStepperStep } from '../../../../type/app-stepper-step';
-
-import type { LocaleProp } from '@type';
+import type { LocaleProp, AppStepperStep } from '@type';
 import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
 import type {
   CalloutCaptcha,
   CalloutChannel,
   CalloutMapSchema,
 } from '@beabee/beabee-common';
+import type { SidebarTabsProps } from './tabs/ContentTab/sidebar-tabs.interface';
 
 const { t } = i18n.global;
 
@@ -24,12 +23,14 @@ export const buckets = computed(() => [
   },
 ]);
 
-export interface ContentStepProps {
+export interface ContentTabProps {
+  // TODO: Move some props to the ContentFormTabProps
   slides: FormBuilderSlide[];
   componentText: Record<string, LocaleProp>;
+  sidebarTabs: SidebarTabsProps;
 }
 
-export interface TitleAndImageStepProps {
+export interface TitleAndImageTabProps {
   title: LocaleProp;
   description: LocaleProp;
   coverImageURL: string;
@@ -42,7 +43,7 @@ export interface TitleAndImageStepProps {
   shareDescription: LocaleProp;
 }
 
-export interface SettingsStepProps {
+export interface SettingsTabProps {
   whoCanTakePart: 'members' | 'everyone';
   allowAnonymousResponses: 'none' | 'guests' | 'all';
   requireCaptcha: CalloutCaptcha;
@@ -61,17 +62,11 @@ export interface SettingsStepProps {
   channels: CalloutChannel[] | null;
 }
 
-export interface EndMessageStepProps {
-  whenFinished: 'message' | 'redirect';
-  thankYouTitle: LocaleProp;
-  thankYouText: LocaleProp;
-  thankYouRedirect: LocaleProp;
-}
 export interface MailchimpSyncStepProps {
   useMailchimpSync: boolean;
 }
 
-export interface DateAndDurationStepProps {
+export interface DateAndDurationTabProps {
   hasEndDate: boolean;
   startNow: boolean;
   startDate: string;
@@ -81,15 +76,14 @@ export interface DateAndDurationStepProps {
 }
 
 export interface CalloutTabsProps {
-  content: ContentStepProps;
-  titleAndImage: TitleAndImageStepProps;
-  settings: SettingsStepProps;
-  endMessage: EndMessageStepProps;
+  content: ContentTabProps;
+  titleAndImage: TitleAndImageTabProps;
+  settings: SettingsTabProps;
   //mailchimp: MailchimpSyncStepProps;
-  dates: DateAndDurationStepProps;
+  dates: DateAndDurationTabProps;
 }
 
-export interface CalloutStep<T> extends AppStepperStep {
+export interface CalloutTab<T> extends AppStepperStep {
   validated: boolean;
   error: boolean;
   data: T;
@@ -97,5 +91,5 @@ export interface CalloutStep<T> extends AppStepperStep {
 }
 
 export type CalloutTabs = {
-  [P in keyof CalloutTabsProps]: CalloutStep<CalloutTabsProps[P]>;
+  [P in keyof CalloutTabsProps]: CalloutTab<CalloutTabsProps[P]>;
 };
