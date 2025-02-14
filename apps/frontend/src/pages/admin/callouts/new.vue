@@ -6,7 +6,7 @@ meta:
 </route>
 
 <template>
-  <div v-if="tabs">
+  <div v-if="tabs" class="flex h-full flex-col overflow-y-hidden">
     <PageTitle
       :title="
         status
