@@ -6,7 +6,7 @@
     <TheMenu />
     <main
       id="top"
-      class="flex flex-1 flex-col overflow-y-hidden bg-primary-5 p-4 pb-0 md:p-10 md:pb-0"
+      class="flex flex-1 flex-col overflow-y-hidden bg-primary-5 p-4 md:p-5"
     >
       <TheBreadcrumb v-if="items.length > 0" :items="items" class="flex-none" />
       <div class="flex-1 overflow-y-hidden">
