@@ -21,6 +21,10 @@
     <div class="flex h-full gap-4">
       <!-- Left Sidebar -->
       <div class="flex-0 basis-menu overflow-y-auto">
+        <SidebarTabs
+          v-model:selected-tab="selectedSidebarTab"
+          :sidebar-tabs="sidebarTabs"
+        />
         <!-- TODO: Move this to the form.io navigation (requires a refactor) -->
         <FormBuilderNavigation
           v-model="currentSlide.navigation"
@@ -59,86 +63,104 @@
       </div>
 
       <!-- Main Content -->
-      <div
-        class="callout-slide-builder flex h-full flex-1 flex-col overflow-y-hidden"
-      >
-        <!-- These styles replicate the FormBuilder layout -->
-        <div class="mb-4 flex flex-none items-end gap-4">
-          <div class="flex-none basis-60">
-            <AppCheckbox
-              v-if="env.experimentalFeatures"
-              v-model="showAdvancedOptions"
-              :label="t('calloutBuilder.showAdvancedOptions')"
-            />
-          </div>
-        </div>
-
-        <FormBuilder
-          :key="currentSlideId"
-          v-model="currentSlide.components"
-          :advanced="showAdvancedOptions"
-          :slides="slides"
-          class="min-h-0 flex-1"
-        />
-
-        <!-- These styles replicate the FormBuilder layout -->
-        <div class="flex gap-4">
-          <div class="max-w-2xl flex-1">
-            <div class="flex justify-between">
-              <div>
-                <p v-if="showAdvancedOptions" class="text-sm text-grey">
-                  {{ t('common.id') }}: {{ currentSlide.id }}
-                </p>
-              </div>
-            </div>
-            <div
-              v-if="tabs.settings.data.locales.length > 0"
-              class="my-4 bg-white p-6 shadow-md"
-            >
-              <AppSubHeading>
-                {{ t('calloutBuilder.translationsTitle') }}
-              </AppSubHeading>
-              <p class="mb-4">
-                {{ t('calloutBuilder.translationsText') }}
-              </p>
-
-              <FormBuilderTranslations
-                v-model="data.componentText"
-                :components="currentSlide.components"
-                :locales="tabs.settings.data.locales"
+      <!-- TODO: Move this to ContentFormTab -->
+      <div v-if="selectedSidebarTab === tabs.content.name">
+        <div
+          class="callout-slide-builder flex h-full flex-1 flex-col overflow-y-hidden"
+        >
+          <!-- These styles replicate the FormBuilder layout -->
+          <div class="mb-4 flex flex-none items-end gap-4">
+            <div class="flex-none basis-60">
+              <AppCheckbox
+                v-if="env.experimentalFeatures"
+                v-model="showAdvancedOptions"
+                :label="t('calloutBuilder.showAdvancedOptions')"
               />
             </div>
           </div>
-          <div class="flex-0 basis-[15rem]" />
+
+          <FormBuilder
+            :key="currentSlideId"
+            v-model="currentSlide.components"
+            :advanced="showAdvancedOptions"
+            :slides="slides"
+            class="min-h-0 flex-1"
+          />
+
+          <!-- These styles replicate the FormBuilder layout -->
+          <div class="flex gap-4">
+            <div class="max-w-2xl flex-1">
+              <div class="flex justify-between">
+                <div>
+                  <p v-if="showAdvancedOptions" class="text-sm text-grey">
+                    {{ t('common.id') }}: {{ currentSlide.id }}
+                  </p>
+                </div>
+              </div>
+              <div
+                v-if="tabs.settings.data.locales.length > 0"
+                class="my-4 bg-white p-6 shadow-md"
+              >
+                <AppSubHeading>
+                  {{ t('calloutBuilder.translationsTitle') }}
+                </AppSubHeading>
+                <p class="mb-4">
+                  {{ t('calloutBuilder.translationsText') }}
+                </p>
+
+                <FormBuilderTranslations
+                  v-model="data.componentText"
+                  :components="currentSlide.components"
+                  :locales="tabs.settings.data.locales"
+                />
+              </div>
+            </div>
+            <div class="flex-0 basis-[15rem]" />
+          </div>
         </div>
       </div>
+      <!-- TODO: Use the sidebar tabs here -->
+      <component
+        :is="sidebarTabs[currentTabKey].component"
+        v-else
+        v-model:data="sidebarTabs[currentTabKey].data"
+        v-model:validated="sidebarTabs[currentTabKey].validated"
+        v-model:error="sidebarTabs[currentTabKey].error"
+        :is-active="true"
+        :status="status"
+        :tabs="tabs"
+      />
     </div>
   </div>
 </template>
 <script lang="ts" setup>
 import { ItemStatus } from '@beabee/beabee-common';
 import useVuelidate from '@vuelidate/core';
-import { ref, watch } from 'vue';
+import { ref, watch, reactive, markRaw } from 'vue';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import type { CalloutTabs, ContentStepProps } from '../callouts.interface';
-import AppNotification from '../../../../AppNotification.vue';
-import FormBuilder from '../../../../form-builder/FormBuilder.vue';
+import type { CalloutTabs, ContentTabProps } from '../../callouts.interface';
+import AppNotification from '../../../../../AppNotification.vue';
+import FormBuilder from '../../../../../form-builder/FormBuilder.vue';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { getSlideSchema } from '../../../../../utils/callouts';
-import AppButton from '../../../../button/AppButton.vue';
-import FormBuilderNavigation from '../../../../form-builder/FormBuilderNavigation.vue';
-import AppCheckbox from '../../../../forms/AppCheckbox.vue';
-import env from '../../../../../env';
+import { getSlideSchema } from '../../../../../../utils/callouts';
+import AppButton from '../../../../../button/AppButton.vue';
+import FormBuilderNavigation from '../../../../../form-builder/FormBuilderNavigation.vue';
+import AppCheckbox from '../../../../../forms/AppCheckbox.vue';
+import env from '../../../../../../env';
 import Draggable from 'vuedraggable';
 import { useRoute } from 'vue-router';
-import CalloutSlideItem from '../CalloutSlideItem.vue';
+import CalloutSlideItem from '../../CalloutSlideItem.vue';
 import FormBuilderTranslations from '@components/form-builder/FormBuilderTranslations.vue';
 import AppSubHeading from '@components/AppSubHeading.vue';
+import SidebarTabs from './SidebarTabs.vue';
+import type { SidebarTabs as SidebarTabsType } from './sidebar-tabs.interface';
+import ContentFormTab from './sidebar-tabs/ContentFormTab.vue';
+import EndMessageTab from './sidebar-tabs/EndMessageTab.vue';
 
 const emit = defineEmits(['update:error', 'update:validated']);
 const props = defineProps<{
-  data: ContentStepProps;
+  data: ContentTabProps;
   tabs: CalloutTabs;
   status: ItemStatus | undefined;
 }>();
@@ -221,4 +243,31 @@ watch(
   },
   { deep: true }
 );
+
+// TODO: we need to pass this as a prop from ContentTab.vue
+const sidebarTabs = reactive<SidebarTabsType>({
+  content: {
+    name: t('createCallout.tabs.content.title'),
+    validated: false,
+    error: false,
+    component: markRaw(ContentFormTab),
+    data: props.data.sidebarTabs.content,
+  },
+  endMessage: {
+    name: t('createCallout.tabs.endMessage.title'),
+    validated: false,
+    error: false,
+    component: markRaw(EndMessageTab),
+    data: props.data.sidebarTabs.endMessage,
+  },
+});
+
+const selectedSidebarTab = ref(sidebarTabs.content.name);
+
+const currentTabKey = computed(() => {
+  const tab = Object.entries(sidebarTabs).find(
+    ([, tab]) => tab.name === selectedSidebarTab.value
+  );
+  return (tab ? tab[0] : 'content') as keyof SidebarTabsType;
+});
 </script>

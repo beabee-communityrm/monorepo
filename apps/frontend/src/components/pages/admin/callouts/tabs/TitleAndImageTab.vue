@@ -98,10 +98,7 @@ import { useI18n } from 'vue-i18n';
 import AppInput from '../../../../forms/AppInput.vue';
 import AppImageUpload from '../../../../forms/AppImageUpload.vue';
 import useVuelidate from '@vuelidate/core';
-import type {
-  CalloutTabs,
-  TitleAndImageStepProps,
-} from '../callouts.interface';
+import type { CalloutTabs, TitleAndImageTabProps } from '../callouts.interface';
 import AppRadioGroup from '../../../../forms/AppRadioGroup.vue';
 import AppLabel from '../../../../forms/AppLabel.vue';
 import env from '../../../../../env';
@@ -113,7 +110,7 @@ import LocaleRichTextEditor from '@components/forms/LocaleRichTextEditor.vue';
 
 const emit = defineEmits(['update:error', 'update:validated']);
 const props = defineProps<{
-  data: TitleAndImageStepProps;
+  data: TitleAndImageTabProps;
   tabs: CalloutTabs;
   status: ItemStatus | undefined;
 }>();
