@@ -14,7 +14,7 @@
   }
 
   .formcomponents {
-    @apply basis-60;
+    @apply h-full basis-60;
   }
 
   .formcomponent {

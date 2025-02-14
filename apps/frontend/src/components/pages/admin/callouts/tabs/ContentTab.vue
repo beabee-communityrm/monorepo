@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
   <div class="flex h-full flex-col overflow-y-hidden">
-    <!-- Notifications -->
+    <!-- Notifications TODO: Move this above the form.io main content (requires a refactor) -->
     <div class="flex-none">
       <AppNotification
         v-if="warnAboutEditing"
@@ -20,8 +20,8 @@
 
     <div class="flex h-full gap-4">
       <!-- Left Sidebar -->
-      <div class="flex-0 basis-menu">
-        <!-- TODO: Move this to the form.io navigation -->
+      <div class="flex-0 basis-menu overflow-y-auto">
+        <!-- TODO: Move this to the form.io navigation (requires a refactor) -->
         <FormBuilderNavigation
           v-model="currentSlide.navigation"
           :slides="slides"
