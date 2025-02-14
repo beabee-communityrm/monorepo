@@ -1,21 +1,8 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div>
-    <AppNotification
-      v-if="warnAboutEditing"
-      variant="warning"
-      class="mb-4"
-      :title="t('editCallout.warning')"
-    />
-
-    <AppNotification
-      v-if="wasJustReplicated"
-      variant="success"
-      class="mb-4"
-      :title="t('editCallout.replicated')"
-    />
-
-    <div class="mt-8 flex gap-8">
+  <div class="flex h-full flex-col overflow-y-hidden">
+    <div class="flex h-full gap-8">
+      <!-- Left Sidebar -->
       <div class="flex-0 basis-menu">
         <Draggable v-model="slides" item-key="id">
           <template #item="{ element, index }">
@@ -38,9 +25,28 @@
         </AppButton>
       </div>
 
-      <div class="callout-slide-builder flex-1">
+      <!-- Main Content -->
+      <div
+        class="callout-slide-builder flex h-full flex-1 flex-col overflow-y-hidden"
+      >
+        <div class="flex-none">
+          <AppNotification
+            v-if="warnAboutEditing"
+            variant="warning"
+            class="mb-4"
+            :title="t('editCallout.warning')"
+          />
+
+          <AppNotification
+            v-if="wasJustReplicated"
+            variant="success"
+            class="mb-4"
+            :title="t('editCallout.replicated')"
+          />
+        </div>
+
         <!-- These styles replicate the FormBuilder layout -->
-        <div class="mb-4 flex items-end gap-8">
+        <div class="mb-4 flex flex-none items-end gap-8">
           <div class="flex max-w-2xl flex-1 items-end justify-between gap-4">
             <div class="flex-1">
               <AppInput
@@ -64,7 +70,7 @@
               />
             </AppButtonGroup>
           </div>
-          <div class="flex-0 basis-[15rem]">
+          <div class="flex-none basis-60">
             <AppCheckbox
               v-if="env.experimentalFeatures"
               v-model="showAdvancedOptions"
@@ -74,10 +80,11 @@
         </div>
 
         <FormBuilder
-          :key="currentSlideId /* FormBuilder isn't reactive */"
+          :key="currentSlideId"
           v-model="currentSlide.components"
           :advanced="showAdvancedOptions"
           :slides="slides"
+          class="min-h-0 flex-1"
         />
 
         <!-- These styles replicate the FormBuilder layout -->
@@ -226,13 +233,3 @@ watch(
   { immediate: true }
 );
 </script>
-<style lang="postcss">
-/* Allows the navigation to appear seamlessly part of the form area */
-.callout-slide-builder {
-  @apply min-h-[35rem];
-
-  .callout-form-builder .formcomponents {
-    @apply h-0;
-  }
-}
-</style>
