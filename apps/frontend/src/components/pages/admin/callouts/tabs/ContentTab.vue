@@ -47,29 +47,6 @@
 
         <!-- These styles replicate the FormBuilder layout -->
         <div class="mb-4 flex flex-none items-end gap-8">
-          <div class="flex max-w-2xl flex-1 items-end justify-between gap-4">
-            <div class="flex-1">
-              <AppInput
-                v-model="currentSlide.title"
-                :label="t('calloutBuilder.internalTitle')"
-                required
-              />
-            </div>
-            <AppButtonGroup>
-              <AppButton
-                variant="primaryOutlined"
-                :icon="faChevronLeft"
-                :disabled="isFirstSlide"
-                @click="currentSlideNo--"
-              />
-              <AppButton
-                variant="primaryOutlined"
-                :icon="faChevronRight"
-                :disabled="isLastSlide"
-                @click="currentSlideNo++"
-              />
-            </AppButtonGroup>
-          </div>
           <div class="flex-none basis-60">
             <AppCheckbox
               v-if="env.experimentalFeatures"
@@ -148,15 +125,9 @@ import { useI18n } from 'vue-i18n';
 import type { CalloutTabs, ContentStepProps } from '../callouts.interface';
 import { AppNotification, AppCheckbox } from '@beabee/vue/components';
 import FormBuilder from '../../../../form-builder/FormBuilder.vue';
-import {
-  faChevronLeft,
-  faChevronRight,
-  faPlus,
-  faTrash,
-} from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { getSlideSchema } from '../../../../../utils/callouts';
-import AppInput from '../../../../forms/AppInput.vue';
-import { AppButton, AppButtonGroup } from '@beabee/vue/components';
+import { AppButton } from '@beabee/vue/components';
 import FormBuilderNavigation from '../../../../form-builder/FormBuilderNavigation.vue';
 import env from '../../../../../env';
 import Draggable from 'vuedraggable';
@@ -231,5 +202,23 @@ watch(
     );
   },
   { immediate: true }
+);
+
+// Add this watch effect to update the internal slide title when components change
+watch(
+  () => currentSlide.value.components,
+  (components) => {
+    if (components.length > 0) {
+      // Find first component with a defined label
+      const firstComponentWithLabel = components.find(
+        (component) => component.label && component.label.trim()
+      );
+
+      if (firstComponentWithLabel?.label) {
+        currentSlide.value.title = firstComponentWithLabel.label;
+      }
+    }
+  },
+  { deep: true }
 );
 </script>
