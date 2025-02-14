@@ -2452,9 +2452,7 @@ span[role='link'] {
 }
 
 .builder-sidebar_scroll {
-  position: sticky;
-  top: 15px;
-  max-height: 100vh;
+  max-height: 100%;
   overflow-y: auto;
 }
 

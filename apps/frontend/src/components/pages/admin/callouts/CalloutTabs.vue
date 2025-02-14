@@ -1,6 +1,7 @@
 <template>
-  <div>
+  <div class="flex h-full flex-col overflow-y-hidden">
     <AppTabs
+      class="flex-none"
       :items="tabItems"
       :selected="selectedStep.name"
       @tab-click="handleTabClick"
