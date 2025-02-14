@@ -21,6 +21,16 @@
     <div class="flex h-full gap-4">
       <!-- Left Sidebar -->
       <div class="flex-0 basis-menu">
+        <!-- TODO: Move this to the form.io navigation -->
+        <FormBuilderNavigation
+          v-model="currentSlide.navigation"
+          :slides="slides"
+          :current-slide-no="currentSlideNo"
+          :is-first="isFirstSlide"
+          :is-last="isLastSlide"
+          :locales="tabs.settings.data.locales"
+        />
+
         <div class="mb-4 flex items-center justify-between">
           <h2 class="text-lg font-semibold">
             {{ t('calloutBuilder.slidesTitle') }}
@@ -46,16 +56,6 @@
             />
           </template>
         </Draggable>
-
-        <!-- TODO: Move this to the form.io navigation -->
-        <FormBuilderNavigation
-          v-model="currentSlide.navigation"
-          :slides="slides"
-          :current-slide-no="currentSlideNo"
-          :is-first="isFirstSlide"
-          :is-last="isLastSlide"
-          :locales="tabs.settings.data.locales"
-        />
       </div>
 
       <!-- Main Content -->
