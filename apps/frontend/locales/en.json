@@ -408,8 +408,9 @@
     "updated": "Your callout was successfully updated."
   },
   "calloutBuilder": {
+    "slidesTitle": "Slides",
     "actions": {
-      "addSlide": "Add slide",
+      "addSlide": "Add",
       "removeSlide": "Remove slide"
     },
     "internalTitle": "Internal title",

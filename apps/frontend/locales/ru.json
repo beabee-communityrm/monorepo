@@ -222,7 +222,7 @@
   },
   "calloutBuilder": {
     "actions": {
-      "addSlide": "Добавить слайд",
+      "addSlide": "Добавить",
       "removeSlide": "Убрать слайд"
     },
     "internalTitle": "Внутренний заголовок",

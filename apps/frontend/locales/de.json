@@ -408,8 +408,9 @@
     "updated": "Änderungen gespeichert!"
   },
   "calloutBuilder": {
+    "slidesTitle": "Slides",
     "actions": {
-      "addSlide": "Slide hinzufügen",
+      "addSlide": "Hinzufügen",
       "removeSlide": "Slide entfernen"
     },
     "internalTitle": "Interner Titel",
