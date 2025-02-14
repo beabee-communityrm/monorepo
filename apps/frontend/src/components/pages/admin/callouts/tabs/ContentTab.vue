@@ -1,6 +1,23 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
   <div class="flex h-full flex-col overflow-y-hidden">
+    <!-- Notifications -->
+    <div class="flex-none">
+      <AppNotification
+        v-if="warnAboutEditing"
+        variant="warning"
+        class="mb-4"
+        :title="t('editCallout.warning')"
+      />
+
+      <AppNotification
+        v-if="wasJustReplicated"
+        variant="success"
+        class="mb-4"
+        :title="t('editCallout.replicated')"
+      />
+    </div>
+
     <div class="flex h-full gap-4">
       <!-- Left Sidebar -->
       <div class="flex-0 basis-menu">
@@ -45,24 +62,8 @@
       <div
         class="callout-slide-builder flex h-full flex-1 flex-col overflow-y-hidden"
       >
-        <div class="flex-none">
-          <AppNotification
-            v-if="warnAboutEditing"
-            variant="warning"
-            class="mb-4"
-            :title="t('editCallout.warning')"
-          />
-
-          <AppNotification
-            v-if="wasJustReplicated"
-            variant="success"
-            class="mb-4"
-            :title="t('editCallout.replicated')"
-          />
-        </div>
-
         <!-- These styles replicate the FormBuilder layout -->
-        <div class="mb-4 flex flex-none items-end gap-8">
+        <div class="mb-4 flex flex-none items-end gap-4">
           <div class="flex-none basis-60">
             <AppCheckbox
               v-if="env.experimentalFeatures"
