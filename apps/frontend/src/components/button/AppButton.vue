@@ -5,10 +5,18 @@
     :target="external ? '_blank' : undefined"
     :rel="external ? 'noopener noreferrer' : undefined"
     :class="buttonClasses"
+    :title="title || name"
+    :aria-label="name || title"
   >
     <font-awesome-icon v-if="icon" :icon="icon" /><slot />
   </a>
-  <router-link v-else-if="to" :to="to" :class="buttonClasses">
+  <router-link
+    v-else-if="to"
+    :to="to"
+    :class="buttonClasses"
+    :title="title || name"
+    :aria-label="name || title"
+  >
     <font-awesome-icon v-if="icon" :icon="icon" /><slot />
   </router-link>
 
@@ -19,6 +27,8 @@
     :disabled="disabled || loading"
     :class="buttonClasses"
     :type="type"
+    :title="title || name"
+    :aria-label="name || title"
   >
     <font-awesome-icon v-if="icon" :icon="icon" /><slot />
     <span v-if="loading" class="absolute inset-0 bg-white opacity-30" />
@@ -63,6 +73,8 @@
  * @props {('xs'|'sm'|'md'|'lg')} [size='md'] - Button size
  * @props {IconDefinition} [icon] - FontAwesome icon
  * @props {('button'|'label')} [is='button'] - Component element type
+ * @props {string} [name] - For aria-label
+ * @props {string} [title] - For tooltip
  *
  * @exposes {Function} focus - Focuses the button element
  * @exposes {Ref<HTMLElement>} innerButton - Reference to the button element
@@ -83,11 +95,6 @@ const variantClasses = {
     'text-primary',
   ],
   link: ['bg-link text-white border-link', 'hover:bg-link-110', 'text-link'],
-  danger: [
-    'bg-danger text-white border-danger',
-    'hover:bg-danger-110',
-    'text-danger',
-  ],
   primaryOutlined: [
     'bg-white text-primary-80 border-primary-40',
     'hover:bg-primary-10 hover:text-primary hover:border-primary-70',
@@ -109,7 +116,17 @@ const variantClasses = {
     'text-body',
   ],
   text: ['underline text-link border-0', 'hover:text-link-110', ''],
+  danger: [
+    'bg-danger text-white border-danger',
+    'hover:bg-danger-110',
+    'text-danger',
+  ],
   dangerText: ['underline text-danger border-0', 'hover:text-danger-110', ''],
+  dangerGhost: [
+    'bg-transparent border-0 text-body-60',
+    'hover:text-danger-70',
+    'text-body-60',
+  ],
 } as const;
 
 const sizeClasses = {
@@ -131,6 +148,8 @@ const props = withDefaults(
     size?: 'xs' | 'sm' | 'md' | 'lg';
     icon?: IconDefinition;
     is?: 'button' | 'label';
+    name?: string;
+    title?: string;
   }>(),
   {
     type: 'button',
@@ -141,6 +160,8 @@ const props = withDefaults(
     size: 'md',
     icon: undefined,
     is: 'button',
+    name: undefined,
+    title: undefined,
   }
 );
 
