@@ -2,7 +2,6 @@
   "name": "@beabee/locale",
   "description": "Beabee Locale Translations",
   "version": "0.1.0",
-  "main": "index.js",
   "type": "commonjs",
   "homepage": "https://github.com/beabee-communityrm/monorepo/tree/main/packages/locale",
   "repository": {
@@ -23,7 +22,7 @@
     "dist/"
   ],
   "exports": {
-    "./locales/*": "./dist/locales/*.js",
-    ".": "./dist/index.js"
+    "./locales/*": "./dist/locales/*.cjs",
+    ".": "./dist/index.cjs"
   }
 }

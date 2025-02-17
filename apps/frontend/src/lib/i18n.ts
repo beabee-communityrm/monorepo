@@ -1,5 +1,6 @@
-import { config as localeConfig, isLocale, type Locale } from '@beabee/locale';
+import { isLocale, type Locale, config as localeConfig } from '@beabee/locale';
 import en from '@beabee/locale/locales/en';
+
 import { computed, watch } from 'vue';
 import {
   type DefaultLocaleMessageSchema,
@@ -11,17 +12,6 @@ import router from '@lib/router';
 
 import env from '@env';
 import { addNotification } from '@store/notifications';
-
-type Diff<T, U> = T extends U ? never : T;
-
-// Remove any variant languages (can't be base languages)
-type BaseLocale = Diff<Locale, `${string}@${string}`>;
-interface LocaleConfig {
-  baseLocale: BaseLocale;
-  name: string;
-  displayName: string;
-  adminLocale: Locale;
-}
 
 export const localeItems = Object.entries(localeConfig).map(([id, config]) => ({
   id,
@@ -58,12 +48,12 @@ export const currentLocale = computed<Locale>(() => {
 
   // Some locales have only been translated in non-admin areas
   return route.path.startsWith('/admin')
-    ? (localeConfig[realLocale].adminLocale as Locale)
+    ? localeConfig[realLocale].adminLocale
     : realLocale;
 });
 
-export const currentLocaleConfig = computed<LocaleConfig>(
-  () => localeConfig[currentLocale.value] as LocaleConfig
+export const currentLocaleConfig = computed(
+  () => localeConfig[currentLocale.value]
 );
 
 // Update document title on route or locale change

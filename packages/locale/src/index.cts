@@ -1,4 +1,4 @@
-import _config from './config.js';
+import _config from './config.cjs';
 
 export type Locale = keyof typeof config;
 
