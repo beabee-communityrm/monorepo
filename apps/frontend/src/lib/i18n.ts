@@ -1,4 +1,4 @@
-import localeConfig from '@beabee/locale/config';
+import { config as localeConfig, isLocale, type Locale } from '@beabee/locale';
 import en from '@beabee/locale/locales/en';
 import { computed, watch } from 'vue';
 import {
@@ -14,20 +14,13 @@ import { addNotification } from '@store/notifications';
 
 type Diff<T, U> = T extends U ? never : T;
 
-// It seems slightly odd that we have to define these types, why can't the JSON
-// import be const typed?
-type LocaleKey = keyof typeof localeConfig;
 // Remove any variant languages (can't be base languages)
-type BaseLocaleKey = Diff<LocaleKey, `${string}@${string}`>;
+type BaseLocale = Diff<Locale, `${string}@${string}`>;
 interface LocaleConfig {
-  baseLocale: BaseLocaleKey;
+  baseLocale: BaseLocale;
   name: string;
   displayName: string;
-  adminLocale: LocaleKey;
-}
-
-export function isLocaleKey(key: string): key is LocaleKey {
-  return key in localeConfig;
+  adminLocale: Locale;
 }
 
 export const localeItems = Object.entries(localeConfig).map(([id, config]) => ({
@@ -57,15 +50,15 @@ const i18n = createI18n({
   },
 });
 
-export const currentLocale = computed<LocaleKey>(() => {
+export const currentLocale = computed<Locale>(() => {
   const route = router.currentRoute.value;
   const newLocale = route.query.lang?.toString() || generalContent.value.locale;
 
-  const realLocale = isLocaleKey(newLocale) ? newLocale : 'en';
+  const realLocale = isLocale(newLocale) ? newLocale : 'en';
 
   // Some locales have only been translated in non-admin areas
   return route.path.startsWith('/admin')
-    ? (localeConfig[realLocale].adminLocale as LocaleKey)
+    ? (localeConfig[realLocale].adminLocale as Locale)
     : realLocale;
 });
 

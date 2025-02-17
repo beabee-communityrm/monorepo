@@ -385,6 +385,7 @@ __metadata:
   resolution: "@beabee/core@workspace:packages/core"
   dependencies:
     "@beabee/beabee-common": "workspace:^"
+    "@beabee/locale": "workspace:^"
     "@beabee/prettier-config": "workspace:^"
     "@beabee/tsconfig": "workspace:^"
     "@sendgrid/mail": "npm:^8.1.4"
