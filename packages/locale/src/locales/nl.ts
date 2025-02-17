@@ -1,0 +1,1435 @@
+export default {
+  "accountPage": {
+    "contactInformation": "Contactgegevens",
+    "deliveryAddress": "Afleveradres",
+    "deliveryOptIn": "Opt-in voor bezorging",
+    "loginDetail": "Inloggegevens",
+    "mfa": {
+      "codeInput": {
+        "info": "Als je je 2FA-apparaat kwijt bent, neem dan contact op met support.",
+        "label": "Code"
+      },
+      "confirmDelete": {
+        "desc": "Weet je zeker dat je Multi-Factor Authenticatie wilt uitschakelen? Vanaf dan heb je alleen nog je wachtwoord nodig om in te loggen. Vergeet niet om de vermelding uit je Authenticator-app te verwijderen. Je kunt het altijd weer inschakelen.",
+        "descToken": "Voer je huidige 2FA-code in om 2FA uit te schakelen:",
+        "title": "2FA uitschakelen"
+      },
+      "createUnknownErrorNotification": "De 2FA kon niet worden opgeslagen vanwege een onbekende fout. Probeer het opnieuw of neem contact op met support.",
+      "deleteUnknownErrorNotification": "De 2FA kon niet worden verwijderd vanwege een onbekende fout. Probeer het opnieuw of neem contact op met support.",
+      "disabledNotification": "2FA succesvol gedeactiveerd",
+      "enabledNotification": "2FA succesvol geactiveerd",
+      "enterCode": {
+        "desc": "Voer de code in die wordt weergegeven in je authenticator app.",
+        "title": "Verificatie"
+      },
+      "modalTitle": "2-factor authenticatie inschakelen",
+      "result": {
+        "invalidCode": "De code kon niet worden bevestigd, probeer het opnieuw of neem contact op met support.",
+        "successful": "2-factor authenticatie is met succes ingesteld.",
+        "title": "Gereed"
+      },
+      "scan": {
+        "desc": "Scan de QR-code hieronder met je authenticatie app.",
+        "title": "QR-code"
+      },
+      "secretInput": {
+        "desc": "Je kunt ook de volgende code invoeren in je Authenticator app.",
+        "label": "Geheime code"
+      },
+      "title": "2-factor authenticatie",
+      "validateButton": {
+        "label": "Token verifiëren"
+      }
+    },
+    "newsletter": {
+      "cantUpdate": "Neem contact op met support{'@'}beabee.io om de nieuwsbriefstatus van dit contact te wijzigen.",
+      "currentStatus": {
+        "cleaned": "Dit contact is verwijderd uit je nieuwsbrieflijst, hun e-mailadres wordt waarschijnlijk geweigerd.",
+        "none": "Dit contact is niet ingeschreven op je nieuwsbrieflijst.",
+        "pending": "Dit contact heeft een opt-in ontvangen voor je nieuwsbrieflijst, ze moeten deze accepteren om ingeschreven te worden.",
+        "subscribed": "Deze contactpersoon is ingeschreven op uw nieuwsbrieflijst.",
+        "unsubscribed": "Dit contact is niet ingeschreven op uw nieuwsbrieflijst."
+      },
+      "subscribe": "Schrijf ze in voor de nieuwsbrief",
+      "title": "Nieuwsbrief",
+      "unsubscribe": "Schrijf ze uit voor de nieuwsbrief"
+    },
+    "phoneInfo": "Door uw telefoonnummer op te geven geeft u toestemming om telefonisch gecontacteerd te worden",
+    "phoneInfoAdmin": "Je moet toestemming van de persoon hebben voordat je hun telefoonnummer aan het systeem toevoegt",
+    "savedPassword": "Nieuw wachtwoord opgeslagen",
+    "subTitle": "Verplichte velden zijn gemarkeerd met een sterretje. Alle informatie die je hier indient is privé.",
+    "title": "Account"
+  },
+  "actions": {
+    "add": "Toevoegen",
+    "back": "Terug",
+    "backToLogin": "Terug naar aanmeldpagina",
+    "cancel": "Annuleren",
+    "changePassword": "Wijzig wachtwoord",
+    "chooseFile": "Bestand kiezen",
+    "close": "Sluit",
+    "continue": "Doorgaan",
+    "copy": "Kopieer",
+    "create": "Aanmaken",
+    "delete": "Verwijderen",
+    "disable": "Uitschakelen",
+    "edit": "Bewerken",
+    "enable": "inschakelen",
+    "endnow": "Nu beëindigen",
+    "export": "Exporteer",
+    "getStarted": "Beginnen",
+    "goBack": "Terug",
+    "next": "Volgende",
+    "noBack": "“Nee, ga terug”.",
+    "participate": "Deelnemen",
+    "preview": "Voorbeeld",
+    "publish": "Publiceren",
+    "reopen": "Heropen",
+    "replicate": "Repliceren",
+    "reset": "opnieuw instellen",
+    "reset2FA": "2FA opnieuw instellen",
+    "resetPassword": "Wachtwoord resetten",
+    "respond": "Reageren",
+    "revertToDraft": "Terug naar concept",
+    "save": "Opslaan",
+    "saveAndAnother": "Opslaan en een andere toevoegen",
+    "saveDraft": "Concept opslaan",
+    "schedule": "Plan",
+    "search": "Zoeken",
+    "sendEmails": "E-mails verzenden",
+    "share": "Delen",
+    "skip": "Sla over",
+    "submit": "Verzenden",
+    "unpublish": "Publiceren",
+    "update": "bijwerken",
+    "view": "Bekijk",
+    "yesDelete": "“Ja, verwijder het”",
+    "yesDisable": "“Ja, schakel het uit”",
+    "yesRemove": "“Ja, verwijder het”"
+  },
+  "addContact": {
+    "contactSaved": "Contact opgeslagen",
+    "errors": {
+      "duplicateEmail": "E-mailadres bestaat al"
+    },
+    "subscribeToNewsletter": "Synchroniseren met nieuwsbrieftool",
+    "title": "Contact toevoegen"
+  },
+  "addNotice": {
+    "form": {
+      "buttonText": "Knop tekst",
+      "expirationDateAndTime": "Vervaldatum en -tijd",
+      "name": "Naam",
+      "startDateAndTime": "Startdatum en -tijd",
+      "text": "Tekst",
+      "url": "URL"
+    },
+    "title": "Een kennisgeving toevoegen"
+  },
+  "adminDashboard": {
+    "hint1": "<p>Wist je dat oproepen zonder einddatum kunnen worden gemaakt en gewoon kunnen blijven lopen? Zie onze <a href=\"https://beabee.io/en/beabee-full-feature-list/\" target=\"_blank\" rel=\"noopener noreferrer\">feature showcase</a> voor meer informatie.</p>\n",
+    "hint2": "<p>Lees meer over <a href=\"https://beabee.io/en/beabee-model/\" target=\"_blank\" rel=\"noopener noreferrer\">de visie van beabee</a> over communitybetrokkenheid en betekenisvolle relaties met je publiek.</p>\n",
+    "hint3": "<p>Onze <a href=\"https://beabee.io/en/beabee-faq/\" target=\"_blank\" rel=\"noopener noreferrer\">FAQ</a> behandelt veelgestelde vragen over opstarten en use cases. Als het antwoord dat je zoekt er niet bij staat, neem dan contact met ons op.</p>\n",
+    "joinSlack": "Word lid van de beabee community op Slack!",
+    "latestCallout": {
+      "createNew": "Nieuwe aanmaken?",
+      "empty": "Momenteel geen actieve oproep.",
+      "title": "Laatste oproep"
+    },
+    "mostRecentMembers": {
+      "title": "Laatst toegetreden leden"
+    },
+    "numbers": {
+      "averageContribution": "Gemiddelde maandelijkse bijdrage",
+      "newMembers": "Nieuwe leden",
+      "revenue": "Inkomsten",
+      "title": "Cijfers van de afgelopen 30 dagen"
+    },
+    "responsesSoFar": "{n} reacties tot nu toe | {n} reacties tot nu toe",
+    "seeAllResponses": "Alle reacties bekijken",
+    "supportInbox": "<p>Hulp nodig? Bezoek <a href=\"https://wiki.beabee.io/help-center-english/\" target=\"_blank\" rel=\"noopener noreferrer\">het beabee Helpcentrum</a> of gebruik onze support inbox: <a href=\"mailto:support{'@'}beabee.io\">support{'@'}beabee.io</a></p>\n",
+    "welcomeBack": "Welkom terug {firstName}!"
+  },
+  "adminSettings": {
+    "apikey": {
+      "confirmCreate": {
+        "text": "Bewaar het volgende token. Het kan later NIET worden opgehaald.",
+        "title": "API sleutel aangemaakt"
+      },
+      "confirmDelete": {
+        "text": "Dit is onomkeerbaar. Alles wat gebruik maakt van deze API sleutel zal stoppen met werken.",
+        "title": "API sleutel verwijderen?"
+      },
+      "copied": "API sleutel gekopieerd naar klembord",
+      "create": "Maak een nieuwe API-sleutel",
+      "expires": {
+        "days": "Over {n} dagen",
+        "never": "Nooit"
+      },
+      "expiresHelp": "Voor een betere beveiliging moet u altijd een vervaldatum instellen om te voorkomen dat uw systeem op lange termijn onbevoegd wordt.",
+      "expiresNeverWarning": "Ik begrijp de risico's van het niet instellen van een vervaldatum",
+      "label": "API-sleutels",
+      "showingOf": "{start} tot {end} weergeven API-sleutels van {total}"
+    },
+    "email": {
+      "fromEmail": "Van e-mail",
+      "fromName": "Van naam",
+      "label": "E-mail",
+      "text": "Alle e-mailcommunicatie wordt vanaf dit e-mailadres verzonden.",
+      "title": "Stel een algemeen e-mailadres in"
+    },
+    "general": {
+      "footer": {
+        "dataPrivacy": {
+          "impressumUrl": "Impressum URL",
+          "privacyUrl": "URL Privacybeleid",
+          "termsUrl": "Servicevoorwaarden URL",
+          "title": "Privacy"
+        },
+        "otherLinks": {
+          "add": "Andere link toevoegen",
+          "linkText": "Link tekst",
+          "title": "Andere links",
+          "url": "URL"
+        },
+        "siteUrl": "Hoofd website URL",
+        "text": "Deze links verschijnen in de footer van beabee en in e-mails",
+        "title": "Footer"
+      },
+      "label": "Algemeen",
+      "language": "Taal",
+      "logo": "Logo",
+      "organisationName": "Naam organisatie",
+      "socialSharing": {
+        "description": "Beschrijving delen",
+        "image": "Afbeelding delen",
+        "shareTitle": "Titel delen",
+        "text": "Configureer wat er op sociale media wordt weergegeven wanneer een link naar jouw beabee community wordt gedeeld",
+        "title": "Sociaal delen",
+        "twitterHandle": "Twitter-handleiding"
+      }
+    },
+    "payment": {
+      "paymentTitle": "Betaling",
+      "taxRate": "BTW-tarief",
+      "taxRateEnabled": "BTW inschakelen"
+    },
+    "theme": {
+      "bodyFont": "Tekst lichaam",
+      "colorNames": {
+        "body": "Tekst",
+        "danger": "Gevaar",
+        "link": "Links",
+        "primary": "Hoofd",
+        "success": "Succes",
+        "warning": "Waarschuwing"
+      },
+      "colors": "Kleuren",
+      "customColors": "Aangepast",
+      "fontNotListed": "<p>Staat jouw lettertype er niet bij? Neem contact op met <a href=\"mailto:support{'@'}beabee.io\">support{'@'}beabee.io</a> om het toe te voegen.</p>\n",
+      "fonts": "Lettertypen",
+      "label": "Thema",
+      "presetColors": {
+        "default": "Standaard"
+      },
+      "titleFont": "Titel lettertype"
+    },
+    "title": "Instellingen"
+  },
+  "advancedSearch": {
+    "addRule": "Regel toevoegen",
+    "button": "Filters",
+    "createFiltersAfter": "regels",
+    "createFiltersBefore": "Toon alleen resultaten die overeenkomen met",
+    "createFiltersType": {
+      "all": "allemaal",
+      "any": "elke"
+    },
+    "createdSegment": "Segment “{segment}” aangemaakt",
+    "matchWord": {
+      "AND": "en",
+      "OR": "of"
+    },
+    "nestedRules": "Geneste regels",
+    "noNestedRules": "Dit filter bevat geneste regels die niet kunnen worden bewerkt met de geavanceerde zoekeditor.",
+    "operators": {
+      "all": {
+        "is_empty": "is leeg",
+        "is_not_empty": "is niet leeg"
+      },
+      "array": {
+        "contains": "omvat",
+        "not_contains": "omvat niet"
+      },
+      "blob": {
+        "contains": "bevat",
+        "not_contains": "bevat niet"
+      },
+      "boolean": {
+        "equal": "is"
+      },
+      "date": {
+        "between": "tussen",
+        "equal": "is",
+        "greater": "na",
+        "greater_or_equal": "na of op",
+        "less": "voor",
+        "less_or_equal": "voor of op",
+        "not_between": "is niet tussen",
+        "not_equal": "staat niet op"
+      },
+      "enum": {
+        "equal": "is",
+        "not_equal": "is niet"
+      },
+      "number": {
+        "between": "tussen",
+        "equal": "is",
+        "greater": "meer dan",
+        "greater_or_equal": "ten minste",
+        "less": "minder dan",
+        "less_or_equal": "hooguit",
+        "not_between": "ligt niet tussen",
+        "not_equal": "is niet"
+      },
+      "text": {
+        "begins_with": "begint met",
+        "contains": "bevat",
+        "ends_with": "eindigt met",
+        "equal": "is",
+        "not_begins_with": "begint niet met",
+        "not_contains": "bevat niet",
+        "not_ends_with": "eindigt niet met",
+        "not_equal": "is niet"
+      }
+    },
+    "saveSegment": {
+      "createOrUpdate": {
+        "create": "Nieuw segment maken",
+        "label": "Wil je een nieuw segment maken?",
+        "update": "Segment “{segment}” bijwerken"
+      },
+      "createSegment": "Segment maken",
+      "segmentName": "Naam segment",
+      "text": "Een segment is een groep contactpersonen die voldoet aan een set filters, zoals de filters die je zojuist hebt gemaakt. Nieuwe contactpersonen die aan deze filters voldoen, worden automatisch aan het segment toegevoegd.",
+      "title": "Segment opslaan",
+      "updateSegment": "Segment bijwerken"
+    },
+    "selectFilter": "Selecteer een filter",
+    "updatedSegment": "Bijgewerkt segment “{segment}”"
+  },
+  "apiKey": {
+    "data": {
+      "createdAt": "Aangemaakt",
+      "description": "Beschrijving",
+      "expires": "Vervaldatum",
+      "token": "Token"
+    }
+  },
+  "callout": {
+    "actions": {
+      "updateResponse": "Je reactie bijwerken"
+    },
+    "addAPoint": "Klik op de kaart waar je een punt wilt toevoegen",
+    "addLocation": "Een nieuw punt toevoegen",
+    "confirmHuman": "Bevestig dat u een mens bent",
+    "contactDetails": "Contactgegevens",
+    "ended": "Deze callout eindigde op {date}",
+    "form": {
+      "email": "Je e-mail",
+      "guestFieldsMissing": "Vertel ons je contactgegevens",
+      "name": "Je naam",
+      "submittingResponseError": "Er is een probleem opgetreden bij het indienen van je reactie, probeer het opnieuw"
+    },
+    "getStarted": "Aan de slag",
+    "joinNow": "Nu meedoen",
+    "loginToYourAccount": "Inloggen op je account",
+    "membersOnly": "Deze oproep is alleen toegankelijk voor leden. Deelnemen",
+    "responseSubmitted": "Reactie ingediend",
+    "share": {
+      "address": "Deel deze oproep met het volgende adres:",
+      "services": "Of deel snel met een van deze diensten:"
+    },
+    "showingPreview": "Je kunt geen reactie indienen in de voorbeeldmodus",
+    "toContributionPage": "Mijn bijdrage bewerken",
+    "updateContribution": "Update uw bijdrage",
+    "views": {
+      "gallery": "Galerij",
+      "map": "Kaart"
+    },
+    "youResponded": "Je hebt gereageerd op deze oproep ♥",
+    "yourResponse": "Je reactie"
+  },
+  "calloutAdmin": {
+    "deleted": "Oproep verwijderd.",
+    "ended": "Callout beëindigd. Je kunt hem heropenen door hem te bewerken.",
+    "overview": "Overzicht",
+    "reopened": "Callout heropend. Bewerk de callout als u een andere einddatum wilt instellen.",
+    "responses": "Antwoorden"
+  },
+  "calloutAdminOverview": {
+    "actions": {
+      "confirmDelete": {
+        "text": "Weet je zeker dat je deze callout wilt verwijderen?",
+        "title": "Oproep verwijderen?"
+      }
+    },
+    "created": "Je nieuwe callout is succesvol aangemaakt.",
+    "dates": {
+      "ends": "Eindigt",
+      "label": "Data",
+      "starts": "Begint"
+    },
+    "settings": {
+      "answers": {
+        "editable": "Kan worden bijgewerkt",
+        "final": "Kan niet worden bijgewerkt",
+        "label": "Antwoorden"
+      },
+      "contactInfo": {
+        "label": "Contact info",
+        "optional": "Optioneel",
+        "required": "Verplicht"
+      },
+      "endsWith": {
+        "label": "Eindigt met",
+        "message": "Bedankbericht",
+        "redirect": "doorsturen"
+      },
+      "label": "Instellingen",
+      "openTo": {
+        "everyone": "Iedereen",
+        "label": "Open voor",
+        "membersOnly": "Alleen leden"
+      }
+    },
+    "summary": "Overzicht",
+    "updated": "Je callout is succesvol bijgewerkt."
+  },
+  "calloutBuilder": {
+    "actions": {
+      "addSlide": "Dia toevoegen",
+      "removeSlide": "Dia verwijderen"
+    },
+    "internalTitle": "Interne titel",
+    "nextButton": "Volgende knop tekst",
+    "nextSlide": {
+      "default": "-- Standaard --",
+      "label": "Volgende dia"
+    },
+    "prevButton": "Terug knop tekst",
+    "showAdvancedOptions": "Geavanceerde opties tonen",
+    "slideNo": "Dia {no}",
+    "submitButton": "Tekst knop Submit",
+    "translationFields": {
+      "description": "Beschrijving",
+      "label": "Label",
+      "option": "Optie {n}",
+      "placeholder": "Plaatshouder"
+    },
+    "translationsText": "Stel de vertalingen in voor elk onderdeel in je formulier",
+    "translationsTitle": "Vertalingen"
+  },
+  "calloutResponse": {
+    "data": {
+      "answers": "Antwoorden",
+      "assignee": "Toegewezen aan",
+      "bucket": "Emmer",
+      "callout": "Oproep",
+      "contact": "Contact",
+      "createdAt": "Datum ingediend",
+      "tags": "Tags",
+      "updatedAt": "Datum bijgewerkt"
+    },
+    "dataGroup": {
+      "answers": "Antwoorden",
+      "response": "Antwoord informatie"
+    }
+  },
+  "calloutResponseBuckets": {
+    "inbox": "Postvak IN",
+    "trash": "Prullenbak",
+    "verified": "Geverifieerd"
+  },
+  "calloutResponseComments": {
+    "actions": {
+      "addComment": "Commentaar toevoegen",
+      "updateComment": "Commentaar bijwerken"
+    },
+    "addComment": "Commentaar toevoegen",
+    "comments": "Opmerkingen",
+    "confirmDelete": {
+      "text": "Weet je zeker dat je deze opmerking wilt verwijderen?",
+      "title": "Commentaar verwijderen?"
+    }
+  },
+  "calloutResponsePage": {
+    "actions": {
+      "assignTo": "Toewijzen aan",
+      "moveBucket": "Emmer verplaatsen",
+      "toggleTag": "Tag slepen",
+      "viewOnMap": "Bekijk op kaart"
+    },
+    "editMode": "U bevindt zich in de bewerkingsmodus, wees voorzichtig!",
+    "manageFolders": "Mappen beheren",
+    "manageReviewers": "Reviewers beheren",
+    "manageTags": "Labels beheren",
+    "notifications": {
+      "addedAssignee": "Toegewezen aan “{assignee}”",
+      "addedTag": "Tag “{tag}” toegevoegd",
+      "movedToBucket": "Verplaatst naar {bucket}",
+      "removedAssignee": "Verwijderd van “{assignee}”.",
+      "removedTag": "Tag “{tag}” verwijderd"
+    },
+    "responseOf": "Antwoord {no} van {total} in {bucket}",
+    "selectedCount": "{n} reactie geselecteerd | {n} reacties geselecteerd"
+  },
+  "calloutResponsesPage": {
+    "moveToBucket": "Verplaats naar {bucket}",
+    "noTags": "Geen tags",
+    "response": "Reactie",
+    "responseNo": "Antwoord {no}",
+    "searchAssignee": "Toegewezen aan...",
+    "searchTag": "Getagd met...",
+    "showAnswer": "Antwoord",
+    "showLatestComment": "Laatste commentaar",
+    "showingOf": "Toont {start} tot {end} reacties uit {total}"
+  },
+  "calloutReviewerManager": {
+    "add": "Recensent toevoegen",
+    "confirmDelete": {
+      "text": "Weet u zeker dat u {reviewerName} wilt verwijderen? Ze zullen deze callout niet langer kunnen beoordelen.",
+      "title": "Recensent verwijderen"
+    },
+    "contact": "Contact ID",
+    "title": "Recensenten oproepen"
+  },
+  "callouts": {
+    "archive": "Archief",
+    "data": {
+      "callout": "Oproep",
+      "endDate": "Einddatum"
+    },
+    "noArchivedCallouts": "Geen oproepen",
+    "search": "Zoeken...",
+    "showAll": "Alle",
+    "showAnswered": "Beantwoord",
+    "showingOf": "{start} tot {end} oproepen van {total} worden weergegeven"
+  },
+  "calloutsAdmin": {
+    "addCallout": "Aankondiging maken",
+    "data": {
+      "expires": "Vervaldatum",
+      "responses": "Reacties",
+      "starts": "Begindatum",
+      "status": "Status",
+      "title": "Titel"
+    },
+    "filter": {
+      "all": "Alle oproepen",
+      "draft": "Conceptoproepen",
+      "ended": "Beëindigde oproepen",
+      "open": "Open meldingen",
+      "scheduled": "Geplande oproepen"
+    }
+  },
+  "common": {
+    "backToHome": "Terug naar home",
+    "contributing": "Bijdragend",
+    "contributionPeriod": {
+      "annually": "Jaarlijks",
+      "monthly": "Maandelijks"
+    },
+    "contributionType": {
+      "automatic": "Automatisch",
+      "gift": "Cadeau",
+      "manual": "Handmatig",
+      "none": "Geen"
+    },
+    "hello": "Hallo",
+    "id": "ID",
+    "itemsPerPage": "{items} items per pagina",
+    "joined": "Aangesloten bij",
+    "label": "Label",
+    "loading": "Aan het laden...",
+    "login": "Inloggen",
+    "newsletterStatus": {
+      "cleaned": "Opgeschoond",
+      "none": "Geen",
+      "pending": "In afwachting",
+      "subscribed": "Ingeschreven",
+      "unsubscribed": "Uitgeschreven"
+    },
+    "no": "Nee",
+    "noResults": "Geen resultaten gevonden",
+    "pageCount": "Pagina {pageNumber} van {pageTotal}",
+    "paymentStatus": {
+      "cancelled": "Geannuleerd",
+      "draft": "Concept",
+      "failed": "Mislukt",
+      "pending": "In afwachting van",
+      "successful": "Succesvol"
+    },
+    "perMonth": "/ maand",
+    "perMonthText": "een maand",
+    "perYear": "/ jaar",
+    "perYearText": "een jaar",
+    "role": {
+      "admin": "Beheerder",
+      "member": "Lid",
+      "superadmin": "Super beheerder"
+    },
+    "selectNone": "-- Geen",
+    "selectOne": "Selecteer een...",
+    "show": "Toon",
+    "status": {
+      "draft": "Concept",
+      "ended": "Beëindigd",
+      "open": "Open",
+      "scheduled": "Gepland"
+    },
+    "thankYou": "Bedankt!",
+    "timeAgo": "{time} geleden",
+    "timeIn": "in {time}",
+    "until": "tot",
+    "yes": "Ja"
+  },
+  "contactAccount": {
+    "confirmDelete": {
+      "text": "Hiermee worden alle gegevens van {email} verwijderd. Als ze een actieve bijdrage hebben, wordt deze geannuleerd.",
+      "title": "Contact verwijderen",
+      "warning": "Dit is onomkeerbaar. Weet je zeker dat je door wilt gaan?"
+    },
+    "contactDeleted": "Contact verwijderd."
+  },
+  "contactContribution": {
+    "confirmCancel": {
+      "confirm": "Ja, annuleren",
+      "text": "Weet je zeker dat je de bijdrage van deze contactpersoon wilt annuleren? Dit kan niet ongedaan worden gemaakt.",
+      "title": "Bijdrage annuleren?"
+    },
+    "updateNotice": {
+      "text": "Je kunt momenteel de bijdrage van een contactpersoon niet bijwerken, neem contact op met support{'@'}beabee.io voor ondersteuning.",
+      "title": "Momenteel niet beschikbaar"
+    }
+  },
+  "contactOverview": {
+    "about": "Over",
+    "account": "Account",
+    "annotation": {
+      "copy": "<p>Alle informatie die in dit gedeelte wordt toegevoegd is <strong>alleen zichtbaar voor admins</strong>. Leden zullen deze nooit zien in hun profiel of ledengedeelte.</p>\n"
+    },
+    "callouts": "Oproepen",
+    "cancellationDate": "Geannuleerd op",
+    "contribution": "Bijdrage",
+    "contributionType": "Type",
+    "joinSurvey": "Meedoen aan onderzoek",
+    "newsletter": {
+      "groups": "Groepen",
+      "status": "Status",
+      "title": "Nieuwsbrief"
+    },
+    "overview": "Overzicht",
+    "pickTag": "Kies een tag uit de onderstaande lijst",
+    "profile": "Profiel",
+    "roles": "Rollen",
+    "security": {
+      "instructions": "Kopieer en deel deze link:",
+      "loginOverride": "Inloggen opheffen",
+      "mfa": {
+        "desc": "Deze contactpersoon heeft 2FA ingeschakeld. Klik op de knop “{ disableLabel }” om deze uit te schakelen.",
+        "disabledDesc": "2FA is niet ingeschakeld voor dit contact."
+      },
+      "resetPassword": "Wachtwoord opnieuw instellen",
+      "title": "Beveiliging",
+      "whatDoTheButtonsDo": "Klik op de knop om een noodlink te genereren:"
+    }
+  },
+  "contacts": {
+    "addContact": "Contact toevoegen",
+    "advancedSearch": {
+      "hasAnswered": "Heeft u deelgenomen aan deze oproep?",
+      "selectCallout": "Selecteer oproep..."
+    },
+    "allContacts": "Alle contacten",
+    "data": {
+      "activeMembership": "Actief lidmaatschap",
+      "activePermission": "Actieve rol",
+      "amount": "Bedrag",
+      "annotationsCopy": "Contact succesvol bijgewerkt",
+      "contribution": "Bijdrage",
+      "contributionCancelled": "Opzegging contributie",
+      "contributionMonthlyAmount": "Contributie maandbedrag",
+      "contributionPeriod": "Contributie periode",
+      "contributionType": "Type bijdrage",
+      "deliveryOptIn": "Keuze voor levering",
+      "description": "Beschrijving",
+      "email": "E-mail",
+      "firstname": "Voornaam",
+      "joined": "Aangesloten bij",
+      "lastSeen": "Laatst gezien",
+      "lastname": "Achternaam",
+      "manualPaymentSource": "Handmatige betalingsbron",
+      "membershipExpires": "Lid tot",
+      "membershipStarts": "Lid sinds",
+      "name": "Naam",
+      "newsletterGroups": "Nieuwsbrief groepen",
+      "newsletterStatus": "Nieuwsbrief status",
+      "notes": "Opmerkingen",
+      "payingFee": "Betaling vergoeding?",
+      "paymentReference": "Referentie betaling",
+      "paymentSource": "Bron van betaling",
+      "period": "Periode",
+      "phone": "Telefoon",
+      "preferredChannel": "Voorkeur kanaal",
+      "tags": "Tags"
+    },
+    "dataGroup": {
+      "callout": "Oproep",
+      "contact": "Contact informatie",
+      "contribution": "Bijdrage",
+      "role": "Rol"
+    },
+    "noContacts": "Nog geen contacten toegevoegd",
+    "noResults": "Geen contacten gevonden",
+    "numResults": "{n} contact gevonden | {n} contacten gevonden",
+    "search": "Contacten zoeken...",
+    "selectedCount": "{n} contactpersoon geselecteerd | {n} contactpersonen geselecteerd",
+    "showingOf": "Toont {start} tot {end} contacten uit {total}"
+  },
+  "contribution": {
+    "adminCancelDescription": "Als je de bijdrage van de contactpersoon annuleert, zal hun lidmaatschap eindigen aan het einde van hun huidige betalingstermijn op {date}.",
+    "bankAccount": "Bankrekening",
+    "billing": "Facturering",
+    "cancelContribution": "Contributie opzeggen",
+    "cancelDescription": "Als je je bijdrage annuleert, zal je lidmaatschap eindigen aan het einde van je huidige betalingsperiode op {date}.",
+    "cancelMessage": "We vinden het jammer dat je weggaat.",
+    "cancelledContribution": "Je bijdrage is geannuleerd.",
+    "changeBank": "Overstappen naar een andere bankrekening",
+    "changeBankInfo": "In de volgende stap worden de gegevens van je nieuwe bankrekening gevraagd.",
+    "contributing": "Je draagt bij",
+    "contributionUpdateError": "Je kunt je bijdrage op dit moment niet bijwerken omdat je nog een betaling tegoed hebt.",
+    "dueToRenew": "Je bijdrage moet vernieuwd worden op {renewalDate}.",
+    "expired": "Je bijdrage is verlopen.",
+    "expiredText": "Overweeg om te verlengen, al is het maar voor het laagste bedrag, het zou ons enorm helpen. Hartelijk dank!",
+    "hasPendingPayment": "Je betaling wordt momenteel verwerkt.",
+    "manualPayment": "Je betaalt momenteel je lidmaatschapsbijdrage via {source}. Door te betalen via ons lidmaatschapssysteem weten we op hoeveel geld van onze leden we elke maand kunnen rekenen en is het gemakkelijker voor jou om je contributie te beheren.",
+    "manualPaymentSource": "een tool van derden",
+    "nextAmountChanging": "Je bijdrage zal veranderen naar {nextAmount} op {renewalDate}.",
+    "paymentHistory": {
+      "empty": "Hier worden eerdere betalingen en bijbehorende facturen weergegeven.",
+      "title": "Betalingsgeschiedenis"
+    },
+    "paymentMethod": "Betaalmethode",
+    "paymentSourceUpdateError": "Je kunt je bankrekening momenteel niet bijwerken omdat je nog een betaling tegoed hebt.",
+    "prorateDecreaseMessage": "Uw huidige bijdrage is nog één maand geldig. | Uw huidige bijdrage duurt nog {n} maanden.",
+    "prorateDecreaseMessageWillStart": "Uw nieuwe bijdrage start op {renewalDate}.",
+    "prorateIncreaseMessage": "Uw huidige bijdrage is nog één maand geldig. | Uw huidige bijdrage duurt nog {n} maanden.",
+    "prorateIncreaseMessageOneOff": "U kunt een eenmalige betaling doen van {oneOffPayment} om uw nieuwe bijdrage onmiddellijk te laten ingaan.",
+    "prorateNoText": "Je blijft tot dan op je huidige contributie.",
+    "prorateNoTitle": "Update mijn bijdrage op {renewalDate}",
+    "prorateYesText": "Er wordt u nu een eenmalige betaling van {oneOffPayment} in rekening gebracht en uw bijdrage wordt onmiddellijk bijgewerkt.",
+    "prorateYesTitle": "Mijn bijdrage nu aanpassen",
+    "restartContribution": "Contributie herstarten",
+    "startContribution": "Contributie starten",
+    "startedContribution": "Je bijdrage is gestart.",
+    "updateContribution": "Contributie bijwerken",
+    "updatePaymentType": "Betalingsmethode bijwerken",
+    "updatedContribution": "Je bijdrage is bijgewerkt.",
+    "updatedPaymentSource": "Je betaalmethode is bijgewerkt.",
+    "willExpire": "Je bijdrage vervalt op {expires}.",
+    "willRenew": "Je bijdrage wordt automatisch verlengd op {renewalDate}.",
+    "willRenewWithNewAmount": "Je bijdrage zal automatisch vernieuwd worden op {renewalDate} en zal veranderen naar het door jou gekozen bedrag van {nextAmount}."
+  },
+  "createCallout": {
+    "lastSaved": "Laatst opgeslagen {duration} geleden",
+    "lastSavedNow": "Zojuist voor het laatst opgeslagen",
+    "steps": {
+      "content": {
+        "title": "Inhoud"
+      },
+      "dates": {
+        "inputs": {
+          "expires": {
+            "label": "Wanneer moet deze callout eindigen?",
+            "opts": {
+              "never": "Nooit, tenzij handmatig afgesloten",
+              "schedule": "Plan een einddatum"
+            }
+          },
+          "starts": {
+            "label": "Wanneer moet deze callout beginnen?",
+            "opts": {
+              "now": "Nu",
+              "schedule": "Plan een startdatum"
+            }
+          }
+        },
+        "title": "Planning"
+      },
+      "endMessage": {
+        "inputs": {
+          "action": {
+            "label": "Als de gebruiker klaar is met het beantwoorden van de callout",
+            "opts": {
+              "redirect": "Doorverwijzen naar een andere pagina",
+              "showMessage": "Een bedankbericht tonen"
+            }
+          },
+          "text": {
+            "help": "<p>Hier kun je gebruikers in meer detail bedanken en hen laten weten wanneer ze updates of follow-ups kunnen verwachten.</p>\n",
+            "label": "Bedank tekst",
+            "placeholder": "Vermeld meer details over hoe waardevol hun input was..."
+          },
+          "title": {
+            "help": "<p>Je lezers zullen de <strong>bedanktitel</strong> zien wanneer ze klaar zijn met het beantwoorden van de oproep.</p>\n",
+            "label": "Titel van het bedankbericht",
+            "placeholder": "Bedankt!"
+          },
+          "url": {
+            "help": "<p>Dit kan je homepage zijn of een eerste artikel over het onderwerp van de callout.</p>\n",
+            "label": "URL voor doorverwijzing",
+            "placeholder": "https://example.com"
+          }
+        },
+        "title": "Einde bericht"
+      },
+      "mailchimp": {
+        "title": "Mailchimp synchroniseren"
+      },
+      "settings": {
+        "inputs": {
+          "anonymous": {
+            "help": "<p>Als u <strong>anonieme reacties</strong> toestaat, worden gebruikers niet om hun contactgegevens gevraagd.</p>\n",
+            "label": "Moeten gasten om hun contactgegevens worden gevraagd?",
+            "opts": {
+              "all": "Alle reacties moeten anoniem zijn, ook van ingelogde gebruikers",
+              "guests": "Nee, reacties van gasten kunnen anoniem zijn",
+              "none": "Ja, vraag gasten om hun contactgegevens"
+            }
+          },
+          "editable": {
+            "help": "<p>Zo ja, dan kunnen de gebruikers <strong>hun antwoorden aanpassen</strong> totdat de callout is afgelopen.</p>\n",
+            "label": "Moeten mensen hun antwoorden kunnen wijzigen voordat de callout eindigt?",
+            "opts": {
+              "no": "Nee, antwoorden zijn definitief",
+              "yes": "Ja"
+            }
+          },
+          "mapSchema": {
+            "addressPattern": {
+              "label": "Welk formaat wil je gebruiken?"
+            },
+            "addressPatternProp": {
+              "label": "Wilt u een veld vullen met het adres?",
+              "none": "-- Een veld niet invullen"
+            },
+            "addressProp": {
+              "label": "Welk formulierveld moet worden gebruikt om reacties op de kaart uit te zetten?"
+            },
+            "bounds": {
+              "label": "Maximale kaart grenzen"
+            },
+            "center": {
+              "label": "Oorspronkelijk kaartcentrum"
+            },
+            "geocodeCountries": {
+              "label": "Zoekresultaten voor locatie beperken tot specifieke landen?"
+            },
+            "initialZoom": {
+              "label": "Initieel zoomniveau"
+            },
+            "maxZoom": {
+              "label": "Maximaal zoomniveau"
+            },
+            "minZoom": {
+              "label": "Minimale zoom"
+            },
+            "style": {
+              "help": "<p>Voor de kaartweergave is een extern kaartprogramma** nodig, zoals [Maptiler] (https://www.maptiler.com) of [Mapbox] (https://www.mapbox.com). Deze hulpprogramma's geven je de URL voor de kaartstijl die je hier moet plakken.</p>\n",
+              "label": "URL kaartstijl"
+            },
+            "title": "Kaartinstellingen"
+          },
+          "multiple": {
+            "help": "<p>Zo ja, dan kunnen ingelogde gebruikers meerdere keren** reageren op de callout.</p>\n",
+            "label": "Kunnen gebruikers de callout meerdere keren beantwoorden?",
+            "opts": {
+              "no": "Nee, slechts één reactie",
+              "yes": "Ja"
+            }
+          },
+          "requireCaptcha": {
+            "help": "<p>Als u <strong>botspambeveiliging</strong> inschakelt, moeten gebruikers een Captcha invullen om te bevestigen dat ze menselijk zijn. Dit is handig om te voorkomen dat uw oproep door bots wordt gespamd.</p>\n",
+            "label": "Bescherming tegen botspam inschakelen op de callout?",
+            "opts": {
+              "all": "Ja, vraag alle gebruikers om te bevestigen dat ze menselijk zijn",
+              "guests": "Ja, vraag gasten om te bevestigen dat ze menselijk zijn",
+              "none": "Geen"
+            }
+          },
+          "responseImageFilter": {
+            "label": "Wilt u een filter toepassen op afbeeldingen?"
+          },
+          "responseImageProp": {
+            "help": "<p>De afbeelding wordt gebruikt om het antwoord te visualiseren in de kaart- of galerijweergave. Belangrijk: dit moet een bestandsuploadcomponent zijn.</p>\n",
+            "label": "Welk formulierveld moet worden gebruikt voor afbeeldingen van reacties?"
+          },
+          "responseLinks": {
+            "label": "Links toevoegen onderaan reacties?"
+          },
+          "responseTitleProp": {
+            "help": "<p>De titel wordt boven elk antwoord in de kaart- of galerieweergave weergegeven.</p>\n",
+            "label": "Welk formulierveld moet worden gebruikt als titel van het antwoord?"
+          },
+          "showResponses": {
+            "help": "<p>Zo ja, dan kunt u een kaart- of galerijweergave instellen om de antwoorden op de oproep te visualiseren.</p>\n",
+            "label": "Mogen gebruikers reacties openbaar zien?"
+          },
+          "visible": {
+            "help": "<p>U kunt de callout <strong>niet zichtbaar</strong> maken voor gebruikers als u alleen wilt dat deze wordt beantwoord door mensen met wie u de link deelt.</p>\n",
+            "label": "Moet het zichtbaar zijn in de dashboards van de gebruikers?",
+            "opts": {
+              "no": "Nee, alleen toegankelijk via de link",
+              "yes": "Ja, zichtbaar voor gebruikers"
+            }
+          },
+          "whichResponseBuckets": {
+            "label": "Welke responsemmers moeten openbaar worden weergegeven?"
+          },
+          "whichResponseViews": {
+            "help": "<p>Bepaal of u de kaartweergave of de galerijweergave of beide wilt gebruiken.</p>\n",
+            "label": "Welke reactieweergaven moeten zichtbaar zijn?",
+            "opts": {
+              "gallery": "Galerijweergave",
+              "map": "Kaartweergave"
+            }
+          },
+          "who": {
+            "help": "<p>Callouts kunnen worden gepresenteerd aan <strong>iedereen</strong> of worden beperkt tot deelname door <strong>alleen leden</strong></p>\n",
+            "label": "Wie kan deelnemen?",
+            "opts": {
+              "everyone": "Iedereen",
+              "members": "Alleen leden"
+            }
+          }
+        },
+        "title": "Instellingen"
+      },
+      "titleAndImage": {
+        "inputs": {
+          "description": {
+            "help": "<p>De <strong>Korte beschrijving</strong> borduurt voort op de titel om uit te leggen waar de callout over gaat. Het is bedoeld om mensen in een paar woorden te informeren over de inhoud.</p>\n",
+            "label": "Korte beschrijving",
+            "placeholder": "Leg snel uit waarom mensen deze callout zouden moeten openen."
+          },
+          "image": {
+            "help": "<p>De <strong>Omslagafbeelding</strong> dient als illustratie voor de callout op menu's en formulieren.</p>\n",
+            "label": "Afbeelding omslag"
+          },
+          "intro": {
+            "help": "<p>De <strong>Inleidingstekst</strong> verschijnt naast de callout. Het moet uitleggen waarom je deze callout maakt en context geven die de gebruiker nodig heeft voordat hij antwoordt.</p>\n",
+            "label": "Inleiding"
+          },
+          "overrideShare": {
+            "label": "Titel en beschrijving van de callout gebruiken om te delen?",
+            "opts": {
+              "no": "Nee, stel een aangepaste titel en beschrijving in",
+              "yes": "Ja"
+            }
+          },
+          "shareDescription": {
+            "help": "<p>Het <strong>Deel beschrijving</strong> veld stelt de korte beschrijving in zoals deze moet verschijnen op social media kaarten.</p>\n",
+            "label": "Beschrijving",
+            "placeholder": "Leg snel uit waarom mensen op deze oproep moeten reageren."
+          },
+          "shareTitle": {
+            "help": "<p>Het <strong>Share title</strong>-veld stelt de titel in zoals deze op kaarten voor sociale media moet verschijnen.</p>\n",
+            "label": "Titel delen",
+            "placeholder": "De naam van je callout"
+          },
+          "slug": {
+            "help": "<p>Je kunt de <strong>Permalink</strong> delen met gebruikers zodat ze toegang hebben tot de callout</p>\n",
+            "label": "Permalink",
+            "opts": {
+              "auto": "Automatisch genereren op basis van de titel van de callout",
+              "manual": "Aangepaste permalink instellen"
+            }
+          },
+          "title": {
+            "help": "<p>De <strong>Titel</strong> verschijnt bij alle vermeldingen van deze callout. Het loont de moeite om even de tijd te nemen om de juiste naam te bedenken zodat mensen geïnteresseerd raken.</p>\n",
+            "label": "Titel",
+            "placeholder": "De naam van je callout."
+          }
+        },
+        "title": "Titel en afbeelding",
+        "urlWillBe": "Permalink wordt"
+      }
+    },
+    "title": "Een oproep maken",
+    "untitledCallout": "Oproep zonder titel"
+  },
+  "editCallout": {
+    "replicated": "Je callout is succesvol gerepliceerd en je bent nu de nieuwe kopie aan het bewerken. Zorg ervoor dat je de titel aanpast op het tabblad “Titel en afbeelding”.",
+    "title": "Bewerken: {title}",
+    "warning": "Voorzichtig! Je bent een live callout aan het bewerken. Het wijzigen van formuliereigenschappen brengt het risico met zich mee dat eerdere antwoorden onbruikbaar worden."
+  },
+  "editNotice": {
+    "title": "Bewerken: {title}"
+  },
+  "footer": {
+    "contactUs": "Neem contact met ons op",
+    "handbookResources": "Handboek & bronnen",
+    "impressum": "Impressum",
+    "joinCommunity": "Word lid van de community",
+    "poweredBy": "onafhankelijke lokale nieuwsredacties",
+    "privacyPolicy": "Privacybeleid",
+    "terms": "Voorwaarden en bepalingen"
+  },
+  "forgotPassword": {
+    "backToLogin": "Terug naar de inlogpagina",
+    "description": "Vul je e-mailadres in en we sturen je instructies om je wachtwoord opnieuw in te stellen.",
+    "message": "Als er een account is gekoppeld aan {email}, ontvangt u binnenkort een e-mail. Controleer uw spam-map als deze niet verschijnt.",
+    "title": "Je wachtwoord vergeten?"
+  },
+  "form": {
+    "addressLine1": "Adresregel 1",
+    "addressLine2": "Adresregel 2",
+    "cancel": "Annuleren",
+    "cityOrTown": "Stad",
+    "deliveryOptIn": "Opt-in levering",
+    "description": "Beschrijving",
+    "email": "E-mail",
+    "errorMessages": {
+      "api": {
+        "account-locked": "Account vergrendeld vanwege te veel mislukte inlogpogingen. Reset je wachtwoord of neem contact op met support voor hulp.",
+        "duplicate-email": "E-mailadres bestaat al",
+        "duplicate-tag-name": "Er bestaat al een tag met deze naam",
+        "invalid-token": "Ongeldig 2FA token",
+        "login-failed": "Ongeldige combinatie wachtwoord/e-mail",
+        "mfa-token-required": "Je hebt 2FA ingeschakeld, voer het token van je authenticator app in om verder te gaan."
+      },
+      "generic": "Oeps, er is iets fout gegaan! Neem contact op met support als dit weer gebeurt.",
+      "unauthorized": "Je hebt hier geen toegang toe.",
+      "validation": "Er ontbreekt iets. Controleer de bovenstaande velden."
+    },
+    "errors": {
+      "address": {
+        "required": "Dit veld is vereist als je een adres wilt toevoegen"
+      },
+      "addressLine1": {
+        "required": "Adresregel 1 is vereist"
+      },
+      "cityOrTown": {
+        "required": "Stad/gemeente is vereist"
+      },
+      "color": {
+        "pattern": "Ongeldige kleur",
+        "required": "Kleur is vereist"
+      },
+      "confirmPassword": {
+        "password": "Ongeldig wachtwoord",
+        "required": "Wachtwoord is vereist",
+        "sameAs": "De wachtwoorden komen niet overeen"
+      },
+      "email": {
+        "email": "Ongeldig e-mailadres",
+        "required": "E-mail is vereist"
+      },
+      "file": {
+        "rateLimited": "Upload mislukt: u hebt onlangs te veel bestanden geüpload. Wacht een paar minuten voordat u het opnieuw probeert.",
+        "tooBig": "Upload mislukt: de bestandsgrootte moet kleiner zijn dan 20Mb"
+      },
+      "firstName": {
+        "required": "Voornaam is vereist"
+      },
+      "lastName": {
+        "required": "Achternaam is vereist"
+      },
+      "name": {
+        "required": "Naam is vereist"
+      },
+      "password": {
+        "password": "Ongeldig wachtwoord",
+        "required": "Wachtwoord is vereist",
+        "sameAs": "De wachtwoorden komen niet overeen"
+      },
+      "postCode": {
+        "required": "Postcode is vereist"
+      },
+      "unknown": {
+        "email": "Ongeldig e-mailadres",
+        "max": "Dit veld moet maximaal {max} zijn",
+        "min": "Dit veld moet minstens {min} zijn",
+        "required": "Dit veld is vereist",
+        "url": "Ongeldige URL"
+      },
+      "url": {
+        "required": "URL is vereist",
+        "url": "Ongeldige URL"
+      },
+      "verifyCode": {
+        "max": "De code mag maximaal {max} tekens lang zijn.",
+        "min": "De code moet minstens {min} tekens lang zijn.",
+        "required": "Code is vereist"
+      }
+    },
+    "firstName": "Voornaam",
+    "lastName": "Achternaam",
+    "newPassword": "Nieuw wachtwoord",
+    "newPasswordConfirm": "Nieuw wachtwoord bevestigen",
+    "notes": "Opmerkingen",
+    "password": "Wachtwoord",
+    "passwordInfo": "“Stel een veilig wachtwoord in: 8+ tekens of langer, en het moet een cijfer, hoofdletters en kleine letters bevatten.”",
+    "phone": "Telefoonnummer",
+    "postCode": "Postcode",
+    "richtext": {
+      "bold": "Vet",
+      "bulletlist": "Opsomming",
+      "heading": "Kop",
+      "italic": "Cursief",
+      "link": "Link",
+      "numberedlist": "Genummerde lijst",
+      "strikethrough": "Doorhalen",
+      "underline": "Onderstrepen"
+    },
+    "saveChanges": "Wijzigingen opslaan",
+    "saved": "Opgeslagen!",
+    "unsavedChanges": "Niet-opgeslagen wijzigingen",
+    "updated": "Bijgewerkt"
+  },
+  "formRenderer": {
+    "components": {
+      "file": {
+        "browse": "uploaden vanaf apparaat",
+        "dropFiles": "Sleep bestanden hierheen om bij te voegen",
+        "or": "of",
+        "switchToFileUpload": "Overschakelen naar bestand uploaden",
+        "takePicture": "Foto maken",
+        "useCamera": "gebruik camera"
+      },
+      "multiple": {
+        "addAnother": "Een andere toevoegen"
+      }
+    }
+  },
+  "homePage": {
+    "editProfile": "Bewerk je community profiel",
+    "manageContribution": "Je bijdrage beheren",
+    "newCallout": "Nieuwe oproep!",
+    "openCallouts": "Oproepen openen",
+    "quickActions": "Snelle acties",
+    "title": "Home",
+    "viewAllCallouts": "Alle callouts bekijken",
+    "viewOpenCallouts": "Open callouts bekijken",
+    "welcome": "Welkom bij ons {firstName}!",
+    "yourProfile": "Uw profiel"
+  },
+  "item": {
+    "status": {
+      "endsIn": "Eindigt in {duration}",
+      "startsIn": "Begint in {duration}"
+    }
+  },
+  "join": {
+    "absorbFeeForce": "{bedrag} bijdragen moeten de {fee} kosten opnemen.",
+    "absorbFeeOptIn": "Ja, ik zal de {fee} kosten op me nemen.",
+    "absorbFeeText": "Onze betalingsverwerker brengt ons kosten per transactie in rekening, wat betekent dat we minder ontvangen uit maandelijkse bijdragen. Accepteer je de {fee} transactiekosten? Je kunt ook jaarlijks betalen.",
+    "contribute": "Draag bij {contribution}",
+    "errors": {
+      "confirmEmail": {
+        "message": "Bijna klaar! We moeten alleen je e-mailadres bevestigen om het instellen van je lidmaatschap af te ronden.",
+        "proceed": "We hebben je een e-mail gestuurd. Klik op de link om verder te gaan.",
+        "title": "Bevestig je e-mailadres"
+      },
+      "failed": {
+        "backToJoin": "Terug naar de aanmeldpagina",
+        "message": "Er is een probleem opgetreden bij het opzetten van je lidmaatschap. Ons team is op de hoogte gebracht. Neem contact op met support als het probleem zich blijft voordoen.",
+        "title": "Er is iets fout gegaan"
+      }
+    },
+    "login": "Inloggen",
+    "memberAccount": "Ledenaccount",
+    "memberAlready": "Ben je al lid?",
+    "minimumContribution": "Minimum bijdrage is",
+    "noContribution": "Ik wil nu geen bijdrage leveren",
+    "notice": "Door verder te gaan accepteer je het",
+    "now": "Word nu lid!",
+    "paymentMethod": "Betaalmethode",
+    "poweredBy": "Mogelijk gemaakt door beabee",
+    "privacy": "Privacybeleid",
+    "tax": {
+      "included": "Bijdrage is inclusief {taxRate}% BTW."
+    }
+  },
+  "joinPayment": {
+    "applePay": {
+      "description": "Lidmaatschap",
+      "recurringLabel": "Periodieke bijdrage"
+    },
+    "genericError": "Oeps, er is iets misgegaan! Neem contact op met support als dit weer gebeurt.",
+    "goBack": "Heb je iets gemist? {back}",
+    "goBackButton": "Terug naar het vorige scherm",
+    "note": "Je kunt je bijdrage op elk moment wijzigen en je betalingsgeschiedenis bekijken in je ledenaccount.",
+    "willBeContributing": "Je draagt {contribution} bij"
+  },
+  "joinSetup": {
+    "confirmDetails": "Bevestig uw gegevens",
+    "continue": "Alles goed! Ga verder",
+    "welcome": "Welkom {firstName}!"
+  },
+  "login": {
+    "backTo": "Terug naar {newsroomName}",
+    "forgotPassword": "Wachtwoord vergeten?",
+    "joinNow": "Word nu lid!",
+    "lostMfaDevice": "Ben je je 2FA-apparaat kwijt?",
+    "notMember": "Nog geen lid?",
+    "title": "Log in op je account"
+  },
+  "lostDevice": {
+    "description": "Voer je e-mailadres in en we sturen je instructies om je 2FA opnieuw in te stellen.",
+    "message": "Als er een account is gekoppeld aan {email}, ontvang je binnenkort een e-mail. Controleer uw spam-map als deze niet verschijnt.",
+    "title": "Bent u uw 2FA-apparaat kwijt?"
+  },
+  "membershipBuilder": {
+    "steps": {
+      "accountConfirmation": {
+        "deliveryAddress": {
+          "showOptIn": "Vraag om postadres",
+          "title": "Postadres"
+        },
+        "description": "Stel je bevestigingsscherm samen",
+        "joinSurvey": {
+          "required": "Gebruikers moeten de enquête invullen voordat ze verder kunnen gaan",
+          "slug": "Oproep",
+          "slugHelp": "Je kunt elke open callout gebruiken die geen vervaldatum heeft.",
+          "text": "Je kunt je nieuwe gebruikers vragen om een uitnodiging in te vullen als onderdeel van de aanmeldingsprocedure. Dit is een goede manier om hen te vragen waarom ze lid zijn geworden of misschien wil je wat extra informatie van hen om hen te helpen in de community te passen.",
+          "textIntro": "Vertel je gebruikers een beetje waarom je om deze informatie vraagt",
+          "title": "Deelnemen aan enquête"
+        },
+        "newsletter": {
+          "groups": {
+            "add": "Nieuwe groep toevoegen",
+            "help": "<p>Je kunt gebruikers laten kiezen van welke nieuwsbriefgroepen ze lid willen worden. Deze groepen moeten al geconfigureerd zijn in Mailchimp, neem contact op met <a href=\"mailto:support{'@'}beabee.io\">support{'@'}beabee.io</a> als je niet zeker weet hoe je deze functie moet gebruiken.</p>\n",
+            "title": "Nieuwsbrief groepen"
+          },
+          "optInDisabled": "Het label wordt niet gebruikt wanneer nieuwsbriefgroepen zichtbaar zijn.",
+          "showOptIn": "Vraag om in te schrijven voor nieuwsbrief",
+          "title": "Nieuwsbrief"
+        },
+        "optInLabel": "Label selectievakje",
+        "optInText": "Tekst",
+        "optInTitle": "Kop",
+        "text": "Nadat gebruikers lid zijn geworden, worden ze gevraagd om hun registratie te bevestigen. Hier kun je de details van het bevestigingsscherm instellen.",
+        "title": "Account bevestiging",
+        "welcomeMessage": "Welkomstbericht"
+      },
+      "emails": {
+        "bigTitle": "Welkomst- en annuleringsmails",
+        "cancellationEmail": "E-mail voor annulering",
+        "description": "Pas je welkomst- en annuleringsmails aan",
+        "text": "Alle e-mails worden verzonden vanaf uw support e-mailadres en bevatten een standaard handtekening. U kunt deze wijzigen in uw e-mailinstellingen.",
+        "title": "E-mails",
+        "welcomeEmail": "Welkom e-mail"
+      },
+      "intro": {
+        "description": "Zeg hallo tegen je nieuwe leden",
+        "message": "Bericht",
+        "showWelcomeMessage": "Welkomstbericht tonen",
+        "text": "Zodra je leden klaar zijn met registreren, worden ze begroet met een bericht. Maak het de jouwe!",
+        "title": "Welkomstbericht"
+      },
+      "joinForm": {
+        "backgroundImage": "Achtergrond afbeelding",
+        "defaultAmount": "Standaard bedrag",
+        "description": "Verfijn je lidmaatschapsformulier",
+        "formSubtitle": "Ondertitel",
+        "formTitle": "Titel",
+        "minAmount": "Minimum bedrag",
+        "showAbsorbFee": "Gebruiker vragen om de betalingskosten te absorberen",
+        "showNoContribution": "Gebruiker toestaan mee te doen zonder bijdrage",
+        "suggestedAmounts": "Voorgestelde contributiebedragen",
+        "text": "In dit gedeelte kun je het lidmaatschapsformulier bewerken, verfijnen en een voorbeeld bekijken.",
+        "title": "Lidmaatschapsformulier"
+      }
+    },
+    "title": "Lidmaatschap bouwer"
+  },
+  "menu": {
+    "account": "Account",
+    "admin": "Beheer",
+    "adminSettings": "Instellingen",
+    "callouts": "Oproepen",
+    "contacts": "Contacten",
+    "contribution": "Bijdrage",
+    "dashboard": "Dashboard",
+    "home": "Home",
+    "legacyApp": "Oud dashboard",
+    "logout": "Afmelden",
+    "membershipBuilder": "Lidmaatschap bouwer",
+    "notices": "Mededelingen",
+    "payments": "Betalingen",
+    "settings": "Instellingen",
+    "yourProfile": "Jouw profiel"
+  },
+  "notFound": {
+    "goBack": "Ga terug naar home",
+    "text": "Deze pagina bestaat niet. Als je denkt dat dit een fout is, neem dan contact op met {support}."
+  },
+  "noticeAdminOverview": {
+    "actions": {
+      "confirmDelete": {
+        "text": "Weet u zeker dat u deze kennisgeving wilt verwijderen?",
+        "title": "Kennisgeving verwijderen?"
+      }
+    },
+    "created": "Uw nieuw bericht werd met succes aangemaakt.",
+    "summary": "Samenvatting",
+    "updated": "Uw bericht werd met succes bijgewerkt."
+  },
+  "notices": {
+    "addNotice": "Melding toevoegen",
+    "data": {
+      "createdAt": "Aangemaakt",
+      "name": "Naam",
+      "status": "Status"
+    },
+    "showingOf": "{start} tot {end} meldingen tonen uit {total}"
+  },
+  "notification": {
+    "error": "Er is iets misgegaan. Probeer de pagina opnieuw te laden."
+  },
+  "pageTitle": {
+    "confirmEmail": "Bevestig e-mail",
+    "duplicateEmail": "E-mail dupliceren",
+    "failed": "Mislukt",
+    "forgotPassword": "Wachtwoord vergeten",
+    "join": "Word lid van",
+    "login": "Inloggen",
+    "lostDevice": "2FA apparaat kwijt?",
+    "notFound": "Pagina niet gevonden",
+    "resetDevice": "2FA apparaat resetten",
+    "resetPassword": "Wachtwoord opnieuw instellen",
+    "setPassword": "Wachtwoord instellen",
+    "setup": "Instellen"
+  },
+  "paymentMethods": {
+    "gc_direct-debit": {
+      "changeLabel": "Automatische incasso wijzigen",
+      "label": "Automatische incasso",
+      "setLabel": "Uw automatische incasso"
+    },
+    "s_bacs": {
+      "changeLabel": "Automatische incasso wijzigen",
+      "label": "Automatische incasso",
+      "setLabel": "Je automatische incasso gegevens"
+    },
+    "s_card": {
+      "changeLabel": "Kaartgegevens wijzigen",
+      "label": "Kaart",
+      "setLabel": "Je kaartgegevens"
+    },
+    "s_ideal": {
+      "changeLabel": "iDEAL-gegevens wijzigen",
+      "label": "iDEAL",
+      "setLabel": "Uw iDEAL-gegevens"
+    },
+    "s_paypal": {
+      "changeLabel": "PayPal-gegevens wijzigen",
+      "label": "PayPal",
+      "setLabel": "Je PayPal-gegevens"
+    },
+    "s_sepa": {
+      "changeLabel": "Automatische incasso wijzigen",
+      "label": "Automatische incasso",
+      "setLabel": "Je automatische incasso gegevens"
+    }
+  },
+  "payments": {
+    "data": {
+      "amount": "Bedrag",
+      "chargeDate": "Datum",
+      "contact": "Contact",
+      "status": "Status"
+    },
+    "dataGroup": {
+      "payment": "Betaling"
+    }
+  },
+  "paymentsAdmin": {
+    "filter": {
+      "all": "Alle betalingen",
+      "cancelled": "Geannuleerde betalingen",
+      "failed": "Mislukte betalingen",
+      "pending": "In afwachting van betalingen",
+      "successful": "Geslaagde betalingen"
+    },
+    "showingOf": "{start} tot {end} betalingen van {total} weergeven"
+  },
+  "resetDevice": {
+    "description": "Voer je wachtwoord in om de 2FA beveiliging te resetten, je kunt een nieuw apparaat instellen zodra je bent ingelogd.",
+    "failed": "Het resetten van het apparaat is niet gelukt, de link is mogelijk verlopen.",
+    "invalidPassword": "Ongeldig wachtwoord",
+    "success": "Uw 2FA apparaat is succesvol gereset",
+    "title": "Uw 2FA-apparaat resetten?"
+  },
+  "resetPassword": {
+    "description": "Stel een nieuw wachtwoord in om in te loggen.",
+    "failed": "Wachtwoord opnieuw instellen is mislukt, de link is mogelijk verlopen.",
+    "login": "Inloggen op je account",
+    "lostDevice": "Als u uw 2FA-apparaat kwijt bent, neem dan contact op met support.",
+    "success": "Uw wachtwoord is opnieuw ingesteld.",
+    "title": "Wachtwoord opnieuw instellen?"
+  },
+  "roleEditor": {
+    "add": "Rol toevoegen",
+    "confirmDelete": {
+      "text": "Weet je zeker dat je deze rol wilt verwijderen?",
+      "title": "Rol verwijderen"
+    },
+    "expires": {
+      "label": "Vervaldatum voor deze rol",
+      "opts": {
+        "never": "Nooit",
+        "schedule": "Stel een vervaldatum in"
+      }
+    },
+    "new": "Nieuwe rol",
+    "starts": {
+      "label": "Startdatum voor deze rol",
+      "opts": {
+        "now": "Nu",
+        "schedule": "Een begindatum instellen"
+      }
+    },
+    "title": "Rollen",
+    "today": "huidige"
+  },
+  "setPassword": {
+    "description": "Stel een nieuw wachtwoord in om in te loggen.",
+    "title": "Wachtwoord instellen"
+  },
+  "tagEditor": {
+    "add": "Label toevoegen",
+    "confirmDelete": {
+      "text_contact": "Weet u zeker dat u deze tag wilt verwijderen? Elke contactpersoon die getagd is met “{tagName}” verliest de tag.",
+      "text_global": "Weet u zeker dat u de tag “{tagName}” wilt verwijderen?",
+      "text_response": "Weet u zeker dat u deze tag wilt verwijderen? Elke reactie die is getagd met “{tagName}” verliest de tag",
+      "title": "Tag verwijderen"
+    },
+    "name": "Naam"
+  },
+  "tags": {
+    "manageTags": "Labels beheren",
+    "noTags": "Geen tags",
+    "notifications": {
+      "addedTag": "Tag “{tag}” toegevoegd",
+      "removedTag": "Tag “{tag}” verwijderd"
+    },
+    "searchTag": "Tagged met...",
+    "toggleTag": "Tag schakelen"
+  },
+  "taxRate": {
+    "invoiceName": "BTW"
+  }
+} as const;

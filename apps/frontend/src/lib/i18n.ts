@@ -1,3 +1,5 @@
+import localeConfig from '@beabee/locale/config';
+import en from '@beabee/locale/locales/en';
 import { computed, watch } from 'vue';
 import {
   type DefaultLocaleMessageSchema,
@@ -7,9 +9,6 @@ import {
 import { currentUser, generalContent, initStore, isEmbed } from '../store';
 import router from '@lib/router';
 
-import i18nConfig from './i18n-config.json';
-
-import en from '../../locales/en.json';
 import env from '@env';
 import { addNotification } from '@store/notifications';
 
@@ -17,7 +16,7 @@ type Diff<T, U> = T extends U ? never : T;
 
 // It seems slightly odd that we have to define these types, why can't the JSON
 // import be const typed?
-type LocaleKey = keyof typeof i18nConfig;
+type LocaleKey = keyof typeof localeConfig;
 // Remove any variant languages (can't be base languages)
 type BaseLocaleKey = Diff<LocaleKey, `${string}@${string}`>;
 interface LocaleConfig {
@@ -28,10 +27,10 @@ interface LocaleConfig {
 }
 
 export function isLocaleKey(key: string): key is LocaleKey {
-  return key in i18nConfig;
+  return key in localeConfig;
 }
 
-export const localeItems = Object.entries(i18nConfig).map(([id, config]) => ({
+export const localeItems = Object.entries(localeConfig).map(([id, config]) => ({
   id,
   label: config.name,
 }));
@@ -66,12 +65,12 @@ export const currentLocale = computed<LocaleKey>(() => {
 
   // Some locales have only been translated in non-admin areas
   return route.path.startsWith('/admin')
-    ? (i18nConfig[realLocale].adminLocale as LocaleKey)
+    ? (localeConfig[realLocale].adminLocale as LocaleKey)
     : realLocale;
 });
 
 export const currentLocaleConfig = computed<LocaleConfig>(
-  () => i18nConfig[currentLocale.value] as LocaleConfig
+  () => localeConfig[currentLocale.value] as LocaleConfig
 );
 
 // Update document title on route or locale change
@@ -90,7 +89,11 @@ watch(
 
     // en is already loaded
     if (newLocale !== 'en') {
-      const messages = await import(`../../locales/${newLocale}.json`);
+      // For the dynamic import to work the locale must be a path, we can't
+      // reference @beabee/locale here
+      const messages = await import(
+        `../../../../packages/locale/dist/locales/${newLocale}.js`
+      );
       i18n.global.setLocaleMessage(justLocale, messages.default);
     }
 

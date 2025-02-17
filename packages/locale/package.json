@@ -1,0 +1,29 @@
+{
+  "name": "@beabee/locale",
+  "description": "Beabee Locale Translations",
+  "version": "0.1.0",
+  "main": "index.js",
+  "type": "module",
+  "homepage": "https://github.com/beabee-communityrm/monorepo/tree/main/packages/locale",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/beabee-communityrm/monorepo/tree/main/packages/locale"
+  },
+  "scripts": {
+    "clear": "rm -rf dist/",
+    "generate": "node generate.cjs",
+    "build": "yarn clear && tsc"
+  },
+  "devDependencies": {
+    "googleapis": "^144.0.0",
+    "markdown-it": "^14.1.0",
+    "typescript": "~5.6.3"
+  },
+  "files": [
+    "dist/"
+  ],
+  "exports": {
+    "./locales/*": "./dist/locales/*.js",
+    "./config": "./dist/config.js"
+  }
+}

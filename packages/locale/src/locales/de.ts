@@ -1,4 +1,4 @@
-{
+export default {
   "accountPage": {
     "contactInformation": "Kontaktdaten",
     "deliveryAddress": "Adresse",
@@ -331,11 +331,10 @@
       "updateResponse": "Antwort bearbeiten"
     },
     "addAPoint": "Klicken Sie dort auf die Karte, wo Sie einen Ort ergänzen möchten",
-    "addLocation": "Neuen Eintrag eingeben",
+    "addLocation": "Neuen Ort eingeben",
     "confirmHuman": "Bitte bestätigen Sie, dass Sie ein Mensch sind",
     "contactDetails": "Kontaktdaten",
     "ended": "Dieser Callout ist seit dem {date} beendet.",
-    "entryOf": "Eintrag {no} von {total}",
     "form": {
       "email": "Ihre E-Mail-Adresse",
       "guestFieldsMissing": "Bitte geben Sie uns Ihre Kontaktdaten.",
@@ -1423,4 +1422,4 @@
   "taxRate": {
     "invoiceName": "MwSt"
   }
-}
+} as const;

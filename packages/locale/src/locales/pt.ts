@@ -1,4 +1,4 @@
-{
+export default {
   "accountPage": {
     "contactInformation": "Informação de contacto",
     "deliveryAddress": "Endereço de entrega",
@@ -925,4 +925,4 @@
   "taxRate": {
     "invoiceName": "???"
   }
-}
+} as const;
