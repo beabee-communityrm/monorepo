@@ -1,4 +1,4 @@
-{
+export default {
   "en": {
     "baseLocale": "en",
     "name": "English",
@@ -39,7 +39,7 @@
     "baseLocale": "nl",
     "name": "Nederlands (callouts only)",
     "displayName": "Nederlands",
-    "adminLocale": "en"
+    "adminLocale": "nl"
   },
   "de@easy": {
     "baseLocale": "de",
@@ -47,4 +47,4 @@
     "displayName": "Leichte Sprache",
     "adminLocale": "de"
   }
-}
+} as const;

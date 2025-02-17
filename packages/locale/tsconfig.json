@@ -1,0 +1,12 @@
+{
+  "include": ["./src"],
+  "compilerOptions": {
+    "module": "node16",
+    "target": "es2022",
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    "declaration": true,
+    "diagnostics": true
+  }
+}

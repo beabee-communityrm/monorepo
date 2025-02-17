@@ -1,4 +1,4 @@
-{
+export default {
   "accountPage": {
     "mfa": {
       "codeInput": {},
@@ -418,4 +418,4 @@
   "taxRate": {
     "invoiceName": "MwSt"
   }
-}
+} as const;

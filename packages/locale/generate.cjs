@@ -120,6 +120,14 @@ function sortObject(obj) {
   return ret;
 }
 
+function saveFile(name, data) {
+  console.log('Updating ' + name);
+  fs.writeFileSync(
+    path.join(__dirname, './src/', name + '.ts'),
+    'export default ' + JSON.stringify(data, null, 2) + ' as const;\n'
+  );
+}
+
 (async () => {
   await loadSheet('Sheet1');
 
@@ -130,17 +138,9 @@ function sortObject(obj) {
   }
 
   for (const locale in localeData) {
-    console.log('Updating ' + locale);
-    fs.writeFileSync(
-      path.join(__dirname, '../locales', locale + '.json'),
-      JSON.stringify(sortObject(localeData[locale]), null, 2) + '\n'
-    );
+    saveFile('./locales/' + locale, sortObject(localeData[locale]));
   }
-
-  fs.writeFileSync(
-    path.join(__dirname, '../src/lib/i18n-config.json'),
-    JSON.stringify(localeConfig, null, 2) + '\n'
-  );
+  saveFile('./config', localeConfig);
 })().catch((err) => {
   console.error(err);
   process.exit(1);
