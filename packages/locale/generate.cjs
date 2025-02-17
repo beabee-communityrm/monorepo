@@ -120,7 +120,7 @@ function sortObject(obj) {
   return ret;
 }
 
-function saveFile(name, data) {
+function saveCtsFile(name, data) {
   console.log('Updating ' + name);
   fs.writeFileSync(
     path.join(__dirname, './src/', name + '.cts'),
@@ -129,7 +129,12 @@ function saveFile(name, data) {
 }
 
 function saveJsonFile(name, data) {
-  saveFile(name, 'export default ' + JSON.stringify(data, null, 2) + ' as const;\n');
+  const serialData = JSON.stringify(data, null, 2);
+  saveCtsFile(name, `export default ${serialData} as const;\n`);
+  fs.writeFileSync(
+    path.join(__dirname, './src/', name + '.json'),
+    serialData
+  );
 }
 
 (async () => {
@@ -146,7 +151,7 @@ function saveJsonFile(name, data) {
     saveJsonFile('./locales/' + locale, sortObject(localeData[locale]));
     localesIndex += `export * as '${locale}' from './${locale}.cjs';\n`;
   }
-  saveFile('./locales/index', localesIndex);
+  saveCtsFile('./locales/index', localesIndex);
   saveJsonFile('./config', localeConfig);
 })().catch((err) => {
   console.error(err);
