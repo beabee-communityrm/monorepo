@@ -14,6 +14,7 @@ import {
   ContentId,
   ContentJoinSetupNewsletterGroupData
 } from "@beabee/beabee-common";
+import { Locale } from "@beabee/locale";
 import { Type } from "class-transformer";
 import {
   IsBoolean,
@@ -27,8 +28,6 @@ import {
 
 import { LinkDto } from "@api/dto/LinkDto";
 import { GetContentTelegramDto } from "@api/dto/ContentTelegramDto";
-
-import { Locale } from "@beabee/core/locale";
 
 export class GetContentContactsDto implements ContentContactsData {
   @IsString({ each: true })

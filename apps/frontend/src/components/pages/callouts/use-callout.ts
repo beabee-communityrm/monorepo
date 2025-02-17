@@ -3,8 +3,7 @@ import { type Ref, computed } from 'vue';
 
 import { currentUser, generalContent } from '@store';
 
-import { isLocaleKey } from '@lib/i18n';
-import i18nConfig from '@lib/i18n-config.json';
+import { isLocale, config as localeConfig } from '@beabee/locale';
 import { useRoute, useRouter } from 'vue-router';
 
 export const HASH_PREFIX = '#response-' as const;
@@ -45,8 +44,8 @@ export function useCalloutVariants(
 
       return {
         id: variantName,
-        label: isLocaleKey(localeName)
-          ? i18nConfig[localeName].displayName
+        label: isLocale(localeName)
+          ? localeConfig[localeName].displayName
           : localeName,
       };
     })

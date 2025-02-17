@@ -1,3 +1,4 @@
+import { isLocale, Locale } from "@beabee/locale";
 import fs from "fs";
 import moment from "moment";
 import path from "path";
@@ -18,7 +19,6 @@ import { MandrillProvider, SendGridProvider, SMTPProvider } from "#providers";
 import { Email, Contact } from "#models/index";
 
 import config from "#config/config";
-import { isLocale, Locale } from "#locale";
 
 const log = mainLogger.child({ app: "email-service" });
 
