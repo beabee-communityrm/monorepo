@@ -17,6 +17,7 @@ COPY --chown=node:node .yarn /opt/.yarn
 COPY --chown=node:node packages/common/package.json /opt/packages/common/package.json
 COPY --chown=node:node packages/core/package.json /opt/packages/core/package.json
 COPY --chown=node:node packages/docker/package.json /opt/packages/docker/package.json
+COPY --chown=node:node packages/locale/package.json /opt/packages/locale/package.json
 COPY --chown=node:node packages/client/package.json /opt/packages/client/package.json
 COPY --chown=node:node packages/test-utils/package.json /opt/packages/test-utils/package.json
 
@@ -74,6 +75,7 @@ FROM base AS dist-common
 COPY --chown=node:node --from=builder /opt/node_modules /opt/node_modules
 COPY --chown=node:node --from=builder /opt/packages/core/dist /opt/packages/core/dist
 COPY --chown=node:node --from=builder /opt/packages/common/dist /opt/packages/common/dist
+COPY --chown=node:node --from=builder /opt/packages/locale /opt/packages/locale
 
 ENTRYPOINT [ "tini", "--" ]
 CMD [ "node", "./dist/app.js" ]

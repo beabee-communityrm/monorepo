@@ -1,4 +1,4 @@
-{
+export default {
   "accountPage": {
     "contactInformation": "Contact information",
     "deliveryAddress": "Delivery address",
@@ -335,7 +335,6 @@
     "confirmHuman": "Please confirm you are human",
     "contactDetails": "Contact details",
     "ended": "This callout ended on {date}",
-    "entryOf": "Entry {no} of {total}",
     "form": {
       "email": "Your email",
       "guestFieldsMissing": "Please tell us your contact details",
@@ -1433,4 +1432,4 @@
   "taxRate": {
     "invoiceName": "VAT"
   }
-}
+} as const;
