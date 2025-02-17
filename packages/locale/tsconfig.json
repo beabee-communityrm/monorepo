@@ -1,8 +1,7 @@
 {
   "include": ["./src"],
   "compilerOptions": {
-    "module": "node16",
-    "target": "es2022",
+    "module": "commonjs",
     "rootDir": "./src",
     "outDir": "./dist",
     "esModuleInterop": true,
