@@ -1,0 +1,22 @@
+---
+subject: O teu primeiro pagamento falhou
+---
+
+<p>Olá *|FNAME|*,</p>
+<p><br /></p>
+<p>
+  Agradecemos muito a tua contribuição para o *|ORGNAME|*, mas infelizmente o
+  teu primeiro pagamento não foi processado com sucesso.
+</p>
+<p><br /></p>
+<p>
+  Para corrigir o problema actualiza o teu método de pagamento no link que segue
+  abaixo, ou entra em contacto connosco por email via
+  <a href="mailto:*|SUPPORTEMAIL|*">*|SUPPORTEMAIL|*</a>.
+</p>
+<p><br /></p>
+<p>
+  <a href="*|LOGINLINK|*"><b>Login</b></a>
+</p>
+<p><br /></p>
+<p>Até já!</p>
