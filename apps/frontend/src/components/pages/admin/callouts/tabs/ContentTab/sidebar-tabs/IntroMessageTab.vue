@@ -6,7 +6,7 @@
       <LocaleRichTextEditor
         v-model="data.introText"
         :locales="locales"
-        :label="t('createCallout.tabs.titleAndImage.inputs.intro.label')"
+        :label="t('createCallout.tabs.intro.label')"
         required
       />
     </AppFormSection>
