@@ -34,7 +34,6 @@ import type { CalloutTabsProps, CalloutTabs } from './callouts.interface';
 
 // Tab Components
 import StepSettings from './tabs/SettingsTab.vue';
-import StepTitleAndImage from './tabs/TitleAndImageTab.vue';
 import StepDatesAndDuration from './tabs/DatesAndDurationTab.vue';
 import StepContent from './tabs/ContentTab/ContentTab.vue';
 
@@ -59,13 +58,6 @@ const tabs = reactive<CalloutTabs>({
     component: markRaw(StepContent),
     data: props.tabsProps.content,
   },
-  titleAndImage: {
-    name: t('createCallout.tabs.titleAndImage.title'),
-    validated: false,
-    error: false,
-    component: markRaw(StepTitleAndImage),
-    data: props.tabsProps.titleAndImage,
-  },
   settings: {
     name: t('createCallout.tabs.settings.title'),
     validated: false,
@@ -85,12 +77,7 @@ const tabs = reactive<CalloutTabs>({
 /**
  * Define the order of tabs
  */
-const tabsInOrder = [
-  tabs.content,
-  tabs.titleAndImage,
-  tabs.settings,
-  tabs.dates,
-];
+const tabsInOrder = [tabs.content, tabs.settings, tabs.dates];
 
 /**
  * Tab selection management
