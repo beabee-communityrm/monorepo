@@ -104,6 +104,7 @@ import CalloutSlideItem from '../../CalloutSlideItem.vue';
 import SidebarTabs from './SidebarTabs.vue';
 import ContentFormTab from './sidebar-tabs/ContentFormTab.vue';
 import EndMessageTab from './sidebar-tabs/EndMessageTab.vue';
+import IntroMessageTab from './sidebar-tabs/IntroMessageTab.vue';
 
 import { getSlideSchema } from '@utils/callouts';
 
@@ -156,6 +157,13 @@ const sidebarTabs = reactive<SidebarTabsType>({
     error: false,
     component: markRaw(ContentFormTab),
     data: props.data.sidebarTabs.content,
+  },
+  intro: {
+    name: t('createCallout.tabs.intro.title'),
+    validated: false,
+    error: false,
+    component: markRaw(IntroMessageTab),
+    data: props.data.sidebarTabs.intro,
   },
   endMessage: {
     name: t('createCallout.tabs.endMessage.title'),

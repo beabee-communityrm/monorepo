@@ -28,14 +28,6 @@
         required
       />
     </AppFormSection>
-    <AppFormSection :help="inputT('intro.help')">
-      <LocaleRichTextEditor
-        v-model="data.introText"
-        :locales="tabs.settings.data.locales"
-        :label="inputT('intro.label')"
-        required
-      />
-    </AppFormSection>
     <AppFormSection v-if="canEditSlug" :help="inputT('slug.help')">
       <AppLabel :label="inputT('slug.label')" required />
       <AppRadioGroup
@@ -105,7 +97,6 @@ import slugify from 'slugify';
 import AppFormSection from '../../../../forms/AppFormSection.vue';
 import LocaleTextArea from '@components/forms/LocaleTextArea.vue';
 import LocaleInput from '@components/forms/LocaleInput.vue';
-import LocaleRichTextEditor from '@components/forms/LocaleRichTextEditor.vue';
 
 const emit = defineEmits(['update:error', 'update:validated']);
 const props = defineProps<{

@@ -49,6 +49,11 @@ const allTabItems = computed<TabItem[]>(() => [
     hidden: true,
   },
   {
+    id: props.sidebarTabs.intro.name,
+    label: props.sidebarTabs.intro.name,
+    to: '',
+  },
+  {
     id: props.sidebarTabs.endMessage.name,
     label: props.sidebarTabs.endMessage.name,
     to: '',
