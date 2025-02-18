@@ -1,17 +1,18 @@
 import type { Raw } from 'vue';
 import type { Component } from 'vue';
 import type { LocaleProp, AppStepperStep } from '@type';
-// import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
+import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
+
+export interface ContentFormTabProps {
+  slides: FormBuilderSlide[];
+  componentText: Record<string, LocaleProp>;
+}
 
 export interface EndMessageTabProps {
   whenFinished: 'message' | 'redirect';
   thankYouTitle: LocaleProp;
   thankYouText: LocaleProp;
   thankYouRedirect: LocaleProp;
-}
-
-export interface ContentFormTabProps {
-  // TODO: Move some props from ContentTabProps here
 }
 
 export interface SidebarTabsProps {

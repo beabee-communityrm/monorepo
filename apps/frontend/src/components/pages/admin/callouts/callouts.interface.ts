@@ -24,7 +24,6 @@ export const buckets = computed(() => [
 ]);
 
 export interface ContentTabProps {
-  // TODO: Move some props to the ContentFormTabProps
   slides: FormBuilderSlide[];
   componentText: Record<string, LocaleProp>;
   sidebarTabs: SidebarTabsProps;
