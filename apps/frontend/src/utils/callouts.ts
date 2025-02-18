@@ -111,7 +111,7 @@ function convertSlidesForSteps(
   return { slides, componentText };
 }
 
-export function convertCalloutToSteps(
+export function convertCalloutToTabs(
   callout?: GetCalloutDataWith<'form' | 'responseViewSchema' | 'variants'>
 ): CalloutTabsProps {
   const settings = env.cnrMode
@@ -139,9 +139,23 @@ export function convertCalloutToSteps(
   const variants = convertVariantsForSteps(callout?.variants);
 
   const content: ContentTabProps = {
-    ...convertSlidesForSteps(callout?.formSchema.slides, callout?.variants),
+    slides: convertSlidesForSteps(callout?.formSchema.slides, callout?.variants)
+      .slides,
+    componentText: convertSlidesForSteps(
+      callout?.formSchema.slides,
+      callout?.variants
+    ).componentText,
     sidebarTabs: {
-      content: {},
+      content: {
+        slides: convertSlidesForSteps(
+          callout?.formSchema.slides,
+          callout?.variants
+        ).slides,
+        componentText: convertSlidesForSteps(
+          callout?.formSchema.slides,
+          callout?.variants
+        ).componentText,
+      },
       endMessage: {
         whenFinished: callout?.thanksRedirect ? 'redirect' : 'message',
         thankYouTitle: variants.thanksTitle,
