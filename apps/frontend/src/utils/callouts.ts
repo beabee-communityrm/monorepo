@@ -169,6 +169,17 @@ export function convertCalloutToTabs(
           callout?.formSchema.slides,
           callout?.variants
         ).componentText,
+        currentSlide: convertSlidesForSteps(
+          callout?.formSchema.slides,
+          callout?.variants
+        ).slides[0],
+        showAdvanced: false,
+        hasLocales: callout?.variants
+          ? Object.keys(callout.variants).length > 1
+          : false,
+        locales: callout?.variants
+          ? Object.keys(callout.variants).filter((v) => v !== 'default')
+          : [],
       },
       endMessage: {
         whenFinished: callout?.thanksRedirect ? 'redirect' : 'message',
