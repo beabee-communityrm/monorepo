@@ -251,7 +251,10 @@ const sidebarTabs = reactive<SidebarTabsType>({
     validated: false,
     error: false,
     component: markRaw(ContentFormTab),
-    data: props.data.sidebarTabs.content,
+    data: {
+      slides: props.data.slides,
+      componentText: props.data.componentText,
+    },
   },
   endMessage: {
     name: t('createCallout.tabs.endMessage.title'),

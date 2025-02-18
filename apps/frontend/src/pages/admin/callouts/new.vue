@@ -50,7 +50,7 @@ import { client } from '@utils/api';
 import type { CalloutTabsProps } from '../../../components/pages/admin/callouts/callouts.interface';
 import CalloutTabs from '../../../components/pages/admin/callouts/CalloutHorizontalTabs.vue';
 import {
-  convertCalloutToSteps,
+  convertCalloutToTabs,
   convertStepsToCallout,
 } from '../../../utils/callouts';
 import PageTitle from '../../../components/PageTitle.vue';
@@ -203,7 +203,7 @@ async function reset() {
         'variants',
       ])
     : undefined;
-  tabs.value = convertCalloutToSteps(callout);
+  tabs.value = convertCalloutToTabs(callout);
   status.value = callout?.status;
 }
 
