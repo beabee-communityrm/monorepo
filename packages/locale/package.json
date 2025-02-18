@@ -2,7 +2,7 @@
   "name": "@beabee/locale",
   "description": "Beabee Locale Translations",
   "version": "0.1.0",
-  "type": "commonjs",
+  "type": "module",
   "homepage": "https://github.com/beabee-communityrm/monorepo/tree/main/packages/locale",
   "repository": {
     "type": "git",
@@ -10,10 +10,12 @@
   },
   "scripts": {
     "clear": "rm -rf dist/",
-    "generate": "node generate.cjs",
-    "build": "yarn clear && tsc"
+    "generate": "node --experimental-specifier-resolution=node --experimental-strip-types generate.ts",
+    "build": "yarn clear && node esbuild.js && tsc",
+    "check": "tsc --noEmit"
   },
   "devDependencies": {
+    "esbuild": "^0.25.0",
     "googleapis": "^144.0.0",
     "markdown-it": "^14.1.0",
     "typescript": "~5.6.3"
