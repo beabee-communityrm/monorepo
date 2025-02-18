@@ -11,24 +11,30 @@ import type { SidebarTabsProps } from './tabs/ContentTab/sidebar-tabs.interface'
 
 const { t } = i18n.global;
 
+/**
+ * Predefined response buckets for callout responses
+ */
 export const buckets = computed(() => [
   { id: '', label: t('calloutResponseBuckets.inbox') },
-  {
-    id: 'verified',
-    label: t('calloutResponseBuckets.verified'),
-  },
-  {
-    id: 'trash',
-    label: t('calloutResponseBuckets.trash'),
-  },
+  { id: 'verified', label: t('calloutResponseBuckets.verified') },
+  { id: 'trash', label: t('calloutResponseBuckets.trash') },
 ]);
 
+/**
+ * Props for the content tab, which contains the form builder and end message configuration
+ */
 export interface ContentTabProps {
+  /** Form builder slides containing the form components */
   slides: FormBuilderSlide[];
+  /** Translations for component texts */
   componentText: Record<string, LocaleProp>;
+  /** Configuration for the sidebar tabs within the content tab */
   sidebarTabs: SidebarTabsProps;
 }
 
+/**
+ * Props for the title and image tab, which contains basic callout information
+ */
 export interface TitleAndImageTabProps {
   title: LocaleProp;
   description: LocaleProp;
@@ -42,6 +48,9 @@ export interface TitleAndImageTabProps {
   shareDescription: LocaleProp;
 }
 
+/**
+ * Props for the settings tab, which contains callout configuration options
+ */
 export interface SettingsTabProps {
   whoCanTakePart: 'members' | 'everyone';
   allowAnonymousResponses: 'none' | 'guests' | 'all';
@@ -61,10 +70,9 @@ export interface SettingsTabProps {
   channels: CalloutChannel[] | null;
 }
 
-export interface MailchimpSyncStepProps {
-  useMailchimpSync: boolean;
-}
-
+/**
+ * Props for the dates tab, which contains scheduling information
+ */
 export interface DateAndDurationTabProps {
   hasEndDate: boolean;
   startNow: boolean;
@@ -74,14 +82,19 @@ export interface DateAndDurationTabProps {
   endTime: string;
 }
 
+/**
+ * Combined props for all main callout tabs
+ */
 export interface CalloutTabsProps {
   content: ContentTabProps;
   titleAndImage: TitleAndImageTabProps;
   settings: SettingsTabProps;
-  //mailchimp: MailchimpSyncStepProps;
   dates: DateAndDurationTabProps;
 }
 
+/**
+ * Base interface for a callout tab component
+ */
 export interface CalloutTab<T> extends AppStepperStep {
   validated: boolean;
   error: boolean;
@@ -89,6 +102,16 @@ export interface CalloutTab<T> extends AppStepperStep {
   component: Raw<Component>;
 }
 
+/**
+ * Type for the complete callout tabs structure
+ */
 export type CalloutTabs = {
   [P in keyof CalloutTabsProps]: CalloutTab<CalloutTabsProps[P]>;
 };
+
+/**
+ * Currently unused
+ */
+export interface MailchimpSyncStepProps {
+  useMailchimpSync: boolean;
+}

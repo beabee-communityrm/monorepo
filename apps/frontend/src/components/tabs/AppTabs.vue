@@ -13,12 +13,7 @@
             orientation === 'vertical' ? 'w-full' : 'mx-1',
           ]"
         >
-          <span>
-            {{ item.label }}
-            <span v-if="item.count !== undefined" class="ml-1">
-              ({{ item.count }})
-            </span>
-          </span>
+          <TabLabel :label="item.label" :count="item.count" />
         </router-link>
         <button
           v-else
@@ -30,14 +25,9 @@
               : 'text-body-80 hover:bg-primary-5 hover:text-body',
             orientation === 'vertical' ? 'w-full' : 'mx-1',
           ]"
-          @click="$emit('tab-click', item.id)"
+          @click="handleTabClick(item.id)"
         >
-          <span>
-            {{ item.label }}
-            <span v-if="item.count !== undefined" class="ml-1">
-              ({{ item.count }})
-            </span>
-          </span>
+          <TabLabel :label="item.label" :count="item.count" />
         </button>
       </li>
     </ul>
@@ -56,6 +46,7 @@ export default {
 
 <script lang="ts" setup>
 import type { TabItem } from './tabs.interface';
+import TabLabel from './TabLabel.vue';
 
 /**
  * Props for the AppTabs component
@@ -63,24 +54,30 @@ import type { TabItem } from './tabs.interface';
  * @property {string | null} selected - ID of the currently selected tab
  * @property {'horizontal' | 'vertical'} orientation - Layout orientation of the tabs
  */
-withDefaults(
-  defineProps<{
-    items: TabItem[];
-    selected: string | null;
-    orientation?: 'horizontal' | 'vertical';
-  }>(),
-  {
-    items: () => [],
-    selected: null,
-    orientation: 'horizontal',
-  }
-);
+interface Props {
+  items: TabItem[];
+  selected: string | null;
+  orientation?: 'horizontal' | 'vertical';
+}
+
+withDefaults(defineProps<Props>(), {
+  items: () => [],
+  selected: null,
+  orientation: 'horizontal',
+});
 
 /**
  * Events emitted by the AppTabs component
  * @event {string} tab-click - Emitted when a non-router tab is clicked, provides the tab ID
  */
-defineEmits<{
+const emit = defineEmits<{
   'tab-click': [id: string];
 }>();
+
+/**
+ * Handle tab click event and emit selected tab
+ */
+const handleTabClick = (id: string) => {
+  emit('tab-click', id);
+};
 </script>

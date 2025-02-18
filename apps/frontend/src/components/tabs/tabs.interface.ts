@@ -28,7 +28,7 @@ export interface TabItem {
   /**
    * Optional count or status indicator to display next to the label
    */
-  count?: string;
+  count?: number;
   /**
    * Optional route path. If provided, the tab will use router-link navigation.
    */

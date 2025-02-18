@@ -11,19 +11,26 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import AppTabs from '../../../../../tabs/AppTabs.vue';
-import type { TabItem } from '../../../../../tabs/tabs.interface';
+import AppTabs from '@components/tabs/AppTabs.vue';
+import type { TabItem } from '@components/tabs/tabs.interface';
 import type { SidebarTabs } from './sidebar-tabs.interface';
 
-const props = defineProps<{
-  sidebarTabs: SidebarTabs;
+interface Props {
+  /** The currently selected tab name */
   selectedTab: string;
-}>();
+  /** Configuration for all sidebar tabs */
+  sidebarTabs: SidebarTabs;
+}
+
+const props = defineProps<Props>();
 
 const emit = defineEmits<{
   'update:selectedTab': [value: string];
 }>();
 
+/**
+ * Convert sidebar tabs into tab items for AppTabs component
+ */
 const tabItems = computed<TabItem[]>(() => [
   {
     id: props.sidebarTabs.content.name,
@@ -37,6 +44,9 @@ const tabItems = computed<TabItem[]>(() => [
   },
 ]);
 
+/**
+ * Handle tab click event and emit selected tab update
+ */
 const handleTabClick = (tabId: string) => {
   emit('update:selectedTab', tabId);
 };
