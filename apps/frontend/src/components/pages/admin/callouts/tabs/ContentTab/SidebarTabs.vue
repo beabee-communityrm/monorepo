@@ -1,8 +1,9 @@
 <template>
   <div class="mb-6">
     <AppTabs
-      :items="tabItems"
+      :items="visibleTabItems"
       :selected="selectedTab"
+      :default-tab="defaultTabName"
       orientation="vertical"
       @tab-click="handleTabClick"
     />
@@ -20,6 +21,8 @@ interface Props {
   selectedTab: string;
   /** Configuration for all sidebar tabs */
   sidebarTabs: SidebarTabs;
+  /** Default tab to fall back to */
+  defaultTab?: string;
 }
 
 const props = defineProps<Props>();
@@ -29,13 +32,21 @@ const emit = defineEmits<{
 }>();
 
 /**
- * Convert sidebar tabs into tab items for AppTabs component
+ * Computed default tab name from sidebar tabs or fallback to 'content'
  */
-const tabItems = computed<TabItem[]>(() => [
+const defaultTabName = computed(
+  () => props.defaultTab ?? props.sidebarTabs.content.name
+);
+
+/**
+ * All tab items including the hidden default tab
+ */
+const allTabItems = computed<TabItem[]>(() => [
   {
     id: props.sidebarTabs.content.name,
     label: props.sidebarTabs.content.name,
     to: '',
+    hidden: true,
   },
   {
     id: props.sidebarTabs.endMessage.name,
@@ -45,9 +56,21 @@ const tabItems = computed<TabItem[]>(() => [
 ]);
 
 /**
+ * Only visible tab items for display
+ */
+const visibleTabItems = computed(() =>
+  allTabItems.value.filter((item) => !item.hidden)
+);
+
+/**
  * Handle tab click event and emit selected tab update
+ * If clicking an already selected tab, switch to default tab
  */
 const handleTabClick = (tabId: string) => {
-  emit('update:selectedTab', tabId);
+  if (tabId === props.selectedTab) {
+    emit('update:selectedTab', defaultTabName.value);
+  } else {
+    emit('update:selectedTab', tabId);
+  }
 };
 </script>
