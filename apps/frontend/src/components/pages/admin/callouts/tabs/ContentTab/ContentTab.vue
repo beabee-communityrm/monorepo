@@ -57,7 +57,7 @@
               :slide-no="index"
               :slides="slides"
               :active="currentSlideId === element.id"
-              @select="currentSlideId = $event"
+              @select="handleSlideSelect"
               @remove="handleRemoveSlide"
             />
           </template>
@@ -186,6 +186,14 @@ function handleRemoveSlide(slideNo: number) {
   slides.value.splice(slideNo, 1);
   currentSlideNo.value = Math.max(0, currentSlideNo.value - 1);
 }
+
+/**
+ * Handle slide selection and reset to default tab
+ */
+const handleSlideSelect = (slideId: string) => {
+  currentSlideId.value = slideId;
+  selectedSidebarTab.value = sidebarTabs.content.name;
+};
 
 // Watchers
 watch(
