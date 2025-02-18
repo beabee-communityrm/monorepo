@@ -3,7 +3,8 @@
   "compilerOptions": {
     "module": "commonjs",
     "rootDir": "./src",
-    "outDir": "./dist",
+    "declarationDir": "./dist/types",
+    "emitDeclarationOnly": true,
     "esModuleInterop": true,
     "declaration": true,
     "diagnostics": true

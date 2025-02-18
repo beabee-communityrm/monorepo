@@ -1,9 +1,2 @@
-import _config from './config.cjs';
-
-export type Locale = keyof typeof config;
-
-export const config = _config;
-
-export function isLocale(s: string): s is Locale {
-  return s in config;
-}
+// This file is only used to generate a index.d.cts file
+export * from "./index.js";
