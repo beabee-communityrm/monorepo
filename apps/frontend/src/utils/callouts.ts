@@ -181,6 +181,17 @@ export function convertCalloutToTabs(
           ? Object.keys(callout.variants).filter((v) => v !== 'default')
           : [],
       },
+      titleAndImage: {
+        title: variants.title,
+        description: variants.excerpt,
+        coverImageURL: callout?.image || '',
+        useCustomSlug: !!callout,
+        autoSlug: '',
+        slug: callout?.slug || '',
+        overrideShare: !!callout?.shareTitle,
+        shareTitle: variants.shareTitle,
+        shareDescription: variants.shareDescription,
+      },
       intro: {
         introText: variants.intro,
       },
@@ -195,17 +206,6 @@ export function convertCalloutToTabs(
 
   return {
     content,
-    titleAndImage: {
-      title: variants.title,
-      description: variants.excerpt,
-      coverImageURL: callout?.image || '',
-      useCustomSlug: !!callout,
-      autoSlug: '',
-      slug: callout?.slug || '',
-      overrideShare: !!callout?.shareTitle,
-      shareTitle: variants.shareTitle,
-      shareDescription: variants.shareDescription,
-    },
     settings: {
       ...settings,
       requireCaptcha: callout?.captcha || CalloutCaptcha.None,
@@ -238,9 +238,6 @@ export function convertCalloutToTabs(
         : [],
       channels: callout?.channels || null,
     },
-    /*mailchimp: {
-      useMailchimpSync: false,
-    },*/
     dates: {
       startNow: !callout || callout.status === ItemStatus.Draft,
       hasEndDate: !!callout?.expires,
@@ -273,8 +270,9 @@ function convertVariantsForCallout(
     }
 
     variants[variant] = {
-      title: steps.titleAndImage.title[variant] || '',
-      excerpt: steps.titleAndImage.description[variant] || '',
+      title: steps.content.sidebarTabs.titleAndImage.title[variant] || '',
+      excerpt:
+        steps.content.sidebarTabs.titleAndImage.description[variant] || '',
       intro: steps.content.sidebarTabs.intro.introText[variant] || '',
       ...(steps.content.sidebarTabs.endMessage.whenFinished === 'redirect'
         ? {
@@ -291,11 +289,14 @@ function convertVariantsForCallout(
               steps.content.sidebarTabs.endMessage.thankYouTitle[variant] || '',
             thanksRedirect: null,
           }),
-      ...(steps.titleAndImage.overrideShare
+      ...(steps.content.sidebarTabs.titleAndImage.overrideShare
         ? {
-            shareTitle: steps.titleAndImage.shareTitle[variant] || '',
+            shareTitle:
+              steps.content.sidebarTabs.titleAndImage.shareTitle[variant] || '',
             shareDescription:
-              steps.titleAndImage.shareDescription[variant] || '',
+              steps.content.sidebarTabs.titleAndImage.shareDescription[
+                variant
+              ] || '',
           }
         : {
             shareTitle: null,
@@ -323,16 +324,16 @@ function convertSlidesForCallout(
 export function convertStepsToCallout(
   steps: CalloutTabsProps
 ): CreateCalloutData {
-  const slug = steps.titleAndImage.useCustomSlug
-    ? steps.titleAndImage.slug
-    : steps.titleAndImage.autoSlug;
+  const slug = steps.content.sidebarTabs.titleAndImage.useCustomSlug
+    ? steps.content.sidebarTabs.titleAndImage.slug
+    : steps.content.sidebarTabs.titleAndImage.autoSlug;
 
   const slides = convertSlidesForCallout(steps);
   const variants = convertVariantsForCallout(steps);
 
   return {
     slug: slug || undefined,
-    image: steps.titleAndImage.coverImageURL,
+    image: steps.content.sidebarTabs.titleAndImage.coverImageURL,
     formSchema: { slides },
     responseViewSchema: steps.settings.showResponses
       ? {
