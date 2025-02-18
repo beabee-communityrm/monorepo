@@ -23,8 +23,29 @@
   "files": [
     "dist/"
   ],
+  "main": "./dist/cjs/index.cjs",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/types/index.d.ts",
   "exports": {
-    "./locales/*": "./dist/locales/*.cjs",
-    ".": "./dist/index.cjs"
+    "./locales/*": {
+      "import": {
+        "types": "./dist/types/locales/*.d.ts",
+        "default": "./dist/esm/locales/*.js"
+      },
+      "require": {
+        "types": "./dist/types/locales/*.d.cts",
+        "default": "./dist/cjs/locales/*.cjs"
+      }
+    },
+    ".": {
+      "import": {
+        "types": "./dist/types/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "types": "./dist/types/index.d.cts",
+        "default": "./dist/cjs/index.cjs"
+      }
+    }
   }
 }
