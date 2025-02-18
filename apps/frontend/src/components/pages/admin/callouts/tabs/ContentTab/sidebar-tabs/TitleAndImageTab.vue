@@ -87,15 +87,16 @@
 import { ItemStatus } from '@beabee/beabee-common';
 import { computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import AppInput from '../../../../forms/AppInput.vue';
-import AppImageUpload from '../../../../forms/AppImageUpload.vue';
+import AppInput from '@components/forms/AppInput.vue';
+import AppImageUpload from '@components/forms/AppImageUpload.vue';
 import useVuelidate from '@vuelidate/core';
-import type { CalloutTabs, TitleAndImageTabProps } from '../callouts.interface';
-import AppRadioGroup from '../../../../forms/AppRadioGroup.vue';
-import AppLabel from '../../../../forms/AppLabel.vue';
-import env from '../../../../../env';
+import type { CalloutTabs } from '@components/pages/admin/callouts/callouts.interface';
+import type { TitleAndImageTabProps } from '../sidebar-tabs.interface';
+import AppRadioGroup from '@components/forms/AppRadioGroup.vue';
+import AppLabel from '@components/forms/AppLabel.vue';
+import env from '@env';
 import slugify from 'slugify';
-import AppFormSection from '../../../../forms/AppFormSection.vue';
+import AppFormSection from '@components/forms/AppFormSection.vue';
 import LocaleTextArea from '@components/forms/LocaleTextArea.vue';
 import LocaleInput from '@components/forms/LocaleInput.vue';
 

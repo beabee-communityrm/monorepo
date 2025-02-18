@@ -33,21 +33,6 @@ export interface ContentTabProps {
 }
 
 /**
- * Props for the title and image tab, which contains basic callout information
- */
-export interface TitleAndImageTabProps {
-  title: LocaleProp;
-  description: LocaleProp;
-  coverImageURL: string;
-  autoSlug: string;
-  useCustomSlug: boolean;
-  slug: string;
-  overrideShare: boolean;
-  shareTitle: LocaleProp;
-  shareDescription: LocaleProp;
-}
-
-/**
  * Props for the settings tab, which contains callout configuration options
  */
 export interface SettingsTabProps {
@@ -86,7 +71,6 @@ export interface DateAndDurationTabProps {
  */
 export interface CalloutTabsProps {
   content: ContentTabProps;
-  titleAndImage: TitleAndImageTabProps;
   settings: SettingsTabProps;
   dates: DateAndDurationTabProps;
 }

@@ -70,7 +70,9 @@ const now = ref(new Date());
 // Computed Properties
 const pageTitle = computed(() =>
   status.value
-    ? t('editCallout.title', { title: tabs.value?.titleAndImage.title.default })
+    ? t('editCallout.title', {
+        title: tabs.value?.content.sidebarTabs.titleAndImage.title.default,
+      })
     : t('createCallout.title')
 );
 
@@ -117,7 +119,8 @@ addBreadcrumb(
           ...(props.id
             ? [
                 {
-                  title: tabs.value.titleAndImage.title.default,
+                  title:
+                    tabs.value.content.sidebarTabs.titleAndImage.title.default,
                   to: '/admin/callouts/view/' + props.id,
                 },
                 {
