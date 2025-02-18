@@ -28,6 +28,9 @@ import type {
 import type { ContentTabProps } from '@components/pages/admin/callouts/callouts.interface';
 const { t } = i18n.global;
 
+/**
+ * Creates a new slide schema with a unique ID and default navigation
+ */
 export function getSlideSchema(no: number): FormBuilderSlide {
   const id = 'slide' + Math.random().toString(36).substring(2, 8);
   return {
@@ -54,6 +57,9 @@ const textFields = [
   'shareDescription',
 ] as const;
 
+/**
+ * Converts variant data into a format suitable for the form steps
+ */
 function convertVariantsForSteps(
   variants: Record<string, CalloutVariantData> | undefined
 ): Record<(typeof textFields)[number], LocaleProp> {
@@ -68,6 +74,8 @@ function convertVariantsForSteps(
     shareDescription: { default: '' },
   };
 
+  if (!variants) return result;
+
   for (const variant in variants) {
     for (const field of textFields) {
       result[field][variant] = variants[variant][field] || '';
@@ -77,14 +85,18 @@ function convertVariantsForSteps(
   return result;
 }
 
+/**
+ * Converts slide data and variants into a format suitable for the form builder
+ */
 function convertSlidesForSteps(
   slidesIn: GetCalloutSlideSchema[] | undefined,
   variants: Record<string, CalloutVariantData> | undefined
 ): { slides: FormBuilderSlide[]; componentText: Record<string, LocaleProp> } {
+  if (!slidesIn) {
+    return { slides: [getSlideSchema(1)], componentText: {} };
+  }
+
   const componentText: Record<string, LocaleProp> = {};
-
-  if (!slidesIn) return { slides: [getSlideSchema(1)], componentText };
-
   const slides = slidesIn.map((slide) => {
     const navigation: FormBuilderNavigation = {
       prevText: { default: '' },
@@ -93,15 +105,17 @@ function convertSlidesForSteps(
       nextSlideId: slide.navigation.nextSlideId,
     };
 
-    for (const variant in variants) {
-      for (const field of ['prevText', 'nextText', 'submitText'] as const) {
-        navigation[field][variant] =
-          variants[variant].slideNavigation[slide.id][field];
-      }
+    if (variants) {
+      for (const variant in variants) {
+        for (const field of ['prevText', 'nextText', 'submitText'] as const) {
+          navigation[field][variant] =
+            variants[variant].slideNavigation[slide.id][field];
+        }
 
-      for (const text in variants[variant].componentText) {
-        componentText[text] ||= { default: '' };
-        componentText[text][variant] = variants[variant].componentText[text];
+        for (const text in variants[variant].componentText) {
+          componentText[text] ||= { default: '' };
+          componentText[text][variant] = variants[variant].componentText[text];
+        }
       }
     }
 

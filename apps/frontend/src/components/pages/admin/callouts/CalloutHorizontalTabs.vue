@@ -1,11 +1,14 @@
 <template>
   <div class="flex h-full flex-col overflow-y-hidden">
+    <!-- Main Navigation Tabs -->
     <AppTabs
       class="flex-none"
       :items="tabItems"
       :selected="selectedTab.name"
       @tab-click="handleTabClick"
     />
+
+    <!-- Tab Content -->
     <component
       :is="tab.component"
       v-for="tab in tabsInOrder"
@@ -22,25 +25,32 @@
 </template>
 
 <script lang="ts" setup>
-import { ItemStatus } from '@beabee/beabee-common';
 import { ref, computed, markRaw, reactive } from 'vue';
 import { useI18n } from 'vue-i18n';
-import AppTabs from '../../../tabs/AppTabs.vue';
+import { ItemStatus } from '@beabee/beabee-common';
+import AppTabs from '@components/tabs/AppTabs.vue';
+import type { TabItem } from '@components/tabs/tabs.interface';
 import type { CalloutTabsProps, CalloutTabs } from './callouts.interface';
-import type { TabItem } from '../../../tabs/tabs.interface';
 
+// Tab Components
 import StepSettings from './tabs/SettingsTab.vue';
 import StepTitleAndImage from './tabs/TitleAndImageTab.vue';
 import StepDatesAndDuration from './tabs/DatesAndDurationTab.vue';
 import StepContent from './tabs/ContentTab/ContentTab.vue';
 
-const props = defineProps<{
+interface Props {
+  /** Props for all tabs */
   tabsProps: CalloutTabsProps;
+  /** Current status of the callout */
   status: ItemStatus | undefined;
-}>();
+}
 
+const props = defineProps<Props>();
 const { t } = useI18n();
 
+/**
+ * Initialize tabs with their components and data
+ */
 const tabs = reactive<CalloutTabs>({
   content: {
     name: t('createCallout.tabs.content.title'),
@@ -72,6 +82,9 @@ const tabs = reactive<CalloutTabs>({
   },
 });
 
+/**
+ * Define the order of tabs
+ */
 const tabsInOrder = [
   tabs.content,
   tabs.titleAndImage,
@@ -79,6 +92,9 @@ const tabsInOrder = [
   tabs.dates,
 ];
 
+/**
+ * Tab selection management
+ */
 const selectedTabName = ref(tabsInOrder[0].name);
 
 const selectedTab = computed(
@@ -87,10 +103,9 @@ const selectedTab = computed(
     tabsInOrder[0]
 );
 
-const handleTabClick = (tabId: string) => {
-  selectedTabName.value = tabId;
-};
-
+/**
+ * Convert tabs into items for AppTabs component
+ */
 const tabItems = computed<TabItem[]>(() =>
   tabsInOrder.map((step) => ({
     id: step.name,
@@ -98,4 +113,11 @@ const tabItems = computed<TabItem[]>(() =>
     to: '',
   }))
 );
+
+/**
+ * Handle tab click event
+ */
+const handleTabClick = (tabId: string) => {
+  selectedTabName.value = tabId;
+};
 </script>
