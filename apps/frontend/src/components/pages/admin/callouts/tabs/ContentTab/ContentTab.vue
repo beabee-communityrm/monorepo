@@ -33,7 +33,7 @@
           :current-slide-no="currentSlideNo"
           :is-first="isFirstSlide"
           :is-last="isLastSlide"
-          :locales="tabs.settings.data.locales"
+          :locales="props.tabs.settings.data.locales"
         />
 
         <!-- Slides Management -->
@@ -66,70 +66,17 @@
 
       <!-- Main Content Area -->
       <div class="flex-1">
-        <!-- Content Form Tab -->
-        <div
-          v-if="selectedSidebarTab === sidebarTabs.content.name"
-          class="callout-slide-builder flex h-full flex-col overflow-y-hidden"
-        >
-          <!-- Form Builder Options -->
-          <div class="mb-4 flex flex-none items-end gap-4">
-            <div class="flex-none basis-60">
-              <AppCheckbox
-                v-if="env.experimentalFeatures"
-                v-model="showAdvancedOptions"
-                :label="t('calloutBuilder.showAdvancedOptions')"
-              />
-            </div>
-          </div>
-
-          <!-- Form Builder -->
-          <FormBuilder
-            :key="currentSlideId"
-            v-model="currentSlide.components"
-            :advanced="showAdvancedOptions"
-            :slides="slides"
-            class="min-h-0 flex-1"
-          />
-
-          <!-- Form Builder Footer -->
-          <div class="flex gap-4">
-            <div class="max-w-2xl flex-1">
-              <!-- Slide ID -->
-              <div class="flex justify-between">
-                <div>
-                  <p v-if="showAdvancedOptions" class="text-sm text-grey">
-                    {{ t('common.id') }}: {{ currentSlide.id }}
-                  </p>
-                </div>
-              </div>
-
-              <!-- Translations -->
-              <div v-if="hasLocales" class="my-4 bg-white p-6 shadow-md">
-                <AppSubHeading>
-                  {{ t('calloutBuilder.translationsTitle') }}
-                </AppSubHeading>
-                <p class="mb-4">
-                  {{ t('calloutBuilder.translationsText') }}
-                </p>
-
-                <FormBuilderTranslations
-                  v-model="data.componentText"
-                  :components="currentSlide.components"
-                  :locales="tabs.settings.data.locales"
-                />
-              </div>
-            </div>
-            <div class="flex-0 basis-[15rem]" />
-          </div>
-        </div>
-
-        <!-- Other Sidebar Tabs -->
         <component
-          :is="sidebarTabs[currentTabKey].component"
-          v-else
-          v-model:data="sidebarTabs[currentTabKey].data"
-          v-model:validated="sidebarTabs[currentTabKey].validated"
-          v-model:error="sidebarTabs[currentTabKey].error"
+          :is="currentSidebarTab.component"
+          v-model:data="currentSidebarTab.data"
+          v-model:validated="currentSidebarTab.validated"
+          v-model:error="currentSidebarTab.error"
+          :current-slide="currentSlide"
+          :slides="slides"
+          :show-advanced="showAdvancedOptions"
+          :has-locales="hasLocales"
+          :component-text="data.componentText"
+          :locales="tabs.settings.data.locales"
           :is-active="true"
           :status="status"
           :tabs="tabs"
@@ -152,19 +99,14 @@ import type { CalloutTabs, ContentTabProps } from '../../callouts.interface';
 import type { SidebarTabs as SidebarTabsType } from './sidebar-tabs.interface';
 
 import AppNotification from '@components/AppNotification.vue';
-import FormBuilder from '@components/form-builder/FormBuilder.vue';
 import AppButton from '@components/button/AppButton.vue';
 import FormBuilderNavigation from '@components/form-builder/FormBuilderNavigation.vue';
-import AppCheckbox from '@components/forms/AppCheckbox.vue';
 import CalloutSlideItem from '../../CalloutSlideItem.vue';
-import FormBuilderTranslations from '@components/form-builder/FormBuilderTranslations.vue';
-import AppSubHeading from '@components/AppSubHeading.vue';
 import SidebarTabs from './SidebarTabs.vue';
 import ContentFormTab from './sidebar-tabs/ContentFormTab.vue';
 import EndMessageTab from './sidebar-tabs/EndMessageTab.vue';
 
 import { getSlideSchema } from '@utils/callouts';
-import env from '@env';
 
 const props = defineProps<{
   data: ContentTabProps;
@@ -214,10 +156,7 @@ const sidebarTabs = reactive<SidebarTabsType>({
     validated: false,
     error: false,
     component: markRaw(ContentFormTab),
-    data: {
-      slides: props.data.slides,
-      componentText: props.data.componentText,
-    },
+    data: props.data.sidebarTabs.content,
   },
   endMessage: {
     name: t('createCallout.tabs.endMessage.title'),
@@ -229,11 +168,13 @@ const sidebarTabs = reactive<SidebarTabsType>({
 });
 
 const selectedSidebarTab = ref(sidebarTabs.content.name);
-const currentTabKey = computed(() => {
+
+// Computed für aktiven Tab
+const currentSidebarTab = computed(() => {
   const tab = Object.entries(sidebarTabs).find(
     ([, tab]) => tab.name === selectedSidebarTab.value
   );
-  return (tab ? tab[0] : 'content') as keyof SidebarTabsType;
+  return tab ? tab[1] : sidebarTabs.content;
 });
 
 // Methods
