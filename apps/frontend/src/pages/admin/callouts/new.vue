@@ -7,15 +7,7 @@ meta:
 
 <template>
   <div v-if="tabs" class="flex h-full flex-col overflow-y-hidden">
-    <PageTitle
-      :title="
-        status
-          ? t('editCallout.title', { title: tabs.titleAndImage.title.default })
-          : t('createCallout.title')
-      "
-      border
-      no-collapse
-    >
+    <PageTitle :title="pageTitle" border no-collapse>
       <div class="flex items-center gap-2">
         <AppAsyncButton
           v-if="!isLive"
@@ -42,66 +34,45 @@ meta:
 </template>
 
 <script lang="ts" setup>
-import { ItemStatus } from '@beabee/beabee-common';
 import { ref, onBeforeMount, computed, onBeforeUnmount } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
+import { ItemStatus } from '@beabee/beabee-common';
 import { client } from '@utils/api';
-import type { CalloutTabsProps } from '../../../components/pages/admin/callouts/callouts.interface';
-import CalloutTabs from '../../../components/pages/admin/callouts/CalloutHorizontalTabs.vue';
-import {
-  convertCalloutToTabs,
-  convertStepsToCallout,
-} from '../../../utils/callouts';
-import PageTitle from '../../../components/PageTitle.vue';
+import { faEye, faBullhorn } from '@fortawesome/free-solid-svg-icons';
+
+import type { CalloutTabsProps } from '@components/pages/admin/callouts/callouts.interface';
+import CalloutTabs from '@components/pages/admin/callouts/CalloutHorizontalTabs.vue';
+import PageTitle from '@components/PageTitle.vue';
+import AppAsyncButton from '@components/button/AppAsyncButton.vue';
+
+import { convertCalloutToTabs, convertStepsToCallout } from '@utils/callouts';
+import { addBreadcrumb } from '@store/breadcrumb';
+import { addNotification } from '@store/notifications';
 import useVuelidate from '@vuelidate/core';
-import AppAsyncButton from '../../../components/button/AppAsyncButton.vue';
-import { addBreadcrumb } from '../../../store/breadcrumb';
-import { addNotification } from '../../../store/notifications';
-import { faBullhorn, faEye } from '@fortawesome/free-solid-svg-icons';
 
-const props = defineProps<{ id?: string }>();
+interface Props {
+  /** Optional ID of the callout to edit */
+  id?: string;
+}
 
+const props = defineProps<Props>();
 const { t } = useI18n();
 const router = useRouter();
 const validation = useVuelidate();
 
-addBreadcrumb(
-  computed(() =>
-    tabs.value
-      ? [
-          {
-            title: t('menu.callouts'),
-            icon: faBullhorn,
-            to: '/admin/callouts',
-          },
-          ...(props.id
-            ? [
-                {
-                  title: tabs.value.titleAndImage.title.default,
-                  to: '/admin/callouts/view/' + props.id,
-                },
-                {
-                  title: t('actions.edit'),
-                  to: '/admin/callouts/edit/' + props.id,
-                },
-              ]
-            : [
-                {
-                  title: t('calloutsAdmin.addCallout'),
-                  to: '/admin/callouts/new',
-                },
-              ]),
-        ]
-      : []
-  )
-);
-
+// State
 const tabs = ref<CalloutTabsProps>();
 const status = ref<ItemStatus>();
 const lastSaved = ref<Date>();
-
 const now = ref(new Date());
+
+// Computed Properties
+const pageTitle = computed(() =>
+  status.value
+    ? t('editCallout.title', { title: tabs.value?.titleAndImage.title.default })
+    : t('createCallout.title')
+);
 
 const canStartNow = computed(
   () =>
@@ -133,8 +104,40 @@ const updateAction = computed(() =>
       : t('actions.schedule')
 );
 
+// Breadcrumb
+addBreadcrumb(
+  computed(() =>
+    tabs.value
+      ? [
+          {
+            title: t('menu.callouts'),
+            icon: faBullhorn,
+            to: '/admin/callouts',
+          },
+          ...(props.id
+            ? [
+                {
+                  title: tabs.value.titleAndImage.title.default,
+                  to: '/admin/callouts/view/' + props.id,
+                },
+                {
+                  title: t('actions.edit'),
+                  to: '/admin/callouts/edit/' + props.id,
+                },
+              ]
+            : [
+                {
+                  title: t('calloutsAdmin.addCallout'),
+                  to: '/admin/callouts/new',
+                },
+              ]),
+        ]
+      : []
+  )
+);
+
+// Methods
 async function saveCallout(asDraft = false) {
-  // Handler can't be called if tabs aren't set
   if (!tabs.value) throw new Error('Steps are not set');
 
   const data = convertStepsToCallout(tabs.value);
@@ -164,6 +167,7 @@ async function handleUpdate() {
       : t('calloutAdminOverview.created'),
     variant: 'success',
   });
+
   if (!isUpdateAction.value) {
     router.push({ path: '/admin/callouts/view/' + callout.slug });
   }
@@ -175,7 +179,9 @@ async function handleSaveDraft() {
     title: 'Saved draft',
     variant: 'success',
   });
+
   router.push({ path: '/admin/callouts/edit/' + callout.slug });
+
   // If reverting from other status then reset form
   if (!isNewOrDraft.value) {
     await reset();
@@ -203,15 +209,19 @@ async function reset() {
         'variants',
       ])
     : undefined;
+
   tabs.value = convertCalloutToTabs(callout);
   status.value = callout?.status;
 }
 
+// Lifecycle Hooks
 let interval: number | undefined;
+
 onBeforeMount(() => {
   reset();
   interval = window.setInterval(() => (now.value = new Date()), 60000);
 });
+
 onBeforeUnmount(() => {
   if (interval) {
     clearInterval(interval);
