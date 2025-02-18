@@ -124,6 +124,10 @@ const contactEmailTemplates = {
     CALLOUTTITLE: params.calloutTitle,
     CALLOUTLINK: `${config.audience}/callouts/${params.calloutSlug}`,
     SUPPORTEMAIL: OptionsService.getText("support-email")
+  }),
+  "contribution-didnt-start": (_: Contact) => ({
+    ORGNAME: OptionsService.getText("organisation"),
+    SUPPORTEMAIL: OptionsService.getText("support-email")
   })
 } as const;
 

@@ -1,0 +1,23 @@
+---
+subject: Ihre erste Zahlung ist gescheitert
+---
+
+<p>Hallo *|FNAME|* *|LNAME|*</p>
+<p><br /></p>
+<p>
+  vielen Dank, dass Sie Mitglied bei *|ORGNAME|* geworden sind. Leider konnte
+  Ihre erste Zahlung nicht verarbeitet werden.
+</p>
+<p><br /></p>
+<p>
+  Um das Problem zu beheben, können Sie sich entweder über den untenstehenden
+  Link einloggen, um Ihre Zahlungsdaten zu aktualisieren, oder unser
+  Support-Team unter <a href="mailto:*|SUPPORTEMAIL|*">*|SUPPORTEMAIL|*</a>
+  kontaktieren.
+</p>
+<p><br /></p>
+<p>
+  <a href="*|LOGINLINK|*"><b>Zum Login</b></a>
+</p>
+<p><br /></p>
+<p>Danke und freundliche Grüße</p>
