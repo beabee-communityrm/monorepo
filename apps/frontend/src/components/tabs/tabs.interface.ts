@@ -33,4 +33,8 @@ export interface TabItem {
    * Optional route path. If provided, the tab will use router-link navigation.
    */
   to?: string;
+  /**
+   * Whether the tab should be hidden from the tab navigation
+   */
+  hidden?: boolean;
 }

@@ -1,7 +1,7 @@
 <template>
   <div class="mb-2 rounded-lg border border-white p-1">
     <ul :class="['gap-1', orientation === 'vertical' ? 'flex-col' : 'flex']">
-      <li v-for="item in items" :key="item.id">
+      <li v-for="item in visibleItems" :key="item.id">
         <router-link
           v-if="item.to"
           :to="item.to"
@@ -47,23 +47,27 @@ export default {
 <script lang="ts" setup>
 import type { TabItem } from './tabs.interface';
 import TabLabel from './TabLabel.vue';
+import { computed } from 'vue';
 
 /**
  * Props for the AppTabs component
  * @property {TabItem[]} items - Array of tab items to display
  * @property {string | null} selected - ID of the currently selected tab
  * @property {'horizontal' | 'vertical'} orientation - Layout orientation of the tabs
+ * @property {string | undefined} defaultTab - Default tab to fall back to
  */
 interface Props {
   items: TabItem[];
   selected: string | null;
   orientation?: 'horizontal' | 'vertical';
+  defaultTab?: string;
 }
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   items: () => [],
   selected: null,
   orientation: 'horizontal',
+  defaultTab: undefined,
 });
 
 /**
@@ -73,6 +77,11 @@ withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{
   'tab-click': [id: string];
 }>();
+
+/**
+ * Filter out hidden items for display
+ */
+const visibleItems = computed(() => props.items.filter((item) => !item.hidden));
 
 /**
  * Handle tab click event and emit selected tab
