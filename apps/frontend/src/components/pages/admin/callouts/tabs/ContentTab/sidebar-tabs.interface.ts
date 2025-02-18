@@ -7,10 +7,18 @@ import type { FormBuilderSlide } from '@components/form-builder/form-builder.int
  * Props for the form builder content tab in the sidebar
  */
 export interface ContentFormTabProps {
-  /** Form builder slides containing the form components */
+  /** Current slide being edited */
+  currentSlide: FormBuilderSlide;
+  /** All slides in the form */
   slides: FormBuilderSlide[];
-  /** Translations for component texts */
+  /** Show advanced options in form builder */
+  showAdvanced: boolean;
+  /** Whether the form has multiple locales */
+  hasLocales: boolean;
+  /** Component text translations */
   componentText: Record<string, LocaleProp>;
+  /** Available locales */
+  locales: string[];
 }
 
 /**
@@ -31,7 +39,14 @@ export interface EndMessageTabProps {
  * Combined props for all sidebar tabs
  */
 export interface SidebarTabsProps {
-  content: ContentFormTabProps;
+  content: {
+    currentSlide: FormBuilderSlide;
+    slides: FormBuilderSlide[];
+    componentText: Record<string, LocaleProp>;
+    showAdvanced: boolean;
+    hasLocales: boolean;
+    locales: string[];
+  };
   endMessage: EndMessageTabProps;
 }
 
