@@ -36,6 +36,14 @@ export interface EndMessageTabProps {
 }
 
 /**
+ * Props for the intro message tab in the sidebar
+ */
+export interface IntroMessageTabProps {
+  /** Intro text shown at the beginning of the form */
+  introText: LocaleProp;
+}
+
+/**
  * Combined props for all sidebar tabs
  */
 export interface SidebarTabsProps {
@@ -47,6 +55,7 @@ export interface SidebarTabsProps {
     hasLocales: boolean;
     locales: string[];
   };
+  intro: IntroMessageTabProps;
   endMessage: EndMessageTabProps;
 }
 
