@@ -39,7 +39,6 @@ export interface TitleAndImageTabProps {
   title: LocaleProp;
   description: LocaleProp;
   coverImageURL: string;
-  introText: LocaleProp;
   autoSlug: string;
   useCustomSlug: boolean;
   slug: string;
