@@ -738,6 +738,11 @@
     "lastSaved": "Zuletzt vor {duration} gespeichert.",
     "lastSavedNow": "Zuletzt vor wenigen Augenblicken gespeichert.",
     "tabs": {
+      "intro": {
+        "title": "Einführung",
+        "help": "<p>Die <strong>Einleitung</strong> erscheint vor den Fragen. Erkläre darin, warum du den Callout machst, also was das Ziel ist und wie die Antworten helfen. Gib so viel Kontext wie möglich, um den Teilnehmenden die Beantwortung zu erleichtern.</p>\n",
+        "label": "Einleitung"
+      },
       "content": {
         "title": "Inhalt"
       },
@@ -785,7 +790,7 @@
             "placeholder": "https://example.com"
           }
         },
-        "title": "Nachricht am Ende"
+        "title": "Danke!"
       },
       "mailchimp": {
         "title": "Mailchimp-Synchronisation"
@@ -917,10 +922,6 @@
           "image": {
             "help": "<p>Das <strong>Titelbild</strong> dient zur Illustration des Callouts.</p>\n",
             "label": "Titelbild"
-          },
-          "intro": {
-            "help": "<p>Die <strong>Einleitung</strong> erscheint vor den Fragen. Erkläre darin, warum du den Callout machst, also was das Ziel ist und wie die Antworten helfen. Gib so viel Kontext wie möglich, um den Teilnehmenden die Beantwortung zu erleichtern.</p>\n",
-            "label": "Einleitung"
           },
           "overrideShare": {
             "label": "Callout-Titel und -Beschreibung zum Teilen verwenden?",
