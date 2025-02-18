@@ -44,18 +44,27 @@ export interface IntroMessageTabProps {
 }
 
 /**
+ * Props for the title and image tab in the sidebar
+ */
+export interface TitleAndImageTabProps {
+  title: LocaleProp;
+  description: LocaleProp;
+  coverImageURL: string;
+  autoSlug: string;
+  useCustomSlug: boolean;
+  slug: string;
+  overrideShare: boolean;
+  shareTitle: LocaleProp;
+  shareDescription: LocaleProp;
+}
+
+/**
  * Combined props for all sidebar tabs
  */
 export interface SidebarTabsProps {
-  content: {
-    currentSlide: FormBuilderSlide;
-    slides: FormBuilderSlide[];
-    componentText: Record<string, LocaleProp>;
-    showAdvanced: boolean;
-    hasLocales: boolean;
-    locales: string[];
-  };
+  content: ContentFormTabProps;
   intro: IntroMessageTabProps;
+  titleAndImage: TitleAndImageTabProps;
   endMessage: EndMessageTabProps;
 }
 
