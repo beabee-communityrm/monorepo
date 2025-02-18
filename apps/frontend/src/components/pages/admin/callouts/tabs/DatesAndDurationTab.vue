@@ -65,7 +65,7 @@ const props = defineProps<{
 }>();
 
 const { t } = useI18n();
-const inputT = (key: string) => t('createCallout.steps.dates.inputs.' + key);
+const inputT = (key: string) => t('createCallout.tabs.dates.inputs.' + key);
 
 // Force step to stay unvalidated until it is visited for new callouts
 const hasVisited = ref(!!props.status);
