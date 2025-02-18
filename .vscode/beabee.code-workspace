@@ -45,6 +45,10 @@
       "path": "../packages/client"
     },
     {
+      "name": "packages/locale",
+      "path": "../packages/locale"
+    },
+    {
       "name": "packages/prettier-config",
       "path": "../packages/prettier-config"
     },

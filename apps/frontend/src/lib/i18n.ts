@@ -1,3 +1,6 @@
+import { isLocale, type Locale, config as localeConfig } from '@beabee/locale';
+import { en } from '@beabee/locale/locales/en';
+
 import { computed, watch } from 'vue';
 import {
   type DefaultLocaleMessageSchema,
@@ -7,31 +10,10 @@ import {
 import { currentUser, generalContent, initStore, isEmbed } from '../store';
 import router from '@lib/router';
 
-import i18nConfig from './i18n-config.json';
-
-import en from '../../locales/en.json';
 import env from '@env';
 import { addNotification } from '@store/notifications';
 
-type Diff<T, U> = T extends U ? never : T;
-
-// It seems slightly odd that we have to define these types, why can't the JSON
-// import be const typed?
-type LocaleKey = keyof typeof i18nConfig;
-// Remove any variant languages (can't be base languages)
-type BaseLocaleKey = Diff<LocaleKey, `${string}@${string}`>;
-interface LocaleConfig {
-  baseLocale: BaseLocaleKey;
-  name: string;
-  displayName: string;
-  adminLocale: LocaleKey;
-}
-
-export function isLocaleKey(key: string): key is LocaleKey {
-  return key in i18nConfig;
-}
-
-export const localeItems = Object.entries(i18nConfig).map(([id, config]) => ({
+export const localeItems = Object.entries(localeConfig).map(([id, config]) => ({
   id,
   label: config.name,
 }));
@@ -58,20 +40,20 @@ const i18n = createI18n({
   },
 });
 
-export const currentLocale = computed<LocaleKey>(() => {
+export const currentLocale = computed<Locale>(() => {
   const route = router.currentRoute.value;
   const newLocale = route.query.lang?.toString() || generalContent.value.locale;
 
-  const realLocale = isLocaleKey(newLocale) ? newLocale : 'en';
+  const realLocale = isLocale(newLocale) ? newLocale : 'en';
 
   // Some locales have only been translated in non-admin areas
   return route.path.startsWith('/admin')
-    ? (i18nConfig[realLocale].adminLocale as LocaleKey)
+    ? localeConfig[realLocale].adminLocale
     : realLocale;
 });
 
-export const currentLocaleConfig = computed<LocaleConfig>(
-  () => i18nConfig[currentLocale.value] as LocaleConfig
+export const currentLocaleConfig = computed(
+  () => localeConfig[currentLocale.value]
 );
 
 // Update document title on route or locale change
@@ -86,11 +68,15 @@ watch(
   [currentLocale, () => generalContent.value.currencyCode],
   async ([newLocale, newCurrencyCode]) => {
     // Remove variants (e.g. @informal)
-    const [justLocale] = newLocale.split('@');
+    const justLocale = newLocale.toString().split('@')[0];
 
     // en is already loaded
     if (newLocale !== 'en') {
-      const messages = await import(`../../locales/${newLocale}.json`);
+      // For the dynamic import to work the locale must be a path, we can't
+      // reference @beabee/locale here
+      const messages = await import(
+        `../../../../packages/locale/dist/locales/${String(newLocale)}.js`
+      );
       i18n.global.setLocaleMessage(justLocale, messages.default);
     }
 
