@@ -161,6 +161,10 @@ export function convertCalloutToTabs(
     ).componentText,
     sidebarTabs: {
       content: {
+        currentSlide: convertSlidesForSteps(
+          callout?.formSchema.slides,
+          callout?.variants
+        ).slides[0],
         slides: convertSlidesForSteps(
           callout?.formSchema.slides,
           callout?.variants
@@ -169,10 +173,6 @@ export function convertCalloutToTabs(
           callout?.formSchema.slides,
           callout?.variants
         ).componentText,
-        currentSlide: convertSlidesForSteps(
-          callout?.formSchema.slides,
-          callout?.variants
-        ).slides[0],
         showAdvanced: false,
         hasLocales: callout?.variants
           ? Object.keys(callout.variants).length > 1
@@ -180,6 +180,9 @@ export function convertCalloutToTabs(
         locales: callout?.variants
           ? Object.keys(callout.variants).filter((v) => v !== 'default')
           : [],
+      },
+      intro: {
+        introText: variants.intro,
       },
       endMessage: {
         whenFinished: callout?.thanksRedirect ? 'redirect' : 'message',
@@ -196,7 +199,6 @@ export function convertCalloutToTabs(
       title: variants.title,
       description: variants.excerpt,
       coverImageURL: callout?.image || '',
-      introText: variants.intro,
       useCustomSlug: !!callout,
       autoSlug: '',
       slug: callout?.slug || '',
@@ -273,7 +275,7 @@ function convertVariantsForCallout(
     variants[variant] = {
       title: steps.titleAndImage.title[variant] || '',
       excerpt: steps.titleAndImage.description[variant] || '',
-      intro: steps.titleAndImage.introText[variant] || '',
+      intro: steps.content.sidebarTabs.intro.introText[variant] || '',
       ...(steps.content.sidebarTabs.endMessage.whenFinished === 'redirect'
         ? {
             thanksText: '',
