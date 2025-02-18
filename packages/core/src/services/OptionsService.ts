@@ -74,7 +74,7 @@ class OptionsService {
 
   getList(key: OptionKey): string[] {
     const text = this.getText(key);
-    return text === "" ? [] : text.split(",").map((s) => s.trim());
+    return text === "" ? [] : text.split(",").map((s: string) => s.trim());
   }
 
   getJSON(key: OptionKey): any {
