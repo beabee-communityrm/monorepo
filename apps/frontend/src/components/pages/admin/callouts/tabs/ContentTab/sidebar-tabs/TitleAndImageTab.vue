@@ -29,15 +29,15 @@
       />
     </AppFormSection>
     <AppFormSection v-if="canEditSlug" :help="inputT('slug.help')">
-      <AppLabel :label="inputT('slug.label')" required />
-      <AppRadioGroup
+      <AppToggleField
         v-if="!status"
         v-model="data.useCustomSlug"
-        name="useCustomSlug"
-        :options="[
-          [false, inputT('slug.opts.auto')],
-          [true, inputT('slug.opts.manual')],
-        ]"
+        :label="inputT('slug.label')"
+        :description="
+          data.useCustomSlug
+            ? inputT('slug.opts.manual')
+            : inputT('slug.opts.auto')
+        "
         required
       />
       <AppInput v-if="data.useCustomSlug" v-model="customSlug" required>
@@ -49,14 +49,14 @@
       </p>
     </AppFormSection>
     <AppFormSection>
-      <AppRadioGroup
+      <AppToggleField
         v-model="data.overrideShare"
-        name="overrideShare"
         :label="inputT('overrideShare.label')"
-        :options="[
-          [false, inputT('overrideShare.opts.yes')],
-          [true, inputT('overrideShare.opts.no')],
-        ]"
+        :description="
+          data.overrideShare
+            ? inputT('overrideShare.opts.no')
+            : inputT('overrideShare.opts.yes')
+        "
         required
       />
     </AppFormSection>
@@ -92,13 +92,12 @@ import AppImageUpload from '@components/forms/AppImageUpload.vue';
 import useVuelidate from '@vuelidate/core';
 import type { CalloutTabs } from '@components/pages/admin/callouts/callouts.interface';
 import type { TitleAndImageTabProps } from '../sidebar-tabs.interface';
-import AppRadioGroup from '@components/forms/AppRadioGroup.vue';
-import AppLabel from '@components/forms/AppLabel.vue';
 import env from '@env';
 import slugify from 'slugify';
 import AppFormSection from '@components/forms/AppFormSection.vue';
 import LocaleTextArea from '@components/forms/LocaleTextArea.vue';
 import LocaleInput from '@components/forms/LocaleInput.vue';
+import AppToggleField from '@components/forms/AppToggleField.vue';
 
 const emit = defineEmits(['update:error', 'update:validated']);
 const props = defineProps<{
