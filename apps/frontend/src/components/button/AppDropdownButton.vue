@@ -7,14 +7,20 @@
     :class="open ? '!rounded-b-none !bg-white' : ''"
     :disabled="disabled"
     :title="title"
-    @click="open = !open"
+    :aria-label="title"
+    :aria-expanded="open"
+    :aria-haspopup="true"
+    role="button"
+    @click="handleClick"
   >
-    <span v-if="showTitle">{{ title }} </span>
+    <span v-if="showTitle">{{ title }}</span>
 
     <template #after>
       <div
         class="border text-left text-sm font-normal text-body-80 shadow-lg"
         :class="{ [sharedClasses]: true, hidden: !open }"
+        role="menu"
+        :aria-hidden="!open"
         @click.stop
       >
         <slot />
@@ -23,28 +29,53 @@
         v-show="open"
         :class="sharedClasses"
         class="box-content w-full border-x pt-px"
+        aria-hidden="true"
       />
     </template>
   </AppButton>
 </template>
 
 <script lang="ts" setup>
+/**
+ * A dropdown button component that shows/hides content in a dropdown menu.
+ * Supports icons, titles, and various style variants.
+ *
+ * @component AppDropdownButton
+ *
+ * @example
+ * <AppDropdownButton
+ *   title="Options"
+ *   variant="primary"
+ *   :icon="faEllipsisV"
+ * >
+ *   <div role="menuitem">Option 1</div>
+ *   <div role="menuitem">Option 2</div>
+ * </AppDropdownButton>
+ */
+
 import type { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { onBeforeMount, onBeforeUnmount, ref, toRef, watch } from 'vue';
-import AppButton from './AppButton.vue';
 import { computed } from 'vue';
+import AppButton from './AppButton.vue';
 
-const props = defineProps<{
+interface Props {
+  /** Icon to display in the button */
   icon: IconDefinition;
+  /** Button and dropdown title */
   title: string;
+  /** Button style variant */
   variant:
     | 'primaryOutlined'
     | 'linkOutlined'
     | 'dangerOutlined'
     | 'greyOutlined';
+  /** Whether to show the title text */
   showTitle?: boolean;
+  /** Whether the button is disabled */
   disabled?: boolean;
-}>();
+}
+
+const props = defineProps<Props>();
 
 const baseClasses = 'absolute top-full min-w-full -left-px z-20 bg-white';
 
@@ -67,16 +98,40 @@ watch(toRef(props, 'disabled'), (disabled) => {
   if (disabled) open.value = false;
 });
 
-function handleClick(evt: Event) {
+function handleClick() {
+  if (!props.disabled) {
+    open.value = !open.value;
+  }
+}
+
+function handleOutsideClick(evt: Event) {
   if (!buttonRef.value?.$el.contains(evt.target as Node)) {
     open.value = false;
   }
 }
 
+// Keyboard navigation
+function handleKeyDown(evt: KeyboardEvent) {
+  if (open.value) {
+    switch (evt.key) {
+      case 'Escape':
+        open.value = false;
+        buttonRef.value?.$el.focus();
+        break;
+      case 'Tab':
+        open.value = false;
+        break;
+    }
+  }
+}
+
 onBeforeMount(() => {
-  document.addEventListener('click', handleClick);
+  document.addEventListener('click', handleOutsideClick);
+  document.addEventListener('keydown', handleKeyDown);
 });
+
 onBeforeUnmount(() => {
-  document.removeEventListener('click', handleClick);
+  document.removeEventListener('click', handleOutsideClick);
+  document.removeEventListener('keydown', handleKeyDown);
 });
 </script>
