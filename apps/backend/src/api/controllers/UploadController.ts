@@ -15,7 +15,7 @@ import UploadFlowService from "@beabee/core/services/UploadFlowService";
 
 import { Contact } from "@beabee/core/models";
 
-import { GetUploadFlowDto } from "@api/dto/UploadFlowDto";
+import { GetUploadFlowDto } from "@beabee/core/api/dto";
 import { BadRequestError } from "@beabee/core/errors";
 import { UUIDParams } from "@api/params/UUIDParams";
 

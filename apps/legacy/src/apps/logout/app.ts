@@ -1,4 +1,4 @@
-import { wrapAsync } from "@beabee/core/utils/index";
+import { wrapAsync } from "@beabee/core/utils/async";
 import express, { type Express, type Request, type Response } from "express";
 
 const app: Express = express();

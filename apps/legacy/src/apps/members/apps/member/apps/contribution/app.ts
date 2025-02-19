@@ -1,7 +1,7 @@
 import { ContributionType } from "@beabee/beabee-common";
 import express, { type Express } from "express";
 
-import { wrapAsync } from "@beabee/core/utils/index";
+import { wrapAsync } from "@beabee/core/utils/async";
 import { calcMonthsLeft } from "#core/utils/payment";
 
 import PaymentService from "@beabee/core/services/PaymentService";

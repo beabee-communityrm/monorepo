@@ -5,6 +5,10 @@ import { TOTP, Secret } from "otpauth";
 import config from "#config/config";
 import { Password } from "#models/index";
 
+import { Request } from "express";
+
+import { Contact } from "@beabee/core/models";
+
 export function generateApiKey(
   idLength: number = 16,
   secretLength: number = 48
@@ -138,4 +142,13 @@ export async function isValidPassword(
   return !!passwordData.salt && hash === passwordData.hash
     ? LOGIN_CODES.LOGGED_IN
     : LOGIN_CODES.LOGIN_FAILED;
+}
+
+export function login(req: Request, contact: Contact): Promise<void> {
+  return new Promise<void>((resolve, reject) => {
+    req.login(contact, (error) => {
+      if (error) reject(error);
+      else resolve();
+    });
+  });
 }

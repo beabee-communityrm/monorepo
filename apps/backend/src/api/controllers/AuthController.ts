@@ -21,8 +21,8 @@ import passport from "@beabee/core/lib/passport";
 
 import ContactsService from "@beabee/core/services/ContactsService";
 
-import { LoginDto, GetAuthInfoDto } from "@api/dto";
-import { login } from "@api/utils";
+import { LoginDto, GetAuthInfoDto } from "@beabee/core/api/dto";
+import { login } from "@beabee/core/utils/auth";
 
 import { Contact, ContactRole } from "@beabee/core/models";
 
@@ -32,7 +32,7 @@ import config from "@beabee/core/config";
 
 import { CurrentAuth } from "@api/decorators/CurrentAuth";
 
-import { authTransformer } from "@api/transformers";
+import { authTransformer } from "@beabee/core/api/transformers";
 
 @JsonController("/auth")
 export class AuthController {

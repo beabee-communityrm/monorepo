@@ -10,7 +10,7 @@ import {
 
 import { createQueryBuilder } from "@beabee/core/database";
 
-import { GetStatsDto, GetStatsOptsDto } from "@api/dto/StatsDto";
+import { GetStatsDto, GetStatsOptsDto } from "@beabee/core/api/dto";
 
 import { Contact, Payment } from "@beabee/core/models";
 

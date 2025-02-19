@@ -13,7 +13,7 @@ import { FindManyOptions, FindOneOptions, FindOptionsWhere, In } from "typeorm";
 
 import { createQueryBuilder, getRepository, runTransaction } from "#database";
 import { log as mainLogger } from "#logging";
-import { normalizeEmailAddress } from "#utils/index";
+import { normalizeEmailAddress } from "#utils/email";
 import { isDuplicateIndex } from "#utils/db";
 import { generatePassword, isValidPassword } from "#utils/auth";
 import { generateContactCode } from "#utils/contact";

@@ -15,7 +15,7 @@ import OptionsService from "#services/OptionsService";
 import { getRepository, runTransaction } from "#database";
 import { log as mainLogger } from "#logging";
 import { isDuplicateIndex } from "#utils/db";
-import { normalizeEmailAddress } from "#utils/index";
+import { normalizeEmailAddress } from "#utils/email";
 
 import {
   Contact,
