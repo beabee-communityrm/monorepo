@@ -910,8 +910,14 @@
       },
       "titleAndImage": {
         "inputs": {
+          "general": {
+            "title": "Allgemeine Informationen"
+          },
+          "sharing": {
+            "title": "Teilen-Optionen"
+          },
           "description": {
-            "help": "<p>Die <strong>Kurzbeschreibung</strong> ergänzt den Titel und sollte in wenigen Worten erklären, worum es bei dem Callout geht.</p>\n",
+            "help": "Diese Beschreibung wird angezeigt, wenn der Callout im Mitglieder-Dashboard sichtbar ist. Sie wird auch für das Teilen verwendet.",
             "label": "Kurzbeschreibung",
             "placeholder": "Erkläre kurz und knapp, warum Menschen an dem Callout teilnehmen sollten."
           },
@@ -925,10 +931,7 @@
           },
           "overrideShare": {
             "label": "Callout-Titel und -Beschreibung zum Teilen verwenden?",
-            "opts": {
-              "no": "Nein, Titel und Beschreibung selbst festlegen.",
-              "yes": "Ja"
-            }
+            "description": "Links, die auf sozialen Netzwerken geteilt werden, werden einen eigenen Titel und eine eigene Beschreibung haben."
           },
           "shareDescription": {
             "help": "<p>Die <strong>Social-Media-Beschreibung</strong> ist die Kurzbeschreibung deines Callouts fürs Teilen in sozialen Netzwerken.</p>\n",
@@ -941,11 +944,12 @@
             "placeholder": "Die Überschrift deines Callouts in sozialen Netzwerken."
           },
           "slug": {
-            "help": "<p>Du kannst den <strong>Permalink</strong> an deine Nutzer schicken, damit sie an dem Callout teilnehmen können.</p>\n",
+            "boxTitle": "Permalink",
+            "help": "<p>Du kannst den <strong>Permalink</strong> mit Nutzern teilen, damit sie den Callout direkt aufrufen können</p>\n",
             "label": "Permalink",
             "opts": {
               "auto": "Automatisch aus Callout-Titel generieren",
-              "manual": "Benutzerdefinierten Permalink festlegen"
+              "manual": "Eigenen Permalink festlegen"
             }
           },
           "title": {
