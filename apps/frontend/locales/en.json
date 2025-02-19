@@ -925,21 +925,24 @@
       },
       "titleAndImage": {
         "inputs": {
+          "general": {
+            "title": "General information"
+          },
+          "sharing": {
+            "title": "Sharing options"
+          },
           "description": {
-            "help": "<p>The <strong>Short description</strong> expands on the title to explain what the callout is about. It is meant to inform people what is inside in a few words.</p>\n",
-            "label": "Short description",
-            "placeholder": "Quickly explain why people should open this callout."
+            "help": "This description is shown if the callout is visible in the member's dashboard. It is also used for sharing.",
+            "label": "Description",
+            "placeholder": "Quickly explain why people should respond to this callout."
           },
           "image": {
             "help": "<p>The <strong>Cover image</strong> will serve as an illustration for the callout on menus and forms.</p>\n",
             "label": "Cover image"
           },
           "overrideShare": {
-            "label": "Use callout title and description for sharing?",
-            "opts": {
-              "no": "No, set a custom title and description",
-              "yes": "Yes"
-            }
+            "label": "Use custom title and description for sharing",
+            "description": "Links shared on social networks will have a custom title and description"
           },
           "shareDescription": {
             "help": "<p>The <strong>Share description</strong> field sets the short description as it should appear on social media cards.</p>\n",
@@ -952,6 +955,7 @@
             "placeholder": "The name of your callout"
           },
           "slug": {
+            "boxTitle": "Slug",
             "help": "<p>You can share the <strong>Permalink</strong> with users so they can access the callout</p>\n",
             "label": "Permalink",
             "opts": {
@@ -991,7 +995,7 @@
   },
   "forgotPassword": {
     "backToLogin": "Back to login page",
-    "description": "Please enter your email address and we’ll send you password reset instructions.",
+    "description": "Please enter your email address and we'll send you password reset instructions.",
     "message": "If there is an account associated with {email}, you will receive an email shortly. Check your spam folder if it doesn't appear.",
     "title": "Forgot your password?"
   },
