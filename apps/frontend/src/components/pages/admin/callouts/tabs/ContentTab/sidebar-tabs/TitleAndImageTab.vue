@@ -1,85 +1,97 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
   <div>
-    <AppFormSection :help="inputT('title.help')">
-      <LocaleInput
-        v-model="data.title"
-        :locales="tabs.settings.data.locales"
-        :label="inputT('title.label')"
-        :placeholder="inputT('title.placeholder')"
-        required
-      />
-    </AppFormSection>
-    <AppFormSection :help="inputT('description.help')">
-      <LocaleTextArea
-        v-model="data.description"
-        :locales="tabs.settings.data.locales"
-        :label="inputT('description.label')"
-        :placeholder="inputT('description.placeholder')"
-        required
-      />
-    </AppFormSection>
-    <AppFormSection :help="inputT('image.help')">
-      <AppImageUpload
-        v-model="data.coverImageURL"
-        :label="inputT('image.label')"
-        :width="1440"
-        :height="900"
-        required
-      />
-    </AppFormSection>
-    <AppFormSection v-if="canEditSlug" :help="inputT('slug.help')">
-      <AppLabel :label="inputT('slug.label')" required />
-      <AppRadioGroup
-        v-if="!status"
-        v-model="data.useCustomSlug"
-        name="useCustomSlug"
-        :options="[
-          [false, inputT('slug.opts.auto')],
-          [true, inputT('slug.opts.manual')],
-        ]"
-        required
-      />
-      <AppInput v-if="data.useCustomSlug" v-model="customSlug" required>
-        <template #before> {{ env.appUrl }}/callouts/ </template>
-      </AppInput>
-      <p v-else class="mt-2 text-sm">
-        {{ t('createCallout.tabs.titleAndImage.urlWillBe') }}
-        {{ env.appUrl }}/callouts/{{ slug || '???' }}
-      </p>
-    </AppFormSection>
-    <AppFormSection>
-      <AppRadioGroup
-        v-model="data.overrideShare"
-        name="overrideShare"
-        :label="inputT('overrideShare.label')"
-        :options="[
-          [false, inputT('overrideShare.opts.yes')],
-          [true, inputT('overrideShare.opts.no')],
-        ]"
-        required
-      />
-    </AppFormSection>
-    <template v-if="data.overrideShare">
-      <AppFormSection :help="inputT('shareTitle.help')">
+    <AppFormBox :title="inputT('general.title')">
+      <AppFormField :help="inputT('title.help')">
         <LocaleInput
-          v-model="data.shareTitle"
+          v-model="data.title"
+          :locales="tabs.settings.data.locales"
+          :label="inputT('title.label')"
+          :placeholder="inputT('title.placeholder')"
+          required
+        />
+      </AppFormField>
+
+      <AppFormField :help="inputT('description.help')">
+        <LocaleTextArea
+          v-model="data.description"
+          :locales="tabs.settings.data.locales"
+          :label="inputT('description.label')"
+          :placeholder="inputT('description.placeholder')"
+          required
+        />
+      </AppFormField>
+
+      <AppFormField :help="inputT('image.help')">
+        <AppImageUpload
+          v-model="data.coverImageURL"
+          :label="inputT('image.label')"
+          :width="1440"
+          :height="900"
+          required
+        />
+      </AppFormField>
+    </AppFormBox>
+
+    <AppFormBox :title="inputT('slug.boxTitle')">
+      <AppFormField :help="inputT('slug.help')">
+        <AppToggleField
+          v-model="data.useCustomSlug"
+          :label="inputT('slug.label')"
+          :description="
+            data.useCustomSlug
+              ? inputT('slug.opts.manual')
+              : inputT('slug.opts.auto')
+          "
+          :disabled="!status || !canEditSlug"
+          required
+        />
+        <AppInput
+          v-if="data.useCustomSlug"
+          v-model="customSlug"
+          :disabled="!canEditSlug"
+          required
+        >
+          <template #before> {{ env.appUrl }}/callouts/ </template>
+        </AppInput>
+        <p v-else class="mt-2 text-sm">
+          {{ t('createCallout.tabs.titleAndImage.urlWillBe') }}
+          {{ env.appUrl }}/callouts/{{ slug || '???' }}
+        </p>
+      </AppFormField>
+    </AppFormBox>
+
+    <AppFormBox :title="inputT('sharing.title')">
+      <AppFormField>
+        <AppToggleField
+          v-model="data.overrideShare"
+          :label="inputT('overrideShare.label')"
+          :description="inputT('overrideShare.description')"
+        />
+      </AppFormField>
+
+      <AppFormField :help="inputT('shareTitle.help')">
+        <LocaleInput
+          v-model="shareTitle"
           :locales="tabs.settings.data.locales"
           :label="inputT('shareTitle.label')"
           :placeholder="inputT('shareTitle.placeholder')"
+          :disabled="!data.overrideShare"
           required
         />
-      </AppFormSection>
-      <AppFormSection :help="inputT('shareDescription.help')">
+      </AppFormField>
+
+      <AppFormField :help="inputT('shareDescription.help')">
         <LocaleTextArea
-          v-model="data.shareDescription"
+          v-model="shareDescription"
           :locales="tabs.settings.data.locales"
           :label="inputT('shareDescription.label')"
           :placeholder="inputT('shareDescription.placeholder')"
+          :disabled="!data.overrideShare"
           required
         />
-      </AppFormSection>
-    </template>
+      </AppFormField>
+    </AppFormBox>
   </div>
 </template>
 
@@ -94,9 +106,11 @@ import type { CalloutTabs } from '@components/pages/admin/callouts/callouts.inte
 import type { TitleAndImageTabProps } from '../sidebar-tabs.interface';
 import env from '@env';
 import slugify from 'slugify';
-import AppFormSection from '@components/forms/AppFormSection.vue';
+import AppFormBox from '@components/forms/AppFormBox.vue';
 import LocaleTextArea from '@components/forms/LocaleTextArea.vue';
 import LocaleInput from '@components/forms/LocaleInput.vue';
+import AppToggleField from '@components/forms/AppToggleField.vue';
+import AppFormField from '@components/forms/AppFormField.vue';
 
 const emit = defineEmits(['update:error', 'update:validated']);
 const props = defineProps<{
@@ -119,7 +133,52 @@ const customSlug = computed({
   set: (newSlug) => (props.data.slug = slugify(newSlug)),
 });
 
-// TODO: FIXME should just be a computed
+// Computed properties for share fields that sync with title/description when not overridden
+const shareTitle = computed({
+  get: () =>
+    props.data.overrideShare ? props.data.shareTitle : props.data.title,
+  set: (value) => {
+    if (props.data.overrideShare) {
+      // eslint-disable-next-line vue/no-mutating-props
+      props.data.shareTitle = value;
+    }
+  },
+});
+
+const shareDescription = computed({
+  get: () =>
+    props.data.overrideShare
+      ? props.data.shareDescription
+      : props.data.description,
+  set: (value) => {
+    if (props.data.overrideShare) {
+      // eslint-disable-next-line vue/no-mutating-props
+      props.data.shareDescription = value;
+    }
+  },
+});
+
+// Watch for changes in title/description and update share fields when not overridden
+watch(
+  () => props.data.title,
+  (newTitle) => {
+    if (!props.data.overrideShare) {
+      // eslint-disable-next-line vue/no-mutating-props
+      props.data.shareTitle = newTitle;
+    }
+  }
+);
+
+watch(
+  () => props.data.description,
+  (newDescription) => {
+    if (!props.data.overrideShare) {
+      // eslint-disable-next-line vue/no-mutating-props
+      props.data.shareDescription = newDescription;
+    }
+  }
+);
+
 watch(
   () => props.data.title,
   (title) => {
