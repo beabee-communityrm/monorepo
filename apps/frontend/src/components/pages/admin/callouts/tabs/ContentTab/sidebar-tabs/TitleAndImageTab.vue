@@ -90,7 +90,6 @@ import { useI18n } from 'vue-i18n';
 import AppInput from '@components/forms/AppInput.vue';
 import AppImageUpload from '@components/forms/AppImageUpload.vue';
 import useVuelidate from '@vuelidate/core';
-import { AppRadioGroup, AppLabel } from '@beabee/vue/components';
 import type { CalloutTabs } from '@components/pages/admin/callouts/callouts.interface';
 import type { TitleAndImageTabProps } from '../sidebar-tabs.interface';
 import env from '@env';
