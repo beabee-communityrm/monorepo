@@ -7,8 +7,15 @@
     :class="buttonClasses"
     :title="title || name"
     :aria-label="name || title"
+    :aria-disabled="disabled"
+    role="button"
   >
-    <font-awesome-icon v-if="icon" :icon="icon" /><slot />
+    <font-awesome-icon
+      v-if="icon"
+      :icon="icon"
+      aria-hidden="true"
+      class="pointer-events-none"
+    /><slot />
   </a>
   <router-link
     v-else-if="to"
@@ -16,8 +23,15 @@
     :class="buttonClasses"
     :title="title || name"
     :aria-label="name || title"
+    :aria-disabled="disabled"
+    role="button"
   >
-    <font-awesome-icon v-if="icon" :icon="icon" /><slot />
+    <font-awesome-icon
+      v-if="icon"
+      :icon="icon"
+      aria-hidden="true"
+      class="pointer-events-none"
+    /><slot />
   </router-link>
 
   <component
@@ -29,15 +43,27 @@
     :type="type"
     :title="title || name"
     :aria-label="name || title"
+    :aria-busy="loading"
+    :aria-disabled="disabled"
   >
-    <font-awesome-icon v-if="icon" :icon="icon" /><slot />
-    <span v-if="loading" class="absolute inset-0 bg-white opacity-30" />
+    <font-awesome-icon
+      v-if="icon"
+      :icon="icon"
+      aria-hidden="true"
+      class="pointer-events-none"
+    /><slot />
+    <span
+      v-if="loading"
+      class="absolute inset-0 bg-white opacity-30"
+      aria-hidden="true"
+    />
     <font-awesome-icon
       v-if="loading"
       class="absolute text-2xl"
       :class="loadingIconClasses"
       :icon="faCircleNotch"
       spin
+      aria-hidden="true"
     />
     <slot name="after" />
   </component>
@@ -136,36 +162,49 @@ const sizeClasses = {
   lg: 'text-3xl px-4.5 py-4',
 } as const;
 
-const props = withDefaults(
-  defineProps<{
-    disabled?: boolean;
-    loading?: boolean;
-    type?: 'button' | 'submit';
-    href?: string;
-    external?: boolean;
-    to?: RouteLocationRaw;
-    variant?: keyof typeof variantClasses;
-    size?: 'xs' | 'sm' | 'md' | 'lg';
-    icon?: IconDefinition;
-    is?: 'button' | 'label';
-    name?: string;
-    title?: string;
-  }>(),
-  {
-    type: 'button',
-    href: undefined,
-    external: false,
-    to: undefined,
-    variant: 'primary',
-    size: 'md',
-    icon: undefined,
-    is: 'button',
-    name: undefined,
-    title: undefined,
-  }
-);
+interface Props {
+  /** Whether the button is disabled */
+  disabled?: boolean;
+  /** Whether to show loading state */
+  loading?: boolean;
+  /** HTML button type */
+  type?: 'button' | 'submit';
+  /** URL for anchor tag */
+  href?: string;
+  /** Opens link in new tab */
+  external?: boolean;
+  /** Vue Router destination */
+  to?: RouteLocationRaw;
+  /** Button style variant */
+  variant?: keyof typeof variantClasses;
+  /** Button size */
+  size?: keyof typeof sizeClasses;
+  /** FontAwesome icon */
+  icon?: IconDefinition;
+  /** Component element type */
+  is?: 'button' | 'label';
+  /** Accessible name */
+  name?: string;
+  /** Tooltip text */
+  title?: string;
+}
 
-const innerButton = ref<HTMLAnchorElement | HTMLButtonElement | null>(null);
+const props = withDefaults(defineProps<Props>(), {
+  disabled: false,
+  loading: false,
+  type: 'button',
+  href: undefined,
+  external: false,
+  to: undefined,
+  variant: 'primary',
+  size: 'md',
+  icon: undefined,
+  is: 'button',
+  name: undefined,
+  title: undefined,
+});
+
+const innerButton = ref<HTMLElement | null>(null);
 
 const focus = () => {
   if (innerButton.value) {
@@ -176,7 +215,7 @@ const focus = () => {
 const buttonClasses = computed(() => {
   return [
     // Base styles
-    'leading-tight inline-flex gap-2 justify-center items-center font-bold rounded whitespace-nowrap relative border',
+    'leading-tight inline-flex gap-2 justify-center items-center font-bold rounded whitespace-nowrap relative border focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-70',
     // Styles for in a button group
     'group-[]/btns:rounded-none group-[]/btns:last:rounded-r group-[]/btns:first:rounded-l group-[]/btns:-ml-px group-[]/btns:hover:z-10',
     // Size styles
