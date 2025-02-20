@@ -66,6 +66,7 @@
 
       <!-- Main Content Area -->
       <div class="flex-1">
+        <!-- TODO: Find a better solution with type validation -->
         <component
           :is="currentSidebarTab.component"
           v-model:data="currentSidebarTab.data"
@@ -73,8 +74,6 @@
           v-model:error="currentSidebarTab.error"
           :current-slide="currentSlide"
           :slides="slides"
-          :show-advanced="showAdvancedOptions"
-          :has-locales="hasLocales"
           :component-text="data.componentText"
           :locales="tabs.settings.data.locales"
           :is-active="true"
@@ -124,8 +123,11 @@ export interface ContentTabData {
 }
 
 export interface ContentTabProps {
+  /** The data for the content tab */
   data: ContentTabData;
+  /** The tabs for the callout */
   tabs: CalloutHorizontalTabs;
+  /** The status of the callout */
   status: ItemStatus | undefined;
 }
 
@@ -136,7 +138,6 @@ const { t } = useI18n();
 const route = useRoute();
 
 // State
-const showAdvancedOptions = ref(false);
 const wasJustReplicated = computed(() => route.query.replicated !== undefined);
 const validation = useVuelidate();
 
@@ -159,7 +160,6 @@ const isFirstSlide = computed(() => currentSlideNo.value === 0);
 const isLastSlide = computed(
   () => currentSlideNo.value === totalSlides.value - 1
 );
-const hasLocales = computed(() => props.tabs.settings.data.locales.length > 0);
 
 // Status Indicators
 const warnAboutEditing = computed(

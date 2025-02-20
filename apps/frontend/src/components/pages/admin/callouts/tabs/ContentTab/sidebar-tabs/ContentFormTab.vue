@@ -66,13 +66,15 @@ import AppSubHeading from '@components/AppSubHeading.vue';
 import env from '@env';
 import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
 import type { LocaleProp } from '@type';
+import type { SidebarTab } from '../SidebarTabs.vue';
 
-// TODO: Create ContentFormTabData interface
+// TODO:
+export type ContentFormTabData = object;
 
 /**
  * Props for the ContentFormTab component
  */
-export interface ContentFormTabProps {
+export interface ContentFormTabProps extends SidebarTab<ContentFormTabData> {
   /** Current slide being edited */
   currentSlide: FormBuilderSlide;
   /** All slides in the form */
