@@ -917,7 +917,8 @@ export const deInformal = {
           },
           "image": {
             "help": "<p>Das <strong>Titelbild</strong> dient zur Illustration des Callouts.</p>\n",
-            "label": "Titelbild"
+            "label": "Titelbild",
+            "description": "Vergessen Sie nicht, nach dem Hochladen eines Bildes zu speichern!"
           },
           "intro": {
             "help": "<p>Die <strong>Einleitung</strong> erscheint vor den Fragen. Erkläre darin, warum du den Callout machst, also was das Ziel ist und wie die Antworten helfen. Gib so viel Kontext wie möglich, um den Teilnehmenden die Beantwortung zu erleichtern.</p>\n",

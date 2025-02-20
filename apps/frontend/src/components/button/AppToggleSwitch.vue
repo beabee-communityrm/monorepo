@@ -21,17 +21,27 @@
 </template>
 
 <script lang="ts" setup>
+/**
+ * A toggle switch component that provides a binary choice.
+ */
 const emit = defineEmits<{
+  /** Emitted when the switch state changes */
   (e: 'update:modelValue', value: boolean): void;
 }>();
 
-interface Props {
+/**
+ * Props for the AppToggleSwitch component
+ */
+export interface AppToggleSwitchProps {
+  /** Current state of the toggle switch */
   modelValue: boolean;
+  /** Color variant of the switch */
   variant?: 'primary' | 'link' | 'danger';
+  /** Whether the switch is disabled */
   disabled?: boolean;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<AppToggleSwitchProps>(), {
   variant: 'primary',
   disabled: false,
 });

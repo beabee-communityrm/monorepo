@@ -19,24 +19,34 @@
 import AppLabel from './AppLabel.vue';
 import AppToggleSwitch from '../button/AppToggleSwitch.vue';
 
-interface Props {
+/**
+ * Props for the AppToggleField component
+ */
+export interface AppToggleFieldProps {
+  /** Current state of the toggle */
   modelValue: boolean;
+  /** Label text for the toggle field */
   label?: string;
+  /** Additional descriptive text below the label */
   description?: string;
+  /** Color variant of the toggle switch */
   variant?: 'primary' | 'link' | 'danger';
+  /** Whether the field is disabled */
   disabled?: boolean;
+  /** Whether the field is required */
   required?: boolean;
 }
 
-withDefaults(defineProps<Props>(), {
+defineEmits<{
+  /** Emitted when the toggle state changes */
+  (e: 'update:modelValue', value: boolean): void;
+}>();
+
+withDefaults(defineProps<AppToggleFieldProps>(), {
   variant: 'primary',
   disabled: false,
   required: false,
   label: undefined,
   description: undefined,
 });
-
-defineEmits<{
-  (e: 'update:modelValue', value: boolean): void;
-}>();
 </script>

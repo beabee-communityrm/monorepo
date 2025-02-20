@@ -26,6 +26,7 @@
         <AppImageUpload
           v-model="data.coverImageURL"
           :label="inputT('image.label')"
+          :description="inputT('image.description')"
           :width="1440"
           :height="900"
           required
@@ -37,6 +38,7 @@
       <AppFormField :help="inputT('slug.help')">
         <AppToggleField
           v-model="data.useCustomSlug"
+          :variant="'link'"
           :label="inputT('slug.label')"
           :description="
             data.useCustomSlug
@@ -65,6 +67,7 @@
       <AppFormField>
         <AppToggleField
           v-model="data.overrideShare"
+          :variant="'link'"
           :label="inputT('overrideShare.label')"
           :description="inputT('overrideShare.description')"
         />
@@ -103,7 +106,7 @@ import AppInput from '@components/forms/AppInput.vue';
 import AppImageUpload from '@components/forms/AppImageUpload.vue';
 import useVuelidate from '@vuelidate/core';
 import type { CalloutTabs } from '@components/pages/admin/callouts/callouts.interface';
-import type { TitleAndImageTabProps } from '../sidebar-tabs.interface';
+import type { TitleAndImageTabData } from '../sidebar-tabs.interface';
 import env from '@env';
 import slugify from 'slugify';
 import AppFormBox from '@components/forms/AppFormBox.vue';
@@ -112,12 +115,17 @@ import LocaleInput from '@components/forms/LocaleInput.vue';
 import AppToggleField from '@components/forms/AppToggleField.vue';
 import AppFormField from '@components/forms/AppFormField.vue';
 
-const emit = defineEmits(['update:error', 'update:validated']);
-const props = defineProps<{
-  data: TitleAndImageTabProps;
+export interface TitleAndImageTabProps {
+  /** The data for the title and image tab */
+  data: TitleAndImageTabData;
+  /** The tabs for the callout */
   tabs: CalloutTabs;
+  /** The status of the item */
   status: ItemStatus | undefined;
-}>();
+}
+
+const emit = defineEmits(['update:error', 'update:validated']);
+const props = defineProps<TitleAndImageTabProps>();
 
 const { t } = useI18n();
 const inputT = (key: string) =>

@@ -28,9 +28,15 @@ import { useI18n } from 'vue-i18n';
 import AppInput from './AppInput.vue';
 import AppRepeatable from './AppRepeatable.vue';
 
-defineProps<{
+/**
+ * Props for the AppLinkList component
+ */
+export interface AppLinkListProps {
+  /** The model value of the link list */
   modelValue: { text: string; url: string }[];
-}>();
+}
+
+defineProps<AppLinkListProps>();
 
 const { t } = useI18n();
 </script>

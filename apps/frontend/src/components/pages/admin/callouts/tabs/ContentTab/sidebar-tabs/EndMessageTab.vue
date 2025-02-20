@@ -53,13 +53,13 @@ import { watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import AppRadioGroup from '../../../../../../forms/AppRadioGroup.vue';
 import type { CalloutTabs } from '../../../callouts.interface';
-import type { EndMessageTabProps } from '../sidebar-tabs.interface';
+import type { EndMessageTabData } from '../sidebar-tabs.interface';
 import AppFormSection from '../../../../../../forms/AppFormSection.vue';
 import LocaleRichTextEditor from '@components/forms/LocaleRichTextEditor.vue';
 import LocaleInput from '@components/forms/LocaleInput.vue';
 
 const emit = defineEmits(['update:error', 'update:validated']);
-defineProps<{ data: EndMessageTabProps; tabs: CalloutTabs }>();
+defineProps<{ data: EndMessageTabData; tabs: CalloutTabs }>();
 
 const { t } = useI18n();
 const inputT = (key: string) =>

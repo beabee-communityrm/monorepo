@@ -56,14 +56,14 @@ import { computed } from 'vue';
  * @property {'horizontal' | 'vertical'} orientation - Layout orientation of the tabs
  * @property {string | undefined} defaultTab - Default tab to fall back to
  */
-interface Props {
+export interface AppTabsProps {
   items: TabItem[];
   selected: string | null;
   orientation?: 'horizontal' | 'vertical';
   defaultTab?: string;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<AppTabsProps>(), {
   items: () => [],
   selected: null,
   orientation: 'horizontal',
