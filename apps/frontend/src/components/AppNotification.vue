@@ -1,18 +1,29 @@
 <template>
   <aside
-    class="rounded border border-t-8 bg-white p-4 text-sm text-body-80"
-    :class="colorClass[0]"
+    v-if="isVisible"
+    class="rounded border border-t-8 bg-white text-sm text-body-80"
+    :class="[
+      colorClass[0],
+      mode === 'inline' ? 'px-4 py-1.5' : 'p-4',
+      mode === 'inline' ? 'border-t-2' : 'border-t-8',
+    ]"
     role="alert"
     :aria-live="variant === 'error' ? 'assertive' : 'polite'"
     :aria-atomic="true"
   >
     <header
       class="flex items-start gap-4"
-      :class="$slots.default ? 'mb-2' : ''"
+      :class="[
+        $slots.default ? 'mb-2' : '',
+        mode === 'inline' && 'items-center',
+      ]"
     >
       <span
-        class="flex flex-1 items-baseline gap-2 font-bold"
-        :class="colorClass[1]"
+        class="flex flex-1 items-baseline gap-2"
+        :class="[
+          colorClass[1],
+          mode === 'inline' ? 'font-normal' : 'font-bold',
+        ]"
       >
         <span v-if="icon" class="notification-icon" aria-hidden="true">
           <font-awesome-icon :icon="icon" />
@@ -37,7 +48,7 @@
         <button
           class="inline-block w-5 cursor-pointer text-center leading-5 hover:bg-grey-lighter hover:text-body"
           :aria-label="t('notifications.remove', { title })"
-          @click="emit('remove')"
+          @click="handleRemove"
         >
           <font-awesome-icon :icon="faTimes" aria-hidden="true" />
         </button>
@@ -85,6 +96,8 @@ export interface AppNotificationProps {
   icon?: IconDefinition;
   /** Whether and how the notification can be removed */
   removeable?: 'auto' | boolean;
+  /** Display mode of the notification */
+  mode?: 'normal' | 'inline';
 }
 
 const emit = defineEmits(['remove']);
@@ -93,7 +106,10 @@ const props = withDefaults(defineProps<AppNotificationProps>(), {
   removeable: true,
   description: undefined,
   icon: undefined,
+  mode: 'normal',
 });
+
+const isVisible = ref(true);
 
 const circleRadius = 10;
 const circleSize = Math.PI * circleRadius * 2;
@@ -127,5 +143,12 @@ const colorClass = computed(() => {
       return ['border-primary', 'text-primary', 'stroke-primary'];
   }
 });
+
+const handleRemove = () => {
+  emit('remove');
+  setTimeout(() => {
+    isVisible.value = false;
+  }, 0);
+};
 </script>
 <style scoped></style>

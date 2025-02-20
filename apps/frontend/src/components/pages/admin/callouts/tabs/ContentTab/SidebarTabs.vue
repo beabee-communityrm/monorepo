@@ -23,9 +23,13 @@ import type { EndMessageTabData } from './sidebar-tabs/EndMessageTab.vue';
  * Combined props for all sidebar tabs
  */
 export interface SidebarTabsData {
+  /** The content tab */
   content: ContentFormTabProps;
+  /** The intro message tab */
   intro: IntroMessageTabData;
+  /** The title and image tab */
   titleAndImage: TitleAndImageTabData;
+  /** The end message tab */
   endMessage: EndMessageTabData;
 }
 
