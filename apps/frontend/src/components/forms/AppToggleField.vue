@@ -1,8 +1,8 @@
 <template>
-  <div class="flex items-start justify-between gap-4">
+  <div class="mb-2 flex items-start justify-between gap-4">
     <div class="flex-1">
       <AppLabel v-if="label" :label="label" :required="required" />
-      <p v-if="description" class="mt-1 text-sm text-body-80">
+      <p v-if="description" class="mb-0.5 mt-1 text-sm text-body-80">
         {{ description }}
       </p>
     </div>
