@@ -67,7 +67,10 @@ import env from '@env';
 import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
 import type { LocaleProp } from '@type';
 
-interface Props {
+/**
+ * Props for the ContentFormTab component
+ */
+export interface ContentFormTabProps {
   /** Current slide being edited */
   currentSlide: FormBuilderSlide;
   /** All slides in the form */
@@ -82,7 +85,7 @@ interface Props {
   locales: string[];
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<ContentFormTabProps>(), {
   showAdvanced: false,
   hasLocales: false,
 });

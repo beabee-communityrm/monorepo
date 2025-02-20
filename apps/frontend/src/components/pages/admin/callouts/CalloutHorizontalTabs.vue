@@ -37,14 +37,17 @@ import StepSettings from './tabs/SettingsTab.vue';
 import StepDatesAndDuration from './tabs/DatesAndDurationTab.vue';
 import StepContent from './tabs/ContentTab/ContentTab.vue';
 
-interface Props {
+/**
+ * Props for the CalloutHorizontalTabs component
+ */
+export interface CalloutHorizontalTabsProps {
   /** Props for all tabs */
   tabsProps: CalloutTabsProps;
   /** Current status of the callout */
   status: ItemStatus | undefined;
 }
 
-const props = defineProps<Props>();
+const props = defineProps<CalloutHorizontalTabsProps>();
 const { t } = useI18n();
 
 /**

@@ -17,13 +17,16 @@
 import { useI18n } from 'vue-i18n';
 import AppFormSection from '@components/forms/AppFormSection.vue';
 import LocaleRichTextEditor from '@components/forms/LocaleRichTextEditor.vue';
-import type { IntroMessageTabProps } from '../sidebar-tabs.interface';
+import type { IntroMessageTabData } from '../sidebar-tabs.interface';
 
-interface Props {
-  data: IntroMessageTabProps;
+/**
+ * Props for the IntroMessageTab component
+ */
+export interface IntroMessageTabProps {
+  data: IntroMessageTabData;
   locales: string[];
 }
 
-defineProps<Props>();
+defineProps<IntroMessageTabProps>();
 const { t } = useI18n();
 </script>
