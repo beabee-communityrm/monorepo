@@ -29,7 +29,7 @@ meta:
         </AppAsyncButton>
       </div>
     </PageTitle>
-    <CalloutTabs :tabs-props="tabs" :status="status" />
+    <CalloutHorizontalTabs :data="tabs" :status="status" />
   </div>
 </template>
 
@@ -41,8 +41,8 @@ import { ItemStatus } from '@beabee/beabee-common';
 import { client } from '@utils/api';
 import { faEye, faBullhorn } from '@fortawesome/free-solid-svg-icons';
 
-import type { CalloutTabsProps } from '@components/pages/admin/callouts/callouts.interface';
-import CalloutTabs from '@components/pages/admin/callouts/CalloutHorizontalTabs.vue';
+import type { CalloutHorizontalTabsData } from '@components/pages/admin/callouts/CalloutHorizontalTabs.vue';
+import CalloutHorizontalTabs from '@components/pages/admin/callouts/CalloutHorizontalTabs.vue';
 import PageTitle from '@components/PageTitle.vue';
 import AppAsyncButton from '@components/button/AppAsyncButton.vue';
 
@@ -65,7 +65,7 @@ const router = useRouter();
 const validation = useVuelidate();
 
 // State
-const tabs = ref<CalloutTabsProps>();
+const tabs = ref<CalloutHorizontalTabsData>();
 const status = ref<ItemStatus>();
 const lastSaved = ref<Date>();
 const now = ref(new Date());

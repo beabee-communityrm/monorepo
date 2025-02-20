@@ -25,24 +25,63 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, markRaw, reactive } from 'vue';
+import {
+  ref,
+  computed,
+  markRaw,
+  reactive,
+  type Raw,
+  type Component,
+} from 'vue';
 import { useI18n } from 'vue-i18n';
 import { ItemStatus } from '@beabee/beabee-common';
 import AppTabs from '@components/tabs/AppTabs.vue';
 import type { TabItem } from '@components/tabs/tabs.interface';
-import type { CalloutTabsProps, CalloutTabs } from './callouts.interface';
+import type { AppStepperStep } from '@type';
 
 // Tab Components
-import StepSettings from './tabs/SettingsTab.vue';
-import StepDatesAndDuration from './tabs/DatesAndDurationTab.vue';
-import StepContent from './tabs/ContentTab/ContentTab.vue';
+import SettingsTab, { type SettingsTabData } from './tabs/SettingsTab.vue';
+import DatesAndDurationTab, {
+  type DateAndDurationTabData,
+} from './tabs/DatesAndDurationTab.vue';
+import ContentTab, {
+  type ContentTabData,
+} from './tabs/ContentTab/ContentTab.vue';
+
+/**
+ * Combined props for all main callout tabs
+ */
+export interface CalloutHorizontalTabsData {
+  content: ContentTabData;
+  settings: SettingsTabData;
+  dates: DateAndDurationTabData;
+}
+
+/**
+ * Base interface for a callout tab component
+ */
+export interface CalloutHorizontalTab<T> extends AppStepperStep {
+  validated: boolean;
+  error: boolean;
+  data: T;
+  component: Raw<Component>;
+}
+
+/**
+ * Type for the complete callout tabs structure
+ */
+export type CalloutHorizontalTabs = {
+  [P in keyof CalloutHorizontalTabsData]: CalloutHorizontalTab<
+    CalloutHorizontalTabsData[P]
+  >;
+};
 
 /**
  * Props for the CalloutHorizontalTabs component
  */
 export interface CalloutHorizontalTabsProps {
   /** Props for all tabs */
-  tabsProps: CalloutTabsProps;
+  data: CalloutHorizontalTabsData;
   /** Current status of the callout */
   status: ItemStatus | undefined;
 }
@@ -53,27 +92,27 @@ const { t } = useI18n();
 /**
  * Initialize tabs with their components and data
  */
-const tabs = reactive<CalloutTabs>({
+const tabs = reactive<CalloutHorizontalTabs>({
   content: {
     name: t('createCallout.tabs.content.title'),
     validated: false,
     error: false,
-    component: markRaw(StepContent),
-    data: props.tabsProps.content,
+    component: markRaw(ContentTab),
+    data: props.data.content,
   },
   settings: {
     name: t('createCallout.tabs.settings.title'),
     validated: false,
     error: false,
-    component: markRaw(StepSettings),
-    data: props.tabsProps.settings,
+    component: markRaw(SettingsTab),
+    data: props.data.settings,
   },
   dates: {
     name: t('createCallout.tabs.dates.title'),
     validated: false,
     error: false,
-    component: markRaw(StepDatesAndDuration),
-    data: props.tabsProps.dates,
+    component: markRaw(DatesAndDurationTab),
+    data: props.data.dates,
   },
 });
 

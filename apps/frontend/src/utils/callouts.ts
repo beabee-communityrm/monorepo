@@ -13,8 +13,8 @@ import {
   type CreateCalloutData,
 } from '@beabee/beabee-common';
 import { format } from 'date-fns';
-import type { CalloutTabsProps } from '@components/pages/admin/callouts/callouts.interface';
-
+import type { CalloutHorizontalTabsData } from '@components/pages/admin/callouts/CalloutHorizontalTabs.vue';
+import { computed } from 'vue';
 import type { FilterItem, FilterItems } from '@type';
 
 import env from '../env';
@@ -25,8 +25,17 @@ import type {
   FormBuilderNavigation,
   FormBuilderSlide,
 } from '@components/form-builder/form-builder.interface';
-import type { ContentTabProps } from '@components/pages/admin/callouts/callouts.interface';
+import type { ContentTabData } from '@components/pages/admin/callouts/tabs/ContentTab/ContentTab.vue';
 const { t } = i18n.global;
+
+/**
+ * Predefined response buckets for callout responses
+ */
+export const buckets = computed(() => [
+  { id: '', label: t('calloutResponseBuckets.inbox') },
+  { id: 'verified', label: t('calloutResponseBuckets.verified') },
+  { id: 'trash', label: t('calloutResponseBuckets.trash') },
+]);
 
 /**
  * Creates a new slide schema with a unique ID and default navigation
@@ -58,7 +67,7 @@ const textFields = [
 ] as const;
 
 /**
- * Converts variant data into a format suitable for the form steps
+ * Converts variant data into a format suitable for the form tabs
  */
 function convertVariantsForSteps(
   variants: Record<string, CalloutVariantData> | undefined
@@ -127,7 +136,7 @@ function convertSlidesForSteps(
 
 export function convertCalloutToTabs(
   callout?: GetCalloutDataWith<'form' | 'responseViewSchema' | 'variants'>
-): CalloutTabsProps {
+): CalloutHorizontalTabsData {
   const settings = env.cnrMode
     ? ({
         whoCanTakePart: 'everyone',
@@ -152,7 +161,7 @@ export function convertCalloutToTabs(
 
   const variants = convertVariantsForSteps(callout?.variants);
 
-  const content: ContentTabProps = {
+  const content: ContentTabData = {
     slides: convertSlidesForSteps(callout?.formSchema.slides, callout?.variants)
       .slides,
     componentText: convertSlidesForSteps(
@@ -250,13 +259,13 @@ export function convertCalloutToTabs(
 }
 
 function convertVariantsForCallout(
-  steps: CalloutTabsProps
+  tabs: CalloutHorizontalTabsData
 ): Record<string, CalloutVariantData> {
   const variants: Record<string, CalloutVariantData> = {};
-  for (const variant of [...steps.settings.locales, 'default']) {
+  for (const variant of [...tabs.settings.locales, 'default']) {
     const slideNavigation: Record<string, CalloutVariantNavigationData> = {};
 
-    for (const slide of steps.content.slides) {
+    for (const slide of tabs.content.slides) {
       slideNavigation[slide.id] = {
         nextText: slide.navigation.nextText[variant] || '',
         prevText: slide.navigation.prevText[variant] || '',
@@ -265,36 +274,36 @@ function convertVariantsForCallout(
     }
 
     const componentText: Record<string, string> = {};
-    for (const key in steps.content.componentText) {
-      componentText[key] = steps.content.componentText[key][variant] || '';
+    for (const key in tabs.content.componentText) {
+      componentText[key] = tabs.content.componentText[key][variant] || '';
     }
 
     variants[variant] = {
-      title: steps.content.sidebarTabs.titleAndImage.title[variant] || '',
+      title: tabs.content.sidebarTabs.titleAndImage.title[variant] || '',
       excerpt:
-        steps.content.sidebarTabs.titleAndImage.description[variant] || '',
-      intro: steps.content.sidebarTabs.intro.introText[variant] || '',
-      ...(steps.content.sidebarTabs.endMessage.whenFinished === 'redirect'
+        tabs.content.sidebarTabs.titleAndImage.description[variant] || '',
+      intro: tabs.content.sidebarTabs.intro.introText[variant] || '',
+      ...(tabs.content.sidebarTabs.endMessage.whenFinished === 'redirect'
         ? {
             thanksText: '',
             thanksTitle: '',
             thanksRedirect:
-              steps.content.sidebarTabs.endMessage.thankYouRedirect[variant] ||
+              tabs.content.sidebarTabs.endMessage.thankYouRedirect[variant] ||
               '',
           }
         : {
             thanksText:
-              steps.content.sidebarTabs.endMessage.thankYouText[variant] || '',
+              tabs.content.sidebarTabs.endMessage.thankYouText[variant] || '',
             thanksTitle:
-              steps.content.sidebarTabs.endMessage.thankYouTitle[variant] || '',
+              tabs.content.sidebarTabs.endMessage.thankYouTitle[variant] || '',
             thanksRedirect: null,
           }),
-      ...(steps.content.sidebarTabs.titleAndImage.overrideShare
+      ...(tabs.content.sidebarTabs.titleAndImage.overrideShare
         ? {
             shareTitle:
-              steps.content.sidebarTabs.titleAndImage.shareTitle[variant] || '',
+              tabs.content.sidebarTabs.titleAndImage.shareTitle[variant] || '',
             shareDescription:
-              steps.content.sidebarTabs.titleAndImage.shareDescription[
+              tabs.content.sidebarTabs.titleAndImage.shareDescription[
                 variant
               ] || '',
           }
@@ -311,9 +320,9 @@ function convertVariantsForCallout(
 }
 
 function convertSlidesForCallout(
-  steps: CalloutTabsProps
+  tabs: CalloutHorizontalTabsData
 ): SetCalloutSlideSchema[] {
-  return steps.content.slides.map((slide) => ({
+  return tabs.content.slides.map((slide) => ({
     ...slide,
     navigation: {
       nextSlideId: slide.navigation.nextSlideId,
@@ -322,58 +331,58 @@ function convertSlidesForCallout(
 }
 
 export function convertStepsToCallout(
-  steps: CalloutTabsProps
+  tabs: CalloutHorizontalTabsData
 ): CreateCalloutData {
-  const slug = steps.content.sidebarTabs.titleAndImage.useCustomSlug
-    ? steps.content.sidebarTabs.titleAndImage.slug
-    : steps.content.sidebarTabs.titleAndImage.autoSlug;
+  const slug = tabs.content.sidebarTabs.titleAndImage.useCustomSlug
+    ? tabs.content.sidebarTabs.titleAndImage.slug
+    : tabs.content.sidebarTabs.titleAndImage.autoSlug;
 
-  const slides = convertSlidesForCallout(steps);
-  const variants = convertVariantsForCallout(steps);
+  const slides = convertSlidesForCallout(tabs);
+  const variants = convertVariantsForCallout(tabs);
 
   return {
     slug: slug || undefined,
-    image: steps.content.sidebarTabs.titleAndImage.coverImageURL,
+    image: tabs.content.sidebarTabs.titleAndImage.coverImageURL,
     formSchema: { slides },
-    responseViewSchema: steps.settings.showResponses
+    responseViewSchema: tabs.settings.showResponses
       ? {
-          buckets: steps.settings.responseBuckets,
-          titleProp: steps.settings.responseTitleProp,
-          imageProp: steps.settings.responseImageProp,
-          imageFilter: steps.settings.responseImageFilter,
-          gallery: steps.settings.responseViews.includes('gallery'),
-          links: steps.settings.responseLinks,
-          map: steps.settings.responseViews.includes('map')
+          buckets: tabs.settings.responseBuckets,
+          titleProp: tabs.settings.responseTitleProp,
+          imageProp: tabs.settings.responseImageProp,
+          imageFilter: tabs.settings.responseImageFilter,
+          gallery: tabs.settings.responseViews.includes('gallery'),
+          links: tabs.settings.responseLinks,
+          map: tabs.settings.responseViews.includes('map')
             ? {
-                ...steps.settings.mapSchema,
-                addressPattern: steps.settings.mapSchema.addressPatternProp
-                  ? steps.settings.mapSchema.addressPattern
+                ...tabs.settings.mapSchema,
+                addressPattern: tabs.settings.mapSchema.addressPatternProp
+                  ? tabs.settings.mapSchema.addressPattern
                   : '',
               }
             : null,
         }
       : null,
-    starts: steps.dates.startNow
+    starts: tabs.dates.startNow
       ? new Date()
-      : new Date(steps.dates.startDate + 'T' + steps.dates.startTime),
-    expires: steps.dates.hasEndDate
-      ? new Date(steps.dates.endDate + 'T' + steps.dates.endTime)
+      : new Date(tabs.dates.startDate + 'T' + tabs.dates.startTime),
+    expires: tabs.dates.hasEndDate
+      ? new Date(tabs.dates.endDate + 'T' + tabs.dates.endTime)
       : null,
-    allowMultiple: steps.settings.multipleResponses,
+    allowMultiple: tabs.settings.multipleResponses,
     allowUpdate:
-      !steps.settings.multipleResponses && steps.settings.usersCanEditAnswers,
-    hidden: !steps.settings.showOnUserDashboards,
-    captcha: steps.settings.requireCaptcha,
+      !tabs.settings.multipleResponses && tabs.settings.usersCanEditAnswers,
+    hidden: !tabs.settings.showOnUserDashboards,
+    captcha: tabs.settings.requireCaptcha,
     access:
-      steps.settings.whoCanTakePart === 'members'
+      tabs.settings.whoCanTakePart === 'members'
         ? CalloutAccess.Member
-        : steps.settings.allowAnonymousResponses === 'none'
+        : tabs.settings.allowAnonymousResponses === 'none'
           ? CalloutAccess.Guest
-          : steps.settings.allowAnonymousResponses === 'guests'
+          : tabs.settings.allowAnonymousResponses === 'guests'
             ? CalloutAccess.Anonymous
             : CalloutAccess.OnlyAnonymous,
     variants,
-    channels: steps.settings.channels,
+    channels: tabs.settings.channels,
   };
 }
 
