@@ -138,40 +138,6 @@ export interface AppInputProps {
   copyable?: boolean;
 }
 
-/**
- * Props for the AppInput component
- */
-export interface AppInputProps {
-  /** The model value of the input */
-  modelValue?: number | string;
-  /** The type of the input */
-  type?: 'password' | 'email' | 'text' | 'date' | 'time' | 'number' | 'url';
-  /** The name of the input */
-  name?: string;
-  /** The label of the input */
-  label?: string;
-  /** The info message of the input */
-  infoMessage?: string;
-  /** Whether the input is required */
-  required?: boolean;
-  /** Whether the input is disabled */
-  disabled?: boolean;
-  /** The minimum value of the input */
-  min?: number | string;
-  /** The maximum value of the input */
-  max?: number | string;
-  /** The value that this input should be the same as */
-  sameAs?: number | string;
-  /** A regex pattern that the input value should match */
-  pattern?: string;
-  /** Whether to hide the error message */
-  hideErrorMessage?: boolean;
-  /** A prefix to display before the input */
-  prefix?: string;
-  /** A suffix to display after the input */
-  suffix?: string;
-}
-
 const emit = defineEmits(['update:modelValue', 'update:validation']);
 const props = withDefaults(defineProps<AppInputProps>(), {
   modelValue: undefined,

@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
   <div>
-    <AppFormBox :title="inputT('general.title')">
+    <AppFormBox :title="inputT('general.title')" class="max-w-3xl">
       <AppFormField :help="inputT('title.help')">
         <LocaleInput
           v-model="data.title"
@@ -34,36 +34,57 @@
       </AppFormField>
     </AppFormBox>
 
-    <AppFormBox :title="inputT('slug.boxTitle')">
+    <AppFormBox
+      :title="inputT('slug.boxTitle')"
+      :notification="
+        !canEditSlug
+          ? {
+              title: t(
+                'createCallout.tabs.titleAndImage.inputs.slug.locked.title'
+              ),
+              description: t(
+                'createCallout.tabs.titleAndImage.inputs.slug.locked.description'
+              ),
+              variant: 'warning',
+              mode: 'inline',
+              removeable: false,
+            }
+          : undefined
+      "
+      class="max-w-3xl"
+    >
       <AppFormField :help="inputT('slug.help')">
         <AppToggleField
-          v-model="data.useCustomSlug"
+          v-model="data.autoGenerateSlug"
           :variant="'link'"
           :label="inputT('slug.label')"
           :description="
-            data.useCustomSlug
-              ? inputT('slug.opts.manual')
-              : inputT('slug.opts.auto')
+            data.autoGenerateSlug
+              ? inputT('slug.opts.auto')
+              : inputT('slug.opts.manual')
           "
-          :disabled="!status || !canEditSlug"
+          :disabled="!canEditSlug"
           required
         />
         <AppInput
-          v-if="data.useCustomSlug"
+          v-if="data.autoGenerateSlug"
+          :model-value="env.appUrl + '/callouts/' + slug"
+          :disabled="true"
+          :copyable="true"
+          required
+        />
+        <AppInput
+          v-else
           v-model="customSlug"
           :disabled="!canEditSlug"
+          :prefix="env.appUrl + '/callouts/'"
+          :copyable="true"
           required
-        >
-          <template #before> {{ env.appUrl }}/callouts/ </template>
-        </AppInput>
-        <p v-else class="mt-2 text-sm">
-          {{ t('createCallout.tabs.titleAndImage.urlWillBe') }}
-          {{ env.appUrl }}/callouts/{{ slug || '???' }}
-        </p>
+        />
       </AppFormField>
     </AppFormBox>
 
-    <AppFormBox :title="inputT('sharing.title')">
+    <AppFormBox :title="inputT('sharing.title')" class="max-w-3xl">
       <AppFormField>
         <AppToggleField
           v-model="data.overrideShare"
@@ -128,7 +149,7 @@ export interface TitleAndImageTabData {
   /** The auto-generated slug of the callout */
   autoSlug: string;
   /** Whether to use a custom slug */
-  useCustomSlug: boolean;
+  autoGenerateSlug: boolean;
   /** The custom slug of the callout */
   slug: string;
   /** Whether to override the share title and description */
@@ -156,11 +177,11 @@ const inputT = (key: string) =>
   t('createCallout.tabs.titleAndImage.inputs.' + key);
 
 const slug = computed(() =>
-  props.data.useCustomSlug ? props.data.slug : props.data.autoSlug
+  props.data.autoGenerateSlug ? props.data.autoSlug : customSlug.value
 );
 
 const customSlug = computed({
-  get: () => props.data.slug,
+  get: () => props.data.slug || props.data.autoSlug,
   // eslint-disable-next-line vue/no-mutating-props
   set: (newSlug) => (props.data.slug = slugify(newSlug)),
 });

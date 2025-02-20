@@ -956,12 +956,16 @@
             "placeholder": "The name of your callout"
           },
           "slug": {
-            "boxTitle": "Slug",
+            "locked": {
+              "title": "The permalink is locked because the callout has already been published.",
+              "description": ""
+            },
+            "boxTitle": "Permalink",
             "help": "<p>You can share the <strong>Permalink</strong> with users so they can access the callout</p>\n",
-            "label": "Permalink",
+            "label": "Auto-generate slug from title",
             "opts": {
-              "auto": "Auto-generate from callout title",
-              "manual": "Set custom permalink"
+              "auto": "The slug is generated from the title and automatically updates until the callout is published.",
+              "manual": "The slug is created manually"
             }
           },
           "title": {
@@ -970,8 +974,7 @@
             "placeholder": "The name of your callout."
           }
         },
-        "title": "Title and image",
-        "urlWillBe": "Permalink will be"
+        "title": "Title and image"
       }
     },
     "title": "Create a callout",
@@ -1439,5 +1442,12 @@
   },
   "taxRate": {
     "invoiceName": "VAT"
+  },
+  "notifications": {
+    "copy": {
+      "success": "Copied to clipboard",
+      "error": "Failed to copy",
+      "errorDesc": "Could not copy text to clipboard. Please try again or copy manually."
+    }
   }
 }

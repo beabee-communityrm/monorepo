@@ -1,7 +1,7 @@
 <template>
-  <div class="mb-6 max-w-3xl">
+  <div class="mb-6">
     <AppLabel v-if="title" :label="title" class="mb-3" />
-    <AppNotification v-if="notification" v-bind="notification" />
+    <AppNotification v-if="notification" v-bind="notification" class="mb-3" />
     <div class="rounded bg-white p-4">
       <slot />
     </div>
