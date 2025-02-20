@@ -11,10 +11,40 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { computed, type Raw, type Component } from 'vue';
 import AppTabs from '@components/tabs/AppTabs.vue';
 import type { TabItem } from '@components/tabs/tabs.interface';
-import type { SidebarTabs } from './sidebar-tabs.interface';
+import type { AppStepperStep } from '@type';
+import type { ContentFormTabProps } from './sidebar-tabs/ContentFormTab.vue';
+import type { IntroMessageTabData } from './sidebar-tabs/IntroMessageTab.vue';
+import type { TitleAndImageTabData } from './sidebar-tabs/TitleAndImageTab.vue';
+import type { EndMessageTabData } from './sidebar-tabs/EndMessageTab.vue';
+/**
+ * Combined props for all sidebar tabs
+ */
+export interface SidebarTabsData {
+  content: ContentFormTabProps;
+  intro: IntroMessageTabData;
+  titleAndImage: TitleAndImageTabData;
+  endMessage: EndMessageTabData;
+}
+
+/**
+ * Base interface for a sidebar tab component
+ */
+export interface SidebarTab<T> extends AppStepperStep {
+  validated: boolean;
+  error: boolean;
+  data: T;
+  component: Raw<Component>;
+}
+
+/**
+ * Type for the complete sidebar tabs structure
+ */
+export type SidebarTabsTabs = {
+  [P in keyof SidebarTabsData]: SidebarTab<SidebarTabsData[P]>;
+};
 
 /**
  * Props for the SidebarTabs component
@@ -23,7 +53,7 @@ export interface SidebarTabsProps {
   /** The currently selected tab name */
   selectedTab: string;
   /** Configuration for all sidebar tabs */
-  sidebarTabs: SidebarTabs;
+  sidebarTabs: SidebarTabsTabs;
   /** Default tab to fall back to */
   defaultTab?: string;
 }

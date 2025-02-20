@@ -54,15 +54,28 @@ import AppInput from '../../../../forms/AppInput.vue';
 import AppLabel from '../../../../forms/AppLabel.vue';
 import AppRadioGroup from '../../../../forms/AppRadioGroup.vue';
 import AppFormSection from '../../../../forms/AppFormSection.vue';
-import type { DateAndDurationTabProps } from '../callouts.interface';
 import { sameAs } from '@vuelidate/validators';
 
-const emit = defineEmits(['update:error', 'update:validated']);
-const props = defineProps<{
-  data: DateAndDurationTabProps;
+/**
+ * Data for the dates tab, which contains scheduling information
+ */
+export interface DateAndDurationTabData {
+  hasEndDate: boolean;
+  startNow: boolean;
+  startDate: string;
+  startTime: string;
+  endDate: string;
+  endTime: string;
+}
+
+export interface DatesAndDurationTabProps {
+  data: DateAndDurationTabData;
   status: ItemStatus | undefined;
   isActive: boolean;
-}>();
+}
+
+const emit = defineEmits(['update:error', 'update:validated']);
+const props = defineProps<DatesAndDurationTabProps>();
 
 const { t } = useI18n();
 const inputT = (key: string) => t('createCallout.tabs.dates.inputs.' + key);

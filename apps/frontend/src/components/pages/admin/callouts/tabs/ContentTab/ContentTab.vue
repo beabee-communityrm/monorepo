@@ -95,8 +95,10 @@ import { useRoute } from 'vue-router';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import Draggable from 'vuedraggable';
 
-import type { CalloutTabs, ContentTabProps } from '../../callouts.interface';
-import type { SidebarTabs as SidebarTabsType } from './sidebar-tabs.interface';
+import type { SidebarTabsTabs, SidebarTabsData } from './SidebarTabs.vue';
+import type { LocaleProp } from '@type';
+import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
+import type { CalloutHorizontalTabs } from '../../CalloutHorizontalTabs.vue';
 
 import AppNotification from '@components/AppNotification.vue';
 import AppButton from '@components/button/AppButton.vue';
@@ -110,11 +112,25 @@ import TitleAndImageTab from './sidebar-tabs/TitleAndImageTab.vue';
 
 import { getSlideSchema } from '@utils/callouts';
 
-const props = defineProps<{
-  data: ContentTabProps;
-  tabs: CalloutTabs;
+/**
+ * Data for the content tab, which contains the form builder and end message configuration
+ */
+export interface ContentTabData {
+  /** Form builder slides containing the form components */
+  slides: FormBuilderSlide[];
+  /** Translations for component texts */
+  componentText: Record<string, LocaleProp>;
+  /** Configuration for the sidebar tabs within the content tab */
+  sidebarTabs: SidebarTabsData;
+}
+
+export interface ContentTabProps {
+  data: ContentTabData;
+  tabs: CalloutHorizontalTabs;
   status: ItemStatus | undefined;
-}>();
+}
+
+const props = defineProps<ContentTabProps>();
 
 const emit = defineEmits(['update:error', 'update:validated']);
 const { t } = useI18n();
@@ -152,7 +168,7 @@ const warnAboutEditing = computed(
 );
 
 // Sidebar Tabs
-const sidebarTabs = reactive<SidebarTabsType>({
+const sidebarTabs = reactive<SidebarTabsTabs>({
   content: {
     name: t('createCallout.tabs.content.title'),
     validated: false,
