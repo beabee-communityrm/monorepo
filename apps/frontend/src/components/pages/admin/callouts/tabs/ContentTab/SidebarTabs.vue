@@ -16,7 +16,10 @@ import AppTabs from '@components/tabs/AppTabs.vue';
 import type { TabItem } from '@components/tabs/tabs.interface';
 import type { SidebarTabs } from './sidebar-tabs.interface';
 
-interface Props {
+/**
+ * Props for the SidebarTabs component
+ */
+export interface SidebarTabsProps {
   /** The currently selected tab name */
   selectedTab: string;
   /** Configuration for all sidebar tabs */
@@ -25,7 +28,7 @@ interface Props {
   defaultTab?: string;
 }
 
-const props = defineProps<Props>();
+const props = defineProps<SidebarTabsProps>();
 
 const emit = defineEmits<{
   'update:selectedTab': [value: string];

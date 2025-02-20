@@ -928,7 +928,8 @@
           },
           "image": {
             "help": "<p>Das <strong>Titelbild</strong> dient zur Illustration des Callouts.</p>\n",
-            "label": "Titelbild"
+            "label": "Titelbild",
+            "description": "Vergessen Sie nicht, nach dem Hochladen eines Bildes zu speichern!"
           },
           "overrideShare": {
             "label": "Callout-Titel und -Beschreibung zum Teilen verwenden?",

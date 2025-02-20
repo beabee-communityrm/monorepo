@@ -36,7 +36,10 @@ import { useI18n } from 'vue-i18n';
 import AppButton from './AppButton.vue';
 import { addNotification } from '../../store/notifications';
 
-interface Props {
+/**
+ * Props for the AppAsyncButton component
+ */
+export interface AppAsyncButtonProps {
   /** Async function to execute on click */
   onClick?: (evt: Event) => Promise<void>;
   /** Accessible label for the button */
@@ -47,7 +50,7 @@ interface Props {
   loadingText?: string;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<AppAsyncButtonProps>(), {
   onClick: undefined,
   ariaLabel: undefined,
   title: undefined,

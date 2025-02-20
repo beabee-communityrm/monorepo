@@ -85,38 +85,56 @@ import AppInputHelp from './AppInputHelp.vue';
 import AppLabel from './AppLabel.vue';
 import AppInputError from './AppInputError.vue';
 
+/**
+ * Props for the AppInput component
+ */
+export interface AppInputProps {
+  /** The model value of the input */
+  modelValue?: number | string;
+  /** The type of the input */
+  type?: 'password' | 'email' | 'text' | 'date' | 'time' | 'number' | 'url';
+  /** The name of the input */
+  name?: string;
+  /** The label of the input */
+  label?: string;
+  /** The info message of the input */
+  infoMessage?: string;
+  /** Whether the input is required */
+  required?: boolean;
+  /** Whether the input is disabled */
+  disabled?: boolean;
+  /** The minimum value of the input */
+  min?: number | string;
+  /** The maximum value of the input */
+  max?: number | string;
+  /** The value that this input should be the same as */
+  sameAs?: number | string;
+  /** A regex pattern that the input value should match */
+  pattern?: string;
+  /** Whether to hide the error message */
+  hideErrorMessage?: boolean;
+  /** A prefix to display before the input */
+  prefix?: string;
+  /** A suffix to display after the input */
+  suffix?: string;
+}
+
 const emit = defineEmits(['update:modelValue', 'update:validation']);
-const props = withDefaults(
-  defineProps<{
-    modelValue?: number | string;
-    type?: 'password' | 'email' | 'text' | 'date' | 'time' | 'number' | 'url';
-    name?: string;
-    label?: string;
-    infoMessage?: string;
-    required?: boolean;
-    disabled?: boolean;
-    min?: number | string;
-    max?: number | string;
-    sameAs?: number | string;
-    pattern?: string;
-    hideErrorMessage?: boolean;
-    prefix?: string;
-    suffix?: string;
-  }>(),
-  {
-    modelValue: undefined,
-    type: 'text',
-    name: 'unknown',
-    label: undefined,
-    infoMessage: undefined,
-    min: undefined,
-    max: undefined,
-    sameAs: undefined,
-    pattern: undefined,
-    prefix: undefined,
-    suffix: undefined,
-  }
-);
+const props = withDefaults(defineProps<AppInputProps>(), {
+  modelValue: undefined,
+  type: 'text',
+  name: 'unknown',
+  label: undefined,
+  infoMessage: undefined,
+  min: undefined,
+  max: undefined,
+  required: false,
+  disabled: false,
+  sameAs: undefined,
+  pattern: undefined,
+  prefix: undefined,
+  suffix: undefined,
+});
 
 const { t } = useI18n();
 

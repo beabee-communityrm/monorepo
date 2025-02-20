@@ -6,12 +6,15 @@
 </template>
 
 <script lang="ts" setup>
-interface Props {
+/**
+ * Props for the TabLabel component
+ */
+export interface TabLabelProps {
   /** Label text to display */
   label: string;
   /** Optional count to display next to label */
   count?: number;
 }
 
-defineProps<Props>();
+defineProps<TabLabelProps>();
 </script>

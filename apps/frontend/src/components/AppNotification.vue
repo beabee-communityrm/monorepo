@@ -72,7 +72,7 @@ import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
-interface Props {
+export interface AppNotificationProps {
   /** Unique identifier for the notification */
   id?: number;
   /** The type of notification */
@@ -88,7 +88,7 @@ interface Props {
 }
 
 const emit = defineEmits(['remove']);
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<AppNotificationProps>(), {
   id: () => Math.floor(Math.random() * 1000000),
   removeable: true,
   description: undefined,

@@ -6,7 +6,7 @@ import type { FormBuilderSlide } from '@components/form-builder/form-builder.int
 /**
  * Props for the form builder content tab in the sidebar
  */
-export interface ContentFormTabProps {
+export interface ContentFormTabData {
   /** Current slide being edited */
   currentSlide: FormBuilderSlide;
   /** All slides in the form */
@@ -24,7 +24,7 @@ export interface ContentFormTabProps {
 /**
  * Props for the end message tab in the sidebar
  */
-export interface EndMessageTabProps {
+export interface EndMessageTabData {
   /** Whether to show a message or redirect after form submission */
   whenFinished: 'message' | 'redirect';
   /** Title for the thank you message */
@@ -38,7 +38,7 @@ export interface EndMessageTabProps {
 /**
  * Props for the intro message tab in the sidebar
  */
-export interface IntroMessageTabProps {
+export interface IntroMessageTabData {
   /** Intro text shown at the beginning of the form */
   introText: LocaleProp;
 }
@@ -46,26 +46,35 @@ export interface IntroMessageTabProps {
 /**
  * Props for the title and image tab in the sidebar
  */
-export interface TitleAndImageTabProps {
+export interface TitleAndImageTabData {
+  /** The title of the callout */
   title: LocaleProp;
+  /** The description of the callout */
   description: LocaleProp;
+  /** The URL of the cover image */
   coverImageURL: string;
+  /** The auto-generated slug of the callout */
   autoSlug: string;
+  /** Whether to use a custom slug */
   useCustomSlug: boolean;
+  /** The custom slug of the callout */
   slug: string;
+  /** Whether to override the share title and description */
   overrideShare: boolean;
+  /** The share title of the callout */
   shareTitle: LocaleProp;
+  /** The share description of the callout */
   shareDescription: LocaleProp;
 }
 
 /**
  * Combined props for all sidebar tabs
  */
-export interface SidebarTabsProps {
-  content: ContentFormTabProps;
-  intro: IntroMessageTabProps;
-  titleAndImage: TitleAndImageTabProps;
-  endMessage: EndMessageTabProps;
+export interface SidebarTabsData {
+  content: ContentFormTabData;
+  intro: IntroMessageTabData;
+  titleAndImage: TitleAndImageTabData;
+  endMessage: EndMessageTabData;
 }
 
 /**
@@ -82,5 +91,5 @@ export interface SidebarTab<T> extends AppStepperStep {
  * Type for the complete sidebar tabs structure
  */
 export type SidebarTabs = {
-  [P in keyof SidebarTabsProps]: SidebarTab<SidebarTabsProps[P]>;
+  [P in keyof SidebarTabsData]: SidebarTab<SidebarTabsData[P]>;
 };
