@@ -161,6 +161,13 @@ export function convertCalloutToTabs(
 
   const variants = convertVariantsForSteps(callout?.variants);
 
+  const locales = callout?.variants
+    ? Object.keys(callout.variants).filter((v) => v !== 'default')
+    : [];
+
+  const variantsCount =
+    (callout?.variants && Object.keys(callout.variants).length) || 0;
+
   const content: ContentTabData = {
     slides: convertSlidesForSteps(callout?.formSchema.slides, callout?.variants)
       .slides,
@@ -183,12 +190,8 @@ export function convertCalloutToTabs(
           callout?.variants
         ).componentText,
         showAdvanced: false,
-        hasLocales: callout?.variants
-          ? Object.keys(callout.variants).length > 1
-          : false,
-        locales: callout?.variants
-          ? Object.keys(callout.variants).filter((v) => v !== 'default')
-          : [],
+        hasLocales: locales.length > 0 || variantsCount > 1 || false,
+        locales: locales,
       },
       titleAndImage: {
         title: variants.title,

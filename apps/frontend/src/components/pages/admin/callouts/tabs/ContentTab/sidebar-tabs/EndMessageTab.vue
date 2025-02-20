@@ -57,6 +57,8 @@ import AppFormSection from '../../../../../../forms/AppFormSection.vue';
 import LocaleRichTextEditor from '@components/forms/LocaleRichTextEditor.vue';
 import LocaleInput from '@components/forms/LocaleInput.vue';
 import type { LocaleProp } from '@type';
+import type { SidebarTab } from '../SidebarTabs.vue';
+
 /**
  * Data for the end message tab in the sidebar
  */
@@ -71,8 +73,7 @@ export interface EndMessageTabData {
   thankYouRedirect: LocaleProp;
 }
 
-export interface EndMessageTabProps {
-  data: EndMessageTabData;
+export interface EndMessageTabProps extends SidebarTab<EndMessageTabData> {
   tabs: CalloutHorizontalTabs;
 }
 
