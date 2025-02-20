@@ -224,7 +224,7 @@ import AppSearch from '@components/search/AppSearch.vue';
 import { client } from '@utils/api';
 import MoveBucketButton from '@components/pages/admin/callouts/MoveBucketButton.vue';
 import ToggleTagButton from '@components/tag/ToggleTagButton.vue';
-import { buckets } from '@components/pages/admin/callouts/callouts.interface';
+import { buckets } from '@utils/callouts';
 import SetAssigneeButton from '@components/pages/admin/callouts/SetAssigneeButton.vue';
 import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
 import {

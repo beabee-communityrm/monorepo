@@ -267,11 +267,7 @@ import {
   AppCheckboxGroup,
 } from '@beabee/vue/components';
 import AppFormSection from '../../../../forms/AppFormSection.vue';
-import {
-  type CalloutTabs,
-  type SettingsTabProps,
-  buckets,
-} from '../callouts.interface';
+import { buckets } from '@utils/callouts';
 import { sameAs } from '@vuelidate/validators';
 import AppInput from '../../../../forms/AppInput.vue';
 import AppSelect from '../../../../forms/AppSelect.vue';
@@ -280,13 +276,43 @@ import env from '../../../../../env';
 import AppLinkList from '../../../../forms/AppLinkList.vue';
 import { localeItems } from '@beabee/vue/lib/i18n';
 
-const emit = defineEmits(['update:error', 'update:validated']);
-const props = defineProps<{
-  data: SettingsTabProps;
+import type {
+  CalloutCaptcha,
+  CalloutChannel,
+  CalloutMapSchema,
+} from '@beabee/beabee-common';
+import type { CalloutHorizontalTabs } from '../CalloutHorizontalTabs.vue';
+/**
+ * Data for the settings tab, which contains callout configuration options
+ */
+export interface SettingsTabData {
+  whoCanTakePart: 'members' | 'everyone';
+  allowAnonymousResponses: 'none' | 'guests' | 'all';
+  requireCaptcha: CalloutCaptcha;
+  showOnUserDashboards: boolean;
+  multipleResponses: boolean;
+  usersCanEditAnswers: boolean;
+  showResponses: boolean;
+  responseViews: ('map' | 'gallery')[];
+  responseBuckets: string[];
+  responseTitleProp: string;
+  responseImageProp: string;
+  responseImageFilter: string;
+  responseLinks: { text: string; url: string }[];
+  mapSchema: CalloutMapSchema;
+  locales: string[];
+  channels: CalloutChannel[] | null;
+}
+
+export interface SettingsTabProps {
+  data: SettingsTabData;
   status: ItemStatus | undefined;
   isActive: boolean;
-  tabs: CalloutTabs;
-}>();
+  tabs: CalloutHorizontalTabs;
+}
+
+const emit = defineEmits(['update:error', 'update:validated']);
+const props = defineProps<SettingsTabProps>();
 
 const { t } = useI18n();
 const inputT = (key: string) => t('createCallout.tabs.settings.inputs.' + key);

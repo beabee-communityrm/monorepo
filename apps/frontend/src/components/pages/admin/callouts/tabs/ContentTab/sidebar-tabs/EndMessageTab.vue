@@ -52,14 +52,32 @@ import useVuelidate from '@vuelidate/core';
 import { watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { AppRadioGroup } from '@beabee/vue/components';
-import type { CalloutTabs } from '../../../callouts.interface';
-import type { EndMessageTabData } from '../sidebar-tabs.interface';
+import type { CalloutHorizontalTabs } from '@components/pages/admin/callouts/CalloutHorizontalTabs.vue';
 import AppFormSection from '../../../../../../forms/AppFormSection.vue';
 import LocaleRichTextEditor from '@components/forms/LocaleRichTextEditor.vue';
 import LocaleInput from '@components/forms/LocaleInput.vue';
+import type { LocaleProp } from '@type';
+/**
+ * Data for the end message tab in the sidebar
+ */
+export interface EndMessageTabData {
+  /** Whether to show a message or redirect after form submission */
+  whenFinished: 'message' | 'redirect';
+  /** Title for the thank you message */
+  thankYouTitle: LocaleProp;
+  /** Content for the thank you message */
+  thankYouText: LocaleProp;
+  /** Redirect URL after form submission */
+  thankYouRedirect: LocaleProp;
+}
+
+export interface EndMessageTabProps {
+  data: EndMessageTabData;
+  tabs: CalloutHorizontalTabs;
+}
 
 const emit = defineEmits(['update:error', 'update:validated']);
-defineProps<{ data: EndMessageTabData; tabs: CalloutTabs }>();
+defineProps<EndMessageTabProps>();
 
 const { t } = useI18n();
 const inputT = (key: string) =>

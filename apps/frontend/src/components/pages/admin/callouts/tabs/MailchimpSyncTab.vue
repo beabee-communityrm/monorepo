@@ -53,12 +53,19 @@
 <script lang="ts" setup>
 import { onMounted } from 'vue';
 import { AppRadioGroup } from '@beabee/vue/components';
-import type { MailchimpSyncStepProps } from '../callouts.interface';
 import AppSelect from '../../../../forms/AppSelect.vue';
 import { faLink } from '@fortawesome/free-solid-svg-icons';
 
+export interface MailchimpSyncStepData {
+  useMailchimpSync: boolean;
+}
+
+export interface MailchimpSyncStepProps {
+  data: MailchimpSyncStepData;
+}
+
 const emit = defineEmits(['update:validated']);
-defineProps<{ data: MailchimpSyncStepProps }>();
+defineProps<MailchimpSyncStepProps>();
 
 const foo = '';
 onMounted(() => emit('update:validated', true));

@@ -105,8 +105,7 @@ import { useI18n } from 'vue-i18n';
 import AppInput from '@components/forms/AppInput.vue';
 import AppImageUpload from '@components/forms/AppImageUpload.vue';
 import useVuelidate from '@vuelidate/core';
-import type { CalloutTabs } from '@components/pages/admin/callouts/callouts.interface';
-import type { TitleAndImageTabData } from '../sidebar-tabs.interface';
+import type { CalloutHorizontalTabs } from '@components/pages/admin/callouts/CalloutHorizontalTabs.vue';
 import env from '@env';
 import slugify from 'slugify';
 import AppFormBox from '@components/forms/AppFormBox.vue';
@@ -114,12 +113,37 @@ import LocaleTextArea from '@components/forms/LocaleTextArea.vue';
 import LocaleInput from '@components/forms/LocaleInput.vue';
 import AppToggleField from '@components/forms/AppToggleField.vue';
 import AppFormField from '@components/forms/AppFormField.vue';
+import type { LocaleProp } from '@type';
+
+/**
+ * Data for the title and image tab in the sidebar
+ */
+export interface TitleAndImageTabData {
+  /** The title of the callout */
+  title: LocaleProp;
+  /** The description of the callout */
+  description: LocaleProp;
+  /** The URL of the cover image */
+  coverImageURL: string;
+  /** The auto-generated slug of the callout */
+  autoSlug: string;
+  /** Whether to use a custom slug */
+  useCustomSlug: boolean;
+  /** The custom slug of the callout */
+  slug: string;
+  /** Whether to override the share title and description */
+  overrideShare: boolean;
+  /** The share title of the callout */
+  shareTitle: LocaleProp;
+  /** The share description of the callout */
+  shareDescription: LocaleProp;
+}
 
 export interface TitleAndImageTabProps {
   /** The data for the title and image tab */
   data: TitleAndImageTabData;
   /** The tabs for the callout */
-  tabs: CalloutTabs;
+  tabs: CalloutHorizontalTabs;
   /** The status of the item */
   status: ItemStatus | undefined;
 }
