@@ -30,18 +30,30 @@ import AppInputError from './AppInputError.vue';
 import AppInputHelp from './AppInputHelp.vue';
 import { toRef } from 'vue';
 
-const emit = defineEmits<(e: 'update:modelValue', value: T) => void>();
-const props = defineProps<{
+/**
+ * Props for the AppSelect component
+ */
+export interface AppSelectProps<T extends string | number> {
+  /** The label to display */
   label?: string;
+  /** The model value of the select */
   modelValue?: T;
+  /** The items to display in the select */
   items: SelectItem<T>[];
+  /** Whether the select is searchable */
   searchable?: boolean;
+  /** The placeholder text for the select */
   placeholder?: string;
+  /** Whether the select is disabled */
   disabled?: boolean;
+  /** Whether the select is required */
   required?: boolean;
-  // inputClass?: string;
+  /** The info message to display */
   infoMessage?: string;
-}>();
+}
+
+const emit = defineEmits<(e: 'update:modelValue', value: T) => void>();
+const props = defineProps<AppSelectProps<T>>();
 
 const rules = computed(() => ({
   v: { required: requiredIf(!!props.required) },

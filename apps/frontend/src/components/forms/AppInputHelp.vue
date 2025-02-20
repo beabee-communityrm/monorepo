@@ -8,5 +8,14 @@
 
 <script lang="ts" setup>
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-defineProps<{ message: string }>();
+
+/**
+ * Props for the AppInputHelp component
+ */
+export interface AppInputHelpProps {
+  /** The message to display */
+  message: string;
+}
+
+defineProps<AppInputHelpProps>();
 </script>

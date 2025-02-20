@@ -23,22 +23,32 @@ import AppInputHelp from './AppInputHelp.vue';
 import AppLabel from '@beabee/vue/components/form/AppLabel';
 import AppInputError from './AppInputError.vue';
 
+/**
+ * Props for the AppTextArea component
+ */
+export interface AppTextAreaProps {
+  /** The model value of the textarea */
+  modelValue?: string;
+  /** The label of the textarea */
+  label?: string;
+  /** The name of the textarea */
+  name?: string;
+  /** The info message of the textarea */
+  infoMessage?: string;
+  /** Whether the textarea is required */
+  required?: boolean;
+  /** Whether the textarea is disabled */
+  disabled?: boolean;
+}
+
 const emit = defineEmits(['update:modelValue']);
-const props = withDefaults(
-  defineProps<{
-    modelValue?: string;
-    label?: string;
-    name?: string;
-    infoMessage?: string;
-    required?: boolean;
-  }>(),
-  {
-    modelValue: '',
-    label: undefined,
-    name: 'unknown',
-    infoMessage: undefined,
-  }
-);
+const props = withDefaults(defineProps<AppTextAreaProps>(), {
+  modelValue: '',
+  label: undefined,
+  name: 'unknown',
+  infoMessage: undefined,
+  disabled: false,
+});
 
 const { t } = useI18n();
 
