@@ -15,23 +15,10 @@ import { computed, type Raw, type Component } from 'vue';
 import AppTabs from '@components/tabs/AppTabs.vue';
 import type { TabItem } from '@components/tabs/tabs.interface';
 import type { AppStepperStep } from '@type';
-import type { ContentFormTabProps } from './sidebar-tabs/ContentFormTab.vue';
+import type { ContentFormTabData } from './sidebar-tabs/ContentFormTab.vue';
 import type { IntroMessageTabData } from './sidebar-tabs/IntroMessageTab.vue';
 import type { TitleAndImageTabData } from './sidebar-tabs/TitleAndImageTab.vue';
 import type { EndMessageTabData } from './sidebar-tabs/EndMessageTab.vue';
-/**
- * Combined props for all sidebar tabs
- */
-export interface SidebarTabsData {
-  /** The content tab */
-  content: ContentFormTabProps;
-  /** The intro message tab */
-  intro: IntroMessageTabData;
-  /** The title and image tab */
-  titleAndImage: TitleAndImageTabData;
-  /** The end message tab */
-  endMessage: EndMessageTabData;
-}
 
 /**
  * Base interface for a sidebar tab component
@@ -49,6 +36,20 @@ export interface SidebarTab<T> extends AppStepperStep {
 export type SidebarTabsTabs = {
   [P in keyof SidebarTabsData]: SidebarTab<SidebarTabsData[P]>;
 };
+
+/**
+ * Combined props for all sidebar tabs
+ */
+export interface SidebarTabsData {
+  /** The content tab */
+  content: ContentFormTabData;
+  /** The intro message tab */
+  intro: IntroMessageTabData;
+  /** The title and image tab */
+  titleAndImage: TitleAndImageTabData;
+  /** The end message tab */
+  endMessage: EndMessageTabData;
+}
 
 /**
  * Props for the SidebarTabs component

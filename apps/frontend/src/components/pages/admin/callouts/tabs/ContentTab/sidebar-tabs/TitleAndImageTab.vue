@@ -135,6 +135,7 @@ import LocaleInput from '@components/forms/LocaleInput.vue';
 import AppToggleField from '@components/forms/AppToggleField.vue';
 import AppFormField from '@components/forms/AppFormField.vue';
 import type { LocaleProp } from '@type';
+import type { SidebarTab } from '../SidebarTabs.vue';
 
 /**
  * Data for the title and image tab in the sidebar
@@ -160,9 +161,8 @@ export interface TitleAndImageTabData {
   shareDescription: LocaleProp;
 }
 
-export interface TitleAndImageTabProps {
-  /** The data for the title and image tab */
-  data: TitleAndImageTabData;
+export interface TitleAndImageTabProps
+  extends SidebarTab<TitleAndImageTabData> {
   /** The tabs for the callout */
   tabs: CalloutHorizontalTabs;
   /** The status of the item */
