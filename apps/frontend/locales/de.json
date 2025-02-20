@@ -946,12 +946,16 @@
             "placeholder": "Die Überschrift deines Callouts in sozialen Netzwerken."
           },
           "slug": {
+            "locked": {
+              "title": "Der Permalink ist gesperrt, weil der Callout bereits veröffentlicht wurde.",
+              "description": ""
+            },
             "boxTitle": "Permalink",
             "help": "<p>Du kannst den <strong>Permalink</strong> mit Nutzern teilen, damit sie den Callout direkt aufrufen können</p>\n",
-            "label": "Permalink",
+            "label": "Auto-generate slug from title",
             "opts": {
-              "auto": "Automatisch aus Callout-Titel generieren",
-              "manual": "Eigenen Permalink festlegen"
+              "auto": "Der Permalink wird aus dem Callout-Titel generiert und automatisch aktualisiert, bis der Callout veröffentlicht wird.",
+              "manual": "Der Permalink wird manuell festgelegt"
             }
           },
           "title": {
@@ -960,8 +964,7 @@
             "placeholder": "Der Name deines Callouts."
           }
         },
-        "title": "Titel und Bild",
-        "urlWillBe": "Der Permalink wird so aussehen"
+        "title": "Titel und Bild"
       }
     },
     "title": "Callout anlegen",
@@ -1429,5 +1432,12 @@
   },
   "taxRate": {
     "invoiceName": "MwSt"
+  },
+  "notifications": {
+    "copy": {
+      "success": "In Zwischenablage kopiert",
+      "error": "Fehler beim Kopieren",
+      "errorDesc": "Text konnte nicht in die Zwischenablage kopiert werden. Bitte versuchen Sie es erneut oder kopieren Sie manuell."
+    }
   }
 }

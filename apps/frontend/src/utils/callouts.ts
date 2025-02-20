@@ -194,7 +194,7 @@ export function convertCalloutToTabs(
         title: variants.title,
         description: variants.excerpt,
         coverImageURL: callout?.image || '',
-        useCustomSlug: !!callout,
+        autoGenerateSlug: !callout,
         autoSlug: '',
         slug: callout?.slug || '',
         overrideShare: !!callout?.shareTitle,
@@ -333,9 +333,9 @@ function convertSlidesForCallout(
 export function convertStepsToCallout(
   tabs: CalloutHorizontalTabsData
 ): CreateCalloutData {
-  const slug = tabs.content.sidebarTabs.titleAndImage.useCustomSlug
-    ? tabs.content.sidebarTabs.titleAndImage.slug
-    : tabs.content.sidebarTabs.titleAndImage.autoSlug;
+  const slug = tabs.content.sidebarTabs.titleAndImage.autoGenerateSlug
+    ? tabs.content.sidebarTabs.titleAndImage.autoSlug
+    : tabs.content.sidebarTabs.titleAndImage.slug;
 
   const slides = convertSlidesForCallout(tabs);
   const variants = convertVariantsForCallout(tabs);

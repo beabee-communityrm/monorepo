@@ -16,7 +16,7 @@ let uniqueId = 0;
 export function addNotification(notification: Omit<Notification, 'id'>) {
   const id = uniqueId++;
   const newNotification = {
-    removeable: true,
+    removeable: 'auto' as boolean | 'auto',
     ...notification,
     id,
   };
