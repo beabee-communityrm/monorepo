@@ -58,7 +58,10 @@ import { onBeforeMount, onBeforeUnmount, ref, toRef, watch } from 'vue';
 import { computed } from 'vue';
 import AppButton from './AppButton.vue';
 
-interface Props {
+/**
+ * Props for the AppDropdownButton component
+ */
+export interface AppDropdownButtonProps {
   /** Icon to display in the button */
   icon: IconDefinition;
   /** Button and dropdown title */
@@ -75,7 +78,7 @@ interface Props {
   disabled?: boolean;
 }
 
-const props = defineProps<Props>();
+const props = defineProps<AppDropdownButtonProps>();
 
 const baseClasses = 'absolute top-full min-w-full -left-px z-20 bg-white';
 

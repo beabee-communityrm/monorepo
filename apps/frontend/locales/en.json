@@ -938,7 +938,8 @@
           },
           "image": {
             "help": "<p>The <strong>Cover image</strong> will serve as an illustration for the callout on menus and forms.</p>\n",
-            "label": "Cover image"
+            "label": "Cover image",
+            "description": "Dont forget to save after uploading an image!"
           },
           "overrideShare": {
             "label": "Use custom title and description for sharing",

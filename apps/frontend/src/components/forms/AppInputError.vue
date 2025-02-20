@@ -6,5 +6,13 @@
 <script lang="ts" setup>
 import { type Ref } from 'vue';
 
-defineProps<{ message: string | Ref<string> }>();
+/**
+ * Props for the AppInputError component
+ */
+export interface AppInputErrorProps {
+  /** The message to display */
+  message: string | Ref<string>;
+}
+
+defineProps<AppInputErrorProps>();
 </script>

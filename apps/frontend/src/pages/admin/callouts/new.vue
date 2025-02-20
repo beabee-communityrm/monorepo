@@ -51,12 +51,15 @@ import { addBreadcrumb } from '@store/breadcrumb';
 import { addNotification } from '@store/notifications';
 import useVuelidate from '@vuelidate/core';
 
-interface Props {
+/**
+ * Props for the CalloutNew component
+ */
+export interface CalloutNewProps {
   /** Optional ID of the callout to edit */
   id?: string;
 }
 
-const props = defineProps<Props>();
+const props = defineProps<CalloutNewProps>();
 const { t } = useI18n();
 const router = useRouter();
 const validation = useVuelidate();

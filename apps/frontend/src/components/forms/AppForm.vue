@@ -43,16 +43,25 @@ import AppNotification from '../AppNotification.vue';
 import AppButton from '../button/AppButton.vue';
 import { LOGIN_CODES } from '@beabee/beabee-common';
 
-const emit = defineEmits(['reset']);
-const props = defineProps<{
+export interface AppFormProps {
+  /** The text of the submit button */
   buttonText: string;
+  /** The text of the reset button */
   resetButtonText?: string;
+  /** The text of the success notification */
   successText?: string;
+  /** The text of the error notification */
   errorText?: Record<string, string>;
+  /** Whether to show the error notification inline */
   inlineError?: boolean;
+  /** Whether to use the full width of the button */
   fullButton?: boolean;
+  /** The function to call when the form is submitted */
   onSubmit?: (evt: Event) => Promise<void | false> | void | false;
-}>();
+}
+
+const emit = defineEmits(['reset']);
+const props = defineProps<AppFormProps>();
 
 const { t } = useI18n();
 

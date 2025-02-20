@@ -162,7 +162,10 @@ const sizeClasses = {
   lg: 'text-3xl px-4.5 py-4',
 } as const;
 
-interface Props {
+/**
+ * Props for the AppButton component
+ */
+export interface AppButtonProps {
   /** Whether the button is disabled */
   disabled?: boolean;
   /** Whether to show loading state */
@@ -189,7 +192,7 @@ interface Props {
   title?: string;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<AppButtonProps>(), {
   disabled: false,
   loading: false,
   type: 'button',

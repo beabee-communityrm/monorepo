@@ -20,14 +20,21 @@ import useVuelidate from '@vuelidate/core';
 import { sameAs } from '@vuelidate/validators';
 import { computed, ref, toRef, watch } from 'vue';
 
-const emit = defineEmits(['update:modelValue']);
-const props = defineProps<{
+export interface AppCheckboxProps {
+  /** The model value of the checkbox */
   modelValue?: boolean;
+  /** Whether the checkbox is disabled */
   disabled?: boolean;
+  /** The label of the checkbox */
   label?: string;
+  /** The icon of the checkbox */
   icon?: IconDefinition;
+  /** Whether the checkbox is required */
   required?: boolean;
-}>();
+}
+
+const emit = defineEmits(['update:modelValue']);
+const props = defineProps<AppCheckboxProps>();
 
 const value = ref(false);
 watch(value, () => emit('update:modelValue', value.value));

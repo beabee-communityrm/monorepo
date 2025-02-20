@@ -7,7 +7,7 @@ import type {
   CalloutChannel,
   CalloutMapSchema,
 } from '@beabee/beabee-common';
-import type { SidebarTabsProps } from './tabs/ContentTab/sidebar-tabs.interface';
+import type { SidebarTabsData } from './tabs/ContentTab/sidebar-tabs.interface';
 
 const { t } = i18n.global;
 
@@ -29,7 +29,7 @@ export interface ContentTabProps {
   /** Translations for component texts */
   componentText: Record<string, LocaleProp>;
   /** Configuration for the sidebar tabs within the content tab */
-  sidebarTabs: SidebarTabsProps;
+  sidebarTabs: SidebarTabsData;
 }
 
 /**

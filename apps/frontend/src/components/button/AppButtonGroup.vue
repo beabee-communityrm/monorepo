@@ -23,14 +23,17 @@
  * </AppButtonGroup>
  */
 
-interface Props {
+/**
+ * Props for the AppButtonGroup component
+ */
+export interface AppButtonGroupProps {
   /** Accessible label for the button group */
   ariaLabel?: string;
   /** Additional description for screen readers */
   ariaDescription?: string;
 }
 
-withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<AppButtonGroupProps>(), {
   ariaLabel: 'Button group',
   ariaDescription: undefined,
 });
