@@ -193,7 +193,7 @@
     "paymentHistory": {}
   },
   "createCallout": {
-    "steps": {
+    "tabs": {
       "content": {},
       "dates": {
         "inputs": {

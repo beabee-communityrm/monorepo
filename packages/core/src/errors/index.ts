@@ -4,6 +4,7 @@
 
 export * from "./BadRequestError";
 export * from "./CantUpdateContribution";
+export * from "./CantUpdateNewsletterContact";
 export * from "./DuplicateEmailError";
 export * from "./DuplicateId";
 export * from "./DuplicateTagNameError";

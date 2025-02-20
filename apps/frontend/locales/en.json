@@ -408,8 +408,9 @@
     "updated": "Your callout was successfully updated."
   },
   "calloutBuilder": {
+    "slidesTitle": "Slides",
     "actions": {
-      "addSlide": "Add slide",
+      "addSlide": "Add",
       "removeSlide": "Remove slide"
     },
     "internalTitle": "Internal title",
@@ -745,7 +746,12 @@
   "createCallout": {
     "lastSaved": "Last saved {duration} ago",
     "lastSavedNow": "Last saved just now",
-    "steps": {
+    "tabs": {
+      "intro": {
+        "title": "Introduction",
+        "help": "<p>The <strong>Introduction text</strong> appears alongside the callout. It should explain why you are doing this callout and give any context the user might need before answering.</p>\n",
+        "label": "Introduction text"
+      },
       "content": {
         "title": "Content"
       },
@@ -793,7 +799,7 @@
             "placeholder": "https://example.com"
           }
         },
-        "title": "End message"
+        "title": "Thank you!"
       },
       "mailchimp": {
         "title": "Mailchimp sync"
@@ -919,25 +925,25 @@
       },
       "titleAndImage": {
         "inputs": {
+          "general": {
+            "title": "General information"
+          },
+          "sharing": {
+            "title": "Sharing options"
+          },
           "description": {
-            "help": "<p>The <strong>Short description</strong> expands on the title to explain what the callout is about. It is meant to inform people what is inside in a few words.</p>\n",
-            "label": "Short description",
-            "placeholder": "Quickly explain why people should open this callout."
+            "help": "This description is shown if the callout is visible in the member's dashboard. It is also used for sharing.",
+            "label": "Description",
+            "placeholder": "Quickly explain why people should respond to this callout."
           },
           "image": {
             "help": "<p>The <strong>Cover image</strong> will serve as an illustration for the callout on menus and forms.</p>\n",
-            "label": "Cover image"
-          },
-          "intro": {
-            "help": "<p>The <strong>Introduction text</strong> appears alongside the callout. It should explain why you are doing this callout and give any context the user might need before answering.</p>\n",
-            "label": "Introduction text"
+            "label": "Cover image",
+            "description": "Dont forget to save after uploading an image!"
           },
           "overrideShare": {
-            "label": "Use callout title and description for sharing?",
-            "opts": {
-              "no": "No, set a custom title and description",
-              "yes": "Yes"
-            }
+            "label": "Use custom title and description for sharing",
+            "description": "Links shared on social networks will have a custom title and description"
           },
           "shareDescription": {
             "help": "<p>The <strong>Share description</strong> field sets the short description as it should appear on social media cards.</p>\n",
@@ -950,11 +956,16 @@
             "placeholder": "The name of your callout"
           },
           "slug": {
+            "locked": {
+              "title": "The permalink is locked because the callout has already been published.",
+              "description": ""
+            },
+            "boxTitle": "Permalink",
             "help": "<p>You can share the <strong>Permalink</strong> with users so they can access the callout</p>\n",
-            "label": "Permalink",
+            "label": "Auto-generate slug from title",
             "opts": {
-              "auto": "Auto-generate from callout title",
-              "manual": "Set custom permalink"
+              "auto": "The slug is generated from the title and automatically updates until the callout is published.",
+              "manual": "The slug is created manually"
             }
           },
           "title": {
@@ -963,8 +974,7 @@
             "placeholder": "The name of your callout."
           }
         },
-        "title": "Title and image",
-        "urlWillBe": "Permalink will be"
+        "title": "Title and image"
       }
     },
     "title": "Create a callout",
@@ -989,7 +999,7 @@
   },
   "forgotPassword": {
     "backToLogin": "Back to login page",
-    "description": "Please enter your email address and we’ll send you password reset instructions.",
+    "description": "Please enter your email address and we'll send you password reset instructions.",
     "message": "If there is an account associated with {email}, you will receive an email shortly. Check your spam folder if it doesn't appear.",
     "title": "Forgot your password?"
   },
@@ -1432,5 +1442,12 @@
   },
   "taxRate": {
     "invoiceName": "VAT"
+  },
+  "notifications": {
+    "copy": {
+      "success": "Copied to clipboard",
+      "error": "Failed to copy",
+      "errorDesc": "Could not copy text to clipboard. Please try again or copy manually."
+    }
   }
 }

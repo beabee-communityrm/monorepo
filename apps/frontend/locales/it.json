@@ -243,7 +243,7 @@
     "willRenew": "Il tuo contributo sarà aggiornato il {renewalDate}."
   },
   "createCallout": {
-    "steps": {
+    "tabs": {
       "content": {},
       "dates": {
         "inputs": {

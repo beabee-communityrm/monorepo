@@ -17,7 +17,7 @@
       <AppFormSection :help="inputT('title.help')">
         <LocaleInput
           v-model="data.thankYouTitle"
-          :locales="steps.settings.data.locales"
+          :locales="tabs.settings.data.locales"
           :label="inputT('title.label')"
           :placeholder="inputT('title.placeholder')"
           required
@@ -27,7 +27,7 @@
       <AppFormSection :help="inputT('text.help')">
         <LocaleRichTextEditor
           v-model="data.thankYouText"
-          :locales="steps.settings.data.locales"
+          :locales="tabs.settings.data.locales"
           :label="inputT('text.label')"
           :placeholder="inputT('text.placeholder')"
           required
@@ -37,7 +37,7 @@
     <AppFormSection v-else :help="inputT('url.help')">
       <LocaleInput
         v-model="data.thankYouRedirect"
-        :locales="steps.settings.data.locales"
+        :locales="tabs.settings.data.locales"
         :label="inputT('url.label')"
         :placeholder="inputT('url.placeholder')"
         type="url"
@@ -51,18 +51,38 @@
 import useVuelidate from '@vuelidate/core';
 import { watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import AppRadioGroup from '../../../../forms/AppRadioGroup.vue';
-import type { CalloutSteps, EndMessageStepProps } from '../callouts.interface';
-import AppFormSection from '../../../../forms/AppFormSection.vue';
+import AppRadioGroup from '../../../../../../forms/AppRadioGroup.vue';
+import type { CalloutHorizontalTabs } from '@components/pages/admin/callouts/CalloutHorizontalTabs.vue';
+import AppFormSection from '../../../../../../forms/AppFormSection.vue';
 import LocaleRichTextEditor from '@components/forms/LocaleRichTextEditor.vue';
 import LocaleInput from '@components/forms/LocaleInput.vue';
+import type { LocaleProp } from '@type';
+import type { SidebarTab } from '../SidebarTabs.vue';
+
+/**
+ * Data for the end message tab in the sidebar
+ */
+export interface EndMessageTabData {
+  /** Whether to show a message or redirect after form submission */
+  whenFinished: 'message' | 'redirect';
+  /** Title for the thank you message */
+  thankYouTitle: LocaleProp;
+  /** Content for the thank you message */
+  thankYouText: LocaleProp;
+  /** Redirect URL after form submission */
+  thankYouRedirect: LocaleProp;
+}
+
+export interface EndMessageTabProps extends SidebarTab<EndMessageTabData> {
+  tabs: CalloutHorizontalTabs;
+}
 
 const emit = defineEmits(['update:error', 'update:validated']);
-defineProps<{ data: EndMessageStepProps; steps: CalloutSteps }>();
+defineProps<EndMessageTabProps>();
 
 const { t } = useI18n();
 const inputT = (key: string) =>
-  t('createCallout.steps.endMessage.inputs.' + key);
+  t('createCallout.tabs.endMessage.inputs.' + key);
 
 const validation = useVuelidate();
 

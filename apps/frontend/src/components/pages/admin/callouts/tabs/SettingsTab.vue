@@ -263,11 +263,7 @@ import { computed, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import AppRadioGroup from '../../../../forms/AppRadioGroup.vue';
 import AppFormSection from '../../../../forms/AppFormSection.vue';
-import {
-  type CalloutSteps,
-  type SettingsStepProps,
-  buckets,
-} from '../callouts.interface';
+import { buckets } from '@utils/callouts';
 import { sameAs } from '@vuelidate/validators';
 import AppInput from '../../../../forms/AppInput.vue';
 import AppSelect from '../../../../forms/AppSelect.vue';
@@ -278,23 +274,53 @@ import AppLinkList from '../../../../forms/AppLinkList.vue';
 import AppLabel from '../../../../forms/AppLabel.vue';
 import { localeItems } from '@lib/i18n';
 
-const emit = defineEmits(['update:error', 'update:validated']);
-const props = defineProps<{
-  data: SettingsStepProps;
+import type {
+  CalloutCaptcha,
+  CalloutChannel,
+  CalloutMapSchema,
+} from '@beabee/beabee-common';
+import type { CalloutHorizontalTabs } from '../CalloutHorizontalTabs.vue';
+/**
+ * Data for the settings tab, which contains callout configuration options
+ */
+export interface SettingsTabData {
+  whoCanTakePart: 'members' | 'everyone';
+  allowAnonymousResponses: 'none' | 'guests' | 'all';
+  requireCaptcha: CalloutCaptcha;
+  showOnUserDashboards: boolean;
+  multipleResponses: boolean;
+  usersCanEditAnswers: boolean;
+  showResponses: boolean;
+  responseViews: ('map' | 'gallery')[];
+  responseBuckets: string[];
+  responseTitleProp: string;
+  responseImageProp: string;
+  responseImageFilter: string;
+  responseLinks: { text: string; url: string }[];
+  mapSchema: CalloutMapSchema;
+  locales: string[];
+  channels: CalloutChannel[] | null;
+}
+
+export interface SettingsTabProps {
+  data: SettingsTabData;
   status: ItemStatus | undefined;
   isActive: boolean;
-  steps: CalloutSteps;
-}>();
+  tabs: CalloutHorizontalTabs;
+}
+
+const emit = defineEmits(['update:error', 'update:validated']);
+const props = defineProps<SettingsTabProps>();
 
 const { t } = useI18n();
-const inputT = (key: string) => t('createCallout.steps.settings.inputs.' + key);
+const inputT = (key: string) => t('createCallout.tabs.settings.inputs.' + key);
 
 // Force step to stay unvalidated until it is visited for new callouts
 const hasVisited = ref(!!props.status);
 watch(toRef(props, 'isActive'), (active) => (hasVisited.value ||= active));
 
 const formComponentItems = computed(() =>
-  getCalloutComponents(props.steps.content.data)
+  getCalloutComponents(props.tabs.content.data)
     .filter((c) => c.input)
     .map((c) => ({
       id: c.fullKey,

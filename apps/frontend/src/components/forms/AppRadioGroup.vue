@@ -27,20 +27,34 @@ import { requiredIf } from '@vuelidate/validators';
 import { computed } from 'vue';
 import AppLabel from './AppLabel.vue';
 
-const emit = defineEmits(['update:modelValue']);
-
-const props = defineProps<{
+/**
+ * Props for the AppRadioGroup component
+ */
+export interface AppRadioGroupProps {
+  /** Currently selected value */
   modelValue?: string | boolean | number | null;
+  /** Array of value-label pairs for the radio options */
   options: [string | boolean | number, string][];
+  /** Name attribute for the radio group */
   name?: string;
+  /** Label for the entire radio group */
   label?: string;
+  /** Whether to display radio options inline */
   inline?: boolean;
+  /** Whether selection is required */
   required?: boolean;
+}
+
+const emit = defineEmits<{
+  /** Emitted when selection changes */
+  (e: 'update:modelValue', value: string | boolean | number | null): void;
 }>();
+
+const props = defineProps<AppRadioGroupProps>();
 
 const selected = computed({
   get: () => props.modelValue,
-  set: (newValue) => emit('update:modelValue', newValue),
+  set: (newValue) => emit('update:modelValue', newValue || null),
 });
 
 // Use a random name to group the inputs if no name provider
