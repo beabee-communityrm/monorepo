@@ -190,8 +190,6 @@ export function convertCalloutToTabs(
           callout?.variants
         ).componentText,
         showAdvanced: false,
-        hasLocales: locales.length > 0 || variantsCount > 1 || false,
-        locales: locales,
       },
       titleAndImage: {
         title: variants.title,

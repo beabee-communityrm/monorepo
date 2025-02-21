@@ -19,7 +19,7 @@ import type { ContentFormTabData } from './sidebar-tabs/ContentFormTab.vue';
 import type { IntroMessageTabData } from './sidebar-tabs/IntroMessageTab.vue';
 import type { TitleAndImageTabData } from './sidebar-tabs/TitleAndImageTab.vue';
 import type { EndMessageTabData } from './sidebar-tabs/EndMessageTab.vue';
-
+import type { ItemStatus } from '@beabee/beabee-common';
 /**
  * Base interface for a sidebar tab component
  */
@@ -30,10 +30,17 @@ export interface SidebarTab<T> extends AppStepperStep {
   component: Raw<Component>;
 }
 
+export interface SidebarTabProps<T> extends SidebarTab<T> {
+  status: ItemStatus | undefined;
+  isActive: boolean;
+  /** Available locales */
+  locales: string[];
+}
+
 /**
  * Type for the complete sidebar tabs structure
  */
-export type SidebarTabsTabs = {
+export type SidebarTabs = {
   [P in keyof SidebarTabsData]: SidebarTab<SidebarTabsData[P]>;
 };
 
@@ -52,18 +59,18 @@ export interface SidebarTabsData {
 }
 
 /**
- * Props for the SidebarTabs component
+ * Props for the SidebarTabsNavigation component
  */
-export interface SidebarTabsProps {
+export interface SidebarTabsNavigationProps {
   /** The currently selected tab name */
   selectedTab: string;
   /** Configuration for all sidebar tabs */
-  sidebarTabs: SidebarTabsTabs;
+  sidebarTabs: SidebarTabs;
   /** Default tab to fall back to */
   defaultTab?: string;
 }
 
-const props = defineProps<SidebarTabsProps>();
+const props = defineProps<SidebarTabsNavigationProps>();
 
 const emit = defineEmits<{
   'update:selectedTab': [value: string];

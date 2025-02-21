@@ -35,7 +35,7 @@
           />
         </div>
 
-        <SidebarTabs
+        <SidebarTabsNavigation
           v-model:selected-tab="selectedSidebarTab"
           :sidebar-tabs="sidebarTabs"
         />
@@ -47,7 +47,7 @@
           :current-slide-no="currentSlideNo"
           :is-first="isFirstSlide"
           :is-last="isLastSlide"
-          :locales="props.tabs.settings.data.locales"
+          :locales="tabs.settings.data.locales"
         />
 
         <!-- Slides Management -->
@@ -87,7 +87,7 @@
           v-model:error="currentSidebarTab.error"
           :is-active="true"
           :status="status"
-          :tabs="tabs"
+          :locales="tabs.settings.data.locales"
         />
       </div>
     </div>
@@ -104,14 +104,16 @@ import { useRoute } from 'vue-router';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import Draggable from 'vuedraggable';
 
-import type { SidebarTabsTabs, SidebarTabsData } from './SidebarTabs.vue';
+import SidebarTabsNavigation, {
+  type SidebarTabs,
+  type SidebarTabsData,
+} from './SidebarTabsNavigation.vue';
 import type { LocaleProp } from '@type';
 import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
 import type { CalloutHorizontalTabs } from '../../CalloutHorizontalTabs.vue';
 
 import FormBuilderNavigation from '@components/form-builder/FormBuilderNavigation.vue';
 import CalloutSlideItem from '../../CalloutSlideItem.vue';
-import SidebarTabs from './SidebarTabs.vue';
 import ContentFormTab from './sidebar-tabs/ContentFormTab.vue';
 import EndMessageTab from './sidebar-tabs/EndMessageTab.vue';
 import IntroMessageTab from './sidebar-tabs/IntroMessageTab.vue';
@@ -178,7 +180,7 @@ const warnAboutEditing = computed(
 );
 
 // Sidebar Tabs
-const sidebarTabs = reactive<SidebarTabsTabs>({
+const sidebarTabs = reactive<SidebarTabs>({
   content: {
     name: t('createCallout.tabs.content.title'),
     validated: false,

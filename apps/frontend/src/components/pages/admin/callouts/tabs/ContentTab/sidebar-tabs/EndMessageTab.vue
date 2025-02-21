@@ -17,7 +17,7 @@
       <AppFormSection :help="inputT('title.help')">
         <LocaleInput
           v-model="data.thankYouTitle"
-          :locales="tabs.settings.data.locales"
+          :locales="locales"
           :label="inputT('title.label')"
           :placeholder="inputT('title.placeholder')"
           required
@@ -27,7 +27,7 @@
       <AppFormSection :help="inputT('text.help')">
         <LocaleRichTextEditor
           v-model="data.thankYouText"
-          :locales="tabs.settings.data.locales"
+          :locales="locales"
           :label="inputT('text.label')"
           :placeholder="inputT('text.placeholder')"
           required
@@ -37,7 +37,7 @@
     <AppFormSection v-else :help="inputT('url.help')">
       <LocaleInput
         v-model="data.thankYouRedirect"
-        :locales="tabs.settings.data.locales"
+        :locales="locales"
         :label="inputT('url.label')"
         :placeholder="inputT('url.placeholder')"
         type="url"
@@ -52,12 +52,11 @@ import useVuelidate from '@vuelidate/core';
 import { watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { AppRadioGroup } from '@beabee/vue/components';
-import type { CalloutHorizontalTabs } from '@components/pages/admin/callouts/CalloutHorizontalTabs.vue';
 import AppFormSection from '../../../../../../forms/AppFormSection.vue';
 import LocaleRichTextEditor from '@components/forms/LocaleRichTextEditor.vue';
 import LocaleInput from '@components/forms/LocaleInput.vue';
 import type { LocaleProp } from '@type';
-import type { SidebarTab } from '../SidebarTabs.vue';
+import type { SidebarTabProps } from '../SidebarTabsNavigation.vue';
 
 /**
  * Data for the end message tab in the sidebar
@@ -73,9 +72,7 @@ export interface EndMessageTabData {
   thankYouRedirect: LocaleProp;
 }
 
-export interface EndMessageTabProps extends SidebarTab<EndMessageTabData> {
-  tabs: CalloutHorizontalTabs;
-}
+export type EndMessageTabProps = SidebarTabProps<EndMessageTabData>;
 
 const emit = defineEmits(['update:error', 'update:validated']);
 defineProps<EndMessageTabProps>();
