@@ -1,5 +1,5 @@
 <template>
-  <div class="flex h-full flex-col overflow-y-hidden">
+  <div class="flex max-h-full min-h-0 flex-1 flex-col">
     <!-- Main Navigation Tabs -->
     <AppTabs
       class="flex-none"

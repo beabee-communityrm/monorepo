@@ -6,7 +6,7 @@ meta:
 </route>
 
 <template>
-  <div v-if="tabs" class="flex h-full flex-col overflow-y-hidden">
+  <div v-if="tabs" class="flex max-h-full min-h-0 flex-1 flex-col">
     <PageTitle :title="pageTitle" border no-collapse>
       <div class="flex items-center gap-2">
         <AppAsyncButton
