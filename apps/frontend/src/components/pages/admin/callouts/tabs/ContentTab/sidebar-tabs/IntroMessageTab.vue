@@ -18,7 +18,7 @@ import { useI18n } from 'vue-i18n';
 import AppFormSection from '@components/forms/AppFormSection.vue';
 import LocaleRichTextEditor from '@components/forms/LocaleRichTextEditor.vue';
 import type { LocaleProp } from '@type';
-import type { SidebarTab } from '../SidebarTabs.vue';
+import type { SidebarTabProps } from '../SidebarTabsNavigation.vue';
 
 /**
  * Data for the intro message tab in the sidebar
@@ -31,9 +31,7 @@ export interface IntroMessageTabData {
 /**
  * Props for the IntroMessageTab component
  */
-export interface IntroMessageTabProps extends SidebarTab<IntroMessageTabData> {
-  locales: string[];
-}
+export type IntroMessageTabProps = SidebarTabProps<IntroMessageTabData>;
 
 defineProps<IntroMessageTabProps>();
 const { t } = useI18n();

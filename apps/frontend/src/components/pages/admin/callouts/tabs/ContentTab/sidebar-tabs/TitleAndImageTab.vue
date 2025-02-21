@@ -7,7 +7,7 @@
       <AppFormField :help="inputT('title.help')">
         <LocaleInput
           v-model="data.title"
-          :locales="tabs.settings.data.locales"
+          :locales="locales"
           :label="inputT('title.label')"
           :placeholder="inputT('title.placeholder')"
           required
@@ -17,7 +17,7 @@
       <AppFormField :help="inputT('description.help')">
         <LocaleTextArea
           v-model="data.description"
-          :locales="tabs.settings.data.locales"
+          :locales="locales"
           :label="inputT('description.label')"
           :placeholder="inputT('description.placeholder')"
           required
@@ -98,7 +98,7 @@
       <AppFormField :help="inputT('shareTitle.help')">
         <LocaleInput
           v-model="shareTitle"
-          :locales="tabs.settings.data.locales"
+          :locales="props.locales"
           :label="inputT('shareTitle.label')"
           :placeholder="inputT('shareTitle.placeholder')"
           :disabled="!data.overrideShare"
@@ -109,7 +109,7 @@
       <AppFormField :help="inputT('shareDescription.help')">
         <LocaleTextArea
           v-model="shareDescription"
-          :locales="tabs.settings.data.locales"
+          :locales="props.locales"
           :label="inputT('shareDescription.label')"
           :placeholder="inputT('shareDescription.placeholder')"
           :disabled="!data.overrideShare"
@@ -127,7 +127,6 @@ import { useI18n } from 'vue-i18n';
 import AppInput from '@components/forms/AppInput.vue';
 import AppImageUpload from '@components/forms/AppImageUpload.vue';
 import useVuelidate from '@vuelidate/core';
-import type { CalloutHorizontalTabs } from '@components/pages/admin/callouts/CalloutHorizontalTabs.vue';
 import env from '@env';
 import slugify from 'slugify';
 import AppFormBox from '@components/forms/AppFormBox.vue';
@@ -136,7 +135,7 @@ import LocaleInput from '@components/forms/LocaleInput.vue';
 import AppToggleField from '@components/forms/AppToggleField.vue';
 import AppFormField from '@components/forms/AppFormField.vue';
 import type { LocaleProp } from '@type';
-import type { SidebarTab } from '../SidebarTabs.vue';
+import type { SidebarTabProps } from '../SidebarTabsNavigation.vue';
 
 /**
  * Data for the title and image tab in the sidebar
@@ -162,13 +161,7 @@ export interface TitleAndImageTabData {
   shareDescription: LocaleProp;
 }
 
-export interface TitleAndImageTabProps
-  extends SidebarTab<TitleAndImageTabData> {
-  /** The tabs for the callout */
-  tabs: CalloutHorizontalTabs;
-  /** The status of the item */
-  status: ItemStatus | undefined;
-}
+export type TitleAndImageTabProps = SidebarTabProps<TitleAndImageTabData>;
 
 const emit = defineEmits(['update:error', 'update:validated']);
 const props = defineProps<TitleAndImageTabProps>();

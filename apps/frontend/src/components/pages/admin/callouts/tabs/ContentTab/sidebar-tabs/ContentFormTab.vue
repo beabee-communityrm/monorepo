@@ -3,10 +3,10 @@
   <div class="flex max-h-full min-h-0 flex-1 flex-col">
     <!-- Form Builder -->
     <FormBuilder
-      :key="props.data.currentSlide.id"
-      v-model="props.data.currentSlide.components"
-      :advanced="props.data.showAdvanced"
-      :slides="props.data.slides"
+      :key="data.currentSlide.id"
+      v-model="data.currentSlide.components"
+      :advanced="data.showAdvanced"
+      :slides="data.slides"
       class="min-h-0 flex-1"
     />
 
@@ -16,14 +16,14 @@
         <!-- Slide ID -->
         <div class="flex justify-between">
           <div>
-            <p v-if="props.data.showAdvanced" class="text-sm text-grey">
-              {{ t('common.id') }}: {{ props.data.currentSlide.id }}
+            <p v-if="data.showAdvanced" class="text-sm text-grey">
+              {{ t('common.id') }}: {{ data.currentSlide.id }}
             </p>
           </div>
         </div>
 
         <!-- Translations -->
-        <div v-if="props.data.hasLocales" class="my-4 bg-white p-6 shadow-md">
+        <div v-if="locales.length > 0" class="my-4 bg-white p-6 shadow-md">
           <AppSubHeading>
             {{ t('calloutBuilder.translationsTitle') }}
           </AppSubHeading>
@@ -32,9 +32,9 @@
           </p>
 
           <FormBuilderTranslations
-            v-model="props.data.componentText"
-            :components="props.data.currentSlide.components"
-            :locales="props.data.locales"
+            v-model="data.componentText"
+            :components="data.currentSlide.components"
+            :locales="locales"
             @update:model-value="handleComponentTextUpdate"
           />
         </div>
@@ -51,7 +51,7 @@ import FormBuilderTranslations from '@components/form-builder/FormBuilderTransla
 import AppSubHeading from '@components/AppSubHeading.vue';
 import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
 import type { LocaleProp } from '@type';
-import type { SidebarTab } from '../SidebarTabs.vue';
+import type { SidebarTabProps } from '../SidebarTabsNavigation.vue';
 
 /**
  * Data for the ContentFormTab component
@@ -61,12 +61,8 @@ export interface ContentFormTabData {
   currentSlide: FormBuilderSlide;
   /** All slides in the form */
   slides: FormBuilderSlide[];
-  /** Whether the form has multiple locales */
-  hasLocales: boolean;
   /** Component text translations */
   componentText: Record<string, LocaleProp>;
-  /** Available locales */
-  locales: string[];
   /** Whether the form is in advanced mode */
   showAdvanced: boolean;
 }
@@ -74,7 +70,7 @@ export interface ContentFormTabData {
 /**
  * Props for the ContentFormTab component
  */
-export type ContentFormTabProps = SidebarTab<ContentFormTabData>;
+export type ContentFormTabProps = SidebarTabProps<ContentFormTabData>;
 
 const props = defineProps<ContentFormTabProps>();
 const emit = defineEmits<{
