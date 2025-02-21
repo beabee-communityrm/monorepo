@@ -1,29 +1,12 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
   <div class="flex max-h-full min-h-0 flex-1 flex-col">
-    <!--
-    Form Builder Options
-    TODO: Move to sidebar
-    -->
-    <div
-      v-if="env.experimentalFeatures"
-      class="mb-4 flex flex-none items-end gap-4"
-    >
-      <div class="flex-none basis-60">
-        <AppCheckbox
-          v-model:checked="showAdvancedOptions"
-          :label="t('calloutBuilder.showAdvancedOptions')"
-          @update:checked="handleAdvancedOptionsUpdate"
-        />
-      </div>
-    </div>
-
     <!-- Form Builder -->
     <FormBuilder
-      :key="currentSlide.id"
-      v-model="currentSlide.components"
-      :advanced="showAdvancedOptions"
-      :slides="slides"
+      :key="props.data.currentSlide.id"
+      v-model="props.data.currentSlide.components"
+      :advanced="props.data.showAdvanced"
+      :slides="props.data.slides"
       class="min-h-0 flex-1"
     />
 
@@ -33,14 +16,14 @@
         <!-- Slide ID -->
         <div class="flex justify-between">
           <div>
-            <p v-if="showAdvancedOptions" class="text-sm text-grey">
-              {{ t('common.id') }}: {{ currentSlide.id }}
+            <p v-if="props.data.showAdvanced" class="text-sm text-grey">
+              {{ t('common.id') }}: {{ props.data.currentSlide.id }}
             </p>
           </div>
         </div>
 
         <!-- Translations -->
-        <div v-if="hasLocales" class="my-4 bg-white p-6 shadow-md">
+        <div v-if="props.data.hasLocales" class="my-4 bg-white p-6 shadow-md">
           <AppSubHeading>
             {{ t('calloutBuilder.translationsTitle') }}
           </AppSubHeading>
@@ -49,9 +32,9 @@
           </p>
 
           <FormBuilderTranslations
-            v-model="props.componentText"
-            :components="currentSlide.components"
-            :locales="locales"
+            v-model="props.data.componentText"
+            :components="props.data.currentSlide.components"
+            :locales="props.data.locales"
             @update:model-value="handleComponentTextUpdate"
           />
         </div>
@@ -62,68 +45,50 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import AppCheckbox from '@components/forms/AppCheckbox.vue';
 import FormBuilder from '@components/form-builder/FormBuilder.vue';
 import FormBuilderTranslations from '@components/form-builder/FormBuilderTranslations.vue';
 import AppSubHeading from '@components/AppSubHeading.vue';
-import env from '@env';
 import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
 import type { LocaleProp } from '@type';
 import type { SidebarTab } from '../SidebarTabs.vue';
 
-// TODO:
-export type ContentFormTabData = object;
-
 /**
- * Props for the ContentFormTab component
+ * Data for the ContentFormTab component
  */
-export interface ContentFormTabProps extends SidebarTab<ContentFormTabData> {
+export interface ContentFormTabData {
   /** Current slide being edited */
   currentSlide: FormBuilderSlide;
   /** All slides in the form */
   slides: FormBuilderSlide[];
-  /** Show advanced options in form builder */
-  showAdvanced: boolean;
   /** Whether the form has multiple locales */
   hasLocales: boolean;
   /** Component text translations */
   componentText: Record<string, LocaleProp>;
   /** Available locales */
   locales: string[];
+  /** Whether the form is in advanced mode */
+  showAdvanced: boolean;
 }
 
-const props = withDefaults(defineProps<ContentFormTabProps>(), {
-  showAdvanced: false,
-  hasLocales: false,
-});
+/**
+ * Props for the ContentFormTab component
+ */
+export type ContentFormTabProps = SidebarTab<ContentFormTabData>;
+
+const props = defineProps<ContentFormTabProps>();
 const emit = defineEmits<{
-  'update:currentSlide': [value: FormBuilderSlide];
-  'update:componentText': [value: Record<string, LocaleProp | undefined>];
-  'update:showAdvanced': [value: boolean];
+  'update:data': [value: ContentFormTabData];
 }>();
 
 const { t } = useI18n();
 
-const showAdvancedOptions = ref(props.showAdvanced);
-
-// Watch for prop changes
-watch(
-  () => props.showAdvanced,
-  (newValue) => {
-    showAdvancedOptions.value = newValue;
-  }
-);
-
-// Event handlers
-const handleAdvancedOptionsUpdate = (value: boolean) => {
-  emit('update:showAdvanced', value);
-};
-
 const handleComponentTextUpdate = (
   value: Record<string, LocaleProp | undefined>
 ) => {
-  emit('update:componentText', value);
+  emit('update:data', {
+    ...props.data,
+    componentText: value as Record<string, LocaleProp>,
+  });
 };
 </script>
