@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div class="flex h-full flex-col overflow-y-hidden">
+  <div class="flex max-h-full min-h-0 flex-1 flex-col">
     <AppFormSection>
       <!-- TODO: Change locale key path to calloutBuilder.intro.label -->
       <LocaleRichTextEditor
