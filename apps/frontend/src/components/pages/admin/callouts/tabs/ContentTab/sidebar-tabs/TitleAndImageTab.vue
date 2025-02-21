@@ -1,7 +1,9 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div>
-    <AppFormBox :title="inputT('general.title')" class="max-w-3xl">
+  <div
+    class="flex max-h-full min-h-0 max-w-3xl flex-1 flex-col gap-4 overflow-y-auto"
+  >
+    <AppFormBox :title="inputT('general.title')">
       <AppFormField :help="inputT('title.help')">
         <LocaleInput
           v-model="data.title"
@@ -51,7 +53,6 @@
             }
           : undefined
       "
-      class="max-w-3xl"
     >
       <AppFormField :help="inputT('slug.help')">
         <AppToggleField
@@ -84,7 +85,7 @@
       </AppFormField>
     </AppFormBox>
 
-    <AppFormBox :title="inputT('sharing.title')" class="max-w-3xl">
+    <AppFormBox :title="inputT('sharing.title')">
       <AppFormField>
         <AppToggleField
           v-model="data.overrideShare"

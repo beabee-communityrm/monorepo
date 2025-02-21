@@ -1,15 +1,16 @@
 <template>
-  <div v-if="isEmbed" class="flex justify-center">
+  <div v-if="isEmbed" class="flex h-screen w-full">
     <router-view />
   </div>
-  <div v-else class="flex h-screen">
+  <div v-else class="flex h-screen w-full">
     <TheMenu />
-    <main
-      id="top"
-      class="flex flex-1 flex-col overflow-y-hidden bg-primary-5 p-4 md:p-5"
-    >
-      <TheBreadcrumb v-if="items.length > 0" :items="items" class="flex-none" />
-      <div class="flex-1 overflow-y-hidden">
+    <main id="top" class="flex w-full flex-1 flex-col bg-primary-5">
+      <TheBreadcrumb
+        v-if="items.length > 0"
+        :items="items"
+        class="flex-none p-4 md:p-5"
+      />
+      <div class="min-h-0 flex-1 p-4 pb-0 md:p-5 md:pb-0">
         <router-view />
       </div>
       <!-- TODO: Add footer on some subpages? -->

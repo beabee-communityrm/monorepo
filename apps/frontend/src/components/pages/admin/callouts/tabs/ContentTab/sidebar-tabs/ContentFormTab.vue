@@ -1,11 +1,16 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div class="callout-slide-builder flex h-full flex-col overflow-y-hidden">
-    <!-- Form Builder Options -->
-    <div class="mb-4 flex flex-none items-end gap-4">
+  <div class="flex max-h-full min-h-0 flex-1 flex-col">
+    <!--
+    Form Builder Options
+    TODO: Move to sidebar
+    -->
+    <div
+      v-if="env.experimentalFeatures"
+      class="mb-4 flex flex-none items-end gap-4"
+    >
       <div class="flex-none basis-60">
         <AppCheckbox
-          v-if="env.experimentalFeatures"
           v-model:checked="showAdvancedOptions"
           :label="t('calloutBuilder.showAdvancedOptions')"
           @update:checked="handleAdvancedOptionsUpdate"

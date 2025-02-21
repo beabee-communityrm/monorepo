@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div class="flex h-full flex-col overflow-y-hidden">
+  <div class="flex min-h-0 flex-1 flex-col">
     <!-- Status Notifications -->
     <div class="flex-none">
       <AppNotification
@@ -18,7 +18,7 @@
       />
     </div>
 
-    <div class="flex h-full gap-4">
+    <div class="flex min-h-0 gap-4">
       <!-- Left Sidebar -->
       <div class="flex-0 basis-menu overflow-y-auto">
         <SidebarTabs
