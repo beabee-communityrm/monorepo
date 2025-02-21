@@ -1,8 +1,19 @@
 <template>
-  <div class="mb-2 flex items-start justify-between gap-4">
+  <div class="mb-2 flex items-start justify-between gap-2">
     <div class="flex-1">
-      <AppLabel v-if="label" :label="label" :required="required" />
-      <p v-if="description" class="mb-0.5 mt-1 text-sm text-body-80">
+      <AppLabel
+        v-if="label"
+        :label="label"
+        :required="required"
+        :class="{ 'text-sm': size === 'small' }"
+      />
+      <p
+        v-if="description"
+        class="mb-0.5 mt-1"
+        :class="
+          size === 'small' ? 'text-xs text-body-80' : 'text-sm text-body-80'
+        "
+      >
         {{ description }}
       </p>
     </div>
@@ -10,6 +21,7 @@
       :model-value="modelValue"
       :variant="variant"
       :disabled="disabled"
+      :size="size"
       @update:model-value="$emit('update:modelValue', $event)"
     />
   </div>
@@ -31,6 +43,8 @@ export interface AppToggleFieldProps {
   description?: string;
   /** Color variant of the toggle switch */
   variant?: 'primary' | 'link' | 'danger';
+  /** Size variant of the field */
+  size?: 'default' | 'small';
   /** Whether the field is disabled */
   disabled?: boolean;
   /** Whether the field is required */
@@ -44,6 +58,7 @@ defineEmits<{
 
 withDefaults(defineProps<AppToggleFieldProps>(), {
   variant: 'primary',
+  size: 'default',
   disabled: false,
   required: false,
   label: undefined,

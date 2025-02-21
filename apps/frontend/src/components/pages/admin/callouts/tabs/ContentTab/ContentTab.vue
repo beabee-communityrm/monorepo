@@ -21,6 +21,20 @@
     <div class="flex min-h-0 gap-4">
       <!-- Left Sidebar -->
       <div class="flex-0 basis-menu overflow-y-auto">
+        <!-- Form Builder Options -->
+        <div
+          v-if="env.experimentalFeatures"
+          class="mb-4 flex flex-none items-end gap-4"
+        >
+          <AppToggleField
+            v-model="sidebarTabs.content.data.showAdvanced"
+            variant="link"
+            size="small"
+            :label="t('calloutBuilder.showAdvancedOptions')"
+            class="flex-1 bg-white p-4"
+          />
+        </div>
+
         <SidebarTabs
           v-model:selected-tab="selectedSidebarTab"
           :sidebar-tabs="sidebarTabs"
@@ -66,16 +80,11 @@
 
       <!-- Main Content Area -->
       <div class="flex-1">
-        <!-- TODO: Find a better solution with type validation -->
         <component
           :is="currentSidebarTab.component"
           v-model:data="currentSidebarTab.data"
           v-model:validated="currentSidebarTab.validated"
           v-model:error="currentSidebarTab.error"
-          :current-slide="currentSlide"
-          :slides="slides"
-          :component-text="data.componentText"
-          :locales="tabs.settings.data.locales"
           :is-active="true"
           :status="status"
           :tabs="tabs"
@@ -107,8 +116,10 @@ import ContentFormTab from './sidebar-tabs/ContentFormTab.vue';
 import EndMessageTab from './sidebar-tabs/EndMessageTab.vue';
 import IntroMessageTab from './sidebar-tabs/IntroMessageTab.vue';
 import TitleAndImageTab from './sidebar-tabs/TitleAndImageTab.vue';
+import AppToggleField from '@components/forms/AppToggleField.vue';
 
 import { getSlideSchema } from '@utils/callouts';
+import env from '@env';
 
 /**
  * Data for the content tab, which contains the form builder and end message configuration
@@ -263,4 +274,14 @@ watch(
   },
   { deep: true }
 );
+
+// Update the data when currentSlide changes
+watch(currentSlide, (newSlide) => {
+  sidebarTabs.content.data.currentSlide = newSlide;
+});
+
+// Update the data when slides changes
+watch(slides, (newSlides) => {
+  sidebarTabs.content.data.slides = newSlides;
+});
 </script>
