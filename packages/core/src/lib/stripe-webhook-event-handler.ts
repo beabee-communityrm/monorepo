@@ -8,6 +8,7 @@ import { stripe, convertStatus, getSalesTaxRateObject } from "./stripe";
 import { Payment, ContactContribution } from "../models";
 import config from "../config/config";
 
+import EmailService from "../services/EmailService";
 import GiftService from "../services/GiftService";
 import ContactsService from "../services/ContactsService";
 import PaymentService from "../services/PaymentService";
@@ -109,6 +110,10 @@ export class StripeWebhookEventHandler {
         await PaymentService.updateData(contribution.contact, {
           subscriptionId: null
         });
+        await EmailService.sendTemplateToContact(
+          "contribution-didnt-start",
+          contribution.contact
+        );
       }
     }
   }
