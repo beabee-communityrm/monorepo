@@ -1,0 +1,26 @@
+---
+subject: Uw account bestaat al
+---
+
+<p>Hallo *|FNAME|*,</p>
+<p><br /></p>
+<p>
+  Je hebt geprobeerd een account aan te maken, maar je account bestaat al bij
+  ons. <b>Je kunt inloggen met je wachtwoord via de volgende link:</b>
+</p>
+<p><br /></p>
+<p>
+  <a href="*|LOGINLINK|*"><b>Login</b></a>
+</p>
+<p><br /></p>
+<p>
+  Als je je wachtwoord bent vergeten, kun je het hier ook opnieuw instellen.
+</p>
+<p><br /></p>
+<p>
+  <b>Let op:</b> De betalingsgegevens die u zojuist hebt ingevoerd, zijn niet
+  opgeslagen. In plaats daarvan kunt u uw betalingsgegevens rechtstreeks
+  wijzigen in uw gebruikersaccount zodra u inlogt.
+</p>
+<p><br /></p>
+<p>Hartelijke groet</p>

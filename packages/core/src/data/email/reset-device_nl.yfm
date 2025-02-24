@@ -1,0 +1,25 @@
+---
+onderwerp: Uw multi-factor authenticatie opnieuw instellen
+---
+
+<p>Hallo *|FNAME|*,</p>
+<p><br /></p>
+<p>
+  Je hebt een verzoek ingediend om je multi-factor authenticatie te resetten. Om
+  je apparaat te resetten en een nieuwe in te stellen, klik je op de volgende
+  link:
+</p>
+<p><br /></p>
+<p>
+  <a href="*|RPLINK|*"><strong>MFA-apparaat opnieuw instellen</strong></a>
+</p>
+<p><br /></p>
+<p>
+  <b>Let op:</b> Als je deze reset niet hebt aangevraagd of als het een
+  vergissing was, negeer dan deze e-mail of neem contact met ons op als je
+  ondersteuning nodig hebt.
+</p>
+<p><br /></p>
+<p>De link is maar voor korte tijd geldig, dus wacht niet te lang.</p>
+<p><br /></p>
+<p>Vriendelijke groet</p>

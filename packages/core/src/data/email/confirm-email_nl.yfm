@@ -1,0 +1,19 @@
+---
+subject: Bevestig uw e-mailadres
+---
+
+<p>Hallo *|FNAME|*,</p>
+<p><br /></p>
+<p>Bevestig je e-mailadres door op de volgende link te klikken:</p>
+<p><br /></p>
+<p>
+  <a href="*|CONFIRMLINK|*"><b>E-mailadres bevestigen</b></a>
+</p>
+<p><br /></p>
+<p>
+  <b>Let op:</b> als je deze link niet hebt aangevraagd, kun je deze e-mail
+  negeren. Iemand heeft mogelijk per ongeluk je e-mailadres getypt en je
+  e-mailadres wordt niet opgeslagen.
+</p>
+<p><br /></p>
+<p>Hartelijke groet</p>
