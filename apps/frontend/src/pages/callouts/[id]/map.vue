@@ -123,7 +123,7 @@ meta:
       </transition>
     </div>
     <div
-      v-if="isOpen && !isAddMode && isEmbed"
+      v-if="showAddButton && !isAddMode && isEmbed"
       class="absolute bottom-8 right-8 hidden md:block"
     >
       <AppButton
@@ -142,7 +142,7 @@ meta:
     >
       <div>
         <AppButton
-          v-if="isOpen"
+          v-if="showAddButton"
           variant="link"
           class="px-2"
           @click.prevent="handleStartAddMode"
@@ -296,6 +296,10 @@ const sidePanelRef = ref<HTMLElement>();
 const showIntroPanel = ref(false);
 const { isOpen } = useCallout(toRef(props, 'callout'));
 const isAddMode = computed(() => route.hash === '#add');
+
+const showAddButton = computed(
+  () => isOpen.value && route.query.noadd === undefined
+);
 
 const newResponseAnswers = ref<CalloutResponseAnswersSlide>();
 
