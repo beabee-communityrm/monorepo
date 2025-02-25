@@ -101,10 +101,10 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import Draggable from 'vuedraggable';
 
 import SidebarTabsNavigation from './SidebarTabsNavigation.vue';
-import type { SidebarTabs, SidebarTabsData } from './SidebarTabContent.vue';
+import type { SidebarTabs, SidebarTabsData } from './SidebarTabs.interface';
 import type { LocaleProp } from '@type';
 import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
-import type { CalloutHorizontalTabs } from '../../CalloutHorizontalTabs.vue';
+import type { CalloutHorizontalTabs } from '../../CalloutHorizontalTabs.interface';
 
 import FormBuilderNavigation from '@components/form-builder/FormBuilderNavigation.vue';
 import CalloutSlideItem from '../../CalloutSlideItem.vue';
@@ -113,7 +113,7 @@ import EndMessageTab from './SidebarTabContent/EndMessageTab.vue';
 import IntroMessageTab from './SidebarTabContent/IntroMessageTab.vue';
 import TitleAndImageTab from './SidebarTabContent/TitleAndImageTab.vue';
 import AppToggleField from '@components/forms/AppToggleField.vue';
-import SidebarTabContent from './SidebarTabContent.vue';
+import SidebarTabContent from './SidebarTabsContent.vue';
 
 import { getSlideSchema } from '@utils/callouts';
 import env from '@env';

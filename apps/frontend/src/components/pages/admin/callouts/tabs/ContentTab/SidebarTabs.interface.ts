@@ -1,19 +1,5 @@
-<!-- eslint-disable vue/no-mutating-props -->
-<template>
-  <component
-    :is="currentTab.component"
-    v-model:data="currentTab.data"
-    v-model:validated="currentTab.validated"
-    v-model:error="currentTab.error"
-    :is-active="true"
-    :status="status"
-    :locales="locales"
-  />
-</template>
-
-<script lang="ts" setup>
-import { type Raw, type Component } from 'vue';
-import { type ItemStatus } from '@beabee/beabee-common';
+import type { Raw, Component } from 'vue';
+import type { ItemStatus } from '@beabee/beabee-common';
 import type { AppStepperStep } from '@type';
 import type { ContentFormTabData } from './SidebarTabContent/ContentFormTab.vue';
 import type { IntroMessageTabData } from './SidebarTabContent/IntroMessageTab.vue';
@@ -63,6 +49,3 @@ export interface SidebarTabContentProps {
   status: ItemStatus | undefined;
   locales: string[];
 }
-
-defineProps<SidebarTabContentProps>();
-</script>

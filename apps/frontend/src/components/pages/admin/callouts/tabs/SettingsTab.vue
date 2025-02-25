@@ -281,7 +281,7 @@ import type {
   CalloutChannel,
   CalloutMapSchema,
 } from '@beabee/beabee-common';
-import type { CalloutHorizontalTabs } from '../CalloutHorizontalTabs.vue';
+import type { CalloutHorizontalTabs } from '../CalloutHorizontalTabs.interface';
 /**
  * Data for the settings tab, which contains callout configuration options
  */

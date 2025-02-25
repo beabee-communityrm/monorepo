@@ -40,7 +40,6 @@ import { useRouter } from 'vue-router';
 import { ItemStatus } from '@beabee/beabee-common';
 import { client } from '@utils/api';
 
-import type { CalloutHorizontalTabsData } from '@components/pages/admin/callouts/CalloutHorizontalTabs.vue';
 import CalloutHorizontalTabs from '@components/pages/admin/callouts/CalloutHorizontalTabs.vue';
 import PageTitle from '@components/PageTitle.vue';
 
@@ -50,6 +49,8 @@ import { AppAsyncButton } from '@beabee/vue/components';
 import { addBreadcrumb } from '../../../store/breadcrumb';
 import { addNotification } from '@beabee/vue/store/notifications';
 import { faBullhorn, faEye } from '@fortawesome/free-solid-svg-icons';
+
+import type { CalloutHorizontalTabsData } from '@components/pages/admin/callouts/CalloutHorizontalTabs.interface';
 
 /**
  * Props for the CalloutNew component
