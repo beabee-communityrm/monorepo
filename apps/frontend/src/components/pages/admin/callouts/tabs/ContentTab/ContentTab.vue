@@ -80,12 +80,8 @@
 
       <!-- Main Content Area -->
       <div class="flex-1">
-        <component
-          :is="currentSidebarTab.component"
-          v-model:data="currentSidebarTab.data"
-          v-model:validated="currentSidebarTab.validated"
-          v-model:error="currentSidebarTab.error"
-          :is-active="true"
+        <SidebarTabContent
+          :current-tab="currentSidebarTab"
           :status="status"
           :locales="tabs.settings.data.locales"
         />
@@ -104,21 +100,20 @@ import { useRoute } from 'vue-router';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import Draggable from 'vuedraggable';
 
-import SidebarTabsNavigation, {
-  type SidebarTabs,
-  type SidebarTabsData,
-} from './SidebarTabsNavigation.vue';
+import SidebarTabsNavigation from './SidebarTabsNavigation.vue';
+import type { SidebarTabs, SidebarTabsData } from './SidebarTabContent.vue';
 import type { LocaleProp } from '@type';
 import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
 import type { CalloutHorizontalTabs } from '../../CalloutHorizontalTabs.vue';
 
 import FormBuilderNavigation from '@components/form-builder/FormBuilderNavigation.vue';
 import CalloutSlideItem from '../../CalloutSlideItem.vue';
-import ContentFormTab from './sidebar-tabs/ContentFormTab.vue';
-import EndMessageTab from './sidebar-tabs/EndMessageTab.vue';
-import IntroMessageTab from './sidebar-tabs/IntroMessageTab.vue';
-import TitleAndImageTab from './sidebar-tabs/TitleAndImageTab.vue';
+import ContentFormTab from './SidebarTabContent/ContentFormTab.vue';
+import EndMessageTab from './SidebarTabContent/EndMessageTab.vue';
+import IntroMessageTab from './SidebarTabContent/IntroMessageTab.vue';
+import TitleAndImageTab from './SidebarTabContent/TitleAndImageTab.vue';
 import AppToggleField from '@components/forms/AppToggleField.vue';
+import SidebarTabContent from './SidebarTabContent.vue';
 
 import { getSlideSchema } from '@utils/callouts';
 import env from '@env';
