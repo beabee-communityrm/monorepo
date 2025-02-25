@@ -1,23 +1,13 @@
 <template>
   <div class="flex max-h-full min-h-0 flex-1 flex-col">
-    <!-- Main Navigation Tabs -->
-    <AppTabs
-      class="flex-none"
-      :items="tabItems"
-      :selected="selectedTab.name"
-      @tab-click="handleTabClick"
+    <CalloutHorizontalTabsNavigation
+      v-model:selected-tab="selectedTabName"
+      :tabs-in-order="tabsInOrder"
     />
 
-    <!-- Tab Content -->
-    <component
-      :is="tab.component"
-      v-for="tab in tabsInOrder"
-      v-show="selectedTab === tab"
-      :key="tab.name"
-      v-model:data="tab.data"
-      v-model:validated="tab.validated"
-      v-model:error="tab.error"
-      :is-active="selectedTab === tab"
+    <CalloutHorizontalTabsContent
+      :selected-tab="selectedTab"
+      :tabs-in-order="tabsInOrder"
       :status="status"
       :tabs="tabs"
     />
@@ -25,68 +15,28 @@
 </template>
 
 <script lang="ts" setup>
-import {
-  ref,
-  computed,
-  markRaw,
-  reactive,
-  type Raw,
-  type Component,
-} from 'vue';
+import { ref, computed, markRaw, reactive } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { ItemStatus } from '@beabee/beabee-common';
-import AppTabs from '@components/tabs/AppTabs.vue';
-import type { TabItem } from '@components/tabs/tabs.interface';
-import type { AppStepperStep } from '@type';
+import { type ItemStatus } from '@beabee/beabee-common';
+
+import CalloutHorizontalTabsNavigation from './CalloutHorizontalTabsNavigation.vue';
+import CalloutHorizontalTabsContent from './CalloutHorizontalTabsContent.vue';
+import type {
+  CalloutHorizontalTabsData,
+  CalloutHorizontalTabs,
+} from './CalloutHorizontalTabs.interface';
 
 // Tab Components
-import SettingsTab, { type SettingsTabData } from './tabs/SettingsTab.vue';
-import DatesAndDurationTab, {
-  type DateAndDurationTabData,
-} from './tabs/DatesAndDurationTab.vue';
-import ContentTab, {
-  type ContentTabData,
-} from './tabs/ContentTab/ContentTab.vue';
+import SettingsTab from './tabs/SettingsTab.vue';
+import DatesAndDurationTab from './tabs/DatesAndDurationTab.vue';
+import ContentTab from './tabs/ContentTab/ContentTab.vue';
 
-/**
- * Combined props for all main callout tabs
- */
-export interface CalloutHorizontalTabsData {
-  content: ContentTabData;
-  settings: SettingsTabData;
-  dates: DateAndDurationTabData;
-}
-
-/**
- * Base interface for a callout tab component
- */
-export interface CalloutHorizontalTab<T> extends AppStepperStep {
-  validated: boolean;
-  error: boolean;
-  data: T;
-  component: Raw<Component>;
-}
-
-/**
- * Type for the complete callout tabs structure
- */
-export type CalloutHorizontalTabs = {
-  [P in keyof CalloutHorizontalTabsData]: CalloutHorizontalTab<
-    CalloutHorizontalTabsData[P]
-  >;
-};
-
-/**
- * Props for the CalloutHorizontalTabs component
- */
-export interface CalloutHorizontalTabsProps {
-  /** Props for all tabs */
+export interface CalloutProps {
   data: CalloutHorizontalTabsData;
-  /** Current status of the callout */
   status: ItemStatus | undefined;
 }
 
-const props = defineProps<CalloutHorizontalTabsProps>();
+const props = defineProps<CalloutProps>();
 const { t } = useI18n();
 
 /**
@@ -131,22 +81,4 @@ const selectedTab = computed(
     tabsInOrder.find((step) => step.name === selectedTabName.value) ||
     tabsInOrder[0]
 );
-
-/**
- * Convert tabs into items for AppTabs component
- */
-const tabItems = computed<TabItem[]>(() =>
-  tabsInOrder.map((step) => ({
-    id: step.name,
-    label: step.name,
-    to: '',
-  }))
-);
-
-/**
- * Handle tab click event
- */
-const handleTabClick = (tabId: string) => {
-  selectedTabName.value = tabId;
-};
 </script>

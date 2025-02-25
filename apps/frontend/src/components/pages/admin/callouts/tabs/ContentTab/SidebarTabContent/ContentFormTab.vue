@@ -51,7 +51,7 @@ import FormBuilderTranslations from '@components/form-builder/FormBuilderTransla
 import AppSubHeading from '@components/AppSubHeading.vue';
 import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
 import type { LocaleProp } from '@type';
-import type { SidebarTabProps } from '../SidebarTabContent.vue';
+import type { SidebarTabProps } from '../SidebarTabs.interface';
 
 /**
  * Data for the ContentFormTab component

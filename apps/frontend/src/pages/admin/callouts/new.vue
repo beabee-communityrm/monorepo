@@ -41,7 +41,6 @@ import { ItemStatus } from '@beabee/beabee-common';
 import { client } from '@utils/api';
 import { faEye, faBullhorn } from '@fortawesome/free-solid-svg-icons';
 
-import type { CalloutHorizontalTabsData } from '@components/pages/admin/callouts/CalloutHorizontalTabs.vue';
 import CalloutHorizontalTabs from '@components/pages/admin/callouts/CalloutHorizontalTabs.vue';
 import PageTitle from '@components/PageTitle.vue';
 import AppAsyncButton from '@components/button/AppAsyncButton.vue';
@@ -50,6 +49,8 @@ import { convertCalloutToTabs, convertStepsToCallout } from '@utils/callouts';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { addNotification } from '@store/notifications';
 import useVuelidate from '@vuelidate/core';
+
+import type { CalloutHorizontalTabsData } from '@components/pages/admin/callouts/CalloutHorizontalTabs.interface';
 
 /**
  * Props for the CalloutNew component

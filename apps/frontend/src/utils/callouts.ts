@@ -13,9 +13,7 @@ import {
   type CreateCalloutData,
 } from '@beabee/beabee-common';
 import { format } from 'date-fns';
-import type { CalloutHorizontalTabsData } from '@components/pages/admin/callouts/CalloutHorizontalTabs.vue';
 import { computed } from 'vue';
-import type { FilterItem, FilterItems } from '@type';
 
 import env from '../env';
 import i18n from '@lib/i18n';
@@ -26,6 +24,9 @@ import type {
   FormBuilderSlide,
 } from '@components/form-builder/form-builder.interface';
 import type { ContentTabData } from '@components/pages/admin/callouts/tabs/ContentTab/ContentTab.vue';
+import type { FilterItem, FilterItems } from '@type';
+import type { CalloutHorizontalTabsData } from '@components/pages/admin/callouts/CalloutHorizontalTabs.interface';
+
 const { t } = i18n.global;
 
 /**
