@@ -135,7 +135,7 @@ import LocaleInput from '@components/forms/LocaleInput.vue';
 import AppToggleField from '@components/forms/AppToggleField.vue';
 import AppFormField from '@components/forms/AppFormField.vue';
 import type { LocaleProp } from '@type';
-import type { SidebarTabProps } from '../SidebarTabsNavigation.vue';
+import type { SidebarTabProps } from '../SidebarTabContent.vue';
 
 /**
  * Data for the title and image tab in the sidebar
