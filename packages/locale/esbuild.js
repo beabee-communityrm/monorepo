@@ -2,7 +2,7 @@
 import { build } from "esbuild";
 import { extname, join } from "node:path";
 import { readdir, rename } from "node:fs/promises";
-// import { transformExtPlugin } from "@gjsify/esbuild-plugin-transform-ext";
+import { transformExtPlugin } from "@gjsify/esbuild-plugin-transform-ext";
 
 const OUTDIR_ESM = "./dist/esm";
 const OUTDIR_CJS = "./dist/cjs";
@@ -20,7 +20,7 @@ await build({
 
 // CJS
 await build({
-  // plugins: [transformExtPlugin({ outExtension: { ".js": ".cjs" } })],
+  plugins: [transformExtPlugin({ outExtension: { ".js": ".cjs" } })],
   entryPoints: ["./src/index.ts", "./src/**/*.ts"],
   outdir: OUTDIR_CJS,
   bundle: false,

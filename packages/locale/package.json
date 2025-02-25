@@ -15,6 +15,7 @@
     "check": "tsc --noEmit"
   },
   "devDependencies": {
+    "@gjsify/esbuild-plugin-transform-ext": "^0.0.4",
     "esbuild": "^0.25.0",
     "googleapis": "^144.0.0",
     "markdown-it": "^14.1.0",

@@ -617,6 +617,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@beabee/locale@workspace:packages/locale"
   dependencies:
+    "@gjsify/esbuild-plugin-transform-ext": "npm:^0.0.4"
     esbuild: "npm:^0.25.0"
     googleapis: "npm:^144.0.0"
     markdown-it: "npm:^14.1.0"
