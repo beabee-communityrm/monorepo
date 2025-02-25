@@ -27,7 +27,7 @@ import { generatePassword } from "@beabee/core/utils/auth";
 
 import { Contact, JoinFlow } from "@beabee/core/models";
 
-import { GetExportQuery } from "@api/dto/BaseDto";
+import { GetExportQuery } from "@beabee/core/api/dto/BaseDto";
 import {
   CreateContactDto,
   GetContactDto,
@@ -36,26 +36,22 @@ import {
   ListContactsDto,
   UpdateContactDto,
   BatchUpdateContactDto,
-  BatchUpdateContactResultDto
-} from "@api/dto/ContactDto";
-import {
+  BatchUpdateContactResultDto,
   CreateContactMfaDto,
   DeleteContactMfaDto,
-  GetContactMfaDto
-} from "@api/dto/ContactMfaDto";
-import {
+  GetContactMfaDto,
   GetContactRoleDto,
-  UpdateContactRoleDto
-} from "@api/dto/ContactRoleDto";
-import {
+  UpdateContactRoleDto,
   StartContributionDto,
   ForceUpdateContributionDto,
-  UpdateContributionDto
-} from "@api/dto/ContributionDto";
-import { CompleteJoinFlowDto, StartJoinFlowDto } from "@api/dto/JoinFlowDto";
-import { PaginatedDto } from "@api/dto/PaginatedDto";
-import { GetPaymentDto, ListPaymentsDto } from "@api/dto/PaymentDto";
-import { GetPaymentFlowDto } from "@api/dto/PaymentFlowDto";
+  UpdateContributionDto,
+  CompleteJoinFlowDto,
+  StartJoinFlowDto,
+  PaginatedDto,
+  GetPaymentDto,
+  ListPaymentsDto,
+  GetPaymentFlowDto
+} from "@beabee/core/api/dto";
 
 import { CurrentAuth } from "@api/decorators/CurrentAuth";
 import PartialBody from "@api/decorators/PartialBody";
@@ -68,10 +64,13 @@ import {
 import { ContactRoleParams } from "@api/params/ContactRoleParams";
 import { mergeRules } from "@beabee/core/utils/rules";
 
-import ContactExporter from "@api/transformers/ContactExporter";
-import ContactTransformer from "@api/transformers/ContactTransformer";
-import ContactRoleTransformer from "@api/transformers/ContactRoleTransformer";
-import PaymentTransformer from "@api/transformers/PaymentTransformer";
+import {
+  contactExporter,
+  contactRoleTransformer,
+  contactTagTransformer,
+  contactTransformer,
+  paymentTransformer
+} from "@beabee/core/api/transformers";
 
 import { AuthInfo } from "@beabee/core/type";
 
@@ -109,7 +108,7 @@ export class ContactController {
       );
     }
 
-    return ContactTransformer.convert(contact, auth, {
+    return contactTransformer.convert(contact, auth, {
       with: [
         ...(data.profile ? [GetContactWith.Profile] : []),
         ...(data.roles ? [GetContactWith.Roles] : [])
@@ -122,7 +121,7 @@ export class ContactController {
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @QueryParams() query: ListContactsDto
   ): Promise<PaginatedDto<GetContactDto>> {
-    return await ContactTransformer.fetch(auth, query);
+    return await contactTransformer.fetch(auth, query);
   }
 
   /**
@@ -153,7 +152,7 @@ export class ContactController {
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @PartialBody() data: BatchUpdateContactDto
   ): Promise<BatchUpdateContactResultDto> {
-    const affected = await ContactTransformer.updateWithTags(auth, data);
+    const affected = await contactTransformer.updateWithTags(auth, data);
     return plainToInstance(BatchUpdateContactResultDto, { affected });
   }
 
@@ -163,7 +162,7 @@ export class ContactController {
     @QueryParams() query: GetExportQuery,
     @Res() res: Response
   ): Promise<Response> {
-    const [exportName, exportData] = await ContactExporter.export(auth, query);
+    const [exportName, exportData] = await contactExporter.export(auth, query);
     res.attachment(exportName).send(exportData);
     return res;
   }
@@ -174,7 +173,7 @@ export class ContactController {
     @TargetUser() target: Contact,
     @QueryParams() query: GetContactOptsDto
   ): Promise<GetContactDto | undefined> {
-    return await ContactTransformer.fetchOneById(auth, target.id, query);
+    return await contactTransformer.fetchOneById(auth, target.id, query);
   }
 
   /**
@@ -205,7 +204,7 @@ export class ContactController {
     @TargetUser() target: Contact,
     @PartialBody() data: UpdateContactDto // Should be Partial<UpdateContactDto>
   ): Promise<GetContactDto | undefined> {
-    return await ContactTransformer.updateOneByContact(auth, target, data);
+    return await contactTransformer.updateOneByContact(auth, target, data);
   }
 
   @Delete("/:id")
@@ -333,7 +332,7 @@ export class ContactController {
     @TargetUser() target: Contact,
     @QueryParams() query: ListPaymentsDto
   ): Promise<PaginatedDto<GetPaymentDto>> {
-    return PaymentTransformer.fetch(auth, {
+    return paymentTransformer.fetch(auth, {
       ...query,
       rules: mergeRules([
         query.rules,
@@ -463,7 +462,7 @@ export class ContactController {
       roleType,
       data
     );
-    return ContactRoleTransformer.convert(role);
+    return contactRoleTransformer.convert(role);
   }
 
   @Authorized("admin")

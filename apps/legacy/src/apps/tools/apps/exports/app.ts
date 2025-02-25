@@ -4,7 +4,7 @@ import { ObjectLiteral, SelectQueryBuilder } from "typeorm";
 
 import { getRepository } from "@beabee/core/database";
 import { hasNewModel, hasSchema, isAdmin } from "#core/middleware";
-import { wrapAsync } from "@beabee/core/utils/index";
+import { wrapAsync } from "@beabee/core/utils/async";
 import { Param, parseParams } from "#core/utils/params";
 
 import { Export, ExportItem } from "@beabee/core/models";

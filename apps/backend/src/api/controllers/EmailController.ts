@@ -15,7 +15,7 @@ import { getRepository } from "@beabee/core/database";
 
 import { Email } from "@beabee/core/models";
 
-import { GetEmailDto, UpdateEmailDto } from "@api/dto/EmailDto";
+import { GetEmailDto, UpdateEmailDto } from "@beabee/core/api/dto";
 import { ExternalEmailTemplate } from "@beabee/core/errors";
 
 async function findEmail(id: string): Promise<Email | null> {

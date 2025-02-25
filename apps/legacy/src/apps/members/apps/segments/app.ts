@@ -3,7 +3,7 @@ import express, { type Express, type Request, type Response } from "express";
 import { getRepository } from "@beabee/core/database";
 import { hasNewModel } from "#core/middleware";
 import { getSegmentContacts } from "#core/utils/segments";
-import { wrapAsync } from "@beabee/core/utils/index";
+import { wrapAsync } from "@beabee/core/utils/async";
 
 import {
   Email,
