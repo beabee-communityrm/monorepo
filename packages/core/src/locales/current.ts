@@ -1,30 +1,27 @@
-// TODO: Move this to it's own beabee-locale package because we use it beabee and beabee-frontend
-
+import * as locales from "@beabee/locale/locales/index";
 import OptionsService from "#services/OptionsService";
 
-import localeDe from "./de.json";
-import localeDeInformal from "./de@informal.json";
-import localeEn from "./en.json";
-import localePt from "./pt.json";
-import localeRu from "./ru.json";
-import localeIt from "./it.json";
+/**
+ * TODO: Duplicate of the function in locale/generate.ts
+ * Converts a locale string to a valid camelCase variable name
+ * @param name - The locale string (e.g. "de@easy", "en-US")
+ * @returns The camelCase variable name (e.g. "deEasy", "enUs")
+ */
+function toCamelCase(name: string): keyof typeof locales {
+  // Get the last part of the path (e.g. "de@easy" from "locales/de@easy")
+  const localeName = name.split("/").pop() || "";
 
-export const locales = {
-  de: localeDe,
-  "de@informal": localeDeInformal,
-  en: localeEn,
-  nl: localeEn, // CNR only
-  pt: localePt,
-  ru: localeRu,
-  it: localeIt
-} as const;
-
-export type Locale = keyof typeof locales;
-
-export function isLocale(s: string): s is Locale {
-  return s in locales;
+  // Split by separators (@ or -) and capitalize each part except the first
+  return localeName
+    .split(/[@-]/)
+    .map((part, index) =>
+      index === 0
+        ? part.toLowerCase()
+        : part.charAt(0).toUpperCase() + part.slice(1).toLowerCase()
+    )
+    .join("") as keyof typeof locales;
 }
 
 export default function currentLocale() {
-  return locales[OptionsService.getText("locale")];
+  return locales[toCamelCase(OptionsService.getText("locale"))];
 }

@@ -19,6 +19,7 @@ COPY packages/common/package.json /opt/packages/common/package.json
 COPY packages/core/package.json /opt/packages/core/package.json
 COPY packages/docker/package.json /opt/packages/docker/package.json
 COPY packages/client/package.json /opt/packages/client/package.json
+COPY packages/locale/package.json /opt/packages/locale/package.json
 COPY packages/test-utils/package.json /opt/packages/test-utils/package.json
 
 # Copy dependencies info from apps
@@ -39,6 +40,7 @@ RUN yarn workspaces focus
 # Copy frontend dependencies
 COPY packages/common /opt/packages/common
 COPY packages/client /opt/packages/client
+COPY packages/locale /opt/packages/locale
 
 # Copy and build frontend and dependencies
 COPY apps/frontend /opt/apps/frontend

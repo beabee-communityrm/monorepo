@@ -1,0 +1,22 @@
+---
+subject: Je eerste betaling is mislukt
+---
+
+<p>Hallo *|FNAME|*</p>
+<p><br /></p>
+<p>
+  We zijn je erg dankbaar voor het starten van een donatie aan *|ORGNAME|*, maar
+  helaas kon je eerste betaling niet worden verwerkt.
+</p>
+<p><br /></p>
+<p>
+  Om het probleem op te lossen kun je inloggen via onderstaande link om je
+  betaalmethode aan te passen, of contact opnemen met ons ondersteuningsteam via
+  <a href="mailto:*|SUPPORTEMAIL|*">*|SUPPORTEMAIL|*</a>
+</p>
+<p><br /></p>
+<p>
+  <a href="*|LOGINLINK|*"><b>Login</b></a>
+</p>
+<p><br /></p>
+<p>Hartelijke groet</p>
