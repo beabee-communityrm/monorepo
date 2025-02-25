@@ -1,7 +1,7 @@
 import { describe, expect, it, beforeAll } from "vitest";
 import { EmailClient } from "@beabee/client";
 import type { UpdateEmailData } from "@beabee/beabee-common";
-import { API_KEY, HOST, PATH } from "./utils/env.js";
+import { API_KEY, HOST, PATH } from "@beabee/test-utils/vitest/env";
 
 describe("Email API", () => {
   let emailClient: EmailClient;

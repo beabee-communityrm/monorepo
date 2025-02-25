@@ -8,7 +8,7 @@ import {
 } from "@beabee/beabee-common";
 import { addDays } from "date-fns";
 
-import { API_KEY, HOST, PATH } from "./utils/env.js";
+import { API_KEY, HOST, PATH } from "@beabee/test-utils/vitest/env";
 
 describe("ContactRole API", () => {
   let contactClient: ContactClient;

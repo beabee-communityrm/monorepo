@@ -7,7 +7,7 @@ import {
   CreateContactMfaData,
   DeleteContactMfaData
 } from "@beabee/beabee-common";
-import { HOST, PATH, API_KEY } from "./utils/env.js";
+import { HOST, PATH, API_KEY } from "@beabee/test-utils/vitest/env";
 
 describe("ContactMfa API", () => {
   let client: BeabeeClient;

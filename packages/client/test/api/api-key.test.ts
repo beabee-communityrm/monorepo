@@ -12,7 +12,7 @@ import {
   PATH,
   TEST_USER_EMAIL,
   TEST_USER_PASSWORD
-} from "./utils/env.js";
+} from "@beabee/test-utils/vitest/env";
 
 describe("ApiKey API", () => {
   let apiKeyClient: ApiKeyClient;
