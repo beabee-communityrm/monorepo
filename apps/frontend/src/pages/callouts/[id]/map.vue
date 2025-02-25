@@ -21,8 +21,8 @@ meta:
     />
     <div class="relative flex-1">
       <MglMap
-        :center="callout.responseViewSchema.map.center"
-        :zoom="callout.responseViewSchema.map.initialZoom"
+        :center="currentPosition.center"
+        :zoom="currentPosition.zoom"
         :map-style="callout.responseViewSchema.map.style"
         :max-zoom="callout.responseViewSchema.map.maxZoom"
         :min-zoom="callout.responseViewSchema.map.minZoom"
@@ -32,6 +32,8 @@ meta:
         @map:click="handleClick"
         @map:mousemove="handleMouseOver"
         @map:zoom="handleZoom"
+        @map:moveend="handlePositionChange"
+        @map:zoomend="handlePositionChange"
       >
         <MglNavigationControl />
         <MglScaleControl />
@@ -213,10 +215,11 @@ import {
 import 'maplibre-gl/dist/maplibre-gl.css';
 import 'vue-maplibre-gl/dist/vue-maplibre-gl.css';
 
-import type {
-  CalloutResponseAnswerAddress,
-  CalloutResponseAnswersSlide,
-  GetCalloutDataWith,
+import {
+  isLngLat,
+  type CalloutResponseAnswerAddress,
+  type CalloutResponseAnswersSlide,
+  type GetCalloutDataWith,
 } from '@beabee/beabee-common';
 
 import { faInfoCircle, faPlus } from '@fortawesome/free-solid-svg-icons';
@@ -277,6 +280,38 @@ const map = ref<Map>();
 const route = useRoute();
 const router = useRouter();
 const { t } = useI18n();
+
+const currentPosition = computed({
+  get: () => {
+    let center = props.callout.responseViewSchema?.map?.center;
+    if (route.query.c) {
+      const newCenter = route.query.c.toString().split(',').map(Number);
+      if (isLngLat(newCenter)) {
+        center = newCenter;
+      }
+    }
+
+    let zoom = props.callout.responseViewSchema?.map?.initialZoom;
+    if (route.query.z) {
+      const newZoom = Number(route.query.z);
+      if (!isNaN(newZoom)) {
+        zoom = newZoom;
+      }
+    }
+
+    return { center, zoom };
+  },
+  set: (position) => {
+    router.replace({
+      ...route,
+      query: {
+        ...route.query,
+        c: position.center?.map((n) => n.toFixed(5)).join(','),
+        z: position.zoom?.toFixed(3),
+      },
+    });
+  },
+});
 
 // The list of responses for this callout
 const responses = ref<GetCalloutResponseMapDataWithAddress[]>([]);
@@ -447,6 +482,20 @@ watch(selectedResponseNumber, (responseNo) => {
     });
   }
 });
+
+/**
+ * Handle move and zoom end events. This updates the current center and zoom
+ * query parameters
+ */
+function handlePositionChange() {
+  if (!map.value) return;
+
+  const { lat, lng } = map.value.getCenter();
+  currentPosition.value = {
+    center: [lng, lat],
+    zoom: map.value.getZoom(),
+  };
+}
 
 /**
  * Handle zoom events. This just keeps track of the number of clusters on the
