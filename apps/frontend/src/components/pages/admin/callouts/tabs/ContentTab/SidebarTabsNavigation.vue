@@ -14,7 +14,7 @@
 import { computed } from 'vue';
 import AppTabs from '@components/tabs/AppTabs.vue';
 import type { TabItem } from '@components/tabs/tabs.interface';
-import type { SidebarTabs } from './SidebarTabContent.vue';
+import type { SidebarTabs } from './SidebarTabs.interface';
 /**
  * Props for the SidebarTabsNavigation component
  */

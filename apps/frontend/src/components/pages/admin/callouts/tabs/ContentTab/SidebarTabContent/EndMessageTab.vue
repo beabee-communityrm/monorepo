@@ -56,7 +56,7 @@ import AppFormSection from '../../../../../../forms/AppFormSection.vue';
 import LocaleRichTextEditor from '@components/forms/LocaleRichTextEditor.vue';
 import LocaleInput from '@components/forms/LocaleInput.vue';
 import type { LocaleProp } from '@type';
-import type { SidebarTabProps } from '../SidebarTabContent.vue';
+import type { SidebarTabProps } from '../SidebarTabs.interface';
 
 /**
  * Data for the end message tab in the sidebar
