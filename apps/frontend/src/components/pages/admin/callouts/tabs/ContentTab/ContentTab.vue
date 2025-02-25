@@ -78,14 +78,12 @@
         </Draggable>
       </div>
 
-      <!-- Main Content Area -->
-      <div class="flex-1">
-        <SidebarTabContent
-          :current-tab="currentSidebarTab"
-          :status="status"
-          :locales="tabs.settings.data.locales"
-        />
-      </div>
+      <SidebarTabContent
+        class="flex-1"
+        :current-tab="currentSidebarTab"
+        :status="status"
+        :locales="tabs.settings.data.locales"
+      />
     </div>
   </div>
 </template>
