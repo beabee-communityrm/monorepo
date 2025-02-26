@@ -230,7 +230,7 @@ import { client, isApiError } from '@utils/api';
 import { CONTACT_MFA_TYPE } from '@beabee/beabee-common';
 import { LOGIN_CODES } from '@beabee/beabee-common';
 
-import AppButton from '@components/button/AppButton.vue';
+import { AppButton } from '@beabee/vue';
 import AppModal from '@components/AppModal.vue';
 import AppHeading from '@components/AppHeading.vue';
 import AppSlider from '@components/slider/AppSlider.vue';

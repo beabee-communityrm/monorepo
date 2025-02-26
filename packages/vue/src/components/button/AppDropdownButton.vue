@@ -53,10 +53,10 @@
  * </AppDropdownButton>
  */
 
-import type { IconDefinition } from '@fortawesome/free-solid-svg-icons';
-import { onBeforeMount, onBeforeUnmount, ref, toRef, watch } from 'vue';
-import { computed } from 'vue';
-import AppButton from './AppButton.vue';
+import type { IconDefinition } from "@fortawesome/free-solid-svg-icons";
+import { onBeforeMount, onBeforeUnmount, ref, toRef, watch } from "vue";
+import { computed } from "vue";
+import AppButton from "./AppButton.vue";
 
 /**
  * Props for the AppDropdownButton component
@@ -68,10 +68,10 @@ export interface AppDropdownButtonProps {
   title: string;
   /** Button style variant */
   variant:
-    | 'primaryOutlined'
-    | 'linkOutlined'
-    | 'dangerOutlined'
-    | 'greyOutlined';
+    | "primaryOutlined"
+    | "linkOutlined"
+    | "dangerOutlined"
+    | "greyOutlined";
   /** Whether to show the title text */
   showTitle?: boolean;
   /** Whether the button is disabled */
@@ -80,24 +80,24 @@ export interface AppDropdownButtonProps {
 
 const props = defineProps<AppDropdownButtonProps>();
 
-const baseClasses = 'absolute top-full min-w-full -left-px z-20 bg-white';
+const baseClasses = "absolute top-full min-w-full -left-px z-20 bg-white";
 
 // Border styles from AppButton
 const variantClasses = {
-  primaryOutlined: 'border-primary-40 group-hover:border-primary-70',
-  linkOutlined: 'border-link',
-  dangerOutlined: 'border-danger',
-  greyOutlined: 'border-grey-light group-hover:border-grey',
+  primaryOutlined: "border-primary-40 group-hover:border-primary-70",
+  linkOutlined: "border-link",
+  dangerOutlined: "border-danger",
+  greyOutlined: "border-grey-light group-hover:border-grey",
 } as const;
 
 const sharedClasses = computed(
-  () => `${baseClasses} ${variantClasses[props.variant]}`
+  () => `${baseClasses} ${variantClasses[props.variant]}`,
 );
 
 const buttonRef = ref<InstanceType<typeof AppButton>>();
 const open = ref(false);
 
-watch(toRef(props, 'disabled'), (disabled) => {
+watch(toRef(props, "disabled"), (disabled) => {
   if (disabled) open.value = false;
 });
 
@@ -117,11 +117,11 @@ function handleOutsideClick(evt: Event) {
 function handleKeyDown(evt: KeyboardEvent) {
   if (open.value) {
     switch (evt.key) {
-      case 'Escape':
+      case "Escape":
         open.value = false;
         buttonRef.value?.$el.focus();
         break;
-      case 'Tab':
+      case "Tab":
         open.value = false;
         break;
     }
@@ -129,12 +129,12 @@ function handleKeyDown(evt: KeyboardEvent) {
 }
 
 onBeforeMount(() => {
-  document.addEventListener('click', handleOutsideClick);
-  document.addEventListener('keydown', handleKeyDown);
+  document.addEventListener("click", handleOutsideClick);
+  document.addEventListener("keydown", handleKeyDown);
 });
 
 onBeforeUnmount(() => {
-  document.removeEventListener('click', handleOutsideClick);
-  document.removeEventListener('keydown', handleKeyDown);
+  document.removeEventListener("click", handleOutsideClick);
+  document.removeEventListener("keydown", handleKeyDown);
 });
 </script>

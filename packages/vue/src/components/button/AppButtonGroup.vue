@@ -34,7 +34,7 @@ export interface AppButtonGroupProps {
 }
 
 withDefaults(defineProps<AppButtonGroupProps>(), {
-  ariaLabel: 'Button group',
+  ariaLabel: "Button group",
   ariaDescription: undefined,
 });
 </script>

@@ -43,7 +43,7 @@ import { faEye, faBullhorn } from '@fortawesome/free-solid-svg-icons';
 
 import CalloutHorizontalTabs from '@components/pages/admin/callouts/CalloutHorizontalTabs.vue';
 import PageTitle from '@components/PageTitle.vue';
-import AppAsyncButton from '@components/button/AppAsyncButton.vue';
+import { AppAsyncButton } from '@beabee/vue';
 
 import { convertCalloutToTabs, convertStepsToCallout } from '@utils/callouts';
 import { addBreadcrumb } from '@store/breadcrumb';

@@ -73,7 +73,7 @@ import useVuelidate from '@vuelidate/core';
 import CalloutFormGuestFields from './CalloutFormGuestFields.vue';
 import AppNotification from '@components/AppNotification.vue';
 import FormRenderer from '@components/form-renderer/FormRenderer.vue';
-import AppButton from '@components/button/AppButton.vue';
+import { AppButton } from '@beabee/vue';
 
 import { currentUser } from '@store';
 
