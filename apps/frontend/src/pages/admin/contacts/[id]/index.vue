@@ -294,7 +294,7 @@ import {
   GetCalloutResponseWith,
 } from '@beabee/beabee-common';
 
-import { addNotification } from '@store/notifications';
+import { addNotification } from '@beabee/vue/store/notifications';
 
 import env from '@env';
 

@@ -173,7 +173,7 @@ import {
   faMailBulk,
 } from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';
-import { addNotification } from '@store/notifications';
+import { addNotification } from '@beabee/vue/store/notifications';
 
 import PageTitle from '@components/PageTitle.vue';
 import { AppButton, AppButtonGroup } from '@beabee/vue';

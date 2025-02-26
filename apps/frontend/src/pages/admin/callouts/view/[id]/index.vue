@@ -112,7 +112,7 @@ import AppInfoListItem from '@components/AppInfoListItem.vue';
 import { ActionButton } from '@beabee/vue';
 import CalloutSummary from '@components/callout/CalloutSummary.vue';
 import AppConfirmDialog from '@components/AppConfirmDialog.vue';
-import { addNotification } from '@store/notifications';
+import { addNotification } from '@beabee/vue/store/notifications';
 import {
   faClone,
   faEye,

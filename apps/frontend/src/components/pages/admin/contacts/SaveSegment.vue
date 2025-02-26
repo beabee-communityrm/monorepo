@@ -69,7 +69,7 @@ import AppRadioGroup from '@components/forms/AppRadioGroup.vue';
 
 import { client } from '@utils/api';
 
-import { addNotification } from '@store/notifications';
+import { addNotification } from '@beabee/vue/store/notifications';
 
 const emit = defineEmits(['saved']);
 const props = defineProps<{

@@ -122,7 +122,7 @@ import AppSelect from '@components/forms/AppSelect.vue';
 import AppCheckbox from '@components/forms/AppCheckbox.vue';
 import AppTime from '@components/AppTime.vue';
 
-import { addNotification } from '@store/notifications';
+import { addNotification } from '@beabee/vue/store/notifications';
 
 import { formatLocale } from '@utils/dates';
 import { definePaginatedQuery } from '@utils/pagination';

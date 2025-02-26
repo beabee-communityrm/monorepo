@@ -1,4 +1,5 @@
-import './style.css';
+import '@beabee/vue/lib/theme';
+import '@beabee/vue/styles';
 import { defineSetupVue3 } from '@histoire/plugin-vue';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';

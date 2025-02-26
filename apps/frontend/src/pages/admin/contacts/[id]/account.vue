@@ -58,7 +58,7 @@ import AppConfirmDialog from '@components/AppConfirmDialog.vue';
 import { client } from '@utils/api';
 import { ActionButton } from '@beabee/vue';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import { addNotification } from '@store/notifications';
+import { addNotification } from '@beabee/vue/store/notifications';
 import type { GetContactData } from '@beabee/beabee-common';
 
 const props = defineProps<{ contact: GetContactData }>();

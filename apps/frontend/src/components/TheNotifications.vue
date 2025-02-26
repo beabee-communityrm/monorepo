@@ -29,7 +29,7 @@
  */
 
 import AppNotification from './AppNotification.vue';
-import { notifications } from '../store/notifications';
+import { notifications } from '@beabee/vue/store/notifications';
 
 function removeItem(id: number) {
   const index = notifications.findIndex((n) => n.id === id);

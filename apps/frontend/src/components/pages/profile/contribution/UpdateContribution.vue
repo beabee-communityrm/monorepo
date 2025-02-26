@@ -120,7 +120,7 @@ import { client, isApiError } from '@utils/api';
 import { currentUser } from '@store/currentUser';
 import { formatLocale } from '@utils/dates';
 
-import { addNotification } from '@store/notifications';
+import { addNotification } from '@beabee/vue/store/notifications';
 
 const validation = useVuelidate();
 

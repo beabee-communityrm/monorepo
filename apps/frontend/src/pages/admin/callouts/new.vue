@@ -47,7 +47,7 @@ import { AppAsyncButton } from '@beabee/vue';
 
 import { convertCalloutToTabs, convertStepsToCallout } from '@utils/callouts';
 import { addBreadcrumb } from '@store/breadcrumb';
-import { addNotification } from '@store/notifications';
+import { addNotification } from '@beabee/vue/store/notifications';
 import useVuelidate from '@vuelidate/core';
 
 import type { CalloutHorizontalTabsData } from '@components/pages/admin/callouts/CalloutHorizontalTabs.interface';

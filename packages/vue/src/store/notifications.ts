@@ -1,7 +1,7 @@
-import { ref, type Component } from 'vue';
+import { type Component, reactive } from 'vue';
 
-export interface Notification {
-  id?: string;
+interface Notification {
+  id: number;
   title: string;
   description?: string;
   variant: 'success' | 'warning' | 'error' | 'info';
@@ -11,29 +11,29 @@ export interface Notification {
   timeout?: number;
 }
 
-const notifications = ref<Notification[]>([]);
+export const notifications = reactive<Notification[]>([]);
 
+let uniqueId = 0;
 export function addNotification(notification: Omit<Notification, 'id'>) {
-  const id = Math.random().toString(36).substring(7);
   const newNotification = {
     removeable: 'auto' as boolean | 'auto',
     ...notification,
-    id,
+    id: uniqueId++,
   };
 
-  notifications.value.push(newNotification);
+  notifications.push(newNotification);
 
   if (notification.timeout !== 0) {
     setTimeout(() => {
-      removeNotification(id);
+      removeNotification(newNotification.id);
     }, notification.timeout || 5000);
   }
 }
 
-export function removeNotification(id: string) {
-  const index = notifications.value.findIndex((n) => n.id === id);
+export function removeNotification(id: number) {
+  const index = notifications.findIndex((n) => n.id === id);
   if (index > -1) {
-    notifications.value.splice(index, 1);
+    notifications.splice(index, 1);
   }
 }
 

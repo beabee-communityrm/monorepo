@@ -109,7 +109,7 @@ import { GetCalloutResponseWith } from '@beabee/beabee-common';
 import { formatLocale } from '@utils/dates';
 
 import { currentUser, canAdmin, isEmbed } from '@store';
-import { addNotification } from '@store/notifications';
+import { addNotification } from '@beabee/vue/store/notifications';
 import { addBreadcrumb } from '@store/breadcrumb';
 
 import CalloutVariantsBox from '@components/pages/callouts/CalloutVariantsBox.vue';
