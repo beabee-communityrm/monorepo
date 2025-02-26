@@ -6,7 +6,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import AppButton from './AppButton.vue';
-import { addNotification } from '../../store/notifications';
+import { addNotification } from '@beabee/vue/store/notifications';
 import { useI18n } from 'vue-i18n';
 
 const props = defineProps<{

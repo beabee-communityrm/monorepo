@@ -5,7 +5,7 @@ import App from './App.vue';
 import i18n from './lib/i18n';
 import router from './lib/router';
 
-import './lib/theme';
+import '@beabee/vue/lib/theme';
 
 import '@iframe-resizer/child';
 

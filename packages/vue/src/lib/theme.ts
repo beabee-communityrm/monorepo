@@ -1,6 +1,6 @@
 import { parseToRgba, mix } from 'color2k';
 import { watch } from 'vue';
-import { generalContent } from '../store';
+import { generalContent } from '@beabee/vue/store/generalContent';
 
 // [Font name, fallbacks]
 export const validFonts = {
@@ -122,9 +122,9 @@ watch(
     setCSSVar('--ff-body', allFonts[fonts.body].join(','));
     setCSSVar('--ff-title', allFonts[fonts.title].join(','));
 
-    import(`../assets/styles/fonts-${fonts.body}.css`);
+    import(`@beabee/vue/assets/styles/fonts-${fonts.body}.css`);
     if (fonts.title !== fonts.body) {
-      import(`../assets/styles/fonts-${fonts.title}.css`);
+      import(`@beabee/vue/assets/styles/fonts-${fonts.title}.css`);
     }
   },
   {

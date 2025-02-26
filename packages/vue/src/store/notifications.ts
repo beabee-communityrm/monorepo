@@ -1,36 +1,15 @@
-import { ref } from 'vue';
+import { type Component, reactive } from 'vue';
 
-export interface Notification {
-  id?: string;
+interface Notification {
+  id: number;
   title: string;
-  variant?: 'success' | 'error';
-  timeout?: number;
+  variant: 'success' | 'warning' | 'error';
+  body?: Component;
 }
 
-const notifications = ref<Notification[]>([]);
+export const notifications = reactive<Notification[]>([]);
 
-export function addNotification(notification: Notification) {
-  const id = Math.random().toString(36).substring(7);
-  notifications.value.push({ ...notification, id });
-
-  if (notification.timeout !== 0) {
-    setTimeout(() => {
-      removeNotification(id);
-    }, notification.timeout || 5000);
-  }
-}
-
-export function removeNotification(id: string) {
-  const index = notifications.value.findIndex((n) => n.id === id);
-  if (index > -1) {
-    notifications.value.splice(index, 1);
-  }
-}
-
-export function useNotifications() {
-  return {
-    notifications,
-    addNotification,
-    removeNotification,
-  };
+let uniqueId = 0;
+export function addNotification(notification: Omit<Notification, 'id'>) {
+  notifications.push({ ...notification, id: uniqueId++ });
 }

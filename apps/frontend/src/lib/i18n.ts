@@ -11,7 +11,7 @@ import { currentUser, generalContent, initStore, isEmbed } from '../store';
 import router from '@lib/router';
 
 import env from '@env';
-import { addNotification } from '@store/notifications';
+import { addNotification } from '@beabee/vue/store/notifications';
 
 export const localeItems = Object.entries(localeConfig).map(([id, config]) => ({
   id,

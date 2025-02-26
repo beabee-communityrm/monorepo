@@ -13,7 +13,7 @@
 
     <template #after>
       <div
-        class="text-body-80 border text-left text-sm font-normal shadow-lg"
+        class="border text-left text-sm font-normal text-body-80 shadow-lg"
         :class="{ [sharedClasses]: true, hidden: !open }"
         @click.stop
       >

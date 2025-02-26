@@ -1,9 +1,18 @@
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
-import { resolve } from 'path';
+import path, { resolve } from 'path';
+import theme from './src/plugins/theme';
+import vueI18n from '@intlify/unplugin-vue-i18n/vite';
 
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [
+    vue(),
+    vueI18n({
+      include: path.resolve(__dirname, './locales/*'),
+      strictMessage: false,
+    }),
+    theme(),
+  ],
   build: {
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
