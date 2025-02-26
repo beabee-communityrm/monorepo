@@ -1,19 +1,11 @@
-import '@beabee/vue/lib/theme';
-import '@beabee/vue/styles';
-import { defineSetupVue3 } from '@histoire/plugin-vue';
-import { icons, library } from './plugins/icons';
-import { i18n } from './lib/i18n';
+import "./style.css";
+import { defineSetupVue3 } from "@histoire/plugin-vue";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { faUser, faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 
-import {
-  faEye,
-  faSave,
-  faUpload,
-  faCheck,
-  faSpinner,
-} from '@fortawesome/free-solid-svg-icons';
+library.add(faUser, faCircleNotch);
 
 export const setupVue3 = defineSetupVue3(({ app }) => {
-  library.add(faEye, faSave, faUpload, faCheck, faSpinner);
-  app.use(icons);
-  app.use(i18n);
+  app.component("font-awesome-icon", FontAwesomeIcon);
 });
