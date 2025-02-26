@@ -1,0 +1,9 @@
+/dist/
+/locales/
+.prettierrc.mjs
+.prettierignore
+.gitignore
+.eslintrc
+.eslintignore
+.histoire/
+.histoire/

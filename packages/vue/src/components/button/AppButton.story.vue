@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { ref } from "vue";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
-import AppButton from "./AppButton.vue";
+import { ref } from 'vue';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
+import AppButton from './AppButton.vue';
 
 const loading = ref(false);
 </script>
@@ -30,7 +30,7 @@ const loading = ref(false);
     </Variant>
 
     <Variant title="Sizes">
-      <div class="flex gap-4 items-center">
+      <div class="flex items-center gap-4">
         <AppButton size="xs">Extra Small</AppButton>
         <AppButton size="sm">Small</AppButton>
         <AppButton size="md">Medium</AppButton>
@@ -39,7 +39,7 @@ const loading = ref(false);
     </Variant>
 
     <Variant title="Variants">
-      <div class="flex gap-4 flex-wrap">
+      <div class="flex flex-wrap gap-4">
         <AppButton variant="primary">Primary</AppButton>
         <AppButton variant="link">Link</AppButton>
         <AppButton variant="danger">Danger</AppButton>
