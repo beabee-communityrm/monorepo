@@ -61,7 +61,7 @@ import type {
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { faPencil, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { AppButton, AppButtonGroup } from '@beabee/vue/components';
+import { AppButton, AppButtonGroup } from '@beabee/vue';
 import AppConfirmDialog from '@components/AppConfirmDialog.vue';
 import CalloutResponseCommentForm from './CalloutResponseCommentForm.vue';
 

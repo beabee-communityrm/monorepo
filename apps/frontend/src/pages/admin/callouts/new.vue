@@ -6,16 +6,8 @@ meta:
 </route>
 
 <template>
-  <div v-if="steps">
-    <PageTitle
-      :title="
-        status
-          ? t('editCallout.title', { title: steps.titleAndImage.title.default })
-          : t('createCallout.title')
-      "
-      border
-      no-collapse
-    >
+  <div v-if="tabs" class="flex max-h-full min-h-0 flex-1 flex-col">
+    <PageTitle :title="pageTitle" border no-collapse>
       <div class="flex items-center gap-2">
         <AppAsyncButton
           v-if="!isLive"
@@ -37,79 +29,63 @@ meta:
         </AppAsyncButton>
       </div>
     </PageTitle>
-    <CalloutStepper :steps-props="steps" :status="status" />
+    <CalloutHorizontalTabs :data="tabs" :status="status" />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ItemStatus } from '@beabee/beabee-common';
 import { ref, onBeforeMount, computed, onBeforeUnmount } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
+import { ItemStatus } from '@beabee/beabee-common';
 import { client } from '@utils/api';
-import type { CalloutStepsProps } from '../../../components/pages/admin/callouts/callouts.interface';
-import CalloutStepper from '../../../components/pages/admin/callouts/CalloutStepper.vue';
-import {
-  convertCalloutToSteps,
-  convertStepsToCallout,
-} from '../../../utils/callouts';
-import PageTitle from '../../../components/PageTitle.vue';
+import { faEye, faBullhorn } from '@fortawesome/free-solid-svg-icons';
+
+import CalloutHorizontalTabs from '@components/pages/admin/callouts/CalloutHorizontalTabs.vue';
+import PageTitle from '@components/PageTitle.vue';
+import { AppAsyncButton } from '@beabee/vue';
+
+import { convertCalloutToTabs, convertStepsToCallout } from '@utils/callouts';
+import { addBreadcrumb } from '@store/breadcrumb';
+import { addNotification } from '@store/notifications';
 import useVuelidate from '@vuelidate/core';
-import { AppAsyncButton } from '@beabee/vue/components';
-import { addBreadcrumb } from '../../../store/breadcrumb';
-import { addNotification } from '@beabee/vue/store/notifications';
-import { faBullhorn, faEye } from '@fortawesome/free-solid-svg-icons';
 
-const props = defineProps<{ id?: string }>();
+import type { CalloutHorizontalTabsData } from '@components/pages/admin/callouts/CalloutHorizontalTabs.interface';
 
+/**
+ * Props for the CalloutNew component
+ */
+export interface CalloutNewProps {
+  /** Optional ID of the callout to edit */
+  id?: string;
+}
+
+const props = defineProps<CalloutNewProps>();
 const { t } = useI18n();
 const router = useRouter();
 const validation = useVuelidate();
 
-addBreadcrumb(
-  computed(() =>
-    steps.value
-      ? [
-          {
-            title: t('menu.callouts'),
-            icon: faBullhorn,
-            to: '/admin/callouts',
-          },
-          ...(props.id
-            ? [
-                {
-                  title: steps.value.titleAndImage.title.default,
-                  to: '/admin/callouts/view/' + props.id,
-                },
-                {
-                  title: t('actions.edit'),
-                  to: '/admin/callouts/edit/' + props.id,
-                },
-              ]
-            : [
-                {
-                  title: t('calloutsAdmin.addCallout'),
-                  to: '/admin/callouts/new',
-                },
-              ]),
-        ]
-      : []
-  )
-);
-
-const steps = ref<CalloutStepsProps>();
+// State
+const tabs = ref<CalloutHorizontalTabsData>();
 const status = ref<ItemStatus>();
 const lastSaved = ref<Date>();
-
 const now = ref(new Date());
+
+// Computed Properties
+const pageTitle = computed(() =>
+  status.value
+    ? t('editCallout.title', {
+        title: tabs.value?.content.sidebarTabs.titleAndImage.title.default,
+      })
+    : t('createCallout.title')
+);
 
 const canStartNow = computed(
   () =>
-    steps.value &&
-    (steps.value.dates.startNow ||
-      new Date(
-        steps.value.dates.startDate + 'T' + steps.value.dates.startTime
-      ) <= now.value)
+    tabs.value &&
+    (tabs.value.dates.startNow ||
+      new Date(tabs.value.dates.startDate + 'T' + tabs.value.dates.startTime) <=
+        now.value)
 );
 
 const isLive = computed(
@@ -134,11 +110,44 @@ const updateAction = computed(() =>
       : t('actions.schedule')
 );
 
-async function saveCallout(asDraft = false) {
-  // Handler can't be called if steps aren't set
-  if (!steps.value) throw new Error('Steps are not set');
+// Breadcrumb
+addBreadcrumb(
+  computed(() =>
+    tabs.value
+      ? [
+          {
+            title: t('menu.callouts'),
+            icon: faBullhorn,
+            to: '/admin/callouts',
+          },
+          ...(props.id
+            ? [
+                {
+                  title:
+                    tabs.value.content.sidebarTabs.titleAndImage.title.default,
+                  to: '/admin/callouts/view/' + props.id,
+                },
+                {
+                  title: t('actions.edit'),
+                  to: '/admin/callouts/edit/' + props.id,
+                },
+              ]
+            : [
+                {
+                  title: t('calloutsAdmin.addCallout'),
+                  to: '/admin/callouts/new',
+                },
+              ]),
+        ]
+      : []
+  )
+);
 
-  const data = convertStepsToCallout(steps.value);
+// Methods
+async function saveCallout(asDraft = false) {
+  if (!tabs.value) throw new Error('Steps are not set');
+
+  const data = convertStepsToCallout(tabs.value);
 
   if (!data.variants.default.title) {
     data.variants.default.title = t('createCallout.untitledCallout');
@@ -165,6 +174,7 @@ async function handleUpdate() {
       : t('calloutAdminOverview.created'),
     variant: 'success',
   });
+
   if (!isUpdateAction.value) {
     router.push({ path: '/admin/callouts/view/' + callout.slug });
   }
@@ -176,7 +186,9 @@ async function handleSaveDraft() {
     title: 'Saved draft',
     variant: 'success',
   });
+
   router.push({ path: '/admin/callouts/edit/' + callout.slug });
+
   // If reverting from other status then reset form
   if (!isNewOrDraft.value) {
     await reset();
@@ -194,8 +206,8 @@ async function handlePreview() {
 }
 
 async function reset() {
-  // Clear any existing steps data to force form reset
-  steps.value = undefined;
+  // Clear any existing tabs data to force form reset
+  tabs.value = undefined;
 
   const callout = props.id
     ? await client.callout.get(props.id, [
@@ -204,15 +216,19 @@ async function reset() {
         'variants',
       ])
     : undefined;
-  steps.value = convertCalloutToSteps(callout);
+
+  tabs.value = convertCalloutToTabs(callout);
   status.value = callout?.status;
 }
 
+// Lifecycle Hooks
 let interval: number | undefined;
+
 onBeforeMount(() => {
   reset();
   interval = window.setInterval(() => (now.value = new Date()), 60000);
 });
+
 onBeforeUnmount(() => {
   if (interval) {
     clearInterval(interval);

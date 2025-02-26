@@ -31,7 +31,7 @@ import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import PageTitle from '../../../components/PageTitle.vue';
-import { AppButton } from '@beabee/vue/components';
+import { AppButton } from '@beabee/vue';
 import { client } from '@utils/api';
 
 const { t } = useI18n();

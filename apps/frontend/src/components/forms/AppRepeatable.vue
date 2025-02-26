@@ -24,14 +24,22 @@
   </div>
 </template>
 <script lang="ts" setup generic="T">
-import { AppButton } from '@beabee/vue/components';
+import { AppButton } from '@beabee/vue';
 import { faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
 
-const props = defineProps<{
+/**
+ * Props for the AppRepeatable component
+ */
+export interface AppRepeatableProps<T> {
+  /** The model value of the repeatable component */
   modelValue: T[];
+  /** The new item to add */
   newItem: () => T;
+  /** The label to display on the add button */
   addLabel: string;
-}>();
+}
+
+const props = defineProps<AppRepeatableProps<T>>();
 
 function addItem() {
   // eslint-disable-next-line vue/no-mutating-props

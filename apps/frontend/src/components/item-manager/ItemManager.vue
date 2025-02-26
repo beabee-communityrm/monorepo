@@ -45,7 +45,7 @@
   </div>
 </template>
 <script lang="ts" setup generic="T, D">
-import { AppButton } from '@beabee/vue/components';
+import { AppButton } from '@beabee/vue';
 import { ref } from 'vue';
 import ItemManagerItem from './ItemManagerItem.vue';
 import ItemManagerForm from './ItemManagerForm.vue';

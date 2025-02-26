@@ -37,22 +37,31 @@
 import useVuelidate from '@vuelidate/core';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { addNotification } from '@beabee/vue/store/notifications';
+import { addNotification } from '../../store/notifications';
 import { isApiError } from '@utils/api';
 import AppNotification from '@components/AppNotification.vue';
-import { AppButton } from '@beabee/vue/components';
+import { AppButton } from '@beabee/vue';
 import { LOGIN_CODES } from '@beabee/beabee-common';
 
-const emit = defineEmits(['reset']);
-const props = defineProps<{
+export interface AppFormProps {
+  /** The text of the submit button */
   buttonText: string;
+  /** The text of the reset button */
   resetButtonText?: string;
+  /** The text of the success notification */
   successText?: string;
+  /** The text of the error notification */
   errorText?: Record<string, string>;
+  /** Whether to show the error notification inline */
   inlineError?: boolean;
+  /** Whether to use the full width of the button */
   fullButton?: boolean;
+  /** The function to call when the form is submitted */
   onSubmit?: (evt: Event) => Promise<void | false> | void | false;
-}>();
+}
+
+const emit = defineEmits(['reset']);
+const props = defineProps<AppFormProps>();
 
 const { t } = useI18n();
 

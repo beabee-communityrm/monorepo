@@ -20,8 +20,8 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n';
 import { generalContent, isEmbed } from '../store';
-import { backgroundStyle } from '../store/generalContent';
-import { AppButton } from '@beabee/vue/components';
+import { backgroundStyle } from '../store';
+import { AppButton } from '@beabee/vue';
 
 const { t } = useI18n();
 </script>

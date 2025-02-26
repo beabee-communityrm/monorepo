@@ -43,8 +43,8 @@ import { useI18n } from 'vue-i18n';
 
 import CalloutSidePanel from './CalloutSidePanel.vue';
 import AppTitle from '@components/AppTitle.vue';
-import { AppButton } from '@beabee/vue/components';
-import { generalContent } from '@beabee/vue/store/generalContent';
+import { AppButton } from '@beabee/vue';
+import { generalContent } from '@store/generalContent';
 import { ItemStatus, type GetCalloutDataWith } from '@beabee/beabee-common';
 import AppShareBox from '@components/AppShareBox.vue';
 import { useRoute } from 'vue-router';

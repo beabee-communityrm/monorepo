@@ -109,10 +109,10 @@ import { client } from '@utils/api';
 import AppHeading from '@components/AppHeading.vue';
 import AppInfoList from '@components/AppInfoList.vue';
 import AppInfoListItem from '@components/AppInfoListItem.vue';
-import { ActionButton } from '@beabee/vue/components';
+import { ActionButton } from '@beabee/vue';
 import CalloutSummary from '@components/callout/CalloutSummary.vue';
 import AppConfirmDialog from '@components/AppConfirmDialog.vue';
-import { addNotification } from '@beabee/vue/store/notifications';
+import { addNotification } from '@store/notifications';
 import {
   faClone,
   faEye,

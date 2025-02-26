@@ -212,7 +212,7 @@ import {
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
-import { AppButton, AppButtonGroup } from '@beabee/vue/components';
+import { AppButton, AppButtonGroup } from '@beabee/vue';
 import AppSelect from '@components/forms/AppSelect.vue';
 import AppVTabs from '@components/tabs/AppVTabs.vue';
 import {
@@ -239,7 +239,7 @@ import {
   faUser,
   faUserPen,
 } from '@fortawesome/free-solid-svg-icons';
-import { addNotification } from '@beabee/vue/store/notifications';
+import { addNotification } from '@store/notifications';
 import { addBreadcrumb } from '@store/breadcrumb';
 import AppTime from '@components/AppTime.vue';
 

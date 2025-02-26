@@ -20,7 +20,8 @@
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { useI18n } from 'vue-i18n';
 
-import { AppDropdownButton, AppSelectableList } from '@beabee/vue/components';
+import AppSelectableList from '@components/AppSelectableList.vue';
+import { AppDropdownButton } from '@beabee/vue';
 
 import type { SelectItem } from '@components/forms/form.interface';
 

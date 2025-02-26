@@ -245,7 +245,7 @@ import {
 import { client } from '@utils/api';
 
 import env from '../../../env';
-import { AppButton } from '@beabee/vue/components';
+import { AppButton } from '@beabee/vue';
 
 import { isEmbed } from '@store';
 

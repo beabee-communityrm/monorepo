@@ -1,15 +1,46 @@
-import { type Component, reactive } from 'vue';
+import { ref, type Component } from "vue";
 
-interface Notification {
-  id: number;
+export interface Notification {
+  id?: string;
   title: string;
-  variant: 'success' | 'warning' | 'error';
+  description?: string;
+  variant: "success" | "warning" | "error" | "info";
   body?: Component;
+  /** Whether notification can be manually removed */
+  removeable?: boolean | "auto";
+  timeout?: number;
 }
 
-export const notifications = reactive<Notification[]>([]);
+const notifications = ref<Notification[]>([]);
 
-let uniqueId = 0;
-export function addNotification(notification: Omit<Notification, 'id'>) {
-  notifications.push({ ...notification, id: uniqueId++ });
+export function addNotification(notification: Omit<Notification, "id">) {
+  const id = Math.random().toString(36).substring(7);
+  const newNotification = {
+    removeable: "auto" as boolean | "auto",
+    ...notification,
+    id,
+  };
+
+  notifications.value.push(newNotification);
+
+  if (notification.timeout !== 0) {
+    setTimeout(() => {
+      removeNotification(id);
+    }, notification.timeout || 5000);
+  }
+}
+
+export function removeNotification(id: string) {
+  const index = notifications.value.findIndex((n) => n.id === id);
+  if (index > -1) {
+    notifications.value.splice(index, 1);
+  }
+}
+
+export function useNotifications() {
+  return {
+    notifications,
+    addNotification,
+    removeNotification,
+  };
 }

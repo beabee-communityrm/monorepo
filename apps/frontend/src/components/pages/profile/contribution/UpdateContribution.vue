@@ -107,7 +107,7 @@ import useVuelidate from '@vuelidate/core';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
 import Contribution from '@components/contribution/Contribution.vue';
-import { AppButton } from '@beabee/vue/components';
+import { AppButton } from '@beabee/vue';
 import ProrateContribution from './ProrateContribution.vue';
 import { type ContributionContent } from '@components/contribution/contribution.interface';
 import AppModal from '@components/AppModal.vue';
@@ -120,7 +120,7 @@ import { client, isApiError } from '@utils/api';
 import { currentUser } from '@store/currentUser';
 import { formatLocale } from '@utils/dates';
 
-import { addNotification } from '@beabee/vue/store/notifications';
+import { addNotification } from '@store/notifications';
 
 const validation = useVuelidate();
 

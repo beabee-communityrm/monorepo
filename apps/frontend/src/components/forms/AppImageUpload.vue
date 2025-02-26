@@ -26,10 +26,18 @@
             type="file"
             accept="image/jpeg,image/png"
             class="sr-only"
+            :aria-label="t('actions.chooseFile')"
             @change="handleChange"
           />
           {{ t('actions.chooseFile') }}
         </AppButton>
+        <p
+          v-if="description"
+          :id="`${id}-description`"
+          class="mt-1 max-w-[200px] text-sm"
+        >
+          {{ description }}
+        </p>
         <AppInputError v-if="formError" :message="formError" />
       </div>
     </div>
@@ -41,19 +49,29 @@ import { helpers, requiredIf, sameAs } from '@vuelidate/validators';
 import { computed, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { client, ClientApiError } from '@utils/api';
-import { AppButton } from '@beabee/vue/components';
+import { AppButton } from '@beabee/vue';
 import AppLabel from '@components/forms/AppLabel.vue';
 import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 import AppInputError from '@components/forms/AppInputError.vue';
 
 const emit = defineEmits(['update:modelValue']);
-const props = defineProps<{
-  modelValue: unknown; // TODO: should be string but vuelidate $model is unknown
+
+export interface AppImageUploadProps {
+  /** The image URL value */
+  modelValue: unknown;
+  /** Width of the image */
   width: number;
+  /** Height of the image */
   height: number;
+  /** Label for the upload field */
   label?: string;
+  /** Description text below the upload button */
+  description?: string;
+  /** Whether the field is required */
   required?: boolean;
-}>();
+}
+
+const props = defineProps<AppImageUploadProps>();
 
 const { t } = useI18n();
 
@@ -61,6 +79,11 @@ const inputRef = ref<HTMLInputElement>();
 const uploading = ref(false);
 const imageUrl = ref(props.modelValue as string);
 const formError = ref('');
+
+// Generate unique ID for aria attributes
+const id = computed(
+  () => `image-upload-${Math.random().toString(36).substring(2, 11)}`
+);
 
 const rules = computed(() => ({
   v: {
