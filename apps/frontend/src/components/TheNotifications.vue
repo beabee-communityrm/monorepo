@@ -1,14 +1,20 @@
 <template>
-  <div class="fixed bottom-16 left-16 z-50 w-96">
+  <div
+    class="fixed bottom-16 left-16 z-50 w-96"
+    role="region"
+    aria-label="Notifications"
+  >
     <div class="flex flex-col gap-4">
       <transition-group name="notification">
-        <AppNotfication
+        <AppNotification
           v-for="notification in notifications"
+          :id="notification.id"
           :key="notification.id"
           :title="notification.title"
+          :description="notification.description"
           :variant="notification.variant"
+          :removeable="notification.removeable"
           class="shadow-lg"
-          removeable="auto"
           @remove="removeItem(notification.id)"
         />
       </transition-group>
@@ -17,14 +23,19 @@
 </template>
 
 <script lang="ts" setup>
-import AppNotfication from './AppNotification.vue';
-import { notifications } from '@beabee/vue';
+/**
+ * Container component for displaying notifications
+ * Handles notification positioning and removal
+ */
+
+import AppNotification from './AppNotification.vue';
+import { notifications } from '@beabee/vue/store/notifications';
 
 function removeItem(id: number) {
-  notifications.splice(
-    notifications.findIndex((n) => n.id === id),
-    1
-  );
+  const index = notifications.findIndex((n) => n.id === id);
+  if (index !== -1) {
+    notifications.splice(index, 1);
+  }
 }
 </script>
 

@@ -48,7 +48,7 @@ meta:
         <label
           v-for="preset in colorPresets"
           :key="preset.name"
-          class="mb-2 flex cursor-pointer items-center"
+          class="mb-2 flex max-w-[15rem] cursor-pointer items-center"
         >
           <input
             v-model="activePreset"
@@ -104,13 +104,7 @@ import { computed, onBeforeMount, onBeforeUnmount, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import AppHeading from '../../../components/AppHeading.vue';
 import { client } from '@utils/api';
-import {
-  getFullTheme,
-  type Theme,
-  availableFonts,
-  colorPresets,
-  visibleCustomColors,
-} from '@beabee/vue/lib/theme';
+import { getFullTheme, type Theme, validFonts } from '@beabee/vue/lib/theme';
 import { generalContent } from '../../../store';
 import AppColorInput from '../../../components/forms/AppColorInput.vue';
 import AppSelect from '../../../components/forms/AppSelect.vue';
@@ -118,6 +112,31 @@ import AppForm from '../../../components/forms/AppForm.vue';
 import App2ColGrid from '../../../components/App2ColGrid.vue';
 
 const { t } = useI18n();
+
+const availableFonts = Object.entries(validFonts).map(([id, [label]]) => ({
+  id,
+  label,
+}));
+
+const colorPresets = [
+  {
+    name: 'default',
+    colors: {
+      primary: '#262453',
+      link: '#43a796',
+      body: '#262453',
+    },
+  },
+];
+
+const visibleCustomColors = [
+  'primary',
+  'link',
+  'body',
+  'success',
+  'warning',
+  'danger',
+] as const;
 
 // Used to restore unsaved themes on exit
 let currentTheme = generalContent.value.theme;
@@ -139,6 +158,7 @@ watch(
   activeTheme,
   (theme) => {
     generalContent.value.theme = theme;
+    // hasSaved.value = false;
   },
   { deep: true }
 );

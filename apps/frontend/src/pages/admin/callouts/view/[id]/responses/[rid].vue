@@ -195,7 +195,7 @@ import AppNotification from '@components/AppNotification.vue';
 import CalloutForm from '@components/pages/callouts/CalloutForm.vue';
 import TagList from '@components/tag/TagList.vue';
 
-import { addNotification } from '@store/notifications';
+import { addNotification } from '@beabee/vue/store/notifications';
 
 import { formatLocale } from '@utils/dates';
 import { client } from '@utils/api';

@@ -240,7 +240,7 @@ import AppInput from '@components/forms/AppInput.vue';
 import AppConfirmDialog from '@components/AppConfirmDialog.vue';
 import AppNotification from '@components/AppNotification.vue';
 
-import { addNotification } from '@store/notifications';
+import { addNotification } from '@beabee/vue/store/notifications';
 import { generalContent } from '@store/index';
 
 import type { AppStepperStep } from '@type/app-stepper-step';

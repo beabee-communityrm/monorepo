@@ -13,9 +13,9 @@ import AppDropdownButton from './AppDropdownButton.vue';
         :show-title="true"
       >
         <div class="p-4">
-          <div class="cursor-pointer p-2 hover:bg-gray-100">User 1</div>
-          <div class="cursor-pointer p-2 hover:bg-gray-100">User 2</div>
-          <div class="cursor-pointer p-2 hover:bg-gray-100">User 3</div>
+          <div class="hover:bg-gray-100 cursor-pointer p-2">User 1</div>
+          <div class="hover:bg-gray-100 cursor-pointer p-2">User 2</div>
+          <div class="hover:bg-gray-100 cursor-pointer p-2">User 3</div>
         </div>
       </AppDropdownButton>
     </Variant>
@@ -27,9 +27,9 @@ import AppDropdownButton from './AppDropdownButton.vue';
         variant="primaryOutlined"
       >
         <div class="p-4">
-          <div class="cursor-pointer p-2 hover:bg-gray-100">User 1</div>
-          <div class="cursor-pointer p-2 hover:bg-gray-100">User 2</div>
-          <div class="cursor-pointer p-2 hover:bg-gray-100">User 3</div>
+          <div class="hover:bg-gray-100 cursor-pointer p-2">User 1</div>
+          <div class="hover:bg-gray-100 cursor-pointer p-2">User 2</div>
+          <div class="hover:bg-gray-100 cursor-pointer p-2">User 3</div>
         </div>
       </AppDropdownButton>
     </Variant>
