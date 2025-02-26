@@ -83,6 +83,8 @@ export async function setup() {
   if (token) {
     console.log("Test API key created:", token);
     process.env.API_KEY = token.trim();
+  } else {
+    throw new Error("Failed to create test API key: " + apiKeyOutput.output);
   }
 
   // Create test payments

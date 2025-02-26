@@ -5,7 +5,8 @@ import {
   Serial,
   CalloutAccess,
   CalloutCaptcha,
-  ItemStatus
+  ItemStatus,
+  GetCalloutResponseWith
 } from "@beabee/beabee-common";
 import { createTestCalloutResponseAnswers } from "./data/callouts.js";
 
@@ -14,7 +15,12 @@ describe("CalloutResponse API", () => {
     it("should correctly deserialize response data with all relations", () => {
       const now = new Date();
       const serializedData: Serial<
-        GetCalloutResponseDataWith<"answers" | "callout" | "contact" | "tags">
+        GetCalloutResponseDataWith<
+          | GetCalloutResponseWith.Answers
+          | GetCalloutResponseWith.Callout
+          | GetCalloutResponseWith.Contact
+          | GetCalloutResponseWith.Tags
+        >
       > = {
         id: "test-id",
         createdAt: now.toISOString(),
@@ -53,7 +59,10 @@ describe("CalloutResponse API", () => {
       };
 
       const result = CalloutResponseClient.deserialize<
-        "answers" | "callout" | "contact" | "tags"
+        | GetCalloutResponseWith.Answers
+        | GetCalloutResponseWith.Callout
+        | GetCalloutResponseWith.Contact
+        | GetCalloutResponseWith.Tags
       >(serializedData);
 
       expect(result.id).toBe(serializedData.id);

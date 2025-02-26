@@ -1,9 +1,9 @@
 import { describe, expect, it, beforeAll } from "vitest";
-import { ContentClient, ClientApiError } from '@beabee/client';
-import { ContentId } from '@beabee/beabee-common';
-import { API_KEY, HOST, PATH } from './utils/env.js';
+import { ContentClient, ClientApiError } from "@beabee/client";
+import { ContentId } from "@beabee/beabee-common";
+import { API_KEY, HOST, PATH } from "@beabee/test-utils/vitest/env";
 
-describe('Content API', () => {
+describe("Content API", () => {
   let contentClient: ContentClient;
 
   beforeAll(() => {
@@ -14,9 +14,9 @@ describe('Content API', () => {
     });
   });
 
-  it('should return 400 for non-existing content id with client', async () => {
+  it("should return 400 for non-existing content id with client", async () => {
     try {
-      await contentClient.get('non-existing-id' as ContentId);
+      await contentClient.get("non-existing-id" as ContentId);
     } catch (error) {
       if (error instanceof ClientApiError) {
         expect(error.httpCode).toBe(400);

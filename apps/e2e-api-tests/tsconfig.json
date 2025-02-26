@@ -7,8 +7,10 @@
   "include": ["src/**/*.ts"],
   "compilerOptions": {
     "noEmit": true,
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "target": "ESNext",
+    "allowImportingTsExtensions": true,
     "esModuleInterop": true
   }
 }

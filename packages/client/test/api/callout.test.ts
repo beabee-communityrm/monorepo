@@ -3,7 +3,8 @@ import { BeabeeClient } from "@beabee/client";
 import {
   ItemStatus,
   type GetCalloutsQuery,
-  type CreateCalloutResponseCommentData
+  type CreateCalloutResponseCommentData,
+  GetCalloutResponseWith
 } from "@beabee/beabee-common";
 import {
   API_KEY,
@@ -11,7 +12,7 @@ import {
   PATH,
   TEST_USER_EMAIL,
   TEST_USER_PASSWORD
-} from "./utils/env.js";
+} from "@beabee/test-utils/vitest/env";
 import { createTestCallout } from "./data/callouts";
 import {
   createTestCalloutResponseAnswers,
@@ -128,7 +129,7 @@ describe("Callout API", () => {
         const { items } = await client.callout.listResponses(
           testCalloutSlug,
           {},
-          ["answers"] as const
+          [GetCalloutResponseWith.Answers]
         );
 
         expect(Array.isArray(items)).toBe(true);
@@ -145,10 +146,10 @@ describe("Callout API", () => {
     describe("get", () => {
       it("should get a response with specified relations", async () => {
         const response = await client.callout.response.get(testResponseId, [
-          "callout",
-          "contact",
-          "assignee",
-          "latestComment"
+          GetCalloutResponseWith.Callout,
+          GetCalloutResponseWith.Contact,
+          GetCalloutResponseWith.Assignee,
+          GetCalloutResponseWith.LatestComment
         ] as const);
 
         expect(response).toBeDefined();

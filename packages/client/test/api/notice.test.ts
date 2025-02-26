@@ -1,7 +1,7 @@
 import { describe, expect, it, beforeAll, afterAll } from "vitest";
 import { BeabeeClient, NoticeClient } from "@beabee/client";
 import { GetNoticesQuery, UpdateNoticeData } from "@beabee/beabee-common";
-import { API_KEY, HOST, PATH } from "./utils/env.js";
+import { API_KEY, HOST, PATH } from "@beabee/test-utils/vitest/env";
 import { testNotice, testNoticeUpdate } from "./data/notices.js";
 
 describe("Notice API", () => {

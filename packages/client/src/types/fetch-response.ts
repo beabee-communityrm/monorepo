@@ -1,3 +1,3 @@
-export interface FetchResponse<T> extends Response {
+export interface FetchResponse<T> extends globalThis.Response {
   data: T;
 }

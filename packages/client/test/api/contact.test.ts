@@ -2,7 +2,7 @@ import { describe, beforeAll, it, expect } from "vitest";
 import { ClientApiError, ContactClient } from "@beabee/client";
 import { GetContactWith } from "@beabee/beabee-common";
 
-import { API_KEY, HOST, PATH } from "./utils/env.js";
+import { API_KEY, HOST, PATH } from "@beabee/test-utils/vitest/env";
 
 describe("Contact API", () => {
   let contactClient: ContactClient;

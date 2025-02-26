@@ -2,12 +2,11 @@
   "include": ["./src"],
   "exclude": ["src/**/*.test.ts"],
   "compilerOptions": {
-    "target": "ESNext",
+    "target": "ESNext", // Should be ES2020 or newer for the fetch API and Response type
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "declarationDir": "./dist/types",
     "esModuleInterop": true,
-    "allowImportingTsExtensions": true,
     "declaration": true,
     "emitDeclarationOnly": true,
     "isolatedModules": true,
