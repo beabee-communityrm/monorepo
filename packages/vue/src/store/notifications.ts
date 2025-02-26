@@ -1,9 +1,9 @@
-import { ref } from "vue";
+import { ref } from 'vue';
 
 export interface Notification {
   id?: string;
   title: string;
-  variant?: "success" | "error";
+  variant?: 'success' | 'error';
   timeout?: number;
 }
 

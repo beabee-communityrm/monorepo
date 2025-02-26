@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { faUser } from "@fortawesome/free-solid-svg-icons";
-import AppButtonGroup from "./AppButtonGroup.vue";
-import AppButton from "./AppButton.vue";
+import { faUser } from '@fortawesome/free-solid-svg-icons';
+import AppButtonGroup from './AppButtonGroup.vue';
+import AppButton from './AppButton.vue';
 </script>
 
 <template>
