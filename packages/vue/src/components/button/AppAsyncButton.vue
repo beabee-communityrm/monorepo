@@ -31,10 +31,10 @@
  * </AppAsyncButton>
  */
 
-import { ref } from "vue";
-import { useI18n } from "vue-i18n";
-import AppButton from "./AppButton.vue";
-import { addNotification } from "../../store/notifications";
+import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import AppButton from './AppButton.vue';
+import { addNotification } from '../../store/notifications';
 
 /**
  * Props for the AppAsyncButton component
@@ -69,10 +69,10 @@ async function handleClick(evt: Event) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (_: unknown) {
     addNotification({
-      title: t("form.errorMessages.generic"),
-      variant: "error",
+      title: t('form.errorMessages.generic'),
+      variant: 'error',
       // Add more descriptive error message for screen readers
-      description: t("form.errorMessages.asyncActionFailed"),
+      description: t('form.errorMessages.asyncActionFailed'),
     });
   } finally {
     loading.value = false;

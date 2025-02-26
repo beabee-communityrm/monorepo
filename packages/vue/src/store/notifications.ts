@@ -1,22 +1,22 @@
-import { ref, type Component } from "vue";
+import { ref, type Component } from 'vue';
 
 export interface Notification {
   id?: string;
   title: string;
   description?: string;
-  variant: "success" | "warning" | "error" | "info";
+  variant: 'success' | 'warning' | 'error' | 'info';
   body?: Component;
   /** Whether notification can be manually removed */
-  removeable?: boolean | "auto";
+  removeable?: boolean | 'auto';
   timeout?: number;
 }
 
 const notifications = ref<Notification[]>([]);
 
-export function addNotification(notification: Omit<Notification, "id">) {
+export function addNotification(notification: Omit<Notification, 'id'>) {
   const id = Math.random().toString(36).substring(7);
   const newNotification = {
-    removeable: "auto" as boolean | "auto",
+    removeable: 'auto' as boolean | 'auto',
     ...notification,
     id,
   };
