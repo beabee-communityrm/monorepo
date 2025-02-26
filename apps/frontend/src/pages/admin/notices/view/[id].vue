@@ -58,7 +58,7 @@ import AppConfirmDialog from '@components/AppConfirmDialog.vue';
 import AppHeading from '@components/AppHeading.vue';
 import AppNotice from '@components/AppNotice.vue';
 import PageTitle from '@components/PageTitle.vue';
-import ActionButton from '@components/button/ActionButton.vue';
+import { ActionButton } from '@beabee/vue';
 import ItemStatus from '@components/item/ItemStatusText.vue';
 import ItemDateRange from '@components/item/ItemDateRange.vue';
 

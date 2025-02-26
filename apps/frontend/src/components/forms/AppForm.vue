@@ -39,8 +39,8 @@ import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { addNotification } from '../../store/notifications';
 import { isApiError } from '@utils/api';
-import AppNotification from '../AppNotification.vue';
-import AppButton from '../button/AppButton.vue';
+import AppNotification from '@components/AppNotification.vue';
+import { AppButton } from '@beabee/vue';
 import { LOGIN_CODES } from '@beabee/beabee-common';
 
 const emit = defineEmits(['reset']);

@@ -184,8 +184,7 @@ import {
 import AppHeading from '@components/AppHeading.vue';
 import AppInfoList from '@components/AppInfoList.vue';
 import AppInfoListItem from '@components/AppInfoListItem.vue';
-import AppButton from '@components/button/AppButton.vue';
-import AppButtonGroup from '@components/button/AppButtonGroup.vue';
+import { AppButton, AppButtonGroup } from '@beabee/vue';
 import { addBreadcrumb } from '@store/breadcrumb';
 import MoveBucketButton from '@components/pages/admin/callouts/MoveBucketButton.vue';
 import ToggleTagButton from '@components/tag/ToggleTagButton.vue';

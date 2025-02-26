@@ -24,9 +24,8 @@ import { faFolder } from '@fortawesome/free-solid-svg-icons';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import AppSelectableList from '../../../AppSelectableList.vue';
-import AppDropdownButton from '../../../button/AppDropdownButton.vue';
 import { buckets } from './callouts.interface';
-
+import { AppDropdownButton } from '@beabee/vue';
 const emit = defineEmits<{
   (event: 'move', id: string, successText: string): void;
 }>();

@@ -82,7 +82,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 import type { Header } from '@components/table/table.interface';
-import AppButton from '@components/button/AppButton.vue';
+import { AppButton } from '@beabee/vue';
 import PageTitle from '@components/PageTitle.vue';
 import AppItemStatus from '@components/AppItemStatus.vue';
 import AppSearchInput from '@components/forms/AppSearchInput.vue';

@@ -4,10 +4,10 @@
   </AppButton>
 </template>
 <script lang="ts" setup>
-import { ref } from 'vue';
-import AppButton from './AppButton.vue';
-import { addNotification } from '../../store/notifications';
-import { useI18n } from 'vue-i18n';
+import { ref } from "vue";
+import AppButton from "./AppButton.vue";
+import { addNotification } from "../../store/notifications";
+import { useI18n } from "vue-i18n";
 
 const props = defineProps<{
   onClick?: (evt: Event) => Promise<void>;
@@ -23,8 +23,8 @@ async function handleClick(evt: Event) {
     await props.onClick?.(evt);
   } catch {
     addNotification({
-      title: t('form.errorMessages.generic'),
-      variant: 'error',
+      title: t("form.errorMessages.generic"),
+      variant: "error",
     });
   } finally {
     loading.value = false;
