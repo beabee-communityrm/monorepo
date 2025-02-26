@@ -42,7 +42,7 @@
 import { onBeforeMount, ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import AppButton from '@components/button/AppButton.vue';
+import { AppButton } from '@beabee/vue';
 import StripePayment from '@components/StripePayment.vue';
 import AppModal from '@components/AppModal.vue';
 import AppHeading from '@components/AppHeading.vue';

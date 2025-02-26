@@ -31,7 +31,7 @@
 import { faCog, faTag } from '@fortawesome/free-solid-svg-icons';
 import { useI18n } from 'vue-i18n';
 import AppSelectableList from '@components/AppSelectableList.vue';
-import AppDropdownButton from '@components/button/AppDropdownButton.vue';
+import { AppDropdownButton } from '@beabee/vue';
 
 const emit = defineEmits<{
   (event: 'toggle', id: string, successText: string): void;

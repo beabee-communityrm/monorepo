@@ -74,7 +74,7 @@ import ContributionInfo from '@components/pages/profile/ContributionInfo.vue';
 import QuickActions from '@components/pages/profile/QuickActions.vue';
 import SectionTitle from '@components/pages/profile/SectionTitle.vue';
 import PageTitle from '@components/PageTitle.vue';
-import AppButton from '@components/button/AppButton.vue';
+import { AppButton } from '@beabee/vue';
 import CalloutCard from '@components/callout/CalloutCard.vue';
 import WelcomeMessage from '@components/welcome-message/WelcomeMessage.vue';
 

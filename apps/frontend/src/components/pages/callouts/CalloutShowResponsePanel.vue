@@ -44,8 +44,7 @@ import {
   type GetCalloutResponseMapData,
 } from '@beabee/beabee-common';
 import CalloutResponse from './CalloutResponse.vue';
-import AppButton from '@components/button/AppButton.vue';
-import AppButtonGroup from '@components/button/AppButtonGroup.vue';
+import { AppButton, AppButtonGroup } from '@beabee/vue';
 import { useI18n } from 'vue-i18n';
 
 defineEmits<{ (e: 'close'): void }>();

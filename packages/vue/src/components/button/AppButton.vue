@@ -109,57 +109,57 @@
 import {
   faCircleNotch,
   type IconDefinition,
-} from '@fortawesome/free-solid-svg-icons';
-import { computed, ref } from 'vue';
-import { type RouteLocationRaw } from 'vue-router';
+} from "@fortawesome/free-solid-svg-icons";
+import { computed, ref } from "vue";
+import { type RouteLocationRaw } from "vue-router";
 
 // Variant classes for [base, hover, loading icon]
 const variantClasses = {
   primary: [
-    'bg-primary-70 text-white border-primary-70',
-    'hover:bg-primary-80',
-    'text-primary',
+    "bg-primary-70 text-white border-primary-70",
+    "hover:bg-primary-80",
+    "text-primary",
   ],
-  link: ['bg-link text-white border-link', 'hover:bg-link-110', 'text-link'],
+  link: ["bg-link text-white border-link", "hover:bg-link-110", "text-link"],
   primaryOutlined: [
-    'bg-white text-primary-80 border-primary-40',
-    'hover:bg-primary-10 hover:text-primary hover:border-primary-70',
-    'text-primary',
+    "bg-white text-primary-80 border-primary-40",
+    "hover:bg-primary-10 hover:text-primary hover:border-primary-70",
+    "text-primary",
   ],
   linkOutlined: [
-    'bg-white text-link border-link',
-    'hover:bg-link-10',
-    'text-link',
+    "bg-white text-link border-link",
+    "hover:bg-link-10",
+    "text-link",
   ],
   dangerOutlined: [
-    'bg-white text-danger border-danger',
-    'hover:bg-danger-10',
-    'text-danger',
+    "bg-white text-danger border-danger",
+    "hover:bg-danger-10",
+    "text-danger",
   ],
   greyOutlined: [
-    'bg-white text-body-80 border-grey-light',
-    'hover:border-grey',
-    'text-body',
+    "bg-white text-body-80 border-grey-light",
+    "hover:border-grey",
+    "text-body",
   ],
-  text: ['underline text-link border-0', 'hover:text-link-110', ''],
+  text: ["underline text-link border-0", "hover:text-link-110", ""],
   danger: [
-    'bg-danger text-white border-danger',
-    'hover:bg-danger-110',
-    'text-danger',
+    "bg-danger text-white border-danger",
+    "hover:bg-danger-110",
+    "text-danger",
   ],
-  dangerText: ['underline text-danger border-0', 'hover:text-danger-110', ''],
+  dangerText: ["underline text-danger border-0", "hover:text-danger-110", ""],
   dangerGhost: [
-    'bg-transparent border-0 text-body-60',
-    'hover:text-danger-70',
-    'text-body-60',
+    "bg-transparent border-0 text-body-60",
+    "hover:text-danger-70",
+    "text-body-60",
   ],
 } as const;
 
 const sizeClasses = {
-  xs: 'text-sm px-2 py-1',
-  sm: 'text-sm p-2',
-  md: 'px-3 py-2.5',
-  lg: 'text-3xl px-4.5 py-4',
+  xs: "text-sm px-2 py-1",
+  sm: "text-sm p-2",
+  md: "px-3 py-2.5",
+  lg: "text-3xl px-4.5 py-4",
 } as const;
 
 /**
@@ -171,7 +171,7 @@ export interface AppButtonProps {
   /** Whether to show loading state */
   loading?: boolean;
   /** HTML button type */
-  type?: 'button' | 'submit';
+  type?: "button" | "submit";
   /** URL for anchor tag */
   href?: string;
   /** Opens link in new tab */
@@ -185,7 +185,7 @@ export interface AppButtonProps {
   /** FontAwesome icon */
   icon?: IconDefinition;
   /** Component element type */
-  is?: 'button' | 'label';
+  is?: "button" | "label";
   /** Accessible name */
   name?: string;
   /** Tooltip text */
@@ -195,14 +195,14 @@ export interface AppButtonProps {
 const props = withDefaults(defineProps<AppButtonProps>(), {
   disabled: false,
   loading: false,
-  type: 'button',
+  type: "button",
   href: undefined,
   external: false,
   to: undefined,
-  variant: 'primary',
-  size: 'md',
+  variant: "primary",
+  size: "md",
   icon: undefined,
-  is: 'button',
+  is: "button",
   name: undefined,
   title: undefined,
 });
@@ -218,17 +218,17 @@ const focus = () => {
 const buttonClasses = computed(() => {
   return [
     // Base styles
-    'leading-tight inline-flex gap-2 justify-center items-center font-bold rounded whitespace-nowrap relative border focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-70',
+    "leading-tight inline-flex gap-2 justify-center items-center font-bold rounded whitespace-nowrap relative border focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-70",
     // Styles for in a button group
-    'group-[]/btns:rounded-none group-[]/btns:last:rounded-r group-[]/btns:first:rounded-l group-[]/btns:-ml-px group-[]/btns:hover:z-10',
+    "group-[]/btns:rounded-none group-[]/btns:last:rounded-r group-[]/btns:first:rounded-l group-[]/btns:-ml-px group-[]/btns:hover:z-10",
     // Size styles
     sizeClasses[props.size],
     // Variant styles
     variantClasses[props.variant][0],
     // Disabled/enabled styles
     props.disabled
-      ? 'cursor-not-allowed opacity-50'
-      : 'cursor-pointer ' + variantClasses[props.variant][1],
+      ? "cursor-not-allowed opacity-50"
+      : "cursor-pointer " + variantClasses[props.variant][1],
   ];
 });
 

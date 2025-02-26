@@ -25,6 +25,7 @@
     "@beabee/beabee-common": "workspace:^",
     "@beabee/client": "workspace:^",
     "@beabee/locale": "workspace:^",
+    "@beabee/vue": "workspace:^",
     "@captchafox/vue": "^1.3.0",
     "@fontsource/fira-sans": "^5.1.0",
     "@fontsource/fira-sans-condensed": "^5.1.0",

@@ -41,7 +41,7 @@ import { useRouter } from 'vue-router';
 
 import AuthBox from '@components/AuthBox.vue';
 import CalloutForm from '@components/pages/callouts/CalloutForm.vue';
-import AppButton from '@components/button/AppButton.vue';
+import { AppButton } from '@beabee/vue';
 
 import { client } from '@utils/api';
 

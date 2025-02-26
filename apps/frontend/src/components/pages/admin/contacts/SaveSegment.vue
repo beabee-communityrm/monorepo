@@ -63,7 +63,7 @@ import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import AppModal from '@components/AppModal.vue';
-import AppButton from '@components/button/AppButton.vue';
+import { AppButton } from '@beabee/vue';
 import AppInput from '@components/forms/AppInput.vue';
 import AppRadioGroup from '@components/forms/AppRadioGroup.vue';
 

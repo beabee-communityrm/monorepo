@@ -50,7 +50,7 @@ import { computed, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { faPlus, faSignHanging } from '@fortawesome/free-solid-svg-icons';
 
-import AppButton from '@components/button/AppButton.vue';
+import { AppButton } from '@beabee/vue';
 import PageTitle from '@components/PageTitle.vue';
 import type { Header } from '@components/table/table.interface';
 import AppItemStatus from '@components/AppItemStatus.vue';

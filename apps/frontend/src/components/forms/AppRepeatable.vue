@@ -24,7 +24,7 @@
   </div>
 </template>
 <script lang="ts" setup generic="T">
-import AppButton from '@components/button/AppButton.vue';
+import { AppButton } from '@beabee/vue';
 import { faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 /**

@@ -107,7 +107,7 @@ import useVuelidate from '@vuelidate/core';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
 import Contribution from '@components/contribution/Contribution.vue';
-import AppButton from '@components/button/AppButton.vue';
+import { AppButton } from '@beabee/vue';
 import ProrateContribution from './ProrateContribution.vue';
 import { type ContributionContent } from '@components/contribution/contribution.interface';
 import AppModal from '@components/AppModal.vue';

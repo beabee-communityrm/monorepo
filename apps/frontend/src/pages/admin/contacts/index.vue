@@ -176,8 +176,7 @@ import { addBreadcrumb } from '@store/breadcrumb';
 import { addNotification } from '@store/notifications';
 
 import PageTitle from '@components/PageTitle.vue';
-import AppButtonGroup from '@components/button/AppButtonGroup.vue';
-import AppButton from '@components/button/AppButton.vue';
+import { AppButton, AppButtonGroup } from '@beabee/vue';
 import ToggleTagButton from '@components/tag/ToggleTagButton.vue';
 import AppSearch from '@components/search/AppSearch.vue';
 import TagList from '@components/tag/TagList.vue';

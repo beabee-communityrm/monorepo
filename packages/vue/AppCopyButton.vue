@@ -9,9 +9,9 @@
 </template>
 
 <script lang="ts" setup>
-import { faCopy } from '@fortawesome/free-solid-svg-icons';
-import { useI18n } from 'vue-i18n';
-import { addNotification } from '../../store/notifications';
+import { faCopy } from "@fortawesome/free-solid-svg-icons";
+import { useI18n } from "vue-i18n";
+import { addNotification } from "../../store/notifications";
 
 const props = defineProps<{
   /** The text to copy to clipboard */
@@ -19,25 +19,25 @@ const props = defineProps<{
 }>();
 
 const { t } = useI18n();
-const emit = defineEmits(['copy']);
+const emit = defineEmits(["copy"]);
 
 const handleCopy = async () => {
   try {
     await navigator.clipboard.writeText(props.text);
     addNotification({
-      title: t('notifications.copy.success'),
-      variant: 'success',
-      removeable: 'auto',
+      title: t("notifications.copy.success"),
+      variant: "success",
+      removeable: "auto",
     });
-    emit('copy');
+    emit("copy");
   } catch (error) {
     addNotification({
-      title: t('notifications.copy.error'),
-      description: t('notifications.copy.errorDesc', {
+      title: t("notifications.copy.error"),
+      description: t("notifications.copy.errorDesc", {
         error,
       }),
-      variant: 'error',
-      removeable: 'auto',
+      variant: "error",
+      removeable: "auto",
     });
   }
 };
