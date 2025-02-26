@@ -34,7 +34,7 @@
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import AppButton from './AppButton.vue';
-import { addNotification } from '../../store/notifications';
+import { addNotification } from '@beabee/vue/store/notifications';
 
 /**
  * Props for the AppAsyncButton component

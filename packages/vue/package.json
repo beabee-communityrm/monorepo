@@ -21,6 +21,16 @@
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/vue-fontawesome": "^3.0.8",
+    "@fontsource/fira-sans": "^5.1.0",
+    "@fontsource/fira-sans-condensed": "^5.1.0",
+    "@fontsource/libre-franklin": "^5.1.1",
+    "@fontsource/nunito-sans": "^5.1.0",
+    "@fontsource/open-sans": "^5.1.0",
+    "@fontsource/roboto": "^5.1.0",
+    "@fontsource/roboto-slab": "^5.1.0",
+    "@fontsource/rubik": "^5.1.0",
+    "@fontsource/ubuntu": "^5.1.0",
+    "@fontsource/work-sans": "^5.1.0",
     "vue": "^3.5.13",
     "vue-i18n": "^9.14.2",
     "vue-router": "^4.5.0"
@@ -31,12 +41,26 @@
     "@histoire/plugin-vue": "^1.0.0-alpha.2",
     "@vitejs/plugin-vue": "^5.2.1",
     "histoire": "^1.0.0-alpha.2",
+    "postcss": "^8.4.49",
     "prettier": "^3.4.2",
+    "tailwindcss": "^3.4.17",
     "typescript": "~5.6.3",
     "vite": "^6.2.0",
     "vue-tsc": "^2.2.4"
   },
   "files": [
     "src/"
-  ]
+  ],
+  "exports": {
+    ".": "./src/index.ts",
+    "./components/*": "./src/components/*.vue",
+    "./lib/*": "./src/lib/*.ts",
+    "./plugins/*": "./src/plugins/*.js",
+    "./store/*": "./src/store/*.ts",
+    "./types/*": "./src/types/*.ts",
+    "./styles/*": "./src/styles/*.css",
+    "./styles": "./src/styles/index.css",
+    "./assets/*": "./src/assets/*",
+    "./tailwind.config": "./tailwind.config.js"
+  }
 }
