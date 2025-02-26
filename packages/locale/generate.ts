@@ -1,7 +1,7 @@
 /**
  * Script to load locale data from a Google sheet
  *
- * Run: ./i18n.js [sheet name]
+ * Run: ./generate.ts [sheet name]
  *
  * Column headers should be locale codes, codes that start with an exclamation mark (!) are ignored.
  *
@@ -170,12 +170,60 @@ function toCamelCase(name: string): string {
 function saveJsonFile(name: string, data: any) {
   const exportName = toCamelCase(name);
 
+  // Filter out undefined values recursively
+  const filterUndefined = (obj: any): any => {
+    if (typeof obj !== "object" || obj === null) {
+      return obj;
+    }
+
+    const filtered: any = {};
+    for (const [key, value] of Object.entries(obj)) {
+      if (value !== undefined) {
+        filtered[key] =
+          typeof value === "object" ? filterUndefined(value) : value;
+      }
+    }
+    return filtered;
+  };
+
+  // Convert object to string with unquoted keys
+  const stringifyWithUnquotedKeys = (obj: any, indent = 0): string => {
+    if (typeof obj !== "object" || obj === null) {
+      return JSON.stringify(obj);
+    }
+
+    const spaces = " ".repeat((indent + 1) * 2);
+
+    // Valid JavaScript identifier regex
+    const validJSIdentifier = /^[a-zA-Z_$][a-zA-Z0-9_$]*$/;
+
+    const entries = Object.entries(obj)
+      .map(([key, value]) => {
+        const valueStr =
+          typeof value === "object" && value !== null
+            ? stringifyWithUnquotedKeys(value, indent + 1)
+            : JSON.stringify(value);
+
+        // Quote the key if it's not a valid JS identifier
+        const formattedKey = validJSIdentifier.test(key)
+          ? key
+          : JSON.stringify(key);
+
+        return `${spaces}${formattedKey}: ${valueStr}`;
+      })
+      .join(",\n");
+
+    return `{\n${entries}\n${" ".repeat(indent * 2)}}`;
+  };
+
+  const filteredData = filterUndefined(data);
+
   saveFile(
     name,
     "export const " +
       exportName +
       " = " +
-      JSON.stringify(data, null, 2) +
+      stringifyWithUnquotedKeys(filteredData) +
       " as const;\n",
   );
 }
