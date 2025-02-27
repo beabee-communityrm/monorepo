@@ -13,7 +13,10 @@ export default ({ command, mode }) => {
   const plugins = [
     vue(),
     vueI18n({
-      include: path.resolve(__dirname, '../../packages/locale/src/locales/*'),
+      include: path.resolve(
+        __dirname,
+        '../../packages/locale/dist/esm/locales/*'
+      ),
       strictMessage: false,
     }),
     theme(),
