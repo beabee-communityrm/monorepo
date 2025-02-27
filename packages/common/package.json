@@ -52,9 +52,9 @@
   "devDependencies": {
     "@beabee/prettier-config": "workspace:^",
     "@gjsify/esbuild-plugin-transform-ext": "^0.0.4",
-    "concurrently": "^9.1.0",
-    "esbuild": "^0.24.1",
-    "prettier": "^3.4.2",
+    "concurrently": "^9.1.2",
+    "esbuild": "^0.24.2",
+    "prettier": "^3.5.2",
     "typescript": "~5.6.3",
     "vitest": "^3.0.7"
   },

@@ -122,8 +122,10 @@ watch(
     setCSSVar('--ff-body', allFonts[fonts.body].join(','));
     setCSSVar('--ff-title', allFonts[fonts.title].join(','));
 
+    /* @vite-ignore */
     import(`@beabee/vue/assets/styles/fonts-${fonts.body}.css`);
     if (fonts.title !== fonts.body) {
+      /* @vite-ignore */
       import(`@beabee/vue/assets/styles/fonts-${fonts.title}.css`);
     }
   },
@@ -131,4 +133,32 @@ watch(
     deep: true,
     immediate: true, // Initialise default theme on page load
   }
+);
+
+export const colorPresets = [
+  {
+    name: 'default',
+    colors: {
+      primary: '#262453',
+      link: '#43a796',
+      body: '#262453',
+    },
+  },
+] as const;
+
+export const visibleCustomColors = [
+  'primary',
+  'link',
+  'body',
+  'success',
+  'warning',
+  'danger',
+] as const;
+
+// Convert validFonts to a format suitable for select components
+export const availableFonts = Object.entries(validFonts).map(
+  ([id, [label]]) => ({
+    id,
+    label,
+  })
 );
