@@ -1,5 +1,5 @@
 import { computed } from 'vue';
-import i18n from '../../../lib/i18n';
+import { i18n } from '@lib/i18n';
 import { type Header } from '../../table/table.interface';
 import type { FilterGroups, FilterItems } from '@type';
 import { type PaymentFilterName, paymentFilters } from '@beabee/beabee-common';

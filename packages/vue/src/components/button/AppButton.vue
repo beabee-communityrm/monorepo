@@ -46,6 +46,35 @@ import {
 import { computed, ref } from 'vue';
 import { type RouteLocationRaw } from 'vue-router';
 
+// Define the variant types
+export type ButtonVariant =
+  | 'primary'
+  | 'link'
+  | 'danger'
+  | 'primaryOutlined'
+  | 'linkOutlined'
+  | 'dangerOutlined'
+  | 'greyOutlined'
+  | 'text'
+  | 'dangerText';
+
+// Define the size types
+export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg';
+
+// Define the component props interface
+export interface AppButtonProps {
+  disabled?: boolean;
+  loading?: boolean;
+  type?: 'button' | 'submit';
+  href?: string;
+  external?: boolean;
+  to?: RouteLocationRaw;
+  variant?: ButtonVariant;
+  size?: ButtonSize;
+  icon?: IconDefinition;
+  is?: 'button' | 'label';
+}
+
 // Variant classes for [base, hover, loading icon]
 const variantClasses = {
   primary: [
@@ -90,30 +119,16 @@ const sizeClasses = {
   lg: 'text-3xl px-4.5 py-4',
 } as const;
 
-const props = withDefaults(
-  defineProps<{
-    disabled?: boolean;
-    loading?: boolean;
-    type?: 'button' | 'submit';
-    href?: string;
-    external?: boolean;
-    to?: RouteLocationRaw;
-    variant?: keyof typeof variantClasses;
-    size?: 'xs' | 'sm' | 'md' | 'lg';
-    icon?: IconDefinition;
-    is?: 'button' | 'label';
-  }>(),
-  {
-    type: 'button',
-    href: undefined,
-    external: false,
-    to: undefined,
-    variant: 'primary',
-    size: 'md',
-    icon: undefined,
-    is: 'button',
-  }
-);
+const props = withDefaults(defineProps<AppButtonProps>(), {
+  type: 'button',
+  href: undefined,
+  external: false,
+  to: undefined,
+  variant: 'primary',
+  size: 'md',
+  icon: undefined,
+  is: 'button',
+});
 
 const innerButton = ref<HTMLAnchorElement | HTMLButtonElement | null>(null);
 
