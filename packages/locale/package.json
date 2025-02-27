@@ -29,14 +29,15 @@
   "module": "./dist/esm/index.js",
   "types": "./dist/types/index.d.ts",
   "exports": {
-    "./locales/*": {
+    "./locales/*": "./dist/esm/locales/*.json",
+    "./locales": {
       "import": {
-        "types": "./dist/types/locales/*.d.ts",
-        "default": "./dist/esm/locales/*.js"
+        "types": "./dist/types/locales/index.d.ts",
+        "default": "./dist/esm/locales/index.js"
       },
       "require": {
-        "types": "./dist/types/locales/*.d.cts",
-        "default": "./dist/cjs/locales/*.cjs"
+        "types": "./dist/types/locales/index.d.cts",
+        "default": "./dist/cjs/locales/index.cjs"
       }
     },
     ".": {
