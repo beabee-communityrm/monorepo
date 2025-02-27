@@ -29,7 +29,7 @@ import {
   faCaretUp,
   type IconDefinition,
 } from '@fortawesome/free-solid-svg-icons';
-import { AppButton } from '@beabee/vue';
+import { AppButton } from '@beabee/vue/components';
 
 defineProps<{
   buttonIcon: IconDefinition;

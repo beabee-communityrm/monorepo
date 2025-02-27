@@ -692,6 +692,7 @@ __metadata:
     "@vitejs/plugin-vue": "npm:^5.2.1"
     color2k: "npm:^2.0.3"
     histoire: "npm:^1.0.0-alpha.2"
+    import-meta-resolve: "npm:^4.1.0"
     postcss: "npm:^8.5.3"
     prettier: "npm:^3.5.2"
     tailwindcss: "npm:^3.4.17"
@@ -9739,6 +9740,13 @@ __metadata:
     parent-module: "npm:^1.0.0"
     resolve-from: "npm:^4.0.0"
   checksum: 10c0/7f882953aa6b740d1f0e384d0547158bc86efbf2eea0f1483b8900a6f65c5a5123c2cf09b0d542cc419d0b98a759ecaeb394237e97ea427f2da221dc3cd80cc3
+  languageName: node
+  linkType: hard
+
+"import-meta-resolve@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "import-meta-resolve@npm:4.1.0"
+  checksum: 10c0/42f3284b0460635ddf105c4ad99c6716099c3ce76702602290ad5cbbcd295700cbc04e4bdf47bacf9e3f1a4cec2e1ff887dabc20458bef398f9de22ddff45ef5
   languageName: node
   linkType: hard
 

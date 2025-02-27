@@ -40,7 +40,7 @@ import { useI18n } from 'vue-i18n';
 import { addNotification } from '@beabee/vue/store/notifications';
 import { isApiError } from '@utils/api';
 import AppNotification from '@components/AppNotification.vue';
-import { AppButton } from '@beabee/vue';
+import { AppButton } from '@beabee/vue/components';
 import { LOGIN_CODES } from '@beabee/beabee-common';
 
 export interface AppFormProps {

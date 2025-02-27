@@ -21,7 +21,7 @@
 import { useI18n } from 'vue-i18n';
 import { generalContent, isEmbed } from '../store';
 import { backgroundStyle } from '../store/generalContent';
-import { AppButton } from '@beabee/vue';
+import { AppButton } from '@beabee/vue/components';
 
 const { t } = useI18n();
 </script>
