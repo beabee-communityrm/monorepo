@@ -24,7 +24,7 @@
 
 <script lang="ts" setup>
 import type { GetNoticeData } from '@beabee/beabee-common';
-import { AppButton } from '@beabee/vue';
+import { AppButton } from '@beabee/vue/components';
 import { faBullhorn } from '@fortawesome/free-solid-svg-icons';
 
 defineProps<{
