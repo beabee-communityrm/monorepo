@@ -17,7 +17,8 @@ import type {
 import { computed, onBeforeMount, ref } from 'vue';
 import { Form } from '../../lib/formio';
 import { type FormChangeEvent } from './form-renderer.interface';
-import { config, dom, library } from '@fortawesome/fontawesome-svg-core';
+import { config, dom } from '@fortawesome/fontawesome-svg-core';
+import { library } from '@beabee/vue/plugins/icons';
 import {
   faCalendar,
   faCloudUpload,
