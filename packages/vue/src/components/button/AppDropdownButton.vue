@@ -37,41 +37,41 @@
 
 <script lang="ts" setup>
 /**
- * A dropdown button component that shows/hides content in a dropdown menu.
- * Supports icons, titles, and various style variants.
+ * A dropdown button component that displays a dropdown menu when clicked.
+ * Used for actions that require selecting from a list of options.
  *
  * @component AppDropdownButton
  *
  * @example
  * <AppDropdownButton
  *   title="Options"
- *   variant="primary"
+ *   variant="primaryOutlined"
  *   :icon="faEllipsisV"
  * >
  *   <div role="menuitem">Option 1</div>
  *   <div role="menuitem">Option 2</div>
  * </AppDropdownButton>
  */
-
 import type { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { onBeforeMount, onBeforeUnmount, ref, toRef, watch } from 'vue';
 import { computed } from 'vue';
 import AppButton from './AppButton.vue';
 
-/**
- * Props for the AppDropdownButton component
- */
+// Define the allowed variants for the dropdown button
+export type DropdownButtonVariant =
+  | 'primaryOutlined'
+  | 'linkOutlined'
+  | 'dangerOutlined'
+  | 'greyOutlined';
+
+// Define the component props interface
 export interface AppDropdownButtonProps {
   /** Icon to display in the button */
   icon: IconDefinition;
   /** Button and dropdown title */
   title: string;
   /** Button style variant */
-  variant:
-    | 'primaryOutlined'
-    | 'linkOutlined'
-    | 'dangerOutlined'
-    | 'greyOutlined';
+  variant: DropdownButtonVariant;
   /** Whether to show the title text */
   showTitle?: boolean;
   /** Whether the button is disabled */

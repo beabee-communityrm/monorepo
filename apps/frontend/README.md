@@ -4,24 +4,24 @@
 
 To set up:
 
-~~~sh
+```sh
 cp .env.example .env
 yarn install
-~~~
+```
 
 By default your frontend will use the API at https://dev.beabee.io. You can change this by editing the `.env` file
 
 To start development:
 
-~~~sh
+```sh
 yarn dev
-~~~
+```
 
 To build the project:
 
-~~~sh
+```sh
 yarn build
-~~~
+```
 
 ## Component Library
 
@@ -29,9 +29,9 @@ The frontend uses shared Vue components from the `@beabee/vue` package. This pac
 
 To use components from the library:
 
-~~~ts
+```ts
 import { AppButton } from '@beabee/vue/components';
-~~~
+```
 
 For more information about the component library, see the [Vue package README](../../packages/vue/README.md).
 
@@ -55,16 +55,16 @@ Our locale data is stored in [this Google Sheet](https://docs.google.com/spreads
 
 To update the locale data in the repository you run the following
 
-~~~
+```
 node scripts/i18n.cjs
 git add -A locales/ && git commit locales/ -m 'chore: updated locales'
-~~~
+```
 
 ### Using the localisation strings
 
 In Vue files:
 
-~~~vue
+```vue
 <template>
   <p>{{ t('hello') }}</p>
 </template>
@@ -75,4 +75,4 @@ import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 </script>
-~~~
+```
