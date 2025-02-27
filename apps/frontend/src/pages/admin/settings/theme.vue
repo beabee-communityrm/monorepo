@@ -48,7 +48,7 @@ meta:
         <label
           v-for="preset in colorPresets"
           :key="preset.name"
-          class="mb-2 flex max-w-[15rem] cursor-pointer items-center"
+          class="mb-2 flex cursor-pointer items-center"
         >
           <input
             v-model="activePreset"
