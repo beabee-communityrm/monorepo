@@ -16,7 +16,7 @@ import { format } from 'date-fns';
 import { computed } from 'vue';
 
 import env from '../env';
-import i18n from '@lib/i18n';
+import { i18n } from '../lib/i18n';
 
 import type { LocaleProp } from '@type';
 import type {

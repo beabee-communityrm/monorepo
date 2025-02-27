@@ -1,7 +1,7 @@
 <template>
   <button
     type="button"
-    class="focus:ring-primary-40 relative transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2"
+    class="relative transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-40 focus:ring-offset-2"
     :class="[
       modelValue
         ? activeVariantClasses[variant]

@@ -6,7 +6,7 @@ import {
 } from '@beabee/beabee-common';
 import { reactive, computed, type Ref } from 'vue';
 
-import i18n from '@lib/i18n';
+import { i18n } from '@lib/i18n';
 
 const { n, t } = i18n.global;
 

@@ -93,7 +93,7 @@ import {
 import AppInputHelp from './AppInputHelp.vue';
 import AppLabel from './AppLabel.vue';
 import AppInputError from './AppInputError.vue';
-import AppCopyButton from '../button/AppCopyButton.vue';
+import { AppCopyButton } from '@beabee/vue/components';
 
 /**
  * Props for the AppInput component

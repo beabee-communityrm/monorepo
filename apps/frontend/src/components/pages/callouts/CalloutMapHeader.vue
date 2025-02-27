@@ -60,8 +60,11 @@ import {
 import AppTitle from '@components/AppTitle.vue';
 import { useCalloutVariants } from './use-callout';
 import { computed, toRef, ref, watch } from 'vue';
-import { AppDropdownButton, AppButton } from '@beabee/vue/components';
-import AppSelectableList from '@components/AppSelectableList.vue';
+import {
+  AppDropdownButton,
+  AppButton,
+  AppSelectableList,
+} from '@beabee/vue/components';
 import { useRoute } from 'vue-router';
 import { ItemStatus, type GetCalloutDataWith } from '@beabee/beabee-common';
 

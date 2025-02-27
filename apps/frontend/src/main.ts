@@ -2,7 +2,7 @@ import { createApp } from 'vue';
 
 import App from './App.vue';
 
-import i18n from './lib/i18n';
+import { i18n } from './lib/i18n';
 import router from './lib/router';
 
 import '@beabee/vue/lib/theme';
