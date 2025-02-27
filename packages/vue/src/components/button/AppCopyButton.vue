@@ -1,7 +1,7 @@
 <template>
   <button
     :title="t('actions.copy')"
-    class="hover:bg-grey-lighter hover:text-body flex h-full w-10 items-center justify-center"
+    class="flex h-full w-10 items-center justify-center hover:bg-grey-lighter hover:text-body"
     @click="handleCopy"
   >
     <font-awesome-icon :icon="faCopy" class="h-4 w-4" />

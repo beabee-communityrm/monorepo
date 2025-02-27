@@ -48,7 +48,7 @@ import { faGripVertical, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { computed } from 'vue';
 import { getDecisionComponent } from '../../../../utils/callouts';
 import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
-import AppButton from '@components/button/AppButton.vue';
+import { AppButton } from '@beabee/vue/components';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();

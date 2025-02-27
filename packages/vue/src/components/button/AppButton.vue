@@ -113,6 +113,36 @@ import {
 import { computed, ref } from 'vue';
 import { type RouteLocationRaw } from 'vue-router';
 
+// Define the variant types
+export type ButtonVariant =
+  | 'primary'
+  | 'link'
+  | 'danger'
+  | 'primaryOutlined'
+  | 'linkOutlined'
+  | 'dangerOutlined'
+  | 'dangerGhost'
+  | 'greyOutlined'
+  | 'text'
+  | 'dangerText';
+
+// Define the size types
+export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg';
+
+// Define the component props interface
+export interface AppButtonProps {
+  disabled?: boolean;
+  loading?: boolean;
+  type?: 'button' | 'submit';
+  href?: string;
+  external?: boolean;
+  to?: RouteLocationRaw;
+  variant?: ButtonVariant;
+  size?: ButtonSize;
+  icon?: IconDefinition;
+  is?: 'button' | 'label';
+}
+
 // Variant classes for [base, hover, loading icon]
 const variantClasses = {
   primary: [
@@ -179,9 +209,9 @@ export interface AppButtonProps {
   /** Vue Router destination */
   to?: RouteLocationRaw;
   /** Button style variant */
-  variant?: keyof typeof variantClasses;
+  variant?: ButtonVariant;
   /** Button size */
-  size?: keyof typeof sizeClasses;
+  size?: ButtonSize;
   /** FontAwesome icon */
   icon?: IconDefinition;
   /** Component element type */
