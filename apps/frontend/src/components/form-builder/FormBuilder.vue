@@ -55,12 +55,8 @@ import {
   faCamera,
   type IconName,
 } from '@fortawesome/free-solid-svg-icons';
-import {
-  config,
-  dom,
-  library,
-  noAuto,
-} from '@fortawesome/fontawesome-svg-core';
+import { config, dom, noAuto } from '@fortawesome/fontawesome-svg-core';
+import { library } from '@beabee/vue/plugins/icons';
 import { onBeforeMount, onBeforeUnmount, ref, toRef, watch } from 'vue';
 
 import { FormBuilder } from '../../lib/formio';

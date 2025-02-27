@@ -9,6 +9,6 @@
     "vitest"
   ],
   "dependencies": {
-    "testcontainers": "^10.17.1"
+    "testcontainers": "^10.18.0"
   }
 }

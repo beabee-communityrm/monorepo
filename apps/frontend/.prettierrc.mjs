@@ -1,2 +1,8 @@
 import { frontendConfig } from '@beabee/prettier-config';
-export default frontendConfig;
+
+const config = {
+  ...frontendConfig,
+  tailwindConfig: './tailwind.config.js',
+};
+
+export default config;

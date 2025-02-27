@@ -1,1 +1,3 @@
-export * from '@beabee/vue/tailwind.config';
+import tailwindConfig from '@beabee/vue/tailwind.config';
+
+export default tailwindConfig;
