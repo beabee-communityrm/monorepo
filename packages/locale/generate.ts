@@ -1,7 +1,8 @@
 /**
  * Script to load locale data from a Google sheet
  *
- * Run: ./i18n.js [sheet name]
+ * Run: `yarn generate` to generate a locale for the current branch.
+ * Run: `yarn generate:branch [sheet name]` to generate a locale for a branch of your choice.
  *
  * Column headers should be locale codes, codes that start with an exclamation mark (!) are ignored.
  *
