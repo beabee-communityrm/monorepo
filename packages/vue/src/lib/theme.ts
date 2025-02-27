@@ -122,11 +122,12 @@ watch(
     setCSSVar('--ff-body', allFonts[fonts.body].join(','));
     setCSSVar('--ff-title', allFonts[fonts.title].join(','));
 
-    /* @vite-ignore */
-    import(`@beabee/vue/assets/styles/fonts-${fonts.body}.css`);
+    const bodyFontFile = `@beabee/vue/assets/styles/fonts-${fonts.body}.css`;
+    const titleFontFile = `@beabee/vue/assets/styles/fonts-${fonts.title}.css`;
+
+    import(/* @vite-ignore */ bodyFontFile);
     if (fonts.title !== fonts.body) {
-      /* @vite-ignore */
-      import(`@beabee/vue/assets/styles/fonts-${fonts.title}.css`);
+      import(/* @vite-ignore */ titleFontFile);
     }
   },
   {

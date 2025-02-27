@@ -103,7 +103,7 @@ import {
   faShareNodes,
 } from '@fortawesome/free-solid-svg-icons';
 import { useI18n } from 'vue-i18n';
-import { AppButton } from '@beabee/vue';
+import { AppButton } from '@beabee/vue/components';
 import AppExpandableBox from '@components/AppExpandableBox.vue';
 import { computed } from 'vue';
 import env from '@env';

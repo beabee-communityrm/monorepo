@@ -109,7 +109,7 @@ import { client } from '@utils/api';
 import AppHeading from '@components/AppHeading.vue';
 import AppInfoList from '@components/AppInfoList.vue';
 import AppInfoListItem from '@components/AppInfoListItem.vue';
-import { ActionButton } from '@beabee/vue';
+import { ActionButton } from '@beabee/vue/components';
 import CalloutSummary from '@components/callout/CalloutSummary.vue';
 import AppConfirmDialog from '@components/AppConfirmDialog.vue';
 import { addNotification } from '@beabee/vue/store/notifications';

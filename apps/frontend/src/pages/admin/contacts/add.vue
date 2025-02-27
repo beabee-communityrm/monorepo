@@ -76,7 +76,7 @@ import AppCheckbox from '@components/forms/AppCheckbox.vue';
 import AppForm from '@components/forms/AppForm.vue';
 import PageTitle from '@components/PageTitle.vue';
 import RoleEditor from '@components/role/RoleEditor.vue';
-import { AppButton } from '@beabee/vue';
+import { AppButton } from '@beabee/vue/components';
 
 import { addBreadcrumb } from '@store/breadcrumb';
 

@@ -21,7 +21,7 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { useI18n } from 'vue-i18n';
 
 import AppSelectableList from '@components/AppSelectableList.vue';
-import { AppDropdownButton } from '@beabee/vue';
+import { AppDropdownButton } from '@beabee/vue/components';
 
 import type { SelectItem } from '@components/forms/form.interface';
 

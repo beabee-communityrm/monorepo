@@ -274,7 +274,7 @@ import { faCircleNotch, faMobileAlt } from '@fortawesome/free-solid-svg-icons';
 
 import AppHeading from '@components/AppHeading.vue';
 import AppInput from '@components/forms/AppInput.vue';
-import { AppButton } from '@beabee/vue';
+import { AppButton } from '@beabee/vue/components';
 import RoleEditor from '@components/role/RoleEditor.vue';
 import AppInfoList from '@components/AppInfoList.vue';
 import AppInfoListItem from '@components/AppInfoListItem.vue';

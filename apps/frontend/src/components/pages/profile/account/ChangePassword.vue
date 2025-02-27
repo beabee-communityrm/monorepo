@@ -51,7 +51,7 @@
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { client } from '@utils/api';
-import { AppButton } from '@beabee/vue';
+import { AppButton } from '@beabee/vue/components';
 import AppInput from '../../../forms/AppInput.vue';
 import AppHeading from '../../../AppHeading.vue';
 import AppForm from '../../../forms/AppForm.vue';

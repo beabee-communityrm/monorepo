@@ -1,3 +1,10 @@
+import { resolve } from 'import-meta-resolve';
+import { fileURLToPath } from 'url';
+
+const vuePkgComponentPath = fileURLToPath(
+  resolve('@beabee/vue/components-path', import.meta.url)
+);
+
 function shades(color, levels = []) {
   return Object.assign(
     { DEFAULT: `rgba(var(--c-${color}), <alpha-value>)` },
@@ -8,11 +15,13 @@ function shades(color, levels = []) {
 }
 
 const config = {
+  // Default content parsing for the frontend app inkluding @beabee/vue components
   content: [
     './index.html',
     './src/**/*.{vue,js,ts,jsx,tsx}',
     './.histoire/**/*.{vue,js,ts,jsx,tsx}',
     './histoire.setup.ts',
+    `${vuePkgComponentPath}/**/*`,
   ],
   safelist: ['bg-success', 'bg-warning', 'bg-danger'],
   theme: {

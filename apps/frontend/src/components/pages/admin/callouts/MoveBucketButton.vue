@@ -25,7 +25,7 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import AppSelectableList from '../../../AppSelectableList.vue';
 import { buckets } from '@utils/callouts';
-import { AppDropdownButton } from '@beabee/vue';
+import { AppDropdownButton } from '@beabee/vue/components';
 const emit = defineEmits<{
   (event: 'move', id: string, successText: string): void;
 }>();

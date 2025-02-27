@@ -50,7 +50,7 @@ import env from '@env';
 import ItemStatusText from '@components/item/ItemStatusText.vue';
 import ItemDateRange from '@components/item/ItemDateRange.vue';
 import AppSubHeading from '@components/AppSubHeading.vue';
-import { AppButton } from '@beabee/vue';
+import { AppButton } from '@beabee/vue/components';
 
 const { t } = useI18n();
 
