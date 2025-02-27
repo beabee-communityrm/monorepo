@@ -56,7 +56,7 @@ import ContactUpdateAccount from '@components/contact/ContactUpdateAccount.vue';
 import App2ColGrid from '@components/App2ColGrid.vue';
 import AppConfirmDialog from '@components/AppConfirmDialog.vue';
 import { client } from '@utils/api';
-import { ActionButton } from '@beabee/vue';
+import { ActionButton } from '@beabee/vue/components';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { addNotification } from '@beabee/vue/store/notifications';
 import type { GetContactData } from '@beabee/beabee-common';

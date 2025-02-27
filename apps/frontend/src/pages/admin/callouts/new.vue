@@ -55,7 +55,7 @@ import {
 } from '../../../utils/callouts';
 import PageTitle from '../../../components/PageTitle.vue';
 import useVuelidate from '@vuelidate/core';
-import { AppAsyncButton } from '@beabee/vue';
+import { AppAsyncButton } from '@beabee/vue/components';
 import { addBreadcrumb } from '../../../store/breadcrumb';
 import { addNotification } from '@beabee/vue/store/notifications';
 import { faBullhorn, faEye } from '@fortawesome/free-solid-svg-icons';

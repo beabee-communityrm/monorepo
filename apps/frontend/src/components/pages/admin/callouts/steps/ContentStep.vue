@@ -149,7 +149,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { getSlideSchema } from '../../../../../utils/callouts';
 import AppInput from '../../../../forms/AppInput.vue';
-import { AppButton, AppButtonGroup } from '@beabee/vue';
+import { AppButton, AppButtonGroup } from '@beabee/vue/components';
 import FormBuilderNavigation from '../../../../form-builder/FormBuilderNavigation.vue';
 import AppCheckbox from '../../../../forms/AppCheckbox.vue';
 import env from '../../../../../env';

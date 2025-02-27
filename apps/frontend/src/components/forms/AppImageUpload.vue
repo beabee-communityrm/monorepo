@@ -41,7 +41,7 @@ import { helpers, requiredIf, sameAs } from '@vuelidate/validators';
 import { computed, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { client, ClientApiError } from '@utils/api';
-import { AppButton } from '@beabee/vue';
+import { AppButton } from '@beabee/vue/components';
 import AppLabel from '@components/forms/AppLabel.vue';
 import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 import AppInputError from '@components/forms/AppInputError.vue';
