@@ -1,5 +1,5 @@
 import { isLocale, type Locale, config as localeConfig } from '@beabee/locale';
-import { en } from '@beabee/locale/locales/en';
+import en from '@beabee/locale/locales/en';
 
 import { computed, watch } from 'vue';
 import {
@@ -75,7 +75,7 @@ watch(
       // For the dynamic import to work the locale must be a path, we can't
       // reference @beabee/locale here
       const messages = await import(
-        `../../../../packages/locale/dist/esm/locales/${String(newLocale)}.js`
+        `../../../../packages/locale/dist/esm/locales/${newLocale}.json`
       );
       i18n.global.setLocaleMessage(justLocale, messages.default);
     }

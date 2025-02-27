@@ -1,4 +1,4 @@
-import * as locales from "@beabee/locale/locales/index";
+import * as locales from "@beabee/locale/locales";
 import OptionsService from "#services/OptionsService";
 
 /**

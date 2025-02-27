@@ -29,6 +29,19 @@ await build({
   format: "cjs",
 });
 
+// The JSON locale files need to be available to both module formats, but also
+// in the types directory so they can be used to generate static types
+for (const outdir of [OUTDIR_ESM, OUTDIR_CJS, './dist/types']) {
+  await build({
+    entryPoints: ["./src/**/*.json"],
+    outdir,
+    bundle: false,
+    loader: {
+      ".json": "copy"
+    }
+  })
+}
+
 async function renameExtensions(directory) {
   for await (const dirEntry of await readdir(directory, {
     withFileTypes: true,
