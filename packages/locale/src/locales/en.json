@@ -939,7 +939,7 @@
             "description": "Don't forget to save after uploading an image!"
           },
           "sharing": {
-            "title": "Sharing options",
+            "title": "Sharing options"
           },
           "overrideShare": {
             "label": "Use callout title and description for sharing?",
