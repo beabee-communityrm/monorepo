@@ -3,6 +3,7 @@ import type { AppStepperStep } from '@type';
 import type { ContentTabData } from './tabs/ContentTab/ContentTab.vue';
 import type { SettingsTabData } from './tabs/SettingsTab.vue';
 import type { DateAndDurationTabData } from './tabs/DatesAndDurationTab.vue';
+import type { TitleAndImageTabData } from './tabs/TitleAndImageTab.vue';
 
 /**
  * Combined props for all main callout tabs
@@ -11,6 +12,7 @@ export interface CalloutHorizontalTabsData {
   content: ContentTabData;
   settings: SettingsTabData;
   dates: DateAndDurationTabData;
+  titleAndImage: TitleAndImageTabData;
 }
 
 /**
