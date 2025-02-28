@@ -91,4 +91,4 @@ The AppToggleSwitch component:
 4. Emits an `update:modelValue` event when clicked to toggle the state
 5. Handles disabled state to prevent interaction when needed
 
-This creates a consistent and accessible toggle switch component that can be used throughout the application. 
+This creates a consistent and accessible toggle switch component that can be used throughout the application.

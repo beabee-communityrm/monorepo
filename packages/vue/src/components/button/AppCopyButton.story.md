@@ -74,11 +74,7 @@ The `AppCopyButton` component provides a simple way to copy text to the clipboar
 The AppCopyButton is commonly used in the AppInput component:
 
 ```vue
-<AppInput
-  v-model="apiKey"
-  label="API Key"
-  copyable
-/>
+<AppInput v-model="apiKey" label="API Key" copyable />
 ```
 
 ## How It Works
@@ -90,4 +86,4 @@ The AppCopyButton component:
 3. Shows an error notification if copying fails
 4. Emits a `copy` event when copying is successful
 
-This makes it easy to provide copy functionality throughout the application with consistent behavior and styling. 
+This makes it easy to provide copy functionality throughout the application with consistent behavior and styling.
