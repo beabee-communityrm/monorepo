@@ -75,7 +75,7 @@ const now = ref(new Date());
 const pageTitle = computed(() =>
   status.value
     ? t('editCallout.title', {
-        title: tabs.value?.content.sidebarTabs.titleAndImage.title.default,
+        title: tabs.value?.titleAndImage.title.default,
       })
     : t('createCallout.title')
 );
@@ -123,8 +123,7 @@ addBreadcrumb(
           ...(props.id
             ? [
                 {
-                  title:
-                    tabs.value.content.sidebarTabs.titleAndImage.title.default,
+                  title: tabs.value?.titleAndImage.title.default,
                   to: '/admin/callouts/view/' + props.id,
                 },
                 {

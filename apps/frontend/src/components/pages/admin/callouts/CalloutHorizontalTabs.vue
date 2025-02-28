@@ -30,6 +30,7 @@ import type {
 import SettingsTab from './tabs/SettingsTab.vue';
 import DatesAndDurationTab from './tabs/DatesAndDurationTab.vue';
 import ContentTab from './tabs/ContentTab/ContentTab.vue';
+import TitleAndImageTab from './tabs/TitleAndImageTab.vue';
 
 export interface CalloutProps {
   data: CalloutHorizontalTabsData;
@@ -50,6 +51,13 @@ const tabs = reactive<CalloutHorizontalTabs>({
     component: markRaw(ContentTab),
     data: props.data.content,
   },
+  titleAndImage: {
+    name: t('createCallout.tabs.titleAndImage.title'),
+    validated: false,
+    error: false,
+    component: markRaw(TitleAndImageTab),
+    data: props.data.titleAndImage,
+  },
   settings: {
     name: t('createCallout.tabs.settings.title'),
     validated: false,
@@ -69,7 +77,12 @@ const tabs = reactive<CalloutHorizontalTabs>({
 /**
  * Define the order of tabs
  */
-const tabsInOrder = [tabs.content, tabs.settings, tabs.dates];
+const tabsInOrder = [
+  tabs.content,
+  tabs.titleAndImage,
+  tabs.settings,
+  tabs.dates,
+];
 
 /**
  * Tab selection management
