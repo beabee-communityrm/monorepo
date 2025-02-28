@@ -13,21 +13,35 @@ import {
   type CreateCalloutData,
 } from '@beabee/beabee-common';
 import { format } from 'date-fns';
-import type { CalloutStepsProps } from '@components/pages/admin/callouts/callouts.interface';
-
-import type { FilterItem, FilterItems } from '@type';
+import { computed } from 'vue';
 
 import env from '../env';
-import i18n from '@lib/i18n';
+import { i18n } from '../lib/i18n';
 
 import type { LocaleProp } from '@type';
 import type {
   FormBuilderNavigation,
   FormBuilderSlide,
 } from '@components/form-builder/form-builder.interface';
+import type { ContentTabData } from '@components/pages/admin/callouts/tabs/ContentTab/ContentTab.vue';
+import type { FilterItem, FilterItems } from '@type';
+import type { CalloutHorizontalTabsData } from '@components/pages/admin/callouts/CalloutHorizontalTabs.interface';
+import type { TitleAndImageTabData } from '@components/pages/admin/callouts/tabs/TitleAndImageTab.vue';
 
 const { t } = i18n.global;
 
+/**
+ * Predefined response buckets for callout responses
+ */
+export const buckets = computed(() => [
+  { id: '', label: t('calloutResponseBuckets.inbox') },
+  { id: 'verified', label: t('calloutResponseBuckets.verified') },
+  { id: 'trash', label: t('calloutResponseBuckets.trash') },
+]);
+
+/**
+ * Creates a new slide schema with a unique ID and default navigation
+ */
 export function getSlideSchema(no: number): FormBuilderSlide {
   const id = 'slide' + Math.random().toString(36).substring(2, 8);
   return {
@@ -54,6 +68,9 @@ const textFields = [
   'shareDescription',
 ] as const;
 
+/**
+ * Converts variant data into a format suitable for the form tabs
+ */
 function convertVariantsForSteps(
   variants: Record<string, CalloutVariantData> | undefined
 ): Record<(typeof textFields)[number], LocaleProp> {
@@ -68,6 +85,8 @@ function convertVariantsForSteps(
     shareDescription: { default: '' },
   };
 
+  if (!variants) return result;
+
   for (const variant in variants) {
     for (const field of textFields) {
       result[field][variant] = variants[variant][field] || '';
@@ -77,14 +96,18 @@ function convertVariantsForSteps(
   return result;
 }
 
+/**
+ * Converts slide data and variants into a format suitable for the form builder
+ */
 function convertSlidesForSteps(
   slidesIn: GetCalloutSlideSchema[] | undefined,
   variants: Record<string, CalloutVariantData> | undefined
 ): { slides: FormBuilderSlide[]; componentText: Record<string, LocaleProp> } {
+  if (!slidesIn) {
+    return { slides: [getSlideSchema(1)], componentText: {} };
+  }
+
   const componentText: Record<string, LocaleProp> = {};
-
-  if (!slidesIn) return { slides: [getSlideSchema(1)], componentText };
-
   const slides = slidesIn.map((slide) => {
     const navigation: FormBuilderNavigation = {
       prevText: { default: '' },
@@ -93,15 +116,17 @@ function convertSlidesForSteps(
       nextSlideId: slide.navigation.nextSlideId,
     };
 
-    for (const variant in variants) {
-      for (const field of ['prevText', 'nextText', 'submitText'] as const) {
-        navigation[field][variant] =
-          variants[variant].slideNavigation[slide.id][field];
-      }
+    if (variants) {
+      for (const variant in variants) {
+        for (const field of ['prevText', 'nextText', 'submitText'] as const) {
+          navigation[field][variant] =
+            variants[variant].slideNavigation[slide.id][field];
+        }
 
-      for (const text in variants[variant].componentText) {
-        componentText[text] ||= { default: '' };
-        componentText[text][variant] = variants[variant].componentText[text];
+        for (const text in variants[variant].componentText) {
+          componentText[text] ||= { default: '' };
+          componentText[text][variant] = variants[variant].componentText[text];
+        }
       }
     }
 
@@ -111,9 +136,9 @@ function convertSlidesForSteps(
   return { slides, componentText };
 }
 
-export function convertCalloutToSteps(
+export function convertCalloutToTabs(
   callout?: GetCalloutDataWith<'form' | 'responseViewSchema' | 'variants'>
-): CalloutStepsProps {
+): CalloutHorizontalTabsData {
   const settings = env.cnrMode
     ? ({
         whoCanTakePart: 'everyone',
@@ -138,25 +163,60 @@ export function convertCalloutToSteps(
 
   const variants = convertVariantsForSteps(callout?.variants);
 
-  const content = convertSlidesForSteps(
-    callout?.formSchema.slides,
-    callout?.variants
-  );
+  const locales = callout
+    ? Object.keys(callout.variants).filter((v) => v !== 'default')
+    : [];
+
+  const content: ContentTabData = {
+    slides: convertSlidesForSteps(callout?.formSchema.slides, callout?.variants)
+      .slides,
+    componentText: convertSlidesForSteps(
+      callout?.formSchema.slides,
+      callout?.variants
+    ).componentText,
+    sidebarTabs: {
+      content: {
+        currentSlide: convertSlidesForSteps(
+          callout?.formSchema.slides,
+          callout?.variants
+        ).slides[0],
+        slides: convertSlidesForSteps(
+          callout?.formSchema.slides,
+          callout?.variants
+        ).slides,
+        componentText: convertSlidesForSteps(
+          callout?.formSchema.slides,
+          callout?.variants
+        ).componentText,
+        showAdvanced: false,
+      },
+      intro: {
+        introText: variants.intro,
+      },
+      endMessage: {
+        whenFinished: callout?.thanksRedirect ? 'redirect' : 'message',
+        thankYouTitle: variants.thanksTitle,
+        thankYouText: variants.thanksText,
+        thankYouRedirect: variants.thanksRedirect,
+      },
+    },
+  };
+
+  const titleAndImage: TitleAndImageTabData = {
+    title: variants.title,
+    description: variants.excerpt,
+    coverImageURL: callout?.image || '',
+    autoGenerateSlug: !callout,
+    autoSlug: '',
+    slug: callout?.slug || '',
+    overrideShare: !!callout?.shareTitle,
+    shareTitle: variants.shareTitle,
+    shareDescription: variants.shareDescription,
+  };
 
   return {
     content,
-    titleAndImage: {
-      title: variants.title,
-      description: variants.excerpt,
-      coverImageURL: callout?.image || '',
-      introText: variants.intro,
-      useCustomSlug: !!callout,
-      autoSlug: '',
-      slug: callout?.slug || '',
-      overrideShare: !!callout?.shareTitle,
-      shareTitle: variants.shareTitle,
-      shareDescription: variants.shareDescription,
-    },
+    titleAndImage,
     settings: {
       ...settings,
       requireCaptcha: callout?.captcha || CalloutCaptcha.None,
@@ -184,20 +244,9 @@ export function convertCalloutToSteps(
         addressPattern: '',
         addressPatternProp: '',
       },
-      locales: callout
-        ? Object.keys(callout.variants).filter((v) => v !== 'default')
-        : [],
+      locales,
       channels: callout?.channels || null,
     },
-    endMessage: {
-      whenFinished: callout?.thanksRedirect ? 'redirect' : 'message',
-      thankYouTitle: variants.thanksTitle,
-      thankYouText: variants.thanksText,
-      thankYouRedirect: variants.thanksRedirect,
-    },
-    /*mailchimp: {
-      useMailchimpSync: false,
-    },*/
     dates: {
       startNow: !callout || callout.status === ItemStatus.Draft,
       hasEndDate: !!callout?.expires,
@@ -210,13 +259,13 @@ export function convertCalloutToSteps(
 }
 
 function convertVariantsForCallout(
-  steps: CalloutStepsProps
+  tabs: CalloutHorizontalTabsData
 ): Record<string, CalloutVariantData> {
   const variants: Record<string, CalloutVariantData> = {};
-  for (const variant of [...steps.settings.locales, 'default']) {
+  for (const variant of [...tabs.settings.locales, 'default']) {
     const slideNavigation: Record<string, CalloutVariantNavigationData> = {};
 
-    for (const slide of steps.content.slides) {
+    for (const slide of tabs.content.slides) {
       slideNavigation[slide.id] = {
         nextText: slide.navigation.nextText[variant] || '',
         prevText: slide.navigation.prevText[variant] || '',
@@ -225,30 +274,34 @@ function convertVariantsForCallout(
     }
 
     const componentText: Record<string, string> = {};
-    for (const key in steps.content.componentText) {
-      componentText[key] = steps.content.componentText[key][variant] || '';
+    for (const key in tabs.content.componentText) {
+      componentText[key] = tabs.content.componentText[key][variant] || '';
     }
 
     variants[variant] = {
-      title: steps.titleAndImage.title[variant] || '',
-      excerpt: steps.titleAndImage.description[variant] || '',
-      intro: steps.titleAndImage.introText[variant] || '',
-      ...(steps.endMessage.whenFinished === 'redirect'
+      title: tabs.titleAndImage.title[variant] || '',
+      excerpt: tabs.titleAndImage.description[variant] || '',
+      intro: tabs.content.sidebarTabs.intro.introText[variant] || '',
+      ...(tabs.content.sidebarTabs.endMessage.whenFinished === 'redirect'
         ? {
             thanksText: '',
             thanksTitle: '',
-            thanksRedirect: steps.endMessage.thankYouRedirect[variant] || '',
+            thanksRedirect:
+              tabs.content.sidebarTabs.endMessage.thankYouRedirect[variant] ||
+              '',
           }
         : {
-            thanksText: steps.endMessage.thankYouText[variant] || '',
-            thanksTitle: steps.endMessage.thankYouTitle[variant] || '',
+            thanksText:
+              tabs.content.sidebarTabs.endMessage.thankYouText[variant] || '',
+            thanksTitle:
+              tabs.content.sidebarTabs.endMessage.thankYouTitle[variant] || '',
             thanksRedirect: null,
           }),
-      ...(steps.titleAndImage.overrideShare
+      ...(tabs.titleAndImage.overrideShare
         ? {
-            shareTitle: steps.titleAndImage.shareTitle[variant] || '',
+            shareTitle: tabs.titleAndImage.shareTitle[variant] || '',
             shareDescription:
-              steps.titleAndImage.shareDescription[variant] || '',
+              tabs.titleAndImage.shareDescription[variant] || '',
           }
         : {
             shareTitle: null,
@@ -263,9 +316,9 @@ function convertVariantsForCallout(
 }
 
 function convertSlidesForCallout(
-  steps: CalloutStepsProps
+  tabs: CalloutHorizontalTabsData
 ): SetCalloutSlideSchema[] {
-  return steps.content.slides.map((slide) => ({
+  return tabs.content.slides.map((slide) => ({
     ...slide,
     navigation: {
       nextSlideId: slide.navigation.nextSlideId,
@@ -274,58 +327,58 @@ function convertSlidesForCallout(
 }
 
 export function convertStepsToCallout(
-  steps: CalloutStepsProps
+  tabs: CalloutHorizontalTabsData
 ): CreateCalloutData {
-  const slug = steps.titleAndImage.useCustomSlug
-    ? steps.titleAndImage.slug
-    : steps.titleAndImage.autoSlug;
+  const slug = tabs.titleAndImage.autoGenerateSlug
+    ? tabs.titleAndImage.autoSlug
+    : tabs.titleAndImage.slug;
 
-  const slides = convertSlidesForCallout(steps);
-  const variants = convertVariantsForCallout(steps);
+  const slides = convertSlidesForCallout(tabs);
+  const variants = convertVariantsForCallout(tabs);
 
   return {
     slug: slug || undefined,
-    image: steps.titleAndImage.coverImageURL,
+    image: tabs.titleAndImage.coverImageURL,
     formSchema: { slides },
-    responseViewSchema: steps.settings.showResponses
+    responseViewSchema: tabs.settings.showResponses
       ? {
-          buckets: steps.settings.responseBuckets,
-          titleProp: steps.settings.responseTitleProp,
-          imageProp: steps.settings.responseImageProp,
-          imageFilter: steps.settings.responseImageFilter,
-          gallery: steps.settings.responseViews.includes('gallery'),
-          links: steps.settings.responseLinks,
-          map: steps.settings.responseViews.includes('map')
+          buckets: tabs.settings.responseBuckets,
+          titleProp: tabs.settings.responseTitleProp,
+          imageProp: tabs.settings.responseImageProp,
+          imageFilter: tabs.settings.responseImageFilter,
+          gallery: tabs.settings.responseViews.includes('gallery'),
+          links: tabs.settings.responseLinks,
+          map: tabs.settings.responseViews.includes('map')
             ? {
-                ...steps.settings.mapSchema,
-                addressPattern: steps.settings.mapSchema.addressPatternProp
-                  ? steps.settings.mapSchema.addressPattern
+                ...tabs.settings.mapSchema,
+                addressPattern: tabs.settings.mapSchema.addressPatternProp
+                  ? tabs.settings.mapSchema.addressPattern
                   : '',
               }
             : null,
         }
       : null,
-    starts: steps.dates.startNow
+    starts: tabs.dates.startNow
       ? new Date()
-      : new Date(steps.dates.startDate + 'T' + steps.dates.startTime),
-    expires: steps.dates.hasEndDate
-      ? new Date(steps.dates.endDate + 'T' + steps.dates.endTime)
+      : new Date(tabs.dates.startDate + 'T' + tabs.dates.startTime),
+    expires: tabs.dates.hasEndDate
+      ? new Date(tabs.dates.endDate + 'T' + tabs.dates.endTime)
       : null,
-    allowMultiple: steps.settings.multipleResponses,
+    allowMultiple: tabs.settings.multipleResponses,
     allowUpdate:
-      !steps.settings.multipleResponses && steps.settings.usersCanEditAnswers,
-    hidden: !steps.settings.showOnUserDashboards,
-    captcha: steps.settings.requireCaptcha,
+      !tabs.settings.multipleResponses && tabs.settings.usersCanEditAnswers,
+    hidden: !tabs.settings.showOnUserDashboards,
+    captcha: tabs.settings.requireCaptcha,
     access:
-      steps.settings.whoCanTakePart === 'members'
+      tabs.settings.whoCanTakePart === 'members'
         ? CalloutAccess.Member
-        : steps.settings.allowAnonymousResponses === 'none'
+        : tabs.settings.allowAnonymousResponses === 'none'
           ? CalloutAccess.Guest
-          : steps.settings.allowAnonymousResponses === 'guests'
+          : tabs.settings.allowAnonymousResponses === 'guests'
             ? CalloutAccess.Anonymous
             : CalloutAccess.OnlyAnonymous,
     variants,
-    channels: steps.settings.channels,
+    channels: tabs.settings.channels,
   };
 }
 

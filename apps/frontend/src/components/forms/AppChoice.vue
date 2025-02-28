@@ -23,14 +23,19 @@
   </div>
 </template>
 <script lang="ts" setup generic="T extends string | number">
+export interface AppChoiceProps<T extends string | number> {
+  /** The model value of the choice */
+  modelValue: T;
+  /** The items for the choice */
+  items: { label: string; value: T }[];
+  /** Whether the choice is disabled */
+  disabled?: boolean;
+  /** The size of the choice */
+  size?: 'xs' | 'sm';
+}
+
 defineEmits(['update:modelValue']);
-withDefaults(
-  defineProps<{
-    modelValue: T;
-    items: { label: string; value: T }[];
-    disabled?: boolean;
-    size?: 'xs' | 'sm';
-  }>(),
-  { size: 'sm' }
-);
+withDefaults(defineProps<AppChoiceProps<T>>(), {
+  size: 'sm',
+});
 </script>

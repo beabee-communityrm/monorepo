@@ -32,12 +32,12 @@ import type { ApplePayRecurringPaymentRequest } from '@stripe/stripe-js/dist/str
 import { loadStripe } from '@stripe/stripe-js/pure';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import AppButton from './button/AppButton.vue';
-import AppInput from './forms/AppInput.vue';
-import AppLabel from './forms/AppLabel.vue';
+import { AppButton } from '@beabee/vue/components';
+import AppInput from '@components/forms/AppInput.vue';
+import AppLabel from '@beabee/vue/components/form/AppLabel';
+import AppNotification from '@beabee/vue/components/notification/AppNotification';
 
 import theme from 'virtual:theme';
-import AppNotification from './AppNotification.vue';
 import { ContributionPeriod } from '@beabee/beabee-common';
 import env from '@env';
 import type { StripePaymentData } from '@type';

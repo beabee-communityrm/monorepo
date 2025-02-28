@@ -30,9 +30,10 @@ COPY apps/legacy/package.json /opt/apps/legacy/package.json
 COPY apps/webhooks/package.json /opt/apps/webhooks/package.json
 COPY apps/e2e-api-tests/package.json /opt/apps/e2e-api-tests/package.json
 
-# Copy config files with dependencies info
+# Copy dependencies with relevant content
 COPY packages/prettier-config /opt/packages/prettier-config
 COPY packages/tsconfig /opt/packages/tsconfig
+COPY packages/vue /opt/packages/vue
 
 # Install dependencies
 RUN yarn workspaces focus
