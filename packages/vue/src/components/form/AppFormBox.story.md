@@ -50,8 +50,8 @@ The `AppFormBox` component is a container for grouping related form fields. It p
 ### With Help Text
 
 ```vue
-<AppFormBox 
-  title="Privacy Settings" 
+<AppFormBox
+  title="Privacy Settings"
   help="These settings control who can see your information."
 >
   <AppFormField>
@@ -132,4 +132,4 @@ The AppFormBox component:
 5. Renders the form fields passed via the default slot
 6. Provides visual separation between different sections of a form
 
-This creates a structured and organized form layout that improves usability and readability. 
+This creates a structured and organized form layout that improves usability and readability.

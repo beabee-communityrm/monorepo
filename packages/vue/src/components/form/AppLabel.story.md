@@ -19,7 +19,7 @@ The `AppLabel` component provides a consistent label for form fields. It's a sim
 | Prop       | Type      | Default | Description                                 |
 | ---------- | --------- | ------- | ------------------------------------------- |
 | `label`    | `string`  | -       | The text to display as the label (required) |
-| `required` | `boolean` | `false` | Whether to show the required indicator (*)  |
+| `required` | `boolean` | `false` | Whether to show the required indicator (\*) |
 
 ## Examples
 
@@ -55,7 +55,7 @@ The AppLabel component:
 
 1. Renders a semantic HTML `<label>` element
 2. Displays the provided label text
-3. Adds an asterisk (*) if the field is required
+3. Adds an asterisk (\*) if the field is required
 4. Applies consistent styling with proper spacing and font weight
 
-This creates a simple but consistent label component that can be used throughout the application's forms. 
+This creates a simple but consistent label component that can be used throughout the application's forms.

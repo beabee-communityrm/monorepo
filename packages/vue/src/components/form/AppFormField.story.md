@@ -46,7 +46,9 @@ The `AppFormField` component is a container for form fields that provides consis
 ### With HTML in Help Text
 
 ```vue
-<AppFormField help="Read our <a href='/privacy' class='text-link'>privacy policy</a> for more information.">
+<AppFormField
+  help="Read our <a href='/privacy' class='text-link'>privacy policy</a> for more information."
+>
   <AppLabel label="Email" />
   <AppInput v-model="email" type="email" />
 </AppFormField>
@@ -83,4 +85,4 @@ The AppFormField component:
 4. Applies proper spacing between consecutive form fields
 5. Supports HTML in the help text for rich formatting and links
 
-This creates a consistent and accessible form layout that can be used throughout the application. 
+This creates a consistent and accessible form layout that can be used throughout the application.
