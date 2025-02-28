@@ -1,6 +1,6 @@
 <template>
   <div class="mb-6">
-    <p v-if="help" class="text-gray-600 mb-2 px-4 text-sm" v-html="help" />
+    <p v-if="help" class="text-gray-600 mb-2 text-sm" v-html="help" />
     <AppLabel v-if="title" :label="title" class="mb-3" />
     <AppNotification v-if="notification" v-bind="notification" class="mb-3" />
     <div class="rounded bg-white p-4">
@@ -13,7 +13,7 @@
 import AppLabel from './AppLabel.vue';
 import AppNotification, {
   type AppNotificationProps,
-} from '../notification/AppNotification.vue';
+} from '@beabee/vue/components/notification/AppNotification';
 
 /**
  * Props for the AppFormBox component
