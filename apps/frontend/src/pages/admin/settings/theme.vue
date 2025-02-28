@@ -114,7 +114,7 @@ import {
 import { generalContent } from '../../../store';
 import AppColorInput from '../../../components/forms/AppColorInput.vue';
 import AppSelect from '../../../components/forms/AppSelect.vue';
-import AppForm from '../../../components/forms/AppForm.vue';
+import AppForm from '@beabee/vue/components/form/AppForm';
 import App2ColGrid from '../../../components/App2ColGrid.vue';
 
 const { t } = useI18n();

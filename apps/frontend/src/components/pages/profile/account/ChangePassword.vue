@@ -54,7 +54,7 @@ import { client } from '@utils/api';
 import { AppButton } from '@beabee/vue/components';
 import AppInput from '../../../forms/AppInput.vue';
 import AppHeading from '../../../AppHeading.vue';
-import AppForm from '../../../forms/AppForm.vue';
+import AppForm from '@beabee/vue/components/form/AppForm';
 import { faKey } from '@fortawesome/free-solid-svg-icons';
 
 const { t } = useI18n();

@@ -1,1 +1,4 @@
-export { default as AppSelectableList } from './AppSelectableList.vue';
+export {
+  default as AppSelectableList,
+  type AppSelectableListProps,
+} from './AppSelectableList.vue';

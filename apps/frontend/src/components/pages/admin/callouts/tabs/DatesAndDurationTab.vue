@@ -51,7 +51,7 @@ import useVuelidate from '@vuelidate/core';
 import { computed, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import AppInput from '../../../../forms/AppInput.vue';
-import AppLabel from '../../../../forms/AppLabel.vue';
+import AppLabel from '@beabee/vue/components/form/AppLabel';
 import AppRadioGroup from '../../../../forms/AppRadioGroup.vue';
 import AppFormSection from '../../../../forms/AppFormSection.vue';
 import { sameAs } from '@vuelidate/validators';

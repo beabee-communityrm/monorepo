@@ -61,9 +61,9 @@ import { format } from 'date-fns';
 import { reactive } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import AppForm from '@components/forms/AppForm.vue';
+import AppForm from '@beabee/vue/components/form/AppForm';
 import AppInput from '@components/forms/AppInput.vue';
-import AppLabel from '@components/forms/AppLabel.vue';
+import AppLabel from '@beabee/vue/components/form/AppLabel';
 
 import type { NoticeFormData } from './notice.interface';
 import type { CreateNoticeData, GetNoticeData } from '@beabee/beabee-common';

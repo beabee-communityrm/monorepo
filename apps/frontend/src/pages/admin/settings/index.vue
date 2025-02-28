@@ -182,7 +182,7 @@ import AppInput from '@components/forms/AppInput.vue';
 import AppSelect from '@components/forms/AppSelect.vue';
 import AppTextArea from '@components/forms/AppTextArea.vue';
 import AppHeading from '@components/AppHeading.vue';
-import AppForm from '@components/forms/AppForm.vue';
+import AppForm from '@beabee/vue/components/form/AppForm';
 import App2ColGrid from '@components/App2ColGrid.vue';
 import AppSubHeading from '@components/AppSubHeading.vue';
 import AppLinkList from '@components/forms/AppLinkList.vue';

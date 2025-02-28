@@ -24,7 +24,7 @@ import useVuelidate from '@vuelidate/core';
 import { requiredIf } from '@vuelidate/validators';
 import { computed } from 'vue';
 import VueMultiselect from 'vue-multiselect';
-import AppLabel from './AppLabel.vue';
+import AppLabel from '@beabee/vue/components/form/AppLabel';
 import type { SelectItem } from './form.interface';
 import AppInputError from './AppInputError.vue';
 import AppInputHelp from './AppInputHelp.vue';

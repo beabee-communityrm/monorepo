@@ -238,7 +238,7 @@ import AppSlide from '@components/slider/AppSlide.vue';
 import AppQRCode from '@components/AppQRCode.vue';
 import AppInput from '@components/forms/AppInput.vue';
 import AppConfirmDialog from '@components/AppConfirmDialog.vue';
-import AppNotification from '@components/AppNotification.vue';
+import AppNotification from '@beabee/vue/components/notification/AppNotification';
 
 import { addNotification } from '@beabee/vue/store/notifications';
 import { generalContent } from '@store/index';

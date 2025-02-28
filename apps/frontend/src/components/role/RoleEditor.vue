@@ -92,7 +92,7 @@ import AppRoundBadge from '@components/AppRoundBadge.vue';
 import { formatLocale } from '@utils/dates';
 import { format } from 'date-fns';
 import AppSelect from '@components/forms/AppSelect.vue';
-import AppLabel from '@components/forms/AppLabel.vue';
+import AppLabel from '@beabee/vue/components/form/AppLabel';
 import AppRadioGroup from '@components/forms/AppRadioGroup.vue';
 import AppInput from '@components/forms/AppInput.vue';
 
