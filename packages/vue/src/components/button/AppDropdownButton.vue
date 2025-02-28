@@ -29,22 +29,32 @@
 </template>
 
 <script lang="ts" setup>
+/**
+ * A dropdown button component that displays a dropdown menu when clicked.
+ * Used for actions that require selecting from a list of options.
+ */
 import type { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { onBeforeMount, onBeforeUnmount, ref, toRef, watch } from 'vue';
 import AppButton from './AppButton.vue';
 import { computed } from 'vue';
 
-const props = defineProps<{
+// Define the allowed variants for the dropdown button
+export type DropdownButtonVariant =
+  | 'primaryOutlined'
+  | 'linkOutlined'
+  | 'dangerOutlined'
+  | 'greyOutlined';
+
+// Define the component props interface
+export interface AppDropdownButtonProps {
   icon: IconDefinition;
   title: string;
-  variant:
-    | 'primaryOutlined'
-    | 'linkOutlined'
-    | 'dangerOutlined'
-    | 'greyOutlined';
+  variant: DropdownButtonVariant;
   showTitle?: boolean;
   disabled?: boolean;
-}>();
+}
+
+const props = defineProps<AppDropdownButtonProps>();
 
 const baseClasses = 'absolute top-full min-w-full -left-px z-20 bg-white';
 

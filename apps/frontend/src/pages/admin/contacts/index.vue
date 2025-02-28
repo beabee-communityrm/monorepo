@@ -173,11 +173,10 @@ import {
   faMailBulk,
 } from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';
-import { addNotification } from '@store/notifications';
+import { addNotification } from '@beabee/vue/store/notifications';
 
 import PageTitle from '@components/PageTitle.vue';
-import AppButtonGroup from '@components/button/AppButtonGroup.vue';
-import AppButton from '@components/button/AppButton.vue';
+import { AppButton, AppButtonGroup } from '@beabee/vue/components';
 import ToggleTagButton from '@components/tag/ToggleTagButton.vue';
 import AppSearch from '@components/search/AppSearch.vue';
 import TagList from '@components/tag/TagList.vue';

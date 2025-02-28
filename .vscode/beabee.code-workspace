@@ -49,12 +49,24 @@
       "path": "../packages/locale"
     },
     {
+      "name": "packages/vue",
+      "path": "../packages/vue"
+    },
+    {
       "name": "packages/prettier-config",
       "path": "../packages/prettier-config"
     },
     {
       "name": "packages/tsconfig",
       "path": "../packages/tsconfig"
+    },
+    {
+      "name": "packages/test-utils",
+      "path": "../packages/test-utils"
+    },
+    {
+      "name": "packages/docker",
+      "path": "../packages/docker"
     }
   ],
   "settings": {

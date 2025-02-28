@@ -30,7 +30,7 @@ import PageTitle from '@components/PageTitle.vue';
 import { client } from '@utils/api';
 
 import { addBreadcrumb } from '@store/breadcrumb';
-import { addNotification } from '@store/notifications';
+import { addNotification } from '@beabee/vue/store/notifications';
 import type { CreateNoticeData, GetNoticeData } from '@beabee/beabee-common';
 
 const { t } = useI18n();

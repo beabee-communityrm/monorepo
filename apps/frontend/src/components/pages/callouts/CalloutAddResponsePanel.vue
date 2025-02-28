@@ -51,7 +51,7 @@ import { useCallout } from './use-callout';
 import { ref, toRef, watch } from 'vue';
 import CalloutSidePanel from './CalloutSidePanel.vue';
 import CalloutThanksBox from './CalloutThanksBox.vue';
-import { generalContent } from '@store/generalContent';
+import { generalContent } from '@beabee/vue/store/generalContent';
 
 import { useI18n } from 'vue-i18n';
 import AppShareBox from '../../AppShareBox.vue';
