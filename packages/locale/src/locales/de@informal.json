@@ -913,9 +913,6 @@
           "general": {
             "title": "Allgemeine Informationen"
           },
-          "sharing": {
-            "title": "Teilen-Optionen"
-          },
           "description": {
             "help": "Diese Beschreibung wird angezeigt, wenn der Callout im Mitglieder-Dashboard sichtbar ist. Sie wird auch für das Teilen verwendet.",
             "label": "Kurzbeschreibung",
@@ -923,11 +920,15 @@
           },
           "image": {
             "help": "<p>Das <strong>Titelbild</strong> dient zur Illustration des Callouts.</p>\n",
-            "label": "Titelbild"
+            "label": "Titelbild",
+            "description": "Vergessen nicht, nach dem Hochladen deines Bildes zu speichern!",
           },
           "intro": {
             "help": "<p>Die <strong>Einleitung</strong> erscheint vor den Fragen. Erkläre darin, warum du den Callout machst, also was das Ziel ist und wie die Antworten helfen. Gib so viel Kontext wie möglich, um den Teilnehmenden die Beantwortung zu erleichtern.</p>\n",
             "label": "Einleitung"
+          },
+          "sharing": {
+            "title": "Teilen-Optionen"
           },
           "overrideShare": {
             "label": "Callout-Titel und -Beschreibung zum Teilen verwenden?",
@@ -944,13 +945,18 @@
             "placeholder": "Die Überschrift deines Callouts in sozialen Netzwerken."
           },
           "slug": {
+            "locked": {
+              "title":
+                "Der Permalink ist gesperrt, weil der Callout bereits veröffentlicht wurde.",
+              "description": ""
+            },
             "boxTitle": "Permalink",
             "help": "<p>Du kannst den <strong>Permalink</strong> mit Nutzern teilen, damit sie den Callout direkt aufrufen können</p>\n",
-            "label": "Permalink",
+            "label": "Auto-generate slug from title",
             "opts": {
-              "auto": "Automatisch aus Callout-Titel generieren",
-              "manual": "Eigenen Permalink festlegen"
-            }
+              "auto": "Der Permalink wird aus dem Callout-Titel generiert und automatisch aktualisiert, bis der Callout veröffentlicht wird.",
+              "manual": "Der Permalink wird manuell festgelegt",
+            },
           },
           "title": {
             "help": "<p>Der <strong>Titel</strong> taucht immer dort auf, wo dein Callout erwähnt wird. Überlege dir einen guten Namen, der Interesse weckt.</p>\n",

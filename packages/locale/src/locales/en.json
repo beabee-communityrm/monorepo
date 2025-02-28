@@ -408,9 +408,10 @@
     "updated": "Your callout was successfully updated."
   },
   "calloutBuilder": {
+    "slidesTitle": "Slides",
     "actions": {
-      "addSlide": "Add slide",
-      "removeSlide": "Remove slide"
+      "addSlide": "Add",
+      "removeSlide": "Remove"
     },
     "internalTitle": "Internal title",
     "nextButton": "Next button text",
@@ -746,6 +747,11 @@
     "lastSaved": "Last saved {duration} ago",
     "lastSavedNow": "Last saved just now",
     "tabs": {
+      "intro": {
+        "title": "Introduction",
+        "help": "<p>The <strong>Introduction text</strong> appears alongside the callout. It should explain why you are doing this callout and give any context the user might need before answering.</p>\n",
+        "label": "Introduction text"
+      },
       "content": {
         "title": "Content"
       },
@@ -919,6 +925,9 @@
       },
       "titleAndImage": {
         "inputs": {
+          "general": {
+            "title": "General information"
+          },
           "description": {
             "help": "<p>The <strong>Short description</strong> expands on the title to explain what the callout is about. It is meant to inform people what is inside in a few words.</p>\n",
             "label": "Short description",
@@ -926,18 +935,15 @@
           },
           "image": {
             "help": "<p>The <strong>Cover image</strong> will serve as an illustration for the callout on menus and forms.</p>\n",
-            "label": "Cover image"
+            "label": "Cover image",
+            "description": "Don't forget to save after uploading an image!"
           },
-          "intro": {
-            "help": "<p>The <strong>Introduction text</strong> appears alongside the callout. It should explain why you are doing this callout and give any context the user might need before answering.</p>\n",
-            "label": "Introduction text"
+          "sharing": {
+            "title": "Sharing options",
           },
           "overrideShare": {
             "label": "Use callout title and description for sharing?",
-            "opts": {
-              "no": "No, set a custom title and description",
-              "yes": "Yes"
-            }
+            "description": "Links shared on social networks will have a custom title and description"
           },
           "shareDescription": {
             "help": "<p>The <strong>Share description</strong> field sets the short description as it should appear on social media cards.</p>\n",
@@ -950,11 +956,17 @@
             "placeholder": "The name of your callout"
           },
           "slug": {
-            "help": "<p>You can share the <strong>Permalink</strong> with users so they can access the callout</p>\n",
-            "label": "Permalink",
+            "locked": {
+              "title":
+                "The permalink is locked because the callout has already been published.",
+              "description": ""
+            },
+            "boxTitle": "Permalink",
+            "help": "<p>You can share the <strong>permalink</strong> with users so they can access the callout directly</p>\n",
+            "label": "Auto-generate slug from title",
             "opts": {
-              "auto": "Auto-generate from callout title",
-              "manual": "Set custom permalink"
+              "auto": "The permalink is generated from the callout title and automatically updated until the callout is published.",
+              "manual": "The permalink is set manually"
             }
           },
           "title": {
@@ -989,7 +1001,7 @@
   },
   "forgotPassword": {
     "backToLogin": "Back to login page",
-    "description": "Please enter your email address and we’ll send you password reset instructions.",
+    "description": "Please enter your email address and we'll send you password reset instructions.",
     "message": "If there is an account associated with {email}, you will receive an email shortly. Check your spam folder if it doesn't appear.",
     "title": "Forgot your password?"
   },
