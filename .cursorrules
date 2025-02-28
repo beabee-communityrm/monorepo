@@ -16,6 +16,8 @@ And we have the following apps:
 - `apps/legacy` in `apps/legacy/package.json` for the legacy frontend application
 - `apps/webhooks` in `apps/webhooks/package.json` for the webhook server
 
+Each of these packages can be checked with yarn, for example, `yarn workspace @beabee/frontend run check` to run the `check` script on the corresponding package.json, use this to verify changes.
+
 There are also packages in the apps directory, but these cannot be imported into the other packages (unless we are inside that app), because they are not self-contained packages. 
 
 Please provide concise answers. Do explain obvious concepts. You can assume that I am knowledgable about most programming topics. Write full code blocks, do not leave out any code.
