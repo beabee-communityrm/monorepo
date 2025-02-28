@@ -27,11 +27,17 @@
 <script lang="ts" setup>
 /**
  * A toggle switch component that provides a binary choice.
+ * Used for enabling/disabling features or settings.
+ *
+ * @component AppToggleSwitch
+ *
+ * @example
+ * <AppToggleSwitch
+ *   v-model="enabled"
+ *   variant="primary"
+ *   size="default"
+ * />
  */
-const emit = defineEmits<{
-  /** Emitted when the switch state changes */
-  (e: 'update:modelValue', value: boolean): void;
-}>();
 
 /**
  * Props for the AppToggleSwitch component
@@ -46,6 +52,11 @@ export interface AppToggleSwitchProps {
   /** Whether the switch is disabled */
   disabled?: boolean;
 }
+
+const emit = defineEmits<{
+  /** Emitted when the switch state changes */
+  (e: 'update:modelValue', value: boolean): void;
+}>();
 
 const props = withDefaults(defineProps<AppToggleSwitchProps>(), {
   variant: 'primary',
@@ -74,6 +85,9 @@ const translateClasses = {
   small: 'translate-x-4',
 } as const;
 
+/**
+ * Toggles the switch state if not disabled
+ */
 function toggle() {
   if (!props.disabled) {
     emit('update:modelValue', !props.modelValue);
