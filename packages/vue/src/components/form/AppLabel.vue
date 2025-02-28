@@ -4,8 +4,15 @@
   </label>
 </template>
 <script lang="ts" setup>
-defineProps<{
+/**
+ * Props for the AppLabel component
+ */
+export interface AppLabelProps {
+  /** The label to display */
   label: string;
+  /** Whether the label is required */
   required?: boolean;
-}>();
+}
+
+defineProps<AppLabelProps>();
 </script>

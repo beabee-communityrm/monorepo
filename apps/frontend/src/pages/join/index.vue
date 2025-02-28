@@ -73,7 +73,7 @@ import StripePayment from '@components/StripePayment.vue';
 import { useJoin } from '@components/pages/join/use-join';
 import JoinForm from '@components/pages/join/JoinForm.vue';
 import { faHandSparkles } from '@fortawesome/free-solid-svg-icons';
-import AppNotification from '@components/AppNotification.vue';
+import AppNotification from '@beabee/vue/components/notification/AppNotification';
 import AuthBox from '@components/AuthBox.vue';
 
 import { client } from '@utils/api';

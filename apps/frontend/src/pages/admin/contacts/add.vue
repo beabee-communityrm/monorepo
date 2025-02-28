@@ -73,7 +73,7 @@ import type { UpdateContribution } from '@components/contact/contact.interface';
 import ContactBasicFields from '@components/contact/ContactBasicFields.vue';
 import ContactContributionFields from '@components/contact/ContactContributionFields.vue';
 import AppCheckbox from '@components/forms/AppCheckbox.vue';
-import AppForm from '@components/forms/AppForm.vue';
+import AppForm from '@beabee/vue/components/form/AppForm';
 import PageTitle from '@components/PageTitle.vue';
 import RoleEditor from '@components/role/RoleEditor.vue';
 import { AppButton } from '@beabee/vue/components';

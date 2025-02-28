@@ -82,7 +82,7 @@ import {
   url,
 } from '@vuelidate/validators';
 import AppInputHelp from './AppInputHelp.vue';
-import AppLabel from './AppLabel.vue';
+import AppLabel from '@beabee/vue/components/form/AppLabel';
 import AppInputError from './AppInputError.vue';
 import { AppCopyButton } from '@beabee/vue/components';
 

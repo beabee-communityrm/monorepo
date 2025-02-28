@@ -191,7 +191,7 @@ import ToggleTagButton from '@components/tag/ToggleTagButton.vue';
 import { buckets } from '@components/pages/admin/callouts/callouts.interface';
 import CalloutResponseComments from '@components/callout/CalloutResponseComments.vue';
 import SetAssigneeButton from '@components/pages/admin/callouts/SetAssigneeButton.vue';
-import AppNotification from '@components/AppNotification.vue';
+import AppNotification from '@beabee/vue/components/notification/AppNotification';
 import CalloutForm from '@components/pages/callouts/CalloutForm.vue';
 import TagList from '@components/tag/TagList.vue';
 

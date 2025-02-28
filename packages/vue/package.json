@@ -18,6 +18,7 @@
     "check:prettier": "prettier -c ."
   },
   "dependencies": {
+    "@beabee/client": "workspace:^",
     "@fontsource/fira-sans": "^5.1.1",
     "@fontsource/fira-sans-condensed": "^5.1.1",
     "@fontsource/libre-franklin": "^5.1.2",

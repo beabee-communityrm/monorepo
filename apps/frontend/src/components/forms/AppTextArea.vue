@@ -20,7 +20,7 @@ import useVuelidate from '@vuelidate/core';
 import { helpers, requiredIf } from '@vuelidate/validators';
 import { useI18n } from 'vue-i18n';
 import AppInputHelp from './AppInputHelp.vue';
-import AppLabel from './AppLabel.vue';
+import AppLabel from '@beabee/vue/components/form/AppLabel';
 import AppInputError from './AppInputError.vue';
 
 const emit = defineEmits(['update:modelValue']);

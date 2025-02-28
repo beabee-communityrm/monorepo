@@ -24,8 +24,8 @@
   </div>
 </template>
 <script lang="ts" setup>
-import AppLabel from '@components/forms/AppLabel.vue';
 import AppTextArea from '@components/forms/AppTextArea.vue';
+import AppLabel from '@beabee/vue/components/form/AppLabel';
 import type { LocaleInputProps } from '@type';
 
 const emit = defineEmits(['update:modelValue']);

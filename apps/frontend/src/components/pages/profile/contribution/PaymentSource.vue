@@ -47,7 +47,7 @@ import StripePayment from '@components/StripePayment.vue';
 import AppModal from '@components/AppModal.vue';
 import AppHeading from '@components/AppHeading.vue';
 import PaymentMethod from '@components/payment-method/PaymentMethod.vue';
-import AppNotification from '@components/AppNotification.vue';
+import AppNotification from '@beabee/vue/components/notification/AppNotification';
 
 import { client, isApiError } from '@utils/api';
 
