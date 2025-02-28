@@ -22,6 +22,7 @@ const variants: ButtonVariant[] = [
   'primaryOutlined',
   'linkOutlined',
   'dangerOutlined',
+  'dangerGhost',
   'greyOutlined',
   'text',
   'dangerText',

@@ -18,6 +18,7 @@ const variants: ButtonVariant[] = [
   'primaryOutlined',
   'linkOutlined',
   'dangerOutlined',
+  'dangerGhost',
   'greyOutlined',
 ];
 </script>

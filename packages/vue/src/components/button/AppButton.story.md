@@ -38,18 +38,18 @@ The `AppButton` component is a versatile button component that can be rendered a
 
 ## Props
 
-| Prop       | Type               | Default     | Description                                                                                                                                                 |
-| ---------- | ------------------ | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `variant`  | `string`           | `'primary'` | Visual style of the button. Options: `primary`, `link`, `danger`, `primaryOutlined`, `linkOutlined`, `dangerOutlined`, `greyOutlined`, `text`, `dangerText` |
-| `size`     | `string`           | `'md'`      | Size of the button. Options: `xs`, `sm`, `md`, `lg`                                                                                                         |
-| `disabled` | `boolean`          | `false`     | Whether the button is disabled                                                                                                                              |
-| `loading`  | `boolean`          | `false`     | Whether to show a loading spinner                                                                                                                           |
-| `type`     | `string`           | `'button'`  | HTML button type attribute. Options: `button`, `submit`                                                                                                     |
-| `href`     | `string`           | `undefined` | URL for anchor tag. If provided, renders as `<a>`                                                                                                           |
-| `external` | `boolean`          | `false`     | Whether the link opens in a new tab (adds `target="_blank"` and `rel="noopener noreferrer"`)                                                                |
-| `to`       | `RouteLocationRaw` | `undefined` | Vue Router destination. If provided, renders as `<router-link>`                                                                                             |
-| `icon`     | `IconDefinition`   | `undefined` | FontAwesome icon to display before the button text                                                                                                          |
-| `is`       | `string`           | `'button'`  | Component to render as. Options: `button`, `label`                                                                                                          |
+| Prop       | Type               | Default     | Description                                                                                                                                                                |
+| ---------- | ------------------ | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `variant`  | `string`           | `'primary'` | Visual style of the button. Options: `primary`, `link`, `danger`, `primaryOutlined`, `linkOutlined`, `dangerOutlined`, `dangerGhost`, `greyOutlined`, `text`, `dangerText` |
+| `size`     | `string`           | `'md'`      | Size of the button. Options: `xs`, `sm`, `md`, `lg`                                                                                                                        |
+| `disabled` | `boolean`          | `false`     | Whether the button is disabled                                                                                                                                             |
+| `loading`  | `boolean`          | `false`     | Whether to show a loading spinner                                                                                                                                          |
+| `type`     | `string`           | `'button'`  | HTML button type attribute. Options: `button`, `submit`                                                                                                                    |
+| `href`     | `string`           | `undefined` | URL for anchor tag. If provided, renders as `<a>`                                                                                                                          |
+| `external` | `boolean`          | `false`     | Whether the link opens in a new tab (adds `target="_blank"` and `rel="noopener noreferrer"`)                                                                               |
+| `to`       | `RouteLocationRaw` | `undefined` | Vue Router destination. If provided, renders as `<router-link>`                                                                                                            |
+| `icon`     | `IconDefinition`   | `undefined` | FontAwesome icon to display before the button text                                                                                                                         |
+| `is`       | `string`           | `'button'`  | Component to render as. Options: `button`, `label`                                                                                                                         |
 
 ## Slots
 
@@ -68,6 +68,7 @@ The button comes in several variants to match different UI needs:
 - `link`: Secondary actions with link styling
 - `danger`: Destructive actions
 - `primaryOutlined`, `linkOutlined`, `dangerOutlined`, `greyOutlined`: Outlined versions with transparent background
+- `dangerGhost`: Ghost button for dangerous actions with minimal visual impact
 - `text`, `dangerText`: Text-only buttons with underline
 
 ### With Icons
