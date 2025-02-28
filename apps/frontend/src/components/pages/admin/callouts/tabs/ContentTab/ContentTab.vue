@@ -39,17 +39,6 @@
           v-model:selected-tab="selectedSidebarTab"
           :sidebar-tabs="sidebarTabs"
         />
-
-        <!-- Slide Navigation -->
-        <FormBuilderNavigation
-          v-model="currentSlide.navigation"
-          :slides="slides"
-          :current-slide-no="currentSlideNo"
-          :is-first="isFirstSlide"
-          :is-last="isLastSlide"
-          :locales="tabs.settings.data.locales"
-        />
-
         <!-- Slides Management -->
         <div class="mb-4 flex items-center justify-between">
           <h2 class="text-lg font-semibold">
@@ -77,6 +66,16 @@
             />
           </template>
         </Draggable>
+
+        <!-- Slide Navigation -->
+        <FormBuilderNavigation
+          v-model="currentSlide.navigation"
+          :slides="slides"
+          :current-slide-no="currentSlideNo"
+          :is-first="isFirstSlide"
+          :is-last="isLastSlide"
+          :locales="tabs.settings.data.locales"
+        />
       </div>
 
       <SidebarTabContent
