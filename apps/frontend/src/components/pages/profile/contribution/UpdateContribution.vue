@@ -113,7 +113,7 @@ import { type ContributionContent } from '@components/contribution/contribution.
 import AppModal from '@components/AppModal.vue';
 import StripePayment from '@components/StripePayment.vue';
 import AppHeading from '@components/AppHeading.vue';
-import AppNotification from '@components/AppNotification.vue';
+import AppNotification from '@beabee/vue/components/notification/AppNotification';
 
 import { client, isApiError } from '@utils/api';
 

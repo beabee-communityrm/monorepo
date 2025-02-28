@@ -36,7 +36,7 @@ meta:
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import AppForm from '@components/forms/AppForm.vue';
+import AppForm from '@beabee/vue/components/form/AppForm';
 import EmailEditor from '@components/pages/admin/membership-builder/EmailEditor.vue';
 import App2ColGrid from '@components/App2ColGrid.vue';
 

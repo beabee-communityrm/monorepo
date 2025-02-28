@@ -34,8 +34,8 @@ import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { AppButton } from '@beabee/vue/components';
 import AppInput from '@components/forms/AppInput.vue';
-import AppLabel from '@components/forms/AppLabel.vue';
-import AppNotification from '@components/AppNotification.vue';
+import AppLabel from '@beabee/vue/components/form/AppLabel';
+import AppNotification from '@beabee/vue/components/notification/AppNotification';
 
 import theme from 'virtual:theme';
 import { ContributionPeriod } from '@beabee/beabee-common';

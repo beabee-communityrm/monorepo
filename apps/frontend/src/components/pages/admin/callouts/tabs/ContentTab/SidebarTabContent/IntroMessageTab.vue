@@ -26,8 +26,8 @@
 
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n';
-import AppFormField from '@components/forms/AppFormField.vue';
-import AppFormBox from '@components/forms/AppFormBox.vue';
+import AppFormField from '@beabee/vue/components/form/AppFormField';
+import AppFormBox from '@beabee/vue/components/form/AppFormBox';
 import LocaleRichTextEditor from '@components/forms/LocaleRichTextEditor.vue';
 
 import type { LocaleProp } from '@type';

@@ -13,7 +13,7 @@
 import AppLabel from './AppLabel.vue';
 import AppNotification, {
   type AppNotificationProps,
-} from '@components/AppNotification.vue';
+} from '@beabee/vue/components/notification/AppNotification';
 
 /**
  * Props for the AppFormBox component

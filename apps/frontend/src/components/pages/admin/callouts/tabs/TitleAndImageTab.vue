@@ -129,11 +129,11 @@ import AppImageUpload from '@components/forms/AppImageUpload.vue';
 import useVuelidate from '@vuelidate/core';
 import env from '@env';
 import slugify from 'slugify';
-import AppFormBox from '@components/forms/AppFormBox.vue';
+import AppFormBox from '@beabee/vue/components/form/AppFormBox';
 import LocaleTextArea from '@components/forms/LocaleTextArea.vue';
 import LocaleInput from '@components/forms/LocaleInput.vue';
-import AppToggleField from '@components/forms/AppToggleField.vue';
-import AppFormField from '@components/forms/AppFormField.vue';
+import AppToggleField from '@beabee/vue/components/form/AppToggleField';
+import AppFormField from '@beabee/vue/components/form/AppFormField';
 import type { LocaleProp } from '@type';
 
 /**

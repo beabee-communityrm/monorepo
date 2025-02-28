@@ -86,7 +86,7 @@ import type { ContributionContent } from '@components/contribution/contribution.
 import { client } from '@utils/api';
 
 import App2ColGrid from '@components/App2ColGrid.vue';
-import AppNotification from '@components/AppNotification.vue';
+import AppNotification from '@beabee/vue/components/notification/AppNotification';
 
 import { currentUser } from '@store';
 

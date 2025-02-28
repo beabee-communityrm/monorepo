@@ -271,7 +271,7 @@ import AppSubHeading from '../../../../AppSubHeading.vue';
 import env from '../../../../../env';
 import AppCheckboxGroup from '../../../../forms/AppCheckboxGroup.vue';
 import AppLinkList from '../../../../forms/AppLinkList.vue';
-import AppLabel from '../../../../forms/AppLabel.vue';
+import AppLabel from '@beabee/vue/components/form/AppLabel';
 import { localeItems } from '@beabee/vue/lib/i18n';
 
 import type {

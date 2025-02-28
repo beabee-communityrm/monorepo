@@ -93,10 +93,10 @@ import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 
 import AppInput from '@components/forms/AppInput.vue';
-import AppNotification from '@components/AppNotification.vue';
+import AppNotification from '@beabee/vue/components/notification/AppNotification';
 import AppTitle from '@components/AppTitle.vue';
 import AuthBox from '@components/AuthBox.vue';
-import AppForm from '@components/forms/AppForm.vue';
+import AppForm from '@beabee/vue/components/form/AppForm';
 
 import { client, isApiError } from '@utils/api';
 import { isInternalUrl } from '@utils/index';

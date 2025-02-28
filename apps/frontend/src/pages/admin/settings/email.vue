@@ -44,7 +44,7 @@ import { useI18n } from 'vue-i18n';
 
 import App2ColGrid from '@components/App2ColGrid.vue';
 import AppHeading from '@components/AppHeading.vue';
-import AppForm from '@components/forms/AppForm.vue';
+import AppForm from '@beabee/vue/components/form/AppForm';
 import AppInput from '@components/forms/AppInput.vue';
 
 import { client } from '@utils/api';

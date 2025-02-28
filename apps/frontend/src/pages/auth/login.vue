@@ -93,8 +93,8 @@ import { useI18n } from 'vue-i18n';
 import { reactive, ref, toRef, watch } from 'vue';
 
 import AppInput from '@components/forms/AppInput.vue';
-import AppForm from '@components/forms/AppForm.vue';
-import AppNotification from '@components/AppNotification.vue';
+import AppForm from '@beabee/vue/components/form/AppForm';
+import AppNotification from '@beabee/vue/components/notification/AppNotification';
 import AppTitle from '@components/AppTitle.vue';
 import AuthBox from '@components/AuthBox.vue';
 

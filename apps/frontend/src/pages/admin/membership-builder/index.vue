@@ -109,10 +109,10 @@ import {
   type ContentPaymentData,
 } from '@beabee/beabee-common';
 
-import AppForm from '@components/forms/AppForm.vue';
+import AppForm from '@beabee/vue/components/form/AppForm';
 import AppInput from '@components/forms/AppInput.vue';
 import RichTextEditor from '@components/rte/RichTextEditor.vue';
-import AppLabel from '@components/forms/AppLabel.vue';
+import AppLabel from '@beabee/vue/components/form/AppLabel';
 import AppSelect from '@components/forms/AppSelect.vue';
 import AppCheckbox from '@components/forms/AppCheckbox.vue';
 import JoinForm from '@components/pages/join/JoinForm.vue';

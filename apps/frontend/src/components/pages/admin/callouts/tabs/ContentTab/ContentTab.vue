@@ -103,14 +103,14 @@ import type { LocaleProp } from '@type';
 import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
 import type { CalloutHorizontalTabs } from '../../CalloutHorizontalTabs.interface';
 
-import AppNotification from '@components/AppNotification.vue';
+import AppNotification from '@beabee/vue/components/notification/AppNotification';
 import { AppButton } from '@beabee/vue/components';
 import FormBuilderNavigation from '@components/form-builder/FormBuilderNavigation.vue';
 import CalloutSlideItem from './CalloutSlideItem.vue';
 import ContentFormTab from './SidebarTabContent/ContentFormTab.vue';
 import EndMessageTab from './SidebarTabContent/EndMessageTab.vue';
 import IntroMessageTab from './SidebarTabContent/IntroMessageTab.vue';
-import AppToggleField from '@components/forms/AppToggleField.vue';
+import AppToggleField from '@beabee/vue/components/form/AppToggleField';
 import SidebarTabContent from './SidebarTabsContent.vue';
 
 import { getSlideSchema } from '@utils/callouts';
