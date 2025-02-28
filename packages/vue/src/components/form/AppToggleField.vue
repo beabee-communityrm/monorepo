@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts" setup>
-import AppLabel from '@beabee/vue/components/form/AppLabel';
+import AppLabel from './AppLabel.vue';
 import { AppToggleSwitch } from '@beabee/vue/components';
 
 /**
