@@ -408,9 +408,10 @@
     "updated": "Änderungen gespeichert!"
   },
   "calloutBuilder": {
+    "slidesTitle": "Slides",
     "actions": {
-      "addSlide": "Slide hinzufügen",
-      "removeSlide": "Slide entfernen"
+      "addSlide": "Hinzufügen",
+      "removeSlide": "Entfernen"
     },
     "internalTitle": "Interner Titel",
     "nextButton": "Text für den Weiter-Button",
@@ -914,6 +915,9 @@
       },
       "titleAndImage": {
         "inputs": {
+          "general": {
+            "title": "Allgemeine Informationen"
+          },
           "description": {
             "help": "<p>Die <strong>Kurzbeschreibung</strong> ergänzt den Titel und sollte in wenigen Worten erklären, worum es bei dem Callout geht.</p>\n",
             "label": "Kurzbeschreibung",
@@ -921,14 +925,15 @@
           },
           "image": {
             "help": "<p>Das <strong>Titelbild</strong> dient zur Illustration des Callouts.</p>\n",
-            "label": "Titelbild"
+            "label": "Titelbild",
+            "description": "Vergessen Sie nicht, nach dem Hochladen eines Bildes zu speichern!"
+          },
+          "sharing": {
+            "title": "Teilen-Optionen"
           },
           "overrideShare": {
             "label": "Callout-Titel und -Beschreibung zum Teilen verwenden?",
-            "opts": {
-              "no": "Nein, Titel und Beschreibung selbst festlegen.",
-              "yes": "Ja"
-            }
+            "description": "Links, die auf sozialen Netzwerken geteilt werden, werden einen eigenen Titel und eine eigene Beschreibung haben."
           },
           "shareDescription": {
             "help": "<p>Die <strong>Social-Media-Beschreibung</strong> ist die Kurzbeschreibung deines Callouts fürs Teilen in sozialen Netzwerken.</p>\n",
@@ -941,11 +946,17 @@
             "placeholder": "Die Überschrift deines Callouts in sozialen Netzwerken."
           },
           "slug": {
-            "help": "<p>Du kannst den <strong>Permalink</strong> an deine Nutzer schicken, damit sie an dem Callout teilnehmen können.</p>\n",
-            "label": "Permalink",
+            "locked": {
+              "title":
+                "Der Permalink ist gesperrt, weil der Callout bereits veröffentlicht wurde.",
+              "description": ""
+            },
+            "boxTitle": "Permalink",
+            "help": "<p>Sie können den <strong>Permalink</strong> mit Nutzern teilen, damit diese den Callout direkt aufrufen können</p>\n",
+            "label": "Auto-generate slug from title",
             "opts": {
-              "auto": "Automatisch aus Callout-Titel generieren",
-              "manual": "Benutzerdefinierten Permalink festlegen"
+              "auto": "Der Permalink wird aus dem Callout-Titel generiert und automatisch aktualisiert, bis der Callout veröffentlicht wird.",
+              "manual": "Der Permalink wird manuell festgelegt"
             }
           },
           "title": {
