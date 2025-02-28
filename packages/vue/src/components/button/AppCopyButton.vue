@@ -9,18 +9,40 @@
 </template>
 
 <script lang="ts" setup>
+/**
+ * A button component for copying text to the clipboard.
+ * Shows a success notification when copying is successful.
+ *
+ * @component AppCopyButton
+ *
+ * @example
+ * <AppCopyButton text="Text to copy" @copy="handleCopy" />
+ */
+
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 import { useI18n } from 'vue-i18n';
 import { addNotification } from '../../store/notifications';
 
-const props = defineProps<{
+/**
+ * Props for the AppCopyButton component
+ */
+export interface AppCopyButtonProps {
   /** The text to copy to clipboard */
   text: string;
-}>();
+}
+
+const props = defineProps<AppCopyButtonProps>();
 
 const { t } = useI18n();
-const emit = defineEmits(['copy']);
+const emit = defineEmits<{
+  /** Emitted when text is successfully copied */
+  (e: 'copy'): void;
+}>();
 
+/**
+ * Handles the copy action
+ * Copies the text to clipboard and shows a notification
+ */
 const handleCopy = async () => {
   try {
     await navigator.clipboard.writeText(props.text);
