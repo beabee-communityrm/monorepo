@@ -26,6 +26,7 @@ import type {
 import type { ContentTabData } from '@components/pages/admin/callouts/tabs/ContentTab/ContentTab.vue';
 import type { FilterItem, FilterItems } from '@type';
 import type { CalloutHorizontalTabsData } from '@components/pages/admin/callouts/CalloutHorizontalTabs.interface';
+import type { TitleAndImageTabData } from '@components/pages/admin/callouts/tabs/TitleAndImageTab.vue';
 
 const { t } = i18n.global;
 
@@ -189,17 +190,6 @@ export function convertCalloutToTabs(
         ).componentText,
         showAdvanced: false,
       },
-      titleAndImage: {
-        title: variants.title,
-        description: variants.excerpt,
-        coverImageURL: callout?.image || '',
-        autoGenerateSlug: !callout,
-        autoSlug: '',
-        slug: callout?.slug || '',
-        overrideShare: !!callout?.shareTitle,
-        shareTitle: variants.shareTitle,
-        shareDescription: variants.shareDescription,
-      },
       intro: {
         introText: variants.intro,
       },
@@ -212,8 +202,21 @@ export function convertCalloutToTabs(
     },
   };
 
+  const titleAndImage: TitleAndImageTabData = {
+    title: variants.title,
+    description: variants.excerpt,
+    coverImageURL: callout?.image || '',
+    autoGenerateSlug: !callout,
+    autoSlug: '',
+    slug: callout?.slug || '',
+    overrideShare: !!callout?.shareTitle,
+    shareTitle: variants.shareTitle,
+    shareDescription: variants.shareDescription,
+  };
+
   return {
     content,
+    titleAndImage,
     settings: {
       ...settings,
       requireCaptcha: callout?.captcha || CalloutCaptcha.None,
@@ -276,9 +279,8 @@ function convertVariantsForCallout(
     }
 
     variants[variant] = {
-      title: tabs.content.sidebarTabs.titleAndImage.title[variant] || '',
-      excerpt:
-        tabs.content.sidebarTabs.titleAndImage.description[variant] || '',
+      title: tabs.titleAndImage.title[variant] || '',
+      excerpt: tabs.titleAndImage.description[variant] || '',
       intro: tabs.content.sidebarTabs.intro.introText[variant] || '',
       ...(tabs.content.sidebarTabs.endMessage.whenFinished === 'redirect'
         ? {
@@ -295,14 +297,11 @@ function convertVariantsForCallout(
               tabs.content.sidebarTabs.endMessage.thankYouTitle[variant] || '',
             thanksRedirect: null,
           }),
-      ...(tabs.content.sidebarTabs.titleAndImage.overrideShare
+      ...(tabs.titleAndImage.overrideShare
         ? {
-            shareTitle:
-              tabs.content.sidebarTabs.titleAndImage.shareTitle[variant] || '',
+            shareTitle: tabs.titleAndImage.shareTitle[variant] || '',
             shareDescription:
-              tabs.content.sidebarTabs.titleAndImage.shareDescription[
-                variant
-              ] || '',
+              tabs.titleAndImage.shareDescription[variant] || '',
           }
         : {
             shareTitle: null,
@@ -330,16 +329,16 @@ function convertSlidesForCallout(
 export function convertStepsToCallout(
   tabs: CalloutHorizontalTabsData
 ): CreateCalloutData {
-  const slug = tabs.content.sidebarTabs.titleAndImage.autoGenerateSlug
-    ? tabs.content.sidebarTabs.titleAndImage.autoSlug
-    : tabs.content.sidebarTabs.titleAndImage.slug;
+  const slug = tabs.titleAndImage.autoGenerateSlug
+    ? tabs.titleAndImage.autoSlug
+    : tabs.titleAndImage.slug;
 
   const slides = convertSlidesForCallout(tabs);
   const variants = convertVariantsForCallout(tabs);
 
   return {
     slug: slug || undefined,
-    image: tabs.content.sidebarTabs.titleAndImage.coverImageURL,
+    image: tabs.titleAndImage.coverImageURL,
     formSchema: { slides },
     responseViewSchema: tabs.settings.showResponses
       ? {

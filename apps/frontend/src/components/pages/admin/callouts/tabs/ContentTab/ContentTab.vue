@@ -109,7 +109,6 @@ import CalloutSlideItem from './CalloutSlideItem.vue';
 import ContentFormTab from './SidebarTabContent/ContentFormTab.vue';
 import EndMessageTab from './SidebarTabContent/EndMessageTab.vue';
 import IntroMessageTab from './SidebarTabContent/IntroMessageTab.vue';
-import TitleAndImageTab from './SidebarTabContent/TitleAndImageTab.vue';
 import AppToggleField from '@components/forms/AppToggleField.vue';
 import SidebarTabContent from './SidebarTabsContent.vue';
 
@@ -180,13 +179,6 @@ const sidebarTabs = reactive<SidebarTabs>({
     error: false,
     component: markRaw(ContentFormTab),
     data: props.data.sidebarTabs.content,
-  },
-  titleAndImage: {
-    name: t('createCallout.tabs.titleAndImage.title'),
-    validated: false,
-    error: false,
-    component: markRaw(TitleAndImageTab),
-    data: props.data.sidebarTabs.titleAndImage,
   },
   intro: {
     name: t('createCallout.tabs.intro.title'),

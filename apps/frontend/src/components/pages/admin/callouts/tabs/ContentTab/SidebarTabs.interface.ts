@@ -3,7 +3,6 @@ import type { ItemStatus } from '@beabee/beabee-common';
 import type { AppStepperStep } from '@type';
 import type { ContentFormTabData } from './SidebarTabContent/ContentFormTab.vue';
 import type { IntroMessageTabData } from './SidebarTabContent/IntroMessageTab.vue';
-import type { TitleAndImageTabData } from './SidebarTabContent/TitleAndImageTab.vue';
 import type { EndMessageTabData } from './SidebarTabContent/EndMessageTab.vue';
 
 /**
@@ -38,8 +37,6 @@ export interface SidebarTabsData {
   content: ContentFormTabData;
   /** The intro message tab */
   intro: IntroMessageTabData;
-  /** The title and image tab */
-  titleAndImage: TitleAndImageTabData;
   /** The end message tab */
   endMessage: EndMessageTabData;
 }
