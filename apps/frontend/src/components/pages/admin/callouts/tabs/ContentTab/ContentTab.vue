@@ -59,6 +59,7 @@
             variant="primary"
             size="sm"
             :icon="faPlus"
+            :title="t('calloutBuilder.actions.addSlide')"
             @click="handleAddSlide"
           >
             {{ t('calloutBuilder.actions.addSlide') }}
@@ -105,7 +106,7 @@ import type { FormBuilderSlide } from '@components/form-builder/form-builder.int
 import type { CalloutHorizontalTabs } from '../../CalloutHorizontalTabs.interface';
 
 import FormBuilderNavigation from '@components/form-builder/FormBuilderNavigation.vue';
-import CalloutSlideItem from '../../CalloutSlideItem.vue';
+import CalloutSlideItem from './CalloutSlideItem.vue';
 import ContentFormTab from './SidebarTabContent/ContentFormTab.vue';
 import EndMessageTab from './SidebarTabContent/EndMessageTab.vue';
 import IntroMessageTab from './SidebarTabContent/IntroMessageTab.vue';
