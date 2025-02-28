@@ -38,10 +38,9 @@ import useVuelidate from '@vuelidate/core';
 import { LOGIN_CODES } from '@beabee/beabee-common';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { addNotification } from '../../store/notifications';
+import { addNotification } from '@beabee/vue/store/notifications';
 import { isApiError } from '@beabee/client';
-import { AppButton } from '../button';
-import { AppNotification } from '../notification';
+import { AppButton, AppNotification } from '@beabee/vue/components';
 
 export interface AppFormProps {
   /** The text of the submit button */

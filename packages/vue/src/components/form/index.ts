@@ -14,14 +14,6 @@ export {
 } from './AppFormField.vue';
 export { default as AppLabel, type AppLabelProps } from './AppLabel.vue';
 export {
-  default as AppRadioGroup,
-  type AppRadioGroupProps,
-} from './AppRadioGroup.vue';
-export {
-  default as AppRadioInput,
-  type AppRadioInputProps,
-} from './AppRadioInput.vue';
-export {
   default as AppToggleField,
   type AppToggleFieldProps,
 } from './AppToggleField.vue';

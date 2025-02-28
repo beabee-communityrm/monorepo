@@ -58,7 +58,7 @@ import useVuelidate from '@vuelidate/core';
 import { watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { AppRadioGroup } from '@beabee/vue/components';
-import AppFormBox from '../../../../../../forms/AppFormBox.vue';
+import AppFormBox from '@beabee/vue/components/form/AppFormBox';
 import LocaleRichTextEditor from '@components/forms/LocaleRichTextEditor.vue';
 import LocaleInput from '@components/forms/LocaleInput.vue';
 import type { LocaleProp } from '@type';

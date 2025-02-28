@@ -109,7 +109,7 @@ import CalloutSlideItem from './CalloutSlideItem.vue';
 import ContentFormTab from './SidebarTabContent/ContentFormTab.vue';
 import EndMessageTab from './SidebarTabContent/EndMessageTab.vue';
 import IntroMessageTab from './SidebarTabContent/IntroMessageTab.vue';
-import AppToggleField from '@components/forms/AppToggleField.vue';
+import AppToggleField from '@beabee/vue/components/form/AppToggleField';
 import SidebarTabContent from './SidebarTabsContent.vue';
 
 import { getSlideSchema } from '@utils/callouts';

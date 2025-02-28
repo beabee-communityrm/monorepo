@@ -14,7 +14,7 @@
 <script lang="ts" setup generic="T extends string | number">
 import { computed } from 'vue';
 import AppCheckbox from './AppCheckbox.vue';
-import AppLabel from './AppLabel.vue';
+import AppLabel from '@beabee/vue/components/form/AppLabel';
 import useVuelidate from '@vuelidate/core';
 import { minValue } from '@vuelidate/validators';
 import type { SelectItem } from '../../types/form.interface';
