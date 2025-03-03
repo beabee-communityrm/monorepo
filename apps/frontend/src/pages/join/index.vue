@@ -113,9 +113,9 @@ const { signUpData, signUpDescription } = useJoin(paymentContent);
 async function submitSignUp() {
   const data = await client.signup.start(signUpData);
   const topWindow = window.top || window;
-  if (data.redirectUrl) {
+  if (data?.redirectUrl) {
     topWindow.location.href = data.redirectUrl;
-  } else if (data.clientSecret) {
+  } else if (data?.clientSecret) {
     stripeClientSecret.value = data.clientSecret;
   } else {
     if (isEmbed) {
