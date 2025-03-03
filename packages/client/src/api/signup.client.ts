@@ -35,9 +35,9 @@ export class SignupClient extends BaseClient {
    * @param data - The signup data including email and contribution details
    * @returns Payment flow parameters for completing signup
    */
-  async start(data: SignupData): Promise<PaymentFlowParams> {
+  async start(data: SignupData): Promise<PaymentFlowParams | undefined> {
     const { data: responseData } = await this.fetch.post<
-      Serial<PaymentFlowParams>
+      Serial<PaymentFlowParams> | undefined
     >("", {
       email: data.email,
       loginUrl: this.options.host + "/auth/login",
