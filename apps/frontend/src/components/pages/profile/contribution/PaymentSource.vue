@@ -31,7 +31,7 @@
         :client-secret="stripeClientSecret"
         :public-key="stripePublicKey"
         :payment-data="paymentData"
-        :return-url="client.contact.contribution.completeUrl"
+        :return-url="client.contact.payment.completeUrl"
         @loaded="onStripeLoaded"
       />
     </AppModal>
