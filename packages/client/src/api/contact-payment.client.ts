@@ -17,6 +17,8 @@ import type {
  * Handles payment methods, payment flows, and payment history for contacts
  */
 export class ContactPaymentClient extends BaseClient {
+  completeUrl: string;
+
   /**
    * Creates a new contact payment client
    * @param options - The client options
@@ -26,6 +28,8 @@ export class ContactPaymentClient extends BaseClient {
       ...options,
       path: cleanUrl(options.path + "/contact")
     });
+    this.completeUrl =
+      options.host + "/profile/contribution/payment-method/complete";
   }
 
   /**
@@ -37,8 +41,7 @@ export class ContactPaymentClient extends BaseClient {
   async update(paymentMethod?: string): Promise<PaymentFlowParams> {
     const { data } = await this.fetch.put("/me/payment-method", {
       paymentMethod,
-      completeUrl:
-        this.options.host + "/profile/contribution/payment-method/complete"
+      completeUrl: this.completeUrl
     });
     return data;
   }
