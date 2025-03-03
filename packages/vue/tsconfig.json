@@ -1,0 +1,15 @@
+{
+  "extends": "@beabee/tsconfig/tsconfig.frontend.json",
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "env.d.ts"
+  ],
+  "exclude": ["node_modules", "dist"],
+  "references": [
+    { "path": "../../packages/common" },
+    { "path": "../../packages/client" }
+  ]
+}

@@ -212,7 +212,7 @@ import {
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
-import AppButton from '@components/button/AppButton.vue';
+import { AppButton, AppButtonGroup } from '@beabee/vue/components';
 import AppSelect from '@components/forms/AppSelect.vue';
 import AppVTabs from '@components/tabs/AppVTabs.vue';
 import {
@@ -222,7 +222,6 @@ import {
 import AppSearch from '@components/search/AppSearch.vue';
 
 import { client } from '@utils/api';
-import AppButtonGroup from '@components/button/AppButtonGroup.vue';
 import MoveBucketButton from '@components/pages/admin/callouts/MoveBucketButton.vue';
 import ToggleTagButton from '@components/tag/ToggleTagButton.vue';
 import { buckets } from '@components/pages/admin/callouts/callouts.interface';
@@ -240,7 +239,7 @@ import {
   faUser,
   faUserPen,
 } from '@fortawesome/free-solid-svg-icons';
-import { addNotification } from '@store/notifications';
+import { addNotification } from '@beabee/vue/store/notifications';
 import { addBreadcrumb } from '@store/breadcrumb';
 import AppTime from '@components/AppTime.vue';
 

@@ -184,8 +184,7 @@ import {
 import AppHeading from '@components/AppHeading.vue';
 import AppInfoList from '@components/AppInfoList.vue';
 import AppInfoListItem from '@components/AppInfoListItem.vue';
-import AppButton from '@components/button/AppButton.vue';
-import AppButtonGroup from '@components/button/AppButtonGroup.vue';
+import { AppButton, AppButtonGroup } from '@beabee/vue/components';
 import { addBreadcrumb } from '@store/breadcrumb';
 import MoveBucketButton from '@components/pages/admin/callouts/MoveBucketButton.vue';
 import ToggleTagButton from '@components/tag/ToggleTagButton.vue';
@@ -196,7 +195,7 @@ import AppNotification from '@components/AppNotification.vue';
 import CalloutForm from '@components/pages/callouts/CalloutForm.vue';
 import TagList from '@components/tag/TagList.vue';
 
-import { addNotification } from '@store/notifications';
+import { addNotification } from '@beabee/vue/store/notifications';
 
 import { formatLocale } from '@utils/dates';
 import { client } from '@utils/api';
