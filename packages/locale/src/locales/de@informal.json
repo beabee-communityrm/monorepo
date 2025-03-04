@@ -955,8 +955,8 @@
             "label": "Auto-generate slug from title",
             "opts": {
               "auto": "Der Permalink wird aus dem Callout-Titel generiert und automatisch aktualisiert, bis der Callout veröffentlicht wird.",
-              "manual": "Der Permalink wird manuell festgelegt",
-            },
+              "manual": "Der Permalink wird manuell festgelegt"
+            }
           },
           "title": {
             "help": "<p>Der <strong>Titel</strong> taucht immer dort auf, wo dein Callout erwähnt wird. Überlege dir einen guten Namen, der Interesse weckt.</p>\n",
