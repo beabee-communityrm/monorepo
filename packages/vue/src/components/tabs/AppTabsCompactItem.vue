@@ -22,8 +22,10 @@ import { type TabItem } from './tabs.interface';
 
 const emit = defineEmits(['click']);
 
-defineProps<{
+export interface AppTabsCompactItemProps {
   item: TabItem;
   selected: boolean;
-}>();
+}
+
+defineProps<AppTabsCompactItemProps>();
 </script>

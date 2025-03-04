@@ -17,8 +17,10 @@ import AppTabsCompactItem from './AppTabsCompactItem.vue';
 
 const emit = defineEmits(['update:modelValue']);
 
-defineProps<{
+export interface AppTabsCompactProps {
   modelValue: string;
   items: TabItem[];
-}>();
+}
+
+defineProps<AppTabsCompactProps>();
 </script>
