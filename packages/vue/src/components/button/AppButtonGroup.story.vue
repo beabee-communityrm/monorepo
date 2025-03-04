@@ -48,7 +48,7 @@ const variants: ButtonVariant[] = [
           :key="variant"
           class="flex flex-col gap-1"
         >
-          <span class="text-gray-500 text-sm">{{ variant }}</span>
+          <span class="text-grey-500 text-sm">{{ variant }}</span>
           <AppButtonGroup>
             <AppButton :variant="variant">Left</AppButton>
             <AppButton :variant="variant">Middle</AppButton>
@@ -67,7 +67,7 @@ const variants: ButtonVariant[] = [
     </Variant>
 
     <Variant title="Toolbar Example">
-      <div class="bg-gray-100 rounded p-4">
+      <div class="rounded bg-grey-lighter p-4">
         <AppButtonGroup>
           <AppButton variant="primary" :icon="faPlus">New</AppButton>
           <AppButton variant="primaryOutlined" :icon="faEdit">Edit</AppButton>

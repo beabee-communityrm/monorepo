@@ -15,8 +15,10 @@ import AppVTabsItem from './AppVTabsItem.vue';
 
 const emit = defineEmits(['update:modelValue']);
 
-defineProps<{
+export interface AppVTabsProps {
   modelValue: string;
   items: TabItem[];
-}>();
+}
+
+defineProps<AppVTabsProps>();
 </script>
