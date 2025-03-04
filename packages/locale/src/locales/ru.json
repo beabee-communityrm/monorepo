@@ -447,7 +447,7 @@
     "willRenewWithNewAmount": "Ваша подписка будет автоматически продлена {renewalDate}. Начиная с этой даты мы будем списывать выбранную вами сумму {nextAmount}."
   },
   "createCallout": {
-    "steps": {
+    "tabs": {
       "content": {},
       "dates": {
         "inputs": {

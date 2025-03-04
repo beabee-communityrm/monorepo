@@ -174,7 +174,7 @@ import {
   type GetCalloutData,
 } from '@beabee/beabee-common';
 
-import AppForm from '@components/forms/AppForm.vue';
+import AppForm from '@beabee/vue/components/form/AppForm';
 import AppInput from '@components/forms/AppInput.vue';
 import AppCheckbox from '@components/forms/AppCheckbox.vue';
 import SetupForm from '@components/pages/join/SetupForm.vue';

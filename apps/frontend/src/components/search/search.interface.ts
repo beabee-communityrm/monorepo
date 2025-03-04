@@ -6,7 +6,7 @@ import {
   type RuleOperator,
 } from '@beabee/beabee-common';
 
-import i18n from '@lib/i18n';
+import { i18n } from '@lib/i18n';
 import type { FilterGroups, FilterItems } from '@type';
 
 const { t } = i18n.global;

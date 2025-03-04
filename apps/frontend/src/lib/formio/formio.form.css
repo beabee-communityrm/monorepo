@@ -2268,8 +2268,8 @@ div[data-oembed-url] {
 .ace_editor,
 .ace_editor div,
 .ace_editor span {
-  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas',
-    monospace !important;
+  font-family:
+    'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', monospace !important;
 }
 
 span[role='link'] {

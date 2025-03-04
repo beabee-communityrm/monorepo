@@ -7,5 +7,13 @@
   </div>
 </template>
 <script lang="ts" setup>
-defineProps<{ help?: string }>();
+/**
+ * Props for the AppFormSection component
+ */
+export interface AppFormSectionProps {
+  /** The help text for the form section */
+  help?: string;
+}
+
+defineProps<AppFormSectionProps>();
 </script>

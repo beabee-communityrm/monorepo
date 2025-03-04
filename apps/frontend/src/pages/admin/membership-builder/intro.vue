@@ -44,7 +44,7 @@ meta:
 <script lang="ts" setup>
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import AppForm from '../../../components/forms/AppForm.vue';
+import AppForm from '@beabee/vue/components/form/AppForm';
 import AppCheckbox from '../../../components/forms/AppCheckbox.vue';
 import RichTextEditor from '../../../components/rte/RichTextEditor.vue';
 import WelcomeMessage from '../../../components/welcome-message/WelcomeMessage.vue';
