@@ -136,6 +136,46 @@ export function getFullTheme(theme: PartialTheme): Theme {
   return { colors, fonts };
 }
 
+/**
+ * Dynamically loads font CSS files as separate chunks.
+ * By using static import paths, Vite can properly analyze and create separate chunks
+ * for each font style during build time, enabling efficient code-splitting and lazy loading.
+ *
+ * @param font - The font name to load
+ * @returns A promise that resolves when the font CSS is loaded
+ */
+function loadFont(font: string) {
+  switch (font) {
+    case 'fira-sans':
+      return import('../assets/styles/fonts-fira-sans.css');
+    case 'fira-sans-condensed':
+      return import('../assets/styles/fonts-fira-sans-condensed.css');
+    case 'helvetica-neue-lt':
+      return import('../assets/styles/fonts-helvetica-neue-lt.css');
+    case 'libre-franklin':
+      return import('../assets/styles/fonts-libre-franklin.css');
+    case 'nunito-sans':
+      return import('../assets/styles/fonts-nunito-sans.css');
+    case 'open-sans':
+      return import('../assets/styles/fonts-open-sans.css');
+    case 'queue':
+      return import('../assets/styles/fonts-queue.css');
+    case 'roboto':
+      return import('../assets/styles/fonts-roboto.css');
+    case 'roboto-slab':
+      return import('../assets/styles/fonts-roboto-slab.css');
+    case 'rubik':
+      return import('../assets/styles/fonts-rubik.css');
+    case 'ubuntu':
+      return import('../assets/styles/fonts-ubuntu.css');
+    case 'work-sans':
+      return import('../assets/styles/fonts-work-sans.css');
+    default:
+      console.warn(`Unknown font: ${font}`);
+      return Promise.resolve();
+  }
+}
+
 watch(
   () => generalContent.value.theme,
   (newTheme) => {
@@ -157,12 +197,10 @@ watch(
     setCSSVar('--ff-body', allFonts[fonts.body].join(','));
     setCSSVar('--ff-title', allFonts[fonts.title].join(','));
 
-    const bodyFontFile = `@beabee/vue/assets/styles/fonts-${fonts.body}.css`;
-    const titleFontFile = `@beabee/vue/assets/styles/fonts-${fonts.title}.css`;
-
-    import(/* @vite-ignore */ bodyFontFile);
+    // Load the fonts using the single function
+    loadFont(fonts.body);
     if (fonts.title !== fonts.body) {
-      import(/* @vite-ignore */ titleFontFile);
+      loadFont(fonts.title);
     }
   },
   {
