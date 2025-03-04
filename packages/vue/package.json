@@ -68,6 +68,8 @@
     "./components/button/*": "./src/components/button/*.vue",
     "./components/list": "./src/components/list/index.ts",
     "./components/list/*": "./src/components/list/*.vue",
+    "./components/tabs": "./src/components/tabs/index.ts",
+    "./components/tabs/*": "./src/components/tabs/*.vue",
     "./components/*": "./src/components/*.vue",
     "./lib/*": "./src/lib/*.ts",
     "./plugins/*": "./src/plugins/*.js",
