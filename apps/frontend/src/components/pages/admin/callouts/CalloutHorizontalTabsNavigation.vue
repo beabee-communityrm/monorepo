@@ -9,8 +9,7 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import AppTabs from '@components/tabs/AppTabs.vue';
-import type { TabItem } from '@components/tabs/tabs.interface';
+import type { TabItem } from '@beabee/vue/components/tabs';
 import type { CalloutHorizontalTab } from './CalloutHorizontalTabs.interface';
 
 export interface CalloutHorizontalTabsNavigationProps {
