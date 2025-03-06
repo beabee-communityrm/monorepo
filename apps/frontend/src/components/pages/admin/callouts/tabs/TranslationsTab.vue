@@ -53,7 +53,9 @@
             :locales="locales"
             :current-slide="currentSlide"
             :is-last-slide="isLastSlide"
+            :intro-text="introText"
             @update:navigation="handleNavigationUpdate"
+            @update:intro-text="handleIntroTextUpdate"
           />
         </div>
       </div>
@@ -105,6 +107,11 @@ const slides = computed<FormBuilderSlide[]>(
   () => props.tabs.content.data.slides || []
 );
 
+// Get intro text from content tab
+const introText = computed<LocaleProp>(
+  () => props.tabs.content.data.sidebarTabs.intro.introText
+);
+
 // Get locales from settings tab
 const locales = computed<string[]>(
   () => props.tabs.settings.data.locales || []
@@ -141,6 +148,13 @@ function handleNavigationUpdate(
     // Update the navigation field in the content tab
     currentSlide.value.navigation[field] = value;
   }
+}
+
+// Handle intro text update
+function handleIntroTextUpdate(value: LocaleProp): void {
+  // Update the intro text in the content tab
+  // eslint-disable-next-line vue/no-mutating-props
+  props.tabs.content.data.sidebarTabs.intro.introText = value;
 }
 
 // Validation

@@ -22,6 +22,7 @@
   </div>
 </template>
 <script lang="ts" setup>
+// Deprecated, use FormBuilderTranslationsTabCard instead
 import RichTextEditor from '@components/rte/RichTextEditor.vue';
 import type { LocaleInputProps } from '@type';
 

@@ -98,6 +98,30 @@
           </div>
         </div>
 
+        <!-- Intro Text Section -->
+        <div v-if="introText" class="mb-8 border-b border-b-primary-20 pb-6">
+          <h3 class="mb-4 font-title text-xl font-semibold">
+            {{ t('createCallout.tabs.intro.label') }}
+          </h3>
+
+          <div class="space-y-2">
+            <div
+              v-if="selected !== defaultLocale"
+              class="mb-1 flex-none text-sm text-body-60"
+              v-html="introText.default"
+            ></div>
+
+            <RichTextEditor
+              :model-value="getIntroValue(selected)"
+              :placeholder="
+                selected === defaultLocale ? '' : t('common.enterTranslation')
+              "
+              :disabled="selected === defaultLocale"
+              @update:model-value="updateIntroValue(selected, $event)"
+            />
+          </div>
+        </div>
+
         <!-- Form Components Section -->
         <div
           v-for="component in components"
@@ -199,6 +223,7 @@ import type { TabItem } from '@beabee/vue/components/tabs';
 import type { LocaleProp } from '@type';
 import AppInput from '@components/forms/AppInput.vue';
 import AppTextArea from '@components/forms/AppTextArea.vue';
+import RichTextEditor from '@components/rte/RichTextEditor.vue';
 import type { FormBuilderSlide } from './form-builder.interface';
 
 const props = defineProps<{
@@ -207,6 +232,7 @@ const props = defineProps<{
   locales: string[];
   currentSlide: FormBuilderSlide;
   isLastSlide: boolean;
+  introText?: LocaleProp;
 }>();
 
 const emit = defineEmits<{
@@ -216,6 +242,7 @@ const emit = defineEmits<{
     field: 'prevText' | 'nextText' | 'submitText',
     value: LocaleProp
   ): void;
+  (e: 'update:introText', value: LocaleProp): void;
 }>();
 
 const { t } = useI18n();
@@ -326,6 +353,32 @@ function updateNavigationValue(
   }
 
   emit('update:navigation', field, currentValue);
+}
+
+// Get intro text value for a specific locale
+function getIntroValue(locale: string): string {
+  if (!props.introText) return '';
+
+  if (locale === defaultLocale.value) {
+    return props.introText.default || '';
+  }
+
+  return props.introText[locale] || '';
+}
+
+// Update intro text value
+function updateIntroValue(locale: string, value: string): void {
+  if (!props.introText) return;
+
+  const currentValue = { ...props.introText };
+
+  if (locale === defaultLocale.value) {
+    currentValue.default = value;
+  } else {
+    currentValue[locale] = value;
+  }
+
+  emit('update:introText', currentValue);
 }
 
 // Get options for select, radio, etc. components

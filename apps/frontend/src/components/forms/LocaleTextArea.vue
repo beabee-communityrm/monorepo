@@ -30,6 +30,7 @@
 </template>
 
 <script lang="ts" setup>
+// Deprecated, use FormBuilderTranslationsTabCard instead
 import { computed } from 'vue';
 import AppTextArea from '@components/forms/AppTextArea.vue';
 import AppLabel from '@beabee/vue/components/form/AppLabel';
