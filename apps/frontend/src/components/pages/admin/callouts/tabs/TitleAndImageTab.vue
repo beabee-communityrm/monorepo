@@ -135,6 +135,7 @@ import LocaleInput from '@components/forms/LocaleInput.vue';
 import AppToggleField from '@beabee/vue/components/form/AppToggleField';
 import AppFormField from '@beabee/vue/components/form/AppFormField';
 import type { LocaleProp } from '@type';
+import type { CalloutHorizontalTabs } from '../CalloutHorizontalTabs.interface';
 
 /**
  * Data for the title and image tab
@@ -164,7 +165,7 @@ export interface TitleAndImageTabProps {
   data: TitleAndImageTabData;
   status: ItemStatus | undefined;
   isActive: boolean;
-  locales: string[];
+  tabs: CalloutHorizontalTabs;
 }
 
 const emit = defineEmits(['update:error', 'update:validated']);
@@ -173,6 +174,8 @@ const props = defineProps<TitleAndImageTabProps>();
 const { t } = useI18n();
 const inputT = (key: string) =>
   t('createCallout.tabs.titleAndImage.inputs.' + key);
+
+const locales = computed(() => props.tabs.settings.data.locales || []);
 
 const slug = computed(() =>
   props.data.autoGenerateSlug ? props.data.autoSlug : customSlug.value

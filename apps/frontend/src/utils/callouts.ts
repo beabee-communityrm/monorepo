@@ -27,6 +27,7 @@ import type { ContentTabData } from '@components/pages/admin/callouts/tabs/Conte
 import type { FilterItem, FilterItems } from '@type';
 import type { CalloutHorizontalTabsData } from '@components/pages/admin/callouts/CalloutHorizontalTabs.interface';
 import type { TitleAndImageTabData } from '@components/pages/admin/callouts/tabs/TitleAndImageTab.vue';
+import type { TranslationsTabData } from '@components/pages/admin/callouts/tabs/TranslationsTab.vue';
 
 const { t } = i18n.global;
 
@@ -167,27 +168,19 @@ export function convertCalloutToTabs(
     ? Object.keys(callout.variants).filter((v) => v !== 'default')
     : [];
 
+  const { slides, componentText } = convertSlidesForSteps(
+    callout?.formSchema.slides,
+    callout?.variants
+  );
+
   const content: ContentTabData = {
-    slides: convertSlidesForSteps(callout?.formSchema.slides, callout?.variants)
-      .slides,
-    componentText: convertSlidesForSteps(
-      callout?.formSchema.slides,
-      callout?.variants
-    ).componentText,
+    slides,
+    componentText,
     sidebarTabs: {
       content: {
-        currentSlide: convertSlidesForSteps(
-          callout?.formSchema.slides,
-          callout?.variants
-        ).slides[0],
-        slides: convertSlidesForSteps(
-          callout?.formSchema.slides,
-          callout?.variants
-        ).slides,
-        componentText: convertSlidesForSteps(
-          callout?.formSchema.slides,
-          callout?.variants
-        ).componentText,
+        currentSlide: slides[0],
+        slides,
+        componentText,
         showAdvanced: false,
       },
       intro: {
@@ -212,6 +205,11 @@ export function convertCalloutToTabs(
     overrideShare: !!callout?.shareTitle,
     shareTitle: variants.shareTitle,
     shareDescription: variants.shareDescription,
+  };
+
+  // Translations tab data
+  const translations: TranslationsTabData = {
+    componentText,
   };
 
   return {
@@ -255,6 +253,7 @@ export function convertCalloutToTabs(
       endDate: callout?.expires ? format(callout.expires, 'yyyy-MM-dd') : '',
       endTime: callout?.expires ? format(callout.expires, 'HH:mm') : '',
     },
+    translations,
   };
 }
 
@@ -273,9 +272,10 @@ function convertVariantsForCallout(
       };
     }
 
+    // Use translations tab data for component text
     const componentText: Record<string, string> = {};
-    for (const key in tabs.content.componentText) {
-      componentText[key] = tabs.content.componentText[key][variant] || '';
+    for (const key in tabs.translations.componentText) {
+      componentText[key] = tabs.translations.componentText[key][variant] || '';
     }
 
     variants[variant] = {

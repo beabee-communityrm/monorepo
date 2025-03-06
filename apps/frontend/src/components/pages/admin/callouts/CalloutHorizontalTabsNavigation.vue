@@ -9,6 +9,7 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue';
+import { AppTabs } from '@beabee/vue/components/tabs';
 import type { TabItem } from '@beabee/vue/components/tabs';
 import type { CalloutHorizontalTab } from './CalloutHorizontalTabs.interface';
 

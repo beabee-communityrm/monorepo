@@ -31,6 +31,7 @@ import SettingsTab from './tabs/SettingsTab.vue';
 import DatesAndDurationTab from './tabs/DatesAndDurationTab.vue';
 import ContentTab from './tabs/ContentTab/ContentTab.vue';
 import TitleAndImageTab from './tabs/TitleAndImageTab.vue';
+import TranslationsTab from './tabs/TranslationsTab.vue';
 
 export interface CalloutProps {
   data: CalloutHorizontalTabsData;
@@ -72,6 +73,13 @@ const tabs = reactive<CalloutHorizontalTabs>({
     component: markRaw(DatesAndDurationTab),
     data: props.data.dates,
   },
+  translations: {
+    name: t('createCallout.tabs.translations.title'),
+    validated: false,
+    error: false,
+    component: markRaw(TranslationsTab),
+    data: props.data.translations,
+  },
 });
 
 /**
@@ -82,6 +90,7 @@ const tabsInOrder = [
   tabs.titleAndImage,
   tabs.settings,
   tabs.dates,
+  tabs.translations,
 ];
 
 /**

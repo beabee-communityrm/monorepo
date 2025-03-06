@@ -21,23 +21,6 @@
             </p>
           </div>
         </div>
-
-        <!-- Translations -->
-        <div v-if="locales.length > 0" class="my-4">
-          <AppSubHeading>
-            {{ t('calloutBuilder.translationsTitle') }}
-          </AppSubHeading>
-          <p class="mb-4">
-            {{ t('calloutBuilder.translationsText') }}
-          </p>
-
-          <FormBuilderTranslationsTabCard
-            v-model="data.componentText"
-            :components="data.currentSlide.components"
-            :locales="locales"
-            @update:model-value="handleComponentTextUpdate"
-          />
-        </div>
       </div>
       <div class="flex-0 basis-[15rem]" />
     </div>
@@ -47,8 +30,6 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n';
 import FormBuilder from '@components/form-builder/FormBuilder.vue';
-import FormBuilderTranslationsTabCard from '@components/form-builder/FormBuilderTranslationsTabCard.vue';
-import AppSubHeading from '@components/AppSubHeading.vue';
 import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
 import type { LocaleProp } from '@type';
 import type { SidebarTabProps } from '../SidebarTabs.interface';
@@ -70,21 +51,14 @@ export interface ContentFormTabData {
 /**
  * Props for the ContentFormTab component
  */
-export type ContentFormTabProps = SidebarTabProps<ContentFormTabData>;
+export type ContentFormTabProps = SidebarTabProps<ContentFormTabData> & {
+  locales?: string[];
+};
 
-const props = defineProps<ContentFormTabProps>();
-const emit = defineEmits<{
+defineProps<ContentFormTabProps>();
+defineEmits<{
   'update:data': [value: ContentFormTabData];
 }>();
 
 const { t } = useI18n();
-
-const handleComponentTextUpdate = (
-  value: Record<string, LocaleProp | undefined>
-) => {
-  emit('update:data', {
-    ...props.data,
-    componentText: value as Record<string, LocaleProp>,
-  });
-};
 </script>
