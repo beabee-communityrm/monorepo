@@ -209,6 +209,97 @@
             </div>
           </div>
         </div>
+
+        <!-- End Message Section -->
+        <div v-if="endMessage" class="mb-8 border-b border-b-primary-20 pb-6">
+          <h3 class="mb-4 font-title text-xl font-semibold">
+            {{ t('createCallout.tabs.endMessage.title') }}
+          </h3>
+
+          <div v-if="endMessage.whenFinished === 'message'" class="space-y-6">
+            <!-- Thank You Title -->
+            <div class="space-y-2">
+              <label class="block text-sm font-medium">
+                {{ inputT('title.label') }}
+              </label>
+
+              <div
+                v-if="selected !== defaultLocale"
+                class="mb-1 flex-none text-sm text-body-60"
+              >
+                {{ endMessage.thankYouTitle.default }}
+              </div>
+
+              <AppInput
+                :model-value="
+                  getEndMessageValue(endMessage.thankYouTitle, selected)
+                "
+                :placeholder="
+                  selected === defaultLocale ? '' : t('common.enterTranslation')
+                "
+                :disabled="selected === defaultLocale"
+                class="w-full"
+                @update:model-value="
+                  updateEndMessageValue('thankYouTitle', selected, $event)
+                "
+              />
+            </div>
+
+            <!-- Thank You Text -->
+            <div class="space-y-2">
+              <label class="block text-sm font-medium">
+                {{ inputT('text.label') }}
+              </label>
+
+              <div
+                v-if="selected !== defaultLocale"
+                class="mb-1 flex-none text-sm text-body-60"
+                v-html="endMessage.thankYouText.default"
+              ></div>
+
+              <RichTextEditor
+                :model-value="
+                  getEndMessageValue(endMessage.thankYouText, selected)
+                "
+                :placeholder="
+                  selected === defaultLocale ? '' : t('common.enterTranslation')
+                "
+                :disabled="selected === defaultLocale"
+                @update:model-value="
+                  updateEndMessageValue('thankYouText', selected, $event)
+                "
+              />
+            </div>
+          </div>
+
+          <div v-else class="space-y-2">
+            <!-- Thank You Redirect -->
+            <label class="block text-sm font-medium">
+              {{ inputT('url.label') }}
+            </label>
+
+            <div
+              v-if="selected !== defaultLocale"
+              class="mb-1 flex-none text-sm text-body-60"
+            >
+              {{ endMessage.thankYouRedirect.default }}
+            </div>
+
+            <AppInput
+              :model-value="
+                getEndMessageValue(endMessage.thankYouRedirect, selected)
+              "
+              :placeholder="
+                selected === defaultLocale ? '' : t('common.enterTranslation')
+              "
+              :disabled="selected === defaultLocale"
+              class="w-full"
+              @update:model-value="
+                updateEndMessageValue('thankYouRedirect', selected, $event)
+              "
+            />
+          </div>
+        </div>
       </template>
     </AppTabCard>
   </div>
@@ -225,6 +316,7 @@ import AppInput from '@components/forms/AppInput.vue';
 import AppTextArea from '@components/forms/AppTextArea.vue';
 import RichTextEditor from '@components/rte/RichTextEditor.vue';
 import type { FormBuilderSlide } from './form-builder.interface';
+import type { EndMessageTabData } from '@components/pages/admin/callouts/tabs/ContentTab/SidebarTabContent/EndMessageTab.vue';
 
 const props = defineProps<{
   modelValue: Record<string, LocaleProp | undefined>;
@@ -233,6 +325,7 @@ const props = defineProps<{
   currentSlide: FormBuilderSlide;
   isLastSlide: boolean;
   introText?: LocaleProp;
+  endMessage?: EndMessageTabData;
 }>();
 
 const emit = defineEmits<{
@@ -243,9 +336,16 @@ const emit = defineEmits<{
     value: LocaleProp
   ): void;
   (e: 'update:introText', value: LocaleProp): void;
+  (
+    e: 'update:endMessage',
+    field: 'thankYouTitle' | 'thankYouText' | 'thankYouRedirect',
+    value: LocaleProp
+  ): void;
 }>();
 
 const { t } = useI18n();
+const inputT = (key: string) =>
+  t('createCallout.tabs.endMessage.inputs.' + key);
 
 // Default locale is always the first one
 const defaultLocale = computed(() => props.locales[0] || 'en');
@@ -379,6 +479,39 @@ function updateIntroValue(locale: string, value: string): void {
   }
 
   emit('update:introText', currentValue);
+}
+
+// Get end message value for a specific locale
+function getEndMessageValue(
+  prop: LocaleProp | undefined,
+  locale: string
+): string {
+  if (!prop) return '';
+
+  if (locale === defaultLocale.value) {
+    return prop.default || '';
+  }
+
+  return prop[locale] || '';
+}
+
+// Update end message value
+function updateEndMessageValue(
+  field: 'thankYouTitle' | 'thankYouText' | 'thankYouRedirect',
+  locale: string,
+  value: string
+): void {
+  if (!props.endMessage) return;
+
+  const currentValue = { ...props.endMessage[field] };
+
+  if (locale === defaultLocale.value) {
+    currentValue.default = value;
+  } else {
+    currentValue[locale] = value;
+  }
+
+  emit('update:endMessage', field, currentValue);
 }
 
 // Get options for select, radio, etc. components

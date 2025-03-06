@@ -16,9 +16,8 @@
       </AppFormBox>
       <template v-if="data.whenFinished === 'message'">
         <AppFormBox class="mx-auto max-w-3xl" :help="inputT('title.help')">
-          <LocaleInput
-            v-model="data.thankYouTitle"
-            :locales="locales"
+          <AppInput
+            v-model="data.thankYouTitle.default"
             :label="inputT('title.label')"
             :placeholder="inputT('title.placeholder')"
             required
@@ -26,9 +25,8 @@
         </AppFormBox>
 
         <AppFormBox class="mx-auto max-w-3xl" :help="inputT('text.help')">
-          <LocaleRichTextEditor
-            v-model="data.thankYouText"
-            :locales="locales"
+          <RichTextEditor
+            v-model="data.thankYouText.default"
             :label="inputT('text.label')"
             :placeholder="inputT('text.placeholder')"
             required
@@ -36,9 +34,8 @@
         </AppFormBox>
       </template>
       <AppFormBox v-else class="mx-auto max-w-3xl" :help="inputT('url.help')">
-        <LocaleInput
-          v-model="data.thankYouRedirect"
-          :locales="locales"
+        <AppInput
+          v-model="data.thankYouRedirect.default"
           :label="inputT('url.label')"
           :placeholder="inputT('url.placeholder')"
           type="url"
@@ -59,8 +56,8 @@ import { watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import AppRadioGroup from '../../../../../../forms/AppRadioGroup.vue';
 import AppFormBox from '@beabee/vue/components/form/AppFormBox';
-import LocaleRichTextEditor from '@components/forms/LocaleRichTextEditor.vue';
-import LocaleInput from '@components/forms/LocaleInput.vue';
+import RichTextEditor from '@components/rte/RichTextEditor.vue';
+import AppInput from '@components/forms/AppInput.vue';
 import type { LocaleProp } from '@type';
 import type { SidebarTabProps } from '../SidebarTabs.interface';
 
