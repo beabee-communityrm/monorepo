@@ -51,6 +51,9 @@
             v-model="componentText"
             :components="currentSlide.components"
             :locales="locales"
+            :current-slide="currentSlide"
+            :is-last-slide="isLastSlide"
+            @update:navigation="handleNavigationUpdate"
           />
         </div>
       </div>
@@ -113,6 +116,14 @@ const currentSlide = computed(() =>
   slides.value.find((slide) => slide.id === currentSlideId.value)
 );
 
+// Check if current slide is the last one
+const currentSlideIndex = computed(() =>
+  slides.value.findIndex((slide) => slide.id === currentSlideId.value)
+);
+const isLastSlide = computed(
+  () => currentSlideIndex.value === slides.value.length - 1
+);
+
 // Component text management
 const componentText = computed({
   get: () => props.data.componentText,
@@ -120,6 +131,17 @@ const componentText = computed({
     emit('update:data', { ...props.data, componentText: value });
   },
 });
+
+// Handle navigation update
+function handleNavigationUpdate(
+  field: 'prevText' | 'nextText' | 'submitText',
+  value: LocaleProp
+): void {
+  if (currentSlide.value) {
+    // Update the navigation field in the content tab
+    currentSlide.value.navigation[field] = value;
+  }
+}
 
 // Validation
 watch(
