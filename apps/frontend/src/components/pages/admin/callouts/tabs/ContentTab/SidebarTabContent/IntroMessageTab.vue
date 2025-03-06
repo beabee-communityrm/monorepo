@@ -7,10 +7,8 @@
         :help="t('createCallout.tabs.intro.help')"
       >
         <AppFormField>
-          <!-- TODO: Change locale key path to calloutBuilder.intro.label -->
-          <LocaleRichTextEditor
-            v-model="data.introText"
-            :locales="locales"
+          <RichTextEditor
+            v-model="data.introText.default"
             :label="t('createCallout.tabs.intro.label')"
             required
           />
@@ -28,7 +26,7 @@
 import { useI18n } from 'vue-i18n';
 import AppFormField from '@beabee/vue/components/form/AppFormField';
 import AppFormBox from '@beabee/vue/components/form/AppFormBox';
-import LocaleRichTextEditor from '@components/forms/LocaleRichTextEditor.vue';
+import RichTextEditor from '@components/rte/RichTextEditor.vue';
 
 import type { LocaleProp } from '@type';
 import type { SidebarTabProps } from '../SidebarTabs.interface';

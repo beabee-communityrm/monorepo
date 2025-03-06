@@ -24,7 +24,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-// Deprecated: This shows all locales, but we only want to show the selected locale
+// Deprecated, use FormBuilderTranslationsTabCard instead
 import AppInput from '@components/forms/AppInput.vue';
 import AppLabel from '@beabee/vue/components/form/AppLabel';
 import type { LocaleInputProps } from '@type';
