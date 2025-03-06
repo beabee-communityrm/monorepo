@@ -1,12 +1,6 @@
 <script lang="ts" setup>
 import { reactive } from 'vue';
-import {
-  AppTabs,
-  AppTabsCompact,
-  AppVTabs,
-  type AppTabsProps,
-  type TabItem,
-} from './index';
+import { AppTabs, type AppTabsProps, type TabItem } from './index';
 
 const state = reactive({
   selectedTab: 'tab1',
@@ -33,20 +27,14 @@ const routerTabs: TabItem[] = [
   { id: 'security', label: 'Security', to: '/security' },
 ];
 
-const verticalTabs: TabItem[] = [
-  { id: 'content', label: 'Content', count: 3 },
-  { id: 'intro', label: 'Introduction' },
-  { id: 'endMessage', label: 'End Message' },
-];
-
 const handleTabClick = (tabId: string) => {
   state.selectedTab = tabId;
 };
 </script>
 
 <template>
-  <Story title="Components/Tabs">
-    <Variant title="AppTabs - Basic">
+  <Story title="Components/Tabs/AppTabs">
+    <Variant title="Basic">
       <div class="flex flex-col gap-4">
         <AppTabs
           :items="basicTabs"
@@ -67,7 +55,7 @@ const handleTabClick = (tabId: string) => {
       </template>
     </Variant>
 
-    <Variant title="AppTabs - With Counts">
+    <Variant title="With Counts">
       <AppTabs
         :items="tabsWithCounts"
         :selected="state.selectedTab"
@@ -75,20 +63,8 @@ const handleTabClick = (tabId: string) => {
       />
     </Variant>
 
-    <Variant title="AppTabs - Router Based">
+    <Variant title="Router Based">
       <AppTabs :items="routerTabs" :selected="state.selectedTab" />
-    </Variant>
-
-    <Variant title="AppTabsCompact">
-      <div class="w-[300px]">
-        <AppTabsCompact v-model="state.selectedTab" :items="tabsWithCounts" />
-      </div>
-    </Variant>
-
-    <Variant title="AppVTabs">
-      <div class="w-[200px]">
-        <AppVTabs v-model="state.selectedTab" :items="verticalTabs" />
-      </div>
     </Variant>
 
     <Variant title="Real World Example - Callout Tabs">
@@ -102,26 +78,6 @@ const handleTabClick = (tabId: string) => {
         :selected="state.selectedTab"
         @tab-click="handleTabClick"
       />
-    </Variant>
-
-    <Variant title="Real World Example - Filter Grid">
-      <div class="flex gap-4">
-        <div class="w-[200px]">
-          <AppVTabs
-            v-model="state.selectedTab"
-            :items="[
-              { id: 'all', label: 'All Items', count: 42 },
-              { id: 'active', label: 'Active', count: 18 },
-              { id: 'archived', label: 'Archived', count: 24 },
-            ]"
-          />
-        </div>
-        <div class="flex-1">
-          <div class="rounded-lg border p-4">
-            Content for {{ state.selectedTab }}
-          </div>
-        </div>
-      </div>
     </Variant>
   </Story>
 </template>
