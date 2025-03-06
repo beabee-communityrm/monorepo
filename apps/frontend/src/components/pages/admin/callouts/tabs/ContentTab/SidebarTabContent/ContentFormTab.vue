@@ -23,7 +23,7 @@
         </div>
 
         <!-- Translations -->
-        <div v-if="locales.length > 0" class="my-4 bg-white p-6 shadow-md">
+        <div v-if="locales.length > 0" class="my-4">
           <AppSubHeading>
             {{ t('calloutBuilder.translationsTitle') }}
           </AppSubHeading>
@@ -31,7 +31,7 @@
             {{ t('calloutBuilder.translationsText') }}
           </p>
 
-          <FormBuilderTranslations
+          <FormBuilderTranslationsTabCard
             v-model="data.componentText"
             :components="data.currentSlide.components"
             :locales="locales"
@@ -47,7 +47,7 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n';
 import FormBuilder from '@components/form-builder/FormBuilder.vue';
-import FormBuilderTranslations from '@components/form-builder/FormBuilderTranslations.vue';
+import FormBuilderTranslationsTabCard from '@components/form-builder/FormBuilderTranslationsTabCard.vue';
 import AppSubHeading from '@components/AppSubHeading.vue';
 import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
 import type { LocaleProp } from '@type';

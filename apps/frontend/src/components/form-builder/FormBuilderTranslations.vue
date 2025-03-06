@@ -38,6 +38,7 @@
   </div>
 </template>
 <script lang="ts" setup>
+// Deprecated, use FormBuilderTranslationsTabCard instead
 import type { CalloutComponentSchema } from '@beabee/beabee-common';
 
 import LocaleTextArea from '@components/forms/LocaleTextArea.vue';
