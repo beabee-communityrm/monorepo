@@ -977,6 +977,9 @@
         },
         "title": "Title and image",
         "urlWillBe": "Permalink will be"
+      },
+      "translations": {
+        "title": "Translations"
       }
     },
     "title": "Create a callout",

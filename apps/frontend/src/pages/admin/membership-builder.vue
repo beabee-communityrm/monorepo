@@ -17,7 +17,7 @@ meta:
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import PageTitle from '../../components/PageTitle.vue';
-import AppTabs from '@beabee/vue/components/tabs/AppTabs';
+import { AppTabs } from '@beabee/vue/components/tabs';
 import { useRoute, useRouter } from 'vue-router';
 import { addBreadcrumb } from '../../store/breadcrumb';
 import { faHandsHelping } from '@fortawesome/free-solid-svg-icons';

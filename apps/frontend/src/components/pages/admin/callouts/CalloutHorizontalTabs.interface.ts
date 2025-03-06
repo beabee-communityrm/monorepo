@@ -4,6 +4,7 @@ import type { ContentTabData } from './tabs/ContentTab/ContentTab.vue';
 import type { SettingsTabData } from './tabs/SettingsTab.vue';
 import type { DateAndDurationTabData } from './tabs/DatesAndDurationTab.vue';
 import type { TitleAndImageTabData } from './tabs/TitleAndImageTab.vue';
+import type { TranslationsTabData } from './tabs/TranslationsTab.vue';
 
 /**
  * Combined props for all main callout tabs
@@ -13,6 +14,7 @@ export interface CalloutHorizontalTabsData {
   settings: SettingsTabData;
   dates: DateAndDurationTabData;
   titleAndImage: TitleAndImageTabData;
+  translations: TranslationsTabData;
 }
 
 /**

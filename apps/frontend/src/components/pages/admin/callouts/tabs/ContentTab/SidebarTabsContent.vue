@@ -2,9 +2,11 @@
 <template>
   <component
     :is="currentTab.component"
-    v-model:data="currentTab.data"
-    v-model:validated="currentTab.validated"
-    v-model:error="currentTab.error"
+    :data="currentTab.data"
+    :validated="currentTab.validated"
+    :error="currentTab.error"
+    :component="currentTab.component"
+    :name="currentTab.name"
     :is-active="true"
     :status="status"
     :locales="locales"

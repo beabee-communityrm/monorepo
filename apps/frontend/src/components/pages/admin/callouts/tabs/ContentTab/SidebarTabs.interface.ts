@@ -20,6 +20,8 @@ export interface SidebarTabProps<T> extends SidebarTab<T> {
   isActive: boolean;
   /** Available locales */
   locales: string[];
+  /** The name of the tab */
+  name: string;
 }
 
 /**

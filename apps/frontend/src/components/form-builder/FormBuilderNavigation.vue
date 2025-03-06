@@ -43,6 +43,8 @@
   </div>
 </template>
 <script lang="ts" setup>
+// TODO: Move locales and translations to apps/frontend/src/components/pages/admin/callouts/tabs/TranslationsTab.vue
+// Maybe in form of a new component
 import { useI18n } from 'vue-i18n';
 import { computed } from 'vue';
 
