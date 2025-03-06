@@ -54,8 +54,10 @@
             :current-slide="currentSlide"
             :is-last-slide="isLastSlide"
             :intro-text="introText"
+            :end-message="endMessage"
             @update:navigation="handleNavigationUpdate"
             @update:intro-text="handleIntroTextUpdate"
+            @update:end-message="handleEndMessageUpdate"
           />
         </div>
       </div>
@@ -72,6 +74,7 @@ import FormBuilderTranslationsTabCard from '@components/form-builder/FormBuilder
 import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
 import type { LocaleProp } from '@type';
 import type { CalloutHorizontalTabs } from '../CalloutHorizontalTabs.interface';
+import type { EndMessageTabData } from '../tabs/ContentTab/SidebarTabContent/EndMessageTab.vue';
 
 /**
  * Data for the translations tab
@@ -110,6 +113,11 @@ const slides = computed<FormBuilderSlide[]>(
 // Get intro text from content tab
 const introText = computed<LocaleProp>(
   () => props.tabs.content.data.sidebarTabs.intro.introText
+);
+
+// Get end message from content tab
+const endMessage = computed<EndMessageTabData>(
+  () => props.tabs.content.data.sidebarTabs.endMessage
 );
 
 // Get locales from settings tab
@@ -155,6 +163,16 @@ function handleIntroTextUpdate(value: LocaleProp): void {
   // Update the intro text in the content tab
   // eslint-disable-next-line vue/no-mutating-props
   props.tabs.content.data.sidebarTabs.intro.introText = value;
+}
+
+// Handle end message update
+function handleEndMessageUpdate(
+  field: 'thankYouTitle' | 'thankYouText' | 'thankYouRedirect',
+  value: LocaleProp
+): void {
+  // Update the end message in the content tab
+  // eslint-disable-next-line vue/no-mutating-props
+  props.tabs.content.data.sidebarTabs.endMessage[field] = value;
 }
 
 // Validation
