@@ -2,28 +2,25 @@
 <template>
   <div class="mb-4 flex flex-col gap-4">
     <div v-if="!isFirst" class="flex-1">
-      <LocaleInput
-        v-model="modelValue.prevText"
+      <AppInput
+        v-model="modelValue.prevText.default"
         :label="t('calloutBuilder.prevButton')"
-        :locales="locales"
         required
       />
     </div>
 
     <div v-if="isLast" class="flex-1">
-      <LocaleInput
-        v-model="modelValue.submitText"
+      <AppInput
+        v-model="modelValue.submitText.default"
         :label="t('calloutBuilder.submitButton')"
-        :locales="locales"
         required
       />
     </div>
     <div v-else>
       <div class="mb-4">
-        <LocaleInput
-          v-model="modelValue.nextText"
+        <AppInput
+          v-model="modelValue.nextText.default"
           :label="t('calloutBuilder.nextButton')"
-          :locales="locales"
           required
         />
       </div>
@@ -38,17 +35,15 @@
           ...slideItems,
         ]"
       />
-      <!-- </template> -->
     </div>
   </div>
 </template>
 <script lang="ts" setup>
-// TODO: Move locales and translations to apps/frontend/src/components/pages/admin/callouts/tabs/TranslationsTab.vue
-// Maybe in form of a new component
+// Translations moved to TranslationsTab
 import { useI18n } from 'vue-i18n';
 import { computed } from 'vue';
 
-import LocaleInput from '@components/forms/LocaleInput.vue';
+import AppInput from '@components/forms/AppInput.vue';
 import AppSelect from '@components/forms/AppSelect.vue';
 import type {
   FormBuilderNavigation,
