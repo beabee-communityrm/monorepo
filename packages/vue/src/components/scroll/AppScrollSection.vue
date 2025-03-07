@@ -1,8 +1,5 @@
 <template>
-  <section
-    ref="sectionRef"
-    class="mb-12 scroll-mt-4 border-t border-t-primary-20 pt-6 first:border-t-0 first:pt-0"
-  >
+  <section ref="sectionRef" class="scroll-mt-4">
     <h2 v-if="title" class="mb-6 font-title text-2xl font-semibold">
       {{ title }}
     </h2>
