@@ -18,7 +18,11 @@
       />
 
       <!-- Main Content -->
-      <div ref="contentRef" class="flex-1 overflow-y-auto">
+      <div
+        ref="contentRef"
+        class="relative flex-1 overflow-y-auto"
+        style="contain: paint"
+      >
         <h2 class="mb-4 text-xl font-semibold">
           {{ t('calloutBuilder.translationsTitle') }}
         </h2>
@@ -27,23 +31,22 @@
         </p>
 
         <!-- Language Settings Section -->
-        <AppScrollSection
-          id="language-settings"
-          :title="t('createCallout.tabs.translations.languageSettings')"
-          @mounted="registerSection"
-          class="mb-8"
-        >
-          <p class="mb-4">
-            {{
-              t('createCallout.tabs.translations.languageSettingsDescription')
-            }}
-          </p>
-          <AppCheckboxGroup
-            v-model="availableLocales"
-            :label="t('createCallout.tabs.translations.enableLanguages')"
-            :options="allLocaleItems"
-            @update:model-value="handleLocalesChange"
-          />
+        <AppScrollSection id="language-settings" @mounted="registerSection">
+          <AppFormBox
+            :title="t('createCallout.tabs.translations.languageSettings')"
+          >
+            <p class="mb-4">
+              {{
+                t('createCallout.tabs.translations.languageSettingsDescription')
+              }}
+            </p>
+            <AppCheckboxGroup
+              v-model="availableLocales"
+              :label="t('createCallout.tabs.translations.enableLanguages')"
+              :options="allLocaleItems"
+              @update:model-value="handleLocalesChange"
+            />
+          </AppFormBox>
         </AppScrollSection>
 
         <div v-if="locales.length > 0">
@@ -52,467 +55,544 @@
             v-model="selectedLocale"
             :items="localeItems"
             class="mb-8"
+            :sticky-tabs="true"
+            variant="transparent"
           >
             <template #default="{ selected }">
               <!-- Title and Description Section -->
               <AppScrollSection
                 id="title-description"
-                :title="t('createCallout.tabs.titleAndImage.title')"
                 @mounted="registerSection"
               >
-                <!-- Title -->
-                <div class="mb-6 space-y-2">
-                  <label class="block text-sm font-medium">
-                    {{
-                      t('createCallout.tabs.titleAndImage.inputs.title.label')
-                    }}
-                  </label>
-
-                  <div
-                    v-if="selected !== defaultLocale"
-                    class="mb-1 flex-none text-sm text-body-60"
-                  >
-                    {{ titleAndImage.title.default }}
-                  </div>
-
-                  <AppInput
-                    :model-value="getTitleValue('title', selected)"
-                    :placeholder="
-                      selected === defaultLocale
-                        ? ''
-                        : t('common.enterTranslation')
-                    "
-                    :disabled="selected === defaultLocale"
-                    class="w-full"
-                    @update:model-value="
-                      updateTitleValue('title', selected, $event)
-                    "
-                  />
-                </div>
-
-                <!-- Description -->
-                <div class="mb-6 space-y-2">
-                  <label class="block text-sm font-medium">
-                    {{
-                      t(
-                        'createCallout.tabs.titleAndImage.inputs.description.label'
-                      )
-                    }}
-                  </label>
-
-                  <div
-                    v-if="selected !== defaultLocale"
-                    class="mb-1 flex-none text-sm text-body-60"
-                  >
-                    {{ titleAndImage.description.default }}
-                  </div>
-
-                  <AppTextArea
-                    :model-value="getTitleValue('description', selected)"
-                    :placeholder="
-                      selected === defaultLocale
-                        ? ''
-                        : t('common.enterTranslation')
-                    "
-                    :disabled="selected === defaultLocale"
-                    rows="3"
-                    class="w-full"
-                    @update:model-value="
-                      updateTitleValue('description', selected, $event)
-                    "
-                  />
-                </div>
-
-                <!-- Share Title (if overrideShare is true) -->
-                <div v-if="titleAndImage.overrideShare" class="mb-6 space-y-2">
-                  <label class="block text-sm font-medium">
-                    {{
-                      t(
-                        'createCallout.tabs.titleAndImage.inputs.shareTitle.label'
-                      )
-                    }}
-                  </label>
-
-                  <div
-                    v-if="selected !== defaultLocale"
-                    class="mb-1 flex-none text-sm text-body-60"
-                  >
-                    {{ titleAndImage.shareTitle.default }}
-                  </div>
-
-                  <AppInput
-                    :model-value="getTitleValue('shareTitle', selected)"
-                    :placeholder="
-                      selected === defaultLocale
-                        ? ''
-                        : t('common.enterTranslation')
-                    "
-                    :disabled="selected === defaultLocale"
-                    class="w-full"
-                    @update:model-value="
-                      updateTitleValue('shareTitle', selected, $event)
-                    "
-                  />
-                </div>
-
-                <!-- Share Description (if overrideShare is true) -->
-                <div v-if="titleAndImage.overrideShare" class="mb-6 space-y-2">
-                  <label class="block text-sm font-medium">
-                    {{
-                      t(
-                        'createCallout.tabs.titleAndImage.inputs.shareDescription.label'
-                      )
-                    }}
-                  </label>
-
-                  <div
-                    v-if="selected !== defaultLocale"
-                    class="mb-1 flex-none text-sm text-body-60"
-                  >
-                    {{ titleAndImage.shareDescription.default }}
-                  </div>
-
-                  <AppTextArea
-                    :model-value="getTitleValue('shareDescription', selected)"
-                    :placeholder="
-                      selected === defaultLocale
-                        ? ''
-                        : t('common.enterTranslation')
-                    "
-                    :disabled="selected === defaultLocale"
-                    rows="3"
-                    class="w-full"
-                    @update:model-value="
-                      updateTitleValue('shareDescription', selected, $event)
-                    "
-                  />
-                </div>
-              </AppScrollSection>
-
-              <!-- Buttons Section -->
-              <AppScrollSection
-                id="buttons"
-                :title="t('calloutBuilder.navigationButtons')"
-                @mounted="registerSection"
-              >
-                <div
-                  v-for="(slide, slideIndex) in slides"
-                  :key="slide.id"
-                  class="mb-8"
+                <AppFormBox
+                  :title="t('createCallout.tabs.titleAndImage.title')"
                 >
-                  <h3 class="mb-4 font-title text-lg font-semibold">
-                    {{ t('calloutBuilder.slideNo', { no: slideIndex + 1 }) }}:
-                    {{ slide.title }}
-                  </h3>
-
-                  <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
-                    <!-- Back Button -->
-                    <div class="space-y-2">
-                      <label class="block text-sm font-medium">
-                        {{ t('calloutBuilder.prevButton') }}
-                      </label>
-
-                      <div
-                        v-if="selected !== defaultLocale"
-                        class="mb-1 flex-none text-sm text-body-60"
-                      >
-                        {{ slide.navigation.prevText.default }}
-                      </div>
-
-                      <AppInput
-                        :model-value="
-                          getNavigationValue(
-                            slide.navigation.prevText,
-                            selected
-                          )
-                        "
-                        :placeholder="
-                          selected === defaultLocale
-                            ? ''
-                            : t('common.enterTranslation')
-                        "
-                        :disabled="selected === defaultLocale"
-                        class="w-full"
-                        @update:model-value="
-                          updateNavigationValue(
-                            slide,
-                            'prevText',
-                            selected,
-                            $event
-                          )
-                        "
-                      />
-                    </div>
-
-                    <!-- Next Button -->
-                    <div
-                      v-if="slideIndex < slides.length - 1"
-                      class="space-y-2"
-                    >
-                      <label class="block text-sm font-medium">
-                        {{ t('calloutBuilder.nextButton') }}
-                      </label>
-
-                      <div
-                        v-if="selected !== defaultLocale"
-                        class="mb-1 flex-none text-sm text-body-60"
-                      >
-                        {{ slide.navigation.nextText.default }}
-                      </div>
-
-                      <AppInput
-                        :model-value="
-                          getNavigationValue(
-                            slide.navigation.nextText,
-                            selected
-                          )
-                        "
-                        :placeholder="
-                          selected === defaultLocale
-                            ? ''
-                            : t('common.enterTranslation')
-                        "
-                        :disabled="selected === defaultLocale"
-                        class="w-full"
-                        @update:model-value="
-                          updateNavigationValue(
-                            slide,
-                            'nextText',
-                            selected,
-                            $event
-                          )
-                        "
-                      />
-                    </div>
-
-                    <!-- Submit Button -->
-                    <div
-                      v-if="slideIndex === slides.length - 1"
-                      class="space-y-2"
-                    >
-                      <label class="block text-sm font-medium">
-                        {{ t('calloutBuilder.submitButton') }}
-                      </label>
-
-                      <div
-                        v-if="selected !== defaultLocale"
-                        class="mb-1 flex-none text-sm text-body-60"
-                      >
-                        {{ slide.navigation.submitText.default }}
-                      </div>
-
-                      <AppInput
-                        :model-value="
-                          getNavigationValue(
-                            slide.navigation.submitText,
-                            selected
-                          )
-                        "
-                        :placeholder="
-                          selected === defaultLocale
-                            ? ''
-                            : t('common.enterTranslation')
-                        "
-                        :disabled="selected === defaultLocale"
-                        class="w-full"
-                        @update:model-value="
-                          updateNavigationValue(
-                            slide,
-                            'submitText',
-                            selected,
-                            $event
-                          )
-                        "
-                      />
-                    </div>
-                  </div>
-                </div>
-              </AppScrollSection>
-
-              <!-- Introduction Section -->
-              <AppScrollSection
-                id="introduction"
-                :title="t('createCallout.tabs.intro.label')"
-                @mounted="registerSection"
-              >
-                <div class="space-y-2">
-                  <div
-                    v-if="selected !== defaultLocale"
-                    class="mb-1 flex-none text-sm text-body-60"
-                    v-html="introText.default"
-                  ></div>
-
-                  <RichTextEditor
-                    :model-value="getIntroValue(selected)"
-                    :placeholder="
-                      selected === defaultLocale
-                        ? ''
-                        : t('common.enterTranslation')
-                    "
-                    :disabled="selected === defaultLocale"
-                    @update:model-value="updateIntroValue(selected, $event)"
-                  />
-                </div>
-              </AppScrollSection>
-
-              <!-- Slides Sections -->
-              <template v-for="(slide, slideIndex) in slides" :key="slide.id">
-                <AppScrollSection
-                  :id="`slide-${slide.id}`"
-                  :title="
-                    t('calloutBuilder.slideNo', { no: slideIndex + 1 }) +
-                    ': ' +
-                    slide.title
-                  "
-                  @mounted="registerSection"
-                >
-                  <div
-                    v-for="component in slide.components"
-                    :key="component.id"
-                    class="mb-8 border-t border-t-primary-20 pt-6"
-                  >
-                    <h3 class="mb-2 font-title text-xl font-semibold">
-                      {{ component.label }}
-                    </h3>
-
-                    <!-- Standard fields (label, description, placeholder) -->
-                    <div
-                      v-for="[field, fieldType] in fields"
-                      :key="field"
-                      class="mb-4"
-                    >
-                      <div v-if="component[field]" class="space-y-2">
-                        <label class="block text-sm font-medium">
-                          {{ t('calloutBuilder.translationFields.' + field) }}
-                        </label>
-
-                        <div
-                          v-if="selected !== defaultLocale"
-                          class="mb-1 flex-none text-sm text-body-60"
-                        >
-                          {{ getDefaultText(component[field] as string) }}
-                        </div>
-
-                        <AppInput
-                          v-if="fieldType === 'input'"
-                          :model-value="
-                            getLocalizedValue(
-                              component[field] as string,
-                              selected
-                            )
-                          "
-                          :placeholder="
-                            selected === defaultLocale
-                              ? ''
-                              : t('common.enterTranslation')
-                          "
-                          :disabled="selected === defaultLocale"
-                          class="w-full"
-                          @update:model-value="
-                            updateValue(
-                              component[field] as string,
-                              selected,
-                              $event
-                            )
-                          "
-                        />
-
-                        <AppTextArea
-                          v-else
-                          :model-value="
-                            getLocalizedValue(
-                              component[field] as string,
-                              selected
-                            )
-                          "
-                          :placeholder="
-                            selected === defaultLocale
-                              ? ''
-                              : t('common.enterTranslation')
-                          "
-                          :disabled="selected === defaultLocale"
-                          rows="3"
-                          class="w-full"
-                          @update:model-value="
-                            updateValue(
-                              component[field] as string,
-                              selected,
-                              $event
-                            )
-                          "
-                        />
-                      </div>
-                    </div>
-
-                    <!-- Options for select, radio, etc. -->
-                    <div
-                      v-for="(value, i) in getOptions(component)"
-                      :key="value.value"
-                      class="mb-4"
-                    >
-                      <div class="space-y-2">
-                        <label class="block text-sm font-medium">
-                          {{
-                            t('calloutBuilder.translationFields.option', {
-                              n: i + 1,
-                            })
-                          }}
-                        </label>
-
-                        <div
-                          v-if="selected !== defaultLocale"
-                          class="mb-1 flex-none text-sm text-body-60"
-                        >
-                          {{ getDefaultText(value.label) }}
-                        </div>
-
-                        <AppInput
-                          :model-value="
-                            getLocalizedValue(value.label, selected)
-                          "
-                          :placeholder="
-                            selected === defaultLocale
-                              ? ''
-                              : t('common.enterTranslation')
-                          "
-                          :disabled="selected === defaultLocale"
-                          class="w-full"
-                          @update:model-value="
-                            updateValue(value.label, selected, $event)
-                          "
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </AppScrollSection>
-              </template>
-
-              <!-- Thank You Section -->
-              <AppScrollSection
-                id="thank-you"
-                :title="t('createCallout.tabs.endMessage.title')"
-                @mounted="registerSection"
-              >
-                <div
-                  v-if="endMessage.whenFinished === 'message'"
-                  class="space-y-6"
-                >
-                  <!-- Thank You Title -->
-                  <div class="space-y-2">
+                  <!-- Title -->
+                  <div class="mb-6 space-y-2">
                     <label class="block text-sm font-medium">
-                      {{ inputT('title.label') }}
+                      {{
+                        t('createCallout.tabs.titleAndImage.inputs.title.label')
+                      }}
                     </label>
 
                     <div
                       v-if="selected !== defaultLocale"
                       class="mb-1 flex-none text-sm text-body-60"
                     >
-                      {{ endMessage.thankYouTitle.default }}
+                      {{ titleAndImage.title.default }}
+                    </div>
+
+                    <AppInput
+                      :model-value="getTitleValue('title', selected)"
+                      :placeholder="
+                        selected === defaultLocale
+                          ? ''
+                          : t('common.enterTranslation')
+                      "
+                      :disabled="selected === defaultLocale"
+                      class="w-full"
+                      @update:model-value="
+                        updateTitleValue('title', selected, $event)
+                      "
+                    />
+                  </div>
+
+                  <!-- Description -->
+                  <div class="mb-6 space-y-2">
+                    <label class="block text-sm font-medium">
+                      {{
+                        t(
+                          'createCallout.tabs.titleAndImage.inputs.description.label'
+                        )
+                      }}
+                    </label>
+
+                    <div
+                      v-if="selected !== defaultLocale"
+                      class="mb-1 flex-none text-sm text-body-60"
+                    >
+                      {{ titleAndImage.description.default }}
+                    </div>
+
+                    <AppTextArea
+                      :model-value="getTitleValue('description', selected)"
+                      :placeholder="
+                        selected === defaultLocale
+                          ? ''
+                          : t('common.enterTranslation')
+                      "
+                      :disabled="selected === defaultLocale"
+                      rows="3"
+                      class="w-full"
+                      @update:model-value="
+                        updateTitleValue('description', selected, $event)
+                      "
+                    />
+                  </div>
+
+                  <!-- Share Title (if overrideShare is true) -->
+                  <div
+                    v-if="titleAndImage.overrideShare"
+                    class="mb-6 space-y-2"
+                  >
+                    <label class="block text-sm font-medium">
+                      {{
+                        t(
+                          'createCallout.tabs.titleAndImage.inputs.shareTitle.label'
+                        )
+                      }}
+                    </label>
+
+                    <div
+                      v-if="selected !== defaultLocale"
+                      class="mb-1 flex-none text-sm text-body-60"
+                    >
+                      {{ titleAndImage.shareTitle.default }}
+                    </div>
+
+                    <AppInput
+                      :model-value="getTitleValue('shareTitle', selected)"
+                      :placeholder="
+                        selected === defaultLocale
+                          ? ''
+                          : t('common.enterTranslation')
+                      "
+                      :disabled="selected === defaultLocale"
+                      class="w-full"
+                      @update:model-value="
+                        updateTitleValue('shareTitle', selected, $event)
+                      "
+                    />
+                  </div>
+
+                  <!-- Share Description (if overrideShare is true) -->
+                  <div
+                    v-if="titleAndImage.overrideShare"
+                    class="mb-6 space-y-2"
+                  >
+                    <label class="block text-sm font-medium">
+                      {{
+                        t(
+                          'createCallout.tabs.titleAndImage.inputs.shareDescription.label'
+                        )
+                      }}
+                    </label>
+
+                    <div
+                      v-if="selected !== defaultLocale"
+                      class="mb-1 flex-none text-sm text-body-60"
+                    >
+                      {{ titleAndImage.shareDescription.default }}
+                    </div>
+
+                    <AppTextArea
+                      :model-value="getTitleValue('shareDescription', selected)"
+                      :placeholder="
+                        selected === defaultLocale
+                          ? ''
+                          : t('common.enterTranslation')
+                      "
+                      :disabled="selected === defaultLocale"
+                      rows="3"
+                      class="w-full"
+                      @update:model-value="
+                        updateTitleValue('shareDescription', selected, $event)
+                      "
+                    />
+                  </div>
+                </AppFormBox>
+              </AppScrollSection>
+
+              <!-- Buttons Section -->
+              <AppScrollSection id="buttons" @mounted="registerSection">
+                <AppFormBox :title="t('calloutBuilder.navigationButtons')">
+                  <div
+                    v-for="(slide, slideIndex) in slides"
+                    :key="slide.id"
+                    class="mb-8"
+                  >
+                    <h3 class="mb-4 font-title text-lg font-semibold">
+                      {{ t('calloutBuilder.slideNo', { no: slideIndex + 1 }) }}:
+                      {{ slide.title }}
+                    </h3>
+
+                    <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+                      <!-- Back Button -->
+                      <div class="space-y-2">
+                        <label class="block text-sm font-medium">
+                          {{ t('calloutBuilder.prevButton') }}
+                        </label>
+
+                        <div
+                          v-if="selected !== defaultLocale"
+                          class="mb-1 flex-none text-sm text-body-60"
+                        >
+                          {{ slide.navigation.prevText.default }}
+                        </div>
+
+                        <AppInput
+                          :model-value="
+                            getNavigationValue(
+                              slide.navigation.prevText,
+                              selected
+                            )
+                          "
+                          :placeholder="
+                            selected === defaultLocale
+                              ? ''
+                              : t('common.enterTranslation')
+                          "
+                          :disabled="selected === defaultLocale"
+                          class="w-full"
+                          @update:model-value="
+                            updateNavigationValue(
+                              slide,
+                              'prevText',
+                              selected,
+                              $event
+                            )
+                          "
+                        />
+                      </div>
+
+                      <!-- Next Button -->
+                      <div
+                        v-if="slideIndex < slides.length - 1"
+                        class="space-y-2"
+                      >
+                        <label class="block text-sm font-medium">
+                          {{ t('calloutBuilder.nextButton') }}
+                        </label>
+
+                        <div
+                          v-if="selected !== defaultLocale"
+                          class="mb-1 flex-none text-sm text-body-60"
+                        >
+                          {{ slide.navigation.nextText.default }}
+                        </div>
+
+                        <AppInput
+                          :model-value="
+                            getNavigationValue(
+                              slide.navigation.nextText,
+                              selected
+                            )
+                          "
+                          :placeholder="
+                            selected === defaultLocale
+                              ? ''
+                              : t('common.enterTranslation')
+                          "
+                          :disabled="selected === defaultLocale"
+                          class="w-full"
+                          @update:model-value="
+                            updateNavigationValue(
+                              slide,
+                              'nextText',
+                              selected,
+                              $event
+                            )
+                          "
+                        />
+                      </div>
+
+                      <!-- Submit Button -->
+                      <div
+                        v-if="slideIndex === slides.length - 1"
+                        class="space-y-2"
+                      >
+                        <label class="block text-sm font-medium">
+                          {{ t('calloutBuilder.submitButton') }}
+                        </label>
+
+                        <div
+                          v-if="selected !== defaultLocale"
+                          class="mb-1 flex-none text-sm text-body-60"
+                        >
+                          {{ slide.navigation.submitText.default }}
+                        </div>
+
+                        <AppInput
+                          :model-value="
+                            getNavigationValue(
+                              slide.navigation.submitText,
+                              selected
+                            )
+                          "
+                          :placeholder="
+                            selected === defaultLocale
+                              ? ''
+                              : t('common.enterTranslation')
+                          "
+                          :disabled="selected === defaultLocale"
+                          class="w-full"
+                          @update:model-value="
+                            updateNavigationValue(
+                              slide,
+                              'submitText',
+                              selected,
+                              $event
+                            )
+                          "
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </AppFormBox>
+              </AppScrollSection>
+
+              <!-- Introduction Section -->
+              <AppScrollSection id="introduction" @mounted="registerSection">
+                <AppFormBox :title="t('createCallout.tabs.intro.label')">
+                  <div class="space-y-2">
+                    <div
+                      v-if="selected !== defaultLocale"
+                      class="mb-1 flex-none text-sm text-body-60"
+                      v-html="introText.default"
+                    ></div>
+
+                    <RichTextEditor
+                      :model-value="getIntroValue(selected)"
+                      :placeholder="
+                        selected === defaultLocale
+                          ? ''
+                          : t('common.enterTranslation')
+                      "
+                      :disabled="selected === defaultLocale"
+                      @update:model-value="updateIntroValue(selected, $event)"
+                    />
+                  </div>
+                </AppFormBox>
+              </AppScrollSection>
+
+              <!-- Slides Sections -->
+              <template v-for="(slide, slideIndex) in slides" :key="slide.id">
+                <AppScrollSection
+                  :id="`slide-${slide.id}`"
+                  @mounted="registerSection"
+                >
+                  <AppFormBox
+                    :title="
+                      t('calloutBuilder.slideNo', { no: slideIndex + 1 }) +
+                      ': ' +
+                      slide.title
+                    "
+                  >
+                    <div
+                      v-for="component in slide.components"
+                      :key="component.id"
+                      class="mb-8 border-t border-t-primary-20 pt-6"
+                    >
+                      <h3 class="mb-2 font-title text-xl font-semibold">
+                        {{ component.label }}
+                      </h3>
+
+                      <!-- Standard fields (label, description, placeholder) -->
+                      <div
+                        v-for="[field, fieldType] in fields"
+                        :key="field"
+                        class="mb-4"
+                      >
+                        <div v-if="component[field]" class="space-y-2">
+                          <label class="block text-sm font-medium">
+                            {{ t('calloutBuilder.translationFields.' + field) }}
+                          </label>
+
+                          <div
+                            v-if="selected !== defaultLocale"
+                            class="mb-1 flex-none text-sm text-body-60"
+                          >
+                            {{ getDefaultText(component[field] as string) }}
+                          </div>
+
+                          <AppInput
+                            v-if="fieldType === 'input'"
+                            :model-value="
+                              getLocalizedValue(
+                                component[field] as string,
+                                selected
+                              )
+                            "
+                            :placeholder="
+                              selected === defaultLocale
+                                ? ''
+                                : t('common.enterTranslation')
+                            "
+                            :disabled="selected === defaultLocale"
+                            class="w-full"
+                            @update:model-value="
+                              updateValue(
+                                component[field] as string,
+                                selected,
+                                $event
+                              )
+                            "
+                          />
+
+                          <AppTextArea
+                            v-else
+                            :model-value="
+                              getLocalizedValue(
+                                component[field] as string,
+                                selected
+                              )
+                            "
+                            :placeholder="
+                              selected === defaultLocale
+                                ? ''
+                                : t('common.enterTranslation')
+                            "
+                            :disabled="selected === defaultLocale"
+                            rows="3"
+                            class="w-full"
+                            @update:model-value="
+                              updateValue(
+                                component[field] as string,
+                                selected,
+                                $event
+                              )
+                            "
+                          />
+                        </div>
+                      </div>
+
+                      <!-- Options for select, radio, etc. -->
+                      <div
+                        v-for="(value, i) in getOptions(component)"
+                        :key="value.value"
+                        class="mb-4"
+                      >
+                        <div class="space-y-2">
+                          <label class="block text-sm font-medium">
+                            {{
+                              t('calloutBuilder.translationFields.option', {
+                                n: i + 1,
+                              })
+                            }}
+                          </label>
+
+                          <div
+                            v-if="selected !== defaultLocale"
+                            class="mb-1 flex-none text-sm text-body-60"
+                          >
+                            {{ getDefaultText(value.label) }}
+                          </div>
+
+                          <AppInput
+                            :model-value="
+                              getLocalizedValue(value.label, selected)
+                            "
+                            :placeholder="
+                              selected === defaultLocale
+                                ? ''
+                                : t('common.enterTranslation')
+                            "
+                            :disabled="selected === defaultLocale"
+                            class="w-full"
+                            @update:model-value="
+                              updateValue(value.label, selected, $event)
+                            "
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </AppFormBox>
+                </AppScrollSection>
+              </template>
+
+              <!-- Thank You Section -->
+              <AppScrollSection id="thank-you" @mounted="registerSection">
+                <AppFormBox :title="t('createCallout.tabs.endMessage.title')">
+                  <div
+                    v-if="endMessage.whenFinished === 'message'"
+                    class="space-y-6"
+                  >
+                    <!-- Thank You Title -->
+                    <div class="space-y-2">
+                      <label class="block text-sm font-medium">
+                        {{ inputT('title.label') }}
+                      </label>
+
+                      <div
+                        v-if="selected !== defaultLocale"
+                        class="mb-1 flex-none text-sm text-body-60"
+                      >
+                        {{ endMessage.thankYouTitle.default }}
+                      </div>
+
+                      <AppInput
+                        :model-value="
+                          getEndMessageValue(endMessage.thankYouTitle, selected)
+                        "
+                        :placeholder="
+                          selected === defaultLocale
+                            ? ''
+                            : t('common.enterTranslation')
+                        "
+                        :disabled="selected === defaultLocale"
+                        class="w-full"
+                        @update:model-value="
+                          updateEndMessageValue(
+                            'thankYouTitle',
+                            selected,
+                            $event
+                          )
+                        "
+                      />
+                    </div>
+
+                    <!-- Thank You Text -->
+                    <div class="space-y-2">
+                      <label class="block text-sm font-medium">
+                        {{ inputT('text.label') }}
+                      </label>
+
+                      <div
+                        v-if="selected !== defaultLocale"
+                        class="mb-1 flex-none text-sm text-body-60"
+                        v-html="endMessage.thankYouText.default"
+                      ></div>
+
+                      <RichTextEditor
+                        :model-value="
+                          getEndMessageValue(endMessage.thankYouText, selected)
+                        "
+                        :placeholder="
+                          selected === defaultLocale
+                            ? ''
+                            : t('common.enterTranslation')
+                        "
+                        :disabled="selected === defaultLocale"
+                        @update:model-value="
+                          updateEndMessageValue(
+                            'thankYouText',
+                            selected,
+                            $event
+                          )
+                        "
+                      />
+                    </div>
+                  </div>
+
+                  <div v-else class="space-y-2">
+                    <!-- Thank You Redirect -->
+                    <label class="block text-sm font-medium">
+                      {{ inputT('url.label') }}
+                    </label>
+
+                    <div
+                      v-if="selected !== defaultLocale"
+                      class="mb-1 flex-none text-sm text-body-60"
+                    >
+                      {{ endMessage.thankYouRedirect.default }}
                     </div>
 
                     <AppInput
                       :model-value="
-                        getEndMessageValue(endMessage.thankYouTitle, selected)
+                        getEndMessageValue(
+                          endMessage.thankYouRedirect,
+                          selected
+                        )
                       "
                       :placeholder="
                         selected === defaultLocale
@@ -522,73 +602,15 @@
                       :disabled="selected === defaultLocale"
                       class="w-full"
                       @update:model-value="
-                        updateEndMessageValue('thankYouTitle', selected, $event)
+                        updateEndMessageValue(
+                          'thankYouRedirect',
+                          selected,
+                          $event
+                        )
                       "
                     />
                   </div>
-
-                  <!-- Thank You Text -->
-                  <div class="space-y-2">
-                    <label class="block text-sm font-medium">
-                      {{ inputT('text.label') }}
-                    </label>
-
-                    <div
-                      v-if="selected !== defaultLocale"
-                      class="mb-1 flex-none text-sm text-body-60"
-                      v-html="endMessage.thankYouText.default"
-                    ></div>
-
-                    <RichTextEditor
-                      :model-value="
-                        getEndMessageValue(endMessage.thankYouText, selected)
-                      "
-                      :placeholder="
-                        selected === defaultLocale
-                          ? ''
-                          : t('common.enterTranslation')
-                      "
-                      :disabled="selected === defaultLocale"
-                      @update:model-value="
-                        updateEndMessageValue('thankYouText', selected, $event)
-                      "
-                    />
-                  </div>
-                </div>
-
-                <div v-else class="space-y-2">
-                  <!-- Thank You Redirect -->
-                  <label class="block text-sm font-medium">
-                    {{ inputT('url.label') }}
-                  </label>
-
-                  <div
-                    v-if="selected !== defaultLocale"
-                    class="mb-1 flex-none text-sm text-body-60"
-                  >
-                    {{ endMessage.thankYouRedirect.default }}
-                  </div>
-
-                  <AppInput
-                    :model-value="
-                      getEndMessageValue(endMessage.thankYouRedirect, selected)
-                    "
-                    :placeholder="
-                      selected === defaultLocale
-                        ? ''
-                        : t('common.enterTranslation')
-                    "
-                    :disabled="selected === defaultLocale"
-                    class="w-full"
-                    @update:model-value="
-                      updateEndMessageValue(
-                        'thankYouRedirect',
-                        selected,
-                        $event
-                      )
-                    "
-                  />
-                </div>
+                </AppFormBox>
               </AppScrollSection>
             </template>
           </AppTabCard>
@@ -611,6 +633,7 @@ import {
   type ScrollSection,
   type TabItem,
 } from '@beabee/vue/components';
+import AppFormBox from '@beabee/vue/components/form/AppFormBox';
 import AppInput from '@components/forms/AppInput.vue';
 import AppTextArea from '@components/forms/AppTextArea.vue';
 import RichTextEditor from '@components/rte/RichTextEditor.vue';

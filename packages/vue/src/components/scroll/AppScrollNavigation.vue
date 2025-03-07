@@ -4,16 +4,17 @@
       <h2 v-if="title" class="mb-2 text-lg font-semibold">
         {{ title }}
       </h2>
-      <div class="space-y-2">
+      <div class="space-y-1">
         <button
           v-for="section in sections"
           :key="section.id"
-          class="w-full rounded-md border px-3 py-2 text-left text-sm transition-colors"
+          class="w-full overflow-hidden text-ellipsis whitespace-nowrap rounded-md px-3 py-2 text-left text-sm transition-colors"
           :class="
             activeSection === section.id
-              ? 'border-primary bg-primary-5 font-medium text-primary'
-              : 'border-primary-20 hover:border-primary-40'
+              ? 'bg-white font-medium text-primary shadow-sm'
+              : 'text-body-80 hover:bg-primary-5 hover:text-body'
           "
+          :title="section.label"
           @click="scrollToSection(section.id)"
         >
           {{ section.label }}

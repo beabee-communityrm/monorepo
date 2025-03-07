@@ -15,18 +15,20 @@ A navigation component that allows users to navigate between sections of content
   <div class="flex-1 overflow-y-auto">
     <AppScrollSection
       id="section1"
-      title="Section 1"
       @mounted="registerSection"
     >
-      <p>Content for section 1</p>
+      <AppFormBox title="Section 1">
+        <p>Content for section 1</p>
+      </AppFormBox>
     </AppScrollSection>
 
     <AppScrollSection
       id="section2"
-      title="Section 2"
       @mounted="registerSection"
     >
-      <p>Content for section 2</p>
+      <AppFormBox title="Section 2">
+        <p>Content for section 2</p>
+      </AppFormBox>
     </AppScrollSection>
   </div>
 </div>
@@ -66,6 +68,9 @@ interface ScrollSection {
 - Smooth scrolling to sections when clicked
 - Support for custom scroll containers
 - Two-way binding for active section
+- Truncates long labels with ellipsis to prevent wrapping
+- Active items have a white background with shadow for clear visual distinction
+- No borders on navigation items for a cleaner look
 
 ## Use Cases
 
@@ -86,12 +91,16 @@ Perfect for navigating between different sections of a translation form:
   />
 
   <div class="flex-1 overflow-y-auto">
-    <AppScrollSection id="buttons" title="Buttons">
-      <!-- Button translations -->
+    <AppScrollSection id="buttons">
+      <AppFormBox title="Buttons">
+        <!-- Button translations -->
+      </AppFormBox>
     </AppScrollSection>
 
-    <AppScrollSection id="intro" title="Introduction">
-      <!-- Introduction translations -->
+    <AppScrollSection id="intro">
+      <AppFormBox title="Introduction">
+        <!-- Introduction translations -->
+      </AppFormBox>
     </AppScrollSection>
 
     <!-- More sections -->
@@ -115,10 +124,11 @@ Useful for navigating through documentation sections:
       v-for="section in docSections"
       :key="section.id"
       :id="section.id"
-      :title="section.label"
       @mounted="registerSection"
     >
-      <!-- Section content -->
+      <AppFormBox :title="section.label">
+        <!-- Section content -->
+      </AppFormBox>
     </AppScrollSection>
   </div>
 </div>
