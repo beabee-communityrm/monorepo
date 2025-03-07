@@ -1,6 +1,7 @@
 {
   "extends": "@beabee/tsconfig/tsconfig.frontend.json",
   "compilerOptions": {
+    "allowImportingTsExtensions": true,
     "paths": {
       "@components/*": ["./src/components/*"],
       "@layouts/*": ["./src/layouts/*"],

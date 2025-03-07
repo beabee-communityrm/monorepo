@@ -8,17 +8,26 @@ import ItemManager from '@components/item-manager/ItemManager.vue';
 import { faTag } from '@fortawesome/free-solid-svg-icons';
 import AppInput from '@components/forms/AppInput.vue';
 
-interface Props {
+/**
+ * Props for the TagManager component
+ */
+export interface TagManagerProps {
   /**
    * Contact id or other entity id with tagging support.
    * If not provided, the tags will be fetched from the root level (e.g. all contact tags).
    */
   entityId?: string | undefined;
+  /**
+   * Operations for the tag client.
+   */
   operations: TagClient;
+  /**
+   * Type of entity to fetch tags for.
+   */
   type?: 'contact' | 'response';
 }
 
-const props = defineProps<Props>();
+const props = defineProps<TagManagerProps>();
 const { t } = useI18n();
 
 const tags = ref<TagData[]>([]);

@@ -1,44 +1,12 @@
 import { isLocale, type Locale, config as localeConfig } from '@beabee/locale';
-import en from '@beabee/locale/locales/en';
 
 import { computed, watch } from 'vue';
-import {
-  type DefaultLocaleMessageSchema,
-  type LocaleMessages,
-  createI18n,
-} from 'vue-i18n';
 import { currentUser, generalContent, initStore, isEmbed } from '../store';
 import router from '@lib/router';
 
 import env from '@env';
-import { addNotification } from '@store/notifications';
-
-export const localeItems = Object.entries(localeConfig).map(([id, config]) => ({
-  id,
-  label: config.name,
-}));
-
-const i18n = createI18n({
-  legacy: false,
-  fallbackLocale: 'en',
-  messages: { en } as LocaleMessages<DefaultLocaleMessageSchema>,
-  pluralRules: {
-    // Format: 0 | ends in 1 (except 11) | ends in 2,3,4 (except teens) | the rest
-    ru: (n) => {
-      if (n === 0) {
-        return 0;
-      }
-
-      // Assume no number given is singular
-      if (n === -1) {
-        return 1;
-      }
-
-      const endsWith = n % 10;
-      return (n > 10 && n < 20) || endsWith >= 5 ? 3 : endsWith === 1 ? 1 : 2;
-    },
-  },
-});
+import { addNotification } from '@beabee/vue/store/notifications';
+import { localeItems, i18n } from '@beabee/vue/lib/i18n';
 
 export const currentLocale = computed<Locale>(() => {
   const route = router.currentRoute.value;
@@ -121,4 +89,4 @@ router.beforeEach(async (to) => {
   }
 });
 
-export default i18n;
+export { localeItems, i18n };

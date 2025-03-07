@@ -182,7 +182,7 @@ import AppInput from '@components/forms/AppInput.vue';
 import AppSelect from '@components/forms/AppSelect.vue';
 import AppTextArea from '@components/forms/AppTextArea.vue';
 import AppHeading from '@components/AppHeading.vue';
-import AppForm from '@components/forms/AppForm.vue';
+import AppForm from '@beabee/vue/components/form/AppForm';
 import App2ColGrid from '@components/App2ColGrid.vue';
 import AppSubHeading from '@components/AppSubHeading.vue';
 import AppLinkList from '@components/forms/AppLinkList.vue';
@@ -192,7 +192,7 @@ import { client } from '@utils/api';
 
 import { generalContent as storeGeneralContent } from '@store';
 
-import { localeItems } from '@lib/i18n';
+import { localeItems } from '@beabee/vue/lib/i18n';
 import type {
   ContentPaymentData,
   ContentShareData,
