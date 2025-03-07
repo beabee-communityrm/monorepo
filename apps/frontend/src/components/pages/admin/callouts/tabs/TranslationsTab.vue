@@ -18,7 +18,7 @@
       />
 
       <!-- Main Content -->
-      <div class="flex-1 overflow-y-auto" ref="contentRef">
+      <div ref="contentRef" class="flex-1 overflow-y-auto">
         <h2 class="mb-4 text-xl font-semibold">
           {{ t('calloutBuilder.translationsTitle') }}
         </h2>
@@ -463,6 +463,7 @@ import type { FormBuilderSlide } from '@components/form-builder/form-builder.int
 import type { LocaleProp } from '@type';
 import type { CalloutHorizontalTabs } from '../CalloutHorizontalTabs.interface';
 import type { EndMessageTabData } from '../tabs/ContentTab/SidebarTabContent/EndMessageTab.vue';
+import { generalContent } from '@store';
 
 /**
  * Data for the translations tab
@@ -510,24 +511,45 @@ const endMessage = computed<EndMessageTabData>(
   () => props.tabs.content.data.sidebarTabs.endMessage
 );
 
-// Get locales from settings tab
-const locales = computed<string[]>(
-  () => props.tabs.settings.data.locales || []
-);
+// Get locales from settings tab, ensure default locale is included
+const locales = computed<string[]>(() => {
+  const settingsLocales = props.tabs.settings.data.locales || [];
+  // Add default locale if not already included
+  if (!settingsLocales.includes(defaultLocale.value)) {
+    return [defaultLocale.value, ...settingsLocales];
+  }
+  return settingsLocales;
+});
 
-// Default locale is always the first one
-const defaultLocale = computed(() => locales.value[0] || 'en');
+// Default locale is the system-wide default locale
+const defaultLocale = computed(() => generalContent.value.locale || 'en');
 
 // Currently selected locale tab
-const selectedLocale = ref(defaultLocale.value);
+const selectedLocale = ref(locales.value[0] || defaultLocale.value);
 
 // Convert locales to tab items
-const localeItems = computed<TabItem[]>(() =>
-  locales.value.map((locale) => ({
-    id: locale,
-    label: getLocaleLabel(locale),
-  }))
-);
+const localeItems = computed<TabItem[]>(() => {
+  // Create a tab for the default locale first
+  const items: TabItem[] = [
+    {
+      id: defaultLocale.value,
+      label:
+        getLocaleLabel(defaultLocale.value) + ' (' + t('common.default') + ')',
+    },
+  ];
+
+  // Add tabs for additional locales
+  locales.value.forEach((locale) => {
+    if (locale !== defaultLocale.value) {
+      items.push({
+        id: locale,
+        label: getLocaleLabel(locale),
+      });
+    }
+  });
+
+  return items;
+});
 
 // Field types mapping
 const fields = [
