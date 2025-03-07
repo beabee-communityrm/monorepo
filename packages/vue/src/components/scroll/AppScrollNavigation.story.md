@@ -11,7 +11,7 @@ A navigation component that allows users to navigate between sections of content
     title="Navigation"
     v-model:activeSection="activeSection"
   />
-  
+
   <div class="flex-1 overflow-y-auto">
     <AppScrollSection
       id="section1"
@@ -20,7 +20,7 @@ A navigation component that allows users to navigate between sections of content
     >
       <p>Content for section 1</p>
     </AppScrollSection>
-    
+
     <AppScrollSection
       id="section2"
       title="Section 2"
@@ -84,16 +84,16 @@ Perfect for navigating between different sections of a translation form:
     ]"
     title="Translations"
   />
-  
+
   <div class="flex-1 overflow-y-auto">
     <AppScrollSection id="buttons" title="Buttons">
       <!-- Button translations -->
     </AppScrollSection>
-    
+
     <AppScrollSection id="intro" title="Introduction">
       <!-- Introduction translations -->
     </AppScrollSection>
-    
+
     <!-- More sections -->
   </div>
 </div>
@@ -109,7 +109,7 @@ Useful for navigating through documentation sections:
     :sections="docSections"
     title="Documentation"
   />
-  
+
   <div class="flex-1 overflow-y-auto">
     <AppScrollSection
       v-for="section in docSections"
@@ -122,4 +122,4 @@ Useful for navigating through documentation sections:
     </AppScrollSection>
   </div>
 </div>
-``` 
+```

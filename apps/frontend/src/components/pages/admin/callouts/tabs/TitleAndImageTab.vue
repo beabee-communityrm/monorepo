@@ -182,8 +182,6 @@ const { t } = useI18n();
 const inputT = (key: string) =>
   t('createCallout.tabs.titleAndImage.inputs.' + key);
 
-const locales = computed(() => props.tabs.settings.data.locales || []);
-
 const slug = computed(() =>
   props.data.autoGenerateSlug ? props.data.autoSlug : customSlug.value
 );

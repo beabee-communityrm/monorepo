@@ -40,16 +40,16 @@ Used to organize different sections of translations:
 ```vue
 <div class="flex gap-4">
   <AppScrollNavigation :sections="sections" />
-  
+
   <div class="flex-1 overflow-y-auto">
     <AppScrollSection id="buttons" title="Buttons">
       <!-- Button translations -->
     </AppScrollSection>
-    
+
     <AppScrollSection id="intro" title="Introduction">
       <!-- Introduction translations -->
     </AppScrollSection>
-    
+
     <AppScrollSection id="slides" title="Slides">
       <!-- Slide translations -->
     </AppScrollSection>
@@ -92,4 +92,4 @@ Useful for organizing settings into logical sections:
 <AppScrollSection id="notifications" title="Notification Settings">
   <!-- Notification settings form -->
 </AppScrollSection>
-``` 
+```

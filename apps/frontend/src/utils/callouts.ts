@@ -42,6 +42,9 @@ export const buckets = computed(() => [
 
 /**
  * Creates a new slide schema with a unique ID and default navigation
+ *
+ * @param no - The slide number to use in the title
+ * @returns A new FormBuilderSlide object with default values
  */
 export function getSlideSchema(no: number): FormBuilderSlide {
   const id = 'slide' + Math.random().toString(36).substring(2, 8);
@@ -71,6 +74,12 @@ const textFields = [
 
 /**
  * Converts variant data into a format suitable for the form tabs
+ *
+ * This function transforms the callout variant data into a structure where each text field
+ * is represented as a LocaleProp object with translations for each variant.
+ *
+ * @param variants - The variant data from the callout
+ * @returns An object with text fields as keys and LocaleProp objects as values
  */
 function convertVariantsForSteps(
   variants: Record<string, CalloutVariantData> | undefined
@@ -99,6 +108,13 @@ function convertVariantsForSteps(
 
 /**
  * Converts slide data and variants into a format suitable for the form builder
+ *
+ * This function transforms the callout slides and their variants into a structure
+ * that can be used by the form builder, including localized navigation text and component text.
+ *
+ * @param slidesIn - The slides from the callout
+ * @param variants - The variant data from the callout
+ * @returns An object containing the transformed slides and component text
  */
 function convertSlidesForSteps(
   slidesIn: GetCalloutSlideSchema[] | undefined,
@@ -137,6 +153,16 @@ function convertSlidesForSteps(
   return { slides, componentText };
 }
 
+/**
+ * Converts a callout object to the tab-based format used in the editor
+ *
+ * This function transforms a callout from the API format into the structure
+ * used by the editor tabs, including content, title and image, settings,
+ * dates, and translations.
+ *
+ * @param callout - The callout data from the API
+ * @returns The callout data structured for the editor tabs
+ */
 export function convertCalloutToTabs(
   callout?: GetCalloutDataWith<'form' | 'responseViewSchema' | 'variants'>
 ): CalloutHorizontalTabsData {
@@ -257,6 +283,15 @@ export function convertCalloutToTabs(
   };
 }
 
+/**
+ * Converts the tab-based format back to variant data for the API
+ *
+ * This function transforms the editor tab data into the variant structure
+ * expected by the API, including translations for all text fields and components.
+ *
+ * @param tabs - The callout data from the editor tabs
+ * @returns The variant data for the API
+ */
 function convertVariantsForCallout(
   tabs: CalloutHorizontalTabsData
 ): Record<string, CalloutVariantData> {
@@ -315,6 +350,12 @@ function convertVariantsForCallout(
   return variants;
 }
 
+/**
+ * Converts the tab-based slide format to the API format
+ *
+ * @param tabs - The callout data from the editor tabs
+ * @returns The slides in the format expected by the API
+ */
 function convertSlidesForCallout(
   tabs: CalloutHorizontalTabsData
 ): SetCalloutSlideSchema[] {
@@ -326,6 +367,15 @@ function convertSlidesForCallout(
   }));
 }
 
+/**
+ * Converts the tab-based editor data to the format expected by the API for creating or updating a callout
+ *
+ * This function transforms the complete editor tab data into the structure
+ * required by the API, including slides, variants, settings, and dates.
+ *
+ * @param tabs - The callout data from the editor tabs
+ * @returns The callout data in the format expected by the API
+ */
 export function convertStepsToCallout(
   tabs: CalloutHorizontalTabsData
 ): CreateCalloutData {
