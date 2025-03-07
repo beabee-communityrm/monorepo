@@ -26,6 +26,26 @@
           {{ t('calloutBuilder.translationsText') }}
         </p>
 
+        <!-- Language Settings Section -->
+        <AppScrollSection
+          id="language-settings"
+          :title="t('createCallout.tabs.translations.languageSettings')"
+          @mounted="registerSection"
+          class="mb-8"
+        >
+          <p class="mb-4">
+            {{
+              t('createCallout.tabs.translations.languageSettingsDescription')
+            }}
+          </p>
+          <AppCheckboxGroup
+            v-model="availableLocales"
+            :label="t('createCallout.tabs.translations.enableLanguages')"
+            :options="allLocaleItems"
+            @update:model-value="handleLocalesChange"
+          />
+        </AppScrollSection>
+
         <div v-if="locales.length > 0">
           <!-- Language Tabs for all sections -->
           <AppTabCard
@@ -599,6 +619,8 @@ import type { LocaleProp } from '@type';
 import type { CalloutHorizontalTabs } from '../CalloutHorizontalTabs.interface';
 import type { EndMessageTabData } from '../tabs/ContentTab/SidebarTabContent/EndMessageTab.vue';
 import { generalContent } from '@store';
+import AppCheckboxGroup from '@components/forms/AppCheckboxGroup.vue';
+import { localeItems as allLocaleItems } from '@beabee/vue/lib/i18n';
 
 /**
  * Data for the translations tab
@@ -659,6 +681,15 @@ const locales = computed<string[]>(() => {
   return settingsLocales;
 });
 
+// Available locales for checkbox group
+const availableLocales = computed({
+  get: () => props.tabs.settings.data.locales || [],
+  set: (value) => {
+    // eslint-disable-next-line vue/no-mutating-props
+    props.tabs.settings.data.locales = value;
+  },
+});
+
 // Default locale is the system-wide default locale
 const defaultLocale = computed(() => generalContent.value.locale || 'en');
 
@@ -702,6 +733,10 @@ const contentRef = ref<HTMLElement | null>(null);
 // Sections for the scroll navigation
 const sections = ref<ScrollSection[]>([
   {
+    id: 'language-settings',
+    label: t('createCallout.tabs.translations.languageSettings'),
+  },
+  {
     id: 'title-description',
     label: t('createCallout.tabs.titleAndImage.title'),
   },
@@ -722,6 +757,10 @@ watch(
 
     // Update sections array
     sections.value = [
+      {
+        id: 'language-settings',
+        label: t('createCallout.tabs.translations.languageSettings'),
+      },
       {
         id: 'title-description',
         label: t('createCallout.tabs.titleAndImage.title'),
@@ -754,18 +793,9 @@ function onSectionChange(): void {
 
 // Helper function to get a human-readable locale name
 function getLocaleLabel(locale: string): string {
-  const localeNames: Record<string, string> = {
-    en: 'English',
-    de: 'Deutsch',
-    fr: 'Français',
-    es: 'Español',
-    pt: 'Português',
-    it: 'Italiano',
-    nl: 'Nederlands',
-    // Add more as needed
-  };
-
-  return localeNames[locale] || locale.toUpperCase();
+  // Find the locale in allLocaleItems
+  const localeItem = allLocaleItems.find((item) => item.id === locale);
+  return localeItem ? localeItem.label : locale.toUpperCase();
 }
 
 // Component text management
@@ -955,6 +985,28 @@ function getOptions(
     return component.data.values;
   } else {
     return [];
+  }
+}
+
+// Handle locales change
+function handleLocalesChange(newLocales: string[]): void {
+  // Update the selected locale if it was removed
+  if (
+    selectedLocale.value !== defaultLocale.value &&
+    !newLocales.includes(selectedLocale.value)
+  ) {
+    selectedLocale.value = defaultLocale.value;
+  }
+
+  // If a new locale was added, select it
+  const addedLocales = newLocales.filter(
+    (locale) =>
+      !props.tabs.settings.data.locales.includes(locale) &&
+      locale !== defaultLocale.value
+  );
+
+  if (addedLocales.length > 0) {
+    selectedLocale.value = addedLocales[0];
   }
 }
 
