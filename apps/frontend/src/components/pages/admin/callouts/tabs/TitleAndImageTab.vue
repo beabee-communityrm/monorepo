@@ -5,23 +5,27 @@
   >
     <AppFormBox :title="inputT('general.title')">
       <AppFormField :help="inputT('title.help')">
-        <LocaleInput
-          v-model="data.title"
-          :locales="locales"
+        <AppInput
+          v-model="titleDefault"
           :label="inputT('title.label')"
           :placeholder="inputT('title.placeholder')"
           required
         />
+        <p class="mt-1 text-sm text-body-60">
+          {{ t('common.translationsInTranslationsTab') }}
+        </p>
       </AppFormField>
 
       <AppFormField :help="inputT('description.help')">
-        <LocaleTextArea
-          v-model="data.description"
-          :locales="locales"
+        <AppTextArea
+          v-model="descriptionDefault"
           :label="inputT('description.label')"
           :placeholder="inputT('description.placeholder')"
           required
         />
+        <p class="mt-1 text-sm text-body-60">
+          {{ t('common.translationsInTranslationsTab') }}
+        </p>
       </AppFormField>
 
       <AppFormField :help="inputT('image.help')">
@@ -96,25 +100,29 @@
       </AppFormField>
 
       <AppFormField :help="inputT('shareTitle.help')">
-        <LocaleInput
-          v-model="shareTitle"
-          :locales="locales"
+        <AppInput
+          v-model="shareTitleDefault"
           :label="inputT('shareTitle.label')"
           :placeholder="inputT('shareTitle.placeholder')"
           :disabled="!data.overrideShare"
           required
         />
+        <p v-if="data.overrideShare" class="mt-1 text-sm text-body-60">
+          {{ t('common.translationsInTranslationsTab') }}
+        </p>
       </AppFormField>
 
       <AppFormField :help="inputT('shareDescription.help')">
-        <LocaleTextArea
-          v-model="shareDescription"
-          :locales="locales"
+        <AppTextArea
+          v-model="shareDescriptionDefault"
           :label="inputT('shareDescription.label')"
           :placeholder="inputT('shareDescription.placeholder')"
           :disabled="!data.overrideShare"
           required
         />
+        <p v-if="data.overrideShare" class="mt-1 text-sm text-body-60">
+          {{ t('common.translationsInTranslationsTab') }}
+        </p>
       </AppFormField>
     </AppFormBox>
   </div>
@@ -130,8 +138,7 @@ import useVuelidate from '@vuelidate/core';
 import env from '@env';
 import slugify from 'slugify';
 import AppFormBox from '@beabee/vue/components/form/AppFormBox';
-import LocaleTextArea from '@components/forms/LocaleTextArea.vue';
-import LocaleInput from '@components/forms/LocaleInput.vue';
+import AppTextArea from '@components/forms/AppTextArea.vue';
 import AppToggleField from '@beabee/vue/components/form/AppToggleField';
 import AppFormField from '@beabee/vue/components/form/AppFormField';
 import type { LocaleProp } from '@type';
@@ -187,6 +194,23 @@ const customSlug = computed({
   set: (newSlug) => (props.data.slug = slugify(newSlug)),
 });
 
+// Computed properties for default values of localized fields
+const titleDefault = computed({
+  get: () => props.data.title.default || '',
+  set: (value) => {
+    // eslint-disable-next-line vue/no-mutating-props
+    props.data.title = { ...props.data.title, default: value };
+  },
+});
+
+const descriptionDefault = computed({
+  get: () => props.data.description.default || '',
+  set: (value) => {
+    // eslint-disable-next-line vue/no-mutating-props
+    props.data.description = { ...props.data.description, default: value };
+  },
+});
+
 // Computed properties for share fields that sync with title/description when not overridden
 const shareTitle = computed({
   get: () =>
@@ -195,6 +219,20 @@ const shareTitle = computed({
     if (props.data.overrideShare) {
       // eslint-disable-next-line vue/no-mutating-props
       props.data.shareTitle = value;
+    }
+  },
+});
+
+const shareTitleDefault = computed({
+  get: () => shareTitle.value.default || '',
+  set: (value) => {
+    const newShareTitle = { ...shareTitle.value, default: value };
+    if (props.data.overrideShare) {
+      // eslint-disable-next-line vue/no-mutating-props
+      props.data.shareTitle = newShareTitle;
+    } else {
+      // eslint-disable-next-line vue/no-mutating-props
+      props.data.title = newShareTitle;
     }
   },
 });
@@ -208,6 +246,20 @@ const shareDescription = computed({
     if (props.data.overrideShare) {
       // eslint-disable-next-line vue/no-mutating-props
       props.data.shareDescription = value;
+    }
+  },
+});
+
+const shareDescriptionDefault = computed({
+  get: () => shareDescription.value.default || '',
+  set: (value) => {
+    const newShareDescription = { ...shareDescription.value, default: value };
+    if (props.data.overrideShare) {
+      // eslint-disable-next-line vue/no-mutating-props
+      props.data.shareDescription = newShareDescription;
+    } else {
+      // eslint-disable-next-line vue/no-mutating-props
+      props.data.description = newShareDescription;
     }
   },
 });

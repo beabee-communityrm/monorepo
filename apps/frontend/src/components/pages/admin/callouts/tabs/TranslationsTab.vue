@@ -34,6 +34,141 @@
             class="mb-8"
           >
             <template #default="{ selected }">
+              <!-- Title and Description Section -->
+              <AppScrollSection
+                id="title-description"
+                :title="t('createCallout.tabs.titleAndImage.title')"
+                @mounted="registerSection"
+              >
+                <!-- Title -->
+                <div class="mb-6 space-y-2">
+                  <label class="block text-sm font-medium">
+                    {{
+                      t('createCallout.tabs.titleAndImage.inputs.title.label')
+                    }}
+                  </label>
+
+                  <div
+                    v-if="selected !== defaultLocale"
+                    class="mb-1 flex-none text-sm text-body-60"
+                  >
+                    {{ titleAndImage.title.default }}
+                  </div>
+
+                  <AppInput
+                    :model-value="getTitleValue('title', selected)"
+                    :placeholder="
+                      selected === defaultLocale
+                        ? ''
+                        : t('common.enterTranslation')
+                    "
+                    :disabled="selected === defaultLocale"
+                    class="w-full"
+                    @update:model-value="
+                      updateTitleValue('title', selected, $event)
+                    "
+                  />
+                </div>
+
+                <!-- Description -->
+                <div class="mb-6 space-y-2">
+                  <label class="block text-sm font-medium">
+                    {{
+                      t(
+                        'createCallout.tabs.titleAndImage.inputs.description.label'
+                      )
+                    }}
+                  </label>
+
+                  <div
+                    v-if="selected !== defaultLocale"
+                    class="mb-1 flex-none text-sm text-body-60"
+                  >
+                    {{ titleAndImage.description.default }}
+                  </div>
+
+                  <AppTextArea
+                    :model-value="getTitleValue('description', selected)"
+                    :placeholder="
+                      selected === defaultLocale
+                        ? ''
+                        : t('common.enterTranslation')
+                    "
+                    :disabled="selected === defaultLocale"
+                    rows="3"
+                    class="w-full"
+                    @update:model-value="
+                      updateTitleValue('description', selected, $event)
+                    "
+                  />
+                </div>
+
+                <!-- Share Title (if overrideShare is true) -->
+                <div v-if="titleAndImage.overrideShare" class="mb-6 space-y-2">
+                  <label class="block text-sm font-medium">
+                    {{
+                      t(
+                        'createCallout.tabs.titleAndImage.inputs.shareTitle.label'
+                      )
+                    }}
+                  </label>
+
+                  <div
+                    v-if="selected !== defaultLocale"
+                    class="mb-1 flex-none text-sm text-body-60"
+                  >
+                    {{ titleAndImage.shareTitle.default }}
+                  </div>
+
+                  <AppInput
+                    :model-value="getTitleValue('shareTitle', selected)"
+                    :placeholder="
+                      selected === defaultLocale
+                        ? ''
+                        : t('common.enterTranslation')
+                    "
+                    :disabled="selected === defaultLocale"
+                    class="w-full"
+                    @update:model-value="
+                      updateTitleValue('shareTitle', selected, $event)
+                    "
+                  />
+                </div>
+
+                <!-- Share Description (if overrideShare is true) -->
+                <div v-if="titleAndImage.overrideShare" class="mb-6 space-y-2">
+                  <label class="block text-sm font-medium">
+                    {{
+                      t(
+                        'createCallout.tabs.titleAndImage.inputs.shareDescription.label'
+                      )
+                    }}
+                  </label>
+
+                  <div
+                    v-if="selected !== defaultLocale"
+                    class="mb-1 flex-none text-sm text-body-60"
+                  >
+                    {{ titleAndImage.shareDescription.default }}
+                  </div>
+
+                  <AppTextArea
+                    :model-value="getTitleValue('shareDescription', selected)"
+                    :placeholder="
+                      selected === defaultLocale
+                        ? ''
+                        : t('common.enterTranslation')
+                    "
+                    :disabled="selected === defaultLocale"
+                    rows="3"
+                    class="w-full"
+                    @update:model-value="
+                      updateTitleValue('shareDescription', selected, $event)
+                    "
+                  />
+                </div>
+              </AppScrollSection>
+
               <!-- Buttons Section -->
               <AppScrollSection
                 id="buttons"
@@ -511,6 +646,9 @@ const endMessage = computed<EndMessageTabData>(
   () => props.tabs.content.data.sidebarTabs.endMessage
 );
 
+// Get title and image data from title and image tab
+const titleAndImage = computed(() => props.tabs.titleAndImage.data);
+
 // Get locales from settings tab, ensure default locale is included
 const locales = computed<string[]>(() => {
   const settingsLocales = props.tabs.settings.data.locales || [];
@@ -563,6 +701,10 @@ const contentRef = ref<HTMLElement | null>(null);
 
 // Sections for the scroll navigation
 const sections = ref<ScrollSection[]>([
+  {
+    id: 'title-description',
+    label: t('createCallout.tabs.titleAndImage.title'),
+  },
   { id: 'buttons', label: t('calloutBuilder.navigationButtons') },
   { id: 'introduction', label: t('createCallout.tabs.intro.label') },
 ]);
@@ -580,6 +722,10 @@ watch(
 
     // Update sections array
     sections.value = [
+      {
+        id: 'title-description',
+        label: t('createCallout.tabs.titleAndImage.title'),
+      },
       { id: 'buttons', label: t('calloutBuilder.navigationButtons') },
       { id: 'introduction', label: t('createCallout.tabs.intro.label') },
       ...slidesSections,
@@ -764,6 +910,39 @@ function updateEndMessageValue(
   // Update the end message in the content tab
   // eslint-disable-next-line vue/no-mutating-props
   props.tabs.content.data.sidebarTabs.endMessage[field] = currentValue;
+}
+
+// Get title and description value for a specific locale
+function getTitleValue(
+  field: 'title' | 'description' | 'shareTitle' | 'shareDescription',
+  locale: string
+): string {
+  if (!titleAndImage.value[field]) return '';
+
+  if (locale === defaultLocale.value) {
+    return titleAndImage.value[field].default || '';
+  }
+
+  return titleAndImage.value[field][locale] || '';
+}
+
+// Update title and description value
+function updateTitleValue(
+  field: 'title' | 'description' | 'shareTitle' | 'shareDescription',
+  locale: string,
+  value: string
+): void {
+  const currentValue = { ...titleAndImage.value[field] };
+
+  if (locale === defaultLocale.value) {
+    currentValue.default = value;
+  } else {
+    currentValue[locale] = value;
+  }
+
+  // Update the title and image in the title and image tab
+  // eslint-disable-next-line vue/no-mutating-props
+  props.tabs.titleAndImage.data[field] = currentValue;
 }
 
 // Get options for select, radio, etc. components
