@@ -17,7 +17,6 @@ export * from './filter-item';
 export * from './geocode-pick-event';
 export * from './get-callout-response-map-data-with-address';
 export * from './item-with-status';
-export * from './locale-input-props';
 export * from './locale-prop';
 export * from './map';
 export * from './notification';
