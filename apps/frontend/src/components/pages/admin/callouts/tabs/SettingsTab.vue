@@ -245,13 +245,6 @@
           </AppFormSection>
         </template>
       </template>
-      <AppFormSection>
-        <AppCheckboxGroup
-          v-model="data.locales"
-          label="Enable multiple languages?"
-          :options="localeItems"
-        />
-      </AppFormSection>
     </template>
   </div>
 </template>
@@ -274,7 +267,6 @@ import AppSelect from '../../../../forms/AppSelect.vue';
 import AppSubHeading from '../../../../AppSubHeading.vue';
 import env from '../../../../../env';
 import AppLinkList from '../../../../forms/AppLinkList.vue';
-import { localeItems } from '@beabee/vue/lib/i18n';
 
 import type {
   CalloutCaptcha,
