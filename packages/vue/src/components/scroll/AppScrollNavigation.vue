@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-0 basis-menu overflow-y-auto">
+  <div class="flex-0 basis-menu overflow-y-auto overflow-x-hidden">
     <div class="mb-4">
       <h2 v-if="title" class="mb-2 text-lg font-semibold">
         {{ title }}
@@ -8,7 +8,7 @@
         <button
           v-for="section in sections"
           :key="section.id"
-          class="w-full overflow-hidden text-ellipsis whitespace-nowrap rounded-md px-3 py-2 text-left text-sm transition-colors"
+          class="w-full overflow-hidden text-ellipsis whitespace-nowrap rounded-md px-3 py-2 text-left font-semibold transition-colors"
           :class="
             activeSection === section.id
               ? 'bg-white font-medium text-primary shadow-sm'
