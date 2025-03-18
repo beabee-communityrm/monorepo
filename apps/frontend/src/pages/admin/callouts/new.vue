@@ -18,12 +18,15 @@ meta:
         >
           {{ t('actions.preview') }}
         </AppAsyncButton>
-        <div v-if="!isLive" class="h-4 border-r border-r-primary-40" />
         <AppAsyncButton variant="primaryOutlined" @click="handleSaveDraft">
           {{
             isNewOrDraft ? t('actions.saveDraft') : t('actions.revertToDraft')
           }}
         </AppAsyncButton>
+        <div
+          v-if="!isLive"
+          class="mr-3 self-stretch border-r border-r-primary-40 pl-2"
+        />
         <AppAsyncButton :disabled="validation.$invalid" @click="handleUpdate">
           {{ updateAction }}
         </AppAsyncButton>
