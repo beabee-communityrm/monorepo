@@ -43,18 +43,17 @@
             <AppCheckboxGroup
               v-model="availableLocales"
               :label="t('createCallout.tabs.translations.enableLanguages')"
-              :options="allLocaleItems"
+              :options="availableLocaleItems"
               @update:model-value="handleLocalesChange"
             />
           </AppFormBox>
         </AppScrollSection>
 
-        <div v-if="locales.length > 0">
+        <div v-if="locales.length > 1" class="my-12">
           <!-- Language Tabs for all sections -->
           <AppTabCard
             v-model="selectedLocale"
             :items="localeItems"
-            class="mb-8"
             :sticky-tabs="true"
             variant="transparent"
           >
@@ -74,13 +73,6 @@
                         t('createCallout.tabs.titleAndImage.inputs.title.label')
                       }}
                     </label>
-
-                    <div
-                      v-if="selected !== defaultLocale"
-                      class="mb-1 flex-none text-sm text-body-60"
-                    >
-                      {{ titleAndImage.title.default }}
-                    </div>
 
                     <AppInput
                       :model-value="getTitleValue('title', selected)"
@@ -106,13 +98,6 @@
                         )
                       }}
                     </label>
-
-                    <div
-                      v-if="selected !== defaultLocale"
-                      class="mb-1 flex-none text-sm text-body-60"
-                    >
-                      {{ titleAndImage.description.default }}
-                    </div>
 
                     <AppTextArea
                       :model-value="getTitleValue('description', selected)"
@@ -143,13 +128,6 @@
                       }}
                     </label>
 
-                    <div
-                      v-if="selected !== defaultLocale"
-                      class="mb-1 flex-none text-sm text-body-60"
-                    >
-                      {{ titleAndImage.shareTitle.default }}
-                    </div>
-
                     <AppInput
                       :model-value="getTitleValue('shareTitle', selected)"
                       :placeholder="
@@ -177,13 +155,6 @@
                         )
                       }}
                     </label>
-
-                    <div
-                      v-if="selected !== defaultLocale"
-                      class="mb-1 flex-none text-sm text-body-60"
-                    >
-                      {{ titleAndImage.shareDescription.default }}
-                    </div>
 
                     <AppTextArea
                       :model-value="getTitleValue('shareDescription', selected)"
@@ -223,13 +194,6 @@
                           {{ t('calloutBuilder.prevButton') }}
                         </label>
 
-                        <div
-                          v-if="selected !== defaultLocale"
-                          class="mb-1 flex-none text-sm text-body-60"
-                        >
-                          {{ slide.navigation.prevText.default }}
-                        </div>
-
                         <AppInput
                           :model-value="
                             getNavigationValue(
@@ -263,13 +227,6 @@
                         <label class="block text-sm font-medium">
                           {{ t('calloutBuilder.nextButton') }}
                         </label>
-
-                        <div
-                          v-if="selected !== defaultLocale"
-                          class="mb-1 flex-none text-sm text-body-60"
-                        >
-                          {{ slide.navigation.nextText.default }}
-                        </div>
 
                         <AppInput
                           :model-value="
@@ -305,13 +262,6 @@
                           {{ t('calloutBuilder.submitButton') }}
                         </label>
 
-                        <div
-                          v-if="selected !== defaultLocale"
-                          class="mb-1 flex-none text-sm text-body-60"
-                        >
-                          {{ slide.navigation.submitText.default }}
-                        </div>
-
                         <AppInput
                           :model-value="
                             getNavigationValue(
@@ -345,12 +295,6 @@
               <AppScrollSection id="introduction" @mounted="registerSection">
                 <AppFormBox :title="t('createCallout.tabs.intro.label')">
                   <div class="space-y-2">
-                    <div
-                      v-if="selected !== defaultLocale"
-                      class="mb-1 flex-none text-sm text-body-60"
-                      v-html="introText.default"
-                    ></div>
-
                     <RichTextEditor
                       :model-value="getIntroValue(selected)"
                       :placeholder="
@@ -381,7 +325,7 @@
                     <div
                       v-for="component in slide.components"
                       :key="component.id"
-                      class="mb-8 border-t border-t-primary-20 pt-6"
+                      class="mb-8 pt-6"
                     >
                       <h3 class="mb-2 font-title text-xl font-semibold">
                         {{ component.label }}
@@ -397,13 +341,6 @@
                           <label class="block text-sm font-medium">
                             {{ t('calloutBuilder.translationFields.' + field) }}
                           </label>
-
-                          <div
-                            v-if="selected !== defaultLocale"
-                            class="mb-1 flex-none text-sm text-body-60"
-                          >
-                            {{ getDefaultText(component[field] as string) }}
-                          </div>
 
                           <AppInput
                             v-if="fieldType === 'input'"
@@ -471,13 +408,6 @@
                             }}
                           </label>
 
-                          <div
-                            v-if="selected !== defaultLocale"
-                            class="mb-1 flex-none text-sm text-body-60"
-                          >
-                            {{ getDefaultText(value.label) }}
-                          </div>
-
                           <AppInput
                             :model-value="
                               getLocalizedValue(value.label, selected)
@@ -513,13 +443,6 @@
                         {{ inputT('title.label') }}
                       </label>
 
-                      <div
-                        v-if="selected !== defaultLocale"
-                        class="mb-1 flex-none text-sm text-body-60"
-                      >
-                        {{ endMessage.thankYouTitle.default }}
-                      </div>
-
                       <AppInput
                         :model-value="
                           getEndMessageValue(endMessage.thankYouTitle, selected)
@@ -547,12 +470,6 @@
                         {{ inputT('text.label') }}
                       </label>
 
-                      <div
-                        v-if="selected !== defaultLocale"
-                        class="mb-1 flex-none text-sm text-body-60"
-                        v-html="endMessage.thankYouText.default"
-                      ></div>
-
                       <RichTextEditor
                         :model-value="
                           getEndMessageValue(endMessage.thankYouText, selected)
@@ -579,13 +496,6 @@
                     <label class="block text-sm font-medium">
                       {{ inputT('url.label') }}
                     </label>
-
-                    <div
-                      v-if="selected !== defaultLocale"
-                      class="mb-1 flex-none text-sm text-body-60"
-                    >
-                      {{ endMessage.thankYouRedirect.default }}
-                    </div>
 
                     <AppInput
                       :model-value="
@@ -713,6 +623,13 @@ const availableLocales = computed({
   },
 });
 
+// Filter out default locale and sort by label
+const availableLocaleItems = computed(() => {
+  return allLocaleItems
+    .filter((item) => item.id !== defaultLocale.value)
+    .sort((a, b) => a.label.localeCompare(b.label));
+});
+
 // Default locale is the system-wide default locale
 const defaultLocale = computed(() => generalContent.value.locale || 'en');
 
@@ -828,14 +745,6 @@ const componentText = computed({
     emit('update:data', { ...props.data, componentText: value });
   },
 });
-
-// Get the default text for a field
-function getDefaultText(ref: string | undefined = ''): string {
-  if (!ref) return '';
-
-  const value = componentText.value[ref];
-  return value?.default || ref;
-}
 
 // Get the localized value for a specific locale
 function getLocalizedValue(
