@@ -45,7 +45,7 @@
     </div>
     <!-- Right Sidebar -->
     <div class="flex-0 basis-[15rem] overflow-y-auto">
-      <p>Right Sidebar</p>
+      <!-- TODO: Add right sidebar content here -->
     </div>
   </div>
 </template>

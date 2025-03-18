@@ -35,7 +35,7 @@ const longContent = Array(20)
       <div class="p-4">
         <AppTabCard v-model="state.selectedTab" :items="languageTabs">
           <template #default="{ selected }">
-            <div class="min-h-[100px]">
+            <div class="min-h-[100px] p-4">
               <p v-if="selected === 'en'">English content goes here</p>
               <p v-else-if="selected === 'de'">Deutscher Inhalt kommt hier</p>
               <p v-else-if="selected === 'pt'">Conteúdo em português aqui</p>
@@ -54,7 +54,7 @@ const longContent = Array(20)
         >
           <template #default="{ selected }">
             <AppFormBox title="Translation Form">
-              <div class="space-y-4">
+              <div class="py-4">
                 <div>
                   <label class="mb-1 block text-sm font-medium">Title</label>
                   <input
@@ -90,8 +90,8 @@ const longContent = Array(20)
             variant="boxed"
           >
             <template #default="{ selected }">
-              <div class="space-y-4">
-                <AppFormBox title="Section 1">
+              <div class="py-4">
+                <AppFormBox class="!px-0" title="Section 1">
                   <p v-if="selected === 'en'" v-text="longContent" />
                   <p v-else-if="selected === 'de'">
                     Langer deutscher Beispieltext...
@@ -102,7 +102,7 @@ const longContent = Array(20)
                 </AppFormBox>
 
                 <AppFormBox title="Section 2">
-                  <div class="space-y-4">
+                  <div class="py-4">
                     <div>
                       <label class="mb-1 block text-sm font-medium"
                         >Title</label
@@ -152,7 +152,7 @@ const longContent = Array(20)
             variant="transparent"
           >
             <template #default="{ selected }">
-              <div class="space-y-4">
+              <div class="py-4">
                 <AppFormBox title="Section 1">
                   <p v-if="selected === 'en'" v-text="longContent" />
                   <p v-else-if="selected === 'de'">
@@ -164,7 +164,7 @@ const longContent = Array(20)
                 </AppFormBox>
 
                 <AppFormBox title="Section 2">
-                  <div class="space-y-4">
+                  <div class="py-4">
                     <div>
                       <label class="mb-1 block text-sm font-medium"
                         >Title</label
@@ -208,7 +208,7 @@ const longContent = Array(20)
       <div class="p-4">
         <AppTabCard v-model="state.selectedTab" :items="tabsWithCounts">
           <template #default="{ selected }">
-            <div class="min-h-[100px]">
+            <div class="min-h-[100px] p-4">
               <p>Showing content for: {{ selected }}</p>
             </div>
           </template>
