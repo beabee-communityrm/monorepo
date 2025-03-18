@@ -23,9 +23,9 @@
         class="relative flex-1 overflow-y-auto"
         style="contain: paint"
       >
-        <h2 class="mb-4 text-xl font-semibold">
+        <AppHeading class="text-xl !text-body">
           {{ t('calloutBuilder.translationsTitle') }}
-        </h2>
+        </AppHeading>
         <p class="mb-4">
           {{ t('calloutBuilder.translationsText') }}
         </p>
@@ -79,7 +79,7 @@
                       :placeholder="
                         selected === defaultLocale
                           ? ''
-                          : t('common.enterTranslation')
+                          : titleAndImage.title.default
                       "
                       :disabled="selected === defaultLocale"
                       class="w-full"
@@ -104,7 +104,7 @@
                       :placeholder="
                         selected === defaultLocale
                           ? ''
-                          : t('common.enterTranslation')
+                          : titleAndImage.description.default
                       "
                       :disabled="selected === defaultLocale"
                       rows="3"
@@ -133,7 +133,7 @@
                       :placeholder="
                         selected === defaultLocale
                           ? ''
-                          : t('common.enterTranslation')
+                          : titleAndImage.shareTitle.default
                       "
                       :disabled="selected === defaultLocale"
                       class="w-full"
@@ -161,7 +161,7 @@
                       :placeholder="
                         selected === defaultLocale
                           ? ''
-                          : t('common.enterTranslation')
+                          : titleAndImage.shareDescription.default
                       "
                       :disabled="selected === defaultLocale"
                       rows="3"
@@ -182,7 +182,7 @@
                     :key="slide.id"
                     class="mb-8"
                   >
-                    <h3 class="mb-4 font-title text-lg font-semibold">
+                    <h3 class="mb-4 font-semibold">
                       {{ t('calloutBuilder.slideNo', { no: slideIndex + 1 }) }}:
                       {{ slide.title }}
                     </h3>
@@ -204,7 +204,7 @@
                           :placeholder="
                             selected === defaultLocale
                               ? ''
-                              : t('common.enterTranslation')
+                              : slide.navigation.prevText.default
                           "
                           :disabled="selected === defaultLocale"
                           class="w-full"
@@ -238,7 +238,7 @@
                           :placeholder="
                             selected === defaultLocale
                               ? ''
-                              : t('common.enterTranslation')
+                              : slide.navigation.nextText.default
                           "
                           :disabled="selected === defaultLocale"
                           class="w-full"
@@ -272,7 +272,7 @@
                           :placeholder="
                             selected === defaultLocale
                               ? ''
-                              : t('common.enterTranslation')
+                              : slide.navigation.submitText.default
                           "
                           :disabled="selected === defaultLocale"
                           class="w-full"
@@ -298,9 +298,7 @@
                     <RichTextEditor
                       :model-value="getIntroValue(selected)"
                       :placeholder="
-                        selected === defaultLocale
-                          ? ''
-                          : t('common.enterTranslation')
+                        selected === defaultLocale ? '' : introText.default
                       "
                       :disabled="selected === defaultLocale"
                       @update:model-value="updateIntroValue(selected, $event)"
@@ -325,9 +323,9 @@
                     <div
                       v-for="component in slide.components"
                       :key="component.id"
-                      class="mb-8 pt-6"
+                      class="mb-8"
                     >
-                      <h3 class="mb-2 font-title text-xl font-semibold">
+                      <h3 class="mb-2 font-semibold">
                         {{ component.label }}
                       </h3>
 
@@ -353,7 +351,7 @@
                             :placeholder="
                               selected === defaultLocale
                                 ? ''
-                                : t('common.enterTranslation')
+                                : getDefaultText(component[field] as string)
                             "
                             :disabled="selected === defaultLocale"
                             class="w-full"
@@ -377,7 +375,7 @@
                             :placeholder="
                               selected === defaultLocale
                                 ? ''
-                                : t('common.enterTranslation')
+                                : getDefaultText(component[field] as string)
                             "
                             :disabled="selected === defaultLocale"
                             rows="3"
@@ -415,7 +413,7 @@
                             :placeholder="
                               selected === defaultLocale
                                 ? ''
-                                : t('common.enterTranslation')
+                                : getDefaultText(value.label)
                             "
                             :disabled="selected === defaultLocale"
                             class="w-full"
@@ -450,7 +448,7 @@
                         :placeholder="
                           selected === defaultLocale
                             ? ''
-                            : t('common.enterTranslation')
+                            : endMessage.thankYouTitle.default
                         "
                         :disabled="selected === defaultLocale"
                         class="w-full"
@@ -477,7 +475,7 @@
                         :placeholder="
                           selected === defaultLocale
                             ? ''
-                            : t('common.enterTranslation')
+                            : endMessage.thankYouText.default
                         "
                         :disabled="selected === defaultLocale"
                         @update:model-value="
@@ -507,7 +505,7 @@
                       :placeholder="
                         selected === defaultLocale
                           ? ''
-                          : t('common.enterTranslation')
+                          : endMessage.thankYouRedirect.default
                       "
                       :disabled="selected === defaultLocale"
                       class="w-full"
@@ -559,6 +557,7 @@ import type { EndMessageTabData } from '../tabs/ContentTab/SidebarTabContent/End
 import { generalContent } from '@store';
 import AppCheckboxGroup from '@components/forms/AppCheckboxGroup.vue';
 import { localeItems as allLocaleItems } from '@beabee/vue/lib/i18n';
+import AppHeading from '@components/AppHeading.vue';
 
 /**
  * Data for the translations tab
@@ -750,6 +749,13 @@ const componentText = computed({
     emit('update:data', { ...props.data, componentText: value });
   },
 });
+
+// Get the default text for a field
+function getDefaultText(ref: string | undefined = ''): string {
+  if (!ref) return '';
+  const value = componentText.value[ref];
+  return value?.default || ref;
+}
 
 // Get the localized value for a specific locale
 function getLocalizedValue(
