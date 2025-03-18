@@ -1,136 +1,169 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div
-    class="flex max-h-full min-h-0 max-w-3xl flex-1 flex-col gap-4 overflow-y-auto"
-  >
-    <AppFormBox :title="inputT('general.title')">
-      <AppFormField :help="inputT('title.help')">
-        <AppInput
-          v-model="titleDefault"
-          :label="inputT('title.label')"
-          :placeholder="inputT('title.placeholder')"
-          required
-        />
-        <p class="mt-1 text-sm text-body-60">
-          {{ t('common.translationsInTranslationsTab') }}
-        </p>
-      </AppFormField>
+  <div class="flex min-h-0 flex-1 flex-col">
+    <!-- Status Notifications would go here if needed -->
 
-      <AppFormField :help="inputT('description.help')">
-        <AppTextArea
-          v-model="descriptionDefault"
-          :label="inputT('description.label')"
-          :placeholder="inputT('description.placeholder')"
-          required
-        />
-        <p class="mt-1 text-sm text-body-60">
-          {{ t('common.translationsInTranslationsTab') }}
-        </p>
-      </AppFormField>
+    <div class="flex min-h-0 gap-4">
+      <!-- Left Sidebar with Scroll Navigation -->
+      <AppScrollNavigation
+        :sections="navigationSections"
+        @section-change="onSectionChange"
+      />
 
-      <AppFormField :help="inputT('image.help')">
-        <AppImageUpload
-          v-model="data.coverImageURL"
-          :label="inputT('image.label')"
-          :description="inputT('image.description')"
-          :width="1440"
-          :height="900"
-          required
-        />
-      </AppFormField>
-    </AppFormBox>
+      <!-- Main Content -->
+      <div
+        ref="contentRef"
+        class="relative max-w-3xl flex-1 overflow-y-auto"
+        style="contain: paint"
+      >
+        <h2 class="mb-4 text-xl font-semibold">
+          {{ t('createCallout.tabs.titleAndImage.title') }}
+        </h2>
 
-    <AppFormBox
-      :title="inputT('slug.boxTitle')"
-      :notification="
-        !canEditSlug
-          ? {
-              title: t(
-                'createCallout.tabs.titleAndImage.inputs.slug.locked.title'
-              ),
-              description: t(
-                'createCallout.tabs.titleAndImage.inputs.slug.locked.description'
-              ),
-              variant: 'warning',
-              mode: 'inline',
-              removeable: false,
-            }
-          : undefined
-      "
-    >
-      <AppFormField :help="inputT('slug.help')">
-        <AppToggleField
-          v-model="data.autoGenerateSlug"
-          :variant="'link'"
-          :label="inputT('slug.label')"
-          :description="
-            data.autoGenerateSlug
-              ? inputT('slug.opts.auto')
-              : inputT('slug.opts.manual')
-          "
-          :disabled="!canEditSlug"
-          required
-        />
-        <AppInput
-          v-if="data.autoGenerateSlug"
-          :model-value="env.appUrl + '/callouts/' + slug"
-          :disabled="true"
-          :copyable="true"
-          required
-        />
-        <AppInput
-          v-else
-          v-model="customSlug"
-          :disabled="!canEditSlug"
-          :prefix="env.appUrl + '/callouts/'"
-          :copyable="true"
-          required
-        />
-      </AppFormField>
-    </AppFormBox>
+        <!-- General Section -->
+        <AppScrollSection id="general" @mounted="registerSection">
+          <AppFormBox :title="inputT('general.title')">
+            <AppFormField :help="inputT('title.help')">
+              <AppInput
+                v-model="titleDefault"
+                :label="inputT('title.label')"
+                :placeholder="inputT('title.placeholder')"
+                required
+              />
+              <p class="mt-1 text-sm text-body-60">
+                {{ t('common.translationsInTranslationsTab') }}
+              </p>
+            </AppFormField>
 
-    <AppFormBox :title="inputT('sharing.title')">
-      <AppFormField>
-        <AppToggleField
-          v-model="data.overrideShare"
-          :variant="'link'"
-          :label="inputT('overrideShare.label')"
-          :description="inputT('overrideShare.description')"
-        />
-      </AppFormField>
+            <AppFormField :help="inputT('description.help')">
+              <AppTextArea
+                v-model="descriptionDefault"
+                :label="inputT('description.label')"
+                :placeholder="inputT('description.placeholder')"
+                required
+              />
+              <p class="mt-1 text-sm text-body-60">
+                {{ t('common.translationsInTranslationsTab') }}
+              </p>
+            </AppFormField>
 
-      <AppFormField :help="inputT('shareTitle.help')">
-        <AppInput
-          v-model="shareTitleDefault"
-          :label="inputT('shareTitle.label')"
-          :placeholder="inputT('shareTitle.placeholder')"
-          :disabled="!data.overrideShare"
-          required
-        />
-        <p v-if="data.overrideShare" class="mt-1 text-sm text-body-60">
-          {{ t('common.translationsInTranslationsTab') }}
-        </p>
-      </AppFormField>
+            <AppFormField :help="inputT('image.help')">
+              <AppImageUpload
+                v-model="data.coverImageURL"
+                :label="inputT('image.label')"
+                :description="inputT('image.description')"
+                :width="1440"
+                :height="900"
+                required
+              />
+            </AppFormField>
+          </AppFormBox>
+        </AppScrollSection>
 
-      <AppFormField :help="inputT('shareDescription.help')">
-        <AppTextArea
-          v-model="shareDescriptionDefault"
-          :label="inputT('shareDescription.label')"
-          :placeholder="inputT('shareDescription.placeholder')"
-          :disabled="!data.overrideShare"
-          required
-        />
-        <p v-if="data.overrideShare" class="mt-1 text-sm text-body-60">
-          {{ t('common.translationsInTranslationsTab') }}
-        </p>
-      </AppFormField>
-    </AppFormBox>
+        <!-- URL & Slug Section -->
+        <AppScrollSection id="url" @mounted="registerSection">
+          <AppFormBox
+            :title="inputT('slug.boxTitle')"
+            :notification="
+              !canEditSlug
+                ? {
+                    title: t(
+                      'createCallout.tabs.titleAndImage.inputs.slug.locked.title'
+                    ),
+                    description: t(
+                      'createCallout.tabs.titleAndImage.inputs.slug.locked.description'
+                    ),
+                    variant: 'warning',
+                    mode: 'inline',
+                    removeable: false,
+                  }
+                : undefined
+            "
+          >
+            <AppFormField :help="inputT('slug.help')">
+              <AppToggleField
+                v-model="data.autoGenerateSlug"
+                :variant="'link'"
+                :label="inputT('slug.label')"
+                :description="
+                  data.autoGenerateSlug
+                    ? inputT('slug.opts.auto')
+                    : inputT('slug.opts.manual')
+                "
+                :disabled="!canEditSlug"
+                required
+              />
+              <AppInput
+                v-if="data.autoGenerateSlug"
+                :model-value="env.appUrl + '/callouts/' + slug"
+                :disabled="true"
+                :copyable="true"
+                required
+              />
+              <AppInput
+                v-else
+                v-model="customSlug"
+                :disabled="!canEditSlug"
+                :prefix="env.appUrl + '/callouts/'"
+                :copyable="true"
+                required
+              />
+            </AppFormField>
+          </AppFormBox>
+        </AppScrollSection>
+
+        <!-- Sharing Settings Section -->
+        <AppScrollSection id="sharing" @mounted="registerSection">
+          <AppFormBox :title="inputT('sharing.title')">
+            <AppFormField>
+              <AppToggleField
+                v-model="data.overrideShare"
+                :variant="'link'"
+                :label="inputT('overrideShare.label')"
+                :description="inputT('overrideShare.description')"
+              />
+            </AppFormField>
+
+            <AppFormField :help="inputT('shareTitle.help')">
+              <AppInput
+                v-model="shareTitleDefault"
+                :label="inputT('shareTitle.label')"
+                :placeholder="inputT('shareTitle.placeholder')"
+                :disabled="!data.overrideShare"
+                required
+              />
+              <p v-if="data.overrideShare" class="mt-1 text-sm text-body-60">
+                {{ t('common.translationsInTranslationsTab') }}
+              </p>
+            </AppFormField>
+
+            <AppFormField :help="inputT('shareDescription.help')">
+              <AppTextArea
+                v-model="shareDescriptionDefault"
+                :label="inputT('shareDescription.label')"
+                :placeholder="inputT('shareDescription.placeholder')"
+                :disabled="!data.overrideShare"
+                required
+              />
+              <p v-if="data.overrideShare" class="mt-1 text-sm text-body-60">
+                {{ t('common.translationsInTranslationsTab') }}
+              </p>
+            </AppFormField>
+          </AppFormBox>
+        </AppScrollSection>
+      </div>
+
+      <!-- Right Sidebar -->
+      <div class="flex-0 basis-[15rem] overflow-y-auto">
+        <!-- Optional content for right sidebar -->
+      </div>
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ItemStatus } from '@beabee/beabee-common';
-import { computed, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import AppInput from '@components/forms/AppInput.vue';
 import AppImageUpload from '@components/forms/AppImageUpload.vue';
@@ -143,6 +176,11 @@ import AppToggleField from '@beabee/vue/components/form/AppToggleField';
 import AppFormField from '@beabee/vue/components/form/AppFormField';
 import type { LocaleProp } from '@type';
 import type { CalloutHorizontalTabs } from '../CalloutHorizontalTabs.interface';
+import {
+  AppScrollNavigation,
+  AppScrollSection,
+  type ScrollSection,
+} from '@beabee/vue/components';
 
 /**
  * Data for the title and image tab
@@ -181,6 +219,42 @@ const props = defineProps<TitleAndImageTabProps>();
 const { t } = useI18n();
 const inputT = (key: string) =>
   t('createCallout.tabs.titleAndImage.inputs.' + key);
+
+// Reference to content container
+const contentRef = ref<HTMLElement | null>(null);
+
+// Sections for scroll navigation
+const sections = ref<ScrollSection[]>([
+  {
+    id: 'general',
+    label: inputT('general.title'),
+  },
+  {
+    id: 'url',
+    label: inputT('slug.boxTitle'),
+  },
+  {
+    id: 'sharing',
+    label: inputT('sharing.title'),
+  },
+]);
+
+// Computed sections for navigation
+const navigationSections = computed(() => sections.value);
+
+// Register a section element for scrolling
+function registerSection(id: string, element: HTMLElement): void {
+  const sectionIndex = sections.value.findIndex((s) => s.id === id);
+  if (sectionIndex >= 0) {
+    sections.value[sectionIndex].element = element;
+  }
+}
+
+// Handle section change from navigation
+function onSectionChange(): void {
+  // This function can be used to perform additional actions when a section is selected
+  // For now, we just rely on the ScrollNavigation component to handle scrolling
+}
 
 const slug = computed(() =>
   props.data.autoGenerateSlug ? props.data.autoSlug : customSlug.value
