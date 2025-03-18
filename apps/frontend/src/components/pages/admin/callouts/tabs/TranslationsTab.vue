@@ -526,6 +526,11 @@
           </AppTabCard>
         </div>
       </div>
+
+      <!-- Right Sidebar -->
+      <div class="flex-0 basis-[15rem] overflow-y-auto">
+        <!-- TODO: Add right sidebar content here -->
+      </div>
     </div>
   </div>
 </template>
