@@ -38,6 +38,7 @@
         <SidebarTabsNavigation
           v-model:selected-tab="selectedSidebarTab"
           :sidebar-tabs="sidebarTabs"
+          :title="t('calloutBuilder.startEndScreenTitle')"
         />
         <!-- Slides Management -->
         <div class="mb-4 flex items-center justify-between">
@@ -79,7 +80,7 @@
       </div>
 
       <SidebarTabContent
-        class="flex-1"
+        class="flex-1 gap-4"
         :current-tab="currentSidebarTab"
         :status="status"
         :locales="tabs.settings.data.locales"

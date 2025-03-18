@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-2 rounded-lg border border-white p-1">
+  <div class="mb-4 rounded-t-md bg-primary-10 p-1">
     <ul :class="['gap-1', orientation === 'vertical' ? 'flex-col' : 'flex']">
       <li v-for="item in visibleItems" :key="item.id">
         <router-link

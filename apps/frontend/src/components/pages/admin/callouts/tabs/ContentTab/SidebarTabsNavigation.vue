@@ -1,6 +1,10 @@
 <template>
   <div class="mb-6">
+    <h2 v-if="title" class="mb-4 text-lg font-semibold">
+      {{ title }}
+    </h2>
     <AppTabs
+      class="!rounded-none"
       :items="visibleTabItems"
       :selected="selectedTab"
       :default-tab="defaultTabName"
@@ -14,6 +18,7 @@
 import { computed } from 'vue';
 import { AppTabs, type TabItem } from '@beabee/vue/components/tabs';
 import type { SidebarTabs } from './SidebarTabs.interface';
+
 /**
  * Props for the SidebarTabsNavigation component
  */
@@ -24,6 +29,8 @@ export interface SidebarTabsNavigationProps {
   sidebarTabs: SidebarTabs;
   /** Default tab to fall back to */
   defaultTab?: string;
+  /** Title for the sidebar tabs navigation */
+  title?: string;
 }
 
 const props = defineProps<SidebarTabsNavigationProps>();
