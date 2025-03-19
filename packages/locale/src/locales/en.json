@@ -755,25 +755,6 @@
       "content": {
         "title": "Content"
       },
-      "dates": {
-        "inputs": {
-          "expires": {
-            "label": "When should this callout end?",
-            "opts": {
-              "never": "Never, unless manually closed",
-              "schedule": "Schedule an end date"
-            }
-          },
-          "starts": {
-            "label": "When should this callout start?",
-            "opts": {
-              "now": "Now",
-              "schedule": "Schedule a start date"
-            }
-          }
-        },
-        "title": "Schedule"
-      },
       "endMessage": {
         "inputs": {
           "action": {
@@ -805,7 +786,24 @@
         "title": "Mailchimp sync"
       },
       "settings": {
+        "dates": {
+          "title": "Schedule"
+        },
         "inputs": {
+          "expires": {
+            "label": "When should this callout end?",
+            "opts": {
+              "never": "Never, unless manually closed",
+              "schedule": "Schedule an end date"
+            }
+          },
+          "starts": {
+            "label": "When should this callout start?",
+            "opts": {
+              "now": "Now",
+              "schedule": "Schedule a start date"
+            }
+          },
           "anonymous": {
             "help": "<p>If you allow <strong>anonymous responses</strong>, users will not be asked for their contact information.</p>\n",
             "label": "Should guests be asked for their contact information?",

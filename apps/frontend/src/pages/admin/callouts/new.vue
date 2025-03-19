@@ -86,9 +86,10 @@ const pageTitle = computed(() =>
 const canStartNow = computed(
   () =>
     tabs.value &&
-    (tabs.value.dates.startNow ||
-      new Date(tabs.value.dates.startDate + 'T' + tabs.value.dates.startTime) <=
-        now.value)
+    (tabs.value.settings.startNow ||
+      new Date(
+        tabs.value.settings.startDate + 'T' + tabs.value.settings.startTime
+      ) <= now.value)
 );
 
 const isLive = computed(
