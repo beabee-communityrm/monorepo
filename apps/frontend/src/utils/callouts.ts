@@ -173,6 +173,12 @@ export function convertCalloutToTabs(
         showOnUserDashboards: false,
         usersCanEditAnswers: false,
         multipleResponses: true,
+        startNow: true,
+        hasEndDate: false,
+        startDate: '',
+        startTime: '',
+        endDate: '',
+        endTime: '',
       } as const)
     : ({
         whoCanTakePart:
@@ -186,6 +192,12 @@ export function convertCalloutToTabs(
         showOnUserDashboards: !callout?.hidden,
         usersCanEditAnswers: callout?.allowUpdate || false,
         multipleResponses: callout?.allowMultiple || false,
+        startNow: !callout || callout.status === ItemStatus.Draft,
+        hasEndDate: !!callout?.expires,
+        startDate: callout?.starts ? format(callout.starts, 'yyyy-MM-dd') : '',
+        startTime: callout?.starts ? format(callout.starts, 'HH:mm') : '',
+        endDate: callout?.expires ? format(callout.expires, 'yyyy-MM-dd') : '',
+        endTime: callout?.expires ? format(callout.expires, 'HH:mm') : '',
       } as const);
 
   const variants = convertVariantsForSteps(callout?.variants);
@@ -271,15 +283,8 @@ export function convertCalloutToTabs(
       locales,
       channels: callout?.channels || null,
     },
-    dates: {
-      startNow: !callout || callout.status === ItemStatus.Draft,
-      hasEndDate: !!callout?.expires,
-      startDate: callout?.starts ? format(callout.starts, 'yyyy-MM-dd') : '',
-      startTime: callout?.starts ? format(callout.starts, 'HH:mm') : '',
-      endDate: callout?.expires ? format(callout.expires, 'yyyy-MM-dd') : '',
-      endTime: callout?.expires ? format(callout.expires, 'HH:mm') : '',
-    },
     translations,
+    responseDisplay: {},
   };
 }
 
@@ -408,11 +413,11 @@ export function convertStepsToCallout(
             : null,
         }
       : null,
-    starts: tabs.dates.startNow
+    starts: tabs.settings.startNow
       ? new Date()
-      : new Date(tabs.dates.startDate + 'T' + tabs.dates.startTime),
-    expires: tabs.dates.hasEndDate
-      ? new Date(tabs.dates.endDate + 'T' + tabs.dates.endTime)
+      : new Date(tabs.settings.startDate + 'T' + tabs.settings.startTime),
+    expires: tabs.settings.hasEndDate
+      ? new Date(tabs.settings.endDate + 'T' + tabs.settings.endTime)
       : null,
     allowMultiple: tabs.settings.multipleResponses,
     allowUpdate:

@@ -2,7 +2,7 @@ import { type Raw, type Component } from 'vue';
 import type { AppStepperStep } from '@type';
 import type { ContentTabData } from './tabs/ContentTab/ContentTab.vue';
 import type { SettingsTabData } from './tabs/SettingsTab.vue';
-import type { DateAndDurationTabData } from './tabs/DatesAndDurationTab.vue';
+import type { ResponseDisplayTabData } from './tabs/ResponseDisplayTab.vue';
 import type { TitleAndImageTabData } from './tabs/TitleAndImageTab.vue';
 import type { TranslationsTabData } from './tabs/TranslationsTab.vue';
 
@@ -11,9 +11,9 @@ import type { TranslationsTabData } from './tabs/TranslationsTab.vue';
  */
 export interface CalloutHorizontalTabsData {
   content: ContentTabData;
-  settings: SettingsTabData;
-  dates: DateAndDurationTabData;
   titleAndImage: TitleAndImageTabData;
+  settings: SettingsTabData;
+  responseDisplay: ResponseDisplayTabData;
   translations: TranslationsTabData;
 }
 

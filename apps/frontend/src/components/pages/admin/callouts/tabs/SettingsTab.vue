@@ -18,9 +18,56 @@
           t('createCallout.tabs.settings.title')
         }}</AppHeading>
 
+        <!-- Date Settings Section -->
+        <AppScrollSection id="dates" @mounted="registerSection">
+          <AppFormBox :title="t('createCallout.tabs.settings.dates.title')">
+            <AppFormSection>
+              <AppLabel :label="inputT('starts.label')" required />
+              <AppRadioGroup
+                v-if="canStartNow"
+                v-model="data.startNow"
+                name="calloutStartDateRadio"
+                :options="[
+                  [true, inputT('starts.opts.now')],
+                  [false, inputT('starts.opts.schedule')],
+                ]"
+                required
+              />
+              <div v-if="!data.startNow" class="flex gap-2">
+                <div>
+                  <AppInput v-model="data.startDate" type="date" required />
+                </div>
+                <div>
+                  <AppInput v-model="data.startTime" type="time" required />
+                </div>
+              </div>
+            </AppFormSection>
+            <AppFormSection>
+              <AppRadioGroup
+                v-model="data.hasEndDate"
+                name="calloutEndDateRadio"
+                :label="inputT('expires.label')"
+                :options="[
+                  [false, inputT('expires.opts.never')],
+                  [true, inputT('expires.opts.schedule')],
+                ]"
+                required
+              />
+              <div v-if="data.hasEndDate" class="flex gap-2">
+                <div>
+                  <AppInput v-model="data.endDate" type="date" required />
+                </div>
+                <div>
+                  <AppInput v-model="data.endTime" type="time" required />
+                </div>
+              </div>
+            </AppFormSection>
+          </AppFormBox>
+        </AppScrollSection>
+
         <!-- General Settings Section -->
         <AppScrollSection id="general" @mounted="registerSection">
-          <AppFormBox :title="t('createCallout.tabs.settings.generalTitle')">
+          <AppFormBox :title="t('createCallout.tabs.settings.general.title')">
             <template v-if="!env.cnrMode">
               <AppFormSection :help="inputT('who.help')">
                 <AppRadioGroup
@@ -348,6 +395,12 @@ export interface SettingsTabData {
   mapSchema: CalloutMapSchema;
   locales: string[];
   channels: CalloutChannel[] | null;
+  hasEndDate: boolean;
+  startNow: boolean;
+  startDate: string;
+  startTime: string;
+  endDate: string;
+  endTime: string;
 }
 
 export interface SettingsTabProps {
@@ -369,8 +422,12 @@ const contentRef = ref<HTMLElement | null>(null);
 // Sections for scroll navigation
 const sections = ref<ScrollSection[]>([
   {
+    id: 'dates',
+    label: t('createCallout.tabs.settings.dates.title'),
+  },
+  {
     id: 'general',
-    label: t('createCallout.tabs.settings.generalTitle'),
+    label: t('createCallout.tabs.settings.general.title'),
   },
 ]);
 
@@ -523,5 +580,12 @@ watch(
     emit('update:validated', !validation.value.$invalid);
   },
   { immediate: true }
+);
+
+const canStartNow = computed(
+  () =>
+    !props.status ||
+    props.status === ItemStatus.Draft ||
+    props.status === ItemStatus.Scheduled
 );
 </script>
