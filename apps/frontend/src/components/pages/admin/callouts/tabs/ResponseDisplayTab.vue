@@ -311,7 +311,9 @@ watch(
 // Watch local data changes and emit updates to parent
 watch(
   localData,
-  () => {
+  (newData) => {
+    // Sync data with parent component
+    Object.assign(props.data, newData);
     emit('update:validated', true);
   },
   { deep: true }

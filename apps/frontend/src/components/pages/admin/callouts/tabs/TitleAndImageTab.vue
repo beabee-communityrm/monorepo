@@ -252,41 +252,66 @@ function onSectionChange(): void {
   // For now, we just rely on the ScrollNavigation component to handle scrolling
 }
 
+// Create local model to avoid direct prop mutations
+const localData = ref({ ...props.data });
+
+// Watch for prop changes and update local data
+watch(
+  () => props.data,
+  (newData) => {
+    localData.value = { ...newData };
+  },
+  { deep: true }
+);
+
+// Watch local data changes and update parent
+watch(
+  localData,
+  (newData) => {
+    // Synchronize back to parent
+    Object.assign(props.data, newData);
+    emit('update:error', validation.value.$errors.length > 0);
+    emit('update:validated', !validation.value.$invalid);
+  },
+  { deep: true }
+);
+
 const slug = computed(() =>
-  props.data.autoGenerateSlug ? props.data.autoSlug : customSlug.value
+  localData.value.autoGenerateSlug ? localData.value.autoSlug : customSlug.value
 );
 
 const customSlug = computed({
-  get: () => props.data.slug || props.data.autoSlug,
-  // eslint-disable-next-line vue/no-mutating-props
-  set: (newSlug) => (props.data.slug = slugify(newSlug)),
+  get: () => localData.value.slug || localData.value.autoSlug,
+  set: (newSlug) => (localData.value.slug = slugify(newSlug)),
 });
 
 // Computed properties for default values of localized fields
 const titleDefault = computed({
-  get: () => props.data.title.default || '',
+  get: () => localData.value.title.default || '',
   set: (value) => {
-    // eslint-disable-next-line vue/no-mutating-props
-    props.data.title = { ...props.data.title, default: value };
+    localData.value.title = { ...localData.value.title, default: value };
   },
 });
 
 const descriptionDefault = computed({
-  get: () => props.data.description.default || '',
+  get: () => localData.value.description.default || '',
   set: (value) => {
-    // eslint-disable-next-line vue/no-mutating-props
-    props.data.description = { ...props.data.description, default: value };
+    localData.value.description = {
+      ...localData.value.description,
+      default: value,
+    };
   },
 });
 
 // Computed properties for share fields that sync with title/description when not overridden
 const shareTitle = computed({
   get: () =>
-    props.data.overrideShare ? props.data.shareTitle : props.data.title,
+    localData.value.overrideShare
+      ? localData.value.shareTitle
+      : localData.value.title,
   set: (value) => {
-    if (props.data.overrideShare) {
-      // eslint-disable-next-line vue/no-mutating-props
-      props.data.shareTitle = value;
+    if (localData.value.overrideShare) {
+      localData.value.shareTitle = value;
     }
   },
 });
@@ -295,25 +320,22 @@ const shareTitleDefault = computed({
   get: () => shareTitle.value.default || '',
   set: (value) => {
     const newShareTitle = { ...shareTitle.value, default: value };
-    if (props.data.overrideShare) {
-      // eslint-disable-next-line vue/no-mutating-props
-      props.data.shareTitle = newShareTitle;
+    if (localData.value.overrideShare) {
+      localData.value.shareTitle = newShareTitle;
     } else {
-      // eslint-disable-next-line vue/no-mutating-props
-      props.data.title = newShareTitle;
+      localData.value.title = newShareTitle;
     }
   },
 });
 
 const shareDescription = computed({
   get: () =>
-    props.data.overrideShare
-      ? props.data.shareDescription
-      : props.data.description,
+    localData.value.overrideShare
+      ? localData.value.shareDescription
+      : localData.value.description,
   set: (value) => {
-    if (props.data.overrideShare) {
-      // eslint-disable-next-line vue/no-mutating-props
-      props.data.shareDescription = value;
+    if (localData.value.overrideShare) {
+      localData.value.shareDescription = value;
     }
   },
 });
@@ -322,42 +344,37 @@ const shareDescriptionDefault = computed({
   get: () => shareDescription.value.default || '',
   set: (value) => {
     const newShareDescription = { ...shareDescription.value, default: value };
-    if (props.data.overrideShare) {
-      // eslint-disable-next-line vue/no-mutating-props
-      props.data.shareDescription = newShareDescription;
+    if (localData.value.overrideShare) {
+      localData.value.shareDescription = newShareDescription;
     } else {
-      // eslint-disable-next-line vue/no-mutating-props
-      props.data.description = newShareDescription;
+      localData.value.description = newShareDescription;
     }
   },
 });
 
 // Watch for changes in title/description and update share fields when not overridden
 watch(
-  () => props.data.title,
+  () => localData.value.title,
   (newTitle) => {
-    if (!props.data.overrideShare) {
-      // eslint-disable-next-line vue/no-mutating-props
-      props.data.shareTitle = newTitle;
+    if (!localData.value.overrideShare) {
+      localData.value.shareTitle = newTitle;
     }
   }
 );
 
 watch(
-  () => props.data.description,
+  () => localData.value.description,
   (newDescription) => {
-    if (!props.data.overrideShare) {
-      // eslint-disable-next-line vue/no-mutating-props
-      props.data.shareDescription = newDescription;
+    if (!localData.value.overrideShare) {
+      localData.value.shareDescription = newDescription;
     }
   }
 );
 
 watch(
-  () => props.data.title,
+  () => localData.value.title,
   (title) => {
-    // eslint-disable-next-line vue/no-mutating-props
-    props.data.autoSlug = slugify(title.default, { lower: true });
+    localData.value.autoSlug = slugify(title.default, { lower: true });
   }
 );
 

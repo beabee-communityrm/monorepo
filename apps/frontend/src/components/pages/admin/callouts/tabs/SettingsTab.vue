@@ -32,10 +32,18 @@
               </div>
               <div v-if="startDateEnabled" class="flex gap-2">
                 <div>
-                  <AppInput v-model="data.startDate" type="date" required />
+                  <AppInput
+                    v-model="localData.startDate"
+                    type="date"
+                    required
+                  />
                 </div>
                 <div>
-                  <AppInput v-model="data.startTime" type="time" required />
+                  <AppInput
+                    v-model="localData.startTime"
+                    type="time"
+                    required
+                  />
                 </div>
               </div>
             </AppFormField>
@@ -45,22 +53,22 @@
             <AppFormField>
               <div class="mb-4">
                 <AppToggleField
-                  v-model="data.hasEndDate"
+                  v-model="localData.hasEndDate"
                   variant="link"
                   :label="inputT('expires.label')"
                   :description="
-                    data.hasEndDate
+                    localData.hasEndDate
                       ? inputT('expires.opts.schedule')
                       : inputT('expires.opts.never')
                   "
                 />
               </div>
-              <div v-if="data.hasEndDate" class="flex gap-2">
+              <div v-if="localData.hasEndDate" class="flex gap-2">
                 <div>
-                  <AppInput v-model="data.endDate" type="date" required />
+                  <AppInput v-model="localData.endDate" type="date" required />
                 </div>
                 <div>
-                  <AppInput v-model="data.endTime" type="time" required />
+                  <AppInput v-model="localData.endTime" type="time" required />
                 </div>
               </div>
             </AppFormField>
@@ -73,7 +81,7 @@
             <AppFormBox :title="t('createCallout.tabs.settings.access.title')">
               <AppFormField :help="inputT('who.help')">
                 <AppRadioGroup
-                  v-model="data.whoCanTakePart"
+                  v-model="localData.whoCanTakePart"
                   name="whoCanTakePart"
                   :label="inputT('who.label')"
                   :options="[
@@ -86,13 +94,13 @@
             </AppFormBox>
             <AppFormBox>
               <AppFormField
-                v-if="data.whoCanTakePart === 'everyone'"
+                v-if="localData.whoCanTakePart === 'everyone'"
                 :help="inputT('anonymous.help')"
               >
               </AppFormField>
               <AppFormField>
                 <AppRadioGroup
-                  v-model="data.allowAnonymousResponses"
+                  v-model="localData.allowAnonymousResponses"
                   name="allowAnonymousResponses"
                   :label="inputT('anonymous.label')"
                   :options="[
@@ -107,7 +115,7 @@
             <AppFormBox>
               <AppFormField :help="inputT('visible.help')">
                 <AppRadioGroup
-                  v-model="data.showOnUserDashboards"
+                  v-model="localData.showOnUserDashboards"
                   name="showOnUserDashboards"
                   :label="inputT('visible.label')"
                   :options="[
@@ -121,7 +129,7 @@
             <AppFormBox>
               <AppFormField :help="inputT('multiple.help')">
                 <AppRadioGroup
-                  v-model="data.multipleResponses"
+                  v-model="localData.multipleResponses"
                   name="multipleResponses"
                   :label="inputT('multiple.label')"
                   :options="[
@@ -132,11 +140,11 @@
                 />
               </AppFormField>
               <AppFormField
-                v-if="!data.multipleResponses"
+                v-if="!localData.multipleResponses"
                 :help="inputT('editable.help')"
               >
                 <AppRadioGroup
-                  v-model="data.usersCanEditAnswers"
+                  v-model="localData.usersCanEditAnswers"
                   name="usersCanEditAnswers"
                   :label="inputT('editable.label')"
                   :options="[
@@ -155,7 +163,7 @@
               :help="inputT('requireCaptcha.help')"
             >
               <AppRadioGroup
-                v-model="data.requireCaptcha"
+                v-model="localData.requireCaptcha"
                 name="requireCaptcha"
                 :label="inputT('requireCaptcha.label')"
                 :options="[
@@ -250,6 +258,29 @@ const sections = ref<ScrollSection[]>([
 // Computed sections for navigation
 const navigationSections = computed(() => sections.value);
 
+// Create local model from props to avoid direct prop mutation
+const localData = ref<SettingsTabData>({ ...props.data });
+
+// Watch for prop changes and update local data
+watch(
+  () => props.data,
+  (newData) => {
+    localData.value = { ...newData };
+  },
+  { deep: true }
+);
+
+// Watch local data changes and emit updates to parent
+watch(
+  localData,
+  (newData) => {
+    // Synchronize the data with the parent component
+    Object.assign(props.data, newData);
+    emit('update:validated', !validation.value.$invalid);
+  },
+  { deep: true }
+);
+
 // Register a section element for scrolling
 function registerSection(id: string, element: HTMLElement): void {
   const sectionIndex = sections.value.findIndex((s) => s.id === id);
@@ -290,10 +321,9 @@ const canStartNow = computed(
 
 // Computed property to control start date toggle
 const startDateEnabled = computed({
-  get: () => !props.data.startNow,
+  get: () => !localData.value.startNow,
   set: (value) => {
-    // eslint-disable-next-line vue/no-mutating-props
-    props.data.startNow = !value;
+    localData.value.startNow = !value;
   },
 });
 </script>
