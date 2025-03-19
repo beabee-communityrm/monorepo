@@ -789,11 +789,11 @@
         "dates": {
           "title": "Scheduling"
         },
-        "responses": {
-          "title": "Response settings"
-        },
         "access": {
           "title": "Access and security"
+        },
+        "displayOptions": {
+          "title": "Display options"
         },
         "inputs": {
           "starts": {
@@ -895,8 +895,12 @@
             "label": "Which form field should be used as the response title?"
           },
           "showResponses": {
-            "help": "<p>If yes, you can set up a map or gallery view to visualise callout answers.</p>\n",
-            "label": "Allow users to see responses publicly?"
+            "help": "<p>Enable this to be able to visualise callout answers in a map or gallery view.</p>\n",
+            "label": "Display responses publicly",
+            "opts": {
+              "no": "Collected responses are not publicly available",
+              "yes": "Show collected responses publicly"
+            }
           },
           "visible": {
             "help": "<p>You can make the callout <strong>not appear</strong> to users if you only want it to be answered by people who you share the link with.</p>\n",
@@ -907,14 +911,21 @@
             }
           },
           "whichResponseBuckets": {
-            "label": "Which response buckets should be shown publicly?"
+            "label": "Visible response buckets",
+            "description": "Responses in unchecked buckets will be hidden from public view"
           },
-          "whichResponseViews": {
-            "help": "<p>Please decide if you want to use the map view or the gallery view or both.</p>\n",
-            "label": "Which response views should be visible?",
-            "opts": {
-              "gallery": "Gallery view",
-              "map": "Map view"
+          "mapAndGallery": {
+            "title": "Map and gallery views",
+            "description": "Choose which response views should be available to users",
+            "gallery": {
+              "label": "Enable gallery view of public responses",
+              "enabledDescription": "An image-based board of responses will be publicly available",
+              "disabledDescription": "An image-based board of responses will not be publicly available"
+            },
+            "map": {
+              "label": "Enable map view of public responses",
+              "enabledDescription": "A location-tagged map overview will be publicly available",
+              "disabledDescription": "A location-tagged map overview will not be publicly available"
             }
           },
           "who": {

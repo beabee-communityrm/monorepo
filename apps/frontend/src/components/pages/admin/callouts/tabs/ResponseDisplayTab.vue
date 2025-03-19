@@ -13,28 +13,80 @@
         class="relative max-w-3xl flex-1 overflow-y-auto"
         style="contain: paint"
       >
-        <AppHeading class="text-xl !text-body">{{
-          t('createCallout.tabs.responseDisplay.title')
-        }}</AppHeading>
+        <AppFormBox>
+          <AppFormField :help="inputT('showResponses.help')">
+            <AppToggleField
+              v-model="localData.showResponses"
+              variant="link"
+              :label="inputT('showResponses.label')"
+              :enabled-description="inputT('showResponses.opts.yes')"
+              :disabled-description="inputT('showResponses.opts.no')"
+            />
+          </AppFormField>
+        </AppFormBox>
 
-        <AppScrollSection id="responses" @mounted="registerSection">
-          <AppFormBox :title="t('createCallout.tabs.settings.responses.title')">
-            <AppFormField :help="inputT('showResponses.help')">
-              <AppToggleField
-                v-model="localData.showResponses"
-                variant="link"
-                :label="inputT('showResponses.label')"
-                :description="
-                  localData.showResponses ? t('common.yes') : t('common.no')
-                "
-              />
-            </AppFormField>
-          </AppFormBox>
+        <template v-if="localData.showResponses">
+          <!-- Map and Gallery Section -->
+          <AppScrollSection id="mapAndGallery" @mounted="registerSection">
+            <AppFormBox
+              :title="
+                t('createCallout.tabs.settings.inputs.mapAndGallery.title')
+              "
+            >
+              <AppFormField>
+                <AppToggleField
+                  v-model="galleryViewEnabled"
+                  variant="link"
+                  :label="
+                    t(
+                      'createCallout.tabs.settings.inputs.mapAndGallery.gallery.label'
+                    )
+                  "
+                  :enabled-description="
+                    t(
+                      'createCallout.tabs.settings.inputs.mapAndGallery.gallery.enabledDescription'
+                    )
+                  "
+                  :disabled-description="
+                    t(
+                      'createCallout.tabs.settings.inputs.mapAndGallery.gallery.disabledDescription'
+                    )
+                  "
+                />
+              </AppFormField>
+            </AppFormBox>
+            <AppFormBox>
+              <AppFormField>
+                <AppToggleField
+                  v-model="mapViewEnabled"
+                  variant="link"
+                  :label="
+                    t(
+                      'createCallout.tabs.settings.inputs.mapAndGallery.map.label'
+                    )
+                  "
+                  :enabled-description="
+                    t(
+                      'createCallout.tabs.settings.inputs.mapAndGallery.map.enabledDescription'
+                    )
+                  "
+                  :disabled-description="
+                    t(
+                      'createCallout.tabs.settings.inputs.mapAndGallery.map.disabledDescription'
+                    )
+                  "
+                />
+              </AppFormField>
+            </AppFormBox>
+          </AppScrollSection>
 
           <!-- Display Options Section -->
-          <template v-if="localData.showResponses">
+          <AppScrollSection id="displayOptions" @mounted="registerSection">
             <AppFormBox
-              :title="t('createCallout.tabs.settings.display-options.title')"
+              :title="t('createCallout.tabs.settings.displayOptions.title')"
+              :description="
+                t('createCallout.tabs.settings.displayOptions.description')
+              "
             >
               <AppFormField>
                 <AppCheckboxGroup
@@ -44,70 +96,50 @@
                 />
               </AppFormField>
             </AppFormBox>
+          </AppScrollSection>
 
-            <!-- Response Views Section -->
-            <AppFormBox :title="inputT('whichResponseViews.title')">
-              <AppFormField :help="inputT('whichResponseViews.help')">
-                <AppCheckboxGroup
-                  v-model="localData.responseViews"
-                  :label="inputT('whichResponseViews.label')"
-                  :options="[
-                    {
-                      id: 'gallery',
-                      label: inputT('whichResponseViews.opts.gallery'),
-                    },
-                    { id: 'map', label: inputT('whichResponseViews.opts.map') },
-                  ]"
-                  required
-                />
-              </AppFormField>
-            </AppFormBox>
+          <!-- Response Title Section -->
+          <AppFormBox :title="inputT('responseTitleProp.title')">
+            <AppFormField :help="inputT('responseTitleProp.help')">
+              <AppSelect
+                v-model="localData.responseTitleProp"
+                :label="inputT('responseTitleProp.label')"
+                :items="formComponentItems"
+                required
+              />
+            </AppFormField>
+          </AppFormBox>
 
-            <!-- Response Title Section -->
-            <AppFormBox :title="inputT('responseTitleProp.title')">
-              <AppFormField :help="inputT('responseTitleProp.help')">
-                <AppSelect
-                  v-model="localData.responseTitleProp"
-                  :label="inputT('responseTitleProp.label')"
-                  :items="formComponentItems"
-                  required
-                />
-              </AppFormField>
-            </AppFormBox>
+          <!-- Response Image Section -->
+          <AppFormBox :title="inputT('responseImageProp.title')">
+            <AppFormField :help="inputT('responseImageProp.help')">
+              <AppSelect
+                v-model="localData.responseImageProp"
+                :label="inputT('responseImageProp.label')"
+                :items="fileComponentItems"
+                :required="localData.responseViews.includes('gallery')"
+              />
+            </AppFormField>
+          </AppFormBox>
 
-            <!-- Response Image Section -->
-            <AppFormBox :title="inputT('responseImageProp.title')">
-              <AppFormField :help="inputT('responseImageProp.help')">
-                <AppSelect
-                  v-model="localData.responseImageProp"
-                  :label="inputT('responseImageProp.label')"
-                  :items="fileComponentItems"
-                  :required="localData.responseViews.includes('gallery')"
-                />
-              </AppFormField>
-            </AppFormBox>
-
-            <!-- Response Links Section -->
-            <AppFormBox :title="inputT('responseLinks.title')">
-              <AppFormField>
-                <AppLabel :label="inputT('responseLinks.label')" />
-                <AppLinkList v-model="localData.responseLinks" />
-              </AppFormField>
-              <AppFormField>
-                <AppInput
-                  v-model="localData.responseImageFilter"
-                  :label="inputT('responseImageFilter.label')"
-                />
-              </AppFormField>
-            </AppFormBox>
-          </template>
-        </AppScrollSection>
+          <!-- Response Links Section -->
+          <AppFormBox :title="inputT('responseLinks.title')">
+            <AppFormField>
+              <AppLabel :label="inputT('responseLinks.label')" />
+              <AppLinkList v-model="localData.responseLinks" />
+            </AppFormField>
+            <AppFormField>
+              <AppInput
+                v-model="localData.responseImageFilter"
+                :label="inputT('responseImageFilter.label')"
+              />
+            </AppFormField>
+          </AppFormBox>
+        </template>
 
         <!-- Map Settings Section -->
         <AppScrollSection
-          v-if="
-            localData.showResponses && localData.responseViews.includes('map')
-          "
+          v-if="mapViewEnabled"
           id="map"
           @mounted="registerSection"
         >
@@ -229,7 +261,6 @@ import AppLinkList from '@components/forms/AppLinkList.vue';
 import AppLabel from '@beabee/vue/components/form/AppLabel';
 import AppFormBox from '@beabee/vue/components/form/AppFormBox';
 import AppFormField from '@beabee/vue/components/form/AppFormField';
-import AppHeading from '@components/AppHeading.vue';
 import { buckets } from '@utils/callouts';
 import {
   AppScrollNavigation,
@@ -295,8 +326,12 @@ const contentRef = ref<HTMLElement | null>(null);
 // Sections for scroll navigation
 const sections = ref<ScrollSection[]>([
   {
-    id: 'responses',
-    label: t('createCallout.tabs.settings.responses.title'),
+    id: 'mapAndGallery',
+    label: t('createCallout.tabs.settings.inputs.mapAndGallery.title'),
+  },
+  {
+    id: 'displayOptions',
+    label: t('createCallout.tabs.settings.displayOptions.title'),
   },
 ]);
 
@@ -436,4 +471,37 @@ watch(
   },
   { immediate: true }
 );
+
+// Computed properties für die Map- und Gallery-View Toggles
+const galleryViewEnabled = computed({
+  get: () => localData.value.responseViews.includes('gallery'),
+  set: (value) => {
+    const views = [...localData.value.responseViews];
+    const index = views.indexOf('gallery');
+
+    if (value && index === -1) {
+      views.push('gallery');
+    } else if (!value && index !== -1) {
+      views.splice(index, 1);
+    }
+
+    localData.value.responseViews = views;
+  },
+});
+
+const mapViewEnabled = computed({
+  get: () => localData.value.responseViews.includes('map'),
+  set: (value) => {
+    const views = [...localData.value.responseViews];
+    const index = views.indexOf('map');
+
+    if (value && index === -1) {
+      views.push('map');
+    } else if (!value && index !== -1) {
+      views.splice(index, 1);
+    }
+
+    localData.value.responseViews = views;
+  },
+});
 </script>
