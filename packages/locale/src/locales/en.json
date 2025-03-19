@@ -792,6 +792,9 @@
         "responses": {
           "title": "Response settings"
         },
+        "access": {
+          "title": "Access and security"
+        },
         "inputs": {
           "starts": {
             "label": "Set a starting date",

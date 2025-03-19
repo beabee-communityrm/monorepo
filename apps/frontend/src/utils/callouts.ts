@@ -256,6 +256,11 @@ export function convertCalloutToTabs(
     settings: {
       ...settings,
       requireCaptcha: callout?.captcha || CalloutCaptcha.None,
+      locales,
+      channels: callout?.channels || null,
+    },
+    translations,
+    responseDisplay: {
       showResponses: !!callout?.responseViewSchema,
       responseViews: [
         ...(callout?.responseViewSchema?.gallery ? ['gallery' as const] : []),
@@ -280,11 +285,7 @@ export function convertCalloutToTabs(
         addressPattern: '',
         addressPatternProp: '',
       },
-      locales,
-      channels: callout?.channels || null,
     },
-    translations,
-    responseDisplay: {},
   };
 }
 
@@ -395,19 +396,20 @@ export function convertStepsToCallout(
     slug: slug || undefined,
     image: tabs.titleAndImage.coverImageURL,
     formSchema: { slides },
-    responseViewSchema: tabs.settings.showResponses
+    responseViewSchema: tabs.responseDisplay.showResponses
       ? {
-          buckets: tabs.settings.responseBuckets,
-          titleProp: tabs.settings.responseTitleProp,
-          imageProp: tabs.settings.responseImageProp,
-          imageFilter: tabs.settings.responseImageFilter,
-          gallery: tabs.settings.responseViews.includes('gallery'),
-          links: tabs.settings.responseLinks,
-          map: tabs.settings.responseViews.includes('map')
+          buckets: tabs.responseDisplay.responseBuckets,
+          titleProp: tabs.responseDisplay.responseTitleProp,
+          imageProp: tabs.responseDisplay.responseImageProp,
+          imageFilter: tabs.responseDisplay.responseImageFilter,
+          gallery: tabs.responseDisplay.responseViews.includes('gallery'),
+          links: tabs.responseDisplay.responseLinks,
+          map: tabs.responseDisplay.responseViews.includes('map')
             ? {
-                ...tabs.settings.mapSchema,
-                addressPattern: tabs.settings.mapSchema.addressPatternProp
-                  ? tabs.settings.mapSchema.addressPattern
+                ...tabs.responseDisplay.mapSchema,
+                addressPattern: tabs.responseDisplay.mapSchema
+                  .addressPatternProp
+                  ? tabs.responseDisplay.mapSchema.addressPattern
                   : '',
               }
             : null,
