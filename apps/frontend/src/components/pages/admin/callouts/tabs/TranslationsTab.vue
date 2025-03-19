@@ -23,9 +23,6 @@
         class="relative flex-1 overflow-y-auto"
         style="contain: paint"
       >
-        <AppHeading class="text-xl !text-body">
-          {{ t('calloutBuilder.translationsTitle') }}
-        </AppHeading>
         <p class="mb-4">
           {{ t('calloutBuilder.translationsText') }}
         </p>
@@ -557,7 +554,6 @@ import type { EndMessageTabData } from '../tabs/ContentTab/SidebarTabContent/End
 import { generalContent } from '@store';
 import AppCheckboxGroup from '@components/forms/AppCheckboxGroup.vue';
 import { localeItems as allLocaleItems } from '@beabee/vue/lib/i18n';
-import AppHeading from '@components/AppHeading.vue';
 
 /**
  * Data for the translations tab

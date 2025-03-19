@@ -1,4 +1,5 @@
 <!-- eslint-disable vue/no-mutating-props -->
+<!-- TODO: This component is not used, fix it -->
 <template>
   <div>
     <div class="grid grid-cols-2 gap-6">

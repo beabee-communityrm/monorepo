@@ -16,10 +16,6 @@
         class="relative max-w-3xl flex-1 overflow-y-auto"
         style="contain: paint"
       >
-        <AppHeading class="text-xl !text-body">
-          {{ t('createCallout.tabs.titleAndImage.title') }}
-        </AppHeading>
-
         <!-- General Section -->
         <AppScrollSection id="general" @mounted="registerSection">
           <AppFormBox :title="inputT('general.title')">
@@ -174,7 +170,6 @@ import AppFormBox from '@beabee/vue/components/form/AppFormBox';
 import AppTextArea from '@components/forms/AppTextArea.vue';
 import AppToggleField from '@beabee/vue/components/form/AppToggleField';
 import AppFormField from '@beabee/vue/components/form/AppFormField';
-import AppHeading from '@components/AppHeading.vue';
 import type { LocaleProp } from '@type';
 import type { CalloutHorizontalTabs } from '../CalloutHorizontalTabs.interface';
 import {
