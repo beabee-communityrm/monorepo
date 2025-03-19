@@ -20,15 +20,13 @@
         <AppScrollSection id="responses" @mounted="registerSection">
           <AppFormBox :title="t('createCallout.tabs.settings.responses.title')">
             <AppFormField :help="inputT('showResponses.help')">
-              <AppRadioGroup
+              <AppToggleField
                 v-model="localData.showResponses"
-                name="showResponses"
+                variant="link"
                 :label="inputT('showResponses.label')"
-                :options="[
-                  [true, t('common.yes')],
-                  [false, t('common.no')],
-                ]"
-                required
+                :description="
+                  localData.showResponses ? t('common.yes') : t('common.no')
+                "
               />
             </AppFormField>
           </AppFormBox>
@@ -224,7 +222,6 @@ import { ItemStatus, getCalloutComponents } from '@beabee/beabee-common';
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import useVuelidate from '@vuelidate/core';
-import AppRadioGroup from '@components/forms/AppRadioGroup.vue';
 import AppInput from '@components/forms/AppInput.vue';
 import AppCheckboxGroup from '@components/forms/AppCheckboxGroup.vue';
 import AppSelect from '@components/forms/AppSelect.vue';
@@ -239,6 +236,7 @@ import {
   AppScrollSection,
   type ScrollSection,
 } from '@beabee/vue/components';
+import AppToggleField from '@beabee/vue/components/form/AppToggleField';
 
 import type { CalloutMapSchema } from '@beabee/beabee-common';
 import type { CalloutHorizontalTabs } from '../CalloutHorizontalTabs.interface';
