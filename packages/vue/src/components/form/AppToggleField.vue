@@ -8,13 +8,13 @@
         :class="{ 'text-sm': size === 'small' }"
       />
       <p
-        v-if="description"
+        v-if="getDescription"
         class="mb-0.5 mt-1"
         :class="
           size === 'small' ? 'text-xs text-body-80' : 'text-sm text-body-80'
         "
       >
-        {{ description }}
+        {{ getDescription }}
       </p>
     </div>
     <AppToggleSwitch
@@ -30,6 +30,7 @@
 <script lang="ts" setup>
 import AppLabel from './AppLabel.vue';
 import { AppToggleSwitch } from '@beabee/vue/components';
+import { computed } from 'vue';
 
 /**
  * Props for the AppToggleField component
@@ -39,8 +40,10 @@ export interface AppToggleFieldProps {
   modelValue: boolean;
   /** Label text for the toggle field */
   label?: string;
-  /** Additional descriptive text below the label */
-  description?: string;
+  /** Description text shown when the toggle is disabled */
+  disabledDescription?: string;
+  /** Description text shown when the toggle is enabled */
+  enabledDescription?: string;
   /** Color variant of the toggle switch */
   variant?: 'primary' | 'link' | 'danger';
   /** Size variant of the field */
@@ -56,12 +59,21 @@ defineEmits<{
   (e: 'update:modelValue', value: boolean): void;
 }>();
 
-withDefaults(defineProps<AppToggleFieldProps>(), {
+const props = withDefaults(defineProps<AppToggleFieldProps>(), {
   variant: 'primary',
   size: 'default',
   disabled: false,
   required: false,
   label: undefined,
-  description: undefined,
+  disabledDescription: undefined,
+  enabledDescription: undefined,
+});
+
+// Compute the appropriate description based on toggle state
+const getDescription = computed(() => {
+  if (props.modelValue) {
+    return props.enabledDescription;
+  }
+  return props.disabledDescription;
 });
 </script>
