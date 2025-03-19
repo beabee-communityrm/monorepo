@@ -787,21 +787,25 @@
       },
       "settings": {
         "dates": {
-          "title": "Schedule"
+          "title": "Scheduling"
+        },
+        "responses": {
+          "title": "Response settings"
         },
         "inputs": {
-          "expires": {
-            "label": "When should this callout end?",
+          "starts": {
+            "label": "Set a starting date",
             "opts": {
-              "never": "Never, unless manually closed",
-              "schedule": "Schedule an end date"
+              "now": "The callout will be made available immediately.",
+              "schedule": "The callout will be made available at a specific date."
             }
           },
-          "starts": {
-            "label": "When should this callout start?",
+          "expires": {
+            "label": "Set an ending date",
+            "description": "Set an end date",
             "opts": {
-              "now": "Now",
-              "schedule": "Schedule a start date"
+              "never": "The callout will run until manually closed",
+              "schedule": "The callout will automatically close at a specific date."
             }
           },
           "anonymous": {

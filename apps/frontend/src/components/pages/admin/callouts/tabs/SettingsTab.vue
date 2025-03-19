@@ -11,29 +11,26 @@
       <!-- Main Content -->
       <div
         ref="contentRef"
-        class="relative flex-1 overflow-y-auto"
+        class="relative max-w-3xl flex-1 overflow-y-auto"
         style="contain: paint"
       >
-        <AppHeading class="text-xl !text-body">{{
-          t('createCallout.tabs.settings.title')
-        }}</AppHeading>
-
         <!-- Date Settings Section -->
         <AppScrollSection id="dates" @mounted="registerSection">
           <AppFormBox :title="t('createCallout.tabs.settings.dates.title')">
-            <AppFormSection>
-              <AppLabel :label="inputT('starts.label')" required />
-              <AppRadioGroup
-                v-if="canStartNow"
-                v-model="data.startNow"
-                name="calloutStartDateRadio"
-                :options="[
-                  [true, inputT('starts.opts.now')],
-                  [false, inputT('starts.opts.schedule')],
-                ]"
-                required
-              />
-              <div v-if="!data.startNow" class="flex gap-2">
+            <AppFormField>
+              <div v-if="canStartNow" class="mb-4">
+                <AppToggleField
+                  v-model="startDateEnabled"
+                  variant="link"
+                  :label="inputT('starts.label')"
+                  :description="
+                    startDateEnabled
+                      ? inputT('starts.opts.schedule')
+                      : inputT('starts.opts.now')
+                  "
+                />
+              </div>
+              <div v-if="startDateEnabled" class="flex gap-2">
                 <div>
                   <AppInput v-model="data.startDate" type="date" required />
                 </div>
@@ -41,18 +38,23 @@
                   <AppInput v-model="data.startTime" type="time" required />
                 </div>
               </div>
-            </AppFormSection>
-            <AppFormSection>
-              <AppRadioGroup
-                v-model="data.hasEndDate"
-                name="calloutEndDateRadio"
-                :label="inputT('expires.label')"
-                :options="[
-                  [false, inputT('expires.opts.never')],
-                  [true, inputT('expires.opts.schedule')],
-                ]"
-                required
-              />
+            </AppFormField>
+          </AppFormBox>
+
+          <AppFormBox>
+            <AppFormField>
+              <div class="mb-4">
+                <AppToggleField
+                  v-model="data.hasEndDate"
+                  variant="link"
+                  :label="inputT('expires.label')"
+                  :description="
+                    data.hasEndDate
+                      ? inputT('expires.opts.schedule')
+                      : inputT('expires.opts.never')
+                  "
+                />
+              </div>
               <div v-if="data.hasEndDate" class="flex gap-2">
                 <div>
                   <AppInput v-model="data.endDate" type="date" required />
@@ -61,7 +63,7 @@
                   <AppInput v-model="data.endTime" type="time" required />
                 </div>
               </div>
-            </AppFormSection>
+            </AppFormField>
           </AppFormBox>
         </AppScrollSection>
 
@@ -69,7 +71,7 @@
         <AppScrollSection id="general" @mounted="registerSection">
           <AppFormBox :title="t('createCallout.tabs.settings.general.title')">
             <template v-if="!env.cnrMode">
-              <AppFormSection :help="inputT('who.help')">
+              <AppFormField :help="inputT('who.help')">
                 <AppRadioGroup
                   v-model="data.whoCanTakePart"
                   name="whoCanTakePart"
@@ -80,8 +82,8 @@
                   ]"
                   required
                 />
-              </AppFormSection>
-              <AppFormSection
+              </AppFormField>
+              <AppFormField
                 v-if="data.whoCanTakePart === 'everyone'"
                 :help="inputT('anonymous.help')"
               >
@@ -96,8 +98,8 @@
                   ]"
                   required
                 />
-              </AppFormSection>
-              <AppFormSection :help="inputT('visible.help')">
+              </AppFormField>
+              <AppFormField :help="inputT('visible.help')">
                 <AppRadioGroup
                   v-model="data.showOnUserDashboards"
                   name="showOnUserDashboards"
@@ -108,8 +110,8 @@
                   ]"
                   required
                 />
-              </AppFormSection>
-              <AppFormSection :help="inputT('multiple.help')">
+              </AppFormField>
+              <AppFormField :help="inputT('multiple.help')">
                 <AppRadioGroup
                   v-model="data.multipleResponses"
                   name="multipleResponses"
@@ -120,8 +122,8 @@
                   ]"
                   required
                 />
-              </AppFormSection>
-              <AppFormSection
+              </AppFormField>
+              <AppFormField
                 v-if="!data.multipleResponses"
                 :help="inputT('editable.help')"
               >
@@ -135,10 +137,10 @@
                   ]"
                   required
                 />
-              </AppFormSection>
+              </AppFormField>
             </template>
 
-            <AppFormSection
+            <AppFormField
               v-if="env.captchafoxKey"
               :help="inputT('requireCaptcha.help')"
             >
@@ -153,7 +155,7 @@
                 ]"
                 required
               />
-            </AppFormSection>
+            </AppFormField>
           </AppFormBox>
         </AppScrollSection>
 
@@ -163,8 +165,8 @@
           id="responses"
           @mounted="registerSection"
         >
-          <AppFormBox :title="t('createCallout.tabs.settings.responsesTitle')">
-            <AppFormSection :help="inputT('showResponses.help')">
+          <AppFormBox :title="t('createCallout.tabs.settings.responses.title')">
+            <AppFormField :help="inputT('showResponses.help')">
               <AppRadioGroup
                 v-model="data.showResponses"
                 name="showResponses"
@@ -175,17 +177,16 @@
                 ]"
                 required
               />
-            </AppFormSection>
+            </AppFormField>
             <template v-if="data.showResponses">
-              <AppFormSection>
+              <AppFormField>
                 <AppCheckboxGroup
                   v-model="data.responseBuckets"
                   :label="inputT('whichResponseBuckets.label')"
                   :options="buckets"
-                  required
                 />
-              </AppFormSection>
-              <AppFormSection :help="inputT('whichResponseViews.help')">
+              </AppFormField>
+              <AppFormField :help="inputT('whichResponseViews.help')">
                 <AppCheckboxGroup
                   v-model="data.responseViews"
                   :label="inputT('whichResponseViews.label')"
@@ -198,33 +199,33 @@
                   ]"
                   required
                 />
-              </AppFormSection>
-              <AppFormSection :help="inputT('responseTitleProp.help')">
+              </AppFormField>
+              <AppFormField :help="inputT('responseTitleProp.help')">
                 <AppSelect
                   v-model="data.responseTitleProp"
                   :label="inputT('responseTitleProp.label')"
                   :items="formComponentItems"
                   required
                 />
-              </AppFormSection>
-              <AppFormSection :help="inputT('responseImageProp.help')">
+              </AppFormField>
+              <AppFormField :help="inputT('responseImageProp.help')">
                 <AppSelect
                   v-model="data.responseImageProp"
                   :label="inputT('responseImageProp.label')"
                   :items="fileComponentItems"
                   :required="data.responseViews.includes('gallery')"
                 />
-              </AppFormSection>
-              <AppFormSection>
+              </AppFormField>
+              <AppFormField>
                 <AppLabel :label="inputT('responseLinks.label')" />
                 <AppLinkList v-model="data.responseLinks" />
-              </AppFormSection>
-              <AppFormSection>
+              </AppFormField>
+              <AppFormField>
                 <AppInput
                   v-model="data.responseImageFilter"
                   :label="inputT('responseImageFilter.label')"
                 />
-              </AppFormSection>
+              </AppFormField>
             </template>
           </AppFormBox>
         </AppScrollSection>
@@ -240,22 +241,22 @@
           @mounted="registerSection"
         >
           <AppFormBox :title="inputT('mapSchema.title')">
-            <AppFormSection>
+            <AppFormField>
               <AppSelect
                 v-model="data.mapSchema.addressProp"
                 :label="inputT('mapSchema.addressProp.label')"
                 :items="addressComponentItems"
                 required
               />
-            </AppFormSection>
-            <AppFormSection :help="inputT('mapSchema.style.help')">
+            </AppFormField>
+            <AppFormField :help="inputT('mapSchema.style.help')">
               <AppInput
                 v-model="data.mapSchema.style"
                 :label="inputT('mapSchema.style.label')"
                 required
               />
-            </AppFormSection>
-            <AppFormSection>
+            </AppFormField>
+            <AppFormField>
               <div class="grid grid-cols-2 gap-4">
                 <div>
                   <AppInput
@@ -272,8 +273,8 @@
                   />
                 </div>
               </div>
-            </AppFormSection>
-            <AppFormSection>
+            </AppFormField>
+            <AppFormField>
               <div class="grid grid-cols-3 gap-4">
                 <div>
                   <AppInput
@@ -306,8 +307,8 @@
                   />
                 </div>
               </div>
-            </AppFormSection>
-            <AppFormSection>
+            </AppFormField>
+            <AppFormField>
               <AppSelect
                 v-model="data.mapSchema.addressPatternProp"
                 :label="inputT('mapSchema.addressPatternProp.label')"
@@ -319,20 +320,20 @@
                   ...textComponentItems,
                 ]"
               />
-            </AppFormSection>
-            <AppFormSection v-if="!!data.mapSchema.addressPatternProp">
+            </AppFormField>
+            <AppFormField v-if="!!data.mapSchema.addressPatternProp">
               <AppInput
                 v-model="data.mapSchema.addressPattern"
                 :label="inputT('mapSchema.addressPattern.label')"
                 required
               />
-            </AppFormSection>
-            <AppFormSection>
+            </AppFormField>
+            <AppFormField>
               <AppInput
                 v-model="data.mapSchema.geocodeCountries"
                 :label="inputT('mapSchema.geocodeCountries.label')"
               />
-            </AppFormSection>
+            </AppFormField>
           </AppFormBox>
         </AppScrollSection>
       </div>
@@ -358,13 +359,13 @@ import {
   AppScrollNavigation,
   AppScrollSection,
   type ScrollSection,
+  AppFormField,
+  AppToggleField,
 } from '@beabee/vue/components';
-import AppFormSection from '@components/forms/AppFormSection.vue';
 import { buckets } from '@utils/callouts';
 import { sameAs } from '@vuelidate/validators';
 import AppInput from '@components/forms/AppInput.vue';
 import AppSelect from '@components/forms/AppSelect.vue';
-import AppHeading from '@components/AppHeading.vue';
 import env from '@env';
 import AppLinkList from '@components/forms/AppLinkList.vue';
 
@@ -435,7 +436,7 @@ const sections = ref<ScrollSection[]>([
 if (env.experimentalFeatures) {
   sections.value.push({
     id: 'responses',
-    label: t('createCallout.tabs.settings.responsesTitle'),
+    label: t('createCallout.tabs.settings.responses.title'),
   });
 
   // Add map section if map view is available
@@ -588,4 +589,13 @@ const canStartNow = computed(
     props.status === ItemStatus.Draft ||
     props.status === ItemStatus.Scheduled
 );
+
+// Computed property to control start date toggle
+const startDateEnabled = computed({
+  get: () => !props.data.startNow,
+  set: (value) => {
+    // eslint-disable-next-line vue/no-mutating-props
+    props.data.startNow = !value;
+  },
+});
 </script>
