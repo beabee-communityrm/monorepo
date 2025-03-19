@@ -8,7 +8,8 @@ const state = reactive({
   size: 'default' as const,
   disabled: false,
   label: 'Toggle feature',
-  description: 'Enable or disable this feature',
+  enabledDescription: 'Feature is currently enabled',
+  disabledDescription: 'Feature is currently disabled',
   required: false,
 });
 
@@ -32,7 +33,8 @@ const advancedOptionsVisible = ref(false);
           :size="state.size"
           :disabled="state.disabled"
           :label="state.label"
-          :description="state.description"
+          :enabled-description="state.enabledDescription"
+          :disabled-description="state.disabledDescription"
           :required="state.required"
         />
 
@@ -52,7 +54,14 @@ const advancedOptionsVisible = ref(false);
         <HstCheckbox v-model="state.disabled" title="Disabled" />
         <HstCheckbox v-model="state.required" title="Required" />
         <HstText v-model="state.label" title="Label" />
-        <HstText v-model="state.description" title="Description" />
+        <HstText
+          v-model="state.enabledDescription"
+          title="Enabled Description"
+        />
+        <HstText
+          v-model="state.disabledDescription"
+          title="Disabled Description"
+        />
       </template>
     </Variant>
 
@@ -67,7 +76,8 @@ const advancedOptionsVisible = ref(false);
             v-model="state.enabled"
             :variant="variant"
             :label="`${variant} variant`"
-            :description="`This is a toggle field with ${variant} styling`"
+            :enabled-description="`This toggle with ${variant} styling is enabled`"
+            :disabled-description="`This toggle with ${variant} styling is disabled`"
           />
         </div>
       </div>
@@ -80,7 +90,8 @@ const advancedOptionsVisible = ref(false);
             v-model="state.enabled"
             :size="size"
             :label="`${size} size`"
-            :description="`This is a toggle field with ${size} size`"
+            :enabled-description="`This ${size} toggle is enabled`"
+            :disabled-description="`This ${size} toggle is disabled`"
           />
         </div>
       </div>
@@ -92,14 +103,16 @@ const advancedOptionsVisible = ref(false);
           <AppToggleField
             :model-value="true"
             label="Enabled"
-            description="This toggle is enabled"
+            enabled-description="This toggle is currently enabled"
+            disabled-description="This toggle is currently disabled"
           />
         </div>
         <div class="rounded border p-4">
           <AppToggleField
             :model-value="false"
             label="Disabled"
-            description="This toggle is disabled"
+            enabled-description="This toggle is currently enabled"
+            disabled-description="This toggle is currently disabled"
           />
         </div>
         <div class="rounded border p-4">
@@ -107,7 +120,8 @@ const advancedOptionsVisible = ref(false);
             :model-value="true"
             disabled
             label="Disabled (On)"
-            description="This toggle is disabled in the ON state"
+            enabled-description="This toggle is enabled but can't be changed"
+            disabled-description="This toggle is disabled and can't be changed"
           />
         </div>
         <div class="rounded border p-4">
@@ -115,7 +129,8 @@ const advancedOptionsVisible = ref(false);
             :model-value="false"
             disabled
             label="Disabled (Off)"
-            description="This toggle is disabled in the OFF state"
+            enabled-description="This toggle is enabled but can't be changed"
+            disabled-description="This toggle is disabled and can't be changed"
           />
         </div>
         <div class="rounded border p-4">
@@ -123,27 +138,10 @@ const advancedOptionsVisible = ref(false);
             :model-value="true"
             required
             label="Required"
-            description="This toggle is required"
+            enabled-description="This required toggle is enabled"
+            disabled-description="This required toggle is disabled"
           />
         </div>
-      </div>
-    </Variant>
-
-    <Variant title="Without Description">
-      <div class="flex max-w-md flex-col gap-4">
-        <AppToggleField
-          v-model="state.enabled"
-          label="Toggle without description"
-        />
-      </div>
-    </Variant>
-
-    <Variant title="Without Label">
-      <div class="flex max-w-md flex-col gap-4">
-        <AppToggleField
-          v-model="state.enabled"
-          description="This toggle has no label, only a description"
-        />
       </div>
     </Variant>
 
@@ -153,7 +151,8 @@ const advancedOptionsVisible = ref(false);
           <AppToggleField
             v-model="notificationsEnabled"
             label="Enable Notifications"
-            description="Receive notifications about updates and activity"
+            enabled-description="You will receive notifications about updates and activity"
+            disabled-description="You will not receive any notifications"
           />
         </div>
 
@@ -162,7 +161,8 @@ const advancedOptionsVisible = ref(false);
             v-model="darkModeEnabled"
             variant="link"
             label="Dark Mode"
-            description="Switch to dark theme for low-light environments"
+            enabled-description="Using dark theme for low-light environments"
+            disabled-description="Using light theme for standard environments"
           />
         </div>
 
@@ -171,7 +171,8 @@ const advancedOptionsVisible = ref(false);
             v-model="autoSaveEnabled"
             size="small"
             label="Auto-save"
-            description="Automatically save changes as you work"
+            enabled-description="Changes are automatically saved as you work"
+            disabled-description="You need to manually save your changes"
           />
         </div>
 
@@ -181,7 +182,8 @@ const advancedOptionsVisible = ref(false);
             variant="link"
             size="small"
             label="Show Advanced Options"
-            description="Display additional configuration options for power users"
+            enabled-description="Additional configuration options are displayed"
+            disabled-description="Only standard options are displayed"
           />
         </div>
       </div>
