@@ -54,7 +54,7 @@ import AppRadioGroup from '../forms/AppRadioGroup.vue';
 import { client } from '@utils/api';
 import { generalContent } from '../../store';
 import { type UpdateContribution } from './contact.interface';
-import { type SelectItem } from '../forms/form.interface';
+import { type SelectItem } from '@beabee/vue/types/form.interface';
 
 const { t } = useI18n();
 

@@ -543,7 +543,7 @@ import {
   type ScrollSection,
   type TabItem,
 } from '@beabee/vue/components';
-import AppFormBox from '@beabee/vue/components/form/AppFormBox';
+import { AppFormBox, AppCheckboxGroup } from '@beabee/vue/components';
 import AppInput from '@components/forms/AppInput.vue';
 import AppTextArea from '@components/forms/AppTextArea.vue';
 import RichTextEditor from '@components/rte/RichTextEditor.vue';
@@ -552,7 +552,6 @@ import type { LocaleProp } from '@type';
 import type { CalloutHorizontalTabs } from '../CalloutHorizontalTabs.interface';
 import type { EndMessageTabData } from '../tabs/ContentTab/SidebarTabContent/EndMessageTab.vue';
 import { generalContent } from '@store';
-import AppCheckboxGroup from '@components/forms/AppCheckboxGroup.vue';
 import { localeItems as allLocaleItems } from '@beabee/vue/lib/i18n';
 
 /**

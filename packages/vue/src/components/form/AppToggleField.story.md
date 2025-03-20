@@ -132,6 +132,7 @@ The `AppToggleField` component provides a labeled toggle switch with state-speci
 The AppToggleField is commonly used for:
 
 1. **Feature Toggles**
+
 ```vue
 <AppToggleField
   v-model="notificationsEnabled"
@@ -142,6 +143,7 @@ The AppToggleField is commonly used for:
 ```
 
 2. **Theme Switching**
+
 ```vue
 <AppToggleField
   v-model="darkModeEnabled"
@@ -152,6 +154,7 @@ The AppToggleField is commonly used for:
 ```
 
 3. **Auto-save Settings**
+
 ```vue
 <AppToggleField
   v-model="autoSaveEnabled"

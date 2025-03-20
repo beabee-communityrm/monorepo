@@ -100,7 +100,7 @@ import { client } from '@utils/api';
 import AppRadioGroup from '../forms/AppRadioGroup.vue';
 import AppForm from '@beabee/vue/components/form/AppForm';
 import AppNotification from '@beabee/vue/components/notification/AppNotification';
-import AppCheckbox from '../forms/AppCheckbox.vue';
+import { AppCheckbox } from '@beabee/vue/components';
 import AppInput from '@components/forms/AppInput.vue';
 
 const props = defineProps<{

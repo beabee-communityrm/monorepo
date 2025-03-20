@@ -25,7 +25,7 @@ import { requiredIf } from '@vuelidate/validators';
 import { computed } from 'vue';
 import VueMultiselect from 'vue-multiselect';
 import AppLabel from '@beabee/vue/components/form/AppLabel';
-import type { SelectItem } from './form.interface';
+import type { SelectItem } from '@beabee/vue/types/form.interface';
 import AppInputError from './AppInputError.vue';
 import AppInputHelp from './AppInputHelp.vue';
 import { toRef } from 'vue';

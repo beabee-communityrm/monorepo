@@ -232,7 +232,7 @@ import {
   defineParam,
   defineRulesParam,
 } from '@utils/pagination';
-import AppCheckbox from '@components/forms/AppCheckbox.vue';
+import { AppCheckbox } from '@beabee/vue/components';
 import {
   faComment,
   faDownload,

@@ -255,19 +255,19 @@ import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import useVuelidate from '@vuelidate/core';
 import AppInput from '@components/forms/AppInput.vue';
-import AppCheckboxGroup from '@components/forms/AppCheckboxGroup.vue';
-import AppSelect from '@components/forms/AppSelect.vue';
-import AppLinkList from '@components/forms/AppLinkList.vue';
-import AppLabel from '@beabee/vue/components/form/AppLabel';
-import AppFormBox from '@beabee/vue/components/form/AppFormBox';
-import AppFormField from '@beabee/vue/components/form/AppFormField';
-import { buckets } from '@utils/callouts';
 import {
+  AppCheckboxGroup,
+  AppLabel,
+  AppFormBox,
+  AppFormField,
   AppScrollNavigation,
   AppScrollSection,
+  AppToggleField,
   type ScrollSection,
 } from '@beabee/vue/components';
-import AppToggleField from '@beabee/vue/components/form/AppToggleField';
+import AppSelect from '@components/forms/AppSelect.vue';
+import AppLinkList from '@components/forms/AppLinkList.vue';
+import { buckets } from '@utils/callouts';
 
 import type { CalloutMapSchema } from '@beabee/beabee-common';
 import type { CalloutHorizontalTabs } from '../CalloutHorizontalTabs.interface';

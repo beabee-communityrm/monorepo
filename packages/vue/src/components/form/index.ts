@@ -1,3 +1,11 @@
+export {
+  default as AppCheckbox,
+  type AppCheckboxProps,
+} from './AppCheckbox.vue';
+export {
+  default as AppCheckboxGroup,
+  type AppCheckboxGroupProps,
+} from './AppCheckboxGroup.vue';
 export { default as AppForm, type AppFormProps } from './AppForm.vue';
 export { default as AppFormBox, type AppFormBoxProps } from './AppFormBox.vue';
 export {

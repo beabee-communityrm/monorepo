@@ -17,7 +17,7 @@ import AppCheckbox from './AppCheckbox.vue';
 import AppLabel from '@beabee/vue/components/form/AppLabel';
 import useVuelidate from '@vuelidate/core';
 import { minValue } from '@vuelidate/validators';
-import type { SelectItem } from './form.interface';
+import type { SelectItem } from '../../types/form.interface';
 
 export interface AppCheckboxGroupProps<T extends string | number> {
   /** The model value of the checkbox group */
