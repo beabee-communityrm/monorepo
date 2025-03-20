@@ -822,14 +822,6 @@
               "enabled": "People who respond will be asked for their contact information"
             }
           },
-          "editable": {
-            "help": "<p>If yes, the users will be able to <strong>update their answers</strong> until the callout reaches its end date.</p>\n",
-            "label": "Should people be able to change their answers before the callout ends?",
-            "opts": {
-              "no": "No, answers are final",
-              "yes": "Yes"
-            }
-          },
           "mapSchema": {
             "addressPattern": {
               "label": "What format would you like to use?"
@@ -864,14 +856,6 @@
               "label": "Map style URL"
             },
             "title": "Map settings"
-          },
-          "multiple": {
-            "help": "<p>If yes, then logged in users will be able to <strong>respond multiple times</strong> to the callout.</p>\n",
-            "label": "Can users answer the callout more than once?",
-            "opts": {
-              "no": "No, only one response",
-              "yes": "Yes"
-            }
           },
           "requireCaptcha": {
             "help": "<p>If you enable <strong>bot spam protection</strong> users will be required to complete a Captcha to confirm they are human. This is useful to prevent your callout being spammed by bots</p>\n",
@@ -944,6 +928,14 @@
             "opts": {
               "enabled": "Members who respond will be identified",
               "disabled": "Members who respond will be anonymous"
+            }
+          },
+          "responseSettings": {
+            "title": "Response settings",
+            "opts": {
+              "singleNonEditable": "Single response, non-editable",
+              "singleEditable": "Single response but editable while callout is open",
+              "multiple": "Multiple responses, non-editable"
             }
           }
         },

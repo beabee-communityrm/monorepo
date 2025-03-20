@@ -75,116 +75,114 @@
           </AppFormBox>
         </AppScrollSection>
 
-        <!-- General Settings Section -->
-        <AppScrollSection id="general" @mounted="registerSection">
-          <template v-if="!env.cnrMode">
-            <AppFormBox :title="t('createCallout.tabs.settings.access.title')">
-              <AppToggleField
-                v-model="openToEveryone"
-                variant="link"
-                :label="inputT('who.label')"
-                :disabled-description="inputT('who.opts.members')"
-                :enabled-description="inputT('who.opts.everyone')"
-              />
+        <!-- Access Settings Section -->
+        <AppScrollSection
+          v-if="!env.cnrMode"
+          id="access"
+          @mounted="registerSection"
+        >
+          <AppFormBox :title="t('createCallout.tabs.settings.access.title')">
+            <AppToggleField
+              v-model="openToEveryone"
+              variant="link"
+              :label="inputT('who.label')"
+              :disabled-description="inputT('who.opts.members')"
+              :enabled-description="inputT('who.opts.everyone')"
+            />
 
-              <div
-                v-if="openToEveryone"
-                class="ml-6 mt-4 border-l-2 border-grey-light pl-6"
-              >
-                <AppFormField>
-                  <AppToggleField
-                    v-model="collectContactInfo"
-                    variant="link"
-                    :label="inputT('anonymous.label')"
-                    :disabled-description="inputT('anonymous.opts.disabled')"
-                    :enabled-description="inputT('anonymous.opts.enabled')"
-                  />
-                </AppFormField>
-
-                <AppFormField v-if="collectContactInfo">
-                  <AppToggleField
-                    v-model="collectMembersContactInfo"
-                    variant="link"
-                    :label="inputT('collectMembers.label')"
-                    :disabled-description="
-                      inputT('collectMembers.opts.disabled')
-                    "
-                    :enabled-description="inputT('collectMembers.opts.enabled')"
-                  />
-                </AppFormField>
-              </div>
-            </AppFormBox>
-            <AppFormBox>
-              <AppToggleField
-                v-model="localData.showOnUserDashboards"
-                variant="link"
-                :label="inputT('visible.label')"
-                :help="inputT('visible.help')"
-                :enabled-description="inputT('visible.opts.enabled')"
-                :disabled-description="inputT('visible.opts.disabled')"
-              />
-            </AppFormBox>
-
-            <AppFormBox>
-              <AppToggleField
-                v-if="env.captchafoxKey"
-                v-model="captchaEnabled"
-                variant="link"
-                :label="inputT('requireCaptcha.label')"
-                :help="inputT('requireCaptcha.help')"
-                :description="
-                  localData.requireCaptcha === CalloutCaptcha.Guest
-                    ? inputT('requireCaptcha.opts.guests')
-                    : localData.requireCaptcha === CalloutCaptcha.All
-                      ? inputT('requireCaptcha.opts.all')
-                      : inputT('requireCaptcha.opts.none')
-                "
-              />
-
-              <div
-                v-if="captchaEnabled && env.captchafoxKey"
-                class="ml-6 mt-4 border-l-2 border-grey-light pl-6"
-              >
-                <AppFormField>
-                  <AppToggleField
-                    v-model="captchaForMembers"
-                    variant="link"
-                    :label="inputT('requireCaptcha.membersLabel')"
-                  />
-                </AppFormField>
-              </div>
-            </AppFormBox>
-
-            <AppFormBox>
-              <AppFormField :help="inputT('multiple.help')">
-                <AppRadioGroup
-                  v-model="localData.multipleResponses"
-                  name="multipleResponses"
-                  :label="inputT('multiple.label')"
-                  :options="[
-                    [true, inputT('multiple.opts.yes')],
-                    [false, inputT('multiple.opts.no')],
-                  ]"
-                  required
+            <div
+              v-if="openToEveryone"
+              class="ml-6 mt-4 border-l-2 border-grey-light pl-6"
+            >
+              <AppFormField>
+                <AppToggleField
+                  v-model="collectContactInfo"
+                  variant="link"
+                  :label="inputT('anonymous.label')"
+                  :disabled-description="inputT('anonymous.opts.disabled')"
+                  :enabled-description="inputT('anonymous.opts.enabled')"
                 />
               </AppFormField>
-              <AppFormField
-                v-if="!localData.multipleResponses"
-                :help="inputT('editable.help')"
-              >
-                <AppRadioGroup
-                  v-model="localData.usersCanEditAnswers"
-                  name="usersCanEditAnswers"
-                  :label="inputT('editable.label')"
-                  :options="[
-                    [true, inputT('editable.opts.yes')],
-                    [false, inputT('editable.opts.no')],
-                  ]"
-                  required
+
+              <AppFormField v-if="collectContactInfo">
+                <AppToggleField
+                  v-model="collectMembersContactInfo"
+                  variant="link"
+                  :label="inputT('collectMembers.label')"
+                  :disabled-description="inputT('collectMembers.opts.disabled')"
+                  :enabled-description="inputT('collectMembers.opts.enabled')"
                 />
               </AppFormField>
-            </AppFormBox>
-          </template>
+            </div>
+          </AppFormBox>
+          <AppFormBox>
+            <AppToggleField
+              v-model="localData.showOnUserDashboards"
+              variant="link"
+              :label="inputT('visible.label')"
+              :help="inputT('visible.help')"
+              :enabled-description="inputT('visible.opts.enabled')"
+              :disabled-description="inputT('visible.opts.disabled')"
+            />
+          </AppFormBox>
+
+          <AppFormBox>
+            <AppToggleField
+              v-if="env.captchafoxKey"
+              v-model="captchaEnabled"
+              variant="link"
+              :label="inputT('requireCaptcha.label')"
+              :help="inputT('requireCaptcha.help')"
+              :description="
+                localData.requireCaptcha === CalloutCaptcha.Guest
+                  ? inputT('requireCaptcha.opts.guests')
+                  : localData.requireCaptcha === CalloutCaptcha.All
+                    ? inputT('requireCaptcha.opts.all')
+                    : inputT('requireCaptcha.opts.none')
+              "
+            />
+
+            <div
+              v-if="captchaEnabled && env.captchafoxKey"
+              class="ml-6 mt-4 border-l-2 border-grey-light pl-6"
+            >
+              <AppFormField>
+                <AppToggleField
+                  v-model="captchaForMembers"
+                  variant="link"
+                  :label="inputT('requireCaptcha.membersLabel')"
+                />
+              </AppFormField>
+            </div>
+          </AppFormBox>
+        </AppScrollSection>
+
+        <!-- Response Settings Section -->
+        <AppScrollSection
+          v-if="!env.cnrMode"
+          id="responseSettings"
+          @mounted="registerSection"
+        >
+          <AppFormBox :title="inputT('responseSettings.title')">
+            <AppFormField>
+              <AppRadioGroup
+                v-model="responseSettingsOption"
+                name="responseSettingsOption"
+                :options="[
+                  [
+                    'singleNonEditable',
+                    inputT('responseSettings.opts.singleNonEditable'),
+                  ],
+                  [
+                    'singleEditable',
+                    inputT('responseSettings.opts.singleEditable'),
+                  ],
+                  ['multiple', inputT('responseSettings.opts.multiple')],
+                ]"
+                required
+              />
+            </AppFormField>
+          </AppFormBox>
         </AppScrollSection>
       </div>
 
@@ -262,11 +260,19 @@ const sections = ref<ScrollSection[]>([
     id: 'dates',
     label: t('createCallout.tabs.settings.dates.title'),
   },
-  {
+]);
+
+if (!env.cnrMode) {
+  sections.value.push({
     id: 'access',
     label: t('createCallout.tabs.settings.access.title'),
-  },
-]);
+  });
+
+  sections.value.push({
+    id: 'responseSettings',
+    label: t('createCallout.tabs.settings.inputs.responseSettings.title'),
+  });
+}
 
 // Computed sections for navigation
 const navigationSections = computed(() => sections.value);
@@ -393,6 +399,36 @@ const captchaForMembers = computed({
     localData.value.requireCaptcha = value
       ? CalloutCaptcha.All
       : CalloutCaptcha.Guest;
+  },
+});
+
+// Computed property to handle combined response settings
+const responseSettingsOption = computed({
+  get: () => {
+    if (localData.value.multipleResponses) {
+      return 'multiple';
+    } else {
+      return localData.value.usersCanEditAnswers
+        ? 'singleEditable'
+        : 'singleNonEditable';
+    }
+  },
+  set: (value: string) => {
+    switch (value) {
+      case 'multiple':
+        localData.value.multipleResponses = true;
+        // When multiple responses are allowed, the edit option is irrelevant
+        localData.value.usersCanEditAnswers = false;
+        break;
+      case 'singleEditable':
+        localData.value.multipleResponses = false;
+        localData.value.usersCanEditAnswers = true;
+        break;
+      case 'singleNonEditable':
+        localData.value.multipleResponses = false;
+        localData.value.usersCanEditAnswers = false;
+        break;
+    }
   },
 });
 </script>
