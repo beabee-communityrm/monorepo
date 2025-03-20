@@ -935,6 +935,13 @@
               "everyone": "Everyone",
               "members": "Members only"
             }
+          },
+          "collectMembers": {
+            "label": "Also collect members' contact information",
+            "opts": {
+              "yes": "Members who respond will be identified",
+              "no": "Members who respond will be anonymous"
+            }
           }
         },
         "title": "Settings"
