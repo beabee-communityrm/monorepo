@@ -79,38 +79,38 @@
         <AppScrollSection id="general" @mounted="registerSection">
           <template v-if="!env.cnrMode">
             <AppFormBox :title="t('createCallout.tabs.settings.access.title')">
-              <AppFormField :help="inputT('who.help')">
-                <AppRadioGroup
-                  v-model="localData.whoCanTakePart"
-                  name="whoCanTakePart"
-                  :label="inputT('who.label')"
-                  :options="[
-                    ['members', inputT('who.opts.members')],
-                    ['everyone', inputT('who.opts.everyone')],
-                  ]"
-                  required
-                />
-              </AppFormField>
-            </AppFormBox>
-            <AppFormBox>
-              <AppFormField
-                v-if="localData.whoCanTakePart === 'everyone'"
-                :help="inputT('anonymous.help')"
+              <AppToggleField
+                v-model="openToEveryone"
+                variant="link"
+                :label="inputT('who.label')"
+                :disabled-description="inputT('who.opts.members')"
+                :enabled-description="inputT('who.opts.everyone')"
+              />
+
+              <div
+                v-if="openToEveryone"
+                class="border-gray-200 ml-2 mt-4 border-l-2 pl-6"
               >
-              </AppFormField>
-              <AppFormField>
-                <AppRadioGroup
-                  v-model="localData.allowAnonymousResponses"
-                  name="allowAnonymousResponses"
-                  :label="inputT('anonymous.label')"
-                  :options="[
-                    ['none', inputT('anonymous.opts.none')],
-                    ['guests', inputT('anonymous.opts.guests')],
-                    ['all', inputT('anonymous.opts.all')],
-                  ]"
-                  required
-                />
-              </AppFormField>
+                <AppFormField>
+                  <AppToggleField
+                    v-model="collectContactInfo"
+                    variant="link"
+                    :label="inputT('anonymous.label')"
+                    :disabled-description="inputT('anonymous.opts.all')"
+                    :enabled-description="inputT('anonymous.opts.none')"
+                  />
+                </AppFormField>
+
+                <AppFormField v-if="collectContactInfo">
+                  <AppToggleField
+                    v-model="collectMembersContactInfo"
+                    variant="link"
+                    :label="inputT('collectMembers.label')"
+                    :disabled-description="inputT('collectMembers.opts.no')"
+                    :enabled-description="inputT('collectMembers.opts.yes')"
+                  />
+                </AppFormField>
+              </div>
             </AppFormBox>
             <AppFormBox>
               <AppFormField :help="inputT('visible.help')">
@@ -324,6 +324,34 @@ const startDateEnabled = computed({
   get: () => !localData.value.startNow,
   set: (value) => {
     localData.value.startNow = !value;
+  },
+});
+
+// Computed property to control access settings
+const openToEveryone = computed({
+  get: () => localData.value.whoCanTakePart === 'everyone',
+  set: (value) => {
+    localData.value.whoCanTakePart = value ? 'everyone' : 'members';
+  },
+});
+
+// Computed property to control contact information settings
+const collectContactInfo = computed({
+  get: () => localData.value.allowAnonymousResponses === 'none',
+  set: (value) => {
+    localData.value.allowAnonymousResponses = value ? 'none' : 'all';
+  },
+});
+
+// Computed property to control members' contact information settings
+const collectMembersContactInfo = computed({
+  get: () => localData.value.allowAnonymousResponses === 'none',
+  set: (value) => {
+    if (value) {
+      localData.value.allowAnonymousResponses = 'none';
+    } else {
+      localData.value.allowAnonymousResponses = 'guests';
+    }
   },
 });
 </script>
