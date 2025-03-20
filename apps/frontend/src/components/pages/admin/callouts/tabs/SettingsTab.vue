@@ -89,7 +89,7 @@
 
               <div
                 v-if="openToEveryone"
-                class="border-gray-200 ml-2 mt-4 border-l-2 pl-6"
+                class="ml-6 mt-4 border-l-2 border-grey-light pl-6"
               >
                 <AppFormField>
                   <AppToggleField

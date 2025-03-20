@@ -67,7 +67,7 @@ function resetForm() {
             <input
               v-model="formData.username"
               type="text"
-              class="border-gray-300 focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border px-3 py-2 shadow-sm focus:outline-none"
+              class="focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
               placeholder="Enter username"
               required
             />
@@ -78,7 +78,7 @@ function resetForm() {
             <input
               v-model="formData.email"
               type="email"
-              class="border-gray-300 focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border px-3 py-2 shadow-sm focus:outline-none"
+              class="focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
               placeholder="Enter email"
               required
             />
@@ -89,7 +89,7 @@ function resetForm() {
             <input
               v-model="formData.password"
               type="password"
-              class="border-gray-300 focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border px-3 py-2 shadow-sm focus:outline-none"
+              class="focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
               placeholder="Enter password"
               required
             />
@@ -119,7 +119,7 @@ function resetForm() {
             <AppLabel label="Email" required />
             <input
               type="email"
-              class="border-gray-300 focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border px-3 py-2 shadow-sm focus:outline-none"
+              class="focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
               placeholder="Enter email"
               required
             />
@@ -129,7 +129,7 @@ function resetForm() {
             <AppLabel label="Password" required />
             <input
               type="password"
-              class="border-gray-300 focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border px-3 py-2 shadow-sm focus:outline-none"
+              class="focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
               placeholder="Enter password"
               required
             />
@@ -145,7 +145,7 @@ function resetForm() {
             <AppLabel label="Display Name" />
             <input
               type="text"
-              class="border-gray-300 focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border px-3 py-2 shadow-sm focus:outline-none"
+              class="focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
               placeholder="Enter display name"
             />
           </AppFormField>
@@ -153,7 +153,7 @@ function resetForm() {
           <AppFormField>
             <AppLabel label="Bio" />
             <textarea
-              class="border-gray-300 focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border px-3 py-2 shadow-sm focus:outline-none"
+              class="focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
               rows="3"
               placeholder="Tell us about yourself"
             ></textarea>
@@ -173,7 +173,7 @@ function resetForm() {
               <AppLabel label="Full Name" required />
               <input
                 type="text"
-                class="border-gray-300 focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border px-3 py-2 shadow-sm focus:outline-none"
+                class="focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
                 placeholder="Enter your full name"
                 required
               />
@@ -183,7 +183,7 @@ function resetForm() {
               <AppLabel label="Email" required />
               <input
                 type="email"
-                class="border-gray-300 focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border px-3 py-2 shadow-sm focus:outline-none"
+                class="focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
                 placeholder="Enter your email"
                 required
               />
@@ -197,7 +197,7 @@ function resetForm() {
               <AppLabel label="Password" required />
               <input
                 type="password"
-                class="border-gray-300 focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border px-3 py-2 shadow-sm focus:outline-none"
+                class="focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
                 placeholder="Enter password"
                 required
               />
@@ -207,7 +207,7 @@ function resetForm() {
               <AppLabel label="Confirm Password" required />
               <input
                 type="password"
-                class="border-gray-300 focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border px-3 py-2 shadow-sm focus:outline-none"
+                class="focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
                 placeholder="Confirm password"
                 required
               />
@@ -224,7 +224,7 @@ function resetForm() {
             <AppLabel label="Email" required />
             <input
               type="email"
-              class="border-gray-300 focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border px-3 py-2 shadow-sm focus:outline-none"
+              class="focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
               placeholder="Enter email"
               required
             />
@@ -234,7 +234,7 @@ function resetForm() {
             <AppLabel label="Password" required />
             <input
               type="password"
-              class="border-gray-300 focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border px-3 py-2 shadow-sm focus:outline-none"
+              class="focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
               placeholder="Enter password"
               required
             />

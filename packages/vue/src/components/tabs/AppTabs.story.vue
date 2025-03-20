@@ -96,7 +96,7 @@ const handleTabClick = (tabId: string) => {
 
     <Variant title="Horizontal Scrolling">
       <div class="w-full max-w-md">
-        <p class="text-gray-600 mb-2 text-sm">
+        <p class="mb-2 text-sm text-grey-dark">
           Container with limited width to show scrolling behavior
         </p>
         <AppTabs

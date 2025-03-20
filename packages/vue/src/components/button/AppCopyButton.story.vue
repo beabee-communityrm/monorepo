@@ -28,7 +28,7 @@ function handleCopy() {
           </div>
         </div>
 
-        <div class="text-gray-500 text-sm">
+        <div class="text-sm text-grey-dark">
           <p>Copy count: {{ copyCount }}</p>
         </div>
       </div>

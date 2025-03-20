@@ -76,7 +76,7 @@ const selectedItems = ref([1, 3] as number[]);
           :required="state.required"
         />
 
-        <div class="text-gray-500 text-sm">
+        <div class="text-sm text-grey-dark">
           <p>Selected options: {{ state.selectedOptions.join(', ') }}</p>
         </div>
       </div>
