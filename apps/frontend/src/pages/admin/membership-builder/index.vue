@@ -114,7 +114,7 @@ import AppInput from '@components/forms/AppInput.vue';
 import RichTextEditor from '@components/rte/RichTextEditor.vue';
 import AppLabel from '@beabee/vue/components/form/AppLabel';
 import AppSelect from '@components/forms/AppSelect.vue';
-import AppCheckbox from '@components/forms/AppCheckbox.vue';
+import { AppCheckbox } from '@beabee/vue/components';
 import JoinForm from '@components/pages/join/JoinForm.vue';
 import AppImageUpload from '@components/forms/AppImageUpload.vue';
 import PeriodAmounts from '@components/pages/admin/membership-builder/PeriodAmounts.vue';

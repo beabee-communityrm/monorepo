@@ -86,8 +86,7 @@ import ContactBasicFields from '@components/contact/ContactBasicFields.vue';
 import ContactMailOptIn from '@components/contact/ContactMailOptIn.vue';
 import AppForm from '@beabee/vue/components/form/AppForm';
 import AuthBox from '@components/AuthBox.vue';
-import AppCheckbox from '@components/forms/AppCheckbox.vue';
-import AppCheckboxGroup from '@components/forms/AppCheckboxGroup.vue';
+import { AppCheckbox, AppCheckboxGroup } from '@beabee/vue/components';
 
 import { type SetupContactData } from './join.interface';
 

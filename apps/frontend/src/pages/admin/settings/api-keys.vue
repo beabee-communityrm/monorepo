@@ -119,7 +119,7 @@ import type { Header } from '@components/table/table.interface';
 import AppHeading from '@components/AppHeading.vue';
 import App2ColGrid from '@components/App2ColGrid.vue';
 import AppSelect from '@components/forms/AppSelect.vue';
-import AppCheckbox from '@components/forms/AppCheckbox.vue';
+import { AppCheckbox } from '@beabee/vue/components';
 import AppTime from '@components/AppTime.vue';
 
 import { addNotification } from '@beabee/vue/store/notifications';

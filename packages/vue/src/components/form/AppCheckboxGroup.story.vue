@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref, reactive } from 'vue';
 import AppCheckboxGroup from './AppCheckboxGroup.vue';
-import type { SelectItem } from '../../../../../apps/frontend/src/components/forms/form.interface';
+import type { SelectItem } from '../../types/form.interface';
 
 type StringOption = SelectItem<string>;
 type NumberOption = SelectItem<number>;

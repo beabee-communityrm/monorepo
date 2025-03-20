@@ -44,62 +44,35 @@ The `AppCheckbox` component provides a styled checkbox with customizable appeara
 ### Basic Usage
 
 ```vue
-<AppCheckbox
-  v-model="isChecked"
-  label="Accept terms and conditions"
-/>
+<AppCheckbox v-model="isChecked" label="Accept terms and conditions" />
 ```
 
 ### With Different Variants
 
 ```vue
-<AppCheckbox
-  v-model="isChecked"
-  variant="primary"
-  label="Primary checkbox"
-/>
+<AppCheckbox v-model="isChecked" variant="primary" label="Primary checkbox" />
 
-<AppCheckbox
-  v-model="isChecked"
-  variant="link"
-  label="Link checkbox"
-/>
+<AppCheckbox v-model="isChecked" variant="link" label="Link checkbox" />
 
-<AppCheckbox
-  v-model="isChecked"
-  variant="danger"
-  label="Danger checkbox"
-/>
+<AppCheckbox v-model="isChecked" variant="danger" label="Danger checkbox" />
 ```
 
 ### With Icon
 
 ```vue
-<AppCheckbox
-  v-model="isChecked"
-  label="Notifications"
-  :icon="faBell"
-/>
+<AppCheckbox v-model="isChecked" label="Notifications" :icon="faBell" />
 ```
 
 ### Required Field
 
 ```vue
-<AppCheckbox
-  v-model="isChecked"
-  label="Accept terms (required)"
-  required
-/>
+<AppCheckbox v-model="isChecked" label="Accept terms (required)" required />
 ```
 
 ### Disabled State
 
 ```vue
-<AppCheckbox
-  v-model="isChecked"
-  label="Disabled checkbox"
-  disabled
-/>
+<AppCheckbox v-model="isChecked" label="Disabled checkbox" disabled />
 ```
 
 ## Real-world Examples
@@ -107,6 +80,7 @@ The `AppCheckbox` component provides a styled checkbox with customizable appeara
 The AppCheckbox is commonly used for:
 
 1. **Terms and Conditions Acceptance**
+
 ```vue
 <AppCheckbox
   v-model="acceptTerms"
@@ -117,6 +91,7 @@ The AppCheckbox is commonly used for:
 ```
 
 2. **Preference Selection**
+
 ```vue
 <AppCheckbox
   v-model="emailNotifications"
@@ -126,11 +101,9 @@ The AppCheckbox is commonly used for:
 ```
 
 3. **Feature Toggle**
+
 ```vue
-<AppCheckbox
-  v-model="advancedMode"
-  label="Enable advanced features"
-/>
+<AppCheckbox v-model="advancedMode" label="Enable advanced features" />
 ```
 
 ## How It Works
@@ -144,4 +117,4 @@ The AppCheckbox component:
 5. Provides hover and focus states for better user experience
 6. Maintains proper vertical alignment between the checkbox and label
 
-This creates a consistent and accessible checkbox component that integrates well with other form elements while providing customization options. 
+This creates a consistent and accessible checkbox component that integrates well with other form elements while providing customization options.

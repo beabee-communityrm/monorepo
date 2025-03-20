@@ -74,6 +74,7 @@
     "./lib/*": "./src/lib/*.ts",
     "./plugins/*": "./src/plugins/*.js",
     "./store/*": "./src/store/*.ts",
+    "./types": "./src/types/index.ts",
     "./types/*": "./src/types/*.ts",
     "./styles/*": "./src/styles/*.css",
     "./styles": "./src/styles/index.css",

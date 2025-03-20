@@ -19,7 +19,7 @@ The `AppCheckboxGroup` component provides a way to group multiple checkboxes tog
   :options="[
     { id: 'option1', label: 'Option 1' },
     { id: 'option2', label: 'Option 2' },
-    { id: 'option3', label: 'Option 3' }
+    { id: 'option3', label: 'Option 3' },
   ]"
   label="Select options"
 />
@@ -51,7 +51,7 @@ The `AppCheckboxGroup` component provides a way to group multiple checkboxes tog
   :options="[
     { id: 'apple', label: 'Apple' },
     { id: 'banana', label: 'Banana' },
-    { id: 'orange', label: 'Orange' }
+    { id: 'orange', label: 'Orange' },
   ]"
   label="Select fruits"
 />
@@ -65,7 +65,7 @@ The `AppCheckboxGroup` component provides a way to group multiple checkboxes tog
   :options="[
     { id: 'news', label: 'News' },
     { id: 'sports', label: 'Sports' },
-    { id: 'entertainment', label: 'Entertainment' }
+    { id: 'entertainment', label: 'Entertainment' },
   ]"
   label="Select at least one category"
   required
@@ -80,7 +80,7 @@ The `AppCheckboxGroup` component provides a way to group multiple checkboxes tog
   :options="[
     { id: 1, label: 'Product 1' },
     { id: 2, label: 'Product 2' },
-    { id: 3, label: 'Product 3' }
+    { id: 3, label: 'Product 3' },
   ]"
   label="Select products"
 />
@@ -91,6 +91,7 @@ The `AppCheckboxGroup` component provides a way to group multiple checkboxes tog
 The AppCheckboxGroup is commonly used for:
 
 1. **Category Selection**
+
 ```vue
 <AppCheckboxGroup
   v-model="selectedCategories"
@@ -98,7 +99,7 @@ The AppCheckboxGroup is commonly used for:
     { id: 'news', label: 'News' },
     { id: 'sports', label: 'Sports' },
     { id: 'tech', label: 'Technology' },
-    { id: 'health', label: 'Health' }
+    { id: 'health', label: 'Health' },
   ]"
   label="Interests"
   required
@@ -106,26 +107,28 @@ The AppCheckboxGroup is commonly used for:
 ```
 
 2. **Multiple Feature Selection**
+
 ```vue
 <AppCheckboxGroup
   v-model="enabledFeatures"
   :options="[
     { id: 'notifications', label: 'Email Notifications' },
     { id: 'newsletter', label: 'Weekly Newsletter' },
-    { id: 'updates', label: 'Product Updates' }
+    { id: 'updates', label: 'Product Updates' },
   ]"
   label="Communication Preferences"
 />
 ```
 
 3. **Terms Acceptance**
+
 ```vue
 <AppCheckboxGroup
   v-model="agreements"
   :options="[
     { id: 'terms', label: 'I accept the Terms of Service' },
     { id: 'privacy', label: 'I accept the Privacy Policy' },
-    { id: 'marketing', label: 'I would like to receive marketing emails' }
+    { id: 'marketing', label: 'I would like to receive marketing emails' },
   ]"
   label="Agreements"
   required
@@ -142,4 +145,4 @@ The AppCheckboxGroup component:
 4. Supports validation to ensure at least one option is selected when required
 5. Provides a consistent interface for working with multiple selections
 
-This creates a consistent and accessible checkbox group component that simplifies working with multiple selection scenarios. 
+This creates a consistent and accessible checkbox group component that simplifies working with multiple selection scenarios.

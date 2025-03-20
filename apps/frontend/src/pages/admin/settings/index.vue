@@ -186,7 +186,7 @@ import AppForm from '@beabee/vue/components/form/AppForm';
 import App2ColGrid from '@components/App2ColGrid.vue';
 import AppSubHeading from '@components/AppSubHeading.vue';
 import AppLinkList from '@components/forms/AppLinkList.vue';
-import AppCheckbox from '@components/forms/AppCheckbox.vue';
+import { AppCheckbox } from '@beabee/vue/components';
 
 import { client } from '@utils/api';
 

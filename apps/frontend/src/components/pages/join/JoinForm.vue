@@ -71,7 +71,7 @@ import beabeeLogo from '@assets/images/beabee-logo.png';
 
 import AccountSection from './AccountSection.vue';
 import Contribution from '@components/contribution/Contribution.vue';
-import AppCheckbox from '@components/forms/AppCheckbox.vue';
+import { AppCheckbox } from '@beabee/vue/components';
 import AppForm from '@beabee/vue/components/form/AppForm';
 import AuthBox from '@components/AuthBox.vue';
 
