@@ -96,8 +96,8 @@
                     v-model="collectContactInfo"
                     variant="link"
                     :label="inputT('anonymous.label')"
-                    :disabled-description="inputT('anonymous.opts.all')"
-                    :enabled-description="inputT('anonymous.opts.none')"
+                    :disabled-description="inputT('anonymous.opts.disabled')"
+                    :enabled-description="inputT('anonymous.opts.enabled')"
                   />
                 </AppFormField>
 
@@ -106,26 +106,55 @@
                     v-model="collectMembersContactInfo"
                     variant="link"
                     :label="inputT('collectMembers.label')"
-                    :disabled-description="inputT('collectMembers.opts.no')"
-                    :enabled-description="inputT('collectMembers.opts.yes')"
+                    :disabled-description="
+                      inputT('collectMembers.opts.disabled')
+                    "
+                    :enabled-description="inputT('collectMembers.opts.enabled')"
                   />
                 </AppFormField>
               </div>
             </AppFormBox>
             <AppFormBox>
-              <AppFormField :help="inputT('visible.help')">
-                <AppRadioGroup
-                  v-model="localData.showOnUserDashboards"
-                  name="showOnUserDashboards"
-                  :label="inputT('visible.label')"
-                  :options="[
-                    [true, inputT('visible.opts.yes')],
-                    [false, inputT('visible.opts.no')],
-                  ]"
-                  required
-                />
-              </AppFormField>
+              <AppToggleField
+                v-model="localData.showOnUserDashboards"
+                variant="link"
+                :label="inputT('visible.label')"
+                :help="inputT('visible.help')"
+                :enabled-description="inputT('visible.opts.enabled')"
+                :disabled-description="inputT('visible.opts.disabled')"
+              />
             </AppFormBox>
+
+            <AppFormBox>
+              <AppToggleField
+                v-if="env.captchafoxKey"
+                v-model="captchaEnabled"
+                variant="link"
+                :label="inputT('requireCaptcha.label')"
+                :help="inputT('requireCaptcha.help')"
+                :description="
+                  localData.requireCaptcha === CalloutCaptcha.Guest
+                    ? inputT('requireCaptcha.opts.guests')
+                    : localData.requireCaptcha === CalloutCaptcha.All
+                      ? inputT('requireCaptcha.opts.all')
+                      : inputT('requireCaptcha.opts.none')
+                "
+              />
+
+              <div
+                v-if="captchaEnabled && env.captchafoxKey"
+                class="ml-6 mt-4 border-l-2 border-grey-light pl-6"
+              >
+                <AppFormField>
+                  <AppToggleField
+                    v-model="captchaForMembers"
+                    variant="link"
+                    :label="inputT('requireCaptcha.membersLabel')"
+                  />
+                </AppFormField>
+              </div>
+            </AppFormBox>
+
             <AppFormBox>
               <AppFormField :help="inputT('multiple.help')">
                 <AppRadioGroup
@@ -156,25 +185,6 @@
               </AppFormField>
             </AppFormBox>
           </template>
-
-          <AppFormBox :title="t('createCallout.tabs.settings.captcha.title')">
-            <AppFormField
-              v-if="env.captchafoxKey"
-              :help="inputT('requireCaptcha.help')"
-            >
-              <AppRadioGroup
-                v-model="localData.requireCaptcha"
-                name="requireCaptcha"
-                :label="inputT('requireCaptcha.label')"
-                :options="[
-                  ['none', inputT('requireCaptcha.opts.none')],
-                  ['guest', inputT('requireCaptcha.opts.guests')],
-                  ['all', inputT('requireCaptcha.opts.all')],
-                ]"
-                required
-              />
-            </AppFormField>
-          </AppFormBox>
         </AppScrollSection>
       </div>
 
@@ -187,7 +197,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ItemStatus } from '@beabee/beabee-common';
+import {
+  ItemStatus,
+  type CalloutChannel,
+  CalloutCaptcha,
+} from '@beabee/beabee-common';
 import useVuelidate from '@vuelidate/core';
 import { computed, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -204,7 +218,6 @@ import { sameAs } from '@vuelidate/validators';
 import AppInput from '@components/forms/AppInput.vue';
 import env from '@env';
 
-import type { CalloutCaptcha, CalloutChannel } from '@beabee/beabee-common';
 import type { CalloutHorizontalTabs } from '../CalloutHorizontalTabs.interface';
 
 /**
@@ -337,9 +350,18 @@ const openToEveryone = computed({
 
 // Computed property to control contact information settings
 const collectContactInfo = computed({
-  get: () => localData.value.allowAnonymousResponses === 'none',
+  get: () => localData.value.allowAnonymousResponses !== 'all',
   set: (value) => {
-    localData.value.allowAnonymousResponses = value ? 'none' : 'all';
+    // If collectContactInfo is true
+    if (value) {
+      // Consider the current state of collectMembersContactInfo
+      localData.value.allowAnonymousResponses = collectMembersContactInfo.value
+        ? 'none'
+        : 'guests';
+    } else {
+      // If no contact information is collected (false)
+      localData.value.allowAnonymousResponses = 'all';
+    }
   },
 });
 
@@ -347,11 +369,30 @@ const collectContactInfo = computed({
 const collectMembersContactInfo = computed({
   get: () => localData.value.allowAnonymousResponses === 'none',
   set: (value) => {
-    if (value) {
-      localData.value.allowAnonymousResponses = 'none';
-    } else {
-      localData.value.allowAnonymousResponses = 'guests';
+    // Diese Option ist nur sinnvoll, wenn collectContactInfo aktiviert ist
+    if (collectContactInfo.value) {
+      localData.value.allowAnonymousResponses = value ? 'none' : 'guests';
     }
+  },
+});
+
+// Computed property to control captcha settings
+const captchaEnabled = computed({
+  get: () => localData.value.requireCaptcha !== CalloutCaptcha.None,
+  set: (value) => {
+    localData.value.requireCaptcha = value
+      ? CalloutCaptcha.Guest
+      : CalloutCaptcha.None;
+  },
+});
+
+// Computed property to control captcha for members settings
+const captchaForMembers = computed({
+  get: () => localData.value.requireCaptcha === CalloutCaptcha.All,
+  set: (value) => {
+    localData.value.requireCaptcha = value
+      ? CalloutCaptcha.All
+      : CalloutCaptcha.Guest;
   },
 });
 </script>
