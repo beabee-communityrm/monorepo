@@ -29,7 +29,7 @@ const autoSaveEnabled = ref(true);
           :disabled="state.disabled"
         />
 
-        <div class="text-gray-500 text-sm">
+        <div class="text-sm text-grey-dark">
           <p>Current state: {{ state.enabled ? 'On' : 'Off' }}</p>
         </div>
       </div>
@@ -53,7 +53,7 @@ const autoSaveEnabled = ref(true);
           :key="variant"
           class="flex flex-col items-center gap-2"
         >
-          <span class="text-gray-500 text-sm">{{ variant }}</span>
+          <span class="text-sm text-grey-dark">{{ variant }}</span>
           <AppToggleSwitch v-model="state.enabled" :variant="variant" />
         </div>
       </div>
@@ -66,7 +66,7 @@ const autoSaveEnabled = ref(true);
           :key="size"
           class="flex flex-col items-center gap-2"
         >
-          <span class="text-gray-500 text-sm">{{ size }}</span>
+          <span class="text-sm text-grey-dark">{{ size }}</span>
           <AppToggleSwitch v-model="state.enabled" :size="size" />
         </div>
       </div>
@@ -75,19 +75,19 @@ const autoSaveEnabled = ref(true);
     <Variant title="States">
       <div class="flex items-center gap-4">
         <div class="flex flex-col items-center gap-2">
-          <span class="text-gray-500 text-sm">Enabled</span>
+          <span class="text-sm text-grey-dark">Enabled</span>
           <AppToggleSwitch :model-value="true" />
         </div>
         <div class="flex flex-col items-center gap-2">
-          <span class="text-gray-500 text-sm">Disabled</span>
+          <span class="text-sm text-grey-dark">Disabled</span>
           <AppToggleSwitch :model-value="false" />
         </div>
         <div class="flex flex-col items-center gap-2">
-          <span class="text-gray-500 text-sm">Disabled (On)</span>
+          <span class="text-sm text-grey-dark">Disabled (On)</span>
           <AppToggleSwitch :model-value="true" disabled />
         </div>
         <div class="flex flex-col items-center gap-2">
-          <span class="text-gray-500 text-sm">Disabled (Off)</span>
+          <span class="text-sm text-grey-dark">Disabled (Off)</span>
           <AppToggleSwitch :model-value="false" disabled />
         </div>
       </div>

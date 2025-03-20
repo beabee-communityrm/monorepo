@@ -39,7 +39,7 @@ const state = reactive({
           <AppLabel label="First Name" required />
           <input
             type="text"
-            class="border-gray-300 focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border px-3 py-2 shadow-sm focus:outline-none"
+            class="focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
           />
         </div>
 
@@ -47,7 +47,7 @@ const state = reactive({
           <AppLabel label="Last Name" />
           <input
             type="text"
-            class="border-gray-300 focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border px-3 py-2 shadow-sm focus:outline-none"
+            class="focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
           />
         </div>
       </div>

@@ -12,7 +12,7 @@
       <div
         class="flex h-5 w-5 items-center justify-center rounded border transition-colors focus:outline-none focus:ring-2 focus:ring-primary-40 focus:ring-offset-2"
         :class="[
-          value ? borderVariantClasses[variant] : 'border-gray-300',
+          value ? borderVariantClasses[variant] : 'border-grey-dark',
           !disabled && !value ? hoverVariantClasses[variant] : '',
           disabled ? 'cursor-not-allowed opacity-50' : '',
         ]"

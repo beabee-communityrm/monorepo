@@ -94,7 +94,7 @@ async function handleClick() {
           {{ state.text }}
         </AppAsyncButton>
 
-        <div class="text-gray-500 text-sm">
+        <div class="text-sm text-grey-dark">
           <p>Success count: {{ successCount }}</p>
           <p>Failure count: {{ failureCount }}</p>
         </div>

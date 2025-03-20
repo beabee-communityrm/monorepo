@@ -1,7 +1,7 @@
 <template>
   <div class="mb-6">
-    <p v-if="help" class="text-gray-600 mb-2 text-sm" v-html="help" />
-    <AppLabel v-if="title" :label="title" class="mb-3" />
+    <p v-if="help" class="mb-2 text-sm text-grey-dark" v-html="help" />
+    <AppLabel v-if="title" :label="title" class="mb-3 px-4" />
     <AppNotification v-if="notification" v-bind="notification" class="mb-3" />
     <div class="rounded bg-white p-4">
       <slot />

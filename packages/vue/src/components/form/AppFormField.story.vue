@@ -17,7 +17,7 @@ const state = reactive({
           <AppLabel label="Field Label" />
           <input
             type="text"
-            class="border-gray-300 focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border px-3 py-2 shadow-sm focus:outline-none"
+            class="focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
             placeholder="Enter value"
           />
         </AppFormField>
@@ -37,7 +37,7 @@ const state = reactive({
           <AppLabel label="Username" />
           <input
             type="text"
-            class="border-gray-300 focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border px-3 py-2 shadow-sm focus:outline-none"
+            class="focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
             placeholder="Enter username"
           />
         </AppFormField>
@@ -50,7 +50,7 @@ const state = reactive({
           <AppLabel label="Email Address" />
           <input
             type="email"
-            class="border-gray-300 focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border px-3 py-2 shadow-sm focus:outline-none"
+            class="focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
             placeholder="Enter email"
           />
         </AppFormField>
@@ -65,7 +65,7 @@ const state = reactive({
           <AppLabel label="Password" />
           <input
             type="password"
-            class="border-gray-300 focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border px-3 py-2 shadow-sm focus:outline-none"
+            class="focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
             placeholder="Enter password"
           />
         </AppFormField>
@@ -78,7 +78,7 @@ const state = reactive({
           <AppLabel label="Full Name" required />
           <input
             type="text"
-            class="border-gray-300 focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border px-3 py-2 shadow-sm focus:outline-none"
+            class="focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
             placeholder="Enter full name"
           />
         </AppFormField>
@@ -89,7 +89,7 @@ const state = reactive({
           <AppLabel label="Email Address" required />
           <input
             type="email"
-            class="border-gray-300 focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border px-3 py-2 shadow-sm focus:outline-none"
+            class="focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
             placeholder="Enter email"
           />
         </AppFormField>
@@ -98,7 +98,7 @@ const state = reactive({
           <AppLabel label="Phone Number" />
           <input
             type="tel"
-            class="border-gray-300 focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border px-3 py-2 shadow-sm focus:outline-none"
+            class="focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
             placeholder="Enter phone number"
           />
         </AppFormField>

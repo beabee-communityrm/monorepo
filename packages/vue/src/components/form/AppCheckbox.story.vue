@@ -38,7 +38,7 @@ const rememberMe = ref(true);
           :required="state.required"
         />
 
-        <div class="text-gray-500 text-sm">
+        <div class="text-sm text-grey-dark">
           <p>Current state: {{ state.checked ? 'Checked' : 'Unchecked' }}</p>
         </div>
       </div>
