@@ -816,11 +816,10 @@
           },
           "anonymous": {
             "help": "<p>If you allow <strong>anonymous responses</strong>, users will not be asked for their contact information.</p>\n",
-            "label": "Should guests be asked for their contact information?",
+            "label": "Collect contact information",
             "opts": {
-              "all": "All responses should be anonymous, including from logged in users",
-              "guests": "No, responses from guests can be anonymous",
-              "none": "Yes, ask guests for their contact information"
+              "disabled": "All responses will be anonymous",
+              "enabled": "People who respond will be asked for their contact information"
             }
           },
           "editable": {
@@ -876,11 +875,12 @@
           },
           "requireCaptcha": {
             "help": "<p>If you enable <strong>bot spam protection</strong> users will be required to complete a Captcha to confirm they are human. This is useful to prevent your callout being spammed by bots</p>\n",
-            "label": "Enable bot spam protection on the callout?",
+            "label": "Enable bot spam protection",
+            "membersLabel": "Enable CAPTCHA for members",
             "opts": {
-              "all": "Yes, ask all users to confirm they are human",
-              "guests": "Yes, ask guests to confirm they are human",
-              "none": "No"
+              "all": "All users will be asked to fill out a CAPTCHA",
+              "guests": "Non-members will be asked to fill out a CAPTCHA",
+              "none": "No CAPTCHA will be required"
             }
           },
           "responseImageFilter": {
@@ -907,10 +907,10 @@
           },
           "visible": {
             "help": "<p>You can make the callout <strong>not appear</strong> to users if you only want it to be answered by people who you share the link with.</p>\n",
-            "label": "Should it be visible in the users' dashboards?",
+            "label": "Show callout in member dashboards",
             "opts": {
-              "no": "No, it can only be accessed through its link",
-              "yes": "Yes, show it to users"
+              "disabled": "The callout will not appear on member dashboards",
+              "enabled": "The callout will appear on member dashboards"
             }
           },
           "whichResponseBuckets": {
@@ -933,17 +933,17 @@
           },
           "who": {
             "help": "<p>Callouts can be presented to <strong>Everyone</strong> or restricted to <strong>Members only</strong> participation</p>\n",
-            "label": "Who can take part?",
+            "label": "Open to everyone",
             "opts": {
-              "everyone": "Everyone",
-              "members": "Members only"
+              "everyone": "Anyone will be able to access and participate in this callout",
+              "members": "Only members will be able to access and participate in this callout"
             }
           },
           "collectMembers": {
             "label": "Also collect members' contact information",
             "opts": {
-              "yes": "Members who respond will be identified",
-              "no": "Members who respond will be anonymous"
+              "enabled": "Members who respond will be identified",
+              "disabled": "Members who respond will be anonymous"
             }
           }
         },

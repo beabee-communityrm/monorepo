@@ -44,6 +44,8 @@ export interface AppToggleFieldProps {
   disabledDescription?: string;
   /** Description text shown when the toggle is enabled */
   enabledDescription?: string;
+  /** Description text always shown */
+  description?: string;
   /** Color variant of the toggle switch */
   variant?: 'primary' | 'link' | 'danger';
   /** Size variant of the field */
@@ -67,13 +69,14 @@ const props = withDefaults(defineProps<AppToggleFieldProps>(), {
   label: undefined,
   disabledDescription: undefined,
   enabledDescription: undefined,
+  description: undefined,
 });
 
 // Compute the appropriate description based on toggle state
 const getDescription = computed(() => {
   if (props.modelValue) {
-    return props.enabledDescription;
+    return props.enabledDescription || props.description;
   }
-  return props.disabledDescription;
+  return props.disabledDescription || props.description;
 });
 </script>
