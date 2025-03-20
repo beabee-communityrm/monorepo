@@ -27,6 +27,20 @@ const routerTabs: TabItem[] = [
   { id: 'security', label: 'Security', to: '/security' },
 ];
 
+// Many tabs to demonstrate horizontal scrolling
+const manyTabs: TabItem[] = [
+  { id: 'tab1', label: 'Overview', to: '' },
+  { id: 'tab2', label: 'Settings', to: '' },
+  { id: 'tab3', label: 'Security', to: '' },
+  { id: 'tab4', label: 'User Management', to: '' },
+  { id: 'tab5', label: 'Integrations', to: '' },
+  { id: 'tab6', label: 'Analytics', to: '' },
+  { id: 'tab7', label: 'Notifications', to: '' },
+  { id: 'tab8', label: 'Billing', to: '' },
+  { id: 'tab9', label: 'Support', to: '' },
+  { id: 'tab10', label: 'Documentation', to: '' },
+];
+
 const handleTabClick = (tabId: string) => {
   state.selectedTab = tabId;
 };
@@ -78,6 +92,19 @@ const handleTabClick = (tabId: string) => {
         :selected="state.selectedTab"
         @tab-click="handleTabClick"
       />
+    </Variant>
+
+    <Variant title="Horizontal Scrolling">
+      <div class="w-full max-w-md">
+        <p class="text-gray-600 mb-2 text-sm">
+          Container with limited width to show scrolling behavior
+        </p>
+        <AppTabs
+          :items="manyTabs"
+          :selected="state.selectedTab"
+          @tab-click="handleTabClick"
+        />
+      </div>
     </Variant>
   </Story>
 </template>

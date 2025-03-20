@@ -1,6 +1,6 @@
 # AppTabs
 
-The primary tabs component that supports both horizontal and vertical orientations, router integration, and count indicators.
+The primary tabs component that supports both horizontal and vertical orientations, router integration, and count indicators. When in horizontal orientation, it provides automatic horizontal scrolling when there are too many tabs to fit the available width.
 
 ## Usage
 
@@ -32,6 +32,12 @@ The primary tabs component that supports both horizontal and vertical orientatio
 | ----------- | -------------- | ---------------------------------------- |
 | `tab-click` | `(id: string)` | Emitted when a non-router tab is clicked |
 
+## Features
+
+- **Horizontal scrolling**: When in horizontal orientation, the component automatically adds horizontal scrolling if there are too many tabs to fit in the available width
+- **No line breaks**: Tab labels never break into multiple lines, ensuring consistent UI
+- **Router integration**: Supports both router-based navigation and click events
+
 ## Common Use Cases
 
 ### Navigation Tabs
@@ -62,6 +68,20 @@ Used in form builders and content editors:
   :selected="selectedTab"
   @tab-click="handleTabClick"
 />
+```
+
+### Many Tabs with Horizontal Scrolling
+
+When you have many tabs that don't fit in the available width:
+
+```vue
+<div class="w-full">
+  <AppTabs
+    :items="manyTabs" <!-- An array with many tab items -->
+    :selected="selectedTab"
+    @tab-click="handleTabClick"
+  />
+</div>
 ```
 
 ## Accessibility

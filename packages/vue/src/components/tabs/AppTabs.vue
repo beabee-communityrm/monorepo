@@ -1,36 +1,43 @@
 <template>
   <div class="mb-4 rounded-t-md bg-primary-10 p-1">
-    <ul :class="['gap-1', orientation === 'vertical' ? 'flex-col' : 'flex']">
-      <li v-for="item in visibleItems" :key="item.id">
-        <router-link
-          v-if="item.to"
-          :to="item.to"
-          class="relative my-2 inline-block rounded-md px-4 py-2 font-semibold transition-colors"
-          :class="[
-            selected === item.id
-              ? 'bg-white text-body shadow-sm'
-              : 'text-body-80 hover:bg-primary-5 hover:text-body',
-            orientation === 'vertical' ? 'w-full' : 'mx-1',
-          ]"
-        >
-          <TabLabel :label="item.label" :count="item.count" />
-        </router-link>
-        <button
-          v-else
-          type="button"
-          class="relative my-2 inline-block rounded-md px-4 py-2 font-semibold transition-colors"
-          :class="[
-            selected === item.id
-              ? 'bg-white text-body shadow-sm'
-              : 'text-body-80 hover:bg-primary-5 hover:text-body',
-            orientation === 'vertical' ? 'w-full' : 'mx-1',
-          ]"
-          @click="handleTabClick(item.id)"
-        >
-          <TabLabel :label="item.label" :count="item.count" />
-        </button>
-      </li>
-    </ul>
+    <div :class="orientation === 'vertical' ? '' : 'overflow-x-auto'">
+      <ul
+        :class="[
+          'gap-1',
+          orientation === 'vertical' ? 'flex-col' : 'flex whitespace-nowrap',
+        ]"
+      >
+        <li v-for="item in visibleItems" :key="item.id">
+          <router-link
+            v-if="item.to"
+            :to="item.to"
+            class="relative my-2 inline-block whitespace-nowrap rounded-md px-4 py-2 font-semibold transition-colors"
+            :class="[
+              selected === item.id
+                ? 'bg-white text-body shadow-sm'
+                : 'text-body-80 hover:bg-primary-5 hover:text-body',
+              orientation === 'vertical' ? 'w-full' : 'mx-1',
+            ]"
+          >
+            <TabLabel :label="item.label" :count="item.count" />
+          </router-link>
+          <button
+            v-else
+            type="button"
+            class="relative my-2 inline-block whitespace-nowrap rounded-md px-4 py-2 font-semibold transition-colors"
+            :class="[
+              selected === item.id
+                ? 'bg-white text-body shadow-sm'
+                : 'text-body-80 hover:bg-primary-5 hover:text-body',
+              orientation === 'vertical' ? 'w-full' : 'mx-1',
+            ]"
+            @click="handleTabClick(item.id)"
+          >
+            <TabLabel :label="item.label" :count="item.count" />
+          </button>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
