@@ -150,7 +150,12 @@
                 <AppToggleField
                   v-model="captchaForMembers"
                   variant="link"
-                  :label="inputT('requireCaptcha.membersLabel')"
+                  :label="inputT('requireCaptcha.members.label')"
+                  :description="
+                    captchaForMembers
+                      ? inputT('requireCaptcha.members.opts.enabled')
+                      : inputT('requireCaptcha.members.opts.disabled')
+                  "
                 />
               </AppFormField>
             </div>
