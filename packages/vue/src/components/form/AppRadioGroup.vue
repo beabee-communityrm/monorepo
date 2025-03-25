@@ -4,19 +4,40 @@
     <label
       v-for="[value, optLabel] in options"
       :key="value.toString()"
-      class="items-baseline"
+      class="cursor-pointer items-center"
       :class="inline ? 'mr-3 inline-flex align-top' : 'mb-1 flex'"
     >
-      <input
-        v-model="selected"
-        type="radio"
-        :name="name"
-        :value="value"
-        :checked="modelValue === value"
-        class="mr-1.5"
-        :required="required"
-      />
-      {{ optLabel }}
+      <div class="flex items-center">
+        <input
+          v-model="selected"
+          type="radio"
+          :name="name"
+          :value="value"
+          :checked="modelValue === value"
+          class="sr-only"
+          :required="required"
+          :disabled="disabled"
+        />
+        <div
+          class="flex h-5 w-5 items-center justify-center rounded-full border transition-colors focus:outline-none focus:ring-2 focus:ring-primary-40 focus:ring-offset-2"
+          :class="[
+            selected === value
+              ? borderVariantClasses[variant]
+              : 'border-grey-dark',
+            !disabled && selected !== value ? hoverVariantClasses[variant] : '',
+            disabled ? 'cursor-not-allowed opacity-50' : '',
+          ]"
+        >
+          <div
+            class="h-2.5 w-2.5 rounded-full"
+            :class="[
+              dotVariantClasses[variant],
+              selected === value ? 'opacity-100' : 'opacity-0',
+            ]"
+          ></div>
+        </div>
+      </div>
+      <span class="ml-2 flex items-center">{{ optLabel }}</span>
     </label>
   </div>
 </template>
@@ -43,6 +64,10 @@ export interface AppRadioGroupProps {
   inline?: boolean;
   /** Whether selection is required */
   required?: boolean;
+  /** Whether radio group is disabled */
+  disabled?: boolean;
+  /** Color variant of the radio buttons */
+  variant?: 'primary' | 'link' | 'danger';
 }
 
 const emit = defineEmits<{
@@ -50,7 +75,12 @@ const emit = defineEmits<{
   (e: 'update:modelValue', value: string | boolean | number | null): void;
 }>();
 
-const props = defineProps<AppRadioGroupProps>();
+const props = withDefaults(defineProps<AppRadioGroupProps>(), {
+  variant: 'link',
+  disabled: false,
+  required: false,
+  inline: false,
+});
 
 const selected = computed({
   get: () => props.modelValue,
@@ -60,6 +90,24 @@ const selected = computed({
 // Use a random name to group the inputs if no name provider
 const uniqueName = Math.random().toString(16).substring(2);
 const name = computed(() => props.name || uniqueName);
+
+const borderVariantClasses = {
+  primary: 'border-primary border-2',
+  link: 'border-link border-2',
+  danger: 'border-danger border-2',
+} as const;
+
+const dotVariantClasses = {
+  primary: 'bg-primary',
+  link: 'bg-link',
+  danger: 'bg-danger',
+} as const;
+
+const hoverVariantClasses = {
+  primary: 'hover:text-primary-120 hover:border-primary-120',
+  link: 'hover:text-link-120 hover:border-link-120',
+  danger: 'hover:text-danger-120 hover:border-danger-120',
+} as const;
 
 const isRequired = computed(() => !!props.required);
 useVuelidate({ v: { required: requiredIf(isRequired) } }, { v: selected });
