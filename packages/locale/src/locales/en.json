@@ -429,7 +429,7 @@
       "label": "Label",
       "option": "Option {n}",
       "placeholder": "Placeholder"
-    },
+    }
   },
   "calloutResponse": {
     "data": {
@@ -1013,7 +1013,7 @@
         },
         "title": "Title and image",
         "urlWillBe": "Permalink will be"
-      },
+      }
     },
     "title": "Create a callout",
     "untitledCallout": "Untitled callout"
