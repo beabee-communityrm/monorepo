@@ -496,7 +496,6 @@
           "requireCaptcha": {
             "opts": {}
           },
-          "responseImageFilter": {},
           "responseImageProp": {},
           "responseLinks": {},
           "responseTitleProp": {},

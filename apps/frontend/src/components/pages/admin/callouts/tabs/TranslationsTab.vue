@@ -23,23 +23,23 @@
         class="relative flex-1 overflow-y-auto"
         style="contain: paint"
       >
-        <p class="mb-4">
-          {{ t('calloutBuilder.translationsText') }}
-        </p>
-
         <!-- Language Settings Section -->
         <AppScrollSection id="language-settings" @mounted="registerSection">
           <AppFormBox
-            :title="t('createCallout.tabs.translations.languageSettings')"
+            :title="t('createCallout.tabs.translations.languageSettings.title')"
           >
-            <p class="mb-4">
-              {{
-                t('createCallout.tabs.translations.languageSettingsDescription')
-              }}
-            </p>
             <AppCheckboxGroup
               v-model="availableLocales"
-              :label="t('createCallout.tabs.translations.enableLanguages')"
+              :label="
+                t(
+                  'createCallout.tabs.translations.languageSettings.enableLanguages'
+                )
+              "
+              :description="
+                t(
+                  'createCallout.tabs.translations.languageSettings.description'
+                )
+              "
               :options="availableLocaleItems"
               @update:model-value="handleLocalesChange"
             />
@@ -673,7 +673,7 @@ const contentRef = ref<HTMLElement | null>(null);
 const sections = ref<ScrollSection[]>([
   {
     id: 'language-settings',
-    label: t('createCallout.tabs.translations.languageSettings'),
+    label: t('createCallout.tabs.translations.languageSettings.title'),
   },
   {
     id: 'title-description',
@@ -698,7 +698,7 @@ watch(
     sections.value = [
       {
         id: 'language-settings',
-        label: t('createCallout.tabs.translations.languageSettings'),
+        label: t('createCallout.tabs.translations.languageSettings.title'),
       },
       {
         id: 'title-description',

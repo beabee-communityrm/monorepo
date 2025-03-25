@@ -269,7 +269,6 @@ export function convertCalloutToTabs(
       responseBuckets: callout?.responseViewSchema?.buckets || [],
       responseTitleProp: callout?.responseViewSchema?.titleProp || '',
       responseImageProp: callout?.responseViewSchema?.imageProp || '',
-      responseImageFilter: callout?.responseViewSchema?.imageFilter || '',
       responseLinks: callout?.responseViewSchema?.links || [],
       mapSchema: callout?.responseViewSchema?.map || {
         style: '',
@@ -401,7 +400,8 @@ export function convertStepsToCallout(
           buckets: tabs.responseDisplay.responseBuckets,
           titleProp: tabs.responseDisplay.responseTitleProp,
           imageProp: tabs.responseDisplay.responseImageProp,
-          imageFilter: tabs.responseDisplay.responseImageFilter,
+          // TODO: Remove this once the image filter is removed from the API
+          imageFilter: '',
           gallery: tabs.responseDisplay.responseViews.includes('gallery'),
           links: tabs.responseDisplay.responseLinks,
           map: tabs.responseDisplay.responseViews.includes('map')

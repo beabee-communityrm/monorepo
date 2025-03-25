@@ -860,9 +860,6 @@
               "none": "Nein"
             }
           },
-          "responseImageFilter": {
-            "label": "Möchtest du einen Filter auf die Bilder legen?"
-          },
           "responseImageProp": {
             "help": "<p>Das Bild wird verwendet, um die Antwort in der Karten- oder Galerieansicht zu visualisieren. Wichtig: Es muss sich um eine Datei-Upload-Komponente handeln.</p>\n",
             "label": "Welches Feld soll als Bild für Darstellung der Antwort dienen?"

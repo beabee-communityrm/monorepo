@@ -426,9 +426,7 @@
       "label": "Label",
       "option": "Optie {n}",
       "placeholder": "Plaatshouder"
-    },
-    "translationsText": "Stel de vertalingen in voor elk onderdeel in je formulier",
-    "translationsTitle": "Vertalingen"
+    }
   },
   "calloutResponse": {
     "data": {
@@ -867,9 +865,6 @@
               "guests": "Ja, vraag gasten om te bevestigen dat ze menselijk zijn",
               "none": "Geen"
             }
-          },
-          "responseImageFilter": {
-            "label": "Wilt u een filter toepassen op afbeeldingen?"
           },
           "responseImageProp": {
             "help": "<p>De afbeelding wordt gebruikt om het antwoord te visualiseren in de kaart- of galerijweergave. Belangrijk: dit moet een bestandsuploadcomponent zijn.</p>\n",

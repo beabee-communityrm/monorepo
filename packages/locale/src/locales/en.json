@@ -430,8 +430,6 @@
       "option": "Option {n}",
       "placeholder": "Placeholder"
     },
-    "translationsText": "Set the translations for each component in your form",
-    "translationsTitle": "Translations"
   },
   "calloutResponse": {
     "data": {
@@ -748,6 +746,14 @@
     "lastSaved": "Last saved {duration} ago",
     "lastSavedNow": "Last saved just now",
     "tabs": {
+      "translations": {
+        "title": "Translations",
+        "languageSettings": {
+          "title": "Language",
+          "enableLanguages": "Enable translation support",
+          "description": "You can translate the callout into multiple languages. If a translation is missing we'll show the text in the primary language."
+        }
+      },
       "responseDisplay": {
         "title": "Response display"
       },
@@ -874,9 +880,6 @@
               "none": "No CAPTCHA will be required"
             }
           },
-          "responseImageFilter": {
-            "label": "Do you want to apply a filter to images?"
-          },
           "responseImageProp": {
             "description": "The image will be used to visualise the answer in map or gallery view",
             "label": "Response image"
@@ -963,7 +966,7 @@
             "title": "General information"
           },
           "description": {
-            "help": "<p>The <strong>Short description</strong> expands on the title to explain what the callout is about. It is meant to inform people what is inside in a few words.</p>\n",
+            "help": "This description is shown if the callout is visible in the member's dashboard. It is also used for sharing.",
             "label": "Short description",
             "placeholder": "Quickly explain why people should open this callout."
           },
@@ -1004,7 +1007,6 @@
             }
           },
           "title": {
-            "help": "<p>The <strong>Title</strong> will appear on all the mentions of this callout. It's worth spending a while coming up with the right name to get people interested.</p>\n",
             "label": "Title",
             "placeholder": "The name of your callout."
           }
@@ -1012,9 +1014,6 @@
         "title": "Title and image",
         "urlWillBe": "Permalink will be"
       },
-      "translations": {
-        "title": "Translations"
-      }
     },
     "title": "Create a callout",
     "untitledCallout": "Untitled callout"

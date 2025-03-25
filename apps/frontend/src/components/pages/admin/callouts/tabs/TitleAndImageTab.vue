@@ -38,9 +38,6 @@
                 :placeholder="inputT('description.placeholder')"
                 required
               />
-              <p class="mt-1 text-sm text-body-60">
-                {{ t('common.translationsInTranslationsTab') }}
-              </p>
             </AppFormField>
 
             <AppFormField :help="inputT('image.help')">
