@@ -173,7 +173,11 @@
 
               <!-- Buttons Section -->
               <AppScrollSection id="buttons" @mounted="registerSection">
-                <AppFormBox :title="t('calloutBuilder.navigationButtons')">
+                <AppFormBox
+                  :title="
+                    t('createCallout.tabs.translations.navigationButtons.title')
+                  "
+                >
                   <div
                     v-for="(slide, slideIndex) in slides"
                     :key="slide.id"
@@ -679,7 +683,10 @@ const sections = ref<ScrollSection[]>([
     id: 'title-description',
     label: t('createCallout.tabs.titleAndImage.title'),
   },
-  { id: 'buttons', label: t('calloutBuilder.navigationButtons') },
+  {
+    id: 'buttons',
+    label: t('createCallout.tabs.translations.navigationButtons.title'),
+  },
   { id: 'introduction', label: t('createCallout.tabs.intro.label') },
 ]);
 
@@ -704,7 +711,10 @@ watch(
         id: 'title-description',
         label: t('createCallout.tabs.titleAndImage.title'),
       },
-      { id: 'buttons', label: t('calloutBuilder.navigationButtons') },
+      {
+        id: 'buttons',
+        label: t('createCallout.tabs.translations.navigationButtons.title'),
+      },
       { id: 'introduction', label: t('createCallout.tabs.intro.label') },
       ...slidesSections,
       { id: 'thank-you', label: t('createCallout.tabs.endMessage.title') },
