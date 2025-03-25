@@ -35,12 +35,13 @@
 </template>
 <script lang="ts" setup>
 import useVuelidate from '@vuelidate/core';
+import { LOGIN_CODES } from '@beabee/beabee-common';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { addNotification } from '@beabee/vue/store/notifications';
+import { addNotification } from '../../store/notifications';
 import { isApiError } from '@beabee/client';
-import { AppButton, AppNotification } from '@beabee/vue/components';
-import { LOGIN_CODES } from '@beabee/beabee-common';
+import { AppButton } from '../button';
+import { AppNotification } from '../notification';
 
 export interface AppFormProps {
   /** The text of the submit button */
