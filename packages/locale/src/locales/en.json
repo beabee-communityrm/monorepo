@@ -754,7 +754,7 @@
           "description": "You can translate the callout into multiple languages. If a translation is missing we'll show the text in the primary language."
         },
         "navigationButtons": {
-          "title": "Buttons",
+          "title": "Buttons"
         }
       },
       "responseDisplay": {
