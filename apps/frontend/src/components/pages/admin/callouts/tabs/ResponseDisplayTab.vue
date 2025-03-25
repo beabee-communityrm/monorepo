@@ -149,16 +149,6 @@
               </AppFormField>
             </template>
           </AppFormBox>
-
-          <!-- Response Image Filter Section -->
-          <AppFormBox>
-            <AppFormField>
-              <AppInput
-                v-model="localData.responseImageFilter"
-                :label="inputT('responseImageFilter.label')"
-              />
-            </AppFormField>
-          </AppFormBox>
         </template>
 
         <!-- Map Settings Section -->
@@ -304,7 +294,6 @@ export interface ResponseDisplayTabData {
   responseBuckets: string[];
   responseTitleProp: string;
   responseImageProp: string;
-  responseImageFilter: string;
   responseLinks: { text: string; url: string }[];
   mapSchema: CalloutMapSchema;
 }
