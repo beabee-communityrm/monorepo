@@ -408,6 +408,7 @@
     "updated": "Your callout was successfully updated."
   },
   "calloutBuilder": {
+    "startEndScreenTitle": "Start & End screens",
     "slidesTitle": "Slides",
     "actions": {
       "addSlide": "Add",
@@ -877,15 +878,24 @@
             "label": "Do you want to apply a filter to images?"
           },
           "responseImageProp": {
-            "help": "<p>The image will be used to visualise the answer in map or gallery view. Important: This has to be a file upload component.</p>\n",
-            "label": "Which form field should be used for response images?"
+            "description": "The image will be used to visualise the answer in map or gallery view",
+            "label": "Response image"
           },
           "responseLinks": {
-            "label": "Add links to the bottom of responses?"
+            "label": "Include a footer at the bottom of responses",
+            "description": "For example, use the response footer to include a link to report an error or a contact email. To link to an email address, type <code>mailto:</code> followed by the email address in the URL field.",
+            "opts": {
+              "enabled": "Show footer links on responses for contact or error reporting",
+              "disabled": "Don't show any footer links on responses"
+            },
+            "placeholder": {
+              "label": "Example: Report an error",
+              "url": "mailto:error{'@'}mail.com"
+            }
           },
           "responseTitleProp": {
-            "help": "<p>The title appears on top of each answer in the map or gallery view.</p>\n",
-            "label": "Which form field should be used as the response title?"
+            "description": "The title will appear on top of each response in the map or gallery view",
+            "label": "Response title"
           },
           "showResponses": {
             "help": "<p>Enable this to be able to visualise callout answers in a map or gallery view.</p>\n",
