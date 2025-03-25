@@ -208,16 +208,16 @@ import {
 import useVuelidate from '@vuelidate/core';
 import { computed, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import AppRadioGroup from '@components/forms/AppRadioGroup.vue';
 import { sameAs } from '@vuelidate/validators';
 import AppInput from '@components/forms/AppInput.vue';
 import env from '@env';
-import AppFormBox from '@beabee/vue/components/form/AppFormBox';
-import AppToggleField from '@beabee/vue/components/form/AppToggleField';
-import AppFormField from '@beabee/vue/components/form/AppFormField';
 import {
   AppScrollNavigation,
   AppScrollSection,
+  AppRadioGroup,
+  AppFormBox,
+  AppToggleField,
+  AppFormField,
   type ScrollSection,
 } from '@beabee/vue/components';
 
