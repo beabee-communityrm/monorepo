@@ -6,7 +6,7 @@
       </h2>
       <div class="space-y-1">
         <button
-          v-for="section in sections"
+          v-for="section in sections.filter((s) => !s.hidden)"
           :key="section.id"
           class="w-full overflow-hidden text-ellipsis whitespace-nowrap rounded-md px-3 py-2 text-left font-semibold transition-colors"
           :class="
@@ -37,6 +37,8 @@ export interface ScrollSection {
   label: string;
   /** Optional element reference for scrolling */
   element?: HTMLElement;
+  /** Whether this section should be hidden in the navigation */
+  hidden?: boolean;
 }
 
 export interface AppScrollNavigationProps {

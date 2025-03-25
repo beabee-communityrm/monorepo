@@ -14,6 +14,11 @@ const sections: ScrollSection[] = [
     id: 'section4',
     label: 'Section 4 with a very long name that should be truncated',
   },
+  {
+    id: 'section5',
+    label: 'Hidden Section (not shown)',
+    hidden: true,
+  },
 ];
 
 // State for the active section
