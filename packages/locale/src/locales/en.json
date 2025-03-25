@@ -860,7 +860,13 @@
           "requireCaptcha": {
             "help": "<p>If you enable <strong>bot spam protection</strong> users will be required to complete a Captcha to confirm they are human. This is useful to prevent your callout being spammed by bots</p>\n",
             "label": "Enable bot spam protection",
-            "membersLabel": "Enable CAPTCHA for members",
+            "members": {
+              "label": "Activate for members too",
+              "opts": {
+                "enabled": "Even your members are asked for a CAPTCHA",
+                "disabled": "Your members are not asked for a CAPTCHA"
+              }
+            },
             "opts": {
               "all": "All users will be asked to fill out a CAPTCHA",
               "guests": "Non-members will be asked to fill out a CAPTCHA",
