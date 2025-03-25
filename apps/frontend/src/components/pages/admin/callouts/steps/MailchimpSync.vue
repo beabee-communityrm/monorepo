@@ -52,7 +52,7 @@
 
 <script lang="ts" setup>
 import { onMounted } from 'vue';
-import AppRadioGroup from '../../../../forms/AppRadioGroup.vue';
+import { AppRadioGroup } from '@beabee/vue/components';
 import type { MailchimpSyncStepProps } from '../callouts.interface';
 import AppSelect from '../../../../forms/AppSelect.vue';
 import { faLink } from '@fortawesome/free-solid-svg-icons';
