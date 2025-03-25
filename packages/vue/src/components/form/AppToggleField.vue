@@ -9,13 +9,12 @@
       />
       <p
         v-if="getDescription"
+        v-html="getDescription"
         class="mb-0.5 mt-1"
         :class="
           size === 'small' ? 'text-xs text-body-80' : 'text-sm text-body-80'
         "
-      >
-        {{ getDescription }}
-      </p>
+      ></p>
     </div>
     <AppToggleSwitch
       :model-value="modelValue"

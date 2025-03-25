@@ -100,10 +100,11 @@
 
           <!-- Response Title Section -->
           <AppFormBox>
-            <AppFormField :help="inputT('responseTitleProp.help')">
+            <AppFormField>
               <AppSelect
                 v-model="localData.responseTitleProp"
                 :label="inputT('responseTitleProp.label')"
+                :description="inputT('responseTitleProp.description')"
                 :items="formComponentItems"
                 required
               />
@@ -112,10 +113,11 @@
 
           <!-- Response Image Section -->
           <AppFormBox>
-            <AppFormField :help="inputT('responseImageProp.help')">
+            <AppFormField>
               <AppSelect
                 v-model="localData.responseImageProp"
                 :label="inputT('responseImageProp.label')"
+                :description="inputT('responseImageProp.description')"
                 :items="fileComponentItems"
                 :required="localData.responseViews.includes('gallery')"
               />
@@ -125,9 +127,31 @@
           <!-- Response Links Section -->
           <AppFormBox>
             <AppFormField>
-              <AppLabel :label="inputT('responseLinks.label')" />
-              <AppLinkList v-model="localData.responseLinks" />
+              <AppToggleField
+                v-model="responseLinksEnabled"
+                variant="link"
+                :label="inputT('responseLinks.label')"
+                :enabled-description="inputT('responseLinks.opts.enabled')"
+                :disabled-description="inputT('responseLinks.opts.disabled')"
+              />
             </AppFormField>
+            <template v-if="responseLinksEnabled">
+              <AppFormField>
+                <p
+                  class="mb-2 text-sm"
+                  v-html="inputT('responseLinks.description')"
+                ></p>
+                <AppLinkList
+                  v-model="localData.responseLinks"
+                  :placeholder-label="inputT('responseLinks.placeholder.label')"
+                  :placeholder-url="inputT('responseLinks.placeholder.url')"
+                />
+              </AppFormField>
+            </template>
+          </AppFormBox>
+
+          <!-- Response Image Filter Section -->
+          <AppFormBox>
             <AppFormField>
               <AppInput
                 v-model="localData.responseImageFilter"
@@ -257,7 +281,6 @@ import useVuelidate from '@vuelidate/core';
 import AppInput from '@components/forms/AppInput.vue';
 import {
   AppCheckboxGroup,
-  AppLabel,
   AppFormBox,
   AppFormField,
   AppScrollNavigation,
@@ -516,6 +539,21 @@ const mapViewEnabled = computed({
     }
 
     localData.value.responseViews = views;
+  },
+});
+
+// New responseLinksEnabled computed property
+const responseLinksEnabled = computed({
+  get: () => localData.value.responseLinks.length > 0,
+  set: (value) => {
+    // If disabled, clear all response links
+    if (!value) {
+      localData.value.responseLinks = [];
+    }
+    // If enabled but no links exist, add an empty one to start
+    else if (localData.value.responseLinks.length === 0) {
+      localData.value.responseLinks = [{ text: '', url: '' }];
+    }
   },
 });
 </script>
