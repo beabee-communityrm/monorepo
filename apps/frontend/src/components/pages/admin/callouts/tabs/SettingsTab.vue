@@ -265,19 +265,21 @@ const sections = ref<ScrollSection[]>([
     id: 'dates',
     label: t('createCallout.tabs.settings.dates.title'),
   },
-]);
-
-if (!env.cnrMode) {
-  sections.value.push({
+  {
     id: 'access',
     label: t('createCallout.tabs.settings.access.title'),
-  });
-
-  sections.value.push({
+    get hidden() {
+      return !!env.cnrMode;
+    },
+  },
+  {
     id: 'responseSettings',
     label: t('createCallout.tabs.settings.inputs.responseSettings.title'),
-  });
-}
+    get hidden() {
+      return !!env.cnrMode;
+    },
+  },
+]);
 
 // Computed sections for navigation
 const navigationSections = computed(() => sections.value);

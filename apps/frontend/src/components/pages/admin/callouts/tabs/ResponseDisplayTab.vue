@@ -99,7 +99,7 @@
           </AppScrollSection>
 
           <!-- Response Title Section -->
-          <AppFormBox :title="inputT('responseTitleProp.title')">
+          <AppFormBox>
             <AppFormField :help="inputT('responseTitleProp.help')">
               <AppSelect
                 v-model="localData.responseTitleProp"
@@ -111,7 +111,7 @@
           </AppFormBox>
 
           <!-- Response Image Section -->
-          <AppFormBox :title="inputT('responseImageProp.title')">
+          <AppFormBox>
             <AppFormField :help="inputT('responseImageProp.help')">
               <AppSelect
                 v-model="localData.responseImageProp"
@@ -123,7 +123,7 @@
           </AppFormBox>
 
           <!-- Response Links Section -->
-          <AppFormBox :title="inputT('responseLinks.title')">
+          <AppFormBox>
             <AppFormField>
               <AppLabel :label="inputT('responseLinks.label')" />
               <AppLinkList v-model="localData.responseLinks" />
@@ -334,6 +334,9 @@ const sections = ref<ScrollSection[]>([
   {
     id: 'displayOptions',
     label: t('createCallout.tabs.settings.displayOptions.title'),
+    get hidden() {
+      return !localData.value.showResponses;
+    },
   },
 ]);
 
@@ -345,6 +348,9 @@ if (
   sections.value.push({
     id: 'map',
     label: inputT('mapSchema.title'),
+    get hidden() {
+      return !localData.value.showResponses;
+    },
   });
 }
 
@@ -423,6 +429,9 @@ watch(
       sections.value.push({
         id: 'map',
         label: inputT('mapSchema.title'),
+        get hidden() {
+          return !localData.value.showResponses;
+        },
       });
     } else if (!hasMap && hasMapSection) {
       const mapIndex = sections.value.findIndex(
@@ -458,6 +467,9 @@ watch(
       sections.value.push({
         id: 'map',
         label: inputT('mapSchema.title'),
+        get hidden() {
+          return !localData.value.showResponses;
+        },
       });
     }
   }
