@@ -19,16 +19,13 @@
         <!-- General Section -->
         <AppScrollSection id="general" @mounted="registerSection">
           <AppFormBox :title="inputT('general.title')">
-            <AppFormField :help="inputT('title.help')">
+            <AppFormField>
               <AppInput
                 v-model="titleDefault"
                 :label="inputT('title.label')"
                 :placeholder="inputT('title.placeholder')"
                 required
               />
-              <p class="mt-1 text-sm text-body-60">
-                {{ t('common.translationsInTranslationsTab') }}
-              </p>
             </AppFormField>
 
             <AppFormField :help="inputT('description.help')">
