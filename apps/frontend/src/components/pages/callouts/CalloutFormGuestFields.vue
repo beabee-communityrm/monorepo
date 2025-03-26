@@ -13,7 +13,7 @@
     </p>
     <div class="mb-4">
       <AppInput
-        v-model="nameProxy"
+        v-model="name"
         :label="t('callout.form.name')"
         name="name"
         required
@@ -21,37 +21,32 @@
     </div>
     <div>
       <AppInput
-        v-model="emailProxy"
+        v-model="email"
         :label="t('callout.form.email')"
         type="email"
         name="email"
         required
       />
     </div>
+    <div v-if="nlOptIn !== undefined" class="mt-4">
+      <AppCheckbox
+        v-model="nlOptIn"
+        :label="t('callout.form.nlOptIn')"
+        name="nlOptIn"
+      />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import AppInput from '../../forms/AppInput.vue';
 import env from '../../../env';
 
-const emit = defineEmits(['update:name', 'update:email']);
-
 const { t } = useI18n();
 
-const props = defineProps<{
-  name: string;
-  email: string;
-}>();
-
-const nameProxy = computed({
-  get: () => props.name,
-  set: (name) => emit('update:name', name),
-});
-const emailProxy = computed({
-  get: () => props.email,
-  set: (email) => emit('update:email', email),
+const name = defineModel<string>('name');
+const email = defineModel<string>('email');
+const nlOptIn = defineModel<boolean | undefined>('nlOptIn', {
+  default: undefined,
 });
 </script>
