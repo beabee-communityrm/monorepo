@@ -7,7 +7,7 @@ meta:
 <template>
   <PageTitle :title="t('menu.contribution')" />
 
-  <App2ColGrid v-if="!isIniting">
+  <App2ColGrid v-if="!isIniting" class="max-w-[1400px]">
     <template #col1>
       <AppNotification
         v-if="updatedPaymentSource"

@@ -20,7 +20,7 @@
       <!-- Main Content -->
       <div
         ref="contentRef"
-        class="relative flex-1 overflow-y-auto"
+        class="relative max-w-3xl flex-1 overflow-y-auto"
         style="contain: paint"
       >
         <!-- Language Settings Section -->

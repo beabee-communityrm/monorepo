@@ -535,7 +535,7 @@
     }
   },
   "common": {
-    "default": "Default",
+    "default": "default",
     "backToHome": "Back to home",
     "contributing": "Contributing",
     "contributionPeriod": {

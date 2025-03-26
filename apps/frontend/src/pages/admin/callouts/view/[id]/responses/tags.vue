@@ -5,7 +5,7 @@ meta:
 </route>
 
 <template>
-  <App2ColGrid>
+  <App2ColGrid class="max-w-[1400px]">
     <template #col1>
       <TagManager
         :entity-id="callout.id"
