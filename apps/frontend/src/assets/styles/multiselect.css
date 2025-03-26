@@ -2,7 +2,7 @@
 
 .multiselect,
 .multiselect__tags {
-  @apply box-border min-h-[38px] w-full;
+  @apply box-border min-h-[42px] w-full;
 }
 
 /* Set same font size and line height as AppInput */

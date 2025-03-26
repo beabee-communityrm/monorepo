@@ -1,5 +1,7 @@
 <template>
-  <div class="mb-[53px] flex-auto overflow-y-auto lg:mb-[61px]">
+  <div
+    class="mb-[53px] flex-auto overflow-y-auto overflow-x-visible lg:mb-[61px]"
+  >
     <TheMenuListSection
       v-for="(section, index) in menu"
       :key="index"
