@@ -44,6 +44,7 @@ export interface TitleAndImageStepProps {
 
 export interface SettingsStepProps {
   whoCanTakePart: 'members' | 'everyone';
+  showNewsletterOptIn: boolean;
   allowAnonymousResponses: 'none' | 'guests' | 'all';
   requireCaptcha: CalloutCaptcha;
   showOnUserDashboards: boolean;

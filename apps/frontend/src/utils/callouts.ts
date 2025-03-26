@@ -118,6 +118,7 @@ export function convertCalloutToSteps(
     ? ({
         whoCanTakePart: 'everyone',
         allowAnonymousResponses: 'guests',
+        showNewsletterOptIn: false,
         showOnUserDashboards: false,
         usersCanEditAnswers: false,
         multipleResponses: true,
@@ -131,6 +132,7 @@ export function convertCalloutToSteps(
             : callout?.access === 'only-anonymous'
               ? 'all'
               : 'none',
+        showNewsletterOptIn: callout?.showNewsletterOptIn || false,
         showOnUserDashboards: !callout?.hidden,
         usersCanEditAnswers: callout?.allowUpdate || false,
         multipleResponses: callout?.allowMultiple || false,
@@ -324,6 +326,7 @@ export function convertStepsToCallout(
           : steps.settings.allowAnonymousResponses === 'guests'
             ? CalloutAccess.Anonymous
             : CalloutAccess.OnlyAnonymous,
+    showNewsletterOptIn: steps.settings.showNewsletterOptIn,
     variants,
     channels: steps.settings.channels,
   };
