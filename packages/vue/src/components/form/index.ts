@@ -18,6 +18,10 @@ export {
   type AppRadioGroupProps,
 } from './AppRadioGroup.vue';
 export {
+  default as AppRadioInput,
+  type AppRadioInputProps,
+} from './AppRadioInput.vue';
+export {
   default as AppToggleField,
   type AppToggleFieldProps,
 } from './AppToggleField.vue';
