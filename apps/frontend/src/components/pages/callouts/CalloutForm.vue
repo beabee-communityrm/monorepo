@@ -10,14 +10,27 @@
     />
 
     <template v-if="isLastSlide && !readonly && !preview">
-      <CalloutFormGuestFields
-        v-if="showGuestFields"
-        v-model:firstname="guestData.firstname"
-        v-model:lastname="guestData.lastname"
-        v-model:email="guestData.email"
-      />
+      <template v-if="showGuestFields">
+        <CalloutFormGuestFields
+          v-model:firstname="guestData.firstname"
+          v-model:lastname="guestData.lastname"
+          v-model:email="guestData.email"
+        />
 
-      <CalloutFormCaptcha v-if="showCaptcha" v-model="captchaToken" />
+        <div v-if="callout.showNewsletterOptIn" class="mb-8">
+          <AppCheckbox
+            v-model="guestData.newsletterOptIn"
+            :label="t('callout.form.newsletterOptIn')"
+            name="newsletterOptIn"
+          />
+        </div>
+      </template>
+
+      <CalloutFormCaptcha
+        v-if="showCaptcha"
+        v-model="captchaToken"
+        class="mb-8"
+      />
 
       <AppNotification
         v-if="formError"
@@ -82,6 +95,7 @@ import { getDecisionComponent } from '@utils/callouts';
 
 import CalloutFormCaptcha from './CalloutFormCaptcha.vue';
 import { requiredIf } from '@vuelidate/validators';
+import AppCheckbox from '@components/forms/AppCheckbox.vue';
 
 const { t } = useI18n();
 
@@ -101,7 +115,9 @@ const guestData = reactive({
   firstname: '',
   lastname: '',
   email: '',
+  newsletterOptIn: false,
 });
+
 const captchaToken = ref('');
 const formError = ref('');
 const isLoading = ref(false);
@@ -160,6 +176,8 @@ const rules = computed(() => ({
 const validation = useVuelidate(rules, { captchaToken });
 
 async function handleSubmit() {
+  if (!props.callout) return; // Can't submit without a callout being loaded
+
   // Only submit answers for slides in the current flow
   // The user might have visited other flows then gone back
   const validAnswers: CalloutResponseAnswersSlide = {};

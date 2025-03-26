@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-8">
+  <div>
     <h3 class="mb-2 font-title text-xl font-semibold">
       {{ t('callout.contactDetails') }}
     </h3>
