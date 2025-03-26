@@ -28,6 +28,12 @@
         required
       />
     </div>
+    <div v-if="nlOptIn !== undefined" class="mt-4">
+      <AppCheckbox
+        v-model="nlOptIn"
+        :label="t('callout.form.nlOptIn')"
+        name="nlOptIn"
+      />
   </div>
 </template>
 
@@ -40,5 +46,7 @@ const { t } = useI18n();
 
 const name = defineModel<string>('name');
 const email = defineModel<string>('email');
+const nlOptIn = defineModel<boolean | undefined>('nlOptIn', {
+  default: undefined,
 });
 </script>
