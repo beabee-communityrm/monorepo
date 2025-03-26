@@ -13,7 +13,7 @@ meta:
     @submit.prevent="handleSubmit"
     @reset="resetTheme"
   >
-    <App2ColGrid>
+    <App2ColGrid class="max-w-[1400px]">
       <template #col1>
         <AppHeading>
           {{ t('adminSettings.theme.fonts') }}

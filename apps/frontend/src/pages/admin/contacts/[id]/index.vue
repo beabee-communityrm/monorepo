@@ -6,7 +6,7 @@ meta:
 </route>
 
 <template>
-  <App2ColGrid v-if="contact" extended>
+  <App2ColGrid v-if="contact" extended class="max-w-[1400px]">
     <template #col1>
       <AppHeading>{{ t('contactOverview.overview') }}</AppHeading>
 

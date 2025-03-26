@@ -6,7 +6,7 @@ meta:
 </route>
 
 <template>
-  <App2ColGrid class="mb-8">
+  <App2ColGrid class="mb-8 max-w-[1400px]">
     <template #col1>
       <p>{{ stepT('text') }}</p>
     </template>
