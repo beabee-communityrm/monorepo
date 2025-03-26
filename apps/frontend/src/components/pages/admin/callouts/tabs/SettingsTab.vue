@@ -226,6 +226,7 @@ export interface SettingsTabData {
   collectGuestInfo: boolean;
   captchaEnabled: boolean;
   captchaForMembers: boolean;
+  showNewsletterOptIn: boolean;
   showOnUserDashboards: boolean;
   responseSettings: 'singleNonEditable' | 'singleEditable' | 'multiple';
   channels: CalloutChannel[] | null;

@@ -173,6 +173,9 @@ abstract class BaseCalloutDto implements CalloutData {
   @IsEnum(CalloutAccess)
   access!: CalloutAccess;
 
+  @IsBoolean()
+  showNewsletterOptIn!: boolean;
+
   @IsEnum(CalloutCaptcha)
   captcha!: CalloutCaptcha;
 

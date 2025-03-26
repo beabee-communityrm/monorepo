@@ -190,6 +190,7 @@ export function convertCalloutToTabs(
         openToEveryone: true,
         collectMemberInfo: false,
         collectGuestInfo: false,
+        showNewsletterOptIn: false,
         showOnUserDashboards: false,
         responseSettings: 'multiple',
         hasStartDate: false,
@@ -204,6 +205,7 @@ export function convertCalloutToTabs(
         openToEveryone: callout?.access !== CalloutAccess.Member,
         collectMemberInfo: callout?.access !== CalloutAccess.OnlyAnonymous,
         collectGuestInfo: callout?.access === CalloutAccess.Guest,
+        showNewsletterOptIn: !!callout?.showNewsletterOptIn,
         showOnUserDashboards: !callout?.hidden,
         responseSettings: callout?.allowMultiple
           ? 'multiple'
@@ -436,6 +438,7 @@ export function convertStepsToCallout(
       : CalloutAccess.Member,
     variants,
     channels: tabs.settings.channels,
+    showNewsletterOptIn: tabs.settings.showNewsletterOptIn,
   };
 }
 

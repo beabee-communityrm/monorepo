@@ -14,6 +14,7 @@ export interface CalloutData {
   allowUpdate: boolean;
   allowMultiple: boolean;
   access: CalloutAccess;
+  showNewsletterOptIn: boolean;
   captcha: CalloutCaptcha;
   hidden: boolean;
   responseViewSchema?: CalloutResponseViewSchema | null;

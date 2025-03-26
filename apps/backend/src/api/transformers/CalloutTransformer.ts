@@ -147,6 +147,7 @@ class CalloutTransformer extends BaseTransformer<
       allowUpdate: callout.allowUpdate,
       allowMultiple: callout.allowMultiple,
       access: callout.access,
+      showNewsletterOptIn: callout.showNewsletterOptIn,
       captcha: callout.captcha,
       status: callout.status,
       hidden: callout.hidden,
