@@ -1,8 +1,8 @@
 <template>
-  <div v-if="isEmbed" class="flex h-screen w-full">
+  <div v-if="isEmbed" class="flex h-screen w-full flex-col md:flex-row">
     <router-view />
   </div>
-  <div v-else class="flex h-screen w-full">
+  <div v-else class="relative flex h-screen w-full flex-col md:flex-row">
     <TheMenu />
     <main id="top" class="flex w-full flex-1 flex-col bg-primary-5">
       <TheBreadcrumb
