@@ -77,6 +77,112 @@
     "actions": {},
     "addAPoint": "Hier kannst du einen Ort rein-schreiben.",
     "addLocation": "Hier kannst du einen neuen Ort rein-schreiben.",
+    "builder": {
+      "actions": {},
+      "common": {
+        "actions": {}
+      },
+      "navigation": {
+        "nextSlide": {}
+      },
+      "tabs": {
+        "content": {},
+        "endMessage": {
+          "inputs": {
+            "action": {
+              "opts": {}
+            },
+            "text": {},
+            "title": {},
+            "url": {}
+          }
+        },
+        "intro": {},
+        "mailchimp": {},
+        "responseDisplay": {},
+        "settings": {
+          "access": {},
+          "dates": {},
+          "displayOptions": {},
+          "inputs": {
+            "anonymous": {
+              "opts": {}
+            },
+            "collectMembers": {
+              "opts": {}
+            },
+            "expires": {
+              "opts": {}
+            },
+            "mapAndGallery": {
+              "gallery": {},
+              "map": {}
+            },
+            "mapSchema": {
+              "addressPattern": {},
+              "addressPatternProp": {},
+              "addressProp": {},
+              "bounds": {},
+              "center": {},
+              "geocodeCountries": {},
+              "initialZoom": {},
+              "maxZoom": {},
+              "minZoom": {},
+              "style": {}
+            },
+            "requireCaptcha": {
+              "members": {
+                "opts": {}
+              },
+              "opts": {}
+            },
+            "responseImageProp": {},
+            "responseLinks": {
+              "opts": {},
+              "placeholder": {}
+            },
+            "responseSettings": {
+              "opts": {}
+            },
+            "responseTitleProp": {},
+            "showResponses": {
+              "opts": {}
+            },
+            "starts": {
+              "opts": {}
+            },
+            "visible": {
+              "opts": {}
+            },
+            "whichResponseBuckets": {},
+            "who": {
+              "opts": {}
+            }
+          }
+        },
+        "titleAndImage": {
+          "inputs": {
+            "description": {},
+            "general": {},
+            "image": {},
+            "overrideShare": {},
+            "shareDescription": {},
+            "shareTitle": {},
+            "sharing": {},
+            "slug": {
+              "locked": {},
+              "opts": {}
+            },
+            "title": {}
+          }
+        },
+        "translations": {
+          "language": {},
+          "navigationButtons": {}
+        }
+      },
+      "translationFields": {}
+    },
     "confirmHuman": "Du musst hier klicken. Dann weiß der Computer: Dass du ein Mensch bist. Und keine Maschine.",
     "ended": "Den Aufruf gibt es nicht mehr.",
     "form": {
@@ -105,11 +211,6 @@
       "endsWith": {},
       "openTo": {}
     }
-  },
-  "calloutBuilder": {
-    "actions": {},
-    "nextSlide": {},
-    "translationFields": {}
   },
   "calloutResponse": {
     "data": {},
@@ -182,7 +283,7 @@
     "paymentHistory": {}
   },
   "createCallout": {
-    "tabs": {
+    "steps": {
       "content": {},
       "dates": {
         "inputs": {
@@ -231,6 +332,7 @@
           "requireCaptcha": {
             "opts": {}
           },
+          "responseImageFilter": {},
           "responseImageProp": {},
           "responseLinks": {},
           "responseTitleProp": {},
@@ -262,6 +364,21 @@
           },
           "title": {}
         }
+      }
+    },
+    "tabs": {
+      "content": {},
+      "endMessage": {
+        "inputs": {
+          "text": {},
+          "title": {}
+        }
+      },
+      "intro": {},
+      "titleAndImage": {},
+      "translations": {
+        "languageSettings": {},
+        "navigationButtons": {}
       }
     }
   },

@@ -332,6 +332,112 @@
     },
     "addAPoint": "Klik op de kaart waar je een punt wilt toevoegen",
     "addLocation": "Een nieuw punt toevoegen",
+    "builder": {
+      "actions": {},
+      "common": {
+        "actions": {}
+      },
+      "navigation": {
+        "nextSlide": {}
+      },
+      "tabs": {
+        "content": {},
+        "endMessage": {
+          "inputs": {
+            "action": {
+              "opts": {}
+            },
+            "text": {},
+            "title": {},
+            "url": {}
+          }
+        },
+        "intro": {},
+        "mailchimp": {},
+        "responseDisplay": {},
+        "settings": {
+          "access": {},
+          "dates": {},
+          "displayOptions": {},
+          "inputs": {
+            "anonymous": {
+              "opts": {}
+            },
+            "collectMembers": {
+              "opts": {}
+            },
+            "expires": {
+              "opts": {}
+            },
+            "mapAndGallery": {
+              "gallery": {},
+              "map": {}
+            },
+            "mapSchema": {
+              "addressPattern": {},
+              "addressPatternProp": {},
+              "addressProp": {},
+              "bounds": {},
+              "center": {},
+              "geocodeCountries": {},
+              "initialZoom": {},
+              "maxZoom": {},
+              "minZoom": {},
+              "style": {}
+            },
+            "requireCaptcha": {
+              "members": {
+                "opts": {}
+              },
+              "opts": {}
+            },
+            "responseImageProp": {},
+            "responseLinks": {
+              "opts": {},
+              "placeholder": {}
+            },
+            "responseSettings": {
+              "opts": {}
+            },
+            "responseTitleProp": {},
+            "showResponses": {
+              "opts": {}
+            },
+            "starts": {
+              "opts": {}
+            },
+            "visible": {
+              "opts": {}
+            },
+            "whichResponseBuckets": {},
+            "who": {
+              "opts": {}
+            }
+          }
+        },
+        "titleAndImage": {
+          "inputs": {
+            "description": {},
+            "general": {},
+            "image": {},
+            "overrideShare": {},
+            "shareDescription": {},
+            "shareTitle": {},
+            "sharing": {},
+            "slug": {
+              "locked": {},
+              "opts": {}
+            },
+            "title": {}
+          }
+        },
+        "translations": {
+          "language": {},
+          "navigationButtons": {}
+        }
+      },
+      "translationFields": {}
+    },
     "confirmHuman": "Bevestig dat u een mens bent",
     "contactDetails": "Contactgegevens",
     "ended": "Deze callout eindigde op {date}",
@@ -405,28 +511,6 @@
     },
     "summary": "Overzicht",
     "updated": "Je callout is succesvol bijgewerkt."
-  },
-  "calloutBuilder": {
-    "actions": {
-      "addSlide": "Dia toevoegen",
-      "removeSlide": "Dia verwijderen"
-    },
-    "internalTitle": "Interne titel",
-    "nextButton": "Volgende knop tekst",
-    "nextSlide": {
-      "default": "-- Standaard --",
-      "label": "Volgende dia"
-    },
-    "prevButton": "Terug knop tekst",
-    "showAdvancedOptions": "Geavanceerde opties tonen",
-    "slideNo": "Dia {no}",
-    "submitButton": "Tekst knop Submit",
-    "translationFields": {
-      "description": "Beschrijving",
-      "label": "Label",
-      "option": "Optie {n}",
-      "placeholder": "Plaatshouder"
-    }
   },
   "calloutResponse": {
     "data": {
@@ -866,6 +950,9 @@
               "none": "Geen"
             }
           },
+          "responseImageFilter": {
+            "label": "Wilt u een filter toepassen op afbeeldingen?"
+          },
           "responseImageProp": {
             "help": "<p>De afbeelding wordt gebruikt om het antwoord te visualiseren in de kaart- of galerijweergave. Belangrijk: dit moet een bestandsuploadcomponent zijn.</p>\n",
             "label": "Welk formulierveld moet worden gebruikt voor afbeeldingen van reacties?"
@@ -959,6 +1046,21 @@
         },
         "title": "Titel en afbeelding",
         "urlWillBe": "Permalink wordt"
+      }
+    },
+    "tabs": {
+      "content": {},
+      "endMessage": {
+        "inputs": {
+          "text": {},
+          "title": {}
+        }
+      },
+      "intro": {},
+      "titleAndImage": {},
+      "translations": {
+        "languageSettings": {},
+        "navigationButtons": {}
       }
     },
     "title": "Een oproep maken",

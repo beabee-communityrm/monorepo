@@ -179,6 +179,112 @@
     },
     "addAPoint": "Кликните, чтобы добавить отметку на карту",
     "addLocation": "Добавить новую локацию",
+    "builder": {
+      "actions": {},
+      "common": {
+        "actions": {}
+      },
+      "navigation": {
+        "nextSlide": {}
+      },
+      "tabs": {
+        "content": {},
+        "endMessage": {
+          "inputs": {
+            "action": {
+              "opts": {}
+            },
+            "text": {},
+            "title": {},
+            "url": {}
+          }
+        },
+        "intro": {},
+        "mailchimp": {},
+        "responseDisplay": {},
+        "settings": {
+          "access": {},
+          "dates": {},
+          "displayOptions": {},
+          "inputs": {
+            "anonymous": {
+              "opts": {}
+            },
+            "collectMembers": {
+              "opts": {}
+            },
+            "expires": {
+              "opts": {}
+            },
+            "mapAndGallery": {
+              "gallery": {},
+              "map": {}
+            },
+            "mapSchema": {
+              "addressPattern": {},
+              "addressPatternProp": {},
+              "addressProp": {},
+              "bounds": {},
+              "center": {},
+              "geocodeCountries": {},
+              "initialZoom": {},
+              "maxZoom": {},
+              "minZoom": {},
+              "style": {}
+            },
+            "requireCaptcha": {
+              "members": {
+                "opts": {}
+              },
+              "opts": {}
+            },
+            "responseImageProp": {},
+            "responseLinks": {
+              "opts": {},
+              "placeholder": {}
+            },
+            "responseSettings": {
+              "opts": {}
+            },
+            "responseTitleProp": {},
+            "showResponses": {
+              "opts": {}
+            },
+            "starts": {
+              "opts": {}
+            },
+            "visible": {
+              "opts": {}
+            },
+            "whichResponseBuckets": {},
+            "who": {
+              "opts": {}
+            }
+          }
+        },
+        "titleAndImage": {
+          "inputs": {
+            "description": {},
+            "general": {},
+            "image": {},
+            "overrideShare": {},
+            "shareDescription": {},
+            "shareTitle": {},
+            "sharing": {},
+            "slug": {
+              "locked": {},
+              "opts": {}
+            },
+            "title": {}
+          }
+        },
+        "translations": {
+          "language": {},
+          "navigationButtons": {}
+        }
+      },
+      "translationFields": {}
+    },
     "confirmHuman": "Confirma por favor que és um humano",
     "contactDetails": "Контакты",
     "ended": "Этот опрос закончился {date}",
@@ -218,22 +324,6 @@
       "contactInfo": {},
       "endsWith": {},
       "openTo": {}
-    }
-  },
-  "calloutBuilder": {
-    "actions": {
-      "addSlide": "Добавить слайд",
-      "removeSlide": "Убрать слайд"
-    },
-    "internalTitle": "Внутренний заголовок",
-    "nextSlide": {},
-    "prevButton": "Текст на кнопке «Назад»",
-    "slideNo": "Слайд {no}",
-    "translationFields": {
-      "description": "Description",
-      "label": "Label",
-      "option": "Option {n}",
-      "placeholder": "Placeholder"
     }
   },
   "calloutResponse": {
@@ -447,7 +537,7 @@
     "willRenewWithNewAmount": "Ваша подписка будет автоматически продлена {renewalDate}. Начиная с этой даты мы будем списывать выбранную вами сумму {nextAmount}."
   },
   "createCallout": {
-    "tabs": {
+    "steps": {
       "content": {},
       "dates": {
         "inputs": {
@@ -496,6 +586,7 @@
           "requireCaptcha": {
             "opts": {}
           },
+          "responseImageFilter": {},
           "responseImageProp": {},
           "responseLinks": {},
           "responseTitleProp": {},
@@ -527,6 +618,21 @@
           },
           "title": {}
         }
+      }
+    },
+    "tabs": {
+      "content": {},
+      "endMessage": {
+        "inputs": {
+          "text": {},
+          "title": {}
+        }
+      },
+      "intro": {},
+      "titleAndImage": {},
+      "translations": {
+        "languageSettings": {},
+        "navigationButtons": {}
       }
     }
   },
