@@ -26,19 +26,15 @@
         <!-- Language Settings Section -->
         <AppScrollSection id="language-settings" @mounted="registerSection">
           <AppFormBox
-            :title="t('createCallout.tabs.translations.languageSettings.title')"
+            :title="t('callout.builder.tabs.translations.language.title')"
           >
             <AppCheckboxGroup
               v-model="availableLocales"
               :label="
-                t(
-                  'createCallout.tabs.translations.languageSettings.enableLanguages'
-                )
+                t('callout.builder.tabs.translations.language.enableLanguages')
               "
               :description="
-                t(
-                  'createCallout.tabs.translations.languageSettings.description'
-                )
+                t('callout.builder.tabs.translations.language.description')
               "
               :options="availableLocaleItems"
               @update:model-value="handleLocalesChange"
@@ -61,13 +57,15 @@
                 @mounted="registerSection"
               >
                 <AppFormBox
-                  :title="t('createCallout.tabs.titleAndImage.title')"
+                  :title="t('callout.builder.tabs.titleAndImage.title')"
                 >
                   <!-- Title -->
                   <div class="mb-6 space-y-2">
                     <label class="block text-sm font-medium">
                       {{
-                        t('createCallout.tabs.titleAndImage.inputs.title.label')
+                        t(
+                          'callout.builder.tabs.titleAndImage.inputs.title.label'
+                        )
                       }}
                     </label>
 
@@ -91,7 +89,7 @@
                     <label class="block text-sm font-medium">
                       {{
                         t(
-                          'createCallout.tabs.titleAndImage.inputs.description.label'
+                          'callout.builder.tabs.titleAndImage.inputs.description.label'
                         )
                       }}
                     </label>
@@ -120,7 +118,7 @@
                     <label class="block text-sm font-medium">
                       {{
                         t(
-                          'createCallout.tabs.titleAndImage.inputs.shareTitle.label'
+                          'callout.builder.tabs.titleAndImage.inputs.shareTitle.label'
                         )
                       }}
                     </label>
@@ -148,7 +146,7 @@
                     <label class="block text-sm font-medium">
                       {{
                         t(
-                          'createCallout.tabs.titleAndImage.inputs.shareDescription.label'
+                          'callout.builder.tabs.titleAndImage.inputs.shareDescription.label'
                         )
                       }}
                     </label>
@@ -175,7 +173,9 @@
               <AppScrollSection id="buttons" @mounted="registerSection">
                 <AppFormBox
                   :title="
-                    t('createCallout.tabs.translations.navigationButtons.title')
+                    t(
+                      'callout.builder.tabs.translations.navigationButtons.title'
+                    )
                   "
                 >
                   <div
@@ -184,7 +184,11 @@
                     class="mb-8"
                   >
                     <h3 class="mb-4 font-semibold">
-                      {{ t('calloutBuilder.slideNo', { no: slideIndex + 1 }) }}:
+                      {{
+                        t('callout.builder.navigation.slideNo', {
+                          no: slideIndex + 1,
+                        })
+                      }}:
                       {{ slide.title }}
                     </h3>
 
@@ -192,7 +196,7 @@
                       <!-- Back Button -->
                       <div class="space-y-2">
                         <label class="block text-sm font-medium">
-                          {{ t('calloutBuilder.prevButton') }}
+                          {{ t('callout.builder.navigation.prevButton') }}
                         </label>
 
                         <AppInput
@@ -226,7 +230,7 @@
                         class="space-y-2"
                       >
                         <label class="block text-sm font-medium">
-                          {{ t('calloutBuilder.nextButton') }}
+                          {{ t('callout.builder.navigation.nextButton') }}
                         </label>
 
                         <AppInput
@@ -260,7 +264,7 @@
                         class="space-y-2"
                       >
                         <label class="block text-sm font-medium">
-                          {{ t('calloutBuilder.submitButton') }}
+                          {{ t('callout.builder.navigation.submitButton') }}
                         </label>
 
                         <AppInput
@@ -294,7 +298,7 @@
 
               <!-- Introduction Section -->
               <AppScrollSection id="introduction" @mounted="registerSection">
-                <AppFormBox :title="t('createCallout.tabs.intro.label')">
+                <AppFormBox :title="t('callout.builder.tabs.intro.label')">
                   <div class="space-y-2">
                     <RichTextEditor
                       :model-value="getIntroValue(selected)"
@@ -316,7 +320,9 @@
                 >
                   <AppFormBox
                     :title="
-                      t('calloutBuilder.slideNo', { no: slideIndex + 1 }) +
+                      t('callout.builder.navigation.slideNo', {
+                        no: slideIndex + 1,
+                      }) +
                       ': ' +
                       slide.title
                     "
@@ -338,7 +344,9 @@
                       >
                         <div v-if="component[field]" class="space-y-2">
                           <label class="block text-sm font-medium">
-                            {{ t('calloutBuilder.translationFields.' + field) }}
+                            {{
+                              t('callout.builder.translationFields.' + field)
+                            }}
                           </label>
 
                           <AppInput
@@ -401,7 +409,7 @@
                         <div class="space-y-2">
                           <label class="block text-sm font-medium">
                             {{
-                              t('calloutBuilder.translationFields.option', {
+                              t('callout.builder.translationFields.option', {
                                 n: i + 1,
                               })
                             }}
@@ -431,7 +439,7 @@
 
               <!-- Thank You Section -->
               <AppScrollSection id="thank-you" @mounted="registerSection">
-                <AppFormBox :title="t('createCallout.tabs.endMessage.title')">
+                <AppFormBox :title="t('callout.builder.tabs.endMessage.title')">
                   <div
                     v-if="endMessage.whenFinished === 'message'"
                     class="space-y-6"
@@ -698,7 +706,9 @@ watch(
     const slidesSections = newSlides.map((slide, index) => ({
       id: `slide-${slide.id}`,
       label:
-        t('calloutBuilder.slideNo', { no: index + 1 }) + ': ' + slide.title,
+        t('callout.builder.navigation.slideNo', { no: index + 1 }) +
+        ': ' +
+        slide.title,
     }));
 
     // Update sections array

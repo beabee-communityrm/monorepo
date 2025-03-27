@@ -35,7 +35,7 @@
         variant="dangerGhost"
         :icon="faTrash"
         :disabled="slides.length === 1"
-        :title="t('calloutBuilder.actions.removeSlide')"
+        :title="t('callout.builder.common.actions.remove')"
         class="!p-1"
         @click.stop="handleRemoveSlide"
       />

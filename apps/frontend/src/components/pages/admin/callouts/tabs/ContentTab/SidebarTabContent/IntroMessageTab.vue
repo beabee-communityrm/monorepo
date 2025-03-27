@@ -4,12 +4,12 @@
     <div class="flex-1 overflow-y-auto bg-white p-6 shadow-md">
       <AppFormBox
         class="mx-auto max-w-3xl"
-        :help="t('createCallout.tabs.intro.help')"
+        :help="t('callout.builder.tabs.intro.help')"
       >
         <AppFormField>
           <RichTextEditor
             v-model="data.introText.default"
-            :label="t('createCallout.tabs.intro.label')"
+            :label="t('callout.builder.tabs.intro.label')"
             required
           />
         </AppFormField>

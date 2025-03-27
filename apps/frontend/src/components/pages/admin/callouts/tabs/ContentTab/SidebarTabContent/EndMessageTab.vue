@@ -81,7 +81,7 @@ defineProps<EndMessageTabProps>();
 
 const { t } = useI18n();
 const inputT = (key: string) =>
-  t('createCallout.tabs.endMessage.inputs.' + key);
+  t('callout.builder.tabs.endMessage.inputs.' + key);
 
 const validation = useVuelidate();
 

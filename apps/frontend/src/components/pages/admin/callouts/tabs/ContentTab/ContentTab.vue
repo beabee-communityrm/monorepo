@@ -30,7 +30,7 @@
             v-model="sidebarTabs.content.data.showAdvanced"
             variant="link"
             size="small"
-            :label="t('calloutBuilder.showAdvancedOptions')"
+            :label="t('callout.builder.showAdvancedOptions')"
             class="flex-1 bg-white p-4"
           />
         </div>
@@ -38,21 +38,21 @@
         <SidebarTabsNavigation
           v-model:selected-tab="selectedSidebarTab"
           :sidebar-tabs="sidebarTabs"
-          :title="t('calloutBuilder.startEndScreenTitle')"
+          :title="t('callout.builder.startEndScreenTitle')"
         />
         <!-- Slides Management -->
         <div class="mb-4 flex items-center justify-between">
           <h2 class="text-lg font-semibold">
-            {{ t('calloutBuilder.slidesTitle') }}
+            {{ t('callout.builder.slidesTitle') }}
           </h2>
           <AppButton
             variant="primary"
             size="sm"
             :icon="faPlus"
-            :title="t('calloutBuilder.actions.addSlide')"
+            :title="t('callout.builder.actions.addSlide')"
             @click="handleAddSlide"
           >
-            {{ t('calloutBuilder.actions.addSlide') }}
+            {{ t('callout.builder.actions.addSlide') }}
           </AppButton>
         </div>
 
