@@ -4,7 +4,7 @@
     <div v-if="!isFirst" class="flex-1">
       <AppInput
         v-model="modelValue.prevText.default"
-        :label="t('calloutBuilder.prevButton')"
+        :label="t('callout.builder.navigation.prevButton')"
         required
       />
     </div>
@@ -12,7 +12,7 @@
     <div v-if="isLast" class="flex-1">
       <AppInput
         v-model="modelValue.submitText.default"
-        :label="t('calloutBuilder.submitButton')"
+        :label="t('callout.builder.navigation.submitButton')"
         required
       />
     </div>
@@ -20,17 +20,17 @@
       <div class="mb-4">
         <AppInput
           v-model="modelValue.nextText.default"
-          :label="t('calloutBuilder.nextButton')"
+          :label="t('callout.builder.navigation.nextButton')"
           required
         />
       </div>
       <AppSelect
         v-model="modelValue.nextSlideId"
-        :label="t('calloutBuilder.nextSlide.label')"
+        :label="t('callout.builder.navigation.nextSlide.label')"
         :items="[
           {
             id: '',
-            label: t('calloutBuilder.nextSlide.default'),
+            label: t('callout.builder.navigation.nextSlide.default'),
           },
           ...slideItems,
         ]"

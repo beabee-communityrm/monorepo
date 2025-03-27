@@ -16,7 +16,7 @@
       >
         <!-- Date Settings Section -->
         <AppScrollSection id="dates" @mounted="registerSection">
-          <AppFormBox :title="t('createCallout.tabs.settings.dates.title')">
+          <AppFormBox :title="t('callout.builder.tabs.settings.dates.title')">
             <AppFormField>
               <div v-if="canStartNow" class="mb-4">
                 <AppToggleField
@@ -81,7 +81,7 @@
           id="access"
           @mounted="registerSection"
         >
-          <AppFormBox :title="t('createCallout.tabs.settings.access.title')">
+          <AppFormBox :title="t('callout.builder.tabs.settings.access.title')">
             <AppToggleField
               v-model="openToEveryone"
               variant="link"
@@ -254,7 +254,8 @@ const emit = defineEmits(['update:error', 'update:validated']);
 const props = defineProps<SettingsTabProps>();
 
 const { t } = useI18n();
-const inputT = (key: string) => t('createCallout.tabs.settings.inputs.' + key);
+const inputT = (key: string) =>
+  t('callout.builder.tabs.settings.inputs.' + key);
 
 // Reference to content container
 const contentRef = ref<HTMLElement | null>(null);
@@ -263,18 +264,18 @@ const contentRef = ref<HTMLElement | null>(null);
 const sections = ref<ScrollSection[]>([
   {
     id: 'dates',
-    label: t('createCallout.tabs.settings.dates.title'),
+    label: t('callout.builder.tabs.settings.dates.title'),
   },
   {
     id: 'access',
-    label: t('createCallout.tabs.settings.access.title'),
+    label: t('callout.builder.tabs.settings.access.title'),
     get hidden() {
       return !!env.cnrMode;
     },
   },
   {
     id: 'responseSettings',
-    label: t('createCallout.tabs.settings.inputs.responseSettings.title'),
+    label: t('callout.builder.tabs.settings.inputs.responseSettings.title'),
     get hidden() {
       return !!env.cnrMode;
     },

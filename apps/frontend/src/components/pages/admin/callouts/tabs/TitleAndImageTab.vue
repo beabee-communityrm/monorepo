@@ -58,10 +58,10 @@
               !canEditSlug
                 ? {
                     title: t(
-                      'createCallout.tabs.titleAndImage.inputs.slug.locked.title'
+                      'callout.builder.tabs.titleAndImage.inputs.slug.locked.title'
                     ),
                     description: t(
-                      'createCallout.tabs.titleAndImage.inputs.slug.locked.description'
+                      'callout.builder.tabs.titleAndImage.inputs.slug.locked.description'
                     ),
                     variant: 'warning',
                     mode: 'inline',
@@ -208,7 +208,7 @@ const props = defineProps<TitleAndImageTabProps>();
 
 const { t } = useI18n();
 const inputT = (key: string) =>
-  t('createCallout.tabs.titleAndImage.inputs.' + key);
+  t('callout.builder.tabs.titleAndImage.inputs.' + key);
 
 // Reference to content container
 const contentRef = ref<HTMLElement | null>(null);

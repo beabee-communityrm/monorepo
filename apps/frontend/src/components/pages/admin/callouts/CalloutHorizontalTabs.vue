@@ -46,35 +46,35 @@ const { t } = useI18n();
  */
 const tabs = reactive<CalloutHorizontalTabs>({
   content: {
-    name: t('createCallout.tabs.content.title'),
+    name: t('callout.builder.tabs.content.title'),
     validated: false,
     error: false,
     component: markRaw(ContentTab),
     data: props.data.content,
   },
   titleAndImage: {
-    name: t('createCallout.tabs.titleAndImage.title'),
+    name: t('callout.builder.tabs.titleAndImage.title'),
     validated: false,
     error: false,
     component: markRaw(TitleAndImageTab),
     data: props.data.titleAndImage,
   },
   settings: {
-    name: t('createCallout.tabs.settings.title'),
+    name: t('callout.builder.tabs.settings.title'),
     validated: false,
     error: false,
     component: markRaw(SettingsTab),
     data: props.data.settings,
   },
   responseDisplay: {
-    name: t('createCallout.tabs.responseDisplay.title'),
+    name: t('callout.builder.tabs.responseDisplay.title'),
     validated: false,
     error: false,
     component: markRaw(ResponseDisplayTab),
     data: props.data.responseDisplay,
   },
   translations: {
-    name: t('createCallout.tabs.translations.title'),
+    name: t('callout.builder.tabs.translations.title'),
     validated: false,
     error: false,
     component: markRaw(TranslationsTab),

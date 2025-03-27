@@ -30,7 +30,7 @@
           <AppScrollSection id="mapAndGallery" @mounted="registerSection">
             <AppFormBox
               :title="
-                t('createCallout.tabs.settings.inputs.mapAndGallery.title')
+                t('callout.builder.tabs.settings.inputs.mapAndGallery.title')
               "
             >
               <AppFormField>
@@ -39,17 +39,17 @@
                   variant="link"
                   :label="
                     t(
-                      'createCallout.tabs.settings.inputs.mapAndGallery.gallery.label'
+                      'callout.builder.tabs.settings.inputs.mapAndGallery.gallery.label'
                     )
                   "
                   :enabled-description="
                     t(
-                      'createCallout.tabs.settings.inputs.mapAndGallery.gallery.enabledDescription'
+                      'callout.builder.tabs.settings.inputs.mapAndGallery.gallery.enabledDescription'
                     )
                   "
                   :disabled-description="
                     t(
-                      'createCallout.tabs.settings.inputs.mapAndGallery.gallery.disabledDescription'
+                      'callout.builder.tabs.settings.inputs.mapAndGallery.gallery.disabledDescription'
                     )
                   "
                 />
@@ -62,17 +62,17 @@
                   variant="link"
                   :label="
                     t(
-                      'createCallout.tabs.settings.inputs.mapAndGallery.map.label'
+                      'callout.builder.tabs.settings.inputs.mapAndGallery.map.label'
                     )
                   "
                   :enabled-description="
                     t(
-                      'createCallout.tabs.settings.inputs.mapAndGallery.map.enabledDescription'
+                      'callout.builder.tabs.settings.inputs.mapAndGallery.map.enabledDescription'
                     )
                   "
                   :disabled-description="
                     t(
-                      'createCallout.tabs.settings.inputs.mapAndGallery.map.disabledDescription'
+                      'callout.builder.tabs.settings.inputs.mapAndGallery.map.disabledDescription'
                     )
                   "
                 />
@@ -83,9 +83,9 @@
           <!-- Display Options Section -->
           <AppScrollSection id="displayOptions" @mounted="registerSection">
             <AppFormBox
-              :title="t('createCallout.tabs.settings.displayOptions.title')"
+              :title="t('callout.builder.tabs.settings.displayOptions.title')"
               :description="
-                t('createCallout.tabs.settings.displayOptions.description')
+                t('callout.builder.tabs.settings.displayOptions.description')
               "
             >
               <AppFormField>
@@ -332,48 +332,42 @@ watch(
 );
 
 const { t } = useI18n();
-const inputT = (key: string) => t('createCallout.tabs.settings.inputs.' + key);
+const inputT = (key: string) =>
+  t('callout.builder.tabs.settings.inputs.' + key);
 
 // Reference to content container
 const contentRef = ref<HTMLElement | null>(null);
 
-// Sections for scroll navigation
-const sections = ref<ScrollSection[]>([
+// Computed sections for navigation
+const navigationSections = computed<ScrollSection[]>(() => [
   {
     id: 'mapAndGallery',
-    label: t('createCallout.tabs.settings.inputs.mapAndGallery.title'),
+    label: t('callout.builder.tabs.settings.inputs.mapAndGallery.title'),
+    get hidden() {
+      return !localData.value.showResponses;
+    },
   },
   {
     id: 'displayOptions',
-    label: t('createCallout.tabs.settings.displayOptions.title'),
+    label: t('callout.builder.tabs.settings.displayOptions.title'),
     get hidden() {
       return !localData.value.showResponses;
+    },
+  },
+  {
+    id: 'map',
+    label: t('callout.builder.tabs.settings.inputs.mapSchema.title'),
+    get hidden() {
+      return !localData.value.showResponses || !mapViewEnabled.value;
     },
   },
 ]);
 
-// Add map section if map view is available
-if (
-  localData.value.showResponses &&
-  localData.value.responseViews.includes('map')
-) {
-  sections.value.push({
-    id: 'map',
-    label: inputT('mapSchema.title'),
-    get hidden() {
-      return !localData.value.showResponses;
-    },
-  });
-}
-
-// Computed sections for navigation
-const navigationSections = computed(() => sections.value);
-
 // Register a section element for scrolling
 function registerSection(id: string, element: HTMLElement): void {
-  const sectionIndex = sections.value.findIndex((s) => s.id === id);
+  const sectionIndex = navigationSections.value.findIndex((s) => s.id === id);
   if (sectionIndex >= 0) {
-    sections.value[sectionIndex].element = element;
+    navigationSections.value[sectionIndex].element = element;
   }
 }
 
@@ -433,12 +427,12 @@ watch(
   (newViews) => {
     // Check if map section should be added or removed
     const hasMap = newViews.includes('map');
-    const hasMapSection = sections.value.some(
+    const hasMapSection = navigationSections.value.some(
       (section) => section.id === 'map'
     );
 
     if (hasMap && !hasMapSection && localData.value.showResponses) {
-      sections.value.push({
+      navigationSections.value.push({
         id: 'map',
         label: inputT('mapSchema.title'),
         get hidden() {
@@ -446,11 +440,11 @@ watch(
         },
       });
     } else if (!hasMap && hasMapSection) {
-      const mapIndex = sections.value.findIndex(
+      const mapIndex = navigationSections.value.findIndex(
         (section) => section.id === 'map'
       );
       if (mapIndex !== -1) {
-        sections.value.splice(mapIndex, 1);
+        navigationSections.value.splice(mapIndex, 1);
       }
     }
   }
@@ -460,23 +454,23 @@ watch(
 watch(
   () => localData.value.showResponses,
   (showResponses) => {
-    const hasMapSection = sections.value.some(
+    const hasMapSection = navigationSections.value.some(
       (section) => section.id === 'map'
     );
 
     if (!showResponses && hasMapSection) {
-      const mapIndex = sections.value.findIndex(
+      const mapIndex = navigationSections.value.findIndex(
         (section) => section.id === 'map'
       );
       if (mapIndex !== -1) {
-        sections.value.splice(mapIndex, 1);
+        navigationSections.value.splice(mapIndex, 1);
       }
     } else if (
       showResponses &&
       !hasMapSection &&
       localData.value.responseViews.includes('map')
     ) {
-      sections.value.push({
+      navigationSections.value.push({
         id: 'map',
         label: inputT('mapSchema.title'),
         get hidden() {
