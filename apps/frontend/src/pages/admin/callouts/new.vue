@@ -3,6 +3,7 @@ name: adminCalloutNew
 meta:
   pageTitle: menu.callouts
   role: admin
+  layout: FlexibleDashboard
 </route>
 
 <template>
