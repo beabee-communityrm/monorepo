@@ -14,7 +14,7 @@
         style="contain: paint"
       >
         <AppFormBox>
-          <AppFormField :help="inputT('showResponses.help')">
+          <AppFormField>
             <AppToggleField
               v-model="localData.showResponses"
               variant="link"

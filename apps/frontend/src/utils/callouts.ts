@@ -50,7 +50,7 @@ export function getSlideSchema(no: number): FormBuilderSlide {
   const id = 'slide' + Math.random().toString(36).substring(2, 8);
   return {
     id,
-    title: t('calloutBuilder.slideNo', { no }),
+    title: t('callout.builder.navigation.slideNo', { no }),
     components: [],
     navigation: {
       nextText: { default: t('actions.next') },

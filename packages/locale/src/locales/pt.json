@@ -187,6 +187,112 @@
     },
     "addAPoint": "Carrega no mapa no sítio onde queres adicionar o ponto.",
     "addLocation": "Adicionar localização",
+    "builder": {
+      "actions": {},
+      "common": {
+        "actions": {}
+      },
+      "navigation": {
+        "nextSlide": {}
+      },
+      "tabs": {
+        "content": {},
+        "endMessage": {
+          "inputs": {
+            "action": {
+              "opts": {}
+            },
+            "text": {},
+            "title": {},
+            "url": {}
+          }
+        },
+        "intro": {},
+        "mailchimp": {},
+        "responseDisplay": {},
+        "settings": {
+          "access": {},
+          "dates": {},
+          "displayOptions": {},
+          "inputs": {
+            "anonymous": {
+              "opts": {}
+            },
+            "collectMembers": {
+              "opts": {}
+            },
+            "expires": {
+              "opts": {}
+            },
+            "mapAndGallery": {
+              "gallery": {},
+              "map": {}
+            },
+            "mapSchema": {
+              "addressPattern": {},
+              "addressPatternProp": {},
+              "addressProp": {},
+              "bounds": {},
+              "center": {},
+              "geocodeCountries": {},
+              "initialZoom": {},
+              "maxZoom": {},
+              "minZoom": {},
+              "style": {}
+            },
+            "requireCaptcha": {
+              "members": {
+                "opts": {}
+              },
+              "opts": {}
+            },
+            "responseImageProp": {},
+            "responseLinks": {
+              "opts": {},
+              "placeholder": {}
+            },
+            "responseSettings": {
+              "opts": {}
+            },
+            "responseTitleProp": {},
+            "showResponses": {
+              "opts": {}
+            },
+            "starts": {
+              "opts": {}
+            },
+            "visible": {
+              "opts": {}
+            },
+            "whichResponseBuckets": {},
+            "who": {
+              "opts": {}
+            }
+          }
+        },
+        "titleAndImage": {
+          "inputs": {
+            "description": {},
+            "general": {},
+            "image": {},
+            "overrideShare": {},
+            "shareDescription": {},
+            "shareTitle": {},
+            "sharing": {},
+            "slug": {
+              "locked": {},
+              "opts": {}
+            },
+            "title": {}
+          }
+        },
+        "translations": {
+          "language": {},
+          "navigationButtons": {}
+        }
+      },
+      "translationFields": {}
+    },
     "contactDetails": "Detalhes de contacto",
     "ended": "Este callout acabou a {date}",
     "form": {
@@ -224,16 +330,6 @@
       "contactInfo": {},
       "endsWith": {},
       "openTo": {}
-    }
-  },
-  "calloutBuilder": {
-    "actions": {},
-    "nextSlide": {},
-    "translationFields": {
-      "description": "Description",
-      "label": "Label",
-      "option": "Option {n}",
-      "placeholder": "Placeholder"
     }
   },
   "calloutResponse": {
@@ -484,7 +580,7 @@
     "willRenewWithNewAmount": "A tua contribuição vai renovar automaticamente a {renewalDate}, passando para a nova quantia de {nextAmount}."
   },
   "createCallout": {
-    "tabs": {
+    "steps": {
       "content": {},
       "dates": {
         "inputs": {
@@ -533,6 +629,7 @@
           "requireCaptcha": {
             "opts": {}
           },
+          "responseImageFilter": {},
           "responseImageProp": {},
           "responseLinks": {},
           "responseTitleProp": {},
@@ -564,6 +661,21 @@
           },
           "title": {}
         }
+      }
+    },
+    "tabs": {
+      "content": {},
+      "endMessage": {
+        "inputs": {
+          "text": {},
+          "title": {}
+        }
+      },
+      "intro": {},
+      "titleAndImage": {},
+      "translations": {
+        "languageSettings": {},
+        "navigationButtons": {}
       }
     }
   },
