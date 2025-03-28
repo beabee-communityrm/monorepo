@@ -76,8 +76,16 @@ Used in form builders and content editors with validation feedback:
 ```vue
 <AppTabs
   :items="[
-    { id: 'content', label: 'Content', validated: formSections.content.isValid },
-    { id: 'settings', label: 'Settings', error: formSections.settings.hasErrors },
+    {
+      id: 'content',
+      label: 'Content',
+      validated: formSections.content.isValid,
+    },
+    {
+      id: 'settings',
+      label: 'Settings',
+      error: formSections.settings.hasErrors,
+    },
     { id: 'dates', label: 'Dates & Duration' },
   ]"
   :selected="selectedTab"

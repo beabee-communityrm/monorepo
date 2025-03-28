@@ -44,7 +44,7 @@ export interface TabItem {
 ```typescript
 const basicTab: TabItem = {
   id: 'settings',
-  label: 'Settings'
+  label: 'Settings',
 };
 ```
 
@@ -54,7 +54,7 @@ const basicTab: TabItem = {
 const routerTab: TabItem = {
   id: 'users',
   label: 'Users',
-  to: '/users'
+  to: '/users',
 };
 ```
 
@@ -64,7 +64,7 @@ const routerTab: TabItem = {
 const tabWithCount: TabItem = {
   id: 'notifications',
   label: 'Notifications',
-  count: 5
+  count: 5,
 };
 ```
 
@@ -74,7 +74,7 @@ const tabWithCount: TabItem = {
 const validatedTab: TabItem = {
   id: 'profile',
   label: 'Profile',
-  validated: true
+  validated: true,
 };
 ```
 
@@ -84,7 +84,7 @@ const validatedTab: TabItem = {
 const errorTab: TabItem = {
   id: 'payment',
   label: 'Payment',
-  error: true
+  error: true,
 };
 ```
 
@@ -94,7 +94,7 @@ const errorTab: TabItem = {
 const hiddenTab: TabItem = {
   id: 'advanced',
   label: 'Advanced Settings',
-  hidden: true
+  hidden: true,
 };
 ```
 
