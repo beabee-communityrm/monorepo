@@ -313,6 +313,7 @@
                         selected === defaultLocale ? '' : introText.default
                       "
                       :disabled="selected === defaultLocale"
+                      :copyable="selected === defaultLocale"
                       @update:model-value="updateIntroValue(selected, $event)"
                     />
                   </div>
@@ -498,6 +499,7 @@
                             : endMessage.thankYouText.default
                         "
                         :disabled="selected === defaultLocale"
+                        :copyable="selected === defaultLocale"
                         @update:model-value="
                           updateEndMessageValue(
                             'thankYouText',
