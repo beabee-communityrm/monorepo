@@ -24,10 +24,12 @@ const emit = defineEmits<{
 }>();
 
 const tabItems = computed<TabItem[]>(() =>
-  props.tabsInOrder.map((step) => ({
-    id: step.name,
-    label: step.name,
+  props.tabsInOrder.map((tab) => ({
+    id: tab.name,
+    label: tab.name,
     to: '',
+    error: tab.error,
+    validated: tab.validated,
   }))
 );
 
