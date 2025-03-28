@@ -1,25 +1,35 @@
 <template>
   <div>
     <AppLabel v-if="label" :label="label" :required="required" :for="id" />
-    <textarea
-      :id="id"
-      v-model="value"
-      class="w-full rounded border p-2 focus:shadow-input focus:outline-none"
-      :class="[
-        hasError
-          ? 'border-danger-70 bg-danger-10'
-          : disabled
-            ? 'cursor-not-allowed border-primary-40 bg-grey-lighter'
-            : 'border-primary-40 bg-white',
-        disabled && 'opacity-60',
-      ]"
-      :required="required"
-      :disabled="disabled"
-      :aria-invalid="hasError"
-      :aria-describedby="getAriaDescribedBy"
-      v-bind="$attrs"
-      @blur="validation.$touch"
-    />
+    <div class="relative">
+      <textarea
+        :id="id"
+        v-model="value"
+        class="w-full rounded border p-2 focus:shadow-input focus:outline-none"
+        :class="[
+          hasError
+            ? 'border-danger-70 bg-danger-10'
+            : disabled
+              ? 'cursor-not-allowed border-primary-40 bg-grey-lighter'
+              : 'border-primary-40 bg-white',
+          disabled && 'opacity-60',
+          copyable && 'pr-10',
+        ]"
+        :required="required"
+        :disabled="disabled"
+        :aria-invalid="hasError"
+        :aria-describedby="getAriaDescribedBy"
+        v-bind="$attrs"
+        @blur="validation.$touch"
+      />
+      <div v-if="copyable" class="absolute right-0 top-0">
+        <AppCopyButton
+          class="mr-1 mt-1 !h-9 !w-9 rounded bg-white/70 hover:bg-white"
+          :text="value?.toString() || ''"
+          @copy="handleCopy"
+        />
+      </div>
+    </div>
     <AppInputError
       v-if="hasError"
       :id="`${id}-error`"
@@ -54,6 +64,7 @@ import { useI18n } from 'vue-i18n';
 import AppInputHelp from './AppInputHelp.vue';
 import AppLabel from '@beabee/vue/components/form/AppLabel';
 import AppInputError from './AppInputError.vue';
+import { AppCopyButton } from '@beabee/vue/components';
 
 /**
  * Props for the AppTextArea component
@@ -73,6 +84,8 @@ export interface AppTextAreaProps {
   disabled?: boolean;
   /** The maximum number of characters allowed */
   maxLength?: number;
+  /** Whether the textarea value can be copied to clipboard */
+  copyable?: boolean;
 }
 
 const emit = defineEmits(['update:modelValue']);
@@ -83,6 +96,7 @@ const props = withDefaults(defineProps<AppTextAreaProps>(), {
   infoMessage: undefined,
   disabled: false,
   maxLength: undefined,
+  copyable: false,
 });
 
 const { t } = useI18n();
@@ -133,4 +147,8 @@ const getAriaDescribedBy = computed(() => {
   if (props.maxLength !== undefined) ids.push(`${id.value}-char-count`);
   return ids.length ? ids.join(' ') : undefined;
 });
+
+const handleCopy = () => {
+  // Optional: Add a notification that copying was successful
+};
 </script>
