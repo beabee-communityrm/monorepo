@@ -77,6 +77,7 @@
                           : titleAndImage.title.default
                       "
                       :disabled="selected === defaultLocale"
+                      :copyable="selected === defaultLocale"
                       class="w-full"
                       @update:model-value="
                         updateTitleValue('title', selected, $event)
@@ -102,6 +103,7 @@
                           : titleAndImage.description.default
                       "
                       :disabled="selected === defaultLocale"
+                      :copyable="selected === defaultLocale"
                       rows="3"
                       class="w-full"
                       @update:model-value="
@@ -131,6 +133,7 @@
                           : titleAndImage.shareTitle.default
                       "
                       :disabled="selected === defaultLocale"
+                      :copyable="selected === defaultLocale"
                       class="w-full"
                       @update:model-value="
                         updateTitleValue('shareTitle', selected, $event)
@@ -159,6 +162,7 @@
                           : titleAndImage.shareDescription.default
                       "
                       :disabled="selected === defaultLocale"
+                      :copyable="selected === defaultLocale"
                       rows="3"
                       class="w-full"
                       @update:model-value="
@@ -212,6 +216,7 @@
                               : slide.navigation.prevText.default
                           "
                           :disabled="selected === defaultLocale"
+                          :copyable="selected === defaultLocale"
                           class="w-full"
                           @update:model-value="
                             updateNavigationValue(
@@ -246,6 +251,7 @@
                               : slide.navigation.nextText.default
                           "
                           :disabled="selected === defaultLocale"
+                          :copyable="selected === defaultLocale"
                           class="w-full"
                           @update:model-value="
                             updateNavigationValue(
@@ -280,6 +286,7 @@
                               : slide.navigation.submitText.default
                           "
                           :disabled="selected === defaultLocale"
+                          :copyable="selected === defaultLocale"
                           class="w-full"
                           @update:model-value="
                             updateNavigationValue(
@@ -363,6 +370,7 @@
                                 : getDefaultText(component[field] as string)
                             "
                             :disabled="selected === defaultLocale"
+                            :copyable="selected === defaultLocale"
                             class="w-full"
                             @update:model-value="
                               updateValue(
@@ -387,6 +395,7 @@
                                 : getDefaultText(component[field] as string)
                             "
                             :disabled="selected === defaultLocale"
+                            :copyable="selected === defaultLocale"
                             rows="3"
                             class="w-full"
                             @update:model-value="
@@ -425,6 +434,7 @@
                                 : getDefaultText(value.label)
                             "
                             :disabled="selected === defaultLocale"
+                            :copyable="selected === defaultLocale"
                             class="w-full"
                             @update:model-value="
                               updateValue(value.label, selected, $event)
@@ -460,6 +470,7 @@
                             : endMessage.thankYouTitle.default
                         "
                         :disabled="selected === defaultLocale"
+                        :copyable="selected === defaultLocale"
                         class="w-full"
                         @update:model-value="
                           updateEndMessageValue(
@@ -517,6 +528,7 @@
                           : endMessage.thankYouRedirect.default
                       "
                       :disabled="selected === defaultLocale"
+                      :copyable="selected === defaultLocale"
                       class="w-full"
                       @update:model-value="
                         updateEndMessageValue(
