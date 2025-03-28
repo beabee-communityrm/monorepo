@@ -37,4 +37,12 @@ export interface TabItem {
    * Whether the tab should be hidden from the tab navigation
    */
   hidden?: boolean;
+  /**
+   * Indicates if the tab content has validation errors
+   */
+  error?: boolean;
+  /**
+   * Indicates if the tab content has been successfully validated
+   */
+  validated?: boolean;
 }

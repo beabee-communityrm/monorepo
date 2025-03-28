@@ -27,6 +27,15 @@ const routerTabs: TabItem[] = [
   { id: 'security', label: 'Security', to: '/security' },
 ];
 
+// Validation state tabs
+const validationTabs: TabItem[] = [
+  { id: 'completed', label: 'Completed', validated: true },
+  { id: 'inProgress', label: 'In Progress' },
+  { id: 'problematic', label: 'Problematic', error: true },
+  { id: 'pendingWithIssues', label: 'Pending', error: true, count: 3 },
+  { id: 'validatedWithCount', label: 'Validated', validated: true, count: 7 },
+];
+
 // Many tabs to demonstrate horizontal scrolling
 const manyTabs: TabItem[] = [
   { id: 'tab1', label: 'Overview', to: '' },
@@ -81,12 +90,26 @@ const handleTabClick = (tabId: string) => {
       <AppTabs :items="routerTabs" :selected="state.selectedTab" />
     </Variant>
 
+    <Variant title="With Validation States">
+      <div class="flex flex-col gap-4">
+        <p class="text-sm text-grey-dark">
+          Tabs with validation states (error, validated) and combined with
+          counts
+        </p>
+        <AppTabs
+          :items="validationTabs"
+          :selected="state.selectedTab"
+          @tab-click="handleTabClick"
+        />
+      </div>
+    </Variant>
+
     <Variant title="Real World Example - Callout Tabs">
       <AppTabs
         :items="[
-          { id: 'content', label: 'Content', to: '' },
+          { id: 'content', label: 'Content', validated: true, to: '' },
           { id: 'settings', label: 'Settings', to: '' },
-          { id: 'dates', label: 'Dates & Duration', to: '' },
+          { id: 'dates', label: 'Dates & Duration', error: true, to: '' },
           { id: 'titleAndImage', label: 'Title & Image', to: '' },
         ]"
         :selected="state.selectedTab"

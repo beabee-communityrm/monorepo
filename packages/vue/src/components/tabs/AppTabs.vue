@@ -19,7 +19,12 @@
               orientation === 'vertical' ? 'w-full' : 'mx-1',
             ]"
           >
-            <TabLabel :label="item.label" :count="item.count" />
+            <TabLabel
+              :label="item.label"
+              :count="item.count"
+              :error="item.error"
+              :validated="item.validated"
+            />
           </router-link>
           <button
             v-else
@@ -33,7 +38,12 @@
             ]"
             @click="handleTabClick(item.id)"
           >
-            <TabLabel :label="item.label" :count="item.count" />
+            <TabLabel
+              :label="item.label"
+              :count="item.count"
+              :error="item.error"
+              :validated="item.validated"
+            />
           </button>
         </li>
       </ul>
