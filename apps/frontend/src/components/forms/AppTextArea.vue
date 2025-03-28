@@ -25,6 +25,15 @@
       :id="`${id}-error`"
       :message="validation.$errors[0].$message"
     />
+    <!-- Display character count when maxLength is set -->
+    <div v-if="maxLength !== undefined" class="mt-1 text-xs text-grey-dark">
+      {{
+        t('form.characters.remaining', {
+          max: maxLength,
+          remaining: remainingChars,
+        })
+      }}
+    </div>
     <AppInputHelp
       v-if="infoMessage"
       :id="`${id}-info`"
@@ -36,7 +45,11 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 import useVuelidate from '@vuelidate/core';
-import { helpers, requiredIf } from '@vuelidate/validators';
+import {
+  helpers,
+  requiredIf,
+  maxLength as maxLengthValidator,
+} from '@vuelidate/validators';
 import { useI18n } from 'vue-i18n';
 import AppInputHelp from './AppInputHelp.vue';
 import AppLabel from '@beabee/vue/components/form/AppLabel';
@@ -58,6 +71,8 @@ export interface AppTextAreaProps {
   required?: boolean;
   /** Whether the textarea is disabled */
   disabled?: boolean;
+  /** The maximum number of characters allowed */
+  maxLength?: number;
 }
 
 const emit = defineEmits(['update:modelValue']);
@@ -67,6 +82,7 @@ const props = withDefaults(defineProps<AppTextAreaProps>(), {
   name: 'unknown',
   infoMessage: undefined,
   disabled: false,
+  maxLength: undefined,
 });
 
 const { t } = useI18n();
@@ -81,12 +97,28 @@ const value = computed({
   set: (newValue) => emit('update:modelValue', newValue),
 });
 
+// Calculate remaining characters
+const remainingChars = computed(() => {
+  if (props.maxLength === undefined) return undefined;
+  return Math.max(0, props.maxLength - (value.value?.length || 0));
+});
+
 const rules = computed(() => ({
   v: {
     required: helpers.withMessage(
       t(`form.errors.${props.name}.required`),
       requiredIf(!!props.required)
     ),
+    // Add maxLength validation when maxLength prop is provided
+    ...(props.maxLength !== undefined && {
+      maxLength: helpers.withMessage(
+        t(`form.errors.maxLength`, {
+          max: props.maxLength,
+          remaining: remainingChars.value,
+        }),
+        maxLengthValidator(props.maxLength)
+      ),
+    }),
   },
 }));
 
@@ -98,6 +130,7 @@ const getAriaDescribedBy = computed(() => {
   const ids = [];
   if (hasError.value) ids.push(`${id.value}-error`);
   if (props.infoMessage) ids.push(`${id.value}-info`);
+  if (props.maxLength !== undefined) ids.push(`${id.value}-char-count`);
   return ids.length ? ids.join(' ') : undefined;
 });
 </script>

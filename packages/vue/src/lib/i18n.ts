@@ -9,7 +9,7 @@ import {
 
 export const localeItems = Object.entries(localeConfig).map(([id, config]) => ({
   id,
-  label: config.displayName,
+  label: config.name,
 }));
 
 export const i18n = createI18n({

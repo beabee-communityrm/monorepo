@@ -393,6 +393,7 @@
   },
   "forgotPassword": {},
   "form": {
+    "characters": {},
     "email": "E-Mail",
     "errorMessages": {
       "api": {

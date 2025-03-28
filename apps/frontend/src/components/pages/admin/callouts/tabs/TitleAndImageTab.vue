@@ -122,9 +122,6 @@
                 :disabled="!data.overrideShare"
                 required
               />
-              <p v-if="data.overrideShare" class="mt-1 text-sm text-body-60">
-                {{ t('common.translationsInTranslationsTab') }}
-              </p>
             </AppFormField>
 
             <AppFormField :help="inputT('shareDescription.help')">
@@ -133,11 +130,9 @@
                 :label="inputT('shareDescription.label')"
                 :placeholder="inputT('shareDescription.placeholder')"
                 :disabled="!data.overrideShare"
+                :max-length="200"
                 required
               />
-              <p v-if="data.overrideShare" class="mt-1 text-sm text-body-60">
-                {{ t('common.translationsInTranslationsTab') }}
-              </p>
             </AppFormField>
           </AppFormBox>
         </AppScrollSection>

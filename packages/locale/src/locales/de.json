@@ -1302,6 +1302,9 @@
     "addressLine1": "Adresse",
     "addressLine2": "Adresse 2",
     "cancel": "Abbrechen",
+    "characters": {
+      "remaining": "Es verbleiben {remaining} Zeichen."
+    },
     "cityOrTown": "Ort",
     "deliveryOptIn": "Einverständnis zur Postsendung",
     "description": "Bezeichnung",
@@ -1352,6 +1355,7 @@
       "lastName": {
         "required": "Nachname benötigt"
       },
+      "maxLength": "Die maximale Länge von {max} Zeichen wurde überschritten",
       "name": {
         "required": "Name benötigt"
       },
