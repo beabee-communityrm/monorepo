@@ -1310,6 +1310,9 @@
     "addressLine1": "Address line 1",
     "addressLine2": "Address line 2",
     "cancel": "Cancel",
+    "characters": {
+      "remaining": "{remaining} characters remaining."
+    },
     "cityOrTown": "City/Town",
     "deliveryOptIn": "Delivery opt-in",
     "description": "Description",
@@ -1360,6 +1363,7 @@
       "lastName": {
         "required": "Last name is required"
       },
+      "maxLength": "Maximum length of {max} characters exceeded",
       "name": {
         "required": "Name is required"
       },

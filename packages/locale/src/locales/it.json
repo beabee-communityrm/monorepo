@@ -463,6 +463,7 @@
   "form": {
     "addressLine1": "Dettagli indirizzo 1",
     "addressLine2": "Dettagli indirizzo 2",
+    "characters": {},
     "cityOrTown": "Città",
     "errorMessages": {
       "api": {}

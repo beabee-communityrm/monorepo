@@ -43,8 +43,8 @@
   },
   "de@easy": {
     "baseLocale": "de",
-    "name": "Deutsch (easy, callouts only)",
-    "displayName": "Leichtes Deutsch",
+    "name": "Deutsch (einfach)",
+    "displayName": "Leichtes Sprache",
     "adminLocale": "de"
   }
 }
