@@ -1,19 +1,19 @@
 <template>
   <div
-    class="mb-4 flex gap-2 rounded p-3"
-    :class="active ? 'bg-white' : 'cursor-pointer bg-primary-10'"
+    class="mb-2 flex items-center gap-2 rounded p-2"
+    :class="
+      active
+        ? 'bg-white font-semibold text-link'
+        : 'cursor-pointer text-body-80 hover:text-body'
+    "
     @click="emit('select', slide.id)"
   >
-    <div>
-      <font-awesome-icon
-        :icon="faGripVertical"
-        class="cursor-grab text-body-60 hover:text-body"
-      />
-    </div>
+    <font-awesome-icon
+      :icon="faGripVertical"
+      class="cursor-grab hover:text-body"
+    />
     <div class="flex min-w-0 flex-1 flex-col justify-center">
-      <p class="text-light truncate text-sm">
-        {{ slideNo + 1 }}: {{ slide.title }}
-      </p>
+      <p class="truncate">{{ slideNo + 1 }}: {{ slide.title }}</p>
       <p
         v-for="[no, nextSlide] in nextSlides"
         :key="no"
@@ -30,16 +30,14 @@
         <span v-else>{{ no + 1 }}: {{ nextSlide.title }}</span>
       </p>
     </div>
-    <div class="flex items-start">
-      <AppButton
-        variant="dangerGhost"
-        :icon="faTrash"
-        :disabled="slides.length === 1"
-        :title="t('callout.builder.common.actions.remove')"
-        class="!p-1"
-        @click.stop="handleRemoveSlide"
-      />
-    </div>
+    <AppButton
+      variant="dangerGhost"
+      :icon="faTrash"
+      :disabled="slides.length === 1"
+      :title="t('callout.builder.common.actions.remove')"
+      class="!p-1"
+      @click.stop="handleRemoveSlide"
+    />
   </div>
 </template>
 

@@ -21,30 +21,28 @@
     <div class="flex min-h-0 gap-4">
       <!-- Left Sidebar -->
       <div class="flex-0 basis-menu overflow-y-auto overflow-x-hidden">
-        <!-- Form Builder Options -->
-        <div
-          v-if="env.experimentalFeatures"
-          class="mb-4 flex flex-none items-end gap-4"
-        >
-          <AppToggleField
-            v-model="sidebarTabs.content.data.showAdvanced"
-            variant="link"
-            size="small"
-            :label="t('callout.builder.showAdvancedOptions')"
-            class="flex-1 bg-white p-4"
-          />
-        </div>
-
         <SidebarTabsNavigation
           v-model:selected-tab="selectedSidebarTab"
           :sidebar-tabs="sidebarTabs"
-          :title="t('callout.builder.startEndScreenTitle')"
         />
+
+        <Draggable v-model="slides" item-key="id" class="mb-2">
+          <template #item="{ element, index }">
+            <CalloutSlideItem
+              :slide-no="index"
+              :slides="slides"
+              :active="
+                currentSidebarTab.name === tabs.content.name &&
+                currentSlideId === element.id
+              "
+              @select="handleSlideSelect"
+              @remove="handleRemoveSlide"
+            />
+          </template>
+        </Draggable>
+
         <!-- Slides Management -->
-        <div class="mb-4 flex items-center justify-between">
-          <h2 class="text-lg font-semibold">
-            {{ t('callout.builder.slidesTitle') }}
-          </h2>
+        <div class="text-right">
           <AppButton
             variant="primary"
             size="sm"
@@ -56,27 +54,31 @@
           </AppButton>
         </div>
 
-        <Draggable v-model="slides" item-key="id">
-          <template #item="{ element, index }">
-            <CalloutSlideItem
-              :slide-no="index"
-              :slides="slides"
-              :active="currentSlideId === element.id"
-              @select="handleSlideSelect"
-              @remove="handleRemoveSlide"
-            />
-          </template>
-        </Draggable>
+        <template v-if="currentSidebarTab.name === tabs.content.name">
+          <div class="my-4 border-b border-b-primary-40" />
 
-        <!-- Slide Navigation -->
-        <FormBuilderNavigation
-          v-model="currentSlide.navigation"
-          :slides="slides"
-          :current-slide-no="currentSlideNo"
-          :is-first="isFirstSlide"
-          :is-last="isLastSlide"
-          :locales="tabs.settings.data.locales"
-        />
+          <!-- Slide Navigation -->
+          <FormBuilderNavigation
+            v-model="currentSlide.navigation"
+            :slides="slides"
+            :current-slide-no="currentSlideNo"
+            :is-first="isFirstSlide"
+            :is-last="isLastSlide"
+            :locales="tabs.settings.data.locales" />
+
+          <!-- Form Builder Options -->
+          <div
+            v-if="env.experimentalFeatures"
+            class="mb-4 flex flex-none items-end gap-4"
+          >
+            <AppToggleField
+              v-model="sidebarTabs.content.data.showAdvanced"
+              variant="link"
+              size="small"
+              :label="t('callout.builder.showAdvancedOptions')"
+              class="flex-1 bg-white p-4"
+            /></div
+        ></template>
       </div>
 
       <SidebarTabContent
