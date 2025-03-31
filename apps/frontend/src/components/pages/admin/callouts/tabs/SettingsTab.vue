@@ -16,9 +16,13 @@
       >
         <!-- Date Settings Section -->
         <AppScrollSection id="dates" @mounted="registerSection">
-          <AppFormBox :title="t('callout.builder.tabs.settings.dates.title')">
+          <AppLabel
+            :label="t('callout.builder.tabs.settings.dates.title')"
+            class="mb-3 px-4"
+          />
+          <AppFormBox v-if="canStartNow">
             <AppFormField>
-              <div v-if="canStartNow" class="mb-4">
+              <div class="mb-4">
                 <AppToggleField
                   v-model="startDateEnabled"
                   variant="link"
@@ -219,6 +223,7 @@ import {
   AppToggleField,
   AppFormField,
   type ScrollSection,
+  AppLabel,
 } from '@beabee/vue/components';
 
 import type { CalloutHorizontalTabs } from '../CalloutHorizontalTabs.interface';
