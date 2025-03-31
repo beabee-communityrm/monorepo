@@ -6,16 +6,12 @@ meta:
 </route>
 
 <template>
-  <App2ColGrid class="mb-8 max-w-[1400px]">
+  <App2ColGrid class="mb-8">
     <template #col1>
       <p>{{ stepT('text') }}</p>
     </template>
   </App2ColGrid>
-  <App2ColGrid
-    v-if="joinContent && paymentContent"
-    extended
-    class="max-w-[1400px]"
-  >
+  <App2ColGrid v-if="joinContent && paymentContent" extended>
     <template #col1>
       <AppForm
         :button-text="t('form.saveChanges')"

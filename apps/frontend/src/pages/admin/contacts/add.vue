@@ -7,7 +7,7 @@ meta:
 
 <template>
   <PageTitle :title="t('addContact.title')" border></PageTitle>
-  <App2ColGrid class="max-w-[1400px]">
+  <App2ColGrid>
     <template #col1>
       <AppForm
         :button-text="t('actions.save')"
