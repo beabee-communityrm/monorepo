@@ -2,7 +2,7 @@
 <template>
   <div class="flex max-h-full min-h-0 flex-1">
     <div class="flex-1 overflow-y-auto bg-white p-6 shadow-md">
-      <AppFormBox class="mx-auto max-w-3xl">
+      <AppFormField class="mx-auto max-w-3xl">
         <AppRadioGroup
           v-model="data.whenFinished"
           name="whenFinished"
@@ -13,27 +13,27 @@
           ]"
           required
         />
-      </AppFormBox>
+      </AppFormField>
       <template v-if="data.whenFinished === 'message'">
-        <AppFormBox class="mx-auto max-w-3xl" :help="inputT('title.help')">
+        <AppFormField class="mx-auto max-w-3xl" :help="inputT('title.help')">
           <AppInput
             v-model="data.thankYouTitle.default"
             :label="inputT('title.label')"
             :placeholder="inputT('title.placeholder')"
             required
           />
-        </AppFormBox>
+        </AppFormField>
 
-        <AppFormBox class="mx-auto max-w-3xl" :help="inputT('text.help')">
+        <AppFormField class="mx-auto max-w-3xl" :help="inputT('text.help')">
           <RichTextEditor
             v-model="data.thankYouText.default"
             :label="inputT('text.label')"
             :placeholder="inputT('text.placeholder')"
             required
           />
-        </AppFormBox>
+        </AppFormField>
       </template>
-      <AppFormBox v-else class="mx-auto max-w-3xl" :help="inputT('url.help')">
+      <AppFormField v-else class="mx-auto max-w-3xl" :help="inputT('url.help')">
         <AppInput
           v-model="data.thankYouRedirect.default"
           :label="inputT('url.label')"
@@ -41,7 +41,7 @@
           type="url"
           required
         />
-      </AppFormBox>
+      </AppFormField>
     </div>
     <!-- Right Sidebar -->
     <div class="flex-0 basis-[15rem] overflow-y-auto">
@@ -54,7 +54,7 @@
 import useVuelidate from '@vuelidate/core';
 import { watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { AppRadioGroup, AppFormBox } from '@beabee/vue/components';
+import { AppRadioGroup, AppFormField } from '@beabee/vue/components';
 import RichTextEditor from '@components/rte/RichTextEditor.vue';
 import AppInput from '@components/forms/AppInput.vue';
 import type { LocaleProp } from '@type';

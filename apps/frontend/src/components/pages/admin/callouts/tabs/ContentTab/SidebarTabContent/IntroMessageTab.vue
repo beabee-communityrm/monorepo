@@ -2,18 +2,16 @@
 <template>
   <div class="flex max-h-full min-h-0 flex-1">
     <div class="flex-1 overflow-y-auto bg-white p-6 shadow-md">
-      <AppFormBox
-        class="mx-auto max-w-3xl"
+      <AppFormField
         :help="t('callout.builder.tabs.intro.help')"
+        class="mx-auto max-w-3xl"
       >
-        <AppFormField>
-          <RichTextEditor
-            v-model="data.introText.default"
-            :label="t('callout.builder.tabs.intro.label')"
-            required
-          />
-        </AppFormField>
-      </AppFormBox>
+        <RichTextEditor
+          v-model="data.introText.default"
+          :label="t('callout.builder.tabs.intro.label')"
+          required
+        />
+      </AppFormField>
     </div>
     <!-- Right Sidebar -->
     <div class="flex-0 basis-[15rem] overflow-y-auto">
@@ -24,12 +22,11 @@
 
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n';
-import AppFormField from '@beabee/vue/components/form/AppFormField';
-import AppFormBox from '@beabee/vue/components/form/AppFormBox';
 import RichTextEditor from '@components/rte/RichTextEditor.vue';
 
 import type { LocaleProp } from '@type';
 import type { SidebarTabProps } from '../SidebarTabs.interface';
+import { AppFormField } from '@beabee/vue/components';
 
 /**
  * Data for the intro message tab in the sidebar
