@@ -55,7 +55,7 @@ import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 
 import AppInput from '@components/forms/AppInput.vue';
-import AppButton from '@components/button/AppButton.vue';
+import { AppButton } from '@beabee/vue/components';
 import AppTitle from '@components/AppTitle.vue';
 import AuthBox from '@components/AuthBox.vue';
 import AppForm from '@components/forms/AppForm.vue';

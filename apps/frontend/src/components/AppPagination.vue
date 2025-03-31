@@ -39,8 +39,7 @@ import {
   faStepForward,
 } from '@fortawesome/free-solid-svg-icons';
 import { computed } from 'vue';
-import AppButton from './button/AppButton.vue';
-import AppButtonGroup from './button/AppButtonGroup.vue';
+import { AppButton, AppButtonGroup } from '@beabee/vue/components';
 
 const props = defineProps<{
   modelValue: number;

@@ -93,7 +93,7 @@ import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 import { faBullhorn, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
-import AppButton from '@components/button/AppButton.vue';
+import { AppButton } from '@beabee/vue/components';
 import AppNotification from '@components/AppNotification.vue';
 import CalloutForm from '@components/pages/callouts/CalloutForm.vue';
 import { useCallout } from '@components/pages/callouts/use-callout';
@@ -109,7 +109,7 @@ import { GetCalloutResponseWith } from '@beabee/beabee-common';
 import { formatLocale } from '@utils/dates';
 
 import { currentUser, canAdmin, isEmbed } from '@store';
-import { addNotification } from '@store/notifications';
+import { addNotification } from '@beabee/vue/store/notifications';
 import { addBreadcrumb } from '@store/breadcrumb';
 
 import CalloutVariantsBox from '@components/pages/callouts/CalloutVariantsBox.vue';

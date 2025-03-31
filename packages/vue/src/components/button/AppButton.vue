@@ -37,35 +37,6 @@
 /**
  * A versatile button component that can render as a button, link, or router-link
  * with various styles and states.
- *
- * @component AppButton
- *
- * @example
- * // Basic button
- * <AppButton>Click me</AppButton>
- *
- * // Primary button with loading state
- * <AppButton variant="primary" :loading="true">Loading...</AppButton>
- *
- * // External link button
- * <AppButton href="https://example.com" external>External Link</AppButton>
- *
- * // Router link button
- * <AppButton :to="{ name: 'home' }">Go Home</AppButton>
- *
- * @props {boolean} [disabled=false] - Disables the button
- * @props {boolean} [loading=false] - Shows a loading spinner
- * @props {('button'|'submit')} [type='button'] - HTML button type
- * @props {string} [href] - URL for anchor tag
- * @props {boolean} [external=false] - Opens link in new tab if true
- * @props {RouteLocationRaw} [to] - Vue Router destination
- * @props {string} [variant='primary'] - Button style variant
- * @props {('xs'|'sm'|'md'|'lg')} [size='md'] - Button size
- * @props {IconDefinition} [icon] - FontAwesome icon
- * @props {('button'|'label')} [is='button'] - Component element type
- *
- * @exposes {Function} focus - Focuses the button element
- * @exposes {Ref<HTMLElement>} innerButton - Reference to the button element
  */
 
 import {
@@ -74,6 +45,35 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { computed, ref } from 'vue';
 import { type RouteLocationRaw } from 'vue-router';
+
+// Define the variant types
+export type ButtonVariant =
+  | 'primary'
+  | 'link'
+  | 'danger'
+  | 'primaryOutlined'
+  | 'linkOutlined'
+  | 'dangerOutlined'
+  | 'greyOutlined'
+  | 'text'
+  | 'dangerText';
+
+// Define the size types
+export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg';
+
+// Define the component props interface
+export interface AppButtonProps {
+  disabled?: boolean;
+  loading?: boolean;
+  type?: 'button' | 'submit';
+  href?: string;
+  external?: boolean;
+  to?: RouteLocationRaw;
+  variant?: ButtonVariant;
+  size?: ButtonSize;
+  icon?: IconDefinition;
+  is?: 'button' | 'label';
+}
 
 // Variant classes for [base, hover, loading icon]
 const variantClasses = {
@@ -119,30 +119,16 @@ const sizeClasses = {
   lg: 'text-3xl px-4.5 py-4',
 } as const;
 
-const props = withDefaults(
-  defineProps<{
-    disabled?: boolean;
-    loading?: boolean;
-    type?: 'button' | 'submit';
-    href?: string;
-    external?: boolean;
-    to?: RouteLocationRaw;
-    variant?: keyof typeof variantClasses;
-    size?: 'xs' | 'sm' | 'md' | 'lg';
-    icon?: IconDefinition;
-    is?: 'button' | 'label';
-  }>(),
-  {
-    type: 'button',
-    href: undefined,
-    external: false,
-    to: undefined,
-    variant: 'primary',
-    size: 'md',
-    icon: undefined,
-    is: 'button',
-  }
-);
+const props = withDefaults(defineProps<AppButtonProps>(), {
+  type: 'button',
+  href: undefined,
+  external: false,
+  to: undefined,
+  variant: 'primary',
+  size: 'md',
+  icon: undefined,
+  is: 'button',
+});
 
 const innerButton = ref<HTMLAnchorElement | HTMLButtonElement | null>(null);
 

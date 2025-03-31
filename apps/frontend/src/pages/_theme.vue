@@ -251,7 +251,7 @@ meta:
 import { ref } from 'vue';
 
 import AppColor from '../components/AppColor.vue';
-import AppButton from '../components/button/AppButton.vue';
+import { AppButton } from '@beabee/vue/components';
 import AppInput from '../components/forms/AppInput.vue';
 import AppSlider from '../components/slider/AppSlider.vue';
 import AppSlide from '../components/slider/AppSlide.vue';

@@ -23,8 +23,7 @@
 import { faFolder } from '@fortawesome/free-solid-svg-icons';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import AppSelectableList from '../../../AppSelectableList.vue';
-import AppDropdownButton from '../../../button/AppDropdownButton.vue';
+import { AppDropdownButton, AppSelectableList } from '@beabee/vue/components';
 import { buckets } from './callouts.interface';
 
 const emit = defineEmits<{

@@ -274,7 +274,7 @@ import { faCircleNotch, faMobileAlt } from '@fortawesome/free-solid-svg-icons';
 
 import AppHeading from '@components/AppHeading.vue';
 import AppInput from '@components/forms/AppInput.vue';
-import AppButton from '@components/button/AppButton.vue';
+import { AppButton } from '@beabee/vue/components';
 import RoleEditor from '@components/role/RoleEditor.vue';
 import AppInfoList from '@components/AppInfoList.vue';
 import AppInfoListItem from '@components/AppInfoListItem.vue';
@@ -294,7 +294,7 @@ import {
   GetCalloutResponseWith,
 } from '@beabee/beabee-common';
 
-import { addNotification } from '@store/notifications';
+import { addNotification } from '@beabee/vue/store/notifications';
 
 import env from '@env';
 

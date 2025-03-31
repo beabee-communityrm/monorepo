@@ -5,7 +5,7 @@ export const initStore = Promise.all([initCurrentUser, initGeneralContent]);
 
 export const isEmbed = window.self !== window.top;
 
-export { generalContent, backgroundStyle } from './generalContent';
+export { generalContent } from './generalContent';
 
 export {
   currentUser,

@@ -1,12 +1,20 @@
 This project uses yarn workspaces, the project-internal yarn packages are stored in the folders `packages/` and `apps/`, where only the packages in the folder `packages/` should be imported. If files are to be imported from one package into an app or another package, the package name must be used for this purpose.
 
 We currently have the following yarn packages which can be imported:
-- `@beabee/client` in `packages/client/package.json`
-- `@beabee/beabee-common` in `packages/common/package.json`
-- `@beabee/core` in `packages/core/package.json`
-- `@beabee/prettier-config` in `packages/prettier-config/package.json`
-- `@beabee/test-utils` in `packages/test-utils/package.json`
-- `@beabee/tsconfig` in `packages/tsconfig/package.json`
+- `@beabee/client` in `packages/client/package.json` for the API client
+- `@beabee/beabee-common` in `packages/common/package.json` for the common types and utilities
+- `@beabee/core` in `packages/core/package.json` for the backend core library
+- `@beabee/prettier-config` in `packages/prettier-config/package.json` for the Prettier configuration
+- `@beabee/test-utils` in `packages/test-utils/package.json` for the test utilities and helpers
+- `@beabee/tsconfig` in `packages/tsconfig/package.json` for the TypeScript configuration
+- `@beabee/vue` in `packages/vue/package.json` for the Vue components used in the frontend
+
+And we have the following apps:
+- `apps/backend` in `apps/backend/package.json` for the backend API server
+- `apps/backend-cli` in `apps/backend-cli/package.json` for the backend CLI
+- `apps/frontend` in `apps/frontend/package.json` for the frontend application
+- `apps/legacy` in `apps/legacy/package.json` for the legacy frontend application
+- `apps/webhooks` in `apps/webhooks/package.json` for the webhook server
 
 There are also packages in the apps directory, but these cannot be imported into the other packages (unless we are inside that app), because they are not self-contained packages. 
 

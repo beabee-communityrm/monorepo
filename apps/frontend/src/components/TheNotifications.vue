@@ -18,7 +18,7 @@
 
 <script lang="ts" setup>
 import AppNotfication from './AppNotification.vue';
-import { notifications } from '../store/notifications';
+import { notifications } from '@beabee/vue';
 
 function removeItem(id: number) {
   notifications.splice(

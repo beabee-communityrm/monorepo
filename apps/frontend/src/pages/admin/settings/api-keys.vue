@@ -112,7 +112,7 @@ import type { GetApiKeyData, Paginated } from '@beabee/beabee-common';
 
 import AppForm from '@components/forms/AppForm.vue';
 import AppInput from '@components/forms/AppInput.vue';
-import AppButton from '@components/button/AppButton.vue';
+import { AppButton } from '@beabee/vue/components';
 import AppConfirmDialog from '@components/AppConfirmDialog.vue';
 import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
 import type { Header } from '@components/table/table.interface';
@@ -122,7 +122,7 @@ import AppSelect from '@components/forms/AppSelect.vue';
 import AppCheckbox from '@components/forms/AppCheckbox.vue';
 import AppTime from '@components/AppTime.vue';
 
-import { addNotification } from '@store/notifications';
+import { addNotification } from '@beabee/vue/store/notifications';
 
 import { formatLocale } from '@utils/dates';
 import { definePaginatedQuery } from '@utils/pagination';

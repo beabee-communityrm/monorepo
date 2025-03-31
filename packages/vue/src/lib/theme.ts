@@ -1,6 +1,6 @@
 import { parseToRgba, mix } from 'color2k';
 import { watch } from 'vue';
-import { generalContent } from '../store';
+import { generalContent } from '@beabee/vue/store/generalContent';
 
 // [Font name, fallbacks]
 export const validFonts = {
@@ -50,6 +50,39 @@ export type PartialTheme = {
   };
 };
 
+export const colorPresets = [
+  {
+    name: 'default',
+    colors: {
+      primary: '#262453',
+      link: '#43a796',
+      body: '#262453',
+      warning: '#f5cc5b',
+      success: '#86a960',
+      danger: '#ce3d3d',
+    },
+  },
+] as const;
+
+const defaultColorPreset = colorPresets[0];
+
+export const visibleCustomColors = [
+  'primary',
+  'link',
+  'body',
+  'success',
+  'warning',
+  'danger',
+] as const;
+
+// Convert validFonts to a format suitable for select components
+export const availableFonts = Object.entries(validFonts).map(
+  ([id, [label]]) => ({
+    id,
+    label,
+  })
+);
+
 function getFont(s: string | undefined): FontId {
   return s !== undefined && s in allFonts ? (s as FontId) : 'open-sans';
 }
@@ -79,26 +112,28 @@ function setShades(
 }
 
 export function getFullTheme(theme: PartialTheme): Theme {
-  const primaryColor = theme.colors?.primary || '#262453';
+  const primaryColor =
+    theme.colors?.primary ?? defaultColorPreset.colors.primary;
   const bodyFont = getFont(theme.fonts?.body);
 
-  return {
-    colors: {
-      _name: theme.colors?._name || 'custom',
-      primary: primaryColor,
-      body: theme.colors?.body || primaryColor,
-      link: theme.colors?.link || primaryColor,
-      warning: theme.colors?.warning || '#f5cc5b',
-      success: theme.colors?.success || '#86a960',
-      danger: theme.colors?.danger || '#ce3d3d',
-      white: theme.colors?.white || '#ffffff',
-      black: theme.colors?.black || '#000000',
-    },
-    fonts: {
-      body: bodyFont,
-      title: getFont(theme.fonts?.title || bodyFont),
-    },
-  };
+  const colors = {
+    _name: theme.colors?._name ?? 'custom',
+    primary: primaryColor,
+    body: theme.colors?.body ?? primaryColor,
+    link: theme.colors?.link ?? defaultColorPreset.colors.link,
+    warning: theme.colors?.warning ?? defaultColorPreset.colors.warning,
+    success: theme.colors?.success ?? defaultColorPreset.colors.success,
+    danger: theme.colors?.danger ?? defaultColorPreset.colors.danger,
+    white: theme.colors?.white ?? '#ffffff',
+    black: theme.colors?.black ?? '#000000',
+  } satisfies Theme['colors'];
+
+  const fonts = {
+    body: bodyFont,
+    title: getFont(theme.fonts?.title ?? bodyFont),
+  } satisfies Theme['fonts'];
+
+  return { colors, fonts };
 }
 
 watch(
@@ -122,9 +157,12 @@ watch(
     setCSSVar('--ff-body', allFonts[fonts.body].join(','));
     setCSSVar('--ff-title', allFonts[fonts.title].join(','));
 
-    import(`../assets/styles/fonts-${fonts.body}.css`);
+    const bodyFontFile = `@beabee/vue/assets/styles/fonts-${fonts.body}.css`;
+    const titleFontFile = `@beabee/vue/assets/styles/fonts-${fonts.title}.css`;
+
+    import(/* @vite-ignore */ bodyFontFile);
     if (fonts.title !== fonts.body) {
-      import(`../assets/styles/fonts-${fonts.title}.css`);
+      import(/* @vite-ignore */ titleFontFile);
     }
   },
   {

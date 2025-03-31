@@ -18,7 +18,7 @@ import type { CalloutStepsProps } from '@components/pages/admin/callouts/callout
 import type { FilterItem, FilterItems } from '@type';
 
 import env from '../env';
-import i18n from '@lib/i18n';
+import { i18n } from '../lib/i18n';
 
 import type { LocaleProp } from '@type';
 import type {
