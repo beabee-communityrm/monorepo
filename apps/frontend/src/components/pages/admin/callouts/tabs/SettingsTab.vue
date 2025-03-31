@@ -22,19 +22,17 @@
           />
           <AppFormBox v-if="canStartNow">
             <AppFormField>
-              <div class="mb-4">
-                <AppToggleField
-                  v-model="startDateEnabled"
-                  variant="link"
-                  :label="inputT('starts.label')"
-                  :description="
-                    startDateEnabled
-                      ? inputT('starts.opts.schedule')
-                      : inputT('starts.opts.now')
-                  "
-                />
-              </div>
-              <div v-if="startDateEnabled" class="flex gap-2">
+              <AppToggleField
+                v-model="startDateEnabled"
+                variant="link"
+                :label="inputT('starts.label')"
+                :description="
+                  startDateEnabled
+                    ? inputT('starts.opts.schedule')
+                    : inputT('starts.opts.now')
+                "
+              />
+              <div v-if="startDateEnabled" class="mt-4 flex gap-2">
                 <div>
                   <AppInput
                     v-model="localData.startDate"
@@ -55,19 +53,17 @@
 
           <AppFormBox>
             <AppFormField>
-              <div class="mb-4">
-                <AppToggleField
-                  v-model="localData.hasEndDate"
-                  variant="link"
-                  :label="inputT('expires.label')"
-                  :description="
-                    localData.hasEndDate
-                      ? inputT('expires.opts.schedule')
-                      : inputT('expires.opts.never')
-                  "
-                />
-              </div>
-              <div v-if="localData.hasEndDate" class="flex gap-2">
+              <AppToggleField
+                v-model="localData.hasEndDate"
+                variant="link"
+                :label="inputT('expires.label')"
+                :description="
+                  localData.hasEndDate
+                    ? inputT('expires.opts.schedule')
+                    : inputT('expires.opts.never')
+                "
+              />
+              <div v-if="localData.hasEndDate" class="mt-4 flex gap-2">
                 <div>
                   <AppInput v-model="localData.endDate" type="date" required />
                 </div>
