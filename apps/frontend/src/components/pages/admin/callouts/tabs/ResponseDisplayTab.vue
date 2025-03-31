@@ -488,6 +488,7 @@ watch(
   validation,
   () => {
     emit('update:error', validation.value.$errors.length > 0);
+    emit('update:validated', !validation.value.$invalid);
   },
   { immediate: true }
 );
