@@ -4,28 +4,19 @@
       <h2 v-if="title" class="mb-2 text-lg font-semibold">
         {{ title }}
       </h2>
-      <div class="space-y-1">
-        <button
-          v-for="section in sections.filter((s) => !s.hidden)"
-          :key="section.id"
-          class="w-full overflow-hidden text-ellipsis whitespace-nowrap rounded-md px-3 py-2 text-left font-semibold transition-colors"
-          :class="
-            activeSection === section.id
-              ? 'bg-white font-medium text-primary shadow-sm'
-              : 'text-body-80 hover:bg-primary-5 hover:text-body'
-          "
-          :title="section.label"
-          @click="scrollToSection(section.id)"
-        >
-          {{ section.label }}
-        </button>
-      </div>
+      <AppVTabs
+        v-model="activeSection"
+        :items="sections.filter((s) => !s.hidden)"
+        :title="title"
+        class="mb-4"
+      />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ref, onMounted, onUnmounted, watch } from 'vue';
+import AppVTabs from '../tabs/AppVTabs.vue';
 
 /**
  * Section definition for scroll navigation
@@ -55,28 +46,7 @@ const props = withDefaults(defineProps<AppScrollNavigationProps>(), {
   scrollContainer: null,
 });
 
-const emit = defineEmits<{
-  (e: 'update:activeSection', sectionId: string): void;
-  (e: 'section-change', sectionId: string): void;
-}>();
-
-// Currently active section
-const activeSection = ref<string>(
-  props.sections.length > 0 ? props.sections[0].id : ''
-);
-
-/**
- * Scroll to a specific section
- */
-function scrollToSection(sectionId: string): void {
-  const section = props.sections.find((s) => s.id === sectionId);
-  if (section && section.element) {
-    section.element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    activeSection.value = sectionId;
-    emit('update:activeSection', sectionId);
-    emit('section-change', sectionId);
-  }
-}
+const activeSection = defineModel<string | undefined>('activeSection');
 
 /**
  * Update active section based on scroll position
@@ -98,8 +68,6 @@ function handleScroll(): void {
     if (rect.top <= offset && rect.bottom > offset) {
       if (activeSection.value !== section.id) {
         activeSection.value = section.id;
-        emit('update:activeSection', section.id);
-        emit('section-change', section.id);
       }
       break;
     }
@@ -109,7 +77,10 @@ function handleScroll(): void {
 // Set up scroll event listener
 onMounted(() => {
   const scrollTarget = props.scrollContainer || window;
-  scrollTarget.addEventListener('scroll', handleScroll, { passive: true });
+  // scrollTarget.addEventListener('scroll', handleScroll, { passive: true });
+  if (!activeSection.value) {
+    activeSection.value = props.sections[0].id;
+  }
 });
 
 onUnmounted(() => {
@@ -127,18 +98,18 @@ watch(
       !props.sections.some((s) => s.id === activeSection.value)
     ) {
       activeSection.value = props.sections[0].id;
-      emit('update:activeSection', activeSection.value);
     }
 
     // Schedule a check for the active section after the DOM has updated
-    setTimeout(handleScroll, 100);
+    // setTimeout(handleScroll, 100);
   },
   { deep: true }
 );
 
-// Expose methods and properties
-defineExpose({
-  scrollToSection,
-  activeSection,
+watch(activeSection, (newSection) => {
+  const section = props.sections.find((s) => s.id === newSection);
+  if (section && section.element) {
+    section.element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 });
 </script>

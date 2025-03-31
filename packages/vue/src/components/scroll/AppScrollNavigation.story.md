@@ -44,10 +44,9 @@ A navigation component that allows users to navigate between sections of content
 
 ## Events
 
-| Event                  | Payload  | Description                                         |
-| ---------------------- | -------- | --------------------------------------------------- |
-| `update:activeSection` | `string` | Emitted when the active section changes             |
-| `section-change`       | `string` | Emitted when a section is clicked or becomes active |
+| Event                  | Payload  | Description                             |
+| ---------------------- | -------- | --------------------------------------- |
+| `update:activeSection` | `string` | Emitted when the active section changes |
 
 ## ScrollSection Interface
 

@@ -5,7 +5,7 @@
       <!-- Left Sidebar with Scroll Navigation -->
       <AppScrollNavigation
         :sections="navigationSections"
-        @section-change="onSectionChange"
+        @update:active-section="onSectionChange"
       />
 
       <!-- Main Content -->
