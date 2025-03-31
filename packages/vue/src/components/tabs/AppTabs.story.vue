@@ -4,7 +4,6 @@ import { AppTabs, type AppTabsProps, type TabItem } from './index';
 
 const state = reactive({
   selectedTab: 'tab1',
-  orientation: 'horizontal' as AppTabsProps['orientation'],
   defaultTab: 'tab1' as AppTabsProps['defaultTab'],
 });
 
@@ -62,18 +61,12 @@ const handleTabClick = (tabId: string) => {
         <AppTabs
           :items="basicTabs"
           :selected="state.selectedTab"
-          :orientation="state.orientation"
           :default-tab="state.defaultTab"
           @tab-click="handleTabClick"
         />
       </div>
 
       <template #controls>
-        <HstSelect
-          v-model="state.orientation"
-          title="Orientation"
-          :options="['horizontal', 'vertical']"
-        />
         <HstText v-model="state.defaultTab" title="Default Tab" />
       </template>
     </Variant>

@@ -1,6 +1,6 @@
 # AppTabs
 
-The primary tabs component that supports both horizontal and vertical orientations, router integration, and count indicators. When in horizontal orientation, it provides automatic horizontal scrolling when there are too many tabs to fit the available width.
+The primary tabs component that supports router integration, count indicators and automatic horizontal scrolling when there are too many tabs to fit the available width.
 
 ## Usage
 
@@ -14,19 +14,17 @@ The primary tabs component that supports both horizontal and vertical orientatio
     { id: 'tab5', label: 'Errors', error: true },
   ]"
   :selected="selectedTab"
-  orientation="horizontal"
   @tab-click="handleTabClick"
 />
 ```
 
 ## Props
 
-| Prop          | Type                         | Default      | Description                      |
-| ------------- | ---------------------------- | ------------ | -------------------------------- |
-| `items`       | `TabItem[]`                  | `[]`         | Array of tab items to display    |
-| `selected`    | `string \| null`             | `null`       | ID of the currently selected tab |
-| `orientation` | `'horizontal' \| 'vertical'` | `horizontal` | Layout orientation of the tabs   |
-| `defaultTab`  | `string \| undefined`        | `undefined`  | Default tab to fall back to      |
+| Prop         | Type                  | Default     | Description                      |
+| ------------ | --------------------- | ----------- | -------------------------------- |
+| `items`      | `TabItem[]`           | `[]`        | Array of tab items to display    |
+| `selected`   | `string \| null`      | `null`      | ID of the currently selected tab |
+| `defaultTab` | `string \| undefined` | `undefined` | Default tab to fall back to      |
 
 ## TabItem Properties
 
@@ -48,7 +46,7 @@ The primary tabs component that supports both horizontal and vertical orientatio
 
 ## Features
 
-- **Horizontal scrolling**: When in horizontal orientation, the component automatically adds horizontal scrolling if there are too many tabs to fit in the available width
+- **Horizontal scrolling**: The component automatically adds horizontal scrolling if there are too many tabs to fit in the available width
 - **No line breaks**: Tab labels never break into multiple lines, ensuring consistent UI
 - **Router integration**: Supports both router-based navigation and click events
 - **Validation states**: Visual indicators for validated or error states with icons and styling

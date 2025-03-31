@@ -1,22 +1,16 @@
 <template>
   <div class="mb-4 rounded-t-md bg-primary-10 p-1">
-    <div :class="orientation === 'vertical' ? '' : 'overflow-x-auto'">
-      <ul
-        :class="[
-          'gap-1',
-          orientation === 'vertical' ? 'flex-col' : 'flex whitespace-nowrap',
-        ]"
-      >
+    <div>
+      <ul class="flex gap-1 whitespace-nowrap">
         <li v-for="item in visibleItems" :key="item.id">
           <router-link
             v-if="item.to"
             :to="item.to"
-            class="relative my-2 inline-block whitespace-nowrap rounded-md px-4 py-2 font-semibold transition-colors"
+            class="relative m-1 inline-block whitespace-nowrap rounded-md px-4 py-2 font-semibold transition-colors"
             :class="[
               selected === item.id
                 ? 'bg-white text-body shadow-sm'
                 : 'text-body-80 hover:bg-primary-5 hover:text-body',
-              orientation === 'vertical' ? 'w-full' : 'mx-1',
             ]"
           >
             <TabLabel
@@ -29,12 +23,11 @@
           <button
             v-else
             type="button"
-            class="relative my-2 inline-block whitespace-nowrap rounded-md px-4 py-2 font-semibold transition-colors"
+            class="relative m-1 inline-block whitespace-nowrap rounded-md px-4 py-2 font-semibold transition-colors"
             :class="[
               selected === item.id
                 ? 'bg-white text-body shadow-sm'
                 : 'text-body-80 hover:bg-primary-5 hover:text-body',
-              orientation === 'vertical' ? 'w-full' : 'mx-1',
             ]"
             @click="handleTabClick(item.id)"
           >
@@ -70,20 +63,17 @@ import { computed } from 'vue';
  * Props for the AppTabs component
  * @property {TabItem[]} items - Array of tab items to display
  * @property {string | null} selected - ID of the currently selected tab
- * @property {'horizontal' | 'vertical'} orientation - Layout orientation of the tabs
  * @property {string | undefined} defaultTab - Default tab to fall back to
  */
 export interface AppTabsProps {
   items: TabItem[];
   selected: string | null;
-  orientation?: 'horizontal' | 'vertical';
   defaultTab?: string;
 }
 
 const props = withDefaults(defineProps<AppTabsProps>(), {
   items: () => [],
   selected: null,
-  orientation: 'horizontal',
   defaultTab: undefined,
 });
 
