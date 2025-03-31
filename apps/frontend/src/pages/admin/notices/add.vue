@@ -7,7 +7,7 @@ meta:
 
 <template>
   <PageTitle :title="t('addNotice.title')" border></PageTitle>
-  <App2ColGrid class="max-w-[1400px]">
+  <App2ColGrid>
     <template #col1>
       <NoticeForm :notice="undefined" @submit="handleSubmit"></NoticeForm>
     </template>

@@ -8,7 +8,7 @@ meta:
   <PageTitle border :title="t('accountPage.title')" />
   <p class="mb-5 text-sm text-primary-80">{{ t('accountPage.subTitle') }}</p>
 
-  <App2ColGrid class="max-w-[1400px]">
+  <App2ColGrid>
     <template #col1>
       <ChangePassword />
       <SetMFA contact-id="me" />

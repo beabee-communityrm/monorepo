@@ -6,7 +6,7 @@ meta:
 </route>
 
 <template>
-  <App2ColGrid class="max-w-[1400px]">
+  <App2ColGrid>
     <template #col1>
       <p class="mb-8">{{ stepT('text') }}</p>
       <AppCheckbox
@@ -16,7 +16,7 @@ meta:
       />
     </template>
   </App2ColGrid>
-  <App2ColGrid v-if="showIntroMessage" extended class="max-w-[1400px]">
+  <App2ColGrid v-if="showIntroMessage" extended>
     <template #col1>
       <AppForm
         :button-text="t('form.saveChanges')"

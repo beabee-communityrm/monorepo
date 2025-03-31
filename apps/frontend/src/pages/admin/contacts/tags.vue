@@ -6,7 +6,7 @@ meta:
 </route>
 
 <template>
-  <App2ColGrid class="max-w-[1400px]">
+  <App2ColGrid>
     <template #col1>
       <TagManager :operations="client.contact.tag" type="contact" />
     </template>

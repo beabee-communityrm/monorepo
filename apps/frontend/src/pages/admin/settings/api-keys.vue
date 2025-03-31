@@ -72,7 +72,7 @@ meta:
     </template>
   </AppPaginatedTable>
 
-  <App2ColGrid class="max-w-[1400px]">
+  <App2ColGrid>
     <template #col1>
       <AppHeading>{{ t('adminSettings.apikey.create') }}</AppHeading>
       <AppForm :button-text="t('actions.create')" @submit="generateApiKey">
