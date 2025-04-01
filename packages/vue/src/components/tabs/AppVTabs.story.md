@@ -9,7 +9,7 @@ Vertical tabs optimized for sidebar navigation and filtering interfaces.
   v-model="selectedTab"
   :items="[
     { id: 'all', label: 'All Items', count: 42 },
-    { id: 'active', label: 'Active', count: 18 }
+    { id: 'active', label: 'Active', count: 18 },
   ]"
 />
 ```
@@ -40,7 +40,7 @@ Common pattern for list views with filtering:
   :items="[
     { id: 'all', label: 'All Items', count: 42 },
     { id: 'active', label: 'Active', count: 18 },
-    { id: 'archived', label: 'Archived', count: 24 }
+    { id: 'archived', label: 'Archived', count: 24 },
   ]"
 />
 ```
@@ -55,7 +55,7 @@ Used for navigating between different sections of content:
   :items="[
     { id: 'content', label: 'Content' },
     { id: 'intro', label: 'Introduction' },
-    { id: 'endMessage', label: 'End Message' }
+    { id: 'endMessage', label: 'End Message' },
   ]"
 />
-``` 
+```

@@ -111,4 +111,4 @@ All tab components follow WAI-ARIA guidelines for tabs:
 
 - `AppTabs` adapts to both horizontal and vertical layouts
 - `AppTabsCompact` provides touch-friendly mobile experience
-- `AppVTabs` collapses into `AppTabsCompact` on mobile screens when used with `AppFilterGrid` 
+- `AppVTabs` collapses into `AppTabsCompact` on mobile screens when used with `AppFilterGrid`

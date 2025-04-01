@@ -9,7 +9,7 @@ A compact version of tabs designed for mobile views. Features horizontal scrolli
   v-model="selectedTab"
   :items="[
     { id: 'inbox', label: 'Inbox', count: 12 },
-    { id: 'sent', label: 'Sent', count: 5 }
+    { id: 'sent', label: 'Sent', count: 5 },
   ]"
 />
 ```
@@ -32,4 +32,4 @@ A compact version of tabs designed for mobile views. Features horizontal scrolli
 
 - Mobile navigation
 - Secondary navigation in responsive layouts
-- When space is limited and you need to display many tabs 
+- When space is limited and you need to display many tabs
