@@ -491,6 +491,9 @@
   "notification": {
     "error": "Das war nicht richtig. Probiere es noch mal."
   },
+  "notifications": {
+    "copy": {}
+  },
   "pageTitle": {
     "notFound": "Der Computer hat die Seite nicht gefunden."
   },

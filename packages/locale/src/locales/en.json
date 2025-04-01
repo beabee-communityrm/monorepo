@@ -1617,6 +1617,11 @@
   "notification": {
     "error": "Something went wrong. Try reloading the page."
   },
+  "notifications": {
+    "copy": {
+      "success": "Copied to clipboard"
+    }
+  },
   "pageTitle": {
     "confirmEmail": "Confirm email",
     "duplicateEmail": "Duplicate email",

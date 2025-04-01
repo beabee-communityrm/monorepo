@@ -603,6 +603,9 @@
     "data": {}
   },
   "notification": {},
+  "notifications": {
+    "copy": {}
+  },
   "pageTitle": {},
   "paymentMethods": {
     "gc_direct-debit": {
