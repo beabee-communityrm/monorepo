@@ -1,26 +1,24 @@
-import fs from "node:fs";
+import fs from "node:fs/promises";
 import path from "node:path";
-import { promisify } from "node:util";
-import { createReadStream } from "node:fs";
 import chalk from "chalk";
+
 import {
-  S3Client,
-  PutObjectCommand,
-  HeadBucketCommand,
-  HeadObjectCommand
-} from "@aws-sdk/client-s3";
-
-export interface MigrateImagesOptions {
-  source: string;
-  bucket: string;
-  endpoint: string;
-  accessKey: string;
-  secretKey: string;
-  region: string;
-  dryRun?: boolean;
-}
-
-const readdir = promisify(fs.readdir);
+  MigrateImagesOptions,
+  MigrationStats
+} from "../../types/migrate-images.js";
+import { findImageDirectories, findMainImage } from "../../utils/files.js";
+import {
+  formatFileSize,
+  formatSuccessMessage,
+  formatSkipMessage,
+  formatDryRunMessage
+} from "../../utils/format.js";
+import {
+  createS3Client,
+  checkBucketExists,
+  checkFileExists,
+  uploadFileToS3
+} from "../../utils/s3.js";
 
 /**
  * Migrates images from local storage to MinIO
@@ -31,165 +29,25 @@ export async function migrateImages(
 ): Promise<void> {
   try {
     const isDryRun = options.dryRun === true;
-
     if (isDryRun) {
       console.log(chalk.yellow("DRY RUN MODE: No files will be uploaded"));
     }
 
-    // Initialize S3 client
-    const s3Client = new S3Client({
-      endpoint: options.endpoint,
-      region: options.region,
-      credentials: {
-        accessKeyId: options.accessKey,
-        secretAccessKey: options.secretKey
-      },
-      forcePathStyle: true
-    });
+    // Initialize S3 client and check bucket
+    const s3Client = createS3Client(
+      options.endpoint,
+      options.region,
+      options.accessKey,
+      options.secretKey
+    );
 
-    // Check if bucket exists
-    try {
-      await s3Client.send(new HeadBucketCommand({ Bucket: options.bucket }));
-      console.log(chalk.green(`✓ Connected to bucket '${options.bucket}'`));
-    } catch (error) {
-      console.error(
-        chalk.red(
-          `Error: Bucket '${options.bucket}' not found or not accessible`
-        )
-      );
-      console.error(
-        "Please make sure the bucket exists and you have the correct permissions"
-      );
-      throw error;
-    }
+    await checkBucketExists(s3Client, options.bucket);
 
-    // Analyze PictShare storage structure
-    console.log(`Analyzing PictShare storage in ${options.source}...`);
+    // Process all images
+    const stats = await processAllImages(s3Client, options);
 
-    // Get all directories in the source folder
-    const directories = (
-      await fs.promises.readdir(options.source, { withFileTypes: true })
-    )
-      .filter((dirent) => dirent.isDirectory())
-      .map((dirent) => dirent.name);
-
-    console.log(`Found ${directories.length} image directories`);
-
-    let successCount = 0;
-    let errorCount = 0;
-    let skippedCount = 0;
-    let totalSizeBytes = 0;
-
-    for (const dir of directories) {
-      try {
-        const dirPath = path.join(options.source, dir);
-        const files = await fs.promises.readdir(dirPath);
-
-        // Find the main image (the one without a prefix)
-        const mainImage = files.find(
-          (file) =>
-            !file.includes("_") &&
-            file !== "deletecode" &&
-            /\.(jpg|jpeg|png|gif|webp)$/i.test(file)
-        );
-
-        if (mainImage) {
-          const filePath = path.join(dirPath, mainImage);
-          // Use the directory name as the image key (without nested folder)
-          const s3Key = dir;
-
-          // Get file stats for size calculation
-          const stats = await fs.promises.stat(filePath);
-
-          // Check if file already exists in S3
-          let fileExists = false;
-          if (!isDryRun) {
-            try {
-              await s3Client.send(
-                new HeadObjectCommand({
-                  Bucket: options.bucket,
-                  Key: s3Key
-                })
-              );
-              // If no error is thrown, the object exists
-              fileExists = true;
-              console.log(
-                chalk.cyan(`⏭ Skipped: ${s3Key} (already exists in bucket)`)
-              );
-              skippedCount++;
-            } catch (err) {
-              // Object doesn't exist, proceed with upload
-              fileExists = false;
-            }
-          }
-
-          if (!fileExists) {
-            totalSizeBytes += stats.size;
-
-            if (!isDryRun) {
-              // Upload file to S3
-              await s3Client.send(
-                new PutObjectCommand({
-                  Bucket: options.bucket,
-                  Key: s3Key,
-                  Body: fs.createReadStream(filePath),
-                  ContentType: getContentType(filePath)
-                })
-              );
-              console.log(
-                chalk.green(
-                  `✓ Migrated: ${s3Key} (${formatFileSize(stats.size)})`
-                )
-              );
-              successCount++;
-            } else {
-              console.log(
-                chalk.blue(
-                  `Would migrate: ${s3Key} (${formatFileSize(stats.size)})`
-                )
-              );
-              successCount++;
-            }
-          }
-        }
-      } catch (error) {
-        errorCount++;
-        console.error(`Error processing directory ${dir}:`, error);
-      }
-    }
-
-    // Summary
-    console.log(chalk.blue("\nMigration Summary:"));
-    if (isDryRun) {
-      console.log(chalk.yellow("DRY RUN - No files were actually uploaded"));
-      console.log(
-        chalk.green(
-          `✓ Would migrate: ${successCount} files (${formatFileSize(totalSizeBytes)})`
-        )
-      );
-    } else {
-      console.log(
-        chalk.green(
-          `✓ Successfully migrated: ${successCount} files (${formatFileSize(totalSizeBytes)})`
-        )
-      );
-      if (skippedCount > 0) {
-        console.log(
-          chalk.cyan(
-            `⏭ Skipped: ${skippedCount} files (already existed in bucket)`
-          )
-        );
-      }
-    }
-
-    if (errorCount > 0) {
-      console.log(chalk.red(`✗ Failed to process: ${errorCount} directories`));
-      console.log(chalk.yellow("Please check the logs for details."));
-    } else if (successCount > 0 || skippedCount > 0) {
-      console.log(chalk.green("✓ Process completed successfully!"));
-    } else {
-      console.log(chalk.yellow("No files found to migrate."));
-    }
+    // Print summary
+    printMigrationSummary(stats, isDryRun);
   } catch (error) {
     console.error(chalk.red("Error during migration:"), error);
     throw error;
@@ -197,58 +55,153 @@ export async function migrateImages(
 }
 
 /**
- * Recursively get all files in a directory
- * @param dir Directory to scan
- * @returns List of file paths
+ * Process all images from source directory
+ * @param s3Client S3 client
+ * @param options Migration options
+ * @returns Migration statistics
  */
-export async function getAllFiles(dir: string): Promise<string[]> {
-  const entries = await readdir(dir, { withFileTypes: true });
+async function processAllImages(
+  s3Client: any,
+  options: MigrateImagesOptions
+): Promise<MigrationStats> {
+  const stats: MigrationStats = {
+    successCount: 0,
+    skippedCount: 0,
+    errorCount: 0,
+    totalSizeBytes: 0
+  };
 
-  const files = await Promise.all(
-    entries.map(async (entry) => {
-      const fullPath = path.join(dir, entry.name);
-      return entry.isDirectory() ? await getAllFiles(fullPath) : fullPath;
-    })
-  );
+  // Analyze PictShare storage structure
+  console.log(`Analyzing PictShare storage in ${options.source}...`);
 
-  return files.flat();
+  // Get all directories in the source folder
+  const directories = await findImageDirectories(options.source);
+  console.log(`Found ${directories.length} image directories`);
+
+  // Process each directory
+  for (const dir of directories) {
+    try {
+      await processImageDirectory(s3Client, options, dir, stats);
+    } catch (error) {
+      stats.errorCount++;
+      console.error(`Error processing directory ${dir}:`, error);
+    }
+  }
+
+  return stats;
 }
 
 /**
- * Format file size in human readable format
- * @param bytes File size in bytes
- * @returns Formatted file size
+ * Process a single image directory
+ * @param s3Client S3 client
+ * @param options Migration options
+ * @param dirName Directory name
+ * @param stats Migration statistics to update
  */
-function formatFileSize(bytes: number): string {
-  if (bytes < 1024) return bytes + " bytes";
-  else if (bytes < 1048576) return (bytes / 1024).toFixed(2) + " KB";
-  else if (bytes < 1073741824) return (bytes / 1048576).toFixed(2) + " MB";
-  else return (bytes / 1073741824).toFixed(2) + " GB";
+async function processImageDirectory(
+  s3Client: any,
+  options: MigrateImagesOptions,
+  dirName: string,
+  stats: MigrationStats
+): Promise<void> {
+  const dirPath = path.join(options.source, dirName);
+  const mainImage = await findMainImage(dirPath);
+
+  if (!mainImage) {
+    return; // No valid image found in this directory
+  }
+
+  const filePath = path.join(dirPath, mainImage);
+  // Use the directory name as the image key (without nested folder)
+  const s3Key = dirName;
+
+  // Get file stats for size calculation
+  const fileStats = await fs.stat(filePath);
+
+  // Check if file already exists in S3
+  if (!options.dryRun) {
+    const fileExists = await checkFileExists(s3Client, options.bucket, s3Key);
+
+    if (fileExists) {
+      console.log(formatSkipMessage(s3Key));
+      stats.skippedCount++;
+      return;
+    }
+  }
+
+  // Process the file
+  await processFile(s3Client, options, filePath, s3Key, fileStats.size, stats);
 }
 
 /**
- * Get content type based on file extension
- * @param filePath Path to file
- * @returns MIME type for the file
+ * Process an individual file
+ * @param s3Client S3 client
+ * @param options Migration options
+ * @param filePath Local file path
+ * @param s3Key S3 object key
+ * @param fileSize File size in bytes
+ * @param stats Migration statistics to update
  */
-export function getContentType(filePath: string): string {
-  const ext = path.extname(filePath).toLowerCase();
+async function processFile(
+  s3Client: any,
+  options: MigrateImagesOptions,
+  filePath: string,
+  s3Key: string,
+  fileSize: number,
+  stats: MigrationStats
+): Promise<void> {
+  stats.totalSizeBytes += fileSize;
 
-  switch (ext) {
-    case ".jpg":
-    case ".jpeg":
-      return "image/jpeg";
-    case ".png":
-      return "image/png";
-    case ".gif":
-      return "image/gif";
-    case ".webp":
-      return "image/webp";
-    case ".svg":
-      return "image/svg+xml";
-    case ".mp4":
-      return "video/mp4";
-    default:
-      return "application/octet-stream";
+  if (!options.dryRun) {
+    // Upload file to S3
+    await uploadFileToS3(s3Client, options.bucket, s3Key, filePath);
+    console.log(formatSuccessMessage(s3Key, fileSize));
+  } else {
+    console.log(formatDryRunMessage(s3Key, fileSize));
+  }
+
+  stats.successCount++;
+}
+
+/**
+ * Print migration summary
+ * @param stats Migration statistics
+ * @param isDryRun Whether this was a dry run
+ */
+function printMigrationSummary(stats: MigrationStats, isDryRun: boolean): void {
+  console.log(chalk.blue("\nMigration Summary:"));
+
+  if (isDryRun) {
+    console.log(chalk.yellow("DRY RUN - No files were actually uploaded"));
+    console.log(
+      chalk.green(
+        `✓ Would migrate: ${stats.successCount} files (${formatFileSize(stats.totalSizeBytes)})`
+      )
+    );
+  } else {
+    console.log(
+      chalk.green(
+        `✓ Successfully migrated: ${stats.successCount} files (${formatFileSize(stats.totalSizeBytes)})`
+      )
+    );
+
+    if (stats.skippedCount > 0) {
+      console.log(
+        chalk.cyan(
+          `⏭ Skipped: ${stats.skippedCount} files (already existed in bucket)`
+        )
+      );
+    }
+  }
+
+  if (stats.errorCount > 0) {
+    console.log(
+      chalk.red(`✗ Failed to process: ${stats.errorCount} directories`)
+    );
+    console.log(chalk.yellow("Please check the logs for details."));
+  } else if (stats.successCount > 0 || stats.skippedCount > 0) {
+    console.log(chalk.green("✓ Process completed successfully!"));
+  } else {
+    console.log(chalk.yellow("No files found to migrate."));
   }
 }
