@@ -624,6 +624,9 @@
             "enableLanguages": "Enable translation support",
             "title": "Language"
           },
+          "languageSettings": {
+            "title": "Language"
+          },
           "navigationButtons": {
             "title": "Buttons"
           },
@@ -1247,37 +1250,6 @@
         },
         "title": "Title and image",
         "urlWillBe": "Permalink will be"
-      }
-    },
-    "tabs": {
-      "content": {
-        "title": "Content"
-      },
-      "endMessage": {
-        "inputs": {
-          "text": {
-            "label": "Thank you text"
-          },
-          "title": {
-            "label": "Thank you title"
-          }
-        },
-        "title": "End message"
-      },
-      "intro": {
-        "label": "Introduction text",
-        "title": "Introduction"
-      },
-      "titleAndImage": {
-        "title": "Title and image"
-      },
-      "translations": {
-        "languageSettings": {
-          "title": "Language"
-        },
-        "navigationButtons": {
-          "title": "Buttons"
-        }
       }
     },
     "title": "Create a callout",

@@ -624,6 +624,9 @@
             "enableLanguages": "Übersetzungsunterstützung aktivieren",
             "title": "Sprache"
           },
+          "languageSettings": {
+            "title": "Sprache"
+          },
           "navigationButtons": {
             "title": "Schaltflächen"
           },
@@ -1239,37 +1242,6 @@
         },
         "title": "Titel und Bild",
         "urlWillBe": "Der Permalink wird so aussehen"
-      }
-    },
-    "tabs": {
-      "content": {
-        "title": "Inhalt"
-      },
-      "endMessage": {
-        "inputs": {
-          "text": {
-            "label": "Dankestext"
-          },
-          "title": {
-            "label": "Dankes-Titel"
-          }
-        },
-        "title": "Abschlussnachricht"
-      },
-      "intro": {
-        "label": "Einleitungstext",
-        "title": "Einleitung"
-      },
-      "titleAndImage": {
-        "title": "Titel und Bild"
-      },
-      "translations": {
-        "languageSettings": {
-          "title": "Sprache"
-        },
-        "navigationButtons": {
-          "title": "Schaltflächen"
-        }
       }
     },
     "title": "Callout anlegen",

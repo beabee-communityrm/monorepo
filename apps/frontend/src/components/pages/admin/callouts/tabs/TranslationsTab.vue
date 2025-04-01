@@ -604,7 +604,7 @@ const emit = defineEmits(['update:data', 'update:validated', 'update:error']);
 
 const { t } = useI18n();
 const inputT = (key: string) =>
-  t('createCallout.tabs.endMessage.inputs.' + key);
+  t('callout.builder.tabs.endMessage.inputs.' + key);
 
 // Status Indicators
 const warnAboutEditing = computed(
@@ -699,17 +699,17 @@ const contentRef = ref<HTMLElement | null>(null);
 const sections = ref<ScrollSection[]>([
   {
     id: 'language-settings',
-    label: t('createCallout.tabs.translations.languageSettings.title'),
+    label: t('callout.builder.tabs.translations.languageSettings.title'),
   },
   {
     id: 'title-description',
-    label: t('createCallout.tabs.titleAndImage.title'),
+    label: t('callout.builder.tabs.titleAndImage.title'),
   },
   {
     id: 'buttons',
-    label: t('createCallout.tabs.translations.navigationButtons.title'),
+    label: t('callout.builder.tabs.translations.navigationButtons.title'),
   },
-  { id: 'introduction', label: t('createCallout.tabs.intro.label') },
+  { id: 'introduction', label: t('callout.builder.tabs.intro.label') },
 ]);
 
 // Initialize sections based on slides
@@ -729,19 +729,19 @@ watch(
     sections.value = [
       {
         id: 'language-settings',
-        label: t('createCallout.tabs.translations.languageSettings.title'),
+        label: t('callout.builder.tabs.translations.languageSettings.title'),
       },
       {
         id: 'title-description',
-        label: t('createCallout.tabs.titleAndImage.title'),
+        label: t('callout.builder.tabs.titleAndImage.title'),
       },
       {
         id: 'buttons',
-        label: t('createCallout.tabs.translations.navigationButtons.title'),
+        label: t('callout.builder.tabs.translations.navigationButtons.title'),
       },
-      { id: 'introduction', label: t('createCallout.tabs.intro.label') },
+      { id: 'introduction', label: t('callout.builder.tabs.intro.label') },
       ...slidesSections,
-      { id: 'thank-you', label: t('createCallout.tabs.endMessage.title') },
+      { id: 'thank-you', label: t('callout.builder.tabs.endMessage.title') },
     ];
   },
   { immediate: true }

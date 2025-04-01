@@ -81,7 +81,7 @@ const pageTitle = computed(() =>
     ? t('editCallout.title', {
         title: tabs.value?.titleAndImage.title.default,
       })
-    : t('createCallout.title')
+    : t('callout.builder.title')
 );
 
 const canStartNow = computed(
@@ -154,7 +154,7 @@ async function saveCallout(asDraft = false) {
   const data = convertStepsToCallout(tabs.value);
 
   if (!data.variants.default.title) {
-    data.variants.default.title = t('createCallout.untitledCallout');
+    data.variants.default.title = t('callout.builder.untitledCallout');
   }
 
   if (asDraft) {

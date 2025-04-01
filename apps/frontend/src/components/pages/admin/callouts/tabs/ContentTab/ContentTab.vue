@@ -175,21 +175,21 @@ const warnAboutEditing = computed(
 // Sidebar Tabs
 const sidebarTabs = reactive<SidebarTabs>({
   content: {
-    name: t('createCallout.tabs.content.title'),
+    name: t('callout.builder.tabs.content.title'),
     validated: false,
     error: false,
     component: markRaw(ContentFormTab),
     data: props.data.sidebarTabs.content,
   },
   intro: {
-    name: t('createCallout.tabs.intro.title'),
+    name: t('callout.builder.tabs.intro.title'),
     validated: false,
     error: false,
     component: markRaw(IntroMessageTab),
     data: props.data.sidebarTabs.intro,
   },
   endMessage: {
-    name: t('createCallout.tabs.endMessage.title'),
+    name: t('callout.builder.tabs.endMessage.title'),
     validated: false,
     error: false,
     component: markRaw(EndMessageTab),
