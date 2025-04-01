@@ -196,7 +196,7 @@
                       {{ slide.title }}
                     </h3>
 
-                    <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+                    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                       <!-- Back Button -->
                       <div class="space-y-2">
                         <label class="block text-sm font-medium">
