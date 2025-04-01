@@ -280,6 +280,7 @@
         },
         "translations": {
           "language": {},
+          "languageSettings": {},
           "navigationButtons": {}
         }
       },
@@ -618,21 +619,6 @@
           },
           "title": {}
         }
-      }
-    },
-    "tabs": {
-      "content": {},
-      "endMessage": {
-        "inputs": {
-          "text": {},
-          "title": {}
-        }
-      },
-      "intro": {},
-      "titleAndImage": {},
-      "translations": {
-        "languageSettings": {},
-        "navigationButtons": {}
       }
     }
   },
