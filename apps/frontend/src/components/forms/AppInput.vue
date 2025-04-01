@@ -17,6 +17,7 @@
   - `prefix` (string): A prefix to display before the input.
   - `suffix` (string): A suffix to display after the input.
   - `copyable` (boolean): Whether the input value can be copied to clipboard.
+  - `copyButtonDisabled` (boolean): Whether the copy button is disabled.
 
   ## Events
   - `update:modelValue` (value: string | number): Emitted when the value of the input changes.
@@ -29,7 +30,7 @@
  -->
 <template>
   <AppLabel v-if="label" :label="label" :required="required" />
-  <div class="flex items-center" :class="disabled && 'opacity-60'">
+  <div class="flex items-center">
     <div v-if="$slots.before" class="flex-0 mr-2"><slot name="before" /></div>
     <div
       class="flex flex-1 items-center overflow-hidden rounded border focus-within:shadow-input"
@@ -44,12 +45,14 @@
       <span
         v-if="prefix"
         class="flex-0 border-r border-primary-40 bg-grey-lighter px-2 py-2"
+        :class="disabled && 'opacity-60'"
       >
         {{ prefix }}
       </span>
       <input
         v-model.trim="value"
         class="h-10 w-full flex-1 bg-white/0 px-2 leading-[20px] focus:outline-none"
+        :class="disabled && 'opacity-60'"
         :type="type"
         :name="name"
         :required="required"
@@ -64,7 +67,9 @@
       <div v-if="copyable" class="flex-0 h-10 border-l border-primary-40">
         <AppCopyButton
           class="h-full"
+          :class="copyButtonDisabled ? 'cursor-not-allowed opacity-60' : ''"
           :text="prefix ? `${prefix}${value}` : value?.toString() || ''"
+          :disabled="copyButtonDisabled"
           @copy="handleCopy"
         />
       </div>
@@ -113,6 +118,8 @@ export interface AppInputProps {
   required?: boolean;
   /** Whether the input is disabled */
   disabled?: boolean;
+  /** Whether the copy button is disabled */
+  copyButtonDisabled?: boolean;
   /** The minimum value of the input */
   min?: number | string;
   /** The maximum value of the input */
@@ -142,6 +149,7 @@ const props = withDefaults(defineProps<AppInputProps>(), {
   max: undefined,
   required: false,
   disabled: false,
+  copyButtonDisabled: false,
   sameAs: undefined,
   pattern: undefined,
   prefix: undefined,
