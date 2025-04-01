@@ -1,5 +1,5 @@
 import { BaseTransformer } from "./BaseTransformer";
-import { TransformPlainToInstance } from "class-transformer";
+import { plainToInstance } from "class-transformer";
 import { GetTagDto } from "@api/dto/TagDto";
 import { createQueryBuilder } from "@beabee/core/database";
 import type { RuleGroup, TagData } from "@beabee/beabee-common";
@@ -41,12 +41,11 @@ abstract class BaseTagTransformer<
    * const tagDto = transformer.convert(tagModel);
    * console.log(tagDto); // { id: "...", name: "..." }
    */
-  @TransformPlainToInstance(GetTagDto)
   convert(tag: TModel): TDto {
-    return {
+    return plainToInstance(this.dtoType, {
       id: tag.id,
       name: tag.name
-    } as TDto;
+    });
   }
 
   /**
