@@ -936,6 +936,9 @@
   "notification": {
     "error": "Houve aqui um erro. Experimenta recarregar a página."
   },
+  "notifications": {
+    "copy": {}
+  },
   "pageTitle": {
     "confirmEmail": "Confirma o email",
     "duplicateEmail": "Email duplicado",

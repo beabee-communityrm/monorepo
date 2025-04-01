@@ -1397,6 +1397,9 @@
   "notification": {
     "error": "Er is iets misgegaan. Probeer de pagina opnieuw te laden."
   },
+  "notifications": {
+    "copy": {}
+  },
   "pageTitle": {
     "confirmEmail": "Bevestig e-mail",
     "duplicateEmail": "E-mail dupliceren",

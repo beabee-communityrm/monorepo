@@ -897,6 +897,9 @@
   "notification": {
     "error": "Что-то пошло не так. Перезагрузите страницу"
   },
+  "notifications": {
+    "copy": {}
+  },
   "pageTitle": {
     "confirmEmail": "Подтвердить почту",
     "duplicateEmail": "Скопировать почту",

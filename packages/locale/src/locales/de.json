@@ -1609,6 +1609,11 @@
   "notification": {
     "error": "Da ist etwas schiefgelaufen!"
   },
+  "notifications": {
+    "copy": {
+      "success": "In die Zwischenablage kopiert"
+    }
+  },
   "pageTitle": {
     "confirmEmail": "E-Mail-Adresse bestätigen",
     "duplicateEmail": "E-Mail-Adresse duplizieren",
