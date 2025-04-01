@@ -102,8 +102,7 @@ import type {
   CalloutSteps,
   TitleAndImageStepProps,
 } from '../callouts.interface';
-import AppRadioGroup from '../../../../forms/AppRadioGroup.vue';
-import AppLabel from '../../../../forms/AppLabel.vue';
+import { AppRadioGroup, AppLabel } from '@beabee/vue/components';
 import env from '../../../../../env';
 import slugify from 'slugify';
 import AppFormSection from '../../../../forms/AppFormSection.vue';

@@ -51,7 +51,7 @@
 import useVuelidate from '@vuelidate/core';
 import { watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import AppRadioGroup from '../../../../forms/AppRadioGroup.vue';
+import { AppRadioGroup } from '@beabee/vue/components';
 import type { CalloutSteps, EndMessageStepProps } from '../callouts.interface';
 import AppFormSection from '../../../../forms/AppFormSection.vue';
 import LocaleRichTextEditor from '@components/forms/LocaleRichTextEditor.vue';

@@ -52,7 +52,7 @@ import { computed, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import AppInput from '../../../../forms/AppInput.vue';
 import AppLabel from '@beabee/vue/components/form/AppLabel';
-import AppRadioGroup from '../../../../forms/AppRadioGroup.vue';
+import { AppRadioGroup } from '@beabee/vue/components';
 import AppFormSection from '../../../../forms/AppFormSection.vue';
 import type { DateAndDurationStepProps } from '../callouts.interface';
 import { sameAs } from '@vuelidate/validators';
