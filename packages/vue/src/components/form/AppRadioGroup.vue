@@ -21,7 +21,8 @@
 import useVuelidate from '@vuelidate/core';
 import { requiredIf } from '@vuelidate/validators';
 import { computed } from 'vue';
-import { AppLabel, AppRadioInput } from '@beabee/vue/components';
+import AppLabel from './AppLabel.vue';
+import AppRadioInput from './AppRadioInput.vue';
 
 /**
  * Props for the AppRadioGroup component

@@ -208,18 +208,19 @@ import {
 import useVuelidate from '@vuelidate/core';
 import { computed, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import {
-  AppRadioGroup,
-  AppScrollNavigation,
-  AppScrollSection,
-  type ScrollSection,
-  AppFormBox,
-  AppFormField,
-  AppToggleField,
-} from '@beabee/vue/components';
 import { sameAs } from '@vuelidate/validators';
 import AppInput from '@components/forms/AppInput.vue';
 import env from '@env';
+import {
+  AppScrollNavigation,
+  AppScrollSection,
+  AppRadioGroup,
+  AppFormBox,
+  AppToggleField,
+  AppFormField,
+  type ScrollSection,
+  AppLabel,
+} from '@beabee/vue/components';
 
 import type { CalloutHorizontalTabs } from '../CalloutHorizontalTabs.interface';
 

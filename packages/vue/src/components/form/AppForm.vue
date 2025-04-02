@@ -40,7 +40,8 @@ import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { addNotification } from '../../store/notifications';
 import { isApiError } from '@beabee/client';
-import { AppButton, AppNotification } from '@beabee/vue/components';
+import { AppButton } from '../button';
+import { AppNotification } from '../notification';
 
 export interface AppFormProps {
   /** The text of the submit button */

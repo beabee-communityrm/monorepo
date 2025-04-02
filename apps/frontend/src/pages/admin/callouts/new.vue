@@ -43,16 +43,16 @@ import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import { ItemStatus } from '@beabee/beabee-common';
 import { client } from '@utils/api';
+import { faEye, faBullhorn } from '@fortawesome/free-solid-svg-icons';
 
 import CalloutHorizontalTabs from '@components/pages/admin/callouts/CalloutHorizontalTabs.vue';
 import PageTitle from '@components/PageTitle.vue';
+import { AppAsyncButton } from '@beabee/vue/components';
 
 import { convertCalloutToTabs, convertStepsToCallout } from '@utils/callouts';
-import useVuelidate from '@vuelidate/core';
-import { AppAsyncButton } from '@beabee/vue/components';
-import { addBreadcrumb } from '../../../store/breadcrumb';
+import { addBreadcrumb } from '@store/breadcrumb';
 import { addNotification } from '@beabee/vue/store/notifications';
-import { faBullhorn, faEye } from '@fortawesome/free-solid-svg-icons';
+import useVuelidate from '@vuelidate/core';
 
 import type { CalloutHorizontalTabsData } from '@components/pages/admin/callouts/CalloutHorizontalTabs.interface';
 

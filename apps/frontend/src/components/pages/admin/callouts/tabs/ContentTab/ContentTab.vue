@@ -94,7 +94,11 @@ import { ItemStatus } from '@beabee/beabee-common';
 import useVuelidate from '@vuelidate/core';
 import { ref, watch, reactive, markRaw, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { AppButton, AppNotification } from '@beabee/vue/components';
+import {
+  AppButton,
+  AppNotification,
+  AppToggleField,
+} from '@beabee/vue/components';
 import { useRoute } from 'vue-router';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import Draggable from 'vuedraggable';
@@ -110,7 +114,6 @@ import CalloutSlideItem from './CalloutSlideItem.vue';
 import ContentFormTab from './SidebarTabContent/ContentFormTab.vue';
 import EndMessageTab from './SidebarTabContent/EndMessageTab.vue';
 import IntroMessageTab from './SidebarTabContent/IntroMessageTab.vue';
-import AppToggleField from '@beabee/vue/components/form/AppToggleField';
 import SidebarTabContent from './SidebarTabsContent.vue';
 
 import { getSlideSchema } from '@utils/callouts';
