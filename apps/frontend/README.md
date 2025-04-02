@@ -35,18 +35,6 @@ import { AppButton } from '@beabee/vue/components';
 
 For more information about the component library, see the [Vue package README](../../packages/vue/README.md).
 
-## Component Library
-
-The frontend uses shared Vue components from the `@beabee/vue` package. This package contains reusable UI components, theme functionality, and styling that can be used across different parts of the application.
-
-To use components from the library:
-
-```ts
-import { AppButton } from '@beabee/vue/components';
-```
-
-For more information about the component library, see the [Vue package README](../../packages/vue/README.md).
-
 ## Internationalisation
 
 Our locale data is stored in [this Google Sheet](https://docs.google.com/spreadsheets/d/1l35DW5OMi-xM8HXek5Q1jOxsXScINqqpEvPWDlpBPX8/edit#gid=0.). We use the Google Sheets APIs to pull this directly into the repository. You should ask another developers for their `.credentials.json` file so you can use the process below.
