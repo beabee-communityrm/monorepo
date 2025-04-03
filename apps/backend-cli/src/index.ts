@@ -11,7 +11,8 @@ import {
   paymentCommand,
   processCommand,
   syncCommand,
-  testCommand
+  testCommand,
+  migrateImagesCommand
 } from "./commands/index.js";
 
 const pkg = JSON.parse(
@@ -26,6 +27,7 @@ yargs(hideBin(process.argv))
   .command(processCommand)
   .command(syncCommand)
   .command(testCommand)
+  .command(migrateImagesCommand)
   .demandCommand(1, "You need at least one command before moving on")
   .version(pkg.version)
   .scriptName("yarn backend-cli")

@@ -1,6 +1,6 @@
 import { runApp } from "@beabee/core/server";
 import { getRepository } from "@beabee/core/database";
-import { Contact, ContactRole } from "@beabee/core/models";
+import { ContactRole } from "@beabee/core/models";
 import { Between } from "typeorm";
 import { NewsletterStatus } from "@beabee/beabee-common";
 import moment from "moment";
