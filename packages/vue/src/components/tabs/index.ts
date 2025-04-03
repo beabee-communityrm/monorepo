@@ -14,4 +14,3 @@ export {
   type AppVTabsItemProps,
 } from './AppVTabsItem.vue';
 export { default as TabLabel, type TabLabelProps } from './TabLabel.vue';
-export * from './tabs.interface';

@@ -109,12 +109,10 @@ import {
   type ContentPaymentData,
 } from '@beabee/beabee-common';
 
-import AppForm from '@beabee/vue/components/form/AppForm';
+import { AppForm, AppLabel, AppCheckbox } from '@beabee/vue/components';
 import AppInput from '@components/forms/AppInput.vue';
 import RichTextEditor from '@components/rte/RichTextEditor.vue';
-import AppLabel from '@beabee/vue/components/form/AppLabel';
 import AppSelect from '@components/forms/AppSelect.vue';
-import { AppCheckbox } from '@beabee/vue/components';
 import JoinForm from '@components/pages/join/JoinForm.vue';
 import AppImageUpload from '@components/forms/AppImageUpload.vue';
 import PeriodAmounts from '@components/pages/admin/membership-builder/PeriodAmounts.vue';

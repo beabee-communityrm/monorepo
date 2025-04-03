@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { reactive } from 'vue';
-import { AppTabsCompact, type TabItem } from './index';
+import { AppTabsCompact } from './index';
+import type { TabItem } from '../../types';
 
 const state = reactive({
   selectedTab: 'inbox',

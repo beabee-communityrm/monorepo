@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { TabItem } from './tabs.interface';
+import type { TabItem } from '../../types/tabs.interface';
 import AppTabs from './AppTabs.vue';
 
 export type AppTabCardVariant = 'boxed' | 'transparent';

@@ -60,7 +60,6 @@ services:
       - ./packages:/opt/packages
       - ./apps/backend/built:/opt/apps/backend/built
       - ./apps/backend-cli/dist:/opt/apps/backend-cli/dist
-      - ./packages/locale/dist:/opt/packages/locale/dist
       # Allow migrations to be written out from the container
       - ./packages/core/src/migrations:/opt/packages/core/src/migrations
     # TODO: Use standard dist folder

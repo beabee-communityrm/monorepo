@@ -12,7 +12,7 @@
   </ul>
 </template>
 <script lang="ts" setup>
-import type { TabItem } from './tabs.interface';
+import type { TabItem } from '../../types/tabs.interface';
 import AppTabsCompactItem from './AppTabsCompactItem.vue';
 
 const emit = defineEmits(['update:modelValue']);

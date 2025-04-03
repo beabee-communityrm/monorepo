@@ -72,11 +72,9 @@ import AppHeading from '@components/AppHeading.vue';
 import type { UpdateContribution } from '@components/contact/contact.interface';
 import ContactBasicFields from '@components/contact/ContactBasicFields.vue';
 import ContactContributionFields from '@components/contact/ContactContributionFields.vue';
-import { AppCheckbox } from '@beabee/vue/components';
-import AppForm from '@beabee/vue/components/form/AppForm';
+import { AppCheckbox, AppForm, AppButton } from '@beabee/vue/components';
 import PageTitle from '@components/PageTitle.vue';
 import RoleEditor from '@components/role/RoleEditor.vue';
-import { AppButton } from '@beabee/vue/components';
 
 import { addBreadcrumb } from '@store/breadcrumb';
 

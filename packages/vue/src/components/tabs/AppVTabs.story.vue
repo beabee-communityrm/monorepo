@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { reactive } from 'vue';
-import { AppVTabs, type TabItem } from './index';
+import { AppVTabs } from './index';
+import type { TabItem } from '../../types';
 
 const state = reactive({
   selectedTab: 'content',

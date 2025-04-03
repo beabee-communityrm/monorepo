@@ -110,16 +110,14 @@ import { faCopy, faTrash, faWarning } from '@fortawesome/free-solid-svg-icons';
 import { addDays } from 'date-fns';
 import type { GetApiKeyData, Paginated } from '@beabee/beabee-common';
 
-import AppForm from '@beabee/vue/components/form/AppForm';
+import { AppForm, AppButton, AppCheckbox } from '@beabee/vue/components';
 import AppInput from '@components/forms/AppInput.vue';
-import { AppButton } from '@beabee/vue/components';
 import AppConfirmDialog from '@components/AppConfirmDialog.vue';
 import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
 import type { Header } from '@components/table/table.interface';
 import AppHeading from '@components/AppHeading.vue';
 import App2ColGrid from '@components/App2ColGrid.vue';
 import AppSelect from '@components/forms/AppSelect.vue';
-import { AppCheckbox } from '@beabee/vue/components';
 import AppTime from '@components/AppTime.vue';
 
 import { addNotification } from '@beabee/vue/store/notifications';

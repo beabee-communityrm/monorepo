@@ -2,7 +2,7 @@
 import { reactive } from 'vue';
 import AppTabCard from './AppTabCard.vue';
 import AppFormBox from '../form/AppFormBox.vue';
-import type { TabItem } from './tabs.interface';
+import type { TabItem } from '../../types/tabs.interface';
 
 const state = reactive({
   selectedTab: 'en',

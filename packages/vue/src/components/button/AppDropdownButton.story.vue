@@ -11,7 +11,7 @@ import {
   faCog,
   faCheck,
 } from '@fortawesome/free-solid-svg-icons';
-import { AppSelectableList } from '@beabee/vue/components/list';
+import { AppSelectableList } from '../list';
 
 const state = reactive({
   icon: faUser,

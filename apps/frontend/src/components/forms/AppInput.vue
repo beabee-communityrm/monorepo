@@ -70,7 +70,6 @@
           :class="copyButtonDisabled ? 'cursor-not-allowed opacity-60' : ''"
           :text="prefix ? `${prefix}${value}` : value?.toString() || ''"
           :disabled="copyButtonDisabled"
-          @copy="handleCopy"
         />
       </div>
     </div>
@@ -96,9 +95,8 @@ import {
   url,
 } from '@vuelidate/validators';
 import AppInputHelp from './AppInputHelp.vue';
-import AppLabel from '@beabee/vue/components/form/AppLabel';
+import { AppLabel, AppCopyButton } from '@beabee/vue/components';
 import AppInputError from './AppInputError.vue';
-import { AppCopyButton } from '@beabee/vue/components';
 
 /**
  * Props for the AppInput component
@@ -299,8 +297,4 @@ function isPassword(value: string) {
 watch(validation, (newState) => {
   emit('update:validation', !newState.$invalid);
 });
-
-const handleCopy = () => {
-  // Optional: Add a notification that copying was successful
-};
 </script>
