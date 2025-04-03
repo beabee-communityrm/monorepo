@@ -50,11 +50,11 @@ import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import AppInput from '../forms/AppInput.vue';
 import AppSelect from '../forms/AppSelect.vue';
-import AppRadioGroup from '../forms/AppRadioGroup.vue';
+import { AppRadioGroup } from '@beabee/vue/components';
 import { client } from '@utils/api';
 import { generalContent } from '../../store';
 import { type UpdateContribution } from './contact.interface';
-import { type SelectItem } from '../forms/form.interface';
+import { type SelectItem } from '@beabee/vue/types';
 
 const { t } = useI18n();
 

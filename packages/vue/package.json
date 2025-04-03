@@ -10,7 +10,9 @@
   },
   "scripts": {
     "dev": "histoire dev",
-    "build": "histoire build",
+    "build": "yarn build:lib && yarn build:styles",
+    "build:lib": "vite build",
+    "build:styles": "vite build --mode styles",
     "start": "histoire preview",
     "format": "prettier --write .",
     "check": "yarn check:tsc && yarn check:prettier",
@@ -18,6 +20,7 @@
     "check:prettier": "prettier -c ."
   },
   "dependencies": {
+    "@beabee/client": "workspace:^",
     "@fontsource/fira-sans": "^5.1.1",
     "@fontsource/fira-sans-condensed": "^5.1.1",
     "@fontsource/libre-franklin": "^5.1.2",
@@ -33,6 +36,7 @@
     "@fortawesome/free-regular-svg-icons": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/vue-fontawesome": "^3.0.8",
+    "@vuelidate/core": "^2.0.3",
     "color2k": "^2.0.3",
     "import-meta-resolve": "^4.1.0",
     "vue": "^3.5.13",
@@ -60,18 +64,13 @@
     ".": "./src/index.ts",
     "./components-path": "./src/components",
     "./components": "./src/components/index.ts",
-    "./components/button": "./src/components/button/index.ts",
-    "./components/button/*": "./src/components/button/*.vue",
-    "./components/list": "./src/components/list/index.ts",
-    "./components/list/*": "./src/components/list/*.vue",
-    "./components/*": "./src/components/*.vue",
     "./lib/*": "./src/lib/*.ts",
     "./plugins/*": "./src/plugins/*.js",
     "./store/*": "./src/store/*.ts",
-    "./types/*": "./src/types/*.ts",
+    "./types": "./src/types/index.ts",
     "./styles/*": "./src/styles/*.css",
     "./styles": "./src/styles/index.css",
-    "./assets/*": "./assets/*",
+    "./assets/*": "./src/assets/*",
     "./tailwind.config": "./tailwind.config.js"
   }
 }

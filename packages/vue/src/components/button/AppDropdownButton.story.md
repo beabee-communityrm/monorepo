@@ -21,9 +21,9 @@ The `AppDropdownButton` component is a button that displays a dropdown menu when
   show-title
 >
   <div class="p-2">
-    <div class="hover:bg-gray-100 cursor-pointer p-2">User 1</div>
-    <div class="hover:bg-gray-100 cursor-pointer p-2">User 2</div>
-    <div class="hover:bg-gray-100 cursor-pointer p-2">User 3</div>
+    <div class="hover:bg-grey-lighter cursor-pointer p-2">User 1</div>
+    <div class="hover:bg-grey-lighter cursor-pointer p-2">User 2</div>
+    <div class="hover:bg-grey-lighter cursor-pointer p-2">User 3</div>
   </div>
 </AppDropdownButton>
 ```
@@ -56,9 +56,9 @@ The `AppDropdownButton` component is a button that displays a dropdown menu when
   show-title
 >
   <div class="p-2">
-    <div class="hover:bg-gray-100 cursor-pointer p-2">User 1</div>
-    <div class="hover:bg-gray-100 cursor-pointer p-2">User 2</div>
-    <div class="hover:bg-gray-100 cursor-pointer p-2">User 3</div>
+    <div class="hover:bg-grey-lighter cursor-pointer p-2">User 1</div>
+    <div class="hover:bg-grey-lighter cursor-pointer p-2">User 2</div>
+    <div class="hover:bg-grey-lighter cursor-pointer p-2">User 3</div>
   </div>
 </AppDropdownButton>
 ```
@@ -68,9 +68,9 @@ The `AppDropdownButton` component is a button that displays a dropdown menu when
 ```vue
 <AppDropdownButton :icon="faUser" title="Select User" variant="primaryOutlined">
   <div class="p-2">
-    <div class="hover:bg-gray-100 cursor-pointer p-2">User 1</div>
-    <div class="hover:bg-gray-100 cursor-pointer p-2">User 2</div>
-    <div class="hover:bg-gray-100 cursor-pointer p-2">User 3</div>
+    <div class="hover:bg-grey-lighter cursor-pointer p-2">User 1</div>
+    <div class="hover:bg-grey-lighter cursor-pointer p-2">User 2</div>
+    <div class="hover:bg-grey-lighter cursor-pointer p-2">User 3</div>
   </div>
 </AppDropdownButton>
 ```

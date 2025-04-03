@@ -943,8 +943,8 @@
             "help": "<p>Du kannst den <strong>Permalink</strong> an deine Nutzer schicken, damit sie an dem Callout teilnehmen können.</p>\n",
             "label": "Permalink",
             "opts": {
-              "auto": "Automatisch aus Callout-Titel generieren",
-              "manual": "Benutzerdefinierten Permalink festlegen"
+              "auto": "Der Permalink wird aus dem Callout-Titel generiert und automatisch aktualisiert, bis der Callout veröffentlicht wird.",
+              "manual": "Der Permalink wird manuell festgelegt"
             }
           },
           "title": {

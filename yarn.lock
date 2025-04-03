@@ -670,6 +670,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@beabee/vue@workspace:packages/vue"
   dependencies:
+    "@beabee/client": "workspace:^"
     "@beabee/prettier-config": "workspace:^"
     "@beabee/tsconfig": "workspace:^"
     "@fontsource/fira-sans": "npm:^5.1.1"
@@ -690,6 +691,7 @@ __metadata:
     "@histoire/plugin-vue": "npm:^1.0.0-alpha.2"
     "@intlify/unplugin-vue-i18n": "npm:^1.6.0"
     "@vitejs/plugin-vue": "npm:^5.2.1"
+    "@vuelidate/core": "npm:^2.0.3"
     color2k: "npm:^2.0.3"
     histoire: "npm:^1.0.0-alpha.2"
     import-meta-resolve: "npm:^4.1.0"

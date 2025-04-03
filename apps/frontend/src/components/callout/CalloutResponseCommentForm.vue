@@ -17,7 +17,7 @@
 
 <script lang="ts" setup>
 import type { GetCalloutResponseCommentData } from '@beabee/beabee-common';
-import AppForm from '../forms/AppForm.vue';
+import { AppForm } from '@beabee/vue/components';
 import RichTextEditor from '../rte/RichTextEditor.vue';
 import { type CommentFormData } from './calloutResponseComment.interface';
 import { reactive } from 'vue';

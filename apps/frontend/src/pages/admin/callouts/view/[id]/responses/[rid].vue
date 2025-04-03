@@ -184,14 +184,17 @@ import {
 import AppHeading from '@components/AppHeading.vue';
 import AppInfoList from '@components/AppInfoList.vue';
 import AppInfoListItem from '@components/AppInfoListItem.vue';
-import { AppButton, AppButtonGroup } from '@beabee/vue/components';
+import {
+  AppButton,
+  AppButtonGroup,
+  AppNotification,
+} from '@beabee/vue/components';
 import { addBreadcrumb } from '@store/breadcrumb';
 import MoveBucketButton from '@components/pages/admin/callouts/MoveBucketButton.vue';
 import ToggleTagButton from '@components/tag/ToggleTagButton.vue';
 import { buckets } from '@components/pages/admin/callouts/callouts.interface';
 import CalloutResponseComments from '@components/callout/CalloutResponseComments.vue';
 import SetAssigneeButton from '@components/pages/admin/callouts/SetAssigneeButton.vue';
-import AppNotification from '@components/AppNotification.vue';
 import CalloutForm from '@components/pages/callouts/CalloutForm.vue';
 import TagList from '@components/tag/TagList.vue';
 

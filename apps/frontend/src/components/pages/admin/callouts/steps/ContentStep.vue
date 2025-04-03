@@ -139,7 +139,7 @@ import { ref, watch } from 'vue';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import type { CalloutSteps, ContentStepProps } from '../callouts.interface';
-import AppNotification from '../../../../AppNotification.vue';
+import { AppNotification, AppCheckbox } from '@beabee/vue/components';
 import FormBuilder from '../../../../form-builder/FormBuilder.vue';
 import {
   faChevronLeft,
@@ -151,7 +151,6 @@ import { getSlideSchema } from '../../../../../utils/callouts';
 import AppInput from '../../../../forms/AppInput.vue';
 import { AppButton, AppButtonGroup } from '@beabee/vue/components';
 import FormBuilderNavigation from '../../../../form-builder/FormBuilderNavigation.vue';
-import AppCheckbox from '../../../../forms/AppCheckbox.vue';
 import env from '../../../../../env';
 import Draggable from 'vuedraggable';
 import { useRoute } from 'vue-router';

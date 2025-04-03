@@ -25,14 +25,7 @@
       "@assets/*": ["./src/assets/*"]
     }
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.d.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "../../packages/vue/src/plugins/icons.ts",
-    "../../packages/vue/src/lib/i18n.ts"
-  ],
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
   "references": [
     { "path": "../../packages/common" },
     { "path": "../../packages/client" }

@@ -278,13 +278,13 @@ const segmentItems = computed(() => [
   {
     id: '',
     label: t('contacts.allContacts'),
-    count: contactsTotal.value === null ? '???' : n(contactsTotal.value),
+    count: contactsTotal.value === null ? 0 : contactsTotal.value,
     to: '/admin/contacts',
   },
   ...segments.value.map((segment) => ({
     id: segment.id,
     label: segment.name,
-    count: n(segment.contactCount),
+    count: segment.contactCount,
     to: '/admin/contacts?segment=' + segment.id,
   })),
 ]);

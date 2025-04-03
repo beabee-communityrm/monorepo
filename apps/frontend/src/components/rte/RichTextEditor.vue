@@ -66,7 +66,7 @@ import Underline from '@tiptap/extension-underline';
 import StarterKit from '@tiptap/starter-kit';
 import Typography from '@tiptap/extension-typography';
 import RichTextEditorButton from './RichTextEditorButton.vue';
-import AppLabel from '../forms/AppLabel.vue';
+import { AppLabel } from '@beabee/vue/components';
 import useVuelidate from '@vuelidate/core';
 import { helpers, requiredIf } from '@vuelidate/validators';
 import {
