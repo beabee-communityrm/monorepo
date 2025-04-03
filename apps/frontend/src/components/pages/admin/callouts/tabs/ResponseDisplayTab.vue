@@ -296,6 +296,7 @@ export interface ResponseDisplayTabData {
   responseImageProp: string;
   responseLinks: { text: string; url: string }[];
   mapSchema: CalloutMapSchema;
+  imageFilter: string;
 }
 
 export interface ResponseDisplayTabProps {

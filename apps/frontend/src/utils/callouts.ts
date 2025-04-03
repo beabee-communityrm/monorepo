@@ -284,6 +284,7 @@ export function convertCalloutToTabs(
         addressPattern: '',
         addressPatternProp: '',
       },
+      imageFilter: callout?.responseViewSchema?.imageFilter || '',
     },
   };
 }
@@ -401,7 +402,7 @@ export function convertStepsToCallout(
           titleProp: tabs.responseDisplay.responseTitleProp,
           imageProp: tabs.responseDisplay.responseImageProp,
           // TODO: Remove this once the image filter is removed from the API
-          imageFilter: '',
+          imageFilter: tabs.responseDisplay.imageFilter,
           gallery: tabs.responseDisplay.responseViews.includes('gallery'),
           links: tabs.responseDisplay.responseLinks,
           map: tabs.responseDisplay.responseViews.includes('map')
