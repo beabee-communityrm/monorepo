@@ -18,9 +18,11 @@ The `AppCopyButton` component provides a simple way to copy text to the clipboar
 
 ## Props
 
-| Prop   | Type     | Required | Description                   |
-| ------ | -------- | -------- | ----------------------------- |
-| `text` | `string` | Yes      | The text to copy to clipboard |
+| Prop       | Type      | Required | Description                    |
+| ---------- | --------- | -------- | ------------------------------ |
+| `text`     | `string`  | Yes      | The text to copy to clipboard  |
+| `variant`  |           | No       | A style variant                |
+| `disabled` | `boolean` | No       | Whether the button is disabled |
 
 ## Events
 

@@ -66,8 +66,6 @@
       <span v-if="suffix" class="flex-0 px-2">{{ suffix }}</span>
       <div v-if="copyable" class="flex-0 h-10 border-l border-primary-40">
         <AppCopyButton
-          class="h-full"
-          :class="copyButtonDisabled ? 'cursor-not-allowed opacity-60' : ''"
           :text="prefix ? `${prefix}${value}` : value?.toString() || ''"
           :disabled="copyButtonDisabled"
         />

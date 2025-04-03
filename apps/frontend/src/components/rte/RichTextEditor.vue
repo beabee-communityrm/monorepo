@@ -66,11 +66,8 @@
         class="content-message"
         :class="disabled && 'ProseMirror-disabled'"
       />
-      <div v-if="copyable" class="absolute right-0 top-0">
-        <AppCopyButton
-          class="mr-1 mt-1 !h-9 !w-9 rounded bg-white/70 hover:bg-white"
-          :text="editor?.getHTML() || ''"
-        />
+      <div v-if="copyable" class="absolute right-1 top-1">
+        <AppCopyButton variant="float" :text="editor?.getHTML() || ''" />
       </div>
     </div>
     <AppInputError v-if="hasError" :message="validation.$errors[0].$message" />

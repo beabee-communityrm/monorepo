@@ -22,11 +22,8 @@
         v-bind="$attrs"
         @blur="validation.$touch"
       />
-      <div v-if="copyable" class="absolute right-0 top-0">
-        <AppCopyButton
-          class="mr-1 mt-1 !h-9 !w-9 rounded bg-white/70 hover:bg-white"
-          :text="value?.toString() || ''"
-        />
+      <div v-if="copyable" class="absolute right-1 top-1">
+        <AppCopyButton variant="float" :text="value?.toString() || ''" />
       </div>
     </div>
     <AppInputError
