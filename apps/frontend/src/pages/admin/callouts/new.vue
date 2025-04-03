@@ -87,7 +87,7 @@ const pageTitle = computed(() =>
 const canStartNow = computed(
   () =>
     tabs.value &&
-    (tabs.value.settings.startNow ||
+    (!tabs.value.settings.hasStartDate ||
       new Date(
         tabs.value.settings.startDate + 'T' + tabs.value.settings.startTime
       ) <= now.value)

@@ -155,10 +155,12 @@ import AppImageUpload from '@components/forms/AppImageUpload.vue';
 import useVuelidate from '@vuelidate/core';
 import env from '@env';
 import slugify from 'slugify';
-import AppFormBox from '@beabee/vue/components/form/AppFormBox';
+import {
+  AppFormBox,
+  AppToggleField,
+  AppFormField,
+} from '@beabee/vue/components';
 import AppTextArea from '@components/forms/AppTextArea.vue';
-import AppToggleField from '@beabee/vue/components/form/AppToggleField';
-import AppFormField from '@beabee/vue/components/form/AppFormField';
 import type { LocaleProp } from '@type';
 import type { CalloutHorizontalTabs } from '../CalloutHorizontalTabs.interface';
 import {

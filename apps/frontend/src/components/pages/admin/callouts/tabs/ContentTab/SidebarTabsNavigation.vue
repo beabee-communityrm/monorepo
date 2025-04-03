@@ -16,7 +16,8 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import { AppTabs, type TabItem } from '@beabee/vue/components/tabs';
+import { AppTabs } from '@beabee/vue/components';
+import { type TabItem } from '@beabee/vue/types';
 import type { SidebarTabs } from './SidebarTabs.interface';
 
 /**

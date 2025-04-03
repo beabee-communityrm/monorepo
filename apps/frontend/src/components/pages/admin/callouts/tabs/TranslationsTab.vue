@@ -567,7 +567,6 @@ import {
   AppScrollSection,
   AppTabCard,
   type ScrollSection,
-  type TabItem,
 } from '@beabee/vue/components';
 import { AppFormBox, AppCheckboxGroup } from '@beabee/vue/components';
 import AppInput from '@components/forms/AppInput.vue';
@@ -579,6 +578,7 @@ import type { CalloutHorizontalTabs } from '../CalloutHorizontalTabs.interface';
 import type { EndMessageTabData } from '../tabs/ContentTab/SidebarTabContent/EndMessageTab.vue';
 import { generalContent } from '@store';
 import { localeItems as allLocaleItems } from '@beabee/vue/lib/i18n';
+import type { TabItem } from '@beabee/vue/types';
 
 /**
  * Data for the translations tab
