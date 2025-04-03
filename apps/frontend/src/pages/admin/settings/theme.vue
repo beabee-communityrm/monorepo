@@ -102,7 +102,12 @@ meta:
 <script lang="ts" setup>
 import { computed, onBeforeMount, onBeforeUnmount, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { AppForm } from '@beabee/vue/components';
 import AppHeading from '../../../components/AppHeading.vue';
+import AppColorInput from '../../../components/forms/AppColorInput.vue';
+import AppSelect from '../../../components/forms/AppSelect.vue';
+import App2ColGrid from '../../../components/App2ColGrid.vue';
+
 import { client } from '@utils/api';
 import {
   getFullTheme,
@@ -112,10 +117,6 @@ import {
   visibleCustomColors,
 } from '@beabee/vue/lib/theme';
 import { generalContent } from '../../../store';
-import AppColorInput from '../../../components/forms/AppColorInput.vue';
-import AppSelect from '../../../components/forms/AppSelect.vue';
-import AppForm from '@beabee/vue/components/form/AppForm';
-import App2ColGrid from '../../../components/App2ColGrid.vue';
 
 const { t } = useI18n();
 

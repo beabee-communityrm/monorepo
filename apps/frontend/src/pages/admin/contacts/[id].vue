@@ -26,7 +26,7 @@ import { useI18n } from 'vue-i18n';
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
 
 import PageTitle from '@components/PageTitle.vue';
-import AppTabs from '@beabee/vue/components/tabs/AppTabs';
+import { AppTabs } from '@beabee/vue/components';
 
 import { addBreadcrumb } from '@store/breadcrumb';
 

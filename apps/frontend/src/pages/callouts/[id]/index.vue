@@ -93,8 +93,7 @@ import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 import { faBullhorn, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
-import { AppButton } from '@beabee/vue/components';
-import AppNotification from '@beabee/vue/components/notification/AppNotification';
+import { AppButton, AppNotification } from '@beabee/vue/components';
 import CalloutForm from '@components/pages/callouts/CalloutForm.vue';
 import { useCallout } from '@components/pages/callouts/use-callout';
 import CalloutLoginPrompt from '@components/pages/callouts/CalloutLoginPrompt.vue';

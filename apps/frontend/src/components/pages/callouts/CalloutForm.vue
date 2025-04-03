@@ -71,9 +71,8 @@ import { useI18n } from 'vue-i18n';
 import useVuelidate from '@vuelidate/core';
 
 import CalloutFormGuestFields from './CalloutFormGuestFields.vue';
-import AppNotification from '@beabee/vue/components/notification/AppNotification';
+import { AppNotification, AppButton } from '@beabee/vue/components';
 import FormRenderer from '@components/form-renderer/FormRenderer.vue';
-import { AppButton } from '@beabee/vue/components';
 
 import { currentUser } from '@store';
 

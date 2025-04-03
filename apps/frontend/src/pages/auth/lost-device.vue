@@ -54,11 +54,10 @@ import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 
+import { AppForm, AppButton } from '@beabee/vue/components';
 import AppInput from '@components/forms/AppInput.vue';
-import { AppButton } from '@beabee/vue/components';
 import AppTitle from '@components/AppTitle.vue';
 import AuthBox from '@components/AuthBox.vue';
-import AppForm from '@beabee/vue/components/form/AppForm';
 
 import { client } from '@utils/api';
 

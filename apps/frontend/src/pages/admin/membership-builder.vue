@@ -16,11 +16,12 @@ meta:
 <script lang="ts" setup>
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import PageTitle from '../../components/PageTitle.vue';
-import AppTabs from '@beabee/vue/components/tabs/AppTabs';
 import { useRoute, useRouter } from 'vue-router';
 import { addBreadcrumb } from '../../store/breadcrumb';
 import { faHandsHelping } from '@fortawesome/free-solid-svg-icons';
+
+import { AppTabs } from '@beabee/vue/components';
+import PageTitle from '../../components/PageTitle.vue';
 
 const { t } = useI18n();
 const route = useRoute();

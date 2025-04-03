@@ -174,9 +174,8 @@ import {
   type GetCalloutData,
 } from '@beabee/beabee-common';
 
-import AppForm from '@beabee/vue/components/form/AppForm';
+import { AppForm, AppCheckbox } from '@beabee/vue/components';
 import AppInput from '@components/forms/AppInput.vue';
-import { AppCheckbox } from '@beabee/vue/components';
 import SetupForm from '@components/pages/join/SetupForm.vue';
 import RichTextEditor from '@components/rte/RichTextEditor.vue';
 import App2ColGrid from '@components/App2ColGrid.vue';

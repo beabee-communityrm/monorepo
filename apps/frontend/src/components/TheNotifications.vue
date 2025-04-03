@@ -28,7 +28,7 @@
  * Handles notification positioning and removal
  */
 
-import AppNotification from '@beabee/vue/components/notification/AppNotification';
+import { AppNotification } from '@beabee/vue/components';
 import { notifications } from '@beabee/vue';
 
 function removeItem(id: number) {

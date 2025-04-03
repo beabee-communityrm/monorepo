@@ -96,9 +96,8 @@ import {
   url,
 } from '@vuelidate/validators';
 import AppInputHelp from './AppInputHelp.vue';
-import AppLabel from '@beabee/vue/components/form/AppLabel';
+import { AppLabel, AppCopyButton } from '@beabee/vue/components';
 import AppInputError from './AppInputError.vue';
-import { AppCopyButton } from '@beabee/vue/components';
 
 /**
  * Props for the AppInput component

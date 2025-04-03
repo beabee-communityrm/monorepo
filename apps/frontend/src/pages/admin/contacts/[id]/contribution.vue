@@ -69,14 +69,12 @@ import { useI18n } from 'vue-i18n';
 import AppHeading from '@components/AppHeading.vue';
 import ContactPaymentsHistory from '@components/contact/ContactPaymentsHistory.vue';
 import type { UpdateContribution } from '@components/contact/contact.interface';
-import AppForm from '@beabee/vue/components/form/AppForm';
+import { AppForm, AppNotification } from '@beabee/vue/components';
 import ContactContributionFields from '@components/contact/ContactContributionFields.vue';
 import App2ColGrid from '@components/App2ColGrid.vue';
 import ContactCancelContribution from '@components/contact/ContactCancelContribution.vue';
 import AppConfirmDialog from '@components/AppConfirmDialog.vue';
 import { client } from '@utils/api';
-
-import AppNotification from '@beabee/vue/components/notification/AppNotification';
 
 const { t } = useI18n();
 

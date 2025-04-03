@@ -214,7 +214,6 @@ import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import { AppButton, AppButtonGroup } from '@beabee/vue/components';
 import AppSelect from '@components/forms/AppSelect.vue';
-import AppVTabs from '@beabee/vue/components/tabs/AppVTabs';
 import {
   headers,
   useCalloutResponseFilters,
@@ -232,7 +231,7 @@ import {
   defineParam,
   defineRulesParam,
 } from '@utils/pagination';
-import { AppCheckbox } from '@beabee/vue/components';
+import { AppCheckbox, AppVTabs } from '@beabee/vue/components';
 import {
   faComment,
   faDownload,
