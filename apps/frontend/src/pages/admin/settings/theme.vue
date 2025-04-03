@@ -54,8 +54,8 @@ meta:
             name="activePreset"
             :value="preset.name"
             required
-            :wrapper-class="'mb-2 flex items-center'"
-            :label-class="'w-full'"
+            wrapper-class="mb-2 flex items-center"
+            label-class="w-full"
           >
             <div class="flex w-full flex-1 items-center justify-between">
               <span>
@@ -77,7 +77,7 @@ meta:
             v-model="activePreset"
             name="activePreset"
             value="custom"
-            :wrapper-class="'mb-4 flex h-8 items-center'"
+            wrapper-class="mb-4 flex h-8 items-center"
           >
             {{ t('adminSettings.theme.customColors') }}
           </AppRadioInput>

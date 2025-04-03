@@ -70,7 +70,6 @@
         <AppCopyButton
           class="mr-1 mt-1 !h-9 !w-9 rounded bg-white/70 hover:bg-white"
           :text="editor?.getHTML() || ''"
-          @copy="handleCopy"
         />
       </div>
     </div>
@@ -194,10 +193,6 @@ function setLink() {
       .setLink({ href: url })
       .run();
   }
-}
-
-function handleCopy() {
-  // Optional: Add a notification that copying was successful
 }
 </script>
 

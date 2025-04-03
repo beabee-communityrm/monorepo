@@ -26,7 +26,6 @@
         <AppCopyButton
           class="mr-1 mt-1 !h-9 !w-9 rounded bg-white/70 hover:bg-white"
           :text="value?.toString() || ''"
-          @copy="handleCopy"
         />
       </div>
     </div>
@@ -147,8 +146,4 @@ const getAriaDescribedBy = computed(() => {
   if (props.maxLength !== undefined) ids.push(`${id.value}-char-count`);
   return ids.length ? ids.join(' ') : undefined;
 });
-
-const handleCopy = () => {
-  // Optional: Add a notification that copying was successful
-};
 </script>
