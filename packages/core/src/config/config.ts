@@ -100,6 +100,13 @@ export const config = {
     url: env.s("BEABEE_DISCOURSE_URL", ""),
     ssoSecret: env.s("BEABEE_DISCOURSE_SSOSECRET", "")
   },
+  minio: {
+    endpoint: env.s("MINIO_ENDPOINT", "http://minio:9000"),
+    region: env.s("MINIO_REGION", "us-east-1"),
+    accessKey: env.s("MINIO_ROOT_USER", "minioadmin"),
+    secretKey: env.s("MINIO_ROOT_PASSWORD", "minioadmin"),
+    bucket: env.s("MINIO_BUCKET", "uploads")
+  },
   email: {
     provider: emailProvider,
     settings:

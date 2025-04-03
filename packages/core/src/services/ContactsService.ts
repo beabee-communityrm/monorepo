@@ -18,16 +18,16 @@ import { isDuplicateIndex } from "#utils/db";
 import { generatePassword, isValidPassword } from "#utils/auth";
 import { generateContactCode } from "#utils/contact";
 
-import ApiKeyService from "#services/ApiKeyService";
-import CalloutsService from "#services/CalloutsService";
-import ContactMfaService from "#services/ContactMfaService";
-import EmailService from "#services/EmailService";
-import NewsletterService from "#services/NewsletterService";
-import PaymentService from "#services/PaymentService";
-import ReferralsService from "#services/ReferralsService";
-import ResetSecurityFlowService from "#services/ResetSecurityFlowService";
-import SegmentService from "#services/SegmentService";
-import UploadFlowService from "#services/UploadFlowService";
+import { apiKeyService } from "#services/ApiKeyService";
+import { calloutsService } from "#services/CalloutsService";
+import { contactMfaService } from "#services/ContactMfaService";
+import { emailService } from "#services/EmailService";
+import { newsletterService } from "#services/NewsletterService";
+import { paymentService } from "#services/PaymentService";
+import { ReferralsService } from "#services/ReferralsService";
+import { resetSecurityFlowService } from "#services/ResetSecurityFlowService";
+import { segmentService } from "#services/SegmentService";
+import { uploadFlowService } from "#services/UploadFlowService";
 
 import {
   Contact,
@@ -127,13 +127,13 @@ class ContactsService {
       });
       await getRepository(ContactProfile).save(contact.profile);
 
-      await PaymentService.createContact(contact);
+      await paymentService.createContact(contact);
 
       if (opts.sync) {
-        await NewsletterService.upsertContact(contact);
+        await newsletterService.upsertContact(contact);
       }
 
-      await EmailService.sendTemplateToAdmin("new-member", { contact });
+      await emailService.sendTemplateToAdmin("new-member", { contact });
 
       return contact;
     } catch (error) {
@@ -182,10 +182,10 @@ class ContactsService {
     Object.assign(contact, updates);
 
     if (opts.sync) {
-      await NewsletterService.upsertContact(contact, undefined, oldEmail);
+      await newsletterService.upsertContact(contact, undefined, oldEmail);
     }
 
-    await PaymentService.updateContact(contact, updates);
+    await paymentService.updateContact(contact, updates);
   }
 
   /**
@@ -227,7 +227,7 @@ class ContactsService {
     await getRepository(Contact).save(contact);
 
     if (wasActive !== contact.membership?.isActive) {
-      await NewsletterService.upsertContact(contact);
+      await newsletterService.upsertContact(contact);
     }
 
     return role;
@@ -278,7 +278,7 @@ class ContactsService {
     });
 
     if (wasActive !== contact.membership?.isActive) {
-      await NewsletterService.upsertContact(contact);
+      await newsletterService.upsertContact(contact);
     }
 
     return ret.affected !== 0;
@@ -301,7 +301,7 @@ class ContactsService {
     }
 
     if (opts.sync && (newsletterStatus || newsletterGroups)) {
-      await NewsletterService.upsertContact(contact, {
+      await newsletterService.upsertContact(contact, {
         newsletterStatus,
         newsletterGroups
       });
@@ -329,7 +329,7 @@ class ContactsService {
       throw new CantUpdateContribution();
     }
 
-    const { startNow, expiryDate } = await PaymentService.updateContribution(
+    const { startNow, expiryDate } = await paymentService.updateContribution(
       contact,
       paymentForm
     );
@@ -350,7 +350,7 @@ class ContactsService {
     await this.extendContactRole(contact, "member", expiryDate);
 
     if (wasManual) {
-      await EmailService.sendTemplateToContact("manual-to-automatic", contact);
+      await emailService.sendTemplateToContact("manual-to-automatic", contact);
     }
   }
 
@@ -359,10 +359,10 @@ class ContactsService {
     email: "cancelled-contribution" | "cancelled-contribution-no-survey"
   ): Promise<void> {
     log.info("Cancel contribution for " + contact.id);
-    await PaymentService.cancelContribution(contact);
+    await paymentService.cancelContribution(contact);
 
-    await EmailService.sendTemplateToContact(email, contact);
-    await EmailService.sendTemplateToAdmin("cancelled-member", {
+    await emailService.sendTemplateToContact(email, contact);
+    await emailService.sendTemplateToAdmin("cancelled-member", {
       contact: contact
     });
   }
@@ -374,17 +374,17 @@ class ContactsService {
    */
   async permanentlyDeleteContact(contact: Contact): Promise<void> {
     // Delete external data first, this is more likely to fail so we'd exit the process early
-    await NewsletterService.permanentlyDeleteContacts([contact]);
-    await PaymentService.permanentlyDeleteContact(contact);
+    await newsletterService.permanentlyDeleteContacts([contact]);
+    await paymentService.permanentlyDeleteContact(contact);
 
     // Delete internal data after the external services are done, this should really never fail
-    await ResetSecurityFlowService.deleteAll(contact);
-    await ApiKeyService.permanentlyDeleteContact(contact);
+    await resetSecurityFlowService.deleteAll(contact);
+    await apiKeyService.permanentlyDeleteContact(contact);
     await ReferralsService.permanentlyDeleteContact(contact);
-    await UploadFlowService.permanentlyDeleteContact(contact);
-    await SegmentService.permanentlyDeleteContact(contact);
-    await CalloutsService.permanentlyDeleteContact(contact);
-    await ContactMfaService.permanentlyDeleteContact(contact);
+    await uploadFlowService.permanentlyDeleteContact(contact);
+    await segmentService.permanentlyDeleteContact(contact);
+    await calloutsService.permanentlyDeleteContact(contact);
+    await contactMfaService.permanentlyDeleteContact(contact);
 
     log.info("Permanently delete contact " + contact.id);
     await runTransaction(async (em) => {
@@ -441,7 +441,7 @@ class ContactsService {
       contributionMonthlyAmount: monthlyAmount
     });
 
-    await PaymentService.updateData(contact, {
+    await paymentService.updateData(contact, {
       mandateId: data.source || null,
       customerId: data.reference || null
     });
@@ -484,12 +484,12 @@ class ContactsService {
       return;
     }
 
-    const rpFlow = await ResetSecurityFlowService.create(
+    const rpFlow = await resetSecurityFlowService.create(
       contact,
       RESET_SECURITY_FLOW_TYPE.PASSWORD
     );
 
-    await EmailService.sendTemplateToContact("reset-password", contact, {
+    await emailService.sendTemplateToContact("reset-password", contact, {
       rpLink: resetUrl + "/" + rpFlow.id
     });
   }
@@ -511,7 +511,7 @@ class ContactsService {
     id: string,
     data: { password: string; token?: string }
   ) {
-    const rpFlow = await ResetSecurityFlowService.get(id);
+    const rpFlow = await resetSecurityFlowService.get(id);
 
     if (!rpFlow) {
       throw new NotFoundError({
@@ -526,7 +526,7 @@ class ContactsService {
     }
 
     // Check if contact has MFA enabled, if so validate MFA
-    const mfa = await ContactMfaService.get(rpFlow.contact);
+    const mfa = await contactMfaService.get(rpFlow.contact);
     if (mfa) {
       // In the future, we might want to add more types of reset flows
       if (mfa.type !== CONTACT_MFA_TYPE.TOTP) {
@@ -541,7 +541,7 @@ class ContactsService {
         });
       }
 
-      const { isValid } = await ContactMfaService.checkToken(
+      const { isValid } = await contactMfaService.checkToken(
         rpFlow.contact,
         data.token,
         1
@@ -557,7 +557,7 @@ class ContactsService {
     });
 
     // Stop all other reset flows if they exist
-    await ResetSecurityFlowService.deleteAll(rpFlow.contact);
+    await resetSecurityFlowService.deleteAll(rpFlow.contact);
 
     return rpFlow.contact;
   }
@@ -582,14 +582,14 @@ class ContactsService {
     }
 
     // Check if contact has MFA enabled
-    const mfa = await ContactMfaService.get(contact);
+    const mfa = await contactMfaService.get(contact);
     if (!mfa) {
       return;
     }
 
-    const rdFlow = await ResetSecurityFlowService.create(contact, type);
+    const rdFlow = await resetSecurityFlowService.create(contact, type);
 
-    await EmailService.sendTemplateToContact("reset-device", contact, {
+    await emailService.sendTemplateToContact("reset-device", contact, {
       rpLink: resetUrl + "/" + rdFlow.id
     });
   }
@@ -606,7 +606,7 @@ class ContactsService {
    * @throws {UnauthorizedError} If the password is invalid
    */
   public async resetDeviceComplete(id: string, password: string) {
-    const rdFlow = await ResetSecurityFlowService.get(id);
+    const rdFlow = await resetSecurityFlowService.get(id);
 
     if (!rdFlow) {
       throw new NotFoundError({
@@ -631,10 +631,10 @@ class ContactsService {
     await this.resetPasswordTries(rdFlow.contact);
 
     // Disable MFA, we can use the unsecure method because we already validated the password
-    await ContactMfaService.deleteUnsecure(rdFlow.contact);
+    await contactMfaService.deleteUnsecure(rdFlow.contact);
 
     // Stop all other reset flows if they exist
-    await ResetSecurityFlowService.deleteAll(rdFlow.contact);
+    await resetSecurityFlowService.deleteAll(rdFlow.contact);
 
     return rdFlow.contact;
   }

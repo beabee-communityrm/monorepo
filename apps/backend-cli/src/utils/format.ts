@@ -16,10 +16,21 @@ export function formatFileSize(bytes: number): string {
  * Format migration success message
  * @param key The S3 key (filename)
  * @param size Size in bytes
+ * @param variantCount Optional number of variants created
  * @returns Formatted success message
  */
-export function formatSuccessMessage(key: string, size: number): string {
-  return chalk.green(`✓ Migrated: ${key} (${formatFileSize(size)})`);
+export function formatSuccessMessage(
+  key: string,
+  size: number,
+  variantCount?: number
+): string {
+  let message = chalk.green(`✓ Migrated: ${key} (${formatFileSize(size)})`);
+
+  if (variantCount && variantCount > 0) {
+    message += chalk.green(` with ${variantCount} variants`);
+  }
+
+  return message;
 }
 
 /**

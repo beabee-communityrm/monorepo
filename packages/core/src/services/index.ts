@@ -8,6 +8,7 @@ export * from "./ContactMfaService";
 export * from "./ContactsService";
 export * from "./EmailService";
 export * from "./GiftService";
+export * from "./ImageService";
 export * from "./NetworkCommunicatorService";
 export * from "./NewsletterService";
 export * from "./OptionsService";

@@ -51,6 +51,7 @@
     "./utils/*": "./dist/utils/*.js"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.779.0",
     "@beabee/beabee-common": "workspace:^",
     "@beabee/locale": "workspace:^",
     "@sendgrid/mail": "^8.1.4",
@@ -72,6 +73,7 @@
     "passport-local": "^1.0.0",
     "reflect-metadata": "^0.2.2",
     "routing-controllers": "^0.10.4",
+    "sharp": "^0.33.5",
     "slugify": "^1.6.6",
     "stripe": "^15.9.0",
     "tar-stream": "^3.1.7",

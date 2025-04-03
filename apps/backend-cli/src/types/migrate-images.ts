@@ -16,6 +16,8 @@ export interface MigrateImagesOptions {
   region: string;
   /** Whether to perform a dry run (no actual uploads) */
   dryRun?: boolean;
+  /** Whether to create image variants (resized versions) */
+  createVariants?: boolean;
 }
 
 /**
@@ -30,4 +32,6 @@ export interface MigrationStats {
   errorCount: number;
   /** Total size of migrated files in bytes */
   totalSizeBytes: number;
+  /** Number of image variants created */
+  variantsCreated: number;
 }

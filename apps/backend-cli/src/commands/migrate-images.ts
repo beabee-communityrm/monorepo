@@ -9,6 +9,7 @@ export interface MigrateImagesArgs {
   secretKey: string;
   region: string;
   dryRun: boolean;
+  createVariants: boolean;
 }
 
 /**
@@ -55,6 +56,11 @@ export const migrateImagesCommand = {
         describe: "Simulate migration without actually uploading files",
         type: "boolean",
         default: false
+      })
+      .option("createVariants", {
+        describe: "Create image variants (resized versions) during migration",
+        type: "boolean",
+        default: true
       });
   },
   handler: async (args: MigrateImagesArgs): Promise<void> => {
@@ -66,7 +72,8 @@ export const migrateImagesCommand = {
         accessKey: args.accessKey,
         secretKey: args.secretKey,
         region: args.region,
-        dryRun: args.dryRun
+        dryRun: args.dryRun,
+        createVariants: args.createVariants
       });
     } catch (error) {
       console.error("Failed to migrate images:", error);

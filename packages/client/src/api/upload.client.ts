@@ -32,10 +32,13 @@ export class UploadClient extends BaseClient {
    * Uploads a file using the provided upload flow
    * @param file - The file to upload
    * @param flowId - The ID of the upload flow
-   * @returns The URL of the uploaded file
+   * @returns The URL of the uploaded file and all size variants
    * @throws {ClientApiError} If the file is too large or rate limit is exceeded
    */
-  async uploadFile(file: File, flowId: string): Promise<{ url: string }> {
+  async uploadFile(
+    file: File,
+    flowId: string
+  ): Promise<{ url: string; urls?: { [key: string]: string } }> {
     // Check file size (20MB limit)
     const MAX_FILE_SIZE = 20 * 1024 * 1024;
     if (file.size >= MAX_FILE_SIZE) {
@@ -49,17 +52,15 @@ export class UploadClient extends BaseClient {
     formData.append("file", file);
 
     try {
-      const { data } = await this.fetch.post<{ url: string }>(
-        "upload/",
-        formData,
-        {
-          params: {
-            token: flowId
-          },
-          basePath: "/", // This removes the /api/1.0/upload prefix from the URL
-          dataType: "multipart"
-        }
-      );
+      const { data } = await this.fetch.post<{
+        url: string;
+        urls?: { [key: string]: string };
+      }>("file", formData, {
+        params: {
+          token: flowId
+        },
+        dataType: "multipart"
+      });
 
       return data;
     } catch (error) {

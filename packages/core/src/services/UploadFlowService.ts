@@ -80,4 +80,3 @@ class UploadFlowService {
 }
 
 export const uploadFlowService = new UploadFlowService();
-export default uploadFlowService;

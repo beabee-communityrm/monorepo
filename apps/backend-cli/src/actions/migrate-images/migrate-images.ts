@@ -20,6 +20,9 @@ import {
   uploadFileToS3
 } from "../../utils/s3.js";
 
+// Import the imageService for processing images
+import { imageService } from "@beabee/core/services/ImageService";
+
 /**
  * Migrates images from local storage to MinIO
  * @param options Migration options
@@ -68,7 +71,8 @@ async function processAllImages(
     successCount: 0,
     skippedCount: 0,
     errorCount: 0,
-    totalSizeBytes: 0
+    totalSizeBytes: 0,
+    variantsCreated: 0
   };
 
   // Analyze PictShare storage structure
@@ -153,11 +157,43 @@ async function processFile(
   stats.totalSizeBytes += fileSize;
 
   if (!options.dryRun) {
-    // Upload file to S3
-    await uploadFileToS3(s3Client, options.bucket, s3Key, filePath);
-    console.log(formatSuccessMessage(s3Key, fileSize));
+    const createVariants = options.createVariants !== false;
+
+    if (createVariants) {
+      // Use ImageService to process image and create variants
+      try {
+        // Read the file
+        const fileBuffer = await fs.readFile(filePath);
+        const fileName = path.basename(filePath);
+
+        // Use ImageService to process and upload
+        const urls = await imageService.uploadFile(fileBuffer, fileName);
+
+        // Count the variants created (subtract 1 for the original)
+        const variantCount = Object.keys(urls).length - 1;
+        stats.variantsCreated += variantCount;
+
+        console.log(formatSuccessMessage(s3Key, fileSize, variantCount));
+      } catch (error) {
+        console.error(`Error processing variants for ${s3Key}:`, error);
+
+        // Fallback to direct upload if variant creation fails
+        await uploadFileToS3(s3Client, options.bucket, s3Key, filePath);
+        console.log(
+          formatSuccessMessage(s3Key, fileSize, 0) + " (fallback upload)"
+        );
+      }
+    } else {
+      // Upload the original file directly (without creating variants)
+      await uploadFileToS3(s3Client, options.bucket, s3Key, filePath);
+      console.log(formatSuccessMessage(s3Key, fileSize));
+    }
   } else {
-    console.log(formatDryRunMessage(s3Key, fileSize));
+    const variantMsg =
+      options.createVariants !== false
+        ? " (with variants)"
+        : " (original only)";
+    console.log(formatDryRunMessage(s3Key, fileSize) + variantMsg);
   }
 
   stats.successCount++;
@@ -184,6 +220,12 @@ function printMigrationSummary(stats: MigrationStats, isDryRun: boolean): void {
         `✓ Successfully migrated: ${stats.successCount} files (${formatFileSize(stats.totalSizeBytes)})`
       )
     );
+
+    if (stats.variantsCreated > 0) {
+      console.log(
+        chalk.green(`✓ Created ${stats.variantsCreated} image variants`)
+      );
+    }
 
     if (stats.skippedCount > 0) {
       console.log(

@@ -120,30 +120,6 @@ services:
       exit 0;
       "
 
-  # Image upload handler
-  img_upload_app:
-    image: beabee/pictshare:v0.2.0
-    ports:
-      - "2080:80"  # PictShare interface on port 2080 for debugging, not for production
-    environment:
-      URL: ${PICTSHARE_URL:-${BEABEE_AUDIENCE}/uploads/}
-      # Image compression settings
-      PNG_COMPRESSION: ${PICTSHARE_PNG_COMPRESSION:-6}
-      JPEG_COMPRESSION: ${PICTSHARE_JPEG_COMPRESSION:-85}
-      # S3 storage configuration (according to PictShare docs)
-      S3_BUCKET: ${MINIO_BUCKET:-uploads}
-      S3_ACCESS_KEY: ${MINIO_ROOT_USER:-minioadmin}
-      S3_SECRET_KEY: ${MINIO_ROOT_PASSWORD:-minioadmin}
-      S3_ENDPOINT: ${MINIO_ENDPOINT:-http://minio:9000}
-      S3_REGION: ${MINIO_REGION:-us-east-1}
-    depends_on:
-      minio:
-        condition: service_healthy
-      minio_client:
-        condition: service_completed_successfully
-      image_migration:
-        condition: service_completed_successfully
-
   # The new frontend
   frontend:
     build:
@@ -191,7 +167,7 @@ services:
       /bin/sh -c "
       if [ \"$${MIGRATE_IMAGES}\" = \"true\" ]; then
         echo 'Starting image migration...' &&
-        yarn backend-cli migrate-images --source=/pictshare_data --endpoint=$${MINIO_ENDPOINT} --accessKey=$${MINIO_ROOT_USER:-minioadmin} --secretKey=$${MINIO_ROOT_PASSWORD:-minioadmin} --bucket=$${MINIO_BUCKET:-uploads};
+        yarn backend-cli migrate-images --source=/pictshare_data --endpoint=$${MINIO_ENDPOINT} --accessKey=$${MINIO_ROOT_USER:-minioadmin} --secretKey=$${MINIO_ROOT_PASSWORD:-minioadmin} --bucket=$${MINIO_BUCKET:-uploads} --createVariants=$${CREATE_IMAGE_VARIANTS:-true};
       else
         echo 'Image migration skipped (MIGRATE_IMAGES is not set to true)' &&
         exit 0;
@@ -210,6 +186,7 @@ services:
         condition: service_completed_successfully
     environment:
       - MIGRATE_IMAGES=${MIGRATE_IMAGES:-true}
+      - CREATE_IMAGE_VARIANTS=${CREATE_IMAGE_VARIANTS:-true}
       - MINIO_ENDPOINT=${MINIO_ENDPOINT:-http://minio:9000}
       - MINIO_ROOT_USER=${MINIO_ROOT_USER:-minioadmin}
       - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD:-minioadmin}
