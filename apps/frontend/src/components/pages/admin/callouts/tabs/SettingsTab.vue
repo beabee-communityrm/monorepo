@@ -23,16 +23,16 @@
           <AppFormBox v-if="canStartNow">
             <AppFormField>
               <AppToggleField
-                v-model="startDateEnabled"
+                v-model="localData.hasStartDate"
                 variant="link"
                 :label="inputT('starts.label')"
                 :description="
-                  startDateEnabled
+                  localData.hasStartDate
                     ? inputT('starts.opts.schedule')
                     : inputT('starts.opts.now')
                 "
               />
-              <div v-if="startDateEnabled" class="mt-4 flex gap-2">
+              <div v-if="localData.hasStartDate" class="mt-4 flex gap-2">
                 <div>
                   <AppInput
                     v-model="localData.startDate"
@@ -236,8 +236,8 @@ export interface SettingsTabData {
   usersCanEditAnswers: boolean;
   locales: string[];
   channels: CalloutChannel[] | null;
+  hasStartDate: boolean;
   hasEndDate: boolean;
-  startNow: boolean;
   startDate: string;
   startTime: string;
   endDate: string;
@@ -346,14 +346,6 @@ const canStartNow = computed(
     props.status === ItemStatus.Draft ||
     props.status === ItemStatus.Scheduled
 );
-
-// Computed property to control start date toggle
-const startDateEnabled = computed({
-  get: () => !localData.value.startNow,
-  set: (value) => {
-    localData.value.startNow = !value;
-  },
-});
 
 // Computed property to control access settings
 const openToEveryone = computed({

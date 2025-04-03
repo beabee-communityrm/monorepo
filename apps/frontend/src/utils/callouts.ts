@@ -173,7 +173,7 @@ export function convertCalloutToTabs(
         showOnUserDashboards: false,
         usersCanEditAnswers: false,
         multipleResponses: true,
-        startNow: true,
+        hasStartDate: false,
         hasEndDate: false,
         startDate: '',
         startTime: '',
@@ -192,7 +192,7 @@ export function convertCalloutToTabs(
         showOnUserDashboards: !callout?.hidden,
         usersCanEditAnswers: callout?.allowUpdate || false,
         multipleResponses: callout?.allowMultiple || false,
-        startNow: !callout || callout.status === ItemStatus.Draft,
+        hasStartDate: callout?.status === ItemStatus.Draft,
         hasEndDate: !!callout?.expires,
         startDate: callout?.starts ? format(callout.starts, 'yyyy-MM-dd') : '',
         startTime: callout?.starts ? format(callout.starts, 'HH:mm') : '',
@@ -415,9 +415,9 @@ export function convertStepsToCallout(
             : null,
         }
       : null,
-    starts: tabs.settings.startNow
-      ? new Date()
-      : new Date(tabs.settings.startDate + 'T' + tabs.settings.startTime),
+    starts: tabs.settings.hasStartDate
+      ? new Date(tabs.settings.startDate + 'T' + tabs.settings.startTime)
+      : new Date(),
     expires: tabs.settings.hasEndDate
       ? new Date(tabs.settings.endDate + 'T' + tabs.settings.endTime)
       : null,
