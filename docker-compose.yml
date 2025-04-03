@@ -112,30 +112,82 @@ services:
     depends_on:
       minio:
         condition: service_healthy
-    entrypoint: >
-      /bin/sh -c "
-      mc alias set myminio ${MINIO_ENDPOINT:-http://minio:9000} ${MINIO_ROOT_USER:-minioadmin} ${MINIO_ROOT_PASSWORD:-minioadmin};
-      mc mb --ignore-existing myminio/${MINIO_BUCKET:-uploads};
-      mc policy set download myminio/${MINIO_BUCKET:-uploads};
+    entrypoint: |
+      /bin/sh -c '
+      mc alias set myminio ${MINIO_ENDPOINT} ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD};
+      mc mb --ignore-existing myminio/${MINIO_BUCKET};
+      mc mb --ignore-existing myminio/${MINIO_S3FS_BUCKET:-images-fs};
+      mc policy set download myminio/${MINIO_BUCKET};
+      mc policy set download myminio/${MINIO_S3FS_BUCKET:-images-fs};
       exit 0;
-      "
+      '
+    environment:
+      - MINIO_ENDPOINT=${MINIO_ENDPOINT:-http://minio:9000}
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER:-minioadmin}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD:-minioadmin}
+      - MINIO_BUCKET=${MINIO_BUCKET:-uploads}
+      - MINIO_S3FS_BUCKET=${MINIO_S3FS_BUCKET:-images-fs}
 
-  # Image upload handler
+  # Image upload handler with integrated s3fs
   img_upload_app:
     image: beabee/pictshare:v0.2.0
+    privileged: true  # Needed for s3fs
     ports:
-      - "2080:80"  # PictShare interface on port 2080 for debugging, not for production
+      - "2080:80"  # PictShare interface on port 2080 for debugging
     environment:
       URL: ${PICTSHARE_URL:-${BEABEE_AUDIENCE}/uploads/}
       # Image compression settings
       PNG_COMPRESSION: ${PICTSHARE_PNG_COMPRESSION:-6}
       JPEG_COMPRESSION: ${PICTSHARE_JPEG_COMPRESSION:-85}
-      # S3 storage configuration (according to PictShare docs)
+      # S3 storage configuration
       S3_BUCKET: ${MINIO_BUCKET:-uploads}
       S3_ACCESS_KEY: ${MINIO_ROOT_USER:-minioadmin}
       S3_SECRET_KEY: ${MINIO_ROOT_PASSWORD:-minioadmin}
       S3_ENDPOINT: ${MINIO_ENDPOINT:-http://minio:9000}
       S3_REGION: ${MINIO_REGION:-us-east-1}
+      # Environment for s3fs
+      MINIO_ENDPOINT: ${MINIO_ENDPOINT:-http://minio:9000}
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
+      MINIO_S3FS_BUCKET: ${MINIO_S3FS_BUCKET:-images-fs}
+    volumes:
+      - upload_data:/old_data:ro  # Mount old data read-only for migration
+    entrypoint: |
+      /bin/sh -c '
+      # Install s3fs
+      apk add --no-cache bash socat wget curl s3fs-fuse fuse
+      
+      # Create credentials file
+      echo ${MINIO_ROOT_USER}:${MINIO_ROOT_PASSWORD} > /etc/passwd-s3fs
+      chmod 600 /etc/passwd-s3fs
+      
+      # Create data directory if not exists
+      mkdir -p /var/www/data
+      
+      # Mount S3 bucket directly to the data directory
+      echo "Mounting S3 bucket ${MINIO_S3FS_BUCKET} to /var/www/data"
+      s3fs ${MINIO_S3FS_BUCKET} /var/www/data -o url=${MINIO_ENDPOINT} -o use_path_request_style -o allow_other -o nonempty -f -d -o dbglevel=info &
+      
+      # Give s3fs time to mount
+      sleep 5
+      
+      # Verify mount
+      df -h | grep s3fs
+      mount | grep s3fs
+      echo "Mount completed"
+      
+      # Migrate data if needed
+      if [ -d "/old_data" ] && [ "$(ls -A /old_data 2>/dev/null)" ]; then
+        echo "Migrating data from old volume to S3..."
+        cp -r /old_data/. /var/www/data/
+        echo "Migration completed"
+      else
+        echo "No data to migrate or old_data is empty"
+      fi
+      
+      # Start the original script
+      exec /etc/start.sh
+      '
     depends_on:
       minio:
         condition: service_healthy
@@ -191,14 +243,14 @@ services:
       /bin/sh -c "
       if [ \"$${MIGRATE_IMAGES}\" = \"true\" ]; then
         echo 'Starting image migration...' &&
-        yarn backend-cli migrate-images --source=/pictshare_data --endpoint=$${MINIO_ENDPOINT} --accessKey=$${MINIO_ROOT_USER:-minioadmin} --secretKey=$${MINIO_ROOT_PASSWORD:-minioadmin} --bucket=$${MINIO_BUCKET:-uploads};
+        yarn backend-cli migrate-images --source=/old_data --endpoint=$${MINIO_ENDPOINT} --accessKey=$${MINIO_ROOT_USER:-minioadmin} --secretKey=$${MINIO_ROOT_PASSWORD:-minioadmin} --bucket=$${MINIO_BUCKET:-uploads};
       else
         echo 'Image migration skipped (MIGRATE_IMAGES is not set to true)' &&
         exit 0;
       fi
       "
     volumes:
-      - upload_data:/pictshare_data
+      - upload_data:/old_data
       - ./packages:/opt/packages
       - ./apps/backend-cli/dist:/opt/apps/backend-cli/dist
     depends_on:
