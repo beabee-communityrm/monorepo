@@ -18,7 +18,7 @@
   </a>
 </template>
 <script lang="ts" setup>
-import { type TabItem } from './tabs.interface';
+import { type TabItem } from '../../types/tabs.interface';
 
 const emit = defineEmits(['click']);
 

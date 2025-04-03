@@ -62,7 +62,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import type { TabItem } from './tabs.interface';
+import type { TabItem } from '../../types/tabs.interface';
 import TabLabel from './TabLabel.vue';
 import { computed } from 'vue';
 
