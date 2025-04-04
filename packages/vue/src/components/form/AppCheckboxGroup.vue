@@ -1,6 +1,9 @@
 <template>
   <div>
     <AppLabel v-if="label" :label="label" :required="required" />
+    <p v-if="description" class="mb-3 text-sm">
+      {{ description }}
+    </p>
     <AppCheckbox
       v-for="option in options"
       :key="option.id"
@@ -26,6 +29,8 @@ export interface AppCheckboxGroupProps<T extends string | number> {
   options: SelectItem<T>[];
   /** The label of the checkbox group */
   label?: string;
+  /** The description of the checkbox group */
+  description?: string;
   /** Whether the checkbox group is inline */
   inline?: boolean;
   /** Whether the checkbox group is required */

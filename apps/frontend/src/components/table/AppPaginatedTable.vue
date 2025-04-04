@@ -12,18 +12,20 @@
         no-limit
       />
     </div>
-    <AppTable
-      v-model:sort="query.sort"
-      :headers="headers"
-      :items="result?.items || null"
-      :selectable="selectable"
-      :row-class="rowClass"
-      class="mb-4 w-full"
-    >
-      <template v-for="name of slotNames" #[name]="slotData" :key="name">
-        <slot :name="name" v-bind="slotData || {}"></slot>
-      </template>
-    </AppTable>
+    <div class="overflow-x-auto">
+      <AppTable
+        v-model:sort="query.sort"
+        :headers="headers"
+        :items="result?.items || null"
+        :selectable="selectable"
+        :row-class="rowClass"
+        class="mb-4 w-full"
+      >
+        <template v-for="name of slotNames" #[name]="slotData" :key="name">
+          <slot :name="name" v-bind="slotData || {}"></slot>
+        </template>
+      </AppTable>
+    </div>
     <AppPaginatedTableResult
       v-model:page="query.page"
       v-model:limit="query.limit"

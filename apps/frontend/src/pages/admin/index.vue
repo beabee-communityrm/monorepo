@@ -10,7 +10,7 @@ meta:
   <p class="mb-8">
     {{ t('adminDashboard.welcomeBack', { firstName: currentUser?.firstname }) }}
   </p>
-  <div class="grid grid-cols-12 gap-6">
+  <div class="grid max-w-[1400px] grid-cols-12 gap-6">
     <div v-if="!env.cnrMode" class="col-span-12 md:col-span-5 xl:col-span-5">
       <AppHeading>{{ t('adminDashboard.numbers.title') }}</AppHeading>
       <div v-if="stats" class="mb-6 flex gap-4">
@@ -79,13 +79,13 @@ meta:
       </a>
     </div>
   </div>
-  <div class="mt-8 gap-6 lg:flex">
+  <div class="mt-8 max-w-[1400px] gap-6 lg:flex">
     <HintBox class="content-i18n" :hint="t('adminDashboard.hint1')" />
     <HintBox class="content-i18n" :hint="t('adminDashboard.hint2')" />
     <HintBox class="content-i18n" :hint="t('adminDashboard.hint3')" />
   </div>
   <div
-    class="content-i18n mt-8 text-center text-sm"
+    class="content-i18n mt-8 max-w-[1400px] text-center text-sm"
     v-html="t('adminDashboard.supportInbox')"
   />
 </template>

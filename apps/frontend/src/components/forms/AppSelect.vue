@@ -1,6 +1,9 @@
 <template>
   <div>
     <AppLabel v-if="label" :label="label" :required="required" />
+    <p v-if="description" class="mb-2 text-sm">
+      {{ description }}
+    </p>
     <VueMultiselect
       :model-value="props.items.find((i) => i.id === props.modelValue)"
       :disabled="disabled"
@@ -50,6 +53,8 @@ export interface AppSelectProps<T extends string | number> {
   required?: boolean;
   /** The info message to display */
   infoMessage?: string;
+  /** The description to display */
+  description?: string;
 }
 
 const emit = defineEmits<(e: 'update:modelValue', value: T) => void>();
