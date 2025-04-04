@@ -18,6 +18,8 @@ export interface MigrateImagesOptions {
   dryRun?: boolean;
   /** Whether to create image variants (resized versions) */
   createVariants?: boolean;
+  /** Whether to preserve the original image format instead of converting to AVIF */
+  preserveFormat?: boolean;
 }
 
 /**

@@ -12,7 +12,8 @@ import {
   Req,
   Res,
   UploadedFile,
-  BadRequestError as RoutingBadRequestError
+  BadRequestError as RoutingBadRequestError,
+  Body
 } from "routing-controllers";
 
 import { uploadFlowService } from "@beabee/core/services/UploadFlowService";
@@ -104,29 +105,27 @@ export class UploadController {
     @QueryParam("w") width?: string,
     @QueryParam("h") height?: string
   ): Promise<void> {
-    try {
-      // Validate parameters
-      const targetWidth = width ? parseInt(width, 10) : undefined;
-      const targetHeight = height ? parseInt(height, 10) : undefined;
+    // URL-decode the filename (since it may have been URL-encoded)
+    const decodedFilename = decodeURIComponent(filename);
 
-      if ((width && isNaN(targetWidth!)) || (height && isNaN(targetHeight!))) {
-        throw new RoutingBadRequestError("Invalid width or height parameters");
-      }
+    // Validate parameters
+    const targetWidth = width ? parseInt(width, 10) : undefined;
+    const targetHeight = height ? parseInt(height, 10) : undefined;
 
-      // Use the streamFile method from ImageService which handles all file types
-      // and automatically selects the best approach for streaming and resizing
-      await imageService.streamFile(
-        filename,
-        {
-          width: targetWidth,
-          height: targetHeight
-        },
-        response
-      );
-    } catch (error) {
-      console.error("Error getting file:", error);
-      throw new NotFoundError("File not found");
+    if ((width && isNaN(targetWidth!)) || (height && isNaN(targetHeight!))) {
+      throw new RoutingBadRequestError("Invalid width or height parameters");
     }
+
+    // Use the streamFile method from ImageService which handles all file types
+    // and automatically selects the best approach for streaming and resizing
+    return await imageService.streamFile(
+      decodedFilename,
+      {
+        width: targetWidth,
+        height: targetHeight
+      },
+      response
+    );
   }
 
   // This should be a POST request as it's not idempotent, but we use nginx's

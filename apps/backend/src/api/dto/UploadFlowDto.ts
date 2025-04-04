@@ -1,5 +1,5 @@
 import { Expose } from "class-transformer";
-import { IsUUID } from "class-validator";
+import { IsObject, IsString, IsUUID } from "class-validator";
 
 export class GetUploadFlowDto {
   @IsUUID()
@@ -8,9 +8,11 @@ export class GetUploadFlowDto {
 }
 
 export class FileUploadResultDto {
+  @IsString()
   @Expose()
   url!: string;
 
+  @IsObject()
   @Expose()
   urls?: { [key: string]: string };
 }

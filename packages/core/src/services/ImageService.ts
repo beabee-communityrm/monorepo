@@ -1,88 +1,114 @@
 import sharp from "sharp";
-import {
-  S3Client,
-  PutObjectCommand,
-  GetObjectCommand,
-  DeleteObjectCommand,
-  S3ClientConfig
-} from "@aws-sdk/client-s3";
 import { Readable } from "stream";
 import path from "path";
 import config from "#config/config";
-import { BadRequestError } from "../errors";
+import { BadRequestError, NotFoundError } from "../errors";
 import type { Response } from "express";
 
-// Image size configurations
+import { S3Service, S3Config } from "./S3Service";
+
+/**
+ * Default image size variations to generate
+ */
 const IMAGE_SIZES = [
   { key: "original", width: null },
-  { key: "sm", width: 300 },
+  { key: "sm", width: 400 },
   { key: "md", width: 600 },
   { key: "lg", width: 1440 },
   { key: "xl", width: 2560 }
 ];
 
-// Output format for resized images (AVIF has better compression than WebP)
+/**
+ * Output format for resized images (AVIF has better compression than WebP)
+ */
 const OUTPUT_FORMAT = "avif" as const;
-// Quality setting for AVIF (0-100)
+
+/**
+ * Quality setting for AVIF (0-100)
+ */
 const OUTPUT_QUALITY = 65;
 
-// Supported image mime types for resizing
+/**
+ * Supported image mime types for resizing
+ */
 const RESIZABLE_MIME_TYPES = [
   "image/jpeg",
   "image/png",
   "image/gif",
   "image/webp",
-  "image/avif",
-  "image/svg+xml"
+  "image/avif"
 ];
 
-// Stream options for different file types
+/**
+ * Options for image streaming
+ */
 interface StreamOptions {
   width?: number | undefined;
   height?: number | undefined;
 }
 
-class ImageService {
-  private s3Client: S3Client;
-  private bucket: string;
+/**
+ * Configuration options for ImageService
+ */
+export interface ImageServiceConfig {
+  s3Config?: Partial<S3Config>;
+  imageSizes?: typeof IMAGE_SIZES;
+  outputFormat?: typeof OUTPUT_FORMAT;
+  outputQuality?: number;
+}
+
+/**
+ * Processed image with its URL
+ */
+interface ProcessedImage {
+  url: string;
+  contentType: string;
+  fileKey: string;
+  buffer: Buffer;
+}
+
+/**
+ * Service for handling image uploads, processing, and streaming
+ */
+export class ImageService {
+  private s3Service: S3Service;
   private imageSizes: typeof IMAGE_SIZES;
   private outputFormat: typeof OUTPUT_FORMAT;
   private outputQuality: number;
 
-  constructor() {
-    // Configure S3 client for MinIO
-    const s3Config: S3ClientConfig = {
-      endpoint: config.minio.endpoint,
-      region: config.minio.region || "us-east-1",
-      credentials: {
-        accessKeyId: config.minio.accessKey,
-        secretAccessKey: config.minio.secretKey
-      },
-      forcePathStyle: true // Required for MinIO
-    };
+  constructor(config?: ImageServiceConfig) {
+    // Initialize S3 service with provided config or default
+    this.s3Service = new S3Service(config?.s3Config);
 
-    this.s3Client = new S3Client(s3Config);
-    this.bucket = config.minio.bucket;
-    this.imageSizes = IMAGE_SIZES;
-    this.outputFormat = OUTPUT_FORMAT;
-    this.outputQuality = OUTPUT_QUALITY;
+    // Set image processing options
+    this.imageSizes = config?.imageSizes || IMAGE_SIZES;
+    this.outputFormat = config?.outputFormat || OUTPUT_FORMAT;
+    this.outputQuality = config?.outputQuality || OUTPUT_QUALITY;
   }
 
   /**
-   * Upload a file to MinIO and process image variations if it's an image
+   * Upload a file to storage and process image variations if it's an image
    * @param fileBuffer The file buffer to upload
    * @param fileName Original filename (used to determine content type)
    * @param prefix Optional folder prefix for the file
+   * @param preserveOriginalName Whether to preserve the exact original filename (for migration)
+   * @param convertFormat Whether to convert image format to the configured output format (default: true)
    * @returns Object with URLs for all generated versions
    */
   async uploadFile(
     fileBuffer: Buffer,
     fileName: string,
-    prefix = ""
+    prefix = "",
+    preserveOriginalName = false,
+    convertFormat = true
   ): Promise<{ [key: string]: string }> {
     try {
       // Generate a unique key for the file
-      const fileKey = this.generateUniqueKey(fileName, prefix);
+      const fileKey = this.generateUniqueKey(
+        fileName,
+        prefix,
+        preserveOriginalName
+      );
       const contentType = this.getContentType(fileName);
 
       // Check if this is an image that needs processing
@@ -92,11 +118,12 @@ class ImageService {
         return await this.processAndUploadImage(
           fileBuffer,
           fileKey,
-          contentType
+          contentType,
+          convertFormat
         );
       } else {
         // For non-image files, just upload the original
-        await this.uploadToS3(fileKey, fileBuffer, contentType);
+        await this.s3Service.uploadBuffer(fileKey, fileBuffer, contentType);
 
         return {
           original: this.generatePublicUrl(fileKey)
@@ -120,16 +147,10 @@ class ImageService {
       // Delete all size variations
       await Promise.all(
         this.imageSizes.map(async (size) => {
-          const key =
-            size.key === "original" ? baseKey : `${baseKey}-${size.key}`;
+          const key = this.getKeyForSize(baseKey, size.key);
 
           try {
-            await this.s3Client.send(
-              new DeleteObjectCommand({
-                Bucket: this.bucket,
-                Key: key
-              })
-            );
+            await this.s3Service.deleteFile(key);
           } catch (err) {
             // Ignore errors if the file doesn't exist
             console.warn(`Failed to delete ${key}`, err);
@@ -147,20 +168,8 @@ class ImageService {
    * @param fileKey The file key
    * @returns Readable stream of the file
    */
-  async getFileStream(fileKey: string): Promise<Readable> {
-    try {
-      const response = await this.s3Client.send(
-        new GetObjectCommand({
-          Bucket: this.bucket,
-          Key: fileKey
-        })
-      );
-
-      return response.Body as Readable;
-    } catch (error) {
-      console.error("Error getting file stream:", error);
-      throw new BadRequestError({ message: "Failed to get file" });
-    }
+  private async getFileStream(fileKey: string): Promise<Readable> {
+    return await this.s3Service.getFileStream(fileKey);
   }
 
   /**
@@ -177,19 +186,70 @@ class ImageService {
     response: Response
   ): Promise<void> {
     try {
+      // Get content type before any streaming operations
       const contentType = this.getContentType(filename);
+
+      // Set content type header only once at the beginning
+      response.setHeader("Content-Type", contentType);
+
       const isResizableImage = RESIZABLE_MIME_TYPES.includes(contentType);
 
       // For non-image files or when no resize options are provided, stream directly
       if (!isResizableImage || (!options.width && !options.height)) {
-        const stream = await this.getFileStream(filename);
-        stream.pipe(response);
+        try {
+          const stream = await this.getFileStream(filename);
+          stream.pipe(response);
+        } catch (error) {
+          // Don't set headers again, just log and throw
+          console.error(`Error streaming file ${filename}:`, error);
+          if (!response.headersSent) {
+            response.status(404);
+          }
+          throw new NotFoundError({ message: "File not found" });
+        }
         return;
       }
 
       // For images with resize options, try to find the best variant or resize dynamically
-      const targetWidth = options.width;
-      const targetHeight = options.height;
+      await this.streamImageWithOptions(filename, options, response);
+    } catch (error) {
+      // Ensure we don't set headers if they've already been sent
+      if (!response.headersSent) {
+        response.status(error instanceof NotFoundError ? 404 : 500);
+      }
+
+      // If the error hasn't been sent to the client yet, end the response with the error
+      if (!response.writableEnded) {
+        if (
+          error instanceof BadRequestError ||
+          error instanceof NotFoundError
+        ) {
+          response.end(error.message);
+        } else {
+          console.error("Error streaming file:", error);
+          response.end("File not found or error processing the file");
+        }
+      }
+    }
+  }
+
+  /**
+   * Stream an image with resizing options
+   * @param filename Filename to stream
+   * @param options Resizing options
+   * @param response Express response to pipe to
+   */
+  private async streamImageWithOptions(
+    filename: string,
+    options: StreamOptions,
+    response: Response
+  ): Promise<void> {
+    const targetWidth = options.width;
+    const targetHeight = options.height;
+
+    try {
+      // Check if file exists in S3 before proceeding
+      await this.s3Service.checkFileExists(filename);
 
       // Try to find an existing variant that matches or is close to the requested size
       const bestVariant = this.findBestSizeVariant(targetWidth, targetHeight);
@@ -198,14 +258,14 @@ class ImageService {
           await this.streamVariant(filename, bestVariant, response);
           return;
         } catch (err) {
-          // If variant not found, fall back to dynamic resizing
+          // Don't throw, just log and continue with dynamic resizing
           console.warn(
-            `Variant ${bestVariant} not found, using dynamic resizing`
+            `Variant ${bestVariant} not found for ${filename}, using dynamic resizing`
           );
         }
       }
 
-      // Dynamic resizing
+      // Dynamic resizing as fallback
       await this.streamResizedImage(
         filename,
         targetWidth,
@@ -213,8 +273,23 @@ class ImageService {
         response
       );
     } catch (error) {
-      console.error("Error streaming file:", error);
-      throw new BadRequestError({ message: "Failed to stream file" });
+      console.error(`Error streaming image ${filename}:`, error);
+
+      // Only try original as fallback if we haven't sent headers yet
+      if (!response.headersSent && !response.writableEnded) {
+        try {
+          const stream = await this.getFileStream(filename);
+          stream.pipe(response);
+        } catch (finalError) {
+          throw new NotFoundError({ message: "File not found" });
+        }
+      } else {
+        // If headers were already sent, we need to end the response
+        if (!response.writableEnded) {
+          response.end();
+        }
+        throw new NotFoundError({ message: "File not found" });
+      }
     }
   }
 
@@ -230,30 +305,89 @@ class ImageService {
     sizeKey: string,
     response: Response
   ): Promise<void> {
+    // Don't set content type header here as it's already set in streamFile
+
     // Check if the filename already contains a size suffix
-    if (
-      filename.includes("-sm") ||
-      filename.includes("-md") ||
-      filename.includes("-lg") ||
-      filename.includes("-xl")
-    ) {
+    if (this.hasSizeSuffix(filename)) {
       // If it does, use it as is
       const stream = await this.getFileStream(filename);
       stream.pipe(response);
       return;
     }
 
-    // Otherwise, construct the variant filename
-    const extension = filename.substring(filename.lastIndexOf(".") || 0);
-    const baseName = filename.substring(
-      0,
-      filename.lastIndexOf(".") || filename.length
-    );
-    const variantFilename = `${baseName}-${sizeKey}${extension}`;
+    // Get variant filename
+    const variantFilename = await this.getVariantFilename(filename, sizeKey);
 
-    // Get and stream the variant
-    const stream = await this.getFileStream(variantFilename);
-    stream.pipe(response);
+    try {
+      // Get and stream the variant without setting content type again
+      const stream = await this.getFileStream(variantFilename);
+      stream.pipe(response);
+    } catch (error) {
+      // Fallback to original if variant not found
+      console.error(`Error streaming variant ${sizeKey}: ${error}`);
+
+      // Only attempt fallback if we haven't written to the response yet
+      if (!response.writableEnded) {
+        try {
+          const originalStream = await this.getFileStream(filename);
+          originalStream.pipe(response);
+        } catch (finalError) {
+          throw new NotFoundError({ message: "File not found" });
+        }
+      } else {
+        throw new NotFoundError({ message: "File not found" });
+      }
+    }
+  }
+
+  /**
+   * Check if filename has a size suffix
+   * @param filename Filename to check
+   * @returns True if filename has a size suffix
+   */
+  private hasSizeSuffix(filename: string): boolean {
+    return (
+      filename.includes("-sm") ||
+      filename.includes("-md") ||
+      filename.includes("-lg") ||
+      filename.includes("-xl")
+    );
+  }
+
+  /**
+   * Get appropriate variant filename
+   * @param filename Original filename
+   * @param sizeKey Size key
+   * @returns Variant filename
+   */
+  private async getVariantFilename(
+    filename: string,
+    sizeKey: string
+  ): Promise<string> {
+    const extension = path.extname(filename);
+    const baseName = filename.substring(0, filename.lastIndexOf(extension));
+
+    // Try first with the original extension
+    let variantFilename = `${baseName}-${sizeKey}${extension}`;
+
+    // If this is not original size and we're using AVIF format, try with AVIF extension
+    if (sizeKey !== "original" && this.outputFormat === "avif") {
+      try {
+        // Check if the file exists with AVIF extension
+        if (
+          await this.s3Service.checkFileExists(`${baseName}-${sizeKey}.avif`)
+        ) {
+          variantFilename = `${baseName}-${sizeKey}.avif`;
+        }
+      } catch (error) {
+        // Fallback to original extension if there's an error
+        console.warn(
+          `Error checking for AVIF variant, using original extension: ${error}`
+        );
+      }
+    }
+
+    return variantFilename;
   }
 
   /**
@@ -270,18 +404,38 @@ class ImageService {
     height: number | undefined,
     response: Response
   ): Promise<void> {
-    const stream = await this.getFileStream(filename);
+    try {
+      const stream = await this.getFileStream(filename);
 
-    // Create a Sharp transformer with resize options
-    const transformer = sharp().resize({
-      width,
-      height,
-      fit: "inside",
-      withoutEnlargement: true
-    });
+      // Create a Sharp transformer with resize options
+      const transformer = sharp().resize({
+        width,
+        height,
+        fit: "inside",
+        withoutEnlargement: true
+      });
 
-    // Pipe through the transformer
-    stream.pipe(transformer).pipe(response);
+      // Add error handlers to the pipeline
+      stream.on("error", (err) => {
+        console.error(`Error in source stream for ${filename}:`, err);
+        if (!response.writableEnded) {
+          response.end();
+        }
+      });
+
+      transformer.on("error", (err) => {
+        console.error(`Error in sharp transformer for ${filename}:`, err);
+        if (!response.writableEnded) {
+          response.end();
+        }
+      });
+
+      // Pipe through the transformer without setting headers again
+      stream.pipe(transformer).pipe(response);
+    } catch (error) {
+      console.error(`Error setting up resize stream for ${filename}:`, error);
+      throw error;
+    }
   }
 
   /**
@@ -328,46 +482,45 @@ class ImageService {
    * @param fileBuffer The image buffer
    * @param baseKey The base key for the file
    * @param contentType The content type of the original file
+   * @param convertFormat Whether to convert image format to the configured output format
    * @returns Object with URLs for all generated versions
    */
   private async processAndUploadImage(
     fileBuffer: Buffer,
     baseKey: string,
-    contentType: string
+    contentType: string,
+    convertFormat = true
   ): Promise<{ [key: string]: string }> {
     const results: { [key: string]: string } = {};
+
+    // Extract file parts
+    const { baseFilename, originalExt, avifExtension } =
+      this.extractFileParts(baseKey);
 
     // Process each size in parallel
     await Promise.all(
       this.imageSizes.map(async (size) => {
         try {
-          let processedBuffer: Buffer;
-          let outputContentType: string;
-          const key =
-            size.key === "original" ? baseKey : `${baseKey}-${size.key}`;
-
-          if (size.key === "original") {
-            // Keep original as is
-            processedBuffer = fileBuffer;
-            outputContentType = contentType;
-          } else {
-            // Process image with sharp
-            const image = sharp(fileBuffer);
-
-            // Resize and convert to AVIF for best compression/quality ratio
-            processedBuffer = await image
-              .resize(size.width)
-              .toFormat(this.outputFormat, { quality: this.outputQuality })
-              .toBuffer();
-
-            outputContentType = `image/${this.outputFormat}`;
-          }
+          // Process image for this size
+          const processed = await this.processImageForSize(
+            fileBuffer,
+            baseFilename,
+            originalExt,
+            avifExtension,
+            contentType,
+            size,
+            convertFormat
+          );
 
           // Upload the processed image
-          await this.uploadToS3(key, processedBuffer, outputContentType);
+          await this.s3Service.uploadBuffer(
+            processed.fileKey,
+            processed.buffer,
+            processed.contentType
+          );
 
-          // Generate public URL
-          results[size.key] = this.generatePublicUrl(key);
+          // Store URL in results
+          results[size.key] = processed.url;
         } catch (err) {
           console.error(`Error processing size ${size.key}:`, err);
           throw err;
@@ -379,39 +532,196 @@ class ImageService {
   }
 
   /**
-   * Upload a buffer to S3/MinIO
-   * @param key The object key
-   * @param buffer The buffer to upload
-   * @param contentType The content type
+   * Extract base filename and extensions from a key
+   * @param baseKey Original file key
+   * @returns Object with parts
    */
-  private async uploadToS3(
-    key: string,
-    buffer: Buffer,
-    contentType: string
-  ): Promise<void> {
-    await this.s3Client.send(
-      new PutObjectCommand({
-        Bucket: this.bucket,
-        Key: key,
-        Body: buffer,
-        ContentType: contentType
-      })
-    );
+  private extractFileParts(baseKey: string) {
+    const dotIndex = baseKey.lastIndexOf(".");
+    const baseFilename =
+      dotIndex > -1 ? baseKey.substring(0, dotIndex) : baseKey;
+    const originalExt = dotIndex > -1 ? baseKey.substring(dotIndex) : "";
+    const avifExtension = `.${this.outputFormat}`;
+
+    return { baseFilename, originalExt, avifExtension };
+  }
+
+  /**
+   * Process an image for a specific size
+   * @param fileBuffer Original file buffer
+   * @param baseFilename Base filename without extension
+   * @param originalExt Original extension
+   * @param avifExtension AVIF extension
+   * @param contentType Original content type
+   * @param size Size configuration
+   * @param convertFormat Whether to convert format
+   * @returns Processed image info
+   */
+  private async processImageForSize(
+    fileBuffer: Buffer,
+    baseFilename: string,
+    originalExt: string,
+    avifExtension: string,
+    contentType: string,
+    size: { key: string; width: number | null },
+    convertFormat: boolean
+  ): Promise<ProcessedImage> {
+    if (size.key === "original") {
+      return this.processOriginalImage(
+        fileBuffer,
+        baseFilename,
+        originalExt,
+        avifExtension,
+        contentType,
+        convertFormat
+      );
+    } else {
+      return this.processResizedImage(
+        fileBuffer,
+        baseFilename,
+        originalExt,
+        avifExtension,
+        contentType,
+        size,
+        convertFormat
+      );
+    }
+  }
+
+  /**
+   * Process the original image
+   * @param fileBuffer Original file buffer
+   * @param baseFilename Base filename
+   * @param originalExt Original extension
+   * @param avifExtension AVIF extension
+   * @param contentType Original content type
+   * @param convertFormat Whether to convert format
+   * @returns Processed image info
+   */
+  private async processOriginalImage(
+    fileBuffer: Buffer,
+    baseFilename: string,
+    originalExt: string,
+    avifExtension: string,
+    contentType: string,
+    convertFormat: boolean
+  ): Promise<ProcessedImage> {
+    let processedBuffer: Buffer;
+    let outputContentType: string;
+    let key: string;
+
+    if (convertFormat) {
+      // Convert original to the configured format
+      const image = sharp(fileBuffer);
+      processedBuffer = await image
+        .toFormat(this.outputFormat, { quality: this.outputQuality })
+        .toBuffer();
+      outputContentType = `image/${this.outputFormat}`;
+      key = `${baseFilename}${avifExtension}`;
+    } else {
+      // Keep original as is
+      processedBuffer = fileBuffer;
+      outputContentType = contentType;
+      key = `${baseFilename}${originalExt}`;
+    }
+
+    return {
+      buffer: processedBuffer,
+      contentType: outputContentType,
+      fileKey: key,
+      url: this.generatePublicUrl(key)
+    };
+  }
+
+  /**
+   * Process a resized image
+   * @param fileBuffer Original file buffer
+   * @param baseFilename Base filename
+   * @param originalExt Original extension
+   * @param avifExtension AVIF extension
+   * @param contentType Original content type
+   * @param size Size configuration
+   * @param convertFormat Whether to convert format
+   * @returns Processed image info
+   */
+  private async processResizedImage(
+    fileBuffer: Buffer,
+    baseFilename: string,
+    originalExt: string,
+    avifExtension: string,
+    contentType: string,
+    size: { key: string; width: number | null },
+    convertFormat: boolean
+  ): Promise<ProcessedImage> {
+    let processedBuffer: Buffer;
+    let outputContentType: string;
+    let key: string;
+
+    // Process image with sharp
+    const image = sharp(fileBuffer);
+
+    if (convertFormat) {
+      // Create key with correct size suffix and extension for converted format
+      key = `${baseFilename}-${size.key}${avifExtension}`;
+
+      // Resize and convert to configured format
+      processedBuffer = await image
+        .resize(size.width)
+        .toFormat(this.outputFormat, { quality: this.outputQuality })
+        .toBuffer();
+
+      outputContentType = `image/${this.outputFormat}`;
+    } else {
+      // Keep original format but resize
+      key = `${baseFilename}-${size.key}${originalExt}`;
+
+      // Resize but maintain original format
+      processedBuffer = await image.resize(size.width).toBuffer();
+      outputContentType = contentType;
+    }
+
+    return {
+      buffer: processedBuffer,
+      contentType: outputContentType,
+      fileKey: key,
+      url: this.generatePublicUrl(key)
+    };
   }
 
   /**
    * Generate a unique key for a file
    * @param fileName The original file name
    * @param prefix Optional prefix for the file
+   * @param preserveOriginalName Whether to preserve the exact original filename (for migration)
    * @returns Unique file key
    */
-  private generateUniqueKey(fileName: string, prefix: string): string {
+  private generateUniqueKey(
+    fileName: string,
+    prefix: string = "",
+    preserveOriginalName: boolean = false
+  ): string {
     const ext = path.extname(fileName);
+    const originalName = path.basename(fileName, ext);
     const timestamp = Date.now();
     const randomStr = Math.random().toString(36).substring(2, 10);
     const sanitizedPrefix = prefix ? `${prefix}/` : "";
 
+    if (preserveOriginalName) {
+      // Use the exact original filename without any cleaning
+      return `${sanitizedPrefix}${originalName}${ext}`;
+    }
+
     return `${sanitizedPrefix}${timestamp}-${randomStr}${ext}`;
+  }
+
+  /**
+   * Get key for a specific size
+   * @param baseKey Base key
+   * @param sizeKey Size key
+   * @returns Full key for the size
+   */
+  private getKeyForSize(baseKey: string, sizeKey: string): string {
+    return sizeKey === "original" ? baseKey : `${baseKey}-${sizeKey}`;
   }
 
   /**
@@ -437,7 +747,13 @@ class ImageService {
   private generatePublicUrl(key: string): string {
     // Ensure key doesn't start with slash
     const cleanKey = key.startsWith("/") ? key.substring(1) : key;
-    return `${config.audience}/uploads/${cleanKey}`;
+
+    // Parse the key to properly encode parts that might contain special characters
+    const keyParts = cleanKey.split("/");
+    const encodedParts = keyParts.map((part) => encodeURIComponent(part));
+    const encodedKey = encodedParts.join("/");
+
+    return `${config.audience}/uploads/${encodedKey}`;
   }
 
   /**
@@ -445,7 +761,7 @@ class ImageService {
    * @param fileName The file name
    * @returns The content type
    */
-  private getContentType(fileName: string): string {
+  public getContentType(fileName: string): string {
     const ext = path.extname(fileName).toLowerCase();
     const contentTypes: Record<string, string> = {
       ".jpg": "image/jpeg",
@@ -473,5 +789,5 @@ class ImageService {
   }
 }
 
+/** Singleton instance of ImageService */
 export const imageService = new ImageService();
-export default imageService;

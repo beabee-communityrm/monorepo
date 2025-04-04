@@ -10,6 +10,7 @@ export interface MigrateImagesArgs {
   region: string;
   dryRun: boolean;
   createVariants: boolean;
+  preserveFormat: boolean;
 }
 
 /**
@@ -61,6 +62,12 @@ export const migrateImagesCommand = {
         describe: "Create image variants (resized versions) during migration",
         type: "boolean",
         default: true
+      })
+      .option("preserveFormat", {
+        describe:
+          "Preserve original image format instead of converting to AVIF",
+        type: "boolean",
+        default: true
       });
   },
   handler: async (args: MigrateImagesArgs): Promise<void> => {
@@ -73,7 +80,8 @@ export const migrateImagesCommand = {
         secretKey: args.secretKey,
         region: args.region,
         dryRun: args.dryRun,
-        createVariants: args.createVariants
+        createVariants: args.createVariants,
+        preserveFormat: args.preserveFormat
       });
     } catch (error) {
       console.error("Failed to migrate images:", error);

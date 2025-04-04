@@ -17,5 +17,6 @@ export * from "./PaymentFlowService";
 export * from "./PaymentService";
 export * from "./ReferralsService";
 export * from "./ResetSecurityFlowService";
+export * from "./S3Service";
 export * from "./SegmentService";
 export * from "./UploadFlowService";

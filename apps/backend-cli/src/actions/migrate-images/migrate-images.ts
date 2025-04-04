@@ -13,15 +13,10 @@ import {
   formatSkipMessage,
   formatDryRunMessage
 } from "../../utils/format.js";
-import {
-  createS3Client,
-  checkBucketExists,
-  checkFileExists,
-  uploadFileToS3
-} from "../../utils/s3.js";
 
-// Import the imageService for processing images
-import { imageService } from "@beabee/core/services/ImageService";
+// Import the ImageService for processing images
+import { ImageService } from "@beabee/core/services/ImageService";
+import { S3Service } from "@beabee/core/services/S3Service";
 
 /**
  * Migrates images from local storage to MinIO
@@ -36,18 +31,26 @@ export async function migrateImages(
       console.log(chalk.yellow("DRY RUN MODE: No files will be uploaded"));
     }
 
-    // Initialize S3 client and check bucket
-    const s3Client = createS3Client(
-      options.endpoint,
-      options.region,
-      options.accessKey,
-      options.secretKey
-    );
+    const s3Config = {
+      endpoint: options.endpoint,
+      region: options.region,
+      accessKey: options.accessKey,
+      secretKey: options.secretKey,
+      bucket: options.bucket
+    };
 
-    await checkBucketExists(s3Client, options.bucket);
+    // Initialize ImageService with custom S3 configuration
+    const imageService = new ImageService({
+      s3Config
+    });
+
+    const s3Service = new S3Service(s3Config);
+
+    // Check bucket exists
+    await s3Service.checkBucketExists(options.bucket);
 
     // Process all images
-    const stats = await processAllImages(s3Client, options);
+    const stats = await processAllImages(options, imageService, s3Service);
 
     // Print summary
     printMigrationSummary(stats, isDryRun);
@@ -59,13 +62,14 @@ export async function migrateImages(
 
 /**
  * Process all images from source directory
- * @param s3Client S3 client
  * @param options Migration options
+ * @param imageService ImageService instance
  * @returns Migration statistics
  */
 async function processAllImages(
-  s3Client: any,
-  options: MigrateImagesOptions
+  options: MigrateImagesOptions,
+  imageService: ImageService,
+  s3Service: S3Service
 ): Promise<MigrationStats> {
   const stats: MigrationStats = {
     successCount: 0,
@@ -85,7 +89,7 @@ async function processAllImages(
   // Process each directory
   for (const dir of directories) {
     try {
-      await processImageDirectory(s3Client, options, dir, stats);
+      await processImageDirectory(options, dir, stats, imageService, s3Service);
     } catch (error) {
       stats.errorCount++;
       console.error(`Error processing directory ${dir}:`, error);
@@ -97,16 +101,17 @@ async function processAllImages(
 
 /**
  * Process a single image directory
- * @param s3Client S3 client
  * @param options Migration options
  * @param dirName Directory name
  * @param stats Migration statistics to update
+ * @param imageService ImageService instance
  */
 async function processImageDirectory(
-  s3Client: any,
   options: MigrateImagesOptions,
   dirName: string,
-  stats: MigrationStats
+  stats: MigrationStats,
+  imageService: ImageService,
+  s3Service: S3Service
 ): Promise<void> {
   const dirPath = path.join(options.source, dirName);
   const mainImage = await findMainImage(dirPath);
@@ -116,84 +121,119 @@ async function processImageDirectory(
   }
 
   const filePath = path.join(dirPath, mainImage);
-  // Use the directory name as the image key (without nested folder)
-  const s3Key = dirName;
 
   // Get file stats for size calculation
   const fileStats = await fs.stat(filePath);
+  const fileSize = fileStats.size;
 
   // Check if file already exists in S3
+  // We use the directory name as a key
   if (!options.dryRun) {
-    const fileExists = await checkFileExists(s3Client, options.bucket, s3Key);
+    const fileExists = await s3Service.checkFileExists(dirName);
 
     if (fileExists) {
-      console.log(formatSkipMessage(s3Key));
+      console.log(formatSkipMessage(dirName));
       stats.skippedCount++;
       return;
     }
   }
 
   // Process the file
-  await processFile(s3Client, options, filePath, s3Key, fileStats.size, stats);
+  await processFile(
+    options,
+    filePath,
+    dirName,
+    fileSize,
+    stats,
+    imageService,
+    s3Service
+  );
 }
 
 /**
  * Process an individual file
- * @param s3Client S3 client
  * @param options Migration options
  * @param filePath Local file path
  * @param s3Key S3 object key
  * @param fileSize File size in bytes
  * @param stats Migration statistics to update
+ * @param imageService ImageService instance
  */
 async function processFile(
-  s3Client: any,
   options: MigrateImagesOptions,
   filePath: string,
   s3Key: string,
   fileSize: number,
-  stats: MigrationStats
+  stats: MigrationStats,
+  imageService: ImageService,
+  s3Service: S3Service
 ): Promise<void> {
   stats.totalSizeBytes += fileSize;
 
   if (!options.dryRun) {
     const createVariants = options.createVariants !== false;
+    const preserveFormat = options.preserveFormat === true;
 
-    if (createVariants) {
-      // Use ImageService to process image and create variants
-      try {
-        // Read the file
-        const fileBuffer = await fs.readFile(filePath);
-        const fileName = path.basename(filePath);
+    try {
+      // Read the file as buffer
+      const fileBuffer = await fs.readFile(filePath);
+      const fileName = path.basename(filePath);
 
-        // Use ImageService to process and upload
-        const urls = await imageService.uploadFile(fileBuffer, fileName);
+      if (createVariants) {
+        // Use the standard upload method from ImageService
+        // This will handle variant creation automatically
+        const urls = await imageService.uploadFile(
+          fileBuffer,
+          fileName,
+          undefined, // No prefix
+          true, // Preserve original filename
+          !preserveFormat // Convert format only if preserveFormat is false
+        );
 
         // Count the variants created (subtract 1 for the original)
         const variantCount = Object.keys(urls).length - 1;
         stats.variantsCreated += variantCount;
 
-        console.log(formatSuccessMessage(s3Key, fileSize, variantCount));
-      } catch (error) {
-        console.error(`Error processing variants for ${s3Key}:`, error);
+        const formatMsg = preserveFormat ? " (original format preserved)" : "";
+        console.log(
+          formatSuccessMessage(s3Key, fileSize, variantCount) + formatMsg
+        );
+      } else {
+        // Upload the original file directly (without creating variants)
+        // We still use uploadFile but make note that no variants were created
+        await s3Service.uploadFile(
+          s3Key,
+          filePath,
+          imageService.getContentType(filePath)
+        );
+        console.log(formatSuccessMessage(s3Key, fileSize, 0));
+      }
+    } catch (error) {
+      console.error(`Error processing file ${s3Key}:`, error);
 
-        // Fallback to direct upload if variant creation fails
-        await uploadFileToS3(s3Client, options.bucket, s3Key, filePath);
+      // Fallback to direct upload if standard method fails
+      try {
+        await s3Service.uploadFile(
+          s3Key,
+          filePath,
+          imageService.getContentType(filePath)
+        );
         console.log(
           formatSuccessMessage(s3Key, fileSize, 0) + " (fallback upload)"
         );
+      } catch (uploadError) {
+        console.error(`Fallback upload failed for ${s3Key}:`, uploadError);
+        throw uploadError;
       }
-    } else {
-      // Upload the original file directly (without creating variants)
-      await uploadFileToS3(s3Client, options.bucket, s3Key, filePath);
-      console.log(formatSuccessMessage(s3Key, fileSize));
     }
   } else {
     const variantMsg =
       options.createVariants !== false
         ? " (with variants)"
         : " (original only)";
-    console.log(formatDryRunMessage(s3Key, fileSize) + variantMsg);
+    const formatMsg =
+      options.preserveFormat === true ? " (original format preserved)" : "";
+    console.log(formatDryRunMessage(s3Key, fileSize) + variantMsg + formatMsg);
   }
 
   stats.successCount++;
