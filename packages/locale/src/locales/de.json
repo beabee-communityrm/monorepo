@@ -582,8 +582,11 @@
               "label": "Titelbild"
             },
             "overrideShare": {
-              "description": "In sozialen Netzwerken geteilte Links haben einen benutzerdefinierten Titel und eine benutzerdefinierte Beschreibung",
-              "label": "Aufruf-Titel und -Beschreibung für das Teilen verwenden?"
+              "label": "Einen benutzerdefinierten Titel und eine benutzerdefinierte Beschreibung für das Teilen verwenden?",
+              "opts": {
+                "disabled": "Links, die in sozialen Netzwerken geteilt werden, haben denselben Titel und dieselbe Beschreibung.",
+                "enabled": "In sozialen Netzwerken geteilte Links haben einen benutzerdefinierten Titel und eine benutzerdefinierte Beschreibung."
+              }
             },
             "shareDescription": {
               "help": "<p>Das Feld <strong>Teilungsbeschreibung</strong> legt die Kurzbeschreibung fest, wie sie auf Social-Media-Karten erscheinen soll.</p>",

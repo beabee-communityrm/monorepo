@@ -582,8 +582,11 @@
               "label": "Cover image"
             },
             "overrideShare": {
-              "description": "Links shared on social networks will have a custom title and description",
-              "label": "Use callout title and description for sharing?"
+              "label": "Use custom title and description for sharing?",
+              "opts": {
+                "disabled": "Links shared on social networks will have the same title and description.",
+                "enabled": "Links shared on social networks will have a custom title and description."
+              }
             },
             "shareDescription": {
               "help": "<p>The <strong>Share description</strong> field sets the short description as it should appear on social media cards.</p>",

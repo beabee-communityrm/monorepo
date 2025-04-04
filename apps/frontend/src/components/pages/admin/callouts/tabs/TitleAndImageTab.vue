@@ -39,7 +39,7 @@
 
             <AppFormField :help="inputT('image.help')">
               <AppImageUpload
-                v-model="data.coverImageURL"
+                v-model="localData.coverImageURL"
                 :label="inputT('image.label')"
                 :description="inputT('image.description')"
                 :width="1440"
@@ -72,19 +72,15 @@
           >
             <AppFormField :help="inputT('slug.help')">
               <AppToggleField
-                v-model="data.autoGenerateSlug"
+                v-model="localData.autoGenerateSlug"
                 :variant="'link'"
                 :label="inputT('slug.label')"
-                :description="
-                  data.autoGenerateSlug
-                    ? inputT('slug.opts.auto')
-                    : inputT('slug.opts.manual')
-                "
+                :enabled-description="inputT('slug.opts.auto')"
+                :disabled-description="inputT('slug.opts.manual')"
                 :disabled="!canEditSlug"
-                required
               />
               <AppInput
-                v-if="data.autoGenerateSlug"
+                v-if="localData.autoGenerateSlug"
                 :model-value="env.appUrl + '/callouts/' + slug"
                 :disabled="true"
                 :copyable="true"
@@ -107,10 +103,11 @@
           <AppFormBox :title="inputT('sharing.title')">
             <AppFormField>
               <AppToggleField
-                v-model="data.overrideShare"
+                v-model="localData.overrideShare"
                 :variant="'link'"
                 :label="inputT('overrideShare.label')"
-                :description="inputT('overrideShare.description')"
+                :enabled-description="inputT('overrideShare.opts.enabled')"
+                :disabled-description="inputT('overrideShare.opts.disabled')"
               />
             </AppFormField>
 
@@ -119,7 +116,7 @@
                 v-model="shareTitleDefault"
                 :label="inputT('shareTitle.label')"
                 :placeholder="inputT('shareTitle.placeholder')"
-                :disabled="!data.overrideShare"
+                :disabled="!localData.overrideShare"
                 required
               />
             </AppFormField>
@@ -129,7 +126,7 @@
                 v-model="shareDescriptionDefault"
                 :label="inputT('shareDescription.label')"
                 :placeholder="inputT('shareDescription.placeholder')"
-                :disabled="!data.overrideShare"
+                :disabled="!localData.overrideShare"
                 :max-length="200"
                 required
               />

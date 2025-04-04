@@ -181,7 +181,9 @@
             "description": {},
             "general": {},
             "image": {},
-            "overrideShare": {},
+            "overrideShare": {
+              "opts": {}
+            },
             "shareDescription": {},
             "shareTitle": {},
             "sharing": {},
