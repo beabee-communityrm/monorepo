@@ -1584,7 +1584,8 @@
   "notifications": {
     "copy": {
       "success": "In die Zwischenablage kopiert"
-    }
+    },
+    "remove": "Benachrichtigung schließen"
   },
   "pageTitle": {
     "confirmEmail": "E-Mail-Adresse bestätigen",

@@ -1592,7 +1592,8 @@
   "notifications": {
     "copy": {
       "success": "Copied to clipboard"
-    }
+    },
+    "remove": "Close notification"
   },
   "pageTitle": {
     "confirmEmail": "Confirm email",
