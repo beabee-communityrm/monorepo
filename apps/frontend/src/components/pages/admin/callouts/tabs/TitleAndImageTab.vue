@@ -5,10 +5,7 @@
 
     <div class="flex min-h-0 gap-4">
       <!-- Left Sidebar with Scroll Navigation -->
-      <AppScrollNavigation
-        :sections="navigationSections"
-        @section-change="onSectionChange"
-      />
+      <AppScrollNavigation :sections="navigationSections" />
 
       <!-- Main Content -->
       <div
@@ -21,7 +18,7 @@
           <AppFormBox :title="inputT('general.title')">
             <AppFormField>
               <AppInput
-                v-model="titleDefault"
+                v-model="data.title.default"
                 :label="inputT('title.label')"
                 :placeholder="inputT('title.placeholder')"
                 required
@@ -30,7 +27,7 @@
 
             <AppFormField :help="inputT('description.help')">
               <AppTextArea
-                v-model="descriptionDefault"
+                v-model="data.description.default"
                 :label="inputT('description.label')"
                 :placeholder="inputT('description.placeholder')"
                 required
@@ -39,7 +36,7 @@
 
             <AppFormField :help="inputT('image.help')">
               <AppImageUpload
-                v-model="localData.coverImageURL"
+                v-model="data.coverImageURL"
                 :label="inputT('image.label')"
                 :description="inputT('image.description')"
                 :width="1440"
@@ -57,12 +54,8 @@
             :notification="
               !canEditSlug
                 ? {
-                    title: t(
-                      'callout.builder.tabs.titleAndImage.inputs.slug.locked.title'
-                    ),
-                    description: t(
-                      'callout.builder.tabs.titleAndImage.inputs.slug.locked.description'
-                    ),
+                    title: inputT('slug.locked.title'),
+                    description: inputT('slug.locked.description'),
                     variant: 'warning',
                     mode: 'inline',
                     removeable: false,
@@ -72,7 +65,7 @@
           >
             <AppFormField :help="inputT('slug.help')">
               <AppToggleField
-                v-model="localData.autoGenerateSlug"
+                v-model="data.autoGenerateSlug"
                 :variant="'link'"
                 :label="inputT('slug.label')"
                 :enabled-description="inputT('slug.opts.auto')"
@@ -80,15 +73,15 @@
                 :disabled="!canEditSlug"
               />
               <AppInput
-                v-if="localData.autoGenerateSlug"
-                :model-value="env.appUrl + '/callouts/' + slug"
+                v-if="data.autoGenerateSlug"
+                :model-value="env.appUrl + '/callouts/' + data.autoSlug"
                 :disabled="true"
                 :copyable="true"
                 required
               />
               <AppInput
                 v-else
-                v-model="customSlug"
+                v-model="props.data.slug"
                 :disabled="!canEditSlug"
                 :prefix="env.appUrl + '/callouts/'"
                 :copyable="true"
@@ -103,7 +96,7 @@
           <AppFormBox :title="inputT('sharing.title')">
             <AppFormField>
               <AppToggleField
-                v-model="localData.overrideShare"
+                v-model="data.overrideShare"
                 :variant="'link'"
                 :label="inputT('overrideShare.label')"
                 :enabled-description="inputT('overrideShare.opts.enabled')"
@@ -113,22 +106,22 @@
 
             <AppFormField :help="inputT('shareTitle.help')">
               <AppInput
-                v-model="shareTitleDefault"
+                v-model="data.shareTitle.default"
                 :label="inputT('shareTitle.label')"
                 :placeholder="inputT('shareTitle.placeholder')"
-                :disabled="!localData.overrideShare"
-                required
+                :disabled="!data.overrideShare"
+                :required="data.overrideShare"
               />
             </AppFormField>
 
             <AppFormField :help="inputT('shareDescription.help')">
               <AppTextArea
-                v-model="shareDescriptionDefault"
+                v-model="data.shareDescription.default"
                 :label="inputT('shareDescription.label')"
                 :placeholder="inputT('shareDescription.placeholder')"
-                :disabled="!localData.overrideShare"
                 :max-length="200"
-                required
+                :disabled="!data.overrideShare"
+                :required="data.overrideShare"
               />
             </AppFormField>
           </AppFormBox>
@@ -234,136 +227,14 @@ function registerSection(id: string, element: HTMLElement): void {
   }
 }
 
-// Handle section change from navigation
-function onSectionChange(): void {
-  // This function can be used to perform additional actions when a section is selected
-  // For now, we just rely on the ScrollNavigation component to handle scrolling
-}
-
-// Create local model to avoid direct prop mutations
-const localData = ref({ ...props.data });
-
-// Watch for prop changes and update local data
+// Slug generation
 watch(
-  () => props.data,
-  (newData) => {
-    localData.value = { ...newData };
-  },
-  { deep: true }
-);
-
-// Watch local data changes and update parent
-watch(
-  localData,
-  (newData) => {
-    // Synchronize back to parent
-    Object.assign(props.data, newData);
-    emit('update:error', validation.value.$errors.length > 0);
-    emit('update:validated', !validation.value.$invalid);
-  },
-  { deep: true }
-);
-
-const slug = computed(() =>
-  localData.value.autoGenerateSlug ? localData.value.autoSlug : customSlug.value
-);
-
-const customSlug = computed({
-  get: () => localData.value.slug || localData.value.autoSlug,
-  set: (newSlug) => (localData.value.slug = slugify(newSlug)),
-});
-
-// Computed properties for default values of localized fields
-const titleDefault = computed({
-  get: () => localData.value.title.default || '',
-  set: (value) => {
-    localData.value.title = { ...localData.value.title, default: value };
-  },
-});
-
-const descriptionDefault = computed({
-  get: () => localData.value.description.default || '',
-  set: (value) => {
-    localData.value.description = {
-      ...localData.value.description,
-      default: value,
-    };
-  },
-});
-
-// Computed properties for share fields that sync with title/description when not overridden
-const shareTitle = computed({
-  get: () =>
-    localData.value.overrideShare
-      ? localData.value.shareTitle
-      : localData.value.title,
-  set: (value) => {
-    if (localData.value.overrideShare) {
-      localData.value.shareTitle = value;
-    }
-  },
-});
-
-const shareTitleDefault = computed({
-  get: () => shareTitle.value.default || '',
-  set: (value) => {
-    const newShareTitle = { ...shareTitle.value, default: value };
-    if (localData.value.overrideShare) {
-      localData.value.shareTitle = newShareTitle;
-    } else {
-      localData.value.title = newShareTitle;
-    }
-  },
-});
-
-const shareDescription = computed({
-  get: () =>
-    localData.value.overrideShare
-      ? localData.value.shareDescription
-      : localData.value.description,
-  set: (value) => {
-    if (localData.value.overrideShare) {
-      localData.value.shareDescription = value;
-    }
-  },
-});
-
-const shareDescriptionDefault = computed({
-  get: () => shareDescription.value.default || '',
-  set: (value) => {
-    const newShareDescription = { ...shareDescription.value, default: value };
-    if (localData.value.overrideShare) {
-      localData.value.shareDescription = newShareDescription;
-    } else {
-      localData.value.description = newShareDescription;
-    }
-  },
-});
-
-// Watch for changes in title/description and update share fields when not overridden
-watch(
-  () => localData.value.title,
-  (newTitle) => {
-    if (!localData.value.overrideShare) {
-      localData.value.shareTitle = newTitle;
-    }
-  }
-);
-
-watch(
-  () => localData.value.description,
-  (newDescription) => {
-    if (!localData.value.overrideShare) {
-      localData.value.shareDescription = newDescription;
-    }
-  }
-);
-
-watch(
-  () => localData.value.title,
+  () => props.data.title.default,
   (title) => {
-    localData.value.autoSlug = slugify(title.default, { lower: true });
-  }
+    // eslint-disable-next-line vue/no-mutating-props
+    props.data.autoSlug = slugify(title, { lower: true });
+  },
+  { immediate: true }
 );
 
 const canEditSlug = computed(

@@ -192,7 +192,7 @@ export function convertCalloutToTabs(
         showOnUserDashboards: !callout?.hidden,
         usersCanEditAnswers: callout?.allowUpdate || false,
         multipleResponses: callout?.allowMultiple || false,
-        hasStartDate: callout?.status === ItemStatus.Draft,
+        hasStartDate: callout?.status === ItemStatus.Scheduled,
         hasEndDate: !!callout?.expires,
         startDate: callout?.starts ? format(callout.starts, 'yyyy-MM-dd') : '',
         startTime: callout?.starts ? format(callout.starts, 'HH:mm') : '',
