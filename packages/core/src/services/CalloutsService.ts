@@ -2,7 +2,8 @@ import {
   GetCalloutFormSchema,
   CalloutResponseAnswersSlide,
   CalloutAccess,
-  CreateCalloutData
+  CreateCalloutData,
+  CreateCalloutResponseGuestData
 } from "@beabee/beabee-common";
 import slugify from "slugify";
 import { BadRequestError } from "routing-controllers";
@@ -267,30 +268,26 @@ class CalloutsService {
    */
   async setGuestResponse(
     callout: Callout,
-    guestName: string | undefined,
-    guestEmail: string | undefined,
+    guest: CreateCalloutResponseGuestData | undefined,
     answers: CalloutResponseAnswersSlide
   ): Promise<CalloutResponse> {
-    if (callout.access === CalloutAccess.Guest && !(guestName && guestEmail)) {
+    if (callout.access === CalloutAccess.Guest && !guest) {
       throw new InvalidCalloutResponse("guest-fields-missing");
-    } else if (
-      callout.access === CalloutAccess.OnlyAnonymous &&
-      (guestName || guestEmail)
-    ) {
+    } else if (callout.access === CalloutAccess.OnlyAnonymous && guest) {
       throw new InvalidCalloutResponse("only-anonymous");
     } else if (!callout.active || callout.access === CalloutAccess.Member) {
       throw new InvalidCalloutResponse("closed");
     }
 
-    if (guestEmail) {
-      guestEmail = normalizeEmailAddress(guestEmail);
+    if (guest) {
+      guest.email = normalizeEmailAddress(guest.email);
 
       try {
-        let contact = await ContactsService.findOneBy({ email: guestEmail });
+        let contact = await ContactsService.findOneBy({ email: guest.email });
 
         // Create a contact if it doesn't exist
         if (!contact && callout.access === CalloutAccess.Guest) {
-          contact = await ContactsService.createContact({ email: guestEmail });
+          contact = await ContactsService.createContact(guest);
         }
 
         // If the guest email matches a contact, then use that contact instead
@@ -314,8 +311,8 @@ class CalloutsService {
 
     const response = new CalloutResponse();
     response.callout = callout;
-    response.guestName = guestName || null;
-    response.guestEmail = guestEmail || null;
+    response.guestName = guest ? `${guest.firstname} ${guest.lastname}` : null;
+    response.guestEmail = guest?.email || null;
     response.answers = answers;
 
     return await this.saveResponse(response);

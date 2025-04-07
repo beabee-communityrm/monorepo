@@ -12,8 +12,9 @@
     <template v-if="isLastSlide && !readonly && !preview">
       <CalloutFormGuestFields
         v-if="showGuestFields"
-        v-model:name="guestName"
-        v-model:email="guestEmail"
+        v-model:firstname="guestData.firstname"
+        v-model:lastname="guestData.lastname"
+        v-model:email="guestData.email"
       />
 
       <CalloutFormCaptcha v-if="showCaptcha" v-model="captchaToken" />
@@ -66,7 +67,7 @@ import type {
   CalloutResponseAnswersSlide,
   GetCalloutDataWith,
 } from '@beabee/beabee-common';
-import { computed, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import useVuelidate from '@vuelidate/core';
 
@@ -97,8 +98,11 @@ const props = defineProps<{
   onSubmit?(answers: CalloutResponseAnswersSlide): void;
 }>();
 
-const guestName = ref('');
-const guestEmail = ref('');
+const guestData = reactive({
+  firstname: '',
+  lastname: '',
+  email: '',
+});
 const captchaToken = ref('');
 const formError = ref('');
 const isLoading = ref(false);
@@ -174,12 +178,9 @@ async function handleSubmit() {
     await client.callout.createResponse(
       props.callout.slug,
       {
-        ...(!currentUser.value &&
-          props.callout?.access === 'guest' && {
-            guestName: guestName.value,
-            guestEmail: guestEmail.value,
-          }),
         answers: validAnswers,
+        ...(!currentUser.value &&
+          props.callout?.access === 'guest' && { guest: guestData }),
       },
       captchaToken.value
     );
