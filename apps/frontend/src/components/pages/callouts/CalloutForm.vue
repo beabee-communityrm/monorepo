@@ -85,7 +85,11 @@ import { useI18n } from 'vue-i18n';
 import useVuelidate from '@vuelidate/core';
 
 import CalloutFormGuestFields from './CalloutFormGuestFields.vue';
-import { AppNotification, AppButton } from '@beabee/vue/components';
+import {
+  AppNotification,
+  AppButton,
+  AppCheckbox,
+} from '@beabee/vue/components';
 import FormRenderer from '@components/form-renderer/FormRenderer.vue';
 
 import { currentUser } from '@store';
@@ -95,7 +99,6 @@ import { getDecisionComponent } from '@utils/callouts';
 
 import CalloutFormCaptcha from './CalloutFormCaptcha.vue';
 import { requiredIf } from '@vuelidate/validators';
-import AppCheckbox from '@components/forms/AppCheckbox.vue';
 
 const { t } = useI18n();
 
