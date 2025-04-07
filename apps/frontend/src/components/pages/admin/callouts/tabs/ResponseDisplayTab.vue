@@ -149,110 +149,110 @@
               </AppFormField>
             </template>
           </AppFormBox>
-        </template>
 
-        <!-- Map Settings Section -->
-        <AppScrollSection
-          v-if="mapViewEnabled"
-          id="map"
-          @mounted="registerSection"
-        >
-          <AppFormBox :title="inputT('mapSchema.title')">
-            <AppFormField>
-              <AppSelect
-                v-model="localData.mapSchema.addressProp"
-                :label="inputT('mapSchema.addressProp.label')"
-                :items="addressComponentItems"
-                required
-              />
-            </AppFormField>
-            <AppFormField :help="inputT('mapSchema.style.help')">
-              <AppInput
-                v-model="localData.mapSchema.style"
-                :label="inputT('mapSchema.style.label')"
-                required
-              />
-            </AppFormField>
-            <AppFormField>
-              <div class="grid grid-cols-2 gap-4">
-                <div>
-                  <AppInput
-                    v-model="mapCenter"
-                    :label="inputT('mapSchema.center.label')"
-                    required
-                  />
+          <!-- Map Settings Section -->
+          <AppScrollSection
+            v-if="mapViewEnabled"
+            id="map"
+            @mounted="registerSection"
+          >
+            <AppFormBox :title="inputT('mapSchema.title')">
+              <AppFormField>
+                <AppSelect
+                  v-model="localData.mapSchema.addressProp"
+                  :label="inputT('mapSchema.addressProp.label')"
+                  :items="addressComponentItems"
+                  required
+                />
+              </AppFormField>
+              <AppFormField :help="inputT('mapSchema.style.help')">
+                <AppInput
+                  v-model="localData.mapSchema.style"
+                  :label="inputT('mapSchema.style.label')"
+                  required
+                />
+              </AppFormField>
+              <AppFormField>
+                <div class="grid grid-cols-2 gap-4">
+                  <div>
+                    <AppInput
+                      v-model="mapCenter"
+                      :label="inputT('mapSchema.center.label')"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <AppInput
+                      v-model="mapBounds"
+                      :label="inputT('mapSchema.bounds.label')"
+                      required
+                    />
+                  </div>
                 </div>
-                <div>
-                  <AppInput
-                    v-model="mapBounds"
-                    :label="inputT('mapSchema.bounds.label')"
-                    required
-                  />
+              </AppFormField>
+              <AppFormField>
+                <div class="grid grid-cols-3 gap-4">
+                  <div>
+                    <AppInput
+                      v-model="localData.mapSchema.initialZoom"
+                      type="number"
+                      :label="inputT('mapSchema.initialZoom.label')"
+                      :min="localData.mapSchema.minZoom"
+                      :max="localData.mapSchema.maxZoom"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <AppInput
+                      v-model="localData.mapSchema.minZoom"
+                      type="number"
+                      :label="inputT('mapSchema.minZoom.label')"
+                      :min="0"
+                      :max="localData.mapSchema.maxZoom"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <AppInput
+                      v-model="localData.mapSchema.maxZoom"
+                      type="number"
+                      :label="inputT('mapSchema.maxZoom.label')"
+                      :min="localData.mapSchema.minZoom"
+                      :max="22"
+                      required
+                    />
+                  </div>
                 </div>
-              </div>
-            </AppFormField>
-            <AppFormField>
-              <div class="grid grid-cols-3 gap-4">
-                <div>
-                  <AppInput
-                    v-model="localData.mapSchema.initialZoom"
-                    type="number"
-                    :label="inputT('mapSchema.initialZoom.label')"
-                    :min="localData.mapSchema.minZoom"
-                    :max="localData.mapSchema.maxZoom"
-                    required
-                  />
-                </div>
-                <div>
-                  <AppInput
-                    v-model="localData.mapSchema.minZoom"
-                    type="number"
-                    :label="inputT('mapSchema.minZoom.label')"
-                    :min="0"
-                    :max="localData.mapSchema.maxZoom"
-                    required
-                  />
-                </div>
-                <div>
-                  <AppInput
-                    v-model="localData.mapSchema.maxZoom"
-                    type="number"
-                    :label="inputT('mapSchema.maxZoom.label')"
-                    :min="localData.mapSchema.minZoom"
-                    :max="22"
-                    required
-                  />
-                </div>
-              </div>
-            </AppFormField>
-            <AppFormField>
-              <AppSelect
-                v-model="localData.mapSchema.addressPatternProp"
-                :label="inputT('mapSchema.addressPatternProp.label')"
-                :items="[
-                  {
-                    id: '',
-                    label: inputT('mapSchema.addressPatternProp.none'),
-                  },
-                  ...textComponentItems,
-                ]"
-              />
-            </AppFormField>
-            <AppFormField v-if="!!localData.mapSchema.addressPatternProp">
-              <AppInput
-                v-model="localData.mapSchema.addressPattern"
-                :label="inputT('mapSchema.addressPattern.label')"
-                required
-              />
-            </AppFormField>
-            <AppFormField>
-              <AppInput
-                v-model="localData.mapSchema.geocodeCountries"
-                :label="inputT('mapSchema.geocodeCountries.label')"
-              />
-            </AppFormField>
-          </AppFormBox>
-        </AppScrollSection>
+              </AppFormField>
+              <AppFormField>
+                <AppSelect
+                  v-model="localData.mapSchema.addressPatternProp"
+                  :label="inputT('mapSchema.addressPatternProp.label')"
+                  :items="[
+                    {
+                      id: '',
+                      label: inputT('mapSchema.addressPatternProp.none'),
+                    },
+                    ...textComponentItems,
+                  ]"
+                />
+              </AppFormField>
+              <AppFormField v-if="!!localData.mapSchema.addressPatternProp">
+                <AppInput
+                  v-model="localData.mapSchema.addressPattern"
+                  :label="inputT('mapSchema.addressPattern.label')"
+                  required
+                />
+              </AppFormField>
+              <AppFormField>
+                <AppInput
+                  v-model="localData.mapSchema.geocodeCountries"
+                  :label="inputT('mapSchema.geocodeCountries.label')"
+                />
+              </AppFormField>
+            </AppFormBox>
+          </AppScrollSection>
+        </template>
       </div>
 
       <!-- Right Sidebar -->
