@@ -9,7 +9,6 @@
     :name="currentTab.name"
     :is-active="true"
     :status="status"
-    :locales="locales"
   />
 </template>
 

@@ -75,7 +75,6 @@
           :current-slide-no="currentSlideNo"
           :is-first="isFirstSlide"
           :is-last="isLastSlide"
-          :locales="tabs.settings.data.locales"
         />
       </div>
 
@@ -83,7 +82,6 @@
         class="flex-1 gap-4"
         :current-tab="currentSidebarTab"
         :status="status"
-        :locales="tabs.settings.data.locales"
       />
     </div>
   </div>

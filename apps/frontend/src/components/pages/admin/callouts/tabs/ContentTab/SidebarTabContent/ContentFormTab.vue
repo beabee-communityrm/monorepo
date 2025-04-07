@@ -51,9 +51,7 @@ export interface ContentFormTabData {
 /**
  * Props for the ContentFormTab component
  */
-export type ContentFormTabProps = SidebarTabProps<ContentFormTabData> & {
-  locales?: string[];
-};
+export type ContentFormTabProps = SidebarTabProps<ContentFormTabData>;
 
 defineProps<ContentFormTabProps>();
 defineEmits<{

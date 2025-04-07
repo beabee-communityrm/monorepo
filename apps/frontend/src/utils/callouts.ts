@@ -181,7 +181,6 @@ export function convertCalloutToTabs(
   const sharedSettings = {
     captchaEnabled: callout?.captcha !== CalloutCaptcha.None,
     captchaForMembers: callout?.captcha === CalloutCaptcha.All,
-    locales,
     channels: callout?.channels || null,
   };
 
@@ -255,6 +254,7 @@ export function convertCalloutToTabs(
 
   // Translations tab data
   const translations: TranslationsTabData = {
+    locales,
     componentText,
   };
 
@@ -305,7 +305,7 @@ function convertVariantsForCallout(
   tabs: CalloutHorizontalTabsData
 ): Record<string, CalloutVariantData> {
   const variants: Record<string, CalloutVariantData> = {};
-  for (const variant of [...tabs.settings.locales, 'default']) {
+  for (const variant of [...tabs.translations.locales, 'default']) {
     const slideNavigation: Record<string, CalloutVariantNavigationData> = {};
 
     for (const slide of tabs.content.slides) {

@@ -18,8 +18,6 @@ export interface SidebarTab<T> extends AppStepperStep {
 export interface SidebarTabProps<T> extends SidebarTab<T> {
   status: ItemStatus | undefined;
   isActive: boolean;
-  /** Available locales */
-  locales: string[];
   /** The name of the tab */
   name: string;
 }
@@ -46,5 +44,4 @@ export interface SidebarTabsData {
 export interface SidebarTabContentProps {
   currentTab: SidebarTab<SidebarTabsData[keyof SidebarTabsData]>;
   status: ItemStatus | undefined;
-  locales: string[];
 }

@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-mutating-props -->
 <template>
   <div class="flex min-h-0 flex-1 flex-col">
     <!-- Status Notifications -->
@@ -29,7 +30,7 @@
             :title="t('callout.builder.tabs.translations.language.title')"
           >
             <AppCheckboxGroup
-              v-model="availableLocales"
+              v-model="data.locales"
               :label="
                 t('callout.builder.tabs.translations.language.enableLanguages')
               "
@@ -584,6 +585,8 @@ import type { TabItem } from '@beabee/vue/types';
  * Data for the translations tab
  */
 export interface TranslationsTabData {
+  /** Available locales */
+  locales: string[];
   /** Component text translations */
   componentText: Record<string, LocaleProp>;
 }
@@ -631,21 +634,12 @@ const titleAndImage = computed(() => props.tabs.titleAndImage.data);
 
 // Get locales from settings tab, ensure default locale is included
 const locales = computed<string[]>(() => {
-  const settingsLocales = props.tabs.settings.data.locales || [];
+  const settingsLocales = props.data.locales || [];
   // Add default locale if not already included
   if (!settingsLocales.includes(defaultLocale.value)) {
     return [defaultLocale.value, ...settingsLocales];
   }
   return settingsLocales;
-});
-
-// Available locales for checkbox group
-const availableLocales = computed({
-  get: () => props.tabs.settings.data.locales || [],
-  set: (value) => {
-    // eslint-disable-next-line vue/no-mutating-props
-    props.tabs.settings.data.locales = value;
-  },
 });
 
 // Filter out default locale and sort by label
@@ -973,8 +967,7 @@ function handleLocalesChange(newLocales: string[]): void {
   // If a new locale was added, select it
   const addedLocales = newLocales.filter(
     (locale) =>
-      !props.tabs.settings.data.locales.includes(locale) &&
-      locale !== defaultLocale.value
+      !props.data.locales.includes(locale) && locale !== defaultLocale.value
   );
 
   if (addedLocales.length > 0) {

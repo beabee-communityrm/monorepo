@@ -236,7 +236,6 @@ export interface SettingsTabData {
   captchaForMembers: boolean;
   showOnUserDashboards: boolean;
   responseSettings: 'singleNonEditable' | 'singleEditable' | 'multiple';
-  locales: string[];
   channels: CalloutChannel[] | null;
   hasStartDate: boolean;
   hasEndDate: boolean;

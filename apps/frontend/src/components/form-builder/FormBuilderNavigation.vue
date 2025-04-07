@@ -58,7 +58,6 @@ const props = defineProps<{
   isFirst: boolean;
   isLast: boolean;
   modelValue: FormBuilderNavigation;
-  locales: string[];
 }>();
 
 const { t } = useI18n();
