@@ -220,12 +220,8 @@ export function convertCalloutToTabs(
 
   const content: ContentTabData = {
     slides,
-    componentText,
     sidebarTabs: {
       content: {
-        currentSlide: slides[0],
-        slides,
-        componentText,
         showAdvanced: false,
       },
       intro: {

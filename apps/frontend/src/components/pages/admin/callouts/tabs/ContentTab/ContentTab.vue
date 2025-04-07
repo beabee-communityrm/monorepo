@@ -80,6 +80,8 @@
 
       <SidebarTabContent
         class="flex-1 gap-4"
+        :slides="slides"
+        :current-slide="currentSlide"
         :current-tab="currentSidebarTab"
         :status="status"
       />
@@ -103,7 +105,6 @@ import Draggable from 'vuedraggable';
 
 import SidebarTabsNavigation from './SidebarTabsNavigation.vue';
 import type { SidebarTabs, SidebarTabsData } from './SidebarTabs.interface';
-import type { LocaleProp } from '@type';
 import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
 import type { CalloutHorizontalTabs } from '../../CalloutHorizontalTabs.interface';
 
@@ -123,8 +124,6 @@ import env from '@env';
 export interface ContentTabData {
   /** Form builder slides containing the form components */
   slides: FormBuilderSlide[];
-  /** Translations for component texts */
-  componentText: Record<string, LocaleProp>;
   /** Configuration for the sidebar tabs within the content tab */
   sidebarTabs: SidebarTabsData;
 }
@@ -263,14 +262,4 @@ watch(
   },
   { deep: true }
 );
-
-// Update the data when currentSlide changes
-watch(currentSlide, (newSlide) => {
-  sidebarTabs.content.data.currentSlide = newSlide;
-});
-
-// Update the data when slides changes
-watch(slides, (newSlides) => {
-  sidebarTabs.content.data.slides = newSlides;
-});
 </script>

@@ -3,10 +3,10 @@
   <div class="flex max-h-full min-h-0 flex-1 flex-col">
     <!-- Form Builder -->
     <FormBuilder
-      :key="data.currentSlide.id"
-      v-model="data.currentSlide.components"
+      :key="currentSlide.id"
+      v-model="currentSlide.components"
       :advanced="data.showAdvanced"
-      :slides="data.slides"
+      :slides="slides"
       class="min-h-0 flex-1"
     />
 
@@ -17,7 +17,7 @@
         <div class="flex justify-between">
           <div>
             <p v-if="data.showAdvanced" class="text-sm text-grey">
-              {{ t('common.id') }}: {{ data.currentSlide.id }}
+              {{ t('common.id') }}: {{ currentSlide.id }}
             </p>
           </div>
         </div>
@@ -30,20 +30,12 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n';
 import FormBuilder from '@components/form-builder/FormBuilder.vue';
-import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
-import type { LocaleProp } from '@type';
 import type { SidebarTabProps } from '../SidebarTabs.interface';
 
 /**
  * Data for the ContentFormTab component
  */
 export interface ContentFormTabData {
-  /** Current slide being edited */
-  currentSlide: FormBuilderSlide;
-  /** All slides in the form */
-  slides: FormBuilderSlide[];
-  /** Component text translations */
-  componentText: Record<string, LocaleProp>;
   /** Whether the form is in advanced mode */
   showAdvanced: boolean;
 }

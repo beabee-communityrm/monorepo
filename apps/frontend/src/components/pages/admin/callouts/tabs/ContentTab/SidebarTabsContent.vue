@@ -9,6 +9,8 @@
     :name="currentTab.name"
     :is-active="true"
     :status="status"
+    :slides="slides"
+    :current-slide="currentSlide"
   />
 </template>
 

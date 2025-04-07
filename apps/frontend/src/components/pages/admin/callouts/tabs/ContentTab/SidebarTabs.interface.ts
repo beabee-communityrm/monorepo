@@ -4,6 +4,7 @@ import type { AppStepperStep } from '@type';
 import type { ContentFormTabData } from './SidebarTabContent/ContentFormTab.vue';
 import type { IntroMessageTabData } from './SidebarTabContent/IntroMessageTab.vue';
 import type { EndMessageTabData } from './SidebarTabContent/EndMessageTab.vue';
+import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
 
 /**
  * Base interface for a sidebar tab component
@@ -20,6 +21,9 @@ export interface SidebarTabProps<T> extends SidebarTab<T> {
   isActive: boolean;
   /** The name of the tab */
   name: string;
+  /** Slide information */
+  slides: FormBuilderSlide[];
+  currentSlide: FormBuilderSlide;
 }
 
 /**
@@ -42,6 +46,8 @@ export interface SidebarTabsData {
 }
 
 export interface SidebarTabContentProps {
+  slides: FormBuilderSlide[];
+  currentSlide: FormBuilderSlide;
   currentTab: SidebarTab<SidebarTabsData[keyof SidebarTabsData]>;
   status: ItemStatus | undefined;
 }
