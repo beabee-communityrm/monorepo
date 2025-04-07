@@ -90,52 +90,42 @@ const longContent = Array(20)
             variant="boxed"
           >
             <template #default="{ selected }">
-              <div class="py-4">
-                <AppFormBox class="!px-0" title="Section 1">
-                  <p v-if="selected === 'en'" v-text="longContent" />
-                  <p v-else-if="selected === 'de'">
-                    Langer deutscher Beispieltext...
-                  </p>
-                  <p v-else-if="selected === 'pt'">
-                    Texto longo em português...
-                  </p>
-                </AppFormBox>
+              <AppFormBox title="Section 1">
+                <p v-if="selected === 'en'" v-text="longContent" />
+                <p v-else-if="selected === 'de'">
+                  Langer deutscher Beispieltext...
+                </p>
+                <p v-else-if="selected === 'pt'">Texto longo em português...</p>
+              </AppFormBox>
 
-                <AppFormBox title="Section 2">
-                  <div class="py-4">
-                    <div>
-                      <label class="mb-1 block text-sm font-medium"
-                        >Title</label
-                      >
-                      <input
-                        type="text"
-                        class="w-full rounded-md border border-primary-20 px-3 py-2"
-                        :placeholder="`Enter title in ${selected}`"
-                      />
-                    </div>
-                    <div>
-                      <label class="mb-1 block text-sm font-medium"
-                        >Description</label
-                      >
-                      <textarea
-                        class="w-full rounded-md border border-primary-20 px-3 py-2"
-                        :placeholder="`Enter description in ${selected}`"
-                        rows="3"
-                      />
-                    </div>
-                  </div>
-                </AppFormBox>
+              <AppFormBox title="Section 2">
+                <div>
+                  <label class="mb-1 block text-sm font-medium">Title</label>
+                  <input
+                    type="text"
+                    class="w-full rounded-md border border-primary-20 px-3 py-2"
+                    :placeholder="`Enter title in ${selected}`"
+                  />
+                </div>
+                <div>
+                  <label class="mb-1 block text-sm font-medium"
+                    >Description</label
+                  >
+                  <textarea
+                    class="w-full rounded-md border border-primary-20 px-3 py-2"
+                    :placeholder="`Enter description in ${selected}`"
+                    rows="3"
+                  />
+                </div>
+              </AppFormBox>
 
-                <AppFormBox title="Section 3">
-                  <p v-if="selected === 'en'" v-text="longContent" />
-                  <p v-else-if="selected === 'de'">
-                    Noch mehr deutscher Beispieltext...
-                  </p>
-                  <p v-else-if="selected === 'pt'">
-                    Mais texto em português...
-                  </p>
-                </AppFormBox>
-              </div>
+              <AppFormBox title="Section 3">
+                <p v-if="selected === 'en'" v-text="longContent" />
+                <p v-else-if="selected === 'de'">
+                  Noch mehr deutscher Beispieltext...
+                </p>
+                <p v-else-if="selected === 'pt'">Mais texto em português...</p>
+              </AppFormBox>
             </template>
           </AppTabCard>
         </div>

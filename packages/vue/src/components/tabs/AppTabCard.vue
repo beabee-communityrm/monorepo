@@ -2,15 +2,14 @@
   <!-- Tab Navigation -->
   <div
     :class="{
-      'rounded-t-lg bg-primary-10': true,
-      'px-1 pt-1 shadow-sm': variant === 'boxed',
+      '-mb-4': true,
+      'bg-primary-10 shadow-sm': variant === 'boxed',
       'sticky top-0 z-50': stickyTabs,
     }"
   >
     <AppTabs
       :items="items"
       :selected="modelValue"
-      class="!mb-0 !rounded-t-lg !p-0"
       @tab-click="$emit('update:modelValue', $event)"
     />
   </div>
@@ -18,8 +17,8 @@
   <!-- Tab Content -->
   <div
     :class="{
-      'rounded-b-lg bg-white': variant === 'boxed',
-      'pt-4': variant === 'transparent',
+      'bg-white px-4': variant === 'boxed',
+      'py-4': true,
     }"
   >
     <slot :selected="modelValue" />
