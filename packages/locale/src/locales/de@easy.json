@@ -105,10 +105,10 @@
           "dates": {},
           "displayOptions": {},
           "inputs": {
-            "anonymous": {
+            "collectGuestInfo": {
               "opts": {}
             },
-            "collectMembers": {
+            "collectMemberInfo": {
               "opts": {}
             },
             "expires": {
@@ -129,6 +129,9 @@
               "maxZoom": {},
               "minZoom": {},
               "style": {}
+            },
+            "openToEveryone": {
+              "opts": {}
             },
             "requireCaptcha": {
               "members": {
@@ -154,10 +157,7 @@
             "visible": {
               "opts": {}
             },
-            "whichResponseBuckets": {},
-            "who": {
-              "opts": {}
-            }
+            "whichResponseBuckets": {}
           }
         },
         "titleAndImage": {

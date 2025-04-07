@@ -28,6 +28,7 @@ import type { FilterItem, FilterItems } from '@type';
 import type { CalloutHorizontalTabsData } from '@components/pages/admin/callouts/CalloutHorizontalTabs.interface';
 import type { TitleAndImageTabData } from '@components/pages/admin/callouts/tabs/TitleAndImageTab.vue';
 import type { TranslationsTabData } from '@components/pages/admin/callouts/tabs/TranslationsTab.vue';
+import type { SettingsTabData } from '@components/pages/admin/callouts/tabs/SettingsTab.vue';
 
 const { t } = i18n.global;
 
@@ -166,40 +167,6 @@ function convertSlidesForSteps(
 export function convertCalloutToTabs(
   callout?: GetCalloutDataWith<'form' | 'responseViewSchema' | 'variants'>
 ): CalloutHorizontalTabsData {
-  const settings = env.cnrMode
-    ? ({
-        whoCanTakePart: 'everyone',
-        allowAnonymousResponses: 'guests',
-        showOnUserDashboards: false,
-        usersCanEditAnswers: false,
-        multipleResponses: true,
-        hasStartDate: false,
-        hasEndDate: false,
-        startDate: '',
-        startTime: '',
-        endDate: '',
-        endTime: '',
-      } as const)
-    : ({
-        whoCanTakePart:
-          !callout || callout.access === 'member' ? 'members' : 'everyone',
-        allowAnonymousResponses:
-          callout?.access === 'anonymous'
-            ? 'guests'
-            : callout?.access === 'only-anonymous'
-              ? 'all'
-              : 'none',
-        showOnUserDashboards: !callout?.hidden,
-        usersCanEditAnswers: callout?.allowUpdate || false,
-        multipleResponses: callout?.allowMultiple || false,
-        hasStartDate: callout?.status === ItemStatus.Scheduled,
-        hasEndDate: !!callout?.expires,
-        startDate: callout?.starts ? format(callout.starts, 'yyyy-MM-dd') : '',
-        startTime: callout?.starts ? format(callout.starts, 'HH:mm') : '',
-        endDate: callout?.expires ? format(callout.expires, 'yyyy-MM-dd') : '',
-        endTime: callout?.expires ? format(callout.expires, 'HH:mm') : '',
-      } as const);
-
   const variants = convertVariantsForSteps(callout?.variants);
 
   const locales = callout
@@ -210,6 +177,47 @@ export function convertCalloutToTabs(
     callout?.formSchema.slides,
     callout?.variants
   );
+
+  const sharedSettings = {
+    captchaEnabled: callout?.captcha !== CalloutCaptcha.None,
+    captchaForMembers: callout?.captcha === CalloutCaptcha.All,
+    locales,
+    channels: callout?.channels || null,
+  };
+
+  const settings: SettingsTabData = env.cnrMode
+    ? ({
+        ...sharedSettings,
+        openToEveryone: true,
+        collectMemberInfo: false,
+        collectGuestInfo: false,
+        showOnUserDashboards: false,
+        responseSettings: 'multiple',
+        hasStartDate: false,
+        hasEndDate: false,
+        startDate: '',
+        startTime: '',
+        endDate: '',
+        endTime: '',
+      } as const)
+    : ({
+        ...sharedSettings,
+        openToEveryone: callout?.access !== CalloutAccess.Member,
+        collectMemberInfo: callout?.access !== CalloutAccess.OnlyAnonymous,
+        collectGuestInfo: callout?.access === CalloutAccess.Guest,
+        showOnUserDashboards: !callout?.hidden,
+        responseSettings: callout?.allowMultiple
+          ? 'multiple'
+          : callout?.allowUpdate
+            ? 'singleEditable'
+            : 'singleNonEditable',
+        hasStartDate: callout?.status === ItemStatus.Scheduled,
+        hasEndDate: !!callout?.expires,
+        startDate: callout?.starts ? format(callout.starts, 'yyyy-MM-dd') : '',
+        startTime: callout?.starts ? format(callout.starts, 'HH:mm') : '',
+        endDate: callout?.expires ? format(callout.expires, 'yyyy-MM-dd') : '',
+        endTime: callout?.expires ? format(callout.expires, 'HH:mm') : '',
+      } as const);
 
   const content: ContentTabData = {
     slides,
@@ -253,12 +261,7 @@ export function convertCalloutToTabs(
   return {
     content,
     titleAndImage,
-    settings: {
-      ...settings,
-      requireCaptcha: callout?.captcha || CalloutCaptcha.None,
-      locales,
-      channels: callout?.channels || null,
-    },
+    settings,
     translations,
     responseDisplay: {
       showResponses: !!callout?.responseViewSchema,
@@ -422,19 +425,21 @@ export function convertStepsToCallout(
     expires: tabs.settings.hasEndDate
       ? new Date(tabs.settings.endDate + 'T' + tabs.settings.endTime)
       : null,
-    allowMultiple: tabs.settings.multipleResponses,
-    allowUpdate:
-      !tabs.settings.multipleResponses && tabs.settings.usersCanEditAnswers,
+    allowMultiple: tabs.settings.responseSettings === 'multiple',
+    allowUpdate: tabs.settings.responseSettings === 'singleEditable',
     hidden: !tabs.settings.showOnUserDashboards,
-    captcha: tabs.settings.requireCaptcha,
-    access:
-      tabs.settings.whoCanTakePart === 'members'
-        ? CalloutAccess.Member
-        : tabs.settings.allowAnonymousResponses === 'none'
+    captcha: tabs.settings.captchaEnabled
+      ? tabs.settings.captchaForMembers
+        ? CalloutCaptcha.All
+        : CalloutCaptcha.Guest
+      : CalloutCaptcha.None,
+    access: tabs.settings.openToEveryone
+      ? tabs.settings.collectMemberInfo
+        ? tabs.settings.collectGuestInfo
           ? CalloutAccess.Guest
-          : tabs.settings.allowAnonymousResponses === 'guests'
-            ? CalloutAccess.Anonymous
-            : CalloutAccess.OnlyAnonymous,
+          : CalloutAccess.Anonymous
+        : CalloutAccess.OnlyAnonymous
+      : CalloutAccess.Member,
     variants,
     channels: tabs.settings.channels,
   };

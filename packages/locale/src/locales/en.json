@@ -413,19 +413,18 @@
             "title": "Display options"
           },
           "inputs": {
-            "anonymous": {
-              "help": "<p>If you allow <strong>anonymous responses</strong>, users will not be asked for their contact information.</p>",
+            "collectGuestInfo": {
+              "label": "Also collect guest contact information",
+              "opts": {
+                "disabled": "Guests who respond will be anonymous",
+                "enabled": "Guests will also be asked for their contact information"
+              }
+            },
+            "collectMemberInfo": {
               "label": "Collect contact information",
               "opts": {
                 "disabled": "All responses will be anonymous",
-                "enabled": "People who respond will be asked for their contact information"
-              }
-            },
-            "collectMembers": {
-              "label": "Also collect members’ contact information",
-              "opts": {
-                "disabled": "Members who respond will be anonymous",
-                "enabled": "Members who respond will be identified"
+                "enabled": "Members who respond will have their contact information collected"
               }
             },
             "expires": {
@@ -484,6 +483,14 @@
                 "label": "Map style URL"
               },
               "title": "Map settings"
+            },
+            "openToEveryone": {
+              "help": "<p>Callouts can be presented to <strong>Everyone</strong> or restricted to <strong>Members only</strong> participation</p>",
+              "label": "Open to everyone",
+              "opts": {
+                "disabled": "Only members will be able to access and participate in this callout",
+                "enabled": "Anyone will be able to access and participate in this callout"
+              }
             },
             "requireCaptcha": {
               "help": "<p>If you enable <strong>bot spam protection</strong> users will be required to complete a Captcha to confirm they are human. This is useful to prevent your callout being spammed by bots</p>",
@@ -554,14 +561,6 @@
             "whichResponseBuckets": {
               "description": "Responses in unchecked buckets will be hidden from public view",
               "label": "Visible response buckets"
-            },
-            "who": {
-              "help": "<p>Callouts can be presented to <strong>Everyone</strong> or restricted to <strong>Members only</strong> participation</p>",
-              "label": "Open to everyone",
-              "opts": {
-                "everyone": "Anyone will be able to access and participate in this callout",
-                "members": "Only members will be able to access and participate in this callout"
-              }
             }
           },
           "title": "Settings"

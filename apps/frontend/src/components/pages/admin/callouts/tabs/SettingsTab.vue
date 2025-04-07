@@ -3,10 +3,7 @@
   <div class="flex min-h-0 flex-1 flex-col">
     <div class="flex min-h-0 gap-4">
       <!-- Left Sidebar with Scroll Navigation -->
-      <AppScrollNavigation
-        :sections="navigationSections"
-        @section-change="onSectionChange"
-      />
+      <AppScrollNavigation :sections="navigationSections" />
 
       <!-- Main Content -->
       <div
@@ -23,26 +20,26 @@
           <AppFormBox v-if="canStartNow">
             <AppFormField>
               <AppToggleField
-                v-model="localData.hasStartDate"
+                v-model="props.data.hasStartDate"
                 variant="link"
                 :label="inputT('starts.label')"
                 :description="
-                  localData.hasStartDate
+                  props.data.hasStartDate
                     ? inputT('starts.opts.schedule')
                     : inputT('starts.opts.now')
                 "
               />
-              <div v-if="localData.hasStartDate" class="mt-4 flex gap-2">
+              <div v-if="props.data.hasStartDate" class="mt-4 flex gap-2">
                 <div>
                   <AppInput
-                    v-model="localData.startDate"
+                    v-model="props.data.startDate"
                     type="date"
                     required
                   />
                 </div>
                 <div>
                   <AppInput
-                    v-model="localData.startTime"
+                    v-model="props.data.startTime"
                     type="time"
                     required
                   />
@@ -54,21 +51,21 @@
           <AppFormBox>
             <AppFormField>
               <AppToggleField
-                v-model="localData.hasEndDate"
+                v-model="props.data.hasEndDate"
                 variant="link"
                 :label="inputT('expires.label')"
                 :description="
-                  localData.hasEndDate
+                  props.data.hasEndDate
                     ? inputT('expires.opts.schedule')
                     : inputT('expires.opts.never')
                 "
               />
-              <div v-if="localData.hasEndDate" class="mt-4 flex gap-2">
+              <div v-if="props.data.hasEndDate" class="mt-4 flex gap-2">
                 <div>
-                  <AppInput v-model="localData.endDate" type="date" required />
+                  <AppInput v-model="props.data.endDate" type="date" required />
                 </div>
                 <div>
-                  <AppInput v-model="localData.endTime" type="time" required />
+                  <AppInput v-model="props.data.endTime" type="time" required />
                 </div>
               </div>
             </AppFormField>
@@ -83,41 +80,48 @@
         >
           <AppFormBox :title="t('callout.builder.tabs.settings.access.title')">
             <AppToggleField
-              v-model="openToEveryone"
+              v-model="props.data.openToEveryone"
               variant="link"
-              :label="inputT('who.label')"
-              :disabled-description="inputT('who.opts.members')"
-              :enabled-description="inputT('who.opts.everyone')"
+              :label="inputT('openToEveryone.label')"
+              :help="inputT('openToEveryone.help')"
+              :disabled-description="inputT('openToEveryone.opts.disabled')"
+              :enabled-description="inputT('openToEveryone.opts.enabled')"
             />
 
             <div
-              v-if="openToEveryone"
+              v-if="props.data.openToEveryone"
               class="ml-6 mt-4 border-l-2 border-grey-light pl-6"
             >
               <AppFormField>
                 <AppToggleField
-                  v-model="collectContactInfo"
+                  v-model="props.data.collectMemberInfo"
                   variant="link"
-                  :label="inputT('anonymous.label')"
-                  :disabled-description="inputT('anonymous.opts.disabled')"
-                  :enabled-description="inputT('anonymous.opts.enabled')"
+                  :label="inputT('collectMemberInfo.label')"
+                  :disabled-description="
+                    inputT('collectMemberInfo.opts.disabled')
+                  "
+                  :enabled-description="
+                    inputT('collectMemberInfo.opts.enabled')
+                  "
                 />
               </AppFormField>
 
-              <AppFormField v-if="collectContactInfo">
+              <AppFormField v-if="props.data.collectMemberInfo">
                 <AppToggleField
-                  v-model="collectMembersContactInfo"
+                  v-model="props.data.collectGuestInfo"
                   variant="link"
-                  :label="inputT('collectMembers.label')"
-                  :disabled-description="inputT('collectMembers.opts.disabled')"
-                  :enabled-description="inputT('collectMembers.opts.enabled')"
+                  :label="inputT('collectGuestInfo.label')"
+                  :disabled-description="
+                    inputT('collectGuestInfo.opts.disabled')
+                  "
+                  :enabled-description="inputT('collectGuestInfo.opts.enabled')"
                 />
               </AppFormField>
             </div>
           </AppFormBox>
           <AppFormBox>
             <AppToggleField
-              v-model="localData.showOnUserDashboards"
+              v-model="props.data.showOnUserDashboards"
               variant="link"
               :label="inputT('visible.label')"
               :help="inputT('visible.help')"
@@ -126,35 +130,36 @@
             />
           </AppFormBox>
 
-          <AppFormBox>
+          <AppFormBox v-if="env.captchafoxKey">
             <AppToggleField
               v-if="env.captchafoxKey"
-              v-model="captchaEnabled"
+              v-model="props.data.captchaEnabled"
               variant="link"
               :label="inputT('requireCaptcha.label')"
               :help="inputT('requireCaptcha.help')"
               :description="
-                localData.requireCaptcha === CalloutCaptcha.Guest
-                  ? inputT('requireCaptcha.opts.guests')
-                  : localData.requireCaptcha === CalloutCaptcha.All
+                props.data.captchaEnabled
+                  ? props.data.captchaForMembers
                     ? inputT('requireCaptcha.opts.all')
-                    : inputT('requireCaptcha.opts.none')
+                    : inputT('requireCaptcha.opts.guests')
+                  : inputT('requireCaptcha.opts.none')
               "
             />
 
             <div
-              v-if="captchaEnabled && env.captchafoxKey"
+              v-if="props.data.captchaEnabled"
               class="ml-6 mt-4 border-l-2 border-grey-light pl-6"
             >
               <AppFormField>
                 <AppToggleField
-                  v-model="captchaForMembers"
+                  v-model="props.data.captchaForMembers"
                   variant="link"
                   :label="inputT('requireCaptcha.members.label')"
-                  :description="
-                    captchaForMembers
-                      ? inputT('requireCaptcha.members.opts.enabled')
-                      : inputT('requireCaptcha.members.opts.disabled')
+                  :enabled-description="
+                    inputT('requireCaptcha.members.opts.enabled')
+                  "
+                  :disabled-description="
+                    inputT('requireCaptcha.members.opts.disabled')
                   "
                 />
               </AppFormField>
@@ -171,8 +176,8 @@
           <AppFormBox :title="inputT('responseSettings.title')">
             <AppFormField>
               <AppRadioGroup
-                v-model="responseSettingsOption"
-                name="responseSettingsOption"
+                v-model="props.data.responseSettings"
+                name="responseSettings"
                 :options="[
                   [
                     'singleNonEditable',
@@ -200,11 +205,7 @@
 </template>
 
 <script lang="ts" setup>
-import {
-  ItemStatus,
-  type CalloutChannel,
-  CalloutCaptcha,
-} from '@beabee/beabee-common';
+import { ItemStatus, type CalloutChannel } from '@beabee/beabee-common';
 import useVuelidate from '@vuelidate/core';
 import { computed, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -228,12 +229,13 @@ import type { CalloutHorizontalTabs } from '../CalloutHorizontalTabs.interface';
  * Data for the settings tab, which contains callout configuration options
  */
 export interface SettingsTabData {
-  whoCanTakePart: 'members' | 'everyone';
-  allowAnonymousResponses: 'none' | 'guests' | 'all';
-  requireCaptcha: CalloutCaptcha;
+  openToEveryone: boolean;
+  collectMemberInfo: boolean;
+  collectGuestInfo: boolean;
+  captchaEnabled: boolean;
+  captchaForMembers: boolean;
   showOnUserDashboards: boolean;
-  multipleResponses: boolean;
-  usersCanEditAnswers: boolean;
+  responseSettings: 'singleNonEditable' | 'singleEditable' | 'multiple';
   locales: string[];
   channels: CalloutChannel[] | null;
   hasStartDate: boolean;
@@ -286,40 +288,12 @@ const sections = ref<ScrollSection[]>([
 // Computed sections for navigation
 const navigationSections = computed(() => sections.value);
 
-// Create local model from props to avoid direct prop mutation
-const localData = ref<SettingsTabData>({ ...props.data });
-
-// Watch for prop changes and update local data
-watch(
-  () => props.data,
-  (newData) => {
-    localData.value = { ...newData };
-  },
-  { deep: true }
-);
-
-// Watch local data changes and emit updates to parent
-watch(
-  localData,
-  (newData) => {
-    // Synchronize the data with the parent component
-    Object.assign(props.data, newData);
-    emit('update:validated', !validation.value.$invalid);
-  },
-  { deep: true }
-);
-
 // Register a section element for scrolling
 function registerSection(id: string, element: HTMLElement): void {
   const sectionIndex = sections.value.findIndex((s) => s.id === id);
   if (sectionIndex >= 0) {
     sections.value[sectionIndex].element = element;
   }
-}
-
-// Handle section change from navigation
-function onSectionChange(): void {
-  // This function can be used to perform additional actions when a section is selected
 }
 
 // Force step to stay unvalidated until it is visited for new callouts
@@ -346,90 +320,4 @@ const canStartNow = computed(
     props.status === ItemStatus.Draft ||
     props.status === ItemStatus.Scheduled
 );
-
-// Computed property to control access settings
-const openToEveryone = computed({
-  get: () => localData.value.whoCanTakePart === 'everyone',
-  set: (value) => {
-    localData.value.whoCanTakePart = value ? 'everyone' : 'members';
-  },
-});
-
-// Computed property to control contact information settings
-const collectContactInfo = computed({
-  get: () => localData.value.allowAnonymousResponses !== 'all',
-  set: (value) => {
-    // If collectContactInfo is true
-    if (value) {
-      // Consider the current state of collectMembersContactInfo
-      localData.value.allowAnonymousResponses = collectMembersContactInfo.value
-        ? 'none'
-        : 'guests';
-    } else {
-      // If no contact information is collected (false)
-      localData.value.allowAnonymousResponses = 'all';
-    }
-  },
-});
-
-// Computed property to control members' contact information settings
-const collectMembersContactInfo = computed({
-  get: () => localData.value.allowAnonymousResponses === 'none',
-  set: (value) => {
-    // Diese Option ist nur sinnvoll, wenn collectContactInfo aktiviert ist
-    if (collectContactInfo.value) {
-      localData.value.allowAnonymousResponses = value ? 'none' : 'guests';
-    }
-  },
-});
-
-// Computed property to control captcha settings
-const captchaEnabled = computed({
-  get: () => localData.value.requireCaptcha !== CalloutCaptcha.None,
-  set: (value) => {
-    localData.value.requireCaptcha = value
-      ? CalloutCaptcha.Guest
-      : CalloutCaptcha.None;
-  },
-});
-
-// Computed property to control captcha for members settings
-const captchaForMembers = computed({
-  get: () => localData.value.requireCaptcha === CalloutCaptcha.All,
-  set: (value) => {
-    localData.value.requireCaptcha = value
-      ? CalloutCaptcha.All
-      : CalloutCaptcha.Guest;
-  },
-});
-
-// Computed property to handle combined response settings
-const responseSettingsOption = computed({
-  get: () => {
-    if (localData.value.multipleResponses) {
-      return 'multiple';
-    } else {
-      return localData.value.usersCanEditAnswers
-        ? 'singleEditable'
-        : 'singleNonEditable';
-    }
-  },
-  set: (value: string) => {
-    switch (value) {
-      case 'multiple':
-        localData.value.multipleResponses = true;
-        // When multiple responses are allowed, the edit option is irrelevant
-        localData.value.usersCanEditAnswers = false;
-        break;
-      case 'singleEditable':
-        localData.value.multipleResponses = false;
-        localData.value.usersCanEditAnswers = true;
-        break;
-      case 'singleNonEditable':
-        localData.value.multipleResponses = false;
-        localData.value.usersCanEditAnswers = false;
-        break;
-    }
-  },
-});
 </script>

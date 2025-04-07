@@ -413,19 +413,13 @@
             "title": "Anzeigeoptionen"
           },
           "inputs": {
-            "anonymous": {
-              "help": "<p>Wenn du <strong>anonyme Antworten</strong> zulässt, werden Nutzer nicht nach ihren Kontaktinformationen gefragt.</p>",
-              "label": "Kontaktinformationen sammeln",
-              "opts": {
-                "disabled": "Alle Antworten werden anonym sein",
-                "enabled": "Personen, die antworten, werden nach ihren Kontaktinformationen gefragt"
-              }
-            },
-            "collectMembers": {
+            "collectGuestInfo": {
               "label": "Auch Kontaktinformationen von Mitgliedern sammeln",
+              "opts": {}
+            },
+            "collectMemberInfo": {
               "opts": {
-                "disabled": "Mitglieder, die antworten, werden anonym sein",
-                "enabled": "Mitglieder, die antworten, werden identifiziert"
+                "disabled": "Alle Antworten werden anonym sein"
               }
             },
             "expires": {
@@ -484,6 +478,14 @@
                 "label": "Karten-Style-URL"
               },
               "title": "Karteneinstellungen"
+            },
+            "openToEveryone": {
+              "help": "<p>Aufrufe können <strong>Allen</strong> präsentiert oder auf die Teilnahme von <strong>nur Mitgliedern</strong> beschränkt werden</p>",
+              "label": "Für alle zugänglich",
+              "opts": {
+                "disabled": "Nur Mitglieder werden auf diesen Aufruf zugreifen und daran teilnehmen können",
+                "enabled": "Jeder wird auf diesen Aufruf zugreifen und daran teilnehmen können"
+              }
             },
             "requireCaptcha": {
               "help": "<p>Wenn du den <strong>Bot-Spam-Schutz</strong> aktivierst, müssen Nutzer ein Captcha ausfüllen, um zu bestätigen, dass sie Menschen sind. Dies ist nützlich, um zu verhindern, dass dein Aufruf von Bots mit Spam überflutet wird</p>",
@@ -554,14 +556,6 @@
             "whichResponseBuckets": {
               "description": "Antworten in nicht markierten Bereichen werden in der öffentlichen Ansicht ausgeblendet",
               "label": "Sichtbare Antwort-Bereiche"
-            },
-            "who": {
-              "help": "<p>Aufrufe können <strong>Allen</strong> präsentiert oder auf die Teilnahme von <strong>nur Mitgliedern</strong> beschränkt werden</p>",
-              "label": "Für alle zugänglich",
-              "opts": {
-                "everyone": "Jeder wird auf diesen Aufruf zugreifen und daran teilnehmen können",
-                "members": "Nur Mitglieder werden auf diesen Aufruf zugreifen und daran teilnehmen können"
-              }
             }
           },
           "title": "Einstellungen"
