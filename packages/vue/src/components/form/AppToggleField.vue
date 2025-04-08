@@ -16,13 +16,15 @@
         "
       ></p>
     </div>
-    <AppToggleSwitch
-      :model-value="modelValue"
-      :variant="variant"
-      :disabled="disabled"
-      :size="size"
-      @update:model-value="$emit('update:modelValue', $event)"
-    />
+    <div class="flex-0">
+      <AppToggleSwitch
+        :model-value="modelValue"
+        :variant="variant"
+        :disabled="disabled"
+        :size="size"
+        @update:model-value="$emit('update:modelValue', $event)"
+      />
+    </div>
   </div>
 </template>
 

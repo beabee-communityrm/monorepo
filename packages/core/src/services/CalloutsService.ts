@@ -3,7 +3,9 @@ import {
   CalloutResponseAnswersSlide,
   CalloutAccess,
   CreateCalloutData,
-  CreateCalloutResponseGuestData
+  CreateCalloutResponseGuestData,
+  CreateCalloutResponseNewsletterData,
+  NewsletterStatus
 } from "@beabee/beabee-common";
 import slugify from "slugify";
 import { BadRequestError } from "routing-controllers";
@@ -222,7 +224,8 @@ class CalloutsService {
   async setResponse(
     callout: Callout,
     contact: Contact,
-    answers: CalloutResponseAnswersSlide
+    answers: CalloutResponseAnswersSlide,
+    newsletter: CreateCalloutResponseNewsletterData | undefined
   ): Promise<CalloutResponse> {
     if (callout.access === CalloutAccess.OnlyAnonymous) {
       throw new InvalidCalloutResponse("only-anonymous");
@@ -248,6 +251,13 @@ class CalloutsService {
 
     const savedResponse = await this.saveResponse(response);
 
+    if (newsletter?.optIn) {
+      await ContactsService.updateContactProfile(contact, {
+        newsletterStatus: NewsletterStatus.Subscribed,
+        newsletterGroups: newsletter.groups
+      });
+    }
+
     if (callout.mcMergeField && callout.pollMergeField) {
       const [slideId, answerKey] = callout.pollMergeField.split(".");
       await NewsletterService.updateContactFields(contact, {
@@ -269,7 +279,8 @@ class CalloutsService {
   async setGuestResponse(
     callout: Callout,
     guest: CreateCalloutResponseGuestData | undefined,
-    answers: CalloutResponseAnswersSlide
+    answers: CalloutResponseAnswersSlide,
+    newsletter: CreateCalloutResponseNewsletterData | undefined
   ): Promise<CalloutResponse> {
     if (callout.access === CalloutAccess.Guest && !guest) {
       throw new InvalidCalloutResponse("guest-fields-missing");
@@ -292,7 +303,12 @@ class CalloutsService {
 
         // If the guest email matches a contact, then use that contact instead
         if (contact) {
-          const response = await this.setResponse(callout, contact, answers);
+          const response = await this.setResponse(
+            callout,
+            contact,
+            answers,
+            newsletter
+          );
 
           // Let the contact know in case it wasn't them
           const title = await this.getCalloutTitle(callout);

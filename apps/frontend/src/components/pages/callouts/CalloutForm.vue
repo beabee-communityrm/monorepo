@@ -15,9 +15,25 @@
         v-model:firstname="guestData.firstname"
         v-model:lastname="guestData.lastname"
         v-model:email="guestData.email"
+        class="mb-8"
       />
 
-      <CalloutFormCaptcha v-if="showCaptcha" v-model="captchaToken" />
+      <NewsletterOptIn
+        v-if="callout.newsletterSchema"
+        v-model="nlData.optIn"
+        v-model:opt-in-groups="nlData.groups"
+        :title="callout.newsletterSchema.title"
+        :text="callout.newsletterSchema.text"
+        :opt-in="callout.newsletterSchema.optIn"
+        :groups="callout.newsletterSchema.groups"
+        class="mb-8"
+      />
+
+      <CalloutFormCaptcha
+        v-if="showCaptcha"
+        v-model="captchaToken"
+        class="mb-8"
+      />
 
       <AppNotification
         v-if="formError"
@@ -74,6 +90,7 @@ import useVuelidate from '@vuelidate/core';
 import CalloutFormGuestFields from './CalloutFormGuestFields.vue';
 import { AppNotification, AppButton } from '@beabee/vue/components';
 import FormRenderer from '@components/form-renderer/FormRenderer.vue';
+import NewsletterOptIn from '@components/newsletter/NewsletterOptIn.vue';
 
 import { currentUser } from '@store';
 
@@ -102,6 +119,9 @@ const guestData = reactive({
   lastname: '',
   email: '',
 });
+
+const nlData = reactive({ optIn: false, groups: [] as string[] });
+
 const captchaToken = ref('');
 const formError = ref('');
 const isLoading = ref(false);
@@ -160,6 +180,8 @@ const rules = computed(() => ({
 const validation = useVuelidate(rules, { captchaToken });
 
 async function handleSubmit() {
+  if (!props.callout) return; // Can't submit without a callout being loaded
+
   // Only submit answers for slides in the current flow
   // The user might have visited other flows then gone back
   const validAnswers: CalloutResponseAnswersSlide = {};
@@ -180,6 +202,7 @@ async function handleSubmit() {
         answers: validAnswers,
         ...(!currentUser.value &&
           props.callout?.access === 'guest' && { guest: guestData }),
+        ...(props.callout?.newsletterSchema && { newsletter: nlData }),
       },
       captchaToken.value
     );

@@ -167,9 +167,33 @@
         <AppScrollSection v-if="!env.cnrMode" id="responseSettings">
           <AppFormBox :title="inputT('responseSettings.title')">
             <AppFormField>
+              <AppToggleField
+                v-model="data.showNewsletterOptIn"
+                variant="link"
+                :label="inputT('newsletterSettings.label')"
+                :enabled-description="inputT('newsletterSettings.opts.enabled')"
+                :disabled-description="
+                  inputT('newsletterSettings.opts.disabled')
+                "
+                :disabled="data.openToEveryone && !data.collectMemberInfo"
+              />
+            </AppFormField>
+            <AppFormField>
+              <NewsletterOptInSettings
+                v-if="data.showNewsletterOptIn"
+                v-model:title="data.newsletterSettings.title"
+                v-model:opt-in="data.newsletterSettings.optIn"
+                v-model:text="data.newsletterSettings.text"
+                v-model:groups="data.newsletterSettings.groups"
+              />
+            </AppFormField>
+          </AppFormBox>
+          <AppFormBox>
+            <AppFormField>
               <AppRadioGroup
                 v-model="props.data.responseSettings"
                 name="responseSettings"
+                :label="inputT('responseSettings.label')"
                 :options="[
                   [
                     'singleNonEditable',
@@ -197,7 +221,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ItemStatus, type CalloutChannel } from '@beabee/beabee-common';
+import {
+  ItemStatus,
+  type CalloutChannel,
+  type CalloutNewsletterSchema,
+} from '@beabee/beabee-common';
 import useVuelidate from '@vuelidate/core';
 import { computed, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -216,6 +244,7 @@ import {
 } from '@beabee/vue/components';
 
 import type { CalloutHorizontalTabs } from '../CalloutHorizontalTabs.interface';
+import NewsletterOptInSettings from '@components/newsletter/NewsletterOptInSettings.vue';
 
 /**
  * Data for the settings tab, which contains callout configuration options
@@ -226,6 +255,8 @@ export interface SettingsTabData {
   collectGuestInfo: boolean;
   captchaEnabled: boolean;
   captchaForMembers: boolean;
+  showNewsletterOptIn: boolean;
+  newsletterSettings: CalloutNewsletterSchema;
   showOnUserDashboards: boolean;
   responseSettings: 'singleNonEditable' | 'singleEditable' | 'multiple';
   channels: CalloutChannel[] | null;

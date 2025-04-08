@@ -66,64 +66,13 @@ meta:
           :label="stepT('newsletter.showOptIn')"
           class="mb-4 font-semibold"
         />
-
-        <template v-if="setupContent.showNewsletterOptIn">
-          <div class="mb-4">
-            <AppInput
-              v-model="setupContent.newsletterTitle"
-              :label="stepT('optInTitle')"
-              required
-            />
-          </div>
-          <div class="mb-4">
-            <RichTextEditor
-              v-model="setupContent.newsletterText"
-              :label="stepT('optInText')"
-              required
-            />
-          </div>
-          <div class="mb-4">
-            <AppInput
-              v-model="setupContent.newsletterOptIn"
-              :label="stepT('optInLabel')"
-              :required="setupContent.newsletterGroups.length === 0"
-              :disabled="setupContent.newsletterGroups.length > 0"
-            />
-            <AppInputHelp
-              v-if="setupContent.newsletterGroups.length > 0"
-              :message="stepT('newsletter.optInDisabled')"
-            />
-          </div>
-          <AppSectionHeading>{{
-            stepT('newsletter.groups.title')
-          }}</AppSectionHeading>
-          <div
-            class="content-i18n mb-4"
-            v-html="stepT('newsletter.groups.help')"
-          />
-          <AppRepeatable
-            v-model="setupContent.newsletterGroups"
-            :new-item="() => ({ id: '', label: '', checked: false })"
-            :add-label="stepT('newsletter.groups.add')"
-            class="mb-4"
-          >
-            <template #default="{ item }">
-              <div class="flex-1">
-                <AppInput v-model="item.id" :label="t('common.id')" required />
-              </div>
-              <div class="flex-1">
-                <AppInput
-                  v-model="item.label"
-                  :label="t('common.label')"
-                  required
-                />
-              </div>
-              <div class="flex-0 flex h-10 items-center self-end">
-                <AppCheckbox v-model="item.checked" label="Default" />
-              </div>
-            </template>
-          </AppRepeatable>
-        </template>
+        <NewsletterOptInSettings
+          v-if="setupContent.showNewsletterOptIn"
+          v-model:newsletter-opt-in="setupContent.newsletterOptIn"
+          v-model:title="setupContent.newsletterTitle"
+          v-model:text="setupContent.newsletterText"
+          v-model:groups="setupContent.newsletterGroups"
+        />
 
         <AppSubHeading class="mt-6">
           {{ stepT('joinSurvey.title') }}
@@ -185,8 +134,7 @@ import AppSubHeading from '@components/AppSubHeading.vue';
 
 import { client } from '@utils/api';
 
-import AppRepeatable from '@components/forms/AppRepeatable.vue';
-import AppSectionHeading from '@components/AppSectionHeading.vue';
+import NewsletterOptInSettings from '@components/newsletter/NewsletterOptInSettings.vue';
 
 const setupContent = ref<ContentJoinSetupData>();
 const openCallouts = ref<GetCalloutData[]>([]);
