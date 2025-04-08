@@ -1,6 +1,6 @@
 <template>
   <section>
-    <h4 class="mb-1 text-lg">{{ title }}</h4>
+    <h3 class="mb-2 font-title text-xl font-semibold">{{ title }}</h3>
     <div class="content-message mb-4 text-sm" v-html="text" />
     <AppCheckboxGroup
       v-if="groups.length > 0"
