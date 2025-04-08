@@ -10,7 +10,7 @@
         class="sr-only"
       />
       <div
-        class="flex h-5 w-5 items-center justify-center rounded border transition-colors focus:outline-none focus:ring-2 focus:ring-primary-40 focus:ring-offset-2"
+        class="flex h-5 w-5 items-center justify-center rounded border bg-white transition-colors focus:outline-none focus:ring-2 focus:ring-primary-40 focus:ring-offset-2"
         :class="[
           value ? borderVariantClasses[variant] : 'border-grey-dark',
           !disabled && !value ? hoverVariantClasses[variant] : '',

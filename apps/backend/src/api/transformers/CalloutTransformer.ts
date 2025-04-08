@@ -147,7 +147,6 @@ class CalloutTransformer extends BaseTransformer<
       allowUpdate: callout.allowUpdate,
       allowMultiple: callout.allowMultiple,
       access: callout.access,
-      showNewsletterOptIn: callout.showNewsletterOptIn,
       captcha: callout.captcha,
       status: callout.status,
       hidden: callout.hidden,
@@ -171,7 +170,8 @@ class CalloutTransformer extends BaseTransformer<
         ...(variant.shareTitle && { shareTitle: variant.shareTitle }),
         ...(variant.shareDescription && {
           shareDescription: variant.shareDescription
-        })
+        }),
+        newsletterSchema: callout.newsletterSchema
       }),
       ...(opts?.with?.includes(GetCalloutWith.ResponseViewSchema) && {
         responseViewSchema: callout.responseViewSchema

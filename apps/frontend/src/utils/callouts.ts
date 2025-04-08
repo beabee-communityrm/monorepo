@@ -11,6 +11,7 @@ import {
   CalloutAccess,
   CalloutCaptcha,
   type CreateCalloutData,
+  type CalloutNewsletterSchema,
 } from '@beabee/beabee-common';
 import { format } from 'date-fns';
 import { computed } from 'vue';
@@ -184,6 +185,13 @@ export function convertCalloutToTabs(
     channels: callout?.channels || null,
   };
 
+  const defaultNewsletterSettings: CalloutNewsletterSchema = {
+    title: '',
+    text: '',
+    optIn: '',
+    groups: [],
+  };
+
   const settings: SettingsTabData = env.cnrMode
     ? ({
         ...sharedSettings,
@@ -191,6 +199,7 @@ export function convertCalloutToTabs(
         collectMemberInfo: false,
         collectGuestInfo: false,
         showNewsletterOptIn: false,
+        newsletterSettings: defaultNewsletterSettings,
         showOnUserDashboards: false,
         responseSettings: 'multiple',
         hasStartDate: false,
@@ -205,7 +214,9 @@ export function convertCalloutToTabs(
         openToEveryone: callout?.access !== CalloutAccess.Member,
         collectMemberInfo: callout?.access !== CalloutAccess.OnlyAnonymous,
         collectGuestInfo: callout?.access === CalloutAccess.Guest,
-        showNewsletterOptIn: !!callout?.showNewsletterOptIn,
+        showNewsletterOptIn: !!callout?.newsletterSchema,
+        newsletterSettings:
+          callout?.newsletterSchema || defaultNewsletterSettings,
         showOnUserDashboards: !callout?.hidden,
         responseSettings: callout?.allowMultiple
           ? 'multiple'
@@ -438,7 +449,9 @@ export function convertStepsToCallout(
       : CalloutAccess.Member,
     variants,
     channels: tabs.settings.channels,
-    showNewsletterOptIn: tabs.settings.showNewsletterOptIn,
+    newsletterSchema: tabs.settings.showNewsletterOptIn
+      ? tabs.settings.newsletterSettings
+      : null,
   };
 }
 

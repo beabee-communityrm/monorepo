@@ -1,4 +1,7 @@
-import type { CalloutResponseViewSchema } from "./index.js";
+import type {
+  CalloutNewsletterSchema,
+  CalloutResponseViewSchema
+} from "./index.js";
 
 import type {
   CalloutAccess,
@@ -14,9 +17,9 @@ export interface CalloutData {
   allowUpdate: boolean;
   allowMultiple: boolean;
   access: CalloutAccess;
-  showNewsletterOptIn: boolean;
   captcha: CalloutCaptcha;
   hidden: boolean;
+  newsletterSchema?: CalloutNewsletterSchema | null;
   responseViewSchema?: CalloutResponseViewSchema | null;
   channels: CalloutChannel[] | null;
 }

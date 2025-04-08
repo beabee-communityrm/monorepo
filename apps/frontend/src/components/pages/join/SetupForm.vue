@@ -50,24 +50,16 @@
         />
       </section>
 
-      <section v-if="showNewsletterOptIn" class="mb-6">
-        <h4 class="mb-1 text-lg">{{ setupContent.newsletterTitle }}</h4>
-        <div
-          class="content-message mb-4 text-sm"
-          v-html="setupContent.newsletterText"
-        />
-        <AppCheckboxGroup
-          v-if="hasNewsletterGroups"
-          v-model="data.profile.newsletterGroups"
-          :options="setupContent.newsletterGroups"
-        />
-        <AppCheckbox
-          v-else
-          v-model="data.profile.newsletterOptIn"
-          :label="setupContent.newsletterOptIn"
-          class="font-bold"
-        />
-      </section>
+      <NewsletterOptIn
+        v-if="showNewsletterOptIn"
+        v-model="data.profile.newsletterOptIn"
+        v-model:opt-in-groups="data.profile.newsletterGroups"
+        :title="setupContent.newsletterTitle"
+        :text="setupContent.newsletterText"
+        :opt-in="setupContent.newsletterOptIn"
+        :groups="setupContent.newsletterGroups"
+        class="mb-6"
+      />
     </AppForm>
   </AuthBox>
 </template>
@@ -85,7 +77,7 @@ import AppAddress from '@components/AppAddress.vue';
 import ContactBasicFields from '@components/contact/ContactBasicFields.vue';
 import ContactMailOptIn from '@components/contact/ContactMailOptIn.vue';
 import AuthBox from '@components/AuthBox.vue';
-import { AppCheckbox, AppCheckboxGroup, AppForm } from '@beabee/vue/components';
+import { AppForm } from '@beabee/vue/components';
 
 import { type SetupContactData } from './join.interface';
 

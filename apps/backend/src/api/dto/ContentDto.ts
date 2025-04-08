@@ -11,8 +11,7 @@ import {
   ContentProfileData,
   ContentShareData,
   ContentPaymentData,
-  ContentId,
-  ContentJoinSetupNewsletterGroupData
+  ContentId
 } from "@beabee/beabee-common";
 import { Locale } from "@beabee/locale";
 import { Type } from "class-transformer";
@@ -28,6 +27,7 @@ import {
 
 import { LinkDto } from "@api/dto/LinkDto";
 import { GetContentTelegramDto } from "@api/dto/ContentTelegramDto";
+import { NewsletterGroupDto } from "@api/dto/NewsletterDto";
 
 export class GetContentContactsDto implements ContentContactsData {
   @IsString({ each: true })
@@ -139,19 +139,6 @@ export class GetContentJoinDto implements ContentJoinData {
   stripeCountry!: StripeFeeCountry;
 }
 
-class GetContentJoinSetupNewsletterGroup
-  implements ContentJoinSetupNewsletterGroupData
-{
-  @IsString()
-  id!: string;
-
-  @IsString()
-  label!: string;
-
-  @IsBoolean()
-  checked!: boolean;
-}
-
 export class GetContentJoinSetupDto implements ContentJoinSetupData {
   @IsString()
   welcome!: string;
@@ -169,8 +156,8 @@ export class GetContentJoinSetupDto implements ContentJoinSetupData {
   showNewsletterOptIn!: boolean;
 
   @ValidateNested({ each: true })
-  @Type(() => GetContentJoinSetupNewsletterGroup)
-  newsletterGroups!: GetContentJoinSetupNewsletterGroup[];
+  @Type(() => NewsletterGroupDto)
+  newsletterGroups!: NewsletterGroupDto[];
 
   @IsString()
   mailTitle!: string;

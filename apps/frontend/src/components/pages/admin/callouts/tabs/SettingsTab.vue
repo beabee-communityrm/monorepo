@@ -197,7 +197,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ItemStatus, type CalloutChannel } from '@beabee/beabee-common';
+import {
+  ItemStatus,
+  type CalloutChannel,
+  type CalloutNewsletterSchema,
+} from '@beabee/beabee-common';
 import useVuelidate from '@vuelidate/core';
 import { computed, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -227,6 +231,7 @@ export interface SettingsTabData {
   captchaEnabled: boolean;
   captchaForMembers: boolean;
   showNewsletterOptIn: boolean;
+  newsletterSettings: CalloutNewsletterSchema;
   showOnUserDashboards: boolean;
   responseSettings: 'singleNonEditable' | 'singleEditable' | 'multiple';
   channels: CalloutChannel[] | null;

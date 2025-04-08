@@ -10,21 +10,23 @@
     />
 
     <template v-if="isLastSlide && !readonly && !preview">
-      <template v-if="showGuestFields">
-        <CalloutFormGuestFields
-          v-model:firstname="guestData.firstname"
-          v-model:lastname="guestData.lastname"
-          v-model:email="guestData.email"
-        />
+      <CalloutFormGuestFields
+        v-if="showGuestFields"
+        v-model:firstname="guestData.firstname"
+        v-model:lastname="guestData.lastname"
+        v-model:email="guestData.email"
+      />
 
-        <div v-if="callout.showNewsletterOptIn" class="mb-8">
-          <AppCheckbox
-            v-model="guestData.newsletterOptIn"
-            :label="t('callout.form.newsletterOptIn')"
-            name="newsletterOptIn"
-          />
-        </div>
-      </template>
+      <div v-if="callout.newsletterSchema" class="mb-8">
+        <NewsletterOptIn
+          v-model="nlData.optIn"
+          v-model:opt-in-groups="nlData.groups"
+          :title="callout.newsletterSchema.title"
+          :text="callout.newsletterSchema.text"
+          :opt-in="callout.newsletterSchema.optIn"
+          :groups="callout.newsletterSchema.groups"
+        />
+      </div>
 
       <CalloutFormCaptcha
         v-if="showCaptcha"
@@ -85,12 +87,9 @@ import { useI18n } from 'vue-i18n';
 import useVuelidate from '@vuelidate/core';
 
 import CalloutFormGuestFields from './CalloutFormGuestFields.vue';
-import {
-  AppNotification,
-  AppButton,
-  AppCheckbox,
-} from '@beabee/vue/components';
+import { AppNotification, AppButton } from '@beabee/vue/components';
 import FormRenderer from '@components/form-renderer/FormRenderer.vue';
+import NewsletterOptIn from '@components/newsletter/NewsletterOptIn.vue';
 
 import { currentUser } from '@store';
 
@@ -118,8 +117,9 @@ const guestData = reactive({
   firstname: '',
   lastname: '',
   email: '',
-  newsletterOptIn: false,
 });
+
+const nlData = reactive({ optIn: false, groups: [] as string[] });
 
 const captchaToken = ref('');
 const formError = ref('');
@@ -201,6 +201,7 @@ async function handleSubmit() {
         answers: validAnswers,
         ...(!currentUser.value &&
           props.callout?.access === 'guest' && { guest: guestData }),
+        ...(props.callout?.newsletterSchema && { newsletter: nlData }),
       },
       captchaToken.value
     );
