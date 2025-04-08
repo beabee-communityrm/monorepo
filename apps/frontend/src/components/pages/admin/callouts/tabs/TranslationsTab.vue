@@ -229,16 +229,22 @@ const sections = computed<ScrollSection[]>(() => {
       id: 'language-settings',
       label: t('callout.builder.tabs.translations.languageSettings.title'),
     },
-    {
-      id: 'title-description',
-      label: t('callout.builder.tabs.titleAndImage.title'),
-    },
-    {
-      id: 'buttons',
-      label: t('callout.builder.tabs.translations.navigationButtons.title'),
-    },
-    ...slidesSections,
-    { id: 'introduction', label: t('callout.builder.tabs.intro.label') },
+    ...(props.data.locales.length > 0
+      ? [
+          {
+            id: 'title-description',
+            label: t('callout.builder.tabs.titleAndImage.title'),
+          },
+          {
+            id: 'buttons',
+            label: t(
+              'callout.builder.tabs.translations.navigationButtons.title'
+            ),
+          },
+          ...slidesSections,
+          { id: 'introduction', label: t('callout.builder.tabs.intro.label') },
+        ]
+      : []),
   ];
 });
 
