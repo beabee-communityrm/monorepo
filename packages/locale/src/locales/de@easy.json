@@ -130,6 +130,9 @@
               "minZoom": {},
               "style": {}
             },
+            "newsletterSettings": {
+              "opts": {}
+            },
             "openToEveryone": {
               "opts": {}
             },
@@ -463,6 +466,9 @@
   },
   "menu": {
     "callouts": "Aufruf"
+  },
+  "newsletterOptIn": {
+    "groups": {}
   },
   "notFound": {
     "goBack": "Hier geht es zu einer neuen Seite. Die gibt dir eine Übersicht.",

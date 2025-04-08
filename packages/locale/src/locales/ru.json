@@ -232,6 +232,9 @@
               "minZoom": {},
               "style": {}
             },
+            "newsletterSettings": {
+              "opts": {}
+            },
             "openToEveryone": {
               "opts": {}
             },
@@ -864,6 +867,9 @@
     "payments": "Платежи",
     "settings": "Настройки",
     "yourProfile": "Ваш профиль"
+  },
+  "newsletterOptIn": {
+    "groups": {}
   },
   "notFound": {
     "goBack": "Вернуться на главную",

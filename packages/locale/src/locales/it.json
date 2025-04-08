@@ -146,6 +146,9 @@
               "minZoom": {},
               "style": {}
             },
+            "newsletterSettings": {
+              "opts": {}
+            },
             "openToEveryone": {
               "opts": {}
             },
@@ -580,6 +583,9 @@
     "payments": "Pagamenti",
     "settings": "Impostazioni",
     "yourProfile": "Il tuo profilo"
+  },
+  "newsletterOptIn": {
+    "groups": {}
   },
   "notFound": {},
   "noticeAdminOverview": {

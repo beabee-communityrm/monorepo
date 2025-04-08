@@ -38,21 +38,21 @@ meta:
           <div class="mb-4">
             <AppInput
               v-model="setupContent.mailTitle"
-              :label="stepT('optInTitle')"
+              :label="t('newsletterOptIn.title')"
               required
             />
           </div>
           <div class="mb-4">
             <RichTextEditor
               v-model="setupContent.mailText"
-              :label="stepT('optInText')"
+              :label="t('newsletterOptIn.text')"
               required
             />
           </div>
           <div class="mb-4">
             <AppInput
               v-model="setupContent.mailOptIn"
-              :label="stepT('optInLabel')"
+              :label="t('newsletterOptIn.optInLabel')"
               required
             />
           </div>
@@ -68,9 +68,9 @@ meta:
         />
         <NewsletterOptInSettings
           v-if="setupContent.showNewsletterOptIn"
-          v-model:newsletter-opt-in="setupContent.newsletterOptIn"
           v-model:title="setupContent.newsletterTitle"
           v-model:text="setupContent.newsletterText"
+          v-model:opt-in="setupContent.newsletterOptIn"
           v-model:groups="setupContent.newsletterGroups"
         />
 

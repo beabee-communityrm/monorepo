@@ -175,12 +175,13 @@
                 :disabled-description="
                   inputT('newsletterSettings.opts.disabled')
                 "
-                :disabled="data.openToEveryone && !data.collectMemberInfo"
+                :disabled="!canAddNewsletterOptIn"
               />
             </AppFormField>
-            <AppFormField>
+            <AppFormField
+              v-if="canAddNewsletterOptIn && data.showNewsletterOptIn"
+            >
               <NewsletterOptInSettings
-                v-if="data.showNewsletterOptIn"
                 v-model:title="data.newsletterSettings.title"
                 v-model:opt-in="data.newsletterSettings.optIn"
                 v-model:text="data.newsletterSettings.text"
@@ -302,6 +303,10 @@ const sections = computed<ScrollSection[]>(() => [
     hidden: env.cnrMode,
   },
 ]);
+
+const canAddNewsletterOptIn = computed(
+  () => !props.data.openToEveryone || props.data.collectMemberInfo
+);
 
 // Force step to stay unvalidated until it is visited for new callouts
 const hasVisited = ref(!!props.status);

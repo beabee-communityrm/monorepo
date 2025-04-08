@@ -479,6 +479,9 @@
               },
               "title": "Karteneinstellungen"
             },
+            "newsletterSettings": {
+              "opts": {}
+            },
             "openToEveryone": {
               "help": "<p>Aufrufe können <strong>Allen</strong> präsentiert oder auf die Teilnahme von <strong>nur Mitgliedern</strong> beschränkt werden</p>",
               "label": "Für alle zugänglich",
@@ -1487,18 +1490,10 @@
           "title": "Anmelde-Fragebogen"
         },
         "newsletter": {
-          "groups": {
-            "add": "Neue Gruppe hinzufügen",
-            "help": "<p>Du kannst Nutzer entscheiden lassen, welche Newsletter-Gruppe sie abonnieren möchten. Die Gruppen müssen zuvor in Mailchimp eingerichtet werden. Wende dich an <a href=\"mailto:support{'@'}beabee.io\">support{'@'}beabee.io</a>, wenn du dabei Hilfe benötigst.</p>\n",
-            "title": "Newsletter-Gruppe"
-          },
-          "optInDisabled": "Der Text wird nicht genutzt, wenn die Newsletter-Gruppen sichtbar sind.",
+          "groups": {},
           "showOptIn": "Nach Newsletterabonnement fragen",
           "title": "Newsletter"
         },
-        "optInLabel": "Beschriftung Kontrollkästchen ",
-        "optInText": "Text",
-        "optInTitle": "Überschrift",
         "text": "Neue Mitglieder müssen ihre Registrierung in folgendem Bildschirm bestätigen. Außerdem werden hier persönliche Informationen abgefragt.",
         "title": "Persönliche Informationen abfragen",
         "welcomeMessage": "Willkommensnachricht"
@@ -1550,6 +1545,18 @@
     "payments": "Zahlungen",
     "settings": "Einstellungen",
     "yourProfile": "Dein Profil"
+  },
+  "newsletterOptIn": {
+    "groups": {
+      "add": "Neue Gruppe hinzufügen",
+      "help": "<p>Du kannst Nutzer entscheiden lassen, welche Newsletter-Gruppe sie abonnieren möchten. Die Gruppen müssen zuvor in Mailchimp eingerichtet werden. Wende dich an <a href=\"mailto:support{'@'}beabee.io\">support{'@'}beabee.io</a>, wenn du dabei Hilfe benötigst.</p>\n",
+      "title": "Newsletter-Gruppe"
+    },
+    "optInDisabled": "Der Text wird nicht genutzt, wenn die Newsletter-Gruppen sichtbar sind.",
+    "optInLabel": "Beschriftung Kontrollkästchen ",
+    "showOptIn": "Nach Newsletterabonnement fragen",
+    "text": "Text",
+    "title": "Überschrift"
   },
   "notFound": {
     "goBack": "Zurück zum Dashboard",
