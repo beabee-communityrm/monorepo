@@ -22,19 +22,6 @@
       <!-- Left Sidebar -->
       <div class="flex-0 basis-menu overflow-y-auto overflow-x-hidden">
         <!-- Form Builder Options -->
-        <div
-          v-if="env.experimentalFeatures"
-          class="mb-4 flex flex-none items-end gap-4"
-        >
-          <AppToggleField
-            v-model="sidebarTabs.content.data.showAdvanced"
-            variant="link"
-            size="small"
-            :label="t('callout.builder.showAdvancedOptions')"
-            class="flex-1 bg-white p-4"
-          />
-        </div>
-
         <SidebarTabsNavigation
           v-model:selected-tab="selectedSidebarTab"
           :sidebar-tabs="sidebarTabs"
@@ -61,21 +48,29 @@
             <CalloutSlideItem
               :slide-no="index"
               :slides="slides"
-              :active="currentSlideId === element.id"
+              :active="
+                selectedSidebarTab === sidebarTabs.content.name &&
+                currentSlideId === element.id
+              "
               @select="handleSlideSelect"
               @remove="handleRemoveSlide"
             />
           </template>
         </Draggable>
 
-        <!-- Slide Navigation -->
-        <FormBuilderNavigation
-          v-model="currentSlide.navigation"
-          :slides="slides"
-          :current-slide-no="currentSlideNo"
-          :is-first="isFirstSlide"
-          :is-last="isLastSlide"
-        />
+        <template v-if="selectedSidebarTab === sidebarTabs.content.name">
+          <!-- Slide Navigation -->
+          <FormBuilderNavigation
+            v-if="selectedSidebarTab === sidebarTabs.content.name"
+            v-model="currentSlide.navigation"
+            :slides="slides"
+            :is-first="isFirstSlide"
+            :is-last="isLastSlide"
+          />
+          <p class="text-sm text-grey">
+            {{ t('common.id') }}: {{ currentSlide.id }}
+          </p>
+        </template>
       </div>
 
       <SidebarTabContent
@@ -94,11 +89,7 @@ import { ItemStatus } from '@beabee/beabee-common';
 import useVuelidate from '@vuelidate/core';
 import { ref, watch, reactive, markRaw, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import {
-  AppButton,
-  AppNotification,
-  AppToggleField,
-} from '@beabee/vue/components';
+import { AppButton, AppNotification } from '@beabee/vue/components';
 import { useRoute } from 'vue-router';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import Draggable from 'vuedraggable';
@@ -116,7 +107,6 @@ import IntroMessageTab from './SidebarTabContent/IntroMessageTab.vue';
 import SidebarTabContent from './SidebarTabsContent.vue';
 
 import { getSlideSchema } from '@utils/callouts';
-import env from '@env';
 
 /**
  * Data for the content tab, which contains the form builder and end message configuration

@@ -301,32 +301,3 @@
 .formio-component-labelPosition {
   @apply !hidden;
 }
-
-body:not(.show-advanced-options) {
-  /* Hide lots of options */
-  .formio-component-autocomplete,
-  .formio-component-tabindex,
-  .formio-component-hideLabel,
-  .formio-component-showWordCount,
-  .formio-component-showCharCount,
-  .formio-component-autofocus,
-  .formio-component-disabled,
-  .formio-component-theme,
-  .formio-component-size,
-  .formio-component-leftIcon,
-  .formio-component-rightIcon,
-  .formio-component-action,
-  .formio-component-saveOnEnter,
-  .formio-component-block,
-  .formio-component-shortcutButtons,
-  .formio-component-validateOn,
-  .formio-component-inputMask,
-  /* Form upload component */
-  .formio-component-dir,
-  /* .formio-component-image, */
-  .formio-component-uploadOnly,
-  .formio-component-fileTypes,
-  .formio-component-fileNameTemplate {
-    @apply hidden;
-  }
-}

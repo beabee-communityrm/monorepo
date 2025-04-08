@@ -5,50 +5,25 @@
     <FormBuilder
       :key="currentSlide.id"
       v-model="currentSlide.components"
-      :advanced="data.showAdvanced"
       :slides="slides"
       class="min-h-0 flex-1"
     />
-
-    <!-- Form Builder Footer -->
-    <div class="flex gap-4">
-      <div class="max-w-2xl flex-1">
-        <!-- Slide ID -->
-        <div class="flex justify-between">
-          <div>
-            <p v-if="data.showAdvanced" class="text-sm text-grey">
-              {{ t('common.id') }}: {{ currentSlide.id }}
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="flex-0 basis-[15rem]" />
-    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { useI18n } from 'vue-i18n';
 import FormBuilder from '@components/form-builder/FormBuilder.vue';
 import type { SidebarTabProps } from '../SidebarTabs.interface';
 
 /**
  * Data for the ContentFormTab component
  */
-export interface ContentFormTabData {
-  /** Whether the form is in advanced mode */
-  showAdvanced: boolean;
-}
+export type ContentFormTabData = undefined;
 
 /**
  * Props for the ContentFormTab component
  */
-export type ContentFormTabProps = SidebarTabProps<ContentFormTabData>;
+export type ContentFormTabProps = SidebarTabProps<never>;
 
 defineProps<ContentFormTabProps>();
-defineEmits<{
-  'update:data': [value: ContentFormTabData];
-}>();
-
-const { t } = useI18n();
 </script>

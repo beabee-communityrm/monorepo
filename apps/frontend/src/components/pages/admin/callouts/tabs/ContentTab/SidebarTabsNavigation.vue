@@ -4,7 +4,6 @@
       {{ title }}
     </h2>
     <AppTabs
-      class="!rounded-none"
       :items="visibleTabItems"
       :selected="selectedTab"
       :default-tab="defaultTabName"

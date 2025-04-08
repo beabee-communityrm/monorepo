@@ -221,9 +221,7 @@ export function convertCalloutToTabs(
   const content: ContentTabData = {
     slides,
     sidebarTabs: {
-      content: {
-        showAdvanced: false,
-      },
+      content: undefined,
       intro: {
         introText: variants.intro,
       },
