@@ -20,10 +20,9 @@
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { useI18n } from 'vue-i18n';
 
-import AppSelectableList from '@components/AppSelectableList.vue';
-import AppDropdownButton from '@components/button/AppDropdownButton.vue';
+import { AppDropdownButton, AppSelectableList } from '@beabee/vue/components';
 
-import type { SelectItem } from '@components/forms/form.interface';
+import type { SelectItem } from '@beabee/vue/types';
 
 const emit = defineEmits<{
   (event: 'assign', id: string | null, successText: string): void;

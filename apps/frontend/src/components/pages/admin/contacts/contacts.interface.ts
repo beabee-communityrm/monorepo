@@ -8,10 +8,10 @@ import {
 } from '@beabee/beabee-common';
 import { computed, ref, watchEffect } from 'vue';
 
-import i18n from '@lib/i18n';
+import { i18n } from '@lib/i18n';
 import { generalContent } from '@store';
 import { type Header } from '@components/table/table.interface';
-import type { SelectItem } from '@components/forms/form.interface';
+import type { SelectItem } from '@beabee/vue/types';
 
 import { withItems, withLabel } from '@utils/rules';
 

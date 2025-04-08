@@ -51,10 +51,9 @@
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { client } from '@utils/api';
-import AppButton from '../../../button/AppButton.vue';
+import { AppButton, AppForm } from '@beabee/vue/components';
 import AppInput from '../../../forms/AppInput.vue';
 import AppHeading from '../../../AppHeading.vue';
-import AppForm from '../../../forms/AppForm.vue';
 import { faKey } from '@fortawesome/free-solid-svg-icons';
 
 const { t } = useI18n();

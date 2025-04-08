@@ -7,6 +7,6 @@
 </template>
 
 <script lang="ts" setup>
-import AppButton from '../button/AppButton.vue';
+import { AppButton } from '@beabee/vue/components';
 defineProps<{ active: boolean }>();
 </script>

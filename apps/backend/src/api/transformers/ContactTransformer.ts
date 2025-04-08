@@ -78,12 +78,13 @@ class ContactTransformer extends BaseContactTransformer<
       ...(opts?.with?.includes(GetContactWith.Contribution) && {
         contribution: contact.contributionInfo
       }),
-      ...(opts?.with?.includes(GetContactWith.Tags) && {
-        tags: contact.tags.map((ct) => contactTagTransformer.convert(ct.tag))
-      }),
       ...(opts?.with?.includes(GetContactWith.IsReviewer) && {
         isReviewer: !!contact.isReviewer
-      })
+      }),
+      ...(auth.roles.includes("admin") &&
+        opts?.with?.includes(GetContactWith.Tags) && {
+          tags: contact.tags.map((ct) => contactTagTransformer.convert(ct.tag))
+        })
     };
   }
 

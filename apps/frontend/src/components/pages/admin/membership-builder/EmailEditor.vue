@@ -26,7 +26,7 @@ import AppSubHeading from '../../../AppSubHeading.vue';
 import AppInput from '../../../forms/AppInput.vue';
 import RichTextEditor from '../../../rte/RichTextEditor.vue';
 import App2ColGrid from '../../../App2ColGrid.vue';
-import AppNotification from '../../../AppNotification.vue';
+import { AppNotification } from '@beabee/vue/components';
 
 const props = defineProps<{
   label: string;

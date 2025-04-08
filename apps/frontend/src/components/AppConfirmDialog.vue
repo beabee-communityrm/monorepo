@@ -30,8 +30,8 @@
   </AppModal>
 </template>
 <script lang="ts" setup>
-import AppButton from './button/AppButton.vue';
-import AppModal from './AppModal.vue';
+import { AppButton } from '@beabee/vue/components';
+import AppModal from '@components/AppModal.vue';
 import { ref } from 'vue';
 
 defineEmits(['close']);

@@ -107,20 +107,19 @@ import useVuelidate from '@vuelidate/core';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
 import Contribution from '@components/contribution/Contribution.vue';
-import AppButton from '@components/button/AppButton.vue';
+import { AppButton, AppNotification } from '@beabee/vue/components';
 import ProrateContribution from './ProrateContribution.vue';
 import { type ContributionContent } from '@components/contribution/contribution.interface';
 import AppModal from '@components/AppModal.vue';
 import StripePayment from '@components/StripePayment.vue';
 import AppHeading from '@components/AppHeading.vue';
-import AppNotification from '@components/AppNotification.vue';
 
 import { client, isApiError } from '@utils/api';
 
 import { currentUser } from '@store/currentUser';
 import { formatLocale } from '@utils/dates';
 
-import { addNotification } from '@store/notifications';
+import { addNotification } from '@beabee/vue/store/notifications';
 
 const validation = useVuelidate();
 

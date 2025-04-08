@@ -251,12 +251,12 @@ meta:
 import { ref } from 'vue';
 
 import AppColor from '../components/AppColor.vue';
-import AppButton from '../components/button/AppButton.vue';
+import { AppButton } from '@beabee/vue/components';
 import AppInput from '../components/forms/AppInput.vue';
 import AppSlider from '../components/slider/AppSlider.vue';
 import AppSlide from '../components/slider/AppSlide.vue';
 import AppStepper from '../components/stepper/AppStepper.vue';
-import AppCheckbox from '../components/forms/AppCheckbox.vue';
+import { AppCheckbox } from '@beabee/vue/components';
 import AppQRCode from '../components/AppQRCode.vue';
 
 import type { AppStepperStep } from '@type/app-stepper-step';

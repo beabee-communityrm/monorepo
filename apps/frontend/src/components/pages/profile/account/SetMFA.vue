@@ -230,7 +230,7 @@ import { client, isApiError } from '@utils/api';
 import { CONTACT_MFA_TYPE } from '@beabee/beabee-common';
 import { LOGIN_CODES } from '@beabee/beabee-common';
 
-import AppButton from '@components/button/AppButton.vue';
+import { AppButton, AppNotification } from '@beabee/vue/components';
 import AppModal from '@components/AppModal.vue';
 import AppHeading from '@components/AppHeading.vue';
 import AppSlider from '@components/slider/AppSlider.vue';
@@ -238,9 +238,8 @@ import AppSlide from '@components/slider/AppSlide.vue';
 import AppQRCode from '@components/AppQRCode.vue';
 import AppInput from '@components/forms/AppInput.vue';
 import AppConfirmDialog from '@components/AppConfirmDialog.vue';
-import AppNotification from '@components/AppNotification.vue';
 
-import { addNotification } from '@store/notifications';
+import { addNotification } from '@beabee/vue/store/notifications';
 import { generalContent } from '@store/index';
 
 import type { AppStepperStep } from '@type/app-stepper-step';

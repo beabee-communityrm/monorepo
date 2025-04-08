@@ -27,11 +27,11 @@ import {
   MembershipStatus,
   type ContributionInfo,
 } from '@beabee/beabee-common';
-import AppButton from '../button/AppButton.vue';
+import { AppButton } from '@beabee/vue/components';
 import { formatLocale } from '@utils/dates';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import AppHeading from '../AppHeading.vue';
+import AppHeading from '@components/AppHeading.vue';
 
 const { t } = useI18n();
 

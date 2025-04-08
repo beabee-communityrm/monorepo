@@ -16,6 +16,8 @@
   - `hideErrorMessage` (boolean): Whether or not to hide the error message. Defaults to `false`.
   - `prefix` (string): A prefix to display before the input.
   - `suffix` (string): A suffix to display after the input.
+  - `copyable` (boolean): Whether the input value can be copied to clipboard.
+  - `copyButtonDisabled` (boolean): Whether the copy button is disabled.
 
   ## Events
   - `update:modelValue` (value: string | number): Emitted when the value of the input changes.
@@ -28,7 +30,7 @@
  -->
 <template>
   <AppLabel v-if="label" :label="label" :required="required" />
-  <div class="flex items-center" :class="disabled && 'opacity-60'">
+  <div class="flex items-center">
     <div v-if="$slots.before" class="flex-0 mr-2"><slot name="before" /></div>
     <div
       class="flex flex-1 items-center overflow-hidden rounded border focus-within:shadow-input"
@@ -40,14 +42,17 @@
             : 'border-primary-40 bg-white'
       "
     >
-      <span v-if="prefix" class="flex-0 px-2">{{ prefix }}</span>
+      <span
+        v-if="prefix"
+        class="flex-0 border-r border-primary-40 bg-grey-lighter px-2 py-2"
+        :class="disabled && 'opacity-60'"
+      >
+        {{ prefix }}
+      </span>
       <input
         v-model.trim="value"
-        class="w-full flex-1 bg-white/0 p-2 leading-[20px] focus:outline-none"
-        :class="{
-          'border-l border-primary-40': prefix,
-          'border-r border-primary-40': suffix,
-        }"
+        class="h-10 w-full flex-1 bg-white/0 px-2 leading-[20px] focus:outline-none"
+        :class="disabled && 'opacity-60'"
         :type="type"
         :name="name"
         :required="required"
@@ -59,6 +64,14 @@
         @blur="validation.$touch"
       />
       <span v-if="suffix" class="flex-0 px-2">{{ suffix }}</span>
+      <div v-if="copyable" class="flex-0 h-10 border-l border-primary-40">
+        <AppCopyButton
+          class="h-full"
+          :class="copyButtonDisabled ? 'cursor-not-allowed opacity-60' : ''"
+          :text="prefix ? `${prefix}${value}` : value?.toString() || ''"
+          :disabled="copyButtonDisabled"
+        />
+      </div>
     </div>
     <div v-if="$slots.after" class="flex-0 ml-2"><slot name="after" /></div>
   </div>
@@ -82,41 +95,65 @@ import {
   url,
 } from '@vuelidate/validators';
 import AppInputHelp from './AppInputHelp.vue';
-import AppLabel from './AppLabel.vue';
+import { AppLabel, AppCopyButton } from '@beabee/vue/components';
 import AppInputError from './AppInputError.vue';
 
+/**
+ * Props for the AppInput component
+ */
+export interface AppInputProps {
+  /** The model value of the input */
+  modelValue?: number | string;
+  /** The type of the input */
+  type?: 'password' | 'email' | 'text' | 'date' | 'time' | 'number' | 'url';
+  /** The name of the input */
+  name?: string;
+  /** The label of the input */
+  label?: string;
+  /** The info message of the input */
+  infoMessage?: string;
+  /** Whether the input is required */
+  required?: boolean;
+  /** Whether the input is disabled */
+  disabled?: boolean;
+  /** Whether the copy button is disabled */
+  copyButtonDisabled?: boolean;
+  /** The minimum value of the input */
+  min?: number | string;
+  /** The maximum value of the input */
+  max?: number | string;
+  /** The value that this input should be the same as */
+  sameAs?: number | string;
+  /** A regex pattern that the input value should match */
+  pattern?: string;
+  /** Whether to hide the error message */
+  hideErrorMessage?: boolean;
+  /** A prefix to display before the input */
+  prefix?: string;
+  /** A suffix to display after the input */
+  suffix?: string;
+  /** Whether the input value can be copied to clipboard */
+  copyable?: boolean;
+}
+
 const emit = defineEmits(['update:modelValue', 'update:validation']);
-const props = withDefaults(
-  defineProps<{
-    modelValue?: number | string;
-    type?: 'password' | 'email' | 'text' | 'date' | 'time' | 'number' | 'url';
-    name?: string;
-    label?: string;
-    infoMessage?: string;
-    required?: boolean;
-    disabled?: boolean;
-    min?: number | string;
-    max?: number | string;
-    sameAs?: number | string;
-    pattern?: string;
-    hideErrorMessage?: boolean;
-    prefix?: string;
-    suffix?: string;
-  }>(),
-  {
-    modelValue: undefined,
-    type: 'text',
-    name: 'unknown',
-    label: undefined,
-    infoMessage: undefined,
-    min: undefined,
-    max: undefined,
-    sameAs: undefined,
-    pattern: undefined,
-    prefix: undefined,
-    suffix: undefined,
-  }
-);
+const props = withDefaults(defineProps<AppInputProps>(), {
+  modelValue: undefined,
+  type: 'text',
+  name: 'unknown',
+  label: undefined,
+  infoMessage: undefined,
+  min: undefined,
+  max: undefined,
+  required: false,
+  disabled: false,
+  copyButtonDisabled: false,
+  sameAs: undefined,
+  pattern: undefined,
+  prefix: undefined,
+  suffix: undefined,
+  copyable: false,
+});
 
 const { t } = useI18n();
 

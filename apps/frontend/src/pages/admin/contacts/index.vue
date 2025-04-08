@@ -173,11 +173,10 @@ import {
   faMailBulk,
 } from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';
-import { addNotification } from '@store/notifications';
+import { addNotification } from '@beabee/vue/store/notifications';
 
 import PageTitle from '@components/PageTitle.vue';
-import AppButtonGroup from '@components/button/AppButtonGroup.vue';
-import AppButton from '@components/button/AppButton.vue';
+import { AppButton, AppButtonGroup } from '@beabee/vue/components';
 import ToggleTagButton from '@components/tag/ToggleTagButton.vue';
 import AppSearch from '@components/search/AppSearch.vue';
 import TagList from '@components/tag/TagList.vue';
@@ -279,13 +278,13 @@ const segmentItems = computed(() => [
   {
     id: '',
     label: t('contacts.allContacts'),
-    count: contactsTotal.value === null ? '???' : n(contactsTotal.value),
+    count: contactsTotal.value === null ? 0 : contactsTotal.value,
     to: '/admin/contacts',
   },
   ...segments.value.map((segment) => ({
     id: segment.id,
     label: segment.name,
-    count: n(segment.contactCount),
+    count: segment.contactCount,
     to: '/admin/contacts?segment=' + segment.id,
   })),
 ]);

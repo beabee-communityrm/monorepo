@@ -63,13 +63,12 @@ import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import AppModal from '@components/AppModal.vue';
-import AppButton from '@components/button/AppButton.vue';
+import { AppButton, AppRadioGroup } from '@beabee/vue/components';
 import AppInput from '@components/forms/AppInput.vue';
-import AppRadioGroup from '@components/forms/AppRadioGroup.vue';
 
 import { client } from '@utils/api';
 
-import { addNotification } from '@store/notifications';
+import { addNotification } from '@beabee/vue/store/notifications';
 
 const emit = defineEmits(['saved']);
 const props = defineProps<{

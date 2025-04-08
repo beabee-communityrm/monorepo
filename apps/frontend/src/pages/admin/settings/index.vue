@@ -177,22 +177,21 @@ meta:
 import { onBeforeMount, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import { AppForm, AppCheckbox } from '@beabee/vue/components';
 import AppImageUpload from '@components/forms/AppImageUpload.vue';
 import AppInput from '@components/forms/AppInput.vue';
 import AppSelect from '@components/forms/AppSelect.vue';
 import AppTextArea from '@components/forms/AppTextArea.vue';
 import AppHeading from '@components/AppHeading.vue';
-import AppForm from '@components/forms/AppForm.vue';
 import App2ColGrid from '@components/App2ColGrid.vue';
 import AppSubHeading from '@components/AppSubHeading.vue';
 import AppLinkList from '@components/forms/AppLinkList.vue';
-import AppCheckbox from '@components/forms/AppCheckbox.vue';
 
 import { client } from '@utils/api';
 
 import { generalContent as storeGeneralContent } from '@store';
 
-import { localeItems } from '@lib/i18n';
+import { localeItems } from '@beabee/vue/lib/i18n';
 import type {
   ContentPaymentData,
   ContentShareData,

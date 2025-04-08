@@ -261,7 +261,11 @@ import { ItemStatus, getCalloutComponents } from '@beabee/beabee-common';
 import useVuelidate from '@vuelidate/core';
 import { computed, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import AppRadioGroup from '../../../../forms/AppRadioGroup.vue';
+import {
+  AppRadioGroup,
+  AppLabel,
+  AppCheckboxGroup,
+} from '@beabee/vue/components';
 import AppFormSection from '../../../../forms/AppFormSection.vue';
 import {
   type CalloutSteps,
@@ -273,10 +277,8 @@ import AppInput from '../../../../forms/AppInput.vue';
 import AppSelect from '../../../../forms/AppSelect.vue';
 import AppSubHeading from '../../../../AppSubHeading.vue';
 import env from '../../../../../env';
-import AppCheckboxGroup from '../../../../forms/AppCheckboxGroup.vue';
 import AppLinkList from '../../../../forms/AppLinkList.vue';
-import AppLabel from '../../../../forms/AppLabel.vue';
-import { localeItems } from '@lib/i18n';
+import { localeItems } from '@beabee/vue/lib/i18n';
 
 const emit = defineEmits(['update:error', 'update:validated']);
 const props = defineProps<{
