@@ -27,7 +27,6 @@
     v-model="groups"
     :new-item="() => ({ id: '', label: '', checked: false })"
     :add-label="t('newsletterOptIn.groups.add')"
-    class="mb-4"
   >
     <template #default="{ item }">
       <div class="flex-1">

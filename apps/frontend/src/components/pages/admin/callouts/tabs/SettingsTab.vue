@@ -167,9 +167,33 @@
         <AppScrollSection v-if="!env.cnrMode" id="responseSettings">
           <AppFormBox :title="inputT('responseSettings.title')">
             <AppFormField>
+              <AppToggleField
+                v-model="data.showNewsletterOptIn"
+                variant="link"
+                :label="inputT('newsletterSettings.label')"
+                :enabled-description="inputT('newsletterSettings.opts.enabled')"
+                :disabled-description="
+                  inputT('newsletterSettings.opts.disabled')
+                "
+                :disabled="data.openToEveryone && !data.collectMemberInfo"
+              />
+            </AppFormField>
+            <AppFormField>
+              <NewsletterOptInSettings
+                v-if="data.showNewsletterOptIn"
+                v-model:title="data.newsletterSettings.title"
+                v-model:opt-in="data.newsletterSettings.optIn"
+                v-model:text="data.newsletterSettings.text"
+                v-model:groups="data.newsletterSettings.groups"
+              />
+            </AppFormField>
+          </AppFormBox>
+          <AppFormBox>
+            <AppFormField>
               <AppRadioGroup
                 v-model="props.data.responseSettings"
                 name="responseSettings"
+                :label="inputT('responseSettings.label')"
                 :options="[
                   [
                     'singleNonEditable',
@@ -220,6 +244,7 @@ import {
 } from '@beabee/vue/components';
 
 import type { CalloutHorizontalTabs } from '../CalloutHorizontalTabs.interface';
+import NewsletterOptInSettings from '@components/newsletter/NewsletterOptInSettings.vue';
 
 /**
  * Data for the settings tab, which contains callout configuration options

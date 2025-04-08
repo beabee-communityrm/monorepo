@@ -15,18 +15,19 @@
         v-model:firstname="guestData.firstname"
         v-model:lastname="guestData.lastname"
         v-model:email="guestData.email"
+        class="mb-8"
       />
 
-      <div v-if="callout.newsletterSchema" class="mb-8">
-        <NewsletterOptIn
-          v-model="nlData.optIn"
-          v-model:opt-in-groups="nlData.groups"
-          :title="callout.newsletterSchema.title"
-          :text="callout.newsletterSchema.text"
-          :opt-in="callout.newsletterSchema.optIn"
-          :groups="callout.newsletterSchema.groups"
-        />
-      </div>
+      <NewsletterOptIn
+        v-if="callout.newsletterSchema"
+        v-model="nlData.optIn"
+        v-model:opt-in-groups="nlData.groups"
+        :title="callout.newsletterSchema.title"
+        :text="callout.newsletterSchema.text"
+        :opt-in="callout.newsletterSchema.optIn"
+        :groups="callout.newsletterSchema.groups"
+        class="mb-8"
+      />
 
       <CalloutFormCaptcha
         v-if="showCaptcha"
