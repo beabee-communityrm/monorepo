@@ -5,7 +5,7 @@
 
     <div class="flex min-h-0 gap-4">
       <!-- Left Sidebar with Scroll Navigation -->
-      <AppScrollNavigation :sections="navigationSections" />
+      <AppScrollNavigation :sections="sections" />
 
       <!-- Main Content -->
       <div
@@ -201,7 +201,7 @@ const inputT = (key: string) =>
 const contentRef = ref<HTMLElement | null>(null);
 
 // Sections for scroll navigation
-const sections = ref<ScrollSection[]>([
+const sections = computed<ScrollSection[]>(() => [
   {
     id: 'general',
     label: inputT('general.title'),
@@ -215,9 +215,6 @@ const sections = ref<ScrollSection[]>([
     label: inputT('sharing.title'),
   },
 ]);
-
-// Computed sections for navigation
-const navigationSections = computed(() => sections.value);
 
 // Slug generation
 watch(
