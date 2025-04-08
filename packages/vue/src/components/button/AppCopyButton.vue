@@ -1,7 +1,15 @@
 <template>
   <button
     :title="t('actions.copy')"
-    class="flex h-full w-10 items-center justify-center hover:bg-grey-lighter hover:text-body"
+    class="flex items-center justify-center"
+    :class="{
+      'h-9 w-9 rounded bg-white/70 enabled:hover:bg-white':
+        props.variant === 'float',
+      'h-full w-10 bg-white enabled:hover:bg-grey-lighter':
+        props.variant === 'normal',
+      'cursor-not-allowed opacity-60': props.disabled,
+    }"
+    :disabled="props.disabled"
     @click="handleCopy"
   >
     <font-awesome-icon :icon="faCopy" class="h-4 w-4" />
@@ -29,9 +37,16 @@ import { addNotification } from '../../store/notifications';
 export interface AppCopyButtonProps {
   /** The text to copy to clipboard */
   text: string;
+  /** The button variant */
+  variant?: 'normal' | 'float';
+  /** Disabled state */
+  disabled?: boolean;
 }
 
-const props = defineProps<AppCopyButtonProps>();
+const props = withDefaults(defineProps<AppCopyButtonProps>(), {
+  variant: 'normal',
+  disabled: false,
+});
 
 const { t } = useI18n();
 const emit = defineEmits<{
@@ -44,6 +59,8 @@ const emit = defineEmits<{
  * Copies the text to clipboard and shows a notification
  */
 const handleCopy = async () => {
+  if (props.disabled) return;
+
   try {
     await navigator.clipboard.writeText(props.text);
     addNotification({

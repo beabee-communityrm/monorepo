@@ -192,7 +192,7 @@ import {
 import { addBreadcrumb } from '@store/breadcrumb';
 import MoveBucketButton from '@components/pages/admin/callouts/MoveBucketButton.vue';
 import ToggleTagButton from '@components/tag/ToggleTagButton.vue';
-import { buckets } from '@components/pages/admin/callouts/callouts.interface';
+import { buckets } from '@utils/callouts';
 import CalloutResponseComments from '@components/callout/CalloutResponseComments.vue';
 import SetAssigneeButton from '@components/pages/admin/callouts/SetAssigneeButton.vue';
 import CalloutForm from '@components/pages/callouts/CalloutForm.vue';

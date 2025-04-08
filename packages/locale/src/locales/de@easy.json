@@ -77,6 +77,115 @@
     "actions": {},
     "addAPoint": "Hier kannst du einen Ort rein-schreiben.",
     "addLocation": "Hier kannst du einen neuen Ort rein-schreiben.",
+    "builder": {
+      "actions": {},
+      "common": {
+        "actions": {}
+      },
+      "navigation": {
+        "nextSlide": {}
+      },
+      "tabs": {
+        "content": {},
+        "endMessage": {
+          "inputs": {
+            "action": {
+              "opts": {}
+            },
+            "text": {},
+            "title": {},
+            "url": {}
+          }
+        },
+        "intro": {},
+        "mailchimp": {},
+        "responseDisplay": {},
+        "settings": {
+          "access": {},
+          "dates": {},
+          "displayOptions": {},
+          "inputs": {
+            "collectGuestInfo": {
+              "opts": {}
+            },
+            "collectMemberInfo": {
+              "opts": {}
+            },
+            "expires": {
+              "opts": {}
+            },
+            "mapAndGallery": {
+              "gallery": {},
+              "map": {}
+            },
+            "mapSchema": {
+              "addressPattern": {},
+              "addressPatternProp": {},
+              "addressProp": {},
+              "bounds": {},
+              "center": {},
+              "geocodeCountries": {},
+              "initialZoom": {},
+              "maxZoom": {},
+              "minZoom": {},
+              "style": {}
+            },
+            "openToEveryone": {
+              "opts": {}
+            },
+            "requireCaptcha": {
+              "members": {
+                "opts": {}
+              },
+              "opts": {}
+            },
+            "responseImageProp": {},
+            "responseLinks": {
+              "opts": {},
+              "placeholder": {}
+            },
+            "responseSettings": {
+              "opts": {}
+            },
+            "responseTitleProp": {},
+            "showResponses": {
+              "opts": {}
+            },
+            "starts": {
+              "opts": {}
+            },
+            "visible": {
+              "opts": {}
+            },
+            "whichResponseBuckets": {}
+          }
+        },
+        "titleAndImage": {
+          "inputs": {
+            "description": {},
+            "general": {},
+            "image": {},
+            "overrideShare": {
+              "opts": {}
+            },
+            "shareDescription": {},
+            "shareTitle": {},
+            "sharing": {},
+            "slug": {
+              "locked": {},
+              "opts": {}
+            },
+            "title": {}
+          }
+        },
+        "translations": {
+          "language": {},
+          "languageSettings": {},
+          "navigationButtons": {}
+        }
+      },
+      "translationFields": {}
+    },
     "confirmHuman": "Du musst hier klicken. Dann weiß der Computer: Dass du ein Mensch bist. Und keine Maschine.",
     "ended": "Den Aufruf gibt es nicht mehr.",
     "form": {
@@ -105,11 +214,6 @@
       "endsWith": {},
       "openTo": {}
     }
-  },
-  "calloutBuilder": {
-    "actions": {},
-    "nextSlide": {},
-    "translationFields": {}
   },
   "calloutResponse": {
     "data": {},
@@ -277,6 +381,7 @@
   },
   "forgotPassword": {},
   "form": {
+    "characters": {},
     "email": "E-Mail",
     "errorMessages": {
       "api": {
@@ -373,6 +478,9 @@
   },
   "notification": {
     "error": "Das war nicht richtig. Probiere es noch mal."
+  },
+  "notifications": {
+    "copy": {}
   },
   "pageTitle": {
     "notFound": "Der Computer hat die Seite nicht gefunden."
