@@ -2,10 +2,7 @@
   <div class="flex min-h-0 flex-1 flex-col">
     <div class="flex min-h-0 gap-4">
       <!-- Left Sidebar with Scroll Navigation -->
-      <AppScrollNavigation
-        :sections="navigationSections"
-        @section-change="onSectionChange"
-      />
+      <AppScrollNavigation :sections="navigationSections" />
 
       <!-- Main Content -->
       <div
@@ -27,7 +24,7 @@
 
         <template v-if="localData.showResponses">
           <!-- Map and Gallery Section -->
-          <AppScrollSection id="mapAndGallery" @mounted="registerSection">
+          <AppScrollSection id="mapAndGallery">
             <AppFormBox
               :title="
                 t('callout.builder.tabs.settings.inputs.mapAndGallery.title')
@@ -81,7 +78,7 @@
           </AppScrollSection>
 
           <!-- Display Options Section -->
-          <AppScrollSection id="displayOptions" @mounted="registerSection">
+          <AppScrollSection id="displayOptions">
             <AppFormBox
               :title="t('callout.builder.tabs.settings.displayOptions.title')"
               :description="
@@ -151,11 +148,7 @@
           </AppFormBox>
 
           <!-- Map Settings Section -->
-          <AppScrollSection
-            v-if="mapViewEnabled"
-            id="map"
-            @mounted="registerSection"
-          >
+          <AppScrollSection v-if="mapViewEnabled" id="map">
             <AppFormBox :title="inputT('mapSchema.title')">
               <AppFormField>
                 <AppSelect
@@ -363,19 +356,6 @@ const navigationSections = computed<ScrollSection[]>(() => [
     },
   },
 ]);
-
-// Register a section element for scrolling
-function registerSection(id: string, element: HTMLElement): void {
-  const sectionIndex = navigationSections.value.findIndex((s) => s.id === id);
-  if (sectionIndex >= 0) {
-    navigationSections.value[sectionIndex].element = element;
-  }
-}
-
-// Handle section change from navigation
-function onSectionChange(): void {
-  // This function can be used to perform additional actions when a section is selected
-}
 
 const formComponentItems = computed(() =>
   getCalloutComponents(props.tabs.content.data)

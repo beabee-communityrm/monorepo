@@ -3,7 +3,7 @@
   <div class="flex min-h-0 flex-1 flex-col">
     <div class="flex min-h-0 gap-4">
       <!-- Left Sidebar with Scroll Navigation -->
-      <AppScrollNavigation :sections="navigationSections" />
+      <AppScrollNavigation :sections="sections" />
 
       <!-- Main Content -->
       <div
@@ -12,7 +12,7 @@
         style="contain: paint"
       >
         <!-- Date Settings Section -->
-        <AppScrollSection id="dates" @mounted="registerSection">
+        <AppScrollSection id="dates">
           <AppLabel
             :label="t('callout.builder.tabs.settings.dates.title')"
             class="mb-3 px-4"
@@ -73,11 +73,7 @@
         </AppScrollSection>
 
         <!-- Access Settings Section -->
-        <AppScrollSection
-          v-if="!env.cnrMode"
-          id="access"
-          @mounted="registerSection"
-        >
+        <AppScrollSection v-if="!env.cnrMode" id="access">
           <AppFormBox :title="t('callout.builder.tabs.settings.access.title')">
             <AppToggleField
               v-model="props.data.openToEveryone"
@@ -168,11 +164,7 @@
         </AppScrollSection>
 
         <!-- Response Settings Section -->
-        <AppScrollSection
-          v-if="!env.cnrMode"
-          id="responseSettings"
-          @mounted="registerSection"
-        >
+        <AppScrollSection v-if="!env.cnrMode" id="responseSettings">
           <AppFormBox :title="inputT('responseSettings.title')">
             <AppFormField>
               <AppRadioGroup
@@ -263,7 +255,7 @@ const inputT = (key: string) =>
 const contentRef = ref<HTMLElement | null>(null);
 
 // Sections for scroll navigation
-const sections = ref<ScrollSection[]>([
+const sections = computed<ScrollSection[]>(() => [
   {
     id: 'dates',
     label: t('callout.builder.tabs.settings.dates.title'),
@@ -271,29 +263,14 @@ const sections = ref<ScrollSection[]>([
   {
     id: 'access',
     label: t('callout.builder.tabs.settings.access.title'),
-    get hidden() {
-      return !!env.cnrMode;
-    },
+    hidden: env.cnrMode,
   },
   {
     id: 'responseSettings',
     label: t('callout.builder.tabs.settings.inputs.responseSettings.title'),
-    get hidden() {
-      return !!env.cnrMode;
-    },
+    hidden: env.cnrMode,
   },
 ]);
-
-// Computed sections for navigation
-const navigationSections = computed(() => sections.value);
-
-// Register a section element for scrolling
-function registerSection(id: string, element: HTMLElement): void {
-  const sectionIndex = sections.value.findIndex((s) => s.id === id);
-  if (sectionIndex >= 0) {
-    sections.value[sectionIndex].element = element;
-  }
-}
 
 // Force step to stay unvalidated until it is visited for new callouts
 const hasVisited = ref(!!props.status);

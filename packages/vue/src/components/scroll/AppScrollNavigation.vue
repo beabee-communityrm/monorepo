@@ -11,8 +11,10 @@
           class="w-full overflow-hidden text-ellipsis whitespace-nowrap rounded-md px-3 py-2 text-left font-semibold transition-colors"
           :class="
             activeSection === section.id
-              ? 'bg-white font-medium text-primary shadow-sm'
-              : 'text-body-80 hover:bg-primary-5 hover:text-body'
+              ? // TODO: reintroduce when scroll detection is fixed
+                // ? 'bg-white font-medium text-primary shadow-sm'
+                'text-body-80 hover:bg-primary-10 hover:text-body'
+              : 'text-body-80 hover:bg-primary-10 hover:text-body'
           "
           :title="section.label"
           @click="scrollToSection(section.id)"
@@ -25,7 +27,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, onUnmounted, watch } from 'vue';
+import { watch } from 'vue';
 
 /**
  * Section definition for scroll navigation
@@ -35,8 +37,6 @@ export interface ScrollSection {
   id: string;
   /** Display label for the section */
   label: string;
-  /** Optional element reference for scrolling */
-  element?: HTMLElement;
   /** Whether this section should be hidden in the navigation */
   hidden?: boolean;
 }
@@ -46,76 +46,27 @@ export interface AppScrollNavigationProps {
   sections: ScrollSection[];
   /** Optional title for the navigation */
   title?: string;
-  /** Optional container element to listen for scroll events */
-  scrollContainer?: HTMLElement | null;
 }
 
 const props = withDefaults(defineProps<AppScrollNavigationProps>(), {
   title: '',
-  scrollContainer: null,
 });
 
-const emit = defineEmits<{
-  (e: 'update:activeSection', sectionId: string): void;
-  (e: 'section-change', sectionId: string): void;
-}>();
-
-// Currently active section
-const activeSection = ref<string>(
-  props.sections.length > 0 ? props.sections[0].id : ''
-);
+const activeSection = defineModel<string>('activeSection');
 
 /**
  * Scroll to a specific section
  */
 function scrollToSection(sectionId: string): void {
   const section = props.sections.find((s) => s.id === sectionId);
-  if (section && section.element) {
-    section.element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  if (section) {
+    document.getElementById('section-' + section.id)?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    });
     activeSection.value = sectionId;
-    emit('update:activeSection', sectionId);
-    emit('section-change', sectionId);
   }
 }
-
-/**
- * Update active section based on scroll position
- */
-function handleScroll(): void {
-  // Find all sections with elements
-  const sectionsWithElements = props.sections.filter((s) => s.element);
-
-  if (sectionsWithElements.length === 0) return;
-
-  // Find the section that is currently in view
-  // We use a small offset to improve the detection
-  const offset = 100;
-
-  for (const section of sectionsWithElements) {
-    if (!section.element) continue;
-
-    const rect = section.element.getBoundingClientRect();
-    if (rect.top <= offset && rect.bottom > offset) {
-      if (activeSection.value !== section.id) {
-        activeSection.value = section.id;
-        emit('update:activeSection', section.id);
-        emit('section-change', section.id);
-      }
-      break;
-    }
-  }
-}
-
-// Set up scroll event listener
-onMounted(() => {
-  const scrollTarget = props.scrollContainer || window;
-  scrollTarget.addEventListener('scroll', handleScroll, { passive: true });
-});
-
-onUnmounted(() => {
-  const scrollTarget = props.scrollContainer || window;
-  scrollTarget.removeEventListener('scroll', handleScroll);
-});
 
 // Watch for changes in sections
 watch(
@@ -127,18 +78,8 @@ watch(
       !props.sections.some((s) => s.id === activeSection.value)
     ) {
       activeSection.value = props.sections[0].id;
-      emit('update:activeSection', activeSection.value);
     }
-
-    // Schedule a check for the active section after the DOM has updated
-    setTimeout(handleScroll, 100);
   },
   { deep: true }
 );
-
-// Expose methods and properties
-defineExpose({
-  scrollToSection,
-  activeSection,
-});
 </script>

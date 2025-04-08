@@ -14,7 +14,7 @@
         style="contain: paint"
       >
         <!-- General Section -->
-        <AppScrollSection id="general" @mounted="registerSection">
+        <AppScrollSection id="general">
           <AppFormBox :title="inputT('general.title')">
             <AppFormField>
               <AppInput
@@ -48,7 +48,7 @@
         </AppScrollSection>
 
         <!-- URL & Slug Section -->
-        <AppScrollSection id="url" @mounted="registerSection">
+        <AppScrollSection id="url">
           <AppFormBox
             :title="inputT('slug.boxTitle')"
             :notification="
@@ -92,7 +92,7 @@
         </AppScrollSection>
 
         <!-- Sharing Settings Section -->
-        <AppScrollSection id="sharing" @mounted="registerSection">
+        <AppScrollSection id="sharing">
           <AppFormBox :title="inputT('sharing.title')">
             <AppFormField>
               <AppToggleField
@@ -218,14 +218,6 @@ const sections = ref<ScrollSection[]>([
 
 // Computed sections for navigation
 const navigationSections = computed(() => sections.value);
-
-// Register a section element for scrolling
-function registerSection(id: string, element: HTMLElement): void {
-  const sectionIndex = sections.value.findIndex((s) => s.id === id);
-  if (sectionIndex >= 0) {
-    sections.value[sectionIndex].element = element;
-  }
-}
 
 // Slug generation
 watch(

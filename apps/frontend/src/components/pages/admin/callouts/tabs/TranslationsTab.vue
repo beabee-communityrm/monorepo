@@ -13,7 +13,7 @@
 
     <div class="flex min-h-0 gap-4">
       <!-- Left Sidebar with Scroll Navigation -->
-      <AppScrollNavigation :sections="navigationSections" />
+      <AppScrollNavigation :sections="sections" />
 
       <!-- Main Content -->
       <div
@@ -22,7 +22,7 @@
         style="contain: paint"
       >
         <!-- Language Settings Section -->
-        <AppScrollSection id="language-settings" @mounted="registerSection">
+        <AppScrollSection id="language-settings">
           <AppFormBox
             :title="t('callout.builder.tabs.translations.language.title')"
           >
@@ -50,10 +50,7 @@
           >
             <template #default="{ selected }">
               <!-- Title and Description Section -->
-              <AppScrollSection
-                id="title-description"
-                @mounted="registerSection"
-              >
+              <AppScrollSection id="title-description">
                 <TitleAndDescriptionTranslations
                   :default-locale="defaultLocale"
                   :selected-locale="selected"
@@ -62,7 +59,7 @@
               </AppScrollSection>
 
               <!-- Buttons Section -->
-              <AppScrollSection id="buttons" @mounted="registerSection">
+              <AppScrollSection id="buttons">
                 <ButtonTranslations
                   :slides="props.tabs.content.data.slides"
                   :default-locale="defaultLocale"
@@ -71,7 +68,7 @@
               </AppScrollSection>
 
               <!-- Introduction Section -->
-              <AppScrollSection id="introduction" @mounted="registerSection">
+              <AppScrollSection id="introduction">
                 <IntroductionTranslations
                   :intro-text="
                     props.tabs.content.data.sidebarTabs.intro.introText
@@ -86,10 +83,7 @@
                 v-for="(slide, slideIndex) in props.tabs.content.data.slides"
                 :key="slide.id"
               >
-                <AppScrollSection
-                  :id="`slide-${slide.id}`"
-                  @mounted="registerSection"
-                >
+                <AppScrollSection :id="`slide-${slide.id}`">
                   <SlideTranslations
                     :slide="slide"
                     :slide-index="slideIndex"
@@ -101,7 +95,7 @@
               </template>
 
               <!-- Thank You Section -->
-              <AppScrollSection id="thank-you" @mounted="registerSection">
+              <AppScrollSection id="thank-you">
                 <ThankYouTranslations
                   :end-message="props.tabs.content.data.sidebarTabs.endMessage"
                   :default-locale="defaultLocale"
@@ -221,67 +215,32 @@ const localeItems = computed<TabItem[]>(() => {
 const contentRef = ref<HTMLElement | null>(null);
 
 // Sections for the scroll navigation
-const sections = ref<ScrollSection[]>([
-  {
-    id: 'language-settings',
-    label: t('callout.builder.tabs.translations.languageSettings.title'),
-  },
-  {
-    id: 'title-description',
-    label: t('callout.builder.tabs.titleAndImage.title'),
-  },
-  {
-    id: 'buttons',
-    label: t('callout.builder.tabs.translations.navigationButtons.title'),
-  },
-  { id: 'introduction', label: t('callout.builder.tabs.intro.label') },
-]);
+const sections = computed<ScrollSection[]>(() => {
+  const slidesSections = props.tabs.content.data.slides.map((slide, index) => ({
+    id: `slide-${slide.id}`,
+    label:
+      t('callout.builder.navigation.slideNo', { no: index + 1 }) +
+      ': ' +
+      slide.title,
+  }));
 
-// Initialize sections based on slides
-watch(
-  () => props.tabs.content.data.slides,
-  (newSlides) => {
-    // Create sections for each slide
-    const slidesSections = newSlides.map((slide, index) => ({
-      id: `slide-${slide.id}`,
-      label:
-        t('callout.builder.navigation.slideNo', { no: index + 1 }) +
-        ': ' +
-        slide.title,
-    }));
-
-    // Update sections array
-    sections.value = [
-      {
-        id: 'language-settings',
-        label: t('callout.builder.tabs.translations.languageSettings.title'),
-      },
-      {
-        id: 'title-description',
-        label: t('callout.builder.tabs.titleAndImage.title'),
-      },
-      {
-        id: 'buttons',
-        label: t('callout.builder.tabs.translations.navigationButtons.title'),
-      },
-      { id: 'introduction', label: t('callout.builder.tabs.intro.label') },
-      ...slidesSections,
-      { id: 'thank-you', label: t('callout.builder.tabs.endMessage.title') },
-    ];
-  },
-  { immediate: true }
-);
-
-// Computed sections for navigation
-const navigationSections = computed(() => sections.value);
-
-// Register a section element for scrolling
-function registerSection(id: string, element: HTMLElement): void {
-  const sectionIndex = sections.value.findIndex((s) => s.id === id);
-  if (sectionIndex >= 0) {
-    sections.value[sectionIndex].element = element;
-  }
-}
+  return [
+    {
+      id: 'language-settings',
+      label: t('callout.builder.tabs.translations.languageSettings.title'),
+    },
+    {
+      id: 'title-description',
+      label: t('callout.builder.tabs.titleAndImage.title'),
+    },
+    {
+      id: 'buttons',
+      label: t('callout.builder.tabs.translations.navigationButtons.title'),
+    },
+    ...slidesSections,
+    { id: 'introduction', label: t('callout.builder.tabs.intro.label') },
+  ];
+});
 
 // Helper function to get a human-readable locale name
 function getLocaleLabel(locale: string): string {
