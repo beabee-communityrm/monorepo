@@ -179,6 +179,115 @@
     },
     "addAPoint": "Кликните, чтобы добавить отметку на карту",
     "addLocation": "Добавить новую локацию",
+    "builder": {
+      "actions": {},
+      "common": {
+        "actions": {}
+      },
+      "navigation": {
+        "nextSlide": {}
+      },
+      "tabs": {
+        "content": {},
+        "endMessage": {
+          "inputs": {
+            "action": {
+              "opts": {}
+            },
+            "text": {},
+            "title": {},
+            "url": {}
+          }
+        },
+        "intro": {},
+        "mailchimp": {},
+        "responseDisplay": {},
+        "settings": {
+          "access": {},
+          "dates": {},
+          "displayOptions": {},
+          "inputs": {
+            "collectGuestInfo": {
+              "opts": {}
+            },
+            "collectMemberInfo": {
+              "opts": {}
+            },
+            "expires": {
+              "opts": {}
+            },
+            "mapAndGallery": {
+              "gallery": {},
+              "map": {}
+            },
+            "mapSchema": {
+              "addressPattern": {},
+              "addressPatternProp": {},
+              "addressProp": {},
+              "bounds": {},
+              "center": {},
+              "geocodeCountries": {},
+              "initialZoom": {},
+              "maxZoom": {},
+              "minZoom": {},
+              "style": {}
+            },
+            "openToEveryone": {
+              "opts": {}
+            },
+            "requireCaptcha": {
+              "members": {
+                "opts": {}
+              },
+              "opts": {}
+            },
+            "responseImageProp": {},
+            "responseLinks": {
+              "opts": {},
+              "placeholder": {}
+            },
+            "responseSettings": {
+              "opts": {}
+            },
+            "responseTitleProp": {},
+            "showResponses": {
+              "opts": {}
+            },
+            "starts": {
+              "opts": {}
+            },
+            "visible": {
+              "opts": {}
+            },
+            "whichResponseBuckets": {}
+          }
+        },
+        "titleAndImage": {
+          "inputs": {
+            "description": {},
+            "general": {},
+            "image": {},
+            "overrideShare": {
+              "opts": {}
+            },
+            "shareDescription": {},
+            "shareTitle": {},
+            "sharing": {},
+            "slug": {
+              "locked": {},
+              "opts": {}
+            },
+            "title": {}
+          }
+        },
+        "translations": {
+          "language": {},
+          "languageSettings": {},
+          "navigationButtons": {}
+        }
+      },
+      "translationFields": {}
+    },
     "confirmHuman": "Confirma por favor que és um humano",
     "contactDetails": "Контакты",
     "ended": "Этот опрос закончился {date}",
@@ -218,22 +327,6 @@
       "contactInfo": {},
       "endsWith": {},
       "openTo": {}
-    }
-  },
-  "calloutBuilder": {
-    "actions": {
-      "addSlide": "Добавить слайд",
-      "removeSlide": "Убрать слайд"
-    },
-    "internalTitle": "Внутренний заголовок",
-    "nextSlide": {},
-    "prevButton": "Текст на кнопке «Назад»",
-    "slideNo": "Слайд {no}",
-    "translationFields": {
-      "description": "Description",
-      "label": "Label",
-      "option": "Option {n}",
-      "placeholder": "Placeholder"
     }
   },
   "calloutResponse": {
@@ -552,6 +645,7 @@
     "addressLine1": "Адрес",
     "addressLine2": "Вторая строчка адреса",
     "cancel": "Отменить",
+    "characters": {},
     "cityOrTown": "Город",
     "deliveryOptIn": "Согласие на рассылку",
     "description": "Описание",
@@ -790,6 +884,9 @@
   },
   "notification": {
     "error": "Что-то пошло не так. Перезагрузите страницу"
+  },
+  "notifications": {
+    "copy": {}
   },
   "pageTitle": {
     "confirmEmail": "Подтвердить почту",

@@ -1,18 +1,20 @@
 .callout-form-builder {
+  @apply flex h-full flex-col;
+
   .drag-and-drop-alert {
-    @apply mb-4 border border-dashed border-primary bg-primary-5 px-4 py-10;
+    @apply mb-4 flex-none border border-dashed border-primary bg-primary-5 px-4 py-10;
   }
 
   .formbuilder {
-    @apply flex flex-row-reverse justify-end gap-8;
+    @apply flex min-h-0 flex-1 flex-row-reverse justify-end gap-4;
   }
 
   .formarea {
-    @apply max-w-2xl flex-1;
+    @apply flex-1 overflow-auto;
   }
 
   .formcomponents {
-    @apply flex-initial basis-[15rem];
+    @apply h-full basis-60;
   }
 
   .formcomponent {
@@ -24,7 +26,7 @@
 
   .builder-component {
     .formio-component {
-      @apply -mx-4 -my-2 rounded border border-solid border-white px-4 py-4;
+      @apply -my-2 mx-auto max-w-3xl rounded border border-solid border-white px-4 py-4;
     }
     &:hover .formio-component {
       @apply border-primary-20 !important;
@@ -298,33 +300,4 @@
 .formio-component-refreshOnChange,
 .formio-component-labelPosition {
   @apply !hidden;
-}
-
-body:not(.show-advanced-options) {
-  /* Hide lots of options */
-  .formio-component-autocomplete,
-  .formio-component-tabindex,
-  .formio-component-hideLabel,
-  .formio-component-showWordCount,
-  .formio-component-showCharCount,
-  .formio-component-autofocus,
-  .formio-component-disabled,
-  .formio-component-theme,
-  .formio-component-size,
-  .formio-component-leftIcon,
-  .formio-component-rightIcon,
-  .formio-component-action,
-  .formio-component-saveOnEnter,
-  .formio-component-block,
-  .formio-component-shortcutButtons,
-  .formio-component-validateOn,
-  .formio-component-inputMask,
-  /* Form upload component */
-  .formio-component-dir,
-  /* .formio-component-image, */
-  .formio-component-uploadOnly,
-  .formio-component-fileTypes,
-  .formio-component-fileNameTemplate {
-    @apply hidden;
-  }
 }

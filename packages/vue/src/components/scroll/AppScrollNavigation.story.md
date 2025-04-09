@@ -36,18 +36,16 @@ A navigation component that allows users to navigate between sections of content
 
 ## Props
 
-| Prop              | Type              | Required | Default | Description                                            |
-| ----------------- | ----------------- | -------- | ------- | ------------------------------------------------------ |
-| `sections`        | `ScrollSection[]` | Yes      | -       | Array of sections to display in the navigation         |
-| `title`           | `string`          | No       | `''`    | Optional title for the navigation                      |
-| `scrollContainer` | `HTMLElement`     | No       | `null`  | Optional container element to listen for scroll events |
+| Prop       | Type              | Required | Default | Description                                    |
+| ---------- | ----------------- | -------- | ------- | ---------------------------------------------- |
+| `sections` | `ScrollSection[]` | Yes      | -       | Array of sections to display in the navigation |
+| `title`    | `string`          | No       | `''`    | Optional title for the navigation              |
 
 ## Events
 
-| Event                  | Payload  | Description                                         |
-| ---------------------- | -------- | --------------------------------------------------- |
-| `update:activeSection` | `string` | Emitted when the active section changes             |
-| `section-change`       | `string` | Emitted when a section is clicked or becomes active |
+| Event                  | Payload  | Description                             |
+| ---------------------- | -------- | --------------------------------------- |
+| `update:activeSection` | `string` | Emitted when the active section changes |
 
 ## ScrollSection Interface
 

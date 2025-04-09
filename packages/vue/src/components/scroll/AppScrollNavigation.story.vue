@@ -14,11 +14,6 @@ const sections: ScrollSection[] = [
     id: 'section4',
     label: 'Section 4 with a very long name that should be truncated',
   },
-  {
-    id: 'section5',
-    label: 'Hidden Section (not shown)',
-    hidden: true,
-  },
 ];
 
 // State for the active section
@@ -28,13 +23,6 @@ const state = reactive({
 
 // Container reference for scroll events
 const containerRef = ref<HTMLElement | null>(null);
-
-// Register section elements
-const sectionElements: Record<string, HTMLElement> = {};
-function registerSection(id: string, element: HTMLElement) {
-  sectionElements[id] = element;
-  sections.find((s) => s.id === id)!.element = element;
-}
 </script>
 
 <template>
@@ -56,7 +44,7 @@ function registerSection(id: string, element: HTMLElement) {
             section.
           </p>
 
-          <AppScrollSection id="section1" @mounted="registerSection">
+          <AppScrollSection id="section1">
             <AppFormBox title="Section 1">
               <p class="mb-4">This is the content of section 1.</p>
               <p class="mb-4">
@@ -67,7 +55,7 @@ function registerSection(id: string, element: HTMLElement) {
             </AppFormBox>
           </AppScrollSection>
 
-          <AppScrollSection id="section2" @mounted="registerSection">
+          <AppScrollSection id="section2">
             <AppFormBox title="Section 2">
               <p class="mb-4">This is the content of section 2.</p>
               <p class="mb-4">
@@ -78,7 +66,7 @@ function registerSection(id: string, element: HTMLElement) {
             </AppFormBox>
           </AppScrollSection>
 
-          <AppScrollSection id="section3" @mounted="registerSection">
+          <AppScrollSection id="section3">
             <AppFormBox title="Section 3">
               <p class="mb-4">This is the content of section 3.</p>
               <p class="mb-4">
@@ -89,7 +77,7 @@ function registerSection(id: string, element: HTMLElement) {
             </AppFormBox>
           </AppScrollSection>
 
-          <AppScrollSection id="section4" @mounted="registerSection">
+          <AppScrollSection id="section4">
             <AppFormBox
               title="Section 4 with a very long name that should be truncated"
             >
@@ -111,7 +99,6 @@ function registerSection(id: string, element: HTMLElement) {
           :sections="sections"
           title="Navigation"
           v-model:activeSection="state.activeSection"
-          :scrollContainer="containerRef"
         />
 
         <div
@@ -121,7 +108,7 @@ function registerSection(id: string, element: HTMLElement) {
           <h1 class="mb-4 text-2xl font-bold">Custom Container</h1>
           <p class="mb-4">This example uses a custom scroll container.</p>
 
-          <AppScrollSection id="section1" @mounted="registerSection">
+          <AppScrollSection id="section1">
             <AppFormBox title="Section 1">
               <p class="mb-4">This is the content of section 1.</p>
               <p class="mb-4">
@@ -132,7 +119,7 @@ function registerSection(id: string, element: HTMLElement) {
             </AppFormBox>
           </AppScrollSection>
 
-          <AppScrollSection id="section2" @mounted="registerSection">
+          <AppScrollSection id="section2">
             <AppFormBox title="Section 2">
               <p class="mb-4">This is the content of section 2.</p>
               <p class="mb-4">
@@ -143,7 +130,7 @@ function registerSection(id: string, element: HTMLElement) {
             </AppFormBox>
           </AppScrollSection>
 
-          <AppScrollSection id="section3" @mounted="registerSection">
+          <AppScrollSection id="section3">
             <AppFormBox title="Section 3">
               <p class="mb-4">This is the content of section 3.</p>
               <p class="mb-4">
@@ -154,7 +141,7 @@ function registerSection(id: string, element: HTMLElement) {
             </AppFormBox>
           </AppScrollSection>
 
-          <AppScrollSection id="section4" @mounted="registerSection">
+          <AppScrollSection id="section4">
             <AppFormBox
               title="Section 4 with a very long name that should be truncated"
             >
