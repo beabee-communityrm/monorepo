@@ -414,12 +414,17 @@
           },
           "inputs": {
             "collectGuestInfo": {
-              "label": "Auch Kontaktinformationen von Mitgliedern sammeln",
-              "opts": {}
+              "label": "Auch Kontaktinformationen von Gästen sammeln",
+              "opts": {
+                "disabled": "Gäste, die antworten, bleiben anonym",
+                "enabled": "Gäste werden ebenfalls nach ihren Kontaktinformationen gefragt"
+              }
             },
             "collectMemberInfo": {
+              "label": "Kontaktinformationen erfassen",
               "opts": {
-                "disabled": "Alle Antworten werden anonym sein"
+                "disabled": "Alle Antworten werden anonym sein",
+                "enabled": "Mitglieder, die antworten, werden mit ihren Kontaktinformationen erfasst"
               }
             },
             "expires": {
