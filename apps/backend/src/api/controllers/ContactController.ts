@@ -18,10 +18,11 @@ import {
   Res
 } from "routing-controllers";
 
+import ContactMfaService from "@beabee/core/services/ContactMfaService";
 import ContactsService from "@beabee/core/services/ContactsService";
+import DispatchService from "@beabee/core/services/DispatchService";
 import PaymentFlowService from "@beabee/core/services/PaymentFlowService";
 import PaymentService from "@beabee/core/services/PaymentService";
-import ContactMfaService from "@beabee/core/services/ContactMfaService";
 
 import { generatePassword } from "@beabee/core/utils/auth";
 
@@ -211,7 +212,7 @@ export class ContactController {
   @Delete("/:id")
   @OnUndefined(204)
   async deleteContact(@TargetUser() target: Contact): Promise<void> {
-    await ContactsService.permanentlyDeleteContact(target);
+    await DispatchService.permanentlyDeleteContact(target);
   }
 
   @Get("/:id/contribution")

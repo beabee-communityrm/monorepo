@@ -109,18 +109,26 @@ export class GetCalloutResponseDto {
   latestComment?: GetCalloutResponseCommentDto | null;
 }
 
+export class CreateCalloutResponseGuestDto {
+  @IsString()
+  firstname!: string;
+
+  @IsString()
+  lastname!: string;
+
+  @IsEmail()
+  email!: string;
+}
+
 export class CreateCalloutResponseDto {
   // TODO: validate
   @IsObject()
   answers!: CalloutResponseAnswersSlide;
 
   @IsOptional()
-  @IsString()
-  guestName?: string;
-
-  @IsOptional()
-  @IsEmail()
-  guestEmail?: string;
+  @ValidateNested()
+  @Type(() => CreateCalloutResponseGuestDto)
+  guest?: CreateCalloutResponseGuestDto;
 
   @IsOptional()
   @IsString()

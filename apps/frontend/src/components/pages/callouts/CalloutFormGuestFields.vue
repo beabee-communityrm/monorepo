@@ -13,16 +13,24 @@
     </p>
     <div class="mb-4">
       <AppInput
-        v-model="nameProxy"
-        :label="t('callout.form.name')"
-        name="name"
+        v-model="firstname"
+        :label="t('form.firstName')"
+        name="firstName"
+        required
+      />
+    </div>
+    <div class="mb-4">
+      <AppInput
+        v-model="lastname"
+        :label="t('form.lastName')"
+        name="lastName"
         required
       />
     </div>
     <div>
       <AppInput
-        v-model="emailProxy"
-        :label="t('callout.form.email')"
+        v-model="email"
+        :label="t('form.email')"
         type="email"
         name="email"
         required
@@ -32,26 +40,13 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import AppInput from '../../forms/AppInput.vue';
 import env from '../../../env';
 
-const emit = defineEmits(['update:name', 'update:email']);
-
 const { t } = useI18n();
 
-const props = defineProps<{
-  name: string;
-  email: string;
-}>();
-
-const nameProxy = computed({
-  get: () => props.name,
-  set: (name) => emit('update:name', name),
-});
-const emailProxy = computed({
-  get: () => props.email,
-  set: (email) => emit('update:email', email),
-});
+const firstname = defineModel<string>('firstname');
+const lastname = defineModel<string>('lastname');
+const email = defineModel<string>('email');
 </script>
