@@ -28,7 +28,8 @@ const log = mainLogger.child({ app: "newsletter-service" });
  */
 async function contactToNlUpdate(
   contact: Contact,
-  updates?: ContactNewsletterUpdates
+  updates?: ContactNewsletterUpdates,
+  opts?: { mergeGroups?: boolean }
 ): Promise<UpdateNewsletterContact | undefined> {
   // TODO: Fix that it relies on contact.profile being loaded
   if (!contact.profile) {
@@ -42,10 +43,19 @@ async function contactToNlUpdate(
     return undefined;
   }
 
+  const groups = updates?.newsletterGroups
+    ? opts?.mergeGroups
+      ? [
+          ...contact.profile.newsletterGroups,
+          ...updates.newsletterGroups
+        ].filter((v, i, a) => a.indexOf(v) === i)
+      : updates.newsletterGroups
+    : contact.profile.newsletterGroups;
+
   return {
     email: contact.email,
     status,
-    groups: updates?.newsletterGroups || contact.profile.newsletterGroups,
+    groups,
     firstname: contact.firstname,
     lastname: contact.lastname,
     fields: {
@@ -131,9 +141,12 @@ class NewsletterService {
   async upsertContact(
     contact: Contact,
     updates?: ContactNewsletterUpdates,
-    oldEmail?: string
+    opts?: {
+      oldEmail?: string;
+      mergeGroups?: boolean;
+    }
   ): Promise<void> {
-    const nlUpdate = await contactToNlUpdate(contact, updates);
+    const nlUpdate = await contactToNlUpdate(contact, updates, opts);
     if (!nlUpdate) {
       log.info("Ignoring contact update for " + contact.id);
       return;
@@ -141,7 +154,10 @@ class NewsletterService {
 
     try {
       log.info("Upsert contact " + contact.id);
-      const nlContact = await this.provider.upsertContact(nlUpdate, oldEmail);
+      const nlContact = await this.provider.upsertContact(
+        nlUpdate,
+        opts?.oldEmail
+      );
 
       log.info(
         `Got newsletter groups and status ${nlContact.status} for contact ${contact.id}`,

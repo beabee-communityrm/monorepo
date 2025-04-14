@@ -252,10 +252,14 @@ class CalloutsService {
     const savedResponse = await this.saveResponse(response);
 
     if (newsletter?.optIn) {
-      await ContactsService.updateContactProfile(contact, {
-        newsletterStatus: NewsletterStatus.Subscribed,
-        newsletterGroups: newsletter.groups
-      });
+      await ContactsService.updateContactProfile(
+        contact,
+        {
+          newsletterStatus: NewsletterStatus.Subscribed,
+          newsletterGroups: newsletter.groups
+        },
+        { mergeGroups: true }
+      );
     }
 
     if (callout.mcMergeField && callout.pollMergeField) {
