@@ -1,6 +1,3 @@
-// Allows us to convert this to a boolean below
-const cnrMode = '__cnrMode__';
-
 export default {
   appUrl: '__appUrl__',
   apiUrl: '__apiUrl__',
@@ -9,6 +6,6 @@ export default {
   appsignalKey: '__appsignalKey__',
   captchafoxKey: '__captchafoxKey__',
   maptilerKey: '__maptilerKey__',
-  cnrMode: !!cnrMode,
+  cnrMode: '__cnrMode__',
   experimentalFeatures: '__experimentalFeatures__',
 };

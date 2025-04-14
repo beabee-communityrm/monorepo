@@ -2,8 +2,8 @@
 import en from './en.json'; export { en };
 import de from './de.json'; export { de };
 import deInformal from './de@informal.json'; export { deInformal };
+import nl from './nl.json'; export { nl };
 import pt from './pt.json'; export { pt };
 import it from './it.json'; export { it };
 import ru from './ru.json'; export { ru };
-import nl from './nl.json'; export { nl };
 import deEasy from './de@easy.json'; export { deEasy };

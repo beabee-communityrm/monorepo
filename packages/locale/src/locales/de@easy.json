@@ -245,6 +245,7 @@
   "common": {
     "contributionPeriod": {},
     "contributionType": {},
+    "default": "Standard",
     "hello": "Hallo.",
     "loading": "Der Computer arbeitet.",
     "newsletterStatus": {},
@@ -287,91 +288,6 @@
   },
   "contribution": {
     "paymentHistory": {}
-  },
-  "createCallout": {
-    "steps": {
-      "content": {},
-      "dates": {
-        "inputs": {
-          "expires": {
-            "opts": {}
-          },
-          "starts": {
-            "opts": {}
-          }
-        }
-      },
-      "endMessage": {
-        "inputs": {
-          "action": {
-            "opts": {}
-          },
-          "text": {},
-          "title": {},
-          "url": {}
-        }
-      },
-      "mailchimp": {},
-      "settings": {
-        "inputs": {
-          "anonymous": {
-            "opts": {}
-          },
-          "editable": {
-            "opts": {}
-          },
-          "mapSchema": {
-            "addressPattern": {},
-            "addressPatternProp": {},
-            "addressProp": {},
-            "bounds": {},
-            "center": {},
-            "geocodeCountries": {},
-            "initialZoom": {},
-            "maxZoom": {},
-            "minZoom": {},
-            "style": {}
-          },
-          "multiple": {
-            "opts": {}
-          },
-          "requireCaptcha": {
-            "opts": {}
-          },
-          "responseImageFilter": {},
-          "responseImageProp": {},
-          "responseLinks": {},
-          "responseTitleProp": {},
-          "showResponses": {},
-          "visible": {
-            "opts": {}
-          },
-          "whichResponseBuckets": {},
-          "whichResponseViews": {
-            "opts": {}
-          },
-          "who": {
-            "opts": {}
-          }
-        }
-      },
-      "titleAndImage": {
-        "inputs": {
-          "description": {},
-          "image": {},
-          "intro": {},
-          "overrideShare": {
-            "opts": {}
-          },
-          "shareDescription": {},
-          "shareTitle": {},
-          "slug": {
-            "opts": {}
-          },
-          "title": {}
-        }
-      }
-    }
   },
   "editCallout": {},
   "editNotice": {},
@@ -482,11 +398,9 @@
   "notices": {
     "data": {}
   },
-  "notification": {
-    "error": "Das war nicht richtig. Probiere es noch mal."
-  },
   "notifications": {
-    "copy": {}
+    "copy": {},
+    "error": "Das war nicht richtig. Probiere es noch mal."
   },
   "pageTitle": {
     "notFound": "Der Computer hat die Seite nicht gefunden."

@@ -295,12 +295,12 @@ const sections = computed<ScrollSection[]>(() => [
   {
     id: 'access',
     label: t('callout.builder.tabs.settings.access.title'),
-    hidden: env.cnrMode,
+    hidden: !!env.cnrMode,
   },
   {
     id: 'responseSettings',
     label: t('callout.builder.tabs.settings.inputs.responseSettings.title'),
-    hidden: env.cnrMode,
+    hidden: !!env.cnrMode,
   },
 ]);
 

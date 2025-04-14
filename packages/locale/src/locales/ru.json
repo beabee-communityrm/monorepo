@@ -542,91 +542,6 @@
     "willRenew": "Ваше подписка будет автоматически продлена {renewalDate}",
     "willRenewWithNewAmount": "Ваша подписка будет автоматически продлена {renewalDate}. Начиная с этой даты мы будем списывать выбранную вами сумму {nextAmount}."
   },
-  "createCallout": {
-    "steps": {
-      "content": {},
-      "dates": {
-        "inputs": {
-          "expires": {
-            "opts": {}
-          },
-          "starts": {
-            "opts": {}
-          }
-        }
-      },
-      "endMessage": {
-        "inputs": {
-          "action": {
-            "opts": {}
-          },
-          "text": {},
-          "title": {},
-          "url": {}
-        }
-      },
-      "mailchimp": {},
-      "settings": {
-        "inputs": {
-          "anonymous": {
-            "opts": {}
-          },
-          "editable": {
-            "opts": {}
-          },
-          "mapSchema": {
-            "addressPattern": {},
-            "addressPatternProp": {},
-            "addressProp": {},
-            "bounds": {},
-            "center": {},
-            "geocodeCountries": {},
-            "initialZoom": {},
-            "maxZoom": {},
-            "minZoom": {},
-            "style": {}
-          },
-          "multiple": {
-            "opts": {}
-          },
-          "requireCaptcha": {
-            "opts": {}
-          },
-          "responseImageFilter": {},
-          "responseImageProp": {},
-          "responseLinks": {},
-          "responseTitleProp": {},
-          "showResponses": {},
-          "visible": {
-            "opts": {}
-          },
-          "whichResponseBuckets": {},
-          "whichResponseViews": {
-            "opts": {}
-          },
-          "who": {
-            "opts": {}
-          }
-        }
-      },
-      "titleAndImage": {
-        "inputs": {
-          "description": {},
-          "image": {},
-          "intro": {},
-          "overrideShare": {
-            "opts": {}
-          },
-          "shareDescription": {},
-          "shareTitle": {},
-          "slug": {
-            "opts": {}
-          },
-          "title": {}
-        }
-      }
-    }
-  },
   "editCallout": {},
   "editNotice": {},
   "footer": {
@@ -888,11 +803,9 @@
       "status": "Статус"
     }
   },
-  "notification": {
-    "error": "Что-то пошло не так. Перезагрузите страницу"
-  },
   "notifications": {
-    "copy": {}
+    "copy": {},
+    "error": "Что-то пошло не так. Перезагрузите страницу"
   },
   "pageTitle": {
     "confirmEmail": "Подтвердить почту",
