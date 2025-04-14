@@ -414,12 +414,17 @@
           },
           "inputs": {
             "collectGuestInfo": {
-              "label": "Auch Kontaktinformationen von Mitgliedern sammeln",
-              "opts": {}
+              "label": "Auch Kontaktinformationen von Gästen sammeln",
+              "opts": {
+                "disabled": "Gäste, die antworten, bleiben anonym",
+                "enabled": "Gäste werden ebenfalls nach ihren Kontaktinformationen gefragt"
+              }
             },
             "collectMemberInfo": {
+              "label": "Kontaktinformationen erfassen",
               "opts": {
-                "disabled": "Alle Antworten werden anonym sein"
+                "disabled": "Alle Antworten werden anonym sein",
+                "enabled": "Mitglieder, die antworten, werden mit ihren Kontaktinformationen erfasst"
               }
             },
             "expires": {
@@ -1018,232 +1023,6 @@
     "willRenew": "Ihre Mitgliedschaft verlängert sich am {renewalDate} automatisch.",
     "willRenewWithNewAmount": "Ihre Mitgliedschaft verlängert sich am {renewalDate} automatisch. Ihr Beitrag ist dann {nextAmount}."
   },
-  "createCallout": {
-    "lastSaved": "Zuletzt vor {duration} gespeichert.",
-    "lastSavedNow": "Zuletzt vor wenigen Augenblicken gespeichert.",
-    "steps": {
-      "content": {
-        "title": "Inhalt"
-      },
-      "dates": {
-        "inputs": {
-          "expires": {
-            "label": "Wann soll der Callout enden?",
-            "opts": {
-              "never": "Nie, bis er manuell beendet wird",
-              "schedule": "Ein Enddatum festlegen"
-            }
-          },
-          "starts": {
-            "label": "Wann willst Du den Callout veröffentlichen?",
-            "opts": {
-              "now": "Sofort",
-              "schedule": "Ein Startdatum festlegen"
-            }
-          }
-        },
-        "title": "Zeitplan"
-      },
-      "endMessage": {
-        "inputs": {
-          "action": {
-            "label": "Wenn die Teilnehmenden ihre Antworten abgeschickt haben",
-            "opts": {
-              "redirect": "Leite sie auf eine andere Seite weiter",
-              "showMessage": "Zeige ihnen eine Dankesnachricht"
-            }
-          },
-          "text": {
-            "help": "<p>Erkläre den Teilnehmenden, warum ihre Antwort hilfreich ist und was damit passiert.</p>\n",
-            "label": "Text der Dankesnachricht",
-            "placeholder": "Erkläre den Teilnehmenden, warum ihre Antwort hilfreich ist und was damit passiert."
-          },
-          "title": {
-            "help": "<p>Die Teilnehmenden sehen den <strong>Titel der Dankesnachricht</strong> wenn sie ihre Antworten abgeschickt haben.</p>\n",
-            "label": "Titel der Dankesnachricht",
-            "placeholder": "Danke!"
-          },
-          "url": {
-            "help": "<p>Leite Teilnehmende zum Beispiel auf deine Webseite oder zu einem Hintergrundartikel zum Thema des Callouts weiter.</p>\n",
-            "label": "URL für die Weiterleitung",
-            "placeholder": "https://example.com"
-          }
-        },
-        "title": "Nachricht am Ende"
-      },
-      "mailchimp": {
-        "title": "Mailchimp-Synchronisation"
-      },
-      "settings": {
-        "inputs": {
-          "anonymous": {
-            "help": "<p>Wenn du <strong>anonyme Antworten</strong> erlaubst, werden Teilenehmer nicht nach ihren Kontaktdaten gefragt.</p>\n",
-            "label": "Sollen Gastteilnehmer nach Kontaktdaten gefragt werden?",
-            "opts": {
-              "all": "Alle Antworten sollen anonym sein, auch bei eingeloggten Teilnehmern.",
-              "guests": "Nein, Gastteilnehmer können sollen anonym antworten können.",
-              "none": "Ja, nach Kontaktdaten fragen."
-            }
-          },
-          "editable": {
-            "help": "<p>Wenn ja, können Teilnehmende <strong>ihre abgeschickten Antworten bearbeiten</strong>, solange der Callout aktiv ist.</p>\n",
-            "label": "Sollen Teilnehmende ihre Antworten bearbeiten können, solange der Callout aktiv ist?",
-            "opts": {
-              "no": "Nein, Antworten sind final",
-              "yes": "Ja"
-            }
-          },
-          "mapSchema": {
-            "addressPattern": {
-              "label": "Welches Format möchtest du benutzen?"
-            },
-            "addressPatternProp": {
-              "label": "Soll ein Feld mit der Adresse gefüllt werden?",
-              "none": "-- Kein Feld mit der Adresse füllen --"
-            },
-            "addressProp": {
-              "label": "Welches Feld soll für die Darstellung der Antworten auf der Karte verwendet werden?"
-            },
-            "bounds": {
-              "label": "Maximale Kartengröße"
-            },
-            "center": {
-              "label": "Karten-Zentrum"
-            },
-            "geocodeCountries": {},
-            "initialZoom": {
-              "label": "Voreingestellter Zoom"
-            },
-            "maxZoom": {
-              "label": "Maximaler Zoom"
-            },
-            "minZoom": {
-              "label": "Minimaler Zoom"
-            },
-            "style": {
-              "help": "<p>Für die Kartenansicht benötigst du ein externes Kartentool, z. B. <a href=\"https://www.maptiler.com\" target=\"_blank\" rel=\"noopener noreferrer\">Maptiler</a> oder <a href=\"https://www.mapbox.com\" target=\"_blank\" rel=\"noopener noreferrer\">Mapbox</a>. Diese Tools stellen dir die URL für die Kartenansicht zur Verfügung, die du hier einfügen musst.</p>\n",
-              "label": "Karten-URL"
-            },
-            "title": "Karteneinstellungen"
-          },
-          "multiple": {
-            "help": "<p>Wenn ja, können eingeloggte Nutzer <strong>mehrfach</strong> am Callout teilnehmen.</p>\n",
-            "label": "Sollen Nutzer mehrfach teilnehmen können?",
-            "opts": {
-              "no": "Nein, nur eine Teilnahme",
-              "yes": "Ja"
-            }
-          },
-          "requireCaptcha": {
-            "help": "<p>Wenn du den <strong>Bot-Spam-Schutz</strong> aktivierst, müssen die Teilnehmenden ein Captcha ausfüllen, um zu bestätigen, dass sie Menschen sind. Das verhindert Spamming von Bots.</p>\n",
-            "label": "Bot-Spam-Schutz für den Callout aktivieren?",
-            "opts": {
-              "all": "Ja, alle Teilnehmenden müssen bestätigen, dass sie Menschen sind.",
-              "guests": "Ja, Gastteilnehmer müssen bestätigen, dass sie Menschen sind.",
-              "none": "Nein"
-            }
-          },
-          "responseImageFilter": {
-            "label": "Möchtest du einen Filter auf die Bilder legen?"
-          },
-          "responseImageProp": {
-            "help": "<p>Das Bild wird verwendet, um die Antwort in der Karten- oder Galerieansicht zu visualisieren. Wichtig: Es muss sich um eine Datei-Upload-Komponente handeln.</p>\n",
-            "label": "Welches Feld soll als Bild für Darstellung der Antwort dienen?"
-          },
-          "responseLinks": {
-            "label": "Links am Ende von Antworten hinzufügen?"
-          },
-          "responseTitleProp": {
-            "help": "<p>Der Titel erscheint als Überschrift auf jeder Antwort in der Karten- oder Galerieansicht.</p>\n",
-            "label": "Welches Feld soll als Überschrift dienen?"
-          },
-          "showResponses": {
-            "help": "<p>Mit dieser Funktion ist es möglich, Callout-Antworten auf einer Karte oder als Galerie darzustellen.</p>\n",
-            "label": "Sollen Antworten öffentlich angezeigt werden?"
-          },
-          "visible": {
-            "help": "<p>Du kannst den Callout <strong>nicht anzeigen</strong> lassen. Dann ist er nur über den Link erreichbar.</p>\n",
-            "label": "Soll der Callout deinen Mitgliedern im Dashboard angezeigt werden?",
-            "opts": {
-              "no": "Nein, Callout nicht im Dashboard anzeigen.",
-              "yes": "Ja, Callout im Dashboard anzeigen."
-            }
-          },
-          "whichResponseBuckets": {
-            "label": "Welche Antwortbereiche sollen öffentlich angezeigt werden?"
-          },
-          "whichResponseViews": {
-            "help": "<p>Hier kannst du entscheiden, ob du die Karten- oder die Galerieansicht verwenden möchtest. Es ist auch möglich beides auszuwählen.</p>\n",
-            "label": "Wie soll die Antwort dargestellt werden?",
-            "opts": {
-              "gallery": "Galerie-Ansicht",
-              "map": "Karten-Ansicht"
-            }
-          },
-          "who": {
-            "help": "<p>Callouts können für <strong>Alle</strong> oder nur für <strong>Mitglieder</strong> zugänglich sein.</p>\n",
-            "label": "Wer kann teilnehmen?",
-            "opts": {
-              "everyone": "Alle",
-              "members": "Nur Mitglieder"
-            }
-          }
-        },
-        "title": "Einstellungen"
-      },
-      "titleAndImage": {
-        "inputs": {
-          "description": {
-            "help": "<p>Die <strong>Kurzbeschreibung</strong> ergänzt den Titel und sollte in wenigen Worten erklären, worum es bei dem Callout geht.</p>\n",
-            "label": "Kurzbeschreibung",
-            "placeholder": "Erkläre kurz und knapp, warum Menschen an dem Callout teilnehmen sollten."
-          },
-          "image": {
-            "help": "<p>Das <strong>Titelbild</strong> dient zur Illustration des Callouts.</p>\n",
-            "label": "Titelbild"
-          },
-          "intro": {
-            "help": "<p>Die <strong>Einleitung</strong> erscheint vor den Fragen. Erkläre darin, warum du den Callout machst, also was das Ziel ist und wie die Antworten helfen. Gib so viel Kontext wie möglich, um den Teilnehmenden die Beantwortung zu erleichtern.</p>\n",
-            "label": "Einleitung"
-          },
-          "overrideShare": {
-            "label": "Callout-Titel und -Beschreibung zum Teilen verwenden?",
-            "opts": {
-              "no": "Nein, Titel und Beschreibung selbst festlegen.",
-              "yes": "Ja"
-            }
-          },
-          "shareDescription": {
-            "help": "<p>Die <strong>Social-Media-Beschreibung</strong> ist die Kurzbeschreibung deines Callouts fürs Teilen in sozialen Netzwerken.</p>\n",
-            "label": "Social-Media-Beschreibung",
-            "placeholder": "Die Kurzbeschreibung deines Callouts für Social Media"
-          },
-          "shareTitle": {
-            "help": "<p>Der <strong>Social-Media-Titel</strong> ist die Überschrift fürs Teilen in sozialen Netzwerken.</p>\n",
-            "label": "Social-Media-Titel",
-            "placeholder": "Die Überschrift deines Callouts in sozialen Netzwerken."
-          },
-          "slug": {
-            "help": "<p>Du kannst den <strong>Permalink</strong> an deine Nutzer schicken, damit sie an dem Callout teilnehmen können.</p>\n",
-            "label": "Permalink",
-            "opts": {
-              "auto": "Automatisch aus Callout-Titel generieren",
-              "manual": "Benutzerdefinierten Permalink festlegen"
-            }
-          },
-          "title": {
-            "help": "<p>Der <strong>Titel</strong> taucht immer dort auf, wo dein Callout erwähnt wird. Überlege dir einen guten Namen, der Interesse weckt.</p>\n",
-            "label": "Titel",
-            "placeholder": "Der Name deines Callouts."
-          }
-        },
-        "title": "Titel und Bild",
-        "urlWillBe": "Der Permalink wird so aussehen"
-      }
-    },
-    "title": "Callout anlegen",
-    "untitledCallout": "Unbenannter Callout"
-  },
   "editCallout": {
     "replicated": "Dein Callout wurde kopiert! Du bearbeitest jetzt die Kopie. Bitte denke unbedingt daran, den Titel zu bearbeiten.",
     "title": "Bearbeiten: {title}",
@@ -1324,7 +1103,6 @@
       "lastName": {
         "required": "Nachname benötigt"
       },
-      "maxLength": "Die maximale Länge von {max} Zeichen wurde überschritten",
       "name": {
         "required": "Name benötigt"
       },
@@ -1339,6 +1117,7 @@
       "unknown": {
         "email": "Ungültige E-Mail-Adresse",
         "max": "Dieses Feld darf höchstens {max} sein",
+        "maxLength": "Die maximale Länge von {max} Zeichen wurde überschritten",
         "min": "Dieses Feld muss mindestens {min}",
         "required": "Dieses Feld wird benötigt",
         "url": "Ungültige URL"
@@ -1575,13 +1354,11 @@
     },
     "showingOf": "Hinweise {start} bis {end} von {total} werden angezeigt."
   },
-  "notification": {
-    "error": "Da ist etwas schiefgelaufen!"
-  },
   "notifications": {
     "copy": {
       "success": "In die Zwischenablage kopiert"
     },
+    "error": "Da ist etwas schiefgelaufen!",
     "remove": "Benachrichtigung schließen"
   },
   "pageTitle": {

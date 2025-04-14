@@ -189,7 +189,7 @@ const sidebarTabs = reactive<SidebarTabs>({
 
 const selectedSidebarTab = ref(sidebarTabs.content.name);
 
-// Computed für aktiven Tab
+// Computed the current sidebar tab
 const currentSidebarTab = computed(() => {
   const tab = Object.entries(sidebarTabs).find(
     ([, tab]) => tab.name === selectedSidebarTab.value

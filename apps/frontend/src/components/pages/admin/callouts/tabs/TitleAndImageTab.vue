@@ -119,7 +119,7 @@
                 v-model="data.shareDescription.default"
                 :label="inputT('shareDescription.label')"
                 :placeholder="inputT('shareDescription.placeholder')"
-                :max-length="200"
+                :maxlength="200"
                 :disabled="!data.overrideShare"
                 :required="data.overrideShare"
               />

@@ -426,6 +426,7 @@
       "manual": "Manual",
       "none": "Nenhuma"
     },
+    "default": "Predefinição",
     "hello": "Olá",
     "id": "ID",
     "itemsPerPage": "{items} itens por página",
@@ -581,91 +582,6 @@
     "willExpire": "A tua contribuição vai expirar a {expires}.",
     "willRenew": "A tua contribuição vai renovar automaticamente a {renewalDate}.",
     "willRenewWithNewAmount": "A tua contribuição vai renovar automaticamente a {renewalDate}, passando para a nova quantia de {nextAmount}."
-  },
-  "createCallout": {
-    "steps": {
-      "content": {},
-      "dates": {
-        "inputs": {
-          "expires": {
-            "opts": {}
-          },
-          "starts": {
-            "opts": {}
-          }
-        }
-      },
-      "endMessage": {
-        "inputs": {
-          "action": {
-            "opts": {}
-          },
-          "text": {},
-          "title": {},
-          "url": {}
-        }
-      },
-      "mailchimp": {},
-      "settings": {
-        "inputs": {
-          "anonymous": {
-            "opts": {}
-          },
-          "editable": {
-            "opts": {}
-          },
-          "mapSchema": {
-            "addressPattern": {},
-            "addressPatternProp": {},
-            "addressProp": {},
-            "bounds": {},
-            "center": {},
-            "geocodeCountries": {},
-            "initialZoom": {},
-            "maxZoom": {},
-            "minZoom": {},
-            "style": {}
-          },
-          "multiple": {
-            "opts": {}
-          },
-          "requireCaptcha": {
-            "opts": {}
-          },
-          "responseImageFilter": {},
-          "responseImageProp": {},
-          "responseLinks": {},
-          "responseTitleProp": {},
-          "showResponses": {},
-          "visible": {
-            "opts": {}
-          },
-          "whichResponseBuckets": {},
-          "whichResponseViews": {
-            "opts": {}
-          },
-          "who": {
-            "opts": {}
-          }
-        }
-      },
-      "titleAndImage": {
-        "inputs": {
-          "description": {},
-          "image": {},
-          "intro": {},
-          "overrideShare": {
-            "opts": {}
-          },
-          "shareDescription": {},
-          "shareTitle": {},
-          "slug": {
-            "opts": {}
-          },
-          "title": {}
-        }
-      }
-    }
   },
   "editCallout": {},
   "editNotice": {},
@@ -921,11 +837,9 @@
   "notices": {
     "data": {}
   },
-  "notification": {
-    "error": "Houve aqui um erro. Experimenta recarregar a página."
-  },
   "notifications": {
-    "copy": {}
+    "copy": {},
+    "error": "Houve aqui um erro. Experimenta recarregar a página."
   },
   "pageTitle": {
     "confirmEmail": "Confirma o email",
