@@ -36,7 +36,7 @@
         <AppInput v-model="item.label" :label="t('common.label')" required />
       </div>
       <div class="flex-0 flex h-10 items-center self-end">
-        <AppCheckbox v-model="item.checked" label="Default" />
+        <AppCheckbox v-model="item.checked" :label="t('common.default')" />
       </div>
     </template>
   </AppRepeatable>
