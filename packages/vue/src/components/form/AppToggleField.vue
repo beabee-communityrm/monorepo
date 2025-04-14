@@ -18,7 +18,7 @@
     </div>
     <div class="flex-0">
       <AppToggleSwitch
-        :model-value="modelValue"
+        :model-value="!disabled && modelValue"
         :variant="variant"
         :disabled="disabled"
         :size="size"

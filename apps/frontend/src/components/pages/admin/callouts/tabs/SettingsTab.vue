@@ -165,7 +165,18 @@
 
         <!-- Response Settings Section -->
         <AppScrollSection v-if="!env.cnrMode" id="responseSettings">
-          <AppFormBox :title="inputT('responseSettings.title')">
+          <AppFormBox
+            :title="inputT('responseSettings.title')"
+            :notification="
+              !canAddNewsletterOptIn
+                ? {
+                    variant: 'warning',
+                    title: inputT('newsletterSettings.disabled'),
+                    removeable: false,
+                  }
+                : undefined
+            "
+          >
             <AppFormField>
               <AppToggleField
                 v-model="data.showNewsletterOptIn"

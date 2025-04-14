@@ -366,6 +366,7 @@
   "joinSetup": {},
   "login": {},
   "lostDevice": {},
+  "mailOptIn": {},
   "membershipBuilder": {
     "steps": {
       "accountConfirmation": {

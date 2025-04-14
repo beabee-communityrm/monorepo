@@ -799,6 +799,7 @@
     "message": "Se existir uma conta associada com o endereço {email}, receberá um e-mail dentro de momentos. Deverá ter recebido um e-mail com instruções na sua caixa de entrada. Verifique a sua pasta de spam se não tiver aparecido.",
     "title": "Perdeste o teu dispositivo 2FA?"
   },
+  "mailOptIn": {},
   "membershipBuilder": {
     "steps": {
       "accountConfirmation": {

@@ -38,21 +38,21 @@ meta:
           <div class="mb-4">
             <AppInput
               v-model="setupContent.mailTitle"
-              :label="t('newsletterOptIn.title')"
+              :label="t('mailOptIn.title')"
               required
             />
           </div>
           <div class="mb-4">
             <RichTextEditor
               v-model="setupContent.mailText"
-              :label="t('newsletterOptIn.text')"
+              :label="t('mailOptIn.text')"
               required
             />
           </div>
           <div class="mb-4">
             <AppInput
               v-model="setupContent.mailOptIn"
-              :label="t('newsletterOptIn.optInLabel')"
+              :label="t('mailOptIn.optInLabel')"
               required
             />
           </div>

@@ -485,6 +485,7 @@
               "title": "Map settings"
             },
             "newsletterSettings": {
+              "disabled": "You can't ask for newsletter sign-ups if you don't collect contact information",
               "label": "Add a newsletter sign-up to the contact form",
               "opts": {
                 "disabled": "Participants won't be asked if they want to sign up to the newsletter",
@@ -532,6 +533,7 @@
               }
             },
             "responseSettings": {
+              "label": "Response behaviour",
               "opts": {
                 "multiple": "Multiple responses, non-editable",
                 "singleEditable": "Single response but editable while callout is open",
@@ -1261,6 +1263,11 @@
     "description": "Please enter your email address, and we will send you instructions on how to reset your 2FA.",
     "message": "If there is an account associated with {email}, you will receive an email shortly. Check your spam folder if it doesn't appear.",
     "title": "Lost your 2FA device?"
+  },
+  "mailOptIn": {
+    "optInLabel": "Checkbox label",
+    "text": "Text",
+    "title": "Heading"
   },
   "membershipBuilder": {
     "steps": {

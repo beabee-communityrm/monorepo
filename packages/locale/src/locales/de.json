@@ -1252,6 +1252,11 @@
     "message": "Gibt es einen Account mit der E-Mail-Adresse {email}, bekommen Sie in Kürze eine Nachricht. Bitte schauen Sie in Ihren Posteingang und befolgen Sie die Anleitung in der E-Mail. Sollte die E-Mail nicht auftauchen, schauen Sie auch in ihrem Spamordner nach.",
     "title": "Haben Sie Ihr 2FA-Gerät verloren?"
   },
+  "mailOptIn": {
+    "optInLabel": "Beschriftung Kontrollkästchen ",
+    "text": "Text",
+    "title": "Überschrift"
+  },
   "membershipBuilder": {
     "steps": {
       "accountConfirmation": {

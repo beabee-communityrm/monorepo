@@ -1053,6 +1053,11 @@
     "message": "Als er een account is gekoppeld aan {email}, ontvang je binnenkort een e-mail. Controleer uw spam-map als deze niet verschijnt.",
     "title": "Bent u uw 2FA-apparaat kwijt?"
   },
+  "mailOptIn": {
+    "optInLabel": "Label selectievakje",
+    "text": "Tekst",
+    "title": "Kop"
+  },
   "membershipBuilder": {
     "steps": {
       "accountConfirmation": {

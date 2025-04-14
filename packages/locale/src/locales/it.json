@@ -469,6 +469,7 @@
     "message": "Se esiste già un account associato a {email}, riceverai una mail a breve. Controlla anche la tua cartella spam.",
     "title": "Hai perso il tuo dispositivo 2FA?"
   },
+  "mailOptIn": {},
   "membershipBuilder": {
     "steps": {
       "accountConfirmation": {
