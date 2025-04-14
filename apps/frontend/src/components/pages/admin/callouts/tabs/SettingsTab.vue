@@ -90,7 +90,7 @@
             >
               <AppFormField>
                 <AppToggleField
-                  v-model="props.data.collectMemberInfo"
+                  v-model="props.data.collectInfo"
                   variant="link"
                   :label="inputT('collectMemberInfo.label')"
                   :disabled-description="
@@ -102,7 +102,7 @@
                 />
               </AppFormField>
 
-              <AppFormField v-if="props.data.collectMemberInfo">
+              <AppFormField v-if="props.data.collectInfo">
                 <AppToggleField
                   v-model="props.data.collectGuestInfo"
                   variant="link"
@@ -263,7 +263,7 @@ import NewsletterOptInSettings from '@components/newsletter/NewsletterOptInSetti
  */
 export interface SettingsTabData {
   openToEveryone: boolean;
-  collectMemberInfo: boolean;
+  collectInfo: boolean;
   collectGuestInfo: boolean;
   captchaEnabled: boolean;
   captchaForMembers: boolean;
@@ -316,7 +316,7 @@ const sections = computed<ScrollSection[]>(() => [
 ]);
 
 const canAddNewsletterOptIn = computed(
-  () => !props.data.openToEveryone || props.data.collectMemberInfo
+  () => !props.data.openToEveryone || props.data.collectInfo
 );
 
 // Force step to stay unvalidated until it is visited for new callouts

@@ -196,7 +196,7 @@ export function convertCalloutToTabs(
     ? ({
         ...sharedSettings,
         openToEveryone: true,
-        collectMemberInfo: false,
+        collectInfo: false,
         collectGuestInfo: false,
         showNewsletterOptIn: false,
         newsletterSettings: defaultNewsletterSettings,
@@ -212,7 +212,7 @@ export function convertCalloutToTabs(
     : ({
         ...sharedSettings,
         openToEveryone: callout?.access !== CalloutAccess.Member,
-        collectMemberInfo: callout?.access !== CalloutAccess.OnlyAnonymous,
+        collectInfo: callout?.access !== CalloutAccess.OnlyAnonymous,
         collectGuestInfo: callout?.access === CalloutAccess.Guest,
         showNewsletterOptIn: !!callout?.newsletterSchema,
         newsletterSettings:
@@ -441,7 +441,7 @@ export function convertStepsToCallout(
         : CalloutCaptcha.Guest
       : CalloutCaptcha.None,
     access: tabs.settings.openToEveryone
-      ? tabs.settings.collectMemberInfo
+      ? tabs.settings.collectInfo
         ? tabs.settings.collectGuestInfo
           ? CalloutAccess.Guest
           : CalloutAccess.Anonymous
