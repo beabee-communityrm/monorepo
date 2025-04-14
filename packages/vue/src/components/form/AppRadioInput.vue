@@ -37,16 +37,17 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
+/**
+ * Possible value for the AppRadioInput component
+ */
+export type AppRadioInputValue = string | boolean | number;
 
 /**
  * Props for the AppRadioInput component
  */
 export interface AppRadioInputProps {
-  /** Currently selected value */
-  modelValue?: string | boolean | number | null;
   /** Value of this radio option */
-  value: string | boolean | number;
+  value: AppRadioInputValue;
   /** Name attribute for the radio input */
   name: string;
   /** Label text for this radio option */
@@ -63,12 +64,7 @@ export interface AppRadioInputProps {
   variant?: 'primary' | 'link' | 'danger';
 }
 
-const emit = defineEmits<{
-  /** Emitted when selection changes */
-  (e: 'update:modelValue', value: string | boolean | number | null): void;
-}>();
-
-const props = withDefaults(defineProps<AppRadioInputProps>(), {
+withDefaults(defineProps<AppRadioInputProps>(), {
   variant: 'link',
   disabled: false,
   required: false,
@@ -76,10 +72,7 @@ const props = withDefaults(defineProps<AppRadioInputProps>(), {
   labelClass: '',
 });
 
-const selected = computed({
-  get: () => props.modelValue,
-  set: (newValue) => emit('update:modelValue', newValue || null),
-});
+const selected = defineModel<AppRadioInputValue>();
 
 const borderVariantClasses = {
   primary: 'border-primary border-2',
