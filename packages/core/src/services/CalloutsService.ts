@@ -3,8 +3,8 @@ import {
   CalloutResponseAnswersSlide,
   CalloutAccess,
   CreateCalloutData,
-  CreateCalloutResponseGuestData,
-  CreateCalloutResponseNewsletterData,
+  CalloutResponseGuestData,
+  CalloutResponseNewsletterData,
   NewsletterStatus
 } from "@beabee/beabee-common";
 import slugify from "slugify";
@@ -225,7 +225,7 @@ class CalloutsService {
     callout: Callout,
     contact: Contact,
     answers: CalloutResponseAnswersSlide,
-    newsletter: CreateCalloutResponseNewsletterData | undefined
+    newsletter: CalloutResponseNewsletterData | undefined
   ): Promise<CalloutResponse> {
     if (callout.access === CalloutAccess.OnlyAnonymous) {
       throw new InvalidCalloutResponse("only-anonymous");
@@ -282,9 +282,9 @@ class CalloutsService {
    */
   async setGuestResponse(
     callout: Callout,
-    guest: CreateCalloutResponseGuestData | undefined,
+    guest: CalloutResponseGuestData | undefined,
     answers: CalloutResponseAnswersSlide,
-    newsletter: CreateCalloutResponseNewsletterData | undefined
+    newsletter: CalloutResponseNewsletterData | undefined
   ): Promise<CalloutResponse> {
     if (callout.access === CalloutAccess.Guest && !guest) {
       throw new InvalidCalloutResponse("guest-fields-missing");

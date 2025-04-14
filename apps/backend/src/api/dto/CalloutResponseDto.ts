@@ -5,8 +5,8 @@ import {
   CalloutResponseAnswersSlide,
   CalloutResponseViewSchema,
   CreateCalloutResponseData,
-  CreateCalloutResponseGuestData,
-  CreateCalloutResponseNewsletterData,
+  CalloutResponseGuestData,
+  CalloutResponseNewsletterData,
   GetCalloutResponseData,
   PaginatedQuery
 } from "@beabee/beabee-common";
@@ -122,9 +122,7 @@ export class GetCalloutResponseDto implements GetCalloutResponseData {
   latestComment?: GetCalloutResponseCommentDto | null;
 }
 
-export class CreateCalloutResponseGuestDto
-  implements CreateCalloutResponseGuestData
-{
+export class CreateCalloutResponseGuestDto implements CalloutResponseGuestData {
   @IsNonEmptyString()
   firstname!: string;
 
@@ -136,7 +134,7 @@ export class CreateCalloutResponseGuestDto
 }
 
 export class CreateCalloutResponseNewsletterDto
-  implements CreateCalloutResponseNewsletterData
+  implements CalloutResponseNewsletterData
 {
   @IsBoolean()
   optIn!: boolean;

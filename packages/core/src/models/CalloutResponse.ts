@@ -1,4 +1,7 @@
-import { CalloutResponseAnswersSlide } from "@beabee/beabee-common";
+import {
+  CalloutResponseAnswersSlide,
+  CalloutResponseNewsletterData
+} from "@beabee/beabee-common";
 import {
   Column,
   CreateDateColumn,
