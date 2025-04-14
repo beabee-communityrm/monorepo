@@ -264,6 +264,7 @@
       "manual": "Manuale",
       "none": "Nessuno"
     },
+    "default": "Predefinito",
     "hello": "Ciao",
     "id": "ID",
     "joined": "Iscritto",
@@ -345,91 +346,6 @@
     "updateContribution": "Aggiorna il tuo contributo",
     "updatePaymentType": "Aggiorna il metodo di pagamento",
     "willRenew": "Il tuo contributo sarà aggiornato il {renewalDate}."
-  },
-  "createCallout": {
-    "steps": {
-      "content": {},
-      "dates": {
-        "inputs": {
-          "expires": {
-            "opts": {}
-          },
-          "starts": {
-            "opts": {}
-          }
-        }
-      },
-      "endMessage": {
-        "inputs": {
-          "action": {
-            "opts": {}
-          },
-          "text": {},
-          "title": {},
-          "url": {}
-        }
-      },
-      "mailchimp": {},
-      "settings": {
-        "inputs": {
-          "anonymous": {
-            "opts": {}
-          },
-          "editable": {
-            "opts": {}
-          },
-          "mapSchema": {
-            "addressPattern": {},
-            "addressPatternProp": {},
-            "addressProp": {},
-            "bounds": {},
-            "center": {},
-            "geocodeCountries": {},
-            "initialZoom": {},
-            "maxZoom": {},
-            "minZoom": {},
-            "style": {}
-          },
-          "multiple": {
-            "opts": {}
-          },
-          "requireCaptcha": {
-            "opts": {}
-          },
-          "responseImageFilter": {},
-          "responseImageProp": {},
-          "responseLinks": {},
-          "responseTitleProp": {},
-          "showResponses": {},
-          "visible": {
-            "opts": {}
-          },
-          "whichResponseBuckets": {},
-          "whichResponseViews": {
-            "opts": {}
-          },
-          "who": {
-            "opts": {}
-          }
-        }
-      },
-      "titleAndImage": {
-        "inputs": {
-          "description": {},
-          "image": {},
-          "intro": {},
-          "overrideShare": {
-            "opts": {}
-          },
-          "shareDescription": {},
-          "shareTitle": {},
-          "slug": {
-            "opts": {}
-          },
-          "title": {}
-        }
-      }
-    }
   },
   "editCallout": {},
   "editNotice": {},
@@ -590,7 +506,6 @@
   "notices": {
     "data": {}
   },
-  "notification": {},
   "notifications": {
     "copy": {}
   },

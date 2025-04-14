@@ -16,7 +16,7 @@ client.fetch.onError((error) => {
     addNotification({
       variant: 'error',
       title: i18n.global.t(
-        'notification.error',
+        'notifications.error',
         'Something went wrong, please try again.'
       ),
     });
