@@ -229,6 +229,8 @@ export type ExportCalloutResponseDto = [
   fullname: string,
   email: string,
   isGuest: boolean,
+  newsletterOptIn: true | "",
+  newsletterGroups: string,
   comments: string,
   ...answers: string[]
 ];

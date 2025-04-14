@@ -248,6 +248,7 @@ class CalloutsService {
     }
 
     response.answers = answers;
+    response.newsletter = newsletter || null;
 
     const savedResponse = await this.saveResponse(response);
 
