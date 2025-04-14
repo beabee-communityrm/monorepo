@@ -15,6 +15,7 @@
         v-model:firstname="guestData.firstname"
         v-model:lastname="guestData.lastname"
         v-model:email="guestData.email"
+        :required="callout.access === CalloutAccess.Guest"
         class="mb-8"
       />
 
@@ -79,9 +80,11 @@
 </template>
 
 <script lang="ts" setup>
-import type {
-  CalloutResponseAnswersSlide,
-  GetCalloutDataWith,
+import {
+  CalloutAccess,
+  CalloutCaptcha,
+  type CalloutResponseAnswersSlide,
+  type GetCalloutDataWith,
 } from '@beabee/beabee-common';
 import { computed, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -162,13 +165,14 @@ const isLastSlide = computed(
 );
 
 const showGuestFields = computed(
-  () => props.callout.access === 'guest' && !currentUser.value
+  () =>
+    props.callout.access !== CalloutAccess.OnlyAnonymous && !currentUser.value
 );
 
 const showCaptcha = computed(
   () =>
-    props.callout.captcha === 'all' ||
-    (props.callout.captcha === 'guest' && !currentUser.value)
+    props.callout.captcha === CalloutCaptcha.All ||
+    (props.callout.captcha === CalloutCaptcha.Guest && !currentUser.value)
 );
 
 const rules = computed(() => ({
@@ -201,8 +205,13 @@ async function handleSubmit() {
       {
         answers: validAnswers,
         ...(!currentUser.value &&
-          props.callout?.access === 'guest' && { guest: guestData }),
-        ...(props.callout?.newsletterSchema && { newsletter: nlData }),
+          guestData.email &&
+          guestData.firstname &&
+          guestData.lastname && {
+            guest: guestData,
+          }),
+        ...(props.callout?.newsletterSchema &&
+          nlData.optIn && { newsletter: nlData }),
       },
       captchaToken.value
     );

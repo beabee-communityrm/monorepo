@@ -414,9 +414,9 @@
           },
           "inputs": {
             "collectGuestInfo": {
-              "label": "Also collect guest contact information",
+              "label": "Require contact information from guests",
               "opts": {
-                "disabled": "Guests who respond will be anonymous",
+                "disabled": "Guests can respond anonymously",
                 "enabled": "Guests will also be asked for their contact information"
               }
             },
@@ -424,7 +424,7 @@
               "label": "Collect contact information",
               "opts": {
                 "disabled": "All responses will be anonymous",
-                "enabled": "Members who respond will have their contact information collected"
+                "enabled": "Members will have their contact information collected"
               }
             },
             "expires": {
