@@ -57,7 +57,7 @@ const { t } = useI18n();
 const title = defineModel<string>('title', { default: '' });
 const optIn = defineModel<string>('optIn', { default: '' });
 const text = defineModel<string>('text', { default: '' });
-const groups = defineModel<NewsletterGroupData[]>({
+const groups = defineModel<NewsletterGroupData[]>('groups', {
   default: [],
 });
 </script>
