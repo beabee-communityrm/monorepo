@@ -29,7 +29,7 @@ import AppRadioInput, { type AppRadioInputValue } from './AppRadioInput.vue';
  */
 export interface AppRadioGroupProps {
   /** Array of value-label pairs for the radio options */
-  options: [string | boolean | number, string][];
+  options: [AppRadioInputValue, string][];
   /** Name attribute for the radio group */
   name?: string;
   /** Label for the entire radio group */
