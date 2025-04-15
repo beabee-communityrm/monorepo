@@ -22,7 +22,7 @@ import { useI18n } from 'vue-i18n';
 
 import { AppDropdownButton, AppSelectableList } from '@beabee/vue/components';
 
-import type { SelectItem } from '@components/forms/form.interface';
+import type { SelectItem } from '@beabee/vue/types';
 
 const emit = defineEmits<{
   (event: 'assign', id: string | null, successText: string): void;

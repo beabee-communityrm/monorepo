@@ -1,5 +1,7 @@
 <template>
-  <div class="flex-auto">
+  <div
+    class="mb-[53px] flex-auto overflow-y-auto overflow-x-visible lg:mb-[61px]"
+  >
     <TheMenuListSection
       v-for="(section, index) in menu"
       :key="index"
@@ -25,7 +27,7 @@
     </div>
   </div>
   <div
-    class="fixed bottom-0 left-0 w-menu border-t border-primary-40 bg-white px-1 py-2 md:w-16 lg:w-menu"
+    class="fixed bottom-0 left-0 w-menu bg-white px-4 py-2 md:w-16 lg:w-menu"
   >
     <a class="cursor-pointer" @click="doLogout">
       <TheMenuListItem :icon="faSignInAlt" :title="t('menu.logout')" />

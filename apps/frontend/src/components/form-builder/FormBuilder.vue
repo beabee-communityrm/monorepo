@@ -57,7 +57,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { config, dom, noAuto } from '@fortawesome/fontawesome-svg-core';
 import { library } from '@beabee/vue/plugins/icons';
-import { onBeforeMount, onBeforeUnmount, ref, toRef, watch } from 'vue';
+import { onBeforeMount, onBeforeUnmount, ref } from 'vue';
 
 import { FormBuilder } from '../../lib/formio';
 import type { CalloutComponentSchema } from '@beabee/beabee-common';
@@ -71,9 +71,8 @@ const emit = defineEmits<{
   (e: 'update:modelValue', components: CalloutComponentSchema[]): void;
 }>();
 
-const props = defineProps<{
+defineProps<{
   modelValue: CalloutComponentSchema[];
-  advanced?: boolean;
   slides?: FormBuilderSlide[];
 }>();
 
@@ -83,10 +82,6 @@ function handleChange() {
   if (!formBuilderRef.value) return;
   emit('update:modelValue', formBuilderRef.value.builder.form.components);
 }
-
-watch(toRef(props, 'advanced'), (show) => {
-  document.body.classList.toggle('show-advanced-options', show);
-});
 
 onBeforeMount(() => {
   library.add(
@@ -139,7 +134,6 @@ onBeforeMount(() => {
 
 onBeforeUnmount(() => {
   noAuto();
-  document.body.classList.remove('show-advanced-options');
 });
 </script>
 <style lang="postcss">

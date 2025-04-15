@@ -15,7 +15,7 @@ import { ContributionPeriod } from '@beabee/beabee-common';
 import { useI18n } from 'vue-i18n';
 import { computed } from 'vue';
 import PeriodAmountValue from './PeriodAmountValue.vue';
-import AppLabel from '../../../forms/AppLabel.vue';
+import { AppLabel } from '@beabee/vue/components';
 
 const emit = defineEmits(['update:modelValue']);
 const props = defineProps<{

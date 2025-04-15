@@ -7,52 +7,69 @@
         :icon="faBold"
         :title="t('form.richtext.bold')"
         :active="editor.isActive('bold')"
+        :disabled="disabled"
         @click="run((cmd) => cmd.toggleBold())"
       />
       <RichTextEditorButton
         :icon="faItalic"
         :title="t('form.richtext.italic')"
         :active="editor.isActive('italic')"
+        :disabled="disabled"
         @click="run((cmd) => cmd.toggleItalic())"
       />
       <RichTextEditorButton
         :icon="faUnderline"
         :title="t('form.richtext.underline')"
         :active="editor.isActive('underline')"
+        :disabled="disabled"
         @click="run((cmd) => cmd.toggleUnderline())"
       />
       <RichTextEditorButton
         :icon="faStrikethrough"
         :title="t('form.richtext.strikethrough')"
         :active="editor.isActive('strike')"
+        :disabled="disabled"
         @click="run((cmd) => cmd.toggleStrike())"
       />
       <RichTextEditorButton
         :icon="faHeading"
         :title="t('form.richtext.heading')"
         :active="editor.isActive('heading', { level: 3 })"
+        :disabled="disabled"
         @click="run((cmd) => cmd.toggleHeading({ level: 3 }))"
       />
       <RichTextEditorButton
         :icon="faList"
         :title="t('form.richtext.bulletlist')"
         :active="editor.isActive('bulletList')"
+        :disabled="disabled"
         @click="run((cmd) => cmd.toggleBulletList())"
       />
       <RichTextEditorButton
         :icon="faListOl"
         :title="t('form.richtext.numberedlist')"
         :active="editor.isActive('orderedList')"
+        :disabled="disabled"
         @click="run((cmd) => cmd.toggleOrderedList())"
       />
       <RichTextEditorButton
         :icon="faLink"
         :title="t('form.richtext.link')"
         :active="editor.isActive('link')"
+        :disabled="disabled"
         @click="setLink"
       />
     </div>
-    <EditorContent :editor="editor" class="content-message" />
+    <div class="relative">
+      <EditorContent
+        :editor="editor"
+        class="content-message"
+        :class="disabled && 'ProseMirror-disabled'"
+      />
+      <div v-if="copyable" class="absolute right-1 top-1">
+        <AppCopyButton variant="float" :text="editor?.getHTML() || ''" />
+      </div>
+    </div>
     <AppInputError v-if="hasError" :message="validation.$errors[0].$message" />
   </div>
 </template>
@@ -66,7 +83,7 @@ import Underline from '@tiptap/extension-underline';
 import StarterKit from '@tiptap/starter-kit';
 import Typography from '@tiptap/extension-typography';
 import RichTextEditorButton from './RichTextEditorButton.vue';
-import AppLabel from '../forms/AppLabel.vue';
+import { AppLabel, AppCopyButton } from '@beabee/vue/components';
 import useVuelidate from '@vuelidate/core';
 import { helpers, requiredIf } from '@vuelidate/validators';
 import {
@@ -88,6 +105,8 @@ const props = defineProps<{
   modelValue: string;
   label?: string;
   required?: boolean;
+  disabled?: boolean;
+  copyable?: boolean;
 }>();
 
 const editor = useEditor({
@@ -105,6 +124,7 @@ const editor = useEditor({
     }),
     Typography,
   ],
+  editable: !props.disabled,
   enableInputRules: false,
   enablePasteRules: false,
   onUpdate: () => {
@@ -121,6 +141,12 @@ const editor = useEditor({
 watch(toRef(props, 'modelValue'), (value) => {
   if (editor.value && editor.value.getHTML() !== value) {
     editor.value.commands.setContent(value as string, false);
+  }
+});
+
+watch(toRef(props, 'disabled'), (value) => {
+  if (editor.value) {
+    editor.value.setEditable(!value);
   }
 });
 
@@ -141,11 +167,11 @@ onBeforeUnmount(() => {
 });
 
 function run(cb: (cmd: ChainedCommands) => ChainedCommands) {
-  if (editor.value) cb(editor.value.chain().focus()).run();
+  if (editor.value && !props.disabled) cb(editor.value.chain().focus()).run();
 }
 
 function setLink() {
-  if (!editor.value) return;
+  if (!editor.value || props.disabled) return;
 
   const previousUrl = editor.value.getAttributes('link').href;
   const url = window.prompt('Set URL (blank to remove)', previousUrl);
@@ -174,5 +200,9 @@ function setLink() {
   .ProseMirror-hasError & {
     @apply border-danger-70 bg-danger-10;
   }
+}
+
+.ProseMirror-disabled .ProseMirror {
+  @apply cursor-not-allowed border-primary-40 bg-grey-lighter opacity-60;
 }
 </style>

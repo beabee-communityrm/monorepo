@@ -332,6 +332,115 @@
     },
     "addAPoint": "Klik op de kaart waar je een punt wilt toevoegen",
     "addLocation": "Een nieuw punt toevoegen",
+    "builder": {
+      "actions": {},
+      "common": {
+        "actions": {}
+      },
+      "navigation": {
+        "nextSlide": {}
+      },
+      "tabs": {
+        "content": {},
+        "endMessage": {
+          "inputs": {
+            "action": {
+              "opts": {}
+            },
+            "text": {},
+            "title": {},
+            "url": {}
+          }
+        },
+        "intro": {},
+        "mailchimp": {},
+        "responseDisplay": {},
+        "settings": {
+          "access": {},
+          "dates": {},
+          "displayOptions": {},
+          "inputs": {
+            "collectGuestInfo": {
+              "opts": {}
+            },
+            "collectMemberInfo": {
+              "opts": {}
+            },
+            "expires": {
+              "opts": {}
+            },
+            "mapAndGallery": {
+              "gallery": {},
+              "map": {}
+            },
+            "mapSchema": {
+              "addressPattern": {},
+              "addressPatternProp": {},
+              "addressProp": {},
+              "bounds": {},
+              "center": {},
+              "geocodeCountries": {},
+              "initialZoom": {},
+              "maxZoom": {},
+              "minZoom": {},
+              "style": {}
+            },
+            "openToEveryone": {
+              "opts": {}
+            },
+            "requireCaptcha": {
+              "members": {
+                "opts": {}
+              },
+              "opts": {}
+            },
+            "responseImageProp": {},
+            "responseLinks": {
+              "opts": {},
+              "placeholder": {}
+            },
+            "responseSettings": {
+              "opts": {}
+            },
+            "responseTitleProp": {},
+            "showResponses": {
+              "opts": {}
+            },
+            "starts": {
+              "opts": {}
+            },
+            "visible": {
+              "opts": {}
+            },
+            "whichResponseBuckets": {}
+          }
+        },
+        "titleAndImage": {
+          "inputs": {
+            "description": {},
+            "general": {},
+            "image": {},
+            "overrideShare": {
+              "opts": {}
+            },
+            "shareDescription": {},
+            "shareTitle": {},
+            "sharing": {},
+            "slug": {
+              "locked": {},
+              "opts": {}
+            },
+            "title": {}
+          }
+        },
+        "translations": {
+          "language": {},
+          "languageSettings": {},
+          "navigationButtons": {}
+        }
+      },
+      "translationFields": {}
+    },
     "confirmHuman": "Bevestig dat u een mens bent",
     "contactDetails": "Contactgegevens",
     "ended": "Deze callout eindigde op {date}",
@@ -405,30 +514,6 @@
     },
     "summary": "Overzicht",
     "updated": "Je callout is succesvol bijgewerkt."
-  },
-  "calloutBuilder": {
-    "actions": {
-      "addSlide": "Dia toevoegen",
-      "removeSlide": "Dia verwijderen"
-    },
-    "internalTitle": "Interne titel",
-    "nextButton": "Volgende knop tekst",
-    "nextSlide": {
-      "default": "-- Standaard --",
-      "label": "Volgende dia"
-    },
-    "prevButton": "Terug knop tekst",
-    "showAdvancedOptions": "Geavanceerde opties tonen",
-    "slideNo": "Dia {no}",
-    "submitButton": "Tekst knop Submit",
-    "translationFields": {
-      "description": "Beschrijving",
-      "label": "Label",
-      "option": "Optie {n}",
-      "placeholder": "Plaatshouder"
-    },
-    "translationsText": "Stel de vertalingen in voor elk onderdeel in je formulier",
-    "translationsTitle": "Vertalingen"
   },
   "calloutResponse": {
     "data": {
@@ -546,6 +631,7 @@
       "manual": "Handmatig",
       "none": "Geen"
     },
+    "default": "Standaard",
     "hello": "Hallo",
     "id": "ID",
     "itemsPerPage": "{items} items per pagina",
@@ -741,234 +827,6 @@
     "willRenew": "Je bijdrage wordt automatisch verlengd op {renewalDate}.",
     "willRenewWithNewAmount": "Je bijdrage zal automatisch vernieuwd worden op {renewalDate} en zal veranderen naar het door jou gekozen bedrag van {nextAmount}."
   },
-  "createCallout": {
-    "lastSaved": "Laatst opgeslagen {duration} geleden",
-    "lastSavedNow": "Zojuist voor het laatst opgeslagen",
-    "steps": {
-      "content": {
-        "title": "Inhoud"
-      },
-      "dates": {
-        "inputs": {
-          "expires": {
-            "label": "Wanneer moet deze callout eindigen?",
-            "opts": {
-              "never": "Nooit, tenzij handmatig afgesloten",
-              "schedule": "Plan een einddatum"
-            }
-          },
-          "starts": {
-            "label": "Wanneer moet deze callout beginnen?",
-            "opts": {
-              "now": "Nu",
-              "schedule": "Plan een startdatum"
-            }
-          }
-        },
-        "title": "Planning"
-      },
-      "endMessage": {
-        "inputs": {
-          "action": {
-            "label": "Als de gebruiker klaar is met het beantwoorden van de callout",
-            "opts": {
-              "redirect": "Doorverwijzen naar een andere pagina",
-              "showMessage": "Een bedankbericht tonen"
-            }
-          },
-          "text": {
-            "help": "<p>Hier kun je gebruikers in meer detail bedanken en hen laten weten wanneer ze updates of follow-ups kunnen verwachten.</p>\n",
-            "label": "Bedank tekst",
-            "placeholder": "Vermeld meer details over hoe waardevol hun input was..."
-          },
-          "title": {
-            "help": "<p>Je lezers zullen de <strong>bedanktitel</strong> zien wanneer ze klaar zijn met het beantwoorden van de oproep.</p>\n",
-            "label": "Titel van het bedankbericht",
-            "placeholder": "Bedankt!"
-          },
-          "url": {
-            "help": "<p>Dit kan je homepage zijn of een eerste artikel over het onderwerp van de callout.</p>\n",
-            "label": "URL voor doorverwijzing",
-            "placeholder": "https://example.com"
-          }
-        },
-        "title": "Einde bericht"
-      },
-      "mailchimp": {
-        "title": "Mailchimp synchroniseren"
-      },
-      "settings": {
-        "inputs": {
-          "anonymous": {
-            "help": "<p>Als u <strong>anonieme reacties</strong> toestaat, worden gebruikers niet om hun contactgegevens gevraagd.</p>\n",
-            "label": "Moeten gasten om hun contactgegevens worden gevraagd?",
-            "opts": {
-              "all": "Alle reacties moeten anoniem zijn, ook van ingelogde gebruikers",
-              "guests": "Nee, reacties van gasten kunnen anoniem zijn",
-              "none": "Ja, vraag gasten om hun contactgegevens"
-            }
-          },
-          "editable": {
-            "help": "<p>Zo ja, dan kunnen de gebruikers <strong>hun antwoorden aanpassen</strong> totdat de callout is afgelopen.</p>\n",
-            "label": "Moeten mensen hun antwoorden kunnen wijzigen voordat de callout eindigt?",
-            "opts": {
-              "no": "Nee, antwoorden zijn definitief",
-              "yes": "Ja"
-            }
-          },
-          "mapSchema": {
-            "addressPattern": {
-              "label": "Welk formaat wil je gebruiken?"
-            },
-            "addressPatternProp": {
-              "label": "Wilt u een veld vullen met het adres?",
-              "none": "-- Een veld niet invullen"
-            },
-            "addressProp": {
-              "label": "Welk formulierveld moet worden gebruikt om reacties op de kaart uit te zetten?"
-            },
-            "bounds": {
-              "label": "Maximale kaart grenzen"
-            },
-            "center": {
-              "label": "Oorspronkelijk kaartcentrum"
-            },
-            "geocodeCountries": {
-              "label": "Zoekresultaten voor locatie beperken tot specifieke landen?"
-            },
-            "initialZoom": {
-              "label": "Initieel zoomniveau"
-            },
-            "maxZoom": {
-              "label": "Maximaal zoomniveau"
-            },
-            "minZoom": {
-              "label": "Minimale zoom"
-            },
-            "style": {
-              "help": "<p>Voor de kaartweergave is een extern kaartprogramma** nodig, zoals [Maptiler] (https://www.maptiler.com) of [Mapbox] (https://www.mapbox.com). Deze hulpprogramma's geven je de URL voor de kaartstijl die je hier moet plakken.</p>\n",
-              "label": "URL kaartstijl"
-            },
-            "title": "Kaartinstellingen"
-          },
-          "multiple": {
-            "help": "<p>Zo ja, dan kunnen ingelogde gebruikers meerdere keren** reageren op de callout.</p>\n",
-            "label": "Kunnen gebruikers de callout meerdere keren beantwoorden?",
-            "opts": {
-              "no": "Nee, slechts één reactie",
-              "yes": "Ja"
-            }
-          },
-          "requireCaptcha": {
-            "help": "<p>Als u <strong>botspambeveiliging</strong> inschakelt, moeten gebruikers een Captcha invullen om te bevestigen dat ze menselijk zijn. Dit is handig om te voorkomen dat uw oproep door bots wordt gespamd.</p>\n",
-            "label": "Bescherming tegen botspam inschakelen op de callout?",
-            "opts": {
-              "all": "Ja, vraag alle gebruikers om te bevestigen dat ze menselijk zijn",
-              "guests": "Ja, vraag gasten om te bevestigen dat ze menselijk zijn",
-              "none": "Geen"
-            }
-          },
-          "responseImageFilter": {
-            "label": "Wilt u een filter toepassen op afbeeldingen?"
-          },
-          "responseImageProp": {
-            "help": "<p>De afbeelding wordt gebruikt om het antwoord te visualiseren in de kaart- of galerijweergave. Belangrijk: dit moet een bestandsuploadcomponent zijn.</p>\n",
-            "label": "Welk formulierveld moet worden gebruikt voor afbeeldingen van reacties?"
-          },
-          "responseLinks": {
-            "label": "Links toevoegen onderaan reacties?"
-          },
-          "responseTitleProp": {
-            "help": "<p>De titel wordt boven elk antwoord in de kaart- of galerieweergave weergegeven.</p>\n",
-            "label": "Welk formulierveld moet worden gebruikt als titel van het antwoord?"
-          },
-          "showResponses": {
-            "help": "<p>Zo ja, dan kunt u een kaart- of galerijweergave instellen om de antwoorden op de oproep te visualiseren.</p>\n",
-            "label": "Mogen gebruikers reacties openbaar zien?"
-          },
-          "visible": {
-            "help": "<p>U kunt de callout <strong>niet zichtbaar</strong> maken voor gebruikers als u alleen wilt dat deze wordt beantwoord door mensen met wie u de link deelt.</p>\n",
-            "label": "Moet het zichtbaar zijn in de dashboards van de gebruikers?",
-            "opts": {
-              "no": "Nee, alleen toegankelijk via de link",
-              "yes": "Ja, zichtbaar voor gebruikers"
-            }
-          },
-          "whichResponseBuckets": {
-            "label": "Welke responsemmers moeten openbaar worden weergegeven?"
-          },
-          "whichResponseViews": {
-            "help": "<p>Bepaal of u de kaartweergave of de galerijweergave of beide wilt gebruiken.</p>\n",
-            "label": "Welke reactieweergaven moeten zichtbaar zijn?",
-            "opts": {
-              "gallery": "Galerijweergave",
-              "map": "Kaartweergave"
-            }
-          },
-          "who": {
-            "help": "<p>Callouts kunnen worden gepresenteerd aan <strong>iedereen</strong> of worden beperkt tot deelname door <strong>alleen leden</strong></p>\n",
-            "label": "Wie kan deelnemen?",
-            "opts": {
-              "everyone": "Iedereen",
-              "members": "Alleen leden"
-            }
-          }
-        },
-        "title": "Instellingen"
-      },
-      "titleAndImage": {
-        "inputs": {
-          "description": {
-            "help": "<p>De <strong>Korte beschrijving</strong> borduurt voort op de titel om uit te leggen waar de callout over gaat. Het is bedoeld om mensen in een paar woorden te informeren over de inhoud.</p>\n",
-            "label": "Korte beschrijving",
-            "placeholder": "Leg snel uit waarom mensen deze callout zouden moeten openen."
-          },
-          "image": {
-            "help": "<p>De <strong>Omslagafbeelding</strong> dient als illustratie voor de callout op menu's en formulieren.</p>\n",
-            "label": "Afbeelding omslag"
-          },
-          "intro": {
-            "help": "<p>De <strong>Inleidingstekst</strong> verschijnt naast de callout. Het moet uitleggen waarom je deze callout maakt en context geven die de gebruiker nodig heeft voordat hij antwoordt.</p>\n",
-            "label": "Inleiding"
-          },
-          "overrideShare": {
-            "label": "Titel en beschrijving van de callout gebruiken om te delen?",
-            "opts": {
-              "no": "Nee, stel een aangepaste titel en beschrijving in",
-              "yes": "Ja"
-            }
-          },
-          "shareDescription": {
-            "help": "<p>Het <strong>Deel beschrijving</strong> veld stelt de korte beschrijving in zoals deze moet verschijnen op social media kaarten.</p>\n",
-            "label": "Beschrijving",
-            "placeholder": "Leg snel uit waarom mensen op deze oproep moeten reageren."
-          },
-          "shareTitle": {
-            "help": "<p>Het <strong>Share title</strong>-veld stelt de titel in zoals deze op kaarten voor sociale media moet verschijnen.</p>\n",
-            "label": "Titel delen",
-            "placeholder": "De naam van je callout"
-          },
-          "slug": {
-            "help": "<p>Je kunt de <strong>Permalink</strong> delen met gebruikers zodat ze toegang hebben tot de callout</p>\n",
-            "label": "Permalink",
-            "opts": {
-              "auto": "Automatisch genereren op basis van de titel van de callout",
-              "manual": "Aangepaste permalink instellen"
-            }
-          },
-          "title": {
-            "help": "<p>De <strong>Titel</strong> verschijnt bij alle vermeldingen van deze callout. Het loont de moeite om even de tijd te nemen om de juiste naam te bedenken zodat mensen geïnteresseerd raken.</p>\n",
-            "label": "Titel",
-            "placeholder": "De naam van je callout."
-          }
-        },
-        "title": "Titel en afbeelding",
-        "urlWillBe": "Permalink wordt"
-      }
-    },
-    "title": "Een oproep maken",
-    "untitledCallout": "Oproep zonder titel"
-  },
   "editCallout": {
     "replicated": "Je callout is succesvol gerepliceerd en je bent nu de nieuwe kopie aan het bewerken. Zorg ervoor dat je de titel aanpast op het tabblad “Titel en afbeelding”.",
     "title": "Bewerken: {title}",
@@ -996,6 +854,7 @@
     "addressLine1": "Adresregel 1",
     "addressLine2": "Adresregel 2",
     "cancel": "Annuleren",
+    "characters": {},
     "cityOrTown": "Stad",
     "deliveryOptIn": "Opt-in levering",
     "description": "Beschrijving",
@@ -1296,7 +1155,8 @@
     },
     "showingOf": "{start} tot {end} meldingen tonen uit {total}"
   },
-  "notification": {
+  "notifications": {
+    "copy": {},
     "error": "Er is iets misgegaan. Probeer de pagina opnieuw te laden."
   },
   "pageTitle": {

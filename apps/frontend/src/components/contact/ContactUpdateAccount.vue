@@ -97,10 +97,12 @@ import ContactBasicFields from './ContactBasicFields.vue';
 import ContactMailOptIn from './ContactMailOptIn.vue';
 import AppHeading from '../AppHeading.vue';
 import { client } from '@utils/api';
-import AppRadioGroup from '../forms/AppRadioGroup.vue';
-import AppForm from '../forms/AppForm.vue';
-import AppNotification from '../AppNotification.vue';
-import AppCheckbox from '../forms/AppCheckbox.vue';
+import {
+  AppCheckbox,
+  AppRadioGroup,
+  AppNotification,
+  AppForm,
+} from '@beabee/vue/components';
 import AppInput from '@components/forms/AppInput.vue';
 
 const props = defineProps<{

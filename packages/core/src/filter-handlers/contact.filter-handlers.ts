@@ -177,6 +177,7 @@ const calloutsFilterHandler: FilterHandler = (qb, args) => {
  * - newsletterGroups: Filters by newsletter group membership
  * - activePermission: Filters by active role permissions
  * - activeMembership: Filters by active membership status
+ * - activeUser: Filters by whether user has set a password or not
  * - membershipStarts: Filters by membership start date
  * - membershipExpires: Filters by membership expiration date
  * - contributionCancelled: Filters by cancelled contributions
@@ -190,6 +191,12 @@ export const contactFilterHandlers: FilterHandlers<string> = {
   newsletterGroups: profileField("newsletterGroups"),
   activePermission,
   activeMembership: activePermission,
+  activeUser: (qb, args) => {
+    qb.where(
+      // Convert password.hash to simple boolean field for simpler querying
+      args.convertToWhereClause(`(${args.fieldPrefix}password.hash <> '')`)
+    );
+  },
   membershipStarts: membershipField("dateAdded"),
   membershipExpires: membershipField("dateExpires"),
   contributionCancelled: contributionField("cancelledAt"),

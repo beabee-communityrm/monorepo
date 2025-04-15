@@ -1,55 +1,49 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div class="mb-4 flex gap-8">
-    <div class="flex-1">
-      <div v-if="!isFirst">
-        <LocaleInput
-          v-model="modelValue.prevText"
-          :label="t('calloutBuilder.prevButton')"
-          :locales="locales"
-          required
-        />
-      </div>
+  <div class="mb-4 flex flex-col gap-4">
+    <div v-if="!isFirst" class="flex-1">
+      <AppInput
+        v-model="modelValue.prevText.default"
+        :label="t('callout.builder.navigation.prevButton')"
+        required
+      />
     </div>
-    <div class="flex-1">
-      <div v-if="isLast">
-        <LocaleInput
-          v-model="modelValue.submitText"
-          :label="t('calloutBuilder.submitButton')"
-          :locales="locales"
+
+    <div v-if="isLast" class="flex-1">
+      <AppInput
+        v-model="modelValue.submitText.default"
+        :label="t('callout.builder.navigation.submitButton')"
+        required
+      />
+    </div>
+    <div v-else>
+      <div class="mb-4">
+        <AppInput
+          v-model="modelValue.nextText.default"
+          :label="t('callout.builder.navigation.nextButton')"
           required
         />
       </div>
-      <div v-else>
-        <div class="mb-4">
-          <LocaleInput
-            v-model="modelValue.nextText"
-            :label="t('calloutBuilder.nextButton')"
-            :locales="locales"
-            required
-          />
-        </div>
-        <AppSelect
-          v-model="modelValue.nextSlideId"
-          :label="t('calloutBuilder.nextSlide.label')"
-          :items="[
-            {
-              id: '',
-              label: t('calloutBuilder.nextSlide.default'),
-            },
-            ...slideItems,
-          ]"
-        />
-        <!-- </template> -->
-      </div>
+      <AppSelect
+        v-model="modelValue.nextSlideId"
+        :label="t('callout.builder.navigation.nextSlide.label')"
+        :items="[
+          {
+            id: '',
+            label: t('callout.builder.navigation.nextSlide.default'),
+          },
+          ...slideItems,
+        ]"
+      />
     </div>
   </div>
 </template>
 <script lang="ts" setup>
+// Translations moved to TranslationsTab
 import { useI18n } from 'vue-i18n';
 import { computed } from 'vue';
 
-import LocaleInput from '@components/forms/LocaleInput.vue';
+import AppInput from '@components/forms/AppInput.vue';
 import AppSelect from '@components/forms/AppSelect.vue';
 import type {
   FormBuilderNavigation,
@@ -64,7 +58,6 @@ const props = defineProps<{
   isFirst: boolean;
   isLast: boolean;
   modelValue: FormBuilderNavigation;
-  locales: string[];
 }>();
 
 const { t } = useI18n();

@@ -1,5 +1,5 @@
 <template>
-  <div class="grid grid-cols-12 gap-6">
+  <div class="grid max-w-[1400px] grid-cols-12 gap-6">
     <div class="col-span-12 md:col-span-6 xl:col-span-4">
       <slot name="col1" />
     </div>

@@ -5,11 +5,33 @@
     :target="external ? '_blank' : undefined"
     :rel="external ? 'noopener noreferrer' : undefined"
     :class="buttonClasses"
+    :title="title || name"
+    :aria-label="name || title"
+    :aria-disabled="disabled"
+    role="button"
   >
-    <font-awesome-icon v-if="icon" :icon="icon" /><slot />
+    <font-awesome-icon
+      v-if="icon"
+      :icon="icon"
+      aria-hidden="true"
+      class="pointer-events-none"
+    /><slot />
   </a>
-  <router-link v-else-if="to" :to="to" :class="buttonClasses">
-    <font-awesome-icon v-if="icon" :icon="icon" /><slot />
+  <router-link
+    v-else-if="to"
+    :to="to"
+    :class="buttonClasses"
+    :title="title || name"
+    :aria-label="name || title"
+    :aria-disabled="disabled"
+    role="button"
+  >
+    <font-awesome-icon
+      v-if="icon"
+      :icon="icon"
+      aria-hidden="true"
+      class="pointer-events-none"
+    /><slot />
   </router-link>
 
   <component
@@ -19,15 +41,29 @@
     :disabled="disabled || loading"
     :class="buttonClasses"
     :type="type"
+    :title="title || name"
+    :aria-label="name || title"
+    :aria-busy="loading"
+    :aria-disabled="disabled"
   >
-    <font-awesome-icon v-if="icon" :icon="icon" /><slot />
-    <span v-if="loading" class="absolute inset-0 bg-white opacity-30" />
+    <font-awesome-icon
+      v-if="icon"
+      :icon="icon"
+      aria-hidden="true"
+      class="pointer-events-none"
+    /><slot />
+    <span
+      v-if="loading"
+      class="absolute inset-0 bg-white opacity-30"
+      aria-hidden="true"
+    />
     <font-awesome-icon
       v-if="loading"
       class="absolute text-2xl"
       :class="loadingIconClasses"
       :icon="faCircleNotch"
       spin
+      aria-hidden="true"
     />
     <slot name="after" />
   </component>
@@ -37,6 +73,37 @@
 /**
  * A versatile button component that can render as a button, link, or router-link
  * with various styles and states.
+ *
+ * @component AppButton
+ *
+ * @example
+ * // Basic button
+ * <AppButton>Click me</AppButton>
+ *
+ * // Primary button with loading state
+ * <AppButton variant="primary" :loading="true">Loading...</AppButton>
+ *
+ * // External link button
+ * <AppButton href="https://example.com" external>External Link</AppButton>
+ *
+ * // Router link button
+ * <AppButton :to="{ name: 'home' }">Go Home</AppButton>
+ *
+ * @props {boolean} [disabled=false] - Disables the button
+ * @props {boolean} [loading=false] - Shows a loading spinner
+ * @props {('button'|'submit')} [type='button'] - HTML button type
+ * @props {string} [href] - URL for anchor tag
+ * @props {boolean} [external=false] - Opens link in new tab if true
+ * @props {RouteLocationRaw} [to] - Vue Router destination
+ * @props {string} [variant='primary'] - Button style variant
+ * @props {('xs'|'sm'|'md'|'lg')} [size='md'] - Button size
+ * @props {IconDefinition} [icon] - FontAwesome icon
+ * @props {('button'|'label')} [is='button'] - Component element type
+ * @props {string} [name] - For aria-label
+ * @props {string} [title] - For tooltip
+ *
+ * @exposes {Function} focus - Focuses the button element
+ * @exposes {Ref<HTMLElement>} innerButton - Reference to the button element
  */
 
 import {
@@ -54,6 +121,7 @@ export type ButtonVariant =
   | 'primaryOutlined'
   | 'linkOutlined'
   | 'dangerOutlined'
+  | 'dangerGhost'
   | 'greyOutlined'
   | 'text'
   | 'dangerText';
@@ -83,11 +151,6 @@ const variantClasses = {
     'text-primary',
   ],
   link: ['bg-link text-white border-link', 'hover:bg-link-110', 'text-link'],
-  danger: [
-    'bg-danger text-white border-danger',
-    'hover:bg-danger-110',
-    'text-danger',
-  ],
   primaryOutlined: [
     'bg-white text-primary-80 border-primary-40',
     'hover:bg-primary-10 hover:text-primary hover:border-primary-70',
@@ -109,7 +172,17 @@ const variantClasses = {
     'text-body',
   ],
   text: ['underline text-link border-0', 'hover:text-link-110', ''],
+  danger: [
+    'bg-danger text-white border-danger',
+    'hover:bg-danger-110',
+    'text-danger',
+  ],
   dangerText: ['underline text-danger border-0', 'hover:text-danger-110', ''],
+  dangerGhost: [
+    'bg-transparent border-0 text-body-60',
+    'hover:text-danger-70',
+    'text-body-60',
+  ],
 } as const;
 
 const sizeClasses = {
@@ -119,7 +192,39 @@ const sizeClasses = {
   lg: 'text-3xl px-4.5 py-4',
 } as const;
 
+/**
+ * Props for the AppButton component
+ */
+export interface AppButtonProps {
+  /** Whether the button is disabled */
+  disabled?: boolean;
+  /** Whether to show loading state */
+  loading?: boolean;
+  /** HTML button type */
+  type?: 'button' | 'submit';
+  /** URL for anchor tag */
+  href?: string;
+  /** Opens link in new tab */
+  external?: boolean;
+  /** Vue Router destination */
+  to?: RouteLocationRaw;
+  /** Button style variant */
+  variant?: ButtonVariant;
+  /** Button size */
+  size?: ButtonSize;
+  /** FontAwesome icon */
+  icon?: IconDefinition;
+  /** Component element type */
+  is?: 'button' | 'label';
+  /** Accessible name */
+  name?: string;
+  /** Tooltip text */
+  title?: string;
+}
+
 const props = withDefaults(defineProps<AppButtonProps>(), {
+  disabled: false,
+  loading: false,
   type: 'button',
   href: undefined,
   external: false,
@@ -128,9 +233,11 @@ const props = withDefaults(defineProps<AppButtonProps>(), {
   size: 'md',
   icon: undefined,
   is: 'button',
+  name: undefined,
+  title: undefined,
 });
 
-const innerButton = ref<HTMLAnchorElement | HTMLButtonElement | null>(null);
+const innerButton = ref<HTMLElement | null>(null);
 
 const focus = () => {
   if (innerButton.value) {
@@ -141,7 +248,7 @@ const focus = () => {
 const buttonClasses = computed(() => {
   return [
     // Base styles
-    'leading-tight inline-flex gap-2 justify-center items-center font-bold rounded whitespace-nowrap relative border',
+    'leading-tight inline-flex gap-2 justify-center items-center font-bold rounded whitespace-nowrap relative border focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-70',
     // Styles for in a button group
     'group-[]/btns:rounded-none group-[]/btns:last:rounded-r group-[]/btns:first:rounded-l group-[]/btns:-ml-px group-[]/btns:hover:z-10',
     // Size styles

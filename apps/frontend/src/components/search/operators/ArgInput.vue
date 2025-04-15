@@ -36,7 +36,7 @@ import type { RuleValue } from '@beabee/beabee-common';
 import { computed } from 'vue';
 import { formatLocale } from '../../../utils/dates';
 import AppInput from '../../forms/AppInput.vue';
-import AppRadioGroup from '../../forms/AppRadioGroup.vue';
+import { AppRadioGroup } from '@beabee/vue/components';
 import AppSelect from '../../forms/AppSelect.vue';
 import DateInput from './DateInput.vue';
 import { useI18n } from 'vue-i18n';

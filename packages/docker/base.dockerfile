@@ -7,7 +7,7 @@ ARG NODE_VERSION=22-bookworm-slim
 FROM node:${NODE_VERSION} AS base
 
 # https://github.com/nodejs/docker-node/blob/main/docs/BestPractices.md#handling-kernel-signals
-RUN apt-get update && apt-get install -y tini
+RUN apt-get update && apt-get install -y tini && rm -rf /var/lib/apt/lists/*
 
 # Copy the workspace configuration
 COPY --chown=node:node package.json yarn.lock .yarnrc.yml /opt/
@@ -105,7 +105,7 @@ CMD [ "node", "./built/api/app.js" ]
 ## Cron image
 FROM dist-backend AS cron_app
 
-RUN apt-get install -y cron rsyslog && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y cron rsyslog && rm -rf /var/lib/apt/lists/*
 
 # Disable Kernal logging
 RUN sed -i '/imklog/s/^/#/' /etc/rsyslog.conf

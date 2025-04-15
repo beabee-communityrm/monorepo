@@ -11,7 +11,7 @@ import { computed, ref, watchEffect } from 'vue';
 import { i18n } from '@lib/i18n';
 import { generalContent } from '@store';
 import { type Header } from '@components/table/table.interface';
-import type { SelectItem } from '@components/forms/form.interface';
+import type { SelectItem } from '@beabee/vue/types';
 
 import { withItems, withLabel } from '@utils/rules';
 
@@ -149,6 +149,10 @@ const filterItems = computed<FilterItems<ContactFilterName>>(() => ({
     contactFilters.activeMembership,
     t('contacts.data.activeMembership')
   ),
+  activeUser: withLabel(
+    contactFilters.activeUser,
+    t('contacts.data.activeUser')
+  ),
   membershipStarts: withLabel(
     contactFilters.membershipStarts,
     t('contacts.data.membershipStarts')
@@ -234,6 +238,7 @@ export function useContactFilters() {
       items: withItems(filterItems, [
         'activePermission',
         'activeMembership',
+        'activeUser',
         'membershipStarts',
         'membershipExpires',
       ]),

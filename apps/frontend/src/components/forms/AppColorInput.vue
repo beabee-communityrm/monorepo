@@ -32,11 +32,15 @@ import { ref, watch } from 'vue';
 import useVuelidate from '@vuelidate/core';
 import { faSort } from '@fortawesome/free-solid-svg-icons';
 
-const emit = defineEmits(['update:modelValue']);
-const props = defineProps<{
+export interface AppColorInputProps {
+  /** The id of the color input */
   id: string;
+  /** The model value of the color input */
   modelValue: string;
-}>();
+}
+
+const emit = defineEmits(['update:modelValue']);
+const props = defineProps<AppColorInputProps>();
 
 const validation = useVuelidate();
 const colorText = ref(props.modelValue);

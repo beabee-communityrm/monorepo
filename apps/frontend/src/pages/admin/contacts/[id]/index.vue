@@ -279,7 +279,7 @@ import RoleEditor from '@components/role/RoleEditor.vue';
 import AppInfoList from '@components/AppInfoList.vue';
 import AppInfoListItem from '@components/AppInfoListItem.vue';
 import RichTextEditor from '@components/rte/RichTextEditor.vue';
-import AppForm from '@components/forms/AppForm.vue';
+import { AppForm } from '@beabee/vue/components';
 import PaymentMethod from '@components/payment-method/PaymentMethod.vue';
 import AppConfirmDialog from '@components/AppConfirmDialog.vue';
 import App2ColGrid from '@components/App2ColGrid.vue';
