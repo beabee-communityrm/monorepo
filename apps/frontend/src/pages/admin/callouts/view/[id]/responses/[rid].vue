@@ -111,6 +111,7 @@ meta:
         with-text
         :reviewer-items="reviewerItems"
         :current-assignee-id="response.assignee?.id"
+        :manage-url="`/admin/callouts/view/${callout.slug}/responses/tags`"
         :disabled="doingAction"
         :loading="doingAction"
         @assign="
