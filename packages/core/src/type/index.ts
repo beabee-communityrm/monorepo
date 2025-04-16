@@ -15,6 +15,8 @@ export * from "./email-mailing-recipient";
 export * from "./email";
 export * from "./export-type-id";
 export * from "./filter-handlers";
+export * from "./image-metadata";
+export * from "./image-service-config";
 export * from "./login-data";
 export * from "./mc-batch";
 export * from "./mc-member";

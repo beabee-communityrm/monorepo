@@ -11,7 +11,7 @@ import {
 
 import ContactsService from "@beabee/core/services/ContactsService";
 
-import { login } from "@api/utils";
+import { login } from "@api/utils/auth";
 import {
   CreateResetPasswordDto,
   UpdateResetPasswordDto

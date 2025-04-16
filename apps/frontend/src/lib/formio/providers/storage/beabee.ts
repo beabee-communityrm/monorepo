@@ -33,20 +33,22 @@ export default class BeabeeStorage {
       throw new Error(t('form.errors.file.tooBig'));
     }
 
-    const uploadFlow = await client.upload.createFlow();
-
     const controller = new AbortController();
     if (typeof abortCallback === 'function') {
       abortCallback(() => controller.abort());
     }
 
     try {
-      const { url } = await client.upload.uploadFile(file, uploadFlow.id);
+      // Direkter Upload mit dem neuen ImageService
+      const response = await client.upload.uploadFile(file);
+
+      // Direkter Zugriff auf die URL vom Response
+      const imageUrl = response.url;
 
       return {
         storage: 'beabee',
         name,
-        url: url,
+        url: imageUrl,
         size: file.size,
       };
     } catch (err) {

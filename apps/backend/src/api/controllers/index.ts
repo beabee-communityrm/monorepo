@@ -7,6 +7,7 @@ export * from "./ContactController.js";
 export * from "./ContactTagController.js";
 export * from "./ContentController.js";
 export * from "./EmailController.js";
+export * from "./ImageController.js";
 export * from "./NoticeController.js";
 export * from "./PaymentController.js";
 export * from "./ResetDeviceController.js";

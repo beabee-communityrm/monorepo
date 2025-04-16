@@ -5,6 +5,16 @@ import { cleanUrl } from "../utils/index.js";
 import { ClientApiError } from "../utils/index.js";
 
 /**
+ * Response from uploadFile
+ */
+export interface UploadFileResponse {
+  /** ID des hochgeladenen Bildes */
+  id: string;
+  /** URL zum hochgeladenen Bild (für Kompatibilität mit altem Client) */
+  url: string;
+}
+
+/**
  * Client for managing file uploads
  */
 export class UploadClient extends BaseClient {
@@ -15,53 +25,42 @@ export class UploadClient extends BaseClient {
   constructor(protected override readonly options: BaseClientOptions) {
     super({
       ...options,
-      path: cleanUrl(options.path + "/upload")
+      path: cleanUrl(options.path + "/images")
     });
   }
 
   /**
-   * Creates a new upload flow
-   * @returns Upload flow data
-   */
-  async createFlow(): Promise<GetUploadFlowData> {
-    const { data } = await this.fetch.post<Serial<GetUploadFlowData>>("");
-    return data;
-  }
-
-  /**
-   * Uploads a file using the provided upload flow
+   * Uploads a file using the new image service
    * @param file - The file to upload
-   * @param flowId - The ID of the upload flow
-   * @returns The URL of the uploaded file
+   * @returns The uploaded image ID and URL
    * @throws {ClientApiError} If the file is too large or rate limit is exceeded
    */
-  async uploadFile(file: File, flowId: string): Promise<{ url: string }> {
+  async uploadFile(file: File): Promise<UploadFileResponse> {
     // Check file size (20MB limit)
     const MAX_FILE_SIZE = 20 * 1024 * 1024;
     if (file.size >= MAX_FILE_SIZE) {
       throw new ClientApiError("File too large", {
         httpCode: 413,
-        code: "FILE_TOO_LARGE"
+        code: "LIMIT_FILE_SIZE"
       });
     }
 
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append("image", file);
 
     try {
-      const { data } = await this.fetch.post<{ url: string }>(
-        "upload/",
-        formData,
-        {
-          params: {
-            token: flowId
-          },
-          basePath: "/", // This removes the /api/1.0/upload prefix from the URL
-          dataType: "multipart"
-        }
-      );
+      const { data } = await this.fetch.post<{ id: string }>("", formData, {
+        dataType: "multipart"
+      });
 
-      return data;
+      // Für Kompatibilität mit bestehendem Code die URL direkt zurückgeben
+      const baseUrl = this.options.basePath || "";
+      const url = `${baseUrl}/uploads/${data.id}`;
+
+      return {
+        id: data.id,
+        url
+      };
     } catch (error) {
       // Rethrow rate limit errors with custom message
       if (error instanceof ClientApiError && error.httpCode === 429) {
@@ -72,5 +71,17 @@ export class UploadClient extends BaseClient {
       }
       throw error;
     }
+  }
+
+  /**
+   * Gets the URL for an image with the specified width
+   * @param id - The image ID
+   * @param width - The desired width in pixels (optional)
+   * @returns The URL of the image
+   */
+  getImageUrl(id: string, width?: number): string {
+    const baseUrl = this.options.basePath || "";
+    const url = `${baseUrl}/uploads/${id}`;
+    return width ? `${url}?w=${width}` : url;
   }
 }

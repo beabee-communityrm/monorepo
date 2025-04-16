@@ -6,6 +6,7 @@ import { getRepository } from "#database";
 
 import { Contact, UploadFlow } from "#models/index";
 
+/** @deprecated Use ImageService.uploadImage instead */
 class UploadFlowService {
   /**
    * Create an upload flow for the given contact and IP address, checking that they
@@ -79,5 +80,7 @@ class UploadFlowService {
   }
 }
 
+/** @deprecated Use ImageService.uploadImage instead */
 export const uploadFlowService = new UploadFlowService();
+/** @deprecated Use ImageService.uploadImage instead */
 export default uploadFlowService;

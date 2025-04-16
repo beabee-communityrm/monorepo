@@ -111,17 +111,23 @@ async function handleChange() {
   formError.value = '';
 
   try {
-    const flow = await client.upload.createFlow();
-    const { url } = await client.upload.uploadFile(file, flow.id);
+    // Upload of the image via the new API
+    const response = await client.upload.uploadFile(file);
 
+    // Create URL with width parameter
+    const uploadedUrl = `${response.url}?w=${props.width}`;
+
+    // Local preview of the uploaded image
     imageUrl.value = URL.createObjectURL(file);
-    emit('update:modelValue', `${url}?w=${props.width}&h=${props.height}`);
+
+    // Actual URL to emit to the parent component
+    emit('update:modelValue', uploadedUrl);
   } catch (error) {
     if (error instanceof ClientApiError) {
       formError.value =
         error.code === 'RATE_LIMIT_EXCEEDED'
           ? t('form.errors.file.rateLimited')
-          : error.code === 'FILE_TOO_LARGE'
+          : error.code === 'LIMIT_FILE_SIZE'
             ? t('form.errors.file.tooBig')
             : t('form.errorMessages.generic');
     } else {

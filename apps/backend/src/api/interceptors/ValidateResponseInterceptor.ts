@@ -13,13 +13,19 @@ import { validateOrReject } from "@api/utils";
 
 const log = mainLogger.child({ app: "validate-response-interceptor" });
 
+// TODO: Do not use this for all controllers and use `@UseInterceptor(ValidateResponseInterceptor)` instead?
 @Interceptor()
 export class ValidateResponseInterceptor implements InterceptorInterface {
   async intercept(action: Action, content: any) {
+    // Skip validation for:
+    // - undefined/null content
+    // - ServerResponse objects
+    // - Buffer objects (for binary data like images)
     if (
       content === undefined ||
       content === null ||
-      content instanceof ServerResponse
+      content instanceof ServerResponse ||
+      Buffer.isBuffer(content)
     ) {
       return content;
     }
