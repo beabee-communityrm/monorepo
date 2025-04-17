@@ -180,7 +180,7 @@ services:
       /bin/sh -c "
       if [ \"$${MIGRATE_IMAGES}\" = \"true\" ]; then
         echo 'Starting image migration...' &&
-        yarn backend-cli migrate-images --source=/old_data --endpoint=$${MINIO_ENDPOINT} --accessKey=$${MINIO_ROOT_USER:-minioadmin} --secretKey=$${MINIO_ROOT_PASSWORD:-minioadmin} --bucket=$${MINIO_BUCKET:-uploads};
+        yarn backend-cli migrate-images --source=/old_data;
       else
         echo 'Image migration skipped (MIGRATE_IMAGES is not set to true)' &&
         exit 0;
@@ -197,12 +197,10 @@ services:
         condition: service_healthy
       minio_client:
         condition: service_completed_successfully
+      db:
+        condition: service_healthy
     environment:
       - MIGRATE_IMAGES=${MIGRATE_IMAGES:-true}
-      - MINIO_ENDPOINT=${MINIO_ENDPOINT:-http://minio:9000}
-      - MINIO_ROOT_USER=${MINIO_ROOT_USER:-minioadmin}
-      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD:-minioadmin}
-      - MINIO_BUCKET=${MINIO_BUCKET:-uploads}
     env_file:
       - .env
 

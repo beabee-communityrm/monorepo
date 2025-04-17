@@ -6,22 +6,22 @@ import {
   MigrateImagesOptions,
   MigrationStats
 } from "../../types/migrate-images.js";
-import { findImageDirectories, findMainImage } from "../../utils/files.js";
+import { findMainImage } from "../../utils/files.js";
 import {
   formatFileSize,
   formatSuccessMessage,
-  formatSkipMessage,
   formatDryRunMessage
 } from "../../utils/format.js";
-import {
-  createS3Client,
-  checkBucketExists,
-  checkFileExists,
-  uploadFileToS3
-} from "../../utils/s3.js";
+
+// Import the required services and utilities from core
+import { imageService } from "@beabee/core/services/ImageService";
+import { calloutsService } from "@beabee/core/services/CalloutsService";
+import { config } from "@beabee/core/config";
+import { connect as connectToDatabase } from "@beabee/core/database";
+import { optionsService } from "@beabee/core/services/OptionsService";
 
 /**
- * Migrates images from local storage to MinIO
+ * Migrates images from local storage to MinIO using ImageService
  * @param options Migration options
  */
 export async function migrateImages(
@@ -33,18 +33,30 @@ export async function migrateImages(
       console.log(chalk.yellow("DRY RUN MODE: No files will be uploaded"));
     }
 
-    // Initialize S3 client and check bucket
-    const s3Client = createS3Client(
-      options.endpoint,
-      options.region,
-      options.accessKey,
-      options.secretKey
-    );
+    // Initialize database connection
+    console.log("Initializing database connection...");
+    try {
+      await connectToDatabase();
+      console.log(chalk.green("✓ Database connection established"));
+    } catch (error) {
+      console.error(chalk.red("Failed to connect to database:"), error);
+      throw new Error("Database connection failed. Migration cannot proceed.");
+    }
 
-    await checkBucketExists(s3Client, options.bucket);
+    // Check the connection to MinIO via ImageService
+    console.log("Checking MinIO connection...");
+    const connectionTest = await imageService.checkConnection();
+    if (!connectionTest) {
+      throw new Error("Failed to connect to MinIO. Check your configuration.");
+    }
 
-    // Process all images
-    const stats = await processAllImages(s3Client, options);
+    console.log(chalk.green("✓ Successfully connected to MinIO"));
+
+    // Reload options to ensure we have the optionsService initialised
+    await optionsService.reload();
+
+    // Process callout images
+    const stats = await processCalloutImages(options);
 
     // Print summary
     printMigrationSummary(stats, isDryRun);
@@ -55,13 +67,11 @@ export async function migrateImages(
 }
 
 /**
- * Process all images from source directory
- * @param s3Client S3 client
+ * Process callout images from callouts
  * @param options Migration options
  * @returns Migration statistics
  */
-async function processAllImages(
-  s3Client: any,
+async function processCalloutImages(
   options: MigrateImagesOptions
 ): Promise<MigrationStats> {
   const stats: MigrationStats = {
@@ -71,20 +81,57 @@ async function processAllImages(
     totalSizeBytes: 0
   };
 
-  // Analyze PictShare storage structure
-  console.log(`Analyzing PictShare storage in ${options.source}...`);
+  // Get all callouts
+  console.log("Fetching callouts...");
+  const callouts = await calloutsService.listCallouts();
+  console.log(`Found ${callouts.length} callouts`);
 
-  // Get all directories in the source folder
-  const directories = await findImageDirectories(options.source);
-  console.log(`Found ${directories.length} image directories`);
+  for (const callout of callouts) {
+    // Check if the callout has an image
+    if (!callout.image) {
+      console.log(chalk.gray(`Skipping callout ${callout.id}: No image`));
+      continue;
+    }
 
-  // Process each directory
-  for (const dir of directories) {
-    try {
-      await processImageDirectory(s3Client, options, dir, stats);
-    } catch (error) {
-      stats.errorCount++;
-      console.error(`Error processing directory ${dir}:`, error);
+    // Strip query parameters for pattern matching
+    const baseImageUrl = callout.image.split("?")[0];
+
+    // Check what type of image URL we have
+    if (baseImageUrl.includes("/uploads/")) {
+      // Old URL format that needs migration
+      try {
+        await processCalloutImage(options, callout, stats);
+      } catch (error) {
+        stats.errorCount++;
+        console.error(
+          `Error processing image for callout ${callout.id}:`,
+          error
+        );
+      }
+    } else if (baseImageUrl.includes("/api/1.0/images/")) {
+      // Already using new URL format, skip it
+      console.log(
+        chalk.cyan(
+          `⏭ Skipping callout ${callout.id}: Image already migrated (${callout.image})`
+        )
+      );
+      stats.skippedCount++;
+    } else {
+      // Attempt to migrate any other format we don't recognize
+      console.log(
+        chalk.yellow(
+          `ℹ Trying to migrate unknown format for callout ${callout.id}: ${callout.image}`
+        )
+      );
+      try {
+        await processCalloutImage(options, callout, stats);
+      } catch (error) {
+        stats.errorCount++;
+        console.error(
+          `Error processing image for callout ${callout.id}:`,
+          error
+        );
+      }
     }
   }
 
@@ -92,75 +139,107 @@ async function processAllImages(
 }
 
 /**
- * Process a single image directory
- * @param s3Client S3 client
+ * Process a single callout image
  * @param options Migration options
- * @param dirName Directory name
+ * @param callout The callout with id, slug, and image
  * @param stats Migration statistics to update
  */
-async function processImageDirectory(
-  s3Client: any,
+async function processCalloutImage(
   options: MigrateImagesOptions,
-  dirName: string,
+  callout: { id: string; slug: string; image: string },
   stats: MigrationStats
 ): Promise<void> {
-  const dirPath = path.join(options.source, dirName);
-  const mainImage = await findMainImage(dirPath);
+  let imageKey: string;
+  let width: string | null = null;
 
-  if (!mainImage) {
-    return; // No valid image found in this directory
+  // Extract width parameter if present
+  const widthMatch = callout.image.match(/[?&]w=(\d+)/);
+  if (widthMatch) {
+    width = widthMatch[1];
   }
 
-  const filePath = path.join(dirPath, mainImage);
-  // Use the directory name as the image key (without nested folder)
-  const s3Key = dirName;
+  // Extract the image key from the image URL/path, removing any query parameters
+  if (callout.image.includes("/uploads/")) {
+    // Format: /uploads/abc123?w=1440
+    const uploadPath = callout.image.split("/uploads/")[1];
+    imageKey = uploadPath.split("?")[0]; // Remove query parameters
+  } else if (!callout.image.includes("/")) {
+    // Direct key format: abc123?w=1440
+    imageKey = callout.image.split("?")[0]; // Remove query parameters
+  } else {
+    console.log(
+      chalk.yellow(
+        `⚠ Unsupported image format for callout ${callout.id}: ${callout.image}`
+      )
+    );
+    stats.errorCount++;
+    return;
+  }
+
+  console.log(
+    chalk.blue(`Extracted image key: ${imageKey} from ${callout.image}`)
+  );
+
+  const sourcePath = path.join(options.source, imageKey);
+  const mainImage = await findMainImage(sourcePath);
+
+  if (!mainImage) {
+    console.log(
+      chalk.yellow(
+        `⚠ No image found for callout ${callout.id} at ${sourcePath}`
+      )
+    );
+    stats.errorCount++;
+    return;
+  }
+
+  const filePath = path.join(sourcePath, mainImage);
 
   // Get file stats for size calculation
   const fileStats = await fs.stat(filePath);
 
-  // Check if file already exists in S3
-  if (!options.dryRun) {
-    const fileExists = await checkFileExists(s3Client, options.bucket, s3Key);
+  console.log(
+    chalk.blue(
+      `Processing image for callout ${callout.id} (${callout.slug}): ${filePath}`
+    )
+  );
 
-    if (fileExists) {
-      console.log(formatSkipMessage(s3Key));
-      stats.skippedCount++;
-      return;
+  if (!options.dryRun) {
+    try {
+      // Read the file as buffer
+      const fileBuffer = await fs.readFile(filePath);
+
+      // Upload the image using ImageService
+      const uploadedImage = await imageService.uploadImage(fileBuffer);
+
+      // Update the callout with the new image ID, preserving width parameter if it existed
+      const newImageUrl = `${config.audience}/api/1.0/images/${uploadedImage.id}${width ? "?w=" + width : ""}`;
+
+      await calloutsService.updateCallout(callout.id, {
+        image: newImageUrl
+      });
+
+      console.log(
+        formatSuccessMessage(
+          `${callout.id} (${callout.slug})`,
+          fileStats.size
+        ) + ` - New image URL: ${newImageUrl}`
+      );
+
+      stats.successCount++;
+      stats.totalSizeBytes += fileStats.size;
+    } catch (error) {
+      stats.errorCount++;
+      console.error(`Error uploading image for callout ${callout.id}:`, error);
     }
-  }
-
-  // Process the file
-  await processFile(s3Client, options, filePath, s3Key, fileStats.size, stats);
-}
-
-/**
- * Process an individual file
- * @param s3Client S3 client
- * @param options Migration options
- * @param filePath Local file path
- * @param s3Key S3 object key
- * @param fileSize File size in bytes
- * @param stats Migration statistics to update
- */
-async function processFile(
-  s3Client: any,
-  options: MigrateImagesOptions,
-  filePath: string,
-  s3Key: string,
-  fileSize: number,
-  stats: MigrationStats
-): Promise<void> {
-  stats.totalSizeBytes += fileSize;
-
-  if (!options.dryRun) {
-    // Upload file to S3
-    await uploadFileToS3(s3Client, options.bucket, s3Key, filePath);
-    console.log(formatSuccessMessage(s3Key, fileSize));
   } else {
-    console.log(formatDryRunMessage(s3Key, fileSize));
+    // Dry run mode
+    console.log(
+      formatDryRunMessage(`${callout.id} (${callout.slug})`, fileStats.size)
+    );
+    stats.successCount++;
+    stats.totalSizeBytes += fileStats.size;
   }
-
-  stats.successCount++;
 }
 
 /**
@@ -175,20 +254,20 @@ function printMigrationSummary(stats: MigrationStats, isDryRun: boolean): void {
     console.log(chalk.yellow("DRY RUN - No files were actually uploaded"));
     console.log(
       chalk.green(
-        `✓ Would migrate: ${stats.successCount} files (${formatFileSize(stats.totalSizeBytes)})`
+        `✓ Would migrate: ${stats.successCount} callout images (${formatFileSize(stats.totalSizeBytes)})`
       )
     );
   } else {
     console.log(
       chalk.green(
-        `✓ Successfully migrated: ${stats.successCount} files (${formatFileSize(stats.totalSizeBytes)})`
+        `✓ Successfully migrated: ${stats.successCount} callout images (${formatFileSize(stats.totalSizeBytes)})`
       )
     );
 
     if (stats.skippedCount > 0) {
       console.log(
         chalk.cyan(
-          `⏭ Skipped: ${stats.skippedCount} files (already existed in bucket)`
+          `⏭ Skipped: ${stats.skippedCount} callout images (already migrated or no image)`
         )
       );
     }
@@ -196,12 +275,12 @@ function printMigrationSummary(stats: MigrationStats, isDryRun: boolean): void {
 
   if (stats.errorCount > 0) {
     console.log(
-      chalk.red(`✗ Failed to process: ${stats.errorCount} directories`)
+      chalk.red(`✗ Failed to process: ${stats.errorCount} callout images`)
     );
     console.log(chalk.yellow("Please check the logs for details."));
   } else if (stats.successCount > 0 || stats.skippedCount > 0) {
     console.log(chalk.green("✓ Process completed successfully!"));
   } else {
-    console.log(chalk.yellow("No files found to migrate."));
+    console.log(chalk.yellow("No callout images found to migrate."));
   }
 }

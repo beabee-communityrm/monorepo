@@ -72,6 +72,22 @@ class CalloutsService {
   }
 
   /**
+   * List all callouts with minimal information
+   * This method should NOT be used in controllers, use CalloutTransformer instead
+   * @returns Array of callouts with id, slug, and image fields
+   */
+  async listCallouts(): Promise<
+    Array<{ id: string; slug: string; image: string }>
+  > {
+    log.info("Listing all callouts for migration purposes");
+    const callouts = await getRepository(Callout).find({
+      select: ["id", "slug", "image"]
+    });
+
+    return callouts;
+  }
+
+  /**
    * Update a callout
    * @param id The callout ID
    * @param data The new callout data
