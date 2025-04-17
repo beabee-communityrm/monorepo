@@ -16,9 +16,53 @@ import {
 // Import the required services and utilities from core
 import { imageService } from "@beabee/core/services/ImageService";
 import { calloutsService } from "@beabee/core/services/CalloutsService";
+import { optionsService } from "@beabee/core/services/OptionsService";
 import { config } from "@beabee/core/config";
 import { connect as connectToDatabase } from "@beabee/core/database";
-import { optionsService } from "@beabee/core/services/OptionsService";
+
+/**
+ * Helper function to check if an image URL is already migrated
+ * @param imageUrl The image URL to check
+ * @returns True if the image is already migrated, false otherwise
+ */
+function isImageMigrated(imageUrl: string): boolean {
+  // Strip query parameters for pattern matching
+  const baseImageUrl = imageUrl.split("?")[0];
+
+  // Check if the image URL contains the new API path
+  return baseImageUrl.includes("/api/1.0/images/");
+}
+
+/**
+ * Helper function to extract the image key from a URL
+ * @param imageUrl The image URL
+ * @returns Object with extracted image key and width
+ */
+function extractImageInfo(imageUrl: string): {
+  imageKey: string | null;
+  width: string | null;
+} {
+  let imageKey: string | null = null;
+  let width: string | null = null;
+
+  // Extract width parameter if present
+  const widthMatch = imageUrl.match(/[?&]w=(\d+)/);
+  if (widthMatch) {
+    width = widthMatch[1];
+  }
+
+  // Extract the image key from the image URL/path, removing any query parameters
+  if (imageUrl.includes("/uploads/")) {
+    // Format: /uploads/abc123?w=1440
+    const uploadPath = imageUrl.split("/uploads/")[1];
+    imageKey = uploadPath.split("?")[0]; // Remove query parameters
+  } else if (!imageUrl.includes("/")) {
+    // Direct key format without slashes
+    imageKey = imageUrl.split("?")[0]; // Remove query parameters
+  }
+
+  return { imageKey, width };
+}
 
 /**
  * Migrates images from local storage to MinIO using ImageService
@@ -55,8 +99,33 @@ export async function migrateImages(
     // Reload options to ensure we have the optionsService initialised
     await optionsService.reload();
 
+    // Create a stats object to track migration progress
+    const stats: MigrationStats = {
+      successCount: 0,
+      skippedCount: 0,
+      errorCount: 0,
+      totalSizeBytes: 0
+    };
+
     // Process callout images
-    const stats = await processCalloutImages(options);
+    console.log(chalk.blue("\n=== Migrating Callout Images ==="));
+    const calloutStats = await processCalloutImages(options);
+
+    // Merge stats
+    stats.successCount += calloutStats.successCount;
+    stats.skippedCount += calloutStats.skippedCount;
+    stats.errorCount += calloutStats.errorCount;
+    stats.totalSizeBytes += calloutStats.totalSizeBytes;
+
+    // Process content images (logo, share image)
+    console.log(chalk.blue("\n=== Migrating Option Images ==="));
+    const optionStats = await processOptionImages(options);
+
+    // Merge stats
+    stats.successCount += optionStats.successCount;
+    stats.skippedCount += optionStats.skippedCount;
+    stats.errorCount += optionStats.errorCount;
+    stats.totalSizeBytes += optionStats.totalSizeBytes;
 
     // Print summary
     printMigrationSummary(stats, isDryRun);
@@ -93,11 +162,16 @@ async function processCalloutImages(
       continue;
     }
 
-    // Strip query parameters for pattern matching
-    const baseImageUrl = callout.image.split("?")[0];
-
-    // Check what type of image URL we have
-    if (baseImageUrl.includes("/uploads/")) {
+    // Check if the image is already migrated
+    if (isImageMigrated(callout.image)) {
+      // Already using new URL format, skip it
+      console.log(
+        chalk.cyan(
+          `⏭ Skipping callout ${callout.id}: Image already migrated (${callout.image})`
+        )
+      );
+      stats.skippedCount++;
+    } else if (callout.image.includes("/uploads/")) {
       // Old URL format that needs migration
       try {
         await processCalloutImage(options, callout, stats);
@@ -108,14 +182,6 @@ async function processCalloutImages(
           error
         );
       }
-    } else if (baseImageUrl.includes("/api/1.0/images/")) {
-      // Already using new URL format, skip it
-      console.log(
-        chalk.cyan(
-          `⏭ Skipping callout ${callout.id}: Image already migrated (${callout.image})`
-        )
-      );
-      stats.skippedCount++;
     } else {
       // Attempt to migrate any other format we don't recognize
       console.log(
@@ -139,6 +205,96 @@ async function processCalloutImages(
 }
 
 /**
+ * Process images stored in options settings
+ * @param options Migration options
+ * @returns Migration statistics
+ */
+async function processOptionImages(
+  options: MigrateImagesOptions
+): Promise<MigrationStats> {
+  const stats: MigrationStats = {
+    successCount: 0,
+    skippedCount: 0,
+    errorCount: 0,
+    totalSizeBytes: 0
+  };
+
+  // Define which option keys contain images
+  const imageOptions = [
+    { key: "logo" as const, label: "Logo" },
+    { key: "share-image" as const, label: "Share Image" }
+  ];
+
+  console.log("Checking option images...");
+
+  // Process each option that might contain an image
+  for (const imageOption of imageOptions) {
+    const imageUrl = optionsService.getText(imageOption.key);
+
+    // Skip if no image URL
+    if (!imageUrl) {
+      console.log(chalk.gray(`Skipping ${imageOption.label}: No image URL`));
+      continue;
+    }
+
+    // String type assertion for TypeScript
+    const imageUrlStr = imageUrl as string;
+
+    // Check if the image is already migrated
+    if (isImageMigrated(imageUrlStr)) {
+      // Already using new URL format, skip it
+      console.log(
+        chalk.cyan(
+          `⏭ Skipping ${imageOption.label}: Image already migrated (${imageUrlStr})`
+        )
+      );
+      stats.skippedCount++;
+    } else if (imageUrlStr.includes("/uploads/")) {
+      // Old URL format that needs migration
+      try {
+        await processOptionImage(
+          options,
+          imageOption.key,
+          imageOption.label,
+          imageUrlStr,
+          stats
+        );
+      } catch (error) {
+        stats.errorCount++;
+        console.error(
+          `Error processing image for ${imageOption.label}:`,
+          error
+        );
+      }
+    } else {
+      // Attempt to migrate any other format we don't recognize
+      console.log(
+        chalk.yellow(
+          `ℹ Trying to migrate unknown format for ${imageOption.label}: ${imageUrlStr}`
+        )
+      );
+      try {
+        await processOptionImage(
+          options,
+          imageOption.key,
+          imageOption.label,
+          imageUrlStr,
+          stats
+        );
+      } catch (error) {
+        stats.errorCount++;
+        console.error(
+          `Error processing image for ${imageOption.label}:`,
+          error
+        );
+      }
+    }
+  }
+
+  return stats;
+}
+
+/**
  * Process a single callout image
  * @param options Migration options
  * @param callout The callout with id, slug, and image
@@ -149,24 +305,10 @@ async function processCalloutImage(
   callout: { id: string; slug: string; image: string },
   stats: MigrationStats
 ): Promise<void> {
-  let imageKey: string;
-  let width: string | null = null;
+  // Extract image info
+  const { imageKey, width } = extractImageInfo(callout.image);
 
-  // Extract width parameter if present
-  const widthMatch = callout.image.match(/[?&]w=(\d+)/);
-  if (widthMatch) {
-    width = widthMatch[1];
-  }
-
-  // Extract the image key from the image URL/path, removing any query parameters
-  if (callout.image.includes("/uploads/")) {
-    // Format: /uploads/abc123?w=1440
-    const uploadPath = callout.image.split("/uploads/")[1];
-    imageKey = uploadPath.split("?")[0]; // Remove query parameters
-  } else if (!callout.image.includes("/")) {
-    // Direct key format: abc123?w=1440
-    imageKey = callout.image.split("?")[0]; // Remove query parameters
-  } else {
+  if (!imageKey) {
     console.log(
       chalk.yellow(
         `⚠ Unsupported image format for callout ${callout.id}: ${callout.image}`
@@ -237,6 +379,88 @@ async function processCalloutImage(
     console.log(
       formatDryRunMessage(`${callout.id} (${callout.slug})`, fileStats.size)
     );
+    stats.successCount++;
+    stats.totalSizeBytes += fileStats.size;
+  }
+}
+
+/**
+ * Process a single option image
+ * @param options Migration options
+ * @param optionKey The option key containing the image URL
+ * @param optionLabel Human-readable label for the option
+ * @param imageUrl The image URL to process
+ * @param stats Migration statistics to update
+ */
+async function processOptionImage(
+  options: MigrateImagesOptions,
+  optionKey: "logo" | "share-image",
+  optionLabel: string,
+  imageUrl: string,
+  stats: MigrationStats
+): Promise<void> {
+  // Extract image info
+  const { imageKey, width } = extractImageInfo(imageUrl);
+
+  if (!imageKey) {
+    console.log(
+      chalk.yellow(
+        `⚠ Unsupported image format for ${optionLabel}: ${imageUrl}`
+      )
+    );
+    stats.errorCount++;
+    return;
+  }
+
+  console.log(chalk.blue(`Extracted image key: ${imageKey} from ${imageUrl}`));
+
+  const sourcePath = path.join(options.source, imageKey);
+  const mainImage = await findMainImage(sourcePath);
+
+  if (!mainImage) {
+    console.log(
+      chalk.yellow(`⚠ No image found for ${optionLabel} at ${sourcePath}`)
+    );
+    stats.errorCount++;
+    return;
+  }
+
+  const filePath = path.join(sourcePath, mainImage);
+
+  // Get file stats for size calculation
+  const fileStats = await fs.stat(filePath);
+
+  console.log(chalk.blue(`Processing image for ${optionLabel}: ${filePath}`));
+
+  if (!options.dryRun) {
+    try {
+      // Read the file as buffer
+      const fileBuffer = await fs.readFile(filePath);
+
+      // Upload the image using ImageService
+      const uploadedImage = await imageService.uploadImage(fileBuffer);
+
+      // Update the option with the new image URL, preserving width parameter if it existed
+      const newImageUrl = `${config.audience}/api/1.0/images/${uploadedImage.id}${width ? "?w=" + width : ""}`;
+
+      // Update directly in OptionsService
+      // Use type assertion to allow setting the specific option keys
+      await optionsService.set({ [optionKey]: newImageUrl });
+
+      console.log(
+        formatSuccessMessage(optionLabel, fileStats.size) +
+          ` - New image URL: ${newImageUrl}`
+      );
+
+      stats.successCount++;
+      stats.totalSizeBytes += fileStats.size;
+    } catch (error) {
+      stats.errorCount++;
+      console.error(`Error uploading image for ${optionLabel}:`, error);
+    }
+  } else {
+    // Dry run mode
+    console.log(formatDryRunMessage(optionLabel, fileStats.size));
     stats.successCount++;
     stats.totalSizeBytes += fileStats.size;
   }
