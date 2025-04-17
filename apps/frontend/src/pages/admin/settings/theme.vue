@@ -105,7 +105,7 @@ meta:
 <script lang="ts" setup>
 import { computed, onBeforeMount, onBeforeUnmount, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { AppForm } from '@beabee/vue/components';
+import { AppForm, AppRadioInput } from '@beabee/vue/components';
 import AppHeading from '../../../components/AppHeading.vue';
 import AppColorInput from '../../../components/forms/AppColorInput.vue';
 import AppSelect from '../../../components/forms/AppSelect.vue';
