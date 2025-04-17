@@ -86,6 +86,7 @@ meta:
             />
             <SetAssigneeButton
               :reviewer-items="reviewerItems"
+              :manage-url="`/admin/callouts/view/${callout.slug}/responses/tags`"
               :disabled="selectedCount === 0"
               :loading="doingAction"
               :current-assignee-id="selectedAssigneeId"
