@@ -17,7 +17,6 @@ import { MulterError } from "multer";
 import { imageService } from "@beabee/core/services/ImageService";
 import { Contact } from "@beabee/core/models";
 import { BadRequestError } from "@beabee/core/errors";
-import UploadFlowService from "@beabee/core/services/UploadFlowService";
 import { uploadMiddleware } from "../middlewares";
 import { config } from "@beabee/core/config";
 
@@ -30,21 +29,10 @@ export class ImageController {
    */
   @Post("/")
   async upload(
-    @CurrentUser({ required: false }) contact: Contact | undefined,
+    @CurrentUser({ required: true }) contact: Contact,
     @Req() req: Request,
     @Res() res: Response
   ): Promise<UploadFileResponse> {
-    // Validate upload flow token if provided
-    const token = req.query.token as string;
-    if (token) {
-      if (!(await UploadFlowService.validate(token))) {
-        throw new NotFoundError("Invalid upload token");
-      }
-    } else if (!contact) {
-      // If no token and not authenticated, reject
-      throw new BadRequestError({ message: "Authentication required" });
-    }
-
     try {
       // Apply multer middleware to handle file upload
       await uploadMiddleware(req, res);

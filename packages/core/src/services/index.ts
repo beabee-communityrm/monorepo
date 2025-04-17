@@ -18,4 +18,3 @@ export * from "./PaymentService";
 export * from "./ReferralsService";
 export * from "./ResetSecurityFlowService";
 export * from "./SegmentService";
-export * from "./UploadFlowService";
