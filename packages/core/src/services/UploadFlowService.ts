@@ -19,6 +19,7 @@ class UploadFlowService {
     contact: Contact | undefined,
     ipAddress: string
   ): Promise<string> {
+    throw new Error("UploadFlowService is deprecated");
     // No more than 10 uploads in a minute for all users
     const oneMinAgo = sub(new Date(), { minutes: 1 });
     await this.canUploadOrFail(ipAddress, oneMinAgo, 10);
@@ -44,6 +45,7 @@ class UploadFlowService {
    * @returns whether the flow was valid
    */
   async validate(id: string): Promise<boolean> {
+    throw new Error("UploadFlowService is deprecated");
     // Flows are valid for one minute
     const oneMinAgo = sub(new Date(), { minutes: 1 });
 
@@ -61,6 +63,7 @@ class UploadFlowService {
    * @param contact The contact
    */
   async permanentlyDeleteContact(contact: Contact): Promise<void> {
+    throw new Error("UploadFlowService is deprecated");
     await getRepository(UploadFlow).delete({ contactId: contact.id });
   }
 
@@ -71,6 +74,7 @@ class UploadFlowService {
    * @param max The maximum number of uploads allowed
    */
   private async canUploadOrFail(ipAddress: string, date: Date, max: number) {
+    throw new Error("UploadFlowService is deprecated");
     const uploadFlows = await getRepository(UploadFlow).find({
       where: { ipAddress, date: MoreThan(date) }
     });

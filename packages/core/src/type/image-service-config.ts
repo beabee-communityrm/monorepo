@@ -1,3 +1,5 @@
+import type { ImageFormat } from "./image-format";
+
 /**
  * Configuration for the ImageService
  */
@@ -48,7 +50,8 @@ export interface ImageServiceConfig {
   quality?: number;
 
   /**
-   * Image format (default: 'webp')
+   * Image format (default: 'avif')
+   * Use 'original' to keep the original image format
    */
-  format?: "avif" | "webp" | "jpeg" | "png";
+  format?: ImageFormat;
 }

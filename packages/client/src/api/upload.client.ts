@@ -1,18 +1,8 @@
-import type { GetUploadFlowData, Serial } from "@beabee/beabee-common";
 import type { BaseClientOptions } from "../types/index.js";
+import type { UploadFileResponse } from "@beabee/beabee-common";
 import { BaseClient } from "./base.client.js";
 import { cleanUrl } from "../utils/index.js";
 import { ClientApiError } from "../utils/index.js";
-
-/**
- * Response from uploadFile
- */
-export interface UploadFileResponse {
-  /** ID des hochgeladenen Bildes */
-  id: string;
-  /** URL zum hochgeladenen Bild (für Kompatibilität mit altem Client) */
-  url: string;
-}
 
 /**
  * Client for managing file uploads
@@ -49,18 +39,11 @@ export class UploadClient extends BaseClient {
     formData.append("image", file);
 
     try {
-      const { data } = await this.fetch.post<{ id: string }>("", formData, {
+      const { data } = await this.fetch.post<UploadFileResponse>("", formData, {
         dataType: "multipart"
       });
 
-      // Für Kompatibilität mit bestehendem Code die URL direkt zurückgeben
-      const baseUrl = this.options.basePath || "";
-      const url = `${baseUrl}/uploads/${data.id}`;
-
-      return {
-        id: data.id,
-        url
-      };
+      return data;
     } catch (error) {
       // Rethrow rate limit errors with custom message
       if (error instanceof ClientApiError && error.httpCode === 429) {

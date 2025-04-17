@@ -19,6 +19,9 @@ import { Contact } from "@beabee/core/models";
 import { BadRequestError } from "@beabee/core/errors";
 import UploadFlowService from "@beabee/core/services/UploadFlowService";
 import { uploadMiddleware } from "../middlewares";
+import { config } from "@beabee/core/config";
+
+import type { UploadFileResponse } from "@beabee/beabee-common";
 
 @JsonController("/images")
 export class ImageController {
@@ -30,7 +33,7 @@ export class ImageController {
     @CurrentUser({ required: false }) contact: Contact | undefined,
     @Req() req: Request,
     @Res() res: Response
-  ): Promise<{ id: string }> {
+  ): Promise<UploadFileResponse> {
     // Validate upload flow token if provided
     const token = req.query.token as string;
     if (token) {
@@ -57,7 +60,11 @@ export class ImageController {
         // req.file.mimetype
       );
 
-      return { id: metadata.id };
+      return {
+        id: metadata.id,
+        // url: `${config.audience}/uploads/${metadata.id}`,
+        url: `${config.audience}/api/1.0/images/${metadata.id}`
+      };
     } catch (error) {
       if (error instanceof BadRequestError) {
         throw error;

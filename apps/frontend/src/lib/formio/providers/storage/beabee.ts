@@ -39,10 +39,10 @@ export default class BeabeeStorage {
     }
 
     try {
-      // Direkter Upload mit dem neuen ImageService
+      // Direct upload with the new ImageService
       const response = await client.upload.uploadFile(file);
 
-      // Direkter Zugriff auf die URL vom Response
+      // Direct access to the URL from the response
       const imageUrl = response.url;
 
       return {

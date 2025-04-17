@@ -1,9 +1,6 @@
-import { ReadStream } from "fs";
-import { promises as fs } from "fs";
-import * as path from "path";
-import * as crypto from "crypto";
-import * as os from "os";
+import { randomUUID } from "crypto";
 import { Readable } from "stream";
+import { extname } from "path";
 
 import {
   S3Client,
@@ -15,7 +12,7 @@ import {
 } from "@aws-sdk/client-s3";
 import sharp from "sharp";
 
-import type { ImageServiceConfig, ImageMetadata } from "../type";
+import type { ImageFormat, ImageServiceConfig, ImageMetadata } from "../type";
 import { BadRequestError, NotFoundError } from "../errors";
 import { log as mainLogger } from "../logging";
 import { getMimetypeFromExtension } from "../utils/file";
@@ -30,7 +27,7 @@ export class ImageService {
   private readonly config: ImageServiceConfig;
   private readonly defaultConfig: Partial<ImageServiceConfig> = {
     quality: 80,
-    format: "webp",
+    format: "avif",
     availableWidths: [100, 300, 600, 900, 1200, 1800]
   };
 
@@ -55,9 +52,13 @@ export class ImageService {
   /**
    * Upload an image to S3/MinIO
    * @param imageData Binary image data or file stream
+   * @param format Output format (avif, webp, jpeg, png, or "original" to keep the original format)
    * @returns Metadata for the uploaded image
    */
-  async uploadImage(imageData: Buffer): Promise<ImageMetadata> {
+  async uploadImage(
+    imageData: Buffer,
+    format?: ImageFormat
+  ): Promise<ImageMetadata> {
     try {
       // If imageData is a ReadStream, convert it to a Buffer
       if (!Buffer.isBuffer(imageData)) {
@@ -73,45 +74,65 @@ export class ImageService {
       }
 
       // Generate a unique ID for the image
-      const fileId = crypto.randomUUID();
+      const fileId = randomUUID();
 
-      // Target format based on configuration
-      const outputFormat = this.config.format || "webp";
+      // Target format based on parameter or configuration
+      const outputFormat = format || this.config.format || "avif";
 
-      // File extension based on the output format
-      const extension = outputFormat;
+      // File extension based on the output format or original format
+      let extension: string;
+      if (outputFormat === "original") {
+        extension = metadata.format;
+      } else {
+        extension = outputFormat;
+      }
+
       const id = `${fileId}.${extension}`;
 
       // Process the image to the target format, but keep full resolution
       let processedImageBuffer: Buffer;
 
-      // Convert the image to the target format
-      switch (outputFormat) {
-        case "webp":
-          processedImageBuffer = await image
-            .webp({ quality: this.config.quality })
-            .toBuffer();
-          break;
-        case "jpeg":
-          processedImageBuffer = await image
-            .jpeg({ quality: this.config.quality })
-            .toBuffer();
-          break;
-        case "png":
-          processedImageBuffer = await image
-            .png({
-              quality: this.config.quality
-                ? Math.floor(this.config.quality / 10)
-                : 8
-            })
-            .toBuffer();
-          break;
-        default:
-          processedImageBuffer = await image.toBuffer();
+      // Convert the image to the target format or keep original
+      if (outputFormat === "original") {
+        // Keep the original format
+        processedImageBuffer = await image.toBuffer();
+      } else {
+        // Convert to the specified format
+        switch (outputFormat) {
+          case "webp":
+            processedImageBuffer = await image
+              .webp({ quality: this.config.quality })
+              .toBuffer();
+            break;
+          case "avif":
+            processedImageBuffer = await image
+              .avif({ quality: this.config.quality })
+              .toBuffer();
+            break;
+          case "jpeg":
+            processedImageBuffer = await image
+              .jpeg({ quality: this.config.quality })
+              .toBuffer();
+            break;
+          case "png":
+            processedImageBuffer = await image
+              .png({
+                quality: this.config.quality
+                  ? Math.floor(this.config.quality / 10)
+                  : 8
+              })
+              .toBuffer();
+            break;
+          default:
+            processedImageBuffer = await image.toBuffer();
+        }
       }
 
       // Correct MIME type for the output format
-      const outputMimetype = getMimetypeFromExtension(extension);
+      const outputMimetype =
+        outputFormat === "original"
+          ? getMimetypeFromExtension(metadata.format)
+          : getMimetypeFromExtension(extension);
 
       // Upload the processed original image
       await this.s3Client.send(
@@ -430,7 +451,7 @@ export class ImageService {
       const imageBuffer = Buffer.concat(chunks);
 
       // Resize the image
-      const extension = path.extname(id).substring(1);
+      const extension = extname(id).substring(1);
       const format = this.config.format || extension;
 
       // Use sharp to resize the image
@@ -442,32 +463,44 @@ export class ImageService {
       });
 
       // Set format and quality
-      switch (format) {
-        case "webp":
-          resizedImageBuffer = await sharpInstance
-            .webp({ quality: this.config.quality })
-            .toBuffer();
-          break;
-        case "jpeg":
-          resizedImageBuffer = await sharpInstance
-            .jpeg({ quality: this.config.quality })
-            .toBuffer();
-          break;
-        case "png":
-          resizedImageBuffer = await sharpInstance
-            .png({
-              quality: this.config.quality
-                ? Math.floor(this.config.quality / 10)
-                : 8
-            })
-            .toBuffer();
-          break;
-        default:
-          resizedImageBuffer = await sharpInstance.toBuffer();
+      if (format === "original") {
+        // Keep the original format (extension from the file)
+        resizedImageBuffer = await sharpInstance.toBuffer();
+      } else {
+        switch (format) {
+          case "webp":
+            resizedImageBuffer = await sharpInstance
+              .webp({ quality: this.config.quality })
+              .toBuffer();
+            break;
+          case "avif":
+            resizedImageBuffer = await sharpInstance
+              .avif({ quality: this.config.quality })
+              .toBuffer();
+            break;
+          case "jpeg":
+            resizedImageBuffer = await sharpInstance
+              .jpeg({ quality: this.config.quality })
+              .toBuffer();
+            break;
+          case "png":
+            resizedImageBuffer = await sharpInstance
+              .png({
+                quality: this.config.quality
+                  ? Math.floor(this.config.quality / 10)
+                  : 8
+              })
+              .toBuffer();
+            break;
+          default:
+            resizedImageBuffer = await sharpInstance.toBuffer();
+        }
       }
 
       // Upload the resized image
-      const outputContentType = getMimetypeFromExtension(format);
+      const outputContentType =
+        format === "original" ? ContentType : getMimetypeFromExtension(format);
+
       await this.s3Client.send(
         new PutObjectCommand({
           Bucket: this.config.s3.bucket,
@@ -496,9 +529,5 @@ export const imageService = new ImageService({
     forcePathStyle: true
   },
   quality: parseInt(process.env.IMAGE_QUALITY || "80"),
-  format: (process.env.IMAGE_FORMAT || "avif") as
-    | "avif"
-    | "webp"
-    | "jpeg"
-    | "png"
+  format: (process.env.IMAGE_FORMAT || "avif") as ImageFormat
 });

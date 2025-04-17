@@ -198,6 +198,7 @@ export * from "./update-notice-data.js";
 export * from "./update-reset-device-data.js";
 export * from "./update-reset-password-data.js";
 export * from "./update-segment-data.js";
+export * from "./upload-file-response.js";
 export * from "./validated-boolean-rule.js";
 export * from "./validated-number-rule.js";
 export * from "./validated-rule-group.js";
