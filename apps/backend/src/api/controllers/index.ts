@@ -16,4 +16,3 @@ export * from "./RootController.js";
 export * from "./SegmentController.js";
 export * from "./SignupController.js";
 export * from "./StatsController.js";
-export * from "./UploadController.js";
