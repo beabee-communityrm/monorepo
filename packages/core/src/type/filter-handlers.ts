@@ -23,6 +23,12 @@ export interface FilterHandlerArgs {
   field: string;
   operator: RuleOperator;
   value: RichRuleValue[];
+  /**
+   * Applies transformations, applies operators and adds parameter suffixes
+   * to a field name to create a valid WHERE clause.
+   * @param field - The field name to convert
+   * @returns
+   */
   convertToWhereClause: (field: string) => string;
   addParamSuffix: (field: string) => string;
 }

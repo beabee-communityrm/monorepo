@@ -91,7 +91,7 @@ import {
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { hasSlotContent } from '../../utils';
-import AppCheckbox from '../forms/AppCheckbox.vue';
+import { AppCheckbox } from '@beabee/vue/components';
 import { type Header, type Item, SortType } from './table.interface';
 
 interface Sort {

@@ -136,6 +136,16 @@ export function getFullTheme(theme: PartialTheme): Theme {
   return { colors, fonts };
 }
 
+/**
+ * Dynamically loads font CSS files as separate chunks.
+ *
+ * @param font - The font name to load
+ * @returns A promise that resolves when the font CSS is loaded
+ */
+function loadFont(font: string) {
+  return import(`../assets/styles/fonts-${font}.css`);
+}
+
 watch(
   () => generalContent.value.theme,
   (newTheme) => {
@@ -157,12 +167,10 @@ watch(
     setCSSVar('--ff-body', allFonts[fonts.body].join(','));
     setCSSVar('--ff-title', allFonts[fonts.title].join(','));
 
-    const bodyFontFile = `@beabee/vue/assets/styles/fonts-${fonts.body}.css`;
-    const titleFontFile = `@beabee/vue/assets/styles/fonts-${fonts.title}.css`;
-
-    import(/* @vite-ignore */ bodyFontFile);
+    // Load the fonts using the single function
+    loadFont(fonts.body);
     if (fonts.title !== fonts.body) {
-      import(/* @vite-ignore */ titleFontFile);
+      loadFont(fonts.title);
     }
   },
   {

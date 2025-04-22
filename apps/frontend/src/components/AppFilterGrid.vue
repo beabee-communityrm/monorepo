@@ -13,9 +13,8 @@
 </template>
 <script lang="ts" setup>
 import { computed } from 'vue';
-import AppVTabs from './tabs/AppVTabs.vue';
-import { type TabItem } from './tabs/tabs.interface';
-import AppTabsCompact from './tabs/AppTabsCompact.vue';
+import { AppVTabs, AppTabsCompact } from '@beabee/vue/components';
+import type { TabItem } from '@beabee/vue/types';
 
 const emit = defineEmits(['update:modelValue']);
 const props = defineProps<{

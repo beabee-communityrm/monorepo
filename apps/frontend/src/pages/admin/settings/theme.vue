@@ -45,40 +45,43 @@ meta:
         <AppHeading>
           {{ t('adminSettings.theme.colors') }}
         </AppHeading>
-        <label
-          v-for="preset in colorPresets"
-          :key="preset.name"
-          class="mb-2 flex cursor-pointer items-center"
-        >
-          <input
+        <div class="mb-2">
+          <AppRadioInput
+            v-for="preset in colorPresets"
+            :key="preset.name"
             v-model="activePreset"
-            type="radio"
+            class="w-full"
             name="activePreset"
             :value="preset.name"
             required
-          />
-          <span class="ml-2 flex-1">
-            {{ t('adminSettings.theme.presetColors.' + preset.name) }}
-          </span>
-          <span
-            v-for="(color, name) in preset.colors"
-            :key="name"
-            class="ml-2 h-8 w-8 rounded-full"
-            :style="{ backgroundColor: color }"
+            wrapper-class="mb-2 flex items-center"
+            label-class="w-full"
           >
-          </span>
-        </label>
-        <label class="mb-4 flex h-8 cursor-pointer items-center">
-          <input
-            id="colorPreset_custom"
+            <div class="flex w-full flex-1 items-center justify-between">
+              <span>
+                {{ t('adminSettings.theme.presetColors.' + preset.name) }}
+              </span>
+              <div class="flex">
+                <span
+                  v-for="(color, name) in preset.colors"
+                  :key="name"
+                  class="ml-2 h-8 w-8 rounded-full"
+                  :style="{ backgroundColor: color }"
+                >
+                </span>
+              </div>
+            </div>
+          </AppRadioInput>
+
+          <AppRadioInput
             v-model="activePreset"
-            type="radio"
             name="activePreset"
             value="custom"
-            class="mr-2"
-          />
-          {{ t('adminSettings.theme.customColors') }}
-        </label>
+            wrapper-class="mb-4 flex h-8 items-center"
+          >
+            {{ t('adminSettings.theme.customColors') }}
+          </AppRadioInput>
+        </div>
         <div
           v-if="activePreset === 'custom' && customColors"
           class="grid grid-cols-3 gap-2"
@@ -102,7 +105,12 @@ meta:
 <script lang="ts" setup>
 import { computed, onBeforeMount, onBeforeUnmount, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { AppForm, AppRadioInput } from '@beabee/vue/components';
 import AppHeading from '../../../components/AppHeading.vue';
+import AppColorInput from '../../../components/forms/AppColorInput.vue';
+import AppSelect from '../../../components/forms/AppSelect.vue';
+import App2ColGrid from '../../../components/App2ColGrid.vue';
+
 import { client } from '@utils/api';
 import {
   getFullTheme,
@@ -112,10 +120,6 @@ import {
   visibleCustomColors,
 } from '@beabee/vue/lib/theme';
 import { generalContent } from '../../../store';
-import AppColorInput from '../../../components/forms/AppColorInput.vue';
-import AppSelect from '../../../components/forms/AppSelect.vue';
-import AppForm from '../../../components/forms/AppForm.vue';
-import App2ColGrid from '../../../components/App2ColGrid.vue';
 
 const { t } = useI18n();
 

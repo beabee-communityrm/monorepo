@@ -13,22 +13,31 @@
     >
       {{ item.label }}
     </AppSelectableList>
+    <router-link
+      class="block border-t border-primary-40 px-3 py-2 font-semibold text-primary underline hover:bg-primary-5 group-hover:border-primary"
+      :to="manageUrl"
+    >
+      <font-awesome-icon class="mr-2" :icon="faCog" />{{
+        t('calloutResponsePage.manageReviewers')
+      }}
+    </router-link>
   </AppDropdownButton>
 </template>
 
 <script lang="ts" setup>
-import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { faCog, faUser } from '@fortawesome/free-solid-svg-icons';
 import { useI18n } from 'vue-i18n';
 
 import { AppDropdownButton, AppSelectableList } from '@beabee/vue/components';
 
-import type { SelectItem } from '@components/forms/form.interface';
+import type { SelectItem } from '@beabee/vue/types';
 
 const emit = defineEmits<{
   (event: 'assign', id: string | null, successText: string): void;
 }>();
 defineProps<{
   reviewerItems: SelectItem<string>[];
+  manageUrl: string;
   currentAssigneeId?: string;
   withText?: boolean;
 }>();

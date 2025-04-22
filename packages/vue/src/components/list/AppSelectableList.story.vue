@@ -92,7 +92,7 @@ function logAction(item: { id: string; label: string }, selected: boolean) {
           {{ item.label }}
         </AppSelectableList>
       </div>
-      <div class="text-gray-500 mt-4 text-sm">
+      <div class="mt-4 text-sm text-grey-dark">
         Selected users: {{ selectedUserIds.join(', ') || 'None' }}
       </div>
     </Variant>
@@ -111,7 +111,7 @@ function logAction(item: { id: string; label: string }, selected: boolean) {
           </div>
         </AppSelectableList>
       </div>
-      <div class="text-gray-500 mt-4 text-sm">
+      <div class="mt-4 text-sm text-grey-dark">
         Selected tags: {{ selectedTagIds.join(', ') || 'None' }}
       </div>
     </Variant>
@@ -130,7 +130,7 @@ function logAction(item: { id: string; label: string }, selected: boolean) {
           </div>
         </AppSelectableList>
       </div>
-      <div class="text-gray-500 mt-4 text-sm">
+      <div class="mt-4 text-sm text-grey-dark">
         Selected language: {{ selectedLanguageId || 'None' }}
       </div>
     </Variant>
@@ -161,7 +161,7 @@ function logAction(item: { id: string; label: string }, selected: boolean) {
         >
           {{ item.label }}
         </AppSelectableList>
-        <p class="text-gray-500 p-3 italic">No items available</p>
+        <p class="p-3 italic text-grey-dark">No items available</p>
       </div>
     </Variant>
   </Story>

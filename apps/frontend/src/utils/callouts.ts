@@ -13,9 +13,7 @@ import {
   type CreateCalloutData,
 } from '@beabee/beabee-common';
 import { format } from 'date-fns';
-import type { CalloutStepsProps } from '@components/pages/admin/callouts/callouts.interface';
-
-import type { FilterItem, FilterItems } from '@type';
+import { computed } from 'vue';
 
 import env from '../env';
 import { i18n } from '../lib/i18n';
@@ -25,14 +23,35 @@ import type {
   FormBuilderNavigation,
   FormBuilderSlide,
 } from '@components/form-builder/form-builder.interface';
+import type { ContentTabData } from '@components/pages/admin/callouts/tabs/ContentTab/ContentTab.vue';
+import type { FilterItem, FilterItems } from '@type';
+import type { CalloutHorizontalTabsData } from '@components/pages/admin/callouts/CalloutHorizontalTabs.interface';
+import type { TitleAndImageTabData } from '@components/pages/admin/callouts/tabs/TitleAndImageTab.vue';
+import type { TranslationsTabData } from '@components/pages/admin/callouts/tabs/TranslationsTab.vue';
+import type { SettingsTabData } from '@components/pages/admin/callouts/tabs/SettingsTab.vue';
 
 const { t } = i18n.global;
 
+/**
+ * Predefined response buckets for callout responses
+ */
+export const buckets = computed(() => [
+  { id: '', label: t('calloutResponseBuckets.inbox') },
+  { id: 'verified', label: t('calloutResponseBuckets.verified') },
+  { id: 'trash', label: t('calloutResponseBuckets.trash') },
+]);
+
+/**
+ * Creates a new slide schema with a unique ID and default navigation
+ *
+ * @param no - The slide number to use in the title
+ * @returns A new FormBuilderSlide object with default values
+ */
 export function getSlideSchema(no: number): FormBuilderSlide {
   const id = 'slide' + Math.random().toString(36).substring(2, 8);
   return {
     id,
-    title: t('calloutBuilder.slideNo', { no }),
+    title: t('callout.builder.navigation.slideNo', { no }),
     components: [],
     navigation: {
       nextText: { default: t('actions.next') },
@@ -54,6 +73,15 @@ const textFields = [
   'shareDescription',
 ] as const;
 
+/**
+ * Converts variant data into a format suitable for the form tabs
+ *
+ * This function transforms the callout variant data into a structure where each text field
+ * is represented as a LocaleProp object with translations for each variant.
+ *
+ * @param variants - The variant data from the callout
+ * @returns An object with text fields as keys and LocaleProp objects as values
+ */
 function convertVariantsForSteps(
   variants: Record<string, CalloutVariantData> | undefined
 ): Record<(typeof textFields)[number], LocaleProp> {
@@ -68,6 +96,8 @@ function convertVariantsForSteps(
     shareDescription: { default: '' },
   };
 
+  if (!variants) return result;
+
   for (const variant in variants) {
     for (const field of textFields) {
       result[field][variant] = variants[variant][field] || '';
@@ -77,14 +107,25 @@ function convertVariantsForSteps(
   return result;
 }
 
+/**
+ * Converts slide data and variants into a format suitable for the form builder
+ *
+ * This function transforms the callout slides and their variants into a structure
+ * that can be used by the form builder, including localized navigation text and component text.
+ *
+ * @param slidesIn - The slides from the callout
+ * @param variants - The variant data from the callout
+ * @returns An object containing the transformed slides and component text
+ */
 function convertSlidesForSteps(
   slidesIn: GetCalloutSlideSchema[] | undefined,
   variants: Record<string, CalloutVariantData> | undefined
 ): { slides: FormBuilderSlide[]; componentText: Record<string, LocaleProp> } {
+  if (!slidesIn) {
+    return { slides: [getSlideSchema(1)], componentText: {} };
+  }
+
   const componentText: Record<string, LocaleProp> = {};
-
-  if (!slidesIn) return { slides: [getSlideSchema(1)], componentText };
-
   const slides = slidesIn.map((slide) => {
     const navigation: FormBuilderNavigation = {
       prevText: { default: '' },
@@ -93,15 +134,17 @@ function convertSlidesForSteps(
       nextSlideId: slide.navigation.nextSlideId,
     };
 
-    for (const variant in variants) {
-      for (const field of ['prevText', 'nextText', 'submitText'] as const) {
-        navigation[field][variant] =
-          variants[variant].slideNavigation[slide.id][field];
-      }
+    if (variants) {
+      for (const variant in variants) {
+        for (const field of ['prevText', 'nextText', 'submitText'] as const) {
+          navigation[field][variant] =
+            variants[variant].slideNavigation[slide.id][field];
+        }
 
-      for (const text in variants[variant].componentText) {
-        componentText[text] ||= { default: '' };
-        componentText[text][variant] = variants[variant].componentText[text];
+        for (const text in variants[variant].componentText) {
+          componentText[text] ||= { default: '' };
+          componentText[text][variant] = variants[variant].componentText[text];
+        }
       }
     }
 
@@ -111,55 +154,110 @@ function convertSlidesForSteps(
   return { slides, componentText };
 }
 
-export function convertCalloutToSteps(
+/**
+ * Converts a callout object to the tab-based format used in the editor
+ *
+ * This function transforms a callout from the API format into the structure
+ * used by the editor tabs, including content, title and image, settings,
+ * dates, and translations.
+ *
+ * @param callout - The callout data from the API
+ * @returns The callout data structured for the editor tabs
+ */
+export function convertCalloutToTabs(
   callout?: GetCalloutDataWith<'form' | 'responseViewSchema' | 'variants'>
-): CalloutStepsProps {
-  const settings = env.cnrMode
-    ? ({
-        whoCanTakePart: 'everyone',
-        allowAnonymousResponses: 'guests',
-        showOnUserDashboards: false,
-        usersCanEditAnswers: false,
-        multipleResponses: true,
-      } as const)
-    : ({
-        whoCanTakePart:
-          !callout || callout.access === 'member' ? 'members' : 'everyone',
-        allowAnonymousResponses:
-          callout?.access === 'anonymous'
-            ? 'guests'
-            : callout?.access === 'only-anonymous'
-              ? 'all'
-              : 'none',
-        showOnUserDashboards: !callout?.hidden,
-        usersCanEditAnswers: callout?.allowUpdate || false,
-        multipleResponses: callout?.allowMultiple || false,
-      } as const);
-
+): CalloutHorizontalTabsData {
   const variants = convertVariantsForSteps(callout?.variants);
 
-  const content = convertSlidesForSteps(
+  const locales = callout
+    ? Object.keys(callout.variants).filter((v) => v !== 'default')
+    : [];
+
+  const { slides, componentText } = convertSlidesForSteps(
     callout?.formSchema.slides,
     callout?.variants
   );
 
+  const sharedSettings = {
+    captchaEnabled: callout?.captcha !== CalloutCaptcha.None,
+    captchaForMembers: callout?.captcha === CalloutCaptcha.All,
+    channels: callout?.channels || null,
+  };
+
+  const settings: SettingsTabData = env.cnrMode
+    ? ({
+        ...sharedSettings,
+        openToEveryone: true,
+        collectMemberInfo: false,
+        collectGuestInfo: false,
+        showOnUserDashboards: false,
+        responseSettings: 'multiple',
+        hasStartDate: false,
+        hasEndDate: false,
+        startDate: '',
+        startTime: '',
+        endDate: '',
+        endTime: '',
+      } as const)
+    : ({
+        ...sharedSettings,
+        openToEveryone: callout?.access !== CalloutAccess.Member,
+        collectMemberInfo: callout?.access !== CalloutAccess.OnlyAnonymous,
+        collectGuestInfo: callout?.access === CalloutAccess.Guest,
+        showOnUserDashboards: !callout?.hidden,
+        responseSettings: callout?.allowMultiple
+          ? 'multiple'
+          : callout?.allowUpdate
+            ? 'singleEditable'
+            : 'singleNonEditable',
+        hasStartDate: callout?.status === ItemStatus.Scheduled,
+        hasEndDate: !!callout?.expires,
+        startDate: callout?.starts ? format(callout.starts, 'yyyy-MM-dd') : '',
+        startTime: callout?.starts ? format(callout.starts, 'HH:mm') : '',
+        endDate: callout?.expires ? format(callout.expires, 'yyyy-MM-dd') : '',
+        endTime: callout?.expires ? format(callout.expires, 'HH:mm') : '',
+      } as const);
+
+  const content: ContentTabData = {
+    slides,
+    sidebarTabs: {
+      content: undefined,
+      intro: {
+        introText: variants.intro,
+      },
+      endMessage: {
+        whenFinished: callout?.thanksRedirect ? 'redirect' : 'message',
+        thankYouTitle: variants.thanksTitle,
+        thankYouText: variants.thanksText,
+        thankYouRedirect: variants.thanksRedirect,
+      },
+    },
+  };
+
+  const titleAndImage: TitleAndImageTabData = {
+    title: variants.title,
+    description: variants.excerpt,
+    coverImageURL: callout?.image || '',
+    autoGenerateSlug: !callout,
+    autoSlug: '',
+    slug: callout?.slug || '',
+    overrideShare: !!callout?.shareTitle,
+    shareTitle: variants.shareTitle,
+    shareDescription: variants.shareDescription,
+  };
+
+  // Translations tab data
+  const translations: TranslationsTabData = {
+    locales,
+    componentText,
+  };
+
   return {
     content,
-    titleAndImage: {
-      title: variants.title,
-      description: variants.excerpt,
-      coverImageURL: callout?.image || '',
-      introText: variants.intro,
-      useCustomSlug: !!callout,
-      autoSlug: '',
-      slug: callout?.slug || '',
-      overrideShare: !!callout?.shareTitle,
-      shareTitle: variants.shareTitle,
-      shareDescription: variants.shareDescription,
-    },
-    settings: {
-      ...settings,
-      requireCaptcha: callout?.captcha || CalloutCaptcha.None,
+    titleAndImage,
+    settings,
+    translations,
+    responseDisplay: {
       showResponses: !!callout?.responseViewSchema,
       responseViews: [
         ...(callout?.responseViewSchema?.gallery ? ['gallery' as const] : []),
@@ -168,7 +266,6 @@ export function convertCalloutToSteps(
       responseBuckets: callout?.responseViewSchema?.buckets || [],
       responseTitleProp: callout?.responseViewSchema?.titleProp || '',
       responseImageProp: callout?.responseViewSchema?.imageProp || '',
-      responseImageFilter: callout?.responseViewSchema?.imageFilter || '',
       responseLinks: callout?.responseViewSchema?.links || [],
       mapSchema: callout?.responseViewSchema?.map || {
         style: '',
@@ -184,39 +281,28 @@ export function convertCalloutToSteps(
         addressPattern: '',
         addressPatternProp: '',
       },
-      locales: callout
-        ? Object.keys(callout.variants).filter((v) => v !== 'default')
-        : [],
-      channels: callout?.channels || null,
-    },
-    endMessage: {
-      whenFinished: callout?.thanksRedirect ? 'redirect' : 'message',
-      thankYouTitle: variants.thanksTitle,
-      thankYouText: variants.thanksText,
-      thankYouRedirect: variants.thanksRedirect,
-    },
-    /*mailchimp: {
-      useMailchimpSync: false,
-    },*/
-    dates: {
-      startNow: !callout || callout.status === ItemStatus.Draft,
-      hasEndDate: !!callout?.expires,
-      startDate: callout?.starts ? format(callout.starts, 'yyyy-MM-dd') : '',
-      startTime: callout?.starts ? format(callout.starts, 'HH:mm') : '',
-      endDate: callout?.expires ? format(callout.expires, 'yyyy-MM-dd') : '',
-      endTime: callout?.expires ? format(callout.expires, 'HH:mm') : '',
+      imageFilter: callout?.responseViewSchema?.imageFilter || '',
     },
   };
 }
 
+/**
+ * Converts the tab-based format back to variant data for the API
+ *
+ * This function transforms the editor tab data into the variant structure
+ * expected by the API, including translations for all text fields and components.
+ *
+ * @param tabs - The callout data from the editor tabs
+ * @returns The variant data for the API
+ */
 function convertVariantsForCallout(
-  steps: CalloutStepsProps
+  tabs: CalloutHorizontalTabsData
 ): Record<string, CalloutVariantData> {
   const variants: Record<string, CalloutVariantData> = {};
-  for (const variant of [...steps.settings.locales, 'default']) {
+  for (const variant of [...tabs.translations.locales, 'default']) {
     const slideNavigation: Record<string, CalloutVariantNavigationData> = {};
 
-    for (const slide of steps.content.slides) {
+    for (const slide of tabs.content.slides) {
       slideNavigation[slide.id] = {
         nextText: slide.navigation.nextText[variant] || '',
         prevText: slide.navigation.prevText[variant] || '',
@@ -224,31 +310,36 @@ function convertVariantsForCallout(
       };
     }
 
+    // Use translations tab data for component text
     const componentText: Record<string, string> = {};
-    for (const key in steps.content.componentText) {
-      componentText[key] = steps.content.componentText[key][variant] || '';
+    for (const key in tabs.translations.componentText) {
+      componentText[key] = tabs.translations.componentText[key][variant] || '';
     }
 
     variants[variant] = {
-      title: steps.titleAndImage.title[variant] || '',
-      excerpt: steps.titleAndImage.description[variant] || '',
-      intro: steps.titleAndImage.introText[variant] || '',
-      ...(steps.endMessage.whenFinished === 'redirect'
+      title: tabs.titleAndImage.title[variant] || '',
+      excerpt: tabs.titleAndImage.description[variant] || '',
+      intro: tabs.content.sidebarTabs.intro.introText[variant] || '',
+      ...(tabs.content.sidebarTabs.endMessage.whenFinished === 'redirect'
         ? {
             thanksText: '',
             thanksTitle: '',
-            thanksRedirect: steps.endMessage.thankYouRedirect[variant] || '',
+            thanksRedirect:
+              tabs.content.sidebarTabs.endMessage.thankYouRedirect[variant] ||
+              '',
           }
         : {
-            thanksText: steps.endMessage.thankYouText[variant] || '',
-            thanksTitle: steps.endMessage.thankYouTitle[variant] || '',
+            thanksText:
+              tabs.content.sidebarTabs.endMessage.thankYouText[variant] || '',
+            thanksTitle:
+              tabs.content.sidebarTabs.endMessage.thankYouTitle[variant] || '',
             thanksRedirect: null,
           }),
-      ...(steps.titleAndImage.overrideShare
+      ...(tabs.titleAndImage.overrideShare
         ? {
-            shareTitle: steps.titleAndImage.shareTitle[variant] || '',
+            shareTitle: tabs.titleAndImage.shareTitle[variant] || '',
             shareDescription:
-              steps.titleAndImage.shareDescription[variant] || '',
+              tabs.titleAndImage.shareDescription[variant] || '',
           }
         : {
             shareTitle: null,
@@ -262,10 +353,16 @@ function convertVariantsForCallout(
   return variants;
 }
 
+/**
+ * Converts the tab-based slide format to the API format
+ *
+ * @param tabs - The callout data from the editor tabs
+ * @returns The slides in the format expected by the API
+ */
 function convertSlidesForCallout(
-  steps: CalloutStepsProps
+  tabs: CalloutHorizontalTabsData
 ): SetCalloutSlideSchema[] {
-  return steps.content.slides.map((slide) => ({
+  return tabs.content.slides.map((slide) => ({
     ...slide,
     navigation: {
       nextSlideId: slide.navigation.nextSlideId,
@@ -273,59 +370,72 @@ function convertSlidesForCallout(
   }));
 }
 
+/**
+ * Converts the tab-based editor data to the format expected by the API for creating or updating a callout
+ *
+ * This function transforms the complete editor tab data into the structure
+ * required by the API, including slides, variants, settings, and dates.
+ *
+ * @param tabs - The callout data from the editor tabs
+ * @returns The callout data in the format expected by the API
+ */
 export function convertStepsToCallout(
-  steps: CalloutStepsProps
+  tabs: CalloutHorizontalTabsData
 ): CreateCalloutData {
-  const slug = steps.titleAndImage.useCustomSlug
-    ? steps.titleAndImage.slug
-    : steps.titleAndImage.autoSlug;
+  const slug = tabs.titleAndImage.autoGenerateSlug
+    ? tabs.titleAndImage.autoSlug
+    : tabs.titleAndImage.slug;
 
-  const slides = convertSlidesForCallout(steps);
-  const variants = convertVariantsForCallout(steps);
+  const slides = convertSlidesForCallout(tabs);
+  const variants = convertVariantsForCallout(tabs);
 
   return {
     slug: slug || undefined,
-    image: steps.titleAndImage.coverImageURL,
+    image: tabs.titleAndImage.coverImageURL,
     formSchema: { slides },
-    responseViewSchema: steps.settings.showResponses
+    responseViewSchema: tabs.responseDisplay.showResponses
       ? {
-          buckets: steps.settings.responseBuckets,
-          titleProp: steps.settings.responseTitleProp,
-          imageProp: steps.settings.responseImageProp,
-          imageFilter: steps.settings.responseImageFilter,
-          gallery: steps.settings.responseViews.includes('gallery'),
-          links: steps.settings.responseLinks,
-          map: steps.settings.responseViews.includes('map')
+          buckets: tabs.responseDisplay.responseBuckets,
+          titleProp: tabs.responseDisplay.responseTitleProp,
+          imageProp: tabs.responseDisplay.responseImageProp,
+          // TODO: Remove this once the image filter is removed from the API
+          imageFilter: tabs.responseDisplay.imageFilter,
+          gallery: tabs.responseDisplay.responseViews.includes('gallery'),
+          links: tabs.responseDisplay.responseLinks,
+          map: tabs.responseDisplay.responseViews.includes('map')
             ? {
-                ...steps.settings.mapSchema,
-                addressPattern: steps.settings.mapSchema.addressPatternProp
-                  ? steps.settings.mapSchema.addressPattern
+                ...tabs.responseDisplay.mapSchema,
+                addressPattern: tabs.responseDisplay.mapSchema
+                  .addressPatternProp
+                  ? tabs.responseDisplay.mapSchema.addressPattern
                   : '',
               }
             : null,
         }
       : null,
-    starts: steps.dates.startNow
-      ? new Date()
-      : new Date(steps.dates.startDate + 'T' + steps.dates.startTime),
-    expires: steps.dates.hasEndDate
-      ? new Date(steps.dates.endDate + 'T' + steps.dates.endTime)
+    starts: tabs.settings.hasStartDate
+      ? new Date(tabs.settings.startDate + 'T' + tabs.settings.startTime)
+      : new Date(),
+    expires: tabs.settings.hasEndDate
+      ? new Date(tabs.settings.endDate + 'T' + tabs.settings.endTime)
       : null,
-    allowMultiple: steps.settings.multipleResponses,
-    allowUpdate:
-      !steps.settings.multipleResponses && steps.settings.usersCanEditAnswers,
-    hidden: !steps.settings.showOnUserDashboards,
-    captcha: steps.settings.requireCaptcha,
-    access:
-      steps.settings.whoCanTakePart === 'members'
-        ? CalloutAccess.Member
-        : steps.settings.allowAnonymousResponses === 'none'
+    allowMultiple: tabs.settings.responseSettings === 'multiple',
+    allowUpdate: tabs.settings.responseSettings === 'singleEditable',
+    hidden: !tabs.settings.showOnUserDashboards,
+    captcha: tabs.settings.captchaEnabled
+      ? tabs.settings.captchaForMembers
+        ? CalloutCaptcha.All
+        : CalloutCaptcha.Guest
+      : CalloutCaptcha.None,
+    access: tabs.settings.openToEveryone
+      ? tabs.settings.collectMemberInfo
+        ? tabs.settings.collectGuestInfo
           ? CalloutAccess.Guest
-          : steps.settings.allowAnonymousResponses === 'guests'
-            ? CalloutAccess.Anonymous
-            : CalloutAccess.OnlyAnonymous,
+          : CalloutAccess.Anonymous
+        : CalloutAccess.OnlyAnonymous
+      : CalloutAccess.Member,
     variants,
-    channels: steps.settings.channels,
+    channels: tabs.settings.channels,
   };
 }
 

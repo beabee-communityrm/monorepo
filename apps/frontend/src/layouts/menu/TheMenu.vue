@@ -29,7 +29,7 @@
     class="absolute bottom-0 z-30 flex w-menu flex-none -translate-x-full transform flex-col bg-white transition-transform transition-width md:static md:w-16 md:transform-none lg:w-menu"
     :class="{ 'top-[68px] translate-x-0': isMenuVisible }"
   >
-    <div class="my-10 hidden text-center md:block">
+    <div class="my-2 hidden text-center md:block lg:my-10">
       <!-- logo on bigger screens -->
 
       <component :is="logoLink.is" v-bind="logoLink.props">

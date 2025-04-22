@@ -187,6 +187,115 @@
     },
     "addAPoint": "Carrega no mapa no sítio onde queres adicionar o ponto.",
     "addLocation": "Adicionar localização",
+    "builder": {
+      "actions": {},
+      "common": {
+        "actions": {}
+      },
+      "navigation": {
+        "nextSlide": {}
+      },
+      "tabs": {
+        "content": {},
+        "endMessage": {
+          "inputs": {
+            "action": {
+              "opts": {}
+            },
+            "text": {},
+            "title": {},
+            "url": {}
+          }
+        },
+        "intro": {},
+        "mailchimp": {},
+        "responseDisplay": {},
+        "settings": {
+          "access": {},
+          "dates": {},
+          "displayOptions": {},
+          "inputs": {
+            "collectGuestInfo": {
+              "opts": {}
+            },
+            "collectMemberInfo": {
+              "opts": {}
+            },
+            "expires": {
+              "opts": {}
+            },
+            "mapAndGallery": {
+              "gallery": {},
+              "map": {}
+            },
+            "mapSchema": {
+              "addressPattern": {},
+              "addressPatternProp": {},
+              "addressProp": {},
+              "bounds": {},
+              "center": {},
+              "geocodeCountries": {},
+              "initialZoom": {},
+              "maxZoom": {},
+              "minZoom": {},
+              "style": {}
+            },
+            "openToEveryone": {
+              "opts": {}
+            },
+            "requireCaptcha": {
+              "members": {
+                "opts": {}
+              },
+              "opts": {}
+            },
+            "responseImageProp": {},
+            "responseLinks": {
+              "opts": {},
+              "placeholder": {}
+            },
+            "responseSettings": {
+              "opts": {}
+            },
+            "responseTitleProp": {},
+            "showResponses": {
+              "opts": {}
+            },
+            "starts": {
+              "opts": {}
+            },
+            "visible": {
+              "opts": {}
+            },
+            "whichResponseBuckets": {}
+          }
+        },
+        "titleAndImage": {
+          "inputs": {
+            "description": {},
+            "general": {},
+            "image": {},
+            "overrideShare": {
+              "opts": {}
+            },
+            "shareDescription": {},
+            "shareTitle": {},
+            "sharing": {},
+            "slug": {
+              "locked": {},
+              "opts": {}
+            },
+            "title": {}
+          }
+        },
+        "translations": {
+          "language": {},
+          "languageSettings": {},
+          "navigationButtons": {}
+        }
+      },
+      "translationFields": {}
+    },
     "contactDetails": "Detalhes de contacto",
     "ended": "Este callout acabou a {date}",
     "form": {
@@ -224,16 +333,6 @@
       "contactInfo": {},
       "endsWith": {},
       "openTo": {}
-    }
-  },
-  "calloutBuilder": {
-    "actions": {},
-    "nextSlide": {},
-    "translationFields": {
-      "description": "Description",
-      "label": "Label",
-      "option": "Option {n}",
-      "placeholder": "Placeholder"
     }
   },
   "calloutResponse": {
@@ -327,6 +426,7 @@
       "manual": "Manual",
       "none": "Nenhuma"
     },
+    "default": "Predefinição",
     "hello": "Olá",
     "id": "ID",
     "itemsPerPage": "{items} itens por página",
@@ -483,91 +583,6 @@
     "willRenew": "A tua contribuição vai renovar automaticamente a {renewalDate}.",
     "willRenewWithNewAmount": "A tua contribuição vai renovar automaticamente a {renewalDate}, passando para a nova quantia de {nextAmount}."
   },
-  "createCallout": {
-    "steps": {
-      "content": {},
-      "dates": {
-        "inputs": {
-          "expires": {
-            "opts": {}
-          },
-          "starts": {
-            "opts": {}
-          }
-        }
-      },
-      "endMessage": {
-        "inputs": {
-          "action": {
-            "opts": {}
-          },
-          "text": {},
-          "title": {},
-          "url": {}
-        }
-      },
-      "mailchimp": {},
-      "settings": {
-        "inputs": {
-          "anonymous": {
-            "opts": {}
-          },
-          "editable": {
-            "opts": {}
-          },
-          "mapSchema": {
-            "addressPattern": {},
-            "addressPatternProp": {},
-            "addressProp": {},
-            "bounds": {},
-            "center": {},
-            "geocodeCountries": {},
-            "initialZoom": {},
-            "maxZoom": {},
-            "minZoom": {},
-            "style": {}
-          },
-          "multiple": {
-            "opts": {}
-          },
-          "requireCaptcha": {
-            "opts": {}
-          },
-          "responseImageFilter": {},
-          "responseImageProp": {},
-          "responseLinks": {},
-          "responseTitleProp": {},
-          "showResponses": {},
-          "visible": {
-            "opts": {}
-          },
-          "whichResponseBuckets": {},
-          "whichResponseViews": {
-            "opts": {}
-          },
-          "who": {
-            "opts": {}
-          }
-        }
-      },
-      "titleAndImage": {
-        "inputs": {
-          "description": {},
-          "image": {},
-          "intro": {},
-          "overrideShare": {
-            "opts": {}
-          },
-          "shareDescription": {},
-          "shareTitle": {},
-          "slug": {
-            "opts": {}
-          },
-          "title": {}
-        }
-      }
-    }
-  },
   "editCallout": {},
   "editNotice": {},
   "footer": {
@@ -589,6 +604,7 @@
     "addressLine1": "Endereço (linha 1)",
     "addressLine2": "Endereço (linha 2)",
     "cancel": "Cancelar",
+    "characters": {},
     "cityOrTown": "Localidade",
     "deliveryOptIn": "Escolher inscrição",
     "description": "Descrição",
@@ -821,7 +837,8 @@
   "notices": {
     "data": {}
   },
-  "notification": {
+  "notifications": {
+    "copy": {},
     "error": "Houve aqui um erro. Experimenta recarregar a página."
   },
   "pageTitle": {

@@ -11,7 +11,7 @@ import {
   faCog,
   faCheck,
 } from '@fortawesome/free-solid-svg-icons';
-import { AppSelectableList } from '@beabee/vue/components/list';
+import { AppSelectableList } from '../list';
 
 const state = reactive({
   icon: faUser,
@@ -104,9 +104,9 @@ function handleSelectLanguage(item: { id: string; label: string }) {
         :disabled="state.disabled"
       >
         <div class="p-4">
-          <div class="hover:bg-gray-100 cursor-pointer p-2">User 1</div>
-          <div class="hover:bg-gray-100 cursor-pointer p-2">User 2</div>
-          <div class="hover:bg-gray-100 cursor-pointer p-2">User 3</div>
+          <div class="cursor-pointer p-2 hover:bg-grey-lighter">User 1</div>
+          <div class="cursor-pointer p-2 hover:bg-grey-lighter">User 2</div>
+          <div class="cursor-pointer p-2 hover:bg-grey-lighter">User 3</div>
         </div>
       </AppDropdownButton>
 
@@ -136,9 +136,9 @@ function handleSelectLanguage(item: { id: string; label: string }) {
         variant="primaryOutlined"
       >
         <div class="p-4">
-          <div class="hover:bg-gray-100 cursor-pointer p-2">User 1</div>
-          <div class="hover:bg-gray-100 cursor-pointer p-2">User 2</div>
-          <div class="hover:bg-gray-100 cursor-pointer p-2">User 3</div>
+          <div class="cursor-pointer p-2 hover:bg-grey-lighter">User 1</div>
+          <div class="cursor-pointer p-2 hover:bg-grey-lighter">User 2</div>
+          <div class="cursor-pointer p-2 hover:bg-grey-lighter">User 3</div>
         </div>
       </AppDropdownButton>
     </Variant>
@@ -235,9 +235,9 @@ function handleSelectLanguage(item: { id: string; label: string }) {
           show-title
         >
           <div class="p-2">
-            <div class="hover:bg-gray-100 cursor-pointer p-2">Option 1</div>
-            <div class="hover:bg-gray-100 cursor-pointer p-2">Option 2</div>
-            <div class="hover:bg-gray-100 cursor-pointer p-2">Option 3</div>
+            <div class="cursor-pointer p-2 hover:bg-grey-lighter">Option 1</div>
+            <div class="cursor-pointer p-2 hover:bg-grey-lighter">Option 2</div>
+            <div class="cursor-pointer p-2 hover:bg-grey-lighter">Option 3</div>
           </div>
         </AppDropdownButton>
       </div>

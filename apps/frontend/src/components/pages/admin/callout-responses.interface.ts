@@ -7,7 +7,7 @@ import {
 import { computed, ref, watchEffect, type Ref } from 'vue';
 import { type FilterGroups, type FilterItems } from '@type';
 import type { Header } from '@components/table/table.interface';
-import type { SelectItem } from '@components/forms/form.interface';
+import type { SelectItem } from '@beabee/vue/types';
 
 import { i18n } from '@lib/i18n';
 import env from '@env';

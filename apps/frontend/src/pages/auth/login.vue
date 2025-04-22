@@ -92,9 +92,8 @@ import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { reactive, ref, toRef, watch } from 'vue';
 
+import { AppForm, AppNotification } from '@beabee/vue/components';
 import AppInput from '@components/forms/AppInput.vue';
-import AppForm from '@components/forms/AppForm.vue';
-import AppNotification from '@components/AppNotification.vue';
 import AppTitle from '@components/AppTitle.vue';
 import AuthBox from '@components/AuthBox.vue';
 

@@ -1,4 +1,5 @@
 import { BaseClient } from "./base.client.js";
+import { ContactClient } from "./contact.client.js";
 import { cleanUrl } from "../utils/index.js";
 import type { BaseClientOptions } from "../types/index.js";
 import type { GetCalloutReviewerData, Serial } from "@beabee/beabee-common";
@@ -22,11 +23,7 @@ export class CalloutReviewerClient extends BaseClient {
   ): GetCalloutReviewerData {
     return {
       ...data,
-      contact: {
-        ...data.contact,
-        joined: CalloutReviewerClient.deserializeDate(data.contact.joined),
-        lastSeen: CalloutReviewerClient.deserializeDate(data.contact.lastSeen)
-      }
+      contact: ContactClient.deserialize(data.contact)
     };
   }
 

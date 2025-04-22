@@ -12,12 +12,19 @@
   </template>
 </template>
 <script lang="ts" setup>
-defineEmits(['update:modelValue']);
-defineProps<{
+/**
+ * Props for the AppToggle component
+ */
+export interface AppToggleProps {
+  /** The model value of the toggle */
   modelValue: string;
+  /** The items to display in the toggle */
   items: {
     id: string;
     label: string;
   }[];
-}>();
+}
+
+defineEmits(['update:modelValue']);
+defineProps<AppToggleProps>();
 </script>

@@ -9,6 +9,7 @@
         <AppInput
           v-model="item.text"
           :label="t('adminSettings.general.footer.otherLinks.linkText')"
+          :placeholder="placeholderLabel"
           required
         />
       </div>
@@ -16,6 +17,7 @@
         <AppInput
           v-model="item.url"
           :label="t('adminSettings.general.footer.otherLinks.url')"
+          :placeholder="placeholderUrl"
           type="text"
           required
         />
@@ -28,9 +30,18 @@ import { useI18n } from 'vue-i18n';
 import AppInput from './AppInput.vue';
 import AppRepeatable from './AppRepeatable.vue';
 
-defineProps<{
+/**
+ * Props for the AppLinkList component
+ */
+export interface AppLinkListProps {
+  /** The model value of the link list */
   modelValue: { text: string; url: string }[];
-}>();
+  /** The placeholder for the link list */
+  placeholderLabel?: string;
+  placeholderUrl?: string;
+}
+
+defineProps<AppLinkListProps>();
 
 const { t } = useI18n();
 </script>

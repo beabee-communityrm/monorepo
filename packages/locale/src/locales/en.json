@@ -332,6 +332,316 @@
     },
     "addAPoint": "Click on the map where you want to add a point",
     "addLocation": "Add a new entry",
+    "builder": {
+      "actions": {
+        "addSlide": "Add slide"
+      },
+      "common": {
+        "actions": {
+          "add": "Add",
+          "remove": "Remove"
+        },
+        "internalTitle": "Internal title",
+        "showAdvancedOptions": "Show advanced options",
+        "slides": "Slides",
+        "startEndScreens": "Start & End screens"
+      },
+      "navigation": {
+        "nextButton": "Next button text",
+        "nextSlide": {
+          "default": "– Default –",
+          "label": "Next slide"
+        },
+        "prevButton": "Back button text",
+        "slideNo": "Slide {no}",
+        "submitButton": "Submit button text"
+      },
+      "showAdvancedOptions": "Show advanced options",
+      "slidesTitle": "Slides",
+      "startEndScreenTitle": "Start & End screens",
+      "tabs": {
+        "content": {
+          "title": "Content"
+        },
+        "endMessage": {
+          "inputs": {
+            "action": {
+              "label": "When the user finishes answering the callout",
+              "opts": {
+                "redirect": "Redirect them to another page",
+                "showMessage": "Show a thank you message"
+              }
+            },
+            "text": {
+              "help": "<p>Here you can thank users in more detail and let them know when to expect updates or follow-ups.</p>",
+              "label": "Thank you text",
+              "placeholder": "Include more details about how valuable their input was…"
+            },
+            "title": {
+              "help": "<p>You readers will see the <strong>Thank you title</strong> when they finish answering the callout.</p>",
+              "label": "Thank you title",
+              "placeholder": "Thank you!"
+            },
+            "url": {
+              "help": "<p>This could be your homepage or a first article about the topic of the callout.</p>",
+              "label": "URL for redirect",
+              "placeholder": "https://example.com"
+            }
+          },
+          "title": "End message"
+        },
+        "intro": {
+          "help": "<p>The <strong>Introduction text</strong> appears alongside the callout. It should explain why you are doing this callout and give any context the user might need before answering.</p>",
+          "label": "Introduction text",
+          "title": "Introduction"
+        },
+        "mailchimp": {
+          "title": "Mailchimp sync"
+        },
+        "responseDisplay": {
+          "title": "Response display"
+        },
+        "settings": {
+          "access": {
+            "title": "Access and security"
+          },
+          "dates": {
+            "title": "Scheduling"
+          },
+          "displayOptions": {
+            "description": "Choose which response options should be visible to users",
+            "title": "Display options"
+          },
+          "inputs": {
+            "collectGuestInfo": {
+              "label": "Also collect guest contact information",
+              "opts": {
+                "disabled": "Guests who respond will be anonymous",
+                "enabled": "Guests will also be asked for their contact information"
+              }
+            },
+            "collectMemberInfo": {
+              "label": "Collect contact information",
+              "opts": {
+                "disabled": "All responses will be anonymous",
+                "enabled": "Members who respond will have their contact information collected"
+              }
+            },
+            "expires": {
+              "description": "Set an end date",
+              "label": "Set an ending date",
+              "opts": {
+                "never": "The callout will run until manually closed",
+                "schedule": "The callout will automatically close at a specific date."
+              }
+            },
+            "mapAndGallery": {
+              "description": "Choose which response views should be available to users",
+              "gallery": {
+                "disabledDescription": "An image-based board of responses will not be publicly available",
+                "enabledDescription": "An image-based board of responses will be publicly available",
+                "label": "Enable gallery view of public responses"
+              },
+              "map": {
+                "disabledDescription": "A location-tagged map overview will not be publicly available",
+                "enabledDescription": "A location-tagged map overview will be publicly available",
+                "label": "Enable map view of public responses"
+              },
+              "title": "Map and gallery views"
+            },
+            "mapSchema": {
+              "addressPattern": {
+                "label": "What format would you like to use?"
+              },
+              "addressPatternProp": {
+                "label": "Do you want to populate a field with the address?",
+                "none": "– Don’t populate a field –"
+              },
+              "addressProp": {
+                "label": "What form field should be used to plot responses on the map?"
+              },
+              "bounds": {
+                "label": "Maximum map bounds"
+              },
+              "center": {
+                "label": "Initial map center"
+              },
+              "geocodeCountries": {
+                "label": "Restrict location search results to specific countries?"
+              },
+              "initialZoom": {
+                "label": "Initial zoom level"
+              },
+              "maxZoom": {
+                "label": "Maximum zoom level"
+              },
+              "minZoom": {
+                "label": "Minimum zoom level"
+              },
+              "style": {
+                "help": "<p>The map view <strong>requires a third-party map tool</strong> like <a href=\"https://www.maptiler.com\" target=\"_blank\" rel=\"noopener noreferrer\">Maptiler</a> or <a href=\"https://www.mapbox.com\" target=\"_blank\" rel=\"noopener noreferrer\">Mapbox</a>. Those tools provide you with the map style URL you need to paste in here.</p>",
+                "label": "Map style URL"
+              },
+              "title": "Map settings"
+            },
+            "openToEveryone": {
+              "help": "<p>Callouts can be presented to <strong>Everyone</strong> or restricted to <strong>Members only</strong> participation</p>",
+              "label": "Open to everyone",
+              "opts": {
+                "disabled": "Only members will be able to access and participate in this callout",
+                "enabled": "Anyone will be able to access and participate in this callout"
+              }
+            },
+            "requireCaptcha": {
+              "help": "<p>If you enable <strong>bot spam protection</strong> users will be required to complete a Captcha to confirm they are human. This is useful to prevent your callout being spammed by bots</p>",
+              "label": "Enable bot spam protection",
+              "members": {
+                "label": "Activate for members too",
+                "opts": {
+                  "disabled": "Your members are not asked for a CAPTCHA",
+                  "enabled": "Even your members are asked for a CAPTCHA"
+                }
+              },
+              "opts": {
+                "all": "All users will be asked to fill out a CAPTCHA",
+                "guests": "Non-members will be asked to fill out a CAPTCHA",
+                "none": "No CAPTCHA will be required"
+              }
+            },
+            "responseImageProp": {
+              "description": "The image will be used to visualise the answer in map or gallery view",
+              "label": "Response image"
+            },
+            "responseLinks": {
+              "description": "For example, use the response footer to include a link to report an error or a contact email. To link to an email address, type mailto: followed by the email address in the URL field.",
+              "label": "Include a footer at the bottom of responses",
+              "opts": {
+                "disabled": "Don’t show any footer links on responses",
+                "enabled": "Show footer links on responses for contact or error reporting"
+              },
+              "placeholder": {
+                "label": "Example: Report an error",
+                "url": "mailto:error{'@'}mail.com"
+              }
+            },
+            "responseSettings": {
+              "opts": {
+                "multiple": "Multiple responses, non-editable",
+                "singleEditable": "Single response but editable while callout is open",
+                "singleNonEditable": "Single response, non-editable"
+              },
+              "title": "Response settings"
+            },
+            "responseTitleProp": {
+              "description": "The title will appear on top of each response in the map or gallery view",
+              "label": "Response title"
+            },
+            "showResponses": {
+              "label": "Display responses publicly",
+              "opts": {
+                "no": "Collected responses are not publicly available",
+                "yes": "Show collected responses publicly"
+              }
+            },
+            "starts": {
+              "label": "Set a starting date",
+              "opts": {
+                "now": "The callout will be made available immediately.",
+                "schedule": "The callout will be made available at a specific date."
+              }
+            },
+            "visible": {
+              "help": "<p>You can make the callout <strong>not appear</strong> to users if you only want it to be answered by people who you share the link with.</p>",
+              "label": "Show callout in member dashboards",
+              "opts": {
+                "disabled": "The callout will not appear on member dashboards",
+                "enabled": "The callout will appear on member dashboards"
+              }
+            },
+            "whichResponseBuckets": {
+              "description": "Responses in unchecked buckets will be hidden from public view",
+              "label": "Visible response buckets"
+            }
+          },
+          "title": "Settings"
+        },
+        "titleAndImage": {
+          "inputs": {
+            "description": {
+              "help": "This description is shown if the callout is visible in the member’s dashboard. It is also used for sharing.",
+              "label": "Short description",
+              "placeholder": "Quickly explain why people should open this callout."
+            },
+            "general": {
+              "title": "General information"
+            },
+            "image": {
+              "description": "Don’t forget to save after uploading an image!",
+              "help": "<p>The <strong>Cover image</strong> will serve as an illustration for the callout on menus and forms.</p>",
+              "label": "Cover image"
+            },
+            "overrideShare": {
+              "label": "Use custom title and description for sharing?",
+              "opts": {
+                "disabled": "Links shared on social networks will have the same title and description.",
+                "enabled": "Links shared on social networks will have a custom title and description."
+              }
+            },
+            "shareDescription": {
+              "help": "<p>The <strong>Share description</strong> field sets the short description as it should appear on social media cards.</p>",
+              "label": "Share description",
+              "placeholder": "Quickly explain why people should respond to this callout."
+            },
+            "shareTitle": {
+              "help": "<p>The <strong>Share title</strong> field sets the title as it should appear on social media cards.</p>",
+              "label": "Share title",
+              "placeholder": "The name of your callout"
+            },
+            "sharing": {
+              "title": "Sharing options"
+            },
+            "slug": {
+              "boxTitle": "Permalink",
+              "help": "<p>You can share the <strong>permalink</strong> with users so they can access the callout directly</p>",
+              "label": "Auto-generate slug from title",
+              "locked": {
+                "title": "The permalink is locked because the callout has already been published."
+              },
+              "opts": {
+                "auto": "The permalink is generated from the callout title and automatically updated until the callout is published.",
+                "manual": "The permalink is set manually"
+              }
+            },
+            "title": {
+              "label": "Title",
+              "placeholder": "The name of your callout."
+            }
+          },
+          "title": "Title and image",
+          "urlWillBe": "Permalink will be"
+        },
+        "translations": {
+          "language": {
+            "description": "You can translate the callout into multiple languages. If a translation is missing we’ll show the text in the primary language.",
+            "enableLanguages": "Enable translation support",
+            "title": "Language"
+          },
+          "languageSettings": {
+            "title": "Language"
+          },
+          "navigationButtons": {
+            "title": "Buttons"
+          },
+          "title": "Translations"
+        }
+      },
+      "translationFields": {
+        "description": "Description",
+        "label": "Label",
+        "option": "Option {n}",
+        "placeholder": "Placeholder"
+      }
+    },
     "confirmHuman": "Please confirm you are human",
     "contactDetails": "Contact details",
     "ended": "This callout ended on {date}",
@@ -406,30 +716,6 @@
     },
     "summary": "Summary",
     "updated": "Your callout was successfully updated."
-  },
-  "calloutBuilder": {
-    "actions": {
-      "addSlide": "Add slide",
-      "removeSlide": "Remove slide"
-    },
-    "internalTitle": "Internal title",
-    "nextButton": "Next button text",
-    "nextSlide": {
-      "default": "-- Default --",
-      "label": "Next slide"
-    },
-    "prevButton": "Back button text",
-    "showAdvancedOptions": "Show advanced options",
-    "slideNo": "Slide {no}",
-    "submitButton": "Submit button text",
-    "translationFields": {
-      "description": "Description",
-      "label": "Label",
-      "option": "Option {n}",
-      "placeholder": "Placeholder"
-    },
-    "translationsText": "Set the translations for each component in your form",
-    "translationsTitle": "Translations"
   },
   "calloutResponse": {
     "data": {
@@ -547,6 +833,7 @@
       "manual": "Manual",
       "none": "None"
     },
+    "default": "Default",
     "hello": "Hello",
     "id": "ID",
     "itemsPerPage": "{items} items per page",
@@ -656,6 +943,7 @@
     "data": {
       "activeMembership": "Active membership",
       "activePermission": "Active role",
+      "activeUser": "Active user",
       "amount": "Amount",
       "annotationsCopy": "Contact successfully updated",
       "contribution": "Contribution",
@@ -742,234 +1030,6 @@
     "willRenew": "Your contribution will automatically renew on {renewalDate}.",
     "willRenewWithNewAmount": "Your contribution will automatically renew on {renewalDate} and will change to your chosen amount of {nextAmount}."
   },
-  "createCallout": {
-    "lastSaved": "Last saved {duration} ago",
-    "lastSavedNow": "Last saved just now",
-    "steps": {
-      "content": {
-        "title": "Content"
-      },
-      "dates": {
-        "inputs": {
-          "expires": {
-            "label": "When should this callout end?",
-            "opts": {
-              "never": "Never, unless manually closed",
-              "schedule": "Schedule an end date"
-            }
-          },
-          "starts": {
-            "label": "When should this callout start?",
-            "opts": {
-              "now": "Now",
-              "schedule": "Schedule a start date"
-            }
-          }
-        },
-        "title": "Schedule"
-      },
-      "endMessage": {
-        "inputs": {
-          "action": {
-            "label": "When the user finishes answering the callout",
-            "opts": {
-              "redirect": "Redirect them to another page",
-              "showMessage": "Show a thank you message"
-            }
-          },
-          "text": {
-            "help": "<p>Here you can thank users in more detail and let them know when to expect updates or follow-ups.</p>\n",
-            "label": "Thank you text",
-            "placeholder": "Include more details about how valuable their input was..."
-          },
-          "title": {
-            "help": "<p>You readers will see the <strong>Thank you title</strong> when they finish answering the callout.</p>\n",
-            "label": "Thank you title",
-            "placeholder": "Thank you!"
-          },
-          "url": {
-            "help": "<p>This could be your homepage or a first article about the topic of the callout.</p>\n",
-            "label": "URL for redirect",
-            "placeholder": "https://example.com"
-          }
-        },
-        "title": "End message"
-      },
-      "mailchimp": {
-        "title": "Mailchimp sync"
-      },
-      "settings": {
-        "inputs": {
-          "anonymous": {
-            "help": "<p>If you allow <strong>anonymous responses</strong>, users will not be asked for their contact information.</p>\n",
-            "label": "Should guests be asked for their contact information?",
-            "opts": {
-              "all": "All responses should be anonymous, including from logged in users",
-              "guests": "No, responses from guests can be anonymous",
-              "none": "Yes, ask guests for their contact information"
-            }
-          },
-          "editable": {
-            "help": "<p>If yes, the users will be able to <strong>update their answers</strong> until the callout reaches its end date.</p>\n",
-            "label": "Should people be able to change their answers before the callout ends?",
-            "opts": {
-              "no": "No, answers are final",
-              "yes": "Yes"
-            }
-          },
-          "mapSchema": {
-            "addressPattern": {
-              "label": "What format would you like to use?"
-            },
-            "addressPatternProp": {
-              "label": "Do you want to populate a field with the address?",
-              "none": "-- Don't populate a field --"
-            },
-            "addressProp": {
-              "label": "What form field should be used to plot responses on the map?"
-            },
-            "bounds": {
-              "label": "Maximum map bounds"
-            },
-            "center": {
-              "label": "Initial map center"
-            },
-            "geocodeCountries": {
-              "label": "Restrict location search results to specific countries?"
-            },
-            "initialZoom": {
-              "label": "Initial zoom level"
-            },
-            "maxZoom": {
-              "label": "Maximum zoom level"
-            },
-            "minZoom": {
-              "label": "Minimum zoom level"
-            },
-            "style": {
-              "help": "<p>The map view <strong>requires a third-party map tool</strong> like <a href=\"https://www.maptiler.com\" target=\"_blank\" rel=\"noopener noreferrer\">Maptiler</a> or <a href=\"https://www.mapbox.com\" target=\"_blank\" rel=\"noopener noreferrer\">Mapbox</a>. Those tools provide you with the map style URL you need to paste in here.</p>\n",
-              "label": "Map style URL"
-            },
-            "title": "Map settings"
-          },
-          "multiple": {
-            "help": "<p>If yes, then logged in users will be able to <strong>respond multiple times</strong> to the callout.</p>\n",
-            "label": "Can users answer the callout more than once?",
-            "opts": {
-              "no": "No, only one response",
-              "yes": "Yes"
-            }
-          },
-          "requireCaptcha": {
-            "help": "<p>If you enable <strong>bot spam protection</strong> users will be required to complete a Captcha to confirm they are human. This is useful to prevent your callout being spammed by bots</p>\n",
-            "label": "Enable bot spam protection on the callout?",
-            "opts": {
-              "all": "Yes, ask all users to confirm they are human",
-              "guests": "Yes, ask guests to confirm they are human",
-              "none": "No"
-            }
-          },
-          "responseImageFilter": {
-            "label": "Do you want to apply a filter to images?"
-          },
-          "responseImageProp": {
-            "help": "<p>The image will be used to visualise the answer in map or gallery view. Important: This has to be a file upload component.</p>\n",
-            "label": "Which form field should be used for response images?"
-          },
-          "responseLinks": {
-            "label": "Add links to the bottom of responses?"
-          },
-          "responseTitleProp": {
-            "help": "<p>The title appears on top of each answer in the map or gallery view.</p>\n",
-            "label": "Which form field should be used as the response title?"
-          },
-          "showResponses": {
-            "help": "<p>If yes, you can set up a map or gallery view to visualise callout answers.</p>\n",
-            "label": "Allow users to see responses publicly?"
-          },
-          "visible": {
-            "help": "<p>You can make the callout <strong>not appear</strong> to users if you only want it to be answered by people who you share the link with.</p>\n",
-            "label": "Should it be visible in the users' dashboards?",
-            "opts": {
-              "no": "No, it can only be accessed through its link",
-              "yes": "Yes, show it to users"
-            }
-          },
-          "whichResponseBuckets": {
-            "label": "Which response buckets should be shown publicly?"
-          },
-          "whichResponseViews": {
-            "help": "<p>Please decide if you want to use the map view or the gallery view or both.</p>\n",
-            "label": "Which response views should be visible?",
-            "opts": {
-              "gallery": "Gallery view",
-              "map": "Map view"
-            }
-          },
-          "who": {
-            "help": "<p>Callouts can be presented to <strong>Everyone</strong> or restricted to <strong>Members only</strong> participation</p>\n",
-            "label": "Who can take part?",
-            "opts": {
-              "everyone": "Everyone",
-              "members": "Members only"
-            }
-          }
-        },
-        "title": "Settings"
-      },
-      "titleAndImage": {
-        "inputs": {
-          "description": {
-            "help": "<p>The <strong>Short description</strong> expands on the title to explain what the callout is about. It is meant to inform people what is inside in a few words.</p>\n",
-            "label": "Short description",
-            "placeholder": "Quickly explain why people should open this callout."
-          },
-          "image": {
-            "help": "<p>The <strong>Cover image</strong> will serve as an illustration for the callout on menus and forms.</p>\n",
-            "label": "Cover image"
-          },
-          "intro": {
-            "help": "<p>The <strong>Introduction text</strong> appears alongside the callout. It should explain why you are doing this callout and give any context the user might need before answering.</p>\n",
-            "label": "Introduction text"
-          },
-          "overrideShare": {
-            "label": "Use callout title and description for sharing?",
-            "opts": {
-              "no": "No, set a custom title and description",
-              "yes": "Yes"
-            }
-          },
-          "shareDescription": {
-            "help": "<p>The <strong>Share description</strong> field sets the short description as it should appear on social media cards.</p>\n",
-            "label": "Share description",
-            "placeholder": "Quickly explain why people should respond to this callout."
-          },
-          "shareTitle": {
-            "help": "<p>The <strong>Share title</strong> field sets the title as it should appear on social media cards.</p>\n",
-            "label": "Share title",
-            "placeholder": "The name of your callout"
-          },
-          "slug": {
-            "help": "<p>You can share the <strong>Permalink</strong> with users so they can access the callout</p>\n",
-            "label": "Permalink",
-            "opts": {
-              "auto": "Auto-generate from callout title",
-              "manual": "Set custom permalink"
-            }
-          },
-          "title": {
-            "help": "<p>The <strong>Title</strong> will appear on all the mentions of this callout. It's worth spending a while coming up with the right name to get people interested.</p>\n",
-            "label": "Title",
-            "placeholder": "The name of your callout."
-          }
-        },
-        "title": "Title and image",
-        "urlWillBe": "Permalink will be"
-      }
-    },
-    "title": "Create a callout",
-    "untitledCallout": "Untitled callout"
-  },
   "editCallout": {
     "replicated": "Your callout was successfully replicated, and you are now editing the new copy. Be sure to edit the title in the \"Title and Image\" tab.",
     "title": "Edit: {title}",
@@ -997,6 +1057,9 @@
     "addressLine1": "Address line 1",
     "addressLine2": "Address line 2",
     "cancel": "Cancel",
+    "characters": {
+      "remaining": "{remaining} characters remaining."
+    },
     "cityOrTown": "City/Town",
     "deliveryOptIn": "Delivery opt-in",
     "description": "Description",
@@ -1061,6 +1124,7 @@
       "unknown": {
         "email": "Invalid email address",
         "max": "This field must be at most {max}",
+        "maxLength": "Maximum length of {max} characters exceeded",
         "min": "This field must be at least {min}",
         "required": "This field is required",
         "url": "Invalid URL"
@@ -1297,8 +1361,12 @@
     },
     "showingOf": "Showing {start} to {end} notices out of {total}"
   },
-  "notification": {
-    "error": "Something went wrong. Try reloading the page."
+  "notifications": {
+    "copy": {
+      "success": "Copied to clipboard"
+    },
+    "error": "Something went wrong. Try reloading the page.",
+    "remove": "Close notification"
   },
   "pageTitle": {
     "confirmEmail": "Confirm email",

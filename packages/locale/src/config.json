@@ -17,6 +17,12 @@
     "displayName": "Deutsch",
     "adminLocale": "de@informal"
   },
+  "nl": {
+    "baseLocale": "nl",
+    "name": "Nederlands",
+    "displayName": "Nederlands",
+    "adminLocale": "nl"
+  },
   "pt": {
     "baseLocale": "pt",
     "name": "Português",
@@ -35,16 +41,10 @@
     "displayName": "Русский",
     "adminLocale": "en"
   },
-  "nl": {
-    "baseLocale": "nl",
-    "name": "Nederlands",
-    "displayName": "Nederlands",
-    "adminLocale": "nl"
-  },
   "de@easy": {
     "baseLocale": "de",
-    "name": "Deutsch (easy, callouts only)",
-    "displayName": "Leichte Sprache",
+    "name": "Deutsch (einfach)",
+    "displayName": "Leichtes Sprache",
     "adminLocale": "de"
   }
 }
