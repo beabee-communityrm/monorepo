@@ -10,10 +10,7 @@ import {
   HeadObjectCommand
 } from "@aws-sdk/client-s3";
 import sharp from "sharp";
-import {
-  isSupportedImageType,
-  ALLOWED_IMAGE_INPUT_FORMATS
-} from "@beabee/beabee-common";
+import { isSupportedImageType } from "@beabee/beabee-common";
 
 import type { ImageFormat } from "../type/image-format";
 import type { ImageServiceConfig } from "../type/image-service-config";
@@ -35,20 +32,11 @@ const log = mainLogger.child({ app: "image-service" });
  */
 export class ImageService {
   private readonly s3Client: S3Client;
-  private readonly config: ImageServiceConfig;
-  private readonly defaultConfig: Partial<ImageServiceConfig> = {
-    quality: 80,
-    format: "avif",
-    availableWidths: [100, 300, 400, 600, 900, 1200, 1440, 1800]
-  };
-
   /**
    * Create a new ImageService
    * @param config Service configuration
    */
-  constructor(config: ImageServiceConfig) {
-    this.config = { ...this.defaultConfig, ...config };
-
+  constructor(private readonly config: ImageServiceConfig) {
     this.s3Client = new S3Client({
       endpoint: this.config.s3.endpoint,
       region: this.config.s3.region,
@@ -58,6 +46,10 @@ export class ImageService {
       },
       forcePathStyle: this.config.s3.forcePathStyle !== false
     });
+
+    this.config.availableWidths = [...this.config.availableWidths].sort(
+      (a, b) => a - b
+    );
   }
 
   /**
@@ -281,12 +273,9 @@ export class ImageService {
 
       if (width) {
         // Find the closest available width that is >= the requested width
-        const availableWidths = [...this.config.availableWidths].sort(
-          (a, b) => a - b
-        );
         bestWidth =
-          availableWidths.find((w) => w >= width) ||
-          availableWidths[availableWidths.length - 1];
+          this.config.availableWidths.find((w) => w >= width) ||
+          this.config.availableWidths[this.config.availableWidths.length - 1];
       }
 
       // Determine the key to use based on whether we're getting a resized version
@@ -593,7 +582,9 @@ export class ImageService {
 }
 
 export const imageService = new ImageService({
-  availableWidths: [100, 300, 600, 900, 1200, 1800],
+  quality: parseInt(process.env.IMAGE_QUALITY || "80"),
+  format: (process.env.IMAGE_FORMAT || "avif") as ImageFormat,
+  availableWidths: [100, 300, 400, 600, 900, 1200, 1440, 1800],
   s3: {
     endpoint: process.env.MINIO_ENDPOINT || "http://minio:9000",
     region: process.env.MINIO_REGION || "us-east-1",
@@ -601,7 +592,5 @@ export const imageService = new ImageService({
     secretKey: process.env.MINIO_ROOT_PASSWORD || "minioadmin",
     bucket: process.env.MINIO_BUCKET || "uploads",
     forcePathStyle: true
-  },
-  quality: parseInt(process.env.IMAGE_QUALITY || "80"),
-  format: (process.env.IMAGE_FORMAT || "avif") as ImageFormat
+  }
 });
