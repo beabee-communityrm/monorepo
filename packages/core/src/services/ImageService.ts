@@ -10,6 +10,10 @@ import {
   HeadObjectCommand
 } from "@aws-sdk/client-s3";
 import sharp from "sharp";
+import {
+  isSupportedImageType,
+  ALLOWED_IMAGE_INPUT_FORMATS
+} from "@beabee/beabee-common";
 
 import type { ImageFormat } from "../type/image-format";
 import type { ImageServiceConfig } from "../type/image-service-config";
@@ -57,13 +61,69 @@ export class ImageService {
   }
 
   /**
+   * Sanitize filename to prevent path traversal attacks
+   * @param filename Original filename
+   * @returns Sanitized filename
+   */
+  private sanitizeFilename(filename: string): string {
+    // Remove path components and special characters
+    return filename.replace(/[/\\?%*:|"<>]/g, "_").replace(/^\.+/, "");
+  }
+
+  /**
+   * Validate image file type, size and content
+   * @param imageData Image data buffer
+   * @param mimetype MIME type if known
+   */
+  private async validateImage(
+    imageData: Buffer,
+    mimetype?: string
+  ): Promise<void> {
+    // Validate MIME type if provided
+    if (mimetype && !isSupportedImageType(mimetype)) {
+      throw new BadRequestError({
+        message:
+          "Unsupported image type. Please upload a JPEG, PNG, WebP or AVIF image."
+      });
+    }
+
+    try {
+      // Validate image content with sharp
+      const image = sharp(imageData);
+      const metadata = await image.metadata();
+
+      // Check if it's actually a valid image
+      if (!metadata.width || !metadata.height || !metadata.format) {
+        throw new BadRequestError({ message: "Invalid image format" });
+      }
+
+      // Check if the detected format is allowed
+      if (!isSupportedImageType(getMimetypeFromExtension(metadata.format))) {
+        throw new BadRequestError({
+          message:
+            "Unsupported image format. Please upload a JPEG, PNG, WebP or AVIF image."
+        });
+      }
+    } catch (error) {
+      if (error instanceof BadRequestError) {
+        throw error;
+      }
+      throw new BadRequestError({ message: "Invalid image file" });
+    }
+  }
+
+  /**
    * Upload an image to S3/MinIO
    * @param imageData Binary image data or file stream
+   * @param originalFilename Original filename (optional)
+   * @param owner Owner's contact email (optional)
    * @param format Output format (avif, webp, jpeg, png, or "original" to keep the original format)
    * @returns Metadata for the uploaded image
    */
   async uploadImage(
     imageData: Buffer,
+    originalFilename?: string,
+    owner?: string,
     format?: ImageFormat
   ): Promise<ImageMetadata> {
     try {
@@ -72,8 +132,21 @@ export class ImageService {
         throw new BadRequestError({ message: "Invalid upload format" });
       }
 
+      // Validate image content, size and type
+      await this.validateImage(
+        imageData,
+        originalFilename
+          ? getMimetypeFromExtension(originalFilename)
+          : undefined
+      );
+
+      // Sanitize original filename if provided
+      const sanitizedFilename = originalFilename
+        ? this.sanitizeFilename(originalFilename)
+        : undefined;
+
       // Process the image with sharp to get metadata
-      const image = sharp(imageData);
+      const image = sharp(imageData).rotate(); // Auto-rotate based on EXIF orientation
       const metadata = await image.metadata();
 
       if (!metadata.width || !metadata.height || !metadata.format) {
@@ -101,28 +174,34 @@ export class ImageService {
 
       // Convert the image to the target format or keep original
       if (outputFormat === "original") {
-        // Keep the original format
-        processedImageBuffer = await image.toBuffer();
+        // Keep the original format but strip metadata
+        processedImageBuffer = await image
+          .withMetadata({ orientation: undefined }) // Strip EXIF but keep orientation
+          .toBuffer();
       } else {
         // Convert to the specified format
         switch (outputFormat) {
           case "webp":
             processedImageBuffer = await image
+              .withMetadata({ orientation: undefined })
               .webp({ quality: this.config.quality })
               .toBuffer();
             break;
           case "avif":
             processedImageBuffer = await image
+              .withMetadata({ orientation: undefined })
               .avif({ quality: this.config.quality })
               .toBuffer();
             break;
           case "jpeg":
             processedImageBuffer = await image
+              .withMetadata({ orientation: undefined })
               .jpeg({ quality: this.config.quality })
               .toBuffer();
             break;
           case "png":
             processedImageBuffer = await image
+              .withMetadata({ orientation: undefined })
               .png({
                 quality: this.config.quality
                   ? Math.floor(this.config.quality / 10)
@@ -131,7 +210,9 @@ export class ImageService {
               .toBuffer();
             break;
           default:
-            processedImageBuffer = await image.toBuffer();
+            processedImageBuffer = await image
+              .withMetadata({ orientation: undefined })
+              .toBuffer();
         }
       }
 
@@ -141,13 +222,23 @@ export class ImageService {
           ? getMimetypeFromExtension(metadata.format)
           : getMimetypeFromExtension(extension);
 
+      // Prepare metadata for S3
+      const s3Metadata: Record<string, string> = {};
+      if (sanitizedFilename) {
+        s3Metadata.originalFilename = sanitizedFilename;
+      }
+      if (owner) {
+        s3Metadata.owner = owner;
+      }
+
       // Upload the processed original image
       await this.s3Client.send(
         new PutObjectCommand({
           Bucket: this.config.s3.bucket,
           Key: `originals/${id}`,
           Body: processedImageBuffer,
-          ContentType: outputMimetype
+          ContentType: outputMimetype,
+          Metadata: Object.keys(s3Metadata).length > 0 ? s3Metadata : undefined
         })
       );
 
@@ -158,7 +249,9 @@ export class ImageService {
         height: metadata.height,
         mimetype: outputMimetype,
         createdAt: new Date(),
-        size: processedImageBuffer.length
+        size: processedImageBuffer.length,
+        filename: sanitizedFilename,
+        owner
       };
     } catch (error) {
       if (error instanceof BadRequestError) {
@@ -368,13 +461,17 @@ export class ImageService {
         })
       );
 
+      const s3Metadata = response.Metadata || {};
+
       return {
         id,
         width: metadata.width,
         height: metadata.height,
         mimetype: contentType,
         createdAt: response.LastModified || new Date(),
-        size: response.ContentLength || buffer.length
+        size: response.ContentLength || buffer.length,
+        filename: s3Metadata.originalfilename,
+        owner: s3Metadata.owner
       };
     } catch (error) {
       log.error("Failed to get image metadata:", error);

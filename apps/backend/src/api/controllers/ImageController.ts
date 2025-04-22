@@ -10,7 +10,8 @@ import {
   Post,
   QueryParam,
   Req,
-  Res
+  Res,
+  UnauthorizedError
 } from "routing-controllers";
 import { MulterError } from "multer";
 
@@ -19,6 +20,7 @@ import { Contact } from "@beabee/core/models";
 import { BadRequestError } from "@beabee/core/errors";
 import { uploadMiddleware } from "../middlewares";
 import { config } from "@beabee/core/config";
+import { isSupportedImageType } from "@beabee/beabee-common";
 
 import type { UploadFileResponse } from "@beabee/beabee-common";
 
@@ -28,10 +30,11 @@ export class ImageController {
    * Upload a new image
    */
   @Post("/")
+  @Authorized()
   async upload(
-    @CurrentUser({ required: true }) contact: Contact,
     @Req() req: Request,
-    @Res() res: Response
+    @Res() res: Response,
+    @CurrentUser({ required: false }) contact?: Contact
   ): Promise<UploadFileResponse> {
     try {
       // Apply multer middleware to handle file upload
@@ -41,16 +44,23 @@ export class ImageController {
         throw new BadRequestError({ message: "No image file provided" });
       }
 
+      // Verify file type is allowed - multer handles size but we still check type
+      if (!isSupportedImageType(req.file.mimetype)) {
+        throw new BadRequestError({
+          message:
+            "Unsupported image type. Please upload a JPEG, PNG, WebP or AVIF image."
+        });
+      }
+
       // Use the ImageService to upload and process the file
       const metadata = await imageService.uploadImage(
-        req.file.buffer
-        // req.file.originalname,
-        // req.file.mimetype
+        req.file.buffer,
+        req.file.originalname,
+        contact?.email // Only add owner information if available
       );
 
       return {
         id: metadata.id,
-        // url: `${config.audience}/uploads/${metadata.id}`,
         url: `${config.audience}/api/1.0/images/${metadata.id}`
       };
     } catch (error) {
@@ -84,10 +94,17 @@ export class ImageController {
       // Get image as buffer
       const imageData = await imageService.getImageBuffer(id, width);
 
-      // Set headers but don't end the response (thanks to passthrough)
+      // Get image metadata to check permissions if needed in the future
+      const metadata = await imageService.getImageMetadata(id);
+
+      // Set appropriate security headers
       res.set({
         "Content-Type": imageData.contentType,
-        "Cache-Control": "public, max-age=86400"
+        "Content-Disposition": `inline; filename="${metadata.filename || id}"`,
+        "Cache-Control": "public, max-age=86400",
+        "X-Content-Type-Options": "nosniff",
+        "Content-Security-Policy": "img-src 'self'",
+        "X-Frame-Options": "SAMEORIGIN"
       });
 
       // Return the buffer, routing-controllers will handle the rest
@@ -108,13 +125,30 @@ export class ImageController {
   @Authorized()
   async deleteImage(
     @Param("id") id: string,
-    @CurrentUser() contact: Contact
+    @CurrentUser({ required: true }) contact: Contact
   ): Promise<{ success: boolean }> {
     try {
+      // Get image metadata first to check ownership
+      const metadata = await imageService.getImageMetadata(id);
+
+      // Check if user is the owner of the image or an admin
+      if (
+        metadata.owner &&
+        metadata.owner !== contact.email &&
+        !contact.hasRole("admin")
+      ) {
+        throw new UnauthorizedError(
+          "You don't have permission to delete this image"
+        );
+      }
+
       const success = await imageService.deleteImage(id);
       return { success };
     } catch (error) {
       if (error instanceof NotFoundError) {
+        throw error;
+      }
+      if (error instanceof UnauthorizedError) {
         throw error;
       }
       throw new BadRequestError({ message: "Failed to delete image" });

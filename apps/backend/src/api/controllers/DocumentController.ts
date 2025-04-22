@@ -9,7 +9,8 @@ import {
   Param,
   Post,
   Req,
-  Res
+  Res,
+  UnauthorizedError
 } from "routing-controllers";
 import { MulterError } from "multer";
 
@@ -18,6 +19,7 @@ import { Contact } from "@beabee/core/models";
 import { BadRequestError } from "@beabee/core/errors";
 import { uploadMiddleware } from "../middlewares";
 import { config } from "@beabee/core/config";
+import { isSupportedDocumentType } from "@beabee/beabee-common";
 
 import type { UploadFileResponse } from "@beabee/beabee-common";
 
@@ -27,10 +29,11 @@ export class DocumentController {
    * Upload a new document
    */
   @Post("/")
+  @Authorized()
   async upload(
-    @CurrentUser({ required: true }) contact: Contact,
     @Req() req: Request,
-    @Res() res: Response
+    @Res() res: Response,
+    @CurrentUser({ required: false }) contact?: Contact
   ): Promise<UploadFileResponse> {
     try {
       // Apply multer middleware to handle file upload
@@ -40,11 +43,19 @@ export class DocumentController {
         throw new BadRequestError({ message: "No document file provided" });
       }
 
-      // Use the DocumentService to upload the file
+      // Verify file type is allowed - multer handles size but we still check type
+      if (!isSupportedDocumentType(req.file.mimetype)) {
+        throw new BadRequestError({
+          message: "Unsupported document type. Please upload a PDF document."
+        });
+      }
+
+      // Use the DocumentService to upload the file with owner information
       const metadata = await documentService.uploadDocument(
         req.file.buffer,
         req.file.originalname,
-        req.file.mimetype
+        req.file.mimetype,
+        contact?.email // Add the owner information if available
       );
 
       // Create response object
@@ -89,10 +100,17 @@ export class DocumentController {
       // Get document as buffer
       const documentData = await documentService.getDocumentBuffer(id);
 
-      // Set appropriate headers
+      // Get document metadata to check permissions if needed in the future
+      const metadata = await documentService.getDocumentMetadata(id);
+
+      // Set appropriate security headers
       res.set({
         "Content-Type": documentData.contentType,
-        "Cache-Control": "public, max-age=86400"
+        "Content-Disposition": `inline; filename="${metadata.filename || id}"`,
+        "Cache-Control": "public, max-age=86400",
+        "X-Content-Type-Options": "nosniff",
+        "Content-Security-Policy": "default-src 'self'",
+        "X-Frame-Options": "DENY"
       });
 
       // Return the buffer, routing-controllers will handle the rest
@@ -113,13 +131,31 @@ export class DocumentController {
   @Authorized()
   async deleteDocument(
     @Param("id") id: string,
-    @CurrentUser() contact: Contact
+    @CurrentUser({ required: true }) contact: Contact
   ): Promise<{ success: boolean }> {
     try {
+      // Get document metadata first to check ownership
+      const metadata = await documentService.getDocumentMetadata(id);
+
+      // Check if the user is the owner of the document
+      // Only allow the document owner or admins to delete documents
+      if (
+        metadata.owner &&
+        metadata.owner !== contact.email &&
+        !contact.hasRole("admin")
+      ) {
+        throw new UnauthorizedError(
+          "You don't have permission to delete this document"
+        );
+      }
+
       const success = await documentService.deleteDocument(id);
       return { success };
     } catch (error) {
       if (error instanceof NotFoundError) {
+        throw error;
+      }
+      if (error instanceof UnauthorizedError) {
         throw error;
       }
       throw new BadRequestError({ message: "Failed to delete document" });

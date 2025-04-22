@@ -31,4 +31,14 @@ export interface ImageMetadata {
    * File size in bytes
    */
   size: number;
+
+  /**
+   * Original filename, if available
+   */
+  filename?: string | undefined;
+
+  /**
+   * Owner's contact email, if available
+   */
+  owner?: string | undefined;
 }

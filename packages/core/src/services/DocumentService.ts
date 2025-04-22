@@ -5,7 +5,8 @@ import {
   S3Client,
   PutObjectCommand,
   DeleteObjectCommand,
-  ListObjectsV2Command
+  ListObjectsV2Command,
+  HeadObjectCommand
 } from "@aws-sdk/client-s3";
 
 import type { DocumentServiceConfig, DocumentMetadata } from "../type/index";
@@ -49,16 +50,57 @@ export class DocumentService {
   }
 
   /**
+   * Sanitize filename to prevent path traversal attacks
+   * @param filename Original filename
+   * @returns Sanitized filename
+   */
+  private sanitizeFilename(filename: string): string {
+    // Remove path components and special characters
+    return filename.replace(/[/\\?%*:|"<>]/g, "_").replace(/^\.+/, "");
+  }
+
+  /**
+   * Validate document content
+   * @param documentData Document data
+   * @param mimetype MIME type
+   */
+  private validateDocument(documentData: Buffer, mimetype?: string): void {
+    // Validate mimetype if provided
+    if (mimetype && !isSupportedDocumentType(mimetype)) {
+      throw new BadRequestError({
+        message:
+          "Unsupported document type. Please upload a PDF or Office document."
+      });
+    }
+
+    // Basic PDF signature check for PDF files
+    if (
+      mimetype === "application/pdf" ||
+      (!mimetype && documentData.length > 4)
+    ) {
+      const pdfSignature = documentData.toString("ascii", 0, 4);
+      if (pdfSignature !== "%PDF") {
+        throw new BadRequestError({
+          message:
+            "Invalid PDF format. The file does not appear to be a valid PDF."
+        });
+      }
+    }
+  }
+
+  /**
    * Upload a document to S3/MinIO
    * @param documentData Binary document data
    * @param originalFilename Original filename (optional)
    * @param mimetype MIME type of the document
+   * @param owner Owner's contact email (optional)
    * @returns Metadata for the uploaded document
    */
   async uploadDocument(
     documentData: Buffer,
     originalFilename?: string,
-    mimetype?: string
+    mimetype?: string,
+    owner?: string
   ): Promise<DocumentMetadata> {
     try {
       // Validate input
@@ -66,24 +108,33 @@ export class DocumentService {
         throw new BadRequestError({ message: "Invalid upload format" });
       }
 
-      // Validate mimetype if provided
-      if (mimetype && !isSupportedDocumentType(mimetype)) {
-        throw new BadRequestError({
-          message:
-            "Unsupported document type. Please upload a PDF or Office document."
-        });
-      }
+      // Validate document content and type
+      this.validateDocument(documentData, mimetype);
+
+      // Sanitize original filename if provided
+      const sanitizedFilename = originalFilename
+        ? this.sanitizeFilename(originalFilename)
+        : undefined;
 
       // Generate a unique ID for the document
       const fileId = randomUUID();
 
       // Use the original filename extension if available, otherwise default to ".pdf"
-      const extension = originalFilename
-        ? getExtensionFromFilename(originalFilename)
+      const extension = sanitizedFilename
+        ? getExtensionFromFilename(sanitizedFilename)
         : ".pdf";
 
       const id = `${fileId}${extension}`;
       const contentType = mimetype || "application/pdf";
+
+      // Prepare metadata for S3
+      const metadata: Record<string, string> = {};
+      if (sanitizedFilename) {
+        metadata.originalFilename = sanitizedFilename;
+      }
+      if (owner) {
+        metadata.owner = owner;
+      }
 
       // Upload the document
       await this.s3Client.send(
@@ -92,7 +143,7 @@ export class DocumentService {
           Key: `documents/${id}`,
           Body: documentData,
           ContentType: contentType,
-          Metadata: originalFilename ? { originalFilename } : undefined
+          Metadata: Object.keys(metadata).length > 0 ? metadata : undefined
         })
       );
 
@@ -102,7 +153,8 @@ export class DocumentService {
         mimetype: contentType,
         createdAt: new Date(),
         size: documentData.length,
-        filename: originalFilename
+        filename: sanitizedFilename,
+        owner
       };
     } catch (error) {
       if (error instanceof BadRequestError) {
@@ -194,11 +246,28 @@ export class DocumentService {
    */
   async getDocumentMetadata(id: string): Promise<DocumentMetadata> {
     try {
-      return await getFileMetadata(
-        this.s3Client,
-        this.config.s3.bucket,
-        `documents/${id}`
+      const key = `documents/${id}`;
+      const headObject = await this.s3Client.send(
+        new HeadObjectCommand({
+          Bucket: this.config.s3.bucket,
+          Key: key
+        })
       );
+
+      if (!headObject) {
+        throw new NotFoundError();
+      }
+
+      const s3Metadata = headObject.Metadata || {};
+
+      return {
+        id,
+        mimetype: headObject.ContentType || "application/octet-stream",
+        createdAt: headObject.LastModified || new Date(),
+        size: headObject.ContentLength || 0,
+        filename: s3Metadata.originalfilename,
+        owner: s3Metadata.owner
+      };
     } catch (error) {
       log.error("Failed to get document metadata:", error);
       throw new NotFoundError();

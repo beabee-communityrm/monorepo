@@ -1,3 +1,8 @@
+import {
+  ALLOWED_DOCUMENT_MIME_TYPES,
+  ALLOWED_IMAGE_MIME_TYPES
+} from "../constants.js";
+
 /**
  * Check if a MIME type is a supported document type
  * @param mimetype MIME type to check
@@ -5,10 +10,7 @@
  */
 export const isSupportedDocumentType = (mimetype?: string): boolean => {
   if (!mimetype) return false;
-
-  const supportedTypes = ["application/pdf"];
-
-  return supportedTypes.includes(mimetype.toLowerCase());
+  return ALLOWED_DOCUMENT_MIME_TYPES.includes(mimetype.toLowerCase());
 };
 
 /**
@@ -18,13 +20,5 @@ export const isSupportedDocumentType = (mimetype?: string): boolean => {
  */
 export const isSupportedImageType = (mimetype?: string): boolean => {
   if (!mimetype) return false;
-
-  const supportedTypes = [
-    "image/png",
-    "image/jpeg",
-    "image/webp",
-    "image/avif"
-  ];
-
-  return supportedTypes.includes(mimetype.toLowerCase());
+  return ALLOWED_IMAGE_MIME_TYPES.includes(mimetype.toLowerCase());
 };

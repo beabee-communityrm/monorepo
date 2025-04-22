@@ -1,7 +1,8 @@
 import type { BaseClientOptions } from "../types/index.js";
 import {
   type UploadFileResponse,
-  isSupportedDocumentType
+  isSupportedDocumentType,
+  MAX_FILE_SIZE_IN_BYTES
 } from "@beabee/beabee-common";
 import { BaseClient } from "./base.client.js";
 import { cleanUrl } from "../utils/index.js";
@@ -30,8 +31,7 @@ export class UploadDocumentClient extends BaseClient {
    */
   async uploadFile(file: File): Promise<UploadFileResponse> {
     // Check file size (20MB limit)
-    const MAX_FILE_SIZE = 20 * 1024 * 1024;
-    if (file.size >= MAX_FILE_SIZE) {
+    if (file.size >= MAX_FILE_SIZE_IN_BYTES) {
       throw new ClientApiError("File too large", {
         httpCode: 413,
         code: "LIMIT_FILE_SIZE"
