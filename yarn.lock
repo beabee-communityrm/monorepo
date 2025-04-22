@@ -1273,7 +1273,7 @@ __metadata:
   resolution: "@beabee/backend-cli@workspace:apps/backend-cli"
   dependencies:
     "@aws-sdk/client-s3": "npm:^3.779.0"
-    "@beabee/core": "workspace:*"
+    "@beabee/core": "workspace:^"
     "@beabee/prettier-config": "workspace:^"
     "@beabee/tsconfig": "workspace:^"
     "@inquirer/prompts": "npm:^3.3.0"
@@ -1376,7 +1376,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@beabee/core@workspace:*, @beabee/core@workspace:^, @beabee/core@workspace:packages/core":
+"@beabee/core@workspace:^, @beabee/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@beabee/core@workspace:packages/core"
   dependencies:

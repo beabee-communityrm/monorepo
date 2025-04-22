@@ -6,4 +6,6 @@ export interface UploadFileResponse {
   id: string;
   /** URL to the uploaded image (for compatibility with old client) */
   url: string;
+  /** Original filename (if available) */
+  filename?: string;
 }

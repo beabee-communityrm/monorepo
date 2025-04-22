@@ -5,17 +5,24 @@ import { extname } from "path";
 import {
   S3Client,
   PutObjectCommand,
-  GetObjectCommand,
   DeleteObjectCommand,
   ListObjectsV2Command,
   HeadObjectCommand
 } from "@aws-sdk/client-s3";
 import sharp from "sharp";
 
-import type { ImageFormat, ImageServiceConfig, ImageMetadata } from "../type";
+import type { ImageFormat } from "../type/image-format";
+import type { ImageServiceConfig } from "../type/image-service-config";
+import type { ImageMetadata } from "../type/image-metadata";
 import { BadRequestError, NotFoundError } from "../errors";
 import { log as mainLogger } from "../logging";
 import { getMimetypeFromExtension } from "../utils/file";
+import {
+  checkConnection,
+  fileExists,
+  getFileStream,
+  getFileBuffer
+} from "../utils/s3";
 
 const log = mainLogger.child({ app: "image-service" });
 
@@ -174,7 +181,7 @@ export class ImageService {
   ): Promise<{ stream: Readable; contentType: string }> {
     try {
       // Check if image exists
-      await this.getImageMetadata(id);
+      await this.imageExists(id);
 
       // Determine the best width to use
       let bestWidth: number | undefined = undefined;
@@ -193,18 +200,11 @@ export class ImageService {
       const key = bestWidth ? `resized/${bestWidth}/${id}` : `originals/${id}`;
 
       // Check if the resized version exists
-      let resizedExists = false;
-      try {
-        await this.s3Client.send(
-          new HeadObjectCommand({
-            Bucket: this.config.s3.bucket,
-            Key: key
-          })
-        );
-        resizedExists = true;
-      } catch (error) {
-        resizedExists = false;
-      }
+      const resizedExists = await fileExists(
+        this.s3Client,
+        this.config.s3.bucket,
+        key
+      );
 
       // If the resized version doesn't exist and bestWidth is set, generate it
       if (!resizedExists && bestWidth) {
@@ -226,33 +226,11 @@ export class ImageService {
         : `originals/${id}`;
 
       try {
-        // Get the content type from metadata
-        const headResult = await this.s3Client.send(
-          new HeadObjectCommand({
-            Bucket: this.config.s3.bucket,
-            Key: finalKey
-          })
+        return await getFileStream(
+          this.s3Client,
+          this.config.s3.bucket,
+          finalKey
         );
-
-        const contentType =
-          headResult.ContentType || "application/octet-stream";
-
-        // Get the object as a stream
-        const { Body } = await this.s3Client.send(
-          new GetObjectCommand({
-            Bucket: this.config.s3.bucket,
-            Key: finalKey
-          })
-        );
-
-        if (!Body) {
-          throw new NotFoundError();
-        }
-
-        return {
-          stream: Body as Readable,
-          contentType
-        };
       } catch (error) {
         log.error(`Failed to get image (${id})`, error);
         throw new NotFoundError();
@@ -266,20 +244,34 @@ export class ImageService {
     }
   }
 
+  /**
+   * Get an image as a buffer with the specified width
+   * @param id Image ID
+   * @param width Desired width in pixels (optional)
+   * @returns Buffer of the image and content type
+   */
   async getImageBuffer(
     id: string,
     width?: number
   ): Promise<{ buffer: Buffer; contentType: string }> {
-    const { stream, contentType } = await this.getImageStream(id, width);
+    try {
+      const { stream, contentType } = await this.getImageStream(id, width);
 
-    // Stream zu Buffer konvertieren
-    const chunks: Buffer[] = [];
-    for await (const chunk of stream) {
-      chunks.push(Buffer.from(chunk));
+      // Convert stream to buffer
+      const chunks: Buffer[] = [];
+      for await (const chunk of stream) {
+        chunks.push(Buffer.from(chunk));
+      }
+      const buffer = Buffer.concat(chunks);
+
+      return { buffer, contentType };
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        throw error;
+      }
+      log.error("Failed to get image buffer:", error);
+      throw new BadRequestError({ message: "Failed to get image buffer" });
     }
-    const buffer = Buffer.concat(chunks);
-
-    return { buffer, contentType };
   }
 
   /**
@@ -290,7 +282,7 @@ export class ImageService {
   async deleteImage(id: string): Promise<boolean> {
     try {
       // Check if image exists
-      await this.getImageMetadata(id);
+      await this.imageExists(id);
 
       // Delete the original image
       await this.s3Client.send(
@@ -334,12 +326,41 @@ export class ImageService {
   }
 
   /**
+   * Check if an image exists
+   * @param id Image ID
+   * @returns True if the image exists
+   */
+  async imageExists(id: string): Promise<boolean> {
+    return fileExists(this.s3Client, this.config.s3.bucket, `originals/${id}`);
+  }
+
+  /**
    * Get metadata for an image
    * @param id Image ID
    * @returns Image metadata
    */
   async getImageMetadata(id: string): Promise<ImageMetadata> {
     try {
+      // Check if the image exists
+      if (!(await this.imageExists(id))) {
+        throw new NotFoundError();
+      }
+
+      // Get the original image to extract width and height
+      const { buffer, contentType } = await getFileBuffer(
+        this.s3Client,
+        this.config.s3.bucket,
+        `originals/${id}`
+      );
+
+      // Get image dimensions using sharp
+      const metadata = await sharp(buffer).metadata();
+
+      if (!metadata.width || !metadata.height) {
+        throw new BadRequestError({ message: "Invalid image format" });
+      }
+
+      // Get file metadata
       const response = await this.s3Client.send(
         new HeadObjectCommand({
           Bucket: this.config.s3.bucket,
@@ -347,41 +368,13 @@ export class ImageService {
         })
       );
 
-      // Get the original image to extract width and height
-      const getObjectCommand = new GetObjectCommand({
-        Bucket: this.config.s3.bucket,
-        Key: `originals/${id}`
-      });
-
-      const { Body, ContentLength, ContentType, LastModified } =
-        await this.s3Client.send(getObjectCommand);
-
-      if (!Body || !ContentType || !LastModified) {
-        throw new NotFoundError();
-      }
-
-      // Read the stream into a buffer
-      const chunks: Buffer[] = [];
-      // @ts-ignore - Body is a stream
-      for await (const chunk of Body) {
-        chunks.push(Buffer.from(chunk));
-      }
-      const imageBuffer = Buffer.concat(chunks);
-
-      // Get image dimensions using sharp
-      const metadata = await sharp(imageBuffer).metadata();
-
-      if (!metadata.width || !metadata.height) {
-        throw new BadRequestError({ message: "Invalid image format" });
-      }
-
       return {
         id,
         width: metadata.width,
         height: metadata.height,
-        mimetype: ContentType,
-        createdAt: LastModified,
-        size: ContentLength || 0
+        mimetype: contentType,
+        createdAt: response.LastModified || new Date(),
+        size: response.ContentLength || buffer.length
       };
     } catch (error) {
       log.error("Failed to get image metadata:", error);
@@ -389,21 +382,18 @@ export class ImageService {
     }
   }
 
+  /**
+   * Check connection to S3/MinIO
+   * @returns True if connection is successful
+   */
   async checkConnection(): Promise<boolean> {
-    try {
-      await this.s3Client.send(
-        new ListObjectsV2Command({
-          Bucket: this.config.s3.bucket,
-          MaxKeys: 1
-        })
-      );
-      return true;
-    } catch (error) {
-      log.error("MinIO connection check failed:", error);
-      return false;
-    }
+    return checkConnection(this.s3Client, this.config.s3.bucket);
   }
 
+  /**
+   * List all images
+   * @returns Array of image paths
+   */
   async listImages(): Promise<string[]> {
     try {
       const response = await this.s3Client.send(
@@ -431,24 +421,11 @@ export class ImageService {
   private async generateResizedImage(id: string, width: number): Promise<void> {
     try {
       // Get the original image
-      const getObjectCommand = new GetObjectCommand({
-        Bucket: this.config.s3.bucket,
-        Key: `originals/${id}`
-      });
-
-      const { Body, ContentType } = await this.s3Client.send(getObjectCommand);
-
-      if (!Body || !ContentType) {
-        throw new NotFoundError();
-      }
-
-      // Read the stream into a buffer
-      const chunks: Buffer[] = [];
-      // @ts-ignore - Body is a stream
-      for await (const chunk of Body) {
-        chunks.push(Buffer.from(chunk));
-      }
-      const imageBuffer = Buffer.concat(chunks);
+      const { buffer, contentType } = await getFileBuffer(
+        this.s3Client,
+        this.config.s3.bucket,
+        `originals/${id}`
+      );
 
       // Resize the image
       const extension = extname(id).substring(1);
@@ -457,7 +434,7 @@ export class ImageService {
       // Use sharp to resize the image
       let resizedImageBuffer: Buffer;
 
-      const sharpInstance = sharp(imageBuffer).resize({
+      const sharpInstance = sharp(buffer).resize({
         width,
         withoutEnlargement: true
       });
@@ -499,7 +476,7 @@ export class ImageService {
 
       // Upload the resized image
       const outputContentType =
-        format === "original" ? ContentType : getMimetypeFromExtension(format);
+        format === "original" ? contentType : getMimetypeFromExtension(format);
 
       await this.s3Client.send(
         new PutObjectCommand({

@@ -1,4 +1,5 @@
 import type { ImageFormat } from "./image-format";
+import type { S3Config } from "./s3-config";
 
 /**
  * Configuration for the ImageService
@@ -12,37 +13,7 @@ export interface ImageServiceConfig {
   /**
    * S3/MinIO configuration
    */
-  s3: {
-    /**
-     * Endpoint URL
-     */
-    endpoint: string;
-
-    /**
-     * Region
-     */
-    region: string;
-
-    /**
-     * Access key
-     */
-    accessKey: string;
-
-    /**
-     * Secret key
-     */
-    secretKey: string;
-
-    /**
-     * Bucket name
-     */
-    bucket: string;
-
-    /**
-     * Force using path style URLs
-     */
-    forcePathStyle?: boolean;
-  };
+  s3: S3Config;
 
   /**
    * Image compression quality (0-100)

@@ -9,7 +9,7 @@ import {
   HeadObjectCommand
 } from "@aws-sdk/client-s3";
 
-import { getContentType } from "./files.js";
+import { getContentType } from "@beabee/core/utils/file";
 
 /**
  * Creates an S3 client

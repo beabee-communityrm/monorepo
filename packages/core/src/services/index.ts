@@ -6,6 +6,7 @@ export * from "./ApiKeyService";
 export * from "./CalloutsService";
 export * from "./ContactMfaService";
 export * from "./ContactsService";
+export * from "./DocumentService";
 export * from "./EmailService";
 export * from "./GiftService";
 export * from "./ImageService";
