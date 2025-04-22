@@ -71,18 +71,6 @@ export class ImageController {
     }
   }
 
-  @Get("/debug")
-  async debugConnection(): Promise<any> {
-    const connected = await imageService.checkConnection();
-    const images = await imageService.listImages();
-
-    return {
-      connected,
-      imageCount: images.length,
-      sampleImages: images.slice(images.length - 5)
-    };
-  }
-
   /**
    * Get an image with optional resizing
    */

@@ -116,9 +116,7 @@ services:
       /bin/sh -c '
       mc alias set myminio ${MINIO_ENDPOINT} ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD};
       mc mb --ignore-existing myminio/${MINIO_BUCKET};
-      mc mb --ignore-existing myminio/${MINIO_S3FS_BUCKET:-images-fs};
       mc policy set download myminio/${MINIO_BUCKET};
-      mc policy set download myminio/${MINIO_S3FS_BUCKET:-images-fs};
       exit 0;
       '
     environment:
@@ -126,7 +124,6 @@ services:
       - MINIO_ROOT_USER=${MINIO_ROOT_USER:-minioadmin}
       - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD:-minioadmin}
       - MINIO_BUCKET=${MINIO_BUCKET:-uploads}
-      - MINIO_S3FS_BUCKET=${MINIO_S3FS_BUCKET:-images-fs}
 
   # The new frontend
   frontend:

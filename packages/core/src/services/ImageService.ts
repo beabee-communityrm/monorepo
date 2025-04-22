@@ -62,7 +62,7 @@ export class ImageService {
     try {
       // If imageData is a ReadStream, convert it to a Buffer
       if (!Buffer.isBuffer(imageData)) {
-        throw new BadRequestError({ message: "Invalid image format" });
+        throw new BadRequestError({ message: "Invalid upload format" });
       }
 
       // Process the image with sharp to get metadata
