@@ -94,9 +94,6 @@ services:
     ports:
       - "9000:9000"  # Admin port for debugging, not for production
       - "9001:9001"  # Console port (Admin UI), not for production
-    environment:
-      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
-      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
     volumes:
       - minio_data:/data
     command: server /data --console-address ":9001"
@@ -105,6 +102,9 @@ services:
       interval: 30s
       timeout: 20s
       retries: 3
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
 
   # MinIO client to initialize buckets
   minio_client:
@@ -166,20 +166,20 @@ services:
     env_file:
       - .env
 
-  # Image migration service
-  # This service migrates old images to MinIO
-  image_migration:
+  # Uploads migration service
+  # This service migrates old uploads to MinIO
+  uploads_migration:
     build:
       context: .
       dockerfile: ./packages/docker/base.dockerfile
       target: api_app
     command: >
       /bin/sh -c "
-      if [ \"$${MIGRATE_IMAGES}\" = \"true\" ]; then
-        echo 'Starting image migration...' &&
-        yarn backend-cli migrate-images --source=/old_data;
+      if [ \"$${MIGRATE_UPLOADS}\" = \"true\" ]; then
+        echo 'Starting uploads migration...' &&
+        yarn backend-cli migrate-uploads --source=/old_data;
       else
-        echo 'Image migration skipped (MIGRATE_IMAGES is not set to true)' &&
+        echo 'Uploads migration skipped (MIGRATE_UPLOADS is not set to true)' &&
         exit 0;
       fi
       "
@@ -197,7 +197,7 @@ services:
       db:
         condition: service_healthy
     environment:
-      - MIGRATE_IMAGES=${MIGRATE_IMAGES:-true}
+      - MIGRATE_UPLOADS=${MIGRATE_UPLOADS:-true}
     env_file:
       - .env
 

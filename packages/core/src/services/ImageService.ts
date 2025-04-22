@@ -39,7 +39,7 @@ export class ImageService {
   private readonly defaultConfig: Partial<ImageServiceConfig> = {
     quality: 80,
     format: "avif",
-    availableWidths: [100, 300, 600, 900, 1200, 1800]
+    availableWidths: [100, 300, 400, 600, 900, 1200, 1440, 1800]
   };
 
   /**

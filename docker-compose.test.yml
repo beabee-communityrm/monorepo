@@ -52,40 +52,23 @@ services:
     environment:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
+    env_file:
+      - .env
+      - .env.test
 
   # MinIO client to initialize buckets
   minio_client:
     extends:
       file: docker-compose.yml
       service: minio_client
-    entrypoint: >
-      /bin/sh -c "
-      mc alias set myminio http://minio:9000 ${MINIO_ROOT_USER:-minioadmin} ${MINIO_ROOT_PASSWORD:-minioadmin};
-      mc mb --ignore-existing myminio/${MINIO_TEST_BUCKET:-uploads-test};
-      mc policy set download myminio/${MINIO_TEST_BUCKET:-uploads-test};
-      exit 0;
-      "
-
-  img_upload_app:
-    extends:
-      file: docker-compose.yml
-      service: img_upload_app
     environment:
-      URL: ${PICTSHARE_URL:-${BEABEE_AUDIENCE}/uploads/}
-      # Image compression settings
-      PNG_COMPRESSION: ${PICTSHARE_PNG_COMPRESSION:-6}
-      JPEG_COMPRESSION: ${PICTSHARE_JPEG_COMPRESSION:-85}
-      # S3 storage configuration for testing
-      S3_BUCKET: ${MINIO_TEST_BUCKET:-uploads-test}
-      S3_ACCESS_KEY: ${MINIO_ROOT_USER:-minioadmin}
-      S3_SECRET_KEY: ${MINIO_ROOT_PASSWORD:-minioadmin}
-      S3_ENDPOINT: ${MINIO_ENDPOINT:-http://minio:9000}
-      S3_REGION: ${MINIO_REGION:-us-east-1}
-    depends_on:
-      minio:
-        condition: service_healthy
-      minio_client:
-        condition: service_completed_successfully
+      - MINIO_ENDPOINT=${MINIO_ENDPOINT:-http://minio:9000}
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER:-minioadmin}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD:-minioadmin}
+      - MINIO_BUCKET=${MINIO_BUCKET:-uploads}
+    env_file:
+      - .env
+      - .env.test
 
   frontend:
     extends:

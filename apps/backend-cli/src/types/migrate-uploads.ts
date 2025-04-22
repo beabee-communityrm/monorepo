@@ -1,8 +1,13 @@
+export interface MigrateUploadsArgs {
+  source: string;
+  dryRun: boolean;
+}
+
 /**
- * Options for image migration
+ * Options for uploads migration
  */
-export interface MigrateImagesOptions {
-  /** Source directory containing images to migrate */
+export interface MigrateUploadsOptions {
+  /** Source directory containing images and documents to migrate */
   source: string;
   /** Whether to perform a dry run (no actual uploads) */
   dryRun?: boolean;

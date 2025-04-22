@@ -3,9 +3,9 @@ import path from "node:path";
 import chalk from "chalk";
 
 import {
-  MigrateImagesOptions,
+  MigrateUploadsOptions,
   MigrationStats
-} from "../../types/migrate-images.js";
+} from "../../types/migrate-uploads.js";
 import { findMainImage } from "../../utils/files.js";
 import {
   formatFileSize,
@@ -21,16 +21,16 @@ import { config } from "@beabee/core/config";
 import { connect as connectToDatabase } from "@beabee/core/database";
 
 /**
- * Helper function to check if an image URL is already migrated
- * @param imageUrl The image URL to check
- * @returns True if the image is already migrated, false otherwise
+ * Helper function to check if a file URL is already migrated
+ * @param fileUrl The file URL to check
+ * @returns True if the file is already migrated, false otherwise
  */
-function isImageMigrated(imageUrl: string): boolean {
+function isFileMigrated(fileUrl: string): boolean {
   // Strip query parameters for pattern matching
-  const baseImageUrl = imageUrl.split("?")[0];
+  const baseFileUrl = fileUrl.split("?")[0];
 
   // Check if the image URL contains the new API path
-  return baseImageUrl.includes("/api/1.0/images/");
+  return baseFileUrl.includes("/api/1.0/");
 }
 
 /**
@@ -68,8 +68,8 @@ function extractImageInfo(imageUrl: string): {
  * Migrates images from local storage to MinIO using ImageService
  * @param options Migration options
  */
-export async function migrateImages(
-  options: MigrateImagesOptions
+export async function migrateUploads(
+  options: MigrateUploadsOptions
 ): Promise<void> {
   try {
     const isDryRun = options.dryRun === true;
@@ -141,7 +141,7 @@ export async function migrateImages(
  * @returns Migration statistics
  */
 async function processCalloutImages(
-  options: MigrateImagesOptions
+  options: MigrateUploadsOptions
 ): Promise<MigrationStats> {
   const stats: MigrationStats = {
     successCount: 0,
@@ -163,7 +163,7 @@ async function processCalloutImages(
     }
 
     // Check if the image is already migrated
-    if (isImageMigrated(callout.image)) {
+    if (isFileMigrated(callout.image)) {
       // Already using new URL format, skip it
       console.log(
         chalk.cyan(
@@ -210,7 +210,7 @@ async function processCalloutImages(
  * @returns Migration statistics
  */
 async function processOptionImages(
-  options: MigrateImagesOptions
+  options: MigrateUploadsOptions
 ): Promise<MigrationStats> {
   const stats: MigrationStats = {
     successCount: 0,
@@ -241,7 +241,7 @@ async function processOptionImages(
     const imageUrlStr = imageUrl as string;
 
     // Check if the image is already migrated
-    if (isImageMigrated(imageUrlStr)) {
+    if (isFileMigrated(imageUrlStr)) {
       // Already using new URL format, skip it
       console.log(
         chalk.cyan(
@@ -301,7 +301,7 @@ async function processOptionImages(
  * @param stats Migration statistics to update
  */
 async function processCalloutImage(
-  options: MigrateImagesOptions,
+  options: MigrateUploadsOptions,
   callout: { id: string; slug: string; image: string },
   stats: MigrationStats
 ): Promise<void> {
@@ -393,7 +393,7 @@ async function processCalloutImage(
  * @param stats Migration statistics to update
  */
 async function processOptionImage(
-  options: MigrateImagesOptions,
+  options: MigrateUploadsOptions,
   optionKey: "logo" | "share-image",
   optionLabel: string,
   imageUrl: string,
