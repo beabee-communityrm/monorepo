@@ -15,6 +15,7 @@ import {
 
 // Import the required services and utilities from core
 import { imageService } from "@beabee/core/services/ImageService";
+import { documentService } from "@beabee/core/services/DocumentService";
 import { calloutsService } from "@beabee/core/services/CalloutsService";
 import { optionsService } from "@beabee/core/services/OptionsService";
 import { config } from "@beabee/core/config";
@@ -126,6 +127,16 @@ export async function migrateUploads(
     stats.skippedCount += optionStats.skippedCount;
     stats.errorCount += optionStats.errorCount;
     stats.totalSizeBytes += optionStats.totalSizeBytes;
+
+    // Process document uploads in callout responses
+    console.log(chalk.blue("\n=== Migrating Callout Response Documents ==="));
+    const documentStats = await processCalloutResponseDocuments(options);
+
+    // Merge stats
+    stats.successCount += documentStats.successCount;
+    stats.skippedCount += documentStats.skippedCount;
+    stats.errorCount += documentStats.errorCount;
+    stats.totalSizeBytes += documentStats.totalSizeBytes;
 
     // Print summary
     printMigrationSummary(stats, isDryRun);
@@ -467,6 +478,248 @@ async function processOptionImage(
 }
 
 /**
+ * Process document uploads from callout responses
+ * @param options Migration options
+ * @returns Migration statistics
+ */
+async function processCalloutResponseDocuments(
+  options: MigrateUploadsOptions
+): Promise<MigrationStats> {
+  const stats: MigrationStats = {
+    successCount: 0,
+    skippedCount: 0,
+    errorCount: 0,
+    totalSizeBytes: 0
+  };
+
+  // Get all callout responses that have file uploads
+  console.log("Fetching callout responses with file uploads...");
+  const responses = await calloutsService.listResponsesWithFileUploads();
+  console.log(`Found ${responses.length} responses with file uploads`);
+
+  // Iterate through each response
+  for (const response of responses) {
+    // Process each slide in the response
+    for (const slideId in response.answers) {
+      const slideAnswers = response.answers[slideId];
+      if (!slideAnswers) continue;
+
+      // Process each component in the slide
+      for (const componentKey in slideAnswers) {
+        const answer = slideAnswers[componentKey];
+
+        // Process the answer or array of answers
+        if (Array.isArray(answer)) {
+          // If it's an array of answers, process each one
+          for (let i = 0; i < answer.length; i++) {
+            const item = answer[i];
+            if (isFileUpload(item)) {
+              try {
+                const updated = await processDocumentUpload(
+                  options,
+                  response,
+                  slideId,
+                  componentKey,
+                  { url: item.url }, // Ensure correct type with object destructuring
+                  i,
+                  stats
+                );
+                if (updated) {
+                  // Update the answer in the array if it was successfully migrated
+                  answer[i] = updated;
+                }
+              } catch (error) {
+                stats.errorCount++;
+                console.error(
+                  `Error processing document for response ${response.id}:`,
+                  error
+                );
+              }
+            }
+          }
+        } else if (isFileUpload(answer)) {
+          try {
+            const updated = await processDocumentUpload(
+              options,
+              response,
+              slideId,
+              componentKey,
+              { url: answer.url }, // Ensure correct type with object destructuring
+              null,
+              stats
+            );
+            if (updated) {
+              // Update the answer if it was successfully migrated
+              slideAnswers[componentKey] = updated;
+            }
+          } catch (error) {
+            stats.errorCount++;
+            console.error(
+              `Error processing document for response ${response.id}:`,
+              error
+            );
+          }
+        }
+      }
+    }
+  }
+
+  return stats;
+}
+
+/**
+ * Helper function to check if an answer is a file upload
+ * @param answer The answer to check
+ * @returns True if the answer is a file upload
+ */
+function isFileUpload(answer: any): answer is { url: string } {
+  return (
+    typeof answer === "object" &&
+    answer !== null &&
+    "url" in answer &&
+    typeof answer.url === "string"
+  );
+}
+
+/**
+ * Process a single document upload
+ * @param options Migration options
+ * @param response The callout response containing the document
+ * @param slideId The slide ID containing the document
+ * @param componentKey The component key containing the document
+ * @param fileUpload The file upload answer
+ * @param arrayIndex Optional index if the answer is in an array
+ * @param stats Migration statistics to update
+ * @returns Updated file upload object if migrated, null otherwise
+ */
+async function processDocumentUpload(
+  options: MigrateUploadsOptions,
+  response: { id: string; calloutId: string; answers: any },
+  slideId: string,
+  componentKey: string,
+  fileUpload: { url: string },
+  arrayIndex: number | null,
+  stats: MigrationStats
+): Promise<{ url: string } | null> {
+  const fileUrl = fileUpload.url;
+  const locationInfo =
+    arrayIndex !== null
+      ? `response ${response.id}, slide ${slideId}, component ${componentKey}, index ${arrayIndex}`
+      : `response ${response.id}, slide ${slideId}, component ${componentKey}`;
+
+  // Check if the document is already migrated using the existing function
+  if (isFileMigrated(fileUrl)) {
+    console.log(
+      chalk.cyan(
+        `⏭ Skipping document in ${locationInfo}: Already migrated (${fileUrl})`
+      )
+    );
+    stats.skippedCount++;
+    return null;
+  }
+
+  // Extract document key from URL
+  const { documentKey } = extractDocumentInfo(fileUrl);
+
+  if (!documentKey) {
+    console.log(
+      chalk.yellow(
+        `⚠ Unsupported document format in ${locationInfo}: ${fileUrl}`
+      )
+    );
+    stats.errorCount++;
+    return null;
+  }
+
+  console.log(
+    chalk.blue(`Extracted document key: ${documentKey} from ${fileUrl}`)
+  );
+
+  const sourcePath = path.join(options.source, documentKey);
+
+  // Verify the document exists
+  try {
+    await fs.access(sourcePath);
+  } catch (error) {
+    console.log(
+      chalk.yellow(`⚠ No document found for ${locationInfo} at ${sourcePath}`)
+    );
+    stats.errorCount++;
+    return null;
+  }
+
+  // Get file stats for size calculation
+  const fileStats = await fs.stat(sourcePath);
+
+  console.log(
+    chalk.blue(`Processing document for ${locationInfo}: ${sourcePath}`)
+  );
+
+  if (!options.dryRun) {
+    try {
+      // Read the file as buffer
+      const fileBuffer = await fs.readFile(sourcePath);
+
+      // Extract original filename from the path if possible
+      const originalFilename = path.basename(sourcePath);
+
+      // Upload the document using DocumentService
+      const uploadedDocument = await documentService.uploadDocument(
+        fileBuffer,
+        originalFilename
+      );
+
+      // Update with the new document URL
+      const newDocumentUrl = `${config.audience}/api/1.0/documents/${uploadedDocument.id}`;
+
+      console.log(
+        formatSuccessMessage(locationInfo, fileStats.size) +
+          ` - New document URL: ${newDocumentUrl}`
+      );
+
+      stats.successCount++;
+      stats.totalSizeBytes += fileStats.size;
+
+      // Return the updated file upload object
+      return { url: newDocumentUrl };
+    } catch (error) {
+      stats.errorCount++;
+      console.error(`Error uploading document for ${locationInfo}:`, error);
+      return null;
+    }
+  } else {
+    // Dry run mode
+    console.log(formatDryRunMessage(locationInfo, fileStats.size));
+    stats.successCount++;
+    stats.totalSizeBytes += fileStats.size;
+    return null;
+  }
+}
+
+/**
+ * Helper function to extract the document key from a URL
+ * @param documentUrl The document URL
+ * @returns Object with extracted document key
+ */
+function extractDocumentInfo(documentUrl: string): {
+  documentKey: string | null;
+} {
+  let documentKey: string | null = null;
+
+  // Extract the document key from the document URL/path, removing any query parameters
+  if (documentUrl.includes("/uploads/")) {
+    // Format: /uploads/abc123
+    const uploadPath = documentUrl.split("/uploads/")[1];
+    documentKey = uploadPath.split("?")[0]; // Remove query parameters
+  } else if (!documentUrl.includes("/")) {
+    // Direct key format without slashes
+    documentKey = documentUrl.split("?")[0]; // Remove query parameters
+  }
+
+  return { documentKey };
+}
+
+/**
  * Print migration summary
  * @param stats Migration statistics
  * @param isDryRun Whether this was a dry run
@@ -478,33 +731,31 @@ function printMigrationSummary(stats: MigrationStats, isDryRun: boolean): void {
     console.log(chalk.yellow("DRY RUN - No files were actually uploaded"));
     console.log(
       chalk.green(
-        `✓ Would migrate: ${stats.successCount} callout images (${formatFileSize(stats.totalSizeBytes)})`
+        `✓ Would migrate: ${stats.successCount} files (${formatFileSize(stats.totalSizeBytes)})`
       )
     );
   } else {
     console.log(
       chalk.green(
-        `✓ Successfully migrated: ${stats.successCount} callout images (${formatFileSize(stats.totalSizeBytes)})`
+        `✓ Successfully migrated: ${stats.successCount} files (${formatFileSize(stats.totalSizeBytes)})`
       )
     );
 
     if (stats.skippedCount > 0) {
       console.log(
         chalk.cyan(
-          `⏭ Skipped: ${stats.skippedCount} callout images (already migrated or no image)`
+          `⏭ Skipped: ${stats.skippedCount} files (already migrated or no file)`
         )
       );
     }
   }
 
   if (stats.errorCount > 0) {
-    console.log(
-      chalk.red(`✗ Failed to process: ${stats.errorCount} callout images`)
-    );
+    console.log(chalk.red(`✗ Failed to process: ${stats.errorCount} files`));
     console.log(chalk.yellow("Please check the logs for details."));
   } else if (stats.successCount > 0 || stats.skippedCount > 0) {
     console.log(chalk.green("✓ Process completed successfully!"));
   } else {
-    console.log(chalk.yellow("No callout images found to migrate."));
+    console.log(chalk.yellow("No files found to migrate."));
   }
 }

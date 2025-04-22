@@ -2,7 +2,8 @@ import {
   GetCalloutFormSchema,
   CalloutResponseAnswersSlide,
   CalloutAccess,
-  CreateCalloutData
+  CreateCalloutData,
+  CalloutResponseAnswer
 } from "@beabee/beabee-common";
 import slugify from "slugify";
 import { BadRequestError } from "routing-controllers";
@@ -75,6 +76,7 @@ class CalloutsService {
    * List all callouts with minimal information
    * This method should NOT be used in controllers, use CalloutTransformer instead
    * @returns Array of callouts with id, slug, and image fields
+   * @deprecated Deprecated from the start, as we only need this for the uploads migration script
    */
   async listCallouts(): Promise<
     Array<{ id: string; slug: string; image: string }>
@@ -467,6 +469,71 @@ class CalloutsService {
     callout.variants = [...(callout.variants || []), defaultVariant];
 
     return defaultVariant.title;
+  }
+
+  /**
+   * List all callout responses that contain a file upload
+   * This method should NOT be used in controllers, use CalloutResponseTransformer instead
+   * @returns Array of callout responses with file uploads
+   * @deprecated Deprecated from the start, as we only need this for the uploads migration script
+   */
+  async listResponsesWithFileUploads(): Promise<
+    Array<{
+      id: string;
+      calloutId: string;
+      answers: CalloutResponseAnswersSlide;
+    }>
+  > {
+    log.info(
+      "Listing all callout responses with file uploads for migration purposes"
+    );
+
+    // Get all responses
+    const responses = await getRepository(CalloutResponse).find({
+      select: ["id", "calloutId", "answers"]
+    });
+
+    // Filter responses with file uploads
+    return responses.filter((response) => {
+      // Iterate through each slide's answers
+      for (const slideId in response.answers) {
+        const slideAnswers = response.answers[slideId];
+        if (!slideAnswers) continue;
+
+        // Iterate through each component's answer in the slide
+        for (const componentKey in slideAnswers) {
+          const answer = slideAnswers[componentKey];
+
+          if (!answer) continue;
+
+          // Check if the answer or any item in an array of answers contains a file upload
+          if (Array.isArray(answer)) {
+            // If it's an array of answers, check each one
+            for (const item of answer) {
+              if (this.isFileUpload(item)) return true;
+            }
+          } else if (this.isFileUpload(answer)) {
+            return true;
+          }
+        }
+      }
+      return false;
+    });
+  }
+
+  /**
+   * Helper method to check if an answer is a file upload
+   * @param answer The answer to check
+   * @returns True if the answer is a file upload
+   * @deprecated Deprecated from the start, as we only need this for the uploads migration script
+   */
+  private isFileUpload(answer: CalloutResponseAnswer): boolean {
+    return (
+      typeof answer === "object" &&
+      answer !== null &&
+      "url" in answer &&
+      typeof answer.url === "string"
+    );
   }
 }
 
