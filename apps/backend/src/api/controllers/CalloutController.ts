@@ -16,7 +16,7 @@ import {
   Res
 } from "routing-controllers";
 
-import CalloutsService from "@beabee/core/services/CalloutsService";
+import { calloutsService } from "@beabee/core/services/CalloutsService";
 
 import { getRepository } from "@beabee/core/database";
 import { verify } from "@core/lib/captchafox";
@@ -63,6 +63,13 @@ import calloutTagTransformer from "@api/transformers/CalloutTagTransformer";
 
 @JsonController("/callout")
 export class CalloutController {
+  @Authorized("admin")
+  @Get("/debug")
+  async debug() {
+    const callouts = await calloutsService.listResponsesWithFileUploads();
+    return callouts;
+  }
+
   @Get("/")
   async getCallouts(
     @CurrentAuth() auth: AuthInfo,
@@ -83,12 +90,12 @@ export class CalloutController {
 
     let id;
     if (fromId) {
-      id = await CalloutsService.duplicateCallout(fromId);
+      id = await calloutsService.duplicateCallout(fromId);
       if (Object.keys(data).length > 0) {
-        await CalloutsService.updateCallout(id, data);
+        await calloutsService.updateCallout(id, data);
       }
     } else {
-      id = await CalloutsService.createCallout(data, data.slug ? false : 0);
+      id = await calloutsService.createCallout(data, data.slug ? false : 0);
     }
 
     return CalloutTransformer.fetchOneByIdOrFail(auth, id);
@@ -113,7 +120,7 @@ export class CalloutController {
     @CalloutId() id: string,
     @PartialBody() data: CreateCalloutDto // Actually Partial<CreateCalloutDto>
   ): Promise<GetCalloutDto | undefined> {
-    await CalloutsService.updateCallout(id, data);
+    await calloutsService.updateCallout(id, data);
     return CalloutTransformer.fetchOneById(auth, id);
   }
 
@@ -121,7 +128,7 @@ export class CalloutController {
   @OnUndefined(204)
   @Delete("/:id")
   async deleteCallout(@CalloutId() id: string): Promise<void> {
-    const deleted = await CalloutsService.deleteCallout(id);
+    const deleted = await calloutsService.deleteCallout(id);
     if (!deleted) {
       throw new NotFoundError();
     }
@@ -200,14 +207,14 @@ export class CalloutController {
 
     // TODO: support assignee/bucket/tags on create
     if (!caller || callout.access === "only-anonymous") {
-      response = await CalloutsService.setGuestResponse(
+      response = await calloutsService.setGuestResponse(
         callout,
         data.guestName,
         data.guestEmail,
         data.answers
       );
     } else {
-      response = await CalloutsService.setResponse(
+      response = await calloutsService.setResponse(
         callout,
         caller,
         data.answers

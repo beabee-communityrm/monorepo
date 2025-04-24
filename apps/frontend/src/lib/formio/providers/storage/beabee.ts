@@ -43,12 +43,12 @@ export default class BeabeeStorage {
       const response = await client.upload.uploadFile(file);
 
       // Direct access to the URL from the response
-      const imageUrl = response.url;
+      const url = response.url;
 
       return {
         storage: 'beabee',
         name,
-        url: imageUrl,
+        url,
         size: file.size,
       };
     } catch (err) {

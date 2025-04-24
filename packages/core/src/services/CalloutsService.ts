@@ -498,18 +498,24 @@ class CalloutsService {
       // Iterate through each slide's answers
       for (const slideId in response.answers) {
         const slideAnswers = response.answers[slideId];
-        if (!slideAnswers) continue;
+        if (!slideAnswers) return false;
+
+        log.info("slideAnswers", slideAnswers);
 
         // Iterate through each component's answer in the slide
         for (const componentKey in slideAnswers) {
           const answer = slideAnswers[componentKey];
 
-          if (!answer) continue;
+          if (!answer) return false;
+
+          log.info("answers " + Array.isArray(answer), answer);
 
           // Check if the answer or any item in an array of answers contains a file upload
           if (Array.isArray(answer)) {
             // If it's an array of answers, check each one
             for (const item of answer) {
+              log.info("answer", item);
+
               if (this.isFileUpload(item)) return true;
             }
           } else if (this.isFileUpload(answer)) {
