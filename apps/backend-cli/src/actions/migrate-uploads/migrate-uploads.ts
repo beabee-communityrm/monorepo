@@ -647,9 +647,6 @@ async function processDocumentUpload(
       // Read the file as buffer
       const fileBuffer = await fs.readFile(sourcePath);
 
-      // Extract original filename from the path if possible
-      // const originalFilename = path.basename(sourcePath);
-
       // Upload the document using DocumentService
       const uploadedDocument = await documentService.uploadDocument(
         fileBuffer,

@@ -63,13 +63,6 @@ import calloutTagTransformer from "@api/transformers/CalloutTagTransformer";
 
 @JsonController("/callout")
 export class CalloutController {
-  @Authorized("admin")
-  @Get("/debug")
-  async debug() {
-    const callouts = await calloutsService.listResponsesWithFileUploads();
-    return callouts;
-  }
-
   @Get("/")
   async getCallouts(
     @CurrentAuth() auth: AuthInfo,

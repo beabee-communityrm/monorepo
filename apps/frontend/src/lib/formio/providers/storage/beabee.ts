@@ -36,8 +36,6 @@ export default class BeabeeStorage {
       // Direct upload with the new ImageService
       const response = await client.upload.uploadFile(file);
 
-      console.log('response', response);
-
       return {
         storage: 'beabee',
         name,
