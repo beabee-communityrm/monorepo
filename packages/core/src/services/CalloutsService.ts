@@ -3,7 +3,8 @@ import {
   CalloutResponseAnswersSlide,
   CalloutAccess,
   CreateCalloutData,
-  CalloutResponseAnswer
+  isFileUploadAnswer,
+  FormioFile
 } from "@beabee/beabee-common";
 import slugify from "slugify";
 import { BadRequestError } from "routing-controllers";
@@ -475,7 +476,6 @@ class CalloutsService {
    * List all callout responses that contain a file upload
    * This method should NOT be used in controllers, use CalloutResponseTransformer instead
    * @returns Array of callout responses with file uploads
-   * @deprecated Deprecated from the start, as we only need this for the uploads migration script
    */
   async listResponsesWithFileUploads(): Promise<
     Array<{
@@ -516,9 +516,9 @@ class CalloutsService {
             for (const item of answer) {
               log.info("answer", item);
 
-              if (this.isFileUpload(item)) return true;
+              if (isFileUploadAnswer(item)) return true;
             }
-          } else if (this.isFileUpload(answer)) {
+          } else if (isFileUploadAnswer(answer)) {
             return true;
           }
         }
@@ -528,18 +528,76 @@ class CalloutsService {
   }
 
   /**
-   * Helper method to check if an answer is a file upload
-   * @param answer The answer to check
-   * @returns True if the answer is a file upload
+   * Update a document URL in a callout response
+   * @param responseId The response ID
+   * @param slideId The slide ID containing the document
+   * @param componentKey The component key containing the document
+   * @param arrayIndex Optional index if the answer is in an array, or null if it's a direct answer
+   * @param newUrl The new document URL
+   * @returns True if the update was successful
    * @deprecated Deprecated from the start, as we only need this for the uploads migration script
    */
-  private isFileUpload(answer: CalloutResponseAnswer): boolean {
-    return (
-      typeof answer === "object" &&
-      answer !== null &&
-      "url" in answer &&
-      typeof answer.url === "string"
-    );
+  async updateResponseFileUploadUrl(
+    responseId: string,
+    slideId: string,
+    componentKey: string,
+    arrayIndex: number | null,
+    newFileUpload: FormioFile
+  ): Promise<boolean> {
+    log.info(`Updating document URL in response ${responseId}`);
+
+    const response = await getRepository(CalloutResponse).findOne({
+      where: { id: responseId },
+      select: ["id", "answers"]
+    });
+
+    if (!response) {
+      log.warn(`Response ${responseId} not found`);
+      return false;
+    }
+
+    const slideAnswers = response.answers[slideId];
+    if (!slideAnswers) {
+      log.warn(`Slide ${slideId} not found in response ${responseId}`);
+      return false;
+    }
+
+    const answer = slideAnswers[componentKey];
+    if (!answer) {
+      log.warn(`Component ${componentKey} not found in slide ${slideId}`);
+      return false;
+    }
+
+    // Update the URL
+    if (arrayIndex !== null && Array.isArray(answer)) {
+      // Update an item in an array
+      if (arrayIndex < 0 || arrayIndex >= answer.length) {
+        log.warn(`Array index ${arrayIndex} out of bounds`);
+        return false;
+      }
+
+      const item = answer[arrayIndex];
+      if (!isFileUploadAnswer(item)) {
+        log.warn(`Item at index ${arrayIndex} is not a file upload`);
+        return false;
+      }
+
+      answer[arrayIndex] = newFileUpload;
+    } else if (!Array.isArray(answer) && isFileUploadAnswer(answer)) {
+      // Update a direct answer
+      slideAnswers[componentKey] = newFileUpload;
+    } else {
+      log.warn(`Answer is not a file upload`);
+      return false;
+    }
+
+    // Save the updated response
+    await getRepository(CalloutResponse).update(responseId, {
+      answers: response.answers
+    });
+
+    log.info(`Successfully updated document URL in response ${responseId}`);
+    return true;
   }
 }
 

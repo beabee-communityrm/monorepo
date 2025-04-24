@@ -20,6 +20,7 @@ import { calloutsService } from "@beabee/core/services/CalloutsService";
 import { optionsService } from "@beabee/core/services/OptionsService";
 import { config } from "@beabee/core/config";
 import { connect as connectToDatabase } from "@beabee/core/database";
+import { isFormioFileAnswer, FormioFile } from "@beabee/beabee-common";
 
 /**
  * Helper function to check if a file URL is already migrated
@@ -513,14 +514,14 @@ async function processCalloutResponseDocuments(
           // If it's an array of answers, process each one
           for (let i = 0; i < answer.length; i++) {
             const item = answer[i];
-            if (isFileUpload(item)) {
+            if (isFormioFileAnswer(item)) {
               try {
                 const updated = await processDocumentUpload(
                   options,
                   response,
                   slideId,
                   componentKey,
-                  { url: item.url }, // Ensure correct type with object destructuring
+                  { ...item }, // Ensure correct type with object destructuring
                   i,
                   stats
                 );
@@ -537,14 +538,14 @@ async function processCalloutResponseDocuments(
               }
             }
           }
-        } else if (isFileUpload(answer)) {
+        } else if (isFormioFileAnswer(answer)) {
           try {
             const updated = await processDocumentUpload(
               options,
               response,
               slideId,
               componentKey,
-              { url: answer.url }, // Ensure correct type with object destructuring
+              { ...answer }, // Ensure correct type with object destructuring
               null,
               stats
             );
@@ -568,20 +569,6 @@ async function processCalloutResponseDocuments(
 }
 
 /**
- * Helper function to check if an answer is a file upload
- * @param answer The answer to check
- * @returns True if the answer is a file upload
- */
-function isFileUpload(answer: any): answer is { url: string } {
-  return (
-    typeof answer === "object" &&
-    answer !== null &&
-    "url" in answer &&
-    typeof answer.url === "string"
-  );
-}
-
-/**
  * Process a single document upload
  * @param options Migration options
  * @param response The callout response containing the document
@@ -597,7 +584,7 @@ async function processDocumentUpload(
   response: { id: string; calloutId: string; answers: any },
   slideId: string,
   componentKey: string,
-  fileUpload: { url: string },
+  fileUpload: FormioFile,
   arrayIndex: number | null,
   stats: MigrationStats
 ): Promise<{ url: string } | null> {
@@ -661,27 +648,40 @@ async function processDocumentUpload(
       const fileBuffer = await fs.readFile(sourcePath);
 
       // Extract original filename from the path if possible
-      const originalFilename = path.basename(sourcePath);
+      // const originalFilename = path.basename(sourcePath);
 
       // Upload the document using DocumentService
       const uploadedDocument = await documentService.uploadDocument(
         fileBuffer,
-        originalFilename
+        fileUpload.originalName || fileUpload.name
       );
 
       // Update with the new document URL
       const newDocumentUrl = `${config.audience}/api/1.0/documents/${uploadedDocument.id}`;
 
-      console.log(
-        formatSuccessMessage(locationInfo, fileStats.size) +
-          ` - New document URL: ${newDocumentUrl}`
+      // Update the response with the new document URL using CalloutsService
+      const updated = await calloutsService.updateResponseFileUploadUrl(
+        response.id,
+        slideId,
+        componentKey,
+        arrayIndex,
+        { ...fileUpload, url: newDocumentUrl }
       );
 
-      stats.successCount++;
-      stats.totalSizeBytes += fileStats.size;
+      if (updated) {
+        console.log(
+          formatSuccessMessage(locationInfo, fileStats.size) +
+            ` - New document URL: ${newDocumentUrl}`
+        );
 
-      // Return the updated file upload object
-      return { url: newDocumentUrl };
+        stats.successCount++;
+        stats.totalSizeBytes += fileStats.size;
+        return { url: newDocumentUrl };
+      } else {
+        stats.errorCount++;
+        console.error(`Failed to update document URL for ${locationInfo}`);
+        return null;
+      }
     } catch (error) {
       stats.errorCount++;
       console.error(`Error uploading document for ${locationInfo}:`, error);
@@ -711,6 +711,10 @@ function extractDocumentInfo(documentUrl: string): {
     // Format: /uploads/abc123
     const uploadPath = documentUrl.split("/uploads/")[1];
     documentKey = uploadPath.split("?")[0]; // Remove query parameters
+
+    // Extract the filename from the document URL
+    const filename = path.basename(documentKey);
+    documentKey = documentKey + "/" + filename;
   } else if (!documentUrl.includes("/")) {
     // Direct key format without slashes
     documentKey = documentUrl.split("?")[0]; // Remove query parameters

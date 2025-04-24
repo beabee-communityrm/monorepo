@@ -111,6 +111,7 @@ export * from "./filter-type.js";
 export * from "./filters.js";
 export * from "./footer-link.js";
 export * from "./force-update-contribution-data.js";
+export * from "./formio-file.js";
 export * from "./get-api-key-data.js";
 export * from "./get-api-keys-query.js";
 export * from "./get-callout-data-with.js";

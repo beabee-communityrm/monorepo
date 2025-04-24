@@ -61,7 +61,8 @@ export class DocumentController {
       // Create response object
       const response: UploadFileResponse = {
         id: metadata.id,
-        url: `${config.audience}/api/1.0/documents/${metadata.id}`
+        url: `${config.audience}/api/1.0/documents/${metadata.id}`,
+        hash: metadata.hash
       };
 
       // Only add filename if it exists

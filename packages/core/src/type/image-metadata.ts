@@ -33,6 +33,11 @@ export interface ImageMetadata {
   size: number;
 
   /**
+   * Hash (ETag) of the file
+   */
+  hash: string;
+
+  /**
    * Original filename, if available
    */
   filename?: string | undefined;

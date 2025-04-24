@@ -17,7 +17,8 @@ import {
   getFileBuffer,
   getFileMetadata,
   getFileStream,
-  fileExists
+  fileExists,
+  getFileHash
 } from "../utils/s3";
 import { getExtensionFromFilename } from "../utils/file";
 import { isSupportedDocumentType } from "@beabee/beabee-common";
@@ -147,6 +148,9 @@ export class DocumentService {
         })
       );
 
+      // Get the hash (ETag) of the uploaded document
+      const hash = await this.getDocumentHash(id);
+
       // Return metadata
       return {
         id,
@@ -154,7 +158,8 @@ export class DocumentService {
         createdAt: new Date(),
         size: documentData.length,
         filename: sanitizedFilename,
-        owner
+        owner,
+        hash
       };
     } catch (error) {
       if (error instanceof BadRequestError) {
@@ -266,10 +271,26 @@ export class DocumentService {
         createdAt: headObject.LastModified || new Date(),
         size: headObject.ContentLength || 0,
         filename: s3Metadata.originalfilename,
-        owner: s3Metadata.owner
+        owner: s3Metadata.owner,
+        hash: headObject.ETag ? headObject.ETag.replace(/"/g, "") : ""
       };
     } catch (error) {
       log.error("Failed to get document metadata:", error);
+      throw new NotFoundError();
+    }
+  }
+
+  /**
+   * Get the hash (ETag) of a document without downloading it
+   * @param id Document ID
+   * @returns Hash (ETag) of the document
+   */
+  async getDocumentHash(id: string): Promise<string> {
+    try {
+      const key = `documents/${id}`;
+      return await getFileHash(this.s3Client, this.config.s3.bucket, key);
+    } catch (error) {
+      log.error("Failed to get document hash:", error);
       throw new NotFoundError();
     }
   }

@@ -61,7 +61,8 @@ export class ImageController {
 
       return {
         id: metadata.id,
-        url: `${config.audience}/api/1.0/images/${metadata.id}`
+        url: `${config.audience}/api/1.0/images/${metadata.id}`,
+        hash: metadata.hash
       };
     } catch (error) {
       if (error instanceof BadRequestError) {

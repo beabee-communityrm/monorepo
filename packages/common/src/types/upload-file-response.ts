@@ -8,4 +8,6 @@ export interface UploadFileResponse {
   url: string;
   /** Original filename (if available) */
   filename?: string;
+  /** Hash (S3 ETag) of the uploaded file */
+  hash: string;
 }

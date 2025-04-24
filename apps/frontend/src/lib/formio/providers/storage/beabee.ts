@@ -2,15 +2,9 @@
 import axios from 'axios';
 import { client } from '@utils/api';
 import { i18n } from '@lib/i18n';
+import type { FormioFile } from '@beabee/beabee-common';
 
 const { t } = i18n.global;
-
-interface BeabeeFile {
-  storage: 'beabee';
-  name: string;
-  url: string;
-  size: number;
-}
 
 export default class BeabeeStorage {
   static get title() {
@@ -28,7 +22,7 @@ export default class BeabeeStorage {
     groupPermssions: any,
     groupId: any,
     abortCallback: any
-  ): Promise<BeabeeFile> {
+  ): Promise<FormioFile> {
     if (file.size >= 20 * 1024 * 1024) {
       throw new Error(t('form.errors.file.tooBig'));
     }
@@ -42,14 +36,15 @@ export default class BeabeeStorage {
       // Direct upload with the new ImageService
       const response = await client.upload.uploadFile(file);
 
-      // Direct access to the URL from the response
-      const url = response.url;
+      console.log('response', response);
 
       return {
         storage: 'beabee',
         name,
-        url,
+        url: response.url,
         size: file.size,
+        hash: response.hash,
+        originalName: file.name,
       };
     } catch (err) {
       if (axios.isAxiosError(err) && err.response?.status === 429) {
@@ -64,7 +59,7 @@ export default class BeabeeStorage {
     throw new Error('Not implemented');
   }
 
-  async downloadFile(file: BeabeeFile) {
+  async downloadFile(file: FormioFile) {
     return file;
   }
 }

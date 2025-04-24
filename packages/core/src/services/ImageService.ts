@@ -22,7 +22,8 @@ import {
   checkConnection,
   fileExists,
   getFileStream,
-  getFileBuffer
+  getFileBuffer,
+  getFileHash
 } from "../utils/s3";
 
 const log = mainLogger.child({ app: "image-service" });
@@ -234,6 +235,9 @@ export class ImageService {
         })
       );
 
+      // Get the hash (ETag) of the uploaded image
+      const hash = await this.getImageHash(id);
+
       // Return metadata
       return {
         id,
@@ -243,7 +247,8 @@ export class ImageService {
         createdAt: new Date(),
         size: processedImageBuffer.length,
         filename: sanitizedFilename,
-        owner
+        owner,
+        hash
       };
     } catch (error) {
       if (error instanceof BadRequestError) {
@@ -452,6 +457,9 @@ export class ImageService {
 
       const s3Metadata = response.Metadata || {};
 
+      // Get the hash (ETag) of the image
+      const hash = response.ETag ? response.ETag.replace(/"/g, "") : "";
+
       return {
         id,
         width: metadata.width,
@@ -460,10 +468,26 @@ export class ImageService {
         createdAt: response.LastModified || new Date(),
         size: response.ContentLength || buffer.length,
         filename: s3Metadata.originalfilename,
-        owner: s3Metadata.owner
+        owner: s3Metadata.owner,
+        hash
       };
     } catch (error) {
       log.error("Failed to get image metadata:", error);
+      throw new NotFoundError();
+    }
+  }
+
+  /**
+   * Get the hash (ETag) of an image without downloading it
+   * @param id Image ID
+   * @returns Hash (ETag) of the image
+   */
+  async getImageHash(id: string): Promise<string> {
+    try {
+      const key = `originals/${id}`;
+      return await getFileHash(this.s3Client, this.config.s3.bucket, key);
+    } catch (error) {
+      log.error("Failed to get image hash:", error);
       throw new NotFoundError();
     }
   }

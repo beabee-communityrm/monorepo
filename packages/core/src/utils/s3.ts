@@ -175,3 +175,35 @@ export async function getFileStream(
     throw new NotFoundError();
   }
 }
+
+/**
+ * Gets the hash (ETag) of a file in S3/MinIO without downloading the file
+ * @param s3Client The S3Client instance
+ * @param bucket The bucket to check
+ * @param key The key of the file
+ * @returns The hash (ETag) of the file with quotes removed
+ */
+export async function getFileHash(
+  s3Client: S3Client,
+  bucket: string,
+  key: string
+): Promise<string> {
+  try {
+    const response = await s3Client.send(
+      new HeadObjectCommand({
+        Bucket: bucket,
+        Key: key
+      })
+    );
+
+    if (!response.ETag) {
+      throw new NotFoundError();
+    }
+
+    // Remove quotes from ETag
+    return response.ETag.replace(/"/g, "");
+  } catch (error) {
+    log.error(`Failed to get file hash for ${key}:`, error);
+    throw new NotFoundError();
+  }
+}
