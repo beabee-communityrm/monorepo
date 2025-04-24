@@ -93,6 +93,7 @@ services:
     image: beabee/pictshare:v0.3.0
     environment:
       URL: ${BEABEE_AUDIENCE}/uploads/
+      CONTENTCONTROLLERS: ${BEABEE_UPLOAD_CONTENTCONTROLLERS:-IMAGE,PDF}
     volumes:
       - upload_data:/var/www/data
 
