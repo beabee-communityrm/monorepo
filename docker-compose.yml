@@ -90,7 +90,7 @@ services:
 
   # Image upload handler
   img_upload_app:
-    image: beabee/pictshare:v0.2.0
+    image: beabee/pictshare:v0.3.0
     environment:
       URL: ${BEABEE_AUDIENCE}/uploads/
     volumes:

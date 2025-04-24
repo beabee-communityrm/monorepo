@@ -49,19 +49,24 @@ export class UploadClient extends BaseClient {
     formData.append("file", file);
 
     try {
-      const { data } = await this.fetch.post<{ url: string }>(
-        "upload/",
-        formData,
-        {
-          params: {
-            token: flowId
-          },
-          basePath: "/", // This removes the /api/1.0/upload prefix from the URL
-          dataType: "multipart"
-        }
-      );
+      const { data } = await this.fetch.post<
+        { url: string } | { filetype: string; reason: string; status: "err" }
+      >("upload/", formData, {
+        params: {
+          token: flowId
+        },
+        basePath: "/", // This removes the /api/1.0/upload prefix from the URL
+        dataType: "multipart"
+      });
 
-      return data;
+      if ("status" in data && data.status === "err") {
+        throw new ClientApiError(data.reason, {
+          httpCode: 400,
+          code: "FILE_TYPE_NOT_ALLOWED"
+        });
+      }
+
+      return data as { url: string };
     } catch (error) {
       // Rethrow rate limit errors with custom message
       if (error instanceof ClientApiError && error.httpCode === 429) {
