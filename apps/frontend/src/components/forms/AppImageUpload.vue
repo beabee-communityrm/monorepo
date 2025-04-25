@@ -83,11 +83,10 @@ const formError = ref('');
 
 // Process the image URL - add prefix if needed
 function processImageUrl(url: unknown): string {
-  console.debug('processImageUrl', url);
   if (!url || typeof url !== 'string') {
     return '';
   }
-  if (!url || isAbsoluteUrl(url) || url.startsWith('blob:')) {
+  if (isAbsoluteUrl(url) || url.startsWith('blob:')) {
     return url;
   }
   if (url.startsWith(env.apiUrl)) {
@@ -137,15 +136,6 @@ async function handleChange() {
 
     // Get the original unmanipulated URL
     const originalUrl = response.path || response.url;
-
-    // Process URL for preview only
-    let displayUrl = response.path
-      ? processImageUrl(response.path)
-      : response.url;
-
-    if (!displayUrl.includes('?w=')) {
-      displayUrl = `${displayUrl}?w=${props.width}`;
-    }
 
     // Local preview of the uploaded image
     rawImageUrl.value = URL.createObjectURL(file);
