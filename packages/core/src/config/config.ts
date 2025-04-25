@@ -1,162 +1,235 @@
+/**
+ * Application configuration module
+ *
+ * This module reads environment variables to create a strongly-typed configuration
+ * object used throughout the application. All environment variables are prefixed with
+ * BEABEE_ to avoid conflicts with other applications.
+ */
 import * as env from "./env";
 
+/**
+ * SMTP email provider configuration
+ * Used when BEABEE_EMAIL_PROVIDER=smtp
+ */
 export interface SMTPEmailConfig {
   provider: "smtp";
   settings: {
-    host: string;
-    port: number;
-    secure: boolean;
+    host: string; // BEABEE_EMAIL_SETTINGS_HOST - SMTP server address
+    port: number; // BEABEE_EMAIL_SETTINGS_PORT - SMTP server port
+    secure: boolean; // BEABEE_EMAIL_SETTINGS_SECURE - Whether to use SSL/TLS (default: false)
     auth: {
-      user: string;
-      pass: string;
+      user: string; // BEABEE_EMAIL_SETTINGS_AUTH_USER - SMTP username
+      pass: string; // BEABEE_EMAIL_SETTINGS_AUTH_PASS - SMTP password
     };
   };
 }
 
+/**
+ * Mandrill email provider configuration
+ * Used when BEABEE_EMAIL_PROVIDER=mandrill
+ */
 export interface MandrillEmailConfig {
   provider: "mandrill";
   settings: {
-    apiKey: string;
+    apiKey: string; // BEABEE_EMAIL_SETTINGS_APIKEY - Mandrill API key
   };
 }
 
+/**
+ * SendGrid email provider configuration
+ * Used when BEABEE_EMAIL_PROVIDER=sendgrid
+ */
 export interface SendGridEmailConfig {
   provider: "sendgrid";
   settings: {
-    apiKey: string;
-    testMode: boolean;
+    apiKey: string; // BEABEE_EMAIL_SETTINGS_APIKEY - SendGrid API key
+    testMode: boolean; // BEABEE_EMAIL_SETTIGS_TESTMODE - Enable test mode (default: false)
   };
 }
 
+// Union type for email configuration - only one provider can be used at a time
 type EmailConfig = SMTPEmailConfig | MandrillEmailConfig | SendGridEmailConfig;
 
+// Get email provider from environment, with validation for allowed values
 const emailProvider = env.e("BEABEE_EMAIL_PROVIDER", [
   "mandrill",
   "sendgrid",
   "smtp"
 ] as const);
 
+/**
+ * Mailchimp newsletter provider configuration
+ * Used when BEABEE_NEWSLETTER_PROVIDER=mailchimp
+ */
 export interface MailchimpNewsletterConfig {
   provider: "mailchimp";
   settings: {
-    apiKey: string;
-    datacenter: string;
-    listId: string;
-    webhookSecret: string;
+    apiKey: string; // BEABEE_NEWSLETTER_SETTINGS_APIKEY - Mailchimp API key
+    datacenter: string; // BEABEE_NEWSLETTER_SETTINGS_DATACENTER - Mailchimp datacenter (e.g., us1)
+    listId: string; // BEABEE_NEWSLETTER_SETTINGS_LISTID - Mailchimp list/audience ID
+    webhookSecret: string; // BEABEE_NEWSLETTER_SETTINGS_WEBHOOKSECRET - Secret for validating Mailchimp webhooks
   };
 }
 
+/**
+ * Empty newsletter provider (when newsletter functionality is disabled)
+ * Used when BEABEE_NEWSLETTER_PROVIDER=none (default)
+ */
 interface NoneNewsletterConfig {
   provider: "none";
   settings: {
-    webhookSecret: string;
+    webhookSecret: string; // BEABEE_NEWSLETTER_SETTINGS_WEBHOOKSECRET - Still available but unused
   };
 }
 
+// Union type for newsletter configuration
 type NewsletterConfig = MailchimpNewsletterConfig | NoneNewsletterConfig;
 
+// Get newsletter provider from environment, with validation for allowed values
+// Defaults to "none" if not specified
 const newsletterProvider = env.e(
   "BEABEE_NEWSLETTER_PROVIDER",
   ["mailchimp", "none"] as const,
   "none"
 );
 
+/**
+ * Application configuration for an individual app module
+ * Used for dynamic app loading and menu building
+ */
 export interface AppConfig {
-  uid: string;
-  title: string;
-  path: string;
-  disabled: boolean;
-  priority: number;
-  appPath: string;
-  hidden?: boolean;
-  subApps: AppConfig[];
-  menu: "none" | "main";
-  permissions: string[];
+  uid: string; // Unique identifier for the app
+  title: string; // Display name for the app
+  path: string; // URL path for the app
+  disabled: boolean; // Whether the app is currently disabled
+  priority: number; // Order priority for menu display
+  appPath: string; // File system path to the app
+  hidden?: boolean; // Whether to hide the app from menus
+  subApps: AppConfig[]; // Nested sub-applications
+  menu: "none" | "main"; // Which menu this app should appear in
+  permissions: string[]; // Required permissions to access this app
 }
 
+/**
+ * Type for overriding app configurations through environment variables
+ * Used with BEABEE_APPOVERRIDES env var
+ */
 export type AppConfigOverrides = Record<string, AppConfigOverride>;
 
 export interface AppConfigOverride {
-  config?: Partial<AppConfig>;
-  subApps?: AppConfigOverrides;
+  config?: Partial<AppConfig>; // Partial app config to override properties
+  subApps?: AppConfigOverrides; // Override sub-apps config
 }
 
+/**
+ * Main application configuration object
+ * Contains all settings derived from environment variables
+ */
 export const config = {
-  audience: env.s("BEABEE_AUDIENCE"),
-  dev: env.b("BEABEE_DEV"),
-  secret: env.s("BEABEE_SECRET"),
-  serviceSecret: env.s("BEABEE_SERVICE_SECRET"),
-  session: env.s("BEABEE_SESSION", "session"),
+  // Core authentication settings
+  audience: env.s("BEABEE_AUDIENCE"), // JWT audience claim - app URL
+  dev: env.b("BEABEE_DEV"), // Development mode flag
+  secret: env.s("BEABEE_SECRET"), // Secret for JWT tokens and data encryption
+  serviceSecret: env.s("BEABEE_SERVICE_SECRET"), // Secret for internal service authentication
+  session: env.s("BEABEE_SESSION", "session"), // Session identifier (default: "session")
+
+  // Cookie settings for authentication
   cookie: {
-    domain: env.s("BEABEE_COOKIE_DOMAIN"),
-    secure: env.b("BEABEE_COOKIE_SECURE", true)
+    domain: env.s("BEABEE_COOKIE_DOMAIN"), // Cookie domain (e.g., localhost)
+    secure: env.b("BEABEE_COOKIE_SECURE", true) // Require HTTPS for cookies (default: true)
   },
-  trustedOrigins: env.ss("BEABEE_TRUSTEDORIGINS", []),
-  databaseUrl: env.s("BEABEE_DATABASE_URL"),
+
+  // CORS and security settings
+  trustedOrigins: env.ss("BEABEE_TRUSTEDORIGINS", []), // Origins allowed to make authenticated requests
+
+  // Database connection
+  databaseUrl: env.s("BEABEE_DATABASE_URL"), // PostgreSQL connection URL
+
+  // CaptchaFox integration for bot protection
   captchaFox: {
-    secret: env.s("BEABEE_CAPTCHAFOX_SECRET", "")
+    secret: env.s("BEABEE_CAPTCHAFOX_SECRET", "") // CaptchaFox secret key (default: empty)
   },
+
+  // Discourse forum integration
   discourse: {
-    url: env.s("BEABEE_DISCOURSE_URL", ""),
-    ssoSecret: env.s("BEABEE_DISCOURSE_SSOSECRET", "")
+    url: env.s("BEABEE_DISCOURSE_URL", ""), // Discourse forum URL (default: empty)
+    ssoSecret: env.s("BEABEE_DISCOURSE_SSOSECRET", "") // Discourse SSO secret (default: empty)
   },
+
+  // Email delivery configuration
   email: {
-    provider: emailProvider,
+    provider: emailProvider, // Email provider type (smtp, mandrill, sendgrid)
     settings:
       emailProvider === "smtp"
         ? {
-            host: env.s("BEABEE_EMAIL_SETTINGS_HOST"),
-            port: env.s("BEABEE_EMAIL_SETTINGS_PORT"),
-            secure: env.b("BEABEE_EMAIL_SETTINGS_SECURE", false),
+            host: env.s("BEABEE_EMAIL_SETTINGS_HOST"), // SMTP server address
+            port: env.s("BEABEE_EMAIL_SETTINGS_PORT"), // SMTP server port
+            secure: env.b("BEABEE_EMAIL_SETTINGS_SECURE", false), // Use SSL/TLS (default: false)
             auth: {
-              user: env.s("BEABEE_EMAIL_SETTINGS_AUTH_USER"),
-              pass: env.s("BEABEE_EMAIL_SETTINGS_AUTH_PASS")
+              user: env.s("BEABEE_EMAIL_SETTINGS_AUTH_USER"), // SMTP username
+              pass: env.s("BEABEE_EMAIL_SETTINGS_AUTH_PASS") // SMTP password
             }
           }
         : emailProvider === "mandrill"
           ? {
-              apiKey: env.s("BEABEE_EMAIL_SETTINGS_APIKEY")
+              apiKey: env.s("BEABEE_EMAIL_SETTINGS_APIKEY") // Mandrill API key
             }
           : {
-              apiKey: env.s("BEABEE_EMAIL_SETTINGS_APIKEY"),
-              testMode: env.b("BEABEE_EMAIL_SETTIGS_TESTMODE", false)
+              apiKey: env.s("BEABEE_EMAIL_SETTINGS_APIKEY"), // SendGrid API key
+              testMode: env.b("BEABEE_EMAIL_SETTIGS_TESTMODE", false) // SendGrid test mode (default: false)
             }
   } as EmailConfig,
+
+  // Newsletter integration configuration
   newsletter: {
-    provider: newsletterProvider,
+    provider: newsletterProvider, // Newsletter provider (mailchimp or none)
     settings: {
-      webhookSecret: env.s("BEABEE_NEWSLETTER_SETTINGS_WEBHOOKSECRET", ""),
+      webhookSecret: env.s("BEABEE_NEWSLETTER_SETTINGS_WEBHOOKSECRET", ""), // Secret for validating webhooks
       ...(newsletterProvider === "mailchimp"
         ? {
-            apiKey: env.s("BEABEE_NEWSLETTER_SETTINGS_APIKEY"),
-            datacenter: env.s("BEABEE_NEWSLETTER_SETTINGS_DATACENTER"),
-            listId: env.s("BEABEE_NEWSLETTER_SETTINGS_LISTID")
+            apiKey: env.s("BEABEE_NEWSLETTER_SETTINGS_APIKEY"), // Mailchimp API key
+            datacenter: env.s("BEABEE_NEWSLETTER_SETTINGS_DATACENTER"), // Mailchimp datacenter
+            listId: env.s("BEABEE_NEWSLETTER_SETTINGS_LISTID") // Mailchimp list/audience ID
           }
         : null)
     }
   } as NewsletterConfig,
+
+  // GoCardless payment integration
   gocardless: {
-    accessToken: env.s("BEABEE_GOCARDLESS_ACCESSTOKEN", ""),
-    secret: env.s("BEABEE_GOCARDLESS_SECRET", ""),
-    sandbox: env.b("BEABEE_GOCARDLESS_SANDBOX", true)
+    accessToken: env.s("BEABEE_GOCARDLESS_ACCESSTOKEN", ""), // GoCardless API token (default: empty)
+    secret: env.s("BEABEE_GOCARDLESS_SECRET", ""), // GoCardless webhook secret (default: empty)
+    sandbox: env.b("BEABEE_GOCARDLESS_SANDBOX", true) // Use GoCardless sandbox (default: true)
   },
+
+  // Stripe payment integration
   stripe: {
-    publicKey: env.s("BEABEE_STRIPE_PUBLICKEY", ""),
-    secretKey: env.s("BEABEE_STRIPE_SECRETKEY", ""),
-    webhookSecret: env.s("BEABEE_STRIPE_WEBHOOKSECRET", ""),
-    membershipProductId: env.s("BEABEE_STRIPE_MEMBERSHIPPRODUCTID", ""),
-    country: env.e("BEABEE_STRIPE_COUNTRY", ["gb", "eu", "ca"] as const, "gb")
+    publicKey: env.s("BEABEE_STRIPE_PUBLICKEY", ""), // Stripe publishable key (default: empty)
+    secretKey: env.s("BEABEE_STRIPE_SECRETKEY", ""), // Stripe secret key (default: empty)
+    webhookSecret: env.s("BEABEE_STRIPE_WEBHOOKSECRET", ""), // Stripe webhook signing secret (default: empty)
+    membershipProductId: env.s("BEABEE_STRIPE_MEMBERSHIPPRODUCTID", ""), // Stripe product ID for memberships
+    country: env.e("BEABEE_STRIPE_COUNTRY", ["gb", "eu", "ca"] as const, "gb") // Stripe account country (default: gb)
   },
-  countryCode: env.e("BEABEE_COUNTRYCODE", ["en", "de", "be"] as const),
-  currencyCode: env.s("BEABEE_CURRENCYCODE"),
-  currencySymbol: env.s("BEABEE_CURRENCYSYMBOL"),
-  passwordTries: env.n("BEABEE_PASSWORDTRIES", 3),
-  passwordIterations: env.n("BEABEE_PASSWORDITERATIONS", 50000),
+
+  // Localization settings
+  countryCode: env.e("BEABEE_COUNTRYCODE", ["en", "de", "be"] as const), // Country code for localization
+  currencyCode: env.s("BEABEE_CURRENCYCODE"), // Currency code (e.g., GBP, EUR)
+  currencySymbol: env.s("BEABEE_CURRENCYSYMBOL"), // Currency symbol (e.g., £, €)
+
+  // Password security settings
+  passwordTries: env.n("BEABEE_PASSWORDTRIES", 3), // Max password attempt tries before lockout (default: 3)
+  passwordIterations: env.n("BEABEE_PASSWORDITERATIONS", 50000), // PBKDF2 iterations for password hashing (default: 50000)
+
+  // Grace period for expired memberships
   gracePeriod: {
-    days: 7
+    days: 7 // Number of days in grace period after expiry
   },
-  logFormat: env.e("BEABEE_LOGFORMAT", ["json", "simple"] as const, "json"),
-  appOverrides: env.json("BEABEE_APPOVERRIDES", {}) as AppConfigOverrides
+
+  // Logging configuration
+  logFormat: env.e("BEABEE_LOGFORMAT", ["json", "simple"] as const, "json"), // Log format (default: json)
+
+  // App configuration overrides from environment
+  appOverrides: env.json("BEABEE_APPOVERRIDES", {}) as AppConfigOverrides // JSON of app configuration overrides
 };
 
 export default config;
