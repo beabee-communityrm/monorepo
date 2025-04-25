@@ -18,9 +18,11 @@ import { imageService } from "@beabee/core/services/ImageService";
 import { documentService } from "@beabee/core/services/DocumentService";
 import { calloutsService } from "@beabee/core/services/CalloutsService";
 import { optionsService } from "@beabee/core/services/OptionsService";
+import { Content } from "@beabee/core/models/Content";
 import { config } from "@beabee/core/config";
 import { connect as connectToDatabase } from "@beabee/core/database";
 import { isFormioFileAnswer, FormioFile } from "@beabee/beabee-common";
+import { getRepository } from "@beabee/core/database";
 
 /**
  * Helper function to check if a file URL is already migrated
@@ -32,9 +34,7 @@ function isFileMigrated(fileUrl: string): boolean {
   const baseFileUrl = fileUrl.split("?")[0];
 
   // Check if the image URL contains the new API path
-  return (
-    baseFileUrl.includes("/documents/") || baseFileUrl.includes("/images/")
-  );
+  return baseFileUrl.includes("documents/") || baseFileUrl.includes("images/");
 }
 
 /**
@@ -130,6 +130,16 @@ export async function migrateUploads(
     stats.skippedCount += optionStats.skippedCount;
     stats.errorCount += optionStats.errorCount;
     stats.totalSizeBytes += optionStats.totalSizeBytes;
+
+    // Process general content background image
+    console.log(chalk.blue("\n=== Migrating Content Background Image ==="));
+    const contentStats = await processContentBackgroundImage(options);
+
+    // Merge stats
+    stats.successCount += contentStats.successCount;
+    stats.skippedCount += contentStats.skippedCount;
+    stats.errorCount += contentStats.errorCount;
+    stats.totalSizeBytes += contentStats.totalSizeBytes;
 
     // Process document uploads in callout responses
     console.log(chalk.blue("\n=== Migrating Callout Response Documents ==="));
@@ -723,6 +733,183 @@ function extractDocumentInfo(documentUrl: string): {
   }
 
   return { documentKey };
+}
+
+/**
+ * Process the background image from general content
+ * @param options Migration options
+ * @returns Migration statistics
+ */
+async function processContentBackgroundImage(
+  options: MigrateUploadsOptions
+): Promise<MigrationStats> {
+  const stats: MigrationStats = {
+    successCount: 0,
+    skippedCount: 0,
+    errorCount: 0,
+    totalSizeBytes: 0
+  };
+
+  console.log("Checking general content background image...");
+
+  // Fetch the general content from database
+  const generalContent = await getRepository(Content).findOneBy({
+    id: "general"
+  });
+
+  // Skip if no content found
+  if (!generalContent) {
+    console.log(chalk.gray(`Skipping general content: Content not found`));
+    return stats;
+  }
+
+  // Get the background URL from the content data
+  const backgroundUrl = generalContent.data.backgroundUrl as string;
+
+  // Skip if no background URL
+  if (!backgroundUrl) {
+    console.log(
+      chalk.gray(`Skipping general content: No background image URL`)
+    );
+    return stats;
+  }
+
+  // Check if the image is already migrated
+  if (isFileMigrated(backgroundUrl)) {
+    // Already using new URL format, skip it
+    console.log(
+      chalk.cyan(
+        `⏭ Skipping general content background: Image already migrated (${backgroundUrl})`
+      )
+    );
+    stats.skippedCount++;
+    return stats;
+  } else if (backgroundUrl.includes("/uploads/")) {
+    // Old URL format that needs migration
+    try {
+      await processGeneralBackgroundImage(options, backgroundUrl, stats);
+    } catch (error) {
+      stats.errorCount++;
+      console.error(
+        `Error processing background image for general content:`,
+        error
+      );
+    }
+  } else if (backgroundUrl) {
+    // Attempt to migrate any other format we don't recognize
+    console.log(
+      chalk.yellow(
+        `ℹ Trying to migrate unknown format for general content background: ${backgroundUrl}`
+      )
+    );
+    try {
+      await processGeneralBackgroundImage(options, backgroundUrl, stats);
+    } catch (error) {
+      stats.errorCount++;
+      console.error(
+        `Error processing background image for general content:`,
+        error
+      );
+    }
+  }
+
+  return stats;
+}
+
+/**
+ * Process the general content background image
+ * @param options Migration options
+ * @param backgroundUrl The background image URL
+ * @param stats Migration statistics to update
+ */
+async function processGeneralBackgroundImage(
+  options: MigrateUploadsOptions,
+  backgroundUrl: string,
+  stats: MigrationStats
+): Promise<void> {
+  // Extract image info
+  const { imageKey, width } = extractImageInfo(backgroundUrl);
+
+  if (!imageKey) {
+    console.log(
+      chalk.yellow(
+        `⚠ Unsupported image format for general content background: ${backgroundUrl}`
+      )
+    );
+    stats.errorCount++;
+    return;
+  }
+
+  console.log(
+    chalk.blue(`Extracted image key: ${imageKey} from ${backgroundUrl}`)
+  );
+
+  const sourcePath = path.join(options.source, imageKey);
+  const mainImage = await findMainImage(sourcePath);
+
+  if (!mainImage) {
+    console.log(
+      chalk.yellow(
+        `⚠ No image found for general content background at ${sourcePath}`
+      )
+    );
+    stats.errorCount++;
+    return;
+  }
+
+  const filePath = path.join(sourcePath, mainImage);
+
+  // Get file stats for size calculation
+  const fileStats = await fs.stat(filePath);
+
+  console.log(
+    chalk.blue(`Processing background image for general content: ${filePath}`)
+  );
+
+  if (!options.dryRun) {
+    try {
+      // Read the file as buffer
+      const fileBuffer = await fs.readFile(filePath);
+
+      // Upload the image using ImageService
+      const uploadedImage = await imageService.uploadImage(fileBuffer);
+
+      // Update the general content with the new image URL, preserving width parameter if it existed
+      const newImagePath = `images/${uploadedImage.id}${width ? "?w=" + width : ""}`;
+
+      // Update the backgroundUrl in the content data
+      await getRepository(Content)
+        .createQueryBuilder()
+        .update(Content)
+        .set({
+          data: () =>
+            `jsonb_set("data", '{backgroundUrl}', '"${newImagePath}"')`
+        })
+        .where("id = :id", { id: "general" })
+        .execute();
+
+      console.log(
+        formatSuccessMessage("General content background", fileStats.size) +
+          ` - New image path: ${newImagePath}`
+      );
+
+      stats.successCount++;
+      stats.totalSizeBytes += fileStats.size;
+    } catch (error) {
+      stats.errorCount++;
+      console.error(
+        `Error uploading background image for general content:`,
+        error
+      );
+    }
+  } else {
+    // Dry run mode
+    console.log(
+      formatDryRunMessage("General content background", fileStats.size)
+    );
+    stats.successCount++;
+    stats.totalSizeBytes += fileStats.size;
+  }
 }
 
 /**

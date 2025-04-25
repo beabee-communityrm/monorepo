@@ -6,7 +6,7 @@
         <p class="mb-3">{{ callout.excerpt }}</p>
       </div>
       <div class="flex-0 ml-4">
-        <img class="w-[150px]" :src="callout.image" />
+        <img class="w-[150px]" :src="imageUrl" />
       </div>
     </div>
     <div class="mb-4 text-sm">
@@ -44,6 +44,7 @@ import type { GetCalloutDataWith } from '@beabee/beabee-common';
 import { useI18n } from 'vue-i18n';
 import { computed } from 'vue';
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
+import noImage from '../../assets/images/no-image.avif';
 
 import env from '@env';
 
@@ -59,4 +60,10 @@ const props = defineProps<{
 }>();
 
 const calloutLink = computed(() => `/callouts/${props.callout.slug}`);
+const imageUrl = computed(() => {
+  if (props.callout.image) {
+    return `${env.apiUrl}/${props.callout.image}`;
+  }
+  return noImage;
+});
 </script>

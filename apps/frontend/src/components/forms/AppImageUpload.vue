@@ -53,6 +53,7 @@ import env from '@env';
 import { AppButton, AppLabel } from '@beabee/vue/components';
 import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 import AppInputError from '@components/forms/AppInputError.vue';
+import { isAbsoluteUrl } from '@beabee/beabee-common';
 
 const emit = defineEmits(['update:modelValue']);
 
@@ -77,8 +78,26 @@ const { t } = useI18n();
 
 const inputRef = ref<HTMLInputElement>();
 const uploading = ref(false);
-const imageUrl = ref(props.modelValue as string);
+const rawImageUrl = ref(props.modelValue);
 const formError = ref('');
+
+// Process the image URL - add prefix if needed
+function processImageUrl(url: unknown): string {
+  console.debug('processImageUrl', url);
+  if (!url || typeof url !== 'string') {
+    return '';
+  }
+  if (!url || isAbsoluteUrl(url) || url.startsWith('blob:')) {
+    return url;
+  }
+  if (url.startsWith(env.apiUrl)) {
+    return url;
+  }
+  return `${env.apiUrl}/${url.replace(/^\//, '')}`;
+}
+
+// Computed property for the displayed image URL
+const imageUrl = computed(() => processImageUrl(rawImageUrl.value));
 
 // Generate unique ID for aria attributes
 const id = computed(
@@ -95,10 +114,11 @@ const rules = computed(() => ({
   uploading: { equal: sameAs(false) },
 }));
 
-useVuelidate(rules, { v: imageUrl, uploading });
+useVuelidate(rules, { v: rawImageUrl, uploading });
 
 watch(toRef(props, 'modelValue'), (newModelValue) => {
-  imageUrl.value = newModelValue as string;
+  rawImageUrl.value = newModelValue;
+
   if (inputRef.value) {
     inputRef.value.value = '';
   }
@@ -115,20 +135,23 @@ async function handleChange() {
     // Upload of the image via the new API
     const response = await client.upload.image.uploadFile(file);
 
-    // Create URL with width parameter
-    let uploadedUrl = response.path
-      ? `${env.appUrl}${env.apiUrl}/${response.path}`
+    // Get the original unmanipulated URL
+    const originalUrl = response.path || response.url;
+
+    // Process URL for preview only
+    let displayUrl = response.path
+      ? processImageUrl(response.path)
       : response.url;
 
-    if (!uploadedUrl.includes('?w=')) {
-      uploadedUrl = `${uploadedUrl}?w=${props.width}`;
+    if (!displayUrl.includes('?w=')) {
+      displayUrl = `${displayUrl}?w=${props.width}`;
     }
 
     // Local preview of the uploaded image
-    imageUrl.value = URL.createObjectURL(file);
+    rawImageUrl.value = URL.createObjectURL(file);
 
-    // Actual URL to emit to the parent component
-    emit('update:modelValue', uploadedUrl);
+    // Emit the original unmanipulated URL to the parent component
+    emit('update:modelValue', originalUrl);
   } catch (error) {
     if (error instanceof ClientApiError) {
       formError.value =
