@@ -47,8 +47,7 @@ export class ImageController {
       // Verify file type is allowed - multer handles size but we still check type
       if (!isSupportedImageType(req.file.mimetype)) {
         throw new BadRequestError({
-          message:
-            "Unsupported image type. Please upload a JPEG, PNG, WebP or AVIF image."
+          message: `Unsupported image type ${req.file.mimetype}. Please upload a JPEG, PNG, WebP or AVIF image.`
         });
       }
 
@@ -59,9 +58,12 @@ export class ImageController {
         contact?.email // Only add owner information if available
       );
 
+      const path = `images/${metadata.id}`;
+
       return {
         id: metadata.id,
-        url: `${config.audience}/api/1.0/images/${metadata.id}`,
+        url: `${config.audience}/api/1.0/${path}`,
+        path,
         hash: metadata.hash
       };
     } catch (error) {
@@ -89,7 +91,7 @@ export class ImageController {
   async getImage(
     @Res() res: Response,
     @Param("id") id: string,
-    @QueryParam("w") width?: number
+    @QueryParam("w", { required: false }) width?: number
   ): Promise<Buffer> {
     try {
       // Get image as buffer

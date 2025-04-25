@@ -16,6 +16,14 @@ export class UploadClient {
   private readonly imageClient: UploadImageClient;
   private readonly documentClient: UploadDocumentClient;
 
+  get image() {
+    return this.imageClient;
+  }
+
+  get document() {
+    return this.documentClient;
+  }
+
   /**
    * Creates a new upload client
    * @param options - The client options

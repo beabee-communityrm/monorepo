@@ -6,6 +6,11 @@
  * BEABEE_ to avoid conflicts with other applications.
  */
 import * as env from "./env";
+import type {
+  ImageServiceConfig,
+  S3Config,
+  DocumentServiceConfig
+} from "../type/index";
 
 /**
  * SMTP email provider configuration
@@ -121,6 +126,31 @@ export interface AppConfigOverride {
   subApps?: AppConfigOverrides; // Override sub-apps config
 }
 
+const s3: S3Config = {
+  endpoint: env.s("MINIO_ENDPOINT", "http://minio:9000"), // MinIO/S3 endpoint URL
+  region: env.s("MINIO_REGION", "us-east-1"), // MinIO/S3 region
+  accessKey: env.s("MINIO_ROOT_USER", "minioadmin"), // MinIO/S3 access key (root user)
+  secretKey: env.s("MINIO_ROOT_PASSWORD", "minioadmin"), // MinIO/S3 secret key (root password)
+  bucket: env.s("MINIO_BUCKET", "uploads"), // MinIO/S3 bucket for uploads
+  forcePathStyle: env.b("MINIO_FORCE_PATH_STYLE", true) // Force path style URLs for S3 compatibility
+};
+
+// Image service configuration
+const image: ImageServiceConfig = {
+  quality: env.n("BEABEE_IMAGE_QUALITY", 80), // Quality level for image compression (default: 80)
+  format: env.e(
+    "BEABEE_IMAGE_FORMAT",
+    ["avif", "webp", "jpeg", "png", "original"] as const, // Allowed image formats
+    "avif" // Default: avif
+  ),
+  availableWidths: [100, 300, 400, 600, 900, 1200, 1440, 1800], // Supported widths for image resizing
+  s3
+};
+
+const document: DocumentServiceConfig = {
+  s3
+};
+
 /**
  * Main application configuration object
  * Contains all settings derived from environment variables
@@ -229,7 +259,13 @@ export const config = {
   logFormat: env.e("BEABEE_LOGFORMAT", ["json", "simple"] as const, "json"), // Log format (default: json)
 
   // App configuration overrides from environment
-  appOverrides: env.json("BEABEE_APPOVERRIDES", {}) as AppConfigOverrides // JSON of app configuration overrides
+  appOverrides: env.json("BEABEE_APPOVERRIDES", {}) as AppConfigOverrides, // JSON of app configuration overrides
+
+  // Image service configuration
+  image,
+
+  // Document service configuration
+  document
 };
 
 export default config;

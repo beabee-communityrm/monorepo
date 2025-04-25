@@ -32,7 +32,9 @@ function isFileMigrated(fileUrl: string): boolean {
   const baseFileUrl = fileUrl.split("?")[0];
 
   // Check if the image URL contains the new API path
-  return baseFileUrl.includes("/api/1.0/");
+  return (
+    baseFileUrl.includes("/documents/") || baseFileUrl.includes("/images/")
+  );
 }
 
 /**
@@ -367,17 +369,18 @@ async function processCalloutImage(
       const uploadedImage = await imageService.uploadImage(fileBuffer);
 
       // Update the callout with the new image ID, preserving width parameter if it existed
-      const newImageUrl = `${config.audience}/api/1.0/images/${uploadedImage.id}${width ? "?w=" + width : ""}`;
+      const newImagePath = `images/${uploadedImage.id}`;
+      // const newImageUrl = `${config.audience}/api/1.0/${newImagePath}${width ? "?w=" + width : ""}`;
 
       await calloutsService.updateCallout(callout.id, {
-        image: newImageUrl
+        image: newImagePath
       });
 
       console.log(
         formatSuccessMessage(
           `${callout.id} (${callout.slug})`,
           fileStats.size
-        ) + ` - New image URL: ${newImageUrl}`
+        ) + ` - New image path: ${newImagePath}`
       );
 
       stats.successCount++;
@@ -453,15 +456,16 @@ async function processOptionImage(
       const uploadedImage = await imageService.uploadImage(fileBuffer);
 
       // Update the option with the new image URL, preserving width parameter if it existed
-      const newImageUrl = `${config.audience}/api/1.0/images/${uploadedImage.id}${width ? "?w=" + width : ""}`;
+      const newImagePath = `images/${uploadedImage.id}${width ? "?w=" + width : ""}`;
+      // const newImageUrl = `${config.audience}/api/1.0/${newImagePath}`;
 
       // Update directly in OptionsService
       // Use type assertion to allow setting the specific option keys
-      await optionsService.set({ [optionKey]: newImageUrl });
+      await optionsService.set({ [optionKey]: newImagePath });
 
       console.log(
         formatSuccessMessage(optionLabel, fileStats.size) +
-          ` - New image URL: ${newImageUrl}`
+          ` - New image path: ${newImagePath}`
       );
 
       stats.successCount++;
@@ -521,7 +525,7 @@ async function processCalloutResponseDocuments(
                   response,
                   slideId,
                   componentKey,
-                  { ...item }, // Ensure correct type with object destructuring
+                  item,
                   i,
                   stats
                 );
@@ -545,7 +549,7 @@ async function processCalloutResponseDocuments(
               response,
               slideId,
               componentKey,
-              { ...answer }, // Ensure correct type with object destructuring
+              answer,
               null,
               stats
             );
@@ -587,7 +591,7 @@ async function processDocumentUpload(
   fileUpload: FormioFile,
   arrayIndex: number | null,
   stats: MigrationStats
-): Promise<{ url: string } | null> {
+): Promise<{ url: string; path: string } | null> {
   const fileUrl = fileUpload.url;
   const locationInfo =
     arrayIndex !== null
@@ -654,7 +658,8 @@ async function processDocumentUpload(
       );
 
       // Update with the new document URL
-      const newDocumentUrl = `${config.audience}/api/1.0/documents/${uploadedDocument.id}`;
+      const newDocumentPath = `documents/${uploadedDocument.id}`;
+      const newDocumentUrl = `${config.audience}/api/1.0/${newDocumentPath}`;
 
       // Update the response with the new document URL using CalloutsService
       const updated = await calloutsService.updateResponseFileUploadUrl(
@@ -662,18 +667,18 @@ async function processDocumentUpload(
         slideId,
         componentKey,
         arrayIndex,
-        { ...fileUpload, url: newDocumentUrl }
+        { ...fileUpload, url: newDocumentUrl, path: newDocumentPath }
       );
 
       if (updated) {
         console.log(
           formatSuccessMessage(locationInfo, fileStats.size) +
-            ` - New document URL: ${newDocumentUrl}`
+            ` - New document path: ${newDocumentPath}`
         );
 
         stats.successCount++;
         stats.totalSizeBytes += fileStats.size;
-        return { url: newDocumentUrl };
+        return { url: newDocumentUrl, path: newDocumentPath };
       } else {
         stats.errorCount++;
         console.error(`Failed to update document URL for ${locationInfo}`);

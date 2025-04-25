@@ -1,10 +1,13 @@
+import type { FormatEnum } from "sharp";
+
 /**
  * Get MIME type from file extension
- * @param extension File extension
+ * @param extension File extension or filename
  * @private
  */
 export const getMimetypeFromExtension = (extension: string): string => {
-  const ext = extension.toLowerCase().replace(".", "");
+  extension = extension.toLowerCase().trim();
+  const ext = extension.includes(".") ? extension.split(".").pop() : extension;
   switch (ext) {
     // Images
     case "jpg":
@@ -73,14 +76,52 @@ export const getMimetypeFromExtension = (extension: string): string => {
   }
 };
 
-/**
- * Get content type based on file path
- * @param filePath Path to file
- * @returns MIME type for the file
- */
-export const getContentType = (filePath: string): string => {
-  const extension = filePath.substring(filePath.lastIndexOf(".")).toLowerCase();
-  return getMimetypeFromExtension(extension);
+export const getMimetypeFromDecoderFormat = (
+  format: keyof FormatEnum
+): string => {
+  switch (format) {
+    case "avif":
+      return "image/avif";
+    case "dz":
+      return "image/vnd.dz";
+    case "fits":
+      return "image/vnd.fits";
+    case "gif":
+      return "image/gif";
+    case "heif":
+      return "image/heif";
+    case "input":
+      return "image/x-icon";
+    case "jpg":
+      return "image/jpeg";
+    case "jpeg":
+      return "image/jpeg";
+    case "jp2":
+      return "image/jp2";
+    case "jxl":
+      return "image/jxl";
+    case "magick":
+      return "image/vnd.ms-photo";
+    case "openslide":
+      return "image/vnd.open-slidedeck";
+    case "png":
+      return "image/png";
+    case "ppm":
+      return "image/vnd.ppm";
+    case "raw":
+      return "image/vnd.cmu-raster";
+    case "svg":
+      return "image/svg+xml";
+    case "tiff":
+    case "tif":
+      return "image/tiff";
+    case "v":
+      return "image/x-icon";
+    case "webp":
+      return "image/webp";
+    default:
+      return "application/octet-stream";
+  }
 };
 
 /**
@@ -106,6 +147,16 @@ export const getExtensionFromMimetype = (mimetype?: string): string => {
       return "avif";
     case "image/svg+xml":
       return "svg";
+    case "image/tiff":
+      return "tif";
+    case "image/heif":
+      return "heif";
+    case "image/jp2":
+      return "jp2";
+    case "image/jxl":
+      return "jxl";
+    case "image/x-icon":
+      return "ico";
 
     // Videos
     case "video/mp4":
@@ -172,4 +223,14 @@ export const getExtensionFromFilename = (filename?: string): string => {
   }
 
   return ".bin";
+};
+
+/**
+ * Sanitize filename to prevent path traversal attacks
+ * @param filename Original filename
+ * @returns Sanitized filename
+ */
+export const sanitizeFilename = (filename: string): string => {
+  // Remove path components and special characters
+  return filename.replace(/[/\\?%*:|"<>]/g, "_").replace(/^\.+/, "");
 };

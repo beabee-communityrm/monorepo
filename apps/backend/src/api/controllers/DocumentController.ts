@@ -58,10 +58,13 @@ export class DocumentController {
         contact?.email // Add the owner information if available
       );
 
+      const path = `documents/${metadata.id}`;
+
       // Create response object
       const response: UploadFileResponse = {
         id: metadata.id,
-        url: `${config.audience}/api/1.0/documents/${metadata.id}`,
+        url: `${config.audience}/api/1.0/${path}`,
+        path,
         hash: metadata.hash
       };
 

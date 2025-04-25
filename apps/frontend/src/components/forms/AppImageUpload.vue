@@ -24,7 +24,7 @@
           <input
             ref="inputRef"
             type="file"
-            accept="image/jpeg,image/png"
+            accept="image/jpeg,image/png,image/webp,image/avif,image/gif,image/svg+xml"
             class="sr-only"
             :aria-label="t('actions.chooseFile')"
             @change="handleChange"
@@ -49,6 +49,7 @@ import { helpers, requiredIf, sameAs } from '@vuelidate/validators';
 import { computed, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { client, ClientApiError } from '@utils/api';
+import env from '@env';
 import { AppButton, AppLabel } from '@beabee/vue/components';
 import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 import AppInputError from '@components/forms/AppInputError.vue';
@@ -112,10 +113,16 @@ async function handleChange() {
 
   try {
     // Upload of the image via the new API
-    const response = await client.upload.uploadFile(file);
+    const response = await client.upload.image.uploadFile(file);
 
     // Create URL with width parameter
-    const uploadedUrl = `${response.url}?w=${props.width}`;
+    let uploadedUrl = response.path
+      ? `${env.appUrl}${env.apiUrl}/${response.path}`
+      : response.url;
+
+    if (!uploadedUrl.includes('?w=')) {
+      uploadedUrl = `${uploadedUrl}?w=${props.width}`;
+    }
 
     // Local preview of the uploaded image
     imageUrl.value = URL.createObjectURL(file);

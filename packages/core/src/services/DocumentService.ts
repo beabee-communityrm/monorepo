@@ -15,13 +15,13 @@ import { log as mainLogger } from "../logging";
 import {
   checkConnection,
   getFileBuffer,
-  getFileMetadata,
   getFileStream,
   fileExists,
   getFileHash
 } from "../utils/s3";
-import { getExtensionFromFilename } from "../utils/file";
+import { getExtensionFromFilename, sanitizeFilename } from "../utils/file";
 import { isSupportedDocumentType } from "@beabee/beabee-common";
+import config from "../config/config";
 
 const log = mainLogger.child({ app: "document-service" });
 
@@ -48,16 +48,6 @@ export class DocumentService {
       },
       forcePathStyle: this.config.s3.forcePathStyle !== false
     });
-  }
-
-  /**
-   * Sanitize filename to prevent path traversal attacks
-   * @param filename Original filename
-   * @returns Sanitized filename
-   */
-  private sanitizeFilename(filename: string): string {
-    // Remove path components and special characters
-    return filename.replace(/[/\\?%*:|"<>]/g, "_").replace(/^\.+/, "");
   }
 
   /**
@@ -114,7 +104,7 @@ export class DocumentService {
 
       // Sanitize original filename if provided
       const sanitizedFilename = originalFilename
-        ? this.sanitizeFilename(originalFilename)
+        ? sanitizeFilename(originalFilename)
         : undefined;
 
       // Generate a unique ID for the document
@@ -338,13 +328,4 @@ export class DocumentService {
   }
 }
 
-export const documentService = new DocumentService({
-  s3: {
-    endpoint: process.env.MINIO_ENDPOINT || "http://minio:9000",
-    region: process.env.MINIO_REGION || "us-east-1",
-    accessKey: process.env.MINIO_ROOT_USER || "minioadmin",
-    secretKey: process.env.MINIO_ROOT_PASSWORD || "minioadmin",
-    bucket: process.env.MINIO_BUCKET || "uploads",
-    forcePathStyle: true
-  }
-});
+export const documentService = new DocumentService(config.document);

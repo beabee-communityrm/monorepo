@@ -40,6 +40,7 @@ export default class BeabeeStorage {
         storage: 'beabee',
         name,
         url: response.url,
+        path: response.path,
         size: file.size,
         hash: response.hash,
         originalName: file.name,

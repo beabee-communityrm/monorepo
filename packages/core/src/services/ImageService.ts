@@ -10,14 +10,16 @@ import {
   HeadObjectCommand
 } from "@aws-sdk/client-s3";
 import sharp from "sharp";
+import { optimize } from "svgo";
 import { isSupportedImageType } from "@beabee/beabee-common";
 
-import type { ImageFormat } from "../type/image-format";
-import type { ImageServiceConfig } from "../type/image-service-config";
-import type { ImageMetadata } from "../type/image-metadata";
 import { BadRequestError, NotFoundError } from "../errors";
 import { log as mainLogger } from "../logging";
-import { getMimetypeFromExtension } from "../utils/file";
+import {
+  getMimetypeFromDecoderFormat,
+  getMimetypeFromExtension,
+  sanitizeFilename
+} from "../utils/file";
 import {
   checkConnection,
   fileExists,
@@ -25,6 +27,13 @@ import {
   getFileBuffer,
   getFileHash
 } from "../utils/s3";
+import config from "../config/config";
+
+import type {
+  ImageFormat,
+  ImageServiceConfig,
+  ImageMetadata
+} from "../type/index";
 
 const log = mainLogger.child({ app: "image-service" });
 
@@ -54,16 +63,6 @@ export class ImageService {
   }
 
   /**
-   * Sanitize filename to prevent path traversal attacks
-   * @param filename Original filename
-   * @returns Sanitized filename
-   */
-  private sanitizeFilename(filename: string): string {
-    // Remove path components and special characters
-    return filename.replace(/[/\\?%*:|"<>]/g, "_").replace(/^\.+/, "");
-  }
-
-  /**
    * Validate image file type, size and content
    * @param imageData Image data buffer
    * @param mimetype MIME type if known
@@ -75,8 +74,7 @@ export class ImageService {
     // Validate MIME type if provided
     if (mimetype && !isSupportedImageType(mimetype)) {
       throw new BadRequestError({
-        message:
-          "Unsupported image type. Please upload a JPEG, PNG, WebP or AVIF image."
+        message: `Unsupported image type ${mimetype}. Please upload a JPEG, PNG, WebP or AVIF image.`
       });
     }
 
@@ -91,10 +89,11 @@ export class ImageService {
       }
 
       // Check if the detected format is allowed
-      if (!isSupportedImageType(getMimetypeFromExtension(metadata.format))) {
+      if (
+        !isSupportedImageType(getMimetypeFromDecoderFormat(metadata.format))
+      ) {
         throw new BadRequestError({
-          message:
-            "Unsupported image format. Please upload a JPEG, PNG, WebP or AVIF image."
+          message: `Unsupported image format ${metadata.format}. Please upload a JPEG, PNG, WebP or AVIF image.`
         });
       }
     } catch (error) {
@@ -125,17 +124,21 @@ export class ImageService {
         throw new BadRequestError({ message: "Invalid upload format" });
       }
 
+      const originalExtension = originalFilename
+        ? extname(originalFilename).substring(1)
+        : undefined;
+
       // Validate image content, size and type
       await this.validateImage(
         imageData,
-        originalFilename
-          ? getMimetypeFromExtension(originalFilename)
+        originalExtension
+          ? getMimetypeFromExtension(originalExtension)
           : undefined
       );
 
       // Sanitize original filename if provided
       const sanitizedFilename = originalFilename
-        ? this.sanitizeFilename(originalFilename)
+        ? sanitizeFilename(originalFilename)
         : undefined;
 
       // Process the image with sharp to get metadata
@@ -144,6 +147,16 @@ export class ImageService {
 
       if (!metadata.width || !metadata.height || !metadata.format) {
         throw new BadRequestError({ message: "Invalid image format" });
+      }
+
+      // If the image format is already the target format or a vector graphic,
+      // we keep the original format if no other format is forced
+      if (metadata.format === this.config.format) {
+        format ||= "original";
+      }
+
+      if (metadata.format === "svg") {
+        format ||= "original";
       }
 
       // Generate a unique ID for the image
@@ -165,8 +178,30 @@ export class ImageService {
       // Process the image to the target format, but keep full resolution
       let processedImageBuffer: Buffer;
 
-      // Convert the image to the target format or keep original
-      if (outputFormat === "original") {
+      // Handle SVG optimization
+      if (metadata.format === "svg" && outputFormat === "original") {
+        // Convert buffer to string for SVGO
+        const svgString = imageData.toString("utf8");
+
+        // Optimize SVG using SVGO
+        const result = optimize(svgString, {
+          multipass: true,
+          plugins: [
+            {
+              name: "preset-default",
+              params: {
+                overrides: {
+                  // Disable removeViewBox to preserve the original aspect ratio
+                  removeViewBox: false
+                }
+              }
+            }
+          ]
+        });
+
+        // Convert optimized SVG back to buffer
+        processedImageBuffer = Buffer.from(result.data, "utf8");
+      } else if (outputFormat === "original") {
         // Keep the original format but strip metadata
         processedImageBuffer = await image
           .withMetadata({ orientation: undefined }) // Strip EXIF but keep orientation
@@ -272,6 +307,21 @@ export class ImageService {
     try {
       // Check if image exists
       await this.imageExists(id);
+
+      // Get image metadata to check format
+      const metadata = await this.getImageMetadata(id);
+      const isSvg = metadata.mimetype === "image/svg+xml";
+
+      // SVGs should not be scaled - always return original
+      if (isSvg) {
+        const key = `originals/${id}`;
+        try {
+          return await getFileStream(this.s3Client, this.config.s3.bucket, key);
+        } catch (error) {
+          log.error(`Failed to get SVG image (${id})`, error);
+          throw new NotFoundError();
+        }
+      }
 
       // Determine the best width to use
       let bestWidth: number | undefined = undefined;
@@ -605,16 +655,4 @@ export class ImageService {
   }
 }
 
-export const imageService = new ImageService({
-  quality: parseInt(process.env.IMAGE_QUALITY || "80"),
-  format: (process.env.IMAGE_FORMAT || "avif") as ImageFormat,
-  availableWidths: [100, 300, 400, 600, 900, 1200, 1440, 1800],
-  s3: {
-    endpoint: process.env.MINIO_ENDPOINT || "http://minio:9000",
-    region: process.env.MINIO_REGION || "us-east-1",
-    accessKey: process.env.MINIO_ROOT_USER || "minioadmin",
-    secretKey: process.env.MINIO_ROOT_PASSWORD || "minioadmin",
-    bucket: process.env.MINIO_BUCKET || "uploads",
-    forcePathStyle: true
-  }
-});
+export const imageService = new ImageService(config.image);
