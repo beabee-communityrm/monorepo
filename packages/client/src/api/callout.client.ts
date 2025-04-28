@@ -182,8 +182,10 @@ export class CalloutClient extends BaseClient {
       "answers" | "guest" | "newsletter"
     >,
     captchaToken?: string
-  ): Promise<GetCalloutResponseData> {
-    const { data } = await this.fetch.post<Serial<GetCalloutResponseData>>(
+  ): Promise<{ id: string } | GetCalloutResponseData> {
+    const { data } = await this.fetch.post<
+      { id: string } | Serial<GetCalloutResponseData>
+    >(
       `/${slug}/responses`,
       {
         answers: newData.answers,
@@ -192,7 +194,7 @@ export class CalloutClient extends BaseClient {
       },
       { params: { captchaToken } }
     );
-    return CalloutResponseClient.deserialize(data);
+    return "number" in data ? CalloutResponseClient.deserialize(data) : data;
   }
 
   /**

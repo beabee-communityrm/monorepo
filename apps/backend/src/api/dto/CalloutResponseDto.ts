@@ -122,6 +122,11 @@ export class GetCalloutResponseDto implements GetCalloutResponseData {
   latestComment?: GetCalloutResponseCommentDto | null;
 }
 
+export class GetGuestCalloutResponseDto {
+  @IsString()
+  id!: string;
+}
+
 export class CreateCalloutResponseGuestDto implements CalloutResponseGuestData {
   @IsNonEmptyString()
   firstname!: string;

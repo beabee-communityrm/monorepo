@@ -41,15 +41,21 @@ describe("Callout API", () => {
     // Create test responses
     const response = await client.callout.createResponse(testCalloutSlug, {
       answers: createTestCalloutResponseAnswers("slide1"),
-      guestName: "Test Guest 1",
-      guestEmail: "test1@example.com"
+      guest: {
+        email: "test1@example.com",
+        firstname: "Test",
+        lastname: "Guest 1"
+      }
     });
     testResponseId = response.id;
 
     await client.callout.createResponse(testCalloutSlug, {
       answers: createMinimalTestCalloutResponseAnswers("slide1"),
-      guestName: "Test Guest 2",
-      guestEmail: "test2@example.com"
+      guest: {
+        email: "test2@example.com",
+        firstname: "Test",
+        lastname: "Guest 2"
+      }
     });
 
     // Create user client (requires login)
@@ -156,6 +162,9 @@ describe("Callout API", () => {
         expect(response.id).toBe(testResponseId);
         expect(response.createdAt).toBeInstanceOf(Date);
         expect(response.updatedAt).toBeInstanceOf(Date);
+        expect(response.contact?.email).toBe("test1@example.com");
+        expect(response.contact?.firstname).toBe("Test");
+        expect(response.contact?.lastname).toBe("Guest 1");
         expect(response.callout).toBeDefined();
       });
     });
@@ -163,7 +172,7 @@ describe("Callout API", () => {
     describe("update", () => {
       it("should update a response", async () => {
         const updateData = {
-          guestName: "Updated Guest Name"
+          bucket: "updated-bucket"
         };
 
         const response = await client.callout.response.update(
@@ -173,7 +182,7 @@ describe("Callout API", () => {
 
         expect(response).toBeDefined();
         expect(response.id).toBe(testResponseId);
-        expect(response.guestName).toBe(updateData.guestName);
+        expect(response.bucket).toBe(updateData.bucket);
       });
     });
   });
