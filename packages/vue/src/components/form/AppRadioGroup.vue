@@ -22,16 +22,14 @@ import useVuelidate from '@vuelidate/core';
 import { requiredIf } from '@vuelidate/validators';
 import { computed } from 'vue';
 import AppLabel from './AppLabel.vue';
-import AppRadioInput from './AppRadioInput.vue';
+import AppRadioInput, { type AppRadioInputValue } from './AppRadioInput.vue';
 
 /**
  * Props for the AppRadioGroup component
  */
 export interface AppRadioGroupProps {
-  /** Currently selected value */
-  modelValue?: string | boolean | number | null;
   /** Array of value-label pairs for the radio options */
-  options: [string | boolean | number, string][];
+  options: [AppRadioInputValue, string][];
   /** Name attribute for the radio group */
   name?: string;
   /** Label for the entire radio group */
@@ -46,11 +44,6 @@ export interface AppRadioGroupProps {
   variant?: 'primary' | 'link' | 'danger';
 }
 
-const emit = defineEmits<{
-  /** Emitted when selection changes */
-  (e: 'update:modelValue', value: string | boolean | number | null): void;
-}>();
-
 const props = withDefaults(defineProps<AppRadioGroupProps>(), {
   variant: 'link',
   disabled: false,
@@ -58,10 +51,7 @@ const props = withDefaults(defineProps<AppRadioGroupProps>(), {
   inline: false,
 });
 
-const selected = computed({
-  get: () => props.modelValue,
-  set: (newValue) => emit('update:modelValue', newValue || null),
-});
+const selected = defineModel<AppRadioInputValue>();
 
 // Use a random name to group the inputs if no name provider
 const uniqueName = Math.random().toString(16).substring(2);

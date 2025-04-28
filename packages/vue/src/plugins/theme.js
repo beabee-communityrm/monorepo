@@ -1,3 +1,5 @@
+import resolveConfig from 'tailwindcss/resolveConfig.js';
+
 export default function themePlugin() {
   const virtualModuleId = 'virtual:theme';
   const resolvedVirtualModuleId = '\0' + virtualModuleId;
@@ -11,14 +13,14 @@ export default function themePlugin() {
     },
     async load(id) {
       if (id === resolvedVirtualModuleId) {
-        const tailwindConfig = await import('../../tailwind.config.js');
+        const fullConfig = resolveConfig('../../tailwind.config.js');
         return (
           'export default ' +
           JSON.stringify({
-            fontSize: tailwindConfig.default.theme.fontSize,
-            borderRadius: tailwindConfig.default.theme.borderRadius,
-            spacing: tailwindConfig.default.theme.spacing,
-            lineHeight: tailwindConfig.default.theme.lineHeight,
+            fontSize: fullConfig.theme.fontSize,
+            borderRadius: fullConfig.theme.borderRadius,
+            spacing: fullConfig.theme.spacing,
+            lineHeight: fullConfig.theme.lineHeight,
           })
         );
       }

@@ -73,6 +73,9 @@ export const contactFilters = {
   activeMembership: {
     type: "boolean"
   },
+  activeUser: {
+    type: "boolean"
+  },
   membershipStarts: {
     type: "date"
   },
