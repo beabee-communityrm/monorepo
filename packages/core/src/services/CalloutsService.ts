@@ -253,13 +253,14 @@ class CalloutsService {
     const savedResponse = await this.saveResponse(response);
 
     if (newsletter?.optIn) {
+      log.info(`Opting contact ${contact.id} into newsletter`, { newsletter });
       await ContactsService.updateContactProfile(
         contact,
         {
           newsletterStatus: NewsletterStatus.Subscribed,
           newsletterGroups: newsletter.groups
         },
-        { mergeGroups: true }
+        { sync: true, mergeGroups: true }
       );
     }
 
@@ -302,6 +303,9 @@ class CalloutsService {
 
       // Create a contact if it doesn't exist
       if (!contact) {
+        log.info(
+          "Creating new contact for callout response with email " + guest.email
+        );
         contact = await ContactsService.createContact(guest);
       }
 
@@ -322,6 +326,8 @@ class CalloutsService {
 
       return response;
     } else {
+      log.info("Creating anonymous callout response for callout " + callout.id);
+
       const response = new CalloutResponse();
       response.callout = callout;
       response.answers = answers;
@@ -429,6 +435,10 @@ class CalloutsService {
 
     try {
       const savedResponse = await getRepository(CalloutResponse).save(response);
+
+      log.info(
+        `Saved callout response ${response.number} for callout ${response.callout.id}`
+      );
 
       await EmailService.sendTemplateToAdmin("new-callout-response", {
         calloutSlug: response.callout.slug,
