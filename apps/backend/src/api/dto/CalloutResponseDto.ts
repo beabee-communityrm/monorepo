@@ -177,20 +177,12 @@ export class CreateCalloutResponseDto implements CreateCalloutResponseData {
 }
 
 export class UpdateCalloutResponseDto
-  implements Partial<CreateCalloutResponseDto>
+  implements Partial<CreateCalloutResponseData>
 {
   // TODO: validate
   @IsObject()
   @IsOptional()
   answers?: CalloutResponseAnswersSlide;
-
-  @IsOptional()
-  @IsString()
-  guestName?: string;
-
-  @IsOptional()
-  @IsEmail()
-  guestEmail?: string;
 
   @IsOptional()
   @IsString()
