@@ -167,7 +167,7 @@ class NewsletterService {
       // newsletter status to None to prevent further updates
       if (err instanceof CantUpdateNewsletterContact) {
         newState = { status: NewsletterStatus.None, groups: [] };
-        log.warn(
+        log.warning(
           `Newsletter upsert failed, setting status to none for contact ${contact.id}`,
           err
         );
