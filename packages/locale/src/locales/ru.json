@@ -367,6 +367,7 @@
   "calloutReviewerManager": {
     "confirmDelete": {}
   },
+  "calloutThanksPage": {},
   "callouts": {
     "archive": "Архив",
     "data": {

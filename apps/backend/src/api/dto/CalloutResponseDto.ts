@@ -122,6 +122,11 @@ export class GetCalloutResponseDto implements GetCalloutResponseData {
   latestComment?: GetCalloutResponseCommentDto | null;
 }
 
+export class GetGuestCalloutResponseDto {
+  @IsString()
+  id!: string;
+}
+
 export class CreateCalloutResponseGuestDto implements CalloutResponseGuestData {
   @IsNonEmptyString()
   firstname!: string;
@@ -172,20 +177,12 @@ export class CreateCalloutResponseDto implements CreateCalloutResponseData {
 }
 
 export class UpdateCalloutResponseDto
-  implements Partial<CreateCalloutResponseDto>
+  implements Partial<CreateCalloutResponseData>
 {
   // TODO: validate
   @IsObject()
   @IsOptional()
   answers?: CalloutResponseAnswersSlide;
-
-  @IsOptional()
-  @IsString()
-  guestName?: string;
-
-  @IsOptional()
-  @IsEmail()
-  guestEmail?: string;
 
   @IsOptional()
   @IsString()

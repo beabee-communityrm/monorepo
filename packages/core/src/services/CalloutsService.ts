@@ -10,6 +10,7 @@ import {
 import slugify from "slugify";
 import { BadRequestError } from "routing-controllers";
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
+import { v4 as uuidv4 } from "uuid";
 
 import ContactsService from "#services/ContactsService";
 import EmailService from "#services/EmailService";
@@ -280,14 +281,14 @@ class CalloutsService {
    * @param guestName The guest's name or undefined for an anonymous response
    * @param guestEmail The guest's email or undefined for an anonymous response
    * @param answers The response answers
-   * @returns The new callout response
+   * @returns The new callout response ID
    */
   async setGuestResponse(
     callout: Callout,
     guest: CalloutResponseGuestData | undefined,
     answers: CalloutResponseAnswersSlide,
     newsletter: CalloutResponseNewsletterData | undefined
-  ): Promise<CalloutResponse> {
+  ): Promise<string> {
     if (callout.access === CalloutAccess.Guest && !guest) {
       throw new InvalidCalloutResponse("guest-fields-missing");
     } else if (callout.access === CalloutAccess.OnlyAnonymous && guest) {
@@ -309,22 +310,32 @@ class CalloutsService {
         contact = await ContactsService.createContact(guest);
       }
 
-      const response = await this.setResponse(
-        callout,
-        contact,
-        answers,
-        newsletter
-      );
+      try {
+        const response = await this.setResponse(
+          callout,
+          contact,
+          answers,
+          newsletter
+        );
 
-      // Let the contact know in case it wasn't them
-      const title = await this.getCalloutTitle(callout);
-      await EmailService.sendTemplateToContact(
-        "confirm-callout-response",
-        contact,
-        { calloutTitle: title, calloutSlug: callout.slug }
-      );
-
-      return response;
+        // Let the contact know in case it wasn't them
+        const title = await this.getCalloutTitle(callout);
+        await EmailService.sendTemplateToContact(
+          "confirm-callout-response",
+          contact,
+          { calloutTitle: title, calloutSlug: callout.slug }
+        );
+        return response.id;
+      } catch (err) {
+        // Suppress errors from creating a response for a contact, this prevents
+        // any potential information leaking about failures related to some
+        // state of the contact
+        if (err instanceof InvalidCalloutResponse) {
+          return uuidv4();
+        } else {
+          throw err;
+        }
+      }
     } else {
       log.info("Creating anonymous callout response for callout " + callout.id);
 
@@ -332,7 +343,8 @@ class CalloutsService {
       response.callout = callout;
       response.answers = answers;
 
-      return await this.saveResponse(response);
+      const savedResponse = await this.saveResponse(response);
+      return savedResponse.id;
     }
   }
 

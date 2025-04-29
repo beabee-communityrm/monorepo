@@ -33,6 +33,7 @@ import {
   CreateCalloutResponseDto,
   GetCalloutResponseDto,
   GetCalloutResponseMapDto,
+  GetGuestCalloutResponseDto,
   ListCalloutResponsesDto
 } from "@api/dto/CalloutResponseDto";
 import { CreateCalloutTagDto, GetCalloutTagDto } from "@api/dto/CalloutTagDto";
@@ -48,7 +49,7 @@ import CalloutResponseMapTransformer from "@api/transformers/CalloutResponseMapT
 import CalloutResponseTransformer from "@api/transformers/CalloutResponseTransformer";
 import { validateOrReject } from "@api/utils";
 
-import { Callout, CalloutResponse, Contact } from "@beabee/core/models";
+import { Callout, Contact } from "@beabee/core/models";
 
 import { CalloutCaptcha } from "@beabee/beabee-common";
 
@@ -60,6 +61,7 @@ import {
   GetCalloutReviewerDto
 } from "@api/dto/CalloutReviewerDto";
 import calloutTagTransformer from "@api/transformers/CalloutTagTransformer";
+import { plainToInstance } from "class-transformer";
 
 @JsonController("/callout")
 export class CalloutController {
@@ -162,14 +164,13 @@ export class CalloutController {
   }
 
   @Post("/:id/responses")
-  @OnUndefined(204)
   async createCalloutResponse(
     @CurrentUser({ required: false }) caller: Contact | undefined,
     @CurrentAuth() auth: AuthInfo,
     @CalloutId() id: string,
     @Body() data: CreateCalloutResponseDto,
     @QueryParam("captchaToken", { required: false }) captchaToken: string
-  ): Promise<GetCalloutResponseDto> {
+  ): Promise<GetGuestCalloutResponseDto | GetCalloutResponseDto> {
     const callout = await getRepository(Callout).findOneBy({ id });
     if (!callout) {
       throw new NotFoundError();
@@ -196,26 +197,23 @@ export class CalloutController {
       }
     }
 
-    let response: CalloutResponse;
-
-    // TODO: support assignee/bucket/tags on create
     if (!caller || callout.access === "only-anonymous") {
-      response = await CalloutsService.setGuestResponse(
+      const id = await CalloutsService.setGuestResponse(
         callout,
         data.guest,
         data.answers,
         data.newsletter
       );
+      return plainToInstance(GetGuestCalloutResponseDto, { id });
     } else {
-      response = await CalloutsService.setResponse(
+      const response = await CalloutsService.setResponse(
         callout,
         caller,
         data.answers,
         data.newsletter
       );
+      return CalloutResponseTransformer.convert(response, auth, {});
     }
-
-    return CalloutResponseTransformer.convert(response, auth, {});
   }
 
   // TODO: move to CalloutTagController like we did for contact tags?

@@ -794,6 +794,9 @@
   "calloutReviewerManager": {
     "confirmDelete": {}
   },
+  "calloutThanksPage": {
+    "oneResponseWarning": "Bitte beachten Sie, dass dieser Callout nur eine Antwort pro Person zulässt. Wenn Sie bereits teilgenommen haben, werden weitere Antworten nicht berücksichtigt."
+  },
   "callouts": {
     "archive": "Archiv",
     "data": {

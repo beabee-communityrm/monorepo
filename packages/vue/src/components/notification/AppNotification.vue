@@ -103,7 +103,7 @@ export interface AppNotificationProps {
 const emit = defineEmits(['remove']);
 const props = withDefaults(defineProps<AppNotificationProps>(), {
   id: () => Math.floor(Math.random() * 1000000),
-  removeable: true,
+  removeable: false,
   description: undefined,
   icon: undefined,
   mode: 'normal',

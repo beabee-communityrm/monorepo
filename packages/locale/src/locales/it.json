@@ -239,6 +239,7 @@
   "calloutReviewerManager": {
     "confirmDelete": {}
   },
+  "calloutThanksPage": {},
   "callouts": {
     "archive": "Archivio",
     "data": {
