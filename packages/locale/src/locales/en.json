@@ -414,9 +414,9 @@
           },
           "inputs": {
             "collectGuestInfo": {
-              "label": "Also collect guest contact information",
+              "label": "Require contact information from guests",
               "opts": {
-                "disabled": "Guests who respond will be anonymous",
+                "disabled": "Guests can respond anonymously",
                 "enabled": "Guests will also be asked for their contact information"
               }
             },
@@ -424,7 +424,7 @@
               "label": "Collect contact information",
               "opts": {
                 "disabled": "All responses will be anonymous",
-                "enabled": "Members who respond will have their contact information collected"
+                "enabled": "Members will have their contact information collected"
               }
             },
             "expires": {
@@ -484,6 +484,14 @@
               },
               "title": "Map settings"
             },
+            "newsletterSettings": {
+              "disabled": "You can't ask for newsletter sign-ups if you don't collect contact information",
+              "label": "Add a newsletter sign-up to the contact form",
+              "opts": {
+                "disabled": "Participants won't be asked if they want to sign up to the newsletter",
+                "enabled": "Participants will be asked if they want to sign up to the newsletter"
+              }
+            },
             "openToEveryone": {
               "help": "<p>Callouts can be presented to <strong>Everyone</strong> or restricted to <strong>Members only</strong> participation</p>",
               "label": "Open to everyone",
@@ -525,6 +533,7 @@
               }
             },
             "responseSettings": {
+              "label": "Response behaviour",
               "opts": {
                 "multiple": "Multiple responses, non-editable",
                 "singleEditable": "Single response but editable while callout is open",
@@ -1256,6 +1265,11 @@
     "message": "If there is an account associated with {email}, you will receive an email shortly. Check your spam folder if it doesn't appear.",
     "title": "Lost your 2FA device?"
   },
+  "mailOptIn": {
+    "optInLabel": "Checkbox label",
+    "text": "Text",
+    "title": "Heading"
+  },
   "membershipBuilder": {
     "steps": {
       "accountConfirmation": {
@@ -1273,18 +1287,10 @@
           "title": "Join survey"
         },
         "newsletter": {
-          "groups": {
-            "add": "Add new group",
-            "help": "<p>You can let users choose which newsletter groups they want to join. These groups must already be configured in Mailchimp, contact <a href=\"mailto:support{'@'}beabee.io\">support{'@'}beabee.io</a> if you are unsure how to use this feature.</p>\n",
-            "title": "Newsletter groups"
-          },
-          "optInDisabled": "The label is not used when newsletter groups are visible",
+          "groups": {},
           "showOptIn": "Ask to subscribe to newsletter",
           "title": "Newsletter"
         },
-        "optInLabel": "Checkbox label",
-        "optInText": "Text",
-        "optInTitle": "Heading",
         "text": "After joining, users will be asked to confirm their registration. Here you can set the details of the confirmation screen.",
         "title": "Account confirmation",
         "welcomeMessage": "Welcome message"
@@ -1336,6 +1342,18 @@
     "payments": "Payments",
     "settings": "Settings",
     "yourProfile": "Your profile"
+  },
+  "newsletterOptIn": {
+    "groups": {
+      "add": "Add new group",
+      "help": "<p>You can let users choose which newsletter groups they want to join. These groups must already be configured in Mailchimp, contact <a href=\"mailto:support{'@'}beabee.io\">support{'@'}beabee.io</a> if you are unsure how to use this feature.</p>\n",
+      "title": "Newsletter groups"
+    },
+    "optInDisabled": "The label is not used when newsletter groups are visible",
+    "optInLabel": "Checkbox label",
+    "showOptIn": "Ask to subscribe to newsletter",
+    "text": "Text",
+    "title": "Heading"
   },
   "notFound": {
     "goBack": "Go back to home",

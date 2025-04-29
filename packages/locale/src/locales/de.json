@@ -414,17 +414,17 @@
           },
           "inputs": {
             "collectGuestInfo": {
-              "label": "Auch Kontaktinformationen von Gästen sammeln",
+              "label": "Kontaktinformationen von Gästen anfordern",
               "opts": {
-                "disabled": "Gäste, die antworten, bleiben anonym",
-                "enabled": "Gäste werden ebenfalls nach ihren Kontaktinformationen gefragt"
+                "disabled": "Gäste können anonym antworten",
+                "enabled": "Gäste werden auch nach ihren Kontaktinformationen gefragt"
               }
             },
             "collectMemberInfo": {
               "label": "Kontaktinformationen erfassen",
               "opts": {
                 "disabled": "Alle Antworten werden anonym sein",
-                "enabled": "Mitglieder, die antworten, werden mit ihren Kontaktinformationen erfasst"
+                "enabled": "Mitglieder werden mit ihren Kontaktinformationen erfasst"
               }
             },
             "expires": {
@@ -484,6 +484,14 @@
               },
               "title": "Karteneinstellungen"
             },
+            "newsletterSettings": {
+              "disabled": "Sie können keine Newsletter-Anmeldungen anfordern, wenn Sie keine Kontaktinformationen sammeln",
+              "label": "Fügen Sie dem Kontaktformular eine Newsletter-Anmeldung hinzu",
+              "opts": {
+                "disabled": "Teilnehmer werden nicht gefragt, ob sie sich für den Newsletter anmelden möchten",
+                "enabled": "Teilnehmer werden gefragt, ob sie sich für den Newsletter anmelden möchten"
+              }
+            },
             "openToEveryone": {
               "help": "<p>Aufrufe können <strong>Allen</strong> präsentiert oder auf die Teilnahme von <strong>nur Mitgliedern</strong> beschränkt werden</p>",
               "label": "Für alle zugänglich",
@@ -525,6 +533,7 @@
               }
             },
             "responseSettings": {
+              "label": "Antwortverhalten",
               "opts": {
                 "multiple": "Mehrere Antworten, nicht bearbeitbar",
                 "singleEditable": "Einzelne Antwort, aber bearbeitbar, solange der Aufruf geöffnet ist",
@@ -1250,6 +1259,11 @@
     "message": "Gibt es einen Account mit der E-Mail-Adresse {email}, bekommen Sie in Kürze eine Nachricht. Bitte schauen Sie in Ihren Posteingang und befolgen Sie die Anleitung in der E-Mail. Sollte die E-Mail nicht auftauchen, schauen Sie auch in ihrem Spamordner nach.",
     "title": "Haben Sie Ihr 2FA-Gerät verloren?"
   },
+  "mailOptIn": {
+    "optInLabel": "Beschriftung Kontrollkästchen ",
+    "text": "Text",
+    "title": "Überschrift"
+  },
   "membershipBuilder": {
     "steps": {
       "accountConfirmation": {
@@ -1267,18 +1281,10 @@
           "title": "Anmelde-Fragebogen"
         },
         "newsletter": {
-          "groups": {
-            "add": "Neue Gruppe hinzufügen",
-            "help": "<p>Du kannst Nutzer entscheiden lassen, welche Newsletter-Gruppe sie abonnieren möchten. Die Gruppen müssen zuvor in Mailchimp eingerichtet werden. Wende dich an <a href=\"mailto:support{'@'}beabee.io\">support{'@'}beabee.io</a>, wenn du dabei Hilfe benötigst.</p>\n",
-            "title": "Newsletter-Gruppe"
-          },
-          "optInDisabled": "Der Text wird nicht genutzt, wenn die Newsletter-Gruppen sichtbar sind.",
+          "groups": {},
           "showOptIn": "Nach Newsletterabonnement fragen",
           "title": "Newsletter"
         },
-        "optInLabel": "Beschriftung Kontrollkästchen ",
-        "optInText": "Text",
-        "optInTitle": "Überschrift",
         "text": "Neue Mitglieder müssen ihre Registrierung in folgendem Bildschirm bestätigen. Außerdem werden hier persönliche Informationen abgefragt.",
         "title": "Persönliche Informationen abfragen",
         "welcomeMessage": "Willkommensnachricht"
@@ -1330,6 +1336,18 @@
     "payments": "Zahlungen",
     "settings": "Einstellungen",
     "yourProfile": "Ihr Profil"
+  },
+  "newsletterOptIn": {
+    "groups": {
+      "add": "Neue Gruppe hinzufügen",
+      "help": "<p>Du kannst Nutzer entscheiden lassen, welche Newsletter-Gruppe sie abonnieren möchten. Die Gruppen müssen zuvor in Mailchimp eingerichtet werden. Wende dich an <a href=\"mailto:support{'@'}beabee.io\">support{'@'}beabee.io</a>, wenn du dabei Hilfe benötigst.</p>\n",
+      "title": "Newsletter-Gruppe"
+    },
+    "optInDisabled": "Der Text wird nicht genutzt, wenn die Newsletter-Gruppen sichtbar sind.",
+    "optInLabel": "Beschriftung Kontrollkästchen ",
+    "showOptIn": "Nach Newsletterabonnement fragen",
+    "text": "Text",
+    "title": "Überschrift"
   },
   "notFound": {
     "goBack": "Zurück zum Dashboard",

@@ -232,6 +232,9 @@
               "minZoom": {},
               "style": {}
             },
+            "newsletterSettings": {
+              "opts": {}
+            },
             "openToEveryone": {
               "opts": {}
             },
@@ -748,6 +751,7 @@
     "message": "Если вы регистрировались с {email}, вскоре вы получите письмо с инструкцией. Если вы не нашли письмо, проверьте папку «Спам»",
     "title": "Потеряли устройство для двухфакторной аутентификации?"
   },
+  "mailOptIn": {},
   "membershipBuilder": {
     "steps": {
       "accountConfirmation": {
@@ -779,6 +783,9 @@
     "payments": "Платежи",
     "settings": "Настройки",
     "yourProfile": "Ваш профиль"
+  },
+  "newsletterOptIn": {
+    "groups": {}
   },
   "notFound": {
     "goBack": "Вернуться на главную",

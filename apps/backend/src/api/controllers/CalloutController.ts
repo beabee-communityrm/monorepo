@@ -203,13 +203,15 @@ export class CalloutController {
       response = await CalloutsService.setGuestResponse(
         callout,
         data.guest,
-        data.answers
+        data.answers,
+        data.newsletter
       );
     } else {
       response = await CalloutsService.setResponse(
         callout,
         caller,
-        data.answers
+        data.answers,
+        data.newsletter
       );
     }
 

@@ -90,7 +90,7 @@
             >
               <AppFormField>
                 <AppToggleField
-                  v-model="props.data.collectMemberInfo"
+                  v-model="props.data.collectInfo"
                   variant="link"
                   :label="inputT('collectMemberInfo.label')"
                   :disabled-description="
@@ -102,7 +102,7 @@
                 />
               </AppFormField>
 
-              <AppFormField v-if="props.data.collectMemberInfo">
+              <AppFormField v-if="props.data.collectInfo">
                 <AppToggleField
                   v-model="props.data.collectGuestInfo"
                   variant="link"
@@ -165,11 +165,47 @@
 
         <!-- Response Settings Section -->
         <AppScrollSection v-if="!env.cnrMode" id="responseSettings">
-          <AppFormBox :title="inputT('responseSettings.title')">
+          <AppFormBox
+            :title="inputT('responseSettings.title')"
+            :notification="
+              !canAddNewsletterOptIn
+                ? {
+                    variant: 'warning',
+                    title: inputT('newsletterSettings.disabled'),
+                    removeable: false,
+                  }
+                : undefined
+            "
+          >
+            <AppFormField>
+              <AppToggleField
+                v-model="data.showNewsletterOptIn"
+                variant="link"
+                :label="inputT('newsletterSettings.label')"
+                :enabled-description="inputT('newsletterSettings.opts.enabled')"
+                :disabled-description="
+                  inputT('newsletterSettings.opts.disabled')
+                "
+                :disabled="!canAddNewsletterOptIn"
+              />
+            </AppFormField>
+            <AppFormField
+              v-if="canAddNewsletterOptIn && data.showNewsletterOptIn"
+            >
+              <NewsletterOptInSettings
+                v-model:title="data.newsletterSettings.title"
+                v-model:opt-in="data.newsletterSettings.optIn"
+                v-model:text="data.newsletterSettings.text"
+                v-model:groups="data.newsletterSettings.groups"
+              />
+            </AppFormField>
+          </AppFormBox>
+          <AppFormBox>
             <AppFormField>
               <AppRadioGroup
                 v-model="props.data.responseSettings"
                 name="responseSettings"
+                :label="inputT('responseSettings.label')"
                 :options="[
                   [
                     'singleNonEditable',
@@ -197,7 +233,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ItemStatus, type CalloutChannel } from '@beabee/beabee-common';
+import {
+  ItemStatus,
+  type CalloutChannel,
+  type CalloutNewsletterSchema,
+} from '@beabee/beabee-common';
 import useVuelidate from '@vuelidate/core';
 import { computed, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -216,16 +256,19 @@ import {
 } from '@beabee/vue/components';
 
 import type { CalloutHorizontalTabs } from '../CalloutHorizontalTabs.interface';
+import NewsletterOptInSettings from '@components/newsletter/NewsletterOptInSettings.vue';
 
 /**
  * Data for the settings tab, which contains callout configuration options
  */
 export interface SettingsTabData {
   openToEveryone: boolean;
-  collectMemberInfo: boolean;
+  collectInfo: boolean;
   collectGuestInfo: boolean;
   captchaEnabled: boolean;
   captchaForMembers: boolean;
+  showNewsletterOptIn: boolean;
+  newsletterSettings: CalloutNewsletterSchema;
   showOnUserDashboards: boolean;
   responseSettings: 'singleNonEditable' | 'singleEditable' | 'multiple';
   channels: CalloutChannel[] | null;
@@ -271,6 +314,10 @@ const sections = computed<ScrollSection[]>(() => [
     hidden: !!env.cnrMode,
   },
 ]);
+
+const canAddNewsletterOptIn = computed(
+  () => !props.data.openToEveryone || props.data.collectInfo
+);
 
 // Force step to stay unvalidated until it is visited for new callouts
 const hasVisited = ref(!!props.status);

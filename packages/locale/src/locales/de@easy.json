@@ -130,6 +130,9 @@
               "minZoom": {},
               "style": {}
             },
+            "newsletterSettings": {
+              "opts": {}
+            },
             "openToEveryone": {
               "opts": {}
             },
@@ -363,6 +366,7 @@
   "joinSetup": {},
   "login": {},
   "lostDevice": {},
+  "mailOptIn": {},
   "membershipBuilder": {
     "steps": {
       "accountConfirmation": {
@@ -379,6 +383,9 @@
   },
   "menu": {
     "callouts": "Aufruf"
+  },
+  "newsletterOptIn": {
+    "groups": {}
   },
   "notFound": {
     "goBack": "Hier geht es zu einer neuen Seite. Die gibt dir eine Übersicht.",
