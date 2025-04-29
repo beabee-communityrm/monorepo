@@ -414,8 +414,10 @@
           },
           "inputs": {
             "collectGuestInfo": {
+              "label": "Kontaktinformationen von Gästen anfordern",
               "opts": {
-                "enabled": "Gäste werden ebenfalls nach ihren Kontaktinformationen gefragt"
+                "disabled": "Gäste können anonym antworten",
+                "enabled": "Gäste werden auch nach ihren Kontaktinformationen gefragt"
               }
             },
             "collectMemberInfo": {
@@ -483,7 +485,12 @@
               "title": "Karteneinstellungen"
             },
             "newsletterSettings": {
-              "opts": {}
+              "disabled": "Du kannst keine Newsletter-Anmeldungen anfordern, wenn du keine Kontaktinformationen sammelst",
+              "label": "Füge dem Kontaktformular eine Newsletter-Anmeldung hinzu",
+              "opts": {
+                "disabled": "Teilnehmer werden nicht gefragt, ob sie sich für den Newsletter anmelden möchten",
+                "enabled": "Teilnehmer werden gefragt, ob sie sich für den Newsletter anmelden möchten"
+              }
             },
             "openToEveryone": {
               "help": "<p>Aufrufe können <strong>Allen</strong> präsentiert oder auf die Teilnahme von <strong>nur Mitgliedern</strong> beschränkt werden</p>",
@@ -526,6 +533,7 @@
               }
             },
             "responseSettings": {
+              "label": "Antwortverhalten",
               "opts": {
                 "multiple": "Mehrere Antworten, nicht bearbeitbar",
                 "singleEditable": "Einzelne Antwort, aber bearbeitbar, solange der Aufruf geöffnet ist",
