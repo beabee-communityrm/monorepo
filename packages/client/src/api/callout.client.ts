@@ -177,19 +177,12 @@ export class CalloutClient extends BaseClient {
    */
   async createResponse(
     slug: string,
-    newData: Pick<
-      CreateCalloutResponseData,
-      "answers" | "guestEmail" | "guestName"
-    >,
+    newData: Pick<CreateCalloutResponseData, "answers" | "guest">,
     captchaToken?: string
   ): Promise<GetCalloutResponseData> {
     const { data } = await this.fetch.post<Serial<GetCalloutResponseData>>(
       `/${slug}/responses`,
-      {
-        answers: newData.answers,
-        guestName: newData.guestName,
-        guestEmail: newData.guestEmail
-      },
+      { answers: newData.answers, guest: newData.guest },
       { params: { captchaToken } }
     );
     return CalloutResponseClient.deserialize(data);

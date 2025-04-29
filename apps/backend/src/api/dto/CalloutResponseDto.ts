@@ -31,9 +31,11 @@ import { GetContactDto } from "@api/dto/ContactDto";
 import { GetCalloutDto } from "@api/dto/CalloutDto";
 import { GetCalloutResponseCommentDto } from "@api/dto/CalloutResponseCommentDto";
 import { GetCalloutTagDto } from "@api/dto/CalloutTagDto";
+import IsNonEmptyString from "@api/validators/IsNonEmptyString";
 
 import { Callout } from "@beabee/core/models";
 import { GetCalloutResponseWith } from "@beabee/beabee-common";
+
 export interface BaseGetCalloutResponseOptsDto {
   callout?: Callout;
   isReviewer?: boolean;
@@ -109,18 +111,26 @@ export class GetCalloutResponseDto {
   latestComment?: GetCalloutResponseCommentDto | null;
 }
 
+export class CreateCalloutResponseGuestDto {
+  @IsNonEmptyString()
+  firstname!: string;
+
+  @IsNonEmptyString()
+  lastname!: string;
+
+  @IsEmail()
+  email!: string;
+}
+
 export class CreateCalloutResponseDto {
   // TODO: validate
   @IsObject()
   answers!: CalloutResponseAnswersSlide;
 
   @IsOptional()
-  @IsString()
-  guestName?: string;
-
-  @IsOptional()
-  @IsEmail()
-  guestEmail?: string;
+  @ValidateNested()
+  @Type(() => CreateCalloutResponseGuestDto)
+  guest?: CreateCalloutResponseGuestDto;
 
   @IsOptional()
   @IsString()
