@@ -175,7 +175,7 @@ export class CalloutController {
       throw new NotFoundError();
     }
 
-    if (caller && (data.guestEmail || data.guestName)) {
+    if (caller && data.guest) {
       throw new InvalidCalloutResponse("logged-in-guest-fields");
     }
 
@@ -202,8 +202,7 @@ export class CalloutController {
     if (!caller || callout.access === "only-anonymous") {
       response = await calloutsService.setGuestResponse(
         callout,
-        data.guestName,
-        data.guestEmail,
+        data.guest,
         data.answers
       );
     } else {
