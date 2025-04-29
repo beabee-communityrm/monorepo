@@ -800,6 +800,9 @@
     "contact": "Contact ID",
     "title": "Callout reviewers"
   },
+  "calloutThanksPage": {
+    "oneResponseWarning": "Please note that this callout only allows one response per person. If you have already contributed, additional responses will not be recorded."
+  },
   "callouts": {
     "archive": "Archive",
     "data": {
