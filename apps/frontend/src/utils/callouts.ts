@@ -179,7 +179,7 @@ export function convertCalloutToTabs(
   );
 
   const sharedSettings = {
-    captchaEnabled: callout?.captcha !== CalloutCaptcha.None,
+    captchaEnabled: callout ? callout.captcha !== CalloutCaptcha.None : false,
     captchaForMembers: callout?.captcha === CalloutCaptcha.All,
     channels: callout?.channels || null,
   };
