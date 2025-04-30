@@ -13,7 +13,6 @@ import { validateOrReject } from "@api/utils";
 
 const log = mainLogger.child({ app: "validate-response-interceptor" });
 
-// TODO: Do not use this for all controllers and use `@UseInterceptor(ValidateResponseInterceptor)` instead?
 @Interceptor()
 export class ValidateResponseInterceptor implements InterceptorInterface {
   async intercept(action: Action, content: any) {

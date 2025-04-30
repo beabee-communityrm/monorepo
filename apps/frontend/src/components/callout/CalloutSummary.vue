@@ -47,12 +47,12 @@ import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 import noImage from '../../assets/images/no-image.avif';
 
 import env from '@env';
+import { resolveImageUrl } from '@utils/url';
 
 import ItemStatusText from '@components/item/ItemStatusText.vue';
 import ItemDateRange from '@components/item/ItemDateRange.vue';
 import AppSubHeading from '@components/AppSubHeading.vue';
 import { AppButton } from '@beabee/vue/components';
-
 const { t } = useI18n();
 
 const props = defineProps<{
@@ -61,9 +61,6 @@ const props = defineProps<{
 
 const calloutLink = computed(() => `/callouts/${props.callout.slug}`);
 const imageUrl = computed(() => {
-  if (props.callout.image) {
-    return `${env.apiUrl}/${props.callout.image}`;
-  }
-  return noImage;
+  return props.callout.image ? resolveImageUrl(props.callout.image) : noImage;
 });
 </script>

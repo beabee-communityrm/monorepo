@@ -19,7 +19,12 @@ import {
   fileExists,
   getFileHash
 } from "../utils/s3";
-import { getExtensionFromFilename, sanitizeFilename } from "../utils/file";
+import {
+  getExtensionFromFilename,
+  getExtensionFromMimetype,
+  getMimetypeFromExtension,
+  sanitizeFilename
+} from "../utils/file";
 import { isSupportedDocumentType } from "@beabee/beabee-common";
 import config from "../config/config";
 
@@ -55,7 +60,7 @@ export class DocumentService {
    * @param documentData Document data
    * @param mimetype MIME type
    */
-  private validateDocument(documentData: Buffer, mimetype?: string): void {
+  private validateDocument(documentData: Buffer, mimetype: string): void {
     // Validate mimetype if provided
     if (mimetype && !isSupportedDocumentType(mimetype)) {
       throw new BadRequestError({
@@ -65,10 +70,12 @@ export class DocumentService {
     }
 
     // Basic PDF signature check for PDF files
-    if (
-      mimetype === "application/pdf" ||
-      (!mimetype && documentData.length > 4)
-    ) {
+    if (mimetype === "application/pdf") {
+      if (documentData.length < 4) {
+        throw new BadRequestError({
+          message: "Invalid PDF format. File is too small."
+        });
+      }
       const pdfSignature = documentData.toString("ascii", 0, 4);
       if (pdfSignature !== "%PDF") {
         throw new BadRequestError({
@@ -89,7 +96,7 @@ export class DocumentService {
    */
   async uploadDocument(
     documentData: Buffer,
-    originalFilename?: string,
+    originalFilename: string,
     mimetype?: string,
     owner?: string
   ): Promise<DocumentMetadata> {
@@ -99,21 +106,21 @@ export class DocumentService {
         throw new BadRequestError({ message: "Invalid upload format" });
       }
 
+      // Sanitize original filename if provided
+      const sanitizedFilename = sanitizeFilename(originalFilename);
+
+      // Use the original filename extension if available
+      const extension = mimetype
+        ? getExtensionFromMimetype(mimetype)
+        : getExtensionFromFilename(sanitizedFilename);
+
+      mimetype ||= getMimetypeFromExtension(extension);
+
       // Validate document content and type
       this.validateDocument(documentData, mimetype);
 
-      // Sanitize original filename if provided
-      const sanitizedFilename = originalFilename
-        ? sanitizeFilename(originalFilename)
-        : undefined;
-
       // Generate a unique ID for the document
       const fileId = randomUUID();
-
-      // Use the original filename extension if available, otherwise default to ".pdf"
-      const extension = sanitizedFilename
-        ? getExtensionFromFilename(sanitizedFilename)
-        : ".pdf";
 
       const id = `${fileId}${extension}`;
       const contentType = mimetype || "application/pdf";

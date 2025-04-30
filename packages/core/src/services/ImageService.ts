@@ -18,6 +18,7 @@ import { log as mainLogger } from "../logging";
 import {
   getMimetypeFromDecoderFormat,
   getMimetypeFromExtension,
+  getExtensionFromFilename,
   sanitizeFilename
 } from "../utils/file";
 import {
@@ -69,7 +70,7 @@ export class ImageService {
    */
   private async validateImage(
     imageData: Buffer,
-    mimetype?: string
+    mimetype: string
   ): Promise<void> {
     // Validate MIME type if provided
     if (mimetype && !isSupportedImageType(mimetype)) {
@@ -107,14 +108,14 @@ export class ImageService {
   /**
    * Upload an image to S3/MinIO
    * @param imageData Binary image data or file stream
-   * @param originalFilename Original filename (optional)
+   * @param originalFilename Original filename
    * @param owner Owner's contact email (optional)
    * @param format Output format (avif, webp, jpeg, png, or "original" to keep the original format)
    * @returns Metadata for the uploaded image
    */
   async uploadImage(
     imageData: Buffer,
-    originalFilename?: string,
+    originalFilename: string,
     owner?: string,
     format?: ImageFormat
   ): Promise<ImageMetadata> {
@@ -124,22 +125,12 @@ export class ImageService {
         throw new BadRequestError({ message: "Invalid upload format" });
       }
 
-      const originalExtension = originalFilename
-        ? extname(originalFilename).substring(1)
-        : undefined;
+      const sanitizedFilename = sanitizeFilename(originalFilename);
+      const originalExtension = getExtensionFromFilename(originalFilename);
+      const originalMimetype = getMimetypeFromExtension(originalExtension);
 
       // Validate image content, size and type
-      await this.validateImage(
-        imageData,
-        originalExtension
-          ? getMimetypeFromExtension(originalExtension)
-          : undefined
-      );
-
-      // Sanitize original filename if provided
-      const sanitizedFilename = originalFilename
-        ? sanitizeFilename(originalFilename)
-        : undefined;
+      await this.validateImage(imageData, originalMimetype);
 
       // Process the image with sharp to get metadata
       const image = sharp(imageData).rotate(); // Auto-rotate based on EXIF orientation
@@ -155,6 +146,7 @@ export class ImageService {
         format ||= "original";
       }
 
+      // We keep SVGs as SVGs by default
       if (metadata.format === "svg") {
         format ||= "original";
       }
@@ -168,12 +160,17 @@ export class ImageService {
       // File extension based on the output format or original format
       let extension: string;
       if (outputFormat === "original") {
-        extension = metadata.format;
+        extension = "." + metadata.format;
+        if (originalExtension !== extension) {
+          log.warn(
+            `Original image extension (${originalExtension}) does not match detected format (${metadata.format}).`
+          );
+        }
       } else {
-        extension = outputFormat;
+        extension = "." + outputFormat;
       }
 
-      const id = `${fileId}.${extension}`;
+      const id = `${fileId}${extension}`;
 
       // Process the image to the target format, but keep full resolution
       let processedImageBuffer: Buffer;

@@ -114,7 +114,7 @@ export class DocumentController {
         "Cache-Control": "public, max-age=86400",
         "X-Content-Type-Options": "nosniff",
         "Content-Security-Policy": "default-src 'self'",
-        "X-Frame-Options": "DENY"
+        "X-Frame-Options": "SAMEORIGIN"
       });
 
       // Return the buffer, routing-controllers will handle the rest

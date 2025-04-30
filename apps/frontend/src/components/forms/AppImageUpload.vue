@@ -49,11 +49,10 @@ import { helpers, requiredIf, sameAs } from '@vuelidate/validators';
 import { computed, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { client, ClientApiError } from '@utils/api';
-import env from '@env';
+import { resolveImageUrl } from '@utils/url';
 import { AppButton, AppLabel } from '@beabee/vue/components';
 import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 import AppInputError from '@components/forms/AppInputError.vue';
-import { isAbsoluteUrl } from '@beabee/beabee-common';
 
 const emit = defineEmits(['update:modelValue']);
 
@@ -81,22 +80,8 @@ const uploading = ref(false);
 const rawImageUrl = ref(props.modelValue);
 const formError = ref('');
 
-// Process the image URL - add prefix if needed
-function processImageUrl(url: unknown): string {
-  if (!url || typeof url !== 'string') {
-    return '';
-  }
-  if (isAbsoluteUrl(url) || url.startsWith('blob:')) {
-    return url;
-  }
-  if (url.startsWith(env.apiUrl)) {
-    return url;
-  }
-  return `${env.apiUrl}/${url.replace(/^\//, '')}`;
-}
-
 // Computed property for the displayed image URL
-const imageUrl = computed(() => processImageUrl(rawImageUrl.value));
+const imageUrl = computed(() => resolveImageUrl(rawImageUrl.value));
 
 // Generate unique ID for aria attributes
 const id = computed(

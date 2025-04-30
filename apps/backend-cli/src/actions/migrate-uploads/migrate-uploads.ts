@@ -376,7 +376,10 @@ async function processCalloutImage(
       const fileBuffer = await fs.readFile(filePath);
 
       // Upload the image using ImageService
-      const uploadedImage = await imageService.uploadImage(fileBuffer);
+      const uploadedImage = await imageService.uploadImage(
+        fileBuffer,
+        mainImage
+      );
 
       // Update the callout with the new image ID, preserving width parameter if it existed
       const newImagePath = `images/${uploadedImage.id}`;
@@ -463,7 +466,10 @@ async function processOptionImage(
       const fileBuffer = await fs.readFile(filePath);
 
       // Upload the image using ImageService
-      const uploadedImage = await imageService.uploadImage(fileBuffer);
+      const uploadedImage = await imageService.uploadImage(
+        fileBuffer,
+        mainImage
+      );
 
       // Update the option with the new image URL, preserving width parameter if it existed
       const newImagePath = `images/${uploadedImage.id}${width ? "?w=" + width : ""}`;
@@ -872,7 +878,10 @@ async function processGeneralBackgroundImage(
       const fileBuffer = await fs.readFile(filePath);
 
       // Upload the image using ImageService
-      const uploadedImage = await imageService.uploadImage(fileBuffer);
+      const uploadedImage = await imageService.uploadImage(
+        fileBuffer,
+        mainImage
+      );
 
       // Update the general content with the new image URL, preserving width parameter if it existed
       const newImagePath = `images/${uploadedImage.id}${width ? "?w=" + width : ""}`;
