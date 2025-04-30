@@ -12,11 +12,29 @@
     <template v-if="isLastSlide && !readonly && !preview">
       <CalloutFormGuestFields
         v-if="showGuestFields"
-        v-model:name="guestName"
-        v-model:email="guestEmail"
+        v-model:firstname="guestData.firstname"
+        v-model:lastname="guestData.lastname"
+        v-model:email="guestData.email"
+        :required="callout.access === CalloutAccess.Guest"
+        class="mb-8"
       />
 
-      <CalloutFormCaptcha v-if="showCaptcha" v-model="captchaToken" />
+      <NewsletterOptIn
+        v-if="callout.newsletterSchema"
+        v-model="nlData.optIn"
+        v-model:opt-in-groups="nlData.groups"
+        :title="callout.newsletterSchema.title"
+        :text="callout.newsletterSchema.text"
+        :opt-in="callout.newsletterSchema.optIn"
+        :groups="callout.newsletterSchema.groups"
+        class="mb-8"
+      />
+
+      <CalloutFormCaptcha
+        v-if="showCaptcha"
+        v-model="captchaToken"
+        class="mb-8"
+      />
 
       <AppNotification
         v-if="formError"
@@ -62,17 +80,20 @@
 </template>
 
 <script lang="ts" setup>
-import type {
-  CalloutResponseAnswersSlide,
-  GetCalloutDataWith,
+import {
+  CalloutAccess,
+  CalloutCaptcha,
+  type CalloutResponseAnswersSlide,
+  type GetCalloutDataWith,
 } from '@beabee/beabee-common';
-import { computed, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import useVuelidate from '@vuelidate/core';
 
 import CalloutFormGuestFields from './CalloutFormGuestFields.vue';
 import { AppNotification, AppButton } from '@beabee/vue/components';
 import FormRenderer from '@components/form-renderer/FormRenderer.vue';
+import NewsletterOptIn from '@components/newsletter/NewsletterOptIn.vue';
 
 import { currentUser } from '@store';
 
@@ -96,8 +117,14 @@ const props = defineProps<{
   onSubmit?(answers: CalloutResponseAnswersSlide): void;
 }>();
 
-const guestName = ref('');
-const guestEmail = ref('');
+const guestData = reactive({
+  firstname: '',
+  lastname: '',
+  email: '',
+});
+
+const nlData = reactive({ optIn: false, groups: [] as string[] });
+
 const captchaToken = ref('');
 const formError = ref('');
 const isLoading = ref(false);
@@ -138,13 +165,14 @@ const isLastSlide = computed(
 );
 
 const showGuestFields = computed(
-  () => props.callout.access === 'guest' && !currentUser.value
+  () =>
+    props.callout.access !== CalloutAccess.OnlyAnonymous && !currentUser.value
 );
 
 const showCaptcha = computed(
   () =>
-    props.callout.captcha === 'all' ||
-    (props.callout.captcha === 'guest' && !currentUser.value)
+    props.callout.captcha === CalloutCaptcha.All ||
+    (props.callout.captcha === CalloutCaptcha.Guest && !currentUser.value)
 );
 
 const rules = computed(() => ({
@@ -156,6 +184,8 @@ const rules = computed(() => ({
 const validation = useVuelidate(rules, { captchaToken });
 
 async function handleSubmit() {
+  if (!props.callout) return; // Can't submit without a callout being loaded
+
   // Only submit answers for slides in the current flow
   // The user might have visited other flows then gone back
   const validAnswers: CalloutResponseAnswersSlide = {};
@@ -173,12 +203,15 @@ async function handleSubmit() {
     await client.callout.createResponse(
       props.callout.slug,
       {
-        ...(!currentUser.value &&
-          props.callout?.access === 'guest' && {
-            guestName: guestName.value,
-            guestEmail: guestEmail.value,
-          }),
         answers: validAnswers,
+        ...(!currentUser.value &&
+          guestData.email &&
+          guestData.firstname &&
+          guestData.lastname && {
+            guest: guestData,
+          }),
+        ...(props.callout?.newsletterSchema &&
+          nlData.optIn && { newsletter: nlData }),
       },
       captchaToken.value
     );

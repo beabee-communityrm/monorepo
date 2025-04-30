@@ -1,9 +1,13 @@
-import type { CalloutResponseAnswersSlide } from "./index.js";
+import type {
+  CalloutResponseAnswersSlide,
+  CalloutResponseGuestData,
+  CalloutResponseNewsletterData
+} from "./index.js";
 
 export interface CreateCalloutResponseData {
-  guestName?: string;
-  guestEmail?: string;
   answers: CalloutResponseAnswersSlide;
+  guest?: CalloutResponseGuestData;
+  newsletter?: CalloutResponseNewsletterData;
   bucket?: string;
   /** List of tags ids to add to the callout response */
   tags?: string[];

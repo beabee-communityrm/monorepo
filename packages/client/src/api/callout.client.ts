@@ -179,20 +179,22 @@ export class CalloutClient extends BaseClient {
     slug: string,
     newData: Pick<
       CreateCalloutResponseData,
-      "answers" | "guestEmail" | "guestName"
+      "answers" | "guest" | "newsletter"
     >,
     captchaToken?: string
-  ): Promise<GetCalloutResponseData> {
-    const { data } = await this.fetch.post<Serial<GetCalloutResponseData>>(
+  ): Promise<{ id: string } | GetCalloutResponseData> {
+    const { data } = await this.fetch.post<
+      { id: string } | Serial<GetCalloutResponseData>
+    >(
       `/${slug}/responses`,
       {
         answers: newData.answers,
-        guestName: newData.guestName,
-        guestEmail: newData.guestEmail
+        guest: newData.guest,
+        newsletter: newData.newsletter
       },
       { params: { captchaToken } }
     );
-    return CalloutResponseClient.deserialize(data);
+    return "number" in data ? CalloutResponseClient.deserialize(data) : data;
   }
 
   /**

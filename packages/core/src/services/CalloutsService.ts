@@ -2,12 +2,17 @@ import {
   GetCalloutFormSchema,
   CalloutResponseAnswersSlide,
   CalloutAccess,
-  CreateCalloutData
+  CreateCalloutData,
+  CalloutResponseGuestData,
+  CalloutResponseNewsletterData,
+  NewsletterStatus
 } from "@beabee/beabee-common";
 import slugify from "slugify";
 import { BadRequestError } from "routing-controllers";
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
+import { v4 as uuidv4 } from "uuid";
 
+import ContactsService from "#services/ContactsService";
 import EmailService from "#services/EmailService";
 import NewsletterService from "#services/NewsletterService";
 import OptionsService from "#services/OptionsService";
@@ -220,7 +225,8 @@ class CalloutsService {
   async setResponse(
     callout: Callout,
     contact: Contact,
-    answers: CalloutResponseAnswersSlide
+    answers: CalloutResponseAnswersSlide,
+    newsletter: CalloutResponseNewsletterData | undefined
   ): Promise<CalloutResponse> {
     if (callout.access === CalloutAccess.OnlyAnonymous) {
       throw new InvalidCalloutResponse("only-anonymous");
@@ -243,8 +249,21 @@ class CalloutsService {
     }
 
     response.answers = answers;
+    response.newsletter = newsletter || null;
 
     const savedResponse = await this.saveResponse(response);
+
+    if (newsletter?.optIn) {
+      log.info(`Opting contact ${contact.id} into newsletter`, { newsletter });
+      await ContactsService.updateContactProfile(
+        contact,
+        {
+          newsletterStatus: NewsletterStatus.Subscribed,
+          newsletterGroups: newsletter.groups
+        },
+        { sync: true, mergeGroups: true }
+      );
+    }
 
     if (callout.mcMergeField && callout.pollMergeField) {
       const [slideId, answerKey] = callout.pollMergeField.split(".");
@@ -262,58 +281,71 @@ class CalloutsService {
    * @param guestName The guest's name or undefined for an anonymous response
    * @param guestEmail The guest's email or undefined for an anonymous response
    * @param answers The response answers
-   * @returns The new callout response
+   * @returns The new callout response ID
    */
   async setGuestResponse(
     callout: Callout,
-    guestName: string | undefined,
-    guestEmail: string | undefined,
-    answers: CalloutResponseAnswersSlide
-  ): Promise<CalloutResponse> {
-    if (callout.access === CalloutAccess.Guest && !(guestName && guestEmail)) {
+    guest: CalloutResponseGuestData | undefined,
+    answers: CalloutResponseAnswersSlide,
+    newsletter: CalloutResponseNewsletterData | undefined
+  ): Promise<string> {
+    if (callout.access === CalloutAccess.Guest && !guest) {
       throw new InvalidCalloutResponse("guest-fields-missing");
-    } else if (
-      callout.access === CalloutAccess.OnlyAnonymous &&
-      (guestName || guestEmail)
-    ) {
+    } else if (callout.access === CalloutAccess.OnlyAnonymous && guest) {
       throw new InvalidCalloutResponse("only-anonymous");
     } else if (!callout.active || callout.access === CalloutAccess.Member) {
       throw new InvalidCalloutResponse("closed");
     }
 
-    if (guestEmail) {
-      guestEmail = normalizeEmailAddress(guestEmail);
+    if (guest) {
+      guest.email = normalizeEmailAddress(guest.email);
 
-      // If the guest email matches a contact, then use that contact instead
-      try {
-        const contact = await getRepository(Contact).findOneBy({
-          email: guestEmail
-        });
-        if (contact) {
-          const response = await this.setResponse(callout, contact, answers);
+      let contact = await ContactsService.findOneBy({ email: guest.email });
 
-          // Let the contact know in case it wasn't them
-          const title = await this.getCalloutTitle(callout);
-          await EmailService.sendTemplateToContact(
-            "confirm-callout-response",
-            contact,
-            { calloutTitle: title, calloutSlug: callout.slug }
-          );
-
-          return response;
-        }
-      } catch (error) {
-        log.error("Failed to associate guest response with contact", error);
+      // Create a contact if it doesn't exist
+      if (!contact) {
+        log.info(
+          "Creating new contact for callout response with email " + guest.email
+        );
+        contact = await ContactsService.createContact(guest);
       }
+
+      try {
+        const response = await this.setResponse(
+          callout,
+          contact,
+          answers,
+          newsletter
+        );
+
+        // Let the contact know in case it wasn't them
+        const title = await this.getCalloutTitle(callout);
+        await EmailService.sendTemplateToContact(
+          "confirm-callout-response",
+          contact,
+          { calloutTitle: title, calloutSlug: callout.slug }
+        );
+        return response.id;
+      } catch (err) {
+        // Suppress errors from creating a response for a contact, this prevents
+        // any potential information leaking about failures related to some
+        // state of the contact
+        if (err instanceof InvalidCalloutResponse) {
+          return uuidv4();
+        } else {
+          throw err;
+        }
+      }
+    } else {
+      log.info("Creating anonymous callout response for callout " + callout.id);
+
+      const response = new CalloutResponse();
+      response.callout = callout;
+      response.answers = answers;
+
+      const savedResponse = await this.saveResponse(response);
+      return savedResponse.id;
     }
-
-    const response = new CalloutResponse();
-    response.callout = callout;
-    response.guestName = guestName || null;
-    response.guestEmail = guestEmail || null;
-    response.answers = answers;
-
-    return await this.saveResponse(response);
   }
 
   /**
@@ -415,6 +447,10 @@ class CalloutsService {
 
     try {
       const savedResponse = await getRepository(CalloutResponse).save(response);
+
+      log.info(
+        `Saved callout response ${response.number} for callout ${response.callout.id}`
+      );
 
       await EmailService.sendTemplateToAdmin("new-callout-response", {
         calloutSlug: response.callout.slug,

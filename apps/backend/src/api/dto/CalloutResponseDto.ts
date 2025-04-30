@@ -4,6 +4,10 @@ import {
   CalloutResponseAnswerFileUpload,
   CalloutResponseAnswersSlide,
   CalloutResponseViewSchema,
+  CreateCalloutResponseData,
+  CalloutResponseGuestData,
+  CalloutResponseNewsletterData,
+  GetCalloutResponseData,
   PaginatedQuery
 } from "@beabee/beabee-common";
 import { Type } from "class-transformer";
@@ -19,7 +23,8 @@ import {
   IsUUID,
   IsNumber,
   IsDate,
-  Allow
+  Allow,
+  IsBoolean
 } from "class-validator";
 
 import {
@@ -31,9 +36,11 @@ import { GetContactDto } from "@api/dto/ContactDto";
 import { GetCalloutDto } from "@api/dto/CalloutDto";
 import { GetCalloutResponseCommentDto } from "@api/dto/CalloutResponseCommentDto";
 import { GetCalloutTagDto } from "@api/dto/CalloutTagDto";
+import IsNonEmptyString from "@api/validators/IsNonEmptyString";
 
 import { Callout } from "@beabee/core/models";
 import { GetCalloutResponseWith } from "@beabee/beabee-common";
+
 export interface BaseGetCalloutResponseOptsDto {
   callout?: Callout;
   isReviewer?: boolean;
@@ -60,7 +67,7 @@ export interface GetCalloutResponseOptsDto
 export interface ListCalloutResponsesDto
   extends BaseGetCalloutResponseOptsDto {}
 
-export class GetCalloutResponseDto {
+export class GetCalloutResponseDto implements GetCalloutResponseData {
   @IsString()
   id!: string;
 
@@ -84,43 +91,77 @@ export class GetCalloutResponseDto {
   @IsString()
   guestEmail!: string | null;
 
+  // with[] answers
   @IsOptional()
   @IsObject()
   answers?: CalloutResponseAnswersSlide;
 
+  // with[] callout
   @IsOptional()
   @ValidateNested()
   callout?: GetCalloutDto;
 
+  // with[] contact
   @IsOptional()
   @ValidateNested()
   contact?: GetContactDto | null;
 
+  // with[] tags
   @IsOptional()
   @ValidateNested({ each: true })
   tags?: GetCalloutTagDto[];
 
+  // with[] assignee
   @IsOptional()
   @ValidateNested()
   assignee?: GetContactDto | null;
 
+  // With latestComment
   @IsOptional()
   @ValidateNested()
   latestComment?: GetCalloutResponseCommentDto | null;
 }
 
-export class CreateCalloutResponseDto {
+export class GetGuestCalloutResponseDto {
+  @IsString()
+  id!: string;
+}
+
+export class CreateCalloutResponseGuestDto implements CalloutResponseGuestData {
+  @IsNonEmptyString()
+  firstname!: string;
+
+  @IsNonEmptyString()
+  lastname!: string;
+
+  @IsEmail()
+  email!: string;
+}
+
+export class CreateCalloutResponseNewsletterDto
+  implements CalloutResponseNewsletterData
+{
+  @IsBoolean()
+  optIn!: boolean;
+
+  @IsString({ each: true })
+  groups!: string[];
+}
+
+export class CreateCalloutResponseDto implements CreateCalloutResponseData {
   // TODO: validate
   @IsObject()
   answers!: CalloutResponseAnswersSlide;
 
   @IsOptional()
-  @IsString()
-  guestName?: string;
+  @ValidateNested()
+  @Type(() => CreateCalloutResponseGuestDto)
+  guest?: CreateCalloutResponseGuestDto;
 
   @IsOptional()
-  @IsEmail()
-  guestEmail?: string;
+  @ValidateNested()
+  @Type(() => CreateCalloutResponseNewsletterDto)
+  newsletter?: CreateCalloutResponseNewsletterDto;
 
   @IsOptional()
   @IsString()
@@ -136,20 +177,12 @@ export class CreateCalloutResponseDto {
 }
 
 export class UpdateCalloutResponseDto
-  implements Partial<CreateCalloutResponseDto>
+  implements Partial<CreateCalloutResponseData>
 {
   // TODO: validate
   @IsObject()
   @IsOptional()
   answers?: CalloutResponseAnswersSlide;
-
-  @IsOptional()
-  @IsString()
-  guestName?: string;
-
-  @IsOptional()
-  @IsEmail()
-  guestEmail?: string;
 
   @IsOptional()
   @IsString()
@@ -193,6 +226,8 @@ export type ExportCalloutResponseDto = [
   fullname: string,
   email: string,
   isGuest: boolean,
+  newsletterOptIn: true | "",
+  newsletterGroups: string,
   comments: string,
   ...answers: string[]
 ];

@@ -2,7 +2,6 @@ import {
   ContributionType,
   RoleType,
   ContributionPeriod,
-  NewsletterStatus,
   PaymentForm,
   LOGIN_CODES,
   CONTACT_MFA_TYPE,
@@ -18,16 +17,11 @@ import { isDuplicateIndex } from "#utils/db";
 import { generatePassword, isValidPassword } from "#utils/auth";
 import { generateContactCode } from "#utils/contact";
 
-import ApiKeyService from "#services/ApiKeyService";
-import CalloutsService from "#services/CalloutsService";
 import ContactMfaService from "#services/ContactMfaService";
 import EmailService from "#services/EmailService";
 import NewsletterService from "#services/NewsletterService";
 import PaymentService from "#services/PaymentService";
-import ReferralsService from "#services/ReferralsService";
 import ResetSecurityFlowService from "#services/ResetSecurityFlowService";
-import SegmentService from "#services/SegmentService";
-import UploadFlowService from "#services/UploadFlowService";
 
 import {
   Contact,
@@ -182,7 +176,11 @@ class ContactsService {
     Object.assign(contact, updates);
 
     if (opts.sync) {
-      await NewsletterService.upsertContact(contact, undefined, oldEmail);
+      await NewsletterService.upsertContact(
+        contact,
+        undefined,
+        oldEmail ? { oldEmail } : undefined
+      );
     }
 
     await PaymentService.updateContact(contact, updates);
@@ -287,7 +285,10 @@ class ContactsService {
   async updateContactProfile(
     contact: Contact,
     updates: Partial<ContactProfile>,
-    opts = { sync: true }
+    opts: { sync?: boolean; mergeGroups?: boolean } = {
+      sync: true,
+      mergeGroups: false
+    }
   ): Promise<void> {
     const { newsletterStatus, newsletterGroups, ...profileUpdates } = updates;
 
@@ -301,10 +302,11 @@ class ContactsService {
     }
 
     if (opts.sync && (newsletterStatus || newsletterGroups)) {
-      await NewsletterService.upsertContact(contact, {
-        newsletterStatus,
-        newsletterGroups
-      });
+      await NewsletterService.upsertContact(
+        contact,
+        { newsletterStatus, newsletterGroups },
+        opts
+      );
     }
   }
 
@@ -373,19 +375,6 @@ class ContactsService {
    * @param contact The contact
    */
   async permanentlyDeleteContact(contact: Contact): Promise<void> {
-    // Delete external data first, this is more likely to fail so we'd exit the process early
-    await NewsletterService.permanentlyDeleteContacts([contact]);
-    await PaymentService.permanentlyDeleteContact(contact);
-
-    // Delete internal data after the external services are done, this should really never fail
-    await ResetSecurityFlowService.deleteAll(contact);
-    await ApiKeyService.permanentlyDeleteContact(contact);
-    await ReferralsService.permanentlyDeleteContact(contact);
-    await UploadFlowService.permanentlyDeleteContact(contact);
-    await SegmentService.permanentlyDeleteContact(contact);
-    await CalloutsService.permanentlyDeleteContact(contact);
-    await ContactMfaService.permanentlyDeleteContact(contact);
-
     log.info("Permanently delete contact " + contact.id);
     await runTransaction(async (em) => {
       // Projects are only in the legacy app, so really no one should have any, but we'll delete them just in case
