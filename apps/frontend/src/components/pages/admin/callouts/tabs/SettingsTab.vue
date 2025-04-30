@@ -73,58 +73,66 @@
         </AppScrollSection>
 
         <!-- Access Settings Section -->
-        <AppScrollSection v-if="!env.cnrMode" id="access">
-          <AppFormBox :title="t('callout.builder.tabs.settings.access.title')">
-            <AppToggleField
-              v-model="props.data.openToEveryone"
-              variant="link"
-              :label="inputT('openToEveryone.label')"
-              :help="inputT('openToEveryone.help')"
-              :disabled-description="inputT('openToEveryone.opts.disabled')"
-              :enabled-description="inputT('openToEveryone.opts.enabled')"
-            />
+        <AppScrollSection id="access">
+          <AppLabel
+            :label="t('callout.builder.tabs.settings.access.title')"
+            class="mb-3 px-4"
+          />
+          <template v-if="!env.cnrMode">
+            <AppFormBox>
+              <AppToggleField
+                v-model="props.data.openToEveryone"
+                variant="link"
+                :label="inputT('openToEveryone.label')"
+                :help="inputT('openToEveryone.help')"
+                :disabled-description="inputT('openToEveryone.opts.disabled')"
+                :enabled-description="inputT('openToEveryone.opts.enabled')"
+              />
 
-            <div
-              v-if="props.data.openToEveryone"
-              class="ml-6 mt-4 border-l-2 border-grey-light pl-6"
-            >
-              <AppFormField>
-                <AppToggleField
-                  v-model="props.data.collectInfo"
-                  variant="link"
-                  :label="inputT('collectMemberInfo.label')"
-                  :disabled-description="
-                    inputT('collectMemberInfo.opts.disabled')
-                  "
-                  :enabled-description="
-                    inputT('collectMemberInfo.opts.enabled')
-                  "
-                />
-              </AppFormField>
+              <div
+                v-if="props.data.openToEveryone"
+                class="ml-6 mt-4 border-l-2 border-grey-light pl-6"
+              >
+                <AppFormField>
+                  <AppToggleField
+                    v-model="props.data.collectInfo"
+                    variant="link"
+                    :label="inputT('collectMemberInfo.label')"
+                    :disabled-description="
+                      inputT('collectMemberInfo.opts.disabled')
+                    "
+                    :enabled-description="
+                      inputT('collectMemberInfo.opts.enabled')
+                    "
+                  />
+                </AppFormField>
 
-              <AppFormField v-if="props.data.collectInfo">
-                <AppToggleField
-                  v-model="props.data.collectGuestInfo"
-                  variant="link"
-                  :label="inputT('collectGuestInfo.label')"
-                  :disabled-description="
-                    inputT('collectGuestInfo.opts.disabled')
-                  "
-                  :enabled-description="inputT('collectGuestInfo.opts.enabled')"
-                />
-              </AppFormField>
-            </div>
-          </AppFormBox>
-          <AppFormBox>
-            <AppToggleField
-              v-model="props.data.showOnUserDashboards"
-              variant="link"
-              :label="inputT('visible.label')"
-              :help="inputT('visible.help')"
-              :enabled-description="inputT('visible.opts.enabled')"
-              :disabled-description="inputT('visible.opts.disabled')"
-            />
-          </AppFormBox>
+                <AppFormField v-if="props.data.collectInfo">
+                  <AppToggleField
+                    v-model="props.data.collectGuestInfo"
+                    variant="link"
+                    :label="inputT('collectGuestInfo.label')"
+                    :disabled-description="
+                      inputT('collectGuestInfo.opts.disabled')
+                    "
+                    :enabled-description="
+                      inputT('collectGuestInfo.opts.enabled')
+                    "
+                  />
+                </AppFormField>
+              </div>
+            </AppFormBox>
+            <AppFormBox>
+              <AppToggleField
+                v-model="props.data.showOnUserDashboards"
+                variant="link"
+                :label="inputT('visible.label')"
+                :help="inputT('visible.help')"
+                :enabled-description="inputT('visible.opts.enabled')"
+                :disabled-description="inputT('visible.opts.disabled')"
+              />
+            </AppFormBox>
+          </template>
 
           <AppFormBox v-if="env.captchafoxKey">
             <AppToggleField
@@ -306,7 +314,6 @@ const sections = computed<ScrollSection[]>(() => [
   {
     id: 'access',
     label: t('callout.builder.tabs.settings.access.title'),
-    hidden: !!env.cnrMode,
   },
   {
     id: 'responseSettings',
