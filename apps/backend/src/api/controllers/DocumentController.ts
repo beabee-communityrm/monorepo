@@ -10,7 +10,8 @@ import {
   Post,
   Req,
   Res,
-  UnauthorizedError
+  UnauthorizedError,
+  UseBefore
 } from "routing-controllers";
 import { MulterError } from "multer";
 
@@ -20,6 +21,7 @@ import { BadRequestError } from "@beabee/core/errors";
 import { uploadMiddleware } from "../middlewares";
 import { config } from "@beabee/core/config";
 import { isSupportedDocumentType } from "@beabee/beabee-common";
+import { RateLimit } from "../decorators";
 
 import type { UploadFileResponse } from "@beabee/beabee-common";
 
@@ -30,6 +32,12 @@ export class DocumentController {
    */
   @Post("/")
   @Authorized()
+  @UseBefore(
+    RateLimit({
+      guest: { points: 5, duration: 60 * 60 },
+      user: { points: 50, duration: 60 * 60 }
+    })
+  )
   async upload(
     @Req() req: Request,
     @Res() res: Response,
