@@ -5,7 +5,8 @@ import {
   CalloutChannel,
   CalloutData,
   CalloutMapSchema,
-  CalloutResponseViewSchema
+  CalloutResponseViewSchema,
+  CalloutNewsletterSchema
 } from "@beabee/beabee-common";
 import {
   Transform,
@@ -28,10 +29,11 @@ import {
   ValidateNested
 } from "class-validator";
 
-import { GetExportQuery, GetPaginatedQuery } from "@api/dto/BaseDto";
+import { GetPaginatedQuery } from "@api/dto/BaseDto";
 import { GetCalloutFormDto, SetCalloutFormDto } from "@api/dto/CalloutFormDto";
 import { CalloutVariantDto } from "@api/dto/CalloutVariantDto";
 import { LinkDto } from "@api/dto/LinkDto";
+import { NewsletterGroupDto } from "@api/dto/NewsletterDto";
 import IsSlug from "@api/validators/IsSlug";
 import IsUrl from "@api/validators/IsUrl";
 import IsMapBounds from "@api/validators/IsMapBounds";
@@ -47,7 +49,7 @@ export enum GetCalloutWith {
   Variants = "variants"
 }
 
-export class GetCalloutOptsDto extends GetExportQuery {
+export class GetCalloutOptsDto {
   @IsOptional()
   @IsEnum(GetCalloutWith, { each: true })
   with?: GetCalloutWith[];
@@ -61,7 +63,14 @@ export class GetCalloutOptsDto extends GetExportQuery {
   showHiddenForAll: boolean = false;
 }
 
-export class ListCalloutsDto extends GetPaginatedQuery {
+export class ListCalloutsDto
+  extends GetPaginatedQuery
+  // Should inherit but can't inherit multiple classes
+  implements GetCalloutOptsDto
+{
+  @IsIn(["title", "starts", "expires"])
+  sort?: string;
+
   @IsOptional()
   @IsEnum(GetCalloutWith, { each: true })
   with?: GetCalloutWith[];
@@ -69,9 +78,6 @@ export class ListCalloutsDto extends GetPaginatedQuery {
   @IsOptional()
   @IsString()
   variant?: string;
-
-  @IsIn(["title", "starts", "expires"])
-  sort?: string;
 
   // This property can only be set internally, not via query params
   @Equals(false)
@@ -115,6 +121,21 @@ class CalloutMapSchemaDto implements CalloutMapSchema {
   @IsOptional()
   @IsString()
   geocodeCountries?: string;
+}
+
+class CalloutNewsletterSchemaDto implements CalloutNewsletterSchema {
+  @IsString()
+  title!: string;
+
+  @IsString()
+  text!: string;
+
+  @IsString()
+  optIn!: string;
+
+  @ValidateNested({ each: true })
+  @Type(() => NewsletterGroupDto)
+  groups!: NewsletterGroupDto[];
 }
 
 class CalloutResponseViewSchemaDto implements CalloutResponseViewSchema {
@@ -180,11 +201,6 @@ abstract class BaseCalloutDto implements CalloutData {
   hidden!: boolean;
 
   @IsOptional()
-  @ValidateNested()
-  @Type(() => CalloutResponseViewSchemaDto)
-  responseViewSchema?: CalloutResponseViewSchemaDto | null;
-
-  @IsOptional()
   @IsEnum(CalloutChannel, { each: true })
   channels!: CalloutChannel[] | null;
 }
@@ -204,6 +220,16 @@ export class CreateCalloutDto extends BaseCalloutDto {
   @Type(() => SetCalloutFormDto)
   formSchema!: SetCalloutFormDto;
 
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => CalloutNewsletterSchemaDto)
+  newsletterSchema!: CalloutNewsletterSchemaDto | null;
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => CalloutResponseViewSchemaDto)
+  responseViewSchema?: CalloutResponseViewSchemaDto | null;
+
   @IsVariantsObject()
   @Transform(transformVariants)
   variants!: Record<string, CalloutVariantDto>;
@@ -222,6 +248,7 @@ export class GetCalloutDto extends BaseCalloutDto {
   @IsString()
   excerpt!: string;
 
+  // with[] form
   @IsOptional()
   @IsString()
   intro?: string;
@@ -260,10 +287,24 @@ export class GetCalloutDto extends BaseCalloutDto {
   formSchema?: GetCalloutFormDto;
 
   @IsOptional()
+  @ValidateNested()
+  @Type(() => CalloutNewsletterSchemaDto)
+  newsletterSchema?: CalloutNewsletterSchemaDto | null;
+  // end with[] form
+
+  // with[] responseViewSchema
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => CalloutResponseViewSchemaDto)
+  responseViewSchema?: CalloutResponseViewSchemaDto | null;
+
+  // with[] variants
+  @IsOptional()
   @IsVariantsObject()
   @Transform(transformVariants)
   variants?: Record<string, CalloutVariantDto>;
 
+  // with[] variantNames
   @IsOptional()
   @IsString({ each: true })
   variantNames?: string[];
