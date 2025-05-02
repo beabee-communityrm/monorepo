@@ -130,7 +130,7 @@ async function handleChange() {
   } catch (error) {
     if (error instanceof ClientApiError) {
       formError.value =
-        error.code === 'RATE_LIMIT_EXCEEDED'
+        error.code === 'TOO_MANY_REQUESTS'
           ? t('form.errors.file.rateLimited')
           : error.code === 'LIMIT_FILE_SIZE'
             ? t('form.errors.file.tooBig')
