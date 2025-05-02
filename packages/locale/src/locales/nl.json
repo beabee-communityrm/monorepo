@@ -385,6 +385,9 @@
               "minZoom": {},
               "style": {}
             },
+            "newsletterSettings": {
+              "opts": {}
+            },
             "openToEveryone": {
               "opts": {}
             },
@@ -588,6 +591,9 @@
     },
     "contact": "Contact ID",
     "title": "Recensenten oproepen"
+  },
+  "calloutThanksPage": {
+    "oneResponseWarning": "Houd er rekening mee dat deze oproep slechts één reactie per persoon toestaat. Als u al hebt bijgedragen, worden extra reacties niet geregistreerd."
   },
   "callouts": {
     "archive": "Archief",
@@ -1050,6 +1056,11 @@
     "message": "Als er een account is gekoppeld aan {email}, ontvang je binnenkort een e-mail. Controleer uw spam-map als deze niet verschijnt.",
     "title": "Bent u uw 2FA-apparaat kwijt?"
   },
+  "mailOptIn": {
+    "optInLabel": "Label selectievakje",
+    "text": "Tekst",
+    "title": "Kop"
+  },
   "membershipBuilder": {
     "steps": {
       "accountConfirmation": {
@@ -1067,18 +1078,10 @@
           "title": "Deelnemen aan enquête"
         },
         "newsletter": {
-          "groups": {
-            "add": "Nieuwe groep toevoegen",
-            "help": "<p>Je kunt gebruikers laten kiezen van welke nieuwsbriefgroepen ze lid willen worden. Deze groepen moeten al geconfigureerd zijn in Mailchimp, neem contact op met <a href=\"mailto:support{'@'}beabee.io\">support{'@'}beabee.io</a> als je niet zeker weet hoe je deze functie moet gebruiken.</p>\n",
-            "title": "Nieuwsbrief groepen"
-          },
-          "optInDisabled": "Het label wordt niet gebruikt wanneer nieuwsbriefgroepen zichtbaar zijn.",
+          "groups": {},
           "showOptIn": "Vraag om in te schrijven voor nieuwsbrief",
           "title": "Nieuwsbrief"
         },
-        "optInLabel": "Label selectievakje",
-        "optInText": "Tekst",
-        "optInTitle": "Kop",
         "text": "Nadat gebruikers lid zijn geworden, worden ze gevraagd om hun registratie te bevestigen. Hier kun je de details van het bevestigingsscherm instellen.",
         "title": "Account bevestiging",
         "welcomeMessage": "Welkomstbericht"
@@ -1130,6 +1133,18 @@
     "payments": "Betalingen",
     "settings": "Instellingen",
     "yourProfile": "Jouw profiel"
+  },
+  "newsletterOptIn": {
+    "groups": {
+      "add": "Nieuwe groep toevoegen",
+      "help": "<p>Je kunt gebruikers laten kiezen van welke nieuwsbriefgroepen ze lid willen worden. Deze groepen moeten al geconfigureerd zijn in Mailchimp, neem contact op met <a href=\"mailto:support{'@'}beabee.io\">support{'@'}beabee.io</a> als je niet zeker weet hoe je deze functie moet gebruiken.</p>\n",
+      "title": "Nieuwsbrief groepen"
+    },
+    "optInDisabled": "Het label wordt niet gebruikt wanneer nieuwsbriefgroepen zichtbaar zijn.",
+    "optInLabel": "Label selectievakje",
+    "showOptIn": "Vraag om in te schrijven voor nieuwsbrief",
+    "text": "Tekst",
+    "title": "Kop"
   },
   "notFound": {
     "goBack": "Ga terug naar home",

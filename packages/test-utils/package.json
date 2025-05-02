@@ -3,10 +3,13 @@
   "version": "1.0.0",
   "type": "module",
   "exports": {
-    "./vitest/*": "./vitest/*.ts"
+    "./vitest/*": "./vitest/*.ts",
+    "./node": "./node/index.ts",
+    "./node/*": "./node/*.ts"
   },
   "files": [
-    "vitest"
+    "vitest",
+    "node"
   ],
   "dependencies": {
     "testcontainers": "^10.18.0"

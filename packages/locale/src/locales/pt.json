@@ -240,6 +240,9 @@
               "minZoom": {},
               "style": {}
             },
+            "newsletterSettings": {
+              "opts": {}
+            },
             "openToEveryone": {
               "opts": {}
             },
@@ -396,6 +399,9 @@
   },
   "calloutReviewerManager": {
     "confirmDelete": {}
+  },
+  "calloutThanksPage": {
+    "oneResponseWarning": "Por favor, note que este aviso permite apenas uma resposta por pessoa. Se você já contribuiu, respostas adicionais não serão registradas."
   },
   "callouts": {
     "archive": "Arquivo",
@@ -796,6 +802,7 @@
     "message": "Se existir uma conta associada com o endereço {email}, receberá um e-mail dentro de momentos. Deverá ter recebido um e-mail com instruções na sua caixa de entrada. Verifique a sua pasta de spam se não tiver aparecido.",
     "title": "Perdeste o teu dispositivo 2FA?"
   },
+  "mailOptIn": {},
   "membershipBuilder": {
     "steps": {
       "accountConfirmation": {
@@ -824,6 +831,9 @@
     "notices": "Avisos",
     "settings": "Definições",
     "yourProfile": "Perfil"
+  },
+  "newsletterOptIn": {
+    "groups": {}
   },
   "notFound": {
     "goBack": "Regressar à página principal",

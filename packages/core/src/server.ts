@@ -32,7 +32,7 @@ export function startServer(app: Express) {
     db.close();
 
     setTimeout(() => {
-      log.warn("Server was forced to shutdown after timeout");
+      log.warning("Server was forced to shutdown after timeout");
       process.exit(1);
     }, 20000).unref();
   });

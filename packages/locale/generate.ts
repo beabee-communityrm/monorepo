@@ -175,10 +175,10 @@ function saveJsonFile(name: string, data: any) {
 export async function generateLocales() {
   await loadSheet("Sheet1");
 
-  if (process.argv[2] && process.argv[2] !== "main") {
-    try {
-      await loadSheet(process.argv[2]);
-    } catch {}
+  for (const branch of process.argv.slice(2)) {
+    if (branch !== 'main') {
+      await loadSheet(branch);
+    }
   }
 
   let localesIndex = "";

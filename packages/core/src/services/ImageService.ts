@@ -287,7 +287,13 @@ export class ImageService {
         throw error;
       }
       log.error("Failed to upload image:", error);
-      throw new BadRequestError({ message: "Failed to upload image" });
+
+      const errorMessage =
+        error instanceof Error ? error.message : "Unknown error";
+
+      throw new BadRequestError({
+        message: "Failed to upload image: " + errorMessage
+      });
     }
   }
 

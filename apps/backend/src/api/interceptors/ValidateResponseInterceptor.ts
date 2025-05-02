@@ -63,11 +63,9 @@ export class ValidateResponseInterceptor implements InterceptorInterface {
         });
       }
     } catch (errors) {
-      log.error(
+      log.warning(
         `Validation failed on response for ${content?.constructor?.name ?? "unknown"}`,
-        {
-          errors
-        }
+        { errors }
       );
       // TODO: Just log error for now
       // throw new InternalServerError("Validation failed");

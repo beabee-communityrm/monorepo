@@ -49,6 +49,9 @@ services:
     extends:
       file: docker-compose.yml
       service: minio
+    ports:
+      - "${BEABEE_MINIO_PORT_ADMIN:-9002}:9000"  # Admin port
+      - "${BEABEE_MINIO_PORT_CONSOLE:-9003}:9001"  # Console port (Admin UI)
     environment:
       MINIO_ROOT_USER: ${BEABEE_MINIO_ROOT_USER:-minioadmin}
       MINIO_ROOT_PASSWORD: ${BEABEE_MINIO_ROOT_PASSWORD:-minioadmin}
