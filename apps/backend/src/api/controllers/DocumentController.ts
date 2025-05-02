@@ -88,7 +88,12 @@ export class DocumentController {
         });
       }
 
-      throw new BadRequestError({ message: "Failed to upload document" });
+      const errorMessage =
+        error instanceof Error ? error.message : "Unknown error";
+
+      throw new BadRequestError({
+        message: "Failed to upload document: " + errorMessage
+      });
     }
   }
 

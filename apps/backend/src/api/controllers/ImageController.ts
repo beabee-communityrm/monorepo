@@ -60,12 +60,19 @@ export class ImageController {
 
       const path = `images/${metadata.id}`;
 
-      return {
+      const response: UploadFileResponse = {
         id: metadata.id,
         url: `${config.audience}/api/1.0/${path}`,
         path,
         hash: metadata.hash
       };
+
+      // Only add filename if it exists
+      if (metadata.filename) {
+        response.filename = metadata.filename;
+      }
+
+      return response;
     } catch (error) {
       if (error instanceof BadRequestError) {
         throw error;
@@ -80,7 +87,12 @@ export class ImageController {
         });
       }
 
-      throw new BadRequestError({ message: "Failed to upload image" });
+      const errorMessage =
+        error instanceof Error ? error.message : "Unknown error";
+
+      throw new BadRequestError({
+        message: "Failed to upload image: " + errorMessage
+      });
     }
   }
 

@@ -162,8 +162,12 @@ export class DocumentService {
       if (error instanceof BadRequestError) {
         throw error;
       }
+      const errorMessage =
+        error instanceof Error ? error.message : "Unknown error";
       log.error("Failed to upload document:", error);
-      throw new BadRequestError({ message: "Failed to upload document" });
+      throw new BadRequestError({
+        message: "Failed to upload document: " + errorMessage
+      });
     }
   }
 

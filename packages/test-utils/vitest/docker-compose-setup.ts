@@ -56,6 +56,14 @@ export async function setup() {
       "api_app",
       Wait.forLogMessage(/Server is ready and listening on port 3000/),
     )
+    .withWaitStrategy(
+      "minio",
+      Wait.forLogMessage(/MinIO Object Storage Server Version/),
+    )
+    .withWaitStrategy(
+      "minio_client",
+      Wait.forLogMessage(/Bucket created successfully `myminio\/uploads`/),
+    )
     .up([
       "db",
       "migration",
@@ -63,6 +71,8 @@ export async function setup() {
       "app_router",
       "webhook_app",
       "stripe_cli",
+      "minio",
+      "minio_client",
     ]);
 
   const apiApp = startedDockerComposeEnvironment.getContainer("api_app-1");
