@@ -402,6 +402,14 @@ export function convertStepsToCallout(
   const slides = convertSlidesForCallout(tabs);
   const variants = convertVariantsForCallout(tabs);
 
+  const access = tabs.settings.openToEveryone
+    ? tabs.settings.collectInfo
+      ? tabs.settings.collectGuestInfo
+        ? CalloutAccess.Guest
+        : CalloutAccess.Anonymous
+      : CalloutAccess.OnlyAnonymous
+    : CalloutAccess.Member;
+
   return {
     slug: slug || undefined,
     image: tabs.titleAndImage.coverImageURL,
@@ -440,18 +448,14 @@ export function convertStepsToCallout(
         ? CalloutCaptcha.All
         : CalloutCaptcha.Guest
       : CalloutCaptcha.None,
-    access: tabs.settings.openToEveryone
-      ? tabs.settings.collectInfo
-        ? tabs.settings.collectGuestInfo
-          ? CalloutAccess.Guest
-          : CalloutAccess.Anonymous
-        : CalloutAccess.OnlyAnonymous
-      : CalloutAccess.Member,
+    access,
     variants,
     channels: tabs.settings.channels,
-    newsletterSchema: tabs.settings.showNewsletterOptIn
-      ? tabs.settings.newsletterSettings
-      : null,
+    newsletterSchema:
+      access !== CalloutAccess.OnlyAnonymous &&
+      tabs.settings.showNewsletterOptIn
+        ? tabs.settings.newsletterSettings
+        : null,
   };
 }
 

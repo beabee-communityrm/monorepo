@@ -20,7 +20,10 @@
       />
 
       <NewsletterOptIn
-        v-if="callout.newsletterSchema"
+        v-if="
+          callout.access !== CalloutAccess.OnlyAnonymous &&
+          callout.newsletterSchema
+        "
         v-model="nlData.optIn"
         v-model:opt-in-groups="nlData.groups"
         :title="callout.newsletterSchema.title"
