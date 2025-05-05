@@ -495,8 +495,8 @@
       "tags": "Теги"
     },
     "dataGroup": {
-      "callout": "Chamada",
-      "contact": "Informação de contacto"
+      "callout": "Опрос",
+      "contact": "Контакты"
     }
   },
   "contribution": {
@@ -759,7 +759,6 @@
         "deliveryAddress": {},
         "joinSurvey": {},
         "newsletter": {
-          "groups": {},
           "title": "Рассылка"
         }
       },

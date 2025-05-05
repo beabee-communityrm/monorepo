@@ -373,9 +373,7 @@
       "accountConfirmation": {
         "deliveryAddress": {},
         "joinSurvey": {},
-        "newsletter": {
-          "groups": {}
-        }
+        "newsletter": {}
       },
       "emails": {},
       "intro": {},
