@@ -15,7 +15,7 @@
         v-model:firstname="guestData.firstname"
         v-model:lastname="guestData.lastname"
         v-model:email="guestData.email"
-        :required="callout.access === CalloutAccess.Guest"
+        :required="callout.access === CalloutAccess.Guest || nlData.optIn"
         class="mb-8"
       />
 
