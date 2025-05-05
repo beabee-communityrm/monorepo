@@ -1078,7 +1078,6 @@
           "title": "Deelnemen aan enquête"
         },
         "newsletter": {
-          "groups": {},
           "showOptIn": "Vraag om in te schrijven voor nieuwsbrief",
           "title": "Nieuwsbrief"
         },
@@ -1142,7 +1141,6 @@
     },
     "optInDisabled": "Het label wordt niet gebruikt wanneer nieuwsbriefgroepen zichtbaar zijn.",
     "optInLabel": "Label selectievakje",
-    "showOptIn": "Vraag om in te schrijven voor nieuwsbrief",
     "text": "Tekst",
     "title": "Kop"
   },
