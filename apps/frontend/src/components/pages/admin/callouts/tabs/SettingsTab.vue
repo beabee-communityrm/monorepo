@@ -151,7 +151,7 @@
             />
 
             <div
-              v-if="props.data.captchaEnabled"
+              v-if="props.data.captchaEnabled && !env.cnrMode"
               class="ml-6 mt-4 border-l-2 border-grey-light pl-6"
             >
               <AppFormField>
