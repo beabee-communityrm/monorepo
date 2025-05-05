@@ -173,8 +173,12 @@
 
         <!-- Response Settings Section -->
         <AppScrollSection v-if="!env.cnrMode" id="responseSettings">
+          <AppLabel
+            :label="inputT('responseSettings.title')"
+            class="mb-3 px-4"
+          />
           <AppFormBox
-            :title="inputT('responseSettings.title')"
+            v-if="env.experimentalFeatures"
             :notification="
               !canAddNewsletterOptIn
                 ? {
