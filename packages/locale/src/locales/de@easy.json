@@ -190,7 +190,9 @@
       "translationFields": {}
     },
     "confirmHuman": "Du musst hier klicken. Dann weiß der Computer: Dass du ein Mensch bist. Und keine Maschine.",
+    "contactDetails": "Kontaktdaten",
     "ended": "Den Aufruf gibt es nicht mehr.",
+    "entryOf": "Eintrag {no} von {total}",
     "form": {
       "submittingResponseError": "Das hat nicht geklappt. Versuche es noch mal."
     },
@@ -308,6 +310,7 @@
         "duplicate-tag-name": "Diesen Tag gibt es schon"
       },
       "generic": "Das ist nicht richtig. Hol dir Hilfe.",
+      "unauthorized": "Sie haben daruf keinen Zugriff.",
       "validation": "Das ist nicht richtig. Du hast ein Feld nicht richtig ausgefüllt. Suche das Feld. Versuche es noch mal."
     },
     "errors": {
@@ -316,13 +319,20 @@
       "cityOrTown": {},
       "color": {},
       "confirmPassword": {},
-      "email": {},
+      "email": {
+        "email": "Ungültige E-Mail-Adresse",
+        "required": "E-Mail-Adresse benötigt"
+      },
       "file": {
         "rateLimited": "Das war nicht richtig. Das waren zu viele Sachen auf einmal. Du musst etwas warten. Dann versuche es noch mal.",
         "tooBig": "Das war nicht richtig. Dein Text ist zu lang. Oder dein Bild ist zu groß. Man darf nur 20 MB hoch-laden."
       },
-      "firstName": {},
-      "lastName": {},
+      "firstName": {
+        "required": "Vorname benötigt"
+      },
+      "lastName": {
+        "required": "Nachname benötigt"
+      },
       "name": {},
       "password": {},
       "postCode": {},
@@ -330,6 +340,8 @@
       "url": {},
       "verifyCode": {}
     },
+    "firstName": "Vorname",
+    "lastName": "Nachname",
     "richtext": {}
   },
   "formRenderer": {
