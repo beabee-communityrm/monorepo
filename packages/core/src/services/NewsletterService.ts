@@ -28,7 +28,8 @@ const log = mainLogger.child({ app: "newsletter-service" });
  */
 async function contactToNlUpdate(
   contact: Contact,
-  updates?: ContactNewsletterUpdates
+  updates?: ContactNewsletterUpdates,
+  opts?: { mergeGroups?: boolean }
 ): Promise<UpdateNewsletterContact | undefined> {
   // TODO: Fix that it relies on contact.profile being loaded
   if (!contact.profile) {
@@ -42,10 +43,19 @@ async function contactToNlUpdate(
     return undefined;
   }
 
+  const groups = updates?.newsletterGroups
+    ? opts?.mergeGroups
+      ? [
+          ...contact.profile.newsletterGroups,
+          ...updates.newsletterGroups
+        ].filter((v, i, a) => a.indexOf(v) === i)
+      : updates.newsletterGroups
+    : contact.profile.newsletterGroups;
+
   return {
     email: contact.email,
     status,
-    groups: updates?.newsletterGroups || contact.profile.newsletterGroups,
+    groups,
     firstname: contact.firstname,
     lastname: contact.lastname,
     fields: {
@@ -131,46 +141,48 @@ class NewsletterService {
   async upsertContact(
     contact: Contact,
     updates?: ContactNewsletterUpdates,
-    oldEmail?: string
+    opts?: {
+      oldEmail?: string;
+      mergeGroups?: boolean;
+    }
   ): Promise<void> {
-    const nlUpdate = await contactToNlUpdate(contact, updates);
+    const nlUpdate = await contactToNlUpdate(contact, updates, opts);
     if (!nlUpdate) {
       log.info("Ignoring contact update for " + contact.id);
       return;
     }
 
+    let newState;
+
     try {
       log.info("Upsert contact " + contact.id);
-      const nlContact = await this.provider.upsertContact(nlUpdate, oldEmail);
+      newState = await this.provider.upsertContact(nlUpdate, opts?.oldEmail);
 
       log.info(
-        `Got newsletter groups and status ${nlContact.status} for contact ${contact.id}`,
-        { groups: nlContact.groups }
+        `Got newsletter groups and status ${newState.status} for contact ${contact.id}`,
+        { groups: newState.groups }
       );
-
-      // TODO: remove dependency on ContactProfile
-      await getRepository(ContactProfile).update(contact.id, {
-        newsletterStatus: nlContact.status,
-        newsletterGroups: nlContact.groups
-      });
-      contact.profile.newsletterStatus = nlContact.status;
-      contact.profile.newsletterGroups = nlContact.groups;
     } catch (err) {
       // The newsletter provider rejected the update, set this contact's
       // newsletter status to None to prevent further updates
       if (err instanceof CantUpdateNewsletterContact) {
-        log.error(
+        newState = { status: NewsletterStatus.None, groups: [] };
+        log.warning(
           `Newsletter upsert failed, setting status to none for contact ${contact.id}`,
           err
         );
-        await getRepository(ContactProfile).update(contact.id, {
-          newsletterStatus: NewsletterStatus.None
-        });
-        contact.profile.newsletterStatus = NewsletterStatus.None;
       } else {
         throw err;
       }
     }
+
+    // TODO: remove dependency on ContactProfile
+    await getRepository(ContactProfile).update(contact.id, {
+      newsletterStatus: newState.status,
+      newsletterGroups: newState.groups
+    });
+    contact.profile.newsletterStatus = newState.status;
+    contact.profile.newsletterGroups = newState.groups;
   }
 
   /**

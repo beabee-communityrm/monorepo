@@ -21,6 +21,7 @@ meta:
       v-if="joinSurvey"
       :callout="joinSurvey"
       :style="'small'"
+      no-bg
       @submitted="goToProfile"
     />
     <div v-if="!setupContent.surveyRequired" class="text-center">

@@ -170,7 +170,8 @@ class CalloutTransformer extends BaseTransformer<
         ...(variant.shareTitle && { shareTitle: variant.shareTitle }),
         ...(variant.shareDescription && {
           shareDescription: variant.shareDescription
-        })
+        }),
+        newsletterSchema: callout.newsletterSchema
       }),
       ...(opts?.with?.includes(GetCalloutWith.ResponseViewSchema) && {
         responseViewSchema: callout.responseViewSchema

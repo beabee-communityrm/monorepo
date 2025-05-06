@@ -90,7 +90,7 @@ const loginWithMfa = async (
   done: PassportLocalDoneCallback
 ) => {
   if (mfa.type !== CONTACT_MFA_TYPE.TOTP) {
-    log.warn("The user has unsupported 2FA enabled.");
+    log.warning("The user has unsupported 2FA enabled.");
     // We pass the contact to the done callback so the user can be logged in and the 2FA is ignored
     return done(null, contact, {
       message: LOGIN_CODES.UNSUPPORTED_2FA
