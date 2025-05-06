@@ -62,6 +62,8 @@ services:
       - ./apps/backend-cli/dist:/opt/apps/backend-cli/dist
       # Allow migrations to be written out from the container
       - ./packages/core/src/migrations:/opt/packages/core/src/migrations
+      # Temporary storage for old uploads
+      - upload_data:/old_data
     # TODO: Use standard dist folder
     command: ['node', '--watch', './built/api/app.js']
 
