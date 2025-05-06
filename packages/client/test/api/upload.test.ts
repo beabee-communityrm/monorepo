@@ -1,18 +1,39 @@
-import { describe, expect, it, beforeAll } from "vitest";
+import { describe, expect, it, beforeEach, afterEach } from "vitest";
 import { BeabeeClient, ClientApiError } from "@beabee/client";
-import { API_KEY, HOST, PATH } from "@beabee/test-utils/vitest/env";
+import {
+  API_KEY,
+  HOST,
+  PATH,
+  TEST_USER_EMAIL,
+  TEST_USER_PASSWORD
+} from "@beabee/test-utils/vitest/env";
 import { createTestFile } from "@beabee/test-utils/node";
 import { resolve } from "path";
 
 describe("Upload API", () => {
   let client: BeabeeClient;
 
-  beforeAll(() => {
+  beforeEach(async () => {
     client = new BeabeeClient({
       host: HOST,
       path: PATH,
       token: API_KEY
     });
+
+    // Log in the user to not hit rate limits
+    await client.auth.login({
+      email: TEST_USER_EMAIL,
+      password: TEST_USER_PASSWORD
+    });
+  });
+
+  // Add afterEach to logout after every test in this suite
+  afterEach(async () => {
+    try {
+      await client.auth.logout();
+    } catch (error) {
+      // Ignore logout errors, maybe the user wasn't logged in
+    }
   });
 
   describe("uploadFile", () => {

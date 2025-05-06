@@ -61,6 +61,46 @@ export const TEST_USER_PASSWORD = env.TEST_USER_PASSWORD || "test1234";
 export const TEST_USER_ROLE = env.TEST_USER_ROLE || "superadmin";
 
 /**
+ * Email for test user
+ * Source: TEST_USER_EMAIL environment variable
+ * Default: "test@beabee.io"
+ */
+export const TEST_RATE_LIMIT_USER_EMAIL =
+  env.TEST_RATE_LIMIT_USER_EMAIL || "rate-limit-test@beabee.io";
+
+/**
+ * First name for test user
+ * Source: TEST_RATE_LIMIT_USER_FIRSTNAME environment variable
+ * Default: "Test"
+ */
+export const TEST_RATE_LIMIT_USER_FIRSTNAME =
+  env.TEST_RATE_LIMIT_USER_FIRSTNAME || "Rate";
+
+/**
+ * Last name for test user
+ * Source: TEST_RATE_LIMIT_USER_LASTNAME environment variable
+ * Default: "Test"
+ */
+export const TEST_RATE_LIMIT_USER_LASTNAME =
+  env.TEST_RATE_LIMIT_USER_LASTNAME || "Limit";
+
+/**
+ * Password for test user
+ * Source: TEST_RATE_LIMIT_USER_PASSWORD environment variable
+ * Default: "test1234"
+ */
+export const TEST_RATE_LIMIT_USER_PASSWORD =
+  env.TEST_RATE_LIMIT_USER_PASSWORD || "rate-limit-test1234";
+
+/**
+ * Role for test user
+ * Source: TEST_RATE_LIMIT_USER_ROLE environment variable
+ * Default: "superadmin"
+ */
+export const TEST_RATE_LIMIT_USER_ROLE =
+  env.TEST_RATE_LIMIT_USER_ROLE || "superadmin";
+
+/**
  * Description for test API key
  * Source: TEST_API_KEY_DESCRIPTION environment variable
  * Default: "api-tests"

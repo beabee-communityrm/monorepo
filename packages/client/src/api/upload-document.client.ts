@@ -59,7 +59,7 @@ export class UploadDocumentClient extends BaseClient {
       if (error instanceof ClientApiError && error.httpCode === 429) {
         throw new ClientApiError("Rate limit exceeded", {
           httpCode: 429,
-          code: "RATE_LIMIT_EXCEEDED"
+          code: "TOO_MANY_REQUESTS"
         });
       }
       throw error;
