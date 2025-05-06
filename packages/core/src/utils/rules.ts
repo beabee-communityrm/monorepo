@@ -171,7 +171,9 @@ function prepareRule(
           // Map "me" to contact id
           if (v === "me") {
             if (!contact) {
-              throw new Error("No contact provided to map contact field type");
+              throw new BadRequestError(
+                "No contact provided to map contact field type"
+              );
             }
             return contact.id;
           } else {
