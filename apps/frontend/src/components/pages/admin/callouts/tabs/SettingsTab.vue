@@ -151,7 +151,7 @@
             />
 
             <div
-              v-if="props.data.captchaEnabled"
+              v-if="props.data.captchaEnabled && !env.cnrMode"
               class="ml-6 mt-4 border-l-2 border-grey-light pl-6"
             >
               <AppFormField>
@@ -173,8 +173,12 @@
 
         <!-- Response Settings Section -->
         <AppScrollSection v-if="!env.cnrMode" id="responseSettings">
+          <AppLabel
+            :label="inputT('responseSettings.title')"
+            class="mb-3 px-4"
+          />
           <AppFormBox
-            :title="inputT('responseSettings.title')"
+            v-if="env.experimentalFeatures"
             :notification="
               !canAddNewsletterOptIn
                 ? {

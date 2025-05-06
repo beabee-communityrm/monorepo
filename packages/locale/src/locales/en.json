@@ -1290,7 +1290,6 @@
           "title": "Join survey"
         },
         "newsletter": {
-          "groups": {},
           "showOptIn": "Ask to subscribe to newsletter",
           "title": "Newsletter"
         },
@@ -1354,7 +1353,6 @@
     },
     "optInDisabled": "The label is not used when newsletter groups are visible",
     "optInLabel": "Checkbox label",
-    "showOptIn": "Ask to subscribe to newsletter",
     "text": "Text",
     "title": "Heading"
   },
