@@ -1284,7 +1284,6 @@
           "title": "Anmelde-Fragebogen"
         },
         "newsletter": {
-          "groups": {},
           "showOptIn": "Nach Newsletterabonnement fragen",
           "title": "Newsletter"
         },
@@ -1348,7 +1347,6 @@
     },
     "optInDisabled": "Der Text wird nicht genutzt, wenn die Newsletter-Gruppen sichtbar sind.",
     "optInLabel": "Beschriftung Kontrollkästchen ",
-    "showOptIn": "Nach Newsletterabonnement fragen",
     "text": "Text",
     "title": "Überschrift"
   },

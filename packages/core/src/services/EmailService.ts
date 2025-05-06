@@ -192,7 +192,7 @@ class EmailService {
     recipients: EmailRecipient[],
     opts?: EmailOptions
   ): Promise<void> {
-    log.info("Sending email", { email: email.id, recipients });
+    log.info("Sending email " + email.id, { recipients });
     try {
       await this.provider.sendEmail(email, recipients, opts);
     } catch (error) {

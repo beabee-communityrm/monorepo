@@ -535,8 +535,8 @@
       "tags": "Etiquetas"
     },
     "dataGroup": {
-      "callout": "Опрос",
-      "contact": "Контакты",
+      "callout": "Chamada",
+      "contact": "Informação de contacto",
       "contribution": "Contribuição",
       "role": "Cargo"
     },
@@ -809,7 +809,6 @@
         "deliveryAddress": {},
         "joinSurvey": {},
         "newsletter": {
-          "groups": {},
           "title": "Newsletter"
         }
       },
