@@ -22,6 +22,7 @@ import { uploadMiddleware } from "../middlewares";
 import { config } from "@beabee/core/config";
 import { isSupportedDocumentType } from "@beabee/beabee-common";
 import { RateLimit } from "../decorators";
+import { UnsupportedFileType } from "@beabee/core/errors";
 
 import type { UploadFileResponse } from "@beabee/beabee-common";
 
@@ -53,7 +54,7 @@ export class DocumentController {
 
       // Verify file type is allowed - multer handles size but we still check type
       if (!isSupportedDocumentType(req.file.mimetype)) {
-        throw new BadRequestError({
+        throw new UnsupportedFileType({
           message: "Unsupported document type. Please upload a PDF document."
         });
       }

@@ -15,3 +15,4 @@ export * from "./NoPaymentMethod";
 export * from "./NotFoundError";
 export * from "./UnauthorizedError";
 export * from "./TooManyRequestsError";
+export * from "./UnsupportedFileType";

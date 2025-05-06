@@ -23,6 +23,7 @@ import { uploadMiddleware } from "../middlewares";
 import { config } from "@beabee/core/config";
 import { isSupportedImageType } from "@beabee/beabee-common";
 import { RateLimit } from "../decorators";
+import { UnsupportedFileType } from "@beabee/core/errors";
 
 import type { UploadFileResponse } from "@beabee/beabee-common";
 
@@ -54,7 +55,7 @@ export class ImageController {
 
       // Verify file type is allowed - multer handles size but we still check type
       if (!isSupportedImageType(req.file.mimetype)) {
-        throw new BadRequestError({
+        throw new UnsupportedFileType({
           message: `Unsupported image type ${req.file.mimetype}. Please upload a JPEG, PNG, WebP or AVIF image.`
         });
       }

@@ -134,7 +134,9 @@ async function handleChange() {
           ? t('form.errors.file.rateLimited')
           : error.code === 'LIMIT_FILE_SIZE'
             ? t('form.errors.file.tooBig')
-            : t('form.errorMessages.generic');
+            : error.code === 'UNSUPPORTED_FILE_TYPE'
+              ? t('form.errors.file.unsupportedType')
+              : t('form.errorMessages.generic');
     } else {
       formError.value = t('form.errorMessages.generic');
     }
