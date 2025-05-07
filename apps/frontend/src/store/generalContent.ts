@@ -1,6 +1,6 @@
 import { computed } from 'vue';
 import { client } from '@utils/api';
-import defaultBgUrl from '@assets/images/auth-bg.jpg';
+import { resolveImageUrl } from '@utils/url';
 import { generalContent } from '@beabee/vue/store/generalContent';
 
 export { generalContent };
@@ -13,5 +13,5 @@ export const initGeneralContent = client.content
   });
 
 export const backgroundStyle = computed(() => ({
-  backgroundImage: `url(${generalContent.value.backgroundUrl || defaultBgUrl})`,
+  backgroundImage: `url(${resolveImageUrl(generalContent.value.backgroundUrl)})`,
 }));

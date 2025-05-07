@@ -5,4 +5,4 @@ export * from "./process.js";
 export * from "./sync.js";
 export * from "./user.js";
 export * from "./test.js";
-export * from "./migrate-images.js";
+export * from "./migrate-uploads.js";

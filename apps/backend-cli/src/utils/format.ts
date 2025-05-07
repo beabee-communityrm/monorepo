@@ -23,15 +23,6 @@ export function formatSuccessMessage(key: string, size: number): string {
 }
 
 /**
- * Format migration skip message
- * @param key The S3 key (filename)
- * @returns Formatted skip message
- */
-export function formatSkipMessage(key: string): string {
-  return chalk.cyan(`⏭ Skipped: ${key} (already exists in bucket)`);
-}
-
-/**
  * Format dry run message
  * @param key The S3 key (filename)
  * @param size Size in bytes

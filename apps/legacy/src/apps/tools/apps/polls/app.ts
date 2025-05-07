@@ -3,7 +3,7 @@ import moment from "moment";
 
 import { createQueryBuilder, getRepository } from "@beabee/core/database";
 import { hasNewModel, isAdmin } from "#core/middleware";
-import { wrapAsync } from "@beabee/core/utils/index";
+import { wrapAsync } from "@beabee/core/utils/express";
 
 import { Callout, CalloutResponse } from "@beabee/core/models";
 

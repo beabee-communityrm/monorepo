@@ -2,33 +2,6 @@ import path from "node:path";
 import fs from "node:fs/promises";
 
 /**
- * Get content type based on file extension
- * @param filePath Path to file
- * @returns MIME type for the file
- */
-export function getContentType(filePath: string): string {
-  const ext = path.extname(filePath).toLowerCase();
-
-  switch (ext) {
-    case ".jpg":
-    case ".jpeg":
-      return "image/jpeg";
-    case ".png":
-      return "image/png";
-    case ".gif":
-      return "image/gif";
-    case ".webp":
-      return "image/webp";
-    case ".svg":
-      return "image/svg+xml";
-    case ".mp4":
-      return "video/mp4";
-    default:
-      return "application/octet-stream";
-  }
-}
-
-/**
  * Recursively get all files in a directory
  * @param dir Directory to scan
  * @returns List of file paths

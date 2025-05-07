@@ -14,6 +14,8 @@ import { Callout, CalloutResponse, Contact } from "@beabee/core/models";
 import { runApp } from "@beabee/core/server";
 import { parse } from "csv-parse";
 import { In } from "typeorm";
+import { isURL } from "class-validator";
+import { config } from "@beabee/core/config";
 
 interface ResponseRow {
   [key: string]: string;
@@ -139,9 +141,33 @@ function parseValue(
         formatted_address: rest.join(",")
       } satisfies CalloutResponseAnswerAddress;
 
+    // TODO: We need to upload the image or document
     case CalloutComponentType.INPUT_FILE:
+      const isValueUrl = isURL(value);
+      let path: string;
+      let url: string;
+
+      if (isValueUrl) {
+        // It's a URL, extract path
+        url = value;
+        // Extract path by removing base URL parts
+        const urlObj = new URL(value);
+        // Remove /api/1.0/ prefix if it exists
+        path = urlObj.pathname.replace(/^\/api\/1\.0\//, "");
+      } else {
+        // It's a path, construct URL
+        path = value;
+        // Ensure path doesn't start with slash
+        if (path.startsWith("/")) {
+          path = path.substring(1);
+        }
+        // Construct full URL
+        url = `${config.audience}/api/1.0/${path}`;
+      }
+
       return {
-        url: value
+        url,
+        path
       } satisfies CalloutResponseAnswerFileUpload;
 
     default:

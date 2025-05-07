@@ -903,7 +903,8 @@
       },
       "file": {
         "rateLimited": "Upload mislukt: u hebt onlangs te veel bestanden geüpload. Wacht een paar minuten voordat u het opnieuw probeert.",
-        "tooBig": "Upload mislukt: de bestandsgrootte moet kleiner zijn dan 20Mb"
+        "tooBig": "Upload mislukt: de bestandsgrootte moet kleiner zijn dan 20Mb",
+        "unsupportedType": "Upload mislukt: het bestandstype wordt niet ondersteund"
       },
       "firstName": {
         "required": "Voornaam is vereist"

@@ -6,7 +6,7 @@
         <p class="mb-3">{{ callout.excerpt }}</p>
       </div>
       <div class="flex-0 ml-4">
-        <img class="w-[150px]" :src="callout.image" />
+        <img class="w-[150px]" :src="imageUrl" />
       </div>
     </div>
     <div class="mb-4 text-sm">
@@ -51,12 +51,20 @@ import ItemStatusText from '@components/item/ItemStatusText.vue';
 import ItemDateRange from '@components/item/ItemDateRange.vue';
 import AppSubHeading from '@components/AppSubHeading.vue';
 import { AppButton } from '@beabee/vue/components';
+import noImage from '../../assets/images/no-image.avif';
+import { resolveImageUrl } from '@utils/url';
 
 const { t } = useI18n();
 
 const props = defineProps<{
   callout: GetCalloutDataWith<'responseCount'>;
 }>();
+
+const imageUrl = computed(() => {
+  return props.callout.image
+    ? resolveImageUrl(props.callout.image, 600)
+    : noImage;
+});
 
 const calloutLink = computed(() => `/callouts/${props.callout.slug}`);
 </script>

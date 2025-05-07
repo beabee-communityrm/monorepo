@@ -27,7 +27,7 @@ export class SignupClient extends BaseClient {
       ...options,
       path: cleanUrl(options.path + "/signup")
     });
-    this.completeUrl = this.options.host + "/join/complete";
+    this.completeUrl = options.host + "/join/complete";
   }
 
   /**

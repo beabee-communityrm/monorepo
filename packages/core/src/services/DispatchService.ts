@@ -9,7 +9,6 @@ import PaymentService from "#services/PaymentService";
 import ReferralsService from "#services/ReferralsService";
 import ResetSecurityFlowService from "#services/ResetSecurityFlowService";
 import SegmentService from "#services/SegmentService";
-import UploadFlowService from "#services/UploadFlowService";
 import ContactsService from "#services/ContactsService";
 
 const log = mainLogger.child({ app: "dispatch-service" });
@@ -30,7 +29,6 @@ class DispatchService {
     await ResetSecurityFlowService.deleteAll(contact);
     await ApiKeyService.permanentlyDeleteContact(contact);
     await ReferralsService.permanentlyDeleteContact(contact);
-    await UploadFlowService.permanentlyDeleteContact(contact);
     await SegmentService.permanentlyDeleteContact(contact);
     await CalloutsService.permanentlyDeleteContact(contact);
     await ContactMfaService.permanentlyDeleteContact(contact);

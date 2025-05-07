@@ -1,18 +1,18 @@
 import { NewsletterStatus, ContributionType } from "@beabee/beabee-common";
 import bodyParser from "body-parser";
 import express, {
-  NextFunction,
+  type NextFunction,
   type Express,
   type Request,
   type Response
 } from "express";
 
 import { log as mainLogger } from "@beabee/core/logging";
-import { normalizeEmailAddress, wrapAsync } from "@beabee/core/utils/index";
+import { wrapAsync } from "@beabee/core/utils/express";
+import { normalizeEmailAddress } from "@beabee/core/utils/email";
 
 import ContactsService from "@beabee/core/services/ContactsService";
 import NewsletterService from "@beabee/core/services/NewsletterService";
-import OptionsService from "@beabee/core/services/OptionsService";
 
 import config from "@beabee/core/config";
 

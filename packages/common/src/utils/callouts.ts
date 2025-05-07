@@ -16,6 +16,7 @@ import type {
   CalloutResponseAnswerAddress,
   CalloutResponseAnswerFileUpload,
   FilterArgs,
+  FormioFile,
   SetCalloutFormSchema
 } from "../types/index.js";
 
@@ -214,6 +215,21 @@ export function isFileUploadAnswer(
   answer: CalloutResponseAnswer | undefined
 ): answer is CalloutResponseAnswerFileUpload {
   return !!answer && typeof answer === "object" && "url" in answer;
+}
+
+export function isFormioFileAnswer(
+  answer: CalloutResponseAnswer | undefined
+): answer is CalloutResponseAnswerFileUpload & FormioFile {
+  return (
+    !!answer &&
+    typeof answer === "object" &&
+    "url" in answer &&
+    "storage" in answer &&
+    "name" in answer &&
+    "size" in answer &&
+    "hash" in answer &&
+    "originalName" in answer
+  );
 }
 
 export function stringifyAnswer(
