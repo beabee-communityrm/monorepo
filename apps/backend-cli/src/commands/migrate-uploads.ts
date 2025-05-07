@@ -23,13 +23,37 @@ export const migrateUploadsCommand = {
         describe: "Simulate migration without actually uploading files",
         type: "boolean",
         default: false
+      })
+      .option("steps", {
+        describe:
+          "List of migration steps to run. Allowed: calloutImages, optionImages, contentBackgroundImage, calloutResponseDocuments. Default: all steps.",
+        type: "string",
+        array: true,
+        choices: [
+          "calloutImages",
+          "optionImages",
+          "contentBackgroundImage",
+          "calloutResponseDocuments"
+        ],
+        default: [
+          "calloutImages",
+          "optionImages",
+          "contentBackgroundImage",
+          "calloutResponseDocuments"
+        ]
       });
   },
   handler: async (args: MigrateUploadsArgs): Promise<void> => {
     try {
       await migrateUploads({
         source: args.source,
-        dryRun: args.dryRun
+        dryRun: args.dryRun,
+        steps: args.steps || [
+          "calloutImages",
+          "optionImages",
+          "contentBackgroundImage",
+          "calloutResponseDocuments"
+        ]
       });
     } catch (error) {
       console.error("Failed to migrate uploads:", error);

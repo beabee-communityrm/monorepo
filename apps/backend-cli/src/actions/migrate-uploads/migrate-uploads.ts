@@ -80,6 +80,7 @@ export async function migrateUploads(
     if (isDryRun) {
       console.log(chalk.yellow("DRY RUN MODE: No files will be uploaded"));
     }
+    const steps = options.steps;
 
     // Initialize database connection
     console.log("Initializing database connection...");
@@ -112,44 +113,48 @@ export async function migrateUploads(
     };
 
     // Process callout images
-    console.log(chalk.blue("\n=== Migrating Callout Images ==="));
-    const calloutStats = await processCalloutImages(options);
-
-    // Merge stats
-    stats.successCount += calloutStats.successCount;
-    stats.skippedCount += calloutStats.skippedCount;
-    stats.errorCount += calloutStats.errorCount;
-    stats.totalSizeBytes += calloutStats.totalSizeBytes;
+    if (steps.includes("calloutImages")) {
+      console.log(chalk.blue("\n=== Migrating Callout Images ==="));
+      const calloutStats = await processCalloutImages(options);
+      // Merge stats
+      stats.successCount += calloutStats.successCount;
+      stats.skippedCount += calloutStats.skippedCount;
+      stats.errorCount += calloutStats.errorCount;
+      stats.totalSizeBytes += calloutStats.totalSizeBytes;
+    }
 
     // Process content images (logo, share image)
-    console.log(chalk.blue("\n=== Migrating Option Images ==="));
-    const optionStats = await processOptionImages(options);
-
-    // Merge stats
-    stats.successCount += optionStats.successCount;
-    stats.skippedCount += optionStats.skippedCount;
-    stats.errorCount += optionStats.errorCount;
-    stats.totalSizeBytes += optionStats.totalSizeBytes;
+    if (steps.includes("optionImages")) {
+      console.log(chalk.blue("\n=== Migrating Option Images ==="));
+      const optionStats = await processOptionImages(options);
+      // Merge stats
+      stats.successCount += optionStats.successCount;
+      stats.skippedCount += optionStats.skippedCount;
+      stats.errorCount += optionStats.errorCount;
+      stats.totalSizeBytes += optionStats.totalSizeBytes;
+    }
 
     // Process general content background image
-    console.log(chalk.blue("\n=== Migrating Content Background Image ==="));
-    const contentStats = await processContentBackgroundImage(options);
-
-    // Merge stats
-    stats.successCount += contentStats.successCount;
-    stats.skippedCount += contentStats.skippedCount;
-    stats.errorCount += contentStats.errorCount;
-    stats.totalSizeBytes += contentStats.totalSizeBytes;
+    if (steps.includes("contentBackgroundImage")) {
+      console.log(chalk.blue("\n=== Migrating Content Background Image ==="));
+      const contentStats = await processContentBackgroundImage(options);
+      // Merge stats
+      stats.successCount += contentStats.successCount;
+      stats.skippedCount += contentStats.skippedCount;
+      stats.errorCount += contentStats.errorCount;
+      stats.totalSizeBytes += contentStats.totalSizeBytes;
+    }
 
     // Process document uploads in callout responses
-    console.log(chalk.blue("\n=== Migrating Callout Response Documents ==="));
-    const documentStats = await processCalloutResponseDocuments(options);
-
-    // Merge stats
-    stats.successCount += documentStats.successCount;
-    stats.skippedCount += documentStats.skippedCount;
-    stats.errorCount += documentStats.errorCount;
-    stats.totalSizeBytes += documentStats.totalSizeBytes;
+    if (steps.includes("calloutResponseDocuments")) {
+      console.log(chalk.blue("\n=== Migrating Callout Response Documents ==="));
+      const documentStats = await processCalloutResponseDocuments(options);
+      // Merge stats
+      stats.successCount += documentStats.successCount;
+      stats.skippedCount += documentStats.skippedCount;
+      stats.errorCount += documentStats.errorCount;
+      stats.totalSizeBytes += documentStats.totalSizeBytes;
+    }
 
     // Print summary
     printMigrationSummary(stats, isDryRun);
