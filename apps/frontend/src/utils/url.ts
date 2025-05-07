@@ -10,15 +10,16 @@ import { isAbsoluteUrl } from '@beabee/beabee-common';
  * @param url - The image URL to process (can be relative or absolute).
  * @returns The resolved, absolute image URL or an empty string.
  */
-export function resolveImageUrl(url: unknown): string {
+export function resolveImageUrl(url: unknown, width?: number): string {
   if (!url || typeof url !== 'string') {
     return '';
   }
   if (isAbsoluteUrl(url) || url.startsWith('blob:')) {
     return url;
   }
-  if (url.startsWith(env.apiUrl)) {
-    return url;
+  const urlObj = new URL(url, env.appUrl + env.apiUrl);
+  if (width) {
+    urlObj.searchParams.set('w', width.toString());
   }
-  return `${env.apiUrl}/${url.replace(/^\//, '')}`;
+  return urlObj.toString();
 }

@@ -50,7 +50,9 @@ import noImage from '../../assets/images/no-image.avif';
 const props = defineProps<{ callout: GetCalloutData }>();
 
 const imageUrl = computed(() => {
-  return props.callout.image ? resolveImageUrl(props.callout.image) : noImage;
+  return props.callout.image
+    ? resolveImageUrl(props.callout.image, 900)
+    : noImage;
 });
 
 const { t } = useI18n();

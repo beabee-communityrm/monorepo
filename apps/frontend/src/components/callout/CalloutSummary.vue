@@ -44,23 +44,27 @@ import type { GetCalloutDataWith } from '@beabee/beabee-common';
 import { useI18n } from 'vue-i18n';
 import { computed } from 'vue';
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
-import noImage from '../../assets/images/no-image.avif';
 
 import env from '@env';
-import { resolveImageUrl } from '@utils/url';
 
 import ItemStatusText from '@components/item/ItemStatusText.vue';
 import ItemDateRange from '@components/item/ItemDateRange.vue';
 import AppSubHeading from '@components/AppSubHeading.vue';
 import { AppButton } from '@beabee/vue/components';
+import noImage from '../../assets/images/no-image.avif';
+import { resolveImageUrl } from '@utils/url';
+
 const { t } = useI18n();
 
 const props = defineProps<{
   callout: GetCalloutDataWith<'responseCount'>;
 }>();
 
-const calloutLink = computed(() => `/callouts/${props.callout.slug}`);
 const imageUrl = computed(() => {
-  return props.callout.image ? resolveImageUrl(props.callout.image) : noImage;
+  return props.callout.image
+    ? resolveImageUrl(props.callout.image, 600)
+    : noImage;
 });
+
+const calloutLink = computed(() => `/callouts/${props.callout.slug}`);
 </script>
