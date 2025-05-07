@@ -5,9 +5,8 @@
     <router-link :to="`/callouts/${callout.slug}`" class="flex h-full flex-col">
       <div class="h-36 bg-primary-40">
         <img
-          v-if="callout.image"
           class="h-full w-full object-cover"
-          :src="callout.image"
+          :src="imageUrl"
           :alt="callout.title"
         />
       </div>
@@ -40,12 +39,19 @@
 
 <script lang="ts" setup>
 import type { GetCalloutData } from '@beabee/beabee-common';
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import AppTime from '../AppTime.vue';
 import AppSubHeading from '../AppSubHeading.vue';
 import { formatLocale } from '@utils/dates';
+import { resolveImageUrl } from '@utils/url';
+import noImage from '../../assets/images/no-image.avif';
 
-defineProps<{ callout: GetCalloutData }>();
+const props = defineProps<{ callout: GetCalloutData }>();
+
+const imageUrl = computed(() => {
+  return props.callout.image ? resolveImageUrl(props.callout.image) : noImage;
+});
 
 const { t } = useI18n();
 </script>
