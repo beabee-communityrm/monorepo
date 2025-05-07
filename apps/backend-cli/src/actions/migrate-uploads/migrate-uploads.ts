@@ -57,9 +57,18 @@ function extractImageInfo(imageUrl: string): {
 
   // Extract the image key from the image URL/path, removing any query parameters
   if (imageUrl.includes("/uploads/")) {
-    // Format: /uploads/abc123?w=1440
+    // Format: /uploads/abc123?w=1440 or /uploads/1440x810/image.jpg
     const uploadPath = imageUrl.split("/uploads/")[1];
-    imageKey = uploadPath.split("?")[0]; // Remove query parameters
+    const pathWithoutQuery = uploadPath.split("?")[0]; // Remove query parameters
+
+    if (pathWithoutQuery.includes("/")) {
+      // If the path contains additional directories (like size directories),
+      // just extract the filename at the end
+      imageKey = pathWithoutQuery.split("/").pop() || null;
+    } else {
+      // Simple path without additional directories
+      imageKey = pathWithoutQuery;
+    }
   } else if (!imageUrl.includes("/")) {
     // Direct key format without slashes
     imageKey = imageUrl.split("?")[0]; // Remove query parameters
@@ -672,38 +681,93 @@ async function processDocumentUpload(
       // Read the file as buffer
       const fileBuffer = await fs.readFile(sourcePath);
 
-      // Upload the document using DocumentService
-      const uploadedDocument = await documentService.uploadDocument(
-        fileBuffer,
-        fileUpload.originalName || fileUpload.name
-      );
+      // Determine if this is an image or a document based on file extension
+      const fileName =
+        fileUpload.originalName || fileUpload.name || path.basename(sourcePath);
+      const fileExt = path.extname(fileName).toLowerCase();
+      const isImage = [
+        ".jpg",
+        ".jpeg",
+        ".png",
+        ".gif",
+        ".webp",
+        ".avif",
+        ".svg",
+        ".tiff",
+        ".tif",
+        ".heif",
+        ".heic",
+        ".jp2"
+      ].includes(fileExt);
 
-      // Update with the new document URL
-      const newDocumentPath = `documents/${uploadedDocument.id}`;
-      const newDocumentUrl = `${config.audience}/api/1.0/${newDocumentPath}`;
-
-      // Update the response with the new document URL using CalloutsService
-      const updated = await calloutsService.updateResponseFileUploadUrl(
-        response.id,
-        slideId,
-        componentKey,
-        arrayIndex,
-        { ...fileUpload, url: newDocumentUrl, path: newDocumentPath }
-      );
-
-      if (updated) {
-        console.log(
-          formatSuccessMessage(locationInfo, fileStats.size) +
-            ` - New document path: ${newDocumentPath}`
+      if (isImage) {
+        // Handle as image using ImageService
+        const uploadedImage = await imageService.uploadImage(
+          fileBuffer,
+          fileName
         );
 
-        stats.successCount++;
-        stats.totalSizeBytes += fileStats.size;
-        return { url: newDocumentUrl, path: newDocumentPath };
+        // Update with the new image URL
+        const newImagePath = `images/${uploadedImage.id}`;
+        const newImageUrl = `${config.audience}/api/1.0/${newImagePath}`;
+
+        // Update the response with the new image URL
+        const updated = await calloutsService.updateResponseFileUploadUrl(
+          response.id,
+          slideId,
+          componentKey,
+          arrayIndex,
+          { ...fileUpload, url: newImageUrl, path: newImagePath }
+        );
+
+        if (updated) {
+          console.log(
+            formatSuccessMessage(locationInfo, fileStats.size) +
+              ` - New image path: ${newImagePath}`
+          );
+
+          stats.successCount++;
+          stats.totalSizeBytes += fileStats.size;
+          return { url: newImageUrl, path: newImagePath };
+        } else {
+          stats.errorCount++;
+          console.error(`Failed to update image URL for ${locationInfo}`);
+          return null;
+        }
       } else {
-        stats.errorCount++;
-        console.error(`Failed to update document URL for ${locationInfo}`);
-        return null;
+        // Handle as document using DocumentService
+        const uploadedDocument = await documentService.uploadDocument(
+          fileBuffer,
+          fileUpload.originalName || fileUpload.name
+        );
+
+        // Update with the new document URL
+        const newDocumentPath = `documents/${uploadedDocument.id}`;
+        const newDocumentUrl = `${config.audience}/api/1.0/${newDocumentPath}`;
+
+        // Update the response with the new document URL using CalloutsService
+        const updated = await calloutsService.updateResponseFileUploadUrl(
+          response.id,
+          slideId,
+          componentKey,
+          arrayIndex,
+          { ...fileUpload, url: newDocumentUrl, path: newDocumentPath }
+        );
+
+        if (updated) {
+          console.log(
+            formatSuccessMessage(locationInfo, fileStats.size) +
+              ` - New document path: ${newDocumentPath}`
+          );
+
+          stats.successCount++;
+          stats.totalSizeBytes += fileStats.size;
+          return { url: newDocumentUrl, path: newDocumentPath };
+        } else {
+          stats.errorCount++;
+          console.error(`Failed to update document URL for ${locationInfo}`);
+          return null;
+        }
       }
     } catch (error) {
       stats.errorCount++;
@@ -731,13 +795,20 @@ function extractDocumentInfo(documentUrl: string): {
 
   // Extract the document key from the document URL/path, removing any query parameters
   if (documentUrl.includes("/uploads/")) {
-    // Format: /uploads/abc123
+    // Format: /uploads/abc123 or /uploads/directory/filename.ext
     const uploadPath = documentUrl.split("/uploads/")[1];
-    documentKey = uploadPath.split("?")[0]; // Remove query parameters
+    const pathWithoutQuery = uploadPath.split("?")[0]; // Remove query parameters
 
-    // Extract the filename from the document URL
-    const filename = path.basename(documentKey);
-    documentKey = documentKey + "/" + filename;
+    // Extract the filename
+    const filename = path.basename(pathWithoutQuery);
+
+    // If path has directories, combine them with the filename
+    if (pathWithoutQuery.includes("/")) {
+      documentKey = filename;
+    } else {
+      // Simple path without additional directories
+      documentKey = pathWithoutQuery + "/" + filename;
+    }
   } else if (!documentUrl.includes("/")) {
     // Direct key format without slashes
     documentKey = documentUrl.split("?")[0]; // Remove query parameters
