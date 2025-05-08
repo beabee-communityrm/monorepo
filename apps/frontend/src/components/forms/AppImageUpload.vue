@@ -81,7 +81,7 @@ const rawImageUrl = ref(props.modelValue);
 const formError = ref('');
 
 // Computed property for the displayed image URL
-const imageUrl = computed(() => resolveImageUrl(rawImageUrl.value));
+const imageUrl = computed(() => resolveImageUrl(rawImageUrl.value as string));
 
 // Generate unique ID for aria attributes
 const id = computed(

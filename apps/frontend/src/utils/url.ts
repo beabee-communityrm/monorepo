@@ -11,7 +11,7 @@ import { isAbsoluteUrl } from '@beabee/beabee-common';
  * @param width - The width of the image to be resolved.
  * @returns The resolved, absolute image URL or an empty string.
  */
-export function resolveImageUrl(url: unknown, width?: number): string {
+export function resolveImageUrl(url: string | URL, width?: number): string {
   if (!url || typeof url !== 'string') {
     return '';
   }
