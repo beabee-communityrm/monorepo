@@ -98,11 +98,6 @@ services:
       - "${BEABEE_MINIO_PORT_CONSOLE:-9001}:9001"  # Console port (Admin UI), not for production
     volumes:
       - minio_data:/data
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
-      interval: 30s
-      timeout: 20s
-      retries: 3
     environment:
       # Map our BEABEE_ prefixed vars to what MinIO expects
       MINIO_ROOT_USER: ${BEABEE_MINIO_ROOT_USER:-minioadmin}
