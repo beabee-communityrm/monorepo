@@ -78,6 +78,7 @@ export default class BeabeeStorage {
   }
 
   async deleteFile() {
+    // TODO: https://github.com/beabee-communityrm/monorepo/issues/181
     throw new Error('Not implemented');
   }
 

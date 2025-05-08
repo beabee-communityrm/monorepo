@@ -9,6 +9,7 @@ export * from "./DuplicateEmailError";
 export * from "./DuplicateId";
 export * from "./DuplicateTagNameError";
 export * from "./ExternalEmailTemplate";
+export * from "./FileTooLargeError";
 export * from "./InvalidCalloutResponse";
 export * from "./InvalidRuleError";
 export * from "./NoPaymentMethod";
