@@ -1500,7 +1500,7 @@
   },
   "tagEditor": {
     "confirmDelete": {
-      "text_contact": "illst du den Tag wirklich weg machen? Der Tag \"{tagName}\" ist dann auch bei den Menschen weg.",
+      "text_contact": "Willst du den Tag wirklich weg machen? Der Tag \"{tagName}\" ist dann auch bei den Menschen weg.",
       "text_global": "Willst du den Tag \"{tagName}\" wirklich weg machen?",
       "text_response": "Willst du den Tag \"{tagName}\" wirklich weg machen?",
       "title": "Tag weg machen"
