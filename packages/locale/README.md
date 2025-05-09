@@ -74,6 +74,8 @@ We welcome translations in both directions:
 
 [Weblate](https://weblate.org/) provides a user-friendly interface for translating strings without needing to understand the technical details:
 
+For detailed instructions on how to use Weblate, check the [official Weblate documentation](https://docs.weblate.org/en/latest/user/translating.html). The documentation is available in many languages - you can change the language using the language selector.
+
 1. **Browse to Translation Projects**: Select the Beabee project and choose the component you want to translate.
 2. **Choose Your Language**: Select the language you want to translate to.
 3. **Start Translating**: You'll see a list of strings that need translation. Click on each string to provide a translation.
