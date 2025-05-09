@@ -66,6 +66,10 @@ We welcome translations in both directions:
 
 ### Getting Started with Translations
 
+<a href="https://hosted.weblate.org/engage/beabee/">
+<img src="https://hosted.weblate.org/widget/beabee/platform/open-graph.png" alt="translation status" />
+</a>
+
 #### Using Weblate
 
 [Weblate](https://weblate.org/) provides a user-friendly interface for translating strings without needing to understand the technical details:
