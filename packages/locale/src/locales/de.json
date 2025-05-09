@@ -793,8 +793,8 @@
     },
     "calloutReviewerManager": {
         "confirmDelete": {
-            "text": "",
-            "title": ""
+            "text": "Sind Sie sicher, dass Sie {reviewerName} entfernen möchten? Diese Person wird diesen Callout nicht mehr überprüfen können.",
+            "title": "Auswerter entfernen"
         },
         "add": "",
         "contact": "",
