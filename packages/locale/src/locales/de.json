@@ -1107,8 +1107,9 @@
         "required": "E-Mail-Adresse benötigt"
       },
       "file": {
-        "rateLimited": "Hochladen fehlgeschlagen: Sie haben in zu kurzer Zeit zu viele Dateien hochgeladen. Bitte warten Sie ein paar Minuten, bevor Sie es erneut versuchen.",
-        "tooBig": "Hochladen fehlgeschlagen: Die Dateigröße darf max. 20 MB betragen."
+        "rateLimited": "Hochladen fehlgeschlagen: Der Dateityp ist nicht unterstützt.",
+        "tooBig": "Hochladen fehlgeschlagen: Die Dateigröße darf max. 20 MB betragen.",
+        "unsupportedType": "Hochladen fehlgeschlagen: Sie haben in zu kurzer Zeit zu viele Dateien hochgeladen. Bitte warten Sie ein paar Minuten, bevor Sie es erneut versuchen."
       },
       "firstName": {
         "required": "Vorname benötigt"
