@@ -48,7 +48,7 @@ export async function generateTemplate(): Promise<void> {
   try {
     const srcDir = path.join(__dirname, "..", "src", "locales");
     const englishFilePath = path.join(srcDir, "en.json");
-    const templateFilePath = path.join(srcDir, "template.json");
+    const templateFilePath = path.join(__dirname, "..", "src", "template.json");
 
     console.log(`Reading English locale file from ${englishFilePath}`);
 
