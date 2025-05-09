@@ -1114,7 +1114,8 @@
       },
       "file": {
         "rateLimited": "",
-        "tooBig": ""
+        "tooBig": "",
+        "unsupportedType": ""
       },
       "firstName": {
         "required": ""

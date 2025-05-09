@@ -792,7 +792,13 @@
     "showingOf": "Antworten {start} bis {end} von {total} werden angezeigt"
   },
   "calloutReviewerManager": {
-    "confirmDelete": {}
+    "confirmDelete": {
+      "text": "",
+      "title": ""
+    },
+    "add": "",
+    "contact": "",
+    "title": ""
   },
   "calloutThanksPage": {
     "oneResponseWarning": "Bitte beacht, dass dieser Callout nur eine Antwort pro Person zulässt. Wenn du bereits teilgenommen hast, werden weitere Antworten nicht berücksichtigt."

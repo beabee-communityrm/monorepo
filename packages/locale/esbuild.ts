@@ -3,10 +3,16 @@ import { build } from "esbuild";
 import { extname, join } from "node:path";
 import { readdir, rename } from "node:fs/promises";
 import { transformExtPlugin } from "@gjsify/esbuild-plugin-transform-ext";
-import { generateTemplate } from "./tools/generate-template.ts";
+import { generateTemplate, normalizeTranslations } from "./tools/index.ts";
 
 const OUTDIR_ESM = "./dist/esm";
 const OUTDIR_CJS = "./dist/cjs";
+
+// Generate the template file based on the English locale file
+await generateTemplate();
+
+// Normalize the translations
+await normalizeTranslations();
 
 // ESM
 await build({
@@ -59,5 +65,3 @@ async function renameExtensions(directory: string) {
 }
 
 await renameExtensions(OUTDIR_CJS);
-
-await generateTemplate();

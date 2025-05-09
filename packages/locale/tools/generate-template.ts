@@ -4,8 +4,6 @@
  * This script loads the English locale file, removes all string values
  * and saves it as a template file that can be used as a starting point
  * for new translations.
- *
- * Usage: node --experimental-specifier-resolution=node --experimental-strip-types ./tools/generate-template.ts
  */
 
 import { readFile, writeFile } from "node:fs/promises";
