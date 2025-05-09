@@ -116,6 +116,18 @@ To see your translations in action:
 2. Rebuild and start the Beabee application
 3. Switch to your language
 
+## Contributor Agreement
+
+By contributing translations to the Beabee project, you agree that:
+
+1. Your contributions are submitted under the Creative Commons Attribution 4.0 International License.
+2. You have the right to submit your translations under this license.
+3. You understand that your translations will be publicly available and can be used, shared, and adapted by others according to the terms of the license.
+4. Beabee may use your translations as part of the application and related documentation.
+5. Your name or username may be credited as a contributor to the translations.
+
+This agreement helps ensure that all translations can be legally included in the Beabee project and redistributed to users.
+
 ## License
 
 All translations are licensed under the [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/)
