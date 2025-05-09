@@ -15,10 +15,16 @@ export function resolveImageUrl(url: string | URL, width?: number): string {
   if (!url || typeof url !== 'string') {
     return '';
   }
-  if (isAbsoluteUrl(url) || url.startsWith('blob:')) {
+  let urlObj: URL;
+  if (isAbsoluteUrl(url)) {
+    urlObj = new URL(url);
+  } else if (url.startsWith('blob:')) {
     return url;
+  } else if (url.startsWith(env.apiUrl)) {
+    urlObj = new URL(url, env.appUrl);
+  } else {
+    urlObj = new URL(`${env.apiUrl}/${url}`, env.appUrl);
   }
-  const urlObj = new URL(url, env.appUrl + env.apiUrl);
   if (width) {
     urlObj.searchParams.set('w', width.toString());
   }
