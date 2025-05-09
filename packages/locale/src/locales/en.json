@@ -1113,8 +1113,9 @@
         "required": "Email is required"
       },
       "file": {
-        "rateLimited": "Upload failed: you have uploaded too many files recently, please wait a few minutes before trying again",
-        "tooBig": "Upload failed: the file size must be under 20Mb"
+        "rateLimited": "Upload failed: the file type is not supported",
+        "tooBig": "Upload failed: the file size must be under 20Mb",
+        "unsupportedType": "Upload failed: you have uploaded too many files recently, please wait a few minutes before trying again"
       },
       "firstName": {
         "required": "First name is required"

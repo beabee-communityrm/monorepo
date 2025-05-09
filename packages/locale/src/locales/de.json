@@ -792,7 +792,13 @@
     "showingOf": "Antworten {start} bis {end} von {total} werden angezeigt"
   },
   "calloutReviewerManager": {
-    "confirmDelete": {}
+    "confirmDelete": {
+      "text": "Sind Sie sicher, dass Sie {reviewerName} entfernen möchten? Diese Person wird diesen Callout nicht mehr überprüfen können.",
+      "title": "Auswerter entfernen"
+    },
+    "add": "",
+    "contact": "",
+    "title": ""
   },
   "calloutThanksPage": {
     "oneResponseWarning": "Bitte beachten Sie, dass dieser Callout nur eine Antwort pro Person zulässt. Wenn Sie bereits teilgenommen haben, werden weitere Antworten nicht berücksichtigt."
@@ -1107,8 +1113,9 @@
         "required": "E-Mail-Adresse benötigt"
       },
       "file": {
-        "rateLimited": "Hochladen fehlgeschlagen: Sie haben in zu kurzer Zeit zu viele Dateien hochgeladen. Bitte warten Sie ein paar Minuten, bevor Sie es erneut versuchen.",
-        "tooBig": "Hochladen fehlgeschlagen: Die Dateigröße darf max. 20 MB betragen."
+        "rateLimited": "Hochladen fehlgeschlagen: Der Dateityp ist nicht unterstützt.",
+        "tooBig": "Hochladen fehlgeschlagen: Die Dateigröße darf max. 20 MB betragen.",
+        "unsupportedType": "Hochladen fehlgeschlagen: Sie haben in zu kurzer Zeit zu viele Dateien hochgeladen. Bitte warten Sie ein paar Minuten, bevor Sie es erneut versuchen."
       },
       "firstName": {
         "required": "Vorname benötigt"
