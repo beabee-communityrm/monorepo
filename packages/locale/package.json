@@ -13,7 +13,8 @@
     "clear": "rm -rf dist/",
     "generate": "git rev-parse --abbrev-ref HEAD | xargs -I {} yarn generate:branch {}",
     "generate:branch": "node --experimental-specifier-resolution=node --experimental-strip-types generate.ts",
-    "build": "yarn clear && node esbuild.js && tsc",
+    "build": "yarn clear && yarn build:esbuild && tsc",
+    "build:esbuild": "node --experimental-specifier-resolution=node --experimental-strip-types esbuild.ts",
     "check": "tsc --noEmit"
   },
   "devDependencies": {

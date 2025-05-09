@@ -3,6 +3,7 @@ import { build } from "esbuild";
 import { extname, join } from "node:path";
 import { readdir, rename } from "node:fs/promises";
 import { transformExtPlugin } from "@gjsify/esbuild-plugin-transform-ext";
+import { generateTemplate } from "./tools/generate-template.ts";
 
 const OUTDIR_ESM = "./dist/esm";
 const OUTDIR_CJS = "./dist/cjs";
@@ -31,18 +32,18 @@ await build({
 
 // The JSON locale files need to be available to both module formats, but also
 // in the types directory so they can be used to generate static types
-for (const outdir of [OUTDIR_ESM, OUTDIR_CJS, './dist/types']) {
+for (const outdir of [OUTDIR_ESM, OUTDIR_CJS, "./dist/types"]) {
   await build({
     entryPoints: ["./src/**/*.json"],
     outdir,
     bundle: false,
     loader: {
-      ".json": "copy"
-    }
-  })
+      ".json": "copy",
+    },
+  });
 }
 
-async function renameExtensions(directory) {
+async function renameExtensions(directory: string) {
   for await (const dirEntry of await readdir(directory, {
     withFileTypes: true,
   })) {
@@ -58,3 +59,5 @@ async function renameExtensions(directory) {
 }
 
 await renameExtensions(OUTDIR_CJS);
+
+await generateTemplate();
