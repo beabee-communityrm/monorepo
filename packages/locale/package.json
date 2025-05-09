@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "type": "module",
   "homepage": "https://github.com/beabee-communityrm/monorepo/tree/main/packages/locale",
+  "license": "CC-BY-4.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/beabee-communityrm/monorepo/tree/main/packages/locale"
