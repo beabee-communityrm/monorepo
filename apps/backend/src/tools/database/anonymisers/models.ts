@@ -135,9 +135,11 @@ function createComponentAnonymiser(
         return chance.date().toISOString();
       case CalloutComponentType.INPUT_EMAIL:
         return chance.email({ domain: "example.com", length: 10 });
+      // TODO: Add support for a general placeholder image?
       case CalloutComponentType.INPUT_FILE:
         return {
-          url: "https://placehold.co/600x400"
+          url: "https://placehold.co/600x400",
+          path: "images/placeholder.avif"
         } satisfies CalloutResponseAnswerFileUpload;
       case CalloutComponentType.INPUT_NUMBER:
         return chance.integer();

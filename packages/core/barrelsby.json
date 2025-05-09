@@ -1,11 +1,13 @@
 {
   "delete": true,
   "local": true,
+  "exclude": ["^.*\\.test\\.ts$"],
   "directory": [
     "./src/errors",
     "./src/models",
     "./src/services",
     "./src/type",
-    "./src/filter-handlers"
+    "./src/filter-handlers",
+    "./src/templates"
   ]
 }

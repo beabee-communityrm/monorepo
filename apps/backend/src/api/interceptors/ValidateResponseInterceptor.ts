@@ -13,13 +13,35 @@ import { validateOrReject } from "@api/utils";
 
 const log = mainLogger.child({ app: "validate-response-interceptor" });
 
+/**
+ * Interceptor to validate outgoing responses against their DTO definitions.
+ *
+ * The primary goal is to act as a safeguard against accidentally leaking data
+ * that shouldn't be exposed, especially differentiating between regular users
+ * and administrators using validation groups.
+ *
+ * It validates each item in the response content (if it's an array) or the content
+ * itself against the DTO using class-validator. Validation groups are applied based
+ * on the user's role ('admin' group for administrators).
+ *
+ * Currently, validation errors are logged but do not throw an error to the client,
+ * allowing potentially invalid responses to pass through while providing visibility
+ * into validation failures.
+ *
+ * This was initially intended as a global interceptor, applied to all routes.
+ */
 @Interceptor()
 export class ValidateResponseInterceptor implements InterceptorInterface {
   async intercept(action: Action, content: any) {
+    // Skip validation for:
+    // - undefined/null content
+    // - ServerResponse objects
+    // - Buffer objects (for binary data like images)
     if (
       content === undefined ||
       content === null ||
-      content instanceof ServerResponse
+      content instanceof ServerResponse ||
+      Buffer.isBuffer(content) // Allow file uploads without validation
     ) {
       return content;
     }

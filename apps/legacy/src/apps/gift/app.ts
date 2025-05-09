@@ -10,7 +10,7 @@ import { loginAndRedirect } from "#core/utils/contact";
 import GiftService from "@beabee/core/services/GiftService";
 import ContactsService from "@beabee/core/services/ContactsService";
 import OptionsService from "@beabee/core/services/OptionsService";
-import { wrapAsync } from "@beabee/core/utils/index";
+import { wrapAsync } from "@beabee/core/utils/express";
 
 import { GiftFlow, GiftForm } from "@beabee/core/models";
 

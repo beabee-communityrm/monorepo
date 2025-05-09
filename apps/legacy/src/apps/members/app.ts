@@ -5,7 +5,7 @@ import queryString from "query-string";
 import { getRepository } from "@beabee/core/database";
 import { isAdmin } from "#core/middleware";
 import { userToAuth } from "#core/utils/index";
-import { wrapAsync } from "@beabee/core/utils/index";
+import { wrapAsync } from "@beabee/core/utils/express";
 
 import OptionsService from "@beabee/core/services/OptionsService";
 import SegmentService from "@beabee/core/services/SegmentService";

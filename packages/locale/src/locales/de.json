@@ -1108,7 +1108,8 @@
       },
       "file": {
         "rateLimited": "Hochladen fehlgeschlagen: Sie haben in zu kurzer Zeit zu viele Dateien hochgeladen. Bitte warten Sie ein paar Minuten, bevor Sie es erneut versuchen.",
-        "tooBig": "Hochladen fehlgeschlagen: Die Dateigröße darf max. 20 MB betragen."
+        "tooBig": "Hochladen fehlgeschlagen: Die Dateigröße darf max. 20 MB betragen.",
+        "unsupportedType": "Hochladen fehlgeschlagen: Der Dateityp ist nicht unterstützt."
       },
       "firstName": {
         "required": "Vorname benötigt"

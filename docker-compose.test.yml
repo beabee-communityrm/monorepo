@@ -45,12 +45,13 @@ services:
       - .env
       - .env.test
 
-  img_upload_app:
+  minio:
     extends:
       file: docker-compose.yml
-      service: img_upload_app
-    environment:
-      URL: ${BEABEE_AUDIENCE}/uploads/
+      service: minio
+    ports:
+      - "${BEABEE_MINIO_PORT_ADMIN:-9002}:9000" # Admin port for debugging, not for production
+      - "${BEABEE_MINIO_PORT_CONSOLE:-9003}:9001" # Console port (Admin UI), not for production
 
   frontend:
     extends:
@@ -64,9 +65,6 @@ services:
     extends:
       file: docker-compose.yml
       service: app_router
-    environment:
-      LEGACY_APP_COOKIE_DOMAIN: ${BEABEE_COOKIE_DOMAIN}
-      TRUSTED_ORIGINS: ${BEABEE_TRUSTEDORIGINS-}
     ports:
       - ${ROUTER_PORT}:80
 
@@ -89,3 +87,4 @@ services:
 volumes:
   db_data:
   upload_data:
+  minio_data:

@@ -11,7 +11,7 @@ import { In } from "typeorm";
 
 import { getRepository } from "@beabee/core/database";
 import { runApp } from "@beabee/core/server";
-import { normalizeEmailAddress } from "@beabee/core/utils/index";
+import { normalizeEmailAddress } from "@beabee/core/utils/email";
 
 import ContactsService from "@beabee/core/services/ContactsService";
 

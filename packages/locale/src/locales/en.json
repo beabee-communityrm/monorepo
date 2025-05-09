@@ -1114,7 +1114,8 @@
       },
       "file": {
         "rateLimited": "Upload failed: you have uploaded too many files recently, please wait a few minutes before trying again",
-        "tooBig": "Upload failed: the file size must be under 20Mb"
+        "tooBig": "Upload failed: the file size must be under 20Mb",
+        "unsupportedType": "Upload failed: the file type is not supported"
       },
       "firstName": {
         "required": "First name is required"

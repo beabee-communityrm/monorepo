@@ -1,9 +1,11 @@
 // Copyright by https://github.com/date-fns/date-fns/blob/main/src/parseISO/index.ts
 // MIT License
 
-import { millisecondsInHour, millisecondsInMinute } from "../constants.js";
-
-import type { ParseISOOptions } from "@beabee/beabee-common";
+import {
+  MILLISECONDS_IN_HOUR,
+  MILLISECONDS_IN_MINUTE,
+  type ParseISOOptions
+} from "@beabee/beabee-common";
 
 /**
  * @name parseISO
@@ -226,7 +228,9 @@ function parseTime(timeString: string): number {
   }
 
   return (
-    hours * millisecondsInHour + minutes * millisecondsInMinute + seconds * 1000
+    hours * MILLISECONDS_IN_HOUR +
+    minutes * MILLISECONDS_IN_MINUTE +
+    seconds * 1000
   );
 }
 
@@ -248,7 +252,9 @@ function parseTimezone(timezoneString: string): number {
     return NaN;
   }
 
-  return sign * (hours * millisecondsInHour + minutes * millisecondsInMinute);
+  return (
+    sign * (hours * MILLISECONDS_IN_HOUR + minutes * MILLISECONDS_IN_MINUTE)
+  );
 }
 
 function dayOfISOWeekYear(

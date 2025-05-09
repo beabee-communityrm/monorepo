@@ -2,7 +2,7 @@ import { RESET_SECURITY_FLOW_TYPE } from "@beabee/beabee-common";
 
 import { createQueryBuilder, getRepository } from "#database";
 import { log as mainLogger } from "#logging";
-import { formatEmailBody } from "#utils/email";
+import { formatEmailBody } from "#templates/email";
 
 import OptionsService from "#services/OptionsService";
 import ResetSecurityFlowService from "#services/ResetSecurityFlowService";

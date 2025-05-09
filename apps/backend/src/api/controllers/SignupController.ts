@@ -22,7 +22,7 @@ import {
 } from "@api/dto/SignupFlowDto";
 import { SignupConfirmEmailParams } from "@api/params/SignupConfirmEmailParams";
 import ContactTransformer from "@api/transformers/ContactTransformer";
-import { login } from "@api/utils";
+import { login } from "@api/utils/auth";
 
 import { JoinFlow, Password } from "@beabee/core/models";
 

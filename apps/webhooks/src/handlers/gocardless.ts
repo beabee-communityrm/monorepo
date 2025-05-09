@@ -4,7 +4,7 @@ import express, { type Express, type Request, type Response } from "express";
 import { log as mainLogger } from "@beabee/core/logging";
 import gocardless from "@beabee/core/lib/gocardless";
 import { GoCardlessWebhookEventHandler } from "@beabee/core/lib/gocardless-webhook-event-handler";
-import { wrapAsync } from "@beabee/core/utils/index";
+import { wrapAsync } from "@beabee/core/utils/express";
 
 const log = mainLogger.child({ app: "webhook-gocardless" });
 

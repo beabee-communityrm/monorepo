@@ -32,7 +32,7 @@ meta:
             :url="`/callouts/${callout.slug}`"
           />
         </div>
-        <img class="mb-6 w-full" :src="callout.image" />
+        <img class="mb-6 w-full" :src="imageUrl" />
         <div class="content-message mb-6 text-lg" v-html="callout.intro" />
       </template>
 
@@ -102,8 +102,10 @@ import CalloutThanksBox from '@components/pages/callouts/CalloutThanksBox.vue';
 import AppMessageBox from '@components/AppMessageBox.vue';
 import AppHeading from '@components/AppHeading.vue';
 import AppTitle from '@components/AppTitle.vue';
-
+import noImage from '@assets/images/no-image.avif';
+import { resolveImageUrl } from '@utils/url';
 import { client } from '@utils/api';
+
 import { GetCalloutResponseWith } from '@beabee/beabee-common';
 import { formatLocale } from '@utils/dates';
 
@@ -161,6 +163,9 @@ const isPreview = computed(
   () => route.query.preview === null && canAdmin.value
 );
 const isRespondPage = computed(() => isEmbed || props.respond);
+const imageUrl = computed(() => {
+  return props.callout.image ? resolveImageUrl(props.callout.image) : noImage;
+});
 
 const { isOpen, showLoginPrompt, showMemberOnlyPrompt } = useCallout(
   toRef(props, 'callout')

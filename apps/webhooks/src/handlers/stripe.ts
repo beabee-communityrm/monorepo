@@ -4,7 +4,7 @@ import express, { type Express } from "express";
 import { log as mainLogger } from "@beabee/core/logging";
 import { stripe } from "@beabee/core/lib/stripe";
 import { StripeWebhookEventHandler } from "@beabee/core/lib/stripe-webhook-event-handler";
-import { wrapAsync } from "@beabee/core/utils/index";
+import { wrapAsync } from "@beabee/core/utils/express";
 
 import config from "@beabee/core/config";
 

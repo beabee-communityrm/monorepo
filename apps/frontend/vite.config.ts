@@ -88,7 +88,7 @@ export default ({ command, mode }) => {
       port: Number(env.VITE_DEV_SERVER_PORT || 3000),
       // Proxy API requests to the backend
       proxy: {
-        '^/(api|login|upload|uploads|favicon.png)': {
+        '^/(api|login|favicon.png)': {
           target: env.APP_BASE_URL,
           changeOrigin: true,
           cookieDomainRewrite: 'localhost',
