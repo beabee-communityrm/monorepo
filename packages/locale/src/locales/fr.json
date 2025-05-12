@@ -1,16 +1,16 @@
 {
   "accountPage": {
-    "contactInformation": "",
-    "deliveryAddress": "",
+    "contactInformation": "Coordonnées",
+    "deliveryAddress": "Adresse de livraison",
     "deliveryOptIn": "",
-    "loginDetail": "",
+    "loginDetail": "Données de connexion",
     "mfa": {
       "codeInput": {
-        "info": "",
-        "label": ""
+        "info": "Si vous avez perdu votre appareil A2F, veuillez contacter l'assistance",
+        "label": "Code"
       },
       "confirmDelete": {
-        "desc": "",
+        "desc": "Êtes-vous sûr·e de vouloir désactiver l'authentification multifacteur ? À partir de maintenant, vous n'aurez besoin que de votre mot de passe pour vous connecter. N'oubliez pas de supprimer l'entrée de votre application Authenticator. Vous pouvez toujours la réactiver.",
         "descToken": "",
         "title": ""
       },
@@ -44,7 +44,7 @@
     "newsletter": {
       "cantUpdate": "",
       "currentStatus": {
-        "cleaned": "",
+        "cleaned": "Ce contact a été retiré de votre liste infolettre, son adresse courriel a probablement rebondi.",
         "none": "",
         "pending": "",
         "subscribed": "",
@@ -91,40 +91,40 @@
     "resetPassword": "",
     "respond": "",
     "revertToDraft": "",
-    "save": "",
-    "saveAndAnother": "",
-    "saveDraft": "",
-    "schedule": "",
-    "search": "",
-    "sendEmails": "",
-    "share": "",
-    "skip": "",
-    "submit": "",
-    "unpublish": "",
-    "update": "",
-    "view": "",
-    "yesDelete": "",
-    "yesDisable": "",
-    "yesRemove": ""
+    "save": "Enregistrer",
+    "saveAndAnother": "Enregistrer et en ajouter un autre",
+    "saveDraft": "Enregistrer le brouillon",
+    "schedule": "Planifier",
+    "search": "Rechercher",
+    "sendEmails": "Envoyer des courriels",
+    "share": "Partager",
+    "skip": "Ignorer",
+    "submit": "Soumettre",
+    "unpublish": "Dépublier",
+    "update": "Mettre à jour",
+    "view": "Visualiser",
+    "yesDelete": "Oui, supprimer",
+    "yesDisable": "Oui, désactiver",
+    "yesRemove": "Oui, retirer"
   },
   "addContact": {
-    "contactSaved": "",
+    "contactSaved": "Contact enregistré",
     "errors": {
-      "duplicateEmail": ""
+      "duplicateEmail": "Cette adresse courriel existe déjà"
     },
-    "subscribeToNewsletter": "",
-    "title": ""
+    "subscribeToNewsletter": "Synchroniser avec l'outil d'infolettre",
+    "title": "Ajouter un contact"
   },
   "addNotice": {
     "form": {
-      "buttonText": "",
-      "expirationDateAndTime": "",
-      "name": "",
-      "startDateAndTime": "",
-      "text": "",
-      "url": ""
+      "buttonText": "Texte du bouton",
+      "expirationDateAndTime": "Date et heure d'expiration",
+      "name": "Nom",
+      "startDateAndTime": "Date et heure de début",
+      "text": "Texte",
+      "url": "URL"
     },
-    "title": ""
+    "title": "Ajouter un avis"
   },
   "adminDashboard": {
     "hint1": "",
@@ -172,11 +172,11 @@
       "showingOf": ""
     },
     "email": {
-      "fromEmail": "",
+      "fromEmail": "Depuis le courriel",
       "fromName": "",
-      "label": "",
-      "text": "",
-      "title": ""
+      "label": "Courriel",
+      "text": "Toute communication par courriel sera envoyée à partir de cette adresse électronique.",
+      "title": "Définir une adresse courriel générale"
     },
     "general": {
       "footer": {
@@ -187,38 +187,38 @@
           "title": ""
         },
         "otherLinks": {
-          "add": "",
-          "linkText": "",
-          "title": "",
-          "url": ""
+          "add": "Ajouter un autre lien",
+          "linkText": "Texte du lien",
+          "title": "Autres liens",
+          "url": "URL"
         },
-        "siteUrl": "",
+        "siteUrl": "URL du site Web principal",
         "text": "",
         "title": ""
       },
       "label": "",
-      "language": "",
-      "logo": "",
-      "organisationName": "",
+      "language": "Langue",
+      "logo": "Logo",
+      "organisationName": "Nom de l'organisation",
       "socialSharing": {
-        "description": "",
-        "image": "",
-        "shareTitle": "",
+        "description": "Partager la description",
+        "image": "Partager l'image",
+        "shareTitle": "Partager le titre",
         "text": "",
         "title": "",
         "twitterHandle": ""
       }
     },
     "payment": {
-      "paymentTitle": "",
-      "taxRate": "",
-      "taxRateEnabled": ""
+      "paymentTitle": "Paiement",
+      "taxRate": "Taux de la TVA",
+      "taxRateEnabled": "Activer la TVA"
     },
     "theme": {
-      "bodyFont": "",
+      "bodyFont": "Texte",
       "colorNames": {
-        "body": "",
-        "danger": "",
+        "body": "Couleur du texte",
+        "danger": "Danger",
         "link": "",
         "primary": "",
         "success": "",
