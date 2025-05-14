@@ -1,10 +1,12 @@
 /**
- * Script to load locale data from a Google sheet
+ * Deprecated script to load locale data from a Google sheet
  *
  * Run: `yarn generate` to generate a locale for the current branch.
  * Run: `yarn generate:branch [sheet name]` to generate a locale for a branch of your choice.
  *
  * Column headers should be locale codes, codes that start with an exclamation mark (!) are ignored.
+ * Special columns:
+ * - !usage: Contains metadata about where the translation is used (User, Admin, CNR)
  *
  * The script can optional load a second sheet to overwrite the main sheet, we add a new sheet for a
  * branch so changes for different features are kept separate.
@@ -38,7 +40,7 @@ const optHandlers = {
 };
 
 const auth = new google.auth.GoogleAuth({
-  keyFile: path.join(__dirname, ".credentials.json"),
+  keyFile: path.join(__dirname, "../.credentials.json"),
   scopes: ["https://www.googleapis.com/auth/spreadsheets.readonly"],
 });
 
@@ -46,6 +48,7 @@ const sheets = google.sheets({ version: "v4", auth });
 
 const localeData = {};
 const localeConfig = {};
+const metadataUsage = {};
 
 function processKeyData(keyOpts, keyData) {
   if (keyData) {
@@ -93,7 +96,7 @@ async function loadSheet(name) {
     }
   }
 
-  // Construct nested objects from a.b.c key paths
+  // Construct nested objects from a.b.c key paths and collect metadata
   for (const row of rows) {
     let isConfig = false;
     if (row.key.startsWith("_")) {
@@ -103,6 +106,13 @@ async function loadSheet(name) {
 
     const keyParts = row.key.split(".");
     const [lastKeyPart, ...keyOpts] = keyParts.pop().split(":");
+
+    // Store usage metadata if present
+    const usage = row["!usage"];
+    if (usage && ["User", "Admin", "CNR", "System"].includes(usage)) {
+      const fullKey = [...keyParts, lastKeyPart].join(".");
+      metadataUsage[fullKey] = usage;
+    }
 
     for (const locale of locales) {
       let localeDataPart = isConfig ? localeConfig[locale] : localeData[locale];
@@ -136,7 +146,7 @@ function sortObject(obj) {
 
 function saveFile(name: string, data: string) {
   console.log("Updating " + name);
-  const filePath = path.join(__dirname, "./src/", name);
+  const filePath = path.join(__dirname, "../", name);
   const dirPath = path.dirname(filePath);
 
   // Create directory if it doesn't exist
@@ -176,7 +186,7 @@ export async function generateLocales() {
   await loadSheet("Sheet1");
 
   for (const branch of process.argv.slice(2)) {
-    if (branch !== 'main') {
+    if (branch !== "main") {
       await loadSheet(branch);
     }
   }
@@ -184,11 +194,18 @@ export async function generateLocales() {
   let localesIndex = "";
   for (const locale in localeData) {
     const localeName = toCamelCase(locale);
-    saveJsonFile("./locales/" + locale, sortObject(localeData[locale]));
+    saveJsonFile("./deprecated/" + locale, sortObject(localeData[locale]));
     localesIndex += `import ${localeName} from './${locale}.json'; export { ${localeName} };\n`;
   }
-  saveTsFile("./locales/index", localesIndex);
-  saveJsonFile("./config", localeConfig);
+  saveTsFile("./deprecated/index", localesIndex);
+  saveJsonFile("./deprecated/config", localeConfig);
+
+  // Save metadata usage information
+  saveTsFile(
+    "./tools/metadata-usage",
+    `// This file is temporary used for metadata sync to Weblate and can be removed after sync\n` +
+      `export const metadataUsage = ${JSON.stringify(sortObject(metadataUsage), null, 2)};`,
+  );
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {

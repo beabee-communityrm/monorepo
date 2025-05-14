@@ -9,8 +9,7 @@
     "baseLocale": "de",
     "name": "Deutsch (formal)",
     "displayName": "Deutsch",
-    "adminLocale": "de",
-    "fallbackLocale": "en"
+    "adminLocale": "de"
   },
   "de@informal": {
     "baseLocale": "de",
@@ -30,28 +29,30 @@
     "baseLocale": "nl",
     "name": "Nederlands",
     "displayName": "Nederlands",
-    "adminLocale": "nl",
-    "fallbackLocale": "en"
+    "adminLocale": "nl"
   },
   "pt": {
     "baseLocale": "pt",
     "name": "Português",
     "displayName": "Português",
-    "adminLocale": "en",
-    "fallbackLocale": "en"
+    "adminLocale": "en"
   },
   "it": {
     "baseLocale": "it",
     "name": "Italiano",
     "displayName": "Italiano",
-    "adminLocale": "en",
-    "fallbackLocale": "en"
+    "adminLocale": "en"
   },
   "ru": {
     "baseLocale": "ru",
     "name": "Русский",
     "displayName": "Русский",
-    "adminLocale": "en",
-    "fallbackLocale": "en"
+    "adminLocale": "en"
+  },
+  "fr": {
+    "baseLocale": "fr",
+    "name": "Français",
+    "displayName": "Français",
+    "adminLocale": "en"
   }
 }
