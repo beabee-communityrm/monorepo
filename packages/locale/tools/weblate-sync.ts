@@ -21,14 +21,19 @@ config({ path: join(__dirname, "../.env") });
  * Defines a mapping of known Weblate label names to their corresponding Weblate label IDs.
  * The keys (e.g., "User", "Admin") are used to validate label strings sourced from the metadata.
  * The IDs are for reference or potential future use with other Weblate API endpoints if needed.
- * When updating labels on a unit via PATCH /api/units/(int:id)/, Weblate expects an array of label *names* (strings).
+ * When updating labels on a unit via PATCH /api/units/(int:id)/, Weblate expects an array of label *IDs* (numbers).
  */
-const WeblateLabels = {
+const WeblateLabels: Record<string, number> = {
   User: 802,
   Admin: 803,
   CNR: 804,
   System: 805,
 };
+
+// Reverse mapping from ID to Name for processing existing labels from Weblate
+const WeblateLabelIdToName: Record<number, string> = Object.fromEntries(
+  Object.entries(WeblateLabels).map(([name, id]) => [id, name]),
+);
 
 interface WeblateConfig {
   apiUrl: string;
@@ -220,29 +225,87 @@ class WeblateSync {
       }
 
       if (this.usageData[key]) {
-        const rawExistingLabels = unit.labels || [];
-        const existingLabels: string[] = rawExistingLabels
-          .map((label: unknown) => {
-            if (typeof label === "string") {
-              return label;
-            }
-            if (
-              typeof label === "object" &&
-              label !== null &&
-              "name" in label &&
-              typeof (label as { name: unknown }).name === "string"
-            ) {
-              return (label as { name: string }).name;
-            }
-            const message = `Unit ${unit.id} (context: ${key}): Encountered an unexpected structure in existing labels from Weblate: ${JSON.stringify(label)}. This label will be ignored.`;
-            if (this.config.dryRun) {
-              console.log(`[DRY RUN] ${message}`);
+        // Ensure existingLabels are strings, handling potential objects from API
+        const rawExistingWeblateLabels = unit.labels || [];
+        const existingLabelNames: string[] = rawExistingWeblateLabels
+          .map((labelInfo: unknown) => {
+            if (typeof labelInfo === "number") {
+              // Weblate might send an array of IDs
+              const name = WeblateLabelIdToName[labelInfo];
+              if (name) {
+                return name;
+              } else {
+                console.warn(
+                  `[Sync Metadata] Unit ${unit.id} (context: ${key}): Found unknown label ID ${labelInfo} from Weblate. Ignoring.`,
+                );
+                return null;
+              }
+            } else if (typeof labelInfo === "string") {
+              // Weblate might send an array of names (less likely for existing labels if IDs are primary)
+              if (WeblateLabels[labelInfo as keyof typeof WeblateLabels]) {
+                return labelInfo;
+              } else {
+                console.warn(
+                  `[Sync Metadata] Unit ${unit.id} (context: ${key}): Found unknown label name "${labelInfo}" from Weblate. Ignoring.`,
+                );
+                return null;
+              }
+            } else if (typeof labelInfo === "object" && labelInfo !== null) {
+              // Weblate might send an array of objects e.g. {id: 802, name: "User"}
+              let id: number | undefined;
+              let name: string | undefined;
+              if (
+                "id" in labelInfo &&
+                typeof (labelInfo as { id: unknown }).id === "number"
+              ) {
+                id = (labelInfo as { id: number }).id;
+              }
+              if (
+                "name" in labelInfo &&
+                typeof (labelInfo as { name: unknown }).name === "string"
+              ) {
+                name = (labelInfo as { name: string }).name;
+              }
+
+              if (
+                name &&
+                WeblateLabels[name as keyof typeof WeblateLabels] !== undefined
+              ) {
+                // If name is present and valid, prefer it
+                if (
+                  id !== undefined &&
+                  WeblateLabels[name as keyof typeof WeblateLabels] !== id
+                ) {
+                  console.warn(
+                    `[Sync Metadata] Unit ${unit.id} (context: ${key}): Label object from Weblate has conflicting ID (${id}) and name ("${name}"). Trusting name if valid. WeblateLabels has ID ${WeblateLabels[name as keyof typeof WeblateLabels]} for this name.`,
+                  );
+                }
+                return name;
+              } else if (id !== undefined) {
+                // If name is not present or not valid, try ID
+                const nameFromId = WeblateLabelIdToName[id];
+                if (nameFromId) {
+                  return nameFromId;
+                } else {
+                  console.warn(
+                    `[Sync Metadata] Unit ${unit.id} (context: ${key}): Found label object with unknown ID ${id} from Weblate. Ignoring.`,
+                  );
+                  return null;
+                }
+              } else {
+                console.warn(
+                  `[Sync Metadata] Unit ${unit.id} (context: ${key}): Found label with unrecognised object structure from Weblate: ${JSON.stringify(labelInfo)}. Ignoring.`,
+                );
+                return null;
+              }
             } else {
-              console.warn(`[Sync Metadata] ${message}`);
+              console.warn(
+                `[Sync Metadata] Unit ${unit.id} (context: ${key}): Found label with unrecognised type from Weblate: ${typeof labelInfo}. Ignoring.`,
+              );
+              return null;
             }
-            return null;
           })
-          .filter((labelName): labelName is string => labelName !== null);
+          .filter((name): name is string => name !== null);
 
         const labelStringsFromMetadata = this.usageData[key]
           .split(",")
@@ -278,42 +341,54 @@ class WeblateSync {
           }
         }
 
-        const labelsToSet = Array.from(
-          new Set([...existingLabels, ...newLabelsToApply]),
+        // Combine existing names with new names from metadata to get the final desired set of names
+        const finalDesiredLabelNames = Array.from(
+          new Set([...existingLabelNames, ...newLabelsToApply]),
         );
 
+        // Sort both arrays of names for consistent comparison
+        const sortedFinalDesiredNames = [...finalDesiredLabelNames].sort();
+        const sortedExistingNames = [...existingLabelNames].sort();
+
         if (
-          JSON.stringify(labelsToSet.sort()) !==
-          JSON.stringify(existingLabels.sort())
+          JSON.stringify(sortedFinalDesiredNames) !==
+          JSON.stringify(sortedExistingNames)
         ) {
+          // Convert the final list of desired label names to IDs for sending to Weblate
           const labelIdsToSend: number[] = [];
-          for (const name of labelsToSet) {
+          for (const name of finalDesiredLabelNames) {
             const id = WeblateLabels[name as keyof typeof WeblateLabels];
+            // This ID should always be found because newLabelsToApply are pre-filtered
+            // and existingLabelNames are also derived from WeblateLabels/WeblateLabelIdToName
             if (id !== undefined) {
               labelIdsToSend.push(id);
             } else {
-              const message = `Cannot map label name "${name}" to an ID for unit ${unit.id} (context: ${key}). It will be omitted from the update. Please ensure all desired labels are defined in WeblateLabels.`;
-              if (this.config.dryRun) {
-                console.log(`[DRY RUN] [Sync Metadata] ${message}`);
-              } else {
-                console.warn(`[Sync Metadata] ${message}`);
-              }
+              // This case should ideally not be reached if logic is correct
+              console.warn(
+                `[Sync Metadata] Unit ${unit.id} (context: ${key}): Could not map final desired label name "${name}" to an ID. This should not happen. Skipping this label for a L P I update.`,
+              );
             }
           }
 
           if (this.config.dryRun) {
             console.log(
-              `[DRY RUN] Unit ${unit.id} (context: ${key}): Current names: ${existingLabels.join(", ") || "[]"}. Desired names: ${labelsToSet.join(", ")}. Would update with Label IDs: ${labelIdsToSend.join(", ")}`,
+              `[DRY RUN] Unit ${unit.id} (context: ${key}): Current names: ${existingLabelNames.join(", ") || "[]"}. Desired names: ${finalDesiredLabelNames.join(", ")}. Would update with Label IDs: ${labelIdsToSend.join(", ")}`,
             );
           } else {
             console.log(
-              `Unit ${unit.id} (context: ${key}): Current names: ${existingLabels.join(", ") || "[]"}. Desired names: ${labelsToSet.join(", ")}. Updating with Label IDs: ${labelIdsToSend.join(", ")}`,
+              `Unit ${unit.id} (context: ${key}): Current names: ${existingLabelNames.join(", ") || "[]"}. Desired names: ${finalDesiredLabelNames.join(", ")}. Updating with Label IDs: ${labelIdsToSend.join(", ")}`,
             );
-            if (labelIdsToSend.length > 0 || labelsToSet.length === 0) {
+            if (
+              labelIdsToSend.length > 0 ||
+              finalDesiredLabelNames.length === 0
+            ) {
               await this.updateUnitLabels(unit.id, labelIdsToSend);
-            } else if (labelsToSet.length > 0 && labelIdsToSend.length === 0) {
+            } else if (
+              finalDesiredLabelNames.length > 0 &&
+              labelIdsToSend.length === 0
+            ) {
               console.warn(
-                `[Sync Metadata] Unit ${unit.id} (context: ${key}): All desired label names (${labelsToSet.join(", ")}) could not be mapped to IDs. No update sent.`,
+                `[Sync Metadata] Unit ${unit.id} (context: ${key}): All desired label names (${finalDesiredLabelNames.join(", ")}) could not be mapped to IDs. No update sent.`,
               );
             }
           }
@@ -321,7 +396,7 @@ class WeblateSync {
         } else {
           if (this.config.dryRun) {
             console.log(
-              `[DRY RUN] Unit ${unit.id} (context: ${key}): Labels are already up-to-date (${existingLabels.join(", ")}).`,
+              `[DRY RUN] Unit ${unit.id} (context: ${key}): Labels are already up-to-date (${existingLabelNames.join(", ")}).`,
             );
           } else {
             console.log(
