@@ -9,42 +9,49 @@
     "baseLocale": "de",
     "name": "Deutsch (formal)",
     "displayName": "Deutsch",
-    "adminLocale": "de"
+    "adminLocale": "de",
+    "fallbackLocale": "en"
   },
   "de@informal": {
     "baseLocale": "de",
     "name": "Deutsch (informal)",
     "displayName": "Deutsch",
-    "adminLocale": "de@informal"
-  },
-  "nl": {
-    "baseLocale": "nl",
-    "name": "Nederlands",
-    "displayName": "Nederlands",
-    "adminLocale": "nl"
-  },
-  "pt": {
-    "baseLocale": "pt",
-    "name": "Português",
-    "displayName": "Português",
-    "adminLocale": "en"
-  },
-  "it": {
-    "baseLocale": "it",
-    "name": "Italiano",
-    "displayName": "Italiano",
-    "adminLocale": "en"
-  },
-  "ru": {
-    "baseLocale": "ru",
-    "name": "Русский",
-    "displayName": "Русский",
-    "adminLocale": "en"
+    "adminLocale": "de@informal",
+    "fallbackLocale": "de"
   },
   "de@easy": {
     "baseLocale": "de",
     "name": "Deutsch (einfach)",
     "displayName": "Leichte Sprache",
-    "adminLocale": "de"
+    "adminLocale": "de",
+    "fallbackLocale": "de@informal"
+  },
+  "nl": {
+    "baseLocale": "nl",
+    "name": "Nederlands",
+    "displayName": "Nederlands",
+    "adminLocale": "nl",
+    "fallbackLocale": "en"
+  },
+  "pt": {
+    "baseLocale": "pt",
+    "name": "Português",
+    "displayName": "Português",
+    "adminLocale": "en",
+    "fallbackLocale": "en"
+  },
+  "it": {
+    "baseLocale": "it",
+    "name": "Italiano",
+    "displayName": "Italiano",
+    "adminLocale": "en",
+    "fallbackLocale": "en"
+  },
+  "ru": {
+    "baseLocale": "ru",
+    "name": "Русский",
+    "displayName": "Русский",
+    "adminLocale": "en",
+    "fallbackLocale": "en"
   }
 }

@@ -4,9 +4,12 @@ import { extname, join } from "node:path";
 import { readdir, rename } from "node:fs/promises";
 import { transformExtPlugin } from "@gjsify/esbuild-plugin-transform-ext";
 import { normalizeTranslations, generateTemplate } from "./tools/index.ts";
+import { localePlugin } from "./tools/esbuild-locale-plugin.ts";
 
 const OUTDIR_ESM = "./dist/esm";
 const OUTDIR_CJS = "./dist/cjs";
+const CONFIG_PATH = "./src/config.json";
+const SOURCE_LOCALES_DIR = "./src/locales";
 
 // Normalize the translations
 await normalizeTranslations();
@@ -46,6 +49,12 @@ for (const outdir of [OUTDIR_ESM, OUTDIR_CJS, "./dist/types"]) {
     loader: {
       ".json": "copy",
     },
+    plugins: [
+      localePlugin({
+        configPath: CONFIG_PATH,
+        sourceLocalesDir: SOURCE_LOCALES_DIR,
+      }),
+    ],
   });
 }
 

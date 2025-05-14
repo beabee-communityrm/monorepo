@@ -6,64 +6,43 @@
  * for new translations.
  */
 
-import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-/**
- * Recursively processes an object, emptying all string values
- * @param obj The object to process
- * @returns A new object with the same structure but empty string values
- */
-function emptyStringValues(obj: Record<string, any>): Record<string, any> {
-  const result: Record<string, any> = {};
-
-  for (const [key, value] of Object.entries(obj)) {
-    // If the value is an object, process it recursively
-    if (value !== null && typeof value === "object") {
-      result[key] = emptyStringValues(value);
-    }
-    // If the value is a string, replace it with an empty string
-    else if (typeof value === "string") {
-      result[key] = "";
-    }
-    // Otherwise, keep the value as is (for non-string primitives)
-    else {
-      result[key] = value;
-    }
-  }
-
-  return result;
-}
+import {
+  getLocalesDir,
+  readJsonFile,
+  writeJsonFile,
+  processObjectStrings,
+  handleError,
+} from "./utils.ts";
 
 /**
  * Generates a template file from the English locale file
  */
 export async function generateTemplate(): Promise<void> {
   try {
-    const srcDir = path.join(__dirname, "..", "src", "locales");
-    const englishFilePath = path.join(srcDir, "en.json");
-    const templateFilePath = path.join(__dirname, "..", "src", "template.json");
+    const localesDir = getLocalesDir();
+    const englishFilePath = path.join(localesDir, "en.json");
+    const templateFilePath = path.join(
+      path.dirname(fileURLToPath(import.meta.url)),
+      "..",
+      "src",
+      "template.json",
+    );
 
     console.log(`Reading English locale file from ${englishFilePath}`);
 
-    // Read the English locale file
-    const englishFileContent = await readFile(englishFilePath, "utf-8");
-    const englishData = JSON.parse(englishFileContent);
-
-    // Process the data to create a template
-    const templateData = emptyStringValues(englishData);
+    // Read the English locale file and process it
+    const englishData =
+      await readJsonFile<Record<string, any>>(englishFilePath);
+    const templateData = processObjectStrings(englishData, () => "");
 
     // Save the template file
-    await writeFile(templateFilePath, JSON.stringify(templateData, null, 2));
+    await writeJsonFile(templateFilePath, templateData);
 
     console.log(`Template file successfully created at ${templateFilePath}`);
   } catch (error) {
-    console.error("Error generating template file:", error);
-    throw error;
+    handleError(error, "generating template file");
   }
 }
 
