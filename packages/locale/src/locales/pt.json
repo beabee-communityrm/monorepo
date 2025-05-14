@@ -55,10 +55,10 @@
       "unsubscribe": "Suspender inscrição na newsletter"
     },
     "phoneInfo": "Ao fornecer o seu número de telefone, está a consentir ser contactado por telefone.",
+    "phoneInfoAdmin": "",
     "savedPassword": "Nova palavra-passe gravada",
     "subTitle": "Os campos obrigatórios estão marcados com asteriscos. Toda a informação enviada por aqui é privada.",
-    "title": "Conta",
-    "phoneInfoAdmin": ""
+    "title": "Conta"
   },
   "actions": {
     "add": "Adicionar",
@@ -160,12 +160,12 @@
         "text": "",
         "title": ""
       },
+      "copied": "",
+      "create": "",
       "expires": {
         "days": "",
         "never": ""
       },
-      "copied": "",
-      "create": "",
       "expiresHelp": "",
       "expiresNeverWarning": "",
       "label": "",
@@ -196,6 +196,10 @@
         "text": "",
         "title": ""
       },
+      "label": "",
+      "language": "",
+      "logo": "",
+      "organisationName": "",
       "socialSharing": {
         "description": "",
         "image": "",
@@ -203,11 +207,7 @@
         "text": "",
         "title": "",
         "twitterHandle": ""
-      },
-      "label": "",
-      "language": "",
-      "logo": "",
-      "organisationName": ""
+      }
     },
     "payment": {
       "paymentTitle": "",
@@ -215,6 +215,7 @@
       "taxRateEnabled": ""
     },
     "theme": {
+      "bodyFont": "",
       "colorNames": {
         "body": "",
         "danger": "",
@@ -223,28 +224,34 @@
         "success": "",
         "warning": ""
       },
-      "presetColors": {
-        "default": ""
-      },
-      "bodyFont": "",
       "colors": "",
       "customColors": "",
       "fontNotListed": "",
       "fonts": "",
       "label": "",
+      "presetColors": {
+        "default": ""
+      },
       "titleFont": ""
     },
     "title": ""
   },
   "advancedSearch": {
+    "addRule": "",
+    "button": "",
+    "createFiltersAfter": "",
+    "createFiltersBefore": "",
     "createFiltersType": {
       "all": "",
       "any": ""
     },
+    "createdSegment": "",
     "matchWord": {
       "AND": "",
       "OR": ""
     },
+    "nestedRules": "",
+    "noNestedRules": "",
     "operators": {
       "all": {
         "is_empty": "",
@@ -308,13 +315,6 @@
       "title": "",
       "updateSegment": ""
     },
-    "addRule": "",
-    "button": "",
-    "createFiltersAfter": "",
-    "createFiltersBefore": "",
-    "createdSegment": "",
-    "nestedRules": "",
-    "noNestedRules": "",
     "selectFilter": "",
     "updatedSegment": ""
   },
@@ -347,15 +347,18 @@
         "startEndScreens": ""
       },
       "navigation": {
+        "nextButton": "",
         "nextSlide": {
           "default": "",
           "label": ""
         },
-        "nextButton": "",
         "prevButton": "",
         "slideNo": "",
         "submitButton": ""
       },
+      "showAdvancedOptions": "",
+      "slidesTitle": "",
+      "startEndScreenTitle": "",
       "tabs": {
         "content": {
           "title": ""
@@ -363,11 +366,11 @@
         "endMessage": {
           "inputs": {
             "action": {
+              "label": "",
               "opts": {
                 "redirect": "",
                 "showMessage": ""
-              },
-              "label": ""
+              }
             },
             "text": {
               "help": "",
@@ -411,28 +414,29 @@
           },
           "inputs": {
             "collectGuestInfo": {
+              "label": "",
               "opts": {
                 "disabled": "",
                 "enabled": ""
-              },
-              "label": ""
+              }
             },
             "collectMemberInfo": {
+              "label": "",
               "opts": {
                 "disabled": "",
                 "enabled": ""
-              },
-              "label": ""
+              }
             },
             "expires": {
+              "description": "",
+              "label": "",
               "opts": {
                 "never": "",
                 "schedule": ""
-              },
-              "description": "",
-              "label": ""
+              }
             },
             "mapAndGallery": {
+              "description": "",
               "gallery": {
                 "disabledDescription": "",
                 "enabledDescription": "",
@@ -443,7 +447,6 @@
                 "enabledDescription": "",
                 "label": ""
               },
-              "description": "",
               "title": ""
             },
             "mapSchema": {
@@ -482,42 +485,44 @@
               "title": ""
             },
             "newsletterSettings": {
+              "disabled": "",
+              "label": "",
               "opts": {
                 "disabled": "",
                 "enabled": ""
-              },
-              "disabled": "",
-              "label": ""
+              }
             },
             "openToEveryone": {
+              "help": "",
+              "label": "",
               "opts": {
                 "disabled": "",
                 "enabled": ""
-              },
-              "help": "",
-              "label": ""
+              }
             },
             "requireCaptcha": {
+              "help": "",
+              "label": "",
               "members": {
+                "label": "",
                 "opts": {
                   "disabled": "",
                   "enabled": ""
-                },
-                "label": ""
+                }
               },
               "opts": {
                 "all": "",
                 "guests": "",
                 "none": ""
-              },
-              "help": "",
-              "label": ""
+              }
             },
             "responseImageProp": {
               "description": "",
               "label": ""
             },
             "responseLinks": {
+              "description": "",
+              "label": "",
               "opts": {
                 "disabled": "",
                 "enabled": ""
@@ -525,17 +530,15 @@
               "placeholder": {
                 "label": "",
                 "url": ""
-              },
-              "description": "",
-              "label": ""
+              }
             },
             "responseSettings": {
+              "label": "",
               "opts": {
                 "multiple": "",
                 "singleEditable": "",
                 "singleNonEditable": ""
               },
-              "label": "",
               "title": ""
             },
             "responseTitleProp": {
@@ -543,26 +546,26 @@
               "label": ""
             },
             "showResponses": {
+              "label": "",
               "opts": {
                 "no": "",
                 "yes": ""
-              },
-              "label": ""
+              }
             },
             "starts": {
+              "label": "",
               "opts": {
                 "now": "",
                 "schedule": ""
-              },
-              "label": ""
+              }
             },
             "visible": {
+              "help": "",
+              "label": "",
               "opts": {
                 "disabled": "",
                 "enabled": ""
-              },
-              "help": "",
-              "label": ""
+              }
             },
             "whichResponseBuckets": {
               "description": "",
@@ -587,11 +590,11 @@
               "label": ""
             },
             "overrideShare": {
+              "label": "",
               "opts": {
                 "disabled": "",
                 "enabled": ""
-              },
-              "label": ""
+              }
             },
             "shareDescription": {
               "help": "",
@@ -607,16 +610,16 @@
               "title": ""
             },
             "slug": {
+              "boxTitle": "",
+              "help": "",
+              "label": "",
               "locked": {
                 "title": ""
               },
               "opts": {
                 "auto": "",
                 "manual": ""
-              },
-              "boxTitle": "",
-              "help": "",
-              "label": ""
+              }
             },
             "title": {
               "label": "",
@@ -646,13 +649,12 @@
         "label": "",
         "option": "",
         "placeholder": ""
-      },
-      "showAdvancedOptions": "",
-      "slidesTitle": "",
-      "startEndScreenTitle": ""
+      }
     },
+    "confirmHuman": "",
     "contactDetails": "Detalhes de contacto",
     "ended": "Este callout acabou a {date}",
+    "entryOf": "",
     "form": {
       "email": "O teu email",
       "guestFieldsMissing": "Dá-nos os teus contactos",
@@ -668,6 +670,7 @@
       "address": "Podes partilhar esta chamada com este endereço:",
       "services": "Ou partilha rapidamente com uma destas plataformas:"
     },
+    "showingPreview": "",
     "toContributionPage": "Editar a minha contribuição",
     "updateContribution": "Por favor atualiza a tua contribuição",
     "views": {
@@ -675,10 +678,7 @@
       "map": "Mapa"
     },
     "youResponded": "Já respondeste a esta chamada ♥",
-    "yourResponse": "A tua resposta",
-    "confirmHuman": "",
-    "entryOf": "",
-    "showingPreview": ""
+    "yourResponse": "A tua resposta"
   },
   "calloutAdmin": {
     "deleted": "",
@@ -694,6 +694,7 @@
         "title": ""
       }
     },
+    "created": "",
     "dates": {
       "ends": "",
       "label": "",
@@ -715,14 +716,13 @@
         "message": "",
         "redirect": ""
       },
+      "label": "",
       "openTo": {
         "everyone": "",
         "label": "",
         "membersOnly": ""
-      },
-      "label": ""
+      }
     },
-    "created": "",
     "summary": "",
     "updated": ""
   },
@@ -767,6 +767,8 @@
       "viewOnMap": ""
     },
     "editMode": "Está no modo de edição, cuidado!",
+    "manageFolders": "",
+    "manageReviewers": "",
     "manageTags": "Gerir etiquetas",
     "notifications": {
       "addedAssignee": "Atribuída a {assignee}",
@@ -776,9 +778,7 @@
       "removedTag": "Etiqueta \"{tag}\" removida"
     },
     "responseOf": "Resposta {no} de um total de {total} em {bucket}",
-    "selectedCount": "{n} resposta selecionada | {n} respostas selecionadas",
-    "manageFolders": "",
-    "manageReviewers": ""
+    "selectedCount": "{n} resposta selecionada | {n} respostas selecionadas"
   },
   "calloutResponsesPage": {
     "moveToBucket": "Mover para {bucket}",
@@ -792,11 +792,11 @@
     "showingOf": "Respostas {start} a {end} de um total de {total}"
   },
   "calloutReviewerManager": {
+    "add": "",
     "confirmDelete": {
       "text": "",
       "title": ""
     },
-    "add": "",
     "contact": "",
     "title": ""
   },
@@ -816,6 +816,7 @@
     "showingOf": "Chamadas {start} a {end} de um total de {total}"
   },
   "calloutsAdmin": {
+    "addCallout": "",
     "data": {
       "expires": "",
       "responses": "",
@@ -829,8 +830,7 @@
       "ended": "",
       "open": "",
       "scheduled": ""
-    },
-    "addCallout": ""
+    }
   },
   "common": {
     "backToHome": "Voltar ao início",
@@ -914,36 +914,36 @@
     }
   },
   "contactOverview": {
+    "about": "",
+    "account": "",
     "annotation": {
       "copy": ""
     },
-    "newsletter": {
-      "groups": "Grupos",
-      "status": "",
-      "title": ""
-    },
-    "security": {
-      "mfa": {
-        "desc": "Este contato ativou o 2FA. Clica no botão \"{ disableLabel }\" para desativar.",
-        "disabledDesc": "Este contato não ativou o 2FA."
-      },
-      "instructions": "",
-      "loginOverride": "",
-      "resetPassword": "",
-      "title": "",
-      "whatDoTheButtonsDo": ""
-    },
-    "about": "",
-    "account": "",
     "callouts": "",
     "cancellationDate": "",
     "contribution": "",
     "contributionType": "",
     "joinSurvey": "",
+    "newsletter": {
+      "groups": "Grupos",
+      "status": "",
+      "title": ""
+    },
     "overview": "",
     "pickTag": "",
     "profile": "",
-    "roles": ""
+    "roles": "",
+    "security": {
+      "instructions": "",
+      "loginOverride": "",
+      "mfa": {
+        "desc": "Este contato ativou o 2FA. Clica no botão \"{ disableLabel }\" para desativar.",
+        "disabledDesc": "Este contato não ativou o 2FA."
+      },
+      "resetPassword": "",
+      "title": "",
+      "whatDoTheButtonsDo": ""
+    }
   },
   "contacts": {
     "addContact": "Adicionar contacto",
@@ -955,6 +955,7 @@
     "data": {
       "activeMembership": "Membro ativo",
       "activePermission": "Cargo ativo",
+      "activeUser": "",
       "amount": "Montante",
       "annotationsCopy": "Contacto atualizado",
       "contribution": "Contribuição",
@@ -962,6 +963,7 @@
       "contributionMonthlyAmount": "Valor mensal da contribuição",
       "contributionPeriod": "Período da contribuição",
       "contributionType": "Tipo de contributo",
+      "deliveryOptIn": "",
       "description": "Descrição",
       "email": "Email",
       "firstname": "Primeiro nome",
@@ -972,6 +974,7 @@
       "membershipExpires": "Membro até",
       "membershipStarts": "Membro desde",
       "name": "Nome",
+      "newsletterGroups": "",
       "newsletterStatus": "Assinatura da newsletter",
       "notes": "Notas",
       "payingFee": "Paga a taxa?",
@@ -980,10 +983,7 @@
       "period": "Período",
       "phone": "Telefone",
       "preferredChannel": "Canal preferido",
-      "tags": "Etiquetas",
-      "activeUser": "",
-      "deliveryOptIn": "",
-      "newsletterGroups": ""
+      "tags": "Etiquetas"
     },
     "dataGroup": {
       "callout": "Chamada",
@@ -995,8 +995,8 @@
     "noResults": "Nenhum contacto encontrado",
     "numResults": "{n} contacto encontrado | {n} contactos encontrados",
     "search": "Pesquisar contactos...",
-    "showingOf": "Contactos {start} a {end} de um total de {total}",
-    "selectedCount": ""
+    "selectedCount": "",
+    "showingOf": "Contactos {start} a {end} de um total de {total}"
   },
   "contribution": {
     "adminCancelDescription": "Se cancelares a contribuição deste contacto, a sua adesão terminará no fim deste ciclo de pagamento a {date}.",
@@ -1016,6 +1016,7 @@
     "hasPendingPayment": "O teu pagamento está agora a ser processado",
     "manualPayment": "A tua contribuição está a ser paga via {source}. Se começares a pagar através do nosso sistema de contribuições, será mais fácil para ti gerires a tua contribuição mensal e vais ajudar-nos a perceber quanto dinheiro recebemos por mês da nossa Comunidade.",
     "manualPaymentSource": "Uma ferramenta desenvolvida por outra organização",
+    "nextAmountChanging": "",
     "paymentHistory": {
       "empty": "Os pagamentos já realizados vão aparecer aqui.",
       "title": "Histórico de pagamentos"
@@ -1039,8 +1040,7 @@
     "updatedPaymentSource": "O teu método de pagamento foi atualizado.",
     "willExpire": "A tua contribuição vai expirar a {expires}.",
     "willRenew": "A tua contribuição vai renovar automaticamente a {renewalDate}.",
-    "willRenewWithNewAmount": "A tua contribuição vai renovar automaticamente a {renewalDate}, passando para a nova quantia de {nextAmount}.",
-    "nextAmountChanging": ""
+    "willRenewWithNewAmount": "A tua contribuição vai renovar automaticamente a {renewalDate}, passando para a nova quantia de {nextAmount}."
   },
   "editCallout": {
     "replicated": "",
@@ -1080,14 +1080,14 @@
       "api": {
         "account-locked": "Conta bloqueada por demasiadas tentativas de login. Faz reset da tua password ou fala connosco.",
         "duplicate-email": "Este endereço de e-mail já existe",
+        "duplicate-tag-name": "",
         "invalid-token": "Token 2FA inválido",
         "login-failed": "Combinação inválida de email e palavra-passe",
-        "mfa-token-required": "Ativaste a autenticação de dois fatores. Introduz o token da tua aplicação de autenticação para continuar.",
-        "duplicate-tag-name": ""
+        "mfa-token-required": "Ativaste a autenticação de dois fatores. Introduz o token da tua aplicação de autenticação para continuar."
       },
       "generic": "Ups, houve aqui um erro. Fala connosco se isto voltar a acontecer.",
-      "validation": "Falta alguma coisa. Verifica os campos acima.",
-      "unauthorized": ""
+      "unauthorized": "",
+      "validation": "Falta alguma coisa. Verifica os campos acima."
     },
     "errors": {
       "address": {
@@ -1137,10 +1137,10 @@
       "unknown": {
         "email": "Endereço de email inválido",
         "max": "Este campo pode ter no máximo {max}",
+        "maxLength": "",
         "min": "Este campo tem de ser pelo menos {min}",
         "required": "Este campo é obrigatório",
-        "url": "URL inválido",
-        "maxLength": ""
+        "url": "URL inválido"
       },
       "url": {
         "required": "O URL é obrigatório",
@@ -1281,6 +1281,7 @@
           "showOptIn": "",
           "title": ""
         },
+        "description": "",
         "joinSurvey": {
           "required": "",
           "slug": "",
@@ -1290,10 +1291,9 @@
           "title": ""
         },
         "newsletter": {
-          "title": "Newsletter",
-          "showOptIn": ""
+          "showOptIn": "",
+          "title": "Newsletter"
         },
-        "description": "",
         "text": "",
         "title": "",
         "welcomeMessage": ""
@@ -1338,13 +1338,13 @@
     "contribution": "Contribuição",
     "dashboard": "Painel",
     "home": "Página inicial",
-    "logout": "Sair",
-    "notices": "Avisos",
-    "settings": "Definições",
-    "yourProfile": "Perfil",
     "legacyApp": "",
+    "logout": "Sair",
     "membershipBuilder": "",
-    "payments": ""
+    "notices": "Avisos",
+    "payments": "",
+    "settings": "Definições",
+    "yourProfile": "Perfil"
   },
   "newsletterOptIn": {
     "groups": {
@@ -1373,12 +1373,12 @@
     "updated": ""
   },
   "notices": {
+    "addNotice": "",
     "data": {
       "createdAt": "",
       "name": "",
       "status": ""
     },
-    "addNotice": "",
     "showingOf": ""
   },
   "notifications": {
@@ -1424,8 +1424,8 @@
       "setLabel": ""
     },
     "s_paypal": {
-      "label": "PayPal",
       "changeLabel": "",
+      "label": "PayPal",
       "setLabel": ""
     },
     "s_sepa": {
@@ -1509,12 +1509,12 @@
     "name": "Nome"
   },
   "tags": {
+    "manageTags": "",
+    "noTags": "",
     "notifications": {
       "addedTag": "",
       "removedTag": ""
     },
-    "manageTags": "",
-    "noTags": "",
     "searchTag": "",
     "toggleTag": ""
   },
