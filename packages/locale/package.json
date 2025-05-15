@@ -11,23 +11,13 @@
   },
   "scripts": {
     "clear": "rm -rf dist/",
-    "generate": "git rev-parse --abbrev-ref HEAD | xargs -I {} yarn generate:branch {}",
-    "generate:branch": "node --experimental-specifier-resolution=node --experimental-strip-types tools/generate.ts",
-    "generate:template": "node --experimental-specifier-resolution=node --experimental-strip-types ./tools/generate-template.ts",
-    "normalize": "node --experimental-specifier-resolution=node --experimental-strip-types ./tools/normalize-translations.ts",
-    "sync-weblate": "node --experimental-specifier-resolution=node --experimental-strip-types tools/weblate-sync.ts",
     "build": "yarn clear && yarn build:esbuild && tsc",
     "build:esbuild": "node --experimental-specifier-resolution=node --experimental-strip-types esbuild.ts",
-    "check": "tsc --noEmit",
-    "setup": "cp .env.example .env"
+    "check": "tsc --noEmit"
   },
   "devDependencies": {
-    "@beabee/weblate-client": "workspace:^",
     "@gjsify/esbuild-plugin-transform-ext": "^0.0.4",
-    "dotenv": "^16.5.0",
     "esbuild": "^0.25.1",
-    "googleapis": "^144.0.0",
-    "markdown-it": "^14.1.0",
     "typescript": "~5.6.3"
   },
   "files": [
