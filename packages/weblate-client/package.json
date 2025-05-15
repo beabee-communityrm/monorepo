@@ -16,7 +16,7 @@
   "scripts": {
     "format": "prettier --write .",
     "check": "yarn check:tsc && yarn check:prettier",
-    "check:tsc": "tsc --project ./tsconfig.build.json --noEmit",
+    "check:tsc": "tsc",
     "check:prettier": "prettier -c .",
     "generate": "yarn openapi-typescript https://hosted.weblate.org/api/schema/ -o src/types/openapi.ts && yarn format"
   },
