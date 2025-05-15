@@ -1456,14 +1456,14 @@
     "showingOf": "Affichage des paiements {start} à {end} sur {total}"
   },
   "resetDevice": {
-    "description": "",
-    "failed": "",
-    "invalidPassword": "",
-    "success": "",
-    "title": ""
+    "description": "Entrez votre mot de passe pour réinitialiser la protection par A2F. Vous pourrez configurer un nouvel appareil après connexion.",
+    "failed": "La réinitialisation de l'appareil a échoué. Le lien a peut-être expiré.",
+    "invalidPassword": "Mot de passe invalide",
+    "success": "Votre appareil d'A2F a bien été réinitialisé",
+    "title": "Réinitialiser votre appareil d'A2F ?"
   },
   "resetPassword": {
-    "description": "",
+    "description": "Définissez un nouveau mot de passe pour vous connecter.",
     "failed": "",
     "login": "",
     "lostDevice": "",
