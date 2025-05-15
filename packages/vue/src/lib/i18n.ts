@@ -1,4 +1,9 @@
-import { config as localeConfig } from '@beabee/locale';
+import {
+  config as localeConfig,
+  Context,
+  isAvailableInContext,
+  type Locale,
+} from '@beabee/locale';
 import en from '@beabee/locale/locales/en';
 
 import {
@@ -7,10 +12,19 @@ import {
   createI18n,
 } from 'vue-i18n';
 
-export const localeItems = Object.entries(localeConfig).map(([id, config]) => ({
+const localeItems = Object.entries(localeConfig).map(([id, config]) => ({
   id,
   label: config.name,
-}));
+})) as { id: Locale; label: string }[];
+
+export const getLocaleItemsForContext = (context: Context) => {
+  return localeItems
+    .filter((item) => isAvailableInContext(item.id, context))
+    .map((item) => ({
+      id: item.id,
+      label: item.label,
+    }));
+};
 
 export const i18n = createI18n({
   legacy: false,

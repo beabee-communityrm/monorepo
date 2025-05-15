@@ -1,5 +1,6 @@
 import type { Locale } from "./locale.js";
 import type { BaseLocale } from "./base-locale.js";
+import type { Context } from "../context.js";
 
 /**
  * Configuration for a single locale
@@ -15,4 +16,6 @@ export interface LocaleConfig {
   adminLocale: Locale;
   /** The locale to fall back to when a translation is missing */
   fallbackLocale?: Locale;
+  /** Whether the locale is available in callouts and backend */
+  availableIn: Context[];
 }
