@@ -1,469 +1,309 @@
 /**
- * TEMPORARY MIGRATION SCRIPT
+ * Weblate Label Sync Script
  *
- * This script is only needed temporarily for the migration from Google Sheets to Weblate.
- * It transfers the labels from the Google Sheets metadata to Weblate labels.
- * Once the migration to Weblate is complete and verified, this script can be safely deleted.
+ * This script synchronizes labels from metadata-usage.ts to Weblate translation units.
+ * It maps translation keys in the metadata to their English source strings in Weblate,
+ * then applies the appropriate labels to those units.
  */
 
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { config } from "dotenv";
 import { metadataUsage } from "./metadata-usage.ts";
+import { WeblateClient } from "@beabee/weblate-client";
+import type { UnitResponseData } from "@beabee/weblate-client";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-// Load environment variables from .env file in the packages/locale directory
-config({ path: join(__dirname, "../.env") });
-
-/**
- * Defines a mapping of known Weblate label names to their corresponding Weblate label IDs.
- * The keys (e.g., "User", "Admin") are used to validate label strings sourced from the metadata.
- * The IDs are for reference or potential future use with other Weblate API endpoints if needed.
- * When updating labels on a unit via PATCH /api/units/(int:id)/, Weblate expects an array of label *IDs* (numbers).
- */
-const WeblateLabels: Record<string, number> = {
+// Constants for Weblate labels and their IDs
+const WEBLATE_LABELS: Record<string, number> = {
   User: 802,
   Admin: 803,
   CNR: 804,
   System: 805,
 };
 
-// Reverse mapping from ID to Name for processing existing labels from Weblate
-const WeblateLabelIdToName: Record<number, string> = Object.fromEntries(
-  Object.entries(WeblateLabels).map(([name, id]) => [id, name]),
-);
-
-interface WeblateConfig {
-  apiUrl: string;
+// Configuration interface
+interface SyncConfig {
+  baseUrl: string;
   token: string;
   project: string;
   component: string;
-  dryRun?: boolean;
+  dryRun: boolean;
 }
 
-interface UsageMetadata {
-  [key: string]: string;
-}
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
-// Define a basic interface for WeblateUnit
-interface WeblateUnit {
-  id: number;
-  source: string[];
-  target: string[];
-  context: string;
-  note: string;
-  labels?: any[];
-  language_code: string;
-  url: string;
-  source_unit: string | null;
-  [key: string]: any;
-}
+// Load environment variables from .env file
+config({ path: join(__dirname, "../.env") });
 
 /**
- * Syncs translation metadata with Weblate using their REST API
+ * Main sync class to handle the synchronization process
  */
 class WeblateSync {
-  private config: WeblateConfig;
-  private usageData: UsageMetadata; // Store the imported metadata
+  private client: WeblateClient;
+  private metadata: Record<string, string>;
+  private config: SyncConfig;
 
-  constructor(config: WeblateConfig, usageData: UsageMetadata) {
-    let apiUrl = config.apiUrl;
-    if (!apiUrl.endsWith("/api/")) {
-      if (apiUrl.endsWith("/")) {
-        apiUrl = `${apiUrl}api/`;
-      } else {
-        apiUrl = `${apiUrl}/api/`;
-      }
-    }
-    this.config = { ...config, apiUrl };
-    this.usageData = usageData; // Assign imported metadata
-
-    if (this.config.dryRun) {
-      console.log(
-        "[DRY RUN] WeblateSync initialized with config:",
-        this.config,
-      );
-      console.log("[DRY RUN] Using metadata:", this.usageData);
-    }
+  constructor(config: SyncConfig, metadata: Record<string, string>) {
+    this.config = config;
+    this.metadata = metadata;
+    this.client = new WeblateClient({
+      baseUrl: config.baseUrl,
+      token: config.token,
+      project: config.project,
+      component: config.component,
+    });
   }
 
   /**
-   * Makes an authenticated request to the Weblate API
+   * Main method to synchronize metadata labels with Weblate
    */
-  private async makeRequest(path: string, method: string, body?: any) {
-    const url = new URL(path, this.config.apiUrl).toString();
-    if (this.config.dryRun && method !== "GET") {
-      console.log(`[DRY RUN] Would ${method} to ${url} with body:`, body);
-      return Promise.resolve({}); // Simulate a successful response for non-GET dry runs
-    }
-    if (this.config.dryRun && method === "GET") {
-      console.log(`[DRY RUN] Would ${method} from ${url}`);
-      if (path.startsWith("units/?q=")) {
-        return Promise.resolve({ results: [] });
-      }
-      return Promise.resolve({});
-    }
-
-    const headers: Record<string, string> = {
-      "Content-Type": "application/json",
-      Authorization: `Token ${this.config.token}`,
-    };
-
+  public async sync(): Promise<void> {
     try {
-      const response = await fetch(url, {
-        method,
-        headers,
-        body: body ? JSON.stringify(body) : undefined,
-      });
+      // Fetch only English units to process
+      console.log("Processing translation keys from metadata...");
 
-      if (!response.ok) {
-        const errorBody = await response.text();
-        console.error(
-          `Weblate API error: ${response.status} ${response.statusText} for URL: ${url}`,
-        );
-        console.error("Error details:", errorBody);
-        throw new Error(
-          `Request failed with status code ${response.status} - ${response.statusText}`,
-        );
+      let updatedCount = 0;
+      let notFoundCount = 0;
+      let errorsCount = 0;
+      let multipleResultsCount = 0;
+
+      // Iterate over metadata keys
+      for (const translationKey in this.metadata) {
+        if (
+          Object.prototype.hasOwnProperty.call(this.metadata, translationKey)
+        ) {
+          const desiredMetadataLabelGroup = this.metadata[translationKey];
+
+          try {
+            // console.log(`Searching for unit with context: "${translationKey}" in Weblate...`);
+            const searchData = await this.client.getTranslationUnits({
+              component: this.config.component,
+              project: this.config.project,
+              language: "en", // Search within English units
+              q: `context:"${translationKey}"`,
+            });
+
+            const unitsFound = searchData.results || [];
+
+            if (!unitsFound.length) {
+              if (notFoundCount < 10) {
+                // Log first few misses
+                console.log(
+                  `No unit found in Weblate for context: "${translationKey}"`,
+                );
+              }
+              notFoundCount++;
+              continue;
+            }
+
+            if (unitsFound.length > 1) {
+              console.warn(
+                `Multiple units (${unitsFound.length}) found for context: "${translationKey}". Processing all.`,
+              );
+              multipleResultsCount++;
+            }
+
+            for (const unit of unitsFound) {
+              // Double-check context as a safeguard, though search should be specific
+              if (unit.context === translationKey) {
+                await this.processUnitLabels(unit, desiredMetadataLabelGroup);
+                updatedCount++;
+              } else {
+                console.warn(
+                  `Found unit ${unit.id} with context "${unit.context}" but expected "${translationKey}" after searching. Skipping this specific unit.`,
+                );
+              }
+            }
+          } catch (error) {
+            console.error(`Error processing key "${translationKey}":`, error);
+            errorsCount++;
+          }
+        }
       }
-      if (response.status === 204) {
-        return {};
-      }
-      return await response.json();
+
+      console.log(`
+Sync summary:
+- Successfully processed/updated units for matching keys: ${updatedCount}
+- Keys from metadata not found in Weblate: ${notFoundCount}
+- Keys resulting in multiple units (all processed): ${multipleResultsCount}
+- Errors encountered during processing: ${errorsCount}
+      `);
     } catch (error) {
-      console.error(`Error making request to ${url}:`, error);
+      console.error("Error during synchronization:", error);
       throw error;
     }
   }
 
   /**
-   * Fetches all translation units for the configured project and component
+   * Process labels for a single unit
    */
-  private async getUnits(): Promise<WeblateUnit[]> {
-    if (this.config.dryRun) {
-      console.log(
-        `[DRY RUN] Would fetch units for project ${this.config.project}, component ${this.config.component}`,
-      );
-    }
-    const path = `units/?q=project:${encodeURIComponent(this.config.project)} AND component:${encodeURIComponent(this.config.component)}`;
-    try {
-      const response = (await this.makeRequest(path, "GET")) as {
-        results: WeblateUnit[];
-        next?: string | null;
-        previous?: string | null;
-        count?: number;
-      };
-
-      return response.results;
-    } catch (error) {
-      return [];
-    }
-  }
-
-  /**
-   * Updates the labels/tags for a specific translation unit
-   */
-  private async updateUnitLabels(unitId: number, labelIds: number[]) {
-    if (this.config.dryRun) {
-      console.log(
-        `[DRY RUN] Would update unit ${unitId} with label IDs:`,
-        labelIds,
-      );
+  private async processUnitLabels(
+    unit: UnitResponseData,
+    metadata: string,
+  ): Promise<void> {
+    if (!unit.id) {
+      console.log("No ID found for unit", unit);
       return;
     }
-    return this.makeRequest(`units/${unitId}/`, "PATCH", {
-      labels: labelIds,
-    });
-  }
 
-  /**
-   * Syncs the metadata from the imported object to Weblate labels
-   */
-  public async syncMetadata() {
+    // Get existing labels
+    const existingLabels = this.parseExistingLabels(unit.labels);
+
+    // Parse metadata to get desired labels
+    const desiredLabels = this.parseDesiredLabels(metadata);
+
+    // Check if we need to update labels
+    const needsUpdate = this.labelsNeedUpdate(existingLabels, desiredLabels);
+
+    if (!needsUpdate) {
+      console.log(`Unit ${unit.id} (${unit.context}) does not need update`);
+      return;
+    }
+
+    // Convert label names to IDs for the API
+    const labelIdsToApply = desiredLabels
+      .filter((label) => WEBLATE_LABELS[label] !== undefined)
+      .map((label) => WEBLATE_LABELS[label]);
+
     if (this.config.dryRun) {
-      console.log("[DRY RUN] Starting metadata sync (no changes will be made)");
+      console.log(`[DRY RUN] Would update unit ${unit.id} (${unit.context}):
+  - Current labels: ${existingLabels.join(", ") || "none"}
+  - New labels: ${desiredLabels.join(", ") || "none"}
+  - Label IDs to apply: ${labelIdsToApply.join(", ") || "none"}`);
     } else {
-      console.log("Starting metadata sync");
+      console.log(`Updating unit ${unit.id} (${unit.context}):
+  - Current labels: ${existingLabels.join(", ") || "none"}
+  - New labels: ${desiredLabels.join(", ") || "none"}
+  - Label IDs to apply: ${labelIdsToApply.join(", ") || "none"}`);
+
+      await this.client.updateUnitLabels(unit.id, labelIdsToApply);
     }
+  }
 
-    const units = await this.getUnits();
+  /**
+   * Parse existing labels from a Weblate unit
+   */
+  private parseExistingLabels(labels: any[] = []): string[] {
+    const result: string[] = [];
 
-    if (!units || units.length === 0) {
-      console.log(
-        "No translation units found in Weblate or error fetching them. Ensure project/component are correct and accessible.",
-      );
-      return;
-    }
-
-    console.log(
-      `Found ${units.length} translation units in Weblate for project '${this.config.project}', component '${this.config.component}'.`,
-    );
-
-    let updatedCount = 0;
-    let notFoundCount = 0;
-    let nonSourceSkippedCount = 0;
-    let sourceTextMismatchSkippedCount = 0;
-
-    for (const unit of units) {
-      const key = unit.context;
-      const unitSourceText =
-        unit.source && unit.source.length > 0 ? unit.source[0] : "";
-
-      const isPotentialSourceUnit =
-        unit.url === unit.source_unit || unit.source_unit === null;
-
-      if (!(isPotentialSourceUnit && unit.language_code === "en")) {
-        nonSourceSkippedCount++;
-        if (this.config.dryRun && nonSourceSkippedCount < 10) {
-          console.log(
-            `[DRY RUN] Unit ${unit.id} (context: ${key}, lang: ${unit.language_code}): Skipping as it's not an English source unit (url: ${unit.url}, source_unit: ${unit.source_unit}).`,
-          );
+    for (const label of labels) {
+      // Handle different possible formats for labels
+      if (typeof label === "string" && WEBLATE_LABELS[label] !== undefined) {
+        result.push(label);
+      } else if (typeof label === "number") {
+        // Convert ID back to name
+        const name = Object.entries(WEBLATE_LABELS).find(
+          ([_, id]) => id === label,
+        )?.[0];
+        if (name) {
+          result.push(name);
         }
-        continue;
-      }
-
-      if (this.usageData[key]) {
-        // Ensure existingLabels are strings, handling potential objects from API
-        const rawExistingWeblateLabels = unit.labels || [];
-        const existingLabelNames: string[] = rawExistingWeblateLabels
-          .map((labelInfo: unknown) => {
-            if (typeof labelInfo === "number") {
-              // Weblate might send an array of IDs
-              const name = WeblateLabelIdToName[labelInfo];
-              if (name) {
-                return name;
-              } else {
-                console.warn(
-                  `[Sync Metadata] Unit ${unit.id} (context: ${key}): Found unknown label ID ${labelInfo} from Weblate. Ignoring.`,
-                );
-                return null;
-              }
-            } else if (typeof labelInfo === "string") {
-              // Weblate might send an array of names (less likely for existing labels if IDs are primary)
-              if (WeblateLabels[labelInfo as keyof typeof WeblateLabels]) {
-                return labelInfo;
-              } else {
-                console.warn(
-                  `[Sync Metadata] Unit ${unit.id} (context: ${key}): Found unknown label name "${labelInfo}" from Weblate. Ignoring.`,
-                );
-                return null;
-              }
-            } else if (typeof labelInfo === "object" && labelInfo !== null) {
-              // Weblate might send an array of objects e.g. {id: 802, name: "User"}
-              let id: number | undefined;
-              let name: string | undefined;
-              if (
-                "id" in labelInfo &&
-                typeof (labelInfo as { id: unknown }).id === "number"
-              ) {
-                id = (labelInfo as { id: number }).id;
-              }
-              if (
-                "name" in labelInfo &&
-                typeof (labelInfo as { name: unknown }).name === "string"
-              ) {
-                name = (labelInfo as { name: string }).name;
-              }
-
-              if (
-                name &&
-                WeblateLabels[name as keyof typeof WeblateLabels] !== undefined
-              ) {
-                // If name is present and valid, prefer it
-                if (
-                  id !== undefined &&
-                  WeblateLabels[name as keyof typeof WeblateLabels] !== id
-                ) {
-                  console.warn(
-                    `[Sync Metadata] Unit ${unit.id} (context: ${key}): Label object from Weblate has conflicting ID (${id}) and name ("${name}"). Trusting name if valid. WeblateLabels has ID ${WeblateLabels[name as keyof typeof WeblateLabels]} for this name.`,
-                  );
-                }
-                return name;
-              } else if (id !== undefined) {
-                // If name is not present or not valid, try ID
-                const nameFromId = WeblateLabelIdToName[id];
-                if (nameFromId) {
-                  return nameFromId;
-                } else {
-                  console.warn(
-                    `[Sync Metadata] Unit ${unit.id} (context: ${key}): Found label object with unknown ID ${id} from Weblate. Ignoring.`,
-                  );
-                  return null;
-                }
-              } else {
-                console.warn(
-                  `[Sync Metadata] Unit ${unit.id} (context: ${key}): Found label with unrecognised object structure from Weblate: ${JSON.stringify(labelInfo)}. Ignoring.`,
-                );
-                return null;
-              }
-            } else {
-              console.warn(
-                `[Sync Metadata] Unit ${unit.id} (context: ${key}): Found label with unrecognised type from Weblate: ${typeof labelInfo}. Ignoring.`,
-              );
-              return null;
-            }
-          })
-          .filter((name): name is string => name !== null);
-
-        const labelStringsFromMetadata = this.usageData[key]
-          .split(",")
-          .map((label) => label.trim())
-          .filter((label) => label.length > 0);
-
-        const knownLabelNames = Object.keys(WeblateLabels);
-        const newLabelsToApply = labelStringsFromMetadata.filter(
-          (labelName) => {
-            if (knownLabelNames.includes(labelName)) {
-              return true;
-            } else {
-              const message = `Label "${labelName}" from metadata for context "${key}" is not a known Weblate label name (from WeblateLabels constant). It will be ignored.`;
-              if (this.config.dryRun) {
-                console.log(`[DRY RUN] [Sync Metadata] ${message}`);
-              } else {
-                console.warn(`[Sync Metadata] ${message}`);
-              }
-              return false;
-            }
-          },
-        );
-
+      } else if (typeof label === "object" && label !== null) {
+        // Handle object format
         if (
-          newLabelsToApply.length === 0 &&
-          labelStringsFromMetadata.length > 0
+          "name" in label &&
+          typeof label.name === "string" &&
+          WEBLATE_LABELS[label.name] !== undefined
         ) {
-          const message = `Context "${key}": All labels from metadata (${labelStringsFromMetadata.join(", ")}) were unknown or filtered out. No new labels will be added based on metadata for this unit.`;
-          if (this.config.dryRun) {
-            console.log(`[DRY RUN] [Sync Metadata] ${message}`);
-          } else {
-            console.log(`[Sync Metadata] ${message}`);
+          result.push(label.name);
+        } else if ("id" in label && typeof label.id === "number") {
+          const name = Object.entries(WEBLATE_LABELS).find(
+            ([_, id]) => id === label.id,
+          )?.[0];
+          if (name) {
+            result.push(name);
           }
         }
-
-        // Combine existing names with new names from metadata to get the final desired set of names
-        const finalDesiredLabelNames = Array.from(
-          new Set([...existingLabelNames, ...newLabelsToApply]),
-        );
-
-        // Sort both arrays of names for consistent comparison
-        const sortedFinalDesiredNames = [...finalDesiredLabelNames].sort();
-        const sortedExistingNames = [...existingLabelNames].sort();
-
-        if (
-          JSON.stringify(sortedFinalDesiredNames) !==
-          JSON.stringify(sortedExistingNames)
-        ) {
-          // Convert the final list of desired label names to IDs for sending to Weblate
-          const labelIdsToSend: number[] = [];
-          for (const name of finalDesiredLabelNames) {
-            const id = WeblateLabels[name as keyof typeof WeblateLabels];
-            // This ID should always be found because newLabelsToApply are pre-filtered
-            // and existingLabelNames are also derived from WeblateLabels/WeblateLabelIdToName
-            if (id !== undefined) {
-              labelIdsToSend.push(id);
-            } else {
-              // This case should ideally not be reached if logic is correct
-              console.warn(
-                `[Sync Metadata] Unit ${unit.id} (context: ${key}): Could not map final desired label name "${name}" to an ID. This should not happen. Skipping this label for a L P I update.`,
-              );
-            }
-          }
-
-          if (this.config.dryRun) {
-            console.log(
-              `[DRY RUN] Unit ${unit.id} (context: ${key}): Current names: ${existingLabelNames.join(", ") || "[]"}. Desired names: ${finalDesiredLabelNames.join(", ")}. Would update with Label IDs: ${labelIdsToSend.join(", ")}`,
-            );
-          } else {
-            console.log(
-              `Unit ${unit.id} (context: ${key}): Current names: ${existingLabelNames.join(", ") || "[]"}. Desired names: ${finalDesiredLabelNames.join(", ")}. Updating with Label IDs: ${labelIdsToSend.join(", ")}`,
-            );
-            if (
-              labelIdsToSend.length > 0 ||
-              finalDesiredLabelNames.length === 0
-            ) {
-              await this.updateUnitLabels(unit.id, labelIdsToSend);
-            } else if (
-              finalDesiredLabelNames.length > 0 &&
-              labelIdsToSend.length === 0
-            ) {
-              console.warn(
-                `[Sync Metadata] Unit ${unit.id} (context: ${key}): All desired label names (${finalDesiredLabelNames.join(", ")}) could not be mapped to IDs. No update sent.`,
-              );
-            }
-          }
-          updatedCount++;
-        } else {
-          if (this.config.dryRun) {
-            console.log(
-              `[DRY RUN] Unit ${unit.id} (context: ${key}): Labels are already up-to-date (${existingLabelNames.join(", ")}).`,
-            );
-          } else {
-            console.log(
-              `Unit ${unit.id} (context: ${key}): Labels already up-to-date.`,
-            );
-          }
-        }
-      } else {
-        notFoundCount++;
       }
     }
-    if (nonSourceSkippedCount > 0) {
-      console.log(
-        `${nonSourceSkippedCount} units were skipped because they were not identified as English source string units.`,
+
+    return result;
+  }
+
+  /**
+   * Parse desired labels from metadata string
+   */
+  private parseDesiredLabels(metadata: string): string[] {
+    return metadata
+      .split(",")
+      .map((label) => label.trim())
+      .filter(
+        (label) => label.length > 0 && WEBLATE_LABELS[label] !== undefined,
       );
+  }
+
+  /**
+   * Check if labels need to be updated
+   */
+  private labelsNeedUpdate(
+    existingLabels: string[],
+    desiredLabels: string[],
+  ): boolean {
+    if (existingLabels.length !== desiredLabels.length) {
+      return true;
     }
-    if (notFoundCount > 0) {
-      console.log(
-        `${notFoundCount} units from Weblate did not have matching entries in the imported metadata.`,
-      );
-    }
-    console.log(
-      `Metadata sync ${this.config.dryRun ? "simulation" : ""} completed. ${updatedCount} units processed for label updates.`,
-    );
+
+    const sortedExisting = [...existingLabels].sort();
+    const sortedDesired = [...desiredLabels].sort();
+
+    return JSON.stringify(sortedExisting) !== JSON.stringify(sortedDesired);
   }
 }
 
-async function main() {
-  const {
-    WEBLATE_API_URL,
-    WEBLATE_API_TOKEN,
-    WEBLATE_PROJECT,
-    WEBLATE_COMPONENT,
-    DRY_RUN,
-  } = process.env;
-
-  if (
-    !WEBLATE_API_URL ||
-    !WEBLATE_API_TOKEN ||
-    !WEBLATE_PROJECT ||
-    !WEBLATE_COMPONENT
-  ) {
-    console.error(
-      "Missing Weblate environment variables. Ensure WEBLATE_API_URL, WEBLATE_API_TOKEN, WEBLATE_PROJECT, and WEBLATE_COMPONENT are set.",
-    );
-    process.exit(1);
-  }
-
-  const cfg: WeblateConfig = {
-    apiUrl: WEBLATE_API_URL,
-    token: WEBLATE_API_TOKEN,
-    project: WEBLATE_PROJECT,
-    component: WEBLATE_COMPONENT,
-    dryRun: DRY_RUN === "true" || DRY_RUN === "1",
-  };
-
-  // Pass the imported metadataUsage to the constructor
-  const sync = new WeblateSync(cfg, metadataUsage);
+/**
+ * Main function to run the script
+ */
+async function main(): Promise<void> {
   try {
-    await sync.syncMetadata();
+    const {
+      WEBLATE_API_URL,
+      WEBLATE_API_TOKEN,
+      WEBLATE_PROJECT,
+      WEBLATE_COMPONENT,
+      DRY_RUN,
+    } = process.env;
+
+    // Check required environment variables
+    if (
+      !WEBLATE_API_URL ||
+      !WEBLATE_API_TOKEN ||
+      !WEBLATE_PROJECT ||
+      !WEBLATE_COMPONENT
+    ) {
+      console.error(`
+Missing required environment variables. Please ensure you have the following set:
+- WEBLATE_API_URL
+- WEBLATE_API_TOKEN
+- WEBLATE_PROJECT
+- WEBLATE_COMPONENT
+      `);
+      process.exit(1);
+    }
+
+    const config: SyncConfig = {
+      baseUrl: WEBLATE_API_URL,
+      token: WEBLATE_API_TOKEN,
+      project: WEBLATE_PROJECT,
+      component: WEBLATE_COMPONENT,
+      dryRun: DRY_RUN === "true" || DRY_RUN === "1",
+    };
+
+    if (config.dryRun) {
+      console.log("Running in DRY RUN mode - no changes will be made");
+    }
+
+    const sync = new WeblateSync(config, metadataUsage);
+    await sync.sync();
+    console.log("Sync completed successfully");
   } catch (error) {
-    console.error("Unhandled error during sync process:", error);
+    console.error("Error running sync:", error);
     process.exit(1);
   }
 }
 
+// Run the script
 main().catch((error) => {
-  console.error("Critical error in main execution:", error);
+  console.error("Critical error:", error);
   process.exit(1);
 });

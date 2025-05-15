@@ -8,6 +8,7 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "declaration": true,
-    "diagnostics": true
+    "diagnostics": true,
+    "verbatimModuleSyntax": true
   }
 }

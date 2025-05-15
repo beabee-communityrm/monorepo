@@ -22,6 +22,7 @@
     "setup": "cp .env.example .env"
   },
   "devDependencies": {
+    "@beabee/weblate-client": "workspace:^",
     "@gjsify/esbuild-plugin-transform-ext": "^0.0.4",
     "dotenv": "^16.5.0",
     "esbuild": "^0.25.1",
