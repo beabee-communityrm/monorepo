@@ -7,8 +7,10 @@ import type { FormatEnum } from "sharp";
  */
 export const getMimetypeFromExtension = (extension: string): string => {
   extension = extension.toLowerCase().trim();
-  const ext = extension.includes(".") ? extension.split(".").pop() : extension;
-  switch (ext) {
+  const extWithoutDot = extension.includes(".")
+    ? extension.split(".").pop()
+    : extension;
+  switch (extWithoutDot) {
     // Images
     case "jpg":
     case "jpeg":
@@ -130,82 +132,82 @@ export const getMimetypeFromDecoderFormat = (
  * @private
  */
 export const getExtensionFromMimetype = (mimetype?: string): string => {
-  if (!mimetype) return "bin";
+  if (!mimetype) return ".bin";
 
   const mime = mimetype.toLowerCase();
   switch (mime) {
     // Images
     case "image/jpeg":
-      return "jpg";
+      return ".jpg";
     case "image/png":
-      return "png";
+      return ".png";
     case "image/webp":
-      return "webp";
+      return ".webp";
     case "image/gif":
-      return "gif";
+      return ".gif";
     case "image/avif":
-      return "avif";
+      return ".avif";
     case "image/svg+xml":
-      return "svg";
+      return ".svg";
     case "image/tiff":
-      return "tif";
+      return ".tif";
     case "image/heif":
-      return "heif";
+      return ".heif";
     case "image/jp2":
-      return "jp2";
+      return ".jp2";
     case "image/jxl":
-      return "jxl";
+      return ".jxl";
     case "image/x-icon":
-      return "ico";
+      return ".ico";
 
     // Videos
     case "video/mp4":
-      return "mp4";
+      return ".mp4";
 
     // Documents
     case "application/pdf":
-      return "pdf";
+      return ".pdf";
     // Microsoft Office
     case "application/msword":
-      return "doc";
+      return ".doc";
     case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-      return "docx";
+      return ".docx";
     case "application/vnd.ms-excel":
-      return "xls";
+      return ".xls";
     case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
-      return "xlsx";
+      return ".xlsx";
     case "application/vnd.ms-powerpoint":
-      return "ppt";
+      return ".ppt";
     case "application/vnd.openxmlformats-officedocument.presentationml.presentation":
-      return "pptx";
+      return ".pptx";
     // OpenOffice/LibreOffice
     case "application/vnd.oasis.opendocument.text":
-      return "odt";
+      return ".odt";
     case "application/vnd.oasis.opendocument.spreadsheet":
-      return "ods";
+      return ".ods";
     case "application/vnd.oasis.opendocument.presentation":
-      return "odp";
+      return ".odp";
     case "application/vnd.oasis.opendocument.graphics":
-      return "odg";
+      return ".odg";
     case "application/vnd.oasis.opendocument.formula":
-      return "odf";
+      return ".odf";
     case "application/vnd.oasis.opendocument.chart":
-      return "odc";
+      return ".odc";
     case "application/vnd.oasis.opendocument.database":
-      return "odb";
+      return ".odb";
     case "application/vnd.oasis.opendocument.text-template":
-      return "ott";
+      return ".ott";
     case "application/vnd.oasis.opendocument.spreadsheet-template":
-      return "ots";
+      return ".ots";
     case "application/vnd.oasis.opendocument.presentation-template":
-      return "otp";
+      return ".otp";
     case "application/vnd.oasis.opendocument.graphics-template":
-      return "otg";
+      return ".otg";
     case "text/plain":
-      return "txt";
+      return ".txt";
 
     default:
-      return "bin";
+      return ".bin";
   }
 };
 
