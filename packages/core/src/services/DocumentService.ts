@@ -110,11 +110,11 @@ export class DocumentService {
       const sanitizedFilename = sanitizeFilename(originalFilename);
 
       // Use the original filename extension if available
-      const extension = mimetype
+      const extWithDot = mimetype
         ? getExtensionFromMimetype(mimetype)
         : getExtensionFromFilename(sanitizedFilename);
 
-      mimetype ||= getMimetypeFromExtension(extension);
+      mimetype ||= getMimetypeFromExtension(extWithDot);
 
       // Validate document content and type
       this.validateDocument(documentData, mimetype);
@@ -122,7 +122,7 @@ export class DocumentService {
       // Generate a unique ID for the document
       const fileId = randomUUID();
 
-      const id = `${fileId}${extension}`;
+      const id = `${fileId}${extWithDot}`;
       const contentType = mimetype || "application/pdf";
 
       // Prepare metadata for S3
