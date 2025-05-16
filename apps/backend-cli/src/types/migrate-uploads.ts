@@ -6,7 +6,7 @@ export interface MigrateUploadsArgs {
    * - calloutImages
    * - optionImages
    * - contentBackgroundImage
-   * - calloutResponseDocuments
+   * - calloutResponseFiles
    * If not provided, all steps will be run.
    */
   steps?: string[];
@@ -25,7 +25,7 @@ export interface MigrateUploadsOptions {
    * - calloutImages
    * - optionImages
    * - contentBackgroundImage
-   * - calloutResponseDocuments
+   * - calloutResponseFiles
    * If not provided, all steps will be run.
    */
   steps: string[];

@@ -26,20 +26,20 @@ export const migrateUploadsCommand = {
       })
       .option("steps", {
         describe:
-          "List of migration steps to run. Allowed: calloutImages, optionImages, contentBackgroundImage, calloutResponseDocuments. Default: all steps.",
+          "List of migration steps to run. Allowed: calloutImages, optionImages, contentBackgroundImage, calloutResponseFiles. Default: all steps.",
         type: "string",
         array: true,
         choices: [
           "calloutImages",
           "optionImages",
           "contentBackgroundImage",
-          "calloutResponseDocuments"
+          "calloutResponseFiles"
         ],
         default: [
           "calloutImages",
           "optionImages",
           "contentBackgroundImage",
-          "calloutResponseDocuments"
+          "calloutResponseFiles"
         ]
       });
   },
@@ -52,7 +52,7 @@ export const migrateUploadsCommand = {
           "calloutImages",
           "optionImages",
           "contentBackgroundImage",
-          "calloutResponseDocuments"
+          "calloutResponseFiles"
         ]
       });
     } catch (error) {
