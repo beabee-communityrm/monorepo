@@ -871,7 +871,7 @@
       "successful": "Succesvol"
     },
     "perMonth": "/ maand",
-    "perMonthText": "een maand",
+    "perMonthText": "per maand",
     "perYear": "/ jaar",
     "perYearText": "een jaar",
     "role": {
@@ -1008,7 +1008,7 @@
     "cancelledContribution": "Je bijdrage is geannuleerd.",
     "changeBank": "Overstappen naar een andere bankrekening",
     "changeBankInfo": "In de volgende stap worden de gegevens van je nieuwe bankrekening gevraagd.",
-    "contributing": "Je draagt bij",
+    "contributing": "Je draagt bij:",
     "contributionUpdateError": "Je kunt je bijdrage op dit moment niet bijwerken omdat je nog een betaling tegoed hebt.",
     "dueToRenew": "Je bijdrage moet vernieuwd worden op {renewalDate}.",
     "expired": "Je bijdrage is verlopen.",
@@ -1038,7 +1038,7 @@
     "updatePaymentType": "Betalingsmethode bijwerken",
     "updatedContribution": "Je bijdrage is bijgewerkt.",
     "updatedPaymentSource": "Je betaalmethode is bijgewerkt.",
-    "willExpire": "Je bijdrage vervalt op {expires}.",
+    "willExpire": "Je bijdrage vervalt over {expires}.",
     "willRenew": "Je bijdrage wordt automatisch verlengd op {renewalDate}.",
     "willRenewWithNewAmount": "Je bijdrage zal automatisch vernieuwd worden op {renewalDate} en zal veranderen naar het door jou gekozen bedrag van {nextAmount}."
   },
