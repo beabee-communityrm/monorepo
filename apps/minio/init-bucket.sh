@@ -5,9 +5,17 @@ set -e
 /usr/bin/docker-entrypoint.sh "$@" &
 MINIO_PID=$!
 
-# Wait for MinIO to be available
+# Wait for MinIO to be available (replace fixed sleep with active check)
 echo "Waiting for MinIO to start..."
-sleep 5
+RETRIES=60
+until nc -z localhost 9000; do
+  sleep 1
+  RETRIES=$((RETRIES-1))
+  if [ $RETRIES -le 0 ]; then
+    echo "MinIO did not start in time."
+    exit 1
+  fi
+done
 
 # Initialize MinIO buckets if BEABEE_MINIO_BUCKET is set
 if [ -n "${BEABEE_MINIO_BUCKET}" ]; then
