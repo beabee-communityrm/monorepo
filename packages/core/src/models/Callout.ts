@@ -4,7 +4,8 @@ import {
   CalloutData,
   CalloutAccess,
   CalloutCaptcha,
-  CalloutChannel
+  CalloutChannel,
+  type CalloutNewsletterSchema
 } from "@beabee/beabee-common";
 import {
   Column,
@@ -52,6 +53,9 @@ export class Callout extends ItemWithStatus implements CalloutData {
   @Column({ default: CalloutAccess.Member })
   access!: CalloutAccess;
 
+  @Column({ type: "jsonb", nullable: true })
+  newsletterSchema!: CalloutNewsletterSchema | null;
+
   @Column({ default: CalloutCaptcha.None })
   captcha!: CalloutCaptcha;
 
@@ -60,9 +64,6 @@ export class Callout extends ItemWithStatus implements CalloutData {
 
   @OneToMany("CalloutResponse", "callout")
   responses!: CalloutResponse[];
-
-  @Column({ nullable: true })
-  responsePassword?: string;
 
   @OneToMany("CalloutTag", "callout")
   tags!: CalloutTag[];

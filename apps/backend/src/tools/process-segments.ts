@@ -59,7 +59,7 @@ async function processSegment(segment: Segment) {
   );
 
   const outgoingEmails = await getRepository(SegmentOngoingEmail).find({
-    where: { segmentId: segment.id },
+    where: { segmentId: segment.id, enabled: true },
     relations: { email: true }
   });
 

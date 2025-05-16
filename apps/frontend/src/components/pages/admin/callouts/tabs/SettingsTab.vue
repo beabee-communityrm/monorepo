@@ -73,58 +73,66 @@
         </AppScrollSection>
 
         <!-- Access Settings Section -->
-        <AppScrollSection v-if="!env.cnrMode" id="access">
-          <AppFormBox :title="t('callout.builder.tabs.settings.access.title')">
-            <AppToggleField
-              v-model="props.data.openToEveryone"
-              variant="link"
-              :label="inputT('openToEveryone.label')"
-              :help="inputT('openToEveryone.help')"
-              :disabled-description="inputT('openToEveryone.opts.disabled')"
-              :enabled-description="inputT('openToEveryone.opts.enabled')"
-            />
+        <AppScrollSection id="access">
+          <AppLabel
+            :label="t('callout.builder.tabs.settings.access.title')"
+            class="mb-3 px-4"
+          />
+          <template v-if="!env.cnrMode">
+            <AppFormBox>
+              <AppToggleField
+                v-model="props.data.openToEveryone"
+                variant="link"
+                :label="inputT('openToEveryone.label')"
+                :help="inputT('openToEveryone.help')"
+                :disabled-description="inputT('openToEveryone.opts.disabled')"
+                :enabled-description="inputT('openToEveryone.opts.enabled')"
+              />
 
-            <div
-              v-if="props.data.openToEveryone"
-              class="ml-6 mt-4 border-l-2 border-grey-light pl-6"
-            >
-              <AppFormField>
-                <AppToggleField
-                  v-model="props.data.collectMemberInfo"
-                  variant="link"
-                  :label="inputT('collectMemberInfo.label')"
-                  :disabled-description="
-                    inputT('collectMemberInfo.opts.disabled')
-                  "
-                  :enabled-description="
-                    inputT('collectMemberInfo.opts.enabled')
-                  "
-                />
-              </AppFormField>
+              <div
+                v-if="props.data.openToEveryone"
+                class="ml-6 mt-4 border-l-2 border-grey-light pl-6"
+              >
+                <AppFormField>
+                  <AppToggleField
+                    v-model="props.data.collectInfo"
+                    variant="link"
+                    :label="inputT('collectMemberInfo.label')"
+                    :disabled-description="
+                      inputT('collectMemberInfo.opts.disabled')
+                    "
+                    :enabled-description="
+                      inputT('collectMemberInfo.opts.enabled')
+                    "
+                  />
+                </AppFormField>
 
-              <AppFormField v-if="props.data.collectMemberInfo">
-                <AppToggleField
-                  v-model="props.data.collectGuestInfo"
-                  variant="link"
-                  :label="inputT('collectGuestInfo.label')"
-                  :disabled-description="
-                    inputT('collectGuestInfo.opts.disabled')
-                  "
-                  :enabled-description="inputT('collectGuestInfo.opts.enabled')"
-                />
-              </AppFormField>
-            </div>
-          </AppFormBox>
-          <AppFormBox>
-            <AppToggleField
-              v-model="props.data.showOnUserDashboards"
-              variant="link"
-              :label="inputT('visible.label')"
-              :help="inputT('visible.help')"
-              :enabled-description="inputT('visible.opts.enabled')"
-              :disabled-description="inputT('visible.opts.disabled')"
-            />
-          </AppFormBox>
+                <AppFormField v-if="props.data.collectInfo">
+                  <AppToggleField
+                    v-model="props.data.collectGuestInfo"
+                    variant="link"
+                    :label="inputT('collectGuestInfo.label')"
+                    :disabled-description="
+                      inputT('collectGuestInfo.opts.disabled')
+                    "
+                    :enabled-description="
+                      inputT('collectGuestInfo.opts.enabled')
+                    "
+                  />
+                </AppFormField>
+              </div>
+            </AppFormBox>
+            <AppFormBox>
+              <AppToggleField
+                v-model="props.data.showOnUserDashboards"
+                variant="link"
+                :label="inputT('visible.label')"
+                :help="inputT('visible.help')"
+                :enabled-description="inputT('visible.opts.enabled')"
+                :disabled-description="inputT('visible.opts.disabled')"
+              />
+            </AppFormBox>
+          </template>
 
           <AppFormBox v-if="env.captchafoxKey">
             <AppToggleField
@@ -143,7 +151,7 @@
             />
 
             <div
-              v-if="props.data.captchaEnabled"
+              v-if="props.data.captchaEnabled && !env.cnrMode"
               class="ml-6 mt-4 border-l-2 border-grey-light pl-6"
             >
               <AppFormField>
@@ -165,11 +173,51 @@
 
         <!-- Response Settings Section -->
         <AppScrollSection v-if="!env.cnrMode" id="responseSettings">
-          <AppFormBox :title="inputT('responseSettings.title')">
+          <AppLabel
+            :label="inputT('responseSettings.title')"
+            class="mb-3 px-4"
+          />
+          <AppFormBox
+            v-if="env.experimentalFeatures"
+            :notification="
+              !canAddNewsletterOptIn
+                ? {
+                    variant: 'warning',
+                    title: inputT('newsletterSettings.disabled'),
+                    removeable: false,
+                  }
+                : undefined
+            "
+          >
+            <AppFormField>
+              <AppToggleField
+                v-model="data.showNewsletterOptIn"
+                variant="link"
+                :label="inputT('newsletterSettings.label')"
+                :enabled-description="inputT('newsletterSettings.opts.enabled')"
+                :disabled-description="
+                  inputT('newsletterSettings.opts.disabled')
+                "
+                :disabled="!canAddNewsletterOptIn"
+              />
+            </AppFormField>
+            <AppFormField
+              v-if="canAddNewsletterOptIn && data.showNewsletterOptIn"
+            >
+              <NewsletterOptInSettings
+                v-model:title="data.newsletterSettings.title"
+                v-model:opt-in="data.newsletterSettings.optIn"
+                v-model:text="data.newsletterSettings.text"
+                v-model:groups="data.newsletterSettings.groups"
+              />
+            </AppFormField>
+          </AppFormBox>
+          <AppFormBox>
             <AppFormField>
               <AppRadioGroup
                 v-model="props.data.responseSettings"
                 name="responseSettings"
+                :label="inputT('responseSettings.label')"
                 :options="[
                   [
                     'singleNonEditable',
@@ -197,7 +245,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ItemStatus, type CalloutChannel } from '@beabee/beabee-common';
+import {
+  ItemStatus,
+  type CalloutChannel,
+  type CalloutNewsletterSchema,
+} from '@beabee/beabee-common';
 import useVuelidate from '@vuelidate/core';
 import { computed, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -216,16 +268,19 @@ import {
 } from '@beabee/vue/components';
 
 import type { CalloutHorizontalTabs } from '../CalloutHorizontalTabs.interface';
+import NewsletterOptInSettings from '@components/newsletter/NewsletterOptInSettings.vue';
 
 /**
  * Data for the settings tab, which contains callout configuration options
  */
 export interface SettingsTabData {
   openToEveryone: boolean;
-  collectMemberInfo: boolean;
+  collectInfo: boolean;
   collectGuestInfo: boolean;
   captchaEnabled: boolean;
   captchaForMembers: boolean;
+  showNewsletterOptIn: boolean;
+  newsletterSettings: CalloutNewsletterSchema;
   showOnUserDashboards: boolean;
   responseSettings: 'singleNonEditable' | 'singleEditable' | 'multiple';
   channels: CalloutChannel[] | null;
@@ -263,7 +318,6 @@ const sections = computed<ScrollSection[]>(() => [
   {
     id: 'access',
     label: t('callout.builder.tabs.settings.access.title'),
-    hidden: !!env.cnrMode,
   },
   {
     id: 'responseSettings',
@@ -271,6 +325,10 @@ const sections = computed<ScrollSection[]>(() => [
     hidden: !!env.cnrMode,
   },
 ]);
+
+const canAddNewsletterOptIn = computed(
+  () => !props.data.openToEveryone || props.data.collectInfo
+);
 
 // Force step to stay unvalidated until it is visited for new callouts
 const hasVisited = ref(!!props.status);

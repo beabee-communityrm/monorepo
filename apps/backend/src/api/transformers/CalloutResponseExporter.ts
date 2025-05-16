@@ -53,6 +53,8 @@ class CalloutResponseExporter extends BaseCalloutResponseTransformer<
       response.assignee?.email || "",
       ...contact,
       !response.contact,
+      response.newsletter?.optIn ? true : "",
+      response.newsletter?.groups.join(",") || "",
       response.comments?.map(commentText).join(", ") || "",
       ...opts.components.map((c) =>
         stringifyAnswer(c, response.answers[c.slideId]?.[c.key])
@@ -137,6 +139,8 @@ class CalloutResponseExporter extends BaseCalloutResponseTransformer<
       "FullName",
       "EmailAddress",
       "IsGuest",
+      "NewsletterOptIn",
+      "NewsletterGroups",
       "Comments",
       ...components.map((c) => c.label || c.key)
     ];

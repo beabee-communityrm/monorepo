@@ -24,7 +24,7 @@ const logger = winston.createLogger({
   levels: winston.config.syslog.levels,
   transports: [
     new winston.transports.Console({
-      stderrLevels: ["error", "warn", "info", "debug"]
+      stderrLevels: ["error", "warning", "info", "debug"]
     })
   ]
 });

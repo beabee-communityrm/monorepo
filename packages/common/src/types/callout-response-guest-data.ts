@@ -1,4 +1,4 @@
-export interface CreateCalloutResponseGuestData {
+export interface CalloutResponseGuestData {
   firstname: string;
   lastname: string;
   email: string;

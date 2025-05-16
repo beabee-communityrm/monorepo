@@ -1,4 +1,7 @@
-import { CalloutResponseAnswersSlide } from "@beabee/beabee-common";
+import {
+  CalloutResponseAnswersSlide,
+  CalloutResponseNewsletterData
+} from "@beabee/beabee-common";
 import {
   Column,
   CreateDateColumn,
@@ -44,6 +47,9 @@ export class CalloutResponse {
 
   @Column({ type: "jsonb" })
   answers!: CalloutResponseAnswersSlide;
+
+  @Column({ type: "jsonb", nullable: true })
+  newsletter!: CalloutResponseNewsletterData | null;
 
   @CreateDateColumn()
   createdAt!: Date;

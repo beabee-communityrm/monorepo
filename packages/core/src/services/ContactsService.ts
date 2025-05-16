@@ -176,7 +176,11 @@ class ContactsService {
     Object.assign(contact, updates);
 
     if (opts.sync) {
-      await NewsletterService.upsertContact(contact, undefined, oldEmail);
+      await NewsletterService.upsertContact(
+        contact,
+        undefined,
+        oldEmail ? { oldEmail } : undefined
+      );
     }
 
     await PaymentService.updateContact(contact, updates);
@@ -281,7 +285,10 @@ class ContactsService {
   async updateContactProfile(
     contact: Contact,
     updates: Partial<ContactProfile>,
-    opts = { sync: true }
+    opts: { sync?: boolean; mergeGroups?: boolean } = {
+      sync: true,
+      mergeGroups: false
+    }
   ): Promise<void> {
     const { newsletterStatus, newsletterGroups, ...profileUpdates } = updates;
 
@@ -295,10 +302,11 @@ class ContactsService {
     }
 
     if (opts.sync && (newsletterStatus || newsletterGroups)) {
-      await NewsletterService.upsertContact(contact, {
-        newsletterStatus,
-        newsletterGroups
-      });
+      await NewsletterService.upsertContact(
+        contact,
+        { newsletterStatus, newsletterGroups },
+        opts
+      );
     }
   }
 

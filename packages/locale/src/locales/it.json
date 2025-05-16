@@ -146,6 +146,9 @@
               "minZoom": {},
               "style": {}
             },
+            "newsletterSettings": {
+              "opts": {}
+            },
             "openToEveryone": {
               "opts": {}
             },
@@ -236,6 +239,7 @@
   "calloutReviewerManager": {
     "confirmDelete": {}
   },
+  "calloutThanksPage": {},
   "callouts": {
     "archive": "Archivio",
     "data": {
@@ -466,13 +470,13 @@
     "message": "Se esiste già un account associato a {email}, riceverai una mail a breve. Controlla anche la tua cartella spam.",
     "title": "Hai perso il tuo dispositivo 2FA?"
   },
+  "mailOptIn": {},
   "membershipBuilder": {
     "steps": {
       "accountConfirmation": {
         "deliveryAddress": {},
         "joinSurvey": {},
         "newsletter": {
-          "groups": {},
           "title": "Newsletter"
         }
       },
@@ -496,6 +500,9 @@
     "payments": "Pagamenti",
     "settings": "Impostazioni",
     "yourProfile": "Il tuo profilo"
+  },
+  "newsletterOptIn": {
+    "groups": {}
   },
   "notFound": {},
   "noticeAdminOverview": {

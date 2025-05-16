@@ -124,7 +124,7 @@ class CalloutResponseMapTransformer extends BaseCalloutResponseTransformer<
       ...query,
       callout: calloutWithSchema,
       // TODO: support pagination in frontend
-      limit: 2000
+      limit: 2200
     });
   }
 }

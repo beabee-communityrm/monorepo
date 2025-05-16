@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
   <div>
-    <div v-for="(item, i) in modelValue" :key="i" class="mb-4 flex gap-4">
+    <div v-for="(item, i) in items" :key="i" class="mb-4 flex gap-4">
       <slot :item="item" :index="i" />
       <div class="flex-0 self-end">
         <button
@@ -31,8 +31,6 @@ import { faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
  * Props for the AppRepeatable component
  */
 export interface AppRepeatableProps<T> {
-  /** The model value of the repeatable component */
-  modelValue: T[];
   /** The new item to add */
   newItem: () => T;
   /** The label to display on the add button */
@@ -40,14 +38,13 @@ export interface AppRepeatableProps<T> {
 }
 
 const props = defineProps<AppRepeatableProps<T>>();
+const items = defineModel<T[]>({ default: [] });
 
 function addItem() {
-  // eslint-disable-next-line vue/no-mutating-props
-  props.modelValue.push(props.newItem());
+  items.value = [...items.value, props.newItem()];
 }
 
 function removeItem(n: number) {
-  // eslint-disable-next-line vue/no-mutating-props
-  props.modelValue.splice(n, 1);
+  items.value = items.value.filter((_, i) => i !== n);
 }
 </script>

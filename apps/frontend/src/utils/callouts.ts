@@ -11,6 +11,7 @@ import {
   CalloutAccess,
   CalloutCaptcha,
   type CreateCalloutData,
+  type CalloutNewsletterSchema,
 } from '@beabee/beabee-common';
 import { format } from 'date-fns';
 import { computed } from 'vue';
@@ -179,17 +180,26 @@ export function convertCalloutToTabs(
   );
 
   const sharedSettings = {
-    captchaEnabled: callout?.captcha !== CalloutCaptcha.None,
+    captchaEnabled: callout ? callout.captcha !== CalloutCaptcha.None : false,
     captchaForMembers: callout?.captcha === CalloutCaptcha.All,
     channels: callout?.channels || null,
+  };
+
+  const defaultNewsletterSettings: CalloutNewsletterSchema = {
+    title: '',
+    text: '',
+    optIn: '',
+    groups: [],
   };
 
   const settings: SettingsTabData = env.cnrMode
     ? ({
         ...sharedSettings,
         openToEveryone: true,
-        collectMemberInfo: false,
+        collectInfo: false,
         collectGuestInfo: false,
+        showNewsletterOptIn: false,
+        newsletterSettings: defaultNewsletterSettings,
         showOnUserDashboards: false,
         responseSettings: 'multiple',
         hasStartDate: false,
@@ -202,8 +212,11 @@ export function convertCalloutToTabs(
     : ({
         ...sharedSettings,
         openToEveryone: callout?.access !== CalloutAccess.Member,
-        collectMemberInfo: callout?.access !== CalloutAccess.OnlyAnonymous,
+        collectInfo: callout?.access !== CalloutAccess.OnlyAnonymous,
         collectGuestInfo: callout?.access === CalloutAccess.Guest,
+        showNewsletterOptIn: !!callout?.newsletterSchema,
+        newsletterSettings:
+          callout?.newsletterSchema || defaultNewsletterSettings,
         showOnUserDashboards: !callout?.hidden,
         responseSettings: callout?.allowMultiple
           ? 'multiple'
@@ -389,6 +402,14 @@ export function convertStepsToCallout(
   const slides = convertSlidesForCallout(tabs);
   const variants = convertVariantsForCallout(tabs);
 
+  const access = tabs.settings.openToEveryone
+    ? tabs.settings.collectInfo
+      ? tabs.settings.collectGuestInfo
+        ? CalloutAccess.Guest
+        : CalloutAccess.Anonymous
+      : CalloutAccess.OnlyAnonymous
+    : CalloutAccess.Member;
+
   return {
     slug: slug || undefined,
     image: tabs.titleAndImage.coverImageURL,
@@ -427,15 +448,14 @@ export function convertStepsToCallout(
         ? CalloutCaptcha.All
         : CalloutCaptcha.Guest
       : CalloutCaptcha.None,
-    access: tabs.settings.openToEveryone
-      ? tabs.settings.collectMemberInfo
-        ? tabs.settings.collectGuestInfo
-          ? CalloutAccess.Guest
-          : CalloutAccess.Anonymous
-        : CalloutAccess.OnlyAnonymous
-      : CalloutAccess.Member,
+    access,
     variants,
     channels: tabs.settings.channels,
+    newsletterSchema:
+      access !== CalloutAccess.OnlyAnonymous &&
+      tabs.settings.showNewsletterOptIn
+        ? tabs.settings.newsletterSettings
+        : null,
   };
 }
 
