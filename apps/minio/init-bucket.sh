@@ -19,9 +19,6 @@ if [ -n "${BEABEE_MINIO_BUCKET}" ]; then
   # Create bucket if it doesn't exist
   mc mb --ignore-existing myminio/"${BEABEE_MINIO_BUCKET}"
   
-  # Set download permissions for the bucket
-  mc anonymous set download myminio/"${BEABEE_MINIO_BUCKET}"
-  
   echo "Bucket initialization completed"
 fi
 
