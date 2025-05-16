@@ -42,7 +42,7 @@ export default {
    */
   maptilerKey: '__maptilerKey__',
   /**
-   * Content and Records (CNR) mode setting
+   * CrowdNewsroom mode setting
    * Source: CNR_MODE environment variable
    * Default: '' (empty string)
    */
