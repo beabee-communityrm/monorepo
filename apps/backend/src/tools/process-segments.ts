@@ -20,6 +20,7 @@ import {
 } from "@beabee/core/models";
 import ContactTransformer from "@api/transformers/ContactTransformer";
 import { GetContactWith } from "@beabee/beabee-common";
+import { InvalidRuleError } from "@beabee/core/errors";
 
 const log = mainLogger.child({ app: "process-segments" });
 
@@ -109,7 +110,19 @@ async function main(segmentId?: string) {
   }
 
   for (const segment of segments) {
-    await processSegment(segment);
+    try {
+      await processSegment(segment);
+    } catch (err) {
+      if (err instanceof InvalidRuleError) {
+        log.warning(
+          "Invalid rule for segment %s: %s",
+          segment.name,
+          err.message
+        );
+      } else {
+        throw err;
+      }
+    }
   }
 }
 
