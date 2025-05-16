@@ -113,6 +113,8 @@ async function main(segmentId?: string) {
     try {
       await processSegment(segment);
     } catch (err) {
+      // Catch InvalidRuleError to reduce logging noise during cronjob runs.
+      // This error is expected and does not require escalation.
       if (err instanceof InvalidRuleError) {
         log.warning(
           "Invalid rule for segment %s: %s",
