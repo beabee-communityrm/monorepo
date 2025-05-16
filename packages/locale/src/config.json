@@ -3,48 +3,88 @@
     "baseLocale": "en",
     "name": "English",
     "displayName": "English",
-    "adminLocale": "en"
+    "adminLocale": "en",
+    "availableIn": [
+      "callout",
+      "backend"
+    ]
   },
   "de": {
     "baseLocale": "de",
     "name": "Deutsch (formal)",
     "displayName": "Deutsch",
-    "adminLocale": "de"
+    "adminLocale": "de",
+    "availableIn": [
+      "callout",
+      "backend"
+    ]
   },
   "de@informal": {
     "baseLocale": "de",
     "name": "Deutsch (informal)",
     "displayName": "Deutsch",
-    "adminLocale": "de@informal"
-  },
-  "nl": {
-    "baseLocale": "nl",
-    "name": "Nederlands",
-    "displayName": "Nederlands",
-    "adminLocale": "nl"
-  },
-  "pt": {
-    "baseLocale": "pt",
-    "name": "Português",
-    "displayName": "Português",
-    "adminLocale": "en"
-  },
-  "it": {
-    "baseLocale": "it",
-    "name": "Italiano",
-    "displayName": "Italiano",
-    "adminLocale": "en"
-  },
-  "ru": {
-    "baseLocale": "ru",
-    "name": "Русский",
-    "displayName": "Русский",
-    "adminLocale": "en"
+    "adminLocale": "de@informal",
+    "fallbackLocale": "de",
+    "availableIn": [
+      "callout",
+      "backend"
+    ]
   },
   "de@easy": {
     "baseLocale": "de",
     "name": "Deutsch (einfach)",
     "displayName": "Leichte Sprache",
-    "adminLocale": "de"
+    "adminLocale": "de",
+    "fallbackLocale": "de@informal",
+    "availableIn": [
+      "callout"
+    ]
+  },
+  "nl": {
+    "baseLocale": "nl",
+    "name": "Nederlands",
+    "displayName": "Nederlands",
+    "adminLocale": "nl",
+    "availableIn": [
+      "callout",
+      "backend"
+    ]
+  },
+  "pt": {
+    "baseLocale": "pt",
+    "name": "Português",
+    "displayName": "Português",
+    "adminLocale": "en",
+    "availableIn": [
+      "callout",
+      "backend"
+    ]
+  },
+  "it": {
+    "baseLocale": "it",
+    "name": "Italiano",
+    "displayName": "Italiano",
+    "adminLocale": "en",
+    "availableIn": [
+      "callout",
+      "backend"
+    ]
+  },
+  "ru": {
+    "baseLocale": "ru",
+    "name": "Русский",
+    "displayName": "Русский",
+    "adminLocale": "en",
+    "availableIn": [
+      "callout",
+      "backend"
+    ]
+  },
+  "fr": {
+    "baseLocale": "fr",
+    "name": "Français",
+    "displayName": "Français",
+    "adminLocale": "en",
+    "availableIn": []
   }
 }

@@ -18,6 +18,7 @@ COPY --chown=node:node packages/common/package.json /opt/packages/common/package
 COPY --chown=node:node packages/core/package.json /opt/packages/core/package.json
 COPY --chown=node:node packages/docker/package.json /opt/packages/docker/package.json
 COPY --chown=node:node packages/locale/package.json /opt/packages/locale/package.json
+COPY --chown=node:node packages/weblate-client/package.json /opt/packages/weblate-client/package.json
 COPY --chown=node:node packages/client/package.json /opt/packages/client/package.json
 COPY --chown=node:node packages/test-utils/package.json /opt/packages/test-utils/package.json
 COPY --chown=node:node packages/vue/package.json /opt/packages/vue/package.json

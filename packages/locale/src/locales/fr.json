@@ -1,0 +1,1524 @@
+{
+  "accountPage": {
+    "contactInformation": "Coordonnées",
+    "deliveryAddress": "Adresse de livraison",
+    "deliveryOptIn": "",
+    "loginDetail": "Informations de connexion",
+    "mfa": {
+      "codeInput": {
+        "info": "Si vous avez perdu votre appareil A2F, veuillez contacter l'assistance",
+        "label": "Code"
+      },
+      "confirmDelete": {
+        "desc": "Voulez-vous vraiment l'authentification multifacteur ? Dès lors, vous n'aurez besoin que de votre mot de passe pour vous connecter. N'oubliez pas de supprimer l'entrée de votre application Authenticator. Vous pourrez toujours la réactiver.",
+        "descToken": "Pour désactiver l'A2F, veuillez taper votre code d'A2F actuel :",
+        "title": "Désactiver l'A2F"
+      },
+      "createUnknownErrorNotification": "Une erreur inconnue a empêché l'activation de l'authentification à 2 facteurs. Veuillez réessayer ou contacter l'assistance.",
+      "deleteUnknownErrorNotification": "Une erreur inconnue a empêché la désactivation de l'authentification à 2 facteurs. Veuillez réessayer ou contacter l'assistance.",
+      "disabledNotification": "L'authentification à deux facteurs a bien été désactivée",
+      "enabledNotification": "L'authentification à deux facteurs à bien été activée",
+      "enterCode": {
+        "desc": "Tapez le code affiché dans votre application d'authentification.",
+        "title": "Vérification"
+      },
+      "modalTitle": "Activer l'authentification à 2 facteurs",
+      "result": {
+        "invalidCode": "Le code n'a pas pu être vérifié, veuillez réessayer ou contacter l'assistance.",
+        "successful": "L'authentification à 2 facteurs a bien été configurée.",
+        "title": "Terminé"
+      },
+      "scan": {
+        "desc": "Scannez le code QR ci-dessous avec votre application d'authentification.",
+        "title": "Code QR"
+      },
+      "secretInput": {
+        "desc": "Vous pouvez également taper le code suivant dans votre application d'authentification.",
+        "label": "Code secret"
+      },
+      "title": "Authentification à 2 facteurs",
+      "validateButton": {
+        "label": "Vérifier le jeton"
+      }
+    },
+    "newsletter": {
+      "cantUpdate": "Pour modifier le statut de la lettre d'information de ce contact, veuillez contacter support{'@'}beabee.io.",
+      "currentStatus": {
+        "cleaned": "Ce contact a été retiré de votre liste de lettres d'information, son adresse e-mail a probablement rebondi.",
+        "none": "Ce contact n'est pas abonné à votre liste de lettres d'information.",
+        "pending": "",
+        "subscribed": "Ce contact est abonné à votre liste de lettres d'information.",
+        "unsubscribed": "Ce contact n'est pas abonné à votre liste de lettres d'information."
+      },
+      "subscribe": "Inscrire à la lettre d'information",
+      "title": "Lettre d'information",
+      "unsubscribe": "Désinscrire de la lettre d'information"
+    },
+    "phoneInfo": "En indiquant votre numéro de téléphone, vous acceptez d'être contacté par téléphone",
+    "phoneInfoAdmin": "Vous devez obtenir le consentement de la personne avant d'ajouter son numéro de téléphone dans le système",
+    "savedPassword": "Nouveau mot de passe enregistré",
+    "subTitle": "Les champs obligatoires sont marqués d'une astérisque. Tous les informations fournies ici restent privées.",
+    "title": "Compte"
+  },
+  "actions": {
+    "add": "Ajouter",
+    "back": "Retour",
+    "backToLogin": "Retour à la connexion",
+    "cancel": "Annuler",
+    "changePassword": "Modifier le mot de passe",
+    "chooseFile": "Sélectionner un fichier",
+    "close": "Fermer",
+    "continue": "Continuer",
+    "copy": "Copier",
+    "create": "Créer",
+    "delete": "Supprimer",
+    "disable": "Désactiver",
+    "edit": "Modifier",
+    "enable": "Activer",
+    "endnow": "Terminer maintenant",
+    "export": "Exporter",
+    "getStarted": "Commencer",
+    "goBack": "Retour",
+    "next": "Suivant",
+    "noBack": "Non, revenir en arrière",
+    "participate": "Participer",
+    "preview": "Aperçu",
+    "publish": "Publier",
+    "reopen": "Réouvrir",
+    "replicate": "Répliquer",
+    "reset": "Réinitialiser",
+    "reset2FA": "Réinitialiser l'A2F",
+    "resetPassword": "Réinitialiser le mot de passe",
+    "respond": "Répondre",
+    "revertToDraft": "Convertir en brouillon",
+    "save": "Enregistrer",
+    "saveAndAnother": "Enregistrer et en ajouter un autre",
+    "saveDraft": "Enregistrer le brouillon",
+    "schedule": "Planifier",
+    "search": "Rechercher",
+    "sendEmails": "Envoyer des e-mails",
+    "share": "Partager",
+    "skip": "Ignorer",
+    "submit": "Soumettre",
+    "unpublish": "Dépublier",
+    "update": "Mettre à jour",
+    "view": "Visualiser",
+    "yesDelete": "Oui, supprimer",
+    "yesDisable": "Oui, désactiver",
+    "yesRemove": "Oui, retirer"
+  },
+  "addContact": {
+    "contactSaved": "Contact enregistré",
+    "errors": {
+      "duplicateEmail": "Cette adresse e-mail existe déjà"
+    },
+    "subscribeToNewsletter": "Synchroniser avec l'outil de lettre d'information",
+    "title": "Ajouter un contact"
+  },
+  "addNotice": {
+    "form": {
+      "buttonText": "Texte du bouton",
+      "expirationDateAndTime": "Date et heure d'expiration",
+      "name": "Nom",
+      "startDateAndTime": "Date et heure de début",
+      "text": "Texte",
+      "url": "URL"
+    },
+    "title": "Ajouter un avis"
+  },
+  "adminDashboard": {
+    "hint1": "<p>Saviez-vous que les campagnes peuvent être créées sans date de fin, et ne jamais s'arrêter ? Consultez nos <a href=\"https://beabee.io/en/beabee-full-feature-list/\" target=\"_blank\" rel=\"noopener noreferrer\">fonctionnalités</a> pour plus d'information.</p>\n",
+    "hint2": "<p>Découvrez-en plus sur <a href=\"https://beabee.io/en/beabee-model/\" target=\"_blank\" rel=\"noopener noreferrer\">la vision de beabee</a> à propos de l'engagement envers la communauté et les relations censées avec votre audience.</p>\n",
+    "hint3": "<p>Notre <a href=\"https://beabee.io/en/beabee-faq/\" target=\"_blank\" rel=\"noopener noreferrer\">FAQ</a> répond aux questions courantes concernant le démarrage et certains cas d'usage. Si vous n'y trouvez pas la réponse que vous cherchez, contactez-nous.</p>\n",
+    "joinSlack": "Rejoignez la communauté beabee sur Slack !",
+    "latestCallout": {
+      "createNew": "En créer un nouveau ?",
+      "empty": "Aucune campagne n'est actuellement active.",
+      "title": "Dernière campagne"
+    },
+    "mostRecentMembers": {
+      "title": "Membres les plus récents"
+    },
+    "numbers": {
+      "averageContribution": "Cotisation mensuelle moyenne",
+      "newMembers": "Nouveaux membres",
+      "revenue": "Revenu",
+      "title": "Données pour les 30 derniers jours"
+    },
+    "responsesSoFar": "{n} réponse jusqu'à présent | {n} réponses jusqu'à présent",
+    "seeAllResponses": "Voir toutes les réponses",
+    "supportInbox": "<p>Besoin d'aide ? Veuillez consulter <a href=\"https://wiki.beabee.io/help-center-english/\" target=\"_blank\" rel=\"noopener noreferrer\">le centre d'aide de beabee</a> ou contacter notre assistance : <a href=\"mailto:support{'@'}beabee.io\">support{'@'}beabee.io</a></p>\n",
+    "welcomeBack": "Bienvenue {firstName} !"
+  },
+  "adminSettings": {
+    "apikey": {
+      "confirmCreate": {
+        "text": "Veuillez enregistrer le jeton suivant. Il NE POURRA PAS être récupéré par la suite.",
+        "title": "Clé d'API créée"
+      },
+      "confirmDelete": {
+        "text": "Ceci est irréversible. Tout ce qui utilise cette clé d'API cessera de fonctionner.",
+        "title": "Supprimer la clé d'API ?"
+      },
+      "copied": "Clé d'API copiée dans le presse-papiers",
+      "create": "Créer une nouvelle clé d'API",
+      "expires": {
+        "days": "Dans {n} jours",
+        "never": "Jamais"
+      },
+      "expiresHelp": "Pour plus de sécurité, vous devriez toujours définir une date d'expiration afin d'éviter que votre système ne soit pas autorisé à long terme.",
+      "expiresNeverWarning": "Je comprends les risques de ne pas définir de date d'expiration",
+      "label": "Clés d'API",
+      "showingOf": "Affichage de {start} à {end} clés API sur {total}"
+    },
+    "email": {
+      "fromEmail": "À partir de l'e-mail",
+      "fromName": "À partir du nom",
+      "label": "E-mail",
+      "text": "Toute communication par e-mail sera envoyée à partir de cette adresse e-mail.",
+      "title": "Définir une adresse e-mail générique"
+    },
+    "general": {
+      "footer": {
+        "dataPrivacy": {
+          "impressumUrl": "URL de l'impressum",
+          "privacyUrl": "URL de la politique de confidentialité",
+          "termsUrl": "URL des conditions d'utilisation",
+          "title": "Politique de confidentialité des données"
+        },
+        "otherLinks": {
+          "add": "Ajouter un autre lien",
+          "linkText": "Texte du lien",
+          "title": "Autres liens",
+          "url": "URL"
+        },
+        "siteUrl": "URL du site Web principal",
+        "text": "Ces liens apparaissent dans le pied de page de beabee et dans les e-mails",
+        "title": "Pied de page"
+      },
+      "label": "Général",
+      "language": "Langue",
+      "logo": "Logo",
+      "organisationName": "Nom de l'organisation",
+      "socialSharing": {
+        "description": "Partager la description",
+        "image": "Partager l'image",
+        "shareTitle": "Partager le titre",
+        "text": "Configurez ce qui apparaît sur les réseaux sociaux lorsqu'un lien vers votre communauté beabee est partagé",
+        "title": "Partage sur les réseaux sociaux",
+        "twitterHandle": "Twitter"
+      }
+    },
+    "payment": {
+      "paymentTitle": "Paiement",
+      "taxRate": "Taux de la TVA",
+      "taxRateEnabled": "Activer la TVA"
+    },
+    "theme": {
+      "bodyFont": "Texte",
+      "colorNames": {
+        "body": "Couleur du texte",
+        "danger": "Danger",
+        "link": "Liens",
+        "primary": "Principal",
+        "success": "Succès",
+        "warning": "Avertissement"
+      },
+      "colors": "Couleurs",
+      "customColors": "Personnalisé",
+      "fontNotListed": "<p>Vous ne trouvez pas votre police ? Contactez <a href=\"mailto:support{'@'}beabee.io\">support{'@'}beabee.io</a> pour demander l'ajout.</p>\n",
+      "fonts": "Polices",
+      "label": "Thème",
+      "presetColors": {
+        "default": "Par défaut"
+      },
+      "titleFont": "Police de titre"
+    },
+    "title": "Paramètres"
+  },
+  "advancedSearch": {
+    "addRule": "Ajouter une règle",
+    "button": "Filtres",
+    "createFiltersAfter": "règles",
+    "createFiltersBefore": "Afficher uniquement les résultats correspondants",
+    "createFiltersType": {
+      "all": "tout",
+      "any": "peu importe"
+    },
+    "createdSegment": "Segment « {segment} » créé",
+    "matchWord": {
+      "AND": "et",
+      "OR": "ou"
+    },
+    "nestedRules": "Règles imbriquées",
+    "noNestedRules": "Ce filtre comporte des règles imbriquées ne pouvant pas être modifiées via l'éditeur de recherche avancée.",
+    "operators": {
+      "all": {
+        "is_empty": "est vide",
+        "is_not_empty": "n'est pas vide"
+      },
+      "array": {
+        "contains": "comprend",
+        "not_contains": "ne comprend pas"
+      },
+      "blob": {
+        "contains": "contient",
+        "not_contains": "ne contient pas"
+      },
+      "boolean": {
+        "equal": "est"
+      },
+      "date": {
+        "between": "entre",
+        "equal": "est le",
+        "greater": "après",
+        "greater_or_equal": "après ou le",
+        "less": "avant",
+        "less_or_equal": "avant ou le",
+        "not_between": "n'est pas entre",
+        "not_equal": "n'est pas le"
+      },
+      "enum": {
+        "equal": "est",
+        "not_equal": "n'est pas"
+      },
+      "number": {
+        "between": "entre",
+        "equal": "est",
+        "greater": "plus que",
+        "greater_or_equal": "au moins",
+        "less": "moins que",
+        "less_or_equal": "au plus",
+        "not_between": "n'est pas entre",
+        "not_equal": "n'est pas"
+      },
+      "text": {
+        "begins_with": "commence par",
+        "contains": "contient",
+        "ends_with": "se termine par",
+        "equal": "est",
+        "not_begins_with": "ne commence pas par",
+        "not_contains": "ne contient pas",
+        "not_ends_with": "ne se termine pas par",
+        "not_equal": "n'est pas"
+      }
+    },
+    "saveSegment": {
+      "createOrUpdate": {
+        "create": "Créer un nouveau segment",
+        "label": "Voulez-vous créer un nouveau segment ?",
+        "update": "Mettre à jour le segment « {segment} »"
+      },
+      "createSegment": "Créer un segment",
+      "segmentName": "Nom du segment",
+      "text": "Un segment est un groupe de contacts correspondant un à un ensemble de filtres comme ceux que vous venez de créer. Les nouveaux contacts correspondant à ces filtres seront automatiquement ajoutés à ce segment.",
+      "title": "Enregistrer le segment",
+      "updateSegment": "Mettre à jour le segment"
+    },
+    "selectFilter": "Sélectionner un filtre",
+    "updatedSegment": "Segment « {segment} » mis à jour"
+  },
+  "apiKey": {
+    "data": {
+      "createdAt": "Créé",
+      "description": "Description",
+      "expires": "Date d'expiration",
+      "token": "Jeton"
+    }
+  },
+  "callout": {
+    "actions": {
+      "updateResponse": "Mettre à jour votre réponse"
+    },
+    "addAPoint": "Cliquez sur la carte à l'endroit où vous souhaitez ajouter un point",
+    "addLocation": "Ajouter une nouvelle entrée",
+    "builder": {
+      "actions": {
+        "addSlide": "Ajouter une diapositive"
+      },
+      "common": {
+        "actions": {
+          "add": "Ajouter",
+          "remove": "Retirer"
+        },
+        "internalTitle": "Titre interne",
+        "showAdvancedOptions": "Afficher les options avancées",
+        "slides": "Diapositives",
+        "startEndScreens": "Écrans de début et de fin"
+      },
+      "navigation": {
+        "nextButton": "Texte du bouton suivant",
+        "nextSlide": {
+          "default": "– Par défaut –",
+          "label": "Diapositive suivante"
+        },
+        "prevButton": "Texte du bouton retour",
+        "slideNo": "Diapositive {no}",
+        "submitButton": "Texte du bouton d'envoi"
+      },
+      "showAdvancedOptions": "Afficher les options avancées",
+      "slidesTitle": "Diapositives",
+      "startEndScreenTitle": "Écrans de début et de fin",
+      "tabs": {
+        "content": {
+          "title": "Contenu"
+        },
+        "endMessage": {
+          "inputs": {
+            "action": {
+              "label": "Lorsque l'utilisateur termine la campagne",
+              "opts": {
+                "redirect": "Rediriger vers une autre page",
+                "showMessage": "Afficher un message de remerciement"
+              }
+            },
+            "text": {
+              "help": "<p>Vous pouvez y remercier les utilisateurs de manière plus détaillée et leur indiquer quand ils peuvent s'attendre à des mises à jour ou à un suivi.</p>",
+              "label": "Texte de remerciement",
+              "placeholder": "Ajoutez plus de détails sur l'importance de leur contribution…"
+            },
+            "title": {
+              "help": "<p>Vos lecteurs verront le <strong>Titre de remerciement</strong> lorsqu'ils termineront la campagne.</p>",
+              "label": "Titre de remerciement",
+              "placeholder": "Merci !"
+            },
+            "url": {
+              "help": "<p>Il peut s'agir de votre page d'accueil ou d'un article sur le sujet de votre campagne.</p>",
+              "label": "URL de redirection",
+              "placeholder": "https://exemple.com"
+            }
+          },
+          "title": "Message de fin"
+        },
+        "intro": {
+          "help": "<p>Le <strong>Texte d'introduction</strong> apparaît à côté de la campagne. Il doit expliquer pourquoi vous effectuez cette campagne et donner du contexte aux utilisateurs avant qu'ils puissent répondre.</p>",
+          "label": "Texte d'introduction",
+          "title": "Introduction"
+        },
+        "mailchimp": {
+          "title": "Synchronisation Mailchimp"
+        },
+        "responseDisplay": {
+          "title": "Affichage de la réponse"
+        },
+        "settings": {
+          "access": {
+            "title": "Accès et sécurité"
+          },
+          "dates": {
+            "title": "Planification"
+          },
+          "displayOptions": {
+            "description": "Sélectionnez les options de réponse visibles par les utilisateurs",
+            "title": "Afficher les options"
+          },
+          "inputs": {
+            "collectGuestInfo": {
+              "label": "Demander les informations de contact des invités",
+              "opts": {
+                "disabled": "Les invités peuvent répondre anonymement",
+                "enabled": "Les invités devront également renseigner leurs informations de contact"
+              }
+            },
+            "collectMemberInfo": {
+              "label": "Collecter les informations de contact",
+              "opts": {
+                "disabled": "Toutes les réponses seront anonymes",
+                "enabled": "Les informations de contact des membres seront collectées"
+              }
+            },
+            "expires": {
+              "description": "Définir une date de fin",
+              "label": "Définir une date de fin",
+              "opts": {
+                "never": "La campagne durera jusqu'à ce qu'elle soit manuellement fermée",
+                "schedule": "La campagne sera fermée automatiquement à une date spécifique."
+              }
+            },
+            "mapAndGallery": {
+              "description": "Sélectionnez quelles visualisations des réponses doivent être disponibles pour les utilisateurs",
+              "gallery": {
+                "disabledDescription": "Un tableau de réponses basé sur des images ne sera pas accessible publiquement",
+                "enabledDescription": "Un tableau de réponses basé sur des images sera accessible publiquement",
+                "label": "Activer la visualisation sous forme de galerie pour les réponses publiques"
+              },
+              "map": {
+                "disabledDescription": "Une carte indiquant la localisation ne sera pas accessible publiquement",
+                "enabledDescription": "Une carte indiquant la localisation sera accessible publiquement",
+                "label": "Activer une vue sous forme de carte des réponses publiques"
+              },
+              "title": "Vues sous forme de carte et de galerie"
+            },
+            "mapSchema": {
+              "addressPattern": {
+                "label": "Quel format souhaitez-vous utiliser ?"
+              },
+              "addressPatternProp": {
+                "label": "Voulez-vous remplir un champ avec l'adresse ?",
+                "none": "– Ne pas remplir –"
+              },
+              "addressProp": {
+                "label": "Quel champ du formulaire devrait être utilisé pour représenter les réponses sur la carte ?"
+              },
+              "bounds": {
+                "label": "Limites de la carte"
+              },
+              "center": {
+                "label": "Centre initial de la carte"
+              },
+              "geocodeCountries": {
+                "label": "Restreindre les résultats de recherche d'emplacement à certains pays ?"
+              },
+              "initialZoom": {
+                "label": "Niveau de zoom initial"
+              },
+              "maxZoom": {
+                "label": "Niveau de zoom maximal"
+              },
+              "minZoom": {
+                "label": "Niveau de zoom minimal"
+              },
+              "style": {
+                "help": "<p>La visualisation sous forme de carte <strong>nécessite un outil tiers</strong> tel que <a href=\"https://www.maptiler.com\" target=\"_blank\" rel=\"noopener noreferrer\">Maptiler</a> ou <a href=\"https://www.mapbox.com\" target=\"_blank\" rel=\"noopener noreferrer\">Mapbox</a>. Ces outils vous sont fournis avec l'URL du style de carte que vous devez coller ici.</p>",
+                "label": "URL du style de carte"
+              },
+              "title": "Paramètres de carte"
+            },
+            "newsletterSettings": {
+              "disabled": "Vous ne pouvez pas demander d'inscription à la lettre d'information si vous ne collectez pas les informations de contact",
+              "label": "Ajouter une inscription à la lettre d'information au formulaire de contact",
+              "opts": {
+                "disabled": "Les participants ne seront pas invités à s'inscrire à la lettre d'information",
+                "enabled": "Les participants seront invités à s'inscrire à la lettre d'information"
+              }
+            },
+            "openToEveryone": {
+              "help": "<p>Les campagnes peuvent être présentées à <strong>Tout le monde</strong> ou restreintes aux <strong>Membres uniquement</strong></p>",
+              "label": "Ouvrir à tout le monde",
+              "opts": {
+                "disabled": "Seuls les membres seront autorisés à accéder et participer à cette campagne",
+                "enabled": "Tout le monde sera autorisé à accéder et participer à cette campagne"
+              }
+            },
+            "requireCaptcha": {
+              "help": "<p>Si vous activez <strong>la protection contre les robots et le spam</strong> les utilisateurs devront compléter un CAPTCHA pour confirmer qu'ils sont humains. C'est utile pour empêcher votre campagne d'être ciblée par des robots</p>",
+              "label": "Activer la protection contre les robots et le spam",
+              "members": {
+                "label": "Activer également pour les membres",
+                "opts": {
+                  "disabled": "Les membres ne doivent pas compléter de CAPTCHA",
+                  "enabled": "Les membres doivent également compléter un CAPTCHA"
+                }
+              },
+              "opts": {
+                "all": "Tous les utilisateurs devront compléter un CAPTCHA",
+                "guests": "Les non membres devront compléter un CAPTCHA",
+                "none": "Aucun CAPTCHA ne sera requis"
+              }
+            },
+            "responseImageProp": {
+              "description": "L'image sera utilisée pour visualiser la réponse dans la vue en carte ou en galerie",
+              "label": "Image de réponse"
+            },
+            "responseLinks": {
+              "description": "Par exemple, utilisez le pied de page de réponse pour inclure un lien permettant de signaler une erreur ou un e-mail de contact. Pour lier une adresse e-mail, tapez mailto: suivi de l'adresse e-mail dans le champ URL.",
+              "label": "Inclure un pied de page en bas des réponses",
+              "opts": {
+                "disabled": "Ne pas afficher de liens dans le pied de page sur les réponses",
+                "enabled": "Afficher les liens de contact ou de signalement d'erreur dans le pied de page des réponses"
+              },
+              "placeholder": {
+                "label": "Exemple : Signaler une erreur",
+                "url": "mailto:error{'@'}mail.com"
+              }
+            },
+            "responseSettings": {
+              "label": "Comportement de réponse",
+              "opts": {
+                "multiple": "Réponses multiples, non modifiable",
+                "singleEditable": "Réponse simple mais modifiable tant que la campagne est active",
+                "singleNonEditable": "Réponse simple, non modifiable"
+              },
+              "title": "Paramètres de réponse"
+            },
+            "responseTitleProp": {
+              "description": "Le titre apparaîtra au dessus de chaque réponse dans la vue en carte ou en galerie",
+              "label": "Titre de la réponse"
+            },
+            "showResponses": {
+              "label": "Afficher les réponses publiquement",
+              "opts": {
+                "no": "Les réponses collectées ne sont pas disponibles publiquement",
+                "yes": "Afficher les réponses collectées publiquement"
+              }
+            },
+            "starts": {
+              "label": "Définir une date de début",
+              "opts": {
+                "now": "La campagne sera disponible immédiatement.",
+                "schedule": "La campagne sera disponible à une date spécifique."
+              }
+            },
+            "visible": {
+              "help": "<p>Vous pouvez <strong>ne pas faire apparaître</strong> la campagne auprès des utilisateurs si vous souhaitez que seules les personnes avec qui vous partagez le lien puissent répondre.</p>",
+              "label": "Afficher la campagne dans le tableau de bord des membres",
+              "opts": {
+                "disabled": "La campagne n'apparaîtra pas dans le tableau de bord des membres",
+                "enabled": "La campagne apparaîtra dans le tableau de bord des membres"
+              }
+            },
+            "whichResponseBuckets": {
+              "description": "",
+              "label": ""
+            }
+          },
+          "title": "Paramètres"
+        },
+        "titleAndImage": {
+          "inputs": {
+            "description": {
+              "help": "Cette description est affichée si la campagne est visible dans le tableau de bord des membres. Elle est également utilisée pour le partage.",
+              "label": "Description courte",
+              "placeholder": "Expliquez brièvement pourquoi les gens devraient ouvrir cette campagne."
+            },
+            "general": {
+              "title": "Informations générales"
+            },
+            "image": {
+              "description": "N'oubliez pas d'enregistrer après avoir importé une image !",
+              "help": "<p>L'<strong>Image de couverture</strong> servira d'illustration pour la campagne sur les menus et les formulaires</p>",
+              "label": "Image de couverture"
+            },
+            "overrideShare": {
+              "label": "Utiliser un titre et une description personnalisés pour le partage ?",
+              "opts": {
+                "disabled": "Les liens partagés sur les réseaux sociaux auront les mêmes titre et description.",
+                "enabled": "Les liens partagées sur les réseaux sociaux auront un titre et une description personnalisés."
+              }
+            },
+            "shareDescription": {
+              "help": "<p>Le champ <strong>Description partagée</strong> définit la description courte tel qu'il doit apparaître sur les réseaux sociaux.</p>",
+              "label": "Description partagée",
+              "placeholder": "Expliquez brièvement pourquoi les gens devraient répondre à cette campagne."
+            },
+            "shareTitle": {
+              "help": "<p>Le champ <strong>Titre partagé</strong> définit le titre tel qu'il doit apparaître sur les réseaux sociaux.</p>",
+              "label": "Titre partagé",
+              "placeholder": "Le nom de votre campagne"
+            },
+            "sharing": {
+              "title": "Options de partage"
+            },
+            "slug": {
+              "boxTitle": "Lien permanent",
+              "help": "<p>Vous pouvez partager <strong>le lien permanent</strong> avec des utilisateurs afin qu'ils puissent accéder directement à la campagne</p>",
+              "label": "Générer automatiquement l'identifiant à partir du titre",
+              "locked": {
+                "title": "Le lien permanent est verrouillé car la campagne a déjà été publiée."
+              },
+              "opts": {
+                "auto": "Le lien permanent est généré à partir du titre de la campagne et automatiquement mis à jour une fois la campagne publiée.",
+                "manual": "Le lien permanent est défini manuellement"
+              }
+            },
+            "title": {
+              "label": "Titre",
+              "placeholder": "Le nom de votre campagne."
+            }
+          },
+          "title": "Titre et image",
+          "urlWillBe": "Le lien permanent sera"
+        },
+        "translations": {
+          "language": {
+            "description": "Vous pouvez traduire la campagne dans plusieurs langues. Si une traduction est manquante nous l'afficheront dans la langue d'origine.",
+            "enableLanguages": "Activer la traduction",
+            "title": "Langue"
+          },
+          "languageSettings": {
+            "title": "Langue"
+          },
+          "navigationButtons": {
+            "title": "Boutons"
+          },
+          "title": "Traductions"
+        }
+      },
+      "translationFields": {
+        "description": "Description",
+        "label": "Intitulé",
+        "option": "Option {n}",
+        "placeholder": "Texte indicatif"
+      }
+    },
+    "confirmHuman": "Veuillez confirmer que vous êtes humain",
+    "contactDetails": "Informations de contact",
+    "ended": "Cette campagne s'est terminée le {date}",
+    "entryOf": "Entrée {no} sur {total}",
+    "form": {
+      "email": "Votre e-mail",
+      "guestFieldsMissing": "Veuillez nous indiquer vos informations de contact",
+      "name": "Votre nom",
+      "submittingResponseError": "Une erreur s'est produite lors de l'envoi de votre réponse, veuillez réessayer"
+    },
+    "getStarted": "Commencer",
+    "joinNow": "S'inscrire maintenant",
+    "loginToYourAccount": "Connectez-vous à votre compte",
+    "membersOnly": "Cette campagne est ouverte aux membres uniquement. Pour participer",
+    "responseSubmitted": "Réponse envoyée",
+    "share": {
+      "address": "Partagez cette campagne avec l'adresse suivante :",
+      "services": "Ou partagez rapidement en utilisant l'un de ces services :"
+    },
+    "showingPreview": "Vous ne pouvez pas envoyer de réponse en mode aperçu",
+    "toContributionPage": "Modifier ma cotisation",
+    "updateContribution": "veuillez mettre à jour votre cotisation",
+    "views": {
+      "gallery": "Galerie",
+      "map": "Carte"
+    },
+    "youResponded": "Vous avez répondu à cette campagne ♥",
+    "yourResponse": "Votre réponse"
+  },
+  "calloutAdmin": {
+    "deleted": "Campagne supprimée.",
+    "ended": "Campagne terminée. Vous pouvez la réouvrir en la modifiant.",
+    "overview": "Vue d'ensemble",
+    "reopened": "Campagne réactivée. Modifiez la campagne si vous devez définir une autre date de fin.",
+    "responses": "Réponses"
+  },
+  "calloutAdminOverview": {
+    "actions": {
+      "confirmDelete": {
+        "text": "Voulez-vous vraiment supprimer cette campagne ?",
+        "title": "Supprimer la campagne ?"
+      }
+    },
+    "created": "Votre nouvelle campagne a bien été créée.",
+    "dates": {
+      "ends": "Se termine",
+      "label": "Dates",
+      "starts": "Commence"
+    },
+    "settings": {
+      "answers": {
+        "editable": "Peut être mis à jour",
+        "final": "Ne peut pas être mis à jour",
+        "label": "Réponses"
+      },
+      "contactInfo": {
+        "label": "Informations de contact",
+        "optional": "Facultatif",
+        "required": "Obligatoire"
+      },
+      "endsWith": {
+        "label": "Se termine avec",
+        "message": "Un message de remerciement",
+        "redirect": "Une redirection"
+      },
+      "label": "Paramètres",
+      "openTo": {
+        "everyone": "Tout le monde",
+        "label": "Ouvrir à",
+        "membersOnly": "Membres uniquement"
+      }
+    },
+    "summary": "Résumé",
+    "updated": "Votre campagne a bien été mise à jour."
+  },
+  "calloutResponse": {
+    "data": {
+      "answers": "Réponses",
+      "assignee": "Assigné à",
+      "bucket": "",
+      "callout": "Campagne",
+      "contact": "Contact",
+      "createdAt": "Date d'envoi",
+      "tags": "Libellés",
+      "updatedAt": "Date de mise à jour"
+    },
+    "dataGroup": {
+      "answers": "Réponses",
+      "response": "Informations sur les réponses"
+    }
+  },
+  "calloutResponseBuckets": {
+    "inbox": "Boîte de réception",
+    "trash": "Corbeille",
+    "verified": "Vérifié"
+  },
+  "calloutResponseComments": {
+    "actions": {
+      "addComment": "Ajouter un commentaire",
+      "updateComment": "Mettre à jour le commentaire"
+    },
+    "addComment": "Ajouter un commentaire",
+    "comments": "Commentaires",
+    "confirmDelete": {
+      "text": "Voulez-vous vraiment supprimer ce commentaire ?",
+      "title": "Supprimer le commentaire ?"
+    }
+  },
+  "calloutResponsePage": {
+    "actions": {
+      "assignTo": "Assigner à",
+      "moveBucket": "",
+      "toggleTag": "Activer le libellé",
+      "viewOnMap": "Voir sur la carte"
+    },
+    "editMode": "Vous êtes en mode édition, attention !",
+    "manageFolders": "Gérer les dossiers",
+    "manageReviewers": "Gérer les vérificateurs",
+    "manageTags": "Gérer les libellés",
+    "notifications": {
+      "addedAssignee": "Assigné à « {assignee} »",
+      "addedTag": "Libellé « {tag} » ajouté",
+      "movedToBucket": "Déplacé vers {bucket}",
+      "removedAssignee": "Désassigné de « {assignee} »",
+      "removedTag": "Libellé « {tag} » retiré "
+    },
+    "responseOf": "Réponse {no} sur {total} dans {bucket}",
+    "selectedCount": "{n} réponse sélectionnée | {n} réponses sélectionnées"
+  },
+  "calloutResponsesPage": {
+    "moveToBucket": "Déplacer vers {bucket}",
+    "noTags": "Aucun libellé",
+    "response": "Réponse",
+    "responseNo": "Réponse {no}",
+    "searchAssignee": "Assigné à…",
+    "searchTag": "Libellé par…",
+    "showAnswer": "Réponse",
+    "showLatestComment": "Dernier commentaire",
+    "showingOf": "Affichage des réponses {start} à {end} sur {total}"
+  },
+  "calloutReviewerManager": {
+    "add": "Ajouter un vérificateur",
+    "confirmDelete": {
+      "text": "Voulez-vous vraiment supprimer {reviewerName} ? Cette personne ne pourra plus vérifier cette campagne.",
+      "title": "Supprimer le vérificateur"
+    },
+    "contact": "Identifiant de contact",
+    "title": "Vérificateurs de campagne"
+  },
+  "calloutThanksPage": {
+    "oneResponseWarning": "Veuillez noter que cette campagne n'autorise qu'une seule réponse par personne. Si vous y avez déjà répondu, les réponses supplémentaires ne seront pas enregistrées."
+  },
+  "callouts": {
+    "archive": "Archiver",
+    "data": {
+      "callout": "Campagne",
+      "endDate": "Date de fin"
+    },
+    "noArchivedCallouts": "Aucune campagne",
+    "search": "Rechercher une campagne…",
+    "showAll": "Tout",
+    "showAnswered": "Avec réponses",
+    "showingOf": "Affichage des campagnes {start} à {end} sur {total}"
+  },
+  "calloutsAdmin": {
+    "addCallout": "Créer une campagne",
+    "data": {
+      "expires": "Date d'expiration",
+      "responses": "Réponses",
+      "starts": "Date de début",
+      "status": "Statut",
+      "title": "Titre"
+    },
+    "filter": {
+      "all": "Toutes les campagnes",
+      "draft": "Campagnes en brouillon",
+      "ended": "Campagnes terminées",
+      "open": "Campagnes en cours",
+      "scheduled": "Campagnes planifiées"
+    }
+  },
+  "common": {
+    "backToHome": "Retour à l'accueil",
+    "contributing": "Contribue",
+    "contributionPeriod": {
+      "annually": "Annuellement",
+      "monthly": "Mensuellement"
+    },
+    "contributionType": {
+      "automatic": "Automatique",
+      "gift": "Cadeau",
+      "manual": "Manuel",
+      "none": "Aucun"
+    },
+    "default": "Par défaut",
+    "hello": "Bonjour",
+    "id": "Identifiant",
+    "itemsPerPage": "{items} éléments par page",
+    "joined": "Inscrit",
+    "label": "Intitulé",
+    "loading": "Chargement…",
+    "login": "Se connecter",
+    "newsletterStatus": {
+      "cleaned": "Effacé",
+      "none": "Aucun",
+      "pending": "En attente",
+      "subscribed": "Abonné",
+      "unsubscribed": "Désabonné"
+    },
+    "no": "Non",
+    "noResults": "Aucun résultat trouvé",
+    "pageCount": "Page {pageNumber} sur {pageTotal}",
+    "paymentStatus": {
+      "cancelled": "Annulé",
+      "draft": "Brouillon",
+      "failed": "Échec",
+      "pending": "En attente",
+      "successful": "Succès"
+    },
+    "perMonth": "/ mois",
+    "perMonthText": "un mois",
+    "perYear": "/ an",
+    "perYearText": "un an",
+    "role": {
+      "admin": "Administrateur",
+      "member": "Membre",
+      "superadmin": "Super administrateur"
+    },
+    "selectNone": "-- Aucun --",
+    "selectOne": "Sélectionner…",
+    "show": "Afficher",
+    "status": {
+      "draft": "Brouillon",
+      "ended": "Terminée",
+      "open": "Active",
+      "scheduled": "Planifiée"
+    },
+    "thankYou": "Merci !",
+    "timeAgo": "il y a {time}",
+    "timeIn": "dans {time}",
+    "until": "jusqu'à",
+    "yes": "Oui"
+  },
+  "contactAccount": {
+    "confirmDelete": {
+      "text": "Toutes les données associées à {email} seront supprimées. Les cotisations actives seront annulées.",
+      "title": "Supprimer le contact",
+      "warning": "Ceci est irréversible. Voulez-vous vraiment continuer ?"
+    },
+    "contactDeleted": "Contact supprimé."
+  },
+  "contactContribution": {
+    "confirmCancel": {
+      "confirm": "Oui, annuler",
+      "text": "Voulez-vous vraiment annuler la cotisation de ce contact ? Ceci ne peut pas être annulé.",
+      "title": "Annuler la cotisation ?"
+    },
+    "updateNotice": {
+      "text": "Vous ne pouvez pas modifier la cotisation d'un contact, veuillez contacter support{'@'}beabee.io pour obtenir de l'aide.",
+      "title": "Non disponible actuellement"
+    }
+  },
+  "contactOverview": {
+    "about": "À propos",
+    "account": "Compte",
+    "annotation": {
+      "copy": "<p>Toutes les informations ajoutées dans cette section seront <strong>uniquement visibles par les administrateurs</strong>. Les membres ne verront jamais ceci sur leur profil ou dans l'espace membre.</p>\n"
+    },
+    "callouts": "Campagnes",
+    "cancellationDate": "Annulé le",
+    "contribution": "Cotisation",
+    "contributionType": "Type",
+    "joinSurvey": "Rejoindre le sondage",
+    "newsletter": {
+      "groups": "Groupes",
+      "status": "Statut",
+      "title": "Lettre d'information"
+    },
+    "overview": "Vue d'ensemble",
+    "pickTag": "Sélectionnez un libellé dans la liste ci-dessous",
+    "profile": "Profil",
+    "roles": "Rôles",
+    "security": {
+      "instructions": "Copiez et partagez ce lien :",
+      "loginOverride": "",
+      "mfa": {
+        "desc": "Ce contact a activé l'A2F. Cliquez sur le bouton « {disableLabel} » pour la désactiver.",
+        "disabledDesc": "L'A2F n'est pas activée pour ce contact."
+      },
+      "resetPassword": "Réinitialiser le mot de passe",
+      "title": "Sécurité",
+      "whatDoTheButtonsDo": "Cliquez sur le bouton pour générer un lien d'urgence :"
+    }
+  },
+  "contacts": {
+    "addContact": "Ajouter un contact",
+    "advancedSearch": {
+      "hasAnswered": "À participé à cette campagne ?",
+      "selectCallout": "Sélectionner une campagne…"
+    },
+    "allContacts": "Tous les contacts",
+    "data": {
+      "activeMembership": "Adhésion active",
+      "activePermission": "Rôle actif",
+      "activeUser": "Utilisateur actif",
+      "amount": "Montant",
+      "annotationsCopy": "Le contact a bien été mis à jour",
+      "contribution": "Cotisation",
+      "contributionCancelled": "Cotisation annulée",
+      "contributionMonthlyAmount": "Montant de cotisation mensuelle",
+      "contributionPeriod": "Période de cotisation",
+      "contributionType": "Type de cotisation",
+      "deliveryOptIn": "",
+      "description": "Description",
+      "email": "E-mail",
+      "firstname": "Prénom",
+      "joined": "Inscrit",
+      "lastSeen": "Dernière connexion",
+      "lastname": "Nom",
+      "manualPaymentSource": "Source de paiement manuel",
+      "membershipExpires": "Membre jusqu'au",
+      "membershipStarts": "Membre depuis",
+      "name": "Nom",
+      "newsletterGroups": "Groupes de lettre d'information",
+      "newsletterStatus": "Statut de la lettre d'information",
+      "notes": "Notes",
+      "payingFee": "Paiement des frais ?",
+      "paymentReference": "Référence de paiement",
+      "paymentSource": "Source de paiement",
+      "period": "Période",
+      "phone": "Numéro de téléphone",
+      "preferredChannel": "Canal de préférence",
+      "tags": "Libellés"
+    },
+    "dataGroup": {
+      "callout": "Campagne",
+      "contact": "Informations de contact",
+      "contribution": "Cotisation",
+      "role": "Rôle"
+    },
+    "noContacts": "Aucun contact ajouté pour le moment",
+    "noResults": "Aucun contact trouvé",
+    "numResults": "{n} contact trouvé | {n} contacts trouvés",
+    "search": "Rechercher un contact…",
+    "selectedCount": "{n} contact sélectionné | {n} contacts sélectionnés",
+    "showingOf": "Affichage des contacts {start} à {end} sur {total}"
+  },
+  "contribution": {
+    "adminCancelDescription": "Si vous annulez la cotisation du contact son adhésion prendra fin à la fin de sont cycle de paiement actuel le {date}.",
+    "bankAccount": "Compte bancaire",
+    "billing": "Facturation",
+    "cancelContribution": "Annuler la cotisation",
+    "cancelDescription": "Si vous annulez votre cotisation votre adhésion prendra fin à la fin de votre cycle de paiement actuel le {date}.",
+    "cancelMessage": "Nous sommes désolés de vous voir partir.",
+    "cancelledContribution": "Votre cotisation a été annulée.",
+    "changeBank": "Changer de compte bancaire",
+    "changeBankInfo": "Les informations de votre nouveau compte bancaire vous seront demandées à l'étape suivante.",
+    "contributing": "Vous cotisez",
+    "contributionUpdateError": "Vous ne pouvez pas mettre à jour votre cotisation pour le moment car vous avez un paiement en attente",
+    "dueToRenew": "Votre cotisation sera renouvelée le {renewalDate}.",
+    "expired": "Votre cotisation a expiré.",
+    "expiredText": "Veuillez envisager de renouveler votre adhésion, même si le montant est le plus bas possible, cela nous aiderait énormément. Merci !",
+    "hasPendingPayment": "Votre paiement est en cours de traitement.",
+    "manualPayment": "Vous payez actuellement votre cotisation via {source}. En payant par l'intermédiaire de notre système d'adhésion, vous nous aiderez à connaître le montant de la contribution de nos membres sur lequel nous pouvons compter mois après mois et il vous sera plus facile de gérer votre cotisation.",
+    "manualPaymentSource": "un outil tiers",
+    "nextAmountChanging": "Votre cotisation passera à {nextAmount} le {renewalDate}.",
+    "paymentHistory": {
+      "empty": "Les paiements passés et leur facture s'afficheront ici.",
+      "title": "Historique de paiement"
+    },
+    "paymentMethod": "Moyen de paiement",
+    "paymentSourceUpdateError": "Vous ne pouvez pas mettre à jour votre compte bancaire pour le moment car vous avez un paiement en attente",
+    "prorateDecreaseMessage": "Vous avez un mois restant pour votre cotisation actuelle. | Vous avez {n} mois restants pour votre cotisation actuelle.",
+    "prorateDecreaseMessageWillStart": "Votre nouvelle cotisation commencera le {renewalDate}.",
+    "prorateIncreaseMessage": "Vous avez un mois restant pour votre cotisation actuelle. | Vous avez {n} mois restants pour votre cotisation actuelle.",
+    "prorateIncreaseMessageOneOff": "Vous pouvez effectuer un paiement unique de {oneOffPayment} pour commencer à cotiser immédiatement.",
+    "prorateNoText": "Vous resterez sur votre cotisation actuelle jusque là.",
+    "prorateNoTitle": "Mettre à jour ma cotisation le {renewalDate}",
+    "prorateYesText": "Un paiement unique de {oneOffPayment} vous sera facturé et votre cotisation sera mise à jour immédiatement",
+    "prorateYesTitle": "Mettre à jour ma cotisation maintenant",
+    "restartContribution": "",
+    "startContribution": "Commencer à cotiser",
+    "startedContribution": "Votre cotisation a commencé.",
+    "updateContribution": "Mettre à jour la cotisation",
+    "updatePaymentType": "Mettre à jour le moyen de paiement",
+    "updatedContribution": "Votre cotisation a été mise à jour.",
+    "updatedPaymentSource": "Votre moyen de paiement a été mis à jour.",
+    "willExpire": "Votre cotisation expire dans {expires}.",
+    "willRenew": "Votre cotisation sera automatiquement renouvelée le {renewalDate}.",
+    "willRenewWithNewAmount": "Votre cotisation sera automatiquement renouvelée le {renewalDate} et sera modifiée pour le montant choisi de {nextAmount}."
+  },
+  "editCallout": {
+    "replicated": "Votre campagne a bien été répliquée et vous modifiez désormais la copie. Assurez-vous de modifier le titre dans l'onglet « Titre et image ».",
+    "title": "Modifier : {title}",
+    "warning": "Attention ! Vous modifiez une campagne en cours. Modifier les propriétés du formulaire risque de rendre les réponses précédentes inutilisables."
+  },
+  "editNotice": {
+    "title": "Modifier : {title}"
+  },
+  "footer": {
+    "contactUs": "Contactez-nous à",
+    "handbookResources": "Manuel et ressources",
+    "impressum": "Impressum",
+    "joinCommunity": "Rejoignez la communauté",
+    "poweredBy": "alimente les rédactions locales indépendantes",
+    "privacyPolicy": "Politique de confidentialité",
+    "terms": "Conditions d'utilisation"
+  },
+  "forgotPassword": {
+    "backToLogin": "Retour à la page de connexion",
+    "description": "Veuillez entrer votre adresse e-mail et nous vous enverrons les instructions de réinitialisation du mot de passe.",
+    "message": "Si un compte est associé à {email}, vous recevrez un e-mail rapidement. Vérifiez s'il n'apparaît pas dans votre dossier indésirables.",
+    "title": "Mot de passe oublié ?"
+  },
+  "form": {
+    "addressLine1": "Adresse ligne 1",
+    "addressLine2": "Adresse ligne 2",
+    "cancel": "Annuler",
+    "characters": {
+      "remaining": "{remaining} caractères restants."
+    },
+    "cityOrTown": "Ville",
+    "deliveryOptIn": "",
+    "description": "Description",
+    "email": "E-mail",
+    "errorMessages": {
+      "api": {
+        "account-locked": "Compte verrouillé en raison d'un trop grand nombre de tentatives de connexion. Veuillez réinitialiser votre mot de passe ou contacter l'assistance pour obtenir de l'aide.",
+        "duplicate-email": "L'adresse e-mail existe déjà",
+        "duplicate-tag-name": "Un libellé portant ce nom existe déjà",
+        "invalid-token": "Jeton A2F invalide",
+        "login-failed": "Identifiants invalides",
+        "mfa-token-required": "Vous avez activé l'A2F, tapez le code depuis votre application d'authentification pour continuer"
+      },
+      "generic": "Oups, une erreur s'est produite ! Contactez l'assistance si cela se produit à nouveau.",
+      "unauthorized": "Vous n'avez pas accès à ceci.",
+      "validation": "Il manque quelque chose. Veuillez vérifier les champs ci-dessus."
+    },
+    "errors": {
+      "address": {
+        "required": "Ce champ est obligatoire si vous souhaitez ajouter une adresse"
+      },
+      "addressLine1": {
+        "required": "Adresse ligne 1 est obligatoire"
+      },
+      "cityOrTown": {
+        "required": "Ville est obligatoire"
+      },
+      "color": {
+        "pattern": "Couleur invalide",
+        "required": "Couleur est obligatoire"
+      },
+      "confirmPassword": {
+        "password": "Mot de passe invalide",
+        "required": "Mot de passe est obligatoire",
+        "sameAs": "Les mots de passe ne correspondent pas"
+      },
+      "email": {
+        "email": "Adresse e-mail invalide",
+        "required": "E-mail est obligatoire"
+      },
+      "file": {
+        "rateLimited": "Échec de l'import : Le type de fichier n'est pas pris en charge",
+        "tooBig": "Échec de l'import : La taille du fichier doit être inférieure à 20Mo",
+        "unsupportedType": "Échec de l'import : Vous avez importé trop de fichiers récemment, veuillez patienter quelques minutes avant de réessayer"
+      },
+      "firstName": {
+        "required": "Prénom est obligatoire"
+      },
+      "lastName": {
+        "required": "Le nom est obligatoire"
+      },
+      "name": {
+        "required": "Le nom est obligatoire"
+      },
+      "password": {
+        "password": "Mot de passe invalide",
+        "required": "Le mot de passe est obligatoire",
+        "sameAs": "Les mots de passe ne correspondent pas"
+      },
+      "postCode": {
+        "required": "Le code postal est obligatoire"
+      },
+      "unknown": {
+        "email": "Adresse e-mail invalide",
+        "max": "Ce champ doit être au plus {max}",
+        "maxLength": "Longueur maximale de {max} caractères dépassée",
+        "min": "Ce champ doit être au moins {min}",
+        "required": "Ce champ est obligatoire",
+        "url": "URL invalide"
+      },
+      "url": {
+        "required": "L'URL est obligatoire",
+        "url": "URL invalide"
+      },
+      "verifyCode": {
+        "max": "Le code devrait comporter au maximum {max} caractères.",
+        "min": "Le code devrait comporter au moins {min} caractères.",
+        "required": "Le code est obligatoire"
+      }
+    },
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "newPassword": "Nouveau mot de passe",
+    "newPasswordConfirm": "Confirmer le nouveau mot de passe",
+    "notes": "Notes",
+    "password": "Mot de passe",
+    "passwordInfo": "Définissez un mot de passe sécurisé : au moins 8 caractères, un nombre, lettres majuscules et minuscules.",
+    "phone": "Numéro de téléphone",
+    "postCode": "Code postal",
+    "richtext": {
+      "bold": "Gras",
+      "bulletlist": "Liste à puces",
+      "heading": "Titre",
+      "italic": "Italique",
+      "link": "Lien",
+      "numberedlist": "Liste ordonnée",
+      "strikethrough": "Barré",
+      "underline": "Souligné"
+    },
+    "saveChanges": "Enregistrer les modifications",
+    "saved": "Enregistré !",
+    "unsavedChanges": "Modifications non enregistrées",
+    "updated": "Mis à jour"
+  },
+  "formRenderer": {
+    "components": {
+      "file": {
+        "browse": "importer depuis l'appareil",
+        "dropFiles": "Déposez des fichiers",
+        "or": "ou",
+        "switchToFileUpload": "Importer des fichiers",
+        "takePicture": "Prendre une photo",
+        "useCamera": "utiliser l'appareil photo"
+      },
+      "multiple": {
+        "addAnother": "Ajouter un autre"
+      }
+    }
+  },
+  "homePage": {
+    "editProfile": "Modifiez votre profil communautaire",
+    "manageContribution": "Gérer votre cotisation",
+    "newCallout": "Nouvelle campagne !",
+    "openCallouts": "Campagnes actives",
+    "quickActions": "Actions rapides",
+    "title": "Accueil",
+    "viewAllCallouts": "Voir toutes les campagnes",
+    "viewOpenCallouts": "Voir les campagnes actives",
+    "welcome": "Bienvenue à bord {firstName} !",
+    "yourProfile": "Votre profil"
+  },
+  "item": {
+    "status": {
+      "endsIn": "Se termine dans {duration}",
+      "startsIn": "Commence dans {duration}"
+    }
+  },
+  "join": {
+    "absorbFeeForce": "{amount} cotisations doivent compenser les frais de {fee}.",
+    "absorbFeeOptIn": "Oui, je compense les frais de {fee}.",
+    "absorbFeeText": "Notre prestataire de paiement nous fait payer des frais pour chaque transaction, ce qui signifie que nous recevons moins de cotisations mensuelles. Pourriez-vous prendre en charge {fee} de frais de transaction ? Vous pouvez également payer annuellement.",
+    "contribute": "Cotiser {contribution}",
+    "errors": {
+      "confirmEmail": {
+        "message": "Vous y êtes presque ! Vous devez simplement confirmer votre adresse e-mail pour finaliser votre adhésion.",
+        "proceed": "Nous vous avons envoyé un e-mail. Veuillez cliquer sur le lien pour continuer.",
+        "title": "Confirmez votre adresse e-mail"
+      },
+      "failed": {
+        "backToJoin": "Retour à la page d'inscription",
+        "message": "Une erreur s'est produite lors de votre adhésion, notre équipe en a été informée. Veuillez contacter l'assistance si le problème persiste.",
+        "title": "Une erreur s'est produite"
+      }
+    },
+    "login": "Se connecter",
+    "memberAccount": "Compte membre",
+    "memberAlready": "Vous êtes déjà membre ?",
+    "minimumContribution": "La cotisation minimum est",
+    "noContribution": "Je ne souhaite pas cotiser pour le moment",
+    "notice": "En continuant vous acceptez les",
+    "now": "S'inscrire maintenant !",
+    "paymentMethod": "Moyen de paiement",
+    "poweredBy": "Propulsé par beabee",
+    "privacy": "Politique de confidentialité",
+    "tax": {
+      "included": "La cotisation comprend {taxRate}% de TVA."
+    }
+  },
+  "joinPayment": {
+    "applePay": {
+      "description": "Adhésion",
+      "recurringLabel": "Cotisation récurrente"
+    },
+    "genericError": "Oups, une erreur s'est produite ! Contactez l'assistance si cela se produit à nouveau.",
+    "goBack": "Avez-vous oublié quelque chose ? {back}",
+    "goBackButton": "Revenir à l'écran précédent",
+    "note": "Vous pourrez modifier votre cotisation et accéder à votre historique de paiement à tout moment depuis votre compte membre",
+    "willBeContributing": "Vous cotiserez {contribution}"
+  },
+  "joinSetup": {
+    "confirmDetails": "Veuillez confirmer vos informations",
+    "continue": "Tout est bon ! Continuer",
+    "welcome": "Bienvenue {firstName} !"
+  },
+  "login": {
+    "backTo": "Revenir à {newsroomName}",
+    "forgotPassword": "Mot de passe oublié ?",
+    "joinNow": "S'inscrire maintenant !",
+    "lostMfaDevice": "Vous avez perdu votre appareil d'A2F ?",
+    "notMember": "Pas encore membre ?",
+    "title": "Connectez-vous à votre compte"
+  },
+  "lostDevice": {
+    "description": "Veuillez enter votre adresse e-mail, nous vous enverrons les instructions pour réinitialiser votre A2F.",
+    "message": "Si un compte est associé à {email}, vous recevrez un e-mail rapidement. Vérifiez s'il n'apparaît pas dans votre dossier indésirables.",
+    "title": "Vous avez perdu votre appareil d'A2F ?"
+  },
+  "mailOptIn": {
+    "optInLabel": "Libellé de la case à cocher",
+    "text": "Texte",
+    "title": "Titre"
+  },
+  "membershipBuilder": {
+    "steps": {
+      "accountConfirmation": {
+        "deliveryAddress": {
+          "showOptIn": "Demander l'adresse postale",
+          "title": "Adresse postale"
+        },
+        "description": "Composez votre écran de confirmation",
+        "joinSurvey": {
+          "required": "Les utilisateurs doivent compléter le sondage avant de continuer",
+          "slug": "Campagne",
+          "slugHelp": "Vous pouvez utiliser n'importe quelle campagne active n'ayant pas de date d'expiration.",
+          "text": "Vous pouvez demander à vos nouveaux utilisateurs de compléter une campagne dans le processus d'inscription. C'est un bon moyen de leur demander pourquoi ils se sont inscrits ou si vous souhaitez obtenir d'autres informations.",
+          "textIntro": "Indiquez à vos utilisateurs pourquoi vous leur demandez cette information",
+          "title": "Rejoindre le sondage"
+        },
+        "newsletter": {
+          "showOptIn": "Inviter à s'inscrire à la lettre d'information",
+          "title": "Lettre d'information"
+        },
+        "text": "Les utilisateurs devront confirmer leur inscription. Ici vous pouvez définir les informations de l'écran de confirmation.",
+        "title": "Confirmation du compte",
+        "welcomeMessage": "Message de bienvenue"
+      },
+      "emails": {
+        "bigTitle": "E-mails de bienvenue et d'annulation",
+        "cancellationEmail": "E-mail d'annulation",
+        "description": "Personnalisez vos e-mail de bienvenue et d'annulation",
+        "text": "Tous les e-mails sont envoyés depuis votre adresse e-mail de support et comportent une signature standard. Vous pouvez modifier ceci dans vos paramètres d'e-mail.",
+        "title": "E-mails",
+        "welcomeEmail": "E-mail de bienvenue"
+      },
+      "intro": {
+        "description": "Souhaitez la bienvenue à vos nouveaux membres",
+        "message": "Message",
+        "showWelcomeMessage": "Afficher le message de bienvenue",
+        "text": "Une fois que vos membre auront complété leur inscription, il seront accueillis avec un message. Appropriez-le vous !",
+        "title": "Message de bienvenue"
+      },
+      "joinForm": {
+        "backgroundImage": "Image d'arrière-plan",
+        "defaultAmount": "Montant par défaut",
+        "description": "Ajustez votre formulaire d'adhésion",
+        "formSubtitle": "Sous-titre",
+        "formTitle": "Titre",
+        "minAmount": "Montant minimum",
+        "showAbsorbFee": "Proposer aux utilisateurs de prendre en charge les frais de paiement",
+        "showNoContribution": "Autoriser les utilisateurs à s'inscrire sans cotisation",
+        "suggestedAmounts": "Montants de cotisation suggérés",
+        "text": "Dans cette section, vous pouvez modifier, ajuster et prévisualiser votre formulaire d'adhésion.",
+        "title": "Formulaire d'inscription"
+      }
+    },
+    "title": "Créateur d'adhésion"
+  },
+  "menu": {
+    "account": "Compte",
+    "admin": "Administration",
+    "adminSettings": "Paramètres",
+    "callouts": "Campagnes",
+    "contacts": "Contacts",
+    "contribution": "Cotisation",
+    "dashboard": "Tableau de bord",
+    "home": "Accueil",
+    "legacyApp": "Ancien tableau de bord",
+    "logout": "Se déconnecter",
+    "membershipBuilder": "Créateur d'adhésion",
+    "notices": "Avertissements",
+    "payments": "Paiments",
+    "settings": "Paramètres",
+    "yourProfile": "Votre profil"
+  },
+  "newsletterOptIn": {
+    "groups": {
+      "add": "Ajouter un nouveau groupe",
+      "help": "<p>Vous pouvez laisser vos utilisateurs choisir les groupes de lettre d'information qu'ils souhaitent rejoindre. Ces groupes doivent déjà être configurés dans Mailchimp, contactez <a href=\"mailto:support{'@'}beabee.io\">support{'@'}beabee.io</a> si vous ne savez pas bien comment utiliser cette fonctionnalité.</p>\n",
+      "title": "Groupes de lettre d'information"
+    },
+    "optInDisabled": "L'intitulé n'est pas utilisé lorsque les groupes de lettre d'information sont visibles",
+    "optInLabel": "Libellé de la case à cocher",
+    "text": "Texte",
+    "title": "Titre"
+  },
+  "notFound": {
+    "goBack": "Revenir à l'accueil",
+    "text": "Cette page n'existe pas. Si vous pensez qu'il s'agit d'une erreur, veuillez contacter {support}."
+  },
+  "noticeAdminOverview": {
+    "actions": {
+      "confirmDelete": {
+        "text": "",
+        "title": ""
+      }
+    },
+    "created": "",
+    "summary": "Résumé",
+    "updated": ""
+  },
+  "notices": {
+    "addNotice": "",
+    "data": {
+      "createdAt": "Créé",
+      "name": "Nom",
+      "status": "Statut"
+    },
+    "showingOf": ""
+  },
+  "notifications": {
+    "copy": {
+      "success": "Copié dans le presse-papiers"
+    },
+    "error": "Une erreur s'est produite. Essayez de recharger la page.",
+    "remove": "Fermer la notification"
+  },
+  "pageTitle": {
+    "confirmEmail": "Confirmer l'e-mail",
+    "duplicateEmail": "Dupliquer l'e-mail",
+    "failed": "Échec",
+    "forgotPassword": "Mot de passe oublié",
+    "join": "Inscription",
+    "login": "Connexion",
+    "lostDevice": "Vous avez perdu votre appareil d'A2F ?",
+    "notFound": "Page non trouvée",
+    "resetDevice": "Réinitialiser l'appareil A2F",
+    "resetPassword": "Réinitialiser le mot de passe",
+    "setPassword": "Définir le mot de passe",
+    "setup": "Configuration"
+  },
+  "paymentMethods": {
+    "gc_direct-debit": {
+      "changeLabel": "Passer au prélèvement automatique",
+      "label": "Prélèvement automatique",
+      "setLabel": "Vos informations de prélèvement automatique"
+    },
+    "s_bacs": {
+      "changeLabel": "Passer au prélèvement automatique",
+      "label": "Prélèvement automatique",
+      "setLabel": "Vos informations de prélèvement automatique"
+    },
+    "s_card": {
+      "changeLabel": "Modifier les informations de carte",
+      "label": "Carte",
+      "setLabel": "Vos informations de carte"
+    },
+    "s_ideal": {
+      "changeLabel": "Modifier vos informations iDEAL",
+      "label": "iDEAL",
+      "setLabel": "Vos informations iDEAL"
+    },
+    "s_paypal": {
+      "changeLabel": "Modifier vos informations PayPal",
+      "label": "PayPal",
+      "setLabel": "Vos informations PayPal"
+    },
+    "s_sepa": {
+      "changeLabel": "Modifier le prélèvement automatique",
+      "label": "Prélèvement automatique",
+      "setLabel": "Vos informations de prélèvement automatique"
+    }
+  },
+  "payments": {
+    "data": {
+      "amount": "Montant",
+      "chargeDate": "Date de facturation",
+      "contact": "Contact",
+      "status": "Statut"
+    },
+    "dataGroup": {
+      "payment": "Paiement"
+    }
+  },
+  "paymentsAdmin": {
+    "filter": {
+      "all": "Tous les paiements",
+      "cancelled": "Paiements annulés",
+      "failed": "Paiements échoués",
+      "pending": "Paiements en attente",
+      "successful": "Paiements réussis"
+    },
+    "showingOf": "Affichage des paiements {start} à {end} sur {total}"
+  },
+  "resetDevice": {
+    "description": "Entrez votre mot de passe pour réinitialiser la protection par A2F. Vous pourrez configurer un nouvel appareil après connexion.",
+    "failed": "La réinitialisation de l'appareil a échoué. Le lien a peut-être expiré.",
+    "invalidPassword": "Mot de passe invalide",
+    "success": "Votre appareil d'A2F a bien été réinitialisé",
+    "title": "Réinitialiser votre appareil d'A2F ?"
+  },
+  "resetPassword": {
+    "description": "Définissez un nouveau mot de passe pour vous connecter.",
+    "failed": "La réinitialisation du mot de passe a échoué. Le lien a peut-être expiré.",
+    "login": "Connectez-vous à votre compte",
+    "lostDevice": "Si vous avez perdu votre appareil d'A2F veuillez contacter l'assistance",
+    "success": "Votre mot de passe a été réinitialisé.",
+    "title": "Réinitialiser votre mot de passe ?"
+  },
+  "roleEditor": {
+    "add": "Ajouter un rôle",
+    "confirmDelete": {
+      "text": "Voulez-vous vraiment supprimer ce rôle ?",
+      "title": "Supprimer le rôle"
+    },
+    "expires": {
+      "label": "Date d'expiration pour ce rôle",
+      "opts": {
+        "never": "Jamais",
+        "schedule": "Définir une date d'expiration"
+      }
+    },
+    "new": "Nouveau rôle",
+    "starts": {
+      "label": "Date de début pour ce rôle",
+      "opts": {
+        "now": "Maintenant",
+        "schedule": "Définir comme date de début"
+      }
+    },
+    "title": "Rôles",
+    "today": "présent"
+  },
+  "setPassword": {
+    "description": "Définissez un nouveau mot de passe pour vous connecter.",
+    "title": "Définir un mot de passe"
+  },
+  "tagEditor": {
+    "add": "Ajouter un libellé",
+    "confirmDelete": {
+      "text_contact": "Voulez-vous vraiment supprimer ce libellé ? Chaque contact comportant « {tagName} » perdra le libellé.",
+      "text_global": "Voulez-vous vraiment supprimer le libellé « tagName » ?",
+      "text_response": "Voulez-vous vraiment supprimer ce libellé ? Chaque réponse comportant « {tagName} » perdra le libellé",
+      "title": "Supprimer le libellé"
+    },
+    "name": "Nom"
+  },
+  "tags": {
+    "manageTags": "Gérer les libellés",
+    "noTags": "Aucun libellé",
+    "notifications": {
+      "addedTag": "Libellé « {tag} » ajouté",
+      "removedTag": "Libellé « {tag} » supprimé "
+    },
+    "searchTag": "Libellé par…",
+    "toggleTag": "Activer/Désactiver le libellé"
+  },
+  "taxRate": {
+    "invoiceName": "TVA"
+  }
+}
