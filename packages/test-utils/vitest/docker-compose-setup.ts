@@ -14,6 +14,7 @@ const env = { ...envDev.parsed, ...envTest.parsed };
 
 const testUserEmail = env.TEST_USER_EMAIL;
 const createTestUserCommand = `yarn backend-cli user create --firstname ${env.TEST_USER_FIRSTNAME} --lastname ${env.TEST_USER_LASTNAME} --email ${testUserEmail} --password ${env.TEST_USER_PASSWORD} --role ${env.TEST_USER_ROLE}`;
+const createRateLimitTestUserCommand = `yarn backend-cli user create --firstname ${env.TEST_RATE_LIMIT_USER_FIRSTNAME} --lastname ${env.TEST_RATE_LIMIT_USER_LASTNAME} --email ${env.TEST_RATE_LIMIT_USER_EMAIL} --password ${env.TEST_RATE_LIMIT_USER_PASSWORD} --role ${env.TEST_RATE_LIMIT_USER_ROLE}`;
 const createTestApiKeyCommand = `yarn backend-cli api-key create --description ${env.TEST_API_KEY_DESCRIPTION} --email ${testUserEmail}`;
 
 // Create test payments with different amounts and periods (at least 10 for pagination)
@@ -56,6 +57,7 @@ export async function setup() {
       "api_app",
       Wait.forLogMessage(/Server is ready and listening on port 3000/),
     )
+    .withWaitStrategy("minio", Wait.forLogMessage(/MinIO server is running.../))
     .up([
       "db",
       "migration",
@@ -63,6 +65,7 @@ export async function setup() {
       "app_router",
       "webhook_app",
       "stripe_cli",
+      "minio",
     ]);
 
   const apiApp = startedDockerComposeEnvironment.getContainer("api_app-1");
@@ -75,6 +78,9 @@ export async function setup() {
 
   // Create test user
   await apiApp.exec(createTestUserCommand.split(" "));
+
+  // Create rate limit test user
+  await apiApp.exec(createRateLimitTestUserCommand.split(" "));
 
   // Create test API key
   const apiKeyOutput = await apiApp.exec(createTestApiKeyCommand.split(" "));

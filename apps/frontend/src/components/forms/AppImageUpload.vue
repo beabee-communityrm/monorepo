@@ -24,7 +24,7 @@
           <input
             ref="inputRef"
             type="file"
-            accept="image/jpeg,image/png"
+            accept="image/jpeg,image/png,image/webp,image/avif,image/gif,image/svg+xml"
             class="sr-only"
             :aria-label="t('actions.chooseFile')"
             @change="handleChange"
@@ -49,6 +49,7 @@ import { helpers, requiredIf, sameAs } from '@vuelidate/validators';
 import { computed, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { client, ClientApiError } from '@utils/api';
+import { resolveImageUrl } from '@utils/url';
 import { AppButton, AppLabel } from '@beabee/vue/components';
 import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 import AppInputError from '@components/forms/AppInputError.vue';
@@ -76,8 +77,11 @@ const { t } = useI18n();
 
 const inputRef = ref<HTMLInputElement>();
 const uploading = ref(false);
-const imageUrl = ref(props.modelValue as string);
+const rawImageUrl = ref(props.modelValue);
 const formError = ref('');
+
+// Computed property for the displayed image URL
+const imageUrl = computed(() => resolveImageUrl(rawImageUrl.value as string));
 
 // Generate unique ID for aria attributes
 const id = computed(
@@ -94,10 +98,11 @@ const rules = computed(() => ({
   uploading: { equal: sameAs(false) },
 }));
 
-useVuelidate(rules, { v: imageUrl, uploading });
+useVuelidate(rules, { v: rawImageUrl, uploading });
 
 watch(toRef(props, 'modelValue'), (newModelValue) => {
-  imageUrl.value = newModelValue as string;
+  rawImageUrl.value = newModelValue;
+
   if (inputRef.value) {
     inputRef.value.value = '';
   }
@@ -111,19 +116,27 @@ async function handleChange() {
   formError.value = '';
 
   try {
-    const flow = await client.upload.createFlow();
-    const { url } = await client.upload.uploadFile(file, flow.id);
+    // Upload of the image via the new API
+    const response = await client.upload.image.uploadFile(file);
 
-    imageUrl.value = URL.createObjectURL(file);
-    emit('update:modelValue', `${url}?w=${props.width}&h=${props.height}`);
+    // Get the original unmanipulated URL
+    const originalUrl = response.path || response.url;
+
+    // Local preview of the uploaded image
+    rawImageUrl.value = URL.createObjectURL(file);
+
+    // Emit the original unmanipulated URL to the parent component
+    emit('update:modelValue', originalUrl);
   } catch (error) {
     if (error instanceof ClientApiError) {
       formError.value =
-        error.code === 'RATE_LIMIT_EXCEEDED'
+        error.code === 'TOO_MANY_REQUESTS'
           ? t('form.errors.file.rateLimited')
-          : error.code === 'FILE_TOO_LARGE'
+          : error.code === 'LIMIT_FILE_SIZE'
             ? t('form.errors.file.tooBig')
-            : t('form.errorMessages.generic');
+            : error.code === 'UNSUPPORTED_FILE_TYPE'
+              ? t('form.errors.file.unsupportedType')
+              : t('form.errorMessages.generic');
     } else {
       formError.value = t('form.errorMessages.generic');
     }

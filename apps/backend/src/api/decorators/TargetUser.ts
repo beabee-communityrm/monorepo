@@ -8,7 +8,7 @@ import {
 import ContactsService from "@beabee/core/services/ContactsService";
 
 import { UUIDParams } from "@api/params/UUIDParams";
-import { validateOrReject } from "@api/utils";
+import { validateOrReject } from "@api/utils/validation";
 
 import { Contact } from "@beabee/core/models";
 

@@ -17,7 +17,7 @@ import {
   NewsletterContact,
   UpdateNewsletterContact
 } from "#type/index";
-import { normalizeEmailAddress } from "#utils/index";
+import { normalizeEmailAddress } from "#utils/email";
 import OptionsService from "#services/OptionsService";
 
 const log = mainLogger.child({ app: "mailchimp" });

@@ -1,16 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import axios from 'axios';
 import { client } from '@utils/api';
 import { i18n } from '@lib/i18n';
+import type { FormioFile } from '@beabee/beabee-common';
+import { ClientApiError } from '@beabee/client';
+import {
+  MAX_FILE_SIZE_IN_BYTES,
+  isSupportedDocumentType,
+  isSupportedDocumentExtension,
+} from '@beabee/beabee-common';
 
 const { t } = i18n.global;
-
-interface BeabeeFile {
-  storage: 'beabee';
-  name: string;
-  url: string;
-  size: number;
-}
 
 export default class BeabeeStorage {
   static get title() {
@@ -28,12 +27,20 @@ export default class BeabeeStorage {
     groupPermssions: any,
     groupId: any,
     abortCallback: any
-  ): Promise<BeabeeFile> {
-    if (file.size >= 20 * 1024 * 1024) {
+  ): Promise<FormioFile> {
+    // Check file size
+    if (file.size >= MAX_FILE_SIZE_IN_BYTES) {
       throw new Error(t('form.errors.file.tooBig'));
     }
 
-    const uploadFlow = await client.upload.createFlow();
+    // Check file type and extension
+    const fileExtension = file.name.split('.').pop()?.toLowerCase();
+    if (
+      !isSupportedDocumentType(file.type) &&
+      (!fileExtension || !isSupportedDocumentExtension(fileExtension))
+    ) {
+      throw new Error(t('form.errors.file.unsupportedType'));
+    }
 
     const controller = new AbortController();
     if (typeof abortCallback === 'function') {
@@ -41,28 +48,41 @@ export default class BeabeeStorage {
     }
 
     try {
-      const { url } = await client.upload.uploadFile(file, uploadFlow.id);
+      // Direct upload with the new ImageService
+      const response = await client.upload.uploadFile(file);
 
       return {
         storage: 'beabee',
         name,
-        url: url,
+        url: response.url,
+        path: response.path,
         size: file.size,
+        hash: response.hash,
+        originalName: file.name,
       };
     } catch (err) {
-      if (axios.isAxiosError(err) && err.response?.status === 429) {
-        throw new Error(t('form.errors.file.rateLimited'));
-      } else {
-        throw new Error(t('form.errorMessages.generic'));
+      if (err instanceof ClientApiError) {
+        if (err.code === 'TOO_MANY_REQUESTS' || err.httpCode === 429) {
+          throw new Error(t('form.errors.file.rateLimited'));
+        } else if (err.code === 'LIMIT_FILE_SIZE' || err.httpCode === 413) {
+          throw new Error(t('form.errors.file.tooBig'));
+        } else if (
+          err.code === 'UNSUPPORTED_FILE_TYPE' ||
+          err.httpCode === 415
+        ) {
+          throw new Error(t('form.errors.file.unsupportedType'));
+        }
       }
+      throw new Error(t('form.errorMessages.generic'));
     }
   }
 
   async deleteFile() {
+    // TODO: https://github.com/beabee-communityrm/monorepo/issues/181
     throw new Error('Not implemented');
   }
 
-  async downloadFile(file: BeabeeFile) {
+  async downloadFile(file: FormioFile) {
     return file;
   }
 }

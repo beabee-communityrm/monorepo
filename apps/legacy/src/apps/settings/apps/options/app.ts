@@ -1,7 +1,7 @@
 import express, { type Express, type Request, type Response } from "express";
 
 import { isSuperAdmin } from "#core/middleware";
-import { wrapAsync } from "@beabee/core/utils/index";
+import { wrapAsync } from "@beabee/core/utils/express";
 
 import OptionsService from "@beabee/core/services/OptionsService";
 

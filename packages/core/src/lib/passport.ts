@@ -7,7 +7,7 @@ import config from "@beabee/core/config";
 import { getRepository } from "@beabee/core/database";
 import { log } from "@beabee/core/logging";
 import { generatePassword, isValidPassword } from "@beabee/core/utils/auth";
-import { normalizeEmailAddress } from "@beabee/core/utils/index";
+import { normalizeEmailAddress } from "@beabee/core/utils/email";
 
 import ContactsService from "@beabee/core/services/ContactsService";
 import ContactMfaService from "@beabee/core/services/ContactMfaService";

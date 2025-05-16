@@ -3,6 +3,8 @@ import {
   CalloutResponseAnswersSlide,
   CalloutAccess,
   CreateCalloutData,
+  isFileUploadAnswer,
+  FormioFile,
   CalloutResponseGuestData,
   CalloutResponseNewsletterData,
   NewsletterStatus
@@ -20,7 +22,7 @@ import OptionsService from "#services/OptionsService";
 import { getRepository, runTransaction } from "#database";
 import { log as mainLogger } from "#logging";
 import { isDuplicateIndex } from "#utils/db";
-import { normalizeEmailAddress } from "#utils/index";
+import { normalizeEmailAddress } from "#utils/email";
 
 import {
   Contact,
@@ -74,6 +76,23 @@ class CalloutsService {
         }
       }
     }
+  }
+
+  /**
+   * List all callouts with minimal information
+   * This method should NOT be used in controllers, use CalloutTransformer instead
+   * @returns Array of callouts with id, slug, and image fields
+   * @deprecated Deprecated from the start, as we only need this for the uploads migration script
+   */
+  async listCallouts(): Promise<
+    Array<{ id: string; slug: string; image: string }>
+  > {
+    log.info("Listing all callouts for migration purposes");
+    const callouts = await getRepository(Callout).find({
+      select: ["id", "slug", "image"]
+    });
+
+    return callouts;
   }
 
   /**
@@ -487,6 +506,128 @@ class CalloutsService {
     callout.variants = [...(callout.variants || []), defaultVariant];
 
     return defaultVariant.title;
+  }
+
+  /**
+   * List all callout responses that contain a file upload
+   * This method should NOT be used in controllers, use CalloutResponseTransformer instead
+   * @returns Array of callout responses with file uploads
+   */
+  async listResponsesWithFileUploads(): Promise<
+    Array<{
+      id: string;
+      calloutId: string;
+      answers: CalloutResponseAnswersSlide;
+    }>
+  > {
+    log.info(
+      "Listing all callout responses with file uploads for migration purposes"
+    );
+
+    // Get all responses
+    const responses = await getRepository(CalloutResponse).find({
+      select: ["id", "calloutId", "answers"]
+    });
+
+    // Filter responses with file uploads
+    return responses.filter((response) => {
+      // Iterate through each slide's answers
+      for (const slideId in response.answers) {
+        const slideAnswers = response.answers[slideId];
+        if (!slideAnswers) return false;
+
+        // Iterate through each component's answer in the slide
+        for (const componentKey in slideAnswers) {
+          const answer = slideAnswers[componentKey];
+
+          if (!answer) return false;
+
+          // Check if the answer or any item in an array of answers contains a file upload
+          if (Array.isArray(answer)) {
+            // If it's an array of answers, check each one
+            for (const item of answer) {
+              if (isFileUploadAnswer(item)) return true;
+            }
+          } else if (isFileUploadAnswer(answer)) {
+            return true;
+          }
+        }
+      }
+      return false;
+    });
+  }
+
+  /**
+   * Update a document URL in a callout response
+   * @param responseId The response ID
+   * @param slideId The slide ID containing the document
+   * @param componentKey The component key containing the document
+   * @param arrayIndex Optional index if the answer is in an array, or null if it's a direct answer
+   * @param newUrl The new document URL
+   * @returns True if the update was successful
+   * @deprecated Deprecated from the start, as we only need this for the uploads migration script
+   */
+  async updateResponseFileUploadUrl(
+    responseId: string,
+    slideId: string,
+    componentKey: string,
+    arrayIndex: number | null,
+    newFileUpload: FormioFile
+  ): Promise<boolean> {
+    log.info(`Updating document URL in response ${responseId}`);
+
+    const response = await getRepository(CalloutResponse).findOne({
+      where: { id: responseId },
+      select: ["id", "answers"]
+    });
+
+    if (!response) {
+      log.warn(`Response ${responseId} not found`);
+      return false;
+    }
+
+    const slideAnswers = response.answers[slideId];
+    if (!slideAnswers) {
+      log.warn(`Slide ${slideId} not found in response ${responseId}`);
+      return false;
+    }
+
+    const answer = slideAnswers[componentKey];
+    if (!answer) {
+      log.warn(`Component ${componentKey} not found in slide ${slideId}`);
+      return false;
+    }
+
+    // Update the URL
+    if (arrayIndex !== null && Array.isArray(answer)) {
+      // Update an item in an array
+      if (arrayIndex < 0 || arrayIndex >= answer.length) {
+        log.warn(`Array index ${arrayIndex} out of bounds`);
+        return false;
+      }
+
+      const item = answer[arrayIndex];
+      if (!isFileUploadAnswer(item)) {
+        log.warn(`Item at index ${arrayIndex} is not a file upload`);
+        return false;
+      }
+
+      answer[arrayIndex] = newFileUpload;
+    } else if (!Array.isArray(answer) && isFileUploadAnswer(answer)) {
+      // Update a direct answer
+      slideAnswers[componentKey] = newFileUpload;
+    } else {
+      log.warn(`Answer is not a file upload`);
+      return false;
+    }
+
+    // Save the updated response
+    await getRepository(CalloutResponse).update(responseId, {
+      answers: response.answers
+    });
+
+    log.info(`Successfully updated document URL in response ${responseId}`);
+    return true;
   }
 }
 
