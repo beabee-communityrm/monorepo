@@ -3,6 +3,7 @@ import juice from "juice";
 import OptionsService from "#services/OptionsService";
 
 import currentLocale from "#locale";
+import config from "#config/config";
 
 export function getEmailFooter(): string {
   const locale = currentLocale();
@@ -10,7 +11,7 @@ export function getEmailFooter(): string {
 <p><br></p>
 <hr>
 <p><br></p>
-<p><img src="${OptionsService.getText(
+<p><img src="${config.audience}/api/1.0/${OptionsService.getText(
     "logo"
   )}" style="display:inline-block; vertical-align: middle" width="50" height="50"><span style="margin-left: 10px">${OptionsService.getText(
     "organisation"
