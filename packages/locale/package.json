@@ -13,7 +13,9 @@
     "clear": "rm -rf dist/",
     "build": "yarn clear && yarn build:esbuild && tsc",
     "build:esbuild": "node --experimental-specifier-resolution=node --experimental-strip-types esbuild.ts",
-    "check": "tsc --noEmit"
+    "check": "tsc --noEmit",
+    "watch": "yarn build:esbuild --watch",
+    "dev": "yarn watch"
   },
   "devDependencies": {
     "@gjsify/esbuild-plugin-transform-ext": "^0.0.4",
