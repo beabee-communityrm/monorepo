@@ -191,7 +191,7 @@ import { client } from '@utils/api';
 
 import { generalContent as storeGeneralContent } from '@store';
 
-import { localeItems } from '@beabee/vue/lib/i18n';
+import { localeItems } from '@lib/i18n';
 import type {
   ContentPaymentData,
   ContentShareData,

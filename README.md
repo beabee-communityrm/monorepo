@@ -214,6 +214,12 @@ yarn format
 
 Documentation is currently limited. For more detailed guidance and documentation, please contact us directly.
 
+## Translation Status
+
+<a href="https://hosted.weblate.org/engage/beabee/">
+<img src="https://hosted.weblate.org/widget/beabee/platform/open-graph.png" alt="translation status" />
+</a>
+
 ## Contact Us
 
 We're always excited to connect with our community, hear feedback, and answer any questions you might have! If you're interested in learning more about Beabee or have any questions, please feel free to reach out:

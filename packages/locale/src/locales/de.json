@@ -792,7 +792,13 @@
     "showingOf": "Antworten {start} bis {end} von {total} werden angezeigt"
   },
   "calloutReviewerManager": {
-    "confirmDelete": {}
+    "add": "Auswerter hinzufügen",
+    "confirmDelete": {
+      "text": "Sind Sie sicher, dass Sie {reviewerName} entfernen möchten? Diese Person wird diesen Callout nicht mehr überprüfen können.",
+      "title": "Auswerter entfernen"
+    },
+    "contact": "Kontakt ID",
+    "title": "Callout Auswerter"
   },
   "calloutThanksPage": {
     "oneResponseWarning": "Bitte beachten Sie, dass dieser Callout nur eine Antwort pro Person zulässt. Wenn Sie bereits teilgenommen haben, werden weitere Antworten nicht berücksichtigt."

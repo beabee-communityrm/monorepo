@@ -2,26 +2,60 @@
   "accountPage": {
     "contactInformation": "Informazioni di contatto",
     "deliveryAddress": "Indirizzo",
+    "deliveryOptIn": "",
     "loginDetail": "Credenziali",
     "mfa": {
-      "codeInput": {},
-      "confirmDelete": {},
+      "codeInput": {
+        "info": "",
+        "label": ""
+      },
+      "confirmDelete": {
+        "desc": "",
+        "descToken": "",
+        "title": ""
+      },
       "createUnknownErrorNotification": "L'autenticazione a 2 fattori non è stata attivata a causa di un errore sconosciuto. Prova di nuovo o contatta il supporto",
       "deleteUnknownErrorNotification": "L'autenticazione a 2 fattori non è stata rimossa a causa di un errore sconosciuto. Prova di nuovo o contatta il supporto",
-      "enterCode": {},
+      "disabledNotification": "",
+      "enabledNotification": "",
+      "enterCode": {
+        "desc": "",
+        "title": ""
+      },
       "modalTitle": "Attiva autenticazione a 2 fattori",
       "result": {
-        "successful": "L'autenticazione a 2 fattori è stata attivata"
+        "invalidCode": "",
+        "successful": "L'autenticazione a 2 fattori è stata attivata",
+        "title": ""
       },
-      "scan": {},
-      "secretInput": {},
+      "scan": {
+        "desc": "",
+        "title": ""
+      },
+      "secretInput": {
+        "desc": "",
+        "label": ""
+      },
       "title": "Autenticazione a 2 fattori",
-      "validateButton": {}
+      "validateButton": {
+        "label": ""
+      }
     },
     "newsletter": {
-      "currentStatus": {},
-      "title": "Newsletter"
+      "cantUpdate": "",
+      "currentStatus": {
+        "cleaned": "",
+        "none": "",
+        "pending": "",
+        "subscribed": "",
+        "unsubscribed": ""
+      },
+      "subscribe": "",
+      "title": "Newsletter",
+      "unsubscribe": ""
     },
+    "phoneInfo": "",
+    "phoneInfoAdmin": "",
     "savedPassword": "Nuova password salvata",
     "subTitle": "I campi obbligatori sono indicati con un asterisco. Le informazioni inviate qui sono private.",
     "title": "Account"
@@ -29,217 +63,746 @@
   "actions": {
     "add": "Aggiungi",
     "back": "Indietro",
+    "backToLogin": "",
+    "cancel": "",
     "changePassword": "Modifica la password",
+    "chooseFile": "",
     "close": "Chiudi",
     "continue": "Prosegui",
+    "copy": "",
+    "create": "",
+    "delete": "",
     "disable": "Disattiva",
+    "edit": "",
     "enable": "Attiva",
+    "endnow": "",
+    "export": "",
+    "getStarted": "",
+    "goBack": "",
+    "next": "",
+    "noBack": "",
+    "participate": "",
+    "preview": "",
+    "publish": "",
+    "reopen": "",
+    "replicate": "",
+    "reset": "",
+    "reset2FA": "",
+    "resetPassword": "",
+    "respond": "",
+    "revertToDraft": "",
+    "save": "",
+    "saveAndAnother": "",
+    "saveDraft": "",
+    "schedule": "",
+    "search": "",
     "sendEmails": "Invia e-mail",
-    "update": "Aggiorna"
+    "share": "",
+    "skip": "",
+    "submit": "",
+    "unpublish": "",
+    "update": "Aggiorna",
+    "view": "",
+    "yesDelete": "",
+    "yesDisable": "",
+    "yesRemove": ""
   },
   "addContact": {
-    "errors": {}
+    "contactSaved": "",
+    "errors": {
+      "duplicateEmail": ""
+    },
+    "subscribeToNewsletter": "",
+    "title": ""
   },
   "addNotice": {
-    "form": {}
+    "form": {
+      "buttonText": "",
+      "expirationDateAndTime": "",
+      "name": "",
+      "startDateAndTime": "",
+      "text": "",
+      "url": ""
+    },
+    "title": ""
   },
   "adminDashboard": {
-    "latestCallout": {},
-    "mostRecentMembers": {},
-    "numbers": {}
+    "hint1": "",
+    "hint2": "",
+    "hint3": "",
+    "joinSlack": "",
+    "latestCallout": {
+      "createNew": "",
+      "empty": "",
+      "title": ""
+    },
+    "mostRecentMembers": {
+      "title": ""
+    },
+    "numbers": {
+      "averageContribution": "",
+      "newMembers": "",
+      "revenue": "",
+      "title": ""
+    },
+    "responsesSoFar": "",
+    "seeAllResponses": "",
+    "supportInbox": "",
+    "welcomeBack": ""
   },
   "adminSettings": {
     "apikey": {
-      "confirmCreate": {},
-      "confirmDelete": {},
-      "expires": {}
+      "confirmCreate": {
+        "text": "",
+        "title": ""
+      },
+      "confirmDelete": {
+        "text": "",
+        "title": ""
+      },
+      "copied": "",
+      "create": "",
+      "expires": {
+        "days": "",
+        "never": ""
+      },
+      "expiresHelp": "",
+      "expiresNeverWarning": "",
+      "label": "",
+      "showingOf": ""
     },
-    "email": {},
+    "email": {
+      "fromEmail": "",
+      "fromName": "",
+      "label": "",
+      "text": "",
+      "title": ""
+    },
     "general": {
       "footer": {
         "dataPrivacy": {
+          "impressumUrl": "",
           "privacyUrl": "Url della privacy",
-          "termsUrl": "Url dei termini di servizio"
+          "termsUrl": "Url dei termini di servizio",
+          "title": ""
         },
-        "otherLinks": {}
+        "otherLinks": {
+          "add": "",
+          "linkText": "",
+          "title": "",
+          "url": ""
+        },
+        "siteUrl": "",
+        "text": "",
+        "title": ""
       },
-      "socialSharing": {}
+      "label": "",
+      "language": "",
+      "logo": "",
+      "organisationName": "",
+      "socialSharing": {
+        "description": "",
+        "image": "",
+        "shareTitle": "",
+        "text": "",
+        "title": "",
+        "twitterHandle": ""
+      }
     },
-    "payment": {},
+    "payment": {
+      "paymentTitle": "",
+      "taxRate": "",
+      "taxRateEnabled": ""
+    },
     "theme": {
-      "colorNames": {},
-      "presetColors": {}
-    }
+      "bodyFont": "",
+      "colorNames": {
+        "body": "",
+        "danger": "",
+        "link": "",
+        "primary": "",
+        "success": "",
+        "warning": ""
+      },
+      "colors": "",
+      "customColors": "",
+      "fontNotListed": "",
+      "fonts": "",
+      "label": "",
+      "presetColors": {
+        "default": ""
+      },
+      "titleFont": ""
+    },
+    "title": ""
   },
   "advancedSearch": {
-    "createFiltersType": {},
-    "matchWord": {},
+    "addRule": "",
+    "button": "",
+    "createFiltersAfter": "",
+    "createFiltersBefore": "",
+    "createFiltersType": {
+      "all": "",
+      "any": ""
+    },
+    "createdSegment": "",
+    "matchWord": {
+      "AND": "",
+      "OR": ""
+    },
+    "nestedRules": "",
+    "noNestedRules": "",
     "operators": {
-      "all": {},
-      "array": {},
-      "blob": {},
-      "boolean": {},
-      "date": {},
-      "enum": {},
-      "number": {},
-      "text": {}
+      "all": {
+        "is_empty": "",
+        "is_not_empty": ""
+      },
+      "array": {
+        "contains": "",
+        "not_contains": ""
+      },
+      "blob": {
+        "contains": "",
+        "not_contains": ""
+      },
+      "boolean": {
+        "equal": ""
+      },
+      "date": {
+        "between": "",
+        "equal": "",
+        "greater": "",
+        "greater_or_equal": "",
+        "less": "",
+        "less_or_equal": "",
+        "not_between": "",
+        "not_equal": ""
+      },
+      "enum": {
+        "equal": "",
+        "not_equal": ""
+      },
+      "number": {
+        "between": "",
+        "equal": "",
+        "greater": "",
+        "greater_or_equal": "",
+        "less": "",
+        "less_or_equal": "",
+        "not_between": "",
+        "not_equal": ""
+      },
+      "text": {
+        "begins_with": "",
+        "contains": "",
+        "ends_with": "",
+        "equal": "",
+        "not_begins_with": "",
+        "not_contains": "",
+        "not_ends_with": "",
+        "not_equal": ""
+      }
     },
     "saveSegment": {
-      "createOrUpdate": {}
-    }
+      "createOrUpdate": {
+        "create": "",
+        "label": "",
+        "update": ""
+      },
+      "createSegment": "",
+      "segmentName": "",
+      "text": "",
+      "title": "",
+      "updateSegment": ""
+    },
+    "selectFilter": "",
+    "updatedSegment": ""
   },
   "apiKey": {
-    "data": {}
+    "data": {
+      "createdAt": "",
+      "description": "",
+      "expires": "",
+      "token": ""
+    }
   },
   "callout": {
-    "actions": {},
+    "actions": {
+      "updateResponse": ""
+    },
+    "addAPoint": "",
+    "addLocation": "",
     "builder": {
-      "actions": {},
+      "actions": {
+        "addSlide": ""
+      },
       "common": {
-        "actions": {}
+        "actions": {
+          "add": "",
+          "remove": ""
+        },
+        "internalTitle": "",
+        "showAdvancedOptions": "",
+        "slides": "",
+        "startEndScreens": ""
       },
       "navigation": {
-        "nextSlide": {}
+        "nextButton": "",
+        "nextSlide": {
+          "default": "",
+          "label": ""
+        },
+        "prevButton": "",
+        "slideNo": "",
+        "submitButton": ""
       },
+      "showAdvancedOptions": "",
+      "slidesTitle": "",
+      "startEndScreenTitle": "",
       "tabs": {
-        "content": {},
+        "content": {
+          "title": ""
+        },
         "endMessage": {
           "inputs": {
             "action": {
-              "opts": {}
+              "label": "",
+              "opts": {
+                "redirect": "",
+                "showMessage": ""
+              }
             },
-            "text": {},
-            "title": {},
-            "url": {}
-          }
+            "text": {
+              "help": "",
+              "label": "",
+              "placeholder": ""
+            },
+            "title": {
+              "help": "",
+              "label": "",
+              "placeholder": ""
+            },
+            "url": {
+              "help": "",
+              "label": "",
+              "placeholder": ""
+            }
+          },
+          "title": ""
         },
-        "intro": {},
-        "mailchimp": {},
-        "responseDisplay": {},
+        "intro": {
+          "help": "",
+          "label": "",
+          "title": ""
+        },
+        "mailchimp": {
+          "title": ""
+        },
+        "responseDisplay": {
+          "title": ""
+        },
         "settings": {
-          "access": {},
-          "dates": {},
-          "displayOptions": {},
+          "access": {
+            "title": ""
+          },
+          "dates": {
+            "title": ""
+          },
+          "displayOptions": {
+            "description": "",
+            "title": ""
+          },
           "inputs": {
             "collectGuestInfo": {
-              "opts": {}
+              "label": "",
+              "opts": {
+                "disabled": "",
+                "enabled": ""
+              }
             },
             "collectMemberInfo": {
-              "opts": {}
+              "label": "",
+              "opts": {
+                "disabled": "",
+                "enabled": ""
+              }
             },
             "expires": {
-              "opts": {}
+              "description": "",
+              "label": "",
+              "opts": {
+                "never": "",
+                "schedule": ""
+              }
             },
             "mapAndGallery": {
-              "gallery": {},
-              "map": {}
+              "description": "",
+              "gallery": {
+                "disabledDescription": "",
+                "enabledDescription": "",
+                "label": ""
+              },
+              "map": {
+                "disabledDescription": "",
+                "enabledDescription": "",
+                "label": ""
+              },
+              "title": ""
             },
             "mapSchema": {
-              "addressPattern": {},
-              "addressPatternProp": {},
-              "addressProp": {},
-              "bounds": {},
-              "center": {},
-              "geocodeCountries": {},
-              "initialZoom": {},
-              "maxZoom": {},
-              "minZoom": {},
-              "style": {}
+              "addressPattern": {
+                "label": ""
+              },
+              "addressPatternProp": {
+                "label": "",
+                "none": ""
+              },
+              "addressProp": {
+                "label": ""
+              },
+              "bounds": {
+                "label": ""
+              },
+              "center": {
+                "label": ""
+              },
+              "geocodeCountries": {
+                "label": ""
+              },
+              "initialZoom": {
+                "label": ""
+              },
+              "maxZoom": {
+                "label": ""
+              },
+              "minZoom": {
+                "label": ""
+              },
+              "style": {
+                "help": "",
+                "label": ""
+              },
+              "title": ""
             },
             "newsletterSettings": {
-              "opts": {}
+              "disabled": "",
+              "label": "",
+              "opts": {
+                "disabled": "",
+                "enabled": ""
+              }
             },
             "openToEveryone": {
-              "opts": {}
+              "help": "",
+              "label": "",
+              "opts": {
+                "disabled": "",
+                "enabled": ""
+              }
             },
             "requireCaptcha": {
+              "help": "",
+              "label": "",
               "members": {
-                "opts": {}
+                "label": "",
+                "opts": {
+                  "disabled": "",
+                  "enabled": ""
+                }
               },
-              "opts": {}
+              "opts": {
+                "all": "",
+                "guests": "",
+                "none": ""
+              }
             },
-            "responseImageProp": {},
+            "responseImageProp": {
+              "description": "",
+              "label": ""
+            },
             "responseLinks": {
-              "opts": {},
-              "placeholder": {}
+              "description": "",
+              "label": "",
+              "opts": {
+                "disabled": "",
+                "enabled": ""
+              },
+              "placeholder": {
+                "label": "",
+                "url": ""
+              }
             },
             "responseSettings": {
-              "opts": {}
+              "label": "",
+              "opts": {
+                "multiple": "",
+                "singleEditable": "",
+                "singleNonEditable": ""
+              },
+              "title": ""
             },
-            "responseTitleProp": {},
+            "responseTitleProp": {
+              "description": "",
+              "label": ""
+            },
             "showResponses": {
-              "opts": {}
+              "label": "",
+              "opts": {
+                "no": "",
+                "yes": ""
+              }
             },
             "starts": {
-              "opts": {}
+              "label": "",
+              "opts": {
+                "now": "",
+                "schedule": ""
+              }
             },
             "visible": {
-              "opts": {}
+              "help": "",
+              "label": "",
+              "opts": {
+                "disabled": "",
+                "enabled": ""
+              }
             },
-            "whichResponseBuckets": {}
-          }
+            "whichResponseBuckets": {
+              "description": "",
+              "label": ""
+            }
+          },
+          "title": ""
         },
         "titleAndImage": {
           "inputs": {
-            "description": {},
-            "general": {},
-            "image": {},
+            "description": {
+              "help": "",
+              "label": "",
+              "placeholder": ""
+            },
+            "general": {
+              "title": ""
+            },
+            "image": {
+              "description": "",
+              "help": "",
+              "label": ""
+            },
             "overrideShare": {
-              "opts": {}
+              "label": "",
+              "opts": {
+                "disabled": "",
+                "enabled": ""
+              }
             },
-            "shareDescription": {},
-            "shareTitle": {},
-            "sharing": {},
+            "shareDescription": {
+              "help": "",
+              "label": "",
+              "placeholder": ""
+            },
+            "shareTitle": {
+              "help": "",
+              "label": "",
+              "placeholder": ""
+            },
+            "sharing": {
+              "title": ""
+            },
             "slug": {
-              "locked": {},
-              "opts": {}
+              "boxTitle": "",
+              "help": "",
+              "label": "",
+              "locked": {
+                "title": ""
+              },
+              "opts": {
+                "auto": "",
+                "manual": ""
+              }
             },
-            "title": {}
-          }
+            "title": {
+              "label": "",
+              "placeholder": ""
+            }
+          },
+          "title": "",
+          "urlWillBe": ""
         },
         "translations": {
-          "language": {},
-          "languageSettings": {},
-          "navigationButtons": {}
+          "language": {
+            "description": "",
+            "enableLanguages": "",
+            "title": ""
+          },
+          "languageSettings": {
+            "title": ""
+          },
+          "navigationButtons": {
+            "title": ""
+          },
+          "title": ""
         }
       },
-      "translationFields": {}
+      "translationFields": {
+        "description": "",
+        "label": "",
+        "option": "",
+        "placeholder": ""
+      }
     },
-    "form": {},
-    "share": {},
-    "views": {}
+    "confirmHuman": "",
+    "contactDetails": "",
+    "ended": "",
+    "entryOf": "",
+    "form": {
+      "email": "",
+      "guestFieldsMissing": "",
+      "name": "",
+      "submittingResponseError": ""
+    },
+    "getStarted": "",
+    "joinNow": "",
+    "loginToYourAccount": "",
+    "membersOnly": "",
+    "responseSubmitted": "",
+    "share": {
+      "address": "",
+      "services": ""
+    },
+    "showingPreview": "",
+    "toContributionPage": "",
+    "updateContribution": "",
+    "views": {
+      "gallery": "",
+      "map": ""
+    },
+    "youResponded": "",
+    "yourResponse": ""
   },
-  "calloutAdmin": {},
+  "calloutAdmin": {
+    "deleted": "",
+    "ended": "",
+    "overview": "",
+    "reopened": "",
+    "responses": ""
+  },
   "calloutAdminOverview": {
     "actions": {
-      "confirmDelete": {}
+      "confirmDelete": {
+        "text": "",
+        "title": ""
+      }
     },
-    "dates": {},
+    "created": "",
+    "dates": {
+      "ends": "",
+      "label": "",
+      "starts": ""
+    },
     "settings": {
-      "answers": {},
-      "contactInfo": {},
-      "endsWith": {},
-      "openTo": {}
-    }
+      "answers": {
+        "editable": "",
+        "final": "",
+        "label": ""
+      },
+      "contactInfo": {
+        "label": "",
+        "optional": "",
+        "required": ""
+      },
+      "endsWith": {
+        "label": "",
+        "message": "",
+        "redirect": ""
+      },
+      "label": "",
+      "openTo": {
+        "everyone": "",
+        "label": "",
+        "membersOnly": ""
+      }
+    },
+    "summary": "",
+    "updated": ""
   },
   "calloutResponse": {
-    "data": {},
-    "dataGroup": {}
+    "data": {
+      "answers": "",
+      "assignee": "",
+      "bucket": "",
+      "callout": "",
+      "contact": "",
+      "createdAt": "",
+      "tags": "",
+      "updatedAt": ""
+    },
+    "dataGroup": {
+      "answers": "",
+      "response": ""
+    }
   },
-  "calloutResponseBuckets": {},
+  "calloutResponseBuckets": {
+    "inbox": "",
+    "trash": "",
+    "verified": ""
+  },
   "calloutResponseComments": {
-    "actions": {},
-    "confirmDelete": {}
+    "actions": {
+      "addComment": "",
+      "updateComment": ""
+    },
+    "addComment": "",
+    "comments": "",
+    "confirmDelete": {
+      "text": "",
+      "title": ""
+    }
   },
   "calloutResponsePage": {
-    "actions": {},
-    "notifications": {}
+    "actions": {
+      "assignTo": "",
+      "moveBucket": "",
+      "toggleTag": "",
+      "viewOnMap": ""
+    },
+    "editMode": "",
+    "manageFolders": "",
+    "manageReviewers": "",
+    "manageTags": "",
+    "notifications": {
+      "addedAssignee": "",
+      "addedTag": "",
+      "movedToBucket": "",
+      "removedAssignee": "",
+      "removedTag": ""
+    },
+    "responseOf": "",
+    "selectedCount": ""
   },
-  "calloutResponsesPage": {},
+  "calloutResponsesPage": {
+    "moveToBucket": "",
+    "noTags": "",
+    "response": "",
+    "responseNo": "",
+    "searchAssignee": "",
+    "searchTag": "",
+    "showAnswer": "",
+    "showLatestComment": "",
+    "showingOf": ""
+  },
   "calloutReviewerManager": {
-    "confirmDelete": {}
+    "add": "",
+    "confirmDelete": {
+      "text": "",
+      "title": ""
+    },
+    "contact": "",
+    "title": ""
   },
-  "calloutThanksPage": {},
+  "calloutThanksPage": {
+    "oneResponseWarning": ""
+  },
   "callouts": {
     "archive": "Archivio",
     "data": {
@@ -249,11 +812,25 @@
     "noArchivedCallouts": "Nessuna callout",
     "search": "Cerca un callout",
     "showAll": "Tutti",
-    "showAnswered": "Completati"
+    "showAnswered": "Completati",
+    "showingOf": ""
   },
   "calloutsAdmin": {
-    "data": {},
-    "filter": {}
+    "addCallout": "",
+    "data": {
+      "expires": "",
+      "responses": "",
+      "starts": "",
+      "status": "",
+      "title": ""
+    },
+    "filter": {
+      "all": "",
+      "draft": "",
+      "ended": "",
+      "open": "",
+      "scheduled": ""
+    }
   },
   "common": {
     "backToHome": "Torna alla home",
@@ -271,7 +848,9 @@
     "default": "Predefinito",
     "hello": "Ciao",
     "id": "ID",
+    "itemsPerPage": "",
     "joined": "Iscritto",
+    "label": "",
     "loading": "Caricamento...",
     "login": "Login",
     "newsletterStatus": {
@@ -295,7 +874,11 @@
     "perMonthText": "al mese",
     "perYear": "/ anno",
     "perYearText": "all'anno",
-    "role": {},
+    "role": {
+      "admin": "",
+      "member": "",
+      "superadmin": ""
+    },
     "selectNone": "-- Nessuno --",
     "selectOne": "Seleziona",
     "show": "Mostra",
@@ -312,7 +895,12 @@
     "yes": "Sì"
   },
   "contactAccount": {
-    "confirmDelete": {}
+    "confirmDelete": {
+      "text": "",
+      "title": "",
+      "warning": ""
+    },
+    "contactDeleted": ""
   },
   "contactContribution": {
     "confirmCancel": {
@@ -320,39 +908,148 @@
       "text": "Sei sicuro di voler cancellare il contributo? Non potrà essere ripristinato",
       "title": "Cancellare il contributo?"
     },
-    "updateNotice": {}
+    "updateNotice": {
+      "text": "",
+      "title": ""
+    }
   },
   "contactOverview": {
-    "annotation": {},
-    "newsletter": {},
+    "about": "",
+    "account": "",
+    "annotation": {
+      "copy": ""
+    },
+    "callouts": "",
+    "cancellationDate": "",
+    "contribution": "",
+    "contributionType": "",
+    "joinSurvey": "",
+    "newsletter": {
+      "groups": "",
+      "status": "",
+      "title": ""
+    },
+    "overview": "",
+    "pickTag": "",
+    "profile": "",
+    "roles": "",
     "security": {
-      "mfa": {}
+      "instructions": "",
+      "loginOverride": "",
+      "mfa": {
+        "desc": "",
+        "disabledDesc": ""
+      },
+      "resetPassword": "",
+      "title": "",
+      "whatDoTheButtonsDo": ""
     }
   },
   "contacts": {
-    "advancedSearch": {},
-    "data": {},
+    "addContact": "",
+    "advancedSearch": {
+      "hasAnswered": "",
+      "selectCallout": ""
+    },
+    "allContacts": "",
+    "data": {
+      "activeMembership": "",
+      "activePermission": "",
+      "activeUser": "",
+      "amount": "",
+      "annotationsCopy": "",
+      "contribution": "",
+      "contributionCancelled": "",
+      "contributionMonthlyAmount": "",
+      "contributionPeriod": "",
+      "contributionType": "",
+      "deliveryOptIn": "",
+      "description": "",
+      "email": "",
+      "firstname": "",
+      "joined": "",
+      "lastSeen": "",
+      "lastname": "",
+      "manualPaymentSource": "",
+      "membershipExpires": "",
+      "membershipStarts": "",
+      "name": "",
+      "newsletterGroups": "",
+      "newsletterStatus": "",
+      "notes": "",
+      "payingFee": "",
+      "paymentReference": "",
+      "paymentSource": "",
+      "period": "",
+      "phone": "",
+      "preferredChannel": "",
+      "tags": ""
+    },
     "dataGroup": {
       "callout": "Callout",
-      "contact": "Informazioni di contatto"
-    }
+      "contact": "Informazioni di contatto",
+      "contribution": "",
+      "role": ""
+    },
+    "noContacts": "",
+    "noResults": "",
+    "numResults": "",
+    "search": "",
+    "selectedCount": "",
+    "showingOf": ""
   },
   "contribution": {
+    "adminCancelDescription": "",
+    "bankAccount": "",
+    "billing": "",
     "cancelContribution": "Cancella il tuo contributo",
     "cancelDescription": "Cancellando il tuo contributo, la tua membership terminerà alla fine del ciclo di pagamento, il {date}.",
+    "cancelMessage": "",
+    "cancelledContribution": "",
+    "changeBank": "",
+    "changeBankInfo": "",
     "contributing": "Il tuo contributo è",
+    "contributionUpdateError": "",
+    "dueToRenew": "",
+    "expired": "",
+    "expiredText": "",
+    "hasPendingPayment": "",
+    "manualPayment": "",
+    "manualPaymentSource": "",
+    "nextAmountChanging": "",
     "paymentHistory": {
+      "empty": "",
       "title": "Cronologia dei pagamenti"
     },
     "paymentMethod": "Metodo di pagamento",
+    "paymentSourceUpdateError": "",
+    "prorateDecreaseMessage": "",
+    "prorateDecreaseMessageWillStart": "",
+    "prorateIncreaseMessage": "",
+    "prorateIncreaseMessageOneOff": "",
+    "prorateNoText": "",
+    "prorateNoTitle": "",
+    "prorateYesText": "",
+    "prorateYesTitle": "",
     "restartContribution": "Ripristina contributo",
     "startContribution": "Avvia contirbuto",
+    "startedContribution": "",
     "updateContribution": "Aggiorna il tuo contributo",
     "updatePaymentType": "Aggiorna il metodo di pagamento",
-    "willRenew": "Il tuo contributo sarà aggiornato il {renewalDate}."
+    "updatedContribution": "",
+    "updatedPaymentSource": "",
+    "willExpire": "",
+    "willRenew": "Il tuo contributo sarà aggiornato il {renewalDate}.",
+    "willRenewWithNewAmount": ""
   },
-  "editCallout": {},
-  "editNotice": {},
+  "editCallout": {
+    "replicated": "",
+    "title": "",
+    "warning": ""
+  },
+  "editNotice": {
+    "title": ""
+  },
   "footer": {
     "contactUs": "Contattaci a",
     "handbookResources": "Manuale & risorse",
@@ -371,44 +1068,133 @@
   "form": {
     "addressLine1": "Dettagli indirizzo 1",
     "addressLine2": "Dettagli indirizzo 2",
-    "characters": {},
+    "cancel": "",
+    "characters": {
+      "remaining": ""
+    },
     "cityOrTown": "Città",
+    "deliveryOptIn": "",
+    "description": "",
+    "email": "",
     "errorMessages": {
-      "api": {}
+      "api": {
+        "account-locked": "",
+        "duplicate-email": "",
+        "duplicate-tag-name": "",
+        "invalid-token": "",
+        "login-failed": "",
+        "mfa-token-required": ""
+      },
+      "generic": "",
+      "unauthorized": "",
+      "validation": ""
     },
     "errors": {
-      "address": {},
-      "addressLine1": {},
-      "cityOrTown": {},
-      "color": {},
-      "confirmPassword": {},
-      "email": {},
-      "file": {},
-      "firstName": {},
-      "lastName": {},
-      "name": {},
-      "password": {},
-      "postCode": {},
-      "unknown": {},
-      "url": {},
-      "verifyCode": {}
+      "address": {
+        "required": ""
+      },
+      "addressLine1": {
+        "required": ""
+      },
+      "cityOrTown": {
+        "required": ""
+      },
+      "color": {
+        "pattern": "",
+        "required": ""
+      },
+      "confirmPassword": {
+        "password": "",
+        "required": "",
+        "sameAs": ""
+      },
+      "email": {
+        "email": "",
+        "required": ""
+      },
+      "file": {
+        "rateLimited": "",
+        "tooBig": "",
+        "unsupportedType": ""
+      },
+      "firstName": {
+        "required": ""
+      },
+      "lastName": {
+        "required": ""
+      },
+      "name": {
+        "required": ""
+      },
+      "password": {
+        "password": "",
+        "required": "",
+        "sameAs": ""
+      },
+      "postCode": {
+        "required": ""
+      },
+      "unknown": {
+        "email": "",
+        "max": "",
+        "maxLength": "",
+        "min": "",
+        "required": "",
+        "url": ""
+      },
+      "url": {
+        "required": "",
+        "url": ""
+      },
+      "verifyCode": {
+        "max": "",
+        "min": "",
+        "required": ""
+      }
     },
     "firstName": "Nome",
     "lastName": "Cognome",
+    "newPassword": "",
+    "newPasswordConfirm": "",
+    "notes": "",
+    "password": "",
     "passwordInfo": "Crea una password sicura: almeno 8 caratteri, un numero, una lettera minuscola e una maiuscola.",
+    "phone": "",
     "postCode": "CAP",
-    "richtext": {},
+    "richtext": {
+      "bold": "",
+      "bulletlist": "",
+      "heading": "",
+      "italic": "",
+      "link": "",
+      "numberedlist": "",
+      "strikethrough": "",
+      "underline": ""
+    },
+    "saveChanges": "",
     "saved": "Salvato!",
+    "unsavedChanges": "",
     "updated": "Aggiornato"
   },
   "formRenderer": {
     "components": {
-      "file": {},
-      "multiple": {}
+      "file": {
+        "browse": "",
+        "dropFiles": "",
+        "or": "",
+        "switchToFileUpload": "",
+        "takePicture": "",
+        "useCamera": ""
+      },
+      "multiple": {
+        "addAnother": ""
+      }
     }
   },
   "homePage": {
+    "editProfile": "",
     "manageContribution": "Gestisci il tuo contributo",
+    "newCallout": "",
     "openCallouts": "Callout in corso",
     "quickActions": "Azioni veloci",
     "title": "Home",
@@ -418,9 +1204,13 @@
     "yourProfile": "Il tuo profilo"
   },
   "item": {
-    "status": {}
+    "status": {
+      "endsIn": "",
+      "startsIn": ""
+    }
   },
   "join": {
+    "absorbFeeForce": "",
     "absorbFeeOptIn": "Sì, intendo coprire i {fee} della transazione.",
     "absorbFeeText": "La nostra piattaforma di pagamento addebita un costo per la transazione. Significa che mensilmente riceveremo meno rispetto alla quota che hai scelto. Vuoi coprire il costo della transazione? Il pagamento annuale, invece, non prevede costi ulteriori.  ",
     "contribute": "Contribuisci con {contribution}",
@@ -431,15 +1221,24 @@
         "title": "Conferma il tuo account."
       },
       "failed": {
+        "backToJoin": "",
+        "message": "",
         "title": "Qualcosa è andato storto"
       }
     },
     "login": "Log in",
     "memberAccount": "Il tuo account",
     "memberAlready": "Sei già iscritto?",
+    "minimumContribution": "",
+    "noContribution": "",
+    "notice": "",
+    "now": "",
     "paymentMethod": "Metodo di pagamento",
+    "poweredBy": "",
     "privacy": "Privacy",
-    "tax": {}
+    "tax": {
+      "included": ""
+    }
   },
   "joinPayment": {
     "applePay": {
@@ -470,20 +1269,65 @@
     "message": "Se esiste già un account associato a {email}, riceverai una mail a breve. Controlla anche la tua cartella spam.",
     "title": "Hai perso il tuo dispositivo 2FA?"
   },
-  "mailOptIn": {},
+  "mailOptIn": {
+    "optInLabel": "",
+    "text": "",
+    "title": ""
+  },
   "membershipBuilder": {
     "steps": {
       "accountConfirmation": {
-        "deliveryAddress": {},
-        "joinSurvey": {},
+        "deliveryAddress": {
+          "showOptIn": "",
+          "title": ""
+        },
+        "description": "",
+        "joinSurvey": {
+          "required": "",
+          "slug": "",
+          "slugHelp": "",
+          "text": "",
+          "textIntro": "",
+          "title": ""
+        },
         "newsletter": {
+          "showOptIn": "",
           "title": "Newsletter"
-        }
+        },
+        "text": "",
+        "title": "",
+        "welcomeMessage": ""
       },
-      "emails": {},
-      "intro": {},
-      "joinForm": {}
-    }
+      "emails": {
+        "bigTitle": "",
+        "cancellationEmail": "",
+        "description": "",
+        "text": "",
+        "title": "",
+        "welcomeEmail": ""
+      },
+      "intro": {
+        "description": "",
+        "message": "",
+        "showWelcomeMessage": "",
+        "text": "",
+        "title": ""
+      },
+      "joinForm": {
+        "backgroundImage": "",
+        "defaultAmount": "",
+        "description": "",
+        "formSubtitle": "",
+        "formTitle": "",
+        "minAmount": "",
+        "showAbsorbFee": "",
+        "showNoContribution": "",
+        "suggestedAmounts": "",
+        "text": "",
+        "title": ""
+      }
+    },
+    "title": ""
   },
   "menu": {
     "account": "Account",
@@ -496,76 +1340,183 @@
     "home": "Home",
     "legacyApp": "Vecchia dashboard",
     "logout": "Log out",
+    "membershipBuilder": "",
     "notices": "Notifiche",
     "payments": "Pagamenti",
     "settings": "Impostazioni",
     "yourProfile": "Il tuo profilo"
   },
   "newsletterOptIn": {
-    "groups": {}
+    "groups": {
+      "add": "",
+      "help": "",
+      "title": ""
+    },
+    "optInDisabled": "",
+    "optInLabel": "",
+    "text": "",
+    "title": ""
   },
-  "notFound": {},
+  "notFound": {
+    "goBack": "",
+    "text": ""
+  },
   "noticeAdminOverview": {
     "actions": {
-      "confirmDelete": {}
-    }
+      "confirmDelete": {
+        "text": "",
+        "title": ""
+      }
+    },
+    "created": "",
+    "summary": "",
+    "updated": ""
   },
   "notices": {
-    "data": {}
+    "addNotice": "",
+    "data": {
+      "createdAt": "",
+      "name": "",
+      "status": ""
+    },
+    "showingOf": ""
   },
   "notifications": {
-    "copy": {}
+    "copy": {
+      "success": ""
+    },
+    "error": "",
+    "remove": ""
   },
-  "pageTitle": {},
+  "pageTitle": {
+    "confirmEmail": "",
+    "duplicateEmail": "",
+    "failed": "",
+    "forgotPassword": "",
+    "join": "",
+    "login": "",
+    "lostDevice": "",
+    "notFound": "",
+    "resetDevice": "",
+    "resetPassword": "",
+    "setPassword": "",
+    "setup": ""
+  },
   "paymentMethods": {
     "gc_direct-debit": {
-      "label": "Addebito diretto"
+      "changeLabel": "",
+      "label": "Addebito diretto",
+      "setLabel": ""
     },
     "s_bacs": {
-      "label": "Addebito diretto"
+      "changeLabel": "",
+      "label": "Addebito diretto",
+      "setLabel": ""
     },
     "s_card": {
       "changeLabel": "Modifica i dettagli della carta",
-      "label": "Carta di credito"
+      "label": "Carta di credito",
+      "setLabel": ""
     },
-    "s_ideal": {},
+    "s_ideal": {
+      "changeLabel": "",
+      "label": "",
+      "setLabel": ""
+    },
     "s_paypal": {
-      "label": "PayPal"
+      "changeLabel": "",
+      "label": "PayPal",
+      "setLabel": ""
     },
     "s_sepa": {
-      "label": "Addebito diretto"
+      "changeLabel": "",
+      "label": "Addebito diretto",
+      "setLabel": ""
     }
   },
   "payments": {
-    "data": {},
-    "dataGroup": {}
+    "data": {
+      "amount": "",
+      "chargeDate": "",
+      "contact": "",
+      "status": ""
+    },
+    "dataGroup": {
+      "payment": ""
+    }
   },
   "paymentsAdmin": {
-    "filter": {}
+    "filter": {
+      "all": "",
+      "cancelled": "",
+      "failed": "",
+      "pending": "",
+      "successful": ""
+    },
+    "showingOf": ""
   },
-  "resetDevice": {},
+  "resetDevice": {
+    "description": "",
+    "failed": "",
+    "invalidPassword": "",
+    "success": "",
+    "title": ""
+  },
   "resetPassword": {
+    "description": "",
+    "failed": "",
     "login": "Accedi al tuo account. ",
+    "lostDevice": "",
+    "success": "",
     "title": "Vuoi reimpostare la tua password?"
   },
   "roleEditor": {
-    "confirmDelete": {},
-    "expires": {
-      "opts": {}
+    "add": "",
+    "confirmDelete": {
+      "text": "",
+      "title": ""
     },
+    "expires": {
+      "label": "",
+      "opts": {
+        "never": "",
+        "schedule": ""
+      }
+    },
+    "new": "",
     "starts": {
-      "opts": {}
-    }
+      "label": "",
+      "opts": {
+        "now": "",
+        "schedule": ""
+      }
+    },
+    "title": "",
+    "today": ""
   },
   "setPassword": {
     "description": "Imposta una nuova password.",
     "title": "Imposta una password"
   },
   "tagEditor": {
-    "confirmDelete": {}
+    "add": "",
+    "confirmDelete": {
+      "text_contact": "",
+      "text_global": "",
+      "text_response": "",
+      "title": ""
+    },
+    "name": ""
   },
   "tags": {
-    "notifications": {}
+    "manageTags": "",
+    "noTags": "",
+    "notifications": {
+      "addedTag": "",
+      "removedTag": ""
+    },
+    "searchTag": "",
+    "toggleTag": ""
   },
   "taxRate": {
     "invoiceName": "VAT"
