@@ -619,7 +619,7 @@ async function processCalloutResponseDocuments(
  */
 async function processFileUpload(
   options: MigrateUploadsOptions,
-  response: { id: string; calloutId: string; answers: any },
+  response: { id: string; calloutId?: string; answers: any },
   slideId: string,
   componentKey: string,
   fileUpload: FormioFile,

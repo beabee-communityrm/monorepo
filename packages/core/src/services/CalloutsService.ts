@@ -526,7 +526,7 @@ class CalloutsService {
 
     // Get all responses
     const responses = await getRepository(CalloutResponse).find({
-      select: ["id", "calloutId", "answers"]
+      select: ["id", "answers"]
     });
 
     // Filter responses with file uploads
