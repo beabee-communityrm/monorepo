@@ -17,7 +17,7 @@ export const migrateUploadsCommand = {
       .option("source", {
         describe: "Source directory containing uploads to migrate",
         type: "string",
-        demandOption: true
+        default: "/old_data"
       })
       .option("dryRun", {
         describe: "Simulate migration without actually uploading files",
