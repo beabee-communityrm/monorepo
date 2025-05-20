@@ -553,11 +553,7 @@ async function processCalloutResponseDocuments(
           for (let i = 0; i < answer.length; i++) {
             const item = answer[i];
             if (!isFormioFileAnswer(item)) {
-              console.log(
-                chalk.yellow(
-                  `⚠ Unsupported file format for response ${response.id}: ${componentKey}`
-                )
-              );
+              // Not a file upload
               continue;
             }
 
@@ -606,11 +602,6 @@ async function processCalloutResponseDocuments(
             );
           }
         } else {
-          console.log(
-            chalk.yellow(
-              `⚠ Unsupported file format for response ${response.id}: ${componentKey}`
-            )
-          );
           // Not a file upload
           continue;
         }
