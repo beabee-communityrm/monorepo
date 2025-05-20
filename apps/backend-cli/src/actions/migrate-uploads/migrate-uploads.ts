@@ -552,28 +552,35 @@ async function processCalloutResponseDocuments(
           // If it's an array of answers, process each one
           for (let i = 0; i < answer.length; i++) {
             const item = answer[i];
-            if (isFormioFileAnswer(item)) {
-              try {
-                const updated = await processFileUpload(
-                  options,
-                  response,
-                  slideId,
-                  componentKey,
-                  item,
-                  i,
-                  stats
-                );
-                if (updated) {
-                  // Update the answer in the array if it was successfully migrated
-                  answer[i] = updated;
-                }
-              } catch (error) {
-                stats.errorCount++;
-                console.error(
-                  `Error processing file for response ${response.id}:`,
-                  error
-                );
+            if (!isFormioFileAnswer(item)) {
+              console.log(
+                chalk.yellow(
+                  `⚠ Unsupported file format for response ${response.id}: ${componentKey}`
+                )
+              );
+              continue;
+            }
+
+            try {
+              const updated = await processFileUpload(
+                options,
+                response,
+                slideId,
+                componentKey,
+                item,
+                i,
+                stats
+              );
+              if (updated) {
+                // Update the answer in the array if it was successfully migrated
+                answer[i] = updated;
               }
+            } catch (error) {
+              stats.errorCount++;
+              console.error(
+                `Error processing file for response ${response.id}:`,
+                error
+              );
             }
           }
         } else if (isFormioFileAnswer(answer)) {
@@ -598,6 +605,14 @@ async function processCalloutResponseDocuments(
               error
             );
           }
+        } else {
+          console.log(
+            chalk.yellow(
+              `⚠ Unsupported file format for response ${response.id}: ${componentKey}`
+            )
+          );
+          // Not a file upload
+          continue;
         }
       }
     }

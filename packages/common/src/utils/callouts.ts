@@ -226,9 +226,10 @@ export function isFormioFileAnswer(
     "url" in answer &&
     "storage" in answer &&
     "name" in answer &&
-    "size" in answer &&
-    "hash" in answer &&
-    "originalName" in answer
+    "size" in answer
+    // Not defined on old files
+    // "hash" in answer &&
+    // "originalName" in answer
   );
 }
 
