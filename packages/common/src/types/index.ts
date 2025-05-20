@@ -175,6 +175,7 @@ export * from "./rule-operator.js";
 export * from "./rule-opperator-params.js";
 export * from "./rule-value.js";
 export * from "./rule.js";
+export * from "./s3-metadata.js";
 export * from "./segment-filter-name.js";
 export * from "./serial.js";
 export * from "./set-callout-form-schema.js";
