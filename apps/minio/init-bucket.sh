@@ -5,10 +5,10 @@ set -e
 /usr/bin/docker-entrypoint.sh "$@" &
 MINIO_PID=$!
 
-# Wait for MinIO to be available (replace fixed sleep with active check)
+# Wait for MinIO to be available
 echo "Waiting for MinIO to start..."
 RETRIES=60
-until nc -z localhost 9000; do
+until (echo > /dev/tcp/localhost/9000) >/dev/null 2>&1; do
   sleep 1
   RETRIES=$((RETRIES-1))
   if [ $RETRIES -le 0 ]; then
