@@ -215,9 +215,9 @@
       "taxRateEnabled": "Activer la TVA"
     },
     "theme": {
-      "bodyFont": "Texte",
+      "bodyFont": "Corps de texte",
       "colorNames": {
-        "body": "Couleur du texte",
+        "body": "Texte",
         "danger": "Danger",
         "link": "Liens",
         "primary": "Principal",
@@ -1094,23 +1094,23 @@
         "required": "Ce champ est obligatoire si vous souhaitez ajouter une adresse"
       },
       "addressLine1": {
-        "required": "Adresse ligne 1 est obligatoire"
+        "required": "L'adresse ligne 1 est obligatoire"
       },
       "cityOrTown": {
-        "required": "Ville est obligatoire"
+        "required": "La ville est obligatoire"
       },
       "color": {
         "pattern": "Couleur invalide",
-        "required": "Couleur est obligatoire"
+        "required": "La couleur est obligatoire"
       },
       "confirmPassword": {
         "password": "Mot de passe invalide",
-        "required": "Mot de passe est obligatoire",
+        "required": "Le mot de passe est obligatoire",
         "sameAs": "Les mots de passe ne correspondent pas"
       },
       "email": {
         "email": "Adresse e-mail invalide",
-        "required": "E-mail est obligatoire"
+        "required": "L'e-mail est obligatoire"
       },
       "file": {
         "rateLimited": "Échec de l'import : Le type de fichier n'est pas pris en charge",
@@ -1118,7 +1118,7 @@
         "unsupportedType": "Échec de l'import : Vous avez importé trop de fichiers récemment, veuillez patienter quelques minutes avant de réessayer"
       },
       "firstName": {
-        "required": "Prénom est obligatoire"
+        "required": "Le prénom est obligatoire"
       },
       "lastName": {
         "required": "Le nom est obligatoire"
