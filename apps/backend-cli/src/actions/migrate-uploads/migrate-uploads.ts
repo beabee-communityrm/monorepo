@@ -154,9 +154,11 @@ export async function migrateUploads(
       stats.totalSizeBytes += contentStats.totalSizeBytes;
     }
 
-    // Process document uploads in callout responses
-    if (steps.includes("calloutResponseDocuments")) {
-      console.log(chalk.blue("\n=== Migrating Callout Response Documents ==="));
+    // Process document and image uploads from callout responses
+    if (steps.includes("calloutResponseFiles")) {
+      console.log(
+        chalk.blue("\n=== Migrating Callout Response Documents and Images ===")
+      );
       const documentStats = await processCalloutResponseDocuments(options);
       // Merge stats
       stats.successCount += documentStats.successCount;
@@ -513,7 +515,7 @@ async function processOptionImage(
 }
 
 /**
- * Process document uploads from callout responses
+ * Process document and image uploads from callout responses
  * @param options Migration options
  * @returns Migration statistics
  */
@@ -528,7 +530,9 @@ async function processCalloutResponseDocuments(
   };
 
   // Get all callout responses that have file uploads
-  console.log("Fetching callout responses with file uploads...");
+  console.log(
+    "Fetching callout responses with file uploads (documents and images)..."
+  );
   const responses = await calloutsService.listResponsesWithFileUploads();
   console.log(`Found ${responses.length} responses with file uploads`);
 
@@ -548,33 +552,36 @@ async function processCalloutResponseDocuments(
           // If it's an array of answers, process each one
           for (let i = 0; i < answer.length; i++) {
             const item = answer[i];
-            if (isFormioFileAnswer(item)) {
-              try {
-                const updated = await processDocumentUpload(
-                  options,
-                  response,
-                  slideId,
-                  componentKey,
-                  item,
-                  i,
-                  stats
-                );
-                if (updated) {
-                  // Update the answer in the array if it was successfully migrated
-                  answer[i] = updated;
-                }
-              } catch (error) {
-                stats.errorCount++;
-                console.error(
-                  `Error processing document for response ${response.id}:`,
-                  error
-                );
+            if (!isFormioFileAnswer(item)) {
+              // Not a file upload
+              continue;
+            }
+
+            try {
+              const updated = await processFileUpload(
+                options,
+                response,
+                slideId,
+                componentKey,
+                item,
+                i,
+                stats
+              );
+              if (updated) {
+                // Update the answer in the array if it was successfully migrated
+                answer[i] = updated;
               }
+            } catch (error) {
+              stats.errorCount++;
+              console.error(
+                `Error processing file for response ${response.id}:`,
+                error
+              );
             }
           }
         } else if (isFormioFileAnswer(answer)) {
           try {
-            const updated = await processDocumentUpload(
+            const updated = await processFileUpload(
               options,
               response,
               slideId,
@@ -590,10 +597,13 @@ async function processCalloutResponseDocuments(
           } catch (error) {
             stats.errorCount++;
             console.error(
-              `Error processing document for response ${response.id}:`,
+              `Error processing file for response ${response.id}:`,
               error
             );
           }
+        } else {
+          // Not a file upload
+          continue;
         }
       }
     }
@@ -603,19 +613,19 @@ async function processCalloutResponseDocuments(
 }
 
 /**
- * Process a single document upload
+ * Process a single file upload (document or image)
  * @param options Migration options
- * @param response The callout response containing the document
- * @param slideId The slide ID containing the document
- * @param componentKey The component key containing the document
+ * @param response The callout response containing the file
+ * @param slideId The slide ID containing the file
+ * @param componentKey The component key containing the file
  * @param fileUpload The file upload answer
  * @param arrayIndex Optional index if the answer is in an array
  * @param stats Migration statistics to update
  * @returns Updated file upload object if migrated, null otherwise
  */
-async function processDocumentUpload(
+async function processFileUpload(
   options: MigrateUploadsOptions,
-  response: { id: string; calloutId: string; answers: any },
+  response: { id: string; calloutId?: string; answers: any },
   slideId: string,
   componentKey: string,
   fileUpload: FormioFile,
@@ -628,42 +638,38 @@ async function processDocumentUpload(
       ? `response ${response.id}, slide ${slideId}, component ${componentKey}, index ${arrayIndex}`
       : `response ${response.id}, slide ${slideId}, component ${componentKey}`;
 
-  // Check if the document is already migrated using the existing function
+  // Check if the file is already migrated using the existing function
   if (isFileMigrated(fileUrl)) {
     console.log(
       chalk.cyan(
-        `⏭ Skipping document in ${locationInfo}: Already migrated (${fileUrl})`
+        `⏭ Skipping file in ${locationInfo}: Already migrated (${fileUrl})`
       )
     );
     stats.skippedCount++;
     return null;
   }
 
-  // Extract document key from URL
+  // Extract file key from URL
   const { documentKey } = extractDocumentInfo(fileUrl);
 
   if (!documentKey) {
     console.log(
-      chalk.yellow(
-        `⚠ Unsupported document format in ${locationInfo}: ${fileUrl}`
-      )
+      chalk.yellow(`⚠ Unsupported file format in ${locationInfo}: ${fileUrl}`)
     );
     stats.errorCount++;
     return null;
   }
 
-  console.log(
-    chalk.blue(`Extracted document key: ${documentKey} from ${fileUrl}`)
-  );
+  console.log(chalk.blue(`Extracted file key: ${documentKey} from ${fileUrl}`));
 
   const sourcePath = path.join(options.source, documentKey);
 
-  // Verify the document exists
+  // Verify the file exists
   try {
     await fs.access(sourcePath);
   } catch (error) {
     console.log(
-      chalk.yellow(`⚠ No document found for ${locationInfo} at ${sourcePath}`)
+      chalk.yellow(`⚠ No file found for ${locationInfo} at ${sourcePath}`)
     );
     stats.errorCount++;
     return null;
@@ -672,33 +678,34 @@ async function processDocumentUpload(
   // Get file stats for size calculation
   const fileStats = await fs.stat(sourcePath);
 
+  // Determine if this is an image or a document based on file extension
+  const fileName =
+    fileUpload.originalName || fileUpload.name || path.basename(sourcePath);
+  const fileExt = path.extname(fileName).toLowerCase();
+  const isImage = [
+    ".jpg",
+    ".jpeg",
+    ".png",
+    ".gif",
+    ".webp",
+    ".avif",
+    ".svg",
+    ".tiff",
+    ".tif",
+    ".heif",
+    ".heic",
+    ".jp2"
+  ].includes(fileExt);
+
+  const fileType = isImage ? "image" : "document";
   console.log(
-    chalk.blue(`Processing document for ${locationInfo}: ${sourcePath}`)
+    chalk.blue(`Processing ${fileType} for ${locationInfo}: ${sourcePath}`)
   );
 
   if (!options.dryRun) {
     try {
       // Read the file as buffer
       const fileBuffer = await fs.readFile(sourcePath);
-
-      // Determine if this is an image or a document based on file extension
-      const fileName =
-        fileUpload.originalName || fileUpload.name || path.basename(sourcePath);
-      const fileExt = path.extname(fileName).toLowerCase();
-      const isImage = [
-        ".jpg",
-        ".jpeg",
-        ".png",
-        ".gif",
-        ".webp",
-        ".avif",
-        ".svg",
-        ".tiff",
-        ".tif",
-        ".heif",
-        ".heic",
-        ".jp2"
-      ].includes(fileExt);
 
       if (isImage) {
         // Handle as image using ImageService
@@ -722,8 +729,10 @@ async function processDocumentUpload(
 
         if (updated) {
           console.log(
-            formatSuccessMessage(locationInfo, fileStats.size) +
-              ` - New image path: ${newImagePath}`
+            formatSuccessMessage(
+              `${fileType} in ${locationInfo}`,
+              fileStats.size
+            ) + ` - New image path: ${newImagePath}`
           );
 
           stats.successCount++;
@@ -756,8 +765,10 @@ async function processDocumentUpload(
 
         if (updated) {
           console.log(
-            formatSuccessMessage(locationInfo, fileStats.size) +
-              ` - New document path: ${newDocumentPath}`
+            formatSuccessMessage(
+              `${fileType} in ${locationInfo}`,
+              fileStats.size
+            ) + ` - New document path: ${newDocumentPath}`
           );
 
           stats.successCount++;
@@ -771,12 +782,14 @@ async function processDocumentUpload(
       }
     } catch (error) {
       stats.errorCount++;
-      console.error(`Error uploading document for ${locationInfo}:`, error);
+      console.error(`Error uploading ${fileType} for ${locationInfo}:`, error);
       return null;
     }
   } else {
     // Dry run mode
-    console.log(formatDryRunMessage(locationInfo, fileStats.size));
+    console.log(
+      formatDryRunMessage(`${fileType} in ${locationInfo}`, fileStats.size)
+    );
     stats.successCount++;
     stats.totalSizeBytes += fileStats.size;
     return null;

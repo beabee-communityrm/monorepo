@@ -11,7 +11,7 @@ import {
 } from "@aws-sdk/client-s3";
 import sharp from "sharp";
 import { optimize } from "svgo";
-import { isSupportedImageType } from "@beabee/beabee-common";
+import { isSupportedImageType, S3Metadata } from "@beabee/beabee-common";
 
 import { BadRequestError, NotFoundError } from "../errors";
 import { log as mainLogger } from "../logging";
@@ -248,9 +248,9 @@ export class ImageService {
           : getMimetypeFromExtension(extension);
 
       // Prepare metadata for S3
-      const s3Metadata: Record<string, string> = {};
+      const s3Metadata: S3Metadata = {};
       if (sanitizedFilename) {
-        s3Metadata.originalFilename = sanitizedFilename;
+        s3Metadata.originalfilename = sanitizedFilename;
       }
       if (owner) {
         s3Metadata.owner = owner;
@@ -263,7 +263,10 @@ export class ImageService {
           Key: `originals/${id}`,
           Body: processedImageBuffer,
           ContentType: outputMimetype,
-          Metadata: Object.keys(s3Metadata).length > 0 ? s3Metadata : undefined
+          Metadata:
+            Object.keys(s3Metadata).length > 0
+              ? (s3Metadata as Record<string, string>)
+              : undefined
         })
       );
 

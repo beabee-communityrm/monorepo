@@ -228,11 +228,22 @@ export const getExtensionFromFilename = (filename?: string): string => {
 };
 
 /**
- * Sanitize filename to prevent path traversal attacks
+ * Sanitize filename to prevent path traversal attacks and ensure HTTP header compatibility
  * @param filename Original filename
  * @returns Sanitized filename
  */
 export const sanitizeFilename = (filename: string): string => {
-  // Remove path components and special characters
-  return filename.replace(/[/\\?%*:|"<>]/g, "_").replace(/^\.+/, "");
+  if (!filename) return "";
+
+  // First convert to string just in case
+  const filenameStr = String(filename);
+
+  // Remove path components, special characters, and non-ASCII characters
+  // Also replace spaces and other potentially problematic characters
+  return filenameStr
+    .replace(/[/\\?%*:|"<>\x00-\x1F\x7F-\xFF\u0100-\uFFFF]/g, "_") // Replace special, control, and non-ASCII chars
+    .replace(/\s+/g, "_") // Replace spaces with underscores
+    .replace(/^\.+/, "") // Remove leading dots
+    .replace(/[^\w.-]/g, "_") // Replace any remaining non-alphanumeric chars except dots and hyphens
+    .trim(); // Trim any leading/trailing spaces
 };

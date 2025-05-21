@@ -25,7 +25,7 @@ import {
   getMimetypeFromExtension,
   sanitizeFilename
 } from "../utils/file";
-import { isSupportedDocumentType } from "@beabee/beabee-common";
+import { isSupportedDocumentType, S3Metadata } from "@beabee/beabee-common";
 import config from "../config/config";
 
 const log = mainLogger.child({ app: "document-service" });
@@ -126,9 +126,9 @@ export class DocumentService {
       const contentType = mimetype || "application/pdf";
 
       // Prepare metadata for S3
-      const metadata: Record<string, string> = {};
+      const metadata: S3Metadata = {};
       if (sanitizedFilename) {
-        metadata.originalFilename = sanitizedFilename;
+        metadata.originalfilename = sanitizedFilename;
       }
       if (owner) {
         metadata.owner = owner;
@@ -141,7 +141,10 @@ export class DocumentService {
           Key: `documents/${id}`,
           Body: documentData,
           ContentType: contentType,
-          Metadata: Object.keys(metadata).length > 0 ? metadata : undefined
+          Metadata:
+            Object.keys(metadata).length > 0
+              ? (metadata as Record<string, string>)
+              : undefined
         })
       );
 
