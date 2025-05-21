@@ -84,7 +84,10 @@
     "baseLocale": "fr",
     "name": "Français",
     "displayName": "Français",
-    "adminLocale": "en",
-    "availableIn": []
+    "adminLocale": "fr",
+    "availableIn": [
+      "callout",
+      "backend"
+    ]
   }
 }
