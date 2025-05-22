@@ -6,7 +6,7 @@
     "adminLocale": "en",
     "availableIn": [
       "callout",
-      "backend"
+      "system"
     ]
   },
   "de": {
@@ -16,7 +16,7 @@
     "adminLocale": "de",
     "availableIn": [
       "callout",
-      "backend"
+      "system"
     ]
   },
   "de@informal": {
@@ -27,7 +27,7 @@
     "fallbackLocale": "de",
     "availableIn": [
       "callout",
-      "backend"
+      "system"
     ]
   },
   "de@easy": {
@@ -47,7 +47,7 @@
     "adminLocale": "nl",
     "availableIn": [
       "callout",
-      "backend"
+      "system"
     ]
   },
   "pt": {
@@ -57,7 +57,7 @@
     "adminLocale": "en",
     "availableIn": [
       "callout",
-      "backend"
+      "system"
     ]
   },
   "it": {
@@ -67,7 +67,7 @@
     "adminLocale": "en",
     "availableIn": [
       "callout",
-      "backend"
+      "system"
     ]
   },
   "ru": {
@@ -77,7 +77,7 @@
     "adminLocale": "en",
     "availableIn": [
       "callout",
-      "backend"
+      "system"
     ]
   },
   "fr": {
@@ -87,7 +87,7 @@
     "adminLocale": "fr",
     "availableIn": [
       "callout",
-      "backend"
+      "system"
     ]
   }
 }

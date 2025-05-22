@@ -130,7 +130,7 @@ import { AppFormBox, AppCheckboxGroup } from '@beabee/vue/components';
 import type { LocaleProp } from '@type';
 import type { CalloutHorizontalTabs } from '../CalloutHorizontalTabs.interface';
 import { generalContent } from '@store';
-import { Context } from '@beabee/locale';
+import { LocaleContext } from '@beabee/locale';
 import { getLocaleItemsForContext } from '@beabee/vue';
 import type { TabItem } from '@beabee/vue/types';
 import ButtonTranslations from './TranslationsTab/ButtonTranslations.vue';
@@ -139,7 +139,7 @@ import IntroductionTranslations from './TranslationsTab/IntroductionTranslations
 import ThankYouTranslations from './TranslationsTab/ThankYouTranslations.vue';
 import SlideTranslations from './TranslationsTab/SlideTranslations.vue';
 
-const allLocaleItems = getLocaleItemsForContext(Context.Callout);
+const allLocaleItems = getLocaleItemsForContext(LocaleContext.Callout);
 
 /**
  * Data for the translations tab

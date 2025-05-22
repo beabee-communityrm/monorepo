@@ -1,6 +1,6 @@
 import path from "node:path";
 import { readJsonFile, mergeObjects } from "./utils.ts";
-import type { LocaleConfig } from "../src/types/config.js";
+import type { LocaleOption } from "../src/types/locale-option.js";
 
 /**
  * Recursively applies fallback translations to a locale
@@ -27,7 +27,7 @@ function applyFallbackTranslationsToObject(
  */
 async function processFallbacksForLocale(
   localeId: string,
-  config: Record<string, LocaleConfig>,
+  config: Record<string, LocaleOption>,
   localesDir: string,
 ): Promise<Record<string, any>> {
   const localeConfig = config[localeId];
@@ -70,7 +70,7 @@ export async function applyFallbackTranslations(
   localesDir: string,
 ): Promise<Record<string, Record<string, any>>> {
   // Read the config file
-  const config = await readJsonFile<Record<string, LocaleConfig>>(configPath);
+  const config = await readJsonFile<Record<string, LocaleOption>>(configPath);
   const processedTranslations: Record<string, Record<string, any>> = {};
 
   // Process each locale

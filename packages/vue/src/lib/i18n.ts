@@ -1,6 +1,6 @@
 import {
   config as localeConfig,
-  Context,
+  LocaleContext,
   isAvailableInContext,
   type Locale,
 } from '@beabee/locale';
@@ -17,7 +17,7 @@ const localeItems = Object.entries(localeConfig).map(([id, config]) => ({
   label: config.name,
 })) as { id: Locale; label: string }[];
 
-export const getLocaleItemsForContext = (context: Context) => {
+export const getLocaleItemsForContext = (context: LocaleContext) => {
   return localeItems
     .filter((item) => isAvailableInContext(item.id, context))
     .map((item) => ({

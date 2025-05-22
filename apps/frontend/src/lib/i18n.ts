@@ -1,5 +1,5 @@
 import {
-  Context,
+  LocaleContext,
   isLocale,
   type Locale,
   config as localeConfig,
@@ -94,6 +94,6 @@ router.beforeEach(async (to) => {
   }
 });
 
-export const localeItems = getLocaleItemsForContext(Context.Backend);
+export const localeItems = getLocaleItemsForContext(LocaleContext.System);
 
 export { i18n };

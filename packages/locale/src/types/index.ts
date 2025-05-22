@@ -1,3 +1,3 @@
 export * from "./base-locale.js";
-export * from "./config.js";
+export * from "./locale-option.js";
 export * from "./locale.js";
