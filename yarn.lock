@@ -1622,7 +1622,7 @@ __metadata:
     query-string: "npm:^7.1.3"
     reflect-metadata: "npm:^0.2.2"
     rimraf: "npm:^6.0.1"
-    routing-controllers: "npm:^0.10.4"
+    routing-controllers: "npm:^0.11.0"
     sass: "npm:^1.77.4"
     slugify: "npm:^1.6.6"
     stripe: "npm:^15.9.0"
@@ -3953,7 +3953,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@koa/router@npm:^12.0.0":
+"@koa/router@npm:^12.0.0, @koa/router@npm:^12.0.1":
   version: 12.0.2
   resolution: "@koa/router@npm:12.0.2"
   dependencies:
@@ -8827,6 +8827,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cookie@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "cookie@npm:1.0.2"
+  checksum: 10c0/fd25fe79e8fbcfcaf6aa61cd081c55d144eeeba755206c058682257cb38c4bd6795c6620de3f064c740695bb65b7949ebb1db7a95e4636efb8357a335ad3f54b
+  languageName: node
+  linkType: hard
+
 "cookies@npm:~0.9.0":
   version: 0.9.1
   resolution: "cookies@npm:0.9.1"
@@ -10603,7 +10610,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express-session@npm:^1.17.3, express-session@npm:^1.18.1":
+"express-session@npm:^1.17.3, express-session@npm:^1.18.0, express-session@npm:^1.18.1":
   version: 1.18.1
   resolution: "express-session@npm:1.18.1"
   dependencies:
@@ -13000,7 +13007,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"koa-bodyparser@npm:^4.4.0":
+"koa-bodyparser@npm:^4.4.0, koa-bodyparser@npm:^4.4.1":
   version: 4.4.1
   resolution: "koa-bodyparser@npm:4.4.1"
   dependencies:
@@ -13056,6 +13063,37 @@ __metadata:
     type-is: "npm:^1.6.16"
     vary: "npm:^1.1.2"
   checksum: 10c0/1dca5027e06855dfc4144093fc678c445b5718c3a61b3b7840e3def999f3efcd0359665fb30d3f427890dfee12ebb1e7d01e210d2122a17240d2f3ceae12b2f2
+  languageName: node
+  linkType: hard
+
+"koa@npm:^2.15.4":
+  version: 2.16.1
+  resolution: "koa@npm:2.16.1"
+  dependencies:
+    accepts: "npm:^1.3.5"
+    cache-content-type: "npm:^1.0.0"
+    content-disposition: "npm:~0.5.2"
+    content-type: "npm:^1.0.4"
+    cookies: "npm:~0.9.0"
+    debug: "npm:^4.3.2"
+    delegates: "npm:^1.0.0"
+    depd: "npm:^2.0.0"
+    destroy: "npm:^1.0.4"
+    encodeurl: "npm:^1.0.2"
+    escape-html: "npm:^1.0.3"
+    fresh: "npm:~0.5.2"
+    http-assert: "npm:^1.3.0"
+    http-errors: "npm:^1.6.3"
+    is-generator-function: "npm:^1.0.7"
+    koa-compose: "npm:^4.1.0"
+    koa-convert: "npm:^2.0.0"
+    on-finished: "npm:^2.3.0"
+    only: "npm:~0.0.2"
+    parseurl: "npm:^1.3.2"
+    statuses: "npm:^1.5.0"
+    type-is: "npm:^1.6.16"
+    vary: "npm:^1.1.2"
+  checksum: 10c0/66beb2e4d7968e1081341ea9a9c1f7f3fad4aaa0475c813f1be79ed84c345d9d45de9e34eeee3cdd790fc81ee5efbde2223d49fd5da571e29b0b3bed6baafb8e
   languageName: node
   linkType: hard
 
@@ -16760,6 +16798,46 @@ __metadata:
     multer:
       optional: true
   checksum: 10c0/bbdf8ed472629554d92278c1211a929a1fc63c0aec4fa75c6255bfa89bc68b0284592183f4f28f606601d941d919d2c820d8a340a1155fa0432fe793ebbb6e13
+  languageName: node
+  linkType: hard
+
+"routing-controllers@npm:^0.11.0":
+  version: 0.11.2
+  resolution: "routing-controllers@npm:0.11.2"
+  dependencies:
+    "@koa/multer": "npm:^3.0.2"
+    "@koa/router": "npm:^12.0.1"
+    body-parser: "npm:^1.20.2"
+    cookie: "npm:^1.0.2"
+    express: "npm:^4.21.2"
+    express-session: "npm:^1.18.0"
+    glob: "npm:^11.0.0"
+    koa: "npm:^2.15.4"
+    koa-bodyparser: "npm:^4.4.1"
+    multer: "npm:^1.4.5-lts.1"
+    reflect-metadata: "npm:^0.2.2"
+    template-url: "npm:^1.0.0"
+  peerDependencies:
+    class-transformer: ^0.5.1
+    class-validator: ^0.14.1
+  dependenciesMeta:
+    "@koa/multer":
+      optional: true
+    "@koa/router":
+      optional: true
+    body-parser:
+      optional: true
+    express:
+      optional: true
+    express-session:
+      optional: true
+    koa:
+      optional: true
+    koa-bodyparser:
+      optional: true
+    multer:
+      optional: true
+  checksum: 10c0/17494e3c9a52117a4f11a16e112cbb1778a66ecc6bf8ad83da0630c581a287785cf6a9477c8cd5b6e2e7b86f9f003be05e4cec00423c69781617f1ef16678f99
   languageName: node
   linkType: hard
 
