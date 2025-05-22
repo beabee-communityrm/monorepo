@@ -1,9 +1,9 @@
 {
   "accountPage": {
-    "contactInformation": "Informazioni di contatto",
-    "deliveryAddress": "Indirizzo",
+    "contactInformation": "",
+    "deliveryAddress": "",
     "deliveryOptIn": "",
-    "loginDetail": "Credenziali",
+    "loginDetail": "",
     "mfa": {
       "codeInput": {
         "info": "",
@@ -14,18 +14,18 @@
         "descToken": "",
         "title": ""
       },
-      "createUnknownErrorNotification": "L'autenticazione a 2 fattori non è stata attivata a causa di un errore sconosciuto. Prova di nuovo o contatta il supporto",
-      "deleteUnknownErrorNotification": "L'autenticazione a 2 fattori non è stata rimossa a causa di un errore sconosciuto. Prova di nuovo o contatta il supporto",
+      "createUnknownErrorNotification": "",
+      "deleteUnknownErrorNotification": "",
       "disabledNotification": "",
       "enabledNotification": "",
       "enterCode": {
         "desc": "",
         "title": ""
       },
-      "modalTitle": "Attiva autenticazione a 2 fattori",
+      "modalTitle": "",
       "result": {
         "invalidCode": "",
-        "successful": "L'autenticazione a 2 fattori è stata attivata",
+        "successful": "",
         "title": ""
       },
       "scan": {
@@ -36,7 +36,7 @@
         "desc": "",
         "label": ""
       },
-      "title": "Autenticazione a 2 fattori",
+      "title": "",
       "validateButton": {
         "label": ""
       }
@@ -51,30 +51,30 @@
         "unsubscribed": ""
       },
       "subscribe": "",
-      "title": "Newsletter",
+      "title": "",
       "unsubscribe": ""
     },
     "phoneInfo": "",
     "phoneInfoAdmin": "",
-    "savedPassword": "Nuova password salvata",
-    "subTitle": "I campi obbligatori sono indicati con un asterisco. Le informazioni inviate qui sono private.",
-    "title": "Account"
+    "savedPassword": "",
+    "subTitle": "",
+    "title": ""
   },
   "actions": {
-    "add": "Aggiungi",
-    "back": "Indietro",
+    "add": "",
+    "back": "",
     "backToLogin": "",
     "cancel": "",
-    "changePassword": "Modifica la password",
+    "changePassword": "",
     "chooseFile": "",
-    "close": "Chiudi",
-    "continue": "Prosegui",
+    "close": "",
+    "continue": "",
     "copy": "",
     "create": "",
     "delete": "",
-    "disable": "Disattiva",
+    "disable": "",
     "edit": "",
-    "enable": "Attiva",
+    "enable": "",
     "endnow": "",
     "export": "",
     "getStarted": "",
@@ -96,12 +96,12 @@
     "saveDraft": "",
     "schedule": "",
     "search": "",
-    "sendEmails": "Invia e-mail",
+    "sendEmails": "",
     "share": "",
     "skip": "",
     "submit": "",
     "unpublish": "",
-    "update": "Aggiorna",
+    "update": "",
     "view": "",
     "yesDelete": "",
     "yesDisable": "",
@@ -182,8 +182,8 @@
       "footer": {
         "dataPrivacy": {
           "impressumUrl": "",
-          "privacyUrl": "Url della privacy",
-          "termsUrl": "Url dei termini di servizio",
+          "privacyUrl": "",
+          "termsUrl": "",
           "title": ""
         },
         "otherLinks": {
@@ -804,15 +804,15 @@
     "oneResponseWarning": ""
   },
   "callouts": {
-    "archive": "Archivio",
+    "archive": "",
     "data": {
-      "callout": "Callout",
-      "endDate": "Data fine"
+      "callout": "",
+      "endDate": ""
     },
-    "noArchivedCallouts": "Nessuna callout",
-    "search": "Cerca un callout",
-    "showAll": "Tutti",
-    "showAnswered": "Completati",
+    "noArchivedCallouts": "",
+    "search": "",
+    "showAll": "",
+    "showAnswered": "",
     "showingOf": ""
   },
   "calloutsAdmin": {
@@ -833,66 +833,66 @@
     }
   },
   "common": {
-    "backToHome": "Torna alla home",
-    "contributing": "Il tuo contributo",
+    "backToHome": "",
+    "contributing": "",
     "contributionPeriod": {
-      "annually": "all'anno",
-      "monthly": "al mese"
+      "annually": "",
+      "monthly": ""
     },
     "contributionType": {
-      "automatic": "Automatico",
-      "gift": "Regalo",
-      "manual": "Manuale",
-      "none": "Nessuno"
+      "automatic": "",
+      "gift": "",
+      "manual": "",
+      "none": ""
     },
-    "default": "Predefinito",
-    "hello": "Ciao",
-    "id": "ID",
+    "default": "",
+    "hello": "",
+    "id": "",
     "itemsPerPage": "",
-    "joined": "Iscritto",
+    "joined": "",
     "label": "",
-    "loading": "Caricamento...",
-    "login": "Login",
+    "loading": "",
+    "login": "",
     "newsletterStatus": {
-      "cleaned": "Pulito",
-      "none": "Nessuno",
-      "pending": "In attesa",
-      "subscribed": "Iscritto",
-      "unsubscribed": "Annulla l'iscrizione"
+      "cleaned": "",
+      "none": "",
+      "pending": "",
+      "subscribed": "",
+      "unsubscribed": ""
     },
-    "no": "No",
-    "noResults": "Nessun risultato",
-    "pageCount": "Pagina {pageNumber} di {pageTotal}",
+    "no": "",
+    "noResults": "",
+    "pageCount": "",
     "paymentStatus": {
-      "cancelled": "Cancellato",
-      "draft": "Bozza",
-      "failed": "Errore",
-      "pending": "In attesa",
-      "successful": "Riuscito"
+      "cancelled": "",
+      "draft": "",
+      "failed": "",
+      "pending": "",
+      "successful": ""
     },
-    "perMonth": "/ mese",
-    "perMonthText": "al mese",
-    "perYear": "/ anno",
-    "perYearText": "all'anno",
+    "perMonth": "",
+    "perMonthText": "",
+    "perYear": "",
+    "perYearText": "",
     "role": {
       "admin": "",
       "member": "",
       "superadmin": ""
     },
-    "selectNone": "-- Nessuno --",
-    "selectOne": "Seleziona",
-    "show": "Mostra",
+    "selectNone": "",
+    "selectOne": "",
+    "show": "",
     "status": {
-      "draft": "Bozza",
-      "ended": "Chiuso",
-      "open": "Aperto",
-      "scheduled": "Programmato"
+      "draft": "",
+      "ended": "",
+      "open": "",
+      "scheduled": ""
     },
-    "thankYou": "Grazie!",
-    "timeAgo": "{time} fa",
-    "timeIn": "in {time}",
-    "until": "fino",
-    "yes": "Sì"
+    "thankYou": "",
+    "timeAgo": "",
+    "timeIn": "",
+    "until": "",
+    "yes": ""
   },
   "contactAccount": {
     "confirmDelete": {
@@ -904,9 +904,9 @@
   },
   "contactContribution": {
     "confirmCancel": {
-      "confirm": "Sì, sono sicuro",
-      "text": "Sei sicuro di voler cancellare il contributo? Non potrà essere ripristinato",
-      "title": "Cancellare il contributo?"
+      "confirm": "",
+      "text": "",
+      "title": ""
     },
     "updateNotice": {
       "text": "",
@@ -986,8 +986,8 @@
       "tags": ""
     },
     "dataGroup": {
-      "callout": "Callout",
-      "contact": "Informazioni di contatto",
+      "callout": "",
+      "contact": "",
       "contribution": "",
       "role": ""
     },
@@ -1002,13 +1002,13 @@
     "adminCancelDescription": "",
     "bankAccount": "",
     "billing": "",
-    "cancelContribution": "Cancella il tuo contributo",
-    "cancelDescription": "Cancellando il tuo contributo, la tua membership terminerà alla fine del ciclo di pagamento, il {date}.",
+    "cancelContribution": "",
+    "cancelDescription": "",
     "cancelMessage": "",
     "cancelledContribution": "",
     "changeBank": "",
     "changeBankInfo": "",
-    "contributing": "Il tuo contributo è",
+    "contributing": "",
     "contributionUpdateError": "",
     "dueToRenew": "",
     "expired": "",
@@ -1019,9 +1019,9 @@
     "nextAmountChanging": "",
     "paymentHistory": {
       "empty": "",
-      "title": "Cronologia dei pagamenti"
+      "title": ""
     },
-    "paymentMethod": "Metodo di pagamento",
+    "paymentMethod": "",
     "paymentSourceUpdateError": "",
     "prorateDecreaseMessage": "",
     "prorateDecreaseMessageWillStart": "",
@@ -1031,15 +1031,15 @@
     "prorateNoTitle": "",
     "prorateYesText": "",
     "prorateYesTitle": "",
-    "restartContribution": "Ripristina contributo",
-    "startContribution": "Avvia contirbuto",
+    "restartContribution": "",
+    "startContribution": "",
     "startedContribution": "",
-    "updateContribution": "Aggiorna il tuo contributo",
-    "updatePaymentType": "Aggiorna il metodo di pagamento",
+    "updateContribution": "",
+    "updatePaymentType": "",
     "updatedContribution": "",
     "updatedPaymentSource": "",
     "willExpire": "",
-    "willRenew": "Il tuo contributo sarà aggiornato il {renewalDate}.",
+    "willRenew": "",
     "willRenewWithNewAmount": ""
   },
   "editCallout": {
@@ -1051,28 +1051,28 @@
     "title": ""
   },
   "footer": {
-    "contactUs": "Contattaci a",
-    "handbookResources": "Manuale & risorse",
-    "impressum": "Impressum",
-    "joinCommunity": "Unisciti alla nostra community",
-    "poweredBy": "powering independent local newsrooms",
-    "privacyPolicy": "Privacy",
-    "terms": "Termini e condizioni"
+    "contactUs": "",
+    "handbookResources": "",
+    "impressum": "",
+    "joinCommunity": "",
+    "poweredBy": "",
+    "privacyPolicy": "",
+    "terms": ""
   },
   "forgotPassword": {
-    "backToLogin": "Torna alla pagina di login ",
-    "description": "Inserisci la tua mail. Ti invieremo le istruzioni su come reimpostare la tua password.",
-    "message": "Se esiste già un account associato a {email}, riceverai una mail a breve. Controlla anche la tua cartella spam.",
-    "title": "Hai dimenticato la password?"
+    "backToLogin": "",
+    "description": "",
+    "message": "",
+    "title": ""
   },
   "form": {
-    "addressLine1": "Dettagli indirizzo 1",
-    "addressLine2": "Dettagli indirizzo 2",
+    "addressLine1": "",
+    "addressLine2": "",
     "cancel": "",
     "characters": {
       "remaining": ""
     },
-    "cityOrTown": "Città",
+    "cityOrTown": "",
     "deliveryOptIn": "",
     "description": "",
     "email": "",
@@ -1152,15 +1152,15 @@
         "required": ""
       }
     },
-    "firstName": "Nome",
-    "lastName": "Cognome",
+    "firstName": "",
+    "lastName": "",
     "newPassword": "",
     "newPasswordConfirm": "",
     "notes": "",
     "password": "",
-    "passwordInfo": "Crea una password sicura: almeno 8 caratteri, un numero, una lettera minuscola e una maiuscola.",
+    "passwordInfo": "",
     "phone": "",
-    "postCode": "CAP",
+    "postCode": "",
     "richtext": {
       "bold": "",
       "bulletlist": "",
@@ -1172,9 +1172,9 @@
       "underline": ""
     },
     "saveChanges": "",
-    "saved": "Salvato!",
+    "saved": "",
     "unsavedChanges": "",
-    "updated": "Aggiornato"
+    "updated": ""
   },
   "formRenderer": {
     "components": {
@@ -1193,15 +1193,15 @@
   },
   "homePage": {
     "editProfile": "",
-    "manageContribution": "Gestisci il tuo contributo",
+    "manageContribution": "",
     "newCallout": "",
-    "openCallouts": "Callout in corso",
-    "quickActions": "Azioni veloci",
-    "title": "Home",
-    "viewAllCallouts": "Vedi tutte le callout",
-    "viewOpenCallouts": "Vedi le callout in corso",
-    "welcome": "Ben fatto {firstName}!",
-    "yourProfile": "Il tuo profilo"
+    "openCallouts": "",
+    "quickActions": "",
+    "title": "",
+    "viewAllCallouts": "",
+    "viewOpenCallouts": "",
+    "welcome": "",
+    "yourProfile": ""
   },
   "item": {
     "status": {
@@ -1211,63 +1211,63 @@
   },
   "join": {
     "absorbFeeForce": "",
-    "absorbFeeOptIn": "Sì, intendo coprire i {fee} della transazione.",
-    "absorbFeeText": "La nostra piattaforma di pagamento addebita un costo per la transazione. Significa che mensilmente riceveremo meno rispetto alla quota che hai scelto. Vuoi coprire il costo della transazione? Il pagamento annuale, invece, non prevede costi ulteriori.  ",
-    "contribute": "Contribuisci con {contribution}",
+    "absorbFeeOptIn": "",
+    "absorbFeeText": "",
+    "contribute": "",
     "errors": {
       "confirmEmail": {
-        "message": "Ci sei quasi! Devi solo confermare il tuo indirizzo mail. Controlla la tua casella di posta.",
-        "proceed": "Ti abbiamo inviato una mail. Clicca il link all'interno per procedere. ",
-        "title": "Conferma il tuo account."
+        "message": "",
+        "proceed": "",
+        "title": ""
       },
       "failed": {
         "backToJoin": "",
         "message": "",
-        "title": "Qualcosa è andato storto"
+        "title": ""
       }
     },
-    "login": "Log in",
-    "memberAccount": "Il tuo account",
-    "memberAlready": "Sei già iscritto?",
+    "login": "",
+    "memberAccount": "",
+    "memberAlready": "",
     "minimumContribution": "",
     "noContribution": "",
     "notice": "",
     "now": "",
-    "paymentMethod": "Metodo di pagamento",
+    "paymentMethod": "",
     "poweredBy": "",
-    "privacy": "Privacy",
+    "privacy": "",
     "tax": {
       "included": ""
     }
   },
   "joinPayment": {
     "applePay": {
-      "description": "Membership",
-      "recurringLabel": "Donazione ricorrente"
+      "description": "",
+      "recurringLabel": ""
     },
-    "genericError": "Ops! Qualcosa è andato storto",
-    "goBack": "Ti sei perso qualcosa? {back}",
-    "goBackButton": "Torna alla schermata precedente",
-    "note": "Potrai modificare l'ammontare del tuo contributo e accedere allo storico delle tue donazioni in qualsiasi momento tramite il tuo account.",
-    "willBeContributing": "Contribuirai con {contribution}"
+    "genericError": "",
+    "goBack": "",
+    "goBackButton": "",
+    "note": "",
+    "willBeContributing": ""
   },
   "joinSetup": {
-    "confirmDetails": "Per favore, conferma i tuoi dettagli.",
-    "continue": "Ottimo! Prosegui",
-    "welcome": "Benvenutə {firstName}!"
+    "confirmDetails": "",
+    "continue": "",
+    "welcome": ""
   },
   "login": {
-    "backTo": "Torna a  {newsroomName}",
-    "forgotPassword": "Hai dimenticato la password?",
-    "joinNow": "Iscriviti!",
-    "lostMfaDevice": "Hai perso il tuo dispositivo 2FA?",
-    "notMember": "Non sei iscritto?",
-    "title": "Accedi al tuo account"
+    "backTo": "",
+    "forgotPassword": "",
+    "joinNow": "",
+    "lostMfaDevice": "",
+    "notMember": "",
+    "title": ""
   },
   "lostDevice": {
-    "description": "Inserisci la tua mail. Ti invieremo le istruzioni su come reimpostare il tuo 2FA.",
-    "message": "Se esiste già un account associato a {email}, riceverai una mail a breve. Controlla anche la tua cartella spam.",
-    "title": "Hai perso il tuo dispositivo 2FA?"
+    "description": "",
+    "message": "",
+    "title": ""
   },
   "mailOptIn": {
     "optInLabel": "",
@@ -1292,7 +1292,7 @@
         },
         "newsletter": {
           "showOptIn": "",
-          "title": "Newsletter"
+          "title": ""
         },
         "text": "",
         "title": "",
@@ -1330,21 +1330,21 @@
     "title": ""
   },
   "menu": {
-    "account": "Account",
-    "admin": "Amministrazione",
-    "adminSettings": "Impostazioni",
-    "callouts": "Callout",
-    "contacts": "Contatti",
-    "contribution": "Il tuo contributo",
-    "dashboard": "Dashboard",
-    "home": "Home",
-    "legacyApp": "Vecchia dashboard",
-    "logout": "Log out",
+    "account": "",
+    "admin": "",
+    "adminSettings": "",
+    "callouts": "",
+    "contacts": "",
+    "contribution": "",
+    "dashboard": "",
+    "home": "",
+    "legacyApp": "",
+    "logout": "",
     "membershipBuilder": "",
-    "notices": "Notifiche",
-    "payments": "Pagamenti",
-    "settings": "Impostazioni",
-    "yourProfile": "Il tuo profilo"
+    "notices": "",
+    "payments": "",
+    "settings": "",
+    "yourProfile": ""
   },
   "newsletterOptIn": {
     "groups": {
@@ -1405,17 +1405,17 @@
   "paymentMethods": {
     "gc_direct-debit": {
       "changeLabel": "",
-      "label": "Addebito diretto",
+      "label": "",
       "setLabel": ""
     },
     "s_bacs": {
       "changeLabel": "",
-      "label": "Addebito diretto",
+      "label": "",
       "setLabel": ""
     },
     "s_card": {
-      "changeLabel": "Modifica i dettagli della carta",
-      "label": "Carta di credito",
+      "changeLabel": "",
+      "label": "",
       "setLabel": ""
     },
     "s_ideal": {
@@ -1425,12 +1425,12 @@
     },
     "s_paypal": {
       "changeLabel": "",
-      "label": "PayPal",
+      "label": "",
       "setLabel": ""
     },
     "s_sepa": {
       "changeLabel": "",
-      "label": "Addebito diretto",
+      "label": "",
       "setLabel": ""
     }
   },
@@ -1465,10 +1465,10 @@
   "resetPassword": {
     "description": "",
     "failed": "",
-    "login": "Accedi al tuo account. ",
+    "login": "",
     "lostDevice": "",
     "success": "",
-    "title": "Vuoi reimpostare la tua password?"
+    "title": ""
   },
   "roleEditor": {
     "add": "",
@@ -1495,8 +1495,8 @@
     "today": ""
   },
   "setPassword": {
-    "description": "Imposta una nuova password.",
-    "title": "Imposta una password"
+    "description": "",
+    "title": ""
   },
   "tagEditor": {
     "add": "",
@@ -1519,6 +1519,6 @@
     "toggleTag": ""
   },
   "taxRate": {
-    "invoiceName": "VAT"
+    "invoiceName": ""
   }
 }

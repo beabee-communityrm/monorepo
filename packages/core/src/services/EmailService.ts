@@ -180,10 +180,10 @@ class EmailService {
       email.id = emailFile;
       email.body = body;
 
-      if (!this.defaultEmails[locale]) {
-        this.defaultEmails[locale] = {};
+      if (!this.defaultEmails[locale as Locale]) {
+        this.defaultEmails[locale as Locale] = {};
       }
-      this.defaultEmails[locale]![id] = email;
+      this.defaultEmails[locale as Locale]![id] = email;
     }
   }
 
