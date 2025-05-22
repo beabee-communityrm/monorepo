@@ -58,7 +58,7 @@
     "pug": "^3.0.3",
     "query-string": "^7.1.3",
     "reflect-metadata": "^0.2.2",
-    "routing-controllers": "^0.10.4",
+    "routing-controllers": "^0.11.0",
     "slugify": "^1.6.6",
     "stripe": "^15.9.0",
     "typeorm": "^0.3.20",
