@@ -13,8 +13,6 @@
         {{ component.label }}
       </h3>
 
-      <!-- <pre><code>{{ JSON.stringify(component, null, 2) }}</code></pre> -->
-
       <!-- Standard fields (label, description, placeholder) -->
       <div v-for="[field, fieldType] in fields" :key="field" class="mb-4">
         <div v-if="component[field]" class="space-y-2">
@@ -38,7 +36,7 @@
 
           <!-- Textarea field -->
           <AppTextArea
-            v-else
+            v-else-if="fieldType === 'textarea'"
             :model-value="
               getLocalizedValue(component[field] as string, selectedLocale)
             "
@@ -46,6 +44,20 @@
             :disabled="selectedLocale === defaultLocale"
             :copyable="selectedLocale === defaultLocale"
             rows="3"
+            @update:model-value="
+              updateValue(component[field] as string, selectedLocale, $event)
+            "
+          />
+
+          <!-- Rich text editor field -->
+          <RichTextEditor
+            v-else-if="fieldType === 'richtext'"
+            :model-value="
+              getLocalizedValue(component[field] as string, selectedLocale)
+            "
+            :placeholder="getDefaultText(component[field] as string)"
+            :disabled="selectedLocale === defaultLocale"
+            :copyable="selectedLocale === defaultLocale"
             @update:model-value="
               updateValue(component[field] as string, selectedLocale, $event)
             "
@@ -91,6 +103,7 @@ import type { LocaleProp } from '@type/locale-prop';
 import AppInput from '@components/forms/AppInput.vue';
 import AppTextArea from '@components/forms/AppTextArea.vue';
 import { AppFormBox } from '@beabee/vue/components';
+import RichTextEditor from '@components/rte/RichTextEditor.vue';
 import {
   getComponentTextValue,
   updateComponentTextValue,
@@ -112,6 +125,7 @@ const fields = [
   ['label', 'input'],
   ['description', 'textarea'],
   ['placeholder', 'input'],
+  ['html', 'richtext'],
 ] as const;
 
 // Get the default text for a field using the utility function
