@@ -9,7 +9,7 @@
 
         <AppInput
           :model-value="getValue(endMessage.thankYouTitle, selectedLocale)"
-          :placeholder="endMessage.thankYouTitle.default"
+          :placeholder="getPlaceholder(endMessage.thankYouTitle)"
           :disabled="selectedLocale === defaultLocale"
           :copyable="selectedLocale === defaultLocale"
           @update:model-value="
@@ -26,7 +26,7 @@
 
         <RichTextEditor
           :model-value="getValue(endMessage.thankYouText, selectedLocale)"
-          :placeholder="endMessage.thankYouText.default"
+          :placeholder="getPlaceholder(endMessage.thankYouText)"
           :disabled="selectedLocale === defaultLocale"
           :copyable="selectedLocale === defaultLocale"
           @update:model-value="
@@ -47,7 +47,7 @@
         :placeholder="
           selectedLocale === defaultLocale
             ? ''
-            : endMessage.thankYouRedirect.default
+            : getPlaceholder(endMessage.thankYouRedirect)
         "
         :disabled="selectedLocale === defaultLocale"
         :copyable="selectedLocale === defaultLocale"
@@ -66,7 +66,11 @@ import type { EndMessageTabData } from '../ContentTab/SidebarTabContent/EndMessa
 import AppInput from '@components/forms/AppInput.vue';
 import { AppFormBox } from '@beabee/vue/components';
 import RichTextEditor from '@components/rte/RichTextEditor.vue';
-import { getLocalizedValue, updateLocalizedValue } from '@utils/callouts';
+import {
+  updateLocalizedValue,
+  getLocalizedValueNoFallback,
+  getLocalizedValueFallback,
+} from '@utils/callouts';
 
 const props = defineProps<{
   defaultLocale: string;
@@ -76,9 +80,18 @@ const props = defineProps<{
 
 const { t } = useI18n();
 
-// Get end message value for a specific locale using utility function
+// Get end message value for a specific locale using utility function (no fallback)
 function getValue(prop: LocaleProp | undefined, locale: string): string {
-  return getLocalizedValue(prop, locale, props.defaultLocale);
+  return getLocalizedValueNoFallback(prop, locale, props.defaultLocale);
+}
+
+// Get fallback text for placeholder
+function getPlaceholder(prop: LocaleProp | undefined): string {
+  return getLocalizedValueFallback(
+    prop,
+    props.selectedLocale,
+    props.defaultLocale
+  );
 }
 
 // Update end message value using utility function

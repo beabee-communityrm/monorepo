@@ -8,7 +8,7 @@
 
       <AppInput
         :model-value="getValue('title', selectedLocale)"
-        :placeholder="titleAndImageData.title.default"
+        :placeholder="getPlaceholder('title')"
         :disabled="selectedLocale === defaultLocale"
         :copyable="selectedLocale === defaultLocale"
         @update:model-value="updateValue('title', selectedLocale, $event)"
@@ -23,11 +23,7 @@
 
       <AppTextArea
         :model-value="getValue('description', selectedLocale)"
-        :placeholder="
-          selectedLocale === defaultLocale
-            ? ''
-            : titleAndImageData.description.default
-        "
+        :placeholder="getPlaceholder('description')"
         :disabled="selectedLocale === defaultLocale"
         :copyable="selectedLocale === defaultLocale"
         rows="3"
@@ -43,11 +39,7 @@
 
       <AppInput
         :model-value="getValue('shareTitle', selectedLocale)"
-        :placeholder="
-          selectedLocale === defaultLocale
-            ? ''
-            : titleAndImageData.shareTitle.default
-        "
+        :placeholder="getPlaceholder('shareTitle')"
         :disabled="selectedLocale === defaultLocale"
         :copyable="selectedLocale === defaultLocale"
         @update:model-value="updateValue('shareTitle', selectedLocale, $event)"
@@ -64,11 +56,7 @@
 
       <AppTextArea
         :model-value="getValue('shareDescription', selectedLocale)"
-        :placeholder="
-          selectedLocale === defaultLocale
-            ? ''
-            : titleAndImageData.shareDescription.default
-        "
+        :placeholder="getPlaceholder('shareDescription')"
         :disabled="selectedLocale === defaultLocale"
         :copyable="selectedLocale === defaultLocale"
         rows="3"
@@ -86,7 +74,11 @@ import type { TitleAndImageTabData } from '../TitleAndImageTab.vue';
 import AppTextArea from '@components/forms/AppTextArea.vue';
 import { AppFormBox } from '@beabee/vue/components';
 import AppInput from '@components/forms/AppInput.vue';
-import { getLocalizedValue, updateLocalizedValue } from '@utils/callouts';
+import {
+  updateLocalizedValue,
+  getLocalizedValueNoFallback,
+  getLocalizedValueFallback,
+} from '@utils/callouts';
 
 const props = defineProps<{
   defaultLocale: string;
@@ -96,14 +88,25 @@ const props = defineProps<{
 
 const { t } = useI18n();
 
-// Get title and description value for a specific locale using utility function
+// Get title and description value for a specific locale using utility function (no fallback)
 function getValue(
   field: 'title' | 'description' | 'shareTitle' | 'shareDescription',
   locale: string
 ): string {
-  return getLocalizedValue(
+  return getLocalizedValueNoFallback(
     props.titleAndImageData[field],
     locale,
+    props.defaultLocale
+  );
+}
+
+// Get fallback text for placeholder
+function getPlaceholder(
+  field: 'title' | 'description' | 'shareTitle' | 'shareDescription'
+): string {
+  return getLocalizedValueFallback(
+    props.titleAndImageData[field],
+    props.selectedLocale,
     props.defaultLocale
   );
 }

@@ -590,32 +590,6 @@ export function updateLocalizedValue(
 }
 
 /**
- * Get the localized value from component text by reference
- *
- * @param componentText - The component text object containing all translations
- * @param ref - The reference key for the text
- * @param locale - The locale to get the value for
- * @param defaultLocale - The default locale
- * @returns The localized value or the reference key if not found
- */
-export function getComponentTextValue(
-  componentText: Record<string, LocaleProp>,
-  ref: string | undefined,
-  locale: string,
-  defaultLocale: string
-): string {
-  if (!ref) return '';
-
-  const prop = componentText[ref];
-  if (!prop) {
-    // If no translation exists, return the reference as fallback
-    return locale === defaultLocale ? ref : '';
-  }
-
-  return getLocalizedValue(prop, locale, defaultLocale);
-}
-
-/**
  * Update a component text value by reference
  *
  * @param componentText - The component text object to update
@@ -642,22 +616,131 @@ export function updateComponentTextValue(
 }
 
 /**
- * Get the default text (placeholder) for a component text reference
+ * Get only the specific translation for a locale without fallback (for translation UI)
  *
- * @param componentText - The component text object
+ * @param componentText - The component text object containing all translations
  * @param ref - The reference key for the text
- * @returns The default text or the reference key as fallback
+ * @param locale - The locale to get the value for
+ * @param defaultLocale - The default locale
+ * @returns The specific translation for the locale or empty string if not found
  */
-export function getComponentTextDefault(
+export function getComponentTextValueNoFallback(
   componentText: Record<string, LocaleProp>,
-  ref: string | undefined
+  ref: string | undefined,
+  locale: string,
+  defaultLocale: string
+): string {
+  if (!ref) return '';
+
+  const prop = componentText[ref];
+  if (!prop) return '';
+
+  // For default locale, return the default value
+  if (locale === defaultLocale) {
+    return prop.default || '';
+  }
+
+  // For other locales, return only the specific translation (no fallback)
+  return prop[locale] || '';
+}
+
+/**
+ * Get the fallback text for placeholder in translation UI
+ *
+ * @param componentText - The component text object containing all translations
+ * @param ref - The reference key for the text
+ * @param locale - The current locale
+ * @param defaultLocale - The default locale
+ * @returns The fallback text to show as placeholder
+ */
+export function getComponentTextFallback(
+  componentText: Record<string, LocaleProp>,
+  ref: string | undefined,
+  locale: string,
+  defaultLocale: string
 ): string {
   if (!ref) return '';
 
   const prop = componentText[ref];
   if (!prop) return ref;
 
+  // For default locale, just return the reference as placeholder
+  if (locale === defaultLocale) {
+    return ref;
+  }
+
+  // For other locales, try fallback chain, then default
+  let currentLocale: keyof LocaleOptions = locale as keyof LocaleOptions;
+  const config = localeConfig as LocaleOptions;
+
+  while (currentLocale && config[currentLocale]?.fallbackLocale) {
+    currentLocale = config[currentLocale].fallbackLocale!;
+    if (prop[currentLocale]) {
+      return prop[currentLocale] || '';
+    }
+  }
+
+  // If no fallback found, use default
   return prop.default || ref;
+}
+
+/**
+ * Get only the specific translation for a locale without fallback (for translation UI with LocaleProp)
+ *
+ * @param prop - The LocaleProp object containing translations
+ * @param locale - The locale to get the value for
+ * @param defaultLocale - The default locale
+ * @returns The specific translation for the locale or empty string if not found
+ */
+export function getLocalizedValueNoFallback(
+  prop: LocaleProp | undefined,
+  locale: string,
+  defaultLocale: string
+): string {
+  if (!prop) return '';
+
+  // For default locale, return the default value
+  if (locale === defaultLocale) {
+    return prop.default || '';
+  }
+
+  // For other locales, return only the specific translation (no fallback)
+  return prop[locale] || '';
+}
+
+/**
+ * Get the fallback text for placeholder in translation UI with LocaleProp
+ *
+ * @param prop - The LocaleProp object containing translations
+ * @param locale - The current locale
+ * @param defaultLocale - The default locale
+ * @returns The fallback text to show as placeholder
+ */
+export function getLocalizedValueFallback(
+  prop: LocaleProp | undefined,
+  locale: string,
+  defaultLocale: string
+): string {
+  if (!prop) return '';
+
+  // For default locale, just return empty (no placeholder needed)
+  if (locale === defaultLocale) {
+    return '';
+  }
+
+  // For other locales, try fallback chain, then default
+  let currentLocale: keyof LocaleOptions = locale as keyof LocaleOptions;
+  const config = localeConfig as LocaleOptions;
+
+  while (currentLocale && config[currentLocale]?.fallbackLocale) {
+    currentLocale = config[currentLocale].fallbackLocale!;
+    if (prop[currentLocale]) {
+      return prop[currentLocale] || '';
+    }
+  }
+
+  // If no fallback found, use default
+  return prop.default || '';
 }
 
 /**

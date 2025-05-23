@@ -105,9 +105,9 @@ import AppTextArea from '@components/forms/AppTextArea.vue';
 import { AppFormBox } from '@beabee/vue/components';
 import RichTextEditor from '@components/rte/RichTextEditor.vue';
 import {
-  getComponentTextValue,
   updateComponentTextValue,
-  getComponentTextDefault,
+  getComponentTextValueNoFallback,
+  getComponentTextFallback,
 } from '@utils/callouts';
 
 const props = defineProps<{
@@ -128,17 +128,22 @@ const fields = [
   ['html', 'richtext'],
 ] as const;
 
-// Get the default text for a field using the utility function
+// Get the fallback text for placeholder in translation UI
 function getDefaultText(ref: string | undefined = ''): string {
-  return getComponentTextDefault(props.componentText, ref);
+  return getComponentTextFallback(
+    props.componentText,
+    ref,
+    props.selectedLocale,
+    props.defaultLocale
+  );
 }
 
-// Get the localized value for a specific locale using the utility function
+// Get only the specific translation for a locale without fallback (for translation UI)
 function getLocalizedValue(
   ref: string | undefined = '',
   locale: string
 ): string {
-  return getComponentTextValue(
+  return getComponentTextValueNoFallback(
     props.componentText,
     ref,
     locale,
