@@ -555,14 +555,10 @@ export function getLocalizedValueWithFallbacks(
   }
 
   // Try fallback chain
-  let currentLocale = locale;
+  let currentLocale: keyof LocaleOptions = locale as keyof LocaleOptions;
   const config = localeConfig as LocaleOptions;
-  while (
-    currentLocale &&
-    config[currentLocale as keyof LocaleOptions]?.fallbackLocale
-  ) {
-    currentLocale =
-      config[currentLocale as keyof LocaleOptions].fallbackLocale!;
+  while (currentLocale && config[currentLocale]?.fallbackLocale) {
+    currentLocale = config[currentLocale].fallbackLocale!;
     if (prop[currentLocale]) {
       return prop[currentLocale] || '';
     }
@@ -679,4 +675,82 @@ export function getComponentTextDefault(
   if (!prop) return ref;
 
   return prop.default || ref;
+}
+
+/**
+ * Generate component text with fallback support from callout variant data
+ *
+ * This function creates a flattened translation object with proper fallback
+ * chain support based on the locale configuration. If a translation is not
+ * available in the requested locale, it will try fallback locales before
+ * using the default value.
+ *
+ * Example:
+ * ```typescript
+ * const variants = {
+ *   'default': { componentText: { 'welcome': 'Welcome' } },
+ *   'de': { componentText: { 'welcome': 'Willkommen' } },
+ *   'de@easy': { componentText: {} } // No translation for welcome
+ * };
+ *
+ * // Requesting 'de@easy' will fallback to 'de', then to 'default'
+ * const result = generateComponentTextWithFallbacks(variants, 'de@easy', 'en');
+ * // result['welcome'] === 'Willkommen' (from 'de' fallback)
+ * ```
+ *
+ * @param variants - The callout variant data
+ * @param currentLocale - The current locale (e.g., 'de@easy', 'de', 'en')
+ * @param defaultLocale - The default locale (usually 'en')
+ * @returns Component text with fallback translations applied
+ */
+export function generateComponentTextWithFallbacks(
+  variants: Record<string, CalloutVariantData> | undefined,
+  currentLocale: string,
+  defaultLocale: string
+): Record<string, string> {
+  if (!variants) return {};
+
+  const result: Record<string, string> = {};
+
+  // Create LocaleProp structure for all component texts
+  const componentTextProps: Record<string, LocaleProp> = {};
+
+  // Collect all component text keys from all variants
+  const allKeys = new Set<string>();
+  for (const variant in variants) {
+    for (const key in variants[variant].componentText) {
+      allKeys.add(key);
+    }
+  }
+
+  // Build LocaleProp structure for each key
+  for (const key of allKeys) {
+    componentTextProps[key] = { default: key }; // Use key as default fallback
+
+    // Add translations from all variants
+    for (const variant in variants) {
+      const text = variants[variant].componentText[key];
+      if (text) {
+        if (variant === 'default') {
+          componentTextProps[key].default = text;
+        } else {
+          componentTextProps[key][variant] = text;
+        }
+      }
+    }
+  }
+
+  // Now apply fallback logic for each key
+  for (const key of allKeys) {
+    const translatedValue = getLocalizedValueWithFallbacks(
+      componentTextProps[key],
+      currentLocale,
+      defaultLocale
+    );
+    if (translatedValue) {
+      result[key] = translatedValue;
+    }
+  }
+
+  return result;
 }
