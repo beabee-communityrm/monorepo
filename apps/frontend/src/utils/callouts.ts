@@ -537,7 +537,7 @@ export function getDecisionComponent(
  * @param defaultLocale - The default locale
  * @returns The localized value with fallbacks applied, or empty string if not found
  */
-export function getLocalizedValueWithFallbacks(
+export function getLocalizedValue(
   prop: LocaleProp | undefined,
   locale: string,
   defaultLocale: string
@@ -566,23 +566,6 @@ export function getLocalizedValueWithFallbacks(
 
   // If no fallback found, try default locale
   return prop.default || '';
-}
-
-/**
- * Get the localized value from a LocaleProp object for a specific locale
- * Now includes fallback chain support based on locale configuration
- *
- * @param prop - The LocaleProp object containing translations
- * @param locale - The locale to get the value for
- * @param defaultLocale - The default locale
- * @returns The localized value with fallbacks applied, or empty string if not found
- */
-export function getLocalizedValue(
-  prop: LocaleProp | undefined,
-  locale: string,
-  defaultLocale: string
-): string {
-  return getLocalizedValueWithFallbacks(prop, locale, defaultLocale);
 }
 
 /**
@@ -710,8 +693,6 @@ export function generateComponentTextWithFallbacks(
 ): Record<string, string> {
   if (!variants) return {};
 
-  const result: Record<string, string> = {};
-
   // Create LocaleProp structure for all component texts
   const componentTextProps: Record<string, LocaleProp> = {};
 
@@ -740,9 +721,10 @@ export function generateComponentTextWithFallbacks(
     }
   }
 
-  // Now apply fallback logic for each key
+  // Apply fallback logic for each key
+  const result: Record<string, string> = {};
   for (const key of allKeys) {
-    const translatedValue = getLocalizedValueWithFallbacks(
+    const translatedValue = getLocalizedValue(
       componentTextProps[key],
       currentLocale,
       defaultLocale
@@ -776,18 +758,20 @@ export function generateSlidesWithNavigationFallbacks(
   if (!variants || !slides.length) return slides;
 
   return slides.map((slide) => {
-    // Build LocaleProp structure for each navigation field
-    const navigationProps: Record<string, LocaleProp> = {
-      nextText: { default: '' },
-      prevText: { default: '' },
-      submitText: { default: '' },
-    };
+    // Create LocaleProp objects for each navigation field
+    const navigationFields = ['nextText', 'prevText', 'submitText'] as const;
+    const navigationProps: Record<string, LocaleProp> = {};
+
+    // Initialize with empty defaults
+    for (const field of navigationFields) {
+      navigationProps[field] = { default: '' };
+    }
 
     // Collect navigation texts from all variants
     for (const variant in variants) {
       const slideNav = variants[variant].slideNavigation[slide.id];
       if (slideNav) {
-        for (const field of ['nextText', 'prevText', 'submitText'] as const) {
+        for (const field of navigationFields) {
           const text = slideNav[field];
           if (text) {
             if (variant === 'default') {
@@ -800,23 +784,23 @@ export function generateSlidesWithNavigationFallbacks(
       }
     }
 
-    // Apply fallback logic for each navigation field
+    // Apply fallback logic and create navigation object
     const navigation = {
       ...slide.navigation,
       nextText:
-        getLocalizedValueWithFallbacks(
+        getLocalizedValue(
           navigationProps.nextText,
           currentLocale,
           defaultLocale
         ) || slide.navigation.nextText,
       prevText:
-        getLocalizedValueWithFallbacks(
+        getLocalizedValue(
           navigationProps.prevText,
           currentLocale,
           defaultLocale
         ) || slide.navigation.prevText,
       submitText:
-        getLocalizedValueWithFallbacks(
+        getLocalizedValue(
           navigationProps.submitText,
           currentLocale,
           defaultLocale
