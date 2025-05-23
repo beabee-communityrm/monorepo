@@ -61,8 +61,10 @@ function handleChange(evt: FormChangeEvent, changes?: { noValidate: boolean }) {
 
 /**
  * Apply translations to components before passing them to Form.io
- * This is necessary because Form.io renders content components directly
- * from their properties and doesn't use the i18n system for dynamic content
+ * This is only necessary for content components because Form.io renders their
+ * HTML property directly without using the i18n system, unlike other component
+ * properties (label, description, placeholder) which are automatically translated
+ * by Form.io's built-in i18n mechanism via formOpts.i18n.custom
  */
 const localizedComponents = computed(() => {
   if (!props.componentI18nText) {
@@ -72,93 +74,20 @@ const localizedComponents = computed(() => {
   const componentI18nText = props.componentI18nText;
 
   return props.components.map((component) => {
-    const localizedComponent = { ...component } as Record<string, unknown>;
-
-    // Handle content components with HTML property
+    // Only process content components with HTML property
     if (component.type === 'content' && 'html' in component) {
       const htmlProperty = component.html as string;
       const htmlTranslation = componentI18nText[htmlProperty];
       if (htmlTranslation) {
-        localizedComponent.html = htmlTranslation;
+        return {
+          ...component,
+          html: htmlTranslation,
+        } as CalloutComponentSchema;
       }
     }
 
-    // Handle label translations for all components
-    if (
-      'label' in component &&
-      component.label &&
-      typeof component.label === 'string'
-    ) {
-      const labelTranslation = componentI18nText[component.label];
-      if (labelTranslation) {
-        localizedComponent.label = labelTranslation;
-      }
-    }
-
-    // Handle description translations
-    if (
-      'description' in component &&
-      component.description &&
-      typeof component.description === 'string'
-    ) {
-      const descriptionTranslation = componentI18nText[component.description];
-      if (descriptionTranslation) {
-        localizedComponent.description = descriptionTranslation;
-      }
-    }
-
-    // Handle placeholder translations
-    if (
-      'placeholder' in component &&
-      component.placeholder &&
-      typeof component.placeholder === 'string'
-    ) {
-      const placeholderTranslation = componentI18nText[component.placeholder];
-      if (placeholderTranslation) {
-        localizedComponent.placeholder = placeholderTranslation;
-      }
-    }
-
-    // Handle options translations for select components
-    if ('values' in component && Array.isArray(component.values)) {
-      localizedComponent.values = component.values.map(
-        (value: Record<string, unknown>) => {
-          const labelTranslation =
-            value.label && typeof value.label === 'string'
-              ? componentI18nText[value.label]
-              : undefined;
-          return labelTranslation
-            ? { ...value, label: labelTranslation }
-            : value;
-        }
-      );
-    }
-
-    // Handle data.values translations for dropdown components
-    if (
-      'data' in component &&
-      component.data &&
-      typeof component.data === 'object' &&
-      component.data !== null
-    ) {
-      const data = component.data as Record<string, unknown>;
-      if ('values' in data && Array.isArray(data.values)) {
-        localizedComponent.data = {
-          ...data,
-          values: data.values.map((value: Record<string, unknown>) => {
-            const labelTranslation =
-              value.label && typeof value.label === 'string'
-                ? componentI18nText[value.label]
-                : undefined;
-            return labelTranslation
-              ? { ...value, label: labelTranslation }
-              : value;
-          }),
-        };
-      }
-    }
-
-    return localizedComponent as CalloutComponentSchema;
+    // For all other components, Form.io's i18n system handles translations automatically
+    return component;
   });
 });
 
