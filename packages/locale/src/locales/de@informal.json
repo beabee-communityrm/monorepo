@@ -648,7 +648,8 @@
         "description": "Beschreibung",
         "label": "Bezeichnung",
         "option": "Option {n}",
-        "placeholder": "Platzhalter"
+        "placeholder": "Platzhalter",
+        "html": "Inhalt"
       }
     },
     "confirmHuman": "Bitte bestätige, dass du ein Mensch bist",

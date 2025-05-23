@@ -88,7 +88,7 @@ import {
   type GetCalloutResponseDataWith,
   type Paginated,
 } from '@beabee/beabee-common';
-import { computed, onBeforeMount, ref, toRef } from 'vue';
+import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 import { faBullhorn, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
@@ -116,11 +116,10 @@ import { addBreadcrumb } from '@store/breadcrumb';
 import CalloutVariantsBox from '@components/pages/callouts/CalloutVariantsBox.vue';
 import AppShareBox from '@components/AppShareBox.vue';
 
+// Props: Receive the already processed callout from parent route
 const props = defineProps<{
-  callout: GetCalloutDataWith<'form' | 'variantNames'>;
+  callout: GetCalloutDataWith<'form' | 'responseViewSchema' | 'variantNames'>;
   respond?: boolean; // Flag for /respond route
-  // Suppress the warning about the ID prop being passed by the router
-  id?: string;
 }>();
 
 const { t } = useI18n();
@@ -168,7 +167,7 @@ const imageUrl = computed(() => {
 });
 
 const { isOpen, showLoginPrompt, showMemberOnlyPrompt } = useCallout(
-  toRef(props, 'callout')
+  computed(() => props.callout)
 );
 
 const responses =

@@ -66,6 +66,11 @@
         class="content-message"
         :class="disabled && 'ProseMirror-disabled'"
       />
+      <div
+        v-if="isEditorEmpty && placeholder"
+        class="pointer-events-none absolute inset-2 text-grey-dark"
+        v-html="placeholder"
+      />
       <div v-if="copyable" class="absolute right-1 top-1">
         <AppCopyButton variant="float" :text="editor?.getHTML() || ''" />
       </div>
@@ -107,6 +112,7 @@ const props = defineProps<{
   required?: boolean;
   disabled?: boolean;
   copyable?: boolean;
+  placeholder?: string;
 }>();
 
 const editor = useEditor({
@@ -191,6 +197,8 @@ function setLink() {
       .run();
   }
 }
+
+const isEditorEmpty = computed(() => editor.value?.isEmpty || false);
 </script>
 
 <style lang="postcss">

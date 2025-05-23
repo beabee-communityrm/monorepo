@@ -648,7 +648,8 @@
         "description": "Description",
         "label": "Intitulé",
         "option": "Option {n}",
-        "placeholder": "Texte indicatif"
+        "placeholder": "Texte indicatif",
+        "html": "Contenu"
       }
     },
     "confirmHuman": "Veuillez confirmer que vous êtes humain",

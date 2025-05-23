@@ -648,7 +648,8 @@
         "description": "Description",
         "label": "Label",
         "option": "Option {n}",
-        "placeholder": "Placeholder"
+        "placeholder": "Placeholder",
+        "html": "Content"
       }
     },
     "confirmHuman": "Please confirm you are human",

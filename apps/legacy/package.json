@@ -85,7 +85,7 @@
     "@types/passport": "^1.0.17",
     "@types/passport-local": "^1.0.38",
     "@types/pug": "^2.0.10",
-    "autoprefixer": "^10.4.20",
+    "autoprefixer": "^10.4.21",
     "concurrently": "^9.1.2",
     "dotenv": "^16.4.7",
     "dpdm": "^3.14.0",
