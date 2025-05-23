@@ -7,7 +7,10 @@ import { useRoute } from 'vue-router';
 import { client } from '@utils/api';
 import { watch } from 'vue';
 import type { GetCalloutDataWith } from '@beabee/beabee-common';
-import { generateComponentTextWithFallbacks } from '@utils/callouts';
+import {
+  generateComponentTextWithFallbacks,
+  generateSlidesWithNavigationFallbacks,
+} from '@utils/callouts';
 import { generalContent } from '@store';
 
 const props = defineProps<{ id: string }>();
@@ -37,12 +40,21 @@ watch(
       defaultLocale
     );
 
-    // Create the callout object with enhanced componentText
+    // Generate slides with navigation fallbacks
+    const slidesWithNavigationFallbacks = generateSlidesWithNavigationFallbacks(
+      calloutWithVariants.formSchema.slides,
+      calloutWithVariants.variants,
+      currentLocale,
+      defaultLocale
+    );
+
+    // Create the callout object with enhanced componentText and slide navigation
     callout.value = {
       ...calloutWithVariants,
       formSchema: {
         ...calloutWithVariants.formSchema,
         componentText: componentTextWithFallbacks,
+        slides: slidesWithNavigationFallbacks,
       },
     };
   },

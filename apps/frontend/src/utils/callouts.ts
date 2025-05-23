@@ -754,3 +754,78 @@ export function generateComponentTextWithFallbacks(
 
   return result;
 }
+
+/**
+ * Generate slide navigation with fallback support from callout variant data
+ *
+ * This function applies the same fallback logic to slide navigation texts
+ * (nextText, prevText, submitText) as the component text function.
+ *
+ * @param slides - The slides from the callout
+ * @param variants - The callout variant data
+ * @param currentLocale - The current locale (e.g., 'de@easy', 'de', 'en')
+ * @param defaultLocale - The default locale (usually 'en')
+ * @returns Slides with navigation text fallbacks applied
+ */
+export function generateSlidesWithNavigationFallbacks(
+  slides: GetCalloutSlideSchema[],
+  variants: Record<string, CalloutVariantData> | undefined,
+  currentLocale: string,
+  defaultLocale: string
+): GetCalloutSlideSchema[] {
+  if (!variants || !slides.length) return slides;
+
+  return slides.map((slide) => {
+    // Build LocaleProp structure for each navigation field
+    const navigationProps: Record<string, LocaleProp> = {
+      nextText: { default: '' },
+      prevText: { default: '' },
+      submitText: { default: '' },
+    };
+
+    // Collect navigation texts from all variants
+    for (const variant in variants) {
+      const slideNav = variants[variant].slideNavigation[slide.id];
+      if (slideNav) {
+        for (const field of ['nextText', 'prevText', 'submitText'] as const) {
+          const text = slideNav[field];
+          if (text) {
+            if (variant === 'default') {
+              navigationProps[field].default = text;
+            } else {
+              navigationProps[field][variant] = text;
+            }
+          }
+        }
+      }
+    }
+
+    // Apply fallback logic for each navigation field
+    const navigation = {
+      ...slide.navigation,
+      nextText:
+        getLocalizedValueWithFallbacks(
+          navigationProps.nextText,
+          currentLocale,
+          defaultLocale
+        ) || slide.navigation.nextText,
+      prevText:
+        getLocalizedValueWithFallbacks(
+          navigationProps.prevText,
+          currentLocale,
+          defaultLocale
+        ) || slide.navigation.prevText,
+      submitText:
+        getLocalizedValueWithFallbacks(
+          navigationProps.submitText,
+          currentLocale,
+          defaultLocale
+        ) || slide.navigation.submitText,
+    };
+
+    return {
+      ...slide,
+      navigation,
+    };
+  });
+}
