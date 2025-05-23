@@ -30,6 +30,7 @@ import type { CalloutHorizontalTabsData } from '@components/pages/admin/callouts
 import type { TitleAndImageTabData } from '@components/pages/admin/callouts/tabs/TitleAndImageTab.vue';
 import type { TranslationsTabData } from '@components/pages/admin/callouts/tabs/TranslationsTab.vue';
 import type { SettingsTabData } from '@components/pages/admin/callouts/tabs/SettingsTab.vue';
+import { config as localeConfig, type LocaleOptions } from '@beabee/locale';
 
 const { t } = i18n.global;
 
@@ -529,25 +530,63 @@ export function getDecisionComponent(
 }
 
 /**
- * Get the localized value from a LocaleProp object for a specific locale
+ * Get a localized value with fallback chain support based on locale configuration
  *
  * @param prop - The LocaleProp object containing translations
- * @param locale - The locale to get the value for
+ * @param locale - The requested locale
  * @param defaultLocale - The default locale
- * @returns The localized value or empty string if not found
+ * @returns The localized value with fallbacks applied, or empty string if not found
  */
-export function getLocalizedValue(
+export function getLocalizedValueWithFallbacks(
   prop: LocaleProp | undefined,
   locale: string,
   defaultLocale: string
 ): string {
   if (!prop) return '';
 
+  // If requesting default locale, return default value
   if (locale === defaultLocale) {
     return prop.default || '';
   }
 
-  return prop[locale] || '';
+  // Try the requested locale first
+  if (prop[locale]) {
+    return prop[locale];
+  }
+
+  // Try fallback chain
+  let currentLocale = locale;
+  const config = localeConfig as LocaleOptions;
+  while (
+    currentLocale &&
+    config[currentLocale as keyof LocaleOptions]?.fallbackLocale
+  ) {
+    currentLocale =
+      config[currentLocale as keyof LocaleOptions].fallbackLocale!;
+    if (prop[currentLocale]) {
+      return prop[currentLocale] || '';
+    }
+  }
+
+  // If no fallback found, try default locale
+  return prop.default || '';
+}
+
+/**
+ * Get the localized value from a LocaleProp object for a specific locale
+ * Now includes fallback chain support based on locale configuration
+ *
+ * @param prop - The LocaleProp object containing translations
+ * @param locale - The locale to get the value for
+ * @param defaultLocale - The default locale
+ * @returns The localized value with fallbacks applied, or empty string if not found
+ */
+export function getLocalizedValue(
+  prop: LocaleProp | undefined,
+  locale: string,
+  defaultLocale: string
+): string {
+  return getLocalizedValueWithFallbacks(prop, locale, defaultLocale);
 }
 
 /**
