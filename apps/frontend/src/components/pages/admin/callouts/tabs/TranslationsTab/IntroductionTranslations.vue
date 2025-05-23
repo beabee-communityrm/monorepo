@@ -3,7 +3,7 @@
     <div class="space-y-2">
       <RichTextEditor
         :model-value="getValue(selectedLocale)"
-        :placeholder="selectedLocale === defaultLocale ? '' : introText.default"
+        :placeholder="introText.default"
         :disabled="selectedLocale === defaultLocale"
         :copyable="selectedLocale === defaultLocale"
         @update:model-value="updateValue(selectedLocale, $event)"
@@ -17,6 +17,7 @@ import { useI18n } from 'vue-i18n';
 import type { LocaleProp } from '@type/locale-prop';
 import { AppFormBox } from '@beabee/vue/components';
 import RichTextEditor from '@components/rte/RichTextEditor.vue';
+import { getLocalizedValue, updateLocalizedValue } from '@utils/callouts';
 
 const props = defineProps<{
   introText: LocaleProp;
@@ -26,25 +27,13 @@ const props = defineProps<{
 
 const { t } = useI18n();
 
-// Get intro text value for a specific locale
+// Get intro text value for a specific locale using utility function
 function getValue(locale: string): string {
-  if (!props.introText) return '';
-
-  if (locale === props.defaultLocale) {
-    return props.introText.default || '';
-  }
-
-  return props.introText[locale] || '';
+  return getLocalizedValue(props.introText, locale, props.defaultLocale);
 }
 
-// Update intro text value
+// Update intro text value using utility function
 function updateValue(locale: string, value: string): void {
-  if (locale === props.defaultLocale) {
-    // eslint-disable-next-line vue/no-mutating-props
-    props.introText.default = value;
-  } else {
-    // eslint-disable-next-line vue/no-mutating-props
-    props.introText[locale] = value;
-  }
+  updateLocalizedValue(props.introText, locale, value, props.defaultLocale);
 }
 </script>

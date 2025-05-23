@@ -527,3 +527,117 @@ export function getDecisionComponent(
 ): CalloutComponentInputSelectableRadioSchema | undefined {
   return flattenComponents(components).find(isDecisionComponent);
 }
+
+/**
+ * Get the localized value from a LocaleProp object for a specific locale
+ *
+ * @param prop - The LocaleProp object containing translations
+ * @param locale - The locale to get the value for
+ * @param defaultLocale - The default locale
+ * @returns The localized value or empty string if not found
+ */
+export function getLocalizedValue(
+  prop: LocaleProp | undefined,
+  locale: string,
+  defaultLocale: string
+): string {
+  if (!prop) return '';
+
+  if (locale === defaultLocale) {
+    return prop.default || '';
+  }
+
+  return prop[locale] || '';
+}
+
+/**
+ * Update a localized value in a LocaleProp object
+ *
+ * @param prop - The LocaleProp object to update
+ * @param locale - The locale to update
+ * @param value - The new value
+ * @param defaultLocale - The default locale
+ */
+export function updateLocalizedValue(
+  prop: LocaleProp,
+  locale: string,
+  value: string,
+  defaultLocale: string
+): void {
+  if (locale === defaultLocale) {
+    prop.default = value;
+  } else {
+    prop[locale] = value;
+  }
+}
+
+/**
+ * Get the localized value from component text by reference
+ *
+ * @param componentText - The component text object containing all translations
+ * @param ref - The reference key for the text
+ * @param locale - The locale to get the value for
+ * @param defaultLocale - The default locale
+ * @returns The localized value or the reference key if not found
+ */
+export function getComponentTextValue(
+  componentText: Record<string, LocaleProp>,
+  ref: string | undefined,
+  locale: string,
+  defaultLocale: string
+): string {
+  if (!ref) return '';
+
+  const prop = componentText[ref];
+  if (!prop) {
+    // If no translation exists, return the reference as fallback
+    return locale === defaultLocale ? ref : '';
+  }
+
+  return getLocalizedValue(prop, locale, defaultLocale);
+}
+
+/**
+ * Update a component text value by reference
+ *
+ * @param componentText - The component text object to update
+ * @param ref - The reference key for the text
+ * @param locale - The locale to update
+ * @param value - The new value
+ * @param defaultLocale - The default locale
+ */
+export function updateComponentTextValue(
+  componentText: Record<string, LocaleProp>,
+  ref: string | undefined,
+  locale: string,
+  value: string,
+  defaultLocale: string
+): void {
+  if (!ref) return;
+
+  // Initialize the LocaleProp if it doesn't exist
+  if (!componentText[ref]) {
+    componentText[ref] = { default: ref };
+  }
+
+  updateLocalizedValue(componentText[ref], locale, value, defaultLocale);
+}
+
+/**
+ * Get the default text (placeholder) for a component text reference
+ *
+ * @param componentText - The component text object
+ * @param ref - The reference key for the text
+ * @returns The default text or the reference key as fallback
+ */
+export function getComponentTextDefault(
+  componentText: Record<string, LocaleProp>,
+  ref: string | undefined
+): string {
+  if (!ref) return '';
+
+  const prop = componentText[ref];
+  if (!prop) return ref;
+
+  return prop.default || ref;
+}

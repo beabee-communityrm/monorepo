@@ -86,6 +86,7 @@ import type { FormBuilderSlide } from '@components/form-builder/form-builder.int
 import type { LocaleProp } from '@type/locale-prop';
 import AppInput from '@components/forms/AppInput.vue';
 import { AppFormBox } from '@beabee/vue/components';
+import { getLocalizedValue, updateLocalizedValue } from '@utils/callouts';
 
 const props = defineProps<{
   slides: FormBuilderSlide[];
@@ -95,30 +96,23 @@ const props = defineProps<{
 
 const { t } = useI18n();
 
-// Get navigation value for a specific locale
+// Get navigation value for a specific locale using utility function
 function getValue(navProp: LocaleProp, locale: string): string {
-  if (locale === props.defaultLocale) {
-    return navProp.default || '';
-  }
-
-  return navProp[locale] || '';
+  return getLocalizedValue(navProp, locale, props.defaultLocale);
 }
-// Update navigation value
+
+// Update navigation value using utility function
 function updateValue(
   slide: FormBuilderSlide,
   field: 'prevText' | 'nextText' | 'submitText',
   locale: string,
   value: string
 ): void {
-  const currentValue = { ...slide.navigation[field] };
-
-  if (locale === props.defaultLocale) {
-    currentValue.default = value;
-  } else {
-    currentValue[locale] = value;
-  }
-
-  // Update the navigation field in the slide
-  slide.navigation[field] = currentValue;
+  updateLocalizedValue(
+    slide.navigation[field],
+    locale,
+    value,
+    props.defaultLocale
+  );
 }
 </script>

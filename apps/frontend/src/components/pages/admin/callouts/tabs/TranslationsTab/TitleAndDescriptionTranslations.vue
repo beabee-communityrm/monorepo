@@ -8,11 +8,7 @@
 
       <AppInput
         :model-value="getValue('title', selectedLocale)"
-        :placeholder="
-          selectedLocale === defaultLocale
-            ? ''
-            : titleAndImageData.title.default
-        "
+        :placeholder="titleAndImageData.title.default"
         :disabled="selectedLocale === defaultLocale"
         :copyable="selectedLocale === defaultLocale"
         @update:model-value="updateValue('title', selectedLocale, $event)"
@@ -90,6 +86,7 @@ import type { TitleAndImageTabData } from '../TitleAndImageTab.vue';
 import AppTextArea from '@components/forms/AppTextArea.vue';
 import { AppFormBox } from '@beabee/vue/components';
 import AppInput from '@components/forms/AppInput.vue';
+import { getLocalizedValue, updateLocalizedValue } from '@utils/callouts';
 
 const props = defineProps<{
   defaultLocale: string;
@@ -99,32 +96,29 @@ const props = defineProps<{
 
 const { t } = useI18n();
 
-// Get title and description value for a specific locale
+// Get title and description value for a specific locale using utility function
 function getValue(
   field: 'title' | 'description' | 'shareTitle' | 'shareDescription',
   locale: string
 ): string {
-  if (!props.titleAndImageData[field]) return '';
-
-  if (locale === props.defaultLocale) {
-    return props.titleAndImageData[field].default || '';
-  }
-
-  return props.titleAndImageData[field][locale] || '';
+  return getLocalizedValue(
+    props.titleAndImageData[field],
+    locale,
+    props.defaultLocale
+  );
 }
 
-// Update title and description value
+// Update title and description value using utility function
 function updateValue(
   field: 'title' | 'description' | 'shareTitle' | 'shareDescription',
   locale: string,
   value: string
 ): void {
-  if (locale === props.defaultLocale) {
-    // eslint-disable-next-line vue/no-mutating-props
-    props.titleAndImageData[field].default = value;
-  } else {
-    // eslint-disable-next-line vue/no-mutating-props
-    props.titleAndImageData[field][locale] = value;
-  }
+  updateLocalizedValue(
+    props.titleAndImageData[field],
+    locale,
+    value,
+    props.defaultLocale
+  );
 }
 </script>

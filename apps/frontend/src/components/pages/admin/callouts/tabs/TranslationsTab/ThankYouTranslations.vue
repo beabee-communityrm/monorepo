@@ -9,11 +9,7 @@
 
         <AppInput
           :model-value="getValue(endMessage.thankYouTitle, selectedLocale)"
-          :placeholder="
-            selectedLocale === defaultLocale
-              ? ''
-              : endMessage.thankYouTitle.default
-          "
+          :placeholder="endMessage.thankYouTitle.default"
           :disabled="selectedLocale === defaultLocale"
           :copyable="selectedLocale === defaultLocale"
           @update:model-value="
@@ -30,11 +26,7 @@
 
         <RichTextEditor
           :model-value="getValue(endMessage.thankYouText, selectedLocale)"
-          :placeholder="
-            selectedLocale === defaultLocale
-              ? ''
-              : endMessage.thankYouText.default
-          "
+          :placeholder="endMessage.thankYouText.default"
           :disabled="selectedLocale === defaultLocale"
           :copyable="selectedLocale === defaultLocale"
           @update:model-value="
@@ -74,6 +66,7 @@ import type { EndMessageTabData } from '../ContentTab/SidebarTabContent/EndMessa
 import AppInput from '@components/forms/AppInput.vue';
 import { AppFormBox } from '@beabee/vue/components';
 import RichTextEditor from '@components/rte/RichTextEditor.vue';
+import { getLocalizedValue, updateLocalizedValue } from '@utils/callouts';
 
 const props = defineProps<{
   defaultLocale: string;
@@ -83,29 +76,22 @@ const props = defineProps<{
 
 const { t } = useI18n();
 
-// Get end message value for a specific locale
+// Get end message value for a specific locale using utility function
 function getValue(prop: LocaleProp | undefined, locale: string): string {
-  if (!prop) return '';
-
-  if (locale === props.defaultLocale) {
-    return prop.default || '';
-  }
-
-  return prop[locale] || '';
+  return getLocalizedValue(prop, locale, props.defaultLocale);
 }
 
-// Update end message value
+// Update end message value using utility function
 function updateValue(
   field: 'thankYouTitle' | 'thankYouText' | 'thankYouRedirect',
   locale: string,
   value: string
 ): void {
-  if (locale === props.defaultLocale) {
-    // eslint-disable-next-line vue/no-mutating-props
-    props.endMessage[field].default = value;
-  } else {
-    // eslint-disable-next-line vue/no-mutating-props
-    props.endMessage[field][locale] = value;
-  }
+  updateLocalizedValue(
+    props.endMessage[field],
+    locale,
+    value,
+    props.defaultLocale
+  );
 }
 </script>
