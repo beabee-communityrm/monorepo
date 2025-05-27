@@ -7,6 +7,8 @@ import {
   MAX_FILE_SIZE_IN_BYTES,
   isSupportedDocumentType,
   isSupportedDocumentExtension,
+  isSupportedImageType,
+  isSupportedImageExtension,
 } from '@beabee/beabee-common';
 
 const { t } = i18n.global;
@@ -33,12 +35,16 @@ export default class BeabeeStorage {
       throw new Error(t('form.errors.file.tooBig'));
     }
 
-    // Check file type and extension
+    // Check file type and extension - must be either a supported document or image
     const fileExtension = file.name.split('.').pop()?.toLowerCase();
-    if (
-      !isSupportedDocumentType(file.type) &&
-      (!fileExtension || !isSupportedDocumentExtension(fileExtension))
-    ) {
+    const isValidDocument =
+      isSupportedDocumentType(file.type) ||
+      (fileExtension && isSupportedDocumentExtension(fileExtension));
+    const isValidImage =
+      isSupportedImageType(file.type) ||
+      (fileExtension && isSupportedImageExtension(fileExtension));
+
+    if (!isValidDocument && !isValidImage) {
       throw new Error(t('form.errors.file.unsupportedType'));
     }
 
