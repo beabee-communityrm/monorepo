@@ -1,6 +1,6 @@
 <template>
   <Form
-    :key="formOptsChanged"
+    :key="componentTextChangeCounter"
     class="callout-form-renderer"
     :form="{ components: localizedComponents }"
     :submission="modelValue && ({ data: modelValue } as any)"
@@ -14,7 +14,7 @@ import type {
   CalloutComponentSchema,
   CalloutResponseAnswersSlide,
 } from '@beabee/beabee-common';
-import { computed, onBeforeMount, ref } from 'vue';
+import { computed, onBeforeMount, ref, watch } from 'vue';
 import { Form } from '../../lib/formio';
 import { type FormChangeEvent } from './form-renderer.interface';
 import { config, dom } from '@fortawesome/fontawesome-svg-core';
@@ -64,6 +64,18 @@ function handleChange(evt: FormChangeEvent, changes?: { noValidate: boolean }) {
  * This is necessary because we handle all translations ourselves instead of
  * relying on Form.io's i18n system for better control and consistency
  */
+// Create a simple counter that changes when componentI18nText changes
+const componentTextChangeCounter = ref(0);
+
+// Watch for changes in componentI18nText and increment counter
+watch(
+  () => props.componentI18nText,
+  () => {
+    componentTextChangeCounter.value++;
+  },
+  { deep: true }
+);
+
 const localizedComponents = computed(() => {
   if (!props.componentI18nText) {
     return props.components;
@@ -162,9 +174,8 @@ const localizedComponents = computed(() => {
   });
 });
 
-const formOptsChanged = ref(0);
-const formOpts = computed(
-  () => ({
+const formOpts = computed(() => {
+  return {
     readOnly: props.readonly,
     noAlerts: true,
     renderMode: props.readonly ? 'html' : 'form',
@@ -184,9 +195,8 @@ const formOpts = computed(
         invalid_url: t('form.errors.unknown.url'),
       },
     },
-  }),
-  { onTrigger: () => formOptsChanged.value++ }
-);
+  };
+});
 
 onBeforeMount(() => {
   library.add(
