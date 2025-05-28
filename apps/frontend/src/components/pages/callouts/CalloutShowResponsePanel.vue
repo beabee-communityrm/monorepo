@@ -36,7 +36,7 @@
 
 <script lang="ts" setup>
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import { computed, watch } from 'vue';
+import { computed } from 'vue';
 
 import CalloutSidePanel from './CalloutSidePanel.vue';
 import {
@@ -54,35 +54,16 @@ const props = defineProps<{
 }>();
 
 const currentResponseNumber = defineModel<number>('currentResponseNumber', {
-  default: 0,
+  required: true,
 });
 
 const { n } = useI18n();
 
-const responseIndex = computed(() => {
-  const index = props.responses.findIndex(
-    (r) => r.number === currentResponseNumber.value
-  );
-  // If no response found with the current number, default to first response
-  return index >= 0 ? index : 0;
-});
+const responseIndex = computed(() =>
+  props.responses.findIndex((r) => r.number === currentResponseNumber.value)
+);
 
 const currentResponse = computed(() => props.responses[responseIndex.value]);
-
-// Watch for changes in responses and set the current response number to the first response
-watch(
-  () => props.responses,
-  (newResponses) => {
-    if (
-      newResponses.length > 0 &&
-      (currentResponseNumber.value === 0 ||
-        !newResponses.find((r) => r.number === currentResponseNumber.value))
-    ) {
-      currentResponseNumber.value = newResponses[0].number;
-    }
-  },
-  { immediate: true }
-);
 
 function changeResponse(inc: number) {
   const newIndex = responseIndex.value + inc;

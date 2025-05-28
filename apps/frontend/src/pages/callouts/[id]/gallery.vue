@@ -49,8 +49,10 @@ meta:
     </transition>
 
     <CalloutShowResponsePanel
+      v-if="selectedResponse"
       :callout="callout"
-      :responses="selectedResponse ? [selectedResponse] : []"
+      :responses="[selectedResponse]"
+      :current-response-number="selectedResponse.number"
       @close="
         router.push({ ...route, hash: '' });
         introOpen = false;
