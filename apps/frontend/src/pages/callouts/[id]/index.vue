@@ -88,7 +88,7 @@ import {
   type GetCalloutResponseDataWith,
   type Paginated,
 } from '@beabee/beabee-common';
-import { computed, onBeforeMount, ref } from 'vue';
+import { computed, onBeforeMount, ref, toRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 import { faBullhorn, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
@@ -167,7 +167,7 @@ const imageUrl = computed(() => {
 });
 
 const { isOpen, showLoginPrompt, showMemberOnlyPrompt } = useCallout(
-  computed(() => props.callout)
+  toRef(props, 'callout')
 );
 
 const responses =
