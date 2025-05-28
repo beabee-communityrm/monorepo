@@ -54,7 +54,7 @@ const props = defineProps<{
 }>();
 
 const currentResponseNumber = defineModel<number>('currentResponseNumber', {
-  default: 0,
+  required: true,
 });
 
 const { n } = useI18n();
@@ -62,6 +62,7 @@ const { n } = useI18n();
 const responseIndex = computed(() =>
   props.responses.findIndex((r) => r.number === currentResponseNumber.value)
 );
+
 const currentResponse = computed(() => props.responses[responseIndex.value]);
 
 function changeResponse(inc: number) {
