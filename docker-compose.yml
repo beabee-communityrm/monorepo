@@ -63,7 +63,7 @@ services:
       # Allow migrations to be written out from the container
       - ./packages/core/src/migrations:/opt/packages/core/src/migrations
     # TODO: Use standard dist folder
-    command: ["node", "--watch", "./dist/api/app.js"]
+    command: ["node", "--watch", "--watch-preserve-output", "./dist/api/app.js"]
 
   # Webhook app
   webhook_app:
