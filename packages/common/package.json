@@ -24,7 +24,7 @@
   },
   "scripts": {
     "clear": "rm -rf dist",
-    "build": "yarn clear && yarn build:types && yarn build:platforms",
+    "build": "yarn build:types && yarn build:platforms",
     "build:platforms": "node esbuild.js",
     "build:types": "tsc --project ./tsconfig.build.json",
     "test": "yarn test:types && yarn test:esm && yarn test:cjs && yarn test:vitest",

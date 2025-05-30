@@ -9,8 +9,8 @@
     "#*": "./dist/*.js"
   },
   "scripts": {
-    "clean": "rimraf dist/ tsconfig.tsbuildinfo",
-    "build": "yarn clean && gulp build && tsc -p ./tsconfig.build.json",
+    "clear": "rimraf dist/",
+    "build": "gulp build && tsc -p ./tsconfig.build.json",
     "dev": "tsc --watch --preserveWatchOutput -p tsconfig.build.json",
     "format": "prettier --write .",
     "test": "echo 'The legacy test suite has no tests yet'",

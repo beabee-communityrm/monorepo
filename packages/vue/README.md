@@ -24,7 +24,7 @@ yarn workspace @beabee/vue install
 [Histoire](https://histoire.dev/) is used for component development and documentation. To start the Histoire development server:
 
 ```sh
-yarn workspace @beabee/vue dev
+yarn workspace @beabee/vue docs:dev
 ```
 
 This will launch Histoire at http://localhost:6006 by default, where you can browse and interact with the components.
@@ -34,13 +34,13 @@ This will launch Histoire at http://localhost:6006 by default, where you can bro
 To build the Histoire documentation site:
 
 ```sh
-yarn workspace @beabee/vue build
+yarn workspace @beabee/vue docs:build
 ```
 
 ### Previewing the built documentation
 
 ```sh
-yarn workspace @beabee/vue start
+yarn workspace @beabee/vue docs:start
 ```
 
 ## Usage

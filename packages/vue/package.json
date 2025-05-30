@@ -9,11 +9,11 @@
     "node": ">=20"
   },
   "scripts": {
-    "dev": "histoire dev",
-    "build": "yarn build:lib && yarn build:styles",
+    "docs:start": "histoire preview",
+    "docs:dev": "histoire dev",
+    "docs:build": "yarn build:lib && yarn build:styles && histoire build",
     "build:lib": "vite build",
     "build:styles": "vite build --mode styles",
-    "start": "histoire preview",
     "format": "prettier --write .",
     "check": "yarn check:tsc && yarn check:prettier",
     "check:tsc": "vue-tsc --noEmit",

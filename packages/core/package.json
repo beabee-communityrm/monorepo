@@ -4,7 +4,8 @@
   "version": "0.16.0",
   "type": "commonjs",
   "scripts": {
-    "build": "rimraf dist/ && tsc -p tsconfig.build.json && cp -r src/data dist/",
+    "clear": "rimraf dist/",
+    "build": "tsc -p tsconfig.build.json && cp -r src/data dist/",
     "dev": "tsc --watch --preserveWatchOutput -p tsconfig.build.json",
     "format": "prettier --write .",
     "check": "concurrently 'yarn:check:*'",

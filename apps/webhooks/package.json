@@ -9,7 +9,8 @@
     "#*": "./dist/*.js"
   },
   "scripts": {
-    "build": "rimraf dist/ && tsc -p ./tsconfig.build.json",
+    "clear": "rimraf dist/",
+    "build": "tsc -p ./tsconfig.build.json",
     "dev": "tsc --watch --preserveWatchOutput -p tsconfig.build.json",
     "format": "prettier --write .",
     "test": "echo 'The webhooks test suite has no tests yet'",

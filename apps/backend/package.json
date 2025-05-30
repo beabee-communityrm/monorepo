@@ -16,8 +16,9 @@
   },
   "homepage": "https://github.com/beabee-communityrm/monorepo/blob/main/apps/backend/README.md",
   "scripts": {
+    "clear": "rimraf dist/",
     "test": "echo 'The backend test suite has no tests yet'",
-    "build": "rimraf dist/ && tsc -p ./tsconfig.build.json",
+    "build": "tsc -p ./tsconfig.build.json",
     "dev": "tsc --watch --preserveWatchOutput -p tsconfig.build.json",
     "format": "prettier --write .",
     "generate:index": "node scripts/generate-index.mjs",

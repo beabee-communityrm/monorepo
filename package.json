@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "clear": "yarn workspaces foreach -v -W run clear",
     "build": "yarn workspaces foreach -v -W --topological-dev run build",
     "dev": "yarn workspaces foreach -v -W -p -i run dev",
     "format": "yarn workspaces foreach -v -W -p run format",
