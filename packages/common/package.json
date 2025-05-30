@@ -53,7 +53,7 @@
     "@beabee/prettier-config": "workspace:^",
     "@gjsify/esbuild-plugin-transform-ext": "^0.0.4",
     "concurrently": "^9.1.2",
-    "esbuild": "^0.25.1",
+    "esbuild": "^0.25.5",
     "prettier": "^3.5.2",
     "typescript": "~5.6.3",
     "vitest": "^3.0.9"

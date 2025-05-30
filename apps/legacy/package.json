@@ -11,7 +11,8 @@
   "scripts": {
     "clear": "rimraf dist/",
     "build": "gulp build && tsc -p ./tsconfig.build.json",
-    "dev": "tsc --watch --preserveWatchOutput -p tsconfig.build.json",
+    "dev": "yarn watch",
+    "watch": "tsc --watch --preserveWatchOutput -p tsconfig.build.json",
     "format": "prettier --write .",
     "test": "echo 'The legacy test suite has no tests yet'",
     "check": "concurrently 'yarn:check:*'",

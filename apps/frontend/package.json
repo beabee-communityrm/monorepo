@@ -4,7 +4,6 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "start": "yarn dev",
     "dev": "vite",
     "build": "yarn check:vue-tsc && yarn build:main && yarn build:embed",
     "build:main": "vite build",
