@@ -1,4 +1,2 @@
 data.export
-
-# TODO: use standard build directory
-/built/
+/dist/

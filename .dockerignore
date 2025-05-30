@@ -8,6 +8,5 @@
 /apps/*/dist/
 /packages/*/dist/
 
-# TODO: should use dist/ folder
-/apps/backend/built/
+/apps/backend/dist/
 

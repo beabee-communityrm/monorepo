@@ -85,7 +85,7 @@ CMD [ "node", "./dist/app.js" ]
 # Backend distribution base
 FROM dist-common AS dist-backend
 
-COPY --chown=node:node --from=builder /opt/apps/backend/built /opt/apps/backend/built
+COPY --chown=node:node --from=builder /opt/apps/backend/dist /opt/apps/backend/dist
 
 WORKDIR /opt/apps/backend
 
@@ -101,7 +101,7 @@ USER node
 COPY --chown=node:node --from=builder /opt/apps/backend-cli/dist /opt/apps/backend-cli/dist
 
 # TODO: use standard dist folder
-CMD [ "node", "./built/api/app.js" ]
+CMD [ "node", "./dist/api/app.js" ]
 
 ## Cron image
 FROM dist-backend AS cron_app

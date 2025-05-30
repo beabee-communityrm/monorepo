@@ -3,7 +3,7 @@
   "version": "0.16.0",
   "description": "A community engagement system for community newsrooms",
   "private": true,
-  "main": "built/app.js",
+  "main": "dist/app.js",
   "type": "commonjs",
   "imports": {
     "#*": "./dist/*.js"

@@ -3,7 +3,7 @@
   "version": "0.16.0",
   "private": true,
   "description": "A community engagement system for community newsrooms",
-  "main": "built/app.js",
+  "main": "dist/app.js",
   "type": "commonjs",
   "repository": {
     "type": "git",
@@ -17,7 +17,7 @@
   "homepage": "https://github.com/beabee-communityrm/monorepo/blob/main/apps/backend/README.md",
   "scripts": {
     "test": "echo 'The backend test suite has no tests yet'",
-    "build": "rimraf built/ && tsc -p ./tsconfig.build.json",
+    "build": "rimraf dist/ && tsc -p ./tsconfig.build.json",
     "dev": "tsc --watch --preserveWatchOutput -p tsconfig.build.json",
     "format": "prettier --write .",
     "generate:index": "node scripts/generate-index.mjs",
@@ -26,10 +26,10 @@
     "check:prettier": "prettier -c .",
     "check:dependencies": "dpdm -T --no-warning --no-tree --exit-code circular:1 src/api/app.ts",
     "setup": "yarn setup:db && yarn setup:user && yarn setup:payment",
-    "setup:user": "docker compose run --rm api_app node built/tools/new-user",
-    "setup:payment": "docker compose run --rm api_app node built/tools/configure",
+    "setup:user": "docker compose run --rm api_app node dist/tools/new-user",
+    "setup:payment": "docker compose run --rm api_app node dist/tools/configure",
     "setup:db": "yarn typeorm:migrate",
-    "typeorm": "typeorm -d ./built/core/lib/typeorm.js",
+    "typeorm": "typeorm -d ./dist/core/lib/typeorm.js",
     "typeorm:migrate": "docker compose up -d db && docker compose run --rm api_app npm run typeorm migration:run",
     "typeorm:revert": "docker compose up -d db && docker compose run --rm api_app npm run typeorm migration:revert",
     "typeorm:generate": "docker compose up -d db && docker compose run --rm api_app npm run typeorm migration:generate --check"
@@ -89,9 +89,9 @@
     "typescript": "~5.6.3"
   },
   "_moduleAliases": {
-    "@core": "./built/core",
-    "@api": "./built/api",
-    "@apps": "./built/apps",
-    "@type": "./built/type"
+    "@core": "./dist/core",
+    "@api": "./dist/api",
+    "@apps": "./dist/apps",
+    "@type": "./dist/type"
   }
 }
