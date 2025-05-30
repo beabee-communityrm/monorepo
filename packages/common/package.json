@@ -24,9 +24,11 @@
   },
   "scripts": {
     "clear": "rm -rf dist",
-    "build": "yarn build:types && yarn build:platforms",
-    "build:platforms": "node esbuild.js",
+    "build": "yarn build:types && yarn build:esbuild",
+    "build:esbuild": "node --experimental-specifier-resolution=node --experimental-strip-types esbuild.ts",
     "build:types": "tsc --project ./tsconfig.build.json",
+    "watch": "yarn build:esbuild --watch",
+    "dev": "yarn watch",
     "test": "yarn test:types && yarn test:esm && yarn test:cjs && yarn test:vitest",
     "test:types": "tsc --noEmit",
     "test:esm": "node test/node/module-type/import.mjs",
