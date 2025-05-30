@@ -1,21 +1,7 @@
 import * as esbuild from "esbuild";
 import { transformExtPlugin } from "@gjsify/esbuild-plugin-transform-ext";
 import { createWatchLoggerPlugin, createCjsRenamePlugin } from "./plugins.ts";
-
-export interface BuildOptions {
-  /** Entry points for the build */
-  entryPoints: string[];
-  /** Output directory */
-  outdir: string;
-  /** Whether to enable watch mode */
-  watch?: boolean;
-  /** Additional plugins to include */
-  additionalPlugins?: esbuild.Plugin[];
-  /** Global name for IIFE builds */
-  globalName?: string;
-  /** Whether to bundle files */
-  bundle?: boolean;
-}
+import type { BuildOptions } from "./types/index.ts";
 
 /**
  * Creates an ESM build configuration

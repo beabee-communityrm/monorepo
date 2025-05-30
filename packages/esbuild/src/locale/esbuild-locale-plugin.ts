@@ -1,11 +1,7 @@
 import type { Plugin } from "esbuild";
 import path from "node:path";
 import { applyFallbackTranslations } from "./fallback-translations.ts";
-
-interface LocalePluginOptions {
-  configPath: string;
-  sourceLocalesDir: string;
-}
+import type { LocalePluginOptions } from "../types/index.ts";
 
 /**
  * Creates an esbuild plugin that processes locale files by applying fallback translations

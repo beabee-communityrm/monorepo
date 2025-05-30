@@ -7,8 +7,8 @@
     "./builders": "./src/builders.ts",
     "./plugins": "./src/plugins.ts",
     "./utils": "./src/utils.ts",
-    "./locale/*": "./src/locale/*.ts",
-    "./locale/copy-plugin": "./src/locale/copy-plugin.ts"
+    "./types": "./src/types/index.ts",
+    "./locale/*": "./src/locale/*.ts"
   },
   "dependencies": {
     "@gjsify/esbuild-plugin-transform-ext": "^0.0.4",

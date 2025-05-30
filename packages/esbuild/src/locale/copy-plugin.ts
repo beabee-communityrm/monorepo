@@ -3,13 +3,7 @@ import { readdir, copyFile, mkdir } from "node:fs/promises";
 import { watch, existsSync } from "node:fs";
 import type { Plugin } from "esbuild";
 import { getTimestamp } from "../utils.ts";
-
-interface CopyPluginOptions {
-  sourceDir: string;
-  outdir: string;
-  dirName: string;
-  isWatch: boolean;
-}
+import type { CopyPluginOptions } from "../types/index.ts";
 
 /**
  * Creates a plugin that copies locale JSON files to the output directory

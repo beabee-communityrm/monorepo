@@ -1,10 +1,6 @@
 import path from "node:path";
 import { readJsonFile, mergeObjects } from "./utils.ts";
-
-export interface LocaleOption {
-  fallbackLocale?: string;
-  [key: string]: any;
-}
+import type { LocaleOption } from "../../../locale/src/types/index.ts";
 
 /**
  * Recursively applies fallback translations to a locale

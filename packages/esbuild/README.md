@@ -13,6 +13,7 @@ This package provides common build functions, plugins, and utilities that are us
 - **Locale-specific Tools**: Special handling for internationalization files
 - **Common Plugins**: Reusable esbuild plugins for various tasks
 - **Utility Functions**: Helper functions for file manipulation and build processes
+- **TypeScript Types**: Comprehensive type definitions for all interfaces
 
 ## Usage
 
@@ -40,6 +41,7 @@ For more control, use the individual build functions:
 
 ```typescript
 import { buildESM, buildCJS, buildBrowser } from "@beabee/esbuild";
+import type { BuildOptions } from "@beabee/esbuild/types";
 
 const esm = await buildESM({
   entryPoints: ["./src/index.ts"],
@@ -71,6 +73,7 @@ import {
   generateTemplate,
   createCopyPlugin 
 } from "@beabee/esbuild";
+import type { CopyPluginOptions } from "@beabee/esbuild/types";
 
 // Normalize translation files
 await normalizeTranslations("./src/locales");
@@ -85,6 +88,18 @@ const copyPlugin = createCopyPlugin({
   dirName: "locales",
   isWatch: false
 });
+```
+
+### Type Imports
+
+All TypeScript types are available from the types export:
+
+```typescript
+import type { 
+  BuildOptions, 
+  LocalePluginOptions, 
+  CopyPluginOptions 
+} from "@beabee/esbuild/types";
 ```
 
 ## API Reference
@@ -104,13 +119,7 @@ Standard build orchestration for packages with ESM, CJS, and Browser builds.
 
 Individual build functions for specific formats.
 
-**Options:**
-- `entryPoints`: Array of entry point files
-- `outdir`: Output directory
-- `watch`: Enable watch mode
-- `additionalPlugins`: Additional esbuild plugins
-- `globalName`: Global name (browser builds only)
-- `bundle`: Whether to bundle files (default: false for ESM/CJS, true for browser)
+**Options:** See `BuildOptions` type for all available options.
 
 ### Plugins
 
@@ -140,9 +149,13 @@ Applies fallback translations based on configuration.
 
 esbuild plugin for processing locale files with fallback translations.
 
+**Options:** See `LocalePluginOptions` type.
+
 #### `createCopyPlugin(options)`
 
 Plugin for copying locale files with watch support.
+
+**Options:** See `CopyPluginOptions` type.
 
 ### Utilities
 
@@ -158,6 +171,40 @@ Checks if the current process is running in watch mode.
 
 Returns current timestamp for logging.
 
+### Types
+
+All TypeScript interfaces and types are available from `@beabee/esbuild/types`:
+
+- `BuildOptions` - Configuration options for build functions
+- `LocalePluginOptions` - Configuration options for locale plugin
+- `CopyPluginOptions` - Configuration options for copy plugin
+
+## Package Structure
+
+```
+packages/esbuild/
+├── src/
+│   ├── builders.ts          # Build functions
+│   ├── plugins.ts           # esbuild plugins
+│   ├── utils.ts             # Utility functions
+│   ├── types/               # TypeScript type definitions
+│   │   ├── build-options.ts
+│   │   ├── locale-plugin-options.ts
+│   │   ├── copy-plugin-options.ts
+│   │   └── index.ts
+│   └── locale/              # Locale-specific tools
+│       ├── utils.ts
+│       ├── fallback-translations.ts
+│       ├── esbuild-locale-plugin.ts
+│       ├── generate-template.ts
+│       ├── normalize-translations.ts
+│       ├── copy-plugin.ts
+│       └── index.ts
+├── index.ts                 # Main export
+├── package.json
+└── README.md
+```
+
 ## Examples
 
 See the following packages for real-world usage examples:
@@ -169,4 +216,4 @@ See the following packages for real-world usage examples:
 ## Dependencies
 
 - `esbuild` - Core build tool
-- `@gjsify/esbuild-plugin-transform-ext` - File extension transformation 
+- `@gjsify/esbuild-plugin-transform-ext` - File extension transformation
