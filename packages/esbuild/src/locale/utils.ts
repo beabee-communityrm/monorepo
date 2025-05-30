@@ -1,19 +1,5 @@
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
-
-/**
- * Get the source directory path for locale files
- * @returns The absolute path to the locales directory
- */
-export function getLocalesDir(): string {
-  return path.join(
-    path.dirname(fileURLToPath(import.meta.url)),
-    "..",
-    "src",
-    "locales",
-  );
-}
 
 /**
  * Read and parse a JSON file

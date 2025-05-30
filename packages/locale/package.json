@@ -18,6 +18,7 @@
     "dev": "yarn watch"
   },
   "devDependencies": {
+    "@beabee/esbuild": "workspace:^",
     "@gjsify/esbuild-plugin-transform-ext": "^0.0.4",
     "esbuild": "^0.25.5",
     "typescript": "~5.6.3"

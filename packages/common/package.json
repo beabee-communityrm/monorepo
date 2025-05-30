@@ -52,6 +52,7 @@
   },
   "homepage": "https://github.com/beabee-communityrm/monorepo/blob/main/packages/common/README.md",
   "devDependencies": {
+    "@beabee/esbuild": "workspace:^",
     "@beabee/prettier-config": "workspace:^",
     "@gjsify/esbuild-plugin-transform-ext": "^0.0.4",
     "concurrently": "^9.1.2",

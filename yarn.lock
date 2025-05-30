@@ -1343,7 +1343,7 @@ __metadata:
     "@types/express-session": "npm:^1.18.1"
     "@types/module-alias": "npm:^2.0.4"
     "@types/multer": "npm:^1.4.12"
-    "@types/node": "npm:^22.13.5"
+    "@types/node": "npm:^22.15.28"
     "@types/passport": "npm:^1.0.17"
     "@types/passport-local": "npm:^1.0.38"
     chance: "npm:^1.1.12"
@@ -1385,6 +1385,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@beabee/beabee-common@workspace:packages/common"
   dependencies:
+    "@beabee/esbuild": "workspace:^"
     "@beabee/prettier-config": "workspace:^"
     "@gjsify/esbuild-plugin-transform-ext": "npm:^0.0.4"
     concurrently: "npm:^9.1.2"
@@ -1401,6 +1402,7 @@ __metadata:
   resolution: "@beabee/client@workspace:packages/client"
   dependencies:
     "@beabee/beabee-common": "workspace:^"
+    "@beabee/esbuild": "workspace:^"
     "@beabee/prettier-config": "workspace:^"
     "@beabee/test-utils": "workspace:^"
     "@gjsify/esbuild-plugin-transform-ext": "npm:^0.0.4"
@@ -1483,6 +1485,16 @@ __metadata:
     "@beabee/tsconfig": "workspace:^"
     typescript: "npm:~5.6.3"
     vitest: "npm:^3.0.9"
+  languageName: unknown
+  linkType: soft
+
+"@beabee/esbuild@workspace:^, @beabee/esbuild@workspace:packages/esbuild":
+  version: 0.0.0-use.local
+  resolution: "@beabee/esbuild@workspace:packages/esbuild"
+  dependencies:
+    "@gjsify/esbuild-plugin-transform-ext": "npm:^0.0.4"
+    "@types/node": "npm:^22.15.28"
+    esbuild: "npm:^0.25.5"
   languageName: unknown
   linkType: soft
 
@@ -1572,7 +1584,7 @@ __metadata:
     "@types/express-session": "npm:^1.18.1"
     "@types/lodash": "npm:^4.17.15"
     "@types/module-alias": "npm:^2.0.4"
-    "@types/node": "npm:^22.13.5"
+    "@types/node": "npm:^22.15.28"
     "@types/papaparse": "npm:^5.3.15"
     "@types/passport": "npm:^1.0.17"
     "@types/passport-local": "npm:^1.0.38"
@@ -1637,6 +1649,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@beabee/locale@workspace:packages/locale"
   dependencies:
+    "@beabee/esbuild": "workspace:^"
     "@gjsify/esbuild-plugin-transform-ext": "npm:^0.0.4"
     esbuild: "npm:^0.25.5"
     typescript: "npm:~5.6.3"
@@ -1737,7 +1750,7 @@ __metadata:
     "@beabee/prettier-config": "workspace:^"
     "@beabee/tsconfig": "workspace:^"
     "@types/express": "npm:^4.17.21"
-    "@types/node": "npm:^22.13.5"
+    "@types/node": "npm:^22.15.28"
     body-parser: "npm:^1.20.3"
     concurrently: "npm:^9.1.2"
     date-fns: "npm:^4.1.0"
@@ -6237,12 +6250,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^22.13.5":
-  version: 22.13.5
-  resolution: "@types/node@npm:22.13.5"
+"@types/node@npm:^22.15.28":
+  version: 22.15.28
+  resolution: "@types/node@npm:22.15.28"
   dependencies:
-    undici-types: "npm:~6.20.0"
-  checksum: 10c0/a2e7ed7bb0690e439004779baedeb05159c5cc41ef6d81c7a6ebea5303fde4033669e1c0e41ff7453b45fd2fea8dbd55fddfcd052950c7fcae3167c970bca725
+    undici-types: "npm:~6.21.0"
+  checksum: 10c0/5d540f44a421edf57d492c5c8f1dcbc4eb1d07f820501848e958c64a83cdb76bebf1d0456d2677c3dc37b94f3fde054b76c880bdd88e19518ae87b05a72bac3c
   languageName: node
   linkType: hard
 
@@ -18761,6 +18774,13 @@ __metadata:
   version: 6.20.0
   resolution: "undici-types@npm:6.20.0"
   checksum: 10c0/68e659a98898d6a836a9a59e6adf14a5d799707f5ea629433e025ac90d239f75e408e2e5ff086afc3cace26f8b26ee52155293564593fbb4a2f666af57fc59bf
+  languageName: node
+  linkType: hard
+
+"undici-types@npm:~6.21.0":
+  version: 6.21.0
+  resolution: "undici-types@npm:6.21.0"
+  checksum: 10c0/c01ed51829b10aa72fc3ce64b747f8e74ae9b60eafa19a7b46ef624403508a54c526ffab06a14a26b3120d055e1104d7abe7c9017e83ced038ea5cf52f8d5e04
   languageName: node
   linkType: hard
 

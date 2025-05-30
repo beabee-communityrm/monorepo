@@ -30,9 +30,10 @@ COPY --chown=node:node apps/legacy/package.json /opt/apps/legacy/package.json
 COPY --chown=node:node apps/webhooks/package.json /opt/apps/webhooks/package.json
 COPY --chown=node:node apps/e2e-api-tests/package.json /opt/apps/e2e-api-tests/package.json
 
-# Copy config files with dependencies info
+# Copy dependencies with relevant content
 COPY --chown=node:node packages/prettier-config /opt/packages/prettier-config
 COPY --chown=node:node packages/tsconfig /opt/packages/tsconfig
+COPY --chown=node:node packages/esbuild /opt/packages/esbuild
 
 ENV NODE_ENV=production
 ENV NODE_OPTIONS=--enable-source-maps

@@ -14,9 +14,11 @@
   },
   "scripts": {
     "clear": "rm -rf dist",
-    "build": "yarn build:types && yarn build:platforms",
-    "build:platforms": "node esbuild.js",
+    "build": "yarn build:types && yarn build:esbuild",
+    "build:esbuild": "node --experimental-specifier-resolution=node --experimental-strip-types esbuild.ts",
     "build:types": "tsc --project ./tsconfig.build.json",
+    "watch": "yarn build:esbuild --watch",
+    "dev": "yarn watch",
     "generate:index": "node generate-index.js",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -29,6 +31,7 @@
     "@beabee/beabee-common": "workspace:^"
   },
   "devDependencies": {
+    "@beabee/esbuild": "workspace:^",
     "@beabee/prettier-config": "workspace:^",
     "@beabee/test-utils": "workspace:^",
     "@gjsify/esbuild-plugin-transform-ext": "^0.0.4",
