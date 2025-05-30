@@ -1,6 +1,6 @@
 {
   "name": "@beabee/legacy",
-  "version": "0.16.0",
+  "version": "0.28.1",
   "description": "A community engagement system for community newsrooms",
   "private": true,
   "main": "dist/app.js",

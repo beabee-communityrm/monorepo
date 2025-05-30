@@ -1,6 +1,6 @@
 {
   "name": "@beabee/beabee-common",
-  "version": "0.21.0",
+  "version": "0.28.1",
   "description": "Shared code between Beabee projects",
   "type": "module",
   "main": "./dist/cjs/index.cjs",

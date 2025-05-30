@@ -1,7 +1,7 @@
 {
   "name": "@beabee/core",
   "description": "Core package for the beabee backend",
-  "version": "0.16.0",
+  "version": "0.28.1",
   "type": "commonjs",
   "scripts": {
     "clear": "rimraf dist/",

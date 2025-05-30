@@ -1,6 +1,6 @@
 {
   "name": "@beabee/e2e-api-tests",
-  "version": "1.0.0",
+  "version": "0.28.1",
   "private": true,
   "type": "module",
   "scripts": {

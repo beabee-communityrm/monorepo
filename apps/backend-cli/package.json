@@ -1,6 +1,6 @@
 {
   "name": "@beabee/backend-cli",
-  "version": "1.0.0",
+  "version": "0.28.1",
   "main": "dist/index.js",
   "bin": "./dist/index.js",
   "type": "module",
