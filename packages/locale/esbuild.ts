@@ -1,7 +1,8 @@
 // Build Node.js ESM module with esbuild.
 import * as esbuild from "esbuild";
 import { extname, join } from "node:path";
-import { readdir, rename } from "node:fs/promises";
+import { readdir, rename, copyFile, mkdir } from "node:fs/promises";
+import { watch, existsSync } from "node:fs";
 import { transformExtPlugin } from "@gjsify/esbuild-plugin-transform-ext";
 import { normalizeTranslations, generateTemplate } from "./tools/index.ts";
 import { localePlugin } from "./tools/esbuild-locale-plugin.ts";
@@ -13,9 +14,100 @@ const SOURCE_LOCALES_DIR = "./src/locales";
 
 const isWatch = process.argv.includes("--watch");
 
+function createWatchLoggerPlugin(name: string) {
+  return {
+    name: `watch-logger-${name}`,
+    setup(build: any) {
+      build.onEnd((result: any) => {
+        if (result.errors.length > 0) {
+          console.log(
+            `🔴 [${new Date().toLocaleTimeString()}] ${name} build failed with ${result.errors.length} errors`,
+          );
+        } else {
+          console.log(
+            `✅ [${new Date().toLocaleTimeString()}] ${name} rebuild completed`,
+          );
+        }
+      });
+    },
+  };
+}
+
+function createCopyPlugin(outdir: string, dirName: string) {
+  return {
+    name: `copy-plugin-${dirName}`,
+    setup(build: any) {
+      let copying = false;
+
+      const copyFiles = async () => {
+        if (copying) return;
+        copying = true;
+
+        try {
+          // Ensure output directory exists
+          const localesOutDir = join(outdir, "locales");
+          if (!existsSync(localesOutDir)) {
+            await mkdir(localesOutDir, { recursive: true });
+          }
+
+          // Process with locale plugin logic
+          const localePluginInstance = localePlugin({
+            configPath: CONFIG_PATH,
+            sourceLocalesDir: SOURCE_LOCALES_DIR,
+          });
+
+          // Copy JSON files manually
+          const files = await readdir(SOURCE_LOCALES_DIR);
+          const jsonFiles = files.filter((file) => file.endsWith(".json"));
+
+          for (const file of jsonFiles) {
+            const sourcePath = join(SOURCE_LOCALES_DIR, file);
+            const targetPath = join(localesOutDir, file);
+            await copyFile(sourcePath, targetPath);
+          }
+
+          console.log(
+            `📋 [${new Date().toLocaleTimeString()}] ${dirName} copied ${jsonFiles.length} locale files`,
+          );
+        } catch (error) {
+          console.error(
+            `❌ [${new Date().toLocaleTimeString()}] ${dirName} copy failed:`,
+            error,
+          );
+        } finally {
+          copying = false;
+        }
+      };
+
+      // Initial copy on build
+      build.onEnd(copyFiles);
+
+      // Watch mode: Monitor source files for changes
+      if (isWatch) {
+        const watcher = watch(
+          SOURCE_LOCALES_DIR,
+          { recursive: true },
+          async (eventType, filename) => {
+            if (filename && filename.endsWith(".json")) {
+              console.log(
+                `📄 [${new Date().toLocaleTimeString()}] ${dirName} detected change: ${filename}`,
+              );
+              await copyFiles();
+            }
+          },
+        );
+
+        build.onDispose(() => {
+          watcher.close();
+        });
+      }
+    },
+  };
+}
+
 async function buildESM(watch = false) {
   const ctx = await esbuild.context({
-    plugins: [],
+    plugins: watch ? [createWatchLoggerPlugin("ESM")] : [],
     entryPoints: ["./src/index.ts", "./src/**/*.ts"],
     outdir: OUTDIR_ESM,
     bundle: false,
@@ -30,7 +122,10 @@ async function buildESM(watch = false) {
 
 async function buildCJS(watch = false) {
   const ctx = await esbuild.context({
-    plugins: [transformExtPlugin({ outExtension: { ".js": ".cjs" } })],
+    plugins: [
+      transformExtPlugin({ outExtension: { ".js": ".cjs" } }),
+      ...(watch ? [createWatchLoggerPlugin("CJS")] : []),
+    ],
     entryPoints: ["./src/index.ts", "./src/**/*.ts"],
     outdir: OUTDIR_CJS,
     bundle: false,
@@ -44,16 +139,19 @@ async function buildCJS(watch = false) {
 }
 
 async function buildJSON(outdir: string, watch = false) {
+  const dirName = outdir.includes("esm")
+    ? "JSON-ESM"
+    : outdir.includes("cjs")
+      ? "JSON-CJS"
+      : "JSON-Types";
   const ctx = await esbuild.context({
-    entryPoints: ["./src/**/*.json"],
+    entryPoints: [], // No actual entry points needed, just using for the plugin system
     outdir,
     bundle: false,
-    loader: { ".json": "copy" },
+    write: false, // We handle file writing in our copy plugin
     plugins: [
-      localePlugin({
-        configPath: CONFIG_PATH,
-        sourceLocalesDir: SOURCE_LOCALES_DIR,
-      }),
+      createCopyPlugin(outdir, dirName),
+      ...(watch ? [createWatchLoggerPlugin(dirName)] : []),
     ],
   });
   if (watch) await ctx.watch();
@@ -66,6 +164,7 @@ async function main() {
   await generateTemplate();
 
   if (isWatch) {
+    console.log("🚀 Starting watch mode...");
     await Promise.all([
       buildESM(true),
       buildCJS(true),
@@ -73,7 +172,7 @@ async function main() {
       buildJSON(OUTDIR_CJS, true),
       buildJSON("./dist/types", true),
     ]);
-    console.log("Watching for changes...");
+    console.log("👀 Watching for changes...");
     // Keep process alive
     process.stdin.resume();
   } else {

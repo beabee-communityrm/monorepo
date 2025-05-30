@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "@gjsify/esbuild-plugin-transform-ext": "^0.0.4",
-    "esbuild": "^0.25.1",
+    "esbuild": "^0.25.5",
     "typescript": "~5.6.3"
   },
   "files": [
