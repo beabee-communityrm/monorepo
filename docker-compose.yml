@@ -9,7 +9,7 @@ x-service-app: &service-app
 
 x-backend-app: &backend-app
   <<: *service-app
-  command: ["node", "--watch", "./dist/app.js"]
+  command: ["node", "--watch", "--watch-preserve-output", "./dist/app.js"]
 
 services:
   db:
