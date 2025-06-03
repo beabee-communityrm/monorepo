@@ -105,7 +105,6 @@ COPY --chown=node:node --from=builder /opt/apps/backend-cli/dist /opt/apps/backe
 HEALTHCHECK --interval=10s --timeout=5s --start-period=30s --retries=3 \
     CMD curl -f http://localhost:3000/health || exit 1
 
-# TODO: use standard dist folder
 CMD [ "node", "./dist/api/app.js" ]
 
 ## Cron image
