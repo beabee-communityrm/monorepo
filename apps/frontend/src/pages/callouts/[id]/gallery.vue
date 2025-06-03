@@ -32,7 +32,7 @@ meta:
               class="mb-2 aspect-video w-full object-cover"
               loading="lazy"
               :style="{ filter: callout.responseViewSchema?.imageFilter }"
-              :src="response.photos[0].url + '?w=400&h=400'"
+              :src="resolveImageUrl(response.photos[0].path, 400)"
             />
             <h2>{{ response.title }}</h2>
           </router-link>
@@ -49,8 +49,10 @@ meta:
     </transition>
 
     <CalloutShowResponsePanel
+      v-if="selectedResponse"
       :callout="callout"
-      :responses="selectedResponse ? [selectedResponse] : []"
+      :responses="[selectedResponse]"
+      :current-response-number="selectedResponse.number"
       @close="
         router.push({ ...route, hash: '' });
         introOpen = false;
@@ -75,6 +77,7 @@ import CalloutIntroPanel from '@components/pages/callouts/CalloutIntroPanel.vue'
 import CalloutMapHeader from '@components/pages/callouts/CalloutMapHeader.vue';
 
 import { client } from '@utils/api';
+import { resolveImageUrl } from '@utils/url';
 
 import { isEmbed } from '@store';
 import type {
