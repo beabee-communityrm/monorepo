@@ -24,7 +24,7 @@
             :placeholder="
               selectedLocale === defaultLocale
                 ? ''
-                : slide.navigation.prevText.default
+                : getPlaceholder(slide.navigation.prevText, selectedLocale)
             "
             :disabled="selectedLocale === defaultLocale"
             :copyable="selectedLocale === defaultLocale"
@@ -45,7 +45,7 @@
             :placeholder="
               selectedLocale === defaultLocale
                 ? ''
-                : slide.navigation.nextText.default
+                : getPlaceholder(slide.navigation.nextText, selectedLocale)
             "
             :disabled="selectedLocale === defaultLocale"
             :copyable="selectedLocale === defaultLocale"
@@ -66,7 +66,7 @@
             :placeholder="
               selectedLocale === defaultLocale
                 ? ''
-                : slide.navigation.submitText.default
+                : getPlaceholder(slide.navigation.submitText, selectedLocale)
             "
             :disabled="selectedLocale === defaultLocale"
             :copyable="selectedLocale === defaultLocale"
@@ -86,6 +86,11 @@ import type { FormBuilderSlide } from '@components/form-builder/form-builder.int
 import type { LocaleProp } from '@type/locale-prop';
 import AppInput from '@components/forms/AppInput.vue';
 import { AppFormBox } from '@beabee/vue/components';
+import {
+  updateLocalizedValue,
+  getLocalizedValueNoFallback,
+  getLocalizedValueFallback,
+} from '@utils/callouts';
 
 const props = defineProps<{
   slides: FormBuilderSlide[];
@@ -95,30 +100,28 @@ const props = defineProps<{
 
 const { t } = useI18n();
 
-// Get navigation value for a specific locale
+// Get navigation value for a specific locale using utility function (no fallback)
 function getValue(navProp: LocaleProp, locale: string): string {
-  if (locale === props.defaultLocale) {
-    return navProp.default || '';
-  }
-
-  return navProp[locale] || '';
+  return getLocalizedValueNoFallback(navProp, locale, props.defaultLocale);
 }
-// Update navigation value
+
+// Get fallback text for placeholder
+function getPlaceholder(navProp: LocaleProp, locale: string): string {
+  return getLocalizedValueFallback(navProp, locale, props.defaultLocale);
+}
+
+// Update navigation value using utility function
 function updateValue(
   slide: FormBuilderSlide,
   field: 'prevText' | 'nextText' | 'submitText',
   locale: string,
   value: string
 ): void {
-  const currentValue = { ...slide.navigation[field] };
-
-  if (locale === props.defaultLocale) {
-    currentValue.default = value;
-  } else {
-    currentValue[locale] = value;
-  }
-
-  // Update the navigation field in the slide
-  slide.navigation[field] = currentValue;
+  updateLocalizedValue(
+    slide.navigation[field],
+    locale,
+    value,
+    props.defaultLocale
+  );
 }
 </script>

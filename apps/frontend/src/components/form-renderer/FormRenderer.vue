@@ -1,8 +1,8 @@
 <template>
   <Form
-    :key="formOptsChanged"
+    :key="componentTextChangeCounter"
     class="callout-form-renderer"
-    :form="{ components }"
+    :form="{ components: localizedComponents }"
     :submission="modelValue && ({ data: modelValue } as any)"
     :options="formOpts"
     language="custom"
@@ -14,7 +14,7 @@ import type {
   CalloutComponentSchema,
   CalloutResponseAnswersSlide,
 } from '@beabee/beabee-common';
-import { computed, onBeforeMount, ref } from 'vue';
+import { computed, onBeforeMount, ref, watch } from 'vue';
 import { Form } from '../../lib/formio';
 import { type FormChangeEvent } from './form-renderer.interface';
 import { config, dom } from '@fortawesome/fontawesome-svg-core';
@@ -59,9 +59,123 @@ function handleChange(evt: FormChangeEvent, changes?: { noValidate: boolean }) {
   }
 }
 
-const formOptsChanged = ref(0);
-const formOpts = computed(
-  () => ({
+/**
+ * Apply translations to components before passing them to Form.io
+ * This is necessary because we handle all translations ourselves instead of
+ * relying on Form.io's i18n system for better control and consistency
+ */
+// Create a simple counter that changes when componentI18nText changes
+const componentTextChangeCounter = ref(0);
+
+// Watch for changes in componentI18nText and increment counter
+watch(
+  () => props.componentI18nText,
+  () => {
+    componentTextChangeCounter.value++;
+  },
+  { deep: true }
+);
+
+const localizedComponents = computed(() => {
+  if (!props.componentI18nText) {
+    return props.components;
+  }
+
+  const componentI18nText = props.componentI18nText;
+
+  return props.components.map((component) => {
+    const localizedComponent = { ...component } as Record<string, unknown>;
+
+    // Handle content components with HTML property
+    if (component.type === 'content' && 'html' in component) {
+      const htmlProperty = component.html as string;
+      const htmlTranslation = componentI18nText[htmlProperty];
+      if (htmlTranslation) {
+        localizedComponent.html = htmlTranslation;
+      }
+    }
+
+    // Handle label translations for all components
+    if (
+      'label' in component &&
+      component.label &&
+      typeof component.label === 'string'
+    ) {
+      const labelTranslation = componentI18nText[component.label];
+      if (labelTranslation) {
+        localizedComponent.label = labelTranslation;
+      }
+    }
+
+    // Handle description translations
+    if (
+      'description' in component &&
+      component.description &&
+      typeof component.description === 'string'
+    ) {
+      const descriptionTranslation = componentI18nText[component.description];
+      if (descriptionTranslation) {
+        localizedComponent.description = descriptionTranslation;
+      }
+    }
+
+    // Handle placeholder translations
+    if (
+      'placeholder' in component &&
+      component.placeholder &&
+      typeof component.placeholder === 'string'
+    ) {
+      const placeholderTranslation = componentI18nText[component.placeholder];
+      if (placeholderTranslation) {
+        localizedComponent.placeholder = placeholderTranslation;
+      }
+    }
+
+    // Handle options translations for select components
+    if ('values' in component && Array.isArray(component.values)) {
+      localizedComponent.values = component.values.map(
+        (value: Record<string, unknown>) => {
+          const labelTranslation =
+            value.label && typeof value.label === 'string'
+              ? componentI18nText[value.label]
+              : undefined;
+          return labelTranslation
+            ? { ...value, label: labelTranslation }
+            : value;
+        }
+      );
+    }
+
+    // Handle data.values translations for dropdown components
+    if (
+      'data' in component &&
+      component.data &&
+      typeof component.data === 'object' &&
+      component.data !== null
+    ) {
+      const data = component.data as Record<string, unknown>;
+      if ('values' in data && Array.isArray(data.values)) {
+        localizedComponent.data = {
+          ...data,
+          values: data.values.map((value: Record<string, unknown>) => {
+            const labelTranslation =
+              value.label && typeof value.label === 'string'
+                ? componentI18nText[value.label]
+                : undefined;
+            return labelTranslation
+              ? { ...value, label: labelTranslation }
+              : value;
+          }),
+        };
+      }
+    }
+
+    return localizedComponent as CalloutComponentSchema;
+  });
+});
+
+const formOpts = computed(() => {
+  return {
     readOnly: props.readonly,
     noAlerts: true,
     renderMode: props.readonly ? 'html' : 'form',
@@ -79,12 +193,10 @@ const formOpts = computed(
         required: t('form.errors.unknown.required'),
         invalid_email: t('form.errors.unknown.email'),
         invalid_url: t('form.errors.unknown.url'),
-        ...props.componentI18nText,
       },
     },
-  }),
-  { onTrigger: () => formOptsChanged.value++ }
-);
+  };
+});
 
 onBeforeMount(() => {
   library.add(
