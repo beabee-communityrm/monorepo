@@ -7,6 +7,3 @@
 
 /apps/*/dist/
 /packages/*/dist/
-
-/apps/backend/dist/
-

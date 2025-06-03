@@ -20,16 +20,13 @@
             {{ t('callout.builder.translationFields.' + field) }}
           </label>
 
+          <!-- Input field -->
           <AppInput
             v-if="fieldType === 'input'"
             :model-value="
               getLocalizedValue(component[field] as string, selectedLocale)
             "
-            :placeholder="
-              selectedLocale === defaultLocale
-                ? ''
-                : getDefaultText(component[field] as string)
-            "
+            :placeholder="getDefaultText(component[field] as string)"
             :disabled="selectedLocale === defaultLocale"
             :copyable="selectedLocale === defaultLocale"
             @update:model-value="
@@ -37,19 +34,30 @@
             "
           />
 
+          <!-- Textarea field -->
           <AppTextArea
-            v-else
+            v-else-if="fieldType === 'textarea'"
             :model-value="
               getLocalizedValue(component[field] as string, selectedLocale)
             "
-            :placeholder="
-              selectedLocale === defaultLocale
-                ? ''
-                : getDefaultText(component[field] as string)
-            "
+            :placeholder="getDefaultText(component[field] as string)"
             :disabled="selectedLocale === defaultLocale"
             :copyable="selectedLocale === defaultLocale"
             rows="3"
+            @update:model-value="
+              updateValue(component[field] as string, selectedLocale, $event)
+            "
+          />
+
+          <!-- Rich text editor field -->
+          <RichTextEditor
+            v-else-if="fieldType === 'richtext'"
+            :model-value="
+              getLocalizedValue(component[field] as string, selectedLocale)
+            "
+            :placeholder="getDefaultText(component[field] as string)"
+            :disabled="selectedLocale === defaultLocale"
+            :copyable="selectedLocale === defaultLocale"
             @update:model-value="
               updateValue(component[field] as string, selectedLocale, $event)
             "
@@ -74,11 +82,7 @@
 
           <AppInput
             :model-value="getLocalizedValue(value.label, selectedLocale)"
-            :placeholder="
-              selectedLocale === defaultLocale
-                ? ''
-                : getDefaultText(value.label)
-            "
+            :placeholder="getDefaultText(value.label)"
             :disabled="selectedLocale === defaultLocale"
             :copyable="selectedLocale === defaultLocale"
             @update:model-value="
@@ -93,12 +97,18 @@
 
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n';
-import type { CalloutComponentSchema } from '@beabee/beabee-common';
+import { type CalloutComponentSchema } from '@beabee/beabee-common';
 import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
 import type { LocaleProp } from '@type/locale-prop';
 import AppInput from '@components/forms/AppInput.vue';
 import AppTextArea from '@components/forms/AppTextArea.vue';
 import { AppFormBox } from '@beabee/vue/components';
+import RichTextEditor from '@components/rte/RichTextEditor.vue';
+import {
+  updateComponentTextValue,
+  getComponentTextValueNoFallback,
+  getComponentTextFallback,
+} from '@utils/callouts';
 
 const props = defineProps<{
   defaultLocale: string;
@@ -115,49 +125,45 @@ const fields = [
   ['label', 'input'],
   ['description', 'textarea'],
   ['placeholder', 'input'],
+  ['html', 'richtext'],
 ] as const;
 
-// Get the default text for a field
+// Get the fallback text for placeholder in translation UI
 function getDefaultText(ref: string | undefined = ''): string {
-  return getLocalizedValue(ref, props.defaultLocale);
+  return getComponentTextFallback(
+    props.componentText,
+    ref,
+    props.selectedLocale,
+    props.defaultLocale
+  );
 }
 
-// Get the localized value for a specific locale
+// Get only the specific translation for a locale without fallback (for translation UI)
 function getLocalizedValue(
   ref: string | undefined = '',
   locale: string
 ): string {
-  if (!ref) return '';
-
-  const value = props.componentText[ref];
-  if (!value) return '';
-
-  if (locale === props.defaultLocale) {
-    return value.default || ref;
-  }
-
-  return value[locale] || '';
+  return getComponentTextValueNoFallback(
+    props.componentText,
+    ref,
+    locale,
+    props.defaultLocale
+  );
 }
 
-// Update a translation value
+// Update a translation value using the utility function
 function updateValue(
   ref: string | undefined = '',
   locale: string,
   value: string
 ): void {
-  if (!ref) return;
-
-  const currentValue = props.componentText[ref] || { default: ref };
-  const newValue = { ...currentValue };
-
-  if (locale === props.defaultLocale) {
-    newValue.default = value;
-  } else {
-    newValue[locale] = value;
-  }
-
-  // eslint-disable-next-line vue/no-mutating-props
-  props.componentText[ref] = newValue;
+  updateComponentTextValue(
+    props.componentText,
+    ref,
+    locale,
+    value,
+    props.defaultLocale
+  );
 }
 
 // Get options for select, radio, etc. components

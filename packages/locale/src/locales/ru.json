@@ -648,7 +648,8 @@
         "description": "",
         "label": "",
         "option": "",
-        "placeholder": ""
+        "placeholder": "",
+        "html": ""
       }
     },
     "confirmHuman": "Confirma por favor que és um humano",
