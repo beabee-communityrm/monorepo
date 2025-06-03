@@ -1,11 +1,12 @@
-import { Get, JsonController } from "routing-controllers";
+import { Get, JsonController, Res } from "routing-controllers";
+import { Response } from "express";
 import { GetHealthDto } from "@api/dto/HealthDto";
 import ContentTransformer from "@api/transformers/ContentTransformer";
 
 @JsonController("/health")
 export class HealthController {
   @Get("/")
-  async getHealth(): Promise<GetHealthDto> {
+  async getHealth(@Res() response: Response): Promise<Response> {
     let databaseStatus = false;
 
     try {
@@ -16,12 +17,16 @@ export class HealthController {
       console.error("Database health check failed:", error);
     }
 
-    return {
+    const healthData: GetHealthDto = {
       status: databaseStatus ? "ok" : "error",
       timestamp: new Date(),
       services: {
         database: databaseStatus
       }
     };
+
+    // Return appropriate HTTP status code
+    const statusCode = databaseStatus ? 200 : 503;
+    return response.status(statusCode).json(healthData);
   }
 }
