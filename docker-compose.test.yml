@@ -67,6 +67,9 @@ services:
       service: app_router
     ports:
       - ${ROUTER_PORT}:80
+    depends_on:
+      - api_app
+      - webhook_app
 
   migration:
     extends:
