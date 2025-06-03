@@ -101,7 +101,6 @@ USER node
 
 COPY --chown=node:node --from=builder /opt/apps/backend-cli/dist /opt/apps/backend-cli/dist
 
-# TODO: use standard dist folder
 CMD [ "node", "./dist/api/app.js" ]
 
 ## Cron image
