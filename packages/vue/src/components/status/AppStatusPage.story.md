@@ -15,7 +15,7 @@ The `AppStatusPage` component provides a full-screen status display for applicat
 ## Usage
 
 ```vue
-<AppStatusPage 
+<AppStatusPage
   title="Loading Application"
   message="Please wait while we connect to the server..."
   loading-text="Performing health checks"
@@ -51,7 +51,7 @@ The `AppStatusPage` component provides a full-screen status display for applicat
 ### Basic Loading State
 
 ```vue
-<AppStatusPage 
+<AppStatusPage
   title="Starting Application"
   message="Please wait while we initialize the system..."
 />
@@ -60,7 +60,7 @@ The `AppStatusPage` component provides a full-screen status display for applicat
 ### With Progress Tracking
 
 ```vue
-<AppStatusPage 
+<AppStatusPage
   title="Loading Services"
   message="Setting up your environment..."
   :show-progress="true"
@@ -72,7 +72,7 @@ The `AppStatusPage` component provides a full-screen status display for applicat
 ### With Retry Option
 
 ```vue
-<AppStatusPage 
+<AppStatusPage
   title="Connection Issues"
   message="We're having trouble connecting to the server."
   :show-retry="true"
@@ -87,7 +87,7 @@ The `AppStatusPage` component provides a full-screen status display for applicat
 Perfect for the backend health check scenario:
 
 ```vue
-<AppStatusPage 
+<AppStatusPage
   title="Health Check"
   message="Verifying server status before launching..."
   loading-text="Checking backend services"
@@ -119,7 +119,7 @@ if (showStatus.value) {
 </script>
 
 <template>
-  <AppStatusPage 
+  <AppStatusPage
     v-if="showStatus"
     title="Starting Beabee"
     message="Please wait while we connect to our services..."
@@ -151,4 +151,4 @@ if (showStatus.value) {
 4. **Connection Recovery**: Provide retry options when connections fail
 5. **Maintenance Mode**: Inform users during system maintenance
 
-The AppStatusPage provides a professional and user-friendly loading experience that keeps users informed about what's happening during application startup. 
+The AppStatusPage provides a professional and user-friendly loading experience that keeps users informed about what's happening during application startup.

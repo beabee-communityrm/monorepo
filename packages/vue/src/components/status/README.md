@@ -47,21 +47,21 @@ async function waitForBackendWithProgress() {
     try {
       statusProgress.value = Math.min((retries / maxRetries) * 90, 90);
       statusText.value = `Attempt ${retries + 1}/${maxRetries}...`;
-      
+
       // Your existing health check logic here
       const response = await fetch('/health');
       if (response.ok) {
         statusProgress.value = 100;
         statusText.value = 'Connection established!';
-        await new Promise(resolve => setTimeout(resolve, 500)); // Brief success display
+        await new Promise((resolve) => setTimeout(resolve, 500)); // Brief success display
         break;
       }
     } catch (error) {
       console.log(`Health check attempt ${retries + 1} failed:`, error);
     }
-    
+
     retries++;
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
   }
 
   // Clean up status page
@@ -103,7 +103,7 @@ const StatusPage = {
         healthStatus.value.error = null;
         healthStatus.value.progress = 0;
         startHealthCheck();
-      }
+      },
     };
   },
   components: { AppStatusPage },
@@ -120,7 +120,7 @@ const StatusPage = {
       info-text="If this takes longer than expected, try refreshing the page."
       @retry="onRetry"
     />
-  `
+  `,
 };
 
 async function startHealthCheck() {
@@ -129,4 +129,4 @@ async function startHealthCheck() {
 }
 ```
 
-This provides a smooth user experience during the application startup process. 
+This provides a smooth user experience during the application startup process.
