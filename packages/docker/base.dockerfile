@@ -7,7 +7,7 @@ ARG NODE_VERSION=22-bookworm-slim
 FROM node:${NODE_VERSION} AS base
 
 # https://github.com/nodejs/docker-node/blob/main/docs/BestPractices.md#handling-kernel-signals
-RUN apt-get update && apt-get install -y tini && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y tini curl && rm -rf /var/lib/apt/lists/*
 
 # Copy the workspace configuration
 COPY --chown=node:node package.json yarn.lock .yarnrc.yml /opt/
@@ -100,6 +100,10 @@ FROM dist-backend AS api_app
 USER node
 
 COPY --chown=node:node --from=builder /opt/apps/backend-cli/dist /opt/apps/backend-cli/dist
+
+# Health check using our custom health endpoint
+HEALTHCHECK --interval=10s --timeout=5s --start-period=30s --retries=3 \
+    CMD curl -f http://localhost:3000/health || exit 1
 
 # TODO: use standard dist folder
 CMD [ "node", "./dist/api/app.js" ]
