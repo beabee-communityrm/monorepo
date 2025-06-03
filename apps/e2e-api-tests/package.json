@@ -16,6 +16,6 @@
     "@beabee/test-utils": "workspace:^",
     "@beabee/tsconfig": "workspace:^",
     "typescript": "~5.6.3",
-    "vitest": "^3.0.9"
+    "vitest": "^3.1.4"
   }
 }

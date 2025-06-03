@@ -9,11 +9,7 @@
 
         <AppInput
           :model-value="getValue(endMessage.thankYouTitle, selectedLocale)"
-          :placeholder="
-            selectedLocale === defaultLocale
-              ? ''
-              : endMessage.thankYouTitle.default
-          "
+          :placeholder="getPlaceholder(endMessage.thankYouTitle)"
           :disabled="selectedLocale === defaultLocale"
           :copyable="selectedLocale === defaultLocale"
           @update:model-value="
@@ -30,11 +26,7 @@
 
         <RichTextEditor
           :model-value="getValue(endMessage.thankYouText, selectedLocale)"
-          :placeholder="
-            selectedLocale === defaultLocale
-              ? ''
-              : endMessage.thankYouText.default
-          "
+          :placeholder="getPlaceholder(endMessage.thankYouText)"
           :disabled="selectedLocale === defaultLocale"
           :copyable="selectedLocale === defaultLocale"
           @update:model-value="
@@ -55,7 +47,7 @@
         :placeholder="
           selectedLocale === defaultLocale
             ? ''
-            : endMessage.thankYouRedirect.default
+            : getPlaceholder(endMessage.thankYouRedirect)
         "
         :disabled="selectedLocale === defaultLocale"
         :copyable="selectedLocale === defaultLocale"
@@ -74,6 +66,11 @@ import type { EndMessageTabData } from '../ContentTab/SidebarTabContent/EndMessa
 import AppInput from '@components/forms/AppInput.vue';
 import { AppFormBox } from '@beabee/vue/components';
 import RichTextEditor from '@components/rte/RichTextEditor.vue';
+import {
+  updateLocalizedValue,
+  getLocalizedValueNoFallback,
+  getLocalizedValueFallback,
+} from '@utils/callouts';
 
 const props = defineProps<{
   defaultLocale: string;
@@ -83,29 +80,31 @@ const props = defineProps<{
 
 const { t } = useI18n();
 
-// Get end message value for a specific locale
+// Get end message value for a specific locale using utility function (no fallback)
 function getValue(prop: LocaleProp | undefined, locale: string): string {
-  if (!prop) return '';
-
-  if (locale === props.defaultLocale) {
-    return prop.default || '';
-  }
-
-  return prop[locale] || '';
+  return getLocalizedValueNoFallback(prop, locale, props.defaultLocale);
 }
 
-// Update end message value
+// Get fallback text for placeholder
+function getPlaceholder(prop: LocaleProp | undefined): string {
+  return getLocalizedValueFallback(
+    prop,
+    props.selectedLocale,
+    props.defaultLocale
+  );
+}
+
+// Update end message value using utility function
 function updateValue(
   field: 'thankYouTitle' | 'thankYouText' | 'thankYouRedirect',
   locale: string,
   value: string
 ): void {
-  if (locale === props.defaultLocale) {
-    // eslint-disable-next-line vue/no-mutating-props
-    props.endMessage[field].default = value;
-  } else {
-    // eslint-disable-next-line vue/no-mutating-props
-    props.endMessage[field][locale] = value;
-  }
+  updateLocalizedValue(
+    props.endMessage[field],
+    locale,
+    value,
+    props.defaultLocale
+  );
 }
 </script>

@@ -116,11 +116,10 @@ import { addBreadcrumb } from '@store/breadcrumb';
 import CalloutVariantsBox from '@components/pages/callouts/CalloutVariantsBox.vue';
 import AppShareBox from '@components/AppShareBox.vue';
 
+// Props: Receive the already processed callout from parent route
 const props = defineProps<{
-  callout: GetCalloutDataWith<'form' | 'variantNames'>;
+  callout: GetCalloutDataWith<'form' | 'responseViewSchema' | 'variantNames'>;
   respond?: boolean; // Flag for /respond route
-  // Suppress the warning about the ID prop being passed by the router
-  id?: string;
 }>();
 
 const { t } = useI18n();
