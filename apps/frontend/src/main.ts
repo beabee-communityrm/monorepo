@@ -14,17 +14,18 @@ import './index.css';
 
 import { init as initErrorHandler } from './lib/appsignal';
 import { BeabeeClient } from '@beabee/client';
+import env from '@env';
 
 /**
  * Wait for backend to be healthy before starting the app
  */
 async function waitForBackend(): Promise<void> {
   const client = new BeabeeClient({
-    host: import.meta.env.VITE_API_HOST || '',
-    path: '/api/1.0',
+    path: env.apiUrl,
+    host: env.appUrl,
   });
 
-  const maxRetries = 30; // 30 seconds total
+  const maxRetries = 60; // 60 seconds total
   const retryDelay = 1000; // 1 second between retries
   let retries = 0;
 
@@ -32,7 +33,7 @@ async function waitForBackend(): Promise<void> {
     try {
       const health = await client.health.check();
       if (health.status === 'ok') {
-        console.log('Backend is healthy');
+        console.log('Backend is healthy', health);
         return;
       }
       console.warn('Backend returned unhealthy status:', health);
