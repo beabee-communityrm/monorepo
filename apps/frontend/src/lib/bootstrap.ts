@@ -4,7 +4,7 @@ import router from './router';
 import { icons } from '@beabee/vue/plugins/icons';
 import { AppStatusPage } from '@beabee/vue/components';
 import { init as initErrorHandler } from './appsignal';
-import { waitForBackend } from '../utils/api/client';
+import { waitForBackend } from '@utils/api/client';
 import App from '../App.vue';
 
 // Flag to prevent multiple app initializations
@@ -46,44 +46,31 @@ function showStatusPage() {
 
   // Create a temporary app for the status page
   statusApp = createApp({
-    components: { AppStatusPage },
     data() {
       return {
         showRetry: false,
-        progress: 0,
-        progressText: 'Connecting to backend...',
-        attempts: 0,
       };
     },
     async mounted() {
-      await this.startApp();
+      await this.checkBackend();
     },
     methods: {
       async handleRetry() {
         this.showRetry = false;
-        this.progress = 0;
-        this.attempts++;
-        await this.startApp();
+        await this.checkBackend();
       },
-      async startApp() {
+      async checkBackend() {
         if (isAppInitialized) {
           return;
         }
 
         try {
-          // Call waitForBackend with full retries and progress callback
-          await waitForBackend((progress, message) => {
-            this.progress = progress;
-            this.progressText = message;
-          });
-
+          // Wait for backend without progress tracking
+          await waitForBackend();
           await startMainApp();
         } catch {
           // Show retry button on failure
           this.showRetry = true;
-          this.progress = 0;
-          this.progressText =
-            'Connection failed. Please check your internet connection.';
         }
       },
     },
@@ -92,9 +79,7 @@ function showStatusPage() {
         title: 'Starting Beabee',
         message: 'Please wait while we connect to our services...',
         loadingText: 'Performing health checks',
-        showProgress: true,
-        progress: this.progress,
-        progressText: this.progressText,
+        showProgress: false,
         showRetry: this.showRetry,
         retryText: 'Try Again',
         showInfo: !this.showRetry,
@@ -115,23 +100,14 @@ function showStatusPage() {
 export async function initializeApp() {
   // Create a promise that resolves after a delay (to show status page)
   const delayPromise = new Promise<'show-status'>((resolve) => {
-    setTimeout(() => {
-      resolve('show-status');
-    }, 500); // Show status page after 500ms if backend hasn't responded
+    setTimeout(() => resolve('show-status'), 500);
   });
 
-  // Create a promise that tries to connect to backend
+  // Create a promise that tries to connect to backend quickly
   const backendPromise = new Promise<'backend-ready'>((resolve, reject) => {
-    waitForBackend(
-      undefined,
-      1 // Only try once for the quick check
-    )
-      .then(() => {
-        resolve('backend-ready');
-      })
-      .catch(() => {
-        reject();
-      });
+    waitForBackend(1) // Only try once for the quick check
+      .then(() => resolve('backend-ready'))
+      .catch(() => reject());
   });
 
   try {
