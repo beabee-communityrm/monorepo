@@ -35,6 +35,7 @@ COPY apps/e2e-api-tests/package.json /opt/apps/e2e-api-tests/package.json
 COPY packages/prettier-config /opt/packages/prettier-config
 COPY packages/tsconfig /opt/packages/tsconfig
 COPY packages/vue /opt/packages/vue
+COPY packages/esbuild /opt/packages/esbuild
 
 # Install dependencies
 RUN yarn workspaces focus

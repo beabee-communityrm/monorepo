@@ -1,6 +1,6 @@
 {
   "name": "@beabee/beabee-common",
-  "version": "0.21.0",
+  "version": "0.28.1",
   "description": "Shared code between Beabee projects",
   "type": "module",
   "main": "./dist/cjs/index.cjs",
@@ -24,9 +24,11 @@
   },
   "scripts": {
     "clear": "rm -rf dist",
-    "build": "yarn clear && yarn build:types && yarn build:platforms",
-    "build:platforms": "node esbuild.js",
+    "build": "yarn build:types && yarn build:esbuild",
+    "build:esbuild": "node --experimental-specifier-resolution=node --experimental-strip-types esbuild.ts",
     "build:types": "tsc --project ./tsconfig.build.json",
+    "watch": "yarn build:esbuild --watch",
+    "dev": "yarn watch",
     "test": "yarn test:types && yarn test:esm && yarn test:cjs && yarn test:vitest",
     "test:types": "tsc --noEmit",
     "test:esm": "node test/node/module-type/import.mjs",
@@ -50,10 +52,11 @@
   },
   "homepage": "https://github.com/beabee-communityrm/monorepo/blob/main/packages/common/README.md",
   "devDependencies": {
+    "@beabee/esbuild": "workspace:^",
     "@beabee/prettier-config": "workspace:^",
     "@gjsify/esbuild-plugin-transform-ext": "^0.0.4",
     "concurrently": "^9.1.2",
-    "esbuild": "^0.25.1",
+    "esbuild": "^0.25.5",
     "prettier": "^3.5.2",
     "typescript": "~5.6.3",
     "vitest": "^3.1.4"

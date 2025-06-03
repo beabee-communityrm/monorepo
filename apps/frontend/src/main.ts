@@ -13,12 +13,16 @@ import '@iframe-resizer/child';
 import './index.css';
 
 import { init as initErrorHandler } from './lib/appsignal';
+import { waitForBackend } from './utils/api/client';
 
-const app = createApp(App);
-initErrorHandler(app);
+// Wait for backend before initializing the app
+waitForBackend().then(() => {
+  const app = createApp(App);
+  initErrorHandler(app);
 
-app.use({ ...router });
-app.use(i18n);
-app.use(icons);
+  app.use({ ...router });
+  app.use(i18n);
+  app.use(icons);
 
-app.mount('#app');
+  app.mount('#app');
+});

@@ -1,0 +1,20 @@
+{
+  "name": "@beabee/esbuild",
+  "version": "0.28.1",
+  "type": "module",
+  "exports": {
+    ".": "./index.ts",
+    "./builders": "./src/builders.ts",
+    "./plugins": "./src/plugins.ts",
+    "./utils": "./src/utils.ts",
+    "./types": "./src/types/index.ts",
+    "./locale/*": "./src/locale/*.ts"
+  },
+  "dependencies": {
+    "@gjsify/esbuild-plugin-transform-ext": "^0.0.4",
+    "esbuild": "^0.25.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.28"
+  }
+}

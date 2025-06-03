@@ -1,6 +1,6 @@
 {
   "name": "@beabee/test-utils",
-  "version": "1.0.0",
+  "version": "0.28.1",
   "type": "module",
   "exports": {
     "./vitest/*": "./vitest/*.ts",

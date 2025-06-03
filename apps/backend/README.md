@@ -53,7 +53,7 @@ docker compose run --rm api_app yarn backend-cli configure --emailDomain <yourdo
 Need some test data? Download it here: coming soon
 
 ```bash
-docker compose run --rm -T api_app node built/tools/database/import.js < <import file>
+docker compose run --rm -T api_app node dist/tools/database/import.js < <import file>
 ```
 
 #### Go to the frontend

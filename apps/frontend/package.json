@@ -1,10 +1,9 @@
 {
   "name": "@beabee/frontend",
-  "version": "0.16.0",
+  "version": "0.28.1",
   "type": "module",
   "private": true,
   "scripts": {
-    "start": "yarn dev",
     "dev": "vite",
     "build": "yarn check:vue-tsc && yarn build:main && yarn build:embed",
     "build:main": "vite build",

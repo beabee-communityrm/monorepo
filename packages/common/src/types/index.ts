@@ -148,6 +148,7 @@ export * from "./get-segment-with.js";
 export * from "./get-segments-query.js";
 export * from "./get-stats-data.js";
 export * from "./get-stats-query.js";
+export * from "./health-check-data.js";
 export * from "./login-data.js";
 export * from "./newsletter-group-data.js";
 export * from "./noop.js";
