@@ -28,42 +28,44 @@ async function waitForBackend(): Promise<void> {
   const maxRetries = 60; // 60 seconds total
   const retryDelay = 1000; // 1 second between retries
   let retries = 0;
+  let wasUnhealthy = false;
 
   while (retries < maxRetries) {
     try {
       const health = await client.health.check();
       if (health.status === 'ok') {
-        console.log('Backend is healthy', health);
+        // Backend is healthy
+
+        // If backend was unhealthy before but is now healthy, refresh the browser
+        if (wasUnhealthy) {
+          window.location.reload();
+          return;
+        }
+
         return;
       }
-      console.warn('Backend returned unhealthy status:', health);
-    } catch (error) {
-      console.warn(
-        `Backend health check failed (attempt ${retries + 1}/${maxRetries}):`,
-        error
-      );
+      // Backend is unhealthy
+      wasUnhealthy = true;
+    } catch {
+      // Backend health check failed
+      wasUnhealthy = true;
     }
 
     retries++;
     await new Promise((resolve) => setTimeout(resolve, retryDelay));
   }
 
-  console.error('Backend failed to become healthy after maximum retries');
-  // Continue anyway - the app will show errors when trying to use API
+  throw new Error('Backend failed to become healthy after maximum retries');
 }
 
 // Wait for backend before initializing the app
-waitForBackend()
-  .then(() => {
-    const app = createApp(App);
-    initErrorHandler(app);
+waitForBackend().then(() => {
+  const app = createApp(App);
+  initErrorHandler(app);
 
-    app.use({ ...router });
-    app.use(i18n);
-    app.use(icons);
+  app.use({ ...router });
+  app.use(i18n);
+  app.use(icons);
 
-    app.mount('#app');
-  })
-  .catch((error) => {
-    console.error('Failed to initialize app:', error);
-  });
+  app.mount('#app');
+});
