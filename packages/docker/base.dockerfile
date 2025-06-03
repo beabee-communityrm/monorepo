@@ -102,7 +102,7 @@ USER node
 COPY --chown=node:node --from=builder /opt/apps/backend-cli/dist /opt/apps/backend-cli/dist
 
 # Health check using our custom health endpoint
-HEALTHCHECK --interval=10s --timeout=5s --start-period=30s --retries=3 \
+HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
     CMD curl -f http://localhost:3000/health || exit 1
 
 CMD [ "node", "./dist/api/app.js" ]
