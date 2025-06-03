@@ -8,6 +8,7 @@ export * from "./ContactTagController.js";
 export * from "./ContentController.js";
 export * from "./DocumentController.js";
 export * from "./EmailController.js";
+export * from "./HealthController.js";
 export * from "./ImageController.js";
 export * from "./NoticeController.js";
 export * from "./PaymentController.js";
