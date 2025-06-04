@@ -9,7 +9,7 @@ x-service-app: &service-app
 
 x-backend-app: &backend-app
   <<: *service-app
-  command: ['node', '--watch', './dist/app.js']
+  command: ["node", "--watch", "--watch-preserve-output", "./dist/app.js"]
 
 services:
   db:
@@ -58,12 +58,12 @@ services:
       - .env
     volumes:
       - ./packages:/opt/packages
-      - ./apps/backend/built:/opt/apps/backend/built
+      - ./apps/backend/dist:/opt/apps/backend/dist
       - ./apps/backend-cli/dist:/opt/apps/backend-cli/dist
       # Allow migrations to be written out from the container
       - ./packages/core/src/migrations:/opt/packages/core/src/migrations
     # TODO: Use standard dist folder
-    command: ['node', '--watch', './built/api/app.js']
+    command: ["node", "--watch", "--watch-preserve-output", "./dist/api/app.js"]
 
   # Webhook app
   webhook_app:
@@ -94,8 +94,8 @@ services:
       context: .
       dockerfile: ./apps/minio/Dockerfile
     ports:
-      - "${BEABEE_MINIO_PORT_ADMIN:-9000}:9000"  # Admin port for debugging, not for production
-      - "${BEABEE_MINIO_PORT_CONSOLE:-9001}:9001"  # Console port (Admin UI), not for production
+      - "${BEABEE_MINIO_PORT_ADMIN:-9000}:9000" # Admin port for debugging, not for production
+      - "${BEABEE_MINIO_PORT_CONSOLE:-9001}:9001" # Console port (Admin UI), not for production
     volumes:
       - minio_data:/data
     environment:
@@ -143,7 +143,7 @@ services:
       context: .
       dockerfile: ./packages/docker/base.dockerfile
       target: api_app
-    command: 'npm run typeorm migration:run'
+    command: "npm run typeorm migration:run"
     # Wait for the database to be ready
     depends_on:
       db:

@@ -1,11 +1,13 @@
 {
   "name": "@beabee/core",
   "description": "Core package for the beabee backend",
-  "version": "0.16.0",
+  "version": "0.28.1",
   "type": "commonjs",
   "scripts": {
-    "build": "rimraf dist/ && tsc -p tsconfig.build.json && cp -r src/data dist/",
-    "dev": "tsc --watch --preserveWatchOutput -p tsconfig.build.json",
+    "clear": "rimraf dist/",
+    "build": "tsc -p tsconfig.build.json && cp -r src/data dist/",
+    "dev": "yarn watch",
+    "watch": "tsc --watch --preserveWatchOutput -p tsconfig.build.json",
     "format": "prettier --write .",
     "check": "concurrently 'yarn:check:*'",
     "check:tsc": "tsc -p tsconfig.build.json --noEmit",

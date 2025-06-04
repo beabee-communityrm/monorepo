@@ -1,7 +1,7 @@
 {
   "name": "@beabee/locale",
   "description": "Beabee Locale Translations",
-  "version": "0.1.0",
+  "version": "0.28.1",
   "type": "module",
   "homepage": "https://github.com/beabee-communityrm/monorepo/tree/main/packages/locale",
   "license": "CC-BY-4.0",
@@ -11,15 +11,16 @@
   },
   "scripts": {
     "clear": "rm -rf dist/",
-    "build": "yarn clear && yarn build:esbuild && tsc",
+    "build": "yarn build:esbuild && tsc",
     "build:esbuild": "node --experimental-specifier-resolution=node --experimental-strip-types esbuild.ts",
     "check": "tsc --noEmit",
     "watch": "yarn build:esbuild --watch",
     "dev": "yarn watch"
   },
   "devDependencies": {
+    "@beabee/esbuild": "workspace:^",
     "@gjsify/esbuild-plugin-transform-ext": "^0.0.4",
-    "esbuild": "^0.25.1",
+    "esbuild": "^0.25.5",
     "typescript": "~5.6.3"
   },
   "files": [

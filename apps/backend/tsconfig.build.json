@@ -4,7 +4,7 @@
   "exclude": ["./src/static/**/*", "./**/*.test.ts"],
   "compilerOptions": {
     "rootDir": "./src",
-    "outDir": "./built", // TODO: use standard outDir
+    "outDir": "./dist",
     "paths": {
       "@core/*": ["./src/core/*"],
       "@apps/*": ["./src/apps/*"],
