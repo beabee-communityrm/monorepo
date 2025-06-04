@@ -12,6 +12,6 @@
     "node"
   ],
   "dependencies": {
-    "testcontainers": "^10.18.0"
+    "testcontainers": "^11.0.0"
   }
 }
