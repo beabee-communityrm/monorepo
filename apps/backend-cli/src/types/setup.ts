@@ -12,3 +12,8 @@ export interface SetupAdminArgs {
   email?: string;
   password?: string;
 }
+
+export interface SetupAllArgs
+  extends SetupSupportEmailArgs,
+    SetupPaymentMethodsArgs,
+    SetupAdminArgs {}
