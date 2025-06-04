@@ -26,7 +26,7 @@ export class HealthController {
     };
 
     // Return appropriate HTTP status code
-    const statusCode = databaseStatus ? 200 : 503;
+    const statusCode = healthData.status === "ok" ? 200 : 503;
     return response.status(statusCode).json(healthData);
   }
 }
