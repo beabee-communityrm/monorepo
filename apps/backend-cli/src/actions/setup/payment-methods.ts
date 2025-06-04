@@ -1,14 +1,15 @@
 import { runApp } from "@beabee/core/server";
 import { getRepository } from "@beabee/core/database";
 import { Content } from "@beabee/core/models";
-import { optionsService } from "@beabee/core/services/OptionsService";
-import type { ConfigureArgs } from "../types/index.js";
+import type { SetupPaymentMethodsArgs } from "../../types/setup.js";
 
-export const configure = async (argv: ConfigureArgs): Promise<void> => {
+/**
+ * Set up payment methods in the join content
+ */
+export const setupPaymentMethods = async (
+  argv: SetupPaymentMethodsArgs
+): Promise<void> => {
   await runApp(async () => {
-    // Set support email based on email domain
-    await optionsService.set("support-email", "support@" + argv.emailDomain);
-
     // Update payment methods in join content
     await getRepository(Content).update("join", {
       data: () =>
@@ -17,8 +18,7 @@ export const configure = async (argv: ConfigureArgs): Promise<void> => {
         )}')`
     });
 
-    console.log("System configuration updated successfully!");
-    console.log(`Support email set to: support@${argv.emailDomain}`);
+    console.log("Payment methods configuration updated successfully!");
     console.log("Payment methods updated to:", argv.paymentMethods.join(", "));
   });
 };
