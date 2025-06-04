@@ -43,22 +43,29 @@ let startedDockerComposeEnvironment: StartedDockerComposeEnvironment | null =
 export async function setup() {
   console.log("Starting Docker Compose environment...");
 
-  startedDockerComposeEnvironment = await new DockerComposeEnvironment(
-    rootPath,
-    "docker-compose.test.yml",
-  )
-    .withEnvironment(env)
-    .withProjectName(env.COMPOSE_PROJECT_NAME || "beabee-test")
-    .withWaitStrategy(
-      "db",
-      Wait.forLogMessage(/database system is ready to accept connections/),
+  try {
+    const dockerComposeEnv = new DockerComposeEnvironment(
+      rootPath,
+      "docker-compose.test.yml",
     )
-    .withWaitStrategy(
-      "api_app",
-      Wait.forLogMessage(/Server is ready and listening on port 3000/),
-    )
-    .withWaitStrategy("minio", Wait.forLogMessage(/MinIO server is running.../))
-    .up([
+      .withEnvironment(env)
+      .withProjectName(env.COMPOSE_PROJECT_NAME || "beabee-test")
+      .withWaitStrategy(
+        "db",
+        Wait.forLogMessage(/database system is ready to accept connections/),
+      )
+      .withWaitStrategy(
+        "api_app",
+        Wait.forLogMessage(/Server is ready and listening on port 3000/),
+      )
+      .withWaitStrategy(
+        "minio",
+        Wait.forLogMessage(/MinIO server is running.../),
+      );
+
+    // Note: app_router is excluded because it depends on 'app' and 'frontend' services
+    // which are not needed for API testing
+    const services = [
       "db",
       "migration",
       "api_app",
@@ -66,53 +73,98 @@ export async function setup() {
       "webhook_app",
       "stripe_cli",
       "minio",
-    ]);
+    ];
+    console.log(`Starting services: ${services.join(", ")}`);
 
-  const apiApp = startedDockerComposeEnvironment.getContainer("api_app-1");
+    startedDockerComposeEnvironment = await dockerComposeEnv.up(services);
+    console.log("✅ All services started successfully");
 
-  // Log the apiApp logs
-  (await apiApp.logs())
-    .on("data", (line) => apiAppLogs.data.push(line))
-    .on("err", (line) => apiAppLogs.err.push(line))
-    .on("end", () => console.log("Stream closed"));
+    const apiApp = startedDockerComposeEnvironment.getContainer("api_app-1");
 
-  // Create test user
-  await apiApp.exec(createTestUserCommand.split(" "));
+    // Log the apiApp logs
+    (await apiApp.logs())
+      .on("data", (line) => {
+        apiAppLogs.data.push(line);
+        if (env.DEBUG_LOGS) {
+          console.log(`[API_APP] ${line}`);
+        }
+      })
+      .on("err", (line) => {
+        apiAppLogs.err.push(line);
+        if (env.DEBUG_LOGS) {
+          console.log(`[API_APP_ERROR] ${line}`);
+        }
+      })
+      .on("end", () => console.log("API app log stream closed"));
 
-  // Create rate limit test user
-  await apiApp.exec(createRateLimitTestUserCommand.split(" "));
+    // Create test user
+    console.log("Creating test user...");
+    await apiApp.exec(createTestUserCommand.split(" "));
 
-  // Create test API key
-  const apiKeyOutput = await apiApp.exec(createTestApiKeyCommand.split(" "));
+    // Create rate limit test user
+    console.log("Creating rate limit test user...");
+    await apiApp.exec(createRateLimitTestUserCommand.split(" "));
 
-  const token = apiKeyOutput.output.match(/Token: (.+)/)?.[1];
-  if (token) {
-    console.log("Test API key created:", token);
-    process.env.API_KEY = token.trim();
-  } else {
-    throw new Error("Failed to create test API key: " + apiKeyOutput.output);
-  }
+    // Create test API key
+    console.log("Creating test API key...");
+    const apiKeyOutput = await apiApp.exec(createTestApiKeyCommand.split(" "));
 
-  // Create test payments
-  console.log("Creating test payments...");
-  for (const command of createTestPaymentsCommands) {
-    await apiApp.exec(command.split(" "));
+    const token = apiKeyOutput.output.match(/Token: (.+)/)?.[1];
+    if (token) {
+      console.log("✅ Test API key created");
+      process.env.API_KEY = token.trim();
+    } else {
+      throw new Error("Failed to create test API key: " + apiKeyOutput.output);
+    }
+
+    // Create test payments
+    console.log(
+      `Creating ${createTestPaymentsCommands.length} test payments...`,
+    );
+    for (const command of createTestPaymentsCommands) {
+      await apiApp.exec(command.split(" "));
+    }
+    console.log("✅ Test payments created");
+
+    console.log("✅ Setup completed successfully");
+  } catch (error) {
+    console.log("❌ Setup failed");
+    console.log(
+      `Error: ${error instanceof Error ? error.message : String(error)}`,
+    );
+    throw error;
   }
 }
 
 export async function teardown() {
   console.log("Tearing down Docker Compose environment...");
-  if (startedDockerComposeEnvironment) {
-    await startedDockerComposeEnvironment.down();
-  }
 
-  // Log the apiApp logs, not set by default
-  if (env.DEBUG_LOGS) {
-    if (apiAppLogs.data.length > 0) {
-      console.log("API App data logs:", apiAppLogs.data);
+  try {
+    if (startedDockerComposeEnvironment) {
+      await startedDockerComposeEnvironment.down();
+      console.log("✅ Docker Compose environment stopped");
     }
-    if (apiAppLogs.err.length > 0) {
-      console.log("API App error logs:", apiAppLogs.err);
+
+    // Log the apiApp logs, not set by default
+    if (env.DEBUG_LOGS) {
+      if (apiAppLogs.data.length > 0) {
+        console.log(`API App data logs (${apiAppLogs.data.length} entries):`);
+        apiAppLogs.data.forEach((log, index) => {
+          console.log(`  [${index + 1}] ${log}`);
+        });
+      }
+      if (apiAppLogs.err.length > 0) {
+        console.log(`API App error logs (${apiAppLogs.err.length} entries):`);
+        apiAppLogs.err.forEach((log, index) => {
+          console.log(`  [${index + 1}] ${log}`);
+        });
+      }
     }
+  } catch (error) {
+    console.log("❌ Teardown failed");
+    console.log(
+      `Error: ${error instanceof Error ? error.message : String(error)}`,
+    );
+    throw error;
   }
 }
