@@ -1,0 +1,22 @@
+{
+  "name": "@beabee/template-vanilla",
+  "version": "0.28.1",
+  "type": "module",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "scripts": {
+    "test": "node --experimental-specifier-resolution=node --experimental-strip-types src/index.test.ts",
+    "check": "tsc --noEmit --project tsconfig.json",
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "@beabee/prettier-config": "workspace:^",
+    "@beabee/tsconfig": "workspace:^",
+    "@types/node": "^22.15.28",
+    "prettier": "^3.5.3"
+  },
+  "dependencies": {
+    "typescript": "^5.8.3"
+  }
+}
