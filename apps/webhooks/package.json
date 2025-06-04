@@ -1,6 +1,6 @@
 {
   "name": "@beabee/webhooks",
-  "version": "0.16.0",
+  "version": "0.28.1",
   "description": "A community engagement system for community newsrooms",
   "private": true,
   "main": "dist/app.js",
@@ -9,8 +9,10 @@
     "#*": "./dist/*.js"
   },
   "scripts": {
-    "build": "rimraf built/ && tsc -p ./tsconfig.build.json",
-    "dev": "tsc --watch --preserveWatchOutput -p tsconfig.build.json",
+    "clear": "rimraf dist/",
+    "build": "tsc -p ./tsconfig.build.json",
+    "dev": "yarn watch",
+    "watch": "tsc --watch --preserveWatchOutput -p tsconfig.build.json",
     "format": "prettier --write .",
     "test": "echo 'The webhooks test suite has no tests yet'",
     "check": "concurrently 'yarn:check:*'",
@@ -33,7 +35,7 @@
     "@beabee/prettier-config": "workspace:^",
     "@beabee/tsconfig": "workspace:^",
     "@types/express": "^4.17.21",
-    "@types/node": "^22.13.5",
+    "@types/node": "^22.15.28",
     "concurrently": "^9.1.2",
     "dotenv": "^16.4.7",
     "dpdm": "^3.14.0",

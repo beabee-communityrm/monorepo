@@ -1,12 +1,11 @@
 {
   "name": "@beabee/e2e-api-tests",
-  "version": "1.0.0",
+  "version": "0.28.1",
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "yarn start",
-    "start": "vitest run",
-    "watch": "vitest",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "presetup": "yarn presetup:env",
     "presetup:env": "cp -n .env.example .env 2>/dev/null || true"
   },

@@ -30,9 +30,10 @@ COPY --chown=node:node apps/legacy/package.json /opt/apps/legacy/package.json
 COPY --chown=node:node apps/webhooks/package.json /opt/apps/webhooks/package.json
 COPY --chown=node:node apps/e2e-api-tests/package.json /opt/apps/e2e-api-tests/package.json
 
-# Copy config files with dependencies info
+# Copy dependencies with relevant content
 COPY --chown=node:node packages/prettier-config /opt/packages/prettier-config
 COPY --chown=node:node packages/tsconfig /opt/packages/tsconfig
+COPY --chown=node:node packages/esbuild /opt/packages/esbuild
 
 ENV NODE_ENV=production
 ENV NODE_OPTIONS=--enable-source-maps
@@ -85,7 +86,7 @@ CMD [ "node", "./dist/app.js" ]
 # Backend distribution base
 FROM dist-common AS dist-backend
 
-COPY --chown=node:node --from=builder /opt/apps/backend/built /opt/apps/backend/built
+COPY --chown=node:node --from=builder /opt/apps/backend/dist /opt/apps/backend/dist
 
 WORKDIR /opt/apps/backend
 
@@ -100,8 +101,7 @@ USER node
 
 COPY --chown=node:node --from=builder /opt/apps/backend-cli/dist /opt/apps/backend-cli/dist
 
-# TODO: use standard dist folder
-CMD [ "node", "./built/api/app.js" ]
+CMD [ "node", "./dist/api/app.js" ]
 
 ## Cron image
 FROM dist-backend AS cron_app

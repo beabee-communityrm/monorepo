@@ -69,6 +69,10 @@
       "path": "../packages/test-utils"
     },
     {
+      "name": "packages/esbuild",
+      "path": "../packages/esbuild"
+    },
+    {
       "name": "packages/docker",
       "path": "../packages/docker"
     }

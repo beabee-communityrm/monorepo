@@ -8,7 +8,6 @@
 import { readdir } from "node:fs/promises";
 import path from "node:path";
 import {
-  getLocalesDir,
   readJsonFile,
   writeJsonFile,
   mergeObjects,
@@ -17,10 +16,10 @@ import {
 
 /**
  * Normalizes all translation files to ensure they have the same structure
+ * @param localesDir Directory containing the locale files
  */
-export async function normalizeTranslations(): Promise<void> {
+export async function normalizeTranslations(localesDir: string): Promise<void> {
   try {
-    const localesDir = getLocalesDir();
     const englishFilePath = path.join(localesDir, "en.json");
 
     console.log(`Reading English locale file from ${englishFilePath}`);

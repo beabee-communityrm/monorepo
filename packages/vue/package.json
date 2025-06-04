@@ -1,7 +1,7 @@
 {
   "name": "@beabee/vue",
   "description": "Vue components for Beabee",
-  "version": "0.1.0",
+  "version": "0.28.1",
   "license": "AGPL-3.0",
   "type": "module",
   "main": "./src/index.ts",
@@ -9,11 +9,11 @@
     "node": ">=20"
   },
   "scripts": {
-    "dev": "histoire dev",
-    "build": "yarn build:lib && yarn build:styles",
+    "docs:start": "histoire preview",
+    "docs:dev": "histoire dev",
+    "docs:build": "yarn build:lib && yarn build:styles && histoire build",
     "build:lib": "vite build",
     "build:styles": "vite build --mode styles",
-    "start": "histoire preview",
     "format": "prettier --write .",
     "check": "yarn check:tsc && yarn check:prettier",
     "check:tsc": "vue-tsc --noEmit",

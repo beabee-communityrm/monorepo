@@ -1,6 +1,6 @@
 import path from "node:path";
 import { readJsonFile, mergeObjects } from "./utils.ts";
-import type { LocaleOption } from "../src/types/locale-option.js";
+import type { LocaleOption } from "../../../locale/src/types/index.ts";
 
 /**
  * Recursively applies fallback translations to a locale

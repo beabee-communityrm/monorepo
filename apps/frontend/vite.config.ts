@@ -95,11 +95,5 @@ export default ({ command, mode }) => {
         },
       },
     },
-    // Useful for linking beabee-common locally
-    ...(command === 'serve' && {
-      optimizeDeps: {
-        exclude: ['@beabee/beabee-common'],
-      },
-    }),
   });
 };

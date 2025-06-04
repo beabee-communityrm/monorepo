@@ -1,2 +1,10 @@
-import config from "../config.json";
-export type Locale = keyof typeof config;
+export type Locale =
+  | "en"
+  | "de"
+  | "de@informal"
+  | "de@easy"
+  | "nl"
+  | "pt"
+  | "it"
+  | "ru"
+  | "fr";
