@@ -1,9 +1,6 @@
 import type { ArgumentsCamelCase, CommandModule } from "yargs";
-import { syncMailchimp } from "../actions/sync/mailchimp.js";
-import { syncSegments } from "../actions/sync/segments.js";
 import type { SyncMailchimpArgs, SyncSegmentsArgs } from "../types/sync.js";
 import moment from "moment";
-import { syncStripe } from "../actions/sync/stripe.js";
 
 export const syncCommand: CommandModule = {
   command: "sync <action>",
@@ -30,8 +27,12 @@ export const syncCommand: CommandModule = {
               description: "Run without making changes",
               default: false
             }),
-        handler: (argv: ArgumentsCamelCase<SyncMailchimpArgs>) =>
-          syncMailchimp(argv)
+        handler: async (argv: ArgumentsCamelCase<SyncMailchimpArgs>) => {
+          const { syncMailchimp } = await import(
+            "../actions/sync/mailchimp.js"
+          );
+          return syncMailchimp(argv);
+        }
       })
       .command({
         command: "segments",
@@ -48,8 +49,10 @@ export const syncCommand: CommandModule = {
               description: "Run without making changes",
               default: false
             }),
-        handler: (argv: ArgumentsCamelCase<SyncSegmentsArgs>) =>
-          syncSegments(argv)
+        handler: async (argv: ArgumentsCamelCase<SyncSegmentsArgs>) => {
+          const { syncSegments } = await import("../actions/sync/segments.js");
+          return syncSegments(argv);
+        }
       })
       .command({
         command: "stripe",
@@ -60,7 +63,10 @@ export const syncCommand: CommandModule = {
             description: "Run without making changes",
             default: false
           }),
-        handler: (argv) => syncStripe(argv.dryRun)
+        handler: async (argv) => {
+          const { syncStripe } = await import("../actions/sync/stripe.js");
+          return syncStripe(argv.dryRun);
+        }
       }),
   handler: () => {}
 };

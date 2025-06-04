@@ -1,5 +1,4 @@
 import type { CommandModule } from "yargs";
-import { configure } from "../actions/configure.js";
 import type { ArgumentsCamelCase } from "yargs";
 import type { ConfigureArgs } from "../types/configure.js";
 
@@ -22,5 +21,8 @@ export const configureCommand: CommandModule<{}, ConfigureArgs> = {
         default: ["s_card", "s_sepa", "s_bacs", "s_paypal", "gc_direct-debit"]
       });
   },
-  handler: (argv: ArgumentsCamelCase<ConfigureArgs>) => configure(argv)
+  handler: async (argv: ArgumentsCamelCase<ConfigureArgs>) => {
+    const { configure } = await import("../actions/configure.js");
+    return configure(argv);
+  }
 };
