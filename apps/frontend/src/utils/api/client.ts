@@ -26,9 +26,9 @@ client.fetch.onError((error) => {
 
 /**
  * Wait for backend to be healthy before starting the app
+ * @param maxRetries - Optional maximum number of retries (default: 60)
  */
-export async function waitForBackend(): Promise<void> {
-  const maxRetries = 60; // 60 seconds total
+export async function waitForBackend(maxRetries: number = 60): Promise<void> {
   const retryDelay = 1000; // 1 second between retries
   let retries = 0;
   let wasUnhealthy = false;
@@ -36,6 +36,7 @@ export async function waitForBackend(): Promise<void> {
   while (retries < maxRetries) {
     try {
       const health = await client.health.check();
+
       if (health.status === 'ok') {
         // Backend is healthy
 
@@ -55,7 +56,9 @@ export async function waitForBackend(): Promise<void> {
     }
 
     retries++;
-    await new Promise((resolve) => setTimeout(resolve, retryDelay));
+    if (retries < maxRetries) {
+      await new Promise((resolve) => setTimeout(resolve, retryDelay));
+    }
   }
 
   throw new Error('Backend failed to become healthy after maximum retries');
