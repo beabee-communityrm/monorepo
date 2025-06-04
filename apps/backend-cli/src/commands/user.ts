@@ -69,6 +69,16 @@ export const userCommand: CommandModule = {
         }
       })
       .command({
+        command: "create-interactive",
+        describe: "Create a new user (interactive)",
+        handler: async () => {
+          const { createUserInteractive } = await import(
+            "../actions/user/create-interactive.js"
+          );
+          return createUserInteractive();
+        }
+      })
+      .command({
         command: "delete <email>",
         describe: "Permanently delete a user",
         builder: (yargs) =>
@@ -80,6 +90,16 @@ export const userCommand: CommandModule = {
         handler: async (argv) => {
           const { deleteUser } = await import("../actions/user/delete.js");
           return deleteUser(argv.email);
+        }
+      })
+      .command({
+        command: "delete-interactive",
+        describe: "Permanently delete a user (interactive)",
+        handler: async () => {
+          const { deleteUserInteractive } = await import(
+            "../actions/user/delete-interactive.js"
+          );
+          return deleteUserInteractive();
         }
       });
   },
