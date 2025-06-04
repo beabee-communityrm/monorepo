@@ -180,7 +180,7 @@ services:
       db:
         condition: service_healthy
     environment:
-      - MIGRATE_UPLOADS=${MIGRATE_UPLOADS:-false}
+      - MIGRATE_UPLOADS=${MIGRATE_UPLOADS:-true}
     env_file:
       - .env
 
