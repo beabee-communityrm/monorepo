@@ -69,6 +69,7 @@ export async function setup() {
       "db",
       "migration",
       "api_app",
+      "app_router",
       "webhook_app",
       "stripe_cli",
       "minio",
