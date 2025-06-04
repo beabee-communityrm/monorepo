@@ -2,7 +2,8 @@ import type { CommandModule } from "yargs";
 import type { ArgumentsCamelCase } from "yargs";
 import type {
   SetupSupportEmailArgs,
-  SetupPaymentMethodsArgs
+  SetupPaymentMethodsArgs,
+  SetupAdminArgs
 } from "../types/setup.js";
 
 export const setupCommand: CommandModule = {
@@ -13,15 +14,14 @@ export const setupCommand: CommandModule = {
       .command({
         command: "support-email",
         describe: "Set up support email configuration",
-        builder: (yargs) => {
+        builder: (yargs: any) => {
           return yargs.option("emailDomain", {
             alias: "e",
             type: "string",
-            describe: "Email domain for support email",
-            demandOption: true
+            describe: "Email domain for support email"
           });
         },
-        handler: async (argv: ArgumentsCamelCase<SetupSupportEmailArgs>) => {
+        handler: async (argv: any) => {
           const { setupSupportEmail } = await import(
             "../actions/setup/support-email.js"
           );
@@ -31,7 +31,7 @@ export const setupCommand: CommandModule = {
       .command({
         command: "payment-methods",
         describe: "Set up payment methods configuration",
-        builder: (yargs) => {
+        builder: (yargs: any) => {
           return yargs.option("paymentMethods", {
             alias: "p",
             type: "array",
@@ -42,21 +42,46 @@ export const setupCommand: CommandModule = {
               "s_bacs",
               "s_paypal",
               "gc_direct-debit"
-            ],
-            default: [
-              "s_card",
-              "s_sepa",
-              "s_bacs",
-              "s_paypal",
-              "gc_direct-debit"
             ]
           });
         },
-        handler: async (argv: ArgumentsCamelCase<SetupPaymentMethodsArgs>) => {
+        handler: async (argv: any) => {
           const { setupPaymentMethods } = await import(
             "../actions/setup/payment-methods.js"
           );
           return setupPaymentMethods(argv);
+        }
+      })
+      .command({
+        command: "admin",
+        describe: "Set up initial admin user",
+        builder: (yargs: any) => {
+          return yargs
+            .option("firstname", {
+              alias: "f",
+              type: "string",
+              describe: "First name of the admin user"
+            })
+            .option("lastname", {
+              alias: "l",
+              type: "string",
+              describe: "Last name of the admin user"
+            })
+            .option("email", {
+              alias: "e",
+              type: "string",
+              describe: "Email address of the admin user"
+            })
+            .option("password", {
+              alias: "p",
+              type: "string",
+              describe:
+                "Password for the admin user (leave empty to generate reset link)"
+            });
+        },
+        handler: async (argv: any) => {
+          const { setupAdmin } = await import("../actions/setup/admin.js");
+          return setupAdmin(argv);
         }
       });
   },

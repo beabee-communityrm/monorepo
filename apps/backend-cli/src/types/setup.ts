@@ -1,7 +1,14 @@
 export interface SetupSupportEmailArgs {
-  emailDomain: string;
+  emailDomain?: string;
 }
 
 export interface SetupPaymentMethodsArgs {
-  paymentMethods: string[];
+  paymentMethods?: string[];
+}
+
+export interface SetupAdminArgs {
+  firstname?: string;
+  lastname?: string;
+  email?: string;
+  password?: string;
 }
