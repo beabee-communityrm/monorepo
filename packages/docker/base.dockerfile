@@ -27,6 +27,7 @@ COPY --chown=node:node packages/weblate-client/package.json /opt/packages/weblat
 # Copy dependencies info from apps
 COPY --chown=node:node apps/backend/package.json /opt/apps/backend/package.json
 COPY --chown=node:node apps/backend-cli/package.json /opt/apps/backend-cli/package.json
+COPY --chown=node:node apps/dev-cli/package.json /opt/apps/dev-cli/package.json
 COPY --chown=node:node apps/legacy/package.json /opt/apps/legacy/package.json
 COPY --chown=node:node apps/webhooks/package.json /opt/apps/webhooks/package.json
 COPY --chown=node:node apps/e2e-api-tests/package.json /opt/apps/e2e-api-tests/package.json
