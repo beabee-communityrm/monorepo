@@ -646,10 +646,10 @@
       },
       "translationFields": {
         "description": "Description",
+        "html": "Contenu",
         "label": "Intitulé",
         "option": "Option {n}",
-        "placeholder": "Texte indicatif",
-        "html": "Contenu"
+        "placeholder": "Texte indicatif"
       }
     },
     "confirmHuman": "Veuillez confirmer que vous êtes humain",
