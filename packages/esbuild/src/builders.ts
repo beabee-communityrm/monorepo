@@ -1,7 +1,11 @@
 import * as esbuild from "esbuild";
 import { transformExtPlugin } from "@gjsify/esbuild-plugin-transform-ext";
 import { createWatchLoggerPlugin, createCjsRenamePlugin } from "./plugins.ts";
-import type { BuildOptions, BuildStandardOptions } from "./types/index.ts";
+import type {
+  BuildOptions,
+  BuildStandardOptions,
+  BuildIIFEOptions,
+} from "./types/index.ts";
 import { ensureDir } from "./utils.ts";
 
 /**
@@ -71,7 +75,7 @@ export async function buildCJS(options: BuildOptions) {
 /**
  * Creates a browser build configuration
  */
-export async function buildBrowser(options: BuildOptions) {
+export async function buildBrowser(options: BuildIIFEOptions) {
   const plugins = [
     ...(options.additionalPlugins || []),
     ...(options.watch ? [createWatchLoggerPlugin("Browser")] : []),
@@ -101,7 +105,7 @@ export async function buildBrowser(options: BuildOptions) {
 }
 
 /**
- * Standard build orchestration for packages with ESM, CJS, and Browser builds
+ * Standard build orchestration for packages with ESM and CJS
  */
 export async function buildStandard(options: BuildStandardOptions) {
   if (options.watch) {
@@ -109,18 +113,13 @@ export async function buildStandard(options: BuildStandardOptions) {
   }
 
   // Create all build contexts
-  const [esm, cjs, browser] = await Promise.all([
+  const [esm, cjs] = await Promise.all([
     buildESM({
       outdir: "./dist/esm",
       ...options,
     }),
     buildCJS({
       outdir: "./dist/cjs",
-      ...options,
-    }),
-    buildBrowser({
-      entryPoints: ["./src/index.ts"],
-      outdir: "./dist/browser",
       ...options,
     }),
   ]);
@@ -131,7 +130,7 @@ export async function buildStandard(options: BuildStandardOptions) {
     process.stdin.resume();
   } else {
     // Dispose contexts after build is complete
-    await Promise.all([esm.dispose(), cjs.dispose(), browser.dispose()]);
+    await Promise.all([esm.dispose(), cjs.dispose()]);
     console.log(`Build completed`);
   }
 }

@@ -7,8 +7,6 @@ export interface BuildStandardOptions {
   watch?: boolean;
   /** Additional plugins to include */
   additionalPlugins?: Plugin[];
-  /** Global name for IIFE builds */
-  globalName?: string;
   /** Whether to bundle files */
   bundle?: boolean;
   /** Base directory */
@@ -18,4 +16,9 @@ export interface BuildStandardOptions {
 export interface BuildOptions extends BuildStandardOptions {
   /** Output directory */
   outdir: string;
+}
+
+export interface BuildIIFEOptions extends BuildOptions {
+  /** Global name for IIFE builds */
+  globalName?: string;
 }

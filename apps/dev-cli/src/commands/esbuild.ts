@@ -7,12 +7,6 @@ export const esbuildCommand: CommandModule = {
   describe: "Build packages using esbuild",
   builder: (yargs) => {
     return yargs
-      .option("globalName", {
-        alias: "global",
-        type: "string",
-        describe: "Global name for browser builds",
-        demandOption: true
-      })
       .option("entryPoints", {
         alias: "entry",
         type: "array",
@@ -31,19 +25,15 @@ export const esbuildCommand: CommandModule = {
         describe: "Base directory to resolve paths from",
         default: process.cwd()
       })
+      .example("yarn dev-cli esbuild", "Build the common package")
       .example(
-        "yarn dev-cli esbuild --global BeabeeCommon",
-        "Build the common package"
-      )
-      .example(
-        "yarn dev-cli esbuild --global BeabeeClient --watch",
+        "yarn dev-cli esbuild --watch",
         "Build the client package in watch mode"
       );
   },
   handler: (argv: any) => {
     // Cast to ensure proper types
     const args: EsbuildArgs = {
-      globalName: argv.globalName as string,
       entryPoints: (argv.entryPoints as string[]).filter(
         (e): e is string => typeof e === "string"
       ),

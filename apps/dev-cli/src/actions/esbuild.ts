@@ -7,11 +7,10 @@ import type { EsbuildArgs } from "../types/index.ts";
  * @param argv Command arguments
  */
 export const esbuild = async (argv: EsbuildArgs): Promise<void> => {
-  const { globalName, entryPoints, watch, baseDir } = argv;
+  const { entryPoints, watch, baseDir } = argv;
   try {
     await buildStandard({
       entryPoints,
-      globalName,
       watch,
       baseDir
     }).catch((err) => {

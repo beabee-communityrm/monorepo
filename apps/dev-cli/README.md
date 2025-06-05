@@ -51,12 +51,11 @@ yarn dev-cli generate-index -p ./src/types ./src/api --baseDir packages/client
 Build packages using the shared esbuild configuration.
 
 ```bash
-yarn dev-cli esbuild --global <global-name>
+yarn dev-cli esbuild
 ```
 
 **Options:**
 
-- `--global, --globalName` (required): Global name for browser builds (e.g., `BeabeeCommon`)
 - `--entry, --entryPoints`: Entry points for build. Default: `["./src/index.ts", "./src/**/*.ts"]`
 - `-w, --watch`: Enable watch mode for continuous rebuilding. Default: `false`
 - `-b, --baseDir`: Base directory to resolve paths from. Default: current directory
@@ -65,16 +64,16 @@ yarn dev-cli esbuild --global <global-name>
 
 ```bash
 # Build a package
-yarn dev-cli esbuild --global BeabeeCommon
+yarn dev-cli esbuild
 
 # Build with watch mode
-yarn dev-cli esbuild --global BeabeeClient --watch
+yarn dev-cli esbuild --watch
 
 # Build from specific directory
-yarn dev-cli esbuild --global BeabeeVue --baseDir packages/vue
+yarn dev-cli esbuild --baseDir packages/vue
 
 # Custom entry points
-yarn dev-cli esbuild --global BeabeeUtils --entry ./src/main.ts ./src/helpers/**/*.ts
+yarn dev-cli esbuild --entry ./src/main.ts ./src/helpers/**/*.ts
 ```
 
 ## Technical Details

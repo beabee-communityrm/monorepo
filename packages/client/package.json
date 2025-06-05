@@ -15,11 +15,11 @@
   "scripts": {
     "clear": "rm -rf dist",
     "build": "yarn build:types && yarn build:esbuild",
-    "build:esbuild": "yarn workspace @beabee/dev-cli start esbuild --global BeabeeClient --baseDir $PWD",
+    "build:esbuild": "yarn workspace @beabee/dev-cli start esbuild --baseDir $PWD",
     "build:types": "tsc --project ./tsconfig.build.json",
     "watch": "yarn build:esbuild --watch",
     "dev": "yarn watch",
-    "generate:index": "yarn workspace @beabee/dev-cli start generate-index -p src/types src/api src/utils --extension js --baseDir $PWD",
+    "generate:index": "yarn workspace @beabee/dev-cli start generate-index --extension js --baseDir $PWD -p src/types src/api src/utils",
     "test": "vitest run",
     "test:watch": "vitest",
     "format": "prettier --write .",

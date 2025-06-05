@@ -22,7 +22,7 @@
     "dev": "yarn watch",
     "watch": "tsc --watch --preserveWatchOutput -p tsconfig.build.json",
     "format": "prettier --write .",
-    "generate:index": "yarn workspace @beabee/dev-cli start generate-index -p src/api/controllers src/api/decorators src/api/dto src/api/interceptors src/api/middlewares src/api/params src/api/transformers src/api/utils src/api/validators src/type --extension js --baseDir $PWD",
+    "generate:index": "yarn workspace @beabee/dev-cli start generate-index --extension js --baseDir $PWD -p src/api/controllers src/api/decorators src/api/dto src/api/interceptors src/api/middlewares src/api/params src/api/transformers src/api/utils src/api/validators src/type",
     "check": "concurrently 'yarn:check:*'",
     "check:tsc": "tsc -p ./tsconfig.build.json --noEmit",
     "check:prettier": "prettier -c .",
