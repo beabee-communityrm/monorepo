@@ -14,14 +14,15 @@ COPY --chown=node:node package.json yarn.lock .yarnrc.yml /opt/
 COPY --chown=node:node .yarn /opt/.yarn
 
 # Copy dependencies info from packages
+COPY --chown=node:node packages/client/package.json /opt/packages/client/package.json
 COPY --chown=node:node packages/common/package.json /opt/packages/common/package.json
 COPY --chown=node:node packages/core/package.json /opt/packages/core/package.json
 COPY --chown=node:node packages/docker/package.json /opt/packages/docker/package.json
 COPY --chown=node:node packages/locale/package.json /opt/packages/locale/package.json
-COPY --chown=node:node packages/weblate-client/package.json /opt/packages/weblate-client/package.json
-COPY --chown=node:node packages/client/package.json /opt/packages/client/package.json
+COPY --chown=node:node packages/template-vanilla/package.json /opt/packages/template-vanilla/package.json
 COPY --chown=node:node packages/test-utils/package.json /opt/packages/test-utils/package.json
 COPY --chown=node:node packages/vue/package.json /opt/packages/vue/package.json
+COPY --chown=node:node packages/weblate-client/package.json /opt/packages/weblate-client/package.json
 
 # Copy dependencies info from apps
 COPY --chown=node:node apps/backend/package.json /opt/apps/backend/package.json
