@@ -84,7 +84,7 @@ The `tsconfig.vanilla.json` configuration is designed for packages that export T
 This configuration is ideal for development tools, build scripts, and utility packages that are executed directly. Packages using this configuration can be run with:
 
 ```bash
-node --experimental-specifier-resolution=node --experimental-strip-types your-file.ts
+node --experimental-specifier-resolution=node --experimental-strip-types --no-warnings your-file.ts
 ```
 
 Example `package.json` scripts for vanilla packages:

@@ -15,7 +15,7 @@
     "check:eslint": "eslint 'src/**/*.{ts,vue}'",
     "check:prettier": "prettier -c .",
     "format": "prettier --write .",
-    "generate:index": "barrelsby --config barrelsby.json",
+    "generate:index": "yarn workspace @beabee/dev-cli start generate-index --extension none --baseDir $PWD -p ./src/type ./src/lib ./src/utils/api",
     "presetup": "yarn presetup:env",
     "presetup:env": "cp -n .env.example .env 2>/dev/null || true"
   },
@@ -66,7 +66,6 @@
     "@rollup/plugin-replace": "^6.0.2",
     "@vitejs/plugin-vue": "^5.2.4",
     "autoprefixer": "^10.4.21",
-    "barrelsby": "^2.8.1",
     "eslint": "^9.17.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-vue": "^9.32.0",

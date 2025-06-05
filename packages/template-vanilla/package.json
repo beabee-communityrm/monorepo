@@ -7,7 +7,7 @@
     ".": "./index.ts"
   },
   "scripts": {
-    "test": "node --experimental-specifier-resolution=node --experimental-strip-types src/index.test.ts",
+    "test": "node --experimental-specifier-resolution=node --experimental-strip-types --no-warnings src/index.test.ts",
     "check": "tsc --noEmit --project tsconfig.json",
     "format": "prettier --write ."
   },
