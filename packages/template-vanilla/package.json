@@ -1,5 +1,6 @@
 {
   "name": "@beabee/template-vanilla",
+  "description": "Vanilla template for TypeScript packages that export TypeScript directly",
   "version": "0.28.1",
   "type": "module",
   "exports": {
