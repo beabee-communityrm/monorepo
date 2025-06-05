@@ -63,8 +63,6 @@ export async function setup() {
         Wait.forLogMessage(/MinIO server is running.../),
       );
 
-    // Note: app_router is excluded because it depends on 'app' and 'frontend' services
-    // which are not needed for API testing
     const services = [
       "db",
       "migration",
