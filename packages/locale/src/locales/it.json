@@ -1325,7 +1325,9 @@
         "showNoContribution": "",
         "suggestedAmounts": "",
         "text": "",
-        "title": ""
+        "title": "",
+        "noticeText": "",
+        "noticeTextHelp": ""
       }
     },
     "title": ""

@@ -5,4 +5,5 @@ export interface ContentPaymentData {
   stripeCountry: StripeFeeCountry;
   taxRateEnabled: boolean;
   taxRate: number;
+  noticeText: string;
 }
