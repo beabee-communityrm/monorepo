@@ -15,11 +15,11 @@
   "scripts": {
     "clear": "rm -rf dist",
     "build": "yarn build:types && yarn build:esbuild",
-    "build:esbuild": "node --experimental-specifier-resolution=node --experimental-strip-types esbuild.ts",
+    "build:esbuild": "yarn workspace @beabee/dev-cli start esbuild --global BeabeeClient --baseDir $PWD",
     "build:types": "tsc --project ./tsconfig.build.json",
     "watch": "yarn build:esbuild --watch",
     "dev": "yarn watch",
-    "generate:index": "node generate-index.js",
+    "generate:index": "yarn workspace @beabee/dev-cli start generate-index -p src/types src/api src/utils --extension js --baseDir $PWD",
     "test": "vitest run",
     "test:watch": "vitest",
     "format": "prettier --write .",
@@ -31,7 +31,6 @@
     "@beabee/beabee-common": "workspace:^"
   },
   "devDependencies": {
-    "@beabee/esbuild": "workspace:^",
     "@beabee/prettier-config": "workspace:^",
     "@beabee/test-utils": "workspace:^",
     "@gjsify/esbuild-plugin-transform-ext": "^0.0.4",

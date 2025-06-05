@@ -1,10 +1,8 @@
 import type { Plugin } from "esbuild";
 
-export interface BuildOptions {
+export interface BuildStandardOptions {
   /** Entry points for the build */
   entryPoints: string[];
-  /** Output directory */
-  outdir: string;
   /** Whether to enable watch mode */
   watch?: boolean;
   /** Additional plugins to include */
@@ -13,4 +11,11 @@ export interface BuildOptions {
   globalName?: string;
   /** Whether to bundle files */
   bundle?: boolean;
+  /** Base directory */
+  baseDir?: string;
+}
+
+export interface BuildOptions extends BuildStandardOptions {
+  /** Output directory */
+  outdir: string;
 }

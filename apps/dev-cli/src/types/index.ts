@@ -1,2 +1,2 @@
-export * from "./esbuild.ts";
-export * from "./generate-index.ts";
+export * from "./esbuild.js";
+export * from "./generate-index.js";

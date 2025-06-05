@@ -1,12 +1,15 @@
 import * as esbuild from "esbuild";
 import { transformExtPlugin } from "@gjsify/esbuild-plugin-transform-ext";
 import { createWatchLoggerPlugin, createCjsRenamePlugin } from "./plugins.ts";
-import type { BuildOptions } from "./types/index.ts";
+import type { BuildOptions, BuildStandardOptions } from "./types/index.ts";
+import { ensureDir } from "./utils.ts";
 
 /**
  * Creates an ESM build configuration
  */
 export async function buildESM(options: BuildOptions) {
+  ensureDir(options.outdir);
+
   const plugins = [
     ...(options.additionalPlugins || []),
     ...(options.watch ? [createWatchLoggerPlugin("ESM")] : []),
@@ -20,6 +23,7 @@ export async function buildESM(options: BuildOptions) {
     platform: "node",
     target: "es2020",
     format: "esm",
+    absWorkingDir: options.baseDir,
   });
 
   if (options.watch) {
@@ -35,6 +39,8 @@ export async function buildESM(options: BuildOptions) {
  * Creates a CommonJS build configuration
  */
 export async function buildCJS(options: BuildOptions) {
+  ensureDir(options.outdir);
+
   const plugins = [
     transformExtPlugin({ outExtension: { ".js": ".cjs" } }),
     ...(options.additionalPlugins || []),
@@ -50,6 +56,7 @@ export async function buildCJS(options: BuildOptions) {
     platform: "node",
     target: "node16",
     format: "cjs",
+    absWorkingDir: options.baseDir,
   });
 
   if (options.watch) {
@@ -81,6 +88,7 @@ export async function buildBrowser(options: BuildOptions) {
     target: "es2020",
     format: "iife",
     globalName: options.globalName,
+    absWorkingDir: options.baseDir,
   });
 
   if (options.watch) {
@@ -95,61 +103,35 @@ export async function buildBrowser(options: BuildOptions) {
 /**
  * Standard build orchestration for packages with ESM, CJS, and Browser builds
  */
-export async function buildStandard(
-  packageName: string,
-  entryPoints: string[],
-  globalName: string,
-  additionalPlugins?: esbuild.Plugin[],
-) {
-  const isWatch = process.argv.includes("--watch");
-
-  if (isWatch) {
+export async function buildStandard(options: BuildStandardOptions) {
+  if (options.watch) {
     console.log("🚀 Starting watch mode...");
-    await Promise.all([
-      buildESM({
-        entryPoints,
-        outdir: "./dist/esm",
-        watch: true,
-        additionalPlugins,
-      }),
-      buildCJS({
-        entryPoints,
-        outdir: "./dist/cjs",
-        watch: true,
-        additionalPlugins,
-      }),
-      buildBrowser({
-        entryPoints: ["./src/index.ts"],
-        outdir: "./dist/browser",
-        watch: true,
-        globalName,
-        additionalPlugins,
-      }),
-    ]);
+  }
+
+  // Create all build contexts
+  const [esm, cjs, browser] = await Promise.all([
+    buildESM({
+      outdir: "./dist/esm",
+      ...options,
+    }),
+    buildCJS({
+      outdir: "./dist/cjs",
+      ...options,
+    }),
+    buildBrowser({
+      entryPoints: ["./src/index.ts"],
+      outdir: "./dist/browser",
+      ...options,
+    }),
+  ]);
+
+  if (options.watch) {
     console.log("👀 Watching for changes...");
     // Keep process alive
     process.stdin.resume();
   } else {
-    const esm = await buildESM({
-      entryPoints,
-      outdir: "./dist/esm",
-      additionalPlugins,
-    });
-    const cjs = await buildCJS({
-      entryPoints,
-      outdir: "./dist/cjs",
-      additionalPlugins,
-    });
-    const browser = await buildBrowser({
-      entryPoints: ["./src/index.ts"],
-      outdir: "./dist/browser",
-      globalName,
-      additionalPlugins,
-    });
-
-    await esm.dispose();
-    await cjs.dispose();
-    await browser.dispose();
-    console.log(`${packageName} build completed`);
+    // Dispose contexts after build is complete
+    await Promise.all([esm.dispose(), cjs.dispose(), browser.dispose()]);
+    console.log(`Build completed`);
   }
 }

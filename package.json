@@ -15,8 +15,7 @@
     "setup": "yarn workspace @beabee/backend run setup",
     "typeorm": "yarn workspace @beabee/backend run typeorm",
     "presetup": "yarn workspaces foreach -v -W -p -i run presetup && yarn presetup:env",
-    "presetup:env": "cp -n .env.example .env 2>/dev/null || true",
-    "dev-cli": "yarn workspace @beabee/dev-cli start"
+    "presetup:env": "cp -n .env.example .env 2>/dev/null || true"
   },
   "workspaces": [
     "packages/*",

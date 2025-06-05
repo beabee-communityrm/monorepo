@@ -33,3 +33,19 @@ export function isWatchMode(): boolean {
 export function getTimestamp(): string {
   return new Date().toLocaleTimeString();
 }
+
+import { mkdirSync } from "fs";
+
+/**
+ * Ensures that a directory exists, creating it if necessary
+ */
+export function ensureDir(dir: string) {
+  try {
+    mkdirSync(dir, { recursive: true });
+  } catch (error) {
+    // Ignore error if directory already exists
+    if ((error as NodeJS.ErrnoException).code !== "EEXIST") {
+      throw error;
+    }
+  }
+}

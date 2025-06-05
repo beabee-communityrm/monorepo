@@ -1,4 +1,4 @@
-#!/usr/bin/env -S node --experimental-specifier-resolution=node --experimental-strip-types
+#!/usr/bin/env -S node --experimental-specifier-resolution=node --experimental-strip-types --no-warnings
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import yargs from "yargs";

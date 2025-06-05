@@ -51,12 +51,11 @@ yarn dev-cli generate-index -p ./src/types ./src/api --baseDir packages/client
 Build packages using the shared esbuild configuration.
 
 ```bash
-yarn dev-cli esbuild --pkg <package-name> --global <global-name>
+yarn dev-cli esbuild --global <global-name>
 ```
 
 **Options:**
 
-- `--pkg, --packageName` (required): Package name for the build (e.g., `@beabee/common`)
 - `--global, --globalName` (required): Global name for browser builds (e.g., `BeabeeCommon`)
 - `--entry, --entryPoints`: Entry points for build. Default: `["./src/index.ts", "./src/**/*.ts"]`
 - `-w, --watch`: Enable watch mode for continuous rebuilding. Default: `false`
@@ -66,42 +65,16 @@ yarn dev-cli esbuild --pkg <package-name> --global <global-name>
 
 ```bash
 # Build a package
-yarn dev-cli esbuild --pkg @beabee/common --global BeabeeCommon
+yarn dev-cli esbuild --global BeabeeCommon
 
 # Build with watch mode
-yarn dev-cli esbuild --pkg @beabee/client --global BeabeeClient --watch
+yarn dev-cli esbuild --global BeabeeClient --watch
 
 # Build from specific directory
-yarn dev-cli esbuild --pkg @beabee/vue --global BeabeeVue --baseDir packages/vue
+yarn dev-cli esbuild --global BeabeeVue --baseDir packages/vue
 
 # Custom entry points
-yarn dev-cli esbuild --pkg @beabee/utils --global BeabeeUtils --entry ./src/main.ts ./src/helpers/**/*.ts
-```
-
-## Common Use Cases
-
-### Regenerating All Index Files
-
-```bash
-# Client package
-yarn dev-cli generate-index -p packages/client/src/types packages/client/src/api packages/client/src/utils
-
-# Common package
-yarn dev-cli generate-index -p packages/common/src/data packages/common/src/error packages/common/src/search packages/common/src/types packages/common/src/utils packages/common/src/validators
-
-# Backend API
-yarn dev-cli generate-index -p apps/backend/src/api/controllers apps/backend/src/api/decorators apps/backend/src/api/dto apps/backend/src/api/interceptors apps/backend/src/api/middlewares apps/backend/src/api/params apps/backend/src/api/transformers apps/backend/src/api/utils apps/backend/src/api/validators apps/backend/src/type
-```
-
-### Building Packages
-
-```bash
-# Build all main packages
-yarn dev-cli esbuild --pkg @beabee/common --global BeabeeCommon --baseDir packages/common
-yarn dev-cli esbuild --pkg @beabee/client --global BeabeeClient --baseDir packages/client
-
-# Development with watch mode
-yarn dev-cli esbuild --pkg @beabee/client --global BeabeeClient --baseDir packages/client --watch
+yarn dev-cli esbuild --global BeabeeUtils --entry ./src/main.ts ./src/helpers/**/*.ts
 ```
 
 ## Technical Details
