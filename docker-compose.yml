@@ -151,39 +151,6 @@ services:
     env_file:
       - .env
 
-  # Uploads migration service
-  # This service migrates old uploads to MinIO
-  uploads_migration:
-    build:
-      context: .
-      dockerfile: ./packages/docker/base.dockerfile
-      target: api_app
-    command: >
-      /bin/sh -c "
-      if [ \"$${MIGRATE_UPLOADS}\" = \"true\" ]; then
-        echo 'Starting uploads migration...' &&
-        yarn backend-cli migrate-uploads --source=/old_data;
-      else
-        echo 'Uploads migration skipped (MIGRATE_UPLOADS is not set to true)' &&
-        exit 0;
-      fi
-      "
-    volumes:
-      - upload_data:/old_data
-      - ./packages:/opt/packages
-      - ./apps/backend-cli/dist:/opt/apps/backend-cli/dist
-    depends_on:
-      migration:
-        condition: service_completed_successfully
-      minio:
-        condition: service_healthy
-      db:
-        condition: service_healthy
-    environment:
-      - MIGRATE_UPLOADS=${MIGRATE_UPLOADS:-true}
-    env_file:
-      - .env
-
   # Stripe CLI for webhook forwarding
   # Only used in local development
   stripe_cli:
