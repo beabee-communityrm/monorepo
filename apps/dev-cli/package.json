@@ -1,0 +1,29 @@
+{
+  "name": "@beabee/dev-cli",
+  "description": "CLI for development",
+  "version": "0.28.1",
+  "type": "module",
+  "main": "src/index.ts",
+  "bin": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "start": "./src/index.ts",
+    "check": "tsc --noEmit --project tsconfig.json",
+    "format": "prettier --write .",
+    "generate:index": "yarn start generate-index -p ./src/types ./src/actions ./src/commands --extension ts"
+  },
+  "dependencies": {
+    "@beabee/esbuild": "workspace:^",
+    "typescript": "^5.8.3",
+    "yargs": "^17.7.2"
+  },
+  "devDependencies": {
+    "@beabee/prettier-config": "workspace:^",
+    "@beabee/tsconfig": "workspace:^",
+    "@types/node": "^22.15.28",
+    "@types/yargs": "^17.0.33",
+    "prettier": "^3.5.3"
+  }
+}
