@@ -1,6 +1,6 @@
-import { QueryFailedError, QueryRunner } from "typeorm";
+import { QueryFailedError, QueryRunner } from 'typeorm';
 
-import type { PgError } from "../type";
+import type { PgError } from '../type';
 /**
  * Adds a new column to a table, sets default values, and makes it non-nullable
  * @param queryRunner The TypeORM query runner instance
@@ -14,7 +14,7 @@ export async function addThenSetNotNull(
   queryRunner: QueryRunner,
   table: string,
   column: string,
-  def = ""
+  def = ''
 ) {
   await queryRunner.query(
     `ALTER TABLE "${table}" ADD "${column}" character varying`
@@ -44,7 +44,7 @@ export function isDuplicateIndex(error: unknown, key?: string): boolean {
     const pgError = error as unknown as PgError;
     const keyTest = key && new RegExp(`^Key \\("?${key}"?\\).* already exists`);
     if (
-      pgError.code === "23505" &&
+      pgError.code === '23505' &&
       (!keyTest || keyTest.test(pgError.detail))
     ) {
       return true;
@@ -69,7 +69,7 @@ export function isDuplicateIndex(error: unknown, key?: string): boolean {
 export function isInvalidType(error: unknown): boolean {
   if (error instanceof QueryFailedError) {
     const pgError = error as unknown as PgError;
-    return pgError.code === "22P02";
+    return pgError.code === '22P02';
   }
   return false;
 }

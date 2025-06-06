@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class AddEmailContent1660562732237 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {

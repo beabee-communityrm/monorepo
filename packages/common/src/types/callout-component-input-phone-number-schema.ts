@@ -1,8 +1,8 @@
-import type { CalloutComponentType } from "../data/index.js";
+import type { CalloutComponentType } from '../data/index.js';
 import type {
   CalloutComponentBaseInputSchema,
-  CalloutComponentInputPhoneNumberRules
-} from "./index.js";
+  CalloutComponentInputPhoneNumberRules,
+} from './index.js';
 
 export interface CalloutComponentInputPhoneNumberSchema
   extends CalloutComponentBaseInputSchema {

@@ -4,11 +4,11 @@ import type {
   GetSegmentsQuery,
   GetSegmentWith,
   Serial,
-  UpdateSegmentData
-} from "@beabee/beabee-common";
-import type { BaseClientOptions } from "../types/index.js";
-import { BaseClient } from "./base.client.js";
-import { cleanUrl } from "../utils/index.js";
+  UpdateSegmentData,
+} from '@beabee/beabee-common';
+import type { BaseClientOptions } from '../types/index.js';
+import { BaseClient } from './base.client.js';
+import { cleanUrl } from '../utils/index.js';
 
 /**
  * Client for managing contact segments.
@@ -22,7 +22,7 @@ export class SegmentsClient extends BaseClient {
   constructor(protected override readonly options: BaseClientOptions) {
     super({
       ...options,
-      path: cleanUrl(options.path + "/segments")
+      path: cleanUrl(options.path + '/segments'),
     });
   }
 
@@ -37,7 +37,7 @@ export class SegmentsClient extends BaseClient {
     _with?: readonly With[]
   ): Promise<GetSegmentDataWith<With>[]> {
     const { data } = await this.fetch.get<Serial<GetSegmentDataWith<With>>[]>(
-      "",
+      '',
       { with: _with, ...query }
     );
     // TODO: needs Serial type guard
@@ -82,14 +82,14 @@ export class SegmentsClient extends BaseClient {
    */
   async create(
     input: CreateSegmentData
-  ): Promise<GetSegmentDataWith<"contactCount">> {
+  ): Promise<GetSegmentDataWith<'contactCount'>> {
     const { data } = await this.fetch.post<
-      Serial<GetSegmentDataWith<"contactCount">>
-    >("", {
+      Serial<GetSegmentDataWith<'contactCount'>>
+    >('', {
       name: input.name,
       order: input.order,
       ruleGroup: input.ruleGroup,
-      description: "" // TODO: deprecated from API
+      description: '', // TODO: deprecated from API
     });
     return data;
   }
@@ -113,13 +113,13 @@ export class SegmentsClient extends BaseClient {
   async update(
     id: string,
     input: UpdateSegmentData
-  ): Promise<GetSegmentDataWith<"contactCount">> {
+  ): Promise<GetSegmentDataWith<'contactCount'>> {
     const { data } = await this.fetch.patch<
-      Serial<GetSegmentDataWith<"contactCount">>
+      Serial<GetSegmentDataWith<'contactCount'>>
     >(`/${id}`, {
       name: input.name,
       order: input.order,
-      ruleGroup: input.ruleGroup
+      ruleGroup: input.ruleGroup,
     });
     return data;
   }

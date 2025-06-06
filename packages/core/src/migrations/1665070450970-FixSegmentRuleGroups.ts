@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 type RuleOperator = string;
 type RuleValue = string | number | boolean;
@@ -10,7 +10,7 @@ interface Rule {
 }
 
 interface RuleGroup {
-  condition: "AND" | "OR";
+  condition: 'AND' | 'OR';
   rules: (Rule | RuleGroup)[];
 }
 
@@ -25,14 +25,14 @@ function cleanRuleGroup(group: RuleGroup): RuleGroup {
   return {
     condition: group.condition,
     rules: group.rules.map((rule) =>
-      "condition" in rule
+      'condition' in rule
         ? cleanRuleGroup(rule)
         : {
             field: rule.field,
             operator: rule.operator,
-            value: rule.value
+            value: rule.value,
           }
-    )
+    ),
   };
 }
 

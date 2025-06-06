@@ -4,8 +4,8 @@ import {
   calloutComponentInputTextTypes,
   calloutComponentInputTypes,
   calloutComponentNestableTypes,
-  CalloutComponentType
-} from "../data/index.js";
+  CalloutComponentType,
+} from '../data/index.js';
 
 import type {
   CalloutComponentBaseMap,
@@ -17,8 +17,8 @@ import type {
   CalloutResponseAnswerFileUpload,
   FilterArgs,
   FormioFile,
-  SetCalloutFormSchema
-} from "../types/index.js";
+  SetCalloutFormSchema,
+} from '../types/index.js';
 
 function convertValuesToOptions(
   values: { value: string; label: string }[]
@@ -31,24 +31,24 @@ function convertComponentToFilter(
 ): FilterArgs & { label: string } {
   const baseItem = {
     label: component.label || component.fullKey,
-    nullable: true
+    nullable: true,
   };
 
   if (
     isCalloutComponentOfType(component, CalloutComponentType.INPUT_CHECKBOX)
   ) {
-    return { ...baseItem, type: "boolean", nullable: false };
+    return { ...baseItem, type: 'boolean', nullable: false };
   }
 
   if (isCalloutComponentOfType(component, CalloutComponentType.INPUT_NUMBER)) {
-    return { ...baseItem, type: "number" };
+    return { ...baseItem, type: 'number' };
   }
 
   if (isCalloutComponentOfType(component, CalloutComponentType.INPUT_SELECT)) {
     return {
       ...baseItem,
-      type: "enum",
-      options: convertValuesToOptions(component.data.values)
+      type: 'enum',
+      options: convertValuesToOptions(component.data.values),
     };
   }
 
@@ -62,19 +62,19 @@ function convertComponentToFilter(
       ...baseItem,
       type:
         component.type === CalloutComponentType.INPUT_SELECTABLE_RADIO
-          ? "enum"
-          : "array",
-      options: convertValuesToOptions(component.values)
+          ? 'enum'
+          : 'array',
+      options: convertValuesToOptions(component.values),
     };
   }
 
   if (
     isCalloutComponentOfType(component, CalloutComponentType.INPUT_TEXT_AREA)
   ) {
-    return { ...baseItem, type: "blob" };
+    return { ...baseItem, type: 'blob' };
   }
 
-  return { ...baseItem, type: "text" };
+  return { ...baseItem, type: 'text' };
 }
 
 function getSelectableLabelFromValue(
@@ -108,7 +108,7 @@ export function isCalloutComponentOfType<T extends CalloutComponentType>(
   component: CalloutComponentBaseSchema,
   type: T
 ): component is CalloutComponentMap[T] {
-  return "type" in component && component.type === type;
+  return 'type' in component && component.type === type;
 }
 
 /**
@@ -119,12 +119,12 @@ export function isCalloutComponentOfType<T extends CalloutComponentType>(
  * @returns Ensure that the component is of the specific base type
  */
 export function isCalloutComponentOfBaseType<
-  T extends CalloutComponentBaseType
+  T extends CalloutComponentBaseType,
 >(
   component: CalloutComponentBaseSchema,
   type: T
 ): component is CalloutComponentBaseMap[T] {
-  if (!("type" in component)) {
+  if (!('type' in component)) {
     return false;
   }
 
@@ -177,8 +177,8 @@ export function filterComponents(
         component,
         CalloutComponentBaseType.NESTABLE
       ) && {
-        components: filterComponents(component.components, filterFn)
-      })
+        components: filterComponents(component.components, filterFn),
+      }),
     };
   });
 }
@@ -190,7 +190,7 @@ export function getCalloutComponents(
     flattenComponents(slide.components).map((component) => ({
       ...component,
       slideId: slide.id,
-      fullKey: `${slide.id}.${component.key}`
+      fullKey: `${slide.id}.${component.key}`,
     }))
   );
 }
@@ -208,13 +208,13 @@ export function getCalloutFilters(
 export function isAddressAnswer(
   answer: CalloutResponseAnswer
 ): answer is CalloutResponseAnswerAddress {
-  return !!answer && typeof answer === "object" && "geometry" in answer;
+  return !!answer && typeof answer === 'object' && 'geometry' in answer;
 }
 
 export function isFileUploadAnswer(
   answer: CalloutResponseAnswer | undefined
 ): answer is CalloutResponseAnswerFileUpload {
-  return !!answer && typeof answer === "object" && "url" in answer;
+  return !!answer && typeof answer === 'object' && 'url' in answer;
 }
 
 export function isFormioFileAnswer(
@@ -222,11 +222,11 @@ export function isFormioFileAnswer(
 ): answer is CalloutResponseAnswerFileUpload & FormioFile {
   return (
     !!answer &&
-    typeof answer === "object" &&
-    "url" in answer &&
-    "storage" in answer &&
-    "name" in answer &&
-    "size" in answer
+    typeof answer === 'object' &&
+    'url' in answer &&
+    'storage' in answer &&
+    'name' in answer &&
+    'size' in answer
     // Not defined on old files
     // "hash" in answer &&
     // "originalName" in answer
@@ -238,20 +238,20 @@ export function stringifyAnswer(
   answer: CalloutResponseAnswer | CalloutResponseAnswer[] | undefined
 ): string {
   if (Array.isArray(answer)) {
-    return answer.map((a) => stringifyAnswer(component, a)).join(", ");
+    return answer.map((a) => stringifyAnswer(component, a)).join(', ');
   } else if (!answer) {
-    return "";
+    return '';
   } else if (isAddressAnswer(answer)) {
-    return answer.geometry.location.lat + ", " + answer.geometry.location.lng;
+    return answer.geometry.location.lat + ', ' + answer.geometry.location.lng;
   } else if (isFileUploadAnswer(answer)) {
     return answer.url;
-  } else if (typeof answer === "object") {
+  } else if (typeof answer === 'object') {
     // Checkboxes
     return Object.entries(answer)
       .filter(([, selected]) => selected)
       .map(([value]) => getSelectableLabelFromValue(component, value))
-      .join(", ");
-  } else if (typeof answer === "string") {
+      .join(', ');
+  } else if (typeof answer === 'string') {
     return getSelectableLabelFromValue(component, answer);
   } else {
     return answer.toString();

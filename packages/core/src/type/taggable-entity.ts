@@ -1,5 +1,5 @@
-import type { TagData } from "@beabee/beabee-common";
-import type { TagAssignment } from "./tag-assignment";
+import type { TagData } from '@beabee/beabee-common';
+import type { TagAssignment } from './tag-assignment';
 /**
  * Represents an entity that can have tags assigned to it.
  * The entity must have an id and a tags array property.

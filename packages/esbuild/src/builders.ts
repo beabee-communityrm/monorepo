@@ -1,12 +1,12 @@
-import * as esbuild from "esbuild";
-import { transformExtPlugin } from "@gjsify/esbuild-plugin-transform-ext";
-import { createWatchLoggerPlugin, createCjsRenamePlugin } from "./plugins.ts";
+import * as esbuild from 'esbuild';
+import { transformExtPlugin } from '@gjsify/esbuild-plugin-transform-ext';
+import { createWatchLoggerPlugin, createCjsRenamePlugin } from './plugins.ts';
 import type {
   BuildOptions,
   BuildStandardOptions,
-  BuildIIFEOptions
-} from "./types/index.ts";
-import { ensureDir } from "./utils.ts";
+  BuildIIFEOptions,
+} from './types/index.ts';
+import { ensureDir } from './utils.ts';
 
 /**
  * Creates an ESM build configuration
@@ -16,7 +16,7 @@ export async function buildESM(options: BuildOptions) {
 
   const plugins = [
     ...(options.additionalPlugins || []),
-    ...(options.watch ? [createWatchLoggerPlugin("ESM")] : [])
+    ...(options.watch ? [createWatchLoggerPlugin('ESM')] : []),
   ];
 
   const ctx = await esbuild.context({
@@ -24,10 +24,10 @@ export async function buildESM(options: BuildOptions) {
     entryPoints: options.entryPoints,
     outdir: options.outdir,
     bundle: options.bundle || false,
-    platform: "node",
-    target: "es2020",
-    format: "esm",
-    absWorkingDir: options.baseDir
+    platform: 'node',
+    target: 'es2020',
+    format: 'esm',
+    absWorkingDir: options.baseDir,
   });
 
   if (options.watch) {
@@ -46,10 +46,10 @@ export async function buildCJS(options: BuildOptions) {
   ensureDir(options.outdir);
 
   const plugins = [
-    transformExtPlugin({ outExtension: { ".js": ".cjs" } }),
+    transformExtPlugin({ outExtension: { '.js': '.cjs' } }),
     ...(options.additionalPlugins || []),
-    ...(options.watch ? [createWatchLoggerPlugin("CJS")] : []),
-    createCjsRenamePlugin(options.outdir, options.baseDir)
+    ...(options.watch ? [createWatchLoggerPlugin('CJS')] : []),
+    createCjsRenamePlugin(options.outdir, options.baseDir),
   ];
 
   const ctx = await esbuild.context({
@@ -57,10 +57,10 @@ export async function buildCJS(options: BuildOptions) {
     entryPoints: options.entryPoints,
     outdir: options.outdir,
     bundle: options.bundle || false,
-    platform: "node",
-    target: "node16",
-    format: "cjs",
-    absWorkingDir: options.baseDir
+    platform: 'node',
+    target: 'node16',
+    format: 'cjs',
+    absWorkingDir: options.baseDir,
   });
 
   if (options.watch) {
@@ -78,7 +78,7 @@ export async function buildCJS(options: BuildOptions) {
 export async function buildBrowser(options: BuildIIFEOptions) {
   const plugins = [
     ...(options.additionalPlugins || []),
-    ...(options.watch ? [createWatchLoggerPlugin("Browser")] : [])
+    ...(options.watch ? [createWatchLoggerPlugin('Browser')] : []),
   ];
 
   const ctx = await esbuild.context({
@@ -88,11 +88,11 @@ export async function buildBrowser(options: BuildIIFEOptions) {
     bundle: true,
     sourcemap: true,
     minify: true,
-    platform: "browser",
-    target: "es2020",
-    format: "iife",
+    platform: 'browser',
+    target: 'es2020',
+    format: 'iife',
     globalName: options.globalName,
-    absWorkingDir: options.baseDir
+    absWorkingDir: options.baseDir,
   });
 
   if (options.watch) {
@@ -109,23 +109,23 @@ export async function buildBrowser(options: BuildIIFEOptions) {
  */
 export async function buildStandard(options: BuildStandardOptions) {
   if (options.watch) {
-    console.log("🚀 Starting watch mode...");
+    console.log('🚀 Starting watch mode...');
   }
 
   // Create all build contexts
   const [esm, cjs] = await Promise.all([
     buildESM({
-      outdir: "./dist/esm",
-      ...options
+      outdir: './dist/esm',
+      ...options,
     }),
     buildCJS({
-      outdir: "./dist/cjs",
-      ...options
-    })
+      outdir: './dist/cjs',
+      ...options,
+    }),
   ]);
 
   if (options.watch) {
-    console.log("👀 Watching for changes...");
+    console.log('👀 Watching for changes...');
     // Keep process alive
     process.stdin.resume();
   } else {

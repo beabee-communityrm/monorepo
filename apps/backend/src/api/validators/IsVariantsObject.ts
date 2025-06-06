@@ -1,9 +1,9 @@
-import { ValidateBy, ValidationOptions, buildMessage } from "class-validator";
+import { ValidateBy, ValidationOptions, buildMessage } from 'class-validator';
 
-import { validateOrReject } from "@api/utils";
+import { validateOrReject } from '@api/utils';
 
 async function isVariantsObject(value: unknown): Promise<boolean> {
-  if (typeof value !== "object" || value === null) {
+  if (typeof value !== 'object' || value === null) {
     return false;
   }
 
@@ -11,7 +11,7 @@ async function isVariantsObject(value: unknown): Promise<boolean> {
 
   for (const key in variants) {
     const variant = variants[key];
-    if (typeof variant !== "object" || variant === null) {
+    if (typeof variant !== 'object' || variant === null) {
       return false;
     }
     await validateOrReject(variant);
@@ -25,14 +25,14 @@ export default function IsVariantsObject(
 ): PropertyDecorator {
   return ValidateBy(
     {
-      name: "isVariantsObject",
+      name: 'isVariantsObject',
       validator: {
         validate: isVariantsObject,
         defaultMessage: buildMessage(
-          (eachPrefix) => eachPrefix + "$property must be an object",
+          (eachPrefix) => eachPrefix + '$property must be an object',
           validationOptions
-        )
-      }
+        ),
+      },
     },
     validationOptions
   );

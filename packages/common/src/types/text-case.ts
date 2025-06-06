@@ -1,1 +1,1 @@
-export type TextCase = "uppercase" | "mixed" | "lowercase";
+export type TextCase = 'uppercase' | 'mixed' | 'lowercase';

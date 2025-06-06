@@ -1,9 +1,9 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class ConvertAllPollsToBuilderTemplate1648725496337
   implements MigrationInterface
 {
-  name = "ConvertAllPollsToBuilderTemplate1648725496337";
+  name = 'ConvertAllPollsToBuilderTemplate1648725496337';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`ALTER TABLE "poll" DROP COLUMN "template"`);

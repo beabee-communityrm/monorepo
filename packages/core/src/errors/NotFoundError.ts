@@ -1,4 +1,4 @@
-import { NotFoundError as _NotFoundError } from "routing-controllers";
+import { NotFoundError as _NotFoundError } from 'routing-controllers';
 
 /**
  * NotFoundError with optional code

@@ -1,9 +1,9 @@
-require("module-alias/register");
+require('module-alias/register');
 
-const { default: gocardless } = require("@core/lib/gocardless");
+const { default: gocardless } = require('@core/lib/gocardless');
 
 async function loadData() {
-  console.error("# Loading data from GoCardless...");
+  console.error('# Loading data from GoCardless...');
 
   const customers = await gocardless.customers.all({ limit: 500 });
   const mandates = await gocardless.mandates.all({ limit: 500 });
@@ -11,8 +11,8 @@ async function loadData() {
   const payments = await gocardless.payments.all({ limit: 500 });
   const subscriptionCancelledEvents = await gocardless.events.all({
     limit: 500,
-    resource_type: "subscriptions",
-    action: "cancelled"
+    resource_type: 'subscriptions',
+    action: 'cancelled',
   });
 
   console.error(`Got ${customers.length} customers`);
@@ -28,7 +28,7 @@ async function loadData() {
     mandates,
     subscriptions,
     payments,
-    subscriptionCancelledEvents
+    subscriptionCancelledEvents,
   };
 }
 

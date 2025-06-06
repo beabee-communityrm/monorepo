@@ -1,4 +1,4 @@
-import { Column } from "typeorm";
+import { Column } from 'typeorm';
 
 export class Password {
   @Column()
@@ -14,6 +14,6 @@ export class Password {
   tries!: number;
 
   static get none(): Password {
-    return { hash: "", salt: "", iterations: 0, tries: 0 };
+    return { hash: '', salt: '', iterations: 0, tries: 0 };
   }
 }

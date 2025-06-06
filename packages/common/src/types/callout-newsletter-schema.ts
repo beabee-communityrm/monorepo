@@ -1,4 +1,4 @@
-import { NewsletterGroupData } from "./index";
+import { NewsletterGroupData } from './index';
 
 export interface CalloutNewsletterSchema {
   title: string;

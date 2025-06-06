@@ -1,7 +1,7 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class AddNLToCaloutResponse1744644045273 implements MigrationInterface {
-  name = "AddNLToCaloutResponse1744644045273";
+  name = 'AddNLToCaloutResponse1744644045273';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(

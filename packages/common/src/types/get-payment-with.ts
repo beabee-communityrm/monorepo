@@ -1,1 +1,1 @@
-export type GetPaymentWith = "contact" | void;
+export type GetPaymentWith = 'contact' | void;

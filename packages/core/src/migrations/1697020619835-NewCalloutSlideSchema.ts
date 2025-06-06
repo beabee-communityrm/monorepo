@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 interface Callout {
   slug: string;
@@ -14,7 +14,7 @@ interface CalloutComponentSchema {
 
 function removeButtons(components: CalloutComponentSchema[]) {
   return components
-    .filter((component) => component.type !== "button")
+    .filter((component) => component.type !== 'button')
     .map((component) => {
       if (component.components) {
         component.components = removeButtons(component.components);
@@ -23,7 +23,7 @@ function removeButtons(components: CalloutComponentSchema[]) {
     });
 }
 
-const SLIDE_ID = "slide1";
+const SLIDE_ID = 'slide1';
 
 /**
  * Converts all old callouts to the new schema format with a single slide
@@ -38,24 +38,24 @@ export class NewCalloutSlideSchema1697020619835 implements MigrationInterface {
       const components = callout.formSchema.components;
 
       const submitText =
-        components[components.length - 1]?.type === "button"
+        components[components.length - 1]?.type === 'button'
           ? components[components.length - 1].label
-          : "Submit";
+          : 'Submit';
 
       const newFormSchema = {
         slides: [
           {
             id: SLIDE_ID,
-            title: "Slide 1",
+            title: 'Slide 1',
             components: removeButtons(components),
             navigation: {
-              prevText: "Prev",
-              nextText: "Next",
-              nextSlideId: "",
-              submitText
-            }
-          }
-        ]
+              prevText: 'Prev',
+              nextText: 'Next',
+              nextSlideId: '',
+              submitText,
+            },
+          },
+        ],
       };
 
       const pollMergeField = callout.pollMergeField

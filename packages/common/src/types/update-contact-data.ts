@@ -1,4 +1,4 @@
-import type { ContactData, UpdateContactProfileData } from "./index.js";
+import type { ContactData, UpdateContactProfileData } from './index.js';
 
 export interface UpdateContactData extends Partial<ContactData> {
   password?: string;

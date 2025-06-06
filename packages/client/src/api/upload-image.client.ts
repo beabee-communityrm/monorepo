@@ -1,12 +1,12 @@
-import type { BaseClientOptions } from "../types/index.js";
+import type { BaseClientOptions } from '../types/index.js';
 import {
   type UploadFileResponse,
   isSupportedImageType,
-  MAX_FILE_SIZE_IN_BYTES
-} from "@beabee/beabee-common";
-import { BaseClient } from "./base.client.js";
-import { cleanUrl } from "../utils/index.js";
-import { ClientApiError } from "../utils/index.js";
+  MAX_FILE_SIZE_IN_BYTES,
+} from '@beabee/beabee-common';
+import { BaseClient } from './base.client.js';
+import { cleanUrl } from '../utils/index.js';
+import { ClientApiError } from '../utils/index.js';
 
 /**
  * Client for managing image uploads
@@ -19,7 +19,7 @@ export class UploadImageClient extends BaseClient {
   constructor(protected override readonly options: BaseClientOptions) {
     super({
       ...options,
-      path: cleanUrl(options.path + "/images")
+      path: cleanUrl(options.path + '/images'),
     });
   }
 
@@ -32,34 +32,34 @@ export class UploadImageClient extends BaseClient {
   async uploadFile(file: File): Promise<UploadFileResponse> {
     // Check file size (20MB limit)
     if (file.size >= MAX_FILE_SIZE_IN_BYTES) {
-      throw new ClientApiError("File too large", {
+      throw new ClientApiError('File too large', {
         httpCode: 413,
-        code: "LIMIT_FILE_SIZE"
+        code: 'LIMIT_FILE_SIZE',
       });
     }
 
     if (!isSupportedImageType(file.type)) {
-      throw new ClientApiError("Unsupported file type", {
+      throw new ClientApiError('Unsupported file type', {
         httpCode: 415,
-        code: "UNSUPPORTED_FILE_TYPE"
+        code: 'UNSUPPORTED_FILE_TYPE',
       });
     }
 
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append('file', file);
 
     try {
-      const { data } = await this.fetch.post<UploadFileResponse>("", formData, {
-        dataType: "multipart"
+      const { data } = await this.fetch.post<UploadFileResponse>('', formData, {
+        dataType: 'multipart',
       });
 
       return data;
     } catch (error) {
       // Rethrow rate limit errors with custom message
       if (error instanceof ClientApiError && error.httpCode === 429) {
-        throw new ClientApiError("Rate limit exceeded", {
+        throw new ClientApiError('Rate limit exceeded', {
           httpCode: 429,
-          code: "TOO_MANY_REQUESTS"
+          code: 'TOO_MANY_REQUESTS',
         });
       }
       throw error;

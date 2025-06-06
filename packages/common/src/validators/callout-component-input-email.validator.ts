@@ -1,10 +1,10 @@
-import { isEmail } from "../utils/index.js";
+import { isEmail } from '../utils/index.js';
 
 import type {
   CalloutComponentInputEmailSchema,
   CalloutResponseAnswer,
-  ValidatorCalloutComponent
-} from "../types/index.js";
+  ValidatorCalloutComponent,
+} from '../types/index.js';
 
 export const calloutComponentInputEmailValidator: ValidatorCalloutComponent<
   CalloutComponentInputEmailSchema

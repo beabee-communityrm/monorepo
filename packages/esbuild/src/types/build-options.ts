@@ -1,4 +1,4 @@
-import type { Plugin } from "esbuild";
+import type { Plugin } from 'esbuild';
 
 export interface BuildStandardOptions {
   /** Entry points for the build */

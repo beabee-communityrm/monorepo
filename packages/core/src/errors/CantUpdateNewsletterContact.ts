@@ -1,7 +1,7 @@
-import { InternalServerError } from "routing-controllers";
+import { InternalServerError } from 'routing-controllers';
 
 export class CantUpdateNewsletterContact extends InternalServerError {
-  readonly code = "cant-update-newsletter-contact";
+  readonly code = 'cant-update-newsletter-contact';
 
   constructor(
     email: string,

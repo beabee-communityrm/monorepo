@@ -1,25 +1,25 @@
-import fs from "fs";
-import dot from "dot";
-import express from "express";
-import moment from "moment";
+import fs from 'fs';
+import dot from 'dot';
+import express from 'express';
+import moment from 'moment';
 
 import config, {
   AppConfig,
   AppConfigOverride,
-  AppConfigOverrides
-} from "@beabee/core/config";
+  AppConfigOverrides,
+} from '@beabee/core/config';
 
-import { log as mainLogger } from "@beabee/core/logging";
-import templateLocals from "#core/template-locals";
+import { log as mainLogger } from '@beabee/core/logging';
+import templateLocals from '#core/template-locals';
 
-let git = "";
+let git = '';
 try {
-  git = fs.readFileSync(__dirname + "/../revision.txt").toString();
+  git = fs.readFileSync(__dirname + '/../revision.txt').toString();
 } catch (e) {
-  git = "DEV";
+  git = 'DEV';
 }
 
-const log = mainLogger.child({ app: "app-loader" });
+const log = mainLogger.child({ app: 'app-loader' });
 
 async function loadAppConfigs(
   basePath: string,
@@ -28,13 +28,13 @@ async function loadAppConfigs(
   const appConfigs = fs
     .readdirSync(basePath)
     .filter((appDir) => {
-      const path = basePath + "/" + appDir;
+      const path = basePath + '/' + appDir;
       return (
-        fs.statSync(path).isDirectory() && fs.existsSync(path + "/config.json")
+        fs.statSync(path).isDirectory() && fs.existsSync(path + '/config.json')
       );
     })
     .map((appDir) =>
-      loadAppConfig(appDir, basePath + "/" + appDir, overrides[appDir])
+      loadAppConfig(appDir, basePath + '/' + appDir, overrides[appDir])
     );
 
   return (await Promise.all(appConfigs))
@@ -48,33 +48,33 @@ async function loadAppConfig(
   overrides: AppConfigOverride = {}
 ): Promise<AppConfig> {
   let appConfig: Partial<AppConfig> &
-    Pick<AppConfig, "title" | "path" | "disabled">;
+    Pick<AppConfig, 'title' | 'path' | 'disabled'>;
   try {
     appConfig = (
-      await import(path + "/config.json", {
-        assert: { type: "json" }
+      await import(path + '/config.json', {
+        assert: { type: 'json' },
       })
     ).default;
   } catch (e) {
     // Fallback to JSON.parse
     appConfig = JSON.parse(
-      await fs.promises.readFile(path + "/config.json", "utf8")
+      await fs.promises.readFile(path + '/config.json', 'utf8')
     );
   }
 
-  const subApps = fs.existsSync(path + "/apps")
-    ? await loadAppConfigs(path + "/apps", overrides.subApps)
+  const subApps = fs.existsSync(path + '/apps')
+    ? await loadAppConfigs(path + '/apps', overrides.subApps)
     : [];
 
   return {
     uid,
-    appPath: path + "/app.js",
+    appPath: path + '/app.js',
     priority: 100,
-    menu: "none",
+    menu: 'none',
     permissions: [],
     subApps,
     ...appConfig,
-    ...overrides.config
+    ...overrides.config,
   };
 }
 
@@ -89,12 +89,12 @@ async function routeApps(
   depth = 0
 ) {
   for (const appConfig of appConfigs) {
-    log.info(`Loading app ${"..".repeat(depth)}${appConfig.path}`);
+    log.info(`Loading app ${'..'.repeat(depth)}${appConfig.path}`);
 
     const app = await requireApp(appConfig.appPath);
 
     // For pug templates
-    app.locals.basedir = __dirname + "/..";
+    app.locals.basedir = __dirname + '/..';
 
     // Global locals
     app.locals.git = git;
@@ -107,7 +107,7 @@ async function routeApps(
     app.locals.dot = dot;
 
     parentApp.use(
-      "/" + appConfig.path,
+      '/' + appConfig.path,
       (req, res, next) => {
         res.locals.app = appConfig;
         // Bit of a hack to pass all params everywhere
@@ -125,7 +125,7 @@ async function routeApps(
 
 export default async function (app: express.Express): Promise<void> {
   const appConfigs = await loadAppConfigs(
-    __dirname + "/../apps",
+    __dirname + '/../apps',
     config.appOverrides
   );
   app.use(templateLocals(appConfigs));

@@ -1,6 +1,6 @@
-import { Contact } from "@beabee/core/models";
-import { calcRenewalDate } from "@beabee/core/utils/payment";
-import { differenceInMonths } from "date-fns";
+import { Contact } from '@beabee/core/models';
+import { calcRenewalDate } from '@beabee/core/utils/payment';
+import { differenceInMonths } from 'date-fns';
 
 /**
  * Calculate the number of months left until the next renewal date

@@ -1,7 +1,7 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class AddCalloutVariant1708685548000 implements MigrationInterface {
-  name = "AddCalloutVariant1708685548000";
+  name = 'AddCalloutVariant1708685548000';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
