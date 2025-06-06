@@ -10,11 +10,23 @@
     "./types": "./src/types/index.ts",
     "./locale/*": "./src/locale/*.ts"
   },
+  "scripts": {
+    "check": "yarn check:tsc && yarn check:prettier",
+    "check:tsc": "tsc --noEmit",
+    "check:prettier": "prettier -c .",
+    "format": "prettier --write .",
+    "generate:index": "yarn workspace @beabee/dev-cli start generate-index --baseDir $PWD --extension ts -p ./src/types ./src/locale"
+  },
   "dependencies": {
     "@gjsify/esbuild-plugin-transform-ext": "^0.0.4",
     "esbuild": "^0.25.5"
   },
   "devDependencies": {
-    "@types/node": "^22.15.28"
+    "@beabee/locale": "workspace:^",
+    "@beabee/prettier-config": "workspace:^",
+    "@beabee/tsconfig": "workspace:^",
+    "@types/node": "^22.15.28",
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.3"
   }
 }

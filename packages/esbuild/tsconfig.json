@@ -1,8 +1,4 @@
 {
   "extends": "@beabee/tsconfig/tsconfig.vanilla.json",
-  "include": ["./src/**/*", "./index.ts"],
-  "compilerOptions": {
-    "composite": true,
-    "noEmit": true
-  }
-} 
+  "include": ["src", "index.ts"]
+}

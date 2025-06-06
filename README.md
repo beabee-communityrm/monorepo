@@ -190,6 +190,86 @@ This continuously compiles TypeScript files as they change.
 
 By running `yarn dev` in the root of the project, you start development processes for all these packages simultaneously, allowing you to work on different parts of the project with live reloading and quick feedback.
 
+## TypeScript Configuration
+
+The Beabee Monorepo uses a dual TypeScript configuration system to ensure proper type checking and module resolution across all packages.
+
+### Dual tsconfig Structure
+
+Many packages use a dual `tsconfig` setup:
+
+- **`tsconfig.json`**: Used by IDEs for optimal IntelliSense and type checking
+- **`tsconfig.build.json`**: Used for the actual build process
+
+This separation ensures development tools get access to source files while build processes use appropriate production settings.
+
+### TypeScript References
+
+TypeScript references establish dependencies between packages and enable:
+
+- **Proper type resolution**: Import types from other packages correctly
+- **IDE navigation**: Jump to source code across package boundaries
+
+```typescript
+// Example tsconfig.json with references
+{
+  "extends": ["./tsconfig.build.json", "@beabee/tsconfig/tsconfig.options.json"],
+  "exclude": [],
+  "references": [
+    { "path": "../../packages/common" },
+    { "path": "../../packages/core" }
+  ]
+}
+```
+
+### Guidelines for New Packages
+
+#### 1. Configuration Type
+
+**Dual configuration**: Package has build script and outputs to `dist/`
+**Single configuration**: Package exports TypeScript files directly
+
+#### 2. Required Scripts
+
+**Dual configuration:**
+```json
+{
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json", 
+    "check:tsc": "tsc -p tsconfig.build.json --noEmit"
+  }
+}
+```
+
+**Single configuration:**
+```json
+{
+  "scripts": {
+    "check": "tsc --noEmit"
+  }
+}
+```
+
+#### 3. TypeScript References
+
+Add references for each `workspace:^` dependency in `package.json`:
+
+```json
+{
+  "references": [
+    { "path": "../../packages/common" },
+    { "path": "../../packages/core" }
+  ]
+}
+```
+
+#### 4. Base Configurations
+
+Extend appropriate base:
+- **Server packages**: `@beabee/tsconfig/tsconfig.server.json`
+- **Frontend packages**: `@beabee/tsconfig/tsconfig.frontend.json`  
+- **Vanilla packages**: `@beabee/tsconfig/tsconfig.vanilla.json`
+
 ### Other Developer Tools
 
 Check and upgrade all dependencies:

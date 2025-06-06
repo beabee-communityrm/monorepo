@@ -8,16 +8,17 @@
   },
   "scripts": {
     "test": "node --experimental-specifier-resolution=node --experimental-strip-types --no-warnings src/index.test.ts",
-    "check": "tsc --noEmit --project tsconfig.json",
-    "format": "prettier --write ."
+    "check": "yarn check:tsc && yarn check:prettier",
+    "check:tsc": "tsc --noEmit",
+    "check:prettier": "prettier -c .",
+    "format": "prettier --write .",
+    "generate:index": "yarn workspace @beabee/dev-cli start generate-index --baseDir $PWD --extension ts -p ./src/types ./src/utils"
   },
   "devDependencies": {
     "@beabee/prettier-config": "workspace:^",
     "@beabee/tsconfig": "workspace:^",
     "@types/node": "^22.15.28",
-    "prettier": "^3.5.3"
-  },
-  "dependencies": {
+    "prettier": "^3.5.3",
     "typescript": "^5.8.3"
   }
 }

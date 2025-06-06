@@ -33,6 +33,11 @@ export const generateIndex = async (argv: GenerateIndexArgs): Promise<void> => {
         }
       }
 
+      // If no files were found to export, add an empty export
+      if (indexContent === "") {
+        indexContent = "export {};\n";
+      }
+
       // Write file asynchronously
       console.log(`Generated index for: ${path}`);
       await writeFile(`${fullPath}/index.ts`, indexContent, "utf-8");

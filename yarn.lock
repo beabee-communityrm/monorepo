@@ -1506,9 +1506,14 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@beabee/esbuild@workspace:packages/esbuild"
   dependencies:
+    "@beabee/locale": "workspace:^"
+    "@beabee/prettier-config": "workspace:^"
+    "@beabee/tsconfig": "workspace:^"
     "@gjsify/esbuild-plugin-transform-ext": "npm:^0.0.4"
     "@types/node": "npm:^22.15.28"
     esbuild: "npm:^0.25.5"
+    prettier: "npm:^3.5.3"
+    typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft
 
@@ -1709,7 +1714,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@beabee/test-utils@workspace:packages/test-utils"
   dependencies:
+    "@beabee/prettier-config": "workspace:^"
+    openapi-typescript: "npm:^7.8.0"
+    prettier: "npm:^3.5.2"
     testcontainers: "npm:^11.0.0"
+    typescript: "npm:~5.6.3"
   languageName: unknown
   linkType: soft
 

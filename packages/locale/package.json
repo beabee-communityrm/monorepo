@@ -10,12 +10,14 @@
     "url": "https://github.com/beabee-communityrm/monorepo/tree/main/packages/locale"
   },
   "scripts": {
-    "clear": "rm -rf dist/",
-    "build": "yarn build:esbuild && tsc -p tsconfig.build.json",
+    "clear": "rm -rf dist/ tsconfig.build.tsbuildinfo",
+    "build": "yarn build:esbuild && yarn build:types",
+    "build:types": "tsc -p tsconfig.build.json",
     "build:esbuild": "node --experimental-specifier-resolution=node --experimental-strip-types --no-warnings esbuild.ts",
     "check": "tsc --noEmit -p tsconfig.build.json",
     "watch": "yarn build:esbuild --watch",
-    "dev": "yarn watch"
+    "dev": "yarn watch",
+    "generate:index": "yarn workspace @beabee/dev-cli start generate-index --baseDir $PWD --extension js -p ./src/types"
   },
   "devDependencies": {
     "@beabee/esbuild": "workspace:^",
