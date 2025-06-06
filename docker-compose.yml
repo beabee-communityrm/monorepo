@@ -143,7 +143,7 @@ services:
       context: .
       dockerfile: ./packages/docker/base.dockerfile
       target: api_app
-    command: "npm run typeorm migration:run"
+    command: "yarn run typeorm migration:run"
     # Wait for the database to be ready
     depends_on:
       db:

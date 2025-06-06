@@ -22,6 +22,7 @@ export * from "./HealthDto.js";
 export * from "./JoinFlowDto.js";
 export * from "./LinkDto.js";
 export * from "./LoginDto.js";
+export * from "./NewsletterDto.js";
 export * from "./NoticeDto.js";
 export * from "./PaginatedDto.js";
 export * from "./PaymentDto.js";

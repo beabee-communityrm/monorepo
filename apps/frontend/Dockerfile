@@ -37,6 +37,9 @@ COPY packages/tsconfig /opt/packages/tsconfig
 COPY packages/vue /opt/packages/vue
 COPY packages/esbuild /opt/packages/esbuild
 
+# Copy apps with relevant content
+COPY apps/dev-cli /opt/apps/dev-cli
+
 # Install dependencies
 RUN yarn workspaces focus
 
