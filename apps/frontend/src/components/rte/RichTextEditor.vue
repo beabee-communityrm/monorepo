@@ -31,27 +31,29 @@
         :disabled="disabled"
         @click="run((cmd) => cmd.toggleStrike())"
       />
-      <RichTextEditorButton
-        :icon="faHeading"
-        :title="t('form.richtext.heading')"
-        :active="editor.isActive('heading', { level: 3 })"
-        :disabled="disabled"
-        @click="run((cmd) => cmd.toggleHeading({ level: 3 }))"
-      />
-      <RichTextEditorButton
-        :icon="faList"
-        :title="t('form.richtext.bulletlist')"
-        :active="editor.isActive('bulletList')"
-        :disabled="disabled"
-        @click="run((cmd) => cmd.toggleBulletList())"
-      />
-      <RichTextEditorButton
-        :icon="faListOl"
-        :title="t('form.richtext.numberedlist')"
-        :active="editor.isActive('orderedList')"
-        :disabled="disabled"
-        @click="run((cmd) => cmd.toggleOrderedList())"
-      />
+      <template v-if="controls !== 'inline'">
+        <RichTextEditorButton
+          :icon="faHeading"
+          :title="t('form.richtext.heading')"
+          :active="editor.isActive('heading', { level: 3 })"
+          :disabled="disabled"
+          @click="run((cmd) => cmd.toggleHeading({ level: 3 }))"
+        />
+        <RichTextEditorButton
+          :icon="faList"
+          :title="t('form.richtext.bulletlist')"
+          :active="editor.isActive('bulletList')"
+          :disabled="disabled"
+          @click="run((cmd) => cmd.toggleBulletList())"
+        />
+        <RichTextEditorButton
+          :icon="faListOl"
+          :title="t('form.richtext.numberedlist')"
+          :active="editor.isActive('orderedList')"
+          :disabled="disabled"
+          @click="run((cmd) => cmd.toggleOrderedList())"
+        />
+      </template>
       <RichTextEditorButton
         :icon="faLink"
         :title="t('form.richtext.link')"
@@ -116,6 +118,7 @@ const props = defineProps<{
   disabled?: boolean;
   copyable?: boolean;
   placeholder?: string;
+  controls?: 'full' | 'inline';
 }>();
 
 const editor = useEditor({

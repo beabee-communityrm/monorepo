@@ -13,7 +13,9 @@
     <AppInput
       v-model="optIn"
       :label="t('newsletterOptIn.optInLabel')"
-      :info-message="groups.length> 0 ? t('newsletterOptIn.optInDisabled') : undefined"
+      :info-message="
+        groups.length > 0 ? t('newsletterOptIn.optInDisabled') : undefined
+      "
       :required="groups.length === 0"
       :disabled="groups.length > 0"
     />

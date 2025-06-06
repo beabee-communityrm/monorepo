@@ -87,13 +87,13 @@ meta:
           :label="stepT('showAbsorbFee')"
           class="mb-4 font-semibold"
         />
-        <div class="mb-4">
-          <AppInput
-            v-model="noticeText"
-            :label="stepT('noticeText')"
-            :info-message="stepT('noticeTextHelp')"
-          />
-        </div>
+        <RichTextEditor
+          v-model="noticeText"
+          controls="inline"
+          :label="stepT('noticeText')"
+          :info-message="stepT('noticeTextHelp')"
+          class="mb-4"
+        />
       </AppForm>
     </template>
     <template #col2>
