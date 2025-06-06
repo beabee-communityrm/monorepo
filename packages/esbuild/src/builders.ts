@@ -49,7 +49,7 @@ export async function buildCJS(options: BuildOptions) {
     transformExtPlugin({ outExtension: { ".js": ".cjs" } }),
     ...(options.additionalPlugins || []),
     ...(options.watch ? [createWatchLoggerPlugin("CJS")] : []),
-    createCjsRenamePlugin(options.outdir),
+    createCjsRenamePlugin(options.outdir, options.baseDir),
   ];
 
   const ctx = await esbuild.context({
