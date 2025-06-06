@@ -4,7 +4,7 @@
  * @returns Cleaned URL string with single forward slashes
  */
 export const cleanUrl = (url: string): string => {
-  return url.replaceAll("//", "/");
+  return url.replaceAll('//', '/');
 };
 
 /**
@@ -34,7 +34,7 @@ export const queryStringify = (obj: Record<string, any>): string => {
       });
     } else if (value instanceof Date) {
       params.append(key, value.toISOString());
-    } else if (typeof value === "object") {
+    } else if (typeof value === 'object') {
       params.append(key, JSON.stringify(value));
     } else if (value !== undefined) {
       params.append(key, value.toString());

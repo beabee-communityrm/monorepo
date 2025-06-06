@@ -1,4 +1,4 @@
-import type { FilterType } from "./index.js";
+import type { FilterType } from './index.js';
 
 export interface BaseFilterArgs {
   type: FilterType;

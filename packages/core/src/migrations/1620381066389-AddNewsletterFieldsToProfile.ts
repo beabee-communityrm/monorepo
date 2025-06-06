@@ -1,9 +1,9 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class AddNewsletterFieldsToProfile1620381066389
   implements MigrationInterface
 {
-  name = "AddNewsletterFieldsToProfile1620381066389";
+  name = 'AddNewsletterFieldsToProfile1620381066389';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(

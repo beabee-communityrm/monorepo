@@ -1,7 +1,7 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class AddSegmentOrder1616693016456 implements MigrationInterface {
-  name = "AddSegmentOrder1616693016456";
+  name = 'AddSegmentOrder1616693016456';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(

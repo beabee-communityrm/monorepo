@@ -5,14 +5,14 @@ import {
   RuleOperator,
   RuleValue,
   RuleGroup,
-  isRuleGroup
-} from "@beabee/beabee-common";
+  isRuleGroup,
+} from '@beabee/beabee-common';
 import {
   Transform,
   TransformFnParams,
   Type,
-  plainToInstance
-} from "class-transformer";
+  plainToInstance,
+} from 'class-transformer';
 import {
   IsString,
   IsIn,
@@ -20,10 +20,10 @@ import {
   ValidateNested,
   IsOptional,
   Min,
-  Max
-} from "class-validator";
+  Max,
+} from 'class-validator';
 
-import { IsType } from "@api/validators/IsType";
+import { IsType } from '@api/validators/IsType';
 
 export class GetPaginatedRule implements Rule {
   @IsString()
@@ -33,7 +33,7 @@ export class GetPaginatedRule implements Rule {
   operator!: RuleOperator;
 
   @IsArray()
-  @IsType(["string", "boolean", "number"], { each: true })
+  @IsType(['string', 'boolean', 'number'], { each: true })
   value!: RuleValue[];
 }
 
@@ -48,8 +48,8 @@ function transformRules(params: TransformFnParams): GetPaginatedRuleGroupRule {
   );
 }
 export class GetPaginatedRuleGroup implements RuleGroup {
-  @IsIn(["AND", "OR"])
-  condition!: "AND" | "OR";
+  @IsIn(['AND', 'OR'])
+  condition!: 'AND' | 'OR';
 
   @IsArray()
   @ValidateNested({ each: true })
@@ -82,6 +82,6 @@ export class GetPaginatedQuery
   sort?: string;
 
   @IsOptional()
-  @IsIn(["ASC", "DESC"])
-  order?: "ASC" | "DESC";
+  @IsIn(['ASC', 'DESC'])
+  order?: 'ASC' | 'DESC';
 }

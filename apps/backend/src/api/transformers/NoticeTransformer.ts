@@ -2,16 +2,16 @@ import {
   ItemStatus,
   NoticeFilterName,
   noticeFilters,
-  RuleGroup
-} from "@beabee/beabee-common";
-import { TransformPlainToInstance } from "class-transformer";
+  RuleGroup,
+} from '@beabee/beabee-common';
+import { TransformPlainToInstance } from 'class-transformer';
 
-import { BaseTransformer } from "@api/transformers/BaseTransformer";
+import { BaseTransformer } from '@api/transformers/BaseTransformer';
 
-import { GetNoticeDto } from "@api/dto/NoticeDto";
-import { statusFilterHandler } from "@beabee/core/filter-handlers";
+import { GetNoticeDto } from '@api/dto/NoticeDto';
+import { statusFilterHandler } from '@beabee/core/filter-handlers';
 
-import { Notice } from "@beabee/core/models";
+import { Notice } from '@beabee/core/models';
 
 export class NoticeTransformer extends BaseTransformer<
   Notice,
@@ -34,14 +34,14 @@ export class NoticeTransformer extends BaseTransformer<
       expires: notice.expires,
       status: notice.status,
       ...(notice.buttonText !== null && { buttonText: notice.buttonText }),
-      ...(notice.url !== null && { url: notice.url })
+      ...(notice.url !== null && { url: notice.url }),
     };
   }
 
   protected async getNonAdminAuthRules(): Promise<RuleGroup> {
     return {
-      condition: "AND",
-      rules: [{ field: "status", operator: "equal", value: [ItemStatus.Open] }]
+      condition: 'AND',
+      rules: [{ field: 'status', operator: 'equal', value: [ItemStatus.Open] }],
     };
   }
 }

@@ -8,19 +8,19 @@ import {
   contactCalloutFilters,
   contactFilters,
   getCalloutFilters,
-  isRuleGroup
-} from "@beabee/beabee-common";
-import { isUUID } from "class-validator";
+  isRuleGroup,
+} from '@beabee/beabee-common';
+import { isUUID } from 'class-validator';
 
-import { getRepository } from "@beabee/core/database";
+import { getRepository } from '@beabee/core/database';
 
-import { BaseTransformer } from "@api/transformers/BaseTransformer";
-import { prefixKeys } from "@api/utils";
+import { BaseTransformer } from '@api/transformers/BaseTransformer';
+import { prefixKeys } from '@api/utils';
 
-import { Callout, Contact } from "@beabee/core/models";
-import { contactFilterHandlers } from "@beabee/core/filter-handlers";
+import { Callout, Contact } from '@beabee/core/models';
+import { contactFilterHandlers } from '@beabee/core/filter-handlers';
 
-import { FilterHandlers } from "@beabee/core/type";
+import { FilterHandlers } from '@beabee/core/type';
 
 function flattenRules(rules: RuleGroup): Rule[] {
   return rules.rules.flatMap((rule) =>
@@ -30,7 +30,7 @@ function flattenRules(rules: RuleGroup): Rule[] {
 
 export abstract class BaseContactTransformer<
   GetDto,
-  GetOptsDto
+  GetOptsDto,
 > extends BaseTransformer<Contact, GetDto, ContactFilterName, GetOptsDto> {
   protected model = Contact;
   protected filters: Filters<ContactFilterName> = contactFilters;
@@ -54,9 +54,9 @@ export abstract class BaseContactTransformer<
 
     // Get callout IDs referenced in the rules
     const calloutIds = rules
-      .filter((r) => r.field.startsWith("callouts."))
+      .filter((r) => r.field.startsWith('callouts.'))
       .map((r) => {
-        const [_, calloutId] = r.field.split(".", 2);
+        const [_, calloutId] = r.field.split('.', 2);
         return calloutId;
       })
       .filter((v, i, a) => a.indexOf(v) === i)
@@ -71,7 +71,7 @@ export abstract class BaseContactTransformer<
           prefixKeys(`callouts.${calloutId}.`, contactCalloutFilters),
           prefixKeys(`callouts.${calloutId}.responses.`, {
             ...calloutResponseFilters,
-            ...getCalloutFilters(callout.formSchema)
+            ...getCalloutFilters(callout.formSchema),
           })
         );
       }

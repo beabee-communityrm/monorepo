@@ -1,9 +1,9 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class ModifyCommentForeignKeyRestraints1678974773924
   implements MigrationInterface
 {
-  name = "ModifyCommentForeignKeyRestraints1678974773924";
+  name = 'ModifyCommentForeignKeyRestraints1678974773924';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(

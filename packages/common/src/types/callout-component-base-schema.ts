@@ -1,8 +1,8 @@
-import type { CalloutComponentType } from "../data/index.js";
+import type { CalloutComponentType } from '../data/index.js';
 import type {
   CalloutComponentBaseRules,
-  CalloutResponseAnswer
-} from "./index.js";
+  CalloutResponseAnswer,
+} from './index.js';
 
 export interface CalloutComponentBaseSchema {
   id: string;

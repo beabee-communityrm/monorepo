@@ -1,9 +1,9 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class ConvertMonthlyAmountToReal1624469629114
   implements MigrationInterface
 {
-  name = "ConvertMonthlyAmountToReal1624469629114";
+  name = 'ConvertMonthlyAmountToReal1624469629114';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     async function convertType(table: string) {
@@ -23,8 +23,8 @@ export class ConvertMonthlyAmountToReal1624469629114
         `ALTER TABLE "${table}" ALTER COLUMN "joinFormMonthlyamount" SET NOT NULL`
       );
     }
-    await convertType("join_flow");
-    await convertType("restart_flow");
+    await convertType('join_flow');
+    await convertType('restart_flow');
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

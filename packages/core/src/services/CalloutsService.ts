@@ -7,22 +7,22 @@ import {
   FormioFile,
   CalloutResponseGuestData,
   CalloutResponseNewsletterData,
-  NewsletterStatus
-} from "@beabee/beabee-common";
-import slugify from "slugify";
-import { BadRequestError } from "routing-controllers";
-import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
-import { v4 as uuidv4 } from "uuid";
+  NewsletterStatus,
+} from '@beabee/beabee-common';
+import slugify from 'slugify';
+import { BadRequestError } from 'routing-controllers';
+import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
+import { v4 as uuidv4 } from 'uuid';
 
-import ContactsService from "#services/ContactsService";
-import EmailService from "#services/EmailService";
-import NewsletterService from "#services/NewsletterService";
-import OptionsService from "#services/OptionsService";
+import ContactsService from '#services/ContactsService';
+import EmailService from '#services/EmailService';
+import NewsletterService from '#services/NewsletterService';
+import OptionsService from '#services/OptionsService';
 
-import { getRepository, runTransaction } from "#database";
-import { log as mainLogger } from "#logging";
-import { isDuplicateIndex } from "#utils/db";
-import { normalizeEmailAddress } from "#utils/email";
+import { getRepository, runTransaction } from '#database';
+import { log as mainLogger } from '#logging';
+import { isDuplicateIndex } from '#utils/db';
+import { normalizeEmailAddress } from '#utils/email';
 
 import {
   Contact,
@@ -32,16 +32,16 @@ import {
   CalloutResponseTag,
   CalloutTag,
   CalloutVariant,
-  CalloutReviewer
-} from "#models/index";
+  CalloutReviewer,
+} from '#models/index';
 
 import {
   DuplicateId,
   InvalidCalloutResponse,
-  NotFoundError
-} from "#errors/index";
+  NotFoundError,
+} from '#errors/index';
 
-const log = mainLogger.child({ app: "callouts-service" });
+const log = mainLogger.child({ app: 'callouts-service' });
 
 class CalloutsService {
   /**
@@ -56,7 +56,7 @@ class CalloutsService {
   ): Promise<string> {
     if (!data.variants?.default) {
       throw new BadRequestError(
-        "Default variant is required to create callout"
+        'Default variant is required to create callout'
       );
     }
 
@@ -64,8 +64,8 @@ class CalloutsService {
       data.slug || slugify(data.variants.default.title, { lower: true });
 
     while (true) {
-      const slug = baseSlug + (autoSlug ? "-" + autoSlug : "");
-      log.info("Creating callout with slug " + slug);
+      const slug = baseSlug + (autoSlug ? '-' + autoSlug : '');
+      log.info('Creating callout with slug ' + slug);
       try {
         return await this.saveCallout({ ...data, slug });
       } catch (err) {
@@ -87,9 +87,9 @@ class CalloutsService {
   async listCallouts(): Promise<
     Array<{ id: string; slug: string; image: string }>
   > {
-    log.info("Listing all callouts for migration purposes");
+    log.info('Listing all callouts for migration purposes');
     const callouts = await getRepository(Callout).find({
-      select: ["id", "slug", "image"]
+      select: ['id', 'slug', 'image'],
     });
 
     return callouts;
@@ -105,17 +105,17 @@ class CalloutsService {
     id: string,
     data: Partial<CreateCalloutData>
   ): Promise<void> {
-    log.info("Updating callout " + id);
+    log.info('Updating callout ' + id);
     // Prevent the join survey from being made inactive
-    if (OptionsService.getText("join-survey") === id) {
+    if (OptionsService.getText('join-survey') === id) {
       if (data.expires) {
         throw new BadRequestError(
-          "Cannot set an expiry date on the join survey"
+          'Cannot set an expiry date on the join survey'
         );
       } else if (data.starts === null) {
-        throw new BadRequestError("Cannot set join survey to draft");
+        throw new BadRequestError('Cannot set join survey to draft');
       } else if (data.starts && data.starts > new Date()) {
-        throw new BadRequestError("Cannot set join survey to scheduled");
+        throw new BadRequestError('Cannot set join survey to scheduled');
       }
     }
 
@@ -125,7 +125,7 @@ class CalloutsService {
   async duplicateCallout(id: string): Promise<string> {
     const callout = await getRepository(Callout).findOne({
       where: { id },
-      relations: { variants: true, tags: true }
+      relations: { variants: true, tags: true },
     });
     if (!callout) {
       throw new NotFoundError();
@@ -137,7 +137,7 @@ class CalloutsService {
       ...calloutData,
       variants: Object.fromEntries(
         variants.map((variant) => [variant.name, variant])
-      )
+      ),
     };
 
     const newId = await this.createCallout(data, 0);
@@ -160,7 +160,7 @@ class CalloutsService {
    * @returns true if the callout was deleted
    */
   async deleteCallout(id: string): Promise<boolean> {
-    log.info("Deleting callout " + id);
+    log.info('Deleting callout ' + id);
 
     return await runTransaction(async (em) => {
       await em
@@ -171,10 +171,10 @@ class CalloutsService {
           const subQuery = em
             .createQueryBuilder()
             .subQuery()
-            .select("id")
-            .from(CalloutResponse, "cr")
-            .where("cr.calloutId = :id");
-          qb.where("responseId IN " + subQuery.getQuery());
+            .select('id')
+            .from(CalloutResponse, 'cr')
+            .where('cr.calloutId = :id');
+          qb.where('responseId IN ' + subQuery.getQuery());
         })
         .setParameters({ id })
         .execute();
@@ -187,10 +187,10 @@ class CalloutsService {
           const subQuery = em
             .createQueryBuilder()
             .subQuery()
-            .select("id")
-            .from(CalloutResponse, "cr")
-            .where("cr.calloutId = :id");
-          qb.where("responseId IN " + subQuery.getQuery());
+            .select('id')
+            .from(CalloutResponse, 'cr')
+            .where('cr.calloutId = :id');
+          qb.where('responseId IN ' + subQuery.getQuery());
         })
         .setParameters({ id })
         .execute();
@@ -219,10 +219,10 @@ class CalloutsService {
     const response = await getRepository(CalloutResponse).findOne({
       where: {
         calloutId: callout.id,
-        contactId: contact.id
+        contactId: contact.id,
       },
       // Get most recent response for callouts with allowMultiple
-      order: { createdAt: "DESC" }
+      order: { createdAt: 'DESC' },
     });
 
     if (response) {
@@ -248,14 +248,14 @@ class CalloutsService {
     newsletter: CalloutResponseNewsletterData | undefined
   ): Promise<CalloutResponse> {
     if (callout.access === CalloutAccess.OnlyAnonymous) {
-      throw new InvalidCalloutResponse("only-anonymous");
+      throw new InvalidCalloutResponse('only-anonymous');
     } else if (
       !contact.membership?.isActive &&
       callout.access === CalloutAccess.Member
     ) {
-      throw new InvalidCalloutResponse("expired-user");
+      throw new InvalidCalloutResponse('expired-user');
     } else if (!callout.active) {
-      throw new InvalidCalloutResponse("closed");
+      throw new InvalidCalloutResponse('closed');
     }
 
     let response = await this.getResponse(callout, contact);
@@ -264,7 +264,7 @@ class CalloutsService {
       response.callout = callout;
       response.contact = contact;
     } else if (!callout.allowUpdate) {
-      throw new InvalidCalloutResponse("cant-update");
+      throw new InvalidCalloutResponse('cant-update');
     }
 
     response.answers = answers;
@@ -278,16 +278,16 @@ class CalloutsService {
         contact,
         {
           newsletterStatus: NewsletterStatus.Subscribed,
-          newsletterGroups: newsletter.groups
+          newsletterGroups: newsletter.groups,
         },
         { sync: true, mergeGroups: true }
       );
     }
 
     if (callout.mcMergeField && callout.pollMergeField) {
-      const [slideId, answerKey] = callout.pollMergeField.split(".");
+      const [slideId, answerKey] = callout.pollMergeField.split('.');
       await NewsletterService.updateContactFields(contact, {
-        [callout.mcMergeField]: answers[slideId]?.[answerKey]?.toString() || ""
+        [callout.mcMergeField]: answers[slideId]?.[answerKey]?.toString() || '',
       });
     }
 
@@ -309,11 +309,11 @@ class CalloutsService {
     newsletter: CalloutResponseNewsletterData | undefined
   ): Promise<string> {
     if (callout.access === CalloutAccess.Guest && !guest) {
-      throw new InvalidCalloutResponse("guest-fields-missing");
+      throw new InvalidCalloutResponse('guest-fields-missing');
     } else if (callout.access === CalloutAccess.OnlyAnonymous && guest) {
-      throw new InvalidCalloutResponse("only-anonymous");
+      throw new InvalidCalloutResponse('only-anonymous');
     } else if (!callout.active || callout.access === CalloutAccess.Member) {
-      throw new InvalidCalloutResponse("closed");
+      throw new InvalidCalloutResponse('closed');
     }
 
     if (guest) {
@@ -324,7 +324,7 @@ class CalloutsService {
       // Create a contact if it doesn't exist
       if (!contact) {
         log.info(
-          "Creating new contact for callout response with email " + guest.email
+          'Creating new contact for callout response with email ' + guest.email
         );
         contact = await ContactsService.createContact(guest);
       }
@@ -340,7 +340,7 @@ class CalloutsService {
         // Let the contact know in case it wasn't them
         const title = await this.getCalloutTitle(callout);
         await EmailService.sendTemplateToContact(
-          "confirm-callout-response",
+          'confirm-callout-response',
           contact,
           { calloutTitle: title, calloutSlug: callout.slug }
         );
@@ -356,7 +356,7 @@ class CalloutsService {
         }
       }
     } else {
-      log.info("Creating anonymous callout response for callout " + callout.id);
+      log.info('Creating anonymous callout response for callout ' + callout.id);
 
       const response = new CalloutResponse();
       response.callout = callout;
@@ -372,11 +372,11 @@ class CalloutsService {
    * @param contact
    */
   public async permanentlyDeleteContact(contact: Contact): Promise<void> {
-    log.info("Permanently delete callout data for contact " + contact.id);
+    log.info('Permanently delete callout data for contact ' + contact.id);
 
     await getRepository(CalloutReviewer).delete({ contactId: contact.id });
     await getRepository(CalloutResponseComment).delete({
-      contactId: contact.id
+      contactId: contact.id,
     });
     await getRepository(CalloutResponse).update(
       { contactId: contact.id },
@@ -405,8 +405,8 @@ class CalloutsService {
     const fixedData = {
       ...calloutData,
       ...(formSchema && {
-        formSchema: formSchema as QueryDeepPartialEntity<GetCalloutFormSchema>
-      })
+        formSchema: formSchema as QueryDeepPartialEntity<GetCalloutFormSchema>,
+      }),
     };
 
     return await runTransaction(async (em) => {
@@ -424,8 +424,8 @@ class CalloutsService {
           newId = result.identifiers[0].id as string;
         }
       } catch (err) {
-        throw isDuplicateIndex(err, "slug")
-          ? new DuplicateId(data.slug || "") // Slug can't actually be undefined here
+        throw isDuplicateIndex(err, 'slug')
+          ? new DuplicateId(data.slug || '') // Slug can't actually be undefined here
           : err;
       }
 
@@ -435,12 +435,12 @@ class CalloutsService {
           Object.entries(variants).map(([name, variant]) => ({
             ...variant,
             name,
-            calloutId: newId
+            calloutId: newId,
           }))
         );
       }
 
-      log.info("Saved callout " + newId);
+      log.info('Saved callout ' + newId);
 
       return newId;
     });
@@ -457,8 +457,8 @@ class CalloutsService {
     if (!response.number) {
       const lastResponse = await getRepository(CalloutResponse).findOne({
         where: { calloutId: response.callout.id },
-        order: { number: "DESC" },
-        select: { number: true }
+        order: { number: 'DESC' },
+        select: { number: true },
       });
 
       response.number = lastResponse ? lastResponse.number + 1 : 1;
@@ -471,11 +471,11 @@ class CalloutsService {
         `Saved callout response ${response.number} for callout ${response.callout.id}`
       );
 
-      await EmailService.sendTemplateToAdmin("new-callout-response", {
+      await EmailService.sendTemplateToAdmin('new-callout-response', {
         calloutSlug: response.callout.slug,
         calloutTitle: await this.getCalloutTitle(response.callout),
         responderName:
-          response.contact?.fullname || response.guestName || "Anonymous"
+          response.contact?.fullname || response.guestName || 'Anonymous',
       });
 
       return savedResponse;
@@ -496,10 +496,10 @@ class CalloutsService {
    */
   private async getCalloutTitle(callout: Callout): Promise<string> {
     const defaultVariant =
-      callout.variants?.find((v) => v.name === "default") ||
+      callout.variants?.find((v) => v.name === 'default') ||
       (await getRepository(CalloutVariant).findOneByOrFail({
         calloutId: callout.id,
-        name: "default"
+        name: 'default',
       }));
 
     // Store for future use
@@ -521,12 +521,12 @@ class CalloutsService {
     }>
   > {
     log.info(
-      "Listing all callout responses with file uploads for migration purposes"
+      'Listing all callout responses with file uploads for migration purposes'
     );
 
     // Get all responses
     const responses = await getRepository(CalloutResponse).find({
-      select: ["id", "answers"]
+      select: ['id', 'answers'],
     });
 
     // Filter responses with file uploads
@@ -578,7 +578,7 @@ class CalloutsService {
 
     const response = await getRepository(CalloutResponse).findOne({
       where: { id: responseId },
-      select: ["id", "answers"]
+      select: ['id', 'answers'],
     });
 
     if (!response) {
@@ -623,7 +623,7 @@ class CalloutsService {
 
     // Save the updated response
     await getRepository(CalloutResponse).update(responseId, {
-      answers: response.answers
+      answers: response.answers,
     });
 
     log.info(`Successfully updated document URL in response ${responseId}`);

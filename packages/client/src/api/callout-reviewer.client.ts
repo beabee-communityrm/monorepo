@@ -1,8 +1,8 @@
-import { BaseClient } from "./base.client.js";
-import { ContactClient } from "./contact.client.js";
-import { cleanUrl } from "../utils/index.js";
-import type { BaseClientOptions } from "../types/index.js";
-import type { GetCalloutReviewerData, Serial } from "@beabee/beabee-common";
+import { BaseClient } from './base.client.js';
+import { ContactClient } from './contact.client.js';
+import { cleanUrl } from '../utils/index.js';
+import type { BaseClientOptions } from '../types/index.js';
+import type { GetCalloutReviewerData, Serial } from '@beabee/beabee-common';
 
 /**
  * Client for managing callout reviewer operations
@@ -11,7 +11,7 @@ export class CalloutReviewerClient extends BaseClient {
   constructor(protected override readonly options: BaseClientOptions) {
     super({
       ...options,
-      path: cleanUrl(options.path + "/callout")
+      path: cleanUrl(options.path + '/callout'),
     });
   }
 
@@ -23,7 +23,7 @@ export class CalloutReviewerClient extends BaseClient {
   ): GetCalloutReviewerData {
     return {
       ...data,
-      contact: ContactClient.deserialize(data.contact)
+      contact: ContactClient.deserialize(data.contact),
     };
   }
 

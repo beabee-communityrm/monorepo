@@ -1,8 +1,8 @@
-import type { CalloutComponentType } from "../data/index.js";
+import type { CalloutComponentType } from '../data/index.js';
 import type {
   CalloutComponentBaseInputSchema,
-  CalloutComponentInputSelectRules
-} from "./index.js";
+  CalloutComponentInputSelectRules,
+} from './index.js';
 
 /** Dropdown menu component schema */
 export interface CalloutComponentInputSelectSchema

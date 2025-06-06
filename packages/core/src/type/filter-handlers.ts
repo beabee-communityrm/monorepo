@@ -1,5 +1,5 @@
-import { FilterType, RuleOperator, RuleValue } from "@beabee/beabee-common";
-import { WhereExpressionBuilder } from "typeorm";
+import { FilterType, RuleOperator, RuleValue } from '@beabee/beabee-common';
+import { WhereExpressionBuilder } from 'typeorm';
 
 /**
  * Represents a rule value that can be either a basic RuleValue or a Date

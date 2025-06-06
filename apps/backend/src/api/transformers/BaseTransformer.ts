@@ -3,27 +3,27 @@ import {
   InvalidRule,
   PaginatedQuery,
   RuleGroup,
-  validateRuleGroup
-} from "@beabee/beabee-common";
-import { plainToInstance } from "class-transformer";
-import { Brackets, ObjectLiteral, SelectQueryBuilder } from "typeorm";
+  validateRuleGroup,
+} from '@beabee/beabee-common';
+import { plainToInstance } from 'class-transformer';
+import { Brackets, ObjectLiteral, SelectQueryBuilder } from 'typeorm';
 
-import { createQueryBuilder, getRepository } from "@beabee/core/database";
+import { createQueryBuilder, getRepository } from '@beabee/core/database';
 
-import { PaginatedDto } from "@api/dto/PaginatedDto";
+import { PaginatedDto } from '@api/dto/PaginatedDto';
 import {
   NotFoundError,
   InvalidRuleError,
-  UnauthorizedError
-} from "@beabee/core/errors";
-import { mergeRules } from "@beabee/core/utils/rules";
+  UnauthorizedError,
+} from '@beabee/core/errors';
+import { mergeRules } from '@beabee/core/utils/rules';
 
-import { TransformerOperation } from "@type/index";
-import { BadRequestError } from "routing-controllers";
-import { convertRulesToWhereClause } from "@beabee/core/utils/rules";
+import { TransformerOperation } from '@type/index';
+import { BadRequestError } from 'routing-controllers';
+import { convertRulesToWhereClause } from '@beabee/core/utils/rules';
 
-import { FetchRawResult } from "@type/index";
-import { AuthInfo, FilterHandlers } from "@beabee/core/type";
+import { FetchRawResult } from '@type/index';
+import { AuthInfo, FilterHandlers } from '@beabee/core/type';
 
 /**
  * Base transformer for querying and converting models to DTOs
@@ -33,10 +33,10 @@ export abstract class BaseTransformer<
   GetDto,
   FilterName extends string = never,
   GetDtoOpts = unknown,
-  Query extends GetDtoOpts & PaginatedQuery = GetDtoOpts & PaginatedQuery
+  Query extends GetDtoOpts & PaginatedQuery = GetDtoOpts & PaginatedQuery,
 > {
   protected abstract model: { new (): Model };
-  protected modelIdField = "id";
+  protected modelIdField = 'id';
 
   protected abstract filters: Filters<FilterName>;
   /**
@@ -110,7 +110,7 @@ export abstract class BaseTransformer<
   ): Promise<boolean> {
     // Default to only admins for now as creating doesn't yet implement the
     // query building logic
-    return auth.roles.includes("admin");
+    return auth.roles.includes('admin');
   }
 
   /**
@@ -187,7 +187,7 @@ export abstract class BaseTransformer<
   protected async prepareQuery<T extends Query>(
     query: T,
     auth: AuthInfo,
-    operation: "create" | "read" | "update" | "delete"
+    operation: 'create' | 'read' | 'update' | 'delete'
   ): Promise<{
     query: T;
     filters: Filters<FilterName>;
@@ -198,7 +198,7 @@ export abstract class BaseTransformer<
     const finalQuery = this.transformQuery(query);
 
     // Apply the authentication rules if not an admin
-    if (!auth.roles.includes("admin")) {
+    if (!auth.roles.includes('admin')) {
       const authRules = await this.getNonAdminAuthRules(
         auth,
         finalQuery,
@@ -230,7 +230,7 @@ export abstract class BaseTransformer<
           validatedRules,
           auth.contact,
           finalFilterHandlers,
-          "item."
+          'item.'
         );
 
         db = { where, params };
@@ -241,7 +241,7 @@ export abstract class BaseTransformer<
         db,
         // TODO: Remove once contact and callout response transformers have been updated
         filters: finalFilters,
-        filterHandlers: finalFilterHandlers
+        filterHandlers: finalFilterHandlers,
       };
     } catch (err) {
       throw err instanceof InvalidRule
@@ -261,12 +261,12 @@ export abstract class BaseTransformer<
     auth: AuthInfo,
     query_: Query
   ): Promise<FetchRawResult<Model, Query>> {
-    const { query, db } = await this.prepareQuery(query_, auth, "read");
+    const { query, db } = await this.prepareQuery(query_, auth, 'read');
 
     const limit = query.limit || 50;
     const offset = query.offset || 0;
 
-    const qb = createQueryBuilder(this.model, "item").offset(offset);
+    const qb = createQueryBuilder(this.model, 'item').offset(offset);
 
     if (limit !== -1) {
       qb.limit(limit);
@@ -277,10 +277,10 @@ export abstract class BaseTransformer<
     }
 
     if (query.sort) {
-      qb.orderBy(`item."${query.sort}"`, query.order || "ASC", "NULLS LAST");
+      qb.orderBy(`item."${query.sort}"`, query.order || 'ASC', 'NULLS LAST');
     }
 
-    this.modifyQueryBuilder(qb, "item.", query, auth);
+    this.modifyQueryBuilder(qb, 'item.', query, auth);
 
     const [items, total] = await qb.getManyAndCount();
 
@@ -303,7 +303,7 @@ export abstract class BaseTransformer<
       total,
       offset,
       count: items.length,
-      items: items.map((item) => this.convert(item, auth, query))
+      items: items.map((item) => this.convert(item, auth, query)),
     });
   }
 
@@ -349,9 +349,9 @@ export abstract class BaseTransformer<
     const query = {
       ...opts,
       rules: {
-        condition: "AND",
-        rules: [{ field: this.modelIdField, operator: "equal", value: [id] }]
-      }
+        condition: 'AND',
+        rules: [{ field: this.modelIdField, operator: 'equal', value: [id] }],
+      },
     } as Query;
 
     return await this.fetchOne(auth, query);
@@ -399,12 +399,12 @@ export abstract class BaseTransformer<
     const { query, db } = await this.prepareQuery(
       { rules } as Query, // TODO: why casting?
       auth,
-      "delete"
+      'delete'
     );
 
     if (!db) {
       throw new BadRequestError(
-        "No rules provided to delete, this would delete all items"
+        'No rules provided to delete, this would delete all items'
       );
     }
 
@@ -414,16 +414,16 @@ export abstract class BaseTransformer<
       .where((qb) => {
         const subQb = createQueryBuilder()
           .subQuery()
-          .select("item." + this.modelIdField)
-          .from(this.model, "item")
+          .select('item.' + this.modelIdField)
+          .from(this.model, 'item')
           .where(db.where);
 
-        this.modifyQueryBuilder(subQb, "item.", query, auth);
+        this.modifyQueryBuilder(subQb, 'item.', query, auth);
 
         // Override select to only select the primary key
-        subQb.select("item." + this.modelIdField);
+        subQb.select('item.' + this.modelIdField);
 
-        qb.where(this.modelIdField + " IN " + subQb.getQuery());
+        qb.where(this.modelIdField + ' IN ' + subQb.getQuery());
       })
       .setParameters(db.params)
       .execute();
@@ -440,8 +440,8 @@ export abstract class BaseTransformer<
    */
   async deleteById(auth: AuthInfo, id: string): Promise<boolean> {
     return await this.delete(auth, {
-      condition: "AND",
-      rules: [{ field: this.modelIdField, operator: "equal", value: [id] }]
+      condition: 'AND',
+      rules: [{ field: this.modelIdField, operator: 'equal', value: [id] }],
     });
   }
 
@@ -460,12 +460,12 @@ export abstract class BaseTransformer<
     const { query, db } = await this.prepareQuery(
       { rules } as Query, // TODO: why casting?
       auth,
-      "update"
+      'update'
     );
 
     if (!db) {
       throw new BadRequestError(
-        "No rules provided to update, this would update all items"
+        'No rules provided to update, this would update all items'
       );
     }
 
@@ -475,15 +475,15 @@ export abstract class BaseTransformer<
       .where((qb) => {
         const subQb = createQueryBuilder()
           .subQuery()
-          .from(this.model, "item")
+          .from(this.model, 'item')
           .where(db.where);
 
-        this.modifyQueryBuilder(subQb, "item.", query, auth);
+        this.modifyQueryBuilder(subQb, 'item.', query, auth);
 
         // Override select to only select the primary key
-        subQb.select("item." + this.modelIdField);
+        subQb.select('item.' + this.modelIdField);
 
-        qb.where(this.modelIdField + " IN " + subQb.getQuery());
+        qb.where(this.modelIdField + ' IN ' + subQb.getQuery());
       })
       .setParameters(db.params)
       .execute();
@@ -507,8 +507,8 @@ export abstract class BaseTransformer<
     const updated = await this.update(
       auth,
       {
-        condition: "AND",
-        rules: [{ field: this.modelIdField, operator: "equal", value: [id] }]
+        condition: 'AND',
+        rules: [{ field: this.modelIdField, operator: 'equal', value: [id] }],
       },
       updates
     );

@@ -1,5 +1,5 @@
-import { NewsletterContact } from "./newsletter-contact";
-import { UpdateNewsletterContact } from "./update-newsletter-contact";
+import { NewsletterContact } from './newsletter-contact';
+import { UpdateNewsletterContact } from './update-newsletter-contact';
 
 export interface NewsletterProvider {
   addTagToContacts(emails: string[], tag: string): Promise<void>;

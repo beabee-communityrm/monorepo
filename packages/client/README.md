@@ -14,19 +14,19 @@ npm install @beabee/client
 ### Example
 
 ```typescript
-import { BeabeeClient } from "@beabee/client";
+import { BeabeeClient } from '@beabee/client';
 
 const client = new BeabeeClient({
-  path: "/api/1.0/",
-  host: "http://localhost:3002",
-  token: "your-api-token"
+  path: '/api/1.0/',
+  host: 'http://localhost:3002',
+  token: 'your-api-token',
 });
 
 // Get by slug or ID
-const callout = await client.callout.get("my-callout-slug");
+const callout = await client.callout.get('my-callout-slug');
 
 // Get with relations
-const calloutWithForm = await client.callout.get("my-callout-slug", ["form"]);
+const calloutWithForm = await client.callout.get('my-callout-slug', ['form']);
 
 // Basic listing
 const callouts = await client.callout.list();
@@ -34,48 +34,48 @@ const callouts = await client.callout.list();
 // List with query filters
 const activeCallouts = await client.callout.list({
   rules: {
-    condition: "AND",
+    condition: 'AND',
     rules: [
-      { field: "status", operator: "equal", value: ["Open"] },
-      { field: "hidden", operator: "equal", value: [false] }
-    ]
+      { field: 'status', operator: 'equal', value: ['Open'] },
+      { field: 'hidden', operator: 'equal', value: [false] },
+    ],
   },
   limit: 10,
-  sort: "title"
+  sort: 'title',
 });
 
 const newCallout = await client.callout.create({
-  title: "My New Callout",
-  slug: "my-new-callout",
-  excerpt: "A brief description",
-  body: "The full callout content",
+  title: 'My New Callout',
+  slug: 'my-new-callout',
+  excerpt: 'A brief description',
+  body: 'The full callout content',
   starts: new Date(),
-  expires: null
+  expires: null,
   // ... other creation fields
 });
 
 // Create a response for a specific callout
-const response = await client.callout.response.create("my-callout-slug", {
+const response = await client.callout.response.create('my-callout-slug', {
   // Guest information
-  guestName: "John Doe",
-  guestEmail: "john@example.com",
+  guestName: 'John Doe',
+  guestEmail: 'john@example.com',
 
   // Form answers
   answers: {
-    question1: "Answer 1",
-    question2: "Answer 2"
+    question1: 'Answer 1',
+    question2: 'Answer 2',
     // ... more answers based on the callout form schema
-  }
+  },
 });
 
 // Get content by ID
-const content = await client.content.get("content-id");
+const content = await client.content.get('content-id');
 
 // Update content by ID
-const updatedContent = await client.content.update("content-id", {
+const updatedContent = await client.content.update('content-id', {
   // Partial content update
-  title: "Updated Title",
-  body: "Updated content"
+  title: 'Updated Title',
+  body: 'Updated content',
 });
 ```
 

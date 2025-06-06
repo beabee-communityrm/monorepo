@@ -1,5 +1,5 @@
-import { Column, Entity, PrimaryColumn, UpdateDateColumn } from "typeorm";
-import { ContentId } from "@beabee/beabee-common";
+import { Column, Entity, PrimaryColumn, UpdateDateColumn } from 'typeorm';
+import { ContentId } from '@beabee/beabee-common';
 
 @Entity()
 export class Content {
@@ -9,6 +9,6 @@ export class Content {
   @UpdateDateColumn()
   updated!: Date;
 
-  @Column({ type: "jsonb" })
+  @Column({ type: 'jsonb' })
   data!: Record<string, unknown>;
 }

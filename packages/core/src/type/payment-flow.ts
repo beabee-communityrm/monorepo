@@ -1,4 +1,4 @@
-import { PaymentFlowParams } from ".";
+import { PaymentFlowParams } from '.';
 
 export interface PaymentFlow {
   id: string;

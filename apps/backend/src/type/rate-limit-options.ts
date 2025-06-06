@@ -1,4 +1,4 @@
-import type { IRateLimiterOptions } from "rate-limiter-flexible";
+import type { IRateLimiterOptions } from 'rate-limiter-flexible';
 
 /**
  * Configuration options for a single rate limiter (e.g., for guests or users).

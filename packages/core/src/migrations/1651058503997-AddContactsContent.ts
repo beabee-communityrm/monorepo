@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class AddContactsContent1651058503997 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {

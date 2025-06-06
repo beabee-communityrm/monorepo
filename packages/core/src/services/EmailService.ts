@@ -1,134 +1,134 @@
-import { isLocale, Locale } from "@beabee/locale";
-import fs from "fs";
-import moment from "moment";
-import path from "path";
-import { loadFront } from "yaml-front-matter";
+import { isLocale, Locale } from '@beabee/locale';
+import fs from 'fs';
+import moment from 'moment';
+import path from 'path';
+import { loadFront } from 'yaml-front-matter';
 
-import { log as mainLogger } from "#logging";
+import { log as mainLogger } from '#logging';
 
-import OptionsService from "#services/OptionsService";
+import OptionsService from '#services/OptionsService';
 
 import {
   EmailMergeFields,
   EmailOptions,
   EmailPerson,
   EmailProvider,
-  EmailRecipient
-} from "#type/index";
-import { MandrillProvider, SendGridProvider, SMTPProvider } from "#providers";
-import { Email, Contact } from "#models/index";
+  EmailRecipient,
+} from '#type/index';
+import { MandrillProvider, SendGridProvider, SMTPProvider } from '#providers';
+import { Email, Contact } from '#models/index';
 
-import config from "#config/config";
+import config from '#config/config';
 
-const log = mainLogger.child({ app: "email-service" });
+const log = mainLogger.child({ app: 'email-service' });
 
 const generalEmailTemplates = {
-  "purchased-gift": (params: {
+  'purchased-gift': (params: {
     fromName: string;
     gifteeFirstName: string;
     giftStartDate: Date;
   }) => ({
     PURCHASER: params.fromName,
     GIFTEE: params.gifteeFirstName,
-    GIFTDATE: moment.utc(params.giftStartDate).format("MMMM Do")
+    GIFTDATE: moment.utc(params.giftStartDate).format('MMMM Do'),
   }),
-  "confirm-email": (params: {
+  'confirm-email': (params: {
     firstName: string;
     lastName: string;
     confirmLink: string;
   }) => ({
     FNAME: params.firstName,
     LNAME: params.lastName,
-    CONFIRMLINK: params.confirmLink
+    CONFIRMLINK: params.confirmLink,
   }),
-  "expired-special-url-resend": (params: {
+  'expired-special-url-resend': (params: {
     firstName: string;
     newUrl: string;
   }) => ({
     FNAME: params.firstName,
-    URL: params.newUrl
-  })
+    URL: params.newUrl,
+  }),
 } as const;
 
 const adminEmailTemplates = {
-  "new-member": (params: { contact: Contact }) => ({
+  'new-member': (params: { contact: Contact }) => ({
     MEMBERID: params.contact.id,
-    MEMBERNAME: params.contact.fullname
+    MEMBERNAME: params.contact.fullname,
   }),
-  "cancelled-member": (params: { contact: Contact }) => ({
+  'cancelled-member': (params: { contact: Contact }) => ({
     MEMBERID: params.contact.id,
-    MEMBERNAME: params.contact.fullname
+    MEMBERNAME: params.contact.fullname,
   }),
-  "new-callout-response": (params: {
+  'new-callout-response': (params: {
     calloutSlug: string;
     calloutTitle: string;
     responderName: string;
   }) => ({
     CALLOUTSLUG: params.calloutSlug,
     CALLOUTTITLE: params.calloutTitle,
-    RESPNAME: params.responderName
-  })
+    RESPNAME: params.responderName,
+  }),
 } as const;
 
 const contactEmailTemplates = {
   welcome: (contact: Contact) => ({
-    REFCODE: contact.referralCode
+    REFCODE: contact.referralCode,
   }),
-  "welcome-post-gift": () => ({}),
-  "reset-password": (_: Contact, params: { rpLink: string }) => ({
-    RPLINK: params.rpLink
+  'welcome-post-gift': () => ({}),
+  'reset-password': (_: Contact, params: { rpLink: string }) => ({
+    RPLINK: params.rpLink,
   }),
-  "reset-device": (_: Contact, params: { rpLink: string }) => ({
-    RPLINK: params.rpLink
+  'reset-device': (_: Contact, params: { rpLink: string }) => ({
+    RPLINK: params.rpLink,
   }),
-  "cancelled-contribution": (contact: Contact) => ({
+  'cancelled-contribution': (contact: Contact) => ({
     EXPIRES: contact.membership?.dateExpires
-      ? moment.utc(contact.membership.dateExpires).format("dddd Do MMMM")
-      : "-",
-    MEMBERSHIPID: contact.id
+      ? moment.utc(contact.membership.dateExpires).format('dddd Do MMMM')
+      : '-',
+    MEMBERSHIPID: contact.id,
   }),
-  "cancelled-contribution-no-survey": (contact: Contact) => {
+  'cancelled-contribution-no-survey': (contact: Contact) => {
     return {
       EXPIRES: contact.membership?.dateExpires
-        ? moment.utc(contact.membership.dateExpires).format("dddd Do MMMM")
-        : "-"
+        ? moment.utc(contact.membership.dateExpires).format('dddd Do MMMM')
+        : '-',
     };
   },
-  "successful-referral": (
+  'successful-referral': (
     contact: Contact,
     params: { refereeName: string; isEligible: boolean }
   ) => ({
     REFCODE: contact.referralCode,
     REFEREENAME: params.refereeName,
-    ISELIGIBLE: params.isEligible
+    ISELIGIBLE: params.isEligible,
   }),
-  "giftee-success": (
+  'giftee-success': (
     _: Contact,
     params: { fromName: string; message: string; giftCode: string }
   ) => ({
     PURCHASER: params.fromName,
     MESSAGE: params.message,
-    ACTIVATELINK: config.audience + "/gift/" + params.giftCode
+    ACTIVATELINK: config.audience + '/gift/' + params.giftCode,
   }),
-  "manual-to-automatic": () => ({}),
-  "email-exists-login": (_: Contact, params: { loginLink: string }) => ({
-    LOGINLINK: params.loginLink
+  'manual-to-automatic': () => ({}),
+  'email-exists-login': (_: Contact, params: { loginLink: string }) => ({
+    LOGINLINK: params.loginLink,
   }),
-  "email-exists-set-password": (_: Contact, params: { spLink: string }) => ({
-    SPLINK: params.spLink
+  'email-exists-set-password': (_: Contact, params: { spLink: string }) => ({
+    SPLINK: params.spLink,
   }),
-  "confirm-callout-response": (
+  'confirm-callout-response': (
     _: Contact,
     params: { calloutSlug: string; calloutTitle: string }
   ) => ({
     CALLOUTTITLE: params.calloutTitle,
     CALLOUTLINK: `${config.audience}/callouts/${params.calloutSlug}`,
-    SUPPORTEMAIL: OptionsService.getText("support-email")
+    SUPPORTEMAIL: OptionsService.getText('support-email'),
   }),
-  "contribution-didnt-start": (_: Contact) => ({
-    ORGNAME: OptionsService.getText("organisation"),
-    SUPPORTEMAIL: OptionsService.getText("support-email")
-  })
+  'contribution-didnt-start': (_: Contact) => ({
+    ORGNAME: OptionsService.getText('organisation'),
+    SUPPORTEMAIL: OptionsService.getText('support-email'),
+  }),
 } as const;
 
 type GeneralEmailTemplates = typeof generalEmailTemplates;
@@ -149,9 +149,9 @@ type EmailTemplateId =
 
 class EmailService {
   private readonly provider: EmailProvider =
-    config.email.provider === "mandrill"
+    config.email.provider === 'mandrill'
       ? new MandrillProvider(config.email.settings)
-      : config.email.provider === "sendgrid"
+      : config.email.provider === 'sendgrid'
         ? new SendGridProvider(config.email.settings)
         : new SMTPProvider(config.email.settings);
 
@@ -160,12 +160,12 @@ class EmailService {
   > = {};
 
   constructor() {
-    const emailDir = path.join(__dirname, "../data/email");
+    const emailDir = path.join(__dirname, '../data/email');
     const emailFiles = fs.readdirSync(emailDir);
-    log.info("Loading default emails");
+    log.info('Loading default emails');
 
     for (const emailFile of emailFiles) {
-      const [id, locale] = path.basename(emailFile, ".yfm").split("_", 2);
+      const [id, locale] = path.basename(emailFile, '.yfm').split('_', 2);
       if (!this.isTemplateId(id) || !isLocale(locale)) {
         log.error(`Unknown ID (${id}) or locale (${locale})`);
         continue;
@@ -192,11 +192,11 @@ class EmailService {
     recipients: EmailRecipient[],
     opts?: EmailOptions
   ): Promise<void> {
-    log.info("Sending email " + email.id, { recipients });
+    log.info('Sending email ' + email.id, { recipients });
     try {
       await this.provider.sendEmail(email, recipients, opts);
     } catch (error) {
-      log.error("Unable to send email " + email.id, error);
+      log.error('Unable to send email ' + email.id, error);
     }
   }
 
@@ -230,7 +230,7 @@ class EmailService {
   async sendTemplateToContact<
     T extends ContactEmailParams<T> extends undefined
       ? ContactEmailTemplateId
-      : never
+      : never,
   >(
     template: T,
     contact: Contact,
@@ -243,7 +243,7 @@ class EmailService {
     params: ContactEmailParams<T>,
     opts?: EmailOptions
   ): Promise<void> {
-    log.info("Sending template to contact " + contact.id);
+    log.info('Sending template to contact ' + contact.id);
 
     const recipient = this.convertContactToRecipient(
       contact,
@@ -259,8 +259,8 @@ class EmailService {
     opts?: EmailOptions
   ): Promise<void> {
     const recipient = {
-      to: { email: OptionsService.getText("support-email") },
-      mergeFields: adminEmailTemplates[template](params as any)
+      to: { email: OptionsService.getText('support-email') },
+      mergeFields: adminEmailTemplates[template](params as any),
     };
 
     await this.sendTemplate(template, [recipient], opts, false);
@@ -274,19 +274,19 @@ class EmailService {
   ): Promise<void> {
     const providerTemplate = this.getProviderTemplate(template);
     if (providerTemplate) {
-      log.info("Sending template " + template, {
+      log.info('Sending template ' + template, {
         template,
         providerTemplate,
-        recipients
+        recipients,
       });
       try {
         await this.provider.sendTemplate(providerTemplate, recipients, opts);
       } catch (error) {
-        log.error("Unable to send template " + template, error);
+        log.error('Unable to send template ' + template, error);
       }
       // Fallback to cancelled contribution email if no no-survey variant
-    } else if (template === "cancelled-contribution-no-survey") {
-      this.sendTemplate("cancelled-contribution", recipients, opts, required);
+    } else if (template === 'cancelled-contribution-no-survey') {
+      this.sendTemplate('cancelled-contribution', recipients, opts, required);
     } else {
       const defaultEmail = this.getDefaultEmail(template);
       if (defaultEmail) {
@@ -312,9 +312,9 @@ class EmailService {
     template: EmailTemplateId,
     email: Email
   ): Promise<void> {
-    OptionsService.setJSON("email-templates", {
-      ...OptionsService.getJSON("email-templates"),
-      [template]: email.id
+    OptionsService.setJSON('email-templates', {
+      ...OptionsService.getJSON('email-templates'),
+      [template]: email.id,
     });
   }
 
@@ -327,11 +327,11 @@ class EmailService {
   }
 
   private getProviderTemplate(template: EmailTemplateId): string | undefined {
-    return OptionsService.getJSON("email-templates")[template];
+    return OptionsService.getJSON('email-templates')[template];
   }
 
   private getDefaultEmail(template: EmailTemplateId): Email | undefined {
-    const locale = OptionsService.getText("locale");
+    const locale = OptionsService.getText('locale');
     return (
       this.defaultEmails[locale]?.[template] ||
       this.defaultEmails.en?.[template]
@@ -349,8 +349,8 @@ class EmailService {
         NAME: contact.fullname,
         FNAME: contact.firstname,
         LNAME: contact.lastname,
-        ...additionalMergeFields
-      }
+        ...additionalMergeFields,
+      },
     };
   }
 }

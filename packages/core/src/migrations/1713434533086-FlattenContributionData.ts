@@ -1,9 +1,9 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class FlattenContributionData1713434533086
   implements MigrationInterface
 {
-  name = "FlattenContributionData1713434533086";
+  name = 'FlattenContributionData1713434533086';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(

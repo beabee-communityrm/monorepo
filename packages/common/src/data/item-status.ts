@@ -1,6 +1,6 @@
 export enum ItemStatus {
-  Draft = "draft",
-  Scheduled = "scheduled",
-  Open = "open",
-  Ended = "ended"
+  Draft = 'draft',
+  Scheduled = 'scheduled',
+  Open = 'open',
+  Ended = 'ended',
 }

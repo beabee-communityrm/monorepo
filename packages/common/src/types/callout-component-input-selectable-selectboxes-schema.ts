@@ -1,8 +1,8 @@
-import type { CalloutComponentType } from "../data/index.js";
+import type { CalloutComponentType } from '../data/index.js';
 import type {
   CalloutComponentBaseInputSelectableSchema,
-  CalloutComponentSelectboxesRules
-} from "./index.js";
+  CalloutComponentSelectboxesRules,
+} from './index.js';
 
 export interface CalloutComponentInputSelectableSelectboxesSchema
   extends CalloutComponentBaseInputSelectableSchema {

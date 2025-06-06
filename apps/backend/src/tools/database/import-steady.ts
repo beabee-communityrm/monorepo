@@ -1,45 +1,45 @@
-import "module-alias/register";
+import 'module-alias/register';
 
 import {
   Address,
   ContributionPeriod,
   ContributionType,
-  NewsletterStatus
-} from "@beabee/beabee-common";
-import { parse } from "csv-parse";
-import { In } from "typeorm";
+  NewsletterStatus,
+} from '@beabee/beabee-common';
+import { parse } from 'csv-parse';
+import { In } from 'typeorm';
 
-import { getRepository } from "@beabee/core/database";
-import { runApp } from "@beabee/core/server";
-import { normalizeEmailAddress } from "@beabee/core/utils/email";
+import { getRepository } from '@beabee/core/database';
+import { runApp } from '@beabee/core/server';
+import { normalizeEmailAddress } from '@beabee/core/utils/email';
 
-import ContactsService from "@beabee/core/services/ContactsService";
+import ContactsService from '@beabee/core/services/ContactsService';
 
-import { Contact, ContactRole } from "@beabee/core/models";
-import contactTagTransformer from "@api/transformers/ContactTagTransformer";
-import { ContactTagAssignment } from "@beabee/core/models";
+import { Contact, ContactRole } from '@beabee/core/models';
+import contactTagTransformer from '@api/transformers/ContactTagTransformer';
+import { ContactTagAssignment } from '@beabee/core/models';
 
 const headers = [
-  "first_name",
-  "last_name",
-  "email",
-  "plan_name",
-  "plan_monthly_amount_cents",
-  "gifted",
-  "subscription_period",
-  "subscription_state",
-  "subscribed_at",
-  "trial_ends_at",
-  "cancelled_at",
-  "expires_at",
-  "shipping_first_name",
-  "shipping_last_name",
-  "shipping_company_name",
-  "shipping_street_and_number",
-  "shipping_city",
-  "shipping_zip_code",
-  "shipping_state",
-  "shipping_country_code"
+  'first_name',
+  'last_name',
+  'email',
+  'plan_name',
+  'plan_monthly_amount_cents',
+  'gifted',
+  'subscription_period',
+  'subscription_state',
+  'subscribed_at',
+  'trial_ends_at',
+  'cancelled_at',
+  'expires_at',
+  'shipping_first_name',
+  'shipping_last_name',
+  'shipping_company_name',
+  'shipping_street_and_number',
+  'shipping_city',
+  'shipping_zip_code',
+  'shipping_state',
+  'shipping_country_code',
 ] as const;
 
 interface SteadyRow {
@@ -49,7 +49,7 @@ interface SteadyRow {
   plan_name: string;
   plan_monthly_amount_cents: number;
   gifted: boolean;
-  subscription_period: "annual" | "monthly";
+  subscription_period: 'annual' | 'monthly';
   subscription_state: string;
   subscribed_at: string;
   trial_ends_at: string;
@@ -67,7 +67,7 @@ interface SteadyRow {
 
 type RawSteadyRow = { [k in keyof SteadyRow]: string };
 
-const isDangerMode = process.argv.includes("--danger");
+const isDangerMode = process.argv.includes('--danger');
 
 /**
  * Check if a row is a valid Steady row
@@ -77,10 +77,10 @@ const isDangerMode = process.argv.includes("--danger");
  */
 function isSteadyRow(row: any): row is RawSteadyRow {
   return (
-    typeof row === "object" &&
-    headers.every((header) => typeof row[header] === "string") &&
-    ["true", "false"].includes(row.gifted) &&
-    ["annual", "monthly"].includes(row.subscription_period) &&
+    typeof row === 'object' &&
+    headers.every((header) => typeof row[header] === 'string') &&
+    ['true', 'false'].includes(row.gifted) &&
+    ['annual', 'monthly'].includes(row.subscription_period) &&
     !isNaN(parseInt(row.plan_monthly_amount_cents))
   );
 }
@@ -91,17 +91,17 @@ function isSteadyRow(row: any): row is RawSteadyRow {
  * @param period Steady's period
  * @returns beabee's period
  */
-function convertPeriod(period: "annual" | "monthly"): ContributionPeriod {
-  return period === "annual"
+function convertPeriod(period: 'annual' | 'monthly'): ContributionPeriod {
+  return period === 'annual'
     ? ContributionPeriod.Annually
     : ContributionPeriod.Monthly;
 }
 
 function getRole(row: SteadyRow): ContactRole {
   return getRepository(ContactRole).create({
-    type: "member",
+    type: 'member',
     dateAdded: new Date(row.subscribed_at),
-    dateExpires: row.expires_at ? new Date(row.expires_at) : null
+    dateExpires: row.expires_at ? new Date(row.expires_at) : null,
   });
 }
 
@@ -117,10 +117,10 @@ function getDeliveryAddress(row: SteadyRow): [boolean, Address | null] {
       true,
       {
         line1: row.shipping_company_name || row.shipping_street_and_number,
-        line2: row.shipping_company_name ? row.shipping_street_and_number : "",
+        line2: row.shipping_company_name ? row.shipping_street_and_number : '',
         city: row.shipping_city,
-        postcode: row.shipping_zip_code
-      }
+        postcode: row.shipping_zip_code,
+      },
     ];
   } else {
     return [false, null];
@@ -132,12 +132,12 @@ async function setContributionData(contact: Contact, row: SteadyRow) {
 
   await ContactsService.forceUpdateContactContribution(contact, {
     type: ContributionType.Manual,
-    source: "Steady",
+    source: 'Steady',
     reference: row.plan_name,
     period,
     amount:
       (row.plan_monthly_amount_cents / 100) *
-      (period === ContributionPeriod.Annually ? 12 : 1)
+      (period === ContributionPeriod.Annually ? 12 : 1),
   });
 }
 
@@ -156,7 +156,7 @@ async function updateExistingContact(contact: Contact, row: SteadyRow) {
     return;
   }
 
-  console.error("Updating " + contact.email);
+  console.error('Updating ' + contact.email);
   if (!isDangerMode) {
     return;
   }
@@ -164,7 +164,7 @@ async function updateExistingContact(contact: Contact, row: SteadyRow) {
   await ContactsService.updateContact(contact, {
     contributionMonthlyAmount: row.plan_monthly_amount_cents / 100,
     firstname: row.first_name,
-    lastname: row.last_name
+    lastname: row.last_name,
   });
 
   // If the contact is already a member, use extend instead to ensure
@@ -174,24 +174,24 @@ async function updateExistingContact(contact: Contact, row: SteadyRow) {
     if (role.dateExpires) {
       await ContactsService.extendContactRole(
         contact,
-        "member",
+        'member',
         role.dateExpires
       );
     }
   } else {
-    await ContactsService.updateContactRole(contact, "member", role);
+    await ContactsService.updateContactRole(contact, 'member', role);
   }
 
   const [deliveryOptIn, deliveryAddress] = getDeliveryAddress(row);
   await ContactsService.updateContactProfile(contact, {
     deliveryOptIn,
-    deliveryAddress
+    deliveryAddress,
   });
 
   // Add Steady tag
   await contactTagTransformer.updateEntityTags(
     [contact.id],
-    ["+steady"] // Add the "steady" tag
+    ['+steady'] // Add the "steady" tag
   );
 
   await setContributionData(contact, row);
@@ -207,7 +207,7 @@ async function addNewContact(row: SteadyRow) {
 
   const [deliveryOptIn, deliveryAddress] = getDeliveryAddress(row);
 
-  console.error("Adding " + row.email);
+  console.error('Adding ' + row.email);
   if (!isDangerMode) {
     return;
   }
@@ -218,19 +218,19 @@ async function addNewContact(row: SteadyRow) {
       firstname: row.first_name,
       lastname: row.last_name,
       joined,
-      roles: [getRole(row)]
+      roles: [getRole(row)],
     },
     {
       deliveryOptIn,
       deliveryAddress,
-      newsletterStatus: NewsletterStatus.None
+      newsletterStatus: NewsletterStatus.None,
     }
   );
 
   // Add Steady tag
   await contactTagTransformer.updateEntityTags(
     [contact.id],
-    ["+steady"] // Add the "steady" tag
+    ['+steady'] // Add the "steady" tag
   );
 
   await setContributionData(contact, row);
@@ -247,23 +247,23 @@ async function processRows(rows: SteadyRow[]) {
 
   // Check if steady tag exists and create if it doesn't
   const steadyTag = await getRepository(ContactTagAssignment)
-    .createQueryBuilder("ta")
-    .innerJoinAndSelect("ta.tag", "tag")
-    .where("tag.name = :name", { name: "Steady" })
+    .createQueryBuilder('ta')
+    .innerJoinAndSelect('ta.tag', 'tag')
+    .where('tag.name = :name', { name: 'Steady' })
     .getOne();
 
   if (!steadyTag) {
     await contactTagTransformer.create(
-      { method: "internal", roles: ["admin"] },
+      { method: 'internal', roles: ['admin'] },
       {
-        name: "Steady",
-        description: "Imported from Steady"
+        name: 'Steady',
+        description: 'Imported from Steady',
       }
     );
   }
 
   const existingContacts = await getRepository(Contact).find({
-    where: { email: In(rows.map((row) => row.email)) }
+    where: { email: In(rows.map((row) => row.email)) },
   });
 
   const existingEmails = existingContacts.map((c) => c.email);
@@ -293,20 +293,22 @@ async function loadRows(): Promise<SteadyRow[]> {
 
     process.stdin
       .pipe(parse({ columns: true, skipEmptyLines: true }))
-      .on("data", (row) => {
+      .on('data', (row) => {
         if (isSteadyRow(row)) {
           rows.push({
             ...row,
             email: normalizeEmailAddress(row.email),
             plan_monthly_amount_cents: parseInt(row.plan_monthly_amount_cents),
-            gifted: row.gifted === "true",
-            subscription_period: row.subscription_period as "annual" | "monthly"
+            gifted: row.gifted === 'true',
+            subscription_period: row.subscription_period as
+              | 'annual'
+              | 'monthly',
           });
         } else {
-          console.error("Invalid row", row);
+          console.error('Invalid row', row);
         }
       })
-      .on("end", () => resolve(rows));
+      .on('end', () => resolve(rows));
   });
 }
 

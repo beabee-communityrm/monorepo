@@ -1,9 +1,9 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class ChangeVariantLocaleToName1708688873027
   implements MigrationInterface
 {
-  name = "ChangeVariantLocaleToName1708688873027";
+  name = 'ChangeVariantLocaleToName1708688873027';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(

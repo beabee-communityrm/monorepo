@@ -1,6 +1,6 @@
-import { ItemStatus } from "@beabee/beabee-common";
-import moment from "moment";
-import { Column } from "typeorm";
+import { ItemStatus } from '@beabee/beabee-common';
+import moment from 'moment';
+import { Column } from 'typeorm';
 
 export class ItemWithStatus {
   @Column({ type: Date, nullable: true })

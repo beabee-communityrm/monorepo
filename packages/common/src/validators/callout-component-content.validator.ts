@@ -1,7 +1,7 @@
 import type {
   CalloutComponentContentSchema,
-  ValidatorCalloutComponent
-} from "../types/index.js";
+  ValidatorCalloutComponent,
+} from '../types/index.js';
 
 export const calloutComponentContentValidator: ValidatorCalloutComponent<
   CalloutComponentContentSchema,

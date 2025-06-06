@@ -1,4 +1,4 @@
-import { NewsletterStatus } from "@beabee/beabee-common";
+import { NewsletterStatus } from '@beabee/beabee-common';
 
 export interface ContactNewsletterUpdates {
   newsletterStatus?: NewsletterStatus | undefined;

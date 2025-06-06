@@ -1,1 +1,1 @@
-export type GetSegmentWith = "contactCount" | void;
+export type GetSegmentWith = 'contactCount' | void;

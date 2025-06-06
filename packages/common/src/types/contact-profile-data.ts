@@ -1,5 +1,5 @@
-import type { NewsletterStatus } from "../data/index.js";
-import type { Address } from "./index.js";
+import type { NewsletterStatus } from '../data/index.js';
+import type { Address } from './index.js';
 
 export interface ContactProfileData {
   telephone: string;

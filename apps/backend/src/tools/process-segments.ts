@@ -1,43 +1,43 @@
 // TODO: Port this to apps/backend-cli/src/actions/sync/segments.ts.
 // To do that, we have to package ContactTransformer e.g. to @beabee/transformers.
 
-import "module-alias/register";
+import 'module-alias/register';
 
-import { In } from "typeorm";
+import { In } from 'typeorm';
 
-import { getRepository } from "@beabee/core/database";
-import { log as mainLogger } from "@beabee/core/logging";
-import { runApp } from "@beabee/core/server";
+import { getRepository } from '@beabee/core/database';
+import { log as mainLogger } from '@beabee/core/logging';
+import { runApp } from '@beabee/core/server';
 
-import EmailService from "@beabee/core/services/EmailService";
-import NewsletterService from "@beabee/core/services/NewsletterService";
-import ContactsService from "@beabee/core/services/ContactsService";
+import EmailService from '@beabee/core/services/EmailService';
+import NewsletterService from '@beabee/core/services/NewsletterService';
+import ContactsService from '@beabee/core/services/ContactsService';
 
 import {
   Segment,
   SegmentOngoingEmail,
-  SegmentContact
-} from "@beabee/core/models";
-import ContactTransformer from "@api/transformers/ContactTransformer";
-import { GetContactWith } from "@beabee/beabee-common";
-import { InvalidRuleError } from "@beabee/core/errors";
+  SegmentContact,
+} from '@beabee/core/models';
+import ContactTransformer from '@api/transformers/ContactTransformer';
+import { GetContactWith } from '@beabee/beabee-common';
+import { InvalidRuleError } from '@beabee/core/errors';
 
-const log = mainLogger.child({ app: "process-segments" });
+const log = mainLogger.child({ app: 'process-segments' });
 
 async function processSegment(segment: Segment) {
-  log.info("Process segment " + segment.name);
+  log.info('Process segment ' + segment.name);
 
   const { items: matchedContacts } = await ContactTransformer.fetchRaw(
-    { method: "internal", roles: ["admin"] },
+    { method: 'internal', roles: ['admin'] },
     {
       limit: -1,
       rules: segment.ruleGroup,
-      with: [GetContactWith.Profile, GetContactWith.Roles]
+      with: [GetContactWith.Profile, GetContactWith.Roles],
     }
   );
 
   const segmentContacts = await getRepository(SegmentContact).find({
-    where: { segmentId: segment.id }
+    where: { segmentId: segment.id },
   });
 
   const newContacts = matchedContacts.filter((m) =>
@@ -53,7 +53,7 @@ async function processSegment(segment: Segment) {
 
   await getRepository(SegmentContact).delete({
     segmentId: segment.id,
-    contactId: In(oldSegmentContactIds)
+    contactId: In(oldSegmentContactIds),
   });
   await getRepository(SegmentContact).insert(
     newContacts.map((contact) => ({ segment, contact }))
@@ -61,21 +61,21 @@ async function processSegment(segment: Segment) {
 
   const outgoingEmails = await getRepository(SegmentOngoingEmail).find({
     where: { segmentId: segment.id, enabled: true },
-    relations: { email: true }
+    relations: { email: true },
   });
 
   // Only fetch old contacts if we need to
   const oldContacts =
     segment.newsletterTag ||
-    outgoingEmails.some((oe) => oe.trigger === "onLeave")
+    outgoingEmails.some((oe) => oe.trigger === 'onLeave')
       ? await ContactsService.findByIds(oldSegmentContactIds)
       : [];
 
   for (const outgoingEmail of outgoingEmails) {
     const emailContacts =
-      outgoingEmail.trigger === "onLeave"
+      outgoingEmail.trigger === 'onLeave'
         ? oldContacts
-        : outgoingEmail.trigger === "onJoin"
+        : outgoingEmail.trigger === 'onJoin'
           ? newContacts
           : [];
     if (emailContacts.length > 0) {
@@ -117,7 +117,7 @@ async function main(segmentId?: string) {
       // This error is expected and does not require escalation.
       if (err instanceof InvalidRuleError) {
         log.warning(
-          "Invalid rule for segment %s: %s",
+          'Invalid rule for segment %s: %s',
           segment.name,
           err.message
         );

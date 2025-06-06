@@ -1,4 +1,4 @@
-import "module-alias/register";
+import 'module-alias/register';
 
 import {
   CalloutComponentSchema,
@@ -7,15 +7,15 @@ import {
   CalloutResponseAnswerAddress,
   CalloutResponseAnswerFileUpload,
   CalloutResponseAnswersSlide,
-  getCalloutComponents
-} from "@beabee/beabee-common";
-import { getRepository, runTransaction } from "@beabee/core/database";
-import { Callout, CalloutResponse, Contact } from "@beabee/core/models";
-import { runApp } from "@beabee/core/server";
-import { parse } from "csv-parse";
-import { In } from "typeorm";
-import { isURL } from "class-validator";
-import { config } from "@beabee/core/config";
+  getCalloutComponents,
+} from '@beabee/beabee-common';
+import { getRepository, runTransaction } from '@beabee/core/database';
+import { Callout, CalloutResponse, Contact } from '@beabee/core/models';
+import { runApp } from '@beabee/core/server';
+import { parse } from 'csv-parse';
+import { In } from 'typeorm';
+import { isURL } from 'class-validator';
+import { config } from '@beabee/core/config';
 
 interface ResponseRow {
   [key: string]: string;
@@ -38,11 +38,11 @@ interface ResponseRow {
  * guest_name and guest_email fields will be ignored
  */
 const metadataHeaders = [
-  "contact_email",
-  "guest_email",
-  "guest_name",
-  "bucket",
-  "created_at"
+  'contact_email',
+  'guest_email',
+  'guest_name',
+  'bucket',
+  'created_at',
 ];
 
 /**
@@ -57,14 +57,14 @@ async function loadRows(headers: string[]): Promise<ResponseRow[]> {
 
     process.stdin
       .pipe(parse({ columns: true, skipEmptyLines: true }))
-      .on("data", (row) => {
+      .on('data', (row) => {
         if (Object.keys(row).every((key) => headers.includes(key))) {
           rows.push(row);
         } else {
-          console.error("Invalid row", row);
+          console.error('Invalid row', row);
         }
       })
-      .on("end", () => {
+      .on('end', () => {
         resolve(rows);
       });
   });
@@ -85,7 +85,7 @@ async function loadContactIds(
     .filter((s, i, a) => a.indexOf(s) === i);
   const contacts = await getRepository(Contact).find({
     select: { id: true, email: true },
-    where: { email: In(contactEmails) }
+    where: { email: In(contactEmails) },
   });
 
   return contacts.reduce(
@@ -112,7 +112,7 @@ function parseValue(
       return parseFloat(value);
 
     case CalloutComponentType.INPUT_CHECKBOX:
-      return value.toLowerCase() === "true" || value === "1";
+      return value.toLowerCase() === 'true' || value === '1';
 
     case CalloutComponentType.INPUT_SELECT:
       // Map labels to values or fallback to the original value
@@ -127,7 +127,7 @@ function parseValue(
     case CalloutComponentType.INPUT_SELECTABLE_SELECTBOXES:
       return (
         value
-          .split(",")
+          .split(',')
           .map((v) => v.trim())
           // Map labels to values or fallback to the original value
           .map((v) => component.values.find((vv) => vv.label === v)?.value || v)
@@ -135,10 +135,10 @@ function parseValue(
       );
 
     case CalloutComponentType.INPUT_ADDRESS:
-      const [lat, lng, ...rest] = value.split(",");
+      const [lat, lng, ...rest] = value.split(',');
       return {
         geometry: { location: { lat: Number(lat), lng: Number(lng) } },
-        formatted_address: rest.join(",")
+        formatted_address: rest.join(','),
       } satisfies CalloutResponseAnswerAddress;
 
     // TODO: We need to upload the image or document
@@ -153,12 +153,12 @@ function parseValue(
         // Extract path by removing base URL parts
         const urlObj = new URL(value);
         // Remove /api/1.0/ prefix if it exists
-        path = urlObj.pathname.replace(/^\/api\/1\.0\//, "");
+        path = urlObj.pathname.replace(/^\/api\/1\.0\//, '');
       } else {
         // It's a path, construct URL
         path = value;
         // Ensure path doesn't start with slash
-        if (path.startsWith("/")) {
+        if (path.startsWith('/')) {
           path = path.substring(1);
         }
         // Construct full URL
@@ -167,7 +167,7 @@ function parseValue(
 
       return {
         url,
-        path
+        path,
       } satisfies CalloutResponseAnswerFileUpload;
 
     default:
@@ -198,7 +198,7 @@ function createResponse(
       continue;
     }
 
-    const [slideId, answerKey] = key.split(".");
+    const [slideId, answerKey] = key.split('.');
     if (!answers[slideId]) {
       answers[slideId] = {};
     }
@@ -215,19 +215,19 @@ function createResponse(
     guestName: (!contactId && row.guest_name) || null,
     guestEmail: (!contactId && row.guest_email) || null,
     answers,
-    bucket: row.bucket || "",
-    ...(row.created_at && { createdAt: new Date(row.created_at) })
+    bucket: row.bucket || '',
+    ...(row.created_at && { createdAt: new Date(row.created_at) }),
   });
 }
 
 runApp(async () => {
   if (!process.argv[2]) {
-    console.error("Usage: import-callout-responses <callout-slug>");
+    console.error('Usage: import-callout-responses <callout-slug>');
     process.exit(1);
   }
 
   const callout = await getRepository(Callout).findOneByOrFail({
-    slug: process.argv[2]
+    slug: process.argv[2],
   });
 
   console.error(`Importing responses for callout ${callout.slug}`);
@@ -235,10 +235,10 @@ runApp(async () => {
   const calloutComponents = getCalloutComponents(callout.formSchema);
   const headers = [
     ...calloutComponents.map((c) => c.fullKey),
-    ...metadataHeaders
+    ...metadataHeaders,
   ];
 
-  console.error(`Possible headers: ${headers.join(", ")}`);
+  console.error(`Possible headers: ${headers.join(', ')}`);
 
   const rows = await loadRows(headers);
 
@@ -250,8 +250,8 @@ runApp(async () => {
 
   const lastResponseByNumber = await getRepository(CalloutResponse).findOne({
     where: { calloutId: callout.id },
-    order: { number: "DESC" },
-    select: { number: true }
+    order: { number: 'DESC' },
+    select: { number: true },
   });
   const nextNumber = (lastResponseByNumber?.number || 0) + 1;
 

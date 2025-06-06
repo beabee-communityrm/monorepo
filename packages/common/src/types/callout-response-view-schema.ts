@@ -1,4 +1,4 @@
-import type { CalloutMapSchema } from "./index.js";
+import type { CalloutMapSchema } from './index.js';
 
 export interface CalloutResponseViewSchema {
   buckets: string[];

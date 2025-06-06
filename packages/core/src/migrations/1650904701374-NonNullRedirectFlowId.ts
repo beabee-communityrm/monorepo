@@ -1,7 +1,7 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class NonNullRedirectFlowId1650904701374 implements MigrationInterface {
-  name = "NonNullRedirectFlowId1650904701374";
+  name = 'NonNullRedirectFlowId1650904701374';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(

@@ -1,7 +1,7 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class OptionalButtonText1659968561064 implements MigrationInterface {
-  name = "OptionalButtonText1659968561064";
+  name = 'OptionalButtonText1659968561064';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(

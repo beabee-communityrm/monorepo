@@ -1,10 +1,10 @@
-import { GetContactWith, RuleGroup } from "@beabee/beabee-common";
-import { TransformPlainToInstance } from "class-transformer";
-import { In, SelectQueryBuilder } from "typeorm";
+import { GetContactWith, RuleGroup } from '@beabee/beabee-common';
+import { TransformPlainToInstance } from 'class-transformer';
+import { In, SelectQueryBuilder } from 'typeorm';
 
-import { createQueryBuilder, getRepository } from "@beabee/core/database";
-import PaymentService from "@beabee/core/services/PaymentService";
-import { CalloutReviewer, Contact, ContactRole } from "@beabee/core/models";
+import { createQueryBuilder, getRepository } from '@beabee/core/database';
+import PaymentService from '@beabee/core/services/PaymentService';
+import { CalloutReviewer, Contact, ContactRole } from '@beabee/core/models';
 
 import {
   GetContactDto,
@@ -12,20 +12,20 @@ import {
   ListContactsDto,
   UpdateContactDto,
   BatchUpdateContactDto,
-  BatchUpdateContactUpdatesDto
-} from "@api/dto/ContactDto";
-import { BaseContactTransformer } from "@api/transformers/BaseContactTransformer";
-import ContactRoleTransformer from "@api/transformers/ContactRoleTransformer";
-import ContactProfileTransformer from "@api/transformers/ContactProfileTransformer";
+  BatchUpdateContactUpdatesDto,
+} from '@api/dto/ContactDto';
+import { BaseContactTransformer } from '@api/transformers/BaseContactTransformer';
+import ContactRoleTransformer from '@api/transformers/ContactRoleTransformer';
+import ContactProfileTransformer from '@api/transformers/ContactProfileTransformer';
 
-import contactTagTransformer from "./ContactTagTransformer";
-import { batchSelect, batchUpdate } from "@beabee/core/utils/rules";
+import contactTagTransformer from './ContactTagTransformer';
+import { batchSelect, batchUpdate } from '@beabee/core/utils/rules';
 
-import { AuthInfo } from "@beabee/core/type";
-import ContactsService from "@beabee/core/services/ContactsService";
-import { generatePassword } from "@beabee/core/utils/auth";
-import { UnauthorizedError } from "@beabee/core/errors";
-import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
+import { AuthInfo } from '@beabee/core/type';
+import ContactsService from '@beabee/core/services/ContactsService';
+import { generatePassword } from '@beabee/core/utils/auth';
+import { UnauthorizedError } from '@beabee/core/errors';
+import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 
 /**
  * Transformer for Contact entities.
@@ -60,39 +60,39 @@ class ContactTransformer extends BaseContactTransformer<
       joined: contact.joined,
       activeRoles: contact.activeRoles,
       ...(contact.lastSeen && {
-        lastSeen: contact.lastSeen
+        lastSeen: contact.lastSeen,
       }),
       ...(contact.contributionAmount && {
-        contributionAmount: contact.contributionAmount
+        contributionAmount: contact.contributionAmount,
       }),
       ...(contact.contributionPeriod && {
-        contributionPeriod: contact.contributionPeriod
+        contributionPeriod: contact.contributionPeriod,
       }),
       ...(opts?.with?.includes(GetContactWith.Profile) &&
         contact.profile && {
-          profile: ContactProfileTransformer.convert(contact.profile, auth)
+          profile: ContactProfileTransformer.convert(contact.profile, auth),
         }),
       ...(opts?.with?.includes(GetContactWith.Roles) && {
-        roles: contact.roles.map(ContactRoleTransformer.convert)
+        roles: contact.roles.map(ContactRoleTransformer.convert),
       }),
       ...(opts?.with?.includes(GetContactWith.Contribution) && {
-        contribution: contact.contributionInfo
+        contribution: contact.contributionInfo,
       }),
       ...(opts?.with?.includes(GetContactWith.IsReviewer) && {
-        isReviewer: !!contact.isReviewer
+        isReviewer: !!contact.isReviewer,
       }),
-      ...(auth.roles.includes("admin") &&
+      ...(auth.roles.includes('admin') &&
         opts?.with?.includes(GetContactWith.Tags) && {
-          tags: contact.tags.map((ct) => contactTagTransformer.convert(ct.tag))
-        })
+          tags: contact.tags.map((ct) => contactTagTransformer.convert(ct.tag)),
+        }),
     };
   }
 
   protected async getNonAdminAuthRules(): Promise<RuleGroup> {
     return {
-      condition: "AND",
+      condition: 'AND',
       // Non-admins can only see themselves
-      rules: [{ field: "id", operator: "equal", value: ["me"] }]
+      rules: [{ field: 'id', operator: 'equal', value: ['me'] }],
     };
   }
 
@@ -110,39 +110,39 @@ class ContactTransformer extends BaseContactTransformer<
     query: ListContactsDto
   ): void {
     if (query.with?.includes(GetContactWith.Profile)) {
-      qb.innerJoinAndSelect(`${fieldPrefix}profile`, "profile");
+      qb.innerJoinAndSelect(`${fieldPrefix}profile`, 'profile');
     }
 
     switch (query.sort) {
       // Add member role to allow sorting by membershipStarts and membershipExpires
-      case "membershipStarts":
-      case "membershipExpires":
+      case 'membershipStarts':
+      case 'membershipExpires':
         qb.leftJoin(
           ContactRole,
-          "cr",
+          'cr',
           `cr.contactId = ${fieldPrefix}id AND cr.type = 'member'`
         )
-          .addSelect("cr.dateAdded", "membershipStarts")
+          .addSelect('cr.dateAdded', 'membershipStarts')
           .addSelect(
             "COALESCE(cr.dateExpires, '-infinity'::timestamp)",
-            "membershipExpires"
+            'membershipExpires'
           )
-          .orderBy(`"${query.sort}"`, query.order || "ASC", "NULLS LAST");
+          .orderBy(`"${query.sort}"`, query.order || 'ASC', 'NULLS LAST');
         break;
 
       // Always put empty first/last names at the bottom
-      case "firstname":
-      case "lastname":
+      case 'firstname':
+      case 'lastname':
         qb.orderBy(
           `NULLIF(${fieldPrefix}${query.sort}, '')`,
-          query.order || "ASC",
-          "NULLS LAST"
+          query.order || 'ASC',
+          'NULLS LAST'
         );
         break;
     }
 
     // Always sort by ID to ensure predictable offset and limit
-    qb.addOrderBy(`${fieldPrefix}id`, "ASC");
+    qb.addOrderBy(`${fieldPrefix}id`, 'ASC');
   }
 
   /**
@@ -161,7 +161,7 @@ class ContactTransformer extends BaseContactTransformer<
     if (contacts.length > 0) {
       if (query.with?.includes(GetContactWith.Contribution)) {
         if (contacts.length > 1) {
-          throw new Error("Cannot fetch contribution for multiple contacts");
+          throw new Error('Cannot fetch contribution for multiple contacts');
         }
 
         contacts[0].contributionInfo = await PaymentService.getContributionInfo(
@@ -179,17 +179,17 @@ class ContactTransformer extends BaseContactTransformer<
       // always being reviewers, this should be revisted in the future
       if (query.with?.includes(GetContactWith.IsReviewer)) {
         // Optimise to not run the query for non-admins
-        const nonAdmins = contacts.filter((c) => !c.hasRole("admin"));
+        const nonAdmins = contacts.filter((c) => !c.hasRole('admin'));
         const reviewers =
           nonAdmins.length > 0
             ? await getRepository(CalloutReviewer).find({
                 where: { contactId: In(nonAdmins.map((c) => c.id)) },
-                select: { contactId: true }
+                select: { contactId: true },
               })
             : [];
         for (const contact of contacts) {
           contact.isReviewer =
-            contact.hasRole("admin") ||
+            contact.hasRole('admin') ||
             reviewers.some((r) => r.contactId === contact.id);
         }
       }
@@ -217,14 +217,14 @@ class ContactTransformer extends BaseContactTransformer<
         ...(data.firstname !== undefined && { firstname: data.firstname }),
         ...(data.lastname !== undefined && { lastname: data.lastname }),
         ...(data.password && {
-          password: await generatePassword(data.password)
-        })
+          password: await generatePassword(data.password),
+        }),
       });
     }
 
     if (data.profile) {
       if (
-        !auth.roles.includes("admin") &&
+        !auth.roles.includes('admin') &&
         (data.profile.notes || data.profile.description)
       ) {
         throw new UnauthorizedError();
@@ -234,7 +234,7 @@ class ContactTransformer extends BaseContactTransformer<
     }
 
     return await this.fetchOneById(auth, target.id, {
-      with: data.profile ? [GetContactWith.Profile] : []
+      with: data.profile ? [GetContactWith.Profile] : [],
     });
   }
 
@@ -259,7 +259,7 @@ class ContactTransformer extends BaseContactTransformer<
     const { query, filters, filterHandlers } = await this.prepareQuery(
       query_,
       auth,
-      "update"
+      'update'
     );
 
     const { tagUpdates, contactUpdates } = this.getUpdateData(query.updates);
@@ -277,7 +277,7 @@ class ContactTransformer extends BaseContactTransformer<
           contactUpdates,
           auth.contact,
           filterHandlers,
-          (qb) => qb.returning(["id"])
+          (qb) => qb.returning(['id'])
         )
       : await batchSelect(
           this.model,
@@ -314,7 +314,7 @@ class ContactTransformer extends BaseContactTransformer<
 
     return {
       tagUpdates,
-      contactUpdates: contactUpdates || {}
+      contactUpdates: contactUpdates || {},
     };
   }
 }
@@ -328,9 +328,9 @@ class ContactTransformer extends BaseContactTransformer<
 export async function loadContactRoles(contacts: Contact[]): Promise<void> {
   if (contacts.length > 0) {
     // Load roles after to ensure offset/limit work
-    const roles = await createQueryBuilder(ContactRole, "cr")
-      .where("cr.contactId IN (:...ids)", {
-        ids: contacts.map((t) => t.id)
+    const roles = await createQueryBuilder(ContactRole, 'cr')
+      .where('cr.contactId IN (:...ids)', {
+        ids: contacts.map((t) => t.id),
       })
       .getMany();
     for (const contact of contacts) {

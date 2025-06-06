@@ -1,9 +1,9 @@
-import type { CalloutComponentType } from "../data/index.js";
+import type { CalloutComponentType } from '../data/index.js';
 import type {
   CalloutComponentBaseInputSchema,
   CalloutComponentInputEmailRules,
-  TextCase
-} from "./index.js";
+  TextCase,
+} from './index.js';
 
 export interface CalloutComponentInputEmailSchema
   extends CalloutComponentBaseInputSchema {

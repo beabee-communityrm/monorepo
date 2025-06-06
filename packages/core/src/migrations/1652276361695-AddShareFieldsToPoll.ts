@@ -1,7 +1,7 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class AddShareFieldsToPoll1652276361695 implements MigrationInterface {
-  name = "AddShareFieldsToPoll1652276361695";
+  name = 'AddShareFieldsToPoll1652276361695';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(

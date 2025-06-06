@@ -1,4 +1,4 @@
-import type { Email } from "#models/index";
+import type { Email } from '#models/index';
 
 export interface EmailTemplate {
   id: string;

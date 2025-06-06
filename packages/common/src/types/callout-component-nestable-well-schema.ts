@@ -1,5 +1,5 @@
-import type { CalloutComponentType } from "../data/index.js";
-import type { CalloutComponentBaseNestableSchema } from "./index.js";
+import type { CalloutComponentType } from '../data/index.js';
+import type { CalloutComponentBaseNestableSchema } from './index.js';
 
 export interface CalloutComponentNestableWellSchema
   extends CalloutComponentBaseNestableSchema {

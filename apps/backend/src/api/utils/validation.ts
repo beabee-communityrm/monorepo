@@ -1,5 +1,5 @@
-import { ValidatorOptions, validate } from "class-validator";
-import { BadRequestError } from "routing-controllers";
+import { ValidatorOptions, validate } from 'class-validator';
+import { BadRequestError } from 'routing-controllers';
 
 /**
  * Validate an object using the same base options as the main API validator
@@ -16,9 +16,9 @@ export async function validateOrReject(
     forbidUnknownValues: true,
     validationError: {
       target: false,
-      value: false
+      value: false,
     },
-    ...validationOptions
+    ...validationOptions,
   });
 
   if (errors.length > 0) {

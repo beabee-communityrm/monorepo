@@ -1,13 +1,13 @@
-import { RoleType } from "@beabee/beabee-common";
+import { RoleType } from '@beabee/beabee-common';
 import {
   Column,
   CreateDateColumn,
   Entity,
   ManyToOne,
-  PrimaryColumn
-} from "typeorm";
+  PrimaryColumn,
+} from 'typeorm';
 
-import { type Contact } from "./index";
+import { type Contact } from './index';
 
 @Entity()
 export class ApiKey {
@@ -16,7 +16,7 @@ export class ApiKey {
 
   @Column({ type: String, nullable: true })
   creatorId!: string | null;
-  @ManyToOne("Contact", { nullable: true })
+  @ManyToOne('Contact', { nullable: true })
   creator!: Contact;
 
   @CreateDateColumn()
@@ -32,6 +32,6 @@ export class ApiKey {
   description!: string;
 
   get activeRoles(): RoleType[] {
-    return ["admin"];
+    return ['admin'];
   }
 }

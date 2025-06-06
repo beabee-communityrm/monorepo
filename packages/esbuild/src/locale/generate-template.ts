@@ -6,13 +6,13 @@
  * for new translations.
  */
 
-import { join } from "node:path";
+import { join } from 'node:path';
 import {
   readJsonFile,
   writeJsonFile,
   processObjectStrings,
-  handleError
-} from "./utils.ts";
+  handleError,
+} from './utils.ts';
 
 /**
  * Generates a template file from the English locale file
@@ -24,20 +24,20 @@ export async function generateTemplate(
   templatePath: string
 ): Promise<void> {
   try {
-    const englishFilePath = join(localesDir, "en.json");
+    const englishFilePath = join(localesDir, 'en.json');
 
     console.log(`Reading English locale file from ${englishFilePath}`);
 
     // Read the English locale file and process it
     const englishData =
       await readJsonFile<Record<string, any>>(englishFilePath);
-    const templateData = processObjectStrings(englishData, () => "");
+    const templateData = processObjectStrings(englishData, () => '');
 
     // Save the template file
     await writeJsonFile(templatePath, templateData);
 
     console.log(`Template file successfully created at ${templatePath}`);
   } catch (error) {
-    handleError(error, "generating template file");
+    handleError(error, 'generating template file');
   }
 }

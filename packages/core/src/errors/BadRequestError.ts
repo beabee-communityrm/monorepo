@@ -1,4 +1,4 @@
-import { BadRequestError as _BadRequestError } from "routing-controllers";
+import { BadRequestError as _BadRequestError } from 'routing-controllers';
 
 /**
  * BadRequestError with optional code

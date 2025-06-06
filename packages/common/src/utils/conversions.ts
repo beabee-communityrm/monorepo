@@ -1,4 +1,4 @@
-import { isPhoneNumber } from "./validations.js";
+import { isPhoneNumber } from './validations.js';
 
 /**
  * Convert the value to a valid phone number
@@ -6,10 +6,10 @@ import { isPhoneNumber } from "./validations.js";
  * @returns The valid phone number or null if the value is not a valid phone number
  */
 export const toPhoneNumber = (value: unknown): string | false => {
-  if (typeof value !== "string" || !value.length) {
+  if (typeof value !== 'string' || !value.length) {
     return false;
   }
-  const result = value.replace(/(?!^\+)\D/g, "");
+  const result = value.replace(/(?!^\+)\D/g, '');
   if (!isPhoneNumber(result)) {
     return false;
   }
@@ -24,11 +24,11 @@ export const toPhoneNumber = (value: unknown): string | false => {
  * @returns The valid bytes number or null if the value is not a valid bytes number.
  */
 export const toBytes = (value: unknown): number | null => {
-  if (typeof value !== "string" || !value.length) {
+  if (typeof value !== 'string' || !value.length) {
     return null;
   }
   const lowerCase = value.toLowerCase();
-  const units = ["b", "kb", "mb", "gb", "tb", "pb", "eb", "zb", "yb"];
+  const units = ['b', 'kb', 'mb', 'gb', 'tb', 'pb', 'eb', 'zb', 'yb'];
   const [, num, unit] = lowerCase.match(/(\d+)(\w+)/)!;
   const unitIndex = units.indexOf(unit.toLowerCase());
 

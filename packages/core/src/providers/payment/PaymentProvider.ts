@@ -1,14 +1,14 @@
-import { PaymentForm, PaymentMethod } from "@beabee/beabee-common";
+import { PaymentForm, PaymentMethod } from '@beabee/beabee-common';
 
-import { getRepository } from "#database";
+import { getRepository } from '#database';
 
-import { Contact, ContactContribution } from "#models/index";
+import { Contact, ContactContribution } from '#models/index';
 
 import {
   CompletedPaymentFlow,
   ContributionInfo,
-  UpdateContributionResult
-} from "#type/index";
+  UpdateContributionResult,
+} from '#type/index';
 
 /**
  * Abstract base class for payment providers that handle ongoing payment operations.

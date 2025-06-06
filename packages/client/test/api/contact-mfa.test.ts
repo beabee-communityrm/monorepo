@@ -1,15 +1,15 @@
-import { describe, expect, it, beforeAll, afterAll, afterEach } from "vitest";
-import { TOTP, Secret } from "otpauth";
+import { describe, expect, it, beforeAll, afterAll, afterEach } from 'vitest';
+import { TOTP, Secret } from 'otpauth';
 
-import { BeabeeClient } from "@beabee/client";
+import { BeabeeClient } from '@beabee/client';
 import {
   CONTACT_MFA_TYPE,
   CreateContactMfaData,
-  DeleteContactMfaData
-} from "@beabee/beabee-common";
-import { HOST, PATH, API_KEY } from "@beabee/test-utils/vitest/env";
+  DeleteContactMfaData,
+} from '@beabee/beabee-common';
+import { HOST, PATH, API_KEY } from '@beabee/test-utils/vitest/env';
 
-describe("ContactMfa API", () => {
+describe('ContactMfa API', () => {
   let client: BeabeeClient;
   let testContactId: string;
   let mfaData: CreateContactMfaData;
@@ -20,30 +20,30 @@ describe("ContactMfa API", () => {
     client = new BeabeeClient({
       host: HOST,
       path: PATH,
-      token: API_KEY
+      token: API_KEY,
     });
 
     // Create a test contact
     const newContact = {
       email: `test-mfa-${Date.now()}@example.com`,
-      firstname: "Test",
-      lastname: "MFA User",
-      password: "testPassword123!"
+      firstname: 'Test',
+      lastname: 'MFA User',
+      password: 'testPassword123!',
     };
 
     const contact = await client.contact.create(newContact);
     testContactId = contact.id;
 
     // Setup MFA data
-    const secret = "JBSWY3DPEHPK3PXP";
+    const secret = 'JBSWY3DPEHPK3PXP';
     totp = new TOTP({
-      secret: Secret.fromBase32(secret)
+      secret: Secret.fromBase32(secret),
     });
 
     mfaData = {
       type: CONTACT_MFA_TYPE.TOTP,
       secret: secret,
-      token: totp.generate()
+      token: totp.generate(),
     };
   });
 
@@ -70,8 +70,8 @@ describe("ContactMfa API", () => {
     }
   });
 
-  describe("create", () => {
-    it("should create MFA for a contact", async () => {
+  describe('create', () => {
+    it('should create MFA for a contact', async () => {
       mfaData.token = totp.generate();
       await client.contact.mfa.create(testContactId, mfaData);
       const response = await client.contact.mfa.get(testContactId);
@@ -79,10 +79,10 @@ describe("ContactMfa API", () => {
       expect(response?.type).toBe(CONTACT_MFA_TYPE.TOTP);
     });
 
-    it("should reject invalid token", async () => {
+    it('should reject invalid token', async () => {
       const invalidMfaData: CreateContactMfaData = {
         ...mfaData,
-        token: "000000" // Invalid token
+        token: '000000', // Invalid token
       };
 
       await expect(
@@ -91,8 +91,8 @@ describe("ContactMfa API", () => {
     });
   });
 
-  describe("get", () => {
-    it("should get MFA status for a contact", async () => {
+  describe('get', () => {
+    it('should get MFA status for a contact', async () => {
       const response = await client.contact.mfa.get(testContactId);
       expect(response).toBeDefined();
       if (response) {
@@ -100,13 +100,13 @@ describe("ContactMfa API", () => {
       }
     });
 
-    it("should return null for contact without MFA", async () => {
+    it('should return null for contact without MFA', async () => {
       // Create a new contact without MFA
       const newContact = {
         email: `test-no-mfa-${Date.now()}@example.com`,
-        firstname: "Test",
-        lastname: "No MFA",
-        password: "testPassword123!"
+        firstname: 'Test',
+        lastname: 'No MFA',
+        password: 'testPassword123!',
       };
       const contact = await client.contact.create(newContact);
 
@@ -118,8 +118,8 @@ describe("ContactMfa API", () => {
     });
   });
 
-  describe("delete", () => {
-    it("should delete MFA for a contact", async () => {
+  describe('delete', () => {
+    it('should delete MFA for a contact', async () => {
       // First ensure MFA exists
       mfaData.token = totp.generate();
       const mfa = await client.contact.mfa.get(testContactId);
@@ -130,7 +130,7 @@ describe("ContactMfa API", () => {
       // Then delete it
       const deleteData: DeleteContactMfaData = {
         type: CONTACT_MFA_TYPE.TOTP,
-        token: totp.generate()
+        token: totp.generate(),
       };
       await client.contact.mfa.delete(testContactId, deleteData);
 
@@ -139,10 +139,10 @@ describe("ContactMfa API", () => {
       expect(response).toBeNull();
     });
 
-    it("should reject invalid token when deleting", async () => {
+    it('should reject invalid token when deleting', async () => {
       const deleteData: DeleteContactMfaData = {
         type: CONTACT_MFA_TYPE.TOTP,
-        token: "000000" // Invalid token
+        token: '000000', // Invalid token
       };
 
       await expect(
@@ -151,10 +151,10 @@ describe("ContactMfa API", () => {
     });
   });
 
-  describe("error handling", () => {
-    it("should return 400 for non-existing contact id", async () => {
+  describe('error handling', () => {
+    it('should return 400 for non-existing contact id', async () => {
       try {
-        await client.contact.mfa.get("non-existing-id");
+        await client.contact.mfa.get('non-existing-id');
         expect(true).toBe(false);
       } catch (error: any) {
         expect(error.httpCode).toBe(400);

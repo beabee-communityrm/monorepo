@@ -1,6 +1,6 @@
-import { Request, Response } from "express";
+import { Request, Response } from 'express';
 
-import { Contact } from "@beabee/core/models";
+import { Contact } from '@beabee/core/models';
 
 export function loginAndRedirect(
   req: Request,
@@ -12,7 +12,7 @@ export function loginAndRedirect(
     if (loginError) {
       throw loginError;
     } else {
-      res.redirect(url || "/");
+      res.redirect(url || '/');
     }
   });
 }

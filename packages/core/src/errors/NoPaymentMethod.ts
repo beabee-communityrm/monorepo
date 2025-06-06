@@ -1,7 +1,7 @@
-import { BadRequestError } from "routing-controllers";
+import { BadRequestError } from 'routing-controllers';
 
 export class NoPaymentMethod extends BadRequestError {
-  readonly code = "no-payment-method";
+  readonly code = 'no-payment-method';
 
   constructor() {
     super();

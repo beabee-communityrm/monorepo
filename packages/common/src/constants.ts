@@ -26,18 +26,18 @@ export const MAX_FILE_SIZE_IN_BYTES: number = 20 * 1024 * 1024; // 20 MB = 20.97
  * @summary Allowed image formats for upload (input formats)
  */
 export const ALLOWED_IMAGE_EXTENSIONS: string[] = [
-  "jpeg",
-  "jpg",
-  "png",
-  "webp",
-  "gif",
-  "avif",
-  "svg", // SVG vector graphics
-  "tiff",
-  "tif", // TIFF-Formate
-  "heif",
-  "heic", // High Efficiency Image Format (Apple Photos)
-  "jp2" // JPEG 2000
+  'jpeg',
+  'jpg',
+  'png',
+  'webp',
+  'gif',
+  'avif',
+  'svg', // SVG vector graphics
+  'tiff',
+  'tif', // TIFF-Formate
+  'heif',
+  'heic', // High Efficiency Image Format (Apple Photos)
+  'jp2', // JPEG 2000
 ];
 
 /**
@@ -47,16 +47,16 @@ export const ALLOWED_IMAGE_EXTENSIONS: string[] = [
  * @summary Allowed MIME types
  */
 export const ALLOWED_IMAGE_MIME_TYPES: string[] = [
-  "image/jpeg",
-  "image/jpg", // Fallback for JPEG which is not standardized
-  "image/png",
-  "image/webp",
-  "image/gif",
-  "image/avif",
-  "image/svg+xml", // SVG is supported, also for scaling and converting
-  "image/tiff", // TIFF is supported by the sharp-module
-  "image/heif", // HEIF/HEIC for High Efficiency Image Format
-  "image/jp2" // JPEG 2000
+  'image/jpeg',
+  'image/jpg', // Fallback for JPEG which is not standardized
+  'image/png',
+  'image/webp',
+  'image/gif',
+  'image/avif',
+  'image/svg+xml', // SVG is supported, also for scaling and converting
+  'image/tiff', // TIFF is supported by the sharp-module
+  'image/heif', // HEIF/HEIC for High Efficiency Image Format
+  'image/jp2', // JPEG 2000
 ];
 
 /**
@@ -65,7 +65,7 @@ export const ALLOWED_IMAGE_MIME_TYPES: string[] = [
  * @name ALLOWED_DOCUMENT_EXTENSIONS
  * @summary Allowed document formats for upload (input formats)
  */
-export const ALLOWED_DOCUMENT_EXTENSIONS: string[] = ["pdf"];
+export const ALLOWED_DOCUMENT_EXTENSIONS: string[] = ['pdf'];
 
 /**
  * A list of all MIME types that are supported by our DocumentService
@@ -73,4 +73,4 @@ export const ALLOWED_DOCUMENT_EXTENSIONS: string[] = ["pdf"];
  * @name ALLOWED_DOCUMENT_MIME_TYPES
  * @summary Allowed MIME types
  */
-export const ALLOWED_DOCUMENT_MIME_TYPES: string[] = ["application/pdf"];
+export const ALLOWED_DOCUMENT_MIME_TYPES: string[] = ['application/pdf'];

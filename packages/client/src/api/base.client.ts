@@ -1,5 +1,5 @@
-import { Fetch, parseISO } from "../utils/index.js";
-import type { BaseClientOptions } from "../types/index.js";
+import { Fetch, parseISO } from '../utils/index.js';
+import type { BaseClientOptions } from '../types/index.js';
 
 /**
  * Abstract base class for all API clients
@@ -19,7 +19,7 @@ export abstract class BaseClient {
   constructor(protected readonly options: BaseClientOptions) {
     this.fetch = new Fetch({
       ...options,
-      basePath: options.path
+      basePath: options.path,
     });
   }
 

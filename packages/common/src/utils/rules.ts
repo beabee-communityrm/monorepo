@@ -1,19 +1,19 @@
-import { InvalidRule } from "../error/index.js";
-import { nullableOperators, operatorsByTypeMap } from "../search/index.js";
-import { isValidDate } from "./date.js";
+import { InvalidRule } from '../error/index.js';
+import { nullableOperators, operatorsByTypeMap } from '../search/index.js';
+import { isValidDate } from './date.js';
 
 import type {
   Filters,
   Rule,
   RuleGroup,
   ValidatedRule,
-  ValidatedRuleGroup
-} from "../types/index.js";
+  ValidatedRuleGroup,
+} from '../types/index.js';
 
 export function isRuleGroup(
   ruleOrGroup: Rule | RuleGroup
 ): ruleOrGroup is RuleGroup {
-  return "condition" in ruleOrGroup;
+  return 'condition' in ruleOrGroup;
 }
 
 export function validateRule<Field extends string>(
@@ -28,7 +28,7 @@ export function validateRule<Field extends string>(
   let expectedArgs = 0;
   if (rule.operator in nullableOperators) {
     // Field cannot be empty (except text which can always be empty)
-    if (!filter.nullable && filter.type !== "text" && filter.type !== "array") {
+    if (!filter.nullable && filter.type !== 'text' && filter.type !== 'array') {
       throw new InvalidRule(
         rule,
         `Invalid nullable operator: field is not nullable`
@@ -53,9 +53,9 @@ export function validateRule<Field extends string>(
   }
 
   const expectedType =
-    filter.type === "boolean" || filter.type === "number"
+    filter.type === 'boolean' || filter.type === 'number'
       ? filter.type
-      : "string";
+      : 'string';
 
   if (rule.value.some((v) => typeof v !== expectedType)) {
     throw new InvalidRule(
@@ -66,7 +66,7 @@ export function validateRule<Field extends string>(
     );
   }
   if (
-    filter.type === "date" &&
+    filter.type === 'date' &&
     rule.value.some((v) => !isValidDate(v as string))
   ) {
     throw new InvalidRule(
@@ -76,7 +76,7 @@ export function validateRule<Field extends string>(
   }
 
   if (
-    (filter.type === "enum" || filter.type === "array") &&
+    (filter.type === 'enum' || filter.type === 'array') &&
     rule.value.some((v) => filter.options?.indexOf(v as string) === -1)
   ) {
     throw new InvalidRule(
@@ -90,7 +90,7 @@ export function validateRule<Field extends string>(
     type: filter.type,
     nullable: !!filter.nullable,
     operator: rule.operator,
-    value: rule.value
+    value: rule.value,
   } as ValidatedRule<Field>;
 }
 
@@ -100,7 +100,7 @@ export function validateRuleGroup<Field extends string>(
 ): ValidatedRuleGroup<Field> {
   const validatedRuleGroup: ValidatedRuleGroup<Field> = {
     condition: ruleGroup.condition,
-    rules: []
+    rules: [],
   };
 
   for (const rule of ruleGroup.rules) {

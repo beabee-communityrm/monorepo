@@ -3,13 +3,13 @@ import {
   CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
-  UpdateDateColumn
-} from "typeorm";
-import { ItemWithStatus } from "./ItemWithStatus";
+  UpdateDateColumn,
+} from 'typeorm';
+import { ItemWithStatus } from './ItemWithStatus';
 
 @Entity()
 export class Notice extends ItemWithStatus {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id!: string;
 
   @CreateDateColumn()

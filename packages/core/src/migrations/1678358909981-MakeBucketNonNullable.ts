@@ -1,7 +1,7 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class MakeBucketNonNullable1678358909981 implements MigrationInterface {
-  name = "MakeBucketNonNullable1678358909981";
+  name = 'MakeBucketNonNullable1678358909981';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(

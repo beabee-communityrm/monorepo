@@ -1,17 +1,17 @@
 import {
   CalloutResponseAnswersSlide,
-  GetCalloutResponseWith
-} from "../index.js";
+  GetCalloutResponseWith,
+} from '../index.js';
 import type {
   GetCalloutData,
   GetCalloutResponseCommentData,
   GetCalloutResponseData,
   GetContactData,
-  Noop
-} from "./index.js";
+  Noop,
+} from './index.js';
 
 export type GetCalloutResponseDataWith<
-  With extends GetCalloutResponseWith | void
+  With extends GetCalloutResponseWith | void,
 > = GetCalloutResponseData &
   (GetCalloutResponseWith.Answers extends With
     ? { answers: CalloutResponseAnswersSlide }

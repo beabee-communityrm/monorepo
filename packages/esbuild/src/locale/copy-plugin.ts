@@ -1,9 +1,9 @@
-import { join } from "node:path";
-import { readdir, copyFile, mkdir } from "node:fs/promises";
-import { watch, existsSync } from "node:fs";
-import type { Plugin } from "esbuild";
-import { getTimestamp } from "../utils.ts";
-import type { CopyPluginOptions } from "../types/index.ts";
+import { join } from 'node:path';
+import { readdir, copyFile, mkdir } from 'node:fs/promises';
+import { watch, existsSync } from 'node:fs';
+import type { Plugin } from 'esbuild';
+import { getTimestamp } from '../utils.ts';
+import type { CopyPluginOptions } from '../types/index.ts';
 
 /**
  * Creates a plugin that copies locale JSON files to the output directory
@@ -12,7 +12,7 @@ export function createCopyPlugin({
   sourceDir,
   outdir,
   dirName,
-  isWatch
+  isWatch,
 }: CopyPluginOptions): Plugin {
   return {
     name: `copy-plugin-${dirName}`,
@@ -25,14 +25,14 @@ export function createCopyPlugin({
 
         try {
           // Ensure output directory exists
-          const localesOutDir = join(outdir, "locales");
+          const localesOutDir = join(outdir, 'locales');
           if (!existsSync(localesOutDir)) {
             await mkdir(localesOutDir, { recursive: true });
           }
 
           // Copy JSON files
           const files = await readdir(sourceDir);
-          const jsonFiles = files.filter((file) => file.endsWith(".json"));
+          const jsonFiles = files.filter((file) => file.endsWith('.json'));
 
           for (const file of jsonFiles) {
             const sourcePath = join(sourceDir, file);
@@ -62,7 +62,7 @@ export function createCopyPlugin({
           sourceDir,
           { recursive: true },
           async (eventType, filename) => {
-            if (filename && filename.endsWith(".json")) {
+            if (filename && filename.endsWith('.json')) {
               console.log(
                 `📄 [${getTimestamp()}] ${dirName} detected change: ${filename}`
               );
@@ -75,6 +75,6 @@ export function createCopyPlugin({
           watcher.close();
         });
       }
-    }
+    },
   };
 }

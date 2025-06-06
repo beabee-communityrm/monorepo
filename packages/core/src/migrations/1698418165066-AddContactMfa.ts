@@ -1,7 +1,7 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class AddContactMfa1698418165066 implements MigrationInterface {
-  name = "AddContactMfa1698418165066";
+  name = 'AddContactMfa1698418165066';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(

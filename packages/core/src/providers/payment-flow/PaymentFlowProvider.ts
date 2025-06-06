@@ -1,10 +1,10 @@
-import { JoinFlow } from "#models/index";
+import { JoinFlow } from '#models/index';
 import {
   CompletedPaymentFlow,
   CompletedPaymentFlowData,
   PaymentFlow,
-  PaymentFlowData
-} from "#type/index";
+  PaymentFlowData,
+} from '#type/index';
 
 /**
  * Interface for payment flow providers that handle the initial payment setup process.

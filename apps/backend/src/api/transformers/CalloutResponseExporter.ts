@@ -2,30 +2,30 @@ import {
   RoleType,
   RuleGroup,
   getCalloutComponents,
-  stringifyAnswer
-} from "@beabee/beabee-common";
-import { stringify } from "csv-stringify/sync";
-import { format } from "date-fns";
-import { In, SelectQueryBuilder } from "typeorm";
+  stringifyAnswer,
+} from '@beabee/beabee-common';
+import { stringify } from 'csv-stringify/sync';
+import { format } from 'date-fns';
+import { In, SelectQueryBuilder } from 'typeorm';
 
-import { getRepository } from "@beabee/core/database";
+import { getRepository } from '@beabee/core/database';
 
-import { GetExportQuery } from "@api/dto/BaseDto";
+import { GetExportQuery } from '@api/dto/BaseDto';
 import {
   ExportCalloutResponseDto,
-  ExportCalloutResponsesOptsDto
-} from "@api/dto/CalloutResponseDto";
-import { BaseCalloutResponseTransformer } from "@api/transformers/BaseCalloutResponseTransformer";
-import { NotFoundError } from "@beabee/core/errors";
-import { getReviewerRules, groupBy } from "@api/utils";
+  ExportCalloutResponsesOptsDto,
+} from '@api/dto/CalloutResponseDto';
+import { BaseCalloutResponseTransformer } from '@api/transformers/BaseCalloutResponseTransformer';
+import { NotFoundError } from '@beabee/core/errors';
+import { getReviewerRules, groupBy } from '@api/utils';
 
 import {
   CalloutResponse,
   CalloutResponseComment,
-  Callout
-} from "@beabee/core/models";
+  Callout,
+} from '@beabee/core/models';
 
-import { AuthInfo } from "@beabee/core/type";
+import { AuthInfo } from '@beabee/core/type';
 
 class CalloutResponseExporter extends BaseCalloutResponseTransformer<
   ExportCalloutResponseDto,
@@ -41,24 +41,24 @@ class CalloutResponseExporter extends BaseCalloutResponseTransformer<
           response.contact.firstname,
           response.contact.lastname,
           response.contact.fullname,
-          response.contact.email
+          response.contact.email,
         ]
-      : ["", "", response.guestName || "", response.guestEmail || ""];
+      : ['', '', response.guestName || '', response.guestEmail || ''];
 
     return [
       response.createdAt.toISOString(),
       response.number,
       response.bucket,
-      response.tags.map((rt) => rt.tag.name).join(", "),
-      response.assignee?.email || "",
+      response.tags.map((rt) => rt.tag.name).join(', '),
+      response.assignee?.email || '',
       ...contact,
       !response.contact,
-      response.newsletter?.optIn ? true : "",
-      response.newsletter?.groups.join(",") || "",
-      response.comments?.map(commentText).join(", ") || "",
+      response.newsletter?.optIn ? true : '',
+      response.newsletter?.groups.join(',') || '',
+      response.comments?.map(commentText).join(', ') || '',
       ...opts.components.map((c) =>
         stringifyAnswer(c, response.answers[c.slideId]?.[c.key])
-      )
+      ),
     ];
   }
 
@@ -66,9 +66,9 @@ class CalloutResponseExporter extends BaseCalloutResponseTransformer<
     auth: AuthInfo,
     query: ExportCalloutResponsesOptsDto
   ): Promise<RuleGroup | false> {
-    const reviewerRules = await getReviewerRules(auth.contact, "calloutId");
+    const reviewerRules = await getReviewerRules(auth.contact, 'calloutId');
     return reviewerRules.length
-      ? { condition: "OR", rules: reviewerRules }
+      ? { condition: 'OR', rules: reviewerRules }
       : false;
   }
 
@@ -76,18 +76,18 @@ class CalloutResponseExporter extends BaseCalloutResponseTransformer<
     qb: SelectQueryBuilder<CalloutResponse>,
     fieldPrefix: string
   ): void {
-    qb.orderBy(`${fieldPrefix}createdAt`, "ASC");
-    qb.leftJoinAndSelect(`${fieldPrefix}assignee`, "assignee");
-    qb.leftJoinAndSelect(`${fieldPrefix}contact`, "contact");
-    qb.leftJoinAndSelect(`${fieldPrefix}tags`, "tags");
-    qb.leftJoinAndSelect("tags.tag", "tag");
+    qb.orderBy(`${fieldPrefix}createdAt`, 'ASC');
+    qb.leftJoinAndSelect(`${fieldPrefix}assignee`, 'assignee');
+    qb.leftJoinAndSelect(`${fieldPrefix}contact`, 'contact');
+    qb.leftJoinAndSelect(`${fieldPrefix}tags`, 'tags');
+    qb.leftJoinAndSelect('tags.tag', 'tag');
   }
 
   protected async modifyItems(responses: CalloutResponse[]): Promise<void> {
     const comments = await getRepository(CalloutResponseComment).find({
       where: { responseId: In(responses.map((r) => r.id)) },
       relations: { contact: true },
-      order: { createdAt: "ASC" }
+      order: { createdAt: 'ASC' },
     });
 
     const commentsByResponseId = groupBy(comments, (c) => c.responseId);
@@ -106,7 +106,7 @@ class CalloutResponseExporter extends BaseCalloutResponseTransformer<
     query: GetExportQuery
   ): Promise<[string, string]> {
     const callout = await getRepository(Callout).findOneBy({
-      id: calloutId
+      id: calloutId,
     });
     if (!callout) {
       throw new NotFoundError();
@@ -121,7 +121,7 @@ class CalloutResponseExporter extends BaseCalloutResponseTransformer<
       ...query,
       callout,
       // Store components to avoid having to flatten them in convert()
-      components
+      components,
     });
 
     const exportName = `responses-${
@@ -129,33 +129,33 @@ class CalloutResponseExporter extends BaseCalloutResponseTransformer<
     }_${new Date().toISOString()}.csv`;
 
     const headers = [
-      "Date",
-      "Number",
-      "Bucket",
-      "Tags",
-      "Assignee",
-      "FirstName",
-      "LastName",
-      "FullName",
-      "EmailAddress",
-      "IsGuest",
-      "NewsletterOptIn",
-      "NewsletterGroups",
-      "Comments",
-      ...components.map((c) => c.label || c.key)
+      'Date',
+      'Number',
+      'Bucket',
+      'Tags',
+      'Assignee',
+      'FirstName',
+      'LastName',
+      'FullName',
+      'EmailAddress',
+      'IsGuest',
+      'NewsletterOptIn',
+      'NewsletterGroups',
+      'Comments',
+      ...components.map((c) => c.label || c.key),
     ];
 
     return [
       exportName,
       stringify([headers, ...result.items], {
-        cast: { date: (d) => d.toISOString() }
-      })
+        cast: { date: (d) => d.toISOString() },
+      }),
     ];
   }
 }
 
 function commentText(comment: CalloutResponseComment) {
-  const date = format(comment.createdAt, "Pp");
+  const date = format(comment.createdAt, 'Pp');
   return `${comment.contact.fullname} (${date}): ${comment.text}`;
 }
 

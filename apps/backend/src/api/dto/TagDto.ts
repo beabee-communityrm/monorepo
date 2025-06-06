@@ -1,6 +1,6 @@
-import { IsIn, IsString, IsUUID } from "class-validator";
+import { IsIn, IsString, IsUUID } from 'class-validator';
 
-import { GetPaginatedQuery } from "@api/dto/BaseDto";
+import { GetPaginatedQuery } from '@api/dto/BaseDto';
 
 export class GetTagDto {
   @IsUUID()
@@ -19,6 +19,6 @@ export class CreateTagDto {
 }
 
 export class ListTagsDto extends GetPaginatedQuery {
-  @IsIn(["id", "name"])
+  @IsIn(['id', 'name'])
   sort?: string;
 }

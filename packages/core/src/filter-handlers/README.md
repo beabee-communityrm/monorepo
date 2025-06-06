@@ -25,7 +25,7 @@ class ExampleTransformer extends BaseTransformer<Model, Dto> {
     // Define filters that should be applied during transformation
     removePrivateData: (data: Model) => {
       // Filter implementation
-    }
+    },
   };
 }
 ```

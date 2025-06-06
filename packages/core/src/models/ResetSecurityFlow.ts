@@ -1,21 +1,21 @@
-import { RESET_SECURITY_FLOW_TYPE } from "@beabee/beabee-common";
+import { RESET_SECURITY_FLOW_TYPE } from '@beabee/beabee-common';
 import {
   CreateDateColumn,
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
-  Column
-} from "typeorm";
-import type { Contact } from "./index";
+  Column,
+} from 'typeorm';
+import type { Contact } from './index';
 
 @Entity()
 export class ResetSecurityFlow {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id!: string;
 
   @Column()
   contactId!: string;
-  @ManyToOne("Contact")
+  @ManyToOne('Contact')
   contact!: Contact;
 
   @CreateDateColumn()

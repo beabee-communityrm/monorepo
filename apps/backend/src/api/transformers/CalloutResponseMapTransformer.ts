@@ -6,24 +6,24 @@ import {
   CalloutResponseViewSchema,
   getCalloutComponents,
   RuleGroup,
-  stringifyAnswer
-} from "@beabee/beabee-common";
-import { TransformPlainToInstance } from "class-transformer";
+  stringifyAnswer,
+} from '@beabee/beabee-common';
+import { TransformPlainToInstance } from 'class-transformer';
 
-import { getRepository } from "@beabee/core/database";
+import { getRepository } from '@beabee/core/database';
 
 import {
   GetCalloutResponseMapDto,
   GetCalloutResponseMapOptsDto,
-  ListCalloutResponsesDto
-} from "@api/dto/CalloutResponseDto";
-import { PaginatedDto } from "@api/dto/PaginatedDto";
-import { NotFoundError } from "@beabee/core/errors";
-import { BaseCalloutResponseTransformer } from "@api/transformers/BaseCalloutResponseTransformer";
+  ListCalloutResponsesDto,
+} from '@api/dto/CalloutResponseDto';
+import { PaginatedDto } from '@api/dto/PaginatedDto';
+import { NotFoundError } from '@beabee/core/errors';
+import { BaseCalloutResponseTransformer } from '@api/transformers/BaseCalloutResponseTransformer';
 
-import { Callout, CalloutResponse } from "@beabee/core/models";
+import { Callout, CalloutResponse } from '@beabee/core/models';
 
-import { AuthInfo } from "@beabee/core/type";
+import { AuthInfo } from '@beabee/core/type';
 
 class CalloutResponseMapTransformer extends BaseCalloutResponseTransformer<
   GetCalloutResponseMapDto,
@@ -35,13 +35,13 @@ class CalloutResponseMapTransformer extends BaseCalloutResponseTransformer<
     auth: AuthInfo,
     opts: GetCalloutResponseMapOptsDto
   ): GetCalloutResponseMapDto {
-    let title = "",
+    let title = '',
       images: CalloutResponseAnswer[] = [],
       address: CalloutResponseAnswer | undefined;
 
     const {
       responseViewSchema: { map, titleProp, imageProp },
-      formSchema
+      formSchema,
     } = opts.callout;
 
     const answers: CalloutResponseAnswersSlide = Object.fromEntries(
@@ -77,8 +77,8 @@ class CalloutResponseMapTransformer extends BaseCalloutResponseTransformer<
       title,
       photos: images as CalloutResponseAnswerFileUpload[], // TODO: ensure type?
       ...(address && {
-        address: address as CalloutResponseAnswerAddress // TODO: ensure type?
-      })
+        address: address as CalloutResponseAnswerAddress, // TODO: ensure type?
+      }),
     };
   }
 
@@ -88,12 +88,12 @@ class CalloutResponseMapTransformer extends BaseCalloutResponseTransformer<
   ): Promise<RuleGroup> {
     return {
       // Only show results from relevant buckets
-      condition: "OR",
+      condition: 'OR',
       rules: query.callout.responseViewSchema.buckets.map((bucket) => ({
-        field: "bucket",
-        operator: "equal",
-        value: [bucket]
-      }))
+        field: 'bucket',
+        operator: 'equal',
+        value: [bucket],
+      })),
     };
   }
 
@@ -124,7 +124,7 @@ class CalloutResponseMapTransformer extends BaseCalloutResponseTransformer<
       ...query,
       callout: calloutWithSchema,
       // TODO: support pagination in frontend
-      limit: 2200
+      limit: 2200,
     });
   }
 }

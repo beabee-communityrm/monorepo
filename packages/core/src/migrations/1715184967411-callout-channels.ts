@@ -1,7 +1,7 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class CalloutChannels1715184967411 implements MigrationInterface {
-  name = "CalloutChannels1715184967411";
+  name = 'CalloutChannels1715184967411';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`ALTER TABLE "callout" ADD "channels" jsonb`);

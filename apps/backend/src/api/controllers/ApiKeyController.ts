@@ -1,4 +1,4 @@
-import { plainToInstance } from "class-transformer";
+import { plainToInstance } from 'class-transformer';
 import {
   JsonController,
   Authorized,
@@ -10,29 +10,29 @@ import {
   OnUndefined,
   NotFoundError,
   Delete,
-  Param
-} from "routing-controllers";
+  Param,
+} from 'routing-controllers';
 
-import ApiKeyService from "@beabee/core/services/ApiKeyService";
+import ApiKeyService from '@beabee/core/services/ApiKeyService';
 
-import { CurrentAuth } from "@api/decorators/CurrentAuth";
+import { CurrentAuth } from '@api/decorators/CurrentAuth';
 import {
   CreateApiKeyDto,
   GetApiKeyDto,
   ListApiKeysDto,
-  NewApiKeyDto
-} from "@api/dto/ApiKeyDto";
-import { PaginatedDto } from "@api/dto/PaginatedDto";
-import ApiKeyTransformer from "@api/transformers/ApiKeyTransformer";
+  NewApiKeyDto,
+} from '@api/dto/ApiKeyDto';
+import { PaginatedDto } from '@api/dto/PaginatedDto';
+import ApiKeyTransformer from '@api/transformers/ApiKeyTransformer';
 
-import { Contact } from "@beabee/core/models";
+import { Contact } from '@beabee/core/models';
 
-import { AuthInfo } from "@beabee/core/type";
+import { AuthInfo } from '@beabee/core/type';
 
-@JsonController("/api-key")
-@Authorized("admin")
+@JsonController('/api-key')
+@Authorized('admin')
 export class ApiKeyController {
-  @Get("/")
+  @Get('/')
   async getApiKeys(
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @QueryParams() query: ListApiKeysDto
@@ -40,16 +40,16 @@ export class ApiKeyController {
     return await ApiKeyTransformer.fetch(auth, query);
   }
 
-  @Get("/:id")
+  @Get('/:id')
   async getApiKey(
     @CurrentAuth({ required: true }) auth: AuthInfo,
-    @Param("id") id: string
+    @Param('id') id: string
   ): Promise<GetApiKeyDto | undefined> {
     return await ApiKeyTransformer.fetchOneById(auth, id);
   }
 
-  @Post("/")
-  @Authorized("superadmin")
+  @Post('/')
+  @Authorized('superadmin')
   async createApiKey(
     @CurrentUser({ required: true }) creator: Contact,
     @Body() data: CreateApiKeyDto
@@ -64,8 +64,8 @@ export class ApiKeyController {
   }
 
   @OnUndefined(204)
-  @Delete("/:id")
-  async deleteApiKey(@Param("id") id: string): Promise<void> {
+  @Delete('/:id')
+  async deleteApiKey(@Param('id') id: string): Promise<void> {
     if (!(await ApiKeyService.delete(id))) {
       throw new NotFoundError();
     }

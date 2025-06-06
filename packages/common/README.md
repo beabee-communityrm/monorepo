@@ -17,9 +17,9 @@ npm install @beabee/beabee-common --save
 In a Node.js environment, use `beabee-common` as follows:
 
 ```ts
-import { parseDate } from "@beabee/beabee-common";
+import { parseDate } from '@beabee/beabee-common';
 
-parseDate("2022"); // Returns: [ 2021-12-31T23:00:00.000Z, 'y' ]
+parseDate('2022'); // Returns: [ 2021-12-31T23:00:00.000Z, 'y' ]
 ```
 
 ## Development

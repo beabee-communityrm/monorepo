@@ -4,23 +4,23 @@ import {
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
-  UpdateDateColumn
-} from "typeorm";
-import type { CalloutResponse, Contact } from "./index";
+  UpdateDateColumn,
+} from 'typeorm';
+import type { CalloutResponse, Contact } from './index';
 
 @Entity()
 export class CalloutResponseComment {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id!: string;
 
   @Column()
   contactId!: string;
-  @ManyToOne("Contact")
+  @ManyToOne('Contact')
   contact!: Contact;
 
   @Column()
   responseId!: string;
-  @ManyToOne("CalloutResponse")
+  @ManyToOne('CalloutResponse')
   response!: CalloutResponse;
 
   @CreateDateColumn()

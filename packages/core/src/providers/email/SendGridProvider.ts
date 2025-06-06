@@ -1,21 +1,21 @@
-import sgMail from "@sendgrid/mail";
+import sgMail from '@sendgrid/mail';
 
-import { log as mainLogger } from "#logging";
+import { log as mainLogger } from '#logging';
 
-import type { EmailOptions, EmailRecipient, PreparedEmail } from "#type/index";
-import { BaseProvider } from "./BaseProvider";
+import type { EmailOptions, EmailRecipient, PreparedEmail } from '#type/index';
+import { BaseProvider } from './BaseProvider';
 
-import { SendGridEmailConfig } from "#config/config";
+import { SendGridEmailConfig } from '#config/config';
 
-const log = mainLogger.child({ app: "sendgrid-email-provider" });
+const log = mainLogger.child({ app: 'sendgrid-email-provider' });
 
 export class SendGridProvider extends BaseProvider {
   private readonly testMode: boolean;
 
-  constructor(settings: SendGridEmailConfig["settings"]) {
+  constructor(settings: SendGridEmailConfig['settings']) {
     super();
     sgMail.setApiKey(settings.apiKey);
-    sgMail.setSubstitutionWrappers("*|", "|*");
+    sgMail.setSubstitutionWrappers('*|', '|*');
     this.testMode = settings.testMode;
   }
 
@@ -28,31 +28,31 @@ export class SendGridProvider extends BaseProvider {
       const resp = await sgMail.sendMultiple({
         from: {
           email: email.fromEmail,
-          name: email.fromName
+          name: email.fromName,
         },
         subject: email.subject,
         html: email.body,
         personalizations: recipients.slice(i, i + 1000).map((recipient) => ({
           to: recipient.to,
           ...(recipient.mergeFields && {
-            substitutions: recipient.mergeFields
-          })
+            substitutions: recipient.mergeFields,
+          }),
         })),
         ...(opts?.sendAt && {
-          sendAt: +opts.sendAt
+          sendAt: +opts.sendAt,
         }),
         ...(opts?.attachments && {
           attachments: opts.attachments.map((attachment) => ({
             filename: attachment.name,
             type: attachment.type,
-            content: attachment.content
-          }))
+            content: attachment.content,
+          })),
         }),
         mailSettings: {
           sandboxMode: {
-            enable: this.testMode
-          }
-        }
+            enable: this.testMode,
+          },
+        },
       });
 
       log.info(

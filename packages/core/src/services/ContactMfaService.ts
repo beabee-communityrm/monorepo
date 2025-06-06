@@ -1,18 +1,18 @@
-import { LOGIN_CODES } from "@beabee/beabee-common";
-import { NotFoundError } from "routing-controllers";
+import { LOGIN_CODES } from '@beabee/beabee-common';
+import { NotFoundError } from 'routing-controllers';
 
-import { Contact, ContactMfa } from "#models/index";
+import { Contact, ContactMfa } from '#models/index';
 
-import { getRepository } from "#database";
-import { validateTotpToken } from "#utils/auth";
+import { getRepository } from '#database';
+import { validateTotpToken } from '#utils/auth';
 
-import { BadRequestError, UnauthorizedError } from "#errors/index";
+import { BadRequestError, UnauthorizedError } from '#errors/index';
 
 import {
   ContactMfaSecure,
   CreateContactMfaData,
-  DeleteContactMfaData
-} from "#type/index";
+  DeleteContactMfaData,
+} from '#type/index';
 
 /**
  * Contact multi factor authentication service
@@ -55,7 +55,7 @@ class ContactMfaService {
 
     const mfa = await getRepository(ContactMfa).save({
       contact,
-      ...data
+      ...data,
     });
     return mfa;
   }
@@ -74,14 +74,14 @@ class ContactMfaService {
       throw new BadRequestError({
         code: LOGIN_CODES.MISSING_TOKEN,
         message:
-          "The contact itself needs to enter the old code to delete its MFA"
+          'The contact itself needs to enter the old code to delete its MFA',
       });
     }
     const tokenValidation = await this.checkToken(contact, data.token, 2);
     if (!tokenValidation.isValid) {
       throw new UnauthorizedError({
         code: LOGIN_CODES.INVALID_TOKEN,
-        message: "Invalid token"
+        message: 'Invalid token',
       });
     }
 
@@ -102,7 +102,7 @@ class ContactMfaService {
     const mfa = await this.get(contact);
 
     if (!mfa) {
-      throw new NotFoundError("Contact has no MFA");
+      throw new NotFoundError('Contact has no MFA');
     }
 
     await getRepository(ContactMfa).delete(mfa.id);
@@ -120,7 +120,7 @@ class ContactMfaService {
     if (!mfa) {
       return {
         isValid: true,
-        delta: null
+        delta: null,
       };
     }
     return validateTotpToken(mfa.secret, token, window);
@@ -146,7 +146,7 @@ class ContactMfaService {
    */
   private async getInsecure(contact: Contact): Promise<ContactMfa | null> {
     const mfa = await getRepository(ContactMfa).findOneBy({
-      contactId: contact.id
+      contactId: contact.id,
     });
     return mfa || null;
   }
@@ -173,13 +173,13 @@ class ContactMfaService {
    */
   private makeSecure(
     mfa?: ContactMfa | null
-  ): Pick<ContactMfa, "id" | "type"> | null {
+  ): Pick<ContactMfa, 'id' | 'type'> | null {
     if (!mfa) {
       return null;
     }
     return {
       id: mfa.id,
-      type: mfa.type
+      type: mfa.type,
     };
   }
 }

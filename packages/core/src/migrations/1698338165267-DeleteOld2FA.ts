@@ -1,7 +1,7 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class DeleteOld2FA1698338165267 implements MigrationInterface {
-  name = "DeleteOld2FA1698338165267";
+  name = 'DeleteOld2FA1698338165267';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`ALTER TABLE "contact" DROP COLUMN "otpActivated"`);

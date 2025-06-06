@@ -1,9 +1,9 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class RemoveResponseIsPartialFlag1729522899474
   implements MigrationInterface
 {
-  name = "RemoveResponseIsPartialFlag1729522899474";
+  name = 'RemoveResponseIsPartialFlag1729522899474';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`DELETE FROM "callout_response" WHERE "isPartial"`);

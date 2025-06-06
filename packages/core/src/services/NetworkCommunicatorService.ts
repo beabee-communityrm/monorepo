@@ -1,19 +1,19 @@
-import { EventEmitter } from "node:events";
-import { Server } from "node:http";
+import { EventEmitter } from 'node:events';
+import { Server } from 'node:http';
 
-import axios from "axios";
-import express, { Request, Response, type Express } from "express";
-import { sign, verify, JsonWebTokenError } from "jsonwebtoken";
+import axios from 'axios';
+import express, { Request, Response, type Express } from 'express';
+import { sign, verify, JsonWebTokenError } from 'jsonwebtoken';
 
-import { log as mainLogger } from "#logging";
-import { wrapAsync } from "#utils/express";
-import { extractToken } from "#utils/auth";
+import { log as mainLogger } from '#logging';
+import { wrapAsync } from '#utils/express';
+import { extractToken } from '#utils/auth';
 
-import type { NetworkServiceMap } from "#type/network-service-map";
+import type { NetworkServiceMap } from '#type/network-service-map';
 
-import config from "#config/config";
+import config from '#config/config';
 
-const log = mainLogger.child({ app: "network-communicator-service" });
+const log = mainLogger.child({ app: 'network-communicator-service' });
 
 class NetworkCommunicatorService {
   private server?: Server;
@@ -21,10 +21,10 @@ class NetworkCommunicatorService {
 
   // TODO: remove hardcoded service references
   private services: NetworkServiceMap = {
-    app: { host: "http://app:4000" },
-    api_app: { host: "http://api_app:4000" },
-    webhook_app: { host: "http://webhook_app:4000" },
-    telegram_bot: { host: "http://telegram_bot:4000", optional: true }
+    app: { host: 'http://app:4000' },
+    api_app: { host: 'http://api_app:4000' },
+    webhook_app: { host: 'http://webhook_app:4000' },
+    telegram_bot: { host: 'http://telegram_bot:4000', optional: true },
   };
 
   /**
@@ -34,9 +34,9 @@ class NetworkCommunicatorService {
    */
   private sign(payload: string | Buffer | object = {}) {
     if (!config.serviceSecret) {
-      throw new Error("No service secret found");
+      throw new Error('No service secret found');
     }
-    return sign(payload, config.serviceSecret, { algorithm: "HS256" });
+    return sign(payload, config.serviceSecret, { algorithm: 'HS256' });
   }
 
   /**
@@ -48,7 +48,7 @@ class NetworkCommunicatorService {
   private verify(authHeader?: string) {
     const token = extractToken(authHeader);
     if (!token) {
-      throw new JsonWebTokenError("No token found");
+      throw new JsonWebTokenError('No token found');
     }
     return verify(token, config.serviceSecret);
   }
@@ -65,13 +65,13 @@ class NetworkCommunicatorService {
     const internalApp = express();
     this.server = internalApp.listen(4000);
 
-    process.on("SIGTERM", () => {
+    process.on('SIGTERM', () => {
       this.server?.close();
     });
 
     // Register internal service routes
     internalApp.post(
-      "/reload",
+      '/reload',
       wrapAsync(this.onInternalServiceRequest.bind(this))
     );
 
@@ -91,7 +91,7 @@ class NetworkCommunicatorService {
     // Get the action from request path
     const actionPath = req.path.substring(1);
     // Convert action path to event name, e.g. "user:created" if the route is "/user/created" or 'reload' if the route is '/reload'
-    const eventName = actionPath.replaceAll("/", ":");
+    const eventName = actionPath.replaceAll('/', ':');
     try {
       const payload = this.verify(req.headers?.authorization);
       this.events.emit(eventName, payload);
@@ -124,14 +124,14 @@ class NetworkCommunicatorService {
     }
 
     const headers = {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${this.sign(payload)}`
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${this.sign(payload)}`,
     };
 
     try {
       // Payload parameter is undefined here because the payload is encrypted in the bearer token
       return await axios.post(`${service.host}/${actionPath}`, undefined, {
-        headers
+        headers,
       });
     } catch (error) {
       // If the service is optional and the request fails, ignore the error otherwise log it

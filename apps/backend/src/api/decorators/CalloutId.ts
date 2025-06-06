@@ -1,9 +1,9 @@
-import { isUUID } from "class-validator";
-import { NotFoundError, createParamDecorator } from "routing-controllers";
+import { isUUID } from 'class-validator';
+import { NotFoundError, createParamDecorator } from 'routing-controllers';
 
-import { getRepository } from "@beabee/core/database";
+import { getRepository } from '@beabee/core/database';
 
-import { Callout } from "@beabee/core/models";
+import { Callout } from '@beabee/core/models';
 
 /**
  * Allows the use of either a callout ID or slug in the route
@@ -23,7 +23,7 @@ export function CalloutId() {
       } else {
         const callout = await getRepository(Callout).findOne({
           select: { id: true },
-          where: { slug: id }
+          where: { slug: id },
         });
         if (!callout) {
           throw new NotFoundError();
@@ -31,6 +31,6 @@ export function CalloutId() {
 
         return callout.id;
       }
-    }
+    },
   });
 }

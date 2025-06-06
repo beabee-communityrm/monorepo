@@ -1,14 +1,14 @@
-import express from "express";
-import DiscourseSSO from "discourse-sso";
+import express from 'express';
+import DiscourseSSO from 'discourse-sso';
 
-import config from "@beabee/core/config";
+import config from '@beabee/core/config';
 
-import { getRepository } from "@beabee/core/database";
-import { isLoggedIn } from "#core/middleware";
-import { hasUser } from "#core/utils/index";
-import { wrapAsync } from "@beabee/core/utils/express";
+import { getRepository } from '@beabee/core/database';
+import { isLoggedIn } from '#core/middleware';
+import { hasUser } from '#core/utils/index';
+import { wrapAsync } from '@beabee/core/utils/express';
 
-import { ProjectContact } from "@beabee/core/models";
+import { ProjectContact } from '@beabee/core/models';
 
 const sso = new DiscourseSSO(config.discourse.ssoSecret);
 
@@ -17,7 +17,7 @@ const app = express();
 app.use(isLoggedIn);
 
 app.get(
-  "/sso",
+  '/sso',
   wrapAsync(
     hasUser(async (req, res) => {
       const { sso: payload, sig } = req.query;
@@ -25,7 +25,7 @@ app.get(
       if (payload && sig && sso.validate(payload as string, sig as string)) {
         const projectContacts = await getRepository(ProjectContact).find({
           where: { contactId: req.user.id },
-          relations: { project: true }
+          relations: { project: true },
         });
 
         const groups = projectContacts
@@ -39,12 +39,12 @@ app.get(
           external_id: req.user.id,
           name: req.user.fullname,
           username: req.user.email,
-          add_groups: groups
+          add_groups: groups,
         };
         const q = sso.buildLoginString(loginPayload);
         res.redirect(`${config.discourse.url}/session/sso_login?${q}`);
       } else {
-        res.status(403).send({ error: "Invalid signature" });
+        res.status(403).send({ error: 'Invalid signature' });
       }
     })
   )

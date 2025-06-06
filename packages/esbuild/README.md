@@ -17,11 +17,11 @@ Shared esbuild utilities and configurations for the Beabee monorepo.
 Most packages use the `buildStandard` function:
 
 ```typescript
-import { buildStandard } from "@beabee/esbuild";
+import { buildStandard } from '@beabee/esbuild';
 
 await buildStandard({
-  entryPoints: ["./src/index.ts", "./src/**/*.ts"],
-  watch: false
+  entryPoints: ['./src/index.ts', './src/**/*.ts'],
+  watch: false,
 });
 ```
 
@@ -32,19 +32,19 @@ This builds both ESM (`./dist/esm`) and CommonJS (`./dist/cjs`) formats.
 For individual formats:
 
 ```typescript
-import { buildESM, buildCJS, buildBrowser } from "@beabee/esbuild";
+import { buildESM, buildCJS, buildBrowser } from '@beabee/esbuild';
 
 // ESM only
 await buildESM({
-  entryPoints: ["./src/index.ts"],
-  outdir: "./dist/esm"
+  entryPoints: ['./src/index.ts'],
+  outdir: './dist/esm',
 });
 
 // Browser bundle
 await buildBrowser({
-  entryPoints: ["./src/index.ts"],
-  outdir: "./dist/browser",
-  globalName: "MyLibrary"
+  entryPoints: ['./src/index.ts'],
+  outdir: './dist/browser',
+  globalName: 'MyLibrary',
 });
 ```
 
@@ -53,13 +53,13 @@ await buildBrowser({
 For internationalization:
 
 ```typescript
-import { normalizeTranslations, generateTemplate } from "@beabee/esbuild";
+import { normalizeTranslations, generateTemplate } from '@beabee/esbuild';
 
 // Normalize translation files
-await normalizeTranslations("./src/locales");
+await normalizeTranslations('./src/locales');
 
 // Generate template from English locale
-await generateTemplate("./src/locales", "./src/template.json");
+await generateTemplate('./src/locales', './src/template.json');
 ```
 
 ## API Reference

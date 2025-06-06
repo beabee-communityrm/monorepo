@@ -1,36 +1,36 @@
 import {
   ContributionType,
   PaymentForm,
-  PaymentSource
-} from "@beabee/beabee-common";
-import { add } from "date-fns";
-import Stripe from "stripe";
+  PaymentSource,
+} from '@beabee/beabee-common';
+import { add } from 'date-fns';
+import Stripe from 'stripe';
 
-import { PaymentProvider } from "./PaymentProvider";
+import { PaymentProvider } from './PaymentProvider';
 
 import {
   stripe,
   createSubscription,
   deleteSubscription,
   manadateToSource,
-  updateSubscription
-} from "#lib/stripe";
-import { log as mainLogger } from "#logging";
-import { calcRenewalDate, getChargeableAmount } from "#utils/payment";
+  updateSubscription,
+} from '#lib/stripe';
+import { log as mainLogger } from '#logging';
+import { calcRenewalDate, getChargeableAmount } from '#utils/payment';
 
-import { Contact } from "#models/index";
+import { Contact } from '#models/index';
 
-import { NoPaymentMethod } from "#errors/index";
+import { NoPaymentMethod } from '#errors/index';
 
-import config from "#config/config";
+import config from '#config/config';
 
 import {
   CompletedPaymentFlow,
   ContributionInfo,
-  UpdateContributionResult
-} from "#type/index";
+  UpdateContributionResult,
+} from '#type/index';
 
-const log = mainLogger.child({ app: "stripe-payment-provider" });
+const log = mainLogger.child({ app: 'stripe-payment-provider' });
 
 export class StripeProvider extends PaymentProvider {
   async canChangeContribution(useExistingMandate: boolean): Promise<boolean> {
@@ -58,7 +58,7 @@ export class StripeProvider extends PaymentProvider {
 
     return {
       // TODO hasPendingPayment: await this.hasPendingPayment(),
-      ...(paymentSource && { paymentSource })
+      ...(paymentSource && { paymentSource }),
     };
   }
 
@@ -82,28 +82,28 @@ export class StripeProvider extends PaymentProvider {
 
     const customerData: Stripe.CustomerUpdateParams = {
       invoice_settings: {
-        default_payment_method: flow.mandateId
+        default_payment_method: flow.mandateId,
       },
       address: address
         ? {
-            line1: address.line1 || "",
+            line1: address.line1 || '',
             ...(address.city && { city: address.city }),
             ...(address.country && { country: address.country }),
             ...(address.line2 && { line2: address.line2 }),
             ...(address.postal_code && { postal_code: address.postal_code }),
-            ...(address.state && { state: address.state })
+            ...(address.state && { state: address.state }),
           }
-        : null
+        : null,
     };
 
     if (this.data.customerId) {
-      log.info("Attach new payment source to " + this.data.customerId);
+      log.info('Attach new payment source to ' + this.data.customerId);
       await stripe.paymentMethods.attach(flow.mandateId, {
-        customer: this.data.customerId
+        customer: this.data.customerId,
       });
       await stripe.customers.update(this.data.customerId, customerData);
     } else {
-      log.info("Create new customer");
+      log.info('Create new customer');
       const customer = await stripe.customers.create({
         email: this.contact.email,
         name: `${this.contact.firstname} ${this.contact.lastname}`,
@@ -111,18 +111,18 @@ export class StripeProvider extends PaymentProvider {
         ...(flow.joinForm.vatNumber && {
           tax_id_data: [
             {
-              type: "eu_vat",
-              value: flow.joinForm.vatNumber
-            }
-          ]
+              type: 'eu_vat',
+              value: flow.joinForm.vatNumber,
+            },
+          ],
         }),
-        ...customerData
+        ...customerData,
       });
       this.data.customerId = customer.id;
     }
 
     if (this.data.mandateId) {
-      log.info("Detach old payment method " + this.data.mandateId);
+      log.info('Detach old payment method ' + this.data.mandateId);
       await stripe.paymentMethods.detach(this.data.mandateId);
     }
 
@@ -144,12 +144,12 @@ export class StripeProvider extends PaymentProvider {
       this.contact.membership?.isActive &&
       this.contact.contributionType === ContributionType.Manual
     ) {
-      log.info("Creating new subscription for manual contributor");
+      log.info('Creating new subscription for manual contributor');
       const newSubscription = await createSubscription(
         this.data.customerId,
         {
           ...paymentForm,
-          monthlyAmount: this.contact.contributionMonthlyAmount || 0
+          monthlyAmount: this.contact.contributionMonthlyAmount || 0,
         },
         this.method,
         calcRenewalDate(this.contact)
@@ -167,7 +167,7 @@ export class StripeProvider extends PaymentProvider {
       ? null
       : {
           chargeable: getChargeableAmount(paymentForm, this.method),
-          monthly: paymentForm.monthlyAmount
+          monthly: paymentForm.monthlyAmount,
         };
 
     await this.updateData();
@@ -177,7 +177,7 @@ export class StripeProvider extends PaymentProvider {
       expiryDate: add(
         new Date(subscription.current_period_end * 1000),
         config.gracePeriod
-      )
+      ),
     };
   }
 
@@ -185,7 +185,7 @@ export class StripeProvider extends PaymentProvider {
     paymentForm: PaymentForm
   ): Promise<{ subscription: Stripe.Subscription; startNow: boolean }> {
     if (this.data.subscriptionId && this.contact.membership?.isActive) {
-      log.info("Update subscription " + this.data.subscriptionId);
+      log.info('Update subscription ' + this.data.subscriptionId);
       return await updateSubscription(
         this.data.subscriptionId,
         paymentForm,
@@ -195,7 +195,7 @@ export class StripeProvider extends PaymentProvider {
       // Cancel any existing (failing) subscriptions
       await this.cancelContribution(true);
 
-      log.info("Create subscription");
+      log.info('Create subscription');
       const subscription = await createSubscription(
         this.data.customerId!, // customerId is asserted in updateContribution
         paymentForm,
@@ -211,12 +211,12 @@ export class StripeProvider extends PaymentProvider {
       (updates.email || updates.firstname || updates.lastname) &&
       this.data.customerId
     ) {
-      log.info("Update contact");
+      log.info('Update contact');
       await stripe.customers.update(this.data.customerId, {
         ...(updates.email && { email: updates.email }),
         ...((updates.firstname || updates.lastname) && {
-          name: `${updates.firstname} ${updates.lastname}`
-        })
+          name: `${updates.firstname} ${updates.lastname}`,
+        }),
       });
     }
   }

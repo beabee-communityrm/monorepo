@@ -1,3 +1,3 @@
-import type { IStrategyOptionsWithRequest } from "passport-local";
+import type { IStrategyOptionsWithRequest } from 'passport-local';
 
 export type PassportLocalStrategyOptions = IStrategyOptionsWithRequest;

@@ -1,8 +1,8 @@
-import type { CalloutComponentType } from "../data/index.js";
+import type { CalloutComponentType } from '../data/index.js';
 import type {
   CalloutComponentBaseRules,
-  CalloutComponentBaseSchema
-} from "./index.js";
+  CalloutComponentBaseSchema,
+} from './index.js';
 
 export interface CalloutComponentBaseInputSchema
   extends CalloutComponentBaseSchema {

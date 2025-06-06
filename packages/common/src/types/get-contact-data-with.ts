@@ -1,11 +1,11 @@
-import { GetContactWith } from "../index.js";
+import { GetContactWith } from '../index.js';
 import type {
   ContactProfileData,
   ContactRoleData,
   ContributionInfo,
   GetContactData,
-  Noop
-} from "./index.js";
+  Noop,
+} from './index.js';
 
 export type GetContactDataWith<With extends GetContactWith | void> =
   GetContactData &

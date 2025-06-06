@@ -1,7 +1,7 @@
-import { IsDate, IsIn, IsString, ValidateNested } from "class-validator";
+import { IsDate, IsIn, IsString, ValidateNested } from 'class-validator';
 
-import { GetPaginatedQuery } from "@api/dto/BaseDto";
-import { GetContactDto } from "@api/dto/ContactDto";
+import { GetPaginatedQuery } from '@api/dto/BaseDto';
+import { GetContactDto } from '@api/dto/ContactDto';
 
 export class CreateCalloutResponseCommentDto {
   @IsString()
@@ -26,6 +26,6 @@ export class GetCalloutResponseCommentDto extends CreateCalloutResponseCommentDt
 }
 
 export class ListCalloutResponseCommentsDto extends GetPaginatedQuery {
-  @IsIn(["createdAt", "updatedAt"])
+  @IsIn(['createdAt', 'updatedAt'])
   sort?: string;
 }

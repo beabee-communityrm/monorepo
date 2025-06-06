@@ -1,19 +1,19 @@
-import { BaseClient } from "./base.client.js";
-import { CalloutClient } from "./callout.client.js";
-import { ContentClient } from "./content.client.js";
-import { ContactClient } from "./contact.client.js";
-import { ApiKeyClient } from "./api-key.client.js";
-import { AuthClient } from "./auth.client.js";
-import { EmailClient } from "./email.client.js";
-import { HealthClient } from "./health.client.js";
-import { NoticeClient } from "./notice.client.js";
-import { PaymentClient } from "./payment.client.js";
-import { ResetSecurityClient } from "./reset-security.client.js";
-import { SegmentsClient } from "./segments.client.js";
-import { SignupClient } from "./signup.client.js";
-import { StatsClient } from "./stats.client.js";
-import { UploadClient } from "./upload.client.js";
-import type { BaseClientOptions } from "../types/index.js";
+import { BaseClient } from './base.client.js';
+import { CalloutClient } from './callout.client.js';
+import { ContentClient } from './content.client.js';
+import { ContactClient } from './contact.client.js';
+import { ApiKeyClient } from './api-key.client.js';
+import { AuthClient } from './auth.client.js';
+import { EmailClient } from './email.client.js';
+import { HealthClient } from './health.client.js';
+import { NoticeClient } from './notice.client.js';
+import { PaymentClient } from './payment.client.js';
+import { ResetSecurityClient } from './reset-security.client.js';
+import { SegmentsClient } from './segments.client.js';
+import { SignupClient } from './signup.client.js';
+import { StatsClient } from './stats.client.js';
+import { UploadClient } from './upload.client.js';
+import type { BaseClientOptions } from '../types/index.js';
 
 /**
  * Main client for interacting with the Beabee API

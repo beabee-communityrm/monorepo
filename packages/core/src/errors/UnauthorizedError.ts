@@ -1,4 +1,4 @@
-import { UnauthorizedError as _UnauthorizedError } from "routing-controllers";
+import { UnauthorizedError as _UnauthorizedError } from 'routing-controllers';
 
 /**
  * UnauthorizedError with optional code

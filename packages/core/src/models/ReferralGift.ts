@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryColumn, ValueTransformer } from "typeorm";
+import { Column, Entity, PrimaryColumn, ValueTransformer } from 'typeorm';
 
 interface ReferralGiftOptions {
   name: string;
@@ -11,7 +11,7 @@ const stockTransformer: ValueTransformer = {
   },
   from(value: [string, number][]): Map<string, number> {
     return new Map(value);
-  }
+  },
 };
 
 @Entity()
@@ -31,9 +31,9 @@ export class ReferralGift {
   @Column({ default: false })
   enabled!: boolean;
 
-  @Column({ type: "jsonb", default: "[]" })
+  @Column({ type: 'jsonb', default: '[]' })
   options!: ReferralGiftOptions[];
 
-  @Column({ type: "jsonb", default: "[]", transformer: stockTransformer })
+  @Column({ type: 'jsonb', default: '[]', transformer: stockTransformer })
   stock!: Map<string, number>;
 }

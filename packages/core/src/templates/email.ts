@@ -1,9 +1,9 @@
-import juice from "juice";
+import juice from 'juice';
 
-import OptionsService from "#services/OptionsService";
+import OptionsService from '#services/OptionsService';
 
-import currentLocale from "#locale";
-import config from "#config/config";
+import currentLocale from '#locale';
+import config from '#config/config';
 
 export function getEmailFooter(): string {
   const locale = currentLocale();
@@ -12,27 +12,27 @@ export function getEmailFooter(): string {
 <hr>
 <p><br></p>
 <p><img src="${config.audience}/api/1.0/${OptionsService.getText(
-    "logo"
+    'logo'
   )}" style="display:inline-block; vertical-align: middle" width="50" height="50"><span style="margin-left: 10px">${OptionsService.getText(
-    "organisation"
+    'organisation'
   )}</span></p>
 <p><br></p>
 <p style="color: #666;">${
     locale.footer.contactUs
   } <a href="mailto:${OptionsService.getText(
-    "support-email"
-  )}">${OptionsService.getText("support-email")}</a>.</p>
+    'support-email'
+  )}">${OptionsService.getText('support-email')}</a>.</p>
 <p style="color: #666;">${[
     [
       locale.footer.privacyPolicy,
-      OptionsService.getText("footer-privacy-link-url")
+      OptionsService.getText('footer-privacy-link-url'),
     ],
-    [locale.footer.terms, OptionsService.getText("footer-terms-link-url")],
-    ["Impressum", OptionsService.getText("footer-impressum-link-url")]
+    [locale.footer.terms, OptionsService.getText('footer-terms-link-url')],
+    ['Impressum', OptionsService.getText('footer-impressum-link-url')],
   ]
     .filter(([text, url]) => !!url)
     .map(([text, url]) => `<a href="${url}">${text}</a>`)
-    .join(", ")}</p>
+    .join(', ')}</p>
 `;
 }
 
@@ -41,6 +41,6 @@ export function formatEmailBody(body: string): string {
 <style>p,ul,ol,h1,h2,h3,h4,h5,h6,pre,blockquote,hr { margin: 0; }</style>
   `;
   // Make empty paragraph tags visible
-  body = body.replace(/<p><\/p>/g, "<p><br></p>");
+  body = body.replace(/<p><\/p>/g, '<p><br></p>');
   return juice(styles + body + getEmailFooter());
 }

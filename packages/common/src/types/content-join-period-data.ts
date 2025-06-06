@@ -1,4 +1,4 @@
-import { ContributionPeriod } from "../data/index.js";
+import { ContributionPeriod } from '../data/index.js';
 
 export interface ContentJoinPeriodData {
   name: ContributionPeriod;

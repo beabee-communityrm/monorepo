@@ -1,5 +1,5 @@
 export enum RoleTypeData {
-  MEMBER = "member",
-  ADMIN = "admin",
-  SUPERADMIN = "superadmin"
+  MEMBER = 'member',
+  ADMIN = 'admin',
+  SUPERADMIN = 'superadmin',
 }

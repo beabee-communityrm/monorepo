@@ -1,7 +1,7 @@
-import { BadRequestError } from "routing-controllers";
+import { BadRequestError } from 'routing-controllers';
 
 export class CantUpdateContribution extends BadRequestError {
-  readonly code = "cant-update-contribution";
+  readonly code = 'cant-update-contribution';
 
   constructor() {
     super();

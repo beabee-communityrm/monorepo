@@ -1,22 +1,22 @@
-import { describe, expect, it, beforeAll } from "vitest";
-import { ContentClient, ClientApiError } from "@beabee/client";
-import { ContentId, ContentJoinData } from "@beabee/beabee-common";
-import { API_KEY, HOST, PATH } from "@beabee/test-utils/vitest/env";
+import { describe, expect, it, beforeAll } from 'vitest';
+import { ContentClient, ClientApiError } from '@beabee/client';
+import { ContentId, ContentJoinData } from '@beabee/beabee-common';
+import { API_KEY, HOST, PATH } from '@beabee/test-utils/vitest/env';
 
-describe("Content API", () => {
+describe('Content API', () => {
   let contentClient: ContentClient;
 
   beforeAll(() => {
     contentClient = new ContentClient({
       host: HOST,
       path: PATH,
-      token: API_KEY
+      token: API_KEY,
     });
   });
 
-  it("should return 400 for non-existing content id with client", async () => {
+  it('should return 400 for non-existing content id with client', async () => {
     try {
-      await contentClient.get("non-existing-id" as ContentId);
+      await contentClient.get('non-existing-id' as ContentId);
     } catch (error) {
       if (error instanceof ClientApiError) {
         expect(error.httpCode).toBe(400);
@@ -24,18 +24,18 @@ describe("Content API", () => {
     }
   });
 
-  it("should fetch content by profile id", async () => {
-    const contentId: ContentId = "profile";
+  it('should fetch content by profile id', async () => {
+    const contentId: ContentId = 'profile';
     const content = await contentClient.get(contentId);
 
     expect(content).toBeDefined();
     expect(content.introMessage).toBeDefined();
   });
 
-  it("should update content", async () => {
-    const contentId: ContentId = "join";
+  it('should update content', async () => {
+    const contentId: ContentId = 'join';
     const updateData: Partial<ContentJoinData> = {
-      title: "Updated join title"
+      title: 'Updated join title',
     };
 
     const updatedContent = await contentClient.update(contentId, updateData);

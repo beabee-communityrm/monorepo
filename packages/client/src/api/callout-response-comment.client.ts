@@ -1,16 +1,16 @@
-import { BaseClient } from "./base.client.js";
-import { cleanUrl } from "../utils/index.js";
-import { ContactClient } from "./contact.client.js";
+import { BaseClient } from './base.client.js';
+import { cleanUrl } from '../utils/index.js';
+import { ContactClient } from './contact.client.js';
 
-import type { BaseClientOptions } from "../types/index.js";
+import type { BaseClientOptions } from '../types/index.js';
 import type {
   CreateCalloutResponseCommentData,
   GetCalloutResponseCommentData,
   GetCalloutResponseCommentsQuery,
   Paginated,
   Serial,
-  UpdateCalloutResponseCommentData
-} from "@beabee/beabee-common";
+  UpdateCalloutResponseCommentData,
+} from '@beabee/beabee-common';
 
 /**
  * Client for managing comments on callout responses
@@ -25,7 +25,7 @@ export class CalloutResponseCommentClient extends BaseClient {
   constructor(protected override readonly options: BaseClientOptions) {
     super({
       ...options,
-      path: cleanUrl(options.path + "/callout-response-comments")
+      path: cleanUrl(options.path + '/callout-response-comments'),
     });
   }
 
@@ -46,7 +46,7 @@ export class CalloutResponseCommentClient extends BaseClient {
       updatedAt: CalloutResponseCommentClient.deserializeDate(
         comment.updatedAt
       ),
-      contact: ContactClient.deserialize(comment.contact)
+      contact: ContactClient.deserialize(comment.contact),
     };
   }
 
@@ -61,13 +61,13 @@ export class CalloutResponseCommentClient extends BaseClient {
   ): Promise<Paginated<GetCalloutResponseCommentData>> {
     const { data } = await this.fetch.get<
       Paginated<Serial<GetCalloutResponseCommentData>>
-    >("", query);
+    >('', query);
 
     return {
       ...data,
       items: data.items.map((item) =>
         CalloutResponseCommentClient.deserialize(item)
-      )
+      ),
     };
   }
 
@@ -81,7 +81,7 @@ export class CalloutResponseCommentClient extends BaseClient {
   ): Promise<GetCalloutResponseCommentData> {
     const { data } = await this.fetch.post<
       Serial<GetCalloutResponseCommentData>
-    >("", newData);
+    >('', newData);
     return CalloutResponseCommentClient.deserialize(data);
   }
 

@@ -1,15 +1,15 @@
-import { plainToInstance } from "class-transformer";
+import { plainToInstance } from 'class-transformer';
 import {
   Get,
   JsonController,
   Params,
   Patch,
-  QueryParams
-} from "routing-controllers";
+  QueryParams,
+} from 'routing-controllers';
 
-import { CurrentAuth } from "@api/decorators/CurrentAuth";
-import PartialBody from "@api/decorators/PartialBody";
-import { UUIDParams } from "@api/params/UUIDParams";
+import { CurrentAuth } from '@api/decorators/CurrentAuth';
+import PartialBody from '@api/decorators/PartialBody';
+import { UUIDParams } from '@api/params/UUIDParams';
 
 import {
   BatchUpdateCalloutResponseDto,
@@ -17,16 +17,16 @@ import {
   UpdateCalloutResponseDto,
   GetCalloutResponseDto,
   GetCalloutResponseOptsDto,
-  ListCalloutResponsesDto
-} from "@api/dto/CalloutResponseDto";
-import { PaginatedDto } from "@api/dto/PaginatedDto";
-import CalloutResponseTransformer from "@api/transformers/CalloutResponseTransformer";
+  ListCalloutResponsesDto,
+} from '@api/dto/CalloutResponseDto';
+import { PaginatedDto } from '@api/dto/PaginatedDto';
+import CalloutResponseTransformer from '@api/transformers/CalloutResponseTransformer';
 
-import { AuthInfo } from "@beabee/core/type";
+import { AuthInfo } from '@beabee/core/type';
 
-@JsonController("/callout-responses")
+@JsonController('/callout-responses')
 export class CalloutResponseController {
-  @Get("/")
+  @Get('/')
   async getCalloutResponses(
     @CurrentAuth() auth: AuthInfo,
     @QueryParams() query: ListCalloutResponsesDto
@@ -34,7 +34,7 @@ export class CalloutResponseController {
     return CalloutResponseTransformer.fetch(auth, query);
   }
 
-  @Patch("/")
+  @Patch('/')
   async updateCalloutResponses(
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @PartialBody() data: BatchUpdateCalloutResponseDto
@@ -46,7 +46,7 @@ export class CalloutResponseController {
     return plainToInstance(BatchUpdateCalloutResponseResultDto, { affected });
   }
 
-  @Get("/:id")
+  @Get('/:id')
   async getCalloutResponse(
     @CurrentAuth() auth: AuthInfo,
     @Params() { id }: UUIDParams,
@@ -54,7 +54,7 @@ export class CalloutResponseController {
   ): Promise<GetCalloutResponseDto | undefined> {
     return await CalloutResponseTransformer.fetchOneById(auth, id, query);
   }
-  @Patch("/:id")
+  @Patch('/:id')
   async updateCalloutResponse(
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @Params() { id }: UUIDParams,

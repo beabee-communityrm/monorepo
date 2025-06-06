@@ -1,8 +1,8 @@
-import { BadRequestError } from "routing-controllers";
-import { isDuplicateIndex } from "../utils/db";
+import { BadRequestError } from 'routing-controllers';
+import { isDuplicateIndex } from '../utils/db';
 
 export class DuplicateTagNameError extends BadRequestError {
-  readonly code = "duplicate-tag-name";
+  readonly code = 'duplicate-tag-name';
 
   constructor(tagName: string) {
     super(`Tag with name "${tagName}" already exists`);
@@ -10,6 +10,6 @@ export class DuplicateTagNameError extends BadRequestError {
   }
 
   static isPostgresError(error: any): boolean {
-    return isDuplicateIndex(error, "name");
+    return isDuplicateIndex(error, 'name');
   }
 }

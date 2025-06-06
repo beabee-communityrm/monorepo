@@ -3,19 +3,19 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
-  PrimaryGeneratedColumn
-} from "typeorm";
-import { type Email } from "./index";
-import { EmailMailingRecipient } from "#type/index";
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { type Email } from './index';
+import { EmailMailingRecipient } from '#type/index';
 
 @Entity()
 export class EmailMailing {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id!: string;
 
   @Column()
   emailId!: string;
-  @ManyToOne("Email", "mailings")
+  @ManyToOne('Email', 'mailings')
   email!: Email;
 
   @CreateDateColumn()
@@ -24,7 +24,7 @@ export class EmailMailing {
   @Column({ type: Date, nullable: true })
   sentDate!: Date | null;
 
-  @Column({ type: "jsonb" })
+  @Column({ type: 'jsonb' })
   recipients!: EmailMailingRecipient[];
 
   @Column({ type: String, nullable: true })
@@ -33,6 +33,6 @@ export class EmailMailing {
   @Column({ type: String, nullable: true })
   nameField!: string | null;
 
-  @Column({ type: "json", nullable: true })
+  @Column({ type: 'json', nullable: true })
   mergeFields!: Record<string, string> | null;
 }

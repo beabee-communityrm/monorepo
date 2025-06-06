@@ -1,4 +1,4 @@
-import type { GetCalloutFormSchema } from "./index.js";
+import type { GetCalloutFormSchema } from './index.js';
 
 export interface GetCalloutFormData {
   formSchema: GetCalloutFormSchema;

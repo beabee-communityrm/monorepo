@@ -1,9 +1,9 @@
-import type { CalloutComponentType } from "../data/index.js";
+import type { CalloutComponentType } from '../data/index.js';
 import type {
   CalloutComponentBaseInputSchema,
   CalloutComponentInputDateTimeRules,
-  TextCase
-} from "./index.js";
+  TextCase,
+} from './index.js';
 
 export interface CalloutComponentInputDateTimeSchema
   extends CalloutComponentBaseInputSchema {
@@ -21,7 +21,7 @@ export interface CalloutComponentInputDateTimeSchema
     [key: string]: unknown;
   };
   widget: {
-    mode: "single";
+    mode: 'single';
     enableTime: boolean;
     /** E.g. "yyyy-MM-dd hh:mm a" */
     format: string;

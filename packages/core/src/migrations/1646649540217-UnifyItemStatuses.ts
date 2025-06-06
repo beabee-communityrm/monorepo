@@ -1,7 +1,7 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class UnifyItemStatuses1646649540217 implements MigrationInterface {
-  name = "UnifyItemStatuses1646649540217";
+  name = 'UnifyItemStatuses1646649540217';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(

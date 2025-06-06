@@ -1,8 +1,8 @@
-import { ItemStatus } from "@beabee/beabee-common";
-import { BadRequestError } from "routing-controllers";
-import { Brackets } from "typeorm";
+import { ItemStatus } from '@beabee/beabee-common';
+import { BadRequestError } from 'routing-controllers';
+import { Brackets } from 'typeorm';
 
-import type { FilterHandler } from "#type";
+import type { FilterHandler } from '#type';
 
 /**
  * Status is a virtual field that maps to starts and expires, this function
@@ -13,8 +13,8 @@ import type { FilterHandler } from "#type";
  */
 export const statusFilterHandler: FilterHandler = (qb, args) => {
   // TODO: handle other operators
-  if (args.operator !== "equal") {
-    throw new BadRequestError("Status field only supports equal operator");
+  if (args.operator !== 'equal') {
+    throw new BadRequestError('Status field only supports equal operator');
   }
 
   switch (args.value[0]) {

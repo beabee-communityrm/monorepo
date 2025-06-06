@@ -1,38 +1,38 @@
-import { TransformPlainToInstance } from "class-transformer";
-import { SelectQueryBuilder } from "typeorm";
-import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity.js";
+import { TransformPlainToInstance } from 'class-transformer';
+import { SelectQueryBuilder } from 'typeorm';
+import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity.js';
 
-import { createQueryBuilder, getRepository } from "@beabee/core/database";
+import { createQueryBuilder, getRepository } from '@beabee/core/database';
 
 import {
   BatchUpdateCalloutResponseDto,
   GetCalloutResponseDto,
   GetCalloutResponseOptsDto,
   ListCalloutResponsesDto,
-  UpdateCalloutResponseDto
-} from "@api/dto/CalloutResponseDto";
-import { PaginatedDto } from "@api/dto/PaginatedDto";
-import { NotFoundError } from "@beabee/core/errors";
+  UpdateCalloutResponseDto,
+} from '@api/dto/CalloutResponseDto';
+import { PaginatedDto } from '@api/dto/PaginatedDto';
+import { NotFoundError } from '@beabee/core/errors';
 import ContactTransformer, {
-  loadContactRoles
-} from "@api/transformers/ContactTransformer";
-import { BaseCalloutResponseTransformer } from "@api/transformers/BaseCalloutResponseTransformer";
-import CalloutTransformer from "@api/transformers/CalloutTransformer";
-import CalloutResponseCommentTransformer from "@api/transformers/CalloutResponseCommentTransformer";
-import calloutTagTransformer from "@api/transformers/CalloutTagTransformer";
-import { batchUpdate } from "@beabee/core/utils/rules";
-import { GetCalloutResponseWith } from "@beabee/beabee-common";
+  loadContactRoles,
+} from '@api/transformers/ContactTransformer';
+import { BaseCalloutResponseTransformer } from '@api/transformers/BaseCalloutResponseTransformer';
+import CalloutTransformer from '@api/transformers/CalloutTransformer';
+import CalloutResponseCommentTransformer from '@api/transformers/CalloutResponseCommentTransformer';
+import calloutTagTransformer from '@api/transformers/CalloutTagTransformer';
+import { batchUpdate } from '@beabee/core/utils/rules';
+import { GetCalloutResponseWith } from '@beabee/beabee-common';
 
 import {
   Callout,
   CalloutResponse,
   CalloutResponseComment,
-  Contact
-} from "@beabee/core/models";
+  Contact,
+} from '@beabee/core/models';
 
-import { AuthInfo } from "@beabee/core/type";
-import { RuleGroup } from "@beabee/beabee-common";
-import { getReviewerRules } from "@api/utils";
+import { AuthInfo } from '@beabee/core/type';
+import { RuleGroup } from '@beabee/beabee-common';
+import { getReviewerRules } from '@api/utils';
 
 export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
   GetCalloutResponseDto,
@@ -53,19 +53,20 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
       guestName: response.guestName,
       guestEmail: response.guestEmail,
       ...(opts.with?.includes(GetCalloutResponseWith.Answers) && {
-        answers: response.answers
+        answers: response.answers,
       }),
       ...(opts.with?.includes(GetCalloutResponseWith.Assignee) && {
         assignee:
           response.assignee &&
-          ContactTransformer.convert(response.assignee, auth)
+          ContactTransformer.convert(response.assignee, auth),
       }),
       ...(opts.with?.includes(GetCalloutResponseWith.Callout) && {
-        callout: CalloutTransformer.convert(response.callout, auth)
+        callout: CalloutTransformer.convert(response.callout, auth),
       }),
       ...(opts.with?.includes(GetCalloutResponseWith.Contact) && {
         contact:
-          response.contact && ContactTransformer.convert(response.contact, auth)
+          response.contact &&
+          ContactTransformer.convert(response.contact, auth),
       }),
       ...(opts.with?.includes(GetCalloutResponseWith.LatestComment) && {
         latestComment:
@@ -73,12 +74,14 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
           CalloutResponseCommentTransformer.convert(
             response.latestComment,
             auth
-          )
+          ),
       }),
       ...(opts.with?.includes(GetCalloutResponseWith.Tags) &&
         response.tags && {
-          tags: response.tags.map((rt) => calloutTagTransformer.convert(rt.tag))
-        })
+          tags: response.tags.map((rt) =>
+            calloutTagTransformer.convert(rt.tag)
+          ),
+        }),
     };
   }
 
@@ -86,19 +89,19 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
     auth: AuthInfo,
     query: GetCalloutResponseOptsDto
   ): Promise<RuleGroup> {
-    const reviewerRules = await getReviewerRules(auth.contact, "calloutId");
+    const reviewerRules = await getReviewerRules(auth.contact, 'calloutId');
 
     // This is a hacky way to pass the reviewer status to modifyQueryBuilder
     query.isReviewer = reviewerRules.length > 0;
 
     return {
-      condition: "OR",
+      condition: 'OR',
       rules: [
         // User's can always see their own responses
-        { field: "contact", operator: "equal", value: ["me"] },
+        { field: 'contact', operator: 'equal', value: ['me'] },
         // And any responses for callouts they are reviewers for
-        ...reviewerRules
-      ]
+        ...reviewerRules,
+      ],
     };
   }
 
@@ -110,23 +113,23 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
   ): void {
     if (
       query.with?.includes(GetCalloutResponseWith.Assignee) &&
-      (query.isReviewer || auth.roles.includes("admin"))
+      (query.isReviewer || auth.roles.includes('admin'))
     ) {
-      qb.leftJoinAndSelect(`${fieldPrefix}assignee`, "assignee");
+      qb.leftJoinAndSelect(`${fieldPrefix}assignee`, 'assignee');
     }
     if (query.with?.includes(GetCalloutResponseWith.Callout)) {
-      qb.innerJoinAndSelect(`${fieldPrefix}callout`, "callout");
+      qb.innerJoinAndSelect(`${fieldPrefix}callout`, 'callout');
       qb.innerJoinAndSelect(
-        "callout.variants",
-        "variant",
+        'callout.variants',
+        'variant',
         "variant.name = 'default'"
       );
     }
     if (
       query.with?.includes(GetCalloutResponseWith.Contact) &&
-      auth.roles.includes("admin")
+      auth.roles.includes('admin')
     ) {
-      qb.leftJoinAndSelect(`${fieldPrefix}contact`, "contact");
+      qb.leftJoinAndSelect(`${fieldPrefix}contact`, 'contact');
     }
   }
 
@@ -138,11 +141,11 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
       const responseIds = responses.map((r) => r.id);
 
       if (query.with?.includes(GetCalloutResponseWith.LatestComment)) {
-        const comments = await createQueryBuilder(CalloutResponseComment, "c")
-          .distinctOn(["c.response"])
-          .where("c.response IN (:...ids)", { ids: responseIds })
-          .leftJoinAndSelect("c.contact", "contact")
-          .orderBy({ "c.response": "ASC", "c.createdAt": "DESC" })
+        const comments = await createQueryBuilder(CalloutResponseComment, 'c')
+          .distinctOn(['c.response'])
+          .where('c.response IN (:...ids)', { ids: responseIds })
+          .leftJoinAndSelect('c.contact', 'contact')
+          .orderBy({ 'c.response': 'ASC', 'c.createdAt': 'DESC' })
           .getMany();
 
         for (const response of responses) {
@@ -156,7 +159,7 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
         .flatMap((response) => [
           response.contact,
           response.assignee,
-          response.latestComment?.contact
+          response.latestComment?.contact,
         ])
         .filter((c): c is Contact => !!c);
       await loadContactRoles(contacts);
@@ -187,7 +190,7 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
     const { query, filters, filterHandlers } = await this.prepareQuery(
       query_,
       auth,
-      "update"
+      'update'
     );
 
     const { tagUpdates, responseUpdates } = getUpdateData(query.updates);
@@ -198,7 +201,7 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
       responseUpdates,
       auth.contact,
       filterHandlers,
-      (qb) => qb.returning(["id"])
+      (qb) => qb.returning(['id'])
     );
 
     const responses: { id: string }[] = result.raw;
@@ -220,10 +223,10 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
   ): Promise<boolean> {
     const query: BatchUpdateCalloutResponseDto = {
       rules: {
-        condition: "AND",
-        rules: [{ field: this.modelIdField, operator: "equal", value: [id] }]
+        condition: 'AND',
+        rules: [{ field: this.modelIdField, operator: 'equal', value: [id] }],
       },
-      updates
+      updates,
     };
     const affected = await this.updateWithTags(auth, query);
     return affected !== 0;
@@ -234,16 +237,16 @@ function getUpdateData(data: UpdateCalloutResponseDto): {
   tagUpdates: string[] | undefined;
   responseUpdates: QueryDeepPartialEntity<CalloutResponse>;
 } {
-  console.log("getUpdateData", data);
+  console.log('getUpdateData', data);
   const { tags: tagUpdates, assigneeId, ...otherUpdates } = data;
   return {
     tagUpdates,
     responseUpdates: {
       ...otherUpdates,
       ...(assigneeId !== undefined && {
-        assignee: assigneeId ? { id: assigneeId } : null
-      })
-    }
+        assignee: assigneeId ? { id: assigneeId } : null,
+      }),
+    },
   };
 }
 

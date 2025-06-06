@@ -1,31 +1,31 @@
-import type { ClientApiErrorData } from "../types/index.js";
+import type { ClientApiErrorData } from '../types/index.js';
 
 export function getErrorNameFromStatus(status: number): string {
   switch (status) {
     case 400:
-      return "BadRequestError";
+      return 'BadRequestError';
     case 401:
-      return "UnauthorizedError";
+      return 'UnauthorizedError';
     case 403:
-      return "ForbiddenError";
+      return 'ForbiddenError';
     case 404:
-      return "NotFoundError";
+      return 'NotFoundError';
     case 409:
-      return "ConflictError";
+      return 'ConflictError';
     case 422:
-      return "ValidationError";
+      return 'ValidationError';
     case 429:
-      return "TooManyRequestsError";
+      return 'TooManyRequestsError';
     case 500:
-      return "InternalServerError";
+      return 'InternalServerError';
     case 502:
-      return "BadGatewayError";
+      return 'BadGatewayError';
     case 503:
-      return "ServiceUnavailableError";
+      return 'ServiceUnavailableError';
     case 504:
-      return "GatewayTimeoutError";
+      return 'GatewayTimeoutError';
     default:
-      return status >= 500 ? "ServerError" : "ClientError";
+      return status >= 500 ? 'ServerError' : 'ClientError';
   }
 }
 
@@ -44,7 +44,7 @@ export class ClientApiError extends Error implements ClientApiErrorData {
     this.httpCode = data.httpCode;
     this.name =
       data.name ||
-      (this.httpCode ? getErrorNameFromStatus(this.httpCode) : "UnknownError");
+      (this.httpCode ? getErrorNameFromStatus(this.httpCode) : 'UnknownError');
   }
 }
 

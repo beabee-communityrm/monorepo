@@ -1,5 +1,5 @@
-import * as fs from "fs";
-import * as path from "path";
+import * as fs from 'fs';
+import * as path from 'path';
 
 export const createTestFile = (filePath: string, mimeType: string): File => {
   const buffer = fs.readFileSync(filePath);

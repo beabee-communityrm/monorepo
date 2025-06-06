@@ -2,8 +2,8 @@ import {
   ALLOWED_DOCUMENT_MIME_TYPES,
   ALLOWED_DOCUMENT_EXTENSIONS,
   ALLOWED_IMAGE_MIME_TYPES,
-  ALLOWED_IMAGE_EXTENSIONS
-} from "../constants.js";
+  ALLOWED_IMAGE_EXTENSIONS,
+} from '../constants.js';
 
 /**
  * Check if a MIME type is a supported document type.
@@ -66,7 +66,7 @@ export const isSupportedImageExtension = (extension?: string): boolean => {
  * ```
  */
 export const bytesToHumanReadable = (bytes: number): string => {
-  const units = ["B", "KB", "MB", "GB", "TB"];
+  const units = ['B', 'KB', 'MB', 'GB', 'TB'];
   let index = 0;
   let value = bytes;
 

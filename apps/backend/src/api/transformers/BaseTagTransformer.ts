@@ -1,15 +1,15 @@
-import { BaseTransformer } from "./BaseTransformer";
-import { plainToInstance } from "class-transformer";
-import { GetTagDto } from "@api/dto/TagDto";
-import { createQueryBuilder } from "@beabee/core/database";
-import type { RuleGroup, TagData } from "@beabee/beabee-common";
+import { BaseTransformer } from './BaseTransformer';
+import { plainToInstance } from 'class-transformer';
+import { GetTagDto } from '@api/dto/TagDto';
+import { createQueryBuilder } from '@beabee/core/database';
+import type { RuleGroup, TagData } from '@beabee/beabee-common';
 import type {
   AuthInfo,
   FilterHandler,
   TagAssignment,
-  TaggableEntity
-} from "@beabee/core/type";
-import { BadRequestError } from "routing-controllers";
+  TaggableEntity,
+} from '@beabee/core/type';
+import { BadRequestError } from 'routing-controllers';
 
 /**
  * Generic transformer for handling tag-related operations.
@@ -22,7 +22,7 @@ import { BadRequestError } from "routing-controllers";
 abstract class BaseTagTransformer<
   TModel extends TagData,
   TDto extends GetTagDto,
-  TFilterName extends string
+  TFilterName extends string,
 > extends BaseTransformer<TModel, TDto, TFilterName> {
   /** The constructor for the DTO class */
   protected abstract dtoType: new () => TDto;
@@ -44,7 +44,7 @@ abstract class BaseTagTransformer<
   convert(tag: TModel): TDto {
     return plainToInstance(this.dtoType, {
       id: tag.id,
-      name: tag.name
+      name: tag.name,
     });
   }
 
@@ -70,10 +70,10 @@ abstract class BaseTagTransformer<
 
     const entityIds = entities.map((e) => e.id);
 
-    const entityTags = (await createQueryBuilder(this.assignmentModel, "et")
+    const entityTags = (await createQueryBuilder(this.assignmentModel, 'et')
       .where(`et.${this.entityIdField} IN (:...ids)`, { ids: entityIds })
-      .innerJoinAndSelect("et.tag", "tag")
-      .orderBy("tag.name", "ASC")
+      .innerJoinAndSelect('et.tag', 'tag')
+      .orderBy('tag.name', 'ASC')
       .getMany()) as TagAssignment<TModel>[];
 
     for (const entity of entities) {
@@ -103,20 +103,20 @@ abstract class BaseTagTransformer<
     tagUpdates: string[]
   ): Promise<void> {
     const addTags = tagUpdates
-      .filter((tag) => tag.startsWith("+"))
+      .filter((tag) => tag.startsWith('+'))
       .flatMap((tag) =>
         entityIds.map((id) => ({
           [this.entityIdField]: id,
-          tagId: tag.slice(1)
+          tagId: tag.slice(1),
         }))
       );
 
     const removeTags = tagUpdates
-      .filter((tag) => tag.startsWith("-"))
+      .filter((tag) => tag.startsWith('-'))
       .flatMap((tag) =>
         entityIds.map((id) => ({
           [this.entityIdField]: id,
-          tagId: tag.slice(1)
+          tagId: tag.slice(1),
         }))
       );
 
@@ -147,7 +147,7 @@ abstract class BaseTagTransformer<
     data: T
   ): {
     tagUpdates: string[] | undefined;
-    otherUpdates: Omit<T, "tags">;
+    otherUpdates: Omit<T, 'tags'>;
   } {
     const { tags: tagUpdates, ...otherUpdates } = data;
     return { tagUpdates, otherUpdates };
@@ -164,10 +164,10 @@ abstract class BaseTagTransformer<
    * await contactTagTransformer.delete(tagId, ContactTagAssignment);
    */
   async delete(auth: AuthInfo, rules: RuleGroup): Promise<boolean> {
-    const { db } = await this.prepareQuery({ rules }, auth, "delete");
+    const { db } = await this.prepareQuery({ rules }, auth, 'delete');
 
     if (!db) {
-      throw new BadRequestError("No rules provided");
+      throw new BadRequestError('No rules provided');
     }
 
     // Delete any matching tag assignments first
@@ -177,11 +177,11 @@ abstract class BaseTagTransformer<
       .where((qb) => {
         const subQb = createQueryBuilder()
           .subQuery()
-          .select("item.id")
-          .from(this.model, "item")
+          .select('item.id')
+          .from(this.model, 'item')
           .where(db.where);
 
-        qb.where("tagId IN " + subQb.getQuery());
+        qb.where('tagId IN ' + subQb.getQuery());
       })
       .setParameters(db.params)
       .execute();
@@ -198,20 +198,20 @@ abstract class BaseTagTransformer<
     const subQb = createQueryBuilder()
       .subQuery()
       .select(`ta.${this.entityIdField}`)
-      .from(this.assignmentModel, "ta");
+      .from(this.assignmentModel, 'ta');
 
-    if (args.operator === "contains" || args.operator === "not_contains") {
-      subQb.where(args.addParamSuffix("ta.tagId = :valueA"));
+    if (args.operator === 'contains' || args.operator === 'not_contains') {
+      subQb.where(args.addParamSuffix('ta.tagId = :valueA'));
     }
 
     const inOp =
-      args.operator === "not_contains" || args.operator === "is_empty"
-        ? "NOT IN"
-        : "IN";
+      args.operator === 'not_contains' || args.operator === 'is_empty'
+        ? 'NOT IN'
+        : 'IN';
 
     qb.where(`${args.fieldPrefix}id ${inOp} ${subQb.getQuery()}`);
 
-    return args.operator === "contains" || args.operator === "not_contains"
+    return args.operator === 'contains' || args.operator === 'not_contains'
       ? { valueA: args.value[0] }
       : {};
   };

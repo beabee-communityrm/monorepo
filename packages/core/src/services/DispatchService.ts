@@ -1,17 +1,17 @@
-import { log as mainLogger } from "#logging";
-import { Contact } from "#models";
+import { log as mainLogger } from '#logging';
+import { Contact } from '#models';
 
-import ApiKeyService from "#services/ApiKeyService";
-import CalloutsService from "#services/CalloutsService";
-import ContactMfaService from "#services/ContactMfaService";
-import NewsletterService from "#services/NewsletterService";
-import PaymentService from "#services/PaymentService";
-import ReferralsService from "#services/ReferralsService";
-import ResetSecurityFlowService from "#services/ResetSecurityFlowService";
-import SegmentService from "#services/SegmentService";
-import ContactsService from "#services/ContactsService";
+import ApiKeyService from '#services/ApiKeyService';
+import CalloutsService from '#services/CalloutsService';
+import ContactMfaService from '#services/ContactMfaService';
+import NewsletterService from '#services/NewsletterService';
+import PaymentService from '#services/PaymentService';
+import ReferralsService from '#services/ReferralsService';
+import ResetSecurityFlowService from '#services/ResetSecurityFlowService';
+import SegmentService from '#services/SegmentService';
+import ContactsService from '#services/ContactsService';
 
-const log = mainLogger.child({ app: "dispatch-service" });
+const log = mainLogger.child({ app: 'dispatch-service' });
 
 /**
  * Dispatch service for operations that talk to a lot of services. This avoids
@@ -19,7 +19,7 @@ const log = mainLogger.child({ app: "dispatch-service" });
  */
 class DispatchService {
   async permanentlyDeleteContact(contact: Contact): Promise<void> {
-    log.info("Permanently deleting contact " + contact.id);
+    log.info('Permanently deleting contact ' + contact.id);
 
     // Delete external data first, this is more likely to fail so we'd exit the process early
     await NewsletterService.permanentlyDeleteContacts([contact]);

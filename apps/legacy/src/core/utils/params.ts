@@ -1,15 +1,15 @@
-import _ from "lodash";
+import _ from 'lodash';
 
 export interface SimpleParam {
   name: string;
   label: string;
-  type: "number" | "boolean" | "text";
+  type: 'number' | 'boolean' | 'text';
 }
 
 export interface SelectParam {
   name: string;
   label: string;
-  type: "select";
+  type: 'select';
   values: [string, string][];
 }
 
@@ -23,11 +23,11 @@ interface Paramable {
 
 function getParamValue(param: Param, s: string): ParamValue {
   switch (param.type) {
-    case "number":
+    case 'number':
       return Number(s);
-    case "boolean":
-      return s === "true";
-    case "select":
+    case 'boolean':
+      return s === 'true';
+    case 'select':
       return param.values.map(([k]) => k).find((k) => s === k);
     default:
       return s;
@@ -39,7 +39,7 @@ export async function loadParams<T extends Paramable>(
 ): Promise<T & { params: Param[] }> {
   return {
     ...item,
-    params: item.getParams ? await item.getParams() : []
+    params: item.getParams ? await item.getParams() : [],
   };
 }
 

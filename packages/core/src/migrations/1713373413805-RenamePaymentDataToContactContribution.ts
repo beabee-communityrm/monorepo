@@ -1,9 +1,9 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class RenamePaymentDataToContactContribution1713373413805
   implements MigrationInterface
 {
-  name = "RenamePaymentDataToContactContribution1713373413805";
+  name = 'RenamePaymentDataToContactContribution1713373413805';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(

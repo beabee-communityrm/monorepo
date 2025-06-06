@@ -1,8 +1,8 @@
 import type {
   CalloutResponseAnswersSlide,
   CalloutResponseGuestData,
-  CalloutResponseNewsletterData
-} from "./index.js";
+  CalloutResponseNewsletterData,
+} from './index.js';
 
 export interface CreateCalloutResponseData {
   answers: CalloutResponseAnswersSlide;

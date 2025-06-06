@@ -1,31 +1,31 @@
-import { CONTACT_MFA_TYPE, LOGIN_CODES } from "@beabee/beabee-common";
-import passport from "passport";
-import passportLocal from "passport-local";
+import { CONTACT_MFA_TYPE, LOGIN_CODES } from '@beabee/beabee-common';
+import passport from 'passport';
+import passportLocal from 'passport-local';
 
-import config from "@beabee/core/config";
+import config from '@beabee/core/config';
 
-import { getRepository } from "@beabee/core/database";
-import { log } from "@beabee/core/logging";
-import { generatePassword, isValidPassword } from "@beabee/core/utils/auth";
-import { normalizeEmailAddress } from "@beabee/core/utils/email";
+import { getRepository } from '@beabee/core/database';
+import { log } from '@beabee/core/logging';
+import { generatePassword, isValidPassword } from '@beabee/core/utils/auth';
+import { normalizeEmailAddress } from '@beabee/core/utils/email';
 
-import ContactsService from "@beabee/core/services/ContactsService";
-import ContactMfaService from "@beabee/core/services/ContactMfaService";
+import ContactsService from '@beabee/core/services/ContactsService';
+import ContactMfaService from '@beabee/core/services/ContactMfaService';
 
-import { UnauthorizedError } from "@beabee/core/errors";
+import { UnauthorizedError } from '@beabee/core/errors';
 
-import { Contact } from "@beabee/core/models";
+import { Contact } from '@beabee/core/models';
 
-import type { ContactMfaSecure } from "@beabee/core/type";
+import type { ContactMfaSecure } from '@beabee/core/type';
 
-import type { LoginData, PassportLocalDoneCallback } from "#type";
+import type { LoginData, PassportLocalDoneCallback } from '#type';
 
 // Add support for local authentication in Passport.js
 passport.use(
   new passportLocal.Strategy(
     {
-      usernameField: "email",
-      passReqToCallback: true
+      usernameField: 'email',
+      passReqToCallback: true,
     },
     async function (
       req: { body: LoginData },
@@ -52,7 +52,7 @@ passport.use(
           // Check if password needs to be rehashed
           if (contact.password.iterations < config.passwordIterations) {
             await ContactsService.updateContact(contact, {
-              password: await generatePassword(password)
+              password: await generatePassword(password),
             });
           }
 
@@ -90,10 +90,10 @@ const loginWithMfa = async (
   done: PassportLocalDoneCallback
 ) => {
   if (mfa.type !== CONTACT_MFA_TYPE.TOTP) {
-    log.warning("The user has unsupported 2FA enabled.");
+    log.warning('The user has unsupported 2FA enabled.');
     // We pass the contact to the done callback so the user can be logged in and the 2FA is ignored
     return done(null, contact, {
-      message: LOGIN_CODES.UNSUPPORTED_2FA
+      message: LOGIN_CODES.UNSUPPORTED_2FA,
     });
   }
 
@@ -117,7 +117,7 @@ const loginWithMfa = async (
     return done(
       new UnauthorizedError({
         code: LOGIN_CODES.INVALID_TOKEN,
-        message: "Invalid 2FA token" + delta ? ` (delta: ${delta})` : ""
+        message: 'Invalid 2FA token' + delta ? ` (delta: ${delta})` : '',
       }),
       false
     );
@@ -135,7 +135,7 @@ passport.serializeUser(function (data, done) {
 // Passport.js deserialise user function
 passport.deserializeUser(async function (data, done) {
   try {
-    if (typeof data === "string") {
+    if (typeof data === 'string') {
       const contact = await ContactsService.findOneBy({ id: data });
       if (contact) {
         // Debounce last seen updates, we don't need to know to the second

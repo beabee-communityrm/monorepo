@@ -1,8 +1,8 @@
-import { Get, JsonController, OnUndefined } from "routing-controllers";
+import { Get, JsonController, OnUndefined } from 'routing-controllers';
 
-@JsonController("/")
+@JsonController('/')
 export class RootController {
-  @Get("/")
+  @Get('/')
   @OnUndefined(201)
   get(): undefined {}
 }

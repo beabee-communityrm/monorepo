@@ -3,29 +3,29 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
-  PrimaryGeneratedColumn
-} from "typeorm";
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
-import type { Contact, Project } from "./index";
+import type { Contact, Project } from './index';
 
 @Entity()
 export class ProjectEngagement {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id!: string;
 
   @Column()
   projectId!: string;
-  @ManyToOne("Project")
+  @ManyToOne('Project')
   project!: Project;
 
   @Column()
   byContactId!: string;
-  @ManyToOne("Contact")
+  @ManyToOne('Contact')
   byContact!: Contact;
 
   @Column()
   toContactId!: string;
-  @ManyToOne("Contact")
+  @ManyToOne('Contact')
   toContact!: Contact;
 
   @CreateDateColumn()

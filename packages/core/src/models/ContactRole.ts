@@ -1,18 +1,18 @@
-import { RoleType } from "@beabee/beabee-common";
+import { RoleType } from '@beabee/beabee-common';
 import {
   Column,
   CreateDateColumn,
   Entity,
   ManyToOne,
-  PrimaryColumn
-} from "typeorm";
-import { type Contact } from "./index";
+  PrimaryColumn,
+} from 'typeorm';
+import { type Contact } from './index';
 
 @Entity()
 export class ContactRole {
   @PrimaryColumn()
   contactId!: string;
-  @ManyToOne("Contact", "roles")
+  @ManyToOne('Contact', 'roles')
   contact!: Contact;
 
   @PrimaryColumn()

@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, Response } from 'express';
 import {
   Authorized,
   CurrentUser,
@@ -11,34 +11,34 @@ import {
   Req,
   Res,
   UnauthorizedError,
-  UseBefore
-} from "routing-controllers";
-import { MulterError } from "multer";
+  UseBefore,
+} from 'routing-controllers';
+import { MulterError } from 'multer';
 
-import { documentService } from "@beabee/core/services";
-import { Contact } from "@beabee/core/models";
-import { BadRequestError } from "@beabee/core/errors";
-import { uploadMiddleware } from "../middlewares";
-import { config } from "@beabee/core/config";
-import { isSupportedDocumentType } from "@beabee/beabee-common";
-import { RateLimit } from "../decorators";
-import { UnsupportedFileType } from "@beabee/core/errors";
+import { documentService } from '@beabee/core/services';
+import { Contact } from '@beabee/core/models';
+import { BadRequestError } from '@beabee/core/errors';
+import { uploadMiddleware } from '../middlewares';
+import { config } from '@beabee/core/config';
+import { isSupportedDocumentType } from '@beabee/beabee-common';
+import { RateLimit } from '../decorators';
+import { UnsupportedFileType } from '@beabee/core/errors';
 
-import type { UploadFileResponse } from "@beabee/beabee-common";
-import { convertMulterError } from "@beabee/core/utils/multer";
-import { MAX_FILE_SIZE_IN_BYTES } from "@beabee/beabee-common";
+import type { UploadFileResponse } from '@beabee/beabee-common';
+import { convertMulterError } from '@beabee/core/utils/multer';
+import { MAX_FILE_SIZE_IN_BYTES } from '@beabee/beabee-common';
 
-@JsonController("/documents")
+@JsonController('/documents')
 export class DocumentController {
   /**
    * Upload a new document
    */
-  @Post("/")
+  @Post('/')
   @Authorized()
   @UseBefore(
     RateLimit({
       guest: { points: 5, duration: 60 * 60 },
-      user: { points: 50, duration: 60 * 60 }
+      user: { points: 50, duration: 60 * 60 },
     })
   )
   async upload(
@@ -55,13 +55,13 @@ export class DocumentController {
     }
 
     if (!req.file) {
-      throw new BadRequestError({ message: "No document file provided" });
+      throw new BadRequestError({ message: 'No document file provided' });
     }
 
     // Verify file type is allowed - multer handles size but we still check type
     if (!isSupportedDocumentType(req.file.mimetype)) {
       throw new UnsupportedFileType({
-        message: "Unsupported document type. Please upload a PDF document."
+        message: 'Unsupported document type. Please upload a PDF document.',
       });
     }
 
@@ -80,7 +80,7 @@ export class DocumentController {
       id: metadata.id,
       url: `${config.audience}/api/1.0/${path}`,
       path,
-      hash: metadata.hash
+      hash: metadata.hash,
     };
 
     // Only add filename if it exists
@@ -94,10 +94,10 @@ export class DocumentController {
   /**
    * Get a document
    */
-  @Get("/:id")
+  @Get('/:id')
   async getDocument(
     @Res() res: Response,
-    @Param("id") id: string
+    @Param('id') id: string
   ): Promise<Buffer> {
     // Get document as buffer
     const documentData = await documentService.getDocumentBuffer(id);
@@ -107,12 +107,12 @@ export class DocumentController {
 
     // Set appropriate security headers
     res.set({
-      "Content-Type": documentData.contentType,
-      "Content-Disposition": `inline; filename="${metadata.filename || id}"`,
-      "Cache-Control": "public, max-age=86400",
-      "X-Content-Type-Options": "nosniff",
-      "Content-Security-Policy": "default-src 'self'",
-      "X-Frame-Options": "SAMEORIGIN"
+      'Content-Type': documentData.contentType,
+      'Content-Disposition': `inline; filename="${metadata.filename || id}"`,
+      'Cache-Control': 'public, max-age=86400',
+      'X-Content-Type-Options': 'nosniff',
+      'Content-Security-Policy': "default-src 'self'",
+      'X-Frame-Options': 'SAMEORIGIN',
     });
 
     // Return the buffer, routing-controllers will handle the rest
@@ -122,10 +122,10 @@ export class DocumentController {
   /**
    * Delete a document
    */
-  @Delete("/:id")
+  @Delete('/:id')
   @Authorized()
   async deleteDocument(
-    @Param("id") id: string,
+    @Param('id') id: string,
     @CurrentUser({ required: true }) contact: Contact
   ): Promise<{ success: boolean }> {
     // Get document metadata first to check ownership
@@ -136,7 +136,7 @@ export class DocumentController {
     if (
       metadata.owner &&
       metadata.owner !== contact.email &&
-      !contact.hasRole("admin")
+      !contact.hasRole('admin')
     ) {
       throw new UnauthorizedError(
         "You don't have permission to delete this document"

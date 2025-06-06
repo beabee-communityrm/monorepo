@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class AddShareContent1660235362253 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {

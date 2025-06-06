@@ -1,21 +1,21 @@
-import { PaymentMethod } from "@beabee/beabee-common";
-import { In } from "typeorm";
-import { log as mainLogger } from "@beabee/core/logging";
-import { getRepository } from "@beabee/core/database";
-import { runApp } from "@beabee/core/server";
-import { stripe } from "@beabee/core/lib/stripe";
-import { ContactContribution } from "@beabee/core/models";
-import { contactsService } from "@beabee/core/services";
-import { StripeWebhookEventHandler } from "@beabee/core/lib/stripe-webhook-event-handler";
+import { PaymentMethod } from '@beabee/beabee-common';
+import { In } from 'typeorm';
+import { log as mainLogger } from '@beabee/core/logging';
+import { getRepository } from '@beabee/core/database';
+import { runApp } from '@beabee/core/server';
+import { stripe } from '@beabee/core/lib/stripe';
+import { ContactContribution } from '@beabee/core/models';
+import { contactsService } from '@beabee/core/services';
+import { StripeWebhookEventHandler } from '@beabee/core/lib/stripe-webhook-event-handler';
 
-const log = mainLogger.child({ app: "stripe-sync" });
+const log = mainLogger.child({ app: 'stripe-sync' });
 
 async function* fetchInvoices(customerId: string) {
   let hasMore = true;
   while (hasMore) {
     const invoices = await stripe.invoices.list({
       customer: customerId,
-      limit: 100
+      limit: 100,
     });
     hasMore = invoices.has_more;
     yield* invoices.data;
@@ -29,10 +29,10 @@ export const syncStripe = async (dryRun: boolean): Promise<void> => {
         method: In([
           PaymentMethod.StripeBACS,
           PaymentMethod.StripeCard,
-          PaymentMethod.StripeSEPA
-        ])
+          PaymentMethod.StripeSEPA,
+        ]),
       },
-      relations: { contact: true }
+      relations: { contact: true },
     });
 
     log.info(`Processing ${contributions.length} Stripe contributions`);
@@ -48,13 +48,13 @@ export const syncStripe = async (dryRun: boolean): Promise<void> => {
           const subscription = await stripe.subscriptions.retrieve(
             contribution.subscriptionId
           );
-          if (subscription.status === "canceled") {
+          if (subscription.status === 'canceled') {
             log.info(`Cancelling subscription ${contribution.subscriptionId}`);
             updates.cancelledAt = subscription.canceled_at
               ? new Date(subscription.canceled_at * 1000)
               : new Date();
             updates.subscriptionId = null;
-          } else if (subscription.status === "incomplete_expired") {
+          } else if (subscription.status === 'incomplete_expired') {
             log.info(
               `Removing incomplete subscription ${contribution.subscriptionId}`
             );
@@ -62,7 +62,7 @@ export const syncStripe = async (dryRun: boolean): Promise<void> => {
             if (!dryRun) {
               await contactsService.revokeContactRole(
                 contribution.contact,
-                "member"
+                'member'
               );
             }
           }
@@ -121,9 +121,9 @@ export const syncStripe = async (dryRun: boolean): Promise<void> => {
       // Apply updates
       if (Object.keys(updates).length > 0) {
         if (dryRun) {
-          log.info("DRY RUN - Would update contribution:", updates);
+          log.info('DRY RUN - Would update contribution:', updates);
         } else {
-          log.info("Updating contribution");
+          log.info('Updating contribution');
           await getRepository(ContactContribution).update(
             contribution.contact.id,
             updates
@@ -132,6 +132,6 @@ export const syncStripe = async (dryRun: boolean): Promise<void> => {
       }
     }
 
-    log.info("Stripe sync completed");
+    log.info('Stripe sync completed');
   });
 };

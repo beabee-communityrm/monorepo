@@ -1,7 +1,7 @@
 import type {
   CalloutResponseAnswerAddress,
-  CalloutResponseAnswerFileUpload
-} from "./index.js";
+  CalloutResponseAnswerFileUpload,
+} from './index.js';
 
 export type CalloutResponseAnswer =
   | string

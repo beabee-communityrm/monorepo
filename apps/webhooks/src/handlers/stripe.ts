@@ -1,25 +1,25 @@
-import bodyParser from "body-parser";
-import express, { type Express } from "express";
+import bodyParser from 'body-parser';
+import express, { type Express } from 'express';
 
-import { log as mainLogger } from "@beabee/core/logging";
-import { stripe } from "@beabee/core/lib/stripe";
-import { StripeWebhookEventHandler } from "@beabee/core/lib/stripe-webhook-event-handler";
-import { wrapAsync } from "@beabee/core/utils/express";
+import { log as mainLogger } from '@beabee/core/logging';
+import { stripe } from '@beabee/core/lib/stripe';
+import { StripeWebhookEventHandler } from '@beabee/core/lib/stripe-webhook-event-handler';
+import { wrapAsync } from '@beabee/core/utils/express';
 
-import config from "@beabee/core/config";
+import config from '@beabee/core/config';
 
-const log = mainLogger.child({ app: "webhook-stripe" });
+const log = mainLogger.child({ app: 'webhook-stripe' });
 
 const stripeWebhookApp: Express = express();
 
-stripeWebhookApp.use(bodyParser.raw({ type: "application/json" }));
+stripeWebhookApp.use(bodyParser.raw({ type: 'application/json' }));
 
-stripeWebhookApp.get("/", (req, res) => res.sendStatus(200));
+stripeWebhookApp.get('/', (req, res) => res.sendStatus(200));
 
 stripeWebhookApp.post(
-  "/",
+  '/',
   wrapAsync(async (req, res) => {
-    const sig = req.headers["stripe-signature"] as string;
+    const sig = req.headers['stripe-signature'] as string;
 
     try {
       const evt = stripe.webhooks.constructEvent(

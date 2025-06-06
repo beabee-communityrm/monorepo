@@ -19,9 +19,9 @@ import {
   CalloutComponentBaseRules,
   CalloutResponseAnswer,
   isCalloutComponentOfBaseType,
-  CalloutComponentBaseType
-} from "@beabee/beabee-common";
-import { Transform, Type, plainToInstance } from "class-transformer";
+  CalloutComponentBaseType,
+} from '@beabee/beabee-common';
+import { Transform, Type, plainToInstance } from 'class-transformer';
 import {
   Equals,
   IsBoolean,
@@ -33,12 +33,12 @@ import {
   ValidateNested,
   ValidationOptions,
   buildMessage,
-  validate
-} from "class-validator";
+  validate,
+} from 'class-validator';
 
-import { log as mainLogger } from "@beabee/core/logging";
+import { log as mainLogger } from '@beabee/core/logging';
 
-const log = mainLogger.child({ app: "callout-form-validation" });
+const log = mainLogger.child({ app: 'callout-form-validation' });
 
 abstract class CalloutComponentBaseDto implements CalloutComponentBaseSchema {
   abstract type: CalloutComponentType;
@@ -99,7 +99,7 @@ class CalloutComponentInputDto
   implements CalloutComponentBaseInputSchema
 {
   @IsIn(calloutComponentInputTypes)
-  type!: CalloutComponentBaseInputSchema["type"];
+  type!: CalloutComponentBaseInputSchema['type'];
 
   @Equals(true)
   input!: true;
@@ -151,7 +151,7 @@ class CalloutComponentInputSelectableDto
   implements CalloutComponentBaseInputSelectableSchema
 {
   @IsIn(calloutComponentInputSelectableTypes)
-  type!: CalloutComponentBaseInputSelectableSchema["type"];
+  type!: CalloutComponentBaseInputSelectableSchema['type'];
 
   @ValidateNested({ each: true })
   @Type(() => CalloutComponentInputSelectableValueDto)
@@ -160,11 +160,11 @@ class CalloutComponentInputSelectableDto
 
 function ComponentType() {
   return Transform(({ value }) => {
-    if (!Array.isArray(value)) throw new Error("Components must be an array");
+    if (!Array.isArray(value)) throw new Error('Components must be an array');
 
     return value.map((component) => {
-      if (typeof component !== "object" || component === null)
-        throw new Error("Component must be an object");
+      if (typeof component !== 'object' || component === null)
+        throw new Error('Component must be an object');
 
       switch (component.type) {
         case CalloutComponentType.CONTENT:
@@ -195,7 +195,7 @@ function ComponentType() {
         return plainToInstance(CalloutComponentNestableDto, component);
       }
 
-      throw new Error("Unknown component type " + component.type);
+      throw new Error('Unknown component type ' + component.type);
     });
   });
 }
@@ -207,24 +207,24 @@ function ComponentType() {
 function IsComponent(validationOptions?: ValidationOptions) {
   return ValidateBy(
     {
-      name: "isComponent",
+      name: 'isComponent',
       validator: {
         async validate(value: unknown) {
-          if (typeof value !== "object" || value === null) return false;
+          if (typeof value !== 'object' || value === null) return false;
           const errors = await validate(value, {
             whitelist: false,
-            forbidUnknownValues: true
+            forbidUnknownValues: true,
           });
           if (errors.length > 0) {
-            log.notice("Component validation errors", { errors });
+            log.notice('Component validation errors', { errors });
           }
           return errors.length === 0;
         },
         defaultMessage: buildMessage(
-          (eachPrefix) => eachPrefix + "$property must be a valid component",
+          (eachPrefix) => eachPrefix + '$property must be a valid component',
           validationOptions
-        )
-      }
+        ),
+      },
     },
     validationOptions
   );
@@ -235,7 +235,7 @@ class CalloutComponentNestableDto
   implements CalloutComponentBaseNestableSchema
 {
   @IsIn(calloutComponentNestableTypes)
-  type!: CalloutComponentBaseNestableSchema["type"];
+  type!: CalloutComponentBaseNestableSchema['type'];
 
   @Equals(false)
   input!: false;

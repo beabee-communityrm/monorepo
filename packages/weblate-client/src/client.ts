@@ -1,10 +1,10 @@
-import createClient from "openapi-fetch";
+import createClient from 'openapi-fetch';
 import type {
   paths,
   WeblateClientOptions,
   UnitUpdateRequestBody,
-  TranslationUnitResponseData
-} from "./types/index";
+  TranslationUnitResponseData,
+} from './types/index';
 
 /**
  * Weblate API client
@@ -20,8 +20,8 @@ export class WeblateClient {
     this.raw = createClient<paths>({
       baseUrl: options.baseUrl,
       headers: {
-        Authorization: `Token ${options.token}`
-      }
+        Authorization: `Token ${options.token}`,
+      },
     });
   }
 
@@ -32,7 +32,7 @@ export class WeblateClient {
    * @returns The list of translation units
    */
   async getUnits() {
-    const response = await this.raw.GET("/units/");
+    const response = await this.raw.GET('/units/');
 
     if (response.error) {
       throw new Error(
@@ -49,12 +49,12 @@ export class WeblateClient {
    * @returns The unit data
    */
   async getUnit(unitId: number) {
-    const response = await this.raw.GET("/units/{id}/", {
+    const response = await this.raw.GET('/units/{id}/', {
       params: {
         path: {
-          id: unitId.toString()
-        }
-      }
+          id: unitId.toString(),
+        },
+      },
     });
 
     if (response.error) {
@@ -73,19 +73,19 @@ export class WeblateClient {
     q?: string;
   }): Promise<TranslationUnitResponseData> {
     const response = await this.raw.GET(
-      "/translations/{component__project__slug}/{component__slug}/{language__code}/units/",
+      '/translations/{component__project__slug}/{component__slug}/{language__code}/units/',
       {
         params: {
           path: {
             component__project__slug: query.project,
             component__slug: query.component,
-            language__code: query.language
+            language__code: query.language,
           },
           query: {
             // @ts-ignore
-            q: query.q
-          }
-        }
+            q: query.q,
+          },
+        },
       }
     );
 
@@ -110,16 +110,16 @@ export class WeblateClient {
     // for this field when patching a unit, despite what the generated type might suggest.
     // The runtime error "int() argument must be ... not 'dict'" is a strong indicator.
     const body: UnitUpdateRequestBody = {
-      labels: labelIds as any // Use type assertion to satisfy TS while sending number[]
+      labels: labelIds as any, // Use type assertion to satisfy TS while sending number[]
     };
 
-    const response = await this.raw.PATCH("/units/{id}/", {
+    const response = await this.raw.PATCH('/units/{id}/', {
       params: {
         path: {
-          id: unitId.toString()
-        }
+          id: unitId.toString(),
+        },
       },
-      body
+      body,
     });
 
     if (response.error) {
@@ -138,13 +138,13 @@ export class WeblateClient {
    * @returns The updated unit data
    */
   async updateUnit(unitId: number, data: UnitUpdateRequestBody) {
-    const response = await this.raw.PATCH("/units/{id}/", {
+    const response = await this.raw.PATCH('/units/{id}/', {
       params: {
         path: {
-          id: unitId.toString()
-        }
+          id: unitId.toString(),
+        },
       },
-      body: data
+      body: data,
     });
 
     if (response.error) {
@@ -162,14 +162,14 @@ export class WeblateClient {
    */
   async getTranslations() {
     const response = await this.raw.GET(
-      "/components/{project__slug}/{slug}/translations/",
+      '/components/{project__slug}/{slug}/translations/',
       {
         params: {
           path: {
             project__slug: this.options.project,
-            slug: this.options.component
-          }
-        }
+            slug: this.options.component,
+          },
+        },
       }
     );
 
@@ -184,15 +184,15 @@ export class WeblateClient {
 
   async getTranslationsForLanguage(language: string) {
     const response = await this.raw.GET(
-      "/translations/{component__project__slug}/{component__slug}/{language__code}/",
+      '/translations/{component__project__slug}/{component__slug}/{language__code}/',
       {
         params: {
           path: {
             component__project__slug: this.options.project,
             component__slug: this.options.component,
-            language__code: language
-          }
-        }
+            language__code: language,
+          },
+        },
       }
     );
 
@@ -211,14 +211,14 @@ export class WeblateClient {
    */
   async getComponentStatistics() {
     const response = await this.raw.GET(
-      "/components/{project__slug}/{slug}/statistics/",
+      '/components/{project__slug}/{slug}/statistics/',
       {
         params: {
           path: {
             project__slug: this.options.project,
-            slug: this.options.component
-          }
-        }
+            slug: this.options.component,
+          },
+        },
       }
     );
 

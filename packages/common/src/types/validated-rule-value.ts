@@ -1,7 +1,7 @@
-import type { FilterType } from "../types/index.js";
+import type { FilterType } from '../types/index.js';
 
-export type ValidatedRuleValue<T extends FilterType> = T extends "number"
+export type ValidatedRuleValue<T extends FilterType> = T extends 'number'
   ? number
-  : T extends "boolean"
+  : T extends 'boolean'
     ? boolean
     : string;

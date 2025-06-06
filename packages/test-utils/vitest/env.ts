@@ -1,7 +1,7 @@
 const env = process.env;
 
 if (!env.API_KEY) {
-  throw new Error("API_KEY is not set");
+  throw new Error('API_KEY is not set');
 }
 
 /**
@@ -16,49 +16,49 @@ export const API_KEY = env.API_KEY;
  * Source: APP_BASE_URL environment variable
  * Default: "http://localhost:4002"
  */
-export const HOST = env.APP_BASE_URL || "http://localhost:4002";
+export const HOST = env.APP_BASE_URL || 'http://localhost:4002';
 
 /**
  * API base path
  * Source: API_BASE_URL environment variable
  * Default: "/api/1.0"
  */
-export const PATH = env.API_BASE_URL || "/api/1.0";
+export const PATH = env.API_BASE_URL || '/api/1.0';
 
 /**
  * Email for test user
  * Source: TEST_USER_EMAIL environment variable
  * Default: "test@beabee.io"
  */
-export const TEST_USER_EMAIL = env.TEST_USER_EMAIL || "test@beabee.io";
+export const TEST_USER_EMAIL = env.TEST_USER_EMAIL || 'test@beabee.io';
 
 /**
  * First name for test user
  * Source: TEST_USER_FIRSTNAME environment variable
  * Default: "Test"
  */
-export const TEST_USER_FIRSTNAME = env.TEST_USER_FIRSTNAME || "Test";
+export const TEST_USER_FIRSTNAME = env.TEST_USER_FIRSTNAME || 'Test';
 
 /**
  * Last name for test user
  * Source: TEST_USER_LASTNAME environment variable
  * Default: "Test"
  */
-export const TEST_USER_LASTNAME = env.TEST_USER_LASTNAME || "Test";
+export const TEST_USER_LASTNAME = env.TEST_USER_LASTNAME || 'Test';
 
 /**
  * Password for test user
  * Source: TEST_USER_PASSWORD environment variable
  * Default: "test1234"
  */
-export const TEST_USER_PASSWORD = env.TEST_USER_PASSWORD || "test1234";
+export const TEST_USER_PASSWORD = env.TEST_USER_PASSWORD || 'test1234';
 
 /**
  * Role for test user
  * Source: TEST_USER_ROLE environment variable
  * Default: "superadmin"
  */
-export const TEST_USER_ROLE = env.TEST_USER_ROLE || "superadmin";
+export const TEST_USER_ROLE = env.TEST_USER_ROLE || 'superadmin';
 
 /**
  * Email for test user
@@ -66,7 +66,7 @@ export const TEST_USER_ROLE = env.TEST_USER_ROLE || "superadmin";
  * Default: "test@beabee.io"
  */
 export const TEST_RATE_LIMIT_USER_EMAIL =
-  env.TEST_RATE_LIMIT_USER_EMAIL || "rate-limit-test@beabee.io";
+  env.TEST_RATE_LIMIT_USER_EMAIL || 'rate-limit-test@beabee.io';
 
 /**
  * First name for test user
@@ -74,7 +74,7 @@ export const TEST_RATE_LIMIT_USER_EMAIL =
  * Default: "Test"
  */
 export const TEST_RATE_LIMIT_USER_FIRSTNAME =
-  env.TEST_RATE_LIMIT_USER_FIRSTNAME || "Rate";
+  env.TEST_RATE_LIMIT_USER_FIRSTNAME || 'Rate';
 
 /**
  * Last name for test user
@@ -82,7 +82,7 @@ export const TEST_RATE_LIMIT_USER_FIRSTNAME =
  * Default: "Test"
  */
 export const TEST_RATE_LIMIT_USER_LASTNAME =
-  env.TEST_RATE_LIMIT_USER_LASTNAME || "Limit";
+  env.TEST_RATE_LIMIT_USER_LASTNAME || 'Limit';
 
 /**
  * Password for test user
@@ -90,7 +90,7 @@ export const TEST_RATE_LIMIT_USER_LASTNAME =
  * Default: "test1234"
  */
 export const TEST_RATE_LIMIT_USER_PASSWORD =
-  env.TEST_RATE_LIMIT_USER_PASSWORD || "rate-limit-test1234";
+  env.TEST_RATE_LIMIT_USER_PASSWORD || 'rate-limit-test1234';
 
 /**
  * Role for test user
@@ -98,7 +98,7 @@ export const TEST_RATE_LIMIT_USER_PASSWORD =
  * Default: "superadmin"
  */
 export const TEST_RATE_LIMIT_USER_ROLE =
-  env.TEST_RATE_LIMIT_USER_ROLE || "superadmin";
+  env.TEST_RATE_LIMIT_USER_ROLE || 'superadmin';
 
 /**
  * Description for test API key
@@ -106,4 +106,4 @@ export const TEST_RATE_LIMIT_USER_ROLE =
  * Default: "api-tests"
  */
 export const TEST_API_KEY_DESCRIPTION =
-  env.TEST_API_KEY_DESCRIPTION || "api-tests";
+  env.TEST_API_KEY_DESCRIPTION || 'api-tests';

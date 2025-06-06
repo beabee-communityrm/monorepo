@@ -4,8 +4,8 @@ import type {
   PaymentSourceStripeBACS,
   PaymentSourceStripeCard,
   PaymentSourceStripePayPal,
-  PaymentSourceStripeSEPA
-} from "./index.js";
+  PaymentSourceStripeSEPA,
+} from './index.js';
 
 export type PaymentSource =
   | PaymentSourceGoCardlessDirectDebit

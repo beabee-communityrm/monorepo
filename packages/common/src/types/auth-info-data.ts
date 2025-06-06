@@ -1,26 +1,26 @@
-import { RoleType } from "@beabee/beabee-common";
-import type { GetContactData } from "./get-contact-data";
+import { RoleType } from '@beabee/beabee-common';
+import type { GetContactData } from './get-contact-data';
 
 interface AuthInfoNoneData {
-  method: "none";
+  method: 'none';
   contact?: undefined;
   roles: RoleType[]; // Should be empty
 }
 
 interface AuthInfoContactData {
-  method: "user";
+  method: 'user';
   contact: GetContactData;
   roles: RoleType[];
 }
 
 interface AuthInfoApiKeyData {
-  method: "api-key";
+  method: 'api-key';
   contact?: GetContactData;
   roles: RoleType[];
 }
 
 interface AuthInfoInternalData {
-  method: "internal";
+  method: 'internal';
   contact?: undefined;
   roles: RoleType[];
 }

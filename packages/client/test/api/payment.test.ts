@@ -1,21 +1,21 @@
-import { beforeAll, describe, expect, it } from "vitest";
-import { PaymentClient } from "@beabee/client";
-import type { GetPaymentsQuery } from "@beabee/beabee-common";
-import { API_KEY, HOST, PATH } from "@beabee/test-utils/vitest/env";
+import { beforeAll, describe, expect, it } from 'vitest';
+import { PaymentClient } from '@beabee/client';
+import type { GetPaymentsQuery } from '@beabee/beabee-common';
+import { API_KEY, HOST, PATH } from '@beabee/test-utils/vitest/env';
 
-describe("PaymentClient", () => {
+describe('PaymentClient', () => {
   let paymentClient: PaymentClient;
 
   beforeAll(() => {
     paymentClient = new PaymentClient({
       host: HOST,
       path: PATH,
-      token: API_KEY
+      token: API_KEY,
     });
   });
 
-  describe("list", () => {
-    it("lists payments without filters", async () => {
+  describe('list', () => {
+    it('lists payments without filters', async () => {
       const { items, count } = await paymentClient.list();
 
       expect(Array.isArray(items)).toBe(true);
@@ -24,37 +24,37 @@ describe("PaymentClient", () => {
       expect(items[0]).toMatchObject({
         amount: expect.any(Number),
         status: expect.any(String),
-        chargeDate: expect.any(Date)
+        chargeDate: expect.any(Date),
       });
     });
 
-    it("lists payments with contact relation", async () => {
-      const { items } = await paymentClient.list({}, ["contact"]);
+    it('lists payments with contact relation', async () => {
+      const { items } = await paymentClient.list({}, ['contact']);
 
       expect(items.length).toBeGreaterThan(0);
-      expect(items[0]).toHaveProperty("contact");
+      expect(items[0]).toHaveProperty('contact');
       if (items[0].contact) {
         expect(items[0].contact).toMatchObject({
           id: expect.any(String),
-          displayName: expect.any(String)
+          displayName: expect.any(String),
         });
       }
     });
 
     // Skip status test as we can't control payment status through CLI
-    it.skip("filters payments by status", async () => {
-      const testStatus = "pending";
+    it.skip('filters payments by status', async () => {
+      const testStatus = 'pending';
       const query: GetPaymentsQuery = {
         rules: {
-          condition: "AND",
+          condition: 'AND',
           rules: [
             {
-              field: "status",
-              operator: "equal",
-              value: [testStatus]
-            }
-          ]
-        }
+              field: 'status',
+              operator: 'equal',
+              value: [testStatus],
+            },
+          ],
+        },
       };
 
       const { items } = await paymentClient.list(query);
@@ -64,20 +64,20 @@ describe("PaymentClient", () => {
     });
 
     // Skip date range test as we can't set charge date through CLI
-    it.skip("filters payments by charge date range", async () => {
-      const startDate = new Date("2023-01-01");
-      const endDate = new Date("2023-12-31");
+    it.skip('filters payments by charge date range', async () => {
+      const startDate = new Date('2023-01-01');
+      const endDate = new Date('2023-12-31');
       const query: GetPaymentsQuery = {
         rules: {
-          condition: "AND",
+          condition: 'AND',
           rules: [
             {
-              field: "chargeDate",
-              operator: "between",
-              value: [startDate.toISOString(), endDate.toISOString()]
-            }
-          ]
-        }
+              field: 'chargeDate',
+              operator: 'between',
+              value: [startDate.toISOString(), endDate.toISOString()],
+            },
+          ],
+        },
       };
 
       const { items } = await paymentClient.list(query);
@@ -93,7 +93,7 @@ describe("PaymentClient", () => {
       });
     });
 
-    it("paginates payments", async () => {
+    it('paginates payments', async () => {
       const page1 = await paymentClient.list({ limit: 5, offset: 0 });
       const page2 = await paymentClient.list({ limit: 5, offset: 5 });
 

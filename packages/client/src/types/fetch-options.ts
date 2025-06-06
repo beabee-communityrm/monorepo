@@ -1,4 +1,4 @@
-import type { HttpMethod } from "./index.js";
+import type { HttpMethod } from './index.js';
 
 export interface FetchOptions extends RequestInit {
   headers?: Record<string, string>;

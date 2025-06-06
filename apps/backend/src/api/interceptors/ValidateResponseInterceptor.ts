@@ -1,17 +1,17 @@
-import { ServerResponse } from "node:http";
+import { ServerResponse } from 'node:http';
 
-import { Request } from "express";
+import { Request } from 'express';
 import {
   Action,
   Interceptor,
   InterceptorInterface,
-  InternalServerError
-} from "routing-controllers";
+  InternalServerError,
+} from 'routing-controllers';
 
-import { log as mainLogger } from "@beabee/core/logging";
-import { validateOrReject } from "@api/utils";
+import { log as mainLogger } from '@beabee/core/logging';
+import { validateOrReject } from '@api/utils';
 
-const log = mainLogger.child({ app: "validate-response-interceptor" });
+const log = mainLogger.child({ app: 'validate-response-interceptor' });
 
 /**
  * Interceptor to validate outgoing responses against their DTO definitions.
@@ -47,7 +47,7 @@ export class ValidateResponseInterceptor implements InterceptorInterface {
     }
 
     const request = action.request as Request;
-    const groups = request.user?.hasRole("admin") ? ["admin"] : [];
+    const groups = request.user?.hasRole('admin') ? ['admin'] : [];
     const items = Array.isArray(content) ? content : [content];
 
     try {
@@ -59,12 +59,12 @@ export class ValidateResponseInterceptor implements InterceptorInterface {
           whitelist: true,
           forbidUnknownValues: true,
           forbidNonWhitelisted: true,
-          validationError: { target: false }
+          validationError: { target: false },
         });
       }
     } catch (errors) {
       log.warning(
-        `Validation failed on response for ${content?.constructor?.name ?? "unknown"}`,
+        `Validation failed on response for ${content?.constructor?.name ?? 'unknown'}`,
         { errors }
       );
       // TODO: Just log error for now
