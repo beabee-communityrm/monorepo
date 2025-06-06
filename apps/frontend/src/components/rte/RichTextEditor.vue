@@ -76,6 +76,7 @@
       </div>
     </div>
     <AppInputError v-if="hasError" :message="validation.$errors[0].$message" />
+    <AppInputHelp v-if="infoMessage" :message="infoMessage" />
   </div>
 </template>
 
@@ -102,6 +103,7 @@ import {
   faUnderline,
 } from '@fortawesome/free-solid-svg-icons';
 import AppInputError from '../forms/AppInputError.vue';
+import AppInputHelp from '../forms/AppInputHelp.vue';
 
 const { t } = useI18n();
 
@@ -109,6 +111,7 @@ const emit = defineEmits(['update:modelValue']);
 const props = defineProps<{
   modelValue: string;
   label?: string;
+  infoMessage?: string;
   required?: boolean;
   disabled?: boolean;
   copyable?: boolean;

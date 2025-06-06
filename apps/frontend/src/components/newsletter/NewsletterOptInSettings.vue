@@ -13,12 +13,9 @@
     <AppInput
       v-model="optIn"
       :label="t('newsletterOptIn.optInLabel')"
+      :info-message="groups.length> 0 ? t('newsletterOptIn.optInDisabled') : undefined"
       :required="groups.length === 0"
       :disabled="groups.length > 0"
-    />
-    <AppInputHelp
-      v-if="groups.length > 0"
-      :message="t('newsletterOptIn.optInDisabled')"
     />
   </div>
   <AppSectionHeading>{{ t('newsletterOptIn.groups.title') }}</AppSectionHeading>
@@ -47,7 +44,6 @@ import { useI18n } from 'vue-i18n';
 import { AppCheckbox } from '@beabee/vue/components';
 import AppInput from '../forms/AppInput.vue';
 import RichTextEditor from '../rte/RichTextEditor.vue';
-import AppInputHelp from '../forms/AppInputHelp.vue';
 import AppSectionHeading from '../AppSectionHeading.vue';
 import AppRepeatable from '../forms/AppRepeatable.vue';
 import type { NewsletterGroupData } from '@beabee/beabee-common';
