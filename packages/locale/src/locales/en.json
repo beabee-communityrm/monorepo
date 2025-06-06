@@ -133,8 +133,8 @@
     "joinSlack": "Join the beabee community on Slack!",
     "latestCallout": {
       "createNew": "Create a new one?",
-      "empty": "No currently active callouts.",
-      "title": "Latest callout"
+      "empty": "No active callouts",
+      "title": "Your CrowdNewsroom"
     },
     "mostRecentMembers": {
       "title": "Most recently joined members"
@@ -366,7 +366,7 @@
         "endMessage": {
           "inputs": {
             "action": {
-              "label": "When the user finishes answering the callout",
+              "label": "After an answer is submitted:",
               "opts": {
                 "redirect": "Redirect them to another page",
                 "showMessage": "Show a thank you message"
@@ -383,7 +383,7 @@
               "placeholder": "Thank you!"
             },
             "url": {
-              "help": "<p>This could be your homepage or a first article about the topic of the callout.</p>",
+              "help": "Users will be automatically taken to this page after submitting a response",
               "label": "URL for redirect",
               "placeholder": "https://example.com"
             }
@@ -391,7 +391,7 @@
           "title": "End message"
         },
         "intro": {
-          "help": "<p>The <strong>Introduction text</strong> appears alongside the callout. It should explain why you are doing this callout and give any context the user might need before answering.</p>",
+          "help": "The introduction text should give any context the user might need before answering",
           "label": "Introduction text",
           "title": "Introduction"
         },
@@ -560,7 +560,7 @@
               }
             },
             "visible": {
-              "help": "<p>You can make the callout <strong>not appear</strong> to users if you only want it to be answered by people who you share the link with.</p>",
+              "help": "The callout will only be visible to people who receive the link",
               "label": "Show callout in member dashboards",
               "opts": {
                 "disabled": "The callout will not appear on member dashboards",
@@ -577,16 +577,16 @@
         "titleAndImage": {
           "inputs": {
             "description": {
-              "help": "This description is shown if the callout is visible in the member's dashboard. It is also used for sharing.",
+              "help": "This description is shown in the member dashboard. It is also used for sharing.",
               "label": "Short description",
-              "placeholder": "Quickly explain why people should open this callout."
+              "placeholder": "Quickly explain why people should participate"
             },
             "general": {
               "title": "General information"
             },
             "image": {
               "description": "Don't forget to save after uploading an image!",
-              "help": "<p>The <strong>Cover image</strong> will serve as an illustration for the callout on menus and forms.</p>",
+              "help": "The cover image is displayed in thumbnails and share links",
               "label": "Cover image"
             },
             "overrideShare": {
@@ -599,7 +599,7 @@
             "shareDescription": {
               "help": "<p>The <strong>Share description</strong> field sets the short description as it should appear on social media cards.</p>",
               "label": "Share description",
-              "placeholder": "Quickly explain why people should respond to this callout."
+              "placeholder": "Quickly explain why people should participate"
             },
             "shareTitle": {
               "help": "<p>The <strong>Share title</strong> field sets the title as it should appear on social media cards.</p>",
@@ -611,13 +611,13 @@
             },
             "slug": {
               "boxTitle": "Permalink",
-              "help": "<p>You can share the <strong>permalink</strong> with users so they can access the callout directly</p>",
+              "help": "Use this link to share the callout",
               "label": "Auto-generate slug from title",
               "locked": {
                 "title": "The permalink is locked because the callout has already been published."
               },
               "opts": {
-                "auto": "The permalink is generated from the callout title and automatically updated until the callout is published.",
+                "auto": "The permalink is generated from the callout title. The link will automatically update if you change the title.",
                 "manual": "The permalink is set manually"
               }
             },
@@ -631,7 +631,7 @@
         },
         "translations": {
           "language": {
-            "description": "You can translate the callout into multiple languages. If a translation is missing we'll show the text in the primary language.",
+            "description": "You can translate the callout into multiple languages. If a translation is missing we’ll show the text in the primary language.",
             "enableLanguages": "Enable translation support",
             "title": "Language"
           },
@@ -668,7 +668,7 @@
     "membersOnly": "This callout is open to members only. To participate",
     "responseSubmitted": "Response submitted",
     "share": {
-      "address": "Share this callout with the following address:",
+      "address": "Share using the following link:",
       "services": "Or quickly share using one of these services:"
     },
     "showingPreview": "You can't submit a response in preview mode",
@@ -732,7 +732,7 @@
       "answers": "Answers",
       "assignee": "Assigned to",
       "bucket": "Bucket",
-      "callout": "Callout",
+      "callout": "CrowdNewsroom",
       "contact": "Contact",
       "createdAt": "Date submitted",
       "tags": "Tags",
@@ -799,25 +799,25 @@
       "title": "Remove reviewer"
     },
     "contact": "Contact ID",
-    "title": "Callout reviewers"
+    "title": "Manage Reviewers"
   },
   "calloutThanksPage": {
-    "oneResponseWarning": "Please note that this callout only allows one response per person. If you have already contributed, additional responses will not be recorded."
+    "oneResponseWarning": "Please note that only one response is allowed per person. If you have already contributed, additional responses will not be recorded."
   },
   "callouts": {
     "archive": "Archive",
     "data": {
-      "callout": "Callout",
+      "callout": "CrowdNewsroom",
       "endDate": "End date"
     },
-    "noArchivedCallouts": "No callouts",
-    "search": "Search callouts...",
+    "noArchivedCallouts": "Nothing to see here",
+    "search": "Search",
     "showAll": "All",
     "showAnswered": "Answered",
-    "showingOf": "Showing {start} to {end} callouts out of {total}"
+    "showingOf": "Showing {start} to {end} out of {total}"
   },
   "calloutsAdmin": {
-    "addCallout": "Create callout",
+    "addCallout": "Create",
     "data": {
       "expires": "Expiry date",
       "responses": "Responses",
@@ -827,10 +827,10 @@
     },
     "filter": {
       "all": "All callouts",
-      "draft": "Draft callouts",
-      "ended": "Ended callouts",
-      "open": "Open callouts",
-      "scheduled": "Scheduled callouts"
+      "draft": "Drafts",
+      "ended": "Ended",
+      "open": "Open",
+      "scheduled": "Scheduled"
     }
   },
   "common": {
@@ -920,7 +920,7 @@
     "annotation": {
       "copy": "<p>All information added in this section is <strong>visible for admins only</strong>. Members will never see these in their profile or member area.</p>\n"
     },
-    "callouts": "Callouts",
+    "callouts": "CrowdNewsroom",
     "cancellationDate": "Cancelled on",
     "contribution": "Contribution",
     "contributionType": "Type",
@@ -949,8 +949,8 @@
   "contacts": {
     "addContact": "Add contact",
     "advancedSearch": {
-      "hasAnswered": "Has participated in this callout?",
-      "selectCallout": "Select callout..."
+      "hasAnswered": "Has participated?",
+      "selectCallout": "Select"
     },
     "allContacts": "All contacts",
     "data": {
@@ -987,7 +987,7 @@
       "tags": "Tags"
     },
     "dataGroup": {
-      "callout": "Callout",
+      "callout": "CrowdNewsroom",
       "contact": "Contact information",
       "contribution": "Contribution",
       "role": "Role"
@@ -1196,11 +1196,11 @@
     "editProfile": "Edit your community profile",
     "manageContribution": "Manage your contribution",
     "newCallout": "New callout!",
-    "openCallouts": "Open callouts",
+    "openCallouts": "CrowdNewsroom",
     "quickActions": "Quick actions",
     "title": "Home",
-    "viewAllCallouts": "View all callouts",
-    "viewOpenCallouts": "View open callouts",
+    "viewAllCallouts": "Open the CrowdNewsroom",
+    "viewOpenCallouts": "Open the CrowdNewsroom",
     "welcome": "Welcome aboard {firstName}!",
     "yourProfile": "Your profile"
   },
@@ -1336,7 +1336,7 @@
     "account": "Account",
     "admin": "Administration",
     "adminSettings": "Settings",
-    "callouts": "Callouts",
+    "callouts": "CrowdNewsroom",
     "contacts": "Contacts",
     "contribution": "Contribution",
     "dashboard": "Dashboard",
