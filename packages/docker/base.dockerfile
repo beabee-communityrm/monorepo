@@ -108,7 +108,7 @@ COPY --chown=node:node --from=builder /opt/apps/backend-cli/dist /opt/apps/backe
 
 # Health check using our custom health endpoint
 HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
-    CMD curl -f http://localhost:3000/api/1.0/health || exit 1
+    CMD curl -f http://localhost:3000/1.0/health || exit 1
 
 CMD [ "node", "./dist/api/app.js" ]
 
