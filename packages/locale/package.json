@@ -11,9 +11,9 @@
   },
   "scripts": {
     "clear": "rm -rf dist/",
-    "build": "yarn build:esbuild && tsc",
+    "build": "yarn build:esbuild && tsc -p tsconfig.build.json",
     "build:esbuild": "node --experimental-specifier-resolution=node --experimental-strip-types --no-warnings esbuild.ts",
-    "check": "tsc --noEmit",
+    "check": "tsc --noEmit -p tsconfig.build.json",
     "watch": "yarn build:esbuild --watch",
     "dev": "yarn watch"
   },

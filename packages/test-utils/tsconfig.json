@@ -1,8 +1,8 @@
 {
   "extends": "@beabee/tsconfig/tsconfig.vanilla.json",
-  "include": ["src"],
+  "include": ["./vitest/**/*", "./node/**/*"],
   "compilerOptions": {
     "composite": true,
     "noEmit": true
   }
-}
+} 
