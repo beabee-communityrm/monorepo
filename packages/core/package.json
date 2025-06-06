@@ -12,7 +12,7 @@
     "check": "concurrently 'yarn:check:*'",
     "check:tsc": "tsc -p tsconfig.build.json --noEmit",
     "check:prettier": "prettier -c .",
-    "generate:index": "yarn workspace @beabee/dev-cli start generate-index --extension none --baseDir $PWD -p ./src/errors ./src/models ./src/services ./src/type ./src/filter-handlers ./src/templates",
+    "generate:index": "yarn workspace @beabee/dev-cli start generate-index --extension none --baseDir $(pwd) -p ./src/errors ./src/models ./src/services ./src/type ./src/filter-handlers ./src/templates",
     "test": "vitest run",
     "test:watch": "vitest"
   },

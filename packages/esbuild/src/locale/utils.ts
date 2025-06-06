@@ -17,7 +17,7 @@ export async function readJsonFile<T>(filePath: string): Promise<T> {
  */
 export async function writeJsonFile(
   filePath: string,
-  data: Record<string, any>,
+  data: Record<string, any>
 ): Promise<void> {
   await writeFile(filePath, JSON.stringify(data, null, 2), "utf-8");
 }
@@ -30,7 +30,7 @@ export async function writeJsonFile(
  */
 export function processObjectStrings(
   obj: Record<string, any>,
-  transformFn: (value: string) => string,
+  transformFn: (value: string) => string
 ): Record<string, any> {
   const result: Record<string, any> = {};
 
@@ -59,8 +59,8 @@ export function mergeObjects(
   source: Record<string, any>,
   stringHandler: (
     targetValue: string | undefined,
-    sourceValue: string,
-  ) => string,
+    sourceValue: string
+  ) => string
 ): Record<string, any> {
   const result = { ...target };
 

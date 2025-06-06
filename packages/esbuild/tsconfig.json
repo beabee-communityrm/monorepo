@@ -1,0 +1,4 @@
+{
+  "extends": "@beabee/tsconfig/tsconfig.vanilla.json",
+  "include": ["src", "index.ts"]
+}

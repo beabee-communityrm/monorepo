@@ -1,5 +1,5 @@
 import type { Plugin } from "esbuild";
-import path from "node:path";
+import { basename } from "node:path";
 import { applyFallbackTranslations } from "./fallback-translations.ts";
 import type { LocalePluginOptions } from "../types/index.ts";
 
@@ -10,7 +10,7 @@ import type { LocalePluginOptions } from "../types/index.ts";
  */
 export function localePlugin({
   configPath,
-  sourceLocalesDir,
+  sourceLocalesDir
 }: LocalePluginOptions): Plugin {
   let processedTranslations: Record<string, Record<string, any>> | null = null;
 
@@ -25,12 +25,12 @@ export function localePlugin({
           if (!processedTranslations) {
             processedTranslations = await applyFallbackTranslations(
               configPath,
-              sourceLocalesDir,
+              sourceLocalesDir
             );
           }
 
           // Get the locale ID from the file name
-          const fileName = path.basename(args.path);
+          const fileName = basename(args.path);
           const localeId = fileName.replace(".json", "");
 
           // For English locale or if no processed translations exist, just return the file as is
@@ -41,10 +41,10 @@ export function localePlugin({
           // Return the processed translations as a JSON file
           return {
             contents: JSON.stringify(processedTranslations[localeId], null, 2),
-            loader: "copy", // Use copy loader to keep it as JSON
+            loader: "copy" // Use copy loader to keep it as JSON
           };
-        },
+        }
       );
-    },
+    }
   };
 }

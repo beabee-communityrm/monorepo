@@ -6,12 +6,12 @@
  * for new translations.
  */
 
-import path from "node:path";
+import { join } from "node:path";
 import {
   readJsonFile,
   writeJsonFile,
   processObjectStrings,
-  handleError,
+  handleError
 } from "./utils.ts";
 
 /**
@@ -21,10 +21,10 @@ import {
  */
 export async function generateTemplate(
   localesDir: string,
-  templatePath: string,
+  templatePath: string
 ): Promise<void> {
   try {
-    const englishFilePath = path.join(localesDir, "en.json");
+    const englishFilePath = join(localesDir, "en.json");
 
     console.log(`Reading English locale file from ${englishFilePath}`);
 

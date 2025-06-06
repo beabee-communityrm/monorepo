@@ -8,8 +8,5 @@
     "env.d.ts"
   ],
   "exclude": ["node_modules", "dist"],
-  "references": [
-    { "path": "../../packages/common" },
-    { "path": "../../packages/client" }
-  ]
+  "references": [{ "path": "../common" }, { "path": "../client" }]
 }

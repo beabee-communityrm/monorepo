@@ -68,7 +68,7 @@ await generateTemplate("./src/locales", "./src/template.json");
 
 - `buildStandard(options)` - Builds both ESM and CommonJS
 - `buildESM(options)` - Builds ESM modules only
-- `buildCJS(options)` - Builds CommonJS modules only  
+- `buildCJS(options)` - Builds CommonJS modules only
 - `buildBrowser(options)` - Builds browser bundles
 
 ### Locale Functions
@@ -79,12 +79,14 @@ await generateTemplate("./src/locales", "./src/template.json");
 ### Types
 
 Import types from `@beabee/esbuild/types`:
+
 - `BuildStandardOptions`, `BuildOptions`, `BuildIIFEOptions`
 - `LocalePluginOptions`, `CopyPluginOptions`
 
 ## Examples
 
 Check the actual usage in:
+
 - `packages/common/package.json` - Standard package build
 - `packages/client/package.json` - Build with watch mode
 - `packages/locale/esbuild.ts` - Locale-specific build

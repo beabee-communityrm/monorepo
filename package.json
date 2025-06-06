@@ -9,7 +9,7 @@
     "format": "yarn workspaces foreach -v -W -p run format",
     "test": "yarn workspaces foreach -v -W run test",
     "check": "yarn workspaces foreach -v -W -p run check",
-    "generate:index": "yarn workspaces foreach -v -W -p run generate:index",
+    "generate:index": "yarn workspaces foreach -v -W run generate:index",
     "publish:next": "yarn workspaces foreach -v -W --no-private npm publish --tolerate-republish --tag next --access public",
     "publish:latest": "yarn workspaces foreach -v -W --no-private npm publish --tolerate-republish --tag latest --access public",
     "setup": "yarn workspace @beabee/backend run setup",
