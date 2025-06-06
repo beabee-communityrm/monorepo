@@ -29,7 +29,7 @@ export const generateIndex = async (argv: GenerateIndexArgs): Promise<void> => {
         if (file.name.endsWith(".ts") && file.name !== "index.ts") {
           const importName = basename(file.name, ".ts");
           const importExtension = getImportExtension(extension);
-          indexContent += `export * from './${importName}${importExtension}';\n`;
+          indexContent += `export * from "./${importName}${importExtension}";\n`;
         }
       }
 

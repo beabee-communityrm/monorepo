@@ -16,7 +16,7 @@
     "check": "yarn check:tsc && yarn check:prettier",
     "check:tsc": "tsc --noEmit",
     "check:prettier": "prettier -c .",
-    "generate:index": "yarn workspace @beabee/dev-cli start generate-index --baseDir $PWD --extension ts -p ./vitest ./node"
+    "generate:index": "yarn workspace @beabee/dev-cli start generate-index --baseDir $(pwd) --extension ts -p ./vitest ./node"
   },
   "dependencies": {
     "@beabee/prettier-config": "workspace:^",

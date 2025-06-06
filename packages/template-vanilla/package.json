@@ -12,7 +12,7 @@
     "check:tsc": "tsc --noEmit",
     "check:prettier": "prettier -c .",
     "format": "prettier --write .",
-    "generate:index": "yarn workspace @beabee/dev-cli start generate-index --baseDir $PWD --extension ts -p ./src/types ./src/utils"
+    "generate:index": "yarn workspace @beabee/dev-cli start generate-index --baseDir $(pwd) --extension ts -p ./src/types ./src/utils"
   },
   "devDependencies": {
     "@beabee/prettier-config": "workspace:^",
