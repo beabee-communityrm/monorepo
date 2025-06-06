@@ -27,7 +27,6 @@ COPY --chown=node:node packages/weblate-client/package.json /opt/packages/weblat
 # Copy dependencies info from apps
 COPY --chown=node:node apps/backend/package.json /opt/apps/backend/package.json
 COPY --chown=node:node apps/backend-cli/package.json /opt/apps/backend-cli/package.json
-COPY --chown=node:node apps/dev-cli/package.json /opt/apps/dev-cli/package.json
 COPY --chown=node:node apps/legacy/package.json /opt/apps/legacy/package.json
 COPY --chown=node:node apps/webhooks/package.json /opt/apps/webhooks/package.json
 COPY --chown=node:node apps/e2e-api-tests/package.json /opt/apps/e2e-api-tests/package.json
@@ -36,6 +35,9 @@ COPY --chown=node:node apps/e2e-api-tests/package.json /opt/apps/e2e-api-tests/p
 COPY --chown=node:node packages/prettier-config /opt/packages/prettier-config
 COPY --chown=node:node packages/tsconfig /opt/packages/tsconfig
 COPY --chown=node:node packages/esbuild /opt/packages/esbuild
+
+# Copy apps with relevant content
+COPY --chown=node:node apps/dev-cli /opt/apps/dev-cli
 
 ENV NODE_ENV=production
 ENV NODE_OPTIONS=--enable-source-maps
@@ -62,6 +64,7 @@ COPY apps/backend /opt/apps/backend
 COPY apps/backend-cli /opt/apps/backend-cli
 COPY apps/legacy /opt/apps/legacy
 COPY apps/webhooks /opt/apps/webhooks
+COPY apps/dev-cli /opt/apps/dev-cli
 
 # Build the applications
 RUN yarn build
