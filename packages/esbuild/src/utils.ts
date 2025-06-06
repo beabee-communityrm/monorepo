@@ -1,4 +1,4 @@
-import { extname, join } from "node:path";
+import { extname, resolve } from "node:path";
 import { readdir, rename } from "node:fs/promises";
 
 /**
@@ -9,7 +9,7 @@ export async function renameExtensions(directory: string): Promise<void> {
   for await (const dirEntry of await readdir(directory, {
     withFileTypes: true,
   })) {
-    const oldPath = join(directory, dirEntry.name);
+    const oldPath = resolve(directory, dirEntry.name);
 
     if (dirEntry.isDirectory()) {
       await renameExtensions(oldPath);
