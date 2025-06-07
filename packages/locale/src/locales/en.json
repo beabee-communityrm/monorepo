@@ -1321,6 +1321,8 @@
         "formSubtitle": "Subtitle",
         "formTitle": "Title",
         "minAmount": "Minimum amount",
+        "noticeText": "Notice text below payment button",
+        "noticeTextHelp": "This appears below the payment button. You could use it to...",
         "showAbsorbFee": "Ask user about absorbing the payment fee",
         "showNoContribution": "Allow user to join without a contribution",
         "suggestedAmounts": "Suggested contribution amounts",

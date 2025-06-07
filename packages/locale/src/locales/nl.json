@@ -1325,7 +1325,9 @@
         "showNoContribution": "Gebruiker toestaan mee te doen zonder bijdrage",
         "suggestedAmounts": "Voorgestelde contributiebedragen",
         "text": "In dit gedeelte kun je het lidmaatschapsformulier bewerken, verfijnen en een voorbeeld bekijken.",
-        "title": "Lidmaatschapsformulier"
+        "title": "Lidmaatschapsformulier",
+        "noticeText": "",
+        "noticeTextHelp": ""
       }
     },
     "title": "Lidmaatschap bouwer"

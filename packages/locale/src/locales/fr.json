@@ -1325,7 +1325,9 @@
         "showNoContribution": "Autoriser les utilisateurs à s'inscrire sans cotisation",
         "suggestedAmounts": "Montants de cotisation suggérés",
         "text": "Dans cette section, vous pouvez modifier, ajuster et prévisualiser votre formulaire d'adhésion.",
-        "title": "Formulaire d'inscription"
+        "title": "Formulaire d'inscription",
+        "noticeText": "",
+        "noticeTextHelp": ""
       }
     },
     "title": "Créateur d'adhésion"

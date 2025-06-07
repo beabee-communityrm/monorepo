@@ -87,6 +87,13 @@ meta:
           :label="stepT('showAbsorbFee')"
           class="mb-4 font-semibold"
         />
+        <div class="mb-4">
+          <AppInput
+            v-model="noticeText"
+            :label="stepT('noticeText')"
+            :info-message="stepT('noticeTextHelp')"
+          />
+        </div>
       </AppForm>
     </template>
     <template #col2>
@@ -125,6 +132,7 @@ import { generalContent } from '@store';
 
 const joinContent = ref<ContentJoinData>();
 const paymentContent = ref<ContentPaymentData>();
+const noticeText = ref('');
 const backgroundUrl = ref('');
 
 const { n, t } = useI18n();
@@ -168,19 +176,22 @@ const validation = useVuelidate(
 );
 
 async function handleUpdate() {
-  if (joinContent.value) {
-    await Promise.all([
-      client.content.update('join', joinContent.value),
-      client.content.update('general', {
-        backgroundUrl: backgroundUrl.value || '',
-      }),
-    ]);
+  if (!joinContent.value || !paymentContent.value) {
+    return;
   }
+  await Promise.all([
+    client.content.update('join', joinContent.value),
+    client.content.update('payment', { noticeText: noticeText.value }),
+    client.content.update('general', {
+      backgroundUrl: backgroundUrl.value || '',
+    }),
+  ]);
 }
 
 onBeforeMount(async () => {
   joinContent.value = await client.content.get('join');
   paymentContent.value = await client.content.get('payment');
+  noticeText.value = paymentContent.value.noticeText || '';
   backgroundUrl.value = generalContent.value.backgroundUrl || '';
 });
 </script>

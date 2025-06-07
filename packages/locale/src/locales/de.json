@@ -1325,7 +1325,9 @@
         "showNoContribution": "Registrierung ohne Zahlung erlauben",
         "suggestedAmounts": "Beiträge vorschlagen",
         "text": "In diesem Abschnitt kannst du dein Registrierungsformular bearbeiten, optimieren und ansehen.",
-        "title": "Registrierung"
+        "title": "Registrierung",
+        "noticeText": "",
+        "noticeTextHelp": ""
       }
     },
     "title": "Membership Builder"
