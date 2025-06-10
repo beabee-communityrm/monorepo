@@ -160,9 +160,9 @@ const document: DocumentServiceConfig = {
  */
 export const config = {
   // Core authentication settings
-  audience: env.s("BEABEE_AUDIENCE"), // JWT audience claim - app URL
+  audience: env.s("BEABEE_AUDIENCE"), // Public URL of the instance
   dev: env.b("BEABEE_DEV"), // Development mode flag
-  secret: env.s("BEABEE_SECRET"), // Secret for JWT tokens and data encryption
+  secret: env.s("BEABEE_SECRET"), // Secret for session signing and data encryption
   serviceSecret: env.s("BEABEE_SERVICE_SECRET"), // Secret for internal service authentication
   session: env.s("BEABEE_SESSION", "session"), // Session identifier (default: "session")
 

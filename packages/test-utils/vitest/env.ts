@@ -13,17 +13,16 @@ export const API_KEY = env.API_KEY;
 
 /**
  * Base URL of the application
- * Source: APP_BASE_URL environment variable
+ * Source: BEABEE_AUDIENCE environment variable
  * Default: "http://localhost:4002"
  */
-export const HOST = env.APP_BASE_URL || "http://localhost:4002";
+export const HOST = env.BEABEE_AUDIENCE || "http://localhost:4002";
 
 /**
  * API base path
- * Source: API_BASE_URL environment variable
  * Default: "/api/1.0"
  */
-export const PATH = env.API_BASE_URL || "/api/1.0";
+export const PATH = "/api/1.0";
 
 /**
  * Email for test user

@@ -1,8 +1,30 @@
-# Environment Variables Documentation
+# Environment Variables Guide
 
 ## Overview
 
-The Beabee project uses environment variables to configure different aspects of the application across various environments and use cases. This document provides a comprehensive guide to all environment variable files and their purposes.
+This guide explains how to work with environment variables in the Beabee project. It focuses on workflows, setup procedures, and troubleshooting.
+
+## Documentation Structure
+
+Environment variable documentation is organized by location and purpose:
+
+### Primary Documentation (TypeScript Files)
+- **Backend Variables**: `packages/core/src/config/config.ts` - Comprehensive JSDoc comments with types, defaults, and validation
+- **Frontend Variables**: `apps/frontend/src/env.ts` - Frontend-specific variables with detailed documentation
+- **Test Variables**: `packages/test-utils/vitest/env.ts` - Test environment configuration
+
+### Quick Reference (Example Files)
+- **`.env.example`** - Simplified overview with required/optional indicators
+- **`.env.test.example`** - Test environment overrides
+- **`.env.remote.example`** - Remote CLI configuration
+
+### This Guide
+Focuses on workflows, setup procedures, and best practices.
+
+When adding or updating environment variables:
+1. Update the relevant TypeScript file with full documentation
+2. Update the corresponding `.env.example` file with a brief description
+3. Update this guide only if workflows change
 
 ## Environment Files
 
@@ -70,8 +92,8 @@ DB_PORT=6543                # PostgreSQL database
 ```
 
 **Access Points**:
-- Frontend (Vite): http://localhost:3000
-- Router (Docker): http://localhost:3002
+- Frontend (Vite): http://localhost:3000 (uses BEABEE_AUDIENCE for API proxy)
+- Router (Docker): http://localhost:3002 (configured via BEABEE_AUDIENCE)
 - MailDev: http://localhost:3025
 
 ### `.env.remote` - Backend CLI Remote Access
@@ -140,123 +162,51 @@ TEST_RATE_LIMIT_USER_EMAIL=rate-limit-test@beabee.io
 # ... additional test user configuration
 ```
 
-## Configuration Categories
+## Environment Variable Reference
 
-### Core Application
+### Primary Documentation Sources
 
-| Variable                | Description                 | Default       | Required |
-| ----------------------- | --------------------------- | ------------- | -------- |
-| `COMPOSE_PROJECT_NAME`  | Docker Compose project name | `beabee`      | No       |
-| `NODE_ENV`              | Application environment     | `development` | No       |
-| `BEABEE_DEV`            | Development mode features   | `true`        | No       |
-| `BEABEE_AUDIENCE`       | Public URL of instance      | -             | Yes      |
-| `BEABEE_SECRET`         | JWT signing secret          | -             | Yes      |
-| `BEABEE_SERVICE_SECRET` | Internal service secret     | -             | Yes      |
+Environment variables are comprehensively documented in the TypeScript source files:
 
-### Security & Authentication
+1. **Backend Variables**: [`packages/core/src/config/config.ts`](../packages/core/src/config/config.ts)
+   - Complete JSDoc documentation for each variable
+   - Type definitions and validation rules
+   - Default values and allowed options
 
-| Variable                | Description                            | Default | Required |
-| ----------------------- | -------------------------------------- | ------- | -------- |
-| `BEABEE_TRUSTEDORIGINS` | CORS allowed origins (comma-separated) | `[]`    | No       |
-| `BEABEE_COOKIE_DOMAIN`  | Cookie domain                          | -       | Yes      |
-| `BEABEE_COOKIE_SECURE`  | HTTPS-only cookies                     | `true`  | No       |
-| `BEABEE_LOGFORMAT`      | Log format (`json`\|`simple`)          | `json`  | No       |
+2. **Frontend Variables**: [`apps/frontend/src/env.ts`](../apps/frontend/src/env.ts)
+   - Frontend-specific environment variables
+   - Usage examples and legacy fallbacks
+   - Integration with build tools
 
-### Database
+3. **Test Variables**: [`packages/test-utils/vitest/env.ts`](../packages/test-utils/vitest/env.ts)
+   - Test user configuration
+   - API key setup
+   - Test environment specifics
 
-| Variable              | Description               | Default | Required |
-| --------------------- | ------------------------- | ------- | -------- |
-| `BEABEE_DATABASE_URL` | PostgreSQL connection URL | -       | Yes      |
+### Quick Reference Files
 
-### Payment Providers
+For a simplified overview, see the example files:
 
-#### Stripe Configuration
-| Variable                            | Description                        | Default | Required |
-| ----------------------------------- | ---------------------------------- | ------- | -------- |
-| `BEABEE_STRIPE_PUBLICKEY`           | Stripe publishable key             | `""`    | Payment* |
-| `BEABEE_STRIPE_SECRETKEY`           | Stripe secret key                  | `""`    | Payment* |
-| `BEABEE_STRIPE_WEBHOOKSECRET`       | Webhook signing secret             | `""`    | Payment* |
-| `BEABEE_STRIPE_MEMBERSHIPPRODUCTID` | Product ID for memberships         | `""`    | Payment* |
-| `BEABEE_STRIPE_COUNTRY`             | Account country (`gb`\|`eu`\|`ca`) | `gb`    | No       |
+1. **[`.env.example`](../.env.example)** - Main development environment
+2. **[`.env.test.example`](../.env.test.example)** - Test environment overrides
+3. **[`.env.remote.example`](../.env.remote.example)** - Remote CLI configuration
 
-#### GoCardless Configuration
-| Variable                        | Description             | Default | Required |
-| ------------------------------- | ----------------------- | ------- | -------- |
-| `BEABEE_GOCARDLESS_ACCESSTOKEN` | API access token        | `""`    | Payment* |
-| `BEABEE_GOCARDLESS_SECRET`      | Webhook secret          | `""`    | Payment* |
-| `BEABEE_GOCARDLESS_SANDBOX`     | Use sandbox environment | `true`  | No       |
+### Variable Categories
 
-*Required when using the respective payment provider.
+Environment variables are organized into these main categories:
 
-### Email Configuration
-
-| Variable                          | Description                               | Default | Required |
-| --------------------------------- | ----------------------------------------- | ------- | -------- |
-| `BEABEE_EMAIL_PROVIDER`           | Provider (`smtp`\|`mandrill`\|`sendgrid`) | -       | Yes      |
-| `BEABEE_EMAIL_SETTINGS_HOST`      | SMTP server (when provider=smtp)          | -       | SMTP*    |
-| `BEABEE_EMAIL_SETTINGS_PORT`      | SMTP port (when provider=smtp)            | -       | SMTP*    |
-| `BEABEE_EMAIL_SETTINGS_AUTH_USER` | SMTP username (when provider=smtp)        | -       | SMTP*    |
-| `BEABEE_EMAIL_SETTINGS_AUTH_PASS` | SMTP password (when provider=smtp)        | -       | SMTP*    |
-| `BEABEE_EMAIL_SETTINGS_SECURE`    | Use SSL/TLS (when provider=smtp)          | `false` | No       |
-
-*Required when using SMTP provider.
-
-### Localization
-
-| Variable                | Description                        | Default | Required |
-| ----------------------- | ---------------------------------- | ------- | -------- |
-| `BEABEE_COUNTRYCODE`    | Country code (`en`\|`de`\|`be`)    | -       | Yes      |
-| `BEABEE_CURRENCYCODE`   | Currency code (e.g., `GBP`, `EUR`) | -       | Yes      |
-| `BEABEE_CURRENCYSYMBOL` | Currency symbol (e.g., `£`, `€`)   | -       | Yes      |
-
-### File Storage (MinIO/S3)
-
-| Variable                     | Description          | Default             | Required |
-| ---------------------------- | -------------------- | ------------------- | -------- |
-| `BEABEE_MINIO_ROOT_USER`     | MinIO admin username | `minioadmin`        | No       |
-| `BEABEE_MINIO_ROOT_PASSWORD` | MinIO admin password | `minioadmin`        | No       |
-| `BEABEE_MINIO_BUCKET`        | Upload bucket name   | `uploads`           | No       |
-| `BEABEE_MINIO_ENDPOINT`      | MinIO server URL     | `http://minio:9000` | No       |
-| `BEABEE_MINIO_REGION`        | S3 region            | `us-east-1`         | No       |
-
-### Image Processing
-
-| Variable                        | Description                                                | Default                              | Required |
-| ------------------------------- | ---------------------------------------------------------- | ------------------------------------ | -------- |
-| `BEABEE_IMAGE_QUALITY`          | Compression quality (0-100)                                | `80`                                 | No       |
-| `BEABEE_IMAGE_FORMAT`           | Default format (`avif`\|`webp`\|`jpeg`\|`png`\|`original`) | `avif`                               | No       |
-| `BEABEE_IMAGE_AVAILABLE_WIDTHS` | Available widths (comma-separated)                         | `100,300,400,600,900,1200,1440,1800` | No       |
-
-### Frontend Configuration
-
-| Variable               | Description          | Default                 | Required |
-| ---------------------- | -------------------- | ----------------------- | -------- |
-| `VITE_DEV_SERVER_PORT` | Vite dev server port | `3000`                  | No       |
-| `APP_BASE_URL`         | Application base URL | `http://localhost:3002` | No       |
-| `API_BASE_URL`         | API base path        | `/api/1.0/`             | No       |
-| `CAPTCHAFOX_KEY`       | Frontend CAPTCHA key | -                       | No       |
-| `MAPTILER_KEY`         | Map service API key  | -                       | No       |
-| `APPSIGNAL_KEY`        | Error tracking key   | -                       | No       |
-
-### Third-Party Integrations
-
-| Variable                     | Description            | Default | Required |
-| ---------------------------- | ---------------------- | ------- | -------- |
-| `BEABEE_CAPTCHAFOX_SECRET`   | Backend CAPTCHA secret | `""`    | No       |
-| `BEABEE_DISCOURSE_URL`       | Forum URL              | `""`    | No       |
-| `BEABEE_DISCOURSE_SSOSECRET` | Forum SSO secret       | `""`    | No       |
-
-### Newsletter (Mailchimp)
-
-| Variable                                   | Description                    | Default | Required   |
-| ------------------------------------------ | ------------------------------ | ------- | ---------- |
-| `BEABEE_NEWSLETTER_PROVIDER`               | Provider (`none`\|`mailchimp`) | `none`  | No         |
-| `BEABEE_NEWSLETTER_SETTINGS_APIKEY`        | Mailchimp API key              | -       | Mailchimp* |
-| `BEABEE_NEWSLETTER_SETTINGS_DATACENTER`    | Mailchimp datacenter           | -       | Mailchimp* |
-| `BEABEE_NEWSLETTER_SETTINGS_LISTID`        | Mailchimp list ID              | -       | Mailchimp* |
-| `BEABEE_NEWSLETTER_SETTINGS_WEBHOOKSECRET` | Webhook secret                 | `""`    | No         |
-
-*Required when using Mailchimp provider.
+- **Core Application** - Secrets, authentication, logging
+- **Network & Ports** - Service endpoints and port configuration
+- **Security** - CORS, cookies, password policies
+- **Localization** - Language and currency settings
+- **Third-Party Services** - API keys and integration settings
+- **Email & Newsletter** - Communication providers
+- **Payment Processing** - Stripe and GoCardless configuration
+- **Database** - Connection strings
+- **File Storage** - MinIO/S3 settings
+- **Image Processing** - Optimization and format settings
+- **Frontend** - Client-side specific variables
+- **Feature Flags** - Experimental features and modes
 
 ## Development Workflows
 

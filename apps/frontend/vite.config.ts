@@ -58,7 +58,7 @@ export default ({ command, mode }) => {
           // In Vite this is the Vite dev server URL with hot module reloading
           // and proxy API requests to the router application URL
           __appUrl__: `http://localhost:${env.VITE_DEV_SERVER_PORT}`,
-          __apiUrl__: env.API_BASE_URL,
+          __apiUrl__: '/api/1.0/',
           __revision__: env.REVISION || 'dev',
           __version__: env.VERSION || 'dev',
           __appsignalKey__: env.APPSIGNAL_KEY || '',
@@ -87,7 +87,7 @@ export default ({ command, mode }) => {
       // Proxy API requests to the backend
       proxy: {
         '^/(api|login|favicon.png)': {
-          target: env.APP_BASE_URL,
+          target: env.BEABEE_AUDIENCE || 'http://localhost:3002',
           changeOrigin: true,
           cookieDomainRewrite: 'localhost',
         },

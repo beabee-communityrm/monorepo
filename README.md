@@ -116,7 +116,7 @@ The `docker-compose.yml` file defines several services, including:
 - `frontend`: Frontend application
 - `app_router`: Router for the frontend and backend
 
-The frontend service is configured to use the `APP_BASE_URL` environment variable, which is set to `http://localhost:3002` by default.
+The frontend service is configured to use the `BEABEE_AUDIENCE` environment variable for API requests.
 
 For more detailed information about each service and its configuration, please refer to the `docker-compose.yml` file in the root directory.
 
@@ -193,8 +193,10 @@ yarn format
 
 ### More Documentation
 
-- [Environment Variables](docs/environment-variables.md) - Complete guide to configuration
+- [Environment Variables Guide](docs/environment-variables.md) - Setup and workflow guide
 - [Payment System](docs/payment/README.md) - Payment architecture and workflows
+
+For environment variable reference, see the `.env.example` files.
 
 Documentation is currently limited. For more detailed guidance and documentation, please contact us directly.
 
