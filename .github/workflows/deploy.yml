@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - dev
+      - feat/locale
     tags:
       - v*
 
@@ -46,6 +47,7 @@ jobs:
             type=ref,event=tag
             type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
             type=raw,value=dev,enable=${{ github.ref == 'refs/heads/dev' }}
+            type=raw,value=weblate,enable=${{ github.ref == 'refs/heads/feat/locale' }}
             type=raw,value=release,enable=${{ startsWith(github.ref, 'refs/tags/v') && !contains(github.ref, '-') }}
 
   build-push-backend:
