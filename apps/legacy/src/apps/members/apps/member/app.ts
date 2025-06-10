@@ -7,10 +7,11 @@ import OptionsService from '@beabee/core/services/OptionsService';
 import PaymentService from '@beabee/core/services/PaymentService';
 import { wrapAsync } from '@beabee/core/utils/express';
 
-import { isAdmin } from '#core/middleware';
-import { canSuperAdmin, generateCode } from '#core/utils/auth';
 import express, { type Express } from 'express';
 import moment from 'moment';
+
+import { isAdmin } from '#core/middleware';
+import { canSuperAdmin, generateCode } from '#core/utils/auth';
 
 const app: Express = express();
 

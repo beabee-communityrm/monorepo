@@ -1,9 +1,10 @@
 import { ContributionPeriod, ContributionType } from '@beabee/beabee-common';
 
-import config from '#config/config';
-import { Contact, ContactRole, Password } from '#models/index';
 import { add, sub } from 'date-fns';
 import { describe, expect, test } from 'vitest';
+
+import config from '#config/config';
+import { Contact, ContactRole, Password } from '#models/index';
 
 import { calcRenewalDate } from './payment';
 

@@ -1,8 +1,9 @@
+import { Express } from 'express';
+
 import * as db from '#database';
 import { log as mainLogger } from '#logging';
 import { networkCommunicatorService } from '#services/NetworkCommunicatorService';
 import OptionsService from '#services/OptionsService';
-import { Express } from 'express';
 
 const log = mainLogger.child({ app: 'server' });
 const PORT = 3000;

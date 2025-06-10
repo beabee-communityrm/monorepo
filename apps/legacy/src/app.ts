@@ -1,3 +1,5 @@
+import 'module-alias/register';
+
 //import specialUrlHandler from '@apps/tools/apps/special-urls/handler';
 import config from '@beabee/core/config';
 import { log, requestErrorLogger, requestLogger } from '@beabee/core/logging';
@@ -8,9 +10,6 @@ import OptionsService, {
 import PageSettingsService from '@beabee/core/services/PageSettingsService';
 import { isInvalidType } from '@beabee/core/utils/db';
 
-import appLoader from '#core/app-loader';
-import quickflash from '#core/quickflash';
-import sessions from '#core/sessions';
 import cleanDeep from 'clean-deep';
 import cookie from 'cookie-parser';
 import csrf from 'csurf';
@@ -19,8 +18,11 @@ import express, { ErrorRequestHandler, RequestHandler } from 'express';
 import flash from 'express-flash';
 // TODO: Last release was 2013
 import helmet from 'helmet';
-import 'module-alias/register';
 import path from 'path';
+
+import appLoader from '#core/app-loader';
+import quickflash from '#core/quickflash';
+import sessions from '#core/sessions';
 
 if (!config.gocardless.sandbox && config.dev) {
   log.error(

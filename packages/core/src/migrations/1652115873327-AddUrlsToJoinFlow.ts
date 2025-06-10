@@ -1,5 +1,6 @@
-import { addThenSetNotNull } from '#utils/db';
 import { MigrationInterface, QueryRunner } from 'typeorm';
+
+import { addThenSetNotNull } from '#utils/db';
 
 export class AddUrlsToJoinFlow1652115873327 implements MigrationInterface {
   name = 'AddUrlsToJoinFlow1652115873327';

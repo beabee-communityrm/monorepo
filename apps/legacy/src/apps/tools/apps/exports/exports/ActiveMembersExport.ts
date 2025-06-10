@@ -1,8 +1,9 @@
 import { createQueryBuilder } from '@beabee/core/database';
 import { Contact, ContactContribution } from '@beabee/core/models';
 
-import { Param } from '#core/utils/params';
 import { Brackets, SelectQueryBuilder } from 'typeorm';
+
+import { Param } from '#core/utils/params';
 
 import BaseExport, { ExportResult } from './BaseExport';
 

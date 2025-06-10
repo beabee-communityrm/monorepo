@@ -7,10 +7,11 @@ import OptionsService from '@beabee/core/services/OptionsService';
 import SegmentService from '@beabee/core/services/SegmentService';
 import { wrapAsync } from '@beabee/core/utils/express';
 
-import { isAdmin } from '#core/middleware';
-import { userToAuth } from '#core/utils/index';
 import express, { type Express, type Request } from 'express';
 import queryString from 'query-string';
+
+import { isAdmin } from '#core/middleware';
+import { userToAuth } from '#core/utils/index';
 
 const app: Express = express();
 

@@ -3,10 +3,11 @@ import { log } from '@beabee/core/logging';
 import { ContactProfile, ContactRole } from '@beabee/core/models';
 import { wrapAsync } from '@beabee/core/utils/express';
 
-import { isAdmin } from '#core/middleware';
 import axios from 'axios';
 import express, { type Express } from 'express';
 import { Brackets } from 'typeorm';
+
+import { isAdmin } from '#core/middleware';
 
 const app: Express = express();
 

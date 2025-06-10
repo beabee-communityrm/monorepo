@@ -3,8 +3,9 @@ import { PageSettings } from '@beabee/core/models';
 import PageSettingsService from '@beabee/core/services/PageSettingsService';
 import { wrapAsync } from '@beabee/core/utils/express';
 
-import { hasNewModel, hasSchema, isAdmin } from '#core/middleware';
 import express, { type Express } from 'express';
+
+import { hasNewModel, hasSchema, isAdmin } from '#core/middleware';
 
 import { createPageSchema } from './schema.json';
 

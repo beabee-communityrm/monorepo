@@ -1,4 +1,3 @@
-import { EmailMailingRecipient } from '#type/index';
 import {
   Column,
   CreateDateColumn,
@@ -6,6 +5,8 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+
+import { EmailMailingRecipient } from '#type/index';
 
 import { type Email } from './index';
 

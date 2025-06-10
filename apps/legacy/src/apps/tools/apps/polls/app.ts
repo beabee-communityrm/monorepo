@@ -2,9 +2,10 @@ import { createQueryBuilder, getRepository } from '@beabee/core/database';
 import { Callout, CalloutResponse } from '@beabee/core/models';
 import { wrapAsync } from '@beabee/core/utils/express';
 
-import { hasNewModel, isAdmin } from '#core/middleware';
 import express, { type Express, type Request, type Response } from 'express';
 import moment from 'moment';
+
+import { hasNewModel, isAdmin } from '#core/middleware';
 
 const app: Express = express();
 

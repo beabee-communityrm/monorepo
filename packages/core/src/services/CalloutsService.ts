@@ -10,6 +10,11 @@ import {
   isFileUploadAnswer,
 } from '@beabee/beabee-common';
 
+import { BadRequestError } from 'routing-controllers';
+import slugify from 'slugify';
+import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
+import { v4 as uuidv4 } from 'uuid';
+
 import { getRepository, runTransaction } from '#database';
 import {
   DuplicateId,
@@ -33,10 +38,6 @@ import NewsletterService from '#services/NewsletterService';
 import OptionsService from '#services/OptionsService';
 import { isDuplicateIndex } from '#utils/db';
 import { normalizeEmailAddress } from '#utils/email';
-import { BadRequestError } from 'routing-controllers';
-import slugify from 'slugify';
-import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
-import { v4 as uuidv4 } from 'uuid';
 
 const log = mainLogger.child({ app: 'callouts-service' });
 

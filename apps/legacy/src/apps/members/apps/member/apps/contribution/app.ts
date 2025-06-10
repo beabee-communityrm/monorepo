@@ -4,8 +4,9 @@ import ContactsService from '@beabee/core/services/ContactsService';
 import PaymentService from '@beabee/core/services/PaymentService';
 import { wrapAsync } from '@beabee/core/utils/express';
 
-import { calcMonthsLeft } from '#core/utils/payment';
 import express, { type Express } from 'express';
+
+import { calcMonthsLeft } from '#core/utils/payment';
 
 const app: Express = express();
 

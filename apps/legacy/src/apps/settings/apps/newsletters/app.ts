@@ -8,9 +8,10 @@ import OptionsService from '@beabee/core/services/OptionsService';
 import { NewsletterContact } from '@beabee/core/type';
 import { wrapAsync } from '@beabee/core/utils/express';
 
-import { isSuperAdmin } from '#core/middleware';
 import express, { type Express, type Request, type Response } from 'express';
 import moment from 'moment';
+
+import { isSuperAdmin } from '#core/middleware';
 
 const log = mainLogger.child({ app: 'newsletter-settings' });
 

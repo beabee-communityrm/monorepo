@@ -1,3 +1,5 @@
+import 'module-alias/register';
+
 import { PaymentMethod, PaymentStatus } from '@beabee/beabee-common';
 import config from '@beabee/core/config';
 import { createQueryBuilder, getRepository } from '@beabee/core/database';
@@ -8,7 +10,6 @@ import PaymentService from '@beabee/core/services/PaymentService';
 
 import { parse } from 'csv-parse';
 import { add, startOfDay } from 'date-fns';
-import 'module-alias/register';
 import Stripe from 'stripe';
 import { Equal, In } from 'typeorm';
 

@@ -6,9 +6,10 @@ import {
   calcPaymentFee,
 } from '@beabee/beabee-common';
 
+import { addMonths, getYear, setYear, sub } from 'date-fns';
+
 import config from '#config/config';
 import { Contact } from '#models/index';
-import { addMonths, getYear, setYear, sub } from 'date-fns';
 
 export function getActualAmount(
   monthlyAmount: number,

@@ -1,7 +1,8 @@
+import sgMail from '@sendgrid/mail';
+
 import { SendGridEmailConfig } from '#config/config';
 import { log as mainLogger } from '#logging';
 import type { EmailOptions, EmailRecipient, PreparedEmail } from '#type/index';
-import sgMail from '@sendgrid/mail';
 
 import { BaseProvider } from './BaseProvider';
 

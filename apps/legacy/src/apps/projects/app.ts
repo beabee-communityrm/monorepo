@@ -7,10 +7,11 @@ import {
 } from '@beabee/core/models';
 import { wrapAsync } from '@beabee/core/utils/express';
 
-import { hasNewModel, hasSchema, isAdmin } from '#core/middleware';
 import express, { type Express } from 'express';
 import _ from 'lodash';
 import moment from 'moment';
+
+import { hasNewModel, hasSchema, isAdmin } from '#core/middleware';
 
 import { createProjectSchema } from './schemas.json';
 

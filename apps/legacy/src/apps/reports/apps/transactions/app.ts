@@ -2,10 +2,11 @@ import { getRepository } from '@beabee/core/database';
 import { Payment } from '@beabee/core/models';
 import { wrapAsync } from '@beabee/core/utils/express';
 
-import { isSuperAdmin } from '#core/middleware';
 import express, { type Express, type Request, type Response } from 'express';
 import moment from 'moment';
 import { Between } from 'typeorm';
+
+import { isSuperAdmin } from '#core/middleware';
 
 const app: Express = express();
 

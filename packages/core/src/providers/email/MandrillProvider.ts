@@ -1,3 +1,5 @@
+import axios, { AxiosRequestTransformer } from 'axios';
+
 import { MandrillEmailConfig } from '#config/config';
 import { log as mainLogger } from '#logging';
 import { Email } from '#models/index';
@@ -7,7 +9,6 @@ import type {
   EmailTemplate,
   PreparedEmail,
 } from '#type/index';
-import axios, { AxiosRequestTransformer } from 'axios';
 
 import { BaseProvider } from './BaseProvider';
 

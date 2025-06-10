@@ -6,10 +6,6 @@ import {
 } from '@beabee/beabee-common';
 import type { TagData } from '@beabee/beabee-common';
 
-import config from '#config/config';
-import type { TaggableEntity } from '#type';
-import { getContributionDescription } from '#utils/contact';
-import { getActualAmount } from '#utils/payment';
 import {
   Column,
   CreateDateColumn,
@@ -18,6 +14,11 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+
+import config from '#config/config';
+import type { TaggableEntity } from '#type';
+import { getContributionDescription } from '#utils/contact';
+import { getActualAmount } from '#utils/payment';
 
 import { ContactTagAssignment } from './ContactTagAssignment';
 import { Password } from './Password';

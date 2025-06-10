@@ -2,9 +2,10 @@ import { ContributionType } from '@beabee/beabee-common';
 import { createQueryBuilder } from '@beabee/core/database';
 import { Contact } from '@beabee/core/models';
 
-import { Param } from '#core/utils/params';
 import _ from 'lodash';
 import { SelectQueryBuilder } from 'typeorm';
+
+import { Param } from '#core/utils/params';
 
 import ActiveMembersExport from './ActiveMembersExport';
 import { ExportResult } from './BaseExport';

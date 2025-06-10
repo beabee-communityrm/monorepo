@@ -3,8 +3,9 @@ import { Contact } from '@beabee/core/models';
 import ContactsService from '@beabee/core/services/ContactsService';
 import { wrapAsync } from '@beabee/core/utils/express';
 
-import { hasSchema } from '#core/middleware';
 import express, { type Express, type Request, type Response } from 'express';
+
+import { hasSchema } from '#core/middleware';
 
 import { updateProfileSchema } from './schemas.json';
 

@@ -1,8 +1,9 @@
 import OptionsService from '@beabee/core/services/OptionsService';
 import { wrapAsync } from '@beabee/core/utils/express';
 
-import { isSuperAdmin } from '#core/middleware';
 import express, { type Express, type Request, type Response } from 'express';
+
+import { isSuperAdmin } from '#core/middleware';
 
 const app: Express = express();
 

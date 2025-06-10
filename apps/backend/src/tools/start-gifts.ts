@@ -1,10 +1,11 @@
+import 'module-alias/register';
+
 import { getRepository } from '@beabee/core/database';
 import { log as mainLogger } from '@beabee/core/logging';
 import { GiftFlow } from '@beabee/core/models';
 import { runApp } from '@beabee/core/server';
 import GiftService from '@beabee/core/services/GiftService';
 
-import 'module-alias/register';
 import moment from 'moment';
 import { Between } from 'typeorm';
 

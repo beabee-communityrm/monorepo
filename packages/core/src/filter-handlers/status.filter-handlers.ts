@@ -1,8 +1,9 @@
 import { ItemStatus } from '@beabee/beabee-common';
 
-import type { FilterHandler } from '#type';
 import { BadRequestError } from 'routing-controllers';
 import { Brackets } from 'typeorm';
+
+import type { FilterHandler } from '#type';
 
 /**
  * Status is a virtual field that maps to starts and expires, this function

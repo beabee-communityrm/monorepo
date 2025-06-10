@@ -4,8 +4,9 @@ import {
   PaymentMethod,
 } from '@beabee/beabee-common';
 
-import { ReferralGiftForm } from '#type/index';
 import { Column } from 'typeorm';
+
+import { ReferralGiftForm } from '#type/index';
 
 import { Password } from './Password';
 

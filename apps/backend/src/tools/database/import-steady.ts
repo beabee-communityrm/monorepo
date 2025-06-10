@@ -1,3 +1,5 @@
+import 'module-alias/register';
+
 import {
   Address,
   ContributionPeriod,
@@ -13,7 +15,6 @@ import { normalizeEmailAddress } from '@beabee/core/utils/email';
 
 import contactTagTransformer from '@api/transformers/ContactTagTransformer';
 import { parse } from 'csv-parse';
-import 'module-alias/register';
 import { In } from 'typeorm';
 
 const headers = [

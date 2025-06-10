@@ -1,3 +1,5 @@
+import 'module-alias/register';
+
 import {
   ContributionType,
   RESET_SECURITY_FLOW_TYPE,
@@ -11,7 +13,6 @@ import ResetSecurityFlowService from '@beabee/core/services/ResetSecurityFlowSer
 import { generatePassword } from '@beabee/core/utils/auth';
 
 import { input, password, select } from '@inquirer/prompts';
-import 'module-alias/register';
 import moment from 'moment';
 
 function notEmpty(s: string) {

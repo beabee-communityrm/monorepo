@@ -1,8 +1,9 @@
+import 'module-alias/register';
+
 import { createQueryBuilder } from '@beabee/core/database';
 import { Callout, CalloutResponse, Contact } from '@beabee/core/models';
 import { runApp } from '@beabee/core/server';
 
-import 'module-alias/register';
 import { Brackets } from 'typeorm';
 
 import { anonymiseModel, clearModels } from './anonymisers';

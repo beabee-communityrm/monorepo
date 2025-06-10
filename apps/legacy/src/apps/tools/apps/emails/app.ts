@@ -6,11 +6,12 @@ import { formatEmailBody } from '@beabee/core/templates/email';
 import { EmailMailingRecipient } from '@beabee/core/type';
 import { wrapAsync } from '@beabee/core/utils/express';
 
-import { hasNewModel, isAdmin } from '#core/middleware';
 import busboy from 'connect-busboy';
 import express, { type Express } from 'express';
 import _ from 'lodash';
 import Papa from 'papaparse';
+
+import { hasNewModel, isAdmin } from '#core/middleware';
 
 const app: Express = express();
 

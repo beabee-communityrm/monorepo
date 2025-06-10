@@ -1,8 +1,9 @@
+import 'module-alias/register';
+
 import config from '@beabee/core/config';
 import { dataSource } from '@beabee/core/database';
 import { runApp } from '@beabee/core/server';
 
-import 'module-alias/register';
 import readline from 'readline';
 
 if (!config.dev) {

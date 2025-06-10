@@ -4,11 +4,12 @@ import OptionsService from '@beabee/core/services/OptionsService';
 import { isInvalidType } from '@beabee/core/utils/db';
 import { wrapAsync } from '@beabee/core/utils/express';
 
-import ajv from '#core/lib/ajv';
-import * as auth from '#core/utils/auth';
 import { ErrorObject, ValidateFunction } from 'ajv';
 import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { EntityTarget, FindOneOptions, ObjectLiteral } from 'typeorm';
+
+import ajv from '#core/lib/ajv';
+import * as auth from '#core/utils/auth';
 
 interface OnErrorHandler {
   (

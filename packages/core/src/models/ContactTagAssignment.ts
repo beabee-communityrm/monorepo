@@ -1,6 +1,5 @@
 import type { TagData } from '@beabee/beabee-common';
 
-import type { TagAssignment } from '#type';
 import {
   CreateDateColumn,
   Entity,
@@ -8,6 +7,8 @@ import {
   ManyToOne,
   PrimaryColumn,
 } from 'typeorm';
+
+import type { TagAssignment } from '#type';
 
 import { Contact } from './Contact';
 import { ContactTag } from './ContactTag';

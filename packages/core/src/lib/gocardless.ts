@@ -5,9 +5,6 @@ import {
   PaymentStatus,
 } from '@beabee/beabee-common';
 
-import config from '#config/config';
-import { log as mainLogger } from '#logging';
-import { getChargeableAmount } from '#utils/payment';
 import axios from 'axios';
 import crypto from 'crypto';
 import { differenceInMonths, format } from 'date-fns';
@@ -28,6 +25,10 @@ import {
 import moment from 'moment';
 import { DeepPartial } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
+
+import config from '#config/config';
+import { log as mainLogger } from '#logging';
+import { getChargeableAmount } from '#utils/payment';
 
 const log = mainLogger.child({ app: 'gocardless-api' });
 

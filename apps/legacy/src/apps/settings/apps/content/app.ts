@@ -4,13 +4,14 @@ import { Content } from '@beabee/core/models';
 import OptionsService from '@beabee/core/services/OptionsService';
 import { wrapAsync } from '@beabee/core/utils/express';
 
-import { isAdmin } from '#core/middleware';
 import express, {
   type Express,
   type NextFunction,
   type Request,
   type Response,
 } from 'express';
+
+import { isAdmin } from '#core/middleware';
 
 const app: Express = express();
 

@@ -1,6 +1,6 @@
-import { runApp } from '@beabee/core/server';
-
 import 'module-alias/register';
+
+import { runApp } from '@beabee/core/server';
 
 import { anonymiseModel, clearModels } from './anonymisers';
 import * as models from './anonymisers/models';

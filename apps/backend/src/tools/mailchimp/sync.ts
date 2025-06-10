@@ -1,3 +1,5 @@
+import 'module-alias/register';
+
 import { NewsletterStatus } from '@beabee/beabee-common';
 import { getRepository } from '@beabee/core/database';
 import { log as mainLogger } from '@beabee/core/logging';
@@ -6,7 +8,6 @@ import { runApp } from '@beabee/core/server';
 import NewsletterService from '@beabee/core/services/NewsletterService';
 import OptionsService from '@beabee/core/services/OptionsService';
 
-import 'module-alias/register';
 import moment from 'moment';
 import { Between } from 'typeorm';
 

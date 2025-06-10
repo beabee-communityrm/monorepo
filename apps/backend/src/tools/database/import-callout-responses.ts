@@ -1,3 +1,5 @@
+import 'module-alias/register';
+
 import {
   CalloutComponentSchema,
   CalloutComponentType,
@@ -14,7 +16,6 @@ import { runApp } from '@beabee/core/server';
 
 import { isURL } from 'class-validator';
 import { parse } from 'csv-parse';
-import 'module-alias/register';
 import { In } from 'typeorm';
 
 interface ResponseRow {

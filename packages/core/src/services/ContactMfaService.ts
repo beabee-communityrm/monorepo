@@ -1,5 +1,7 @@
 import { LOGIN_CODES } from '@beabee/beabee-common';
 
+import { NotFoundError } from 'routing-controllers';
+
 import { getRepository } from '#database';
 import { BadRequestError, UnauthorizedError } from '#errors/index';
 import { Contact, ContactMfa } from '#models/index';
@@ -9,7 +11,6 @@ import {
   DeleteContactMfaData,
 } from '#type/index';
 import { validateTotpToken } from '#utils/auth';
-import { NotFoundError } from 'routing-controllers';
 
 /**
  * Contact multi factor authentication service

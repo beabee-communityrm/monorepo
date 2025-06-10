@@ -6,9 +6,10 @@ import ContactsService from '@beabee/core/services/ContactsService';
 import { wrapAsync } from '@beabee/core/utils/express';
 import { getNextParam, isValidNextUrl } from '@beabee/core/utils/url';
 
-import { loginAndRedirect } from '#core/utils/contact';
 import express, { type Express, type Request, type Response } from 'express';
 import passport from 'passport';
+
+import { loginAndRedirect } from '#core/utils/contact';
 
 const app: Express = express();
 

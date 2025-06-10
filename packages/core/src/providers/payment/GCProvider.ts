@@ -4,6 +4,9 @@ import {
   PaymentSource,
 } from '@beabee/beabee-common';
 
+import { Subscription } from 'gocardless-nodejs';
+import moment from 'moment';
+
 import config from '#config/config';
 import { NoPaymentMethod } from '#errors/index';
 import gocardless, {
@@ -20,8 +23,6 @@ import {
   UpdateContributionResult,
 } from '#type/index';
 import { calcRenewalDate } from '#utils/payment';
-import { Subscription } from 'gocardless-nodejs';
-import moment from 'moment';
 
 import { PaymentProvider } from './PaymentProvider';
 

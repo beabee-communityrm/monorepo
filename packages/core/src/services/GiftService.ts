@@ -4,6 +4,8 @@ import {
   NewsletterStatus,
 } from '@beabee/beabee-common';
 
+import moment from 'moment';
+
 import config from '#config/config';
 import { getRepository } from '#database';
 import { Stripe, stripe } from '#lib/stripe';
@@ -14,7 +16,6 @@ import EmailService from '#services/EmailService';
 import OptionsService from '#services/OptionsService';
 import { generateContactCode } from '#utils/contact';
 import { isDuplicateIndex } from '#utils/db';
-import moment from 'moment';
 
 const log = mainLogger.child({ app: 'gift-service' });
 

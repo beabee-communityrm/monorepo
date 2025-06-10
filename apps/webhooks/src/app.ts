@@ -4,10 +4,11 @@ import OptionsService, {
   OptionKey,
 } from '@beabee/core/services/OptionsService';
 
+import express, { Handler, Request, Response } from 'express';
+
 import { gocardlessWebhookApp } from '#handlers/gocardless';
 import { mailchimpWebhookApp } from '#handlers/mailchimp';
 import { stripeWebhookApp } from '#handlers/stripe';
-import express, { Handler, Request, Response } from 'express';
 
 function checkOpt(key: OptionKey): Handler {
   return (req, res, next) => {

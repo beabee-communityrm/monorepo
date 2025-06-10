@@ -1,3 +1,9 @@
+import {
+  Event,
+  EventResourceType,
+  PaymentStatus,
+} from 'gocardless-nodejs/types/Types';
+
 import { log as mainLogger } from '#logging';
 import {
   cancelMandate,
@@ -5,11 +11,6 @@ import {
   updatePayment,
   updatePaymentStatus,
 } from '#utils/gocardless';
-import {
-  Event,
-  EventResourceType,
-  PaymentStatus,
-} from 'gocardless-nodejs/types/Types';
 
 import gocardless from './gocardless';
 

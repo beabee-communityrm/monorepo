@@ -9,6 +9,8 @@ import {
   RoleType,
 } from '@beabee/beabee-common';
 
+import { FindManyOptions, FindOneOptions, FindOptionsWhere, In } from 'typeorm';
+
 import { createQueryBuilder, getRepository, runTransaction } from '#database';
 import {
   BadRequestError,
@@ -37,7 +39,6 @@ import { generatePassword, isValidPassword } from '#utils/auth';
 import { generateContactCode } from '#utils/contact';
 import { isDuplicateIndex } from '#utils/db';
 import { normalizeEmailAddress } from '#utils/email';
-import { FindManyOptions, FindOneOptions, FindOptionsWhere, In } from 'typeorm';
 
 export type PartialContact = Pick<Contact, 'email' | 'contributionType'> &
   Partial<Contact>;
