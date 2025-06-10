@@ -78,10 +78,11 @@
 </template>
 
 <script lang="ts" setup>
+import useVuelidate from '@vuelidate/core';
+import { minValue } from '@vuelidate/validators';
 import { computed, toRefs } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { minValue } from '@vuelidate/validators';
-import useVuelidate from '@vuelidate/core';
+
 import { generalContent } from '../../store';
 import AppChoice from '../forms/AppChoice.vue';
 

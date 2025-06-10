@@ -1,4 +1,5 @@
 import { isPassword } from '@beabee/beabee-common';
+
 import { ValidateBy, ValidationOptions, buildMessage } from 'class-validator';
 
 export default function IsPassword(

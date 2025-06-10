@@ -1,5 +1,6 @@
-import { describe, expect, test } from 'vitest';
 import { toPhoneNumber } from '@beabee/beabee-common';
+
+import { describe, expect, test } from 'vitest';
 
 describe('toPhoneNumber', () => {
   test('valid phone number starting with +', () => {

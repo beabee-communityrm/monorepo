@@ -1,5 +1,5 @@
-import { onBeforeMount, onBeforeUnmount, type Ref, reactive } from 'vue';
 import type { BreadcrumbItem } from '@type';
+import { type Ref, onBeforeMount, onBeforeUnmount, reactive } from 'vue';
 
 export const breadcrumbItems = reactive<Ref<BreadcrumbItem[]>[]>([]);
 

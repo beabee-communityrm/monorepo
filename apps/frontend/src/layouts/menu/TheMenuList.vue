@@ -36,20 +36,20 @@
 </template>
 
 <script lang="ts" setup>
-import { useI18n } from 'vue-i18n';
-import { useRouter } from 'vue-router';
-import TheMenuListItem from './TheMenuListItem.vue';
-import TheMenuListSection from './TheMenuListSection.vue';
-import { canAdmin } from '../../store';
-import { client } from '@utils/api';
-import env from '../../env';
-
-import { adminMenu, menu } from './menu-list';
 import {
   faSignInAlt,
   faWindowRestore,
 } from '@fortawesome/free-solid-svg-icons';
+import { client } from '@utils/api';
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
+
+import env from '../../env';
+import { canAdmin } from '../../store';
+import TheMenuListItem from './TheMenuListItem.vue';
+import TheMenuListSection from './TheMenuListSection.vue';
+import { adminMenu, menu } from './menu-list';
 
 const { t } = useI18n();
 

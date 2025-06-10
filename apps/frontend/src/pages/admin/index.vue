@@ -91,26 +91,27 @@ meta:
 </template>
 <script lang="ts" setup>
 import {
-  ItemStatus,
   type GetCalloutDataWith,
   type GetContactData,
   type GetStatsData,
+  ItemStatus,
 } from '@beabee/beabee-common';
-import { useI18n } from 'vue-i18n';
-import PageTitle from '@components/PageTitle.vue';
-import { currentUser } from '@store';
-import AppHeading from '@components/AppHeading.vue';
-import KeyStat from '@components/pages/admin/KeyStat.vue';
-import { computed, onBeforeMount, ref } from 'vue';
 
-import { client } from '@utils/api';
-import HintBox from '@components/pages/admin/HintBox.vue';
-import CalloutSummary from '@components/callout/CalloutSummary.vue';
-import { subDays } from 'date-fns';
-import { addBreadcrumb } from '@store/breadcrumb';
-import { faChartLine } from '@fortawesome/free-solid-svg-icons';
-import env from '../../env';
+import AppHeading from '@components/AppHeading.vue';
 import AppTime from '@components/AppTime.vue';
+import PageTitle from '@components/PageTitle.vue';
+import CalloutSummary from '@components/callout/CalloutSummary.vue';
+import HintBox from '@components/pages/admin/HintBox.vue';
+import KeyStat from '@components/pages/admin/KeyStat.vue';
+import { faChartLine } from '@fortawesome/free-solid-svg-icons';
+import { currentUser } from '@store';
+import { addBreadcrumb } from '@store/breadcrumb';
+import { client } from '@utils/api';
+import { subDays } from 'date-fns';
+import { computed, onBeforeMount, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+import env from '../../env';
 
 const { n, t } = useI18n();
 

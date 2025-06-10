@@ -1,8 +1,8 @@
-import { BaseClient } from './base.client.js';
-import { cleanUrl } from '../utils/index.js';
+import type { ContentData, ContentId } from '@beabee/beabee-common';
 
 import type { BaseClientOptions } from '../types/index.js';
-import type { ContentData, ContentId } from '@beabee/beabee-common';
+import { cleanUrl } from '../utils/index.js';
+import { BaseClient } from './base.client.js';
 
 /**
  * Client for managing content pages and blocks

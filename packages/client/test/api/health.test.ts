@@ -1,6 +1,7 @@
-import { describe, expect, it, beforeAll } from 'vitest';
 import { HealthClient } from '@beabee/client';
 import { API_KEY, HOST, PATH } from '@beabee/test-utils/vitest/env';
+
+import { beforeAll, describe, expect, it } from 'vitest';
 
 describe('Health API', () => {
   let healthClient: HealthClient;

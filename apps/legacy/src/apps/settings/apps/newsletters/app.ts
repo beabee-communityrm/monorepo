@@ -1,20 +1,16 @@
 import { NewsletterStatus } from '@beabee/beabee-common';
-import express, { type Express, type Request, type Response } from 'express';
-import moment from 'moment';
-
+import config from '@beabee/core/config';
 import { log as mainLogger } from '@beabee/core/logging';
-import { isSuperAdmin } from '#core/middleware';
-import { wrapAsync } from '@beabee/core/utils/express';
-
+import { Contact } from '@beabee/core/models';
 import ContactsService from '@beabee/core/services/ContactsService';
 import NewsletterService from '@beabee/core/services/NewsletterService';
 import OptionsService from '@beabee/core/services/OptionsService';
-
 import { NewsletterContact } from '@beabee/core/type';
+import { wrapAsync } from '@beabee/core/utils/express';
 
-import { Contact } from '@beabee/core/models';
-
-import config from '@beabee/core/config';
+import { isSuperAdmin } from '#core/middleware';
+import express, { type Express, type Request, type Response } from 'express';
+import moment from 'moment';
 
 const log = mainLogger.child({ app: 'newsletter-settings' });
 

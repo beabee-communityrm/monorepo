@@ -82,39 +82,36 @@ meta:
 </template>
 <script lang="ts" setup>
 import {
-  ItemStatus,
   type CalloutResponseAnswersSlide,
   type GetCalloutDataWith,
   type GetCalloutResponseDataWith,
+  ItemStatus,
   type Paginated,
 } from '@beabee/beabee-common';
-import { computed, onBeforeMount, ref, toRef } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { useRoute, useRouter } from 'vue-router';
-import { faBullhorn, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-
+import { GetCalloutResponseWith } from '@beabee/beabee-common';
 import { AppButton, AppNotification } from '@beabee/vue/components';
+import { addNotification } from '@beabee/vue/store/notifications';
+
+import noImage from '@assets/images/no-image.avif';
+import AppHeading from '@components/AppHeading.vue';
+import AppMessageBox from '@components/AppMessageBox.vue';
+import AppShareBox from '@components/AppShareBox.vue';
+import AppTitle from '@components/AppTitle.vue';
 import CalloutForm from '@components/pages/callouts/CalloutForm.vue';
-import { useCallout } from '@components/pages/callouts/use-callout';
 import CalloutLoginPrompt from '@components/pages/callouts/CalloutLoginPrompt.vue';
 import CalloutMemberOnlyPrompt from '@components/pages/callouts/CalloutMemberOnlyPrompt.vue';
 import CalloutThanksBox from '@components/pages/callouts/CalloutThanksBox.vue';
-import AppMessageBox from '@components/AppMessageBox.vue';
-import AppHeading from '@components/AppHeading.vue';
-import AppTitle from '@components/AppTitle.vue';
-import noImage from '@assets/images/no-image.avif';
-import { resolveImageUrl } from '@utils/url';
-import { client } from '@utils/api';
-
-import { GetCalloutResponseWith } from '@beabee/beabee-common';
-import { formatLocale } from '@utils/dates';
-
-import { currentUser, canAdmin, isEmbed } from '@store';
-import { addNotification } from '@beabee/vue/store/notifications';
-import { addBreadcrumb } from '@store/breadcrumb';
-
 import CalloutVariantsBox from '@components/pages/callouts/CalloutVariantsBox.vue';
-import AppShareBox from '@components/AppShareBox.vue';
+import { useCallout } from '@components/pages/callouts/use-callout';
+import { faBullhorn, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { canAdmin, currentUser, isEmbed } from '@store';
+import { addBreadcrumb } from '@store/breadcrumb';
+import { client } from '@utils/api';
+import { formatLocale } from '@utils/dates';
+import { resolveImageUrl } from '@utils/url';
+import { computed, onBeforeMount, ref, toRef } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRoute, useRouter } from 'vue-router';
 
 // Props: Receive the already processed callout from parent route
 const props = defineProps<{

@@ -15,20 +15,18 @@ meta:
 </template>
 
 <script lang="ts" setup>
+import type { CreateNoticeData, GetNoticeData } from '@beabee/beabee-common';
+import { addNotification } from '@beabee/vue/store/notifications';
+
+import App2ColGrid from '@components/App2ColGrid.vue';
+import PageTitle from '@components/PageTitle.vue';
+import NoticeForm from '@components/notice/NoticeForm.vue';
+import { faSignHanging } from '@fortawesome/free-solid-svg-icons';
+import { addBreadcrumb } from '@store/breadcrumb';
+import { client } from '@utils/api';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
-import { faSignHanging } from '@fortawesome/free-solid-svg-icons';
-
-import PageTitle from '@components/PageTitle.vue';
-import NoticeForm from '@components/notice/NoticeForm.vue';
-import App2ColGrid from '@components/App2ColGrid.vue';
-
-import { client } from '@utils/api';
-
-import { addBreadcrumb } from '@store/breadcrumb';
-import { addNotification } from '@beabee/vue/store/notifications';
-import type { CreateNoticeData, GetNoticeData } from '@beabee/beabee-common';
 
 const { t } = useI18n();
 const router = useRouter();

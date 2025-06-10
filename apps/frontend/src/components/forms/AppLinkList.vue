@@ -27,6 +27,7 @@
 </template>
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n';
+
 import AppInput from './AppInput.vue';
 import AppRepeatable from './AppRepeatable.vue';
 

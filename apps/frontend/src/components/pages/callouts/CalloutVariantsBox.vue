@@ -9,11 +9,13 @@
 </template>
 
 <script setup lang="ts">
-import { faGlobe } from '@fortawesome/free-solid-svg-icons';
-import { useCalloutVariants } from './use-callout';
 import type { GetCalloutDataWith } from '@beabee/beabee-common';
-import { toRef } from 'vue';
+
 import AppToggle from '@components/forms/AppToggle.vue';
+import { faGlobe } from '@fortawesome/free-solid-svg-icons';
+import { toRef } from 'vue';
+
+import { useCalloutVariants } from './use-callout';
 
 const props = defineProps<{
   callout: GetCalloutDataWith<'variantNames'>;

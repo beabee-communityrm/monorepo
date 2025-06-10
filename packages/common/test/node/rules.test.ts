@@ -1,5 +1,6 @@
-import { describe, expect, test } from 'vitest';
 import { Filters, InvalidRule, validateRule } from '@beabee/beabee-common';
+
+import { describe, expect, test } from 'vitest';
 
 const testFilters: Filters = {
   name: {

@@ -1,9 +1,10 @@
 import createClient from 'openapi-fetch';
+
 import type {
-  paths,
-  WeblateClientOptions,
-  UnitUpdateRequestBody,
   TranslationUnitResponseData,
+  UnitUpdateRequestBody,
+  WeblateClientOptions,
+  paths,
 } from './types/index';
 
 /**

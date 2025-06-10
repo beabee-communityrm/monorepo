@@ -1,9 +1,8 @@
-import { Brackets, SelectQueryBuilder } from 'typeorm';
-
 import { createQueryBuilder } from '@beabee/core/database';
-import { Param } from '#core/utils/params';
+import { Contact, ContactContribution } from '@beabee/core/models';
 
-import { ContactContribution, Contact } from '@beabee/core/models';
+import { Param } from '#core/utils/params';
+import { Brackets, SelectQueryBuilder } from 'typeorm';
 
 import BaseExport, { ExportResult } from './BaseExport';
 

@@ -1,5 +1,6 @@
-import { ref } from 'vue';
 import type { ContentGeneralData } from '@beabee/beabee-common';
+
+import { ref } from 'vue';
 
 export const generalContent = ref<ContentGeneralData>({
   organisationName: '',

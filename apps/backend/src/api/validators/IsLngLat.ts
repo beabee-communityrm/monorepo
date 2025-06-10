@@ -1,5 +1,6 @@
 import { isLngLat } from '@beabee/beabee-common';
-import { buildMessage, ValidateBy, ValidationOptions } from 'class-validator';
+
+import { ValidateBy, ValidationOptions, buildMessage } from 'class-validator';
 
 export default function IsLngLat(
   validationOptions?: ValidationOptions

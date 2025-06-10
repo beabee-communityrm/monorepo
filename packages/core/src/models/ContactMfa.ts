@@ -1,4 +1,5 @@
 import { CONTACT_MFA_TYPE } from '@beabee/beabee-common';
+
 import {
   Column,
   Entity,

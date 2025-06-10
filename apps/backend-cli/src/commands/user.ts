@@ -1,9 +1,10 @@
-import type { CommandModule, Argv } from 'yargs';
+import type { Argv, CommandModule } from 'yargs';
+import type { ArgumentsCamelCase } from 'yargs';
+
 import { createUser } from '../actions/user/create.js';
 import { deleteUser } from '../actions/user/delete.js';
 import { listUsers } from '../actions/user/list.js';
 import type { CreateUserArgs } from '../types/index.js';
-import type { ArgumentsCamelCase } from 'yargs';
 
 export const userCommand: CommandModule = {
   command: 'user <action>',

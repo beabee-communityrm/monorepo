@@ -1,8 +1,7 @@
-import { CalloutComponentType } from './callout-component-type.js';
+import type { CalloutComponentBaseInputSchema } from '../types/index.js';
 import { calloutComponentInputSelectableTypes } from './callout-component-input-selectable-types.js';
 import { calloutComponentInputTextTypes } from './callout-component-input-text-types.js';
-
-import type { CalloutComponentBaseInputSchema } from '../types/index.js';
+import { CalloutComponentType } from './callout-component-type.js';
 
 /** Array of all possible callout input component types */
 export const calloutComponentInputTypes: Array<

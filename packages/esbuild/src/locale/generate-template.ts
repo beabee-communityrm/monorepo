@@ -5,13 +5,13 @@
  * and saves it as a template file that can be used as a starting point
  * for new translations.
  */
-
 import { join } from 'node:path';
+
 import {
+  handleError,
+  processObjectStrings,
   readJsonFile,
   writeJsonFile,
-  processObjectStrings,
-  handleError,
 } from './utils.ts';
 
 /**

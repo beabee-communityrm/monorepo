@@ -1,18 +1,28 @@
 import {
+  FilterType,
   Filters,
-  isRuleGroup,
-  validateRuleGroup,
+  InvalidRule,
+  Rule,
+  RuleGroup,
+  RuleOperator,
   ValidatedRule,
   ValidatedRuleGroup,
-  RuleOperator,
-  FilterType,
-  operatorsByType,
-  InvalidRule,
-  parseDate,
   getMinDateUnit,
-  RuleGroup,
-  Rule,
+  isRuleGroup,
+  operatorsByType,
+  parseDate,
+  validateRuleGroup,
 } from '@beabee/beabee-common';
+
+import { createQueryBuilder } from '#database';
+import { simpleFilterHandler } from '#filter-handlers/simple.filter-handlers';
+import { Contact } from '#models';
+import type {
+  FilterHandler,
+  FilterHandlers,
+  RichRuleValue,
+  SelectResult,
+} from '#type/index';
 import { BadRequestError } from 'routing-controllers';
 import {
   Brackets,
@@ -24,18 +34,6 @@ import {
   WhereExpressionBuilder,
 } from 'typeorm';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
-
-import { simpleFilterHandler } from '#filter-handlers/simple.filter-handlers';
-
-import { createQueryBuilder } from '#database';
-import { Contact } from '#models';
-
-import type {
-  FilterHandler,
-  FilterHandlers,
-  RichRuleValue,
-  SelectResult,
-} from '#type/index';
 
 // Operator definitions
 

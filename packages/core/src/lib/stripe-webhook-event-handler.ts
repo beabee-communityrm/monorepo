@@ -1,17 +1,17 @@
 import { PaymentStatus } from '@beabee/beabee-common';
+
 import { add } from 'date-fns';
 import type Stripe from 'stripe';
 
+import config from '../config/config';
 import { getRepository } from '../database';
 import { log as mainLogger } from '../logging';
-import { stripe, convertStatus, getSalesTaxRateObject } from './stripe';
-import { Payment, ContactContribution } from '../models';
-import config from '../config/config';
-
+import { ContactContribution, Payment } from '../models';
+import ContactsService from '../services/ContactsService';
 import EmailService from '../services/EmailService';
 import GiftService from '../services/GiftService';
-import ContactsService from '../services/ContactsService';
 import PaymentService from '../services/PaymentService';
+import { convertStatus, getSalesTaxRateObject, stripe } from './stripe';
 
 const log = mainLogger.child({ app: 'stripe-webhook-handler' });
 

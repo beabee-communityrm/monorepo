@@ -1,5 +1,6 @@
 import { GetPaginatedQuery } from '@api/dto/BaseDto';
 import { IsDate, IsIn, IsString, ValidateNested } from 'class-validator';
+
 import { GetContactDto } from './ContactDto';
 
 export class CreateCalloutReviewerDto {

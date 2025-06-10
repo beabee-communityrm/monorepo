@@ -1,12 +1,13 @@
 import { PaymentMethod } from '@beabee/beabee-common';
-import { In } from 'typeorm';
-import { log as mainLogger } from '@beabee/core/logging';
 import { getRepository } from '@beabee/core/database';
-import { runApp } from '@beabee/core/server';
 import { stripe } from '@beabee/core/lib/stripe';
-import { ContactContribution } from '@beabee/core/models';
-import { contactsService } from '@beabee/core/services';
 import { StripeWebhookEventHandler } from '@beabee/core/lib/stripe-webhook-event-handler';
+import { log as mainLogger } from '@beabee/core/logging';
+import { ContactContribution } from '@beabee/core/models';
+import { runApp } from '@beabee/core/server';
+import { contactsService } from '@beabee/core/services';
+
+import { In } from 'typeorm';
 
 const log = mainLogger.child({ app: 'stripe-sync' });
 

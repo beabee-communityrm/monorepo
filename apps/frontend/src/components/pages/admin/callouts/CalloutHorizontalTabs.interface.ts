@@ -1,8 +1,9 @@
-import { type Raw, type Component } from 'vue';
 import type { AppStepperStep } from '@type';
+import { type Component, type Raw } from 'vue';
+
 import type { ContentTabData } from './tabs/ContentTab/ContentTab.vue';
-import type { SettingsTabData } from './tabs/SettingsTab.vue';
 import type { ResponseDisplayTabData } from './tabs/ResponseDisplayTab.vue';
+import type { SettingsTabData } from './tabs/SettingsTab.vue';
 import type { TitleAndImageTabData } from './tabs/TitleAndImageTab.vue';
 import type { TranslationsTabData } from './tabs/TranslationsTab.vue';
 

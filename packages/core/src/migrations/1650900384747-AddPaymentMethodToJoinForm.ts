@@ -1,5 +1,5 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
 import { addThenSetNotNull } from '#utils/db';
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class AddPaymentMethodToJoinForm1650900384747
   implements MigrationInterface

@@ -1,4 +1,5 @@
 import type { HealthCheckData } from '@beabee/beabee-common';
+
 import { IsBoolean, IsDate, IsIn, ValidateNested } from 'class-validator';
 
 class HealthCheckServicesDto {

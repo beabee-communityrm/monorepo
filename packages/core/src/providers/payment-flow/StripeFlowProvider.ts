@@ -1,17 +1,17 @@
-import { stripe, paymentMethodToStripeType, Stripe } from '#lib/stripe';
+import { PaymentMethod } from '@beabee/beabee-common';
+
+import { BadRequestError } from '#errors/BadRequestError';
+import { Stripe, paymentMethodToStripeType, stripe } from '#lib/stripe';
 import { log as mainLogger } from '#logging';
 import { JoinFlow } from '#models/index';
-
-import { PaymentFlowProvider } from './PaymentFlowProvider';
-
 import {
   CompletedPaymentFlow,
   CompletedPaymentFlowData,
   PaymentFlow,
   PaymentFlowData,
 } from '#type/index';
-import { PaymentMethod } from '@beabee/beabee-common';
-import { BadRequestError } from '#errors/BadRequestError';
+
+import { PaymentFlowProvider } from './PaymentFlowProvider';
 
 const log = mainLogger.child({ app: 'stripe-payment-flow-provider' });
 

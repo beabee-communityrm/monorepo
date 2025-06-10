@@ -3,10 +3,11 @@ import {
   PaymentForm,
   PaymentMethod,
 } from '@beabee/beabee-common';
+
+import { ReferralGiftForm } from '#type/index';
 import { Column } from 'typeorm';
 
 import { Password } from './Password';
-import { ReferralGiftForm } from '#type/index';
 
 export class JoinForm implements PaymentForm, ReferralGiftForm {
   @Column()

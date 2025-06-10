@@ -1,19 +1,16 @@
 import { RESET_SECURITY_FLOW_TYPE } from '@beabee/beabee-common';
-import express, { type Express } from 'express';
-import moment from 'moment';
-
 import config from '@beabee/core/config';
-
 import { getRepository } from '@beabee/core/database';
-import { isAdmin } from '#core/middleware';
-import { wrapAsync } from '@beabee/core/utils/express';
-import { canSuperAdmin, generateCode } from '#core/utils/auth';
-
+import { Contact, ResetSecurityFlow } from '@beabee/core/models';
 import ContactsService from '@beabee/core/services/ContactsService';
 import OptionsService from '@beabee/core/services/OptionsService';
 import PaymentService from '@beabee/core/services/PaymentService';
+import { wrapAsync } from '@beabee/core/utils/express';
 
-import { Contact, ResetSecurityFlow } from '@beabee/core/models';
+import { isAdmin } from '#core/middleware';
+import { canSuperAdmin, generateCode } from '#core/utils/auth';
+import express, { type Express } from 'express';
+import moment from 'moment';
 
 const app: Express = express();
 

@@ -5,12 +5,12 @@
  * object used throughout the application. All environment variables are prefixed with
  * BEABEE_ to avoid conflicts with other applications.
  */
-import * as env from './env';
 import type {
+  DocumentServiceConfig,
   ImageServiceConfig,
   S3Config,
-  DocumentServiceConfig,
 } from '../type/index';
+import * as env from './env';
 
 /**
  * SMTP email provider configuration

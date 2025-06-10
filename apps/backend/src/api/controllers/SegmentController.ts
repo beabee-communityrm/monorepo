@@ -1,3 +1,25 @@
+import { getRepository } from '@beabee/core/database';
+import {
+  Segment,
+  SegmentContact,
+  SegmentOngoingEmail,
+} from '@beabee/core/models';
+import { AuthInfo } from '@beabee/core/type';
+
+import { CurrentAuth } from '@api/decorators/CurrentAuth';
+import PartialBody from '@api/decorators/PartialBody';
+import { GetContactDto, ListContactsDto } from '@api/dto/ContactDto';
+import { PaginatedDto } from '@api/dto/PaginatedDto';
+import {
+  CreateSegmentDto,
+  GetSegmentDto,
+  GetSegmentOptsDto,
+  GetSegmentWith,
+  ListSegmentsDto,
+} from '@api/dto/SegmentDto';
+import { UUIDParams } from '@api/params/UUIDParams';
+import ContactTransformer from '@api/transformers/ContactTransformer';
+import SegmentTransformer from '@api/transformers/SegmentTransformer';
 import {
   Authorized,
   Body,
@@ -11,31 +33,6 @@ import {
   Post,
   QueryParams,
 } from 'routing-controllers';
-
-import { getRepository } from '@beabee/core/database';
-
-import { CurrentAuth } from '@api/decorators/CurrentAuth';
-import PartialBody from '@api/decorators/PartialBody';
-import { GetContactDto, ListContactsDto } from '@api/dto/ContactDto';
-import {
-  GetSegmentDto,
-  ListSegmentsDto,
-  CreateSegmentDto,
-  GetSegmentWith,
-  GetSegmentOptsDto,
-} from '@api/dto/SegmentDto';
-import { PaginatedDto } from '@api/dto/PaginatedDto';
-import { UUIDParams } from '@api/params/UUIDParams';
-import ContactTransformer from '@api/transformers/ContactTransformer';
-import SegmentTransformer from '@api/transformers/SegmentTransformer';
-
-import {
-  Segment,
-  SegmentContact,
-  SegmentOngoingEmail,
-} from '@beabee/core/models';
-
-import { AuthInfo } from '@beabee/core/type';
 
 @JsonController('/segments')
 @Authorized('admin')

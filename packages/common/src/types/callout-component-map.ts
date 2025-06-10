@@ -1,5 +1,4 @@
 import type { CalloutComponentType } from '../data/index.js';
-
 import type {
   CalloutComponentContentSchema,
   CalloutComponentInputAddressSchema,
@@ -10,9 +9,9 @@ import type {
   CalloutComponentInputFileSchema,
   CalloutComponentInputNumberSchema,
   CalloutComponentInputPhoneNumberSchema,
+  CalloutComponentInputSelectSchema,
   CalloutComponentInputSelectableRadioSchema,
   CalloutComponentInputSelectableSelectboxesSchema,
-  CalloutComponentInputSelectSchema,
   CalloutComponentInputSignatureSchema,
   CalloutComponentInputTextAreaSchema,
   CalloutComponentInputTextFieldSchema,

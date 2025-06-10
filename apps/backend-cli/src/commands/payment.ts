@@ -1,8 +1,10 @@
+import { ContributionPeriod, PaymentMethod } from '@beabee/beabee-common';
+
 import type { CommandModule } from 'yargs';
+import type { ArgumentsCamelCase } from 'yargs';
+
 import { createPayment } from '../actions/payment/create.js';
 import { listPayments } from '../actions/payment/list.js';
-import { ContributionPeriod, PaymentMethod } from '@beabee/beabee-common';
-import type { ArgumentsCamelCase } from 'yargs';
 import type { CreatePaymentArgs } from '../types/payment.js';
 
 export const paymentCommand: CommandModule = {

@@ -1,9 +1,15 @@
 import {
   ContributionInfo,
-  ContributionType,
   ContributionPeriod,
+  ContributionType,
   RoleType,
 } from '@beabee/beabee-common';
+import type { TagData } from '@beabee/beabee-common';
+
+import config from '#config/config';
+import type { TaggableEntity } from '#type';
+import { getContributionDescription } from '#utils/contact';
+import { getActualAmount } from '#utils/payment';
 import {
   Column,
   CreateDateColumn,
@@ -13,16 +19,9 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { getActualAmount } from '#utils/payment';
-import config from '#config/config';
-
-import { Password } from './Password';
-
-import type { ContactContribution, ContactProfile, ContactRole } from './index';
 import { ContactTagAssignment } from './ContactTagAssignment';
-import type { TagData } from '@beabee/beabee-common';
-import type { TaggableEntity } from '#type';
-import { getContributionDescription } from '#utils/contact';
+import { Password } from './Password';
+import type { ContactContribution, ContactProfile, ContactRole } from './index';
 
 interface LoginOverride {
   code: string;

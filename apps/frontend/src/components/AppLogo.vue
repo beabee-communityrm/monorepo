@@ -3,9 +3,10 @@
 </template>
 <script lang="ts" setup>
 import env from '@env';
-import { generalContent } from '../store';
-import defaultLogo from '../assets/images/logo.png';
 import { computed } from 'vue';
+
+import defaultLogo from '../assets/images/logo.png';
+import { generalContent } from '../store';
 
 const url = computed(() =>
   generalContent.value.logoUrl

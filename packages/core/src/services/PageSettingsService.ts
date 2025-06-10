@@ -1,8 +1,6 @@
 import { getRepository } from '#database';
-
-import OptionsService from '#services/OptionsService';
-
 import { PageSettings } from '#models/index';
+import OptionsService from '#services/OptionsService';
 
 interface PageSettingsCache extends PageSettings {
   patternRegex: RegExp;

@@ -57,24 +57,24 @@ meta:
 </template>
 <script lang="ts" setup>
 import {
-  ContributionType,
-  GetContactWith,
   type ContributionInfo,
+  ContributionType,
   type GetContactData,
+  GetContactWith,
 } from '@beabee/beabee-common';
-import { onBeforeMount, ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { useI18n } from 'vue-i18n';
+import { AppForm, AppNotification } from '@beabee/vue/components';
 
+import App2ColGrid from '@components/App2ColGrid.vue';
+import AppConfirmDialog from '@components/AppConfirmDialog.vue';
 import AppHeading from '@components/AppHeading.vue';
+import ContactCancelContribution from '@components/contact/ContactCancelContribution.vue';
+import ContactContributionFields from '@components/contact/ContactContributionFields.vue';
 import ContactPaymentsHistory from '@components/contact/ContactPaymentsHistory.vue';
 import type { UpdateContribution } from '@components/contact/contact.interface';
-import { AppForm, AppNotification } from '@beabee/vue/components';
-import ContactContributionFields from '@components/contact/ContactContributionFields.vue';
-import App2ColGrid from '@components/App2ColGrid.vue';
-import ContactCancelContribution from '@components/contact/ContactCancelContribution.vue';
-import AppConfirmDialog from '@components/AppConfirmDialog.vue';
 import { client } from '@utils/api';
+import { onBeforeMount, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
 
 const { t } = useI18n();
 

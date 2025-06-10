@@ -1,6 +1,7 @@
 import { QueryFailedError, QueryRunner } from 'typeorm';
 
 import type { PgError } from '../type';
+
 /**
  * Adds a new column to a table, sets default values, and makes it non-nullable
  * @param queryRunner The TypeORM query runner instance

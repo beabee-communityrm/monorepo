@@ -1,13 +1,10 @@
-import 'module-alias/register';
-
-import { checkbox, input } from '@inquirer/prompts';
-
 import { getRepository } from '@beabee/core/database';
+import { Content } from '@beabee/core/models';
 import { runApp } from '@beabee/core/server';
-
 import OptionsService from '@beabee/core/services/OptionsService';
 
-import { Content } from '@beabee/core/models';
+import { checkbox, input } from '@inquirer/prompts';
+import 'module-alias/register';
 
 function notEmpty(s: string) {
   return s.trim() !== '';

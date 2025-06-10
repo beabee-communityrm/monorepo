@@ -4,13 +4,14 @@ import {
   CalloutResponseAnswerFileUpload,
   CalloutResponseAnswersSlide,
   CalloutResponseViewSchema,
-  getCalloutComponents,
   RuleGroup,
+  getCalloutComponents,
   stringifyAnswer,
 } from '@beabee/beabee-common';
-import { TransformPlainToInstance } from 'class-transformer';
-
 import { getRepository } from '@beabee/core/database';
+import { NotFoundError } from '@beabee/core/errors';
+import { Callout, CalloutResponse } from '@beabee/core/models';
+import { AuthInfo } from '@beabee/core/type';
 
 import {
   GetCalloutResponseMapDto,
@@ -18,12 +19,8 @@ import {
   ListCalloutResponsesDto,
 } from '@api/dto/CalloutResponseDto';
 import { PaginatedDto } from '@api/dto/PaginatedDto';
-import { NotFoundError } from '@beabee/core/errors';
 import { BaseCalloutResponseTransformer } from '@api/transformers/BaseCalloutResponseTransformer';
-
-import { Callout, CalloutResponse } from '@beabee/core/models';
-
-import { AuthInfo } from '@beabee/core/type';
+import { TransformPlainToInstance } from 'class-transformer';
 
 class CalloutResponseMapTransformer extends BaseCalloutResponseTransformer<
   GetCalloutResponseMapDto,

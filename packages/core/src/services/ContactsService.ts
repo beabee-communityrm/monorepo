@@ -1,28 +1,23 @@
 import {
-  ContributionType,
-  RoleType,
-  ContributionPeriod,
-  PaymentForm,
-  LOGIN_CODES,
   CONTACT_MFA_TYPE,
-  RESET_SECURITY_FLOW_TYPE,
+  ContributionPeriod,
+  ContributionType,
+  LOGIN_CODES,
+  PaymentForm,
   RESET_SECURITY_FLOW_ERROR_CODE,
+  RESET_SECURITY_FLOW_TYPE,
+  RoleType,
 } from '@beabee/beabee-common';
-import { FindManyOptions, FindOneOptions, FindOptionsWhere, In } from 'typeorm';
 
 import { createQueryBuilder, getRepository, runTransaction } from '#database';
+import {
+  BadRequestError,
+  CantUpdateContribution,
+  DuplicateEmailError,
+  NotFoundError,
+  UnauthorizedError,
+} from '#errors/index';
 import { log as mainLogger } from '#logging';
-import { normalizeEmailAddress } from '#utils/email';
-import { isDuplicateIndex } from '#utils/db';
-import { generatePassword, isValidPassword } from '#utils/auth';
-import { generateContactCode } from '#utils/contact';
-
-import ContactMfaService from '#services/ContactMfaService';
-import EmailService from '#services/EmailService';
-import NewsletterService from '#services/NewsletterService';
-import PaymentService from '#services/PaymentService';
-import ResetSecurityFlowService from '#services/ResetSecurityFlowService';
-
 import {
   Contact,
   ContactProfile,
@@ -33,14 +28,16 @@ import {
   Project,
   ProjectEngagement,
 } from '#models/index';
-
-import {
-  BadRequestError,
-  CantUpdateContribution,
-  DuplicateEmailError,
-  NotFoundError,
-  UnauthorizedError,
-} from '#errors/index';
+import ContactMfaService from '#services/ContactMfaService';
+import EmailService from '#services/EmailService';
+import NewsletterService from '#services/NewsletterService';
+import PaymentService from '#services/PaymentService';
+import ResetSecurityFlowService from '#services/ResetSecurityFlowService';
+import { generatePassword, isValidPassword } from '#utils/auth';
+import { generateContactCode } from '#utils/contact';
+import { isDuplicateIndex } from '#utils/db';
+import { normalizeEmailAddress } from '#utils/email';
+import { FindManyOptions, FindOneOptions, FindOptionsWhere, In } from 'typeorm';
 
 export type PartialContact = Pick<Contact, 'email' | 'contributionType'> &
   Partial<Contact>;

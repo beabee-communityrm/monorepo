@@ -1,9 +1,9 @@
-import 'module-alias/register';
-
 import { runApp } from '@beabee/core/server';
 
-import * as models from './anonymisers/models';
+import 'module-alias/register';
+
 import { anonymiseModel, clearModels } from './anonymisers';
+import * as models from './anonymisers/models';
 
 // Order these so they respect foreign key constraints
 const anonymisers = [

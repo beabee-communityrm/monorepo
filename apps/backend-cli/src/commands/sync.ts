@@ -1,9 +1,10 @@
+import moment from 'moment';
 import type { ArgumentsCamelCase, CommandModule } from 'yargs';
+
 import { syncMailchimp } from '../actions/sync/mailchimp.js';
 import { syncSegments } from '../actions/sync/segments.js';
-import type { SyncMailchimpArgs, SyncSegmentsArgs } from '../types/sync.js';
-import moment from 'moment';
 import { syncStripe } from '../actions/sync/stripe.js';
+import type { SyncMailchimpArgs, SyncSegmentsArgs } from '../types/sync.js';
 
 export const syncCommand: CommandModule = {
   command: 'sync <action>',

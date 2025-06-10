@@ -1,12 +1,13 @@
 import {
-  SetCalloutFormSchema,
-  CalloutResponseViewSchema,
-  CalloutData,
   CalloutAccess,
   CalloutCaptcha,
   CalloutChannel,
+  CalloutData,
   type CalloutNewsletterSchema,
+  CalloutResponseViewSchema,
+  SetCalloutFormSchema,
 } from '@beabee/beabee-common';
+
 import {
   Column,
   CreateDateColumn,
@@ -15,8 +16,8 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import type { CalloutResponse, CalloutTag, CalloutVariant } from './index';
 import { ItemWithStatus } from './ItemWithStatus';
+import type { CalloutResponse, CalloutTag, CalloutVariant } from './index';
 
 @Entity()
 export class Callout extends ItemWithStatus implements CalloutData {

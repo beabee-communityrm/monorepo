@@ -1,6 +1,8 @@
-import { BeabeeClient, isApiError, ClientApiError } from '@beabee/client';
-import env from '@env';
+import { BeabeeClient, ClientApiError, isApiError } from '@beabee/client';
 import { addNotification } from '@beabee/vue/store/notifications';
+
+import env from '@env';
+
 import { i18n } from '../../lib/i18n';
 
 export const client = new BeabeeClient({

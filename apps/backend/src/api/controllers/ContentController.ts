@@ -1,12 +1,7 @@
 import {
-  Authorized,
-  Body,
-  Get,
-  JsonController,
-  Params,
-  Patch,
-  BadRequestError,
-} from 'routing-controllers';
+  disableSalesTaxRate,
+  updateSalesTaxRate,
+} from '@beabee/core/lib/stripe';
 
 import PartialBody from '@api/decorators/PartialBody';
 import {
@@ -16,17 +11,22 @@ import {
   GetContentGeneralDto,
   GetContentJoinDto,
   GetContentJoinSetupDto,
+  GetContentPaymentDto,
   GetContentProfileDto,
   GetContentShareDto,
-  GetContentPaymentDto,
   GetContentTelegramDto,
 } from '@api/dto';
 import { ContentParams } from '@api/params/ContentParams';
 import ContentTransformer from '@api/transformers/ContentTransformer';
 import {
-  disableSalesTaxRate,
-  updateSalesTaxRate,
-} from '@beabee/core/lib/stripe';
+  Authorized,
+  BadRequestError,
+  Body,
+  Get,
+  JsonController,
+  Params,
+  Patch,
+} from 'routing-controllers';
 
 @JsonController('/content')
 export class ContentController {

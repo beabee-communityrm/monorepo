@@ -213,40 +213,37 @@
 </template>
 
 <script lang="ts" setup>
-import {
-  onBeforeMount,
-  ref,
-  toRef,
-  computed,
-  watch,
-  reactive,
-  nextTick,
-} from 'vue';
-import { useI18n } from 'vue-i18n';
-import { faMobileAlt } from '@fortawesome/free-solid-svg-icons';
-import { TOTP, Secret } from 'otpauth';
-
-import { client, isApiError } from '@utils/api';
 import { CONTACT_MFA_TYPE } from '@beabee/beabee-common';
 import { LOGIN_CODES } from '@beabee/beabee-common';
-
+import { GetContactWith } from '@beabee/beabee-common';
 import { AppButton, AppNotification } from '@beabee/vue/components';
-import AppModal from '@components/AppModal.vue';
+import { addNotification } from '@beabee/vue/store/notifications';
+
+import AppConfirmDialog from '@components/AppConfirmDialog.vue';
 import AppHeading from '@components/AppHeading.vue';
-import AppSlider from '@components/slider/AppSlider.vue';
-import AppSlide from '@components/slider/AppSlide.vue';
+import AppModal from '@components/AppModal.vue';
 import AppQRCode from '@components/AppQRCode.vue';
 import AppInput from '@components/forms/AppInput.vue';
-import AppConfirmDialog from '@components/AppConfirmDialog.vue';
-
-import { addNotification } from '@beabee/vue/store/notifications';
+import AppSlide from '@components/slider/AppSlide.vue';
+import AppSlider from '@components/slider/AppSlider.vue';
+import { faMobileAlt } from '@fortawesome/free-solid-svg-icons';
 import { generalContent } from '@store/index';
-
-import type { AppStepperStep } from '@type/app-stepper-step';
 import type { AppSliderSlideEventDetails } from '@type/app-slider-slide-event-details';
+import type { AppStepperStep } from '@type/app-stepper-step';
 import type { SetMfaSteps } from '@type/set-mfa-steps';
 import type { SetMfaTotpIdentity } from '@type/set-mfa-totp-identity';
-import { GetContactWith } from '@beabee/beabee-common';
+import { client, isApiError } from '@utils/api';
+import { Secret, TOTP } from 'otpauth';
+import {
+  computed,
+  nextTick,
+  onBeforeMount,
+  reactive,
+  ref,
+  toRef,
+  watch,
+} from 'vue';
+import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 

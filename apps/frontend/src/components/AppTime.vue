@@ -14,8 +14,9 @@
 </template>
 <script lang="ts" setup>
 import { computed } from 'vue';
-import { formatDistanceLocale, formatLocale } from '../utils/dates';
 import { useI18n } from 'vue-i18n';
+
+import { formatDistanceLocale, formatLocale } from '../utils/dates';
 
 const props = defineProps<{ datetime: Date; timeOnly?: boolean }>();
 

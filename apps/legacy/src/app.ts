@@ -1,29 +1,26 @@
-import 'module-alias/register';
-
-import path from 'path';
-
-import cleanDeep from 'clean-deep';
-import cookie from 'cookie-parser';
-import csrf from 'csurf'; // TODO: This package is deprecated, see https://www.npmjs.com/package/csurf
-import express, { ErrorRequestHandler, RequestHandler } from 'express';
-import flash from 'express-flash'; // TODO: Last release was 2013
-import helmet from 'helmet';
-
-import appLoader from '#core/app-loader';
+//import specialUrlHandler from '@apps/tools/apps/special-urls/handler';
+import config from '@beabee/core/config';
 import { log, requestErrorLogger, requestLogger } from '@beabee/core/logging';
-import quickflash from '#core/quickflash';
 import { initApp, startServer } from '@beabee/core/server';
-import sessions from '#core/sessions';
-import { isInvalidType } from '@beabee/core/utils/db';
-
 import OptionsService, {
   OptionKey,
 } from '@beabee/core/services/OptionsService';
 import PageSettingsService from '@beabee/core/services/PageSettingsService';
+import { isInvalidType } from '@beabee/core/utils/db';
 
-//import specialUrlHandler from '@apps/tools/apps/special-urls/handler';
-
-import config from '@beabee/core/config';
+import appLoader from '#core/app-loader';
+import quickflash from '#core/quickflash';
+import sessions from '#core/sessions';
+import cleanDeep from 'clean-deep';
+import cookie from 'cookie-parser';
+import csrf from 'csurf';
+// TODO: This package is deprecated, see https://www.npmjs.com/package/csurf
+import express, { ErrorRequestHandler, RequestHandler } from 'express';
+import flash from 'express-flash';
+// TODO: Last release was 2013
+import helmet from 'helmet';
+import 'module-alias/register';
+import path from 'path';
 
 if (!config.gocardless.sandbox && config.dev) {
   log.error(

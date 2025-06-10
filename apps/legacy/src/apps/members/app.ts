@@ -1,18 +1,16 @@
 import { GetContactWith, Paginated, RuleGroup } from '@beabee/beabee-common';
-import express, { type Express, type Request } from 'express';
-import queryString from 'query-string';
-
 import { getRepository } from '@beabee/core/database';
-import { isAdmin } from '#core/middleware';
-import { userToAuth } from '#core/utils/index';
-import { wrapAsync } from '@beabee/core/utils/express';
-
-import OptionsService from '@beabee/core/services/OptionsService';
-import SegmentService from '@beabee/core/services/SegmentService';
-
 // import ContactTransformer from "@api/transformers/ContactTransformer";
 
-import { Project, Contact, Segment } from '@beabee/core/models';
+import { Contact, Project, Segment } from '@beabee/core/models';
+import OptionsService from '@beabee/core/services/OptionsService';
+import SegmentService from '@beabee/core/services/SegmentService';
+import { wrapAsync } from '@beabee/core/utils/express';
+
+import { isAdmin } from '#core/middleware';
+import { userToAuth } from '#core/utils/index';
+import express, { type Express, type Request } from 'express';
+import queryString from 'query-string';
 
 const app: Express = express();
 

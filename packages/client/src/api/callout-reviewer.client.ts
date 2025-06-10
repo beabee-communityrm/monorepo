@@ -1,8 +1,9 @@
+import type { GetCalloutReviewerData, Serial } from '@beabee/beabee-common';
+
+import type { BaseClientOptions } from '../types/index.js';
+import { cleanUrl } from '../utils/index.js';
 import { BaseClient } from './base.client.js';
 import { ContactClient } from './contact.client.js';
-import { cleanUrl } from '../utils/index.js';
-import type { BaseClientOptions } from '../types/index.js';
-import type { GetCalloutReviewerData, Serial } from '@beabee/beabee-common';
 
 /**
  * Client for managing callout reviewer operations

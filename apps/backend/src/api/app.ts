@@ -1,10 +1,19 @@
-import 'module-alias/register';
-import 'reflect-metadata';
-
 import { RoleType } from '@beabee/beabee-common';
+import config from '@beabee/core/config';
+import {
+  log as mainLogger,
+  requestErrorLogger,
+  requestLogger,
+} from '@beabee/core/logging';
+import { Contact } from '@beabee/core/models';
+import { initApp, startServer } from '@beabee/core/server';
+
+import sessions from '@core/lib/sessions';
 import cookie from 'cookie-parser';
 import cors from 'cors';
 import express, { ErrorRequestHandler, Request } from 'express';
+import 'module-alias/register';
+import 'reflect-metadata';
 import {
   HttpError,
   InternalServerError,
@@ -13,22 +22,8 @@ import {
 } from 'routing-controllers';
 
 import * as Controllers from './controllers';
-
 import { ValidateResponseInterceptor } from './interceptors/ValidateResponseInterceptor';
-
 import { AuthMiddleware } from './middlewares';
-
-import {
-  log as mainLogger,
-  requestErrorLogger,
-  requestLogger,
-} from '@beabee/core/logging';
-import sessions from '@core/lib/sessions';
-import { initApp, startServer } from '@beabee/core/server';
-
-import { Contact } from '@beabee/core/models';
-
-import config from '@beabee/core/config';
 
 function currentUserChecker(action: { request: Request }): Contact | undefined {
   return action.request.auth?.contact;

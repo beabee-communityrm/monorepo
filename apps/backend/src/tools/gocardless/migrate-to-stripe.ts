@@ -1,20 +1,16 @@
-import 'module-alias/register';
-
 import { PaymentMethod, PaymentStatus } from '@beabee/beabee-common';
-import { parse } from 'csv-parse';
-import { add, startOfDay } from 'date-fns';
-import Stripe from 'stripe';
-import { Equal, In } from 'typeorm';
-
+import config from '@beabee/core/config';
 import { createQueryBuilder, getRepository } from '@beabee/core/database';
-import { runApp } from '@beabee/core/server';
 import { stripe, stripeTypeToPaymentMethod } from '@beabee/core/lib/stripe';
-
+import { Contact, ContactContribution, Payment } from '@beabee/core/models';
+import { runApp } from '@beabee/core/server';
 import PaymentService from '@beabee/core/services/PaymentService';
 
-import { Contact, Payment, ContactContribution } from '@beabee/core/models';
-
-import config from '@beabee/core/config';
+import { parse } from 'csv-parse';
+import { add, startOfDay } from 'date-fns';
+import 'module-alias/register';
+import Stripe from 'stripe';
+import { Equal, In } from 'typeorm';
 
 interface MigrationRow {
   old_customer_id: string;

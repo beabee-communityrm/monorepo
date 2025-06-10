@@ -1,4 +1,5 @@
 import { Address } from '@beabee/beabee-common';
+
 import { Column } from 'typeorm';
 
 export class GiftForm {

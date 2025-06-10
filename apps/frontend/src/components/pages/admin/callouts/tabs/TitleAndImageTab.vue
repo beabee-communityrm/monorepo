@@ -138,26 +138,28 @@
 
 <script lang="ts" setup>
 import { ItemStatus } from '@beabee/beabee-common';
-import { computed, ref, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
-import AppInput from '@components/forms/AppInput.vue';
-import AppImageUpload from '@components/forms/AppImageUpload.vue';
-import useVuelidate from '@vuelidate/core';
-import env from '@env';
-import slugify from 'slugify';
 import {
   AppFormBox,
-  AppToggleField,
   AppFormField,
+  AppToggleField,
 } from '@beabee/vue/components';
-import AppTextArea from '@components/forms/AppTextArea.vue';
-import type { LocaleProp } from '@type';
-import type { CalloutHorizontalTabs } from '../CalloutHorizontalTabs.interface';
 import {
   AppScrollNavigation,
   AppScrollSection,
   type ScrollSection,
 } from '@beabee/vue/components';
+
+import AppImageUpload from '@components/forms/AppImageUpload.vue';
+import AppInput from '@components/forms/AppInput.vue';
+import AppTextArea from '@components/forms/AppTextArea.vue';
+import env from '@env';
+import type { LocaleProp } from '@type';
+import useVuelidate from '@vuelidate/core';
+import slugify from 'slugify';
+import { computed, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+import type { CalloutHorizontalTabs } from '../CalloutHorizontalTabs.interface';
 
 /**
  * Data for the title and image tab

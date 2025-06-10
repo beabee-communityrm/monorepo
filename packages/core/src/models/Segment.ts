@@ -1,5 +1,7 @@
 import { RuleGroup } from '@beabee/beabee-common';
+
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+
 import type { SegmentContact } from './index';
 
 @Entity()

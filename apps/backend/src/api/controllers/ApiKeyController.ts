@@ -1,19 +1,6 @@
-import { plainToInstance } from 'class-transformer';
-import {
-  JsonController,
-  Authorized,
-  Post,
-  CurrentUser,
-  Get,
-  QueryParams,
-  Body,
-  OnUndefined,
-  NotFoundError,
-  Delete,
-  Param,
-} from 'routing-controllers';
-
+import { Contact } from '@beabee/core/models';
 import ApiKeyService from '@beabee/core/services/ApiKeyService';
+import { AuthInfo } from '@beabee/core/type';
 
 import { CurrentAuth } from '@api/decorators/CurrentAuth';
 import {
@@ -24,10 +11,20 @@ import {
 } from '@api/dto/ApiKeyDto';
 import { PaginatedDto } from '@api/dto/PaginatedDto';
 import ApiKeyTransformer from '@api/transformers/ApiKeyTransformer';
-
-import { Contact } from '@beabee/core/models';
-
-import { AuthInfo } from '@beabee/core/type';
+import { plainToInstance } from 'class-transformer';
+import {
+  Authorized,
+  Body,
+  CurrentUser,
+  Delete,
+  Get,
+  JsonController,
+  NotFoundError,
+  OnUndefined,
+  Param,
+  Post,
+  QueryParams,
+} from 'routing-controllers';
 
 @JsonController('/api-key')
 @Authorized('admin')

@@ -1,9 +1,10 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue';
+
 import AppForm from './AppForm.vue';
+import AppFormBox from './AppFormBox.vue';
 import AppFormField from './AppFormField.vue';
 import AppLabel from './AppLabel.vue';
-import AppFormBox from './AppFormBox.vue';
 
 const state = reactive({
   buttonText: 'Submit',

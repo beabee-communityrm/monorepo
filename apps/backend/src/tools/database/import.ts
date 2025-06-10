@@ -1,11 +1,9 @@
-import 'module-alias/register';
-
-import readline from 'readline';
-
+import config from '@beabee/core/config';
 import { dataSource } from '@beabee/core/database';
 import { runApp } from '@beabee/core/server';
 
-import config from '@beabee/core/config';
+import 'module-alias/register';
+import readline from 'readline';
 
 if (!config.dev) {
   console.error("Can't import to live database");

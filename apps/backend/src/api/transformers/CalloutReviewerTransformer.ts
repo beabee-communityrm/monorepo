@@ -1,16 +1,18 @@
 import {
   CalloutReviewerFilterName,
-  calloutReviewerFilters,
   RuleGroup,
+  calloutReviewerFilters,
 } from '@beabee/beabee-common';
 import { CalloutReviewer } from '@beabee/core/models';
-import { BaseTransformer } from './BaseTransformer';
 import { AuthInfo } from '@beabee/core/type';
+
 import { GetCalloutReviewerDto } from '@api/dto/CalloutReviewerDto';
-import ContactTransformer, { loadContactRoles } from './ContactTransformer';
 import { getReviewerRules } from '@api/utils/callouts';
-import { SelectQueryBuilder } from 'typeorm';
 import { TransformerOperation } from '@type/transformer-operation';
+import { SelectQueryBuilder } from 'typeorm';
+
+import { BaseTransformer } from './BaseTransformer';
+import ContactTransformer, { loadContactRoles } from './ContactTransformer';
 
 class CalloutReviewerTransformer extends BaseTransformer<
   CalloutReviewer,

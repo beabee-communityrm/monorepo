@@ -22,7 +22,9 @@ meta:
 
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n';
+
 import AppTitle from '../../../components/AppTitle.vue';
 import AuthBox from '../../../components/AuthBox.vue';
+
 const { t } = useI18n();
 </script>

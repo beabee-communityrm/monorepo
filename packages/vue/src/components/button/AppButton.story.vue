@@ -1,10 +1,11 @@
 <script lang="ts" setup>
-import { ref, reactive } from 'vue';
+import { faEdit, faTrash, faUser } from '@fortawesome/free-solid-svg-icons';
+import { reactive, ref } from 'vue';
+
 import AppButton, {
-  type ButtonVariant,
   type ButtonSize,
+  type ButtonVariant,
 } from './AppButton.vue';
-import { faUser, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 const state = reactive({
   disabled: false,

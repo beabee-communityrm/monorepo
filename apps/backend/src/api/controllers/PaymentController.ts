@@ -1,10 +1,4 @@
-import {
-  Authorized,
-  Get,
-  JsonController,
-  Param,
-  QueryParams,
-} from 'routing-controllers';
+import { AuthInfo } from '@beabee/core/type';
 
 import { CurrentAuth } from '@api/decorators/CurrentAuth';
 import { PaginatedDto } from '@api/dto/PaginatedDto';
@@ -14,8 +8,13 @@ import {
   ListPaymentsDto,
 } from '@api/dto/PaymentDto';
 import PaymentTransformer from '@api/transformers/PaymentTransformer';
-
-import { AuthInfo } from '@beabee/core/type';
+import {
+  Authorized,
+  Get,
+  JsonController,
+  Param,
+  QueryParams,
+} from 'routing-controllers';
 
 @JsonController('/payment')
 @Authorized()

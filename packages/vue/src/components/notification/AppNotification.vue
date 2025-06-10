@@ -73,7 +73,6 @@
  *
  * @component AppNotification
  */
-
 import {
   type IconDefinition,
   faTimes,

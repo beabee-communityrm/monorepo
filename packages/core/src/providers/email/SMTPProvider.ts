@@ -1,12 +1,10 @@
+import { SMTPEmailConfig } from '#config/config';
+import { log as mainLogger } from '#logging';
+import type { EmailOptions, EmailRecipient, PreparedEmail } from '#type/index';
 import nodemailer from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
 
-import { log as mainLogger } from '#logging';
-
-import type { EmailOptions, EmailRecipient, PreparedEmail } from '#type/index';
 import { BaseProvider } from './BaseProvider';
-
-import { SMTPEmailConfig } from '#config/config';
 
 const log = mainLogger.child({ app: 'smtp-email-provider' });
 

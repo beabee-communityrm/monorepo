@@ -1,26 +1,28 @@
 import {
-  CalloutComponentBaseSchema,
   CalloutComponentBaseInputSchema,
+  CalloutComponentBaseInputSelectableSchema,
   CalloutComponentBaseNestableSchema,
+  CalloutComponentBaseRules,
+  CalloutComponentBaseSchema,
+  CalloutComponentBaseType,
   CalloutComponentContentSchema,
   CalloutComponentInputSelectSchema,
-  CalloutComponentType,
-  calloutComponentNestableTypes,
-  calloutComponentInputTypes,
-  CalloutComponentBaseInputSelectableSchema,
-  calloutComponentInputSelectableTypes,
   CalloutComponentSchema,
+  CalloutComponentType,
+  CalloutResponseAnswer,
   GetCalloutFormSchema,
   GetCalloutNavigationSchema,
   GetCalloutSlideSchema,
   SetCalloutFormSchema,
   SetCalloutNavigationSchema,
   SetCalloutSlideSchema,
-  CalloutComponentBaseRules,
-  CalloutResponseAnswer,
+  calloutComponentInputSelectableTypes,
+  calloutComponentInputTypes,
+  calloutComponentNestableTypes,
   isCalloutComponentOfBaseType,
-  CalloutComponentBaseType,
 } from '@beabee/beabee-common';
+import { log as mainLogger } from '@beabee/core/logging';
+
 import { Transform, Type, plainToInstance } from 'class-transformer';
 import {
   Equals,
@@ -35,8 +37,6 @@ import {
   buildMessage,
   validate,
 } from 'class-validator';
-
-import { log as mainLogger } from '@beabee/core/logging';
 
 const log = mainLogger.child({ app: 'callout-form-validation' });
 

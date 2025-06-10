@@ -1,13 +1,10 @@
-import { isLocale, Locale } from '@beabee/locale';
-import fs from 'fs';
-import moment from 'moment';
-import path from 'path';
-import { loadFront } from 'yaml-front-matter';
+import { Locale, isLocale } from '@beabee/locale';
 
+import config from '#config/config';
 import { log as mainLogger } from '#logging';
-
+import { Contact, Email } from '#models/index';
+import { MandrillProvider, SMTPProvider, SendGridProvider } from '#providers';
 import OptionsService from '#services/OptionsService';
-
 import {
   EmailMergeFields,
   EmailOptions,
@@ -15,10 +12,10 @@ import {
   EmailProvider,
   EmailRecipient,
 } from '#type/index';
-import { MandrillProvider, SendGridProvider, SMTPProvider } from '#providers';
-import { Email, Contact } from '#models/index';
-
-import config from '#config/config';
+import fs from 'fs';
+import moment from 'moment';
+import path from 'path';
+import { loadFront } from 'yaml-front-matter';
 
 const log = mainLogger.child({ app: 'email-service' });
 

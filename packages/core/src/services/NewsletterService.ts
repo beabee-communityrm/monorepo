@@ -1,21 +1,18 @@
 import { NewsletterStatus } from '@beabee/beabee-common';
 
+import config from '#config/config';
 import { getRepository } from '#database';
+import { CantUpdateNewsletterContact } from '#errors/CantUpdateNewsletterContact';
 import { log as mainLogger } from '#logging';
-
+import { Contact, ContactProfile } from '#models/index';
+import { MailchimpProvider, NoneProvider } from '#providers';
 import {
   ContactNewsletterUpdates,
   NewsletterContact,
   NewsletterProvider,
   UpdateNewsletterContact,
 } from '#type/index';
-import { MailchimpProvider, NoneProvider } from '#providers';
-
-import { Contact, ContactProfile } from '#models/index';
-
-import config from '#config/config';
 import { getContributionDescription } from '#utils/contact';
-import { CantUpdateNewsletterContact } from '#errors/CantUpdateNewsletterContact';
 
 const log = mainLogger.child({ app: 'newsletter-service' });
 

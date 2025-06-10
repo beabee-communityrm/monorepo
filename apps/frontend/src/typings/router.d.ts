@@ -1,4 +1,5 @@
 import { RoleType } from '@beabee/beabee-common';
+
 import 'vue-router';
 
 declare module 'vue-router' {

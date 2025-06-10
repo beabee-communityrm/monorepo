@@ -1,15 +1,17 @@
 <script lang="ts" setup>
-import { ref, reactive } from 'vue';
-import type { ButtonVariant } from './AppButton.vue';
-import AppAsyncButton from './AppAsyncButton.vue';
+import { addNotification } from '@beabee/vue/store/notifications';
+
 import {
+  faCheck,
   faEye,
   faSave,
-  faUpload,
-  faCheck,
   faSpinner,
+  faUpload,
 } from '@fortawesome/free-solid-svg-icons';
-import { addNotification } from '@beabee/vue/store/notifications';
+import { reactive, ref } from 'vue';
+
+import AppAsyncButton from './AppAsyncButton.vue';
+import type { ButtonVariant } from './AppButton.vue';
 
 const variants: ButtonVariant[] = [
   'primary',

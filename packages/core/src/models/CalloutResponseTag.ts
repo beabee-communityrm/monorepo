@@ -1,4 +1,5 @@
 import { CreateDateColumn, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
+
 import type { CalloutResponse, CalloutTag } from './index';
 
 @Entity({})

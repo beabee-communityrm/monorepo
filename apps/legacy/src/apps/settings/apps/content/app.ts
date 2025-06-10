@@ -1,19 +1,16 @@
-import express, {
-  type Express,
-  type Request,
-  type Response,
-  type NextFunction,
-} from 'express';
-
+import type { ContentId } from '@beabee/beabee-common';
 import { getRepository } from '@beabee/core/database';
-import { isAdmin } from '#core/middleware';
+import { Content } from '@beabee/core/models';
+import OptionsService from '@beabee/core/services/OptionsService';
 import { wrapAsync } from '@beabee/core/utils/express';
 
-import OptionsService from '@beabee/core/services/OptionsService';
-
-import { Content } from '@beabee/core/models';
-
-import type { ContentId } from '@beabee/beabee-common';
+import { isAdmin } from '#core/middleware';
+import express, {
+  type Express,
+  type NextFunction,
+  type Request,
+  type Response,
+} from 'express';
 
 const app: Express = express();
 

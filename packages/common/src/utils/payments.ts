@@ -1,5 +1,4 @@
 import { ContributionPeriod, PaymentMethod } from '../data/index.js';
-
 import type { Feeable, StripeFeeCountry } from '../types/index.js';
 
 const stripeFees = {

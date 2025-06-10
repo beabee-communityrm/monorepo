@@ -8,44 +8,44 @@ import {
   CalloutResponseAnswersSlide,
   SetCalloutSlideSchema,
 } from '@beabee/beabee-common';
-import { Chance } from 'chance';
-import crypto from 'crypto';
-import { EntityTarget, ObjectLiteral } from 'typeorm';
-import { v4 as uuidv4 } from 'uuid';
-
 import {
+  Callout,
+  CalloutResponse,
+  CalloutResponseComment,
+  CalloutResponseTag,
+  CalloutTag,
+  CalloutVariant,
+  Contact,
+  ContactContribution,
+  ContactProfile,
+  ContactRole,
+  ContactTag,
+  ContactTagAssignment,
   Email,
   EmailMailing,
   Export,
   ExportItem,
   GiftFlow,
-  Contact,
-  ContactRole,
-  ContactProfile,
   Notice,
   Option,
   PageSettings,
+  Password,
   Payment,
-  ContactContribution,
-  Callout,
-  CalloutResponse,
-  CalloutResponseTag,
-  CalloutTag,
   Project,
   ProjectContact,
   ProjectEngagement,
   Referral,
   ReferralGift,
+  ResetSecurityFlow,
   Segment,
   SegmentContact,
   SegmentOngoingEmail,
-  CalloutResponseComment,
-  ResetSecurityFlow,
-  Password,
-  ContactTagAssignment,
-  CalloutVariant,
-  ContactTag,
 } from '@beabee/core/models';
+
+import { Chance } from 'chance';
+import crypto from 'crypto';
+import { EntityTarget, ObjectLiteral } from 'typeorm';
+import { v4 as uuidv4 } from 'uuid';
 
 /**
  * Generic types for object maps

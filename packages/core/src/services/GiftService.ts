@@ -3,21 +3,18 @@ import {
   ContributionType,
   NewsletterStatus,
 } from '@beabee/beabee-common';
-import moment from 'moment';
-
-import { getRepository } from '#database';
-import { log as mainLogger } from '#logging';
-import { stripe, Stripe } from '#lib/stripe';
-import { isDuplicateIndex } from '#utils/db';
-import { generateContactCode } from '#utils/contact';
-
-import EmailService from '#services/EmailService';
-import ContactsService from '#services/ContactsService';
-import OptionsService from '#services/OptionsService';
-
-import { GiftFlow, GiftForm, ContactRole } from '#models/index';
 
 import config from '#config/config';
+import { getRepository } from '#database';
+import { Stripe, stripe } from '#lib/stripe';
+import { log as mainLogger } from '#logging';
+import { ContactRole, GiftFlow, GiftForm } from '#models/index';
+import ContactsService from '#services/ContactsService';
+import EmailService from '#services/EmailService';
+import OptionsService from '#services/OptionsService';
+import { generateContactCode } from '#utils/contact';
+import { isDuplicateIndex } from '#utils/db';
+import moment from 'moment';
 
 const log = mainLogger.child({ app: 'gift-service' });
 

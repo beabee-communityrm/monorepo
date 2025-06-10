@@ -1,10 +1,10 @@
-import bodyParser from 'body-parser';
-import express, { type Express, type Request, type Response } from 'express';
-
-import { log as mainLogger } from '@beabee/core/logging';
 import gocardless from '@beabee/core/lib/gocardless';
 import { GoCardlessWebhookEventHandler } from '@beabee/core/lib/gocardless-webhook-event-handler';
+import { log as mainLogger } from '@beabee/core/logging';
 import { wrapAsync } from '@beabee/core/utils/express';
+
+import bodyParser from 'body-parser';
+import express, { type Express, type Request, type Response } from 'express';
 
 const log = mainLogger.child({ app: 'webhook-gocardless' });
 

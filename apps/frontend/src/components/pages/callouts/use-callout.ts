@@ -1,9 +1,8 @@
-import { ItemStatus, type GetCalloutDataWith } from '@beabee/beabee-common';
-import { type Ref, computed } from 'vue';
+import { type GetCalloutDataWith, ItemStatus } from '@beabee/beabee-common';
+import { isLocale, config as localeConfig } from '@beabee/locale';
 
 import { currentUser, generalContent } from '@store';
-
-import { isLocale, config as localeConfig } from '@beabee/locale';
+import { type Ref, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 export const HASH_PREFIX = '#response-' as const;

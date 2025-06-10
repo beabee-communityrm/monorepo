@@ -4,14 +4,14 @@
  * This script ensures all translation files have the same structure as the English one.
  * It adds missing keys with empty strings to all locale files.
  */
-
 import { readdir } from 'node:fs/promises';
 import { join } from 'node:path';
+
 import {
+  handleError,
+  mergeObjects,
   readJsonFile,
   writeJsonFile,
-  mergeObjects,
-  handleError,
 } from './utils.ts';
 
 /**

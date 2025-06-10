@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { ref, reactive, onMounted } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
+
 import AppStatusPage from './AppStatusPage.vue';
 
 const state = reactive({

@@ -6,23 +6,18 @@ import {
 } from '@beabee/beabee-common';
 
 import { getRepository } from '#database';
+import { DuplicateEmailError } from '#errors/index';
 import { log as mainLogger } from '#logging';
-
-import EmailService from '#services/EmailService';
-import ContactsService from '#services/ContactsService';
-import OptionsService from '#services/OptionsService';
-import PaymentService from '#services/PaymentService';
-import ResetSecurityFlowService from './ResetSecurityFlowService';
-import { JoinFlow, JoinForm, Contact } from '#models/index';
-
+import { Contact, JoinFlow, JoinForm } from '#models/index';
 import {
   PaymentFlowProvider,
-  stripeFlowProvider,
   gcFlowProvider,
+  stripeFlowProvider,
 } from '#providers';
-
-import { DuplicateEmailError } from '#errors/index';
-
+import ContactsService from '#services/ContactsService';
+import EmailService from '#services/EmailService';
+import OptionsService from '#services/OptionsService';
+import PaymentService from '#services/PaymentService';
 import {
   CompleteUrls,
   CompletedPaymentFlow,
@@ -31,6 +26,8 @@ import {
   PaymentFlowData,
   PaymentFlowParams,
 } from '#type/index';
+
+import ResetSecurityFlowService from './ResetSecurityFlowService';
 
 const paymentProviders = {
   [PaymentMethod.StripeCard]: stripeFlowProvider,

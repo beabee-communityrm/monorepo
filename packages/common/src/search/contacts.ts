@@ -1,9 +1,9 @@
-import type { Filters } from '../types/index.js';
 import {
   ContributionPeriod,
   ContributionType,
   NewsletterStatus,
 } from '../data/index.js';
+import type { Filters } from '../types/index.js';
 import type { TagFiltersType } from './tags.js';
 
 export const RoleTypes = ['member', 'admin', 'superadmin'] as const;

@@ -27,11 +27,13 @@ meta:
   </AuthBox>
 </template>
 <script lang="ts" setup>
-import { useI18n } from 'vue-i18n';
 import { AppButton } from '@beabee/vue/components';
-import { generalContent } from '../store';
+
+import { useI18n } from 'vue-i18n';
+
 import AppTitle from '../components/AppTitle.vue';
 import AuthBox from '../components/AuthBox.vue';
+import { generalContent } from '../store';
 
 const { t } = useI18n();
 </script>

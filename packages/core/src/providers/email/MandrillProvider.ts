@@ -1,19 +1,15 @@
-import axios, { AxiosRequestTransformer } from 'axios';
-
+import { MandrillEmailConfig } from '#config/config';
 import { log as mainLogger } from '#logging';
-
 import { Email } from '#models/index';
-
 import type {
   EmailOptions,
   EmailRecipient,
   EmailTemplate,
   PreparedEmail,
 } from '#type/index';
+import axios, { AxiosRequestTransformer } from 'axios';
 
 import { BaseProvider } from './BaseProvider';
-
-import { MandrillEmailConfig } from '#config/config';
 
 const log = mainLogger.child({ app: 'mandrill-email-provider' });
 

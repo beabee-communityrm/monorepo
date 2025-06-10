@@ -88,21 +88,18 @@ meta:
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { useI18n } from 'vue-i18n';
-
+import { RESET_SECURITY_FLOW_ERROR_CODE } from '@beabee/beabee-common';
 import { AppForm, AppNotification } from '@beabee/vue/components';
-import AppInput from '@components/forms/AppInput.vue';
+
 import AppTitle from '@components/AppTitle.vue';
 import AuthBox from '@components/AuthBox.vue';
-
+import AppInput from '@components/forms/AppInput.vue';
+import { updateCurrentUser } from '@store/index';
 import { client, isApiError } from '@utils/api';
 import { isInternalUrl } from '@utils/index';
-
-import { updateCurrentUser } from '@store/index';
-
-import { RESET_SECURITY_FLOW_ERROR_CODE } from '@beabee/beabee-common';
+import { reactive, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRoute, useRouter } from 'vue-router';
 
 const props = withDefaults(
   defineProps<{

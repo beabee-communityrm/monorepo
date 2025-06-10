@@ -32,9 +32,10 @@
 </template>
 
 <script lang="ts" setup>
-import { useI18n } from 'vue-i18n';
-import AppInput from '../../forms/AppInput.vue';
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+import AppInput from '../../forms/AppInput.vue';
 
 const { t } = useI18n();
 

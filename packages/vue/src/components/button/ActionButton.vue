@@ -29,8 +29,8 @@
  *   Edit
  * </ActionButton>
  */
-
 import type { IconDefinition } from '@fortawesome/free-solid-svg-icons';
+
 import AppButton from './AppButton.vue';
 
 /**

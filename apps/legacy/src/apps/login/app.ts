@@ -1,17 +1,14 @@
-import { RoleTypes, RoleType } from '@beabee/beabee-common';
+import { RoleType, RoleTypes } from '@beabee/beabee-common';
+import config from '@beabee/core/config';
+import { getRepository } from '@beabee/core/database';
+import { ContactRole } from '@beabee/core/models';
+import ContactsService from '@beabee/core/services/ContactsService';
+import { wrapAsync } from '@beabee/core/utils/express';
+import { getNextParam, isValidNextUrl } from '@beabee/core/utils/url';
+
+import { loginAndRedirect } from '#core/utils/contact';
 import express, { type Express, type Request, type Response } from 'express';
 import passport from 'passport';
-
-import { getRepository } from '@beabee/core/database';
-import { wrapAsync } from '@beabee/core/utils/express';
-import { isValidNextUrl, getNextParam } from '@beabee/core/utils/url';
-import { loginAndRedirect } from '#core/utils/contact';
-
-import ContactsService from '@beabee/core/services/ContactsService';
-
-import { ContactRole } from '@beabee/core/models';
-
-import config from '@beabee/core/config';
 
 const app: Express = express();
 

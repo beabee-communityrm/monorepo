@@ -21,12 +21,13 @@
 </template>
 
 <script lang="ts" setup>
-import { useI18n } from 'vue-i18n';
-import RichTextEditor from '@components/rte/RichTextEditor.vue';
-
-import type { LocaleProp } from '@type';
-import type { SidebarTabProps } from '../SidebarTabs.interface';
 import { AppFormField } from '@beabee/vue/components';
+
+import RichTextEditor from '@components/rte/RichTextEditor.vue';
+import type { LocaleProp } from '@type';
+import { useI18n } from 'vue-i18n';
+
+import type { SidebarTabProps } from '../SidebarTabs.interface';
 
 /**
  * Data for the intro message tab in the sidebar

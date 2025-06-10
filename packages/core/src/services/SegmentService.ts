@@ -1,5 +1,4 @@
 import { getRepository } from '#database';
-
 import { Contact, Segment, SegmentContact } from '#models/index';
 
 class SegmentService {

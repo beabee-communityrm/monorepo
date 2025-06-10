@@ -12,13 +12,14 @@ meta:
 </template>
 
 <script lang="ts" setup>
-import { faBullhorn } from '@fortawesome/free-solid-svg-icons';
-import { computed, onBeforeMount, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
+import type { GetCalloutDataWith } from '@beabee/beabee-common';
+
 import PageTitle from '@components/PageTitle.vue';
+import { faBullhorn } from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { client } from '@utils/api';
-import type { GetCalloutDataWith } from '@beabee/beabee-common';
+import { computed, onBeforeMount, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 const props = defineProps<{ id: string }>();
 

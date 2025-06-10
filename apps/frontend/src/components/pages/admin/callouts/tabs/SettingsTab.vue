@@ -246,29 +246,30 @@
 
 <script lang="ts" setup>
 import {
-  ItemStatus,
   type CalloutChannel,
   type CalloutNewsletterSchema,
+  ItemStatus,
 } from '@beabee/beabee-common';
-import useVuelidate from '@vuelidate/core';
-import { computed, ref, toRef, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { sameAs } from '@vuelidate/validators';
-import AppInput from '@components/forms/AppInput.vue';
-import env from '@env';
 import {
+  AppFormBox,
+  AppFormField,
+  AppLabel,
+  AppRadioGroup,
   AppScrollNavigation,
   AppScrollSection,
-  AppRadioGroup,
-  AppFormBox,
   AppToggleField,
-  AppFormField,
   type ScrollSection,
-  AppLabel,
 } from '@beabee/vue/components';
 
-import type { CalloutHorizontalTabs } from '../CalloutHorizontalTabs.interface';
+import AppInput from '@components/forms/AppInput.vue';
 import NewsletterOptInSettings from '@components/newsletter/NewsletterOptInSettings.vue';
+import env from '@env';
+import useVuelidate from '@vuelidate/core';
+import { sameAs } from '@vuelidate/validators';
+import { computed, ref, toRef, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+import type { CalloutHorizontalTabs } from '../CalloutHorizontalTabs.interface';
 
 /**
  * Data for the settings tab, which contains callout configuration options

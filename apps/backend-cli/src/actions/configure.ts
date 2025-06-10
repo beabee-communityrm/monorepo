@@ -1,7 +1,8 @@
-import { runApp } from '@beabee/core/server';
 import { getRepository } from '@beabee/core/database';
 import { Content } from '@beabee/core/models';
+import { runApp } from '@beabee/core/server';
 import { optionsService } from '@beabee/core/services/OptionsService';
+
 import type { ConfigureArgs } from '../types/index.js';
 
 export const configure = async (argv: ConfigureArgs): Promise<void> => {

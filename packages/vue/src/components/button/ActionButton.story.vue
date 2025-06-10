@@ -1,19 +1,20 @@
 <script lang="ts" setup>
-import { reactive } from 'vue';
-import ActionButton from './ActionButton.vue';
 import {
-  faEdit,
-  faTrash,
-  faUser,
-  faPlus,
-  faDownload,
-  faUpload,
-  faEye,
   faClone,
-  faPencilAlt,
-  faHourglassStart,
+  faDownload,
+  faEdit,
+  faEye,
   faHourglassEnd,
+  faHourglassStart,
+  faPencilAlt,
+  faPlus,
+  faTrash,
+  faUpload,
+  faUser,
 } from '@fortawesome/free-solid-svg-icons';
+import { reactive } from 'vue';
+
+import ActionButton from './ActionButton.vue';
 
 const state = reactive({
   icon: faEdit,

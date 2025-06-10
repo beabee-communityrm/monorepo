@@ -1,12 +1,14 @@
 import { NewsletterStatus } from '@beabee/beabee-common';
 
-import { log as mainLogger } from '#logging';
+import { MailchimpNewsletterConfig } from '#config/config';
+import { CantUpdateNewsletterContact } from '#errors/CantUpdateNewsletterContact';
 import {
   createInstance,
   getMCMemberUrl,
   mcMemberToNlContact,
   nlContactToMCMember,
 } from '#lib/mailchimp';
+import { log as mainLogger } from '#logging';
 import OptionsService from '#services/OptionsService';
 import {
   MCMember,
@@ -16,9 +18,6 @@ import {
   UpdateNewsletterContact,
   UpsertMCMemberResponse,
 } from '#type/index';
-
-import { MailchimpNewsletterConfig } from '#config/config';
-import { CantUpdateNewsletterContact } from '#errors/CantUpdateNewsletterContact';
 
 const log = mainLogger.child({ app: 'mailchimp-provider' });
 

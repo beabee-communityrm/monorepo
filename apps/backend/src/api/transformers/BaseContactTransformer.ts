@@ -10,17 +10,14 @@ import {
   getCalloutFilters,
   isRuleGroup,
 } from '@beabee/beabee-common';
-import { isUUID } from 'class-validator';
-
 import { getRepository } from '@beabee/core/database';
+import { contactFilterHandlers } from '@beabee/core/filter-handlers';
+import { Callout, Contact } from '@beabee/core/models';
+import { FilterHandlers } from '@beabee/core/type';
 
 import { BaseTransformer } from '@api/transformers/BaseTransformer';
 import { prefixKeys } from '@api/utils';
-
-import { Callout, Contact } from '@beabee/core/models';
-import { contactFilterHandlers } from '@beabee/core/filter-handlers';
-
-import { FilterHandlers } from '@beabee/core/type';
+import { isUUID } from 'class-validator';
 
 function flattenRules(rules: RuleGroup): Rule[] {
   return rules.rules.flatMap((rule) =>

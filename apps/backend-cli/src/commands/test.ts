@@ -1,4 +1,5 @@
 import type { CommandModule } from 'yargs';
+
 import { listTestUsers } from '../actions/test/list-users.js';
 
 export const testCommand: CommandModule = {

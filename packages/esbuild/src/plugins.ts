@@ -1,6 +1,7 @@
 import type { Plugin } from 'esbuild';
-import { renameExtensions, getTimestamp } from './utils.ts';
 import { resolve } from 'node:path';
+
+import { getTimestamp, renameExtensions } from './utils.ts';
 
 /**
  * Creates a plugin that logs build completion and errors during watch mode

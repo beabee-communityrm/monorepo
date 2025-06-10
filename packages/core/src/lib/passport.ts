@@ -1,24 +1,18 @@
 import { CONTACT_MFA_TYPE, LOGIN_CODES } from '@beabee/beabee-common';
-import passport from 'passport';
-import passportLocal from 'passport-local';
-
 import config from '@beabee/core/config';
-
 import { getRepository } from '@beabee/core/database';
+import { UnauthorizedError } from '@beabee/core/errors';
 import { log } from '@beabee/core/logging';
+import { Contact } from '@beabee/core/models';
+import ContactMfaService from '@beabee/core/services/ContactMfaService';
+import ContactsService from '@beabee/core/services/ContactsService';
+import type { ContactMfaSecure } from '@beabee/core/type';
 import { generatePassword, isValidPassword } from '@beabee/core/utils/auth';
 import { normalizeEmailAddress } from '@beabee/core/utils/email';
 
-import ContactsService from '@beabee/core/services/ContactsService';
-import ContactMfaService from '@beabee/core/services/ContactMfaService';
-
-import { UnauthorizedError } from '@beabee/core/errors';
-
-import { Contact } from '@beabee/core/models';
-
-import type { ContactMfaSecure } from '@beabee/core/type';
-
 import type { LoginData, PassportLocalDoneCallback } from '#type';
+import passport from 'passport';
+import passportLocal from 'passport-local';
 
 // Add support for local authentication in Passport.js
 passport.use(

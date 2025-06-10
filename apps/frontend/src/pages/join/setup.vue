@@ -17,20 +17,17 @@ meta:
 
 <script lang="ts" setup>
 import {
-  NewsletterStatus,
   type ContentJoinSetupData,
+  NewsletterStatus,
   type UpdateContactProfileData,
 } from '@beabee/beabee-common';
-import { onBeforeMount, ref } from 'vue';
-import { useRouter } from 'vue-router';
 
 import SetupForm from '@components/pages/join/SetupForm.vue';
-
-import { client } from '@utils/api';
-
-import { updateCurrentUser } from '@store';
-
 import type { SetupContactData } from '@components/pages/join/join.interface';
+import { updateCurrentUser } from '@store';
+import { client } from '@utils/api';
+import { onBeforeMount, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 const router = useRouter();
 

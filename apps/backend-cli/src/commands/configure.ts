@@ -1,6 +1,7 @@
 import type { CommandModule } from 'yargs';
-import { configure } from '../actions/configure.js';
 import type { ArgumentsCamelCase } from 'yargs';
+
+import { configure } from '../actions/configure.js';
 import type { ConfigureArgs } from '../types/configure.js';
 
 export const configureCommand: CommandModule<{}, ConfigureArgs> = {

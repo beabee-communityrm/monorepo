@@ -57,15 +57,15 @@
 </template>
 
 <script lang="ts" setup>
+import type { CreateNoticeData, GetNoticeData } from '@beabee/beabee-common';
+import { AppForm, AppLabel } from '@beabee/vue/components';
+
+import AppInput from '@components/forms/AppInput.vue';
 import { format } from 'date-fns';
 import { reactive } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { AppForm, AppLabel } from '@beabee/vue/components';
-import AppInput from '@components/forms/AppInput.vue';
-
 import type { NoticeFormData } from './notice.interface';
-import type { CreateNoticeData, GetNoticeData } from '@beabee/beabee-common';
 
 defineEmits(['submit']);
 const props = defineProps<{ notice: GetNoticeData | undefined }>();

@@ -1,9 +1,9 @@
-import crypto from 'node:crypto';
 import { LOGIN_CODES } from '@beabee/beabee-common';
-import { TOTP, Secret } from 'otpauth';
 
 import config from '#config/config';
 import { Password } from '#models/index';
+import crypto from 'node:crypto';
+import { Secret, TOTP } from 'otpauth';
 
 export function generateApiKey(
   idLength: number = 16,

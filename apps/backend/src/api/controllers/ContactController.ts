@@ -1,4 +1,56 @@
 import { ContributionPeriod, GetContactWith } from '@beabee/beabee-common';
+import {
+  CantUpdateContribution,
+  NoPaymentMethod,
+  UnauthorizedError,
+} from '@beabee/core/errors';
+import { Contact, JoinFlow } from '@beabee/core/models';
+import ContactMfaService from '@beabee/core/services/ContactMfaService';
+import ContactsService from '@beabee/core/services/ContactsService';
+import DispatchService from '@beabee/core/services/DispatchService';
+import PaymentFlowService from '@beabee/core/services/PaymentFlowService';
+import PaymentService from '@beabee/core/services/PaymentService';
+import { AuthInfo } from '@beabee/core/type';
+import { generatePassword } from '@beabee/core/utils/auth';
+import { mergeRules } from '@beabee/core/utils/rules';
+
+import { CurrentAuth } from '@api/decorators/CurrentAuth';
+import PartialBody from '@api/decorators/PartialBody';
+import { TargetUser } from '@api/decorators/TargetUser';
+import { GetExportQuery } from '@api/dto/BaseDto';
+import {
+  BatchUpdateContactDto,
+  BatchUpdateContactResultDto,
+  CreateContactDto,
+  GetContactDto,
+  GetContactOptsDto,
+  GetContributionInfoDto,
+  ListContactsDto,
+  UpdateContactDto,
+} from '@api/dto/ContactDto';
+import {
+  CreateContactMfaDto,
+  DeleteContactMfaDto,
+  GetContactMfaDto,
+} from '@api/dto/ContactMfaDto';
+import {
+  GetContactRoleDto,
+  UpdateContactRoleDto,
+} from '@api/dto/ContactRoleDto';
+import {
+  ForceUpdateContributionDto,
+  StartContributionDto,
+  UpdateContributionDto,
+} from '@api/dto/ContributionDto';
+import { CompleteJoinFlowDto, StartJoinFlowDto } from '@api/dto/JoinFlowDto';
+import { PaginatedDto } from '@api/dto/PaginatedDto';
+import { GetPaymentDto, ListPaymentsDto } from '@api/dto/PaymentDto';
+import { GetPaymentFlowDto } from '@api/dto/PaymentFlowDto';
+import { ContactRoleParams } from '@api/params/ContactRoleParams';
+import ContactExporter from '@api/transformers/ContactExporter';
+import ContactRoleTransformer from '@api/transformers/ContactRoleTransformer';
+import ContactTransformer from '@api/transformers/ContactTransformer';
+import PaymentTransformer from '@api/transformers/PaymentTransformer';
 import { plainToInstance } from 'class-transformer';
 import { Response } from 'express';
 import {
@@ -17,64 +69,6 @@ import {
   QueryParams,
   Res,
 } from 'routing-controllers';
-
-import ContactMfaService from '@beabee/core/services/ContactMfaService';
-import ContactsService from '@beabee/core/services/ContactsService';
-import DispatchService from '@beabee/core/services/DispatchService';
-import PaymentFlowService from '@beabee/core/services/PaymentFlowService';
-import PaymentService from '@beabee/core/services/PaymentService';
-
-import { generatePassword } from '@beabee/core/utils/auth';
-
-import { Contact, JoinFlow } from '@beabee/core/models';
-
-import { GetExportQuery } from '@api/dto/BaseDto';
-import {
-  CreateContactDto,
-  GetContactDto,
-  GetContactOptsDto,
-  GetContributionInfoDto,
-  ListContactsDto,
-  UpdateContactDto,
-  BatchUpdateContactDto,
-  BatchUpdateContactResultDto,
-} from '@api/dto/ContactDto';
-import {
-  CreateContactMfaDto,
-  DeleteContactMfaDto,
-  GetContactMfaDto,
-} from '@api/dto/ContactMfaDto';
-import {
-  GetContactRoleDto,
-  UpdateContactRoleDto,
-} from '@api/dto/ContactRoleDto';
-import {
-  StartContributionDto,
-  ForceUpdateContributionDto,
-  UpdateContributionDto,
-} from '@api/dto/ContributionDto';
-import { CompleteJoinFlowDto, StartJoinFlowDto } from '@api/dto/JoinFlowDto';
-import { PaginatedDto } from '@api/dto/PaginatedDto';
-import { GetPaymentDto, ListPaymentsDto } from '@api/dto/PaymentDto';
-import { GetPaymentFlowDto } from '@api/dto/PaymentFlowDto';
-
-import { CurrentAuth } from '@api/decorators/CurrentAuth';
-import PartialBody from '@api/decorators/PartialBody';
-import { TargetUser } from '@api/decorators/TargetUser';
-import {
-  CantUpdateContribution,
-  NoPaymentMethod,
-  UnauthorizedError,
-} from '@beabee/core/errors';
-import { ContactRoleParams } from '@api/params/ContactRoleParams';
-import { mergeRules } from '@beabee/core/utils/rules';
-
-import ContactExporter from '@api/transformers/ContactExporter';
-import ContactTransformer from '@api/transformers/ContactTransformer';
-import ContactRoleTransformer from '@api/transformers/ContactRoleTransformer';
-import PaymentTransformer from '@api/transformers/PaymentTransformer';
-
-import { AuthInfo } from '@beabee/core/type';
 
 @JsonController('/contact')
 @Authorized()

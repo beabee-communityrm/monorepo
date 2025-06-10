@@ -1,32 +1,30 @@
-import 'module-alias/register';
-
-import { Brackets } from 'typeorm';
-
 import { createQueryBuilder } from '@beabee/core/database';
+import { Callout, CalloutResponse, Contact } from '@beabee/core/models';
 import { runApp } from '@beabee/core/server';
 
-import { Contact, Callout, CalloutResponse } from '@beabee/core/models';
+import 'module-alias/register';
+import { Brackets } from 'typeorm';
 
+import { anonymiseModel, clearModels } from './anonymisers';
 import {
   ModelAnonymiser,
-  contactContributionAnonymiser,
-  paymentsAnonymiser,
-  contactAnonymiser,
-  contactRoleAnonymiser,
-  contactProfileAnonymiser,
-  calloutResponsesAnonymiser,
-  calloutsAnonymiser,
-  calloutTagsAnonymiser,
   calloutResponseCommentsAnonymiser,
   calloutResponseTagsAnonymiser,
-  segmentContactsAnonymiser,
+  calloutResponsesAnonymiser,
+  calloutTagsAnonymiser,
+  calloutVariantAnonymiser,
+  calloutsAnonymiser,
+  contactAnonymiser,
+  contactContributionAnonymiser,
+  contactProfileAnonymiser,
+  contactRoleAnonymiser,
+  paymentsAnonymiser,
   projectContactsAnonymiser,
   projectEngagmentsAnonymiser,
   referralsAnonymiser,
   resetSecurityFlowAnonymiser,
-  calloutVariantAnonymiser,
+  segmentContactsAnonymiser,
 } from './anonymisers/models';
-import { anonymiseModel, clearModels } from './anonymisers';
 
 const contactAnonymisers = [
   contactAnonymiser,

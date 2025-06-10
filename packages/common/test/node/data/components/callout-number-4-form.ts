@@ -1,7 +1,7 @@
 import { CalloutComponentType } from '@beabee/beabee-common';
-import { calloutComponentValidateNumber1 } from './validate-rules/callout-component-validate-number-1.js';
-
 import type { CalloutComponentInputNumberSchema } from '@beabee/beabee-common';
+
+import { calloutComponentValidateNumber1 } from './validate-rules/callout-component-validate-number-1.js';
 
 export const calloutNumber4Form: CalloutComponentInputNumberSchema = {
   id: 'ekoulk',

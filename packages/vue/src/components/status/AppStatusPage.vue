@@ -80,8 +80,8 @@
  *   show-progress
  * />
  */
+import { faCircleNotch, faHeart } from '@fortawesome/free-solid-svg-icons';
 
-import { faHeart, faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 import { AppButton } from '../button';
 
 /**

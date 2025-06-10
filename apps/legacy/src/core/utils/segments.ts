@@ -1,9 +1,7 @@
-import { validateRuleGroup, contactFilters } from '@beabee/beabee-common';
-import { Contact, Segment } from '@beabee/core/models';
-
-import { buildSelectQuery } from '@beabee/core/utils/rules';
-
+import { contactFilters, validateRuleGroup } from '@beabee/beabee-common';
 import { contactFilterHandlers } from '@beabee/core/filter-handlers';
+import { Contact, Segment } from '@beabee/core/models';
+import { buildSelectQuery } from '@beabee/core/utils/rules';
 
 /** @deprecated Only used in legacy codebase */
 export async function getSegmentContacts(segment: Segment): Promise<Contact[]> {

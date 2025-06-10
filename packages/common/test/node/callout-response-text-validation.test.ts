@@ -1,8 +1,10 @@
-import { describe, expect, test } from 'vitest';
 import {
   CalloutComponentInputTextAreaSchema,
   calloutComponentInputTextValidator,
 } from '@beabee/beabee-common';
+
+import { describe, expect, test } from 'vitest';
+
 import { calloutTextarea1Form } from './data/components/index.js';
 
 describe('Validate callout textarea form response', () => {

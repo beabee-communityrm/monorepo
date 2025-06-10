@@ -1,8 +1,5 @@
-import express, { Handler, Request, Response } from 'express';
-
 import { log, requestErrorLogger, requestLogger } from '@beabee/core/logging';
 import { initApp, startServer } from '@beabee/core/server';
-
 import OptionsService, {
   OptionKey,
 } from '@beabee/core/services/OptionsService';
@@ -10,6 +7,7 @@ import OptionsService, {
 import { gocardlessWebhookApp } from '#handlers/gocardless';
 import { mailchimpWebhookApp } from '#handlers/mailchimp';
 import { stripeWebhookApp } from '#handlers/stripe';
+import express, { Handler, Request, Response } from 'express';
 
 function checkOpt(key: OptionKey): Handler {
   return (req, res, next) => {

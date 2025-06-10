@@ -1,17 +1,17 @@
+import { log as mainLogger } from '#logging';
+import {
+  cancelMandate,
+  cancelSubscription,
+  updatePayment,
+  updatePaymentStatus,
+} from '#utils/gocardless';
 import {
   Event,
   EventResourceType,
   PaymentStatus,
 } from 'gocardless-nodejs/types/Types';
 
-import { log as mainLogger } from '#logging';
 import gocardless from './gocardless';
-import {
-  updatePaymentStatus,
-  updatePayment,
-  cancelSubscription,
-  cancelMandate,
-} from '#utils/gocardless';
 
 const log = mainLogger.child({ app: 'gocardless-webhook-handler' });
 

@@ -1,18 +1,18 @@
-import { describe, expect, it, beforeAll, afterAll } from 'vitest';
-import { ApiKeyClient, AuthClient } from '@beabee/client';
 import type {
   CreateApiKeyData,
   GetApiKeyData,
   Paginated,
 } from '@beabee/beabee-common';
-import { addDays } from 'date-fns';
-
+import { ApiKeyClient, AuthClient } from '@beabee/client';
 import {
   HOST,
   PATH,
   TEST_USER_EMAIL,
   TEST_USER_PASSWORD,
 } from '@beabee/test-utils/vitest/env';
+
+import { addDays } from 'date-fns';
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
 describe('ApiKey API', () => {
   let apiKeyClient: ApiKeyClient;

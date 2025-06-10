@@ -1,4 +1,5 @@
 import { LoginData } from '@beabee/core/type';
+
 import { IsEmail, IsOptional, IsString } from 'class-validator';
 
 export class LoginDto implements LoginData {

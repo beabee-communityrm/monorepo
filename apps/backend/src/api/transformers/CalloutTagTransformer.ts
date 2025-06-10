@@ -1,20 +1,22 @@
-import { BadRequestError, UnauthorizedError } from 'routing-controllers';
-import { GetCalloutTagDto } from '@api/dto';
 import {
   CalloutTagFilterName,
   Filters,
-  calloutTagFilters,
   RuleGroup,
+  calloutTagFilters,
 } from '@beabee/beabee-common';
+import { getRepository } from '@beabee/core/database';
 import {
-  CalloutTag,
   CalloutResponseTag,
   CalloutReviewer,
+  CalloutTag,
 } from '@beabee/core/models';
 import { AuthInfo } from '@beabee/core/type';
+
+import { GetCalloutTagDto } from '@api/dto';
 import { getReviewerRules } from '@api/utils/callouts';
+import { BadRequestError, UnauthorizedError } from 'routing-controllers';
+
 import BaseTagTransformer from './BaseTagTransformer';
-import { getRepository } from '@beabee/core/database';
 
 class CalloutTagTransformer extends BaseTagTransformer<
   CalloutTag,

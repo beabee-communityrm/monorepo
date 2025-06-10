@@ -1,12 +1,13 @@
-import { runApp } from '@beabee/core/server';
-import { getRepository } from '@beabee/core/database';
-import { ContactRole } from '@beabee/core/models';
-import { Between } from 'typeorm';
 import { NewsletterStatus } from '@beabee/beabee-common';
-import moment from 'moment';
+import { getRepository } from '@beabee/core/database';
+import { log as mainLogger } from '@beabee/core/logging';
+import { ContactRole } from '@beabee/core/models';
+import { runApp } from '@beabee/core/server';
 import { newsletterService } from '@beabee/core/services/NewsletterService';
 import { optionsService } from '@beabee/core/services/OptionsService';
-import { log as mainLogger } from '@beabee/core/logging';
+
+import moment from 'moment';
+import { Between } from 'typeorm';
 
 const log = mainLogger.child({ app: 'mailchimp-sync' });
 

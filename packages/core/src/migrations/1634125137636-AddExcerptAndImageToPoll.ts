@@ -1,5 +1,5 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
 import { addThenSetNotNull } from '#utils/db';
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class AddExcerptAndImageToPoll1634125137636
   implements MigrationInterface

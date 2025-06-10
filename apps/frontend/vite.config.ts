@@ -1,11 +1,12 @@
+import theme from '@beabee/vue/plugins/theme';
+
+import vueI18n from '@intlify/unplugin-vue-i18n/vite';
+// TODO: Replace with https://github.com/posva/unplugin-vue-router as recommended by `vite-plugin-pages` itself
+import replace from '@rollup/plugin-replace';
+import vue from '@vitejs/plugin-vue';
 import path from 'path';
 import { defineConfig, loadEnv } from 'vite';
-import vue from '@vitejs/plugin-vue';
-import vueI18n from '@intlify/unplugin-vue-i18n/vite';
-import pages from 'vite-plugin-pages'; // TODO: Replace with https://github.com/posva/unplugin-vue-router as recommended by `vite-plugin-pages` itself
-import replace from '@rollup/plugin-replace';
-
-import theme from '@beabee/vue/plugins/theme';
+import pages from 'vite-plugin-pages';
 
 export default ({ command, mode }) => {
   const env = loadEnv(mode, process.cwd(), '');

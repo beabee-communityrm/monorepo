@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { ref, reactive } from 'vue';
+import { reactive, ref } from 'vue';
+
 import AppRadioGroup from './AppRadioGroup.vue';
 
 const state = reactive({

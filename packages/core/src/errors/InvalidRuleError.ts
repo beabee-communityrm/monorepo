@@ -1,4 +1,5 @@
 import { Rule } from '@beabee/beabee-common';
+
 import { BadRequestError } from 'routing-controllers';
 
 export class InvalidRuleError extends BadRequestError {

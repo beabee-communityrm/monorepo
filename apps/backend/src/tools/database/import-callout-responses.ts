@@ -1,5 +1,3 @@
-import 'module-alias/register';
-
 import {
   CalloutComponentSchema,
   CalloutComponentType,
@@ -9,13 +7,15 @@ import {
   CalloutResponseAnswersSlide,
   getCalloutComponents,
 } from '@beabee/beabee-common';
+import { config } from '@beabee/core/config';
 import { getRepository, runTransaction } from '@beabee/core/database';
 import { Callout, CalloutResponse, Contact } from '@beabee/core/models';
 import { runApp } from '@beabee/core/server';
-import { parse } from 'csv-parse';
-import { In } from 'typeorm';
+
 import { isURL } from 'class-validator';
-import { config } from '@beabee/core/config';
+import { parse } from 'csv-parse';
+import 'module-alias/register';
+import { In } from 'typeorm';
 
 interface ResponseRow {
   [key: string]: string;

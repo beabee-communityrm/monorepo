@@ -1,12 +1,13 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
-import AppSelectableList from './AppSelectableList.vue';
 import {
-  faUser,
-  faTag,
   faFolder,
   faGlobe,
+  faTag,
+  faUser,
 } from '@fortawesome/free-solid-svg-icons';
+import { ref } from 'vue';
+
+import AppSelectableList from './AppSelectableList.vue';
 
 // Sample data for examples
 const users = [

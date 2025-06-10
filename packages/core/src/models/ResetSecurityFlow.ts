@@ -1,11 +1,13 @@
 import { RESET_SECURITY_FLOW_TYPE } from '@beabee/beabee-common';
+
 import {
+  Column,
   CreateDateColumn,
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
-  Column,
 } from 'typeorm';
+
 import type { Contact } from './index';
 
 @Entity()

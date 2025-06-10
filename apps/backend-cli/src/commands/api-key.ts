@@ -1,8 +1,8 @@
+import type { ArgumentsCamelCase, CommandModule } from 'yargs';
+
 import { createApiKey } from '../actions/api-key/create.js';
 import { deleteApiKey } from '../actions/api-key/delete.js';
 import { listApiKeys } from '../actions/api-key/list.js';
-
-import type { ArgumentsCamelCase, CommandModule } from 'yargs';
 import type { CreateApiKeyArgs, DeleteApiKeyArgs } from '../types/index.js';
 
 export const apiKeyCommand: CommandModule = {

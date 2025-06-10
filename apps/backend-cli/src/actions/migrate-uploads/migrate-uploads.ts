@@ -1,6 +1,17 @@
+import { FormioFile, isFormioFileAnswer } from '@beabee/beabee-common';
+import { config } from '@beabee/core/config';
+import { connect as connectToDatabase } from '@beabee/core/database';
+import { getRepository } from '@beabee/core/database';
+import { Content } from '@beabee/core/models/Content';
+import { calloutsService } from '@beabee/core/services/CalloutsService';
+import { documentService } from '@beabee/core/services/DocumentService';
+// Import the required services and utilities from core
+import { imageService } from '@beabee/core/services/ImageService';
+import { optionsService } from '@beabee/core/services/OptionsService';
+
+import chalk from 'chalk';
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import chalk from 'chalk';
 
 import {
   MigrateUploadsOptions,
@@ -8,21 +19,10 @@ import {
 } from '../../types/migrate-uploads.js';
 import { findMainImage } from '../../utils/files.js';
 import {
+  formatDryRunMessage,
   formatFileSize,
   formatSuccessMessage,
-  formatDryRunMessage,
 } from '../../utils/format.js';
-
-// Import the required services and utilities from core
-import { imageService } from '@beabee/core/services/ImageService';
-import { documentService } from '@beabee/core/services/DocumentService';
-import { calloutsService } from '@beabee/core/services/CalloutsService';
-import { optionsService } from '@beabee/core/services/OptionsService';
-import { Content } from '@beabee/core/models/Content';
-import { config } from '@beabee/core/config';
-import { connect as connectToDatabase } from '@beabee/core/database';
-import { isFormioFileAnswer, FormioFile } from '@beabee/beabee-common';
-import { getRepository } from '@beabee/core/database';
 
 /**
  * Helper function to check if a file URL is already migrated

@@ -258,10 +258,7 @@
 
 <script lang="ts" setup>
 import { ItemStatus, getCalloutComponents } from '@beabee/beabee-common';
-import { computed, ref, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
-import useVuelidate from '@vuelidate/core';
-import AppInput from '@components/forms/AppInput.vue';
+import type { CalloutMapSchema } from '@beabee/beabee-common';
 import {
   AppCheckboxGroup,
   AppFormBox,
@@ -271,11 +268,15 @@ import {
   AppToggleField,
   type ScrollSection,
 } from '@beabee/vue/components';
-import AppSelect from '@components/forms/AppSelect.vue';
-import AppLinkList from '@components/forms/AppLinkList.vue';
-import { buckets } from '@utils/callouts';
 
-import type { CalloutMapSchema } from '@beabee/beabee-common';
+import AppInput from '@components/forms/AppInput.vue';
+import AppLinkList from '@components/forms/AppLinkList.vue';
+import AppSelect from '@components/forms/AppSelect.vue';
+import { buckets } from '@utils/callouts';
+import useVuelidate from '@vuelidate/core';
+import { computed, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
+
 import type { CalloutHorizontalTabs } from '../CalloutHorizontalTabs.interface';
 
 /**

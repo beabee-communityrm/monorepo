@@ -1,4 +1,5 @@
 import { PaymentStatus } from '@beabee/beabee-common';
+
 import {
   Column,
   CreateDateColumn,
@@ -7,6 +8,7 @@ import {
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
+
 import { type Contact } from './index';
 
 @Entity()

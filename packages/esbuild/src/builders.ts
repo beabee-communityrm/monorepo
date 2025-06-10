@@ -1,10 +1,11 @@
-import * as esbuild from 'esbuild';
 import { transformExtPlugin } from '@gjsify/esbuild-plugin-transform-ext';
-import { createWatchLoggerPlugin, createCjsRenamePlugin } from './plugins.ts';
+import * as esbuild from 'esbuild';
+
+import { createCjsRenamePlugin, createWatchLoggerPlugin } from './plugins.ts';
 import type {
+  BuildIIFEOptions,
   BuildOptions,
   BuildStandardOptions,
-  BuildIIFEOptions,
 } from './types/index.ts';
 import { ensureDir } from './utils.ts';
 

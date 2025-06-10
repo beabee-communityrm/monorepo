@@ -4,26 +4,11 @@ import {
   GetContactWith,
   MembershipStatus,
   NewsletterStatus,
+  PaymentSource,
   RoleType,
   RoleTypes,
-  PaymentSource,
 } from '@beabee/beabee-common';
-import { Type } from 'class-transformer';
-import {
-  IsArray,
-  IsBoolean,
-  IsDate,
-  IsEmail,
-  IsEnum,
-  IsIn,
-  IsNumber,
-  IsObject,
-  IsOptional,
-  IsString,
-  Validate,
-  ValidateNested,
-  IsDefined,
-} from 'class-validator';
+import { ContributionInfo } from '@beabee/core/type';
 
 import { GetPaginatedQuery, GetPaginatedRuleGroup } from '@api/dto/BaseDto';
 import {
@@ -36,10 +21,23 @@ import {
 } from '@api/dto/ContactRoleDto';
 import { GetContactTagDto } from '@api/dto/ContactTagDto';
 import { ForceUpdateContributionDto } from '@api/dto/ContributionDto';
-
 import IsPassword from '@api/validators/IsPassword';
-
-import { ContributionInfo } from '@beabee/core/type';
+import { Type } from 'class-transformer';
+import {
+  IsArray,
+  IsBoolean,
+  IsDate,
+  IsDefined,
+  IsEmail,
+  IsEnum,
+  IsIn,
+  IsNumber,
+  IsObject,
+  IsOptional,
+  IsString,
+  Validate,
+  ValidateNested,
+} from 'class-validator';
 
 const contactSortFields = [
   'firstname',

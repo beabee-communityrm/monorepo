@@ -1,16 +1,12 @@
-import crypto from 'node:crypto';
-
-import { Request, Response } from 'express';
-import { Middleware, ExpressMiddlewareInterface } from 'routing-controllers';
-
 import { getRepository } from '@beabee/core/database';
-
+import { ApiKey } from '@beabee/core/models';
 import ContactsService from '@beabee/core/services/ContactsService';
+import { AuthInfo } from '@beabee/core/type';
 import { extractToken } from '@beabee/core/utils/auth';
 
-import { ApiKey } from '@beabee/core/models';
-
-import { AuthInfo } from '@beabee/core/type';
+import { Request, Response } from 'express';
+import crypto from 'node:crypto';
+import { ExpressMiddlewareInterface, Middleware } from 'routing-controllers';
 
 @Middleware({ type: 'before' })
 export class AuthMiddleware implements ExpressMiddlewareInterface {

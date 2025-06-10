@@ -1,22 +1,18 @@
-import 'module-alias/register';
-
 import {
   ContributionType,
   RESET_SECURITY_FLOW_TYPE,
 } from '@beabee/beabee-common';
-import { input, password, select } from '@inquirer/prompts';
-import moment from 'moment';
-
+import config from '@beabee/core/config';
 import { getRepository } from '@beabee/core/database';
+import { ContactRole } from '@beabee/core/models';
 import { runApp } from '@beabee/core/server';
-import { generatePassword } from '@beabee/core/utils/auth';
-
 import ContactsService from '@beabee/core/services/ContactsService';
 import ResetSecurityFlowService from '@beabee/core/services/ResetSecurityFlowService';
+import { generatePassword } from '@beabee/core/utils/auth';
 
-import { ContactRole } from '@beabee/core/models';
-
-import config from '@beabee/core/config';
+import { input, password, select } from '@inquirer/prompts';
+import 'module-alias/register';
+import moment from 'moment';
 
 function notEmpty(s: string) {
   return s.trim() !== '';

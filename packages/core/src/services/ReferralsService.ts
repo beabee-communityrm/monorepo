@@ -1,9 +1,7 @@
 import { getRepository } from '#database';
 import { log as mainLogger } from '#logging';
-
+import { Contact, Referral, ReferralGift } from '#models/index';
 import EmailService from '#services/EmailService';
-
-import { Contact, ReferralGift, Referral } from '#models/index';
 import { ReferralGiftForm } from '#type/index';
 
 const log = mainLogger.child({ app: 'referrals-service' });

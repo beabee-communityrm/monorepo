@@ -1,6 +1,5 @@
 import fs from 'fs';
 import path from 'path';
-
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class SessionTable1616677358190 implements MigrationInterface {

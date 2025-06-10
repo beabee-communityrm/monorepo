@@ -1,4 +1,5 @@
 import { FilterType, RuleOperator, RuleValue } from '@beabee/beabee-common';
+
 import { WhereExpressionBuilder } from 'typeorm';
 
 /**

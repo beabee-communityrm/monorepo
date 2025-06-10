@@ -18,9 +18,10 @@
 </template>
 
 <script lang="ts" setup>
-import { useI18n } from 'vue-i18n';
-import { computed } from 'vue';
 import { AppCheckbox } from '@beabee/vue/components';
+
+import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 const { t, n } = useI18n();
 
