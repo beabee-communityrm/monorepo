@@ -8,11 +8,12 @@ export const baseConfig = {
       options: { parser: "html" },
     },
   ],
+  plugins: ["@trivago/prettier-plugin-sort-imports"],
 };
 
 // Frontend specific configuration
 export const frontendConfig = {
   ...baseConfig,
-  plugins: ["prettier-plugin-tailwindcss"],
+  plugins: [...baseConfig.plugins, "prettier-plugin-tailwindcss"],
   tailwindConfig: null,
 };
