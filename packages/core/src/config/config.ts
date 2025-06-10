@@ -143,7 +143,10 @@ const image: ImageServiceConfig = {
     ["avif", "webp", "jpeg", "png", "original"] as const, // Allowed image formats
     "avif" // Default: avif
   ),
-  availableWidths: [100, 300, 400, 600, 900, 1200, 1440, 1800], // Supported widths for image resizing
+  availableWidths: env.nn(
+    "BEABEE_IMAGE_AVAILABLE_WIDTHS",
+    [100, 300, 400, 600, 900, 1200, 1440, 1800]
+  ), // Supported widths for image resizing
   s3
 };
 

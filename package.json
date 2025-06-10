@@ -15,7 +15,7 @@
     "setup": "yarn workspace @beabee/backend run setup",
     "typeorm": "yarn workspace @beabee/backend run typeorm",
     "bootstrap": "yarn workspaces foreach -v -W -p -i run bootstrap && yarn bootstrap:env",
-    "bootstrap:env": "cp -n .env.example .env 2>/dev/null; cp -n .env.remote.example .env.remote 2>/dev/null || true"
+    "bootstrap:env": "cp -n .env.example .env 2>/dev/null; cp -n .env.remote.example .env.remote 2>/dev/null; cp -n .env.test.example .env.test 2>/dev/null || true"
   },
   "workspaces": [
     "packages/*",

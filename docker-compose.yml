@@ -116,7 +116,7 @@ services:
         - VERSION=${VERSION}
         - REVISION=${REVISION}
     env_file:
-      - ./apps/frontend/.env
+      - .env
 
   # Application router
   app_router:

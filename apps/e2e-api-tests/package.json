@@ -5,9 +5,7 @@
   "type": "module",
   "scripts": {
     "test": "vitest run",
-    "test:watch": "vitest",
-    "bootstrap": "yarn bootstrap:env",
-    "bootstrap:env": "cp -n .env.example .env 2>/dev/null || true"
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@beabee/client": "workspace:*"

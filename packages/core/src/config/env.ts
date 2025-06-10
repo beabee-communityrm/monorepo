@@ -97,6 +97,25 @@ export function e<T extends readonly string[]>(
 }
 
 /**
+ * Reads an environment variable as a number array
+ * @param name The name of the environment variable to read
+ * @param def The default value to return if the environment variable is not set
+ * @returns The value
+ */
+export function nn(name: string, def?: number[]): number[] {
+  const value =
+    read(name)
+      ?.split(",")
+      .map((v) => Number(v.trim())) || def;
+  assert(value !== undefined, `Missing environment variable ${name}`);
+  assert(
+    value.every((v) => !isNaN(v)),
+    `Invalid number array for environment variable ${name}: contains non-numeric values`
+  );
+  return value;
+}
+
+/**
  * Reads an environment variable as a JSON object
  * @param name The name of the environment variable to read
  * @param def The default value to return if the environment variable is not set

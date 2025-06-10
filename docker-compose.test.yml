@@ -58,8 +58,8 @@ services:
       file: docker-compose.yml
       service: frontend
     env_file:
-      - ./apps/frontend/.env
-      - ./apps/frontend/.env.test
+      - .env
+      - .env.test
 
   app_router:
     extends:
