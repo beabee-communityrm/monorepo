@@ -17,6 +17,8 @@ export const baseConfig = {
   ],
   importOrderSeparation: true,
   importOrderSortSpecifiers: true,
+  // Add parser plugins to support decorators and other TypeScript features
+  importOrderParserPlugins: ["typescript", "decorators-legacy"],
 };
 
 // Frontend specific configuration
