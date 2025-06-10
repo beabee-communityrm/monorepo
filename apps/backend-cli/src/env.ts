@@ -16,7 +16,7 @@ if (!isRunningInDocker()) {
   env = {
     ...env,
     ...dotenv.config({
-      path: [workspaceRootPath + "/.env.cli"],
+      path: [workspaceRootPath + "/.env.remote"],
       override: false
     }).parsed
   };
@@ -44,7 +44,7 @@ if (!isRunningInDocker()) {
     env = {
       ...env,
       ...dotenv.config({
-        path: [workspaceRootPath + "/.env.cli-test"],
+        path: [workspaceRootPath + "/.env.remote-test"],
         override: true
       }).parsed
     };

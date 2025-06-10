@@ -43,10 +43,10 @@ You need the following tools installed on your machine:
    yarn install
    ```
 
-2. Run the presetup script to copy the example environment files:
+2. Run the bootstrap script to copy the example environment files:
 
    ```bash
-   yarn presetup
+   yarn bootstrap
    ```
 3. Complete the .env in your root by setting the following environment variables:
 
