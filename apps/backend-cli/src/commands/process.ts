@@ -1,5 +1,4 @@
 import type { CommandModule, ArgumentsCamelCase } from "yargs";
-import { processGifts } from "../actions/process/gifts.js";
 import type { ProcessGiftsArgs } from "../types/process.js";
 
 export const processCommand: CommandModule = {
@@ -21,8 +20,10 @@ export const processCommand: CommandModule = {
             description: "Run without making changes",
             default: false
           }),
-      handler: (argv: ArgumentsCamelCase<ProcessGiftsArgs>) =>
-        processGifts(argv)
+      handler: async (argv: ArgumentsCamelCase<ProcessGiftsArgs>) => {
+        const { processGifts } = await import("../actions/process/gifts.js");
+        return processGifts(argv);
+      }
     }),
   handler: () => {}
 };

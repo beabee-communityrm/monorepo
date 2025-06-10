@@ -1,6 +1,4 @@
 import type { CommandModule } from "yargs";
-import { createPayment } from "../actions/payment/create.js";
-import { listPayments } from "../actions/payment/list.js";
 import { ContributionPeriod, PaymentMethod } from "@beabee/beabee-common";
 import type { ArgumentsCamelCase } from "yargs";
 import type { CreatePaymentArgs } from "../types/payment.js";
@@ -51,8 +49,12 @@ export const paymentCommand: CommandModule = {
               description: "Prorate payment",
               default: false
             }),
-        handler: (argv: ArgumentsCamelCase<CreatePaymentArgs>) =>
-          createPayment(argv)
+        handler: async (argv: ArgumentsCamelCase<CreatePaymentArgs>) => {
+          const { createPayment } = await import(
+            "../actions/payment/create.js"
+          );
+          return createPayment(argv);
+        }
       })
       .command({
         command: "list [email]",
@@ -62,7 +64,10 @@ export const paymentCommand: CommandModule = {
             type: "string",
             description: "Filter by contact email"
           }),
-        handler: (argv) => listPayments(argv.email as string | undefined)
+        handler: async (argv) => {
+          const { listPayments } = await import("../actions/payment/list.js");
+          return listPayments(argv.email as string | undefined);
+        }
       }),
   handler: () => {}
 };

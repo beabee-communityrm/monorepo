@@ -1,5 +1,4 @@
 import { Argv } from "yargs";
-import { migrateUploads } from "../actions/migrate-uploads/migrate-uploads.js";
 import { MigrateUploadsArgs } from "../types/index.js";
 
 /**
@@ -45,6 +44,9 @@ export const migrateUploadsCommand = {
   },
   handler: async (args: MigrateUploadsArgs): Promise<void> => {
     try {
+      const { migrateUploads } = await import(
+        "../actions/migrate-uploads/migrate-uploads.js"
+      );
       await migrateUploads({
         source: args.source,
         dryRun: args.dryRun,
