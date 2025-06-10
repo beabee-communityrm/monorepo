@@ -51,7 +51,7 @@ Configuration for server-side TypeScript projects, particularly those using deco
 
 **Features:**
 - Extends `@tsconfig/node22` for Node.js compatibility
-- Enables experimental decorators and decorator metadata for frameworks like NestJS
+- Enables experimental decorators and decorator metadata for frameworks like `routing-controllers`
 - Includes strict type checking options like `exactOptionalPropertyTypes`
 - Allows importing JSON modules with `resolveJsonModule`
 - Disables `useDefineForClassFields` for compatibility with class-transformer libraries
