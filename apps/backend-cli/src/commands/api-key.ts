@@ -1,8 +1,5 @@
 import type { ArgumentsCamelCase, CommandModule } from 'yargs';
 
-import { createApiKey } from '../actions/api-key/create.js';
-import { deleteApiKey } from '../actions/api-key/delete.js';
-import { listApiKeys } from '../actions/api-key/list.js';
 import type { CreateApiKeyArgs, DeleteApiKeyArgs } from '../types/index.js';
 
 export const apiKeyCommand: CommandModule = {
@@ -13,7 +10,10 @@ export const apiKeyCommand: CommandModule = {
       .command({
         command: 'list',
         describe: 'List all API keys',
-        handler: () => listApiKeys(),
+        handler: async () => {
+          const { listApiKeys } = await import('../actions/api-key/list.js');
+          return listApiKeys();
+        },
       })
       .command({
         command: 'create',
@@ -39,14 +39,18 @@ export const apiKeyCommand: CommandModule = {
               demandOption: true,
             });
         },
-        handler: (argv: ArgumentsCamelCase<CreateApiKeyArgs>) =>
-          createApiKey(argv), // Call the function instead of just returning argv
+        handler: async (argv: ArgumentsCamelCase<CreateApiKeyArgs>) => {
+          const { createApiKey } = await import('../actions/api-key/create.js');
+          return createApiKey(argv);
+        },
       })
       .command({
         command: 'delete <id>',
         describe: 'Delete an API key',
-        handler: (argv: ArgumentsCamelCase<DeleteApiKeyArgs>) =>
-          deleteApiKey(argv),
+        handler: async (argv: ArgumentsCamelCase<DeleteApiKeyArgs>) => {
+          const { deleteApiKey } = await import('../actions/api-key/delete.js');
+          return deleteApiKey(argv);
+        },
       });
   },
   handler: () => {},
