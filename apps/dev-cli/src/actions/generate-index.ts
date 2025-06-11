@@ -29,8 +29,13 @@ export const generateIndex = async (argv: GenerateIndexArgs): Promise<void> => {
         if (file.name.endsWith(".ts") && file.name !== "index.ts") {
           const importName = basename(file.name, ".ts");
           const importExtension = getImportExtension(extension);
-          indexContent += `export * from './${importName}${importExtension}';\n`;
+          indexContent += `export * from "./${importName}${importExtension}";\n`;
         }
+      }
+
+      // If no files were found to export, add an empty export
+      if (indexContent === "") {
+        indexContent = "export {};\n";
       }
 
       // Write file asynchronously

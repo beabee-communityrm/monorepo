@@ -1,14 +1,14 @@
 import { DockerComposeEnvironment, Wait } from "testcontainers";
-import path from "node:path";
-import dotenv from "dotenv";
+import { resolve } from "node:path";
+import { config } from "dotenv";
 
 import type { StartedDockerComposeEnvironment } from "testcontainers";
 
-const rootPath = path.resolve(process.cwd() + "/../..");
-const envDev = dotenv.config({ path: [rootPath + "/.env"], override: false });
-const envTest = dotenv.config({
+const rootPath = resolve(process.cwd() + "/../..");
+const envDev = config({ path: [rootPath + "/.env"], override: false });
+const envTest = config({
   path: [rootPath + "/.env.test"],
-  override: true,
+  override: true
 });
 const env = { ...envDev.parsed, ...envTest.parsed };
 
@@ -29,12 +29,12 @@ const createTestPaymentsCommands = [
   `yarn backend-cli payment create --email ${testUserEmail} --amount 70 --period annually`,
   `yarn backend-cli payment create --email ${testUserEmail} --amount 80 --period annually`,
   `yarn backend-cli payment create --email ${testUserEmail} --amount 90 --period annually`,
-  `yarn backend-cli payment create --email ${testUserEmail} --amount 100 --period annually`,
+  `yarn backend-cli payment create --email ${testUserEmail} --amount 100 --period annually`
 ];
 
 const apiAppLogs = {
   data: [] as string[],
-  err: [] as string[],
+  err: [] as string[]
 };
 
 let startedDockerComposeEnvironment: StartedDockerComposeEnvironment | null =
@@ -46,21 +46,21 @@ export async function setup() {
   try {
     const dockerComposeEnv = new DockerComposeEnvironment(
       rootPath,
-      "docker-compose.test.yml",
+      "docker-compose.test.yml"
     )
       .withEnvironment(env)
       .withProjectName(env.COMPOSE_PROJECT_NAME || "beabee-test")
       .withWaitStrategy(
         "db",
-        Wait.forLogMessage(/database system is ready to accept connections/),
+        Wait.forLogMessage(/database system is ready to accept connections/)
       )
       .withWaitStrategy(
         "api_app",
-        Wait.forLogMessage(/Server is ready and listening on port 3000/),
+        Wait.forLogMessage(/Server is ready and listening on port 3000/)
       )
       .withWaitStrategy(
         "minio",
-        Wait.forLogMessage(/MinIO server is running.../),
+        Wait.forLogMessage(/MinIO server is running.../)
       );
 
     const services = [
@@ -70,7 +70,7 @@ export async function setup() {
       "app_router",
       "webhook_app",
       "stripe_cli",
-      "minio",
+      "minio"
     ];
     console.log(`Starting services: ${services.join(", ")}`);
 
@@ -117,7 +117,7 @@ export async function setup() {
 
     // Create test payments
     console.log(
-      `Creating ${createTestPaymentsCommands.length} test payments...`,
+      `Creating ${createTestPaymentsCommands.length} test payments...`
     );
     for (const command of createTestPaymentsCommands) {
       await apiApp.exec(command.split(" "));
@@ -128,7 +128,7 @@ export async function setup() {
   } catch (error) {
     console.log("❌ Setup failed");
     console.log(
-      `Error: ${error instanceof Error ? error.message : String(error)}`,
+      `Error: ${error instanceof Error ? error.message : String(error)}`
     );
     throw error;
   }
@@ -161,7 +161,7 @@ export async function teardown() {
   } catch (error) {
     console.log("❌ Teardown failed");
     console.log(
-      `Error: ${error instanceof Error ? error.message : String(error)}`,
+      `Error: ${error instanceof Error ? error.message : String(error)}`
     );
     throw error;
   }

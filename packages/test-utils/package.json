@@ -11,7 +11,18 @@
     "vitest",
     "node"
   ],
+  "scripts": {
+    "format": "prettier --write .",
+    "check": "yarn check:tsc && yarn check:prettier",
+    "check:tsc": "tsc --noEmit",
+    "check:prettier": "prettier -c .",
+    "generate:index": "yarn workspace @beabee/dev-cli start generate-index --baseDir $(pwd) --extension ts -p ./vitest ./node"
+  },
   "dependencies": {
-    "testcontainers": "^11.0.0"
+    "@beabee/prettier-config": "workspace:^",
+    "openapi-typescript": "^7.8.0",
+    "prettier": "^3.5.2",
+    "testcontainers": "^11.0.0",
+    "typescript": "~5.6.3"
   }
 }
