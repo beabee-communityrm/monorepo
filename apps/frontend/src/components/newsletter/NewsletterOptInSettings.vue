@@ -46,12 +46,12 @@
 import type { NewsletterGroupData } from '@beabee/beabee-common';
 import { AppInput } from '@beabee/vue';
 import { AppInputHelp } from '@beabee/vue';
+import { AppRepeatable } from '@beabee/vue';
 import { AppCheckbox } from '@beabee/vue/components';
 
 import { useI18n } from 'vue-i18n';
 
 import AppSectionHeading from '../AppSectionHeading.vue';
-import AppRepeatable from '../forms/AppRepeatable.vue';
 import RichTextEditor from '../rte/RichTextEditor.vue';
 
 const { t } = useI18n();

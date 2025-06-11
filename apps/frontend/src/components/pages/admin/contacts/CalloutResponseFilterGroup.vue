@@ -27,8 +27,8 @@ import {
   ItemStatus,
   contactCalloutFilters,
 } from '@beabee/beabee-common';
+import { AppSelect } from '@beabee/vue';
 
-import AppSelect from '@components/forms/AppSelect.vue';
 import AppSearchRuleFilter from '@components/search/AppSearchRuleFilter.vue';
 import type {
   SearchRuleEmits,

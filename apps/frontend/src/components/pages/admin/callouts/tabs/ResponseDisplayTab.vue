@@ -142,6 +142,9 @@
                   v-model="localData.responseLinks"
                   :placeholder-label="inputT('responseLinks.placeholder.label')"
                   :placeholder-url="inputT('responseLinks.placeholder.url')"
+                  :text-label="inputT('responseLinks.text.label')"
+                  :url-label="inputT('responseLinks.url.label')"
+                  :add-label="inputT('responseLinks.add')"
                 />
               </AppFormField>
             </template>
@@ -260,6 +263,7 @@
 import { ItemStatus, getCalloutComponents } from '@beabee/beabee-common';
 import type { CalloutMapSchema } from '@beabee/beabee-common';
 import { AppInput } from '@beabee/vue';
+import { AppLinkList, AppSelect } from '@beabee/vue';
 import {
   AppCheckboxGroup,
   AppFormBox,
@@ -270,8 +274,6 @@ import {
   type ScrollSection,
 } from '@beabee/vue/components';
 
-import AppLinkList from '@components/forms/AppLinkList.vue';
-import AppSelect from '@components/forms/AppSelect.vue';
 import { buckets } from '@utils/callouts';
 import useVuelidate from '@vuelidate/core';
 import { computed, ref, watch } from 'vue';

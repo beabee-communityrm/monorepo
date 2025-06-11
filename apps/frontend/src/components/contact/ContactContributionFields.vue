@@ -47,6 +47,7 @@
 <script lang="ts" setup>
 import { ContributionType } from '@beabee/beabee-common';
 import { AppInput } from '@beabee/vue';
+import { AppSelect } from '@beabee/vue';
 import { AppRadioGroup } from '@beabee/vue/components';
 import { type SelectItem } from '@beabee/vue/types';
 
@@ -55,7 +56,6 @@ import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { generalContent } from '../../store';
-import AppSelect from '../forms/AppSelect.vue';
 import { type UpdateContribution } from './contact.interface';
 
 const { t } = useI18n();

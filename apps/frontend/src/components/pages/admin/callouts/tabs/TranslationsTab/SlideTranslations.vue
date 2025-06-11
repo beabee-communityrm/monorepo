@@ -98,10 +98,10 @@
 <script lang="ts" setup>
 import { type CalloutComponentSchema } from '@beabee/beabee-common';
 import { AppInput } from '@beabee/vue';
+import { AppTextArea } from '@beabee/vue';
 import { AppFormBox } from '@beabee/vue/components';
 
 import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
-import AppTextArea from '@components/forms/AppTextArea.vue';
 import RichTextEditor from '@components/rte/RichTextEditor.vue';
 import type { LocaleProp } from '@type/locale-prop';
 import {

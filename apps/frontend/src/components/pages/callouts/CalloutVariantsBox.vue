@@ -10,8 +10,8 @@
 
 <script setup lang="ts">
 import type { GetCalloutDataWith } from '@beabee/beabee-common';
+import { AppToggle } from '@beabee/vue';
 
-import AppToggle from '@components/forms/AppToggle.vue';
 import { faGlobe } from '@fortawesome/free-solid-svg-icons';
 import { toRef } from 'vue';
 

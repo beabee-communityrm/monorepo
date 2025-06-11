@@ -34,6 +34,7 @@
 <script lang="ts" setup>
 import type { RuleValue } from '@beabee/beabee-common';
 import { AppInput } from '@beabee/vue';
+import { AppSelect } from '@beabee/vue';
 import { AppRadioGroup } from '@beabee/vue/components';
 
 import type { FilterItem } from '@type';
@@ -41,7 +42,6 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { formatLocale } from '../../../utils/dates';
-import AppSelect from '../../forms/AppSelect.vue';
 import DateInput from './DateInput.vue';
 
 const emit = defineEmits(['update:modelValue']);

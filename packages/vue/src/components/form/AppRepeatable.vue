@@ -24,9 +24,9 @@
   </div>
 </template>
 <script lang="ts" setup generic="T">
-import { AppButton } from '@beabee/vue/components';
-
 import { faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
+
+import AppButton from '../button/AppButton.vue';
 
 /**
  * Props for the AppRepeatable component

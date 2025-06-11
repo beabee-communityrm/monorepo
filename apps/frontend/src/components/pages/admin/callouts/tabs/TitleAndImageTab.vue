@@ -139,6 +139,7 @@
 <script lang="ts" setup>
 import { ItemStatus } from '@beabee/beabee-common';
 import { AppInput } from '@beabee/vue';
+import { AppTextArea } from '@beabee/vue';
 import {
   AppFormBox,
   AppFormField,
@@ -151,7 +152,6 @@ import {
 } from '@beabee/vue/components';
 
 import AppImageUpload from '@components/forms/AppImageUpload.vue';
-import AppTextArea from '@components/forms/AppTextArea.vue';
 import env from '@env';
 import type { LocaleProp } from '@type';
 import useVuelidate from '@vuelidate/core';

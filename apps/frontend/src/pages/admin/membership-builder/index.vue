@@ -105,12 +105,12 @@ import {
   ContributionPeriod,
 } from '@beabee/beabee-common';
 import { AppInput } from '@beabee/vue';
+import { AppSelect } from '@beabee/vue';
 import { AppCheckbox, AppForm, AppLabel } from '@beabee/vue/components';
 
 import App2ColGrid from '@components/App2ColGrid.vue';
 import AppSubHeading from '@components/AppSubHeading.vue';
 import AppImageUpload from '@components/forms/AppImageUpload.vue';
-import AppSelect from '@components/forms/AppSelect.vue';
 import PeriodAmounts from '@components/pages/admin/membership-builder/PeriodAmounts.vue';
 import JoinForm from '@components/pages/join/JoinForm.vue';
 import RichTextEditor from '@components/rte/RichTextEditor.vue';

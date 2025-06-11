@@ -34,12 +34,7 @@
     />
     <!-- Display character count when maxLength is set -->
     <div v-if="maxlength !== undefined" class="mt-1 text-xs text-grey-dark">
-      {{
-        t('form.characters.remaining', {
-          max: maxlength,
-          remaining: remainingChars,
-        })
-      }}
+      {{ characterCountText }}
     </div>
     <AppInputHelp
       v-if="infoMessage"
@@ -50,10 +45,6 @@
 </template>
 
 <script lang="ts" setup>
-import { AppInputError, AppInputHelp } from '@beabee/vue';
-import { AppLabel } from '@beabee/vue/components';
-import { AppCopyButton } from '@beabee/vue/components';
-
 import useVuelidate from '@vuelidate/core';
 import {
   helpers,
@@ -61,7 +52,11 @@ import {
   requiredIf,
 } from '@vuelidate/validators';
 import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
+
+import AppCopyButton from '../button/AppCopyButton.vue';
+import AppInputError from './AppInputError.vue';
+import AppInputHelp from './AppInputHelp.vue';
+import AppLabel from './AppLabel.vue';
 
 /**
  * Props for the AppTextArea component
@@ -83,6 +78,12 @@ export interface AppTextAreaProps {
   maxlength?: number;
   /** Whether the textarea value can be copied to clipboard */
   copyable?: boolean;
+  /** Text to display for required field error (e.g., "This field is required") */
+  requiredErrorText?: string;
+  /** Text template for max length error (e.g., "Must be no more than {max} characters") */
+  maxLengthErrorText?: string;
+  /** Text template for character count (e.g., "{remaining} of {max} characters remaining") */
+  characterCountText?: string;
 }
 
 const emit = defineEmits(['update:modelValue']);
@@ -94,9 +95,10 @@ const props = withDefaults(defineProps<AppTextAreaProps>(), {
   disabled: false,
   maxlength: undefined,
   copyable: false,
+  requiredErrorText: 'This field is required',
+  maxLengthErrorText: 'Must be no more than {max} characters',
+  characterCountText: '{remaining} of {max} characters remaining',
 });
-
-const { t } = useI18n();
 
 // Generate unique ID for aria-labels and form associations
 const id = computed(
@@ -114,19 +116,25 @@ const remainingChars = computed(() => {
   return Math.max(0, props.maxlength - (value.value?.length || 0));
 });
 
+// Format character count text
+const characterCountText = computed(() => {
+  if (props.maxlength === undefined || remainingChars.value === undefined)
+    return '';
+  return props.characterCountText
+    .replace('{remaining}', remainingChars.value.toString())
+    .replace('{max}', props.maxlength.toString());
+});
+
 const rules = computed(() => ({
   v: {
     required: helpers.withMessage(
-      t(`form.errors.${props.name}.required`),
+      props.requiredErrorText,
       requiredIf(!!props.required)
     ),
     // Add maxLength validation when maxlength prop is provided
     ...(props.maxlength !== undefined && {
       maxLength: helpers.withMessage(
-        t(`form.errors.${props.name}.maxLength`, {
-          max: props.maxlength,
-          remaining: remainingChars.value,
-        }),
+        props.maxLengthErrorText.replace('{max}', props.maxlength.toString()),
         maxLengthValidator(props.maxlength)
       ),
     }),

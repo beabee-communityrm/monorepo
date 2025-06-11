@@ -70,9 +70,9 @@
 
 <script lang="ts" setup>
 import { AppInput } from '@beabee/vue';
+import { AppTextArea } from '@beabee/vue';
 import { AppFormBox } from '@beabee/vue/components';
 
-import AppTextArea from '@components/forms/AppTextArea.vue';
 import {
   getLocalizedValueFallback,
   getLocalizedValueNoFallback,

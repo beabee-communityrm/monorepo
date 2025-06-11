@@ -26,12 +26,12 @@
 </template>
 
 <script lang="ts" setup>
-import { AppInput } from '@beabee/vue';
-
 import { faSort } from '@fortawesome/free-solid-svg-icons';
 import useVuelidate from '@vuelidate/core';
 import { ref, watch } from 'vue';
 import { ColorPicker } from 'vue-accessible-color-picker';
+
+import AppInput from './AppInput.vue';
 
 export interface AppColorInputProps {
   /** The id of the color input */
