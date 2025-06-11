@@ -1,25 +1,25 @@
-import { describe, expect, it, beforeAll, afterAll } from "vitest";
-import { BeabeeClient } from "@beabee/client";
+import { describe, expect, it, beforeAll, afterAll } from 'vitest';
+import { BeabeeClient } from '@beabee/client';
 import {
   ItemStatus,
   type GetCalloutsQuery,
   type CreateCalloutResponseCommentData,
-  GetCalloutResponseWith
-} from "@beabee/beabee-common";
+  GetCalloutResponseWith,
+} from '@beabee/beabee-common';
 import {
   API_KEY,
   HOST,
   PATH,
   TEST_USER_EMAIL,
-  TEST_USER_PASSWORD
-} from "@beabee/test-utils/vitest/env";
-import { createTestCallout } from "./data/callouts";
+  TEST_USER_PASSWORD,
+} from '@beabee/test-utils/vitest/env';
+import { createTestCallout } from './data/callouts';
 import {
   createTestCalloutResponseAnswers,
-  createMinimalTestCalloutResponseAnswers
-} from "./data/callouts";
+  createMinimalTestCalloutResponseAnswers,
+} from './data/callouts';
 
-describe("Callout API", () => {
+describe('Callout API', () => {
   let client: BeabeeClient;
   let userClient: BeabeeClient;
   let testCalloutSlug: string;
@@ -30,7 +30,7 @@ describe("Callout API", () => {
     client = new BeabeeClient({
       host: HOST,
       path: PATH,
-      token: API_KEY
+      token: API_KEY,
     });
 
     // Create test callout
@@ -40,34 +40,34 @@ describe("Callout API", () => {
 
     // Create test responses
     const response = await client.callout.createResponse(testCalloutSlug, {
-      answers: createTestCalloutResponseAnswers("slide1"),
+      answers: createTestCalloutResponseAnswers('slide1'),
       guest: {
-        email: "test1@example.com",
-        firstname: "Test",
-        lastname: "Guest 1"
-      }
+        email: 'test1@example.com',
+        firstname: 'Test',
+        lastname: 'Guest 1',
+      },
     });
     testResponseId = response.id;
 
     await client.callout.createResponse(testCalloutSlug, {
-      answers: createMinimalTestCalloutResponseAnswers("slide1"),
+      answers: createMinimalTestCalloutResponseAnswers('slide1'),
       guest: {
-        email: "test2@example.com",
-        firstname: "Test",
-        lastname: "Guest 2"
-      }
+        email: 'test2@example.com',
+        firstname: 'Test',
+        lastname: 'Guest 2',
+      },
     });
 
     // Create user client (requires login)
     userClient = new BeabeeClient({
       host: HOST,
-      path: PATH
+      path: PATH,
     });
 
     // Login for comment operations
     await userClient.auth.login({
       email: TEST_USER_EMAIL,
-      password: TEST_USER_PASSWORD
+      password: TEST_USER_PASSWORD,
     });
   });
 
@@ -75,63 +75,63 @@ describe("Callout API", () => {
     await client.auth.logout();
   });
 
-  describe("Callouts", () => {
-    describe("list", () => {
-      it("should list callouts with pagination and filtering", async () => {
+  describe('Callouts', () => {
+    describe('list', () => {
+      it('should list callouts with pagination and filtering', async () => {
         const query: GetCalloutsQuery = {
           limit: 100,
           offset: 0,
-          sort: "starts",
-          order: "DESC",
+          sort: 'starts',
+          order: 'DESC',
           rules: {
-            condition: "AND",
+            condition: 'AND',
             rules: [
               {
-                field: "status",
-                operator: "equal",
-                value: [ItemStatus.Open]
+                field: 'status',
+                operator: 'equal',
+                value: [ItemStatus.Open],
               },
               {
-                field: "hidden",
-                operator: "equal",
-                value: [false]
-              }
-            ]
-          }
+                field: 'hidden',
+                operator: 'equal',
+                value: [false],
+              },
+            ],
+          },
         };
 
         const response = await client.callout.list(query);
 
         expect(response).toBeDefined();
-        expect(response).toHaveProperty("total");
-        expect(response).toHaveProperty("items");
+        expect(response).toHaveProperty('total');
+        expect(response).toHaveProperty('items');
         expect(Array.isArray(response.items)).toBe(true);
 
         if (response.items.length > 0) {
           const firstCallout = response.items[0];
-          expect(firstCallout).toHaveProperty("id");
-          expect(firstCallout).toHaveProperty("slug");
-          expect(firstCallout).toHaveProperty("title");
+          expect(firstCallout).toHaveProperty('id');
+          expect(firstCallout).toHaveProperty('slug');
+          expect(firstCallout).toHaveProperty('title');
         }
       });
     });
 
-    describe("get", () => {
-      it("should get a callout by slug with form data", async () => {
+    describe('get', () => {
+      it('should get a callout by slug with form data', async () => {
         const response = await client.callout.get(testCalloutSlug, [
-          "form"
+          'form',
         ] as const);
 
         expect(response).toBeDefined();
         expect(response.slug).toBe(testCalloutSlug);
-        expect(response).toHaveProperty("formSchema");
+        expect(response).toHaveProperty('formSchema');
       });
     });
   });
 
-  describe("Callout Responses", () => {
-    describe("list", () => {
-      it("should list responses with pagination and filtering", async () => {
+  describe('Callout Responses', () => {
+    describe('list', () => {
+      it('should list responses with pagination and filtering', async () => {
         const { items } = await client.callout.listResponses(
           testCalloutSlug,
           {},
@@ -142,37 +142,37 @@ describe("Callout API", () => {
         expect(items.length).toBeGreaterThan(0);
 
         const firstResponse = items[0];
-        expect(firstResponse).toHaveProperty("id");
-        expect(firstResponse).toHaveProperty("createdAt");
+        expect(firstResponse).toHaveProperty('id');
+        expect(firstResponse).toHaveProperty('createdAt');
         expect(firstResponse.createdAt).toBeInstanceOf(Date);
-        expect(firstResponse).toHaveProperty("answers");
+        expect(firstResponse).toHaveProperty('answers');
       });
     });
 
-    describe("get", () => {
-      it("should get a response with specified relations", async () => {
+    describe('get', () => {
+      it('should get a response with specified relations', async () => {
         const response = await client.callout.response.get(testResponseId, [
           GetCalloutResponseWith.Callout,
           GetCalloutResponseWith.Contact,
           GetCalloutResponseWith.Assignee,
-          GetCalloutResponseWith.LatestComment
+          GetCalloutResponseWith.LatestComment,
         ] as const);
 
         expect(response).toBeDefined();
         expect(response.id).toBe(testResponseId);
         expect(response.createdAt).toBeInstanceOf(Date);
         expect(response.updatedAt).toBeInstanceOf(Date);
-        expect(response.contact?.email).toBe("test1@example.com");
-        expect(response.contact?.firstname).toBe("Test");
-        expect(response.contact?.lastname).toBe("Guest 1");
+        expect(response.contact?.email).toBe('test1@example.com');
+        expect(response.contact?.firstname).toBe('Test');
+        expect(response.contact?.lastname).toBe('Guest 1');
         expect(response.callout).toBeDefined();
       });
     });
 
-    describe("update", () => {
-      it("should update a response", async () => {
+    describe('update', () => {
+      it('should update a response', async () => {
         const updateData = {
-          bucket: "updated-bucket"
+          bucket: 'updated-bucket',
         };
 
         const response = await client.callout.response.update(
@@ -187,14 +187,14 @@ describe("Callout API", () => {
     });
   });
 
-  describe("Callout Response Comments", () => {
+  describe('Callout Response Comments', () => {
     let testCommentId: string;
 
-    describe("create", () => {
-      it("should create a new comment", async () => {
+    describe('create', () => {
+      it('should create a new comment', async () => {
         const newComment: CreateCalloutResponseCommentData = {
-          text: "Test comment",
-          responseId: testResponseId
+          text: 'Test comment',
+          responseId: testResponseId,
         };
 
         // Create comment with user logged in client
@@ -209,10 +209,10 @@ describe("Callout API", () => {
       });
     });
 
-    describe("update", () => {
-      it("should update an existing comment", async () => {
+    describe('update', () => {
+      it('should update an existing comment', async () => {
         const updateData = {
-          text: "Updated comment"
+          text: 'Updated comment',
         };
 
         const response = await client.callout.response.comment.update(
@@ -226,36 +226,36 @@ describe("Callout API", () => {
       });
     });
 
-    describe("list", () => {
-      it("should list comments for a response", async () => {
+    describe('list', () => {
+      it('should list comments for a response', async () => {
         const response = await client.callout.response.comment.list({
           rules: {
             rules: [
               {
-                field: "responseId",
-                operator: "equal",
-                value: [testResponseId]
-              }
+                field: 'responseId',
+                operator: 'equal',
+                value: [testResponseId],
+              },
             ],
-            condition: "AND"
-          }
+            condition: 'AND',
+          },
         });
 
         expect(response.items.length).toBeGreaterThan(0);
-        expect(response.items[0]).toHaveProperty("text");
-        expect(response.items[0]).toHaveProperty("contact");
+        expect(response.items[0]).toHaveProperty('text');
+        expect(response.items[0]).toHaveProperty('contact');
       });
     });
 
-    describe("delete", () => {
-      it("should delete a comment", async () => {
+    describe('delete', () => {
+      it('should delete a comment', async () => {
         await client.callout.response.comment.delete(testCommentId);
 
         const { items } = await client.callout.response.comment.list({
           rules: {
-            rules: [{ field: "id", operator: "equal", value: [testCommentId] }],
-            condition: "AND"
-          }
+            rules: [{ field: 'id', operator: 'equal', value: [testCommentId] }],
+            condition: 'AND',
+          },
         });
         expect(items.length).toBe(0);
       });

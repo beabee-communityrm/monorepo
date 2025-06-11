@@ -1,11 +1,11 @@
-import { isURL } from "../utils/index.js";
+import { isURL } from '../utils/index.js';
 
 import type {
   CalloutComponentInputFileSchema,
   CalloutResponseAnswer,
-  ValidatorCalloutComponent
-} from "../types/index.js";
-import { isFileUploadAnswer } from "../utils/callouts.js";
+  ValidatorCalloutComponent,
+} from '../types/index.js';
+import { isFileUploadAnswer } from '../utils/callouts.js';
 
 export const calloutComponentInputFileValidator: ValidatorCalloutComponent<
   CalloutComponentInputFileSchema

@@ -1,7 +1,7 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class AddApiKeyModel1685528456765 implements MigrationInterface {
-  name = "AddApiKeyModel1685528456765";
+  name = 'AddApiKeyModel1685528456765';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(

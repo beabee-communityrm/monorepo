@@ -1,37 +1,37 @@
-import type { Filters } from "../types/index.js";
-import { ItemStatus } from "../data/index.js";
+import type { Filters } from '../types/index.js';
+import { ItemStatus } from '../data/index.js';
 
 export const noticeFilters = {
   id: {
-    type: "text"
+    type: 'text',
   },
   createdAt: {
-    type: "date"
+    type: 'date',
   },
   updatedAt: {
-    type: "date"
+    type: 'date',
   },
   name: {
-    type: "text"
+    type: 'text',
   },
   expires: {
-    type: "date",
-    nullable: true
+    type: 'date',
+    nullable: true,
   },
   enabled: {
-    type: "boolean"
+    type: 'boolean',
   },
   text: {
-    type: "text"
+    type: 'text',
   },
   status: {
-    type: "enum",
+    type: 'enum',
     options: [
       ItemStatus.Draft,
       ItemStatus.Scheduled,
       ItemStatus.Open,
-      ItemStatus.Ended
-    ] satisfies ItemStatus[] as ItemStatus[]
-  }
+      ItemStatus.Ended,
+    ] satisfies ItemStatus[] as ItemStatus[],
+  },
 } as const;
 noticeFilters satisfies Filters;

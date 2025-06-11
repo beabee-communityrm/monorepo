@@ -1,16 +1,16 @@
-import { describe, expect, it, beforeAll, afterAll } from "vitest";
-import { ContactClient, ContactRoleClient } from "@beabee/client";
+import { describe, expect, it, beforeAll, afterAll } from 'vitest';
+import { ContactClient, ContactRoleClient } from '@beabee/client';
 import {
   ContactRoleData,
   RoleTypeData,
   Serial,
-  UpdateContactRoleData
-} from "@beabee/beabee-common";
-import { addDays } from "date-fns";
+  UpdateContactRoleData,
+} from '@beabee/beabee-common';
+import { addDays } from 'date-fns';
 
-import { API_KEY, HOST, PATH } from "@beabee/test-utils/vitest/env";
+import { API_KEY, HOST, PATH } from '@beabee/test-utils/vitest/env';
 
-describe("ContactRole API", () => {
+describe('ContactRole API', () => {
   let contactClient: ContactClient;
   let testContactId: string;
 
@@ -18,15 +18,15 @@ describe("ContactRole API", () => {
     contactClient = new ContactClient({
       host: HOST,
       path: PATH,
-      token: API_KEY
+      token: API_KEY,
     });
 
     // Create a test contact
     const newContact = {
       email: `test-role-${Date.now()}@example.com`,
-      firstname: "Test",
-      lastname: "Role User",
-      password: "testPassword123!"
+      firstname: 'Test',
+      lastname: 'Role User',
+      password: 'testPassword123!',
     };
 
     const response = await contactClient.create(newContact);
@@ -40,12 +40,12 @@ describe("ContactRole API", () => {
     }
   });
 
-  describe("update", () => {
-    it("should update a contact role with expiration", async () => {
+  describe('update', () => {
+    it('should update a contact role with expiration', async () => {
       const role = RoleTypeData.ADMIN;
       const updateData = {
         dateAdded: new Date(),
-        dateExpires: addDays(new Date(), 30)
+        dateExpires: addDays(new Date(), 30),
       };
 
       const result = await contactClient.role.update(
@@ -60,19 +60,19 @@ describe("ContactRole API", () => {
       expect(result.dateExpires).toBeInstanceOf(Date);
     });
 
-    it("should keep existing expiration when dateExpires is undefined", async () => {
+    it('should keep existing expiration when dateExpires is undefined', async () => {
       const role = RoleTypeData.ADMIN;
 
       // First set an expiration date
       const initialExpiry = addDays(new Date(), 30);
       await contactClient.role.update(testContactId, role, {
         dateAdded: new Date(),
-        dateExpires: initialExpiry
+        dateExpires: initialExpiry,
       });
 
       // Then update with undefined dateExpires
       const updateData: UpdateContactRoleData = {
-        dateAdded: new Date()
+        dateAdded: new Date(),
       };
 
       const result = await contactClient.role.update(
@@ -89,20 +89,20 @@ describe("ContactRole API", () => {
       expect(result.dateExpires).not.toBeNull();
     });
 
-    it("should remove expiration when dateExpires is null", async () => {
+    it('should remove expiration when dateExpires is null', async () => {
       const role = RoleTypeData.ADMIN;
 
       // First set an expiration date
       const initialExpiry = addDays(new Date(), 30);
       await contactClient.role.update(testContactId, role, {
         dateAdded: new Date(),
-        dateExpires: initialExpiry
+        dateExpires: initialExpiry,
       });
 
       // Then update with null dateExpires
       const updateData = {
         dateAdded: new Date(),
-        dateExpires: null
+        dateExpires: null,
       };
 
       const result = await contactClient.role.update(
@@ -118,11 +118,11 @@ describe("ContactRole API", () => {
       expect(result.dateExpires).toBeNull();
     });
 
-    it("should reject empty string as invalid dateExpires value", async () => {
+    it('should reject empty string as invalid dateExpires value', async () => {
       const role = RoleTypeData.ADMIN;
       const updateData: UpdateContactRoleData = {
         dateAdded: new Date(),
-        dateExpires: "" as any
+        dateExpires: '' as any,
       };
 
       await expect(
@@ -131,8 +131,8 @@ describe("ContactRole API", () => {
     });
   });
 
-  describe("delete", () => {
-    it("should delete a contact role", async () => {
+  describe('delete', () => {
+    it('should delete a contact role', async () => {
       const role = RoleTypeData.ADMIN;
       await expect(
         contactClient.role.delete(testContactId, role)
@@ -140,15 +140,15 @@ describe("ContactRole API", () => {
     });
   });
 
-  describe("deserialize", () => {
-    it("should correctly deserialize role data with expiration", () => {
+  describe('deserialize', () => {
+    it('should correctly deserialize role data with expiration', () => {
       const now = new Date();
       const expires = addDays(now, 30);
 
       const serializedData = {
         role: RoleTypeData.ADMIN,
         dateAdded: now.toISOString(),
-        dateExpires: expires.toISOString()
+        dateExpires: expires.toISOString(),
       };
 
       const result = ContactRoleClient.deserialize(serializedData);
@@ -160,13 +160,13 @@ describe("ContactRole API", () => {
       expect(result.dateExpires?.toISOString()).toBe(expires.toISOString());
     });
 
-    it("should correctly deserialize role data without expiration", () => {
+    it('should correctly deserialize role data without expiration', () => {
       const now = new Date();
 
       const serializedData: Serial<ContactRoleData> = {
         role: RoleTypeData.ADMIN,
         dateAdded: now.toISOString(),
-        dateExpires: ""
+        dateExpires: '',
       };
 
       const result = ContactRoleClient.deserialize(serializedData);

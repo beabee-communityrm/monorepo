@@ -1,17 +1,17 @@
-import axios from "axios";
-import express, { type Express } from "express";
-import { Brackets } from "typeorm";
+import axios from 'axios';
+import express, { type Express } from 'express';
+import { Brackets } from 'typeorm';
 
-import { createQueryBuilder } from "@beabee/core/database";
-import { log } from "@beabee/core/logging";
-import { isAdmin } from "#core/middleware";
-import { wrapAsync } from "@beabee/core/utils/express";
+import { createQueryBuilder } from '@beabee/core/database';
+import { log } from '@beabee/core/logging';
+import { isAdmin } from '#core/middleware';
+import { wrapAsync } from '@beabee/core/utils/express';
 
-import { ContactRole, ContactProfile } from "@beabee/core/models";
+import { ContactRole, ContactProfile } from '@beabee/core/models';
 
 const app: Express = express();
 
-app.set("views", __dirname + "/views");
+app.set('views', __dirname + '/views');
 
 app.use(isAdmin);
 
@@ -33,7 +33,7 @@ interface PostcodeCache {
 }
 
 function cleanPostcode(postcode: string): string {
-  return postcode.toLowerCase().replace(/\s/g, "").trim();
+  return postcode.toLowerCase().replace(/\s/g, '').trim();
 }
 
 const postcodeCache: { [key: string]: PostcodeCache | null } = {};
@@ -51,12 +51,12 @@ async function getPostcodes(postcodes: string[]): Promise<PostcodeCache[]> {
 
   for (let i = 0; i < unknownPostcodes.length; i += 100) {
     const unknownPostcodesSlice = unknownPostcodes.slice(i, i + 100);
-    log.info("Fetching postcodes", unknownPostcodesSlice);
+    log.info('Fetching postcodes', unknownPostcodesSlice);
 
     const resp = await axios.post(
-      "https://api.postcodes.io/postcodes?filter=postcode,latitude,longitude",
+      'https://api.postcodes.io/postcodes?filter=postcode,latitude,longitude',
       {
-        postcodes: unknownPostcodesSlice
+        postcodes: unknownPostcodesSlice,
       }
     );
 
@@ -65,7 +65,7 @@ async function getPostcodes(postcodes: string[]): Promise<PostcodeCache[]> {
       postcodeCache[result.query] = result.result
         ? {
             latitude: result.result.latitude,
-            longitude: result.result.longitude
+            longitude: result.result.longitude,
           }
         : null;
     }
@@ -76,23 +76,23 @@ async function getPostcodes(postcodes: string[]): Promise<PostcodeCache[]> {
     .filter((pc): pc is PostcodeCache => pc !== null);
 }
 
-app.get("/", (req, res) => {
-  res.render("index");
+app.get('/', (req, res) => {
+  res.render('index');
 });
 
 app.get(
-  "/locations",
+  '/locations',
   wrapAsync(async (req, res) => {
     const now = new Date();
-    const profiles = await createQueryBuilder(ContactProfile, "profile")
-      .innerJoin(ContactRole, "mp", "profile.contactId = mp.contactId")
-      .where("profile.deliveryOptIn = true")
+    const profiles = await createQueryBuilder(ContactProfile, 'profile')
+      .innerJoin(ContactRole, 'mp', 'profile.contactId = mp.contactId')
+      .where('profile.deliveryOptIn = true')
       .andWhere("mp.type = 'member' AND mp.dateAdded <= :now", { now })
       .andWhere(
         new Brackets((qb) =>
           qb
-            .where("mp.dateExpires >= :now", { now })
-            .orWhere("mp.dateExpires = NULL")
+            .where('mp.dateExpires >= :now', { now })
+            .orWhere('mp.dateExpires = NULL')
         )
       )
       .getMany();

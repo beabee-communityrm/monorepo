@@ -1,7 +1,7 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class AddUploadUsedCol1691597308499 implements MigrationInterface {
-  name = "AddUploadUsedCol1691597308499";
+  name = 'AddUploadUsedCol1691597308499';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(

@@ -1,10 +1,10 @@
-import { RESET_SECURITY_FLOW_TYPE } from "@beabee/beabee-common";
-import { subHours } from "date-fns";
-import { InsertResult, MoreThan } from "typeorm";
+import { RESET_SECURITY_FLOW_TYPE } from '@beabee/beabee-common';
+import { subHours } from 'date-fns';
+import { InsertResult, MoreThan } from 'typeorm';
 
-import { createQueryBuilder, getRepository } from "#database";
+import { createQueryBuilder, getRepository } from '#database';
 
-import { ResetSecurityFlow, Contact } from "#models/index";
+import { ResetSecurityFlow, Contact } from '#models/index';
 
 interface InsertResetSecurityFlowResult extends InsertResult {
   raw: { id: string; contactId: string }[] | undefined;
@@ -42,7 +42,7 @@ class ResetSecurityFlowService {
         .insert()
         .into(ResetSecurityFlow)
         .values(contactIds.map((id) => ({ contact: { id }, type })))
-        .returning(["id", "contact"])
+        .returning(['id', 'contact'])
         .execute();
 
     const rpFlowIdsByContactId = Object.fromEntries(
@@ -58,7 +58,7 @@ class ResetSecurityFlowService {
    */
   async deleteAll(contact: Contact) {
     return await getRepository(ResetSecurityFlow).delete({
-      contactId: contact.id
+      contactId: contact.id,
     });
   }
 
@@ -70,7 +70,7 @@ class ResetSecurityFlowService {
   async get(id: string) {
     return await getRepository(ResetSecurityFlow).findOne({
       where: { id, date: MoreThan(subHours(new Date(), 24)) },
-      relations: { contact: true }
+      relations: { contact: true },
     });
   }
 }

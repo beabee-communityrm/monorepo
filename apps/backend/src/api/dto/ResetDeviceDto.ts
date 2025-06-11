@@ -1,7 +1,7 @@
-import { RESET_SECURITY_FLOW_TYPE } from "@beabee/beabee-common";
-import { IsEmail, Validate, IsIn } from "class-validator";
-import IsPassword from "@api/validators/IsPassword";
-import IsUrl from "@api/validators/IsUrl";
+import { RESET_SECURITY_FLOW_TYPE } from '@beabee/beabee-common';
+import { IsEmail, Validate, IsIn } from 'class-validator';
+import IsPassword from '@api/validators/IsPassword';
+import IsUrl from '@api/validators/IsUrl';
 
 export class CreateResetDeviceDto {
   @IsEmail()

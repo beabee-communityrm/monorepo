@@ -1,16 +1,16 @@
-import { BaseClient } from "./base.client.js";
-import { cleanUrl } from "../utils/index.js";
-import { ContactContributionClient } from "./contact-contribution.client.js";
+import { BaseClient } from './base.client.js';
+import { cleanUrl } from '../utils/index.js';
+import { ContactContributionClient } from './contact-contribution.client.js';
 
-import type { BaseClientOptions } from "../types/index.js";
+import type { BaseClientOptions } from '../types/index.js';
 import type {
   ContributionInfo,
   GetPaymentData,
   GetPaymentsQuery,
   Paginated,
   PaymentFlowParams,
-  Serial
-} from "@beabee/beabee-common";
+  Serial,
+} from '@beabee/beabee-common';
 
 /**
  * Client for managing contact payment operations
@@ -26,10 +26,10 @@ export class ContactPaymentClient extends BaseClient {
   constructor(protected override readonly options: BaseClientOptions) {
     super({
       ...options,
-      path: cleanUrl(options.path + "/contact")
+      path: cleanUrl(options.path + '/contact'),
     });
     this.completeUrl =
-      options.host + "/profile/contribution/payment-method/complete";
+      options.host + '/profile/contribution/payment-method/complete';
   }
 
   /**
@@ -39,9 +39,9 @@ export class ContactPaymentClient extends BaseClient {
    * @returns Payment flow parameters for client-side handling
    */
   async update(paymentMethod?: string): Promise<PaymentFlowParams> {
-    const { data } = await this.fetch.put("/me/payment-method", {
+    const { data } = await this.fetch.put('/me/payment-method', {
       paymentMethod,
-      completeUrl: this.completeUrl
+      completeUrl: this.completeUrl,
     });
     return data;
   }
@@ -53,8 +53,8 @@ export class ContactPaymentClient extends BaseClient {
    * @returns Updated contribution information
    */
   async completeUpdate(paymentFlowId: string): Promise<ContributionInfo> {
-    const { data } = await this.fetch.post("/me/payment-method/complete", {
-      paymentFlowId
+    const { data } = await this.fetch.post('/me/payment-method/complete', {
+      paymentFlowId,
     });
     return ContactContributionClient.deserialize(data);
   }
@@ -79,8 +79,8 @@ export class ContactPaymentClient extends BaseClient {
       items: data.items.map((item) => ({
         chargeDate: ContactPaymentClient.deserializeDate(item.chargeDate),
         amount: item.amount,
-        status: item.status
-      }))
+        status: item.status,
+      })),
     };
   }
 }

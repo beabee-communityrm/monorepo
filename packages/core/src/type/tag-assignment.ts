@@ -1,4 +1,4 @@
-import { TagData } from "@beabee/beabee-common";
+import { TagData } from '@beabee/beabee-common';
 
 /**
  * Represents a tag assignment that links a tag to an entity.

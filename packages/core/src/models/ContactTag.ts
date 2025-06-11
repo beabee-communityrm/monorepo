@@ -1,9 +1,9 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
-import type { TagData } from "@beabee/beabee-common";
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import type { TagData } from '@beabee/beabee-common';
 
 @Entity()
 export class ContactTag implements TagData {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id!: string;
 
   @Column({ unique: true })

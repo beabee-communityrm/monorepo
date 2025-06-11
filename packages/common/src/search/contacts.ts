@@ -1,94 +1,94 @@
-import type { Filters } from "../types/index.js";
+import type { Filters } from '../types/index.js';
 import {
   ContributionPeriod,
   ContributionType,
-  NewsletterStatus
-} from "../data/index.js";
-import type { TagFiltersType } from "./tags.js";
+  NewsletterStatus,
+} from '../data/index.js';
+import type { TagFiltersType } from './tags.js';
 
-export const RoleTypes = ["member", "admin", "superadmin"] as const;
+export const RoleTypes = ['member', 'admin', 'superadmin'] as const;
 
 export const contactFilters = {
   id: {
-    type: "contact"
+    type: 'contact',
   },
   firstname: {
-    type: "text"
+    type: 'text',
   },
   lastname: {
-    type: "text"
+    type: 'text',
   },
   email: {
-    type: "text"
+    type: 'text',
   },
   joined: {
-    type: "date"
+    type: 'date',
   },
   lastSeen: {
-    type: "date"
+    type: 'date',
   },
   contributionCancelled: {
-    type: "date",
-    nullable: true
+    type: 'date',
+    nullable: true,
   },
   contributionType: {
-    type: "enum",
+    type: 'enum',
     options: [
       ContributionType.Automatic,
       ContributionType.Gift,
       ContributionType.Manual,
-      ContributionType.None
-    ] satisfies ContributionType[] as ContributionType[]
+      ContributionType.None,
+    ] satisfies ContributionType[] as ContributionType[],
   },
   contributionMonthlyAmount: {
-    type: "number"
+    type: 'number',
   },
   contributionPeriod: {
-    type: "enum",
+    type: 'enum',
     options: [
       ContributionPeriod.Monthly,
-      ContributionPeriod.Annually
-    ] satisfies ContributionPeriod[] as ContributionPeriod[]
+      ContributionPeriod.Annually,
+    ] satisfies ContributionPeriod[] as ContributionPeriod[],
   },
   deliveryOptIn: {
-    type: "boolean"
+    type: 'boolean',
   },
   newsletterStatus: {
-    type: "enum",
+    type: 'enum',
     options: [
       NewsletterStatus.Subscribed,
       NewsletterStatus.Unsubscribed,
       NewsletterStatus.Cleaned,
       NewsletterStatus.Pending,
-      NewsletterStatus.None
-    ] satisfies NewsletterStatus[] as NewsletterStatus[]
+      NewsletterStatus.None,
+    ] satisfies NewsletterStatus[] as NewsletterStatus[],
   },
   newsletterGroups: {
-    type: "array"
+    type: 'array',
   },
   activePermission: {
-    type: "enum",
-    options: RoleTypes satisfies typeof RoleTypes as typeof RoleTypes
+    type: 'enum',
+    options: RoleTypes satisfies typeof RoleTypes as typeof RoleTypes,
   },
   activeMembership: {
-    type: "boolean"
+    type: 'boolean',
   },
   activeUser: {
-    type: "boolean"
+    type: 'boolean',
   },
   membershipStarts: {
-    type: "date"
+    type: 'date',
   },
   membershipExpires: {
-    type: "date"
+    type: 'date',
   },
   manualPaymentSource: {
-    type: "text",
-    nullable: true
+    type: 'text',
+    nullable: true,
   },
   tags: {
-    type: "array"
-  }
+    type: 'array',
+  },
 } as const;
 contactFilters satisfies Filters;
 
@@ -97,24 +97,24 @@ export type ContactFilterName = keyof typeof contactFilters;
 export const contactTagFilters = {
   // ...tagFilters,
   id: {
-    type: "text"
+    type: 'text',
   },
   name: {
-    type: "text"
+    type: 'text',
   },
   description: {
-    type: "text"
+    type: 'text',
   },
   contactId: {
-    type: "text"
-  }
+    type: 'text',
+  },
 } as const;
 contactTagFilters satisfies TagFiltersType & Filters;
 
 export const contactCalloutFilters = {
   hasAnswered: {
-    type: "boolean"
-  }
+    type: 'boolean',
+  },
 } as const;
 contactCalloutFilters satisfies Filters;
 

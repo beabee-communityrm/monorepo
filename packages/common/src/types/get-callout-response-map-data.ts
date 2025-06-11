@@ -1,8 +1,8 @@
 import type {
   CalloutResponseAnswerAddress,
   CalloutResponseAnswerFileUpload,
-  CalloutResponseAnswersSlide
-} from "./index.js";
+  CalloutResponseAnswersSlide,
+} from './index.js';
 
 export interface GetCalloutResponseMapData {
   number: number;

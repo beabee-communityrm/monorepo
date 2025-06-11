@@ -5,21 +5,21 @@ import {
   getCalloutFilters,
   PaginatedQuery,
   RuleGroup,
-  RuleOperator
-} from "@beabee/beabee-common";
+  RuleOperator,
+} from '@beabee/beabee-common';
 
-import { BaseGetCalloutResponseOptsDto } from "@api/dto/CalloutResponseDto";
-import { BaseTransformer } from "@api/transformers/BaseTransformer";
-import { mergeRules } from "@beabee/core/utils/rules";
+import { BaseGetCalloutResponseOptsDto } from '@api/dto/CalloutResponseDto';
+import { BaseTransformer } from '@api/transformers/BaseTransformer';
+import { mergeRules } from '@beabee/core/utils/rules';
 
-import { CalloutResponse } from "@beabee/core/models";
+import { CalloutResponse } from '@beabee/core/models';
 
-import { FilterHandlers } from "@beabee/core/type";
-import { calloutResponseFilterHandlers } from "@beabee/core/filter-handlers";
+import { FilterHandlers } from '@beabee/core/type';
+import { calloutResponseFilterHandlers } from '@beabee/core/filter-handlers';
 
 export abstract class BaseCalloutResponseTransformer<
   GetDto,
-  GetOptsDto extends BaseGetCalloutResponseOptsDto
+  GetOptsDto extends BaseGetCalloutResponseOptsDto,
 > extends BaseTransformer<
   CalloutResponse,
   GetDto,
@@ -38,7 +38,7 @@ export abstract class BaseCalloutResponseTransformer<
     return [
       // If looking for responses for a particular callout then add answer filtering
       query.callout ? getCalloutFilters(query.callout.formSchema) : {},
-      {}
+      {},
     ];
   }
 
@@ -49,11 +49,11 @@ export abstract class BaseCalloutResponseTransformer<
         query.rules,
         // Only load responses for the given callout
         !!query.callout && {
-          field: "calloutId",
-          operator: "equal",
-          value: [query.callout.id]
-        }
-      ])
+          field: 'calloutId',
+          operator: 'equal',
+          value: [query.callout.id],
+        },
+      ]),
     };
   }
 }

@@ -4,8 +4,8 @@
 import {
   MILLISECONDS_IN_HOUR,
   MILLISECONDS_IN_MINUTE,
-  type ParseISOOptions
-} from "@beabee/beabee-common";
+  type ParseISOOptions,
+} from '@beabee/beabee-common';
 
 /**
  * @name parseISO
@@ -108,7 +108,7 @@ interface ParsedYear {
 const patterns = {
   dateTimeDelimiter: /[T ]/,
   timeZoneDelimiter: /[Z ]/i,
-  timezone: /([Z+-].*)$/
+  timezone: /([Z+-].*)$/,
 };
 
 const dateRegex =
@@ -145,7 +145,7 @@ function splitDateString(dateString: string): DateString {
   if (timeString) {
     const token = patterns.timezone.exec(timeString);
     if (token) {
-      dateStrings.time = timeString.replace(token[1], "");
+      dateStrings.time = timeString.replace(token[1], '');
       dateStrings.timezone = token[1];
     } else {
       dateStrings.time = timeString;
@@ -157,16 +157,16 @@ function splitDateString(dateString: string): DateString {
 
 function parseYear(dateString: string, additionalDigits: number): ParsedYear {
   const regex = new RegExp(
-    "^(?:(\\d{4}|[+-]\\d{" +
+    '^(?:(\\d{4}|[+-]\\d{' +
       (4 + additionalDigits) +
-      "})|(\\d{2}|[+-]\\d{" +
+      '})|(\\d{2}|[+-]\\d{' +
       (2 + additionalDigits) +
-      "})$)"
+      '})$)'
   );
 
   const captures = dateString.match(regex);
   // Invalid ISO-formatted year
-  if (!captures) return { year: NaN, restDateString: "" };
+  if (!captures) return { year: NaN, restDateString: '' };
 
   const year = captures[1] ? parseInt(captures[1]) : null;
   const century = captures[2] ? parseInt(captures[2]) : null;
@@ -174,7 +174,7 @@ function parseYear(dateString: string, additionalDigits: number): ParsedYear {
   // either year or century is null, not both
   return {
     year: century === null ? (year as number) : century * 100,
-    restDateString: dateString.slice((captures[1] || captures[2]).length)
+    restDateString: dateString.slice((captures[1] || captures[2]).length),
   };
 }
 
@@ -235,16 +235,16 @@ function parseTime(timeString: string): number {
 }
 
 function parseTimeUnit(value: string): number {
-  return (value && parseFloat(value.replace(",", "."))) || 0;
+  return (value && parseFloat(value.replace(',', '.'))) || 0;
 }
 
 function parseTimezone(timezoneString: string): number {
-  if (timezoneString === "Z") return 0;
+  if (timezoneString === 'Z') return 0;
 
   const captures = timezoneString.match(timezoneRegex);
   if (!captures) return 0;
 
-  const sign = captures[1] === "+" ? -1 : 1;
+  const sign = captures[1] === '+' ? -1 : 1;
   const hours = parseInt(captures[2]);
   const minutes = (captures[3] && parseInt(captures[3])) || 0;
 

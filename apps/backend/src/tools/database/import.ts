@@ -1,11 +1,11 @@
-import "module-alias/register";
+import 'module-alias/register';
 
-import readline from "readline";
+import readline from 'readline';
 
-import { dataSource } from "@beabee/core/database";
-import { runApp } from "@beabee/core/server";
+import { dataSource } from '@beabee/core/database';
+import { runApp } from '@beabee/core/server';
 
-import config from "@beabee/core/config";
+import config from '@beabee/core/config';
 
 if (!config.dev) {
   console.error("Can't import to live database");
@@ -18,15 +18,15 @@ runApp(async () => {
     const rl = readline.createInterface({
       input: process.stdin,
       output: process.stdout,
-      terminal: false
+      terminal: false,
     });
 
-    let query = "";
+    let query = '';
     for await (const line of rl) {
       if (query) {
-        console.log("Running " + query.substring(0, 100) + "...");
-        await manager.query(query, line !== "" ? JSON.parse(line) : undefined);
-        query = "";
+        console.log('Running ' + query.substring(0, 100) + '...');
+        await manager.query(query, line !== '' ? JSON.parse(line) : undefined);
+        query = '';
       } else {
         query = line;
       }

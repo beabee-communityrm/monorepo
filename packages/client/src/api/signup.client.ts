@@ -3,11 +3,11 @@ import {
   ContributionPeriod,
   type PaymentFlowParams,
   type Serial,
-  type SignupData
-} from "@beabee/beabee-common";
-import type { BaseClientOptions } from "../types/index.js";
-import { BaseClient } from "./base.client.js";
-import { cleanUrl } from "../utils/index.js";
+  type SignupData,
+} from '@beabee/beabee-common';
+import type { BaseClientOptions } from '../types/index.js';
+import { BaseClient } from './base.client.js';
+import { cleanUrl } from '../utils/index.js';
 
 /**
  * Client for managing user signup and registration
@@ -25,9 +25,9 @@ export class SignupClient extends BaseClient {
   constructor(protected override readonly options: BaseClientOptions) {
     super({
       ...options,
-      path: cleanUrl(options.path + "/signup")
+      path: cleanUrl(options.path + '/signup'),
     });
-    this.completeUrl = options.host + "/join/complete";
+    this.completeUrl = options.host + '/join/complete';
   }
 
   /**
@@ -38,11 +38,11 @@ export class SignupClient extends BaseClient {
   async start(data: SignupData): Promise<PaymentFlowParams | undefined> {
     const { data: responseData } = await this.fetch.post<
       Serial<PaymentFlowParams> | undefined
-    >("", {
+    >('', {
       email: data.email,
-      loginUrl: this.options.host + "/auth/login",
-      setPasswordUrl: this.options.host + "/auth/set-password",
-      confirmUrl: this.options.host + "/join/confirm-email",
+      loginUrl: this.options.host + '/auth/login',
+      setPasswordUrl: this.options.host + '/auth/set-password',
+      confirmUrl: this.options.host + '/join/confirm-email',
       ...(!data.noContribution && {
         contribution: {
           amount: data.amount,
@@ -50,9 +50,9 @@ export class SignupClient extends BaseClient {
           payFee: data.payFee && data.period === ContributionPeriod.Monthly,
           prorate: false,
           paymentMethod: data.paymentMethod,
-          completeUrl: this.completeUrl
-        }
-      })
+          completeUrl: this.completeUrl,
+        },
+      }),
     });
     return responseData;
   }
@@ -62,11 +62,11 @@ export class SignupClient extends BaseClient {
    * @param data - The completion data including name and payment details
    */
   async complete(data: CompleteSignupData): Promise<void> {
-    await this.fetch.post("/complete", {
+    await this.fetch.post('/complete', {
       paymentFlowId: data.paymentFlowId,
       firstname: data.firstname,
       lastname: data.lastname,
-      vatNumber: data.vatNumber
+      vatNumber: data.vatNumber,
     });
   }
 
@@ -75,6 +75,6 @@ export class SignupClient extends BaseClient {
    * @param joinFlowId - The join flow ID from the confirmation email
    */
   async confirmEmail(joinFlowId: string | string[]): Promise<void> {
-    await this.fetch.post("/confirm-email", { joinFlowId });
+    await this.fetch.post('/confirm-email', { joinFlowId });
   }
 }

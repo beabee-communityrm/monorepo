@@ -1,9 +1,9 @@
-import "module-alias/register";
+import 'module-alias/register';
 
-import { runApp } from "@beabee/core/server";
+import { runApp } from '@beabee/core/server';
 
-import * as models from "./anonymisers/models";
-import { anonymiseModel, clearModels } from "./anonymisers";
+import * as models from './anonymisers/models';
+import { anonymiseModel, clearModels } from './anonymisers';
 
 // Order these so they respect foreign key constraints
 const anonymisers = [
@@ -36,7 +36,7 @@ const anonymisers = [
   models.segmentsAnonymiser,
   models.segmentContactsAnonymiser,
   models.segmentOngoingEmailsAnonymiser,
-  models.exportItemsAnonymiser // Must be after all exportable items
+  models.exportItemsAnonymiser, // Must be after all exportable items
 ] as models.ModelAnonymiser[];
 
 async function main() {

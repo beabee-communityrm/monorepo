@@ -1,5 +1,5 @@
-import path from "node:path";
-import fs from "node:fs/promises";
+import path from 'node:path';
+import fs from 'node:fs/promises';
 
 /**
  * Recursively get all files in a directory
@@ -43,8 +43,8 @@ export async function findMainImage(dirPath: string): Promise<string | null> {
 
   const mainImage = files.find(
     (file) =>
-      !file.includes("_") &&
-      file !== "deletecode" &&
+      !file.includes('_') &&
+      file !== 'deletecode' &&
       /\.(jpg|jpeg|png|gif|webp)$/i.test(file)
   );
 

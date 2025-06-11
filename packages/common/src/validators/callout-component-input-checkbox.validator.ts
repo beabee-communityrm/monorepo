@@ -1,8 +1,8 @@
 import type {
   CalloutComponentInputCheckboxSchema,
   CalloutResponseAnswer,
-  ValidatorCalloutComponent
-} from "../types/index.js";
+  ValidatorCalloutComponent,
+} from '../types/index.js';
 
 export const calloutComponentInputCheckboxValidator: ValidatorCalloutComponent<
   CalloutComponentInputCheckboxSchema
@@ -10,5 +10,5 @@ export const calloutComponentInputCheckboxValidator: ValidatorCalloutComponent<
   _schema: CalloutComponentInputCheckboxSchema,
   answer: CalloutResponseAnswer
 ): boolean => {
-  return typeof answer === "boolean";
+  return typeof answer === 'boolean';
 };

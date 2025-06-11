@@ -1,5 +1,5 @@
-import { IsString, IsUUID } from "class-validator";
-import { CreateTagDto, GetTagDto, ListTagsDto } from "./TagDto";
+import { IsString, IsUUID } from 'class-validator';
+import { CreateTagDto, GetTagDto, ListTagsDto } from './TagDto';
 
 /**
  * The contact tag DTO
@@ -13,7 +13,7 @@ import { CreateTagDto, GetTagDto, ListTagsDto } from "./TagDto";
  *    but adding groups via inheritance doesn't work
  */
 export class GetContactTagDto implements GetTagDto {
-  @IsUUID(undefined, { groups: ["admin"] })
+  @IsUUID(undefined, { groups: ['admin'] })
   id!: string;
 
   @IsString()

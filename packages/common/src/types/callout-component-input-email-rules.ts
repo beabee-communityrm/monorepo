@@ -1,4 +1,4 @@
-import type { CalloutComponentBaseRules } from "./index.js";
+import type { CalloutComponentBaseRules } from './index.js';
 
 export interface CalloutComponentInputEmailRules
   extends CalloutComponentBaseRules {

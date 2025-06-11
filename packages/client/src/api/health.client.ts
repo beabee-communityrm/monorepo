@@ -1,7 +1,7 @@
-import { BaseClient } from "./base.client.js";
-import { cleanUrl } from "../utils/index.js";
-import type { BaseClientOptions } from "../types/index.js";
-import type { HealthCheckData } from "@beabee/beabee-common";
+import { BaseClient } from './base.client.js';
+import { cleanUrl } from '../utils/index.js';
+import type { BaseClientOptions } from '../types/index.js';
+import type { HealthCheckData } from '@beabee/beabee-common';
 
 /**
  * Client for checking the health status of the Beabee API
@@ -16,7 +16,7 @@ export class HealthClient extends BaseClient {
   constructor(protected override readonly options: BaseClientOptions) {
     super({
       ...options,
-      path: cleanUrl(options.path + "/health")
+      path: cleanUrl(options.path + '/health'),
     });
   }
 
@@ -26,12 +26,12 @@ export class HealthClient extends BaseClient {
    * @throws {ClientApiError} If the API is unreachable
    */
   async check(): Promise<HealthCheckData> {
-    const { data } = await this.fetch.get<HealthCheckData>("");
+    const { data } = await this.fetch.get<HealthCheckData>('');
 
     // Deserialize timestamp
     return {
       ...data,
-      timestamp: BaseClient.deserializeDate(data.timestamp)
+      timestamp: BaseClient.deserializeDate(data.timestamp),
     };
   }
 }

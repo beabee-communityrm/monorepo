@@ -1,25 +1,25 @@
-import express, { type Express, type Request, type Response } from "express";
+import express, { type Express, type Request, type Response } from 'express';
 
-import { hasSchema } from "#core/middleware";
-import { wrapAsync } from "@beabee/core/utils/express";
+import { hasSchema } from '#core/middleware';
+import { wrapAsync } from '@beabee/core/utils/express';
 
-import ContactsService from "@beabee/core/services/ContactsService";
+import ContactsService from '@beabee/core/services/ContactsService';
 
-import { Contact } from "@beabee/core/models";
+import { Contact } from '@beabee/core/models';
 
-import { updateProfileSchema } from "./schemas.json";
-import { DuplicateEmailError } from "@beabee/core/errors";
+import { updateProfileSchema } from './schemas.json';
+import { DuplicateEmailError } from '@beabee/core/errors';
 
 const app: Express = express();
 
-app.set("views", __dirname + "/views");
+app.set('views', __dirname + '/views');
 
-app.get("/", (req: Request, res: Response) => {
-  res.render("index", { member: req.model });
+app.get('/', (req: Request, res: Response) => {
+  res.render('index', { member: req.model });
 });
 
 app.post(
-  "/",
+  '/',
   [hasSchema(updateProfileSchema).orFlash],
   wrapAsync(async (req: Request, res: Response) => {
     const {
@@ -31,8 +31,8 @@ app.post(
         delivery_line1,
         delivery_line2,
         delivery_city,
-        delivery_postcode
-      }
+        delivery_postcode,
+      },
     } = req;
     const contact = req.model as Contact;
 
@@ -40,7 +40,7 @@ app.post(
       await ContactsService.updateContact(contact, {
         email,
         firstname,
-        lastname
+        lastname,
       });
       await ContactsService.updateContactProfile(contact, {
         deliveryOptIn: delivery_optin,
@@ -49,13 +49,13 @@ app.post(
               line1: delivery_line1,
               line2: delivery_line2,
               city: delivery_city,
-              postcode: delivery_postcode
+              postcode: delivery_postcode,
             }
-          : null
+          : null,
       });
     } catch (error) {
       if (error instanceof DuplicateEmailError) {
-        req.flash("danger", "email-duplicate");
+        req.flash('danger', 'email-duplicate');
       } else {
         throw error;
       }

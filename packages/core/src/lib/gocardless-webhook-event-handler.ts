@@ -1,19 +1,19 @@
 import {
   Event,
   EventResourceType,
-  PaymentStatus
-} from "gocardless-nodejs/types/Types";
+  PaymentStatus,
+} from 'gocardless-nodejs/types/Types';
 
-import { log as mainLogger } from "#logging";
-import gocardless from "./gocardless";
+import { log as mainLogger } from '#logging';
+import gocardless from './gocardless';
 import {
   updatePaymentStatus,
   updatePayment,
   cancelSubscription,
-  cancelMandate
-} from "#utils/gocardless";
+  cancelMandate,
+} from '#utils/gocardless';
 
-const log = mainLogger.child({ app: "gocardless-webhook-handler" });
+const log = mainLogger.child({ app: 'gocardless-webhook-handler' });
 
 /**
  * Handles all incoming GoCardless webhook events and processes them according to their type.
@@ -55,7 +55,7 @@ export class GoCardlessWebhookEventHandler {
       case EventResourceType.Refunds:
         return await this.handleRefundResourceEvent(event);
       default:
-        log.info("Unhandled event", event);
+        log.info('Unhandled event', event);
         break;
     }
   }
@@ -88,15 +88,15 @@ export class GoCardlessWebhookEventHandler {
     event: Event
   ): Promise<void> {
     switch (event.action) {
-      case "created":
-      case "customer_approval_granted":
-      case "payment_created":
-      case "amended":
+      case 'created':
+      case 'customer_approval_granted':
+      case 'payment_created':
+      case 'amended':
         // Do nothing, we already have the details on file
         break;
-      case "customer_approval_denied":
-      case "cancelled":
-      case "finished":
+      case 'customer_approval_denied':
+      case 'cancelled':
+      case 'finished':
         await cancelSubscription(event.links!.subscription!);
         break;
     }
@@ -109,23 +109,23 @@ export class GoCardlessWebhookEventHandler {
    */
   private static async handleMandateResourceEvent(event: Event): Promise<void> {
     switch (event.action) {
-      case "created":
-      case "customer_approval_granted":
-      case "customer_approval_skipped":
-      case "submitted":
-      case "active":
-      case "transferred":
+      case 'created':
+      case 'customer_approval_granted':
+      case 'customer_approval_skipped':
+      case 'submitted':
+      case 'active':
+      case 'transferred':
         // Do nothing, we already have the details on file
         break;
-      case "reinstated":
+      case 'reinstated':
         log.error(
           "Mandate reinstated, its likely this mandate won't be linked to a member...",
           event
         );
         break;
-      case "cancelled":
-      case "failed":
-      case "expired":
+      case 'cancelled':
+      case 'failed':
+      case 'expired':
         // Remove the mandate from the database
         await cancelMandate(event.links!.mandate!);
         break;

@@ -1,1 +1,1 @@
-export type { Duration } from "date-fns";
+export type { Duration } from 'date-fns';

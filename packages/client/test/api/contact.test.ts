@@ -1,10 +1,10 @@
-import { describe, beforeAll, it, expect } from "vitest";
-import { ClientApiError, ContactClient } from "@beabee/client";
-import { GetContactWith } from "@beabee/beabee-common";
+import { describe, beforeAll, it, expect } from 'vitest';
+import { ClientApiError, ContactClient } from '@beabee/client';
+import { GetContactWith } from '@beabee/beabee-common';
 
-import { API_KEY, HOST, PATH } from "@beabee/test-utils/vitest/env";
+import { API_KEY, HOST, PATH } from '@beabee/test-utils/vitest/env';
 
-describe("Contact API", () => {
+describe('Contact API', () => {
   let contactClient: ContactClient;
   let testContactId: string;
 
@@ -12,17 +12,17 @@ describe("Contact API", () => {
     contactClient = new ContactClient({
       host: HOST,
       path: PATH,
-      token: API_KEY
+      token: API_KEY,
     });
   });
 
-  describe("create", () => {
-    it("should create a new contact", async () => {
+  describe('create', () => {
+    it('should create a new contact', async () => {
       const newContact = {
         email: `test-${Date.now()}@example.com`,
-        firstname: "Test",
-        lastname: "User",
-        password: "testPassword123!"
+        firstname: 'Test',
+        lastname: 'User',
+        password: 'testPassword123!',
       };
 
       const response = await contactClient.create(newContact);
@@ -40,9 +40,9 @@ describe("Contact API", () => {
     });
   });
 
-  it("should return 400 for non-existing contact id with client", async () => {
+  it('should return 400 for non-existing contact id with client', async () => {
     try {
-      await contactClient.get("non-existing-id");
+      await contactClient.get('non-existing-id');
     } catch (error) {
       if (error instanceof ClientApiError) {
         expect(error.httpCode).toBe(400);
@@ -50,33 +50,33 @@ describe("Contact API", () => {
     }
   });
 
-  it("should successfully list contacts", async () => {
+  it('should successfully list contacts', async () => {
     const response = await contactClient.list({});
 
     // Check response structure
     expect(response).toBeDefined();
-    expect(response).toHaveProperty("total");
-    expect(response).toHaveProperty("offset");
-    expect(response).toHaveProperty("count");
-    expect(response).toHaveProperty("items");
+    expect(response).toHaveProperty('total');
+    expect(response).toHaveProperty('offset');
+    expect(response).toHaveProperty('count');
+    expect(response).toHaveProperty('items');
     expect(Array.isArray(response.items)).toBe(true);
 
     // Check first item properties if exists
     if (response.items.length > 0) {
       const firstContact = response.items[0];
-      expect(firstContact).toHaveProperty("id");
-      expect(firstContact).toHaveProperty("email");
-      expect(firstContact).toHaveProperty("firstname");
-      expect(firstContact).toHaveProperty("lastname");
-      expect(firstContact).toHaveProperty("joined");
-      expect(firstContact).toHaveProperty("activeRoles");
-      expect(firstContact).toHaveProperty("displayName");
+      expect(firstContact).toHaveProperty('id');
+      expect(firstContact).toHaveProperty('email');
+      expect(firstContact).toHaveProperty('firstname');
+      expect(firstContact).toHaveProperty('lastname');
+      expect(firstContact).toHaveProperty('joined');
+      expect(firstContact).toHaveProperty('activeRoles');
+      expect(firstContact).toHaveProperty('displayName');
       expect(Array.isArray(firstContact.activeRoles)).toBe(true);
     }
   });
 
-  describe("get", () => {
-    it("should get a contact by id", async () => {
+  describe('get', () => {
+    it('should get a contact by id', async () => {
       const response = await contactClient.get(testContactId);
 
       expect(response).toBeDefined();
@@ -84,9 +84,9 @@ describe("Contact API", () => {
       expect(response.displayName).toBeDefined();
     });
 
-    it("should get a contact with roles", async () => {
+    it('should get a contact with roles', async () => {
       const response = await contactClient.get(testContactId, [
-        GetContactWith.Roles
+        GetContactWith.Roles,
       ]);
 
       expect(response).toBeDefined();
@@ -96,11 +96,11 @@ describe("Contact API", () => {
     });
   });
 
-  describe("update", () => {
-    it("should update a contact", async () => {
+  describe('update', () => {
+    it('should update a contact', async () => {
       const updateData = {
-        firstname: "Updated",
-        lastname: "Name"
+        firstname: 'Updated',
+        lastname: 'Name',
       };
 
       const response = await contactClient.update(testContactId, updateData);
@@ -114,8 +114,8 @@ describe("Contact API", () => {
     });
   });
 
-  describe("delete", () => {
-    it("should delete a contact", async () => {
+  describe('delete', () => {
+    it('should delete a contact', async () => {
       await expect(
         contactClient.delete(testContactId)
       ).resolves.toBeUndefined();

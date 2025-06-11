@@ -2,39 +2,39 @@ import express, {
   type Express,
   type Request,
   type Response,
-  type NextFunction
-} from "express";
+  type NextFunction,
+} from 'express';
 
-import { getRepository } from "@beabee/core/database";
-import { isAdmin } from "#core/middleware";
-import { wrapAsync } from "@beabee/core/utils/express";
+import { getRepository } from '@beabee/core/database';
+import { isAdmin } from '#core/middleware';
+import { wrapAsync } from '@beabee/core/utils/express';
 
-import OptionsService from "@beabee/core/services/OptionsService";
+import OptionsService from '@beabee/core/services/OptionsService';
 
-import { Content } from "@beabee/core/models";
+import { Content } from '@beabee/core/models';
 
-import type { ContentId } from "@beabee/beabee-common";
+import type { ContentId } from '@beabee/beabee-common';
 
 const app: Express = express();
 
-app.set("views", __dirname + "/views");
+app.set('views', __dirname + '/views');
 
 app.use(isAdmin);
 
 app.get(
-  "/",
+  '/',
   wrapAsync(async (req: Request, res: Response) => {
     const content = await getRepository(Content).find();
     function get(id: ContentId) {
       return content.find((c) => c.id === id)?.data || {};
     }
-    res.render("index", {
-      general: get("general"),
-      join: get("join"),
-      joinSetup: get("join/setup"),
-      profile: get("profile"),
-      payment: get("payment"),
-      telegram: get("telegram")
+    res.render('index', {
+      general: get('general'),
+      join: get('join'),
+      joinSetup: get('join/setup'),
+      profile: get('profile'),
+      payment: get('payment'),
+      telegram: get('telegram'),
     });
   })
 );
@@ -42,31 +42,31 @@ app.get(
 const parseData = {
   general: (data: any) => ({
     ...data,
-    hideContribution: data.hideContribution === "true"
+    hideContribution: data.hideContribution === 'true',
   }),
   join: (data: any) => ({
     ...data,
     initialAmount: Number(data.initialAmount),
     periods: data.periods.map((p: { name: string; presetAmounts: string }) => ({
       name: p.name,
-      presetAmounts: p.presetAmounts.split(",").map((s) => Number(s.trim()))
+      presetAmounts: p.presetAmounts.split(',').map((s) => Number(s.trim())),
     })),
-    showNoContribution: data.showNoContribution === "true",
+    showNoContribution: data.showNoContribution === 'true',
     paymentMethods: data.paymentMethods
-      .split(",")
+      .split(',')
       .map((s: string) => s.trim())
-      .filter((s: string) => !!s)
+      .filter((s: string) => !!s),
   }),
-  "join/setup": (data: any) => ({
+  'join/setup': (data: any) => ({
     ...data,
-    showNewsletterOptIn: data.showNewsletterOptIn === "true"
+    showNewsletterOptIn: data.showNewsletterOptIn === 'true',
   }),
   profile: (d: any) => d,
   contacts: (d: any) => d,
   share: (d: any) => d,
   email: (d: any) => d,
   payment: (d: any) => d,
-  telegram: (d: any) => d
+  telegram: (d: any) => d,
 } as const;
 
 // urlencoding parser doesn't support overwriting if the same query param
@@ -85,14 +85,14 @@ function dedupeOptions(req: Request, res: Response, next: NextFunction) {
 }
 
 app.post(
-  "/",
+  '/',
   dedupeOptions,
   wrapAsync(async (req, res) => {
     if (req.body.id) {
       const id = req.body.id as ContentId;
       await getRepository(Content).save({
         id,
-        data: parseData[id](req.body.data || {})
+        data: parseData[id](req.body.data || {}),
       });
     }
 
@@ -100,7 +100,7 @@ app.post(
       await OptionsService.set(req.body.options);
     }
 
-    res.redirect("/settings/content");
+    res.redirect('/settings/content');
   })
 );
 

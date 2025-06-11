@@ -5,40 +5,40 @@ import {
   ItemStatus,
   PaginatedQuery,
   Rule,
-  RuleGroup
-} from "@beabee/beabee-common";
-import { TransformPlainToInstance } from "class-transformer";
+  RuleGroup,
+} from '@beabee/beabee-common';
+import { TransformPlainToInstance } from 'class-transformer';
 import {
   BadRequestError,
   NotFoundError,
-  UnauthorizedError
-} from "routing-controllers";
-import { SelectQueryBuilder } from "typeorm";
+  UnauthorizedError,
+} from 'routing-controllers';
+import { SelectQueryBuilder } from 'typeorm';
 
-import { createQueryBuilder } from "@beabee/core/database";
+import { createQueryBuilder } from '@beabee/core/database';
 
 import {
   GetCalloutWith,
   ListCalloutsDto,
   GetCalloutDto,
-  GetCalloutOptsDto
-} from "@api/dto/CalloutDto";
-import { BaseTransformer } from "@api/transformers/BaseTransformer";
-import CalloutVariantTransformer from "@api/transformers/CalloutVariantTransformer";
-import { groupBy } from "@api/utils";
-import { mergeRules } from "@beabee/core/utils/rules";
+  GetCalloutOptsDto,
+} from '@api/dto/CalloutDto';
+import { BaseTransformer } from '@api/transformers/BaseTransformer';
+import CalloutVariantTransformer from '@api/transformers/CalloutVariantTransformer';
+import { groupBy } from '@api/utils';
+import { mergeRules } from '@beabee/core/utils/rules';
 
 import {
   Callout,
   CalloutResponse,
   CalloutReviewer,
-  CalloutVariant
-} from "@beabee/core/models";
+  CalloutVariant,
+} from '@beabee/core/models';
 
-import { AuthInfo, FilterHandlers } from "@beabee/core/type";
+import { AuthInfo, FilterHandlers } from '@beabee/core/type';
 
-import { calloutFilterHandlers } from "@beabee/core/filter-handlers";
-import { getReviewerRules } from "@api/utils/callouts";
+import { calloutFilterHandlers } from '@beabee/core/filter-handlers';
+import { getReviewerRules } from '@api/utils/callouts';
 class CalloutTransformer extends BaseTransformer<
   Callout,
   GetCalloutDto,
@@ -61,14 +61,14 @@ class CalloutTransformer extends BaseTransformer<
       {
         answeredBy: (qb, args) => {
           // TODO: support not_equal for admins
-          if (args.operator !== "equal") {
-            throw new BadRequestError("answeredBy only supports equal");
+          if (args.operator !== 'equal') {
+            throw new BadRequestError('answeredBy only supports equal');
           }
 
           // Non-admins can only query for their own responses
           if (
             auth.contact &&
-            !auth.roles.includes("admin") &&
+            !auth.roles.includes('admin') &&
             args.value[0] !== auth.contact.id
           ) {
             throw new UnauthorizedError();
@@ -77,34 +77,34 @@ class CalloutTransformer extends BaseTransformer<
           // TODO: deduplicate with hasAnswered
           const subQb = createQueryBuilder()
             .subQuery()
-            .select("cr.calloutId")
-            .distinctOn(["cr.calloutId"])
-            .from(CalloutResponse, "cr")
+            .select('cr.calloutId')
+            .distinctOn(['cr.calloutId'])
+            .from(CalloutResponse, 'cr')
             .where(args.convertToWhereClause(`cr.contactId`))
-            .orderBy("cr.calloutId");
+            .orderBy('cr.calloutId');
 
           qb.where(`${args.fieldPrefix}id IN ${subQb.getQuery()}`);
         },
         canReview: (qb, args) => {
           if (!auth.contact) {
-            throw new BadRequestError("canReview requires contact");
+            throw new BadRequestError('canReview requires contact');
           }
 
-          if (!auth.roles.includes("admin")) {
+          if (!auth.roles.includes('admin')) {
             const subQb = createQueryBuilder()
               .subQuery()
-              .select("cr.calloutId")
-              .from(CalloutReviewer, "cr")
-              .where(args.addParamSuffix("cr.contactId = :contactId"));
+              .select('cr.calloutId')
+              .from(CalloutReviewer, 'cr')
+              .where(args.addParamSuffix('cr.contactId = :contactId'));
 
-            const operator = args.value[0] ? "IN" : "NOT IN";
+            const operator = args.value[0] ? 'IN' : 'NOT IN';
 
             qb.where(`${args.fieldPrefix}id ${operator} ${subQb.getQuery()}`);
 
             return { contactId: auth.contact.id };
           }
-        }
-      }
+        },
+      },
     ];
   }
 
@@ -117,11 +117,11 @@ class CalloutTransformer extends BaseTransformer<
     const variants = Object.fromEntries(
       callout.variants.map((variant) => [
         variant.name,
-        CalloutVariantTransformer.convert(variant)
+        CalloutVariantTransformer.convert(variant),
       ])
     );
 
-    const variant = variants[opts?.variant || "default"];
+    const variant = variants[opts?.variant || 'default'];
     if (!variant) {
       throw new NotFoundError(`Variant ${opts?.variant} not found`);
     }
@@ -132,10 +132,10 @@ class CalloutTransformer extends BaseTransformer<
         ...slide,
         navigation: {
           ...variant.slideNavigation[slide.id],
-          ...slide.navigation
-        }
+          ...slide.navigation,
+        },
       })),
-      componentText: variant.componentText
+      componentText: variant.componentText,
     };
 
     return {
@@ -154,10 +154,10 @@ class CalloutTransformer extends BaseTransformer<
       expires: callout.expires,
       channels: callout.channels,
       ...(callout.hasAnswered !== undefined && {
-        hasAnswered: callout.hasAnswered
+        hasAnswered: callout.hasAnswered,
       }),
       ...(callout.responseCount !== undefined && {
-        responseCount: callout.responseCount
+        responseCount: callout.responseCount,
       }),
       ...(opts?.with?.includes(GetCalloutWith.Form) && {
         intro: variant.intro,
@@ -165,23 +165,23 @@ class CalloutTransformer extends BaseTransformer<
         thanksTitle: variant.thanksTitle,
         formSchema,
         ...(variant.thanksRedirect && {
-          thanksRedirect: variant.thanksRedirect
+          thanksRedirect: variant.thanksRedirect,
         }),
         ...(variant.shareTitle && { shareTitle: variant.shareTitle }),
         ...(variant.shareDescription && {
-          shareDescription: variant.shareDescription
+          shareDescription: variant.shareDescription,
         }),
-        newsletterSchema: callout.newsletterSchema
+        newsletterSchema: callout.newsletterSchema,
       }),
       ...(opts?.with?.includes(GetCalloutWith.ResponseViewSchema) && {
-        responseViewSchema: callout.responseViewSchema
+        responseViewSchema: callout.responseViewSchema,
       }),
       ...(opts?.with?.includes(GetCalloutWith.VariantNames) && {
-        variantNames: callout.variantNames
+        variantNames: callout.variantNames,
       }),
       ...(opts?.with?.includes(GetCalloutWith.Variants) && {
-        variants
-      })
+        variants,
+      }),
     };
   }
 
@@ -190,35 +190,35 @@ class CalloutTransformer extends BaseTransformer<
     query: GetCalloutOptsDto
   ): Promise<RuleGroup> {
     return {
-      condition: "OR",
+      condition: 'OR',
       rules: [
         // Reviewers can see all the callouts they are reviewers for
-        ...(await getReviewerRules(auth.contact, "id")),
+        ...(await getReviewerRules(auth.contact, 'id')),
 
         // Non-admins can only see open or ended non-hidden callouts
         mergeRules([
           {
-            condition: "OR",
+            condition: 'OR',
             rules: [
               {
-                field: "status",
-                operator: "equal",
-                value: [ItemStatus.Open]
+                field: 'status',
+                operator: 'equal',
+                value: [ItemStatus.Open],
               },
               {
-                field: "status",
-                operator: "equal",
-                value: [ItemStatus.Ended]
-              }
-            ]
+                field: 'status',
+                operator: 'equal',
+                value: [ItemStatus.Ended],
+              },
+            ],
           },
           !query.showHiddenForAll && {
-            field: "hidden",
-            operator: "equal",
-            value: [false]
-          }
-        ])
-      ]
+            field: 'hidden',
+            operator: 'equal',
+            value: [false],
+          },
+        ]),
+      ],
     };
   }
 
@@ -230,7 +230,7 @@ class CalloutTransformer extends BaseTransformer<
   ): void {
     if (
       query.with?.includes(GetCalloutWith.ResponseCount) &&
-      auth.roles.includes("admin")
+      auth.roles.includes('admin')
     ) {
       qb.loadRelationCountAndMap(
         `${fieldPrefix}responseCount`,
@@ -239,12 +239,12 @@ class CalloutTransformer extends BaseTransformer<
     }
 
     // Always load a variant for filtering and sorting
-    qb.leftJoinAndSelect(`${fieldPrefix}variants`, "cvd", "cvd.name = :name", {
-      name: query.variant || "default"
+    qb.leftJoinAndSelect(`${fieldPrefix}variants`, 'cvd', 'cvd.name = :name', {
+      name: query.variant || 'default',
     });
 
-    if (query.sort === "title") {
-      qb.orderBy("cvd.title", query.order || "ASC");
+    if (query.sort === 'title') {
+      qb.orderBy('cvd.title', query.order || 'ASC');
     }
   }
 
@@ -261,14 +261,14 @@ class CalloutTransformer extends BaseTransformer<
         GetCalloutWith.VariantNames
       );
       if (withVariants || withVariantNames) {
-        const qb = createQueryBuilder(CalloutVariant, "cv").where(
-          "cv.calloutId IN (:...ids)",
+        const qb = createQueryBuilder(CalloutVariant, 'cv').where(
+          'cv.calloutId IN (:...ids)',
           { ids: calloutIds }
         );
 
         // Fetch minimal data if not requesting the variants
         if (!query.with?.includes(GetCalloutWith.Variants)) {
-          qb.select(["cv.name", "cv.calloutId"]);
+          qb.select(['cv.name', 'cv.calloutId']);
         }
 
         const variants = await qb.getMany();
@@ -287,14 +287,14 @@ class CalloutTransformer extends BaseTransformer<
       }
 
       if (auth.contact && query.with?.includes(GetCalloutWith.HasAnswered)) {
-        const answeredCallouts = await createQueryBuilder(CalloutResponse, "cr")
-          .select("cr.calloutId", "id")
-          .distinctOn(["cr.calloutId"])
-          .where("cr.calloutId IN (:...ids) AND cr.contactId = :id", {
+        const answeredCallouts = await createQueryBuilder(CalloutResponse, 'cr')
+          .select('cr.calloutId', 'id')
+          .distinctOn(['cr.calloutId'])
+          .where('cr.calloutId IN (:...ids) AND cr.contactId = :id', {
             ids: calloutIds,
-            id: auth.contact.id
+            id: auth.contact.id,
           })
-          .orderBy("cr.calloutId")
+          .orderBy('cr.calloutId')
           .getRawMany<{ id: string }>();
 
         const answeredIds = answeredCallouts.map((c) => c.id);

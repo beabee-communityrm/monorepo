@@ -7,21 +7,21 @@ import {
   startOfMinute,
   startOfMonth,
   startOfSecond,
-  startOfYear
-} from "date-fns";
+  startOfYear,
+} from 'date-fns';
 
-import type { DateUnit, Duration, UnitMatches } from "../types/index.js";
+import type { DateUnit, Duration, UnitMatches } from '../types/index.js';
 
 // Must be ordered from highest resolution to lowest (seconds to years)
-export const dateUnits = ["s", "m", "h", "d", "M", "y"] as const;
+export const dateUnits = ['s', 'm', 'h', 'd', 'M', 'y'] as const;
 
 export const dateUnitMap: Record<DateUnit, keyof Duration> = {
-  y: "years",
-  M: "months",
-  d: "days",
-  h: "hours",
-  m: "minutes",
-  s: "seconds"
+  y: 'years',
+  M: 'months',
+  d: 'days',
+  h: 'hours',
+  m: 'minutes',
+  s: 'seconds',
 };
 
 const startOf: Record<DateUnit, (d: Date) => Date> = {
@@ -30,7 +30,7 @@ const startOf: Record<DateUnit, (d: Date) => Date> = {
   d: startOfDay,
   h: startOfHour,
   m: startOfMinute,
-  s: startOfSecond
+  s: startOfSecond,
 };
 
 const relativeDate = /^\$now(?<units>\(((y|M|d|h|m|s):(-?\d+),?)+\))?$/;
@@ -62,7 +62,7 @@ export function parseDate(
         units.push(unit);
       }
     } else {
-      units = ["d"];
+      units = ['d'];
     }
   } else {
     date = parseISO(value);
@@ -71,7 +71,7 @@ export function parseDate(
       .map(([unit]) => unit) as DateUnit[];
   }
 
-  const minUnit = getMinDateUnit(units) || "s";
+  const minUnit = getMinDateUnit(units) || 's';
   return [startOf[minUnit](date), minUnit];
 }
 
@@ -82,7 +82,7 @@ export function getMinDateUnit(units: DateUnit[]): DateUnit | undefined {
 }
 
 export function isValidDate(s: string | Date): boolean {
-  if (typeof s === "string") {
+  if (typeof s === 'string') {
     return relativeDate.test(s) || isValid(parseISO(s));
   }
   return isValid(s);
@@ -95,11 +95,11 @@ export function isDateBetween(
 ): boolean {
   let valid = isValidDate(date);
   if (start) {
-    start = typeof start === "string" ? parseISO(start) : start;
+    start = typeof start === 'string' ? parseISO(start) : start;
     valid = valid && date >= start!;
   }
   if (end) {
-    end = typeof end === "string" ? parseISO(end) : end;
+    end = typeof end === 'string' ? parseISO(end) : end;
     valid = valid && date <= end!;
   }
   return valid;

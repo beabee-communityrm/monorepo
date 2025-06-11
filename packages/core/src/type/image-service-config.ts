@@ -1,5 +1,5 @@
-import type { ImageFormat } from "./image-format";
-import type { S3Config } from "./s3-config";
+import type { ImageFormat } from './image-format';
+import type { S3Config } from './s3-config';
 
 /**
  * Configuration for the ImageService

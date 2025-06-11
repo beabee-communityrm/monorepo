@@ -1,9 +1,9 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class RenameGoCardlessToAutomatic1652285362376
   implements MigrationInterface
 {
-  name = "RenameGoCardlessToAutomatic1652285362376";
+  name = 'RenameGoCardlessToAutomatic1652285362376';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
