@@ -1,4 +1,5 @@
 export * from './button';
+export * from './contribution';
 export * from './form';
 export * from './list';
 export * from './notification';

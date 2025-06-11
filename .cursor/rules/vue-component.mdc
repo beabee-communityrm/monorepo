@@ -13,6 +13,8 @@ alwaysApply: false
 ## Create story
 - Following existing story patterns in `packages/vue/src/components/**/*.story.*`
 - Add brief documentation as a `.story.md` file following existing documentation structure
+- Do not document anything that is already documented in the source code
+- Avoid duplicating documentation that is already documented in the source code; instead, refer to existing documentation
 
 ## Modify component
 - Adjust the story and documentation as necessary.

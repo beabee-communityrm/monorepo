@@ -13,7 +13,15 @@ alwaysApply: false
    - **Components using locale strings must accept translated text as props** instead of hardcoded locale keys
    - Remove `useI18n()` and `t()` calls - pass translated strings from parent components instead
    - Follow [vue-component.mdc](mdc:.cursor/rules/vue-component.mdc) guidelines
-   - Refactor the components cleanly and sustainably during migration, make them accessible and document them in context with their intended use
+   - If possible, migrate dependent components and interfaces as well
+   - If a component or interface depends on store (`apps/frontend/src/store`), pass this instead to remove the dependency
+
+4. **Refactor**
+   - Refactor all migrated components cleanly and sustainably
+   - Make them accessible 
+   - Document them using TSDoc
    - Keep their required functionality in the context of their use
+
+5. **Finalisation**
    - Adapt the frontend application so that the migrated components are used
-   - When you are done with the migration, suggest a commit message and PR description for our changes
+   - Suggest a commit message and PR description for our changes
