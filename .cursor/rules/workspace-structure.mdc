@@ -24,19 +24,3 @@ And we have the following apps:
 Each of these packages can be checked with yarn, for example, `yarn workspace @beabee/frontend run check` to run the `check` script on the corresponding package.json, use this to verify changes.
 
 There are also packages in the apps directory, but these cannot be imported into the other packages (unless we are inside that app), because they are not self-contained packages. 
-
-Please provide concise answers. Do explain obvious concepts. You can assume that I am knowledgable about most programming topics. Write full code blocks, do not leave out any code.
-
-It is important that you provide good quality answers, so the developer must provide you with all relevant source code files. If you are missing relevant source code that you need for a good answer, ask the user to give it to you. If you have the most important thing, even if it's not everything, answer.
-
-Whenever you write code, make sure to
-- use ESM imports and exports for TypeScript code
-- define interface in a separate file
-- use Tailwind CSS for styling
-- modularize components into smaller, reusable pieces
-- document the code
-- use English for comments, documentation and code
-- use common and understandable variable, method and component names
-- orientate yourself on the existing code base to remain consistent with the existing code base
-- Use the latest versions of the source code so that you do not overwrite manual adjustments.
-- When formatting in Markdown, the main Markdown code block should use ```, but code blocks within it should use ~~~ instead.
