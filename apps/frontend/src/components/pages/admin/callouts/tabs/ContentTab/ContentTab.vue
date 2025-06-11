@@ -86,27 +86,26 @@
 
 <script lang="ts" setup>
 import { ItemStatus } from '@beabee/beabee-common';
-import useVuelidate from '@vuelidate/core';
-import { ref, watch, reactive, markRaw, computed } from 'vue';
-import { useI18n } from 'vue-i18n';
 import { AppButton, AppNotification } from '@beabee/vue/components';
-import { useRoute } from 'vue-router';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import Draggable from 'vuedraggable';
-
-import SidebarTabsNavigation from './SidebarTabsNavigation.vue';
-import type { SidebarTabs, SidebarTabsData } from './SidebarTabs.interface';
-import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
-import type { CalloutHorizontalTabs } from '../../CalloutHorizontalTabs.interface';
 
 import FormBuilderNavigation from '@components/form-builder/FormBuilderNavigation.vue';
+import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { getSlideSchema } from '@utils/callouts';
+import useVuelidate from '@vuelidate/core';
+import { computed, markRaw, reactive, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRoute } from 'vue-router';
+import Draggable from 'vuedraggable';
+
+import type { CalloutHorizontalTabs } from '../../CalloutHorizontalTabs.interface';
 import CalloutSlideItem from './CalloutSlideItem.vue';
 import ContentFormTab from './SidebarTabContent/ContentFormTab.vue';
 import EndMessageTab from './SidebarTabContent/EndMessageTab.vue';
 import IntroMessageTab from './SidebarTabContent/IntroMessageTab.vue';
+import type { SidebarTabs, SidebarTabsData } from './SidebarTabs.interface';
 import SidebarTabContent from './SidebarTabsContent.vue';
-
-import { getSlideSchema } from '@utils/callouts';
+import SidebarTabsNavigation from './SidebarTabsNavigation.vue';
 
 /**
  * Data for the content tab, which contains the form builder and end message configuration

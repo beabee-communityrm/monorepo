@@ -99,29 +99,27 @@ meta:
   </App2ColGrid>
 </template>
 <script lang="ts" setup>
-import { computed, onBeforeMount, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
-import useVuelidate from '@vuelidate/core';
-import { required } from '@vuelidate/validators';
 import {
-  ContributionPeriod,
   type ContentJoinData,
   type ContentPaymentData,
+  ContributionPeriod,
 } from '@beabee/beabee-common';
+import { AppCheckbox, AppForm, AppLabel } from '@beabee/vue/components';
 
-import { AppForm, AppLabel, AppCheckbox } from '@beabee/vue/components';
-import AppInput from '@components/forms/AppInput.vue';
-import RichTextEditor from '@components/rte/RichTextEditor.vue';
-import AppSelect from '@components/forms/AppSelect.vue';
-import JoinForm from '@components/pages/join/JoinForm.vue';
-import AppImageUpload from '@components/forms/AppImageUpload.vue';
-import PeriodAmounts from '@components/pages/admin/membership-builder/PeriodAmounts.vue';
 import App2ColGrid from '@components/App2ColGrid.vue';
 import AppSubHeading from '@components/AppSubHeading.vue';
-
-import { client } from '@utils/api';
-
+import AppImageUpload from '@components/forms/AppImageUpload.vue';
+import AppInput from '@components/forms/AppInput.vue';
+import AppSelect from '@components/forms/AppSelect.vue';
+import PeriodAmounts from '@components/pages/admin/membership-builder/PeriodAmounts.vue';
+import JoinForm from '@components/pages/join/JoinForm.vue';
+import RichTextEditor from '@components/rte/RichTextEditor.vue';
 import { generalContent } from '@store';
+import { client } from '@utils/api';
+import useVuelidate from '@vuelidate/core';
+import { required } from '@vuelidate/validators';
+import { computed, onBeforeMount, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 const joinContent = ref<ContentJoinData>();
 const paymentContent = ref<ContentPaymentData>();

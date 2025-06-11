@@ -1,18 +1,17 @@
+import { createQueryBuilder, getRepository } from '@beabee/core/database';
+import { Email, EmailMailing, SegmentOngoingEmail } from '@beabee/core/models';
+import EmailService from '@beabee/core/services/EmailService';
+import OptionsService from '@beabee/core/services/OptionsService';
+import { formatEmailBody } from '@beabee/core/templates/email';
+import { EmailMailingRecipient } from '@beabee/core/type';
+import { wrapAsync } from '@beabee/core/utils/express';
+
 import busboy from 'connect-busboy';
 import express, { type Express } from 'express';
 import _ from 'lodash';
 import Papa from 'papaparse';
 
-import { createQueryBuilder, getRepository } from '@beabee/core/database';
 import { hasNewModel, isAdmin } from '#core/middleware';
-import { wrapAsync } from '@beabee/core/utils/express';
-import { formatEmailBody } from '@beabee/core/templates/email';
-
-import EmailService from '@beabee/core/services/EmailService';
-import OptionsService from '@beabee/core/services/OptionsService';
-
-import { Email, EmailMailing, SegmentOngoingEmail } from '@beabee/core/models';
-import { EmailMailingRecipient } from '@beabee/core/type';
 
 const app: Express = express();
 

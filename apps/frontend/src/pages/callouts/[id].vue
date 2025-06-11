@@ -2,16 +2,17 @@
   <router-view v-if="callout" :callout="callout" />
 </template>
 <script lang="ts" setup>
-import { ref } from 'vue';
-import { useRoute } from 'vue-router';
-import { client } from '@utils/api';
-import { watch } from 'vue';
 import type { GetCalloutDataWith } from '@beabee/beabee-common';
+
+import { generalContent } from '@store';
+import { client } from '@utils/api';
 import {
   generateComponentTextWithFallbacks,
   generateSlidesWithNavigationFallbacks,
 } from '@utils/callouts';
-import { generalContent } from '@store';
+import { ref } from 'vue';
+import { watch } from 'vue';
+import { useRoute } from 'vue-router';
 
 const props = defineProps<{ id: string }>();
 const callout =

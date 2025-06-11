@@ -1,5 +1,6 @@
-import { describe, expect, test } from 'vitest';
 import { isValidPayFee } from '@beabee/beabee-common';
+
+import { describe, expect, test } from 'vitest';
 
 describe('isValidPayFee', () => {
   test('valid pay fee - monthly with fee', () => {

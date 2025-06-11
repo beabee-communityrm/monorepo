@@ -52,10 +52,12 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted } from 'vue';
 import { AppRadioGroup } from '@beabee/vue/components';
-import AppSelect from '../../../../forms/AppSelect.vue';
+
 import { faLink } from '@fortawesome/free-solid-svg-icons';
+import { onMounted } from 'vue';
+
+import AppSelect from '../../../../forms/AppSelect.vue';
 
 export interface MailchimpSyncStepData {
   useMailchimpSync: boolean;

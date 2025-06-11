@@ -1,13 +1,15 @@
-import Stripe from 'stripe';
-import { Contact } from '@beabee/core/models';
-import { paymentService } from '@beabee/core/services';
 import { PaymentForm, PaymentMethod } from '@beabee/beabee-common';
-import type { CreatePaymentArgs } from '../../types/index.js';
 import {
-  stripe,
   getPriceData,
   getSalesTaxRateObject,
+  stripe,
 } from '@beabee/core/lib/stripe';
+import { Contact } from '@beabee/core/models';
+import { paymentService } from '@beabee/core/services';
+
+import Stripe from 'stripe';
+
+import type { CreatePaymentArgs } from '../../types/index.js';
 
 // Step 2: Create join flow data
 function createPaymentFormData(argv: CreatePaymentArgs): PaymentForm {

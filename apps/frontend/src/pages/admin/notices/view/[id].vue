@@ -45,27 +45,25 @@ meta:
 </template>
 
 <script lang="ts" setup>
-import { computed, onBeforeMount, ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { useI18n } from 'vue-i18n';
-import {
-  faPencilAlt,
-  faSignHanging,
-  faTrash,
-} from '@fortawesome/free-solid-svg-icons';
+import type { GetNoticeData } from '@beabee/beabee-common';
+import { ActionButton } from '@beabee/vue/components';
 
 import AppConfirmDialog from '@components/AppConfirmDialog.vue';
 import AppHeading from '@components/AppHeading.vue';
 import AppNotice from '@components/AppNotice.vue';
 import PageTitle from '@components/PageTitle.vue';
-import { ActionButton } from '@beabee/vue/components';
-import ItemStatus from '@components/item/ItemStatusText.vue';
 import ItemDateRange from '@components/item/ItemDateRange.vue';
-
+import ItemStatus from '@components/item/ItemStatusText.vue';
+import {
+  faPencilAlt,
+  faSignHanging,
+  faTrash,
+} from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';
-
 import { client } from '@utils/api';
-import type { GetNoticeData } from '@beabee/beabee-common';
+import { computed, onBeforeMount, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
 
 const props = defineProps<{ id: string }>();
 const { t } = useI18n();

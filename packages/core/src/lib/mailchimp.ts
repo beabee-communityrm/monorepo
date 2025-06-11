@@ -1,13 +1,14 @@
-import crypto from 'crypto';
-
 import { NewsletterStatus } from '@beabee/beabee-common';
-import axios from 'axios';
+
 import JSONStream from 'JSONStream';
+import axios from 'axios';
+import crypto from 'crypto';
 import gunzip from 'gunzip-maybe';
 import tar from 'tar-stream';
 
 import { MailchimpNewsletterConfig } from '#config/config';
 import { log as mainLogger } from '#logging';
+import OptionsService from '#services/OptionsService';
 import {
   MCBatch,
   MCMember,
@@ -18,7 +19,6 @@ import {
   UpdateNewsletterContact,
 } from '#type/index';
 import { normalizeEmailAddress } from '#utils/email';
-import OptionsService from '#services/OptionsService';
 
 const log = mainLogger.child({ app: 'mailchimp' });
 

@@ -58,15 +58,16 @@ import type {
   GetCalloutResponseCommentData,
   UpdateCalloutResponseCommentData,
 } from '@beabee/beabee-common';
-import { onBeforeMount, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { faPencil, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { AppButton, AppButtonGroup } from '@beabee/vue/components';
-import AppConfirmDialog from '@components/AppConfirmDialog.vue';
-import CalloutResponseCommentForm from './CalloutResponseCommentForm.vue';
 
+import AppConfirmDialog from '@components/AppConfirmDialog.vue';
+import { faPencil, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { client } from '@utils/api';
 import { formatLocale } from '@utils/dates';
+import { onBeforeMount, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+import CalloutResponseCommentForm from './CalloutResponseCommentForm.vue';
 
 const { t } = useI18n();
 

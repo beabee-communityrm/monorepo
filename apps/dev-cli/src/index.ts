@@ -3,7 +3,8 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
-import { generateIndexCommand, esbuildCommand } from './commands/index.ts';
+
+import { esbuildCommand, generateIndexCommand } from './commands/index.ts';
 
 const pkg = JSON.parse(
   readFileSync(resolve(process.cwd(), './package.json'), 'utf8')

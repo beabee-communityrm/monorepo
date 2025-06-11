@@ -15,12 +15,13 @@
   </div>
 </template>
 <script lang="ts" setup generic="T extends string | number">
-import { computed } from 'vue';
-import AppCheckbox from './AppCheckbox.vue';
-import AppLabel from './AppLabel.vue';
 import useVuelidate from '@vuelidate/core';
 import { minValue } from '@vuelidate/validators';
+import { computed } from 'vue';
+
 import type { SelectItem } from '../../types/form.interface';
+import AppCheckbox from './AppCheckbox.vue';
+import AppLabel from './AppLabel.vue';
 
 export interface AppCheckboxGroupProps<T extends string | number> {
   /** The model value of the checkbox group */

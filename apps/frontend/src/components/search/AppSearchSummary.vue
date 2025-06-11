@@ -17,10 +17,11 @@
 </template>
 <script lang="ts" setup>
 import type { RuleGroup } from '@beabee/beabee-common';
-import { useI18n } from 'vue-i18n';
-import AppSearchRuleOrGroup from './AppSearchRuleOrGroup.vue';
 
 import type { FilterGroups } from '@type';
+import { useI18n } from 'vue-i18n';
+
+import AppSearchRuleOrGroup from './AppSearchRuleOrGroup.vue';
 
 const emit = defineEmits<(e: 'update:modelValue', value: RuleGroup) => void>();
 const props = defineProps<{

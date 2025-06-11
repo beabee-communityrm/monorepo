@@ -1,7 +1,6 @@
-import { DockerComposeEnvironment, Wait } from 'testcontainers';
-import { resolve } from 'node:path';
 import { config } from 'dotenv';
-
+import { resolve } from 'node:path';
+import { DockerComposeEnvironment, Wait } from 'testcontainers';
 import type { StartedDockerComposeEnvironment } from 'testcontainers';
 
 const rootPath = resolve(process.cwd() + '/../..');

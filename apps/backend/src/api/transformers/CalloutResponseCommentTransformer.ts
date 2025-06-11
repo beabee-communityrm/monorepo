@@ -1,27 +1,25 @@
 import {
   CalloutResponseCommentFilterName,
-  calloutResponseCommentFilters,
   RuleGroup,
+  calloutResponseCommentFilters,
 } from '@beabee/beabee-common';
-import { TransformPlainToInstance } from 'class-transformer';
-import { SelectQueryBuilder } from 'typeorm';
+import { createQueryBuilder } from '@beabee/core/database';
+import {
+  CalloutResponse,
+  CalloutResponseComment,
+  CalloutReviewer,
+} from '@beabee/core/models';
+import { AuthInfo, FilterHandlers } from '@beabee/core/type';
 
 import { GetCalloutResponseCommentDto } from '@api/dto/CalloutResponseCommentDto';
 import { BaseTransformer } from '@api/transformers/BaseTransformer';
 import ContactTransformer, {
   loadContactRoles,
 } from '@api/transformers/ContactTransformer';
-
-import {
-  CalloutResponse,
-  CalloutResponseComment,
-  CalloutReviewer,
-} from '@beabee/core/models';
-
 import { getReviewerRules } from '@api/utils/callouts';
+import { TransformPlainToInstance } from 'class-transformer';
 import { BadRequestError } from 'routing-controllers';
-import { createQueryBuilder } from '@beabee/core/database';
-import { AuthInfo, FilterHandlers } from '@beabee/core/type';
+import { SelectQueryBuilder } from 'typeorm';
 
 class CalloutResponseCommentTransformer extends BaseTransformer<
   CalloutResponseComment,

@@ -1,5 +1,6 @@
-import { describe, expect, test } from 'vitest';
 import { isTextInRange, isTextInWordRange } from '@beabee/beabee-common';
+
+import { describe, expect, test } from 'vitest';
 
 describe('isTextInRange', () => {
   test('valid string within range', () => {

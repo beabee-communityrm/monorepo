@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+
 import type { CalloutResponse, Contact } from './index';
 
 @Entity()

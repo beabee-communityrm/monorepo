@@ -78,15 +78,17 @@
 </template>
 <script lang="ts" setup>
 import {
-  filterComponents,
   type GetCalloutDataWith,
   type GetCalloutResponseMapData,
+  filterComponents,
 } from '@beabee/beabee-common';
+
 import {
   faChevronLeft,
   faChevronRight,
 } from '@fortawesome/free-solid-svg-icons';
 import { computed, ref, watch } from 'vue';
+
 import CalloutForm from './CalloutForm.vue';
 
 const props = defineProps<{

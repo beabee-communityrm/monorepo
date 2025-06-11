@@ -1,7 +1,8 @@
-import { computed } from 'vue';
+import { generalContent } from '@beabee/vue/store/generalContent';
+
 import { client } from '@utils/api';
 import { resolveImageUrl } from '@utils/url';
-import { generalContent } from '@beabee/vue/store/generalContent';
+import { computed } from 'vue';
 
 export { generalContent };
 

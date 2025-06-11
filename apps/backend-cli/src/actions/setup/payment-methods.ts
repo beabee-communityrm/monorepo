@@ -1,7 +1,9 @@
-import { runApp } from '@beabee/core/server';
 import { getRepository } from '@beabee/core/database';
 import { Content } from '@beabee/core/models';
+import { runApp } from '@beabee/core/server';
+
 import { checkbox } from '@inquirer/prompts';
+
 import type { SetupPaymentMethodsArgs } from '../../types/setup.js';
 
 /**

@@ -1,5 +1,6 @@
 import { runApp } from '@beabee/core/server';
 import { contactsService } from '@beabee/core/services/ContactsService';
+
 import { select } from '@inquirer/prompts';
 
 export const deleteUser = async (email: string): Promise<void> => {

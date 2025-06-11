@@ -1,4 +1,5 @@
 import { RoleType, RoleTypes } from '@beabee/beabee-common';
+
 import { Type } from 'class-transformer';
 import { IsDate, IsIn, IsOptional } from 'class-validator';
 

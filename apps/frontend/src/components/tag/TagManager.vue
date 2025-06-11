@@ -1,12 +1,13 @@
 <script lang="ts" setup>
-import { computed, onBeforeMount, reactive, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
-import AppHeading from '@components/AppHeading.vue';
-import type { TagClient } from '@beabee/client';
 import type { TagData, TagUpdateData } from '@beabee/beabee-common';
+import type { TagClient } from '@beabee/client';
+
+import AppHeading from '@components/AppHeading.vue';
+import AppInput from '@components/forms/AppInput.vue';
 import ItemManager from '@components/item-manager/ItemManager.vue';
 import { faTag } from '@fortawesome/free-solid-svg-icons';
-import AppInput from '@components/forms/AppInput.vue';
+import { computed, onBeforeMount, reactive, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 /**
  * Props for the TagManager component

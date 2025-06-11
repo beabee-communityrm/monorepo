@@ -1,15 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { client } from '@utils/api';
-import { i18n } from '@lib/i18n';
 import type { FormioFile } from '@beabee/beabee-common';
-import { ClientApiError } from '@beabee/client';
 import {
   MAX_FILE_SIZE_IN_BYTES,
-  isSupportedDocumentType,
   isSupportedDocumentExtension,
-  isSupportedImageType,
+  isSupportedDocumentType,
   isSupportedImageExtension,
+  isSupportedImageType,
 } from '@beabee/beabee-common';
+import { ClientApiError } from '@beabee/client';
+
+import { i18n } from '@lib/i18n';
+import { client } from '@utils/api';
 
 const { t } = i18n.global;
 

@@ -50,16 +50,15 @@ meta:
 </template>
 
 <script lang="ts" setup>
+import { AppButton, AppForm } from '@beabee/vue/components';
+
+import AppTitle from '@components/AppTitle.vue';
+import AuthBox from '@components/AuthBox.vue';
+import AppInput from '@components/forms/AppInput.vue';
+import { client } from '@utils/api';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
-
-import { AppForm, AppButton } from '@beabee/vue/components';
-import AppInput from '@components/forms/AppInput.vue';
-import AppTitle from '@components/AppTitle.vue';
-import AuthBox from '@components/AuthBox.vue';
-
-import { client } from '@utils/api';
 
 const { t } = useI18n();
 const route = useRoute();

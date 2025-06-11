@@ -12,10 +12,9 @@
   <div ref="qrContainerEl" class="aspect-square w-full"></div>
 </template>
 <script lang="ts" setup>
-import { ref, onMounted, watch } from 'vue';
-import qrCode from 'qrcode-generator';
-
 import type { AppQrCodeProps } from '@type/app-qr-code-props';
+import qrCode from 'qrcode-generator';
+import { onMounted, ref, watch } from 'vue';
 
 const qrContainerEl = ref<HTMLDivElement | null>(null);
 

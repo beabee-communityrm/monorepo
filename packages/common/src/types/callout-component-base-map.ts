@@ -1,5 +1,4 @@
 import type { CalloutComponentBaseType } from '../data/index.js';
-
 import type {
   CalloutComponentContentSchema,
   CalloutComponentInputSchema,

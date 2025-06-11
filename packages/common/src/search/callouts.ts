@@ -1,5 +1,5 @@
-import type { Filters } from '../types/index.js';
 import { ItemStatus } from '../data/index.js';
+import type { Filters } from '../types/index.js';
 import type { TagFiltersType } from './tags.js';
 
 export const calloutFilters = {

@@ -1,10 +1,12 @@
-import type { Raw, Component } from 'vue';
 import type { ItemStatus } from '@beabee/beabee-common';
-import type { AppStepperStep } from '@type';
-import type { ContentFormTabData } from './SidebarTabContent/ContentFormTab.vue';
-import type { IntroMessageTabData } from './SidebarTabContent/IntroMessageTab.vue';
-import type { EndMessageTabData } from './SidebarTabContent/EndMessageTab.vue';
+
 import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
+import type { AppStepperStep } from '@type';
+import type { Component, Raw } from 'vue';
+
+import type { ContentFormTabData } from './SidebarTabContent/ContentFormTab.vue';
+import type { EndMessageTabData } from './SidebarTabContent/EndMessageTab.vue';
+import type { IntroMessageTabData } from './SidebarTabContent/IntroMessageTab.vue';
 
 /**
  * Base interface for a sidebar tab component

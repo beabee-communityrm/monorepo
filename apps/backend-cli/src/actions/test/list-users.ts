@@ -1,11 +1,12 @@
 import { ContributionPeriod, ContributionType } from '@beabee/beabee-common';
-import { Brackets } from 'typeorm';
-import { log as mainLogger } from '@beabee/core/logging';
-import { createQueryBuilder } from '@beabee/core/database';
-import { getActualAmount } from '@beabee/core/utils/payment';
-import { Contact, ContactContribution, Payment } from '@beabee/core/models';
 import { config } from '@beabee/core/config';
+import { createQueryBuilder } from '@beabee/core/database';
+import { log as mainLogger } from '@beabee/core/logging';
+import { Contact, ContactContribution, Payment } from '@beabee/core/models';
 import { runApp } from '@beabee/core/server';
+import { getActualAmount } from '@beabee/core/utils/payment';
+
+import { Brackets } from 'typeorm';
 
 const log = mainLogger.child({ app: 'test-users' });
 

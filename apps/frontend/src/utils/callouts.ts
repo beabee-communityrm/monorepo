@@ -1,36 +1,36 @@
 import {
-  flattenComponents,
-  ItemStatus,
-  type CalloutComponentSchema,
-  type CalloutComponentInputSelectableRadioSchema,
-  type GetCalloutSlideSchema,
-  type SetCalloutSlideSchema,
-  type CalloutVariantData,
-  type CalloutVariantNavigationData,
-  type GetCalloutDataWith,
   CalloutAccess,
   CalloutCaptcha,
-  type CreateCalloutData,
+  type CalloutComponentInputSelectableRadioSchema,
+  type CalloutComponentSchema,
   type CalloutNewsletterSchema,
+  type CalloutVariantData,
+  type CalloutVariantNavigationData,
+  type CreateCalloutData,
+  type GetCalloutDataWith,
+  type GetCalloutSlideSchema,
+  ItemStatus,
+  type SetCalloutSlideSchema,
+  flattenComponents,
 } from '@beabee/beabee-common';
+import { type LocaleOptions, config as localeConfig } from '@beabee/locale';
+
+import type {
+  FormBuilderNavigation,
+  FormBuilderSlide,
+} from '@components/form-builder/form-builder.interface';
+import type { CalloutHorizontalTabsData } from '@components/pages/admin/callouts/CalloutHorizontalTabs.interface';
+import type { ContentTabData } from '@components/pages/admin/callouts/tabs/ContentTab/ContentTab.vue';
+import type { SettingsTabData } from '@components/pages/admin/callouts/tabs/SettingsTab.vue';
+import type { TitleAndImageTabData } from '@components/pages/admin/callouts/tabs/TitleAndImageTab.vue';
+import type { TranslationsTabData } from '@components/pages/admin/callouts/tabs/TranslationsTab.vue';
+import type { LocaleProp } from '@type';
+import type { FilterItem, FilterItems } from '@type';
 import { format } from 'date-fns';
 import { computed } from 'vue';
 
 import env from '../env';
 import { i18n } from '../lib/i18n';
-
-import type { LocaleProp } from '@type';
-import type {
-  FormBuilderNavigation,
-  FormBuilderSlide,
-} from '@components/form-builder/form-builder.interface';
-import type { ContentTabData } from '@components/pages/admin/callouts/tabs/ContentTab/ContentTab.vue';
-import type { FilterItem, FilterItems } from '@type';
-import type { CalloutHorizontalTabsData } from '@components/pages/admin/callouts/CalloutHorizontalTabs.interface';
-import type { TitleAndImageTabData } from '@components/pages/admin/callouts/tabs/TitleAndImageTab.vue';
-import type { TranslationsTabData } from '@components/pages/admin/callouts/tabs/TranslationsTab.vue';
-import type { SettingsTabData } from '@components/pages/admin/callouts/tabs/SettingsTab.vue';
-import { config as localeConfig, type LocaleOptions } from '@beabee/locale';
 
 const { t } = i18n.global;
 

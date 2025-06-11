@@ -1,7 +1,7 @@
-import { Get, JsonController, Res } from 'routing-controllers';
-import { Response } from 'express';
 import { GetHealthDto } from '@api/dto/HealthDto';
 import ContentTransformer from '@api/transformers/ContentTransformer';
+import { Response } from 'express';
+import { Get, JsonController, Res } from 'routing-controllers';
 
 @JsonController('/health')
 export class HealthController {

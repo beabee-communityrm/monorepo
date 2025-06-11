@@ -9,6 +9,7 @@
 
 <script lang="ts" setup>
 import { AppButton } from '@beabee/vue/components';
+
 defineProps<{
   active: boolean;
   disabled?: boolean;

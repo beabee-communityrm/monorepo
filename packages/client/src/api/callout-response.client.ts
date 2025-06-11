@@ -1,19 +1,19 @@
-import { BaseClient } from './base.client.js';
-import { cleanUrl } from '../utils/index.js';
-import { ContactClient } from './contact.client.js';
-import { CalloutResponseCommentClient } from './callout-response-comment.client.js';
-
-import type { BaseClientOptions } from '../types/index.js';
 import type {
   GetCalloutResponseData,
   GetCalloutResponseDataWith,
-  GetCalloutResponsesQuery,
   GetCalloutResponseWith,
+  GetCalloutResponsesQuery,
   Paginated,
   RuleGroup,
   Serial,
   UpdateCalloutResponseData,
 } from '@beabee/beabee-common';
+
+import type { BaseClientOptions } from '../types/index.js';
+import { cleanUrl } from '../utils/index.js';
+import { BaseClient } from './base.client.js';
+import { CalloutResponseCommentClient } from './callout-response-comment.client.js';
+import { ContactClient } from './contact.client.js';
 
 /**
  * Client for managing callout responses

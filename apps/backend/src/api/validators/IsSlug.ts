@@ -1,4 +1,4 @@
-import { buildMessage, ValidateBy, ValidationOptions } from 'class-validator';
+import { ValidateBy, ValidationOptions, buildMessage } from 'class-validator';
 import slugify from 'slugify';
 
 export default function IsSlug(

@@ -19,9 +19,10 @@
 
 <script lang="ts" setup>
 import {
-  faExclamationCircle,
   faCheckCircle,
+  faExclamationCircle,
 } from '@fortawesome/free-solid-svg-icons';
+
 /**
  * Props for the TabLabel component
  */

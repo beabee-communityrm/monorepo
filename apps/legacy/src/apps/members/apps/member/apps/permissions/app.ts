@@ -1,4 +1,8 @@
 import { RoleType } from '@beabee/beabee-common';
+import { Contact } from '@beabee/core/models';
+import ContactsService from '@beabee/core/services/ContactsService';
+import { wrapAsync } from '@beabee/core/utils/express';
+
 import express, {
   type Express,
   type NextFunction,
@@ -8,11 +12,6 @@ import express, {
 
 import { hasSchema } from '#core/middleware';
 import { createDateTime } from '#core/utils/index';
-import { wrapAsync } from '@beabee/core/utils/express';
-
-import ContactsService from '@beabee/core/services/ContactsService';
-
-import { Contact } from '@beabee/core/models';
 
 import { createPermissionSchema, updatePermissionSchema } from './schemas.json';
 

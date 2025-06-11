@@ -25,7 +25,7 @@
 
 <script lang="ts" setup>
 import type { IconDefinition } from '@fortawesome/free-solid-svg-icons';
-import { ref, onMounted, onBeforeUnmount, computed } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 
 defineProps<{
   title: string;

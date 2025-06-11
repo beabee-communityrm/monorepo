@@ -64,31 +64,28 @@ meta:
 
 <script lang="ts" setup>
 import {
+  type ContentPaymentData,
+  type ContributionInfo,
   ContributionPeriod,
   ContributionType,
   MembershipStatus,
   PaymentMethod,
-  type ContentPaymentData,
-  type ContributionInfo,
 } from '@beabee/beabee-common';
+import { AppNotification } from '@beabee/vue/components';
+
+import App2ColGrid from '@components/App2ColGrid.vue';
+import PageTitle from '@components/PageTitle.vue';
+import ContactCancelContribution from '@components/contact/ContactCancelContribution.vue';
+import ContactPaymentsHistory from '@components/contact/ContactPaymentsHistory.vue';
+import type { ContributionContent } from '@components/contribution/contribution.interface';
+import ContributionBox from '@components/pages/profile/contribution/ContributionBox.vue';
+import PaymentSource from '@components/pages/profile/contribution/PaymentSource.vue';
+import UpdateContribution from '@components/pages/profile/contribution/UpdateContribution.vue';
+import { currentUser } from '@store';
+import { client } from '@utils/api';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
-
-import ContributionBox from '@components/pages/profile/contribution/ContributionBox.vue';
-import ContactCancelContribution from '@components/contact/ContactCancelContribution.vue';
-import PaymentSource from '@components/pages/profile/contribution/PaymentSource.vue';
-import PageTitle from '@components/PageTitle.vue';
-import ContactPaymentsHistory from '@components/contact/ContactPaymentsHistory.vue';
-import UpdateContribution from '@components/pages/profile/contribution/UpdateContribution.vue';
-import type { ContributionContent } from '@components/contribution/contribution.interface';
-
-import { client } from '@utils/api';
-
-import App2ColGrid from '@components/App2ColGrid.vue';
-import { AppNotification } from '@beabee/vue/components';
-
-import { currentUser } from '@store';
 
 const { t } = useI18n();
 const route = useRoute();

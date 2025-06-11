@@ -1,8 +1,7 @@
-import { SelectQueryBuilder } from 'typeorm';
-
 import { createQueryBuilder } from '@beabee/core/database';
-
 import { Contact, Referral } from '@beabee/core/models';
+
+import { SelectQueryBuilder } from 'typeorm';
 
 import BaseExport, { ExportResult } from './BaseExport';
 

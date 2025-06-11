@@ -15,7 +15,6 @@
 import { CaptchaFox } from '@captchafox/vue';
 import env from '@env';
 import { currentLocaleConfig } from '@lib/i18n';
-
 import { useI18n } from 'vue-i18n';
 
 defineEmits(['update:modelValue']);

@@ -1,10 +1,11 @@
 import type { CommandModule } from 'yargs';
 import type { ArgumentsCamelCase } from 'yargs';
+
 import type {
-  SetupSupportEmailArgs,
-  SetupPaymentMethodsArgs,
   SetupAdminArgs,
   SetupAllArgs,
+  SetupPaymentMethodsArgs,
+  SetupSupportEmailArgs,
 } from '../types/setup.js';
 
 export const setupCommand: CommandModule = {

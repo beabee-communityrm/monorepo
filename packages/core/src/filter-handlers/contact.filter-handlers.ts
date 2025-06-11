@@ -1,20 +1,17 @@
-import { Brackets } from 'typeorm';
-
 import { createQueryBuilder } from '@beabee/core/database';
-
 import {
   CalloutResponse,
+  ContactContribution,
   ContactProfile,
   ContactRole,
-  ContactContribution,
 } from '@beabee/core/models';
+import { FilterHandler, FilterHandlers } from '@beabee/core/type';
 import { getFilterHandler } from '@beabee/core/utils/rules';
 
-import { FilterHandler, FilterHandlers } from '@beabee/core/type';
-
-import { contactTagFilterHandler } from './tag.filter-handlers';
+import { Brackets } from 'typeorm';
 
 import { calloutResponseFilterHandlers } from './callout-response.filter-handlers';
+import { contactTagFilterHandler } from './tag.filter-handlers';
 
 /**
  * @fileoverview Contact filter handlers for managing contact-related queries and filters

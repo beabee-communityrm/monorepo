@@ -1,32 +1,32 @@
+import { S3Metadata, isSupportedDocumentType } from '@beabee/beabee-common';
+
+import {
+  DeleteObjectCommand,
+  HeadObjectCommand,
+  ListObjectsV2Command,
+  PutObjectCommand,
+  S3Client,
+} from '@aws-sdk/client-s3';
 import { randomUUID } from 'crypto';
 import { Readable } from 'stream';
 
-import {
-  S3Client,
-  PutObjectCommand,
-  DeleteObjectCommand,
-  ListObjectsV2Command,
-  HeadObjectCommand,
-} from '@aws-sdk/client-s3';
-
-import type { DocumentServiceConfig, DocumentMetadata } from '../type/index';
+import config from '../config/config';
 import { BadRequestError, NotFoundError } from '../errors';
 import { log as mainLogger } from '../logging';
-import {
-  checkConnection,
-  getFileBuffer,
-  getFileStream,
-  fileExists,
-  getFileHash,
-} from '../utils/s3';
+import type { DocumentMetadata, DocumentServiceConfig } from '../type/index';
 import {
   getExtensionFromFilename,
   getExtensionFromMimetype,
   getMimetypeFromExtension,
   sanitizeFilename,
 } from '../utils/file';
-import { isSupportedDocumentType, S3Metadata } from '@beabee/beabee-common';
-import config from '../config/config';
+import {
+  checkConnection,
+  fileExists,
+  getFileBuffer,
+  getFileHash,
+  getFileStream,
+} from '../utils/s3';
 
 const log = mainLogger.child({ app: 'document-service' });
 

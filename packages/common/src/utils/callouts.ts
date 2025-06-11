@@ -1,12 +1,11 @@
 import {
   CalloutComponentBaseType,
+  CalloutComponentType,
   calloutComponentInputSelectableTypes,
   calloutComponentInputTextTypes,
   calloutComponentInputTypes,
   calloutComponentNestableTypes,
-  CalloutComponentType,
 } from '../data/index.js';
-
 import type {
   CalloutComponentBaseMap,
   CalloutComponentBaseSchema,

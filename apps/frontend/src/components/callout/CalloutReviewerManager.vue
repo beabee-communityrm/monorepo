@@ -39,6 +39,7 @@
 
 <script lang="ts" setup>
 import type { GetCalloutReviewerData } from '@beabee/beabee-common';
+
 import AppHeading from '@components/AppHeading.vue';
 import AppInput from '@components/forms/AppInput.vue';
 import ItemManager from '@components/item-manager/ItemManager.vue';

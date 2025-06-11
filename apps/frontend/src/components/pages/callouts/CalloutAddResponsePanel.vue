@@ -44,17 +44,18 @@ import {
   type CalloutResponseAnswersSlide,
   type GetCalloutDataWith,
 } from '@beabee/beabee-common';
-import CalloutForm from './CalloutForm.vue';
-import CalloutMemberOnlyPrompt from './CalloutMemberOnlyPrompt.vue';
-import CalloutLoginPrompt from './CalloutLoginPrompt.vue';
-import { useCallout } from './use-callout';
-import { ref, toRef, watch } from 'vue';
-import CalloutSidePanel from './CalloutSidePanel.vue';
-import CalloutThanksBox from './CalloutThanksBox.vue';
 import { generalContent } from '@beabee/vue/store/generalContent';
 
+import { ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+
 import AppShareBox from '../../AppShareBox.vue';
+import CalloutForm from './CalloutForm.vue';
+import CalloutLoginPrompt from './CalloutLoginPrompt.vue';
+import CalloutMemberOnlyPrompt from './CalloutMemberOnlyPrompt.vue';
+import CalloutSidePanel from './CalloutSidePanel.vue';
+import CalloutThanksBox from './CalloutThanksBox.vue';
+import { useCallout } from './use-callout';
 
 defineEmits<(e: 'close') => void>();
 const props = defineProps<{

@@ -1,7 +1,6 @@
-import { IsDate, IsIn, IsString, ValidateNested } from 'class-validator';
-
 import { GetPaginatedQuery } from '@api/dto/BaseDto';
 import { GetContactDto } from '@api/dto/ContactDto';
+import { IsDate, IsIn, IsString, ValidateNested } from 'class-validator';
 
 export class CreateCalloutResponseCommentDto {
   @IsString()

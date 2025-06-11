@@ -1,9 +1,10 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue';
-import AppScrollNavigation from './AppScrollNavigation.vue';
-import AppScrollSection from './AppScrollSection.vue';
+
 import AppFormBox from '../form/AppFormBox.vue';
+import AppScrollNavigation from './AppScrollNavigation.vue';
 import type { ScrollSection } from './AppScrollNavigation.vue';
+import AppScrollSection from './AppScrollSection.vue';
 
 // Example sections
 const sections: ScrollSection[] = [

@@ -82,8 +82,8 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { AppCopyButton, AppLabel } from '@beabee/vue/components';
+
 import useVuelidate from '@vuelidate/core';
 import {
   email,
@@ -92,9 +92,11 @@ import {
   sameAs as sameAsValidator,
   url,
 } from '@vuelidate/validators';
-import AppInputHelp from './AppInputHelp.vue';
-import { AppLabel, AppCopyButton } from '@beabee/vue/components';
+import { computed, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
+
 import AppInputError from './AppInputError.vue';
+import AppInputHelp from './AppInputHelp.vue';
 
 /**
  * Props for the AppInput component

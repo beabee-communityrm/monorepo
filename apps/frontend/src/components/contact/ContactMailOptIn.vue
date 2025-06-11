@@ -9,6 +9,7 @@
 </template>
 <script lang="ts" setup>
 import { AppCheckbox } from '@beabee/vue/components';
+
 import { computed } from 'vue';
 
 const emit = defineEmits(['update:modelValue']);

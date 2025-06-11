@@ -1,4 +1,5 @@
 import { log as mainLogger } from '@beabee/core/logging';
+
 import { SyncSegmentsArgs } from '../../types/sync.js';
 
 const log = mainLogger.child({ app: 'process-segments' });

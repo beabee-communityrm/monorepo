@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import AppScrollSection from './AppScrollSection.vue';
 import AppFormBox from '../form/AppFormBox.vue';
+import AppScrollSection from './AppScrollSection.vue';
 </script>
 
 <template>

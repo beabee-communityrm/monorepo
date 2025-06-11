@@ -1,15 +1,14 @@
-import { ServerResponse } from 'node:http';
+import { log as mainLogger } from '@beabee/core/logging';
 
+import { validateOrReject } from '@api/utils';
 import { Request } from 'express';
+import { ServerResponse } from 'node:http';
 import {
   Action,
   Interceptor,
   InterceptorInterface,
   InternalServerError,
 } from 'routing-controllers';
-
-import { log as mainLogger } from '@beabee/core/logging';
-import { validateOrReject } from '@api/utils';
 
 const log = mainLogger.child({ app: 'validate-response-interceptor' });
 

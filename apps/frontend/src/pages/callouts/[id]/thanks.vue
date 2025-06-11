@@ -19,15 +19,16 @@ meta:
 </template>
 <script lang="ts" setup>
 import type { GetCalloutDataWith } from '@beabee/beabee-common';
-import CalloutVariantsBox from '@components/pages/callouts/CalloutVariantsBox.vue';
+
+import AppShareBox from '@components/AppShareBox.vue';
 import AppTitle from '@components/AppTitle.vue';
 import CalloutThanksBox from '@components/pages/callouts/CalloutThanksBox.vue';
-import { currentUser, isEmbed } from '@store/index';
-import { addBreadcrumb } from '@store/breadcrumb';
-import { computed } from 'vue';
+import CalloutVariantsBox from '@components/pages/callouts/CalloutVariantsBox.vue';
 import { faBullhorn } from '@fortawesome/free-solid-svg-icons';
+import { addBreadcrumb } from '@store/breadcrumb';
+import { currentUser, isEmbed } from '@store/index';
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import AppShareBox from '@components/AppShareBox.vue';
 
 const props = defineProps<{
   callout: GetCalloutDataWith<'form' | 'variantNames'>;

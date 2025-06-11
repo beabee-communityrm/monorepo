@@ -1,4 +1,5 @@
 import { PaginatedQuery } from '@beabee/beabee-common';
+
 import { ObjectLiteral } from 'typeorm';
 
 export interface FetchRawResult<

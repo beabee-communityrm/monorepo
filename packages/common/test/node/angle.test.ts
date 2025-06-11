@@ -1,5 +1,6 @@
-import { describe, expect, test } from 'vitest';
 import { isAngle } from '@beabee/beabee-common';
+
+import { describe, expect, test } from 'vitest';
 
 describe('isAngle', () => {
   test('valid angle - 0', () => {

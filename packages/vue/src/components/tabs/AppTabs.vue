@@ -62,9 +62,10 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { computed } from 'vue';
+
 import type { TabItem } from '../../types/tabs.interface';
 import TabLabel from './TabLabel.vue';
-import { computed } from 'vue';
 
 /**
  * Props for the AppTabs component

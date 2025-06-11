@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { ref, reactive } from 'vue';
+import { reactive, ref } from 'vue';
+
 import AppCopyButton from './AppCopyButton.vue';
 
 const state = reactive({

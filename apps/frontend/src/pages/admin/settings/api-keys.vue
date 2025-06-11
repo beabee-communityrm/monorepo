@@ -103,28 +103,26 @@ meta:
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, watchEffect } from 'vue';
-import useVuelidate from '@vuelidate/core';
-import { useI18n } from 'vue-i18n';
-import { faCopy, faTrash, faWarning } from '@fortawesome/free-solid-svg-icons';
-import { addDays } from 'date-fns';
 import type { GetApiKeyData, Paginated } from '@beabee/beabee-common';
-
-import { AppForm, AppButton, AppCheckbox } from '@beabee/vue/components';
-import AppInput from '@components/forms/AppInput.vue';
-import AppConfirmDialog from '@components/AppConfirmDialog.vue';
-import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
-import type { Header } from '@components/table/table.interface';
-import AppHeading from '@components/AppHeading.vue';
-import App2ColGrid from '@components/App2ColGrid.vue';
-import AppSelect from '@components/forms/AppSelect.vue';
-import AppTime from '@components/AppTime.vue';
-
+import { AppButton, AppCheckbox, AppForm } from '@beabee/vue/components';
 import { addNotification } from '@beabee/vue/store/notifications';
 
+import App2ColGrid from '@components/App2ColGrid.vue';
+import AppConfirmDialog from '@components/AppConfirmDialog.vue';
+import AppHeading from '@components/AppHeading.vue';
+import AppTime from '@components/AppTime.vue';
+import AppInput from '@components/forms/AppInput.vue';
+import AppSelect from '@components/forms/AppSelect.vue';
+import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
+import type { Header } from '@components/table/table.interface';
+import { faCopy, faTrash, faWarning } from '@fortawesome/free-solid-svg-icons';
+import { client } from '@utils/api';
 import { formatLocale } from '@utils/dates';
 import { definePaginatedQuery } from '@utils/pagination';
-import { client } from '@utils/api';
+import useVuelidate from '@vuelidate/core';
+import { addDays } from 'date-fns';
+import { computed, ref, watchEffect } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 const { n, t } = useI18n();
 

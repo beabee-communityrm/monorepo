@@ -1,6 +1,6 @@
-import { runApp } from '@beabee/core/server';
-import { Contact } from '@beabee/core/models';
 import { getRepository } from '@beabee/core/database';
+import { Contact } from '@beabee/core/models';
+import { runApp } from '@beabee/core/server';
 import { apiKeyService } from '@beabee/core/services/ApiKeyService';
 
 import type { CreateApiKeyArgs } from '../../types/index.js';

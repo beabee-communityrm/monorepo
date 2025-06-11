@@ -1,6 +1,5 @@
 // Copyright by https://github.com/date-fns/date-fns/blob/main/src/parseISO/index.ts
 // MIT License
-
 import {
   MILLISECONDS_IN_HOUR,
   MILLISECONDS_IN_MINUTE,

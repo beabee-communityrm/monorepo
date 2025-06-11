@@ -26,11 +26,12 @@
   </nav>
 </template>
 <script lang="ts" setup>
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
-import type { MenuSection } from './menu-list.interface';
+
 import TheMenuListItem from './TheMenuListItem.vue';
-import { computed } from 'vue';
+import type { MenuSection } from './menu-list.interface';
 
 const props = defineProps<{
   section: MenuSection;

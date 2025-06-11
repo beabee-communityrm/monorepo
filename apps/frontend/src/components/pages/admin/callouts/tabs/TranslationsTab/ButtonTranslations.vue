@@ -81,16 +81,17 @@
 </template>
 
 <script lang="ts" setup>
-import { useI18n } from 'vue-i18n';
-import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
-import type { LocaleProp } from '@type/locale-prop';
-import AppInput from '@components/forms/AppInput.vue';
 import { AppFormBox } from '@beabee/vue/components';
+
+import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
+import AppInput from '@components/forms/AppInput.vue';
+import type { LocaleProp } from '@type/locale-prop';
 import {
-  updateLocalizedValue,
-  getLocalizedValueNoFallback,
   getLocalizedValueFallback,
+  getLocalizedValueNoFallback,
+  updateLocalizedValue,
 } from '@utils/callouts';
+import { useI18n } from 'vue-i18n';
 
 const props = defineProps<{
   slides: FormBuilderSlide[];

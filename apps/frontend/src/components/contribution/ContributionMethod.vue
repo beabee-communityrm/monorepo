@@ -31,9 +31,11 @@
 </template>
 <script lang="ts" setup>
 import { PaymentMethod } from '@beabee/beabee-common';
+
 import { useI18n } from 'vue-i18n';
-import PaymentMethodIcon from '../payment-method/PaymentMethodIcon.vue';
+
 import AppSubHeading from '../AppSubHeading.vue';
+import PaymentMethodIcon from '../payment-method/PaymentMethodIcon.vue';
 
 const { t } = useI18n();
 

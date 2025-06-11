@@ -1,7 +1,6 @@
 import { type Library, library } from '@fortawesome/fontawesome-svg-core';
+import { faCircleNotch, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faUser, faCircleNotch } from '@fortawesome/free-solid-svg-icons';
-
 import type { App } from 'vue';
 
 export const icons = {

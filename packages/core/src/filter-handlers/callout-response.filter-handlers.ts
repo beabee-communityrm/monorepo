@@ -1,6 +1,6 @@
-import { FilterHandlers } from '@beabee/core/type';
-import { calloutTagFilterHandler } from '@beabee/core/filter-handlers/tag.filter-handlers';
 import { RuleOperator } from '@beabee/beabee-common';
+import { calloutTagFilterHandler } from '@beabee/core/filter-handlers/tag.filter-handlers';
+import { FilterHandlers } from '@beabee/core/type';
 
 /**
  * @fileoverview Filter handlers for callout responses, managing answer filtering and tag operations

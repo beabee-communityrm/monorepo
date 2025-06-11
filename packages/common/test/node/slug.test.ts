@@ -1,6 +1,7 @@
 // Adapted from https://github.com/Trott/slug/blob/main/test/slug.test.js
-import { describe, expect, test } from 'vitest';
 import { slug } from '@beabee/beabee-common';
+
+import { describe, expect, test } from 'vitest';
 
 describe('slug', () => {
   test('should replace whitespaces with replacement', () => {

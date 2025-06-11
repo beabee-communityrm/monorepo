@@ -1,13 +1,13 @@
 import { PaymentForm } from '@beabee/beabee-common';
 
 import { Contact } from '#models/index';
-import { PaymentProvider } from './PaymentProvider';
-
 import {
   CompletedPaymentFlow,
   ContributionInfo,
   UpdateContributionResult,
 } from '#type/index';
+
+import { PaymentProvider } from './PaymentProvider';
 
 /**
  * Implements PaymentProvider for manual payment methods.

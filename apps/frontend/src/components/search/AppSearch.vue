@@ -29,14 +29,15 @@
 
 <script lang="ts" setup>
 import type { RuleGroup } from '@beabee/beabee-common';
+
+import AppExpandableBox from '@components/AppExpandableBox.vue';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
+import type { FilterGroups } from '@type';
 import { computed, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import type { FilterGroups } from '@type';
 import AppSearchForm from './AppSearchForm.vue';
 import AppSearchSummary from './AppSearchSummary.vue';
-import AppExpandableBox from '@components/AppExpandableBox.vue';
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: RuleGroup): void;

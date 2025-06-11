@@ -1,6 +1,6 @@
-import { runApp } from '@beabee/core/server';
 import { getRepository } from '@beabee/core/database';
 import { ApiKey } from '@beabee/core/models';
+import { runApp } from '@beabee/core/server';
 
 export const listApiKeys = async (): Promise<void> => {
   await runApp(async () => {

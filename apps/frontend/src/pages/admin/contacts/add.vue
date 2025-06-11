@@ -56,29 +56,27 @@ meta:
 
 <script lang="ts" setup>
 import {
+  type ContactRoleData,
   ContributionType,
   NewsletterStatus,
-  type ContactRoleData,
   type RoleType,
 } from '@beabee/beabee-common';
+import { AppButton, AppCheckbox, AppForm } from '@beabee/vue/components';
+
+import App2ColGrid from '@components/App2ColGrid.vue';
+import AppHeading from '@components/AppHeading.vue';
+import PageTitle from '@components/PageTitle.vue';
+import ContactBasicFields from '@components/contact/ContactBasicFields.vue';
+import ContactContributionFields from '@components/contact/ContactContributionFields.vue';
+import type { UpdateContribution } from '@components/contact/contact.interface';
+import RoleEditor from '@components/role/RoleEditor.vue';
+import { faUsers } from '@fortawesome/free-solid-svg-icons';
+import { addBreadcrumb } from '@store/breadcrumb';
+import { client } from '@utils/api';
 import useVuelidate from '@vuelidate/core';
 import { computed, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
-import { faUsers } from '@fortawesome/free-solid-svg-icons';
-
-import App2ColGrid from '@components/App2ColGrid.vue';
-import AppHeading from '@components/AppHeading.vue';
-import type { UpdateContribution } from '@components/contact/contact.interface';
-import ContactBasicFields from '@components/contact/ContactBasicFields.vue';
-import ContactContributionFields from '@components/contact/ContactContributionFields.vue';
-import { AppCheckbox, AppForm, AppButton } from '@beabee/vue/components';
-import PageTitle from '@components/PageTitle.vue';
-import RoleEditor from '@components/role/RoleEditor.vue';
-
-import { addBreadcrumb } from '@store/breadcrumb';
-
-import { client } from '@utils/api';
 
 const { t } = useI18n();
 const router = useRouter();

@@ -14,9 +14,10 @@
 </template>
 
 <script lang="ts" setup>
-import { faTag } from '@fortawesome/free-solid-svg-icons';
-import AppTag from '@components/AppTag.vue';
 import type { TagData } from '@beabee/beabee-common';
+
+import AppTag from '@components/AppTag.vue';
+import { faTag } from '@fortawesome/free-solid-svg-icons';
 
 defineProps<{
   tags: Pick<TagData, 'name' | 'id'>[];

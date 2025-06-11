@@ -105,10 +105,9 @@
  * @exposes {Function} focus - Focuses the button element
  * @exposes {Ref<HTMLElement>} innerButton - Reference to the button element
  */
-
 import {
-  faCircleNotch,
   type IconDefinition,
+  faCircleNotch,
 } from '@fortawesome/free-solid-svg-icons';
 import { computed, ref } from 'vue';
 import { type RouteLocationRaw } from 'vue-router';

@@ -32,7 +32,7 @@ This builds both ESM (`./dist/esm`) and CommonJS (`./dist/cjs`) formats.
 For individual formats:
 
 ```typescript
-import { buildESM, buildCJS, buildBrowser } from '@beabee/esbuild';
+import { buildBrowser, buildCJS, buildESM } from '@beabee/esbuild';
 
 // ESM only
 await buildESM({
@@ -53,7 +53,7 @@ await buildBrowser({
 For internationalization:
 
 ```typescript
-import { normalizeTranslations, generateTemplate } from '@beabee/esbuild';
+import { generateTemplate, normalizeTranslations } from '@beabee/esbuild';
 
 // Normalize translation files
 await normalizeTranslations('./src/locales');

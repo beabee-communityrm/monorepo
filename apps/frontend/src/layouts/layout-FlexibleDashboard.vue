@@ -25,12 +25,12 @@
  *
  * @component
  */
-
-import TheMenu from './menu/TheMenu.vue';
-import { breadcrumbItems } from '../store/breadcrumb';
-import TheBreadcrumb from '../components/TheBreadcrumb.vue';
 import { computed } from 'vue';
+
+import TheBreadcrumb from '../components/TheBreadcrumb.vue';
 import { isEmbed } from '../store';
+import { breadcrumbItems } from '../store/breadcrumb';
+import TheMenu from './menu/TheMenu.vue';
 
 const items = computed(() => breadcrumbItems.flatMap((bi) => bi.value));
 </script>

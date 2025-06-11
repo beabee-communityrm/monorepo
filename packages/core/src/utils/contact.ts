@@ -1,6 +1,8 @@
+import { ContributionPeriod, ContributionType } from '@beabee/beabee-common';
+
 import config from '#config/config';
 import { Contact } from '#models/index';
-import { ContributionPeriod, ContributionType } from '@beabee/beabee-common';
+
 import { getActualAmount } from './payment';
 
 export function generateContactCode(contact: Partial<Contact>): string | null {

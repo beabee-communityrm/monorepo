@@ -19,11 +19,12 @@
   </main>
 </template>
 <script lang="ts" setup>
+import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 import { useI18n } from 'vue-i18n';
+
+import AppTitle from '../components/AppTitle.vue';
 import AuthBox from '../components/AuthBox.vue';
 import { backgroundStyle } from '../store/generalContent';
-import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
-import AppTitle from '../components/AppTitle.vue';
 
 const { t } = useI18n();
 </script>

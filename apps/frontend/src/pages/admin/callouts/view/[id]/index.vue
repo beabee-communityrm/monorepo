@@ -100,27 +100,27 @@ meta:
   </div>
 </template>
 <script lang="ts" setup>
-import { ItemStatus, type GetCalloutDataWith } from '@beabee/beabee-common';
-import { ref } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { useRouter } from 'vue-router';
+import { type GetCalloutDataWith, ItemStatus } from '@beabee/beabee-common';
+import { ActionButton } from '@beabee/vue/components';
+import { addNotification } from '@beabee/vue/store/notifications';
 
-import { client } from '@utils/api';
+import AppConfirmDialog from '@components/AppConfirmDialog.vue';
 import AppHeading from '@components/AppHeading.vue';
 import AppInfoList from '@components/AppInfoList.vue';
 import AppInfoListItem from '@components/AppInfoListItem.vue';
-import { ActionButton } from '@beabee/vue/components';
 import CalloutSummary from '@components/callout/CalloutSummary.vue';
-import AppConfirmDialog from '@components/AppConfirmDialog.vue';
-import { addNotification } from '@beabee/vue/store/notifications';
 import {
   faClone,
   faEye,
+  faHourglassEnd,
+  faHourglassStart,
   faPencilAlt,
   faTrash,
-  faHourglassStart,
-  faHourglassEnd,
 } from '@fortawesome/free-solid-svg-icons';
+import { client } from '@utils/api';
+import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
 
 const props = defineProps<{
   callout: GetCalloutDataWith<'form' | 'responseCount'>;

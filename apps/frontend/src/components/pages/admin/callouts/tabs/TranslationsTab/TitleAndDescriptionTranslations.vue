@@ -69,16 +69,18 @@
 </template>
 
 <script lang="ts" setup>
-import { useI18n } from 'vue-i18n';
-import type { TitleAndImageTabData } from '../TitleAndImageTab.vue';
-import AppTextArea from '@components/forms/AppTextArea.vue';
 import { AppFormBox } from '@beabee/vue/components';
+
 import AppInput from '@components/forms/AppInput.vue';
+import AppTextArea from '@components/forms/AppTextArea.vue';
 import {
-  updateLocalizedValue,
-  getLocalizedValueNoFallback,
   getLocalizedValueFallback,
+  getLocalizedValueNoFallback,
+  updateLocalizedValue,
 } from '@utils/callouts';
+import { useI18n } from 'vue-i18n';
+
+import type { TitleAndImageTabData } from '../TitleAndImageTab.vue';
 
 const props = defineProps<{
   defaultLocale: string;

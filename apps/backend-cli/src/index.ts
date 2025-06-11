@@ -1,19 +1,20 @@
 #!/usr/bin/env node
-import './env.js';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
+
 import {
   apiKeyCommand,
-  userCommand,
-  setupCommand,
+  migrateUploadsCommand,
   paymentCommand,
   processCommand,
+  setupCommand,
   syncCommand,
   testCommand,
-  migrateUploadsCommand,
+  userCommand,
 } from './commands/index.js';
+import './env.js';
 
 const pkg = JSON.parse(
   readFileSync(resolve(process.cwd(), './package.json'), 'utf8')

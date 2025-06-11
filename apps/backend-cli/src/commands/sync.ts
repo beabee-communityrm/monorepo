@@ -1,6 +1,7 @@
-import type { ArgumentsCamelCase, CommandModule } from 'yargs';
-import type { SyncMailchimpArgs, SyncSegmentsArgs } from '../types/sync.js';
 import moment from 'moment';
+import type { ArgumentsCamelCase, CommandModule } from 'yargs';
+
+import type { SyncMailchimpArgs, SyncSegmentsArgs } from '../types/sync.js';
 
 export const syncCommand: CommandModule = {
   command: 'sync <action>',

@@ -1,9 +1,3 @@
-import { BaseClient } from './base.client.js';
-import { cleanUrl } from '../utils/index.js';
-import { CalloutResponseClient } from './callout-response.client.js';
-import { CalloutTagClient } from './callout-tag.client.js';
-import { CalloutReviewerClient } from './callout-reviewer.client.js';
-import type { BaseClientOptions } from '../types/index.js';
 import type {
   CreateCalloutData,
   CreateCalloutResponseData,
@@ -12,14 +6,21 @@ import type {
   GetCalloutResponseData,
   GetCalloutResponseDataWith,
   GetCalloutResponseMapData,
-  GetCalloutResponsesQuery,
   GetCalloutResponseWith,
-  GetCalloutsQuery,
+  GetCalloutResponsesQuery,
   GetCalloutWith,
+  GetCalloutsQuery,
   Paginated,
   Serial,
   UpdateCalloutData,
 } from '@beabee/beabee-common';
+
+import type { BaseClientOptions } from '../types/index.js';
+import { cleanUrl } from '../utils/index.js';
+import { BaseClient } from './base.client.js';
+import { CalloutResponseClient } from './callout-response.client.js';
+import { CalloutReviewerClient } from './callout-reviewer.client.js';
+import { CalloutTagClient } from './callout-tag.client.js';
 
 export class CalloutClient extends BaseClient {
   /** Client for managing callout responses */

@@ -1,10 +1,10 @@
 import {
   PaymentFilterName,
-  paymentFilters,
   RuleGroup,
+  paymentFilters,
 } from '@beabee/beabee-common';
-import { TransformPlainToInstance } from 'class-transformer';
-import { SelectQueryBuilder } from 'typeorm';
+import { Contact, Payment } from '@beabee/core/models';
+import { AuthInfo } from '@beabee/core/type';
 
 import {
   GetPaymentDto,
@@ -12,14 +12,12 @@ import {
   GetPaymentWith,
   ListPaymentsDto,
 } from '@api/dto/PaymentDto';
+import { BaseTransformer } from '@api/transformers/BaseTransformer';
 import ContactTransformer, {
   loadContactRoles,
 } from '@api/transformers/ContactTransformer';
-import { BaseTransformer } from '@api/transformers/BaseTransformer';
-
-import { Contact, Payment } from '@beabee/core/models';
-
-import { AuthInfo } from '@beabee/core/type';
+import { TransformPlainToInstance } from 'class-transformer';
+import { SelectQueryBuilder } from 'typeorm';
 
 class PaymentTransformer extends BaseTransformer<
   Payment,

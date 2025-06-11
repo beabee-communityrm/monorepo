@@ -1,6 +1,8 @@
 import { runApp } from '@beabee/core/server';
 import { optionsService } from '@beabee/core/services/OptionsService';
+
 import { input } from '@inquirer/prompts';
+
 import type { SetupSupportEmailArgs } from '../../types/setup.js';
 
 /**
