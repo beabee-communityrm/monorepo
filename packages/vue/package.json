@@ -17,7 +17,8 @@
     "format": "prettier --write .",
     "check": "yarn check:tsc && yarn check:prettier",
     "check:tsc": "vue-tsc --noEmit",
-    "check:prettier": "prettier -c ."
+    "check:prettier": "prettier -c .",
+    "generate:index": "yarn workspace @beabee/dev-cli start generate-index --extension ts --baseDir $(pwd) -p ./src/lib ./src/store ./src/types"
   },
   "dependencies": {
     "@beabee/client": "workspace:^",

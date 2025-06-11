@@ -1,2 +1,2 @@
-export * from './i18n';
-export * from './theme';
+export * from './i18n.ts';
+export * from './theme.ts';

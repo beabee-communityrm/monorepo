@@ -1,2 +1,2 @@
-export * from './form.interface';
-export * from './tabs.interface';
+export * from './form.interface.ts';
+export * from './tabs.interface.ts';
