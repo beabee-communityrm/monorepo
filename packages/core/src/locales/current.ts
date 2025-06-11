@@ -1,5 +1,5 @@
-import * as locales from "@beabee/locale/locales";
-import OptionsService from "#services/OptionsService";
+import * as locales from '@beabee/locale/locales';
+import OptionsService from '#services/OptionsService';
 
 /**
  * TODO: Duplicate of the function in locale/generate.ts
@@ -9,7 +9,7 @@ import OptionsService from "#services/OptionsService";
  */
 function toCamelCase(name: string): keyof typeof locales {
   // Get the last part of the path (e.g. "de@easy" from "locales/de@easy")
-  const localeName = name.split("/").pop() || "";
+  const localeName = name.split('/').pop() || '';
 
   // Split by separators (@ or -) and capitalize each part except the first
   return localeName
@@ -19,9 +19,9 @@ function toCamelCase(name: string): keyof typeof locales {
         ? part.toLowerCase()
         : part.charAt(0).toUpperCase() + part.slice(1).toLowerCase()
     )
-    .join("") as keyof typeof locales;
+    .join('') as keyof typeof locales;
 }
 
 export default function currentLocale() {
-  return locales[toCamelCase(OptionsService.getText("locale"))];
+  return locales[toCamelCase(OptionsService.getText('locale'))];
 }

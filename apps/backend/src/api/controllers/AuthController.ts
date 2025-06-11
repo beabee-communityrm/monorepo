@@ -1,6 +1,6 @@
-import { LOGIN_CODES, RoleTypes, RoleType } from "@beabee/beabee-common";
-import { isUUID } from "class-validator";
-import { Request, Response } from "express";
+import { LOGIN_CODES, RoleTypes, RoleType } from '@beabee/beabee-common';
+import { isUUID } from 'class-validator';
+import { Request, Response } from 'express';
 import {
   Body,
   Get,
@@ -11,33 +11,33 @@ import {
   Param,
   Post,
   Req,
-  Res
-} from "routing-controllers";
+  Res,
+} from 'routing-controllers';
 
-import { UnauthorizedError } from "@beabee/core/errors";
+import { UnauthorizedError } from '@beabee/core/errors';
 
-import { getRepository } from "@beabee/core/database";
-import passport from "@beabee/core/lib/passport";
+import { getRepository } from '@beabee/core/database';
+import passport from '@beabee/core/lib/passport';
 
-import ContactsService from "@beabee/core/services/ContactsService";
+import ContactsService from '@beabee/core/services/ContactsService';
 
-import { LoginDto, GetAuthInfoDto } from "@api/dto";
-import { login } from "@api/utils/auth";
+import { LoginDto, GetAuthInfoDto } from '@api/dto';
+import { login } from '@api/utils/auth';
 
-import { Contact, ContactRole } from "@beabee/core/models";
+import { Contact, ContactRole } from '@beabee/core/models';
 
-import { PassportLoginInfo, AuthInfo } from "@beabee/core/type";
+import { PassportLoginInfo, AuthInfo } from '@beabee/core/type';
 
-import config from "@beabee/core/config";
+import config from '@beabee/core/config';
 
-import { CurrentAuth } from "@api/decorators/CurrentAuth";
+import { CurrentAuth } from '@api/decorators/CurrentAuth';
 
-import { authTransformer } from "@api/transformers";
+import { authTransformer } from '@api/transformers';
 
-@JsonController("/auth")
+@JsonController('/auth')
 export class AuthController {
   @OnUndefined(204)
-  @Post("/login")
+  @Post('/login')
   async login(
     @Req() req: Request,
     @Res() res: Response,
@@ -46,7 +46,7 @@ export class AuthController {
   ): Promise<void> {
     const user = await new Promise<Contact>((resolve, reject) => {
       passport.authenticate(
-        "local",
+        'local',
         async (
           err: null | HttpError | UnauthorizedError,
           user: Contact | false,
@@ -69,7 +69,7 @@ export class AuthController {
             return reject(
               new UnauthorizedError({
                 code: info?.message || LOGIN_CODES.LOGIN_FAILED,
-                message: info?.message || LOGIN_CODES.LOGIN_FAILED
+                message: info?.message || LOGIN_CODES.LOGIN_FAILED,
               })
             );
           }
@@ -85,8 +85,8 @@ export class AuthController {
   }
 
   @OnUndefined(204)
-  @Get("/login/as/:id")
-  async loginAs(@Req() req: Request, @Param("id") id: string): Promise<void> {
+  @Get('/login/as/:id')
+  async loginAs(@Req() req: Request, @Param('id') id: string): Promise<void> {
     // IMPORTANT: This is only available in dev mode
     if (!config.dev) {
       throw new NotFoundError();
@@ -96,10 +96,10 @@ export class AuthController {
     if (RoleTypes.indexOf(id as RoleType) > -1) {
       const role = await getRepository(ContactRole).findOne({
         where: { type: id as RoleType },
-        relations: { contact: true }
+        relations: { contact: true },
       });
       contact = role?.contact;
-    } else if (isUUID(id, "4")) {
+    } else if (isUUID(id, '4')) {
       contact = await ContactsService.findOneBy({ id });
     }
 
@@ -111,7 +111,7 @@ export class AuthController {
   }
 
   @OnUndefined(204)
-  @Post("/logout")
+  @Post('/logout')
   async logout(@Req() req: Request): Promise<void> {
     await new Promise<void>((resolve, reject) =>
       req.logout((err) => {
@@ -121,7 +121,7 @@ export class AuthController {
     );
   }
 
-  @Get("/info")
+  @Get('/info')
   async getAuthInfo(
     @CurrentAuth({ required: false }) auth: AuthInfo
   ): Promise<GetAuthInfoDto> {

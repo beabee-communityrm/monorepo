@@ -1,9 +1,9 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class RemoveContactProfileTag1730983012356
   implements MigrationInterface
 {
-  name = "RemoveContactProfileTag1730983012356";
+  name = 'RemoveContactProfileTag1730983012356';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     // Remove old tags column from contact_profile

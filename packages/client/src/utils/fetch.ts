@@ -4,14 +4,14 @@ import {
   isJson,
   hasProtocol,
   CookiePolyfill,
-  queryStringify
-} from "./index.js";
+  queryStringify,
+} from './index.js';
 
 import type {
   FetchOptions,
   FetchResponse,
-  HttpMethod
-} from "../types/index.js";
+  HttpMethod,
+} from '../types/index.js';
 
 /**
  * A wrapper for the fetch API with some additional features.
@@ -24,21 +24,21 @@ export class Fetch {
     if (options.token) {
       options.headers = {
         ...options.headers,
-        Authorization: `Bearer ${options.token}`
+        Authorization: `Bearer ${options.token}`,
       };
-      options.credentials ||= "same-origin";
+      options.credentials ||= 'same-origin';
     } else {
-      options.credentials ||= "include";
+      options.credentials ||= 'include';
     }
 
     // Set default options
-    options.dataType ||= "json";
-    options.cache ||= "default";
-    options.method ||= "GET";
-    options.mode ||= "cors";
+    options.dataType ||= 'json';
+    options.cache ||= 'default';
+    options.method ||= 'GET';
+    options.mode ||= 'cors';
     options.isAjax ||=
-      typeof options.isAjax === "boolean" ? options.isAjax : true;
-    options.basePath ||= "/";
+      typeof options.isAjax === 'boolean' ? options.isAjax : true;
+    options.basePath ||= '/';
 
     this.options = options;
   }
@@ -56,7 +56,7 @@ export class Fetch {
     data?: D,
     options: FetchOptions = {}
   ) {
-    return this.fetch<T>(url, "POST", data, options);
+    return this.fetch<T>(url, 'POST', data, options);
   }
 
   /**
@@ -72,7 +72,7 @@ export class Fetch {
     data?: D,
     options: FetchOptions = {}
   ) {
-    return this.fetch<T>(url, "DELETE", data, options);
+    return this.fetch<T>(url, 'DELETE', data, options);
   }
 
   /**
@@ -89,7 +89,7 @@ export class Fetch {
     data?: D,
     options: FetchOptions = {}
   ) {
-    return this.fetch<T>(url, "PUT", data, options);
+    return this.fetch<T>(url, 'PUT', data, options);
   }
 
   /**
@@ -106,7 +106,7 @@ export class Fetch {
     data?: D,
     options: FetchOptions = {}
   ) {
-    return this.fetch<T>(url, "PATCH", data, options);
+    return this.fetch<T>(url, 'PATCH', data, options);
   }
 
   /**
@@ -124,7 +124,7 @@ export class Fetch {
     data?: D,
     options: FetchOptions = {}
   ) {
-    return this.fetch<T>(url, "GET", data, options);
+    return this.fetch<T>(url, 'GET', data, options);
   }
 
   /**
@@ -134,39 +134,39 @@ export class Fetch {
   protected parseDataType(dataType?: string) {
     const headers: Record<string, string> = {};
     let contentType: string | undefined = undefined;
-    let accept = "*/*";
+    let accept = '*/*';
     switch (dataType) {
-      case "script":
-        contentType = "application/javascript";
+      case 'script':
+        contentType = 'application/javascript';
         break;
-      case "json":
-        contentType = "application/json";
-        accept = "application/json";
+      case 'json':
+        contentType = 'application/json';
+        accept = 'application/json';
         break;
-      case "xml":
-        contentType = "application/xml";
-        accept = "application/xml, text/xml";
+      case 'xml':
+        contentType = 'application/xml';
+        accept = 'application/xml, text/xml';
         break;
-      case "text":
-        contentType = "text/plain";
-        accept = "text/plain";
+      case 'text':
+        contentType = 'text/plain';
+        accept = 'text/plain';
         break;
-      case "html":
-        contentType = "text/html";
-        accept = "text/html";
+      case 'html':
+        contentType = 'text/html';
+        accept = 'text/html';
         break;
-      case "form":
-      case "multipart":
+      case 'form':
+      case 'multipart':
         // Remove Content-Type so browser can set it with boundary
         contentType = undefined;
         break;
     }
 
     if (contentType) {
-      headers["Content-Type"] = contentType;
+      headers['Content-Type'] = contentType;
     }
     if (accept) {
-      headers["Accept"] = accept;
+      headers['Accept'] = accept;
     }
     return headers;
   }
@@ -199,7 +199,7 @@ export class Fetch {
    */
   protected async fetch<T = unknown, D = any>(
     url: string | URL,
-    method: HttpMethod = "GET",
+    method: HttpMethod = 'GET',
     data: D | {} = {},
     options: FetchOptions = {}
   ): Promise<FetchResponse<T>> {
@@ -217,13 +217,13 @@ export class Fetch {
   // Rename existing fetch implementation to performFetch
   protected async performFetch<T = unknown, D = any>(
     url: string | URL,
-    method: HttpMethod = "GET",
+    method: HttpMethod = 'GET',
     data: D | {} = {},
     options: FetchOptions = {}
   ): Promise<FetchResponse<T>> {
     if (!fetch) {
       throw new Error(
-        "Your platform does not support the fetch API, please install a polyfill."
+        'Your platform does not support the fetch API, please install a polyfill.'
       );
     }
 
@@ -231,8 +231,8 @@ export class Fetch {
     options.params ||= {};
 
     // Use basePath if url does not have a protocol
-    if (typeof url === "string" && !hasProtocol(url)) {
-      url = cleanUrl(options.basePath + "/" + url);
+    if (typeof url === 'string' && !hasProtocol(url)) {
+      url = cleanUrl(options.basePath + '/' + url);
     }
 
     url = new URL(url, this.options.host);
@@ -240,21 +240,21 @@ export class Fetch {
     const headers: Record<string, string> = {
       ...this.options.headers,
       ...options.headers,
-      ...this.parseDataType(options.dataType)
+      ...this.parseDataType(options.dataType),
     };
 
     // Handle cookies with polyfill
     if (CookiePolyfill.shouldBeUsed(options.credentials)) {
       const cookies = CookiePolyfill.get();
       if (cookies.length > 0) {
-        headers["Cookie"] = cookies.join("; ");
+        headers['Cookie'] = cookies.join('; ');
       }
     }
 
     // This is a common technique used to identify Ajax requests.
     // The `X-Requested-With` header is not a standard HTTP header, but it is commonly used in the context of web development.
-    if (options.isAjax && !headers["X-Requested-With"]) {
-      headers["X-Requested-With"] = "XMLHttpRequest";
+    if (options.isAjax && !headers['X-Requested-With']) {
+      headers['X-Requested-With'] = 'XMLHttpRequest';
     }
 
     let body = options.body;
@@ -267,11 +267,11 @@ export class Fetch {
      * - For other HTTP methods: Only options.params are added to URL parameters,
      *   while data goes into the request body.
      */
-    if (method === "GET") {
+    if (method === 'GET') {
       // For GET requests, merge options.params and data into query string
       const queryParams = {
         ...options.params,
-        ...data
+        ...data,
       };
       if (Object.keys(queryParams).length > 0) {
         url.search = queryStringify(queryParams);
@@ -284,7 +284,7 @@ export class Fetch {
       }
       // Handle body data
       if (data) {
-        if (options.dataType === "form" || options.dataType === "multipart") {
+        if (options.dataType === 'form' || options.dataType === 'multipart') {
           if (data instanceof FormData) {
             body = data;
           } else {
@@ -300,7 +300,7 @@ export class Fetch {
       ...options,
       method,
       body,
-      headers
+      headers,
     });
 
     // Store cookies from response
@@ -313,23 +313,23 @@ export class Fetch {
 
     // Automatically parse json response
     let bodyResult = (await response.text()) as unknown;
-    if (typeof bodyResult === "string" && isJson(bodyResult)) {
+    if (typeof bodyResult === 'string' && isJson(bodyResult)) {
       bodyResult = JSON.parse(bodyResult);
     }
 
-    if (typeof bodyResult === "string") {
+    if (typeof bodyResult === 'string') {
       switch (bodyResult) {
-        case "null":
-        case "": // FIXME: Does the server interpret `null` as an empty string?
+        case 'null':
+        case '': // FIXME: Does the server interpret `null` as an empty string?
           bodyResult = null;
           break;
-        case "true":
+        case 'true':
           bodyResult = true;
           break;
-        case "false":
+        case 'false':
           bodyResult = false;
           break;
-        case "undefined":
+        case 'undefined':
           bodyResult = undefined;
           break;
       }
@@ -338,22 +338,22 @@ export class Fetch {
     const result: FetchResponse<T> = {
       ...response,
       data: bodyResult as T,
-      ok: response.status >= 200 && response.status < 400
+      ok: response.status >= 200 && response.status < 400,
     };
 
     // Makes it sense to throw an error if the response is not ok
     if (!result.ok) {
       if (result.data) {
         const data = result.data as any;
-        console.error("Error response", data);
+        console.error('Error response', data);
         if (Array.isArray(data.errors)) {
           for (const error of data.errors) {
             console.error(JSON.stringify(error, null, 2));
           }
         }
-        throw new ClientApiError(data.message || "Unknown error", {
+        throw new ClientApiError(data.message || 'Unknown error', {
           ...data,
-          status: response.status
+          status: response.status,
         });
       }
       throw result;

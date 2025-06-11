@@ -1,8 +1,8 @@
-import type { CalloutComponentType } from "../data/index.js";
+import type { CalloutComponentType } from '../data/index.js';
 import type {
   CalloutComponentBaseInputSelectableSchema,
-  CalloutComponentInputSelectableRadioRules
-} from "./index.js";
+  CalloutComponentInputSelectableRadioRules,
+} from './index.js';
 
 export interface CalloutComponentInputSelectableRadioSchema
   extends CalloutComponentBaseInputSelectableSchema {

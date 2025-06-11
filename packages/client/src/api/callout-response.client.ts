@@ -1,9 +1,9 @@
-import { BaseClient } from "./base.client.js";
-import { cleanUrl } from "../utils/index.js";
-import { ContactClient } from "./contact.client.js";
-import { CalloutResponseCommentClient } from "./callout-response-comment.client.js";
+import { BaseClient } from './base.client.js';
+import { cleanUrl } from '../utils/index.js';
+import { ContactClient } from './contact.client.js';
+import { CalloutResponseCommentClient } from './callout-response-comment.client.js';
 
-import type { BaseClientOptions } from "../types/index.js";
+import type { BaseClientOptions } from '../types/index.js';
 import type {
   GetCalloutResponseData,
   GetCalloutResponseDataWith,
@@ -12,8 +12,8 @@ import type {
   Paginated,
   RuleGroup,
   Serial,
-  UpdateCalloutResponseData
-} from "@beabee/beabee-common";
+  UpdateCalloutResponseData,
+} from '@beabee/beabee-common';
 
 /**
  * Client for managing callout responses
@@ -31,7 +31,7 @@ export class CalloutResponseClient extends BaseClient {
   constructor(protected override readonly options: BaseClientOptions) {
     super({
       ...options,
-      path: cleanUrl(options.path + "/callout-responses")
+      path: cleanUrl(options.path + '/callout-responses'),
     });
     this.comment = new CalloutResponseCommentClient(options);
   }
@@ -51,16 +51,16 @@ export class CalloutResponseClient extends BaseClient {
       createdAt: CalloutResponseClient.deserializeDate(response.createdAt),
       updatedAt: CalloutResponseClient.deserializeDate(response.updatedAt),
       ...(response.assignee && {
-        assignee: ContactClient.deserialize(response.assignee)
+        assignee: ContactClient.deserialize(response.assignee),
       }),
       ...(response.contact && {
-        contact: ContactClient.deserialize(response.contact)
+        contact: ContactClient.deserialize(response.contact),
       }),
       ...(response.latestComment && {
         latestComment: CalloutResponseCommentClient.deserialize(
           response.latestComment
-        )
-      })
+        ),
+      }),
     };
   }
 
@@ -77,11 +77,11 @@ export class CalloutResponseClient extends BaseClient {
   ): Promise<Paginated<GetCalloutResponseDataWith<With>>> {
     const { data } = await this.fetch.get<
       Paginated<Serial<GetCalloutResponseDataWith<With>>>
-    >("", { with: _with, ...query });
+    >('', { with: _with, ...query });
 
     return {
       ...data,
-      items: data.items.map((item) => CalloutResponseClient.deserialize(item))
+      items: data.items.map((item) => CalloutResponseClient.deserialize(item)),
     };
   }
 
@@ -96,9 +96,9 @@ export class CalloutResponseClient extends BaseClient {
     rules: RuleGroup,
     updates: UpdateCalloutResponseData
   ): Promise<{ affected: number }> {
-    const { data } = await this.fetch.patch<Serial<{ affected: number }>>("", {
+    const { data } = await this.fetch.patch<Serial<{ affected: number }>>('', {
       rules,
-      updates
+      updates,
     });
     return data;
   }

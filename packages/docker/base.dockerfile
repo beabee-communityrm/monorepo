@@ -36,6 +36,9 @@ COPY --chown=node:node packages/prettier-config /opt/packages/prettier-config
 COPY --chown=node:node packages/tsconfig /opt/packages/tsconfig
 COPY --chown=node:node packages/esbuild /opt/packages/esbuild
 
+# Copy apps with relevant content
+COPY --chown=node:node apps/dev-cli /opt/apps/dev-cli
+
 ENV NODE_ENV=production
 ENV NODE_OPTIONS=--enable-source-maps
 
@@ -61,6 +64,7 @@ COPY apps/backend /opt/apps/backend
 COPY apps/backend-cli /opt/apps/backend-cli
 COPY apps/legacy /opt/apps/legacy
 COPY apps/webhooks /opt/apps/webhooks
+COPY apps/dev-cli /opt/apps/dev-cli
 
 # Build the applications
 RUN yarn build
@@ -104,7 +108,7 @@ COPY --chown=node:node --from=builder /opt/apps/backend-cli/dist /opt/apps/backe
 
 # Health check using our custom health endpoint
 HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
-    CMD curl -f http://localhost:3000/health || exit 1
+    CMD curl -f http://localhost:3000/1.0/health || exit 1
 
 CMD [ "node", "./dist/api/app.js" ]
 
@@ -112,6 +116,9 @@ CMD [ "node", "./dist/api/app.js" ]
 FROM dist-backend AS cron_app
 
 RUN apt-get update && apt-get install -y cron rsyslog && rm -rf /var/lib/apt/lists/*
+
+# Copy backend-cli for cron jobs
+COPY --chown=node:node --from=builder /opt/apps/backend-cli/dist /opt/apps/backend-cli/dist
 
 # Disable Kernal logging
 RUN sed -i '/imklog/s/^/#/' /etc/rsyslog.conf

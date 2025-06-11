@@ -1,4 +1,4 @@
-import type { NewsletterGroupData } from "./index.js";
+import type { NewsletterGroupData } from './index.js';
 
 export interface ContentJoinSetupData {
   welcome: string;

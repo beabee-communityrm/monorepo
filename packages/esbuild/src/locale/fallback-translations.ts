@@ -1,6 +1,6 @@
-import path from "node:path";
-import { readJsonFile, mergeObjects } from "./utils.ts";
-import type { LocaleOption } from "../../../locale/src/types/index.ts";
+import { join } from 'node:path';
+import { readJsonFile, mergeObjects } from './utils.ts';
+import type { LocaleOption } from '@beabee/locale';
 
 /**
  * Recursively applies fallback translations to a locale
@@ -10,7 +10,7 @@ import type { LocaleOption } from "../../../locale/src/types/index.ts";
  */
 function applyFallbackTranslationsToObject(
   translations: Record<string, any>,
-  fallbackTranslations: Record<string, any>,
+  fallbackTranslations: Record<string, any>
 ): Record<string, any> {
   return mergeObjects(translations, fallbackTranslations, (target, source) => {
     // If target is empty string or undefined, use the fallback translation
@@ -28,7 +28,7 @@ function applyFallbackTranslationsToObject(
 async function processFallbacksForLocale(
   localeId: string,
   config: Record<string, LocaleOption>,
-  localesDir: string,
+  localesDir: string
 ): Promise<Record<string, any>> {
   const localeConfig = config[localeId];
   if (!localeConfig) {
@@ -36,7 +36,7 @@ async function processFallbacksForLocale(
   }
 
   // Read the current locale's translations
-  const localeFile = path.join(localesDir, `${localeId}.json`);
+  const localeFile = join(localesDir, `${localeId}.json`);
   const translations = await readJsonFile<Record<string, any>>(localeFile);
 
   // If there's no fallback, return the current translations
@@ -48,13 +48,13 @@ async function processFallbacksForLocale(
   const fallbackTranslations = await processFallbacksForLocale(
     localeConfig.fallbackLocale,
     config,
-    localesDir,
+    localesDir
   );
 
   // Apply fallback translations
   const result = applyFallbackTranslationsToObject(
     translations,
-    fallbackTranslations,
+    fallbackTranslations
   );
 
   return result;
@@ -67,7 +67,7 @@ async function processFallbacksForLocale(
  */
 export async function applyFallbackTranslations(
   configPath: string,
-  localesDir: string,
+  localesDir: string
 ): Promise<Record<string, Record<string, any>>> {
   // Read the config file
   const config = await readJsonFile<Record<string, LocaleOption>>(configPath);
@@ -85,7 +85,7 @@ export async function applyFallbackTranslations(
     processedTranslations[localeId] = await processFallbacksForLocale(
       localeId,
       config,
-      localesDir,
+      localesDir
     );
   }
 

@@ -5,14 +5,14 @@
  * It adds missing keys with empty strings to all locale files.
  */
 
-import { readdir } from "node:fs/promises";
-import path from "node:path";
+import { readdir } from 'node:fs/promises';
+import { join } from 'node:path';
 import {
   readJsonFile,
   writeJsonFile,
   mergeObjects,
   handleError,
-} from "./utils.ts";
+} from './utils.ts';
 
 /**
  * Normalizes all translation files to ensure they have the same structure
@@ -20,7 +20,7 @@ import {
  */
 export async function normalizeTranslations(localesDir: string): Promise<void> {
   try {
-    const englishFilePath = path.join(localesDir, "en.json");
+    const englishFilePath = join(localesDir, 'en.json');
 
     console.log(`Reading English locale file from ${englishFilePath}`);
 
@@ -31,14 +31,14 @@ export async function normalizeTranslations(localesDir: string): Promise<void> {
     // Get all JSON files in the locales directory
     const files = await readdir(localesDir);
     const jsonFiles = files.filter(
-      (file) => file.endsWith(".json") && file !== "en.json",
+      (file) => file.endsWith('.json') && file !== 'en.json'
     );
 
     console.log(`Found ${jsonFiles.length} translation files to normalize`);
 
     // Process each file
     for (const file of jsonFiles) {
-      const filePath = path.join(localesDir, file);
+      const filePath = join(localesDir, file);
       console.log(`Normalizing ${file}...`);
 
       // Read the translation file
@@ -48,7 +48,7 @@ export async function normalizeTranslations(localesDir: string): Promise<void> {
       const normalizedData = mergeObjects(
         fileData,
         englishData,
-        (targetValue, sourceValue) => targetValue || "",
+        (targetValue, sourceValue) => targetValue || ''
       );
 
       // Write the normalized file
@@ -57,8 +57,8 @@ export async function normalizeTranslations(localesDir: string): Promise<void> {
       console.log(`${file} normalized successfully`);
     }
 
-    console.log("All translation files have been normalized");
+    console.log('All translation files have been normalized');
   } catch (error) {
-    handleError(error, "normalizing translation files");
+    handleError(error, 'normalizing translation files');
   }
 }

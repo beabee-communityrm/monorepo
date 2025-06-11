@@ -1,13 +1,9 @@
 {
-  "include": ["./src"],
+  "extends": [
+    "./tsconfig.build.json"
+  ],
+  "exclude": [],
   "compilerOptions": {
-    "module": "commonjs",
-    "rootDir": "./src",
-    "declarationDir": "./dist/types",
-    "emitDeclarationOnly": true,
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "declaration": true,
-    "diagnostics": true
+    "composite": true
   }
 }

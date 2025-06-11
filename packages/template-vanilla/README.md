@@ -27,16 +27,26 @@ Run yarn install to update the yarn.lock file with your new package:
 yarn install
 ```
 
-### 4. Commit to git
+### 4. Update Docker configuration
+
+Add your new package to the Docker base image by updating `packages/docker/base.dockerfile`. Add the following line in the "Copy dependencies info from packages" section:
+
+```dockerfile
+COPY --chown=node:node packages/your-package/package.json /opt/packages/your-package/package.json
+```
+
+**Important**: This step is crucial! Without it, Docker builds will fail because the yarn.lock file changes when packages are missing from the Docker context.
+
+### 5. Commit to git
 
 Add your new package to git as the starting point:
 
 ```bash
-git add packages/your-package
+git add packages/your-package packages/docker/base.dockerfile
 git commit -m "feat: add @beabee/your-package template"
 ```
 
-### 5. Customize your package
+### 6. Customize your package
 
 Now you can start developing your package:
 

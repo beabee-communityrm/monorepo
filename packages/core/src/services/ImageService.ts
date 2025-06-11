@@ -1,42 +1,42 @@
-import { randomUUID } from "crypto";
-import { Readable } from "stream";
-import { extname } from "path";
+import { randomUUID } from 'crypto';
+import { Readable } from 'stream';
+import { extname } from 'path';
 
 import {
   S3Client,
   PutObjectCommand,
   DeleteObjectCommand,
   ListObjectsV2Command,
-  HeadObjectCommand
-} from "@aws-sdk/client-s3";
-import sharp from "sharp";
-import { optimize } from "svgo";
-import { isSupportedImageType, S3Metadata } from "@beabee/beabee-common";
+  HeadObjectCommand,
+} from '@aws-sdk/client-s3';
+import sharp from 'sharp';
+import { optimize } from 'svgo';
+import { isSupportedImageType, S3Metadata } from '@beabee/beabee-common';
 
-import { BadRequestError, NotFoundError } from "../errors";
-import { log as mainLogger } from "../logging";
+import { BadRequestError, NotFoundError } from '../errors';
+import { log as mainLogger } from '../logging';
 import {
   getMimetypeFromDecoderFormat,
   getMimetypeFromExtension,
   getExtensionFromFilename,
-  sanitizeFilename
-} from "../utils/file";
+  sanitizeFilename,
+} from '../utils/file';
 import {
   checkConnection,
   fileExists,
   getFileStream,
   getFileBuffer,
-  getFileHash
-} from "../utils/s3";
-import config from "../config/config";
+  getFileHash,
+} from '../utils/s3';
+import config from '../config/config';
 
 import type {
   ImageFormat,
   ImageServiceConfig,
-  ImageMetadata
-} from "../type/index";
+  ImageMetadata,
+} from '../type/index';
 
-const log = mainLogger.child({ app: "image-service" });
+const log = mainLogger.child({ app: 'image-service' });
 
 /**
  * Service for handling image uploads, resizing, and storage in S3/MinIO
@@ -53,9 +53,9 @@ export class ImageService {
       region: this.config.s3.region,
       credentials: {
         accessKeyId: this.config.s3.accessKey,
-        secretAccessKey: this.config.s3.secretKey
+        secretAccessKey: this.config.s3.secretKey,
       },
-      forcePathStyle: this.config.s3.forcePathStyle !== false
+      forcePathStyle: this.config.s3.forcePathStyle !== false,
     });
 
     this.config.availableWidths = [...this.config.availableWidths].sort(
@@ -75,7 +75,7 @@ export class ImageService {
     // Validate MIME type if provided
     if (mimetype && !isSupportedImageType(mimetype)) {
       throw new BadRequestError({
-        message: `Unsupported image type ${mimetype}. Please upload a JPEG, PNG, WebP or AVIF image.`
+        message: `Unsupported image type ${mimetype}. Please upload a JPEG, PNG, WebP or AVIF image.`,
       });
     }
 
@@ -86,7 +86,7 @@ export class ImageService {
 
       // Check if it's actually a valid image
       if (!metadata.width || !metadata.height || !metadata.format) {
-        throw new BadRequestError({ message: "Invalid image format" });
+        throw new BadRequestError({ message: 'Invalid image format' });
       }
 
       // Check if the detected format is allowed
@@ -94,14 +94,14 @@ export class ImageService {
         !isSupportedImageType(getMimetypeFromDecoderFormat(metadata.format))
       ) {
         throw new BadRequestError({
-          message: `Unsupported image format ${metadata.format}. Please upload a JPEG, PNG, WebP or AVIF image.`
+          message: `Unsupported image format ${metadata.format}. Please upload a JPEG, PNG, WebP or AVIF image.`,
         });
       }
     } catch (error) {
       if (error instanceof BadRequestError) {
         throw error;
       }
-      throw new BadRequestError({ message: "Invalid image file" });
+      throw new BadRequestError({ message: 'Invalid image file' });
     }
   }
 
@@ -122,7 +122,7 @@ export class ImageService {
     try {
       // If imageData is a ReadStream, convert it to a Buffer
       if (!Buffer.isBuffer(imageData)) {
-        throw new BadRequestError({ message: "Invalid upload format" });
+        throw new BadRequestError({ message: 'Invalid upload format' });
       }
 
       const sanitizedFilename = sanitizeFilename(originalFilename);
@@ -137,37 +137,37 @@ export class ImageService {
       const metadata = await image.metadata();
 
       if (!metadata.width || !metadata.height || !metadata.format) {
-        throw new BadRequestError({ message: "Invalid image format" });
+        throw new BadRequestError({ message: 'Invalid image format' });
       }
 
       // If the image format is already the target format or a vector graphic,
       // we keep the original format if no other format is forced
       if (metadata.format === this.config.format) {
-        format ||= "original";
+        format ||= 'original';
       }
 
       // We keep SVGs as SVGs by default
-      if (metadata.format === "svg") {
-        format ||= "original";
+      if (metadata.format === 'svg') {
+        format ||= 'original';
       }
 
       // Generate a unique ID for the image
       const fileId = randomUUID();
 
       // Target format based on parameter or configuration
-      const outputFormat = format || this.config.format || "avif";
+      const outputFormat = format || this.config.format || 'avif';
 
       // File extension based on the output format or original format
       let extension: string;
-      if (outputFormat === "original") {
-        extension = "." + metadata.format;
+      if (outputFormat === 'original') {
+        extension = '.' + metadata.format;
         if (originalExtension !== extension) {
           log.warn(
             `Original image extension (${originalExtension}) does not match detected format (${metadata.format}).`
           );
         }
       } else {
-        extension = "." + outputFormat;
+        extension = '.' + outputFormat;
       }
 
       const id = `${fileId}${extension}`;
@@ -176,29 +176,29 @@ export class ImageService {
       let processedImageBuffer: Buffer;
 
       // Handle SVG optimization
-      if (metadata.format === "svg" && outputFormat === "original") {
+      if (metadata.format === 'svg' && outputFormat === 'original') {
         // Convert buffer to string for SVGO
-        const svgString = imageData.toString("utf8");
+        const svgString = imageData.toString('utf8');
 
         // Optimize SVG using SVGO
         const result = optimize(svgString, {
           multipass: true,
           plugins: [
             {
-              name: "preset-default",
+              name: 'preset-default',
               params: {
                 overrides: {
                   // Disable removeViewBox to preserve the original aspect ratio
-                  removeViewBox: false
-                }
-              }
-            }
-          ]
+                  removeViewBox: false,
+                },
+              },
+            },
+          ],
         });
 
         // Convert optimized SVG back to buffer
-        processedImageBuffer = Buffer.from(result.data, "utf8");
-      } else if (outputFormat === "original") {
+        processedImageBuffer = Buffer.from(result.data, 'utf8');
+      } else if (outputFormat === 'original') {
         // Keep the original format but strip metadata
         processedImageBuffer = await image
           .withMetadata({ orientation: undefined }) // Strip EXIF but keep orientation
@@ -206,31 +206,31 @@ export class ImageService {
       } else {
         // Convert to the specified format
         switch (outputFormat) {
-          case "webp":
+          case 'webp':
             processedImageBuffer = await image
               .withMetadata({ orientation: undefined })
               .webp({ quality: this.config.quality })
               .toBuffer();
             break;
-          case "avif":
+          case 'avif':
             processedImageBuffer = await image
               .withMetadata({ orientation: undefined })
               .avif({ quality: this.config.quality })
               .toBuffer();
             break;
-          case "jpeg":
+          case 'jpeg':
             processedImageBuffer = await image
               .withMetadata({ orientation: undefined })
               .jpeg({ quality: this.config.quality })
               .toBuffer();
             break;
-          case "png":
+          case 'png':
             processedImageBuffer = await image
               .withMetadata({ orientation: undefined })
               .png({
                 quality: this.config.quality
                   ? Math.floor(this.config.quality / 10)
-                  : 8
+                  : 8,
               })
               .toBuffer();
             break;
@@ -243,7 +243,7 @@ export class ImageService {
 
       // Correct MIME type for the output format
       const outputMimetype =
-        outputFormat === "original"
+        outputFormat === 'original'
           ? getMimetypeFromExtension(metadata.format)
           : getMimetypeFromExtension(extension);
 
@@ -266,7 +266,7 @@ export class ImageService {
           Metadata:
             Object.keys(s3Metadata).length > 0
               ? (s3Metadata as Record<string, string>)
-              : undefined
+              : undefined,
         })
       );
 
@@ -283,19 +283,19 @@ export class ImageService {
         size: processedImageBuffer.length,
         filename: sanitizedFilename,
         owner,
-        hash
+        hash,
       };
     } catch (error) {
       if (error instanceof BadRequestError) {
         throw error;
       }
-      log.error("Failed to upload image:", error);
+      log.error('Failed to upload image:', error);
 
       const errorMessage =
-        error instanceof Error ? error.message : "Unknown error";
+        error instanceof Error ? error.message : 'Unknown error';
 
       throw new BadRequestError({
-        message: "Failed to upload image: " + errorMessage
+        message: 'Failed to upload image: ' + errorMessage,
       });
     }
   }
@@ -316,7 +316,7 @@ export class ImageService {
 
       // Get image metadata to check format
       const metadata = await this.getImageMetadata(id);
-      const isSvg = metadata.mimetype === "image/svg+xml";
+      const isSvg = metadata.mimetype === 'image/svg+xml';
 
       // SVGs should not be scaled - always return original
       if (isSvg) {
@@ -382,8 +382,8 @@ export class ImageService {
       if (error instanceof NotFoundError) {
         throw error;
       }
-      log.error("Failed to get image stream:", error);
-      throw new BadRequestError({ message: "Failed to get image stream" });
+      log.error('Failed to get image stream:', error);
+      throw new BadRequestError({ message: 'Failed to get image stream' });
     }
   }
 
@@ -412,8 +412,8 @@ export class ImageService {
       if (error instanceof NotFoundError) {
         throw error;
       }
-      log.error("Failed to get image buffer:", error);
-      throw new BadRequestError({ message: "Failed to get image buffer" });
+      log.error('Failed to get image buffer:', error);
+      throw new BadRequestError({ message: 'Failed to get image buffer' });
     }
   }
 
@@ -431,14 +431,14 @@ export class ImageService {
       await this.s3Client.send(
         new DeleteObjectCommand({
           Bucket: this.config.s3.bucket,
-          Key: `originals/${id}`
+          Key: `originals/${id}`,
         })
       );
 
       // List and delete all resized versions
       const listCommand = new ListObjectsV2Command({
         Bucket: this.config.s3.bucket,
-        Prefix: `resized/`
+        Prefix: `resized/`,
       });
 
       const response = await this.s3Client.send(listCommand);
@@ -450,7 +450,7 @@ export class ImageService {
           return this.s3Client.send(
             new DeleteObjectCommand({
               Bucket: this.config.s3.bucket,
-              Key: item.Key
+              Key: item.Key,
             })
           );
         });
@@ -463,8 +463,8 @@ export class ImageService {
       if (error instanceof NotFoundError) {
         throw error;
       }
-      log.error("Failed to delete image:", error);
-      throw new BadRequestError({ message: "Failed to delete image" });
+      log.error('Failed to delete image:', error);
+      throw new BadRequestError({ message: 'Failed to delete image' });
     }
   }
 
@@ -500,21 +500,21 @@ export class ImageService {
       const metadata = await sharp(buffer).metadata();
 
       if (!metadata.width || !metadata.height) {
-        throw new BadRequestError({ message: "Invalid image format" });
+        throw new BadRequestError({ message: 'Invalid image format' });
       }
 
       // Get file metadata
       const response = await this.s3Client.send(
         new HeadObjectCommand({
           Bucket: this.config.s3.bucket,
-          Key: `originals/${id}`
+          Key: `originals/${id}`,
         })
       );
 
       const s3Metadata = response.Metadata || {};
 
       // Get the hash (ETag) of the image
-      const hash = response.ETag ? response.ETag.replace(/"/g, "") : "";
+      const hash = response.ETag ? response.ETag.replace(/"/g, '') : '';
 
       return {
         id,
@@ -525,10 +525,10 @@ export class ImageService {
         size: response.ContentLength || buffer.length,
         filename: s3Metadata.originalfilename,
         owner: s3Metadata.owner,
-        hash
+        hash,
       };
     } catch (error) {
-      log.error("Failed to get image metadata:", error);
+      log.error('Failed to get image metadata:', error);
       throw new NotFoundError();
     }
   }
@@ -543,7 +543,7 @@ export class ImageService {
       const key = `originals/${id}`;
       return await getFileHash(this.s3Client, this.config.s3.bucket, key);
     } catch (error) {
-      log.error("Failed to get image hash:", error);
+      log.error('Failed to get image hash:', error);
       throw new NotFoundError();
     }
   }
@@ -565,15 +565,15 @@ export class ImageService {
       const response = await this.s3Client.send(
         new ListObjectsV2Command({
           Bucket: this.config.s3.bucket,
-          Prefix: "originals/"
+          Prefix: 'originals/',
         })
       );
 
       return (response.Contents || [])
-        .map((item) => item.Key || "")
-        .filter((key) => key.startsWith("originals/"));
+        .map((item) => item.Key || '')
+        .filter((key) => key.startsWith('originals/'));
     } catch (error) {
-      log.error("Failed to list images:", error);
+      log.error('Failed to list images:', error);
       return [];
     }
   }
@@ -602,36 +602,36 @@ export class ImageService {
 
       const sharpInstance = sharp(buffer).resize({
         width,
-        withoutEnlargement: true
+        withoutEnlargement: true,
       });
 
       // Set format and quality
-      if (format === "original") {
+      if (format === 'original') {
         // Keep the original format (extension from the file)
         resizedImageBuffer = await sharpInstance.toBuffer();
       } else {
         switch (format) {
-          case "webp":
+          case 'webp':
             resizedImageBuffer = await sharpInstance
               .webp({ quality: this.config.quality })
               .toBuffer();
             break;
-          case "avif":
+          case 'avif':
             resizedImageBuffer = await sharpInstance
               .avif({ quality: this.config.quality })
               .toBuffer();
             break;
-          case "jpeg":
+          case 'jpeg':
             resizedImageBuffer = await sharpInstance
               .jpeg({ quality: this.config.quality })
               .toBuffer();
             break;
-          case "png":
+          case 'png':
             resizedImageBuffer = await sharpInstance
               .png({
                 quality: this.config.quality
                   ? Math.floor(this.config.quality / 10)
-                  : 8
+                  : 8,
               })
               .toBuffer();
             break;
@@ -642,20 +642,20 @@ export class ImageService {
 
       // Upload the resized image
       const outputContentType =
-        format === "original" ? contentType : getMimetypeFromExtension(format);
+        format === 'original' ? contentType : getMimetypeFromExtension(format);
 
       await this.s3Client.send(
         new PutObjectCommand({
           Bucket: this.config.s3.bucket,
           Key: `resized/${width}/${id}`,
           Body: resizedImageBuffer,
-          ContentType: outputContentType
+          ContentType: outputContentType,
         })
       );
     } catch (error) {
-      log.error("Failed to generate resized image:", error);
+      log.error('Failed to generate resized image:', error);
       throw new BadRequestError({
-        message: "Failed to generate resized image"
+        message: 'Failed to generate resized image',
       });
     }
   }

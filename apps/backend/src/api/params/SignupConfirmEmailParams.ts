@@ -1,6 +1,6 @@
-import { IsUUID } from "class-validator";
+import { IsUUID } from 'class-validator';
 
 export class SignupConfirmEmailParams {
-  @IsUUID("4")
+  @IsUUID('4')
   joinFlowId!: string;
 }

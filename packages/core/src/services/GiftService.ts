@@ -1,25 +1,25 @@
 import {
   Address,
   ContributionType,
-  NewsletterStatus
-} from "@beabee/beabee-common";
-import moment from "moment";
+  NewsletterStatus,
+} from '@beabee/beabee-common';
+import moment from 'moment';
 
-import { getRepository } from "#database";
-import { log as mainLogger } from "#logging";
-import { stripe, Stripe } from "#lib/stripe";
-import { isDuplicateIndex } from "#utils/db";
-import { generateContactCode } from "#utils/contact";
+import { getRepository } from '#database';
+import { log as mainLogger } from '#logging';
+import { stripe, Stripe } from '#lib/stripe';
+import { isDuplicateIndex } from '#utils/db';
+import { generateContactCode } from '#utils/contact';
 
-import EmailService from "#services/EmailService";
-import ContactsService from "#services/ContactsService";
-import OptionsService from "#services/OptionsService";
+import EmailService from '#services/EmailService';
+import ContactsService from '#services/ContactsService';
+import OptionsService from '#services/OptionsService';
 
-import { GiftFlow, GiftForm, ContactRole } from "#models/index";
+import { GiftFlow, GiftForm, ContactRole } from '#models/index';
 
-import config from "#config/config";
+import config from '#config/config';
 
-const log = mainLogger.child({ app: "gift-service" });
+const log = mainLogger.child({ app: 'gift-service' });
 
 export class GiftService {
   private static readonly giftMonthlyAmount = 3;
@@ -30,15 +30,15 @@ export class GiftService {
    * @returns Stripe session ID
    */
   static async createGiftFlow(giftForm: GiftForm): Promise<string> {
-    log.info("Create gift flow", giftForm);
+    log.info('Create gift flow', giftForm);
 
     const giftFlow = await GiftService.createGiftFlowWithCode(giftForm);
 
     const params: Stripe.Checkout.SessionCreateParams = {
-      success_url: config.audience + "/gift/thanks/" + giftFlow.id,
-      cancel_url: config.audience + "/gift",
+      success_url: config.audience + '/gift/thanks/' + giftFlow.id,
+      cancel_url: config.audience + '/gift',
       customer_email: giftForm.fromEmail,
-      payment_method_types: ["card"],
+      payment_method_types: ['card'],
       line_items: [
         {
           quantity: 1,
@@ -47,18 +47,18 @@ export class GiftService {
             currency: config.currencyCode.toLowerCase(),
             product_data: {
               name: `Gift membership - ${giftForm.months} month${
-                giftForm.months != 1 ? "s" : ""
-              }`
-            }
-          }
-        }
-      ]
+                giftForm.months != 1 ? 's' : ''
+              }`,
+            },
+          },
+        },
+      ],
     };
 
     const session = await stripe.checkout.sessions.create(params);
 
     await getRepository(GiftFlow).update(giftFlow.id, {
-      sessionId: session.id
+      sessionId: session.id,
     });
 
     return session.id;
@@ -68,7 +68,7 @@ export class GiftService {
     const giftFlowRepository = getRepository(GiftFlow);
     const giftFlow = await giftFlowRepository.findOne({ where: { sessionId } });
 
-    log.info("Complete gift flow", { sessionId, giftFlowId: giftFlow?.id });
+    log.info('Complete gift flow', { sessionId, giftFlowId: giftFlow?.id });
 
     if (giftFlow) {
       await giftFlowRepository.update(giftFlow.id, { completed: true });
@@ -77,13 +77,13 @@ export class GiftService {
       const now = moment.utc();
 
       await EmailService.sendTemplateTo(
-        "purchased-gift",
+        'purchased-gift',
         { email: fromEmail, name: fromName },
         { fromName, gifteeFirstName: firstname, giftStartDate: startDate }
       );
 
       // Immediately process gifts for today
-      if (moment.utc(startDate).isSame(now, "day")) {
+      if (moment.utc(startDate).isSame(now, 'day')) {
         await GiftService.processGiftFlow(giftFlow, true);
       }
     }
@@ -93,9 +93,9 @@ export class GiftService {
     giftFlow: GiftFlow,
     sendImmediately = false
   ): Promise<void> {
-    log.info("Process gift flow " + giftFlow.id, {
+    log.info('Process gift flow ' + giftFlow.id, {
       giftFlow: { ...giftFlow, giftForm: undefined },
-      sendImmediately
+      sendImmediately,
     });
 
     const {
@@ -105,7 +105,7 @@ export class GiftService {
       deliveryAddress,
       months,
       fromName,
-      message
+      message,
     } = giftFlow.giftForm;
     const now = moment.utc();
 
@@ -114,8 +114,8 @@ export class GiftService {
     await getRepository(GiftFlow).update(giftFlow.id, { processed: true });
 
     const role = getRepository(ContactRole).create({
-      type: "member",
-      dateExpires: now.clone().add(months, "months").toDate()
+      type: 'member',
+      dateExpires: now.clone().add(months, 'months').toDate(),
     });
 
     const contact = await ContactsService.createContact(
@@ -125,15 +125,15 @@ export class GiftService {
         email,
         contributionType: ContributionType.Gift,
         contributionMonthlyAmount: GiftService.giftMonthlyAmount,
-        roles: [role]
+        roles: [role],
       },
       {
         deliveryOptIn: !!deliveryAddress?.line1,
         deliveryAddress: deliveryAddress,
         newsletterStatus: NewsletterStatus.Subscribed,
-        newsletterGroups: OptionsService.getJSON("newsletter-groups").map(
+        newsletterGroups: OptionsService.getJSON('newsletter-groups').map(
           (group: { id: string }) => group.id
-        )
+        ),
       }
     );
 
@@ -142,11 +142,11 @@ export class GiftService {
 
     const sendAt = sendImmediately
       ? undefined
-      : now.clone().startOf("day").add({ h: 9 }).toDate();
+      : now.clone().startOf('day').add({ h: 9 }).toDate();
     await EmailService.sendTemplateToContact(
-      "giftee-success",
+      'giftee-success',
       contact,
-      { fromName, message: message || "", giftCode: giftFlow.setupCode },
+      { fromName, message: message || '', giftCode: giftFlow.setupCode },
       { sendAt }
     );
   }
@@ -156,30 +156,30 @@ export class GiftService {
     giftAddress: Address,
     deliveryAddress: Address
   ): Promise<void> {
-    log.info("Update gift flow address " + giftFlow.id);
+    log.info('Update gift flow address ' + giftFlow.id);
 
     if (!giftFlow.processed && !giftFlow.giftForm.giftAddress) {
       await getRepository(GiftFlow).update(giftFlow.id, {
         giftForm: {
           giftAddress,
-          deliveryAddress
-        }
+          deliveryAddress,
+        },
       });
     }
   }
 
   private static async createGiftFlowWithCode(
-    giftForm: GiftFlow["giftForm"]
+    giftForm: GiftFlow['giftForm']
   ): Promise<GiftFlow> {
     try {
       const giftFlow = new GiftFlow();
-      giftFlow.sessionId = "UNKNOWN";
+      giftFlow.sessionId = 'UNKNOWN';
       giftFlow.setupCode = generateContactCode(giftForm)!;
       giftFlow.giftForm = giftForm;
       await getRepository(GiftFlow).insert(giftFlow);
       return giftFlow;
     } catch (error) {
-      if (isDuplicateIndex(error, "setupCode")) {
+      if (isDuplicateIndex(error, 'setupCode')) {
         return await GiftService.createGiftFlowWithCode(giftForm);
       }
       throw error;

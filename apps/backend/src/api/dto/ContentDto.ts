@@ -11,10 +11,10 @@ import {
   ContentProfileData,
   ContentShareData,
   ContentPaymentData,
-  ContentId
-} from "@beabee/beabee-common";
-import { Locale } from "@beabee/locale";
-import { Type } from "class-transformer";
+  ContentId,
+} from '@beabee/beabee-common';
+import { Locale } from '@beabee/locale';
+import { Type } from 'class-transformer';
 import {
   IsBoolean,
   IsEnum,
@@ -22,12 +22,12 @@ import {
   IsNumber,
   IsObject,
   IsString,
-  ValidateNested
-} from "class-validator";
+  ValidateNested,
+} from 'class-validator';
 
-import { LinkDto } from "@api/dto/LinkDto";
-import { GetContentTelegramDto } from "@api/dto/ContentTelegramDto";
-import { NewsletterGroupDto } from "@api/dto/NewsletterDto";
+import { LinkDto } from '@api/dto/LinkDto';
+import { GetContentTelegramDto } from '@api/dto/ContentTelegramDto';
+import { NewsletterGroupDto } from '@api/dto/NewsletterDto';
 
 export class GetContentContactsDto implements ContentContactsData {
   @IsString({ each: true })
@@ -135,7 +135,7 @@ export class GetContentJoinDto implements ContentJoinData {
   stripePublicKey!: string;
 
   /** @deprecated Use {@link GetContentPaymentDto.stripeCountry} instead. */
-  @IsIn(["eu", "gb", "ca"])
+  @IsIn(['eu', 'gb', 'ca'])
   stripeCountry!: StripeFeeCountry;
 }
 
@@ -204,7 +204,7 @@ export class GetContentPaymentDto implements ContentPaymentData {
   @IsString()
   stripePublicKey!: string;
 
-  @IsIn(["eu", "gb", "ca"])
+  @IsIn(['eu', 'gb', 'ca'])
   stripeCountry!: StripeFeeCountry;
 
   @IsBoolean()
@@ -218,22 +218,22 @@ export class GetContentPaymentDto implements ContentPaymentData {
 }
 
 export type GetContentDto<Id extends ContentId = ContentId> =
-  Id extends "contacts"
+  Id extends 'contacts'
     ? GetContentContactsDto
-    : never | Id extends "email"
+    : never | Id extends 'email'
       ? GetContentEmailDto
-      : never | Id extends "general"
+      : never | Id extends 'general'
         ? GetContentGeneralDto
-        : never | Id extends "join"
+        : never | Id extends 'join'
           ? GetContentJoinDto
-          : never | Id extends "join/setup"
+          : never | Id extends 'join/setup'
             ? GetContentJoinSetupDto
-            : never | Id extends "profile"
+            : never | Id extends 'profile'
               ? GetContentProfileDto
-              : never | Id extends "share"
+              : never | Id extends 'share'
                 ? GetContentShareDto
-                : never | Id extends "payment"
+                : never | Id extends 'payment'
                   ? GetContentPaymentDto
-                  : never | Id extends "telegram"
+                  : never | Id extends 'telegram'
                     ? GetContentTelegramDto
                     : never;

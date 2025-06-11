@@ -1,9 +1,9 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class AddCalloutResponseViewSchema1692289610630
   implements MigrationInterface
 {
-  name = "AddCalloutResponseViewSchema1692289610630";
+  name = 'AddCalloutResponseViewSchema1692289610630';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(

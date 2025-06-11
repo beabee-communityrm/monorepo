@@ -1,6 +1,6 @@
 export enum MembershipStatus {
-  Active = "active",
-  Expiring = "expiring",
-  Expired = "expired",
-  None = "none"
+  Active = 'active',
+  Expiring = 'expiring',
+  Expired = 'expired',
+  None = 'none',
 }

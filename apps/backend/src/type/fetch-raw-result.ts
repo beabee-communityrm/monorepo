@@ -1,9 +1,9 @@
-import { PaginatedQuery } from "@beabee/beabee-common";
-import { ObjectLiteral } from "typeorm";
+import { PaginatedQuery } from '@beabee/beabee-common';
+import { ObjectLiteral } from 'typeorm';
 
 export interface FetchRawResult<
   Model extends ObjectLiteral,
-  Query extends PaginatedQuery
+  Query extends PaginatedQuery,
 > {
   items: Model[];
   total: number;

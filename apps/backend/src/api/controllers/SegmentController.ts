@@ -9,38 +9,38 @@ import {
   Params,
   Patch,
   Post,
-  QueryParams
-} from "routing-controllers";
+  QueryParams,
+} from 'routing-controllers';
 
-import { getRepository } from "@beabee/core/database";
+import { getRepository } from '@beabee/core/database';
 
-import { CurrentAuth } from "@api/decorators/CurrentAuth";
-import PartialBody from "@api/decorators/PartialBody";
-import { GetContactDto, ListContactsDto } from "@api/dto/ContactDto";
+import { CurrentAuth } from '@api/decorators/CurrentAuth';
+import PartialBody from '@api/decorators/PartialBody';
+import { GetContactDto, ListContactsDto } from '@api/dto/ContactDto';
 import {
   GetSegmentDto,
   ListSegmentsDto,
   CreateSegmentDto,
   GetSegmentWith,
-  GetSegmentOptsDto
-} from "@api/dto/SegmentDto";
-import { PaginatedDto } from "@api/dto/PaginatedDto";
-import { UUIDParams } from "@api/params/UUIDParams";
-import ContactTransformer from "@api/transformers/ContactTransformer";
-import SegmentTransformer from "@api/transformers/SegmentTransformer";
+  GetSegmentOptsDto,
+} from '@api/dto/SegmentDto';
+import { PaginatedDto } from '@api/dto/PaginatedDto';
+import { UUIDParams } from '@api/params/UUIDParams';
+import ContactTransformer from '@api/transformers/ContactTransformer';
+import SegmentTransformer from '@api/transformers/SegmentTransformer';
 
 import {
   Segment,
   SegmentContact,
-  SegmentOngoingEmail
-} from "@beabee/core/models";
+  SegmentOngoingEmail,
+} from '@beabee/core/models';
 
-import { AuthInfo } from "@beabee/core/type";
+import { AuthInfo } from '@beabee/core/type';
 
-@JsonController("/segments")
-@Authorized("admin")
+@JsonController('/segments')
+@Authorized('admin')
 export class SegmentController {
-  @Get("/")
+  @Get('/')
   async getSegments(
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @QueryParams() query: ListSegmentsDto
@@ -49,7 +49,7 @@ export class SegmentController {
     return result.items; // TODO: return paginated
   }
 
-  @Post("/")
+  @Post('/')
   async createSegment(
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @Body() data: CreateSegmentDto
@@ -58,8 +58,8 @@ export class SegmentController {
     if (data.order === undefined) {
       const segments = await getRepository(Segment).find({
         select: { order: true },
-        order: { order: "DESC" },
-        take: 1
+        order: { order: 'DESC' },
+        take: 1,
       });
       data.order = segments.length > 0 ? segments[0].order + 1 : 0;
     }
@@ -67,11 +67,11 @@ export class SegmentController {
 
     // Use fetchOne to ensure that the segment has a contactCount
     return await SegmentTransformer.fetchOneByIdOrFail(auth, segment.id, {
-      with: [GetSegmentWith.contactCount]
+      with: [GetSegmentWith.contactCount],
     });
   }
 
-  @Get("/:id")
+  @Get('/:id')
   async getSegment(
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @Params() { id }: UUIDParams,
@@ -80,7 +80,7 @@ export class SegmentController {
     return await SegmentTransformer.fetchOneById(auth, id, opts);
   }
 
-  @Patch("/:id")
+  @Patch('/:id')
   async updateSegment(
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @Params() { id }: UUIDParams,
@@ -88,11 +88,11 @@ export class SegmentController {
   ): Promise<GetSegmentDto | undefined> {
     await getRepository(Segment).update(id, data);
     return await SegmentTransformer.fetchOneById(auth, id, {
-      with: [GetSegmentWith.contactCount]
+      with: [GetSegmentWith.contactCount],
     });
   }
 
-  @Delete("/:id")
+  @Delete('/:id')
   @OnUndefined(204)
   async deleteSegment(@Params() { id }: UUIDParams): Promise<void> {
     await getRepository(SegmentContact).delete({ segment: { id } });
@@ -103,7 +103,7 @@ export class SegmentController {
     }
   }
 
-  @Get("/:id/contacts")
+  @Get('/:id/contacts')
   async getSegmentContacts(
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @Params() { id }: UUIDParams,
@@ -115,10 +115,10 @@ export class SegmentController {
         ...query,
         rules: query.rules
           ? {
-              condition: "AND",
-              rules: [segment.ruleGroup, query.rules]
+              condition: 'AND',
+              rules: [segment.ruleGroup, query.rules],
             }
-          : segment.ruleGroup
+          : segment.ruleGroup,
       });
     }
   }

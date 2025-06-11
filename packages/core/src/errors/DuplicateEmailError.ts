@@ -1,7 +1,7 @@
-import { BadRequestError } from "routing-controllers";
+import { BadRequestError } from 'routing-controllers';
 
 export class DuplicateEmailError extends BadRequestError {
-  readonly code = "duplicate-email";
+  readonly code = 'duplicate-email';
 
   constructor() {
     super();

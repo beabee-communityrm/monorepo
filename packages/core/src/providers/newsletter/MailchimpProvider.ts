@@ -1,26 +1,26 @@
-import { NewsletterStatus } from "@beabee/beabee-common";
+import { NewsletterStatus } from '@beabee/beabee-common';
 
-import { log as mainLogger } from "#logging";
+import { log as mainLogger } from '#logging';
 import {
   createInstance,
   getMCMemberUrl,
   mcMemberToNlContact,
-  nlContactToMCMember
-} from "#lib/mailchimp";
-import OptionsService from "#services/OptionsService";
+  nlContactToMCMember,
+} from '#lib/mailchimp';
+import OptionsService from '#services/OptionsService';
 import {
   MCMember,
   MCOperation,
   NewsletterContact,
   NewsletterProvider,
   UpdateNewsletterContact,
-  UpsertMCMemberResponse
-} from "#type/index";
+  UpsertMCMemberResponse,
+} from '#type/index';
 
-import { MailchimpNewsletterConfig } from "#config/config";
-import { CantUpdateNewsletterContact } from "#errors/CantUpdateNewsletterContact";
+import { MailchimpNewsletterConfig } from '#config/config';
+import { CantUpdateNewsletterContact } from '#errors/CantUpdateNewsletterContact';
 
-const log = mainLogger.child({ app: "mailchimp-provider" });
+const log = mainLogger.child({ app: 'mailchimp-provider' });
 
 interface GetMembersResponse {
   members: MCMember[];
@@ -30,7 +30,7 @@ export class MailchimpProvider implements NewsletterProvider {
   private readonly api;
   private readonly listId;
 
-  constructor(settings: MailchimpNewsletterConfig["settings"]) {
+  constructor(settings: MailchimpNewsletterConfig['settings']) {
     this.api = createInstance(settings);
     this.listId = settings.listId;
   }
@@ -43,12 +43,12 @@ export class MailchimpProvider implements NewsletterProvider {
    */
   async addTagToContacts(emails: string[], tag: string): Promise<void> {
     const operations: MCOperation[] = emails.map((email) => ({
-      path: getMCMemberUrl(this.listId, email) + "/tags",
-      method: "POST",
+      path: getMCMemberUrl(this.listId, email) + '/tags',
+      method: 'POST',
       body: JSON.stringify({
-        tags: [{ name: tag, status: "active" }]
+        tags: [{ name: tag, status: 'active' }],
       }),
-      operation_id: `add_tag_${email}`
+      operation_id: `add_tag_${email}`,
     }));
     await this.api.dispatchOperations(operations);
   }
@@ -61,12 +61,12 @@ export class MailchimpProvider implements NewsletterProvider {
    */
   async removeTagFromContacts(emails: string[], tag: string): Promise<void> {
     const operations: MCOperation[] = emails.map((email) => ({
-      path: getMCMemberUrl(this.listId, email) + "/tags",
-      method: "POST",
+      path: getMCMemberUrl(this.listId, email) + '/tags',
+      method: 'POST',
       body: JSON.stringify({
-        tags: [{ name: tag, status: "inactive" }]
+        tags: [{ name: tag, status: 'inactive' }],
       }),
-      operation_id: `remove_tag_${email}`
+      operation_id: `remove_tag_${email}`,
     }));
     await this.api.dispatchOperations(operations);
   }
@@ -94,8 +94,8 @@ export class MailchimpProvider implements NewsletterProvider {
   async getContacts(): Promise<NewsletterContact[]> {
     const operation: MCOperation = {
       path: `lists/${this.listId}/members`,
-      method: "GET",
-      operation_id: "get"
+      method: 'GET',
+      operation_id: 'get',
     };
 
     const batch = await this.api.createBatch([operation]);
@@ -121,9 +121,9 @@ export class MailchimpProvider implements NewsletterProvider {
     oldEmail = contact.email
   ): Promise<NewsletterContact> {
     const baseReq = {
-      method: "PUT",
+      method: 'PUT',
       url: getMCMemberUrl(this.listId, oldEmail),
-      params: { skip_merge_validation: true }
+      params: { skip_merge_validation: true },
     };
 
     const mcMember = nlContactToMCMember(contact);
@@ -132,11 +132,11 @@ export class MailchimpProvider implements NewsletterProvider {
       ...baseReq,
       data: mcMember,
       // Don't error on 400s, we'll try to recover
-      validateStatus: (status) => status <= 400
+      validateStatus: (status) => status <= 400,
     });
 
     if (resp.status === 200) {
-      log.info("Updated member " + contact.email);
+      log.info('Updated member ' + contact.email);
       return mcMemberToNlContact(resp.data);
 
       // Try to put the user into pending state if they're in a compliance state
@@ -144,7 +144,7 @@ export class MailchimpProvider implements NewsletterProvider {
     } else if (
       contact.status === NewsletterStatus.Subscribed &&
       resp.status === 400 &&
-      resp.data?.title === "Member In Compliance State"
+      resp.data?.title === 'Member In Compliance State'
     ) {
       log.info(
         `Member ${contact.email} had status ${resp.data.title}, trying to re-add them`
@@ -154,7 +154,7 @@ export class MailchimpProvider implements NewsletterProvider {
         UpsertMCMemberResponse
       >({
         ...baseReq,
-        data: { ...mcMember, status: "pending" }
+        data: { ...mcMember, status: 'pending' },
       });
 
       if (resp2.status === 200) {
@@ -180,7 +180,7 @@ export class MailchimpProvider implements NewsletterProvider {
     contact: UpdateNewsletterContact,
     oldEmail = contact.email
   ): Promise<NewsletterContact> {
-    log.info("Upsert contact " + contact.email);
+    log.info('Upsert contact ' + contact.email);
 
     const updatedContact = await this.upsertContactOrTryPending(
       contact,
@@ -193,10 +193,10 @@ export class MailchimpProvider implements NewsletterProvider {
       updatedContact.isActiveUser !== contact.isActiveUser
     ) {
       this.updateContactTags(updatedContact.email, {
-        [OptionsService.getText("newsletter-active-member-tag")]:
+        [OptionsService.getText('newsletter-active-member-tag')]:
           contact.isActiveMember,
-        [OptionsService.getText("newsletter-active-user-tag")]:
-          contact.isActiveUser
+        [OptionsService.getText('newsletter-active-user-tag')]:
+          contact.isActiveUser,
       });
     }
 
@@ -214,13 +214,13 @@ export class MailchimpProvider implements NewsletterProvider {
     email: string,
     tags: Record<string, boolean>
   ): Promise<void> {
-    log.info("Update tags for " + email, { tags });
+    log.info('Update tags for ' + email, { tags });
 
-    await this.api.instance.post(getMCMemberUrl(this.listId, email) + "/tags", {
+    await this.api.instance.post(getMCMemberUrl(this.listId, email) + '/tags', {
       tags: Object.entries(tags).map(([name, active]) => ({
         name,
-        status: active ? "active" : "inactive"
-      }))
+        status: active ? 'active' : 'inactive',
+      })),
     });
   }
 
@@ -238,7 +238,7 @@ export class MailchimpProvider implements NewsletterProvider {
     await this.api.instance.patch(
       getMCMemberUrl(this.listId, email),
       { merge_fields: fields },
-      { params: { skip_merge_validation: "true" } }
+      { params: { skip_merge_validation: 'true' } }
     );
   }
 
@@ -254,10 +254,10 @@ export class MailchimpProvider implements NewsletterProvider {
       const mcMember = nlContactToMCMember(contact);
       return {
         path: getMCMemberUrl(this.listId, contact.email),
-        params: { skip_merge_validation: "true" },
-        method: "PUT",
+        params: { skip_merge_validation: 'true' },
+        method: 'PUT',
         body: JSON.stringify({ ...mcMember, status_if_new: mcMember.status }),
-        operation_id: `update_${contact.email}`
+        operation_id: `update_${contact.email}`,
       };
     });
 
@@ -272,8 +272,8 @@ export class MailchimpProvider implements NewsletterProvider {
   async archiveContacts(emails: string[]): Promise<void> {
     const operations: MCOperation[] = emails.map((email) => ({
       path: getMCMemberUrl(this.listId, email),
-      method: "DELETE",
-      operation_id: `delete_${email}`
+      method: 'DELETE',
+      operation_id: `delete_${email}`,
     }));
     await this.api.dispatchOperations(
       operations,
@@ -290,9 +290,9 @@ export class MailchimpProvider implements NewsletterProvider {
    */
   async permanentlyDeleteContacts(emails: string[]): Promise<void> {
     const operations: MCOperation[] = emails.map((email) => ({
-      path: getMCMemberUrl(this.listId, email) + "/actions/permanently-delete",
-      method: "POST",
-      operation_id: `delete-permanently_${email}`
+      path: getMCMemberUrl(this.listId, email) + '/actions/permanently-delete',
+      method: 'POST',
+      operation_id: `delete-permanently_${email}`,
     }));
     await this.api.dispatchOperations(
       operations,

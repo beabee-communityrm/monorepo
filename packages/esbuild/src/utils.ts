@@ -1,5 +1,5 @@
-import { extname, join } from "node:path";
-import { readdir, rename } from "node:fs/promises";
+import { extname, resolve } from 'node:path';
+import { readdir, rename } from 'node:fs/promises';
 
 /**
  * Recursively renames .js files to .cjs in a directory
@@ -9,12 +9,12 @@ export async function renameExtensions(directory: string): Promise<void> {
   for await (const dirEntry of await readdir(directory, {
     withFileTypes: true,
   })) {
-    const oldPath = join(directory, dirEntry.name);
+    const oldPath = resolve(directory, dirEntry.name);
 
     if (dirEntry.isDirectory()) {
       await renameExtensions(oldPath);
-    } else if (extname(oldPath) === ".js") {
-      const newPath = oldPath.replace(".js", ".cjs");
+    } else if (extname(oldPath) === '.js') {
+      const newPath = oldPath.replace('.js', '.cjs');
       await rename(oldPath, newPath);
     }
   }
@@ -24,7 +24,7 @@ export async function renameExtensions(directory: string): Promise<void> {
  * Checks if the current process is running in watch mode
  */
 export function isWatchMode(): boolean {
-  return process.argv.includes("--watch");
+  return process.argv.includes('--watch');
 }
 
 /**
@@ -32,4 +32,20 @@ export function isWatchMode(): boolean {
  */
 export function getTimestamp(): string {
   return new Date().toLocaleTimeString();
+}
+
+import { mkdirSync } from 'fs';
+
+/**
+ * Ensures that a directory exists, creating it if necessary
+ */
+export function ensureDir(dir: string) {
+  try {
+    mkdirSync(dir, { recursive: true });
+  } catch (error) {
+    // Ignore error if directory already exists
+    if ((error as NodeJS.ErrnoException).code !== 'EEXIST') {
+      throw error;
+    }
+  }
 }

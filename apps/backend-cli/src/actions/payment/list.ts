@@ -1,29 +1,29 @@
-import { runApp } from "@beabee/core/server";
-import { Payment } from "@beabee/core/models";
-import { getRepository } from "@beabee/core/database";
+import { runApp } from '@beabee/core/server';
+import { Payment } from '@beabee/core/models';
+import { getRepository } from '@beabee/core/database';
 
 export const listPayments = async (email?: string): Promise<void> => {
   await runApp(async () => {
     const queryBuilder = getRepository(Payment)
-      .createQueryBuilder("payment")
-      .leftJoinAndSelect("payment.contact", "contact")
-      .orderBy("payment.chargeDate", "DESC");
+      .createQueryBuilder('payment')
+      .leftJoinAndSelect('payment.contact', 'contact')
+      .orderBy('payment.chargeDate', 'DESC');
 
     if (email) {
-      queryBuilder.where("contact.email = :email", { email });
+      queryBuilder.where('contact.email = :email', { email });
     }
 
     const payments = await queryBuilder.getMany();
 
     if (payments.length === 0) {
       console.log(
-        email ? `No payments found for ${email}` : "No payments found"
+        email ? `No payments found for ${email}` : 'No payments found'
       );
       return;
     }
 
-    console.log("\nPayments:");
-    console.log("--------------------------------------------------");
+    console.log('\nPayments:');
+    console.log('--------------------------------------------------');
     for (const payment of payments) {
       console.log(`ID: ${payment.id}`);
       console.log(`Amount: €${payment.amount}`);
@@ -40,7 +40,7 @@ export const listPayments = async (email?: string): Promise<void> => {
       if (payment.amountRefunded) {
         console.log(`Refunded: €${payment.amountRefunded}`);
       }
-      console.log("--------------------------------------------------");
+      console.log('--------------------------------------------------');
     }
   });
 };

@@ -1,5 +1,6 @@
-import type { Plugin } from "esbuild";
-import { renameExtensions, getTimestamp } from "./utils.ts";
+import type { Plugin } from 'esbuild';
+import { renameExtensions, getTimestamp } from './utils.ts';
+import { resolve } from 'node:path';
 
 /**
  * Creates a plugin that logs build completion and errors during watch mode
@@ -11,7 +12,7 @@ export function createWatchLoggerPlugin(name: string): Plugin {
       build.onEnd((result: any) => {
         if (result.errors.length > 0) {
           console.log(
-            `🔴 [${getTimestamp()}] ${name} build failed with ${result.errors.length} errors`,
+            `🔴 [${getTimestamp()}] ${name} build failed with ${result.errors.length} errors`
           );
         } else {
           console.log(`✅ [${getTimestamp()}] ${name} rebuild completed`);
@@ -24,13 +25,20 @@ export function createWatchLoggerPlugin(name: string): Plugin {
 /**
  * Creates a plugin that renames .js files to .cjs after CJS build completion
  */
-export function createCjsRenamePlugin(outdir: string): Plugin {
+export function createCjsRenamePlugin(
+  outdir: string,
+  baseDir?: string
+): Plugin {
   return {
-    name: "cjs-rename-plugin",
+    name: 'cjs-rename-plugin',
     setup(build: any) {
       build.onEnd(async (result: any) => {
         if (result.errors.length === 0) {
-          await renameExtensions(outdir);
+          if (baseDir) {
+            await renameExtensions(resolve(baseDir, outdir));
+          } else {
+            await renameExtensions(outdir);
+          }
         }
       });
     },

@@ -4,25 +4,25 @@ import {
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
-  Unique
-} from "typeorm";
-import type { Callout } from "./Callout";
-import type { Contact } from "./Contact";
+  Unique,
+} from 'typeorm';
+import type { Callout } from './Callout';
+import type { Contact } from './Contact';
 
 @Entity()
-@Unique(["callout", "contact"])
+@Unique(['callout', 'contact'])
 export class CalloutReviewer {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id!: string;
 
   @Column()
   calloutId!: string;
-  @ManyToOne("Callout")
+  @ManyToOne('Callout')
   callout!: Callout;
 
   @Column()
   contactId!: string;
-  @ManyToOne("Contact")
+  @ManyToOne('Contact')
   contact!: Contact;
 
   @CreateDateColumn()

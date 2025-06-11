@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 interface Callout {
   slug: string;
@@ -7,7 +7,7 @@ interface Callout {
 export class AddCalloutResponseNumber1678287340165
   implements MigrationInterface
 {
-  name = "AddCalloutResponseNumber1678287340165";
+  name = 'AddCalloutResponseNumber1678287340165';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(

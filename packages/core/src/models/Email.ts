@@ -3,13 +3,13 @@ import {
   CreateDateColumn,
   Entity,
   OneToMany,
-  PrimaryGeneratedColumn
-} from "typeorm";
-import { type EmailMailing } from "./index";
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { type EmailMailing } from './index';
 
 @Entity()
 export class Email {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id!: string;
 
   @CreateDateColumn()
@@ -27,10 +27,10 @@ export class Email {
   @Column()
   subject!: string;
 
-  @Column({ type: "text" })
+  @Column({ type: 'text' })
   body!: string;
 
-  @OneToMany("EmailMailing", "email")
+  @OneToMany('EmailMailing', 'email')
   mailings!: EmailMailing[];
 
   mailingCount?: number;

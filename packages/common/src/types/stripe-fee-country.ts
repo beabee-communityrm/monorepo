@@ -1,1 +1,1 @@
-export type StripeFeeCountry = "eu" | "gb" | "ca";
+export type StripeFeeCountry = 'eu' | 'gb' | 'ca';

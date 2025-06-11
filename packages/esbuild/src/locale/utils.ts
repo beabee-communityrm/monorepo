@@ -1,4 +1,4 @@
-import { readFile, writeFile } from "node:fs/promises";
+import { readFile, writeFile } from 'node:fs/promises';
 
 /**
  * Read and parse a JSON file
@@ -6,7 +6,7 @@ import { readFile, writeFile } from "node:fs/promises";
  * @returns Parsed JSON content
  */
 export async function readJsonFile<T>(filePath: string): Promise<T> {
-  const content = await readFile(filePath, "utf-8");
+  const content = await readFile(filePath, 'utf-8');
   return JSON.parse(content) as T;
 }
 
@@ -17,9 +17,9 @@ export async function readJsonFile<T>(filePath: string): Promise<T> {
  */
 export async function writeJsonFile(
   filePath: string,
-  data: Record<string, any>,
+  data: Record<string, any>
 ): Promise<void> {
-  await writeFile(filePath, JSON.stringify(data, null, 2), "utf-8");
+  await writeFile(filePath, JSON.stringify(data, null, 2), 'utf-8');
 }
 
 /**
@@ -30,14 +30,14 @@ export async function writeJsonFile(
  */
 export function processObjectStrings(
   obj: Record<string, any>,
-  transformFn: (value: string) => string,
+  transformFn: (value: string) => string
 ): Record<string, any> {
   const result: Record<string, any> = {};
 
   for (const [key, value] of Object.entries(obj)) {
-    if (value !== null && typeof value === "object") {
+    if (value !== null && typeof value === 'object') {
       result[key] = processObjectStrings(value, transformFn);
-    } else if (typeof value === "string") {
+    } else if (typeof value === 'string') {
       result[key] = transformFn(value);
     } else {
       result[key] = value;
@@ -59,17 +59,17 @@ export function mergeObjects(
   source: Record<string, any>,
   stringHandler: (
     targetValue: string | undefined,
-    sourceValue: string,
-  ) => string,
+    sourceValue: string
+  ) => string
 ): Record<string, any> {
   const result = { ...target };
 
   for (const [key, sourceValue] of Object.entries(source)) {
     // Handle non-existent keys
     if (!(key in result)) {
-      if (sourceValue !== null && typeof sourceValue === "object") {
+      if (sourceValue !== null && typeof sourceValue === 'object') {
         result[key] = {};
-      } else if (typeof sourceValue === "string") {
+      } else if (typeof sourceValue === 'string') {
         result[key] = stringHandler(undefined, sourceValue);
       } else {
         result[key] = sourceValue;
@@ -82,16 +82,16 @@ export function mergeObjects(
       // For objects, merge recursively
       if (
         sourceValue !== null &&
-        typeof sourceValue === "object" &&
+        typeof sourceValue === 'object' &&
         targetValue !== null &&
-        typeof targetValue === "object"
+        typeof targetValue === 'object'
       ) {
         result[key] = mergeObjects(targetValue, sourceValue, stringHandler);
       }
       // For strings, use the string handler
       else if (
-        typeof sourceValue === "string" &&
-        typeof targetValue === "string"
+        typeof sourceValue === 'string' &&
+        typeof targetValue === 'string'
       ) {
         result[key] = stringHandler(targetValue, sourceValue);
       }

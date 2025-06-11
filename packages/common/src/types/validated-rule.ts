@@ -1,8 +1,8 @@
 import type {
   ValidatedBooleanRule,
   ValidatedNumberRule,
-  ValidatedStringRule
-} from "../types/index.js";
+  ValidatedStringRule,
+} from '../types/index.js';
 
 export type ValidatedRule<Field extends string> =
   | ValidatedNumberRule<Field>

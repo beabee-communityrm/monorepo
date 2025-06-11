@@ -25,7 +25,7 @@
   "scripts": {
     "clear": "rm -rf dist",
     "build": "yarn build:types && yarn build:esbuild",
-    "build:esbuild": "node --experimental-specifier-resolution=node --experimental-strip-types esbuild.ts",
+    "build:esbuild": "yarn workspace @beabee/dev-cli start esbuild --baseDir $(pwd)",
     "build:types": "tsc --project ./tsconfig.build.json",
     "watch": "yarn build:esbuild --watch",
     "dev": "yarn watch",
@@ -35,7 +35,7 @@
     "test:cjs": "node test/node/module-type/require.cjs",
     "test:vitest": "vitest run",
     "test:vitest:watch": "vitest",
-    "generate:index": "node generate-index.js",
+    "generate:index": "yarn workspace @beabee/dev-cli start generate-index --extension js --baseDir $(pwd) -p ./src/data ./src/error ./src/search ./src/types ./src/utils ./src/validators",
     "format": "prettier --write .",
     "check": "yarn check:tsc && yarn check:prettier",
     "check:tsc": "tsc --project ./tsconfig.build.json --noEmit",
@@ -52,7 +52,6 @@
   },
   "homepage": "https://github.com/beabee-communityrm/monorepo/blob/main/packages/common/README.md",
   "devDependencies": {
-    "@beabee/esbuild": "workspace:^",
     "@beabee/prettier-config": "workspace:^",
     "@gjsify/esbuild-plugin-transform-ext": "^0.0.4",
     "concurrently": "^9.1.2",

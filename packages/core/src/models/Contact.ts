@@ -2,27 +2,27 @@ import {
   ContributionInfo,
   ContributionType,
   ContributionPeriod,
-  RoleType
-} from "@beabee/beabee-common";
+  RoleType,
+} from '@beabee/beabee-common';
 import {
   Column,
   CreateDateColumn,
   Entity,
   OneToMany,
   OneToOne,
-  PrimaryGeneratedColumn
-} from "typeorm";
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
-import { getActualAmount } from "#utils/payment";
-import config from "#config/config";
+import { getActualAmount } from '#utils/payment';
+import config from '#config/config';
 
-import { Password } from "./Password";
+import { Password } from './Password';
 
-import type { ContactContribution, ContactProfile, ContactRole } from "./index";
-import { ContactTagAssignment } from "./ContactTagAssignment";
-import type { TagData } from "@beabee/beabee-common";
-import type { TaggableEntity } from "#type";
-import { getContributionDescription } from "#utils/contact";
+import type { ContactContribution, ContactProfile, ContactRole } from './index';
+import { ContactTagAssignment } from './ContactTagAssignment';
+import type { TagData } from '@beabee/beabee-common';
+import type { TaggableEntity } from '#type';
+import { getContributionDescription } from '#utils/contact';
 
 interface LoginOverride {
   code: string;
@@ -31,7 +31,7 @@ interface LoginOverride {
 
 @Entity()
 export class Contact implements TaggableEntity<TagData> {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id!: string;
 
   @Column({ unique: true })
@@ -52,7 +52,7 @@ export class Contact implements TaggableEntity<TagData> {
   @Column({ type: Date, nullable: true })
   lastSeen!: Date | null;
 
-  @Column({ type: "jsonb", nullable: true })
+  @Column({ type: 'jsonb', nullable: true })
   loginOverride!: LoginOverride | null;
 
   @Column()
@@ -61,7 +61,7 @@ export class Contact implements TaggableEntity<TagData> {
   @Column({ type: String, nullable: true })
   contributionPeriod!: ContributionPeriod | null;
 
-  @Column({ type: "real", nullable: true })
+  @Column({ type: 'real', nullable: true })
   contributionMonthlyAmount!: number | null;
 
   @Column({ type: String, unique: true, nullable: true })
@@ -70,41 +70,41 @@ export class Contact implements TaggableEntity<TagData> {
   @Column({ type: String, unique: true, nullable: true })
   pollsCode!: string | null;
 
-  @OneToMany("ContactRole", "contact", { eager: true, cascade: true })
+  @OneToMany('ContactRole', 'contact', { eager: true, cascade: true })
   roles!: ContactRole[];
 
-  @OneToOne("ContactProfile", "contact")
+  @OneToOne('ContactProfile', 'contact')
   profile!: ContactProfile;
 
-  @OneToOne("ContactContribution", "contact")
+  @OneToOne('ContactContribution', 'contact')
   contribution!: ContactContribution;
 
   contributionInfo?: ContributionInfo;
 
-  @OneToMany("ContactTagAssignment", "contact")
+  @OneToMany('ContactTagAssignment', 'contact')
   tags!: ContactTagAssignment[];
 
   isReviewer?: boolean;
 
   get activeRoles(): RoleType[] {
     const ret = this.roles.filter((p) => p.isActive).map((p) => p.type);
-    if (ret.includes("superadmin")) {
-      ret.push("admin");
+    if (ret.includes('superadmin')) {
+      ret.push('admin');
     }
     return ret;
   }
 
   hasRole(roleType: RoleType): boolean {
     return (
-      this.activeRoles.includes("superadmin") ||
+      this.activeRoles.includes('superadmin') ||
       this.activeRoles.includes(roleType)
     );
   }
 
   get fullname(): string {
     return this.firstname || this.lastname
-      ? this.firstname + " " + this.lastname
-      : "";
+      ? this.firstname + ' ' + this.lastname
+      : '';
   }
 
   get contributionAmount(): number | null {
@@ -128,10 +128,10 @@ export class Contact implements TaggableEntity<TagData> {
   }
 
   get membership(): ContactRole | undefined {
-    return this.roles.find((p) => p.type === "member");
+    return this.roles.find((p) => p.type === 'member');
   }
 
   get setupComplete(): boolean {
-    return this.password.hash !== "";
+    return this.password.hash !== '';
   }
 }

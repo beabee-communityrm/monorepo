@@ -1,5 +1,5 @@
-import type { CalloutComponentType } from "../data/index.js";
-import type { CalloutComponentBaseSchema } from "./index.js";
+import type { CalloutComponentType } from '../data/index.js';
+import type { CalloutComponentBaseSchema } from './index.js';
 
 /** A Callout content component only providing html content and accepts no answers. */
 export interface CalloutComponentContentSchema

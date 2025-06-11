@@ -2,24 +2,24 @@ import {
   EntityTarget,
   ObjectLiteral,
   OrderByCondition,
-  SelectQueryBuilder
-} from "typeorm";
-import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
+  SelectQueryBuilder,
+} from 'typeorm';
+import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 
-import { createQueryBuilder, getRepository } from "@beabee/core/database";
-import { log as mainLogger } from "@beabee/core/logging";
+import { createQueryBuilder, getRepository } from '@beabee/core/database';
+import { log as mainLogger } from '@beabee/core/logging';
 
-import { Callout, CalloutResponse } from "@beabee/core/models";
+import { Callout, CalloutResponse } from '@beabee/core/models';
 
 import {
   calloutResponsesAnonymiser,
   createAnswersAnonymiser,
   ModelAnonymiser,
   ObjectMap,
-  PropertyMap
-} from "./models";
+  PropertyMap,
+} from './models';
 
-const log = mainLogger.child({ app: "anonymisers" });
+const log = mainLogger.child({ app: 'anonymisers' });
 
 // Maps don't stringify well
 function stringify(value: any): string {
@@ -42,22 +42,22 @@ async function anonymiseCalloutResponses(
   ) => SelectQueryBuilder<CalloutResponse>,
   valueMap: Map<string, unknown>
 ): Promise<void> {
-  const callouts = await createQueryBuilder(Callout, "callout").getMany();
+  const callouts = await createQueryBuilder(Callout, 'callout').getMany();
   for (const callout of callouts) {
     const answersMap = createAnswersAnonymiser(callout.formSchema.slides);
 
     const responses = await prepareQuery(
-      createQueryBuilder(CalloutResponse, "item")
+      createQueryBuilder(CalloutResponse, 'item')
     )
-      .andWhere("item.calloutId = :id", { id: callout.id })
-      .orderBy("item.id", "ASC")
+      .andWhere('item.calloutId = :id', { id: callout.id })
+      .orderBy('item.id', 'ASC')
       .getMany();
 
     if (responses.length === 0) {
       continue;
     }
 
-    log.info("-- " + callout.slug);
+    log.info('-- ' + callout.slug);
 
     const newResponses = responses.map((response) => ({
       ...anonymiseItem(
@@ -65,7 +65,7 @@ async function anonymiseCalloutResponses(
         calloutResponsesAnonymiser.objectMap,
         valueMap
       ),
-      answers: anonymiseItem(response.answers, answersMap, undefined, false)
+      answers: anonymiseItem(response.answers, answersMap, undefined, false),
     }));
 
     writeItems(CalloutResponse, newResponses);
@@ -96,7 +96,7 @@ function anonymiseItem<T>(
       const valueKey = stringify(oldValue);
 
       const newValue =
-        typeof propertyMap === "function"
+        typeof propertyMap === 'function'
           ? valueMap.get(valueKey) || propertyMap(oldValue)
           : anonymiseItem(oldValue, propertyMap, valueMap);
 
@@ -128,7 +128,7 @@ function writeItems<T extends ObjectLiteral>(
     .values(items as QueryDeepPartialEntity<T>)
     .getQueryAndParameters();
 
-  console.log(query + ";");
+  console.log(query + ';');
   console.log(stringify(params));
 }
 
@@ -153,12 +153,12 @@ export async function anonymiseModel<T extends ObjectLiteral>(
 
   // Order by primary keys for predictable pagination
   const orderBy: OrderByCondition = Object.fromEntries(
-    metadata.primaryColumns.map((col) => ["item." + col.databaseName, "ASC"])
+    metadata.primaryColumns.map((col) => ['item.' + col.databaseName, 'ASC'])
   );
 
   for (let i = 0; ; i += 1000) {
     const items = await prepareQuery(
-      createQueryBuilder(anonymiser.model, "item")
+      createQueryBuilder(anonymiser.model, 'item')
     )
       .orderBy(orderBy)
       .offset(i)

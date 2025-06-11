@@ -2,36 +2,36 @@ import {
   Payment as GCPayment,
   PaymentStatus as GCPaymentStatus,
   Subscription as GCSubscription,
-  SubscriptionIntervalUnit
-} from "gocardless-nodejs/types/Types";
-import moment, { DurationInputObject } from "moment";
+  SubscriptionIntervalUnit,
+} from 'gocardless-nodejs/types/Types';
+import moment, { DurationInputObject } from 'moment';
 
-import { getRepository } from "@beabee/core/database";
-import gocardless, { convertStatus } from "@beabee/core/lib/gocardless";
-import { log as mainLogger } from "@beabee/core/logging";
+import { getRepository } from '@beabee/core/database';
+import gocardless, { convertStatus } from '@beabee/core/lib/gocardless';
+import { log as mainLogger } from '@beabee/core/logging';
 
-import ContactsService from "@beabee/core/services/ContactsService";
-import PaymentService from "@beabee/core/services/PaymentService";
+import ContactsService from '@beabee/core/services/ContactsService';
+import PaymentService from '@beabee/core/services/PaymentService';
 
-import { Payment } from "@beabee/core/models";
+import { Payment } from '@beabee/core/models';
 
-import config from "@beabee/core/config";
-import { PaymentStatus } from "@beabee/beabee-common";
+import config from '@beabee/core/config';
+import { PaymentStatus } from '@beabee/beabee-common';
 
-const log = mainLogger.child({ app: "payment-webhook-utils" });
+const log = mainLogger.child({ app: 'payment-webhook-utils' });
 
 export async function updatePayment(
   gcPaymentId: string,
   action?: string
 ): Promise<void> {
-  log.info("Update payment " + gcPaymentId);
+  log.info('Update payment ' + gcPaymentId);
 
   const gcPayment = await gocardless.payments.get(gcPaymentId);
   const payment = await findOrCreatePayment(gcPayment);
 
   if (payment) {
     payment.status = convertStatus(gcPayment.status!);
-    payment.description = gcPayment.description || "Unknown";
+    payment.description = gcPayment.description || 'Unknown';
     payment.amount = Number(gcPayment.amount) / 100;
     payment.amountRefunded = Number(gcPayment.amount_refunded) / 100;
     payment.chargeDate = moment.utc(gcPayment.charge_date).toDate();
@@ -39,12 +39,12 @@ export async function updatePayment(
     await getRepository(Payment).save(payment);
 
     switch (action) {
-      case "cancelled":
-      case "failed":
+      case 'cancelled':
+      case 'failed':
         await cancelPayment(payment);
         break;
 
-      case "confirmed":
+      case 'confirmed':
         await confirmPayment(payment);
         break;
     }
@@ -58,27 +58,27 @@ async function cancelPayment(payment: Payment): Promise<void> {
 
   const expiryDate = await calcFailedPaymentPeriodEnd(payment);
 
-  log.info("Cancel payment " + payment.id, {
+  log.info('Cancel payment ' + payment.id, {
     paymentId: payment.id,
     contactId: payment.contact.id,
     subscriptionId: payment.subscriptionId,
-    expiryDate
+    expiryDate,
   });
 
   if (expiryDate) {
-    await ContactsService.updateContactRole(payment.contact, "member", {
-      dateExpires: expiryDate
+    await ContactsService.updateContactRole(payment.contact, 'member', {
+      dateExpires: expiryDate,
     });
   } else {
-    await ContactsService.revokeContactRole(payment.contact, "member");
+    await ContactsService.revokeContactRole(payment.contact, 'member');
   }
 }
 
 async function confirmPayment(payment: Payment): Promise<void> {
-  log.info("Confirm payment " + payment.id, {
+  log.info('Confirm payment ' + payment.id, {
     paymentId: payment.id,
     contactId: payment.contact?.id,
-    subscriptionId: payment.subscriptionId
+    subscriptionId: payment.subscriptionId,
   });
 
   if (!payment.contact || !payment.subscriptionId) {
@@ -99,14 +99,14 @@ async function confirmPayment(payment: Payment): Promise<void> {
 
   await ContactsService.extendContactRole(
     payment.contact,
-    "member",
+    'member',
     await calcConfirmedPaymentPeriodEnd(payment)
   );
 
   const contribution = await PaymentService.getContribution(payment.contact);
   if (payment.amount === contribution.nextAmount?.chargeable) {
     await ContactsService.updateContact(payment.contact, {
-      contributionMonthlyAmount: contribution.nextAmount?.monthly
+      contributionMonthlyAmount: contribution.nextAmount?.monthly,
     });
     await PaymentService.updateData(payment.contact, { nextAmount: null });
   }
@@ -158,9 +158,9 @@ async function calcFailedPaymentPeriodEnd(
   const latestSuccessfulPayment = await getRepository(Payment).findOne({
     where: {
       subscriptionId,
-      status: PaymentStatus.Successful
+      status: PaymentStatus.Successful,
     },
-    order: { chargeDate: "DESC" }
+    order: { chargeDate: 'DESC' },
   });
 
   if (latestSuccessfulPayment) {
@@ -176,12 +176,12 @@ function getSubscriptionDuration(
 ): DurationInputObject {
   const unit =
     subscription.interval_unit === SubscriptionIntervalUnit.Yearly
-      ? "year"
+      ? 'year'
       : subscription.interval_unit === SubscriptionIntervalUnit.Monthly
-        ? "month"
-        : "week";
+        ? 'month'
+        : 'week';
   return {
-    [unit]: Number(subscription.interval)
+    [unit]: Number(subscription.interval),
   };
 }
 
@@ -197,36 +197,36 @@ export async function updatePaymentStatus(
 export async function cancelSubscription(
   subscriptionId: string
 ): Promise<void> {
-  log.info("Cancel subscription " + subscriptionId);
+  log.info('Cancel subscription ' + subscriptionId);
 
   const contribution = await PaymentService.getContributionBy(
-    "subscriptionId",
+    'subscriptionId',
     subscriptionId
   );
   if (contribution) {
     await ContactsService.cancelContactContribution(
       contribution.contact,
-      "cancelled-contribution"
+      'cancelled-contribution'
     );
   } else {
-    log.info("Unlink subscription " + subscriptionId);
+    log.info('Unlink subscription ' + subscriptionId);
   }
 }
 
 export async function cancelMandate(mandateId: string): Promise<void> {
   const contribution = await PaymentService.getContributionBy(
-    "mandateId",
+    'mandateId',
     mandateId
   );
   if (contribution) {
-    log.info("Cancel mandate " + mandateId, {
+    log.info('Cancel mandate ' + mandateId, {
       contactId: contribution.contact.id,
-      mandateId
+      mandateId,
     });
 
     await PaymentService.updateData(contribution.contact, { mandateId: null });
   } else {
-    log.info("Unlinked mandate " + mandateId);
+    log.info('Unlinked mandate ' + mandateId);
   }
 }
 
@@ -235,22 +235,22 @@ async function findOrCreatePayment(
 ): Promise<Payment | undefined> {
   const payment = await getRepository(Payment).findOne({
     where: { id: gcPayment.id! },
-    relations: { contact: true }
+    relations: { contact: true },
   });
   if (payment) {
     return payment;
   }
 
   const contribution = await PaymentService.getContributionBy(
-    "mandateId",
+    'mandateId',
     gcPayment.links!.mandate!
   );
 
   // If not found then the mandate wasn't created by us
   if (contribution) {
-    log.info("Create payment " + gcPayment.id, {
+    log.info('Create payment ' + gcPayment.id, {
       contactId: contribution.contact.id,
-      gcPaymentId: gcPayment.id
+      gcPaymentId: gcPayment.id,
     });
     const newPayment = new Payment();
     newPayment.id = gcPayment.id!;

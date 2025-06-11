@@ -2,8 +2,8 @@ import type {
   GetContactData,
   GetPaymentData,
   GetPaymentWith,
-  Noop
-} from "./index.js";
+  Noop,
+} from './index.js';
 
 export type GetPaymentDataWith<With extends GetPaymentWith> = GetPaymentData &
-  ("contact" extends With ? { contact: GetContactData | null } : Noop);
+  ('contact' extends With ? { contact: GetContactData | null } : Noop);

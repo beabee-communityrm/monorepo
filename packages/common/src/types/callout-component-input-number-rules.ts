@@ -1,9 +1,9 @@
-import type { CalloutComponentBaseRules } from "./index.js";
+import type { CalloutComponentBaseRules } from './index.js';
 
 export interface CalloutComponentInputNumberRules
   extends CalloutComponentBaseRules {
   /** TODO: For what is this property? */
-  integer?: "";
+  integer?: '';
   /** The maximum value that can be entered for this field. */
   max?: number;
   /** The minimum value that can be entered for this field. */

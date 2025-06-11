@@ -1,17 +1,17 @@
-import gocardless from "#lib/gocardless";
-import { log as mainLogger } from "#logging";
+import gocardless from '#lib/gocardless';
+import { log as mainLogger } from '#logging';
 
-import { JoinFlow } from "#models/index";
+import { JoinFlow } from '#models/index';
 
-import { PaymentFlowProvider } from "./PaymentFlowProvider";
+import { PaymentFlowProvider } from './PaymentFlowProvider';
 import {
   CompletedPaymentFlow,
   CompletedPaymentFlowData,
   PaymentFlow,
-  PaymentFlowData
-} from "#type/index";
+  PaymentFlowData,
+} from '#type/index';
 
-const log = mainLogger.child({ app: "gc-payment-flow-provider" });
+const log = mainLogger.child({ app: 'gc-payment-flow-provider' });
 
 /**
  * Implements PaymentFlowProvider for GoCardless direct debit payments.
@@ -36,16 +36,16 @@ class GCFlowProvider implements PaymentFlowProvider {
       prefilled_customer: {
         email: params.email,
         ...(params.firstname && { given_name: params.firstname }),
-        ...(params.lastname && { family_name: params.lastname })
-      }
+        ...(params.lastname && { family_name: params.lastname }),
+      },
     });
-    log.info("Created redirect flow " + redirectFlow.id);
+    log.info('Created redirect flow ' + redirectFlow.id);
 
     return {
       id: redirectFlow.id!,
       params: {
-        redirectUrl: redirectFlow.redirect_url!
-      }
+        redirectUrl: redirectFlow.redirect_url!,
+      },
     };
   }
 
@@ -58,15 +58,15 @@ class GCFlowProvider implements PaymentFlowProvider {
     const redirectFlow = await gocardless.redirectFlows.complete(
       joinFlow.paymentFlowId,
       {
-        session_token: joinFlow.id
+        session_token: joinFlow.id,
       }
     );
-    log.info("Completed redirect flow " + redirectFlow.id);
+    log.info('Completed redirect flow ' + redirectFlow.id);
 
     return {
       joinForm: joinFlow.joinForm,
       customerId: redirectFlow.links!.customer!,
-      mandateId: redirectFlow.links!.mandate!
+      mandateId: redirectFlow.links!.mandate!,
     };
   }
 
@@ -86,11 +86,11 @@ class GCFlowProvider implements PaymentFlowProvider {
       ...(customer.given_name && { firstname: customer.given_name }),
       ...(customer.family_name && { lastname: customer.family_name }),
       billingAddress: {
-        line1: customer.address_line1 || "",
+        line1: customer.address_line1 || '',
         line2: customer.address_line2 || undefined,
-        city: customer.city || "",
-        postcode: customer.postal_code || ""
-      }
+        city: customer.city || '',
+        postcode: customer.postal_code || '',
+      },
     };
   }
 }

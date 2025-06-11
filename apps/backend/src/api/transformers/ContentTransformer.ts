@@ -1,11 +1,11 @@
-import { plainToInstance } from "class-transformer";
-import { ContentId, ContentData } from "@beabee/beabee-common";
-import { createQueryBuilder, getRepository } from "@beabee/core/database";
-import { getEmailFooter } from "@beabee/core/templates/email";
+import { plainToInstance } from 'class-transformer';
+import { ContentId, ContentData } from '@beabee/beabee-common';
+import { createQueryBuilder, getRepository } from '@beabee/core/database';
+import { getEmailFooter } from '@beabee/core/templates/email';
 
 import OptionsService, {
-  OptionKey
-} from "@beabee/core/services/OptionsService";
+  OptionKey,
+} from '@beabee/core/services/OptionsService';
 import {
   GetContentContactsDto,
   GetContentDto,
@@ -16,12 +16,12 @@ import {
   GetContentProfileDto,
   GetContentShareDto,
   GetContentPaymentDto,
-  GetContentTelegramDto
-} from "@api/dto/index";
+  GetContentTelegramDto,
+} from '@api/dto/index';
 
-import { Content } from "@beabee/core/models";
+import { Content } from '@beabee/core/models';
 
-import config from "@beabee/core/config";
+import config from '@beabee/core/config';
 
 class ContentTransformer {
   convert<Id extends ContentId>(
@@ -33,11 +33,11 @@ class ContentTransformer {
       email: GetContentEmailDto,
       general: GetContentGeneralDto,
       join: GetContentJoinDto,
-      "join/setup": GetContentJoinSetupDto,
+      'join/setup': GetContentJoinSetupDto,
       profile: GetContentProfileDto,
       share: GetContentShareDto,
       payment: GetContentPaymentDto,
-      telegram: GetContentTelegramDto
+      telegram: GetContentTelegramDto,
     }[id];
 
     return plainToInstance(Dto as any, data);
@@ -50,13 +50,13 @@ class ContentTransformer {
 
     for (const [key, value] of Object.entries(contentData[id])) {
       switch (value[0]) {
-        case "data":
+        case 'data':
           ret[key] = content?.data[key] || value[1];
           break;
-        case "option":
+        case 'option':
           ret[key] = OptionsService[optTypeGetter[value[2]]](value[1]);
           break;
-        case "readonly":
+        case 'readonly':
           ret[key] = value[1]();
           break;
       }
@@ -81,10 +81,10 @@ class ContentTransformer {
       }
 
       switch (value[0]) {
-        case "data":
+        case 'data':
           dataUpdates[key] = data[key];
           break;
-        case "option":
+        case 'option':
           const optValue = optTypeSetter[value[2]](data[key]);
           if (optValue !== undefined) {
             optionUpdates[value[1]] = optValue;
@@ -99,39 +99,39 @@ class ContentTransformer {
     await createQueryBuilder()
       .update(Content)
       .set({
-        data: () => '"data" || :data::jsonb'
+        data: () => '"data" || :data::jsonb',
       })
-      .where("id = :id")
+      .where('id = :id')
       .setParameters({ id, data: dataUpdates })
       .execute();
   }
 }
 
-type OptionKeyType = "text" | "int" | "bool" | "list" | "json";
+type OptionKeyType = 'text' | 'int' | 'bool' | 'list' | 'json';
 
 const optTypeGetter = {
-  text: "getText",
-  int: "getInt",
-  bool: "getBool",
-  list: "getList",
-  json: "getJSON"
+  text: 'getText',
+  int: 'getInt',
+  bool: 'getBool',
+  list: 'getList',
+  json: 'getJSON',
 } as const;
 
 const optTypeSetter = {
-  text: (s: any) => (typeof s === "string" ? s : undefined),
-  int: (s: any) => (typeof s === "number" ? s : undefined),
-  bool: (s: any) => (typeof s === "boolean" ? s : undefined),
-  list: (s: any) => (Array.isArray(s) ? s.join(",") : undefined),
-  json: (s: any) => JSON.stringify(s)
+  text: (s: any) => (typeof s === 'string' ? s : undefined),
+  int: (s: any) => (typeof s === 'number' ? s : undefined),
+  bool: (s: any) => (typeof s === 'boolean' ? s : undefined),
+  list: (s: any) => (Array.isArray(s) ? s.join(',') : undefined),
+  json: (s: any) => JSON.stringify(s),
 } as const;
 
 type ContentValueOption = [
-  type: "option",
+  type: 'option',
   key: OptionKey,
-  keyType: OptionKeyType
+  keyType: OptionKeyType,
 ];
-type ContentValueReadOnly = [type: "readonly", getter: () => unknown];
-type ContentValueData = [type: "data", def: unknown];
+type ContentValueReadOnly = [type: 'readonly', getter: () => unknown];
+type ContentValueData = [type: 'data', def: unknown];
 
 type ContentValue =
   | ContentValueOption
@@ -146,81 +146,85 @@ function withValue<Id extends ContentId>(
 }
 
 const contentData = {
-  contacts: withValue<"contacts">({
-    tags: ["option", "available-tags", "list"],
-    manualPaymentSources: ["option", "available-manual-payment-sources", "list"]
+  contacts: withValue<'contacts'>({
+    tags: ['option', 'available-tags', 'list'],
+    manualPaymentSources: [
+      'option',
+      'available-manual-payment-sources',
+      'list',
+    ],
   }),
-  email: withValue<"email">({
-    footer: ["readonly", getEmailFooter],
-    supportEmail: ["option", "support-email", "text"],
-    supportEmailName: ["option", "support-email-from", "text"]
+  email: withValue<'email'>({
+    footer: ['readonly', getEmailFooter],
+    supportEmail: ['option', 'support-email', 'text'],
+    supportEmailName: ['option', 'support-email-from', 'text'],
   }),
-  general: withValue<"general">({
-    backgroundUrl: ["data", ""],
-    currencyCode: ["readonly", () => config.currencyCode],
-    currencySymbol: ["readonly", () => config.currencySymbol],
-    footerLinks: ["data", []],
-    hideContribution: ["data", false],
-    logoUrl: ["option", "logo", "text"],
-    organisationName: ["option", "organisation", "text"],
-    siteUrl: ["option", "home-link-url", "text"],
-    supportEmail: ["option", "support-email", "text"],
-    theme: ["option", "theme", "json"],
-    termsLink: ["option", "footer-terms-link-url", "text"],
-    privacyLink: ["option", "footer-privacy-link-url", "text"],
-    impressumLink: ["option", "footer-impressum-link-url", "text"],
-    locale: ["option", "locale", "text"]
+  general: withValue<'general'>({
+    backgroundUrl: ['data', ''],
+    currencyCode: ['readonly', () => config.currencyCode],
+    currencySymbol: ['readonly', () => config.currencySymbol],
+    footerLinks: ['data', []],
+    hideContribution: ['data', false],
+    logoUrl: ['option', 'logo', 'text'],
+    organisationName: ['option', 'organisation', 'text'],
+    siteUrl: ['option', 'home-link-url', 'text'],
+    supportEmail: ['option', 'support-email', 'text'],
+    theme: ['option', 'theme', 'json'],
+    termsLink: ['option', 'footer-terms-link-url', 'text'],
+    privacyLink: ['option', 'footer-privacy-link-url', 'text'],
+    impressumLink: ['option', 'footer-impressum-link-url', 'text'],
+    locale: ['option', 'locale', 'text'],
   }),
-  join: withValue<"join">({
-    initialAmount: ["data", 0],
-    initialPeriod: ["data", ""],
-    minMonthlyAmount: ["option", "contribution-min-monthly-amount", "int"],
-    periods: ["data", []],
-    paymentMethods: ["data", []],
-    showAbsorbFee: ["option", "show-absorb-fee", "bool"],
-    showNoContribution: ["data", false],
-    stripeCountry: ["readonly", () => config.stripe.country],
-    stripePublicKey: ["readonly", () => config.stripe.publicKey],
-    subtitle: ["data", ""],
-    title: ["data", ""]
+  join: withValue<'join'>({
+    initialAmount: ['data', 0],
+    initialPeriod: ['data', ''],
+    minMonthlyAmount: ['option', 'contribution-min-monthly-amount', 'int'],
+    periods: ['data', []],
+    paymentMethods: ['data', []],
+    showAbsorbFee: ['option', 'show-absorb-fee', 'bool'],
+    showNoContribution: ['data', false],
+    stripeCountry: ['readonly', () => config.stripe.country],
+    stripePublicKey: ['readonly', () => config.stripe.publicKey],
+    subtitle: ['data', ''],
+    title: ['data', ''],
   }),
-  "join/setup": withValue<"join/setup">({
-    mailOptIn: ["data", ""],
-    mailText: ["data", ""],
-    mailTitle: ["data", ""],
-    newsletterOptIn: ["data", ""],
-    newsletterText: ["data", ""],
-    newsletterTitle: ["data", ""],
-    newsletterGroups: ["option", "newsletter-groups", "json"],
-    showMailOptIn: ["option", "show-mail-opt-in", "bool"],
-    showNewsletterOptIn: ["data", false],
-    surveyRequired: ["data", false],
-    surveySlug: ["option", "join-survey", "text"],
-    surveyText: ["data", ""],
-    welcome: ["data", ""]
+  'join/setup': withValue<'join/setup'>({
+    mailOptIn: ['data', ''],
+    mailText: ['data', ''],
+    mailTitle: ['data', ''],
+    newsletterOptIn: ['data', ''],
+    newsletterText: ['data', ''],
+    newsletterTitle: ['data', ''],
+    newsletterGroups: ['option', 'newsletter-groups', 'json'],
+    showMailOptIn: ['option', 'show-mail-opt-in', 'bool'],
+    showNewsletterOptIn: ['data', false],
+    surveyRequired: ['data', false],
+    surveySlug: ['option', 'join-survey', 'text'],
+    surveyText: ['data', ''],
+    welcome: ['data', ''],
   }),
-  profile: withValue<"profile">({
-    introMessage: ["data", ""]
+  profile: withValue<'profile'>({
+    introMessage: ['data', ''],
   }),
-  share: withValue<"share">({
-    description: ["option", "share-description", "text"],
-    image: ["option", "share-image", "text"],
-    title: ["option", "share-title", "text"],
-    twitterHandle: ["option", "share-twitter-handle", "text"]
+  share: withValue<'share'>({
+    description: ['option', 'share-description', 'text'],
+    image: ['option', 'share-image', 'text'],
+    title: ['option', 'share-title', 'text'],
+    twitterHandle: ['option', 'share-twitter-handle', 'text'],
   }),
-  payment: withValue<"payment">({
-    stripePublicKey: ["readonly", () => config.stripe.publicKey],
-    stripeCountry: ["readonly", () => config.stripe.country],
-    taxRateEnabled: ["option", "tax-rate-enabled", "bool"],
-    taxRate: ["option", "tax-rate-percentage", "int"],
-    noticeText: ["data", ""]
+  payment: withValue<'payment'>({
+    stripePublicKey: ['readonly', () => config.stripe.publicKey],
+    stripeCountry: ['readonly', () => config.stripe.country],
+    taxRateEnabled: ['option', 'tax-rate-enabled', 'bool'],
+    taxRate: ['option', 'tax-rate-percentage', 'int'],
+    noticeText: ['data', '']
   }),
-  telegram: withValue<"telegram">({
+  telegram: withValue<'telegram'>({
     welcomeMessageMd: [
-      "data",
-      "*Hello*, I'm your Callout bot\\. Use me to list and answer callouts from [beabee](https://beabee.io/)\\."
-    ]
-  })
+      'data',
+      "*Hello*, I'm your Callout bot\\. Use me to list and answer callouts from [beabee](https://beabee.io/)\\.",
+    ],
+  }),
 } as const;
 
 export default new ContentTransformer();
