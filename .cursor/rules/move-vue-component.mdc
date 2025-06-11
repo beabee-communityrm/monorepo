@@ -1,13 +1,19 @@
 ---
-description: 
+description: Migrate Vue component from frontend app to vue package
 globs: 
 alwaysApply: false
 ---
-Migrate Vue component from frontend app to vue package:
-
 1. **Component identification**: Which component from `apps/frontend` should be migrated to `packages/vue/src/components`? (If not specified, ask for component name)
 
 2. **Usage analysis**: Search `apps/frontend` for current component usage to understand implementation patterns for creating appropriate stories
 
 3. **Migration execution**: :
+   - **Do not migrate components that use API calls** to the `packages/vue` package
+   - Components using `@utils/api`, `client.ts`, or any API-specific imports should remain in the frontend app
+   - **Components using locale strings must accept translated text as props** instead of hardcoded locale keys
+   - Remove `useI18n()` and `t()` calls - pass translated strings from parent components instead
    - Follow [vue-component.mdc](mdc:.cursor/rules/vue-component.mdc) guidelines
+   - Refactor the components cleanly and sustainably during migration, make them accessible and document them in context with their intended use
+   - Keep their required functionality in the context of their use
+   - Adapt the frontend application so that the migrated components are used
+   - When you are done with the migration, suggest a commit message and PR description for our changes

@@ -5,17 +5,17 @@ alwaysApply: false
 ---
 # Vue Components
 
-## When creating new Vue component
+## Creating component
 - Follow patterns from existing components in `packages/vue/src/components`
-- Create a corresponding `.story.vue` file following existing story patterns
+- Create a corresponding `.story.vue` file
+- Vue package components must be application-independent applicable without API dependencies
+
+## Create story
+- Following existing story patterns in `packages/vue/src/components/**/*.story.*`
 - Add brief documentation as a `.story.md` file following existing documentation structure
 
-## API Dependencies
-- **Do not migrate components that use API calls** to the `packages/vue` package
-- Components using `@utils/api`, `client.ts`, or any API-specific imports should remain in their current location
-- Vue package components must be universally applicable without API dependencies
-- **Components using locale strings must accept translated text as props** instead of hardcoded locale keys
-- Remove `useI18n()` and `t()` calls - pass translated strings from parent components instead
+## Modify component
+- Adjust the story and documentation as necessary.
 
 ## Mobile-First Design
 - **Design for mobile screens first**, then scale up to larger screens.

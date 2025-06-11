@@ -15,5 +15,4 @@ Whenever you write code, make sure to
 - use English for comments, documentation and code
 - use common and understandable variable, method and component names
 - orientate yourself on the existing code base to remain consistent with the existing code base
-- Use the latest versions of the source code so that you do not overwrite manual adjustments.
-- When formatting in Markdown, the main Markdown code block should use ```, but code blocks within it should use ~~~ instead.
+- Use the latest versions of the source code so that you do not overwrite manual adjustments
