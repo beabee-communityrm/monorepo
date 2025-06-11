@@ -80,6 +80,7 @@
 </template>
 
 <script lang="ts" setup="{ emit }">
+import { AppInputError } from '@beabee/vue';
 import { AppCopyButton, AppLabel } from '@beabee/vue/components';
 
 import {
@@ -102,7 +103,6 @@ import { helpers, requiredIf } from '@vuelidate/validators';
 import { computed, onBeforeUnmount, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import AppInputError from '../forms/AppInputError.vue';
 import RichTextEditorButton from './RichTextEditorButton.vue';
 
 const { t } = useI18n();

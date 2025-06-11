@@ -178,13 +178,13 @@ import type {
   ContentPaymentData,
   ContentShareData,
 } from '@beabee/beabee-common';
+import { AppInput } from '@beabee/vue';
 import { AppCheckbox, AppForm } from '@beabee/vue/components';
 
 import App2ColGrid from '@components/App2ColGrid.vue';
 import AppHeading from '@components/AppHeading.vue';
 import AppSubHeading from '@components/AppSubHeading.vue';
 import AppImageUpload from '@components/forms/AppImageUpload.vue';
-import AppInput from '@components/forms/AppInput.vue';
 import AppLinkList from '@components/forms/AppLinkList.vue';
 import AppSelect from '@components/forms/AppSelect.vue';
 import AppTextArea from '@components/forms/AppTextArea.vue';

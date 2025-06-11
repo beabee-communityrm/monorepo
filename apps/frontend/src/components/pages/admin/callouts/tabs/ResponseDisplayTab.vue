@@ -259,6 +259,7 @@
 <script lang="ts" setup>
 import { ItemStatus, getCalloutComponents } from '@beabee/beabee-common';
 import type { CalloutMapSchema } from '@beabee/beabee-common';
+import { AppInput } from '@beabee/vue';
 import {
   AppCheckboxGroup,
   AppFormBox,
@@ -269,7 +270,6 @@ import {
   type ScrollSection,
 } from '@beabee/vue/components';
 
-import AppInput from '@components/forms/AppInput.vue';
 import AppLinkList from '@components/forms/AppLinkList.vue';
 import AppSelect from '@components/forms/AppSelect.vue';
 import { buckets } from '@utils/callouts';

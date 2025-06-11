@@ -50,6 +50,7 @@
 </template>
 
 <script lang="ts" setup>
+import { AppInputError, AppInputHelp } from '@beabee/vue';
 import { AppLabel } from '@beabee/vue/components';
 import { AppCopyButton } from '@beabee/vue/components';
 
@@ -61,9 +62,6 @@ import {
 } from '@vuelidate/validators';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-
-import AppInputError from './AppInputError.vue';
-import AppInputHelp from './AppInputHelp.vue';
 
 /**
  * Props for the AppTextArea component

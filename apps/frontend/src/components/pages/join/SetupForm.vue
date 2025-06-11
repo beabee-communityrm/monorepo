@@ -69,13 +69,13 @@ import {
   GetContactWith,
   NewsletterStatus,
 } from '@beabee/beabee-common';
+import { AppInput } from '@beabee/vue';
 import { AppForm } from '@beabee/vue/components';
 
 import AppAddress from '@components/AppAddress.vue';
 import AuthBox from '@components/AuthBox.vue';
 import ContactBasicFields from '@components/contact/ContactBasicFields.vue';
 import ContactMailOptIn from '@components/contact/ContactMailOptIn.vue';
-import AppInput from '@components/forms/AppInput.vue';
 import NewsletterOptIn from '@components/newsletter/NewsletterOptIn.vue';
 import { client } from '@utils/api';
 import useVuelidate from '@vuelidate/core';

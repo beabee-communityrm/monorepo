@@ -216,6 +216,7 @@
 import { CONTACT_MFA_TYPE } from '@beabee/beabee-common';
 import { LOGIN_CODES } from '@beabee/beabee-common';
 import { GetContactWith } from '@beabee/beabee-common';
+import { AppInput } from '@beabee/vue';
 import { AppButton, AppNotification } from '@beabee/vue/components';
 import { addNotification } from '@beabee/vue/store/notifications';
 
@@ -223,7 +224,6 @@ import AppConfirmDialog from '@components/AppConfirmDialog.vue';
 import AppHeading from '@components/AppHeading.vue';
 import AppModal from '@components/AppModal.vue';
 import AppQRCode from '@components/AppQRCode.vue';
-import AppInput from '@components/forms/AppInput.vue';
 import AppSlide from '@components/slider/AppSlide.vue';
 import AppSlider from '@components/slider/AppSlider.vue';
 import { faMobileAlt } from '@fortawesome/free-solid-svg-icons';

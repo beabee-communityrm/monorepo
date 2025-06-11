@@ -6,7 +6,17 @@ export {
   default as AppCheckboxGroup,
   type AppCheckboxGroupProps,
 } from './AppCheckboxGroup.vue';
+export { default as AppChoice, type AppChoiceProps } from './AppChoice.vue';
 export { default as AppForm, type AppFormProps } from './AppForm.vue';
+export { default as AppInput, type AppInputProps } from './AppInput.vue';
+export {
+  default as AppInputError,
+  type AppInputErrorProps,
+} from './AppInputError.vue';
+export {
+  default as AppInputHelp,
+  type AppInputHelpProps,
+} from './AppInputHelp.vue';
 export { default as AppFormBox, type AppFormBoxProps } from './AppFormBox.vue';
 export {
   default as AppFormField,

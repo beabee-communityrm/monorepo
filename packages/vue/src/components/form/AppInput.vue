@@ -82,8 +82,6 @@
 </template>
 
 <script lang="ts" setup>
-import { AppCopyButton, AppLabel } from '@beabee/vue/components';
-
 import useVuelidate from '@vuelidate/core';
 import {
   email,
@@ -95,8 +93,10 @@ import {
 import { computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import { AppCopyButton } from '../button';
 import AppInputError from './AppInputError.vue';
 import AppInputHelp from './AppInputHelp.vue';
+import AppLabel from './AppLabel.vue';
 
 /**
  * Props for the AppInput component

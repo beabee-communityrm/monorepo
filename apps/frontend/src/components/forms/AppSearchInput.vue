@@ -23,10 +23,10 @@
 </template>
 
 <script lang="ts" setup>
+import { AppInput } from '@beabee/vue';
+
 import { faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { ref, watch } from 'vue';
-
-import AppInput from './AppInput.vue';
 
 /**
  * Props for the AppSearchInput component

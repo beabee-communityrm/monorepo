@@ -20,6 +20,7 @@
   </App2ColGrid>
 </template>
 <script lang="ts" setup>
+import { AppInput } from '@beabee/vue';
 import { AppNotification } from '@beabee/vue/components';
 
 import { computed, ref } from 'vue';
@@ -27,7 +28,6 @@ import { computed, ref } from 'vue';
 import { currentUser } from '../../../../store';
 import App2ColGrid from '../../../App2ColGrid.vue';
 import AppSubHeading from '../../../AppSubHeading.vue';
-import AppInput from '../../../forms/AppInput.vue';
 import RichTextEditor from '../../../rte/RichTextEditor.vue';
 
 const props = defineProps<{

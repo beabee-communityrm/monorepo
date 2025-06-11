@@ -57,11 +57,11 @@ import type {
   GetSegmentDataWith,
   RuleGroup,
 } from '@beabee/beabee-common';
+import { AppInput } from '@beabee/vue';
 import { AppButton, AppRadioGroup } from '@beabee/vue/components';
 import { addNotification } from '@beabee/vue/store/notifications';
 
 import AppModal from '@components/AppModal.vue';
-import AppInput from '@components/forms/AppInput.vue';
 import { faFloppyDisk } from '@fortawesome/free-solid-svg-icons';
 import { client } from '@utils/api';
 import useVuelidate from '@vuelidate/core';

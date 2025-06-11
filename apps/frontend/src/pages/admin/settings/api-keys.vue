@@ -104,6 +104,7 @@ meta:
 
 <script lang="ts" setup>
 import type { GetApiKeyData, Paginated } from '@beabee/beabee-common';
+import { AppInput } from '@beabee/vue';
 import { AppButton, AppCheckbox, AppForm } from '@beabee/vue/components';
 import { addNotification } from '@beabee/vue/store/notifications';
 
@@ -111,7 +112,6 @@ import App2ColGrid from '@components/App2ColGrid.vue';
 import AppConfirmDialog from '@components/AppConfirmDialog.vue';
 import AppHeading from '@components/AppHeading.vue';
 import AppTime from '@components/AppTime.vue';
-import AppInput from '@components/forms/AppInput.vue';
 import AppSelect from '@components/forms/AppSelect.vue';
 import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
 import type { Header } from '@components/table/table.interface';

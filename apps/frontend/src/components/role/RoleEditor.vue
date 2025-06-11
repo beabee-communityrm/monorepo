@@ -84,10 +84,10 @@ import {
   type RoleType,
   RoleTypes,
 } from '@beabee/beabee-common';
+import { AppInput } from '@beabee/vue';
 import { AppLabel, AppRadioGroup } from '@beabee/vue/components';
 
 import AppRoundBadge from '@components/AppRoundBadge.vue';
-import AppInput from '@components/forms/AppInput.vue';
 import AppSelect from '@components/forms/AppSelect.vue';
 import ItemManager from '@components/item-manager/ItemManager.vue';
 import { formatLocale } from '@utils/dates';

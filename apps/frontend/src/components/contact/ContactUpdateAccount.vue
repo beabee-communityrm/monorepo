@@ -90,6 +90,7 @@
 </template>
 <script lang="ts" setup>
 import { GetContactWith, NewsletterStatus } from '@beabee/beabee-common';
+import { AppInput } from '@beabee/vue';
 import {
   AppCheckbox,
   AppForm,
@@ -97,7 +98,6 @@ import {
   AppRadioGroup,
 } from '@beabee/vue/components';
 
-import AppInput from '@components/forms/AppInput.vue';
 import { client } from '@utils/api';
 import { computed, reactive, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';

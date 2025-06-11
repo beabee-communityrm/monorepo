@@ -3,6 +3,7 @@
     {{ message }}
   </p>
 </template>
+
 <script lang="ts" setup>
 import { type Ref } from 'vue';
 

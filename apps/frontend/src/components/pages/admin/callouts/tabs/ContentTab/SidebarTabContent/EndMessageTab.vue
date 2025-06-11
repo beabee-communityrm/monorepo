@@ -51,9 +51,9 @@
 </template>
 
 <script lang="ts" setup>
+import { AppInput } from '@beabee/vue';
 import { AppFormField, AppRadioGroup } from '@beabee/vue/components';
 
-import AppInput from '@components/forms/AppInput.vue';
 import RichTextEditor from '@components/rte/RichTextEditor.vue';
 import type { LocaleProp } from '@type';
 import useVuelidate from '@vuelidate/core';

@@ -44,13 +44,13 @@
 
 <script lang="ts" setup>
 import type { NewsletterGroupData } from '@beabee/beabee-common';
+import { AppInput } from '@beabee/vue';
+import { AppInputHelp } from '@beabee/vue';
 import { AppCheckbox } from '@beabee/vue/components';
 
 import { useI18n } from 'vue-i18n';
 
 import AppSectionHeading from '../AppSectionHeading.vue';
-import AppInput from '../forms/AppInput.vue';
-import AppInputHelp from '../forms/AppInputHelp.vue';
 import AppRepeatable from '../forms/AppRepeatable.vue';
 import RichTextEditor from '../rte/RichTextEditor.vue';
 

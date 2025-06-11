@@ -50,11 +50,11 @@ meta:
 </template>
 
 <script lang="ts" setup>
+import { AppInput } from '@beabee/vue';
 import { AppButton, AppForm } from '@beabee/vue/components';
 
 import AppTitle from '@components/AppTitle.vue';
 import AuthBox from '@components/AuthBox.vue';
-import AppInput from '@components/forms/AppInput.vue';
 import { client } from '@utils/api';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';

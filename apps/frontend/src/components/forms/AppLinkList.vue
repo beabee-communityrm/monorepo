@@ -26,9 +26,10 @@
   </AppRepeatable>
 </template>
 <script lang="ts" setup>
+import { AppInput } from '@beabee/vue';
+
 import { useI18n } from 'vue-i18n';
 
-import AppInput from './AppInput.vue';
 import AppRepeatable from './AppRepeatable.vue';
 
 /**

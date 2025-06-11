@@ -248,6 +248,7 @@ meta:
 </template>
 
 <script lang="ts" setup>
+import { AppInput } from '@beabee/vue';
 import { AppButton } from '@beabee/vue/components';
 import { AppCheckbox } from '@beabee/vue/components';
 
@@ -261,7 +262,6 @@ import { ref } from 'vue';
 
 import AppColor from '../components/AppColor.vue';
 import AppQRCode from '../components/AppQRCode.vue';
-import AppInput from '../components/forms/AppInput.vue';
 import AppSlide from '../components/slider/AppSlide.vue';
 import AppSlider from '../components/slider/AppSlider.vue';
 import AppStepper from '../components/stepper/AppStepper.vue';
