@@ -29,7 +29,7 @@
 
  -->
 <template>
-  <AppLabel v-if="label" :label="label" :required="required" />
+  <AppLabel v-if="label" :label="label" :required="required" :for="inputId" />
   <div class="flex items-center">
     <div v-if="$slots.before" class="flex-0 mr-2"><slot name="before" /></div>
     <div
@@ -44,14 +44,17 @@
     >
       <span
         v-if="prefix"
+        :id="prefixId"
         class="flex-0 border-r border-primary-40 bg-grey-lighter px-2 py-2"
         :class="disabled && 'opacity-60'"
+        aria-hidden="true"
       >
         {{ prefix }}
       </span>
       <input
+        :id="inputId"
         v-model.trim="value"
-        class="h-10 w-full flex-1 bg-white/0 px-2 leading-[20px] focus:outline-none"
+        class="h-10 w-full flex-1 bg-white/0 px-2 leading-[20px] focus:outline-none focus:ring-2 focus:ring-link focus:ring-offset-2"
         :class="disabled && 'opacity-60'"
         :type="type"
         :name="name"
@@ -60,14 +63,19 @@
         :min="min"
         :max="max"
         :pattern="pattern"
+        :aria-invalid="hasError"
+        :aria-describedby="ariaDescribedBy"
         v-bind="$attrs"
         @blur="validation.$touch"
       />
-      <span v-if="suffix" class="flex-0 px-2">{{ suffix }}</span>
+      <span v-if="suffix" :id="suffixId" class="flex-0 px-2" aria-hidden="true">
+        {{ suffix }}
+      </span>
       <div v-if="copyable" class="flex-0 h-10 border-l border-primary-40">
         <AppCopyButton
           :text="prefix ? `${prefix}${value}` : value?.toString() || ''"
           :disabled="copyButtonDisabled"
+          :aria-label="`Copy ${label || 'input value'} to clipboard`"
         />
       </div>
     </div>
@@ -76,9 +84,10 @@
 
   <AppInputError
     v-if="hasError && !hideErrorMessage"
+    :id="errorId"
     :message="validation.$errors[0].$message"
   />
-  <AppInputHelp v-if="infoMessage" :message="infoMessage" />
+  <AppInputHelp v-if="infoMessage" :id="helpId" :message="infoMessage" />
 </template>
 
 <script lang="ts" setup>
@@ -134,6 +143,8 @@ export interface AppInputProps {
   suffix?: string;
   /** Whether the input value can be copied to clipboard */
   copyable?: boolean;
+  /** Custom ID for the input element */
+  id?: string;
 }
 
 const emit = defineEmits(['update:modelValue', 'update:validation']);
@@ -153,9 +164,29 @@ const props = withDefaults(defineProps<AppInputProps>(), {
   prefix: undefined,
   suffix: undefined,
   copyable: false,
+  id: undefined,
 });
 
 const { t } = useI18n();
+
+// Generate unique IDs for accessibility
+const inputId = computed(
+  () =>
+    props.id || `input-${props.name}-${Math.random().toString(36).substr(2, 9)}`
+);
+const errorId = computed(() => `${inputId.value}-error`);
+const helpId = computed(() => `${inputId.value}-help`);
+const prefixId = computed(() => `${inputId.value}-prefix`);
+const suffixId = computed(() => `${inputId.value}-suffix`);
+
+// Build aria-describedby string
+const ariaDescribedBy = computed(() => {
+  const descriptions = [];
+  if (props.infoMessage) descriptions.push(helpId.value);
+  if (hasError.value && !props.hideErrorMessage)
+    descriptions.push(errorId.value);
+  return descriptions.length > 0 ? descriptions.join(' ') : undefined;
+});
 
 const value = computed({
   get: () => props.modelValue,

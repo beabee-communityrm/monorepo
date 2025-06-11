@@ -1,5 +1,10 @@
 <template>
-  <p class="mt-1.5 text-xs font-semibold text-danger" role="alert">
+  <p
+    :id="id"
+    class="mt-1.5 text-xs font-semibold text-danger"
+    role="alert"
+    aria-live="polite"
+  >
     {{ message }}
   </p>
 </template>
@@ -13,6 +18,8 @@ import { type Ref } from 'vue';
 export interface AppInputErrorProps {
   /** The message to display */
   message: string | Ref<string>;
+  /** The ID for the error element */
+  id?: string;
 }
 
 defineProps<AppInputErrorProps>();
