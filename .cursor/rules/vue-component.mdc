@@ -10,6 +10,13 @@ alwaysApply: false
 - Create a corresponding `.story.vue` file following existing story patterns
 - Add brief documentation as a `.story.md` file following existing documentation structure
 
+## API Dependencies
+- **Do not migrate components that use API calls** to the `packages/vue` package
+- Components using `@utils/api`, `client.ts`, or any API-specific imports should remain in their current location
+- Vue package components must be universally applicable without API dependencies
+- **Components using locale strings must accept translated text as props** instead of hardcoded locale keys
+- Remove `useI18n()` and `t()` calls - pass translated strings from parent components instead
+
 ## Mobile-First Design
 - **Design for mobile screens first**, then scale up to larger screens.
 - Use Tailwind's responsive prefixes (`sm:`, `md:`, `lg:`, `xl:`) to adjust layouts for different screen sizes.
