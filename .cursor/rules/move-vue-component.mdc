@@ -1,0 +1,13 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+Migrate Vue component from frontend app to vue package:
+
+1. **Component identification**: Which component from `apps/frontend` should be migrated to `packages/vue/src/components`? (If not specified, ask for component name)
+
+2. **Usage analysis**: Search `apps/frontend` for current component usage to understand implementation patterns for creating appropriate stories
+
+3. **Migration execution**: :
+   - Follow [vue-component.mdc](mdc:.cursor/rules/vue-component.mdc) guidelines

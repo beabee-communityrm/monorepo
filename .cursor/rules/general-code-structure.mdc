@@ -3,15 +3,15 @@ description:
 globs: 
 alwaysApply: true
 ---
-Please provide concise answers. Do explain obvious concepts. You can assume that I am knowledgable about most programming topics. Write full code blocks, do not leave out any code.
-
-It is important that you provide good quality answers, so the developer must provide you with all relevant source code files. If you are missing relevant source code that you need for a good answer, read it by yourself. If you have the most important thing, even if it's not everything, answer.
-
 Whenever you write code, make sure to
+- Write complete code blocks
+- Provide concise answers assuming programming knowledge
+- Read missing source code yourself to give quality answers
 - use ESM imports and exports for TypeScript code
 - define interface in a separate file
 - modularize components into smaller, reusable pieces
 - document the code
+- when writing documentation, prefer doing it directly in code; if creating additional documentation, reference existing documentation instead of rewriting it
 - use English for comments, documentation and code
 - use common and understandable variable, method and component names
 - orientate yourself on the existing code base to remain consistent with the existing code base

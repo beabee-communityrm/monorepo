@@ -1,0 +1,9 @@
+---
+description: 
+globs: packages/vue/src/components/**/*
+alwaysApply: false
+---
+**When creating new Vue components:**
+- Follow patterns from existing components in `packages/vue/src/components`
+- Create a corresponding `.story.vue` file following existing story patterns
+- Add brief documentation as a `.story.md` file following existing documentation structure

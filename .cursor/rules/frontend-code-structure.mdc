@@ -4,4 +4,5 @@ globs: packages/vue/**/*,apps/frontend/**/*
 alwaysApply: false
 ---
 Whenever you write code, make sure to
-- use Tailwind CSS for styling
+- Use Tailwind CSS for styling
+- Create new Vue Components in `packages/vue/src/components`
