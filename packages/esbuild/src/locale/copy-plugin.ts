@@ -12,7 +12,7 @@ export function createCopyPlugin({
   sourceDir,
   outdir,
   dirName,
-  isWatch,
+  isWatch
 }: CopyPluginOptions): Plugin {
   return {
     name: `copy-plugin-${dirName}`,
@@ -41,12 +41,12 @@ export function createCopyPlugin({
           }
 
           console.log(
-            `📋 [${getTimestamp()}] ${dirName} copied ${jsonFiles.length} locale files`,
+            `📋 [${getTimestamp()}] ${dirName} copied ${jsonFiles.length} locale files`
           );
         } catch (error) {
           console.error(
             `❌ [${getTimestamp()}] ${dirName} copy failed:`,
-            error,
+            error
           );
         } finally {
           copying = false;
@@ -64,17 +64,17 @@ export function createCopyPlugin({
           async (eventType, filename) => {
             if (filename && filename.endsWith(".json")) {
               console.log(
-                `📄 [${getTimestamp()}] ${dirName} detected change: ${filename}`,
+                `📄 [${getTimestamp()}] ${dirName} detected change: ${filename}`
               );
               await copyFiles();
             }
-          },
+          }
         );
 
         build.onDispose(() => {
           watcher.close();
         });
       }
-    },
+    }
   };
 }

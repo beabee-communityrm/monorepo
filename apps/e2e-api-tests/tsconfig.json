@@ -5,6 +5,9 @@
   ],
   "exclude": [], // Override tsconfig.build.json exclude
   "include": ["src/**/*.ts"],
+  "references": [
+    { "path": "../../packages/client" }
+  ],
   "compilerOptions": {
     "noEmit": true,
     "module": "ESNext",

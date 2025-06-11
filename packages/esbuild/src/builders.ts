@@ -4,7 +4,7 @@ import { createWatchLoggerPlugin, createCjsRenamePlugin } from "./plugins.ts";
 import type {
   BuildOptions,
   BuildStandardOptions,
-  BuildIIFEOptions,
+  BuildIIFEOptions
 } from "./types/index.ts";
 import { ensureDir } from "./utils.ts";
 
@@ -16,7 +16,7 @@ export async function buildESM(options: BuildOptions) {
 
   const plugins = [
     ...(options.additionalPlugins || []),
-    ...(options.watch ? [createWatchLoggerPlugin("ESM")] : []),
+    ...(options.watch ? [createWatchLoggerPlugin("ESM")] : [])
   ];
 
   const ctx = await esbuild.context({
@@ -27,7 +27,7 @@ export async function buildESM(options: BuildOptions) {
     platform: "node",
     target: "es2020",
     format: "esm",
-    absWorkingDir: options.baseDir,
+    absWorkingDir: options.baseDir
   });
 
   if (options.watch) {
@@ -49,7 +49,7 @@ export async function buildCJS(options: BuildOptions) {
     transformExtPlugin({ outExtension: { ".js": ".cjs" } }),
     ...(options.additionalPlugins || []),
     ...(options.watch ? [createWatchLoggerPlugin("CJS")] : []),
-    createCjsRenamePlugin(options.outdir, options.baseDir),
+    createCjsRenamePlugin(options.outdir, options.baseDir)
   ];
 
   const ctx = await esbuild.context({
@@ -60,7 +60,7 @@ export async function buildCJS(options: BuildOptions) {
     platform: "node",
     target: "node16",
     format: "cjs",
-    absWorkingDir: options.baseDir,
+    absWorkingDir: options.baseDir
   });
 
   if (options.watch) {
@@ -78,7 +78,7 @@ export async function buildCJS(options: BuildOptions) {
 export async function buildBrowser(options: BuildIIFEOptions) {
   const plugins = [
     ...(options.additionalPlugins || []),
-    ...(options.watch ? [createWatchLoggerPlugin("Browser")] : []),
+    ...(options.watch ? [createWatchLoggerPlugin("Browser")] : [])
   ];
 
   const ctx = await esbuild.context({
@@ -92,7 +92,7 @@ export async function buildBrowser(options: BuildIIFEOptions) {
     target: "es2020",
     format: "iife",
     globalName: options.globalName,
-    absWorkingDir: options.baseDir,
+    absWorkingDir: options.baseDir
   });
 
   if (options.watch) {
@@ -116,12 +116,12 @@ export async function buildStandard(options: BuildStandardOptions) {
   const [esm, cjs] = await Promise.all([
     buildESM({
       outdir: "./dist/esm",
-      ...options,
+      ...options
     }),
     buildCJS({
       outdir: "./dist/cjs",
-      ...options,
-    }),
+      ...options
+    })
   ]);
 
   if (options.watch) {

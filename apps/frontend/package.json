@@ -11,11 +11,11 @@
     "serve": "vite preview",
     "i18n": "node scripts/i18n.cjs $(git rev-parse --symbolic-full-name --abbrev-ref HEAD)",
     "check": "yarn check:vue-tsc && yarn check:eslint && yarn check:prettier",
-    "check:vue-tsc": "vue-tsc --noEmit",
+    "check:vue-tsc": "vue-tsc --noEmit -p tsconfig.build.json",
     "check:eslint": "eslint 'src/**/*.{ts,vue}'",
     "check:prettier": "prettier -c .",
     "format": "prettier --write .",
-    "generate:index": "yarn workspace @beabee/dev-cli start generate-index --extension none --baseDir $PWD -p ./src/type ./src/lib ./src/utils/api"
+    "generate:index": "yarn workspace @beabee/dev-cli start generate-index --extension none --baseDir $(pwd) -p ./src/type ./src/lib ./src/utils/api"
   },
   "dependencies": {
     "@appsignal/javascript": "^1.5.0",

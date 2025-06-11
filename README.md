@@ -171,6 +171,18 @@ This continuously compiles TypeScript files as they change.
 
 By running `yarn dev` in the root of the project, you start development processes for all these packages simultaneously, allowing you to work on different parts of the project with live reloading and quick feedback.
 
+## TypeScript Configuration
+
+The Beabee Monorepo uses a sophisticated TypeScript configuration system with shared configurations provided by the [`@beabee/tsconfig`](packages/tsconfig/README.md) package. This ensures proper type checking and module resolution across all packages in the monorepo.
+
+For detailed information about TypeScript configurations, including:
+- Available configurations (server, frontend, vanilla)
+- Dual tsconfig structure
+- TypeScript references
+- Guidelines for new packages
+
+Please refer to the [TypeScript Configuration Documentation](packages/tsconfig/README.md).
+
 ### Other Developer Tools
 
 Check and upgrade all dependencies:

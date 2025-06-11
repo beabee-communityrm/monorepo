@@ -12,13 +12,13 @@ export function createWatchLoggerPlugin(name: string): Plugin {
       build.onEnd((result: any) => {
         if (result.errors.length > 0) {
           console.log(
-            `🔴 [${getTimestamp()}] ${name} build failed with ${result.errors.length} errors`,
+            `🔴 [${getTimestamp()}] ${name} build failed with ${result.errors.length} errors`
           );
         } else {
           console.log(`✅ [${getTimestamp()}] ${name} rebuild completed`);
         }
       });
-    },
+    }
   };
 }
 
@@ -27,7 +27,7 @@ export function createWatchLoggerPlugin(name: string): Plugin {
  */
 export function createCjsRenamePlugin(
   outdir: string,
-  baseDir?: string,
+  baseDir?: string
 ): Plugin {
   return {
     name: "cjs-rename-plugin",
@@ -41,6 +41,6 @@ export function createCjsRenamePlugin(
           }
         }
       });
-    },
+    }
   };
 }
