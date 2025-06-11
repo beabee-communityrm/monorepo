@@ -1,5 +1,7 @@
 import 'module-alias/register';
 
+import 'reflect-metadata';
+
 import { RoleType } from '@beabee/beabee-common';
 import config from '@beabee/core/config';
 import {
@@ -14,7 +16,6 @@ import sessions from '@core/lib/sessions';
 import cookie from 'cookie-parser';
 import cors from 'cors';
 import express, { ErrorRequestHandler, Request } from 'express';
-import 'reflect-metadata';
 import {
   HttpError,
   InternalServerError,
