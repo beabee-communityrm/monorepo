@@ -217,7 +217,7 @@ const contentData = {
     stripeCountry: ['readonly', () => config.stripe.country],
     taxRateEnabled: ['option', 'tax-rate-enabled', 'bool'],
     taxRate: ['option', 'tax-rate-percentage', 'int'],
-    noticeText: ['data', '']
+    noticeText: ['data', ''],
   }),
   telegram: withValue<'telegram'>({
     welcomeMessageMd: [
