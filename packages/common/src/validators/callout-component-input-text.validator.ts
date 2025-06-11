@@ -1,11 +1,10 @@
-import { isTextInRange, isTextInWordRange } from '../utils/index.js';
-
 import type {
   CalloutComponentInputTextRules,
   CalloutComponentInputTextSchema,
   CalloutResponseAnswer,
   ValidatorCalloutComponent,
 } from '../types/index.js';
+import { isTextInRange, isTextInWordRange } from '../utils/index.js';
 
 const validateRules = (
   rules: CalloutComponentInputTextRules | undefined,

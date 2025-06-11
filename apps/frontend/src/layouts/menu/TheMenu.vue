@@ -42,13 +42,14 @@
 </template>
 
 <script lang="ts" setup>
+import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
 import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
+
+import AppLogo from '../../components/AppLogo.vue';
 import { currentUser, generalContent } from '../../store';
 import TheMenuList from './TheMenuList.vue';
-import AppLogo from '../../components/AppLogo.vue';
-import { useI18n } from 'vue-i18n';
-import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
 
 const route = useRoute();
 const { t } = useI18n();

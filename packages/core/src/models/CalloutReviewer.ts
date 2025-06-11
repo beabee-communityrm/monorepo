@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
+
 import type { Callout } from './Callout';
 import type { Contact } from './Contact';
 

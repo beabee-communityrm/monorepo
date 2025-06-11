@@ -96,19 +96,20 @@
 </template>
 
 <script lang="ts" setup>
-import { useI18n } from 'vue-i18n';
 import { type CalloutComponentSchema } from '@beabee/beabee-common';
+import { AppFormBox } from '@beabee/vue/components';
+
 import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
-import type { LocaleProp } from '@type/locale-prop';
 import AppInput from '@components/forms/AppInput.vue';
 import AppTextArea from '@components/forms/AppTextArea.vue';
-import { AppFormBox } from '@beabee/vue/components';
 import RichTextEditor from '@components/rte/RichTextEditor.vue';
+import type { LocaleProp } from '@type/locale-prop';
 import {
-  updateComponentTextValue,
-  getComponentTextValueNoFallback,
   getComponentTextFallback,
+  getComponentTextValueNoFallback,
+  updateComponentTextValue,
 } from '@utils/callouts';
+import { useI18n } from 'vue-i18n';
 
 const props = defineProps<{
   defaultLocale: string;

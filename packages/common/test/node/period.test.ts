@@ -1,5 +1,6 @@
-import { describe, expect, test } from 'vitest';
 import { isPeriod } from '@beabee/beabee-common';
+
+import { describe, expect, test } from 'vitest';
 
 describe('isPeriod', () => {
   test('valid period - monthly', () => {

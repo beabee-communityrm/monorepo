@@ -1,7 +1,5 @@
-import { describe, expect, it, beforeAll, beforeEach, afterEach } from 'vitest';
-import { AuthClient, ClientApiError } from '@beabee/client';
 import type { LoginData } from '@beabee/beabee-common';
-
+import { AuthClient, ClientApiError } from '@beabee/client';
 import {
   API_KEY,
   HOST,
@@ -9,6 +7,8 @@ import {
   TEST_USER_EMAIL,
   TEST_USER_PASSWORD,
 } from '@beabee/test-utils/vitest/env';
+
+import { afterEach, beforeAll, beforeEach, describe, expect, it } from 'vitest';
 
 describe('Auth API', () => {
   let authTokenClient: AuthClient;

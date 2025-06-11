@@ -21,7 +21,9 @@ meta:
 
 <script lang="ts" setup>
 import { AppButton } from '@beabee/vue/components';
+
 import { useI18n } from 'vue-i18n';
+
 import AppTitle from '../../components/AppTitle.vue';
 import AuthBox from '../../components/AuthBox.vue';
 

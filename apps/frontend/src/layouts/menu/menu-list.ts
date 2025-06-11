@@ -1,6 +1,4 @@
-import { computed } from 'vue';
-import type { MenuSection } from './menu-list.interface';
-import { generalContent } from '@store/generalContent';
+import env from '@env';
 import {
   faAddressCard,
   faBullhorn,
@@ -12,8 +10,11 @@ import {
   faSignHanging,
   faUsers,
 } from '@fortawesome/free-solid-svg-icons';
-import env from '@env';
 import { canAdmin, currentUser } from '@store/currentUser';
+import { generalContent } from '@store/generalContent';
+import { computed } from 'vue';
+
+import type { MenuSection } from './menu-list.interface';
 
 export const menu = computed<MenuSection[]>(() => [
   {

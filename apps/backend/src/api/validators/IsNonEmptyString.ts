@@ -1,8 +1,8 @@
 import {
-  buildMessage,
-  isString,
   ValidateBy,
   ValidationOptions,
+  buildMessage,
+  isString,
 } from 'class-validator';
 
 export default function IsNonEmptyString(

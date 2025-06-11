@@ -1,4 +1,7 @@
 import { PaymentStatus } from '@beabee/beabee-common';
+
+import { GetPaginatedQuery } from '@api/dto/BaseDto';
+import { GetContactDto } from '@api/dto/ContactDto';
 import {
   IsArray,
   IsDate,
@@ -8,9 +11,6 @@ import {
   IsOptional,
   ValidateNested,
 } from 'class-validator';
-
-import { GetPaginatedQuery } from '@api/dto/BaseDto';
-import { GetContactDto } from '@api/dto/ContactDto';
 
 export class GetPaymentDto {
   @IsNumber()

@@ -44,15 +44,16 @@
   </div>
 </template>
 <script lang="ts" setup>
+import { AppButton, AppLabel } from '@beabee/vue/components';
+
+import AppInputError from '@components/forms/AppInputError.vue';
+import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
+import { ClientApiError, client } from '@utils/api';
+import { resolveImageUrl } from '@utils/url';
 import useVuelidate from '@vuelidate/core';
 import { helpers, requiredIf, sameAs } from '@vuelidate/validators';
 import { computed, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { client, ClientApiError } from '@utils/api';
-import { resolveImageUrl } from '@utils/url';
-import { AppButton, AppLabel } from '@beabee/vue/components';
-import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
-import AppInputError from '@components/forms/AppInputError.vue';
 
 const emit = defineEmits(['update:modelValue']);
 

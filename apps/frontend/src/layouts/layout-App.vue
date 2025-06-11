@@ -3,8 +3,8 @@
 </template>
 
 <script lang="ts" setup>
-import { useRoute } from 'vue-router';
 import { shallowRef, watch } from 'vue';
+import { useRoute } from 'vue-router';
 
 const route = useRoute();
 

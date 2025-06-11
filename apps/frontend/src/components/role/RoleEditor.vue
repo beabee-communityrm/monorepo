@@ -79,21 +79,21 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, reactive } from 'vue';
-import { useI18n } from 'vue-i18n';
 import {
-  RoleTypes,
   type ContactRoleData,
   type RoleType,
+  RoleTypes,
 } from '@beabee/beabee-common';
+import { AppLabel, AppRadioGroup } from '@beabee/vue/components';
 
-import ItemManager from '@components/item-manager/ItemManager.vue';
 import AppRoundBadge from '@components/AppRoundBadge.vue';
+import AppInput from '@components/forms/AppInput.vue';
+import AppSelect from '@components/forms/AppSelect.vue';
+import ItemManager from '@components/item-manager/ItemManager.vue';
 import { formatLocale } from '@utils/dates';
 import { format } from 'date-fns';
-import AppSelect from '@components/forms/AppSelect.vue';
-import { AppLabel, AppRadioGroup } from '@beabee/vue/components';
-import AppInput from '@components/forms/AppInput.vue';
+import { computed, reactive } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 const props = defineProps<{
   roles: ContactRoleData[];

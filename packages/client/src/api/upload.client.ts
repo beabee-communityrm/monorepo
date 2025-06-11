@@ -1,12 +1,13 @@
-import type { BaseClientOptions } from '../types/index.js';
 import {
   type UploadFileResponse,
-  isSupportedImageType,
   isSupportedDocumentType,
+  isSupportedImageType,
 } from '@beabee/beabee-common';
+
+import type { BaseClientOptions } from '../types/index.js';
 import { ClientApiError } from '../utils/index.js';
-import { UploadImageClient } from './upload-image.client.js';
 import { UploadDocumentClient } from './upload-document.client.js';
+import { UploadImageClient } from './upload-image.client.js';
 
 /**
  * Client for managing file uploads

@@ -23,15 +23,17 @@
 </template>
 
 <script lang="ts" setup generic="T extends string | number">
+import { AppLabel } from '@beabee/vue/components';
+import { type SelectItem } from '@beabee/vue/types';
+
 import useVuelidate from '@vuelidate/core';
 import { requiredIf } from '@vuelidate/validators';
 import { computed } from 'vue';
+import { toRef } from 'vue';
 import VueMultiselect from 'vue-multiselect';
-import { AppLabel } from '@beabee/vue/components';
-import { type SelectItem } from '@beabee/vue/types';
+
 import AppInputError from './AppInputError.vue';
 import AppInputHelp from './AppInputHelp.vue';
-import { toRef } from 'vue';
 
 /**
  * Props for the AppSelect component

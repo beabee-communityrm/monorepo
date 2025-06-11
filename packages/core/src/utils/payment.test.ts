@@ -1,12 +1,12 @@
+import { ContributionPeriod, ContributionType } from '@beabee/beabee-common';
+
+import { add, sub } from 'date-fns';
 import { describe, expect, test } from 'vitest';
 
-import { ContributionPeriod, ContributionType } from '@beabee/beabee-common';
-import { add, sub } from 'date-fns';
-
-import { calcRenewalDate } from './payment';
+import config from '#config/config';
 import { Contact, ContactRole, Password } from '#models/index';
 
-import config from '#config/config';
+import { calcRenewalDate } from './payment';
 
 function createContact(contact?: Partial<Contact>): Contact {
   return Object.assign(new Contact(), {

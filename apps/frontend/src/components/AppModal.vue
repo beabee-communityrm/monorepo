@@ -30,10 +30,11 @@
   </Teleport>
 </template>
 <script lang="ts" setup>
-import { onBeforeUnmount, ref, toRef, watch } from 'vue';
-import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
-import AppHeading from './AppHeading.vue';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
+import { onBeforeUnmount, ref, toRef, watch } from 'vue';
+
+import AppHeading from './AppHeading.vue';
 
 defineEmits(['close']);
 const props = defineProps<{

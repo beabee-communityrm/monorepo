@@ -24,12 +24,13 @@
   </div>
 </template>
 <script setup lang="ts">
+import { AppButton } from '@beabee/vue/components';
+
 import {
+  type IconDefinition,
   faCaretDown,
   faCaretUp,
-  type IconDefinition,
 } from '@fortawesome/free-solid-svg-icons';
-import { AppButton } from '@beabee/vue/components';
 
 defineProps<{
   buttonIcon: IconDefinition;

@@ -248,24 +248,23 @@ meta:
 </template>
 
 <script lang="ts" setup>
+import { AppButton } from '@beabee/vue/components';
+import { AppCheckbox } from '@beabee/vue/components';
+
+import {
+  faAngleLeft,
+  faAngleRight,
+  faRotateBack,
+} from '@fortawesome/free-solid-svg-icons';
+import type { AppStepperStep } from '@type/app-stepper-step';
 import { ref } from 'vue';
 
 import AppColor from '../components/AppColor.vue';
-import { AppButton } from '@beabee/vue/components';
-import AppInput from '../components/forms/AppInput.vue';
-import AppSlider from '../components/slider/AppSlider.vue';
-import AppSlide from '../components/slider/AppSlide.vue';
-import AppStepper from '../components/stepper/AppStepper.vue';
-import { AppCheckbox } from '@beabee/vue/components';
 import AppQRCode from '../components/AppQRCode.vue';
-
-import type { AppStepperStep } from '@type/app-stepper-step';
-
-import {
-  faAngleRight,
-  faAngleLeft,
-  faRotateBack,
-} from '@fortawesome/free-solid-svg-icons';
+import AppInput from '../components/forms/AppInput.vue';
+import AppSlide from '../components/slider/AppSlide.vue';
+import AppSlider from '../components/slider/AppSlider.vue';
+import AppStepper from '../components/stepper/AppStepper.vue';
 
 const appStepper = ref({
   selectedStepIndex: 0,

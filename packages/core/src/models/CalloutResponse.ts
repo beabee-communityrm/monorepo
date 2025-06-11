@@ -2,6 +2,7 @@ import {
   CalloutResponseAnswersSlide,
   CalloutResponseNewsletterData,
 } from '@beabee/beabee-common';
+
 import {
   Column,
   CreateDateColumn,
@@ -14,10 +15,10 @@ import {
 } from 'typeorm';
 
 import type {
-  Contact,
   Callout,
   CalloutResponseComment,
   CalloutResponseTag,
+  Contact,
 } from './index';
 
 @Entity()

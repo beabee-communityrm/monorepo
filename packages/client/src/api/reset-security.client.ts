@@ -1,5 +1,3 @@
-import { BaseClient } from './base.client.js';
-import type { BaseClientOptions } from '../types/index.js';
 import {
   type CreateResetDeviceData,
   type CreateResetPasswordData,
@@ -7,6 +5,9 @@ import {
   type UpdateResetDeviceData,
   type UpdateResetPasswordData,
 } from '@beabee/beabee-common';
+
+import type { BaseClientOptions } from '../types/index.js';
+import { BaseClient } from './base.client.js';
 
 /**
  * Client for managing security reset flows

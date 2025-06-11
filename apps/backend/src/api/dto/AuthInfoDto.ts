@@ -1,3 +1,5 @@
+import { RoleType } from '@beabee/beabee-common';
+
 import { Type } from 'class-transformer';
 import {
   IsArray,
@@ -6,8 +8,8 @@ import {
   IsString,
   ValidateNested,
 } from 'class-validator';
+
 import { GetContactDto } from './ContactDto';
-import { RoleType } from '@beabee/beabee-common';
 
 /**
  * DTO for authentication information response

@@ -1,4 +1,5 @@
-import type { CommandModule, ArgumentsCamelCase } from 'yargs';
+import type { ArgumentsCamelCase, CommandModule } from 'yargs';
+
 import { generateIndex } from '../actions/index.ts';
 import type { GenerateIndexArgs } from '../types/index.ts';
 

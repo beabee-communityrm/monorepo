@@ -1,7 +1,7 @@
 import type {
-  OtherFilterArgs,
   ArrayFilterArgs,
   EnumFilterArgs,
+  OtherFilterArgs,
 } from '@beabee/beabee-common';
 
 export interface FilterItemOther extends OtherFilterArgs {

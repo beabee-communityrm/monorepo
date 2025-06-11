@@ -1,8 +1,8 @@
 import {
-  config as localeConfig,
+  type Locale,
   LocaleContext,
   isAvailableInContext,
-  type Locale,
+  config as localeConfig,
 } from '@beabee/locale';
 import en from '@beabee/locale/locales/en';
 

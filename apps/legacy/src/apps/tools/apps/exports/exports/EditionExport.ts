@@ -1,14 +1,14 @@
 import { ContributionType } from '@beabee/beabee-common';
+import { createQueryBuilder } from '@beabee/core/database';
+import { Contact } from '@beabee/core/models';
+
 import _ from 'lodash';
 import { SelectQueryBuilder } from 'typeorm';
 
-import { createQueryBuilder } from '@beabee/core/database';
 import { Param } from '#core/utils/params';
 
-import { Contact } from '@beabee/core/models';
-
-import { ExportResult } from './BaseExport';
 import ActiveMembersExport from './ActiveMembersExport';
+import { ExportResult } from './BaseExport';
 
 export default class EditionExport extends ActiveMembersExport {
   exportName = 'Edition export';

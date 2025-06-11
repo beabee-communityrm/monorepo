@@ -1,15 +1,15 @@
-import fs from 'fs';
-import dot from 'dot';
-import express from 'express';
-import moment from 'moment';
-
 import config, {
   AppConfig,
   AppConfigOverride,
   AppConfigOverrides,
 } from '@beabee/core/config';
-
 import { log as mainLogger } from '@beabee/core/logging';
+
+import dot from 'dot';
+import express from 'express';
+import fs from 'fs';
+import moment from 'moment';
+
 import templateLocals from '#core/template-locals';
 
 let git = '';

@@ -46,21 +46,19 @@ meta:
 </template>
 <script lang="ts" setup>
 import type { GetNoticeData, Paginated } from '@beabee/beabee-common';
-import { computed, ref, watchEffect } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { faPlus, faSignHanging } from '@fortawesome/free-solid-svg-icons';
-
 import { AppButton } from '@beabee/vue/components';
-import PageTitle from '@components/PageTitle.vue';
-import type { Header } from '@components/table/table.interface';
+
 import AppItemStatus from '@components/AppItemStatus.vue';
+import PageTitle from '@components/PageTitle.vue';
 import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
-
+import type { Header } from '@components/table/table.interface';
+import { faPlus, faSignHanging } from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';
-
 import { client } from '@utils/api';
 import { formatLocale } from '@utils/dates';
 import { definePaginatedQuery } from '@utils/pagination';
+import { computed, ref, watchEffect } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 

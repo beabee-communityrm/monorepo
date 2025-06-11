@@ -2,15 +2,15 @@ import {
   ContributionType,
   RESET_SECURITY_FLOW_TYPE,
 } from '@beabee/beabee-common';
-import { runApp } from '@beabee/core/server';
+import { config } from '@beabee/core/config';
 import { getRepository } from '@beabee/core/database';
-import { generatePassword } from '@beabee/core/utils/auth';
 import { ContactRole } from '@beabee/core/models';
-import moment from 'moment';
-
+import { runApp } from '@beabee/core/server';
 import { contactsService } from '@beabee/core/services/ContactsService';
 import { resetSecurityFlowService } from '@beabee/core/services/ResetSecurityFlowService';
-import { config } from '@beabee/core/config';
+import { generatePassword } from '@beabee/core/utils/auth';
+
+import moment from 'moment';
 
 import type { CreateUserArgs } from '../../types/user.js';
 

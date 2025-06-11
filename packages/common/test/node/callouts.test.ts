@@ -1,16 +1,17 @@
-import { describe, expect, test } from 'vitest';
 import {
   CalloutComponentBaseNestableSchema,
+  CalloutComponentInputSelectSchema,
   CalloutComponentInputSelectableRadioSchema,
   CalloutComponentInputSelectableSchema,
-  CalloutComponentInputSelectSchema,
   CalloutComponentInputTextFieldSchema,
   CalloutComponentType,
   CalloutResponseAnswersSlide,
-  getCalloutComponents,
   GetCalloutFormSchema,
+  getCalloutComponents,
   stringifyAnswer,
 } from '@beabee/beabee-common';
+
+import { describe, expect, test } from 'vitest';
 
 const textComponent: CalloutComponentInputTextFieldSchema = {
   id: 'myTextComponent',

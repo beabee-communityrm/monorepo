@@ -1,24 +1,24 @@
-import { BaseClient } from './base.client.js';
-import { cleanUrl } from '../utils/index.js';
-import { ContactMfaClient } from './contact-mfa.client.js';
-import { ContactContributionClient } from './contact-contribution.client.js';
-import { ContactRoleClient } from './contact-role.client.js';
-import { ContactTagClient } from './contact-tag.client.js';
-import { ContactPaymentClient } from './contact-payment.client.js';
-
-import type { BaseClientOptions } from '../types/index.js';
 import type {
   ContactRoleData,
   CreateContactData,
   GetContactData,
   GetContactDataWith,
-  GetContactsQuery,
   GetContactWith,
+  GetContactsQuery,
   Paginated,
   RuleGroup,
   Serial,
   UpdateContactData,
 } from '@beabee/beabee-common';
+
+import type { BaseClientOptions } from '../types/index.js';
+import { cleanUrl } from '../utils/index.js';
+import { BaseClient } from './base.client.js';
+import { ContactContributionClient } from './contact-contribution.client.js';
+import { ContactMfaClient } from './contact-mfa.client.js';
+import { ContactPaymentClient } from './contact-payment.client.js';
+import { ContactRoleClient } from './contact-role.client.js';
+import { ContactTagClient } from './contact-tag.client.js';
 
 /**
  * Client for managing contacts (users) in the Beabee system

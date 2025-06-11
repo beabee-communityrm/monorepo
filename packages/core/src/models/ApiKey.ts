@@ -1,4 +1,5 @@
 import { RoleType } from '@beabee/beabee-common';
+
 import {
   Column,
   CreateDateColumn,

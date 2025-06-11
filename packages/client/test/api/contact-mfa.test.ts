@@ -1,13 +1,13 @@
-import { describe, expect, it, beforeAll, afterAll, afterEach } from 'vitest';
-import { TOTP, Secret } from 'otpauth';
-
-import { BeabeeClient } from '@beabee/client';
 import {
   CONTACT_MFA_TYPE,
   CreateContactMfaData,
   DeleteContactMfaData,
 } from '@beabee/beabee-common';
-import { HOST, PATH, API_KEY } from '@beabee/test-utils/vitest/env';
+import { BeabeeClient } from '@beabee/client';
+import { API_KEY, HOST, PATH } from '@beabee/test-utils/vitest/env';
+
+import { Secret, TOTP } from 'otpauth';
+import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 
 describe('ContactMfa API', () => {
   let client: BeabeeClient;

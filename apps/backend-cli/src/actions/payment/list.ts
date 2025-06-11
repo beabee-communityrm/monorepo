@@ -1,6 +1,6 @@
-import { runApp } from '@beabee/core/server';
-import { Payment } from '@beabee/core/models';
 import { getRepository } from '@beabee/core/database';
+import { Payment } from '@beabee/core/models';
+import { runApp } from '@beabee/core/server';
 
 export const listPayments = async (email?: string): Promise<void> => {
   await runApp(async () => {

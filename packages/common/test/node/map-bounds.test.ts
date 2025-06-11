@@ -1,5 +1,6 @@
-import { describe, expect, test } from 'vitest';
 import { isMapBounds } from '@beabee/beabee-common';
+
+import { describe, expect, test } from 'vitest';
 
 describe('isMapBounds', () => {
   test('valid map bounds', () => {

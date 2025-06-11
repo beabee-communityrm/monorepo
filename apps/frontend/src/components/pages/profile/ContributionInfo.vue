@@ -18,13 +18,12 @@
 </template>
 
 <script lang="ts" setup>
-import { useI18n } from 'vue-i18n';
+import type { GetContactData } from '@beabee/beabee-common';
 
 import AppInfoList from '@components/AppInfoList.vue';
 import AppInfoListItem from '@components/AppInfoListItem.vue';
-
 import { formatLocale } from '@utils/dates';
-import type { GetContactData } from '@beabee/beabee-common';
+import { useI18n } from 'vue-i18n';
 
 const { t, n } = useI18n();
 

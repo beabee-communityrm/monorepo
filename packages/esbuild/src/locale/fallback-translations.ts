@@ -1,6 +1,8 @@
-import { join } from 'node:path';
-import { readJsonFile, mergeObjects } from './utils.ts';
 import type { LocaleOption } from '@beabee/locale';
+
+import { join } from 'node:path';
+
+import { mergeObjects, readJsonFile } from './utils.ts';
 
 /**
  * Recursively applies fallback translations to a locale

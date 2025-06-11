@@ -1,5 +1,6 @@
-import { describe, expect, test } from 'vitest';
 import { isPassword } from '@beabee/beabee-common';
+
+import { describe, expect, test } from 'vitest';
 
 describe('isPassword', () => {
   test('valid password', () => {

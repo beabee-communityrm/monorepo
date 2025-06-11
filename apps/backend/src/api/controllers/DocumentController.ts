@@ -1,4 +1,15 @@
+import { isSupportedDocumentType } from '@beabee/beabee-common';
+import type { UploadFileResponse } from '@beabee/beabee-common';
+import { MAX_FILE_SIZE_IN_BYTES } from '@beabee/beabee-common';
+import { config } from '@beabee/core/config';
+import { BadRequestError } from '@beabee/core/errors';
+import { UnsupportedFileType } from '@beabee/core/errors';
+import { Contact } from '@beabee/core/models';
+import { documentService } from '@beabee/core/services';
+import { convertMulterError } from '@beabee/core/utils/multer';
+
 import { Request, Response } from 'express';
+import { MulterError } from 'multer';
 import {
   Authorized,
   CurrentUser,
@@ -13,20 +24,9 @@ import {
   UnauthorizedError,
   UseBefore,
 } from 'routing-controllers';
-import { MulterError } from 'multer';
 
-import { documentService } from '@beabee/core/services';
-import { Contact } from '@beabee/core/models';
-import { BadRequestError } from '@beabee/core/errors';
-import { uploadMiddleware } from '../middlewares';
-import { config } from '@beabee/core/config';
-import { isSupportedDocumentType } from '@beabee/beabee-common';
 import { RateLimit } from '../decorators';
-import { UnsupportedFileType } from '@beabee/core/errors';
-
-import type { UploadFileResponse } from '@beabee/beabee-common';
-import { convertMulterError } from '@beabee/core/utils/multer';
-import { MAX_FILE_SIZE_IN_BYTES } from '@beabee/beabee-common';
+import { uploadMiddleware } from '../middlewares';
 
 @JsonController('/documents')
 export class DocumentController {

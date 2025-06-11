@@ -1,15 +1,14 @@
 import gocardless from '#lib/gocardless';
 import { log as mainLogger } from '#logging';
-
 import { JoinFlow } from '#models/index';
-
-import { PaymentFlowProvider } from './PaymentFlowProvider';
 import {
   CompletedPaymentFlow,
   CompletedPaymentFlowData,
   PaymentFlow,
   PaymentFlowData,
 } from '#type/index';
+
+import { PaymentFlowProvider } from './PaymentFlowProvider';
 
 const log = mainLogger.child({ app: 'gc-payment-flow-provider' });
 

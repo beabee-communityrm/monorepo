@@ -1,31 +1,29 @@
 import { GetContactWith, RuleGroup } from '@beabee/beabee-common';
-import { TransformPlainToInstance } from 'class-transformer';
-import { In, SelectQueryBuilder } from 'typeorm';
-
 import { createQueryBuilder, getRepository } from '@beabee/core/database';
-import PaymentService from '@beabee/core/services/PaymentService';
+import { UnauthorizedError } from '@beabee/core/errors';
 import { CalloutReviewer, Contact, ContactRole } from '@beabee/core/models';
+import ContactsService from '@beabee/core/services/ContactsService';
+import PaymentService from '@beabee/core/services/PaymentService';
+import { AuthInfo } from '@beabee/core/type';
+import { generatePassword } from '@beabee/core/utils/auth';
+import { batchSelect, batchUpdate } from '@beabee/core/utils/rules';
 
 import {
+  BatchUpdateContactDto,
+  BatchUpdateContactUpdatesDto,
   GetContactDto,
   GetContactOptsDto,
   ListContactsDto,
   UpdateContactDto,
-  BatchUpdateContactDto,
-  BatchUpdateContactUpdatesDto,
 } from '@api/dto/ContactDto';
 import { BaseContactTransformer } from '@api/transformers/BaseContactTransformer';
-import ContactRoleTransformer from '@api/transformers/ContactRoleTransformer';
 import ContactProfileTransformer from '@api/transformers/ContactProfileTransformer';
+import ContactRoleTransformer from '@api/transformers/ContactRoleTransformer';
+import { TransformPlainToInstance } from 'class-transformer';
+import { In, SelectQueryBuilder } from 'typeorm';
+import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 
 import contactTagTransformer from './ContactTagTransformer';
-import { batchSelect, batchUpdate } from '@beabee/core/utils/rules';
-
-import { AuthInfo } from '@beabee/core/type';
-import ContactsService from '@beabee/core/services/ContactsService';
-import { generatePassword } from '@beabee/core/utils/auth';
-import { UnauthorizedError } from '@beabee/core/errors';
-import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 
 /**
  * Transformer for Contact entities.

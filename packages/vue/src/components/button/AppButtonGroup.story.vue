@@ -1,15 +1,16 @@
 <script lang="ts" setup>
 import {
-  faUser,
-  faEdit,
-  faTrash,
-  faPlus,
   faDownload,
+  faEdit,
+  faPlus,
+  faTrash,
   faUpload,
+  faUser,
 } from '@fortawesome/free-solid-svg-icons';
-import AppButtonGroup from './AppButtonGroup.vue';
-import AppButton, { type ButtonVariant } from './AppButton.vue';
+
 import ActionButton from './ActionButton.vue';
+import AppButton, { type ButtonVariant } from './AppButton.vue';
+import AppButtonGroup from './AppButtonGroup.vue';
 
 const variants: ButtonVariant[] = [
   'primary',

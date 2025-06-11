@@ -14,25 +14,27 @@ import type {
   CalloutComponentSchema,
   CalloutResponseAnswersSlide,
 } from '@beabee/beabee-common';
-import { computed, onBeforeMount, ref, watch } from 'vue';
-import { Form } from '../../lib/formio';
-import { type FormChangeEvent } from './form-renderer.interface';
-import { config, dom } from '@fortawesome/fontawesome-svg-core';
 import { library } from '@beabee/vue/plugins/icons';
+
+import { config, dom } from '@fortawesome/fontawesome-svg-core';
 import {
+  type IconName,
   faCalendar,
+  faCamera,
   faCloudUpload,
   faCross,
+  faPlus,
   faRefresh,
   faRemove,
   faTimesCircle,
-  faCamera,
-  type IconName,
-  faPlus,
 } from '@fortawesome/free-solid-svg-icons';
-import { useI18n } from 'vue-i18n';
 import useVuelidate from '@vuelidate/core';
 import { sameAs } from '@vuelidate/validators';
+import { computed, onBeforeMount, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+import { Form } from '../../lib/formio';
+import { type FormChangeEvent } from './form-renderer.interface';
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: CalloutResponseAnswersSlide[string]): void;

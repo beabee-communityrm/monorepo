@@ -18,19 +18,21 @@
 </template>
 
 <script lang="ts" setup>
-import { client } from '@utils/api';
-import AppHeading from '../AppHeading.vue';
-import AppSubHeading from '../AppSubHeading.vue';
-import CalloutResponseComment from './CalloutResponseComment.vue';
-import CalloutResponseCommentForm from './CalloutResponseCommentForm.vue';
-import { type CommentFormData } from './calloutResponseComment.interface';
 import {
   type GetCalloutResponseCommentData,
   type GetCalloutResponseCommentsQuery,
   type Paginated,
 } from '@beabee/beabee-common';
+
+import { client } from '@utils/api';
 import { onBeforeMount, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import AppHeading from '../AppHeading.vue';
+import AppSubHeading from '../AppSubHeading.vue';
+import CalloutResponseComment from './CalloutResponseComment.vue';
+import CalloutResponseCommentForm from './CalloutResponseCommentForm.vue';
+import { type CommentFormData } from './calloutResponseComment.interface';
 
 const { t } = useI18n();
 

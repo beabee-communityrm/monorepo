@@ -1,45 +1,43 @@
 import {
-  GetCalloutFormSchema,
-  CalloutResponseAnswersSlide,
   CalloutAccess,
-  CreateCalloutData,
-  isFileUploadAnswer,
-  FormioFile,
+  CalloutResponseAnswersSlide,
   CalloutResponseGuestData,
   CalloutResponseNewsletterData,
+  CreateCalloutData,
+  FormioFile,
+  GetCalloutFormSchema,
   NewsletterStatus,
+  isFileUploadAnswer,
 } from '@beabee/beabee-common';
-import slugify from 'slugify';
+
 import { BadRequestError } from 'routing-controllers';
+import slugify from 'slugify';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { v4 as uuidv4 } from 'uuid';
 
-import ContactsService from '#services/ContactsService';
-import EmailService from '#services/EmailService';
-import NewsletterService from '#services/NewsletterService';
-import OptionsService from '#services/OptionsService';
-
 import { getRepository, runTransaction } from '#database';
-import { log as mainLogger } from '#logging';
-import { isDuplicateIndex } from '#utils/db';
-import { normalizeEmailAddress } from '#utils/email';
-
-import {
-  Contact,
-  Callout,
-  CalloutResponse,
-  CalloutResponseComment,
-  CalloutResponseTag,
-  CalloutTag,
-  CalloutVariant,
-  CalloutReviewer,
-} from '#models/index';
-
 import {
   DuplicateId,
   InvalidCalloutResponse,
   NotFoundError,
 } from '#errors/index';
+import { log as mainLogger } from '#logging';
+import {
+  Callout,
+  CalloutResponse,
+  CalloutResponseComment,
+  CalloutResponseTag,
+  CalloutReviewer,
+  CalloutTag,
+  CalloutVariant,
+  Contact,
+} from '#models/index';
+import ContactsService from '#services/ContactsService';
+import EmailService from '#services/EmailService';
+import NewsletterService from '#services/NewsletterService';
+import OptionsService from '#services/OptionsService';
+import { isDuplicateIndex } from '#utils/db';
+import { normalizeEmailAddress } from '#utils/email';
 
 const log = mainLogger.child({ app: 'callouts-service' });
 

@@ -1,10 +1,12 @@
-import type { Request, Response, NextFunction } from 'express';
+import { TooManyRequestsError } from '@beabee/core/errors';
+
+import type { NextFunction, Request, Response } from 'express';
 import {
+  IRateLimiterOptions,
   RateLimiterMemory,
   RateLimiterRes,
-  IRateLimiterOptions,
 } from 'rate-limiter-flexible';
-import { TooManyRequestsError } from '@beabee/core/errors';
+
 import type { RateLimitOptions } from '../../type';
 
 // Defaults merged with provided options

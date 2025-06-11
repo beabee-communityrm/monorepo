@@ -1,25 +1,26 @@
 import {
-  type EnumFilterArgs,
   type ArrayFilterArgs,
-  type OtherFilterArgs,
+  type EnumFilterArgs,
   type FilterType,
-  type RuleValue,
-  operatorsByType,
+  type OtherFilterArgs,
   type Rule,
-  operatorsByTypeMap,
-  type RuleOperator,
   type RuleGroup,
+  type RuleOperator,
+  type RuleValue,
   isRuleGroup,
+  operatorsByType,
+  operatorsByTypeMap,
 } from '@beabee/beabee-common';
-import type { Ref } from 'vue';
+
 import type {
-  FilterItemEnum,
-  FilterItemArray,
-  FilterItemOther,
   FilterItem,
-  RuleGroupWithEmpty,
+  FilterItemArray,
+  FilterItemEnum,
+  FilterItemOther,
   FilterItems,
+  RuleGroupWithEmpty,
 } from '@type';
+import type { Ref } from 'vue';
 
 interface LabelOpts {
   prefix: string;

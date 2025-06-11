@@ -12,8 +12,9 @@
 </template>
 <script lang="ts" setup>
 import { computed } from 'vue';
-import AppInput from '../../../forms/AppInput.vue';
+
 import { generalContent } from '../../../../store';
+import AppInput from '../../../forms/AppInput.vue';
 
 const emit = defineEmits(['update:modelValue']);
 const props = defineProps<{

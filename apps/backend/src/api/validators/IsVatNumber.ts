@@ -1,4 +1,4 @@
-import { ValidationOptions, ValidateBy, buildMessage } from 'class-validator';
+import { ValidateBy, ValidationOptions, buildMessage } from 'class-validator';
 import { checkVAT, countries } from 'jsvat-next';
 
 export default function IsVatNumber(

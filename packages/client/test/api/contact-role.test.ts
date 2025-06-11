@@ -1,14 +1,14 @@
-import { describe, expect, it, beforeAll, afterAll } from 'vitest';
-import { ContactClient, ContactRoleClient } from '@beabee/client';
 import {
   ContactRoleData,
   RoleTypeData,
   Serial,
   UpdateContactRoleData,
 } from '@beabee/beabee-common';
-import { addDays } from 'date-fns';
-
+import { ContactClient, ContactRoleClient } from '@beabee/client';
 import { API_KEY, HOST, PATH } from '@beabee/test-utils/vitest/env';
+
+import { addDays } from 'date-fns';
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
 describe('ContactRole API', () => {
   let contactClient: ContactClient;

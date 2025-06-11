@@ -2,8 +2,8 @@ import {
   CalloutAccess,
   CalloutCaptcha,
   CalloutComponentType,
-  type CreateCalloutData,
   type CalloutResponseAnswersSlide,
+  type CreateCalloutData,
 } from '@beabee/beabee-common';
 
 export const createTestCallout = (

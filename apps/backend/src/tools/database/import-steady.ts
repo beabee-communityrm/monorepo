@@ -6,18 +6,16 @@ import {
   ContributionType,
   NewsletterStatus,
 } from '@beabee/beabee-common';
-import { parse } from 'csv-parse';
-import { In } from 'typeorm';
-
 import { getRepository } from '@beabee/core/database';
+import { Contact, ContactRole } from '@beabee/core/models';
+import { ContactTagAssignment } from '@beabee/core/models';
 import { runApp } from '@beabee/core/server';
+import ContactsService from '@beabee/core/services/ContactsService';
 import { normalizeEmailAddress } from '@beabee/core/utils/email';
 
-import ContactsService from '@beabee/core/services/ContactsService';
-
-import { Contact, ContactRole } from '@beabee/core/models';
 import contactTagTransformer from '@api/transformers/ContactTagTransformer';
-import { ContactTagAssignment } from '@beabee/core/models';
+import { parse } from 'csv-parse';
+import { In } from 'typeorm';
 
 const headers = [
   'first_name',

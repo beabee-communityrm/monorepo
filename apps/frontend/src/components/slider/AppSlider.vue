@@ -50,13 +50,12 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue';
-
-import AppStepper from '../stepper/AppStepper.vue';
-
-import type { Ref } from 'vue';
 import type { AppSliderProps } from '@type/app-slider-props';
 import type { AppSliderSlideEventDetails } from '@type/app-slider-slide-event-details';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
+import type { Ref } from 'vue';
+
+import AppStepper from '../stepper/AppStepper.vue';
 
 const emit = defineEmits<{
   (e: 'slide', details: AppSliderSlideEventDetails): void;

@@ -1,4 +1,5 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
+
 import { addThenSetNotNull } from '#utils/db';
 
 export class AddExcerptAndImageToPoll1634125137636

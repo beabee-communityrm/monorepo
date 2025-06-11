@@ -60,17 +60,19 @@
 </template>
 
 <script lang="ts" setup>
-import { useI18n } from 'vue-i18n';
-import type { LocaleProp } from '@type';
-import type { EndMessageTabData } from '../ContentTab/SidebarTabContent/EndMessageTab.vue';
-import AppInput from '@components/forms/AppInput.vue';
 import { AppFormBox } from '@beabee/vue/components';
+
+import AppInput from '@components/forms/AppInput.vue';
 import RichTextEditor from '@components/rte/RichTextEditor.vue';
+import type { LocaleProp } from '@type';
 import {
-  updateLocalizedValue,
-  getLocalizedValueNoFallback,
   getLocalizedValueFallback,
+  getLocalizedValueNoFallback,
+  updateLocalizedValue,
 } from '@utils/callouts';
+import { useI18n } from 'vue-i18n';
+
+import type { EndMessageTabData } from '../ContentTab/SidebarTabContent/EndMessageTab.vue';
 
 const props = defineProps<{
   defaultLocale: string;

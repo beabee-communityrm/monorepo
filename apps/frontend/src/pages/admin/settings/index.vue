@@ -174,28 +174,25 @@ meta:
 </template>
 
 <script lang="ts" setup>
-import { onBeforeMount, reactive, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
-
-import { AppForm, AppCheckbox } from '@beabee/vue/components';
-import AppImageUpload from '@components/forms/AppImageUpload.vue';
-import AppInput from '@components/forms/AppInput.vue';
-import AppSelect from '@components/forms/AppSelect.vue';
-import AppTextArea from '@components/forms/AppTextArea.vue';
-import AppHeading from '@components/AppHeading.vue';
-import App2ColGrid from '@components/App2ColGrid.vue';
-import AppSubHeading from '@components/AppSubHeading.vue';
-import AppLinkList from '@components/forms/AppLinkList.vue';
-
-import { client } from '@utils/api';
-
-import { generalContent as storeGeneralContent } from '@store';
-
-import { localeItems } from '@lib/i18n';
 import type {
   ContentPaymentData,
   ContentShareData,
 } from '@beabee/beabee-common';
+import { AppCheckbox, AppForm } from '@beabee/vue/components';
+
+import App2ColGrid from '@components/App2ColGrid.vue';
+import AppHeading from '@components/AppHeading.vue';
+import AppSubHeading from '@components/AppSubHeading.vue';
+import AppImageUpload from '@components/forms/AppImageUpload.vue';
+import AppInput from '@components/forms/AppInput.vue';
+import AppLinkList from '@components/forms/AppLinkList.vue';
+import AppSelect from '@components/forms/AppSelect.vue';
+import AppTextArea from '@components/forms/AppTextArea.vue';
+import { localeItems } from '@lib/i18n';
+import { generalContent as storeGeneralContent } from '@store';
+import { client } from '@utils/api';
+import { onBeforeMount, reactive, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 

@@ -1,5 +1,6 @@
-import { describe, expect, test } from 'vitest';
 import { isType } from '@beabee/beabee-common';
+
+import { describe, expect, test } from 'vitest';
 
 describe('isType', () => {
   test('valid type - string', () => {

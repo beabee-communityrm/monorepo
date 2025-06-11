@@ -90,6 +90,10 @@
 </template>
 
 <script lang="ts" setup>
+import { AppButton } from '@beabee/vue/components';
+
+import AppExpandableBox from '@components/AppExpandableBox.vue';
+import env from '@env';
 import {
   faFacebook,
   faLinkedin,
@@ -102,11 +106,8 @@ import {
   faEnvelope,
   faShareNodes,
 } from '@fortawesome/free-solid-svg-icons';
-import { useI18n } from 'vue-i18n';
-import { AppButton } from '@beabee/vue/components';
-import AppExpandableBox from '@components/AppExpandableBox.vue';
 import { computed } from 'vue';
-import env from '@env';
+import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 

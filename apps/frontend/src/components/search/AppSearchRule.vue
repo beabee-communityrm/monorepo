@@ -24,8 +24,9 @@
 </template>
 <script lang="ts" setup>
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
-import type { SearchRuleEmits, SearchRuleProps } from './search.interface';
+
 import AppSearchRuleFilter from './AppSearchRuleFilter.vue';
+import type { SearchRuleEmits, SearchRuleProps } from './search.interface';
 
 const emit = defineEmits<SearchRuleEmits>();
 defineProps<SearchRuleProps>();

@@ -1,5 +1,5 @@
-import { slug } from './slug.js';
 import { ContributionPeriod } from '../data/index.js';
+import { slug } from './slug.js';
 
 /**
  * Check if the value is a valid angle.

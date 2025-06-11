@@ -1,7 +1,8 @@
-import { describe, expect, it, beforeAll } from 'vitest';
-import { ContentClient, ClientApiError } from '@beabee/client';
 import { ContentId, ContentJoinData } from '@beabee/beabee-common';
+import { ClientApiError, ContentClient } from '@beabee/client';
 import { API_KEY, HOST, PATH } from '@beabee/test-utils/vitest/env';
+
+import { beforeAll, describe, expect, it } from 'vitest';
 
 describe('Content API', () => {
   let contentClient: ContentClient;

@@ -1,11 +1,10 @@
-import { describe, expect, it, beforeAll, afterAll } from 'vitest';
-import { BeabeeClient } from '@beabee/client';
 import {
-  ItemStatus,
-  type GetCalloutsQuery,
   type CreateCalloutResponseCommentData,
   GetCalloutResponseWith,
+  type GetCalloutsQuery,
+  ItemStatus,
 } from '@beabee/beabee-common';
+import { BeabeeClient } from '@beabee/client';
 import {
   API_KEY,
   HOST,
@@ -13,10 +12,13 @@ import {
   TEST_USER_EMAIL,
   TEST_USER_PASSWORD,
 } from '@beabee/test-utils/vitest/env';
+
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+
 import { createTestCallout } from './data/callouts';
 import {
-  createTestCalloutResponseAnswers,
   createMinimalTestCalloutResponseAnswers,
+  createTestCalloutResponseAnswers,
 } from './data/callouts';
 
 describe('Callout API', () => {

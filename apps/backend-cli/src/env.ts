@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
-import { resolve } from 'node:path';
 import { existsSync } from 'node:fs';
+import { resolve } from 'node:path';
 
 const isRunningInDocker = () => existsSync('/.dockerenv');
 

@@ -22,11 +22,12 @@
 </template>
 
 <script lang="ts" setup>
-import { useI18n } from 'vue-i18n';
-import { faThumbsUp } from '@fortawesome/free-solid-svg-icons';
-import AppMessageBox from '@components/AppMessageBox.vue';
 import { CalloutAccess, type GetCalloutDataWith } from '@beabee/beabee-common';
+
+import AppMessageBox from '@components/AppMessageBox.vue';
+import { faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import { currentUser } from '@store/currentUser';
+import { useI18n } from 'vue-i18n';
 
 defineProps<{
   callout: GetCalloutDataWith<'form'>;

@@ -1,11 +1,11 @@
+import { getRepository } from '@beabee/core/database';
+import { ReferralGift } from '@beabee/core/models';
+import { wrapAsync } from '@beabee/core/utils/express';
+
 import express, { type Express, type Request, type Response } from 'express';
 import _ from 'lodash';
 
-import { getRepository } from '@beabee/core/database';
 import { hasNewModel, hasSchema, isAdmin } from '#core/middleware';
-import { wrapAsync } from '@beabee/core/utils/express';
-
-import { ReferralGift } from '@beabee/core/models';
 
 import { updateSchema } from './schemas.json';
 

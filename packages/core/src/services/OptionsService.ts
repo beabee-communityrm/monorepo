@@ -1,9 +1,8 @@
-import { getRepository } from '#database';
 import defaultOptions from '#data/options/defaults';
+import { getRepository } from '#database';
 import { log as mainLogger } from '#logging';
-import { networkCommunicatorService } from '#services/NetworkCommunicatorService';
-
 import { Option } from '#models/index';
+import { networkCommunicatorService } from '#services/NetworkCommunicatorService';
 
 export type OptionKey = keyof typeof defaultOptions;
 type OptionValue = string | boolean | number;

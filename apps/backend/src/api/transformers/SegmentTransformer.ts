@@ -1,9 +1,6 @@
-import {
-  RoleType,
-  SegmentFilterName,
-  segmentFilters,
-} from '@beabee/beabee-common';
-import { TransformPlainToInstance } from 'class-transformer';
+import { SegmentFilterName, segmentFilters } from '@beabee/beabee-common';
+import { Segment } from '@beabee/core/models';
+import { AuthInfo } from '@beabee/core/type';
 
 import {
   GetSegmentDto,
@@ -13,10 +10,7 @@ import {
 } from '@api/dto/SegmentDto';
 import { BaseTransformer } from '@api/transformers/BaseTransformer';
 import ContactTransformer from '@api/transformers/ContactTransformer';
-
-import { Segment } from '@beabee/core/models';
-
-import { AuthInfo } from '@beabee/core/type';
+import { TransformPlainToInstance } from 'class-transformer';
 
 class SegmentTransformer extends BaseTransformer<
   Segment,

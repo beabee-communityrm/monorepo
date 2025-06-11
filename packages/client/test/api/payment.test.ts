@@ -1,7 +1,8 @@
-import { beforeAll, describe, expect, it } from 'vitest';
-import { PaymentClient } from '@beabee/client';
 import type { GetPaymentsQuery } from '@beabee/beabee-common';
+import { PaymentClient } from '@beabee/client';
 import { API_KEY, HOST, PATH } from '@beabee/test-utils/vitest/env';
+
+import { beforeAll, describe, expect, it } from 'vitest';
 
 describe('PaymentClient', () => {
   let paymentClient: PaymentClient;

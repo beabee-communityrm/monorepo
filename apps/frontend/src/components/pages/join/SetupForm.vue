@@ -65,25 +65,24 @@
 </template>
 <script lang="ts" setup>
 import {
+  type ContentJoinSetupData,
   GetContactWith,
   NewsletterStatus,
-  type ContentJoinSetupData,
 } from '@beabee/beabee-common';
+import { AppForm } from '@beabee/vue/components';
+
+import AppAddress from '@components/AppAddress.vue';
+import AuthBox from '@components/AuthBox.vue';
+import ContactBasicFields from '@components/contact/ContactBasicFields.vue';
+import ContactMailOptIn from '@components/contact/ContactMailOptIn.vue';
+import AppInput from '@components/forms/AppInput.vue';
+import NewsletterOptIn from '@components/newsletter/NewsletterOptIn.vue';
+import { client } from '@utils/api';
 import useVuelidate from '@vuelidate/core';
 import { computed, reactive } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import AppAddress from '@components/AppAddress.vue';
-import ContactBasicFields from '@components/contact/ContactBasicFields.vue';
-import ContactMailOptIn from '@components/contact/ContactMailOptIn.vue';
-import NewsletterOptIn from '@components/newsletter/NewsletterOptIn.vue';
-import AuthBox from '@components/AuthBox.vue';
-import { AppForm } from '@beabee/vue/components';
-
 import { type SetupContactData } from './join.interface';
-
-import { client } from '@utils/api';
-import AppInput from '@components/forms/AppInput.vue';
 
 const props = defineProps<{
   setupContent: ContentJoinSetupData;

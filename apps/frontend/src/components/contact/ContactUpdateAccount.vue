@@ -90,20 +90,22 @@
 </template>
 <script lang="ts" setup>
 import { GetContactWith, NewsletterStatus } from '@beabee/beabee-common';
-import { computed, reactive, ref, toRef, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
-import AppAddress from '../AppAddress.vue';
-import ContactBasicFields from './ContactBasicFields.vue';
-import ContactMailOptIn from './ContactMailOptIn.vue';
-import AppHeading from '../AppHeading.vue';
-import { client } from '@utils/api';
 import {
   AppCheckbox,
-  AppRadioGroup,
-  AppNotification,
   AppForm,
+  AppNotification,
+  AppRadioGroup,
 } from '@beabee/vue/components';
+
 import AppInput from '@components/forms/AppInput.vue';
+import { client } from '@utils/api';
+import { computed, reactive, ref, toRef, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+import AppAddress from '../AppAddress.vue';
+import AppHeading from '../AppHeading.vue';
+import ContactBasicFields from './ContactBasicFields.vue';
+import ContactMailOptIn from './ContactMailOptIn.vue';
 
 const props = defineProps<{
   id: string;

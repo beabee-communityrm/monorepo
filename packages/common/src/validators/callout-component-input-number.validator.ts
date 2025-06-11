@@ -1,10 +1,9 @@
-import { isNumber, isNumberInRange } from '../utils/index.js';
-
 import type {
   CalloutComponentInputNumberSchema,
   CalloutResponseAnswer,
   ValidatorCalloutComponent,
 } from '../types/index.js';
+import { isNumber, isNumberInRange } from '../utils/index.js';
 
 export const calloutComponentInputNumberValidator: ValidatorCalloutComponent<
   CalloutComponentInputNumberSchema

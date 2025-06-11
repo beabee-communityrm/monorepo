@@ -1,7 +1,8 @@
 import {
-  CalloutComponentType,
   type CalloutComponentInputTextAreaSchema,
+  CalloutComponentType,
 } from '@beabee/beabee-common';
+
 import { calloutComponentValidateText1 } from './validate-rules/callout-component-validate-text-1.js';
 
 export const calloutTextarea1Form: CalloutComponentInputTextAreaSchema = {

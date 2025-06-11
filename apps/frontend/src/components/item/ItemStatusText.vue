@@ -27,13 +27,11 @@
 
 <script lang="ts" setup>
 import { ItemStatus } from '@beabee/beabee-common';
-import { useI18n } from 'vue-i18n';
-
-import { formatDistanceLocale } from '@utils/dates';
 
 import AppItemStatus from '@components/AppItemStatus.vue';
-
 import type { ItemWithStatus } from '@type';
+import { formatDistanceLocale } from '@utils/dates';
+import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
