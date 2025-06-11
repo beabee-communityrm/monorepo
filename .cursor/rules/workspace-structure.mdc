@@ -1,3 +1,8 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
 This project uses yarn workspaces, the project-internal yarn packages are stored in the folders `packages/` and `apps/`, where only the packages in the folder `packages/` should be imported. If files are to be imported from one package into an app or another package, the package name must be used for this purpose.
 
 We currently have the following yarn packages which can be imported:
