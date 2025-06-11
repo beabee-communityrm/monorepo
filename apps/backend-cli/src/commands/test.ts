@@ -1,5 +1,4 @@
 import type { CommandModule } from 'yargs';
-import { listTestUsers } from '../actions/test/list-users.js';
 
 export const testCommand: CommandModule = {
   command: 'test <action>',
@@ -14,7 +13,10 @@ export const testCommand: CommandModule = {
           description: 'Run without making changes',
           default: false,
         }),
-      handler: (argv) => listTestUsers(argv.dryRun),
+      handler: async (argv) => {
+        const { listTestUsers } = await import('../actions/test/list-users.js');
+        return listTestUsers(argv.dryRun);
+      },
     }),
   handler: () => {},
 };

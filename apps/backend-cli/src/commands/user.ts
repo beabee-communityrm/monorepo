@@ -1,7 +1,4 @@
 import type { CommandModule, Argv } from 'yargs';
-import { createUser } from '../actions/user/create.js';
-import { deleteUser } from '../actions/user/delete.js';
-import { listUsers } from '../actions/user/list.js';
 import type { CreateUserArgs } from '../types/index.js';
 import type { ArgumentsCamelCase } from 'yargs';
 
@@ -18,7 +15,10 @@ export const userCommand: CommandModule = {
             type: 'string',
             description: 'Filter by email',
           }),
-        handler: (argv) => listUsers(argv.email as string | undefined),
+        handler: async (argv) => {
+          const { listUsers } = await import('../actions/user/list.js');
+          return listUsers(argv.email as string | undefined);
+        },
       })
       .command({
         command: 'create',
@@ -63,8 +63,12 @@ export const userCommand: CommandModule = {
               default: 'superadmin',
             }) as Argv<CreateUserArgs>;
         },
-        handler: (argv: ArgumentsCamelCase<CreateUserArgs>) => createUser(argv),
+        handler: async (argv: ArgumentsCamelCase<CreateUserArgs>) => {
+          const { createUser } = await import('../actions/user/create.js');
+          return createUser(argv);
+        },
       })
+
       .command({
         command: 'delete <email>',
         describe: 'Permanently delete a user',
@@ -74,7 +78,10 @@ export const userCommand: CommandModule = {
             description: 'Email of the user to delete',
             demandOption: true,
           }),
-        handler: (argv) => deleteUser(argv.email),
+        handler: async (argv) => {
+          const { deleteUser } = await import('../actions/user/delete.js');
+          return deleteUser(argv.email);
+        },
       });
   },
   handler: () => {},
