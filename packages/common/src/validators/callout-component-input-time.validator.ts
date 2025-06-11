@@ -1,8 +1,8 @@
 import type {
   CalloutComponentInputTimeSchema,
   CalloutResponseAnswer,
-  ValidatorCalloutComponent
-} from "../types/index.js";
+  ValidatorCalloutComponent,
+} from '../types/index.js';
 
 export const calloutComponentInputTimeValidator: ValidatorCalloutComponent<
   CalloutComponentInputTimeSchema

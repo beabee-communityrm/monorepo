@@ -4,14 +4,14 @@ import {
   Entity,
   ManyToOne,
   OneToMany,
-  PrimaryGeneratedColumn
-} from "typeorm";
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
-import type { Contact, ProjectContact } from "./index";
+import type { Contact, ProjectContact } from './index';
 
 @Entity()
 export class Project {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id!: string;
 
   @CreateDateColumn()
@@ -19,7 +19,7 @@ export class Project {
 
   @Column({ type: String, nullable: true })
   ownerId!: string | null;
-  @ManyToOne("Contact", { nullable: true })
+  @ManyToOne('Contact', { nullable: true })
   owner!: Contact | null;
 
   @Column()
@@ -34,7 +34,7 @@ export class Project {
   @Column({ type: String, nullable: true })
   groupName!: string | null;
 
-  @OneToMany("ProjectContact", "project")
+  @OneToMany('ProjectContact', 'project')
   contacts!: ProjectContact[];
 
   contactCount?: number;

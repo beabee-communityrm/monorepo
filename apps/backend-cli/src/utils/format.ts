@@ -1,4 +1,4 @@
-import chalk from "chalk";
+import chalk from 'chalk';
 
 /**
  * Format file size in human readable format
@@ -6,10 +6,10 @@ import chalk from "chalk";
  * @returns Formatted file size
  */
 export function formatFileSize(bytes: number): string {
-  if (bytes < 1024) return bytes + " bytes";
-  else if (bytes < 1048576) return (bytes / 1024).toFixed(2) + " KB";
-  else if (bytes < 1073741824) return (bytes / 1048576).toFixed(2) + " MB";
-  else return (bytes / 1073741824).toFixed(2) + " GB";
+  if (bytes < 1024) return bytes + ' bytes';
+  else if (bytes < 1048576) return (bytes / 1024).toFixed(2) + ' KB';
+  else if (bytes < 1073741824) return (bytes / 1048576).toFixed(2) + ' MB';
+  else return (bytes / 1073741824).toFixed(2) + ' GB';
 }
 
 /**

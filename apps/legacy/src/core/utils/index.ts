@@ -1,12 +1,12 @@
-import { NextFunction, Request, RequestHandler, Response } from "express";
+import { NextFunction, Request, RequestHandler, Response } from 'express';
 
-import { AuthInfo } from "@beabee/core/type";
+import { AuthInfo } from '@beabee/core/type';
 
 export function userToAuth(user: Express.User): AuthInfo {
   return {
-    method: "user",
+    method: 'user',
     contact: user,
-    roles: user.activeRoles
+    roles: user.activeRoles,
   };
 }
 
@@ -32,7 +32,7 @@ export function hasUser(
 
 export function isSocialScraper(req: Request): boolean {
   return /^(Twitterbot|facebookexternalhit)/.test(
-    req.headers["user-agent"] || ""
+    req.headers['user-agent'] || ''
   );
 }
 
@@ -49,10 +49,10 @@ export function createDateTime(
   date: string | undefined,
   time: string | undefined
 ): Date | null {
-  return date && time ? new Date(date + "T" + time) : null;
+  return date && time ? new Date(date + 'T' + time) : null;
 }
 
 // From https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions#escaping
 export function escapeRegExp(s: string) {
-  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // $& means the whole matched string
+  return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
 }

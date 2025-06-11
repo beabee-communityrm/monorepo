@@ -1,3 +1,3 @@
-import type { PaginatedQuery } from "./index.js";
+import type { PaginatedQuery } from './index.js';
 
 export type GetCalloutResponsesQuery = PaginatedQuery; // TODO: constrain fields

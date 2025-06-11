@@ -1,17 +1,17 @@
-import { Type } from "class-transformer";
+import { Type } from 'class-transformer';
 import {
   IsEnum,
   IsIn,
   IsNumber,
   IsOptional,
   IsString,
-  ValidateNested
-} from "class-validator";
+  ValidateNested,
+} from 'class-validator';
 
-import { GetPaginatedQuery, GetPaginatedRuleGroup } from "@api/dto/BaseDto";
+import { GetPaginatedQuery, GetPaginatedRuleGroup } from '@api/dto/BaseDto';
 
 export enum GetSegmentWith {
-  contactCount = "contactCount"
+  contactCount = 'contactCount',
 }
 
 export class CreateSegmentDto {
@@ -51,6 +51,6 @@ export class ListSegmentsDto extends GetPaginatedQuery {
   with?: GetSegmentWith[];
 
   @IsOptional()
-  @IsIn(["name", "description", "order"])
+  @IsIn(['name', 'description', 'order'])
   sort?: string;
 }

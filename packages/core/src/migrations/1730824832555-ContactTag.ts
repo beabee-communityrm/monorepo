@@ -1,7 +1,7 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class ContactTag1730824832555 implements MigrationInterface {
-  name = "ContactTag1730824832555";
+  name = 'ContactTag1730824832555';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     // Create tables

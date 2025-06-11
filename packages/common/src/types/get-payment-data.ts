@@ -1,4 +1,4 @@
-import type { PaymentStatus } from "../data/index.js";
+import type { PaymentStatus } from '../data/index.js';
 
 export interface GetPaymentData {
   chargeDate: Date;

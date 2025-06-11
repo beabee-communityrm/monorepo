@@ -1,14 +1,14 @@
-import { getRepository } from "#database";
-import defaultOptions from "#data/options/defaults";
-import { log as mainLogger } from "#logging";
-import { networkCommunicatorService } from "#services/NetworkCommunicatorService";
+import { getRepository } from '#database';
+import defaultOptions from '#data/options/defaults';
+import { log as mainLogger } from '#logging';
+import { networkCommunicatorService } from '#services/NetworkCommunicatorService';
 
-import { Option } from "#models/index";
+import { Option } from '#models/index';
 
 export type OptionKey = keyof typeof defaultOptions;
 type OptionValue = string | boolean | number;
 
-const log = mainLogger.child({ app: "options-service" });
+const log = mainLogger.child({ app: 'options-service' });
 
 interface OptionWithDefault extends Option {
   default: boolean;
@@ -22,7 +22,7 @@ class OptionsService {
   private optionCache: Record<OptionKey, OptionWithDefault> | undefined;
 
   constructor() {
-    networkCommunicatorService.on("reload", this.reload.bind(this));
+    networkCommunicatorService.on('reload', this.reload.bind(this));
   }
 
   isKey(s: any): s is OptionKey {
@@ -30,13 +30,13 @@ class OptionsService {
   }
 
   async reload(): Promise<void> {
-    log.info("Reload cache");
+    log.info('Reload cache');
     const newCache: Partial<Record<OptionKey, OptionWithDefault>> = {};
     for (const key of Object.keys(defaultOptions)) {
       newCache[key as OptionKey] = {
         key,
         value: defaultOptions[key as OptionKey],
-        default: true
+        default: true,
       };
     }
     (await getRepository(Option).find()).map((option) => {
@@ -50,7 +50,7 @@ class OptionsService {
 
   get(key: OptionKey): OptionWithDefault {
     if (!this.optionCache) {
-      throw new Error("OptionsService not initialised");
+      throw new Error('OptionsService not initialised');
     }
     return this.optionCache[key];
   }
@@ -65,7 +65,7 @@ class OptionsService {
 
   getBool(key: OptionKey): boolean {
     switch (this.getText(key)) {
-      case "true":
+      case 'true':
         return true;
       default:
         return false;
@@ -74,7 +74,7 @@ class OptionsService {
 
   getList(key: OptionKey): string[] {
     const text = this.getText(key);
-    return text === "" ? [] : text.split(",").map((s: string) => s.trim());
+    return text === '' ? [] : text.split(',').map((s: string) => s.trim());
   }
 
   getJSON(key: OptionKey): any {
@@ -83,7 +83,7 @@ class OptionsService {
 
   getAll(): Record<OptionKey, OptionWithDefault> {
     if (!this.optionCache) {
-      throw new Error("OptionsService not initialised");
+      throw new Error('OptionsService not initialised');
     }
     return this.optionCache;
   }
@@ -108,7 +108,7 @@ class OptionsService {
 
     if (options.length) {
       await getRepository(Option).save(options);
-      await networkCommunicatorService.notifyAll("reload");
+      await networkCommunicatorService.notifyAll('reload');
     }
   }
 
@@ -122,7 +122,7 @@ class OptionsService {
       option.value = defaultOptions[key];
       option.default = true;
       await getRepository(Option).delete(key);
-      await networkCommunicatorService.notifyAll("reload");
+      await networkCommunicatorService.notifyAll('reload');
     }
   }
 }

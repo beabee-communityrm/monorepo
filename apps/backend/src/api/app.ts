@@ -1,34 +1,34 @@
-import "module-alias/register";
-import "reflect-metadata";
+import 'module-alias/register';
+import 'reflect-metadata';
 
-import { RoleType } from "@beabee/beabee-common";
-import cookie from "cookie-parser";
-import cors from "cors";
-import express, { ErrorRequestHandler, Request } from "express";
+import { RoleType } from '@beabee/beabee-common';
+import cookie from 'cookie-parser';
+import cors from 'cors';
+import express, { ErrorRequestHandler, Request } from 'express';
 import {
   HttpError,
   InternalServerError,
   NotFoundError,
-  useExpressServer
-} from "routing-controllers";
+  useExpressServer,
+} from 'routing-controllers';
 
-import * as Controllers from "./controllers";
+import * as Controllers from './controllers';
 
-import { ValidateResponseInterceptor } from "./interceptors/ValidateResponseInterceptor";
+import { ValidateResponseInterceptor } from './interceptors/ValidateResponseInterceptor';
 
-import { AuthMiddleware } from "./middlewares";
+import { AuthMiddleware } from './middlewares';
 
 import {
   log as mainLogger,
   requestErrorLogger,
-  requestLogger
-} from "@beabee/core/logging";
-import sessions from "@core/lib/sessions";
-import { initApp, startServer } from "@beabee/core/server";
+  requestLogger,
+} from '@beabee/core/logging';
+import sessions from '@core/lib/sessions';
+import { initApp, startServer } from '@beabee/core/server';
 
-import { Contact } from "@beabee/core/models";
+import { Contact } from '@beabee/core/models';
 
-import config from "@beabee/core/config";
+import config from '@beabee/core/config';
 
 function currentUserChecker(action: { request: Request }): Contact | undefined {
   return action.request.auth?.contact;
@@ -54,7 +54,7 @@ initApp()
     sessions(app);
 
     useExpressServer(app, {
-      routePrefix: "/1.0",
+      routePrefix: '/1.0',
       controllers: Object.values(Controllers),
       interceptors: [ValidateResponseInterceptor],
       middlewares: [AuthMiddleware],
@@ -66,15 +66,15 @@ initApp()
         whitelist: true,
         validationError: {
           target: false,
-          value: false
-        }
+          value: false,
+        },
       },
       defaults: {
         paramOptions: {
-          required: true
-        }
+          required: true,
+        },
       },
-      defaultErrorHandler: false
+      defaultErrorHandler: false,
     });
 
     app.use((req, res) => {
@@ -83,22 +83,22 @@ initApp()
       }
     });
 
-    const log = mainLogger.child({ app: "response" });
+    const log = mainLogger.child({ app: 'response' });
 
     app.use(function (error, req, res, next) {
       if (error instanceof HttpError && error.httpCode < 500) {
         res.status(error.httpCode).send(error);
         if (error.httpCode === 400) {
-          log.notice("Bad request, probably a validation error", {
+          log.notice('Bad request, probably a validation error', {
             body: req.body,
             query: req.query,
             stack: error.stack,
-            error
+            error,
           });
         }
       } else {
-        log.error("Unhandled error: ", error);
-        res.status(500).send(new InternalServerError("Unhandled error"));
+        log.error('Unhandled error: ', error);
+        res.status(500).send(new InternalServerError('Unhandled error'));
       }
     } as ErrorRequestHandler);
 
@@ -107,5 +107,5 @@ initApp()
     startServer(app);
   })
   .catch((err) => {
-    mainLogger.error("Error during initialization", err);
+    mainLogger.error('Error during initialization', err);
   });

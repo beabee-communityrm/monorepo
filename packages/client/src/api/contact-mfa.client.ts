@@ -1,13 +1,13 @@
-import { BaseClient } from "./base.client.js";
-import { cleanUrl } from "../utils/index.js";
+import { BaseClient } from './base.client.js';
+import { cleanUrl } from '../utils/index.js';
 
-import type { BaseClientOptions } from "../types/index.js";
+import type { BaseClientOptions } from '../types/index.js';
 import type {
   CreateContactMfaData,
   DeleteContactMfaData,
   GetContactMfaData,
-  Serial
-} from "@beabee/beabee-common";
+  Serial,
+} from '@beabee/beabee-common';
 
 /**
  * Client for managing contact MFA operations.
@@ -16,7 +16,7 @@ export class ContactMfaClient extends BaseClient {
   constructor(protected override readonly options: BaseClientOptions) {
     super({
       ...options,
-      path: cleanUrl(options.path + "/contact")
+      path: cleanUrl(options.path + '/contact'),
     });
   }
 

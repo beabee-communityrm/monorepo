@@ -1,10 +1,10 @@
-import { isURL } from "../utils/index.js";
+import { isURL } from '../utils/index.js';
 
 import type {
   CalloutComponentInputUrlSchema,
   CalloutResponseAnswer,
-  ValidatorCalloutComponent
-} from "../types/index.js";
+  ValidatorCalloutComponent,
+} from '../types/index.js';
 
 export const calloutComponentInputUrlValidator: ValidatorCalloutComponent<
   CalloutComponentInputUrlSchema

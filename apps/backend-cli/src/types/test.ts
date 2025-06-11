@@ -1,4 +1,4 @@
-import type { Brackets } from "typeorm";
+import type { Brackets } from 'typeorm';
 
 export interface TestUserFilters {
   isActive: Brackets;

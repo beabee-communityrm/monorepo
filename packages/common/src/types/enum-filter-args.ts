@@ -1,7 +1,7 @@
-import type { BaseFilterArgs } from "./index.js";
+import type { BaseFilterArgs } from './index.js';
 
 export interface EnumFilterArgs<T extends readonly string[]>
   extends BaseFilterArgs {
-  type: "enum";
+  type: 'enum';
   options: T;
 }

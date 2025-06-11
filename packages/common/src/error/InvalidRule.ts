@@ -1,4 +1,4 @@
-import type { Rule } from "../types/index.js";
+import type { Rule } from '../types/index.js';
 
 export class InvalidRule extends Error {
   constructor(

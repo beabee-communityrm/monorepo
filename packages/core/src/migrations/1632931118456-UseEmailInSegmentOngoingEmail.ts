@@ -1,9 +1,9 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class UseEmailInSegmentOngoingEmail1632931118456
   implements MigrationInterface
 {
-  name = "UseEmailInSegmentOngoingEmail1632931118456";
+  name = 'UseEmailInSegmentOngoingEmail1632931118456';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(

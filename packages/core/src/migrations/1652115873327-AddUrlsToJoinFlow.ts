@@ -1,13 +1,13 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
-import { addThenSetNotNull } from "#utils/db";
+import { MigrationInterface, QueryRunner } from 'typeorm';
+import { addThenSetNotNull } from '#utils/db';
 
 export class AddUrlsToJoinFlow1652115873327 implements MigrationInterface {
-  name = "AddUrlsToJoinFlow1652115873327";
+  name = 'AddUrlsToJoinFlow1652115873327';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
-    await addThenSetNotNull(queryRunner, "join_flow", "loginUrl");
-    await addThenSetNotNull(queryRunner, "join_flow", "setPasswordUrl");
-    await addThenSetNotNull(queryRunner, "join_flow", "confirmUrl");
+    await addThenSetNotNull(queryRunner, 'join_flow', 'loginUrl');
+    await addThenSetNotNull(queryRunner, 'join_flow', 'setPasswordUrl');
+    await addThenSetNotNull(queryRunner, 'join_flow', 'confirmUrl');
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

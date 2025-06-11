@@ -3,14 +3,14 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
-  PrimaryGeneratedColumn
-} from "typeorm";
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
-import type { Segment, Email } from "./index";
+import type { Segment, Email } from './index';
 
 @Entity()
 export class SegmentOngoingEmail {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id!: string;
 
   @CreateDateColumn()
@@ -18,7 +18,7 @@ export class SegmentOngoingEmail {
 
   @Column()
   segmentId!: string;
-  @ManyToOne("Segment")
+  @ManyToOne('Segment')
   segment!: Segment;
 
   @Column()
@@ -26,7 +26,7 @@ export class SegmentOngoingEmail {
 
   @Column()
   emailId!: string;
-  @ManyToOne("Email")
+  @ManyToOne('Email')
   email!: Email;
 
   @Column({ default: false })

@@ -1,19 +1,19 @@
-import express, { type Express } from "express";
-import Papa from "papaparse";
-import { ObjectLiteral, SelectQueryBuilder } from "typeorm";
+import express, { type Express } from 'express';
+import Papa from 'papaparse';
+import { ObjectLiteral, SelectQueryBuilder } from 'typeorm';
 
-import { getRepository } from "@beabee/core/database";
-import { hasNewModel, hasSchema, isAdmin } from "#core/middleware";
-import { wrapAsync } from "@beabee/core/utils/express";
-import { Param, parseParams } from "#core/utils/params";
+import { getRepository } from '@beabee/core/database';
+import { hasNewModel, hasSchema, isAdmin } from '#core/middleware';
+import { wrapAsync } from '@beabee/core/utils/express';
+import { Param, parseParams } from '#core/utils/params';
 
-import { Export, ExportItem } from "@beabee/core/models";
+import { Export, ExportItem } from '@beabee/core/models';
 
-import { ExportTypeId } from "@beabee/core/type";
+import { ExportTypeId } from '@beabee/core/type';
 
-import { createSchema, updateSchema } from "./schemas.json";
+import { createSchema, updateSchema } from './schemas.json';
 
-import ExportTypes from "./exports";
+import ExportTypes from './exports';
 
 export interface ExportType<T extends ObjectLiteral> {
   exportName: string;
@@ -32,22 +32,22 @@ interface CreateSchema {
 }
 
 interface AddItemSchema {
-  action: "add";
+  action: 'add';
 }
 
 interface UpdateItemsSchema {
-  action: "update";
+  action: 'update';
   oldStatus: string;
   newStatus: string;
 }
 
 interface ExportSchema {
-  action: "export";
+  action: 'export';
   status?: string;
 }
 
 interface DeleteSchema {
-  action: "delete";
+  action: 'delete';
 }
 
 type UpdateSchema =
@@ -68,18 +68,18 @@ async function schemaToExport(data: CreateSchema): Promise<Export> {
 
 const app: Express = express();
 
-app.set("views", __dirname + "/views");
+app.set('views', __dirname + '/views');
 
 app.use(isAdmin);
 
 app.get(
-  "/",
+  '/',
   wrapAsync(async function (req, res) {
     const exports = await getRepository(Export).find();
 
     const exportsByType = Object.keys(ExportTypes).map((type) => ({
       exportName: new ExportTypes[type as ExportTypeId]().exportName,
-      exports: exports.filter((e) => e.type === type)
+      exports: exports.filter((e) => e.type === type),
     }));
 
     const exportTypesWithParams = [];
@@ -90,107 +90,107 @@ app.get(
       exportTypesWithParams.push(exportType);
     }
 
-    res.render("index", { exportsByType, exportTypesWithParams });
+    res.render('index', { exportsByType, exportTypesWithParams });
   })
 );
 
 app.post(
-  "/",
+  '/',
   hasSchema(createSchema).orFlash,
   wrapAsync(async function (req, res) {
     const exportDetails = await getRepository(Export).save(
       await schemaToExport(req.body)
     );
-    req.flash("success", "exports-created");
-    res.redirect("/tools/exports/" + exportDetails.id);
+    req.flash('success', 'exports-created');
+    res.redirect('/tools/exports/' + exportDetails.id);
   })
 );
 
 app.get(
-  "/:id",
-  hasNewModel(Export, "id"),
+  '/:id',
+  hasNewModel(Export, 'id'),
   wrapAsync(async function (req, res) {
     const exportDetails = req.model as Export;
     const exportType = new ExportTypes[exportDetails.type](exportDetails);
 
     const exportItems = await getRepository(ExportItem).find({
-      where: { exportId: exportDetails.id }
+      where: { exportId: exportDetails.id },
     });
     const newItemIds = await exportType.getNewItemIds();
 
     const exportItemsByStatus = exportType.itemStatuses.map((status) => ({
       name: status,
-      items: exportItems.filter((item) => item.status === status)
+      items: exportItems.filter((item) => item.status === status),
     }));
 
-    res.render("export", {
+    res.render('export', {
       exportDetails,
       exportType,
       exportItems,
       exportItemsByStatus,
-      newItemCount: newItemIds.length
+      newItemCount: newItemIds.length,
     });
   })
 );
 
 app.get(
-  "/:id/items/:status",
-  hasNewModel(Export, "id"),
+  '/:id/items/:status',
+  hasNewModel(Export, 'id'),
   wrapAsync(async (req, res) => {
     const exportDetails = req.model as Export;
     const exportType = new ExportTypes[exportDetails.type](exportDetails);
 
     const items =
-      req.params.status === "new"
+      req.params.status === 'new'
         ? await exportType.getNewItems()
         : await exportType.getItems(req.params.status);
 
     const exportData = await exportType.getExport(items as any);
 
     const fields =
-      "fields" in exportData ? exportData.fields : Object.keys(exportData[0]);
+      'fields' in exportData ? exportData.fields : Object.keys(exportData[0]);
     const data =
-      "data" in exportData
+      'data' in exportData
         ? exportData.data
         : exportData.map((row) => fields.map((field) => row[field]));
 
-    res.render("items", {
+    res.render('items', {
       fields,
       data,
       exportDetails,
-      status: req.params.status
+      status: req.params.status,
     });
   })
 );
 
 app.post(
-  "/:id",
-  [hasSchema(updateSchema).orFlash, hasNewModel(Export, "id")],
+  '/:id',
+  [hasSchema(updateSchema).orFlash, hasNewModel(Export, 'id')],
   wrapAsync(async function (req, res) {
     const data = req.body as UpdateSchema;
     const exportDetails = req.model as Export;
     const exportType = new ExportTypes[exportDetails.type](exportDetails);
 
-    if (data.action === "add") {
+    if (data.action === 'add') {
       const newItemIds = await exportType.getNewItemIds();
       const newExportItems = newItemIds.map((id) => ({
         itemId: id,
         export: exportDetails,
-        status: exportType.itemStatuses[0]
+        status: exportType.itemStatuses[0],
       }));
       await getRepository(ExportItem).insert(newExportItems);
 
-      req.flash("success", "exports-added");
-      res.redirect("/tools/exports/" + exportDetails.id);
-    } else if (data.action === "update") {
+      req.flash('success', 'exports-added');
+      res.redirect('/tools/exports/' + exportDetails.id);
+    } else if (data.action === 'update') {
       await getRepository(ExportItem).update(
         { exportId: exportDetails.id, status: data.oldStatus },
         { status: data.newStatus }
       );
 
-      req.flash("success", "exports-updated");
-      res.redirect("/tools/exports/" + exportDetails.id);
-    } else if (data.action === "export") {
+      req.flash('success', 'exports-updated');
+      res.redirect('/tools/exports/' + exportDetails.id);
+    } else if (data.action === 'export') {
       const items = await exportType.getItems(data.status);
 
       const exportName = `export-${
@@ -199,11 +199,11 @@ app.post(
       const exportData = await exportType.getExport(items as any);
 
       res.attachment(exportName).send(Papa.unparse(exportData as any)); // TODO: fix
-    } else if (data.action === "delete") {
+    } else if (data.action === 'delete') {
       await getRepository(ExportItem).delete({ exportId: exportDetails.id });
       await getRepository(Export).delete(exportDetails.id);
-      req.flash("success", "exports-deleted");
-      res.redirect("/tools/exports");
+      req.flash('success', 'exports-deleted');
+      res.redirect('/tools/exports');
     }
   })
 );

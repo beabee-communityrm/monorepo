@@ -1,37 +1,37 @@
-import { Address, ContributionType } from "@beabee/beabee-common";
-import { SelectQueryBuilder } from "typeorm";
+import { Address, ContributionType } from '@beabee/beabee-common';
+import { SelectQueryBuilder } from 'typeorm';
 
-import { createQueryBuilder } from "@beabee/core/database";
+import { createQueryBuilder } from '@beabee/core/database';
 
-import { GiftFlow } from "@beabee/core/models";
+import { GiftFlow } from '@beabee/core/models';
 
-import BaseExport, { ExportResult } from "./BaseExport";
+import BaseExport, { ExportResult } from './BaseExport';
 
 function addressFields(address: Address | null) {
   return {
-    GifteeAddress1: address?.line1 || "",
-    GifteeAddress2: address?.line2 || "",
-    GifteeCity: address?.city || "",
-    GifteePostcode: address?.postcode?.trim().toUpperCase() || ""
+    GifteeAddress1: address?.line1 || '',
+    GifteeAddress2: address?.line2 || '',
+    GifteeCity: address?.city || '',
+    GifteePostcode: address?.postcode?.trim().toUpperCase() || '',
   };
 }
 
 export default class GiftsExport extends BaseExport<GiftFlow> {
-  exportName = "Gifts export";
-  itemStatuses = ["added", "seen", "sent"];
-  itemName = "gifts";
-  idColumn = "g.id";
+  exportName = 'Gifts export';
+  itemStatuses = ['added', 'seen', 'sent'];
+  itemName = 'gifts';
+  idColumn = 'g.id';
 
   protected get query(): SelectQueryBuilder<GiftFlow> {
-    return createQueryBuilder(GiftFlow, "g")
-      .leftJoinAndSelect("g.giftee", "giftee")
-      .leftJoinAndSelect("giftee.roles", "roles")
-      .leftJoinAndSelect("giftee.profile", "profile")
-      .orderBy("g.date");
+    return createQueryBuilder(GiftFlow, 'g')
+      .leftJoinAndSelect('g.giftee', 'giftee')
+      .leftJoinAndSelect('giftee.roles', 'roles')
+      .leftJoinAndSelect('giftee.profile', 'profile')
+      .orderBy('g.date');
   }
 
   protected getNewItemsQuery(): SelectQueryBuilder<GiftFlow> {
-    return super.getNewItemsQuery().andWhere("g.completed = TRUE");
+    return super.getNewItemsQuery().andWhere('g.completed = TRUE');
   }
 
   async getExport(giftFlows: GiftFlow[]): Promise<ExportResult> {
@@ -42,21 +42,21 @@ export default class GiftsExport extends BaseExport<GiftFlow> {
             GifteeFirstName: giftee.firstname,
             GifteeEmail: giftee.email,
             GifteeExpiryDate: giftee.roles
-              .find((p) => p.type === "member")
+              .find((p) => p.type === 'member')
               ?.dateExpires?.toISOString(),
             GifteeHasActivated: !giftee.password.hash,
             GifteeHasConverted:
               giftee.contributionType !== ContributionType.Gift,
-            ...addressFields(giftee.profile.deliveryAddress)
+            ...addressFields(giftee.profile.deliveryAddress),
           }
         : {
-            GifteeName: giftForm.firstname + " " + giftForm.lastname,
+            GifteeName: giftForm.firstname + ' ' + giftForm.lastname,
             GifteeFirstName: giftForm.firstname,
             GifteeEmail: giftForm.email,
-            GifteeExpiryDate: "",
+            GifteeExpiryDate: '',
             GifteeHasActivated: false,
             GifteeHasConverted: false,
-            ...addressFields(giftForm.deliveryAddress)
+            ...addressFields(giftForm.deliveryAddress),
           };
 
       return {
@@ -67,7 +67,7 @@ export default class GiftsExport extends BaseExport<GiftFlow> {
         GifterName: giftForm.fromName,
         GifterEmail: giftForm.fromEmail,
         Message: giftForm.message,
-        ...gifteeDetails
+        ...gifteeDetails,
       };
     });
   }

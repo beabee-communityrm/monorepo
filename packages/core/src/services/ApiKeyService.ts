@@ -1,7 +1,7 @@
-import { getRepository } from "#database";
-import { generateApiKey } from "#utils/auth";
+import { getRepository } from '#database';
+import { generateApiKey } from '#utils/auth';
 
-import { ApiKey, Contact } from "#models/index";
+import { ApiKey, Contact } from '#models/index';
 
 class ApiKeyService {
   /**
@@ -23,7 +23,7 @@ class ApiKeyService {
       secretHash,
       creator,
       description,
-      expires
+      expires,
     });
 
     return token;

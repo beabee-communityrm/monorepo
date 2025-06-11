@@ -1,9 +1,9 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class OptionalFromEmailFields1656001166095
   implements MigrationInterface
 {
-  name = "OptionalFromEmailFields1656001166095";
+  name = 'OptionalFromEmailFields1656001166095';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(

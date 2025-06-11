@@ -1,18 +1,18 @@
-import { describe, expect, it } from "vitest";
-import { CalloutResponseClient } from "@beabee/client";
+import { describe, expect, it } from 'vitest';
+import { CalloutResponseClient } from '@beabee/client';
 import {
   GetCalloutResponseDataWith,
   Serial,
   CalloutAccess,
   CalloutCaptcha,
   ItemStatus,
-  GetCalloutResponseWith
-} from "@beabee/beabee-common";
-import { createTestCalloutResponseAnswers } from "./data/callouts.js";
+  GetCalloutResponseWith,
+} from '@beabee/beabee-common';
+import { createTestCalloutResponseAnswers } from './data/callouts.js';
 
-describe("CalloutResponse API", () => {
-  describe("deserialize", () => {
-    it("should correctly deserialize response data with all relations", () => {
+describe('CalloutResponse API', () => {
+  describe('deserialize', () => {
+    it('should correctly deserialize response data with all relations', () => {
       const now = new Date();
       const serializedData: Serial<
         GetCalloutResponseDataWith<
@@ -22,21 +22,21 @@ describe("CalloutResponse API", () => {
           | GetCalloutResponseWith.Tags
         >
       > = {
-        id: "test-id",
+        id: 'test-id',
         createdAt: now.toISOString(),
         updatedAt: now.toISOString(),
         number: 1,
-        bucket: "default",
+        bucket: 'default',
         guestName: null,
         guestEmail: null,
-        answers: createTestCalloutResponseAnswers("slide1"),
+        answers: createTestCalloutResponseAnswers('slide1'),
         tags: [],
         callout: {
-          id: "test-callout-id",
-          slug: "test-callout-slug",
-          title: "Test Callout",
+          id: 'test-callout-id',
+          slug: 'test-callout-slug',
+          title: 'Test Callout',
           status: ItemStatus.Open,
-          image: "",
+          image: '',
           starts: null,
           expires: null,
           allowUpdate: true,
@@ -45,17 +45,17 @@ describe("CalloutResponse API", () => {
           hidden: false,
           captcha: CalloutCaptcha.None,
           channels: [],
-          excerpt: "Test Callout Excerpt"
+          excerpt: 'Test Callout Excerpt',
         },
         contact: {
-          id: "contact-id",
-          email: "test@example.com",
-          firstname: "Test",
-          lastname: "User",
+          id: 'contact-id',
+          email: 'test@example.com',
+          firstname: 'Test',
+          lastname: 'User',
           joined: now,
           activeRoles: [],
-          displayName: "Test User"
-        }
+          displayName: 'Test User',
+        },
       };
 
       const result = CalloutResponseClient.deserialize<

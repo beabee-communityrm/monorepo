@@ -6,9 +6,9 @@ import {
   NewsletterStatus,
   RoleType,
   RoleTypes,
-  PaymentSource
-} from "@beabee/beabee-common";
-import { Type } from "class-transformer";
+  PaymentSource,
+} from '@beabee/beabee-common';
+import { Type } from 'class-transformer';
 import {
   IsArray,
   IsBoolean,
@@ -22,34 +22,34 @@ import {
   IsString,
   Validate,
   ValidateNested,
-  IsDefined
-} from "class-validator";
+  IsDefined,
+} from 'class-validator';
 
-import { GetPaginatedQuery, GetPaginatedRuleGroup } from "@api/dto/BaseDto";
+import { GetPaginatedQuery, GetPaginatedRuleGroup } from '@api/dto/BaseDto';
 import {
   GetContactProfileDto,
-  UpdateContactProfileDto
-} from "@api/dto/ContactProfileDto";
+  UpdateContactProfileDto,
+} from '@api/dto/ContactProfileDto';
 import {
   CreateContactRoleDto,
-  GetContactRoleDto
-} from "@api/dto/ContactRoleDto";
-import { GetContactTagDto } from "@api/dto/ContactTagDto";
-import { ForceUpdateContributionDto } from "@api/dto/ContributionDto";
+  GetContactRoleDto,
+} from '@api/dto/ContactRoleDto';
+import { GetContactTagDto } from '@api/dto/ContactTagDto';
+import { ForceUpdateContributionDto } from '@api/dto/ContributionDto';
 
-import IsPassword from "@api/validators/IsPassword";
+import IsPassword from '@api/validators/IsPassword';
 
-import { ContributionInfo } from "@beabee/core/type";
+import { ContributionInfo } from '@beabee/core/type';
 
 const contactSortFields = [
-  "firstname",
-  "lastname",
-  "email",
-  "joined",
-  "lastSeen",
-  "contributionMonthlyAmount",
-  "membershipStarts",
-  "membershipExpires"
+  'firstname',
+  'lastname',
+  'email',
+  'joined',
+  'lastSeen',
+  'contributionMonthlyAmount',
+  'membershipStarts',
+  'membershipExpires',
 ] as const;
 
 export class GetContactOptsDto {

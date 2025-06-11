@@ -3,14 +3,14 @@ import {
   CalloutCaptcha,
   CalloutComponentType,
   type CreateCalloutData,
-  type CalloutResponseAnswersSlide
-} from "@beabee/beabee-common";
+  type CalloutResponseAnswersSlide,
+} from '@beabee/beabee-common';
 
 export const createTestCallout = (
-  slug = "test-callout-" + Date.now()
+  slug = 'test-callout-' + Date.now()
 ): CreateCalloutData => ({
   slug,
-  image: "https://placehold.co/150",
+  image: 'https://placehold.co/150',
   starts: new Date(),
   expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
   channels: [],
@@ -21,106 +21,106 @@ export const createTestCallout = (
   hidden: false,
   variants: {
     default: {
-      title: "Default",
-      excerpt: "Default variant",
-      intro: "Default variant",
-      thanksTitle: "Default variant",
-      thanksText: "Default variant",
+      title: 'Default',
+      excerpt: 'Default variant',
+      intro: 'Default variant',
+      thanksTitle: 'Default variant',
+      thanksText: 'Default variant',
       thanksRedirect: null,
       shareTitle: null,
       shareDescription: null,
       slideNavigation: {},
-      componentText: {}
-    }
+      componentText: {},
+    },
   },
   formSchema: {
     slides: [
       {
-        id: "slide1",
-        title: "Personal Information",
+        id: 'slide1',
+        title: 'Personal Information',
         components: [
           {
             type: CalloutComponentType.INPUT_TEXT_FIELD,
-            id: "name",
-            key: "name",
-            label: "Full Name",
-            placeholder: "Enter your full name",
+            id: 'name',
+            key: 'name',
+            label: 'Full Name',
+            placeholder: 'Enter your full name',
             input: true,
             validate: {
-              required: true
-            }
+              required: true,
+            },
           },
           {
             type: CalloutComponentType.INPUT_EMAIL,
-            id: "email",
-            key: "email",
-            label: "Email Address",
-            placeholder: "Enter your email",
+            id: 'email',
+            key: 'email',
+            label: 'Email Address',
+            placeholder: 'Enter your email',
             input: true,
             validate: {
-              required: true
-            }
+              required: true,
+            },
           },
           {
             type: CalloutComponentType.INPUT_ADDRESS,
-            id: "address",
-            key: "address",
-            label: "Address",
+            id: 'address',
+            key: 'address',
+            label: 'Address',
             input: true,
             validate: {
-              required: false
-            }
-          }
+              required: false,
+            },
+          },
         ],
         navigation: {
-          nextSlideId: "slide2"
-        }
+          nextSlideId: 'slide2',
+        },
       },
       {
-        id: "slide2",
-        title: "Additional Information",
+        id: 'slide2',
+        title: 'Additional Information',
         components: [
           {
             type: CalloutComponentType.INPUT_TEXT_AREA,
-            id: "comments",
-            key: "comments",
-            label: "Comments",
-            placeholder: "Enter any additional comments",
+            id: 'comments',
+            key: 'comments',
+            label: 'Comments',
+            placeholder: 'Enter any additional comments',
             input: true,
             validate: {
-              required: false
-            }
+              required: false,
+            },
           },
           {
             type: CalloutComponentType.INPUT_SELECT,
-            id: "category",
-            key: "category",
-            label: "Category",
+            id: 'category',
+            key: 'category',
+            label: 'Category',
             input: true,
             data: {
               values: [
-                { label: "Option 1", value: "opt1" },
-                { label: "Option 2", value: "opt2" }
-              ]
+                { label: 'Option 1', value: 'opt1' },
+                { label: 'Option 2', value: 'opt2' },
+              ],
             },
             validate: {
-              required: true
-            }
-          }
+              required: true,
+            },
+          },
         ],
         navigation: {
-          nextSlideId: "slide3"
-        }
-      }
-    ]
-  }
+          nextSlideId: 'slide3',
+        },
+      },
+    ],
+  },
 });
 
 export const createMinimalTestCallout = (
-  slug = "minimal-test-callout-" + Date.now()
+  slug = 'minimal-test-callout-' + Date.now()
 ): CreateCalloutData => ({
   slug,
-  image: "https://placehold.co/150",
+  image: 'https://placehold.co/150',
   starts: new Date(),
   expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
   channels: [],
@@ -133,44 +133,44 @@ export const createMinimalTestCallout = (
   formSchema: {
     slides: [
       {
-        id: "slide1",
-        title: "Basic Information",
+        id: 'slide1',
+        title: 'Basic Information',
         components: [
           {
             type: CalloutComponentType.INPUT_TEXT_FIELD,
-            id: "name",
-            key: "name",
-            label: "Name",
+            id: 'name',
+            key: 'name',
+            label: 'Name',
             input: true,
             validate: {
-              required: true
-            }
-          }
+              required: true,
+            },
+          },
         ],
         navigation: {
-          nextSlideId: "slide2"
-        }
-      }
-    ]
-  }
+          nextSlideId: 'slide2',
+        },
+      },
+    ],
+  },
 });
 
 export const createTestCalloutResponseAnswers = (
-  slideId = "slide1"
+  slideId = 'slide1'
 ): CalloutResponseAnswersSlide => ({
   [slideId]: {
-    name: "Test Name",
-    email: "test@example.com",
-    comments: "Test comment",
-    category: "opt1",
-    address: "123 Test Street, Test City, 12345"
-  }
+    name: 'Test Name',
+    email: 'test@example.com',
+    comments: 'Test comment',
+    category: 'opt1',
+    address: '123 Test Street, Test City, 12345',
+  },
 });
 
 export const createMinimalTestCalloutResponseAnswers = (
-  slideId = "slide1"
+  slideId = 'slide1'
 ): CalloutResponseAnswersSlide => ({
   [slideId]: {
-    name: "Test Name"
-  }
+    name: 'Test Name',
+  },
 });

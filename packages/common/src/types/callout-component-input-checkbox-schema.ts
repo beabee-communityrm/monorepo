@@ -1,8 +1,8 @@
-import type { CalloutComponentType } from "../data/index.js";
+import type { CalloutComponentType } from '../data/index.js';
 import type {
   CalloutComponentBaseInputSchema,
-  CalloutComponentInputCheckboxRules
-} from "./index.js";
+  CalloutComponentInputCheckboxRules,
+} from './index.js';
 
 export interface CalloutComponentInputCheckboxSchema
   extends CalloutComponentBaseInputSchema {

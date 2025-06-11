@@ -1,14 +1,14 @@
-import { BaseClient } from "./base.client.js";
-import { cleanUrl } from "../utils/index.js";
-import type { BaseClientOptions } from "../types/index.js";
+import { BaseClient } from './base.client.js';
+import { cleanUrl } from '../utils/index.js';
+import type { BaseClientOptions } from '../types/index.js';
 import type {
   CreateNoticeData,
   GetNoticeData,
   GetNoticesQuery,
   Paginated,
   Serial,
-  UpdateNoticeData
-} from "@beabee/beabee-common";
+  UpdateNoticeData,
+} from '@beabee/beabee-common';
 
 /**
  * Client for managing dashboard notices
@@ -23,7 +23,7 @@ export class NoticeClient extends BaseClient {
   constructor(protected override readonly options: BaseClientOptions) {
     super({
       ...options,
-      path: cleanUrl(options.path + "/notice")
+      path: cleanUrl(options.path + '/notice'),
     });
   }
 
@@ -39,7 +39,7 @@ export class NoticeClient extends BaseClient {
       createdAt: NoticeClient.deserializeDate(notice.createdAt),
       updatedAt: NoticeClient.deserializeDate(notice.updatedAt),
       starts: NoticeClient.deserializeDate(notice.starts),
-      expires: NoticeClient.deserializeDate(notice.expires)
+      expires: NoticeClient.deserializeDate(notice.expires),
     };
   }
 
@@ -50,13 +50,13 @@ export class NoticeClient extends BaseClient {
    */
   async list(query: GetNoticesQuery = {}): Promise<Paginated<GetNoticeData>> {
     const { data } = await this.fetch.get<Paginated<Serial<GetNoticeData>>>(
-      "",
+      '',
       query
     );
 
     return {
       ...data,
-      items: data.items.map((notice) => this.deserialize(notice))
+      items: data.items.map((notice) => this.deserialize(notice)),
     };
   }
 
@@ -77,7 +77,7 @@ export class NoticeClient extends BaseClient {
    */
   async create(data: CreateNoticeData): Promise<GetNoticeData> {
     const { data: responseData } = await this.fetch.post<Serial<GetNoticeData>>(
-      "",
+      '',
       data
     );
     return this.deserialize(responseData);

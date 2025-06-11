@@ -1,2 +1,2 @@
-import { baseConfig } from "@beabee/prettier-config";
+import { baseConfig } from '@beabee/prettier-config';
 export default baseConfig;

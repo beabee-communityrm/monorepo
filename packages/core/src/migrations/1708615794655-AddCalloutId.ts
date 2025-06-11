@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 interface Callout {
   id: string;
@@ -6,7 +6,7 @@ interface Callout {
 }
 
 export class AddCalloutId1708615794655 implements MigrationInterface {
-  name = "AddCalloutId1708615794655";
+  name = 'AddCalloutId1708615794655';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     // Add new ID columns

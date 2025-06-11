@@ -1,1 +1,1 @@
-export type TransformerOperation = "create" | "read" | "update" | "delete";
+export type TransformerOperation = 'create' | 'read' | 'update' | 'delete';

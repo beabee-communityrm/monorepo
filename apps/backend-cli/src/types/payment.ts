@@ -1,4 +1,4 @@
-import { ContributionPeriod, PaymentMethod } from "@beabee/beabee-common";
+import { ContributionPeriod, PaymentMethod } from '@beabee/beabee-common';
 
 export interface CreatePaymentArgs {
   email: string;
