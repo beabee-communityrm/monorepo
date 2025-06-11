@@ -2,14 +2,7 @@
 
 ## Development setup
 
-To set up:
-
-```sh
-cp .env.example .env
-yarn install
-```
-
-By default your frontend will use the API at https://dev.beabee.io. You can change this by editing the `.env` file
+By default your frontend will use the API at https://dev.beabee.io. You can change this by editing the `.env` file in the root of the project.
 
 To start development:
 
