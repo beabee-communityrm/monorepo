@@ -63,8 +63,7 @@
 </template>
 <script lang="ts" setup>
 import type { Rule, RuleGroup } from '@beabee/beabee-common';
-import { AppSelect } from '@beabee/vue';
-import { AppButton } from '@beabee/vue/components';
+import { AppButton, AppSelect } from '@beabee/vue';
 
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import type { FilterGroups } from '@type/index';

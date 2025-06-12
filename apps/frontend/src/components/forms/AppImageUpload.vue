@@ -44,8 +44,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { AppInputError } from '@beabee/vue';
-import { AppButton, AppLabel } from '@beabee/vue/components';
+import { AppButton, AppInputError, AppLabel } from '@beabee/vue';
 
 import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 import { ClientApiError, client } from '@utils/api';

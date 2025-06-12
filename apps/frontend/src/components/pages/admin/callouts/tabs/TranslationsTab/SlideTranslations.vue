@@ -97,9 +97,7 @@
 
 <script lang="ts" setup>
 import { type CalloutComponentSchema } from '@beabee/beabee-common';
-import { AppInput } from '@beabee/vue';
-import { AppTextArea } from '@beabee/vue';
-import { AppFormBox } from '@beabee/vue/components';
+import { AppFormBox, AppInput, AppTextArea } from '@beabee/vue';
 
 import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
 import RichTextEditor from '@components/rte/RichTextEditor.vue';

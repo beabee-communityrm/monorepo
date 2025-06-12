@@ -272,13 +272,10 @@ import {
   CONTACT_MFA_TYPE,
   GetCalloutResponseWith,
 } from '@beabee/beabee-common';
-import { AppInput } from '@beabee/vue';
-import { AppButton } from '@beabee/vue/components';
-import { AppForm } from '@beabee/vue/components';
+import { AppButton, AppConfirmDialog, AppForm, AppInput } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
 import App2ColGrid from '@components/App2ColGrid.vue';
-import AppConfirmDialog from '@components/AppConfirmDialog.vue';
 import AppHeading from '@components/AppHeading.vue';
 import AppInfoList from '@components/AppInfoList.vue';
 import AppInfoListItem from '@components/AppInfoListItem.vue';

@@ -103,8 +103,7 @@ meta:
 </template>
 
 <script lang="ts" setup>
-import { AppColorInput, AppSelect } from '@beabee/vue';
-import { AppForm, AppRadioInput } from '@beabee/vue/components';
+import { AppColorInput, AppForm, AppRadioInput, AppSelect } from '@beabee/vue';
 import {
   type Theme,
   availableFonts,

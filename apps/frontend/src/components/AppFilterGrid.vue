@@ -12,7 +12,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { AppTabsCompact, AppVTabs } from '@beabee/vue/components';
+import { AppTabsCompact, AppVTabs } from '@beabee/vue';
 import type { TabItem } from '@beabee/vue/types';
 
 import { computed } from 'vue';

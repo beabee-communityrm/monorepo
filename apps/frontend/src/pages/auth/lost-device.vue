@@ -50,8 +50,7 @@ meta:
 </template>
 
 <script lang="ts" setup>
-import { AppInput } from '@beabee/vue';
-import { AppButton, AppForm } from '@beabee/vue/components';
+import { AppButton, AppForm, AppInput } from '@beabee/vue';
 
 import AppTitle from '@components/AppTitle.vue';
 import AuthBox from '@components/AuthBox.vue';

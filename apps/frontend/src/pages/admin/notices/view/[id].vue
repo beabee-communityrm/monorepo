@@ -46,9 +46,8 @@ meta:
 
 <script lang="ts" setup>
 import type { GetNoticeData } from '@beabee/beabee-common';
-import { ActionButton } from '@beabee/vue/components';
+import { ActionButton, AppConfirmDialog } from '@beabee/vue';
 
-import AppConfirmDialog from '@components/AppConfirmDialog.vue';
 import AppHeading from '@components/AppHeading.vue';
 import AppNotice from '@components/AppNotice.vue';
 import PageTitle from '@components/PageTitle.vue';

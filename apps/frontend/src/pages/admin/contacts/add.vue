@@ -61,7 +61,7 @@ import {
   NewsletterStatus,
   type RoleType,
 } from '@beabee/beabee-common';
-import { AppButton, AppCheckbox, AppForm } from '@beabee/vue/components';
+import { AppButton, AppCheckbox, AppForm } from '@beabee/vue';
 
 import App2ColGrid from '@components/App2ColGrid.vue';
 import AppHeading from '@components/AppHeading.vue';

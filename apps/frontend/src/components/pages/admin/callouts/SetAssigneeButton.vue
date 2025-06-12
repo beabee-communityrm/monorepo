@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts" setup>
-import { AppDropdownButton, AppSelectableList } from '@beabee/vue/components';
+import { AppDropdownButton, AppSelectableList } from '@beabee/vue';
 import type { SelectItem } from '@beabee/vue/types';
 
 import { faCog, faUser } from '@fortawesome/free-solid-svg-icons';

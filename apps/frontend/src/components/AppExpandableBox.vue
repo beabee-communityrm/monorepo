@@ -24,7 +24,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { AppButton } from '@beabee/vue/components';
+import { AppButton } from '@beabee/vue';
 
 import {
   type IconDefinition,

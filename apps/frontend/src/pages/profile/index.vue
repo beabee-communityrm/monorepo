@@ -65,7 +65,7 @@ import {
   type GetContactData,
   ItemStatus,
 } from '@beabee/beabee-common';
-import { AppButton } from '@beabee/vue/components';
+import { AppButton } from '@beabee/vue';
 
 import PageTitle from '@components/PageTitle.vue';
 import CalloutCard from '@components/callout/CalloutCard.vue';

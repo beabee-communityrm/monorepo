@@ -48,8 +48,7 @@
   </AppForm>
 </template>
 <script lang="ts" setup>
-import { AppInput } from '@beabee/vue';
-import { AppButton, AppForm } from '@beabee/vue/components';
+import { AppButton, AppForm, AppInput } from '@beabee/vue';
 
 import { faKey } from '@fortawesome/free-solid-svg-icons';
 import { client } from '@utils/api';

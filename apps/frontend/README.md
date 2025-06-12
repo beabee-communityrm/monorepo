@@ -30,7 +30,7 @@ The frontend uses shared Vue components from the `@beabee/vue` package. This pac
 To use components from the library:
 
 ```ts
-import { AppButton } from '@beabee/vue/components';
+import { AppButton } from '@beabee/vue';
 ```
 
 For more information about the component library, see the [Vue package README](../../packages/vue/README.md).

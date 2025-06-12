@@ -69,8 +69,7 @@ import {
   GetContactWith,
   NewsletterStatus,
 } from '@beabee/beabee-common';
-import { AppInput } from '@beabee/vue';
-import { AppForm } from '@beabee/vue/components';
+import { AppForm, AppInput } from '@beabee/vue';
 
 import AppAddress from '@components/AppAddress.vue';
 import AuthBox from '@components/AuthBox.vue';

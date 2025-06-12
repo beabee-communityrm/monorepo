@@ -262,17 +262,18 @@
 <script lang="ts" setup>
 import { ItemStatus, getCalloutComponents } from '@beabee/beabee-common';
 import type { CalloutMapSchema } from '@beabee/beabee-common';
-import { AppInput } from '@beabee/vue';
-import { AppLinkList, AppSelect } from '@beabee/vue';
 import {
   AppCheckboxGroup,
   AppFormBox,
   AppFormField,
+  AppInput,
+  AppLinkList,
   AppScrollNavigation,
   AppScrollSection,
+  AppSelect,
   AppToggleField,
   type ScrollSection,
-} from '@beabee/vue/components';
+} from '@beabee/vue';
 
 import { buckets } from '@utils/callouts';
 import useVuelidate from '@vuelidate/core';

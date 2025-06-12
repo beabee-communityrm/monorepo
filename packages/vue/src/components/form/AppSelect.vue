@@ -28,14 +28,10 @@ import { requiredIf } from '@vuelidate/validators';
 import { computed, toRef } from 'vue';
 import VueMultiselect from 'vue-multiselect';
 
+import type { SelectItem } from '../../types';
 import AppInputError from './AppInputError.vue';
 import AppInputHelp from './AppInputHelp.vue';
 import AppLabel from './AppLabel.vue';
-
-export interface SelectItem<T extends string | number> {
-  id: T;
-  label: string;
-}
 
 /**
  * Props for the AppSelect component

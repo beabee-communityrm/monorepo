@@ -20,8 +20,7 @@
   </App2ColGrid>
 </template>
 <script lang="ts" setup>
-import { AppInput } from '@beabee/vue';
-import { AppNotification } from '@beabee/vue/components';
+import { AppInput, AppNotification } from '@beabee/vue';
 
 import { computed, ref } from 'vue';
 

@@ -101,10 +101,9 @@ meta:
 </template>
 <script lang="ts" setup>
 import { type GetCalloutDataWith, ItemStatus } from '@beabee/beabee-common';
-import { ActionButton } from '@beabee/vue/components';
+import { ActionButton, AppConfirmDialog } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
-import AppConfirmDialog from '@components/AppConfirmDialog.vue';
 import AppHeading from '@components/AppHeading.vue';
 import AppInfoList from '@components/AppInfoList.vue';
 import AppInfoListItem from '@components/AppInfoListItem.vue';

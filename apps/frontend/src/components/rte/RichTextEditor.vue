@@ -80,8 +80,7 @@
 </template>
 
 <script lang="ts" setup="{ emit }">
-import { AppInputError } from '@beabee/vue';
-import { AppCopyButton, AppLabel } from '@beabee/vue/components';
+import { AppCopyButton, AppInputError, AppLabel } from '@beabee/vue';
 
 import {
   faBold,

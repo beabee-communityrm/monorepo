@@ -1388,7 +1388,7 @@ __metadata:
     dotenv: "npm:^16.4.7"
     moment: "npm:^2.30.1"
     prettier: "npm:^3.5.2"
-    typescript: "npm:~5.6.3"
+    typescript: "npm:~5.8.3"
     yargs: "npm:^17.7.2"
   bin:
     backend-cli: ./dist/index.js
@@ -1447,7 +1447,7 @@ __metadata:
     stripe: "npm:^15.9.0"
     tsconfig: "npm:^7.0.0"
     typeorm: "npm:^0.3.20"
-    typescript: "npm:~5.6.3"
+    typescript: "npm:~5.8.3"
     uuid: "npm:^11.1.0"
   languageName: unknown
   linkType: soft
@@ -1462,7 +1462,7 @@ __metadata:
     date-fns: "npm:^4.1.0"
     esbuild: "npm:^0.25.5"
     prettier: "npm:^3.5.2"
-    typescript: "npm:~5.6.3"
+    typescript: "npm:~5.8.3"
     vitest: "npm:^3.2.1"
   languageName: unknown
   linkType: soft
@@ -1478,7 +1478,7 @@ __metadata:
     dotenv: "npm:^16.4.7"
     otpauth: "npm:^9.3.6"
     prettier: "npm:^3.5.2"
-    typescript: "npm:~5.6.3"
+    typescript: "npm:~5.8.3"
     vitest: "npm:^3.2.1"
   languageName: unknown
   linkType: soft
@@ -1530,7 +1530,7 @@ __metadata:
     tar-stream: "npm:^3.1.7"
     tsconfig: "npm:^7.0.0"
     typeorm: "npm:^0.3.20"
-    typescript: "npm:~5.6.3"
+    typescript: "npm:~5.8.3"
     uuid: "npm:^11.1.0"
     vitest: "npm:^3.2.1"
     winston: "npm:^3.17.0"
@@ -1568,7 +1568,7 @@ __metadata:
     "@beabee/client": "workspace:*"
     "@beabee/test-utils": "workspace:^"
     "@beabee/tsconfig": "workspace:^"
-    typescript: "npm:~5.6.3"
+    typescript: "npm:~5.8.3"
     vitest: "npm:^3.2.1"
   languageName: unknown
   linkType: soft
@@ -1637,7 +1637,7 @@ __metadata:
     qrcode-generator: "npm:^1.4.4"
     slugify: "npm:^1.6.6"
     tailwindcss: "npm:^3.4.17"
-    typescript: "npm:~5.6.3"
+    typescript: "npm:~5.8.3"
     typescript-eslint: "npm:^8.25.0"
     vite: "npm:^6.3.5"
     vite-plugin-pages: "npm:^0.33.0"
@@ -1727,7 +1727,7 @@ __metadata:
     stripe: "npm:^15.9.0"
     tsconfig: "npm:^7.0.0"
     typeorm: "npm:^0.3.20"
-    typescript: "npm:~5.6.3"
+    typescript: "npm:~5.8.3"
     uuid: "npm:^11.1.0"
   languageName: unknown
   linkType: soft
@@ -1739,7 +1739,7 @@ __metadata:
     "@beabee/esbuild": "workspace:^"
     "@gjsify/esbuild-plugin-transform-ext": "npm:^0.0.4"
     esbuild: "npm:^0.25.5"
-    typescript: "npm:~5.6.3"
+    typescript: "npm:~5.8.3"
   languageName: unknown
   linkType: soft
 
@@ -1788,7 +1788,7 @@ __metadata:
     openapi-typescript: "npm:^7.8.0"
     prettier: "npm:^3.5.2"
     testcontainers: "npm:^11.0.0"
-    typescript: "npm:~5.6.3"
+    typescript: "npm:~5.8.3"
   languageName: unknown
   linkType: soft
 
@@ -1798,7 +1798,7 @@ __metadata:
   dependencies:
     "@tsconfig/node22": "npm:^22.0.0"
     "@vue/tsconfig": "npm:^0.7.0"
-    typescript: "npm:~5.6.3"
+    typescript: "npm:~5.8.3"
   peerDependencies:
     typescript: ~5.6.3
   languageName: unknown
@@ -1836,7 +1836,7 @@ __metadata:
     postcss: "npm:^8.5.3"
     prettier: "npm:^3.5.2"
     tailwindcss: "npm:^3.4.17"
-    typescript: "npm:~5.6.3"
+    typescript: "npm:~5.8.3"
     vite: "npm:^6.3.5"
     vue: "npm:^3.5.14"
     vue-accessible-color-picker: "npm:^5.2.0"
@@ -1869,7 +1869,7 @@ __metadata:
     rimraf: "npm:^6.0.1"
     stripe: "npm:^15.9.0"
     typeorm: "npm:^0.3.20"
-    typescript: "npm:~5.6.3"
+    typescript: "npm:~5.8.3"
   languageName: unknown
   linkType: soft
 
@@ -1881,7 +1881,7 @@ __metadata:
     openapi-fetch: "npm:^0.14.0"
     openapi-typescript: "npm:^7.8.0"
     prettier: "npm:^3.5.2"
-    typescript: "npm:~5.6.3"
+    typescript: "npm:~5.8.3"
   languageName: unknown
   linkType: soft
 
@@ -19066,23 +19066,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^5.8.3":
+"typescript@npm:^5.8.3, typescript@npm:~5.8.3":
   version: 5.8.3
   resolution: "typescript@npm:5.8.3"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 10c0/5f8bb01196e542e64d44db3d16ee0e4063ce4f3e3966df6005f2588e86d91c03e1fb131c2581baf0fb65ee79669eea6e161cd448178986587e9f6844446dbb48
-  languageName: node
-  linkType: hard
-
-"typescript@npm:~5.6.3":
-  version: 5.6.3
-  resolution: "typescript@npm:5.6.3"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 10c0/44f61d3fb15c35359bc60399cb8127c30bae554cd555b8e2b46d68fa79d680354b83320ad419ff1b81a0bdf324197b29affe6cc28988cd6a74d4ac60c94f9799
   languageName: node
   linkType: hard
 
@@ -19096,23 +19086,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A^5.8.3#optional!builtin<compat/typescript>":
+"typescript@patch:typescript@npm%3A^5.8.3#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A~5.8.3#optional!builtin<compat/typescript>":
   version: 5.8.3
   resolution: "typescript@patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 10c0/39117e346ff8ebd87ae1510b3a77d5d92dae5a89bde588c747d25da5c146603a99c8ee588c7ef80faaf123d89ed46f6dbd918d534d641083177d5fac38b8a1cb
-  languageName: node
-  linkType: hard
-
-"typescript@patch:typescript@npm%3A~5.6.3#optional!builtin<compat/typescript>":
-  version: 5.6.3
-  resolution: "typescript@patch:typescript@npm%3A5.6.3#optional!builtin<compat/typescript>::version=5.6.3&hash=8c6c40"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 10c0/7c9d2e07c81226d60435939618c91ec2ff0b75fbfa106eec3430f0fcf93a584bc6c73176676f532d78c3594fe28a54b36eb40b3d75593071a7ec91301533ace7
   languageName: node
   linkType: hard
 

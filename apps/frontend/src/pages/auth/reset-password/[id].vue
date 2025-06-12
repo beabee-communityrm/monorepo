@@ -89,8 +89,7 @@ meta:
 
 <script lang="ts" setup>
 import { RESET_SECURITY_FLOW_ERROR_CODE } from '@beabee/beabee-common';
-import { AppInput } from '@beabee/vue';
-import { AppForm, AppNotification } from '@beabee/vue/components';
+import { AppForm, AppInput, AppNotification } from '@beabee/vue';
 
 import AppTitle from '@components/AppTitle.vue';
 import AuthBox from '@components/AuthBox.vue';

@@ -81,8 +81,7 @@
 </template>
 
 <script lang="ts" setup>
-import { AppInput } from '@beabee/vue';
-import { AppFormBox } from '@beabee/vue/components';
+import { AppFormBox, AppInput } from '@beabee/vue';
 
 import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
 import type { LocaleProp } from '@type/locale-prop';

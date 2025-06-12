@@ -55,11 +55,7 @@ export {
   default as AppSearchInput,
   type AppSearchInputProps,
 } from './AppSearchInput.vue';
-export {
-  default as AppSelect,
-  type AppSelectProps,
-  type SelectItem,
-} from './AppSelect.vue';
+export { default as AppSelect, type AppSelectProps } from './AppSelect.vue';
 export {
   default as AppTextArea,
   type AppTextAreaProps,

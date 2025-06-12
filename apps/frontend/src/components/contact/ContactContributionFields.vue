@@ -46,10 +46,12 @@
 
 <script lang="ts" setup>
 import { ContributionType } from '@beabee/beabee-common';
-import { AppInput } from '@beabee/vue';
-import { AppSelect } from '@beabee/vue';
-import { AppRadioGroup } from '@beabee/vue/components';
-import { type SelectItem } from '@beabee/vue/types';
+import {
+  AppInput,
+  AppRadioGroup,
+  AppSelect,
+  type SelectItem,
+} from '@beabee/vue';
 
 import { client } from '@utils/api';
 import { computed, onBeforeMount, ref } from 'vue';

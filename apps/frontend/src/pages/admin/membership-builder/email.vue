@@ -34,7 +34,7 @@ meta:
 </template>
 <script lang="ts" setup>
 import type { GetEmailData } from '@beabee/beabee-common';
-import { AppForm } from '@beabee/vue/components';
+import { AppForm } from '@beabee/vue';
 
 import App2ColGrid from '@components/App2ColGrid.vue';
 import EmailEditor from '@components/pages/admin/membership-builder/EmailEditor.vue';

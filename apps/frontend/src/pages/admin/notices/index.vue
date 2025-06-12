@@ -46,7 +46,7 @@ meta:
 </template>
 <script lang="ts" setup>
 import type { GetNoticeData, Paginated } from '@beabee/beabee-common';
-import { AppButton } from '@beabee/vue/components';
+import { AppButton } from '@beabee/vue';
 
 import AppItemStatus from '@components/AppItemStatus.vue';
 import PageTitle from '@components/PageTitle.vue';

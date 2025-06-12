@@ -32,7 +32,7 @@
 </template>
 
 <script lang="ts" setup>
-import { AppButton, AppButtonGroup } from '@beabee/vue/components';
+import { AppButton, AppButtonGroup } from '@beabee/vue';
 
 import {
   faCaretLeft,

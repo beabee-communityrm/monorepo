@@ -41,7 +41,7 @@
 </template>
 <script lang="ts" setup>
 import type { GetCalloutDataWith } from '@beabee/beabee-common';
-import { AppButton } from '@beabee/vue/components';
+import { AppButton } from '@beabee/vue';
 
 import AppSubHeading from '@components/AppSubHeading.vue';
 import ItemDateRange from '@components/item/ItemDateRange.vue';

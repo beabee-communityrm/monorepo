@@ -27,7 +27,7 @@ import {
   ContributionType,
   MembershipStatus,
 } from '@beabee/beabee-common';
-import { AppButton } from '@beabee/vue/components';
+import { AppButton } from '@beabee/vue';
 
 import AppHeading from '@components/AppHeading.vue';
 import { formatLocale } from '@utils/dates';

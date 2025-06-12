@@ -42,7 +42,7 @@ meta:
   </App2ColGrid>
 </template>
 <script lang="ts" setup>
-import { AppCheckbox, AppForm } from '@beabee/vue/components';
+import { AppCheckbox, AppForm } from '@beabee/vue';
 
 import { client } from '@utils/api';
 import { onBeforeMount, ref } from 'vue';

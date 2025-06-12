@@ -89,7 +89,7 @@ import {
   type Paginated,
 } from '@beabee/beabee-common';
 import { GetCalloutResponseWith } from '@beabee/beabee-common';
-import { AppButton, AppNotification } from '@beabee/vue/components';
+import { AppButton, AppNotification } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
 import noImage from '@assets/images/no-image.avif';

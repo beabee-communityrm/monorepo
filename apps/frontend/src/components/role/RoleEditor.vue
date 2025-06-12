@@ -3,6 +3,12 @@
     :items="roles"
     :item-to-data="roleToFormData"
     :add-button-text="t('roleEditor.add')"
+    :edit-button-text="t('actions.edit')"
+    :delete-button-text="t('actions.delete')"
+    :update-button-text="t('actions.update')"
+    :cancel-button-text="t('actions.cancel')"
+    :no-back-button-text="t('actions.noBack')"
+    :yes-remove-button-text="t('actions.yesRemove')"
     :delete-title="t('roleEditor.confirmDelete.title')"
     :delete-text="() => t('roleEditor.confirmDelete.text')"
     @add="handleUpsert"
@@ -84,12 +90,15 @@ import {
   type RoleType,
   RoleTypes,
 } from '@beabee/beabee-common';
-import { AppInput } from '@beabee/vue';
-import { AppSelect } from '@beabee/vue';
-import { AppLabel, AppRadioGroup } from '@beabee/vue/components';
+import {
+  AppInput,
+  AppLabel,
+  AppRadioGroup,
+  AppSelect,
+  ItemManager,
+} from '@beabee/vue';
 
 import AppRoundBadge from '@components/AppRoundBadge.vue';
-import ItemManager from '@components/item-manager/ItemManager.vue';
 import { formatLocale } from '@utils/dates';
 import { format } from 'date-fns';
 import { computed, reactive } from 'vue';

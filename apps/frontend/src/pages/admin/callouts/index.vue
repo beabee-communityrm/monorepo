@@ -72,8 +72,7 @@ import type {
   GetCalloutsQuery,
   Paginated,
 } from '@beabee/beabee-common';
-import { AppSearchInput } from '@beabee/vue';
-import { AppButton } from '@beabee/vue/components';
+import { AppButton, AppSearchInput } from '@beabee/vue';
 
 import AppFilterGrid from '@components/AppFilterGrid.vue';
 import AppItemStatus from '@components/AppItemStatus.vue';

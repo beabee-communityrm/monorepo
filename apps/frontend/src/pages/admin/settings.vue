@@ -11,7 +11,7 @@ meta:
 </template>
 
 <script lang="ts" setup>
-import { AppTabs } from '@beabee/vue/components';
+import { AppTabs } from '@beabee/vue';
 
 import { faCog } from '@fortawesome/free-solid-svg-icons';
 import { computed } from 'vue';

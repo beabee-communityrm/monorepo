@@ -67,7 +67,7 @@ watch(
 
 router.beforeEach(async (to) => {
   // Block route for initial store load, this will only happen once
-  await initStore;
+  await initStore();
 
   // Ensure route is embeddable if we are embedded
   if (isEmbed && !to.meta.embeddable) {

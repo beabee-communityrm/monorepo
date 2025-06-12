@@ -28,7 +28,7 @@
 <script lang="ts" setup>
 import { ContributionPeriod } from '@beabee/beabee-common';
 import { AppInput } from '@beabee/vue';
-import { AppButton, AppLabel, AppNotification } from '@beabee/vue/components';
+import { AppButton, AppLabel, AppNotification } from '@beabee/vue';
 
 import env from '@env';
 import type { Appearance } from '@stripe/stripe-js';

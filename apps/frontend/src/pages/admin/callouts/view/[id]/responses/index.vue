@@ -210,10 +210,14 @@ import {
   type UpdateCalloutResponseData,
   stringifyAnswer,
 } from '@beabee/beabee-common';
-import { AppSelect } from '@beabee/vue';
-import { AppButton, AppButtonGroup } from '@beabee/vue/components';
-import { AppCheckbox, AppVTabs } from '@beabee/vue/components';
-import { addNotification } from '@beabee/vue/store/notifications';
+import {
+  AppButton,
+  AppButtonGroup,
+  AppCheckbox,
+  AppSelect,
+  AppVTabs,
+  addNotification,
+} from '@beabee/vue';
 
 import AppTime from '@components/AppTime.vue';
 import {

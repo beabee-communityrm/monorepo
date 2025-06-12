@@ -14,7 +14,7 @@ meta:
   <router-view />
 </template>
 <script lang="ts" setup>
-import { AppTabs } from '@beabee/vue/components';
+import { AppTabs } from '@beabee/vue';
 
 import { faHandsHelping } from '@fortawesome/free-solid-svg-icons';
 import { computed, ref } from 'vue';

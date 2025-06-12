@@ -40,8 +40,7 @@ meta:
 </template>
 <script lang="ts" setup>
 import type { ContentEmailData } from '@beabee/beabee-common';
-import { AppInput } from '@beabee/vue';
-import { AppForm } from '@beabee/vue/components';
+import { AppForm, AppInput } from '@beabee/vue';
 
 import App2ColGrid from '@components/App2ColGrid.vue';
 import AppHeading from '@components/AppHeading.vue';

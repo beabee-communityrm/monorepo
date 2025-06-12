@@ -104,9 +104,13 @@ import {
   type ContentPaymentData,
   ContributionPeriod,
 } from '@beabee/beabee-common';
-import { AppInput } from '@beabee/vue';
-import { AppSelect } from '@beabee/vue';
-import { AppCheckbox, AppForm, AppLabel } from '@beabee/vue/components';
+import {
+  AppCheckbox,
+  AppForm,
+  AppInput,
+  AppLabel,
+  AppSelect,
+} from '@beabee/vue';
 
 import App2ColGrid from '@components/App2ColGrid.vue';
 import AppSubHeading from '@components/AppSubHeading.vue';

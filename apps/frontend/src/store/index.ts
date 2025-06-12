@@ -1,7 +1,10 @@
 import { initCurrentUser } from './currentUser';
 import { initGeneralContent } from './generalContent';
 
-export const initStore = Promise.all([initCurrentUser, initGeneralContent]);
+export const initStore = async () => {
+  await initCurrentUser();
+  await initGeneralContent();
+};
 
 export const isEmbed = window.self !== window.top;
 

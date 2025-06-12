@@ -96,7 +96,7 @@ import {
   AppForm,
   AppNotification,
   AppRadioGroup,
-} from '@beabee/vue/components';
+} from '@beabee/vue';
 
 import { client } from '@utils/api';
 import { computed, reactive, ref, toRef, watch } from 'vue';

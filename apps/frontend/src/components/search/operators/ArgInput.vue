@@ -33,9 +33,7 @@
 </template>
 <script lang="ts" setup>
 import type { RuleValue } from '@beabee/beabee-common';
-import { AppInput } from '@beabee/vue';
-import { AppSelect } from '@beabee/vue';
-import { AppRadioGroup } from '@beabee/vue/components';
+import { AppInput, AppRadioGroup, AppSelect } from '@beabee/vue';
 
 import type { FilterItem } from '@type';
 import { computed } from 'vue';

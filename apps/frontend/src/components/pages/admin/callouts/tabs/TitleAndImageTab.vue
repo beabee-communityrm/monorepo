@@ -138,18 +138,16 @@
 
 <script lang="ts" setup>
 import { ItemStatus } from '@beabee/beabee-common';
-import { AppInput } from '@beabee/vue';
-import { AppTextArea } from '@beabee/vue';
 import {
   AppFormBox,
   AppFormField,
-  AppToggleField,
-} from '@beabee/vue/components';
-import {
+  AppInput,
   AppScrollNavigation,
   AppScrollSection,
+  AppTextArea,
+  AppToggleField,
   type ScrollSection,
-} from '@beabee/vue/components';
+} from '@beabee/vue';
 
 import AppImageUpload from '@components/forms/AppImageUpload.vue';
 import env from '@env';

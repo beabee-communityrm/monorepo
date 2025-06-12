@@ -185,9 +185,14 @@ import type {
   ContentPaymentData,
   ContentShareData,
 } from '@beabee/beabee-common';
-import { AppInput } from '@beabee/vue';
-import { AppLinkList, AppSelect, AppTextArea } from '@beabee/vue';
-import { AppCheckbox, AppForm } from '@beabee/vue/components';
+import {
+  AppCheckbox,
+  AppForm,
+  AppInput,
+  AppLinkList,
+  AppSelect,
+  AppTextArea,
+} from '@beabee/vue';
 
 import App2ColGrid from '@components/App2ColGrid.vue';
 import AppHeading from '@components/AppHeading.vue';

@@ -27,7 +27,7 @@ meta:
 </template>
 
 <script lang="ts" setup>
-import { AppButton } from '@beabee/vue/components';
+import { AppButton } from '@beabee/vue';
 
 import { client } from '@utils/api';
 import { ref } from 'vue';

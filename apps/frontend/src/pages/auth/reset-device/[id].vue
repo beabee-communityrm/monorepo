@@ -43,8 +43,7 @@ meta:
 
 <script lang="ts" setup>
 import { LOGIN_CODES } from '@beabee/beabee-common';
-import { AppInput } from '@beabee/vue';
-import { AppForm } from '@beabee/vue/components';
+import { AppForm, AppInput } from '@beabee/vue';
 
 import AppTitle from '@components/AppTitle.vue';
 import AuthBox from '@components/AuthBox.vue';

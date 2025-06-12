@@ -20,7 +20,7 @@ meta:
 
 <script lang="ts" setup>
 import type { GetContactData } from '@beabee/beabee-common';
-import { AppTabs } from '@beabee/vue/components';
+import { AppTabs } from '@beabee/vue';
 
 import PageTitle from '@components/PageTitle.vue';
 import { faUsers } from '@fortawesome/free-solid-svg-icons';

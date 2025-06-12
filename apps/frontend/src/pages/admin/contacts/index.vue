@@ -163,9 +163,13 @@ import {
   type RuleGroup,
   type UpdateContactData,
 } from '@beabee/beabee-common';
-import { AppSearchInput, AppSelect } from '@beabee/vue';
-import { AppButton, AppButtonGroup } from '@beabee/vue/components';
-import { addNotification } from '@beabee/vue/store/notifications';
+import {
+  AppButton,
+  AppButtonGroup,
+  AppSearchInput,
+  AppSelect,
+  addNotification,
+} from '@beabee/vue';
 
 import AppFilterGrid from '@components/AppFilterGrid.vue';
 import PageTitle from '@components/PageTitle.vue';

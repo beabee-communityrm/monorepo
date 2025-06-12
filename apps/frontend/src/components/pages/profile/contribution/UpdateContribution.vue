@@ -101,11 +101,10 @@ import {
   MembershipStatus,
   PaymentMethod,
 } from '@beabee/beabee-common';
-import { AppButton, AppNotification } from '@beabee/vue/components';
+import { AppButton, AppModal, AppNotification } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
 import AppHeading from '@components/AppHeading.vue';
-import AppModal from '@components/AppModal.vue';
 import StripePayment from '@components/StripePayment.vue';
 import Contribution from '@components/contribution/Contribution.vue';
 import { type ContributionContent } from '@components/contribution/contribution.interface';

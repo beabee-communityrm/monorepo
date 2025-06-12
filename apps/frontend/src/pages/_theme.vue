@@ -248,9 +248,7 @@ meta:
 </template>
 
 <script lang="ts" setup>
-import { AppInput } from '@beabee/vue';
-import { AppButton } from '@beabee/vue/components';
-import { AppCheckbox } from '@beabee/vue/components';
+import { AppButton, AppCheckbox, AppInput } from '@beabee/vue';
 
 import {
   faAngleLeft,

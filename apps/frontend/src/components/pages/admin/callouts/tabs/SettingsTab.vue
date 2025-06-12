@@ -260,7 +260,7 @@ import {
   AppScrollSection,
   AppToggleField,
   type ScrollSection,
-} from '@beabee/vue/components';
+} from '@beabee/vue';
 
 import NewsletterOptInSettings from '@components/newsletter/NewsletterOptInSettings.vue';
 import env from '@env';

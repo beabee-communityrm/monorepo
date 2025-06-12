@@ -39,7 +39,7 @@ meta:
 
 <script lang="ts" setup>
 import { ItemStatus } from '@beabee/beabee-common';
-import { AppAsyncButton } from '@beabee/vue/components';
+import { AppAsyncButton } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
 import PageTitle from '@components/PageTitle.vue';

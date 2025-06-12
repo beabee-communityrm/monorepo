@@ -52,8 +52,7 @@
 </template>
 
 <script lang="ts" setup>
-import { AppSelect } from '@beabee/vue';
-import { AppRadioGroup } from '@beabee/vue/components';
+import { AppRadioGroup, AppSelect } from '@beabee/vue';
 
 import { faLink } from '@fortawesome/free-solid-svg-icons';
 import { onMounted } from 'vue';

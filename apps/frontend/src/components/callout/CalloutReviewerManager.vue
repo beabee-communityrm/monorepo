@@ -5,6 +5,12 @@
       :items="reviewers"
       :item-to-data="reviewerToFormData"
       :add-button-text="t('calloutReviewerManager.add')"
+      :edit-button-text="t('actions.edit')"
+      :delete-button-text="t('actions.delete')"
+      :update-button-text="t('actions.update')"
+      :cancel-button-text="t('actions.cancel')"
+      :no-back-button-text="t('actions.noBack')"
+      :yes-remove-button-text="t('actions.yesRemove')"
       :delete-title="t('calloutReviewerManager.confirmDelete.title')"
       :delete-text="
         (reviewer) =>
@@ -39,10 +45,9 @@
 
 <script lang="ts" setup>
 import type { GetCalloutReviewerData } from '@beabee/beabee-common';
-import { AppInput } from '@beabee/vue';
+import { AppInput, ItemManager } from '@beabee/vue';
 
 import AppHeading from '@components/AppHeading.vue';
-import ItemManager from '@components/item-manager/ItemManager.vue';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { client } from '@utils/api';
 import { reactive, ref, watchEffect } from 'vue';

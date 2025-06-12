@@ -40,7 +40,7 @@
 
 <script lang="ts" setup>
 import { type GetCalloutDataWith, ItemStatus } from '@beabee/beabee-common';
-import { AppButton } from '@beabee/vue/components';
+import { AppButton } from '@beabee/vue';
 import { generalContent } from '@beabee/vue/store/generalContent';
 
 import noImage from '@assets/images/no-image.avif';

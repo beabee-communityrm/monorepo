@@ -172,11 +172,7 @@ import {
   GetCalloutResponseWith,
   type UpdateCalloutResponseData,
 } from '@beabee/beabee-common';
-import {
-  AppButton,
-  AppButtonGroup,
-  AppNotification,
-} from '@beabee/vue/components';
+import { AppButton, AppButtonGroup, AppNotification } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
 import AppHeading from '@components/AppHeading.vue';

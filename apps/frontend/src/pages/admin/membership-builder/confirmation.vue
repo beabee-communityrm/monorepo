@@ -120,10 +120,13 @@ import {
   type GetCalloutData,
   ItemStatus,
 } from '@beabee/beabee-common';
-import { AppInput } from '@beabee/vue';
-import { AppInputHelp } from '@beabee/vue';
-import { AppSelect } from '@beabee/vue';
-import { AppCheckbox, AppForm } from '@beabee/vue/components';
+import {
+  AppCheckbox,
+  AppForm,
+  AppInput,
+  AppInputHelp,
+  AppSelect,
+} from '@beabee/vue';
 
 import App2ColGrid from '@components/App2ColGrid.vue';
 import AppSubHeading from '@components/AppSubHeading.vue';

@@ -83,7 +83,7 @@
 </template>
 
 <script lang="ts" setup generic="I extends Item">
-import { AppCheckbox } from '@beabee/vue/components';
+import { AppCheckbox } from '@beabee/vue';
 
 import {
   faCaretDown,
