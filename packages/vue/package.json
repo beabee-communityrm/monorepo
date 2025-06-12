@@ -40,6 +40,7 @@
     "@vuelidate/core": "^2.0.3",
     "color2k": "^2.0.3",
     "import-meta-resolve": "^4.1.0",
+    "qrcode-generator": "^1.5.0",
     "vue": "^3.5.14",
     "vue-accessible-color-picker": "^5.2.0",
     "vue-i18n": "^11.1.3",

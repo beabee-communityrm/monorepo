@@ -76,11 +76,15 @@ import {
   ItemStatus,
   type Paginated,
 } from '@beabee/beabee-common';
-import { AppHeading, AppSearchInput, AppToggle } from '@beabee/vue';
+import {
+  AppHeading,
+  AppPagination,
+  AppSearchInput,
+  AppToggle,
+  PageTitle,
+} from '@beabee/vue';
 
-import AppPagination from '@components/AppPagination.vue';
 import AppTime from '@components/AppTime.vue';
-import PageTitle from '@components/PageTitle.vue';
 import CalloutCard from '@components/callout/CalloutCard.vue';
 import AppTable from '@components/table/AppTable.vue';
 import type { Header } from '@components/table/table.interface';

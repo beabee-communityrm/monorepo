@@ -39,11 +39,10 @@
 <script lang="ts" setup>
 import type { Paginated } from '@beabee/beabee-common';
 import { AppSelect } from '@beabee/vue';
+import { AppPagination } from '@beabee/vue';
 
 import { computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-
-import AppPagination from '../AppPagination.vue';
 
 const emit = defineEmits(['update:page', 'update:limit']);
 

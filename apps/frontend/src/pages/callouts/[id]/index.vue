@@ -92,13 +92,13 @@ import {
 import {
   AppButton,
   AppHeading,
+  AppMessageBox,
   AppNotification,
   AppTitle,
   addNotification,
 } from '@beabee/vue';
 
 import noImage from '@assets/images/no-image.avif';
-import AppMessageBox from '@components/AppMessageBox.vue';
 import AppShareBox from '@components/AppShareBox.vue';
 import CalloutForm from '@components/pages/callouts/CalloutForm.vue';
 import CalloutLoginPrompt from '@components/pages/callouts/CalloutLoginPrompt.vue';

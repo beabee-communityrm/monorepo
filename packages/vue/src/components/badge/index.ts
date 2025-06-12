@@ -4,3 +4,4 @@ export {
   default as AppRoundBadge,
   type AppRoundBadgeProps,
 } from './AppRoundBadge.vue';
+export { default as AppTag } from './AppTag.vue';

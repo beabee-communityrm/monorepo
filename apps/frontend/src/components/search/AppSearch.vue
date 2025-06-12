@@ -29,8 +29,8 @@
 
 <script lang="ts" setup>
 import type { RuleGroup } from '@beabee/beabee-common';
+import { AppExpandableBox } from '@beabee/vue';
 
-import AppExpandableBox from '@components/AppExpandableBox.vue';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import type { FilterGroups } from '@type';
 import { computed, ref, toRef, watch } from 'vue';

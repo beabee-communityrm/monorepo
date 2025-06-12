@@ -224,9 +224,8 @@ import {
   AppNotification,
   addNotification,
 } from '@beabee/vue';
-import { AppHeading } from '@beabee/vue';
+import { AppHeading, AppQRCode } from '@beabee/vue';
 
-import AppQRCode from '@components/AppQRCode.vue';
 import AppSlide from '@components/slider/AppSlide.vue';
 import AppSlider from '@components/slider/AppSlider.vue';
 import { faMobileAlt } from '@fortawesome/free-solid-svg-icons';

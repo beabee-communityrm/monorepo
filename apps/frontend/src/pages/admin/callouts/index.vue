@@ -75,11 +75,14 @@ import type {
   GetCalloutsQuery,
   Paginated,
 } from '@beabee/beabee-common';
-import { AppButton, AppSearchInput } from '@beabee/vue';
-import { ItemStatus } from '@beabee/vue';
+import {
+  AppButton,
+  AppFilterGrid,
+  AppSearchInput,
+  ItemStatus,
+  PageTitle,
+} from '@beabee/vue';
 
-import AppFilterGrid from '@components/AppFilterGrid.vue';
-import PageTitle from '@components/PageTitle.vue';
 import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
 import type { Header } from '@components/table/table.interface';
 import {
