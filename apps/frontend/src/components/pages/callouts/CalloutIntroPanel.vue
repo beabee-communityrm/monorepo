@@ -39,18 +39,19 @@
 </template>
 
 <script lang="ts" setup>
+import { type GetCalloutDataWith, ItemStatus } from '@beabee/beabee-common';
+import { AppButton } from '@beabee/vue/components';
+import { generalContent } from '@beabee/vue/store/generalContent';
+
+import noImage from '@assets/images/no-image.avif';
+import AppShareBox from '@components/AppShareBox.vue';
+import AppTitle from '@components/AppTitle.vue';
+import { resolveImageUrl } from '@utils/url';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 
 import CalloutSidePanel from './CalloutSidePanel.vue';
-import AppTitle from '@components/AppTitle.vue';
-import { AppButton } from '@beabee/vue/components';
-import { generalContent } from '@beabee/vue/store/generalContent';
-import { ItemStatus, type GetCalloutDataWith } from '@beabee/beabee-common';
-import AppShareBox from '@components/AppShareBox.vue';
-import noImage from '@assets/images/no-image.avif';
-import { resolveImageUrl } from '@utils/url';
 
 defineEmits<{ (e: 'close'): void }>();
 

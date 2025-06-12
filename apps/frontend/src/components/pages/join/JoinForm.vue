@@ -61,24 +61,23 @@
   </AuthBox>
 </template>
 <script lang="ts" setup>
-import { computed, toRef } from 'vue';
-import { useI18n } from 'vue-i18n';
-import useVuelidate from '@vuelidate/core';
-import { generalContent, isEmbed } from '@store';
-import { useJoin } from './use-join';
-
-import beabeeLogo from '@assets/images/beabee-logo.png';
-
-import AccountSection from './AccountSection.vue';
-import Contribution from '@components/contribution/Contribution.vue';
-import { AppCheckbox, AppForm } from '@beabee/vue/components';
-import AuthBox from '@components/AuthBox.vue';
-
-import AppTitle from '@components/AppTitle.vue';
 import type {
   ContentJoinData,
   ContentPaymentData,
 } from '@beabee/beabee-common';
+import { AppCheckbox, AppForm } from '@beabee/vue/components';
+
+import beabeeLogo from '@assets/images/beabee-logo.png';
+import AppTitle from '@components/AppTitle.vue';
+import AuthBox from '@components/AuthBox.vue';
+import Contribution from '@components/contribution/Contribution.vue';
+import { generalContent, isEmbed } from '@store';
+import useVuelidate from '@vuelidate/core';
+import { computed, toRef } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+import AccountSection from './AccountSection.vue';
+import { useJoin } from './use-join';
 
 const props = defineProps<{
   joinContent: ContentJoinData;

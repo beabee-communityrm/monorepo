@@ -42,14 +42,16 @@ meta:
   </App2ColGrid>
 </template>
 <script lang="ts" setup>
+import { AppCheckbox, AppForm } from '@beabee/vue/components';
+
+import { client } from '@utils/api';
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { AppForm, AppCheckbox } from '@beabee/vue/components';
+
+import App2ColGrid from '../../../components/App2ColGrid.vue';
 import RichTextEditor from '../../../components/rte/RichTextEditor.vue';
 import WelcomeMessage from '../../../components/welcome-message/WelcomeMessage.vue';
 import { currentUser } from '../../../store';
-import { client } from '@utils/api';
-import App2ColGrid from '../../../components/App2ColGrid.vue';
 
 const { t } = useI18n();
 const stepT = (key: string) => t('membershipBuilder.steps.intro.' + key);

@@ -1,11 +1,11 @@
 import {
-  GetContactWith,
   type GetContactDataWith,
+  GetContactWith,
   type RoleType,
 } from '@beabee/beabee-common';
-import { computed, type ComputedRef, ref } from 'vue';
 
 import { client } from '@utils/api';
+import { type ComputedRef, computed, ref } from 'vue';
 
 export async function updateCurrentUser(): Promise<void> {
   try {

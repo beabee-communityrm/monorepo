@@ -1,6 +1,5 @@
-import { ValidateBy, ValidationOptions, buildMessage } from 'class-validator';
-
 import { validateOrReject } from '@api/utils';
+import { ValidateBy, ValidationOptions, buildMessage } from 'class-validator';
 
 async function isVariantsObject(value: unknown): Promise<boolean> {
   if (typeof value !== 'object' || value === null) {

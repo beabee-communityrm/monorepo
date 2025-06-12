@@ -1,17 +1,16 @@
-import {
-  cleanUrl,
-  ClientApiError,
-  isJson,
-  hasProtocol,
-  CookiePolyfill,
-  queryStringify,
-} from './index.js';
-
 import type {
   FetchOptions,
   FetchResponse,
   HttpMethod,
 } from '../types/index.js';
+import {
+  ClientApiError,
+  CookiePolyfill,
+  cleanUrl,
+  hasProtocol,
+  isJson,
+  queryStringify,
+} from './index.js';
 
 /**
  * A wrapper for the fetch API with some additional features.

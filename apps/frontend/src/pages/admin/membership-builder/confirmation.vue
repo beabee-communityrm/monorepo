@@ -115,25 +115,23 @@ meta:
   </App2ColGrid>
 </template>
 <script lang="ts" setup>
-import { onBeforeMount, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
 import {
-  ItemStatus,
   type ContentJoinSetupData,
   type GetCalloutData,
+  ItemStatus,
 } from '@beabee/beabee-common';
+import { AppCheckbox, AppForm } from '@beabee/vue/components';
 
-import { AppForm, AppCheckbox } from '@beabee/vue/components';
+import App2ColGrid from '@components/App2ColGrid.vue';
+import AppSubHeading from '@components/AppSubHeading.vue';
 import AppInput from '@components/forms/AppInput.vue';
+import AppSelect from '@components/forms/AppSelect.vue';
+import NewsletterOptInSettings from '@components/newsletter/NewsletterOptInSettings.vue';
 import SetupForm from '@components/pages/join/SetupForm.vue';
 import RichTextEditor from '@components/rte/RichTextEditor.vue';
-import App2ColGrid from '@components/App2ColGrid.vue';
-import AppSelect from '@components/forms/AppSelect.vue';
-import AppSubHeading from '@components/AppSubHeading.vue';
-
 import { client } from '@utils/api';
-
-import NewsletterOptInSettings from '@components/newsletter/NewsletterOptInSettings.vue';
+import { onBeforeMount, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 const setupContent = ref<ContentJoinSetupData>();
 const openCallouts = ref<GetCalloutData[]>([]);

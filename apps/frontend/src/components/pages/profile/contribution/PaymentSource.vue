@@ -39,19 +39,17 @@
 </template>
 
 <script lang="ts" setup>
-import { onBeforeMount, ref, computed } from 'vue';
-import { useI18n } from 'vue-i18n';
-
+import type { PaymentSource, PaymentSourceManual } from '@beabee/beabee-common';
 import { AppButton, AppNotification } from '@beabee/vue/components';
-import StripePayment from '@components/StripePayment.vue';
-import AppModal from '@components/AppModal.vue';
+
 import AppHeading from '@components/AppHeading.vue';
+import AppModal from '@components/AppModal.vue';
+import StripePayment from '@components/StripePayment.vue';
 import PaymentMethod from '@components/payment-method/PaymentMethod.vue';
-
-import { client, isApiError } from '@utils/api';
-
-import type { PaymentSourceManual, PaymentSource } from '@beabee/beabee-common';
 import type { StripePaymentData } from '@type/stripe-payment-data';
+import { client, isApiError } from '@utils/api';
+import { computed, onBeforeMount, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 

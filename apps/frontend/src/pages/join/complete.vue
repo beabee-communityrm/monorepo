@@ -9,9 +9,9 @@ meta:
 <template><div /></template>
 
 <script lang="ts" setup>
+import { client } from '@utils/api';
 import { onBeforeMount } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { client } from '@utils/api';
 
 const route = useRoute();
 const router = useRouter();

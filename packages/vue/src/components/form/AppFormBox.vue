@@ -10,10 +10,10 @@
 </template>
 
 <script lang="ts" setup>
-import AppLabel from './AppLabel.vue';
 import AppNotification, {
   type AppNotificationProps,
 } from '../notification/AppNotification.vue';
+import AppLabel from './AppLabel.vue';
 
 /**
  * Props for the AppFormBox component

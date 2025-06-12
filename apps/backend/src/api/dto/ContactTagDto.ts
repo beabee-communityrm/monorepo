@@ -1,4 +1,5 @@
 import { IsString, IsUUID } from 'class-validator';
+
 import { CreateTagDto, GetTagDto, ListTagsDto } from './TagDto';
 
 /**

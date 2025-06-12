@@ -1,4 +1,5 @@
 import { Argv } from 'yargs';
+
 import { MigrateUploadsArgs } from '../types/index.js';
 
 /**

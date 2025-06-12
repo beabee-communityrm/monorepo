@@ -1,3 +1,14 @@
+import {
+  MAX_FILE_SIZE_IN_BYTES,
+  isSupportedImageType,
+} from '@beabee/beabee-common';
+import type { UploadFileResponse } from '@beabee/beabee-common';
+import { config } from '@beabee/core/config';
+import { BadRequestError, UnsupportedFileType } from '@beabee/core/errors';
+import { Contact } from '@beabee/core/models';
+import { imageService } from '@beabee/core/services/ImageService';
+import { convertMulterError } from '@beabee/core/utils/multer';
+
 import { Request, Response } from 'express';
 import {
   Authorized,
@@ -14,19 +25,8 @@ import {
   UseBefore,
 } from 'routing-controllers';
 
-import { imageService } from '@beabee/core/services/ImageService';
-import { Contact } from '@beabee/core/models';
-import { BadRequestError, UnsupportedFileType } from '@beabee/core/errors';
-import { convertMulterError } from '@beabee/core/utils/multer';
-import { uploadMiddleware } from '../middlewares';
-import { config } from '@beabee/core/config';
-import {
-  isSupportedImageType,
-  MAX_FILE_SIZE_IN_BYTES,
-} from '@beabee/beabee-common';
 import { RateLimit } from '../decorators';
-
-import type { UploadFileResponse } from '@beabee/beabee-common';
+import { uploadMiddleware } from '../middlewares';
 
 @JsonController('/images')
 export class ImageController {

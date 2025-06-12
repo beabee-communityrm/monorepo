@@ -5,10 +5,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ItemStatus, type GetNoticeData } from '@beabee/beabee-common';
-import { onBeforeMount, ref } from 'vue';
+import { type GetNoticeData, ItemStatus } from '@beabee/beabee-common';
+
 import AppNotice from '@components/AppNotice.vue';
 import { client } from '@utils/api';
+import { onBeforeMount, ref } from 'vue';
 
 const notices = ref<GetNoticeData[]>([]);
 const loading = ref(false);

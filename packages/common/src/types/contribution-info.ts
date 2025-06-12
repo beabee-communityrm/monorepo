@@ -3,7 +3,6 @@ import type {
   ContributionType,
   MembershipStatus,
 } from '../data/index.js';
-
 import type { PaymentSource } from './index.js';
 
 export interface ContributionInfo {

@@ -1,8 +1,3 @@
-import { BaseClient } from './base.client.js';
-import { cleanUrl } from '../utils/index.js';
-import { ContactClient } from './contact.client.js';
-
-import type { BaseClientOptions } from '../types/index.js';
 import type {
   CreateCalloutResponseCommentData,
   GetCalloutResponseCommentData,
@@ -11,6 +6,11 @@ import type {
   Serial,
   UpdateCalloutResponseCommentData,
 } from '@beabee/beabee-common';
+
+import type { BaseClientOptions } from '../types/index.js';
+import { cleanUrl } from '../utils/index.js';
+import { BaseClient } from './base.client.js';
+import { ContactClient } from './contact.client.js';
 
 /**
  * Client for managing comments on callout responses

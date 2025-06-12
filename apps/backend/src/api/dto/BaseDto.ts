@@ -1,12 +1,14 @@
 import {
   PaginatedQuery,
   Rule,
-  ruleOperators,
+  RuleGroup,
   RuleOperator,
   RuleValue,
-  RuleGroup,
   isRuleGroup,
+  ruleOperators,
 } from '@beabee/beabee-common';
+
+import { IsType } from '@api/validators/IsType';
 import {
   Transform,
   TransformFnParams,
@@ -14,16 +16,14 @@ import {
   plainToInstance,
 } from 'class-transformer';
 import {
-  IsString,
-  IsIn,
   IsArray,
-  ValidateNested,
+  IsIn,
   IsOptional,
-  Min,
+  IsString,
   Max,
+  Min,
+  ValidateNested,
 } from 'class-validator';
-
-import { IsType } from '@api/validators/IsType';
 
 export class GetPaginatedRule implements Rule {
   @IsString()

@@ -1,7 +1,6 @@
 import { getRepository } from '#database';
-import { generateApiKey } from '#utils/auth';
-
 import { ApiKey, Contact } from '#models/index';
+import { generateApiKey } from '#utils/auth';
 
 class ApiKeyService {
   /**

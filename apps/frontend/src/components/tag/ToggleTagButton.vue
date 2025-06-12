@@ -28,9 +28,10 @@
   </AppDropdownButton>
 </template>
 <script lang="ts" setup>
+import { AppDropdownButton, AppSelectableList } from '@beabee/vue/components';
+
 import { faCog, faTag } from '@fortawesome/free-solid-svg-icons';
 import { useI18n } from 'vue-i18n';
-import { AppDropdownButton, AppSelectableList } from '@beabee/vue/components';
 
 const emit = defineEmits<{
   (event: 'toggle', id: string, successText: string): void;

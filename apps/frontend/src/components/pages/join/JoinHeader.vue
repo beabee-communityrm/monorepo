@@ -9,5 +9,6 @@
 <script lang="ts" setup>
 import AppLogo from '../../AppLogo.vue';
 import AppTitle from '../../AppTitle.vue';
+
 defineProps<{ title: string }>();
 </script>

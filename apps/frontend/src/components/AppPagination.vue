@@ -32,6 +32,8 @@
 </template>
 
 <script lang="ts" setup>
+import { AppButton, AppButtonGroup } from '@beabee/vue/components';
+
 import {
   faCaretLeft,
   faCaretRight,
@@ -39,7 +41,6 @@ import {
   faStepForward,
 } from '@fortawesome/free-solid-svg-icons';
 import { computed } from 'vue';
-import { AppButton, AppButtonGroup } from '@beabee/vue/components';
 
 const props = defineProps<{
   modelValue: number;

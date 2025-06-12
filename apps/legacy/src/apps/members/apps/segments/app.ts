@@ -1,20 +1,19 @@
-import express, { type Express, type Request, type Response } from 'express';
-
 import { getRepository } from '@beabee/core/database';
-import { hasNewModel } from '#core/middleware';
-import { getSegmentContacts } from '#core/utils/segments';
-import { wrapAsync } from '@beabee/core/utils/express';
-
 import {
   Email,
   EmailMailing,
   Segment,
-  SegmentOngoingEmail,
   SegmentContact,
+  SegmentOngoingEmail,
 } from '@beabee/core/models';
+import { wrapAsync } from '@beabee/core/utils/express';
 
-import { EmailSchema, schemaToEmail } from '#apps/tools/apps/emails/app';
+import express, { type Express, type Request, type Response } from 'express';
+
 import { cleanRuleGroup } from '#apps/members/app';
+import { EmailSchema, schemaToEmail } from '#apps/tools/apps/emails/app';
+import { hasNewModel } from '#core/middleware';
+import { getSegmentContacts } from '#core/utils/segments';
 
 const app: Express = express();
 

@@ -4,33 +4,31 @@ import {
   PaymentMethod,
   PaymentStatus,
 } from '@beabee/beabee-common';
+
 import axios from 'axios';
 import crypto from 'crypto';
+import { differenceInMonths, format } from 'date-fns';
 import { Request } from 'express';
 import {
   Customer,
   CustomerBankAccount,
+  PaymentStatus as GCPaymentStatus,
   Mandate,
   Payment,
+  PaymentCurrency,
   RedirectFlow,
   RedirectFlowPrefilledCustomer,
   Refund,
   Subscription,
   SubscriptionIntervalUnit,
-  PaymentCurrency,
-  PaymentStatus as GCPaymentStatus,
 } from 'gocardless-nodejs/types/Types';
+import moment from 'moment';
 import { DeepPartial } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 
-import { log as mainLogger } from '#logging';
-
-import { differenceInMonths, format } from 'date-fns';
-import moment from 'moment';
-
-import { getChargeableAmount } from '#utils/payment';
-
 import config from '#config/config';
+import { log as mainLogger } from '#logging';
+import { getChargeableAmount } from '#utils/payment';
 
 const log = mainLogger.child({ app: 'gocardless-api' });
 

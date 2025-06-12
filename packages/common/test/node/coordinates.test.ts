@@ -1,5 +1,6 @@
-import { describe, expect, test } from 'vitest';
 import { isLngLat } from '@beabee/beabee-common';
+
+import { describe, expect, test } from 'vitest';
 
 describe('isLngLat test with', () => {
   test('a valid longitude/latitude pair', () => {

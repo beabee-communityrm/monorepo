@@ -1,19 +1,23 @@
 import {
-  ContributionPeriod,
-  PaymentMethod,
-  StripeFeeCountry,
   ContentContactsData,
   ContentEmailData,
   ContentGeneralData,
+  ContentId,
   ContentJoinData,
   ContentJoinPeriodData,
   ContentJoinSetupData,
+  ContentPaymentData,
   ContentProfileData,
   ContentShareData,
-  ContentPaymentData,
-  ContentId,
+  ContributionPeriod,
+  PaymentMethod,
+  StripeFeeCountry,
 } from '@beabee/beabee-common';
 import { Locale } from '@beabee/locale';
+
+import { GetContentTelegramDto } from '@api/dto/ContentTelegramDto';
+import { LinkDto } from '@api/dto/LinkDto';
+import { NewsletterGroupDto } from '@api/dto/NewsletterDto';
 import { Type } from 'class-transformer';
 import {
   IsBoolean,
@@ -24,10 +28,6 @@ import {
   IsString,
   ValidateNested,
 } from 'class-validator';
-
-import { LinkDto } from '@api/dto/LinkDto';
-import { GetContentTelegramDto } from '@api/dto/ContentTelegramDto';
-import { NewsletterGroupDto } from '@api/dto/NewsletterDto';
 
 export class GetContentContactsDto implements ContentContactsData {
   @IsString({ each: true })

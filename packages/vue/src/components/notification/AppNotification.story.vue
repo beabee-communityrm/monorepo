@@ -1,9 +1,10 @@
 <script lang="ts" setup>
-import { reactive } from 'vue';
 import {
-  faInfoCircle,
   faExclamationTriangle,
+  faInfoCircle,
 } from '@fortawesome/free-solid-svg-icons';
+import { reactive } from 'vue';
+
 import AppNotification from './AppNotification.vue';
 
 const state = reactive({

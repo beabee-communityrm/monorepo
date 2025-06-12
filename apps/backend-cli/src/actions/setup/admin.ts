@@ -1,7 +1,8 @@
-import { input, password, confirm } from '@inquirer/prompts';
-import { createUser } from '../user/create.js';
+import { confirm, input, password } from '@inquirer/prompts';
+
 import type { CreateUserArgs } from '../../types/index.js';
 import type { SetupAdminArgs } from '../../types/setup.js';
+import { createUser } from '../user/create.js';
 
 /**
  * Interactive setup for creating an initial admin user

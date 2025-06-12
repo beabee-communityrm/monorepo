@@ -12,10 +12,12 @@
 </template>
 <script lang="ts" setup>
 import { ContributionPeriod } from '@beabee/beabee-common';
-import { useI18n } from 'vue-i18n';
-import { computed } from 'vue';
-import PeriodAmountValue from './PeriodAmountValue.vue';
 import { AppLabel } from '@beabee/vue/components';
+
+import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+import PeriodAmountValue from './PeriodAmountValue.vue';
 
 const emit = defineEmits(['update:modelValue']);
 const props = defineProps<{

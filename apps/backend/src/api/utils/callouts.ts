@@ -1,6 +1,6 @@
 import { Rule } from '@beabee/beabee-common';
 import { getRepository } from '@beabee/core/database';
-import { Contact, CalloutReviewer } from '@beabee/core/models';
+import { CalloutReviewer, Contact } from '@beabee/core/models';
 
 export async function getReviewerRules(
   contact: Contact | undefined,

@@ -1,9 +1,9 @@
 import {
-  nullableOperators,
-  operatorsByTypeMap,
   type FilterType,
   type Rule,
   type RuleOperator,
+  nullableOperators,
+  operatorsByTypeMap,
 } from '@beabee/beabee-common';
 
 import { i18n } from '@lib/i18n';

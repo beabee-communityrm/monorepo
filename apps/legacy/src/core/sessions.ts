@@ -1,13 +1,12 @@
 import { RoleType } from '@beabee/beabee-common';
+import config from '@beabee/core/config';
+import { dataSource } from '@beabee/core/database';
+import passport from '@beabee/core/lib/passport';
+
 import _pgSession from 'connect-pg-simple';
 import express, { RequestHandler, Response } from 'express';
 import session from 'express-session';
 import { PostgresDriver } from 'typeorm/driver/postgres/PostgresDriver';
-
-import { dataSource } from '@beabee/core/database';
-import passport from '@beabee/core/lib/passport';
-
-import config from '@beabee/core/config';
 
 const pgSession = _pgSession(session);
 

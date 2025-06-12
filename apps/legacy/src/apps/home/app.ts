@@ -1,7 +1,8 @@
-import express, { type Express } from 'express';
 import OptionsService, {
   OptionKey,
 } from '@beabee/core/services/OptionsService';
+
+import express, { type Express } from 'express';
 
 const app: Express = express();
 

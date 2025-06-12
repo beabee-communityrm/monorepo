@@ -1,4 +1,5 @@
 import { Address } from '@beabee/beabee-common';
+
 import { IsDefined, IsOptional, IsString } from 'class-validator';
 
 export class UpdateAddressDto implements Address {

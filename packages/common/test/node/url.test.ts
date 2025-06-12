@@ -1,5 +1,6 @@
-import { describe, expect, test } from 'vitest';
 import { isURL } from '@beabee/beabee-common';
+
+import { describe, expect, test } from 'vitest';
 
 describe('isURL', () => {
   test('valid URL', () => {

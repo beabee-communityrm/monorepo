@@ -105,8 +105,9 @@ The component is designed to be used in `main.ts` during the `waitForBackend()` 
 
 ```vue
 <script setup>
-import { ref } from 'vue';
 import AppStatusPage from '@beabee/vue/components/status/AppStatusPage.vue';
+
+import { ref } from 'vue';
 
 const showStatus = ref(true);
 const healthProgress = ref(0);

@@ -1,10 +1,11 @@
 <script lang="ts" setup>
-import { ref, reactive } from 'vue';
 import {
   faBell,
   faEnvelope,
   faShieldAlt,
 } from '@fortawesome/free-solid-svg-icons';
+import { reactive, ref } from 'vue';
+
 import AppCheckbox from './AppCheckbox.vue';
 
 const state = reactive({

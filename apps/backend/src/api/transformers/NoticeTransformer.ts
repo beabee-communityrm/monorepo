@@ -1,17 +1,15 @@
 import {
   ItemStatus,
   NoticeFilterName,
-  noticeFilters,
   RuleGroup,
+  noticeFilters,
 } from '@beabee/beabee-common';
-import { TransformPlainToInstance } from 'class-transformer';
-
-import { BaseTransformer } from '@api/transformers/BaseTransformer';
+import { statusFilterHandler } from '@beabee/core/filter-handlers';
+import { Notice } from '@beabee/core/models';
 
 import { GetNoticeDto } from '@api/dto/NoticeDto';
-import { statusFilterHandler } from '@beabee/core/filter-handlers';
-
-import { Notice } from '@beabee/core/models';
+import { BaseTransformer } from '@api/transformers/BaseTransformer';
+import { TransformPlainToInstance } from 'class-transformer';
 
 export class NoticeTransformer extends BaseTransformer<
   Notice,

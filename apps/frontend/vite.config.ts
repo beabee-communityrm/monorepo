@@ -1,50 +1,49 @@
-import path from 'path';
-import { defineConfig, loadEnv } from 'vite';
-import vue from '@vitejs/plugin-vue';
-import vueI18n from '@intlify/unplugin-vue-i18n/vite';
-import pages from 'vite-plugin-pages'; // TODO: Replace with https://github.com/posva/unplugin-vue-router as recommended by `vite-plugin-pages` itself
-import replace from '@rollup/plugin-replace';
-
 import theme from '@beabee/vue/plugins/theme';
 
-export default ({ command, mode }) => {
-  const env = loadEnv(mode, process.cwd(), '');
+import vueI18n from '@intlify/unplugin-vue-i18n/vite';
+// TODO: Replace with https://github.com/posva/unplugin-vue-router as recommended by `vite-plugin-pages` itself
+import replace from '@rollup/plugin-replace';
+import vue from '@vitejs/plugin-vue';
+import { resolve } from 'path';
+import { defineConfig, loadEnv } from 'vite';
+import type { Plugin } from 'vite';
+import pages from 'vite-plugin-pages';
 
-  const plugins = [
+export default ({ command, mode }) => {
+  const env = loadEnv(mode, resolve(process.cwd(), '../../'), '');
+
+  const plugins: Plugin[] = [
     vue(),
     vueI18n({
-      include: path.resolve(
-        __dirname,
-        '../../packages/locale/dist/esm/locales/*'
-      ),
+      include: resolve(__dirname, '../../packages/locale/dist/esm/locales/*'),
       strictMessage: false,
-    }),
+    }) as Plugin,
     theme(),
     pages(),
   ];
 
   // Keep this in sync with tsconfig.json -> compilerOptions.paths
   const alias = {
-    '@components/': `${path.resolve(__dirname, './src/components')}/`,
-    '@layouts/': `${path.resolve(__dirname, './src/layouts')}/`,
-    '@lib/': `${path.resolve(__dirname, './src/lib')}/`,
-    '@pages/': `${path.resolve(__dirname, './src/pages')}/`,
-    '@store/': `${path.resolve(__dirname, './src/store')}/`,
-    '@type/': `${path.resolve(__dirname, './src/type')}/`,
-    '@utils/': `${path.resolve(__dirname, './src/utils')}/`,
-    '@enums/': `${path.resolve(__dirname, './src/enums')}/`,
+    '@components/': `${resolve(__dirname, './src/components')}/`,
+    '@layouts/': `${resolve(__dirname, './src/layouts')}/`,
+    '@lib/': `${resolve(__dirname, './src/lib')}/`,
+    '@pages/': `${resolve(__dirname, './src/pages')}/`,
+    '@store/': `${resolve(__dirname, './src/store')}/`,
+    '@type/': `${resolve(__dirname, './src/type')}/`,
+    '@utils/': `${resolve(__dirname, './src/utils')}/`,
+    '@enums/': `${resolve(__dirname, './src/enums')}/`,
 
-    '@components': `${path.resolve(__dirname, './src/components/index')}`,
-    '@layouts': `${path.resolve(__dirname, './src/layouts/index')}`,
-    '@lib': `${path.resolve(__dirname, './src/lib/index')}`,
-    '@pages': `${path.resolve(__dirname, './src/pages/index')}`,
-    '@store': `${path.resolve(__dirname, './src/store/index')}`,
-    '@type': `${path.resolve(__dirname, './src/type/index')}`,
-    '@utils': `${path.resolve(__dirname, './src/utils/index')}`,
-    '@enums': `${path.resolve(__dirname, './src/enums/index')}`,
+    '@components': `${resolve(__dirname, './src/components/index')}`,
+    '@layouts': `${resolve(__dirname, './src/layouts/index')}`,
+    '@lib': `${resolve(__dirname, './src/lib/index')}`,
+    '@pages': `${resolve(__dirname, './src/pages/index')}`,
+    '@store': `${resolve(__dirname, './src/store/index')}`,
+    '@type': `${resolve(__dirname, './src/type/index')}`,
+    '@utils': `${resolve(__dirname, './src/utils/index')}`,
+    '@enums': `${resolve(__dirname, './src/enums/index')}`,
 
-    '@env': `${path.resolve(__dirname, './src/env')}`,
-    '@assets': `${path.resolve(__dirname, './src/assets')}`,
+    '@env': `${resolve(__dirname, './src/env')}`,
+    '@assets': `${resolve(__dirname, './src/assets')}`,
   };
 
   /*
@@ -60,7 +59,7 @@ export default ({ command, mode }) => {
           // In Vite this is the Vite dev server URL with hot module reloading
           // and proxy API requests to the router application URL
           __appUrl__: `http://localhost:${env.VITE_DEV_SERVER_PORT}`,
-          __apiUrl__: env.API_BASE_URL,
+          __apiUrl__: '/api/1.0/',
           __revision__: env.REVISION || 'dev',
           __version__: env.VERSION || 'dev',
           __appsignalKey__: env.APPSIGNAL_KEY || '',
@@ -70,7 +69,7 @@ export default ({ command, mode }) => {
           __experimentalFeatures__: env.EXPERIMENTAL_FEATURES || '',
         },
         preventAssignment: true,
-      })
+      }) as Plugin
     );
   }
 
@@ -89,7 +88,7 @@ export default ({ command, mode }) => {
       // Proxy API requests to the backend
       proxy: {
         '^/(api|login|favicon.png)': {
-          target: env.APP_BASE_URL,
+          target: env.BEABEE_AUDIENCE || 'http://localhost:3002',
           changeOrigin: true,
           cookieDomainRewrite: 'localhost',
         },

@@ -44,11 +44,12 @@
 </template>
 
 <script lang="ts" setup>
-import { faGripVertical, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { computed } from 'vue';
-import { getDecisionComponent } from '@utils/callouts';
-import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
 import { AppButton } from '@beabee/vue/components';
+
+import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
+import { faGripVertical, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { getDecisionComponent } from '@utils/callouts';
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();

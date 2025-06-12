@@ -10,9 +10,8 @@ import {
   SelectQueryBuilder,
 } from 'typeorm';
 
-import { log as mainLogger } from './logging';
-
 import config from './config/config';
+import { log as mainLogger } from './logging';
 
 const log = mainLogger.child({ app: 'database' });
 

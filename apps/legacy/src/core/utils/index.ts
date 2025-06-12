@@ -1,6 +1,6 @@
-import { NextFunction, Request, RequestHandler, Response } from 'express';
-
 import { AuthInfo } from '@beabee/core/type';
+
+import { NextFunction, Request, RequestHandler, Response } from 'express';
 
 export function userToAuth(user: Express.User): AuthInfo {
   return {

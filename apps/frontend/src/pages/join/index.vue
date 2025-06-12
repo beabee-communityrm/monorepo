@@ -66,24 +66,22 @@ meta:
 
 <script lang="ts" setup>
 import {
-  ContributionPeriod,
   type ContentJoinData,
   type ContentPaymentData,
+  ContributionPeriod,
 } from '@beabee/beabee-common';
+import { AppNotification } from '@beabee/vue/components';
+
+import AuthBox from '@components/AuthBox.vue';
+import StripePayment from '@components/StripePayment.vue';
+import JoinForm from '@components/pages/join/JoinForm.vue';
+import { useJoin } from '@components/pages/join/use-join';
+import { faHandSparkles } from '@fortawesome/free-solid-svg-icons';
+import { generalContent, isEmbed } from '@store';
+import { client } from '@utils/api';
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
-
-import StripePayment from '@components/StripePayment.vue';
-import { useJoin } from '@components/pages/join/use-join';
-import JoinForm from '@components/pages/join/JoinForm.vue';
-import { faHandSparkles } from '@fortawesome/free-solid-svg-icons';
-import { AppNotification } from '@beabee/vue/components';
-import AuthBox from '@components/AuthBox.vue';
-
-import { client } from '@utils/api';
-
-import { generalContent, isEmbed } from '@store';
 
 const { t } = useI18n();
 

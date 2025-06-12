@@ -1,4 +1,5 @@
-import type { CommandModule, ArgumentsCamelCase } from 'yargs';
+import type { ArgumentsCamelCase, CommandModule } from 'yargs';
+
 import { esbuild } from '../actions/index.ts';
 import type { EsbuildArgs } from '../types/index.ts';
 

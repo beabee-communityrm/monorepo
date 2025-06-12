@@ -36,17 +36,15 @@ import type {
   ContentJoinSetupData,
   GetCalloutDataWith,
 } from '@beabee/beabee-common';
-import { onBeforeMount, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { useRouter } from 'vue-router';
+import { AppButton } from '@beabee/vue/components';
 
 import AuthBox from '@components/AuthBox.vue';
 import CalloutForm from '@components/pages/callouts/CalloutForm.vue';
-import { AppButton } from '@beabee/vue/components';
-
-import { client } from '@utils/api';
-
 import { currentUser } from '@store';
+import { client } from '@utils/api';
+import { onBeforeMount, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
 
 const { t } = useI18n();
 const router = useRouter();

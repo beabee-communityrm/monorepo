@@ -10,7 +10,10 @@
 node_modules/
 
 *.tsbuildinfo
+
 .env
+.env.remote
+.env.test
 
 dist/
 

@@ -1,4 +1,5 @@
 import { RoleType } from '@beabee/beabee-common';
+
 import type { GetContactData } from './get-contact-data';
 
 interface AuthInfoNoneData {

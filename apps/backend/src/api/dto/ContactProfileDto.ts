@@ -1,4 +1,6 @@
 import { NewsletterStatus } from '@beabee/beabee-common';
+
+import { GetAddressDto, UpdateAddressDto } from '@api/dto/AddressDto';
 import { Type } from 'class-transformer';
 import {
   IsArray,
@@ -8,8 +10,6 @@ import {
   IsString,
   ValidateNested,
 } from 'class-validator';
-
-import { GetAddressDto, UpdateAddressDto } from '@api/dto/AddressDto';
 
 export class GetContactProfileDto {
   @IsString()

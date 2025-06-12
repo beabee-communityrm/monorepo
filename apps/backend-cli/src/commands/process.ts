@@ -1,4 +1,5 @@
-import type { CommandModule, ArgumentsCamelCase } from 'yargs';
+import type { ArgumentsCamelCase, CommandModule } from 'yargs';
+
 import type { ProcessGiftsArgs } from '../types/process.js';
 
 export const processCommand: CommandModule = {

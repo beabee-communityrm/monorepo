@@ -1,21 +1,21 @@
+import { DuplicateTagNameError, NotFoundError } from '@beabee/core/errors';
+import { AuthInfo } from '@beabee/core/type';
+
+import { CurrentAuth } from '@api/decorators/CurrentAuth';
+import PartialBody from '@api/decorators/PartialBody';
+import { CreateContactTagDto, GetContactTagDto, ListTagsDto } from '@api/dto';
+import contactTagTransformer from '@api/transformers/ContactTagTransformer';
 import {
   Body,
+  Delete,
   Get,
   JsonController,
-  Post,
-  Patch,
-  Param,
   OnUndefined,
-  Delete,
+  Param,
+  Patch,
+  Post,
   QueryParams,
 } from 'routing-controllers';
-import PartialBody from '@api/decorators/PartialBody';
-
-import { CreateContactTagDto, GetContactTagDto, ListTagsDto } from '@api/dto';
-import { CurrentAuth } from '@api/decorators/CurrentAuth';
-import { AuthInfo } from '@beabee/core/type';
-import contactTagTransformer from '@api/transformers/ContactTagTransformer';
-import { DuplicateTagNameError, NotFoundError } from '@beabee/core/errors';
 
 /**
  * Controller for managing contact tags.

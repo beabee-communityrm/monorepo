@@ -1,13 +1,13 @@
+import { createQueryBuilder } from '@beabee/core/database';
+import { log } from '@beabee/core/logging';
+import { ContactProfile, ContactRole } from '@beabee/core/models';
+import { wrapAsync } from '@beabee/core/utils/express';
+
 import axios from 'axios';
 import express, { type Express } from 'express';
 import { Brackets } from 'typeorm';
 
-import { createQueryBuilder } from '@beabee/core/database';
-import { log } from '@beabee/core/logging';
 import { isAdmin } from '#core/middleware';
-import { wrapAsync } from '@beabee/core/utils/express';
-
-import { ContactRole, ContactProfile } from '@beabee/core/models';
 
 const app: Express = express();
 

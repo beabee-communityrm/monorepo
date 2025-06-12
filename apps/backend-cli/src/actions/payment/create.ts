@@ -1,7 +1,8 @@
-import { runApp } from '@beabee/core/server';
-import { generatePassword } from '@beabee/core/utils/auth';
-import { contactsService } from '@beabee/core/services';
 import { PaymentMethod } from '@beabee/beabee-common';
+import { runApp } from '@beabee/core/server';
+import { contactsService } from '@beabee/core/services';
+import { generatePassword } from '@beabee/core/utils/auth';
+
 import type { CreatePaymentArgs } from '../../types/index.js';
 import { createStripePayment } from './stripe-create.js';
 

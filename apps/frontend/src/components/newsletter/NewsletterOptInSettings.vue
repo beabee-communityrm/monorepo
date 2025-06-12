@@ -42,13 +42,15 @@
 </template>
 
 <script lang="ts" setup>
-import { useI18n } from 'vue-i18n';
-import { AppCheckbox } from '@beabee/vue/components';
-import AppInput from '../forms/AppInput.vue';
-import RichTextEditor from '../rte/RichTextEditor.vue';
-import AppSectionHeading from '../AppSectionHeading.vue';
-import AppRepeatable from '../forms/AppRepeatable.vue';
 import type { NewsletterGroupData } from '@beabee/beabee-common';
+import { AppCheckbox } from '@beabee/vue/components';
+
+import { useI18n } from 'vue-i18n';
+
+import AppSectionHeading from '../AppSectionHeading.vue';
+import AppInput from '../forms/AppInput.vue';
+import AppRepeatable from '../forms/AppRepeatable.vue';
+import RichTextEditor from '../rte/RichTextEditor.vue';
 
 const { t } = useI18n();
 

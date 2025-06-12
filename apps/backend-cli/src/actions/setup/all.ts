@@ -1,7 +1,7 @@
-import { setupSupportEmail } from './support-email.js';
-import { setupPaymentMethods } from './payment-methods.js';
-import { setupAdmin } from './admin.js';
 import type { SetupAllArgs } from '../../types/setup.js';
+import { setupAdmin } from './admin.js';
+import { setupPaymentMethods } from './payment-methods.js';
+import { setupSupportEmail } from './support-email.js';
 
 /**
  * Complete system setup that runs all setup steps in sequence:

@@ -1,6 +1,5 @@
-import { CalloutComponentType } from './callout-component-type.js';
-
 import type { CalloutComponentBaseNestableSchema } from '../types/index.js';
+import { CalloutComponentType } from './callout-component-type.js';
 
 /** Array of all possible callout nestable component types */
 export const calloutComponentNestableTypes: Array<

@@ -83,17 +83,8 @@
 </template>
 
 <script lang="ts" setup="{ emit }">
-import { computed, onBeforeUnmount, toRef, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { useEditor, EditorContent, type ChainedCommands } from '@tiptap/vue-3';
-import Link from '@tiptap/extension-link';
-import Underline from '@tiptap/extension-underline';
-import StarterKit from '@tiptap/starter-kit';
-import Typography from '@tiptap/extension-typography';
-import RichTextEditorButton from './RichTextEditorButton.vue';
-import { AppLabel, AppCopyButton } from '@beabee/vue/components';
-import useVuelidate from '@vuelidate/core';
-import { helpers, requiredIf } from '@vuelidate/validators';
+import { AppCopyButton, AppLabel } from '@beabee/vue/components';
+
 import {
   faBold,
   faHeading,
@@ -104,6 +95,16 @@ import {
   faStrikethrough,
   faUnderline,
 } from '@fortawesome/free-solid-svg-icons';
+import Link from '@tiptap/extension-link';
+import Typography from '@tiptap/extension-typography';
+import Underline from '@tiptap/extension-underline';
+import StarterKit from '@tiptap/starter-kit';
+import { type ChainedCommands, EditorContent, useEditor } from '@tiptap/vue-3';
+import useVuelidate from '@vuelidate/core';
+import { helpers, requiredIf } from '@vuelidate/validators';
+import { computed, onBeforeUnmount, toRef, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
+
 import AppInputError from '../forms/AppInputError.vue';
 import AppInputHelp from '../forms/AppInputHelp.vue';
 

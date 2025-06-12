@@ -1,16 +1,15 @@
+import config from '@beabee/core/config';
+import { getRepository } from '@beabee/core/database';
+import OptionsService from '@beabee/core/services/OptionsService';
+import { isInvalidType } from '@beabee/core/utils/db';
+import { wrapAsync } from '@beabee/core/utils/express';
+
 import { ErrorObject, ValidateFunction } from 'ajv';
 import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { EntityTarget, FindOneOptions, ObjectLiteral } from 'typeorm';
 
-import { getRepository } from '@beabee/core/database';
 import ajv from '#core/lib/ajv';
 import * as auth from '#core/utils/auth';
-
-import OptionsService from '@beabee/core/services/OptionsService';
-
-import config from '@beabee/core/config';
-import { wrapAsync } from '@beabee/core/utils/express';
-import { isInvalidType } from '@beabee/core/utils/db';
 
 interface OnErrorHandler {
   (

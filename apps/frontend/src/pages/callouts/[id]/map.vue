@@ -185,6 +185,50 @@ meta:
 
 <script lang="ts" setup>
 import {
+  type CalloutResponseAnswerAddress,
+  type CalloutResponseAnswersSlide,
+  type GetCalloutDataWith,
+  isLngLat,
+} from '@beabee/beabee-common';
+import { AppButton } from '@beabee/vue/components';
+
+import CalloutAddResponsePanel from '@components/pages/callouts/CalloutAddResponsePanel.vue';
+import CalloutIntroPanel from '@components/pages/callouts/CalloutIntroPanel.vue';
+import CalloutMapHeader from '@components/pages/callouts/CalloutMapHeader.vue';
+import CalloutShowResponsePanel from '@components/pages/callouts/CalloutShowResponsePanel.vue';
+import {
+  HASH_PREFIX,
+  useCallout,
+} from '@components/pages/callouts/use-callout';
+import { faInfoCircle, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { currentLocaleConfig } from '@lib/i18n';
+import { GeocodingControl } from '@maptiler/geocoding-control/maplibregl';
+import '@maptiler/geocoding-control/style.css';
+import { isEmbed } from '@store';
+import type {
+  GeocodePickEvent,
+  GetCalloutResponseMapDataWithAddress,
+  MapClusterFeature,
+  MapPointFeature,
+  MapPointFeatureCollection,
+} from '@type';
+import { setKey } from '@utils';
+import { client } from '@utils/api';
+import {
+  type GeocodeResult,
+  featureToAddress,
+  formatGeocodeResult,
+  reverseGeocode,
+} from '@utils/geocode';
+import {
+  type GeoJSONSource,
+  type LngLatLike,
+  Map,
+  type MapMouseEvent,
+  type MapSourceDataEvent,
+} from 'maplibre-gl';
+import 'maplibre-gl/dist/maplibre-gl.css';
+import {
   computed,
   onBeforeMount,
   onMounted,
@@ -193,71 +237,21 @@ import {
   watch,
   watchEffect,
 } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import {
-  MglMap,
-  MglGeoJsonSource,
   MglCircleLayer,
-  MglSymbolLayer,
+  MglGeoJsonSource,
+  MglGeolocationControl,
+  MglMap,
   MglMarker,
   MglNavigationControl,
   MglScaleControl,
-  MglGeolocationControl,
+  MglSymbolLayer,
 } from 'vue-maplibre-gl';
-import {
-  Map,
-  type GeoJSONSource,
-  type LngLatLike,
-  type MapMouseEvent,
-  type MapSourceDataEvent,
-} from 'maplibre-gl';
-
-import 'maplibre-gl/dist/maplibre-gl.css';
 import 'vue-maplibre-gl/dist/vue-maplibre-gl.css';
-
-import {
-  isLngLat,
-  type CalloutResponseAnswerAddress,
-  type CalloutResponseAnswersSlide,
-  type GetCalloutDataWith,
-} from '@beabee/beabee-common';
-
-import { faInfoCircle, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { useI18n } from 'vue-i18n';
-import { GeocodingControl } from '@maptiler/geocoding-control/maplibregl';
-import '@maptiler/geocoding-control/style.css';
-
-import CalloutShowResponsePanel from '@components/pages/callouts/CalloutShowResponsePanel.vue';
-import CalloutIntroPanel from '@components/pages/callouts/CalloutIntroPanel.vue';
-import CalloutAddResponsePanel from '@components/pages/callouts/CalloutAddResponsePanel.vue';
-import {
-  HASH_PREFIX,
-  useCallout,
-} from '@components/pages/callouts/use-callout';
-
-import { setKey } from '@utils';
-import {
-  type GeocodeResult,
-  featureToAddress,
-  reverseGeocode,
-  formatGeocodeResult,
-} from '@utils/geocode';
-import { client } from '@utils/api';
+import { useRoute, useRouter } from 'vue-router';
 
 import env from '../../../env';
-import { AppButton } from '@beabee/vue/components';
-
-import { isEmbed } from '@store';
-
-import { currentLocaleConfig } from '@lib/i18n';
-import CalloutMapHeader from '@components/pages/callouts/CalloutMapHeader.vue';
-import type {
-  GeocodePickEvent,
-  GetCalloutResponseMapDataWithAddress,
-  MapClusterFeature,
-  MapPointFeature,
-  MapPointFeatureCollection,
-} from '@type';
 
 const LAYER_IDS = {
   CLUSTERS: 'clusters',

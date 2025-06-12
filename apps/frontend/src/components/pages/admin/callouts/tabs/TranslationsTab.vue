@@ -116,9 +116,9 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
 import { ItemStatus } from '@beabee/beabee-common';
+import { LocaleContext } from '@beabee/locale';
+import { getLocaleItemsForContext } from '@beabee/vue';
 import {
   AppNotification,
   AppScrollNavigation,
@@ -126,18 +126,20 @@ import {
   AppTabCard,
   type ScrollSection,
 } from '@beabee/vue/components';
-import { AppFormBox, AppCheckboxGroup } from '@beabee/vue/components';
-import type { LocaleProp } from '@type';
-import type { CalloutHorizontalTabs } from '../CalloutHorizontalTabs.interface';
-import { generalContent } from '@store';
-import { LocaleContext } from '@beabee/locale';
-import { getLocaleItemsForContext } from '@beabee/vue';
+import { AppCheckboxGroup, AppFormBox } from '@beabee/vue/components';
 import type { TabItem } from '@beabee/vue/types';
+
+import { generalContent } from '@store';
+import type { LocaleProp } from '@type';
+import { computed, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+import type { CalloutHorizontalTabs } from '../CalloutHorizontalTabs.interface';
 import ButtonTranslations from './TranslationsTab/ButtonTranslations.vue';
-import TitleAndDescriptionTranslations from './TranslationsTab/TitleAndDescriptionTranslations.vue';
 import IntroductionTranslations from './TranslationsTab/IntroductionTranslations.vue';
-import ThankYouTranslations from './TranslationsTab/ThankYouTranslations.vue';
 import SlideTranslations from './TranslationsTab/SlideTranslations.vue';
+import ThankYouTranslations from './TranslationsTab/ThankYouTranslations.vue';
+import TitleAndDescriptionTranslations from './TranslationsTab/TitleAndDescriptionTranslations.vue';
 
 const allLocaleItems = getLocaleItemsForContext(LocaleContext.Callout);
 

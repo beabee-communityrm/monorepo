@@ -50,18 +50,20 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { AppLabel } from '@beabee/vue/components';
+import { AppCopyButton } from '@beabee/vue/components';
+
 import useVuelidate from '@vuelidate/core';
 import {
   helpers,
-  requiredIf,
   maxLength as maxLengthValidator,
+  requiredIf,
 } from '@vuelidate/validators';
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import AppInputHelp from './AppInputHelp.vue';
-import { AppLabel } from '@beabee/vue/components';
+
 import AppInputError from './AppInputError.vue';
-import { AppCopyButton } from '@beabee/vue/components';
+import AppInputHelp from './AppInputHelp.vue';
 
 /**
  * Props for the AppTextArea component

@@ -1,8 +1,10 @@
 import { type CalloutResponseAnswerAddress } from '@beabee/beabee-common';
-import { type GeocodingFeature } from '@maptiler/client';
-import { geocoding } from '../lib/maptiler';
-import env from '../env';
+
 import { currentLocaleConfig } from '@lib/i18n';
+import { type GeocodingFeature } from '@maptiler/client';
+
+import env from '../env';
+import { geocoding } from '../lib/maptiler';
 
 export interface GeocodeResult {
   formatted_address: string;

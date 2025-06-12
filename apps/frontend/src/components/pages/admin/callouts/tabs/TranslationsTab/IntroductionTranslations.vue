@@ -13,15 +13,16 @@
 </template>
 
 <script lang="ts" setup>
-import { useI18n } from 'vue-i18n';
-import type { LocaleProp } from '@type/locale-prop';
 import { AppFormBox } from '@beabee/vue/components';
+
 import RichTextEditor from '@components/rte/RichTextEditor.vue';
+import type { LocaleProp } from '@type/locale-prop';
 import {
-  updateLocalizedValue,
-  getLocalizedValueNoFallback,
   getLocalizedValueFallback,
+  getLocalizedValueNoFallback,
+  updateLocalizedValue,
 } from '@utils/callouts';
+import { useI18n } from 'vue-i18n';
 
 const props = defineProps<{
   introText: LocaleProp;

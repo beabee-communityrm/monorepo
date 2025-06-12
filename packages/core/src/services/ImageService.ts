@@ -1,40 +1,39 @@
-import { randomUUID } from 'crypto';
-import { Readable } from 'stream';
-import { extname } from 'path';
+import { S3Metadata, isSupportedImageType } from '@beabee/beabee-common';
 
 import {
-  S3Client,
-  PutObjectCommand,
   DeleteObjectCommand,
-  ListObjectsV2Command,
   HeadObjectCommand,
+  ListObjectsV2Command,
+  PutObjectCommand,
+  S3Client,
 } from '@aws-sdk/client-s3';
+import { randomUUID } from 'crypto';
+import { extname } from 'path';
 import sharp from 'sharp';
+import { Readable } from 'stream';
 import { optimize } from 'svgo';
-import { isSupportedImageType, S3Metadata } from '@beabee/beabee-common';
 
+import config from '../config/config';
 import { BadRequestError, NotFoundError } from '../errors';
 import { log as mainLogger } from '../logging';
+import type {
+  ImageFormat,
+  ImageMetadata,
+  ImageServiceConfig,
+} from '../type/index';
 import {
+  getExtensionFromFilename,
   getMimetypeFromDecoderFormat,
   getMimetypeFromExtension,
-  getExtensionFromFilename,
   sanitizeFilename,
 } from '../utils/file';
 import {
   checkConnection,
   fileExists,
-  getFileStream,
   getFileBuffer,
   getFileHash,
+  getFileStream,
 } from '../utils/s3';
-import config from '../config/config';
-
-import type {
-  ImageFormat,
-  ImageServiceConfig,
-  ImageMetadata,
-} from '../type/index';
 
 const log = mainLogger.child({ app: 'image-service' });
 

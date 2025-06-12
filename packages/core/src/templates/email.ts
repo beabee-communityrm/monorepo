@@ -1,9 +1,8 @@
 import juice from 'juice';
 
-import OptionsService from '#services/OptionsService';
-
-import currentLocale from '#locale';
 import config from '#config/config';
+import currentLocale from '#locale';
+import OptionsService from '#services/OptionsService';
 
 export function getEmailFooter(): string {
   const locale = currentLocale();

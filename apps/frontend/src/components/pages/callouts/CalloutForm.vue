@@ -89,22 +89,20 @@ import {
   type CalloutResponseAnswersSlide,
   type GetCalloutDataWith,
 } from '@beabee/beabee-common';
-import { computed, reactive, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
-import useVuelidate from '@vuelidate/core';
+import { AppButton, AppNotification } from '@beabee/vue/components';
 
-import CalloutFormGuestFields from './CalloutFormGuestFields.vue';
-import { AppNotification, AppButton } from '@beabee/vue/components';
 import FormRenderer from '@components/form-renderer/FormRenderer.vue';
 import NewsletterOptIn from '@components/newsletter/NewsletterOptIn.vue';
-
 import { currentUser } from '@store';
-
 import { client, isApiError } from '@utils/api';
 import { getDecisionComponent } from '@utils/callouts';
+import useVuelidate from '@vuelidate/core';
+import { requiredIf } from '@vuelidate/validators';
+import { computed, reactive, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import CalloutFormCaptcha from './CalloutFormCaptcha.vue';
-import { requiredIf } from '@vuelidate/validators';
+import CalloutFormGuestFields from './CalloutFormGuestFields.vue';
 
 const { t } = useI18n();
 

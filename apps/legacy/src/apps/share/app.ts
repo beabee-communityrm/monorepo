@@ -1,15 +1,12 @@
-import express, { type Express, type Request, type Response } from 'express';
-
+import config from '@beabee/core/config';
 import { createQueryBuilder } from '@beabee/core/database';
-import { wrapAsync } from '@beabee/core/utils/express';
-
+import { Callout } from '@beabee/core/models';
 import PageSettingsService, {
   JustPageSettings,
 } from '@beabee/core/services/PageSettingsService';
+import { wrapAsync } from '@beabee/core/utils/express';
 
-import { Callout } from '@beabee/core/models';
-
-import config from '@beabee/core/config';
+import express, { type Express, type Request, type Response } from 'express';
 
 const app: Express = express();
 

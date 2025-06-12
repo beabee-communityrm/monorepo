@@ -1,6 +1,7 @@
-import { describe, expect, it } from 'vitest';
-import { CalloutResponseCommentClient } from '@beabee/client';
 import { GetCalloutResponseCommentData, Serial } from '@beabee/beabee-common';
+import { CalloutResponseCommentClient } from '@beabee/client';
+
+import { describe, expect, it } from 'vitest';
 
 describe('CalloutResponseComment API', () => {
   describe('deserialize', () => {

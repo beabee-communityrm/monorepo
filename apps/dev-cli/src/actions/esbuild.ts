@@ -1,5 +1,7 @@
 import { buildStandard } from '@beabee/esbuild';
+
 import { resolve } from 'node:path';
+
 import type { EsbuildArgs } from '../types/index.ts';
 
 /**

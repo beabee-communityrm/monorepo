@@ -1,5 +1,6 @@
 import { readdir, writeFile } from 'node:fs/promises';
 import { basename, resolve } from 'node:path';
+
 import type { GenerateIndexArgs } from '../types/index.ts';
 
 /**

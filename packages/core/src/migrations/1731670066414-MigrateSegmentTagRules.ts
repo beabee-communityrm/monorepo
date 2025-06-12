@@ -1,7 +1,9 @@
+import type { Rule, RuleGroup, RuleValue } from '@beabee/beabee-common';
+
 import { MigrationInterface, QueryRunner } from 'typeorm';
+
 import { ContactTag } from '../models/ContactTag';
 import { Segment } from '../models/Segment';
-import type { RuleGroup, Rule, RuleValue } from '@beabee/beabee-common';
 
 export class MigrateSegmentTagRules1731670066414 implements MigrationInterface {
   name = 'MigrateSegmentTagRules1731670066414';

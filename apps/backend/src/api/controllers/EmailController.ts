@@ -1,3 +1,9 @@
+import { getRepository } from '@beabee/core/database';
+import { ExternalEmailTemplate } from '@beabee/core/errors';
+import { Email } from '@beabee/core/models';
+import EmailService from '@beabee/core/services/EmailService';
+
+import { GetEmailDto, UpdateEmailDto } from '@api/dto/EmailDto';
 import { plainToInstance } from 'class-transformer';
 import { isUUID } from 'class-validator';
 import {
@@ -8,15 +14,6 @@ import {
   Param,
   Put,
 } from 'routing-controllers';
-
-import EmailService from '@beabee/core/services/EmailService';
-
-import { getRepository } from '@beabee/core/database';
-
-import { Email } from '@beabee/core/models';
-
-import { GetEmailDto, UpdateEmailDto } from '@api/dto/EmailDto';
-import { ExternalEmailTemplate } from '@beabee/core/errors';
 
 async function findEmail(id: string): Promise<Email | null> {
   if (isUUID(id, '4')) {

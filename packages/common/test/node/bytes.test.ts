@@ -1,5 +1,6 @@
-import { describe, expect, test } from 'vitest';
 import { toBytes } from '@beabee/beabee-common';
+
+import { describe, expect, test } from 'vitest';
 
 describe('toBytes', () => {
   test('valid bytes conversion', () => {

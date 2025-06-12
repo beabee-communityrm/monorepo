@@ -1,3 +1,7 @@
+import { createQueryBuilder, getRepository } from '@beabee/core/database';
+import { log as mainLogger } from '@beabee/core/logging';
+import { Callout, CalloutResponse } from '@beabee/core/models';
+
 import {
   EntityTarget,
   ObjectLiteral,
@@ -6,17 +10,12 @@ import {
 } from 'typeorm';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 
-import { createQueryBuilder, getRepository } from '@beabee/core/database';
-import { log as mainLogger } from '@beabee/core/logging';
-
-import { Callout, CalloutResponse } from '@beabee/core/models';
-
 import {
-  calloutResponsesAnonymiser,
-  createAnswersAnonymiser,
   ModelAnonymiser,
   ObjectMap,
   PropertyMap,
+  calloutResponsesAnonymiser,
+  createAnswersAnonymiser,
 } from './models';
 
 const log = mainLogger.child({ app: 'anonymisers' });

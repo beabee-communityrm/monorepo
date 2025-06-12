@@ -6,22 +6,19 @@ import {
 
 import { getRepository, runTransaction } from '#database';
 import { log as mainLogger } from '#logging';
-import { calcRenewalDate, getActualAmount } from '#utils/payment';
-
-import { Contact, Payment, ContactContribution } from '#models/index';
-
+import { Contact, ContactContribution, Payment } from '#models/index';
 import {
-  PaymentProvider,
   GCProvider,
   ManualProvider,
+  PaymentProvider,
   StripeProvider,
 } from '#providers';
-
 import {
   CompletedPaymentFlow,
   ContributionInfo,
   UpdateContributionResult,
 } from '#type/index';
+import { calcRenewalDate, getActualAmount } from '#utils/payment';
 
 const log = mainLogger.child({ app: 'payment-service' });
 

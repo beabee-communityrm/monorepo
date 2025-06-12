@@ -1,6 +1,7 @@
-import { parseToRgba, mix } from 'color2k';
-import { watch } from 'vue';
 import { generalContent } from '@beabee/vue/store/generalContent';
+
+import { mix, parseToRgba } from 'color2k';
+import { watch } from 'vue';
 
 // [Font name, fallbacks]
 export const validFonts = {

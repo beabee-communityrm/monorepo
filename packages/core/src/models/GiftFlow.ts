@@ -6,8 +6,8 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import type { Contact } from './index';
 import { GiftForm } from './GiftForm';
+import type { Contact } from './index';
 
 @Entity()
 export class GiftFlow {

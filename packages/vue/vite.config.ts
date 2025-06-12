@@ -1,8 +1,9 @@
-import { defineConfig } from 'vite';
+import vueI18n from '@intlify/unplugin-vue-i18n/vite';
 import vue from '@vitejs/plugin-vue';
 import path, { resolve } from 'path';
+import { defineConfig } from 'vite';
+
 import theme from './src/plugins/theme';
-import vueI18n from '@intlify/unplugin-vue-i18n/vite';
 
 export default defineConfig({
   plugins: [

@@ -15,21 +15,21 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, markRaw, reactive } from 'vue';
-import { useI18n } from 'vue-i18n';
 import { type ItemStatus } from '@beabee/beabee-common';
 
-import CalloutHorizontalTabsNavigation from './CalloutHorizontalTabsNavigation.vue';
-import CalloutHorizontalTabsContent from './CalloutHorizontalTabsContent.vue';
-import type {
-  CalloutHorizontalTabsData,
-  CalloutHorizontalTabs,
-} from './CalloutHorizontalTabs.interface';
+import { computed, markRaw, reactive, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
+import type {
+  CalloutHorizontalTabs,
+  CalloutHorizontalTabsData,
+} from './CalloutHorizontalTabs.interface';
+import CalloutHorizontalTabsContent from './CalloutHorizontalTabsContent.vue';
+import CalloutHorizontalTabsNavigation from './CalloutHorizontalTabsNavigation.vue';
+import ContentTab from './tabs/ContentTab/ContentTab.vue';
+import ResponseDisplayTab from './tabs/ResponseDisplayTab.vue';
 // Tab Components
 import SettingsTab from './tabs/SettingsTab.vue';
-import ResponseDisplayTab from './tabs/ResponseDisplayTab.vue';
-import ContentTab from './tabs/ContentTab/ContentTab.vue';
 import TitleAndImageTab from './tabs/TitleAndImageTab.vue';
 import TranslationsTab from './tabs/TranslationsTab.vue';
 

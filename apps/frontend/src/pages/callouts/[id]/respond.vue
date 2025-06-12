@@ -9,7 +9,9 @@ meta:
 </template>
 <script lang="ts" setup>
 import type { GetCalloutDataWith } from '@beabee/beabee-common';
+
 import CalloutPage from './index.vue';
+
 defineProps<{
   callout: GetCalloutDataWith<'form' | 'responseViewSchema' | 'variantNames'>;
 }>();

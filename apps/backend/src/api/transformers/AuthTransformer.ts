@@ -1,8 +1,10 @@
-import { AuthInfo } from '@beabee/core/type';
-import ContactTransformer, { loadContactRoles } from './ContactTransformer';
 import { Contact } from '@beabee/core/models';
+import { AuthInfo } from '@beabee/core/type';
+
 import { GetAuthInfoDto } from '@api/dto';
 import { TransformPlainToInstance } from 'class-transformer';
+
+import ContactTransformer, { loadContactRoles } from './ContactTransformer';
 
 class AuthTransformer {
   /**

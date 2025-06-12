@@ -1,17 +1,17 @@
 import {
+  type Locale,
   LocaleContext,
   isLocale,
-  type Locale,
   config as localeConfig,
 } from '@beabee/locale';
-
-import { computed, watch } from 'vue';
-import { currentUser, generalContent, initStore, isEmbed } from '../store';
-import router from '@lib/router';
+import { getLocaleItemsForContext, i18n } from '@beabee/vue/lib/i18n';
+import { addNotification } from '@beabee/vue/store/notifications';
 
 import env from '@env';
-import { addNotification } from '@beabee/vue/store/notifications';
-import { getLocaleItemsForContext, i18n } from '@beabee/vue/lib/i18n';
+import router from '@lib/router';
+import { computed, watch } from 'vue';
+
+import { currentUser, generalContent, initStore, isEmbed } from '../store';
 
 export const currentLocale = computed<Locale>(() => {
   const route = router.currentRoute.value;

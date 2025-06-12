@@ -1,5 +1,6 @@
-import { extname, resolve } from 'node:path';
+import { mkdirSync } from 'fs';
 import { readdir, rename } from 'node:fs/promises';
+import { extname, resolve } from 'node:path';
 
 /**
  * Recursively renames .js files to .cjs in a directory
@@ -33,8 +34,6 @@ export function isWatchMode(): boolean {
 export function getTimestamp(): string {
   return new Date().toLocaleTimeString();
 }
-
-import { mkdirSync } from 'fs';
 
 /**
  * Ensures that a directory exists, creating it if necessary

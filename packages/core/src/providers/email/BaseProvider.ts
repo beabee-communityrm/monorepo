@@ -1,23 +1,19 @@
 import { RESET_SECURITY_FLOW_TYPE } from '@beabee/beabee-common';
 
+import config from '#config/config';
 import { createQueryBuilder, getRepository } from '#database';
 import { log as mainLogger } from '#logging';
-import { formatEmailBody } from '#templates/email';
-
+import { Contact, Email } from '#models/index';
 import OptionsService from '#services/OptionsService';
 import ResetSecurityFlowService from '#services/ResetSecurityFlowService';
-
-import { Email, Contact } from '#models/index';
-
+import { formatEmailBody } from '#templates/email';
 import type {
+  EmailOptions,
   EmailProvider,
   EmailRecipient,
-  EmailOptions,
   EmailTemplate,
   PreparedEmail,
 } from '#type/index';
-
-import config from '#config/config';
 
 const log = mainLogger.child({ app: 'base-email-provider' });
 

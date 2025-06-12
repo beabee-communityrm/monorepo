@@ -26,9 +26,9 @@
  * @example
  * <AppCopyButton text="Text to copy" @copy="handleCopy" />
  */
-
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 import { useI18n } from 'vue-i18n';
+
 import { addNotification } from '../../store/notifications';
 
 /**

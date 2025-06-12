@@ -25,12 +25,11 @@
 </template>
 
 <script lang="ts" setup>
+import { AppDropdownButton, AppSelectableList } from '@beabee/vue/components';
+import type { SelectItem } from '@beabee/vue/types';
+
 import { faCog, faUser } from '@fortawesome/free-solid-svg-icons';
 import { useI18n } from 'vue-i18n';
-
-import { AppDropdownButton, AppSelectableList } from '@beabee/vue/components';
-
-import type { SelectItem } from '@beabee/vue/types';
 
 const emit = defineEmits<{
   (event: 'assign', id: string | null, successText: string): void;

@@ -1,12 +1,11 @@
-import bodyParser from 'body-parser';
-import express, { type Express } from 'express';
-
-import { log as mainLogger } from '@beabee/core/logging';
+import config from '@beabee/core/config';
 import { stripe } from '@beabee/core/lib/stripe';
 import { StripeWebhookEventHandler } from '@beabee/core/lib/stripe-webhook-event-handler';
+import { log as mainLogger } from '@beabee/core/logging';
 import { wrapAsync } from '@beabee/core/utils/express';
 
-import config from '@beabee/core/config';
+import bodyParser from 'body-parser';
+import express, { type Express } from 'express';
 
 const log = mainLogger.child({ app: 'webhook-stripe' });
 

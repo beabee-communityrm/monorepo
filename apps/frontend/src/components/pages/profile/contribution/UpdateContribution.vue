@@ -94,32 +94,30 @@
 </template>
 <script lang="ts" setup>
 import {
-  ContributionPeriod,
-  PaymentMethod,
-  MembershipStatus,
-  ContributionType,
-  type ContributionInfo,
   type ContentPaymentData,
+  type ContributionInfo,
+  ContributionPeriod,
+  ContributionType,
+  MembershipStatus,
+  PaymentMethod,
 } from '@beabee/beabee-common';
-import { computed, onBeforeMount, reactive, ref, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
-import useVuelidate from '@vuelidate/core';
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-
-import Contribution from '@components/contribution/Contribution.vue';
 import { AppButton, AppNotification } from '@beabee/vue/components';
-import ProrateContribution from './ProrateContribution.vue';
-import { type ContributionContent } from '@components/contribution/contribution.interface';
+import { addNotification } from '@beabee/vue/store/notifications';
+
+import AppHeading from '@components/AppHeading.vue';
 import AppModal from '@components/AppModal.vue';
 import StripePayment from '@components/StripePayment.vue';
-import AppHeading from '@components/AppHeading.vue';
-
-import { client, isApiError } from '@utils/api';
-
+import Contribution from '@components/contribution/Contribution.vue';
+import { type ContributionContent } from '@components/contribution/contribution.interface';
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { currentUser } from '@store/currentUser';
+import { client, isApiError } from '@utils/api';
 import { formatLocale } from '@utils/dates';
+import useVuelidate from '@vuelidate/core';
+import { computed, onBeforeMount, reactive, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 
-import { addNotification } from '@beabee/vue/store/notifications';
+import ProrateContribution from './ProrateContribution.vue';
 
 const validation = useVuelidate();
 

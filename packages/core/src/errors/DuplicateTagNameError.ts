@@ -1,4 +1,5 @@
 import { BadRequestError } from 'routing-controllers';
+
 import { isDuplicateIndex } from '../utils/db';
 
 export class DuplicateTagNameError extends BadRequestError {

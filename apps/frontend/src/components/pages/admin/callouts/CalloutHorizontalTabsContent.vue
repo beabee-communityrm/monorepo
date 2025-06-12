@@ -15,6 +15,7 @@
 
 <script lang="ts" setup>
 import { type ItemStatus } from '@beabee/beabee-common';
+
 import type {
   CalloutHorizontalTab,
   CalloutHorizontalTabs,

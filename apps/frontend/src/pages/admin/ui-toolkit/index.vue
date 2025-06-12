@@ -77,13 +77,13 @@ meta:
 </template>
 
 <script lang="ts" setup>
-import { useI18n } from 'vue-i18n';
+import AppHeading from '@components/AppHeading.vue';
+import AppSectionHeading from '@components/AppSectionHeading.vue';
+import AppSubHeading from '@components/AppSubHeading.vue';
 import AppTitle from '@components/AppTitle.vue';
 import PageTitle from '@components/PageTitle.vue';
-import AppHeading from '@components/AppHeading.vue';
-import AppSubHeading from '@components/AppSubHeading.vue';
-import AppSectionHeading from '@components/AppSectionHeading.vue';
 import SectionTitle from '@components/pages/profile/SectionTitle.vue';
+import { useI18n } from 'vue-i18n';
 
 // TODO: Move ui widgets from src/pages/_theme.vue to here
 

@@ -9,13 +9,14 @@ import {
   CalloutResponseAnswersSlide,
   getCalloutComponents,
 } from '@beabee/beabee-common';
+import { config } from '@beabee/core/config';
 import { getRepository, runTransaction } from '@beabee/core/database';
 import { Callout, CalloutResponse, Contact } from '@beabee/core/models';
 import { runApp } from '@beabee/core/server';
+
+import { isURL } from 'class-validator';
 import { parse } from 'csv-parse';
 import { In } from 'typeorm';
-import { isURL } from 'class-validator';
-import { config } from '@beabee/core/config';
 
 interface ResponseRow {
   [key: string]: string;

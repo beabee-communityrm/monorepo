@@ -72,28 +72,26 @@ import type {
   GetCalloutsQuery,
   Paginated,
 } from '@beabee/beabee-common';
-import { computed, ref, watchEffect } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { AppButton } from '@beabee/vue/components';
+
+import AppFilterGrid from '@components/AppFilterGrid.vue';
+import AppItemStatus from '@components/AppItemStatus.vue';
+import PageTitle from '@components/PageTitle.vue';
+import AppSearchInput from '@components/forms/AppSearchInput.vue';
+import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
+import type { Header } from '@components/table/table.interface';
 import {
-  faPlus,
   faBullhorn,
   faEye,
   faEyeSlash,
+  faPlus,
 } from '@fortawesome/free-solid-svg-icons';
-
-import type { Header } from '@components/table/table.interface';
-import { AppButton } from '@beabee/vue/components';
-import PageTitle from '@components/PageTitle.vue';
-import AppItemStatus from '@components/AppItemStatus.vue';
-import AppSearchInput from '@components/forms/AppSearchInput.vue';
-import AppFilterGrid from '@components/AppFilterGrid.vue';
-import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
-
-import { definePaginatedQuery, defineParam } from '@utils/pagination';
-import { formatLocale } from '@utils/dates';
-import { client } from '@utils/api';
-
 import { addBreadcrumb } from '@store/breadcrumb';
+import { client } from '@utils/api';
+import { formatLocale } from '@utils/dates';
+import { definePaginatedQuery, defineParam } from '@utils/pagination';
+import { computed, ref, watchEffect } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 

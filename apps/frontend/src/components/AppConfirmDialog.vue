@@ -31,6 +31,7 @@
 </template>
 <script lang="ts" setup>
 import { AppButton } from '@beabee/vue/components';
+
 import AppModal from '@components/AppModal.vue';
 import { ref } from 'vue';
 

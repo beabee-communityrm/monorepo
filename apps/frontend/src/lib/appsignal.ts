@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import Appsignal from '@appsignal/javascript';
 import type { App } from 'vue';
+
 import env from '../env';
 
 export function init(app: App) {

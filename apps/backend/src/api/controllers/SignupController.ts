@@ -1,3 +1,17 @@
+import { getRepository } from '@beabee/core/database';
+import { JoinFlow, Password } from '@beabee/core/models';
+import PaymentFlowService from '@beabee/core/services/PaymentFlowService';
+import { generatePassword } from '@beabee/core/utils/auth';
+
+import { GetContactDto } from '@api/dto/ContactDto';
+import { GetPaymentFlowDto } from '@api/dto/PaymentFlowDto';
+import {
+  CompleteSignupFlowDto,
+  StartSignupFlowDto,
+} from '@api/dto/SignupFlowDto';
+import { SignupConfirmEmailParams } from '@api/params/SignupConfirmEmailParams';
+import ContactTransformer from '@api/transformers/ContactTransformer';
+import { login } from '@api/utils/auth';
 import { plainToInstance } from 'class-transformer';
 import { Request } from 'express';
 import {
@@ -8,23 +22,6 @@ import {
   Post,
   Req,
 } from 'routing-controllers';
-
-import { getRepository } from '@beabee/core/database';
-import { generatePassword } from '@beabee/core/utils/auth';
-
-import PaymentFlowService from '@beabee/core/services/PaymentFlowService';
-
-import { GetContactDto } from '@api/dto/ContactDto';
-import { GetPaymentFlowDto } from '@api/dto/PaymentFlowDto';
-import {
-  StartSignupFlowDto,
-  CompleteSignupFlowDto,
-} from '@api/dto/SignupFlowDto';
-import { SignupConfirmEmailParams } from '@api/params/SignupConfirmEmailParams';
-import ContactTransformer from '@api/transformers/ContactTransformer';
-import { login } from '@api/utils/auth';
-
-import { JoinFlow, Password } from '@beabee/core/models';
 
 @JsonController('/signup')
 export class SignupController {

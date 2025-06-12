@@ -1,5 +1,6 @@
-import env from '@env';
 import { isAbsoluteUrl } from '@beabee/beabee-common';
+
+import env from '@env';
 
 /**
  * Resolves an image URL to ensure it's absolute.

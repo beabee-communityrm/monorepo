@@ -4,9 +4,11 @@ meta:
 </route>
 <template><div /></template>
 <script lang="ts" setup>
-import { useRouter } from 'vue-router';
-import { canAdmin, currentUser } from '../store';
 import env from '@env';
+import { useRouter } from 'vue-router';
+
+import { canAdmin, currentUser } from '../store';
+
 useRouter().replace(
   canAdmin.value
     ? '/admin'

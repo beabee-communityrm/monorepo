@@ -1,26 +1,23 @@
-// TODO: Port this to apps/backend-cli/src/actions/sync/segments.ts.
-// To do that, we have to package ContactTransformer e.g. to @beabee/transformers.
-
 import 'module-alias/register';
 
-import { In } from 'typeorm';
-
+// TODO: Port this to apps/backend-cli/src/actions/sync/segments.ts.
+// To do that, we have to package ContactTransformer e.g. to @beabee/transformers.
+import { GetContactWith } from '@beabee/beabee-common';
 import { getRepository } from '@beabee/core/database';
+import { InvalidRuleError } from '@beabee/core/errors';
 import { log as mainLogger } from '@beabee/core/logging';
-import { runApp } from '@beabee/core/server';
-
-import EmailService from '@beabee/core/services/EmailService';
-import NewsletterService from '@beabee/core/services/NewsletterService';
-import ContactsService from '@beabee/core/services/ContactsService';
-
 import {
   Segment,
-  SegmentOngoingEmail,
   SegmentContact,
+  SegmentOngoingEmail,
 } from '@beabee/core/models';
+import { runApp } from '@beabee/core/server';
+import ContactsService from '@beabee/core/services/ContactsService';
+import EmailService from '@beabee/core/services/EmailService';
+import NewsletterService from '@beabee/core/services/NewsletterService';
+
 import ContactTransformer from '@api/transformers/ContactTransformer';
-import { GetContactWith } from '@beabee/beabee-common';
-import { InvalidRuleError } from '@beabee/core/errors';
+import { In } from 'typeorm';
 
 const log = mainLogger.child({ app: 'process-segments' });
 

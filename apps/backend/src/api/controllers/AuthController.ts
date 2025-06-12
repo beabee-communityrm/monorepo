@@ -1,4 +1,16 @@
-import { LOGIN_CODES, RoleTypes, RoleType } from '@beabee/beabee-common';
+import { LOGIN_CODES, RoleType, RoleTypes } from '@beabee/beabee-common';
+import config from '@beabee/core/config';
+import { getRepository } from '@beabee/core/database';
+import { UnauthorizedError } from '@beabee/core/errors';
+import passport from '@beabee/core/lib/passport';
+import { Contact, ContactRole } from '@beabee/core/models';
+import ContactsService from '@beabee/core/services/ContactsService';
+import { AuthInfo, PassportLoginInfo } from '@beabee/core/type';
+
+import { CurrentAuth } from '@api/decorators/CurrentAuth';
+import { GetAuthInfoDto, LoginDto } from '@api/dto';
+import { authTransformer } from '@api/transformers';
+import { login } from '@api/utils/auth';
 import { isUUID } from 'class-validator';
 import { Request, Response } from 'express';
 import {
@@ -13,26 +25,6 @@ import {
   Req,
   Res,
 } from 'routing-controllers';
-
-import { UnauthorizedError } from '@beabee/core/errors';
-
-import { getRepository } from '@beabee/core/database';
-import passport from '@beabee/core/lib/passport';
-
-import ContactsService from '@beabee/core/services/ContactsService';
-
-import { LoginDto, GetAuthInfoDto } from '@api/dto';
-import { login } from '@api/utils/auth';
-
-import { Contact, ContactRole } from '@beabee/core/models';
-
-import { PassportLoginInfo, AuthInfo } from '@beabee/core/type';
-
-import config from '@beabee/core/config';
-
-import { CurrentAuth } from '@api/decorators/CurrentAuth';
-
-import { authTransformer } from '@api/transformers';
 
 @JsonController('/auth')
 export class AuthController {

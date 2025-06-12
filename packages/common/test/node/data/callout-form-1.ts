@@ -1,3 +1,6 @@
+import type { GetCalloutFormSchema } from '@beabee/beabee-common';
+
+import { calloutNavigation1 } from './callout-navigation-1.js';
 import { calloutAddress1Form } from './components/callout-address-1-form.js';
 import { calloutCheckbox1Form } from './components/callout-checkbox-1-form.js';
 import { calloutContent1Form } from './components/callout-content-1-form.js';
@@ -18,9 +21,6 @@ import { calloutSignature1Form } from './components/callout-signature-1-form.js'
 import { calloutTextarea1Form } from './components/callout-textarea-1-form.js';
 import { calloutTime1Form } from './components/callout-time-1-form.js';
 import { calloutUrl1Form } from './components/callout-url-1-form.js';
-import { calloutNavigation1 } from './callout-navigation-1.js';
-
-import type { GetCalloutFormSchema } from '@beabee/beabee-common';
 
 export const calloutForm1Schema: GetCalloutFormSchema = {
   slides: [

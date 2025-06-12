@@ -1,3 +1,4 @@
+import { GetPaginatedQuery, GetPaginatedRuleGroup } from '@api/dto/BaseDto';
 import { Type } from 'class-transformer';
 import {
   IsEnum,
@@ -7,8 +8,6 @@ import {
   IsString,
   ValidateNested,
 } from 'class-validator';
-
-import { GetPaginatedQuery, GetPaginatedRuleGroup } from '@api/dto/BaseDto';
 
 export enum GetSegmentWith {
   contactCount = 'contactCount',

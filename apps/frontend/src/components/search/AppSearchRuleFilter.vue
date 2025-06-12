@@ -25,10 +25,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watchEffect } from 'vue';
-import AppSearchRuleFilterGroup from './AppSearchRuleFilterGroup.vue';
 import AppToggle from '@components/forms/AppToggle.vue';
-import type { SearchRuleProps, SearchRuleEmits } from './search.interface';
+import { computed, ref, watchEffect } from 'vue';
+
+import AppSearchRuleFilterGroup from './AppSearchRuleFilterGroup.vue';
+import type { SearchRuleEmits, SearchRuleProps } from './search.interface';
 
 const emit = defineEmits<SearchRuleEmits>();
 const props = defineProps<SearchRuleProps>();

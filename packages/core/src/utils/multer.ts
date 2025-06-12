@@ -1,6 +1,8 @@
+import { bytesToHumanReadable } from '@beabee/beabee-common';
+
 import { MulterError } from 'multer';
 import { HttpError } from 'routing-controllers';
-import { bytesToHumanReadable } from '@beabee/beabee-common';
+
 import {
   BadRequestError,
   FileTooLargeError,
