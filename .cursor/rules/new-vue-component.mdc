@@ -1,0 +1,23 @@
+---
+description: Create or customise Vue component
+globs: 
+alwaysApply: false
+---
+When you create or customise a new component:
+
+## Component
+- Use [AppTemplate.vue](mdc:packages/vue/src/components/template/AppTemplate.vue) as a template
+- Follow patterns from existing components in `packages/vue/src/components`
+- Create a corresponding `.story.vue` file
+- Vue package components must be application-independent applicable without API dependencies
+
+## Story
+- Use [AppTemplate.story.vue](mdc:packages/vue/src/components/template/AppTemplate.story.vue) as a template
+- Add brief documentation as a `.story.md` file following existing documentation structure
+- Avoid duplicating documentation that is already documented in the source code
+- Refer to existing source code documentation instead of rewriting it
+- Adjust existing stories as necessary
+
+## Dokumentation
+- Use [AppTemplate.story.md](mdc:packages/vue/src/components/template/AppTemplate.story.md) as a template
+- Adjust existing documentation as necessary

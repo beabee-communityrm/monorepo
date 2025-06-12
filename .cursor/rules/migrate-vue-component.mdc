@@ -3,24 +3,28 @@ description: Migrate Vue component from frontend app to vue package
 globs: 
 alwaysApply: false
 ---
-1. **Component identification**: Which component from `apps/frontend` should be migrated to `packages/vue/src/components`? (If not specified, ask for component name)
+1. **Component identification**
+   - Which component from `apps/frontend` should be migrated to `packages/vue/src/components`? (If not specified, ask for component name)
 
-2. **Usage analysis**: Search `apps/frontend` for current component usage to understand implementation patterns for creating appropriate stories
+2. **Usage analysis**
+   - Search `apps/frontend` for current component usage to understand implementation patterns for creating appropriate stories
 
-3. **Migration execution**: :
+3. **Migration execution**
    - **Do not migrate components that use API calls** to the `packages/vue` package
    - Components using `@utils/api`, `client.ts`, or any API-specific imports should remain in the frontend app
    - **Components using locale strings must accept translated text as props** instead of hardcoded locale keys
    - Remove `useI18n()` and `t()` calls - pass translated strings from parent components instead
-   - Follow [vue-component.mdc](mdc:.cursor/rules/vue-component.mdc) guidelines
-   - If possible, migrate dependent components and interfaces as well
+   - Migrate dependent components, utils, interfaces, types, etc as well
    - If a component or interface depends on store (`apps/frontend/src/store`), pass this instead to remove the dependency
+   - Follow [vue-component.mdc](mdc:.cursor/rules/vue-component.mdc) rules, treat migrated components like customised components
 
 4. **Refactor**
    - Refactor all migrated components cleanly and sustainably
-   - Make them accessible 
    - Document them using TSDoc
    - Keep their required functionality in the context of their use
+   - Make them accessible using **semantic HTML elements** and **ARIA attributes** where it makes sense
+   - Implement **keyboard navigation support** where it makes sense
+   - Include `role` attributes when semantic elements aren't sufficient
 
 5. **Finalisation**
    - Adapt the frontend application so that the migrated components are used

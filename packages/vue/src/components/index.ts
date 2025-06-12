@@ -6,3 +6,4 @@ export * from './notification';
 export * from './scroll';
 export * from './status';
 export * from './tabs';
+export * from './template';

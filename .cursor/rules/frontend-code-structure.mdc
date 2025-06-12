@@ -3,6 +3,12 @@ description:
 globs: packages/vue/**/*,apps/frontend/**/*
 alwaysApply: false
 ---
-Whenever you write code, make sure to
-- Use Tailwind CSS for styling
-- Create new Vue Components in `packages/vue/src/components`
+Whenever you write HTML or UI code, make sure to
+- Mobile-first design approach
+- Tailwind CSS styling with responsive design
+- Accessibility with **semantic HTML elements** and **ARIA attributes**
+- Focus management and keyboard navigation
+- Touch-Friendly UI with interactive elements for easy tapping and **touch gestures** for common actions
+- Include `role` attributes when semantic elements aren't sufficient
+- Provide alternative text for images and icons (`alt` attribute, `aria-hidden="true"` for decorative)
+- Maintain logical focus order and visible focus indicators
