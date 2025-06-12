@@ -9,7 +9,7 @@ x-service-app: &service-app
 
 x-backend-app: &backend-app
   <<: *service-app
-  command: ['node', '--watch', './dist/app.js']
+  command: ["node", "--watch", "--watch-preserve-output", "./dist/app.js"]
 
 services:
   db:
@@ -58,12 +58,12 @@ services:
       - .env
     volumes:
       - ./packages:/opt/packages
-      - ./apps/backend/built:/opt/apps/backend/built
+      - ./apps/backend/dist:/opt/apps/backend/dist
       - ./apps/backend-cli/dist:/opt/apps/backend-cli/dist
       # Allow migrations to be written out from the container
       - ./packages/core/src/migrations:/opt/packages/core/src/migrations
     # TODO: Use standard dist folder
-    command: ['node', '--watch', './built/api/app.js']
+    command: ["node", "--watch", "--watch-preserve-output", "./dist/api/app.js"]
 
   # Webhook app
   webhook_app:
@@ -94,8 +94,8 @@ services:
       context: .
       dockerfile: ./apps/minio/Dockerfile
     ports:
-      - "${BEABEE_MINIO_PORT_ADMIN:-9000}:9000"  # Admin port for debugging, not for production
-      - "${BEABEE_MINIO_PORT_CONSOLE:-9001}:9001"  # Console port (Admin UI), not for production
+      - "${BEABEE_MINIO_PORT_ADMIN:-9000}:9000" # Admin port for debugging, not for production
+      - "${BEABEE_MINIO_PORT_CONSOLE:-9001}:9001" # Console port (Admin UI), not for production
     volumes:
       - minio_data:/data
     environment:
@@ -115,8 +115,14 @@ services:
       args:
         - VERSION=${VERSION}
         - REVISION=${REVISION}
-    env_file:
-      - ./apps/frontend/.env
+    environment:
+      APP_BASE_URL: ${BEABEE_AUDIENCE}
+      API_BASE_URL: /api/1.0/
+      CNR_MODE: ${BEABEE_CNR_MODE-}
+      EXPERIMENTAL_FEATURES: ${BEABEE_EXPERIMENTAL_FEATURES-}
+      APPSIGNAL_KEY: ${BEABEE_APPSIGNAL_KEY-}
+      CAPTCHAFOX_KEY: ${BEABEE_CAPTCHAFOX_KEY-}
+      MAPTILER_KEY: ${BEABEE_MAPTILER_KEY-}
 
   # Application router
   app_router:
@@ -143,44 +149,11 @@ services:
       context: .
       dockerfile: ./packages/docker/base.dockerfile
       target: api_app
-    command: 'npm run typeorm migration:run'
+    command: "yarn run typeorm migration:run"
     # Wait for the database to be ready
     depends_on:
       db:
         condition: service_healthy
-    env_file:
-      - .env
-
-  # Uploads migration service
-  # This service migrates old uploads to MinIO
-  uploads_migration:
-    build:
-      context: .
-      dockerfile: ./packages/docker/base.dockerfile
-      target: api_app
-    command: >
-      /bin/sh -c "
-      if [ \"$${MIGRATE_UPLOADS}\" = \"true\" ]; then
-        echo 'Starting uploads migration...' &&
-        yarn backend-cli migrate-uploads --source=/old_data;
-      else
-        echo 'Uploads migration skipped (MIGRATE_UPLOADS is not set to true)' &&
-        exit 0;
-      fi
-      "
-    volumes:
-      - upload_data:/old_data
-      - ./packages:/opt/packages
-      - ./apps/backend-cli/dist:/opt/apps/backend-cli/dist
-    depends_on:
-      migration:
-        condition: service_completed_successfully
-      minio:
-        condition: service_healthy
-      db:
-        condition: service_healthy
-    environment:
-      - MIGRATE_UPLOADS=${MIGRATE_UPLOADS:-true}
     env_file:
       - .env
 

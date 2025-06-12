@@ -1,9 +1,10 @@
-import crypto from "node:crypto";
-import { LOGIN_CODES } from "@beabee/beabee-common";
-import { TOTP, Secret } from "otpauth";
+import { LOGIN_CODES } from '@beabee/beabee-common';
 
-import config from "#config/config";
-import { Password } from "#models/index";
+import crypto from 'node:crypto';
+import { Secret, TOTP } from 'otpauth';
+
+import config from '#config/config';
+import { Password } from '#models/index';
 
 export function generateApiKey(
   idLength: number = 16,
@@ -14,9 +15,9 @@ export function generateApiKey(
   secretHash: string;
   token: string;
 } {
-  const id = crypto.randomBytes(idLength / 2).toString("hex");
-  const secret = crypto.randomBytes(secretLength / 2).toString("hex");
-  const secretHash = crypto.createHash("sha256").update(secret).digest("hex");
+  const id = crypto.randomBytes(idLength / 2).toString('hex');
+  const secret = crypto.randomBytes(secretLength / 2).toString('hex');
+  const secretHash = crypto.createHash('sha256').update(secret).digest('hex');
   const token = `${id}_${secret}`;
   return { id, secret, secretHash, token };
 }
@@ -28,7 +29,7 @@ export function generateApiKey(
 export function generateSalt(): Promise<string> {
   return new Promise((resolve) => {
     crypto.randomBytes(256, function (ex, salt) {
-      resolve(salt.toString("hex"));
+      resolve(salt.toString('hex'));
     });
   });
 }
@@ -52,9 +53,9 @@ export function hashPassword(
       salt,
       iterations,
       512,
-      "sha512",
+      'sha512',
       function (err, hash) {
-        resolve(hash.toString("hex"));
+        resolve(hash.toString('hex'));
       }
     );
   });
@@ -72,7 +73,7 @@ export async function generatePassword(password: string): Promise<Password> {
     salt,
     hash,
     iterations: config.passwordIterations,
-    tries: 0
+    tries: 0,
   };
 }
 
@@ -90,7 +91,7 @@ export const validateTotpToken = (
   window = 1
 ) => {
   const totp = new TOTP({
-    secret: Secret.fromBase32(secret)
+    secret: Secret.fromBase32(secret),
   });
 
   const delta = totp.validate({ token, window });
@@ -98,14 +99,14 @@ export const validateTotpToken = (
 
   return {
     isValid,
-    delta
+    delta,
   };
 };
 
 export function extractToken(authHeader?: string): string | null {
   if (!authHeader) return null;
-  if (authHeader?.startsWith("Bearer ")) {
-    return authHeader.split(" ")[1] || null;
+  if (authHeader?.startsWith('Bearer ')) {
+    return authHeader.split(' ')[1] || null;
   }
   return null;
 }

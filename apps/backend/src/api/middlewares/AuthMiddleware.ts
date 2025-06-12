@@ -1,18 +1,14 @@
-import crypto from "node:crypto";
+import { getRepository } from '@beabee/core/database';
+import { ApiKey } from '@beabee/core/models';
+import ContactsService from '@beabee/core/services/ContactsService';
+import { AuthInfo } from '@beabee/core/type';
+import { extractToken } from '@beabee/core/utils/auth';
 
-import { Request, Response } from "express";
-import { Middleware, ExpressMiddlewareInterface } from "routing-controllers";
+import { Request, Response } from 'express';
+import crypto from 'node:crypto';
+import { ExpressMiddlewareInterface, Middleware } from 'routing-controllers';
 
-import { getRepository } from "@beabee/core/database";
-
-import ContactsService from "@beabee/core/services/ContactsService";
-import { extractToken } from "@beabee/core/utils/auth";
-
-import { ApiKey } from "@beabee/core/models";
-
-import { AuthInfo } from "@beabee/core/type";
-
-@Middleware({ type: "before" })
+@Middleware({ type: 'before' })
 export class AuthMiddleware implements ExpressMiddlewareInterface {
   async use(
     req: Request,
@@ -34,38 +30,38 @@ async function getAuth(request: Request): Promise<AuthInfo> {
     const apiKey = await getValidApiKey(token);
     if (apiKey) {
       // API key can act as a user
-      const contactId = headers["x-contact-id"]?.toString();
+      const contactId = headers['x-contact-id']?.toString();
       if (contactId) {
         const contact = await ContactsService.findOneBy({ id: contactId });
         if (contact) {
           return {
-            method: "api-key",
+            method: 'api-key',
             contact,
             // API can never acquire superadmin role
-            roles: contact.activeRoles.filter((r) => r !== "superadmin")
+            roles: contact.activeRoles.filter((r) => r !== 'superadmin'),
           };
         }
       } else {
         return {
-          method: "api-key",
-          roles: apiKey.activeRoles
+          method: 'api-key',
+          roles: apiKey.activeRoles,
         };
       }
     }
   } else if (request.user) {
     return {
-      method: "user",
+      method: 'user',
       contact: request.user,
-      roles: request.user.activeRoles
+      roles: request.user.activeRoles,
     };
   }
 
-  return { method: "none", roles: [] };
+  return { method: 'none', roles: [] };
 }
 
 async function getValidApiKey(key: string): Promise<ApiKey | undefined> {
-  const [_, secret] = key.split("_");
-  const secretHash = crypto.createHash("sha256").update(secret).digest("hex");
+  const [_, secret] = key.split('_');
+  const secretHash = crypto.createHash('sha256').update(secret).digest('hex');
   const apiKey = await getRepository(ApiKey).findOneBy({ secretHash });
   return !!apiKey && (!apiKey.expires || apiKey.expires > new Date())
     ? apiKey

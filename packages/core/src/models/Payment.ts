@@ -1,13 +1,15 @@
-import { PaymentStatus } from "@beabee/beabee-common";
+import { PaymentStatus } from '@beabee/beabee-common';
+
 import {
   Column,
   CreateDateColumn,
   Entity,
   ManyToOne,
   PrimaryColumn,
-  UpdateDateColumn
-} from "typeorm";
-import { type Contact } from "./index";
+  UpdateDateColumn,
+} from 'typeorm';
+
+import { type Contact } from './index';
 
 @Entity()
 export class Payment {
@@ -19,7 +21,7 @@ export class Payment {
 
   @Column({ type: String, nullable: true })
   contactId!: string | null;
-  @ManyToOne("Contact", { nullable: true })
+  @ManyToOne('Contact', { nullable: true })
   contact!: Contact | null;
 
   @Column()
@@ -28,10 +30,10 @@ export class Payment {
   @Column()
   description!: string;
 
-  @Column({ type: "real" })
+  @Column({ type: 'real' })
   amount!: number;
 
-  @Column({ type: "real", nullable: true })
+  @Column({ type: 'real', nullable: true })
   amountRefunded!: number | null;
 
   @Column()

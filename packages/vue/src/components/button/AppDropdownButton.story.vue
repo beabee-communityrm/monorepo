@@ -1,17 +1,18 @@
 <script lang="ts" setup>
-import { ref, reactive } from 'vue';
+import {
+  faCheck,
+  faCog,
+  faFolder,
+  faGlobe,
+  faTag,
+  faUser,
+} from '@fortawesome/free-solid-svg-icons';
+import { reactive, ref } from 'vue';
+
+import { AppSelectableList } from '../list';
 import AppDropdownButton, {
   type DropdownButtonVariant,
 } from './AppDropdownButton.vue';
-import {
-  faUser,
-  faTag,
-  faFolder,
-  faGlobe,
-  faCog,
-  faCheck,
-} from '@fortawesome/free-solid-svg-icons';
-import { AppSelectableList } from '../list';
 
 const state = reactive({
   icon: faUser,

@@ -1,11 +1,10 @@
-import { getRepository } from "#database";
-
-import { Contact, Segment, SegmentContact } from "#models/index";
+import { getRepository } from '#database';
+import { Contact, Segment, SegmentContact } from '#models/index';
 
 class SegmentService {
   async createSegment(
     name: string,
-    ruleGroup: Segment["ruleGroup"]
+    ruleGroup: Segment['ruleGroup']
   ): Promise<Segment> {
     const segment = new Segment();
     segment.name = name;

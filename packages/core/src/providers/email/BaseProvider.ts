@@ -1,28 +1,24 @@
-import { RESET_SECURITY_FLOW_TYPE } from "@beabee/beabee-common";
+import { RESET_SECURITY_FLOW_TYPE } from '@beabee/beabee-common';
 
-import { createQueryBuilder, getRepository } from "#database";
-import { log as mainLogger } from "#logging";
-import { formatEmailBody } from "#templates/email";
-
-import OptionsService from "#services/OptionsService";
-import ResetSecurityFlowService from "#services/ResetSecurityFlowService";
-
-import { Email, Contact } from "#models/index";
-
+import config from '#config/config';
+import { createQueryBuilder, getRepository } from '#database';
+import { log as mainLogger } from '#logging';
+import { Contact, Email } from '#models/index';
+import OptionsService from '#services/OptionsService';
+import ResetSecurityFlowService from '#services/ResetSecurityFlowService';
+import { formatEmailBody } from '#templates/email';
 import type {
+  EmailOptions,
   EmailProvider,
   EmailRecipient,
-  EmailOptions,
   EmailTemplate,
-  PreparedEmail
-} from "#type/index";
+  PreparedEmail,
+} from '#type/index';
 
-import config from "#config/config";
+const log = mainLogger.child({ app: 'base-email-provider' });
 
-const log = mainLogger.child({ app: "base-email-provider" });
-
-function generateResetPasswordLinks(type: "set" | "reset") {
-  const mergeField = type === "set" ? "SPLINK" : "RPLINK";
+function generateResetPasswordLinks(type: 'set' | 'reset') {
+  const mergeField = type === 'set' ? 'SPLINK' : 'RPLINK';
   const baseUrl = `${config.audience}/auth/${type}-password`;
   const fallbackUrl = `${config.audience}/auth/login`;
 
@@ -40,9 +36,9 @@ function generateResetPasswordLinks(type: "set" | "reset") {
     log.info(`Creating ${emails.length} links for ${mergeField}`);
 
     // Get list of contacts who match the recipients
-    const contacts = await createQueryBuilder(Contact, "c")
-      .select(["id", "email"])
-      .where("c.email IN (:...emails)", { emails })
+    const contacts = await createQueryBuilder(Contact, 'c')
+      .select(['id', 'email'])
+      .where('c.email IN (:...emails)', { emails })
       .getRawMany<{ id: string; email: string }>();
 
     const contactIdsByEmail = Object.fromEntries(
@@ -65,19 +61,19 @@ function generateResetPasswordLinks(type: "set" | "reset") {
           ...recipient,
           mergeFields: {
             ...recipient.mergeFields,
-            [mergeField]: rpFlowId ? `${baseUrl}/${rpFlowId}` : fallbackUrl
-          }
+            [mergeField]: rpFlowId ? `${baseUrl}/${rpFlowId}` : fallbackUrl,
+          },
         };
       }
     });
   };
 }
 
-const magicMergeFields = ["SPLINK", "LOGINLINK", "RPLINK"] as const;
+const magicMergeFields = ['SPLINK', 'LOGINLINK', 'RPLINK'] as const;
 
 const magicMergeFieldsProcessors = {
-  SPLINK: generateResetPasswordLinks("set"),
-  RPLINK: generateResetPasswordLinks("reset"),
+  SPLINK: generateResetPasswordLinks('set'),
+  RPLINK: generateResetPasswordLinks('reset'),
   LOGINLINK: async (recipients: EmailRecipient[]) => {
     // TODO: generate login override link
     return recipients.map((recipient) =>
@@ -87,11 +83,11 @@ const magicMergeFieldsProcessors = {
             ...recipient,
             mergeFields: {
               ...recipient.mergeFields,
-              LOGINLINK: `${config.audience}/auth/login`
-            }
+              LOGINLINK: `${config.audience}/auth/login`,
+            },
           }
     );
-  }
+  },
 } as const;
 
 export abstract class BaseProvider implements EmailProvider {
@@ -109,10 +105,10 @@ export abstract class BaseProvider implements EmailProvider {
     const preparedEmail = {
       ...email,
       body: formatEmailBody(email.body),
-      fromEmail: email.fromEmail || OptionsService.getText("support-email"),
+      fromEmail: email.fromEmail || OptionsService.getText('support-email'),
       fromName:
         email.fromName ||
-        (email.fromEmail ? "" : OptionsService.getText("support-email-from"))
+        (email.fromEmail ? '' : OptionsService.getText('support-email-from')),
     };
 
     let preparedRecipients = recipients;

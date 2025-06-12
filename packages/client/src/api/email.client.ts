@@ -1,7 +1,8 @@
-import { BaseClient } from "./base.client.js";
-import { cleanUrl } from "../utils/index.js";
-import type { BaseClientOptions } from "../types/index.js";
-import type { GetEmailData, UpdateEmailData } from "@beabee/beabee-common";
+import type { GetEmailData, UpdateEmailData } from '@beabee/beabee-common';
+
+import type { BaseClientOptions } from '../types/index.js';
+import { cleanUrl } from '../utils/index.js';
+import { BaseClient } from './base.client.js';
 
 /**
  * Client for managing email operations
@@ -16,7 +17,7 @@ export class EmailClient extends BaseClient {
   constructor(protected override readonly options: BaseClientOptions) {
     super({
       ...options,
-      path: cleanUrl(options.path + "/email")
+      path: cleanUrl(options.path + '/email'),
     });
   }
 

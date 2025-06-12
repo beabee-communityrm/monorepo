@@ -34,16 +34,44 @@ docker compose up -d
 
 ### To get started
 
-#### Create a new super admin
+#### Complete system setup (recommended)
+
+The easiest way to set up your beabee instance is using the all-in-one setup command:
 
 ```bash
-docker compose run --rm api_app yarn backend-cli user create --firstname <YourFirstname> --lastname <YourLastname> --email <YourEmail> --password <YourPassword>
+docker compose run --rm api_app yarn backend-cli setup all
 ```
 
-#### Payment methods and email domain
+This will guide you through setting up:
+
+- Support email configuration
+- Payment methods
+- Initial admin user
+
+You can also provide additional options to skip some prompts:
 
 ```bash
-docker compose run --rm api_app yarn backend-cli configure --emailDomain <yourdomain.com>
+docker compose run --rm api_app yarn backend-cli setup all \
+  --emailDomain <yourdomain.com> \
+  --firstname <YourFirstname> \
+  --lastname <YourLastname> \
+  --admin-email <YourEmail> \
+  --admin-password <YourPassword>
+```
+
+#### Alternative: Manual step-by-step setup
+
+If you prefer to configure each part separately:
+
+```bash
+# Set up support email
+docker compose run --rm api_app yarn backend-cli setup support-email --emailDomain <yourdomain.com>
+
+# Set up payment methods
+docker compose run --rm api_app yarn backend-cli setup payment-methods
+
+# Create initial admin user
+docker compose run --rm api_app yarn backend-cli setup admin --firstname <YourFirstname> --lastname <YourLastname> --email <YourEmail> --password <YourPassword>
 ```
 
 > ⚠️ If you only set up the system locally, it doesn't matter what email domain you specify, but it still has to be valid, e.g. `example.org`.
@@ -53,7 +81,7 @@ docker compose run --rm api_app yarn backend-cli configure --emailDomain <yourdo
 Need some test data? Download it here: coming soon
 
 ```bash
-docker compose run --rm -T api_app node built/tools/database/import.js < <import file>
+docker compose run --rm -T api_app node dist/tools/database/import.js < <import file>
 ```
 
 #### Go to the frontend
@@ -196,7 +224,7 @@ Webhooks are handled by the `webhook_app` service. This is a separate service fr
 By default we are using [MailDev](https://github.com/maildev/maildev) for local development. For this to work it must be configured the first time, run the following command if not already done:
 
 ```bash
-yarn setup:payment
+docker compose run --rm api_app yarn backend-cli setup payment-methods
 ```
 
 If the Docker Compose Stack is started, you can reach MailDev via http://localhost:3025/ by default. If you now receive an e-mail during your tests, you will find it there.
@@ -225,7 +253,7 @@ BEABEE_STRIPE_SECRETKEY=<secret key>
 And also that you have configured the payment methods using
 
 ```bash
-yarn setup:payment
+docker compose run --rm api_app yarn backend-cli setup payment-methods
 ```
 
 You can get the public key and secret key in the [Stripe dashboard](https://dashboard.stripe.com).

@@ -55,6 +55,7 @@
       "unsubscribe": "Suspender inscrição na newsletter"
     },
     "phoneInfo": "Ao fornecer o seu número de telefone, está a consentir ser contactado por telefone.",
+    "phoneInfoAdmin": "",
     "savedPassword": "Nova palavra-passe gravada",
     "subTitle": "Os campos obrigatórios estão marcados com asteriscos. Toda a informação enviada por aqui é privada.",
     "title": "Conta"
@@ -115,7 +116,15 @@
     "title": "Adicionar um contacto"
   },
   "addNotice": {
-    "form": {}
+    "form": {
+      "buttonText": "",
+      "expirationDateAndTime": "",
+      "name": "",
+      "startDateAndTime": "",
+      "text": "",
+      "url": ""
+    },
+    "title": ""
   },
   "adminDashboard": {
     "hint1": "<p>Sabias que as chamadas podem ser criadas sem data de conclusão, e assim continuarem indefinidamente? Há mais pormenores na nossa <a href=\"https://beabee.io/en/beabee-full-feature-list/\" target=\"_blank\" rel=\"noopener noreferrer\">demonstração de funcionalidades</a></p>\n",
@@ -143,43 +152,179 @@
   },
   "adminSettings": {
     "apikey": {
-      "confirmCreate": {},
-      "confirmDelete": {},
-      "expires": {}
+      "confirmCreate": {
+        "text": "",
+        "title": ""
+      },
+      "confirmDelete": {
+        "text": "",
+        "title": ""
+      },
+      "copied": "",
+      "create": "",
+      "expires": {
+        "days": "",
+        "never": ""
+      },
+      "expiresHelp": "",
+      "expiresNeverWarning": "",
+      "label": "",
+      "showingOf": ""
     },
-    "email": {},
+    "email": {
+      "fromEmail": "",
+      "fromName": "",
+      "label": "",
+      "text": "",
+      "title": ""
+    },
     "general": {
       "footer": {
-        "dataPrivacy": {},
-        "otherLinks": {}
+        "dataPrivacy": {
+          "impressumUrl": "",
+          "privacyUrl": "",
+          "termsUrl": "",
+          "title": ""
+        },
+        "otherLinks": {
+          "add": "",
+          "linkText": "",
+          "title": "",
+          "url": ""
+        },
+        "siteUrl": "",
+        "text": "",
+        "title": ""
       },
-      "socialSharing": {}
+      "label": "",
+      "language": "",
+      "logo": "",
+      "organisationName": "",
+      "socialSharing": {
+        "description": "",
+        "image": "",
+        "shareTitle": "",
+        "text": "",
+        "title": "",
+        "twitterHandle": ""
+      }
     },
-    "payment": {},
+    "payment": {
+      "paymentTitle": "",
+      "taxRate": "",
+      "taxRateEnabled": ""
+    },
     "theme": {
-      "colorNames": {},
-      "presetColors": {}
-    }
+      "bodyFont": "",
+      "colorNames": {
+        "body": "",
+        "danger": "",
+        "link": "",
+        "primary": "",
+        "success": "",
+        "warning": ""
+      },
+      "colors": "",
+      "customColors": "",
+      "fontNotListed": "",
+      "fonts": "",
+      "label": "",
+      "presetColors": {
+        "default": ""
+      },
+      "titleFont": ""
+    },
+    "title": ""
   },
   "advancedSearch": {
-    "createFiltersType": {},
-    "matchWord": {},
+    "addRule": "",
+    "button": "",
+    "createFiltersAfter": "",
+    "createFiltersBefore": "",
+    "createFiltersType": {
+      "all": "",
+      "any": ""
+    },
+    "createdSegment": "",
+    "matchWord": {
+      "AND": "",
+      "OR": ""
+    },
+    "nestedRules": "",
+    "noNestedRules": "",
     "operators": {
-      "all": {},
-      "array": {},
-      "blob": {},
-      "boolean": {},
-      "date": {},
-      "enum": {},
-      "number": {},
-      "text": {}
+      "all": {
+        "is_empty": "",
+        "is_not_empty": ""
+      },
+      "array": {
+        "contains": "",
+        "not_contains": ""
+      },
+      "blob": {
+        "contains": "",
+        "not_contains": ""
+      },
+      "boolean": {
+        "equal": ""
+      },
+      "date": {
+        "between": "",
+        "equal": "",
+        "greater": "",
+        "greater_or_equal": "",
+        "less": "",
+        "less_or_equal": "",
+        "not_between": "",
+        "not_equal": ""
+      },
+      "enum": {
+        "equal": "",
+        "not_equal": ""
+      },
+      "number": {
+        "between": "",
+        "equal": "",
+        "greater": "",
+        "greater_or_equal": "",
+        "less": "",
+        "less_or_equal": "",
+        "not_between": "",
+        "not_equal": ""
+      },
+      "text": {
+        "begins_with": "",
+        "contains": "",
+        "ends_with": "",
+        "equal": "",
+        "not_begins_with": "",
+        "not_contains": "",
+        "not_ends_with": "",
+        "not_equal": ""
+      }
     },
     "saveSegment": {
-      "createOrUpdate": {}
-    }
+      "createOrUpdate": {
+        "create": "",
+        "label": "",
+        "update": ""
+      },
+      "createSegment": "",
+      "segmentName": "",
+      "text": "",
+      "title": "",
+      "updateSegment": ""
+    },
+    "selectFilter": "",
+    "updatedSegment": ""
   },
   "apiKey": {
-    "data": {}
+    "data": {
+      "createdAt": "",
+      "description": "",
+      "expires": "",
+      "token": ""
+    }
   },
   "callout": {
     "actions": {
@@ -188,119 +333,329 @@
     "addAPoint": "Carrega no mapa no sítio onde queres adicionar o ponto.",
     "addLocation": "Adicionar localização",
     "builder": {
-      "actions": {},
+      "actions": {
+        "addSlide": ""
+      },
       "common": {
-        "actions": {}
+        "actions": {
+          "add": "",
+          "remove": ""
+        },
+        "internalTitle": "",
+        "showAdvancedOptions": "",
+        "slides": "",
+        "startEndScreens": ""
       },
       "navigation": {
-        "nextSlide": {}
+        "nextButton": "",
+        "nextSlide": {
+          "default": "",
+          "label": ""
+        },
+        "prevButton": "",
+        "slideNo": "",
+        "submitButton": ""
       },
+      "showAdvancedOptions": "",
+      "slidesTitle": "",
+      "startEndScreenTitle": "",
       "tabs": {
-        "content": {},
+        "content": {
+          "title": ""
+        },
         "endMessage": {
           "inputs": {
             "action": {
-              "opts": {}
+              "label": "",
+              "opts": {
+                "redirect": "",
+                "showMessage": ""
+              }
             },
-            "text": {},
-            "title": {},
-            "url": {}
-          }
+            "text": {
+              "help": "",
+              "label": "",
+              "placeholder": ""
+            },
+            "title": {
+              "help": "",
+              "label": "",
+              "placeholder": ""
+            },
+            "url": {
+              "help": "",
+              "label": "",
+              "placeholder": ""
+            }
+          },
+          "title": ""
         },
-        "intro": {},
-        "mailchimp": {},
-        "responseDisplay": {},
+        "intro": {
+          "help": "",
+          "label": "",
+          "title": ""
+        },
+        "mailchimp": {
+          "title": ""
+        },
+        "responseDisplay": {
+          "title": ""
+        },
         "settings": {
-          "access": {},
-          "dates": {},
-          "displayOptions": {},
+          "access": {
+            "title": ""
+          },
+          "dates": {
+            "title": ""
+          },
+          "displayOptions": {
+            "description": "",
+            "title": ""
+          },
           "inputs": {
             "collectGuestInfo": {
-              "opts": {}
+              "label": "",
+              "opts": {
+                "disabled": "",
+                "enabled": ""
+              }
             },
             "collectMemberInfo": {
-              "opts": {}
+              "label": "",
+              "opts": {
+                "disabled": "",
+                "enabled": ""
+              }
             },
             "expires": {
-              "opts": {}
+              "description": "",
+              "label": "",
+              "opts": {
+                "never": "",
+                "schedule": ""
+              }
             },
             "mapAndGallery": {
-              "gallery": {},
-              "map": {}
+              "description": "",
+              "gallery": {
+                "disabledDescription": "",
+                "enabledDescription": "",
+                "label": ""
+              },
+              "map": {
+                "disabledDescription": "",
+                "enabledDescription": "",
+                "label": ""
+              },
+              "title": ""
             },
             "mapSchema": {
-              "addressPattern": {},
-              "addressPatternProp": {},
-              "addressProp": {},
-              "bounds": {},
-              "center": {},
-              "geocodeCountries": {},
-              "initialZoom": {},
-              "maxZoom": {},
-              "minZoom": {},
-              "style": {}
+              "addressPattern": {
+                "label": ""
+              },
+              "addressPatternProp": {
+                "label": "",
+                "none": ""
+              },
+              "addressProp": {
+                "label": ""
+              },
+              "bounds": {
+                "label": ""
+              },
+              "center": {
+                "label": ""
+              },
+              "geocodeCountries": {
+                "label": ""
+              },
+              "initialZoom": {
+                "label": ""
+              },
+              "maxZoom": {
+                "label": ""
+              },
+              "minZoom": {
+                "label": ""
+              },
+              "style": {
+                "help": "",
+                "label": ""
+              },
+              "title": ""
             },
             "newsletterSettings": {
-              "opts": {}
+              "disabled": "",
+              "label": "",
+              "opts": {
+                "disabled": "",
+                "enabled": ""
+              }
             },
             "openToEveryone": {
-              "opts": {}
+              "help": "",
+              "label": "",
+              "opts": {
+                "disabled": "",
+                "enabled": ""
+              }
             },
             "requireCaptcha": {
+              "help": "",
+              "label": "",
               "members": {
-                "opts": {}
+                "label": "",
+                "opts": {
+                  "disabled": "",
+                  "enabled": ""
+                }
               },
-              "opts": {}
+              "opts": {
+                "all": "",
+                "guests": "",
+                "none": ""
+              }
             },
-            "responseImageProp": {},
+            "responseImageProp": {
+              "description": "",
+              "label": ""
+            },
             "responseLinks": {
-              "opts": {},
-              "placeholder": {}
+              "description": "",
+              "label": "",
+              "opts": {
+                "disabled": "",
+                "enabled": ""
+              },
+              "placeholder": {
+                "label": "",
+                "url": ""
+              }
             },
             "responseSettings": {
-              "opts": {}
+              "label": "",
+              "opts": {
+                "multiple": "",
+                "singleEditable": "",
+                "singleNonEditable": ""
+              },
+              "title": ""
             },
-            "responseTitleProp": {},
+            "responseTitleProp": {
+              "description": "",
+              "label": ""
+            },
             "showResponses": {
-              "opts": {}
+              "label": "",
+              "opts": {
+                "no": "",
+                "yes": ""
+              }
             },
             "starts": {
-              "opts": {}
+              "label": "",
+              "opts": {
+                "now": "",
+                "schedule": ""
+              }
             },
             "visible": {
-              "opts": {}
+              "help": "",
+              "label": "",
+              "opts": {
+                "disabled": "",
+                "enabled": ""
+              }
             },
-            "whichResponseBuckets": {}
-          }
+            "whichResponseBuckets": {
+              "description": "",
+              "label": ""
+            }
+          },
+          "title": ""
         },
         "titleAndImage": {
           "inputs": {
-            "description": {},
-            "general": {},
-            "image": {},
+            "description": {
+              "help": "",
+              "label": "",
+              "placeholder": ""
+            },
+            "general": {
+              "title": ""
+            },
+            "image": {
+              "description": "",
+              "help": "",
+              "label": ""
+            },
             "overrideShare": {
-              "opts": {}
+              "label": "",
+              "opts": {
+                "disabled": "",
+                "enabled": ""
+              }
             },
-            "shareDescription": {},
-            "shareTitle": {},
-            "sharing": {},
+            "shareDescription": {
+              "help": "",
+              "label": "",
+              "placeholder": ""
+            },
+            "shareTitle": {
+              "help": "",
+              "label": "",
+              "placeholder": ""
+            },
+            "sharing": {
+              "title": ""
+            },
             "slug": {
-              "locked": {},
-              "opts": {}
+              "boxTitle": "",
+              "help": "",
+              "label": "",
+              "locked": {
+                "title": ""
+              },
+              "opts": {
+                "auto": "",
+                "manual": ""
+              }
             },
-            "title": {}
-          }
+            "title": {
+              "label": "",
+              "placeholder": ""
+            }
+          },
+          "title": "",
+          "urlWillBe": ""
         },
         "translations": {
-          "language": {},
-          "languageSettings": {},
-          "navigationButtons": {}
+          "language": {
+            "description": "",
+            "enableLanguages": "",
+            "title": ""
+          },
+          "languageSettings": {
+            "title": ""
+          },
+          "navigationButtons": {
+            "title": ""
+          },
+          "title": ""
         }
       },
-      "translationFields": {}
+      "translationFields": {
+        "description": "",
+        "label": "",
+        "option": "",
+        "placeholder": "",
+        "html": ""
+      }
     },
+    "confirmHuman": "",
     "contactDetails": "Detalhes de contacto",
     "ended": "Este callout acabou a {date}",
+    "entryOf": "",
     "form": {
       "email": "O teu email",
       "guestFieldsMissing": "Dá-nos os teus contactos",
@@ -316,6 +671,7 @@
       "address": "Podes partilhar esta chamada com este endereço:",
       "services": "Ou partilha rapidamente com uma destas plataformas:"
     },
+    "showingPreview": "",
     "toContributionPage": "Editar a minha contribuição",
     "updateContribution": "Por favor atualiza a tua contribuição",
     "views": {
@@ -325,18 +681,51 @@
     "youResponded": "Já respondeste a esta chamada ♥",
     "yourResponse": "A tua resposta"
   },
-  "calloutAdmin": {},
+  "calloutAdmin": {
+    "deleted": "",
+    "ended": "",
+    "overview": "",
+    "reopened": "",
+    "responses": ""
+  },
   "calloutAdminOverview": {
     "actions": {
-      "confirmDelete": {}
+      "confirmDelete": {
+        "text": "",
+        "title": ""
+      }
     },
-    "dates": {},
+    "created": "",
+    "dates": {
+      "ends": "",
+      "label": "",
+      "starts": ""
+    },
     "settings": {
-      "answers": {},
-      "contactInfo": {},
-      "endsWith": {},
-      "openTo": {}
-    }
+      "answers": {
+        "editable": "",
+        "final": "",
+        "label": ""
+      },
+      "contactInfo": {
+        "label": "",
+        "optional": "",
+        "required": ""
+      },
+      "endsWith": {
+        "label": "",
+        "message": "",
+        "redirect": ""
+      },
+      "label": "",
+      "openTo": {
+        "everyone": "",
+        "label": "",
+        "membersOnly": ""
+      }
+    },
+    "summary": "",
+    "updated": ""
   },
   "calloutResponse": {
     "data": {
@@ -349,7 +738,10 @@
       "tags": "Etiquetas",
       "updatedAt": "Data de atualização"
     },
-    "dataGroup": {}
+    "dataGroup": {
+      "answers": "",
+      "response": ""
+    }
   },
   "calloutResponseBuckets": {
     "inbox": "Caixa de entrada",
@@ -372,9 +764,12 @@
     "actions": {
       "assignTo": "Atribuir a",
       "moveBucket": "Mover balde",
-      "toggleTag": "Ativar etiqueta"
+      "toggleTag": "Ativar etiqueta",
+      "viewOnMap": ""
     },
     "editMode": "Está no modo de edição, cuidado!",
+    "manageFolders": "",
+    "manageReviewers": "",
     "manageTags": "Gerir etiquetas",
     "notifications": {
       "addedAssignee": "Atribuída a {assignee}",
@@ -398,7 +793,13 @@
     "showingOf": "Respostas {start} a {end} de um total de {total}"
   },
   "calloutReviewerManager": {
-    "confirmDelete": {}
+    "add": "",
+    "confirmDelete": {
+      "text": "",
+      "title": ""
+    },
+    "contact": "",
+    "title": ""
   },
   "calloutThanksPage": {
     "oneResponseWarning": "Por favor, note que este aviso permite apenas uma resposta por pessoa. Se você já contribuiu, respostas adicionais não serão registradas."
@@ -416,8 +817,21 @@
     "showingOf": "Chamadas {start} a {end} de um total de {total}"
   },
   "calloutsAdmin": {
-    "data": {},
-    "filter": {}
+    "addCallout": "",
+    "data": {
+      "expires": "",
+      "responses": "",
+      "starts": "",
+      "status": "",
+      "title": ""
+    },
+    "filter": {
+      "all": "",
+      "draft": "",
+      "ended": "",
+      "open": "",
+      "scheduled": ""
+    }
   },
   "common": {
     "backToHome": "Voltar ao início",
@@ -482,31 +896,67 @@
     "yes": "Sim"
   },
   "contactAccount": {
-    "confirmDelete": {}
+    "confirmDelete": {
+      "text": "",
+      "title": "",
+      "warning": ""
+    },
+    "contactDeleted": ""
   },
   "contactContribution": {
-    "confirmCancel": {},
-    "updateNotice": {}
+    "confirmCancel": {
+      "confirm": "",
+      "text": "",
+      "title": ""
+    },
+    "updateNotice": {
+      "text": "",
+      "title": ""
+    }
   },
   "contactOverview": {
-    "annotation": {},
-    "newsletter": {
-      "groups": "Grupos"
+    "about": "",
+    "account": "",
+    "annotation": {
+      "copy": ""
     },
+    "callouts": "",
+    "cancellationDate": "",
+    "contribution": "",
+    "contributionType": "",
+    "joinSurvey": "",
+    "newsletter": {
+      "groups": "Grupos",
+      "status": "",
+      "title": ""
+    },
+    "overview": "",
+    "pickTag": "",
+    "profile": "",
+    "roles": "",
     "security": {
+      "instructions": "",
+      "loginOverride": "",
       "mfa": {
         "desc": "Este contato ativou o 2FA. Clica no botão \"{ disableLabel }\" para desativar.",
         "disabledDesc": "Este contato não ativou o 2FA."
-      }
+      },
+      "resetPassword": "",
+      "title": "",
+      "whatDoTheButtonsDo": ""
     }
   },
   "contacts": {
     "addContact": "Adicionar contacto",
-    "advancedSearch": {},
+    "advancedSearch": {
+      "hasAnswered": "",
+      "selectCallout": ""
+    },
     "allContacts": "Todos os contactos",
     "data": {
       "activeMembership": "Membro ativo",
       "activePermission": "Cargo ativo",
+      "activeUser": "",
       "amount": "Montante",
       "annotationsCopy": "Contacto atualizado",
       "contribution": "Contribuição",
@@ -514,6 +964,7 @@
       "contributionMonthlyAmount": "Valor mensal da contribuição",
       "contributionPeriod": "Período da contribuição",
       "contributionType": "Tipo de contributo",
+      "deliveryOptIn": "",
       "description": "Descrição",
       "email": "Email",
       "firstname": "Primeiro nome",
@@ -524,6 +975,7 @@
       "membershipExpires": "Membro até",
       "membershipStarts": "Membro desde",
       "name": "Nome",
+      "newsletterGroups": "",
       "newsletterStatus": "Assinatura da newsletter",
       "notes": "Notas",
       "payingFee": "Paga a taxa?",
@@ -544,6 +996,7 @@
     "noResults": "Nenhum contacto encontrado",
     "numResults": "{n} contacto encontrado | {n} contactos encontrados",
     "search": "Pesquisar contactos...",
+    "selectedCount": "",
     "showingOf": "Contactos {start} a {end} de um total de {total}"
   },
   "contribution": {
@@ -564,6 +1017,7 @@
     "hasPendingPayment": "O teu pagamento está agora a ser processado",
     "manualPayment": "A tua contribuição está a ser paga via {source}. Se começares a pagar através do nosso sistema de contribuições, será mais fácil para ti gerires a tua contribuição mensal e vais ajudar-nos a perceber quanto dinheiro recebemos por mês da nossa Comunidade.",
     "manualPaymentSource": "Uma ferramenta desenvolvida por outra organização",
+    "nextAmountChanging": "",
     "paymentHistory": {
       "empty": "Os pagamentos já realizados vão aparecer aqui.",
       "title": "Histórico de pagamentos"
@@ -589,8 +1043,14 @@
     "willRenew": "A tua contribuição vai renovar automaticamente a {renewalDate}.",
     "willRenewWithNewAmount": "A tua contribuição vai renovar automaticamente a {renewalDate}, passando para a nova quantia de {nextAmount}."
   },
-  "editCallout": {},
-  "editNotice": {},
+  "editCallout": {
+    "replicated": "",
+    "title": "",
+    "warning": ""
+  },
+  "editNotice": {
+    "title": ""
+  },
   "footer": {
     "contactUs": "Entra em contacto connosco em",
     "handbookResources": "Manual e recursos",
@@ -610,7 +1070,9 @@
     "addressLine1": "Endereço (linha 1)",
     "addressLine2": "Endereço (linha 2)",
     "cancel": "Cancelar",
-    "characters": {},
+    "characters": {
+      "remaining": ""
+    },
     "cityOrTown": "Localidade",
     "deliveryOptIn": "Escolher inscrição",
     "description": "Descrição",
@@ -619,11 +1081,13 @@
       "api": {
         "account-locked": "Conta bloqueada por demasiadas tentativas de login. Faz reset da tua password ou fala connosco.",
         "duplicate-email": "Este endereço de e-mail já existe",
+        "duplicate-tag-name": "",
         "invalid-token": "Token 2FA inválido",
         "login-failed": "Combinação inválida de email e palavra-passe",
         "mfa-token-required": "Ativaste a autenticação de dois fatores. Introduz o token da tua aplicação de autenticação para continuar."
       },
       "generic": "Ups, houve aqui um erro. Fala connosco se isto voltar a acontecer.",
+      "unauthorized": "",
       "validation": "Falta alguma coisa. Verifica os campos acima."
     },
     "errors": {
@@ -674,6 +1138,7 @@
       "unknown": {
         "email": "Endereço de email inválido",
         "max": "Este campo pode ter no máximo {max}",
+        "maxLength": "",
         "min": "Este campo tem de ser pelo menos {min}",
         "required": "Este campo é obrigatório",
         "url": "URL inválido"
@@ -772,7 +1237,9 @@
     "paymentMethod": "Forma de pagamento",
     "poweredBy": "Powered by beabee",
     "privacy": "Política de Privacidade",
-    "tax": {}
+    "tax": {
+      "included": ""
+    }
   },
   "joinPayment": {
     "applePay": {
@@ -803,20 +1270,65 @@
     "message": "Se existir uma conta associada com o endereço {email}, receberá um e-mail dentro de momentos. Deverá ter recebido um e-mail com instruções na sua caixa de entrada. Verifique a sua pasta de spam se não tiver aparecido.",
     "title": "Perdeste o teu dispositivo 2FA?"
   },
-  "mailOptIn": {},
+  "mailOptIn": {
+    "optInLabel": "",
+    "text": "",
+    "title": ""
+  },
   "membershipBuilder": {
     "steps": {
       "accountConfirmation": {
-        "deliveryAddress": {},
-        "joinSurvey": {},
+        "deliveryAddress": {
+          "showOptIn": "",
+          "title": ""
+        },
+        "description": "",
+        "joinSurvey": {
+          "required": "",
+          "slug": "",
+          "slugHelp": "",
+          "text": "",
+          "textIntro": "",
+          "title": ""
+        },
         "newsletter": {
+          "showOptIn": "",
           "title": "Newsletter"
-        }
+        },
+        "text": "",
+        "title": "",
+        "welcomeMessage": ""
       },
-      "emails": {},
-      "intro": {},
-      "joinForm": {}
-    }
+      "emails": {
+        "bigTitle": "",
+        "cancellationEmail": "",
+        "description": "",
+        "text": "",
+        "title": "",
+        "welcomeEmail": ""
+      },
+      "intro": {
+        "description": "",
+        "message": "",
+        "showWelcomeMessage": "",
+        "text": "",
+        "title": ""
+      },
+      "joinForm": {
+        "backgroundImage": "",
+        "defaultAmount": "",
+        "description": "",
+        "formSubtitle": "",
+        "formTitle": "",
+        "minAmount": "",
+        "showAbsorbFee": "",
+        "showNoContribution": "",
+        "suggestedAmounts": "",
+        "text": "",
+        "title": ""
+      }
+    },
+    "title": ""
   },
   "menu": {
     "account": "Conta",
@@ -827,13 +1339,24 @@
     "contribution": "Contribuição",
     "dashboard": "Painel",
     "home": "Página inicial",
+    "legacyApp": "",
     "logout": "Sair",
+    "membershipBuilder": "",
     "notices": "Avisos",
+    "payments": "",
     "settings": "Definições",
     "yourProfile": "Perfil"
   },
   "newsletterOptIn": {
-    "groups": {}
+    "groups": {
+      "add": "",
+      "help": "",
+      "title": ""
+    },
+    "optInDisabled": "",
+    "optInLabel": "",
+    "text": "",
+    "title": ""
   },
   "notFound": {
     "goBack": "Regressar à página principal",
@@ -841,15 +1364,30 @@
   },
   "noticeAdminOverview": {
     "actions": {
-      "confirmDelete": {}
-    }
+      "confirmDelete": {
+        "text": "",
+        "title": ""
+      }
+    },
+    "created": "",
+    "summary": "",
+    "updated": ""
   },
   "notices": {
-    "data": {}
+    "addNotice": "",
+    "data": {
+      "createdAt": "",
+      "name": "",
+      "status": ""
+    },
+    "showingOf": ""
   },
   "notifications": {
-    "copy": {},
-    "error": "Houve aqui um erro. Experimenta recarregar a página."
+    "copy": {
+      "success": ""
+    },
+    "error": "Houve aqui um erro. Experimenta recarregar a página.",
+    "remove": ""
   },
   "pageTitle": {
     "confirmEmail": "Confirma o email",
@@ -881,9 +1419,15 @@
       "label": "Cartão",
       "setLabel": "Detalhes do teu cartão"
     },
-    "s_ideal": {},
+    "s_ideal": {
+      "changeLabel": "",
+      "label": "",
+      "setLabel": ""
+    },
     "s_paypal": {
-      "label": "PayPal"
+      "changeLabel": "",
+      "label": "PayPal",
+      "setLabel": ""
     },
     "s_sepa": {
       "changeLabel": "Alterar débito direto",
@@ -892,11 +1436,25 @@
     }
   },
   "payments": {
-    "data": {},
-    "dataGroup": {}
+    "data": {
+      "amount": "",
+      "chargeDate": "",
+      "contact": "",
+      "status": ""
+    },
+    "dataGroup": {
+      "payment": ""
+    }
   },
   "paymentsAdmin": {
-    "filter": {}
+    "filter": {
+      "all": "",
+      "cancelled": "",
+      "failed": "",
+      "pending": "",
+      "successful": ""
+    },
+    "showingOf": ""
   },
   "resetDevice": {
     "description": "Insere a tua palavra-pase para fazer reset do seu dispositivo 2FA. Vais poder associar um novo dispositivo quando fizeres login.",
@@ -943,11 +1501,23 @@
   },
   "tagEditor": {
     "add": "Adicionar etiqueta",
-    "confirmDelete": {},
+    "confirmDelete": {
+      "text_contact": "",
+      "text_global": "",
+      "text_response": "",
+      "title": ""
+    },
     "name": "Nome"
   },
   "tags": {
-    "notifications": {}
+    "manageTags": "",
+    "noTags": "",
+    "notifications": {
+      "addedTag": "",
+      "removedTag": ""
+    },
+    "searchTag": "",
+    "toggleTag": ""
   },
   "taxRate": {
     "invoiceName": "???"

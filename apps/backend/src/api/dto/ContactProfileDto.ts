@@ -1,15 +1,15 @@
-import { NewsletterStatus } from "@beabee/beabee-common";
-import { Type } from "class-transformer";
+import { NewsletterStatus } from '@beabee/beabee-common';
+
+import { GetAddressDto, UpdateAddressDto } from '@api/dto/AddressDto';
+import { Type } from 'class-transformer';
 import {
   IsArray,
   IsBoolean,
   IsEnum,
   IsOptional,
   IsString,
-  ValidateNested
-} from "class-validator";
-
-import { GetAddressDto, UpdateAddressDto } from "@api/dto/AddressDto";
+  ValidateNested,
+} from 'class-validator';
 
 export class GetContactProfileDto {
   @IsString()
@@ -35,10 +35,10 @@ export class GetContactProfileDto {
   @IsString({ each: true })
   newsletterGroups!: string[];
 
-  @IsString({ groups: ["admin"] })
+  @IsString({ groups: ['admin'] })
   notes?: string;
 
-  @IsString({ groups: ["admin"] })
+  @IsString({ groups: ['admin'] })
   description?: string;
 }
 

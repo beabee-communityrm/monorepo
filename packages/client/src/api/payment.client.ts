@@ -1,15 +1,15 @@
-import { BaseClient } from "./base.client.js";
-import { cleanUrl } from "../utils/index.js";
-import { ContactClient } from "./contact.client.js";
-
-import type { BaseClientOptions } from "../types/index.js";
 import type {
   GetPaymentDataWith,
-  GetPaymentsQuery,
   GetPaymentWith,
+  GetPaymentsQuery,
   Paginated,
-  Serial
-} from "@beabee/beabee-common";
+  Serial,
+} from '@beabee/beabee-common';
+
+import type { BaseClientOptions } from '../types/index.js';
+import { cleanUrl } from '../utils/index.js';
+import { BaseClient } from './base.client.js';
+import { ContactClient } from './contact.client.js';
 
 /**
  * Client for managing payments
@@ -24,7 +24,7 @@ export class PaymentClient extends BaseClient {
   constructor(protected override readonly options: BaseClientOptions) {
     super({
       ...options,
-      path: cleanUrl(options.path + "/payment")
+      path: cleanUrl(options.path + '/payment'),
     });
   }
 
@@ -43,8 +43,8 @@ export class PaymentClient extends BaseClient {
       amount: payment.amount,
       status: payment.status,
       ...(payment.contact !== undefined && {
-        contact: payment.contact && ContactClient.deserialize(payment.contact)
-      })
+        contact: payment.contact && ContactClient.deserialize(payment.contact),
+      }),
     };
   }
 
@@ -60,11 +60,11 @@ export class PaymentClient extends BaseClient {
   ): Promise<Paginated<GetPaymentDataWith<With>>> {
     const { data } = await this.fetch.get<
       Paginated<Serial<GetPaymentDataWith<With>>>
-    >("", { with: _with, ...query });
+    >('', { with: _with, ...query });
 
     return {
       ...data,
-      items: data.items.map((item) => PaymentClient.deserialize(item))
+      items: data.items.map((item) => PaymentClient.deserialize(item)),
     };
   }
 }

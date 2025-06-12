@@ -1,8 +1,8 @@
 {
   "name": "@beabee/client",
   "description": "The Beabee API Client",
-  "version": "0.3.3",
-  "license": "Apache-2.0",
+  "version": "0.28.1",
+  "license": "AGPL-3.0",
   "type": "module",
   "engines": {
     "node": ">=20"
@@ -14,10 +14,12 @@
   },
   "scripts": {
     "clear": "rm -rf dist",
-    "build": "yarn clear && yarn build:types && yarn build:platforms",
-    "build:platforms": "node esbuild.js",
+    "build": "yarn build:types && yarn build:esbuild",
+    "build:esbuild": "yarn workspace @beabee/dev-cli start esbuild --baseDir $(pwd)",
     "build:types": "tsc --project ./tsconfig.build.json",
-    "generate:index": "node generate-index.js",
+    "watch": "yarn build:esbuild --watch",
+    "dev": "yarn watch",
+    "generate:index": "yarn workspace @beabee/dev-cli start generate-index --extension js --baseDir $(pwd) -p src/types src/api src/utils",
     "test": "vitest run",
     "test:watch": "vitest",
     "format": "prettier --write .",
@@ -36,7 +38,7 @@
     "otpauth": "^9.3.6",
     "prettier": "^3.5.2",
     "typescript": "~5.6.3",
-    "vitest": "^3.0.9"
+    "vitest": "^3.2.1"
   },
   "files": [
     "dist/"

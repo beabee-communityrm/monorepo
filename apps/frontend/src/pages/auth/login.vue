@@ -88,23 +88,20 @@ meta:
 </template>
 
 <script lang="ts" setup>
-import { useRoute } from 'vue-router';
-import { useI18n } from 'vue-i18n';
-import { reactive, ref, toRef, watch } from 'vue';
-
-import { AppForm, AppNotification } from '@beabee/vue/components';
-import AppInput from '@components/forms/AppInput.vue';
-import AppTitle from '@components/AppTitle.vue';
-import AuthBox from '@components/AuthBox.vue';
-
-import { isInternalUrl } from '@utils/index';
-import { client, isApiError } from '@utils/api';
-
-import { updateCurrentUser } from '@store/index';
-
 import { LOGIN_CODES } from '@beabee/beabee-common';
 import type { LoginData } from '@beabee/beabee-common';
+import { AppForm, AppNotification } from '@beabee/vue/components';
+
+import AppTitle from '@components/AppTitle.vue';
+import AuthBox from '@components/AuthBox.vue';
+import AppInput from '@components/forms/AppInput.vue';
 import env from '@env';
+import { updateCurrentUser } from '@store/index';
+import { client, isApiError } from '@utils/api';
+import { isInternalUrl } from '@utils/index';
+import { reactive, ref, toRef, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRoute } from 'vue-router';
 
 const { t } = useI18n();
 

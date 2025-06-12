@@ -1,6 +1,58 @@
-import { ContributionPeriod, GetContactWith } from "@beabee/beabee-common";
-import { plainToInstance } from "class-transformer";
-import { Response } from "express";
+import { ContributionPeriod, GetContactWith } from '@beabee/beabee-common';
+import {
+  CantUpdateContribution,
+  NoPaymentMethod,
+  UnauthorizedError,
+} from '@beabee/core/errors';
+import { Contact, JoinFlow } from '@beabee/core/models';
+import ContactMfaService from '@beabee/core/services/ContactMfaService';
+import ContactsService from '@beabee/core/services/ContactsService';
+import DispatchService from '@beabee/core/services/DispatchService';
+import PaymentFlowService from '@beabee/core/services/PaymentFlowService';
+import PaymentService from '@beabee/core/services/PaymentService';
+import { AuthInfo } from '@beabee/core/type';
+import { generatePassword } from '@beabee/core/utils/auth';
+import { mergeRules } from '@beabee/core/utils/rules';
+
+import { CurrentAuth } from '@api/decorators/CurrentAuth';
+import PartialBody from '@api/decorators/PartialBody';
+import { TargetUser } from '@api/decorators/TargetUser';
+import { GetExportQuery } from '@api/dto/BaseDto';
+import {
+  BatchUpdateContactDto,
+  BatchUpdateContactResultDto,
+  CreateContactDto,
+  GetContactDto,
+  GetContactOptsDto,
+  GetContributionInfoDto,
+  ListContactsDto,
+  UpdateContactDto,
+} from '@api/dto/ContactDto';
+import {
+  CreateContactMfaDto,
+  DeleteContactMfaDto,
+  GetContactMfaDto,
+} from '@api/dto/ContactMfaDto';
+import {
+  GetContactRoleDto,
+  UpdateContactRoleDto,
+} from '@api/dto/ContactRoleDto';
+import {
+  ForceUpdateContributionDto,
+  StartContributionDto,
+  UpdateContributionDto,
+} from '@api/dto/ContributionDto';
+import { CompleteJoinFlowDto, StartJoinFlowDto } from '@api/dto/JoinFlowDto';
+import { PaginatedDto } from '@api/dto/PaginatedDto';
+import { GetPaymentDto, ListPaymentsDto } from '@api/dto/PaymentDto';
+import { GetPaymentFlowDto } from '@api/dto/PaymentFlowDto';
+import { ContactRoleParams } from '@api/params/ContactRoleParams';
+import ContactExporter from '@api/transformers/ContactExporter';
+import ContactRoleTransformer from '@api/transformers/ContactRoleTransformer';
+import ContactTransformer from '@api/transformers/ContactTransformer';
+import PaymentTransformer from '@api/transformers/PaymentTransformer';
+import { plainToInstance } from 'class-transformer';
+import { Response } from 'express';
 import {
   Authorized,
   BadRequestError,
@@ -15,72 +67,14 @@ import {
   Post,
   Put,
   QueryParams,
-  Res
-} from "routing-controllers";
+  Res,
+} from 'routing-controllers';
 
-import ContactMfaService from "@beabee/core/services/ContactMfaService";
-import ContactsService from "@beabee/core/services/ContactsService";
-import DispatchService from "@beabee/core/services/DispatchService";
-import PaymentFlowService from "@beabee/core/services/PaymentFlowService";
-import PaymentService from "@beabee/core/services/PaymentService";
-
-import { generatePassword } from "@beabee/core/utils/auth";
-
-import { Contact, JoinFlow } from "@beabee/core/models";
-
-import { GetExportQuery } from "@api/dto/BaseDto";
-import {
-  CreateContactDto,
-  GetContactDto,
-  GetContactOptsDto,
-  GetContributionInfoDto,
-  ListContactsDto,
-  UpdateContactDto,
-  BatchUpdateContactDto,
-  BatchUpdateContactResultDto
-} from "@api/dto/ContactDto";
-import {
-  CreateContactMfaDto,
-  DeleteContactMfaDto,
-  GetContactMfaDto
-} from "@api/dto/ContactMfaDto";
-import {
-  GetContactRoleDto,
-  UpdateContactRoleDto
-} from "@api/dto/ContactRoleDto";
-import {
-  StartContributionDto,
-  ForceUpdateContributionDto,
-  UpdateContributionDto
-} from "@api/dto/ContributionDto";
-import { CompleteJoinFlowDto, StartJoinFlowDto } from "@api/dto/JoinFlowDto";
-import { PaginatedDto } from "@api/dto/PaginatedDto";
-import { GetPaymentDto, ListPaymentsDto } from "@api/dto/PaymentDto";
-import { GetPaymentFlowDto } from "@api/dto/PaymentFlowDto";
-
-import { CurrentAuth } from "@api/decorators/CurrentAuth";
-import PartialBody from "@api/decorators/PartialBody";
-import { TargetUser } from "@api/decorators/TargetUser";
-import {
-  CantUpdateContribution,
-  NoPaymentMethod,
-  UnauthorizedError
-} from "@beabee/core/errors";
-import { ContactRoleParams } from "@api/params/ContactRoleParams";
-import { mergeRules } from "@beabee/core/utils/rules";
-
-import ContactExporter from "@api/transformers/ContactExporter";
-import ContactTransformer from "@api/transformers/ContactTransformer";
-import ContactRoleTransformer from "@api/transformers/ContactRoleTransformer";
-import PaymentTransformer from "@api/transformers/PaymentTransformer";
-
-import { AuthInfo } from "@beabee/core/type";
-
-@JsonController("/contact")
+@JsonController('/contact')
 @Authorized()
 export class ContactController {
-  @Authorized("admin")
-  @Post("/")
+  @Authorized('admin')
+  @Post('/')
   async createContact(
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @Body() data: CreateContactDto
@@ -91,8 +85,8 @@ export class ContactController {
         firstname: data.firstname,
         lastname: data.lastname,
         ...(data.password && {
-          password: await generatePassword(data.password)
-        })
+          password: await generatePassword(data.password),
+        }),
       },
       data.profile
     );
@@ -113,12 +107,12 @@ export class ContactController {
     return ContactTransformer.convert(contact, auth, {
       with: [
         ...(data.profile ? [GetContactWith.Profile] : []),
-        ...(data.roles ? [GetContactWith.Roles] : [])
-      ]
+        ...(data.roles ? [GetContactWith.Roles] : []),
+      ],
     });
   }
 
-  @Get("/")
+  @Get('/')
   async getContacts(
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @QueryParams() query: ListContactsDto
@@ -148,8 +142,8 @@ export class ContactController {
    *   }
    * }
    */
-  @Authorized("admin")
-  @Patch("/")
+  @Authorized('admin')
+  @Patch('/')
   async updateContacts(
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @PartialBody() data: BatchUpdateContactDto
@@ -158,7 +152,7 @@ export class ContactController {
     return plainToInstance(BatchUpdateContactResultDto, { affected });
   }
 
-  @Get(".csv")
+  @Get('.csv')
   async exportContacts(
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @QueryParams() query: GetExportQuery,
@@ -169,7 +163,7 @@ export class ContactController {
     return res;
   }
 
-  @Get("/:id")
+  @Get('/:id')
   async getContact(
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @TargetUser() target: Contact,
@@ -200,7 +194,7 @@ export class ContactController {
    *   "lastname": "Doe"
    * }
    */
-  @Patch("/:id")
+  @Patch('/:id')
   async updateContact(
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @TargetUser() target: Contact,
@@ -209,13 +203,13 @@ export class ContactController {
     return await ContactTransformer.updateOneByContact(auth, target, data);
   }
 
-  @Delete("/:id")
+  @Delete('/:id')
   @OnUndefined(204)
   async deleteContact(@TargetUser() target: Contact): Promise<void> {
     await DispatchService.permanentlyDeleteContact(target);
   }
 
-  @Get("/:id/contribution")
+  @Get('/:id/contribution')
   async getContribution(
     @TargetUser() target: Contact
   ): Promise<GetContributionInfoDto> {
@@ -223,7 +217,7 @@ export class ContactController {
     return plainToInstance(GetContributionInfoDto, ret);
   }
 
-  @Patch("/:id/contribution")
+  @Patch('/:id/contribution')
   async updateContribution(
     @TargetUser() target: Contact,
     @Body() data: UpdateContributionDto
@@ -236,7 +230,7 @@ export class ContactController {
     return await this.getContribution(target);
   }
 
-  @Post("/:id/contribution")
+  @Post('/:id/contribution')
   async startContribution(
     @TargetUser() target: Contact,
     @Body() data: StartContributionDto
@@ -248,7 +242,7 @@ export class ContactController {
    * Get contact multi factor authentication if exists
    * @param target The target contact
    */
-  @Get("/:id/mfa")
+  @Get('/:id/mfa')
   async getContactMfa(
     @TargetUser() target: Contact
   ): Promise<GetContactMfaDto | null> {
@@ -262,7 +256,7 @@ export class ContactController {
    * @param data The data to create the contact multi factor authentication
    */
   @OnUndefined(201)
-  @Post("/:id/mfa")
+  @Post('/:id/mfa')
   async createContactMfa(
     @Body() data: CreateContactMfaDto,
     @TargetUser() target: Contact
@@ -277,13 +271,13 @@ export class ContactController {
    * @param id The contact id
    */
   @OnUndefined(201)
-  @Delete("/:id/mfa")
+  @Delete('/:id/mfa')
   async deleteContactMfa(
     @TargetUser() target: Contact,
     @Body() data: DeleteContactMfaDto,
     @Params() { id }: { id: string }
   ): Promise<void> {
-    if (id === "me") {
+    if (id === 'me') {
       await ContactMfaService.deleteSecure(target, data);
     } else {
       // It's secure to call this unsecure method here because the user is an admin,
@@ -293,15 +287,15 @@ export class ContactController {
   }
 
   @OnUndefined(204)
-  @Post("/:id/contribution/cancel")
+  @Post('/:id/contribution/cancel')
   async cancelContribution(@TargetUser() target: Contact): Promise<void> {
     await ContactsService.cancelContactContribution(
       target,
-      "cancelled-contribution-no-survey"
+      'cancelled-contribution-no-survey'
     );
   }
 
-  @Post("/:id/contribution/complete")
+  @Post('/:id/contribution/complete')
   async completeStartContribution(
     @TargetUser() target: Contact,
     @Body() data: CompleteJoinFlowDto
@@ -318,8 +312,8 @@ export class ContactController {
    * @param data
    * @returns
    */
-  @Authorized("admin")
-  @Patch("/:id/contribution/force")
+  @Authorized('admin')
+  @Patch('/:id/contribution/force')
   async forceUpdateContribution(
     @TargetUser() target: Contact,
     @Body() data: ForceUpdateContributionDto
@@ -328,7 +322,7 @@ export class ContactController {
     return await this.getContribution(target);
   }
 
-  @Get("/:id/payment")
+  @Get('/:id/payment')
   async getPayments(
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @TargetUser() target: Contact,
@@ -338,12 +332,12 @@ export class ContactController {
       ...query,
       rules: mergeRules([
         query.rules,
-        { field: "contact", operator: "equal", value: [target.id] }
-      ])
+        { field: 'contact', operator: 'equal', value: [target.id] },
+      ]),
     });
   }
 
-  @Put("/:id/payment-method")
+  @Put('/:id/payment-method')
   async updatePaymentMethod(
     @TargetUser() target: Contact,
     @Body() data: StartJoinFlowDto
@@ -363,11 +357,11 @@ export class ContactController {
       period: ContributionPeriod.Annually,
       monthlyAmount: 0,
       payFee: false,
-      prorate: false
+      prorate: false,
     });
   }
 
-  @Post("/:id/payment-method/complete")
+  @Post('/:id/payment-method/complete')
   async completeUpdatePaymentMethod(
     @TargetUser() target: Contact,
     @Body() data: CompleteJoinFlowDto
@@ -390,13 +384,13 @@ export class ContactController {
         ...data,
         monthlyAmount: data.monthlyAmount,
         // TODO: unnecessary, should be optional
-        password: await generatePassword(""),
-        email: ""
+        password: await generatePassword(''),
+        email: '',
       },
       {
-        confirmUrl: "",
-        loginUrl: "",
-        setPasswordUrl: ""
+        confirmUrl: '',
+        loginUrl: '',
+        setPasswordUrl: '',
       },
       data.completeUrl,
       target
@@ -437,8 +431,8 @@ export class ContactController {
     return joinFlow;
   }
 
-  @Authorized("admin")
-  @Put("/:id/role/:roleType")
+  @Authorized('admin')
+  @Put('/:id/role/:roleType')
   async updateRole(
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @TargetUser() target: Contact,
@@ -455,7 +449,7 @@ export class ContactController {
       throw new BadRequestError();
     }
 
-    if (roleType === "superadmin" && !auth.roles.includes("superadmin")) {
+    if (roleType === 'superadmin' && !auth.roles.includes('superadmin')) {
       throw new UnauthorizedError();
     }
 
@@ -467,15 +461,15 @@ export class ContactController {
     return ContactRoleTransformer.convert(role);
   }
 
-  @Authorized("admin")
-  @Delete("/:id/role/:roleType")
+  @Authorized('admin')
+  @Delete('/:id/role/:roleType')
   @OnUndefined(201)
   async deleteRole(
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @TargetUser() target: Contact,
     @Params() { roleType }: ContactRoleParams
   ): Promise<void> {
-    if (roleType === "superadmin" && !auth.roles.includes("superadmin")) {
+    if (roleType === 'superadmin' && !auth.roles.includes('superadmin')) {
       throw new UnauthorizedError();
     }
 

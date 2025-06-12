@@ -1,11 +1,13 @@
-import { MulterError } from "multer";
-import { HttpError } from "routing-controllers";
-import { bytesToHumanReadable } from "@beabee/beabee-common";
+import { bytesToHumanReadable } from '@beabee/beabee-common';
+
+import { MulterError } from 'multer';
+import { HttpError } from 'routing-controllers';
+
 import {
   BadRequestError,
   FileTooLargeError,
-  UnsupportedFileType
-} from "../errors";
+  UnsupportedFileType,
+} from '../errors';
 
 /**
  * Converts multer upload errors into appropriate HTTP error responses
@@ -35,7 +37,7 @@ export function convertMulterError(
   error: unknown,
   maxFileSizeBytes?: number
 ): HttpError {
-  const message = error instanceof Error ? error.message : "Unknown error";
+  const message = error instanceof Error ? error.message : 'Unknown error';
 
   // Format max file size for display if provided
   const sizeDisplay = maxFileSizeBytes
@@ -46,57 +48,57 @@ export function convertMulterError(
   if (!(error instanceof MulterError)) {
     return new BadRequestError({
       message: `Upload error: ${message}`,
-      code: "UPLOAD_ERROR"
+      code: 'UPLOAD_ERROR',
     });
   }
 
   // Handle specific MulterError codes
   switch (error.code) {
-    case "LIMIT_FILE_SIZE":
+    case 'LIMIT_FILE_SIZE':
       return new FileTooLargeError({
         message: `File too large: ${message}`,
-        ...(sizeDisplay ? { maxSize: sizeDisplay } : {})
+        ...(sizeDisplay ? { maxSize: sizeDisplay } : {}),
       });
 
-    case "LIMIT_UNEXPECTED_FILE":
+    case 'LIMIT_UNEXPECTED_FILE':
       return new UnsupportedFileType({
-        message: `Unexpected file: ${error.field || "unknown field"}: ${message}`
+        message: `Unexpected file: ${error.field || 'unknown field'}: ${message}`,
       });
 
-    case "LIMIT_FILE_COUNT":
+    case 'LIMIT_FILE_COUNT':
       return new BadRequestError({
         message: `Too many files uploaded: ${message}`,
-        code: "TOO_MANY_FILES"
+        code: 'TOO_MANY_FILES',
       });
 
-    case "LIMIT_PART_COUNT":
+    case 'LIMIT_PART_COUNT':
       return new BadRequestError({
         message: `Too many parts in multipart form: ${message}`,
-        code: "TOO_MANY_PARTS"
+        code: 'TOO_MANY_PARTS',
       });
 
-    case "LIMIT_FIELD_KEY":
+    case 'LIMIT_FIELD_KEY':
       return new BadRequestError({
         message: `Field name too long: ${message}`,
-        code: "FIELD_KEY_TOO_LONG"
+        code: 'FIELD_KEY_TOO_LONG',
       });
 
-    case "LIMIT_FIELD_VALUE":
+    case 'LIMIT_FIELD_VALUE':
       return new BadRequestError({
         message: `Field value too long: ${message}`,
-        code: "FIELD_VALUE_TOO_LONG"
+        code: 'FIELD_VALUE_TOO_LONG',
       });
 
-    case "LIMIT_FIELD_COUNT":
+    case 'LIMIT_FIELD_COUNT':
       return new BadRequestError({
         message: `Too many fields in form: ${message}`,
-        code: "TOO_MANY_FIELDS"
+        code: 'TOO_MANY_FIELDS',
       });
 
     default:
       return new BadRequestError({
         message: `Upload error: ${message}`,
-        code: "UPLOAD_ERROR"
+        code: 'UPLOAD_ERROR',
       });
   }
 }

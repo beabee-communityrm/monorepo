@@ -1,13 +1,14 @@
-import crypto from "crypto";
+import { NewsletterStatus } from '@beabee/beabee-common';
 
-import { NewsletterStatus } from "@beabee/beabee-common";
-import axios from "axios";
-import JSONStream from "JSONStream";
-import gunzip from "gunzip-maybe";
-import tar from "tar-stream";
+import JSONStream from 'JSONStream';
+import axios from 'axios';
+import crypto from 'crypto';
+import gunzip from 'gunzip-maybe';
+import tar from 'tar-stream';
 
-import { MailchimpNewsletterConfig } from "#config/config";
-import { log as mainLogger } from "#logging";
+import { MailchimpNewsletterConfig } from '#config/config';
+import { log as mainLogger } from '#logging';
+import OptionsService from '#services/OptionsService';
 import {
   MCBatch,
   MCMember,
@@ -15,31 +16,30 @@ import {
   MCOperationResponse,
   MCStatus,
   NewsletterContact,
-  UpdateNewsletterContact
-} from "#type/index";
-import { normalizeEmailAddress } from "#utils/email";
-import OptionsService from "#services/OptionsService";
+  UpdateNewsletterContact,
+} from '#type/index';
+import { normalizeEmailAddress } from '#utils/email';
 
-const log = mainLogger.child({ app: "mailchimp" });
+const log = mainLogger.child({ app: 'mailchimp' });
 
 export function createInstance(
-  settings: MailchimpNewsletterConfig["settings"]
+  settings: MailchimpNewsletterConfig['settings']
 ) {
   const instance = axios.create({
     baseURL: `https://${settings.datacenter}.api.mailchimp.com/3.0/`,
     auth: {
-      username: "user",
-      password: settings.apiKey
-    }
+      username: 'user',
+      password: settings.apiKey,
+    },
   });
 
   instance.interceptors.request.use((config) => {
     log.info(`${config.method} ${config.url}`, {
       params: config.params,
       // Don't print all the batch operations
-      ...((config.url !== "/batches/" || config.method !== "post") && {
-        data: config.data
-      })
+      ...((config.url !== '/batches/' || config.method !== 'post') && {
+        data: config.data,
+      }),
     });
 
     return config;
@@ -51,10 +51,10 @@ export function createInstance(
     },
     (error) => {
       log.error(
-        "MailChimp API returned with status " + error.response?.status,
+        'MailChimp API returned with status ' + error.response?.status,
         {
           status: error.response?.status,
-          data: error.response?.data
+          data: error.response?.data,
         }
       );
       return Promise.reject(error);
@@ -63,7 +63,7 @@ export function createInstance(
 
   async function createBatch(operations: MCOperation[]): Promise<MCBatch> {
     log.info(`Creating batch with ${operations.length} operations`);
-    const response = await instance.post("/batches/", { operations });
+    const response = await instance.post('/batches/', { operations });
     return response.data as MCBatch;
   }
 
@@ -71,15 +71,15 @@ export function createInstance(
     log.info(`Waiting for batch ${batch.id}`, {
       finishedOperations: batch.finished_operations,
       totalOperations: batch.total_operations,
-      erroredOperations: batch.errored_operations
+      erroredOperations: batch.errored_operations,
     });
 
-    if (batch.status === "finished") {
+    if (batch.status === 'finished') {
       return batch;
     } else {
       await new Promise((resolve) => setTimeout(resolve, 5000));
       return await waitForBatch(
-        (await instance.get("/batches/" + batch.id)).data
+        (await instance.get('/batches/' + batch.id)).data
       );
     }
   }
@@ -91,27 +91,27 @@ export function createInstance(
     log.info(`Getting responses for batch ${batch.id}`, {
       finishedOperations: batch.finished_operations,
       totalOperations: batch.total_operations,
-      erroredOperations: batch.errored_operations
+      erroredOperations: batch.errored_operations,
     });
 
     const batchResponses: any[] = [];
 
     const response = await axios({
-      method: "GET",
+      method: 'GET',
       url: batch.response_body_url,
-      responseType: "stream"
+      responseType: 'stream',
     });
 
     const extract = tar.extract();
 
-    extract.on("entry", (header, stream, next) => {
-      stream.on("end", next);
+    extract.on('entry', (header, stream, next) => {
+      stream.on('end', next);
 
-      if (header.type === "file") {
+      if (header.type === 'file') {
         log.info(`Checking batch error file: ${header.name}`);
         stream
-          .pipe(JSONStream.parse("*"))
-          .on("data", (data: MCOperationResponse) => {
+          .pipe(JSONStream.parse('*'))
+          .on('data', (data: MCOperationResponse) => {
             if (!validateStatus || validateStatus(data.status_code)) {
               batchResponses.push(JSON.parse(data.response));
             } else {
@@ -130,8 +130,8 @@ export function createInstance(
       response.data
         .pipe(gunzip())
         .pipe(extract)
-        .on("error", reject)
-        .on("finish", () => resolve(batchResponses));
+        .on('error', reject)
+        .on('finish', () => resolve(batchResponses));
     });
   }
 
@@ -153,7 +153,7 @@ export function createInstance(
             params: operation.params,
             url: operation.path,
             ...(operation.body && { data: JSON.parse(operation.body) }),
-            validateStatus: validateStatus || null
+            validateStatus: validateStatus || null,
           });
         } catch (err) {
           log.error(
@@ -171,28 +171,28 @@ export function createInstance(
     createBatch,
     waitForBatch,
     getBatchResponses,
-    dispatchOperations
+    dispatchOperations,
   };
 }
 
 export function mcStatusToStatus(mcStatus: MCStatus): NewsletterStatus {
   switch (mcStatus) {
-    case "cleaned":
+    case 'cleaned':
       return NewsletterStatus.Cleaned;
-    case "pending":
+    case 'pending':
       return NewsletterStatus.Pending;
-    case "subscribed":
+    case 'subscribed':
       return NewsletterStatus.Subscribed;
-    case "unsubscribed":
+    case 'unsubscribed':
       return NewsletterStatus.Unsubscribed;
   }
 }
 
 export function getMCMemberUrl(listId: string, email: string) {
   const emailHash = crypto
-    .createHash("md5")
+    .createHash('md5')
     .update(normalizeEmailAddress(email))
-    .digest("hex");
+    .digest('hex');
   return `lists/${listId}/members/${emailHash}`;
 }
 
@@ -200,11 +200,11 @@ export function nlContactToMCMember(
   nlContact: UpdateNewsletterContact
 ): Partial<MCMember> {
   if (nlContact.status === NewsletterStatus.None) {
-    throw new Error("NewsletterStatus = None for " + nlContact.email);
+    throw new Error('NewsletterStatus = None for ' + nlContact.email);
   }
 
   const groups: { id: string; label: string }[] =
-    OptionsService.getJSON("newsletter-groups");
+    OptionsService.getJSON('newsletter-groups');
 
   return {
     email_address: nlContact.email,
@@ -213,30 +213,30 @@ export function nlContactToMCMember(
       merge_fields: {
         ...(nlContact.firstname && { FNAME: nlContact.firstname }),
         ...(nlContact.lastname && { LNAME: nlContact.lastname }),
-        ...nlContact.fields
-      }
+        ...nlContact.fields,
+      },
     }),
     ...(nlContact.groups && {
       interests: Object.assign(
         {},
         ...groups.map((group) => ({
-          [group.id]: nlContact.groups?.includes(group.id)
+          [group.id]: nlContact.groups?.includes(group.id),
         }))
-      )
-    })
+      ),
+    }),
   };
 }
 
 export function mcMemberToNlContact(member: MCMember): NewsletterContact {
   const { FNAME, LNAME, ...fields } = member.merge_fields;
   const activeMemberTag = OptionsService.getText(
-    "newsletter-active-member-tag"
+    'newsletter-active-member-tag'
   );
-  const activeUserTag = OptionsService.getText("newsletter-active-user-tag");
+  const activeUserTag = OptionsService.getText('newsletter-active-user-tag');
   return {
     email: normalizeEmailAddress(member.email_address),
-    firstname: FNAME || "",
-    lastname: LNAME || "",
+    firstname: FNAME || '',
+    lastname: LNAME || '',
     joined: new Date(
       member.timestamp_opt || member.timestamp_signup || member.last_changed
     ),
@@ -250,6 +250,6 @@ export function mcMemberToNlContact(member: MCMember): NewsletterContact {
     fields,
     isActiveMember:
       member.tags.findIndex((t) => t.name === activeMemberTag) !== -1,
-    isActiveUser: member.tags.findIndex((t) => t.name === activeUserTag) !== -1
+    isActiveUser: member.tags.findIndex((t) => t.name === activeUserTag) !== -1,
   };
 }

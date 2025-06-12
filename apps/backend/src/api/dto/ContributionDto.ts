@@ -1,22 +1,22 @@
 import {
   ContributionPeriod,
   ContributionType,
-  PaymentMethod
-} from "@beabee/beabee-common";
+  PaymentMethod,
+} from '@beabee/beabee-common';
+
+import IsUrl from '@api/validators/IsUrl';
+import IsValidPayFee from '@api/validators/IsValidPayFee';
+import MinContributionAmount from '@api/validators/MinContributionAmount';
 import {
   IsBoolean,
   IsEnum,
   IsIn,
   IsNumber,
   IsOptional,
-  IsString
-} from "class-validator";
+  IsString,
+} from 'class-validator';
 
-import IsUrl from "@api/validators/IsUrl";
-import IsValidPayFee from "@api/validators/IsValidPayFee";
-import MinContributionAmount from "@api/validators/MinContributionAmount";
-
-import { StartJoinFlowDto } from "./JoinFlowDto";
+import { StartJoinFlowDto } from './JoinFlowDto';
 
 export class UpdateContributionDto {
   @MinContributionAmount()

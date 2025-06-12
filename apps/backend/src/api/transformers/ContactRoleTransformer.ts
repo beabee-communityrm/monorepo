@@ -1,9 +1,9 @@
-import { BaseTransformer } from "./BaseTransformer";
-import { TransformPlainToInstance } from "class-transformer";
+import { ContactRole } from '@beabee/core/models';
 
-import { GetContactRoleDto } from "@api/dto/ContactRoleDto";
+import { GetContactRoleDto } from '@api/dto/ContactRoleDto';
+import { TransformPlainToInstance } from 'class-transformer';
 
-import { ContactRole } from "@beabee/core/models";
+import { BaseTransformer } from './BaseTransformer';
 
 class ContactRoleTransformer extends BaseTransformer<
   ContactRole,
@@ -17,7 +17,7 @@ class ContactRoleTransformer extends BaseTransformer<
     return {
       role: role.type,
       dateAdded: role.dateAdded,
-      dateExpires: role.dateExpires
+      dateExpires: role.dateExpires,
     };
   }
 }

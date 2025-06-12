@@ -21,9 +21,10 @@
 </template>
 
 <script lang="ts" setup>
-import SectionTitle from './SectionTitle.vue';
 import { useI18n } from 'vue-i18n';
+
 import { generalContent } from '../../../store';
+import SectionTitle from './SectionTitle.vue';
 
 const { t } = useI18n();
 </script>

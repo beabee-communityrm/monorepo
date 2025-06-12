@@ -1,4 +1,4 @@
-import "reflect-metadata";
+import 'reflect-metadata';
 
 import {
   DataSource,
@@ -7,21 +7,20 @@ import {
   ObjectLiteral,
   QueryRunner,
   Repository,
-  SelectQueryBuilder
-} from "typeorm";
+  SelectQueryBuilder,
+} from 'typeorm';
 
-import { log as mainLogger } from "./logging";
+import config from './config/config';
+import { log as mainLogger } from './logging';
 
-import config from "./config/config";
-
-const log = mainLogger.child({ app: "database" });
+const log = mainLogger.child({ app: 'database' });
 
 export const dataSource: DataSource = new DataSource({
-  type: "postgres",
+  type: 'postgres',
   url: config.databaseUrl,
   logging: config.dev,
-  entities: [__dirname + "/models/*.js"],
-  migrations: [__dirname + "/migrations/*.js"]
+  entities: [__dirname + '/models/*.js'],
+  migrations: [__dirname + '/migrations/*.js'],
 });
 
 export function runTransaction<T>(
@@ -63,9 +62,9 @@ export function createQueryBuilder<Entity extends ObjectLiteral>(
 export async function connect(): Promise<void> {
   try {
     await dataSource.initialize();
-    log.info("Connected to database");
+    log.info('Connected to database');
   } catch (error) {
-    log.error("Error connecting to database", error);
+    log.error('Error connecting to database', error);
     process.exit(1);
   }
 }

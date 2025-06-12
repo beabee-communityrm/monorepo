@@ -1,10 +1,10 @@
-import { ItemStatus } from "@beabee/beabee-common";
-import { Type } from "class-transformer";
-import { IsDate, IsEnum, IsIn, IsOptional, IsString } from "class-validator";
+import { ItemStatus } from '@beabee/beabee-common';
 
-import { GetPaginatedQuery } from "@api/dto/BaseDto";
+import { GetPaginatedQuery } from '@api/dto/BaseDto';
+import { Type } from 'class-transformer';
+import { IsDate, IsEnum, IsIn, IsOptional, IsString } from 'class-validator';
 
-const sortFields = ["createdAt", "updatedAt", "name", "expires"] as const;
+const sortFields = ['createdAt', 'updatedAt', 'name', 'expires'] as const;
 
 export class ListNoticesDto extends GetPaginatedQuery {
   @IsIn(sortFields)

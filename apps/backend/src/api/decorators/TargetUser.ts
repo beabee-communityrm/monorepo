@@ -1,16 +1,14 @@
-import { Request } from "express";
+import { Contact } from '@beabee/core/models';
+import ContactsService from '@beabee/core/services/ContactsService';
+
+import { UUIDParams } from '@api/params/UUIDParams';
+import { validateOrReject } from '@api/utils/validation';
+import { Request } from 'express';
 import {
   NotFoundError,
   UnauthorizedError,
-  createParamDecorator
-} from "routing-controllers";
-
-import ContactsService from "@beabee/core/services/ContactsService";
-
-import { UUIDParams } from "@api/params/UUIDParams";
-import { validateOrReject } from "@api/utils/validation";
-
-import { Contact } from "@beabee/core/models";
+  createParamDecorator,
+} from 'routing-controllers';
 
 /**
  * The target user can either be the current user or for admins
@@ -30,7 +28,7 @@ export function TargetUser() {
       }
 
       const id = request.params.id;
-      if (id !== "me" && auth.roles.includes("admin")) {
+      if (id !== 'me' && auth.roles.includes('admin')) {
         const uuid = new UUIDParams();
         uuid.id = id;
         await validateOrReject(uuid);
@@ -41,11 +39,11 @@ export function TargetUser() {
         } else {
           throw new NotFoundError();
         }
-      } else if (auth.contact && (id === "me" || id === auth.contact.id)) {
+      } else if (auth.contact && (id === 'me' || id === auth.contact.id)) {
         return auth.contact;
       } else {
         throw new UnauthorizedError();
       }
-    }
+    },
   });
 }

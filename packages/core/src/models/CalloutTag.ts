@@ -1,10 +1,12 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import type { TagData } from "@beabee/beabee-common";
-import type { Callout } from "./index";
+import type { TagData } from '@beabee/beabee-common';
+
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+
+import type { Callout } from './index';
 
 @Entity()
 export class CalloutTag implements TagData {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id!: string;
 
   @Column()
@@ -15,6 +17,6 @@ export class CalloutTag implements TagData {
 
   @Column()
   calloutId!: string;
-  @ManyToOne("Callout")
+  @ManyToOne('Callout')
   callout!: Callout;
 }

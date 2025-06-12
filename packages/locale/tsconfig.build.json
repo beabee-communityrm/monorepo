@@ -1,0 +1,17 @@
+{
+  "extends": [
+    "@beabee/tsconfig/tsconfig.options.json"
+  ],
+  "include": ["./src"],
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "rootDir": "./src",
+    "declarationDir": "./dist/types",
+    "emitDeclarationOnly": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "declaration": true,
+    "diagnostics": true
+  }
+} 

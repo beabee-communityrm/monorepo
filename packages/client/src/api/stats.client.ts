@@ -1,11 +1,12 @@
 import type {
   GetStatsData,
   GetStatsQuery,
-  Serial
-} from "@beabee/beabee-common";
-import type { BaseClientOptions } from "../types/index.js";
-import { BaseClient } from "./base.client.js";
-import { cleanUrl } from "../utils/index.js";
+  Serial,
+} from '@beabee/beabee-common';
+
+import type { BaseClientOptions } from '../types/index.js';
+import { cleanUrl } from '../utils/index.js';
+import { BaseClient } from './base.client.js';
 
 /**
  * Client for fetching statistics
@@ -18,7 +19,7 @@ export class StatsClient extends BaseClient {
   constructor(protected override readonly options: BaseClientOptions) {
     super({
       ...options,
-      path: cleanUrl(options.path + "/stats")
+      path: cleanUrl(options.path + '/stats'),
     });
   }
 
@@ -28,7 +29,7 @@ export class StatsClient extends BaseClient {
    * @returns The statistics data
    */
   async list(query: GetStatsQuery): Promise<GetStatsData> {
-    const { data } = await this.fetch.get<Serial<GetStatsData>>("", query);
+    const { data } = await this.fetch.get<Serial<GetStatsData>>('', query);
     return data;
   }
 }

@@ -57,9 +57,6 @@ services:
     extends:
       file: docker-compose.yml
       service: frontend
-    env_file:
-      - ./apps/frontend/.env
-      - ./apps/frontend/.env.test
 
   app_router:
     extends:
@@ -67,6 +64,9 @@ services:
       service: app_router
     ports:
       - ${ROUTER_PORT}:80
+    depends_on:
+      - api_app
+      - webhook_app
 
   migration:
     extends:

@@ -1,4 +1,4 @@
-import { strict as assert } from "assert";
+import { strict as assert } from 'assert';
 
 /**
  * Reads an environment variable and decodes it if it is base64 encoded.
@@ -7,9 +7,9 @@ import { strict as assert } from "assert";
  */
 function read(name: string): string | undefined {
   const value = process.env[name];
-  if (value?.startsWith("base64:")) {
+  if (value?.startsWith('base64:')) {
     const base64Value = value.substring(7);
-    const decodedValue = Buffer.from(base64Value, "base64").toString("utf-8");
+    const decodedValue = Buffer.from(base64Value, 'base64').toString('utf-8');
     return decodedValue;
   } else {
     return value;
@@ -35,7 +35,7 @@ export function s(name: string, def?: string): string {
  * @returns The value
  */
 export function ss(name: string, def?: string[]): string[] {
-  const value = read(name)?.split(",") || def;
+  const value = read(name)?.split(',') || def;
   assert(value !== undefined, `Missing environment variable ${name}`);
   return value;
 }
@@ -68,10 +68,10 @@ export function b(name: string, def?: boolean): boolean {
     return def;
   }
   assert(
-    value === "true" || value === "false",
+    value === 'true' || value === 'false',
     `Invalid boolean for environment variable ${name}: ${value}`
   );
-  return value === "true";
+  return value === 'true';
 }
 
 /**
@@ -90,8 +90,27 @@ export function e<T extends readonly string[]>(
   assert(
     options.indexOf(value) !== -1,
     `Invalid value for environment variable ${name}: ${value}. Valid options are: ${options.join(
-      ", "
+      ', '
     )}`
+  );
+  return value;
+}
+
+/**
+ * Reads an environment variable as a number array
+ * @param name The name of the environment variable to read
+ * @param def The default value to return if the environment variable is not set
+ * @returns The value
+ */
+export function nn(name: string, def?: number[]): number[] {
+  const value =
+    read(name)
+      ?.split(',')
+      .map((v) => Number(v.trim())) || def;
+  assert(value !== undefined, `Missing environment variable ${name}`);
+  assert(
+    value.every((v) => !isNaN(v)),
+    `Invalid number array for environment variable ${name}: contains non-numeric values`
   );
   return value;
 }

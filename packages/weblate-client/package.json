@@ -1,0 +1,48 @@
+{
+  "name": "@beabee/weblate-client",
+  "description": "A Weblate API Client",
+  "version": "0.28.1",
+  "license": "AGPL-3.0",
+  "type": "module",
+  "main": "./src/index.ts",
+  "engines": {
+    "node": ">=20"
+  },
+  "homepage": "https://github.com/beabee-communityrm/monorepo/tree/main/packages/weblate-client",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/beabee-communityrm/monorepo/tree/main/packages/weblate-client"
+  },
+  "scripts": {
+    "format": "prettier --write .",
+    "check": "yarn check:tsc && yarn check:prettier",
+    "check:tsc": "tsc --noEmit",
+    "check:prettier": "prettier -c .",
+    "generate": "yarn openapi-typescript https://hosted.weblate.org/api/schema/ -o src/types/openapi.ts && yarn format"
+  },
+  "devDependencies": {
+    "@beabee/prettier-config": "workspace:^",
+    "openapi-typescript": "^7.8.0",
+    "prettier": "^3.5.2",
+    "typescript": "~5.6.3"
+  },
+  "dependencies": {
+    "openapi-fetch": "^0.14.0"
+  },
+  "files": [
+    "src/"
+  ],
+  "exports": {
+    ".": {
+      "import": {
+        "default": "./src/index.ts"
+      }
+    }
+  },
+  "keywords": [
+    "beabee",
+    "weblate",
+    "api",
+    "client"
+  ]
+}

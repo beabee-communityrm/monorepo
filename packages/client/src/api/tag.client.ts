@@ -1,11 +1,12 @@
-import { BaseClient } from "./base.client.js";
-import { cleanUrl } from "../utils/index.js";
-import type { BaseClientOptions } from "../types/index.js";
 import type {
   TagCreateData,
   TagGetData,
-  TagUpdateData
-} from "@beabee/beabee-common";
+  TagUpdateData,
+} from '@beabee/beabee-common';
+
+import type { BaseClientOptions } from '../types/index.js';
+import { cleanUrl } from '../utils/index.js';
+import { BaseClient } from './base.client.js';
 
 /**
  * Client for managing tag operations
@@ -14,7 +15,7 @@ export abstract class TagClient extends BaseClient {
   constructor(protected override readonly options: BaseClientOptions) {
     super({
       ...options,
-      path: cleanUrl(options.path ?? "")
+      path: cleanUrl(options.path ?? ''),
     });
   }
 
@@ -29,8 +30,8 @@ export abstract class TagClient extends BaseClient {
     const { data } = await this.fetch.get<TagGetData[]>(
       this.getBasePath(entityId),
       {
-        sort: "name",
-        order: "ASC"
+        sort: 'name',
+        order: 'ASC',
       }
     );
     return data;

@@ -3,19 +3,20 @@ import {
   Entity,
   Index,
   ManyToOne,
-  PrimaryGeneratedColumn
-} from "typeorm";
-import type { Export } from "./index";
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+
+import type { Export } from './index';
 
 @Entity()
-@Index(["export", "itemId"], { unique: true })
+@Index(['export', 'itemId'], { unique: true })
 export class ExportItem {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id!: string;
 
   @Column()
   exportId!: string;
-  @ManyToOne("Export")
+  @ManyToOne('Export')
   export!: Export;
 
   @Column()

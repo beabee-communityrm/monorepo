@@ -1,23 +1,20 @@
-import { NewsletterStatus } from "@beabee/beabee-common";
+import { NewsletterStatus } from '@beabee/beabee-common';
 
-import { getRepository } from "#database";
-import { log as mainLogger } from "#logging";
-
+import config from '#config/config';
+import { getRepository } from '#database';
+import { CantUpdateNewsletterContact } from '#errors/CantUpdateNewsletterContact';
+import { log as mainLogger } from '#logging';
+import { Contact, ContactProfile } from '#models/index';
+import { MailchimpProvider, NoneProvider } from '#providers';
 import {
   ContactNewsletterUpdates,
   NewsletterContact,
   NewsletterProvider,
-  UpdateNewsletterContact
-} from "#type/index";
-import { MailchimpProvider, NoneProvider } from "#providers";
+  UpdateNewsletterContact,
+} from '#type/index';
+import { getContributionDescription } from '#utils/contact';
 
-import { Contact, ContactProfile } from "#models/index";
-
-import config from "#config/config";
-import { getContributionDescription } from "#utils/contact";
-import { CantUpdateNewsletterContact } from "#errors/CantUpdateNewsletterContact";
-
-const log = mainLogger.child({ app: "newsletter-service" });
+const log = mainLogger.child({ app: 'newsletter-service' });
 
 /**
  * Convert a contact to a newsletter update object that can be sent to the
@@ -34,7 +31,7 @@ async function contactToNlUpdate(
   // TODO: Fix that it relies on contact.profile being loaded
   if (!contact.profile) {
     contact.profile = await getRepository(ContactProfile).findOneByOrFail({
-      contactId: contact.id
+      contactId: contact.id,
     });
   }
 
@@ -47,7 +44,7 @@ async function contactToNlUpdate(
     ? opts?.mergeGroups
       ? [
           ...contact.profile.newsletterGroups,
-          ...updates.newsletterGroups
+          ...updates.newsletterGroups,
         ].filter((v, i, a) => a.indexOf(v) === i)
       : updates.newsletterGroups
     : contact.profile.newsletterGroups;
@@ -59,18 +56,18 @@ async function contactToNlUpdate(
     firstname: contact.firstname,
     lastname: contact.lastname,
     fields: {
-      REFCODE: contact.referralCode || "",
-      POLLSCODE: contact.pollsCode || "",
+      REFCODE: contact.referralCode || '',
+      POLLSCODE: contact.pollsCode || '',
       C_DESC: getContributionDescription(
         contact.contributionType,
         contact.contributionMonthlyAmount,
         contact.contributionPeriod
       ),
-      C_MNTHAMT: contact.contributionMonthlyAmount?.toFixed(2) || "",
-      C_PERIOD: contact.contributionPeriod || ""
+      C_MNTHAMT: contact.contributionMonthlyAmount?.toFixed(2) || '',
+      C_PERIOD: contact.contributionPeriod || '',
     },
     isActiveMember: contact.membership?.isActive || false,
-    isActiveUser: !!contact.password.hash
+    isActiveUser: !!contact.password.hash,
   };
 }
 
@@ -96,7 +93,7 @@ async function getValidNlUpdates(
 
 class NewsletterService {
   private readonly provider: NewsletterProvider =
-    config.newsletter.provider === "mailchimp"
+    config.newsletter.provider === 'mailchimp'
       ? new MailchimpProvider(config.newsletter.settings)
       : new NoneProvider();
 
@@ -148,14 +145,14 @@ class NewsletterService {
   ): Promise<void> {
     const nlUpdate = await contactToNlUpdate(contact, updates, opts);
     if (!nlUpdate) {
-      log.info("Ignoring contact update for " + contact.id);
+      log.info('Ignoring contact update for ' + contact.id);
       return;
     }
 
     let newState;
 
     try {
-      log.info("Upsert contact " + contact.id);
+      log.info('Upsert contact ' + contact.id);
       newState = await this.provider.upsertContact(nlUpdate, opts?.oldEmail);
 
       log.info(
@@ -179,7 +176,7 @@ class NewsletterService {
     // TODO: remove dependency on ContactProfile
     await getRepository(ContactProfile).update(contact.id, {
       newsletterStatus: newState.status,
-      newsletterGroups: newState.groups
+      newsletterGroups: newState.groups,
     });
     contact.profile.newsletterStatus = newState.status;
     contact.profile.newsletterGroups = newState.groups;
@@ -216,7 +213,7 @@ class NewsletterService {
     if (nlUpdate) {
       await this.provider.updateContactFields(nlUpdate.email, fields);
     } else {
-      log.info("Ignoring contact field update for " + contact.id);
+      log.info('Ignoring contact field update for ' + contact.id);
     }
   }
 

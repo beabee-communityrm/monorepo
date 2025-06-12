@@ -1,4 +1,4 @@
-import { RequestHandler } from "express";
+import { RequestHandler } from 'express';
 
 export function wrapAsync(fn: RequestHandler): RequestHandler {
   return async (req, res, next) => {

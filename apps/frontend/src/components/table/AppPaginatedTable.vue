@@ -38,10 +38,12 @@
 
 <script lang="ts" setup generic="I extends Item">
 import { type Paginated } from '@beabee/beabee-common';
+
+import { computed, useSlots } from 'vue';
+
 import AppPaginatedTableResult from './AppPaginatedTableResult.vue';
 import AppTable from './AppTable.vue';
 import { type Header, type Item, SortType } from './table.interface';
-import { computed, useSlots } from 'vue';
 
 defineProps<{
   headers: Header[];

@@ -1,9 +1,8 @@
-import { ParamsDictionary } from "express-serve-static-core";
+import { CalloutResponseAnswersSlide } from '@beabee/beabee-common';
+import { ApiKey, Contact } from '@beabee/core/models';
+import { AuthInfo as AuthInfo2 } from '@beabee/core/type';
 
-import { CalloutResponseAnswersSlide } from "@beabee/beabee-common";
-import { ApiKey, Contact } from "@beabee/core/models";
-
-import { AuthInfo as AuthInfo2 } from "@beabee/core/type";
+import { ParamsDictionary } from 'express-serve-static-core';
 
 declare global {
   type HTMLElement = never;
@@ -20,9 +19,9 @@ declare global {
   }
 }
 
-declare module "express-session" {
+declare module 'express-session' {
   interface SessionData {
-    method?: "plain" | "totp";
+    method?: 'plain' | 'totp';
     answers: CalloutResponseAnswersSlide | undefined;
   }
 }

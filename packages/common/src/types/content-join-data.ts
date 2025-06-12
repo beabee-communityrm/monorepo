@@ -1,6 +1,5 @@
-import type { ContributionPeriod, PaymentMethod } from "../data/index.js";
-
-import type { ContentJoinPeriodData, StripeFeeCountry } from "./index.js";
+import type { ContributionPeriod, PaymentMethod } from '../data/index.js';
+import type { ContentJoinPeriodData, StripeFeeCountry } from './index.js';
 
 export interface ContentJoinData {
   title: string;

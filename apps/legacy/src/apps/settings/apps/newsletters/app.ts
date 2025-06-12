@@ -1,38 +1,35 @@
-import { NewsletterStatus } from "@beabee/beabee-common";
-import express, { type Express, type Request, type Response } from "express";
-import moment from "moment";
+import { NewsletterStatus } from '@beabee/beabee-common';
+import config from '@beabee/core/config';
+import { log as mainLogger } from '@beabee/core/logging';
+import { Contact } from '@beabee/core/models';
+import ContactsService from '@beabee/core/services/ContactsService';
+import NewsletterService from '@beabee/core/services/NewsletterService';
+import OptionsService from '@beabee/core/services/OptionsService';
+import { NewsletterContact } from '@beabee/core/type';
+import { wrapAsync } from '@beabee/core/utils/express';
 
-import { log as mainLogger } from "@beabee/core/logging";
-import { isSuperAdmin } from "#core/middleware";
-import { wrapAsync } from "@beabee/core/utils/express";
+import express, { type Express, type Request, type Response } from 'express';
+import moment from 'moment';
 
-import ContactsService from "@beabee/core/services/ContactsService";
-import NewsletterService from "@beabee/core/services/NewsletterService";
-import OptionsService from "@beabee/core/services/OptionsService";
+import { isSuperAdmin } from '#core/middleware';
 
-import { NewsletterContact } from "@beabee/core/type";
-
-import { Contact } from "@beabee/core/models";
-
-import config from "@beabee/core/config";
-
-const log = mainLogger.child({ app: "newsletter-settings" });
+const log = mainLogger.child({ app: 'newsletter-settings' });
 
 const app: Express = express();
 
-app.set("views", __dirname + "/views");
+app.set('views', __dirname + '/views');
 
 app.use(isSuperAdmin);
 
-app.get("/", (req: Request, res: Response) => {
-  res.render("index", { provider: config.newsletter.provider });
+app.get('/', (req: Request, res: Response) => {
+  res.render('index', { provider: config.newsletter.provider });
 });
 
 async function setResyncStatus(message: string) {
-  log.info("Resync status: " + message);
+  log.info('Resync status: ' + message);
   await OptionsService.set(
-    "newsletter-resync-status",
-    `[${moment.utc().format("HH:mm DD/MM")}] ${message}`
+    'newsletter-resync-status',
+    `[${moment.utc().format('HH:mm DD/MM')}] ${message}`
   );
 }
 
@@ -40,7 +37,7 @@ function groupsList(groups: string[]) {
   return groups
     .slice()
     .sort((a, b) => (a < b ? -1 : 1))
-    .join(",");
+    .join(',');
 }
 
 function isMismatchedContact(contact: Contact, nlContact: NewsletterContact) {
@@ -50,7 +47,7 @@ function isMismatchedContact(contact: Contact, nlContact: NewsletterContact) {
       groupsList(nlContact.groups) ||
     !!contact.membership?.isActive !==
       nlContact.tags.includes(
-        OptionsService.getText("newsletter-active-member-tag")
+        OptionsService.getText('newsletter-active-member-tag')
       )
   );
 }
@@ -71,7 +68,7 @@ interface ReportData {
 }
 
 async function handleResync(
-  statusSource: "ours" | "theirs",
+  statusSource: 'ours' | 'theirs',
   opts: {
     updateThem: boolean;
     dryRun: boolean;
@@ -79,10 +76,10 @@ async function handleResync(
   }
 ) {
   try {
-    await setResyncStatus("In progress: Fetching contact lists");
+    await setResyncStatus('In progress: Fetching contact lists');
 
     const contacts = await ContactsService.find({
-      relations: { profile: true }
+      relations: { profile: true },
     });
     const nlContacts = await NewsletterService.getNewsletterContacts();
 
@@ -96,7 +93,7 @@ async function handleResync(
         existingContacts.push(contact);
 
         const status =
-          statusSource === "ours"
+          statusSource === 'ours'
             ? contact.profile.newsletterStatus
             : nlContact.status;
         if (
@@ -123,20 +120,20 @@ async function handleResync(
     );
 
     await OptionsService.set(
-      "newsletter-resync-data",
+      'newsletter-resync-data',
       JSON.stringify({
         uploadIds: newContactsToUpload.map((m) => m.id),
         imports: nlContactsToImport.map((m) => ({
           email: m.email,
           status: m.status,
-          groups: m.groups
+          groups: m.groups,
         })),
         mismatched: mismatchedContacts.map(([m, nlm]) => ({
           id: m.id,
           status: nlm.status,
           groups: nlm.groups,
-          tags: nlm.tags
-        }))
+          tags: nlm.tags,
+        })),
       } as ReportData)
     );
 
@@ -155,7 +152,7 @@ async function handleResync(
     }
 
     // Must fix status before mass update to avoid overwriting in the wrong direction
-    if (statusSource === "theirs") {
+    if (statusSource === 'theirs') {
       await setResyncStatus(
         `In progress: Fixing ${mismatchedContacts.length} mismatched contacts`
       );
@@ -165,7 +162,7 @@ async function handleResync(
           contact,
           {
             newsletterStatus: nlContact.status,
-            newsletterGroups: nlContact.groups
+            newsletterGroups: nlContact.groups,
           },
           { sync: false }
         );
@@ -187,13 +184,13 @@ async function handleResync(
         mismatchedContacts
           .filter(([m]) => m.membership?.isActive)
           .map(([m]) => m),
-        OptionsService.getText("newsletter-active-member-tag")
+        OptionsService.getText('newsletter-active-member-tag')
       );
       await NewsletterService.removeTagFromContacts(
         mismatchedContacts
           .filter(([m]) => !m.membership?.isActive)
           .map(([m]) => m),
-        OptionsService.getText("newsletter-active-member-tag")
+        OptionsService.getText('newsletter-active-member-tag')
       );
 
       // TODO: Check other tags
@@ -214,11 +211,11 @@ async function handleResync(
           email: nlContact.email,
           firstname: nlContact.firstname,
           lastname: nlContact.lastname,
-          joined: nlContact.joined
+          joined: nlContact.joined,
         },
         {
           newsletterStatus: nlContact.status,
-          newsletterGroups: nlContact.groups
+          newsletterGroups: nlContact.groups,
         },
         { sync: false }
       );
@@ -234,45 +231,45 @@ async function handleResync(
       );
     }
   } catch (error: any) {
-    log.error("Newsletter sync failed", error);
-    await setResyncStatus("Error: " + error.message);
+    log.error('Newsletter sync failed', error);
+    await setResyncStatus('Error: ' + error.message);
   }
 }
 
 app.post(
-  "/",
+  '/',
   wrapAsync(async (req, res) => {
-    if (req.body.action === "resync") {
-      await setResyncStatus("In progress: initialising resync");
-      req.flash("success", "newsletter-resync-started");
+    if (req.body.action === 'resync') {
+      await setResyncStatus('In progress: initialising resync');
+      req.flash('success', 'newsletter-resync-started');
       res.redirect(req.originalUrl);
 
       handleResync(req.body.statusSource, {
-        updateThem: req.body.updateThem === "true",
-        dryRun: req.body.dryRun === "true",
-        removeUnsubscribed: req.body.removeUnsubscribed === "true"
+        updateThem: req.body.updateThem === 'true',
+        dryRun: req.body.dryRun === 'true',
+        removeUnsubscribed: req.body.removeUnsubscribed === 'true',
       });
     }
   })
 );
 
 app.get(
-  "/report",
+  '/report',
   wrapAsync(async (req, res) => {
-    const data = OptionsService.getJSON("newsletter-resync-data") as ReportData;
+    const data = OptionsService.getJSON('newsletter-resync-data') as ReportData;
     const newContactsToUpload = await ContactsService.findByIds(data.uploadIds);
     const mismatchedContacts = await ContactsService.findByIds(
       data.mismatched.map((m) => m.id),
       { relations: { profile: true } }
     );
 
-    res.render("report", {
+    res.render('report', {
       contactsToImport: data.imports,
       newContactsToUpload,
       mismatchedContacts: data.mismatched.map((m) => ({
         ...m,
-        contact: mismatchedContacts.find((m2) => m.id === m2.id)
-      }))
+        contact: mismatchedContacts.find((m2) => m.id === m2.id),
+      })),
     });
   })
 );

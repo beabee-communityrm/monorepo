@@ -1,4 +1,4 @@
-import type { GetContactData } from "./index.js";
+import type { GetContactData } from './index.js';
 
 export interface GetApiKeyData {
   id: string;

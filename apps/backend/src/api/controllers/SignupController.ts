@@ -1,35 +1,32 @@
-import { plainToInstance } from "class-transformer";
-import { Request } from "express";
+import { getRepository } from '@beabee/core/database';
+import { JoinFlow, Password } from '@beabee/core/models';
+import PaymentFlowService from '@beabee/core/services/PaymentFlowService';
+import { generatePassword } from '@beabee/core/utils/auth';
+
+import { GetContactDto } from '@api/dto/ContactDto';
+import { GetPaymentFlowDto } from '@api/dto/PaymentFlowDto';
+import {
+  CompleteSignupFlowDto,
+  StartSignupFlowDto,
+} from '@api/dto/SignupFlowDto';
+import { SignupConfirmEmailParams } from '@api/params/SignupConfirmEmailParams';
+import ContactTransformer from '@api/transformers/ContactTransformer';
+import { login } from '@api/utils/auth';
+import { plainToInstance } from 'class-transformer';
+import { Request } from 'express';
 import {
   Body,
   JsonController,
   NotFoundError,
   OnUndefined,
   Post,
-  Req
-} from "routing-controllers";
+  Req,
+} from 'routing-controllers';
 
-import { getRepository } from "@beabee/core/database";
-import { generatePassword } from "@beabee/core/utils/auth";
-
-import PaymentFlowService from "@beabee/core/services/PaymentFlowService";
-
-import { GetContactDto } from "@api/dto/ContactDto";
-import { GetPaymentFlowDto } from "@api/dto/PaymentFlowDto";
-import {
-  StartSignupFlowDto,
-  CompleteSignupFlowDto
-} from "@api/dto/SignupFlowDto";
-import { SignupConfirmEmailParams } from "@api/params/SignupConfirmEmailParams";
-import ContactTransformer from "@api/transformers/ContactTransformer";
-import { login } from "@api/utils/auth";
-
-import { JoinFlow, Password } from "@beabee/core/models";
-
-@JsonController("/signup")
+@JsonController('/signup')
 export class SignupController {
   @OnUndefined(204)
-  @Post("/")
+  @Post('/')
   async startSignup(
     @Body() data: StartSignupFlowDto
   ): Promise<GetPaymentFlowDto | undefined> {
@@ -37,7 +34,7 @@ export class SignupController {
       email: data.email,
       password: data.password
         ? await generatePassword(data.password)
-        : Password.none
+        : Password.none,
     };
 
     if (data.contribution) {
@@ -45,7 +42,7 @@ export class SignupController {
         {
           ...baseForm,
           ...data.contribution,
-          monthlyAmount: data.contribution.monthlyAmount
+          monthlyAmount: data.contribution.monthlyAmount,
         },
         data,
         data.contribution.completeUrl,
@@ -60,7 +57,7 @@ export class SignupController {
   }
 
   @OnUndefined(204)
-  @Post("/complete")
+  @Post('/complete')
   async completeSignup(@Body() data: CompleteSignupFlowDto): Promise<void> {
     const joinFlow = await PaymentFlowService.getJoinFlowByPaymentId(
       data.paymentFlowId
@@ -78,13 +75,13 @@ export class SignupController {
     await PaymentFlowService.sendConfirmEmail(joinFlow);
   }
 
-  @Post("/confirm-email")
+  @Post('/confirm-email')
   async confirmEmail(
     @Req() req: Request,
     @Body() { joinFlowId }: SignupConfirmEmailParams
   ): Promise<GetContactDto> {
     const joinFlow = await getRepository(JoinFlow).findOneBy({
-      id: joinFlowId
+      id: joinFlowId,
     });
     if (!joinFlow) {
       throw new NotFoundError();
@@ -94,9 +91,9 @@ export class SignupController {
     await login(req, contact);
 
     return ContactTransformer.convert(contact, {
-      method: "user",
+      method: 'user',
       contact,
-      roles: contact.activeRoles
+      roles: contact.activeRoles,
     });
   }
 }

@@ -7,20 +7,22 @@ ARG NODE_VERSION=22-bookworm-slim
 FROM node:${NODE_VERSION} AS base
 
 # https://github.com/nodejs/docker-node/blob/main/docs/BestPractices.md#handling-kernel-signals
-RUN apt-get update && apt-get install -y tini && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y tini curl && rm -rf /var/lib/apt/lists/*
 
 # Copy the workspace configuration
 COPY --chown=node:node package.json yarn.lock .yarnrc.yml /opt/
 COPY --chown=node:node .yarn /opt/.yarn
 
 # Copy dependencies info from packages
+COPY --chown=node:node packages/client/package.json /opt/packages/client/package.json
 COPY --chown=node:node packages/common/package.json /opt/packages/common/package.json
 COPY --chown=node:node packages/core/package.json /opt/packages/core/package.json
 COPY --chown=node:node packages/docker/package.json /opt/packages/docker/package.json
 COPY --chown=node:node packages/locale/package.json /opt/packages/locale/package.json
-COPY --chown=node:node packages/client/package.json /opt/packages/client/package.json
+COPY --chown=node:node packages/template-vanilla/package.json /opt/packages/template-vanilla/package.json
 COPY --chown=node:node packages/test-utils/package.json /opt/packages/test-utils/package.json
 COPY --chown=node:node packages/vue/package.json /opt/packages/vue/package.json
+COPY --chown=node:node packages/weblate-client/package.json /opt/packages/weblate-client/package.json
 
 # Copy dependencies info from apps
 COPY --chown=node:node apps/backend/package.json /opt/apps/backend/package.json
@@ -29,9 +31,13 @@ COPY --chown=node:node apps/legacy/package.json /opt/apps/legacy/package.json
 COPY --chown=node:node apps/webhooks/package.json /opt/apps/webhooks/package.json
 COPY --chown=node:node apps/e2e-api-tests/package.json /opt/apps/e2e-api-tests/package.json
 
-# Copy config files with dependencies info
+# Copy dependencies with relevant content
 COPY --chown=node:node packages/prettier-config /opt/packages/prettier-config
 COPY --chown=node:node packages/tsconfig /opt/packages/tsconfig
+COPY --chown=node:node packages/esbuild /opt/packages/esbuild
+
+# Copy apps with relevant content
+COPY --chown=node:node apps/dev-cli /opt/apps/dev-cli
 
 ENV NODE_ENV=production
 ENV NODE_OPTIONS=--enable-source-maps
@@ -58,6 +64,7 @@ COPY apps/backend /opt/apps/backend
 COPY apps/backend-cli /opt/apps/backend-cli
 COPY apps/legacy /opt/apps/legacy
 COPY apps/webhooks /opt/apps/webhooks
+COPY apps/dev-cli /opt/apps/dev-cli
 
 # Build the applications
 RUN yarn build
@@ -84,7 +91,7 @@ CMD [ "node", "./dist/app.js" ]
 # Backend distribution base
 FROM dist-common AS dist-backend
 
-COPY --chown=node:node --from=builder /opt/apps/backend/built /opt/apps/backend/built
+COPY --chown=node:node --from=builder /opt/apps/backend/dist /opt/apps/backend/dist
 
 WORKDIR /opt/apps/backend
 
@@ -99,13 +106,19 @@ USER node
 
 COPY --chown=node:node --from=builder /opt/apps/backend-cli/dist /opt/apps/backend-cli/dist
 
-# TODO: use standard dist folder
-CMD [ "node", "./built/api/app.js" ]
+# Health check using our custom health endpoint
+HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
+    CMD curl -f http://localhost:3000/1.0/health || exit 1
+
+CMD [ "node", "./dist/api/app.js" ]
 
 ## Cron image
 FROM dist-backend AS cron_app
 
 RUN apt-get update && apt-get install -y cron rsyslog && rm -rf /var/lib/apt/lists/*
+
+# Copy backend-cli for cron jobs
+COPY --chown=node:node --from=builder /opt/apps/backend-cli/dist /opt/apps/backend-cli/dist
 
 # Disable Kernal logging
 RUN sed -i '/imklog/s/^/#/' /etc/rsyslog.conf

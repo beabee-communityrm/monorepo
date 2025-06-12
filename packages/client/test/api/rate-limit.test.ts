@@ -1,23 +1,24 @@
-import { describe, expect, it, beforeEach, afterEach } from "vitest";
-import { BeabeeClient, ClientApiError } from "@beabee/client";
+import { BeabeeClient, ClientApiError } from '@beabee/client';
+import { createTestFile } from '@beabee/test-utils/node';
 import {
   HOST,
   PATH,
   TEST_RATE_LIMIT_USER_EMAIL,
-  TEST_RATE_LIMIT_USER_PASSWORD
-} from "@beabee/test-utils/vitest/env";
-import { createTestFile } from "@beabee/test-utils/node";
-import { resolve } from "path";
+  TEST_RATE_LIMIT_USER_PASSWORD,
+} from '@beabee/test-utils/vitest/env';
 
-describe("Upload API", () => {
-  describe("Rate Limits", () => {
+import { resolve } from 'path';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+
+describe('Upload API', () => {
+  describe('Rate Limits', () => {
     let client: BeabeeClient;
 
     beforeEach(async () => {
       // Create a guest client (unauthenticated)
       client = new BeabeeClient({
         host: HOST,
-        path: PATH
+        path: PATH,
       });
     });
 
@@ -30,10 +31,10 @@ describe("Upload API", () => {
       }
     });
 
-    describe("Rate Limit Tests", () => {
-      it("should enforce rate limits for guest users uploading images", async () => {
-        const svgPath = resolve(__dirname, "data/400x600.svg");
-        const svgFile = createTestFile(svgPath, "image/svg+xml");
+    describe('Rate Limit Tests', () => {
+      it('should enforce rate limits for guest users uploading images', async () => {
+        const svgPath = resolve(__dirname, 'data/400x600.svg');
+        const svgFile = createTestFile(svgPath, 'image/svg+xml');
 
         // Guest users are limited to 5 requests per hour
         // We'll make 5 requests, they should all succeed
@@ -50,26 +51,26 @@ describe("Upload API", () => {
           expect(true).toBe(false);
         } catch (error) {
           console.error(
-            "should enforce rate limits for guest users uploading images",
+            'should enforce rate limits for guest users uploading images',
             error
           );
           expect(error).toBeInstanceOf(ClientApiError);
           if (error instanceof ClientApiError) {
             expect(error.httpCode).toBe(429);
-            expect(error.code).toBe("TOO_MANY_REQUESTS");
+            expect(error.code).toBe('TOO_MANY_REQUESTS');
           }
         }
       });
 
-      it("should allow authenticated users to upload documents", async () => {
+      it('should allow authenticated users to upload documents', async () => {
         // Log in the user specifically for this test
         await client.auth.login({
           email: TEST_RATE_LIMIT_USER_EMAIL,
-          password: TEST_RATE_LIMIT_USER_PASSWORD
+          password: TEST_RATE_LIMIT_USER_PASSWORD,
         });
 
-        const pdfPath = resolve(__dirname, "data/Lorem-Ipsum.pdf");
-        const pdfFile = createTestFile(pdfPath, "application/pdf");
+        const pdfPath = resolve(__dirname, 'data/Lorem-Ipsum.pdf');
+        const pdfFile = createTestFile(pdfPath, 'application/pdf');
 
         // Authenticated users should be able to make more requests (up to 50/hour)
         // We'll test with just 6 requests, which should be well below the limit

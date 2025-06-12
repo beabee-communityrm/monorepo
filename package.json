@@ -3,32 +3,33 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "clear": "yarn workspaces foreach -v -W run clear",
     "build": "yarn workspaces foreach -v -W --topological-dev run build",
     "dev": "yarn workspaces foreach -v -W -p -i run dev",
     "format": "yarn workspaces foreach -v -W -p run format",
     "test": "yarn workspaces foreach -v -W run test",
     "check": "yarn workspaces foreach -v -W -p run check",
-    "generate:index": "yarn workspaces foreach -v -W -p run generate:index",
+    "generate:index": "yarn workspaces foreach -v -W run generate:index",
     "publish:next": "yarn workspaces foreach -v -W --no-private npm publish --tolerate-republish --tag next --access public",
     "publish:latest": "yarn workspaces foreach -v -W --no-private npm publish --tolerate-republish --tag latest --access public",
     "setup": "yarn workspace @beabee/backend run setup",
     "typeorm": "yarn workspace @beabee/backend run typeorm",
-    "presetup": "yarn workspaces foreach -v -W -p -i run presetup && yarn presetup:env",
-    "presetup:env": "cp -n .env.example .env 2>/dev/null || true"
+    "bootstrap": "yarn workspaces foreach -v -W -p -i run bootstrap && yarn bootstrap:env",
+    "bootstrap:env": "cp -n .env.example .env 2>/dev/null; cp -n .env.remote.example .env.remote 2>/dev/null; cp -n .env.test.example .env.test 2>/dev/null || true"
   },
   "workspaces": [
     "packages/*",
     "apps/*"
   ],
   "_moduleAliases": {
-    "@core": "./apps/backend/built/core",
-    "@api": "./apps/backend/built/api",
-    "@apps": "./apps/backend/built/apps",
-    "@config": "./apps/backend/built/config/config.js",
-    "@locale": "./apps/backend/built/locales/current.js",
-    "@models": "./apps/backend/built/models",
-    "@type": "./apps/backend/built/type",
-    "@enums": "./apps/backend/built/enums"
+    "@core": "./apps/backend/dist/core",
+    "@api": "./apps/backend/dist/api",
+    "@apps": "./apps/backend/dist/apps",
+    "@config": "./apps/backend/dist/config/config.js",
+    "@locale": "./apps/backend/dist/locales/current.js",
+    "@models": "./apps/backend/dist/models",
+    "@type": "./apps/backend/dist/type",
+    "@enums": "./apps/backend/dist/enums"
   },
   "resolutions": {
     "@types/express": "^4.17.21",

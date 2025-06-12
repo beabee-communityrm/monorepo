@@ -1,12 +1,12 @@
-import { slug } from "./slug.js";
-import { ContributionPeriod } from "../data/index.js";
+import { ContributionPeriod } from '../data/index.js';
+import { slug } from './slug.js';
 
 /**
  * Check if the value is a valid angle.
  * @param value The value to check
  */
 export const isAngle = (value: unknown, span = 180): value is number => {
-  return typeof value === "number" && value >= span * -1 && value <= span;
+  return typeof value === 'number' && value >= span * -1 && value <= span;
 };
 
 /**
@@ -15,7 +15,7 @@ export const isAngle = (value: unknown, span = 180): value is number => {
  * @param span The span of the angle
  */
 export const isEmail = (value: unknown): value is string => {
-  if (typeof value !== "string" || value.length === 0) {
+  if (typeof value !== 'string' || value.length === 0) {
     return false;
   }
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -56,7 +56,7 @@ export const isMapBounds = (
  */
 export const isPassword = (value: unknown): value is string => {
   return (
-    typeof value === "string" &&
+    typeof value === 'string' &&
     value.length >= 8 &&
     /[a-z]/.test(value) &&
     /[A-Z]/.test(value) &&
@@ -81,7 +81,7 @@ export const isPeriod = (value: unknown): value is ContributionPeriod => {
  * @returns
  */
 export const isSlug = (value: unknown): value is string => {
-  return typeof value === "string" && value === slug(value);
+  return typeof value === 'string' && value === slug(value);
 };
 
 /**
@@ -91,14 +91,14 @@ export const isSlug = (value: unknown): value is string => {
  */
 export function isType(
   types: Array<
-    | "string"
-    | "number"
-    | "bigint"
-    | "boolean"
-    | "symbol"
-    | "undefined"
-    | "object"
-    | "function"
+    | 'string'
+    | 'number'
+    | 'bigint'
+    | 'boolean'
+    | 'symbol'
+    | 'undefined'
+    | 'object'
+    | 'function'
   >,
   value: unknown
 ): boolean {
@@ -110,7 +110,7 @@ export function isType(
  * @param value The value to check
  */
 export const isURL = (value: unknown): value is string => {
-  if (typeof value !== "string" || !value.length) {
+  if (typeof value !== 'string' || !value.length) {
     return false;
   }
   const urlRegex =
@@ -123,7 +123,7 @@ export const isURL = (value: unknown): value is string => {
  * @param value The value to check
  */
 export const isNumber = (value: unknown): value is number => {
-  return typeof value === "number" && !isNaN(value);
+  return typeof value === 'number' && !isNaN(value);
 };
 
 export const isAmountOfMoney = (value: unknown): value is number => {
@@ -131,7 +131,7 @@ export const isAmountOfMoney = (value: unknown): value is number => {
     return false;
   }
 
-  const decimalPart = value.toString().split(".")[1];
+  const decimalPart = value.toString().split('.')[1];
   // If the amount of money has decimal
   if (decimalPart && decimalPart.length > 2) {
     return false;
@@ -152,7 +152,7 @@ export const isAmountOfMoney = (value: unknown): value is number => {
  * @param value The value to check
  */
 export const isPhoneNumber = (value: unknown): value is string => {
-  if (typeof value !== "string" || !value.length) {
+  if (typeof value !== 'string' || !value.length) {
     return false;
   }
   if (value.length > 15 || value.length < 5) {
@@ -175,8 +175,8 @@ export const isValidPayFee = (
   period: unknown
 ): value is boolean => {
   if (
-    typeof value !== "boolean" ||
-    typeof amount !== "number" ||
+    typeof value !== 'boolean' ||
+    typeof amount !== 'number' ||
     !isPeriod(period)
   ) {
     return false;
@@ -203,13 +203,13 @@ export const isNumberInRange = (
     return false;
   }
 
-  if (typeof min === "number") {
+  if (typeof min === 'number') {
     if (value < min) {
       return false;
     }
   }
 
-  if (typeof max === "number") {
+  if (typeof max === 'number') {
     if (value > max) {
       return false;
     }
@@ -229,15 +229,15 @@ export const isTextInRange = (
   minLength = 0,
   maxLength?: number
 ): boolean => {
-  if (typeof value !== "string") {
+  if (typeof value !== 'string') {
     return false;
   }
 
-  if (typeof minLength === "number" && value.length < minLength) {
+  if (typeof minLength === 'number' && value.length < minLength) {
     return false;
   }
 
-  if (typeof maxLength === "number" && value.length > maxLength) {
+  if (typeof maxLength === 'number' && value.length > maxLength) {
     return false;
   }
 
@@ -255,17 +255,17 @@ export const isTextInWordRange = (
   minWordLength = 0,
   maxWordLength?: number
 ): boolean => {
-  if (typeof value !== "string") {
+  if (typeof value !== 'string') {
     return false;
   }
 
-  const words = value.length > 0 ? value.split(" ") : [];
+  const words = value.length > 0 ? value.split(' ') : [];
 
-  if (typeof minWordLength === "number" && words.length < minWordLength) {
+  if (typeof minWordLength === 'number' && words.length < minWordLength) {
     return false;
   }
 
-  if (typeof maxWordLength === "number" && words.length > maxWordLength) {
+  if (typeof maxWordLength === 'number' && words.length > maxWordLength) {
     return false;
   }
 

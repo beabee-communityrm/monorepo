@@ -3,15 +3,15 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
-  PrimaryGeneratedColumn
-} from "typeorm";
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
-import type { Contact } from "./index";
-import { GiftForm } from "./GiftForm";
+import { GiftForm } from './GiftForm';
+import type { Contact } from './index';
 
 @Entity()
 export class GiftFlow {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id!: string;
 
   @CreateDateColumn()
@@ -34,6 +34,6 @@ export class GiftFlow {
 
   @Column({ type: String, nullable: true })
   gifteeId!: string | null;
-  @ManyToOne("Contact")
+  @ManyToOne('Contact')
   giftee!: Contact | null;
 }

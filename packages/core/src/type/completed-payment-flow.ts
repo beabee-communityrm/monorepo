@@ -1,4 +1,4 @@
-import type { JoinForm } from "#models/index";
+import type { JoinForm } from '#models/index';
 
 export interface CompletedPaymentFlow {
   joinForm: JoinForm;

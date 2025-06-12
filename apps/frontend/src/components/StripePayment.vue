@@ -26,19 +26,19 @@
   >
 </template>
 <script lang="ts" setup>
-import useVuelidate from '@vuelidate/core';
+import { ContributionPeriod } from '@beabee/beabee-common';
+import { AppButton, AppLabel, AppNotification } from '@beabee/vue/components';
+
+import AppInput from '@components/forms/AppInput.vue';
+import env from '@env';
 import type { Appearance } from '@stripe/stripe-js';
 import type { ApplePayRecurringPaymentRequest } from '@stripe/stripe-js/dist/stripe-js/elements/apple-pay';
 import { loadStripe } from '@stripe/stripe-js/pure';
+import type { StripePaymentData } from '@type';
+import useVuelidate from '@vuelidate/core';
+import theme from 'virtual:theme';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { AppButton, AppLabel, AppNotification } from '@beabee/vue/components';
-import AppInput from '@components/forms/AppInput.vue';
-
-import theme from 'virtual:theme';
-import { ContributionPeriod } from '@beabee/beabee-common';
-import env from '@env';
-import type { StripePaymentData } from '@type';
 
 const emit = defineEmits(['loaded']);
 

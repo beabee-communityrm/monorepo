@@ -1,20 +1,22 @@
-import { Type } from "class-transformer";
+import { RoleType } from '@beabee/beabee-common';
+
+import { Type } from 'class-transformer';
 import {
   IsArray,
   IsIn,
   IsOptional,
   IsString,
-  ValidateNested
-} from "class-validator";
-import { GetContactDto } from "./ContactDto";
-import { RoleType } from "@beabee/beabee-common";
+  ValidateNested,
+} from 'class-validator';
+
+import { GetContactDto } from './ContactDto';
 
 /**
  * DTO for authentication information response
  * Contains user contact data and roles
  */
 export class GetAuthInfoDto {
-  @IsIn(["none", "user", "api-key", "internal"])
+  @IsIn(['none', 'user', 'api-key', 'internal'])
   method!: string;
 
   @IsOptional()

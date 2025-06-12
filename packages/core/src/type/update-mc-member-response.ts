@@ -1,5 +1,6 @@
-import { AxiosResponse } from "axios";
-import { MCMember } from "./mc-member";
+import { AxiosResponse } from 'axios';
+
+import { MCMember } from './mc-member';
 
 interface UpsertMCMemberResponseBadRequest extends AxiosResponse {
   status: 400;

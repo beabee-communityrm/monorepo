@@ -1,5 +1,5 @@
-import { Type } from "class-transformer";
-import { IsDate, IsNumber, IsOptional } from "class-validator";
+import { Type } from 'class-transformer';
+import { IsDate, IsNumber, IsOptional } from 'class-validator';
 
 export class GetStatsOptsDto {
   @Type(() => Date)

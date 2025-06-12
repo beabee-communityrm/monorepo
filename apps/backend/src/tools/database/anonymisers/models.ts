@@ -6,46 +6,46 @@ import {
   CalloutResponseAnswerFileUpload,
   CalloutResponseAnswers,
   CalloutResponseAnswersSlide,
-  SetCalloutSlideSchema
-} from "@beabee/beabee-common";
-import { Chance } from "chance";
-import crypto from "crypto";
-import { EntityTarget, ObjectLiteral } from "typeorm";
-import { v4 as uuidv4 } from "uuid";
-
+  SetCalloutSlideSchema,
+} from '@beabee/beabee-common';
 import {
+  Callout,
+  CalloutResponse,
+  CalloutResponseComment,
+  CalloutResponseTag,
+  CalloutTag,
+  CalloutVariant,
+  Contact,
+  ContactContribution,
+  ContactProfile,
+  ContactRole,
+  ContactTag,
+  ContactTagAssignment,
   Email,
   EmailMailing,
   Export,
   ExportItem,
   GiftFlow,
-  Contact,
-  ContactRole,
-  ContactProfile,
   Notice,
   Option,
   PageSettings,
+  Password,
   Payment,
-  ContactContribution,
-  Callout,
-  CalloutResponse,
-  CalloutResponseTag,
-  CalloutTag,
   Project,
   ProjectContact,
   ProjectEngagement,
   Referral,
   ReferralGift,
+  ResetSecurityFlow,
   Segment,
   SegmentContact,
   SegmentOngoingEmail,
-  CalloutResponseComment,
-  ResetSecurityFlow,
-  Password,
-  ContactTagAssignment,
-  CalloutVariant,
-  ContactTag
-} from "@beabee/core/models";
+} from '@beabee/core/models';
+
+import { Chance } from 'chance';
+import crypto from 'crypto';
+import { EntityTarget, ObjectLiteral } from 'typeorm';
+import { v4 as uuidv4 } from 'uuid';
 
 /**
  * Generic types for object maps
@@ -124,8 +124,8 @@ function createComponentAnonymiser(
         return {
           formatted_address: chance.address(),
           geometry: {
-            location: { lat: chance.latitude(), lng: chance.longitude() }
-          }
+            location: { lat: chance.latitude(), lng: chance.longitude() },
+          },
         } satisfies CalloutResponseAnswerAddress;
       case CalloutComponentType.INPUT_CHECKBOX:
         return chance.pickone([true, false]);
@@ -134,12 +134,12 @@ function createComponentAnonymiser(
       case CalloutComponentType.INPUT_DATE_TIME:
         return chance.date().toISOString();
       case CalloutComponentType.INPUT_EMAIL:
-        return chance.email({ domain: "example.com", length: 10 });
+        return chance.email({ domain: 'example.com', length: 10 });
       // TODO: Add support for a general placeholder image?
       case CalloutComponentType.INPUT_FILE:
         return {
-          url: "https://placehold.co/600x400",
-          path: "images/placeholder.avif"
+          url: 'https://placehold.co/600x400',
+          path: 'images/placeholder.avif',
         } satisfies CalloutResponseAnswerFileUpload;
       case CalloutComponentType.INPUT_NUMBER:
         return chance.integer();
@@ -150,7 +150,7 @@ function createComponentAnonymiser(
       case CalloutComponentType.INPUT_SELECTABLE_RADIO:
       case CalloutComponentType.INPUT_SELECTABLE_SELECTBOXES:
         const values =
-          component.type === "select"
+          component.type === 'select'
             ? component.data.values
             : component.values;
         return chance.pickone(values.map(({ value }) => value));
@@ -160,14 +160,14 @@ function createComponentAnonymiser(
         return chance.sentence();
       case CalloutComponentType.INPUT_TIME:
         return (
-          chance.hour({ twentyfour: true }).toString().padStart(2, "0") +
-          ":" +
-          chance.minute().toString().padStart(2, "0")
+          chance.hour({ twentyfour: true }).toString().padStart(2, '0') +
+          ':' +
+          chance.minute().toString().padStart(2, '0')
         );
       case CalloutComponentType.INPUT_URL:
         return chance.url();
       default:
-        throw new Error("Unknown component type " + component.type);
+        throw new Error('Unknown component type ' + component.type);
     }
   }
 
@@ -217,16 +217,16 @@ function copy<T>(a: T): T {
 
 function randomId(len: number, prefix?: string) {
   return () =>
-    (prefix || "") +
-    crypto.randomBytes(6).toString("hex").slice(0, len).toUpperCase();
+    (prefix || '') +
+    crypto.randomBytes(6).toString('hex').slice(0, len).toUpperCase();
 }
 
 let codeNo = 0;
 function uniqueCode(): string {
   codeNo++;
-  const letter = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[Math.floor(codeNo / 1000)];
+  const letter = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[Math.floor(codeNo / 1000)];
   const no = codeNo % 1000;
-  return letter.padStart(2, "A") + (no + "").padStart(3, "0");
+  return letter.padStart(2, 'A') + (no + '').padStart(3, '0');
 }
 
 // Model anonymisers
@@ -240,7 +240,7 @@ export const calloutResponsesAnonymiser = createModelAnonymiser(
     contactId: () => uuidv4(),
     assigneeId: () => uuidv4(),
     guestName: () => chance.name(),
-    guestEmail: () => chance.email({ domain: "example.com", length: 10 })
+    guestEmail: () => chance.email({ domain: 'example.com', length: 10 }),
   }
 );
 
@@ -250,7 +250,7 @@ export const calloutResponseCommentsAnonymiser = createModelAnonymiser(
     id: () => uuidv4(),
     responseId: () => uuidv4(),
     contactId: () => uuidv4(),
-    text: () => chance.paragraph()
+    text: () => chance.paragraph(),
   }
 );
 
@@ -258,35 +258,35 @@ export const calloutResponseTagsAnonymiser = createModelAnonymiser(
   CalloutResponseTag,
   {
     responseId: () => uuidv4(),
-    tagId: () => uuidv4()
+    tagId: () => uuidv4(),
   }
 );
 
 export const calloutTagsAnonymiser = createModelAnonymiser(CalloutTag, {
   id: () => uuidv4(),
   name: () => chance.word(),
-  description: () => chance.sentence()
+  description: () => chance.sentence(),
 });
 
 export const calloutVariantAnonymiser = createModelAnonymiser(CalloutVariant);
 
 export const contactAnonymiser = createModelAnonymiser(Contact, {
   id: () => uuidv4(),
-  email: () => chance.email({ domain: "fake.beabee.io", length: 10 }),
+  email: () => chance.email({ domain: 'fake.beabee.io', length: 10 }),
   firstname: () => chance.first(),
   lastname: () => chance.last(),
   password: () => Password.none,
   pollsCode: uniqueCode,
-  referralCode: uniqueCode
+  referralCode: uniqueCode,
 });
 
 export const contactContributionAnonymiser = createModelAnonymiser(
   ContactContribution,
   {
     contactId: () => uuidv4(),
-    customerId: randomId(12, "CU"),
-    mandateId: randomId(12, "MD"),
-    subscriptionId: randomId(12, "SB")
+    customerId: randomId(12, 'CU'),
+    mandateId: randomId(12, 'MD'),
+    subscriptionId: randomId(12, 'SB'),
   }
 );
 
@@ -299,40 +299,40 @@ export const contactProfileAnonymiser = createModelAnonymiser(ContactProfile, {
   twitter: () => chance.twitter(),
   deliveryAddress: {
     line1: () => chance.address(),
-    line2: () => chance.pickone(["Cabot", "Easton", "Southmead", "Hanham"]),
-    city: () => "Bristol",
-    postcode: () => "BS1 1AA"
-  }
+    line2: () => chance.pickone(['Cabot', 'Easton', 'Southmead', 'Hanham']),
+    city: () => 'Bristol',
+    postcode: () => 'BS1 1AA',
+  },
 });
 
 export const contactRoleAnonymiser = createModelAnonymiser(ContactRole, {
-  contactId: () => uuidv4()
+  contactId: () => uuidv4(),
 });
 
 export const contactTagAnonymiser = createModelAnonymiser(ContactTag, {
   id: () => uuidv4(),
   name: () => chance.word(),
-  description: () => chance.sentence()
+  description: () => chance.sentence(),
 });
 
 export const contactTagAssignmentAnonymiser = createModelAnonymiser(
   ContactTagAssignment,
   {
     contactId: () => uuidv4(),
-    tagId: () => uuidv4()
+    tagId: () => uuidv4(),
   }
 );
 
 export const emailAnonymiser = createModelAnonymiser(Email);
 
 export const emailMailingAnonymiser = createModelAnonymiser(EmailMailing, {
-  recipients: () => []
+  recipients: () => [],
 });
 
 export const exportsAnonymiser = createModelAnonymiser(Export);
 
 export const exportItemsAnonymiser = createModelAnonymiser(ExportItem, {
-  itemId: copy // These will be mapped to values that have already been seen
+  itemId: copy, // These will be mapped to values that have already been seen
 });
 
 export const giftFlowAnonymiser = createModelAnonymiser(GiftFlow, {
@@ -342,12 +342,12 @@ export const giftFlowAnonymiser = createModelAnonymiser(GiftFlow, {
   giftForm: {
     firstname: () => chance.first(),
     lastname: () => chance.last(),
-    email: () => chance.email({ domain: "fake.beabee.io", length: 10 }),
+    email: () => chance.email({ domain: 'fake.beabee.io', length: 10 }),
     message: () => chance.sentence(),
     fromName: () => chance.name(),
-    fromEmail: () => chance.email({ domain: "fake.beabee.io", length: 10 })
+    fromEmail: () => chance.email({ domain: 'fake.beabee.io', length: 10 }),
   },
-  gifteeId: () => uuidv4()
+  gifteeId: () => uuidv4(),
 });
 
 export const noticesAnonymiser = createModelAnonymiser(Notice);
@@ -358,18 +358,18 @@ export const pageSettingsAnonymiser = createModelAnonymiser(PageSettings);
 
 export const paymentsAnonymiser = createModelAnonymiser(Payment, {
   id: () => uuidv4(),
-  subscriptionId: randomId(12, "SB"),
-  contactId: () => uuidv4()
+  subscriptionId: randomId(12, 'SB'),
+  contactId: () => uuidv4(),
 });
 
 export const projectsAnonymiser = createModelAnonymiser(Project, {
-  ownerId: () => uuidv4()
+  ownerId: () => uuidv4(),
 });
 
 export const projectContactsAnonymiser = createModelAnonymiser(ProjectContact, {
   id: () => uuidv4(),
   contactId: () => uuidv4(),
-  tag: () => chance.profession()
+  tag: () => chance.profession(),
 });
 
 export const projectEngagmentsAnonymiser = createModelAnonymiser(
@@ -378,32 +378,32 @@ export const projectEngagmentsAnonymiser = createModelAnonymiser(
     id: () => uuidv4(),
     byContactId: () => uuidv4(),
     toContactId: () => uuidv4(),
-    notes: () => chance.sentence()
+    notes: () => chance.sentence(),
   }
 );
 
 export const referralsAnonymiser = createModelAnonymiser(Referral, {
   id: () => uuidv4(),
   referrerId: () => uuidv4(),
-  refereeId: () => uuidv4()
+  refereeId: () => uuidv4(),
 });
 
 export const referralsGiftAnonymiser = createModelAnonymiser(ReferralGift, {
-  stock: copy // Add to map so it is serialised correctly
+  stock: copy, // Add to map so it is serialised correctly
 });
 
 export const resetSecurityFlowAnonymiser = createModelAnonymiser(
   ResetSecurityFlow,
   {
     id: () => uuidv4(),
-    contactId: () => uuidv4()
+    contactId: () => uuidv4(),
   }
 );
 
 export const segmentsAnonymiser = createModelAnonymiser(Segment);
 
 export const segmentContactsAnonymiser = createModelAnonymiser(SegmentContact, {
-  contactId: () => uuidv4()
+  contactId: () => uuidv4(),
 });
 
 export const segmentOngoingEmailsAnonymiser =

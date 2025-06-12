@@ -60,27 +60,25 @@ meta:
 
 <script lang="ts" setup>
 import {
-  ItemStatus,
   type ContentProfileData,
   type GetCalloutData,
   type GetContactData,
+  ItemStatus,
 } from '@beabee/beabee-common';
-import { ref, onBeforeMount, type Ref } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { useRoute } from 'vue-router';
+import { AppButton } from '@beabee/vue/components';
 
-import NoticeContainer from '@components/pages/profile/NoticeContainer.vue';
+import PageTitle from '@components/PageTitle.vue';
+import CalloutCard from '@components/callout/CalloutCard.vue';
 import ContributionInfo from '@components/pages/profile/ContributionInfo.vue';
+import NoticeContainer from '@components/pages/profile/NoticeContainer.vue';
 import QuickActions from '@components/pages/profile/QuickActions.vue';
 import SectionTitle from '@components/pages/profile/SectionTitle.vue';
-import PageTitle from '@components/PageTitle.vue';
-import { AppButton } from '@beabee/vue/components';
-import CalloutCard from '@components/callout/CalloutCard.vue';
 import WelcomeMessage from '@components/welcome-message/WelcomeMessage.vue';
-
-import { client } from '@utils/api';
-
 import { currentUser, generalContent } from '@store';
+import { client } from '@utils/api';
+import { type Ref, onBeforeMount, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRoute } from 'vue-router';
 
 const { t } = useI18n();
 

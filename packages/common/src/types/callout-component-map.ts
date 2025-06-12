@@ -1,5 +1,4 @@
-import type { CalloutComponentType } from "../data/index.js";
-
+import type { CalloutComponentType } from '../data/index.js';
 import type {
   CalloutComponentContentSchema,
   CalloutComponentInputAddressSchema,
@@ -10,9 +9,9 @@ import type {
   CalloutComponentInputFileSchema,
   CalloutComponentInputNumberSchema,
   CalloutComponentInputPhoneNumberSchema,
+  CalloutComponentInputSelectSchema,
   CalloutComponentInputSelectableRadioSchema,
   CalloutComponentInputSelectableSelectboxesSchema,
-  CalloutComponentInputSelectSchema,
   CalloutComponentInputSignatureSchema,
   CalloutComponentInputTextAreaSchema,
   CalloutComponentInputTextFieldSchema,
@@ -20,8 +19,8 @@ import type {
   CalloutComponentInputUrlSchema,
   CalloutComponentNestablePanelSchema,
   CalloutComponentNestableTabsSchema,
-  CalloutComponentNestableWellSchema
-} from "./index.js";
+  CalloutComponentNestableWellSchema,
+} from './index.js';
 
 type CalloutComponentSchemas = {
   [CalloutComponentType.CONTENT]: CalloutComponentContentSchema;

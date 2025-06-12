@@ -1,4 +1,44 @@
-import { Response } from "express";
+import { CalloutCaptcha } from '@beabee/beabee-common';
+import { getRepository } from '@beabee/core/database';
+import { InvalidCalloutResponse, UnauthorizedError } from '@beabee/core/errors';
+import { Callout, Contact } from '@beabee/core/models';
+import { calloutsService } from '@beabee/core/services/CalloutsService';
+import { AuthInfo } from '@beabee/core/type';
+
+import { CalloutId } from '@api/decorators/CalloutId';
+import { CurrentAuth } from '@api/decorators/CurrentAuth';
+import PartialBody from '@api/decorators/PartialBody';
+import { ListTagsDto } from '@api/dto';
+import { GetExportQuery } from '@api/dto/BaseDto';
+import {
+  CreateCalloutDto,
+  GetCalloutDto,
+  GetCalloutOptsDto,
+  ListCalloutsDto,
+} from '@api/dto/CalloutDto';
+import {
+  CreateCalloutResponseDto,
+  GetCalloutResponseDto,
+  GetCalloutResponseMapDto,
+  GetGuestCalloutResponseDto,
+  ListCalloutResponsesDto,
+} from '@api/dto/CalloutResponseDto';
+import {
+  CreateCalloutReviewerDto,
+  GetCalloutReviewerDto,
+} from '@api/dto/CalloutReviewerDto';
+import { CreateCalloutTagDto, GetCalloutTagDto } from '@api/dto/CalloutTagDto';
+import { PaginatedDto } from '@api/dto/PaginatedDto';
+import CalloutResponseExporter from '@api/transformers/CalloutResponseExporter';
+import CalloutResponseMapTransformer from '@api/transformers/CalloutResponseMapTransformer';
+import CalloutResponseTransformer from '@api/transformers/CalloutResponseTransformer';
+import CalloutReviewerTransformer from '@api/transformers/CalloutReviewerTransformer';
+import calloutTagTransformer from '@api/transformers/CalloutTagTransformer';
+import CalloutTransformer from '@api/transformers/CalloutTransformer';
+import { validateOrReject } from '@api/utils/validation';
+import { verify } from '@core/lib/captchafox';
+import { plainToInstance } from 'class-transformer';
+import { Response } from 'express';
 import {
   Authorized,
   Body,
@@ -13,59 +53,12 @@ import {
   Post,
   QueryParam,
   QueryParams,
-  Res
-} from "routing-controllers";
+  Res,
+} from 'routing-controllers';
 
-import { calloutsService } from "@beabee/core/services/CalloutsService";
-
-import { getRepository } from "@beabee/core/database";
-import { verify } from "@core/lib/captchafox";
-
-import { GetExportQuery } from "@api/dto/BaseDto";
-
-import {
-  CreateCalloutDto,
-  GetCalloutDto,
-  GetCalloutOptsDto,
-  ListCalloutsDto
-} from "@api/dto/CalloutDto";
-import {
-  CreateCalloutResponseDto,
-  GetCalloutResponseDto,
-  GetCalloutResponseMapDto,
-  GetGuestCalloutResponseDto,
-  ListCalloutResponsesDto
-} from "@api/dto/CalloutResponseDto";
-import { CreateCalloutTagDto, GetCalloutTagDto } from "@api/dto/CalloutTagDto";
-import { PaginatedDto } from "@api/dto/PaginatedDto";
-
-import { CalloutId } from "@api/decorators/CalloutId";
-import { CurrentAuth } from "@api/decorators/CurrentAuth";
-import PartialBody from "@api/decorators/PartialBody";
-import { InvalidCalloutResponse, UnauthorizedError } from "@beabee/core/errors";
-import CalloutTransformer from "@api/transformers/CalloutTransformer";
-import CalloutResponseExporter from "@api/transformers/CalloutResponseExporter";
-import CalloutResponseMapTransformer from "@api/transformers/CalloutResponseMapTransformer";
-import CalloutResponseTransformer from "@api/transformers/CalloutResponseTransformer";
-import { validateOrReject } from "@api/utils/validation";
-
-import { Callout, Contact } from "@beabee/core/models";
-
-import { CalloutCaptcha } from "@beabee/beabee-common";
-
-import { AuthInfo } from "@beabee/core/type";
-import { ListTagsDto } from "@api/dto";
-import CalloutReviewerTransformer from "@api/transformers/CalloutReviewerTransformer";
-import {
-  CreateCalloutReviewerDto,
-  GetCalloutReviewerDto
-} from "@api/dto/CalloutReviewerDto";
-import calloutTagTransformer from "@api/transformers/CalloutTagTransformer";
-import { plainToInstance } from "class-transformer";
-
-@JsonController("/callout")
+@JsonController('/callout')
 export class CalloutController {
-  @Get("/")
+  @Get('/')
   async getCallouts(
     @CurrentAuth() auth: AuthInfo,
     @QueryParams() query: ListCalloutsDto
@@ -73,11 +66,11 @@ export class CalloutController {
     return CalloutTransformer.fetch(auth, query);
   }
 
-  @Authorized("admin")
-  @Post("/")
+  @Authorized('admin')
+  @Post('/')
   async createCallout(
     @CurrentAuth({ required: true }) auth: AuthInfo,
-    @QueryParam("fromId", { required: false }) fromId: string,
+    @QueryParam('fromId', { required: false }) fromId: string,
     @Body({ validate: false, required: false }) data: CreateCalloutDto
   ): Promise<GetCalloutDto> {
     // Allow partial body if duplicating
@@ -96,7 +89,7 @@ export class CalloutController {
     return CalloutTransformer.fetchOneByIdOrFail(auth, id);
   }
 
-  @Get("/:id")
+  @Get('/:id')
   async getCallout(
     @CurrentAuth() auth: AuthInfo,
     @CalloutId() id: string,
@@ -104,12 +97,12 @@ export class CalloutController {
   ): Promise<GetCalloutDto | undefined> {
     return CalloutTransformer.fetchOneById(auth, id, {
       ...query,
-      showHiddenForAll: true
+      showHiddenForAll: true,
     });
   }
 
-  @Authorized("admin")
-  @Patch("/:id")
+  @Authorized('admin')
+  @Patch('/:id')
   async updateCallout(
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @CalloutId() id: string,
@@ -119,9 +112,9 @@ export class CalloutController {
     return CalloutTransformer.fetchOneById(auth, id);
   }
 
-  @Authorized("admin")
+  @Authorized('admin')
   @OnUndefined(204)
-  @Delete("/:id")
+  @Delete('/:id')
   async deleteCallout(@CalloutId() id: string): Promise<void> {
     const deleted = await calloutsService.deleteCallout(id);
     if (!deleted) {
@@ -129,7 +122,7 @@ export class CalloutController {
     }
   }
 
-  @Get("/:id/responses")
+  @Get('/:id/responses')
   async getCalloutResponses(
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @CalloutId() id: string,
@@ -138,7 +131,7 @@ export class CalloutController {
     return await CalloutResponseTransformer.fetchForCallout(auth, id, query);
   }
 
-  @Get("/:id/responses.csv")
+  @Get('/:id/responses.csv')
   async exportCalloutResponses(
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @CalloutId() id: string,
@@ -154,7 +147,7 @@ export class CalloutController {
     return res;
   }
 
-  @Get("/:id/responses/map")
+  @Get('/:id/responses/map')
   async getCalloutResponsesMap(
     @CurrentAuth() auth: AuthInfo,
     @CalloutId() id: string,
@@ -163,13 +156,13 @@ export class CalloutController {
     return await CalloutResponseMapTransformer.fetchForCallout(auth, id, query);
   }
 
-  @Post("/:id/responses")
+  @Post('/:id/responses')
   async createCalloutResponse(
     @CurrentUser({ required: false }) caller: Contact | undefined,
     @CurrentAuth() auth: AuthInfo,
     @CalloutId() id: string,
     @Body() data: CreateCalloutResponseDto,
-    @QueryParam("captchaToken", { required: false }) captchaToken: string
+    @QueryParam('captchaToken', { required: false }) captchaToken: string
   ): Promise<GetGuestCalloutResponseDto | GetCalloutResponseDto> {
     const callout = await getRepository(Callout).findOneBy({ id });
     if (!callout) {
@@ -177,7 +170,7 @@ export class CalloutController {
     }
 
     if (caller && data.guest) {
-      throw new InvalidCalloutResponse("logged-in-guest-fields");
+      throw new InvalidCalloutResponse('logged-in-guest-fields');
     }
 
     if (
@@ -185,19 +178,19 @@ export class CalloutController {
       (callout.captcha === CalloutCaptcha.Guest && !caller)
     ) {
       if (!captchaToken) {
-        throw new UnauthorizedError({ code: "captcha-required" });
+        throw new UnauthorizedError({ code: 'captcha-required' });
       }
 
       const error = await verify(captchaToken);
       if (error) {
         throw new UnauthorizedError({
-          code: "captcha-failed",
-          message: "Captcha failed with error " + error
+          code: 'captcha-failed',
+          message: 'Captcha failed with error ' + error,
         });
       }
     }
 
-    if (!caller || callout.access === "only-anonymous") {
+    if (!caller || callout.access === 'only-anonymous') {
       const id = await calloutsService.setGuestResponse(
         callout,
         data.guest,
@@ -217,7 +210,7 @@ export class CalloutController {
   }
 
   // TODO: move to CalloutTagController like we did for contact tags?
-  @Get("/:id/tags")
+  @Get('/:id/tags')
   async getCalloutTags(
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @CalloutId() id: string,
@@ -227,16 +220,16 @@ export class CalloutController {
       limit: -1,
       ...query,
       rules: {
-        condition: "AND",
-        rules: [{ field: "calloutId", operator: "equal", value: [id] }]
-      }
+        condition: 'AND',
+        rules: [{ field: 'calloutId', operator: 'equal', value: [id] }],
+      },
     });
 
     return result.items;
   }
 
   // TODO: move to CalloutTagController like we did for contact tags?
-  @Post("/:id/tags")
+  @Post('/:id/tags')
   async createCalloutTag(
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @CalloutId() id: string,
@@ -245,24 +238,24 @@ export class CalloutController {
     // TODO: handle foreign key error
     return calloutTagTransformer.create(auth, {
       ...data,
-      calloutId: id
+      calloutId: id,
     });
   }
 
   // TODO: move to CalloutTagController like we did for contact tags?
-  @Get("/:id/tags/:tagId")
+  @Get('/:id/tags/:tagId')
   async getCalloutTag(
     @CurrentAuth({ required: true }) auth: AuthInfo,
-    @Param("tagId") tagId: string
+    @Param('tagId') tagId: string
   ): Promise<GetCalloutTagDto | undefined> {
     return calloutTagTransformer.fetchOneById(auth, tagId);
   }
 
   // TODO: move to CalloutTagController like we did for contact tags?
-  @Patch("/:id/tags/:tagId")
+  @Patch('/:id/tags/:tagId')
   async updateCalloutTag(
     @CurrentAuth({ required: true }) auth: AuthInfo,
-    @Param("tagId") tagId: string,
+    @Param('tagId') tagId: string,
     @PartialBody() data: CreateCalloutTagDto // Partial<TagCreateData>
   ): Promise<GetCalloutTagDto | undefined> {
     if (!(await calloutTagTransformer.updateById(auth, tagId, data))) {
@@ -273,18 +266,18 @@ export class CalloutController {
   }
 
   // TODO: move to CalloutTagController like we did for contact tags?
-  @Delete("/:id/tags/:tagId")
+  @Delete('/:id/tags/:tagId')
   @OnUndefined(204)
   async deleteCalloutTag(
     @CurrentAuth({ required: true }) auth: AuthInfo,
-    @Param("tagId") tagId: string
+    @Param('tagId') tagId: string
   ): Promise<void> {
     if (!(await calloutTagTransformer.deleteById(auth, tagId))) {
       throw new NotFoundError();
     }
   }
 
-  @Get("/:id/reviewers")
+  @Get('/:id/reviewers')
   async getCalloutReviewers(
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @CalloutId() id: string,
@@ -293,15 +286,15 @@ export class CalloutController {
     const result = await CalloutReviewerTransformer.fetch(auth, {
       ...query,
       rules: {
-        condition: "AND",
-        rules: [{ field: "calloutId", operator: "equal", value: [id] }]
-      }
+        condition: 'AND',
+        rules: [{ field: 'calloutId', operator: 'equal', value: [id] }],
+      },
     });
 
     return result.items;
   }
 
-  @Post("/:id/reviewers")
+  @Post('/:id/reviewers')
   async createCalloutReviewer(
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @CalloutId() id: string,
@@ -309,23 +302,23 @@ export class CalloutController {
   ): Promise<GetCalloutReviewerDto> {
     return CalloutReviewerTransformer.create(auth, {
       calloutId: id,
-      ...data
+      ...data,
     });
   }
 
-  @Get("/:id/reviewers/:reviewerId")
+  @Get('/:id/reviewers/:reviewerId')
   async getCalloutReviewer(
     @CurrentAuth({ required: true }) auth: AuthInfo,
-    @Param("reviewerId") reviewerId: string
+    @Param('reviewerId') reviewerId: string
   ): Promise<GetCalloutReviewerDto | undefined> {
     return CalloutReviewerTransformer.fetchOneById(auth, reviewerId);
   }
 
-  @Delete("/:id/reviewers/:reviewerId")
+  @Delete('/:id/reviewers/:reviewerId')
   @OnUndefined(204)
   async deleteCalloutReviewer(
     @CurrentAuth({ required: true }) auth: AuthInfo,
-    @Param("reviewerId") reviewerId: string
+    @Param('reviewerId') reviewerId: string
   ): Promise<void> {
     if (!(await CalloutReviewerTransformer.deleteById(auth, reviewerId))) {
       throw new NotFoundError();

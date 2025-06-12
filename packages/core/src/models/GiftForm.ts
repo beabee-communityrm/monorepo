@@ -1,5 +1,6 @@
-import { Address } from "@beabee/beabee-common";
-import { Column } from "typeorm";
+import { Address } from '@beabee/beabee-common';
+
+import { Column } from 'typeorm';
 
 export class GiftForm {
   @Column()
@@ -11,7 +12,7 @@ export class GiftForm {
   @Column()
   email!: string;
 
-  @Column({ type: "date" })
+  @Column({ type: 'date' })
   startDate!: Date;
 
   @Column({ type: String, nullable: true })
@@ -26,9 +27,9 @@ export class GiftForm {
   @Column()
   months!: number;
 
-  @Column({ type: "jsonb", nullable: true })
+  @Column({ type: 'jsonb', nullable: true })
   giftAddress!: Address | null;
 
-  @Column({ type: "jsonb", nullable: true })
+  @Column({ type: 'jsonb', nullable: true })
   deliveryAddress!: Address | null;
 }

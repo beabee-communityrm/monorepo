@@ -1,21 +1,18 @@
-import axios, { AxiosRequestTransformer } from "axios";
+import axios, { AxiosRequestTransformer } from 'axios';
 
-import { log as mainLogger } from "#logging";
-
-import { Email } from "#models/index";
-
+import { MandrillEmailConfig } from '#config/config';
+import { log as mainLogger } from '#logging';
+import { Email } from '#models/index';
 import type {
   EmailOptions,
   EmailRecipient,
   EmailTemplate,
-  PreparedEmail
-} from "#type/index";
+  PreparedEmail,
+} from '#type/index';
 
-import { BaseProvider } from "./BaseProvider";
+import { BaseProvider } from './BaseProvider';
 
-import { MandrillEmailConfig } from "#config/config";
-
-const log = mainLogger.child({ app: "mandrill-email-provider" });
+const log = mainLogger.child({ app: 'mandrill-email-provider' });
 
 interface MandrillTemplate {
   slug: string;
@@ -34,19 +31,19 @@ interface MandrillMessage {
 export class MandrillProvider extends BaseProvider {
   private readonly instance;
 
-  constructor(settings: MandrillEmailConfig["settings"]) {
+  constructor(settings: MandrillEmailConfig['settings']) {
     super();
     this.instance = axios.create({
-      baseURL: "https://mandrillapp.com/api/1.0/",
+      baseURL: 'https://mandrillapp.com/api/1.0/',
       // Add key to all POST request bodys
       transformRequest: [
         (data, headers) => {
           return { ...data, key: settings.apiKey };
         },
-        ...(axios.defaults.transformRequest as AxiosRequestTransformer[])
+        ...(axios.defaults.transformRequest as AxiosRequestTransformer[]),
       ],
       timeout: 1000,
-      headers: { "X-Custom-Header": "foobar" }
+      headers: { 'X-Custom-Header': 'foobar' },
     });
   }
 
@@ -55,19 +52,19 @@ export class MandrillProvider extends BaseProvider {
     recipients: EmailRecipient[],
     opts?: EmailOptions
   ): Promise<void> {
-    const resp = await this.instance.post("/messages/send", {
+    const resp = await this.instance.post('/messages/send', {
       message: {
         ...this.createMessageData(recipients, opts),
         from_name: email.fromName,
         from_email: email.fromEmail,
         subject: email.subject,
         html: email.body,
-        auto_text: true
+        auto_text: true,
       },
-      ...(opts?.sendAt && { send_at: opts.sendAt.toISOString() })
+      ...(opts?.sendAt && { send_at: opts.sendAt.toISOString() }),
     });
 
-    log.info("Sent email", { data: resp.data });
+    log.info('Sent email', { data: resp.data });
   }
 
   async sendTemplate(
@@ -77,12 +74,12 @@ export class MandrillProvider extends BaseProvider {
   ): Promise<void> {
     log.info(`Sending template ${templateId}`);
 
-    if (templateId.startsWith("mandrill_")) {
-      const resp = await this.instance.post("/messages/send-template", {
+    if (templateId.startsWith('mandrill_')) {
+      const resp = await this.instance.post('/messages/send-template', {
         message: this.createMessageData(recipients, opts),
         template_name: templateId.substring(9), // Remove mandrill_
         template_content: [],
-        ...(opts?.sendAt && { send_at: opts.sendAt.toISOString() })
+        ...(opts?.sendAt && { send_at: opts.sendAt.toISOString() }),
       });
       log.info(`Sent template ${templateId}`, { data: resp.data });
     } else {
@@ -91,25 +88,25 @@ export class MandrillProvider extends BaseProvider {
   }
 
   async getTemplateEmail(templateId: string): Promise<false | Email | null> {
-    return templateId.startsWith("mandrill_")
+    return templateId.startsWith('mandrill_')
       ? false
       : await super.getTemplateEmail(templateId);
   }
 
   async getTemplates(): Promise<EmailTemplate[]> {
     const resp =
-      await this.instance.post<MandrillTemplate[]>("/templates/list");
+      await this.instance.post<MandrillTemplate[]>('/templates/list');
     const localEmailTemplates = await super.getTemplates();
 
     return [
       ...localEmailTemplates.map((email) => ({
         id: email.id,
-        name: "Local: " + email.name
+        name: 'Local: ' + email.name,
       })),
       ...resp.data.map((template) => ({
-        id: "mandrill_" + template.slug,
-        name: "Mandrill: " + template.name
-      }))
+        id: 'mandrill_' + template.slug,
+        name: 'Mandrill: ' + template.name,
+      })),
     ];
   }
 
@@ -123,10 +120,10 @@ export class MandrillProvider extends BaseProvider {
         rcpt: r.to.email,
         vars: Object.entries(r.mergeFields || []).map(([name, content]) => ({
           name,
-          content
-        }))
+          content,
+        })),
       })),
-      ...(opts?.attachments && { attachments: opts.attachments })
+      ...(opts?.attachments && { attachments: opts.attachments }),
     };
   }
 }

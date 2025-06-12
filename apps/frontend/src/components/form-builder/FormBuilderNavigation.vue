@@ -40,11 +40,11 @@
 </template>
 <script lang="ts" setup>
 // Translations moved to TranslationsTab
-import { useI18n } from 'vue-i18n';
-import { computed } from 'vue';
-
 import AppInput from '@components/forms/AppInput.vue';
 import AppSelect from '@components/forms/AppSelect.vue';
+import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+
 import type {
   FormBuilderNavigation,
   FormBuilderSlide,

@@ -1,4 +1,15 @@
-import { Request, Response } from "express";
+import {
+  MAX_FILE_SIZE_IN_BYTES,
+  isSupportedImageType,
+} from '@beabee/beabee-common';
+import type { UploadFileResponse } from '@beabee/beabee-common';
+import { config } from '@beabee/core/config';
+import { BadRequestError, UnsupportedFileType } from '@beabee/core/errors';
+import { Contact } from '@beabee/core/models';
+import { imageService } from '@beabee/core/services/ImageService';
+import { convertMulterError } from '@beabee/core/utils/multer';
+
+import { Request, Response } from 'express';
 import {
   Authorized,
   CurrentUser,
@@ -11,34 +22,23 @@ import {
   Req,
   Res,
   UnauthorizedError,
-  UseBefore
-} from "routing-controllers";
+  UseBefore,
+} from 'routing-controllers';
 
-import { imageService } from "@beabee/core/services/ImageService";
-import { Contact } from "@beabee/core/models";
-import { BadRequestError, UnsupportedFileType } from "@beabee/core/errors";
-import { convertMulterError } from "@beabee/core/utils/multer";
-import { uploadMiddleware } from "../middlewares";
-import { config } from "@beabee/core/config";
-import {
-  isSupportedImageType,
-  MAX_FILE_SIZE_IN_BYTES
-} from "@beabee/beabee-common";
-import { RateLimit } from "../decorators";
+import { RateLimit } from '../decorators';
+import { uploadMiddleware } from '../middlewares';
 
-import type { UploadFileResponse } from "@beabee/beabee-common";
-
-@JsonController("/images")
+@JsonController('/images')
 export class ImageController {
   /**
    * Upload a new image
    */
-  @Post("/")
+  @Post('/')
   @Authorized()
   @UseBefore(
     RateLimit({
       guest: { points: 5, duration: 60 * 60 },
-      user: { points: 50, duration: 60 * 60 }
+      user: { points: 50, duration: 60 * 60 },
     })
   )
   async upload(
@@ -55,13 +55,13 @@ export class ImageController {
     }
 
     if (!req.file) {
-      throw new BadRequestError({ message: "No image file provided" });
+      throw new BadRequestError({ message: 'No image file provided' });
     }
 
     // Verify file type is allowed - multer handles size but we still check type
     if (!isSupportedImageType(req.file.mimetype)) {
       throw new UnsupportedFileType({
-        message: `Unsupported image type ${req.file.mimetype}. Please upload a JPEG, PNG, WebP or AVIF image.`
+        message: `Unsupported image type ${req.file.mimetype}. Please upload a JPEG, PNG, WebP or AVIF image.`,
       });
     }
 
@@ -78,7 +78,7 @@ export class ImageController {
       id: metadata.id,
       url: `${config.audience}/api/1.0/${path}`,
       path,
-      hash: metadata.hash
+      hash: metadata.hash,
     };
 
     // Only add filename if it exists
@@ -92,11 +92,11 @@ export class ImageController {
   /**
    * Get an image with optional resizing
    */
-  @Get("/:id")
+  @Get('/:id')
   async getImage(
     @Res() res: Response,
-    @Param("id") id: string,
-    @QueryParam("w", { required: false }) width?: number
+    @Param('id') id: string,
+    @QueryParam('w', { required: false }) width?: number
   ): Promise<Buffer> {
     // Get image as buffer
     const imageData = await imageService.getImageBuffer(id, width);
@@ -106,12 +106,12 @@ export class ImageController {
 
     // Set appropriate security headers
     res.set({
-      "Content-Type": imageData.contentType,
-      "Content-Disposition": `inline; filename="${metadata.filename || id}"`,
-      "Cache-Control": "public, max-age=86400",
-      "X-Content-Type-Options": "nosniff",
-      "Content-Security-Policy": "img-src 'self'",
-      "X-Frame-Options": "SAMEORIGIN"
+      'Content-Type': imageData.contentType,
+      'Content-Disposition': `inline; filename="${metadata.filename || id}"`,
+      'Cache-Control': 'public, max-age=86400',
+      'X-Content-Type-Options': 'nosniff',
+      'Content-Security-Policy': "img-src 'self'",
+      'X-Frame-Options': 'SAMEORIGIN',
     });
 
     // Return the buffer, routing-controllers will handle the rest
@@ -121,10 +121,10 @@ export class ImageController {
   /**
    * Delete an image
    */
-  @Delete("/:id")
+  @Delete('/:id')
   @Authorized()
   async deleteImage(
-    @Param("id") id: string,
+    @Param('id') id: string,
     @CurrentUser({ required: true }) contact: Contact
   ): Promise<{ success: boolean }> {
     // Get image metadata first to check ownership
@@ -134,7 +134,7 @@ export class ImageController {
     if (
       metadata.owner &&
       metadata.owner !== contact.email &&
-      !contact.hasRole("admin")
+      !contact.hasRole('admin')
     ) {
       throw new UnauthorizedError(
         "You don't have permission to delete this image"

@@ -1,4 +1,4 @@
-import { CreateTagDto, GetTagDto, ListTagsDto } from "./TagDto";
+import { CreateTagDto, GetTagDto, ListTagsDto } from './TagDto';
 
 export class GetCalloutTagDto extends GetTagDto {}
 

@@ -1,28 +1,28 @@
-import fs from "node:fs/promises";
-import path from "node:path";
-import chalk from "chalk";
+import { FormioFile, isFormioFileAnswer } from '@beabee/beabee-common';
+import { config } from '@beabee/core/config';
+import { connect as connectToDatabase } from '@beabee/core/database';
+import { getRepository } from '@beabee/core/database';
+import { Content } from '@beabee/core/models/Content';
+import { calloutsService } from '@beabee/core/services/CalloutsService';
+import { documentService } from '@beabee/core/services/DocumentService';
+// Import the required services and utilities from core
+import { imageService } from '@beabee/core/services/ImageService';
+import { optionsService } from '@beabee/core/services/OptionsService';
+
+import chalk from 'chalk';
+import fs from 'node:fs/promises';
+import path from 'node:path';
 
 import {
   MigrateUploadsOptions,
-  MigrationStats
-} from "../../types/migrate-uploads.js";
-import { findMainImage } from "../../utils/files.js";
+  MigrationStats,
+} from '../../types/migrate-uploads.js';
+import { findMainImage } from '../../utils/files.js';
 import {
+  formatDryRunMessage,
   formatFileSize,
   formatSuccessMessage,
-  formatDryRunMessage
-} from "../../utils/format.js";
-
-// Import the required services and utilities from core
-import { imageService } from "@beabee/core/services/ImageService";
-import { documentService } from "@beabee/core/services/DocumentService";
-import { calloutsService } from "@beabee/core/services/CalloutsService";
-import { optionsService } from "@beabee/core/services/OptionsService";
-import { Content } from "@beabee/core/models/Content";
-import { config } from "@beabee/core/config";
-import { connect as connectToDatabase } from "@beabee/core/database";
-import { isFormioFileAnswer, FormioFile } from "@beabee/beabee-common";
-import { getRepository } from "@beabee/core/database";
+} from '../../utils/format.js';
 
 /**
  * Helper function to check if a file URL is already migrated
@@ -31,10 +31,10 @@ import { getRepository } from "@beabee/core/database";
  */
 function isFileMigrated(fileUrl: string): boolean {
   // Strip query parameters for pattern matching
-  const baseFileUrl = fileUrl.split("?")[0];
+  const baseFileUrl = fileUrl.split('?')[0];
 
   // Check if the image URL contains the new API path
-  return baseFileUrl.includes("documents/") || baseFileUrl.includes("images/");
+  return baseFileUrl.includes('documents/') || baseFileUrl.includes('images/');
 }
 
 /**
@@ -56,22 +56,22 @@ function extractImageInfo(imageUrl: string): {
   }
 
   // Extract the image key from the image URL/path, removing any query parameters
-  if (imageUrl.includes("/uploads/")) {
+  if (imageUrl.includes('/uploads/')) {
     // Format: /uploads/abc123?w=1440 or /uploads/1440x810/image.jpg
-    const uploadPath = imageUrl.split("/uploads/")[1];
-    const pathWithoutQuery = uploadPath.split("?")[0]; // Remove query parameters
+    const uploadPath = imageUrl.split('/uploads/')[1];
+    const pathWithoutQuery = uploadPath.split('?')[0]; // Remove query parameters
 
-    if (pathWithoutQuery.includes("/")) {
+    if (pathWithoutQuery.includes('/')) {
       // If the path contains additional directories (like size directories),
       // just extract the filename at the end
-      imageKey = pathWithoutQuery.split("/").pop() || null;
+      imageKey = pathWithoutQuery.split('/').pop() || null;
     } else {
       // Simple path without additional directories
       imageKey = pathWithoutQuery;
     }
-  } else if (!imageUrl.includes("/")) {
+  } else if (!imageUrl.includes('/')) {
     // Direct key format without slashes
-    imageKey = imageUrl.split("?")[0]; // Remove query parameters
+    imageKey = imageUrl.split('?')[0]; // Remove query parameters
   }
 
   return { imageKey, width };
@@ -87,28 +87,28 @@ export async function migrateUploads(
   try {
     const isDryRun = options.dryRun === true;
     if (isDryRun) {
-      console.log(chalk.yellow("DRY RUN MODE: No files will be uploaded"));
+      console.log(chalk.yellow('DRY RUN MODE: No files will be uploaded'));
     }
     const steps = options.steps;
 
     // Initialize database connection
-    console.log("Initializing database connection...");
+    console.log('Initializing database connection...');
     try {
       await connectToDatabase();
-      console.log(chalk.green("✓ Database connection established"));
+      console.log(chalk.green('✓ Database connection established'));
     } catch (error) {
-      console.error(chalk.red("Failed to connect to database:"), error);
-      throw new Error("Database connection failed. Migration cannot proceed.");
+      console.error(chalk.red('Failed to connect to database:'), error);
+      throw new Error('Database connection failed. Migration cannot proceed.');
     }
 
     // Check the connection to MinIO via ImageService
-    console.log("Checking MinIO connection...");
+    console.log('Checking MinIO connection...');
     const connectionTest = await imageService.checkConnection();
     if (!connectionTest) {
-      throw new Error("Failed to connect to MinIO. Check your configuration.");
+      throw new Error('Failed to connect to MinIO. Check your configuration.');
     }
 
-    console.log(chalk.green("✓ Successfully connected to MinIO"));
+    console.log(chalk.green('✓ Successfully connected to MinIO'));
 
     // Reload options to ensure we have the optionsService initialised
     await optionsService.reload();
@@ -118,12 +118,12 @@ export async function migrateUploads(
       successCount: 0,
       skippedCount: 0,
       errorCount: 0,
-      totalSizeBytes: 0
+      totalSizeBytes: 0,
     };
 
     // Process callout images
-    if (steps.includes("calloutImages")) {
-      console.log(chalk.blue("\n=== Migrating Callout Images ==="));
+    if (steps.includes('calloutImages')) {
+      console.log(chalk.blue('\n=== Migrating Callout Images ==='));
       const calloutStats = await processCalloutImages(options);
       // Merge stats
       stats.successCount += calloutStats.successCount;
@@ -133,8 +133,8 @@ export async function migrateUploads(
     }
 
     // Process content images (logo, share image)
-    if (steps.includes("optionImages")) {
-      console.log(chalk.blue("\n=== Migrating Option Images ==="));
+    if (steps.includes('optionImages')) {
+      console.log(chalk.blue('\n=== Migrating Option Images ==='));
       const optionStats = await processOptionImages(options);
       // Merge stats
       stats.successCount += optionStats.successCount;
@@ -144,8 +144,8 @@ export async function migrateUploads(
     }
 
     // Process general content background image
-    if (steps.includes("contentBackgroundImage")) {
-      console.log(chalk.blue("\n=== Migrating Content Background Image ==="));
+    if (steps.includes('contentBackgroundImage')) {
+      console.log(chalk.blue('\n=== Migrating Content Background Image ==='));
       const contentStats = await processContentBackgroundImage(options);
       // Merge stats
       stats.successCount += contentStats.successCount;
@@ -155,9 +155,9 @@ export async function migrateUploads(
     }
 
     // Process document and image uploads from callout responses
-    if (steps.includes("calloutResponseFiles")) {
+    if (steps.includes('calloutResponseFiles')) {
       console.log(
-        chalk.blue("\n=== Migrating Callout Response Documents and Images ===")
+        chalk.blue('\n=== Migrating Callout Response Documents and Images ===')
       );
       const documentStats = await processCalloutResponseDocuments(options);
       // Merge stats
@@ -170,7 +170,7 @@ export async function migrateUploads(
     // Print summary
     printMigrationSummary(stats, isDryRun);
   } catch (error) {
-    console.error(chalk.red("Error during migration:"), error);
+    console.error(chalk.red('Error during migration:'), error);
     throw error;
   }
 }
@@ -187,11 +187,11 @@ async function processCalloutImages(
     successCount: 0,
     skippedCount: 0,
     errorCount: 0,
-    totalSizeBytes: 0
+    totalSizeBytes: 0,
   };
 
   // Get all callouts
-  console.log("Fetching callouts...");
+  console.log('Fetching callouts...');
   const callouts = await calloutsService.listCallouts();
   console.log(`Found ${callouts.length} callouts`);
 
@@ -211,7 +211,7 @@ async function processCalloutImages(
         )
       );
       stats.skippedCount++;
-    } else if (callout.image.includes("/uploads/")) {
+    } else if (callout.image.includes('/uploads/')) {
       // Old URL format that needs migration
       try {
         await processCalloutImage(options, callout, stats);
@@ -256,16 +256,16 @@ async function processOptionImages(
     successCount: 0,
     skippedCount: 0,
     errorCount: 0,
-    totalSizeBytes: 0
+    totalSizeBytes: 0,
   };
 
   // Define which option keys contain images
   const imageOptions = [
-    { key: "logo" as const, label: "Logo" },
-    { key: "share-image" as const, label: "Share Image" }
+    { key: 'logo' as const, label: 'Logo' },
+    { key: 'share-image' as const, label: 'Share Image' },
   ];
 
-  console.log("Checking option images...");
+  console.log('Checking option images...');
 
   // Process each option that might contain an image
   for (const imageOption of imageOptions) {
@@ -289,7 +289,7 @@ async function processOptionImages(
         )
       );
       stats.skippedCount++;
-    } else if (imageUrlStr.includes("/uploads/")) {
+    } else if (imageUrlStr.includes('/uploads/')) {
       // Old URL format that needs migration
       try {
         await processOptionImage(
@@ -402,7 +402,7 @@ async function processCalloutImage(
       // const newImageUrl = `${config.audience}/api/1.0/${newImagePath}${width ? "?w=" + width : ""}`;
 
       await calloutsService.updateCallout(callout.id, {
-        image: newImagePath
+        image: newImagePath,
       });
 
       console.log(
@@ -438,7 +438,7 @@ async function processCalloutImage(
  */
 async function processOptionImage(
   options: MigrateUploadsOptions,
-  optionKey: "logo" | "share-image",
+  optionKey: 'logo' | 'share-image',
   optionLabel: string,
   imageUrl: string,
   stats: MigrationStats
@@ -488,7 +488,7 @@ async function processOptionImage(
       );
 
       // Update the option with the new image URL, preserving width parameter if it existed
-      const newImagePath = `images/${uploadedImage.id}${width ? "?w=" + width : ""}`;
+      const newImagePath = `images/${uploadedImage.id}${width ? '?w=' + width : ''}`;
       // const newImageUrl = `${config.audience}/api/1.0/${newImagePath}`;
 
       // Update directly in OptionsService
@@ -526,12 +526,12 @@ async function processCalloutResponseDocuments(
     successCount: 0,
     skippedCount: 0,
     errorCount: 0,
-    totalSizeBytes: 0
+    totalSizeBytes: 0,
   };
 
   // Get all callout responses that have file uploads
   console.log(
-    "Fetching callout responses with file uploads (documents and images)..."
+    'Fetching callout responses with file uploads (documents and images)...'
   );
   const responses = await calloutsService.listResponsesWithFileUploads();
   console.log(`Found ${responses.length} responses with file uploads`);
@@ -683,21 +683,21 @@ async function processFileUpload(
     fileUpload.originalName || fileUpload.name || path.basename(sourcePath);
   const fileExt = path.extname(fileName).toLowerCase();
   const isImage = [
-    ".jpg",
-    ".jpeg",
-    ".png",
-    ".gif",
-    ".webp",
-    ".avif",
-    ".svg",
-    ".tiff",
-    ".tif",
-    ".heif",
-    ".heic",
-    ".jp2"
+    '.jpg',
+    '.jpeg',
+    '.png',
+    '.gif',
+    '.webp',
+    '.avif',
+    '.svg',
+    '.tiff',
+    '.tif',
+    '.heif',
+    '.heic',
+    '.jp2',
   ].includes(fileExt);
 
-  const fileType = isImage ? "image" : "document";
+  const fileType = isImage ? 'image' : 'document';
   console.log(
     chalk.blue(`Processing ${fileType} for ${locationInfo}: ${sourcePath}`)
   );
@@ -807,24 +807,24 @@ function extractDocumentInfo(documentUrl: string): {
   let documentKey: string | null = null;
 
   // Extract the document key from the document URL/path, removing any query parameters
-  if (documentUrl.includes("/uploads/")) {
+  if (documentUrl.includes('/uploads/')) {
     // Format: /uploads/abc123 or /uploads/directory/filename.ext
-    const uploadPath = documentUrl.split("/uploads/")[1];
-    const pathWithoutQuery = uploadPath.split("?")[0]; // Remove query parameters
+    const uploadPath = documentUrl.split('/uploads/')[1];
+    const pathWithoutQuery = uploadPath.split('?')[0]; // Remove query parameters
 
     // Extract the filename
     const filename = path.basename(pathWithoutQuery);
 
     // If path has directories, combine them with the filename
-    if (pathWithoutQuery.includes("/")) {
+    if (pathWithoutQuery.includes('/')) {
       documentKey = filename;
     } else {
       // Simple path without additional directories
-      documentKey = pathWithoutQuery + "/" + filename;
+      documentKey = pathWithoutQuery + '/' + filename;
     }
-  } else if (!documentUrl.includes("/")) {
+  } else if (!documentUrl.includes('/')) {
     // Direct key format without slashes
-    documentKey = documentUrl.split("?")[0]; // Remove query parameters
+    documentKey = documentUrl.split('?')[0]; // Remove query parameters
   }
 
   return { documentKey };
@@ -842,14 +842,14 @@ async function processContentBackgroundImage(
     successCount: 0,
     skippedCount: 0,
     errorCount: 0,
-    totalSizeBytes: 0
+    totalSizeBytes: 0,
   };
 
-  console.log("Checking general content background image...");
+  console.log('Checking general content background image...');
 
   // Fetch the general content from database
   const generalContent = await getRepository(Content).findOneBy({
-    id: "general"
+    id: 'general',
   });
 
   // Skip if no content found
@@ -879,7 +879,7 @@ async function processContentBackgroundImage(
     );
     stats.skippedCount++;
     return stats;
-  } else if (backgroundUrl.includes("/uploads/")) {
+  } else if (backgroundUrl.includes('/uploads/')) {
     // Old URL format that needs migration
     try {
       await processGeneralBackgroundImage(options, backgroundUrl, stats);
@@ -973,7 +973,7 @@ async function processGeneralBackgroundImage(
       );
 
       // Update the general content with the new image URL, preserving width parameter if it existed
-      const newImagePath = `images/${uploadedImage.id}${width ? "?w=" + width : ""}`;
+      const newImagePath = `images/${uploadedImage.id}${width ? '?w=' + width : ''}`;
 
       // Update the backgroundUrl in the content data
       await getRepository(Content)
@@ -981,13 +981,13 @@ async function processGeneralBackgroundImage(
         .update(Content)
         .set({
           data: () =>
-            `jsonb_set("data", '{backgroundUrl}', '"${newImagePath}"')`
+            `jsonb_set("data", '{backgroundUrl}', '"${newImagePath}"')`,
         })
-        .where("id = :id", { id: "general" })
+        .where('id = :id', { id: 'general' })
         .execute();
 
       console.log(
-        formatSuccessMessage("General content background", fileStats.size) +
+        formatSuccessMessage('General content background', fileStats.size) +
           ` - New image path: ${newImagePath}`
       );
 
@@ -1003,7 +1003,7 @@ async function processGeneralBackgroundImage(
   } else {
     // Dry run mode
     console.log(
-      formatDryRunMessage("General content background", fileStats.size)
+      formatDryRunMessage('General content background', fileStats.size)
     );
     stats.successCount++;
     stats.totalSizeBytes += fileStats.size;
@@ -1016,10 +1016,10 @@ async function processGeneralBackgroundImage(
  * @param isDryRun Whether this was a dry run
  */
 function printMigrationSummary(stats: MigrationStats, isDryRun: boolean): void {
-  console.log(chalk.blue("\nMigration Summary:"));
+  console.log(chalk.blue('\nMigration Summary:'));
 
   if (isDryRun) {
-    console.log(chalk.yellow("DRY RUN - No files were actually uploaded"));
+    console.log(chalk.yellow('DRY RUN - No files were actually uploaded'));
     console.log(
       chalk.green(
         `✓ Would migrate: ${stats.successCount} files (${formatFileSize(stats.totalSizeBytes)})`
@@ -1043,10 +1043,10 @@ function printMigrationSummary(stats: MigrationStats, isDryRun: boolean): void {
 
   if (stats.errorCount > 0) {
     console.log(chalk.red(`✗ Failed to process: ${stats.errorCount} files`));
-    console.log(chalk.yellow("Please check the logs for details."));
+    console.log(chalk.yellow('Please check the logs for details.'));
   } else if (stats.successCount > 0 || stats.skippedCount > 0) {
-    console.log(chalk.green("✓ Process completed successfully!"));
+    console.log(chalk.green('✓ Process completed successfully!'));
   } else {
-    console.log(chalk.yellow("No files found to migrate."));
+    console.log(chalk.yellow('No files found to migrate.'));
   }
 }

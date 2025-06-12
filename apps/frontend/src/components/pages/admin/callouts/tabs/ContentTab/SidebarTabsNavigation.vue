@@ -14,9 +14,11 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
 import { AppTabs } from '@beabee/vue/components';
 import { type TabItem } from '@beabee/vue/types';
+
+import { computed } from 'vue';
+
 import type { SidebarTabs } from './SidebarTabs.interface';
 
 /**

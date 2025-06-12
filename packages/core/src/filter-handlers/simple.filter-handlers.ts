@@ -1,4 +1,4 @@
-import type { FilterHandler } from "#type";
+import type { FilterHandler } from '#type';
 
 /**
  * @fileoverview Simple filter handler implementation for basic where clause filtering

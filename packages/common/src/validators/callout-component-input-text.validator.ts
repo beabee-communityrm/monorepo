@@ -1,11 +1,10 @@
-import { isTextInRange, isTextInWordRange } from "../utils/index.js";
-
 import type {
   CalloutComponentInputTextRules,
   CalloutComponentInputTextSchema,
   CalloutResponseAnswer,
-  ValidatorCalloutComponent
-} from "../types/index.js";
+  ValidatorCalloutComponent,
+} from '../types/index.js';
+import { isTextInRange, isTextInWordRange } from '../utils/index.js';
 
 const validateRules = (
   rules: CalloutComponentInputTextRules | undefined,
@@ -22,9 +21,9 @@ const validateRules = (
 
   // Check if the answer matches the provided pattern
   if (
-    typeof rules.pattern === "string" &&
+    typeof rules.pattern === 'string' &&
     rules.pattern.length &&
-    !new RegExp(rules.pattern).test(answer || "")
+    !new RegExp(rules.pattern).test(answer || '')
   ) {
     return false;
   }
@@ -49,7 +48,7 @@ export const calloutComponentInputTextValidator: ValidatorCalloutComponent<
   schema: CalloutComponentInputTextSchema,
   answer: CalloutResponseAnswer
 ): boolean => {
-  if (typeof answer !== "string") {
+  if (typeof answer !== 'string') {
     return false;
   }
 

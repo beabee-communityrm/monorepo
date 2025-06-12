@@ -1,21 +1,19 @@
-import { Type } from "class-transformer";
+import type { JoinForm } from '@beabee/core/models';
+import { CompleteUrls } from '@beabee/core/type';
+
+import { StartContributionDto } from '@api/dto/ContributionDto';
+import { CompleteJoinFlowDto } from '@api/dto/JoinFlowDto';
+import IsPassword from '@api/validators/IsPassword';
+import IsUrl from '@api/validators/IsUrl';
+import IsVatNumber from '@api/validators/IsVatNumber';
+import { Type } from 'class-transformer';
 import {
   IsEmail,
+  IsOptional,
+  IsString,
   Validate,
   ValidateNested,
-  IsOptional,
-  IsString
-} from "class-validator";
-
-import { StartContributionDto } from "@api/dto/ContributionDto";
-import { CompleteJoinFlowDto } from "@api/dto/JoinFlowDto";
-import IsPassword from "@api/validators/IsPassword";
-import IsUrl from "@api/validators/IsUrl";
-
-import type { JoinForm } from "@beabee/core/models";
-
-import { CompleteUrls } from "@beabee/core/type";
-import IsVatNumber from "@api/validators/IsVatNumber";
+} from 'class-validator';
 
 export class StartSignupFlowDto implements CompleteUrls {
   @IsUrl()
@@ -42,7 +40,7 @@ export class StartSignupFlowDto implements CompleteUrls {
 
 export class CompleteSignupFlowDto
   extends CompleteJoinFlowDto
-  implements Pick<JoinForm, "firstname" | "lastname" | "vatNumber">
+  implements Pick<JoinForm, 'firstname' | 'lastname' | 'vatNumber'>
 {
   @IsOptional()
   @IsString()

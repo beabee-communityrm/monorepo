@@ -1,16 +1,14 @@
-import { RoleType } from "@beabee/beabee-common";
-import { stringify } from "csv-stringify/sync";
-import { SelectQueryBuilder } from "typeorm";
+import { RoleType } from '@beabee/beabee-common';
+import { Contact } from '@beabee/core/models';
+import { getMembershipStatus } from '@beabee/core/services/PaymentService';
+import { AuthInfo } from '@beabee/core/type';
 
-import { getMembershipStatus } from "@beabee/core/services/PaymentService";
+import { GetExportQuery } from '@api/dto/BaseDto';
+import { ExportContactDto } from '@api/dto/ContactDto';
+import { stringify } from 'csv-stringify/sync';
+import { SelectQueryBuilder } from 'typeorm';
 
-import { GetExportQuery } from "@api/dto/BaseDto";
-import { ExportContactDto } from "@api/dto/ContactDto";
-
-import { Contact } from "@beabee/core/models";
-
-import { AuthInfo } from "@beabee/core/type";
-import { BaseContactTransformer } from "./BaseContactTransformer";
+import { BaseContactTransformer } from './BaseContactTransformer';
 
 class ContactExporter extends BaseContactTransformer<
   ExportContactDto,
@@ -26,22 +24,22 @@ class ContactExporter extends BaseContactTransformer<
       FirstName: contact.firstname,
       LastName: contact.lastname,
       Joined: contact.joined.toISOString(),
-      Tags: tagNames.join(", "),
+      Tags: tagNames.join(', '),
       ContributionType: contact.contributionType,
       ContributionMonthlyAmount: contact.contributionMonthlyAmount,
       ContributionPeriod: contact.contributionPeriod,
       ContributionDescription: contact.contributionDescription,
       ContributionCancelled:
-        contact.contribution.cancelledAt?.toISOString() || "",
-      MembershipStarts: contact.membership?.dateAdded.toISOString() || "",
-      MembershipExpires: contact.membership?.dateExpires?.toISOString() || "",
+        contact.contribution.cancelledAt?.toISOString() || '',
+      MembershipStarts: contact.membership?.dateAdded.toISOString() || '',
+      MembershipExpires: contact.membership?.dateExpires?.toISOString() || '',
       MembershipStatus: getMembershipStatus(contact),
       NewsletterStatus: contact.profile.newsletterStatus,
       DeliveryOptIn: contact.profile.deliveryOptIn,
-      DeliveryAddressLine1: contact.profile.deliveryAddress?.line1 || "",
-      DeliveryAddressLine2: contact.profile.deliveryAddress?.line2 || "",
-      DeliveryAddressCity: contact.profile.deliveryAddress?.city || "",
-      DeliveryAddressPostcode: contact.profile.deliveryAddress?.postcode || ""
+      DeliveryAddressLine1: contact.profile.deliveryAddress?.line1 || '',
+      DeliveryAddressLine2: contact.profile.deliveryAddress?.line2 || '',
+      DeliveryAddressCity: contact.profile.deliveryAddress?.city || '',
+      DeliveryAddressPostcode: contact.profile.deliveryAddress?.postcode || '',
     };
   }
 
@@ -50,13 +48,13 @@ class ContactExporter extends BaseContactTransformer<
     fieldPrefix: string
   ): void {
     qb.orderBy(`${fieldPrefix}joined`);
-    qb.leftJoinAndSelect(`${fieldPrefix}roles`, "roles");
-    qb.leftJoinAndSelect(`${fieldPrefix}profile`, "profile");
-    qb.leftJoinAndSelect(`${fieldPrefix}contribution`, "contribution");
+    qb.leftJoinAndSelect(`${fieldPrefix}roles`, 'roles');
+    qb.leftJoinAndSelect(`${fieldPrefix}profile`, 'profile');
+    qb.leftJoinAndSelect(`${fieldPrefix}contribution`, 'contribution');
     qb.leftJoinAndSelect(
       `${fieldPrefix}tags`,
-      "tagAssignments"
-    ).leftJoinAndSelect("tagAssignments.tag", "tag");
+      'tagAssignments'
+    ).leftJoinAndSelect('tagAssignments.tag', 'tag');
   }
 
   async export(

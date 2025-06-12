@@ -1,13 +1,13 @@
-import { PaymentForm } from "@beabee/beabee-common";
+import { PaymentForm } from '@beabee/beabee-common';
 
-import { Contact } from "#models/index";
-import { PaymentProvider } from "./PaymentProvider";
-
+import { Contact } from '#models/index';
 import {
   CompletedPaymentFlow,
   ContributionInfo,
-  UpdateContributionResult
-} from "#type/index";
+  UpdateContributionResult,
+} from '#type/index';
+
+import { PaymentProvider } from './PaymentProvider';
 
 /**
  * Implements PaymentProvider for manual payment methods.
@@ -32,12 +32,12 @@ export class ManualProvider extends PaymentProvider {
       paymentSource: {
         method: null,
         ...(this.data.customerId && {
-          reference: this.data.customerId
+          reference: this.data.customerId,
         }),
         ...(this.data.mandateId && {
-          source: this.data.mandateId
-        })
-      }
+          source: this.data.mandateId,
+        }),
+      },
     };
   }
 
@@ -60,7 +60,7 @@ export class ManualProvider extends PaymentProvider {
   async updateContribution(
     paymentForm: PaymentForm
   ): Promise<UpdateContributionResult> {
-    throw new Error("Method not implemented.");
+    throw new Error('Method not implemented.');
   }
 
   /**
@@ -70,7 +70,7 @@ export class ManualProvider extends PaymentProvider {
   async updatePaymentMethod(
     completedPaymentFlow: CompletedPaymentFlow
   ): Promise<void> {
-    throw new Error("Method not implemented.");
+    throw new Error('Method not implemented.');
   }
 
   /**

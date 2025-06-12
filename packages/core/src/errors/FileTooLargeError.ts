@@ -1,11 +1,11 @@
-import { HttpError } from "routing-controllers";
+import { HttpError } from 'routing-controllers';
 
 /**
  * Custom error for HTTP 413 Payload Too Large responses.
  */
 export class FileTooLargeError extends HttpError {
   httpCode = 413;
-  code = "FILE_TOO_LARGE";
+  code = 'FILE_TOO_LARGE';
 
   constructor(
     options: {
@@ -17,10 +17,10 @@ export class FileTooLargeError extends HttpError {
       options.message ||
       (options.maxSize
         ? `File too large (max ${options.maxSize})`
-        : "File too large");
+        : 'File too large');
 
     super(413, message);
     Object.setPrototypeOf(this, FileTooLargeError.prototype);
-    this.name = "FileTooLargeError";
+    this.name = 'FileTooLargeError';
   }
 }

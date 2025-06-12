@@ -1,12 +1,14 @@
-import { Column, Entity, ManyToOne, PrimaryColumn } from "typeorm";
-import type { Callout } from "./index";
-import { CalloutVariantNavigationData } from "@beabee/beabee-common";
+import { CalloutVariantNavigationData } from '@beabee/beabee-common';
+
+import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
+
+import type { Callout } from './index';
 
 @Entity()
 export class CalloutVariant {
   @PrimaryColumn()
   calloutId!: string;
-  @ManyToOne("Callout")
+  @ManyToOne('Callout')
   callout!: Callout;
 
   @PrimaryColumn()
@@ -36,9 +38,9 @@ export class CalloutVariant {
   @Column({ type: String, nullable: true })
   shareDescription!: string | null;
 
-  @Column({ type: "jsonb" })
+  @Column({ type: 'jsonb' })
   slideNavigation!: Record<string, CalloutVariantNavigationData>;
 
-  @Column({ type: "jsonb", default: "{}" })
+  @Column({ type: 'jsonb', default: '{}' })
   componentText!: Record<string, string>;
 }

@@ -1,17 +1,18 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
-import { addThenSetNotNull } from "#utils/db";
+import { MigrationInterface, QueryRunner } from 'typeorm';
+
+import { addThenSetNotNull } from '#utils/db';
 
 export class AddPaymentMethodToJoinForm1650900384747
   implements MigrationInterface
 {
-  name = "AddPaymentMethodToJoinForm1650900384747";
+  name = 'AddPaymentMethodToJoinForm1650900384747';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await addThenSetNotNull(
       queryRunner,
-      "join_flow",
-      "joinFormPaymentmethod",
-      "direct-debit"
+      'join_flow',
+      'joinFormPaymentmethod',
+      'direct-debit'
     );
   }
 

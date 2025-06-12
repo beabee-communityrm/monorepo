@@ -1,13 +1,13 @@
-import { BaseClient } from "./base.client.js";
-import { cleanUrl } from "../utils/index.js";
-import type { BaseClientOptions } from "../types/index.js";
-
 import type {
   ContactRoleData,
   RoleType,
   Serial,
-  UpdateContactRoleData
-} from "@beabee/beabee-common";
+  UpdateContactRoleData,
+} from '@beabee/beabee-common';
+
+import type { BaseClientOptions } from '../types/index.js';
+import { cleanUrl } from '../utils/index.js';
+import { BaseClient } from './base.client.js';
 
 export class ContactRoleClient extends BaseClient {
   static deserialize(data: Serial<ContactRoleData>): ContactRoleData {
@@ -16,14 +16,14 @@ export class ContactRoleClient extends BaseClient {
       dateAdded: this.deserializeDate(data.dateAdded),
       dateExpires: data.dateExpires
         ? this.deserializeDate(data.dateExpires)
-        : null
+        : null,
     };
   }
 
   constructor(protected override readonly options: BaseClientOptions) {
     super({
       ...options,
-      path: cleanUrl(options.path + "/contact")
+      path: cleanUrl(options.path + '/contact'),
     });
   }
 
@@ -35,7 +35,7 @@ export class ContactRoleClient extends BaseClient {
   ): Promise<ContactRoleData> {
     const { data } = await this.fetch.put(`/${id}/role/${role}`, {
       dateAdded: updateData.dateAdded,
-      dateExpires: updateData.dateExpires
+      dateExpires: updateData.dateExpires,
     });
     return ContactRoleClient.deserialize(data);
   }

@@ -1,22 +1,20 @@
-import { NewsletterStatus, ContributionType } from "@beabee/beabee-common";
-import bodyParser from "body-parser";
+import { ContributionType, NewsletterStatus } from '@beabee/beabee-common';
+import config from '@beabee/core/config';
+import { log as mainLogger } from '@beabee/core/logging';
+import ContactsService from '@beabee/core/services/ContactsService';
+import NewsletterService from '@beabee/core/services/NewsletterService';
+import { normalizeEmailAddress } from '@beabee/core/utils/email';
+import { wrapAsync } from '@beabee/core/utils/express';
+
+import bodyParser from 'body-parser';
 import express, {
-  type NextFunction,
   type Express,
+  type NextFunction,
   type Request,
-  type Response
-} from "express";
+  type Response,
+} from 'express';
 
-import { log as mainLogger } from "@beabee/core/logging";
-import { wrapAsync } from "@beabee/core/utils/express";
-import { normalizeEmailAddress } from "@beabee/core/utils/email";
-
-import ContactsService from "@beabee/core/services/ContactsService";
-import NewsletterService from "@beabee/core/services/NewsletterService";
-
-import config from "@beabee/core/config";
-
-const log = mainLogger.child({ app: "webhook-mailchimp" });
+const log = mainLogger.child({ app: 'webhook-mailchimp' });
 
 const mailchimpWebhookApp: Express = express();
 
@@ -37,17 +35,17 @@ interface MCCleanedEmailData {
 }
 
 interface MCProfileWebhook {
-  type: "subscribe" | "unsubscribe" | "profile";
+  type: 'subscribe' | 'unsubscribe' | 'profile';
   data: MCProfileData;
 }
 
 interface MCUpdateEmailWebhook {
-  type: "upemail";
+  type: 'upemail';
   data: MCUpdateEmailData;
 }
 
 interface MCCleanedEmailWebhook {
-  type: "cleaned";
+  type: 'cleaned';
   data: MCCleanedEmailData;
 }
 
@@ -59,7 +57,7 @@ type MCWebhook =
 // Mailchimp pings this endpoint when you first add the webhook
 // Don't check for newsletter provider here as the webhook can be set
 // before Mailchimp has been enabled
-mailchimpWebhookApp.get("/", (req: Request, res: Response) => {
+mailchimpWebhookApp.get('/', (req: Request, res: Response) => {
   res.sendStatus(
     req.query.secret === config.newsletter.settings.webhookSecret ? 200 : 404
   );
@@ -67,8 +65,8 @@ mailchimpWebhookApp.get("/", (req: Request, res: Response) => {
 
 mailchimpWebhookApp.use((req: Request, res: Response, next: NextFunction) => {
   if (
-    config.newsletter.provider === "mailchimp" &&
-    req.query["secret"] === config.newsletter.settings.webhookSecret
+    config.newsletter.provider === 'mailchimp' &&
+    req.query['secret'] === config.newsletter.settings.webhookSecret
   ) {
     next();
   } else {
@@ -80,30 +78,30 @@ mailchimpWebhookApp.use(bodyParser.json());
 mailchimpWebhookApp.use(bodyParser.urlencoded({ extended: true }));
 
 mailchimpWebhookApp.post(
-  "/",
+  '/',
   wrapAsync(async (req: Request, res: Response) => {
     const body = req.body as MCWebhook;
 
-    log.info("Got webhook " + body.type);
+    log.info('Got webhook ' + body.type);
 
     switch (body.type) {
-      case "upemail":
+      case 'upemail':
         await handleUpdateEmail(body.data);
         break;
 
-      case "subscribe":
+      case 'subscribe':
         await handleSubscribe(body.data);
         break;
 
-      case "unsubscribe":
+      case 'unsubscribe':
         await handleUnsubscribe(body.data);
         break;
 
-      case "cleaned":
+      case 'cleaned':
         await handleCleaned(body.data);
         break;
 
-      case "profile":
+      case 'profile':
         // Make MailChimp resend the webhook if we don't find a contact
         // it's probably because the upemail and profile webhooks
         // arrived out of order
@@ -133,7 +131,7 @@ async function handleUpdateEmail(data: MCUpdateEmailData) {
       { sync: false }
     );
   } else {
-    log.error("Old email not found in Mailchimp update email hook", data);
+    log.error('Old email not found in Mailchimp update email hook', data);
   }
 }
 
@@ -141,14 +139,14 @@ async function handleSubscribe(data: MCProfileData) {
   const email = normalizeEmailAddress(data.email);
 
   log.info({
-    action: "subscribe",
-    data: { email }
+    action: 'subscribe',
+    data: { email },
   });
 
   const contact = await ContactsService.findOneBy({ email });
   if (contact) {
     await ContactsService.updateContactProfile(contact, {
-      newsletterStatus: NewsletterStatus.Subscribed
+      newsletterStatus: NewsletterStatus.Subscribed,
     });
   } else {
     const nlContact = await NewsletterService.getNewsletterContact(email);
@@ -156,12 +154,12 @@ async function handleSubscribe(data: MCProfileData) {
       {
         email,
         contributionType: ContributionType.None,
-        firstname: data.merges.FNAME || "",
-        lastname: data.merges.LNAME || ""
+        firstname: data.merges.FNAME || '',
+        lastname: data.merges.LNAME || '',
       },
       {
         newsletterStatus: NewsletterStatus.Subscribed,
-        newsletterGroups: nlContact?.groups || []
+        newsletterGroups: nlContact?.groups || [],
       }
     );
   }
@@ -170,12 +168,12 @@ async function handleSubscribe(data: MCProfileData) {
 async function handleUnsubscribe(data: MCProfileData) {
   const email = normalizeEmailAddress(data.email);
 
-  log.info("Unsubscribe " + email);
+  log.info('Unsubscribe ' + email);
 
   const contact = await ContactsService.findOneBy({ email });
   if (contact) {
     await ContactsService.updateContactProfile(contact, {
-      newsletterStatus: NewsletterStatus.Unsubscribed
+      newsletterStatus: NewsletterStatus.Unsubscribed,
     });
   }
 }
@@ -183,12 +181,12 @@ async function handleUnsubscribe(data: MCProfileData) {
 async function handleCleaned(data: MCCleanedEmailData) {
   const email = normalizeEmailAddress(data.email);
 
-  log.info("Cleaned " + email);
+  log.info('Cleaned ' + email);
 
   const contact = await ContactsService.findOneBy({ email });
   if (contact) {
     await ContactsService.updateContactProfile(contact, {
-      newsletterStatus: NewsletterStatus.Cleaned
+      newsletterStatus: NewsletterStatus.Cleaned,
     });
   }
 }
@@ -196,21 +194,21 @@ async function handleCleaned(data: MCCleanedEmailData) {
 async function handleUpdateProfile(data: MCProfileData): Promise<boolean> {
   const email = normalizeEmailAddress(data.email);
 
-  log.info("Update profile for " + email);
+  log.info('Update profile for ' + email);
 
   const contact = await ContactsService.findOneBy({ email });
   if (contact) {
     const nlContact = await NewsletterService.getNewsletterContact(email);
     await ContactsService.updateContact(contact, {
       firstname: data.merges.FNAME || contact.firstname,
-      lastname: data.merges.LNAME || contact.lastname
+      lastname: data.merges.LNAME || contact.lastname,
     });
     await ContactsService.updateContactProfile(contact, {
-      newsletterGroups: nlContact?.groups || []
+      newsletterGroups: nlContact?.groups || [],
     });
     return true;
   } else {
-    log.info("Contact not found for " + email);
+    log.info('Contact not found for ' + email);
     return false;
   }
 }

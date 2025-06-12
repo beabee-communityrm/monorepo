@@ -1,35 +1,32 @@
 import {
   PaymentForm,
   PaymentMethod,
-  PaymentSource
-} from "@beabee/beabee-common";
-import { Subscription } from "gocardless-nodejs";
-import moment from "moment";
+  PaymentSource,
+} from '@beabee/beabee-common';
 
+import { Subscription } from 'gocardless-nodejs';
+import moment from 'moment';
+
+import config from '#config/config';
+import { NoPaymentMethod } from '#errors/index';
 import gocardless, {
   createSubscription,
-  updateSubscription,
+  hasPendingPayment,
   prorateSubscription,
-  hasPendingPayment
-} from "#lib/gocardless";
-import { log as mainLogger } from "#logging";
-import { calcRenewalDate } from "#utils/payment";
-
-import { PaymentProvider } from "./PaymentProvider";
-
-import { Contact } from "#models/index";
-
-import { NoPaymentMethod } from "#errors/index";
-
-import config from "#config/config";
-
+  updateSubscription,
+} from '#lib/gocardless';
+import { log as mainLogger } from '#logging';
+import { Contact } from '#models/index';
 import {
   CompletedPaymentFlow,
   ContributionInfo,
-  UpdateContributionResult
-} from "#type/index";
+  UpdateContributionResult,
+} from '#type/index';
+import { calcRenewalDate } from '#utils/payment';
 
-const log = mainLogger.child({ app: "gc-payment-provider" });
+import { PaymentProvider } from './PaymentProvider';
+
+const log = mainLogger.child({ app: 'gc-payment-provider' });
 
 /**
  * Implements PaymentProvider for GoCardless direct debit payments.
@@ -53,9 +50,9 @@ export class GCProvider extends PaymentProvider {
 
         paymentSource = {
           method: PaymentMethod.GoCardlessDirectDebit,
-          bankName: bankAccount.bank_name || "",
-          accountHolderName: bankAccount.account_holder_name || "",
-          accountNumberEnding: bankAccount.account_number_ending || ""
+          bankName: bankAccount.bank_name || '',
+          accountHolderName: bankAccount.account_holder_name || '',
+          accountNumberEnding: bankAccount.account_number_ending || '',
         };
         pendingPayment = await hasPendingPayment(this.data.mandateId);
       } catch (err: any) {
@@ -68,7 +65,7 @@ export class GCProvider extends PaymentProvider {
 
     return {
       hasPendingPayment: pendingPayment,
-      ...(paymentSource && { paymentSource })
+      ...(paymentSource && { paymentSource }),
     };
   }
 
@@ -97,8 +94,8 @@ export class GCProvider extends PaymentProvider {
     // result in double charging
     return (
       (useExistingMandate &&
-        this.contact.contributionPeriod === "monthly" &&
-        paymentForm.period === "monthly") ||
+        this.contact.contributionPeriod === 'monthly' &&
+        paymentForm.period === 'monthly') ||
       !(this.data.mandateId && (await hasPendingPayment(this.data.mandateId)))
     );
   }
@@ -111,9 +108,9 @@ export class GCProvider extends PaymentProvider {
   async updateContribution(
     paymentForm: PaymentForm
   ): Promise<UpdateContributionResult> {
-    log.info("Update contribution for " + this.contact.id, {
+    log.info('Update contribution for ' + this.contact.id, {
       userId: this.contact.id,
-      paymentForm
+      paymentForm,
     });
 
     if (!this.data.mandateId) {
@@ -143,7 +140,7 @@ export class GCProvider extends PaymentProvider {
     if (subscription) {
       expiryDate = subscription.upcoming_payments![0].charge_date;
     } else {
-      log.info("Creating new subscription");
+      log.info('Creating new subscription');
       subscription = await createSubscription(
         this.data.mandateId,
         paymentForm,
@@ -162,11 +159,11 @@ export class GCProvider extends PaymentProvider {
         this.contact.contributionMonthlyAmount || 0
       ));
 
-    log.info("Activate contribution for " + this.contact.id, {
+    log.info('Activate contribution for ' + this.contact.id, {
       userId: this.contact.id,
       paymentForm,
       startNow,
-      expiryDate
+      expiryDate,
     });
 
     this.data.subscriptionId = subscription.id!;
@@ -175,7 +172,7 @@ export class GCProvider extends PaymentProvider {
       ? null
       : {
           monthly: paymentForm.monthlyAmount,
-          chargeable: Number(subscription.amount)
+          chargeable: Number(subscription.amount),
         };
 
     await this.updateData();
@@ -188,7 +185,7 @@ export class GCProvider extends PaymentProvider {
    * @param keepMandate - Whether to keep mandate for future use
    */
   async cancelContribution(keepMandate: boolean): Promise<void> {
-    log.info("Cancel subscription for " + this.contact.id, { keepMandate });
+    log.info('Cancel subscription for ' + this.contact.id, { keepMandate });
 
     const subscriptionId = this.data.subscriptionId;
     const mandateId = this.data.mandateId;
@@ -216,10 +213,10 @@ export class GCProvider extends PaymentProvider {
   async updatePaymentMethod(
     completedPaymentFlow: CompletedPaymentFlow
   ): Promise<void> {
-    log.info("Update payment source for " + this.contact.id, {
+    log.info('Update payment source for ' + this.contact.id, {
       userId: this.contact.id,
       data: this.data,
-      completedPaymentFlow
+      completedPaymentFlow,
     });
 
     const hadSubscription = !!this.data.subscriptionId;
@@ -246,7 +243,7 @@ export class GCProvider extends PaymentProvider {
         monthlyAmount: this.contact.contributionMonthlyAmount,
         period: this.contact.contributionPeriod,
         payFee: !!this.data.payFee,
-        prorate: false
+        prorate: false,
       });
     }
   }
@@ -260,11 +257,11 @@ export class GCProvider extends PaymentProvider {
       (updates.email || updates.firstname || updates.lastname) &&
       this.data.customerId
     ) {
-      log.info("Update contact in GoCardless");
+      log.info('Update contact in GoCardless');
       await gocardless.customers.update(this.data.customerId, {
         ...(updates.email && { email: updates.email }),
         ...(updates.firstname && { given_name: updates.firstname }),
-        ...(updates.lastname && { family_name: updates.lastname })
+        ...(updates.lastname && { family_name: updates.lastname }),
       });
     }
   }

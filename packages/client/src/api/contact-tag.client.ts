@@ -1,5 +1,5 @@
-import { TagClient } from "./tag.client.js";
-import type { BaseClientOptions } from "../types/index.js";
+import type { BaseClientOptions } from '../types/index.js';
+import { TagClient } from './tag.client.js';
 
 /**
  * Client for managing contact tags
@@ -22,8 +22,8 @@ export class ContactTagClient extends TagClient {
    */
   protected override getBasePath(contactId: string | undefined): string {
     if (contactId) {
-      throw new Error("Contact ID is not supported for contact tags");
+      throw new Error('Contact ID is not supported for contact tags');
     }
-    return "/contact-tags";
+    return '/contact-tags';
   }
 }

@@ -1,1 +1,1 @@
-export type ImageFormat = "avif" | "webp" | "jpeg" | "png" | "original";
+export type ImageFormat = 'avif' | 'webp' | 'jpeg' | 'png' | 'original';

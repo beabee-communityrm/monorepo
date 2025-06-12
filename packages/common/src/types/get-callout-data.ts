@@ -1,5 +1,5 @@
-import type { ItemStatus } from "../data/index.js";
-import type { CalloutData } from "./index.js";
+import type { ItemStatus } from '../data/index.js';
+import type { CalloutData } from './index.js';
 
 export interface GetCalloutData extends CalloutData {
   id: string;

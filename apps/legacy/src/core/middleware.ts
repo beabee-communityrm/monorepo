@@ -1,16 +1,15 @@
-import { ErrorObject, ValidateFunction } from "ajv";
-import { NextFunction, Request, RequestHandler, Response } from "express";
-import { EntityTarget, FindOneOptions, ObjectLiteral } from "typeorm";
+import config from '@beabee/core/config';
+import { getRepository } from '@beabee/core/database';
+import OptionsService from '@beabee/core/services/OptionsService';
+import { isInvalidType } from '@beabee/core/utils/db';
+import { wrapAsync } from '@beabee/core/utils/express';
 
-import { getRepository } from "@beabee/core/database";
-import ajv from "#core/lib/ajv";
-import * as auth from "#core/utils/auth";
+import { ErrorObject, ValidateFunction } from 'ajv';
+import { NextFunction, Request, RequestHandler, Response } from 'express';
+import { EntityTarget, FindOneOptions, ObjectLiteral } from 'typeorm';
 
-import OptionsService from "@beabee/core/services/OptionsService";
-
-import config from "@beabee/core/config";
-import { wrapAsync } from "@beabee/core/utils/express";
-import { isInvalidType } from "@beabee/core/utils/db";
+import ajv from '#core/lib/ajv';
+import * as auth from '#core/utils/auth';
 
 interface OnErrorHandler {
   (
@@ -21,7 +20,7 @@ interface OnErrorHandler {
   ): void;
 }
 
-const validationKeys = ["body", "query", "params"] as const;
+const validationKeys = ['body', 'query', 'params'] as const;
 type ValidationKeys = typeof validationKeys extends readonly (infer U)[]
   ? U
   : never;
@@ -37,14 +36,14 @@ interface HasSchema {
 
 function convertErrorsToMessages(errors: ErrorObject[]): string[] {
   const genericErrorMessage =
-    OptionsService.getText("flash-validation-error-generic") || "";
+    OptionsService.getText('flash-validation-error-generic') || '';
   return (
     errors
       .map((error) => {
         switch (error.keyword) {
-          case "required":
+          case 'required':
             return `flash-validation-error${error.instancePath}.${error.params.missingProperty}-required`;
-          case "format":
+          case 'format':
             return `flash-validation-error.${error.params.format}-format`;
           default:
             return `flash-validation-error${error.instancePath}-${error.keyword}`;
@@ -64,7 +63,7 @@ function convertErrorsToMessages(errors: ErrorObject[]): string[] {
 
 const flashErrors: OnErrorHandler = (errors, req, res) => {
   convertErrorsToMessages(errors).forEach((message) =>
-    req.flash("danger", message)
+    req.flash('danger', message)
   );
 
   res.redirect(req.originalUrl);
@@ -122,7 +121,7 @@ export function hasSchema(
     orRedirect(url) {
       return onRequest(validators, redirectTo(url));
     },
-    orReplyWithJSON: onRequest(validators, replyWithJSON)
+    orReplyWithJSON: onRequest(validators, replyWithJSON),
   };
 }
 
@@ -136,9 +135,9 @@ export function hasNewModel<T extends ObjectLiteral>(
       try {
         req.model = await getRepository(entity).findOne({
           where: {
-            [prop]: req.params[prop as string]
+            [prop]: req.params[prop as string],
           } as T,
-          ...findOpts
+          ...findOpts,
         });
       } catch (err) {
         if (!isInvalidType(err)) {
@@ -149,7 +148,7 @@ export function hasNewModel<T extends ObjectLiteral>(
     if (req.model) {
       next();
     } else {
-      next("route");
+      next('route');
     }
   });
 }
@@ -186,8 +185,8 @@ export function isAdmin(req: Request, res: Response, next: NextFunction): void {
     case auth.AuthenticationStatus.LOGGED_IN:
       return next();
     case auth.AuthenticationStatus.NOT_ADMIN:
-      req.flash("warning", "403");
-      res.redirect("/");
+      req.flash('warning', '403');
+      res.redirect('/');
       return;
     default:
       auth.handleNotAuthed(status, req, res);
@@ -212,8 +211,8 @@ export function isSuperAdmin(
     case auth.AuthenticationStatus.LOGGED_IN:
       return next();
     case auth.AuthenticationStatus.NOT_ADMIN:
-      req.flash("warning", "403");
-      res.redirect("/");
+      req.flash('warning', '403');
+      res.redirect('/');
       return;
     default:
       auth.handleNotAuthed(status, req, res);

@@ -1,12 +1,10 @@
-import { TransformPlainToInstance } from "class-transformer";
+import { ContactProfile } from '@beabee/core/models';
+import { AuthInfo } from '@beabee/core/type';
 
-import { GetContactProfileDto } from "@api/dto/ContactProfileDto";
-import AddressTransformer from "@api/transformers/AddressTransformer";
-import { BaseTransformer } from "@api/transformers/BaseTransformer";
-
-import { ContactProfile } from "@beabee/core/models";
-
-import { AuthInfo } from "@beabee/core/type";
+import { GetContactProfileDto } from '@api/dto/ContactProfileDto';
+import AddressTransformer from '@api/transformers/AddressTransformer';
+import { BaseTransformer } from '@api/transformers/BaseTransformer';
+import { TransformPlainToInstance } from 'class-transformer';
 
 class ContactProfileTransformer extends BaseTransformer<
   ContactProfile,
@@ -27,10 +25,10 @@ class ContactProfileTransformer extends BaseTransformer<
         AddressTransformer.convert(profile.deliveryAddress),
       newsletterStatus: profile.newsletterStatus,
       newsletterGroups: profile.newsletterGroups,
-      ...(auth.roles.includes("admin") && {
+      ...(auth.roles.includes('admin') && {
         notes: profile.notes,
-        description: profile.description
-      })
+        description: profile.description,
+      }),
     };
   }
 }

@@ -1,17 +1,17 @@
-import { ContributionPeriod, isPeriod } from "@beabee/beabee-common";
+import { ContributionPeriod, isPeriod } from '@beabee/beabee-common';
+import OptionsService from '@beabee/core/services/OptionsService';
+
 import {
-  buildMessage,
-  isNumber,
   ValidateBy,
   ValidationArguments,
-  ValidationOptions
-} from "class-validator";
-
-import OptionsService from "@beabee/core/services/OptionsService";
+  ValidationOptions,
+  buildMessage,
+  isNumber,
+} from 'class-validator';
 
 function getMinAmount(period: ContributionPeriod) {
   const minMonthlyAmount = OptionsService.getInt(
-    "contribution-min-monthly-amount"
+    'contribution-min-monthly-amount'
   );
 
   return period === ContributionPeriod.Monthly
@@ -23,7 +23,7 @@ function getPeriod(
   args: ValidationArguments | undefined
 ): ContributionPeriod | undefined {
   return args &&
-    "period" in args.object &&
+    'period' in args.object &&
     args.object.period &&
     isPeriod(args.object.period)
     ? args.object.period
@@ -35,7 +35,7 @@ export default function MinContributionAmount(
 ): PropertyDecorator {
   return ValidateBy(
     {
-      name: "minContributionAmount",
+      name: 'minContributionAmount',
       validator: {
         validate: (value, args) => {
           const period = getPeriod(args);
@@ -46,8 +46,8 @@ export default function MinContributionAmount(
           return period
             ? eachPrefix + `$property must be at least ${getMinAmount(period)}`
             : eachPrefix + `must have a valid period`;
-        }, validationOptions)
-      }
+        }, validationOptions),
+      },
     },
     validationOptions
   );

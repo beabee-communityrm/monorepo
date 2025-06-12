@@ -1,13 +1,15 @@
-import Stripe from "stripe";
-import { Contact } from "@beabee/core/models";
-import { paymentService } from "@beabee/core/services";
-import { PaymentForm, PaymentMethod } from "@beabee/beabee-common";
-import type { CreatePaymentArgs } from "../../types/index.js";
+import { PaymentForm, PaymentMethod } from '@beabee/beabee-common';
 import {
-  stripe,
   getPriceData,
-  getSalesTaxRateObject
-} from "@beabee/core/lib/stripe";
+  getSalesTaxRateObject,
+  stripe,
+} from '@beabee/core/lib/stripe';
+import { Contact } from '@beabee/core/models';
+import { paymentService } from '@beabee/core/services';
+
+import Stripe from 'stripe';
+
+import type { CreatePaymentArgs } from '../../types/index.js';
 
 // Step 2: Create join flow data
 function createPaymentFormData(argv: CreatePaymentArgs): PaymentForm {
@@ -15,7 +17,7 @@ function createPaymentFormData(argv: CreatePaymentArgs): PaymentForm {
     monthlyAmount: argv.amount,
     period: argv.period,
     payFee: argv.payFee,
-    prorate: argv.prorate
+    prorate: argv.prorate,
   };
 }
 
@@ -27,8 +29,8 @@ async function createStripeCustomer(
     email: contact.email,
     name: `${contact.firstname} ${contact.lastname}`,
     metadata: {
-      contactId: contact.id
-    }
+      contactId: contact.id,
+    },
   });
 }
 
@@ -38,20 +40,20 @@ async function setupTestPaymentMethod(
 ): Promise<Stripe.PaymentMethod> {
   // Create payment method with test card
   const paymentMethod = await stripe.paymentMethods.create({
-    type: "card",
-    card: { token: "tok_visa" }
+    type: 'card',
+    card: { token: 'tok_visa' },
   });
 
   // Attach payment method to customer
   await stripe.paymentMethods.attach(paymentMethod.id, {
-    customer: customerId
+    customer: customerId,
   });
 
   // Set as default payment method
   await stripe.customers.update(customerId, {
     invoice_settings: {
-      default_payment_method: paymentMethod.id
-    }
+      default_payment_method: paymentMethod.id,
+    },
   });
 
   return paymentMethod;
@@ -66,15 +68,15 @@ async function createAndActivateSubscription(
   const subscription = await stripe.subscriptions.create({
     customer: customerId,
     items: [{ price_data: getPriceData(paymentForm, paymentMethod) }],
-    payment_behavior: "error_if_incomplete",
-    expand: ["latest_invoice.payment_intent"],
-    default_tax_rates: getSalesTaxRateObject()
+    payment_behavior: 'error_if_incomplete',
+    expand: ['latest_invoice.payment_intent'],
+    default_tax_rates: getSalesTaxRateObject(),
   });
 
   // Ensure subscription is active
-  if (subscription.status !== "active") {
+  if (subscription.status !== 'active') {
     await stripe.subscriptions.update(subscription.id, {
-      trial_end: "now"
+      trial_end: 'now',
     });
   }
 
@@ -118,15 +120,15 @@ export async function createStripePayment(
     await paymentService.updateData(contact, {
       customerId: customer.id,
       mandateId: paymentMethod.id,
-      subscriptionId: subscription.id
+      subscriptionId: subscription.id,
     });
 
-    console.log("Payment setup completed successfully!");
+    console.log('Payment setup completed successfully!');
     console.log(`Customer ID: ${customer.id}`);
     console.log(`Payment Method ID: ${paymentMethod.id}`);
     console.log(`Subscription ID: ${subscription.id}`);
   } catch (error) {
-    console.error("Failed to setup payment:", error);
+    console.error('Failed to setup payment:', error);
     throw error;
   }
 }

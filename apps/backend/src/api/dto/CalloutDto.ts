@@ -1,19 +1,30 @@
 import {
-  ItemStatus,
   CalloutAccess,
   CalloutCaptcha,
   CalloutChannel,
   CalloutData,
   CalloutMapSchema,
+  CalloutNewsletterSchema,
   CalloutResponseViewSchema,
-  CalloutNewsletterSchema
-} from "@beabee/beabee-common";
+  ItemStatus,
+} from '@beabee/beabee-common';
+
+import { GetPaginatedQuery } from '@api/dto/BaseDto';
+import { GetCalloutFormDto, SetCalloutFormDto } from '@api/dto/CalloutFormDto';
+import { CalloutVariantDto } from '@api/dto/CalloutVariantDto';
+import { LinkDto } from '@api/dto/LinkDto';
+import { NewsletterGroupDto } from '@api/dto/NewsletterDto';
+import IsLngLat from '@api/validators/IsLngLat';
+import IsMapBounds from '@api/validators/IsMapBounds';
+import IsSlug from '@api/validators/IsSlug';
+import IsUrl from '@api/validators/IsUrl';
+import IsVariantsObject from '@api/validators/IsVariantsObject';
 import {
   Transform,
   TransformFnParams,
   Type,
-  plainToInstance
-} from "class-transformer";
+  plainToInstance,
+} from 'class-transformer';
 import {
   Equals,
   IsArray,
@@ -26,27 +37,16 @@ import {
   IsString,
   Max,
   Min,
-  ValidateNested
-} from "class-validator";
-
-import { GetPaginatedQuery } from "@api/dto/BaseDto";
-import { GetCalloutFormDto, SetCalloutFormDto } from "@api/dto/CalloutFormDto";
-import { CalloutVariantDto } from "@api/dto/CalloutVariantDto";
-import { LinkDto } from "@api/dto/LinkDto";
-import { NewsletterGroupDto } from "@api/dto/NewsletterDto";
-import IsSlug from "@api/validators/IsSlug";
-import IsUrl from "@api/validators/IsUrl";
-import IsMapBounds from "@api/validators/IsMapBounds";
-import IsLngLat from "@api/validators/IsLngLat";
-import IsVariantsObject from "@api/validators/IsVariantsObject";
+  ValidateNested,
+} from 'class-validator';
 
 export enum GetCalloutWith {
-  Form = "form",
-  HasAnswered = "hasAnswered",
-  ResponseCount = "responseCount",
-  ResponseViewSchema = "responseViewSchema",
-  VariantNames = "variantNames",
-  Variants = "variants"
+  Form = 'form',
+  HasAnswered = 'hasAnswered',
+  ResponseCount = 'responseCount',
+  ResponseViewSchema = 'responseViewSchema',
+  VariantNames = 'variantNames',
+  Variants = 'variants',
 }
 
 export class GetCalloutOptsDto {
@@ -68,7 +68,7 @@ export class ListCalloutsDto
   // Should inherit but can't inherit multiple classes
   implements GetCalloutOptsDto
 {
-  @IsIn(["title", "starts", "expires"])
+  @IsIn(['title', 'starts', 'expires'])
   sort?: string;
 
   @IsOptional()

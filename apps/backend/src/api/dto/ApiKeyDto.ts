@@ -1,14 +1,13 @@
+import { GetPaginatedQuery } from '@api/dto/BaseDto';
+import { GetContactDto } from '@api/dto/ContactDto';
+import { Type } from 'class-transformer';
 import {
   IsDate,
   IsIn,
   IsOptional,
   IsString,
-  ValidateNested
-} from "class-validator";
-import { Type } from "class-transformer";
-
-import { GetPaginatedQuery } from "@api/dto/BaseDto";
-import { GetContactDto } from "@api/dto/ContactDto";
+  ValidateNested,
+} from 'class-validator';
 
 export class CreateApiKeyDto {
   @IsString()
@@ -37,6 +36,6 @@ export class GetApiKeyDto extends CreateApiKeyDto {
 }
 
 export class ListApiKeysDto extends GetPaginatedQuery {
-  @IsIn(["createdAt", "expires"])
+  @IsIn(['createdAt', 'expires'])
   sort?: string;
 }

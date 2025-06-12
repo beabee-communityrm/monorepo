@@ -1,8 +1,8 @@
-import { ObjectLiteral, SelectQueryBuilder } from "typeorm";
+import { Export, ExportItem } from '@beabee/core/models';
 
-import { Param } from "#core/utils/params";
+import { ObjectLiteral, SelectQueryBuilder } from 'typeorm';
 
-import { Export, ExportItem } from "@beabee/core/models";
+import { Param } from '#core/utils/params';
 
 export type ExportResult =
   | Record<string, unknown>[]
@@ -36,12 +36,12 @@ export default abstract class BaseExport<T extends ObjectLiteral> {
       .where((qb) => {
         const subQuery = qb
           .subQuery()
-          .select("ei.itemId")
-          .from(ExportItem, "ei")
-          .where("ei.exportId = :exportId");
+          .select('ei.itemId')
+          .from(ExportItem, 'ei')
+          .where('ei.exportId = :exportId');
 
         if (status) {
-          subQuery.andWhere("ei.status = :status");
+          subQuery.andWhere('ei.status = :status');
         }
         return `${this.idColumn}::text IN ` + subQuery.getQuery();
       })
@@ -54,9 +54,9 @@ export default abstract class BaseExport<T extends ObjectLiteral> {
       .andWhere((qb) => {
         const subQuery = qb
           .subQuery()
-          .select("ei.itemId")
-          .from(ExportItem, "ei")
-          .where("ei.exportId = :exportId");
+          .select('ei.itemId')
+          .from(ExportItem, 'ei')
+          .where('ei.exportId = :exportId');
 
         return `${this.idColumn}::text NOT IN ` + subQuery.getQuery();
       })
@@ -69,7 +69,7 @@ export default abstract class BaseExport<T extends ObjectLiteral> {
 
   async getNewItemIds(): Promise<string[]> {
     return (
-      await this.getNewItemsQuery().select(this.idColumn, "id").getRawMany()
+      await this.getNewItemsQuery().select(this.idColumn, 'id').getRawMany()
     ).map((item) => item.id);
   }
 }

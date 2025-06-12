@@ -15,6 +15,7 @@
 <script lang="ts" setup>
 import { type IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { computed } from 'vue';
+
 import AppSubHeading from './AppSubHeading.vue';
 
 const props = defineProps<{

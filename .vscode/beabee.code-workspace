@@ -49,6 +49,10 @@
       "path": "../packages/locale"
     },
     {
+      "name": "packages/weblate-client",
+      "path": "../packages/weblate-client"
+    },
+    {
       "name": "packages/vue",
       "path": "../packages/vue"
     },
@@ -63,6 +67,10 @@
     {
       "name": "packages/test-utils",
       "path": "../packages/test-utils"
+    },
+    {
+      "name": "packages/esbuild",
+      "path": "../packages/esbuild"
     },
     {
       "name": "packages/docker",

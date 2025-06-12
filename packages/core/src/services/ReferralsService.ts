@@ -1,12 +1,10 @@
-import { getRepository } from "#database";
-import { log as mainLogger } from "#logging";
+import { getRepository } from '#database';
+import { log as mainLogger } from '#logging';
+import { Contact, Referral, ReferralGift } from '#models/index';
+import EmailService from '#services/EmailService';
+import { ReferralGiftForm } from '#type/index';
 
-import EmailService from "#services/EmailService";
-
-import { Contact, ReferralGift, Referral } from "#models/index";
-import { ReferralGiftForm } from "#type/index";
-
-const log = mainLogger.child({ app: "referrals-service" });
+const log = mainLogger.child({ app: 'referrals-service' });
 
 export class ReferralsService {
   static async getGifts(): Promise<ReferralGift[]> {
@@ -20,12 +18,12 @@ export class ReferralsService {
     if (!giftForm.referralGift) return true; // No gift option
 
     const gift = await getRepository(ReferralGift).findOneBy({
-      name: giftForm.referralGift
+      name: giftForm.referralGift,
     });
     if (gift && gift.enabled && gift.minAmount <= amount) {
       if (giftForm.referralGiftOptions) {
         const optionStockRef = Object.values(giftForm.referralGiftOptions).join(
-          "/"
+          '/'
         );
         const optionStock = gift.stock.get(optionStockRef);
         return optionStock === undefined || optionStock > 0;
@@ -38,15 +36,15 @@ export class ReferralsService {
   }
 
   static async updateGiftStock(giftForm: ReferralGiftForm): Promise<void> {
-    log.info("Update gift stock", giftForm);
+    log.info('Update gift stock', giftForm);
 
     if (giftForm.referralGift) {
       const gift = await getRepository(ReferralGift).findOneBy({
-        name: giftForm.referralGift
+        name: giftForm.referralGift,
       });
       if (gift && giftForm.referralGiftOptions) {
         const optionStockRef = Object.values(giftForm.referralGiftOptions).join(
-          "/"
+          '/'
         );
         const optionStock = gift.stock.get(optionStockRef);
         if (optionStock !== undefined) {
@@ -63,11 +61,11 @@ export class ReferralsService {
     referee: Contact,
     giftForm: ReferralGiftForm
   ): Promise<void> {
-    log.info("Create referral", {
+    log.info('Create referral', {
       referrerId: referrer?.id,
       refereeId: referee.id,
       giftForm,
-      refereeAmount: referee.contributionMonthlyAmount
+      refereeAmount: referee.contributionMonthlyAmount,
     });
 
     const referral = new Referral();
@@ -75,7 +73,7 @@ export class ReferralsService {
     referral.referee = referee;
     referral.refereeAmount = referee.contributionMonthlyAmount || 0;
     referral.refereeGift = {
-      name: giftForm.referralGift || ""
+      name: giftForm.referralGift || '',
     } as ReferralGift;
     referral.refereeGiftOptions = giftForm.referralGiftOptions || null;
 
@@ -85,13 +83,13 @@ export class ReferralsService {
 
     if (referrer) {
       await EmailService.sendTemplateToContact(
-        "successful-referral",
+        'successful-referral',
         referrer,
         {
           refereeName: referee.firstname,
           isEligible:
             !!referee.contributionMonthlyAmount &&
-            referee.contributionMonthlyAmount >= 3
+            referee.contributionMonthlyAmount >= 3,
         }
       );
     }
@@ -100,7 +98,7 @@ export class ReferralsService {
   static async getContactReferrals(referrer: Contact): Promise<Referral[]> {
     return await getRepository(Referral).find({
       relations: { referrerGift: true, referee: true },
-      where: { referrerId: referrer.id }
+      where: { referrerId: referrer.id },
     });
   }
 
@@ -118,7 +116,7 @@ export class ReferralsService {
             ? { name: giftForm.referralGift }
             : null,
         referrerGiftOptions: giftForm.referralGiftOptions || null,
-        referrerHasSelected: true
+        referrerHasSelected: true,
       });
 
       await ReferralsService.updateGiftStock(giftForm);
@@ -133,7 +131,7 @@ export class ReferralsService {
    * @param contact The contact
    */
   static async permanentlyDeleteContact(contact: Contact): Promise<void> {
-    log.info("Permanently delete contact referrals for contact " + contact.id);
+    log.info('Permanently delete contact referrals for contact ' + contact.id);
     await getRepository(Referral).update(
       { referrerId: contact.id },
       { referrer: null }

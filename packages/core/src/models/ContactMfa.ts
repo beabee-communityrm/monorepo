@@ -1,31 +1,32 @@
-import { CONTACT_MFA_TYPE } from "@beabee/beabee-common";
+import { CONTACT_MFA_TYPE } from '@beabee/beabee-common';
+
 import {
   Column,
   Entity,
   JoinColumn,
   OneToOne,
-  PrimaryGeneratedColumn
-} from "typeorm";
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
-import { type Contact } from "./index";
+import { type Contact } from './index';
 
 /**
  * The **unsecure** contact multi factor authentication information with the `secret` key
  **/
 @Entity()
 export class ContactMfa {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id!: string;
 
   @Column()
   contactId!: string;
-  @OneToOne("Contact", "mfa")
+  @OneToOne('Contact', 'mfa')
   @JoinColumn()
   contact!: Contact;
 
   @Column({ type: String })
   type!: CONTACT_MFA_TYPE;
 
-  @Column({ default: "" })
+  @Column({ default: '' })
   secret!: string;
 }

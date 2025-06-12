@@ -12,5 +12,6 @@ meta:
 
 <script lang="ts" setup>
 import ResetPasswordPage from '../reset-password/[id].vue';
+
 defineProps<{ id: string }>();
 </script>

@@ -1,56 +1,56 @@
-import { ContributionType } from "@beabee/beabee-common";
-import _ from "lodash";
-import { SelectQueryBuilder } from "typeorm";
+import { ContributionType } from '@beabee/beabee-common';
+import { createQueryBuilder } from '@beabee/core/database';
+import { Contact } from '@beabee/core/models';
 
-import { createQueryBuilder } from "@beabee/core/database";
-import { Param } from "#core/utils/params";
+import _ from 'lodash';
+import { SelectQueryBuilder } from 'typeorm';
 
-import { Contact } from "@beabee/core/models";
+import { Param } from '#core/utils/params';
 
-import { ExportResult } from "./BaseExport";
-import ActiveMembersExport from "./ActiveMembersExport";
+import ActiveMembersExport from './ActiveMembersExport';
+import { ExportResult } from './BaseExport';
 
 export default class EditionExport extends ActiveMembersExport {
-  exportName = "Edition export";
-  itemStatuses = ["added", "sent"];
-  itemName = "members";
-  idColumn = "m.id";
+  exportName = 'Edition export';
+  itemStatuses = ['added', 'sent'];
+  itemName = 'members';
+  idColumn = 'm.id';
 
   async getParams(): Promise<Param[]> {
     return [
       {
-        name: "monthlyAmountThreshold",
-        label: "Monthly contribution amount threshold",
-        type: "number"
+        name: 'monthlyAmountThreshold',
+        label: 'Monthly contribution amount threshold',
+        type: 'number',
       },
       {
-        name: "includeNonOptIn",
-        label: "Include those without delivery opt in",
-        type: "boolean"
-      }
+        name: 'includeNonOptIn',
+        label: 'Include those without delivery opt in',
+        type: 'boolean',
+      },
     ];
   }
 
   protected get query(): SelectQueryBuilder<Contact> {
-    return createQueryBuilder(Contact, "m")
-      .innerJoinAndSelect("m.profile", "profile")
+    return createQueryBuilder(Contact, 'm')
+      .innerJoinAndSelect('m.profile', 'profile')
       .orderBy({
-        firstname: "ASC",
-        lastname: "ASC"
+        firstname: 'ASC',
+        lastname: 'ASC',
       });
   }
 
   protected getNewItemsQuery(): SelectQueryBuilder<Contact> {
     const query = super
       .getNewItemsQuery()
-      .andWhere("m.contributionMonthlyAmount >= :amount")
+      .andWhere('m.contributionMonthlyAmount >= :amount')
       .setParameters({
         now: new Date(),
-        amount: this.ex!.params?.monthlyAmountThreshold || 3
+        amount: this.ex!.params?.monthlyAmountThreshold || 3,
       });
 
     if (!this.ex!.params?.includeNonOptIn) {
-      query.andWhere("profile.deliveryOptIn = TRUE");
+      query.andWhere('profile.deliveryOptIn = TRUE');
     }
 
     return query;
@@ -59,10 +59,10 @@ export default class EditionExport extends ActiveMembersExport {
   async getExport(contacts: Contact[]): Promise<ExportResult> {
     return contacts.map((contact) => {
       const deliveryAddress = contact.profile.deliveryAddress || {
-        line1: "",
-        line2: "",
-        city: "",
-        postcode: ""
+        line1: '',
+        line2: '',
+        city: '',
+        postcode: '',
       };
 
       return {
@@ -75,7 +75,7 @@ export default class EditionExport extends ActiveMembersExport {
         Postcode: deliveryAddress.postcode.trim().toUpperCase(),
         ReferralCode: contact.referralCode,
         IsGift: contact.contributionType === ContributionType.Gift,
-        ContributionMonthlyAmount: contact.contributionMonthlyAmount
+        ContributionMonthlyAmount: contact.contributionMonthlyAmount,
       };
     });
   }

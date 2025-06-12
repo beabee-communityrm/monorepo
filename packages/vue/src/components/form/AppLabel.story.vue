@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { reactive } from 'vue';
+
 import AppLabel from './AppLabel.vue';
 
 const state = reactive({

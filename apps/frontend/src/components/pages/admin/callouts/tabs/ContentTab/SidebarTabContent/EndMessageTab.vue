@@ -51,13 +51,15 @@
 </template>
 
 <script lang="ts" setup>
+import { AppFormField, AppRadioGroup } from '@beabee/vue/components';
+
+import AppInput from '@components/forms/AppInput.vue';
+import RichTextEditor from '@components/rte/RichTextEditor.vue';
+import type { LocaleProp } from '@type';
 import useVuelidate from '@vuelidate/core';
 import { watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { AppRadioGroup, AppFormField } from '@beabee/vue/components';
-import RichTextEditor from '@components/rte/RichTextEditor.vue';
-import AppInput from '@components/forms/AppInput.vue';
-import type { LocaleProp } from '@type';
+
 import type { SidebarTabProps } from '../SidebarTabs.interface';
 
 /**

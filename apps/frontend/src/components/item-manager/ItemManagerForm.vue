@@ -10,6 +10,7 @@
 </template>
 <script lang="ts" setup generic="D">
 import { AppForm } from '@beabee/vue/components';
+
 import useVuelidate from '@vuelidate/core';
 import { required } from '@vuelidate/validators';
 import { useI18n } from 'vue-i18n';

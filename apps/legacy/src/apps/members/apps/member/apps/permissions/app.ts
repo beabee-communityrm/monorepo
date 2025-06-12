@@ -1,20 +1,19 @@
-import { RoleType } from "@beabee/beabee-common";
+import { RoleType } from '@beabee/beabee-common';
+import { Contact } from '@beabee/core/models';
+import ContactsService from '@beabee/core/services/ContactsService';
+import { wrapAsync } from '@beabee/core/utils/express';
+
 import express, {
   type Express,
   type NextFunction,
   type Request,
-  type Response
-} from "express";
+  type Response,
+} from 'express';
 
-import { hasSchema } from "#core/middleware";
-import { createDateTime } from "#core/utils/index";
-import { wrapAsync } from "@beabee/core/utils/express";
+import { hasSchema } from '#core/middleware';
+import { createDateTime } from '#core/utils/index';
 
-import ContactsService from "@beabee/core/services/ContactsService";
-
-import { Contact } from "@beabee/core/models";
-
-import { createPermissionSchema, updatePermissionSchema } from "./schemas.json";
+import { createPermissionSchema, updatePermissionSchema } from './schemas.json';
 
 interface CreateRoleSchema {
   type: RoleType;
@@ -28,24 +27,24 @@ function canUpdateRole(req: Request, res: Response, next: NextFunction) {
   if (req.user?.hasRole(req.params.id as RoleType)) {
     next();
   } else {
-    req.flash("danger", "403");
+    req.flash('danger', '403');
     res.redirect(req.originalUrl);
   }
 }
 
 const app: Express = express();
 
-app.set("views", __dirname + "/views");
+app.set('views', __dirname + '/views');
 
 app.get(
-  "/",
+  '/',
   wrapAsync(async (req, res) => {
-    res.render("index", { member: req.model });
+    res.render('index', { member: req.model });
   })
 );
 
 app.post(
-  "/",
+  '/',
   hasSchema(createPermissionSchema).orFlash,
   wrapAsync(async (req, res) => {
     const { type, startTime, startDate, expiryDate, expiryTime } =
@@ -53,13 +52,13 @@ app.post(
     const contact = req.model as Contact;
 
     if (!req.user?.hasRole(type)) {
-      req.flash("danger", "403");
+      req.flash('danger', '403');
       return res.redirect(req.originalUrl);
     }
 
     const dupe = contact.roles.find((p) => p.type === type);
     if (dupe) {
-      req.flash("danger", "permission-duplicate");
+      req.flash('danger', 'permission-duplicate');
       res.redirect(req.originalUrl);
       return;
     }
@@ -68,14 +67,14 @@ app.post(
     const dateExpires = createDateTime(expiryDate, expiryTime);
 
     if (dateExpires && dateAdded >= dateExpires) {
-      req.flash("warning", "permission-expiry-error");
+      req.flash('warning', 'permission-expiry-error');
       res.redirect(req.originalUrl);
       return;
     }
 
     await ContactsService.updateContactRole(contact, type, {
       dateAdded,
-      dateExpires
+      dateExpires,
     });
 
     res.redirect(req.originalUrl);
@@ -83,28 +82,28 @@ app.post(
 );
 
 app.get(
-  "/:id/modify",
+  '/:id/modify',
   canUpdateRole,
   wrapAsync(async (req, res) => {
     const contact = req.model as Contact;
 
     const role = contact.roles.find((p) => p.type === req.params.id);
     if (role) {
-      res.render("permission", { member: contact, current: role });
+      res.render('permission', { member: contact, current: role });
     } else {
-      req.flash("warning", "permission-404");
+      req.flash('warning', 'permission-404');
       res.redirect(req.baseUrl);
     }
   })
 );
 
 app.post(
-  "/:id/modify",
+  '/:id/modify',
   canUpdateRole,
   hasSchema(updatePermissionSchema).orFlash,
   wrapAsync(async (req, res) => {
     const {
-      body: { startDate, startTime, expiryDate, expiryTime }
+      body: { startDate, startTime, expiryDate, expiryTime },
     } = req;
     const contact = req.model as Contact;
     const roleType = req.params.id as RoleType;
@@ -113,23 +112,23 @@ app.post(
     const dateExpires = createDateTime(expiryDate, expiryTime);
 
     if (dateExpires && dateAdded >= dateExpires) {
-      req.flash("warning", "permission-expiry-error");
+      req.flash('warning', 'permission-expiry-error');
       res.redirect(req.baseUrl);
       return;
     }
 
     await ContactsService.updateContactRole(contact, roleType, {
       dateAdded,
-      dateExpires
+      dateExpires,
     });
 
-    req.flash("success", "permission-updated");
+    req.flash('success', 'permission-updated');
     res.redirect(req.baseUrl);
   })
 );
 
 app.post(
-  "/:id/revoke",
+  '/:id/revoke',
   canUpdateRole,
   wrapAsync(async (req, res) => {
     await ContactsService.revokeContactRole(
@@ -137,7 +136,7 @@ app.post(
       req.params.id as RoleType
     );
 
-    req.flash("success", "permission-removed");
+    req.flash('success', 'permission-removed');
     res.redirect(req.baseUrl);
   })
 );

@@ -1,26 +1,27 @@
-import { describe, expect, it } from "vitest";
-import { CalloutResponseCommentClient } from "@beabee/client";
-import { GetCalloutResponseCommentData, Serial } from "@beabee/beabee-common";
+import { GetCalloutResponseCommentData, Serial } from '@beabee/beabee-common';
+import { CalloutResponseCommentClient } from '@beabee/client';
 
-describe("CalloutResponseComment API", () => {
-  describe("deserialize", () => {
-    it("should correctly deserialize comment data", () => {
+import { describe, expect, it } from 'vitest';
+
+describe('CalloutResponseComment API', () => {
+  describe('deserialize', () => {
+    it('should correctly deserialize comment data', () => {
       const now = new Date();
       const serializedData: Serial<GetCalloutResponseCommentData> = {
-        id: "test-id",
-        responseId: "test-response-id",
-        text: "Test comment",
+        id: 'test-id',
+        responseId: 'test-response-id',
+        text: 'Test comment',
         createdAt: now.toISOString(),
         updatedAt: now.toISOString(),
         contact: {
-          id: "contact-id",
-          email: "test@example.com",
-          firstname: "Test",
-          lastname: "User",
+          id: 'contact-id',
+          email: 'test@example.com',
+          firstname: 'Test',
+          lastname: 'User',
           joined: now,
           activeRoles: [],
-          displayName: "Test User"
-        }
+          displayName: 'Test User',
+        },
       };
 
       const result = CalloutResponseCommentClient.deserialize(serializedData);

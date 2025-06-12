@@ -1,14 +1,15 @@
-import {
-  S3Client,
-  ListObjectsV2Command,
-  HeadObjectCommand,
-  GetObjectCommand
-} from "@aws-sdk/client-s3";
-import { Readable } from "stream";
-import { NotFoundError } from "@beabee/core/errors";
-import { log as mainLogger } from "@beabee/core/logging";
+import { NotFoundError } from '@beabee/core/errors';
+import { log as mainLogger } from '@beabee/core/logging';
 
-const log = mainLogger.child({ app: "s3-utils" });
+import {
+  GetObjectCommand,
+  HeadObjectCommand,
+  ListObjectsV2Command,
+  S3Client,
+} from '@aws-sdk/client-s3';
+import { Readable } from 'stream';
+
+const log = mainLogger.child({ app: 's3-utils' });
 
 /**
  * Checks the connection to S3/MinIO
@@ -24,12 +25,12 @@ export async function checkConnection(
     await s3Client.send(
       new ListObjectsV2Command({
         Bucket: bucket,
-        MaxKeys: 1
+        MaxKeys: 1,
       })
     );
     return true;
   } catch (error) {
-    log.error("S3/MinIO connection check failed:", error);
+    log.error('S3/MinIO connection check failed:', error);
     return false;
   }
 }
@@ -55,7 +56,7 @@ export async function getFileMetadata(
     const response = await s3Client.send(
       new HeadObjectCommand({
         Bucket: bucket,
-        Key: key
+        Key: key,
       })
     );
 
@@ -64,13 +65,13 @@ export async function getFileMetadata(
     }
 
     // Extract the ID from the key (removing the prefix)
-    const id = key.split("/").pop() || "";
+    const id = key.split('/').pop() || '';
 
     return {
       id,
       mimetype: response.ContentType,
       createdAt: response.LastModified,
-      size: response.ContentLength || 0
+      size: response.ContentLength || 0,
     };
   } catch (error) {
     log.error(`Failed to get file metadata for ${key}:`, error);
@@ -94,7 +95,7 @@ export async function fileExists(
     await s3Client.send(
       new HeadObjectCommand({
         Bucket: bucket,
-        Key: key
+        Key: key,
       })
     );
     return true;
@@ -119,7 +120,7 @@ export async function getFileBuffer(
     const { Body, ContentType } = await s3Client.send(
       new GetObjectCommand({
         Bucket: bucket,
-        Key: key
+        Key: key,
       })
     );
 
@@ -158,7 +159,7 @@ export async function getFileStream(
     const { Body, ContentType } = await s3Client.send(
       new GetObjectCommand({
         Bucket: bucket,
-        Key: key
+        Key: key,
       })
     );
 
@@ -168,7 +169,7 @@ export async function getFileStream(
 
     return {
       stream: Body as Readable,
-      contentType: ContentType
+      contentType: ContentType,
     };
   } catch (error) {
     log.error(`Failed to get file stream for ${key}:`, error);
@@ -192,7 +193,7 @@ export async function getFileHash(
     const response = await s3Client.send(
       new HeadObjectCommand({
         Bucket: bucket,
-        Key: key
+        Key: key,
       })
     );
 
@@ -201,7 +202,7 @@ export async function getFileHash(
     }
 
     // Remove quotes from ETag
-    return response.ETag.replace(/"/g, "");
+    return response.ETag.replace(/"/g, '');
   } catch (error) {
     log.error(`Failed to get file hash for ${key}:`, error);
     throw new NotFoundError();

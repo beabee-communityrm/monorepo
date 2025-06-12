@@ -1,27 +1,25 @@
 import {
   CalloutResponseCommentFilterName,
+  RuleGroup,
   calloutResponseCommentFilters,
-  RuleGroup
-} from "@beabee/beabee-common";
-import { TransformPlainToInstance } from "class-transformer";
-import { SelectQueryBuilder } from "typeorm";
-
-import { GetCalloutResponseCommentDto } from "@api/dto/CalloutResponseCommentDto";
-import { BaseTransformer } from "@api/transformers/BaseTransformer";
-import ContactTransformer, {
-  loadContactRoles
-} from "@api/transformers/ContactTransformer";
-
+} from '@beabee/beabee-common';
+import { createQueryBuilder } from '@beabee/core/database';
 import {
   CalloutResponse,
   CalloutResponseComment,
-  CalloutReviewer
-} from "@beabee/core/models";
+  CalloutReviewer,
+} from '@beabee/core/models';
+import { AuthInfo, FilterHandlers } from '@beabee/core/type';
 
-import { getReviewerRules } from "@api/utils/callouts";
-import { BadRequestError } from "routing-controllers";
-import { createQueryBuilder } from "@beabee/core/database";
-import { AuthInfo, FilterHandlers } from "@beabee/core/type";
+import { GetCalloutResponseCommentDto } from '@api/dto/CalloutResponseCommentDto';
+import { BaseTransformer } from '@api/transformers/BaseTransformer';
+import ContactTransformer, {
+  loadContactRoles,
+} from '@api/transformers/ContactTransformer';
+import { getReviewerRules } from '@api/utils/callouts';
+import { TransformPlainToInstance } from 'class-transformer';
+import { BadRequestError } from 'routing-controllers';
+import { SelectQueryBuilder } from 'typeorm';
 
 class CalloutResponseCommentTransformer extends BaseTransformer<
   CalloutResponseComment,
@@ -33,8 +31,8 @@ class CalloutResponseCommentTransformer extends BaseTransformer<
   protected filterHandlers: FilterHandlers<CalloutResponseCommentFilterName> = {
     calloutId: (qb, args) => {
       // calloutId is on the response rather than the comment
-      qb.where(args.convertToWhereClause("response.calloutId"));
-    }
+      qb.where(args.convertToWhereClause('response.calloutId'));
+    },
   };
 
   @TransformPlainToInstance(GetCalloutResponseCommentDto)
@@ -48,19 +46,19 @@ class CalloutResponseCommentTransformer extends BaseTransformer<
       createdAt: comment.createdAt,
       updatedAt: comment.updatedAt,
       responseId: comment.responseId,
-      text: comment.text
+      text: comment.text,
     };
   }
 
   protected async getNonAdminAuthRules(auth: AuthInfo): Promise<RuleGroup> {
     return {
-      condition: "OR",
+      condition: 'OR',
       rules: [
         // User's can always see their own response comments
-        { field: "contact", operator: "equal", value: ["me"] },
+        { field: 'contact', operator: 'equal', value: ['me'] },
         // And any comments for callouts they are reviewers for
-        ...(await getReviewerRules(auth.contact, "calloutId"))
-      ]
+        ...(await getReviewerRules(auth.contact, 'calloutId')),
+      ],
     };
   }
 
@@ -68,12 +66,12 @@ class CalloutResponseCommentTransformer extends BaseTransformer<
     qb: SelectQueryBuilder<CalloutResponseComment>,
     fieldPrefix: string
   ): void {
-    qb.leftJoinAndSelect(`${fieldPrefix}contact`, "contact");
+    qb.leftJoinAndSelect(`${fieldPrefix}contact`, 'contact');
 
     // Fetch the calloutId for the response comment
-    qb.leftJoin(`${fieldPrefix}response`, "response").addSelect(
-      "response.calloutId",
-      "calloutId"
+    qb.leftJoin(`${fieldPrefix}response`, 'response').addSelect(
+      'response.calloutId',
+      'calloutId'
     );
   }
 
@@ -95,26 +93,26 @@ class CalloutResponseCommentTransformer extends BaseTransformer<
     auth: AuthInfo,
     data: Partial<CalloutResponseComment>
   ): Promise<boolean> {
-    if (auth.roles.includes("admin")) {
+    if (auth.roles.includes('admin')) {
       return true;
     }
 
     if (!data.responseId || !auth.contact) {
-      throw new BadRequestError("Response ID and contact required");
+      throw new BadRequestError('Response ID and contact required');
     }
 
-    const reviewer = await createQueryBuilder(CalloutReviewer, "reviewer")
-      .select("1")
+    const reviewer = await createQueryBuilder(CalloutReviewer, 'reviewer')
+      .select('1')
       .innerJoin(
         CalloutResponse,
-        "response",
-        "reviewer.calloutId = response.calloutId"
+        'response',
+        'reviewer.calloutId = response.calloutId'
       )
-      .where("reviewer.contactId = :contactId")
-      .andWhere("response.id = :responseId")
+      .where('reviewer.contactId = :contactId')
+      .andWhere('response.id = :responseId')
       .setParameters({
         contactId: auth.contact.id,
-        responseId: data.responseId
+        responseId: data.responseId,
       })
       .getRawOne();
 

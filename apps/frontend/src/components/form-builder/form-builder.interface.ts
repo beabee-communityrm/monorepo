@@ -1,4 +1,5 @@
 import { type CalloutComponentSchema } from '@beabee/beabee-common';
+
 import type { LocaleProp } from '@type';
 
 /**

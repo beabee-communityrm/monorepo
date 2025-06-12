@@ -1,4 +1,4 @@
-import type { RuleGroup } from "./index.js";
+import type { RuleGroup } from './index.js';
 
 export interface GetSegmentData {
   id: string;

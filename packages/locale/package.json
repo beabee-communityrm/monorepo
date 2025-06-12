@@ -1,25 +1,28 @@
 {
   "name": "@beabee/locale",
   "description": "Beabee Locale Translations",
-  "version": "0.1.0",
+  "version": "0.28.1",
   "type": "module",
   "homepage": "https://github.com/beabee-communityrm/monorepo/tree/main/packages/locale",
+  "license": "CC-BY-4.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/beabee-communityrm/monorepo/tree/main/packages/locale"
   },
   "scripts": {
-    "clear": "rm -rf dist/",
-    "generate": "git rev-parse --abbrev-ref HEAD | xargs -I {} yarn generate:branch {}",
-    "generate:branch": "node --experimental-specifier-resolution=node --experimental-strip-types generate.ts",
-    "build": "yarn clear && node esbuild.js && tsc",
-    "check": "tsc --noEmit"
+    "clear": "rm -rf dist/ tsconfig.build.tsbuildinfo",
+    "build": "yarn build:types && yarn build:esbuild",
+    "build:types": "rm -f tsconfig.build.tsbuildinfo && tsc -p tsconfig.build.json",
+    "build:esbuild": "node --experimental-specifier-resolution=node --experimental-strip-types --no-warnings esbuild.ts",
+    "check": "tsc --noEmit -p tsconfig.build.json",
+    "watch": "yarn build:esbuild --watch",
+    "dev": "yarn watch",
+    "generate:index": "yarn workspace @beabee/dev-cli start generate-index --baseDir $(pwd) --extension js -p ./src/types"
   },
   "devDependencies": {
+    "@beabee/esbuild": "workspace:^",
     "@gjsify/esbuild-plugin-transform-ext": "^0.0.4",
-    "esbuild": "^0.25.1",
-    "googleapis": "^144.0.0",
-    "markdown-it": "^14.1.0",
+    "esbuild": "^0.25.5",
     "typescript": "~5.6.3"
   },
   "files": [

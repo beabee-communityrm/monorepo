@@ -1,10 +1,9 @@
 import type {
   ContributionPeriod,
   ContributionType,
-  MembershipStatus
-} from "../data/index.js";
-
-import type { PaymentSource } from "./index.js";
+  MembershipStatus,
+} from '../data/index.js';
+import type { PaymentSource } from './index.js';
 
 export interface ContributionInfo {
   type: ContributionType;

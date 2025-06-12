@@ -257,46 +257,43 @@ meta:
 </template>
 
 <script lang="ts" setup>
-import { onBeforeMount, ref, reactive } from 'vue';
 import {
-  ContributionType,
-  GetContactWith,
   type ContactRoleData,
   type ContentJoinSetupData,
+  ContributionType,
   type GetCalloutDataWith,
   type GetCalloutResponseDataWith,
   type GetContactData,
   type GetContactDataWith,
+  GetContactWith,
   type RoleType,
 } from '@beabee/beabee-common';
-import { useI18n } from 'vue-i18n';
-import { faCircleNotch, faMobileAlt } from '@fortawesome/free-solid-svg-icons';
-
-import AppHeading from '@components/AppHeading.vue';
-import AppInput from '@components/forms/AppInput.vue';
-import { AppButton } from '@beabee/vue/components';
-import RoleEditor from '@components/role/RoleEditor.vue';
-import AppInfoList from '@components/AppInfoList.vue';
-import AppInfoListItem from '@components/AppInfoListItem.vue';
-import RichTextEditor from '@components/rte/RichTextEditor.vue';
-import { AppForm } from '@beabee/vue/components';
-import PaymentMethod from '@components/payment-method/PaymentMethod.vue';
-import AppConfirmDialog from '@components/AppConfirmDialog.vue';
-import App2ColGrid from '@components/App2ColGrid.vue';
-import CalloutForm from '@components/pages/callouts/CalloutForm.vue';
-import ToggleTagButton from '@components/tag/ToggleTagButton.vue';
-import TagList from '@components/tag/TagList.vue';
-
-import { client } from '@utils/api';
-import { formatLocale } from '@utils/dates';
 import {
   CONTACT_MFA_TYPE,
   GetCalloutResponseWith,
 } from '@beabee/beabee-common';
-
+import { AppButton } from '@beabee/vue/components';
+import { AppForm } from '@beabee/vue/components';
 import { addNotification } from '@beabee/vue/store/notifications';
 
+import App2ColGrid from '@components/App2ColGrid.vue';
+import AppConfirmDialog from '@components/AppConfirmDialog.vue';
+import AppHeading from '@components/AppHeading.vue';
+import AppInfoList from '@components/AppInfoList.vue';
+import AppInfoListItem from '@components/AppInfoListItem.vue';
+import AppInput from '@components/forms/AppInput.vue';
+import CalloutForm from '@components/pages/callouts/CalloutForm.vue';
+import PaymentMethod from '@components/payment-method/PaymentMethod.vue';
+import RoleEditor from '@components/role/RoleEditor.vue';
+import RichTextEditor from '@components/rte/RichTextEditor.vue';
+import TagList from '@components/tag/TagList.vue';
+import ToggleTagButton from '@components/tag/ToggleTagButton.vue';
 import env from '@env';
+import { faCircleNotch, faMobileAlt } from '@fortawesome/free-solid-svg-icons';
+import { client } from '@utils/api';
+import { formatLocale } from '@utils/dates';
+import { onBeforeMount, reactive, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 const { t, n } = useI18n();
 

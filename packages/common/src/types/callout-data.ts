@@ -1,13 +1,12 @@
 import type {
-  CalloutNewsletterSchema,
-  CalloutResponseViewSchema
-} from "./index.js";
-
-import type {
   CalloutAccess,
   CalloutCaptcha,
-  CalloutChannel
-} from "../data/index.js";
+  CalloutChannel,
+} from '../data/index.js';
+import type {
+  CalloutNewsletterSchema,
+  CalloutResponseViewSchema,
+} from './index.js';
 
 export interface CalloutData {
   slug?: string;

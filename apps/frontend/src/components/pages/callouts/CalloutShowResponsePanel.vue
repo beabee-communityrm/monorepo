@@ -35,17 +35,18 @@
 </template>
 
 <script lang="ts" setup>
-import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import { computed } from 'vue';
-
-import CalloutSidePanel from './CalloutSidePanel.vue';
 import {
   type GetCalloutDataWith,
   type GetCalloutResponseMapData,
 } from '@beabee/beabee-common';
-import CalloutResponse from './CalloutResponse.vue';
 import { AppButton, AppButtonGroup } from '@beabee/vue/components';
+
+import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import CalloutResponse from './CalloutResponse.vue';
+import CalloutSidePanel from './CalloutSidePanel.vue';
 
 defineEmits<{ (e: 'close'): void }>();
 const props = defineProps<{
@@ -54,7 +55,7 @@ const props = defineProps<{
 }>();
 
 const currentResponseNumber = defineModel<number>('currentResponseNumber', {
-  default: 0,
+  required: true,
 });
 
 const { n } = useI18n();
@@ -62,6 +63,7 @@ const { n } = useI18n();
 const responseIndex = computed(() =>
   props.responses.findIndex((r) => r.number === currentResponseNumber.value)
 );
+
 const currentResponse = computed(() => props.responses[responseIndex.value]);
 
 function changeResponse(inc: number) {

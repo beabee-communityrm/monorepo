@@ -1,13 +1,14 @@
-import { ContributionPeriod, ContributionType } from "@beabee/beabee-common";
-import { Brackets } from "typeorm";
-import { log as mainLogger } from "@beabee/core/logging";
-import { createQueryBuilder } from "@beabee/core/database";
-import { getActualAmount } from "@beabee/core/utils/payment";
-import { Contact, ContactContribution, Payment } from "@beabee/core/models";
-import { config } from "@beabee/core/config";
-import { runApp } from "@beabee/core/server";
+import { ContributionPeriod, ContributionType } from '@beabee/beabee-common';
+import { config } from '@beabee/core/config';
+import { createQueryBuilder } from '@beabee/core/database';
+import { log as mainLogger } from '@beabee/core/logging';
+import { Contact, ContactContribution, Payment } from '@beabee/core/models';
+import { runApp } from '@beabee/core/server';
+import { getActualAmount } from '@beabee/core/utils/payment';
 
-const log = mainLogger.child({ app: "test-users" });
+import { Brackets } from 'typeorm';
+
+const log = mainLogger.child({ app: 'test-users' });
 
 interface TestUserFilters {
   isActive: Brackets;
@@ -32,64 +33,64 @@ export const listTestUsers = async (dryRun = false): Promise<void> => {
     const filters = await getFilters();
 
     // Active users
-    await logContactVaryContributions("Active, no scheduled payments", [
+    await logContactVaryContributions('Active, no scheduled payments', [
       filters.isActive,
-      filters.noScheduledPayments
+      filters.noScheduledPayments,
     ]);
 
-    await logContactVaryContributions("Active, has scheduled payments", [
+    await logContactVaryContributions('Active, has scheduled payments', [
       filters.isActive,
-      filters.hasScheduledPayments
+      filters.hasScheduledPayments,
     ]);
 
     // Inactive users
-    await logContactVaryContributions("Inactive due to failed payment", [
+    await logContactVaryContributions('Inactive due to failed payment', [
       filters.hasSubscription,
       filters.isInactive,
-      filters.hasFailedPayments
+      filters.hasFailedPayments,
     ]);
 
     await logContactVaryContributions(
-      "Inactive due to failed payment, has scheduled payments",
+      'Inactive due to failed payment, has scheduled payments',
       [
         filters.hasSubscription,
         filters.isInactive,
         filters.hasFailedPayments,
-        filters.hasScheduledPayments
+        filters.hasScheduledPayments,
       ]
     );
 
     // Cancelled memberships
-    await logContactVaryContributions("Cancelled active member", [
+    await logContactVaryContributions('Cancelled active member', [
       filters.isActive,
-      filters.hasCancelled
+      filters.hasCancelled,
     ]);
 
-    await logContactVaryContributions("Cancelled inactive member", [
+    await logContactVaryContributions('Cancelled inactive member', [
       filters.isInactive,
-      filters.hasCancelled
+      filters.hasCancelled,
     ]);
 
     // Gift memberships
-    await logContact("Active, gift membership", [
+    await logContact('Active, gift membership', [
       filters.isActive,
-      filters.isGift
+      filters.isGift,
     ]);
 
-    await logContact("Inactive, gift membership", [
+    await logContact('Inactive, gift membership', [
       filters.isInactive,
-      filters.isGift
+      filters.isGift,
     ]);
 
     // Special cases
-    await logContact("Active, paying fee", [
+    await logContact('Active, paying fee', [
       filters.isActive,
-      filters.isPayingFee
+      filters.isPayingFee,
     ]);
 
-    await logContact("Super admin account", [filters.isSuperAdmin]);
+    await logContact('Super admin account', [filters.isSuperAdmin]);
 
-    log.info("Test users listing completed");
+    log.info('Test users listing completed');
   });
 };
 
@@ -97,9 +98,9 @@ export const listTestUsers = async (dryRun = false): Promise<void> => {
  * Logs contact details for a specific test scenario
  */
 async function logContact(type: string, conditions: Brackets[]) {
-  const qb = createQueryBuilder(Contact, "m")
-    .innerJoinAndSelect("m.roles", "mp")
-    .where("TRUE");
+  const qb = createQueryBuilder(Contact, 'm')
+    .innerJoinAndSelect('m.roles', 'mp')
+    .where('TRUE');
 
   for (const condition of conditions) {
     qb.andWhere(condition);
@@ -111,7 +112,7 @@ async function logContact(type: string, conditions: Brackets[]) {
     log.info(`${contact.fullname}, ${contact.email}`);
     log.info(`${config.audience}/login/as/${contact.id}`);
   } else {
-    log.info("No contact found");
+    log.info('No contact found');
   }
 }
 
@@ -126,7 +127,7 @@ async function logContactVaryContributions(
   for (const amount of amounts) {
     for (const period of [
       ContributionPeriod.Monthly,
-      ContributionPeriod.Annually
+      ContributionPeriod.Annually,
     ]) {
       await logContact(
         `${type}, £${getActualAmount(amount, period)}/${period}`,
@@ -134,10 +135,10 @@ async function logContactVaryContributions(
           ...conditions,
           new Brackets((qb) =>
             qb.where(
-              "m.contributionMonthlyAmount = :amount AND m.contributionPeriod = :period",
+              'm.contributionMonthlyAmount = :amount AND m.contributionPeriod = :period',
               { amount, period }
             )
-          )
+          ),
         ]
       );
     }
@@ -152,33 +153,33 @@ async function getFilters(): Promise<TestUserFilters> {
 
   const hasScheduledPayments = createQueryBuilder()
     .subQuery()
-    .select("p.contactId")
-    .from(Payment, "p")
+    .select('p.contactId')
+    .from(Payment, 'p')
     .where("p.status = 'pending'");
 
   const hasFailedPayments = createQueryBuilder()
     .subQuery()
-    .select("p.contactId")
-    .from(Payment, "p")
+    .select('p.contactId')
+    .from(Payment, 'p')
     .where("p.status = 'failed'");
 
   const hasSubscription = createQueryBuilder()
     .subQuery()
-    .select("cc.contactId")
-    .from(ContactContribution, "cc")
-    .where("cc.subscriptionId IS NOT NULL");
+    .select('cc.contactId')
+    .from(ContactContribution, 'cc')
+    .where('cc.subscriptionId IS NOT NULL');
 
   const hasCancelled = createQueryBuilder()
     .subQuery()
-    .select("cc.contactId")
-    .from(ContactContribution, "cc")
-    .where("cc.cancelledAt IS NOT NULL");
+    .select('cc.contactId')
+    .from(ContactContribution, 'cc')
+    .where('cc.cancelledAt IS NOT NULL');
 
   const isPayingFee = createQueryBuilder()
     .subQuery()
-    .select("cc.contactId")
-    .from(ContactContribution, "cc")
-    .where("cc.payFee = TRUE");
+    .select('cc.contactId')
+    .from(ContactContribution, 'cc')
+    .where('cc.payFee = TRUE');
 
   return {
     isActive: new Brackets((qb) =>
@@ -189,30 +190,30 @@ async function getFilters(): Promise<TestUserFilters> {
     ),
     isSuperAdmin: new Brackets((qb) => qb.where("mp.type = 'superadmin'")),
     isGift: new Brackets((qb) =>
-      qb.where("m.contributionType = :gift", {
-        gift: ContributionType.Gift
+      qb.where('m.contributionType = :gift', {
+        gift: ContributionType.Gift,
       })
     ),
     hasSubscription: new Brackets((qb) =>
-      qb.where("m.id IN " + hasSubscription.getQuery())
+      qb.where('m.id IN ' + hasSubscription.getQuery())
     ),
     hasCancelled: new Brackets((qb) =>
-      qb.where("m.id IN " + hasCancelled.getQuery())
+      qb.where('m.id IN ' + hasCancelled.getQuery())
     ),
     isPayingFee: new Brackets((qb) =>
-      qb.where("m.id IN " + isPayingFee.getQuery())
+      qb.where('m.id IN ' + isPayingFee.getQuery())
     ),
     noScheduledPayments: new Brackets((qb) =>
-      qb.where("m.id NOT IN " + hasScheduledPayments.getQuery())
+      qb.where('m.id NOT IN ' + hasScheduledPayments.getQuery())
     ),
     hasScheduledPayments: new Brackets((qb) =>
-      qb.where("m.id IN " + hasScheduledPayments.getQuery())
+      qb.where('m.id IN ' + hasScheduledPayments.getQuery())
     ),
     noFailedPayments: new Brackets((qb) =>
-      qb.where("m.id NOT IN " + hasFailedPayments.getQuery())
+      qb.where('m.id NOT IN ' + hasFailedPayments.getQuery())
     ),
     hasFailedPayments: new Brackets((qb) =>
-      qb.where("m.id IN " + hasFailedPayments.getQuery())
-    )
+      qb.where('m.id IN ' + hasFailedPayments.getQuery())
+    ),
   };
 }

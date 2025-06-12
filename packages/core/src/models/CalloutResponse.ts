@@ -1,7 +1,8 @@
 import {
   CalloutResponseAnswersSlide,
-  CalloutResponseNewsletterData
-} from "@beabee/beabee-common";
+  CalloutResponseNewsletterData,
+} from '@beabee/beabee-common';
+
 import {
   Column,
   CreateDateColumn,
@@ -10,25 +11,25 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
   Unique,
-  UpdateDateColumn
-} from "typeorm";
+  UpdateDateColumn,
+} from 'typeorm';
 
 import type {
-  Contact,
   Callout,
   CalloutResponseComment,
-  CalloutResponseTag
-} from "./index";
+  CalloutResponseTag,
+  Contact,
+} from './index';
 
 @Entity()
-@Unique(["callout", "number"])
+@Unique(['callout', 'number'])
 export class CalloutResponse {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id!: string;
 
   @Column()
   calloutId!: string;
-  @ManyToOne("Callout", "responses")
+  @ManyToOne('Callout', 'responses')
   callout!: Callout;
 
   @Column()
@@ -36,7 +37,7 @@ export class CalloutResponse {
 
   @Column({ type: String, nullable: true })
   contactId!: string | null;
-  @ManyToOne("Contact", { nullable: true })
+  @ManyToOne('Contact', { nullable: true })
   contact!: Contact | null;
 
   @Column({ type: String, nullable: true })
@@ -45,10 +46,10 @@ export class CalloutResponse {
   @Column({ type: String, nullable: true })
   guestEmail!: string | null;
 
-  @Column({ type: "jsonb" })
+  @Column({ type: 'jsonb' })
   answers!: CalloutResponseAnswersSlide;
 
-  @Column({ type: "jsonb", nullable: true })
+  @Column({ type: 'jsonb', nullable: true })
   newsletter!: CalloutResponseNewsletterData | null;
 
   @CreateDateColumn()
@@ -57,18 +58,18 @@ export class CalloutResponse {
   @UpdateDateColumn()
   updatedAt!: Date;
 
-  @Column({ default: "" })
+  @Column({ default: '' })
   bucket!: string;
 
-  @OneToMany("CalloutResponseTag", "response")
+  @OneToMany('CalloutResponseTag', 'response')
   tags!: CalloutResponseTag[];
 
   @Column({ type: String, nullable: true })
   assigneeId!: string | null;
-  @ManyToOne("Contact", { nullable: true })
+  @ManyToOne('Contact', { nullable: true })
   assignee!: Contact | null;
 
-  @OneToMany("CalloutResponseComment", "response")
+  @OneToMany('CalloutResponseComment', 'response')
   comments?: CalloutResponseComment[];
 
   latestComment?: CalloutResponseComment | null;

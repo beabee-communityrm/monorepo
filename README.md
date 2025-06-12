@@ -43,19 +43,14 @@ You need the following tools installed on your machine:
    yarn install
    ```
 
-2. Run the presetup script to copy the example environment files:
+2. Run the bootstrap script to copy the example environment files:
 
    ```bash
-   yarn presetup
+   yarn bootstrap
    ```
-3. Complete the .env in your root by setting the following environment variables:
-
-   ```bash
-   BEABEE_STRIPE_PUBLICKEY=...
-   BEABEE_STRIPE_SECRETKEY=...
-   BEABEE_STRIPE_WEBHOOKSECRET=...
-   BEABEE_STRIPE_MEMBERSHIPPRODUCTID=...
-   ```
+3. Complete the `.env` file in your root by setting the required environment variables.
+   
+   See the [Environment Variables Documentation](docs/environment-variables.md) for detailed configuration instructions.
 
 4. Build the project locally:
 
@@ -95,31 +90,17 @@ If you want to use Visual Studio Code as your code editor, you can use the provi
 code .vscode/beabee.code-workspace
 ```
 
-#### Ports:
+#### Access Points:
 
 The Beabee project uses several ports for different services in development mode:
 
-- `3000`: Frontend development server (Vite)
-- `3002`: Router for the new frontend and legacy backend
-- `3025`: MailDev for email testing (defined by MAIL_PORT in .env)
-- `6543`: PostgreSQL database (mapped from container's 5432)
+- **Frontend development**: http://localhost:3000 (Vite dev server with HMR)
+- **Router (production-like)**: http://localhost:3002 (Docker Compose)
+- **MailDev interface**: http://localhost:3025 (Email testing)
 
-As you can see, you can access the frontend via two different URLs:
+> **Recommended**: Use the Vite development server (port 3000) for frontend development to get hot module replacement and modern development features.
 
-- Via Vite dev server + proxy (http://localhost:3000)
-- Router over Docker Compose (http://localhost:3002)
-
-The recommended way for frontend development is to use the Vite development server (http://localhost:3000), as this will give you hot module replacement (HMR) and other modern development features.
-
-Accessing the frontend through the router (http://localhost:3002) mimics more closely the production environment and can be used to test if the access works as it will be delivered later. This is useful for verifying the production-like behavior during development.
-
-When running the project, make sure these ports are available on your local machine. You can access different parts of the application using these URLs:
-
-- Frontend development: http://localhost:3000
-- Router (frontend and backend): http://localhost:3002
-- MailDev interface: http://localhost:3025
-
-Note: The actual ports used may vary based on your specific .env configuration. Always refer to your local .env file for the most accurate port settings.
+For detailed port configuration and environment variable setup, see the [Environment Variables Documentation](docs/environment-variables.md).
 
 ### Docker Compose
 
@@ -135,7 +116,7 @@ The `docker-compose.yml` file defines several services, including:
 - `frontend`: Frontend application
 - `app_router`: Router for the frontend and backend
 
-The frontend service is configured to use the `APP_BASE_URL` environment variable, which is set to `http://localhost:3002` by default.
+The frontend service is configured to use the `BEABEE_AUDIENCE` environment variable for API requests.
 
 For more detailed information about each service and its configuration, please refer to the `docker-compose.yml` file in the root directory.
 
@@ -190,6 +171,18 @@ This continuously compiles TypeScript files as they change.
 
 By running `yarn dev` in the root of the project, you start development processes for all these packages simultaneously, allowing you to work on different parts of the project with live reloading and quick feedback.
 
+## TypeScript Configuration
+
+The Beabee Monorepo uses a sophisticated TypeScript configuration system with shared configurations provided by the [`@beabee/tsconfig`](packages/tsconfig/README.md) package. This ensures proper type checking and module resolution across all packages in the monorepo.
+
+For detailed information about TypeScript configurations, including:
+- Available configurations (server, frontend, vanilla)
+- Dual tsconfig structure
+- TypeScript references
+- Guidelines for new packages
+
+Please refer to the [TypeScript Configuration Documentation](packages/tsconfig/README.md).
+
 ### Other Developer Tools
 
 Check and upgrade all dependencies:
@@ -212,7 +205,18 @@ yarn format
 
 ### More Documentation
 
+- [Environment Variables Guide](docs/environment-variables.md) - Setup and workflow guide
+- [Payment System](docs/payment/README.md) - Payment architecture and workflows
+
+For environment variable reference, see the `.env.example` files.
+
 Documentation is currently limited. For more detailed guidance and documentation, please contact us directly.
+
+## Translation Status
+
+<a href="https://hosted.weblate.org/engage/beabee/">
+<img src="https://hosted.weblate.org/widget/beabee/platform/open-graph.png" alt="translation status" />
+</a>
 
 ## Contact Us
 

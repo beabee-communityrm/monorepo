@@ -1,14 +1,14 @@
-import { BaseClient } from "./base.client.js";
-import { cleanUrl } from "../utils/index.js";
-
-import type { BaseClientOptions } from "../types/index.js";
 import type {
   CreateApiKeyData,
   GetApiKeyData,
   GetApiKeysQuery,
   Paginated,
-  Serial
-} from "@beabee/beabee-common";
+  Serial,
+} from '@beabee/beabee-common';
+
+import type { BaseClientOptions } from '../types/index.js';
+import { cleanUrl } from '../utils/index.js';
+import { BaseClient } from './base.client.js';
 
 export class ApiKeyClient extends BaseClient {
   /**
@@ -18,7 +18,7 @@ export class ApiKeyClient extends BaseClient {
   constructor(protected override readonly options: BaseClientOptions) {
     super({
       ...options,
-      path: cleanUrl(options.path + "/api-key")
+      path: cleanUrl(options.path + '/api-key'),
     });
   }
 
@@ -31,7 +31,7 @@ export class ApiKeyClient extends BaseClient {
     return {
       ...apiKey,
       createdAt: this.deserializeDate(apiKey.createdAt),
-      expires: this.deserializeDate(apiKey.expires)
+      expires: this.deserializeDate(apiKey.expires),
     };
   }
 
@@ -42,7 +42,7 @@ export class ApiKeyClient extends BaseClient {
    */
   async create(newData: CreateApiKeyData): Promise<{ token: string }> {
     const { data } = await this.fetch.post<Serial<{ token: string }>>(
-      "",
+      '',
       newData
     );
     return data;
@@ -55,13 +55,13 @@ export class ApiKeyClient extends BaseClient {
    */
   async list(query?: GetApiKeysQuery): Promise<Paginated<GetApiKeyData>> {
     const { data } = await this.fetch.get<Paginated<Serial<GetApiKeyData>>>(
-      "",
+      '',
       query
     );
 
     return {
       ...data,
-      items: data.items.map((item) => ApiKeyClient.deserialize(item))
+      items: data.items.map((item) => ApiKeyClient.deserialize(item)),
     };
   }
 

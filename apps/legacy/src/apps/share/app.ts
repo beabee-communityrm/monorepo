@@ -1,34 +1,31 @@
-import express, { type Express, type Request, type Response } from "express";
-
-import { createQueryBuilder } from "@beabee/core/database";
-import { wrapAsync } from "@beabee/core/utils/express";
-
+import config from '@beabee/core/config';
+import { createQueryBuilder } from '@beabee/core/database';
+import { Callout } from '@beabee/core/models';
 import PageSettingsService, {
-  JustPageSettings
-} from "@beabee/core/services/PageSettingsService";
+  JustPageSettings,
+} from '@beabee/core/services/PageSettingsService';
+import { wrapAsync } from '@beabee/core/utils/express';
 
-import { Callout } from "@beabee/core/models";
-
-import config from "@beabee/core/config";
+import express, { type Express, type Request, type Response } from 'express';
 
 const app: Express = express();
 
-app.set("views", __dirname + "/views");
+app.set('views', __dirname + '/views');
 
 async function getCalloutShareSettings(
   uri: string
 ): Promise<JustPageSettings | undefined> {
-  const parts = uri.substring("/callouts/".length).split("?");
-  const slug = parts[0].split("/")[0];
+  const parts = uri.substring('/callouts/'.length).split('?');
+  const slug = parts[0].split('/')[0];
   const locale =
     parts[1]
-      ?.split("&")
-      .map((q) => q.split("="))
-      .find(([k]) => k === "lang")?.[1] || "default";
+      ?.split('&')
+      .map((q) => q.split('='))
+      .find(([k]) => k === 'lang')?.[1] || 'default';
 
-  const callout = await createQueryBuilder(Callout, "c")
-    .innerJoinAndSelect("c.variants", "v", "v.name = :locale", { locale })
-    .where("c.slug = :slug", { slug })
+  const callout = await createQueryBuilder(Callout, 'c')
+    .innerJoinAndSelect('c.variants', 'v', 'v.name = :locale', { locale })
+    .where('c.slug = :slug', { slug })
     .getOne();
 
   if (callout) {
@@ -43,24 +40,24 @@ async function getCalloutShareSettings(
       shareTitle: variant.shareTitle || variant.title,
       shareDescription: variant.shareDescription || variant.excerpt,
       shareImage: callout.image,
-      shareUrl: config.audience + "/callouts/" + callout.slug
+      shareUrl: config.audience + '/callouts/' + callout.slug,
     };
   }
 }
 
 app.get(
-  "/",
+  '/',
   wrapAsync(async (req: Request, res: Response) => {
     let pageSettings: JustPageSettings | undefined;
 
     const uri = req.query.uri ? req.query.uri.toString() : undefined;
     if (uri) {
-      pageSettings = uri.startsWith("/callouts/")
+      pageSettings = uri.startsWith('/callouts/')
         ? await getCalloutShareSettings(uri)
         : PageSettingsService.getPath(uri);
     }
 
-    res.render("index", pageSettings && { pageSettings });
+    res.render('index', pageSettings && { pageSettings });
   })
 );
 

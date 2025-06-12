@@ -1,19 +1,19 @@
-import { PaymentStatus } from "@beabee/beabee-common";
-import { add } from "date-fns";
-import type Stripe from "stripe";
+import { PaymentStatus } from '@beabee/beabee-common';
 
-import { getRepository } from "../database";
-import { log as mainLogger } from "../logging";
-import { stripe, convertStatus, getSalesTaxRateObject } from "./stripe";
-import { Payment, ContactContribution } from "../models";
-import config from "../config/config";
+import { add } from 'date-fns';
+import type Stripe from 'stripe';
 
-import EmailService from "../services/EmailService";
-import GiftService from "../services/GiftService";
-import ContactsService from "../services/ContactsService";
-import PaymentService from "../services/PaymentService";
+import config from '../config/config';
+import { getRepository } from '../database';
+import { log as mainLogger } from '../logging';
+import { ContactContribution, Payment } from '../models';
+import ContactsService from '../services/ContactsService';
+import EmailService from '../services/EmailService';
+import GiftService from '../services/GiftService';
+import PaymentService from '../services/PaymentService';
+import { convertStatus, getSalesTaxRateObject, stripe } from './stripe';
 
-const log = mainLogger.child({ app: "stripe-webhook-handler" });
+const log = mainLogger.child({ app: 'stripe-webhook-handler' });
 
 /**
  * Handles all incoming Stripe webhook events and processes them according to their type.
@@ -30,28 +30,28 @@ export class StripeWebhookEventHandler {
     log.info(`Processing webhook ${event.id} ${event.type}`);
 
     switch (event.type) {
-      case "checkout.session.completed":
+      case 'checkout.session.completed':
         await this.handleCheckoutSessionCompleted(event.data.object);
         break;
-      case "customer.deleted":
+      case 'customer.deleted':
         await this.handleCustomerDeleted(event.data.object);
         break;
-      case "customer.subscription.updated":
+      case 'customer.subscription.updated':
         await this.handleCustomerSubscriptionUpdated(event.data.object);
         break;
-      case "customer.subscription.deleted":
+      case 'customer.subscription.deleted':
         await this.handleCustomerSubscriptionDeleted(event.data.object);
         break;
-      case "invoice.created":
+      case 'invoice.created':
         await this.handleInvoiceCreated(event.data.object);
         break;
-      case "invoice.updated":
+      case 'invoice.updated':
         await this.handleInvoiceUpdated(event.data.object);
         break;
-      case "invoice.paid":
+      case 'invoice.paid':
         await this.handleInvoicePaid(event.data.object);
         break;
-      case "payment_method.detached":
+      case 'payment_method.detached':
         await this.handlePaymentMethodDetached(event.data.object);
         break;
     }
@@ -75,16 +75,16 @@ export class StripeWebhookEventHandler {
     customer: Stripe.Customer
   ): Promise<void> {
     const contribution = await PaymentService.getContributionBy(
-      "customerId",
+      'customerId',
       customer.id
     );
     if (contribution) {
-      log.info("Delete customer from " + customer.id, {
+      log.info('Delete customer from ' + customer.id, {
         customerId: customer.id,
-        contactId: contribution.contact.id
+        contactId: contribution.contact.id,
       });
       await PaymentService.updateData(contribution.contact, {
-        customerId: null
+        customerId: null,
       });
     }
   }
@@ -97,21 +97,21 @@ export class StripeWebhookEventHandler {
   private static async handleCustomerSubscriptionUpdated(
     subscription: Stripe.Subscription
   ): Promise<void> {
-    if (subscription.status === "incomplete_expired") {
+    if (subscription.status === 'incomplete_expired') {
       const contribution = await PaymentService.getContributionBy(
-        "subscriptionId",
+        'subscriptionId',
         subscription.id
       );
       if (contribution) {
         log.info(
           `Subscription ${subscription.id} never started, revoking membership from ${contribution.contact.id}`
         );
-        await ContactsService.revokeContactRole(contribution.contact, "member");
+        await ContactsService.revokeContactRole(contribution.contact, 'member');
         await PaymentService.updateData(contribution.contact, {
-          subscriptionId: null
+          subscriptionId: null,
         });
         await EmailService.sendTemplateToContact(
-          "contribution-didnt-start",
+          'contribution-didnt-start',
           contribution.contact
         );
       }
@@ -125,15 +125,15 @@ export class StripeWebhookEventHandler {
   private static async handleCustomerSubscriptionDeleted(
     subscription: Stripe.Subscription
   ): Promise<void> {
-    log.info("Cancel subscription " + subscription.id);
+    log.info('Cancel subscription ' + subscription.id);
     const contribution = await PaymentService.getContributionBy(
-      "subscriptionId",
+      'subscriptionId',
       subscription.id
     );
     if (contribution) {
       await ContactsService.cancelContactContribution(
         contribution.contact,
-        "cancelled-contribution"
+        'cancelled-contribution'
       );
     }
   }
@@ -154,7 +154,7 @@ export class StripeWebhookEventHandler {
     // Can't update non-draft invoices. This should never be a problem as only a
     // subscription's initial invoice is created in a finalised state
     // https://docs.stripe.com/billing/invoices/subscription#update-first-invoice
-    if (invoice.status !== "draft") return;
+    if (invoice.status !== 'draft') return;
 
     const taxRateObj = getSalesTaxRateObject();
     const invoiceTaxRateObj = invoice.default_tax_rates.map((rate) => rate.id);
@@ -175,11 +175,11 @@ export class StripeWebhookEventHandler {
   ): Promise<Payment | undefined> {
     const payment = await this.findOrCreatePayment(invoice);
     if (payment) {
-      log.info("Updating payment for invoice " + invoice.id);
+      log.info('Updating payment for invoice ' + invoice.id);
       payment.status = invoice.status
         ? convertStatus(invoice.status)
         : PaymentStatus.Draft;
-      payment.description = invoice.description || "";
+      payment.description = invoice.description || '';
       payment.amount = invoice.total / 100;
       payment.chargeDate = new Date(invoice.created * 1000);
       return await getRepository(Payment).save(payment);
@@ -208,7 +208,7 @@ export class StripeWebhookEventHandler {
     const line = invoice.lines.data.slice(-1)[0];
     if (line.subscription !== invoice.subscription) {
       log.error(
-        "Expected subscription to be last line on invoice" + invoice.id
+        'Expected subscription to be last line on invoice' + invoice.id
       );
       return;
     }
@@ -224,16 +224,16 @@ export class StripeWebhookEventHandler {
     paymentMethod: Stripe.PaymentMethod
   ): Promise<void> {
     const contribution = await PaymentService.getContributionBy(
-      "mandateId",
+      'mandateId',
       paymentMethod.id
     );
     if (contribution) {
-      log.info("Detached payment method " + paymentMethod.id, {
+      log.info('Detached payment method ' + paymentMethod.id, {
         mandateId: paymentMethod.id,
-        contactId: contribution.contact.id
+        contactId: contribution.contact.id,
       });
       await PaymentService.updateData(contribution.contact, {
-        mandateId: null
+        mandateId: null,
       });
     }
   }
@@ -247,16 +247,16 @@ export class StripeWebhookEventHandler {
     invoice: Stripe.Invoice
   ): Promise<ContactContribution | null> {
     if (!invoice.customer) {
-      log.info("Ignoring invoice without customer " + invoice.id);
+      log.info('Ignoring invoice without customer ' + invoice.id);
       return null;
     }
 
     const contribution = await PaymentService.getContributionBy(
-      "customerId",
+      'customerId',
       invoice.customer as string
     );
     if (!contribution) {
-      log.info("Ignoring invoice with unknown customer " + invoice.id);
+      log.info('Ignoring invoice with unknown customer ' + invoice.id);
     }
     return contribution;
   }
@@ -311,15 +311,15 @@ export class StripeWebhookEventHandler {
     invoice: Stripe.Invoice,
     taxRateObj: string[]
   ): Promise<void> {
-    const updateTaxRateObj = taxRateObj.length > 0 ? taxRateObj : "";
+    const updateTaxRateObj = taxRateObj.length > 0 ? taxRateObj : '';
 
-    log.info("Updating tax rate on invoice " + invoice.id, {
+    log.info('Updating tax rate on invoice ' + invoice.id, {
       oldTaxRate: invoice.default_tax_rates.map((rate) => rate.id),
-      newTaxRate: updateTaxRateObj
+      newTaxRate: updateTaxRateObj,
     });
 
     await stripe.invoices.update(invoice.id, {
-      default_tax_rates: updateTaxRateObj
+      default_tax_rates: updateTaxRateObj,
     });
 
     // Update the subscription if it exists
@@ -338,18 +338,18 @@ export class StripeWebhookEventHandler {
    */
   private static async updateSubscriptionTaxRates(
     subscriptionId: string,
-    taxRates: string[] | ""
+    taxRates: string[] | ''
   ): Promise<void> {
     const subscription = await stripe.subscriptions.retrieve(subscriptionId);
     if (
-      subscription.status !== "canceled" &&
-      subscription.status !== "incomplete_expired"
+      subscription.status !== 'canceled' &&
+      subscription.status !== 'incomplete_expired'
     ) {
       log.info(
         `Updating tax rate on subscription ${subscriptionId} with status ${subscription.status}`
       );
       await stripe.subscriptions.update(subscriptionId, {
-        default_tax_rates: taxRates
+        default_tax_rates: taxRates,
       });
     }
   }
@@ -365,16 +365,16 @@ export class StripeWebhookEventHandler {
   ): Promise<void> {
     await ContactsService.extendContactRole(
       contribution.contact,
-      "member",
+      'member',
       add(new Date(line.period.end * 1000), config.gracePeriod)
     );
 
     if (line.amount === contribution.nextAmount?.chargeable) {
       await ContactsService.updateContact(contribution.contact, {
-        contributionMonthlyAmount: contribution.nextAmount.monthly
+        contributionMonthlyAmount: contribution.nextAmount.monthly,
       });
       await PaymentService.updateData(contribution.contact, {
-        nextAmount: null
+        nextAmount: null,
       });
     }
   }

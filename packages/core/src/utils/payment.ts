@@ -1,14 +1,15 @@
 import {
-  calcPaymentFee,
   ContributionPeriod,
   ContributionType,
   PaymentForm,
-  PaymentMethod
-} from "@beabee/beabee-common";
-import { addMonths, getYear, setYear, sub } from "date-fns";
+  PaymentMethod,
+  calcPaymentFee,
+} from '@beabee/beabee-common';
 
-import { Contact } from "#models/index";
-import config from "#config/config";
+import { addMonths, getYear, setYear, sub } from 'date-fns';
+
+import config from '#config/config';
+import { Contact } from '#models/index';
 
 export function getActualAmount(
   monthlyAmount: number,

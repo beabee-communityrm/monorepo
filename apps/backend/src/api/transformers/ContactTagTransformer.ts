@@ -1,12 +1,14 @@
-import { GetContactTagDto } from "@api/dto";
 import {
   ContactTagFilterName,
   Filters,
+  RoleType,
   contactTagFilters,
-  RoleType
-} from "@beabee/beabee-common";
-import { ContactTag, ContactTagAssignment } from "@beabee/core/models";
-import BaseTagTransformer from "./BaseTagTransformer";
+} from '@beabee/beabee-common';
+import { ContactTag, ContactTagAssignment } from '@beabee/core/models';
+
+import { GetContactTagDto } from '@api/dto';
+
+import BaseTagTransformer from './BaseTagTransformer';
 
 class ContactTagTransformer extends BaseTagTransformer<
   ContactTag,
@@ -17,7 +19,7 @@ class ContactTagTransformer extends BaseTagTransformer<
   protected filters: Filters<ContactTagFilterName> = contactTagFilters;
   protected dtoType = GetContactTagDto;
   protected assignmentModel = ContactTagAssignment;
-  protected entityIdField = "contactId";
+  protected entityIdField = 'contactId';
 }
 
 export default new ContactTagTransformer();

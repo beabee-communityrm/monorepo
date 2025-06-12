@@ -13,58 +13,59 @@
   />
 </template>
 <script lang="ts" setup>
+import type { CalloutComponentSchema } from '@beabee/beabee-common';
+import { library } from '@beabee/vue/plugins/icons';
+
+import { config, dom, noAuto } from '@fortawesome/fontawesome-svg-core';
 import {
-  faQuestionCircle,
-  faTerminal,
+  type IconName,
+  faArrowsAlt,
+  faAsterisk,
+  faAt,
+  faBars,
+  faCalendar,
+  faCamera,
+  faCheckSquare,
+  faClock,
+  faCloudUpload,
+  faCode,
+  faCog,
+  faColumns,
+  faCopy,
+  faDotCircle,
+  faFolder,
   faFont,
   faHashtag,
-  faAsterisk,
-  faCheckSquare,
-  faPlusSquare,
-  faThList,
-  faDotCircle,
-  faStop,
-  faCog,
-  faArrowsAlt,
-  faWrench,
-  faCopy,
-  faTimes,
-  faBars,
-  faTimesCircle,
-  faPlus,
-  faCode,
-  faColumns,
-  faThLarge,
-  faListAlt,
-  faTable,
-  faFolder,
-  faSquare,
-  faParagraph,
-  faAt,
-  faLink,
-  faPhoneSquare,
-  faTags,
   faHome,
-  faCalendar,
-  faClock,
-  faUsd,
+  faLink,
   faList,
+  faListAlt,
+  faParagraph,
   faPencil,
+  faPhoneSquare,
+  faPlus,
+  faPlusSquare,
+  faQuestionCircle,
   faRefresh,
-  faCloudUpload,
-  faCamera,
-  type IconName,
+  faSquare,
+  faStop,
+  faTable,
+  faTags,
+  faTerminal,
+  faThLarge,
+  faThList,
+  faTimes,
+  faTimesCircle,
+  faUsd,
+  faWrench,
 } from '@fortawesome/free-solid-svg-icons';
-import { config, dom, noAuto } from '@fortawesome/fontawesome-svg-core';
-import { library } from '@beabee/vue/plugins/icons';
 import { onBeforeMount, onBeforeUnmount, ref } from 'vue';
 
 import { FormBuilder } from '../../lib/formio';
-import type { CalloutComponentSchema } from '@beabee/beabee-common';
 import {
-  formOpts,
   type FormBuilderRef,
   type FormBuilderSlide,
+  formOpts,
 } from './form-builder.interface';
 
 const emit = defineEmits<{

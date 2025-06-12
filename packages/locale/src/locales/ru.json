@@ -54,6 +54,8 @@
       "title": "Рассылка",
       "unsubscribe": "Убрать из списка рассылки"
     },
+    "phoneInfo": "",
+    "phoneInfoAdmin": "",
     "savedPassword": "Новый пароль сохранён",
     "subTitle": "Обязательные поля отмечены звёздочкой. Вся информация, которой вы делитесь, конфиденциальна.",
     "title": "Профиль"
@@ -106,10 +108,23 @@
     "yesRemove": "Да, удалить"
   },
   "addContact": {
-    "errors": {}
+    "contactSaved": "",
+    "errors": {
+      "duplicateEmail": ""
+    },
+    "subscribeToNewsletter": "",
+    "title": ""
   },
   "addNotice": {
-    "form": {}
+    "form": {
+      "buttonText": "",
+      "expirationDateAndTime": "",
+      "name": "",
+      "startDateAndTime": "",
+      "text": "",
+      "url": ""
+    },
+    "title": ""
   },
   "adminDashboard": {
     "hint1": "<p>Вы знете, что можно создавать опросы без дедлайна — и они будут активны всегда? <a href=\"https://beabee.io/en/beabee-full-feature-list/\" target=\"_blank\" rel=\"noopener noreferrer\">Подробности здесь</a></p>\n",
@@ -130,48 +145,186 @@
       "revenue": "Доход",
       "title": "За последние 30 дней"
     },
+    "responsesSoFar": "",
+    "seeAllResponses": "",
     "supportInbox": "<p>Нужна помощь? Зайдите в <a href=\"https://wiki.beabee.io/help-center-english/\" target=\"_blank\" rel=\"noopener noreferrer\">Справочный центр</a> или напишите в поддержку: <a href=\"mailto:support{'@'}beabee.io\">support{'@'}beabee.io</a></p>\n",
     "welcomeBack": "Рады снова вас видеть, {firstName}!"
   },
   "adminSettings": {
     "apikey": {
-      "confirmCreate": {},
-      "confirmDelete": {},
-      "expires": {}
+      "confirmCreate": {
+        "text": "",
+        "title": ""
+      },
+      "confirmDelete": {
+        "text": "",
+        "title": ""
+      },
+      "copied": "",
+      "create": "",
+      "expires": {
+        "days": "",
+        "never": ""
+      },
+      "expiresHelp": "",
+      "expiresNeverWarning": "",
+      "label": "",
+      "showingOf": ""
     },
-    "email": {},
+    "email": {
+      "fromEmail": "",
+      "fromName": "",
+      "label": "",
+      "text": "",
+      "title": ""
+    },
     "general": {
       "footer": {
-        "dataPrivacy": {},
-        "otherLinks": {}
+        "dataPrivacy": {
+          "impressumUrl": "",
+          "privacyUrl": "",
+          "termsUrl": "",
+          "title": ""
+        },
+        "otherLinks": {
+          "add": "",
+          "linkText": "",
+          "title": "",
+          "url": ""
+        },
+        "siteUrl": "",
+        "text": "",
+        "title": ""
       },
-      "socialSharing": {}
+      "label": "",
+      "language": "",
+      "logo": "",
+      "organisationName": "",
+      "socialSharing": {
+        "description": "",
+        "image": "",
+        "shareTitle": "",
+        "text": "",
+        "title": "",
+        "twitterHandle": ""
+      }
     },
-    "payment": {},
+    "payment": {
+      "paymentTitle": "",
+      "taxRate": "",
+      "taxRateEnabled": ""
+    },
     "theme": {
-      "colorNames": {},
-      "presetColors": {}
-    }
+      "bodyFont": "",
+      "colorNames": {
+        "body": "",
+        "danger": "",
+        "link": "",
+        "primary": "",
+        "success": "",
+        "warning": ""
+      },
+      "colors": "",
+      "customColors": "",
+      "fontNotListed": "",
+      "fonts": "",
+      "label": "",
+      "presetColors": {
+        "default": ""
+      },
+      "titleFont": ""
+    },
+    "title": ""
   },
   "advancedSearch": {
-    "createFiltersType": {},
-    "matchWord": {},
+    "addRule": "",
+    "button": "",
+    "createFiltersAfter": "",
+    "createFiltersBefore": "",
+    "createFiltersType": {
+      "all": "",
+      "any": ""
+    },
+    "createdSegment": "",
+    "matchWord": {
+      "AND": "",
+      "OR": ""
+    },
+    "nestedRules": "",
+    "noNestedRules": "",
     "operators": {
-      "all": {},
-      "array": {},
-      "blob": {},
-      "boolean": {},
-      "date": {},
-      "enum": {},
-      "number": {},
-      "text": {}
+      "all": {
+        "is_empty": "",
+        "is_not_empty": ""
+      },
+      "array": {
+        "contains": "",
+        "not_contains": ""
+      },
+      "blob": {
+        "contains": "",
+        "not_contains": ""
+      },
+      "boolean": {
+        "equal": ""
+      },
+      "date": {
+        "between": "",
+        "equal": "",
+        "greater": "",
+        "greater_or_equal": "",
+        "less": "",
+        "less_or_equal": "",
+        "not_between": "",
+        "not_equal": ""
+      },
+      "enum": {
+        "equal": "",
+        "not_equal": ""
+      },
+      "number": {
+        "between": "",
+        "equal": "",
+        "greater": "",
+        "greater_or_equal": "",
+        "less": "",
+        "less_or_equal": "",
+        "not_between": "",
+        "not_equal": ""
+      },
+      "text": {
+        "begins_with": "",
+        "contains": "",
+        "ends_with": "",
+        "equal": "",
+        "not_begins_with": "",
+        "not_contains": "",
+        "not_ends_with": "",
+        "not_equal": ""
+      }
     },
     "saveSegment": {
-      "createOrUpdate": {}
-    }
+      "createOrUpdate": {
+        "create": "",
+        "label": "",
+        "update": ""
+      },
+      "createSegment": "",
+      "segmentName": "",
+      "text": "",
+      "title": "",
+      "updateSegment": ""
+    },
+    "selectFilter": "",
+    "updatedSegment": ""
   },
   "apiKey": {
-    "data": {}
+    "data": {
+      "createdAt": "",
+      "description": "",
+      "expires": "",
+      "token": ""
+    }
   },
   "callout": {
     "actions": {
@@ -180,120 +333,329 @@
     "addAPoint": "Кликните, чтобы добавить отметку на карту",
     "addLocation": "Добавить новую локацию",
     "builder": {
-      "actions": {},
+      "actions": {
+        "addSlide": ""
+      },
       "common": {
-        "actions": {}
+        "actions": {
+          "add": "",
+          "remove": ""
+        },
+        "internalTitle": "",
+        "showAdvancedOptions": "",
+        "slides": "",
+        "startEndScreens": ""
       },
       "navigation": {
-        "nextSlide": {}
+        "nextButton": "",
+        "nextSlide": {
+          "default": "",
+          "label": ""
+        },
+        "prevButton": "",
+        "slideNo": "",
+        "submitButton": ""
       },
+      "showAdvancedOptions": "",
+      "slidesTitle": "",
+      "startEndScreenTitle": "",
       "tabs": {
-        "content": {},
+        "content": {
+          "title": ""
+        },
         "endMessage": {
           "inputs": {
             "action": {
-              "opts": {}
+              "label": "",
+              "opts": {
+                "redirect": "",
+                "showMessage": ""
+              }
             },
-            "text": {},
-            "title": {},
-            "url": {}
-          }
+            "text": {
+              "help": "",
+              "label": "",
+              "placeholder": ""
+            },
+            "title": {
+              "help": "",
+              "label": "",
+              "placeholder": ""
+            },
+            "url": {
+              "help": "",
+              "label": "",
+              "placeholder": ""
+            }
+          },
+          "title": ""
         },
-        "intro": {},
-        "mailchimp": {},
-        "responseDisplay": {},
+        "intro": {
+          "help": "",
+          "label": "",
+          "title": ""
+        },
+        "mailchimp": {
+          "title": ""
+        },
+        "responseDisplay": {
+          "title": ""
+        },
         "settings": {
-          "access": {},
-          "dates": {},
-          "displayOptions": {},
+          "access": {
+            "title": ""
+          },
+          "dates": {
+            "title": ""
+          },
+          "displayOptions": {
+            "description": "",
+            "title": ""
+          },
           "inputs": {
             "collectGuestInfo": {
-              "opts": {}
+              "label": "",
+              "opts": {
+                "disabled": "",
+                "enabled": ""
+              }
             },
             "collectMemberInfo": {
-              "opts": {}
+              "label": "",
+              "opts": {
+                "disabled": "",
+                "enabled": ""
+              }
             },
             "expires": {
-              "opts": {}
+              "description": "",
+              "label": "",
+              "opts": {
+                "never": "",
+                "schedule": ""
+              }
             },
             "mapAndGallery": {
-              "gallery": {},
-              "map": {}
+              "description": "",
+              "gallery": {
+                "disabledDescription": "",
+                "enabledDescription": "",
+                "label": ""
+              },
+              "map": {
+                "disabledDescription": "",
+                "enabledDescription": "",
+                "label": ""
+              },
+              "title": ""
             },
             "mapSchema": {
-              "addressPattern": {},
-              "addressPatternProp": {},
-              "addressProp": {},
-              "bounds": {},
-              "center": {},
-              "geocodeCountries": {},
-              "initialZoom": {},
-              "maxZoom": {},
-              "minZoom": {},
-              "style": {}
+              "addressPattern": {
+                "label": ""
+              },
+              "addressPatternProp": {
+                "label": "",
+                "none": ""
+              },
+              "addressProp": {
+                "label": ""
+              },
+              "bounds": {
+                "label": ""
+              },
+              "center": {
+                "label": ""
+              },
+              "geocodeCountries": {
+                "label": ""
+              },
+              "initialZoom": {
+                "label": ""
+              },
+              "maxZoom": {
+                "label": ""
+              },
+              "minZoom": {
+                "label": ""
+              },
+              "style": {
+                "help": "",
+                "label": ""
+              },
+              "title": ""
             },
             "newsletterSettings": {
-              "opts": {}
+              "disabled": "",
+              "label": "",
+              "opts": {
+                "disabled": "",
+                "enabled": ""
+              }
             },
             "openToEveryone": {
-              "opts": {}
+              "help": "",
+              "label": "",
+              "opts": {
+                "disabled": "",
+                "enabled": ""
+              }
             },
             "requireCaptcha": {
+              "help": "",
+              "label": "",
               "members": {
-                "opts": {}
+                "label": "",
+                "opts": {
+                  "disabled": "",
+                  "enabled": ""
+                }
               },
-              "opts": {}
+              "opts": {
+                "all": "",
+                "guests": "",
+                "none": ""
+              }
             },
-            "responseImageProp": {},
+            "responseImageProp": {
+              "description": "",
+              "label": ""
+            },
             "responseLinks": {
-              "opts": {},
-              "placeholder": {}
+              "description": "",
+              "label": "",
+              "opts": {
+                "disabled": "",
+                "enabled": ""
+              },
+              "placeholder": {
+                "label": "",
+                "url": ""
+              }
             },
             "responseSettings": {
-              "opts": {}
+              "label": "",
+              "opts": {
+                "multiple": "",
+                "singleEditable": "",
+                "singleNonEditable": ""
+              },
+              "title": ""
             },
-            "responseTitleProp": {},
+            "responseTitleProp": {
+              "description": "",
+              "label": ""
+            },
             "showResponses": {
-              "opts": {}
+              "label": "",
+              "opts": {
+                "no": "",
+                "yes": ""
+              }
             },
             "starts": {
-              "opts": {}
+              "label": "",
+              "opts": {
+                "now": "",
+                "schedule": ""
+              }
             },
             "visible": {
-              "opts": {}
+              "help": "",
+              "label": "",
+              "opts": {
+                "disabled": "",
+                "enabled": ""
+              }
             },
-            "whichResponseBuckets": {}
-          }
+            "whichResponseBuckets": {
+              "description": "",
+              "label": ""
+            }
+          },
+          "title": ""
         },
         "titleAndImage": {
           "inputs": {
-            "description": {},
-            "general": {},
-            "image": {},
+            "description": {
+              "help": "",
+              "label": "",
+              "placeholder": ""
+            },
+            "general": {
+              "title": ""
+            },
+            "image": {
+              "description": "",
+              "help": "",
+              "label": ""
+            },
             "overrideShare": {
-              "opts": {}
+              "label": "",
+              "opts": {
+                "disabled": "",
+                "enabled": ""
+              }
             },
-            "shareDescription": {},
-            "shareTitle": {},
-            "sharing": {},
+            "shareDescription": {
+              "help": "",
+              "label": "",
+              "placeholder": ""
+            },
+            "shareTitle": {
+              "help": "",
+              "label": "",
+              "placeholder": ""
+            },
+            "sharing": {
+              "title": ""
+            },
             "slug": {
-              "locked": {},
-              "opts": {}
+              "boxTitle": "",
+              "help": "",
+              "label": "",
+              "locked": {
+                "title": ""
+              },
+              "opts": {
+                "auto": "",
+                "manual": ""
+              }
             },
-            "title": {}
-          }
+            "title": {
+              "label": "",
+              "placeholder": ""
+            }
+          },
+          "title": "",
+          "urlWillBe": ""
         },
         "translations": {
-          "language": {},
-          "languageSettings": {},
-          "navigationButtons": {}
+          "language": {
+            "description": "",
+            "enableLanguages": "",
+            "title": ""
+          },
+          "languageSettings": {
+            "title": ""
+          },
+          "navigationButtons": {
+            "title": ""
+          },
+          "title": ""
         }
       },
-      "translationFields": {}
+      "translationFields": {
+        "description": "",
+        "label": "",
+        "option": "",
+        "placeholder": "",
+        "html": ""
+      }
     },
     "confirmHuman": "Confirma por favor que és um humano",
     "contactDetails": "Контакты",
     "ended": "Этот опрос закончился {date}",
+    "entryOf": "",
     "form": {
       "email": "Ваша почта",
       "guestFieldsMissing": "Пожалуйста, сообщите нам свои контактные данные",
@@ -319,18 +681,51 @@
     "youResponded": "Вы ответили на этот опрос ♥",
     "yourResponse": "Ваш ответ"
   },
-  "calloutAdmin": {},
+  "calloutAdmin": {
+    "deleted": "",
+    "ended": "",
+    "overview": "",
+    "reopened": "",
+    "responses": ""
+  },
   "calloutAdminOverview": {
     "actions": {
-      "confirmDelete": {}
+      "confirmDelete": {
+        "text": "",
+        "title": ""
+      }
     },
-    "dates": {},
+    "created": "",
+    "dates": {
+      "ends": "",
+      "label": "",
+      "starts": ""
+    },
     "settings": {
-      "answers": {},
-      "contactInfo": {},
-      "endsWith": {},
-      "openTo": {}
-    }
+      "answers": {
+        "editable": "",
+        "final": "",
+        "label": ""
+      },
+      "contactInfo": {
+        "label": "",
+        "optional": "",
+        "required": ""
+      },
+      "endsWith": {
+        "label": "",
+        "message": "",
+        "redirect": ""
+      },
+      "label": "",
+      "openTo": {
+        "everyone": "",
+        "label": "",
+        "membersOnly": ""
+      }
+    },
+    "summary": "",
+    "updated": ""
   },
   "calloutResponse": {
     "data": {
@@ -343,31 +738,72 @@
       "tags": "Теги",
       "updatedAt": "Обновлённая дата"
     },
-    "dataGroup": {}
+    "dataGroup": {
+      "answers": "",
+      "response": ""
+    }
   },
-  "calloutResponseBuckets": {},
+  "calloutResponseBuckets": {
+    "inbox": "",
+    "trash": "",
+    "verified": ""
+  },
   "calloutResponseComments": {
-    "actions": {},
-    "confirmDelete": {}
+    "actions": {
+      "addComment": "",
+      "updateComment": ""
+    },
+    "addComment": "",
+    "comments": "",
+    "confirmDelete": {
+      "text": "",
+      "title": ""
+    }
   },
   "calloutResponsePage": {
-    "actions": {},
-    "notifications": {}
+    "actions": {
+      "assignTo": "",
+      "moveBucket": "",
+      "toggleTag": "",
+      "viewOnMap": ""
+    },
+    "editMode": "",
+    "manageFolders": "",
+    "manageReviewers": "",
+    "manageTags": "",
+    "notifications": {
+      "addedAssignee": "",
+      "addedTag": "",
+      "movedToBucket": "",
+      "removedAssignee": "",
+      "removedTag": ""
+    },
+    "responseOf": "",
+    "selectedCount": ""
   },
   "calloutResponsesPage": {
     "moveToBucket": "Перенести в {bucket}",
     "noTags": "Нет тегов",
     "response": "Ответ",
     "responseNo": "Ответ {no}",
+    "searchAssignee": "",
     "searchTag": "Теги:",
     "showAnswer": "Ответ",
     "showLatestComment": "Последний комментарий",
     "showingOf": "Показать ответы с {start} по {end} из общего количества {total}"
   },
   "calloutReviewerManager": {
-    "confirmDelete": {}
+    "add": "",
+    "confirmDelete": {
+      "text": "",
+      "title": ""
+    },
+    "contact": "",
+    "title": ""
   },
-  "calloutThanksPage": {},
+  "calloutThanksPage": {
+    "oneResponseWarning": ""
+  },
   "callouts": {
     "archive": "Архив",
     "data": {
@@ -381,8 +817,21 @@
     "showingOf": "Показаны опросы с {start} до {end} из {total}"
   },
   "calloutsAdmin": {
-    "data": {},
-    "filter": {}
+    "addCallout": "",
+    "data": {
+      "expires": "",
+      "responses": "",
+      "starts": "",
+      "status": "",
+      "title": ""
+    },
+    "filter": {
+      "all": "",
+      "draft": "",
+      "ended": "",
+      "open": "",
+      "scheduled": ""
+    }
   },
   "common": {
     "backToHome": "На главную",
@@ -397,8 +846,12 @@
       "manual": "Вручную",
       "none": "Отсутствует"
     },
+    "default": "",
     "hello": "Привет",
+    "id": "",
+    "itemsPerPage": "",
     "joined": "Вы присоединились",
+    "label": "",
     "loading": "Загрузка...",
     "login": "Войти",
     "newsletterStatus": {
@@ -443,24 +896,43 @@
     "yes": "Да"
   },
   "contactAccount": {
-    "confirmDelete": {}
+    "confirmDelete": {
+      "text": "",
+      "title": "",
+      "warning": ""
+    },
+    "contactDeleted": ""
   },
   "contactContribution": {
-    "confirmCancel": {},
-    "updateNotice": {}
+    "confirmCancel": {
+      "confirm": "",
+      "text": "",
+      "title": ""
+    },
+    "updateNotice": {
+      "text": "",
+      "title": ""
+    }
   },
   "contactOverview": {
     "about": "О",
+    "account": "",
     "annotation": {
       "copy": "<p>Вся информация, добавленная в этот раздел, <strong>видна только администраторам</strong>. Участники никогда не увидят их в своем профиле или личном кабинете.</p>\n"
     },
+    "callouts": "",
+    "cancellationDate": "",
     "contribution": "Взнос",
+    "contributionType": "",
+    "joinSurvey": "",
     "newsletter": {
       "groups": "Группы",
       "status": "Статус",
       "title": "Новости"
     },
     "overview": "Обзор",
+    "pickTag": "",
+    "profile": "",
     "roles": "Роль",
     "security": {
       "instructions": "Скопируйте и поделитесь этой ссылкой:",
@@ -475,16 +947,36 @@
     }
   },
   "contacts": {
-    "advancedSearch": {},
+    "addContact": "",
+    "advancedSearch": {
+      "hasAnswered": "",
+      "selectCallout": ""
+    },
+    "allContacts": "",
     "data": {
+      "activeMembership": "",
+      "activePermission": "",
+      "activeUser": "",
       "amount": "Сумма",
+      "annotationsCopy": "",
       "contribution": "Взнос",
+      "contributionCancelled": "",
+      "contributionMonthlyAmount": "",
+      "contributionPeriod": "",
+      "contributionType": "",
       "deliveryOptIn": "Согласие на доставку",
       "description": "Описание",
       "email": "Почтовый ящик",
+      "firstname": "",
       "joined": "Участник с",
       "lastSeen": "Последний раз онлайн",
+      "lastname": "",
+      "manualPaymentSource": "",
+      "membershipExpires": "",
+      "membershipStarts": "",
       "name": "Имя",
+      "newsletterGroups": "",
+      "newsletterStatus": "",
       "notes": "Примечания",
       "payingFee": "Оплачивает транзакционные издержки?",
       "paymentReference": "?",
@@ -496,8 +988,16 @@
     },
     "dataGroup": {
       "callout": "Опрос",
-      "contact": "Контакты"
-    }
+      "contact": "Контакты",
+      "contribution": "",
+      "role": ""
+    },
+    "noContacts": "",
+    "noResults": "",
+    "numResults": "",
+    "search": "",
+    "selectedCount": "",
+    "showingOf": ""
   },
   "contribution": {
     "adminCancelDescription": "Если вы отмените взнос этого контакта, он будет считаться членом клуба до завершения подписки {date}.",
@@ -543,8 +1043,14 @@
     "willRenew": "Ваше подписка будет автоматически продлена {renewalDate}",
     "willRenewWithNewAmount": "Ваша подписка будет автоматически продлена {renewalDate}. Начиная с этой даты мы будем списывать выбранную вами сумму {nextAmount}."
   },
-  "editCallout": {},
-  "editNotice": {},
+  "editCallout": {
+    "replicated": "",
+    "title": "",
+    "warning": ""
+  },
+  "editNotice": {
+    "title": ""
+  },
   "footer": {
     "contactUs": "Свяжитесь с нами:",
     "handbookResources": "Справочник и ресурсы",
@@ -564,7 +1070,9 @@
     "addressLine1": "Адрес",
     "addressLine2": "Вторая строчка адреса",
     "cancel": "Отменить",
-    "characters": {},
+    "characters": {
+      "remaining": ""
+    },
     "cityOrTown": "Город",
     "deliveryOptIn": "Согласие на рассылку",
     "description": "Описание",
@@ -573,11 +1081,13 @@
       "api": {
         "account-locked": "Ваш аккаунт заблокирован из-за множества неудачных попыток входа. Попробуйте сбросить пароль или обратитесь в поддержку",
         "duplicate-email": "Этот E-mail уже зарегистрирован",
+        "duplicate-tag-name": "",
         "invalid-token": "Некорректный токен двухфакторной аутентификации",
         "login-failed": "Неправильная почта и/или пароль",
         "mfa-token-required": "У вас включена двухфакторная аутентификация, поэтому для сброса пароля вам нужно ввести токен из вашего приложения для аутентификации. Пожалуйста, введите его здесь"
       },
       "generic": "Что-то пошло не так. Если ошибка повторится, обратитесь в поддержку",
+      "unauthorized": "",
       "validation": "Пожалуйста, заполните все поля"
     },
     "errors": {
@@ -605,7 +1115,8 @@
       },
       "file": {
         "rateLimited": "Загрузка не удалась: вы загрузили слишком много файлов. Подождите пару минут и попробуйте снова",
-        "tooBig": "Загрузка не удалась: файл должен весить меньше 20Mb"
+        "tooBig": "Загрузка не удалась: файл должен весить меньше 20Mb",
+        "unsupportedType": "Загрузка не удалась: вы загрузили слишком много файлов. Подождите пару минут и попробуйте снова"
       },
       "firstName": {
         "required": "Нужно добавить имя"
@@ -627,6 +1138,7 @@
       "unknown": {
         "email": "Некорректный почтовый адрес",
         "max": "В этом поле может быть {max} символов",
+        "maxLength": "",
         "min": "В этом поле должно быть минимум {min} символов",
         "required": "Нужно заполнить это поле",
         "url": "Неверная ссылка"
@@ -662,7 +1174,8 @@
     },
     "saveChanges": "Сохранить изменения",
     "saved": "Изменения сохранены",
-    "unsavedChanges": "Есть несохранённые изменения"
+    "unsavedChanges": "Есть несохранённые изменения",
+    "updated": ""
   },
   "formRenderer": {
     "components": {
@@ -724,10 +1237,15 @@
     "paymentMethod": "Способ оплаты",
     "poweredBy": "Технологии beabee",
     "privacy": "Политика конфиденциальности",
-    "tax": {}
+    "tax": {
+      "included": ""
+    }
   },
   "joinPayment": {
-    "applePay": {},
+    "applePay": {
+      "description": "",
+      "recurringLabel": ""
+    },
     "genericError": "Что-то пошло не так! Если эта проблема возникнет снова, свяжитесь со службой поддержки.",
     "goBack": "Что-то пропустили? {back}",
     "goBackButton": "Назад",
@@ -752,20 +1270,65 @@
     "message": "Если вы регистрировались с {email}, вскоре вы получите письмо с инструкцией. Если вы не нашли письмо, проверьте папку «Спам»",
     "title": "Потеряли устройство для двухфакторной аутентификации?"
   },
-  "mailOptIn": {},
+  "mailOptIn": {
+    "optInLabel": "",
+    "text": "",
+    "title": ""
+  },
   "membershipBuilder": {
     "steps": {
       "accountConfirmation": {
-        "deliveryAddress": {},
-        "joinSurvey": {},
+        "deliveryAddress": {
+          "showOptIn": "",
+          "title": ""
+        },
+        "description": "",
+        "joinSurvey": {
+          "required": "",
+          "slug": "",
+          "slugHelp": "",
+          "text": "",
+          "textIntro": "",
+          "title": ""
+        },
         "newsletter": {
+          "showOptIn": "",
           "title": "Рассылка"
-        }
+        },
+        "text": "",
+        "title": "",
+        "welcomeMessage": ""
       },
-      "emails": {},
-      "intro": {},
-      "joinForm": {}
-    }
+      "emails": {
+        "bigTitle": "",
+        "cancellationEmail": "",
+        "description": "",
+        "text": "",
+        "title": "",
+        "welcomeEmail": ""
+      },
+      "intro": {
+        "description": "",
+        "message": "",
+        "showWelcomeMessage": "",
+        "text": "",
+        "title": ""
+      },
+      "joinForm": {
+        "backgroundImage": "",
+        "defaultAmount": "",
+        "description": "",
+        "formSubtitle": "",
+        "formTitle": "",
+        "minAmount": "",
+        "showAbsorbFee": "",
+        "showNoContribution": "",
+        "suggestedAmounts": "",
+        "text": "",
+        "title": ""
+      }
+    },
+    "title": ""
   },
   "menu": {
     "account": "Аккаунт",
@@ -785,7 +1348,15 @@
     "yourProfile": "Ваш профиль"
   },
   "newsletterOptIn": {
-    "groups": {}
+    "groups": {
+      "add": "",
+      "help": "",
+      "title": ""
+    },
+    "optInDisabled": "",
+    "optInLabel": "",
+    "text": "",
+    "title": ""
   },
   "notFound": {
     "goBack": "Вернуться на главную",
@@ -793,8 +1364,14 @@
   },
   "noticeAdminOverview": {
     "actions": {
-      "confirmDelete": {}
-    }
+      "confirmDelete": {
+        "text": "",
+        "title": ""
+      }
+    },
+    "created": "",
+    "summary": "",
+    "updated": ""
   },
   "notices": {
     "addNotice": "Добавить уведомление",
@@ -802,11 +1379,15 @@
       "createdAt": "Создать",
       "name": "Имя",
       "status": "Статус"
-    }
+    },
+    "showingOf": ""
   },
   "notifications": {
-    "copy": {},
-    "error": "Что-то пошло не так. Перезагрузите страницу"
+    "copy": {
+      "success": ""
+    },
+    "error": "Что-то пошло не так. Перезагрузите страницу",
+    "remove": ""
   },
   "pageTitle": {
     "confirmEmail": "Подтвердить почту",
@@ -838,9 +1419,15 @@
       "label": "Карта",
       "setLabel": "Данные вашей карты"
     },
-    "s_ideal": {},
+    "s_ideal": {
+      "changeLabel": "",
+      "label": "",
+      "setLabel": ""
+    },
     "s_paypal": {
-      "label": "PayPal"
+      "changeLabel": "",
+      "label": "PayPal",
+      "setLabel": ""
     },
     "s_sepa": {
       "changeLabel": "Поменять данные счёта",
@@ -849,11 +1436,25 @@
     }
   },
   "payments": {
-    "data": {},
-    "dataGroup": {}
+    "data": {
+      "amount": "",
+      "chargeDate": "",
+      "contact": "",
+      "status": ""
+    },
+    "dataGroup": {
+      "payment": ""
+    }
   },
   "paymentsAdmin": {
-    "filter": {}
+    "filter": {
+      "all": "",
+      "cancelled": "",
+      "failed": "",
+      "pending": "",
+      "successful": ""
+    },
+    "showingOf": ""
   },
   "resetDevice": {
     "description": "Введите пароль, чтобы сбросить двухфакторной аутентификации. После входа в систему вы сможете настроить новое устройство.",
@@ -871,23 +1472,52 @@
     "title": "Сбросить пароль?"
   },
   "roleEditor": {
-    "confirmDelete": {},
-    "expires": {
-      "opts": {}
+    "add": "",
+    "confirmDelete": {
+      "text": "",
+      "title": ""
     },
+    "expires": {
+      "label": "",
+      "opts": {
+        "never": "",
+        "schedule": ""
+      }
+    },
+    "new": "",
     "starts": {
-      "opts": {}
-    }
+      "label": "",
+      "opts": {
+        "now": "",
+        "schedule": ""
+      }
+    },
+    "title": "",
+    "today": ""
   },
   "setPassword": {
     "description": "Введите новый пароль",
     "title": "Установить пароль"
   },
   "tagEditor": {
-    "confirmDelete": {}
+    "add": "",
+    "confirmDelete": {
+      "text_contact": "",
+      "text_global": "",
+      "text_response": "",
+      "title": ""
+    },
+    "name": ""
   },
   "tags": {
-    "notifications": {}
+    "manageTags": "",
+    "noTags": "",
+    "notifications": {
+      "addedTag": "",
+      "removedTag": ""
+    },
+    "searchTag": "",
+    "toggleTag": ""
   },
   "taxRate": {
     "invoiceName": "???"

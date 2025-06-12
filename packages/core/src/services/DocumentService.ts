@@ -1,34 +1,34 @@
-import { randomUUID } from "crypto";
-import { Readable } from "stream";
+import { S3Metadata, isSupportedDocumentType } from '@beabee/beabee-common';
 
 import {
-  S3Client,
-  PutObjectCommand,
   DeleteObjectCommand,
+  HeadObjectCommand,
   ListObjectsV2Command,
-  HeadObjectCommand
-} from "@aws-sdk/client-s3";
+  PutObjectCommand,
+  S3Client,
+} from '@aws-sdk/client-s3';
+import { randomUUID } from 'crypto';
+import { Readable } from 'stream';
 
-import type { DocumentServiceConfig, DocumentMetadata } from "../type/index";
-import { BadRequestError, NotFoundError } from "../errors";
-import { log as mainLogger } from "../logging";
-import {
-  checkConnection,
-  getFileBuffer,
-  getFileStream,
-  fileExists,
-  getFileHash
-} from "../utils/s3";
+import config from '../config/config';
+import { BadRequestError, NotFoundError } from '../errors';
+import { log as mainLogger } from '../logging';
+import type { DocumentMetadata, DocumentServiceConfig } from '../type/index';
 import {
   getExtensionFromFilename,
   getExtensionFromMimetype,
   getMimetypeFromExtension,
-  sanitizeFilename
-} from "../utils/file";
-import { isSupportedDocumentType, S3Metadata } from "@beabee/beabee-common";
-import config from "../config/config";
+  sanitizeFilename,
+} from '../utils/file';
+import {
+  checkConnection,
+  fileExists,
+  getFileBuffer,
+  getFileHash,
+  getFileStream,
+} from '../utils/s3';
 
-const log = mainLogger.child({ app: "document-service" });
+const log = mainLogger.child({ app: 'document-service' });
 
 /**
  * Service for handling document uploads and storage in S3/MinIO
@@ -49,9 +49,9 @@ export class DocumentService {
       region: this.config.s3.region,
       credentials: {
         accessKeyId: this.config.s3.accessKey,
-        secretAccessKey: this.config.s3.secretKey
+        secretAccessKey: this.config.s3.secretKey,
       },
-      forcePathStyle: this.config.s3.forcePathStyle !== false
+      forcePathStyle: this.config.s3.forcePathStyle !== false,
     });
   }
 
@@ -65,22 +65,22 @@ export class DocumentService {
     if (mimetype && !isSupportedDocumentType(mimetype)) {
       throw new BadRequestError({
         message:
-          "Unsupported document type. Please upload a PDF or Office document."
+          'Unsupported document type. Please upload a PDF or Office document.',
       });
     }
 
     // Basic PDF signature check for PDF files
-    if (mimetype === "application/pdf") {
+    if (mimetype === 'application/pdf') {
       if (documentData.length < 4) {
         throw new BadRequestError({
-          message: "Invalid PDF format. File is too small."
+          message: 'Invalid PDF format. File is too small.',
         });
       }
-      const pdfSignature = documentData.toString("ascii", 0, 4);
-      if (pdfSignature !== "%PDF") {
+      const pdfSignature = documentData.toString('ascii', 0, 4);
+      if (pdfSignature !== '%PDF') {
         throw new BadRequestError({
           message:
-            "Invalid PDF format. The file does not appear to be a valid PDF."
+            'Invalid PDF format. The file does not appear to be a valid PDF.',
         });
       }
     }
@@ -103,7 +103,7 @@ export class DocumentService {
     try {
       // Validate input
       if (!Buffer.isBuffer(documentData)) {
-        throw new BadRequestError({ message: "Invalid upload format" });
+        throw new BadRequestError({ message: 'Invalid upload format' });
       }
 
       // Sanitize original filename if provided
@@ -123,7 +123,7 @@ export class DocumentService {
       const fileId = randomUUID();
 
       const id = `${fileId}${extWithDot}`;
-      const contentType = mimetype || "application/pdf";
+      const contentType = mimetype || 'application/pdf';
 
       // Prepare metadata for S3
       const metadata: S3Metadata = {};
@@ -144,7 +144,7 @@ export class DocumentService {
           Metadata:
             Object.keys(metadata).length > 0
               ? (metadata as Record<string, string>)
-              : undefined
+              : undefined,
         })
       );
 
@@ -159,17 +159,17 @@ export class DocumentService {
         size: documentData.length,
         filename: sanitizedFilename,
         owner,
-        hash
+        hash,
       };
     } catch (error) {
       if (error instanceof BadRequestError) {
         throw error;
       }
       const errorMessage =
-        error instanceof Error ? error.message : "Unknown error";
-      log.error("Failed to upload document:", error);
+        error instanceof Error ? error.message : 'Unknown error';
+      log.error('Failed to upload document:', error);
       throw new BadRequestError({
-        message: "Failed to upload document: " + errorMessage
+        message: 'Failed to upload document: ' + errorMessage,
       });
     }
   }
@@ -192,8 +192,8 @@ export class DocumentService {
       if (error instanceof NotFoundError) {
         throw error;
       }
-      log.error("Failed to get document stream:", error);
-      throw new BadRequestError({ message: "Failed to get document" });
+      log.error('Failed to get document stream:', error);
+      throw new BadRequestError({ message: 'Failed to get document' });
     }
   }
 
@@ -215,8 +215,8 @@ export class DocumentService {
       if (error instanceof NotFoundError) {
         throw error;
       }
-      log.error("Failed to get document buffer:", error);
-      throw new BadRequestError({ message: "Failed to get document" });
+      log.error('Failed to get document buffer:', error);
+      throw new BadRequestError({ message: 'Failed to get document' });
     }
   }
 
@@ -234,7 +234,7 @@ export class DocumentService {
       await this.s3Client.send(
         new DeleteObjectCommand({
           Bucket: this.config.s3.bucket,
-          Key: `documents/${id}`
+          Key: `documents/${id}`,
         })
       );
 
@@ -243,8 +243,8 @@ export class DocumentService {
       if (error instanceof NotFoundError) {
         throw error;
       }
-      log.error("Failed to delete document:", error);
-      throw new BadRequestError({ message: "Failed to delete document" });
+      log.error('Failed to delete document:', error);
+      throw new BadRequestError({ message: 'Failed to delete document' });
     }
   }
 
@@ -259,7 +259,7 @@ export class DocumentService {
       const headObject = await this.s3Client.send(
         new HeadObjectCommand({
           Bucket: this.config.s3.bucket,
-          Key: key
+          Key: key,
         })
       );
 
@@ -271,15 +271,15 @@ export class DocumentService {
 
       return {
         id,
-        mimetype: headObject.ContentType || "application/octet-stream",
+        mimetype: headObject.ContentType || 'application/octet-stream',
         createdAt: headObject.LastModified || new Date(),
         size: headObject.ContentLength || 0,
         filename: s3Metadata.originalfilename,
         owner: s3Metadata.owner,
-        hash: headObject.ETag ? headObject.ETag.replace(/"/g, "") : ""
+        hash: headObject.ETag ? headObject.ETag.replace(/"/g, '') : '',
       };
     } catch (error) {
-      log.error("Failed to get document metadata:", error);
+      log.error('Failed to get document metadata:', error);
       throw new NotFoundError();
     }
   }
@@ -294,7 +294,7 @@ export class DocumentService {
       const key = `documents/${id}`;
       return await getFileHash(this.s3Client, this.config.s3.bucket, key);
     } catch (error) {
-      log.error("Failed to get document hash:", error);
+      log.error('Failed to get document hash:', error);
       throw new NotFoundError();
     }
   }
@@ -325,18 +325,18 @@ export class DocumentService {
       const response = await this.s3Client.send(
         new ListObjectsV2Command({
           Bucket: this.config.s3.bucket,
-          Prefix: "documents/"
+          Prefix: 'documents/',
         })
       );
 
       return (response.Contents || [])
         .map((item) => {
-          const key = item.Key || "";
-          return key.replace("documents/", "");
+          const key = item.Key || '';
+          return key.replace('documents/', '');
         })
         .filter(Boolean);
     } catch (error) {
-      log.error("Failed to list documents:", error);
+      log.error('Failed to list documents:', error);
       return [];
     }
   }

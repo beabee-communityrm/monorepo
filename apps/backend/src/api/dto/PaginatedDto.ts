@@ -1,5 +1,6 @@
-import { Paginated } from "@beabee/beabee-common";
-import { IsNumber, ValidateNested } from "class-validator";
+import { Paginated } from '@beabee/beabee-common';
+
+import { IsNumber, ValidateNested } from 'class-validator';
 
 export class PaginatedDto<T> implements Paginated<T> {
   @ValidateNested({ each: true })

@@ -1,12 +1,13 @@
-import { BaseClient } from "./base.client.js";
-import type { BaseClientOptions } from "../types/index.js";
 import {
   type CreateResetDeviceData,
   type CreateResetPasswordData,
   RESET_SECURITY_FLOW_TYPE,
   type UpdateResetDeviceData,
-  type UpdateResetPasswordData
-} from "@beabee/beabee-common";
+  type UpdateResetPasswordData,
+} from '@beabee/beabee-common';
+
+import type { BaseClientOptions } from '../types/index.js';
+import { BaseClient } from './base.client.js';
 
 /**
  * Client for managing security reset flows
@@ -30,9 +31,9 @@ export class ResetSecurityClient extends BaseClient {
   async resetPasswordBegin(email: string): Promise<void> {
     const data: CreateResetPasswordData = {
       email,
-      resetUrl: this.options.host + "/auth/reset-password"
+      resetUrl: this.options.host + '/auth/reset-password',
     };
-    await this.fetch.post("reset-password", data);
+    await this.fetch.post('reset-password', data);
   }
 
   /**
@@ -49,7 +50,7 @@ export class ResetSecurityClient extends BaseClient {
   ): Promise<void> {
     const data: UpdateResetPasswordData = {
       password,
-      token
+      token,
     };
     await this.fetch.put(`reset-password/${resetPasswordFlowId}`, data);
   }
@@ -62,10 +63,10 @@ export class ResetSecurityClient extends BaseClient {
   async resetDeviceBegin(email: string): Promise<void> {
     const data: CreateResetDeviceData = {
       email,
-      resetUrl: this.options.host + "/auth/reset-device",
-      type: RESET_SECURITY_FLOW_TYPE.TOTP
+      resetUrl: this.options.host + '/auth/reset-device',
+      type: RESET_SECURITY_FLOW_TYPE.TOTP,
     };
-    await this.fetch.post("reset-device", data);
+    await this.fetch.post('reset-device', data);
   }
 
   /**
@@ -80,7 +81,7 @@ export class ResetSecurityClient extends BaseClient {
   ): Promise<void> {
     const data: UpdateResetDeviceData = {
       password,
-      type: RESET_SECURITY_FLOW_TYPE.TOTP
+      type: RESET_SECURITY_FLOW_TYPE.TOTP,
     };
     await this.fetch.put(`reset-device/${resetMfaFlowId}`, data);
   }

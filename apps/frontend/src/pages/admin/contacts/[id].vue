@@ -20,19 +20,17 @@ meta:
 
 <script lang="ts" setup>
 import type { GetContactData } from '@beabee/beabee-common';
-import { computed, onBeforeMount, ref } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { useI18n } from 'vue-i18n';
-import { faUsers } from '@fortawesome/free-solid-svg-icons';
-
-import PageTitle from '@components/PageTitle.vue';
 import { AppTabs } from '@beabee/vue/components';
 
+import PageTitle from '@components/PageTitle.vue';
+import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';
+import { client } from '@utils/api';
+import { computed, onBeforeMount, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRoute, useRouter } from 'vue-router';
 
 import env from '../../../env';
-
-import { client } from '@utils/api';
 
 const props = defineProps<{ id: string }>();
 

@@ -1,19 +1,19 @@
 import {
   type CalloutResponseFilterName,
+  type GetCalloutDataWith,
   calloutResponseFilters,
   getCalloutComponents,
-  type GetCalloutDataWith,
 } from '@beabee/beabee-common';
-import { computed, ref, watchEffect, type Ref } from 'vue';
-import { type FilterGroups, type FilterItems } from '@type';
-import type { Header } from '@components/table/table.interface';
 import type { SelectItem } from '@beabee/vue/types';
 
-import { i18n } from '@lib/i18n';
+import type { Header } from '@components/table/table.interface';
 import env from '@env';
-import { withLabel } from '@utils/rules';
+import { i18n } from '@lib/i18n';
+import { type FilterGroups, type FilterItems } from '@type';
 import { client } from '@utils/api';
 import { convertComponentsToFilters } from '@utils/callouts';
+import { withLabel } from '@utils/rules';
+import { type Ref, computed, ref, watchEffect } from 'vue';
 
 const { t } = i18n.global;
 

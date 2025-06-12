@@ -33,15 +33,14 @@ meta:
   </AppForm>
 </template>
 <script lang="ts" setup>
+import type { GetEmailData } from '@beabee/beabee-common';
+import { AppForm } from '@beabee/vue/components';
+
+import App2ColGrid from '@components/App2ColGrid.vue';
+import EmailEditor from '@components/pages/admin/membership-builder/EmailEditor.vue';
+import { client, isApiError } from '@utils/api';
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-
-import { AppForm } from '@beabee/vue/components';
-import EmailEditor from '@components/pages/admin/membership-builder/EmailEditor.vue';
-import App2ColGrid from '@components/App2ColGrid.vue';
-
-import { client, isApiError } from '@utils/api';
-import type { GetEmailData } from '@beabee/beabee-common';
 
 const { t } = useI18n();
 const stepT = (key: string) => t('membershipBuilder.steps.emails.' + key);

@@ -7,13 +7,13 @@ import type {
   CalloutComponentInputFileSchema,
   CalloutComponentInputNumberSchema,
   CalloutComponentInputPhoneNumberSchema,
-  CalloutComponentInputSelectableSchema,
   CalloutComponentInputSelectSchema,
+  CalloutComponentInputSelectableSchema,
   CalloutComponentInputSignatureSchema,
   CalloutComponentInputTextSchema,
   CalloutComponentInputTimeSchema,
-  CalloutComponentInputUrlSchema
-} from "./index.js";
+  CalloutComponentInputUrlSchema,
+} from './index.js';
 
 /** Any callout input component schema */
 export type CalloutComponentInputSchema =

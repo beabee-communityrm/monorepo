@@ -1,33 +1,33 @@
-import { runApp } from "@beabee/core/server";
-import { contactsService } from "@beabee/core/services/ContactsService";
+import { runApp } from '@beabee/core/server';
+import { contactsService } from '@beabee/core/services/ContactsService';
 
 export const listUsers = async (email?: string): Promise<void> => {
   await runApp(async () => {
     const contacts = await contactsService.find({
       where: email ? { email } : {},
-      relations: ["roles", "profile", "contribution"],
-      order: { joined: "DESC" }
+      relations: ['roles', 'profile', 'contribution'],
+      order: { joined: 'DESC' },
     });
 
     if (contacts.length === 0) {
-      console.log(email ? `No users found for ${email}` : "No users found");
+      console.log(email ? `No users found for ${email}` : 'No users found');
       return;
     }
 
-    console.log("\nUsers:");
-    console.log("--------------------------------------------------");
+    console.log('\nUsers:');
+    console.log('--------------------------------------------------');
     for (const contact of contacts) {
       console.log(`ID: ${contact.id}`);
       console.log(`Name: ${contact.fullname}`);
       console.log(`Email: ${contact.email}`);
       console.log(`Joined: ${contact.joined.toISOString()}`);
-      console.log(`Last seen: ${contact.lastSeen?.toISOString() || "Never"}`);
+      console.log(`Last seen: ${contact.lastSeen?.toISOString() || 'Never'}`);
 
       if (contact.roles.length > 0) {
-        console.log("Roles:");
+        console.log('Roles:');
         contact.roles.forEach((role) => {
           console.log(
-            `  - ${role.type}${role.dateExpires ? ` (expires: ${role.dateExpires.toISOString()})` : ""}`
+            `  - ${role.type}${role.dateExpires ? ` (expires: ${role.dateExpires.toISOString()})` : ''}`
           );
         });
       }
@@ -57,7 +57,7 @@ export const listUsers = async (email?: string): Promise<void> => {
         }
       }
 
-      console.log("--------------------------------------------------");
+      console.log('--------------------------------------------------');
     }
   });
 };

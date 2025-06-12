@@ -20,14 +20,15 @@ meta:
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
-import TagManager from '@components/tag/TagManager.vue';
-import { client } from '@utils/api';
 import type { GetCalloutDataWith } from '@beabee/beabee-common';
+
 import App2ColGrid from '@components/App2ColGrid.vue';
 import CalloutReviewerManager from '@components/callout/CalloutReviewerManager.vue';
+import TagManager from '@components/tag/TagManager.vue';
 import { addBreadcrumb } from '@store/breadcrumb';
+import { client } from '@utils/api';
+import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 defineProps<{
   callout: GetCalloutDataWith<'form'>;

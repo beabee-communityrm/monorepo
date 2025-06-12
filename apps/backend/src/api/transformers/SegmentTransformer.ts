@@ -1,22 +1,16 @@
-import {
-  RoleType,
-  SegmentFilterName,
-  segmentFilters
-} from "@beabee/beabee-common";
-import { TransformPlainToInstance } from "class-transformer";
+import { SegmentFilterName, segmentFilters } from '@beabee/beabee-common';
+import { Segment } from '@beabee/core/models';
+import { AuthInfo } from '@beabee/core/type';
 
 import {
   GetSegmentDto,
   GetSegmentOptsDto,
   GetSegmentWith,
-  ListSegmentsDto
-} from "@api/dto/SegmentDto";
-import { BaseTransformer } from "@api/transformers/BaseTransformer";
-import ContactTransformer from "@api/transformers/ContactTransformer";
-
-import { Segment } from "@beabee/core/models";
-
-import { AuthInfo } from "@beabee/core/type";
+  ListSegmentsDto,
+} from '@api/dto/SegmentDto';
+import { BaseTransformer } from '@api/transformers/BaseTransformer';
+import ContactTransformer from '@api/transformers/ContactTransformer';
+import { TransformPlainToInstance } from 'class-transformer';
 
 class SegmentTransformer extends BaseTransformer<
   Segment,
@@ -40,8 +34,8 @@ class SegmentTransformer extends BaseTransformer<
       ruleGroup: segment.ruleGroup,
       order: segment.order,
       ...(opts.with?.includes(GetSegmentWith.contactCount) && {
-        contactCount: segment.contactCount
-      })
+        contactCount: segment.contactCount,
+      }),
     };
   }
 
@@ -54,7 +48,7 @@ class SegmentTransformer extends BaseTransformer<
       for (const segment of segments) {
         const result = await ContactTransformer.fetch(auth, {
           limit: 0,
-          rules: segment.ruleGroup
+          rules: segment.ruleGroup,
         });
         segment.contactCount = result.total;
       }

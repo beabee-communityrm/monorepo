@@ -3,43 +3,42 @@ import {
   CalloutResponseAnswerAddress,
   CalloutResponseAnswerFileUpload,
   CalloutResponseAnswersSlide,
-  CalloutResponseViewSchema,
-  CreateCalloutResponseData,
   CalloutResponseGuestData,
   CalloutResponseNewsletterData,
+  CalloutResponseViewSchema,
+  CreateCalloutResponseData,
   GetCalloutResponseData,
-  PaginatedQuery
-} from "@beabee/beabee-common";
-import { Type } from "class-transformer";
-import {
-  IsOptional,
-  IsEnum,
-  IsString,
-  IsIn,
-  IsObject,
-  IsEmail,
-  ValidateNested,
-  IsDefined,
-  IsUUID,
-  IsNumber,
-  IsDate,
-  Allow,
-  IsBoolean
-} from "class-validator";
+  PaginatedQuery,
+} from '@beabee/beabee-common';
+import { GetCalloutResponseWith } from '@beabee/beabee-common';
+import { Callout } from '@beabee/core/models';
 
 import {
   GetExportQuery,
   GetPaginatedQuery,
-  GetPaginatedRuleGroup
-} from "@api/dto/BaseDto";
-import { GetContactDto } from "@api/dto/ContactDto";
-import { GetCalloutDto } from "@api/dto/CalloutDto";
-import { GetCalloutResponseCommentDto } from "@api/dto/CalloutResponseCommentDto";
-import { GetCalloutTagDto } from "@api/dto/CalloutTagDto";
-import IsNonEmptyString from "@api/validators/IsNonEmptyString";
-
-import { Callout } from "@beabee/core/models";
-import { GetCalloutResponseWith } from "@beabee/beabee-common";
+  GetPaginatedRuleGroup,
+} from '@api/dto/BaseDto';
+import { GetCalloutDto } from '@api/dto/CalloutDto';
+import { GetCalloutResponseCommentDto } from '@api/dto/CalloutResponseCommentDto';
+import { GetCalloutTagDto } from '@api/dto/CalloutTagDto';
+import { GetContactDto } from '@api/dto/ContactDto';
+import IsNonEmptyString from '@api/validators/IsNonEmptyString';
+import { Type } from 'class-transformer';
+import {
+  Allow,
+  IsBoolean,
+  IsDate,
+  IsDefined,
+  IsEmail,
+  IsEnum,
+  IsIn,
+  IsNumber,
+  IsObject,
+  IsOptional,
+  IsString,
+  IsUUID,
+  ValidateNested,
+} from 'class-validator';
 
 export interface BaseGetCalloutResponseOptsDto {
   callout?: Callout;
@@ -57,7 +56,7 @@ export class ListCalloutResponsesDto extends GetPaginatedQuery {
   @IsEnum(GetCalloutResponseWith, { each: true })
   with?: GetCalloutResponseWith[];
 
-  @IsIn(["number", "createdAt", "updatedAt"])
+  @IsIn(['number', 'createdAt', 'updatedAt'])
   sort?: string;
 }
 
@@ -171,7 +170,7 @@ export class CreateCalloutResponseDto implements CreateCalloutResponseData {
   @IsString({ each: true })
   tags?: string[];
 
-  @IsUUID("4")
+  @IsUUID('4')
   @IsOptional()
   assigneeId?: string | null;
 }
@@ -192,7 +191,7 @@ export class UpdateCalloutResponseDto
   @IsString({ each: true })
   tags?: string[];
 
-  @IsUUID("4")
+  @IsUUID('4')
   @IsOptional()
   assigneeId?: string | null;
 }
@@ -226,10 +225,10 @@ export type ExportCalloutResponseDto = [
   fullname: string,
   email: string,
   isGuest: boolean,
-  newsletterOptIn: true | "",
+  newsletterOptIn: true | '',
   newsletterGroups: string,
   comments: string,
-  ...answers: string[]
+  ...answers: string[],
 ];
 
 export interface ExportCalloutResponsesOptsDto

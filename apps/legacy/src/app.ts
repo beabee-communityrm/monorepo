@@ -1,42 +1,41 @@
-import "module-alias/register";
-
-import path from "path";
-
-import cleanDeep from "clean-deep";
-import cookie from "cookie-parser";
-import csrf from "csurf"; // TODO: This package is deprecated, see https://www.npmjs.com/package/csurf
-import express, { ErrorRequestHandler, RequestHandler } from "express";
-import flash from "express-flash"; // TODO: Last release was 2013
-import helmet from "helmet";
-
-import appLoader from "#core/app-loader";
-import { log, requestErrorLogger, requestLogger } from "@beabee/core/logging";
-import quickflash from "#core/quickflash";
-import { initApp, startServer } from "@beabee/core/server";
-import sessions from "#core/sessions";
-import { isInvalidType } from "@beabee/core/utils/db";
-
-import OptionsService, {
-  OptionKey
-} from "@beabee/core/services/OptionsService";
-import PageSettingsService from "@beabee/core/services/PageSettingsService";
+import 'module-alias/register';
 
 //import specialUrlHandler from '@apps/tools/apps/special-urls/handler';
+import config from '@beabee/core/config';
+import { log, requestErrorLogger, requestLogger } from '@beabee/core/logging';
+import { initApp, startServer } from '@beabee/core/server';
+import OptionsService, {
+  OptionKey,
+} from '@beabee/core/services/OptionsService';
+import PageSettingsService from '@beabee/core/services/PageSettingsService';
+import { isInvalidType } from '@beabee/core/utils/db';
 
-import config from "@beabee/core/config";
+import cleanDeep from 'clean-deep';
+import cookie from 'cookie-parser';
+import csrf from 'csurf';
+// TODO: This package is deprecated, see https://www.npmjs.com/package/csurf
+import express, { ErrorRequestHandler, RequestHandler } from 'express';
+import flash from 'express-flash';
+// TODO: Last release was 2013
+import helmet from 'helmet';
+import path from 'path';
+
+import appLoader from '#core/app-loader';
+import quickflash from '#core/quickflash';
+import sessions from '#core/sessions';
 
 if (!config.gocardless.sandbox && config.dev) {
   log.error(
-    "Dev mode enabled but GoCardless is not in sandbox, refusing to start"
+    'Dev mode enabled but GoCardless is not in sandbox, refusing to start'
   );
   process.exit(1);
 }
 
 const app = express();
 
-app.set("views", __dirname + "/views");
-app.set("view engine", "pug");
-app.set("view cache", false);
+app.set('views', __dirname + '/views');
+app.set('view engine', 'pug');
+app.set('view cache', false);
 
 app.use(helmet({ contentSecurityPolicy: false }));
 app.use(cookie());
@@ -44,19 +43,19 @@ app.use(express.urlencoded({ extended: true }));
 
 // Remove empty strings from form submissions
 app.use((req, res, next) => {
-  if (req.headers["content-type"] === "application/x-www-form-urlencoded") {
+  if (req.headers['content-type'] === 'application/x-www-form-urlencoded') {
     req.body = cleanDeep(req.body, {
       emptyArrays: false,
-      emptyObjects: false
+      emptyObjects: false,
     });
   }
   next();
 });
 
 // Setup tracker
-app.use("/membership.js", (req, res) => {
-  const referrerUrl = req.get("referer");
-  res.set("Content-Type", "application/javascript");
+app.use('/membership.js', (req, res) => {
+  const referrerUrl = req.get('referer');
+  res.set('Content-Type', 'application/javascript');
   if (
     referrerUrl &&
     config.trustedOrigins.some((url) => referrerUrl.startsWith(url))
@@ -65,17 +64,17 @@ app.use("/membership.js", (req, res) => {
     if (memberId) {
       res.send('window.Membership = {memberId: "' + memberId + '"}');
     } else {
-      res.send("window.Membership = {}");
+      res.send('window.Membership = {}');
     }
   } else {
-    res.status(404).send("");
+    res.status(404).send('');
   }
 });
 
-app.use("/static", express.static(path.join(__dirname, "static")));
+app.use('/static', express.static(path.join(__dirname, 'static')));
 
-app.get("/favicon.png", (req, res) => {
-  res.redirect(OptionsService.getText("logo"));
+app.get('/favicon.png', (req, res) => {
+  res.redirect(OptionsService.getText('logo'));
 });
 
 // Log the rest
@@ -100,11 +99,11 @@ initApp()
     app.use(csrf());
 
     app.use(function (err, req, res, next) {
-      if (err.code == "EBADCSRFTOKEN") {
+      if (err.code == 'EBADCSRFTOKEN') {
         return res
           .status(403)
           .send(
-            "Error: Please make sure cookies are enabled. (CSRF token invalid)"
+            'Error: Please make sure cookies are enabled. (CSRF token invalid)'
           );
       }
       next(err);
@@ -129,7 +128,7 @@ initApp()
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     app.use(function (req, res, next) {
       res.status(404);
-      res.render("404");
+      res.render('404');
     });
 
     app.use(requestErrorLogger);
@@ -138,11 +137,11 @@ initApp()
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     app.use(function (err, req, res, next) {
       res.status(500);
-      res.render("500", { error: config.dev ? err.stack : undefined });
+      res.render('500', { error: config.dev ? err.stack : undefined });
     } as ErrorRequestHandler);
 
     startServer(app);
   })
   .catch((err) => {
-    log.error("Error during initialization", err);
+    log.error('Error during initialization', err);
   });

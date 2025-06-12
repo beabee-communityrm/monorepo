@@ -2,35 +2,32 @@ import {
   Address,
   ContributionPeriod,
   PaymentMethod,
-  RESET_SECURITY_FLOW_TYPE
-} from "@beabee/beabee-common";
+  RESET_SECURITY_FLOW_TYPE,
+} from '@beabee/beabee-common';
 
-import { getRepository } from "#database";
-import { log as mainLogger } from "#logging";
-
-import EmailService from "#services/EmailService";
-import ContactsService from "#services/ContactsService";
-import OptionsService from "#services/OptionsService";
-import PaymentService from "#services/PaymentService";
-import ResetSecurityFlowService from "./ResetSecurityFlowService";
-import { JoinFlow, JoinForm, Contact } from "#models/index";
-
+import { getRepository } from '#database';
+import { DuplicateEmailError } from '#errors/index';
+import { log as mainLogger } from '#logging';
+import { Contact, JoinFlow, JoinForm } from '#models/index';
 import {
   PaymentFlowProvider,
+  gcFlowProvider,
   stripeFlowProvider,
-  gcFlowProvider
-} from "#providers";
-
-import { DuplicateEmailError } from "#errors/index";
-
+} from '#providers';
+import ContactsService from '#services/ContactsService';
+import EmailService from '#services/EmailService';
+import OptionsService from '#services/OptionsService';
+import PaymentService from '#services/PaymentService';
 import {
   CompleteUrls,
   CompletedPaymentFlow,
   CompletedPaymentFlowData,
   PaymentFlow,
   PaymentFlowData,
-  PaymentFlowParams
-} from "#type/index";
+  PaymentFlowParams,
+} from '#type/index';
+
+import ResetSecurityFlowService from './ResetSecurityFlowService';
 
 const paymentProviders = {
   [PaymentMethod.StripeCard]: stripeFlowProvider,
@@ -38,10 +35,10 @@ const paymentProviders = {
   [PaymentMethod.StripeBACS]: stripeFlowProvider,
   [PaymentMethod.StripePayPal]: stripeFlowProvider,
   [PaymentMethod.StripeIdeal]: stripeFlowProvider,
-  [PaymentMethod.GoCardlessDirectDebit]: gcFlowProvider
+  [PaymentMethod.GoCardlessDirectDebit]: gcFlowProvider,
 };
 
-const log = mainLogger.child({ app: "payment-flow-service" });
+const log = mainLogger.child({ app: 'payment-flow-service' });
 
 /**
  * Service that manages the complete payment flow process in beabee.
@@ -61,7 +58,7 @@ class PaymentFlowService implements PaymentFlowProvider {
    * @returns Promise resolving to created JoinFlow
    */
   async createJoinFlow(
-    form: Pick<JoinForm, "email" | "password">,
+    form: Pick<JoinForm, 'email' | 'password'>,
     urls: CompleteUrls
   ): Promise<JoinFlow> {
     const joinForm: JoinForm = {
@@ -71,12 +68,12 @@ class PaymentFlowService implements PaymentFlowProvider {
       period: ContributionPeriod.Monthly,
       payFee: false,
       prorate: false,
-      paymentMethod: PaymentMethod.StripeCard
+      paymentMethod: PaymentMethod.StripeCard,
     };
     return await getRepository(JoinFlow).save({
       ...urls,
       joinForm,
-      paymentFlowId: ""
+      paymentFlowId: '',
     });
   }
 
@@ -97,10 +94,10 @@ class PaymentFlowService implements PaymentFlowProvider {
     const joinFlow = await getRepository(JoinFlow).save({
       ...urls,
       joinForm,
-      paymentFlowId: ""
+      paymentFlowId: '',
     });
 
-    log.info("Creating payment join flow " + joinFlow.id, { joinForm });
+    log.info('Creating payment join flow ' + joinFlow.id, { joinForm });
 
     const paymentFlow = await this.createPaymentFlow(
       joinFlow,
@@ -108,7 +105,7 @@ class PaymentFlowService implements PaymentFlowProvider {
       user
     );
     await getRepository(JoinFlow).update(joinFlow.id, {
-      paymentFlowId: paymentFlow.id
+      paymentFlowId: paymentFlow.id,
     });
     return paymentFlow.params;
   }
@@ -127,7 +124,7 @@ class PaymentFlowService implements PaymentFlowProvider {
   async completeJoinFlow(
     joinFlow: JoinFlow
   ): Promise<CompletedPaymentFlow | undefined> {
-    log.info("Completing join flow " + joinFlow.id);
+    log.info('Completing join flow ' + joinFlow.id);
     const paymentFlow = joinFlow.paymentFlowId
       ? await this.completePaymentFlow(joinFlow)
       : undefined;
@@ -136,19 +133,19 @@ class PaymentFlowService implements PaymentFlowProvider {
   }
 
   async sendConfirmEmail(joinFlow: JoinFlow): Promise<void> {
-    log.info("Send confirm email for join flow " + joinFlow.id);
+    log.info('Send confirm email for join flow ' + joinFlow.id);
 
     const contact = await ContactsService.findOneBy({
-      email: joinFlow.joinForm.email
+      email: joinFlow.joinForm.email,
     });
 
     if (contact?.membership?.isActive) {
       if (contact.password.hash) {
         await EmailService.sendTemplateToContact(
-          "email-exists-login",
+          'email-exists-login',
           contact,
           {
-            loginLink: joinFlow.loginUrl
+            loginLink: joinFlow.loginUrl,
           }
         );
       } else {
@@ -157,21 +154,21 @@ class PaymentFlowService implements PaymentFlowProvider {
           RESET_SECURITY_FLOW_TYPE.PASSWORD
         );
         await EmailService.sendTemplateToContact(
-          "email-exists-set-password",
+          'email-exists-set-password',
           contact,
           {
-            spLink: joinFlow.setPasswordUrl + "/" + rpFlow.id
+            spLink: joinFlow.setPasswordUrl + '/' + rpFlow.id,
           }
         );
       }
     } else {
       await EmailService.sendTemplateTo(
-        "confirm-email",
+        'confirm-email',
         { email: joinFlow.joinForm.email },
         {
-          firstName: joinFlow.joinForm.firstname || "",
-          lastName: joinFlow.joinForm.lastname || "",
-          confirmLink: joinFlow.confirmUrl + "/" + joinFlow.id
+          firstName: joinFlow.joinForm.firstname || '',
+          lastName: joinFlow.joinForm.lastname || '',
+          confirmLink: joinFlow.confirmUrl + '/' + joinFlow.id,
         }
       );
     }
@@ -183,7 +180,7 @@ class PaymentFlowService implements PaymentFlowProvider {
     // get a confirm email if they are already an active member
     let contact = await ContactsService.findOne({
       where: { email: joinFlow.joinForm.email },
-      relations: { profile: true }
+      relations: { profile: true },
     });
     if (contact?.membership?.isActive) {
       throw new DuplicateEmailError();
@@ -192,8 +189,8 @@ class PaymentFlowService implements PaymentFlowProvider {
     const partialContact = {
       email: joinFlow.joinForm.email,
       password: joinFlow.joinForm.password,
-      firstname: joinFlow.joinForm.firstname || "",
-      lastname: joinFlow.joinForm.lastname || ""
+      firstname: joinFlow.joinForm.firstname || '',
+      lastname: joinFlow.joinForm.lastname || '',
     };
 
     const completedPaymentFlow = await this.completeJoinFlow(joinFlow);
@@ -204,9 +201,9 @@ class PaymentFlowService implements PaymentFlowProvider {
         await this.getCompletedPaymentFlowData(completedPaymentFlow);
 
       // Prefill contact data from payment provider if possible
-      partialContact.firstname ||= paymentData.firstname || "";
-      partialContact.lastname ||= paymentData.lastname || "";
-      deliveryAddress = OptionsService.getBool("show-mail-opt-in")
+      partialContact.firstname ||= paymentData.firstname || '';
+      partialContact.lastname ||= paymentData.lastname || '';
+      deliveryAddress = OptionsService.getBool('show-mail-opt-in')
         ? paymentData.billingAddress
         : undefined;
     }
@@ -215,8 +212,8 @@ class PaymentFlowService implements PaymentFlowProvider {
       await ContactsService.updateContact(contact, partialContact);
     } else {
       contact = await ContactsService.createContact(partialContact, {
-        newsletterStatus: OptionsService.getText("newsletter-default-status"),
-        deliveryAddress: deliveryAddress || null
+        newsletterStatus: OptionsService.getText('newsletter-default-status'),
+        deliveryAddress: deliveryAddress || null,
       });
     }
 
@@ -228,7 +225,7 @@ class PaymentFlowService implements PaymentFlowProvider {
       );
     }
 
-    await EmailService.sendTemplateToContact("welcome", contact);
+    await EmailService.sendTemplateToContact('welcome', contact);
 
     return contact;
   }
@@ -238,7 +235,7 @@ class PaymentFlowService implements PaymentFlowProvider {
     completeUrl: string,
     data: PaymentFlowData
   ): Promise<PaymentFlow> {
-    log.info("Create payment flow for join flow " + joinFlow.id);
+    log.info('Create payment flow for join flow ' + joinFlow.id);
     return paymentProviders[joinFlow.joinForm.paymentMethod].createPaymentFlow(
       joinFlow,
       completeUrl,
@@ -247,7 +244,7 @@ class PaymentFlowService implements PaymentFlowProvider {
   }
 
   async completePaymentFlow(joinFlow: JoinFlow): Promise<CompletedPaymentFlow> {
-    log.info("Complete payment flow for join flow " + joinFlow.id);
+    log.info('Complete payment flow for join flow ' + joinFlow.id);
     return paymentProviders[
       joinFlow.joinForm.paymentMethod
     ].completePaymentFlow(joinFlow);

@@ -8,10 +8,11 @@ meta:
 <template><div /></template>
 
 <script lang="ts" setup>
+import { client } from '@utils/api';
 import { onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router';
+
 import { updateCurrentUser } from '../../../store';
-import { client } from '@utils/api';
 
 const props = defineProps<{ id: string }>();
 

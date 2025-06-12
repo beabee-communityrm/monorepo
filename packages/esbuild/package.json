@@ -1,0 +1,32 @@
+{
+  "name": "@beabee/esbuild",
+  "version": "0.28.1",
+  "type": "module",
+  "exports": {
+    ".": "./index.ts",
+    "./builders": "./src/builders.ts",
+    "./plugins": "./src/plugins.ts",
+    "./utils": "./src/utils.ts",
+    "./types": "./src/types/index.ts",
+    "./locale/*": "./src/locale/*.ts"
+  },
+  "scripts": {
+    "check": "yarn check:tsc && yarn check:prettier",
+    "check:tsc": "tsc --noEmit",
+    "check:prettier": "prettier -c .",
+    "format": "prettier --write .",
+    "generate:index": "yarn workspace @beabee/dev-cli start generate-index --baseDir $(pwd) --extension ts -p ./src/types ./src/locale"
+  },
+  "dependencies": {
+    "@gjsify/esbuild-plugin-transform-ext": "^0.0.4",
+    "esbuild": "^0.25.5"
+  },
+  "devDependencies": {
+    "@beabee/locale": "workspace:^",
+    "@beabee/prettier-config": "workspace:^",
+    "@beabee/tsconfig": "workspace:^",
+    "@types/node": "^22.15.28",
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.3"
+  }
+}

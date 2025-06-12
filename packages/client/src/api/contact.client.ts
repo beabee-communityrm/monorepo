@@ -1,24 +1,24 @@
-import { BaseClient } from "./base.client.js";
-import { cleanUrl } from "../utils/index.js";
-import { ContactMfaClient } from "./contact-mfa.client.js";
-import { ContactContributionClient } from "./contact-contribution.client.js";
-import { ContactRoleClient } from "./contact-role.client.js";
-import { ContactTagClient } from "./contact-tag.client.js";
-import { ContactPaymentClient } from "./contact-payment.client.js";
-
-import type { BaseClientOptions } from "../types/index.js";
 import type {
   ContactRoleData,
   CreateContactData,
   GetContactData,
   GetContactDataWith,
-  GetContactsQuery,
   GetContactWith,
+  GetContactsQuery,
   Paginated,
   RuleGroup,
   Serial,
-  UpdateContactData
-} from "@beabee/beabee-common";
+  UpdateContactData,
+} from '@beabee/beabee-common';
+
+import type { BaseClientOptions } from '../types/index.js';
+import { cleanUrl } from '../utils/index.js';
+import { BaseClient } from './base.client.js';
+import { ContactContributionClient } from './contact-contribution.client.js';
+import { ContactMfaClient } from './contact-mfa.client.js';
+import { ContactPaymentClient } from './contact-payment.client.js';
+import { ContactRoleClient } from './contact-role.client.js';
+import { ContactTagClient } from './contact-tag.client.js';
 
 /**
  * Client for managing contacts (users) in the Beabee system
@@ -48,7 +48,7 @@ export class ContactClient extends BaseClient {
   constructor(protected override readonly options: BaseClientOptions) {
     super({
       ...options,
-      path: cleanUrl(options.path + "/contact")
+      path: cleanUrl(options.path + '/contact'),
     });
     this.mfa = new ContactMfaClient(options);
     this.contribution = new ContactContributionClient(options);
@@ -76,13 +76,13 @@ export class ContactClient extends BaseClient {
       ...(contact.contribution && {
         contribution: ContactContributionClient.deserialize(
           contact.contribution
-        )
+        ),
       }),
       ...(contact.roles && {
         roles: contact.roles.map((role: Serial<ContactRoleData>) =>
           ContactRoleClient.deserialize(role)
-        )
-      })
+        ),
+      }),
     };
   }
 
@@ -97,14 +97,14 @@ export class ContactClient extends BaseClient {
     _with?: readonly With[]
   ): Promise<Paginated<GetContactDataWith<With>>> {
     const { data } = await this.fetch.get<Paginated<Serial<GetContactData>>>(
-      "/",
+      '/',
       { with: _with, ...query }
     );
     return {
       ...data,
       items: data.items.map((item: Serial<GetContactData>) =>
         ContactClient.deserialize<With>(item)
-      )
+      ),
     };
   }
 
@@ -114,7 +114,7 @@ export class ContactClient extends BaseClient {
    * @returns The created contact
    */
   async create(newData: CreateContactData): Promise<GetContactData> {
-    const { data } = await this.fetch.post("/", newData);
+    const { data } = await this.fetch.post('/', newData);
     return ContactClient.deserialize(data);
   }
 
@@ -159,9 +159,9 @@ export class ContactClient extends BaseClient {
     rules: RuleGroup,
     updates: UpdateContactData
   ): Promise<{ affected: number }> {
-    const { data } = await this.fetch.patch("/", {
+    const { data } = await this.fetch.patch('/', {
       rules,
-      updates
+      updates,
     });
     return data;
   }

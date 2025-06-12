@@ -1,12 +1,11 @@
-import { CalloutComponentType } from "./callout-component-type.js";
-import { calloutComponentInputSelectableTypes } from "./callout-component-input-selectable-types.js";
-import { calloutComponentInputTextTypes } from "./callout-component-input-text-types.js";
-
-import type { CalloutComponentBaseInputSchema } from "../types/index.js";
+import type { CalloutComponentBaseInputSchema } from '../types/index.js';
+import { calloutComponentInputSelectableTypes } from './callout-component-input-selectable-types.js';
+import { calloutComponentInputTextTypes } from './callout-component-input-text-types.js';
+import { CalloutComponentType } from './callout-component-type.js';
 
 /** Array of all possible callout input component types */
 export const calloutComponentInputTypes: Array<
-  CalloutComponentBaseInputSchema["type"]
+  CalloutComponentBaseInputSchema['type']
 > = [
   ...calloutComponentInputSelectableTypes,
   ...calloutComponentInputTextTypes,
@@ -21,5 +20,5 @@ export const calloutComponentInputTypes: Array<
   CalloutComponentType.INPUT_SELECT,
   CalloutComponentType.INPUT_SIGNATURE,
   CalloutComponentType.INPUT_TIME,
-  CalloutComponentType.INPUT_URL
+  CalloutComponentType.INPUT_URL,
 ];

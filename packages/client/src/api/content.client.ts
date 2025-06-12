@@ -1,8 +1,8 @@
-import { BaseClient } from "./base.client.js";
-import { cleanUrl } from "../utils/index.js";
+import type { ContentData, ContentId } from '@beabee/beabee-common';
 
-import type { BaseClientOptions } from "../types/index.js";
-import type { ContentData, ContentId } from "@beabee/beabee-common";
+import type { BaseClientOptions } from '../types/index.js';
+import { cleanUrl } from '../utils/index.js';
+import { BaseClient } from './base.client.js';
 
 /**
  * Client for managing content pages and blocks
@@ -18,7 +18,7 @@ export class ContentClient extends BaseClient {
   constructor(protected override readonly options: BaseClientOptions) {
     super({
       ...options,
-      path: cleanUrl(options.path + "/content")
+      path: cleanUrl(options.path + '/content'),
     });
   }
 

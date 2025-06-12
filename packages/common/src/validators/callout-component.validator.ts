@@ -1,33 +1,31 @@
-import { calloutComponentContentValidator } from "./callout-component-content.validator.js";
-import { calloutComponentInputAddressValidator } from "./callout-component-input-address.validator.js";
-import { calloutComponentInputCheckboxValidator } from "./callout-component-input-checkbox.validator.js";
-import { calloutComponentInputCurrencyValidator } from "./callout-component-input-currency.validator.js";
-import { calloutComponentInputDateTimeValidator } from "./callout-component-input-date-time.validator.js";
-import { calloutComponentInputEmailValidator } from "./callout-component-input-email.validator.js";
-import { calloutComponentInputFileValidator } from "./callout-component-input-file.validator.js";
-import { calloutComponentInputNumberValidator } from "./callout-component-input-number.validator.js";
-import { calloutComponentInputSelectValidator } from "./callout-component-input-select.validator.js";
-import { calloutComponentInputPhoneNumberValidator } from "./callout-component-input-phone-number.validator.js";
-import { calloutComponentInputSelectableValidator } from "./callout-component-input-selectable.validator.js";
-import { calloutComponentInputSignatureValidator } from "./callout-component-input-signature.validator.js";
-import { calloutComponentInputTextValidator } from "./callout-component-input-text.validator.js";
-import { calloutComponentInputTimeValidator } from "./callout-component-input-time.validator.js";
-import { calloutComponentInputUrlValidator } from "./callout-component-input-url.validator.js";
-
 import {
   CalloutComponentBaseType,
-  CalloutComponentType
-} from "../data/index.js";
-import { isCalloutComponentOfBaseType } from "../utils/callouts.js";
-
+  CalloutComponentType,
+} from '../data/index.js';
 import type {
   CalloutComponentInputSchema,
   CalloutComponentNestableSchema,
   CalloutComponentSchema,
   CalloutResponseAnswer,
   CalloutResponseAnswers,
-  ValidatorCalloutComponent
-} from "../types/index.js";
+  ValidatorCalloutComponent,
+} from '../types/index.js';
+import { isCalloutComponentOfBaseType } from '../utils/callouts.js';
+import { calloutComponentContentValidator } from './callout-component-content.validator.js';
+import { calloutComponentInputAddressValidator } from './callout-component-input-address.validator.js';
+import { calloutComponentInputCheckboxValidator } from './callout-component-input-checkbox.validator.js';
+import { calloutComponentInputCurrencyValidator } from './callout-component-input-currency.validator.js';
+import { calloutComponentInputDateTimeValidator } from './callout-component-input-date-time.validator.js';
+import { calloutComponentInputEmailValidator } from './callout-component-input-email.validator.js';
+import { calloutComponentInputFileValidator } from './callout-component-input-file.validator.js';
+import { calloutComponentInputNumberValidator } from './callout-component-input-number.validator.js';
+import { calloutComponentInputPhoneNumberValidator } from './callout-component-input-phone-number.validator.js';
+import { calloutComponentInputSelectValidator } from './callout-component-input-select.validator.js';
+import { calloutComponentInputSelectableValidator } from './callout-component-input-selectable.validator.js';
+import { calloutComponentInputSignatureValidator } from './callout-component-input-signature.validator.js';
+import { calloutComponentInputTextValidator } from './callout-component-input-text.validator.js';
+import { calloutComponentInputTimeValidator } from './callout-component-input-time.validator.js';
+import { calloutComponentInputUrlValidator } from './callout-component-input-url.validator.js';
 
 export const calloutComponentNestableValidator = (
   schema: CalloutComponentNestableSchema,
@@ -46,7 +44,7 @@ export const calloutComponentNestableValidator = (
  * A map of validator classes to be used for Callout component.
  */
 const calloutInputValidatorsMap: Record<
-  CalloutComponentInputSchema["type"],
+  CalloutComponentInputSchema['type'],
   ValidatorCalloutComponent<any>
 > = {
   // Input
@@ -74,7 +72,7 @@ const calloutInputValidatorsMap: Record<
   [CalloutComponentType.INPUT_SELECTABLE_RADIO]:
     calloutComponentInputSelectableValidator,
   [CalloutComponentType.INPUT_SELECTABLE_SELECTBOXES]:
-    calloutComponentInputSelectableValidator
+    calloutComponentInputSelectableValidator,
 };
 export function calloutComponentInputValidator(
   schema: CalloutComponentInputSchema,
@@ -137,5 +135,5 @@ export function calloutComponentValidator(
     return calloutComponentContentValidator(schema, answer as unknown);
   }
 
-  throw new Error("Invalid schema type");
+  throw new Error('Invalid schema type');
 }

@@ -1,14 +1,16 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
-import { ContactTag } from "../models/ContactTag";
-import { Segment } from "../models/Segment";
-import type { RuleGroup, Rule, RuleValue } from "@beabee/beabee-common";
+import type { Rule, RuleGroup, RuleValue } from '@beabee/beabee-common';
+
+import { MigrationInterface, QueryRunner } from 'typeorm';
+
+import { ContactTag } from '../models/ContactTag';
+import { Segment } from '../models/Segment';
 
 export class MigrateSegmentTagRules1731670066414 implements MigrationInterface {
-  name = "MigrateSegmentTagRules1731670066414";
+  name = 'MigrateSegmentTagRules1731670066414';
 
   private isUuid(value: RuleValue): boolean {
     return (
-      typeof value === "string" &&
+      typeof value === 'string' &&
       /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
         value
       )
@@ -16,7 +18,7 @@ export class MigrateSegmentTagRules1731670066414 implements MigrationInterface {
   }
 
   public async up(queryRunner: QueryRunner): Promise<void> {
-    console.log("Starting segment tag rules migration...");
+    console.log('Starting segment tag rules migration...');
 
     const segments = await queryRunner.manager.find(Segment);
     const tags = await queryRunner.manager.find(ContactTag);
@@ -28,8 +30,8 @@ export class MigrateSegmentTagRules1731670066414 implements MigrationInterface {
       rules: (Rule | RuleGroup)[]
     ): (Rule | RuleGroup)[] => {
       return rules.filter((rule) => {
-        if ("field" in rule) {
-          if (rule.value.includes("__DELETE_ME__")) {
+        if ('field' in rule) {
+          if (rule.value.includes('__DELETE_ME__')) {
             return false;
           }
         } else {
@@ -48,9 +50,9 @@ export class MigrateSegmentTagRules1731670066414 implements MigrationInterface {
           rules: (Rule | RuleGroup)[]
         ): (Rule | RuleGroup)[] => {
           for (const rule of rules) {
-            if ("field" in rule) {
+            if ('field' in rule) {
               if (
-                rule.field === "tags" &&
+                rule.field === 'tags' &&
                 Array.isArray(rule.value) &&
                 rule.value.length > 0
               ) {
@@ -70,7 +72,7 @@ export class MigrateSegmentTagRules1731670066414 implements MigrationInterface {
                       `Tag not found: ${tagName} in segment: ${segment.id}`
                     );
                     modified = true;
-                    return "__DELETE_ME__";
+                    return '__DELETE_ME__';
                   });
                 }
               }
@@ -106,7 +108,7 @@ export class MigrateSegmentTagRules1731670066414 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    console.log("Starting rollback of segment tag rules...");
+    console.log('Starting rollback of segment tag rules...');
 
     const segments = await queryRunner.manager.find(Segment);
     const tags = await queryRunner.manager.find(ContactTag);
@@ -121,10 +123,10 @@ export class MigrateSegmentTagRules1731670066414 implements MigrationInterface {
 
         const processRules = (rules: (Rule | RuleGroup)[]): void => {
           for (const rule of rules) {
-            if ("field" in rule) {
+            if ('field' in rule) {
               // Handle Rule type
               if (
-                rule.field === "tags" &&
+                rule.field === 'tags' &&
                 Array.isArray(rule.value) &&
                 rule.value.length > 0
               ) {

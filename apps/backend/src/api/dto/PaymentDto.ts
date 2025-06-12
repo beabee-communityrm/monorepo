@@ -1,4 +1,7 @@
-import { PaymentStatus } from "@beabee/beabee-common";
+import { PaymentStatus } from '@beabee/beabee-common';
+
+import { GetPaginatedQuery } from '@api/dto/BaseDto';
+import { GetContactDto } from '@api/dto/ContactDto';
 import {
   IsArray,
   IsDate,
@@ -6,11 +9,8 @@ import {
   IsIn,
   IsNumber,
   IsOptional,
-  ValidateNested
-} from "class-validator";
-
-import { GetPaginatedQuery } from "@api/dto/BaseDto";
-import { GetContactDto } from "@api/dto/ContactDto";
+  ValidateNested,
+} from 'class-validator';
 
 export class GetPaymentDto {
   @IsNumber()
@@ -28,7 +28,7 @@ export class GetPaymentDto {
 }
 
 export enum GetPaymentWith {
-  Contact = "contact"
+  Contact = 'contact',
 }
 
 export class GetPaymentOptsDto {
@@ -44,6 +44,6 @@ export class ListPaymentsDto extends GetPaginatedQuery {
   @IsEnum(GetPaymentWith, { each: true })
   with?: GetPaymentWith[];
 
-  @IsIn(["amount", "chargeDate"])
+  @IsIn(['amount', 'chargeDate'])
   sort?: string;
 }

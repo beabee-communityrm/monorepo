@@ -29,9 +29,10 @@
 </template>
 
 <script lang="ts" setup>
-import AppLabel from './AppLabel.vue';
-import AppToggleSwitch from '../button/AppToggleSwitch.vue';
 import { computed } from 'vue';
+
+import AppToggleSwitch from '../button/AppToggleSwitch.vue';
+import AppLabel from './AppLabel.vue';
 
 /**
  * Props for the AppToggleField component

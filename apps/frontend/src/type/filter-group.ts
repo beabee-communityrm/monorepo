@@ -1,4 +1,5 @@
 import type { Component } from 'vue';
+
 import type { FilterItems } from './filter-item';
 
 export interface FilterGroup {

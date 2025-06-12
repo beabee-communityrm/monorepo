@@ -1,51 +1,51 @@
-import { Brackets, SelectQueryBuilder } from "typeorm";
+import { createQueryBuilder } from '@beabee/core/database';
+import { Contact, ContactContribution } from '@beabee/core/models';
 
-import { createQueryBuilder } from "@beabee/core/database";
-import { Param } from "#core/utils/params";
+import { Brackets, SelectQueryBuilder } from 'typeorm';
 
-import { ContactContribution, Contact } from "@beabee/core/models";
+import { Param } from '#core/utils/params';
 
-import BaseExport, { ExportResult } from "./BaseExport";
+import BaseExport, { ExportResult } from './BaseExport';
 
 export default class ActiveMembersExport extends BaseExport<Contact> {
-  exportName = "Active members export";
-  itemStatuses = ["added", "seeen"];
-  itemName = "active members";
-  idColumn = "m.id";
+  exportName = 'Active members export';
+  itemStatuses = ['added', 'seeen'];
+  itemName = 'active members';
+  idColumn = 'm.id';
 
   async getParams(): Promise<Param[]> {
     return [
       {
-        name: "hasActiveSubscription",
-        label: "Has active subscription",
-        type: "boolean"
-      }
+        name: 'hasActiveSubscription',
+        label: 'Has active subscription',
+        type: 'boolean',
+      },
     ];
   }
 
   protected get query(): SelectQueryBuilder<Contact> {
-    return createQueryBuilder(Contact, "m").orderBy({
-      firstname: "ASC",
-      lastname: "ASC"
+    return createQueryBuilder(Contact, 'm').orderBy({
+      firstname: 'ASC',
+      lastname: 'ASC',
     });
   }
 
   protected getNewItemsQuery(): SelectQueryBuilder<Contact> {
     const query = super
       .getNewItemsQuery()
-      .innerJoin("m.roles", "mp")
+      .innerJoin('m.roles', 'mp')
       .andWhere("mp.type = 'member' AND mp.dateAdded <= :now")
       .andWhere(
         new Brackets((qb) => {
-          qb.where("mp.dateExpires IS NULL").orWhere("mp.dateExpires > :now");
+          qb.where('mp.dateExpires IS NULL').orWhere('mp.dateExpires > :now');
         })
       )
       .setParameters({ now: new Date() });
 
     if (this.ex!.params?.hasActiveSubscription) {
       query
-        .innerJoin(ContactContribution, "cc", "cc.contactId = m.id")
-        .andWhere("cc.subscriptionId IS NOT NULL");
+        .innerJoin(ContactContribution, 'cc', 'cc.contactId = m.id')
+        .andWhere('cc.subscriptionId IS NOT NULL');
     }
 
     return query;
@@ -62,7 +62,7 @@ export default class ActiveMembersExport extends BaseExport<Contact> {
       ContributionType: contact.contributionType,
       ContributionMonthlyAmount: contact.contributionMonthlyAmount,
       ContributionPeriod: contact.contributionPeriod,
-      ContributionDescription: contact.contributionDescription
+      ContributionDescription: contact.contributionDescription,
     }));
   }
 }

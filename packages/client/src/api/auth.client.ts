@@ -1,8 +1,9 @@
-import { BaseClient } from "./base.client.js";
-import { ContactClient } from "./contact.client.js";
-import { cleanUrl } from "../utils/index.js";
-import type { BaseClientOptions } from "../types/index.js";
-import type { AuthInfoData, LoginData } from "@beabee/beabee-common";
+import type { AuthInfoData, LoginData } from '@beabee/beabee-common';
+
+import type { BaseClientOptions } from '../types/index.js';
+import { cleanUrl } from '../utils/index.js';
+import { BaseClient } from './base.client.js';
+import { ContactClient } from './contact.client.js';
 
 /**
  * Client for managing authentication operations
@@ -17,7 +18,7 @@ export class AuthClient extends BaseClient {
   constructor(protected override readonly options: BaseClientOptions) {
     super({
       ...options,
-      path: cleanUrl(options.path + "/auth")
+      path: cleanUrl(options.path + '/auth'),
     });
   }
 
@@ -29,14 +30,14 @@ export class AuthClient extends BaseClient {
    */
   async login(data: LoginData): Promise<void> {
     await this.fetch.post(
-      "login",
+      'login',
       {
         email: data.email,
         password: data.password,
-        token: data.token
+        token: data.token,
       },
       {
-        credentials: "include"
+        credentials: 'include',
       }
     );
   }
@@ -46,8 +47,8 @@ export class AuthClient extends BaseClient {
    * @returns Promise that resolves with the auth info
    */
   async info(): Promise<AuthInfoData> {
-    const { data } = await this.fetch.get<AuthInfoData>("info", {
-      credentials: "include"
+    const { data } = await this.fetch.get<AuthInfoData>('info', {
+      credentials: 'include',
     });
 
     if (data.contact) {
@@ -62,8 +63,8 @@ export class AuthClient extends BaseClient {
    * @returns Promise that resolves when logout is complete
    */
   async logout(): Promise<void> {
-    await this.fetch.post("logout", undefined, {
-      credentials: "include"
+    await this.fetch.post('logout', undefined, {
+      credentials: 'include',
     });
     // Clear stored cookies after logout
     this.fetch.clearCookies();

@@ -20,6 +20,7 @@ COPY packages/core/package.json /opt/packages/core/package.json
 COPY packages/docker/package.json /opt/packages/docker/package.json
 COPY packages/client/package.json /opt/packages/client/package.json
 COPY packages/locale/package.json /opt/packages/locale/package.json
+COPY packages/weblate-client/package.json /opt/packages/weblate-client/package.json
 COPY packages/test-utils/package.json /opt/packages/test-utils/package.json
 
 # Copy dependencies info from apps
@@ -34,6 +35,10 @@ COPY apps/e2e-api-tests/package.json /opt/apps/e2e-api-tests/package.json
 COPY packages/prettier-config /opt/packages/prettier-config
 COPY packages/tsconfig /opt/packages/tsconfig
 COPY packages/vue /opt/packages/vue
+COPY packages/esbuild /opt/packages/esbuild
+
+# Copy apps with relevant content
+COPY apps/dev-cli /opt/apps/dev-cli
 
 # Install dependencies
 RUN yarn workspaces focus

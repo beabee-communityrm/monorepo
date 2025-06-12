@@ -64,17 +64,17 @@
 
 <script lang="ts" setup>
 import {
+  type ContributionInfo,
   ContributionPeriod,
   ContributionType,
   MembershipStatus,
-  type ContributionInfo,
 } from '@beabee/beabee-common';
-import { useI18n } from 'vue-i18n';
-import { formatLocale } from '@utils/dates';
-import { computed } from 'vue';
 
 import AppSubHeading from '@components/AppSubHeading.vue';
 import AppTime from '@components/AppTime.vue';
+import { formatLocale } from '@utils/dates';
+import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 const { n, t } = useI18n();
 

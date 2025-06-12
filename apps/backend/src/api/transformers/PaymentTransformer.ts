@@ -1,25 +1,23 @@
 import {
   PaymentFilterName,
+  RuleGroup,
   paymentFilters,
-  RuleGroup
-} from "@beabee/beabee-common";
-import { TransformPlainToInstance } from "class-transformer";
-import { SelectQueryBuilder } from "typeorm";
+} from '@beabee/beabee-common';
+import { Contact, Payment } from '@beabee/core/models';
+import { AuthInfo } from '@beabee/core/type';
 
 import {
   GetPaymentDto,
   GetPaymentOptsDto,
   GetPaymentWith,
-  ListPaymentsDto
-} from "@api/dto/PaymentDto";
+  ListPaymentsDto,
+} from '@api/dto/PaymentDto';
+import { BaseTransformer } from '@api/transformers/BaseTransformer';
 import ContactTransformer, {
-  loadContactRoles
-} from "@api/transformers/ContactTransformer";
-import { BaseTransformer } from "@api/transformers/BaseTransformer";
-
-import { Contact, Payment } from "@beabee/core/models";
-
-import { AuthInfo } from "@beabee/core/type";
+  loadContactRoles,
+} from '@api/transformers/ContactTransformer';
+import { TransformPlainToInstance } from 'class-transformer';
+import { SelectQueryBuilder } from 'typeorm';
 
 class PaymentTransformer extends BaseTransformer<
   Payment,
@@ -42,16 +40,16 @@ class PaymentTransformer extends BaseTransformer<
       status: payment.status,
       ...(opts.with?.includes(GetPaymentWith.Contact) && {
         contact:
-          payment.contact && ContactTransformer.convert(payment.contact, auth)
-      })
+          payment.contact && ContactTransformer.convert(payment.contact, auth),
+      }),
     };
   }
 
   protected async getNonAdminAuthRules(): Promise<RuleGroup> {
     return {
-      condition: "AND",
+      condition: 'AND',
       // Non-admins can only see their own payments
-      rules: [{ field: "contact", operator: "equal", value: ["me"] }]
+      rules: [{ field: 'contact', operator: 'equal', value: ['me'] }],
     };
   }
 
@@ -61,7 +59,7 @@ class PaymentTransformer extends BaseTransformer<
     query: ListPaymentsDto
   ): void {
     if (query.with?.includes(GetPaymentWith.Contact)) {
-      qb.leftJoinAndSelect(`${fieldPrefix}contact`, "contact");
+      qb.leftJoinAndSelect(`${fieldPrefix}contact`, 'contact');
     }
   }
 

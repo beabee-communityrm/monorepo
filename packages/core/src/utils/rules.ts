@@ -1,19 +1,20 @@
 import {
+  FilterType,
   Filters,
-  isRuleGroup,
-  validateRuleGroup,
+  InvalidRule,
+  Rule,
+  RuleGroup,
+  RuleOperator,
   ValidatedRule,
   ValidatedRuleGroup,
-  RuleOperator,
-  FilterType,
-  operatorsByType,
-  InvalidRule,
-  parseDate,
   getMinDateUnit,
-  RuleGroup,
-  Rule
-} from "@beabee/beabee-common";
-import { BadRequestError } from "routing-controllers";
+  isRuleGroup,
+  operatorsByType,
+  parseDate,
+  validateRuleGroup,
+} from '@beabee/beabee-common';
+
+import { BadRequestError } from 'routing-controllers';
 import {
   Brackets,
   EntityTarget,
@@ -21,39 +22,37 @@ import {
   SelectQueryBuilder,
   UpdateQueryBuilder,
   UpdateResult,
-  WhereExpressionBuilder
-} from "typeorm";
-import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
+  WhereExpressionBuilder,
+} from 'typeorm';
+import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 
-import { simpleFilterHandler } from "#filter-handlers/simple.filter-handlers";
-
-import { createQueryBuilder } from "#database";
-import { Contact } from "#models";
-
+import { createQueryBuilder } from '#database';
+import { simpleFilterHandler } from '#filter-handlers/simple.filter-handlers';
+import { Contact } from '#models';
 import type {
   FilterHandler,
   FilterHandlers,
   RichRuleValue,
-  SelectResult
-} from "#type/index";
+  SelectResult,
+} from '#type/index';
 
 // Operator definitions
 
 const equalityOperatorsWhere = {
   equal: (field: string) => `${field} = :valueA`,
-  not_equal: (field: string) => `${field} <> :valueA`
+  not_equal: (field: string) => `${field} <> :valueA`,
 };
 
 const nullableOperatorsWhere = {
   is_empty: (field: string) => `${field} IS NULL`,
-  is_not_empty: (field: string) => `${field} IS NOT NULL`
+  is_not_empty: (field: string) => `${field} IS NOT NULL`,
 };
 
 const blobOperatorsWhere = {
   contains: (field: string) => `${field} ILIKE '%' || :valueA || '%'`,
   not_contains: (field: string) => `${field} NOT ILIKE '%' || :valueA || '%'`,
   is_empty: (field: string) => `${field} = ''`,
-  is_not_empty: (field: string) => `${field} <> ''`
+  is_not_empty: (field: string) => `${field} <> ''`,
 };
 
 const numericOperatorsWhere = {
@@ -64,13 +63,13 @@ const numericOperatorsWhere = {
   greater: (field: string) => `${field} > :valueA`,
   greater_or_equal: (field: string) => `${field} >= :valueA`,
   between: (field: string) => `${field} BETWEEN :valueA AND :valueB`,
-  not_between: (field: string) => `${field} NOT BETWEEN :valueA AND :valueB`
+  not_between: (field: string) => `${field} NOT BETWEEN :valueA AND :valueB`,
 };
 
 function withOperators<T extends FilterType>(
   type: T,
   operators: Record<
-    keyof (typeof operatorsByType)[T] | "is_empty" | "is_not_empty",
+    keyof (typeof operatorsByType)[T] | 'is_empty' | 'is_not_empty',
     (field: string) => string
   >
 ) {
@@ -81,46 +80,46 @@ const operatorsWhereByType: Record<
   FilterType,
   Partial<Record<RuleOperator, (field: string) => string>>
 > = {
-  text: withOperators("text", {
+  text: withOperators('text', {
     ...equalityOperatorsWhere,
     ...blobOperatorsWhere,
     begins_with: (field) => `${field} ILIKE :valueA || '%'`,
     not_begins_with: (field) => `${field} NOT ILIKE :valueA || '%'`,
     ends_with: (field) => `${field} ILIKE '%' || :valueA`,
-    not_ends_with: (field) => `${field} NOT ILIKE '%' || :valueA`
+    not_ends_with: (field) => `${field} NOT ILIKE '%' || :valueA`,
   }),
-  blob: withOperators("blob", blobOperatorsWhere),
-  date: withOperators("date", numericOperatorsWhere),
-  number: withOperators("number", numericOperatorsWhere),
-  boolean: withOperators("boolean", {
+  blob: withOperators('blob', blobOperatorsWhere),
+  date: withOperators('date', numericOperatorsWhere),
+  number: withOperators('number', numericOperatorsWhere),
+  boolean: withOperators('boolean', {
     ...nullableOperatorsWhere,
-    equal: equalityOperatorsWhere.equal
+    equal: equalityOperatorsWhere.equal,
   }),
-  array: withOperators("array", {
+  array: withOperators('array', {
     contains: (field) => `${field} ? :valueA`,
     not_contains: (field) => `${field} ? :valueA = FALSE`,
     is_empty: (field) => `${field} ->> 0 IS NULL`,
-    is_not_empty: (field) => `${field} ->> 0 IS NOT NULL`
+    is_not_empty: (field) => `${field} ->> 0 IS NOT NULL`,
   }),
-  enum: withOperators("enum", {
+  enum: withOperators('enum', {
     ...equalityOperatorsWhere,
-    ...nullableOperatorsWhere
+    ...nullableOperatorsWhere,
   }),
-  contact: withOperators("contact", {
+  contact: withOperators('contact', {
     ...equalityOperatorsWhere,
-    ...nullableOperatorsWhere
-  })
+    ...nullableOperatorsWhere,
+  }),
 };
 
 // Rule parsing
 
 const dateUnitSql = {
-  y: "year",
-  M: "month",
-  d: "day",
-  h: "hour",
-  m: "minute",
-  s: "second"
+  y: 'year',
+  M: 'month',
+  d: 'day',
+  h: 'hour',
+  m: 'minute',
+  s: 'second',
 } as const;
 
 function simpleField(field: string): string {
@@ -149,37 +148,37 @@ function prepareRule(
   contact: Contact | undefined
 ): [(field: string) => string, RichRuleValue[]] {
   switch (rule.type) {
-    case "blob":
-    case "text":
+    case 'blob':
+    case 'text':
       // Make NULL an empty string for comparison
       return [rule.nullable ? coalesceField : simpleField, rule.value];
 
-    case "date": {
+    case 'date': {
       // Compare dates by at least day, but more specific if H/m/s are provided
       const values = rule.value.map((v) => parseDate(v));
-      const minUnit = getMinDateUnit(["d", ...values.map(([_, unit]) => unit)]);
+      const minUnit = getMinDateUnit(['d', ...values.map(([_, unit]) => unit)]);
       return [
         (field) => `DATE_TRUNC('${dateUnitSql[minUnit]}', ${field})`,
-        values.map(([date]) => date)
+        values.map(([date]) => date),
       ];
     }
 
-    case "contact":
+    case 'contact':
       return [
         simpleField,
         rule.value.map((v) => {
           // Map "me" to contact id
-          if (v === "me") {
+          if (v === 'me') {
             if (!contact) {
               throw new BadRequestError(
-                "No contact provided to map contact field type"
+                'No contact provided to map contact field type'
               );
             }
             return contact.id;
           } else {
             return v;
           }
-        })
+        }),
       ];
 
     default:
@@ -204,8 +203,8 @@ export function getFilterHandler(
 ): FilterHandler {
   let filterHandler = filterHandlers?.[field];
   // See if there is a catch all field handler for subfields
-  if (!filterHandler && field.includes(".")) {
-    const catchallField = field.split(".", 1)[0] + ".";
+  if (!filterHandler && field.includes('.')) {
+    const catchallField = field.split('.', 1)[0] + '.';
     filterHandler = filterHandlers?.[catchallField];
   }
 
@@ -232,7 +231,7 @@ export function convertRulesToWhereClause(
 ): [Brackets, Record<string, unknown>] {
   const params: Record<string, unknown> = {
     // Some queries need a current date parameter
-    now: new Date()
+    now: new Date(),
   };
   let ruleNo = 0;
 
@@ -241,19 +240,19 @@ export function convertRulesToWhereClause(
       const applyOperator = operatorsWhereByType[rule.type][rule.operator];
       if (!applyOperator) {
         // Shouln't be able to happen as rule has been validated
-        throw new Error("Invalid ValidatedRule");
+        throw new Error('Invalid ValidatedRule');
       }
 
-      const paramSuffix = "_" + ruleNo;
+      const paramSuffix = '_' + ruleNo;
       const [transformField, value] = prepareRule(rule, contact);
 
       // Add values as params
-      params["valueA" + paramSuffix] = value[0];
-      params["valueB" + paramSuffix] = value[1];
+      params['valueA' + paramSuffix] = value[0];
+      params['valueB' + paramSuffix] = value[1];
 
       // Add suffixes to parameters but avoid replacing casts e.g. ::boolean
       const addParamSuffix = (field: string) =>
-        field.replace(/[^:]:[a-zA-Z]+/g, "$&" + paramSuffix);
+        field.replace(/[^:]:[a-zA-Z]+/g, '$&' + paramSuffix);
 
       const newParams = getFilterHandler(filterHandlers, rule.field)(qb, {
         fieldPrefix,
@@ -263,7 +262,7 @@ export function convertRulesToWhereClause(
         value,
         convertToWhereClause: (field) =>
           addParamSuffix(applyOperator(transformField(field))),
-        addParamSuffix
+        addParamSuffix,
       });
 
       if (newParams) {
@@ -279,9 +278,9 @@ export function convertRulesToWhereClause(
   function parseRuleGroup(ruleGroup: ValidatedRuleGroup<string>) {
     return (qb: WhereExpressionBuilder): void => {
       if (ruleGroup.rules.length > 0) {
-        qb.where(ruleGroup.condition === "AND" ? "TRUE" : "FALSE");
+        qb.where(ruleGroup.condition === 'AND' ? 'TRUE' : 'FALSE');
         const conditionFn =
-          ruleGroup.condition === "AND" ? "andWhere" : "orWhere";
+          ruleGroup.condition === 'AND' ? 'andWhere' : 'orWhere';
         for (const rule of ruleGroup.rules) {
           qb[conditionFn](
             new Brackets(
@@ -300,17 +299,17 @@ export function convertRulesToWhereClause(
 /** @depreciated remove once SegmentService has been cleaned up */
 export function buildSelectQuery<
   Entity extends ObjectLiteral,
-  Field extends string
+  Field extends string,
 >(
   entity: EntityTarget<Entity>,
   ruleGroup: ValidatedRuleGroup<Field> | undefined,
   contact?: Contact,
   filterHandlers?: FilterHandlers<Field>
 ): SelectQueryBuilder<Entity> {
-  const qb = createQueryBuilder(entity, "item");
+  const qb = createQueryBuilder(entity, 'item');
   if (ruleGroup) {
     qb.where(
-      ...convertRulesToWhereClause(ruleGroup, contact, filterHandlers, "item.")
+      ...convertRulesToWhereClause(ruleGroup, contact, filterHandlers, 'item.')
     );
   }
   return qb;
@@ -318,7 +317,7 @@ export function buildSelectQuery<
 
 export async function batchUpdate<
   Entity extends ObjectLiteral,
-  Field extends string
+  Field extends string,
 >(
   entity: EntityTarget<Entity>,
   filters: Filters<Field>,
@@ -338,11 +337,11 @@ export async function batchUpdate<
           validatedRuleGroup,
           contact,
           filterHandlers,
-          ""
+          ''
         )
       );
 
-    queryCallback?.(qb, "");
+    queryCallback?.(qb, '');
 
     return await qb.execute();
   } catch (err) {
@@ -380,7 +379,7 @@ export async function batchUpdate<
  */
 export async function batchSelect<
   Entity extends ObjectLiteral,
-  Field extends string
+  Field extends string,
 >(
   entity: EntityTarget<Entity>,
   filters: Filters<Field>,
@@ -392,24 +391,24 @@ export async function batchSelect<
   try {
     const validatedRuleGroup = validateRuleGroup(filters, ruleGroup);
 
-    const qb = createQueryBuilder(entity, "entity")
-      .select(["entity.id"])
+    const qb = createQueryBuilder(entity, 'entity')
+      .select(['entity.id'])
       .where(
         ...convertRulesToWhereClause(
           validatedRuleGroup,
           contact,
           filterHandlers,
-          "entity."
+          'entity.'
         )
       );
 
-    queryCallback?.(qb, "entity.");
+    queryCallback?.(qb, 'entity.');
 
     const raw = await qb.getRawMany();
 
     return {
       raw: raw.map((r) => ({ id: r.entity_id })),
-      affected: raw.length
+      affected: raw.length,
     };
   } catch (err) {
     if (err instanceof InvalidRule) {
@@ -426,7 +425,7 @@ export function mergeRules(
   rules: (Rule | RuleGroup | undefined | false)[]
 ): RuleGroup {
   return {
-    condition: "AND",
-    rules: rules.filter((rule): rule is Rule | RuleGroup => !!rule)
+    condition: 'AND',
+    rules: rules.filter((rule): rule is Rule | RuleGroup => !!rule),
   };
 }

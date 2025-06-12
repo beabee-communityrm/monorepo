@@ -1,5 +1,5 @@
-declare module "passport-totp" {
-  import { Strategy as PassportStrategy } from "passport-strategy";
+declare module 'passport-totp' {
+  import { Strategy as PassportStrategy } from 'passport-strategy';
 
   interface TotpOptions {
     window: number;

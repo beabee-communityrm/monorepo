@@ -1,29 +1,26 @@
 import {
   MembershipStatus,
   PaymentForm,
-  PaymentMethod
-} from "@beabee/beabee-common";
+  PaymentMethod,
+} from '@beabee/beabee-common';
 
-import { getRepository, runTransaction } from "#database";
-import { log as mainLogger } from "#logging";
-import { calcRenewalDate, getActualAmount } from "#utils/payment";
-
-import { Contact, Payment, ContactContribution } from "#models/index";
-
+import { getRepository, runTransaction } from '#database';
+import { log as mainLogger } from '#logging';
+import { Contact, ContactContribution, Payment } from '#models/index';
 import {
-  PaymentProvider,
   GCProvider,
   ManualProvider,
-  StripeProvider
-} from "#providers";
-
+  PaymentProvider,
+  StripeProvider,
+} from '#providers';
 import {
   CompletedPaymentFlow,
   ContributionInfo,
-  UpdateContributionResult
-} from "#type/index";
+  UpdateContributionResult,
+} from '#type/index';
+import { calcRenewalDate, getActualAmount } from '#utils/payment';
 
-const log = mainLogger.child({ app: "payment-service" });
+const log = mainLogger.child({ app: 'payment-service' });
 
 const PaymentProviders = {
   [PaymentMethod.StripeCard]: StripeProvider,
@@ -31,7 +28,7 @@ const PaymentProviders = {
   [PaymentMethod.StripeBACS]: StripeProvider,
   [PaymentMethod.StripePayPal]: StripeProvider,
   [PaymentMethod.StripeIdeal]: StripeProvider,
-  [PaymentMethod.GoCardlessDirectDebit]: GCProvider
+  [PaymentMethod.GoCardlessDirectDebit]: GCProvider,
 };
 
 export function getMembershipStatus(contact: Contact): MembershipStatus {
@@ -54,19 +51,19 @@ class PaymentService {
     const contribution = await getRepository(
       ContactContribution
     ).findOneByOrFail({
-      contactId: contact.id
+      contactId: contact.id,
     });
     // No need to refetch contact, just add it in
     return { ...contribution, contact };
   }
 
   async getContributionBy(
-    key: "customerId" | "mandateId" | "subscriptionId",
+    key: 'customerId' | 'mandateId' | 'subscriptionId',
     value: string
   ): Promise<ContactContribution | null> {
     return await getRepository(ContactContribution).findOne({
       where: { [key]: value },
-      relations: { contact: true }
+      relations: { contact: true },
     });
   }
 
@@ -99,7 +96,7 @@ class PaymentService {
       p.canChangeContribution(useExistingPaymentSource, paymentForm)
     );
     log.info(
-      `Contact ${contact.id} ${ret ? "can" : "cannot"} change contribution`
+      `Contact ${contact.id} ${ret ? 'can' : 'cannot'} change contribution`
     );
     return ret;
   }
@@ -115,10 +112,10 @@ class PaymentService {
       return {
         type: contact.contributionType,
         ...(contact.contributionAmount !== null && {
-          amount: contact.contributionAmount
+          amount: contact.contributionAmount,
         }),
         ...(contact.contributionPeriod !== null && {
-          period: contact.contributionPeriod
+          period: contact.contributionPeriod,
         }),
         ...(d.payFee !== null && { payFee: d.payFee }),
         ...(d.nextAmount &&
@@ -126,15 +123,15 @@ class PaymentService {
             nextAmount: getActualAmount(
               d.nextAmount.monthly,
               contact.contributionPeriod
-            )
+            ),
           }),
         ...(contact.membership?.dateExpires && {
-          membershipExpiryDate: contact.membership.dateExpires
+          membershipExpiryDate: contact.membership.dateExpires,
         }),
         membershipStatus: getMembershipStatus(contact),
         ...(await p.getContributionInfo()),
         ...(d.cancelledAt && { cancellationDate: d.cancelledAt }),
-        ...(renewalDate && { renewalDate })
+        ...(renewalDate && { renewalDate }),
       };
     });
   }
@@ -144,7 +141,7 @@ class PaymentService {
   }
 
   async createContact(contact: Contact): Promise<void> {
-    log.info("Create contribution for contact " + contact.id);
+    log.info('Create contribution for contact ' + contact.id);
     await getRepository(ContactContribution).save({ contact });
   }
 
@@ -152,7 +149,7 @@ class PaymentService {
     contact: Contact,
     updates: Partial<Contact>
   ): Promise<void> {
-    log.info("Update contact for contact " + contact.id);
+    log.info('Update contact for contact ' + contact.id);
     await this.provider(contact, (p) => p.updateContact(updates));
   }
 
@@ -160,7 +157,7 @@ class PaymentService {
     contact: Contact,
     paymentForm: PaymentForm
   ): Promise<UpdateContributionResult> {
-    log.info("Update contribution for contact " + contact.id);
+    log.info('Update contribution for contact ' + contact.id);
     const ret = await this.provider(contact, (p) =>
       p.updateContribution(paymentForm)
     );
@@ -175,16 +172,16 @@ class PaymentService {
     contact: Contact,
     completedPaymentFlow: CompletedPaymentFlow
   ): Promise<void> {
-    log.info("Update payment method for contact " + contact.id, {
-      completedPaymentFlow
+    log.info('Update payment method for contact ' + contact.id, {
+      completedPaymentFlow,
     });
 
     const contribution = await this.getContribution(contact);
     const newMethod = completedPaymentFlow.joinForm.paymentMethod;
     if (contribution.method !== newMethod) {
-      log.info("Changing payment method, cancelling previous contribution", {
+      log.info('Changing payment method, cancelling previous contribution', {
         contribution,
-        newMethod
+        newMethod,
       });
       await this.providerFromData(contribution, (p) =>
         p.cancelContribution(false)
@@ -193,7 +190,7 @@ class PaymentService {
       // Clear the old payment data, set the new method
       Object.assign(contribution, {
         ...ContactContribution.empty,
-        method: newMethod
+        method: newMethod,
       });
       await getRepository(ContactContribution).save(contribution);
     }
@@ -207,7 +204,7 @@ class PaymentService {
     contact: Contact,
     keepMandate = false
   ): Promise<void> {
-    log.info("Cancel contribution for contact " + contact.id);
+    log.info('Cancel contribution for contact ' + contact.id);
     await this.provider(contact, (p) => p.cancelContribution(keepMandate));
     await getRepository(ContactContribution).update(
       { contactId: contact.id },
@@ -222,7 +219,7 @@ class PaymentService {
    * @param contact The contact
    */
   async permanentlyDeleteContact(contact: Contact): Promise<void> {
-    log.info("Permanently delete payment data for contact " + contact.id);
+    log.info('Permanently delete payment data for contact ' + contact.id);
     await this.provider(contact, (p) => p.permanentlyDeleteContact());
 
     await runTransaction(async (em) => {

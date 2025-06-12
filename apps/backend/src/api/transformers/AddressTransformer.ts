@@ -1,7 +1,7 @@
-import { Address } from "@beabee/beabee-common";
-import { TransformPlainToInstance } from "class-transformer";
+import { Address } from '@beabee/beabee-common';
 
-import { GetAddressDto } from "@api/dto/AddressDto";
+import { GetAddressDto } from '@api/dto/AddressDto';
+import { TransformPlainToInstance } from 'class-transformer';
 
 // TODO: make Address into a proper model
 class AddressTransformer {
@@ -9,9 +9,9 @@ class AddressTransformer {
   convert(address: Address): GetAddressDto {
     return {
       line1: address.line1,
-      line2: address.line2 || "",
+      line2: address.line2 || '',
       city: address.city,
-      postcode: address.postcode
+      postcode: address.postcode,
     };
   }
 }

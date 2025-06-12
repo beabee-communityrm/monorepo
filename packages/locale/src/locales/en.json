@@ -455,7 +455,7 @@
               },
               "addressPatternProp": {
                 "label": "Do you want to populate a field with the address?",
-                "none": "– Don’t populate a field –"
+                "none": "– Don't populate a field –"
               },
               "addressProp": {
                 "label": "What form field should be used to plot responses on the map?"
@@ -524,7 +524,7 @@
               "description": "For example, use the response footer to include a link to report an error or a contact email. To link to an email address, type mailto: followed by the email address in the URL field.",
               "label": "Include a footer at the bottom of responses",
               "opts": {
-                "disabled": "Don’t show any footer links on responses",
+                "disabled": "Don't show any footer links on responses",
                 "enabled": "Show footer links on responses for contact or error reporting"
               },
               "placeholder": {
@@ -577,7 +577,7 @@
         "titleAndImage": {
           "inputs": {
             "description": {
-              "help": "This description is shown if the callout is visible in the member’s dashboard. It is also used for sharing.",
+              "help": "This description is shown if the callout is visible in the member's dashboard. It is also used for sharing.",
               "label": "Short description",
               "placeholder": "Quickly explain why people should open this callout."
             },
@@ -585,7 +585,7 @@
               "title": "General information"
             },
             "image": {
-              "description": "Don’t forget to save after uploading an image!",
+              "description": "Don't forget to save after uploading an image!",
               "help": "<p>The <strong>Cover image</strong> will serve as an illustration for the callout on menus and forms.</p>",
               "label": "Cover image"
             },
@@ -631,7 +631,7 @@
         },
         "translations": {
           "language": {
-            "description": "You can translate the callout into multiple languages. If a translation is missing we’ll show the text in the primary language.",
+            "description": "You can translate the callout into multiple languages. If a translation is missing we'll show the text in the primary language.",
             "enableLanguages": "Enable translation support",
             "title": "Language"
           },
@@ -648,7 +648,8 @@
         "description": "Description",
         "label": "Label",
         "option": "Option {n}",
-        "placeholder": "Placeholder"
+        "placeholder": "Placeholder",
+        "html": "Content"
       }
     },
     "confirmHuman": "Please confirm you are human",
@@ -1061,7 +1062,7 @@
   },
   "forgotPassword": {
     "backToLogin": "Back to login page",
-    "description": "Please enter your email address and we’ll send you password reset instructions.",
+    "description": "Please enter your email address and we'll send you password reset instructions.",
     "message": "If there is an account associated with {email}, you will receive an email shortly. Check your spam folder if it doesn't appear.",
     "title": "Forgot your password?"
   },

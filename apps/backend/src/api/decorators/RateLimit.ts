@@ -1,22 +1,24 @@
-import type { Request, Response, NextFunction } from "express";
+import { TooManyRequestsError } from '@beabee/core/errors';
+
+import type { NextFunction, Request, Response } from 'express';
 import {
+  IRateLimiterOptions,
   RateLimiterMemory,
   RateLimiterRes,
-  IRateLimiterOptions
-} from "rate-limiter-flexible";
-import { TooManyRequestsError } from "@beabee/core/errors";
-import type { RateLimitOptions } from "../../type";
+} from 'rate-limiter-flexible';
+
+import type { RateLimitOptions } from '../../type';
 
 // Defaults merged with provided options
 const defaultGuestLimit: IRateLimiterOptions = {
   points: 10,
   duration: 60 * 60,
-  keyPrefix: "rate_limit_guest_default"
+  keyPrefix: 'rate_limit_guest_default',
 };
 const defaultUserLimit: IRateLimiterOptions = {
   points: 100,
   duration: 60 * 60,
-  keyPrefix: "rate_limit_user_default"
+  keyPrefix: 'rate_limit_user_default',
 };
 
 // Cache limiter instances based on final config string
@@ -47,7 +49,7 @@ function getLimiters(options: RateLimitOptions): {
     console.log(`Creating rate limiters for key: ${cacheKey}`); // Debug log
     limiterCache.set(cacheKey, {
       guest: new RateLimiterMemory(guestConfig),
-      user: new RateLimiterMemory(userConfig)
+      user: new RateLimiterMemory(userConfig),
     });
   }
   return limiterCache.get(cacheKey)!;
@@ -78,7 +80,7 @@ export function RateLimit(options: RateLimitOptions) {
       key = currentUser.id.toString();
       limiter = limiters.user;
     } else {
-      key = req.ip || "unknown_ip";
+      key = req.ip || 'unknown_ip';
       limiter = limiters.guest;
     }
 
@@ -90,16 +92,16 @@ export function RateLimit(options: RateLimitOptions) {
       .catch((rejRes) => {
         if (rejRes instanceof RateLimiterRes) {
           const retryAfter = Math.ceil(rejRes.msBeforeNext / 1000);
-          res.set("Retry-After", String(retryAfter));
+          res.set('Retry-After', String(retryAfter));
           // Use routing-controllers error handling by throwing the error
           next(
             new TooManyRequestsError({
-              message: `Rate limit exceeded. Try again in ${retryAfter} seconds.`
+              message: `Rate limit exceeded. Try again in ${retryAfter} seconds.`,
             })
           );
         } else {
-          console.error("Rate limiting error:", rejRes);
-          next(new Error("Internal server error during rate limiting."));
+          console.error('Rate limiting error:', rejRes);
+          next(new Error('Internal server error during rate limiting.'));
         }
       });
   };

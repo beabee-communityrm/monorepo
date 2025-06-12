@@ -2,58 +2,56 @@ import {
   ContributionPeriod,
   PaymentForm,
   PaymentMethod,
-  PaymentStatus
-} from "@beabee/beabee-common";
-import axios from "axios";
-import crypto from "crypto";
-import { Request } from "express";
+  PaymentStatus,
+} from '@beabee/beabee-common';
+
+import axios from 'axios';
+import crypto from 'crypto';
+import { differenceInMonths, format } from 'date-fns';
+import { Request } from 'express';
 import {
   Customer,
   CustomerBankAccount,
+  PaymentStatus as GCPaymentStatus,
   Mandate,
   Payment,
+  PaymentCurrency,
   RedirectFlow,
   RedirectFlowPrefilledCustomer,
   Refund,
   Subscription,
   SubscriptionIntervalUnit,
-  PaymentCurrency,
-  PaymentStatus as GCPaymentStatus
-} from "gocardless-nodejs/types/Types";
-import { DeepPartial } from "typeorm";
-import { v4 as uuidv4 } from "uuid";
+} from 'gocardless-nodejs/types/Types';
+import moment from 'moment';
+import { DeepPartial } from 'typeorm';
+import { v4 as uuidv4 } from 'uuid';
 
-import { log as mainLogger } from "#logging";
+import config from '#config/config';
+import { log as mainLogger } from '#logging';
+import { getChargeableAmount } from '#utils/payment';
 
-import { differenceInMonths, format } from "date-fns";
-import moment from "moment";
-
-import { getChargeableAmount } from "#utils/payment";
-
-import config from "#config/config";
-
-const log = mainLogger.child({ app: "gocardless-api" });
+const log = mainLogger.child({ app: 'gocardless-api' });
 
 const gocardlessInstance = axios.create({
   baseURL: `https://${
-    config.gocardless.sandbox ? "api-sandbox" : "api"
+    config.gocardless.sandbox ? 'api-sandbox' : 'api'
   }.gocardless.com`,
   headers: {
     Authorization: `Bearer ${config.gocardless.accessToken}`,
-    "GoCardless-Version": "2015-07-06",
-    Accept: "application/json",
-    "Content-Type": "application/json"
-  }
+    'GoCardless-Version': '2015-07-06',
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+  },
 });
 
 gocardlessInstance.interceptors.request.use((config) => {
   log.info(`${config.method} ${config.url}`, {
     params: config.params,
-    data: config.data
+    data: config.data,
   });
 
-  if (config.method === "post") {
-    config.headers["Idempotency-Key"] = uuidv4();
+  if (config.method === 'post') {
+    config.headers['Idempotency-Key'] = uuidv4();
   }
   return config;
 });
@@ -63,7 +61,7 @@ function isCancellationFailed(error: any) {
     error.response &&
     error.response.status === 422 &&
     error.response.data.error?.errors?.some(
-      (e: any) => e.reason === "cancellation_failed"
+      (e: any) => e.reason === 'cancellation_failed'
     )
   );
 }
@@ -79,14 +77,14 @@ gocardlessInstance.interceptors.response.use(
     } else {
       log.error(`GoCardless API returned ${error.response.status}`, {
         status: error.response.status,
-        data: error.response.data
+        data: error.response.data,
       });
       throw error;
     }
   }
 );
 
-const STANDARD_METHODS = ["create", "get", "update", "list", "all"];
+const STANDARD_METHODS = ['create', 'get', 'update', 'list', 'all'];
 
 interface Methods<T, C> {
   create(data: DeepPartial<C>): Promise<T>;
@@ -121,7 +119,7 @@ function createMethods<T, C = T>(
     },
     async all(params) {
       const {
-        data: { meta, [key]: resources }
+        data: { meta, [key]: resources },
       } = await gocardlessInstance.get(endpoint, { params });
 
       const moreResources = meta.cursors.after
@@ -132,20 +130,20 @@ function createMethods<T, C = T>(
     },
     async get(id, params) {
       const response = await gocardlessInstance.get(`${endpoint}/${id}`, {
-        params
+        params,
       });
       return <T>response.data[key];
     },
     async update(id, data) {
       const response = await gocardlessInstance.put(`${endpoint}/${id}`, {
-        [key]: data
+        [key]: data,
       });
       return <T>response.data[key];
     },
     async remove(id) {
       const response = await gocardlessInstance.delete(`${endpoint}/${id}`);
       return response.status < 300;
-    }
+    },
   };
 
   function actionMethod(action: string) {
@@ -172,52 +170,52 @@ interface CreateRedirectFlow extends RedirectFlow {
 const gocardless = {
   //creditors: createMethods<Creditor>('creditors', STANDARD_METHODS),
   //creditorBankAccounts: createMethods<CreditorBankAccount>('creditor_bank_accounts', ['create', 'get', 'list', 'all'], ['disable']),
-  customers: createMethods<Customer>("customers", [
+  customers: createMethods<Customer>('customers', [
     ...STANDARD_METHODS,
-    "remove"
+    'remove',
   ]),
   customerBankAccounts: createMethods<CustomerBankAccount>(
-    "customer_bank_accounts",
+    'customer_bank_accounts',
     STANDARD_METHODS,
-    ["disable"]
+    ['disable']
   ),
   //events: createMethods<Event>('events', ['get', 'list', 'all']),
-  mandates: createMethods<Mandate>("mandates", STANDARD_METHODS, [
-    "cancel",
-    "reinstate"
+  mandates: createMethods<Mandate>('mandates', STANDARD_METHODS, [
+    'cancel',
+    'reinstate',
   ]),
   //mandateImports: createMethods<MandateImport>('mandate_imports', ['create', 'get'], ['submit', 'cancel']),
   //mandateImportEntries: createMethods<MandateImportEntry>('mandate_import_entries', ['create', 'list', 'all']),
-  payments: createMethods<Payment>("payments", STANDARD_METHODS, [
-    "cancel",
-    "retry"
+  payments: createMethods<Payment>('payments', STANDARD_METHODS, [
+    'cancel',
+    'retry',
   ]),
   //payouts: createMethods<Payout>('payouts', ['get', 'list', 'all']),
   //payoutItems: createMethods<PayoutItem>('payout_items', ['list', 'all']),
   redirectFlows: createMethods<RedirectFlow, CreateRedirectFlow>(
-    "redirect_flows",
-    ["create", "get"],
-    ["complete"]
+    'redirect_flows',
+    ['create', 'get'],
+    ['complete']
   ),
-  refunds: createMethods<Refund>("refunds", STANDARD_METHODS),
+  refunds: createMethods<Refund>('refunds', STANDARD_METHODS),
   subscriptions: createMethods<Subscription>(
-    "subscriptions",
+    'subscriptions',
     STANDARD_METHODS,
-    ["cancel"]
+    ['cancel']
   ),
   webhooks: {
     validate(req: Request): boolean {
       return (
         req.body &&
-        req.headers["content-type"] === "application/json" &&
-        req.headers["webhook-signature"] ===
+        req.headers['content-type'] === 'application/json' &&
+        req.headers['webhook-signature'] ===
           crypto
-            .createHmac("sha256", config.gocardless.secret)
+            .createHmac('sha256', config.gocardless.secret)
             .update(req.body)
-            .digest("hex")
+            .digest('hex')
       );
-    }
-  }
+    },
+  },
 };
 
 export default gocardless;
@@ -237,14 +235,14 @@ async function getNextPendingPayment(query: Record<string, unknown>) {
     GCPaymentStatus.PendingSubmission,
     GCPaymentStatus.Submitted,
     // This one is unlikely so can go last to reduce API calls
-    GCPaymentStatus.PendingCustomerApproval
+    GCPaymentStatus.PendingCustomerApproval,
   ]) {
     const payments = await gocardless.payments.list({
       status,
       limit: 1,
-      sort_field: "charge_date",
-      sort_direction: "asc",
-      ...query
+      sort_field: 'charge_date',
+      sort_direction: 'asc',
+      ...query,
     });
     if (payments.length > 0) {
       return payments[0];
@@ -257,7 +255,7 @@ export async function getSubscriptionNextChargeDate(
 ): Promise<Date> {
   const pendingPayment = await getNextPendingPayment({
     subscription: subscription.id,
-    "charge_date[gte]": moment.utc().format("YYYY-MM-DD")
+    'charge_date[gte]': moment.utc().format('YYYY-MM-DD'),
   });
 
   // Check for pending payments because subscription.upcoming_payments doesn't
@@ -273,12 +271,12 @@ export async function createSubscription(
   paymentForm: PaymentForm,
   _startDate?: Date
 ): Promise<Subscription> {
-  let startDate = _startDate && format(_startDate, "yyyy-MM-dd");
+  let startDate = _startDate && format(_startDate, 'yyyy-MM-dd');
   const chargeableAmount = getGCChargeableAmount(paymentForm);
-  log.info("Create subscription for " + mandateId, {
+  log.info('Create subscription for ' + mandateId, {
     paymentForm,
     startDate,
-    chargeableAmount
+    chargeableAmount,
   });
 
   if (startDate) {
@@ -296,11 +294,11 @@ export async function createSubscription(
       paymentForm.period === ContributionPeriod.Annually
         ? SubscriptionIntervalUnit.Yearly
         : SubscriptionIntervalUnit.Monthly,
-    name: "Membership",
+    name: 'Membership',
     links: {
-      mandate: mandateId
+      mandate: mandateId,
     },
-    ...(startDate && { start_date: startDate })
+    ...(startDate && { start_date: startDate }),
   });
 
   return subscription;
@@ -321,7 +319,7 @@ export async function updateSubscription(
   // as one of the 10 updates
   if (subscription.amount !== chargeableAmount) {
     return await gocardless.subscriptions.update(subscriptionId, {
-      amount: chargeableAmount
+      amount: chargeableAmount,
     });
   } else {
     return subscription;
@@ -338,11 +336,11 @@ export async function prorateSubscription(
   const prorateAmount =
     (paymentForm.monthlyAmount - lastMonthlyAmount) * monthsLeft;
 
-  log.info("Prorate subscription for " + mandateId, {
+  log.info('Prorate subscription for ' + mandateId, {
     lastMonthlyAmount,
     paymentForm,
     monthsLeft,
-    prorateAmount
+    prorateAmount,
   });
 
   if (prorateAmount >= 0) {
@@ -353,10 +351,10 @@ export async function prorateSubscription(
       await gocardless.payments.create({
         amount: Math.floor(prorateAmount * 100).toFixed(0),
         currency: config.currencyCode.toUpperCase() as PaymentCurrency,
-        description: "One-off payment to start new contribution",
+        description: 'One-off payment to start new contribution',
         links: {
-          mandate: mandateId
-        }
+          mandate: mandateId,
+        },
       });
       return true;
     }

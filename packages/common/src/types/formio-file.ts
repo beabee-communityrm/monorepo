@@ -1,5 +1,5 @@
 export interface FormioFile {
-  storage: "beabee";
+  storage: 'beabee';
   name: string;
   /**
    * URL of the uploaded file

@@ -1,25 +1,22 @@
-import { plainToInstance } from "class-transformer";
-import { isUUID } from "class-validator";
+import { getRepository } from '@beabee/core/database';
+import { ExternalEmailTemplate } from '@beabee/core/errors';
+import { Email } from '@beabee/core/models';
+import EmailService from '@beabee/core/services/EmailService';
+
+import { GetEmailDto, UpdateEmailDto } from '@api/dto/EmailDto';
+import { plainToInstance } from 'class-transformer';
+import { isUUID } from 'class-validator';
 import {
   Authorized,
   Body,
   Get,
   JsonController,
   Param,
-  Put
-} from "routing-controllers";
-
-import EmailService from "@beabee/core/services/EmailService";
-
-import { getRepository } from "@beabee/core/database";
-
-import { Email } from "@beabee/core/models";
-
-import { GetEmailDto, UpdateEmailDto } from "@api/dto/EmailDto";
-import { ExternalEmailTemplate } from "@beabee/core/errors";
+  Put,
+} from 'routing-controllers';
 
 async function findEmail(id: string): Promise<Email | null> {
-  if (isUUID(id, "4")) {
+  if (isUUID(id, '4')) {
     return await getRepository(Email).findOneBy({ id });
   } else if (EmailService.isTemplateId(id)) {
     const maybeEmail = await EmailService.getTemplateEmail(id);
@@ -36,22 +33,22 @@ async function findEmail(id: string): Promise<Email | null> {
 function emailToData(email: Email): GetEmailDto {
   return plainToInstance(GetEmailDto, {
     subject: email.subject,
-    body: email.body
+    body: email.body,
   });
 }
 
-@Authorized("admin")
-@JsonController("/email")
+@Authorized('admin')
+@JsonController('/email')
 export class EmailController {
-  @Get("/:id")
-  async getEmail(@Param("id") id: string): Promise<GetEmailDto | undefined> {
+  @Get('/:id')
+  async getEmail(@Param('id') id: string): Promise<GetEmailDto | undefined> {
     const email = await findEmail(id);
     return email ? emailToData(email) : undefined;
   }
 
-  @Put("/:id")
+  @Put('/:id')
   async updateEmail(
-    @Param("id") id: string,
+    @Param('id') id: string,
     @Body() data: UpdateEmailDto
   ): Promise<GetEmailDto | undefined> {
     const email = await findEmail(id);
@@ -60,8 +57,8 @@ export class EmailController {
       return data;
     } else if (EmailService.isTemplateId(id)) {
       const email = await getRepository(Email).save({
-        name: "Email for " + id,
-        ...data
+        name: 'Email for ' + id,
+        ...data,
       });
       await EmailService.setTemplateEmail(id, email);
       return emailToData(email);

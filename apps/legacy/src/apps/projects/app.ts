@@ -1,19 +1,19 @@
-import express, { type Express } from "express";
-import _ from "lodash";
-import moment from "moment";
-
-import { createQueryBuilder, getRepository } from "@beabee/core/database";
-import { hasNewModel, hasSchema, isAdmin } from "#core/middleware";
-import { wrapAsync } from "@beabee/core/utils/express";
-
+import { createQueryBuilder, getRepository } from '@beabee/core/database';
 import {
   Contact,
   Project,
   ProjectContact,
-  ProjectEngagement
-} from "@beabee/core/models";
+  ProjectEngagement,
+} from '@beabee/core/models';
+import { wrapAsync } from '@beabee/core/utils/express';
 
-import { createProjectSchema } from "./schemas.json";
+import express, { type Express } from 'express';
+import _ from 'lodash';
+import moment from 'moment';
+
+import { hasNewModel, hasSchema, isAdmin } from '#core/middleware';
+
+import { createProjectSchema } from './schemas.json';
 
 interface CreateProjectSchema {
   title: string;
@@ -31,31 +31,31 @@ interface CreateEngagementSchema {
 }
 
 interface UpdateProjectAction extends CreateProjectSchema {
-  action: "update";
+  action: 'update';
 }
 
 interface AddContactsAction {
-  action: "add-contacts";
+  action: 'add-contacts';
   contactIds: string[];
 }
 
 interface UpdateContactTagAction {
-  action: "update-contact-tag";
+  action: 'update-contact-tag';
   projectContactId: string;
   tag: string;
 }
 
 interface AddContactEngagementAction extends CreateEngagementSchema {
-  action: "add-contact-engagement";
+  action: 'add-contact-engagement';
 }
 
 interface DeleteContactEngagementAction {
-  action: "delete-contact-engagement";
+  action: 'delete-contact-engagement';
   projectEngagementId: string;
 }
 
 interface DeleteProjectAction {
-  action: "delete";
+  action: 'delete';
 }
 
 type UpdateAction =
@@ -68,66 +68,66 @@ type UpdateAction =
 
 function schemaToProject(
   data: CreateProjectSchema
-): Pick<Project, "title" | "description" | "status" | "groupName"> {
+): Pick<Project, 'title' | 'description' | 'status' | 'groupName'> {
   const { title, description, status, groupName } = data;
   return { title, description, status, groupName: groupName || null };
 }
 
 function schemaToEngagement(
   data: CreateEngagementSchema
-): Pick<ProjectEngagement, "type" | "notes" | "date" | "toContact"> {
+): Pick<ProjectEngagement, 'type' | 'notes' | 'date' | 'toContact'> {
   const { type, date, time, notes } = data;
   return {
     type,
     notes,
     date: moment(`${date}T${time}`).toDate(),
-    toContact: { id: data.contactId } as Contact
+    toContact: { id: data.contactId } as Contact,
   };
 }
 
 const app: Express = express();
 
-app.set("views", __dirname + "/views");
+app.set('views', __dirname + '/views');
 
 app.use(isAdmin);
 
 app.get(
-  "/",
+  '/',
   wrapAsync(async (req, res) => {
-    const projects = await createQueryBuilder(Project, "p")
-      .loadRelationCountAndMap("p.contactCount", "p.contacts")
+    const projects = await createQueryBuilder(Project, 'p')
+      .loadRelationCountAndMap('p.contactCount', 'p.contacts')
       .getMany();
 
-    res.render("index", { projects });
+    res.render('index', { projects });
   })
 );
 
 app.post(
-  "/",
+  '/',
   hasSchema(createProjectSchema).orFlash,
   wrapAsync(async (req, res) => {
     const project = await getRepository(Project).save({
       ...schemaToProject(req.body),
-      owner: req.user!
+      owner: req.user!,
     });
-    req.flash("success", "project-created");
-    res.redirect("/projects/" + project.id);
+    req.flash('success', 'project-created');
+    res.redirect('/projects/' + project.id);
   })
 );
 
 app.get(
-  "/:id",
-  hasNewModel(Project, "id", { relations: { owner: true } }),
+  '/:id',
+  hasNewModel(Project, 'id', { relations: { owner: true } }),
   wrapAsync(async (req, res) => {
     const project = req.model as Project;
 
     const projectContacts = await getRepository(ProjectContact).find({
       where: { projectId: project.id },
-      relations: { contact: { profile: true } }
+      relations: { contact: { profile: true } },
     });
     const engagements = await getRepository(ProjectEngagement).find({
       where: { projectId: project.id },
-      relations: { byContact: true, toContact: true }
+      relations: { byContact: true, toContact: true },
     });
 
     const projectContactsWithEngagement = projectContacts.map((pm) => {
@@ -137,67 +137,67 @@ app.get(
       return {
         ...pm,
         engagements: contactEngagements,
-        engagementsByDate: _.sortBy(contactEngagements, "date"),
-        latestEngagement: contactEngagements[contactEngagements.length - 1]
+        engagementsByDate: _.sortBy(contactEngagements, 'date'),
+        latestEngagement: contactEngagements[contactEngagements.length - 1],
       };
     });
 
-    res.render("project", {
+    res.render('project', {
       project,
-      projectContacts: projectContactsWithEngagement
+      projectContacts: projectContactsWithEngagement,
     });
   })
 );
 
 app.post(
-  "/:id",
-  hasNewModel(Project, "id"),
+  '/:id',
+  hasNewModel(Project, 'id'),
   wrapAsync(async (req, res) => {
     const data = req.body as UpdateAction;
     const project = req.model as Project;
 
     switch (data.action) {
-      case "update":
+      case 'update':
         await getRepository(Project).update(project.id, schemaToProject(data));
-        req.flash("success", "project-updated");
+        req.flash('success', 'project-updated');
         res.redirect(req.originalUrl);
         break;
-      case "add-contacts":
+      case 'add-contacts':
         await getRepository(ProjectContact).insert(
           data.contactIds.map((contactId) => ({
             project,
-            contact: { id: contactId }
+            contact: { id: contactId },
           }))
         );
-        req.flash("success", "project-members-added");
+        req.flash('success', 'project-members-added');
         res.redirect(req.originalUrl);
         break;
-      case "update-contact-tag":
+      case 'update-contact-tag':
         await getRepository(ProjectContact).update(data.projectContactId, {
-          tag: data.tag
+          tag: data.tag,
         });
-        res.redirect(req.originalUrl + "#contacts");
+        res.redirect(req.originalUrl + '#contacts');
         break;
-      case "add-contact-engagement":
+      case 'add-contact-engagement':
         await getRepository(ProjectEngagement).insert({
           ...schemaToEngagement(data),
           project,
-          byContact: req.user!
+          byContact: req.user!,
         });
-        res.redirect(req.originalUrl + "#contacts");
+        res.redirect(req.originalUrl + '#contacts');
         break;
-      case "delete-contact-engagement":
+      case 'delete-contact-engagement':
         await getRepository(ProjectEngagement).delete(data.projectEngagementId);
-        res.redirect(req.originalUrl + "#contacts");
+        res.redirect(req.originalUrl + '#contacts');
         break;
-      case "delete":
+      case 'delete':
         await getRepository(ProjectEngagement).delete({
-          projectId: project.id
+          projectId: project.id,
         });
         await getRepository(ProjectContact).delete({ projectId: project.id });
         await getRepository(Project).delete(project.id);
-        req.flash("success", "project-deleted");
-        res.redirect("/projects");
+        req.flash('success', 'project-deleted');
+        res.redirect('/projects');
         break;
     }
   })

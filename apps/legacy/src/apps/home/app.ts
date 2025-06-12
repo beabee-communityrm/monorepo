@@ -1,18 +1,19 @@
-import express, { type Express } from "express";
 import OptionsService, {
-  OptionKey
-} from "@beabee/core/services/OptionsService";
+  OptionKey,
+} from '@beabee/core/services/OptionsService';
+
+import express, { type Express } from 'express';
 
 const app: Express = express();
 
-app.set("views", __dirname + "/views");
+app.set('views', __dirname + '/views');
 
-app.get("/", (req, res, next) => {
+app.get('/', (req, res, next) => {
   const redirectUrlOpt: OptionKey = req.user
-    ? req.user.hasRole("admin")
-      ? "admin-home-url"
-      : "user-home-url"
-    : "home-redirect-url";
+    ? req.user.hasRole('admin')
+      ? 'admin-home-url'
+      : 'user-home-url'
+    : 'home-redirect-url';
 
   const redirectUrl = OptionsService.getText(redirectUrlOpt);
   if (redirectUrl) {
@@ -22,8 +23,8 @@ app.get("/", (req, res, next) => {
   }
 });
 
-app.get("/", function (req, res) {
-  res.render("index");
+app.get('/', function (req, res) {
+  res.render('index');
 });
 
 export default app;

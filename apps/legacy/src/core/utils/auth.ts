@@ -1,17 +1,18 @@
-import crypto from "crypto";
-import { Request, Response } from "express";
-import { getNextParam } from "@beabee/core/utils/url";
+import { getNextParam } from '@beabee/core/utils/url';
+
+import crypto from 'crypto';
+import { Request, Response } from 'express';
 
 export enum AuthenticationStatus {
   LOGGED_IN = 1,
   NOT_LOGGED_IN = 0,
   NOT_MEMBER = -1,
   NOT_ADMIN = -2,
-  REQUIRES_2FA = -3
+  REQUIRES_2FA = -3,
 }
 
 export function generateCode(): string {
-  return crypto.randomBytes(10).toString("hex");
+  return crypto.randomBytes(10).toString('hex');
 }
 
 /**
@@ -38,7 +39,7 @@ export function canAdmin(req: Request): AuthenticationStatus {
   const status = loggedIn(req);
   if (status != AuthenticationStatus.LOGGED_IN) {
     return status;
-  } else if (req.user?.hasRole("admin")) {
+  } else if (req.user?.hasRole('admin')) {
     return AuthenticationStatus.LOGGED_IN;
   }
   return AuthenticationStatus.NOT_ADMIN;
@@ -54,7 +55,7 @@ export function canSuperAdmin(req: Request): AuthenticationStatus {
   const status = loggedIn(req);
   if (status != AuthenticationStatus.LOGGED_IN) {
     return status;
-  } else if (req.user?.hasRole("superadmin")) {
+  } else if (req.user?.hasRole('superadmin')) {
     return AuthenticationStatus.LOGGED_IN;
   }
   return AuthenticationStatus.NOT_ADMIN;
@@ -65,15 +66,15 @@ export function handleNotAuthed(
   req: Request,
   res: Response
 ): void {
-  const nextUrl = req.method === "GET" ? getNextParam(req.originalUrl) : "";
+  const nextUrl = req.method === 'GET' ? getNextParam(req.originalUrl) : '';
 
   switch (status) {
     case AuthenticationStatus.REQUIRES_2FA:
-      res.redirect("/otp" + nextUrl);
+      res.redirect('/otp' + nextUrl);
       return;
     default:
-      req.flash("error", "login-required");
-      res.redirect("/login" + nextUrl);
+      req.flash('error', 'login-required');
+      res.redirect('/login' + nextUrl);
       return;
   }
 }
@@ -89,15 +90,15 @@ export function handleNotAuthed(
  * @returns
  */
 export function passwordRequirements(password: string): string | true {
-  if (!password) return "password-err-length";
+  if (!password) return 'password-err-length';
 
-  if (password.length < 8) return "password-err-length";
+  if (password.length < 8) return 'password-err-length';
 
-  if (password.match(/\d/g) === null) return "password-err-number";
+  if (password.match(/\d/g) === null) return 'password-err-number';
 
-  if (password.match(/[A-Z]/g) === null) return "password-err-letter-up";
+  if (password.match(/[A-Z]/g) === null) return 'password-err-letter-up';
 
-  if (password.match(/[a-z]/g) === null) return "password-err-letter-low";
+  if (password.match(/[a-z]/g) === null) return 'password-err-letter-low';
 
   return true;
 }

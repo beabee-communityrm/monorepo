@@ -1,7 +1,8 @@
-import { ContributionPeriod, PaymentMethod } from "@beabee/beabee-common";
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { ContributionPeriod, PaymentMethod } from '@beabee/beabee-common';
 
-import { getChargeableAmount } from "#utils/payment";
+import { MigrationInterface, QueryRunner } from 'typeorm';
+
+import { getChargeableAmount } from '#utils/payment';
 
 interface PaymentQueryResults {
   id: string;
@@ -32,14 +33,14 @@ export class UpdateGCNextAmount1696600862719 implements MigrationInterface {
           monthlyAmount: result.data.nextMonthlyAmount,
           period: result.contributionPeriod,
           payFee: result.data.payFee,
-          prorate: false
+          prorate: false,
         },
         PaymentMethod.GoCardlessDirectDebit
       );
 
       const nextAmount = {
         monthly: result.data.nextMonthlyAmount,
-        charegable: chargeableAmount
+        charegable: chargeableAmount,
       };
 
       queryRunner.query(

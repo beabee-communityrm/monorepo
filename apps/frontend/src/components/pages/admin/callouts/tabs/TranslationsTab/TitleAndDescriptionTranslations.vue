@@ -8,11 +8,7 @@
 
       <AppInput
         :model-value="getValue('title', selectedLocale)"
-        :placeholder="
-          selectedLocale === defaultLocale
-            ? ''
-            : titleAndImageData.title.default
-        "
+        :placeholder="getPlaceholder('title')"
         :disabled="selectedLocale === defaultLocale"
         :copyable="selectedLocale === defaultLocale"
         @update:model-value="updateValue('title', selectedLocale, $event)"
@@ -27,11 +23,7 @@
 
       <AppTextArea
         :model-value="getValue('description', selectedLocale)"
-        :placeholder="
-          selectedLocale === defaultLocale
-            ? ''
-            : titleAndImageData.description.default
-        "
+        :placeholder="getPlaceholder('description')"
         :disabled="selectedLocale === defaultLocale"
         :copyable="selectedLocale === defaultLocale"
         rows="3"
@@ -47,11 +39,7 @@
 
       <AppInput
         :model-value="getValue('shareTitle', selectedLocale)"
-        :placeholder="
-          selectedLocale === defaultLocale
-            ? ''
-            : titleAndImageData.shareTitle.default
-        "
+        :placeholder="getPlaceholder('shareTitle')"
         :disabled="selectedLocale === defaultLocale"
         :copyable="selectedLocale === defaultLocale"
         @update:model-value="updateValue('shareTitle', selectedLocale, $event)"
@@ -68,11 +56,7 @@
 
       <AppTextArea
         :model-value="getValue('shareDescription', selectedLocale)"
-        :placeholder="
-          selectedLocale === defaultLocale
-            ? ''
-            : titleAndImageData.shareDescription.default
-        "
+        :placeholder="getPlaceholder('shareDescription')"
         :disabled="selectedLocale === defaultLocale"
         :copyable="selectedLocale === defaultLocale"
         rows="3"
@@ -85,11 +69,18 @@
 </template>
 
 <script lang="ts" setup>
-import { useI18n } from 'vue-i18n';
-import type { TitleAndImageTabData } from '../TitleAndImageTab.vue';
-import AppTextArea from '@components/forms/AppTextArea.vue';
 import { AppFormBox } from '@beabee/vue/components';
+
 import AppInput from '@components/forms/AppInput.vue';
+import AppTextArea from '@components/forms/AppTextArea.vue';
+import {
+  getLocalizedValueFallback,
+  getLocalizedValueNoFallback,
+  updateLocalizedValue,
+} from '@utils/callouts';
+import { useI18n } from 'vue-i18n';
+
+import type { TitleAndImageTabData } from '../TitleAndImageTab.vue';
 
 const props = defineProps<{
   defaultLocale: string;
@@ -99,32 +90,40 @@ const props = defineProps<{
 
 const { t } = useI18n();
 
-// Get title and description value for a specific locale
+// Get title and description value for a specific locale using utility function (no fallback)
 function getValue(
   field: 'title' | 'description' | 'shareTitle' | 'shareDescription',
   locale: string
 ): string {
-  if (!props.titleAndImageData[field]) return '';
-
-  if (locale === props.defaultLocale) {
-    return props.titleAndImageData[field].default || '';
-  }
-
-  return props.titleAndImageData[field][locale] || '';
+  return getLocalizedValueNoFallback(
+    props.titleAndImageData[field],
+    locale,
+    props.defaultLocale
+  );
 }
 
-// Update title and description value
+// Get fallback text for placeholder
+function getPlaceholder(
+  field: 'title' | 'description' | 'shareTitle' | 'shareDescription'
+): string {
+  return getLocalizedValueFallback(
+    props.titleAndImageData[field],
+    props.selectedLocale,
+    props.defaultLocale
+  );
+}
+
+// Update title and description value using utility function
 function updateValue(
   field: 'title' | 'description' | 'shareTitle' | 'shareDescription',
   locale: string,
   value: string
 ): void {
-  if (locale === props.defaultLocale) {
-    // eslint-disable-next-line vue/no-mutating-props
-    props.titleAndImageData[field].default = value;
-  } else {
-    // eslint-disable-next-line vue/no-mutating-props
-    props.titleAndImageData[field][locale] = value;
-  }
+  updateLocalizedValue(
+    props.titleAndImageData[field],
+    locale,
+    value,
+    props.defaultLocale
+  );
 }
 </script>

@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
+
 import AppRadioInput from './AppRadioInput.vue';
 
 const selection = ref('option1');

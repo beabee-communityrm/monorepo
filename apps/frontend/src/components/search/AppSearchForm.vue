@@ -62,17 +62,19 @@
   </form>
 </template>
 <script lang="ts" setup>
-import { AppButton } from '@beabee/vue/components';
-import { useI18n } from 'vue-i18n';
-import AppSearchRuleOrGroup from './AppSearchRuleOrGroup.vue';
-import type { RuleGroupWithEmpty } from '@type/rule-group-with-empty';
-import { computed, reactive, toRef, watch } from 'vue';
-import type { FilterGroups } from '@type/index';
-import useVuelidate from '@vuelidate/core';
-import { copyRuleGroup, isRuleGroupEqual } from '@utils/rules';
 import type { Rule, RuleGroup } from '@beabee/beabee-common';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { AppButton } from '@beabee/vue/components';
+
 import AppSelect from '@components/forms/AppSelect.vue';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import type { FilterGroups } from '@type/index';
+import type { RuleGroupWithEmpty } from '@type/rule-group-with-empty';
+import { copyRuleGroup, isRuleGroupEqual } from '@utils/rules';
+import useVuelidate from '@vuelidate/core';
+import { computed, reactive, toRef, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+import AppSearchRuleOrGroup from './AppSearchRuleOrGroup.vue';
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: RuleGroup): void;

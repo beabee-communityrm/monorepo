@@ -18,11 +18,13 @@
 <script lang="ts" setup>
 import type { GetCalloutResponseCommentData } from '@beabee/beabee-common';
 import { AppForm } from '@beabee/vue/components';
-import RichTextEditor from '../rte/RichTextEditor.vue';
-import { type CommentFormData } from './calloutResponseComment.interface';
+
+import useVuelidate from '@vuelidate/core';
 import { reactive } from 'vue';
 import { useI18n } from 'vue-i18n';
-import useVuelidate from '@vuelidate/core';
+
+import RichTextEditor from '../rte/RichTextEditor.vue';
+import { type CommentFormData } from './calloutResponseComment.interface';
 
 const { t } = useI18n();
 

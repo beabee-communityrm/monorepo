@@ -2,28 +2,28 @@ import {
   ContributionPeriod,
   PaymentForm,
   PaymentMethod,
+  PaymentSource,
   PaymentStatus,
-  PaymentSource
-} from "@beabee/beabee-common";
-import { differenceInMonths } from "date-fns";
-import Stripe from "stripe";
+} from '@beabee/beabee-common';
 
-import config from "#config/config";
-import currentLocale from "#locale";
-import { log as mainLogger } from "#logging";
-import { getChargeableAmount } from "#utils/payment";
+import { differenceInMonths } from 'date-fns';
+import Stripe from 'stripe';
 
-import OptionsService from "#services/OptionsService";
+import config from '#config/config';
+import currentLocale from '#locale';
+import { log as mainLogger } from '#logging';
+import OptionsService from '#services/OptionsService';
+import { getChargeableAmount } from '#utils/payment';
 
-const log = mainLogger.child({ app: "stripe-utils" });
+const log = mainLogger.child({ app: 'stripe-utils' });
 
 export const stripe = new Stripe(config.stripe.secretKey, {
-  apiVersion: "2024-04-10",
-  typescript: true
+  apiVersion: '2024-04-10',
+  typescript: true,
 });
 
 export function getSalesTaxRateObject(): string[] {
-  const taxRateId = OptionsService.getText("tax-rate-stripe-id");
+  const taxRateId = OptionsService.getText('tax-rate-stripe-id');
   return taxRateId ? [taxRateId] : [];
 }
 
@@ -36,7 +36,7 @@ export function getSalesTaxRateObject(): string[] {
 export async function updateSalesTaxRate(percentage: number): Promise<void> {
   log.info(`Updating sales tax rate to ${percentage}%`);
 
-  const id = OptionsService.getText("tax-rate-stripe-id");
+  const id = OptionsService.getText('tax-rate-stripe-id');
   if (id) {
     const taxRate = await stripe.taxRates.retrieve(id);
     // Tax rate is already set to the right percentage
@@ -51,19 +51,19 @@ export async function updateSalesTaxRate(percentage: number): Promise<void> {
     percentage: percentage,
     active: true,
     inclusive: true,
-    display_name: currentLocale().taxRate.invoiceName
+    display_name: currentLocale().taxRate.invoiceName,
   });
 
-  await OptionsService.set("tax-rate-stripe-id", taxRate.id);
+  await OptionsService.set('tax-rate-stripe-id', taxRate.id);
 }
 
 export async function disableSalesTaxRate(): Promise<void> {
-  log.info("Disabling sales tax rate");
+  log.info('Disabling sales tax rate');
 
-  const id = OptionsService.getText("tax-rate-stripe-id");
+  const id = OptionsService.getText('tax-rate-stripe-id');
   if (id) {
     await stripe.taxRates.update(id, { active: false });
-    await OptionsService.set("tax-rate-stripe-id", "");
+    await OptionsService.set('tax-rate-stripe-id', '');
   }
 }
 
@@ -83,9 +83,9 @@ export function getPriceData(
     product: config.stripe.membershipProductId,
     recurring: {
       interval:
-        paymentForm.period === ContributionPeriod.Monthly ? "month" : "year"
+        paymentForm.period === ContributionPeriod.Monthly ? 'month' : 'year',
     },
-    unit_amount: getChargeableAmount(paymentForm, paymentMethod)
+    unit_amount: getChargeableAmount(paymentForm, paymentMethod),
   };
 }
 
@@ -116,7 +116,7 @@ async function calculateProrationParams(
   const invoice = await stripe.invoices.retrieveUpcoming({
     subscription: subscription.id,
     subscription_items: [subscriptionItem],
-    subscription_proration_date: prorationTime
+    subscription_proration_date: prorationTime,
   });
 
   const prorationAmount = invoice.lines.data
@@ -128,7 +128,7 @@ async function calculateProrationParams(
     // amount and is much simpler than trying to calculate the minimum payment per
     // payment method
     prorationAmount: prorationAmount < 100 ? 0 : prorationAmount,
-    prorationTime
+    prorationTime,
   };
 }
 
@@ -145,9 +145,9 @@ export const getCreateSubscriptionParams = (
     ...(renewalDate &&
       renewalDate > new Date() && {
         billing_cycle_anchor: Math.floor(+renewalDate / 1000),
-        proration_behavior: "none"
+        proration_behavior: 'none',
       }),
-    default_tax_rates: getSalesTaxRateObject()
+    default_tax_rates: getSalesTaxRateObject(),
   };
 };
 
@@ -166,9 +166,9 @@ export async function createSubscription(
   paymentMethod: PaymentMethod,
   renewalDate?: Date
 ): Promise<Stripe.Subscription> {
-  log.info("Creating subscription on " + customerId, {
+  log.info('Creating subscription on ' + customerId, {
     paymentForm,
-    renewalDate
+    renewalDate,
   });
   return await stripe.subscriptions.create(
     getCreateSubscriptionParams(
@@ -194,11 +194,11 @@ export async function updateSubscription(
   paymentMethod: PaymentMethod
 ): Promise<{ subscription: Stripe.Subscription; startNow: boolean }> {
   const subscription = await stripe.subscriptions.retrieve(subscriptionId, {
-    expand: ["schedule"]
+    expand: ['schedule'],
   });
   const newSubscriptionItem = {
     id: subscription.items.data[0].id,
-    price_data: getPriceData(paymentForm, paymentMethod)
+    price_data: getPriceData(paymentForm, paymentMethod),
   };
 
   const { prorationAmount, prorationTime } = await calculateProrationParams(
@@ -206,19 +206,19 @@ export async function updateSubscription(
     newSubscriptionItem
   );
 
-  log.info("Preparing update subscription for " + subscription.id, {
+  log.info('Preparing update subscription for ' + subscription.id, {
     renewalDate: new Date(subscription.current_period_end * 1000),
     prorationDate: new Date(prorationTime * 1000),
     prorationAmount,
-    paymentForm
+    paymentForm,
   });
 
   // Clear any previous schedule
   const oldSchedule =
     subscription.schedule as Stripe.SubscriptionSchedule | null;
   if (
-    oldSchedule?.status === "active" ||
-    oldSchedule?.status === "not_started"
+    oldSchedule?.status === 'active' ||
+    oldSchedule?.status === 'not_started'
   ) {
     log.info(`Releasing schedule ${oldSchedule.id} for ${subscription.id}`);
     await stripe.subscriptionSchedules.release(oldSchedule.id);
@@ -231,16 +231,16 @@ export async function updateSubscription(
       items: [newSubscriptionItem],
       ...(prorationAmount > 0
         ? {
-            proration_behavior: "always_invoice",
-            proration_date: prorationTime
+            proration_behavior: 'always_invoice',
+            proration_date: prorationTime,
           }
         : {
-            proration_behavior: "none",
+            proration_behavior: 'none',
             // Force it to change at the start of the next period, this is
             // important when changing from monthly to annual as otherwise
             // Stripe starts the new billing cycle immediately
-            trial_end: subscription.current_period_end
-          })
+            trial_end: subscription.current_period_end,
+          }),
     };
 
     // Start new contribution immediately (monthly or prorated annuals)
@@ -250,7 +250,7 @@ export async function updateSubscription(
     // Schedule the change for the next period
     log.info(`Creating new schedule for ${subscription.id}`);
     const schedule = await stripe.subscriptionSchedules.create({
-      from_subscription: subscription.id
+      from_subscription: subscription.id,
     });
 
     await stripe.subscriptionSchedules.update(schedule.id, {
@@ -258,13 +258,13 @@ export async function updateSubscription(
         {
           start_date: schedule.phases[0].start_date,
           end_date: schedule.phases[0].end_date,
-          items: [{ price: schedule.phases[0].items[0].price as string }]
+          items: [{ price: schedule.phases[0].items[0].price as string }],
         },
         {
           start_date: schedule.phases[0].end_date,
-          items: [{ price_data: newSubscriptionItem.price_data }]
-        }
-      ]
+          items: [{ price_data: newSubscriptionItem.price_data }],
+        },
+      ],
     });
   }
 
@@ -285,7 +285,7 @@ export async function deleteSubscription(
     // Ignore resource missing errors, the subscription might have been already removed
     if (
       !(error instanceof Stripe.errors.StripeInvalidRequestError) ||
-      error.code !== "resource_missing"
+      error.code !== 'resource_missing'
     ) {
       throw error;
     }
@@ -303,17 +303,17 @@ export function paymentMethodToStripeType(
 ): Stripe.PaymentMethod.Type {
   switch (method) {
     case PaymentMethod.StripeCard:
-      return "card";
+      return 'card';
     case PaymentMethod.StripeSEPA:
-      return "sepa_debit";
+      return 'sepa_debit';
     case PaymentMethod.StripeBACS:
-      return "bacs_debit";
+      return 'bacs_debit';
     case PaymentMethod.StripePayPal:
-      return "paypal";
+      return 'paypal';
     case PaymentMethod.StripeIdeal:
-      return "ideal";
+      return 'ideal';
     case PaymentMethod.GoCardlessDirectDebit:
-      return "bacs_debit";
+      return 'bacs_debit';
   }
 }
 
@@ -328,18 +328,18 @@ export function stripeTypeToPaymentMethod(
   type: Stripe.PaymentMethod.Type
 ): PaymentMethod {
   switch (type) {
-    case "card":
+    case 'card':
       return PaymentMethod.StripeCard;
-    case "sepa_debit":
+    case 'sepa_debit':
       return PaymentMethod.StripeSEPA;
-    case "bacs_debit":
+    case 'bacs_debit':
       return PaymentMethod.StripeBACS;
-    case "paypal":
+    case 'paypal':
       return PaymentMethod.StripePayPal;
-    case "ideal":
+    case 'ideal':
       return PaymentMethod.StripeIdeal;
     default:
-      throw new Error("Unexpected Stripe payment type");
+      throw new Error('Unexpected Stripe payment type');
   }
 }
 
@@ -354,39 +354,39 @@ export async function manadateToSource(
 ): Promise<PaymentSource | undefined> {
   const method = await stripe.paymentMethods.retrieve(mandateId);
 
-  if (method.type === "card" && method.card) {
+  if (method.type === 'card' && method.card) {
     return {
       method: PaymentMethod.StripeCard,
       isLink: false,
       last4: method.card.last4,
       expiryMonth: method.card.exp_month,
-      expiryYear: method.card.exp_year
+      expiryYear: method.card.exp_year,
     };
-  } else if (method.type === "sepa_debit" && method.sepa_debit) {
+  } else if (method.type === 'sepa_debit' && method.sepa_debit) {
     return {
       method: PaymentMethod.StripeSEPA,
-      country: method.sepa_debit.country || "",
-      bankCode: method.sepa_debit.bank_code || "",
-      branchCode: method.sepa_debit.branch_code || "",
-      last4: method.sepa_debit.last4 || ""
+      country: method.sepa_debit.country || '',
+      bankCode: method.sepa_debit.bank_code || '',
+      branchCode: method.sepa_debit.branch_code || '',
+      last4: method.sepa_debit.last4 || '',
     };
-  } else if (method.type === "bacs_debit" && method.bacs_debit) {
+  } else if (method.type === 'bacs_debit' && method.bacs_debit) {
     return {
       method: PaymentMethod.StripeBACS,
-      sortCode: method.bacs_debit.sort_code || "",
-      last4: method.bacs_debit.last4 || ""
+      sortCode: method.bacs_debit.sort_code || '',
+      last4: method.bacs_debit.last4 || '',
     };
-  } else if (method.type === "paypal" && method.paypal) {
+  } else if (method.type === 'paypal' && method.paypal) {
     return {
       method: PaymentMethod.StripePayPal,
-      payerEmail: method.paypal.payer_email || "",
-      payerId: method.paypal.payer_id || ""
+      payerEmail: method.paypal.payer_email || '',
+      payerId: method.paypal.payer_id || '',
     };
-  } else if (method.type === "link" && method.link) {
+  } else if (method.type === 'link' && method.link) {
     return {
       method: PaymentMethod.StripeCard,
       isLink: true,
-      email: method.link.email || ""
+      email: method.link.email || '',
     };
   }
 }
@@ -399,19 +399,19 @@ export async function manadateToSource(
  */
 export function convertStatus(status: Stripe.Invoice.Status): PaymentStatus {
   switch (status) {
-    case "draft":
+    case 'draft':
       return PaymentStatus.Draft;
 
-    case "open":
+    case 'open':
       return PaymentStatus.Pending;
 
-    case "paid":
+    case 'paid':
       return PaymentStatus.Successful;
 
-    case "void":
+    case 'void':
       return PaymentStatus.Cancelled;
 
-    case "uncollectible":
+    case 'uncollectible':
       return PaymentStatus.Failed;
   }
 }

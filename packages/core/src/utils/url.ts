@@ -3,5 +3,5 @@ export function isValidNextUrl(url: string): boolean {
 }
 
 export function getNextParam(url: string): string {
-  return isValidNextUrl(url) ? "?next=" + encodeURIComponent(url) : "";
+  return isValidNextUrl(url) ? '?next=' + encodeURIComponent(url) : '';
 }

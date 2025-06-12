@@ -1,6 +1,7 @@
-import { FilterHandlers } from "@beabee/core/type";
-import { CalloutFilterName } from "@beabee/beabee-common";
-import { statusFilterHandler } from "./status.filter-handlers";
+import { CalloutFilterName } from '@beabee/beabee-common';
+import { FilterHandlers } from '@beabee/core/type';
+
+import { statusFilterHandler } from './status.filter-handlers';
 
 /**
  * @fileoverview Filter handlers for callouts, managing status and title filtering
@@ -30,6 +31,6 @@ export const calloutFilterHandlers: FilterHandlers<CalloutFilterName> = {
   status: statusFilterHandler,
   title: (qb, args) => {
     // Filter by variant title
-    qb.where(args.convertToWhereClause("cvd.title"));
-  }
+    qb.where(args.convertToWhereClause('cvd.title'));
+  },
 };

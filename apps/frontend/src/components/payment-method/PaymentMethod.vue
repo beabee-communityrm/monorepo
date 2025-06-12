@@ -5,9 +5,10 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { computed } from 'vue';
 import { PaymentMethod } from '@beabee/beabee-common';
 import type { PaymentSource } from '@beabee/beabee-common';
+
+import { computed } from 'vue';
 
 import PaymentMethodIcon from './PaymentMethodIcon.vue';
 

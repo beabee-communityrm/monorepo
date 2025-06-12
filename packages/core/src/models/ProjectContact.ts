@@ -3,24 +3,25 @@ import {
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
-  Unique
-} from "typeorm";
-import type { Contact, Project } from "./index";
+  Unique,
+} from 'typeorm';
+
+import type { Contact, Project } from './index';
 
 @Entity()
-@Unique(["project", "contact"])
+@Unique(['project', 'contact'])
 export class ProjectContact {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id!: string;
 
   @Column()
   projectId!: string;
-  @ManyToOne("Project", "contacts")
+  @ManyToOne('Project', 'contacts')
   project!: Project;
 
   @Column()
   contactId!: string;
-  @ManyToOne("Contact")
+  @ManyToOne('Contact')
   contact!: Contact;
 
   @Column({ type: String, nullable: true })

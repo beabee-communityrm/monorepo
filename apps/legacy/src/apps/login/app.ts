@@ -1,42 +1,40 @@
-import { RoleTypes, RoleType } from "@beabee/beabee-common";
-import express, { type Express, type Request, type Response } from "express";
-import passport from "passport";
+import { RoleType, RoleTypes } from '@beabee/beabee-common';
+import config from '@beabee/core/config';
+import { getRepository } from '@beabee/core/database';
+import { ContactRole } from '@beabee/core/models';
+import ContactsService from '@beabee/core/services/ContactsService';
+import { wrapAsync } from '@beabee/core/utils/express';
+import { getNextParam, isValidNextUrl } from '@beabee/core/utils/url';
 
-import { getRepository } from "@beabee/core/database";
-import { wrapAsync } from "@beabee/core/utils/express";
-import { isValidNextUrl, getNextParam } from "@beabee/core/utils/url";
-import { loginAndRedirect } from "#core/utils/contact";
+import express, { type Express, type Request, type Response } from 'express';
+import passport from 'passport';
 
-import ContactsService from "@beabee/core/services/ContactsService";
-
-import { ContactRole } from "@beabee/core/models";
-
-import config from "@beabee/core/config";
+import { loginAndRedirect } from '#core/utils/contact';
 
 const app: Express = express();
 
-app.set("views", __dirname + "/views");
+app.set('views', __dirname + '/views');
 
-app.get("/", function (req: Request, res: Response) {
+app.get('/', function (req: Request, res: Response) {
   const nextParam = req.query.next as string;
   if (req.user) {
-    res.redirect(isValidNextUrl(nextParam) ? nextParam : "/");
+    res.redirect(isValidNextUrl(nextParam) ? nextParam : '/');
   } else {
-    res.render("index", { nextParam: getNextParam(nextParam) });
+    res.render('index', { nextParam: getNextParam(nextParam) });
   }
 });
 
 if (config.dev) {
   app.get(
-    "/as/:id",
+    '/as/:id',
     wrapAsync(async (req, res) => {
       let contact;
       if (RoleTypes.indexOf(req.params.id as RoleType) > -1) {
         const role = await getRepository(ContactRole).findOne({
           where: {
-            type: req.params.id as RoleType
+            type: req.params.id as RoleType,
           },
-          relations: { contact: true }
+          relations: { contact: true },
         });
         contact = role?.contact;
       } else {
@@ -46,14 +44,14 @@ if (config.dev) {
       if (contact) {
         loginAndRedirect(req, res, contact);
       } else {
-        res.redirect("/login");
+        res.redirect('/login');
       }
     })
   );
 }
 
 app.get(
-  "/:code",
+  '/:code',
   wrapAsync(async function (req, res) {
     const nextParam = req.query.next as string;
     const contact = await ContactsService.findByLoginOverride(req.params.code);
@@ -63,23 +61,23 @@ app.get(
         req,
         res,
         contact,
-        isValidNextUrl(nextParam) ? nextParam : "/"
+        isValidNextUrl(nextParam) ? nextParam : '/'
       );
     } else {
-      req.flash("error", "login-code-invalid");
-      res.redirect("/login");
+      req.flash('error', 'login-code-invalid');
+      res.redirect('/login');
     }
   })
 );
 
-app.post("/", (req, res) => {
+app.post('/', (req, res) => {
   const nextParam = req.query.next as string;
-  passport.authenticate("local", {
-    failureRedirect: "/login" + getNextParam(nextParam),
-    failureFlash: true
+  passport.authenticate('local', {
+    failureRedirect: '/login' + getNextParam(nextParam),
+    failureFlash: true,
   })(req, res, () => {
-    req.session.method = "plain";
-    res.redirect(isValidNextUrl(nextParam) ? nextParam : "/");
+    req.session.method = 'plain';
+    res.redirect(isValidNextUrl(nextParam) ? nextParam : '/');
   });
 });
 

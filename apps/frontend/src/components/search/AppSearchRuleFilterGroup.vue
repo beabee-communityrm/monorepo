@@ -42,23 +42,22 @@
 </template>
 
 <script setup lang="ts">
-import { operatorsByTypeMap, type RuleOperator } from '@beabee/beabee-common';
+import { type RuleOperator, operatorsByTypeMap } from '@beabee/beabee-common';
+
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { createNewRule, getDefaultRuleValue } from '@utils/rules';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import AppSelect from '../forms/AppSelect.vue';
 import AppSearchRuleFilterGroupItem from './AppSearchRuleFilterGroupItem.vue';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
-
 import {
-  operatorItems,
-  operatorT,
-  nullableOperatorItems,
   type SearchRuleEmits,
   type SearchRuleFilterGroupProps,
+  nullableOperatorItems,
+  operatorItems,
+  operatorT,
 } from './search.interface';
-
-import { createNewRule, getDefaultRuleValue } from '@utils/rules';
 
 const emit = defineEmits<SearchRuleEmits>();
 const props = defineProps<SearchRuleFilterGroupProps>();

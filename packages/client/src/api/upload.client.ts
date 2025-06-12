@@ -1,12 +1,13 @@
-import type { BaseClientOptions } from "../types/index.js";
 import {
   type UploadFileResponse,
+  isSupportedDocumentType,
   isSupportedImageType,
-  isSupportedDocumentType
-} from "@beabee/beabee-common";
-import { ClientApiError } from "../utils/index.js";
-import { UploadImageClient } from "./upload-image.client.js";
-import { UploadDocumentClient } from "./upload-document.client.js";
+} from '@beabee/beabee-common';
+
+import type { BaseClientOptions } from '../types/index.js';
+import { ClientApiError } from '../utils/index.js';
+import { UploadDocumentClient } from './upload-document.client.js';
+import { UploadImageClient } from './upload-image.client.js';
 
 /**
  * Client for managing file uploads
@@ -46,9 +47,9 @@ export class UploadClient {
     } else if (isSupportedDocumentType(file.type)) {
       return this.documentClient.uploadFile(file);
     } else {
-      throw new ClientApiError("Unsupported file type", {
+      throw new ClientApiError('Unsupported file type', {
         httpCode: 415,
-        code: "UNSUPPORTED_FILE_TYPE"
+        code: 'UNSUPPORTED_FILE_TYPE',
       });
     }
   }

@@ -1,5 +1,5 @@
-import { TagClient } from "./tag.client.js";
-import type { BaseClientOptions } from "../types/index.js";
+import type { BaseClientOptions } from '../types/index.js';
+import { TagClient } from './tag.client.js';
 
 /**
  * Client for managing tags associated with callouts

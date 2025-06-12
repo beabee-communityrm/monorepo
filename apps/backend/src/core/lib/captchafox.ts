@@ -1,13 +1,13 @@
-import { verify as cfVerify } from "@captchafox/node";
+import config from '@beabee/core/config';
 
-import config from "@beabee/core/config";
+import { verify as cfVerify } from '@captchafox/node';
 
 export async function verify(token: string): Promise<string> {
   const resp = await cfVerify(config.captchaFox.secret, token);
   if (resp.success) {
-    return "";
+    return '';
   } else {
-    const errorCodes = resp["error-codes"];
-    return errorCodes ? errorCodes.join(", ") : "unknown";
+    const errorCodes = resp['error-codes'];
+    return errorCodes ? errorCodes.join(', ') : 'unknown';
   }
 }

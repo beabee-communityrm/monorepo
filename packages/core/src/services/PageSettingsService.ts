@@ -1,31 +1,29 @@
-import { getRepository } from "#database";
-
-import OptionsService from "#services/OptionsService";
-
-import { PageSettings } from "#models/index";
+import { getRepository } from '#database';
+import { PageSettings } from '#models/index';
+import OptionsService from '#services/OptionsService';
 
 interface PageSettingsCache extends PageSettings {
   patternRegex: RegExp;
 }
 
-export type JustPageSettings = Omit<PageSettings, "id" | "pattern">;
+export type JustPageSettings = Omit<PageSettings, 'id' | 'pattern'>;
 
 export class PageSettingsService {
-  private static pathCache: Record<string, JustPageSettings | "default"> = {};
+  private static pathCache: Record<string, JustPageSettings | 'default'> = {};
   private static psCache: PageSettingsCache[] = [];
 
   static getPath(path: string): JustPageSettings {
     let cache = this.pathCache[path];
     if (cache === undefined) {
       cache = this.pathCache[path] =
-        this.psCache.find((ps) => ps.patternRegex.test(path)) || "default";
+        this.psCache.find((ps) => ps.patternRegex.test(path)) || 'default';
     }
-    return cache === "default"
+    return cache === 'default'
       ? {
-          shareUrl: "/",
-          shareTitle: OptionsService.getText("share-title"),
-          shareDescription: OptionsService.getText("share-description"),
-          shareImage: OptionsService.getText("share-image")
+          shareUrl: '/',
+          shareTitle: OptionsService.getText('share-title'),
+          shareDescription: OptionsService.getText('share-description'),
+          shareImage: OptionsService.getText('share-image'),
         }
       : cache;
   }
@@ -33,7 +31,7 @@ export class PageSettingsService {
   static async reload(): Promise<void> {
     this.psCache = (await getRepository(PageSettings).find()).map((ps) => ({
       ...ps,
-      patternRegex: new RegExp(ps.pattern)
+      patternRegex: new RegExp(ps.pattern),
     }));
     this.pathCache = {};
   }

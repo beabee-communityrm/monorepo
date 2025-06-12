@@ -1,20 +1,17 @@
-import { Brackets } from "typeorm";
-
-import { createQueryBuilder } from "@beabee/core/database";
-
+import { createQueryBuilder } from '@beabee/core/database';
 import {
   CalloutResponse,
+  ContactContribution,
   ContactProfile,
   ContactRole,
-  ContactContribution
-} from "@beabee/core/models";
-import { getFilterHandler } from "@beabee/core/utils/rules";
+} from '@beabee/core/models';
+import { FilterHandler, FilterHandlers } from '@beabee/core/type';
+import { getFilterHandler } from '@beabee/core/utils/rules';
 
-import { FilterHandler, FilterHandlers } from "@beabee/core/type";
+import { Brackets } from 'typeorm';
 
-import { contactTagFilterHandler } from "./tag.filter-handlers";
-
-import { calloutResponseFilterHandlers } from "./callout-response.filter-handlers";
+import { calloutResponseFilterHandlers } from './callout-response.filter-handlers';
+import { contactTagFilterHandler } from './tag.filter-handlers';
 
 /**
  * @fileoverview Contact filter handlers for managing contact-related queries and filters
@@ -31,7 +28,7 @@ function membershipField(field: keyof ContactRole): FilterHandler {
     const subQb = createQueryBuilder()
       .subQuery()
       .select(`cr.contactId`)
-      .from(ContactRole, "cr")
+      .from(ContactRole, 'cr')
       .where(`cr.type = 'member'`)
       .andWhere(convertToWhereClause(`cr.${field}`));
 
@@ -49,7 +46,7 @@ function profileField(field: keyof ContactProfile): FilterHandler {
     const subQb = createQueryBuilder()
       .subQuery()
       .select(`profile.contactId`)
-      .from(ContactProfile, "profile")
+      .from(ContactProfile, 'profile')
       .where(convertToWhereClause(`profile.${field}`));
 
     qb.where(`${fieldPrefix}id IN ${subQb.getQuery()}`);
@@ -66,7 +63,7 @@ function contributionField(field: keyof ContactContribution): FilterHandler {
     const subQb = createQueryBuilder()
       .subQuery()
       .select(`cc.contactId`)
-      .from(ContactContribution, "cc")
+      .from(ContactContribution, 'cc')
       .where(convertToWhereClause(`cc.${field}`));
 
     qb.where(`${fieldPrefix}id IN ${subQb.getQuery()}`);
@@ -79,17 +76,17 @@ function contributionField(field: keyof ContactContribution): FilterHandler {
  * @returns A filter handler function for the specified permission field
  */
 const activePermission: FilterHandler = (qb, args) => {
-  const roleType = args.field === "activeMembership" ? "member" : args.value[0];
+  const roleType = args.field === 'activeMembership' ? 'member' : args.value[0];
 
   const isIn =
-    args.field === "activeMembership"
+    args.field === 'activeMembership'
       ? (args.value[0] as boolean)
-      : args.operator === "equal";
+      : args.operator === 'equal';
 
   const subQb = createQueryBuilder()
     .subQuery()
     .select(`cr.contactId`)
-    .from(ContactRole, "cr")
+    .from(ContactRole, 'cr')
     .where(`cr.type = '${roleType}'`)
     .andWhere(`cr.dateAdded <= :now`)
     .andWhere(
@@ -113,7 +110,7 @@ const activePermission: FilterHandler = (qb, args) => {
  */
 const calloutsFilterHandler: FilterHandler = (qb, args) => {
   // Split out callouts.<id>.<filterName>[.<restFields...>]
-  const [, calloutId, subField, ...restFields] = args.field.split(".");
+  const [, calloutId, subField, ...restFields] = args.field.split('.');
 
   let params;
 
@@ -124,13 +121,13 @@ const calloutsFilterHandler: FilterHandler = (qb, args) => {
      *
      * Filter field: callout.<id>.responses.<restFields>
      */
-    case "responses": {
+    case 'responses': {
       const subQb = createQueryBuilder()
         .subQuery()
-        .select("item.contactId")
-        .from(CalloutResponse, "item");
+        .select('item.contactId')
+        .from(CalloutResponse, 'item');
 
-      const responseField = restFields.join(".");
+      const responseField = restFields.join('.');
       const filterHandler = getFilterHandler(
         calloutResponseFilterHandlers,
         responseField
@@ -138,8 +135,8 @@ const calloutsFilterHandler: FilterHandler = (qb, args) => {
       params = filterHandler(subQb, { ...args, field: responseField });
 
       subQb
-        .andWhere(args.addParamSuffix("item.calloutId = :calloutId"))
-        .andWhere("item.contactId IS NOT NULL");
+        .andWhere(args.addParamSuffix('item.calloutId = :calloutId'))
+        .andWhere('item.contactId IS NOT NULL');
 
       qb.where(`${args.fieldPrefix}id IN ${subQb.getQuery()}`);
       break;
@@ -150,15 +147,15 @@ const calloutsFilterHandler: FilterHandler = (qb, args) => {
      *
      * Filter field: callout.<id>.hasAnswered
      */
-    case "hasAnswered": {
+    case 'hasAnswered': {
       const subQb = createQueryBuilder()
         .subQuery()
-        .select("item.contactId")
-        .from(CalloutResponse, "item")
+        .select('item.contactId')
+        .from(CalloutResponse, 'item')
         .where(args.addParamSuffix(`item.calloutId = :calloutId`))
-        .andWhere("item.contactId IS NOT NULL");
+        .andWhere('item.contactId IS NOT NULL');
 
-      const operator = args.value[0] ? "IN" : "NOT IN";
+      const operator = args.value[0] ? 'IN' : 'NOT IN';
 
       qb.where(`${args.fieldPrefix}id ${operator} ${subQb.getQuery()}`);
       break;
@@ -186,9 +183,9 @@ const calloutsFilterHandler: FilterHandler = (qb, args) => {
  * - tags: Filters by contact tags
  */
 export const contactFilterHandlers: FilterHandlers<string> = {
-  deliveryOptIn: profileField("deliveryOptIn"),
-  newsletterStatus: profileField("newsletterStatus"),
-  newsletterGroups: profileField("newsletterGroups"),
+  deliveryOptIn: profileField('deliveryOptIn'),
+  newsletterStatus: profileField('newsletterStatus'),
+  newsletterGroups: profileField('newsletterGroups'),
   activePermission,
   activeMembership: activePermission,
   activeUser: (qb, args) => {
@@ -197,13 +194,13 @@ export const contactFilterHandlers: FilterHandlers<string> = {
       args.convertToWhereClause(`(${args.fieldPrefix}password.hash <> '')`)
     );
   },
-  membershipStarts: membershipField("dateAdded"),
-  membershipExpires: membershipField("dateExpires"),
-  contributionCancelled: contributionField("cancelledAt"),
+  membershipStarts: membershipField('dateAdded'),
+  membershipExpires: membershipField('dateExpires'),
+  contributionCancelled: contributionField('cancelledAt'),
   manualPaymentSource: (qb, args) => {
-    contributionField("mandateId")(qb, args);
+    contributionField('mandateId')(qb, args);
     qb.andWhere(`${args.fieldPrefix}contributionType = 'Manual'`);
   },
-  "callouts.": calloutsFilterHandler,
-  tags: contactTagFilterHandler
+  'callouts.': calloutsFilterHandler,
+  tags: contactTagFilterHandler,
 };

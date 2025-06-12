@@ -34,12 +34,14 @@
   </form>
 </template>
 <script lang="ts" setup>
-import useVuelidate from '@vuelidate/core';
 import { LOGIN_CODES } from '@beabee/beabee-common';
+import { isApiError } from '@beabee/client';
+
+import useVuelidate from '@vuelidate/core';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+
 import { addNotification } from '../../store/notifications';
-import { isApiError } from '@beabee/client';
 import { AppButton } from '../button';
 import { AppNotification } from '../notification';
 

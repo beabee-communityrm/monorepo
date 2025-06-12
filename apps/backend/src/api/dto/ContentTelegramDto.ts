@@ -1,5 +1,6 @@
-import { IsString } from "class-validator";
-import type { ContentTelegramData } from "@beabee/beabee-common";
+import type { ContentTelegramData } from '@beabee/beabee-common';
+
+import { IsString } from 'class-validator';
 
 export class GetContentTelegramDto implements ContentTelegramData {
   /** Markdown formatted welcome message */
