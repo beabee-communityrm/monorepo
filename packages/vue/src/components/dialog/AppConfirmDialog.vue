@@ -1,3 +1,8 @@
+<!--
+  # AppConfirmDialog
+  A confirmation dialog that wraps AppModal with predefined cancel and confirm buttons.
+  Used for user decision flows like destructive actions, important decisions, or async operations.
+-->
 <template>
   <AppModal
     :open="open"
@@ -33,8 +38,8 @@
 
 <script lang="ts" setup>
 /**
- * A confirmation dialog component that displays a modal with cancel and confirm buttons.
- * Used for confirming destructive actions or important decisions.
+ * Confirmation dialog component with cancel and confirm buttons.
+ * Extends AppModal with predefined button layout and loading state management for user decisions.
  *
  * @component AppConfirmDialog
  *
@@ -48,7 +53,7 @@
  *   @close="showConfirm = false"
  *   @confirm="deleteItem"
  * >
- *   <p>Are you sure you want to delete this item? This action cannot be undone.</p>
+ *   <p>Are you sure you want to delete this item?</p>
  * </AppConfirmDialog>
  */
 import { ref } from 'vue';

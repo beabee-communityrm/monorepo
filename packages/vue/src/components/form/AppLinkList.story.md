@@ -1,6 +1,20 @@
 # AppLinkList
 
-A reusable component for managing dynamic lists of links with text and URL pairs. Built on top of the `AppRepeatable` component, it provides an intuitive interface for adding, editing, and removing links.
+The `AppLinkList` component displays a list of clickable links with consistent styling and optional icons for navigation or actions.
+
+## Usage Patterns
+
+- **Navigation menus** - Lists of page or section links
+- **Action lists** - Collections of user actions or operations
+- **Resource lists** - Links to external resources or documents
+- **Quick links** - Frequently accessed pages or functions
+
+## Key Features
+
+- ✅ **Consistent styling** - Standardized link appearance across the application
+- ✅ **Icon support** - Optional icons for visual context and recognition
+- ✅ **Router integration** - Works with Vue Router for internal navigation
+- ✅ **External links** - Proper handling of external URLs with security
 
 ## Use Cases
 
@@ -33,46 +47,6 @@ Configures additional action links that appear with each response in callout vie
   placeholder-url="e.g., /response/{id}"
 />
 ```
-
-## Features
-
-- **Dynamic List Management**: Add and remove link entries with a clean interface
-- **Validation**: Both text and URL fields are required by default
-- **Flexible Labeling**: All labels and placeholders are configurable via props
-- **Type Safety**: Full TypeScript support with proper prop interfaces
-- **Consistent UI**: Uses the same form components (`AppInput`) for consistent styling
-
-## Props
-
-### Required Props
-
-- `modelValue`: Array of link objects with `text` and `url` properties
-- `addLabel`: Text for the "Add" button (defaults to "Add Link")
-
-### Optional Props
-
-- `textLabel`: Label for the text input field
-- `urlLabel`: Label for the URL input field
-- `placeholderLabel`: Placeholder text for the text input
-- `placeholderUrl`: Placeholder text for the URL input
-
-## Data Structure
-
-The component expects and emits an array of objects with this structure:
-
-```typescript
-interface LinkItem {
-  text: string;
-  url: string;
-}
-```
-
-## Accessibility
-
-- Uses semantic form labels for screen readers
-- Provides clear button labels for add/remove actions
-- Maintains proper focus management when adding/removing items
-- All inputs include appropriate `required` attributes
 
 ## Integration with AppRepeatable
 

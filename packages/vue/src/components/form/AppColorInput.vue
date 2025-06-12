@@ -1,3 +1,8 @@
+<!--
+  # AppColorInput
+  A color picker component combining text input for hex values with an interactive color picker widget.
+  Supports both 3-digit (#RGB) and 6-digit (#RRGGBB) hex formats with validation.
+-->
 <template>
   <div class="mb-2 flex">
     <div

@@ -1,6 +1,20 @@
 # AppVTabs
 
-Vertical tabs optimized for sidebar navigation and filtering interfaces.
+The `AppVTabs` component provides vertical tab navigation, ideal for sidebar layouts and settings interfaces with multiple categories.
+
+## Usage Patterns
+
+- **Settings interfaces** - Navigate between different configuration sections
+- **Sidebar navigation** - Vertical menu systems with content panels
+- **Admin panels** - Organize management tools into categories
+- **Multi-category forms** - Group form sections vertically for better space usage
+
+## Key Features
+
+- ✅ **Vertical orientation** - Space-efficient sidebar layout design
+- ✅ **Responsive behavior** - Adapts to different screen sizes appropriately  
+- ✅ **Visual hierarchy** - Clear distinction between navigation and content
+- ✅ **Count indicators** - Optional badges for tab item counts
 
 ## Usage
 
@@ -10,52 +24,6 @@ Vertical tabs optimized for sidebar navigation and filtering interfaces.
   :items="[
     { id: 'all', label: 'All Items', count: 42 },
     { id: 'active', label: 'Active', count: 18 },
-  ]"
-/>
-```
-
-## Props
-
-| Prop         | Type        | Required | Description                   |
-| ------------ | ----------- | -------- | ----------------------------- |
-| `modelValue` | `string`    | Yes      | Currently selected tab ID     |
-| `items`      | `TabItem[]` | Yes      | Array of tab items to display |
-
-## Features
-
-- Vertical layout optimized for sidebars
-- Count indicators
-- v-model support for two-way binding
-- Consistent styling with other tab components
-
-## Use Cases
-
-### Filter Sidebar
-
-Common pattern for list views with filtering:
-
-```vue
-<AppVTabs
-  v-model="selectedFilter"
-  :items="[
-    { id: 'all', label: 'All Items', count: 42 },
-    { id: 'active', label: 'Active', count: 18 },
-    { id: 'archived', label: 'Archived', count: 24 },
-  ]"
-/>
-```
-
-### Content Navigation
-
-Used for navigating between different sections of content:
-
-```vue
-<AppVTabs
-  v-model="selectedSection"
-  :items="[
-    { id: 'content', label: 'Content' },
-    { id: 'intro', label: 'Introduction' },
-    { id: 'endMessage', label: 'End Message' },
   ]"
 />
 ```

@@ -1,14 +1,20 @@
 # AppCopyButton
 
-The `AppCopyButton` component provides a simple way to copy text to the clipboard. It displays a copy icon button that, when clicked, copies the provided text and shows a success notification.
+The `AppCopyButton` component provides a simple way to copy text to the clipboard with user feedback through notifications.
 
-## Features
+## Usage Patterns
 
-- Copies text to clipboard with a single click
-- Shows success notification when copying is successful
-- Shows error notification if copying fails
-- Emits an event when copying is successful
-- Designed to be used within input fields or other UI elements
+- **Input fields** - Copy values from read-only inputs (API keys, URLs, codes)
+- **Code blocks** - Copy code snippets or configuration values  
+- **Share links** - Copy URLs or sharing links
+- **Reference data** - Copy IDs, tokens, or other reference information
+
+## Key Features
+
+- ✅ **Clipboard API** - Uses modern browser clipboard functionality
+- ✅ **User feedback** - Success/error notifications with internationalization
+- ✅ **Two variants** - Normal (for inputs) and float (for overlays)
+- ✅ **Event emission** - Emits copy event for additional handling
 
 ## Usage
 
@@ -30,54 +36,6 @@ The `AppCopyButton` component provides a simple way to copy text to the clipboar
 | ------ | ---------------------------------------- |
 | `copy` | Emitted when text is successfully copied |
 
-## Examples
-
-### Basic Usage
-
-```vue
-<AppCopyButton text="Copy this text" @copy="handleCopy" />
-```
-
-### In an Input Field
-
-```vue
-<div class="flex items-center border rounded">
-  <input
-    v-model="value"
-    class="flex-1 px-2 py-2 border-none focus:outline-none"
-    type="text"
-  />
-  <div class="h-10 border-l border-primary-40">
-    <AppCopyButton :text="value" />
-  </div>
-</div>
-```
-
-### With Prefix
-
-```vue
-<div class="flex items-center border rounded">
-  <span class="flex-0 border-r border-primary-40 bg-grey-lighter px-2 py-2">
-    https://
-  </span>
-  <input
-    v-model="domain"
-    class="flex-1 px-2 py-2 border-none focus:outline-none"
-    type="text"
-  />
-  <div class="h-10 border-l border-primary-40">
-    <AppCopyButton :text="`https://${domain}`" />
-  </div>
-</div>
-```
-
-### In a Form Component
-
-The AppCopyButton is commonly used in the AppInput component:
-
-```vue
-<AppInput v-model="apiKey" label="API Key" copyable />
-```
 
 ## How It Works
 

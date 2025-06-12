@@ -4,14 +4,14 @@ A modal dialog component that displays content in an overlay with proper accessi
 
 ## Usage Patterns
 
-- **General dialogs** - Information display, forms, or content that requires user attention
-- **Confirmation contexts** - Base component for building confirmation dialogs
 - **Content presentation** - Displaying detailed information or complex interfaces
+- **Form dialogs** - Creating or editing content in a focused overlay
+- **Image galleries** - Showcasing media content with backdrop focus
+- **Confirmation base** - Foundation for building confirmation dialogs
 
 ## Key Features
 
-- ✅ **Body scroll lock** during modal display
-- ✅ **Backdrop click prevention** to maintain focus
-- ✅ **ARIA modal standards** with proper labeling
-- ✅ **Responsive design** with mobile-optimized sizing
-- ✅ **Teleport to body** for proper z-index stacking
+- ✅ **Body scroll lock** - Prevents background scrolling during modal display
+- ✅ **Backdrop click prevention** - Modal stays open for intentional interaction
+- ✅ **ARIA modal standards** - Proper accessibility with screen reader support
+- ✅ **Teleport to body** - Ensures proper z-index stacking

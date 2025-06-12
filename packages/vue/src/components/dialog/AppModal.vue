@@ -1,3 +1,8 @@
+<!--
+  # AppModal
+  A modal dialog component with proper accessibility features and body scroll lock.
+  Displays content in an overlay with backdrop click prevention and keyboard navigation.
+-->
 <template>
   <Teleport to="body">
     <div
@@ -41,18 +46,13 @@
 
 <script lang="ts" setup>
 /**
- * A modal dialog component that displays content in an overlay with proper accessibility features.
- * Provides backdrop click prevention, scroll lock, and keyboard navigation support.
+ * Modal dialog component that displays content in an overlay with proper accessibility.
+ * Provides backdrop click prevention, body scroll lock, and keyboard navigation support.
  *
  * @component AppModal
  *
  * @example
- * <AppModal
- *   :open="showModal"
- *   title="Confirm Action"
- *   close-button-text="Close dialog"
- *   @close="showModal = false"
- * >
+ * <AppModal :open="showModal" title="Confirm Action" @close="showModal = false">
  *   <p>Are you sure you want to proceed?</p>
  * </AppModal>
  */
@@ -64,29 +64,42 @@ import { computed, onBeforeUnmount, ref, toRef, watch } from 'vue';
  * Props for the AppModal component
  */
 export interface AppModalProps {
-  /** Whether the modal is open */
+  /** Whether the modal is currently open and visible */
   open: boolean;
   /** Title displayed in the modal header */
   title?: string;
-  /** Visual variant for styling */
+  /** Visual variant affecting title styling */
   variant?: 'danger';
   /** Accessible text for the close button */
   closeButtonText?: string;
 }
+
+/**
+ * Events emitted by the AppModal component
+ */
+const emit = defineEmits<{
+  /**
+   * Emitted when the modal should be closed
+   */
+  close: [];
+}>();
+
+/**
+ * Slots available in the AppModal component
+ */
+defineSlots<{
+  /**
+   * Default slot for modal content
+   * @description The main content area of the modal
+   */
+  default(): any;
+}>();
 
 const props = withDefaults(defineProps<AppModalProps>(), {
   title: undefined,
   variant: undefined,
   closeButtonText: 'Close',
 });
-
-/**
- * Events emitted by the AppModal component
- */
-const emit = defineEmits<{
-  /** Emitted when the modal should be closed */
-  (e: 'close'): void;
-}>();
 
 // Generate unique ID for ARIA relationships
 const modalId = computed(
@@ -95,6 +108,9 @@ const modalId = computed(
 
 const divRef = ref<HTMLElement>();
 
+/**
+ * Manages body scroll lock when modal opens/closes
+ */
 watch([toRef(props, 'open'), divRef], ([open]) => {
   if (divRef.value) {
     if (open) {
@@ -105,6 +121,9 @@ watch([toRef(props, 'open'), divRef], ([open]) => {
   }
 });
 
+/**
+ * Cleanup scroll lock on component unmount
+ */
 onBeforeUnmount(() => {
   if (divRef.value && props.open) {
     enableBodyScroll(divRef.value);

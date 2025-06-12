@@ -1,53 +1,20 @@
 # AppLabel
 
-The `AppLabel` component provides a consistent label for form fields. It's a simple component that displays a label with an optional required indicator.
+The `AppLabel` component provides consistent label styling for form fields with required field indicators and proper accessibility attributes.
 
-## Features
+## Usage Patterns
 
-- Consistent styling for form labels
-- Optional required indicator (asterisk)
-- Semantic HTML using the `<label>` element
+- **Form field labels** - Standard labels for all input types
+- **Required field marking** - Visual indicators for mandatory fields  
+- **Accessibility compliance** - Proper label-input associations
+- **Help text integration** - Labels that work with AppInputHelp components
 
-## Usage
+## Key Features
 
-```vue
-<AppLabel label="First Name" required />
-```
-
-## Props
-
-| Prop       | Type      | Default | Description                                 |
-| ---------- | --------- | ------- | ------------------------------------------- |
-| `label`    | `string`  | -       | The text to display as the label (required) |
-| `required` | `boolean` | `false` | Whether to show the required indicator (\*) |
-
-## Examples
-
-### Basic Usage
-
-```vue
-<AppLabel label="First Name" />
-```
-
-### Required Field
-
-```vue
-<AppLabel label="First Name" required />
-```
-
-### In a Form
-
-```vue
-<div>
-  <AppLabel label="First Name" required />
-  <AppInput v-model="firstName" name="firstName" required />
-</div>
-
-<div>
-  <AppLabel label="Last Name" />
-  <AppInput v-model="lastName" name="lastName" />
-</div>
-```
+- ✅ **Required indicators** - Automatic asterisk (*) for required fields
+- ✅ **Consistent styling** - Standardized typography and spacing
+- ✅ **Accessibility support** - Proper `for` attribute associations
+- ✅ **Flexible content** - Supports both text and rich content labels
 
 ## How It Works
 
