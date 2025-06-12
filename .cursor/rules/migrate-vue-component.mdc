@@ -7,7 +7,8 @@ Migrate Vue components from `apps/frontend` to `packages/vue/src/components`.
 
 ## Prerequisites
 - Identify target component (ask if not specified)
-- Analyze usage patterns in `apps/frontend` for story creation
+- Analyze the current usage of the target component(s) within `apps/frontend` to understand its context, prop usage, and interaction patterns
+- Use this information to inform refactoring, story creation, or integration updates
 
 ## Migration Rules
 - **Block API components**: Do not migrate components using `@utils/api`, `client.ts`, or API imports
@@ -16,7 +17,7 @@ Migrate Vue components from `apps/frontend` to `packages/vue/src/components`.
 - **Include dependencies**: Migrate related components, utils, interfaces, types
 
 ## Implementation
-- Follow [new-vue-component.mdc](mdc:.cursor/rules/new-vue-component.mdc) standards
+- Follow [new-vue-component.mdc](mdc:.cursor/rules/new-vue-component.mdc)
 - Clean refactoring with TSDoc documentation
 - Maintain required functionality
 - Add semantic HTML and ARIA attributes
@@ -26,8 +27,8 @@ Migrate Vue components from `apps/frontend` to `packages/vue/src/components`.
 ## Completion
 - Update `apps/frontend`:
   - To use migrated components by updating the imports to `@beabee/vue`
-  - Reuse existing import declarations where possible: `import { OldComponent, NewComponent } from '@beabee/vue';`
-import { AppTitle } from '@beabee/vue';
+  - Reuse existing import declarations: `import { AlreadyExistingComponent, MigratedComponent } from '@beabee/vue';`
   - This includes adapting component interfaces, adjusting prop drilling, or updating binding logic where necessary
   - Repeat all necessary steps—such as updating imports, adjusting props, and rewriting references—for each component involved
+- Run `yarn format` to automatic formatting all changes
 - Provide commit message and PR description

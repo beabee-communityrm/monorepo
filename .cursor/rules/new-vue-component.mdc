@@ -7,7 +7,7 @@ Create Vue components with stories and documentation. Follow existing patterns a
 
 ## Templates
 - Component: [AppTemplate.vue](mdc:packages/vue/src/components/template/AppTemplate.vue)
-- Story: [AppTemplate.story.vue](mdc:packages/vue/src/components/template/AppTemplate.story.vue)
+- Story: [vue-component-story.mdc](mdc:.cursor/rules/vue-component-story.mdc)
 - Exports: [index.ts](mdc:packages/vue/src/components/template/index.ts)
 - Documentation: [vue-component-story-documentation.mdc](mdc:.cursor/rules/vue-component-story-documentation.mdc)
 - Code Standards: [frontend-code-structure.mdc](mdc:.cursor/rules/frontend-code-structure.mdc)
