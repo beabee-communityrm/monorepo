@@ -212,6 +212,9 @@ export class GetContentPaymentDto implements ContentPaymentData {
 
   @IsNumber()
   taxRate!: number;
+
+  @IsString()
+  noticeText!: string;
 }
 
 export type GetContentDto<Id extends ContentId = ContentId> =

@@ -1325,7 +1325,9 @@
         "showNoContribution": "Registrierung ohne Zahlung erlauben",
         "suggestedAmounts": "Beiträge vorschlagen",
         "text": "In diesem Abschnitt kannst du dein Registrierungsformular bearbeiten, optimieren und ansehen.",
-        "title": "Registrierung"
+        "title": "Registrierung",
+        "noticeText": "Hinweistext unter dem Zahlungsbutton",
+        "noticeTextHelp": "Verwenden Sie dieses Feld, um einen Hinweis unter dem Zahlungsbutton hinzuzufügen, zum Beispiel zur Erklärung von Zahlungsperioden oder Bankeinzugsermächtigungen. Sie können dieses Feld auch leer lassen."
       }
     },
     "title": "Membership Builder"
