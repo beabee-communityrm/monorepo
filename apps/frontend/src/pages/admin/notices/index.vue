@@ -46,10 +46,8 @@ meta:
 </template>
 <script lang="ts" setup>
 import type { GetNoticeData, Paginated } from '@beabee/beabee-common';
-import { AppButton } from '@beabee/vue';
-import { ItemStatus } from '@beabee/vue';
+import { AppButton, ItemStatus, PageTitle } from '@beabee/vue';
 
-import PageTitle from '@components/PageTitle.vue';
 import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
 import type { Header } from '@components/table/table.interface';
 import { faPlus, faSignHanging } from '@fortawesome/free-solid-svg-icons';

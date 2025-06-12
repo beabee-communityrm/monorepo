@@ -82,9 +82,9 @@ import {
   AppSectionHeading,
   AppSubHeading,
   AppTitle,
+  PageTitle,
 } from '@beabee/vue';
 
-import PageTitle from '@components/PageTitle.vue';
 import SectionTitle from '@components/pages/profile/SectionTitle.vue';
 import { useI18n } from 'vue-i18n';
 

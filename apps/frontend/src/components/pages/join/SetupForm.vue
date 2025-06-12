@@ -47,6 +47,12 @@
           v-model:post-code="data.postCode"
           v-model:city-or-town="data.cityOrTown"
           :required="data.profile.deliveryOptIn"
+          :labels="{
+            addressLine1: t('form.addressLine1'),
+            addressLine2: t('form.addressLine2'),
+            cityOrTown: t('form.cityOrTown'),
+            postCode: t('form.postCode'),
+          }"
         />
       </section>
 
@@ -69,9 +75,8 @@ import {
   GetContactWith,
   NewsletterStatus,
 } from '@beabee/beabee-common';
-import { AppForm, AppInput } from '@beabee/vue';
+import { AppAddress, AppForm, AppInput } from '@beabee/vue';
 
-import AppAddress from '@components/AppAddress.vue';
 import AuthBox from '@components/AuthBox.vue';
 import ContactBasicFields from '@components/contact/ContactBasicFields.vue';
 import ContactMailOptIn from '@components/contact/ContactMailOptIn.vue';

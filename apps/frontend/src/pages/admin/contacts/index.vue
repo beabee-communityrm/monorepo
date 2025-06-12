@@ -166,13 +166,13 @@ import {
 import {
   AppButton,
   AppButtonGroup,
+  AppFilterGrid,
   AppSearchInput,
   AppSelect,
+  PageTitle,
   addNotification,
 } from '@beabee/vue';
 
-import AppFilterGrid from '@components/AppFilterGrid.vue';
-import PageTitle from '@components/PageTitle.vue';
 import SaveSegment from '@components/pages/admin/contacts/SaveSegment.vue';
 import {
   headers,

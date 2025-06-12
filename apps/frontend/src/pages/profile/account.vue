@@ -20,11 +20,10 @@ meta:
 </template>
 
 <script lang="ts" setup>
-import { App2ColGrid } from '@beabee/vue';
+import { App2ColGrid, PageTitle } from '@beabee/vue';
 
 import { useI18n } from 'vue-i18n';
 
-import PageTitle from '../../components/PageTitle.vue';
 import ContactUpdateAccount from '../../components/contact/ContactUpdateAccount.vue';
 import ChangePassword from '../../components/pages/profile/account/ChangePassword.vue';
 import SetMFA from '../../components/pages/profile/account/SetMFA.vue';

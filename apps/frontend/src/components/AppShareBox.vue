@@ -90,8 +90,7 @@
 </template>
 
 <script lang="ts" setup>
-import { AppButton } from '@beabee/vue';
-import { AppExpandableBox } from '@beabee/vue';
+import { AppButton, AppExpandableBox } from '@beabee/vue';
 
 import env from '@env';
 import {

@@ -81,12 +81,12 @@ import {
   ActionButton,
   AppConfirmDialog,
   AppHeading,
+  AppNotice,
   ItemDateRange,
   ItemStatusText,
+  PageTitle,
 } from '@beabee/vue';
 
-import AppNotice from '@components/AppNotice.vue';
-import PageTitle from '@components/PageTitle.vue';
 import {
   faPencilAlt,
   faSignHanging,

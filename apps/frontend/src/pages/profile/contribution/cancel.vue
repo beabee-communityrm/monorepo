@@ -27,14 +27,12 @@ meta:
 </template>
 
 <script lang="ts" setup>
-import { AppButton } from '@beabee/vue';
+import { AppButton, PageTitle } from '@beabee/vue';
 
 import { client } from '@utils/api';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
-
-import PageTitle from '../../../components/PageTitle.vue';
 
 const { t } = useI18n();
 const router = useRouter();

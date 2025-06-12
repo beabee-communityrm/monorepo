@@ -85,12 +85,18 @@
       v-model:post-code="data.postCode"
       v-model:city-or-town="data.cityOrTown"
       :required="data.deliveryOptIn"
+      :labels="{
+        addressLine1: t('form.addressLine1'),
+        addressLine2: t('form.addressLine2'),
+        cityOrTown: t('form.cityOrTown'),
+        postCode: t('form.postCode'),
+      }"
     />
   </AppForm>
 </template>
 <script lang="ts" setup>
 import { GetContactWith, NewsletterStatus } from '@beabee/beabee-common';
-import { AppInput } from '@beabee/vue';
+import { AppAddress, AppInput } from '@beabee/vue';
 import {
   AppCheckbox,
   AppForm,
@@ -103,7 +109,6 @@ import { client } from '@utils/api';
 import { computed, reactive, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import AppAddress from '../AppAddress.vue';
 import ContactBasicFields from './ContactBasicFields.vue';
 import ContactMailOptIn from './ContactMailOptIn.vue';
 

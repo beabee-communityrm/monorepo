@@ -14,14 +14,13 @@ meta:
   <router-view />
 </template>
 <script lang="ts" setup>
-import { AppTabs } from '@beabee/vue';
+import { AppTabs, PageTitle } from '@beabee/vue';
 
 import { faHandsHelping } from '@fortawesome/free-solid-svg-icons';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
-import PageTitle from '../../components/PageTitle.vue';
 import { addBreadcrumb } from '../../store/breadcrumb';
 
 const { t } = useI18n();

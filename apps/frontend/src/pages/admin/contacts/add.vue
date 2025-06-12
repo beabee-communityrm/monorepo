@@ -61,10 +61,15 @@ import {
   NewsletterStatus,
   type RoleType,
 } from '@beabee/beabee-common';
-import { AppButton, AppCheckbox, AppForm } from '@beabee/vue';
-import { App2ColGrid, AppHeading } from '@beabee/vue';
+import {
+  App2ColGrid,
+  AppButton,
+  AppCheckbox,
+  AppForm,
+  AppHeading,
+  PageTitle,
+} from '@beabee/vue';
 
-import PageTitle from '@components/PageTitle.vue';
 import ContactBasicFields from '@components/contact/ContactBasicFields.vue';
 import ContactContributionFields from '@components/contact/ContactContributionFields.vue';
 import type { UpdateContribution } from '@components/contact/contact.interface';
