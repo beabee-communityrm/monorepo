@@ -3,7 +3,11 @@
   <div class="space-y-4">
     <div
       v-for="(item, index) in items"
-      :key="itemKey ? item[itemKey] : index"
+      :key="
+        itemKey && typeof item === 'object' && item !== null && itemKey in item
+          ? (item as any)[itemKey]
+          : index
+      "
       class="group relative"
     >
       <div class="flex gap-3">
@@ -48,7 +52,7 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" setup generic="T = any">
 /**
  * Dynamic list component for managing arrays of items with CRUD operations.
  * Supports drag-and-drop reordering, custom content slots, and flexible item management.
@@ -65,7 +69,6 @@
  *   </template>
  * </AppRepeatable>
  */
-import type { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import {
   faGripVertical,
   faPlus,
@@ -81,7 +84,7 @@ export interface AppRepeatableProps<T = any> {
   /** Array of items to manage */
   modelValue: T[];
   /** Property name to use as unique key for items (for better Vue reactivity) */
-  itemKey?: keyof T;
+  itemKey?: string;
   /** Whether users can add new items */
   allowAdd?: boolean;
   /** Whether users can remove existing items */
@@ -130,13 +133,13 @@ defineSlots<{
   default(props: { item: T; index: number; remove: () => void }): any;
 }>();
 
-const props = withDefaults(defineProps<AppRepeatableProps>(), {
+const props = withDefaults(defineProps<AppRepeatableProps<T>>(), {
   itemKey: undefined,
   allowAdd: true,
   allowRemove: true,
   allowReorder: true,
   addButtonText: undefined,
-  createItem: () => ({}) as any,
+  createItem: () => ({}) as T,
 });
 
 const { t } = useI18n();

@@ -16,7 +16,6 @@ The `AppStatusPage` component provides a full-page layout for displaying status 
 - ✅ **Action buttons** - Optional buttons for user next steps
 - ✅ **Responsive design** - Adapts gracefully to all screen sizes
 
-
 ## Usage
 
 ```vue

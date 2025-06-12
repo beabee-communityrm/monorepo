@@ -12,8 +12,6 @@ A color picker component combining text input for hex values with an interactive
 ## Key Features
 
 - ✅ **Dual input methods** - Text input for precise hex values and visual picker for intuitive selection
-- ✅ **Real-time preview** - Color swatch shows current selection immediately  
+- ✅ **Real-time preview** - Color swatch shows current selection immediately
 - ✅ **Format validation** - Supports 3-digit (#RGB) and 6-digit (#RRGGBB) hex formats
 - ✅ **Accessibility focused** - Keyboard navigation and screen reader support
-
-

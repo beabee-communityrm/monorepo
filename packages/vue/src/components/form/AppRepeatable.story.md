@@ -5,7 +5,7 @@ The `AppRepeatable` component provides a dynamic list interface where users can 
 ## Usage Patterns
 
 - **Dynamic forms** - Add/remove form sections like contact information or skills
-- **List management** - Manage collections of links, tags, or categories  
+- **List management** - Manage collections of links, tags, or categories
 - **Multi-item input** - Handle arrays of structured data in forms
 - **Configuration lists** - Build dynamic configuration with repeated elements
 

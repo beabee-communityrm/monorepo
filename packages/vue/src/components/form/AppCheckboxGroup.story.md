@@ -14,4 +14,4 @@ The `AppCheckboxGroup` component manages multiple checkboxes as a group with sha
 - ✅ **Group validation** - Shared validation state across all checkboxes
 - ✅ **Flexible layout** - Supports various checkbox arrangements
 - ✅ **Select all/none** - Optional controls for bulk selection
-- ✅ **Accessible grouping** - Proper ARIA attributes for screen readers 
+- ✅ **Accessible grouping** - Proper ARIA attributes for screen readers

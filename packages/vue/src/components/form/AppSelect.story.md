@@ -6,7 +6,7 @@ The `AppSelect` component provides a dropdown selection interface with search ca
 
 - **Data selection** - Choose from lists of users, categories, or entities
 - **Configuration options** - Settings with predefined choices
-- **Filter controls** - Narrow down content or search results  
+- **Filter controls** - Narrow down content or search results
 - **Multi-select scenarios** - Combined with search for large datasets
 
 ## Key Features
@@ -15,4 +15,3 @@ The `AppSelect` component provides a dropdown selection interface with search ca
 - ✅ **Generic typing** - Supports any data type with proper TypeScript inference
 - ✅ **Validation integration** - Works with form validation frameworks
 - ✅ **Accessibility** - Proper ARIA attributes and keyboard navigation
-

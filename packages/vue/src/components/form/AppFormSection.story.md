@@ -14,4 +14,4 @@ The `AppFormSection` component creates logical sections within forms with option
 - ✅ **Section headers** - Optional titles for clear section identification
 - ✅ **Visual dividers** - Subtle separators between sections
 - ✅ **Nested structure** - Can contain form boxes and fields
-- ✅ **Responsive design** - Adapts to different screen sizes 
+- ✅ **Responsive design** - Adapts to different screen sizes

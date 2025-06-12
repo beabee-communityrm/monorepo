@@ -12,7 +12,7 @@ The `AppForm` component provides a standardized form container with built-in err
 ## Key Features
 
 - ✅ **Built-in error handling** - Automatic API error management with notifications
-- ✅ **Loading state management** - Disables form during submission with visual feedback  
+- ✅ **Loading state management** - Disables form during submission with visual feedback
 - ✅ **Success notifications** - Configurable success messages after submission
 - ✅ **Validation integration** - Works with Vuelidate for client-side validation
 

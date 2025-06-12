@@ -6,7 +6,7 @@ The `AppChoice` component provides a button group for selecting a single option 
 
 - **Contribution amounts** - Predefined donation values (€5, €10, €25, €50)
 - **Payment periods** - Monthly vs Yearly subscription options
-- **Display modes** - List, Grid, Card view toggles  
+- **Display modes** - List, Grid, Card view toggles
 - **Configuration options** - Settings with predefined choices
 
 ## Key Features

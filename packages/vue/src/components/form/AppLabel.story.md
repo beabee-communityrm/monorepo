@@ -5,13 +5,13 @@ The `AppLabel` component provides consistent label styling for form fields with 
 ## Usage Patterns
 
 - **Form field labels** - Standard labels for all input types
-- **Required field marking** - Visual indicators for mandatory fields  
+- **Required field marking** - Visual indicators for mandatory fields
 - **Accessibility compliance** - Proper label-input associations
 - **Help text integration** - Labels that work with AppInputHelp components
 
 ## Key Features
 
-- ✅ **Required indicators** - Automatic asterisk (*) for required fields
+- ✅ **Required indicators** - Automatic asterisk (\*) for required fields
 - ✅ **Consistent styling** - Standardized typography and spacing
 - ✅ **Accessibility support** - Proper `for` attribute associations
 - ✅ **Flexible content** - Supports both text and rich content labels

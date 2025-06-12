@@ -4,7 +4,7 @@ The `AppToggle` component provides a horizontal toggle button group for selectin
 
 ## Usage Patterns
 
-- **View modes** - Switch between List, Grid, or Card display modes  
+- **View modes** - Switch between List, Grid, or Card display modes
 - **Time periods** - Toggle between Day, Week, Month, or Year views
 - **Content filters** - Select Active, Inactive, or All status options
 - **Settings choices** - Pick between Public, Private, or Members-only visibility

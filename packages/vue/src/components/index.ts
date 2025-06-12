@@ -2,6 +2,7 @@ export * from './button';
 export * from './contribution';
 export * from './dialog';
 export * from './form';
+export * from './item';
 export * from './item-manager';
 export * from './list';
 export * from './notification';

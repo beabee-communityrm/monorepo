@@ -5,7 +5,7 @@ The `AppCheckbox` component provides a styled checkbox with customizable appeara
 ## Usage Patterns
 
 - **Terms acceptance** - Legal agreements with required validation
-- **Preference selection** - User settings and notification options  
+- **Preference selection** - User settings and notification options
 - **Feature toggles** - Enable/disable application features
 - **List selections** - Multiple item selection in forms
 

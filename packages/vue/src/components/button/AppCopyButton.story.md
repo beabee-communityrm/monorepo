@@ -5,7 +5,7 @@ The `AppCopyButton` component provides a simple way to copy text to the clipboar
 ## Usage Patterns
 
 - **Input fields** - Copy values from read-only inputs (API keys, URLs, codes)
-- **Code blocks** - Copy code snippets or configuration values  
+- **Code blocks** - Copy code snippets or configuration values
 - **Share links** - Copy URLs or sharing links
 - **Reference data** - Copy IDs, tokens, or other reference information
 
@@ -35,7 +35,6 @@ The `AppCopyButton` component provides a simple way to copy text to the clipboar
 | Event  | Description                              |
 | ------ | ---------------------------------------- |
 | `copy` | Emitted when text is successfully copied |
-
 
 ## How It Works
 

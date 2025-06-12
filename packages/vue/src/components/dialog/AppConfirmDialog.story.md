@@ -5,7 +5,7 @@ A confirmation dialog that wraps `AppModal` with predefined cancel and confirm b
 ## Usage Patterns
 
 - **Destructive actions** - Delete confirmations with `variant="danger"` styling
-- **Important decisions** - Save/discard changes, permanent operations  
+- **Important decisions** - Save/discard changes, permanent operations
 - **User agreements** - Terms acceptance with single confirm button
 - **Async operations** - Actions requiring loading states with `onConfirm` prop
 

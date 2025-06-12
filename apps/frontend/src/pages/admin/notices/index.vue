@@ -29,7 +29,7 @@ meta:
     :result="noticesTable"
   >
     <template #value-status="{ value }">
-      <AppItemStatus :status="value" />
+      <ItemStatus :status="value" :status-text="t('common.status.' + value)" />
     </template>
     <template #value-name="{ item, value }">
       <router-link
@@ -47,8 +47,8 @@ meta:
 <script lang="ts" setup>
 import type { GetNoticeData, Paginated } from '@beabee/beabee-common';
 import { AppButton } from '@beabee/vue';
+import { ItemStatus } from '@beabee/vue';
 
-import AppItemStatus from '@components/AppItemStatus.vue';
 import PageTitle from '@components/PageTitle.vue';
 import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
 import type { Header } from '@components/table/table.interface';

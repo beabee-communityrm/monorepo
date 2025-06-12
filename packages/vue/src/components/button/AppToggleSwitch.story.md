@@ -12,7 +12,7 @@ The `AppToggleSwitch` component provides a toggle switch for binary choices as a
 ## Key Features
 
 - ✅ **Multiple variants** - Primary, link, and danger color schemes
-- ✅ **Two sizes** - Default and small for different contexts  
+- ✅ **Two sizes** - Default and small for different contexts
 - ✅ **Smooth animations** - 200ms transition for state changes
 - ✅ **Accessibility** - Proper ARIA attributes and keyboard support
 

@@ -14,4 +14,4 @@ The `AppInputHelp` component provides helpful context and guidance text for form
 - ✅ **Accessible help text** - Proper ARIA relationships with form inputs
 - ✅ **Consistent styling** - Standardized appearance for help messages
 - ✅ **Flexible positioning** - Can be placed above or below form fields
-- ✅ **Rich content support** - Handles both plain text and formatted content 
+- ✅ **Rich content support** - Handles both plain text and formatted content

@@ -36,7 +36,10 @@ meta:
     >
       <template #header-hidden><font-awesome-icon :icon="faEye" /></template>
       <template #value-status="{ value }">
-        <AppItemStatus :status="value" />
+        <ItemStatus
+          :status="value"
+          :status-text="t('common.status.' + value)"
+        />
       </template>
       <template #value-title="{ item, value }">
         <router-link
@@ -73,9 +76,9 @@ import type {
   Paginated,
 } from '@beabee/beabee-common';
 import { AppButton, AppSearchInput } from '@beabee/vue';
+import { ItemStatus } from '@beabee/vue';
 
 import AppFilterGrid from '@components/AppFilterGrid.vue';
-import AppItemStatus from '@components/AppItemStatus.vue';
 import PageTitle from '@components/PageTitle.vue';
 import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
 import type { Header } from '@components/table/table.interface';

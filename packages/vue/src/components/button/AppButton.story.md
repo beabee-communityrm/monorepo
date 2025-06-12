@@ -5,7 +5,7 @@ The `AppButton` component is a versatile button that can be rendered as a button
 ## Usage Patterns
 
 - **Primary actions** - Main call-to-action buttons with `primary` variant
-- **Secondary actions** - Supporting actions with `primaryOutlined` or `greyOutlined` variants  
+- **Secondary actions** - Supporting actions with `primaryOutlined` or `greyOutlined` variants
 - **Destructive actions** - Delete or dangerous operations with `danger` variant
 - **Navigation** - Links and router navigation with `link` variant
 - **Text actions** - Minimal styling with `text` variants

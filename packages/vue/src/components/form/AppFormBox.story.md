@@ -14,4 +14,4 @@ The `AppFormBox` component provides a structured container for grouping related 
 - ✅ **Visual grouping** - Clear visual separation between form sections
 - ✅ **Optional headers** - Title and description for section context
 - ✅ **Flexible content** - Any form fields can be placed inside
-- ✅ **Consistent spacing** - Standardized padding and margins 
+- ✅ **Consistent spacing** - Standardized padding and margins

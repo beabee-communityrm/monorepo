@@ -23,7 +23,7 @@ const tagState = reactive({
 });
 
 const emptyState = reactive({
-  items: [],
+  items: [] as Array<{ value: string }>,
 });
 
 // Factory functions for new items

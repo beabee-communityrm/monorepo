@@ -12,7 +12,7 @@ The `AppVTabs` component provides vertical tab navigation, ideal for sidebar lay
 ## Key Features
 
 - ✅ **Vertical orientation** - Space-efficient sidebar layout design
-- ✅ **Responsive behavior** - Adapts to different screen sizes appropriately  
+- ✅ **Responsive behavior** - Adapts to different screen sizes appropriately
 - ✅ **Visual hierarchy** - Clear distinction between navigation and content
 - ✅ **Count indicators** - Optional badges for tab item counts
 

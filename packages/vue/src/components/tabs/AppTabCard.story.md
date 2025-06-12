@@ -6,7 +6,7 @@ The `AppTabCard` component provides a tabbed interface with boxed and transparen
 
 - **Translation forms** - Multi-language content editing with sticky tabs
 - **Status management** - Filter content by status with count indicators
-- **Form sections** - Organize complex forms into tabbed sections  
+- **Form sections** - Organize complex forms into tabbed sections
 - **Content categorization** - Group related content with visual separation
 
 ## Key Features

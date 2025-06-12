@@ -14,4 +14,4 @@ The `AppInputError` component displays validation error messages with consistent
 - ✅ **Consistent styling** - Standardized error message appearance
 - ✅ **Accessibility support** - Proper ARIA attributes for screen readers
 - ✅ **Flexible content** - Supports both simple text and complex error structures
-- ✅ **Visual emphasis** - Clear error state indication with color and typography 
+- ✅ **Visual emphasis** - Clear error state indication with color and typography
