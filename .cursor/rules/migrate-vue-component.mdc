@@ -21,7 +21,13 @@ Migrate Vue components from `apps/frontend` to `packages/vue/src/components`.
 - Maintain required functionality
 - Add semantic HTML and ARIA attributes
 - Implement keyboard navigation support
+- When migrating multiple components, apply the migration process iteratively
 
 ## Completion
-- Update frontend app to use migrated components
+- Update `apps/frontend`:
+  - To use migrated components by updating the imports to `@beabee/vue`
+  - Reuse existing import declarations where possible: `import { OldComponent, NewComponent } from '@beabee/vue';`
+import { AppTitle } from '@beabee/vue';
+  - This includes adapting component interfaces, adjusting prop drilling, or updating binding logic where necessary
+  - Repeat all necessary steps—such as updating imports, adjusting props, and rewriting references—for each component involved
 - Provide commit message and PR description
