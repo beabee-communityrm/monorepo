@@ -1,0 +1,6 @@
+.env
+.env.remote
+.env.test
+!.env.example
+!.env.remote.example
+!.env.test.example
