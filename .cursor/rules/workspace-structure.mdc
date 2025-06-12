@@ -1,7 +1,7 @@
 ---
-description: 
+description: Information about the structure of our yarn workpaces and their modules
 globs: 
-alwaysApply: true
+alwaysApply: false
 ---
 This project uses yarn workspaces, the project-internal yarn packages are stored in the folders `packages/` and `apps/`, where only the packages in the folder `packages/` should be imported. If files are to be imported from one package into an app or another package, the package name must be used for this purpose.
 

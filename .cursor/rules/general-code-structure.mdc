@@ -1,7 +1,7 @@
 ---
 description: 
-globs: 
-alwaysApply: true
+globs: *.ts,*.js,*.vue
+alwaysApply: false
 ---
 Whenever you write code, make sure to
 - Write complete code blocks

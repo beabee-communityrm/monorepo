@@ -1,23 +1,21 @@
 ---
-description: Create or customise Vue component
+description: Create and edit Vue components
 globs: 
 alwaysApply: false
 ---
-When you create or customise a new component:
+Create Vue components with stories and documentation. Follow existing patterns and templates.
 
-## Component
-- Use [AppTemplate.vue](mdc:packages/vue/src/components/template/AppTemplate.vue) as a template
-- Follow patterns from existing components in `packages/vue/src/components`
-- Create a corresponding `.story.vue` file
-- Vue package components must be application-independent applicable without API dependencies
+## Templates
+- Component: [AppTemplate.vue](mdc:packages/vue/src/components/template/AppTemplate.vue)
+- Story: [AppTemplate.story.vue](mdc:packages/vue/src/components/template/AppTemplate.story.vue)
+- Exports: [index.ts](mdc:packages/vue/src/components/template/index.ts)
+- Documentation: [vue-component-story-documentation.mdc](mdc:.cursor/rules/vue-component-story-documentation.mdc)
+- Code Standards: [frontend-code-structure.mdc](mdc:.cursor/rules/frontend-code-structure.mdc)
 
-## Story
-- Use [AppTemplate.story.vue](mdc:packages/vue/src/components/template/AppTemplate.story.vue) as a template
-- Add brief documentation as a `.story.md` file following existing documentation structure
-- Avoid duplicating documentation that is already documented in the source code
-- Refer to existing source code documentation instead of rewriting it
-- Adjust existing stories as necessary
+## Requirements
+- Application-independent (no API dependencies)
+- Create `.story.vue` and `.story.md` files
+- Reference existing documentation instead of duplicating
+- Follow patterns from `packages/vue/src/components`
 
-## Dokumentation
-- Use [AppTemplate.story.md](mdc:packages/vue/src/components/template/AppTemplate.story.md) as a template
-- Adjust existing documentation as necessary
+
