@@ -16,6 +16,7 @@ Create Vue components with stories and documentation. Follow existing patterns a
 - Application-independent (no API dependencies)
 - Create `.story.vue` and `.story.md` files
 - Reference existing documentation instead of duplicating
-- Follow patterns from `packages/vue/src/components`
-
-
+- Follow patterns from `packages/vue/src/components` and analyze the existing folder structure
+- Assign each component to a semantically appropriate directory
+- If no suitable directory exists, create a new folder that reflects the component's purpose and scope
+- Prioritize maintainability and logical grouping
