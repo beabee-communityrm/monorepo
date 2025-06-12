@@ -1326,8 +1326,8 @@
         "suggestedAmounts": "Beiträge vorschlagen",
         "text": "In diesem Abschnitt kannst du dein Registrierungsformular bearbeiten, optimieren und ansehen.",
         "title": "Registrierung",
-        "noticeText": "",
-        "noticeTextHelp": ""
+        "noticeText": "Hinweistext unter dem Zahlungsbutton",
+        "noticeTextHelp": "Verwende dieses Feld, um einen Hinweis unter dem Zahlungsbutton hinzuzufügen, zum Beispiel zur Erklärung von Zahlungsperioden oder Bankeinzugsermächtigungen. Du kannst dieses Feld auch leer lassen."
       }
     },
     "title": "Membership Builder"
