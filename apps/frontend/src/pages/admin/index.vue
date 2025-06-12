@@ -96,8 +96,8 @@ import {
   type GetStatsData,
   ItemStatus,
 } from '@beabee/beabee-common';
+import { AppHeading } from '@beabee/vue';
 
-import AppHeading from '@components/AppHeading.vue';
 import AppTime from '@components/AppTime.vue';
 import PageTitle from '@components/PageTitle.vue';
 import CalloutSummary from '@components/callout/CalloutSummary.vue';

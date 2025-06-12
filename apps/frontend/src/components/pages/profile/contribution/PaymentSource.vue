@@ -40,9 +40,8 @@
 
 <script lang="ts" setup>
 import type { PaymentSource, PaymentSourceManual } from '@beabee/beabee-common';
-import { AppButton, AppModal, AppNotification } from '@beabee/vue';
+import { AppButton, AppHeading, AppModal, AppNotification } from '@beabee/vue';
 
-import AppHeading from '@components/AppHeading.vue';
 import StripePayment from '@components/StripePayment.vue';
 import PaymentMethod from '@components/payment-method/PaymentMethod.vue';
 import type { StripePaymentData } from '@type/stripe-payment-data';

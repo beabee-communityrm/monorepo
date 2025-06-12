@@ -51,9 +51,9 @@ meta:
 <script lang="ts" setup>
 import type { GetContactData } from '@beabee/beabee-common';
 import { ActionButton, AppConfirmDialog } from '@beabee/vue';
+import { App2ColGrid } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
-import App2ColGrid from '@components/App2ColGrid.vue';
 import ContactUpdateAccount from '@components/contact/ContactUpdateAccount.vue';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { client } from '@utils/api';

@@ -49,11 +49,11 @@ import {
   AppInput,
   AppInputHelp,
   AppRepeatable,
+  AppSectionHeading,
 } from '@beabee/vue';
 
 import { useI18n } from 'vue-i18n';
 
-import AppSectionHeading from '../AppSectionHeading.vue';
 import RichTextEditor from '../rte/RichTextEditor.vue';
 
 const { t } = useI18n();

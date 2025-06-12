@@ -13,10 +13,10 @@
 </template>
 
 <script lang="ts" setup>
+import { AppSubHeading } from '@beabee/vue';
+
 import { type IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { computed } from 'vue';
-
-import AppSubHeading from './AppSubHeading.vue';
 
 const props = defineProps<{
   title: string;

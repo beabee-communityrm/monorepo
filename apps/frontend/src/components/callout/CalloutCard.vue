@@ -39,6 +39,7 @@
 
 <script lang="ts" setup>
 import type { GetCalloutData } from '@beabee/beabee-common';
+import { AppSubHeading } from '@beabee/vue';
 
 import { formatLocale } from '@utils/dates';
 import { resolveImageUrl } from '@utils/url';
@@ -46,7 +47,6 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import noImage from '../../assets/images/no-image.avif';
-import AppSubHeading from '../AppSubHeading.vue';
 import AppTime from '../AppTime.vue';
 
 const props = defineProps<{ callout: GetCalloutData }>();

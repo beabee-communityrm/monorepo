@@ -70,9 +70,13 @@
 <script lang="ts" setup>
 import type { GetCalloutDataWith } from '@beabee/beabee-common';
 import type { BaseLocale } from '@beabee/locale';
-import { AppButton, ItemDateRange, ItemStatusText } from '@beabee/vue';
+import {
+  AppButton,
+  AppSubHeading,
+  ItemDateRange,
+  ItemStatusText,
+} from '@beabee/vue';
 
-import AppSubHeading from '@components/AppSubHeading.vue';
 import env from '@env';
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 import { formatDistanceLocale } from '@utils/dates';

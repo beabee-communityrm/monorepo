@@ -76,9 +76,8 @@ import {
   ItemStatus,
   type Paginated,
 } from '@beabee/beabee-common';
-import { AppSearchInput, AppToggle } from '@beabee/vue';
+import { AppHeading, AppSearchInput, AppToggle } from '@beabee/vue';
 
-import AppHeading from '@components/AppHeading.vue';
 import AppPagination from '@components/AppPagination.vue';
 import AppTime from '@components/AppTime.vue';
 import PageTitle from '@components/PageTitle.vue';

@@ -62,10 +62,14 @@ import {
   type GetContactData,
   GetContactWith,
 } from '@beabee/beabee-common';
-import { AppConfirmDialog, AppForm, AppNotification } from '@beabee/vue';
+import {
+  App2ColGrid,
+  AppConfirmDialog,
+  AppForm,
+  AppHeading,
+  AppNotification,
+} from '@beabee/vue';
 
-import App2ColGrid from '@components/App2ColGrid.vue';
-import AppHeading from '@components/AppHeading.vue';
 import ContactCancelContribution from '@components/contact/ContactCancelContribution.vue';
 import ContactContributionFields from '@components/contact/ContactContributionFields.vue';
 import ContactPaymentsHistory from '@components/contact/ContactPaymentsHistory.vue';

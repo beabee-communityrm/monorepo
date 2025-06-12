@@ -112,10 +112,8 @@ import {
   AppInput,
   AppSelect,
 } from '@beabee/vue';
-import { addNotification } from '@beabee/vue/store/notifications';
+import { App2ColGrid, AppHeading, addNotification } from '@beabee/vue';
 
-import App2ColGrid from '@components/App2ColGrid.vue';
-import AppHeading from '@components/AppHeading.vue';
 import AppTime from '@components/AppTime.vue';
 import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
 import type { Header } from '@components/table/table.interface';

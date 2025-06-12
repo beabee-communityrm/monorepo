@@ -97,13 +97,13 @@ import {
   AppNotification,
   AppRadioGroup,
 } from '@beabee/vue';
+import { AppHeading } from '@beabee/vue';
 
 import { client } from '@utils/api';
 import { computed, reactive, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import AppAddress from '../AppAddress.vue';
-import AppHeading from '../AppHeading.vue';
 import ContactBasicFields from './ContactBasicFields.vue';
 import ContactMailOptIn from './ContactMailOptIn.vue';
 

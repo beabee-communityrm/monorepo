@@ -66,9 +66,9 @@ import type {
   ContentPaymentData,
 } from '@beabee/beabee-common';
 import { AppCheckbox, AppForm } from '@beabee/vue';
+import { AppTitle } from '@beabee/vue';
 
 import beabeeLogo from '@assets/images/beabee-logo.png';
-import AppTitle from '@components/AppTitle.vue';
 import AuthBox from '@components/AuthBox.vue';
 import Contribution from '@components/contribution/Contribution.vue';
 import { generalContent, isEmbed } from '@store';

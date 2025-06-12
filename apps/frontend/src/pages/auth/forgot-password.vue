@@ -52,8 +52,8 @@ meta:
 <script lang="ts" setup>
 import { AppInput } from '@beabee/vue';
 import { AppButton, AppForm } from '@beabee/vue';
+import { AppTitle } from '@beabee/vue';
 
-import AppTitle from '@components/AppTitle.vue';
 import AuthBox from '@components/AuthBox.vue';
 import { client } from '@utils/api';
 import { ref } from 'vue';

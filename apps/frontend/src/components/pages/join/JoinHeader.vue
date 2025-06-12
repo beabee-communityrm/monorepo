@@ -7,8 +7,9 @@
   </header>
 </template>
 <script lang="ts" setup>
+import { AppTitle } from '@beabee/vue';
+
 import AppLogo from '../../AppLogo.vue';
-import AppTitle from '../../AppTitle.vue';
 
 defineProps<{ title: string }>();
 </script>

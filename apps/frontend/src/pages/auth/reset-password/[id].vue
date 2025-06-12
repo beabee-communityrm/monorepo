@@ -89,9 +89,8 @@ meta:
 
 <script lang="ts" setup>
 import { RESET_SECURITY_FLOW_ERROR_CODE } from '@beabee/beabee-common';
-import { AppForm, AppInput, AppNotification } from '@beabee/vue';
+import { AppForm, AppInput, AppNotification, AppTitle } from '@beabee/vue';
 
-import AppTitle from '@components/AppTitle.vue';
 import AuthBox from '@components/AuthBox.vue';
 import { updateCurrentUser } from '@store/index';
 import { client, isApiError } from '@utils/api';

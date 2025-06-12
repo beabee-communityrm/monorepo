@@ -51,9 +51,13 @@
 
 <script lang="ts" setup>
 import { type GetCalloutDataWith, ItemStatus } from '@beabee/beabee-common';
-import { AppButton, AppDropdownButton, AppSelectableList } from '@beabee/vue';
+import {
+  AppButton,
+  AppDropdownButton,
+  AppSelectableList,
+  AppTitle,
+} from '@beabee/vue';
 
-import AppTitle from '@components/AppTitle.vue';
 import {
   faGlobe,
   faImages,

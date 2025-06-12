@@ -48,14 +48,12 @@
   </AppForm>
 </template>
 <script lang="ts" setup>
-import { AppButton, AppForm, AppInput } from '@beabee/vue';
+import { AppButton, AppForm, AppHeading, AppInput } from '@beabee/vue';
 
 import { faKey } from '@fortawesome/free-solid-svg-icons';
 import { client } from '@utils/api';
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-
-import AppHeading from '../../../AppHeading.vue';
 
 const { t } = useI18n();
 

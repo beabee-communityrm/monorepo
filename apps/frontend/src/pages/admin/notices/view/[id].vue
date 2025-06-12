@@ -80,11 +80,11 @@ import type { BaseLocale } from '@beabee/locale';
 import {
   ActionButton,
   AppConfirmDialog,
+  AppHeading,
   ItemDateRange,
   ItemStatusText,
 } from '@beabee/vue';
 
-import AppHeading from '@components/AppHeading.vue';
 import AppNotice from '@components/AppNotice.vue';
 import PageTitle from '@components/PageTitle.vue';
 import {

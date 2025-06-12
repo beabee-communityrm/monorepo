@@ -77,10 +77,13 @@ meta:
 </template>
 
 <script lang="ts" setup>
-import AppHeading from '@components/AppHeading.vue';
-import AppSectionHeading from '@components/AppSectionHeading.vue';
-import AppSubHeading from '@components/AppSubHeading.vue';
-import AppTitle from '@components/AppTitle.vue';
+import {
+  AppHeading,
+  AppSectionHeading,
+  AppSubHeading,
+  AppTitle,
+} from '@beabee/vue';
+
 import PageTitle from '@components/PageTitle.vue';
 import SectionTitle from '@components/pages/profile/SectionTitle.vue';
 import { useI18n } from 'vue-i18n';

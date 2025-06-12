@@ -193,10 +193,8 @@ import {
   AppSelect,
   AppTextArea,
 } from '@beabee/vue';
+import { App2ColGrid, AppHeading, AppSubHeading } from '@beabee/vue';
 
-import App2ColGrid from '@components/App2ColGrid.vue';
-import AppHeading from '@components/AppHeading.vue';
-import AppSubHeading from '@components/AppSubHeading.vue';
 import AppImageUpload from '@components/forms/AppImageUpload.vue';
 import { localeItems } from '@lib/i18n';
 import { generalContent as storeGeneralContent } from '@store';

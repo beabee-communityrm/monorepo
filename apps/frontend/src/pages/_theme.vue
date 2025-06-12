@@ -248,7 +248,7 @@ meta:
 </template>
 
 <script lang="ts" setup>
-import { AppButton, AppCheckbox, AppInput } from '@beabee/vue';
+import { AppButton, AppCheckbox, AppColor, AppInput } from '@beabee/vue';
 
 import {
   faAngleLeft,
@@ -258,7 +258,6 @@ import {
 import type { AppStepperStep } from '@type/app-stepper-step';
 import { ref } from 'vue';
 
-import AppColor from '../components/AppColor.vue';
 import AppQRCode from '../components/AppQRCode.vue';
 import AppSlide from '../components/slider/AppSlide.vue';
 import AppSlider from '../components/slider/AppSlider.vue';

@@ -42,13 +42,12 @@ meta:
   </App2ColGrid>
 </template>
 <script lang="ts" setup>
-import { AppCheckbox, AppForm } from '@beabee/vue';
+import { App2ColGrid, AppCheckbox, AppForm } from '@beabee/vue';
 
 import { client } from '@utils/api';
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import App2ColGrid from '../../../components/App2ColGrid.vue';
 import RichTextEditor from '../../../components/rte/RichTextEditor.vue';
 import WelcomeMessage from '../../../components/welcome-message/WelcomeMessage.vue';
 import { currentUser } from '../../../store';

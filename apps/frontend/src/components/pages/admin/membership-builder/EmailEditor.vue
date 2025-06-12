@@ -20,13 +20,16 @@
   </App2ColGrid>
 </template>
 <script lang="ts" setup>
-import { AppInput, AppNotification } from '@beabee/vue';
+import {
+  App2ColGrid,
+  AppInput,
+  AppNotification,
+  AppSubHeading,
+} from '@beabee/vue';
 
 import { computed, ref } from 'vue';
 
 import { currentUser } from '../../../../store';
-import App2ColGrid from '../../../App2ColGrid.vue';
-import AppSubHeading from '../../../AppSubHeading.vue';
 import RichTextEditor from '../../../rte/RichTextEditor.vue';
 
 const props = defineProps<{

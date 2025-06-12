@@ -105,15 +105,15 @@ import {
   ContributionPeriod,
 } from '@beabee/beabee-common';
 import {
+  App2ColGrid,
   AppCheckbox,
   AppForm,
   AppInput,
   AppLabel,
   AppSelect,
+  AppSubHeading,
 } from '@beabee/vue';
 
-import App2ColGrid from '@components/App2ColGrid.vue';
-import AppSubHeading from '@components/AppSubHeading.vue';
 import AppImageUpload from '@components/forms/AppImageUpload.vue';
 import PeriodAmounts from '@components/pages/admin/membership-builder/PeriodAmounts.vue';
 import JoinForm from '@components/pages/join/JoinForm.vue';

@@ -42,8 +42,8 @@ import {
   type Paginated,
   PaymentStatus,
 } from '@beabee/beabee-common';
+import { AppHeading } from '@beabee/vue';
 
-import AppHeading from '@components/AppHeading.vue';
 import AppPagination from '@components/AppPagination.vue';
 import AppTable from '@components/table/AppTable.vue';
 import { type Header, SortType } from '@components/table/table.interface';

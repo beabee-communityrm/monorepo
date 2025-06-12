@@ -14,7 +14,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import AppTitle from './AppTitle.vue';
+import { AppTitle } from '@beabee/vue';
 
 defineProps<{
   title: string;

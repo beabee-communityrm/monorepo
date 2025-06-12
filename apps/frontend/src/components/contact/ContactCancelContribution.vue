@@ -27,9 +27,8 @@ import {
   ContributionType,
   MembershipStatus,
 } from '@beabee/beabee-common';
-import { AppButton } from '@beabee/vue';
+import { AppButton, AppHeading } from '@beabee/vue';
 
-import AppHeading from '@components/AppHeading.vue';
 import { formatLocale } from '@utils/dates';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';

@@ -94,11 +94,11 @@ import {
   AppInput,
   AppLabel,
   AppRadioGroup,
+  AppRoundBadge,
   AppSelect,
   ItemManager,
 } from '@beabee/vue';
 
-import AppRoundBadge from '@components/AppRoundBadge.vue';
 import { formatLocale } from '@utils/dates';
 import { format } from 'date-fns';
 import { computed, reactive } from 'vue';

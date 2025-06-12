@@ -224,8 +224,8 @@ import {
   AppNotification,
   addNotification,
 } from '@beabee/vue';
+import { AppHeading } from '@beabee/vue';
 
-import AppHeading from '@components/AppHeading.vue';
 import AppQRCode from '@components/AppQRCode.vue';
 import AppSlide from '@components/slider/AppSlide.vue';
 import AppSlider from '@components/slider/AppSlider.vue';

@@ -14,7 +14,8 @@ meta:
 </template>
 
 <script lang="ts" setup>
-import App2ColGrid from '@components/App2ColGrid.vue';
+import { App2ColGrid } from '@beabee/vue';
+
 import TagManager from '@components/tag/TagManager.vue';
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';
