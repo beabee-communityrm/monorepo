@@ -57,8 +57,8 @@ meta:
         <AppTime
           v-if="value"
           :datetime="value"
-          :time-ago-template="t('common.timeAgo')"
-          :time-in-template="t('common.timeIn')"
+          :time-ago-template="t('common.timeAgo', { time: '{time}' })"
+          :time-in-template="t('common.timeIn', { time: '{time}' })"
         />
         <span v-else :title="t('adminSettings.apikey.expiresHelp')">
           <font-awesome-icon :icon="faWarning" />

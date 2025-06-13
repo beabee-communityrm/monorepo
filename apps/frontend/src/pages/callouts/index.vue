@@ -54,8 +54,8 @@ meta:
       <AppTime
         v-if="item.expires"
         :datetime="item.expires"
-        :time-ago-template="t('common.timeAgo')"
-        :time-in-template="t('common.timeIn')"
+        :time-ago-template="t('common.timeAgo', { time: '{time}' })"
+        :time-in-template="t('common.timeIn', { time: '{time}' })"
       />
       <span v-else>-</span>
     </template>

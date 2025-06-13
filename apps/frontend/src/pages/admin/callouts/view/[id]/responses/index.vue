@@ -144,8 +144,9 @@ meta:
         <template #value-createdAt="{ value }">
           <AppTime
             :datetime="value"
-            :time-ago-template="t('common.timeAgo')"
-            :time-in-template="t('common.timeIn')"
+            :time-ago-template="t('common.timeAgo', { time: '{time}' })"
+            :time-in-template="t('common.timeIn', { time: '{time}' })"
+            :locale="i18n.global.locale.value as BaseLocale"
           />
         </template>
 
@@ -190,8 +191,9 @@ meta:
               <AppTime
                 class="font-semibold text-body-60"
                 :datetime="item.latestComment.createdAt"
-                :time-ago-template="t('common.timeAgo')"
-                :time-in-template="t('common.timeIn')"
+                :time-ago-template="t('common.timeAgo', { time: '{time}' })"
+                :time-in-template="t('common.timeIn', { time: '{time}' })"
+                :locale="i18n.global.locale.value as BaseLocale"
               />
               <b> • {{ item.latestComment.contact.displayName }}:{{ ' ' }}</b>
               <span
@@ -216,6 +218,7 @@ import {
   type UpdateCalloutResponseData,
   stringifyAnswer,
 } from '@beabee/beabee-common';
+import type { BaseLocale } from '@beabee/locale';
 import {
   AppButton,
   AppButtonGroup,
@@ -242,6 +245,7 @@ import {
   faUser,
   faUserPen,
 } from '@fortawesome/free-solid-svg-icons';
+import { i18n } from '@lib/i18n';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { client } from '@utils/api';
 import { buckets } from '@utils/callouts';
