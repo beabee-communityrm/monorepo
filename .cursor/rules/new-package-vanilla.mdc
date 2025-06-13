@@ -1,0 +1,14 @@
+---
+description: Scaffold a new TypeScript vanilla package within our monorepo workspace
+globs: 
+alwaysApply: false
+---
+Scaffold a new TypeScript vanilla package within our monorepo workspace.
+
+## Prerequisites
+- Identify target package information (ask if not specified)
+- If the package is intended for the backend or requires CommonJS support, this template is not suitable. Use a different package that uses CommonJS as a template instead.
+
+## Implementation
+- Use the `packages/template-vanilla` package conventions for structure, naming, tsconfig, and package.json
+- Read the [README.md](mdc:packages/template-vanilla/README.md) of the template and follow the instructions outlined therein
