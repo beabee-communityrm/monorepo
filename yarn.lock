@@ -1745,6 +1745,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@beabee/lucide-utils@workspace:packages/lucide-utils":
+  version: 0.0.0-use.local
+  resolution: "@beabee/lucide-utils@workspace:packages/lucide-utils"
+  dependencies:
+    "@beabee/prettier-config": "workspace:^"
+    "@beabee/tsconfig": "workspace:^"
+    "@types/node": "npm:^22.15.28"
+    lucide: "npm:^0.515.0"
+    prettier: "npm:^3.5.3"
+    typescript: "npm:^5.8.3"
+  languageName: unknown
+  linkType: soft
+
 "@beabee/minio@workspace:apps/minio":
   version: 0.0.0-use.local
   resolution: "@beabee/minio@workspace:apps/minio"
@@ -13729,6 +13742,13 @@ __metadata:
   dependencies:
     es5-ext: "npm:~0.10.2"
   checksum: 10c0/83517032b46843601c4528be65e8aaf85f5a7860a9cfa3e4f2b5591da436e7cd748d95b450c91434c4ffb75d3ae4c069ddbdd9f71ada56a99a00c03088c51b4d
+  languageName: node
+  linkType: hard
+
+"lucide@npm:^0.515.0":
+  version: 0.515.0
+  resolution: "lucide@npm:0.515.0"
+  checksum: 10c0/a614ffa24be03bcb336514bd095895831b060c9e1a6fa131c838bc559032585e365b095354381caaced35396e5e04728f9792157532e68a630c1f40b6ef007db
   languageName: node
   linkType: hard
 

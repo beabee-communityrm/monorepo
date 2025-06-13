@@ -1,0 +1,27 @@
+{
+  "name": "@beabee/lucide-utils",
+  "description": "Utilities for working with Lucide icons in the beabee monorepo",
+  "version": "0.28.1",
+  "type": "module",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "scripts": {
+    "update": "node --experimental-specifier-resolution=node --experimental-strip-types --no-warnings scripts/build.ts && yarn generate:index && yarn format",
+    "check": "yarn check:tsc && yarn check:prettier",
+    "check:tsc": "tsc --noEmit",
+    "check:prettier": "prettier -c .",
+    "format": "prettier --write .",
+    "generate:index": "yarn workspace @beabee/dev-cli start generate-index --baseDir $(pwd) --extension ts -p ./src/types ./src/utils ./src/data"
+  },
+  "dependencies": {
+    "lucide": "^0.515.0"
+  },
+  "devDependencies": {
+    "@beabee/prettier-config": "workspace:^",
+    "@beabee/tsconfig": "workspace:^",
+    "@types/node": "^22.15.28",
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.3"
+  }
+}

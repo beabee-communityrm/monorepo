@@ -120,6 +120,7 @@ Since this template uses direct TypeScript exports, no build step is required. S
 1. Write your TypeScript code in the `src/` directory
 2. Export what you need through `index.ts`
 3. Import and use in other packages immediately
+4. When using relative imports within your package, always include the `.ts` extension
 
 ### Available Scripts
 
