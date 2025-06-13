@@ -1,0 +1,22 @@
+---
+description: Create and edit Vue components
+globs: 
+alwaysApply: false
+---
+Create Vue components with stories and documentation. Follow existing patterns and templates.
+
+## Templates
+- Component: [AppTemplate.vue](mdc:packages/vue/src/components/template/AppTemplate.vue)
+- Story: [vue-component-story.mdc](mdc:.cursor/rules/vue-component-story.mdc)
+- Exports: [index.ts](mdc:packages/vue/src/components/template/index.ts)
+- Documentation: [vue-component-story-documentation.mdc](mdc:.cursor/rules/vue-component-story-documentation.mdc)
+- Code Standards: [frontend-code-structure.mdc](mdc:.cursor/rules/frontend-code-structure.mdc)
+
+## Requirements
+- Application-independent (no API dependencies)
+- Create `.story.vue` and `.story.md` files
+- Reference existing documentation instead of duplicating
+- Follow patterns from `packages/vue/src/components` and analyze the existing folder structure
+- Assign each component to a semantically appropriate directory
+- If no suitable directory exists, create a new folder that reflects the component's purpose and scope
+- Prioritize maintainability and logical grouping
