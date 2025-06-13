@@ -51,7 +51,12 @@ meta:
     </template>
 
     <template #value-expires="{ item }">
-      <AppTime v-if="item.expires" :datetime="item.expires" />
+      <AppTime
+        v-if="item.expires"
+        :datetime="item.expires"
+        :time-ago-template="t('common.timeAgo')"
+        :time-in-template="t('common.timeIn')"
+      />
       <span v-else>-</span>
     </template>
 
@@ -80,11 +85,11 @@ import {
   AppHeading,
   AppPagination,
   AppSearchInput,
+  AppTime,
   AppToggle,
   PageTitle,
 } from '@beabee/vue';
 
-import AppTime from '@components/AppTime.vue';
 import CalloutCard from '@components/callout/CalloutCard.vue';
 import AppTable from '@components/table/AppTable.vue';
 import type { Header } from '@components/table/table.interface';

@@ -142,7 +142,11 @@ meta:
           <span v-else>-</span>
         </template>
         <template #value-createdAt="{ value }">
-          <AppTime :datetime="value" />
+          <AppTime
+            :datetime="value"
+            :time-ago-template="t('common.timeAgo')"
+            :time-in-template="t('common.timeIn')"
+          />
         </template>
 
         <template
@@ -186,6 +190,8 @@ meta:
               <AppTime
                 class="font-semibold text-body-60"
                 :datetime="item.latestComment.createdAt"
+                :time-ago-template="t('common.timeAgo')"
+                :time-in-template="t('common.timeIn')"
               />
               <b> • {{ item.latestComment.contact.displayName }}:{{ ' ' }}</b>
               <span
@@ -218,8 +224,8 @@ import {
   AppVTabs,
   addNotification,
 } from '@beabee/vue';
+import { AppTime } from '@beabee/vue';
 
-import AppTime from '@components/AppTime.vue';
 import {
   headers,
   useCalloutResponseFilters,

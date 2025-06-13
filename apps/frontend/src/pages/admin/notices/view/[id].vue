@@ -20,21 +20,33 @@ meta:
           :scheduled-text="
             notice.status === 'scheduled' && notice.starts
               ? t('item.status.startsIn', {
-                  duration: formatDistanceLocale(notice.starts, new Date()),
+                  duration: formatDistanceLocale(
+                    notice.starts,
+                    new Date(),
+                    i18n.global.locale.value as BaseLocale
+                  ),
                 })
               : ''
           "
           :open-text="
             notice.status === 'open' && notice.expires
               ? t('item.status.endsIn', {
-                  duration: formatDistanceLocale(notice.expires, new Date()),
+                  duration: formatDistanceLocale(
+                    notice.expires,
+                    new Date(),
+                    i18n.global.locale.value as BaseLocale
+                  ),
                 })
               : ''
           "
           :ended-text="
             notice.status === 'ended' && notice.expires
               ? t('common.timeAgo', {
-                  time: formatDistanceLocale(notice.expires, new Date()),
+                  time: formatDistanceLocale(
+                    notice.expires,
+                    new Date(),
+                    i18n.global.locale.value as BaseLocale
+                  ),
                 })
               : ''
           "
@@ -85,6 +97,7 @@ import {
   ItemDateRange,
   ItemStatusText,
   PageTitle,
+  formatDistanceLocale,
 } from '@beabee/vue';
 
 import {
@@ -92,9 +105,9 @@ import {
   faSignHanging,
   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
+import { i18n } from '@lib/i18n';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { client } from '@utils/api';
-import { formatDistanceLocale } from '@utils/dates';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';

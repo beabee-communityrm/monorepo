@@ -48,6 +48,8 @@ meta:
           <AppTime
             class="flex-1 text-right text-sm font-semibold text-body-60"
             :datetime="member.joined"
+            :time-ago-template="t('common.timeAgo')"
+            :time-in-template="t('common.timeIn')"
           />
         </li>
       </ul>
@@ -96,9 +98,8 @@ import {
   type GetStatsData,
   ItemStatus,
 } from '@beabee/beabee-common';
-import { AppHeading, PageTitle } from '@beabee/vue';
+import { AppHeading, AppTime, PageTitle } from '@beabee/vue';
 
-import AppTime from '@components/AppTime.vue';
 import CalloutSummary from '@components/callout/CalloutSummary.vue';
 import HintBox from '@components/pages/admin/HintBox.vue';
 import KeyStat from '@components/pages/admin/KeyStat.vue';

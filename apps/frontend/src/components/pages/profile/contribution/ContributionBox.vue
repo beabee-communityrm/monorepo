@@ -69,9 +69,8 @@ import {
   ContributionType,
   MembershipStatus,
 } from '@beabee/beabee-common';
-import { AppSubHeading } from '@beabee/vue';
+import { AppSubHeading, AppTime } from '@beabee/vue';
 
-import AppTime from '@components/AppTime.vue';
 import { formatLocale } from '@utils/dates';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';

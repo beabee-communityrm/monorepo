@@ -54,7 +54,12 @@ meta:
     </template>
     <template #value-expires="{ value }">
       <span class="whitespace-nowrap">
-        <AppTime v-if="value" :datetime="value" />
+        <AppTime
+          v-if="value"
+          :datetime="value"
+          :time-ago-template="t('common.timeAgo')"
+          :time-in-template="t('common.timeIn')"
+        />
         <span v-else :title="t('adminSettings.apikey.expiresHelp')">
           <font-awesome-icon :icon="faWarning" />
           {{ t('adminSettings.apikey.expires.never') }}
@@ -111,10 +116,10 @@ import {
   AppForm,
   AppInput,
   AppSelect,
+  AppTime,
 } from '@beabee/vue';
 import { App2ColGrid, AppHeading, addNotification } from '@beabee/vue';
 
-import AppTime from '@components/AppTime.vue';
 import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
 import type { Header } from '@components/table/table.interface';
 import { faCopy, faTrash, faWarning } from '@fortawesome/free-solid-svg-icons';
