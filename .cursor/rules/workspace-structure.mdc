@@ -1,35 +1,35 @@
 ---
-description: 
+description: Information about the node / npm / yarn packages / modules in this workspace
 globs: 
-alwaysApply: true
+alwaysApply: false
 ---
-This project uses yarn workspaces, the project-internal yarn packages are stored in the folders `packages/` and `apps/`, where only the packages in the folder `packages/` should be imported. If files are to be imported from one package into an app or another package, the package name must be used for this purpose.
+**Beabee Monorepo Package Structure:**
 
-We currently have the following yarn packages which can be imported:
-- `@beabee/client` in `packages/client/package.json` - The Beabee API Client for interacting with the backend API
-- `@beabee/beabee-common` in `packages/common/package.json` - Shared code between Beabee projects including common types and utilities
-- `@beabee/core` in `packages/core/package.json` - Core package for the beabee backend with database models, services, and providers
-- `@beabee/prettier-config` in `packages/prettier-config/package.json` - Prettier configuration for consistent code formatting across the project
-- `@beabee/test-utils` in `packages/test-utils/package.json` - Test utilities and helpers for unit and integration testing
-- `@beabee/tsconfig` in `packages/tsconfig/package.json` - TypeScript configuration presets for different project types (frontend, server, etc.)
-- `@beabee/vue` in `packages/vue/package.json` - Vue components library used in the frontend application
-- `@beabee/docker` in `packages/docker/package.json` - Docker base configuration
-- `@beabee/esbuild` in `packages/esbuild/package.json` - ESBuild configuration and plugins for building packages
-- `@beabee/locale` in `packages/locale/package.json` - Beabee locale translations and internationalization resources
-- `@beabee/template-vanilla` in `packages/template-vanilla/package.json` - Vanilla template for TypeScript packages that export TypeScript directly
-- `@beabee/weblate-client` in `packages/weblate-client/package.json` - A Weblate API Client for managing translations
+**Yarn Workspaces:** Packages in `packages/` (importable) and `apps/` (standalone applications).
 
-And we have the following apps:
-- `@beabee/backend` in `apps/backend/package.json` - The main backend API server, a community engagement system for community newsrooms
-- `@beabee/backend-cli` in `apps/backend-cli/package.json` - Backend CLI tool for administrative tasks like setup, migrations, and data management
-- `@beabee/frontend` in `apps/frontend/package.json` - The modern Vue 3 frontend application with form builder and member management
-- `@beabee/legacy` in `apps/legacy/package.json` - The legacy frontend application (older UI, being phased out)
-- `@beabee/webhooks` in `apps/webhooks/package.json` - Webhook server for handling external service integrations (Stripe, GoCardless, etc.)
-- `@beabee/dev-cli` in `apps/dev-cli/package.json` - CLI for development tasks like generating index files and building with esbuild
-- `@beabee/e2e-api-tests` in `apps/e2e-api-tests/package.json` - End-to-end API test suite using Vitest
-- `@beabee/minio` in `apps/minio/package.json` - MinIO object storage configuration for file uploads
-- `@beabee/router` in `apps/router/package.json` - Nginx router configuration for request routing in production
+**Importable Packages (`packages/`):**
+- `@beabee/client` - API client for backend communication
+- `@beabee/beabee-common` - Shared types and utilities across projects
+- `@beabee/core` - Backend core with models, services, providers
+- `@beabee/vue` - Vue components library for frontend
+- `@beabee/locale` - Internationalization and translations
+- `@beabee/prettier-config` - Code formatting configuration
+- `@beabee/tsconfig` - TypeScript configurations (frontend, server, vanilla)
+- `@beabee/test-utils` - Testing utilities and helpers
+- `@beabee/esbuild` - Build configuration and plugins
+- `@beabee/docker` - Docker base configuration
+- `@beabee/template-vanilla` - TypeScript package template
+- `@beabee/weblate-client` - Translation management API client
 
-Each of these packages can be checked with yarn, for example, `yarn workspace @beabee/frontend run check` to run the `check` script on the corresponding package.json, use this to verify changes.
+**Applications (`apps/`):**
+- `@beabee/backend` - Main API server (community engagement system)
+- `@beabee/frontend` - Modern Vue 3 frontend with form builder
+- `@beabee/webhooks` - External service integrations (Stripe, GoCardless)
+- `@beabee/backend-cli` - Admin CLI (setup, migrations, data management)
+- `@beabee/legacy` - Legacy frontend (being phased out)
+- `@beabee/e2e-api-tests` - API test suite
+- `@beabee/dev-cli` - Development tools (index generation, building)
+- `@beabee/router` - Nginx routing configuration
+- `@beabee/minio` - Object storage configuration
 
-There are also packages in the apps directory, but these cannot be imported into the other packages (unless we are inside that app), because they are not self-contained packages. 
+**Import Rule:** Only packages from `packages/` can be imported. Use package names for cross-package imports. Apps cannot be imported by other packages. 
