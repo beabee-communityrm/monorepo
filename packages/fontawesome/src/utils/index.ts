@@ -1,2 +1,1 @@
-// FontAwesome utilities will be exported from here
-// Example: export * from './iconHelpers.js';
+export * from './icon-utils.ts';

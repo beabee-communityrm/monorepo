@@ -1,4 +1,4 @@
-// FontAwesome types will be defined here
-// Example: export interface FontAwesomeIcon { ... }
-
-export {};
+export * from './core.ts';
+export * from './metadata.ts';
+export * from './picker.ts';
+export * from './search.ts';

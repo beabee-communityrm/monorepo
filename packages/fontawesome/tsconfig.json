@@ -1,3 +1,9 @@
 {
-  "extends": ["@beabee/tsconfig/tsconfig.vanilla.json"]
+  "extends": ["@beabee/tsconfig/tsconfig.vanilla.json"],
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "module": "ESNext",
+    "target": "ES2020",
+    "moduleResolution": "node"
+  }
 }
