@@ -40,8 +40,8 @@
 </template>
 <script lang="ts" setup>
 // Translations moved to TranslationsTab
-import AppInput from '@components/forms/AppInput.vue';
-import AppSelect from '@components/forms/AppSelect.vue';
+import { AppInput, AppSelect } from '@beabee/vue';
+
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 

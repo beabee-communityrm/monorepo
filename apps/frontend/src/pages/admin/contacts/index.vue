@@ -163,13 +163,16 @@ import {
   type RuleGroup,
   type UpdateContactData,
 } from '@beabee/beabee-common';
-import { AppButton, AppButtonGroup } from '@beabee/vue/components';
-import { addNotification } from '@beabee/vue/store/notifications';
+import {
+  AppButton,
+  AppButtonGroup,
+  AppFilterGrid,
+  AppSearchInput,
+  AppSelect,
+  PageTitle,
+  addNotification,
+} from '@beabee/vue';
 
-import AppFilterGrid from '@components/AppFilterGrid.vue';
-import PageTitle from '@components/PageTitle.vue';
-import AppSearchInput from '@components/forms/AppSearchInput.vue';
-import AppSelect from '@components/forms/AppSelect.vue';
 import SaveSegment from '@components/pages/admin/contacts/SaveSegment.vue';
 import {
   headers,

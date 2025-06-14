@@ -1,2 +1,2 @@
-export * from './generalContent';
-export * from './notifications';
+export * from './generalContent.ts';
+export * from './notifications.ts';

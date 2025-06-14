@@ -65,6 +65,7 @@ meta:
             v-model="shareContent.description"
             :label="t('adminSettings.general.socialSharing.description')"
             required
+            :required-error-text="t('form.errors.description.required')"
           />
         </div>
         <div class="mb-4">
@@ -167,7 +168,13 @@ meta:
         <AppSubHeading>
           {{ t('adminSettings.general.footer.otherLinks.title') }}
         </AppSubHeading>
-        <AppLinkList v-model="footerData.footerLinks" class="mb-4" />
+        <AppLinkList
+          v-model="footerData.footerLinks"
+          class="mb-4"
+          :text-label="t('adminSettings.general.footer.otherLinks.linkText')"
+          :url-label="t('adminSettings.general.footer.otherLinks.url')"
+          :add-label="t('adminSettings.general.footer.otherLinks.add')"
+        />
       </AppForm>
     </template>
   </App2ColGrid>
@@ -178,16 +185,17 @@ import type {
   ContentPaymentData,
   ContentShareData,
 } from '@beabee/beabee-common';
-import { AppCheckbox, AppForm } from '@beabee/vue/components';
+import {
+  AppCheckbox,
+  AppForm,
+  AppInput,
+  AppLinkList,
+  AppSelect,
+  AppTextArea,
+} from '@beabee/vue';
+import { App2ColGrid, AppHeading, AppSubHeading } from '@beabee/vue';
 
-import App2ColGrid from '@components/App2ColGrid.vue';
-import AppHeading from '@components/AppHeading.vue';
-import AppSubHeading from '@components/AppSubHeading.vue';
 import AppImageUpload from '@components/forms/AppImageUpload.vue';
-import AppInput from '@components/forms/AppInput.vue';
-import AppLinkList from '@components/forms/AppLinkList.vue';
-import AppSelect from '@components/forms/AppSelect.vue';
-import AppTextArea from '@components/forms/AppTextArea.vue';
 import { localeItems } from '@lib/i18n';
 import { generalContent as storeGeneralContent } from '@store';
 import { client } from '@utils/api';

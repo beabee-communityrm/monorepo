@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts" setup>
-import { AppDropdownButton, AppSelectableList } from '@beabee/vue/components';
+import { AppDropdownButton, AppSelectableList } from '@beabee/vue';
 
 import { faFolder } from '@fortawesome/free-solid-svg-icons';
 import { buckets } from '@utils/callouts';

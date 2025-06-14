@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts" setup>
-import { AppFormField } from '@beabee/vue/components';
+import { AppFormField } from '@beabee/vue';
 
 import RichTextEditor from '@components/rte/RichTextEditor.vue';
 import type { LocaleProp } from '@type';

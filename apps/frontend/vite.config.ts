@@ -1,12 +1,10 @@
 import theme from '@beabee/vue/plugins/theme';
 
 import vueI18n from '@intlify/unplugin-vue-i18n/vite';
-// TODO: Replace with https://github.com/posva/unplugin-vue-router as recommended by `vite-plugin-pages` itself
 import replace from '@rollup/plugin-replace';
 import vue from '@vitejs/plugin-vue';
 import { resolve } from 'path';
-import { defineConfig, loadEnv } from 'vite';
-import type { Plugin } from 'vite';
+import { type Plugin, defineConfig, loadEnv } from 'vite';
 import pages from 'vite-plugin-pages';
 
 export default ({ command, mode }) => {

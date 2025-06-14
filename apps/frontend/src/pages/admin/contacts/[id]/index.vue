@@ -258,30 +258,30 @@ meta:
 
 <script lang="ts" setup>
 import {
+  CONTACT_MFA_TYPE,
   type ContactRoleData,
   type ContentJoinSetupData,
   ContributionType,
   type GetCalloutDataWith,
   type GetCalloutResponseDataWith,
+  GetCalloutResponseWith,
   type GetContactData,
   type GetContactDataWith,
   GetContactWith,
   type RoleType,
 } from '@beabee/beabee-common';
 import {
-  CONTACT_MFA_TYPE,
-  GetCalloutResponseWith,
-} from '@beabee/beabee-common';
-import { AppButton } from '@beabee/vue/components';
-import { AppForm } from '@beabee/vue/components';
+  App2ColGrid,
+  AppButton,
+  AppConfirmDialog,
+  AppForm,
+  AppHeading,
+  AppInfoList,
+  AppInfoListItem,
+  AppInput,
+} from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
-import App2ColGrid from '@components/App2ColGrid.vue';
-import AppConfirmDialog from '@components/AppConfirmDialog.vue';
-import AppHeading from '@components/AppHeading.vue';
-import AppInfoList from '@components/AppInfoList.vue';
-import AppInfoListItem from '@components/AppInfoListItem.vue';
-import AppInput from '@components/forms/AppInput.vue';
 import CalloutForm from '@components/pages/callouts/CalloutForm.vue';
 import PaymentMethod from '@components/payment-method/PaymentMethod.vue';
 import RoleEditor from '@components/role/RoleEditor.vue';

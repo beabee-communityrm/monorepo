@@ -58,9 +58,8 @@
 
 <script lang="ts" setup>
 import type { CreateNoticeData, GetNoticeData } from '@beabee/beabee-common';
-import { AppForm, AppLabel } from '@beabee/vue/components';
+import { AppForm, AppInput, AppLabel } from '@beabee/vue';
 
-import AppInput from '@components/forms/AppInput.vue';
 import { format } from 'date-fns';
 import { reactive } from 'vue';
 import { useI18n } from 'vue-i18n';

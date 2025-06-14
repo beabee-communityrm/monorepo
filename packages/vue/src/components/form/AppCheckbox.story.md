@@ -1,6 +1,20 @@
 # AppCheckbox
 
-The `AppCheckbox` component provides a styled checkbox with customizable appearance and variant support. It's designed to be used in forms and other interactive elements where users need to make binary choices.
+The `AppCheckbox` component provides a styled checkbox with customizable appearance and variant support for forms and interactive elements.
+
+## Usage Patterns
+
+- **Terms acceptance** - Legal agreements with required validation
+- **Preference selection** - User settings and notification options
+- **Feature toggles** - Enable/disable application features
+- **List selections** - Multiple item selection in forms
+
+## Key Features
+
+- ✅ **Custom styling** - Consistent visual design across variants
+- ✅ **Three color variants** - Primary, link, and danger color schemes
+- ✅ **Optional icons** - Support for FontAwesome icons alongside labels
+- ✅ **Validation support** - Built-in required field validation with Vuelidate
 
 ## Features
 
@@ -38,73 +52,6 @@ The `AppCheckbox` component provides a styled checkbox with customizable appeara
 | Event               | Description                             |
 | ------------------- | --------------------------------------- |
 | `update:modelValue` | Emitted when the checkbox state changes |
-
-## Examples
-
-### Basic Usage
-
-```vue
-<AppCheckbox v-model="isChecked" label="Accept terms and conditions" />
-```
-
-### With Different Variants
-
-```vue
-<AppCheckbox v-model="isChecked" variant="primary" label="Primary checkbox" />
-
-<AppCheckbox v-model="isChecked" variant="link" label="Link checkbox" />
-
-<AppCheckbox v-model="isChecked" variant="danger" label="Danger checkbox" />
-```
-
-### With Icon
-
-```vue
-<AppCheckbox v-model="isChecked" label="Notifications" :icon="faBell" />
-```
-
-### Required Field
-
-```vue
-<AppCheckbox v-model="isChecked" label="Accept terms (required)" required />
-```
-
-### Disabled State
-
-```vue
-<AppCheckbox v-model="isChecked" label="Disabled checkbox" disabled />
-```
-
-## Real-world Examples
-
-The AppCheckbox is commonly used for:
-
-1. **Terms and Conditions Acceptance**
-
-```vue
-<AppCheckbox
-  v-model="acceptTerms"
-  label="I accept the terms and conditions"
-  required
-  variant="primary"
-/>
-```
-
-2. **Preference Selection**
-
-```vue
-<AppCheckbox
-  v-model="emailNotifications"
-  label="Subscribe to email notifications"
-  variant="link"
-/>
-```
-
-3. **Feature Toggle**
-
-```vue
-<AppCheckbox v-model="advancedMode" label="Enable advanced features" />
-```
 
 ## How It Works
 

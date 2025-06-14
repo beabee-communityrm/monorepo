@@ -190,7 +190,7 @@ import {
   type GetCalloutDataWith,
   isLngLat,
 } from '@beabee/beabee-common';
-import { AppButton } from '@beabee/vue/components';
+import { AppButton } from '@beabee/vue';
 
 import CalloutAddResponsePanel from '@components/pages/callouts/CalloutAddResponsePanel.vue';
 import CalloutIntroPanel from '@components/pages/callouts/CalloutIntroPanel.vue';

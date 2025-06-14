@@ -81,10 +81,9 @@
 </template>
 
 <script lang="ts" setup>
-import { AppFormBox } from '@beabee/vue/components';
+import { AppFormBox, AppInput } from '@beabee/vue';
 
 import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
-import AppInput from '@components/forms/AppInput.vue';
 import type { LocaleProp } from '@type/locale-prop';
 import {
   getLocalizedValueFallback,

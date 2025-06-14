@@ -1,9 +1,11 @@
 <template>
-  <label class="mb-0.5 block font-semibold">
+  <label class="mb-0.5 block font-semibold" :for="forId">
     {{ label }} {{ required ? '*' : '' }}
   </label>
 </template>
 <script lang="ts" setup>
+import { computed } from 'vue';
+
 /**
  * Props for the AppLabel component
  */
@@ -12,7 +14,10 @@ export interface AppLabelProps {
   label: string;
   /** Whether the label is required */
   required?: boolean;
+  /** The ID of the input element this label is for */
+  for?: string;
 }
 
-defineProps<AppLabelProps>();
+const props = defineProps<AppLabelProps>();
+const forId = computed(() => props.for);
 </script>

@@ -80,7 +80,7 @@
 </template>
 
 <script lang="ts" setup="{ emit }">
-import { AppCopyButton, AppLabel } from '@beabee/vue/components';
+import { AppCopyButton, AppInputError, AppLabel } from '@beabee/vue';
 
 import {
   faBold,
@@ -102,7 +102,6 @@ import { helpers, requiredIf } from '@vuelidate/validators';
 import { computed, onBeforeUnmount, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import AppInputError from '../forms/AppInputError.vue';
 import RichTextEditorButton from './RichTextEditorButton.vue';
 
 const { t } = useI18n();

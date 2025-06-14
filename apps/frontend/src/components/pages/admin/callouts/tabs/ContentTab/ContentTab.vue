@@ -86,7 +86,7 @@
 
 <script lang="ts" setup>
 import { ItemStatus } from '@beabee/beabee-common';
-import { AppButton, AppNotification } from '@beabee/vue/components';
+import { AppButton, AppNotification } from '@beabee/vue';
 
 import FormBuilderNavigation from '@components/form-builder/FormBuilderNavigation.vue';
 import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';

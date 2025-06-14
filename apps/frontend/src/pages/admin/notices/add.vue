@@ -16,10 +16,8 @@ meta:
 
 <script lang="ts" setup>
 import type { CreateNoticeData, GetNoticeData } from '@beabee/beabee-common';
-import { addNotification } from '@beabee/vue/store/notifications';
+import { App2ColGrid, PageTitle, addNotification } from '@beabee/vue';
 
-import App2ColGrid from '@components/App2ColGrid.vue';
-import PageTitle from '@components/PageTitle.vue';
 import NoticeForm from '@components/notice/NoticeForm.vue';
 import { faSignHanging } from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';

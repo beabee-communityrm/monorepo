@@ -21,7 +21,13 @@
             <span class="font-semibold">{{
               `${t('common.until')} ${formatLocale(callout.expires, 'MMMM d')}`
             }}</span>
-            <AppTime class="text-body-80" :datetime="callout.expires" />
+            <AppTime
+              class="text-body-80"
+              :datetime="callout.expires"
+              :time-ago-template="t('common.timeAgo', { time: '{time}' })"
+              :time-in-template="t('common.timeIn', { time: '{time}' })"
+              :locale="i18n.global.locale.value as BaseLocale"
+            />
           </div>
         </div>
       </div>
@@ -39,15 +45,16 @@
 
 <script lang="ts" setup>
 import type { GetCalloutData } from '@beabee/beabee-common';
+import type { BaseLocale } from '@beabee/locale';
+import { AppSubHeading, AppTime } from '@beabee/vue';
 
+import { i18n } from '@lib/i18n';
 import { formatLocale } from '@utils/dates';
 import { resolveImageUrl } from '@utils/url';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import noImage from '../../assets/images/no-image.avif';
-import AppSubHeading from '../AppSubHeading.vue';
-import AppTime from '../AppTime.vue';
 
 const props = defineProps<{ callout: GetCalloutData }>();
 

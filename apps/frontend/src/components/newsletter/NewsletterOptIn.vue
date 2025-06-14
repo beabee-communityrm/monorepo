@@ -18,7 +18,7 @@
 
 <script lang="ts" setup>
 import type { NewsletterGroupData } from '@beabee/beabee-common';
-import { AppCheckbox, AppCheckboxGroup } from '@beabee/vue/components';
+import { AppCheckbox, AppCheckboxGroup } from '@beabee/vue';
 
 import { watch } from 'vue';
 

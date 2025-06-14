@@ -20,9 +20,9 @@ meta:
 
 <script lang="ts" setup>
 import type { CreateNoticeData, GetNoticeData } from '@beabee/beabee-common';
+import { PageTitle } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
-import PageTitle from '@components/PageTitle.vue';
 import NoticeForm from '@components/notice/NoticeForm.vue';
 import { faSignHanging } from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';

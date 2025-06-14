@@ -25,7 +25,8 @@
 </template>
 
 <script lang="ts" setup>
-import AppToggle from '@components/forms/AppToggle.vue';
+import { AppToggle } from '@beabee/vue';
+
 import { computed, ref, watchEffect } from 'vue';
 
 import AppSearchRuleFilterGroup from './AppSearchRuleFilterGroup.vue';

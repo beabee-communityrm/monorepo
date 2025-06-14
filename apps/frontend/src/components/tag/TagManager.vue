@@ -1,10 +1,8 @@
 <script lang="ts" setup>
 import type { TagData, TagUpdateData } from '@beabee/beabee-common';
 import type { TagClient } from '@beabee/client';
+import { AppHeading, AppInput, ItemManager } from '@beabee/vue';
 
-import AppHeading from '@components/AppHeading.vue';
-import AppInput from '@components/forms/AppInput.vue';
-import ItemManager from '@components/item-manager/ItemManager.vue';
 import { faTag } from '@fortawesome/free-solid-svg-icons';
 import { computed, onBeforeMount, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -89,6 +87,12 @@ onBeforeMount(async () => {
       :items="tags"
       :item-to-data="tagToFormData"
       :add-button-text="t('tagEditor.add')"
+      :edit-button-text="t('actions.edit')"
+      :delete-button-text="t('actions.delete')"
+      :update-button-text="t('actions.update')"
+      :cancel-button-text="t('actions.cancel')"
+      :no-back-button-text="t('actions.noBack')"
+      :yes-remove-button-text="t('actions.yesRemove')"
       :delete-title="t('tagEditor.confirmDelete.title')"
       :delete-text="(tag) => t(deleteText, { tagName: tag.name })"
       @add="handleNewTag"
