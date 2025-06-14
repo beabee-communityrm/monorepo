@@ -1,4 +1,5 @@
 import {
+  type BaseLocale,
   type Locale,
   LocaleContext,
   isLocale,
@@ -41,7 +42,9 @@ watch(
   [currentLocale, () => generalContent.value.currencyCode],
   async ([newLocale, newCurrencyCode]) => {
     // Remove variants (e.g. @informal)
-    const justLocale = newLocale.toString().split('@')[0];
+    const justLocale: BaseLocale = newLocale
+      .toString()
+      .split('@')[0] as BaseLocale;
 
     // en is already loaded
     if (newLocale !== 'en') {
@@ -67,7 +70,7 @@ watch(
 
 router.beforeEach(async (to) => {
   // Block route for initial store load, this will only happen once
-  await initStore;
+  await initStore();
 
   // Ensure route is embeddable if we are embedded
   if (isEmbed && !to.meta.embeddable) {

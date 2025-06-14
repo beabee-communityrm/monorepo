@@ -54,7 +54,12 @@ meta:
     </template>
     <template #value-expires="{ value }">
       <span class="whitespace-nowrap">
-        <AppTime v-if="value" :datetime="value" />
+        <AppTime
+          v-if="value"
+          :datetime="value"
+          :time-ago-template="t('common.timeAgo', { time: '{time}' })"
+          :time-in-template="t('common.timeIn', { time: '{time}' })"
+        />
         <span v-else :title="t('adminSettings.apikey.expiresHelp')">
           <font-awesome-icon :icon="faWarning" />
           {{ t('adminSettings.apikey.expires.never') }}
@@ -104,15 +109,17 @@ meta:
 
 <script lang="ts" setup>
 import type { GetApiKeyData, Paginated } from '@beabee/beabee-common';
-import { AppButton, AppCheckbox, AppForm } from '@beabee/vue/components';
-import { addNotification } from '@beabee/vue/store/notifications';
+import {
+  AppButton,
+  AppCheckbox,
+  AppConfirmDialog,
+  AppForm,
+  AppInput,
+  AppSelect,
+  AppTime,
+} from '@beabee/vue';
+import { App2ColGrid, AppHeading, addNotification } from '@beabee/vue';
 
-import App2ColGrid from '@components/App2ColGrid.vue';
-import AppConfirmDialog from '@components/AppConfirmDialog.vue';
-import AppHeading from '@components/AppHeading.vue';
-import AppTime from '@components/AppTime.vue';
-import AppInput from '@components/forms/AppInput.vue';
-import AppSelect from '@components/forms/AppSelect.vue';
 import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
 import type { Header } from '@components/table/table.interface';
 import { faCopy, faTrash, faWarning } from '@fortawesome/free-solid-svg-icons';

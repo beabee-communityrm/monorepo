@@ -12,7 +12,7 @@
 </template>
 <script lang="ts" setup>
 import { ContributionPeriod } from '@beabee/beabee-common';
-import { AppLabel } from '@beabee/vue/components';
+import { AppLabel } from '@beabee/vue';
 
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';

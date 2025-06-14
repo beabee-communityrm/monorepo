@@ -90,9 +90,8 @@
 </template>
 
 <script lang="ts" setup>
-import { AppButton } from '@beabee/vue/components';
+import { AppButton, AppExpandableBox } from '@beabee/vue';
 
-import AppExpandableBox from '@components/AppExpandableBox.vue';
 import env from '@env';
 import {
   faFacebook,

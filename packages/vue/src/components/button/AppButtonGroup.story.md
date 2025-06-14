@@ -1,14 +1,19 @@
 # AppButtonGroup
 
-The `AppButtonGroup` component is a container for grouping multiple `AppButton` components together with connected styling, creating a cohesive button group or toolbar.
+The `AppButtonGroup` component groups multiple `AppButton` components together with connected styling, creating a cohesive button group or toolbar.
 
-## Features
+## Usage Patterns
 
-- Groups buttons together with connected styling
-- Removes spacing between buttons
-- Rounds only the outer corners of the button group
-- Works with any variant of AppButton
-- Can be used with ActionButton components as well
+- **Toolbars** - Collections of related actions (New, Edit, Download, Delete)
+- **View toggles** - Switch between different display modes (List, Grid, Card)
+- **Filter groups** - Related filtering options
+- **Action groups** - Sets of related operations
+
+## Key Features
+
+- ✅ **Connected styling** - Removes borders between buttons and rounds outer corners only
+- ✅ **Semantic grouping** - Uses `role="group"` for accessibility
+- ✅ **Focus management** - Proper keyboard navigation within the group
 
 ## Usage
 
@@ -25,70 +30,6 @@ The `AppButtonGroup` component is a container for grouping multiple `AppButton` 
 | Slot    | Description                                              |
 | ------- | -------------------------------------------------------- |
 | default | Place AppButton components here to create a button group |
-
-## Examples
-
-### Basic Button Group
-
-Create a simple group of connected buttons:
-
-```vue
-<AppButtonGroup>
-  <AppButton variant="primaryOutlined">Button 1</AppButton>
-  <AppButton variant="primaryOutlined">Button 2</AppButton>
-  <AppButton variant="primaryOutlined">Button 3</AppButton>
-</AppButtonGroup>
-```
-
-### With Icons
-
-Button groups work well with icons:
-
-```vue
-<AppButtonGroup>
-  <AppButton variant="primaryOutlined" :icon="faUser">User 1</AppButton>
-  <AppButton variant="primaryOutlined" :icon="faUser">User 2</AppButton>
-  <AppButton variant="primaryOutlined" :icon="faUser">User 3</AppButton>
-</AppButtonGroup>
-```
-
-### Different Variants
-
-You can use any button variant in a button group:
-
-```vue
-<AppButtonGroup>
-  <AppButton variant="primary">Left</AppButton>
-  <AppButton variant="primary">Middle</AppButton>
-  <AppButton variant="primary">Right</AppButton>
-</AppButtonGroup>
-```
-
-### Toolbar Example
-
-Create a toolbar with different button types:
-
-```vue
-<AppButtonGroup>
-  <AppButton variant="primary" :icon="faPlus">New</AppButton>
-  <AppButton variant="primaryOutlined" :icon="faEdit">Edit</AppButton>
-  <AppButton variant="primaryOutlined" :icon="faDownload">Download</AppButton>
-  <AppButton variant="primaryOutlined" :icon="faUpload">Upload</AppButton>
-  <AppButton variant="danger" :icon="faTrash">Delete</AppButton>
-</AppButtonGroup>
-```
-
-### With Action Buttons
-
-You can also use ActionButton components in a button group:
-
-```vue
-<AppButtonGroup>
-  <ActionButton :icon="faEdit">Edit</ActionButton>
-  <ActionButton :icon="faTrash">Delete</ActionButton>
-  <ActionButton :icon="faPlus">Add</ActionButton>
-</AppButtonGroup>
-```
 
 ## How It Works
 

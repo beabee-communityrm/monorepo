@@ -11,14 +11,13 @@ meta:
 </template>
 
 <script lang="ts" setup>
-import { AppTabs } from '@beabee/vue/components';
+import { AppTabs, PageTitle } from '@beabee/vue';
 
 import { faCog } from '@fortawesome/free-solid-svg-icons';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
-import PageTitle from '../../components/PageTitle.vue';
 import { addBreadcrumb } from '../../store/breadcrumb';
 
 const { t } = useI18n();

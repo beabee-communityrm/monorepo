@@ -120,13 +120,16 @@ import {
   type GetCalloutData,
   ItemStatus,
 } from '@beabee/beabee-common';
-import { AppCheckbox, AppForm } from '@beabee/vue/components';
+import {
+  App2ColGrid,
+  AppCheckbox,
+  AppForm,
+  AppInput,
+  AppInputHelp,
+  AppSelect,
+  AppSubHeading,
+} from '@beabee/vue';
 
-import App2ColGrid from '@components/App2ColGrid.vue';
-import AppSubHeading from '@components/AppSubHeading.vue';
-import AppInput from '@components/forms/AppInput.vue';
-import AppInputHelp from '@components/forms/AppInputHelp.vue';
-import AppSelect from '@components/forms/AppSelect.vue';
 import NewsletterOptInSettings from '@components/newsletter/NewsletterOptInSettings.vue';
 import SetupForm from '@components/pages/join/SetupForm.vue';
 import RichTextEditor from '@components/rte/RichTextEditor.vue';

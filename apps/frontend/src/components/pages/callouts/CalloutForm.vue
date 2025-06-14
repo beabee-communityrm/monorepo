@@ -89,7 +89,7 @@ import {
   type CalloutResponseAnswersSlide,
   type GetCalloutDataWith,
 } from '@beabee/beabee-common';
-import { AppButton, AppNotification } from '@beabee/vue/components';
+import { AppButton, AppNotification } from '@beabee/vue';
 
 import FormRenderer from '@components/form-renderer/FormRenderer.vue';
 import NewsletterOptIn from '@components/newsletter/NewsletterOptIn.vue';

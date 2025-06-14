@@ -78,13 +78,14 @@
 </template>
 
 <script lang="ts" setup>
+import { AppChoice } from '@beabee/vue';
+
 import useVuelidate from '@vuelidate/core';
 import { minValue } from '@vuelidate/validators';
 import { computed, toRefs } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { generalContent } from '../../store';
-import AppChoice from '../forms/AppChoice.vue';
 
 const { t, n } = useI18n();
 

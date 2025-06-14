@@ -43,13 +43,13 @@
 
 <script setup lang="ts">
 import { type RuleOperator, operatorsByTypeMap } from '@beabee/beabee-common';
+import { AppSelect } from '@beabee/vue';
 
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { createNewRule, getDefaultRuleValue } from '@utils/rules';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import AppSelect from '../forms/AppSelect.vue';
 import AppSearchRuleFilterGroupItem from './AppSearchRuleFilterGroupItem.vue';
 import {
   type SearchRuleEmits,

@@ -250,6 +250,7 @@ import {
   type CalloutNewsletterSchema,
   ItemStatus,
 } from '@beabee/beabee-common';
+import { AppInput } from '@beabee/vue';
 import {
   AppFormBox,
   AppFormField,
@@ -259,9 +260,8 @@ import {
   AppScrollSection,
   AppToggleField,
   type ScrollSection,
-} from '@beabee/vue/components';
+} from '@beabee/vue';
 
-import AppInput from '@components/forms/AppInput.vue';
 import NewsletterOptInSettings from '@components/newsletter/NewsletterOptInSettings.vue';
 import env from '@env';
 import useVuelidate from '@vuelidate/core';

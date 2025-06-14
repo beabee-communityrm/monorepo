@@ -51,7 +51,12 @@ meta:
     </template>
 
     <template #value-expires="{ item }">
-      <AppTime v-if="item.expires" :datetime="item.expires" />
+      <AppTime
+        v-if="item.expires"
+        :datetime="item.expires"
+        :time-ago-template="t('common.timeAgo', { time: '{time}' })"
+        :time-in-template="t('common.timeIn', { time: '{time}' })"
+      />
       <span v-else>-</span>
     </template>
 
@@ -76,14 +81,16 @@ import {
   ItemStatus,
   type Paginated,
 } from '@beabee/beabee-common';
+import {
+  AppHeading,
+  AppPagination,
+  AppSearchInput,
+  AppTime,
+  AppToggle,
+  PageTitle,
+} from '@beabee/vue';
 
-import AppHeading from '@components/AppHeading.vue';
-import AppPagination from '@components/AppPagination.vue';
-import AppTime from '@components/AppTime.vue';
-import PageTitle from '@components/PageTitle.vue';
 import CalloutCard from '@components/callout/CalloutCard.vue';
-import AppSearchInput from '@components/forms/AppSearchInput.vue';
-import AppToggle from '@components/forms/AppToggle.vue';
 import AppTable from '@components/table/AppTable.vue';
 import type { Header } from '@components/table/table.interface';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';

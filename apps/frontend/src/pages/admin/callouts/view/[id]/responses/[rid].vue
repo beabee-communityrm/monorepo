@@ -175,13 +175,13 @@ import {
 import {
   AppButton,
   AppButtonGroup,
+  AppHeading,
+  AppInfoList,
+  AppInfoListItem,
   AppNotification,
-} from '@beabee/vue/components';
-import { addNotification } from '@beabee/vue/store/notifications';
+  addNotification,
+} from '@beabee/vue';
 
-import AppHeading from '@components/AppHeading.vue';
-import AppInfoList from '@components/AppInfoList.vue';
-import AppInfoListItem from '@components/AppInfoListItem.vue';
 import CalloutResponseComments from '@components/callout/CalloutResponseComments.vue';
 import { useCalloutResponseFilters } from '@components/pages/admin/callout-responses.interface';
 import MoveBucketButton from '@components/pages/admin/callouts/MoveBucketButton.vue';

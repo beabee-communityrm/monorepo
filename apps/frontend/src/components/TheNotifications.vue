@@ -27,8 +27,7 @@
  * Container component for displaying notifications
  * Handles notification positioning and removal
  */
-import { notifications } from '@beabee/vue';
-import { AppNotification } from '@beabee/vue/components';
+import { AppNotification, notifications } from '@beabee/vue';
 
 function removeItem(id: number) {
   const index = notifications.findIndex((n) => n.id === id);

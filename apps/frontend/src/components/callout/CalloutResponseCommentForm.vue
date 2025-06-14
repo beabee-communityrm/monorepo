@@ -17,7 +17,7 @@
 
 <script lang="ts" setup>
 import type { GetCalloutResponseCommentData } from '@beabee/beabee-common';
-import { AppForm } from '@beabee/vue/components';
+import { AppForm } from '@beabee/vue';
 
 import useVuelidate from '@vuelidate/core';
 import { reactive } from 'vue';

@@ -118,16 +118,17 @@
 <script lang="ts" setup>
 import { ItemStatus } from '@beabee/beabee-common';
 import { LocaleContext } from '@beabee/locale';
-import { getLocaleItemsForContext } from '@beabee/vue';
 import {
+  AppCheckboxGroup,
+  AppFormBox,
   AppNotification,
   AppScrollNavigation,
   AppScrollSection,
   AppTabCard,
   type ScrollSection,
-} from '@beabee/vue/components';
-import { AppCheckboxGroup, AppFormBox } from '@beabee/vue/components';
-import type { TabItem } from '@beabee/vue/types';
+  type TabItem,
+  getLocaleItemsForContext,
+} from '@beabee/vue';
 
 import { generalContent } from '@store';
 import type { LocaleProp } from '@type';

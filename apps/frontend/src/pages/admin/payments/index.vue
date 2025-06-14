@@ -47,9 +47,8 @@ import type {
   GetPaymentsQuery,
   Paginated,
 } from '@beabee/beabee-common';
+import { AppFilterGrid, PageTitle } from '@beabee/vue';
 
-import AppFilterGrid from '@components/AppFilterGrid.vue';
-import PageTitle from '@components/PageTitle.vue';
 import {
   filterGroups,
   headers,

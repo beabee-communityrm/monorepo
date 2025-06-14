@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts" setup>
-import { AppTabs } from '@beabee/vue/components';
+import { AppTabs } from '@beabee/vue';
 import { type TabItem } from '@beabee/vue/types';
 
 import { computed } from 'vue';

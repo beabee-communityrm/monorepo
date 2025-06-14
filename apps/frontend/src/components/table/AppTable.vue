@@ -83,7 +83,7 @@
 </template>
 
 <script lang="ts" setup generic="I extends Item">
-import { AppCheckbox } from '@beabee/vue/components';
+import { AppCheckbox } from '@beabee/vue';
 
 import {
   faCaretDown,
@@ -96,7 +96,7 @@ import { useI18n } from 'vue-i18n';
 import { hasSlotContent } from '../../utils';
 import { type Header, type Item, SortType } from './table.interface';
 
-interface Sort {
+export interface Sort {
   by: string | null;
   type: SortType;
 }

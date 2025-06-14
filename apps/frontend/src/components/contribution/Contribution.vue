@@ -39,6 +39,8 @@
     :fee="fee"
     :force="shouldForceFee"
     :disabled="disabled"
+    :absorb-fee-text="absorbFeeText"
+    :absorb-fee-label="absorbFeeLabel"
   />
 </template>
 
@@ -49,13 +51,12 @@ import {
   PaymentMethod,
   calcPaymentFee,
 } from '@beabee/beabee-common';
+import { AppChoice, ContributionFee } from '@beabee/vue';
 
 import { computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import AppChoice from '../forms/AppChoice.vue';
 import ContributionAmount from './ContributionAmount.vue';
-import ContributionFee from './ContributionFee.vue';
 import ContributionMethod from './ContributionMethod.vue';
 import { type ContributionContent } from './contribution.interface';
 
@@ -74,7 +75,7 @@ const props = withDefaults(
   { showPeriod: true, showPaymentMethod: true, disabled: false }
 );
 
-const { t } = useI18n();
+const { t, n } = useI18n();
 
 const fee = computed(() =>
   calcPaymentFee(props, props.paymentContent.stripeCountry)
@@ -137,4 +138,15 @@ const shouldForceFee = computed(() => {
 watch(shouldForceFee, (force) => {
   if (force) payFeeProxy.value = true;
 });
+
+const absorbFeeText = computed(() =>
+  t('join.absorbFeeText', { fee: n(fee.value, 'currency') })
+);
+
+const absorbFeeLabel = computed(() =>
+  t(shouldForceFee.value ? 'join.absorbFeeForce' : 'join.absorbFeeOptIn', {
+    fee: n(fee.value, 'currency'),
+    amount: n(amountProxy.value, 'currency'),
+  })
+);
 </script>

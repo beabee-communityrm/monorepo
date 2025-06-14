@@ -28,10 +28,11 @@
 </template>
 
 <script lang="ts" setup>
+import { AppSubHeading } from '@beabee/vue';
+
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { useI18n } from 'vue-i18n';
 
-import AppSubHeading from '../AppSubHeading.vue';
 import WelcomeIcon from './WelcomeIcon.vue';
 
 const { t } = useI18n();

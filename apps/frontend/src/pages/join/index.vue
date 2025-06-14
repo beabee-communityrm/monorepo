@@ -65,7 +65,7 @@ import {
   type ContentPaymentData,
   ContributionPeriod,
 } from '@beabee/beabee-common';
-import { AppNotification } from '@beabee/vue/components';
+import { AppNotification } from '@beabee/vue';
 
 import AuthBox from '@components/AuthBox.vue';
 import StripePayment from '@components/StripePayment.vue';

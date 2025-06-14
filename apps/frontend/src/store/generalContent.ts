@@ -6,9 +6,8 @@ import { computed } from 'vue';
 
 export { generalContent };
 
-export const initGeneralContent = client.content
-  .get('general')
-  .then((content) => {
+export const initGeneralContent = () =>
+  client.content.get('general').then((content) => {
     generalContent.value = content;
     return content;
   });

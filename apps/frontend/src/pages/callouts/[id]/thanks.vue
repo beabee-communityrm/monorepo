@@ -19,9 +19,9 @@ meta:
 </template>
 <script lang="ts" setup>
 import type { GetCalloutDataWith } from '@beabee/beabee-common';
+import { AppTitle } from '@beabee/vue';
 
 import AppShareBox from '@components/AppShareBox.vue';
-import AppTitle from '@components/AppTitle.vue';
 import CalloutThanksBox from '@components/pages/callouts/CalloutThanksBox.vue';
 import CalloutVariantsBox from '@components/pages/callouts/CalloutVariantsBox.vue';
 import { faBullhorn } from '@fortawesome/free-solid-svg-icons';

@@ -15,8 +15,8 @@
 
 <script lang="ts" setup>
 import type { TagData } from '@beabee/beabee-common';
+import { AppTag } from '@beabee/vue';
 
-import AppTag from '@components/AppTag.vue';
 import { faTag } from '@fortawesome/free-solid-svg-icons';
 
 defineProps<{
