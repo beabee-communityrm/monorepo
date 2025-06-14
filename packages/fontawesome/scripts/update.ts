@@ -89,19 +89,21 @@ function processIcon(
   familyData: RawFontAwesomeFamilyData | undefined,
   iconCategories: string[]
 ): ProcessedFontAwesomeIcon {
+  // Extract styles from free version of familyStylesByLicense, fallback to original styles
+  const freeStyles =
+    familyData?.familyStylesByLicense?.free?.map((item) => item.style) || [];
+  const styles = freeStyles.length > 0 ? freeStyles : iconData.styles || [];
+
   return {
     name: iconName,
     label: iconData.label || iconName,
     unicode: iconData.unicode || '',
-    styles: iconData.styles || [],
+    styles,
     searchTerms: iconData.search?.terms || [],
     categories: iconCategories,
     aliases: iconData.aliases?.names?.length
       ? iconData.aliases.names
       : undefined,
-    changes: iconData.changes,
-    voted: iconData.voted || false,
-    familyStylesByLicense: familyData?.familyStylesByLicense,
   };
 }
 
@@ -193,7 +195,15 @@ async function generateIconsFile(
 
 export const FONTAWESOME_ICONS: FontAwesome[] = ${JSON.stringify(
     icons,
-    null,
+    [
+      'name',
+      'label',
+      'unicode',
+      'styles',
+      'searchTerms',
+      'categories',
+      'aliases',
+    ],
     CONFIG.GENERATION.indentSize
   )};
 
@@ -232,19 +242,6 @@ export default FONTAWESOME_CATEGORIES;
 }
 
 /**
- * Generates the index file for the data directory
- */
-async function generateIndexFile(): Promise<void> {
-  const content = `${generateFileHeader('FontAwesome data exports')}export * from './icons';
-export * from './categories';
-`;
-
-  const filePath = join(CONFIG.OUTPUT_DIR, 'index.ts');
-  await writeFile(filePath, content);
-  console.log(`📄 Generated index file: ${filePath}`);
-}
-
-/**
  * Main function that orchestrates the metadata processing
  */
 async function main(): Promise<void> {
@@ -261,7 +258,6 @@ async function main(): Promise<void> {
     await Promise.all([
       generateIconsFile(icons),
       generateCategoriesFile(categories),
-      generateIndexFile(),
     ]);
 
     console.log('🎉 FontAwesome metadata processing completed successfully!');

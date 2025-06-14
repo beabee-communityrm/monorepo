@@ -1,5 +1,5 @@
 // Auto-generated file - do not edit manually
-// Generated on 2025-06-14T05:45:22.518Z
+// Generated on 2025-06-14T07:43:28.691Z
 // FontAwesome categories data
 import type { FontAwesomeCategory } from '../types';
 

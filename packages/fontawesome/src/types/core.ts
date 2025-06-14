@@ -18,12 +18,6 @@ export interface FontAwesome {
   searchTerms: string[];
   categories: string[];
   aliases?: string[];
-  changes?: string[];
-  voted?: boolean;
-  familyStylesByLicense?: {
-    free?: FontAwesomeFamilyStyle[];
-    pro?: FontAwesomeFamilyStyle[];
-  };
 }
 
 /**

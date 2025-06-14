@@ -48,12 +48,6 @@ export interface ProcessedFontAwesomeIcon {
   searchTerms: string[];
   categories: string[];
   aliases?: string[];
-  changes?: string[];
-  voted?: boolean;
-  familyStylesByLicense?: {
-    free?: Array<{ family: string; style: string }>;
-    pro?: Array<{ family: string; style: string }>;
-  };
 }
 
 /**

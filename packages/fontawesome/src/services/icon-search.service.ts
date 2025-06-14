@@ -56,7 +56,6 @@ export class IconSearchService {
         'searchTerms',
         'categories',
         'aliases',
-        'voted',
       ],
       searchOptions: {
         boost: {
@@ -324,7 +323,6 @@ export class IconSearchService {
         'searchTerms',
         'categories',
         'aliases',
-        'voted',
       ],
       extractField: (document, fieldName) => {
         const value = document[fieldName as keyof FontAwesome];
@@ -355,7 +353,6 @@ export class IconSearchService {
       searchTerms: Array.isArray(result.searchTerms) ? result.searchTerms : [],
       categories: Array.isArray(result.categories) ? result.categories : [],
       aliases: Array.isArray(result.aliases) ? result.aliases : undefined,
-      voted: result.voted || false,
     };
   }
 
