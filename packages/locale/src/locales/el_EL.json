@@ -62,14 +62,14 @@
   },
   "actions": {
     "add": "",
-    "back": "",
+    "back": "πίσω",
     "backToLogin": "",
     "cancel": "",
     "changePassword": "",
     "chooseFile": "",
     "close": "",
     "continue": "",
-    "copy": "",
+    "copy": "αντίγραφο",
     "create": "",
     "delete": "",
     "disable": "",
@@ -77,9 +77,9 @@
     "enable": "",
     "endnow": "",
     "export": "",
-    "getStarted": "",
+    "getStarted": "αρχίζω",
     "goBack": "",
-    "next": "",
+    "next": "επόμενος",
     "noBack": "",
     "participate": "",
     "preview": "",
@@ -97,9 +97,9 @@
     "schedule": "",
     "search": "",
     "sendEmails": "",
-    "share": "",
+    "share": "Μοιραστείτε",
     "skip": "",
-    "submit": "",
+    "submit": "υποβάλετε",
     "unpublish": "",
     "update": "",
     "view": "",
@@ -330,8 +330,8 @@
     "actions": {
       "updateResponse": ""
     },
-    "addAPoint": "",
-    "addLocation": "",
+    "addAPoint": "Μπορείτε να εισαγάγετε μια τοποθεσία εδώ.",
+    "addLocation": "Μπορείτε να εισαγάγετε μια νέα τοποθεσία εδώ.",
     "builder": {
       "actions": {
         "addSlide": ""
@@ -652,31 +652,31 @@
         "placeholder": ""
       }
     },
-    "confirmHuman": "",
+    "confirmHuman": "Παρακαλώ επιβεβαιώστε ότι είστε άνθρωπος.",
     "contactDetails": "",
-    "ended": "",
-    "entryOf": "",
+    "ended": "Δεν υπάρχει πια!",
+    "entryOf": "Καταχώρηση {αρ.} από {σύνολο}",
     "form": {
       "email": "",
       "guestFieldsMissing": "",
       "name": "",
-      "submittingResponseError": ""
+      "submittingResponseError": "Δεν λειτούργησε. Δοκιμάστε ξανά."
     },
-    "getStarted": "",
+    "getStarted": "Ξεκινήστε εδώ!",
     "joinNow": "",
     "loginToYourAccount": "",
     "membersOnly": "",
-    "responseSubmitted": "",
+    "responseSubmitted": "Το μήνυμά σας έχει σταλεί.",
     "share": {
-      "address": "",
-      "services": ""
+      "address": "Εδώ μπορείτε να προωθήσετε αυτήν τη φόρμα στην ακόλουθη διεύθυνση:",
+      "services": "Μπορείτε επίσης να στείλετε αυτήν τη φόρμα σε άλλα άτομα, για παράδειγμα, μέσω Facebook, TikTok ή Instagram."
     },
     "showingPreview": "",
     "toContributionPage": "",
     "updateContribution": "",
     "views": {
-      "gallery": "",
-      "map": ""
+      "gallery": "Συλλογή εικόνων / γκαλερί",
+      "map": "χάρτη"
     },
     "youResponded": "",
     "yourResponse": ""
@@ -846,13 +846,13 @@
       "manual": "",
       "none": ""
     },
-    "default": "",
-    "hello": "",
+    "default": "Προεπιλογή",
+    "hello": "Γεια σας",
     "id": "",
     "itemsPerPage": "",
     "joined": "",
     "label": "",
-    "loading": "",
+    "loading": "Φορτία",
     "login": "",
     "newsletterStatus": {
       "cleaned": "",
@@ -862,7 +862,7 @@
       "unsubscribed": ""
     },
     "no": "",
-    "noResults": "",
+    "noResults": "Δε βρέθηκαν αποτελέσματα.",
     "pageCount": "",
     "paymentStatus": {
       "cancelled": "",
@@ -880,18 +880,18 @@
       "member": "",
       "superadmin": ""
     },
-    "selectNone": "",
-    "selectOne": "",
-    "show": "",
+    "selectNone": "-- Κανένας --",
+    "selectOne": "επιλέξτε",
+    "show": "δείξε",
     "status": {
-      "draft": "",
-      "ended": "",
-      "open": "",
-      "scheduled": ""
+      "draft": "Προσχέδιο",
+      "ended": "πλήρης",
+      "open": "ανοιχτό",
+      "scheduled": "προγραμματισμένο"
     },
-    "thankYou": "",
-    "timeAgo": "",
-    "timeIn": "",
+    "thankYou": "Ευχαριστώ πολύ!",
+    "timeAgo": "πριν το {time}",
+    "timeIn": "σε {χρόνο}",
     "until": "",
     "yes": ""
   },
@@ -1054,9 +1054,9 @@
   "footer": {
     "contactUs": "",
     "handbookResources": "",
-    "impressum": "",
+    "impressum": "Αποτύπωμα",
     "joinCommunity": "",
-    "poweredBy": "",
+    "poweredBy": "Ενισχύουμε τα ανεξάρτητα τοπικά συντακτικά γραφεία.",
     "privacyPolicy": "",
     "terms": ""
   },
@@ -1076,7 +1076,7 @@
     "cityOrTown": "",
     "deliveryOptIn": "",
     "description": "",
-    "email": "",
+    "email": "ηλεκτρονικό ταχυδρομείο",
     "errorMessages": {
       "api": {
         "account-locked": "",
@@ -1086,9 +1086,9 @@
         "login-failed": "",
         "mfa-token-required": ""
       },
-      "generic": "",
-      "unauthorized": "",
-      "validation": ""
+      "generic": "Ωχ! Κάτι πήγε στραβά. Επικοινωνήστε με την υποστήριξη εάν συμβεί ξανά αυτό.",
+      "unauthorized": "Δεν περιλαμβάνεται πρόσβαση.",
+      "validation": "Κάτι λείπει. Ελέγξτε τα παραπάνω πεδία."
     },
     "errors": {
       "address": {
@@ -1114,8 +1114,8 @@
         "required": ""
       },
       "file": {
-        "rateLimited": "",
-        "tooBig": "",
+        "rateLimited": "Η μεταφόρτωση απέτυχε: Ανεβάσατε πάρα πολλά αρχεία σε πολύ σύντομο χρονικό διάστημα. Περιμένετε λίγα λεπτά πριν προσπαθήσετε ξανά.",
+        "tooBig": "Η μεταφόρτωση απέτυχε: Το μέγιστο μέγεθος αρχείου δεν μπορεί να υπερβαίνει τα 20 MB.",
         "unsupportedType": ""
       },
       "firstName": {
@@ -1180,15 +1180,15 @@
   "formRenderer": {
     "components": {
       "file": {
-        "browse": "",
-        "dropFiles": "",
-        "or": "",
-        "switchToFileUpload": "",
-        "takePicture": "",
-        "useCamera": ""
+        "browse": "Πρέπει να περιμένετε: Μέχρι να σταματήσει να γυρίζει ο τροχός./ Μέχρι να γίνει μπλε η μπάρα.",
+        "dropFiles": "Σύρετε αρχεία εδώ.",
+        "or": "ή",
+        "switchToFileUpload": "Μετάβαση στη μεταφόρτωση αρχείου",
+        "takePicture": "Βγάλτε μια φωτογραφία εδώ.",
+        "useCamera": "χρησιμοποιήστε κάμερα"
       },
       "multiple": {
-        "addAnother": ""
+        "addAnother": "Εδώ μπορείτε να ανεβάσετε μια νέα φωτογραφία./ Εδώ μπορείτε να ανεβάσετε ένα νέο αρχείο."
       }
     }
   },
@@ -1206,8 +1206,8 @@
   },
   "item": {
     "status": {
-      "endsIn": "",
-      "startsIn": ""
+      "endsIn": "Η μεταφόρτωση θα ολοκληρωθεί σύντομα.",
+      "startsIn": "Η μεταφόρτωση θα ξεκινήσει σύντομα."
     }
   },
   "join": {
@@ -1334,7 +1334,7 @@
     "account": "",
     "admin": "",
     "adminSettings": "",
-    "callouts": "",
+    "callouts": "Ένδειξη",
     "contacts": "",
     "contribution": "",
     "dashboard": "",
@@ -1359,8 +1359,8 @@
     "title": ""
   },
   "notFound": {
-    "goBack": "",
-    "text": ""
+    "goBack": "Επιστρέψτε στον πίνακα ελέγχου/αρχική σελίδα.",
+    "text": "Ο ιστότοπος δεν υπάρχει πλέον. Ζητήστε βοήθεια."
   },
   "noticeAdminOverview": {
     "actions": {
@@ -1386,7 +1386,7 @@
     "copy": {
       "success": ""
     },
-    "error": "",
+    "error": "σφάλματος",
     "remove": ""
   },
   "pageTitle": {
@@ -1397,7 +1397,7 @@
     "join": "",
     "login": "",
     "lostDevice": "",
-    "notFound": "",
+    "notFound": "Η σελίδα δεν βρέθηκε",
     "resetDevice": "",
     "resetPassword": "",
     "setPassword": "",
