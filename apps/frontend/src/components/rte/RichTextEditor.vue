@@ -31,27 +31,29 @@
         :disabled="disabled"
         @click="run((cmd) => cmd.toggleStrike())"
       />
-      <RichTextEditorButton
-        :icon="faHeading"
-        :title="t('form.richtext.heading')"
-        :active="editor.isActive('heading', { level: 3 })"
-        :disabled="disabled"
-        @click="run((cmd) => cmd.toggleHeading({ level: 3 }))"
-      />
-      <RichTextEditorButton
-        :icon="faList"
-        :title="t('form.richtext.bulletlist')"
-        :active="editor.isActive('bulletList')"
-        :disabled="disabled"
-        @click="run((cmd) => cmd.toggleBulletList())"
-      />
-      <RichTextEditorButton
-        :icon="faListOl"
-        :title="t('form.richtext.numberedlist')"
-        :active="editor.isActive('orderedList')"
-        :disabled="disabled"
-        @click="run((cmd) => cmd.toggleOrderedList())"
-      />
+      <template v-if="controls !== 'inline'">
+        <RichTextEditorButton
+          :icon="faHeading"
+          :title="t('form.richtext.heading')"
+          :active="editor.isActive('heading', { level: 3 })"
+          :disabled="disabled"
+          @click="run((cmd) => cmd.toggleHeading({ level: 3 }))"
+        />
+        <RichTextEditorButton
+          :icon="faList"
+          :title="t('form.richtext.bulletlist')"
+          :active="editor.isActive('bulletList')"
+          :disabled="disabled"
+          @click="run((cmd) => cmd.toggleBulletList())"
+        />
+        <RichTextEditorButton
+          :icon="faListOl"
+          :title="t('form.richtext.numberedlist')"
+          :active="editor.isActive('orderedList')"
+          :disabled="disabled"
+          @click="run((cmd) => cmd.toggleOrderedList())"
+        />
+      </template>
       <RichTextEditorButton
         :icon="faLink"
         :title="t('form.richtext.link')"
@@ -76,6 +78,7 @@
       </div>
     </div>
     <AppInputError v-if="hasError" :message="validation.$errors[0].$message" />
+    <AppInputHelp v-if="infoMessage" :message="infoMessage" />
   </div>
 </template>
 
@@ -103,7 +106,7 @@ import { computed, onBeforeUnmount, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import AppInputError from '../forms/AppInputError.vue';
-import RichTextEditorButton from './RichTextEditorButton.vue';
+import AppInputHelp from '../forms/AppInputHelp.vue';
 
 const { t } = useI18n();
 
@@ -111,10 +114,12 @@ const emit = defineEmits(['update:modelValue']);
 const props = defineProps<{
   modelValue: string;
   label?: string;
+  infoMessage?: string;
   required?: boolean;
   disabled?: boolean;
   copyable?: boolean;
   placeholder?: string;
+  controls?: 'full' | 'inline';
 }>();
 
 const editor = useEditor({

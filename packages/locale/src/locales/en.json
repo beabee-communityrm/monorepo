@@ -1321,6 +1321,8 @@
         "formSubtitle": "Subtitle",
         "formTitle": "Title",
         "minAmount": "Minimum amount",
+        "noticeText": "Notice below payment button",
+        "noticeTextHelp": "Use this field to add a notice below the payment button, for example explaining payment periods or bank authorizations. You can also leave this field blank.",
         "showAbsorbFee": "Ask user about absorbing the payment fee",
         "showNoContribution": "Allow user to join without a contribution",
         "suggestedAmounts": "Suggested contribution amounts",

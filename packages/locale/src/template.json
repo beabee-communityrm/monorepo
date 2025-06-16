@@ -1321,6 +1321,8 @@
         "formSubtitle": "",
         "formTitle": "",
         "minAmount": "",
+        "noticeText": "",
+        "noticeTextHelp": "",
         "showAbsorbFee": "",
         "showNoContribution": "",
         "suggestedAmounts": "",

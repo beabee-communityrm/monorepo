@@ -56,6 +56,11 @@ meta:
       :return-url="client.signup.completeUrl"
       show-name-fields
     />
+    <div
+      v-if="paymentContent.noticeText"
+      class="content-message"
+      v-html="paymentContent.noticeText"
+    />
   </AuthBox>
 </template>
 
@@ -104,6 +109,7 @@ const paymentContent = ref<ContentPaymentData>({
   stripeCountry: 'eu',
   taxRateEnabled: false,
   taxRate: 7,
+  noticeText: '',
 });
 
 const { signUpData, signUpDescription } = useJoin(paymentContent);
