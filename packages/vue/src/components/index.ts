@@ -9,6 +9,7 @@ export * from './item-manager';
 export * from './layout';
 export * from './list';
 export * from './navigation';
+export * from './newsletter';
 export * from './notification';
 export * from './scroll';
 export * from './status';

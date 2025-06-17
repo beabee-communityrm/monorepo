@@ -67,12 +67,14 @@ meta:
           :label="stepT('newsletter.showOptIn')"
           class="mb-4 font-semibold"
         />
-        <NewsletterOptInSettings
+        <AppNewsletterOptInSettings
           v-if="setupContent.showNewsletterOptIn"
           v-model:title="setupContent.newsletterTitle"
           v-model:text="setupContent.newsletterText"
           v-model:opt-in="setupContent.newsletterOptIn"
           v-model:groups="setupContent.newsletterGroups"
+          :labels="newsletterSettingsLabels"
+          :editor-labels="editorLabels"
         />
 
         <AppSubHeading class="mt-6">
@@ -131,8 +133,9 @@ import {
   AppSelect,
   AppSubHeading,
 } from '@beabee/vue';
+import { AppNewsletterOptInSettings } from '@beabee/vue';
+import type { AppNewsletterOptInSettingsLabels } from '@beabee/vue';
 
-import NewsletterOptInSettings from '@components/newsletter/NewsletterOptInSettings.vue';
 import SetupForm from '@components/pages/join/SetupForm.vue';
 import { client } from '@utils/api';
 import { onBeforeMount, ref } from 'vue';
@@ -148,6 +151,20 @@ const editorLabels = useRichTextEditorLabels();
 
 const stepT = (key: string) =>
   t('membershipBuilder.steps.accountConfirmation.' + key);
+
+// Newsletter settings labels
+const newsletterSettingsLabels: AppNewsletterOptInSettingsLabels = {
+  title: t('newsletterOptIn.title'),
+  text: t('newsletterOptIn.text'),
+  optInLabel: t('newsletterOptIn.optInLabel'),
+  optInDisabled: t('newsletterOptIn.optInDisabled'),
+  groupsTitle: t('newsletterOptIn.groups.title'),
+  groupsHelp: t('newsletterOptIn.groups.help'),
+  groupsAdd: t('newsletterOptIn.groups.add'),
+  commonId: t('common.id'),
+  commonLabel: t('common.label'),
+  commonDefault: t('common.default'),
+};
 
 async function handleUpdate() {
   if (setupContent.value) {

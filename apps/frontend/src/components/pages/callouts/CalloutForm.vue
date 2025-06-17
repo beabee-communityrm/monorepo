@@ -19,7 +19,7 @@
         class="mb-8"
       />
 
-      <NewsletterOptIn
+      <AppNewsletterOptIn
         v-if="
           callout.access !== CalloutAccess.OnlyAnonymous &&
           callout.newsletterSchema
@@ -90,9 +90,9 @@ import {
   type GetCalloutDataWith,
 } from '@beabee/beabee-common';
 import { AppButton, AppNotification } from '@beabee/vue';
+import { AppNewsletterOptIn } from '@beabee/vue';
 
 import FormRenderer from '@components/form-renderer/FormRenderer.vue';
-import NewsletterOptIn from '@components/newsletter/NewsletterOptIn.vue';
 import { currentUser } from '@store';
 import { client, isApiError } from '@utils/api';
 import { getDecisionComponent } from '@utils/callouts';
