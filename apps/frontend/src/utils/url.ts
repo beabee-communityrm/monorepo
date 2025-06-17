@@ -31,3 +31,7 @@ export function resolveImageUrl(url: string | URL, width?: number): string {
   }
   return urlObj.toString();
 }
+
+export function isInternalUrl(url: string | undefined): url is string {
+  return !!url && /^\/([^/]|$)/.test(url);
+}
