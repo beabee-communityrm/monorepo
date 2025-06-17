@@ -39,16 +39,16 @@
     </div>
 
     <!-- Add button -->
-    <button
+    <AppButton
       v-if="allowAdd"
-      type="button"
-      class="hover:text-primary-110 flex items-center gap-2 px-3 py-2 text-primary focus:outline-none focus:ring-2 focus:ring-primary-40 focus:ring-offset-2"
-      :aria-label="addButtonText || t('actions.add')"
+      variant="primaryOutlined"
+      size="sm"
+      :icon="faPlus"
+      :name="addButtonText || t('actions.add')"
       @click="addItem"
     >
-      <font-awesome-icon :icon="faPlus" class="h-4 w-4" />
-      <span>{{ addButtonText || t('actions.add') }}</span>
-    </button>
+      {{ addButtonText || t('actions.add') }}
+    </AppButton>
   </div>
 </template>
 
@@ -76,6 +76,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import AppButton from '../button/AppButton.vue';
 
 /**
  * Props for the AppRepeatable component
