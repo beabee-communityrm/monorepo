@@ -82,6 +82,7 @@ meta:
           <AppSelect
             v-model="setupContent.surveySlug"
             :label="stepT('joinSurvey.slug')"
+            :info-message="stepT('joinSurvey.slugHelp')"
             :items="[
               { id: '', label: t('common.selectNone') },
               ...openCallouts.map((callout) => ({
@@ -90,7 +91,6 @@ meta:
               })),
             ]"
           />
-          <AppInputHelp :message="stepT('joinSurvey.slugHelp')" />
         </div>
         <template v-if="setupContent.surveySlug">
           <RichTextEditor
@@ -125,7 +125,6 @@ import {
   AppCheckbox,
   AppForm,
   AppInput,
-  AppInputHelp,
   AppSelect,
   AppSubHeading,
 } from '@beabee/vue';

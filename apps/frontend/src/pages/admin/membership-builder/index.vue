@@ -87,6 +87,13 @@ meta:
           :label="stepT('showAbsorbFee')"
           class="mb-4 font-semibold"
         />
+        <RichTextEditor
+          v-model="noticeText"
+          controls="inline"
+          :label="stepT('noticeText')"
+          :info-message="stepT('noticeTextHelp')"
+          class="mb-4"
+        />
       </AppForm>
     </template>
     <template #col2>
@@ -127,6 +134,7 @@ import { useI18n } from 'vue-i18n';
 
 const joinContent = ref<ContentJoinData>();
 const paymentContent = ref<ContentPaymentData>();
+const noticeText = ref('');
 const backgroundUrl = ref('');
 
 const { n, t } = useI18n();
@@ -170,19 +178,22 @@ const validation = useVuelidate(
 );
 
 async function handleUpdate() {
-  if (joinContent.value) {
-    await Promise.all([
-      client.content.update('join', joinContent.value),
-      client.content.update('general', {
-        backgroundUrl: backgroundUrl.value || '',
-      }),
-    ]);
+  if (!joinContent.value || !paymentContent.value) {
+    return;
   }
+  await Promise.all([
+    client.content.update('join', joinContent.value),
+    client.content.update('payment', { noticeText: noticeText.value }),
+    client.content.update('general', {
+      backgroundUrl: backgroundUrl.value || '',
+    }),
+  ]);
 }
 
 onBeforeMount(async () => {
   joinContent.value = await client.content.get('join');
   paymentContent.value = await client.content.get('payment');
+  noticeText.value = paymentContent.value.noticeText || '';
   backgroundUrl.value = generalContent.value.backgroundUrl || '';
 });
 </script>
