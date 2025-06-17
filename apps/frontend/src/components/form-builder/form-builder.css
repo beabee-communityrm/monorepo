@@ -58,6 +58,10 @@
 
   .form-builder-panel {
     @apply mb-2;
+    /* Override collapse visibility because it's not used in the form builder as intended by Tailwind */
+    .collapse {
+      visibility: visible !important;
+    }
   }
 
   .form-builder-group-header {
