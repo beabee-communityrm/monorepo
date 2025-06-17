@@ -50,7 +50,7 @@ const createNewsletter = () => ({
 </script>
 
 <template>
-  <Story title="Components/Form/AppRepeatable">
+  <Story title="Form/AppRepeatable">
     <Variant title="Todo List Example">
       <div class="max-w-2xl space-y-6">
         <div class="rounded border p-6">
