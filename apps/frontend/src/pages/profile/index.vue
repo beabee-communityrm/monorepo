@@ -15,6 +15,7 @@ meta:
       :first-name="user.firstname"
       :last-name="user.lastname"
       :text="profileContent.introMessage"
+      :welcome-template="t('homePage.welcome')"
       @close="removeWelcomeMessage"
     />
   </section>
@@ -66,13 +67,13 @@ import {
   ItemStatus,
 } from '@beabee/beabee-common';
 import { AppButton, PageTitle } from '@beabee/vue';
+import { WelcomeMessage } from '@beabee/vue';
 
 import CalloutCard from '@components/callout/CalloutCard.vue';
 import ContributionInfo from '@components/pages/profile/ContributionInfo.vue';
 import NoticeContainer from '@components/pages/profile/NoticeContainer.vue';
 import QuickActions from '@components/pages/profile/QuickActions.vue';
 import SectionTitle from '@components/pages/profile/SectionTitle.vue';
-import WelcomeMessage from '@components/welcome-message/WelcomeMessage.vue';
 import { currentUser, generalContent } from '@store';
 import { client } from '@utils/api';
 import { type Ref, onBeforeMount, ref } from 'vue';

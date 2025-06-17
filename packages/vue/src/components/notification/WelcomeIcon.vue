@@ -4,6 +4,8 @@
     width="510"
     height="480"
     viewBox="0 0 134.938 127"
+    role="img"
+    :aria-label="ariaLabel"
   >
     <g transform="matrix(0 0 0 0 0 264583.33)">
       <circle
@@ -235,92 +237,6 @@
         r="3.969"
       />
       <circle
-        style="fill: #000; stroke-linecap: round; stop-color: #000"
-        cx="54.24"
-        cy="117.74"
-        r="3.969"
-      />
-      <circle
-        style="fill: #000; stroke-linecap: round; stop-color: #000"
-        cx="70.115"
-        cy="117.74"
-        r="3.969"
-      />
-    </g>
-    <g transform="translate(-10.583 -10.583)">
-      <circle
-        style="
-          fill: #f5cc5b;
-          fill-opacity: 1;
-          stroke-width: 0.529167;
-          stroke-linecap: round;
-          stop-color: #000;
-        "
-        cx="78.052"
-        cy="14.552"
-        r="3.969"
-      />
-      <circle
-        style="
-          fill: #f5cc5b;
-          fill-opacity: 1;
-          stroke-width: 0.529167;
-          stroke-linecap: round;
-          stop-color: #000;
-        "
-        cx="93.927"
-        cy="14.552"
-        r="3.969"
-      />
-      <circle
-        style="
-          fill: #f5cc5b;
-          fill-opacity: 1;
-          stroke-width: 0.529167;
-          stroke-linecap: round;
-          stop-color: #000;
-        "
-        cx="78.052"
-        cy="27.781"
-        r="3.969"
-      />
-      <circle
-        style="
-          fill: #f5cc5b;
-          fill-opacity: 1;
-          stroke-width: 0.529167;
-          stroke-linecap: round;
-          stop-color: #000;
-        "
-        cx="93.927"
-        cy="27.781"
-        r="3.969"
-      />
-      <circle
-        style="
-          fill: #f5cc5b;
-          fill-opacity: 1;
-          stroke-width: 0.529167;
-          stroke-linecap: round;
-          stop-color: #000;
-        "
-        cx="46.302"
-        cy="27.781"
-        r="3.969"
-      />
-      <circle
-        style="
-          fill: #f5cc5b;
-          fill-opacity: 1;
-          stroke-width: 0.529167;
-          stroke-linecap: round;
-          stop-color: #000;
-        "
-        cx="62.177"
-        cy="27.781"
-        r="3.969"
-      />
-      <circle
         style="
           fill: #f5cc5b;
           fill-opacity: 1;
@@ -412,90 +328,6 @@
           stroke-linecap: round;
           stop-color: #000;
         "
-        cx="141.552"
-        cy="107.156"
-        r="3.969"
-      />
-      <circle
-        style="
-          fill: #f5cc5b;
-          fill-opacity: 1;
-          stroke-width: 0.529167;
-          stroke-linecap: round;
-          stop-color: #000;
-        "
-        cx="93.927"
-        cy="107.156"
-        r="3.969"
-      />
-      <circle
-        style="
-          fill: #f5cc5b;
-          fill-opacity: 1;
-          stroke-width: 0.529167;
-          stroke-linecap: round;
-          stop-color: #000;
-        "
-        cx="109.802"
-        cy="107.156"
-        r="3.969"
-      />
-      <circle
-        style="
-          fill: #f5cc5b;
-          fill-opacity: 1;
-          stroke-width: 0.529167;
-          stroke-linecap: round;
-          stop-color: #000;
-        "
-        cx="93.927"
-        cy="120.385"
-        r="3.969"
-      />
-      <circle
-        style="
-          fill: #f5cc5b;
-          fill-opacity: 1;
-          stroke-width: 0.529167;
-          stroke-linecap: round;
-          stop-color: #000;
-        "
-        cx="109.802"
-        cy="120.385"
-        r="3.969"
-      />
-      <circle
-        style="
-          fill: #f5cc5b;
-          fill-opacity: 1;
-          stroke-width: 0.529167;
-          stroke-linecap: round;
-          stop-color: #000;
-        "
-        cx="62.177"
-        cy="120.385"
-        r="3.969"
-      />
-      <circle
-        style="
-          fill: #f5cc5b;
-          fill-opacity: 1;
-          stroke-width: 0.529167;
-          stroke-linecap: round;
-          stop-color: #000;
-        "
-        cx="78.052"
-        cy="120.385"
-        r="3.969"
-      />
-      <circle
-        style="
-          fill: #f5cc5b;
-          fill-opacity: 1;
-          stroke-width: 0.529167;
-          stroke-linecap: round;
-          stop-color: #000;
-        "
         cx="62.177"
         cy="133.615"
         r="3.969"
@@ -544,3 +376,18 @@
     />
   </svg>
 </template>
+
+<script lang="ts" setup>
+/**
+ * WelcomeIcon displays a decorative icon for welcome messages
+ */
+
+export interface WelcomeIconProps {
+  /** Accessibility label for the icon */
+  ariaLabel?: string;
+}
+
+withDefaults(defineProps<WelcomeIconProps>(), {
+  ariaLabel: 'Welcome icon',
+});
+</script>

@@ -37,6 +37,7 @@ meta:
         :first-name="currentUser?.firstname || ''"
         :last-name="currentUser?.lastname || ''"
         :text="introMessage"
+        :welcome-template="t('homePage.welcome')"
         small
       />
     </template>
@@ -48,13 +49,13 @@ import {
   AppCheckbox,
   AppForm,
   AppRichTextEditor,
+  WelcomeMessage,
 } from '@beabee/vue';
 
 import { client } from '@utils/api';
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import WelcomeMessage from '../../../components/welcome-message/WelcomeMessage.vue';
 import { useRichTextEditorLabels } from '../../../composables/useRichTextEditorLabels';
 import { currentUser } from '../../../store';
 
