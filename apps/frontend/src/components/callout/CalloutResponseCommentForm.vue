@@ -10,23 +10,24 @@
     @reset="emit('cancel')"
   >
     <div class="mb-4">
-      <RichTextEditor v-model="data.text" required />
+      <AppRichTextEditor v-model="data.text" :labels="editorLabels" required />
     </div>
   </AppForm>
 </template>
 
 <script lang="ts" setup>
 import type { GetCalloutResponseCommentData } from '@beabee/beabee-common';
-import { AppForm } from '@beabee/vue';
+import { AppForm, AppRichTextEditor } from '@beabee/vue';
 
 import useVuelidate from '@vuelidate/core';
 import { reactive } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import RichTextEditor from '../rte/RichTextEditor.vue';
+import { useRichTextEditorLabels } from '../../composables/useRichTextEditorLabels';
 import { type CommentFormData } from './calloutResponseComment.interface';
 
 const { t } = useI18n();
+const editorLabels = useRichTextEditorLabels();
 
 const validation = useVuelidate();
 

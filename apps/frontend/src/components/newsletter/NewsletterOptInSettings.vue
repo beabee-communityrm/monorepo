@@ -3,9 +3,10 @@
     <AppInput v-model="title" :label="t('newsletterOptIn.title')" required />
   </div>
   <div class="mb-4">
-    <RichTextEditor
+    <AppRichTextEditor
       v-model="text"
       :label="t('newsletterOptIn.text')"
+      :labels="editorLabels"
       required
     />
   </div>
@@ -47,14 +48,16 @@ import {
   AppCheckbox,
   AppInput,
   AppRepeatable,
+  AppRichTextEditor,
   AppSectionHeading,
 } from '@beabee/vue';
 
 import { useI18n } from 'vue-i18n';
 
-import RichTextEditor from '../rte/RichTextEditor.vue';
+import { useRichTextEditorLabels } from '../../composables/useRichTextEditorLabels';
 
 const { t } = useI18n();
+const editorLabels = useRichTextEditorLabels();
 
 const title = defineModel<string>('title', { default: '' });
 const optIn = defineModel<string>('optIn', { default: '' });

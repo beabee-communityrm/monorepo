@@ -25,9 +25,10 @@
         </AppFormField>
 
         <AppFormField class="mx-auto max-w-3xl" :help="inputT('text.help')">
-          <RichTextEditor
+          <AppRichTextEditor
             v-model="data.thankYouText.default"
             :label="inputT('text.label')"
+            :labels="editorLabels"
             :placeholder="inputT('text.placeholder')"
             required
           />
@@ -51,14 +52,19 @@
 </template>
 
 <script lang="ts" setup>
-import { AppFormField, AppInput, AppRadioGroup } from '@beabee/vue';
+import {
+  AppFormField,
+  AppInput,
+  AppRadioGroup,
+  AppRichTextEditor,
+} from '@beabee/vue';
 
-import RichTextEditor from '@components/rte/RichTextEditor.vue';
 import type { LocaleProp } from '@type';
 import useVuelidate from '@vuelidate/core';
 import { watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import { useRichTextEditorLabels } from '../../../../../../../composables/useRichTextEditorLabels';
 import type { SidebarTabProps } from '../SidebarTabs.interface';
 
 /**
@@ -81,6 +87,7 @@ const emit = defineEmits(['update:error', 'update:validated']);
 defineProps<EndMessageTabProps>();
 
 const { t } = useI18n();
+const editorLabels = useRichTextEditorLabels();
 const inputT = (key: string) =>
   t('callout.builder.tabs.endMessage.inputs.' + key);
 

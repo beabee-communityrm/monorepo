@@ -6,7 +6,12 @@
         <div class="mb-4">
           <AppInput v-model="email.subject" label="Subject" required />
         </div>
-        <RichTextEditor v-model="email.body" label="Message" required />
+        <AppRichTextEditor
+          v-model="email.body"
+          label="Message"
+          :labels="editorLabels"
+          required
+        />
       </template>
       <AppNotification v-else variant="warning" title="Can't edit email">
         <p>
@@ -24,13 +29,16 @@ import {
   App2ColGrid,
   AppInput,
   AppNotification,
+  AppRichTextEditor,
   AppSubHeading,
 } from '@beabee/vue';
 
 import { computed, ref } from 'vue';
 
+import { useRichTextEditorLabels } from '../../../../composables/useRichTextEditorLabels';
 import { currentUser } from '../../../../store';
-import RichTextEditor from '../../../rte/RichTextEditor.vue';
+
+const editorLabels = useRichTextEditorLabels();
 
 const props = defineProps<{
   label: string;

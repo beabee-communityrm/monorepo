@@ -119,9 +119,10 @@ meta:
             :label="t('contacts.data.description')"
           />
         </div>
-        <RichTextEditor
+        <AppRichTextEditor
           v-model="contactAbout.notes"
           :label="t('contacts.data.notes')"
+          :labels="editorLabels"
           class="mb-4"
         />
       </AppForm>
@@ -279,13 +280,13 @@ import {
   AppInfoList,
   AppInfoListItem,
   AppInput,
+  AppRichTextEditor,
 } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
 import CalloutForm from '@components/pages/callouts/CalloutForm.vue';
 import PaymentMethod from '@components/payment-method/PaymentMethod.vue';
 import RoleEditor from '@components/role/RoleEditor.vue';
-import RichTextEditor from '@components/rte/RichTextEditor.vue';
 import TagList from '@components/tag/TagList.vue';
 import ToggleTagButton from '@components/tag/ToggleTagButton.vue';
 import env from '@env';
@@ -295,7 +296,10 @@ import { formatLocale } from '@utils/dates';
 import { onBeforeMount, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import { useRichTextEditorLabels } from '../../../../composables/useRichTextEditorLabels';
+
 const { t, n } = useI18n();
+const editorLabels = useRichTextEditorLabels();
 
 const props = defineProps<{
   contact: GetContactData;

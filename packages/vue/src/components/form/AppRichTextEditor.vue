@@ -1,62 +1,82 @@
+<!--
+  # AppRichTextEditor
+  A rich text editor component built on top of TipTap editor with customizable toolbar controls.
+  Supports bold, italic, underline, strikethrough, headings, lists, and links.
+
+  ## Features:
+  - Customizable toolbar (full or inline controls)
+  - Accessible with ARIA labels and keyboard navigation
+  - Copy functionality for content
+  - Placeholder text support
+  - Form validation integration
+  - Responsive design
+  - Disabled state support
+  - Touch-friendly interface
+-->
 <template>
   <div :class="hasError && 'ProseMirror-hasError'">
     <AppLabel v-if="label" :label="label" :required="required" />
 
-    <div v-if="editor" class="mb-2 flex flex-row gap-1">
-      <RichTextEditorButton
+    <div
+      v-if="editor"
+      class="mb-2 flex flex-row gap-1"
+      role="toolbar"
+      :aria-label="toolbarAriaLabel"
+    >
+      <AppRichTextEditorButton
         :icon="faBold"
-        :title="t('form.richtext.bold')"
+        :title="labels.bold"
         :active="editor.isActive('bold')"
         :disabled="disabled"
         @click="run((cmd) => cmd.toggleBold())"
       />
-      <RichTextEditorButton
+      <AppRichTextEditorButton
         :icon="faItalic"
-        :title="t('form.richtext.italic')"
+        :title="labels.italic"
         :active="editor.isActive('italic')"
         :disabled="disabled"
         @click="run((cmd) => cmd.toggleItalic())"
       />
-      <RichTextEditorButton
+      <AppRichTextEditorButton
         :icon="faUnderline"
-        :title="t('form.richtext.underline')"
+        :title="labels.underline"
         :active="editor.isActive('underline')"
         :disabled="disabled"
         @click="run((cmd) => cmd.toggleUnderline())"
       />
-      <RichTextEditorButton
+      <AppRichTextEditorButton
         :icon="faStrikethrough"
-        :title="t('form.richtext.strikethrough')"
+        :title="labels.strikethrough"
         :active="editor.isActive('strike')"
         :disabled="disabled"
         @click="run((cmd) => cmd.toggleStrike())"
       />
       <template v-if="controls !== 'inline'">
-        <RichTextEditorButton
+        <AppRichTextEditorButton
           :icon="faHeading"
-          :title="t('form.richtext.heading')"
+          :title="labels.heading"
           :active="editor.isActive('heading', { level: 3 })"
           :disabled="disabled"
           @click="run((cmd) => cmd.toggleHeading({ level: 3 }))"
         />
-        <RichTextEditorButton
+        <AppRichTextEditorButton
           :icon="faList"
-          :title="t('form.richtext.bulletlist')"
+          :title="labels.bulletList"
           :active="editor.isActive('bulletList')"
           :disabled="disabled"
           @click="run((cmd) => cmd.toggleBulletList())"
         />
-        <RichTextEditorButton
+        <AppRichTextEditorButton
           :icon="faListOl"
-          :title="t('form.richtext.numberedlist')"
+          :title="labels.numberedList"
           :active="editor.isActive('orderedList')"
           :disabled="disabled"
           @click="run((cmd) => cmd.toggleOrderedList())"
         />
       </template>
-      <RichTextEditorButton
+      <AppRichTextEditorButton
         :icon="faLink"
-        :title="t('form.richtext.link')"
+        :title="labels.link"
         :active="editor.isActive('link')"
         :disabled="disabled"
         @click="setLink"
@@ -67,11 +87,13 @@
         :editor="editor"
         class="content-message"
         :class="disabled && 'ProseMirror-disabled'"
+        :aria-label="editorAriaLabel"
       />
       <div
         v-if="isEditorEmpty && placeholder"
         class="pointer-events-none absolute inset-2 text-grey-dark"
         v-html="placeholder"
+        aria-hidden="true"
       />
       <div v-if="copyable" class="absolute right-1 top-1">
         <AppCopyButton variant="float" :text="editor?.getHTML() || ''" />
@@ -82,14 +104,13 @@
   </div>
 </template>
 
-<script lang="ts" setup="{ emit }">
-import {
-  AppCopyButton,
-  AppInputError,
-  AppInputHelp,
-  AppLabel,
-} from '@beabee/vue';
-
+<script lang="ts" setup>
+/**
+ * Rich text editor component with customizable toolbar.
+ * Built on TipTap editor with accessibility and validation support.
+ *
+ * @component AppRichTextEditor
+ */
 import {
   faBold,
   faHeading,
@@ -108,22 +129,84 @@ import { type ChainedCommands, EditorContent, useEditor } from '@tiptap/vue-3';
 import useVuelidate from '@vuelidate/core';
 import { helpers, requiredIf } from '@vuelidate/validators';
 import { computed, onBeforeUnmount, toRef, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
 
-import RichTextEditorButton from './RichTextEditorButton.vue';
+import { AppCopyButton, AppInputError, AppInputHelp, AppLabel } from '../index';
+import AppRichTextEditorButton from './AppRichTextEditorButton.vue';
 
-const { t } = useI18n();
+/**
+ * Labels for the rich text editor toolbar buttons
+ */
+export interface RichTextEditorLabels {
+  /** Bold button label */
+  bold: string;
+  /** Italic button label */
+  italic: string;
+  /** Underline button label */
+  underline: string;
+  /** Strikethrough button label */
+  strikethrough: string;
+  /** Heading button label */
+  heading: string;
+  /** Bullet list button label */
+  bulletList: string;
+  /** Numbered list button label */
+  numberedList: string;
+  /** Link button label */
+  link: string;
+}
 
-const emit = defineEmits(['update:modelValue']);
-const props = defineProps<{
+/**
+ * Props for the AppRichTextEditor component
+ */
+export interface AppRichTextEditorProps {
+  /** Current value of the editor (HTML content) */
   modelValue: string;
+  /** Label for the editor */
   label?: string;
+  /** Helper text displayed below the editor */
   infoMessage?: string;
+  /** Whether the field is required */
   required?: boolean;
+  /** Whether the editor is disabled */
   disabled?: boolean;
+  /** Whether to show copy button */
   copyable?: boolean;
+  /** Placeholder text shown when editor is empty */
   placeholder?: string;
+  /** Controls displayed in toolbar */
   controls?: 'full' | 'inline';
+  /** Labels for toolbar buttons (required for internationalization) */
+  labels: RichTextEditorLabels;
+  /** Required field validation error message */
+  requiredErrorMessage?: string;
+  /** ARIA label for the toolbar */
+  toolbarAriaLabel?: string;
+  /** ARIA label for the editor content area */
+  editorAriaLabel?: string;
+}
+
+const props = withDefaults(defineProps<AppRichTextEditorProps>(), {
+  label: undefined,
+  infoMessage: undefined,
+  required: false,
+  disabled: false,
+  copyable: false,
+  placeholder: undefined,
+  controls: 'full',
+  requiredErrorMessage: 'This field is required',
+  toolbarAriaLabel: 'Text formatting toolbar',
+  editorAriaLabel: 'Rich text editor',
+});
+
+/**
+ * Events emitted by the AppRichTextEditor component
+ */
+const emit = defineEmits<{
+  /**
+   * Emitted when the editor content changes
+   * @param value - The new HTML content
+   */
+  'update:modelValue': [value: string];
 }>();
 
 const editor = useEditor({
@@ -170,7 +253,7 @@ watch(toRef(props, 'disabled'), (value) => {
 const rules = computed(() => ({
   v: {
     required: helpers.withMessage(
-      t('form.errors.unknown.required'),
+      props.requiredErrorMessage,
       requiredIf(!!props.required)
     ),
   },
@@ -183,11 +266,17 @@ onBeforeUnmount(() => {
   editor.value?.destroy();
 });
 
-function run(cb: (cmd: ChainedCommands) => ChainedCommands) {
+/**
+ * Runs a TipTap command on the editor
+ */
+function run(cb: (cmd: ChainedCommands) => ChainedCommands): void {
   if (editor.value && !props.disabled) cb(editor.value.chain().focus()).run();
 }
 
-function setLink() {
+/**
+ * Opens link dialog and sets or removes link
+ */
+function setLink(): void {
   if (!editor.value || props.disabled) return;
 
   const previousUrl = editor.value.getAttributes('link').href;

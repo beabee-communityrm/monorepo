@@ -43,9 +43,10 @@ meta:
             />
           </div>
           <div class="mb-4">
-            <RichTextEditor
+            <AppRichTextEditor
               v-model="setupContent.mailText"
               :label="t('mailOptIn.text')"
+              :labels="editorLabels"
               required
             />
           </div>
@@ -93,9 +94,10 @@ meta:
           />
         </div>
         <template v-if="setupContent.surveySlug">
-          <RichTextEditor
+          <AppRichTextEditor
             v-model="setupContent.surveyText"
             :label="stepT('joinSurvey.textIntro')"
+            :labels="editorLabels"
             class="mb-4"
           />
 
@@ -125,21 +127,24 @@ import {
   AppCheckbox,
   AppForm,
   AppInput,
+  AppRichTextEditor,
   AppSelect,
   AppSubHeading,
 } from '@beabee/vue';
 
 import NewsletterOptInSettings from '@components/newsletter/NewsletterOptInSettings.vue';
 import SetupForm from '@components/pages/join/SetupForm.vue';
-import RichTextEditor from '@components/rte/RichTextEditor.vue';
 import { client } from '@utils/api';
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import { useRichTextEditorLabels } from '../../../composables/useRichTextEditorLabels';
 
 const setupContent = ref<ContentJoinSetupData>();
 const openCallouts = ref<GetCalloutData[]>([]);
 
 const { t } = useI18n();
+const editorLabels = useRichTextEditorLabels();
 
 const stepT = (key: string) =>
   t('membershipBuilder.steps.accountConfirmation.' + key);

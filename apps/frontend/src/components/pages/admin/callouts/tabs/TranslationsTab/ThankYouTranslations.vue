@@ -24,8 +24,9 @@
           {{ t('callout.builder.tabs.endMessage.inputs.text.label') }}
         </label>
 
-        <RichTextEditor
+        <AppRichTextEditor
           :model-value="getValue(endMessage.thankYouText, selectedLocale)"
+          :labels="editorLabels"
           :placeholder="getPlaceholder(endMessage.thankYouText)"
           :disabled="selectedLocale === defaultLocale"
           :copyable="selectedLocale === defaultLocale"
@@ -60,9 +61,8 @@
 </template>
 
 <script lang="ts" setup>
-import { AppFormBox, AppInput } from '@beabee/vue';
+import { AppFormBox, AppInput, AppRichTextEditor } from '@beabee/vue';
 
-import RichTextEditor from '@components/rte/RichTextEditor.vue';
 import type { LocaleProp } from '@type';
 import {
   getLocalizedValueFallback,
@@ -71,6 +71,7 @@ import {
 } from '@utils/callouts';
 import { useI18n } from 'vue-i18n';
 
+import { useRichTextEditorLabels } from '../../../../../../composables/useRichTextEditorLabels';
 import type { EndMessageTabData } from '../ContentTab/SidebarTabContent/EndMessageTab.vue';
 
 const props = defineProps<{
@@ -80,6 +81,7 @@ const props = defineProps<{
 }>();
 
 const { t } = useI18n();
+const editorLabels = useRichTextEditorLabels();
 
 // Get end message value for a specific locale using utility function (no fallback)
 function getValue(prop: LocaleProp | undefined, locale: string): string {

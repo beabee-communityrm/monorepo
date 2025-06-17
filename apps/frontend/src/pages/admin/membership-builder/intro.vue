@@ -23,9 +23,10 @@ meta:
         :success-text="t('form.saved')"
         @submit="handleUpdate"
       >
-        <RichTextEditor
+        <AppRichTextEditor
           v-model="introMessage"
           :label="stepT('message')"
+          :labels="editorLabels"
           class="mb-4"
           required
         />
@@ -42,17 +43,23 @@ meta:
   </App2ColGrid>
 </template>
 <script lang="ts" setup>
-import { App2ColGrid, AppCheckbox, AppForm } from '@beabee/vue';
+import {
+  App2ColGrid,
+  AppCheckbox,
+  AppForm,
+  AppRichTextEditor,
+} from '@beabee/vue';
 
 import { client } from '@utils/api';
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import RichTextEditor from '../../../components/rte/RichTextEditor.vue';
 import WelcomeMessage from '../../../components/welcome-message/WelcomeMessage.vue';
+import { useRichTextEditorLabels } from '../../../composables/useRichTextEditorLabels';
 import { currentUser } from '../../../store';
 
 const { t } = useI18n();
+const editorLabels = useRichTextEditorLabels();
 const stepT = (key: string) => t('membershipBuilder.steps.intro.' + key);
 
 const introMessage = ref('');
