@@ -4,9 +4,9 @@ import {
   calloutResponseFilters,
   getCalloutComponents,
 } from '@beabee/beabee-common';
+import type { Header } from '@beabee/vue';
 import type { SelectItem } from '@beabee/vue/types';
 
-import type { Header } from '@components/table/table.interface';
 import env from '@env';
 import { i18n } from '@lib/i18n';
 import { type FilterGroups, type FilterItems } from '@type';

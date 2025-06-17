@@ -85,14 +85,14 @@ import {
   AppHeading,
   AppPagination,
   AppSearchInput,
+  AppTable,
   AppTime,
   AppToggle,
+  type Header,
   PageTitle,
 } from '@beabee/vue';
 
 import CalloutCard from '@components/callout/CalloutCard.vue';
-import AppTable from '@components/table/AppTable.vue';
-import type { Header } from '@components/table/table.interface';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { client } from '@utils/api';
 import { defineParam } from '@utils/pagination';

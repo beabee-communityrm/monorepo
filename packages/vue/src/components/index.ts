@@ -12,6 +12,7 @@ export * from './navigation';
 export * from './notification';
 export * from './scroll';
 export * from './status';
+export * from './table';
 export * from './tabs';
 export * from './template';
 export * from './typography';

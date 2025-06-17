@@ -333,6 +333,7 @@
     "addAPoint": "Klicken Sie dort auf die Karte, wo Sie einen Ort ergänzen möchten",
     "addLocation": "Neuen Eintrag eingeben",
     "builder": {
+      "title": "Callout-Builder",
       "actions": {
         "addSlide": "Slide hinzufügen"
       },

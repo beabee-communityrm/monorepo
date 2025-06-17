@@ -78,13 +78,13 @@ import type {
 import {
   AppButton,
   AppFilterGrid,
+  AppPaginatedTable,
   AppSearchInput,
+  type Header,
   ItemStatus,
   PageTitle,
 } from '@beabee/vue';
 
-import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
-import type { Header } from '@components/table/table.interface';
 import {
   faBullhorn,
   faEye,

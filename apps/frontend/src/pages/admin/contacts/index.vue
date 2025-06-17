@@ -167,6 +167,7 @@ import {
   AppButton,
   AppButtonGroup,
   AppFilterGrid,
+  AppPaginatedTable,
   AppSearchInput,
   AppSelect,
   PageTitle,
@@ -179,7 +180,6 @@ import {
   useContactFilters,
 } from '@components/pages/admin/contacts/contacts.interface';
 import AppSearch from '@components/search/AppSearch.vue';
-import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
 import TagList from '@components/tag/TagList.vue';
 import ToggleTagButton from '@components/tag/ToggleTagButton.vue';
 import {

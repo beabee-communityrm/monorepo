@@ -1,3 +1,35 @@
+<!--
+  # AppTable
+  A reusable data table component with sorting, selection, and slot support.
+
+  ## Features:
+  - Sortable columns
+  - Row selection
+  - Flexible slot system for custom content
+  - Keyboard navigation support
+  - Responsive design with Tailwind CSS
+  - Accessible with ARIA attributes
+
+  ## Props:
+  - `headers`: Array of column definitions
+  - `items`: Array of data items to display
+  - `sort`: Current sort configuration
+  - `selectable`: Enable row selection
+  - `hideHeaders`: Hide table headers
+  - `rowClass`: Function to add custom row classes
+  - `emptyText`: Text to display when no data
+  - `loadingText`: Text to display while loading
+
+  ## Events:
+  - `update:sort`: Emitted when sort changes
+
+  ## Slots:
+  - `header-{column}`: Custom header content
+  - `value-{column}`: Custom cell content
+  - `after`: Content after each row
+  - `empty`: Custom empty state
+  - `loading`: Custom loading state
+-->
 <template>
   <table class="border-b border-primary-20">
     <thead v-if="!hideHeaders" class="text-sm">
@@ -17,7 +49,9 @@
           :style="{ width: header.width }"
           @click="sortBy(header)"
         >
-          <slot :name="`header-${header.value}`">{{ header.text }}</slot>
+          <slot :name="`header-${header.value}`" :header="header">{{
+            header.text
+          }}</slot>
           <font-awesome-icon
             v-if="header.value === sort?.by"
             class="ml-2"
@@ -40,7 +74,7 @@
         <td v-if="selectable" />
         <td :colspan="headers.length" class="p-2">
           <slot :name="items ? 'empty' : 'loading'">
-            <p>{{ items ? t('common.noResults') : t('common.loading') }}</p>
+            <p>{{ items ? emptyText : loadingText }}</p>
           </slot>
         </td>
       </tr>
@@ -83,6 +117,11 @@
 </template>
 
 <script lang="ts" setup generic="I extends Item">
+/**
+ * Data table component with sorting and selection capabilities
+ *
+ * @component AppTable
+ */
 import { AppCheckbox } from '@beabee/vue';
 
 import {
@@ -91,32 +130,90 @@ import {
   faSort,
 } from '@fortawesome/free-solid-svg-icons';
 import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
 
-import { hasSlotContent } from '../../utils';
-import { type Header, type Item, SortType } from './table.interface';
+import { type Header, type Item, type Sort, SortType } from '../../types/table';
+import { hasSlotContent } from '../../utils/slots';
 
-export interface Sort {
-  by: string | null;
-  type: SortType;
+/**
+ * Props for the AppTable component
+ */
+export interface AppTableProps<I extends Item> {
+  /** Current sort configuration */
+  sort?: Sort;
+  /** Array of column definitions */
+  headers: Header[];
+  /** Array of data items to display (null for loading state) */
+  items: I[] | null;
+  /** Enable row selection with checkboxes */
+  selectable?: boolean;
+  /** Hide the table headers */
+  hideHeaders?: boolean;
+  /** Function to add custom CSS classes to rows */
+  rowClass?: (item: I) => string;
+  /** Text to display when there are no items */
+  emptyText?: string;
+  /** Text to display while loading */
+  loadingText?: string;
 }
 
-const props = defineProps<{
-  sort?: Sort;
-  headers: Header[];
-  items: I[] | null;
-  selectable?: boolean;
-  hideHeaders?: boolean;
-  rowClass?: (item: I) => string;
+const props = withDefaults(defineProps<AppTableProps<I>>(), {
+  sort: undefined,
+  selectable: false,
+  hideHeaders: false,
+  rowClass: undefined,
+  emptyText: 'No results',
+  loadingText: 'Loading...',
+});
+
+/**
+ * Events emitted by the AppTable component
+ */
+const emit = defineEmits<{
+  /**
+   * Emitted when the sort configuration changes
+   * @param sort - The new sort configuration
+   */
+  'update:sort': [sort: Sort];
 }>();
 
-const emit = defineEmits(['update:sort']);
+/**
+ * Slots available in the AppTable component
+ */
+defineSlots<
+  {
+    /**
+     * Custom content for a specific header
+     * @param header - The header configuration
+     */
+    [K in `header-${string}`]: (props: { header: Header }) => any;
+  } & {
+    /**
+     * Custom content for a specific cell value
+     * @param item - The row item
+     * @param value - The cell value
+     */
+    [K in `value-${string}`]: (props: { item: I; value: any }) => any;
+  } & {
+    /**
+     * Additional content displayed after each row
+     * @param item - The row item
+     */
+    after: (props: { item: I }) => any;
+    /**
+     * Custom empty state content
+     */
+    empty: () => any;
+    /**
+     * Custom loading state content
+     */
+    loading: () => any;
+  }
+>();
 
-const { t } = useI18n();
-
+// Computed properties
 const sort = computed({
   get: () => props.sort,
-  set: (value) => emit('update:sort', value),
+  set: (value) => value && emit('update:sort', value),
 });
 
 const allSelected = computed({
@@ -132,6 +229,7 @@ const allSelected = computed({
   },
 });
 
+// Methods
 function rowClasses(item: I): string {
   return (
     (props.rowClass ? props.rowClass(item) : '') +

@@ -118,10 +118,14 @@ import {
   AppSelect,
   AppTime,
 } from '@beabee/vue';
-import { App2ColGrid, AppHeading, addNotification } from '@beabee/vue';
+import {
+  App2ColGrid,
+  AppHeading,
+  AppPaginatedTable,
+  type Header,
+  addNotification,
+} from '@beabee/vue';
 
-import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
-import type { Header } from '@components/table/table.interface';
 import { faCopy, faTrash, faWarning } from '@fortawesome/free-solid-svg-icons';
 import { client } from '@utils/api';
 import { formatLocale } from '@utils/dates';

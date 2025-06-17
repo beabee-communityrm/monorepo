@@ -47,7 +47,7 @@ import type {
   GetPaymentsQuery,
   Paginated,
 } from '@beabee/beabee-common';
-import { AppFilterGrid, PageTitle } from '@beabee/vue';
+import { AppFilterGrid, AppPaginatedTable, PageTitle } from '@beabee/vue';
 
 import {
   filterGroups,
@@ -56,7 +56,6 @@ import {
 } from '@components/pages/admin/payments.interface';
 import PaymentStatus from '@components/payment/PaymentStatus.vue';
 import AppSearch from '@components/search/AppSearch.vue';
-import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
 import { faEuro } from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { client } from '@utils/api';
