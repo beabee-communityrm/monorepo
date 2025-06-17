@@ -46,7 +46,7 @@ const copyableText = ref(
 </script>
 
 <template>
-  <Story title="Components/Form/AppTextArea">
+  <Story title="Form/AppTextArea">
     <Variant title="Playground">
       <div class="max-w-2xl space-y-6">
         <AppTextArea

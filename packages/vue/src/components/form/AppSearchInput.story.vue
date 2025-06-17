@@ -16,7 +16,7 @@ const filterState = reactive({
 </script>
 
 <template>
-  <Story title="Components/Form/AppSearchInput">
+  <Story title="Form/AppSearchInput">
     <Variant title="Playground">
       <div class="max-w-md space-y-6">
         <AppSearchInput

@@ -48,53 +48,11 @@ function handleContentChange(value) {
 </script>
 ```
 
-## Props
+## Related Components
 
-| Prop                   | Type                   | Default                     | Description                            |
-| ---------------------- | ---------------------- | --------------------------- | -------------------------------------- |
-| `modelValue`           | `string`               | -                           | Current HTML content of the editor     |
-| `label`                | `string`               | `undefined`                 | Label for the editor field             |
-| `infoMessage`          | `string`               | `undefined`                 | Helper text displayed below the editor |
-| `required`             | `boolean`              | `false`                     | Whether the field is required          |
-| `disabled`             | `boolean`              | `false`                     | Whether the editor is disabled         |
-| `copyable`             | `boolean`              | `false`                     | Whether to show copy button            |
-| `placeholder`          | `string`               | `undefined`                 | Placeholder text when editor is empty  |
-| `controls`             | `'full' \| 'inline'`   | `'full'`                    | Controls displayed in toolbar          |
-| `labels`               | `RichTextEditorLabels` | -                           | Labels for toolbar buttons             |
-| `requiredErrorMessage` | `string`               | `'This field is required'`  | Error message for required validation  |
-| `toolbarAriaLabel`     | `string`               | `'Text formatting toolbar'` | ARIA label for toolbar                 |
-| `editorAriaLabel`      | `string`               | `'Rich text editor'`        | ARIA label for editor content          |
+### AppRichTextEditorButton
 
-## Events
-
-| Event               | Payload  | Description                         |
-| ------------------- | -------- | ----------------------------------- |
-| `update:modelValue` | `string` | Emitted when editor content changes |
-
-## Types
-
-### RichTextEditorLabels
-
-```typescript
-interface RichTextEditorLabels {
-  bold: string;
-  italic: string;
-  underline: string;
-  strikethrough: string;
-  heading: string;
-  bulletList: string;
-  numberedList: string;
-  link: string;
-}
-```
-
-## Accessibility
-
-- **Semantic HTML**: Uses proper heading structure and form elements
-- **ARIA Labels**: Comprehensive labeling for screen readers
-- **Keyboard Navigation**: Full keyboard support for all formatting commands
-- **Focus Management**: Proper focus handling within the editor
-- **Touch-Friendly**: Minimum 44x44px touch targets for mobile users
+Toolbar button component used internally by AppRichTextEditor. Provides active/inactive states and accessibility features. See component props and documentation in the TypeScript interface.
 
 ## Validation
 

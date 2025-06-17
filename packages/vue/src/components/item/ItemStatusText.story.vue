@@ -98,7 +98,7 @@ const multilingualExamples = [
 </script>
 
 <template>
-  <Story title="Components/Item/ItemStatusText">
+  <Story title="Item/ItemStatusText">
     <Variant title="Playground">
       <div class="flex max-w-md flex-col gap-4">
         <ItemStatusText

@@ -22,7 +22,7 @@ const sampleValues = [
 </script>
 
 <template>
-  <Story title="Components/Utility/AppQRCode">
+  <Story title="Utility/AppQRCode">
     <Variant title="Playground">
       <div class="flex flex-col items-center space-y-4">
         <div class="w-64">

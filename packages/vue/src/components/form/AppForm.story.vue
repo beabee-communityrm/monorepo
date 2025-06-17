@@ -50,7 +50,7 @@ function resetForm() {
 </script>
 
 <template>
-  <Story title="Components/Form/AppForm">
+  <Story title="Form/AppForm">
     <Variant title="Playground">
       <div class="flex max-w-md flex-col gap-4">
         <AppForm

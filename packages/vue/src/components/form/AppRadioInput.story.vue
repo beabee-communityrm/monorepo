@@ -8,7 +8,7 @@ const variants = ['primary', 'link', 'danger'] as const;
 </script>
 
 <template>
-  <Story title="Components/Form/AppRadioInput">
+  <Story title="Form/AppRadioInput">
     <Variant title="Basic">
       <div class="flex max-w-md flex-col gap-4">
         <div class="space-y-2">

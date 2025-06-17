@@ -104,7 +104,7 @@ async function handleItemDelete() {
 </script>
 
 <template>
-  <Story title="Components/ItemManager/ItemManager">
+  <Story title="ItemManager/ItemManager">
     <Variant title="Playground">
       <div class="max-w-md">
         <ItemManager

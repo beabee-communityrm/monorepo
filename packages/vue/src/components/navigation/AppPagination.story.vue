@@ -16,7 +16,7 @@ const scenarios = [
 </script>
 
 <template>
-  <Story title="Components/Navigation/AppPagination">
+  <Story title="Navigation/AppPagination">
     <Variant title="Playground">
       <div class="space-y-4">
         <div class="rounded border p-4">

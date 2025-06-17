@@ -19,7 +19,7 @@ const longHex = ref('#0066cc');
 </script>
 
 <template>
-  <Story title="Components/Form/AppColorInput">
+  <Story title="Form/AppColorInput">
     <Variant title="Playground">
       <div class="max-w-md space-y-6">
         <AppColorInput v-model="state.color" :id="state.id" />

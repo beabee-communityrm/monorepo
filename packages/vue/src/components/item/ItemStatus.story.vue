@@ -51,7 +51,7 @@ const contentScenarios = [
 </script>
 
 <template>
-  <Story title="Components/Item/ItemStatus">
+  <Story title="Item/ItemStatus">
     <Variant title="Playground">
       <div class="flex max-w-md flex-col gap-4">
         <ItemStatusComponent

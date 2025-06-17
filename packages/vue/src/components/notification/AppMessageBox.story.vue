@@ -35,7 +35,7 @@ const sampleMessages = {
 </script>
 
 <template>
-  <Story title="Components/Notification/AppMessageBox">
+  <Story title="Notification/AppMessageBox">
     <Variant title="Playground">
       <div class="space-y-4">
         <AppMessageBox

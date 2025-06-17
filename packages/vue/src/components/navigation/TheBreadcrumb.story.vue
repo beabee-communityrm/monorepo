@@ -49,7 +49,7 @@ const deepNestingCrumbs: BreadcrumbItem[] = [
 </script>
 
 <template>
-  <Story title="Components/Navigation/TheBreadcrumb">
+  <Story title="Navigation/TheBreadcrumb">
     <Variant title="Playground">
       <div class="space-y-4">
         <div class="rounded border p-4">

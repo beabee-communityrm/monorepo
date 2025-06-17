@@ -12,7 +12,7 @@ const state = reactive({
 </script>
 
 <template>
-  <Story title="Components/Form/AppFormSection">
+  <Story title="Form/AppFormSection">
     <Variant title="Playground">
       <div class="max-w-2xl">
         <AppFormSection :help="state.help">

@@ -43,7 +43,7 @@ async function handleAsyncConfirm() {
 </script>
 
 <template>
-  <Story title="Components/Dialog/AppConfirmDialog">
+  <Story title="Dialog/AppConfirmDialog">
     <Variant title="Playground">
       <div class="flex flex-col gap-4">
         <div class="flex gap-2">

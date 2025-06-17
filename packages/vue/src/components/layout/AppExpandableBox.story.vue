@@ -30,7 +30,7 @@ function handleExpand() {
 </script>
 
 <template>
-  <Story title="Components/Layout/AppExpandableBox">
+  <Story title="Layout/AppExpandableBox">
     <Variant title="Playground">
       <div class="max-w-lg">
         <AppExpandableBox

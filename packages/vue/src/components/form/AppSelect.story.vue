@@ -29,7 +29,7 @@ const colorState = reactive({
 </script>
 
 <template>
-  <Story title="Components/Form/AppSelect">
+  <Story title="Form/AppSelect">
     <Variant title="Playground">
       <div class="max-w-md space-y-6">
         <AppSelect

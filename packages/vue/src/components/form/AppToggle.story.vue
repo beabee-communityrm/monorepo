@@ -22,7 +22,7 @@ const statusState = reactive({
 </script>
 
 <template>
-  <Story title="Components/Form/AppToggle">
+  <Story title="Form/AppToggle">
     <Variant title="Playground">
       <div class="max-w-md space-y-6">
         <div>

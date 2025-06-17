@@ -40,7 +40,7 @@ const timeValue = ref('');
 </script>
 
 <template>
-  <Story title="Components/Form/AppInput">
+  <Story title="Form/AppInput">
     <Variant title="Playground">
       <div class="flex max-w-md flex-col gap-4">
         <AppInput

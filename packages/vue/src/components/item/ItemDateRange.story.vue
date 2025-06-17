@@ -30,7 +30,7 @@ const eventDates = {
 </script>
 
 <template>
-  <Story title="Components/Item/ItemDateRange">
+  <Story title="Item/ItemDateRange">
     <Variant title="Playground">
       <div class="flex max-w-md flex-col gap-4">
         <ItemDateRange

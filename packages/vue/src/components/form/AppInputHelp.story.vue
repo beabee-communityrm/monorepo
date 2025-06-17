@@ -9,7 +9,7 @@ const state = reactive({
 </script>
 
 <template>
-  <Story title="Components/Form/AppInputHelp">
+  <Story title="Form/AppInputHelp">
     <Variant title="Playground">
       <div class="flex max-w-md flex-col gap-4">
         <AppInputHelp :message="state.message" />

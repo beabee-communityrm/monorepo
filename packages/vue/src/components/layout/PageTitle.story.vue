@@ -12,7 +12,7 @@ const state = reactive({
 </script>
 
 <template>
-  <Story title="Components/Layout/PageTitle">
+  <Story title="Layout/PageTitle">
     <Variant title="Playground">
       <div class="max-w-2xl">
         <PageTitle

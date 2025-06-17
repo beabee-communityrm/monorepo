@@ -74,7 +74,7 @@ const sampleContent: Record<string, { title: string; description: string }> = {
 </script>
 
 <template>
-  <Story title="Components/Layout/AppFilterGrid">
+  <Story title="Layout/AppFilterGrid">
     <Variant title="Playground">
       <div class="h-96">
         <AppFilterGrid v-model="state.currentFilter" :items="filterItems">

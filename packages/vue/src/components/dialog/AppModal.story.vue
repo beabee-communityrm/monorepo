@@ -27,7 +27,7 @@ function closeModal() {
 </script>
 
 <template>
-  <Story title="Components/Dialog/AppModal">
+  <Story title="Dialog/AppModal">
     <Variant title="Playground">
       <div class="flex flex-col gap-4">
         <div class="flex gap-2">

@@ -71,7 +71,7 @@ function getTimeInTemplate(locale: keyof typeof localeTemplates): string {
 </script>
 
 <template>
-  <Story title="Components/Utility/AppTime">
+  <Story title="Utility/AppTime">
     <Variant title="Playground">
       <div class="flex flex-col gap-4">
         <div class="rounded border p-4">

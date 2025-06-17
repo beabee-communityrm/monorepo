@@ -9,7 +9,7 @@ const state = reactive({
 </script>
 
 <template>
-  <Story title="Components/Form/AppInputError">
+  <Story title="Form/AppInputError">
     <Variant title="Playground">
       <div class="flex max-w-md flex-col gap-4">
         <AppInputError :message="state.message" />

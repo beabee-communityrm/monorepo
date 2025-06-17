@@ -18,7 +18,7 @@ const payFeeDisabled = ref(false);
 </script>
 
 <template>
-  <Story title="Components/Contribution/ContributionFee">
+  <Story title="Contribution/ContributionFee">
     <Variant title="Playground">
       <div class="max-w-md">
         <ContributionFee

@@ -30,7 +30,7 @@ function handleRemove() {
 </script>
 
 <template>
-  <Story title="Components/Badge/AppTag">
+  <Story title="Badge/AppTag">
     <Variant title="Playground">
       <div class="space-y-4">
         <div class="rounded border p-4">
