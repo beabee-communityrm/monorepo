@@ -3,8 +3,6 @@ export * from './api-request-error';
 export * from './app-qr-code-error-correction-level';
 export * from './app-qr-code-props';
 export * from './app-qr-code-type-number';
-export * from './app-slider-props';
-export * from './app-slider-slide-event-details';
 export * from './breadcrumb-item';
 export * from './content';
 export * from './filter-group';
