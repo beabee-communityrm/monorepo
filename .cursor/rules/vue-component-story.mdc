@@ -11,3 +11,4 @@ Create a story for a component
 - Analyze the component and current usage within `apps/frontend` to understand its context, prop usage, and interaction patterns
 - Use this information for story creation.
 - Create `.story.vue` and `.story.md` files
+- Check `packages/vue/tailwind.config.js` to know all available Tailwind utility classes and variants
