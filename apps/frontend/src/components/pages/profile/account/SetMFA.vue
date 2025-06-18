@@ -225,13 +225,13 @@ import {
   addNotification,
 } from '@beabee/vue';
 import { AppHeading, AppQRCode } from '@beabee/vue';
+import type { AppStepperStep } from '@beabee/vue';
 
 import AppSlide from '@components/slider/AppSlide.vue';
 import AppSlider from '@components/slider/AppSlider.vue';
 import { faMobileAlt } from '@fortawesome/free-solid-svg-icons';
 import { generalContent } from '@store/index';
 import type { AppSliderSlideEventDetails } from '@type/app-slider-slide-event-details';
-import type { AppStepperStep } from '@type/app-stepper-step';
 import type { SetMfaSteps } from '@type/set-mfa-steps';
 import type { SetMfaTotpIdentity } from '@type/set-mfa-totp-identity';
 import { client, isApiError } from '@utils/api';

@@ -273,6 +273,7 @@ import {
   GetContactWith,
   type RoleType,
 } from '@beabee/beabee-common';
+import type { BaseLocale } from '@beabee/locale';
 import {
   App2ColGrid,
   AppButton,

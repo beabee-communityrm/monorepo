@@ -249,19 +249,18 @@ meta:
 
 <script lang="ts" setup>
 import { AppButton, AppCheckbox, AppColor, AppInput } from '@beabee/vue';
-import { AppQRCode } from '@beabee/vue';
+import { AppQRCode, AppStepper } from '@beabee/vue';
+import type { AppStepperStep } from '@beabee/vue';
 
 import {
   faAngleLeft,
   faAngleRight,
   faRotateBack,
 } from '@fortawesome/free-solid-svg-icons';
-import type { AppStepperStep } from '@type/app-stepper-step';
 import { ref } from 'vue';
 
 import AppSlide from '../components/slider/AppSlide.vue';
 import AppSlider from '../components/slider/AppSlider.vue';
-import AppStepper from '../components/stepper/AppStepper.vue';
 
 const appStepper = ref({
   selectedStepIndex: 0,
