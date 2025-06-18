@@ -26,7 +26,7 @@
               :datetime="callout.expires"
               :time-ago-template="t('common.timeAgo', { time: '{time}' })"
               :time-in-template="t('common.timeIn', { time: '{time}' })"
-              :locale="i18n.global.locale.value as BaseLocale"
+              :locale="locale as BaseLocale"
             />
           </div>
         </div>
@@ -48,7 +48,6 @@ import type { GetCalloutData } from '@beabee/beabee-common';
 import type { BaseLocale } from '@beabee/locale';
 import { AppSubHeading, AppTime } from '@beabee/vue';
 
-import { i18n } from '@lib/i18n';
 import { formatLocale } from '@utils/dates';
 import { resolveImageUrl } from '@utils/url';
 import { computed } from 'vue';
@@ -64,5 +63,5 @@ const imageUrl = computed(() => {
     : noImage;
 });
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 </script>

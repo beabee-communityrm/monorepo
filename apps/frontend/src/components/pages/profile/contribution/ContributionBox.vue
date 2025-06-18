@@ -29,7 +29,7 @@
             <AppTime
               v-if="contribution.membershipExpiryDate"
               :datetime="contribution.membershipExpiryDate"
-              :locale="i18n.global.locale.value as BaseLocale"
+              :locale="locale as BaseLocale"
               time-only
               class="font-bold text-danger"
             />
@@ -73,12 +73,11 @@ import {
 import type { BaseLocale } from '@beabee/locale';
 import { AppSubHeading, AppTime } from '@beabee/vue';
 
-import { i18n } from '@lib/i18n';
 import { formatLocale } from '@utils/dates';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-const { n, t } = useI18n();
+const { n, t, locale } = useI18n();
 
 const props = defineProps<{
   contribution: ContributionInfo;

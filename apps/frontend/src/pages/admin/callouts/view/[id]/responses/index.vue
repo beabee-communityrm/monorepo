@@ -146,7 +146,7 @@ meta:
             :datetime="value"
             :time-ago-template="t('common.timeAgo', { time: '{time}' })"
             :time-in-template="t('common.timeIn', { time: '{time}' })"
-            :locale="i18n.global.locale.value as BaseLocale"
+            :locale="locale as BaseLocale"
           />
         </template>
 
@@ -193,7 +193,7 @@ meta:
                 :datetime="item.latestComment.createdAt"
                 :time-ago-template="t('common.timeAgo', { time: '{time}' })"
                 :time-in-template="t('common.timeIn', { time: '{time}' })"
-                :locale="i18n.global.locale.value as BaseLocale"
+                :locale="locale as BaseLocale"
               />
               <b> • {{ item.latestComment.contact.displayName }}:{{ ' ' }}</b>
               <span
@@ -245,7 +245,6 @@ import {
   faUser,
   faUserPen,
 } from '@fortawesome/free-solid-svg-icons';
-import { i18n } from '@lib/i18n';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { client } from '@utils/api';
 import { buckets } from '@utils/callouts';
@@ -276,7 +275,7 @@ import { useTagFilter } from '../../../../../../composables/useTagFilter';
  * Props & Composables
  */
 const props = defineProps<{ callout: GetCalloutDataWith<'form'> }>();
-const { t, n } = useI18n();
+const { t, n, locale } = useI18n();
 const route = useRoute();
 
 /**

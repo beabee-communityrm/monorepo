@@ -50,7 +50,7 @@ meta:
             :datetime="member.joined"
             :time-ago-template="t('common.timeAgo', { time: '{time}' })"
             :time-in-template="t('common.timeIn', { time: '{time}' })"
-            :locale="i18n.global.locale.value as BaseLocale"
+            :locale="locale as BaseLocale"
           />
         </li>
       </ul>
@@ -106,7 +106,6 @@ import CalloutSummary from '@components/callout/CalloutSummary.vue';
 import HintBox from '@components/pages/admin/HintBox.vue';
 import KeyStat from '@components/pages/admin/KeyStat.vue';
 import { faChartLine } from '@fortawesome/free-solid-svg-icons';
-import { i18n } from '@lib/i18n';
 import { currentUser } from '@store';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { client } from '@utils/api';
@@ -116,7 +115,7 @@ import { useI18n } from 'vue-i18n';
 
 import env from '../../env';
 
-const { n, t } = useI18n();
+const { n, t, locale } = useI18n();
 
 addBreadcrumb(
   computed(() => [
