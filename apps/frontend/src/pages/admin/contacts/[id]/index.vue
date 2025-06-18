@@ -90,8 +90,10 @@ meta:
 
       <AppHeading class="mt-6">{{ t('contactOverview.roles') }}</AppHeading>
       <div class="relative mt-4">
-        <RoleEditor
+        <AppRoleEditor
           :roles="contact.roles"
+          :labels="roleEditorLabels"
+          :locale="locale as BaseLocale"
           @delete="handleDeleteRole"
           @update="handleUpdateRole"
         />
@@ -282,11 +284,11 @@ import {
   AppInput,
   AppRichTextEditor,
 } from '@beabee/vue';
+import { AppRoleEditor, type AppRoleEditorLabels } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
 import CalloutForm from '@components/pages/callouts/CalloutForm.vue';
 import PaymentMethod from '@components/payment-method/PaymentMethod.vue';
-import RoleEditor from '@components/role/RoleEditor.vue';
 import TagList from '@components/tag/TagList.vue';
 import ToggleTagButton from '@components/tag/ToggleTagButton.vue';
 import env from '@env';
@@ -298,8 +300,31 @@ import { useI18n } from 'vue-i18n';
 
 import { useRichTextEditorLabels } from '../../../../composables/useRichTextEditorLabels';
 
-const { t, n } = useI18n();
+const { t, n, locale } = useI18n();
 const editorLabels = useRichTextEditorLabels();
+
+const roleEditorLabels: AppRoleEditorLabels = {
+  addButtonText: t('roleEditor.add'),
+  editButtonText: t('actions.edit'),
+  deleteButtonText: t('actions.delete'),
+  updateButtonText: t('actions.update'),
+  cancelButtonText: t('actions.cancel'),
+  noBackButtonText: t('actions.noBack'),
+  yesRemoveButtonText: t('actions.yesRemove'),
+  deleteTitle: t('roleEditor.confirmDelete.title'),
+  deleteText: t('roleEditor.confirmDelete.text'),
+  todayText: t('roleEditor.today'),
+  newRoleLabel: t('roleEditor.new'),
+  startsLabel: t('roleEditor.starts.label'),
+  startsNowOption: t('roleEditor.starts.opts.now'),
+  startsScheduleOption: t('roleEditor.starts.opts.schedule'),
+  expiresLabel: t('roleEditor.expires.label'),
+  expiresNeverOption: t('roleEditor.expires.opts.never'),
+  expiresScheduleOption: t('roleEditor.expires.opts.schedule'),
+  memberRoleLabel: t('common.role.member'),
+  adminRoleLabel: t('common.role.admin'),
+  superAdminRoleLabel: t('common.role.superadmin'),
+};
 
 const props = defineProps<{
   contact: GetContactData;
