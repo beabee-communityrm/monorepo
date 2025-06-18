@@ -13,17 +13,21 @@ meta:
     ></PageTitle>
 
     <div class="grid lg:grid-cols-2">
-      <NoticeForm :notice="notice" @submit="handleSubmit"></NoticeForm>
+      <NoticeForm
+        :notice="notice"
+        :labels="labels"
+        @submit="handleSubmit"
+      ></NoticeForm>
     </div>
   </template>
 </template>
 
 <script lang="ts" setup>
 import type { CreateNoticeData, GetNoticeData } from '@beabee/beabee-common';
-import { PageTitle } from '@beabee/vue';
+import { NoticeForm, PageTitle } from '@beabee/vue';
+import type { NoticeFormLabels } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
-import NoticeForm from '@components/notice/NoticeForm.vue';
 import { faSignHanging } from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { client } from '@utils/api';
@@ -36,6 +40,16 @@ const router = useRouter();
 
 const props = defineProps<{ id: string }>();
 const notice = ref<GetNoticeData | undefined>();
+
+const labels: NoticeFormLabels = {
+  save: t('actions.save'),
+  name: t('addNotice.form.name'),
+  startDateAndTime: t('addNotice.form.startDateAndTime'),
+  expirationDateAndTime: t('addNotice.form.expirationDateAndTime'),
+  text: t('addNotice.form.text'),
+  buttonText: t('addNotice.form.buttonText'),
+  url: t('addNotice.form.url'),
+};
 
 addBreadcrumb(
   computed(() => [

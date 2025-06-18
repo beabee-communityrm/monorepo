@@ -3,7 +3,6 @@ export {
   type AppNotificationProps,
 } from './AppNotification.vue';
 export { default as AppMessageBox } from './AppMessageBox.vue';
-export { default as AppNotice } from './AppNotice.vue';
 export { default as WelcomeMessage } from './WelcomeMessage.vue';
 export { default as WelcomeIcon } from './WelcomeIcon.vue';
 

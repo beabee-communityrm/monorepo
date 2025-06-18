@@ -9,16 +9,25 @@ meta:
   <PageTitle :title="t('addNotice.title')" border></PageTitle>
   <App2ColGrid>
     <template #col1>
-      <NoticeForm :notice="undefined" @submit="handleSubmit"></NoticeForm>
+      <NoticeForm
+        :notice="undefined"
+        :labels="labels"
+        @submit="handleSubmit"
+      ></NoticeForm>
     </template>
   </App2ColGrid>
 </template>
 
 <script lang="ts" setup>
 import type { CreateNoticeData, GetNoticeData } from '@beabee/beabee-common';
-import { App2ColGrid, PageTitle, addNotification } from '@beabee/vue';
+import {
+  App2ColGrid,
+  NoticeForm,
+  PageTitle,
+  addNotification,
+} from '@beabee/vue';
+import type { NoticeFormLabels } from '@beabee/vue';
 
-import NoticeForm from '@components/notice/NoticeForm.vue';
 import { faSignHanging } from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { client } from '@utils/api';
@@ -28,6 +37,16 @@ import { useRouter } from 'vue-router';
 
 const { t } = useI18n();
 const router = useRouter();
+
+const labels: NoticeFormLabels = {
+  save: t('actions.save'),
+  name: t('addNotice.form.name'),
+  startDateAndTime: t('addNotice.form.startDateAndTime'),
+  expirationDateAndTime: t('addNotice.form.expirationDateAndTime'),
+  text: t('addNotice.form.text'),
+  buttonText: t('addNotice.form.buttonText'),
+  url: t('addNotice.form.url'),
+};
 
 addBreadcrumb(
   computed(() => [

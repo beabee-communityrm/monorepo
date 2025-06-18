@@ -191,7 +191,7 @@ const multipleNotices: GetNoticeData[] = [
 </script>
 
 <template>
-  <Story title="Notification/AppNotice">
+  <Story title="Notice/AppNotice">
     <Variant title="Playground">
       <div class="space-y-4">
         <AppNotice
