@@ -650,7 +650,8 @@
         "option": "Option {n}",
         "placeholder": "Texte indicatif",
         "html": "Contenu"
-      }
+      },
+      "title": ""
     },
     "confirmHuman": "Veuillez confirmer que vous êtes humain",
     "contactDetails": "Informations de contact",
