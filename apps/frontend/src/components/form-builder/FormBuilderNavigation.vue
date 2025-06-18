@@ -39,7 +39,6 @@
   </div>
 </template>
 <script lang="ts" setup>
-// Translations moved to TranslationsTab
 import { AppInput, AppSelect } from '@beabee/vue';
 
 import { computed } from 'vue';

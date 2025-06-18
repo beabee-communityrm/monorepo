@@ -4,8 +4,8 @@
     v-else-if="item.type === 'boolean'"
     v-model="value"
     :options="[
-      [true, t('common.yes')],
-      [false, t('common.no')],
+      [true, labels.yes],
+      [false, labels.no],
     ]"
     inline
     required
@@ -16,7 +16,11 @@
     :items="item.options || []"
     required
   />
-  <DateInput v-else-if="item.type === 'date'" v-model="value" />
+  <DateInput
+    v-else-if="item.type === 'date'"
+    v-model="value"
+    :relative-placeholder="labels.relativeDatePlaceholder"
+  />
   <AppInput
     v-else
     v-model="value"
@@ -31,25 +35,47 @@
     class="min-w-[10rem]"
   />
 </template>
-<script lang="ts" setup>
+
+<script setup lang="ts">
 import type { RuleValue } from '@beabee/beabee-common';
-import { AppInput, AppRadioGroup, AppSelect } from '@beabee/vue';
+import type { BaseLocale } from '@beabee/locale';
+import { AppInput, AppRadioGroup, AppSelect, formatLocale } from '@beabee/vue';
 
-import type { FilterItem } from '@type';
 import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
 
-import { formatLocale } from '../../../utils/dates';
+import type { FilterItem } from '../../../types/search';
 import DateInput from './DateInput.vue';
 
-const emit = defineEmits(['update:modelValue']);
-const props = defineProps<{
+/**
+ * Argument input component for different filter types
+ * @param modelValue - The current value
+ * @param item - The filter item configuration
+ * @param readonly - Whether the component is in readonly mode
+ * @param labels - Labels for UI text
+ * @param locale - Locale for date formatting
+ */
+
+interface Props {
   modelValue: RuleValue;
   item: FilterItem;
   readonly: boolean;
-}>();
+  labels: {
+    yes: string;
+    no: string;
+    relativeDatePlaceholder: string;
+  };
+  locale?: BaseLocale;
+}
 
-const { t } = useI18n();
+interface Emits {
+  (event: 'update:modelValue', value: RuleValue): void;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  locale: 'en' as BaseLocale,
+});
+
+const emit = defineEmits<Emits>();
 
 const value = computed({
   // modelValue has a different type depending on the item.type
@@ -69,11 +95,11 @@ const readonlyValue = computed(() => {
       if (date.startsWith('$now')) {
         return props.modelValue;
       } else {
-        return formatLocale(new Date(date), 'P');
+        return formatLocale(new Date(date), 'P', props.locale);
       }
     }
     case 'boolean':
-      return props.modelValue === true ? t('common.yes') : t('common.no');
+      return props.modelValue === true ? props.labels.yes : props.labels.no;
 
     case 'array':
     case 'enum':

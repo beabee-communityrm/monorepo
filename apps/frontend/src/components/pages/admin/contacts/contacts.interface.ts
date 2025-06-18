@@ -7,12 +7,12 @@ import {
   contactFilters,
 } from '@beabee/beabee-common';
 import { type Header, type SelectItem } from '@beabee/vue';
+import { withItems, withLabel } from '@beabee/vue';
+import type { FilterGroups, FilterItems } from '@beabee/vue';
 
 import { i18n } from '@lib/i18n';
 import { generalContent } from '@store';
-import type { FilterGroups, FilterItems } from '@type';
 import { client } from '@utils/api';
-import { withItems, withLabel } from '@utils/rules';
 import { computed, ref, watchEffect } from 'vue';
 
 import CalloutResponseFilterGroup from './CalloutResponseFilterGroup.vue';

@@ -4,17 +4,17 @@
       class="mb-3 flex items-center gap-2 text-sm font-semibold text-body-80"
     >
       <span>
-        {{ t('advancedSearch.createFiltersBefore') }}
+        {{ labels.createFiltersBefore }}
       </span>
       <AppSelect
         v-model="ruleGroup.condition"
         :items="[
-          { id: 'AND', label: t('advancedSearch.createFiltersType.all') },
-          { id: 'OR', label: t('advancedSearch.createFiltersType.any') },
+          { id: 'AND', label: labels.conditionTypes.all },
+          { id: 'OR', label: labels.conditionTypes.any },
         ]"
         required
       />
-      <span>{{ t('advancedSearch.createFiltersAfter') }}</span>
+      <span>{{ labels.createFiltersAfter }}</span>
     </div>
 
     <div class="relative mb-4">
@@ -27,11 +27,14 @@
           <AppSearchRuleOrGroup
             v-model:rule="ruleGroup.rules[i]"
             :filter-groups="filterGroups"
+            :operator-labels="operatorLabels"
+            :labels="labels"
+            :locale="locale"
             @remove="removeRule(i)"
           />
           <span
             class="absolute bottom-full left-1/2 z-10 -translate-x-1/2 translate-y-1/2 rounded bg-primary-70 px-2 py-1 font-bold uppercase text-white group-first:hidden"
-            >{{ t('advancedSearch.matchWord.' + ruleGroup.condition) }}</span
+            >{{ labels.matchConditions[ruleGroup.condition] }}</span
           >
         </li>
       </ul>
@@ -42,7 +45,7 @@
           size="xs"
           @click="addRule"
         >
-          {{ t('advancedSearch.addRule') }}
+          {{ labels.addRule }}
         </AppButton>
       </div>
     </div>
@@ -53,39 +56,83 @@
         :disabled="validation.$invalid || !hasChanged"
         type="submit"
       >
-        {{ t('actions.search') }}
+        {{ labels.search }}
       </AppButton>
       <AppButton v-if="hasChanged" variant="text" @click="handleReset">
-        {{ t('actions.reset') }}
+        {{ labels.reset }}
       </AppButton>
     </div>
   </form>
 </template>
-<script lang="ts" setup>
+
+<script setup lang="ts">
 import type { Rule, RuleGroup } from '@beabee/beabee-common';
+import type { BaseLocale } from '@beabee/locale';
 import { AppButton, AppSelect } from '@beabee/vue';
 
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import type { FilterGroups } from '@type/index';
-import type { RuleGroupWithEmpty } from '@type/rule-group-with-empty';
-import { copyRuleGroup, isRuleGroupEqual } from '@utils/rules';
 import useVuelidate from '@vuelidate/core';
 import { computed, reactive, toRef, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
 
+import type {
+  FilterGroups,
+  OperatorLabels,
+  RuleGroupWithEmpty,
+} from '../../types/search';
+import { copyRuleGroup, isRuleGroupEqual } from '../../utils/rules';
 import AppSearchRuleOrGroup from './AppSearchRuleOrGroup.vue';
 
-const emit = defineEmits<{
-  (e: 'update:modelValue', value: RuleGroup): void;
-  (e: 'reset'): void;
-}>();
-const props = defineProps<{
+/**
+ * Search form component for building complex filter rules
+ * @param filterGroups - Available filter groups
+ * @param modelValue - The current rule group
+ * @param hasChanged - Whether the form has changes
+ * @param operatorLabels - Labels for operators
+ * @param labels - Labels for UI text
+ * @param locale - Locale for date formatting
+ */
+
+interface Props {
   filterGroups: FilterGroups;
   modelValue: RuleGroup | undefined;
   hasChanged: boolean;
-}>();
+  operatorLabels: OperatorLabels;
+  labels: {
+    createFiltersBefore: string;
+    createFiltersAfter: string;
+    conditionTypes: {
+      all: string;
+      any: string;
+    };
+    matchConditions: {
+      AND: string;
+      OR: string;
+    };
+    addRule: string;
+    search: string;
+    reset: string;
+    selectFilter: string;
+    yes: string;
+    no: string;
+    relativeDatePlaceholder: string;
+    and: string;
+    nestedRules: string;
+    noNestedRules: string;
+  };
+  locale?: BaseLocale;
+}
 
-const { t } = useI18n();
+interface Emits {
+  (event: 'update:modelValue', value: RuleGroup): void;
+  (event: 'reset'): void;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  locale: 'en' as BaseLocale,
+});
+
+const emit = defineEmits<Emits>();
+
 const validation = useVuelidate();
 
 const ruleGroup = reactive<RuleGroupWithEmpty>({

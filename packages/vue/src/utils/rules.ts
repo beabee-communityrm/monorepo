@@ -1,8 +1,5 @@
 import {
-  type ArrayFilterArgs,
-  type EnumFilterArgs,
   type FilterType,
-  type OtherFilterArgs,
   type Rule,
   type RuleGroup,
   type RuleOperator,
@@ -12,73 +9,11 @@ import {
   operatorsByTypeMap,
 } from '@beabee/beabee-common';
 
-import type {
-  FilterItem,
-  FilterItemArray,
-  FilterItemEnum,
-  FilterItemOther,
-  FilterItems,
-  RuleGroupWithEmpty,
-} from '@type';
-import type { Ref } from 'vue';
+import type { RuleGroupWithEmpty } from '../types/search';
 
-interface LabelOpts {
-  prefix: string;
-}
-
-export function withLabel<T extends readonly string[]>(
-  args: EnumFilterArgs<T>,
-  label: string,
-  optionLabels: Record<T[number], string>
-): FilterItemEnum<T>;
-export function withLabel(
-  args: ArrayFilterArgs<undefined>,
-  label: string,
-  opts?: LabelOpts
-): FilterItemArray<undefined>;
-export function withLabel<T extends readonly string[]>(
-  args: ArrayFilterArgs<T>,
-  label: string,
-  optionLabels: Record<T[number], string>
-): FilterItemArray<T>;
-export function withLabel(
-  args: OtherFilterArgs,
-  label: string,
-  opts?: LabelOpts
-): FilterItemOther;
-export function withLabel<T extends readonly string[]>(
-  args: EnumFilterArgs<T> | ArrayFilterArgs<T> | OtherFilterArgs,
-  label: string,
-  extraArg?: Record<T[number], string> | LabelOpts
-): FilterItem {
-  if (args.type === 'enum' || (args.type === 'array' && args.options)) {
-    const optionLabels = extraArg as Record<T[number], string>;
-    return {
-      ...args,
-      label,
-      options: (args.options || []).map((id: T[number]) => ({
-        id,
-        label: optionLabels[id],
-      })),
-    };
-  } else {
-    const args2 = args as OtherFilterArgs | ArrayFilterArgs<undefined>;
-    const opts = extraArg as LabelOpts | undefined;
-    return { ...args2, label, ...opts };
-  }
-}
-
-export function withItems<T extends string, S extends T>(
-  items: Ref<FilterItems<T>>,
-  itemIds: S[]
-): FilterItems<S> {
-  const ret: Partial<FilterItems<S>> = {};
-  for (const id of itemIds) {
-    ret[id] = items.value[id];
-  }
-  return ret as FilterItems<S>;
-}
-
+/**
+ * Get default value for a rule based on its type
+ */
 export function getDefaultRuleValue(type: FilterType): RuleValue {
   switch (type) {
     case 'boolean':
@@ -90,7 +25,9 @@ export function getDefaultRuleValue(type: FilterType): RuleValue {
   }
 }
 
-// Enforces type safety for the operator and initial values
+/**
+ * Create default operator and value for a given type
+ */
 function withDefault<T extends FilterType>(
   type: T,
   operator: keyof (typeof operatorsByType)[T]
@@ -116,6 +53,9 @@ const ruleDefaultsByType: Record<
   array: () => withDefault('array', 'contains'),
 };
 
+/**
+ * Create a new rule with default operator and value for the given field type
+ */
 export function createNewRule(field: string, type: FilterType): Rule {
   return {
     field,
@@ -123,6 +63,9 @@ export function createNewRule(field: string, type: FilterType): Rule {
   };
 }
 
+/**
+ * Create a deep copy of a rule
+ */
 export function copyRule(rule: Rule): Rule {
   return {
     field: rule.field,
@@ -131,6 +74,9 @@ export function copyRule(rule: Rule): Rule {
   };
 }
 
+/**
+ * Create a deep copy of a rule group
+ */
 export function copyRuleGroup(ruleGroup: RuleGroup): RuleGroup {
   return {
     condition: ruleGroup.condition,
@@ -142,6 +88,9 @@ export function copyRuleGroup(ruleGroup: RuleGroup): RuleGroup {
   };
 }
 
+/**
+ * Check if two rules are equal
+ */
 export function isRuleEqual(a: Rule, b: Rule): boolean {
   return (
     a.field === b.field &&
@@ -151,6 +100,9 @@ export function isRuleEqual(a: Rule, b: Rule): boolean {
   );
 }
 
+/**
+ * Check if two rule groups are equal (including empty states)
+ */
 export function isRuleGroupEqual(
   a: RuleGroupWithEmpty,
   b: RuleGroupWithEmpty

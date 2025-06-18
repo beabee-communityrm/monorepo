@@ -5,14 +5,14 @@ import {
   getCalloutComponents,
 } from '@beabee/beabee-common';
 import type { Header } from '@beabee/vue';
+import { withLabel } from '@beabee/vue';
+import { type FilterGroups, type FilterItems } from '@beabee/vue';
 import type { SelectItem } from '@beabee/vue/types';
 
 import env from '@env';
 import { i18n } from '@lib/i18n';
-import { type FilterGroups, type FilterItems } from '@type';
 import { client } from '@utils/api';
 import { convertComponentsToFilters } from '@utils/callouts';
-import { withLabel } from '@utils/rules';
 import { type Ref, computed, ref, watchEffect } from 'vue';
 
 const { t } = i18n.global;
@@ -132,7 +132,7 @@ export function useCalloutResponseFilters(
   const answerItems = computed(() =>
     Object.entries(answerFilterItems.value).map(([id, item]) => ({
       id: id,
-      label: item.label,
+      label: (item as { label: string }).label,
     }))
   );
 

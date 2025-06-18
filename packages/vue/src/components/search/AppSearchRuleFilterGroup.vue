@@ -2,10 +2,12 @@
   <template v-if="readonly">
     <template v-if="rule && ruleFilterItem">
       <b>{{ ruleFilterItem.label }}</b>
-      {{ operatorT(ruleFilterItem.type, rule.operator) }}
+      {{ getOperatorLabel(ruleFilterItem.type, rule.operator) }}
       <AppSearchRuleFilterGroupItem
         :rule="rule"
         :item="ruleFilterItem"
+        :labels="labels"
+        :locale="locale"
         readonly
       />
       <button type="button" class="-mr-2 px-2" @click="emit('remove')">
@@ -18,7 +20,7 @@
   <div v-else class="flex items-center gap-2">
     <AppSelect
       :model-value="rule?.field || ''"
-      :placeholder="t('advancedSearch.selectFilter')"
+      :placeholder="labels.selectFilter"
       :items="filterItems"
       required
       class="basis-2/5"
@@ -35,7 +37,12 @@
       />
       <span v-else>{{ filterOperatorItems[0].label }}</span>
       <div class="flex-1">
-        <AppSearchRuleFilterGroupItem :rule="rule" :item="ruleFilterItem" />
+        <AppSearchRuleFilterGroupItem
+          :rule="rule"
+          :item="ruleFilterItem"
+          :labels="labels"
+          :locale="locale"
+        />
       </div>
     </template>
   </div>
@@ -43,26 +50,59 @@
 
 <script setup lang="ts">
 import { type RuleOperator, operatorsByTypeMap } from '@beabee/beabee-common';
+import type { BaseLocale } from '@beabee/locale';
 import { AppSelect } from '@beabee/vue';
 
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
-import { createNewRule, getDefaultRuleValue } from '@utils/rules';
 import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
 
-import AppSearchRuleFilterGroupItem from './AppSearchRuleFilterGroupItem.vue';
 import {
+  type OperatorLabels,
   type SearchRuleEmits,
   type SearchRuleFilterGroupProps,
-  nullableOperatorItems,
-  operatorItems,
-  operatorT,
-} from './search.interface';
+  buildNullableOperatorItems,
+  buildOperatorItems,
+} from '../../types/search';
+import { createNewRule, getDefaultRuleValue } from '../../utils/rules';
+import AppSearchRuleFilterGroupItem from './AppSearchRuleFilterGroupItem.vue';
 
-const emit = defineEmits<SearchRuleEmits>();
-const props = defineProps<SearchRuleFilterGroupProps>();
+/**
+ * Rule filter group component that handles selection of fields and operators
+ * @param filterGroup - The filter group configuration
+ * @param rule - The current rule
+ * @param readonly - Whether the component is in readonly mode
+ * @param operatorLabels - Labels for operators
+ * @param labels - Labels for UI text
+ * @param locale - Locale for date formatting
+ */
 
-const { t } = useI18n();
+interface Props extends SearchRuleFilterGroupProps {
+  operatorLabels: OperatorLabels;
+  labels: {
+    selectFilter: string;
+    yes: string;
+    no: string;
+    relativeDatePlaceholder: string;
+    and: string;
+  };
+  locale?: BaseLocale;
+}
+
+interface Emits extends SearchRuleEmits {
+  (event: 'remove'): void;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  readonly: false,
+  locale: 'en' as BaseLocale,
+});
+
+const emit = defineEmits<Emits>();
+
+const operatorItems = computed(() => buildOperatorItems(props.operatorLabels));
+const nullableOperatorItems = computed(() =>
+  buildNullableOperatorItems(props.operatorLabels)
+);
 
 const ruleFilterItem = computed(() => {
   return props.rule ? props.filterGroup.items[props.rule.field] : undefined;
@@ -81,10 +121,25 @@ const filterOperatorItems = computed(() => {
   if (!item) return [];
 
   return [
-    ...operatorItems[item.type],
-    ...(item.nullable ? nullableOperatorItems : []),
+    ...operatorItems.value[item.type],
+    ...(item.nullable ? nullableOperatorItems.value : []),
   ];
 });
+
+function getOperatorLabel(type: string, operator: RuleOperator): string {
+  let labelType = type;
+  if (operator === 'is_empty' || operator === 'is_not_empty') {
+    labelType = 'all';
+  }
+  if (labelType === 'contact') {
+    labelType = 'text';
+  }
+
+  return (
+    props.operatorLabels[labelType as keyof OperatorLabels]?.[operator] ||
+    operator
+  );
+}
 
 function changeRule(id: string) {
   const type = props.filterGroup.items[id].type;

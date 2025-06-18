@@ -14,6 +14,7 @@ export * from './notice';
 export * from './notification';
 export * from './role';
 export * from './scroll';
+export * from './search';
 export * from './status';
 export * from './table';
 export * from './tabs';
