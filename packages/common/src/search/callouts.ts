@@ -148,3 +148,13 @@ export const calloutReviewerFilters = {
   },
 } as const;
 calloutReviewerFilters satisfies Filters;
+
+export const calloutVariantFilters = {
+  calloutId: {
+    type: 'text',
+  },
+  name: {
+    type: 'text',
+  },
+} as const;
+calloutVariantFilters satisfies Filters;

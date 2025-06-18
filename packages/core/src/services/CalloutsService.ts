@@ -125,7 +125,8 @@ class CalloutsService {
 
     const newCalloutVariants = Object.fromEntries(
       variants.map((variant) => {
-        return [variant.name, variant];
+        const { id: removeVariantId, ...variantData } = variant;
+        return [variant.name, variantData];
       })
     );
 

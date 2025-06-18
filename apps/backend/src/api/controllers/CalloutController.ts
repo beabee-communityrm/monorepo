@@ -35,6 +35,7 @@ import CalloutResponseTransformer from '@api/transformers/CalloutResponseTransfo
 import CalloutReviewerTransformer from '@api/transformers/CalloutReviewerTransformer';
 import calloutTagTransformer from '@api/transformers/CalloutTagTransformer';
 import CalloutTransformer from '@api/transformers/CalloutTransformer';
+import CalloutVariantTransformer from '@api/transformers/CalloutVariantTransformer';
 import { validateOrReject } from '@api/utils/validation';
 import { verify } from '@core/lib/captchafox';
 import { plainToInstance } from 'class-transformer';
@@ -115,14 +116,32 @@ export class CalloutController {
     });
   }
 
-  @Authorized('admin')
   @Patch('/:id')
   async updateCallout(
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @CalloutId() id: string,
     @PartialBody() data: CreateCalloutDto // Actually Partial<CreateCalloutDto>
   ): Promise<GetCalloutDto | undefined> {
-    await calloutsService.updateCallout(id, data);
+    const { variants, ...calloutData } = data;
+
+    await CalloutTransformer.updateById(auth, id, calloutData);
+
+    if (variants) {
+      for (const [name, variant] of Object.entries(variants)) {
+        await CalloutVariantTransformer.update(
+          auth,
+          {
+            condition: 'AND',
+            rules: [
+              { field: 'calloutId', operator: 'equal', value: [id] },
+              { field: 'name', operator: 'equal', value: [name] },
+            ],
+          },
+          variant
+        );
+      }
+    }
+
     return CalloutTransformer.fetchOneById(auth, id);
   }
 
