@@ -7,6 +7,7 @@ import {
   type CalloutVariantData,
   type CalloutVariantNavigationData,
   type CreateCalloutData,
+  type CreateCalloutVariantData,
   type GetCalloutDataWith,
   type GetCalloutSlideSchema,
   ItemStatus,
@@ -301,6 +302,65 @@ export function convertCalloutToTabs(
 }
 
 /**
+ * Converts a callout variant for the API format
+ *
+ * @param tabs - The callout data from the editor tabs
+ * @param variant - The variant to convert (e.g., 'default', 'de', 'en')
+ * @returns The variant data for the callout in the format expected by the API
+ */
+function convertVariantForCallout(
+  tabs: CalloutHorizontalTabsData,
+  variant: string
+): CalloutVariantData {
+  const slideNavigation: Record<string, CalloutVariantNavigationData> = {};
+
+  for (const slide of tabs.content.slides) {
+    slideNavigation[slide.id] = {
+      nextText: slide.navigation.nextText[variant] || '',
+      prevText: slide.navigation.prevText[variant] || '',
+      submitText: slide.navigation.submitText[variant] || '',
+    };
+  }
+
+  // Use translations tab data for component text
+  const componentText: Record<string, string> = {};
+  for (const key in tabs.translations.componentText) {
+    componentText[key] = tabs.translations.componentText[key][variant] || '';
+  }
+
+  return {
+    title: tabs.titleAndImage.title[variant] || '',
+    excerpt: tabs.titleAndImage.description[variant] || '',
+    intro: tabs.content.sidebarTabs.intro.introText[variant] || '',
+    ...(tabs.content.sidebarTabs.endMessage.whenFinished === 'redirect'
+      ? {
+          thanksText: '',
+          thanksTitle: '',
+          thanksRedirect:
+            tabs.content.sidebarTabs.endMessage.thankYouRedirect[variant] || '',
+        }
+      : {
+          thanksText:
+            tabs.content.sidebarTabs.endMessage.thankYouText[variant] || '',
+          thanksTitle:
+            tabs.content.sidebarTabs.endMessage.thankYouTitle[variant] || '',
+          thanksRedirect: null,
+        }),
+    ...(tabs.titleAndImage.overrideShare
+      ? {
+          shareTitle: tabs.titleAndImage.shareTitle[variant] || '',
+          shareDescription: tabs.titleAndImage.shareDescription[variant] || '',
+        }
+      : {
+          shareTitle: null,
+          shareDescription: null,
+        }),
+    slideNavigation,
+    componentText,
+  };
+}
+
+/**
  * Converts the tab-based format back to variant data for the API
  *
  * This function transforms the editor tab data into the variant structure
@@ -311,60 +371,16 @@ export function convertCalloutToTabs(
  */
 function convertVariantsForCallout(
   tabs: CalloutHorizontalTabsData
-): Record<string, CalloutVariantData> {
-  const variants: Record<string, CalloutVariantData> = {};
-  for (const variant of [...tabs.translations.locales, 'default']) {
-    const slideNavigation: Record<string, CalloutVariantNavigationData> = {};
-
-    for (const slide of tabs.content.slides) {
-      slideNavigation[slide.id] = {
-        nextText: slide.navigation.nextText[variant] || '',
-        prevText: slide.navigation.prevText[variant] || '',
-        submitText: slide.navigation.submitText[variant] || '',
-      };
-    }
-
-    // Use translations tab data for component text
-    const componentText: Record<string, string> = {};
-    for (const key in tabs.translations.componentText) {
-      componentText[key] = tabs.translations.componentText[key][variant] || '';
-    }
-
-    variants[variant] = {
-      title: tabs.titleAndImage.title[variant] || '',
-      excerpt: tabs.titleAndImage.description[variant] || '',
-      intro: tabs.content.sidebarTabs.intro.introText[variant] || '',
-      ...(tabs.content.sidebarTabs.endMessage.whenFinished === 'redirect'
-        ? {
-            thanksText: '',
-            thanksTitle: '',
-            thanksRedirect:
-              tabs.content.sidebarTabs.endMessage.thankYouRedirect[variant] ||
-              '',
-          }
-        : {
-            thanksText:
-              tabs.content.sidebarTabs.endMessage.thankYouText[variant] || '',
-            thanksTitle:
-              tabs.content.sidebarTabs.endMessage.thankYouTitle[variant] || '',
-            thanksRedirect: null,
-          }),
-      ...(tabs.titleAndImage.overrideShare
-        ? {
-            shareTitle: tabs.titleAndImage.shareTitle[variant] || '',
-            shareDescription:
-              tabs.titleAndImage.shareDescription[variant] || '',
-          }
-        : {
-            shareTitle: null,
-            shareDescription: null,
-          }),
-      slideNavigation,
-      componentText,
-    };
-  }
-
-  return variants;
+): CreateCalloutVariantData {
+  return {
+    default: convertVariantForCallout(tabs, 'default'),
+    ...Object.fromEntries(
+      tabs.translations.locales.map((locale) => [
+        locale,
+        convertVariantForCallout(tabs, locale),
+      ])
+    ),
+  };
 }
 
 /**
