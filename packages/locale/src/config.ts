@@ -67,4 +67,11 @@ export const config: LocaleOptions = {
     adminLocale: "fr",
     availableIn: [LocaleContext.Callout, LocaleContext.System],
   },
+  el: {
+    baseLocale: "el",
+    name: "Ελληνικά",
+    displayName: "Ελληνικά",
+    adminLocale: "en",
+    availableIn: [LocaleContext.Callout],
+  },
 };
