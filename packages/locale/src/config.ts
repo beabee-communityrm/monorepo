@@ -72,6 +72,6 @@ export const config: LocaleOptions = {
     name: "Ελληνικά",
     displayName: "Ελληνικά",
     adminLocale: "en",
-    availableIn: [LocaleContext.Callout, LocaleContext.System],
+    availableIn: [LocaleContext.Callout],
   },
 };
