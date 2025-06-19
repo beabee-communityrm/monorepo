@@ -62,14 +62,14 @@
   },
   "actions": {
     "add": "",
-    "back": "Hier kommst du zu deiner letzten Seite.",
+    "back": "πίσω",
     "backToLogin": "",
     "cancel": "",
     "changePassword": "",
     "chooseFile": "",
     "close": "",
     "continue": "",
-    "copy": "Hier kannst du es kopieren.",
+    "copy": "αντίγραφο",
     "create": "",
     "delete": "",
     "disable": "",
@@ -77,9 +77,9 @@
     "enable": "",
     "endnow": "",
     "export": "",
-    "getStarted": "Hier kannst du starten.",
+    "getStarted": "αρχίζω",
     "goBack": "",
-    "next": "Hier kommst du auf die nächste Seite.",
+    "next": "επόμενος",
     "noBack": "",
     "participate": "",
     "preview": "",
@@ -96,10 +96,10 @@
     "saveDraft": "",
     "schedule": "",
     "search": "",
-    "sendEmails": "E-Mails schicken",
-    "share": "Hier schickst du den Text / die Datei / das Bild an andere.",
+    "sendEmails": "",
+    "share": "Μοιραστείτε",
     "skip": "",
-    "submit": "Hier wird deine Meldung weg-geschickt.",
+    "submit": "υποβάλετε",
     "unpublish": "",
     "update": "",
     "view": "",
@@ -330,8 +330,8 @@
     "actions": {
       "updateResponse": ""
     },
-    "addAPoint": "Hier kannst du einen Ort rein-schreiben.",
-    "addLocation": "Hier kannst du einen neuen Ort rein-schreiben.",
+    "addAPoint": "Μπορείτε να εισαγάγετε μια τοποθεσία εδώ.",
+    "addLocation": "Μπορείτε να εισαγάγετε μια νέα τοποθεσία εδώ.",
     "builder": {
       "actions": {
         "addSlide": ""
@@ -652,31 +652,31 @@
         "placeholder": ""
       }
     },
-    "confirmHuman": "Du musst hier klicken. Dann weiß der Computer: Dass du ein Mensch bist. Und keine Maschine.",
-    "contactDetails": "Kontaktdaten",
-    "ended": "Den Aufruf gibt es nicht mehr.",
-    "entryOf": "Eintrag {no} von {total}",
+    "confirmHuman": "Παρακαλώ επιβεβαιώστε ότι είστε άνθρωπος.",
+    "contactDetails": "",
+    "ended": "Αυτή η έρευνα έληξε στις {date}",
+    "entryOf": "Καταχώρηση {no} από {total}",
     "form": {
       "email": "",
       "guestFieldsMissing": "",
       "name": "",
-      "submittingResponseError": "Das hat nicht geklappt. Versuche es noch mal."
+      "submittingResponseError": "Δεν λειτούργησε. Δοκιμάστε ξανά."
     },
-    "getStarted": "Hier geht es los.",
+    "getStarted": "Ξεκινήστε εδώ!",
     "joinNow": "",
     "loginToYourAccount": "",
     "membersOnly": "",
-    "responseSubmitted": "Dein Brief / Deine Mail wurde weg-geschickt.",
+    "responseSubmitted": "Το μήνυμά σας έχει σταλεί.",
     "share": {
-      "address": "Hier kannst du den Aufruf an andere schicken. Drücke dazu hier.",
-      "services": "Diesen Aufruf kannst du hier auch an andere Menschen schicken. Zum Beispiel über Facebook oder über TikTok oder über Instagram."
+      "address": "Εδώ μπορείτε να προωθήσετε αυτήν τη φόρμα στην ακόλουθη διεύθυνση:",
+      "services": "Μπορείτε επίσης να στείλετε αυτήν τη φόρμα σε άλλα άτομα, για παράδειγμα, μέσω Facebook, TikTok ή Instagram."
     },
     "showingPreview": "",
     "toContributionPage": "",
     "updateContribution": "",
     "views": {
-      "gallery": "Bild-Sammlung / Galerie",
-      "map": "Karte"
+      "gallery": "Συλλογή εικόνων / γκαλερί",
+      "map": "χάρτη"
     },
     "youResponded": "",
     "yourResponse": ""
@@ -846,13 +846,13 @@
       "manual": "",
       "none": ""
     },
-    "default": "Standard",
-    "hello": "Hallo.",
+    "default": "Προεπιλογή",
+    "hello": "Γεια σας",
     "id": "",
     "itemsPerPage": "",
     "joined": "",
     "label": "",
-    "loading": "Der Computer arbeitet.",
+    "loading": "Φορτία",
     "login": "",
     "newsletterStatus": {
       "cleaned": "",
@@ -862,11 +862,11 @@
       "unsubscribed": ""
     },
     "no": "",
-    "noResults": "Der Computer hat keine Ergebnisse gefunden.",
+    "noResults": "Δε βρέθηκαν αποτελέσματα.",
     "pageCount": "",
     "paymentStatus": {
       "cancelled": "",
-      "draft": "Hier ist ein erster Vorschlag.",
+      "draft": "",
       "failed": "",
       "pending": "",
       "successful": ""
@@ -880,18 +880,18 @@
       "member": "",
       "superadmin": ""
     },
-    "selectNone": "keine",
-    "selectOne": "Hier kannst du ein Bild / eine Unterschrift / … aus-suchen",
-    "show": "Hier wird das Bild / der Text gezeigt.",
+    "selectNone": "-- Κανένας --",
+    "selectOne": "επιλέξτε",
+    "show": "δείξε",
     "status": {
-      "draft": "Hier ist ein erster Vorschlag.",
-      "ended": "… ist zu Ende.",
-      "open": "Open",
-      "scheduled": "Scheduled"
+      "draft": "Προσχέδιο",
+      "ended": "πλήρης",
+      "open": "ανοιχτό",
+      "scheduled": "προγραμματισμένο"
     },
-    "thankYou": "Vielen Dank.",
-    "timeAgo": "vor",
-    "timeIn": "in",
+    "thankYou": "Ευχαριστώ πολύ!",
+    "timeAgo": "πριν το {time}",
+    "timeIn": "σε {time}",
     "until": "",
     "yes": ""
   },
@@ -1052,13 +1052,13 @@
     "title": ""
   },
   "footer": {
-    "contactUs": "Schreibe uns. Nutze diese Adresse:",
+    "contactUs": "",
     "handbookResources": "",
-    "impressum": "Impressum",
+    "impressum": "Αποτύπωμα",
     "joinCommunity": "",
-    "poweredBy": "Wir machen einige Journalisten stark. Diese Journalisten gehören zu keiner Organisation. Dazu sagt man auch: Sie sind un-abhängig.",
-    "privacyPolicy": "Datenschutzerklärung",
-    "terms": "Allgemeine Geschäftsbedingungen"
+    "poweredBy": "Ενισχύουμε τα ανεξάρτητα τοπικά συντακτικά γραφεία.",
+    "privacyPolicy": "",
+    "terms": ""
   },
   "forgotPassword": {
     "backToLogin": "",
@@ -1076,19 +1076,19 @@
     "cityOrTown": "",
     "deliveryOptIn": "",
     "description": "",
-    "email": "E-Mail",
+    "email": "ηλεκτρονικό ταχυδρομείο",
     "errorMessages": {
       "api": {
         "account-locked": "",
         "duplicate-email": "",
-        "duplicate-tag-name": "Diesen Tag gibt es schon",
+        "duplicate-tag-name": "",
         "invalid-token": "",
         "login-failed": "",
         "mfa-token-required": ""
       },
-      "generic": "Das ist nicht richtig. Hol dir Hilfe.",
-      "unauthorized": "Sie haben daruf keinen Zugriff.",
-      "validation": "Das ist nicht richtig. Du hast ein Feld nicht richtig ausgefüllt. Suche das Feld. Versuche es noch mal."
+      "generic": "Ωχ! Κάτι πήγε στραβά. Επικοινωνήστε με την υποστήριξη εάν συμβεί ξανά αυτό.",
+      "unauthorized": "Δεν περιλαμβάνεται πρόσβαση.",
+      "validation": "Κάτι λείπει. Ελέγξτε τα παραπάνω πεδία."
     },
     "errors": {
       "address": {
@@ -1110,19 +1110,19 @@
         "sameAs": ""
       },
       "email": {
-        "email": "Ungültige E-Mail-Adresse",
-        "required": "E-Mail-Adresse benötigt"
+        "email": "",
+        "required": ""
       },
       "file": {
-        "rateLimited": "Das war nicht richtig. Das waren zu viele Sachen auf einmal. Du musst etwas warten. Dann versuche es noch mal.",
-        "tooBig": "Das war nicht richtig. Dein Text ist zu lang. Oder dein Bild ist zu groß. Man darf nur 20 MB hoch-laden.",
-        "unsupportedType": "Das war nicht richtig. Diese Art von Datei geht nicht."
+        "rateLimited": "Η μεταφόρτωση απέτυχε: Ανεβάσατε πάρα πολλά αρχεία σε πολύ σύντομο χρονικό διάστημα. Περιμένετε λίγα λεπτά πριν προσπαθήσετε ξανά.",
+        "tooBig": "Η μεταφόρτωση απέτυχε: Το μέγιστο μέγεθος αρχείου δεν μπορεί να υπερβαίνει τα 20 MB.",
+        "unsupportedType": ""
       },
       "firstName": {
-        "required": "Vorname benötigt"
+        "required": ""
       },
       "lastName": {
-        "required": "Nachname benötigt"
+        "required": ""
       },
       "name": {
         "required": ""
@@ -1153,8 +1153,8 @@
         "required": ""
       }
     },
-    "firstName": "Vorname",
-    "lastName": "Nachname",
+    "firstName": "",
+    "lastName": "",
     "newPassword": "",
     "newPasswordConfirm": "",
     "notes": "",
@@ -1180,15 +1180,15 @@
   "formRenderer": {
     "components": {
       "file": {
-        "browse": "Du musst warten: Bis sich das Rädchen nicht mehr dreht./ Bis der Balken blau ist.",
-        "dropFiles": "Du musst die Datei mit dem Pfeil von der Mouse hier her ziehen.",
-        "or": "oder",
-        "switchToFileUpload": "Hier wird dein Foto hoch-geladen.",
-        "takePicture": "Hier machst du ein Foto.",
-        "useCamera": "Du musst die Kamera an-machen."
+        "browse": "Πρέπει να περιμένετε: Μέχρι να σταματήσει να γυρίζει ο τροχός./ Μέχρι να γίνει μπλε η μπάρα.",
+        "dropFiles": "Σύρετε αρχεία εδώ.",
+        "or": "ή",
+        "switchToFileUpload": "Μετάβαση στη μεταφόρτωση αρχείου",
+        "takePicture": "Βγάλτε μια φωτογραφία εδώ.",
+        "useCamera": "χρησιμοποιήστε κάμερα"
       },
       "multiple": {
-        "addAnother": "Hier kannst du ein neues Foto hoch-laden./ Hier kannst du eine neue Datei hoch-laden."
+        "addAnother": "Εδώ μπορείτε να ανεβάσετε μια νέα φωτογραφία./ Εδώ μπορείτε να ανεβάσετε ένα νέο αρχείο."
       }
     }
   },
@@ -1206,8 +1206,8 @@
   },
   "item": {
     "status": {
-      "endsIn": "Das Hoch-laden ist gleich zu Ende.",
-      "startsIn": "Das Hoch-laden beginnt gleich."
+      "endsIn": "Αυτή η έρευνα έληξε στις {duration}",
+      "startsIn": "Η έρευνα θα ξεκινήσει σε {duration}"
     }
   },
   "join": {
@@ -1325,9 +1325,7 @@
         "showNoContribution": "",
         "suggestedAmounts": "",
         "text": "",
-        "title": "",
-        "noticeText": "",
-        "noticeTextHelp": ""
+        "title": ""
       }
     },
     "title": ""
@@ -1336,7 +1334,7 @@
     "account": "",
     "admin": "",
     "adminSettings": "",
-    "callouts": "Aufruf",
+    "callouts": "Ένδειξη",
     "contacts": "",
     "contribution": "",
     "dashboard": "",
@@ -1361,8 +1359,8 @@
     "title": ""
   },
   "notFound": {
-    "goBack": "Hier geht es zu einer neuen Seite. Die gibt dir eine Übersicht.",
-    "text": "Die Internet-Seite gibt es nicht mehr. Hol dir Hilfe."
+    "goBack": "Επιστρέψτε στον πίνακα ελέγχου/αρχική σελίδα.",
+    "text": "Ο ιστότοπος δεν υπάρχει πλέον. Επικοινωνήστε με την {support}."
   },
   "noticeAdminOverview": {
     "actions": {
@@ -1388,7 +1386,7 @@
     "copy": {
       "success": ""
     },
-    "error": "Das war nicht richtig. Probiere es noch mal.",
+    "error": "σφάλματος",
     "remove": ""
   },
   "pageTitle": {
@@ -1399,7 +1397,7 @@
     "join": "",
     "login": "",
     "lostDevice": "",
-    "notFound": "Der Computer hat die Seite nicht gefunden.",
+    "notFound": "Η σελίδα δεν βρέθηκε",
     "resetDevice": "",
     "resetPassword": "",
     "setPassword": "",
@@ -1504,10 +1502,10 @@
   "tagEditor": {
     "add": "",
     "confirmDelete": {
-      "text_contact": "Willst du den Tag wirklich weg machen? Der Tag \"{tagName}\" ist dann auch bei den Menschen weg.",
-      "text_global": "Willst du den Tag \"{tagName}\" wirklich weg machen?",
-      "text_response": "Willst du den Tag \"{tagName}\" wirklich weg machen?",
-      "title": "Tag weg machen"
+      "text_contact": "",
+      "text_global": "",
+      "text_response": "",
+      "title": ""
     },
     "name": ""
   },
@@ -1522,6 +1520,6 @@
     "toggleTag": ""
   },
   "taxRate": {
-    "invoiceName": "MwSt"
+    "invoiceName": ""
   }
 }
