@@ -58,7 +58,7 @@ meta:
     />
     <div
       v-if="paymentContent.noticeText"
-      class="content-message"
+      class="content-message mt-3 text-center text-xs"
       v-html="paymentContent.noticeText"
     />
   </AuthBox>
