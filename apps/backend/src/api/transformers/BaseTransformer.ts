@@ -20,7 +20,7 @@ import { TransformerOperation } from '@type/index';
 import { FetchRawResult } from '@type/index';
 import { plainToInstance } from 'class-transformer';
 import { BadRequestError } from 'routing-controllers';
-import { Brackets, ObjectLiteral, SelectQueryBuilder } from 'typeorm';
+import { Brackets, ObjectLiteral, SelectQueryBuilder, Table } from 'typeorm';
 
 /**
  * Base transformer for querying and converting models to DTOs
@@ -154,7 +154,8 @@ export abstract class BaseTransformer<
     qb: SelectQueryBuilder<Model>,
     fieldPrefix: string,
     query: Query,
-    auth: AuthInfo
+    auth: AuthInfo,
+    operation: TransformerOperation
   ): void {}
 
   /**
@@ -184,7 +185,7 @@ export abstract class BaseTransformer<
   protected async prepareQuery<T extends Query>(
     query: T,
     auth: AuthInfo,
-    operation: 'create' | 'read' | 'update' | 'delete'
+    operation: TransformerOperation
   ): Promise<{
     query: T;
     filters: Filters<FilterName>;
@@ -277,7 +278,7 @@ export abstract class BaseTransformer<
       qb.orderBy(`item."${query.sort}"`, query.order || 'ASC', 'NULLS LAST');
     }
 
-    this.modifyQueryBuilder(qb, 'item.', query, auth);
+    this.modifyQueryBuilder(qb, 'item.', query, auth, 'read');
 
     const [items, total] = await qb.getManyAndCount();
 
@@ -415,7 +416,7 @@ export abstract class BaseTransformer<
           .from(this.model, 'item')
           .where(db.where);
 
-        this.modifyQueryBuilder(subQb, 'item.', query, auth);
+        this.modifyQueryBuilder(subQb, 'item.', query, auth, 'delete');
 
         // Override select to only select the primary key
         subQb.select('item.' + this.modelIdField);
@@ -475,7 +476,7 @@ export abstract class BaseTransformer<
           .from(this.model, 'item')
           .where(db.where);
 
-        this.modifyQueryBuilder(subQb, 'item.', query, auth);
+        this.modifyQueryBuilder(subQb, 'item.', query, auth, 'update');
 
         // Override select to only select the primary key
         subQb.select('item.' + this.modelIdField);

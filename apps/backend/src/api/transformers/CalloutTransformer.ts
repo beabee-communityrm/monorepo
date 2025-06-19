@@ -28,6 +28,7 @@ import { BaseTransformer } from '@api/transformers/BaseTransformer';
 import CalloutVariantTransformer from '@api/transformers/CalloutVariantTransformer';
 import { groupBy } from '@api/utils';
 import { getReviewerRules } from '@api/utils/callouts';
+import { TransformerOperation } from '@type/index';
 import { TransformPlainToInstance } from 'class-transformer';
 import {
   BadRequestError,
@@ -184,13 +185,21 @@ class CalloutTransformer extends BaseTransformer<
 
   protected async getNonAdminAuthRules(
     auth: AuthInfo,
-    query: GetCalloutOptsDto
-  ): Promise<RuleGroup> {
+    query: GetCalloutOptsDto,
+    operation: TransformerOperation
+  ): Promise<RuleGroup | false> {
+    const reviewerRules = await getReviewerRules(auth.contact, 'id');
+
+    // Not a reviewer, can only read callouts
+    if (operation !== 'read' && reviewerRules.length === 0) {
+      return false;
+    }
+
     return {
       condition: 'OR',
       rules: [
         // Reviewers can see all the callouts they are reviewers for
-        ...(await getReviewerRules(auth.contact, 'id')),
+        ...reviewerRules,
 
         // Non-admins can only see open or ended non-hidden callouts
         mergeRules([
@@ -223,7 +232,8 @@ class CalloutTransformer extends BaseTransformer<
     qb: SelectQueryBuilder<Callout>,
     fieldPrefix: string,
     query: ListCalloutsDto,
-    auth: AuthInfo
+    auth: AuthInfo,
+    operation: TransformerOperation
   ): void {
     if (
       query.with?.includes(GetCalloutWith.ResponseCount) &&
@@ -235,13 +245,19 @@ class CalloutTransformer extends BaseTransformer<
       );
     }
 
-    // Always load a variant for filtering and sorting
-    qb.leftJoinAndSelect(`${fieldPrefix}variants`, 'cvd', 'cvd.name = :name', {
-      name: query.variant || 'default',
-    });
-
-    if (query.sort === 'title') {
-      qb.orderBy('cvd.title', query.order || 'ASC');
+    if (operation === 'read') {
+      // Always load a variant for filtering and sorting
+      qb.leftJoinAndSelect(
+        `${fieldPrefix}variants`,
+        'cvd',
+        'cvd.name = :name',
+        {
+          name: query.variant || 'default',
+        }
+      );
+      if (query.sort === 'title') {
+        qb.orderBy('cvd.title', query.order || 'ASC');
+      }
     }
   }
 
