@@ -7,6 +7,7 @@ import {
   FormioFile,
   GetCalloutFormSchema,
   NewsletterStatus,
+  UpdateCalloutData,
   isFileUploadAnswer,
 } from '@beabee/beabee-common';
 
@@ -52,12 +53,6 @@ class CalloutsService {
     data: CreateCalloutData,
     autoSlug: number | false
   ): Promise<string> {
-    if (!data.variants?.default) {
-      throw new BadRequestError(
-        'Default variant is required to create callout'
-      );
-    }
-
     const baseSlug =
       data.slug || slugify(data.variants.default.title, { lower: true });
 
@@ -99,10 +94,7 @@ class CalloutsService {
    * @param data The new callout data
    * @returns The updated callout
    */
-  async updateCallout(
-    id: string,
-    data: Partial<CreateCalloutData>
-  ): Promise<void> {
+  async updateCallout(id: string, data: UpdateCalloutData): Promise<void> {
     log.info('Updating callout ' + id);
     // Prevent the join survey from being made inactive
     if (OptionsService.getText('join-survey') === id) {
@@ -129,16 +121,23 @@ class CalloutsService {
       throw new NotFoundError();
     }
 
-    const { id: removeId, tags, variants, ...calloutData } = callout;
+    const { id: removeId, tags, variants, ...newCalloutData } = callout;
 
-    const data: CreateCalloutData = {
-      ...calloutData,
-      variants: Object.fromEntries(
-        variants.map((variant) => [variant.name, variant])
-      ),
+    const newCalloutVariants = Object.fromEntries(
+      variants.map((variant) => {
+        return [variant.name, variant];
+      })
+    );
+
+    const newCallout = {
+      ...newCalloutData,
+      variants: {
+        default: newCalloutVariants.default,
+        ...newCalloutVariants,
+      },
     };
 
-    const newId = await this.createCallout(data, 0);
+    const newId = await this.createCallout(newCallout, 0);
 
     if (tags.length > 0) {
       await getRepository(CalloutTag).save(
@@ -393,7 +392,7 @@ class CalloutsService {
    * @returns The data
    */
   private async saveCallout(
-    data: Partial<CreateCalloutData>,
+    data: UpdateCalloutData,
     id?: string
   ): Promise<string> {
     const { formSchema, variants, ...calloutData } = data;

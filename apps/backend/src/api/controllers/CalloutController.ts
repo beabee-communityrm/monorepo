@@ -41,6 +41,7 @@ import { plainToInstance } from 'class-transformer';
 import { Response } from 'express';
 import {
   Authorized,
+  BadRequestError,
   Body,
   CurrentUser,
   Delete,
@@ -83,7 +84,20 @@ export class CalloutController {
         await calloutsService.updateCallout(id, data);
       }
     } else {
-      id = await calloutsService.createCallout(data, data.slug ? false : 0);
+      if (!data.variants.default) {
+        throw new BadRequestError(
+          'Default variant is required to create a callout'
+        );
+      }
+
+      id = await calloutsService.createCallout(
+        {
+          ...data,
+          // Tell TypeScript that variants.default is always present
+          variants: { default: data.variants.default, ...data.variants },
+        },
+        data.slug ? false : 0
+      );
     }
 
     return CalloutTransformer.fetchOneByIdOrFail(auth, id);
