@@ -5,7 +5,7 @@
   "scripts": {
     "clear": "yarn workspaces foreach -v -W run clear",
     "build": "yarn workspaces foreach -v -W --topological-dev run build",
-    "dev": "yarn workspaces foreach -v -W -p -i run dev",
+    "dev": "yarn workspaces foreach -v -W -p -i -j unlimited run dev",
     "format": "yarn workspaces foreach -v -W -p run format",
     "test": "yarn workspaces foreach -v -W run test",
     "check": "yarn workspaces foreach -v -W -p run check",
