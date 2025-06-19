@@ -3,9 +3,6 @@ x-service-app: &service-app
     # Wait for the database to be ready
     db:
       condition: service_healthy
-    # Wait for the migration to be completed
-    migration:
-      condition: service_completed_successfully
 
 x-backend-app: &backend-app
   <<: *service-app
@@ -142,20 +139,6 @@ services:
       - app
       - frontend
       - webhook_app
-
-  # Database migration service
-  migration:
-    build:
-      context: .
-      dockerfile: ./packages/docker/base.dockerfile
-      target: api_app
-    command: "yarn run typeorm migration:run"
-    # Wait for the database to be ready
-    depends_on:
-      db:
-        condition: service_healthy
-    env_file:
-      - .env
 
   # Stripe CLI for webhook forwarding
   # Only used in local development
