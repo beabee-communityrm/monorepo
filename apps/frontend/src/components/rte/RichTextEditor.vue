@@ -107,6 +107,7 @@ import { useI18n } from 'vue-i18n';
 
 import AppInputError from '../forms/AppInputError.vue';
 import AppInputHelp from '../forms/AppInputHelp.vue';
+import RichTextEditorButton from './RichTextEditorButton.vue';
 
 const { t } = useI18n();
 
