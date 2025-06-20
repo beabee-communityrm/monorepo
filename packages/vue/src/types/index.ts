@@ -6,3 +6,4 @@ export * from './slider.ts';
 export * from './stepper.ts';
 export * from './table.ts';
 export * from './tabs.interface.ts';
+export type { ContributionContent } from './contribution';

@@ -1,3 +1,8 @@
+<!--
+  # SEPA Icon
+  Single Euro Payments Area (SEPA) icon for European bank transfers.
+  Displays the SEPA logo as an SVG.
+-->
 <template>
   <svg
     xmlns="http://www.w3.org/2000/svg"

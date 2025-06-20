@@ -1,16 +1,15 @@
 <template>
   <div v-if="source.method">
-    <PaymentMethodIcon :method="source.method" />
+    <VuePaymentMethodIcon :method="source.method" />
     {{ description }}
   </div>
 </template>
 <script lang="ts" setup>
 import { PaymentMethod } from '@beabee/beabee-common';
 import type { PaymentSource } from '@beabee/beabee-common';
+import { PaymentMethodIcon as VuePaymentMethodIcon } from '@beabee/vue';
 
 import { computed } from 'vue';
-
-import PaymentMethodIcon from './PaymentMethodIcon.vue';
 
 const props = defineProps<{ source: PaymentSource }>();
 

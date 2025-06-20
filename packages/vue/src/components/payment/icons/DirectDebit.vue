@@ -1,3 +1,8 @@
+<!--
+  # Direct Debit Icon
+  Direct Debit payment method icon showing a bank building.
+  Uses a Font Awesome icon from their pro set.
+-->
 <template>
   <svg
     xmlns="http://www.w3.org/2000/svg"

@@ -1,3 +1,31 @@
+<!--
+  # ContributionAmount
+  A component for selecting and entering contribution amounts.
+  Features large numerical input with increment/decrement buttons and preset amount selection.
+  
+  ## Props
+  - `modelValue` (number): The current amount value
+  - `isMonthly` (boolean): Whether the contribution is monthly
+  - `minAmount` (number): Minimum allowed amount
+  - `definedAmounts` (number[]): Preset amounts to display as quick choices
+  - `disabled` (boolean): Whether the component is disabled
+  - `currencySymbol` (string): Currency symbol to display (e.g. "€", "$")
+  - `minimumText` (string): Text for minimum contribution error
+  - `perPeriodText` (string): Text for per period (e.g. "per month", "per year")
+  - `currencyFormatter` (function): Function to format currency values for preset amounts
+  
+  ## Events
+  - `update:modelValue` (number): Emitted when the amount changes
+  
+  ## Features
+  - Large numerical input with visual prominence
+  - Increment/decrement buttons for easy adjustment
+  - Keyboard shortcuts (up/down arrows)
+  - Preset amount selection buttons
+  - Validation with visual error states
+  - Currency symbol display
+  - Accessibility support with ARIA attributes
+-->
 <template>
   <div class="flex flex-wrap gap-2">
     <div
@@ -11,7 +39,7 @@
       "
     >
       <label class="flex flex-1 items-baseline px-6 font-bold text-body-60">
-        <span>{{ generalContent.currencySymbol }}</span>
+        <span>{{ currencySymbol }}</span>
         <div class="relative mx-1 font-semibold">
           <div class="text-6xl/[7rem]">
             {{ amount || '0' }}
@@ -22,13 +50,15 @@
             :min="minAmount"
             :class="{ 'bg-danger-10': hasError }"
             :disabled="disabled"
+            :aria-invalid="hasError"
+            :aria-describedby="hasError ? 'amount-error' : undefined"
             @input="handleInput"
             @keydown.up.prevent="0 /* just stop caret moving */"
             @keyup.up="changeAmount(amount + 1)"
             @keyup.down="changeAmount(amount - 1)"
           />
         </div>
-        <div class="flex-0">{{ perPeriod }}</div>
+        <div class="flex-0">{{ perPeriodText }}</div>
       </label>
 
       <div class="flex h-full flex-none flex-col">
@@ -36,6 +66,7 @@
           class="amount-button border-b border-l"
           type="button"
           :disabled="disabled"
+          :aria-label="`Increase amount by 1`"
           @click="changeAmount(amount + 1)"
         >
           ▲
@@ -46,6 +77,7 @@
           type="button"
           :disabled="disabled"
           :class="{ 'is-invalid': amount <= minAmount }"
+          :aria-label="`Decrease amount by 1`"
           @click="changeAmount(amount - 1)"
         >
           ▼
@@ -57,7 +89,7 @@
       :model-value="amount"
       :items="
         definedAmounts.map((amount) => ({
-          label: n(amount, 'currency'),
+          label: currencyFormatter(amount),
           value: amount,
         }))
       "
@@ -68,40 +100,54 @@
 
     <div
       v-if="hasError"
+      id="amount-error"
       class="col-span-12 mt-0 text-sm font-semibold text-danger"
       role="alert"
     >
-      {{ t('join.minimumContribution') }}
-      {{ n(minAmount, 'currency') }} {{ perPeriod }}
+      {{ minimumText }}
+      {{ currencyFormatter(minAmount) }} {{ perPeriodText }}
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { AppChoice } from '@beabee/vue';
-
 import useVuelidate from '@vuelidate/core';
 import { minValue } from '@vuelidate/validators';
 import { computed, toRefs } from 'vue';
-import { useI18n } from 'vue-i18n';
 
-import { generalContent } from '../../store';
+import { AppChoice } from '../form';
 
-const { t, n } = useI18n();
-
-const emits = defineEmits(['update:modelValue']);
-const props = defineProps<{
+/**
+ * Props for the ContributionAmount component
+ */
+export interface ContributionAmountProps {
+  /** The current amount value */
   modelValue: number;
+  /** Whether the contribution is monthly */
   isMonthly: boolean;
+  /** Minimum allowed amount */
   minAmount: number;
+  /** Preset amounts to display as quick choices */
   definedAmounts: number[];
+  /** Whether the component is disabled */
   disabled: boolean;
-}>();
+  /** Currency symbol to display */
+  currencySymbol: string;
+  /** Text for minimum contribution error */
+  minimumText: string;
+  /** Text for per period display */
+  perPeriodText: string;
+  /** Function to format currency values */
+  currencyFormatter: (value: number) => string;
+}
+
+const emit = defineEmits(['update:modelValue']);
+const props = defineProps<ContributionAmountProps>();
 
 const amount = computed({
   get: () => props.modelValue,
   set: (newAmount) => {
-    emits('update:modelValue', newAmount);
+    emit('update:modelValue', newAmount);
     validation.value.amount.$touch();
   },
 });
@@ -129,10 +175,6 @@ const rules = computed(() =>
 );
 
 const validation = useVuelidate(rules, { amount });
-
-const perPeriod = computed(() => {
-  return props.isMonthly ? t('common.perMonth') : t('common.perYear');
-});
 </script>
 
 <style lang="postcss" scoped>

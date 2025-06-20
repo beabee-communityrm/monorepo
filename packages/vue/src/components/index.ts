@@ -12,6 +12,7 @@ export * from './navigation';
 export * from './newsletter';
 export * from './notice';
 export * from './notification';
+export * from './payment';
 export * from './role';
 export * from './scroll';
 export * from './search';

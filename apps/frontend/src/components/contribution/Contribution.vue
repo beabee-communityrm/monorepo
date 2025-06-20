@@ -13,24 +13,21 @@
     class="mb-4"
   />
 
-  <ContributionAmount
-    v-model.number="amountProxy"
-    :is-monthly="isMonthly"
-    :min-amount="minAmount"
-    :defined-amounts="definedAmounts"
+  <VueContribution
+    v-model:amount="amountProxy"
+    v-model:period="periodProxy"
+    v-model:pay-fee="payFeeProxy"
+    v-model:payment-method="paymentMethodProxy"
+    :content="content"
+    :payment-content="paymentContent"
+    :show-period="false"
+    :show-payment-method="showPaymentMethod"
     :disabled="disabled"
+    :labels="contributionLabels"
     class="mb-4"
-  />
-
-  <slot></slot>
-
-  <ContributionMethod
-    v-if="showPaymentMethod"
-    v-model="paymentMethodProxy"
-    :methods="content.paymentMethods"
-    :disabled="disabled"
-    class="mb-4"
-  />
+  >
+    <slot></slot>
+  </VueContribution>
 
   <ContributionFee
     v-if="isMonthly && content.showAbsorbFee"
@@ -52,13 +49,41 @@ import {
   calcPaymentFee,
 } from '@beabee/beabee-common';
 import { AppChoice, ContributionFee } from '@beabee/vue';
+import { Contribution as VueContribution } from '@beabee/vue';
 
+import { generalContent } from '@store';
 import { computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import ContributionAmount from './ContributionAmount.vue';
-import ContributionMethod from './ContributionMethod.vue';
 import { type ContributionContent } from './contribution.interface';
+
+/**
+ * Labels and text content for the Contribution component
+ */
+interface ContributionLabels {
+  /** Currency symbol (e.g. "€", "$") */
+  currencySymbol: string;
+  /** Text for minimum contribution error */
+  minimumContribution: string;
+  /** Text for per month display */
+  perMonth: string;
+  /** Text for per year display */
+  perYear: string;
+  /** Title for payment method selection */
+  paymentMethodTitle: string;
+  /** Text for fee absorption explanation */
+  absorbFeeText: string;
+  /** Text for optional fee absorption checkbox */
+  absorbFeeOptional: string;
+  /** Text for forced fee absorption checkbox */
+  absorbFeeForced: string;
+  /** Labels for contribution periods */
+  periods: Record<string, string>;
+  /** Labels for payment methods */
+  paymentMethods: Record<PaymentMethod, string>;
+  /** Function to format currency values */
+  currencyFormatter: (value: number) => string;
+}
 
 const props = withDefaults(
   defineProps<{
@@ -80,6 +105,39 @@ const { t, n } = useI18n();
 const fee = computed(() =>
   calcPaymentFee(props, props.paymentContent.stripeCountry)
 );
+
+// Create labels object for the vue package component
+const contributionLabels = computed<ContributionLabels>(() => ({
+  currencySymbol: generalContent.value.currencySymbol,
+  minimumContribution: t('join.minimumContribution'),
+  perMonth: t('common.perMonth'),
+  perYear: t('common.perYear'),
+  paymentMethodTitle: t('join.paymentMethod'),
+  absorbFeeText: t('join.absorbFeeText', { fee: '{fee}' }),
+  absorbFeeOptional: t('join.absorbFeeOptIn', {
+    fee: '{fee}',
+    amount: '{amount}',
+  }),
+  absorbFeeForced: t('join.absorbFeeForce', {
+    fee: '{fee}',
+    amount: '{amount}',
+  }),
+  periods: {
+    monthly: t('common.contributionPeriod.monthly'),
+    annually: t('common.contributionPeriod.annually'),
+  },
+  paymentMethods: {
+    [PaymentMethod.StripeCard]: t('paymentMethods.stripe-card.label'),
+    [PaymentMethod.StripeSEPA]: t('paymentMethods.stripe-sepa.label'),
+    [PaymentMethod.StripeBACS]: t('paymentMethods.stripe-bacs.label'),
+    [PaymentMethod.StripePayPal]: t('paymentMethods.stripe-paypal.label'),
+    [PaymentMethod.StripeIdeal]: t('paymentMethods.stripe-ideal.label'),
+    [PaymentMethod.GoCardlessDirectDebit]: t(
+      'paymentMethods.gocardless-direct-debit.label'
+    ),
+  },
+  currencyFormatter: (amount: number) => n(amount, 'currency'),
+}));
 
 const emit = defineEmits([
   'update:amount',
@@ -111,18 +169,6 @@ const paymentMethodProxy = computed({
 const isMonthly = computed(
   () => periodProxy.value === ContributionPeriod.Monthly
 );
-
-const minAmount = computed(() => {
-  const { minMonthlyAmount } = props.content;
-  return isMonthly.value ? minMonthlyAmount : minMonthlyAmount * 12;
-});
-
-const definedAmounts = computed(() => {
-  const selectedPeriod = props.content.periods.find((period) => {
-    return period.name === periodProxy.value;
-  });
-  return selectedPeriod?.presetAmounts || [];
-});
 
 watch(isMonthly, (value) => {
   amountProxy.value = value

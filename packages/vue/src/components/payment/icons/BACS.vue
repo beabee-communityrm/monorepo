@@ -1,3 +1,8 @@
+<!--
+  # BACS Icon
+  Direct Debit symbol for UK BACS payments.
+  Displays the official Direct Debit logo as an SVG.
+-->
 <template>
   <svg
     width="30"
