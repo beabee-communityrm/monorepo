@@ -1,20 +1,52 @@
+<!--
+  # PaymentMethod
+  Displays payment method information with icon and formatted description.
+  Shows appropriate details based on the payment method type.
+  
+  ## Props
+  - `source` (PaymentSource): The payment source containing method and details
+  
+  ## Examples
+  ```vue
+  <PaymentMethod :source="paymentSource" />
+  ```
+-->
 <template>
-  <div v-if="source.method">
-    <VuePaymentMethodIcon :method="source.method" />
-    {{ description }}
+  <div
+    v-if="source.method"
+    class="flex items-center gap-2"
+    role="group"
+    :aria-label="`Payment method: ${description}`"
+  >
+    <PaymentMethodIcon :method="source.method" aria-hidden="true" />
+    <span class="text-sm">{{ description }}</span>
   </div>
 </template>
+
 <script lang="ts" setup>
 import { PaymentMethod } from '@beabee/beabee-common';
 import type { PaymentSource } from '@beabee/beabee-common';
-import { PaymentMethodIcon as VuePaymentMethodIcon } from '@beabee/vue';
 
 import { computed } from 'vue';
 
-const props = defineProps<{ source: PaymentSource }>();
+import PaymentMethodIcon from './PaymentMethodIcon.vue';
 
+/**
+ * Props for the PaymentMethod component
+ */
+export interface PaymentMethodProps {
+  /** The payment source containing method and details */
+  source: PaymentSource;
+}
+
+const props = defineProps<PaymentMethodProps>();
+
+/**
+ * Computed description based on payment method type
+ */
 const description = computed(() => {
   const source = props.source;
+
   switch (source.method) {
     case PaymentMethod.StripeCard:
       return source.isLink

@@ -286,10 +286,10 @@ import {
   AppRichTextEditor,
 } from '@beabee/vue';
 import { AppRoleEditor, type AppRoleEditorLabels } from '@beabee/vue';
+import { PaymentMethod } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
 import CalloutForm from '@components/pages/callouts/CalloutForm.vue';
-import PaymentMethod from '@components/payment-method/PaymentMethod.vue';
 import TagList from '@components/tag/TagList.vue';
 import ToggleTagButton from '@components/tag/ToggleTagButton.vue';
 import env from '@env';
