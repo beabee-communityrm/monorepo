@@ -647,10 +647,10 @@
       },
       "translationFields": {
         "description": "",
+        "html": "",
         "label": "",
         "option": "",
-        "placeholder": "",
-        "html": ""
+        "placeholder": ""
       }
     },
     "confirmHuman": "",

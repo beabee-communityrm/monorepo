@@ -37,7 +37,7 @@ const state = reactive({
   locale: 'en' as const,
 });
 
-const locales: BaseLocale[] = ['en', 'de', 'nl', 'pt', 'ru', 'it', 'fr'];
+const locales: BaseLocale[] = ['en', 'de', 'nl', 'pt', 'ru', 'it', 'fr', 'el'];
 
 // Create simple timestamp options for Histoire controls
 const timestampOptions: { label: string; value: number }[] = [
@@ -59,6 +59,7 @@ const localeTemplates: Record<BaseLocale, { timeAgo: string; timeIn: string }> =
     ru: { timeAgo: '{time} назад', timeIn: 'через {time}' },
     it: { timeAgo: '{time} fa', timeIn: 'in {time}' },
     fr: { timeAgo: '{time} auparavant', timeIn: 'dans {time}' },
+    el: { timeAgo: '{time} πριν', timeIn: 'σε {time}' },
   } as const;
 
 function getTimeAgoTemplate(locale: keyof typeof localeTemplates): string {

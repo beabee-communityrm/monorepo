@@ -1,16 +1,17 @@
 import type { BaseLocale } from '@beabee/locale';
 
 import { type Locale, format, formatDistance } from 'date-fns';
-import { de, enGB, fr, it, nl, pt, ru } from 'date-fns/locale';
+import { de, el, enGB as en, fr, it, nl, pt, ru } from 'date-fns/locale';
 
-const locales: Record<BaseLocale, Locale> = {
-  en: enGB,
+export const DateFnsLocales: Record<BaseLocale, Locale> = {
+  en,
   de,
   nl,
   pt,
   ru,
   it,
   fr,
+  el,
 };
 
 /**
@@ -26,7 +27,7 @@ export function formatDistanceLocale(
   locale: BaseLocale = 'en'
 ): string {
   return formatDistance(firstDate, secondDate, {
-    locale: locales[locale],
+    locale: DateFnsLocales[locale],
   });
 }
 
@@ -43,6 +44,6 @@ export function formatLocale(
   locale: BaseLocale = 'en'
 ): string {
   return format(date, formatString, {
-    locale: locales[locale],
+    locale: DateFnsLocales[locale],
   });
 }

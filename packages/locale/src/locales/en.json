@@ -251,7 +251,7 @@
       "OR": "or"
     },
     "nestedRules": "Nested rules",
-    "noNestedRules": "This filter contains nested rules which cannot be edited using the advanced serach editor.",
+    "noNestedRules": "This filter contains nested rules which cannot be edited using the advanced search editor.",
     "operators": {
       "all": {
         "is_empty": "is empty",
@@ -647,10 +647,10 @@
       },
       "translationFields": {
         "description": "Description",
+        "html": "Content",
         "label": "Label",
         "option": "Option {n}",
-        "placeholder": "Placeholder",
-        "html": "Content"
+        "placeholder": "Placeholder"
       }
     },
     "confirmHuman": "Please confirm you are human",

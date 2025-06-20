@@ -647,10 +647,10 @@
       },
       "translationFields": {
         "description": "Beschreibung",
+        "html": "Inhalt",
         "label": "Bezeichnung",
         "option": "Option {n}",
-        "placeholder": "Platzhalter",
-        "html": "Inhalt"
+        "placeholder": "Platzhalter"
       }
     },
     "confirmHuman": "Bitte bestätigen Sie, dass Sie ein Mensch sind",

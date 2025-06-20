@@ -31,7 +31,8 @@ import type { BaseLocale } from '@beabee/locale';
 
 import { faCalendar } from '@fortawesome/free-regular-svg-icons';
 import { format } from 'date-fns';
-import { de, enGB, fr, it, nl, pt, ru } from 'date-fns/locale';
+
+import { DateFnsLocales } from '../../utils/dates';
 
 /**
  * Props for the ItemDateRange component
@@ -59,22 +60,12 @@ const props = withDefaults(defineProps<ItemDateRangeProps>(), {
   showIcon: true,
 });
 
-const locales = {
-  en: enGB,
-  de,
-  nl,
-  pt,
-  ru,
-  it,
-  fr,
-} as const;
-
 /**
  * Formats a date using the specified locale and format
  */
 function formatDate(date: Date, formatString: string): string {
   return format(date, formatString, {
-    locale: locales[props.locale],
+    locale: DateFnsLocales[props.locale],
   });
 }
 </script>
