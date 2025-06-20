@@ -28,17 +28,6 @@
   >
     <slot></slot>
   </VueContribution>
-
-  <ContributionFee
-    v-if="isMonthly && content.showAbsorbFee"
-    v-model="payFeeProxy"
-    :amount="amountProxy"
-    :fee="fee"
-    :force="shouldForceFee"
-    :disabled="disabled"
-    :absorb-fee-text="absorbFeeText"
-    :absorb-fee-label="absorbFeeLabel"
-  />
 </template>
 
 <script lang="ts" setup>
@@ -46,13 +35,8 @@ import {
   type ContentPaymentData,
   ContributionPeriod,
   PaymentMethod,
-  calcPaymentFee,
 } from '@beabee/beabee-common';
-import {
-  AppChoice,
-  type ContributionContent,
-  ContributionFee,
-} from '@beabee/vue';
+import { AppChoice, type ContributionContent } from '@beabee/vue';
 import { Contribution as VueContribution } from '@beabee/vue';
 
 import { generalContent } from '@store';
@@ -92,21 +76,22 @@ const props = withDefaults(
     amount: number;
     period: ContributionPeriod;
     payFee: boolean;
-    paymentMethod: PaymentMethod;
+    paymentMethod?: PaymentMethod;
     content: ContributionContent;
     paymentContent: ContentPaymentData;
     showPeriod?: boolean;
     showPaymentMethod?: boolean;
     disabled?: boolean;
   }>(),
-  { showPeriod: true, showPaymentMethod: true, disabled: false }
+  {
+    showPeriod: true,
+    showPaymentMethod: true,
+    disabled: false,
+    paymentMethod: PaymentMethod.StripeCard,
+  }
 );
 
 const { t, n } = useI18n();
-
-const fee = computed(() =>
-  calcPaymentFee(props, props.paymentContent.stripeCountry)
-);
 
 // Create labels object for the vue package component
 const contributionLabels = computed<ContributionLabels>(() => ({
@@ -129,13 +114,29 @@ const contributionLabels = computed<ContributionLabels>(() => ({
     annually: t('common.contributionPeriod.annually'),
   },
   paymentMethods: {
-    [PaymentMethod.StripeCard]: t('paymentMethods.stripe-card.label'),
-    [PaymentMethod.StripeSEPA]: t('paymentMethods.stripe-sepa.label'),
-    [PaymentMethod.StripeBACS]: t('paymentMethods.stripe-bacs.label'),
-    [PaymentMethod.StripePayPal]: t('paymentMethods.stripe-paypal.label'),
-    [PaymentMethod.StripeIdeal]: t('paymentMethods.stripe-ideal.label'),
+    [PaymentMethod.StripeCard]: t(
+      'paymentMethods.stripe-card.label',
+      'Credit Card'
+    ),
+    [PaymentMethod.StripeSEPA]: t(
+      'paymentMethods.stripe-sepa.label',
+      'SEPA Direct Debit'
+    ),
+    [PaymentMethod.StripeBACS]: t(
+      'paymentMethods.stripe-bacs.label',
+      'Bank Transfer'
+    ),
+    [PaymentMethod.StripePayPal]: t(
+      'paymentMethods.stripe-paypal.label',
+      'PayPal'
+    ),
+    [PaymentMethod.StripeIdeal]: t(
+      'paymentMethods.stripe-ideal.label',
+      'iDEAL'
+    ),
     [PaymentMethod.GoCardlessDirectDebit]: t(
-      'paymentMethods.gocardless-direct-debit.label'
+      'paymentMethods.gocardless-direct-debit.label',
+      'Direct Debit'
     ),
   },
   currencyFormatter: (amount: number) => n(amount, 'currency'),
@@ -164,7 +165,7 @@ const payFeeProxy = computed({
 });
 
 const paymentMethodProxy = computed({
-  get: () => props.paymentMethod,
+  get: () => props.paymentMethod || PaymentMethod.StripeCard,
   set: (paymentMethod) => emit('update:paymentMethod', paymentMethod),
 });
 
@@ -177,24 +178,4 @@ watch(isMonthly, (value) => {
     ? Math.floor(amountProxy.value / 12)
     : amountProxy.value * 12;
 });
-
-const shouldForceFee = computed(() => {
-  return (
-    props.content.showAbsorbFee && amountProxy.value === 1 && isMonthly.value
-  );
-});
-watch(shouldForceFee, (force) => {
-  if (force) payFeeProxy.value = true;
-});
-
-const absorbFeeText = computed(() =>
-  t('join.absorbFeeText', { fee: n(fee.value, 'currency') })
-);
-
-const absorbFeeLabel = computed(() =>
-  t(shouldForceFee.value ? 'join.absorbFeeForce' : 'join.absorbFeeOptIn', {
-    fee: n(fee.value, 'currency'),
-    amount: n(amountProxy.value, 'currency'),
-  })
-);
 </script>

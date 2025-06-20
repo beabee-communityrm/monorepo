@@ -30,54 +30,56 @@
   - Full accessibility support
 -->
 <template>
-  <AppChoice
-    v-if="showPeriod"
-    v-model="periodProxy"
-    :items="
-      content.periods.map((period) => ({
-        label: labels.periods[period.name],
-        value: period.name,
-      }))
-    "
-    :disabled="disabled"
-    class="mb-4"
-  />
+  <div>
+    <AppChoice
+      v-if="showPeriod"
+      v-model="periodProxy"
+      :items="
+        content.periods.map((period) => ({
+          label: labels.periods[period.name],
+          value: period.name,
+        }))
+      "
+      :disabled="disabled"
+      class="mb-4"
+    />
 
-  <ContributionAmount
-    v-model.number="amountProxy"
-    :is-monthly="isMonthly"
-    :min-amount="minAmount"
-    :defined-amounts="definedAmounts"
-    :disabled="disabled"
-    :currency-symbol="labels.currencySymbol"
-    :minimum-text="labels.minimumContribution"
-    :per-period-text="perPeriodText"
-    :currency-formatter="labels.currencyFormatter"
-    class="mb-4"
-  />
+    <ContributionAmount
+      v-model.number="amountProxy"
+      :is-monthly="isMonthly"
+      :min-amount="minAmount"
+      :defined-amounts="definedAmounts"
+      :disabled="disabled"
+      :currency-symbol="labels.currencySymbol"
+      :minimum-text="labels.minimumContribution"
+      :per-period-text="perPeriodText"
+      :currency-formatter="labels.currencyFormatter"
+      class="mb-4"
+    />
 
-  <slot></slot>
+    <slot></slot>
 
-  <ContributionMethod
-    v-if="showPaymentMethod"
-    v-model="paymentMethodProxy"
-    :methods="content.paymentMethods"
-    :disabled="disabled"
-    :title="labels.paymentMethodTitle"
-    :method-labels="labels.paymentMethods"
-    class="mb-4"
-  />
+    <ContributionMethod
+      v-if="showPaymentMethod"
+      v-model="paymentMethodProxy"
+      :methods="content.paymentMethods"
+      :disabled="disabled"
+      :title="labels.paymentMethodTitle"
+      :method-labels="labels.paymentMethods"
+      class="mb-4"
+    />
 
-  <ContributionFee
-    v-if="isMonthly && content.showAbsorbFee"
-    v-model="payFeeProxy"
-    :amount="amountProxy"
-    :fee="fee"
-    :force="shouldForceFee"
-    :disabled="disabled"
-    :absorb-fee-text="absorbFeeText"
-    :absorb-fee-label="absorbFeeLabel"
-  />
+    <ContributionFee
+      v-if="isMonthly && content.showAbsorbFee"
+      v-model="payFeeProxy"
+      :amount="amountProxy"
+      :fee="fee"
+      :force="shouldForceFee"
+      :disabled="disabled"
+      :absorb-fee-text="absorbFeeText"
+      :absorb-fee-label="absorbFeeLabel"
+    />
+  </div>
 </template>
 
 <script lang="ts" setup>
