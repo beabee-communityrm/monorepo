@@ -1321,13 +1321,13 @@
         "formSubtitle": "Ondertitel",
         "formTitle": "Titel",
         "minAmount": "Minimum bedrag",
+        "noticeText": "",
+        "noticeTextHelp": "",
         "showAbsorbFee": "Gebruiker vragen om de betalingskosten te absorberen",
         "showNoContribution": "Gebruiker toestaan mee te doen zonder bijdrage",
         "suggestedAmounts": "Voorgestelde contributiebedragen",
         "text": "In dit gedeelte kun je het lidmaatschapsformulier bewerken, verfijnen en een voorbeeld bekijken.",
-        "title": "Lidmaatschapsformulier",
-        "noticeText": "",
-        "noticeTextHelp": ""
+        "title": "Lidmaatschapsformulier"
       }
     },
     "title": "Lidmaatschap bouwer"

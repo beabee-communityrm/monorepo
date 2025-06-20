@@ -1321,13 +1321,13 @@
         "formSubtitle": "Sous-titre",
         "formTitle": "Titre",
         "minAmount": "Montant minimum",
+        "noticeText": "",
+        "noticeTextHelp": "",
         "showAbsorbFee": "Proposer aux utilisateurs de prendre en charge les frais de paiement",
         "showNoContribution": "Autoriser les utilisateurs à s'inscrire sans cotisation",
         "suggestedAmounts": "Montants de cotisation suggérés",
         "text": "Dans cette section, vous pouvez modifier, ajuster et prévisualiser votre formulaire d'adhésion.",
-        "title": "Formulaire d'inscription",
-        "noticeText": "",
-        "noticeTextHelp": ""
+        "title": "Formulaire d'inscription"
       }
     },
     "title": "Créateur d'adhésion"
