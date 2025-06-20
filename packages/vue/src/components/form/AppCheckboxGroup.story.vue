@@ -66,7 +66,7 @@ const selectedItems = ref([1, 3] as number[]);
 </script>
 
 <template>
-  <Story title="Components/Form/AppCheckboxGroup">
+  <Story title="Form/AppCheckboxGroup">
     <Variant title="Playground">
       <div class="flex max-w-md flex-col gap-4">
         <AppCheckboxGroup

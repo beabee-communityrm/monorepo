@@ -25,9 +25,10 @@
  *
  * @component
  */
+import { TheBreadcrumb } from '@beabee/vue';
+
 import { computed } from 'vue';
 
-import TheBreadcrumb from '../components/TheBreadcrumb.vue';
 import { isEmbed } from '../store';
 import { breadcrumbItems } from '../store/breadcrumb';
 import TheMenu from './menu/TheMenu.vue';

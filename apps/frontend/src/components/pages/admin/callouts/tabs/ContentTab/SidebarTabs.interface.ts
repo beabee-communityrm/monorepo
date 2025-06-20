@@ -1,7 +1,7 @@
 import type { ItemStatus } from '@beabee/beabee-common';
+import type { AppStepperStep } from '@beabee/vue';
 
 import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
-import type { AppStepperStep } from '@type';
 import type { Component, Raw } from 'vue';
 
 import type { ContentFormTabData } from './SidebarTabContent/ContentFormTab.vue';

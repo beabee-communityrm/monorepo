@@ -1,6 +1,20 @@
 # AppScrollNavigation
 
-A navigation component that allows users to navigate between sections of content by scrolling. It automatically highlights the active section based on scroll position.
+The `AppScrollNavigation` component provides a navigation sidebar that highlights the current section as users scroll through content.
+
+## Usage Patterns
+
+- **Documentation sites** - Table of contents with active section highlighting
+- **Settings pages** - Navigate between configuration sections
+- **Long forms** - Jump between form sections with progress indication
+- **Content pages** - Article navigation with reading progress
+
+## Key Features
+
+- ✅ **Active section tracking** - Automatically highlights current section
+- ✅ **Smooth scroll navigation** - Jump to sections with smooth animation
+- ✅ **Sticky positioning** - Remains visible during page scroll
+- ✅ **Progress indication** - Visual feedback of reading/completion progress
 
 ## Usage
 
@@ -28,104 +42,6 @@ A navigation component that allows users to navigate between sections of content
     >
       <AppFormBox title="Section 2">
         <p>Content for section 2</p>
-      </AppFormBox>
-    </AppScrollSection>
-  </div>
-</div>
-```
-
-## Props
-
-| Prop       | Type              | Required | Default | Description                                    |
-| ---------- | ----------------- | -------- | ------- | ---------------------------------------------- |
-| `sections` | `ScrollSection[]` | Yes      | -       | Array of sections to display in the navigation |
-| `title`    | `string`          | No       | `''`    | Optional title for the navigation              |
-
-## Events
-
-| Event                  | Payload  | Description                             |
-| ---------------------- | -------- | --------------------------------------- |
-| `update:activeSection` | `string` | Emitted when the active section changes |
-
-## ScrollSection Interface
-
-```typescript
-interface ScrollSection {
-  /** Unique identifier for the section */
-  id: string;
-  /** Display label for the section */
-  label: string;
-  /** Optional element reference for scrolling */
-  element?: HTMLElement;
-}
-```
-
-## Features
-
-- Automatically highlights the active section based on scroll position
-- Smooth scrolling to sections when clicked
-- Support for custom scroll containers
-- Two-way binding for active section
-- Truncates long labels with ellipsis to prevent wrapping
-- Active items have a white background with shadow for clear visual distinction
-- No borders on navigation items for a cleaner look
-
-## Use Cases
-
-### Form Builder Translations
-
-Perfect for navigating between different sections of a translation form:
-
-```vue
-<div class="flex gap-4">
-  <AppScrollNavigation
-    :sections="[
-      { id: 'buttons', label: 'Buttons' },
-      { id: 'intro', label: 'Introduction' },
-      { id: 'slides', label: 'Slides' },
-      { id: 'thank-you', label: 'Thank You' }
-    ]"
-    title="Translations"
-  />
-
-  <div class="flex-1 overflow-y-auto">
-    <AppScrollSection id="buttons">
-      <AppFormBox title="Buttons">
-        <!-- Button translations -->
-      </AppFormBox>
-    </AppScrollSection>
-
-    <AppScrollSection id="intro">
-      <AppFormBox title="Introduction">
-        <!-- Introduction translations -->
-      </AppFormBox>
-    </AppScrollSection>
-
-    <!-- More sections -->
-  </div>
-</div>
-```
-
-### Documentation Navigation
-
-Useful for navigating through documentation sections:
-
-```vue
-<div class="flex gap-4">
-  <AppScrollNavigation
-    :sections="docSections"
-    title="Documentation"
-  />
-
-  <div class="flex-1 overflow-y-auto">
-    <AppScrollSection
-      v-for="section in docSections"
-      :key="section.id"
-      :id="section.id"
-      @mounted="registerSection"
-    >
-      <AppFormBox :title="section.label">
-        <!-- Section content -->
       </AppFormBox>
     </AppScrollSection>
   </div>

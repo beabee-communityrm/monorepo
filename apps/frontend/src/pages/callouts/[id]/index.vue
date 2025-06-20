@@ -85,18 +85,21 @@ import {
   type CalloutResponseAnswersSlide,
   type GetCalloutDataWith,
   type GetCalloutResponseDataWith,
+  GetCalloutResponseWith,
   ItemStatus,
   type Paginated,
 } from '@beabee/beabee-common';
-import { GetCalloutResponseWith } from '@beabee/beabee-common';
-import { AppButton, AppNotification } from '@beabee/vue/components';
-import { addNotification } from '@beabee/vue/store/notifications';
+import {
+  AppButton,
+  AppHeading,
+  AppMessageBox,
+  AppNotification,
+  AppTitle,
+  addNotification,
+} from '@beabee/vue';
 
 import noImage from '@assets/images/no-image.avif';
-import AppHeading from '@components/AppHeading.vue';
-import AppMessageBox from '@components/AppMessageBox.vue';
 import AppShareBox from '@components/AppShareBox.vue';
-import AppTitle from '@components/AppTitle.vue';
 import CalloutForm from '@components/pages/callouts/CalloutForm.vue';
 import CalloutLoginPrompt from '@components/pages/callouts/CalloutLoginPrompt.vue';
 import CalloutMemberOnlyPrompt from '@components/pages/callouts/CalloutMemberOnlyPrompt.vue';

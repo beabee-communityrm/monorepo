@@ -30,7 +30,7 @@ function handleRemove() {
 </script>
 
 <template>
-  <Story title="Components/Notification/AppNotification">
+  <Story title="Notification/AppNotification">
     <Variant title="Playground">
       <div v-if="state.visible" class="flex max-w-md flex-col gap-4">
         <AppNotification

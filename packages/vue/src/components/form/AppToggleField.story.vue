@@ -25,7 +25,7 @@ const advancedOptionsVisible = ref(false);
 </script>
 
 <template>
-  <Story title="Components/Form/AppToggleField">
+  <Story title="Form/AppToggleField">
     <Variant title="Playground">
       <div class="flex max-w-md flex-col gap-4">
         <AppToggleField

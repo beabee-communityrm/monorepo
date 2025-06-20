@@ -333,6 +333,7 @@
     "addAPoint": "Click on the map where you want to add a point",
     "addLocation": "Add a new entry",
     "builder": {
+      "title": "Callout builder",
       "actions": {
         "addSlide": "Add slide"
       },

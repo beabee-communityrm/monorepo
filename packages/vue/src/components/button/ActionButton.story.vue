@@ -54,7 +54,7 @@ const calloutActions = commonActions.slice(0, 6);
 </script>
 
 <template>
-  <Story title="Components/Button/ActionButton">
+  <Story title="Button/ActionButton">
     <Variant title="Playground">
       <div class="flex flex-col gap-4">
         <ActionButton :icon="state.icon">

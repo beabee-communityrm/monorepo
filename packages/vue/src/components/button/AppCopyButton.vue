@@ -1,3 +1,8 @@
+<!--
+  # AppCopyButton
+  A button component for copying text to the clipboard with success/error notifications.
+  Shows copy icon and provides user feedback through notification system.
+-->
 <template>
   <button
     :title="t('actions.copy')"
@@ -18,13 +23,13 @@
 
 <script lang="ts" setup>
 /**
- * A button component for copying text to the clipboard.
- * Shows a success notification when copying is successful.
+ * Button component for copying text to the clipboard with user feedback.
+ * Shows success notification when copying succeeds and error notification when it fails.
  *
  * @component AppCopyButton
  *
  * @example
- * <AppCopyButton text="Text to copy" @copy="handleCopy" />
+ * <AppCopyButton text="Copy this text" @copy="handleCopy" />
  */
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 import { useI18n } from 'vue-i18n';
@@ -37,11 +42,21 @@ import { addNotification } from '../../store/notifications';
 export interface AppCopyButtonProps {
   /** The text to copy to clipboard */
   text: string;
-  /** The button variant */
+  /** Visual variant affecting button styling */
   variant?: 'normal' | 'float';
-  /** Disabled state */
+  /** Whether the button is disabled */
   disabled?: boolean;
 }
+
+/**
+ * Events emitted by the AppCopyButton component
+ */
+const emit = defineEmits<{
+  /**
+   * Emitted when text is successfully copied to clipboard
+   */
+  copy: [];
+}>();
 
 const props = withDefaults(defineProps<AppCopyButtonProps>(), {
   variant: 'normal',
@@ -49,14 +64,9 @@ const props = withDefaults(defineProps<AppCopyButtonProps>(), {
 });
 
 const { t } = useI18n();
-const emit = defineEmits<{
-  /** Emitted when text is successfully copied */
-  (e: 'copy'): void;
-}>();
 
 /**
- * Handles the copy action
- * Copies the text to clipboard and shows a notification
+ * Handles the copy action by writing text to clipboard and showing notifications
  */
 const handleCopy = async () => {
   if (props.disabled) return;

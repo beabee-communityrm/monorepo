@@ -90,8 +90,10 @@ meta:
 
       <AppHeading class="mt-6">{{ t('contactOverview.roles') }}</AppHeading>
       <div class="relative mt-4">
-        <RoleEditor
+        <AppRoleEditor
           :roles="contact.roles"
+          :labels="roleEditorLabels"
+          :locale="locale as BaseLocale"
           @delete="handleDeleteRole"
           @update="handleUpdateRole"
         />
@@ -119,9 +121,10 @@ meta:
             :label="t('contacts.data.description')"
           />
         </div>
-        <RichTextEditor
+        <AppRichTextEditor
           v-model="contactAbout.notes"
           :label="t('contacts.data.notes')"
+          :labels="editorLabels"
           class="mb-4"
         />
       </AppForm>
@@ -258,34 +261,35 @@ meta:
 
 <script lang="ts" setup>
 import {
+  CONTACT_MFA_TYPE,
   type ContactRoleData,
   type ContentJoinSetupData,
   ContributionType,
   type GetCalloutDataWith,
   type GetCalloutResponseDataWith,
+  GetCalloutResponseWith,
   type GetContactData,
   type GetContactDataWith,
   GetContactWith,
   type RoleType,
 } from '@beabee/beabee-common';
+import type { BaseLocale } from '@beabee/locale';
 import {
-  CONTACT_MFA_TYPE,
-  GetCalloutResponseWith,
-} from '@beabee/beabee-common';
-import { AppButton } from '@beabee/vue/components';
-import { AppForm } from '@beabee/vue/components';
+  App2ColGrid,
+  AppButton,
+  AppConfirmDialog,
+  AppForm,
+  AppHeading,
+  AppInfoList,
+  AppInfoListItem,
+  AppInput,
+  AppRichTextEditor,
+} from '@beabee/vue';
+import { AppRoleEditor, type AppRoleEditorLabels } from '@beabee/vue';
+import { PaymentMethod } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
-import App2ColGrid from '@components/App2ColGrid.vue';
-import AppConfirmDialog from '@components/AppConfirmDialog.vue';
-import AppHeading from '@components/AppHeading.vue';
-import AppInfoList from '@components/AppInfoList.vue';
-import AppInfoListItem from '@components/AppInfoListItem.vue';
-import AppInput from '@components/forms/AppInput.vue';
 import CalloutForm from '@components/pages/callouts/CalloutForm.vue';
-import PaymentMethod from '@components/payment-method/PaymentMethod.vue';
-import RoleEditor from '@components/role/RoleEditor.vue';
-import RichTextEditor from '@components/rte/RichTextEditor.vue';
 import TagList from '@components/tag/TagList.vue';
 import ToggleTagButton from '@components/tag/ToggleTagButton.vue';
 import env from '@env';
@@ -295,7 +299,33 @@ import { formatLocale } from '@utils/dates';
 import { onBeforeMount, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-const { t, n } = useI18n();
+import { useRichTextEditorLabels } from '../../../../composables/useRichTextEditorLabels';
+
+const { t, n, locale } = useI18n();
+const editorLabels = useRichTextEditorLabels();
+
+const roleEditorLabels: AppRoleEditorLabels = {
+  addButtonText: t('roleEditor.add'),
+  editButtonText: t('actions.edit'),
+  deleteButtonText: t('actions.delete'),
+  updateButtonText: t('actions.update'),
+  cancelButtonText: t('actions.cancel'),
+  noBackButtonText: t('actions.noBack'),
+  yesRemoveButtonText: t('actions.yesRemove'),
+  deleteTitle: t('roleEditor.confirmDelete.title'),
+  deleteText: t('roleEditor.confirmDelete.text'),
+  todayText: t('roleEditor.today'),
+  newRoleLabel: t('roleEditor.new'),
+  startsLabel: t('roleEditor.starts.label'),
+  startsNowOption: t('roleEditor.starts.opts.now'),
+  startsScheduleOption: t('roleEditor.starts.opts.schedule'),
+  expiresLabel: t('roleEditor.expires.label'),
+  expiresNeverOption: t('roleEditor.expires.opts.never'),
+  expiresScheduleOption: t('roleEditor.expires.opts.schedule'),
+  memberRoleLabel: t('common.role.member'),
+  adminRoleLabel: t('common.role.admin'),
+  superAdminRoleLabel: t('common.role.superadmin'),
+};
 
 const props = defineProps<{
   contact: GetContactData;

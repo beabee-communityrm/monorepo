@@ -23,8 +23,8 @@
 
 <script lang="ts" setup>
 import { CalloutAccess, type GetCalloutDataWith } from '@beabee/beabee-common';
+import { AppMessageBox } from '@beabee/vue';
 
-import AppMessageBox from '@components/AppMessageBox.vue';
 import { faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import { currentUser } from '@store/currentUser';
 import { useI18n } from 'vue-i18n';

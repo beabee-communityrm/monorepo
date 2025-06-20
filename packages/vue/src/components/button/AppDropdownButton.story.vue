@@ -95,7 +95,7 @@ function handleSelectLanguage(item: { id: string; label: string }) {
 </script>
 
 <template>
-  <Story title="Components/Button/AppDropdownButton">
+  <Story title="Button/AppDropdownButton">
     <Variant title="Playground">
       <AppDropdownButton
         :icon="state.icon"

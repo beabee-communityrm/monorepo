@@ -81,7 +81,7 @@ function logAction(item: { id: string; label: string }, selected: boolean) {
 </script>
 
 <template>
-  <Story title="Components/List/AppSelectableList">
+  <Story title="List/AppSelectableList">
     <Variant title="Basic">
       <div class="max-w-xs rounded border">
         <AppSelectableList

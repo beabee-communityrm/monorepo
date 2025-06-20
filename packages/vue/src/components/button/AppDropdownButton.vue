@@ -1,3 +1,9 @@
+<!--
+  # AppDropdownButton
+  A dropdown button component that shows a menu when clicked.
+  Supports keyboard navigation and outside click detection for accessibility.
+-->
+
 <template>
   <AppButton
     ref="buttonRef"
@@ -37,19 +43,15 @@
 
 <script lang="ts" setup>
 /**
- * A dropdown button component that displays a dropdown menu when clicked.
- * Used for actions that require selecting from a list of options.
+ * Dropdown button component that displays a menu when clicked with keyboard navigation support.
+ * Automatically closes on outside clicks and provides accessible menu interaction patterns.
  *
  * @component AppDropdownButton
  *
  * @example
- * <AppDropdownButton
- *   title="Options"
- *   variant="primaryOutlined"
- *   :icon="faEllipsisV"
- * >
- *   <div role="menuitem">Option 1</div>
- *   <div role="menuitem">Option 2</div>
+ * <AppDropdownButton title="Actions" variant="primaryOutlined" :icon="faEllipsisV">
+ *   <div role="menuitem" @click="editAction">Edit</div>
+ *   <div role="menuitem" @click="deleteAction">Delete</div>
  * </AppDropdownButton>
  */
 import type { IconDefinition } from '@fortawesome/free-solid-svg-icons';
@@ -65,19 +67,32 @@ export type DropdownButtonVariant =
   | 'dangerOutlined'
   | 'greyOutlined';
 
-// Define the component props interface
+/**
+ * Props for the AppDropdownButton component
+ */
 export interface AppDropdownButtonProps {
-  /** Icon to display in the button */
+  /** FontAwesome icon to display in the button trigger */
   icon: IconDefinition;
-  /** Button and dropdown title */
+  /** Button title and accessible label text */
   title: string;
-  /** Button style variant */
+  /** Visual style variant for the button trigger */
   variant: DropdownButtonVariant;
-  /** Whether to show the title text */
+  /** Whether to display the title text alongside the icon */
   showTitle?: boolean;
-  /** Whether the button is disabled */
+  /** Whether the dropdown button is disabled */
   disabled?: boolean;
 }
+
+/**
+ * Slots available in the AppDropdownButton component
+ */
+defineSlots<{
+  /**
+   * Default slot for dropdown menu content
+   * @description Menu items with role="menuitem" for accessibility
+   */
+  default(): any;
+}>();
 
 const props = defineProps<AppDropdownButtonProps>();
 

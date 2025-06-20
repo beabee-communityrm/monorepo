@@ -29,8 +29,10 @@ meta:
         </section>
         <section class="mb-8">
           <AppHeading>{{ t('contactOverview.roles') }}</AppHeading>
-          <RoleEditor
+          <AppRoleEditor
             :roles="data.roles"
+            :labels="roleEditorLabels"
+            :locale="locale as BaseLocale"
             @delete="handleDeleteRole"
             @update="handleUpdateRole"
           />
@@ -61,15 +63,20 @@ import {
   NewsletterStatus,
   type RoleType,
 } from '@beabee/beabee-common';
-import { AppButton, AppCheckbox, AppForm } from '@beabee/vue/components';
+import type { BaseLocale } from '@beabee/locale';
+import {
+  App2ColGrid,
+  AppButton,
+  AppCheckbox,
+  AppForm,
+  AppHeading,
+  PageTitle,
+} from '@beabee/vue';
+import { AppRoleEditor, type AppRoleEditorLabels } from '@beabee/vue';
 
-import App2ColGrid from '@components/App2ColGrid.vue';
-import AppHeading from '@components/AppHeading.vue';
-import PageTitle from '@components/PageTitle.vue';
 import ContactBasicFields from '@components/contact/ContactBasicFields.vue';
 import ContactContributionFields from '@components/contact/ContactContributionFields.vue';
 import type { UpdateContribution } from '@components/contact/contact.interface';
-import RoleEditor from '@components/role/RoleEditor.vue';
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { client } from '@utils/api';
@@ -78,8 +85,31 @@ import { computed, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 const router = useRouter();
+
+const roleEditorLabels: AppRoleEditorLabels = {
+  addButtonText: t('roleEditor.add'),
+  editButtonText: t('actions.edit'),
+  deleteButtonText: t('actions.delete'),
+  updateButtonText: t('actions.update'),
+  cancelButtonText: t('actions.cancel'),
+  noBackButtonText: t('actions.noBack'),
+  yesRemoveButtonText: t('actions.yesRemove'),
+  deleteTitle: t('roleEditor.confirmDelete.title'),
+  deleteText: t('roleEditor.confirmDelete.text'),
+  todayText: t('roleEditor.today'),
+  newRoleLabel: t('roleEditor.new'),
+  startsLabel: t('roleEditor.starts.label'),
+  startsNowOption: t('roleEditor.starts.opts.now'),
+  startsScheduleOption: t('roleEditor.starts.opts.schedule'),
+  expiresLabel: t('roleEditor.expires.label'),
+  expiresNeverOption: t('roleEditor.expires.opts.never'),
+  expiresScheduleOption: t('roleEditor.expires.opts.schedule'),
+  memberRoleLabel: t('common.role.member'),
+  adminRoleLabel: t('common.role.admin'),
+  superAdminRoleLabel: t('common.role.superadmin'),
+};
 
 addBreadcrumb(
   computed(() => [

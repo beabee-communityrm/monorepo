@@ -10,7 +10,7 @@ const state = reactive({
 </script>
 
 <template>
-  <Story title="Components/Form/AppLabel">
+  <Story title="Form/AppLabel">
     <Variant title="Playground">
       <div class="flex max-w-md flex-col gap-4">
         <AppLabel :label="state.label" :required="state.required" />

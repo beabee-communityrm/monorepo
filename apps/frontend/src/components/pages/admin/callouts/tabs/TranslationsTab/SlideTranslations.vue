@@ -50,11 +50,12 @@
           />
 
           <!-- Rich text editor field -->
-          <RichTextEditor
+          <AppRichTextEditor
             v-else-if="fieldType === 'richtext'"
             :model-value="
               getLocalizedValue(component[field] as string, selectedLocale)
             "
+            :labels="editorLabels"
             :placeholder="getDefaultText(component[field] as string)"
             :disabled="selectedLocale === defaultLocale"
             :copyable="selectedLocale === defaultLocale"
@@ -97,12 +98,14 @@
 
 <script lang="ts" setup>
 import { type CalloutComponentSchema } from '@beabee/beabee-common';
-import { AppFormBox } from '@beabee/vue/components';
+import {
+  AppFormBox,
+  AppInput,
+  AppRichTextEditor,
+  AppTextArea,
+} from '@beabee/vue';
 
 import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
-import AppInput from '@components/forms/AppInput.vue';
-import AppTextArea from '@components/forms/AppTextArea.vue';
-import RichTextEditor from '@components/rte/RichTextEditor.vue';
 import type { LocaleProp } from '@type/locale-prop';
 import {
   getComponentTextFallback,
@@ -110,6 +113,8 @@ import {
   updateComponentTextValue,
 } from '@utils/callouts';
 import { useI18n } from 'vue-i18n';
+
+import { useRichTextEditorLabels } from '../../../../../../composables/useRichTextEditorLabels';
 
 const props = defineProps<{
   defaultLocale: string;
@@ -120,6 +125,7 @@ const props = defineProps<{
 }>();
 
 const { t } = useI18n();
+const editorLabels = useRichTextEditorLabels();
 
 // Field types mapping
 const fields = [

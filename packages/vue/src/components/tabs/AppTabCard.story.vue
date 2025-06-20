@@ -31,7 +31,7 @@ const longContent = Array(20)
 </script>
 
 <template>
-  <Story title="Components/Tabs/AppTabCard">
+  <Story title="Tabs/AppTabCard">
     <Variant title="Boxed Variant (Default)">
       <div class="p-4">
         <AppTabCard v-model="state.selectedTab" :items="languageTabs">

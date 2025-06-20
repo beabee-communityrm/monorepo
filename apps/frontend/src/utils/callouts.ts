@@ -14,6 +14,7 @@ import {
   flattenComponents,
 } from '@beabee/beabee-common';
 import { type LocaleOptions, config as localeConfig } from '@beabee/locale';
+import type { FilterItem, FilterItems } from '@beabee/vue';
 
 import type {
   FormBuilderNavigation,
@@ -25,7 +26,6 @@ import type { SettingsTabData } from '@components/pages/admin/callouts/tabs/Sett
 import type { TitleAndImageTabData } from '@components/pages/admin/callouts/tabs/TitleAndImageTab.vue';
 import type { TranslationsTabData } from '@components/pages/admin/callouts/tabs/TranslationsTab.vue';
 import type { LocaleProp } from '@type';
-import type { FilterItem, FilterItems } from '@type';
 import { format } from 'date-fns';
 import { computed } from 'vue';
 

@@ -40,12 +40,10 @@
 
 <script lang="ts" setup>
 import { type GetCalloutDataWith, ItemStatus } from '@beabee/beabee-common';
-import { AppButton } from '@beabee/vue/components';
-import { generalContent } from '@beabee/vue/store/generalContent';
+import { AppButton, AppTitle, generalContent } from '@beabee/vue';
 
 import noImage from '@assets/images/no-image.avif';
 import AppShareBox from '@components/AppShareBox.vue';
-import AppTitle from '@components/AppTitle.vue';
 import { resolveImageUrl } from '@utils/url';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';

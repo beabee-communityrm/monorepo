@@ -85,7 +85,7 @@ async function handleClick() {
 </script>
 
 <template>
-  <Story title="Components/Button/AppAsyncButton">
+  <Story title="Button/AppAsyncButton">
     <Variant title="Playground">
       <div class="flex flex-col gap-4">
         <AppAsyncButton

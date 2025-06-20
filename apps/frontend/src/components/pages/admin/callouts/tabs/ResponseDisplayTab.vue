@@ -142,6 +142,9 @@
                   v-model="localData.responseLinks"
                   :placeholder-label="inputT('responseLinks.placeholder.label')"
                   :placeholder-url="inputT('responseLinks.placeholder.url')"
+                  :text-label="inputT('responseLinks.text.label')"
+                  :url-label="inputT('responseLinks.url.label')"
+                  :add-label="inputT('responseLinks.add')"
                 />
               </AppFormField>
             </template>
@@ -263,15 +266,15 @@ import {
   AppCheckboxGroup,
   AppFormBox,
   AppFormField,
+  AppInput,
+  AppLinkList,
   AppScrollNavigation,
   AppScrollSection,
+  AppSelect,
   AppToggleField,
   type ScrollSection,
-} from '@beabee/vue/components';
+} from '@beabee/vue';
 
-import AppInput from '@components/forms/AppInput.vue';
-import AppLinkList from '@components/forms/AppLinkList.vue';
-import AppSelect from '@components/forms/AppSelect.vue';
 import { buckets } from '@utils/callouts';
 import useVuelidate from '@vuelidate/core';
 import { computed, ref, watch } from 'vue';
