@@ -48,14 +48,16 @@ import {
   PaymentMethod,
   calcPaymentFee,
 } from '@beabee/beabee-common';
-import { AppChoice, ContributionFee } from '@beabee/vue';
+import {
+  AppChoice,
+  type ContributionContent,
+  ContributionFee,
+} from '@beabee/vue';
 import { Contribution as VueContribution } from '@beabee/vue';
 
 import { generalContent } from '@store';
 import { computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-
-import { type ContributionContent } from './contribution.interface';
 
 /**
  * Labels and text content for the Contribution component

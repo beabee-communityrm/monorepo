@@ -71,11 +71,15 @@ import {
   MembershipStatus,
   PaymentMethod,
 } from '@beabee/beabee-common';
-import { App2ColGrid, AppNotification, PageTitle } from '@beabee/vue';
+import {
+  App2ColGrid,
+  AppNotification,
+  type ContributionContent,
+  PageTitle,
+} from '@beabee/vue';
 
 import ContactCancelContribution from '@components/contact/ContactCancelContribution.vue';
 import ContactPaymentsHistory from '@components/contact/ContactPaymentsHistory.vue';
-import type { ContributionContent } from '@components/contribution/contribution.interface';
 import ContributionBox from '@components/pages/profile/contribution/ContributionBox.vue';
 import PaymentSource from '@components/pages/profile/contribution/PaymentSource.vue';
 import UpdateContribution from '@components/pages/profile/contribution/UpdateContribution.vue';
