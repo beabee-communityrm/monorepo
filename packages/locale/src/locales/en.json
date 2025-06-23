@@ -130,7 +130,7 @@
     "title": "Add a notice"
   },
   "adminDashboard": {
-    "hint1": "<p>\"Callouts\" are now called \"CrowdNewsrooms\". Check out our <a href=\"https://wiki.beabee.io/help-center-english/engagement/crowdnewsroom\" target=\"_blank\" rel=\"noopener noreferrer\">Help Center</a> for guides and case studies to engage your community.</p>",
+    "hint1": "<p>Did you know CrowdNewsrooms can be created without an end date, and just keep running? See our <a href=\"https://beabee.io/en/beabee-full-feature-list/\" target=\"_blank\" rel=\"noopener noreferrer\">feature showcase</a> for more information.</p>\n",
     "hint2": "<p>Find out more about <a href=\"https://beabee.io/en/beabee-model/\" target=\"_blank\" rel=\"noopener noreferrer\">the beabee vision</a> around community engagement and meaningful relationships with your audience.</p>\n",
     "hint3": "<p>Our <a href=\"https://beabee.io/en/beabee-faq/\" target=\"_blank\" rel=\"noopener noreferrer\">FAQ</a> addresses common questions about getting started and use cases. If the answer you're looking for isn't there, get in touch.</p>\n",
     "joinSlack": "Join the beabee community on Slack!",
@@ -851,15 +851,6 @@
       "title": "Remove reviewer"
     },
     "contact": "Contact ID",
-    "editorTag": "Editor",
-    "search": {
-      "error": {
-        "message": "Please ensure that the email address exists and is free of typos.",
-        "title": "Contact not found"
-      },
-      "placeholder": "Search email address",
-      "successMessage": "Email Is Valid"
-    },
     "title": "Reviewers"
   },
   "calloutThanksPage": {
