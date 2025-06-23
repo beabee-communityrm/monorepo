@@ -720,7 +720,7 @@
         "twitter": "Auf Twitter teilen",
         "whatsapp": "Auf WhatsApp teilen"
       },
-      "services": "Diesen CrowdNewsroom auf einer der folgenden Plattformen teilen: "
+      "services": "Diesen CrowdNewsroom auf einer der folgenden Plattformen teilen:"
     },
     "showingPreview": "Im Vorschaumodus sind Antworten deaktiviert.",
     "toContributionPage": "Meinen Beitrag ändern",
@@ -860,7 +860,7 @@
       "placeholder": "E-Mail-Adresse suchen",
       "successMessage": "E-Mail ist gültig"
     },
-    "title": "Auswerter"
+    "title": "Auswerter verwalten"
   },
   "calloutThanksPage": {
     "oneResponseWarning": "Bitte beachten Sie, dass nur eine Antwort pro Person möglich ist. Wenn Sie bereits teilgenommen haben, werden weitere Antworten nicht berücksichtigt."
