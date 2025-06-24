@@ -225,7 +225,7 @@ async function handleSaveGeneral() {
   );
 
   // Refresh the favicon
-  await fetch('/favicon.png', {
+  await fetch('/api/1.0/favicon.ico', {
     method: 'GET',
     credentials: 'include',
   });
