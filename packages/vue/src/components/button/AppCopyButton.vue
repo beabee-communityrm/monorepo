@@ -5,19 +5,26 @@
 -->
 <template>
   <button
-    :title="t('actions.copy')"
+    :title="label || t('actions.copy')"
     class="flex items-center justify-center"
     :class="{
       'h-9 w-9 rounded bg-white/70 enabled:hover:bg-white':
         props.variant === 'float',
       'h-full w-10 bg-white enabled:hover:bg-grey-lighter':
-        props.variant === 'normal',
+        props.variant === 'normal' && !label,
+      'h-full bg-white px-3 enabled:hover:bg-grey-lighter':
+        props.variant === 'normal' && label,
       'cursor-not-allowed opacity-60': props.disabled,
     }"
     :disabled="props.disabled"
     @click="handleCopy"
   >
-    <font-awesome-icon :icon="faCopy" class="h-4 w-4" />
+    <font-awesome-icon
+      :icon="faCopy"
+      class="h-4 w-4"
+      :class="{ 'mr-2': label }"
+    />
+    <span v-if="label" class="text-sm">{{ label }}</span>
   </button>
 </template>
 
@@ -30,6 +37,7 @@
  *
  * @example
  * <AppCopyButton text="Copy this text" @copy="handleCopy" />
+ * <AppCopyButton text="Copy this text" label="Copy link" @copy="handleCopy" />
  */
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 import { useI18n } from 'vue-i18n';
@@ -46,6 +54,8 @@ export interface AppCopyButtonProps {
   variant?: 'normal' | 'float';
   /** Whether the button is disabled */
   disabled?: boolean;
+  /** Optional text label to show next to the icon */
+  label?: string;
 }
 
 /**
@@ -61,6 +71,7 @@ const emit = defineEmits<{
 const props = withDefaults(defineProps<AppCopyButtonProps>(), {
   variant: 'normal',
   disabled: false,
+  label: undefined,
 });
 
 const { t } = useI18n();

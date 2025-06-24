@@ -75,6 +75,7 @@
         <AppCopyButton
           :text="prefix ? `${prefix}${value}` : value?.toString() || ''"
           :disabled="copyButtonDisabled"
+          :label="copyLabel"
           :aria-label="`Copy ${label || 'input value'} to clipboard`"
         />
       </div>
@@ -143,6 +144,8 @@ export interface AppInputProps {
   suffix?: string;
   /** Whether the input value can be copied to clipboard */
   copyable?: boolean;
+  /** Text label for the copy button (if copyable is true) */
+  copyLabel?: string;
   /** Custom ID for the input element */
   id?: string;
 }
@@ -164,6 +167,7 @@ const props = withDefaults(defineProps<AppInputProps>(), {
   prefix: undefined,
   suffix: undefined,
   copyable: false,
+  copyLabel: undefined,
   id: undefined,
 });
 

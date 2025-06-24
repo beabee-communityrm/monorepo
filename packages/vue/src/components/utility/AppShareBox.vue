@@ -6,7 +6,7 @@
   ## Features:
   - Multiple social media sharing options (Facebook, LinkedIn, Telegram, Twitter, WhatsApp)
   - Email sharing support
-  - Copy-to-clipboard functionality
+  - Copy-to-clipboard functionality using AppInput
   - Collapsible interface using AppExpandableBox
   - Full keyboard navigation support
   - Accessibility features with ARIA labels
@@ -35,30 +35,15 @@
       <!-- Address section -->
       <section>
         <p class="mb-2 text-sm text-body-80">{{ addressText }}</p>
-        <div
-          class="bg-grey-lightest flex items-center rounded border border-grey-light px-3 py-2"
-          role="group"
-          :aria-label="addressText"
-        >
-          <span
-            class="mr-2 flex-1 break-all text-link"
-            :id="`${componentId}-url`"
-            role="text"
-            :aria-label="`URL: ${fullUrl}`"
-          >
-            {{ fullUrl }}
-          </span>
-          <AppButton
-            :icon="faCopy"
-            size="sm"
-            variant="greyOutlined"
-            :aria-describedby="`${componentId}-url`"
-            :aria-label="`${copyText}: ${fullUrl}`"
-            @click="copyToClipboard"
-          >
-            {{ copyText }}
-          </AppButton>
-        </div>
+        <AppInput
+          :model-value="fullUrl"
+          :label="addressText"
+          disabled
+          copyable
+          :copy-label="copyText"
+          :aria-label="`URL: ${fullUrl}`"
+          hide-error-message
+        />
       </section>
 
       <!-- Social sharing section -->
@@ -184,14 +169,10 @@ import {
   faTwitter,
   faWhatsapp,
 } from '@fortawesome/free-brands-svg-icons';
-import {
-  faCopy,
-  faEnvelope,
-  faShareNodes,
-} from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope, faShareNodes } from '@fortawesome/free-solid-svg-icons';
 import { computed } from 'vue';
 
-import { AppButton, AppExpandableBox } from '../..';
+import { AppExpandableBox, AppInput } from '../..';
 
 /**
  * Props for the AppShareBox component
@@ -222,69 +203,17 @@ const props = withDefaults(defineProps<AppShareBoxProps>(), {
 });
 
 /**
- * Events emitted by the AppShareBox component
- */
-const emit = defineEmits<{
-  /**
-   * Emitted when the URL is successfully copied to clipboard
-   * @param url - The URL that was copied
-   */
-  copied: [url: string];
-  /**
-   * Emitted when copying to clipboard fails
-   * @param error - The error that occurred
-   */
-  copyError: [error: Error];
-}>();
-
-// Generate unique component ID for accessibility
-const componentId = computed(
-  () => `share-box-${Math.random().toString(36).substring(2, 11)}`
-);
-
-/**
  * Computed full URL combining base URL and relative URL
  */
 const fullUrl = computed(() => {
+  if (!props.baseUrl || !props.url) {
+    return '';
+  }
+
   const base = props.baseUrl.endsWith('/')
     ? props.baseUrl.slice(0, -1)
     : props.baseUrl;
   const url = props.url.startsWith('/') ? props.url : `/${props.url}`;
   return base + url;
 });
-
-/**
- * Copies the full URL to the clipboard
- */
-async function copyToClipboard(): Promise<void> {
-  try {
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      await navigator.clipboard.writeText(fullUrl.value);
-      emit('copied', fullUrl.value);
-    } else {
-      // Fallback for older browsers
-      const textArea = document.createElement('textarea');
-      textArea.value = fullUrl.value;
-      textArea.style.position = 'fixed';
-      textArea.style.left = '-999999px';
-      textArea.style.top = '-999999px';
-      document.body.appendChild(textArea);
-      textArea.focus();
-      textArea.select();
-
-      if (document.execCommand('copy')) {
-        emit('copied', fullUrl.value);
-      } else {
-        throw new Error('Copy command failed');
-      }
-
-      document.body.removeChild(textArea);
-    }
-  } catch (error) {
-    emit(
-      'copyError',
-      error instanceof Error ? error : new Error('Failed to copy to clipboard')
-    );
-  }
-}
 </script>
