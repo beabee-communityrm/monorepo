@@ -1,6 +1,5 @@
 import 'module-alias/register';
 
-import { resolveImageUrl } from '@beabee/beabee-common';
 //import specialUrlHandler from '@apps/tools/apps/special-urls/handler';
 import config from '@beabee/core/config';
 import { log, requestErrorLogger, requestLogger } from '@beabee/core/logging';
@@ -74,10 +73,9 @@ app.use('/membership.js', (req, res) => {
 
 app.use('/static', express.static(path.join(__dirname, 'static')));
 
+// Updated favicon route - redirect to the new API endpoint
 app.get('/favicon.png', (req, res) => {
-  const logoUrl = OptionsService.getText('logo');
-  const fullImageUrl = resolveImageUrl(logoUrl, '/api/1.0/', config.audience);
-  res.redirect(fullImageUrl);
+  res.redirect(`${config.audience}/favicon.ico`);
 });
 
 // Log the rest
