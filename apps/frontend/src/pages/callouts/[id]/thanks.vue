@@ -11,19 +11,23 @@ meta:
   <CalloutThanksBox :callout="callout" class="mb-6" />
   <div class="w-full md:max-w-2xl">
     <AppShareBox
+      :url="`/callouts/${callout.slug}`"
+      :base-url="env.appUrl"
+      :share-text="t('actions.share')"
+      :copy-text="t('actions.copy')"
       :address-text="t('callout.share.address')"
       :services-text="t('callout.share.services')"
-      :url="`/callouts/${callout.slug}`"
+      :email-text="t('form.email')"
     />
   </div>
 </template>
 <script lang="ts" setup>
 import type { GetCalloutDataWith } from '@beabee/beabee-common';
-import { AppTitle } from '@beabee/vue';
+import { AppShareBox, AppTitle } from '@beabee/vue';
 
-import AppShareBox from '@components/AppShareBox.vue';
 import CalloutThanksBox from '@components/pages/callouts/CalloutThanksBox.vue';
 import CalloutVariantsBox from '@components/pages/callouts/CalloutVariantsBox.vue';
+import env from '@env';
 import { faBullhorn } from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { currentUser, isEmbed } from '@store/index';
