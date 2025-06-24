@@ -1,3 +1,5 @@
+import { resolveImageUrl } from '@beabee/beabee-common';
+
 import config from '../config/config';
 import { BadRequestError, NotFoundError } from '../errors';
 import { log as mainLogger } from '../logging';
@@ -101,16 +103,23 @@ export class FaviconService {
       log.warn('Failed to parse theme for manifest, using defaults:', error);
     }
 
-    // Generate icon URLs
-    const baseUrl = config.audience;
+    // Generate icon URLs with correct API prefix
     const icons = [
       {
-        src: `${baseUrl}/android-chrome-192x192.png`,
+        src: resolveImageUrl(
+          '/android-chrome-192x192.png',
+          '/api/1.0/',
+          config.audience
+        ),
         sizes: '192x192',
         type: 'image/png',
       },
       {
-        src: `${baseUrl}/android-chrome-512x512.png`,
+        src: resolveImageUrl(
+          '/android-chrome-512x512.png',
+          '/api/1.0/',
+          config.audience
+        ),
         sizes: '512x512',
         type: 'image/png',
       },

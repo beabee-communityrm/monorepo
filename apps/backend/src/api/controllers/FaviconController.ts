@@ -46,7 +46,7 @@ export class FaviconController {
    * Get web app manifest
    */
   @Get('/site.webmanifest')
-  async getWebManifest(@Res() res: Response): Promise<object> {
+  async getWebAppManifest(@Res() res: Response): Promise<object> {
     const manifest = await faviconService.getWebAppManifest();
 
     res.set({

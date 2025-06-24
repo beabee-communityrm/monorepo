@@ -73,9 +73,12 @@ app.use('/membership.js', (req, res) => {
 
 app.use('/static', express.static(path.join(__dirname, 'static')));
 
-// Updated favicon route - redirect to the new API endpoint
 app.get('/favicon.png', (req, res) => {
-  res.redirect(`${config.audience}/favicon.ico`);
+  res.redirect(`${config.audience}/api/1.0/favicon-32x32.png`);
+});
+
+app.get('/favicon.ico', (req, res) => {
+  res.redirect(`${config.audience}/api/1.0/favicon.ico`);
 });
 
 // Log the rest
