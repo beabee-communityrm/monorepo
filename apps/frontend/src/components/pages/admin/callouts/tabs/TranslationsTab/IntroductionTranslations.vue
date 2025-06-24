@@ -7,6 +7,12 @@
         :placeholder="getPlaceholder()"
         :disabled="selectedLocale === defaultLocale"
         :copyable="selectedLocale === defaultLocale"
+        :copy-button-props="{
+          copyButtonTitle: t('actions.copy'),
+          successMessage: t('notifications.copy.success'),
+          errorMessage: t('notifications.error'),
+          removeAriaLabel: t('notifications.remove'),
+        }"
         @update:model-value="updateValue(selectedLocale, $event)"
       />
     </div>

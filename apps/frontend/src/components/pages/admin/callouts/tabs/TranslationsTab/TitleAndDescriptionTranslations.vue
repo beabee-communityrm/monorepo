@@ -11,6 +11,12 @@
         :placeholder="getPlaceholder('title')"
         :disabled="selectedLocale === defaultLocale"
         :copyable="selectedLocale === defaultLocale"
+        :copy-button-props="{
+          copyButtonTitle: t('actions.copy'),
+          successMessage: t('notifications.copy.success'),
+          errorMessage: t('notifications.error'),
+          removeAriaLabel: t('notifications.remove'),
+        }"
         @update:model-value="updateValue('title', selectedLocale, $event)"
       />
     </div>
@@ -26,6 +32,12 @@
         :placeholder="getPlaceholder('description')"
         :disabled="selectedLocale === defaultLocale"
         :copyable="selectedLocale === defaultLocale"
+        :copy-button-props="{
+          copyButtonTitle: t('actions.copy'),
+          successMessage: t('notifications.copy.success'),
+          errorMessage: t('notifications.error'),
+          removeAriaLabel: t('notifications.remove'),
+        }"
         rows="3"
         @update:model-value="updateValue('description', selectedLocale, $event)"
       />
@@ -42,6 +54,12 @@
         :placeholder="getPlaceholder('shareTitle')"
         :disabled="selectedLocale === defaultLocale"
         :copyable="selectedLocale === defaultLocale"
+        :copy-button-props="{
+          copyButtonTitle: t('actions.copy'),
+          successMessage: t('notifications.copy.success'),
+          errorMessage: t('notifications.error'),
+          removeAriaLabel: t('notifications.remove'),
+        }"
         @update:model-value="updateValue('shareTitle', selectedLocale, $event)"
       />
     </div>
@@ -59,6 +77,12 @@
         :placeholder="getPlaceholder('shareDescription')"
         :disabled="selectedLocale === defaultLocale"
         :copyable="selectedLocale === defaultLocale"
+        :copy-button-props="{
+          copyButtonTitle: t('actions.copy'),
+          successMessage: t('notifications.copy.success'),
+          errorMessage: t('notifications.error'),
+          removeAriaLabel: t('notifications.remove'),
+        }"
         rows="3"
         @update:model-value="
           updateValue('shareDescription', selectedLocale, $event)

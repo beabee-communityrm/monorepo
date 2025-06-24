@@ -55,7 +55,6 @@
               !canEditSlug
                 ? {
                     title: inputT('slug.locked.title'),
-                    description: inputT('slug.locked.description'),
                     variant: 'warning',
                     mode: 'inline',
                     removeable: false,
@@ -77,6 +76,12 @@
                 :model-value="env.appUrl + '/callouts/' + data.autoSlug"
                 :disabled="true"
                 :copyable="true"
+                :copy-button-props="{
+                  copyButtonTitle: t('actions.copy'),
+                  successMessage: t('notifications.copy.success'),
+                  errorMessage: t('notifications.error'),
+                  removeAriaLabel: t('notifications.remove'),
+                }"
                 required
               />
               <AppInput
@@ -85,6 +90,12 @@
                 :disabled="!canEditSlug"
                 :prefix="env.appUrl + '/callouts/'"
                 :copyable="true"
+                :copy-button-props="{
+                  copyButtonTitle: t('actions.copy'),
+                  successMessage: t('notifications.copy.success'),
+                  errorMessage: t('notifications.error'),
+                  removeAriaLabel: t('notifications.remove'),
+                }"
                 required
               />
             </AppFormField>

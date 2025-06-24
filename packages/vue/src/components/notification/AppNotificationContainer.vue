@@ -14,6 +14,7 @@
           :description="notification.description"
           :variant="notification.variant"
           :removeable="notification.removeable"
+          :remove-aria-label="notification.removeAriaLabel || removeAriaLabel"
           class="shadow-lg"
           @remove="removeItem(notification.id)"
         />
@@ -24,16 +25,30 @@
 
 <script lang="ts" setup>
 /**
- * Container component for displaying notifications
- * Handles notification positioning and removal
+ * Container component for displaying notifications with positioning and transitions.
+ * Handles notification positioning, transitions, and removal functionality.
+ *
+ * @component AppNotificationContainer
  */
-import { AppNotification, notifications } from '@beabee/vue';
+import { useNotifications } from '../../store/notifications';
+import AppNotification from './AppNotification.vue';
 
+export interface AppNotificationContainerProps {
+  /** Aria label for the remove button on notifications */
+  removeAriaLabel?: string;
+}
+
+const props = withDefaults(defineProps<AppNotificationContainerProps>(), {
+  removeAriaLabel: 'Close notification',
+});
+
+const { notifications, removeNotification } = useNotifications();
+
+/**
+ * Removes a notification by ID
+ */
 function removeItem(id: number) {
-  const index = notifications.findIndex((n) => n.id === id);
-  if (index !== -1) {
-    notifications.splice(index, 1);
-  }
+  removeNotification(id);
 }
 </script>
 

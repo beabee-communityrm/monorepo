@@ -34,7 +34,6 @@
 import { addNotification } from '@beabee/vue/store/notifications';
 
 import { ref } from 'vue';
-import { useI18n } from 'vue-i18n';
 
 import AppButton from './AppButton.vue';
 
@@ -50,6 +49,12 @@ export interface AppAsyncButtonProps {
   title?: string;
   /** Text announced to screen readers during loading state */
   loadingText?: string;
+  /** Error message to show when async operation fails */
+  errorMessage?: string;
+  /** Error description for screen readers when async operation fails */
+  errorDescription?: string;
+  /** Aria label for the remove button on error notifications */
+  removeAriaLabel?: string;
 }
 
 /**
@@ -68,9 +73,11 @@ const props = withDefaults(defineProps<AppAsyncButtonProps>(), {
   ariaLabel: undefined,
   title: undefined,
   loadingText: undefined,
+  errorMessage: 'Something went wrong',
+  errorDescription: undefined,
+  removeAriaLabel: 'Close notification',
 });
 
-const { t } = useI18n();
 const loading = ref(false);
 
 /**
@@ -86,10 +93,11 @@ async function handleClick(evt: Event) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (_: unknown) {
     addNotification({
-      title: t('form.errorMessages.generic'),
+      title: props.errorMessage,
       variant: 'error',
       // Add more descriptive error message for screen readers
-      description: t('form.errorMessages.asyncActionFailed'),
+      description: props.errorDescription,
+      removeAriaLabel: props.removeAriaLabel,
     });
   } finally {
     loading.value = false;

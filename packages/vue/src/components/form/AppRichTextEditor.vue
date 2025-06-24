@@ -96,7 +96,11 @@
         aria-hidden="true"
       />
       <div v-if="copyable" class="absolute right-1 top-1">
-        <AppCopyButton variant="float" :text="editor?.getHTML() || ''" />
+        <AppCopyButton
+          variant="float"
+          :text="editor?.getHTML() || ''"
+          v-bind="copyButtonProps"
+        />
       </div>
     </div>
     <AppInputError v-if="hasError" :message="validation.$errors[0].$message" />
@@ -183,6 +187,14 @@ export interface AppRichTextEditorProps {
   toolbarAriaLabel?: string;
   /** ARIA label for the editor content area */
   editorAriaLabel?: string;
+  /** Props for the copy button */
+  copyButtonProps?: {
+    copyButtonTitle?: string;
+    successMessage?: string;
+    errorMessage?: string;
+    errorDescription?: string;
+    removeAriaLabel?: string;
+  };
 }
 
 const props = withDefaults(defineProps<AppRichTextEditorProps>(), {
@@ -196,6 +208,7 @@ const props = withDefaults(defineProps<AppRichTextEditorProps>(), {
   requiredErrorMessage: 'This field is required',
   toolbarAriaLabel: 'Text formatting toolbar',
   editorAriaLabel: 'Rich text editor',
+  copyButtonProps: undefined,
 });
 
 /**

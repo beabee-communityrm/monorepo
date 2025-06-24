@@ -28,6 +28,12 @@
             "
             :disabled="selectedLocale === defaultLocale"
             :copyable="selectedLocale === defaultLocale"
+            :copy-button-props="{
+              copyButtonTitle: t('actions.copy'),
+              successMessage: t('notifications.copy.success'),
+              errorMessage: t('notifications.error'),
+              removeAriaLabel: t('notifications.remove'),
+            }"
             @update:model-value="
               updateValue(slide, 'prevText', selectedLocale, $event)
             "
@@ -49,6 +55,12 @@
             "
             :disabled="selectedLocale === defaultLocale"
             :copyable="selectedLocale === defaultLocale"
+            :copy-button-props="{
+              copyButtonTitle: t('actions.copy'),
+              successMessage: t('notifications.copy.success'),
+              errorMessage: t('notifications.error'),
+              removeAriaLabel: t('notifications.remove'),
+            }"
             @update:model-value="
               updateValue(slide, 'nextText', selectedLocale, $event)
             "
@@ -70,6 +82,12 @@
             "
             :disabled="selectedLocale === defaultLocale"
             :copyable="selectedLocale === defaultLocale"
+            :copy-button-props="{
+              copyButtonTitle: t('actions.copy'),
+              successMessage: t('notifications.copy.success'),
+              errorMessage: t('notifications.error'),
+              removeAriaLabel: t('notifications.remove'),
+            }"
             @update:model-value="
               updateValue(slide, 'submitText', selectedLocale, $event)
             "

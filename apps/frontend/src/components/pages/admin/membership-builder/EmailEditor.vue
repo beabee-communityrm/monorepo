@@ -10,6 +10,13 @@
           v-model="email.body"
           label="Message"
           :labels="editorLabels"
+          copyable
+          :copy-button-props="{
+            copyButtonTitle: t('actions.copy'),
+            successMessage: t('notifications.copy.success'),
+            errorMessage: t('notifications.error'),
+            removeAriaLabel: t('notifications.remove'),
+          }"
           required
         />
       </template>
@@ -34,10 +41,12 @@ import {
 } from '@beabee/vue';
 
 import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import { useRichTextEditorLabels } from '../../../../composables/useRichTextEditorLabels';
 import { currentUser } from '../../../../store';
 
+const { t } = useI18n();
 const editorLabels = useRichTextEditorLabels();
 
 const props = defineProps<{

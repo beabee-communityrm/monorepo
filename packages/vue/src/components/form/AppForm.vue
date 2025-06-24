@@ -5,7 +5,7 @@
     <AppNotification
       v-if="validation.$errors.length > 0"
       variant="error"
-      :title="t('form.errorMessages.validation')"
+      :title="validationErrorMessage"
       class="mb-4"
     />
 
@@ -39,7 +39,6 @@ import { isApiError } from '@beabee/client';
 
 import useVuelidate from '@vuelidate/core';
 import { computed, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
 
 import { addNotification } from '../../store/notifications';
 import { AppButton } from '../button';
@@ -60,20 +59,36 @@ export interface AppFormProps {
   fullButton?: boolean;
   /** The function to call when the form is submitted */
   onSubmit?: (evt: Event) => Promise<void | false> | void | false;
+  /** Aria label for the remove button on notifications */
+  removeAriaLabel?: string;
+  /** Validation error message */
+  validationErrorMessage?: string;
+  /** Default error messages for various error codes */
+  defaultErrorMessages?: Record<string, string>;
 }
 
 const emit = defineEmits(['reset']);
-const props = defineProps<AppFormProps>();
-
-const { t } = useI18n();
+const props = withDefaults(defineProps<AppFormProps>(), {
+  resetButtonText: undefined,
+  successText: undefined,
+  errorText: () => ({}),
+  inlineError: false,
+  fullButton: false,
+  onSubmit: undefined,
+  removeAriaLabel: 'Close notification',
+  validationErrorMessage: 'Please check the form for errors',
+  defaultErrorMessages: () => ({
+    unknown: 'Something went wrong. Please try again.',
+    'duplicate-email': 'This email address is already in use',
+    'login-failed': 'Invalid email or password',
+    'invalid-token': 'Invalid or expired token',
+    'account-locked': 'Account is temporarily locked',
+    'duplicate-tag-name': 'This tag name already exists',
+  }),
+});
 
 const errorMessages = computed<Record<string, string>>(() => ({
-  unknown: t('form.errorMessages.generic'),
-  'duplicate-email': t('form.errorMessages.api.duplicate-email'),
-  [LOGIN_CODES.LOGIN_FAILED]: t('form.errorMessages.api.login-failed'),
-  [LOGIN_CODES.INVALID_TOKEN]: t('form.errorMessages.api.invalid-token'),
-  [LOGIN_CODES.LOCKED]: t('form.errorMessages.api.account-locked'),
-  'duplicate-tag-name': t('form.errorMessages.api.duplicate-tag-name'),
+  ...props.defaultErrorMessages,
   ...props.errorText,
 }));
 
@@ -92,6 +107,7 @@ async function handleSubmit(evt: Event) {
       addNotification({
         title: props.successText,
         variant: 'success',
+        removeAriaLabel: props.removeAriaLabel,
       });
     }
   } catch (err) {
@@ -105,7 +121,11 @@ async function handleSubmit(evt: Event) {
     if (props.inlineError) {
       inlineErrorText.value = errorText;
     } else {
-      addNotification({ title: errorText, variant: 'error' });
+      addNotification({
+        title: errorText,
+        variant: 'error',
+        removeAriaLabel: props.removeAriaLabel,
+      });
     }
   } finally {
     isLoading.value = false;

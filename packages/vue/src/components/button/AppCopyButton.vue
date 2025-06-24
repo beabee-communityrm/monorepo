@@ -5,7 +5,7 @@
 -->
 <template>
   <button
-    :title="label || t('actions.copy')"
+    :title="label || copyButtonTitle"
     class="flex items-center justify-center"
     :class="{
       'h-9 w-9 rounded bg-white/70 enabled:hover:bg-white':
@@ -36,11 +36,15 @@
  * @component AppCopyButton
  *
  * @example
- * <AppCopyButton text="Copy this text" @copy="handleCopy" />
- * <AppCopyButton text="Copy this text" label="Copy link" @copy="handleCopy" />
+ * <AppCopyButton
+ *   text="Copy this text"
+ *   copy-button-title="Copy to clipboard"
+ *   success-message="Copied to clipboard"
+ *   error-message="Failed to copy"
+ *   @copy="handleCopy"
+ * />
  */
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
-import { useI18n } from 'vue-i18n';
 
 import { addNotification } from '../../store/notifications';
 
@@ -56,6 +60,16 @@ export interface AppCopyButtonProps {
   disabled?: boolean;
   /** Optional text label to show next to the icon */
   label?: string;
+  /** Aria label for the remove button on notifications */
+  removeAriaLabel?: string;
+  /** Title text for the copy button */
+  copyButtonTitle?: string;
+  /** Success message to show when copy succeeds */
+  successMessage?: string;
+  /** Error message to show when copy fails */
+  errorMessage?: string;
+  /** Error description template with {error} placeholder (optional) */
+  errorDescription?: string;
 }
 
 /**
@@ -72,9 +86,12 @@ const props = withDefaults(defineProps<AppCopyButtonProps>(), {
   variant: 'normal',
   disabled: false,
   label: undefined,
+  removeAriaLabel: 'Close notification',
+  copyButtonTitle: 'Copy to clipboard',
+  successMessage: 'Copied to clipboard',
+  errorMessage: 'Failed to copy',
+  errorDescription: undefined,
 });
-
-const { t } = useI18n();
 
 /**
  * Handles the copy action by writing text to clipboard and showing notifications
@@ -85,19 +102,21 @@ const handleCopy = async () => {
   try {
     await navigator.clipboard.writeText(props.text);
     addNotification({
-      title: t('notifications.copy.success'),
+      title: props.successMessage,
       variant: 'success',
       removeable: 'auto',
+      removeAriaLabel: props.removeAriaLabel,
     });
     emit('copy');
   } catch (error) {
     addNotification({
-      title: t('notifications.copy.error'),
-      description: t('notifications.copy.errorDesc', {
-        error,
-      }),
+      title: props.errorMessage,
+      description: props.errorDescription
+        ? props.errorDescription.replace('{error}', String(error))
+        : undefined,
       variant: 'error',
       removeable: 'auto',
+      removeAriaLabel: props.removeAriaLabel,
     });
   }
 };

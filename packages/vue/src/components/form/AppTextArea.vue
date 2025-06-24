@@ -24,7 +24,13 @@
         @blur="validation.$touch"
       />
       <div v-if="copyable" class="absolute right-1 top-1">
-        <AppCopyButton variant="float" :text="value?.toString() || ''" />
+        <AppCopyButton
+          variant="float"
+          :text="value?.toString() || ''"
+          :disabled="copyButtonDisabled"
+          :label="copyLabel"
+          v-bind="copyButtonProps"
+        />
       </div>
     </div>
     <AppInputError
@@ -32,8 +38,12 @@
       :id="`${id}-error`"
       :message="validation.$errors[0].$message"
     />
-    <!-- Display character count when maxLength is set -->
-    <div v-if="maxlength !== undefined" class="mt-1 text-xs text-grey-dark">
+    <!-- Display character count when maxlength is set -->
+    <div
+      v-if="maxlength !== undefined"
+      class="mt-1 text-xs text-grey-dark"
+      :id="`${id}-char-count`"
+    >
       {{ characterCountText }}
     </div>
     <AppInputHelp
@@ -78,31 +88,50 @@ export interface AppTextAreaProps {
   maxlength?: number;
   /** Whether the textarea value can be copied to clipboard */
   copyable?: boolean;
+  /** Text label for the copy button (if copyable is true) */
+  copyLabel?: string;
+  /** Whether the copy button is disabled */
+  copyButtonDisabled?: boolean;
+  /** Custom ID for the textarea element */
+  id?: string;
   /** Text to display for required field error (e.g., "This field is required") */
   requiredErrorText?: string;
   /** Text template for max length error (e.g., "Must be no more than {max} characters") */
   maxLengthErrorText?: string;
   /** Text template for character count (e.g., "{remaining} of {max} characters remaining") */
   characterCountText?: string;
+  /** Props for the copy button */
+  copyButtonProps?: {
+    copyButtonTitle?: string;
+    successMessage?: string;
+    errorMessage?: string;
+    errorDescription?: string;
+    removeAriaLabel?: string;
+  };
 }
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue', 'update:validation']);
 const props = withDefaults(defineProps<AppTextAreaProps>(), {
   modelValue: '',
-  label: undefined,
   name: 'unknown',
+  label: undefined,
   infoMessage: undefined,
+  required: false,
   disabled: false,
   maxlength: undefined,
   copyable: false,
+  copyLabel: undefined,
+  copyButtonDisabled: false,
+  id: undefined,
   requiredErrorText: 'This field is required',
   maxLengthErrorText: 'Must be no more than {max} characters',
   characterCountText: '{remaining} of {max} characters remaining',
+  copyButtonProps: undefined,
 });
 
 // Generate unique ID for aria-labels and form associations
 const id = computed(
-  () => `textarea-${Math.random().toString(36).substring(2, 11)}`
+  () => props.id || `textarea-${Math.random().toString(36).substring(2, 11)}`
 );
 
 const value = computed({

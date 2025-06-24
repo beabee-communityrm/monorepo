@@ -12,6 +12,12 @@
           :placeholder="getPlaceholder(endMessage.thankYouTitle)"
           :disabled="selectedLocale === defaultLocale"
           :copyable="selectedLocale === defaultLocale"
+          :copy-button-props="{
+            copyButtonTitle: t('actions.copy'),
+            successMessage: t('notifications.copy.success'),
+            errorMessage: t('notifications.error'),
+            removeAriaLabel: t('notifications.remove'),
+          }"
           @update:model-value="
             updateValue('thankYouTitle', selectedLocale, $event)
           "
@@ -30,6 +36,12 @@
           :placeholder="getPlaceholder(endMessage.thankYouText)"
           :disabled="selectedLocale === defaultLocale"
           :copyable="selectedLocale === defaultLocale"
+          :copy-button-props="{
+            copyButtonTitle: t('actions.copy'),
+            successMessage: t('notifications.copy.success'),
+            errorMessage: t('notifications.error'),
+            removeAriaLabel: t('notifications.remove'),
+          }"
           @update:model-value="
             updateValue('thankYouText', selectedLocale, $event)
           "
@@ -52,6 +64,12 @@
         "
         :disabled="selectedLocale === defaultLocale"
         :copyable="selectedLocale === defaultLocale"
+        :copy-button-props="{
+          copyButtonTitle: t('actions.copy'),
+          successMessage: t('notifications.copy.success'),
+          errorMessage: t('notifications.error'),
+          removeAriaLabel: t('notifications.remove'),
+        }"
         @update:model-value="
           updateValue('thankYouRedirect', selectedLocale, $event)
         "

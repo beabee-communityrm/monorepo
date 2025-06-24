@@ -1,7 +1,12 @@
 <template>
   <AppForm
-    :button-text="t('actions.update')"
-    :success-text="t('form.saved')"
+    :button-text="t('form.buttonText.saveChanges')"
+    :success-text="t('form.successMessages.accountUpdated')"
+    :error-text="{
+      'duplicate-email': t('form.errorMessages.api.duplicate-email'),
+    }"
+    :validation-error-message="t('form.errorMessages.validation')"
+    :remove-aria-label="t('notifications.remove')"
     @submit="handleSubmit"
   >
     <AppHeading>{{ t('accountPage.contactInformation') }}</AppHeading>
