@@ -132,8 +132,8 @@
     "hint3": "<p>Unsere Community-Meetups finden jeden dritten Donnerstag im Monat statt. Du willst dein Best-Practice-Beispiel mit anderen teilen? Schreib eine E-Mail an <a href=\"mailto:tobias.hauswurz{'@'}correctiv.org\">tobias.hauswurz{'@'}correctiv.org</a></p>\n",
     "joinSlack": "Tritt der beabee-Community auf Slack bei!",
     "latestCallout": {
-      "createNew": "Neuen Callout erstellen?",
-      "empty": "Es gibt aktuell keine aktiven Umfragen.",
+      "createNew": "Neuen CrowdNewsroom erstellen?",
+      "empty": "Es gibt aktuell keine aktiven CrowdNewsrooms.",
       "title": "CrowdNewsroom"
     },
     "mostRecentMembers": {
@@ -431,8 +431,8 @@
               "description": "Enddatum festlegen",
               "label": "Enddatum festlegen",
               "opts": {
-                "never": "Die Umfrage läuft, bis sie manuell geschlossen wird.",
-                "schedule": "Die Umfrage wird automatisch zu einem bestimmten Datum geschlossen."
+                "never": "Der CrowdNewsroom läuft, bis er manuell geschlossen wird.",
+                "schedule": "Der CrowdNewsroom wird automatisch zu einem bestimmten Datum geschlossen."
               }
             },
             "mapAndGallery": {
@@ -496,12 +496,12 @@
               "help": "<p>Aufrufe können <strong>Allen</strong> präsentiert oder auf die Teilnahme von <strong>nur Mitgliedern</strong> beschränkt werden</p>",
               "label": "Für alle zugänglich",
               "opts": {
-                "disabled": "Nur Mitglieder werden auf diese Umfrage zugreifen und daran teilnehmen können.",
-                "enabled": "Jede Person kann auf diese Umfrage zugreifen und daran teilnehmen."
+                "disabled": "Nur Mitglieder werden auf diesen CrowdNewsroom zugreifen und daran teilnehmen können.",
+                "enabled": "Jede Person kann auf diesen CrowdNewsroom zugreifen und daran teilnehmen."
               }
             },
             "requireCaptcha": {
-              "help": "<p>Wenn Sie den <strong>Bot-Spam-Schutz</strong> aktivieren, müssen Nutzer ein Captcha ausfüllen, um zu bestätigen, dass sie Menschen sind. Dies ist nützlich, um zu verhindern, dass Ihre Umfrage von Bots mit Spam überflutet wird.</p>",
+              "help": "<p>Wenn Sie den <strong>Bot-Spam-Schutz</strong> aktivieren, müssen Nutzer ein Captcha ausfüllen, um zu bestätigen, dass sie Menschen sind. Dies ist nützlich, um zu verhindern, dass Ihr CrowdNewsroom von Bots mit Spam überflutet wird.</p>",
               "label": "Bot-Spam-Schutz aktivieren",
               "members": {
                 "label": "Auch für Mitglieder aktivieren",
@@ -536,7 +536,7 @@
               "label": "Antwortverhalten",
               "opts": {
                 "multiple": "Mehrere Antworten, nicht bearbeitbar",
-                "singleEditable": "Einzelne Antwort, aber bearbeitbar, solange die Umfrage geöffnet ist.",
+                "singleEditable": "Einzelne Antwort, aber bearbeitbar, solange der CrowdNewsroom geöffnet ist.",
                 "singleNonEditable": "Einzelne Antwort, nicht bearbeitbar"
               },
               "title": "Antworteinstellungen"
@@ -555,16 +555,16 @@
             "starts": {
               "label": "Startdatum festlegen",
               "opts": {
-                "now": "Die Umfrage wird sofort verfügbar gemacht.",
-                "schedule": "Die Umfrage wird zu einem bestimmten Datum verfügbar gemacht."
+                "now": "Der CrowdNewsroom wird sofort verfügbar gemacht.",
+                "schedule": "Der CrowdNewsroom wird zu einem bestimmten Datum verfügbar gemacht."
               }
             },
             "visible": {
-              "help": "Die Umfrage wird nur sichtbar sein für Personen, die den Link erhalten.",
-              "label": "Umfrage im Mitglieder-Dashboard anzeigen",
+              "help": "Der CrowdNewsroom wird nur sichtbar sein für Personen, die den Link erhalten.",
+              "label": "CrowdNewsroom im Mitglieder-Dashboard anzeigen",
               "opts": {
-                "disabled": "Die Umfrage wird nicht im Mitglieder-Dashboard erscheinen.",
-                "enabled": "Die Umfrage wird im Mitglieder-Dashboard erscheinen."
+                "disabled": "Der CrowdNewsroom wird nicht im Mitglieder-Dashboard erscheinen.",
+                "enabled": "Der CrowdNewsroom wird im Mitglieder-Dashboard erscheinen."
               }
             },
             "whichResponseBuckets": {
@@ -604,26 +604,26 @@
             "shareTitle": {
               "help": "<p>Das Feld <strong>Teilungstitel</strong> legt den Titel fest, wie er auf Social-Media-Karten erscheinen soll.</p>",
               "label": "Teilungstitel",
-              "placeholder": "Der Name Ihrer Umfrage"
+              "placeholder": "Der Name Ihres CrowdNewsrooms"
             },
             "sharing": {
               "title": "Teilen-Optionen"
             },
             "slug": {
               "boxTitle": "Permalink",
-              "help": "Diese Umfrage per Link teilen:",
+              "help": "Diesen CrowdNewsroom per Link teilen:",
               "label": "Slug automatisch aus dem Titel generieren",
               "locked": {
-                "title": "Der Permalink ist gesperrt, da die Umfrage bereits veröffentlicht wurde."
+                "title": "Der Permalink ist gesperrt, da der CrowdNewsroom bereits veröffentlicht wurde."
               },
               "opts": {
-                "auto": "Der Permalink wird aus dem Titel der Umfrage generiert. Der Link wird automatisch aktualisiert, wenn Sie den Titel ändern.",
+                "auto": "Der Permalink wird aus dem Titel des CrowdNewsrooms generiert. Der Link wird automatisch aktualisiert, wenn Sie den Titel ändern.",
                 "manual": "Der Permalink wird manuell festgelegt"
               }
             },
             "title": {
               "label": "Titel",
-              "placeholder": "Der Name Ihrer Umfrage."
+              "placeholder": "Der Name Ihres CrowdNewsrooms."
             }
           },
           "title": "Titel und Bild",
@@ -654,7 +654,7 @@
     },
     "confirmHuman": "Bitte bestätigen Sie, dass Sie ein Mensch sind",
     "contactDetails": "Kontaktdaten",
-    "ended": "Diese Umfrage ist seit dem {date} beendet.",
+    "ended": "Dieser CrowdNewsroom ist seit dem {date} beendet.",
     "entryOf": "Eintrag {no} von {total}",
     "form": {
       "email": "Ihre E-Mail-Adresse",
@@ -665,11 +665,11 @@
     "getStarted": "Starten",
     "joinNow": "Mitglied werden",
     "loginToYourAccount": "Einloggen",
-    "membersOnly": "An dieser Umfrage können nur Mitglieder teilnehmen. Um teilzunehmen…",
+    "membersOnly": "An diesem CrowdNewsroom können nur Mitglieder teilnehmen. Um teilzunehmen…",
     "responseSubmitted": "Antwort eingereicht",
     "share": {
-      "address": "Diese Umfrage per Link teilen:",
-      "services": "Diesen Callout auf einer der folgenden Plattformen teilen: "
+      "address": "Diesen CrowdNewsroom per Link teilen:",
+      "services": "Diesen CrowdNewsroom auf einer der folgenden Plattformen teilen:"
     },
     "showingPreview": "Im Vorschaumodus sind Antworten deaktiviert.",
     "toContributionPage": "Meinen Beitrag ändern",
@@ -682,20 +682,20 @@
     "yourResponse": "Ihre Antwort"
   },
   "calloutAdmin": {
-    "deleted": "Umfrage gelöscht",
-    "ended": "Diese Umfrage ist beendet. Sie können sie wieder öffnen, indem Sie sie bearbeiten.",
+    "deleted": "CrowdNewsroom gelöscht",
+    "ended": "Dieser CrowdNewsroom ist beendet. Sie können ihn wieder öffnen, indem Sie ihn bearbeiten.",
     "overview": "Überblick",
-    "reopened": "Diese Umfrage ist wieder geöffnet. Gehen Sie auf „Bearbeiten“, um ein neues Enddatum einzustellen.",
+    "reopened": "Dieser CrowdNewsroom ist wieder geöffnet. Gehen Sie auf „Bearbeiten“, um ein neues Enddatum einzustellen.",
     "responses": "Antworten"
   },
   "calloutAdminOverview": {
     "actions": {
       "confirmDelete": {
-        "text": "Sind Sie sicher, dass Sie diese Umfrage löschen möchten?",
-        "title": "Umfrage löschen?"
+        "text": "Sind Sie sicher, dass Sie diesen CrowdNewsroom löschen möchten?",
+        "title": "CrowdNewsroom löschen?"
       }
     },
-    "created": "Super, Ihre Umfrage wurde erstellt!",
+    "created": "Super, Ihr CrowdNewsroom wurde erstellt!",
     "dates": {
       "ends": "Enddatum",
       "label": "Termine",
@@ -795,7 +795,7 @@
   "calloutReviewerManager": {
     "add": "Auswerter hinzufügen",
     "confirmDelete": {
-      "text": "Sind Sie sicher, dass Sie {ReviewerName} entfernen möchten? Diese Person wird die Umfrage nicht mehr überprüfen können.",
+      "text": "Sind Sie sicher, dass Sie {ReviewerName} entfernen möchten? Diese Person wird den CrowdNewsroom nicht mehr überprüfen können.",
       "title": "Auswerter entfernen"
     },
     "contact": "Kontakt ID",
@@ -810,14 +810,14 @@
       "callout": "CrowdNewsroom",
       "endDate": "Enddatum"
     },
-    "noArchivedCallouts": "Keine Umfragen",
-    "search": "Umfrage durchsuchen",
+    "noArchivedCallouts": "Keine CrowdNewsrooms",
+    "search": "CrowdNewsroom durchsuchen",
     "showAll": "Alle",
     "showAnswered": "Beantwortet",
     "showingOf": "{start} bis {end} von {total} werden angezeigt."
   },
   "calloutsAdmin": {
-    "addCallout": "Umfrage anlegen",
+    "addCallout": "CrowdNewsroom anlegen",
     "data": {
       "expires": "Enddatum",
       "responses": "Antworten",
@@ -826,7 +826,7 @@
       "title": "Titel"
     },
     "filter": {
-      "all": "Alle Umfragen",
+      "all": "Alle",
       "draft": "Entwürfe",
       "ended": "Beendete",
       "open": "Aktive",
@@ -920,7 +920,7 @@
     "annotation": {
       "copy": "<p>Alle hier eingegebenen Information sind <strong>nur für Administratoren sichtbar</strong>.\nNutzer bekommen das nicht angezeigt.</p>\n"
     },
-    "callouts": "CrowdNewsroom",
+    "callouts": "CrowdNewsrooms",
     "cancellationDate": "Gekündigt am",
     "contribution": "Beitrag",
     "contributionType": "Zahlungsart",
@@ -950,7 +950,7 @@
     "addContact": "Kontakt hinzufügen",
     "advancedSearch": {
       "hasAnswered": "Hat teilgenommen?",
-      "selectCallout": "Umfrage auswählen..."
+      "selectCallout": "CrowdNewsroom auswählen..."
     },
     "allContacts": "Alle Kontakte",
     "data": {
@@ -1044,9 +1044,9 @@
     "willRenewWithNewAmount": "Ihre Mitgliedschaft verlängert sich am {renewalDate} automatisch. Ihr Beitrag ist dann {nextAmount}."
   },
   "editCallout": {
-    "replicated": "Ihre Umfrage wurde kopiert! Sie bearbeiten jetzt die Kopie. Bitte denken Sie unbedingt daran, den Titel zu bearbeiten.",
+    "replicated": "Ihr CrowdNewsroom wurde kopiert! Sie bearbeiten jetzt die Kopie. Bitte denken Sie unbedingt daran, den Titel zu bearbeiten.",
     "title": "Bearbeiten: {title}",
-    "warning": "Vorsicht! Sie bearbeiten eine veröffentlichte Umfrage. Wenn Sie Umfrageelemente bearbeiten, riskieren Sie, Antworten unbrauchbar zu machen."
+    "warning": "Vorsicht! Sie bearbeiten einen veröffentlichten CrowdNewsroom. Wenn Sie Elemente bearbeiten, riskieren Sie, Antworten unbrauchbar zu machen."
   },
   "editNotice": {
     "title": "Bearbeiten: {title}"
@@ -1285,8 +1285,8 @@
         "description": "Stelle ein, welche persönlichen Informationen Du über deine Mitglieder sammeln willst.",
         "joinSurvey": {
           "required": "Die Mitglieder müssen den Fragebogen ausfüllen, ehe sie fortfahren können.",
-          "slug": "Umfrage",
-          "slugHelp": "Sie können jede Umfrage verwenden, die ein Enddatum hat.",
+          "slug": "CrowdNewsroom",
+          "slugHelp": "Sie können jeden CrowdNewsroom verwenden, der ein Enddatum hat.",
           "text": "Als Teil des Anmeldeprozesses können Sie Ihre neuen Mitglieder einen kurzen Fragebogen ausfüllen lassen. Sie können zum Beispiel zusätzliche Informationen abfragen oder in Erfahrung bringen, warum sie Mitglied geworden sind.",
           "textIntro": "Erkläre deinen Mitgliedern kurz, warum du weitere Informationen von ihnen haben möchtest.",
           "title": "Anmelde-Fragebogen"
@@ -1321,13 +1321,13 @@
         "formSubtitle": "Untertitel",
         "formTitle": "Titel",
         "minAmount": "Mindestbeitrag",
+        "noticeText": "Hinweistext unter dem Zahlungsbutton",
+        "noticeTextHelp": "Verwenden Sie dieses Feld, um einen Hinweis unter dem Zahlungsbutton hinzuzufügen, zum Beispiel zur Erklärung von Zahlungsperioden oder Bankeinzugsermächtigungen. Sie können dieses Feld auch leer lassen.",
         "showAbsorbFee": "Nutzer um Ausgleich der Gebühren bitten",
         "showNoContribution": "Registrierung ohne Zahlung erlauben",
         "suggestedAmounts": "Beiträge vorschlagen",
         "text": "In diesem Abschnitt kannst du dein Registrierungsformular bearbeiten, optimieren und ansehen.",
-        "title": "Registrierung",
-        "noticeText": "Hinweistext unter dem Zahlungsbutton",
-        "noticeTextHelp": "Verwenden Sie dieses Feld, um einen Hinweis unter dem Zahlungsbutton hinzuzufügen, zum Beispiel zur Erklärung von Zahlungsperioden oder Bankeinzugsermächtigungen. Sie können dieses Feld auch leer lassen."
+        "title": "Registrierung"
       }
     },
     "title": "Membership Builder"

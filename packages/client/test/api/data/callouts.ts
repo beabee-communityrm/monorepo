@@ -129,7 +129,20 @@ export const createMinimalTestCallout = (
   allowUpdate: false,
   allowMultiple: false,
   hidden: false,
-  variants: {},
+  variants: {
+    default: {
+      title: 'Minimal Variant',
+      excerpt: 'Minimal variant for testing',
+      intro: 'This is a minimal variant for testing purposes.',
+      thanksTitle: 'Thank You!',
+      thanksText: 'Your response has been recorded.',
+      thanksRedirect: null,
+      shareTitle: null,
+      shareDescription: null,
+      slideNavigation: {},
+      componentText: {},
+    },
+  },
   formSchema: {
     slides: [
       {
