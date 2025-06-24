@@ -1,3 +1,6 @@
-import type { CreateCalloutData } from './index.js';
+import type { CreateCalloutData, CreateCalloutVariantData } from './index.js';
 
-export type UpdateCalloutData = Partial<CreateCalloutData>;
+export interface UpdateCalloutData
+  extends Partial<Omit<CreateCalloutData, 'variants'>> {
+  variants?: Partial<CreateCalloutVariantData>;
+}
