@@ -35,10 +35,7 @@ export {
   default as AppToggleField,
   type AppToggleFieldProps,
 } from './AppToggleField.vue';
-export {
-  default as AppColorInput,
-  type AppColorInputProps,
-} from './AppColorInput.vue';
+export { default as AppColorInput } from './AppColorInput.vue';
 export {
   default as AppFormSection,
   type AppFormSectionProps,
@@ -51,10 +48,7 @@ export {
   default as AppRepeatable,
   type AppRepeatableProps,
 } from './AppRepeatable.vue';
-export {
-  default as AppSearchInput,
-  type AppSearchInputProps,
-} from './AppSearchInput.vue';
+export { default as AppSearchInput } from './AppSearchInput.vue';
 export { default as AppSelect, type AppSelectProps } from './AppSelect.vue';
 export {
   default as AppTextArea,

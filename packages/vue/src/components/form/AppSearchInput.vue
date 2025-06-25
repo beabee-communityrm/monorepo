@@ -26,17 +26,8 @@
 import { faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { ref, watch } from 'vue';
 
+import type { AppSearchInputProps } from '../../types/form';
 import AppInput from './AppInput.vue';
-
-/**
- * Props for the AppSearchInput component
- */
-export interface AppSearchInputProps {
-  /** The model value of the search input */
-  modelValue: string;
-  /** The placeholder text for the search input */
-  placeholder: string;
-}
 
 const emit = defineEmits(['update:modelValue']);
 const props = defineProps<AppSearchInputProps>();

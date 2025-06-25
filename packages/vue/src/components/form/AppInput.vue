@@ -105,60 +105,17 @@ import {
 import { computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import { useAriaDescribedBy } from '../../composables/useAccessibility';
+import type { AppInputProps } from '../../types/form';
+import { generateFormFieldId, generateFormFieldIds } from '../../utils/ids';
+import { getInputStateClasses } from '../../utils/variants';
 import { AppCopyButton } from '../button';
 import AppInputError from './AppInputError.vue';
 import AppInputHelp from './AppInputHelp.vue';
 import AppLabel from './AppLabel.vue';
 
-/**
- * Props for the AppInput component
- */
-export interface AppInputProps {
-  /** The model value of the input */
-  modelValue?: number | string;
-  /** The type of the input */
-  type?: 'password' | 'email' | 'text' | 'date' | 'time' | 'number' | 'url';
-  /** The name of the input */
-  name?: string;
-  /** The label of the input */
-  label?: string;
-  /** The info message of the input */
-  infoMessage?: string;
-  /** Whether the input is required */
-  required?: boolean;
-  /** Whether the input is disabled */
-  disabled?: boolean;
-  /** Whether the copy button is disabled */
-  copyButtonDisabled?: boolean;
-  /** The minimum value of the input */
-  min?: number | string;
-  /** The maximum value of the input */
-  max?: number | string;
-  /** The value that this input should be the same as */
-  sameAs?: number | string;
-  /** A regex pattern that the input value should match */
-  pattern?: string;
-  /** Whether to hide the error message */
-  hideErrorMessage?: boolean;
-  /** A prefix to display before the input */
-  prefix?: string;
-  /** A suffix to display after the input */
-  suffix?: string;
-  /** Whether the input value can be copied to clipboard */
-  copyable?: boolean;
-  /** Text label for the copy button (if copyable is true) */
-  copyLabel?: string;
-  /** Custom ID for the input element */
-  id?: string;
-  /** Props for the copy button */
-  copyButtonProps?: {
-    copyButtonTitle?: string;
-    successMessage?: string;
-    errorMessage?: string;
-    errorDescription?: string;
-    removeAriaLabel?: string;
-  };
-}
+// Props interface is now imported from types
+export type { AppInputProps } from '../../types/form';
 
 const emit = defineEmits(['update:modelValue', 'update:validation']);
 const props = withDefaults(defineProps<AppInputProps>(), {
@@ -185,23 +142,18 @@ const props = withDefaults(defineProps<AppInputProps>(), {
 const { t } = useI18n();
 
 // Generate unique IDs for accessibility
-const inputId = computed(
-  () =>
-    props.id || `input-${props.name}-${Math.random().toString(36).substr(2, 9)}`
+const baseInputId = computed(
+  () => props.id || generateFormFieldId(props.name, 'input')
 );
-const errorId = computed(() => `${inputId.value}-error`);
-const helpId = computed(() => `${inputId.value}-help`);
-const prefixId = computed(() => `${inputId.value}-prefix`);
-const suffixId = computed(() => `${inputId.value}-suffix`);
 
-// Build aria-describedby string
-const ariaDescribedBy = computed(() => {
-  const descriptions = [];
-  if (props.infoMessage) descriptions.push(helpId.value);
-  if (hasError.value && !props.hideErrorMessage)
-    descriptions.push(errorId.value);
-  return descriptions.length > 0 ? descriptions.join(' ') : undefined;
-});
+const fieldIds = computed(() => generateFormFieldIds(baseInputId.value));
+const inputId = computed(() => fieldIds.value.baseId);
+const errorId = computed(() => fieldIds.value.errorId);
+const helpId = computed(() => fieldIds.value.helpId);
+const prefixId = computed(() => fieldIds.value.prefixId);
+const suffixId = computed(() => fieldIds.value.suffixId);
+
+// We'll define ariaDescribedBy after hasError is available
 
 const value = computed({
   get: () => props.modelValue,
@@ -329,6 +281,14 @@ const rules = computed(() => ({
 
 const validation = useVuelidate(rules, { v: value });
 const hasError = computed(() => validation.value.$errors.length > 0);
+
+// Use accessibility composable for aria-describedby
+const { ariaDescribedBy } = useAriaDescribedBy({
+  helpId,
+  errorId,
+  hasHelp: computed(() => !!props.infoMessage),
+  hasError: computed(() => hasError.value && !props.hideErrorMessage),
+});
 
 function isPassword(value: string) {
   if (!value) return true;

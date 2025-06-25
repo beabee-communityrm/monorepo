@@ -17,8 +17,8 @@
       <div
         class="flex h-5 w-5 items-center justify-center rounded border bg-white transition-colors focus:outline-none focus:ring-2 focus:ring-primary-40 focus:ring-offset-2"
         :class="[
-          value ? borderVariantClasses[variant] : 'border-grey-dark',
-          !disabled && !value ? hoverVariantClasses[variant] : '',
+          value ? getFormVariantClasses(variant, 'border') : 'border-grey-dark',
+          !disabled && !value ? getFormVariantClasses(variant, 'hover') : '',
           disabled ? 'cursor-not-allowed opacity-50' : '',
         ]"
       >
@@ -26,7 +26,7 @@
           v-if="value"
           :icon="faCheck"
           class="h-4 w-4"
-          :class="iconVariantClasses[variant]"
+          :class="getFormVariantClasses(variant, 'icon')"
         />
       </div>
     </div>
@@ -46,29 +46,16 @@
  * @example
  * <AppCheckbox v-model="isChecked" label="Accept terms" variant="primary" />
  */
-import type { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import useVuelidate from '@vuelidate/core';
 import { sameAs } from '@vuelidate/validators';
 import { computed, ref, toRef, watch } from 'vue';
 
-/**
- * Props for the AppCheckbox component
- */
-export interface AppCheckboxProps {
-  /** Current checked state of the checkbox */
-  modelValue?: boolean;
-  /** Whether the checkbox is disabled */
-  disabled?: boolean;
-  /** Label text displayed next to the checkbox */
-  label?: string;
-  /** Optional icon displayed before the label */
-  icon?: IconDefinition;
-  /** Whether the checkbox is required (validation) */
-  required?: boolean;
-  /** Color variant affecting border and icon colors */
-  variant?: 'primary' | 'link' | 'danger';
-}
+import type { AppCheckboxProps } from '../../types/form';
+import { type FormVariant, getFormVariantClasses } from '../../utils/variants';
+
+// Props interface is now imported from types
+export type { AppCheckboxProps } from '../../types/form';
 
 /**
  * Events emitted by the AppCheckbox component
@@ -89,23 +76,7 @@ const props = withDefaults(defineProps<AppCheckboxProps>(), {
   icon: undefined,
 });
 
-const borderVariantClasses = {
-  primary: 'border-primary border-2',
-  link: 'border-link border-2',
-  danger: 'border-danger border-2',
-} as const;
-
-const iconVariantClasses = {
-  primary: 'text-primary',
-  link: 'text-link',
-  danger: 'text-danger',
-} as const;
-
-const hoverVariantClasses = {
-  primary: 'hover:text-primary-120 hover:border-primary-120',
-  link: 'hover:text-link-120 hover:border-link-120',
-  danger: 'hover:text-danger-120 hover:border-danger-120',
-} as const;
+// Variant classes are now provided by utility functions
 
 const value = ref(false);
 

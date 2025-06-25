@@ -36,14 +36,8 @@ import useVuelidate from '@vuelidate/core';
 import { ref, watch } from 'vue';
 import { ColorPicker } from 'vue-accessible-color-picker';
 
+import type { AppColorInputProps } from '../../types/form';
 import AppInput from './AppInput.vue';
-
-export interface AppColorInputProps {
-  /** The id of the color input */
-  id: string;
-  /** The model value of the color input */
-  modelValue: string;
-}
 
 const emit = defineEmits(['update:modelValue']);
 const props = defineProps<AppColorInputProps>();

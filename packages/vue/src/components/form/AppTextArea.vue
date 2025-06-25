@@ -8,10 +8,10 @@
         class="w-full rounded border p-2 focus:shadow-input focus:outline-none"
         :class="[
           hasError
-            ? 'border-danger-70 bg-danger-10'
+            ? getInputStateClasses('error')
             : disabled
-              ? 'cursor-not-allowed border-primary-40 bg-grey-lighter'
-              : 'border-primary-40 bg-white',
+              ? `cursor-not-allowed ${getInputStateClasses('disabled')}`
+              : getInputStateClasses('default'),
           disabled && 'opacity-60',
           copyable && 'pr-10',
         ]"
@@ -35,22 +35,18 @@
     </div>
     <AppInputError
       v-if="hasError"
-      :id="`${id}-error`"
+      :id="errorId"
       :message="validation.$errors[0].$message"
     />
     <!-- Display character count when maxlength is set -->
     <div
       v-if="maxlength !== undefined"
       class="mt-1 text-xs text-grey-dark"
-      :id="`${id}-char-count`"
+      :id="charCountId"
     >
       {{ characterCountText }}
     </div>
-    <AppInputHelp
-      v-if="infoMessage"
-      :id="`${id}-info`"
-      :message="infoMessage"
-    />
+    <AppInputHelp v-if="infoMessage" :id="helpId" :message="infoMessage" />
   </div>
 </template>
 
@@ -63,52 +59,17 @@ import {
 } from '@vuelidate/validators';
 import { computed } from 'vue';
 
+import { useAriaDescribedBy } from '../../composables/useAccessibility';
+import type { AppTextAreaProps } from '../../types/form';
+import { generateFormFieldId, generateFormFieldIds } from '../../utils/ids';
+import { getInputStateClasses } from '../../utils/variants';
 import AppCopyButton from '../button/AppCopyButton.vue';
 import AppInputError from './AppInputError.vue';
 import AppInputHelp from './AppInputHelp.vue';
 import AppLabel from './AppLabel.vue';
 
-/**
- * Props for the AppTextArea component
- */
-export interface AppTextAreaProps {
-  /** The model value of the textarea */
-  modelValue?: string;
-  /** The label of the textarea */
-  label?: string;
-  /** The name of the textarea */
-  name?: string;
-  /** The info message of the textarea */
-  infoMessage?: string;
-  /** Whether the textarea is required */
-  required?: boolean;
-  /** Whether the textarea is disabled */
-  disabled?: boolean;
-  /** The maximum number of characters allowed */
-  maxlength?: number;
-  /** Whether the textarea value can be copied to clipboard */
-  copyable?: boolean;
-  /** Text label for the copy button (if copyable is true) */
-  copyLabel?: string;
-  /** Whether the copy button is disabled */
-  copyButtonDisabled?: boolean;
-  /** Custom ID for the textarea element */
-  id?: string;
-  /** Text to display for required field error (e.g., "This field is required") */
-  requiredErrorText?: string;
-  /** Text template for max length error (e.g., "Must be no more than {max} characters") */
-  maxLengthErrorText?: string;
-  /** Text template for character count (e.g., "{remaining} of {max} characters remaining") */
-  characterCountText?: string;
-  /** Props for the copy button */
-  copyButtonProps?: {
-    copyButtonTitle?: string;
-    successMessage?: string;
-    errorMessage?: string;
-    errorDescription?: string;
-    removeAriaLabel?: string;
-  };
-}
+// Props interface is now imported from types
+export type { AppTextAreaProps } from '../../types/form';
 
 const emit = defineEmits(['update:modelValue', 'update:validation']);
 const props = withDefaults(defineProps<AppTextAreaProps>(), {
@@ -129,10 +90,16 @@ const props = withDefaults(defineProps<AppTextAreaProps>(), {
   copyButtonProps: undefined,
 });
 
-// Generate unique ID for aria-labels and form associations
-const id = computed(
-  () => props.id || `textarea-${Math.random().toString(36).substring(2, 11)}`
+// Generate unique IDs for accessibility
+const baseTextAreaId = computed(
+  () => props.id || generateFormFieldId(props.name, 'textarea')
 );
+
+const fieldIds = computed(() => generateFormFieldIds(baseTextAreaId.value));
+const id = computed(() => fieldIds.value.baseId);
+const errorId = computed(() => fieldIds.value.errorId);
+const helpId = computed(() => fieldIds.value.helpId);
+const charCountId = computed(() => `${id.value}-char-count`);
 
 const value = computed({
   get: () => props.modelValue,
@@ -173,12 +140,11 @@ const rules = computed(() => ({
 const validation = useVuelidate(rules, { v: value });
 const hasError = computed(() => validation.value.$errors.length > 0);
 
-// Combine IDs for aria-describedby
-const getAriaDescribedBy = computed(() => {
-  const ids = [];
-  if (hasError.value) ids.push(`${id.value}-error`);
-  if (props.infoMessage) ids.push(`${id.value}-info`);
-  if (props.maxlength !== undefined) ids.push(`${id.value}-char-count`);
-  return ids.length ? ids.join(' ') : undefined;
+// Use accessibility composable for aria-describedby
+const { ariaDescribedBy: getAriaDescribedBy } = useAriaDescribedBy({
+  helpId,
+  errorId,
+  hasHelp: computed(() => !!props.infoMessage),
+  hasError: computed(() => hasError.value),
 });
 </script>
