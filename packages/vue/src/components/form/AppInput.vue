@@ -78,7 +78,6 @@
           :disabled="copyButtonDisabled"
           :label="copyLabel"
           :aria-label="`Copy ${label || 'input value'} to clipboard`"
-          v-bind="copyButtonProps"
         />
       </div>
     </div>
@@ -150,14 +149,6 @@ export interface AppInputProps {
   copyLabel?: string;
   /** Custom ID for the input element */
   id?: string;
-  /** Props for the copy button */
-  copyButtonProps?: {
-    copyButtonTitle?: string;
-    successMessage?: string;
-    errorMessage?: string;
-    errorDescription?: string;
-    removeAriaLabel?: string;
-  };
 }
 
 const emit = defineEmits(['update:modelValue', 'update:validation']);
@@ -179,7 +170,6 @@ const props = withDefaults(defineProps<AppInputProps>(), {
   copyable: false,
   copyLabel: undefined,
   id: undefined,
-  copyButtonProps: undefined,
 });
 
 const { t } = useI18n();
