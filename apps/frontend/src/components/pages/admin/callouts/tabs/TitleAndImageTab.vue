@@ -76,13 +76,7 @@
                 :model-value="env.appUrl + '/callouts/' + data.autoSlug"
                 :disabled="true"
                 :copyable="true"
-                :copy-button-props="{
-                  copyButtonTitle: t('actions.copy'),
-                  successMessage: t('notifications.copy.success'),
-                  errorMessage: t('notifications.error'),
-                  removeAriaLabel: t('notifications.remove'),
-                }"
-                required
+                :copy-label="t('actions.copy')"
               />
               <AppInput
                 v-else
@@ -90,12 +84,7 @@
                 :disabled="!canEditSlug"
                 :prefix="env.appUrl + '/callouts/'"
                 :copyable="true"
-                :copy-button-props="{
-                  copyButtonTitle: t('actions.copy'),
-                  successMessage: t('notifications.copy.success'),
-                  errorMessage: t('notifications.error'),
-                  removeAriaLabel: t('notifications.remove'),
-                }"
+                :copy-label="t('actions.copy')"
                 required
               />
             </AppFormField>
@@ -137,6 +126,7 @@
             </AppFormField>
           </AppFormBox>
         </AppScrollSection>
+
       </div>
 
       <!-- Right Sidebar -->

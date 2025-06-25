@@ -10,13 +10,9 @@
           v-model="email.body"
           label="Message"
           :labels="editorLabels"
-          copyable
-          :copy-button-props="{
-            copyButtonTitle: t('actions.copy'),
-            successMessage: t('notifications.copy.success'),
-            errorMessage: t('notifications.error'),
-            removeAriaLabel: t('notifications.remove'),
-          }"
+          :copyable="true"
+          :copy-label="t('actions.copy')"
+          class="col-span-12"
           required
         />
       </template>

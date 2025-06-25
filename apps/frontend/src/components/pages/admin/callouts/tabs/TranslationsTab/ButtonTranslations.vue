@@ -27,13 +27,8 @@
                 : getPlaceholder(slide.navigation.prevText, selectedLocale)
             "
             :disabled="selectedLocale === defaultLocale"
-            :copyable="selectedLocale === defaultLocale"
-            :copy-button-props="{
-              copyButtonTitle: t('actions.copy'),
-              successMessage: t('notifications.copy.success'),
-              errorMessage: t('notifications.error'),
-              removeAriaLabel: t('notifications.remove'),
-            }"
+            :copyable="true"
+            :copy-label="t('actions.copy')"
             @update:model-value="
               updateValue(slide, 'prevText', selectedLocale, $event)
             "
@@ -54,13 +49,8 @@
                 : getPlaceholder(slide.navigation.nextText, selectedLocale)
             "
             :disabled="selectedLocale === defaultLocale"
-            :copyable="selectedLocale === defaultLocale"
-            :copy-button-props="{
-              copyButtonTitle: t('actions.copy'),
-              successMessage: t('notifications.copy.success'),
-              errorMessage: t('notifications.error'),
-              removeAriaLabel: t('notifications.remove'),
-            }"
+            :copyable="true"
+            :copy-label="t('actions.copy')"
             @update:model-value="
               updateValue(slide, 'nextText', selectedLocale, $event)
             "
@@ -81,13 +71,8 @@
                 : getPlaceholder(slide.navigation.submitText, selectedLocale)
             "
             :disabled="selectedLocale === defaultLocale"
-            :copyable="selectedLocale === defaultLocale"
-            :copy-button-props="{
-              copyButtonTitle: t('actions.copy'),
-              successMessage: t('notifications.copy.success'),
-              errorMessage: t('notifications.error'),
-              removeAriaLabel: t('notifications.remove'),
-            }"
+            :copyable="true"
+            :copy-label="t('actions.copy')"
             @update:model-value="
               updateValue(slide, 'submitText', selectedLocale, $event)
             "
