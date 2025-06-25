@@ -36,8 +36,11 @@ import {
   ContributionPeriod,
   PaymentMethod,
 } from '@beabee/beabee-common';
-import { AppChoice, type ContributionContent } from '@beabee/vue';
-import { Contribution as VueContribution } from '@beabee/vue';
+import {
+  AppChoice,
+  type ContributionContent,
+  Contribution as VueContribution,
+} from '@beabee/vue';
 
 import { generalContent } from '@store';
 import { computed, watch } from 'vue';
