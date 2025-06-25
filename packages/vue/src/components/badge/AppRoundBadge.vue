@@ -18,7 +18,7 @@
 <template>
   <span
     class="inline-block rounded-full align-middle"
-    :class="[sizeClasses[size], colorClasses[type]]"
+    :class="[getBadgeSizeClasses(size), getBadgeColorClasses(type)]"
     :aria-label="ariaLabel"
     role="img"
   />
@@ -32,35 +32,16 @@
  */
 import { computed } from 'vue';
 
-/**
- * Props for the AppRoundBadge component
- */
-export interface AppRoundBadgeProps {
-  /** Visual status type that determines the color */
-  type: 'success' | 'warning' | 'danger';
-  /** Size variant of the badge */
-  size?: 'large' | 'small';
-  /** Accessible label for screen readers */
-  ariaLabel?: string;
-}
+import type { AppRoundBadgeProps } from '../../types/badge';
+import {
+  getBadgeColorClasses,
+  getBadgeSizeClasses,
+} from '../../utils/variants';
 
 const props = withDefaults(defineProps<AppRoundBadgeProps>(), {
   size: 'large',
   ariaLabel: undefined,
 });
-
-// Size-based classes mapping
-const sizeClasses = {
-  large: 'w-4 h-4',
-  small: 'w-2 h-2',
-} as const;
-
-// Type-based color classes mapping
-const colorClasses = {
-  success: 'bg-success',
-  warning: 'bg-warning',
-  danger: 'bg-danger',
-} as const;
 
 // Generate accessible label if not provided
 const ariaLabel = computed(() => {

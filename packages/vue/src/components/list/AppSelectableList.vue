@@ -24,22 +24,13 @@
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { computed } from 'vue';
 
-// Define the component props interface
+// Define the component props interface (kept here due to generic constraints)
 export interface AppSelectableListProps<T extends { id: string }> {
-  /**
-   * Array of items to display in the list
-   * Each item must have an id property
-   */
+  /** Array of items to display in the list */
   items: T[];
-
-  /**
-   * Array of selected item IDs
-   */
+  /** Array of selected item IDs */
   selectedItemIds?: string[];
-
-  /**
-   * Whether the list is disabled
-   */
+  /** Whether the list is disabled */
   disabled?: boolean;
 }
 

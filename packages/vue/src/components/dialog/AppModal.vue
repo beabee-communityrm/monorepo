@@ -60,19 +60,11 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { computed, onBeforeUnmount, ref, toRef, watch } from 'vue';
 
-/**
- * Props for the AppModal component
- */
-export interface AppModalProps {
-  /** Whether the modal is currently open and visible */
-  open: boolean;
-  /** Title displayed in the modal header */
-  title?: string;
-  /** Visual variant affecting title styling */
-  variant?: 'danger';
-  /** Accessible text for the close button */
-  closeButtonText?: string;
-}
+import type { AppModalProps } from '../../types/dialog';
+import { generateComponentId } from '../../utils/ids';
+
+// Props interface is now imported from types
+export type { AppModalProps } from '../../types/dialog';
 
 /**
  * Events emitted by the AppModal component
@@ -102,9 +94,7 @@ const props = withDefaults(defineProps<AppModalProps>(), {
 });
 
 // Generate unique ID for ARIA relationships
-const modalId = computed(
-  () => `modal-${Math.random().toString(36).substring(2, 11)}`
-);
+const modalId = computed(() => generateComponentId('AppModal'));
 
 const divRef = ref<HTMLElement>();
 

@@ -53,7 +53,7 @@
         />
 
         <!-- Step name -->
-        <h4 class="font-semibold" :id="`step-${stepIndex}-label`">
+        <h4 class="font-semibold" :id="getStepLabelId(stepIndex)">
           {{ step.name }}
         </h4>
 
@@ -77,7 +77,10 @@
  *
  * @component AppStepper
  */
+import { computed } from 'vue';
+
 import type { AppStepperStep } from '../../types/stepper';
+import { generateComponentId } from '../../utils/ids';
 
 /**
  * Props for the AppStepper component
@@ -97,6 +100,11 @@ const props = withDefaults(defineProps<AppStepperProps>(), {
   disabled: false,
   ariaLabel: 'Step progress',
 });
+
+// Generate unique ID for consistent labeling
+const componentId = generateComponentId('AppStepper');
+const getStepLabelId = (stepIndex: number) =>
+  `${componentId}-step-${stepIndex}-label`;
 
 /**
  * Events emitted by the AppStepper component
