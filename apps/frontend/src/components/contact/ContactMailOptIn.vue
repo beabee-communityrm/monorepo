@@ -8,7 +8,7 @@
   </section>
 </template>
 <script lang="ts" setup>
-import { AppCheckbox } from '@beabee/vue/components';
+import { AppCheckbox } from '@beabee/vue';
 
 import { computed } from 'vue';
 

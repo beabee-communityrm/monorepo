@@ -21,8 +21,8 @@ meta:
 
 <script lang="ts" setup>
 import type { GetCalloutDataWith } from '@beabee/beabee-common';
+import { App2ColGrid } from '@beabee/vue';
 
-import App2ColGrid from '@components/App2ColGrid.vue';
 import CalloutReviewerManager from '@components/callout/CalloutReviewerManager.vue';
 import TagManager from '@components/tag/TagManager.vue';
 import { addBreadcrumb } from '@store/breadcrumb';

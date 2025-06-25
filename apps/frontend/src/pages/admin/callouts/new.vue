@@ -39,10 +39,9 @@ meta:
 
 <script lang="ts" setup>
 import { ItemStatus } from '@beabee/beabee-common';
-import { AppAsyncButton } from '@beabee/vue/components';
+import { AppAsyncButton, PageTitle } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
-import PageTitle from '@components/PageTitle.vue';
 import type { CalloutHorizontalTabsData } from '@components/pages/admin/callouts/CalloutHorizontalTabs.interface';
 import CalloutHorizontalTabs from '@components/pages/admin/callouts/CalloutHorizontalTabs.vue';
 import { faBullhorn, faEye } from '@fortawesome/free-solid-svg-icons';

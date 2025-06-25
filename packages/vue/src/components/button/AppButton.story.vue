@@ -40,7 +40,7 @@ const icons = {
 </script>
 
 <template>
-  <Story title="Components/Button/AppButton">
+  <Story title="Button/AppButton">
     <Variant title="Playground">
       <div class="flex flex-col gap-4">
         <AppButton

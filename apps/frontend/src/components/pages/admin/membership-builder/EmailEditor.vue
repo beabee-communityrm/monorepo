@@ -6,7 +6,19 @@
         <div class="mb-4">
           <AppInput v-model="email.subject" label="Subject" required />
         </div>
-        <RichTextEditor v-model="email.body" label="Message" required />
+        <AppRichTextEditor
+          v-model="email.body"
+          label="Message"
+          :labels="editorLabels"
+          copyable
+          :copy-button-props="{
+            copyButtonTitle: t('actions.copy'),
+            successMessage: t('notifications.copy.success'),
+            errorMessage: t('notifications.error'),
+            removeAriaLabel: t('notifications.remove'),
+          }"
+          required
+        />
       </template>
       <AppNotification v-else variant="warning" title="Can't edit email">
         <p>
@@ -20,15 +32,22 @@
   </App2ColGrid>
 </template>
 <script lang="ts" setup>
-import { AppNotification } from '@beabee/vue/components';
+import {
+  App2ColGrid,
+  AppInput,
+  AppNotification,
+  AppRichTextEditor,
+  AppSubHeading,
+} from '@beabee/vue';
 
 import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
+import { useRichTextEditorLabels } from '../../../../composables/useRichTextEditorLabels';
 import { currentUser } from '../../../../store';
-import App2ColGrid from '../../../App2ColGrid.vue';
-import AppSubHeading from '../../../AppSubHeading.vue';
-import AppInput from '../../../forms/AppInput.vue';
-import RichTextEditor from '../../../rte/RichTextEditor.vue';
+
+const { t } = useI18n();
+const editorLabels = useRichTextEditorLabels();
 
 const props = defineProps<{
   label: string;

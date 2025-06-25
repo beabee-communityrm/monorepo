@@ -101,14 +101,17 @@ import {
   MembershipStatus,
   PaymentMethod,
 } from '@beabee/beabee-common';
-import { AppButton, AppNotification } from '@beabee/vue/components';
+import {
+  AppButton,
+  AppHeading,
+  AppModal,
+  AppNotification,
+  type ContributionContent,
+} from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
-import AppHeading from '@components/AppHeading.vue';
-import AppModal from '@components/AppModal.vue';
 import StripePayment from '@components/StripePayment.vue';
 import Contribution from '@components/contribution/Contribution.vue';
-import { type ContributionContent } from '@components/contribution/contribution.interface';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { currentUser } from '@store/currentUser';
 import { client, isApiError } from '@utils/api';
@@ -212,6 +215,8 @@ async function handleUpdate() {
   } catch (err) {
     if (isApiError(err, ['cant-update-contribution'])) {
       cantUpdate.value = true;
+    } else {
+      throw err;
     }
   }
 }
@@ -251,8 +256,21 @@ watch(
         : props.modelValue.payFee
       : false;
     newContribution.prorate = true;
+
+    // Ensure paymentMethod is always set to a valid value
+    const currentPaymentMethod = props.modelValue.paymentSource?.method;
+    const availableMethods = props.content.paymentMethods;
+
+    // Fallback to a default payment method if none are configured
+    const defaultPaymentMethod =
+      availableMethods.length > 0
+        ? availableMethods[0]
+        : PaymentMethod.StripeCard; // Fallback if no methods configured
+
     newContribution.paymentMethod =
-      props.modelValue.paymentSource?.method || props.content.paymentMethods[0];
+      currentPaymentMethod && availableMethods.includes(currentPaymentMethod)
+        ? currentPaymentMethod
+        : defaultPaymentMethod;
   },
   { immediate: true }
 );

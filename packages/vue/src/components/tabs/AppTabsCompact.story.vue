@@ -26,7 +26,7 @@ const navigationTabs: TabItem[] = [
 </script>
 
 <template>
-  <Story title="Components/Tabs/AppTabsCompact">
+  <Story title="Tabs/AppTabsCompact">
     <Variant title="Basic">
       <div class="w-full">
         <AppTabsCompact v-model="state.selectedTab" :items="navigationTabs" />

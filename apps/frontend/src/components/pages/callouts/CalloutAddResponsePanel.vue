@@ -3,9 +3,13 @@
     <div v-if="showOnlyThanks">
       <CalloutThanksBox :callout="callout" class="p-0" />
       <AppShareBox
+        :url="`/callouts/${callout.slug}/map`"
+        :base-url="env.appUrl"
+        :share-text="t('actions.share')"
+        :copy-text="t('actions.copy')"
         :address-text="t('callout.share.address')"
         :services-text="t('callout.share.services')"
-        :url="`/callouts/${callout.slug}/map`"
+        :email-text="t('form.email')"
       />
     </div>
     <template v-else>
@@ -44,12 +48,13 @@ import {
   type CalloutResponseAnswersSlide,
   type GetCalloutDataWith,
 } from '@beabee/beabee-common';
+import { AppShareBox } from '@beabee/vue';
 import { generalContent } from '@beabee/vue/store/generalContent';
 
+import env from '@env';
 import { ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import AppShareBox from '../../AppShareBox.vue';
 import CalloutForm from './CalloutForm.vue';
 import CalloutLoginPrompt from './CalloutLoginPrompt.vue';
 import CalloutMemberOnlyPrompt from './CalloutMemberOnlyPrompt.vue';

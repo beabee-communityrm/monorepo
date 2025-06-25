@@ -11,5 +11,5 @@
   <AppHeading class="hidden md:block"><slot /></AppHeading>
 </template>
 <script lang="ts" setup>
-import AppHeading from '../../../components/AppHeading.vue';
+import { AppHeading } from '@beabee/vue';
 </script>

@@ -8,6 +8,8 @@ interface Notification {
   body?: Component;
   /** Whether notification can be manually removed */
   removeable?: boolean | 'auto';
+  /** Aria label for the remove button */
+  removeAriaLabel?: string;
   timeout?: number;
 }
 
@@ -17,6 +19,7 @@ let uniqueId = 0;
 export function addNotification(notification: Omit<Notification, 'id'>) {
   const newNotification = {
     removeable: 'auto' as boolean | 'auto',
+    removeAriaLabel: 'Close notification',
     ...notification,
     id: uniqueId++,
   };

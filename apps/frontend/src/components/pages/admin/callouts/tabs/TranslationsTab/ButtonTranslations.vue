@@ -28,6 +28,12 @@
             "
             :disabled="selectedLocale === defaultLocale"
             :copyable="selectedLocale === defaultLocale"
+            :copy-button-props="{
+              copyButtonTitle: t('actions.copy'),
+              successMessage: t('notifications.copy.success'),
+              errorMessage: t('notifications.error'),
+              removeAriaLabel: t('notifications.remove'),
+            }"
             @update:model-value="
               updateValue(slide, 'prevText', selectedLocale, $event)
             "
@@ -49,6 +55,12 @@
             "
             :disabled="selectedLocale === defaultLocale"
             :copyable="selectedLocale === defaultLocale"
+            :copy-button-props="{
+              copyButtonTitle: t('actions.copy'),
+              successMessage: t('notifications.copy.success'),
+              errorMessage: t('notifications.error'),
+              removeAriaLabel: t('notifications.remove'),
+            }"
             @update:model-value="
               updateValue(slide, 'nextText', selectedLocale, $event)
             "
@@ -70,6 +82,12 @@
             "
             :disabled="selectedLocale === defaultLocale"
             :copyable="selectedLocale === defaultLocale"
+            :copy-button-props="{
+              copyButtonTitle: t('actions.copy'),
+              successMessage: t('notifications.copy.success'),
+              errorMessage: t('notifications.error'),
+              removeAriaLabel: t('notifications.remove'),
+            }"
             @update:model-value="
               updateValue(slide, 'submitText', selectedLocale, $event)
             "
@@ -81,10 +99,9 @@
 </template>
 
 <script lang="ts" setup>
-import { AppFormBox } from '@beabee/vue/components';
+import { AppFormBox, AppInput } from '@beabee/vue';
 
 import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
-import AppInput from '@components/forms/AppInput.vue';
 import type { LocaleProp } from '@type/locale-prop';
 import {
   getLocalizedValueFallback,

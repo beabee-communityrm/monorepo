@@ -27,9 +27,13 @@ meta:
       <template v-if="!isRespondPage">
         <div v-if="callout.status === ItemStatus.Open" class="mb-6">
           <AppShareBox
+            :url="`/callouts/${callout.slug}`"
+            :base-url="env.appUrl"
+            :share-text="t('actions.share')"
+            :copy-text="t('actions.copy')"
             :address-text="t('callout.share.address')"
             :services-text="t('callout.share.services')"
-            :url="`/callouts/${callout.slug}`"
+            :email-text="t('form.email')"
           />
         </div>
         <img class="mb-6 w-full" :src="imageUrl" />
@@ -85,24 +89,28 @@ import {
   type CalloutResponseAnswersSlide,
   type GetCalloutDataWith,
   type GetCalloutResponseDataWith,
+  GetCalloutResponseWith,
   ItemStatus,
   type Paginated,
 } from '@beabee/beabee-common';
-import { GetCalloutResponseWith } from '@beabee/beabee-common';
-import { AppButton, AppNotification } from '@beabee/vue/components';
-import { addNotification } from '@beabee/vue/store/notifications';
+import {
+  AppButton,
+  AppHeading,
+  AppMessageBox,
+  AppNotification,
+  AppShareBox,
+  AppTitle,
+  addNotification,
+} from '@beabee/vue';
 
 import noImage from '@assets/images/no-image.avif';
-import AppHeading from '@components/AppHeading.vue';
-import AppMessageBox from '@components/AppMessageBox.vue';
-import AppShareBox from '@components/AppShareBox.vue';
-import AppTitle from '@components/AppTitle.vue';
 import CalloutForm from '@components/pages/callouts/CalloutForm.vue';
 import CalloutLoginPrompt from '@components/pages/callouts/CalloutLoginPrompt.vue';
 import CalloutMemberOnlyPrompt from '@components/pages/callouts/CalloutMemberOnlyPrompt.vue';
 import CalloutThanksBox from '@components/pages/callouts/CalloutThanksBox.vue';
 import CalloutVariantsBox from '@components/pages/callouts/CalloutVariantsBox.vue';
 import { useCallout } from '@components/pages/callouts/use-callout';
+import env from '@env';
 import { faBullhorn, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { canAdmin, currentUser, isEmbed } from '@store';
 import { addBreadcrumb } from '@store/breadcrumb';

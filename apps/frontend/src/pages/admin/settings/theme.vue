@@ -103,7 +103,14 @@ meta:
 </template>
 
 <script lang="ts" setup>
-import { AppForm, AppRadioInput } from '@beabee/vue/components';
+import {
+  App2ColGrid,
+  AppColorInput,
+  AppForm,
+  AppHeading,
+  AppRadioInput,
+  AppSelect,
+} from '@beabee/vue';
 import {
   type Theme,
   availableFonts,
@@ -116,10 +123,6 @@ import { client } from '@utils/api';
 import { computed, onBeforeMount, onBeforeUnmount, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import App2ColGrid from '../../../components/App2ColGrid.vue';
-import AppHeading from '../../../components/AppHeading.vue';
-import AppColorInput from '../../../components/forms/AppColorInput.vue';
-import AppSelect from '../../../components/forms/AppSelect.vue';
 import { generalContent } from '../../../store';
 
 const { t } = useI18n();

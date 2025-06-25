@@ -28,7 +28,7 @@
   </AppDropdownButton>
 </template>
 <script lang="ts" setup>
-import { AppDropdownButton, AppSelectableList } from '@beabee/vue/components';
+import { AppDropdownButton, AppSelectableList } from '@beabee/vue';
 
 import { faCog, faTag } from '@fortawesome/free-solid-svg-icons';
 import { useI18n } from 'vue-i18n';

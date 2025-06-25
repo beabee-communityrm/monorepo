@@ -14,3 +14,7 @@ import env from '@env';
 export function resolveImageUrl(url: string | URL, width?: number): string {
   return resolveImageUrlCommon(url, env.apiUrl, env.appUrl, width);
 }
+
+export function isInternalUrl(url: string | undefined): url is string {
+  return !!url && /^\/([^/]|$)/.test(url);
+}

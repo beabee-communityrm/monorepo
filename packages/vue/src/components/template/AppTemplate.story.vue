@@ -45,7 +45,7 @@ function handleActivate() {
 </script>
 
 <template>
-  <Story title="Components/Template/AppTemplate">
+  <Story title="Template/AppTemplate">
     <Variant title="Playground">
       <div class="flex max-w-md flex-col gap-4">
         <AppTemplate

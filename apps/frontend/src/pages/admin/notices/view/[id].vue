@@ -12,8 +12,50 @@ meta:
       <div class="flex-initial basis-3/4">
         <AppHeading>{{ t('noticeAdminOverview.summary') }}</AppHeading>
         <AppNotice :notice="notice"></AppNotice>
-        <ItemStatus :item="notice"></ItemStatus>
-        <ItemDateRange :item="notice" />
+        <ItemStatusText
+          :status="notice.status"
+          :status-text="t('common.status.' + notice.status)"
+          :starts="notice.starts"
+          :expires="notice.expires"
+          :scheduled-text="
+            notice.status === 'scheduled' && notice.starts
+              ? t('item.status.startsIn', {
+                  duration: formatDistanceLocale(
+                    notice.starts,
+                    new Date(),
+                    locale as BaseLocale
+                  ),
+                })
+              : ''
+          "
+          :open-text="
+            notice.status === 'open' && notice.expires
+              ? t('item.status.endsIn', {
+                  duration: formatDistanceLocale(
+                    notice.expires,
+                    new Date(),
+                    locale as BaseLocale
+                  ),
+                })
+              : ''
+          "
+          :ended-text="
+            notice.status === 'ended' && notice.expires
+              ? t('common.timeAgo', {
+                  time: formatDistanceLocale(
+                    notice.expires,
+                    new Date(),
+                    locale as BaseLocale
+                  ),
+                })
+              : ''
+          "
+        />
+        <ItemDateRange
+          :starts="notice.starts"
+          :expires="notice.expires"
+          :locale="locale as BaseLocale"
+        />
       </div>
 
       <div class="flex-0 flex flex-wrap gap-2 lg:flex-col">
@@ -46,14 +88,18 @@ meta:
 
 <script lang="ts" setup>
 import type { GetNoticeData } from '@beabee/beabee-common';
-import { ActionButton } from '@beabee/vue/components';
+import type { BaseLocale } from '@beabee/locale';
+import {
+  ActionButton,
+  AppConfirmDialog,
+  AppHeading,
+  AppNotice,
+  ItemDateRange,
+  ItemStatusText,
+  PageTitle,
+  formatDistanceLocale,
+} from '@beabee/vue';
 
-import AppConfirmDialog from '@components/AppConfirmDialog.vue';
-import AppHeading from '@components/AppHeading.vue';
-import AppNotice from '@components/AppNotice.vue';
-import PageTitle from '@components/PageTitle.vue';
-import ItemDateRange from '@components/item/ItemDateRange.vue';
-import ItemStatus from '@components/item/ItemStatusText.vue';
 import {
   faPencilAlt,
   faSignHanging,
@@ -66,7 +112,7 @@ import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 
 const props = defineProps<{ id: string }>();
-const { t } = useI18n();
+const { t, locale } = useI18n();
 
 const notice = ref<GetNoticeData | undefined>();
 const router = useRouter();

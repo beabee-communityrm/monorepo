@@ -6,8 +6,8 @@
 
 <script lang="ts" setup>
 import { type GetNoticeData, ItemStatus } from '@beabee/beabee-common';
+import { AppNotice } from '@beabee/vue';
 
-import AppNotice from '@components/AppNotice.vue';
 import { client } from '@utils/api';
 import { onBeforeMount, ref } from 'vue';
 

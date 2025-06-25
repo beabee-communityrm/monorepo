@@ -15,6 +15,7 @@ const state = reactive({
   removeable: true,
   showIcon: false,
   visible: true,
+  removeAriaLabel: 'Close notification',
 });
 
 const variants = ['success', 'warning', 'error', 'info'] as const;
@@ -30,7 +31,7 @@ function handleRemove() {
 </script>
 
 <template>
-  <Story title="Components/Notification/AppNotification">
+  <Story title="Notification/AppNotification">
     <Variant title="Playground">
       <div v-if="state.visible" class="flex max-w-md flex-col gap-4">
         <AppNotification
@@ -39,6 +40,7 @@ function handleRemove() {
           :variant="state.variant"
           :mode="state.mode"
           :removeable="state.removeable"
+          :remove-aria-label="state.removeAriaLabel"
           :icon="
             state.showIcon
               ? state.variant === 'info'
@@ -80,6 +82,10 @@ function handleRemove() {
           ]"
         />
         <HstCheckbox v-model="state.showIcon" title="Show Icon" />
+        <HstText
+          v-model="state.removeAriaLabel"
+          title="Remove Button Aria Label"
+        />
       </template>
     </Variant>
 

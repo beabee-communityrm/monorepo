@@ -1,3 +1,8 @@
+<!--
+  # AppCheckbox
+  A custom styled checkbox component with variant support and icon functionality.
+  Provides consistent styling across the application with accessibility features.
+-->
 <template>
   <label class="flex cursor-pointer flex-row items-center font-semibold">
     <div class="flex items-center">
@@ -33,8 +38,13 @@
 </template>
 <script lang="ts" setup>
 /**
- * A custom checkbox component with variant support
- * Used for enabling/disabling features or settings.
+ * Custom checkbox component with variant support and optional icon.
+ * Provides consistent styling and accessibility features across the application.
+ *
+ * @component AppCheckbox
+ *
+ * @example
+ * <AppCheckbox v-model="isChecked" label="Accept terms" variant="primary" />
  */
 import type { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
@@ -42,22 +52,35 @@ import useVuelidate from '@vuelidate/core';
 import { sameAs } from '@vuelidate/validators';
 import { computed, ref, toRef, watch } from 'vue';
 
+/**
+ * Props for the AppCheckbox component
+ */
 export interface AppCheckboxProps {
-  /** The model value of the checkbox */
+  /** Current checked state of the checkbox */
   modelValue?: boolean;
   /** Whether the checkbox is disabled */
   disabled?: boolean;
-  /** The label of the checkbox */
+  /** Label text displayed next to the checkbox */
   label?: string;
-  /** The icon of the checkbox */
+  /** Optional icon displayed before the label */
   icon?: IconDefinition;
-  /** Whether the checkbox is required */
+  /** Whether the checkbox is required (validation) */
   required?: boolean;
-  /** Color variant of the checkbox */
+  /** Color variant affecting border and icon colors */
   variant?: 'primary' | 'link' | 'danger';
 }
 
-const emit = defineEmits(['update:modelValue']);
+/**
+ * Events emitted by the AppCheckbox component
+ */
+const emit = defineEmits<{
+  /**
+   * Emitted when checkbox state changes
+   * @param value - The new boolean value
+   */
+  (e: 'update:modelValue', value: boolean): void;
+}>();
+
 const props = withDefaults(defineProps<AppCheckboxProps>(), {
   variant: 'link',
   disabled: false,
@@ -85,11 +108,18 @@ const hoverVariantClasses = {
 } as const;
 
 const value = ref(false);
+
+/**
+ * Sync internal value with modelValue prop
+ */
 watch(value, () => emit('update:modelValue', value.value));
 watch(toRef(props, 'modelValue'), (newValue) => (value.value = newValue), {
   immediate: true,
 });
 
+/**
+ * Vuelidate validation for required checkboxes
+ */
 const rules = computed(() =>
   props.required ? { v: { ticked: sameAs(true) } } : { v: {} }
 );

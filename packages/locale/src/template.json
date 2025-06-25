@@ -333,6 +333,7 @@
     "addAPoint": "",
     "addLocation": "",
     "builder": {
+      "title": "",
       "actions": {
         "addSlide": ""
       },

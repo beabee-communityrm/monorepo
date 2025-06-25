@@ -55,9 +55,9 @@ import {
   AppButton,
   AppDropdownButton,
   AppSelectableList,
-} from '@beabee/vue/components';
+  AppTitle,
+} from '@beabee/vue';
 
-import AppTitle from '@components/AppTitle.vue';
 import {
   faGlobe,
   faImages,

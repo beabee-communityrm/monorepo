@@ -1,10 +1,11 @@
 <template>
   <LayoutApp />
 
-  <TheNotifications />
+  <AppNotificationContainer :remove-aria-label="$t('notifications.remove')" />
 </template>
 
 <script lang="ts" setup>
-import TheNotifications from './components/TheNotifications.vue';
+import { AppNotificationContainer } from '@beabee/vue';
+
 import LayoutApp from './layouts/layout-App.vue';
 </script>

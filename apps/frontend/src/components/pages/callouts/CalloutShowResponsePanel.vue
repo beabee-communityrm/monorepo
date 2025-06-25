@@ -39,7 +39,7 @@ import {
   type GetCalloutDataWith,
   type GetCalloutResponseMapData,
 } from '@beabee/beabee-common';
-import { AppButton, AppButtonGroup } from '@beabee/vue/components';
+import { AppButton, AppButtonGroup } from '@beabee/vue';
 
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { computed } from 'vue';

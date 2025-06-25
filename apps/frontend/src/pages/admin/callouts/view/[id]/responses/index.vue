@@ -142,7 +142,12 @@ meta:
           <span v-else>-</span>
         </template>
         <template #value-createdAt="{ value }">
-          <AppTime :datetime="value" />
+          <AppTime
+            :datetime="value"
+            :time-ago-template="t('common.timeAgo', { time: '{time}' })"
+            :time-in-template="t('common.timeIn', { time: '{time}' })"
+            :locale="locale as BaseLocale"
+          />
         </template>
 
         <template
@@ -186,6 +191,9 @@ meta:
               <AppTime
                 class="font-semibold text-body-60"
                 :datetime="item.latestComment.createdAt"
+                :time-ago-template="t('common.timeAgo', { time: '{time}' })"
+                :time-in-template="t('common.timeIn', { time: '{time}' })"
+                :locale="locale as BaseLocale"
               />
               <b> • {{ item.latestComment.contact.displayName }}:{{ ' ' }}</b>
               <span
@@ -210,12 +218,18 @@ import {
   type UpdateCalloutResponseData,
   stringifyAnswer,
 } from '@beabee/beabee-common';
-import { AppButton, AppButtonGroup } from '@beabee/vue/components';
-import { AppCheckbox, AppVTabs } from '@beabee/vue/components';
-import { addNotification } from '@beabee/vue/store/notifications';
+import type { BaseLocale } from '@beabee/locale';
+import {
+  AppButton,
+  AppButtonGroup,
+  AppCheckbox,
+  AppPaginatedTable,
+  AppSelect,
+  AppVTabs,
+  addNotification,
+} from '@beabee/vue';
+import { AppTime } from '@beabee/vue';
 
-import AppTime from '@components/AppTime.vue';
-import AppSelect from '@components/forms/AppSelect.vue';
 import {
   headers,
   useCalloutResponseFilters,
@@ -223,7 +237,6 @@ import {
 import MoveBucketButton from '@components/pages/admin/callouts/MoveBucketButton.vue';
 import SetAssigneeButton from '@components/pages/admin/callouts/SetAssigneeButton.vue';
 import AppSearch from '@components/search/AppSearch.vue';
-import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
 import TagList from '@components/tag/TagList.vue';
 import ToggleTagButton from '@components/tag/ToggleTagButton.vue';
 import {
@@ -262,7 +275,7 @@ import { useTagFilter } from '../../../../../../composables/useTagFilter';
  * Props & Composables
  */
 const props = defineProps<{ callout: GetCalloutDataWith<'form'> }>();
-const { t, n } = useI18n();
+const { t, n, locale } = useI18n();
 const route = useRoute();
 
 /**

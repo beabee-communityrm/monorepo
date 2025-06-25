@@ -20,7 +20,7 @@ const autoSaveEnabled = ref(true);
 </script>
 
 <template>
-  <Story title="Components/Button/AppToggleSwitch">
+  <Story title="Button/AppToggleSwitch">
     <Variant title="Playground">
       <div class="flex flex-col gap-4">
         <AppToggleSwitch

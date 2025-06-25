@@ -55,7 +55,6 @@
               !canEditSlug
                 ? {
                     title: inputT('slug.locked.title'),
-                    description: inputT('slug.locked.description'),
                     variant: 'warning',
                     mode: 'inline',
                     removeable: false,
@@ -77,6 +76,12 @@
                 :model-value="env.appUrl + '/callouts/' + data.autoSlug"
                 :disabled="true"
                 :copyable="true"
+                :copy-button-props="{
+                  copyButtonTitle: t('actions.copy'),
+                  successMessage: t('notifications.copy.success'),
+                  errorMessage: t('notifications.error'),
+                  removeAriaLabel: t('notifications.remove'),
+                }"
                 required
               />
               <AppInput
@@ -85,6 +90,12 @@
                 :disabled="!canEditSlug"
                 :prefix="env.appUrl + '/callouts/'"
                 :copyable="true"
+                :copy-button-props="{
+                  copyButtonTitle: t('actions.copy'),
+                  successMessage: t('notifications.copy.success'),
+                  errorMessage: t('notifications.error'),
+                  removeAriaLabel: t('notifications.remove'),
+                }"
                 required
               />
             </AppFormField>
@@ -141,17 +152,15 @@ import { ItemStatus } from '@beabee/beabee-common';
 import {
   AppFormBox,
   AppFormField,
-  AppToggleField,
-} from '@beabee/vue/components';
-import {
+  AppInput,
   AppScrollNavigation,
   AppScrollSection,
+  AppTextArea,
+  AppToggleField,
   type ScrollSection,
-} from '@beabee/vue/components';
+} from '@beabee/vue';
 
 import AppImageUpload from '@components/forms/AppImageUpload.vue';
-import AppInput from '@components/forms/AppInput.vue';
-import AppTextArea from '@components/forms/AppTextArea.vue';
 import env from '@env';
 import type { LocaleProp } from '@type';
 import useVuelidate from '@vuelidate/core';

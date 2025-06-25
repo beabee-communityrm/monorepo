@@ -1,14 +1,20 @@
 # AppToggleSwitch
 
-The `AppToggleSwitch` component provides a toggle switch for binary choices. It's commonly used for enabling or disabling features, settings, or options.
+The `AppToggleSwitch` component provides a toggle switch for binary choices as a visual alternative to checkboxes.
 
-## Features
+## Usage Patterns
 
-- Multiple color variants (primary, link, danger)
-- Different sizes (default, small)
-- Support for disabled state
-- Accessible with proper ARIA attributes
-- Smooth transition animations
+- **Settings toggles** - Enable/disable features or preferences
+- **Visibility controls** - Show/hide content or UI elements
+- **Mode switches** - Dark/light mode, public/private settings
+- **Feature flags** - Toggle experimental or optional features
+
+## Key Features
+
+- ✅ **Multiple variants** - Primary, link, and danger color schemes
+- ✅ **Two sizes** - Default and small for different contexts
+- ✅ **Smooth animations** - 200ms transition for state changes
+- ✅ **Accessibility** - Proper ARIA attributes and keyboard support
 
 ## Usage
 
@@ -30,56 +36,6 @@ The `AppToggleSwitch` component provides a toggle switch for binary choices. It'
 | Event               | Description                           |
 | ------------------- | ------------------------------------- |
 | `update:modelValue` | Emitted when the switch state changes |
-
-## Examples
-
-### Basic Usage
-
-```vue
-<AppToggleSwitch v-model="enabled" />
-```
-
-### With Different Variants
-
-```vue
-<AppToggleSwitch v-model="enabled" variant="primary" />
-<AppToggleSwitch v-model="enabled" variant="link" />
-<AppToggleSwitch v-model="enabled" variant="danger" />
-```
-
-### With Different Sizes
-
-```vue
-<AppToggleSwitch v-model="enabled" size="default" />
-<AppToggleSwitch v-model="enabled" size="small" />
-```
-
-### Disabled State
-
-```vue
-<AppToggleSwitch v-model="enabled" disabled />
-```
-
-### In a Form Field
-
-The AppToggleSwitch is commonly used in the AppToggleField component:
-
-```vue
-<AppToggleField
-  v-model="notifications"
-  label="Enable Notifications"
-  description="Receive notifications about updates and activity"
-/>
-```
-
-## Real-world Examples
-
-The AppToggleSwitch is used in several places throughout the application:
-
-1. **User Settings** - For enabling/disabling features
-2. **Notification Preferences** - For toggling different notification types
-3. **Privacy Settings** - For opting in/out of data collection
-4. **Display Options** - For toggling UI features like dark mode
 
 ## How It Works
 

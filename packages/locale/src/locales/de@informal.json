@@ -650,7 +650,8 @@
         "label": "Bezeichnung",
         "option": "Option {n}",
         "placeholder": "Platzhalter"
-      }
+      },
+      "title": ""
     },
     "confirmHuman": "Bitte bestätige, dass du ein Mensch bist",
     "contactDetails": "Kontaktdaten",

@@ -25,9 +25,10 @@ meta:
             required
           />
         </div>
-        <RichTextEditor
+        <AppRichTextEditor
           v-model="joinContent.subtitle"
           :label="stepT('formSubtitle')"
+          :labels="editorLabels"
           class="mb-4"
         />
 
@@ -87,10 +88,11 @@ meta:
           :label="stepT('showAbsorbFee')"
           class="mb-4 font-semibold"
         />
-        <RichTextEditor
+        <AppRichTextEditor
           v-model="noticeText"
           controls="inline"
           :label="stepT('noticeText')"
+          :labels="editorLabels"
           :info-message="stepT('noticeTextHelp')"
           class="mb-4"
         />
@@ -111,16 +113,20 @@ import {
   type ContentPaymentData,
   ContributionPeriod,
 } from '@beabee/beabee-common';
-import { AppCheckbox, AppForm, AppLabel } from '@beabee/vue/components';
+import {
+  App2ColGrid,
+  AppCheckbox,
+  AppForm,
+  AppInput,
+  AppLabel,
+  AppRichTextEditor,
+  AppSelect,
+  AppSubHeading,
+} from '@beabee/vue';
 
-import App2ColGrid from '@components/App2ColGrid.vue';
-import AppSubHeading from '@components/AppSubHeading.vue';
 import AppImageUpload from '@components/forms/AppImageUpload.vue';
-import AppInput from '@components/forms/AppInput.vue';
-import AppSelect from '@components/forms/AppSelect.vue';
 import PeriodAmounts from '@components/pages/admin/membership-builder/PeriodAmounts.vue';
 import JoinForm from '@components/pages/join/JoinForm.vue';
-import RichTextEditor from '@components/rte/RichTextEditor.vue';
 import { generalContent } from '@store';
 import { client } from '@utils/api';
 import useVuelidate from '@vuelidate/core';
@@ -128,12 +134,15 @@ import { required } from '@vuelidate/validators';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import { useRichTextEditorLabels } from '../../../composables/useRichTextEditorLabels';
+
 const joinContent = ref<ContentJoinData>();
 const paymentContent = ref<ContentPaymentData>();
 const noticeText = ref('');
 const backgroundUrl = ref('');
 
 const { n, t } = useI18n();
+const editorLabels = useRichTextEditorLabels();
 
 const stepT = (key: string) => t('membershipBuilder.steps.joinForm.' + key);
 

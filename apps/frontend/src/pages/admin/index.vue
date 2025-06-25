@@ -48,6 +48,9 @@ meta:
           <AppTime
             class="flex-1 text-right text-sm font-semibold text-body-60"
             :datetime="member.joined"
+            :time-ago-template="t('common.timeAgo', { time: '{time}' })"
+            :time-in-template="t('common.timeIn', { time: '{time}' })"
+            :locale="locale as BaseLocale"
           />
         </li>
       </ul>
@@ -96,10 +99,9 @@ import {
   type GetStatsData,
   ItemStatus,
 } from '@beabee/beabee-common';
+import type { BaseLocale } from '@beabee/locale';
+import { AppHeading, AppTime, PageTitle } from '@beabee/vue';
 
-import AppHeading from '@components/AppHeading.vue';
-import AppTime from '@components/AppTime.vue';
-import PageTitle from '@components/PageTitle.vue';
 import CalloutSummary from '@components/callout/CalloutSummary.vue';
 import HintBox from '@components/pages/admin/HintBox.vue';
 import KeyStat from '@components/pages/admin/KeyStat.vue';
@@ -113,7 +115,7 @@ import { useI18n } from 'vue-i18n';
 
 import env from '../../env';
 
-const { n, t } = useI18n();
+const { n, t, locale } = useI18n();
 
 addBreadcrumb(
   computed(() => [

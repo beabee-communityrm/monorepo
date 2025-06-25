@@ -1,6 +1,20 @@
 # AppTabsCompact
 
-A compact version of tabs designed for mobile views. Features horizontal scrolling and snap points for better touch interaction.
+The `AppTabsCompact` component provides a space-efficient tab interface with reduced padding and spacing for dense layouts.
+
+## Usage Patterns
+
+- **Mobile interfaces** - Conserve vertical space on smaller screens
+- **Dashboard widgets** - Compact tabs for dense information displays
+- **Embedded components** - Tabs within modal dialogs or sidebars
+- **Content previews** - Quick switching between preview modes
+
+## Key Features
+
+- ✅ **Reduced spacing** - Compact design for space-constrained layouts
+- ✅ **Mobile optimized** - Touch-friendly while maintaining small footprint
+- ✅ **Same functionality** - All standard tab features in smaller package
+- ✅ **Consistent styling** - Maintains design system coherence
 
 ## Usage
 
@@ -13,23 +27,3 @@ A compact version of tabs designed for mobile views. Features horizontal scrolli
   ]"
 />
 ```
-
-## Props
-
-| Prop         | Type        | Required | Description                   |
-| ------------ | ----------- | -------- | ----------------------------- |
-| `modelValue` | `string`    | Yes      | Currently selected tab ID     |
-| `items`      | `TabItem[]` | Yes      | Array of tab items to display |
-
-## Features
-
-- Horizontal scrolling with snap points
-- Compact design for mobile interfaces
-- Count indicators
-- v-model support for two-way binding
-
-## Use Cases
-
-- Mobile navigation
-- Secondary navigation in responsive layouts
-- When space is limited and you need to display many tabs

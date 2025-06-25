@@ -71,8 +71,8 @@
 
 <script lang="ts" setup>
 /**
- * A versatile button component that can render as a button, link, or router-link
- * with various styles and states.
+ * A versatile button component that can render as button, anchor, or router-link.
+ * Supports multiple visual variants, sizes, icons, loading states, and disabled state.
  *
  * @component AppButton
  *
@@ -80,13 +80,13 @@
  * // Basic button
  * <AppButton>Click me</AppButton>
  *
- * // Primary button with loading state
- * <AppButton variant="primary" :loading="true">Loading...</AppButton>
+ * // With variant and icon
+ * <AppButton variant="primary" :icon="faUser">User Profile</AppButton>
  *
- * // External link button
- * <AppButton href="https://example.com" external>External Link</AppButton>
+ * // As external link
+ * <AppButton href="https://example.com" external>Visit Site</AppButton>
  *
- * // Router link button
+ * // As router link
  * <AppButton :to="{ name: 'home' }">Go Home</AppButton>
  *
  * @props {boolean} [disabled=false] - Disables the button

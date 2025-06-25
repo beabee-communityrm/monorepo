@@ -47,10 +47,16 @@
           v-model:post-code="data.postCode"
           v-model:city-or-town="data.cityOrTown"
           :required="data.profile.deliveryOptIn"
+          :labels="{
+            addressLine1: t('form.addressLine1'),
+            addressLine2: t('form.addressLine2'),
+            cityOrTown: t('form.cityOrTown'),
+            postCode: t('form.postCode'),
+          }"
         />
       </section>
 
-      <NewsletterOptIn
+      <AppNewsletterOptIn
         v-if="showNewsletterOptIn"
         v-model="data.profile.newsletterOptIn"
         v-model:opt-in-groups="data.profile.newsletterGroups"
@@ -69,14 +75,12 @@ import {
   GetContactWith,
   NewsletterStatus,
 } from '@beabee/beabee-common';
-import { AppForm } from '@beabee/vue/components';
+import { AppAddress, AppForm, AppInput } from '@beabee/vue';
+import { AppNewsletterOptIn } from '@beabee/vue';
 
-import AppAddress from '@components/AppAddress.vue';
 import AuthBox from '@components/AuthBox.vue';
 import ContactBasicFields from '@components/contact/ContactBasicFields.vue';
 import ContactMailOptIn from '@components/contact/ContactMailOptIn.vue';
-import AppInput from '@components/forms/AppInput.vue';
-import NewsletterOptIn from '@components/newsletter/NewsletterOptIn.vue';
 import { client } from '@utils/api';
 import useVuelidate from '@vuelidate/core';
 import { computed, reactive } from 'vue';
