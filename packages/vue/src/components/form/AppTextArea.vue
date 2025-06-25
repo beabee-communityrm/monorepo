@@ -28,8 +28,6 @@
           variant="float"
           :text="value?.toString() || ''"
           :disabled="copyButtonDisabled"
-          :label="copyLabel"
-          v-bind="copyButtonProps"
         />
       </div>
     </div>
@@ -88,8 +86,6 @@ export interface AppTextAreaProps {
   maxlength?: number;
   /** Whether the textarea value can be copied to clipboard */
   copyable?: boolean;
-  /** Text label for the copy button (if copyable is true) */
-  copyLabel?: string;
   /** Whether the copy button is disabled */
   copyButtonDisabled?: boolean;
   /** Custom ID for the textarea element */
@@ -100,14 +96,6 @@ export interface AppTextAreaProps {
   maxLengthErrorText?: string;
   /** Text template for character count (e.g., "{remaining} of {max} characters remaining") */
   characterCountText?: string;
-  /** Props for the copy button */
-  copyButtonProps?: {
-    copyButtonTitle?: string;
-    successMessage?: string;
-    errorMessage?: string;
-    errorDescription?: string;
-    removeAriaLabel?: string;
-  };
 }
 
 const emit = defineEmits(['update:modelValue', 'update:validation']);
@@ -120,13 +108,11 @@ const props = withDefaults(defineProps<AppTextAreaProps>(), {
   disabled: false,
   maxlength: undefined,
   copyable: false,
-  copyLabel: undefined,
   copyButtonDisabled: false,
   id: undefined,
   requiredErrorText: 'This field is required',
   maxLengthErrorText: 'Must be no more than {max} characters',
   characterCountText: '{remaining} of {max} characters remaining',
-  copyButtonProps: undefined,
 });
 
 // Generate unique ID for aria-labels and form associations
