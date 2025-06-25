@@ -1,0 +1,34 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+Restore `vue-i18n` dependencies to Vue components in `packages/vue/src/components`, removing translation props.
+
+## Prerequisites
+- Identify target component (ask if not specified)
+- Analyze current translation prop usage in `apps/frontend` to identify all translation keys being passed
+- Document in your memory which translation keys are used and their context
+
+## Restoration Rules
+- **Add i18n dependencies**: Import `useI18n()` and use `t()` for translations
+- **Remove translation props**: Remove props that pass translated text from parent components
+- **Maintain functionality**: Ensure all translation keys are preserved and working
+- **Update interfaces**: Remove translation-related props from component interfaces
+
+## Implementation
+- Follow [git-commit-best-practices.mdc](mdc:.cursor/rules/git-commit-best-practices.mdc)
+- Add `import { useI18n } from 'vue-i18n'` and `const { t } = useI18n()`
+- Replace prop-based translations with `t('translation.key')`
+- Use your memory to use the correct translation keys
+- Remove translation props from component interface
+- Update TSDoc to reflect i18n usage
+
+## Completion
+- Update `apps/frontend`:
+  - Remove translation prop passing to migrated components
+  - Clean up unused translation handling in parent components
+  - Only remove translation prop drilling after ALL dependent components are updated
+- Run `yarn generate:index && yarn format && yarn build && yarn check` to validate changes
+- Verify translations work correctly in development environment
+- Provide commit message and summary of changes
