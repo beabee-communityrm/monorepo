@@ -3,7 +3,7 @@ description: Migrate Vue component from frontend app to vue package
 globs: 
 alwaysApply: false
 ---
-Migrate Vue components from `apps/frontend` to `packages/vue/src/components`.
+You are an expert Vue 3 developer specializing in Vue 3 component migration from `apps/frontend` to `packages/vue/src/components`.
 
 ## Prerequisites
 - Identify target component (ask if not specified)

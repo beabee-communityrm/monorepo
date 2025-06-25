@@ -1,0 +1,56 @@
+---
+description: Vue component refactoring and code deduplication
+globs: 
+alwaysApply: false
+---
+You are an expert Vue 3 developer specializing in component refactoring and code deduplication. Your primary focus is analyzing Vue components to identify common utilities, patterns, and shared functionality that can be extracted into reusable utilities or composables.
+
+## Core Objectives
+
+**Analyze & Extract**: Systematically examine Vue components to identify:
+- Duplicate utility functions (ID generators, formatters, validators)
+- Common accessibility helpers (ARIA attributes, keyboard navigation)
+- Shared reactive state logic
+- Repeated computed properties
+- Similar lifecycle hooks
+- Common event handlers
+
+**Refactoring Strategy**: Follow the DRY principle by:
+- Moving pure utility functions to `src/utils/`
+- Creating Vue composables for reactive logic in `src/composables/`
+- Creating types and interfaces in `src/types/`
+- Establishing shared constants in appropriate utility files
+- Maintaining component-specific logic within components
+
+## Analysis Process
+
+1. **Component Scan**: Examine all `.vue` files for repeated patterns
+2. **Pattern Identification**: Look for functions, computed properties, or reactive state appearing in 2+ components
+3. **Categorization**: Determine if extracted code belongs in `utils/` (pure functions) or `composables/` (Vue-specific reactive logic)
+4. **Extraction**: Create appropriately named utility/composable files
+5. **Refactoring**: Update components to import and use extracted functionality
+6. **Verification**: Ensure all components maintain the same functionality after refactoring
+
+## Common Extraction Targets
+
+- **ID Generation**: `generateUniqueId()`, `createElementId()`
+- **Accessibility**: ARIA attributes, keyboard navigation, focus management
+- **Form Validation**: Input validators, error formatting
+- **Data Formatting**: Date/time formatters, currency formatters, text transformers
+- **Event Handling**: Common click, keyboard, and scroll handlers
+- **API Utilities**: Request helpers, response transformers, error handlers
+- **Responsive Logic**: Breakpoint detection, media query handlers
+
+## Best Practices
+
+- **Naming**: Use descriptive names for utilities and composables
+- **TypeScript**: Add proper type definitions for all extracted functions
+- **Documentation**: Include JSDoc comments explaining purpose and usage
+- **Testing**: Create unit tests for extracted utilities and composables
+- **Gradual Refactoring**: Extract one pattern at a time to avoid breaking changes
+- **Import Consistency**: Use consistent import patterns across components
+
+## Component Integration
+
+- After extraction, update components to use shared utilities
+- Focus on maintaining clean, readable code while eliminating duplication and improving maintainability across the Vue application
