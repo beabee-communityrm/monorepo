@@ -22,6 +22,7 @@
 
     <div
       v-if="text"
+      :id="`${componentId}-description`"
       class="mb-4 max-w-none text-sm text-body-80"
       v-html="text"
     />
@@ -41,7 +42,7 @@
       v-model="optInStatus"
       :label="optIn"
       class="font-bold transition-colors"
-      :aria-describedby="text ? `${componentId}-description` : undefined"
+      :aria-describedby="text ? ariaDescribedBy : undefined"
     />
   </section>
 </template>
@@ -57,6 +58,8 @@ import type { NewsletterGroupData } from '@beabee/beabee-common';
 
 import { computed, watch } from 'vue';
 
+import { useAriaDescribedBy } from '../../composables/useAccessibility';
+import { generateComponentId } from '../../utils/ids';
 import { AppCheckbox, AppCheckboxGroup } from '../form/index';
 
 /**
@@ -86,9 +89,12 @@ const optInGroups = defineModel<string[]>('optInGroups', {
 });
 
 // Generate unique ID for ARIA relationships
-const componentId = computed(
-  () => `newsletter-opt-in-${Math.random().toString(36).substring(2, 11)}`
-);
+const componentId = computed(() => generateComponentId('AppNewsletterOptIn'));
+
+// Use accessibility composable for aria-describedby
+const { ariaDescribedBy } = useAriaDescribedBy({
+  helpId: computed(() => `${componentId.value}-description`),
+});
 
 /**
  * Synchronize opt-in status with selected groups

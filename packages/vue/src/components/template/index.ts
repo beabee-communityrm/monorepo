@@ -1,4 +1,1 @@
-export {
-  default as AppTemplate,
-  type AppTemplateProps,
-} from './AppTemplate.vue';
+export { default as AppTemplate } from './AppTemplate.vue';

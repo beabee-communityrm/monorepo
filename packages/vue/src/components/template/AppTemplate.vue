@@ -18,8 +18,8 @@
   <div
     class="rounded border p-4 transition-colors"
     :class="[
-      variantClasses[variant],
-      sizeClasses[size],
+      getTemplateVariantClasses(variant),
+      getTemplateSizeClasses(size),
       disabled
         ? 'cursor-not-allowed opacity-50'
         : 'cursor-pointer hover:bg-opacity-80 focus:outline-none focus:ring-2 focus:ring-primary-70 focus:ring-offset-2',
@@ -81,30 +81,14 @@
  *
  * @component AppTemplate
  */
-import type { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { computed } from 'vue';
 
-/**
- * Props for the AppTemplate component
- */
-export interface AppTemplateProps {
-  /** The main title displayed in the component */
-  title?: string;
-  /** Optional description text for additional context */
-  description?: string;
-  /** Visual variant of the component */
-  variant?: 'primary' | 'secondary' | 'success' | 'warning' | 'danger';
-  /** Size variant of the component */
-  size?: 'sm' | 'md' | 'lg';
-  /** Optional icon to display in the header */
-  icon?: IconDefinition;
-  /** Optional badge text to display in the header */
-  badge?: string;
-  /** Whether the component is disabled */
-  disabled?: boolean;
-  /** Accessible label for screen readers */
-  ariaLabel?: string;
-}
+import type { AppTemplateProps } from '../../types/template';
+import { generateComponentId } from '../../utils/ids';
+import {
+  getTemplateSizeClasses,
+  getTemplateVariantClasses,
+} from '../../utils/variants';
 
 const props = withDefaults(defineProps<AppTemplateProps>(), {
   title: undefined,
@@ -150,25 +134,7 @@ defineSlots<{
 }>();
 
 // Generate unique ID for ARIA relationships
-const componentId = computed(
-  () => `template-${Math.random().toString(36).substring(2, 11)}`
-);
-
-// Variant-based styling classes
-const variantClasses = {
-  primary: 'border-primary-40 bg-primary-5 text-primary-80',
-  secondary: 'border-grey-light bg-grey-lighter text-body',
-  success: 'border-success-30 bg-success-10 text-success-110',
-  warning: 'border-warning-30 bg-warning-10 text-warning',
-  danger: 'border-danger-30 bg-danger-10 text-danger-110',
-} as const;
-
-// Size-based styling classes
-const sizeClasses = {
-  sm: 'p-3 text-sm',
-  md: 'p-4',
-  lg: 'p-6 text-lg',
-} as const;
+const componentId = computed(() => generateComponentId('AppTemplate'));
 
 /**
  * Handles click events

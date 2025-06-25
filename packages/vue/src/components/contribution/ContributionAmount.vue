@@ -51,7 +51,7 @@
             :class="{ 'bg-danger-10': hasError }"
             :disabled="disabled"
             :aria-invalid="hasError"
-            :aria-describedby="hasError ? 'amount-error' : undefined"
+            :aria-describedby="ariaDescribedBy"
             @input="handleInput"
             @keydown.up.prevent="0 /* just stop caret moving */"
             @keyup.up="changeAmount(amount + 1)"
@@ -100,7 +100,7 @@
 
     <div
       v-if="hasError"
-      id="amount-error"
+      :id="errorId"
       class="col-span-12 mt-0 text-sm font-semibold text-danger"
       role="alert"
     >
@@ -115,6 +115,8 @@ import useVuelidate from '@vuelidate/core';
 import { minValue } from '@vuelidate/validators';
 import { computed, toRefs } from 'vue';
 
+import { useAriaDescribedBy } from '../../composables/useAccessibility';
+import { generateComponentId } from '../../utils/ids';
 import { AppChoice } from '../form';
 
 /**
@@ -162,7 +164,18 @@ function changeAmount(newAmount: number, allowInvalid = false) {
     : Math.max(props.minAmount, newAmount);
 }
 
+// Validation rules and validation instance are defined above
 const hasError = computed(() => validation.value.$errors.length > 0);
+
+// Generate unique IDs for accessibility
+const componentId = generateComponentId('ContributionAmount');
+const errorId = computed(() => `${componentId}-error`);
+
+// Set up ARIA describedby
+const { ariaDescribedBy } = useAriaDescribedBy({
+  errorId: errorId,
+  hasError: hasError,
+});
 
 const rules = computed(() =>
   props.disabled

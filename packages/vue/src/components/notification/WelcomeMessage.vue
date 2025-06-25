@@ -39,6 +39,7 @@
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { computed } from 'vue';
 
+import { generateComponentId } from '../../utils/ids';
 import { AppSubHeading } from '../typography';
 import WelcomeIcon from './WelcomeIcon.vue';
 
@@ -76,9 +77,7 @@ const welcomeText = computed(() => {
     .replace('{lastName}', props.lastName);
 });
 
-const headingId = computed(
-  () => `welcome-heading-${Math.random().toString(36).substr(2, 9)}`
-);
+const headingId = computed(() => generateComponentId('WelcomeMessage'));
 
 defineEmits<{
   /** Emitted when the close button is clicked */
