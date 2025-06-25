@@ -46,31 +46,11 @@
  */
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 
-import { addNotification } from '../../store/notifications';
+import { useNotificationHelpers } from '../../composables/useNotifications';
+import type { AppCopyButtonProps } from '../../types/button';
 
-/**
- * Props for the AppCopyButton component
- */
-export interface AppCopyButtonProps {
-  /** The text to copy to clipboard */
-  text: string;
-  /** Visual variant affecting button styling */
-  variant?: 'normal' | 'float';
-  /** Whether the button is disabled */
-  disabled?: boolean;
-  /** Optional text label to show next to the icon */
-  label?: string;
-  /** Aria label for the remove button on notifications */
-  removeAriaLabel?: string;
-  /** Title text for the copy button */
-  copyButtonTitle?: string;
-  /** Success message to show when copy succeeds */
-  successMessage?: string;
-  /** Error message to show when copy fails */
-  errorMessage?: string;
-  /** Error description template with {error} placeholder (optional) */
-  errorDescription?: string;
-}
+// Props interface is now imported from types
+export type { AppCopyButtonProps } from '../../types/button';
 
 /**
  * Events emitted by the AppCopyButton component
@@ -93,31 +73,24 @@ const props = withDefaults(defineProps<AppCopyButtonProps>(), {
   errorDescription: undefined,
 });
 
+const { copyToClipboard } = useNotificationHelpers();
+
 /**
  * Handles the copy action by writing text to clipboard and showing notifications
  */
 const handleCopy = async () => {
   if (props.disabled) return;
 
-  try {
-    await navigator.clipboard.writeText(props.text);
-    addNotification({
-      title: props.successMessage,
-      variant: 'success',
-      removeable: 'auto',
-      removeAriaLabel: props.removeAriaLabel,
-    });
+  const success = await copyToClipboard({
+    text: props.text,
+    successMessage: props.successMessage,
+    errorMessage: props.errorMessage,
+    errorDescription: props.errorDescription,
+    removeAriaLabel: props.removeAriaLabel,
+  });
+
+  if (success) {
     emit('copy');
-  } catch (error) {
-    addNotification({
-      title: props.errorMessage,
-      description: props.errorDescription
-        ? props.errorDescription.replace('{error}', String(error))
-        : undefined,
-      variant: 'error',
-      removeable: 'auto',
-      removeAriaLabel: props.removeAriaLabel,
-    });
   }
 };
 </script>

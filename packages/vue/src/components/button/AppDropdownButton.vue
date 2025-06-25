@@ -54,34 +54,17 @@
  *   <div role="menuitem" @click="deleteAction">Delete</div>
  * </AppDropdownButton>
  */
-import type { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { onBeforeMount, onBeforeUnmount, ref, toRef, watch } from 'vue';
 import { computed } from 'vue';
 
+import type { AppDropdownButtonProps } from '../../types/button';
 import AppButton from './AppButton.vue';
 
-// Define the allowed variants for the dropdown button
-export type DropdownButtonVariant =
-  | 'primaryOutlined'
-  | 'linkOutlined'
-  | 'dangerOutlined'
-  | 'greyOutlined';
+// Variant type is now imported from types
+export type { DropdownButtonVariant } from '../../types/button';
 
-/**
- * Props for the AppDropdownButton component
- */
-export interface AppDropdownButtonProps {
-  /** FontAwesome icon to display in the button trigger */
-  icon: IconDefinition;
-  /** Button title and accessible label text */
-  title: string;
-  /** Visual style variant for the button trigger */
-  variant: DropdownButtonVariant;
-  /** Whether to display the title text alongside the icon */
-  showTitle?: boolean;
-  /** Whether the dropdown button is disabled */
-  disabled?: boolean;
-}
+// Props interface is now imported from types
+export type { AppDropdownButtonProps } from '../../types/button';
 
 /**
  * Slots available in the AppDropdownButton component

@@ -8,11 +8,9 @@
     type="button"
     class="relative transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-40 focus:ring-offset-2"
     :class="[
-      modelValue
-        ? activeVariantClasses[variant]
-        : 'bg-grey-light hover:bg-grey',
+      getToggleSwitchVariantClasses(variant, modelValue),
       disabled && 'cursor-not-allowed opacity-50',
-      sizeClasses[size],
+      getToggleSwitchSizeClasses(size, 'container'),
     ]"
     :disabled="disabled"
     :aria-checked="modelValue"
@@ -22,8 +20,10 @@
     <span
       class="pointer-events-none block bg-white shadow transition-transform duration-200"
       :class="[
-        switchSizeClasses[size],
-        modelValue ? translateClasses[size] : 'translate-x-0.5',
+        getToggleSwitchSizeClasses(size, 'switch'),
+        modelValue
+          ? getToggleSwitchSizeClasses(size, 'translate')
+          : 'translate-x-0.5',
       ]"
     />
   </button>
@@ -39,20 +39,14 @@
  * @example
  * <AppToggleSwitch v-model="enabled" variant="primary" />
  */
+import type { AppToggleSwitchProps } from '../../types/button';
+import {
+  getToggleSwitchSizeClasses,
+  getToggleSwitchVariantClasses,
+} from '../../utils/variants';
 
-/**
- * Props for the AppToggleSwitch component
- */
-export interface AppToggleSwitchProps {
-  /** Current state of the toggle switch */
-  modelValue: boolean;
-  /** Color variant affecting the active state styling */
-  variant?: 'primary' | 'link' | 'danger';
-  /** Size variant affecting dimensions */
-  size?: 'default' | 'small';
-  /** Whether the switch is disabled */
-  disabled?: boolean;
-}
+// Props interface is now imported from types
+export type { AppToggleSwitchProps } from '../../types/button';
 
 /**
  * Events emitted by the AppToggleSwitch component
@@ -71,26 +65,7 @@ const props = withDefaults(defineProps<AppToggleSwitchProps>(), {
   disabled: false,
 });
 
-const activeVariantClasses = {
-  primary: 'bg-primary hover:bg-primary-110',
-  link: 'bg-link hover:bg-link-110',
-  danger: 'bg-danger hover:bg-danger-110',
-} as const;
-
-const sizeClasses = {
-  default: 'h-6 w-11 rounded-full',
-  small: 'h-5 w-9 rounded-full',
-} as const;
-
-const switchSizeClasses = {
-  default: 'h-5 w-5 rounded-full',
-  small: 'h-4 w-4 rounded-full',
-} as const;
-
-const translateClasses = {
-  default: 'translate-x-5',
-  small: 'translate-x-4',
-} as const;
+// Variant and size classes are now provided by utility functions
 
 /**
  * Toggles the switch state if not disabled

@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import {
-  faCheck,
   faCog,
   faFolder,
   faGlobe,
@@ -97,19 +96,21 @@ function handleSelectLanguage(item: { id: string; label: string }) {
 <template>
   <Story title="Button/AppDropdownButton">
     <Variant title="Playground">
-      <AppDropdownButton
-        :icon="state.icon"
-        :title="state.title"
-        :variant="state.variant"
-        :show-title="state.showTitle"
-        :disabled="state.disabled"
-      >
-        <div class="p-4">
-          <div class="cursor-pointer p-2 hover:bg-grey-lighter">User 1</div>
-          <div class="cursor-pointer p-2 hover:bg-grey-lighter">User 2</div>
-          <div class="cursor-pointer p-2 hover:bg-grey-lighter">User 3</div>
-        </div>
-      </AppDropdownButton>
+      <div class="flex gap-4">
+        <AppDropdownButton
+          :icon="state.icon"
+          :title="state.title"
+          :variant="state.variant"
+          :show-title="state.showTitle"
+          :disabled="state.disabled"
+        >
+          <div class="p-4">
+            <div class="cursor-pointer p-2 hover:bg-grey-lighter">User 1</div>
+            <div class="cursor-pointer p-2 hover:bg-grey-lighter">User 2</div>
+            <div class="cursor-pointer p-2 hover:bg-grey-lighter">User 3</div>
+          </div>
+        </AppDropdownButton>
+      </div>
 
       <template #controls>
         <HstText v-model="state.title" title="Button Title" />
@@ -131,116 +132,134 @@ function handleSelectLanguage(item: { id: string; label: string }) {
     </Variant>
 
     <Variant title="Icon Only">
-      <AppDropdownButton
-        :icon="faUser"
-        title="Select User"
-        variant="primaryOutlined"
-      >
-        <div class="p-4">
-          <div class="cursor-pointer p-2 hover:bg-grey-lighter">User 1</div>
-          <div class="cursor-pointer p-2 hover:bg-grey-lighter">User 2</div>
-          <div class="cursor-pointer p-2 hover:bg-grey-lighter">User 3</div>
-        </div>
-      </AppDropdownButton>
+      <div class="flex gap-4">
+        <AppDropdownButton
+          :icon="faUser"
+          title="Select User"
+          variant="primaryOutlined"
+        >
+          <div class="p-4">
+            <div class="cursor-pointer p-2 hover:bg-grey-lighter">User 1</div>
+            <div class="cursor-pointer p-2 hover:bg-grey-lighter">User 2</div>
+            <div class="cursor-pointer p-2 hover:bg-grey-lighter">User 3</div>
+          </div>
+        </AppDropdownButton>
+      </div>
     </Variant>
 
     <Variant title="Assign User Example">
-      <AppDropdownButton
-        :icon="faUser"
-        title="Assign To"
-        variant="primaryOutlined"
-        show-title
-      >
-        <AppSelectableList
-          v-slot="{ item }"
-          :items="users"
-          :selected-item-ids="selectedUserId ? [selectedUserId] : []"
-          @click="handleAssign"
+      <div class="flex gap-4">
+        <AppDropdownButton
+          :icon="faUser"
+          title="Assign To"
+          variant="primaryOutlined"
+          show-title
         >
-          {{ item.label }}
-        </AppSelectableList>
-      </AppDropdownButton>
+          <AppSelectableList
+            v-slot="{ item }"
+            :items="users"
+            :selected-item-ids="selectedUserId ? [selectedUserId] : []"
+            @click="handleAssign"
+          >
+            {{ item.label }}
+          </AppSelectableList>
+        </AppDropdownButton>
+      </div>
     </Variant>
 
     <Variant title="Tag Selection Example">
-      <AppDropdownButton
-        :icon="faTag"
-        title="Toggle Tags"
-        variant="primaryOutlined"
-        show-title
-      >
-        <p v-if="tags.length === 0" class="px-3 py-2 italic">
-          No tags available
-        </p>
-        <AppSelectableList
-          v-else
-          v-slot="{ item }"
-          :items="tags"
-          :selected-item-ids="selectedTagIds"
-          @click="handleToggleTag"
+      <div class="flex gap-4">
+        <AppDropdownButton
+          :icon="faTag"
+          title="Toggle Tags"
+          variant="primaryOutlined"
+          show-title
         >
-          <font-awesome-icon :icon="faTag" class="mr-2" />{{ item.label }}
-        </AppSelectableList>
+          <p v-if="tags.length === 0" class="px-3 py-2 italic">
+            No tags available
+          </p>
+          <AppSelectableList
+            v-else
+            v-slot="{ item }"
+            :items="tags"
+            :selected-item-ids="selectedTagIds"
+            @click="handleToggleTag"
+          >
+            <font-awesome-icon :icon="faTag" class="mr-2" />{{ item.label }}
+          </AppSelectableList>
 
-        <router-link
-          class="block border-t border-primary-40 px-3 py-2 font-semibold text-primary underline hover:bg-primary-5"
-          to="#"
-        >
-          <font-awesome-icon :icon="faCog" class="mr-2" />Manage Tags
-        </router-link>
-      </AppDropdownButton>
+          <router-link
+            class="block border-t border-primary-40 px-3 py-2 font-semibold text-primary underline hover:bg-primary-5"
+            to="#"
+          >
+            <font-awesome-icon :icon="faCog" class="mr-2" />Manage Tags
+          </router-link>
+        </AppDropdownButton>
+      </div>
     </Variant>
 
     <Variant title="Move Bucket Example">
-      <AppDropdownButton
-        :icon="faFolder"
-        title="Move to Bucket"
-        variant="primaryOutlined"
-        show-title
-      >
-        <AppSelectableList
-          v-slot="{ item }"
-          :items="buckets.filter((b) => b.id !== currentBucket)"
-          @click="handleMoveBucket"
+      <div class="flex gap-4">
+        <AppDropdownButton
+          :icon="faFolder"
+          title="Move to Bucket"
+          variant="primaryOutlined"
+          show-title
         >
-          Move to {{ item.label }}
-        </AppSelectableList>
-      </AppDropdownButton>
+          <AppSelectableList
+            v-slot="{ item }"
+            :items="buckets.filter((b) => b.id !== currentBucket)"
+            @click="handleMoveBucket"
+          >
+            Move to {{ item.label }}
+          </AppSelectableList>
+        </AppDropdownButton>
+      </div>
     </Variant>
 
     <Variant title="Language Selection Example">
-      <AppDropdownButton
-        :icon="faGlobe"
-        title="English"
-        variant="greyOutlined"
-        show-title
-      >
-        <AppSelectableList
-          v-slot="{ item }"
-          :items="languages"
-          @click="handleSelectLanguage"
+      <div class="flex gap-4">
+        <AppDropdownButton
+          :icon="faGlobe"
+          title="English"
+          variant="greyOutlined"
+          show-title
         >
-          <font-awesome-icon :icon="faGlobe" class="mr-2" />{{ item.label }}
-        </AppSelectableList>
-      </AppDropdownButton>
+          <AppSelectableList
+            v-slot="{ item }"
+            :items="languages"
+            @click="handleSelectLanguage"
+          >
+            <font-awesome-icon :icon="faGlobe" class="mr-2" />{{ item.label }}
+          </AppSelectableList>
+        </AppDropdownButton>
+      </div>
     </Variant>
 
     <Variant title="Different Variants">
       <div class="flex gap-4">
-        <AppDropdownButton
-          v-for="variant in variants"
-          :key="variant"
-          :icon="faUser"
-          :title="variant"
-          :variant="variant"
-          show-title
-        >
-          <div class="p-2">
-            <div class="cursor-pointer p-2 hover:bg-grey-lighter">Option 1</div>
-            <div class="cursor-pointer p-2 hover:bg-grey-lighter">Option 2</div>
-            <div class="cursor-pointer p-2 hover:bg-grey-lighter">Option 3</div>
-          </div>
-        </AppDropdownButton>
+        <div>
+          <AppDropdownButton
+            v-for="variant in variants"
+            :key="variant"
+            :icon="faUser"
+            :title="variant"
+            :variant="variant"
+            show-title
+          >
+            <div class="p-2">
+              <div class="cursor-pointer p-2 hover:bg-grey-lighter">
+                Option 1
+              </div>
+              <div class="cursor-pointer p-2 hover:bg-grey-lighter">
+                Option 2
+              </div>
+              <div class="cursor-pointer p-2 hover:bg-grey-lighter">
+                Option 3
+              </div>
+            </div>
+          </AppDropdownButton>
+        </div>
       </div>
     </Variant>
   </Story>

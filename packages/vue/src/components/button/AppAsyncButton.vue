@@ -35,27 +35,11 @@ import { addNotification } from '@beabee/vue/store/notifications';
 
 import { ref } from 'vue';
 
+import type { AppAsyncButtonProps } from '../../types/button';
 import AppButton from './AppButton.vue';
 
-/**
- * Props for the AppAsyncButton component
- */
-export interface AppAsyncButtonProps {
-  /** Async function to execute when the button is clicked */
-  onClick?: (evt: Event) => Promise<void>;
-  /** Accessible label for the button */
-  ariaLabel?: string;
-  /** Tooltip text displayed on hover */
-  title?: string;
-  /** Text announced to screen readers during loading state */
-  loadingText?: string;
-  /** Error message to show when async operation fails */
-  errorMessage?: string;
-  /** Error description for screen readers when async operation fails */
-  errorDescription?: string;
-  /** Aria label for the remove button on error notifications */
-  removeAriaLabel?: string;
-}
+// Props interface is now imported from types
+export type { AppAsyncButtonProps } from '../../types/button';
 
 /**
  * Slots available in the AppAsyncButton component

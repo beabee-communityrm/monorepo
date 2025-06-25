@@ -105,121 +105,24 @@
  * @exposes {Function} focus - Focuses the button element
  * @exposes {Ref<HTMLElement>} innerButton - Reference to the button element
  */
-import {
-  type IconDefinition,
-  faCircleNotch,
-} from '@fortawesome/free-solid-svg-icons';
+import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 import { computed, ref } from 'vue';
-import { type RouteLocationRaw } from 'vue-router';
 
-// Define the variant types
-export type ButtonVariant =
-  | 'primary'
-  | 'link'
-  | 'danger'
-  | 'primaryOutlined'
-  | 'linkOutlined'
-  | 'dangerOutlined'
-  | 'dangerGhost'
-  | 'greyOutlined'
-  | 'text'
-  | 'dangerText';
+import type { AppButtonProps } from '../../types/button';
+import {
+  type ButtonSize,
+  type ButtonVariant,
+  getButtonSizeClasses,
+  getButtonVariantClasses,
+} from '../../utils/variants';
 
-// Define the size types
-export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg';
+// Re-export types for public API
+export type { ButtonVariant, ButtonSize } from '../../utils/variants';
+export type { AppButtonProps } from '../../types/button';
 
-// Define the component props interface
-export interface AppButtonProps {
-  disabled?: boolean;
-  loading?: boolean;
-  type?: 'button' | 'submit';
-  href?: string;
-  external?: boolean;
-  to?: RouteLocationRaw;
-  variant?: ButtonVariant;
-  size?: ButtonSize;
-  icon?: IconDefinition;
-  is?: 'button' | 'label';
-}
+// Variant and size classes are now provided by utility functions
 
-// Variant classes for [base, hover, loading icon]
-const variantClasses = {
-  primary: [
-    'bg-primary-70 text-white border-primary-70',
-    'hover:bg-primary-80',
-    'text-primary',
-  ],
-  link: ['bg-link text-white border-link', 'hover:bg-link-110', 'text-link'],
-  primaryOutlined: [
-    'bg-white text-primary-80 border-primary-40',
-    'hover:bg-primary-10 hover:text-primary hover:border-primary-70',
-    'text-primary',
-  ],
-  linkOutlined: [
-    'bg-white text-link border-link',
-    'hover:bg-link-10',
-    'text-link',
-  ],
-  dangerOutlined: [
-    'bg-white text-danger border-danger',
-    'hover:bg-danger-10',
-    'text-danger',
-  ],
-  greyOutlined: [
-    'bg-white text-body-80 border-grey-light',
-    'hover:border-grey',
-    'text-body',
-  ],
-  text: ['underline text-link border-0', 'hover:text-link-110', ''],
-  danger: [
-    'bg-danger text-white border-danger',
-    'hover:bg-danger-110',
-    'text-danger',
-  ],
-  dangerText: ['underline text-danger border-0', 'hover:text-danger-110', ''],
-  dangerGhost: [
-    'bg-transparent border-0 text-body-60',
-    'hover:text-danger-70',
-    'text-body-60',
-  ],
-} as const;
-
-const sizeClasses = {
-  xs: 'text-sm px-2 py-1',
-  sm: 'text-sm p-2',
-  md: 'px-3 py-2.5',
-  lg: 'text-3xl px-4.5 py-4',
-} as const;
-
-/**
- * Props for the AppButton component
- */
-export interface AppButtonProps {
-  /** Whether the button is disabled */
-  disabled?: boolean;
-  /** Whether to show loading state */
-  loading?: boolean;
-  /** HTML button type */
-  type?: 'button' | 'submit';
-  /** URL for anchor tag */
-  href?: string;
-  /** Opens link in new tab */
-  external?: boolean;
-  /** Vue Router destination */
-  to?: RouteLocationRaw;
-  /** Button style variant */
-  variant?: ButtonVariant;
-  /** Button size */
-  size?: ButtonSize;
-  /** FontAwesome icon */
-  icon?: IconDefinition;
-  /** Component element type */
-  is?: 'button' | 'label';
-  /** Accessible name */
-  name?: string;
-  /** Tooltip text */
-  title?: string;
-}
+// Props interface is now imported from types
 
 const props = withDefaults(defineProps<AppButtonProps>(), {
   disabled: false,
@@ -251,17 +154,19 @@ const buttonClasses = computed(() => {
     // Styles for in a button group
     'group-[]/btns:rounded-none group-[]/btns:last:rounded-r group-[]/btns:first:rounded-l group-[]/btns:-ml-px group-[]/btns:hover:z-10',
     // Size styles
-    sizeClasses[props.size],
+    getButtonSizeClasses(props.size),
     // Variant styles
-    variantClasses[props.variant][0],
+    getButtonVariantClasses(props.variant, 'base'),
     // Disabled/enabled styles
     props.disabled
       ? 'cursor-not-allowed opacity-50'
-      : 'cursor-pointer ' + variantClasses[props.variant][1],
+      : 'cursor-pointer ' + getButtonVariantClasses(props.variant, 'hover'),
   ];
 });
 
-const loadingIconClasses = computed(() => variantClasses[props.variant][2]);
+const loadingIconClasses = computed(() =>
+  getButtonVariantClasses(props.variant, 'loading')
+);
 
 // Allow to focus the button from outside
 defineExpose({
