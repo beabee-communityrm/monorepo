@@ -5,7 +5,7 @@
     <AppNotification
       v-if="validation.$errors.length > 0"
       variant="error"
-      :title="validationErrorMessage"
+      :title="t('form.errorMessages.validation')"
       class="mb-4"
     />
 
@@ -39,6 +39,8 @@
  *
  * Uses internal i18n for:
  * - Notification close button: notifications.remove
+ * - Validation error message: form.errorMessages.validation
+ * - Default error messages: form.errorMessages.*
  *
  * @component AppForm
  */
@@ -69,10 +71,6 @@ export interface AppFormProps {
   fullButton?: boolean;
   /** The function to call when the form is submitted */
   onSubmit?: (evt: Event) => Promise<void | false> | void | false;
-  /** Validation error message */
-  validationErrorMessage?: string;
-  /** Default error messages for various error codes */
-  defaultErrorMessages?: Record<string, string>;
 }
 
 const emit = defineEmits(['reset']);
@@ -83,19 +81,19 @@ const props = withDefaults(defineProps<AppFormProps>(), {
   inlineError: false,
   fullButton: false,
   onSubmit: undefined,
-  validationErrorMessage: 'Please check the form for errors',
-  defaultErrorMessages: () => ({
-    unknown: 'Something went wrong. Please try again.',
-    'duplicate-email': 'This email address is already in use',
-    'login-failed': 'Invalid email or password',
-    'invalid-token': 'Invalid or expired token',
-    'account-locked': 'Account is temporarily locked',
-    'duplicate-tag-name': 'This tag name already exists',
-  }),
 });
 
+const defaultErrorMessages = computed<Record<string, string>>(() => ({
+  unknown: t('form.errorMessages.generic'),
+  'duplicate-email': t('form.errorMessages.api.duplicate-email'),
+  'login-failed': t('form.errorMessages.api.login-failed'),
+  'invalid-token': t('form.errorMessages.api.invalid-token'),
+  'account-locked': t('form.errorMessages.api.account-locked'),
+  'duplicate-tag-name': t('form.errorMessages.api.duplicate-tag-name'),
+}));
+
 const errorMessages = computed<Record<string, string>>(() => ({
-  ...props.defaultErrorMessages,
+  ...defaultErrorMessages.value,
   ...props.errorText,
 }));
 
