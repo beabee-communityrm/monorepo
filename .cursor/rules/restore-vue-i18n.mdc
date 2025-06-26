@@ -5,23 +5,36 @@ alwaysApply: false
 ---
 Restore `vue-i18n` dependencies to Vue components in `packages/vue/src/components`, removing translation props.
 
+## Migration Strategy
+- **Priority-based approach**: Start with components that have the fewest translation props and dependencies
+- **Dependency order**: Migrate dependency components before components that use them (e.g., migrate AppCopyButton before AppInput)
+- **Complexity assessment**: Analyze components by number and complexity of translation props:
+  - Low complexity: Single props like `removeAriaLabel`
+  - Medium complexity: Structured props like `copyButtonProps` objects
+  - High complexity: Large nested objects like `labels` with many properties
+
 ## Prerequisites
 - Identify target component (ask if not specified)
 - Analyze current translation prop usage in `apps/frontend` to identify all translation keys being passed
 - Document in your memory which translation keys are used and their context
+- Check component dependencies to ensure proper migration order
 
 ## Restoration Rules
 - **Add i18n dependencies**: Import `useI18n()` and use `t()` for translations
 - **Remove translation props**: Remove props that pass translated text from parent components
 - **Maintain functionality**: Ensure all translation keys are preserved and working
 - **Update interfaces**: Remove translation-related props from component interfaces
+- **Handle complex props**: For structured props (like `copyButtonProps`), replace each sub-property with appropriate `t()` calls
+- **Error handling**: For error messages with interpolation, use `t('key', { variable: value })` syntax
 
-## Implementation
-- Follow [git-commit-best-practices.mdc](mdc:.cursor/rules/git-commit-best-practices.mdc)
+## Implementation Patterns
+- Follow [git-commit-best-practices.mdc](mdc:.cursor/rules/git-commit-best-practices.mdc) for regular and clean git commits
 - Add `import { useI18n } from 'vue-i18n'` and `const { t } = useI18n()`
 - Replace prop-based translations with `t('translation.key')`
+- **Verify translation keys**: Always check `packages/locale/src/locales/en.json` to ensure the translation key exists
 - Use your memory to use the correct translation keys
 - Remove translation props from component interface
+- Update component exports in index files to remove obsolete type exports
 - Update TSDoc to reflect i18n usage
 
 ## Completion
@@ -31,4 +44,5 @@ Restore `vue-i18n` dependencies to Vue components in `packages/vue/src/component
   - Only remove translation prop drilling after ALL dependent components are updated
 - Run `yarn generate:index && yarn format && yarn build && yarn check` to validate changes
 - Verify translations work correctly in development environment
-- Provide commit message and summary of changes
+- Provide commit message following pattern: `feat(vue): Restore vue-i18n in ComponentName`
+- Document completed migrations in memory for tracking progress
