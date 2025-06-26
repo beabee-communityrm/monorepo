@@ -42,8 +42,8 @@
  *   @copy="handleCopy"
  * />
  */
-import { useI18n } from 'vue-i18n';
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
+import { useI18n } from 'vue-i18n';
 
 import { addNotification } from '../../store/notifications';
 

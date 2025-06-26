@@ -126,7 +126,6 @@
             </AppFormField>
           </AppFormBox>
         </AppScrollSection>
-
       </div>
 
       <!-- Right Sidebar -->
