@@ -4,6 +4,9 @@
   with optional group selection. Provides flexible configuration for both 
   simple checkbox and multi-group selection modes.
 
+  Uses internal i18n for accessibility:
+  - Newsletter groups label: newsletter.groups
+
   ## Features
   - Single opt-in checkbox mode when no groups are provided
   - Multi-group selection mode with individual group checkboxes
@@ -31,7 +34,7 @@
       v-if="groups.length > 0"
       v-model="optInGroups"
       :options="groups"
-      :aria-label="groupsAriaLabel || 'Newsletter groups'"
+      :aria-label="t('newsletter.groups')"
       class="space-y-3"
     />
 
@@ -51,13 +54,19 @@
  * Newsletter opt-in component for subscription management.
  * Supports both simple checkbox and multi-group selection modes.
  *
+ * Uses internal i18n for accessibility:
+ * - Newsletter groups label: newsletter.groups
+ *
  * @component AppNewsletterOptIn
  */
 import type { NewsletterGroupData } from '@beabee/beabee-common';
 
 import { computed, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import { AppCheckbox, AppCheckboxGroup } from '../form/index';
+
+const { t } = useI18n();
 
 /**
  * Props for the AppNewsletterOptIn component
@@ -71,8 +80,6 @@ export interface AppNewsletterOptInProps {
   optIn: string;
   /** Available newsletter groups for multi-selection */
   groups: NewsletterGroupData[];
-  /** ARIA label for the groups selection (defaults to 'Newsletter groups') */
-  groupsAriaLabel?: string;
 }
 
 const props = defineProps<AppNewsletterOptInProps>();
