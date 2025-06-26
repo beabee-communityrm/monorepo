@@ -18,8 +18,6 @@
   - `showingText`: Template for showing range text
   - `pageCountText`: Template for page count text
   - `itemsPerPageText`: Template for items per page text
-  - `emptyText`: Text to display when no data
-  - `loadingText`: Text to display while loading
   - `formatNumber`: Number formatter function
 
   ## Events:
@@ -52,8 +50,6 @@
         :items="result?.items || null"
         :selectable="selectable"
         :row-class="rowClass"
-        :empty-text="emptyText"
-        :loading-text="loadingText"
         class="mb-4 w-full"
       >
         <template v-for="name of slotNames" #[name]="slotData" :key="name">
@@ -124,10 +120,6 @@ export interface AppPaginatedTableProps<I extends Item> {
    * Example: "{items} per page"
    */
   itemsPerPageText?: string;
-  /** Text to display when there are no items */
-  emptyText?: string;
-  /** Text to display while loading */
-  loadingText?: string;
   /** Number formatter function */
   formatNumber?: (value: number) => string;
 }
@@ -139,8 +131,6 @@ const props = withDefaults(defineProps<AppPaginatedTableProps<I>>(), {
     'Showing <b>{start}</b> to <b>{end}</b> of <b>{total}</b> results',
   pageCountText: 'Page <b>{pageNumber}</b> of <b>{pageTotal}</b>',
   itemsPerPageText: '{items} per page',
-  emptyText: 'No results',
-  loadingText: 'Loading...',
   formatNumber: (value: number) => value.toLocaleString(),
 });
 
