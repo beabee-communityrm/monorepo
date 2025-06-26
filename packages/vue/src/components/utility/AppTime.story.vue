@@ -32,8 +32,6 @@ const dates = {
 const state = reactive({
   selectedTimestamp: dates.past.oneHourAgo.getTime(),
   timeOnly: false,
-  timeAgoTemplate: '{time} ago',
-  timeInTemplate: 'in {time}',
   locale: 'en' as const,
 });
 
@@ -48,27 +46,6 @@ const timestampOptions: { label: string; value: number }[] = [
   { label: 'In 1 hour', value: dates.future.inOneHour.getTime() },
   { label: 'In 3 days', value: dates.future.inThreeDays.getTime() },
 ];
-
-// Locale-specific time templates based on the original i18n files
-const localeTemplates: Record<BaseLocale, { timeAgo: string; timeIn: string }> =
-  {
-    en: { timeAgo: '{time} ago', timeIn: 'in {time}' },
-    de: { timeAgo: 'vor {time}', timeIn: 'in {time}' },
-    nl: { timeAgo: '{time} geleden', timeIn: 'in {time}' },
-    pt: { timeAgo: 'há {time}', timeIn: 'em {time}' },
-    ru: { timeAgo: '{time} назад', timeIn: 'через {time}' },
-    it: { timeAgo: '{time} fa', timeIn: 'in {time}' },
-    fr: { timeAgo: '{time} auparavant', timeIn: 'dans {time}' },
-    el: { timeAgo: '{time} πριν', timeIn: 'σε {time}' },
-  } as const;
-
-function getTimeAgoTemplate(locale: keyof typeof localeTemplates): string {
-  return localeTemplates[locale]?.timeAgo || localeTemplates.en.timeAgo;
-}
-
-function getTimeInTemplate(locale: keyof typeof localeTemplates): string {
-  return localeTemplates[locale]?.timeIn || localeTemplates.en.timeIn;
-}
 </script>
 
 <template>
@@ -80,8 +57,6 @@ function getTimeInTemplate(locale: keyof typeof localeTemplates): string {
           <AppTime
             :datetime="state.selectedTimestamp"
             :time-only="state.timeOnly"
-            :time-ago-template="state.timeAgoTemplate"
-            :time-in-template="state.timeInTemplate"
             :locale="state.locale"
           />
           <p class="mt-2 text-xs text-body-60">
@@ -97,14 +72,6 @@ function getTimeInTemplate(locale: keyof typeof localeTemplates): string {
           :options="timestampOptions"
         />
         <HstCheckbox v-model="state.timeOnly" title="Time Only" />
-        <HstText
-          v-model="state.timeAgoTemplate"
-          title="Time Ago Template (use {time} placeholder)"
-        />
-        <HstText
-          v-model="state.timeInTemplate"
-          title="Time In Template (use {time} placeholder)"
-        />
         <HstSelect v-model="state.locale" title="Locale" :options="locales" />
       </template>
     </Variant>
@@ -156,25 +123,6 @@ function getTimeInTemplate(locale: keyof typeof localeTemplates): string {
       </div>
     </Variant>
 
-    <Variant title="Custom Templates">
-      <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <div class="rounded border p-4">
-          <p class="mb-2 font-medium">Custom past template:</p>
-          <AppTime
-            :datetime="dates.past.oneHourAgo"
-            time-ago-template="🕐 {time} before now"
-          />
-        </div>
-        <div class="rounded border p-4">
-          <p class="mb-2 font-medium">Custom future template:</p>
-          <AppTime
-            :datetime="dates.future.inOneHour"
-            time-in-template="⏰ coming up in {time}"
-          />
-        </div>
-      </div>
-    </Variant>
-
     <Variant title="Different Locales">
       <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
         <div v-for="locale in locales" :key="locale" class="rounded border p-4">
@@ -182,8 +130,6 @@ function getTimeInTemplate(locale: keyof typeof localeTemplates): string {
           <AppTime
             :datetime="dates.past.oneHourAgo.getTime()"
             :locale="locale"
-            :time-ago-template="getTimeAgoTemplate(locale)"
-            :time-in-template="getTimeInTemplate(locale)"
           />
         </div>
       </div>

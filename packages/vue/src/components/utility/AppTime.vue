@@ -2,11 +2,14 @@
   # AppTime
   A component that displays the relative time from a date to the current time.
   
+  Uses internal i18n for time templates:
+  - Time ago template: common.timeAgo
+  - Time in template: common.timeIn
+  
   ## Features
   - Displays relative time (e.g., "2 hours ago", "in 3 days")
   - Supports both past and future dates
   - Includes formatted title for accessibility
-  - Customizable text templates via props
   - Locale support for date formatting
   
   ## Usage
@@ -16,12 +19,6 @@
 <AppTime :datetime="'2024-01-15T10:30:00Z'" />
 
 <AppTime :datetime="1705315800000" />
-
-<AppTime
-  :datetime="someDate"
-  time-ago-template="{time} ago"
-  time-in-template="in {time}"
-/>
 ``` -->
 <template>
   <time
@@ -39,13 +36,20 @@
 /**
  * Component for displaying relative time with accessibility support.
  *
+ * Uses internal i18n for time templates:
+ * - Time ago template: common.timeAgo
+ * - Time in template: common.timeIn
+ *
  * @component AppTime
  */
 import type { BaseLocale } from '@beabee/locale';
 
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import { formatDistanceLocale, formatLocale } from '../../utils/dates';
+
+const { t } = useI18n();
 
 /**
  * Props for the AppTime component
@@ -55,18 +59,12 @@ export interface AppTimeProps {
   datetime: Date | string | number;
   /** Only display relative time without prefix/suffix */
   timeOnly?: boolean;
-  /** Template for past dates, use {time} as placeholder */
-  timeAgoTemplate?: string;
-  /** Template for future dates, use {time} as placeholder */
-  timeInTemplate?: string;
   /** Locale for date formatting */
   locale?: BaseLocale;
 }
 
 const props = withDefaults(defineProps<AppTimeProps>(), {
   timeOnly: false,
-  timeAgoTemplate: '{time} ago',
-  timeInTemplate: 'in {time}',
   locale: 'en',
 });
 
@@ -92,7 +90,7 @@ const label = computed(() => {
   }
 
   const template =
-    dateObject.value > now ? props.timeInTemplate : props.timeAgoTemplate;
+    dateObject.value > now ? t('common.timeIn') : t('common.timeAgo');
 
   return template.replace('{time}', time);
 });
