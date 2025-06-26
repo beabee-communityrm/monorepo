@@ -3,20 +3,7 @@ import type { NewsletterGroupData } from '@beabee/beabee-common';
 
 import { reactive, ref } from 'vue';
 
-import type { RichTextEditorLabels } from '../form/index';
 import AppNewsletterOptInSettings from './AppNewsletterOptInSettings.vue';
-
-// Mock rich text editor labels
-const mockEditorLabels: RichTextEditorLabels = {
-  bold: 'Bold',
-  italic: 'Italic',
-  underline: 'Underline',
-  strikethrough: 'Strikethrough',
-  heading: 'Heading',
-  bulletList: 'Bullet List',
-  numberedList: 'Numbered List',
-  link: 'Link',
-};
 
 const mockLabels = reactive({
   title: 'Newsletter Title',
@@ -81,7 +68,6 @@ function toggleGroups() {
           v-model:opt-in="optIn"
           v-model:groups="groups"
           :labels="mockLabels"
-          :editor-labels="mockEditorLabels"
         />
 
         <div class="mt-8 rounded border bg-primary-5 p-4">
@@ -119,7 +105,6 @@ function toggleGroups() {
           v-model:opt-in="optIn"
           v-model:groups="simpleGroups"
           :labels="mockLabels"
-          :editor-labels="mockEditorLabels"
         />
       </div>
     </Variant>
@@ -132,7 +117,6 @@ function toggleGroups() {
           v-model:opt-in="optIn"
           v-model:groups="groups"
           :labels="mockLabels"
-          :editor-labels="mockEditorLabels"
         />
       </div>
     </Variant>
@@ -158,7 +142,6 @@ function toggleGroups() {
             commonLabel: 'Display Name',
             commonDefault: 'Selected by Default',
           }"
-          :editor-labels="mockEditorLabels"
         />
       </div>
     </Variant>
@@ -171,7 +154,6 @@ function toggleGroups() {
           v-model:opt-in="emptyOptIn"
           v-model:groups="emptyGroups"
           :labels="mockLabels"
-          :editor-labels="mockEditorLabels"
         />
       </div>
     </Variant>
@@ -197,7 +179,6 @@ function toggleGroups() {
           v-model:opt-in="optIn"
           v-model:groups="groups"
           :labels="mockLabels"
-          :editor-labels="mockEditorLabels"
         />
       </div>
     </Variant>

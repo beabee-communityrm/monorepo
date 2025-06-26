@@ -1,6 +1,26 @@
-import type { RichTextEditorLabels } from '@beabee/vue';
-
 import { useI18n } from 'vue-i18n';
+
+/**
+ * Labels for the rich text editor toolbar buttons
+ */
+export interface RichTextEditorLabels {
+  /** Bold button label */
+  bold: string;
+  /** Italic button label */
+  italic: string;
+  /** Underline button label */
+  underline: string;
+  /** Strikethrough button label */
+  strikethrough: string;
+  /** Heading button label */
+  heading: string;
+  /** Bullet list button label */
+  bulletList: string;
+  /** Numbered list button label */
+  numberedList: string;
+  /** Link button label */
+  link: string;
+}
 
 /**
  * Composable that provides standard labels for the RichTextEditor component
