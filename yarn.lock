@@ -1569,6 +1569,7 @@ __metadata:
     "@beabee/prettier-config": "workspace:^"
     "@beabee/test-utils": "workspace:^"
     "@beabee/tsconfig": "workspace:^"
+    prettier: "npm:^3.5.2"
     typescript: "npm:~5.6.3"
     vitest: "npm:^3.2.1"
   languageName: unknown
