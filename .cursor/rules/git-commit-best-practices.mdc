@@ -19,6 +19,7 @@ Before committing:
 - **CLI Note**: For interactive git commands, append `| cat` to ensure output is visible
 
 ## Quality Standards
+- Run `yarn format && yarn check` before you commit
 - Use imperative mood in subject lines
 - Keep subject lines under 50 characters
 - Include scope when applicable (component, module, file area)
