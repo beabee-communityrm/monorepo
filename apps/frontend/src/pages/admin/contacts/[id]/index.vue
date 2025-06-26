@@ -124,7 +124,6 @@ meta:
         <AppRichTextEditor
           v-model="contactAbout.notes"
           :label="t('contacts.data.notes')"
-          :labels="editorLabels"
           class="mb-4"
         />
       </AppForm>
@@ -299,10 +298,7 @@ import { formatLocale } from '@utils/dates';
 import { onBeforeMount, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { useRichTextEditorLabels } from '../../../../composables/useRichTextEditorLabels';
-
 const { t, n, locale } = useI18n();
-const editorLabels = useRichTextEditorLabels();
 
 const roleEditorLabels: AppRoleEditorLabels = {
   addButtonText: t('roleEditor.add'),

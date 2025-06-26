@@ -46,7 +46,6 @@ meta:
             <AppRichTextEditor
               v-model="setupContent.mailText"
               :label="t('mailOptIn.text')"
-              :labels="editorLabels"
               required
             />
           </div>
@@ -74,7 +73,6 @@ meta:
           v-model:opt-in="setupContent.newsletterOptIn"
           v-model:groups="setupContent.newsletterGroups"
           :labels="newsletterSettingsLabels"
-          :editor-labels="editorLabels"
         />
 
         <AppSubHeading class="mt-6">
@@ -99,7 +97,6 @@ meta:
           <AppRichTextEditor
             v-model="setupContent.surveyText"
             :label="stepT('joinSurvey.textIntro')"
-            :labels="editorLabels"
             class="mb-4"
           />
 
@@ -141,13 +138,10 @@ import { client } from '@utils/api';
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { useRichTextEditorLabels } from '../../../composables/useRichTextEditorLabels';
-
 const setupContent = ref<ContentJoinSetupData>();
 const openCallouts = ref<GetCalloutData[]>([]);
 
 const { t } = useI18n();
-const editorLabels = useRichTextEditorLabels();
 
 const stepT = (key: string) =>
   t('membershipBuilder.steps.accountConfirmation.' + key);

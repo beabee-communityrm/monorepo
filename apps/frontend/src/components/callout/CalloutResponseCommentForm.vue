@@ -10,7 +10,7 @@
     @reset="emit('cancel')"
   >
     <div class="mb-4">
-      <AppRichTextEditor v-model="data.text" :labels="editorLabels" required />
+      <AppRichTextEditor v-model="data.text" required />
     </div>
   </AppForm>
 </template>
@@ -23,11 +23,9 @@ import useVuelidate from '@vuelidate/core';
 import { reactive } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { useRichTextEditorLabels } from '../../composables/useRichTextEditorLabels';
 import { type CommentFormData } from './calloutResponseComment.interface';
 
 const { t } = useI18n();
-const editorLabels = useRichTextEditorLabels();
 
 const validation = useVuelidate();
 

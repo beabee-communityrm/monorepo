@@ -9,7 +9,6 @@
         <AppRichTextEditor
           v-model="email.body"
           label="Message"
-          :labels="editorLabels"
           :copyable="true"
           :copy-label="t('actions.copy')"
           class="col-span-12"
@@ -39,11 +38,9 @@ import {
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { useRichTextEditorLabels } from '../../../../composables/useRichTextEditorLabels';
 import { currentUser } from '../../../../store';
 
 const { t } = useI18n();
-const editorLabels = useRichTextEditorLabels();
 
 const props = defineProps<{
   label: string;
