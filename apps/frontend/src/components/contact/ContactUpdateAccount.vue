@@ -1,7 +1,7 @@
 <template>
   <AppForm
-    :button-text="t('form.buttonText.saveChanges')"
-    :success-text="t('form.successMessages.accountUpdated')"
+    :button-text="t('form.saveChanges')"
+    :success-text="t('form.updated')"
     :error-text="{
       'duplicate-email': t('form.errorMessages.api.duplicate-email'),
     }"
