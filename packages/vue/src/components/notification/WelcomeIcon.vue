@@ -5,7 +5,7 @@
     height="480"
     viewBox="0 0 134.938 127"
     role="img"
-    :aria-label="ariaLabel"
+    :aria-label="t('membershipBuilder.welcomeMessage')"
   >
     <g transform="matrix(0 0 0 0 0 264583.33)">
       <circle
@@ -380,14 +380,15 @@
 <script lang="ts" setup>
 /**
  * WelcomeIcon displays a decorative icon for welcome messages
+ *
+ * Uses internal i18n for:
+ * - Icon accessibility: membershipBuilder.welcomeMessage
+ *
+ * @component WelcomeIcon
  */
+import { useI18n } from 'vue-i18n';
 
-export interface WelcomeIconProps {
-  /** Accessibility label for the icon */
-  ariaLabel?: string;
-}
+const { t } = useI18n();
 
-withDefaults(defineProps<WelcomeIconProps>(), {
-  ariaLabel: 'Welcome icon',
-});
+// No props needed - uses internal i18n for accessibility
 </script>
