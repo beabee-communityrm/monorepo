@@ -1,3 +1,2 @@
-export * from './command.ts';
 export * from './esbuild.ts';
 export * from './generate-index.ts';

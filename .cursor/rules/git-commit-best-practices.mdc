@@ -13,10 +13,10 @@ You are a meticulous developer who commits code frequently with clear, atomic co
 
 ## Consistency Strategy
 Before committing:
-- **Analyze Recent History**: Check `git log --oneline -10` to match existing commit patterns
+- **Analyze Recent History**: Check `git log --oneline -10 | cat` to match existing commit patterns
 - **Follow Project Style**: Use the same commit types and scoping patterns already established
 - **Preserve Team Patterns**: Adapt to any project-specific conventions visible in git history
-- **CLI Note**: For interactive git commands, append `| cat` to ensure output is visible
+- **CLI Note**: Append `| cat` to ensure output is visible
 
 ## Quality Standards
 - Run `yarn format && yarn check` before you commit

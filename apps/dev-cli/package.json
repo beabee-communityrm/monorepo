@@ -10,12 +10,14 @@
   },
   "scripts": {
     "start": "./src/index.ts",
+    "mcp": "./src/mcp-server.ts",
     "check": "tsc --noEmit --project tsconfig.json",
     "format": "prettier --write .",
     "generate:index": "yarn start generate-index -p ./src/types ./src/actions ./src/commands --extension ts"
   },
   "dependencies": {
     "@beabee/esbuild": "workspace:^",
+    "@modelcontextprotocol/sdk": "^1.13.1",
     "typescript": "^5.8.3",
     "yargs": "^17.7.2"
   },
