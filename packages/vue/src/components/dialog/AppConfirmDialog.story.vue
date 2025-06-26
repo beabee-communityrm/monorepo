@@ -11,7 +11,6 @@ const state = reactive({
   cancel: 'Cancel',
   variant: 'default' as 'default' | 'danger',
   disableConfirm: false,
-  closeButtonText: 'Close dialog',
   showCancel: true,
   asyncConfirm: false,
 });
@@ -61,7 +60,6 @@ async function handleAsyncConfirm() {
           :cancel="state.showCancel ? state.cancel : undefined"
           :variant="state.variant === 'default' ? undefined : state.variant"
           :disable-confirm="state.disableConfirm"
-          :close-button-text="state.closeButtonText"
           :on-confirm="state.asyncConfirm ? handleAsyncConfirm : undefined"
           @close="closeDialog"
           @confirm="handleConfirm"
@@ -82,7 +80,7 @@ async function handleAsyncConfirm() {
           title="Variant"
           :options="variants"
         />
-        <HstText v-model="state.closeButtonText" title="Close Button Text" />
+
         <HstCheckbox v-model="state.showCancel" title="Show Cancel Button" />
         <HstCheckbox v-model="state.disableConfirm" title="Disable Confirm" />
         <HstCheckbox v-model="state.asyncConfirm" title="Async Confirm" />
