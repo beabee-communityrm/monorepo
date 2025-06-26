@@ -2,7 +2,7 @@
   <AppRepeatable
     :model-value="modelValue"
     :new-item="() => ({ text: '', url: '' })"
-    :add-label="props.addLabel"
+    :add-label="t('actions.add')"
   >
     <template #default="{ item }">
       <div class="flex-1">
@@ -26,8 +26,17 @@
   </AppRepeatable>
 </template>
 <script lang="ts" setup>
+/**
+ * Link list component for managing multiple text/URL pairs
+ *
+ * Uses internal i18n for add button: actions.add
+ */
+import { useI18n } from 'vue-i18n';
+
 import AppInput from './AppInput.vue';
 import AppRepeatable from './AppRepeatable.vue';
+
+const { t } = useI18n();
 
 /**
  * Props for the AppLinkList component
@@ -43,11 +52,7 @@ export interface AppLinkListProps {
   textLabel?: string;
   /** The label for the URL field */
   urlLabel?: string;
-  /** The label for the add button */
-  addLabel?: string;
 }
 
-const props = withDefaults(defineProps<AppLinkListProps>(), {
-  addLabel: 'Add Link',
-});
+defineProps<AppLinkListProps>();
 </script>
