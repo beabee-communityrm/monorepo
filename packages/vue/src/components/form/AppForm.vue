@@ -42,7 +42,6 @@
  *
  * @component AppForm
  */
-import { LOGIN_CODES } from '@beabee/beabee-common';
 import { isApiError } from '@beabee/client';
 
 import useVuelidate from '@vuelidate/core';
