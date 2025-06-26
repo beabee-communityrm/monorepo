@@ -62,18 +62,7 @@ export async function setup() {
         Wait.forLogMessage(/MinIO server is running.../)
       );
 
-    const services = [
-      'db',
-      'migration',
-      'api_app',
-      'app_router',
-      'webhook_app',
-      'stripe_cli',
-      'minio',
-    ];
-    console.log(`Starting services: ${services.join(', ')}`);
-
-    startedDockerComposeEnvironment = await dockerComposeEnv.up(services);
+    startedDockerComposeEnvironment = await dockerComposeEnv.up();
     console.log('✅ All services started successfully');
 
     const apiApp = startedDockerComposeEnvironment.getContainer('api_app-1');
