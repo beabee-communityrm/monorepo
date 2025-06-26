@@ -2,6 +2,11 @@
   # AppPaginatedTableResult
   A component that displays pagination information and controls for paginated tables.
 
+  Uses internal i18n for pagination text:
+  - Showing text: common.showingOf
+  - Page count text: common.pageCount
+  - Items per page text: common.itemsPerPage
+
   ## Features:
   - Shows current page range and total results
   - Page size selector (optional)
@@ -14,9 +19,6 @@
   - `limit`: Items per page
   - `result`: Paginated result data
   - `noLimit`: Hide the items per page selector
-  - `showingText`: Template for showing range text with placeholders
-  - `pageCountText`: Template for page count text with placeholders
-  - `itemsPerPageText`: Template for items per page text with placeholders
 
   ## Events:
   - `update:page`: Emitted when page changes
@@ -48,6 +50,11 @@
 /**
  * Pagination information and controls component
  *
+ * Uses internal i18n for pagination text:
+ * - Showing text: common.showingOf
+ * - Page count text: common.pageCount
+ * - Items per page text: common.itemsPerPage
+ *
  * @component AppPaginatedTableResult
  */
 import type { Paginated } from '@beabee/beabee-common';
@@ -55,6 +62,9 @@ import { AppSelect } from '@beabee/vue';
 import { AppPagination } from '@beabee/vue';
 
 import { computed, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 /**
  * Props for the AppPaginatedTableResult component
@@ -68,31 +78,12 @@ export interface AppPaginatedTableResultProps {
   result: Paginated<unknown> | undefined;
   /** Hide the items per page selector */
   noLimit?: boolean;
-  /**
-   * Template for showing range text with placeholders: {start}, {end}, {total}
-   * Example: "Showing <b>{start}</b> to <b>{end}</b> of <b>{total}</b> results"
-   */
-  showingText?: string;
-  /**
-   * Template for page count text with placeholders: {pageNumber}, {pageTotal}
-   * Example: "Page <b>{pageNumber}</b> of <b>{pageTotal}</b>"
-   */
-  pageCountText?: string;
-  /**
-   * Template for items per page text with placeholder: {items}
-   * Example: "{items} per page"
-   */
-  itemsPerPageText?: string;
   /** Number formatter function */
   formatNumber?: (value: number) => string;
 }
 
 const props = withDefaults(defineProps<AppPaginatedTableResultProps>(), {
   noLimit: false,
-  showingText:
-    'Showing <b>{start}</b> to <b>{end}</b> of <b>{total}</b> results',
-  pageCountText: 'Page <b>{pageNumber}</b> of <b>{pageTotal}</b>',
-  itemsPerPageText: '{items} per page',
   formatNumber: (value: number) => value.toLocaleString(),
 });
 
@@ -126,7 +117,7 @@ const currentLimit = computed({
 const limits = computed(() =>
   [12, 25, 50, 100].map((x) => ({
     id: x,
-    label: props.itemsPerPageText.replace('{items}', props.formatNumber(x)),
+    label: t('common.itemsPerPage').replace('{items}', props.formatNumber(x)),
   }))
 );
 
@@ -137,7 +128,7 @@ const totalPages = computed(() =>
 const formattedShowingText = computed(() => {
   if (!props.result || props.result.count === 0) return '';
 
-  return props.showingText
+  return t('common.showingOf')
     .replace('{start}', props.formatNumber(props.result.offset + 1))
     .replace(
       '{end}',
@@ -149,7 +140,7 @@ const formattedShowingText = computed(() => {
 const formattedPageCountText = computed(() => {
   if (!props.result || props.result.count === 0) return '';
 
-  return props.pageCountText
+  return t('common.pageCount')
     .replace('{pageNumber}', props.formatNumber(props.page + 1))
     .replace('{pageTotal}', props.formatNumber(totalPages.value));
 });
