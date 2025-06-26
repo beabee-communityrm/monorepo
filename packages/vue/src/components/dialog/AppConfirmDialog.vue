@@ -11,7 +11,6 @@
     :open="open"
     :title="title"
     :variant="variant"
-    :close-button-text="t('actions.close')"
     @close="$emit('close')"
   >
     <div class="mb-4 text-lg">
@@ -63,12 +62,9 @@
  * </AppConfirmDialog>
  */
 import { ref } from 'vue';
-import { useI18n } from 'vue-i18n';
 
 import { AppButton } from '../button';
 import AppModal from './AppModal.vue';
-
-const { t } = useI18n();
 
 /**
  * Props for the AppConfirmDialog component
