@@ -6,7 +6,6 @@
       'duplicate-email': t('form.errorMessages.api.duplicate-email'),
     }"
     :validation-error-message="t('form.errorMessages.validation')"
-    :remove-aria-label="t('notifications.remove')"
     @submit="handleSubmit"
   >
     <AppHeading>{{ t('accountPage.contactInformation') }}</AppHeading>

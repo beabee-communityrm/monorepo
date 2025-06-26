@@ -34,15 +34,26 @@
   </form>
 </template>
 <script lang="ts" setup>
+/**
+ * Form component with validation, error handling, and notifications.
+ *
+ * Uses internal i18n for:
+ * - Notification close button: notifications.remove
+ *
+ * @component AppForm
+ */
 import { LOGIN_CODES } from '@beabee/beabee-common';
 import { isApiError } from '@beabee/client';
 
 import useVuelidate from '@vuelidate/core';
 import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import { addNotification } from '../../store/notifications';
 import { AppButton } from '../button';
 import { AppNotification } from '../notification';
+
+const { t } = useI18n();
 
 export interface AppFormProps {
   /** The text of the submit button */
@@ -59,8 +70,6 @@ export interface AppFormProps {
   fullButton?: boolean;
   /** The function to call when the form is submitted */
   onSubmit?: (evt: Event) => Promise<void | false> | void | false;
-  /** Aria label for the remove button on notifications */
-  removeAriaLabel?: string;
   /** Validation error message */
   validationErrorMessage?: string;
   /** Default error messages for various error codes */
@@ -75,7 +84,6 @@ const props = withDefaults(defineProps<AppFormProps>(), {
   inlineError: false,
   fullButton: false,
   onSubmit: undefined,
-  removeAriaLabel: 'Close notification',
   validationErrorMessage: 'Please check the form for errors',
   defaultErrorMessages: () => ({
     unknown: 'Something went wrong. Please try again.',
@@ -107,7 +115,7 @@ async function handleSubmit(evt: Event) {
       addNotification({
         title: props.successText,
         variant: 'success',
-        removeAriaLabel: props.removeAriaLabel,
+        removeAriaLabel: t('notifications.remove'),
       });
     }
   } catch (err) {
@@ -124,7 +132,7 @@ async function handleSubmit(evt: Event) {
       addNotification({
         title: errorText,
         variant: 'error',
-        removeAriaLabel: props.removeAriaLabel,
+        removeAriaLabel: t('notifications.remove'),
       });
     }
   } finally {
