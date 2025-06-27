@@ -8,6 +8,7 @@ import {
   esbuildCommand,
   generateIndexCommand,
   mcpCommand,
+  translationCommand,
 } from './commands/index.ts';
 
 const pkg = JSON.parse(
@@ -18,6 +19,7 @@ yargs(hideBin(process.argv))
   .command(generateIndexCommand)
   .command(esbuildCommand)
   .command(mcpCommand)
+  .command(translationCommand)
   .demandCommand(1, 'You need at least one command before moving on')
   .version(pkg.version)
   .scriptName('yarn dev-cli')

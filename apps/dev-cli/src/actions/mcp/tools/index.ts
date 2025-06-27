@@ -1,4 +1,11 @@
 import type { McpToolDefinition } from '../../../types/mcp.ts';
+import {
+  checkTranslationKeyTool,
+  getAvailableLocalesTool,
+  getTranslationsTool,
+  listTranslationKeysTool,
+  validateTranslationUsageTool,
+} from './translation.ts';
 
 /**
  * Registry of all available MCP tools
@@ -7,7 +14,13 @@ import type { McpToolDefinition } from '../../../types/mcp.ts';
  * Each tool should be implemented in its own file within this directory.
  */
 export const mcpTools: McpToolDefinition[] = [
-  // Tools will be added here
+  // Translation validation tools
+  checkTranslationKeyTool,
+  getTranslationsTool,
+  listTranslationKeysTool,
+  validateTranslationUsageTool,
+  getAvailableLocalesTool,
+  // Future tools will be added here
   // Example:
   // esbuildTool,
   // generateIndexTool,

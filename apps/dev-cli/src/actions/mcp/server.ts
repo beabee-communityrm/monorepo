@@ -1,5 +1,9 @@
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import {
+  CallToolRequestSchema,
+  ListToolsRequestSchema,
+} from '@modelcontextprotocol/sdk/types.js';
 
 import type { McpServerArgs } from '../../types/mcp.ts';
 import { getAllMcpTools } from './tools/index.ts';
@@ -17,29 +21,85 @@ export async function startMcpServer(args: McpServerArgs = {}): Promise<void> {
     debug = false,
   } = args;
 
-  // Create MCP server instance
-  const server = new McpServer({
-    name,
-    version,
-  });
-
-  // Register all available MCP tools
+  // Get all available MCP tools
   const tools = getAllMcpTools();
+
+  // Create MCP server instance
+  const server = new Server(
+    {
+      name,
+      version,
+    },
+    {
+      capabilities: {
+        tools: {},
+      },
+    }
+  );
 
   if (debug) {
     console.error(`🔧 Registering ${tools.length} MCP tools...`);
   }
 
-  // Note: For now we don't register any tools since the registry is empty
-  // This will be extended when we add specific MCP tools
-  for (const tool of tools) {
-    // TODO: Register tools when we implement them
-    // server.tool(tool.name, tool.description, tool.inputSchema, tool.handler);
+  // Register tools handler to list available tools
+  server.setRequestHandler(ListToolsRequestSchema, async () => {
+    if (debug) {
+      console.error('📋 Listing tools requested');
+    }
+
+    return {
+      tools: tools.map((tool) => ({
+        name: tool.name,
+        description: tool.description,
+        inputSchema: tool.inputSchema,
+      })),
+    };
+  });
+
+  // Register tool execution handler
+  server.setRequestHandler(CallToolRequestSchema, async (request) => {
+    const toolName = request.params.name;
+    const args = request.params.arguments || {};
 
     if (debug) {
-      console.error(`  ✓ Ready to register tool: ${tool.name}`);
+      console.error(`🔧 Executing tool: ${toolName} with args:`, args);
     }
-  }
+
+    const tool = tools.find((t) => t.name === toolName);
+    if (!tool) {
+      throw new Error(`Unknown tool: ${toolName}`);
+    }
+
+    try {
+      const result = await tool.handler(args);
+
+      if (debug) {
+        console.error(`✅ Tool ${toolName} executed successfully`);
+      }
+
+      // Return in the format expected by MCP SDK
+      return {
+        content: result.content,
+        isError: result.isError,
+      };
+    } catch (error) {
+      if (debug) {
+        console.error(`❌ Tool ${toolName} failed:`, error);
+      }
+
+      return {
+        content: [
+          {
+            type: 'text',
+            text: `Error executing ${toolName}: ${
+              error instanceof Error ? error.message : String(error)
+            }`,
+          },
+        ],
+        isError: true,
+      };
+    }
+  });
 
   // Setup server transport (using stdio for AI assistant communication)
   const transport = new StdioServerTransport();
@@ -49,9 +109,7 @@ export async function startMcpServer(args: McpServerArgs = {}): Promise<void> {
     await server.connect(transport);
 
     console.error('🚀 Beabee Dev CLI MCP Server started');
-    console.error(
-      `📋 Available tools: ${tools.map((t) => t.name).join(', ') || 'none (ready for implementation)'}`
-    );
+    console.error(`📋 Available tools: ${tools.map((t) => t.name).join(', ')}`);
     console.error(
       '💡 The server is now ready to receive requests from AI assistants'
     );

@@ -25,12 +25,6 @@ export const mcpCommand: CommandModule = {
         describe: 'Server name',
         default: '@beabee/dev-cli-mcp',
       })
-      .option('version', {
-        alias: 'v',
-        type: 'string',
-        describe: 'Server version',
-        default: '1.0.0',
-      })
       .example('yarn dev-cli mcp', 'Start the MCP server')
       .example('yarn dev-cli mcp --debug', 'Start with debug logging')
       .epilog(
@@ -42,7 +36,7 @@ export const mcpCommand: CommandModule = {
     const args: McpServerArgs = {
       debug: argv.debug as boolean,
       name: argv.name as string,
-      version: argv.version as string,
+      version: argv.serverVersion as string,
     };
 
     return startMcpServer(args);
