@@ -4,7 +4,11 @@ import { resolve } from 'node:path';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 
-import { esbuildCommand, generateIndexCommand } from './commands/index.ts';
+import {
+  esbuildCommand,
+  generateIndexCommand,
+  mcpCommand,
+} from './commands/index.ts';
 
 const pkg = JSON.parse(
   readFileSync(resolve(process.cwd(), './package.json'), 'utf8')
@@ -13,6 +17,7 @@ const pkg = JSON.parse(
 yargs(hideBin(process.argv))
   .command(generateIndexCommand)
   .command(esbuildCommand)
+  .command(mcpCommand)
   .demandCommand(1, 'You need at least one command before moving on')
   .version(pkg.version)
   .scriptName('yarn dev-cli')
