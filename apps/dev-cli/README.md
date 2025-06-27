@@ -12,6 +12,9 @@ yarn dev-cli <command>
 
 # Full workspace command
 yarn workspace @beabee/dev-cli start <command>
+
+# MCP Server (for AI integration)
+yarn workspace @beabee/dev-cli mcp
 ```
 
 ## Commands
@@ -75,6 +78,46 @@ yarn dev-cli esbuild --baseDir packages/vue
 # Custom entry points
 yarn dev-cli esbuild --entry ./src/main.ts ./src/helpers/**/*.ts
 ```
+
+## MCP Server (AI Integration)
+
+The CLI includes an MCP (Model Context Protocol) server that exposes all CLI commands as tools for AI assistants.
+
+### Starting the MCP Server
+
+```bash
+# Start MCP server (runs in stdio mode)
+yarn dev-cli mcp
+
+# Or from workspace root
+yarn workspace @beabee/dev-cli mcp
+```
+
+### MCP Integration
+
+The MCP server automatically exposes all CLI commands as tools with:
+
+- **Auto-generated schemas** from command definitions
+- **Parameter validation** and type checking
+- **Rich responses** with detailed output and metadata
+- **Error handling** with meaningful error messages
+
+Available MCP tools:
+
+- `generate-index` - Generate index.ts files for directories
+- `esbuild` - Build packages using esbuild
+
+### Architecture
+
+The CLI uses a unified command architecture that serves both human (CLI) and AI (MCP) interfaces:
+
+```
+CLI Interface (yargs) ──┐
+                        ├──→ Command Registry ──→ Actions Layer
+MCP Interface (tools) ──┘
+```
+
+This ensures consistency between CLI and MCP interfaces while maintaining a single source of truth for command logic.
 
 ## Technical Details
 
