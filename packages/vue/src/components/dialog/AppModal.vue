@@ -22,7 +22,7 @@
         <button
           class="absolute right-0 top-0 h-8 w-8 hover:text-primary"
           type="button"
-          :aria-label="closeButtonText"
+          :aria-label="t('actions.close')"
           @click="$emit('close')"
         >
           <font-awesome-icon :icon="faTimes" />
@@ -49,6 +49,9 @@
  * Modal dialog component that displays content in an overlay with proper accessibility.
  * Provides backdrop click prevention, body scroll lock, and keyboard navigation support.
  *
+ * Uses internal i18n for:
+ * - Close button accessibility: actions.close
+ *
  * @component AppModal
  *
  * @example
@@ -59,6 +62,9 @@
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { computed, onBeforeUnmount, ref, toRef, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 /**
  * Props for the AppModal component
@@ -70,8 +76,6 @@ export interface AppModalProps {
   title?: string;
   /** Visual variant affecting title styling */
   variant?: 'danger';
-  /** Accessible text for the close button */
-  closeButtonText?: string;
 }
 
 /**
@@ -98,7 +102,6 @@ defineSlots<{
 const props = withDefaults(defineProps<AppModalProps>(), {
   title: undefined,
   variant: undefined,
-  closeButtonText: 'Close',
 });
 
 // Generate unique ID for ARIA relationships

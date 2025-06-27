@@ -17,8 +17,6 @@
   - `selectable`: Enable row selection
   - `hideHeaders`: Hide table headers
   - `rowClass`: Function to add custom row classes
-  - `emptyText`: Text to display when no data
-  - `loadingText`: Text to display while loading
 
   ## Events:
   - `update:sort`: Emitted when sort changes
@@ -29,6 +27,10 @@
   - `after`: Content after each row
   - `empty`: Custom empty state
   - `loading`: Custom loading state
+
+  ## Internal i18n usage:
+  - common.noResults: "No results found"
+  - common.loading: "Loading..."
 -->
 <template>
   <table class="border-b border-primary-20">
@@ -74,7 +76,7 @@
         <td v-if="selectable" />
         <td :colspan="headers.length" class="p-2">
           <slot :name="items ? 'empty' : 'loading'">
-            <p>{{ items ? emptyText : loadingText }}</p>
+            <p>{{ items ? t('common.noResults') : t('common.loading') }}</p>
           </slot>
         </td>
       </tr>
@@ -118,7 +120,11 @@
 
 <script lang="ts" setup generic="I extends Item">
 /**
- * Data table component with sorting and selection capabilities
+ * Data table component with sorting and selection capabilities.
+ *
+ * Uses internal i18n for:
+ * - Empty state message: common.noResults
+ * - Loading state message: common.loading
  *
  * @component AppTable
  */
@@ -130,6 +136,7 @@ import {
   faSort,
 } from '@fortawesome/free-solid-svg-icons';
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import { type Header, type Item, type Sort, SortType } from '../../types/table';
 import { hasSlotContent } from '../../utils/slots';
@@ -150,10 +157,6 @@ export interface AppTableProps<I extends Item> {
   hideHeaders?: boolean;
   /** Function to add custom CSS classes to rows */
   rowClass?: (item: I) => string;
-  /** Text to display when there are no items */
-  emptyText?: string;
-  /** Text to display while loading */
-  loadingText?: string;
 }
 
 const props = withDefaults(defineProps<AppTableProps<I>>(), {
@@ -161,9 +164,9 @@ const props = withDefaults(defineProps<AppTableProps<I>>(), {
   selectable: false,
   hideHeaders: false,
   rowClass: undefined,
-  emptyText: 'No results',
-  loadingText: 'Loading...',
 });
+
+const { t } = useI18n();
 
 /**
  * Events emitted by the AppTable component

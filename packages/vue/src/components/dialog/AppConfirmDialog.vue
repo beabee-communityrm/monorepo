@@ -2,13 +2,15 @@
   # AppConfirmDialog
   A confirmation dialog that wraps AppModal with predefined cancel and confirm buttons.
   Used for user decision flows like destructive actions, important decisions, or async operations.
+  
+  Uses internal i18n for standard text:
+  - Close button: actions.close
 -->
 <template>
   <AppModal
     :open="open"
     :title="title"
     :variant="variant"
-    :close-button-text="closeButtonText"
     @close="$emit('close')"
   >
     <div class="mb-4 text-lg">
@@ -40,6 +42,9 @@
 /**
  * Confirmation dialog component with cancel and confirm buttons.
  * Extends AppModal with predefined button layout and loading state management for user decisions.
+ *
+ * Uses internal i18n for standard text:
+ * - Close button: actions.close
  *
  * @component AppConfirmDialog
  *
@@ -79,8 +84,6 @@ export interface AppConfirmDialogProps {
   disableConfirm?: boolean;
   /** Async function to execute on confirm */
   onConfirm?: () => Promise<void> | void;
-  /** Accessible text for the close button */
-  closeButtonText?: string;
 }
 
 const props = withDefaults(defineProps<AppConfirmDialogProps>(), {
@@ -88,7 +91,6 @@ const props = withDefaults(defineProps<AppConfirmDialogProps>(), {
   cancel: undefined,
   disableConfirm: false,
   onConfirm: undefined,
-  closeButtonText: 'Close dialog',
 });
 
 /**

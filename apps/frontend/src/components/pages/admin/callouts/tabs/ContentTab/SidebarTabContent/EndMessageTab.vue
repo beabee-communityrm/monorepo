@@ -28,7 +28,6 @@
           <AppRichTextEditor
             v-model="data.thankYouText.default"
             :label="inputT('text.label')"
-            :labels="editorLabels"
             :placeholder="inputT('text.placeholder')"
             required
           />
@@ -64,7 +63,6 @@ import useVuelidate from '@vuelidate/core';
 import { watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { useRichTextEditorLabels } from '../../../../../../../composables/useRichTextEditorLabels';
 import type { SidebarTabProps } from '../SidebarTabs.interface';
 
 /**
@@ -87,7 +85,6 @@ const emit = defineEmits(['update:error', 'update:validated']);
 defineProps<EndMessageTabProps>();
 
 const { t } = useI18n();
-const editorLabels = useRichTextEditorLabels();
 const inputT = (key: string) =>
   t('callout.builder.tabs.endMessage.inputs.' + key);
 

@@ -44,10 +44,10 @@
       variant="primaryOutlined"
       size="sm"
       :icon="faPlus"
-      :name="addButtonText || t('actions.add')"
+      :name="t('actions.add')"
       @click="addItem"
     >
-      {{ addButtonText || t('actions.add') }}
+      {{ t('actions.add') }}
     </AppButton>
   </div>
 </template>
@@ -57,10 +57,15 @@
  * Dynamic list component for managing arrays of items with CRUD operations.
  * Supports drag-and-drop reordering, custom content slots, and flexible item management.
  *
+ * Uses internal i18n for:
+ * - Add button text: actions.add
+ * - Remove button accessibility: actions.remove
+ * - Reorder button accessibility: actions.reorder
+ *
  * @component AppRepeatable
  *
  * @example
- * <AppRepeatable v-model="contactList" :item-key="'id'" add-button-text="Add Contact">
+ * <AppRepeatable v-model="contactList" :item-key="'id'">
  *   <template #default="{ item, index, remove }">
  *     <div class="border p-3 rounded">
  *       <AppInput v-model="item.name" placeholder="Name" />
@@ -93,8 +98,6 @@ export interface AppRepeatableProps<T = any> {
   allowRemove?: boolean;
   /** Whether users can reorder items via drag-and-drop */
   allowReorder?: boolean;
-  /** Text for the add button */
-  addButtonText?: string;
   /** Factory function to create new items when adding */
   createItem?: () => T;
 }
@@ -140,7 +143,6 @@ const props = withDefaults(defineProps<AppRepeatableProps<T>>(), {
   allowAdd: true,
   allowRemove: true,
   allowReorder: true,
-  addButtonText: undefined,
   createItem: () => ({}) as T,
 });
 

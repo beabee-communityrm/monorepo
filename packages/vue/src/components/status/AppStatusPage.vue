@@ -17,12 +17,12 @@
 
       <!-- Title -->
       <h1 class="mb-4 text-2xl font-bold text-body">
-        {{ title }}
+        {{ t('status.loadingApplication') }}
       </h1>
 
       <!-- Status Message -->
       <p class="mb-6 text-body-80">
-        {{ message }}
+        {{ t('status.pleaseWait') }}
       </p>
 
       <!-- Loading Indicator -->
@@ -33,7 +33,7 @@
           spin
         />
         <span class="ml-3 text-sm text-body-60">
-          {{ loadingText }}
+          {{ t('status.connectingToServer') }}
         </span>
       </div>
 
@@ -46,20 +46,20 @@
           />
         </div>
         <p class="mt-2 text-xs text-body-60">
-          {{ progressText }}
+          {{ t('status.initializing') }}
         </p>
       </div>
 
       <!-- Retry Button -->
       <div v-if="showRetry" class="mb-4">
         <AppButton variant="primaryOutlined" size="sm" @click="handleRetry">
-          {{ retryText }}
+          {{ t('actions.tryAgain') }}
         </AppButton>
       </div>
 
       <!-- Additional Info -->
       <div v-if="showInfo" class="text-xs text-body-60">
-        <p>{{ infoText }}</p>
+        <p>{{ t('status.usuallyTakesSeconds') }}</p>
       </div>
     </div>
   </div>
@@ -70,57 +70,50 @@
  * A status page component that displays loading state while waiting for backend readiness.
  * Used during application startup to provide user feedback during health checks.
  *
+ * Uses internal i18n for all text content:
+ * - status.loadingApplication
+ * - status.pleaseWait
+ * - status.connectingToServer
+ * - status.initializing
+ * - actions.tryAgain
+ * - status.usuallyTakesSeconds
+ *
  * @component AppStatusPage
  *
  * @example
  * <AppStatusPage
- *   title="Starting Application"
- *   message="Please wait while we connect to the server..."
  *   :progress="45"
  *   show-progress
+ *   show-retry
+ *   @retry="handleRetry"
  * />
  */
 import { faCircleNotch, faHeart } from '@fortawesome/free-solid-svg-icons';
+import { useI18n } from 'vue-i18n';
 
 import { AppButton } from '../button';
+
+const { t } = useI18n();
 
 /**
  * Props for the AppStatusPage component
  */
 export interface AppStatusPageProps {
-  /** Main title displayed on the status page */
-  title?: string;
-  /** Status message explaining what's happening */
-  message?: string;
-  /** Loading text displayed next to the spinner */
-  loadingText?: string;
   /** Whether to show the progress bar */
   showProgress?: boolean;
   /** Progress percentage (0-100) */
   progress?: number;
-  /** Text displayed below the progress bar */
-  progressText?: string;
   /** Whether to show the retry button */
   showRetry?: boolean;
-  /** Text for the retry button */
-  retryText?: string;
   /** Whether to show additional info */
   showInfo?: boolean;
-  /** Additional information text */
-  infoText?: string;
 }
 
 const props = withDefaults(defineProps<AppStatusPageProps>(), {
-  title: 'Loading Application',
-  message: 'Please wait while we prepare everything for you...',
-  loadingText: 'Connecting to server',
   showProgress: false,
   progress: 0,
-  progressText: 'Initializing...',
   showRetry: false,
-  retryText: 'Try Again',
   showInfo: false,
-  infoText: 'This usually takes just a few seconds.',
 });
 
 const emit = defineEmits<{

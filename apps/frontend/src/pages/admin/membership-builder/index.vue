@@ -28,7 +28,6 @@ meta:
         <AppRichTextEditor
           v-model="joinContent.subtitle"
           :label="stepT('formSubtitle')"
-          :labels="editorLabels"
           class="mb-4"
         />
 
@@ -92,7 +91,6 @@ meta:
           v-model="noticeText"
           controls="inline"
           :label="stepT('noticeText')"
-          :labels="editorLabels"
           :info-message="stepT('noticeTextHelp')"
           class="mb-4"
         />
@@ -134,15 +132,12 @@ import { required } from '@vuelidate/validators';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { useRichTextEditorLabels } from '../../../composables/useRichTextEditorLabels';
-
 const joinContent = ref<ContentJoinData>();
 const paymentContent = ref<ContentPaymentData>();
 const noticeText = ref('');
 const backgroundUrl = ref('');
 
 const { n, t } = useI18n();
-const editorLabels = useRichTextEditorLabels();
 
 const stepT = (key: string) => t('membershipBuilder.steps.joinForm.' + key);
 

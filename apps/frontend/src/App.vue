@@ -1,7 +1,7 @@
 <template>
   <LayoutApp />
 
-  <AppNotificationContainer :remove-aria-label="$t('notifications.remove')" />
+  <AppNotificationContainer />
 </template>
 
 <script lang="ts" setup>

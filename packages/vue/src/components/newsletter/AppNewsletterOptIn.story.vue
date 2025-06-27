@@ -19,7 +19,6 @@ const state = reactive({
   optIn: 'Yes, I would like to receive the newsletter',
   groups: [] as NewsletterGroupData[],
   showGroups: false,
-  groupsAriaLabel: 'Newsletter groups',
 });
 
 const optInStatus = ref(false);
@@ -46,7 +45,6 @@ function toggleGroupMode() {
           :text="state.text"
           :opt-in="state.optIn"
           :groups="state.groups"
-          :groups-aria-label="state.groupsAriaLabel"
         />
 
         <div class="mt-6 rounded border bg-grey-lighter p-4">
@@ -63,7 +61,7 @@ function toggleGroupMode() {
         <HstText v-model="state.title" title="Title" />
         <HstTextarea v-model="state.text" title="Text Content (HTML)" />
         <HstText v-model="state.optIn" title="Opt-in Label" />
-        <HstText v-model="state.groupsAriaLabel" title="Groups ARIA Label" />
+
         <HstButton title="Toggle Group Mode" @click="toggleGroupMode">
           {{
             state.showGroups ? 'Switch to Simple Mode' : 'Switch to Group Mode'

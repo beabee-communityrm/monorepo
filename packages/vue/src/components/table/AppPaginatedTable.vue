@@ -15,11 +15,6 @@
   - `query`: Query object with page, limit, and sort
   - `selectable`: Enable row selection
   - `rowClass`: Function to add custom row classes
-  - `showingText`: Template for showing range text
-  - `pageCountText`: Template for page count text
-  - `itemsPerPageText`: Template for items per page text
-  - `emptyText`: Text to display when no data
-  - `loadingText`: Text to display while loading
   - `formatNumber`: Number formatter function
 
   ## Events:
@@ -37,9 +32,6 @@
         v-model:page="query.page"
         v-model:limit="query.limit"
         :result="result"
-        :showing-text="showingText"
-        :page-count-text="pageCountText"
-        :items-per-page-text="itemsPerPageText"
         :format-number="formatNumber"
         class="ml-auto items-end"
         no-limit
@@ -52,8 +44,6 @@
         :items="result?.items || null"
         :selectable="selectable"
         :row-class="rowClass"
-        :empty-text="emptyText"
-        :loading-text="loadingText"
         class="mb-4 w-full"
       >
         <template v-for="name of slotNames" #[name]="slotData" :key="name">
@@ -65,9 +55,6 @@
       v-model:page="query.page"
       v-model:limit="query.limit"
       :result="result"
-      :showing-text="showingText"
-      :page-count-text="pageCountText"
-      :items-per-page-text="itemsPerPageText"
       :format-number="formatNumber"
       class="items-center"
     />
@@ -109,25 +96,6 @@ export interface AppPaginatedTableProps<I extends Item> {
   selectable?: boolean;
   /** Function to add custom CSS classes to rows */
   rowClass?: (item: I) => string;
-  /**
-   * Template for showing range text with placeholders: {start}, {end}, {total}
-   * Example: "Showing <b>{start}</b> to <b>{end}</b> of <b>{total}</b> results"
-   */
-  showingText?: string;
-  /**
-   * Template for page count text with placeholders: {pageNumber}, {pageTotal}
-   * Example: "Page <b>{pageNumber}</b> of <b>{pageTotal}</b>"
-   */
-  pageCountText?: string;
-  /**
-   * Template for items per page text with placeholder: {items}
-   * Example: "{items} per page"
-   */
-  itemsPerPageText?: string;
-  /** Text to display when there are no items */
-  emptyText?: string;
-  /** Text to display while loading */
-  loadingText?: string;
   /** Number formatter function */
   formatNumber?: (value: number) => string;
 }
@@ -135,12 +103,6 @@ export interface AppPaginatedTableProps<I extends Item> {
 const props = withDefaults(defineProps<AppPaginatedTableProps<I>>(), {
   selectable: false,
   rowClass: undefined,
-  showingText:
-    'Showing <b>{start}</b> to <b>{end}</b> of <b>{total}</b> results',
-  pageCountText: 'Page <b>{pageNumber}</b> of <b>{pageTotal}</b>',
-  itemsPerPageText: '{items} per page',
-  emptyText: 'No results',
-  loadingText: 'Loading...',
   formatNumber: (value: number) => value.toLocaleString(),
 });
 

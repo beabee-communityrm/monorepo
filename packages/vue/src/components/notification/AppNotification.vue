@@ -47,7 +47,7 @@
         </svg>
         <button
           class="inline-block w-5 cursor-pointer text-center leading-5 hover:bg-grey-lighter hover:text-body"
-          :aria-label="removeAriaLabel"
+          :aria-label="t('notifications.remove')"
           @click="handleRemove"
         >
           <font-awesome-icon :icon="faTimes" aria-hidden="true" />
@@ -78,6 +78,9 @@ import {
   faTimes,
 } from '@fortawesome/free-solid-svg-icons';
 import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 export interface AppNotificationProps {
   /** Unique identifier for the notification */
@@ -94,8 +97,6 @@ export interface AppNotificationProps {
   removeable?: 'auto' | boolean;
   /** Display mode of the notification */
   mode?: 'normal' | 'inline';
-  /** Aria label for the remove button */
-  removeAriaLabel?: string;
 }
 
 const emit = defineEmits(['remove']);
@@ -105,7 +106,6 @@ const props = withDefaults(defineProps<AppNotificationProps>(), {
   description: undefined,
   icon: undefined,
   mode: 'normal',
-  removeAriaLabel: 'Close notification',
 });
 
 const isVisible = ref(true);

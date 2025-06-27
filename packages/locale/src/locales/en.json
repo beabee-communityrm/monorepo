@@ -884,6 +884,7 @@
     "selectNone": "-- None --",
     "selectOne": "Select one...",
     "show": "Show",
+    "showingOf": "Showing <b>{start}</b> to <b>{end}</b> of <b>{total}</b> results",
     "status": {
       "draft": "Draft",
       "ended": "Ended",

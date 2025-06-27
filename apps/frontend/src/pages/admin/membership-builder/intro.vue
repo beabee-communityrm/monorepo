@@ -26,7 +26,6 @@ meta:
         <AppRichTextEditor
           v-model="introMessage"
           :label="stepT('message')"
-          :labels="editorLabels"
           class="mb-4"
           required
         />
@@ -56,11 +55,9 @@ import { client } from '@utils/api';
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { useRichTextEditorLabels } from '../../../composables/useRichTextEditorLabels';
 import { currentUser } from '../../../store';
 
 const { t } = useI18n();
-const editorLabels = useRichTextEditorLabels();
 const stepT = (key: string) => t('membershipBuilder.steps.intro.' + key);
 
 const introMessage = ref('');

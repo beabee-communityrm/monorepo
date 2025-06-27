@@ -15,7 +15,6 @@ const state = reactive({
   removeable: true,
   showIcon: false,
   visible: true,
-  removeAriaLabel: 'Close notification',
 });
 
 const variants = ['success', 'warning', 'error', 'info'] as const;
@@ -40,7 +39,6 @@ function handleRemove() {
           :variant="state.variant"
           :mode="state.mode"
           :removeable="state.removeable"
-          :remove-aria-label="state.removeAriaLabel"
           :icon="
             state.showIcon
               ? state.variant === 'info'
@@ -82,10 +80,6 @@ function handleRemove() {
           ]"
         />
         <HstCheckbox v-model="state.showIcon" title="Show Icon" />
-        <HstText
-          v-model="state.removeAriaLabel"
-          title="Remove Button Aria Label"
-        />
       </template>
     </Variant>
 

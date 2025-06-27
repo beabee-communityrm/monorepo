@@ -28,13 +28,8 @@
             "
             :placeholder="getDefaultText(component[field] as string)"
             :disabled="selectedLocale === defaultLocale"
-            :copyable="selectedLocale === defaultLocale"
-            :copy-button-props="{
-              copyButtonTitle: t('actions.copy'),
-              successMessage: t('notifications.copy.success'),
-              errorMessage: t('notifications.error'),
-              removeAriaLabel: t('notifications.remove'),
-            }"
+            :copyable="true"
+            :copy-label="t('actions.copy')"
             @update:model-value="
               updateValue(component[field] as string, selectedLocale, $event)
             "
@@ -48,13 +43,8 @@
             "
             :placeholder="getDefaultText(component[field] as string)"
             :disabled="selectedLocale === defaultLocale"
-            :copyable="selectedLocale === defaultLocale"
-            :copy-button-props="{
-              copyButtonTitle: t('actions.copy'),
-              successMessage: t('notifications.copy.success'),
-              errorMessage: t('notifications.error'),
-              removeAriaLabel: t('notifications.remove'),
-            }"
+            :copyable="true"
+            :copy-label="t('actions.copy')"
             rows="3"
             @update:model-value="
               updateValue(component[field] as string, selectedLocale, $event)
@@ -67,16 +57,10 @@
             :model-value="
               getLocalizedValue(component[field] as string, selectedLocale)
             "
-            :labels="editorLabels"
             :placeholder="getDefaultText(component[field] as string)"
             :disabled="selectedLocale === defaultLocale"
-            :copyable="selectedLocale === defaultLocale"
-            :copy-button-props="{
-              copyButtonTitle: t('actions.copy'),
-              successMessage: t('notifications.copy.success'),
-              errorMessage: t('notifications.error'),
-              removeAriaLabel: t('notifications.remove'),
-            }"
+            :copyable="true"
+            :copy-label="t('actions.copy')"
             @update:model-value="
               updateValue(component[field] as string, selectedLocale, $event)
             "
@@ -103,13 +87,8 @@
             :model-value="getLocalizedValue(value.label, selectedLocale)"
             :placeholder="getDefaultText(value.label)"
             :disabled="selectedLocale === defaultLocale"
-            :copyable="selectedLocale === defaultLocale"
-            :copy-button-props="{
-              copyButtonTitle: t('actions.copy'),
-              successMessage: t('notifications.copy.success'),
-              errorMessage: t('notifications.error'),
-              removeAriaLabel: t('notifications.remove'),
-            }"
+            :copyable="true"
+            :copy-label="t('actions.copy')"
             @update:model-value="
               updateValue(value.label, selectedLocale, $event)
             "
@@ -138,8 +117,6 @@ import {
 } from '@utils/callouts';
 import { useI18n } from 'vue-i18n';
 
-import { useRichTextEditorLabels } from '../../../../../../composables/useRichTextEditorLabels';
-
 const props = defineProps<{
   defaultLocale: string;
   selectedLocale: string;
@@ -149,7 +126,6 @@ const props = defineProps<{
 }>();
 
 const { t } = useI18n();
-const editorLabels = useRichTextEditorLabels();
 
 // Field types mapping
 const fields = [

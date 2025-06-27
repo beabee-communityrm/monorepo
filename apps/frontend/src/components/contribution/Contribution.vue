@@ -114,28 +114,19 @@ const contributionLabels = computed<ContributionLabels>(() => ({
     annually: t('common.contributionPeriod.annually'),
   },
   paymentMethods: {
-    [PaymentMethod.StripeCard]: t(
-      'paymentMethods.stripe-card.label',
-      'Credit Card'
-    ),
+    [PaymentMethod.StripeCard]: t('paymentMethods.s_card.label', 'Credit Card'),
     [PaymentMethod.StripeSEPA]: t(
-      'paymentMethods.stripe-sepa.label',
+      'paymentMethods.s_sepa.label',
       'SEPA Direct Debit'
     ),
     [PaymentMethod.StripeBACS]: t(
-      'paymentMethods.stripe-bacs.label',
+      'paymentMethods.s_bacs.label',
       'Bank Transfer'
     ),
-    [PaymentMethod.StripePayPal]: t(
-      'paymentMethods.stripe-paypal.label',
-      'PayPal'
-    ),
-    [PaymentMethod.StripeIdeal]: t(
-      'paymentMethods.stripe-ideal.label',
-      'iDEAL'
-    ),
+    [PaymentMethod.StripePayPal]: t('paymentMethods.s_paypal.label', 'PayPal'),
+    [PaymentMethod.StripeIdeal]: t('paymentMethods.s_ideal.label', 'iDEAL'),
     [PaymentMethod.GoCardlessDirectDebit]: t(
-      'paymentMethods.gocardless-direct-debit.label',
+      'paymentMethods.gc_direct-debit.label',
       'Direct Debit'
     ),
   },

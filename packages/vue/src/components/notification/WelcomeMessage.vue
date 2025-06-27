@@ -9,7 +9,7 @@
       <WelcomeIcon
         class="float-left mb-4 mr-4 h-auto w-[4.5rem] md:w-[7.5rem]"
         :class="!small && 'lg:mb-8 lg:mr-8 lg:w-[17rem]'"
-        :aria-label="iconAriaLabel"
+        :aria-label="t('membershipBuilder.intro.title')"
       />
 
       <AppSubHeading :id="headingId">
@@ -27,7 +27,7 @@
 
     <button
       class="absolute right-4 top-4 cursor-pointer rounded text-2xl hover:text-body-60 focus:outline-none focus:ring-2 focus:ring-primary-40 focus:ring-offset-2"
-      :aria-label="closeAriaLabel"
+      :aria-label="t('actions.close')"
       @click="$emit('close')"
     >
       <font-awesome-icon :icon="faTimes" />
@@ -38,13 +38,20 @@
 <script lang="ts" setup>
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import { AppSubHeading } from '../typography';
 import WelcomeIcon from './WelcomeIcon.vue';
 
+const { t } = useI18n();
+
 /**
  * WelcomeMessage displays a personalized welcome message with user information
  * and a closeable interface for onboarding or informational content.
+ *
+ * Uses internal i18n for accessibility labels:
+ * - Icon aria-label: membershipBuilder.intro.title
+ * - Close button aria-label: actions.close
  */
 
 export interface WelcomeMessageProps {
@@ -58,16 +65,10 @@ export interface WelcomeMessageProps {
   welcomeTemplate: string;
   /** Whether to display in small/compact mode */
   small?: boolean;
-  /** Accessibility label for the welcome icon */
-  iconAriaLabel?: string;
-  /** Accessibility label for the close button */
-  closeAriaLabel?: string;
 }
 
 const props = withDefaults(defineProps<WelcomeMessageProps>(), {
   small: false,
-  iconAriaLabel: 'Welcome icon',
-  closeAriaLabel: 'Close welcome message',
 });
 
 const welcomeText = computed(() => {

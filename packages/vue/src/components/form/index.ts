@@ -64,7 +64,6 @@ export { default as AppToggle, type AppToggleProps } from './AppToggle.vue';
 export {
   default as AppRichTextEditor,
   type AppRichTextEditorProps,
-  type RichTextEditorLabels,
 } from './AppRichTextEditor.vue';
 export {
   default as AppRichTextEditorButton,

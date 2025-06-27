@@ -10,7 +10,6 @@ const state = reactive({
   ],
   textLabel: 'Link Text',
   urlLabel: 'URL',
-  addLabel: 'Add Link',
   placeholderLabel: 'Enter link text',
   placeholderUrl: 'https://example.com',
 });
@@ -49,7 +48,6 @@ const emptyLinks = ref([]);
           v-model="state.links"
           :text-label="state.textLabel"
           :url-label="state.urlLabel"
-          :add-label="state.addLabel"
           :placeholder-label="state.placeholderLabel"
           :placeholder-url="state.placeholderUrl"
         />
@@ -72,7 +70,6 @@ const emptyLinks = ref([]);
       <template #controls>
         <HstText v-model="state.textLabel" title="Text Label" />
         <HstText v-model="state.urlLabel" title="URL Label" />
-        <HstText v-model="state.addLabel" title="Add Button Label" />
         <HstText v-model="state.placeholderLabel" title="Text Placeholder" />
         <HstText v-model="state.placeholderUrl" title="URL Placeholder" />
       </template>
@@ -90,7 +87,6 @@ const emptyLinks = ref([]);
             v-model="footerLinks.links"
             text-label="Link Text"
             url-label="URL"
-            add-label="Add Footer Link"
             placeholder-label="e.g., About Us"
             placeholder-url="e.g., /about"
           />
@@ -125,7 +121,6 @@ const emptyLinks = ref([]);
             v-model="responseLinks.links"
             text-label="Link Text"
             url-label="URL Pattern"
-            add-label="Add Response Link"
             placeholder-label="e.g., View Details"
             placeholder-url="e.g., /response/{id}"
           />
@@ -164,7 +159,6 @@ const emptyLinks = ref([]);
             v-model="socialLinks.links"
             text-label="Platform"
             url-label="Profile URL"
-            add-label="Add Social Link"
             placeholder-label="e.g., Twitter"
             placeholder-url="https://twitter.com/yourhandle"
           />
@@ -184,7 +178,6 @@ const emptyLinks = ref([]);
             v-model="emptyLinks"
             text-label="Link Text"
             url-label="URL"
-            add-label="Add First Link"
           />
         </div>
       </div>

@@ -23,7 +23,6 @@
       <AppRichTextEditor
         v-model="text"
         :label="labels.text"
-        :labels="editorLabels"
         required
         class="w-full"
       />
@@ -107,7 +106,6 @@
  */
 import type { NewsletterGroupData } from '@beabee/beabee-common';
 
-import type { RichTextEditorLabels } from '../form/index';
 import {
   AppCheckbox,
   AppInput,
@@ -148,8 +146,6 @@ export interface AppNewsletterOptInSettingsLabels {
 export interface AppNewsletterOptInSettingsProps {
   /** Text labels for all UI elements */
   labels: AppNewsletterOptInSettingsLabels;
-  /** Labels for the rich text editor toolbar */
-  editorLabels: RichTextEditorLabels;
 }
 
 const props = defineProps<AppNewsletterOptInSettingsProps>();

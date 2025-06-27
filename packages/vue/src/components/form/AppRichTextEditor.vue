@@ -21,32 +21,32 @@
       v-if="editor"
       class="mb-2 flex flex-row gap-1"
       role="toolbar"
-      :aria-label="toolbarAriaLabel"
+      :aria-label="t('form.richtext.toolbar')"
     >
       <AppRichTextEditorButton
         :icon="faBold"
-        :title="labels.bold"
+        :title="t('form.richtext.bold')"
         :active="editor.isActive('bold')"
         :disabled="disabled"
         @click="run((cmd) => cmd.toggleBold())"
       />
       <AppRichTextEditorButton
         :icon="faItalic"
-        :title="labels.italic"
+        :title="t('form.richtext.italic')"
         :active="editor.isActive('italic')"
         :disabled="disabled"
         @click="run((cmd) => cmd.toggleItalic())"
       />
       <AppRichTextEditorButton
         :icon="faUnderline"
-        :title="labels.underline"
+        :title="t('form.richtext.underline')"
         :active="editor.isActive('underline')"
         :disabled="disabled"
         @click="run((cmd) => cmd.toggleUnderline())"
       />
       <AppRichTextEditorButton
         :icon="faStrikethrough"
-        :title="labels.strikethrough"
+        :title="t('form.richtext.strikethrough')"
         :active="editor.isActive('strike')"
         :disabled="disabled"
         @click="run((cmd) => cmd.toggleStrike())"
@@ -54,21 +54,21 @@
       <template v-if="controls !== 'inline'">
         <AppRichTextEditorButton
           :icon="faHeading"
-          :title="labels.heading"
+          :title="t('form.richtext.heading')"
           :active="editor.isActive('heading', { level: 3 })"
           :disabled="disabled"
           @click="run((cmd) => cmd.toggleHeading({ level: 3 }))"
         />
         <AppRichTextEditorButton
           :icon="faList"
-          :title="labels.bulletList"
+          :title="t('form.richtext.bulletlist')"
           :active="editor.isActive('bulletList')"
           :disabled="disabled"
           @click="run((cmd) => cmd.toggleBulletList())"
         />
         <AppRichTextEditorButton
           :icon="faListOl"
-          :title="labels.numberedList"
+          :title="t('form.richtext.numberedlist')"
           :active="editor.isActive('orderedList')"
           :disabled="disabled"
           @click="run((cmd) => cmd.toggleOrderedList())"
@@ -76,7 +76,7 @@
       </template>
       <AppRichTextEditorButton
         :icon="faLink"
-        :title="labels.link"
+        :title="t('form.richtext.link')"
         :active="editor.isActive('link')"
         :disabled="disabled"
         @click="setLink"
@@ -87,7 +87,7 @@
         :editor="editor"
         class="content-message"
         :class="disabled && 'ProseMirror-disabled'"
-        :aria-label="editorAriaLabel"
+        :aria-label="t('form.richtext.editor')"
       />
       <div
         v-if="isEditorEmpty && placeholder"
@@ -96,11 +96,7 @@
         aria-hidden="true"
       />
       <div v-if="copyable" class="absolute right-1 top-1">
-        <AppCopyButton
-          variant="float"
-          :text="editor?.getHTML() || ''"
-          v-bind="copyButtonProps"
-        />
+        <AppCopyButton variant="float" :text="editor?.getHTML() || ''" />
       </div>
     </div>
     <AppInputError v-if="hasError" :message="validation.$errors[0].$message" />
@@ -133,31 +129,10 @@ import { type ChainedCommands, EditorContent, useEditor } from '@tiptap/vue-3';
 import useVuelidate from '@vuelidate/core';
 import { helpers, requiredIf } from '@vuelidate/validators';
 import { computed, onBeforeUnmount, toRef, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import { AppCopyButton, AppInputError, AppInputHelp, AppLabel } from '../index';
 import AppRichTextEditorButton from './AppRichTextEditorButton.vue';
-
-/**
- * Labels for the rich text editor toolbar buttons
- */
-export interface RichTextEditorLabels {
-  /** Bold button label */
-  bold: string;
-  /** Italic button label */
-  italic: string;
-  /** Underline button label */
-  underline: string;
-  /** Strikethrough button label */
-  strikethrough: string;
-  /** Heading button label */
-  heading: string;
-  /** Bullet list button label */
-  bulletList: string;
-  /** Numbered list button label */
-  numberedList: string;
-  /** Link button label */
-  link: string;
-}
 
 /**
  * Props for the AppRichTextEditor component
@@ -179,22 +154,6 @@ export interface AppRichTextEditorProps {
   placeholder?: string;
   /** Controls displayed in toolbar */
   controls?: 'full' | 'inline';
-  /** Labels for toolbar buttons (required for internationalization) */
-  labels: RichTextEditorLabels;
-  /** Required field validation error message */
-  requiredErrorMessage?: string;
-  /** ARIA label for the toolbar */
-  toolbarAriaLabel?: string;
-  /** ARIA label for the editor content area */
-  editorAriaLabel?: string;
-  /** Props for the copy button */
-  copyButtonProps?: {
-    copyButtonTitle?: string;
-    successMessage?: string;
-    errorMessage?: string;
-    errorDescription?: string;
-    removeAriaLabel?: string;
-  };
 }
 
 const props = withDefaults(defineProps<AppRichTextEditorProps>(), {
@@ -205,10 +164,6 @@ const props = withDefaults(defineProps<AppRichTextEditorProps>(), {
   copyable: false,
   placeholder: undefined,
   controls: 'full',
-  requiredErrorMessage: 'This field is required',
-  toolbarAriaLabel: 'Text formatting toolbar',
-  editorAriaLabel: 'Rich text editor',
-  copyButtonProps: undefined,
 });
 
 /**
@@ -221,6 +176,8 @@ const emit = defineEmits<{
    */
   'update:modelValue': [value: string];
 }>();
+
+const { t } = useI18n();
 
 const editor = useEditor({
   content: props.modelValue as string,
@@ -266,7 +223,7 @@ watch(toRef(props, 'disabled'), (value) => {
 const rules = computed(() => ({
   v: {
     required: helpers.withMessage(
-      props.requiredErrorMessage,
+      t('form.errors.required'),
       requiredIf(!!props.required)
     ),
   },

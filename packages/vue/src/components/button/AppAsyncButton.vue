@@ -2,6 +2,10 @@
   # AppAsyncButton
   An asynchronous button component that extends AppButton with built-in async operation handling.
   Automatically manages loading states and error notifications for async operations.
+  
+  Uses internal i18n for standard messages:
+  - Loading text: common.loading
+  - Error notifications: notifications.error, notifications.remove
 -->
 <template>
   <AppButton
@@ -12,7 +16,7 @@
     :title="title"
     @click="handleClick"
   >
-    <span v-if="loading" class="sr-only">{{ loadingText }}</span>
+    <span v-if="loading" class="sr-only">{{ t('common.loading') }}</span>
     <span v-else>
       <slot />
     </span>
@@ -24,6 +28,10 @@
  * Asynchronous button component that handles loading states and error notifications.
  * Extends AppButton with automatic async operation support including loading states and error handling.
  *
+ * Uses internal i18n for standard messages:
+ * - Loading text: common.loading
+ * - Error notifications: notifications.error, notifications.remove
+ *
  * @component AppAsyncButton
  *
  * @example
@@ -34,8 +42,11 @@
 import { addNotification } from '@beabee/vue/store/notifications';
 
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import AppButton from './AppButton.vue';
+
+const { t } = useI18n();
 
 /**
  * Props for the AppAsyncButton component
@@ -47,14 +58,6 @@ export interface AppAsyncButtonProps {
   ariaLabel?: string;
   /** Tooltip text displayed on hover */
   title?: string;
-  /** Text announced to screen readers during loading state */
-  loadingText?: string;
-  /** Error message to show when async operation fails */
-  errorMessage?: string;
-  /** Error description for screen readers when async operation fails */
-  errorDescription?: string;
-  /** Aria label for the remove button on error notifications */
-  removeAriaLabel?: string;
 }
 
 /**
@@ -72,10 +75,6 @@ const props = withDefaults(defineProps<AppAsyncButtonProps>(), {
   onClick: undefined,
   ariaLabel: undefined,
   title: undefined,
-  loadingText: undefined,
-  errorMessage: 'Something went wrong',
-  errorDescription: undefined,
-  removeAriaLabel: 'Close notification',
 });
 
 const loading = ref(false);
@@ -93,11 +92,9 @@ async function handleClick(evt: Event) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (_: unknown) {
     addNotification({
-      title: props.errorMessage,
+      title: t('notifications.error'),
       variant: 'error',
-      // Add more descriptive error message for screen readers
-      description: props.errorDescription,
-      removeAriaLabel: props.removeAriaLabel,
+      removeAriaLabel: t('notifications.remove'),
     });
   } finally {
     loading.value = false;
