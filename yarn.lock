@@ -1543,6 +1543,7 @@ __metadata:
   resolution: "@beabee/dev-cli@workspace:apps/dev-cli"
   dependencies:
     "@beabee/esbuild": "workspace:^"
+    "@beabee/locale": "workspace:^"
     "@beabee/prettier-config": "workspace:^"
     "@beabee/tsconfig": "workspace:^"
     "@modelcontextprotocol/sdk": "npm:^1.13.2"
@@ -1553,7 +1554,7 @@ __metadata:
     yargs: "npm:^17.7.2"
     zod: "npm:^3.24.1"
   bin:
-    dev-cli: ./src/index.ts
+    dev-cli: ./bin/dev-cli.js
   languageName: unknown
   linkType: soft
 
