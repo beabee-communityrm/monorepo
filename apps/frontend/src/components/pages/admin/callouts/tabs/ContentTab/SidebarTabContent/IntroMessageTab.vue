@@ -9,7 +9,6 @@
         <AppRichTextEditor
           v-model="data.introText.default"
           :label="t('callout.builder.tabs.intro.label')"
-          :labels="editorLabels"
           required
         />
       </AppFormField>
@@ -27,7 +26,6 @@ import { AppFormField, AppRichTextEditor } from '@beabee/vue';
 import type { LocaleProp } from '@type';
 import { useI18n } from 'vue-i18n';
 
-import { useRichTextEditorLabels } from '../../../../../../../composables/useRichTextEditorLabels';
 import type { SidebarTabProps } from '../SidebarTabs.interface';
 
 /**
@@ -45,5 +43,4 @@ export type IntroMessageTabProps = SidebarTabProps<IntroMessageTabData>;
 
 defineProps<IntroMessageTabProps>();
 const { t } = useI18n();
-const editorLabels = useRichTextEditorLabels();
 </script>

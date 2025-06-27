@@ -26,7 +26,6 @@
 
         <AppRichTextEditor
           :model-value="getValue(endMessage.thankYouText, selectedLocale)"
-          :labels="editorLabels"
           :placeholder="getPlaceholder(endMessage.thankYouText)"
           :disabled="selectedLocale === defaultLocale"
           :copyable="true"
@@ -72,7 +71,6 @@ import {
 } from '@utils/callouts';
 import { useI18n } from 'vue-i18n';
 
-import { useRichTextEditorLabels } from '../../../../../../composables/useRichTextEditorLabels';
 import type { EndMessageTabData } from '../ContentTab/SidebarTabContent/EndMessageTab.vue';
 
 const props = defineProps<{
@@ -82,7 +80,6 @@ const props = defineProps<{
 }>();
 
 const { t } = useI18n();
-const editorLabels = useRichTextEditorLabels();
 
 // Get end message value for a specific locale using utility function (no fallback)
 function getValue(prop: LocaleProp | undefined, locale: string): string {

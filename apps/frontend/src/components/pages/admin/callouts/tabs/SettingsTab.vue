@@ -210,7 +210,6 @@
                 v-model:text="data.newsletterSettings.text"
                 v-model:groups="data.newsletterSettings.groups"
                 :labels="newsletterSettingsLabels"
-                :editor-labels="editorLabels"
               />
             </AppFormField>
           </AppFormBox>
@@ -272,7 +271,6 @@ import { sameAs } from '@vuelidate/validators';
 import { computed, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { useRichTextEditorLabels } from '../../../../../composables/useRichTextEditorLabels';
 import type { CalloutHorizontalTabs } from '../CalloutHorizontalTabs.interface';
 
 /**
@@ -312,7 +310,6 @@ const inputT = (key: string) =>
   t('callout.builder.tabs.settings.inputs.' + key);
 
 // Newsletter settings labels
-const editorLabels = useRichTextEditorLabels();
 
 const newsletterSettingsLabels: AppNewsletterOptInSettingsLabels = {
   title: t('newsletterOptIn.title'),
