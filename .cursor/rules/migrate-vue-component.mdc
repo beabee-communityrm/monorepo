@@ -12,12 +12,13 @@ Migrate Vue components from `apps/frontend` to `packages/vue/src/components`.
 
 ## Migration Rules
 - **Block API components**: Do not migrate components using `@utils/api`, `client.ts`, or API imports
-- **Remove i18n dependencies**: Replace `useI18n()` and `t()` with props for translated text
+- **Keep i18n dependencies**: Maintain `useI18n()` and `t()` for translations (do not replace with props)
 - **Remove store dependencies**: Pass store data as props instead of direct store access
 - **Include dependencies**: Migrate related components, utils, interfaces, types
 
 ## Implementation
 - Follow [new-vue-component.mdc](mdc:.cursor/rules/new-vue-component.mdc)
+- Follow [git-commit-best-practices.mdc](mdc:.cursor/rules/git-commit-best-practices.mdc)
 - Clean refactoring with TSDoc documentation
 - Maintain required functionality
 - Add semantic HTML and ARIA attributes
@@ -27,8 +28,11 @@ Migrate Vue components from `apps/frontend` to `packages/vue/src/components`.
 ## Completion
 - Update `apps/frontend`:
   - To use migrated components by updating the imports to `@beabee/vue`
+  - Create wrapper components that appear multiple times with many identical property combinations
   - Reuse existing import declarations: `import { AlreadyExistingComponent, MigratedComponent } from '@beabee/vue';`
-  - This includes adapting component interfaces, adjusting prop drilling, or updating binding logic where necessary
+  - Remove any translation prop drilling since components now handle i18n internally
   - Repeat all necessary steps—such as updating imports, adjusting props, and rewriting references—for each component involved
-- Run `yarn format` to automatic formatting all changes
+- Run `yarn generate:index && yarn format && yarn build && yarn check` to build, format and validate all changes
+- Review all migrated components and verify that stories exist for each component where appropriate, check if they are logically grouped, and iterate to create missing stories or improve organization if needed
+- Suggest specific frontend pages and routes that should be visited to test the migrated Vue components
 - Provide commit message and PR description
