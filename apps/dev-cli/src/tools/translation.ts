@@ -1,12 +1,12 @@
-import type { McpToolDefinition, McpToolResult } from '../../../types/mcp.ts';
-import type { ListTranslationKeysOptions } from '../../../types/translation.ts';
 import {
   checkTranslationKey,
   getAvailableLocales,
   getTranslations,
   listTranslationKeys,
   validateTranslationUsage,
-} from '../../translation.ts';
+} from '../actions/translation.ts';
+import type { McpToolDefinition, McpToolResult } from '../types/mcp.ts';
+import type { ListTranslationKeysOptions } from '../types/translation.ts';
 
 /**
  * MCP tool for checking if a translation key exists

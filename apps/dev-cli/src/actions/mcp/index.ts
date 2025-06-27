@@ -1,2 +1,1 @@
-export { startMcpServer } from './server.ts';
-export * from './tools/index.ts';
+export * from './server.ts';

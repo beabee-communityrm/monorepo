@@ -5,8 +5,11 @@ import {
   ListToolsRequestSchema,
 } from '@modelcontextprotocol/sdk/types.js';
 
+import * as _tools from '../../tools/index.ts';
 import type { McpServerArgs } from '../../types/mcp.ts';
-import { getAllMcpTools } from './tools/index.ts';
+import { packageJson } from '../../utils/package.ts';
+
+const tools = Object.values(_tools);
 
 /**
  * Start the MCP server
@@ -16,13 +19,10 @@ import { getAllMcpTools } from './tools/index.ts';
  */
 export async function startMcpServer(args: McpServerArgs = {}): Promise<void> {
   const {
-    name = '@beabee/dev-cli-mcp',
-    version = '1.0.0',
+    name = packageJson.name,
+    version = packageJson.version,
     debug = false,
   } = args;
-
-  // Get all available MCP tools
-  const tools = getAllMcpTools();
 
   // Create MCP server instance
   const server = new Server(
