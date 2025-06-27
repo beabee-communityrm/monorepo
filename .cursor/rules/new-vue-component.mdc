@@ -11,6 +11,7 @@ Create Vue components with stories and documentation. Follow existing patterns a
 - Exports: [index.ts](mdc:packages/vue/src/components/template/index.ts)
 - Documentation: [vue-component-story-documentation.mdc](mdc:.cursor/rules/vue-component-story-documentation.mdc)
 - Code Standards: [frontend-code-structure.mdc](mdc:.cursor/rules/frontend-code-structure.mdc)
+- Additional component types: `packages/vue/src/types`
 
 ## Requirements
 - Application-independent (no API dependencies)

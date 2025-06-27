@@ -9,5 +9,9 @@ Create a story for a component
 - Follow [AppTemplate.story.vue](mdc:packages/vue/src/components/template/AppTemplate.story.vue)
 - Dokumentation [vue-component-story-documentation.mdc](mdc:.cursor/rules/vue-component-story-documentation.mdc)
 - Analyze the component and current usage within `apps/frontend` to understand its context, prop usage, and interaction patterns
-- Use this information for story creation.
 - Create `.story.vue` and `.story.md` files
+- Tailwind config: `packages/vue/tailwind.config.js` to know all available Tailwind utility classes and variants
+
+# Implementation
+- Use context information for story creation
+- If a UI component cannot be meaningfully used on its own, do not create a Storybook story for it
