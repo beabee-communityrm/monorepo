@@ -87,6 +87,7 @@ yarn dev-cli translation <subcommand>
 **Subcommands:**
 
 #### `locales`
+
 List all available locales in the translation system.
 
 ```bash
@@ -94,6 +95,7 @@ yarn dev-cli translation locales
 ```
 
 #### `check-key`
+
 Check if a translation key exists across all locales.
 
 ```bash
@@ -101,6 +103,7 @@ yarn dev-cli translation check-key <key>
 ```
 
 **Examples:**
+
 ```bash
 # Check if a key exists
 yarn dev-cli translation check-key common.loading
@@ -110,6 +113,7 @@ yarn dev-cli translation check-key user.profile.settings
 ```
 
 #### `get`
+
 Get translation values for a key across all locales.
 
 ```bash
@@ -117,6 +121,7 @@ yarn dev-cli translation get <key>
 ```
 
 **Examples:**
+
 ```bash
 # Get translations for a key
 yarn dev-cli translation get actions.save
@@ -126,6 +131,7 @@ yarn dev-cli translation get form.validation.required
 ```
 
 #### `list-keys`
+
 List available translation keys with optional filtering.
 
 ```bash
@@ -133,11 +139,13 @@ yarn dev-cli translation list-keys [options]
 ```
 
 **Options:**
+
 - `--prefix`: Filter keys by prefix (e.g., "form." for form-related keys)
 - `--limit`: Maximum number of keys to return
 - `--locale`: Locale to check for key existence (default: "en")
 
 **Examples:**
+
 ```bash
 # List all keys
 yarn dev-cli translation list-keys
@@ -153,6 +161,7 @@ yarn dev-cli translation list-keys --locale de
 ```
 
 #### `validate`
+
 Validate translation key format and get suggestions.
 
 ```bash
@@ -160,6 +169,7 @@ yarn dev-cli translation validate <key>
 ```
 
 **Examples:**
+
 ```bash
 # Validate key format
 yarn dev-cli translation validate user.profile.settings
@@ -177,11 +187,13 @@ yarn dev-cli mcp [options]
 ```
 
 **Options:**
+
 - `--name`: Server name (default: "beabee-dev-cli")
 - `--server-version`: Server version (default: package version)
 - `--debug`: Enable debug logging
 
 **Examples:**
+
 ```bash
 # Start MCP server
 yarn dev-cli mcp
@@ -194,8 +206,9 @@ yarn dev-cli mcp --name "beabee-dev-tools"
 ```
 
 **Available MCP Tools:**
+
 - `check_translation_key` - Check if a translation key exists across locales
-- `get_translations` - Get translation values for a key across all locales  
+- `get_translations` - Get translation values for a key across all locales
 - `list_translation_keys` - List available translation keys with filtering
 - `validate_translation_usage` - Validate key format and get suggestions
 - `get_available_locales` - Get all supported locales
@@ -252,7 +265,7 @@ To integrate with other MCP-compatible clients (Claude Desktop, VS Code with MCP
       "command": "node",
       "args": [
         "--experimental-specifier-resolution=node",
-        "--experimental-strip-types", 
+        "--experimental-strip-types",
         "--no-warnings",
         "/path/to/beabee/monorepo/apps/dev-cli/src/index.ts",
         "mcp"
