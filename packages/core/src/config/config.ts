@@ -145,8 +145,8 @@ const image: ImageServiceConfig = {
   ),
   availableWidths: env.nn(
     'BEABEE_IMAGE_AVAILABLE_WIDTHS',
-    [100, 300, 400, 600, 900, 1200, 1440, 1800]
-  ), // Supported widths for image resizing
+    [16, 32, 100, 180, 192, 300, 400, 512, 600, 900, 1200, 1440, 1800]
+  ), // Supported widths for image resizing (includes favicon sizes: 16, 32, 180, 192, 512)
   s3,
 };
 

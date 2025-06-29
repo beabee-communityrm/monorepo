@@ -1,6 +1,5 @@
 import 'module-alias/register';
 
-import { resolveImageUrl } from '@beabee/beabee-common';
 //import specialUrlHandler from '@apps/tools/apps/special-urls/handler';
 import config from '@beabee/core/config';
 import { log, requestErrorLogger, requestLogger } from '@beabee/core/logging';
@@ -75,9 +74,11 @@ app.use('/membership.js', (req, res) => {
 app.use('/static', express.static(path.join(__dirname, 'static')));
 
 app.get('/favicon.png', (req, res) => {
-  const logoUrl = OptionsService.getText('logo');
-  const fullImageUrl = resolveImageUrl(logoUrl, '/api/1.0/', config.audience);
-  res.redirect(fullImageUrl);
+  res.redirect(`${config.audience}/api/1.0/favicon-32x32.png`);
+});
+
+app.get('/favicon.ico', (req, res) => {
+  res.redirect(`${config.audience}/api/1.0/favicon.ico`);
 });
 
 // Log the rest

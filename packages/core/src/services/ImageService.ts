@@ -527,7 +527,7 @@ export class ImageService {
         hash,
       };
     } catch (error) {
-      log.error('Failed to get image metadata:', error);
+      log.error(`Failed to get image metadata for ${id}:`, error);
       throw new NotFoundError();
     }
   }
