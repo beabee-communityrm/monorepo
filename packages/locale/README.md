@@ -19,15 +19,25 @@ Currently supported languages:
 
 ## Usage
 
-Import the locale data in your project:
+The package supports three import formats:
+
+1. **Built JavaScript (ESM/CJS)** - Default for production
+2. **Direct TypeScript** - For development and tools that support TypeScript directly
 
 ```typescript
-// Import config and helper functions
+// Import config and helper functions (built JavaScript)
 import { config, isLocale, type Locale } from '@beabee/locale';
 
-// Import specific locale data
+// Import config and helper functions (direct TypeScript)
+import { config, isLocale, type Locale } from '@beabee/locale/src';
+
+// Import specific locale data (built)
 import en from '@beabee/locale/locales/en';
 import de from '@beabee/locale/locales/de';
+
+// Import specific locale data (direct TypeScript)
+import en from '@beabee/locale/src/locales/en.json' with { type: 'json' };
+import de from '@beabee/locale/src/locales/de.json' with { type: 'json' };
 
 // Check if a string is a valid locale
 const userLocale = 'de@informal';
@@ -35,6 +45,11 @@ if (isLocale(userLocale)) {
   // It's a valid locale
   console.log(config[userLocale].name); // "Deutsch (informal)"
 }
+```
+
+The direct TypeScript imports can be used with Node.js using:
+```bash
+node --experimental-specifier-resolution=node --experimental-strip-types --experimental-transform-types --no-warnings your-file.ts
 ```
 
 ## Development
