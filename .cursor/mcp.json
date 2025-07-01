@@ -6,7 +6,7 @@
         "--experimental-specifier-resolution=node",
         "--experimental-strip-types",
         "--no-warnings",
-        "${workspaceFolder}/apps/dev-cli/src/index.ts",
+        "./apps/dev-cli/src/index.ts",
         "mcp"
       ]
     }
