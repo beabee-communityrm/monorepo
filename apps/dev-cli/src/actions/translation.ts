@@ -1,8 +1,8 @@
 import { type Locale, config as localeConfig } from '@beabee/locale/src';
 
 import { readFile, writeFile } from 'node:fs/promises';
+import Module from 'node:module';
 import { dirname, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
 
 import type {
   ListTranslationKeysOptions,
@@ -13,12 +13,10 @@ import type {
   TranslationValidationResult,
 } from '../types/translation.ts';
 
-// Get the locale package path
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-const LOCALE_PACKAGE_PATH = resolve(
-  __dirname,
-  '../../../../packages/locale/src/locales'
+// Get the locale package path using require.resolve for better robustness
+const require = Module.createRequire(import.meta.url);
+const LOCALE_PACKAGE_PATH = dirname(
+  require.resolve('@beabee/locale/src/locales')
 );
 
 /**
@@ -32,7 +30,7 @@ export function getAvailableLocales(): Locale[] {
  * Get the correct locale file name from locale code
  */
 function getLocaleFileName(locale: Locale): string {
-  return `${locale.replace('@', '@')}.json`;
+  return `${locale}.json`;
 }
 
 /**
