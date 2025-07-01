@@ -105,7 +105,8 @@
     "view": "View",
     "yesDelete": "Yes, delete it",
     "yesDisable": "Yes, disable it",
-    "yesRemove": "Yes, remove it"
+    "yesRemove": "Yes, remove it",
+    "tryAgain": "Try again"
   },
   "addContact": {
     "contactSaved": "Contact saved",
@@ -1525,5 +1526,12 @@
   },
   "taxRate": {
     "invoiceName": "VAT"
+  },
+  "status": {
+    "loadingApplication": "Loading Application",
+    "pleaseWait": "Please wait...",
+    "connectingToServer": "Connecting to server...",
+    "initializing": "Initializing...",
+    "usuallyTakesSeconds": "This usually takes a few seconds"
   }
 }
