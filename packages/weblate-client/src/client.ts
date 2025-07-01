@@ -5,7 +5,7 @@ import type {
   UnitUpdateRequestBody,
   WeblateClientOptions,
   paths,
-} from './types/index';
+} from './types/index.ts';
 
 /**
  * Weblate API client
