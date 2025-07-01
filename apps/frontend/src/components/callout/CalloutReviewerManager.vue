@@ -5,12 +5,6 @@
       :items="reviewers"
       :item-to-data="reviewerToFormData"
       :add-button-text="t('calloutReviewerManager.add')"
-      :edit-button-text="t('actions.edit')"
-      :delete-button-text="t('actions.delete')"
-      :update-button-text="t('actions.update')"
-      :cancel-button-text="t('actions.cancel')"
-      :no-back-button-text="t('actions.noBack')"
-      :yes-remove-button-text="t('actions.yesRemove')"
       :delete-title="t('calloutReviewerManager.confirmDelete.title')"
       :delete-text="
         (reviewer) =>
