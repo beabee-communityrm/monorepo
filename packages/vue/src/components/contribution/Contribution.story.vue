@@ -1,29 +1,15 @@
 <script lang="ts" setup>
-import {
-  type ContentPaymentData,
-  ContributionPeriod,
-  PaymentMethod,
-} from '@beabee/beabee-common';
+import type { ContentPaymentData } from '@beabee/beabee-common';
+import { ContributionPeriod, PaymentMethod } from '@beabee/beabee-common';
 
-import { reactive, ref } from 'vue';
+import { reactive } from 'vue';
 
-import type { ContributionContent } from '../../types/contribution';
-import Contribution, { type ContributionLabels } from './Contribution.vue';
+import Contribution from './Contribution.vue';
 
-const state = reactive({
-  amount: 25,
-  period: ContributionPeriod.Monthly,
-  payFee: true,
-  paymentMethod: PaymentMethod.StripeCard,
-  showPeriod: true,
-  showPaymentMethod: true,
-  disabled: false,
-});
-
-const content: ContributionContent = {
-  initialAmount: 5,
+const content = {
+  initialAmount: 25,
   initialPeriod: ContributionPeriod.Monthly,
-  minMonthlyAmount: 5,
+  minMonthlyAmount: 1,
   showAbsorbFee: true,
   periods: [
     {
@@ -35,11 +21,7 @@ const content: ContributionContent = {
       presetAmounts: [60, 120, 300, 600],
     },
   ],
-  paymentMethods: [
-    PaymentMethod.StripeCard,
-    PaymentMethod.StripePayPal,
-    PaymentMethod.StripeSEPA,
-  ],
+  paymentMethods: [PaymentMethod.StripeCard, PaymentMethod.StripePayPal],
 };
 
 const paymentContent: ContentPaymentData = {
@@ -50,31 +32,20 @@ const paymentContent: ContentPaymentData = {
   noticeText: '',
 };
 
-const labels: ContributionLabels = {
-  currencySymbol: '€',
-  minimumContribution: 'Minimum contribution',
-  perMonth: 'per month',
-  perYear: 'per year',
-  paymentMethodTitle: 'Payment Method',
-  absorbFeeText: 'Help us cover the {fee} processing fee for this transaction.',
-  absorbFeeOptional:
-    "I'll pay {fee} to cover the processing fee ({amount} total)",
-  absorbFeeForced:
-    'Processing fee of {fee} is required for this contribution amount',
-  periods: {
-    [ContributionPeriod.Monthly]: 'Monthly',
-    [ContributionPeriod.Annually]: 'Annually',
-  },
-  paymentMethods: {
-    [PaymentMethod.StripeCard]: 'Credit Card',
-    [PaymentMethod.StripeSEPA]: 'SEPA',
-    [PaymentMethod.StripeBACS]: 'BACS',
-    [PaymentMethod.StripePayPal]: 'PayPal',
-    [PaymentMethod.StripeIdeal]: 'iDEAL',
-    [PaymentMethod.GoCardlessDirectDebit]: 'Direct Debit',
-  },
-  currencyFormatter: (value: number) => `€${value}`,
-};
+// Mock currency formatter
+const currencyFormatter = (value: number) => `€${value}`;
+const currencySymbol = '€';
+
+// State for the playground
+const state = reactive({
+  amount: 25,
+  period: ContributionPeriod.Monthly,
+  payFee: true,
+  paymentMethod: PaymentMethod.StripeCard,
+  showPeriod: true,
+  showPaymentMethod: true,
+  disabled: false,
+});
 
 // State for different scenarios
 const monthlyState = reactive({
@@ -113,7 +84,8 @@ const minimumState = reactive({
           :show-period="state.showPeriod"
           :show-payment-method="state.showPaymentMethod"
           :disabled="state.disabled"
-          :labels="labels"
+          :currency-symbol="currencySymbol"
+          :currency-formatter="currencyFormatter"
         />
         <div class="mt-6 rounded bg-grey-lighter p-4 text-sm">
           <h4 class="mb-2 font-semibold">Current Values:</h4>
@@ -147,7 +119,8 @@ const minimumState = reactive({
           :show-period="true"
           :show-payment-method="true"
           :disabled="false"
-          :labels="labels"
+          :currency-symbol="currencySymbol"
+          :currency-formatter="currencyFormatter"
         />
         <div class="mt-4 text-sm text-grey">
           Monthly contribution with fee absorption option
@@ -167,7 +140,8 @@ const minimumState = reactive({
           :show-period="true"
           :show-payment-method="true"
           :disabled="false"
-          :labels="labels"
+          :currency-symbol="currencySymbol"
+          :currency-formatter="currencyFormatter"
         />
         <div class="mt-4 text-sm text-grey">
           Annual contribution (fee option hidden for yearly)
@@ -187,7 +161,8 @@ const minimumState = reactive({
           :show-period="true"
           :show-payment-method="true"
           :disabled="false"
-          :labels="labels"
+          :currency-symbol="currencySymbol"
+          :currency-formatter="currencyFormatter"
         />
         <div class="mt-4 text-sm text-grey">
           Minimum contribution amount forces fee absorption
@@ -207,7 +182,8 @@ const minimumState = reactive({
           :show-period="false"
           :show-payment-method="false"
           :disabled="false"
-          :labels="labels"
+          :currency-symbol="currencySymbol"
+          :currency-formatter="currencyFormatter"
         />
         <div class="mt-4 text-sm text-grey">
           Amount selection only (period and payment method hidden)
@@ -227,7 +203,8 @@ const minimumState = reactive({
           :show-period="true"
           :show-payment-method="true"
           :disabled="true"
-          :labels="labels"
+          :currency-symbol="currencySymbol"
+          :currency-formatter="currencyFormatter"
         />
         <div class="mt-4 text-sm text-grey">All form elements are disabled</div>
       </div>
@@ -248,37 +225,11 @@ const minimumState = reactive({
           :show-period="true"
           :show-payment-method="true"
           :disabled="false"
-          :labels="labels"
+          :currency-symbol="currencySymbol"
+          :currency-formatter="currencyFormatter"
         />
         <div class="mt-4 text-sm text-grey">
-          Payment method selection is hidden when only one method is available
-        </div>
-      </div>
-    </Variant>
-
-    <Variant title="With Custom Content Slot">
-      <div class="max-w-lg">
-        <Contribution
-          v-model:amount="state.amount"
-          v-model:period="state.period"
-          v-model:pay-fee="state.payFee"
-          v-model:payment-method="state.paymentMethod"
-          :content="content"
-          :payment-content="paymentContent"
-          :show-period="true"
-          :show-payment-method="true"
-          :disabled="false"
-          :labels="labels"
-        >
-          <div
-            class="my-4 rounded border border-primary-40 bg-primary-5 p-3 text-sm"
-          >
-            <p class="font-semibold">Special Offer!</p>
-            <p>Join now and get your first month at 50% off.</p>
-          </div>
-        </Contribution>
-        <div class="mt-4 text-sm text-grey">
-          Custom content can be inserted between amount and payment method
+          Only one payment method available
         </div>
       </div>
     </Variant>
