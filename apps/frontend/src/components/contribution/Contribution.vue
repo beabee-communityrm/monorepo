@@ -23,7 +23,8 @@
     :show-period="false"
     :show-payment-method="showPaymentMethod"
     :disabled="disabled"
-    :labels="contributionLabels"
+    :currency-symbol="generalContent.currencySymbol"
+    :currency-formatter="(amount: number) => n(amount, 'currency')"
     class="mb-4"
   >
     <slot></slot>
@@ -42,34 +43,6 @@ import { Contribution as VueContribution } from '@beabee/vue';
 import { generalContent } from '@store';
 import { computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-
-/**
- * Labels and text content for the Contribution component
- */
-interface ContributionLabels {
-  /** Currency symbol (e.g. "€", "$") */
-  currencySymbol: string;
-  /** Text for minimum contribution error */
-  minimumContribution: string;
-  /** Text for per month display */
-  perMonth: string;
-  /** Text for per year display */
-  perYear: string;
-  /** Title for payment method selection */
-  paymentMethodTitle: string;
-  /** Text for fee absorption explanation */
-  absorbFeeText: string;
-  /** Text for optional fee absorption checkbox */
-  absorbFeeOptional: string;
-  /** Text for forced fee absorption checkbox */
-  absorbFeeForced: string;
-  /** Labels for contribution periods */
-  periods: Record<string, string>;
-  /** Labels for payment methods */
-  paymentMethods: Record<PaymentMethod, string>;
-  /** Function to format currency values */
-  currencyFormatter: (value: number) => string;
-}
 
 const props = withDefaults(
   defineProps<{
@@ -92,46 +65,6 @@ const props = withDefaults(
 );
 
 const { t, n } = useI18n();
-
-// Create labels object for the vue package component
-const contributionLabels = computed<ContributionLabels>(() => ({
-  currencySymbol: generalContent.value.currencySymbol,
-  minimumContribution: t('join.minimumContribution'),
-  perMonth: t('common.perMonth'),
-  perYear: t('common.perYear'),
-  paymentMethodTitle: t('join.paymentMethod'),
-  absorbFeeText: t('join.absorbFeeText', { fee: '{fee}' }),
-  absorbFeeOptional: t('join.absorbFeeOptIn', {
-    fee: '{fee}',
-    amount: '{amount}',
-  }),
-  absorbFeeForced: t('join.absorbFeeForce', {
-    fee: '{fee}',
-    amount: '{amount}',
-  }),
-  periods: {
-    monthly: t('common.contributionPeriod.monthly'),
-    annually: t('common.contributionPeriod.annually'),
-  },
-  paymentMethods: {
-    [PaymentMethod.StripeCard]: t('paymentMethods.s_card.label', 'Credit Card'),
-    [PaymentMethod.StripeSEPA]: t(
-      'paymentMethods.s_sepa.label',
-      'SEPA Direct Debit'
-    ),
-    [PaymentMethod.StripeBACS]: t(
-      'paymentMethods.s_bacs.label',
-      'Bank Transfer'
-    ),
-    [PaymentMethod.StripePayPal]: t('paymentMethods.s_paypal.label', 'PayPal'),
-    [PaymentMethod.StripeIdeal]: t('paymentMethods.s_ideal.label', 'iDEAL'),
-    [PaymentMethod.GoCardlessDirectDebit]: t(
-      'paymentMethods.gc_direct-debit.label',
-      'Direct Debit'
-    ),
-  },
-  currencyFormatter: (amount: number) => n(amount, 'currency'),
-}));
 
 const emit = defineEmits([
   'update:amount',

@@ -13,7 +13,8 @@
   - `showPeriod` (boolean): Whether to show period selection
   - `showPaymentMethod` (boolean): Whether to show payment method selection
   - `disabled` (boolean): Whether the form is disabled
-  - `labels` (ContributionLabels): All text labels and translations
+  - `currencySymbol` (string): Currency symbol (e.g. "€", "$")
+  - `currencyFormatter` (function): Function to format currency values
   
   ## Events
   - `update:amount` (number): Emitted when amount changes
@@ -30,16 +31,11 @@
   - Full accessibility support
 -->
 <template>
-  <div>
+  <div class="space-y-4">
     <AppChoice
       v-if="showPeriod"
       v-model="periodProxy"
-      :items="
-        content.periods.map((period) => ({
-          label: labels.periods[period.name],
-          value: period.name,
-        }))
-      "
+      :items="periodItems"
       :disabled="disabled"
       class="mb-4"
     />
@@ -50,10 +46,10 @@
       :min-amount="minAmount"
       :defined-amounts="definedAmounts"
       :disabled="disabled"
-      :currency-symbol="labels.currencySymbol"
-      :minimum-text="labels.minimumContribution"
+      :currency-symbol="currencySymbol"
+      :minimum-text="t('join.minimumContribution')"
       :per-period-text="perPeriodText"
-      :currency-formatter="labels.currencyFormatter"
+      :currency-formatter="currencyFormatter"
       class="mb-4"
     />
 
@@ -64,8 +60,8 @@
       v-model="paymentMethodProxy"
       :methods="content.paymentMethods"
       :disabled="disabled"
-      :title="labels.paymentMethodTitle"
-      :method-labels="labels.paymentMethods"
+      :title="t('join.paymentMethod')"
+      :method-labels="paymentMethodLabels"
       class="mb-4"
     />
 
@@ -91,6 +87,7 @@ import {
 } from '@beabee/beabee-common';
 
 import { computed, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import type { ContributionContent } from '../../types/contribution';
 import { AppChoice } from '../form';
@@ -98,33 +95,7 @@ import ContributionAmount from './ContributionAmount.vue';
 import ContributionFee from './ContributionFee.vue';
 import ContributionMethod from './ContributionMethod.vue';
 
-/**
- * Labels and text content for the Contribution component
- */
-export interface ContributionLabels {
-  /** Currency symbol (e.g. "€", "$") */
-  currencySymbol: string;
-  /** Text for minimum contribution error */
-  minimumContribution: string;
-  /** Text for per month display */
-  perMonth: string;
-  /** Text for per year display */
-  perYear: string;
-  /** Title for payment method selection */
-  paymentMethodTitle: string;
-  /** Text for fee absorption explanation */
-  absorbFeeText: string;
-  /** Text for optional fee absorption checkbox */
-  absorbFeeOptional: string;
-  /** Text for forced fee absorption checkbox */
-  absorbFeeForced: string;
-  /** Labels for contribution periods */
-  periods: Record<string, string>;
-  /** Labels for payment methods */
-  paymentMethods: Record<PaymentMethod, string>;
-  /** Function to format currency values */
-  currencyFormatter: (value: number) => string;
-}
+const { t } = useI18n();
 
 /**
  * Props for the Contribution component
@@ -148,8 +119,10 @@ export interface ContributionProps {
   showPaymentMethod?: boolean;
   /** Whether the form is disabled */
   disabled?: boolean;
-  /** All text labels and translations */
-  labels: ContributionLabels;
+  /** Currency symbol (e.g. "€", "$") */
+  currencySymbol: string;
+  /** Function to format currency values */
+  currencyFormatter: (value: number) => string;
 }
 
 const props = withDefaults(defineProps<ContributionProps>(), {
@@ -206,8 +179,26 @@ const definedAmounts = computed(() => {
 });
 
 const perPeriodText = computed(() => {
-  return isMonthly.value ? props.labels.perMonth : props.labels.perYear;
+  return isMonthly.value ? t('common.perMonth') : t('common.perYear');
 });
+
+const periodItems = computed(() =>
+  props.content.periods.map((period) => ({
+    label: t(`common.contributionPeriod.${period.name}`),
+    value: period.name,
+  }))
+);
+
+const paymentMethodLabels = computed(() => ({
+  [PaymentMethod.StripeCard]: t('paymentMethods.s_card.label'),
+  [PaymentMethod.StripeSEPA]: t('paymentMethods.s_sepa.label'),
+  [PaymentMethod.StripeBACS]: t('paymentMethods.s_bacs.label'),
+  [PaymentMethod.StripePayPal]: t('paymentMethods.s_paypal.label'),
+  [PaymentMethod.StripeIdeal]: t('paymentMethods.s_ideal.label'),
+  [PaymentMethod.GoCardlessDirectDebit]: t(
+    'paymentMethods.gc_direct-debit.label'
+  ),
+}));
 
 watch(isMonthly, (value) => {
   amountProxy.value = value
@@ -226,18 +217,16 @@ watch(shouldForceFee, (force) => {
 });
 
 const absorbFeeText = computed(() =>
-  props.labels.absorbFeeText.replace(
-    '{fee}',
-    props.labels.currencyFormatter(fee.value)
-  )
+  t('join.absorbFeeText', { fee: props.currencyFormatter(fee.value) })
 );
 
 const absorbFeeLabel = computed(() => {
   const template = shouldForceFee.value
-    ? props.labels.absorbFeeForced
-    : props.labels.absorbFeeOptional;
-  return template
-    .replace('{fee}', props.labels.currencyFormatter(fee.value))
-    .replace('{amount}', props.labels.currencyFormatter(amountProxy.value));
+    ? 'join.absorbFeeForce'
+    : 'join.absorbFeeOptIn';
+  return t(template, {
+    fee: props.currencyFormatter(fee.value),
+    amount: props.currencyFormatter(amountProxy.value),
+  });
 });
 </script>
