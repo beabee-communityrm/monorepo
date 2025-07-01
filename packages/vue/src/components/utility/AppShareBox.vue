@@ -3,6 +3,11 @@
   A component for sharing URLs across various social media platforms and methods.
   Provides a collapsible box with social sharing options and a copy-to-clipboard feature.
 
+  Uses internal i18n for standard text:
+  - Share button text: actions.share
+  - Copy button text: actions.copy
+  - Email sharing text: form.email
+
   ## Features:
   - Multiple social media sharing options (Facebook, LinkedIn, Telegram, Twitter, WhatsApp)
   - Email sharing support
@@ -17,8 +22,6 @@
   <AppShareBox
     url="/my-page"
     base-url="https://example.com"
-    share-text="Check out this page"
-    copy-text="Copy link"
     address-text="Share this page using the address below:"
     services-text="Or share via social media:"
   />
@@ -27,9 +30,9 @@
 <template>
   <AppExpandableBox
     :button-icon="faShareNodes"
-    :button-text="shareText"
+    :button-text="t('actions.share')"
     role="region"
-    :aria-label="shareText"
+    :aria-label="t('actions.share')"
   >
     <div class="space-y-4">
       <!-- Address section -->
@@ -40,7 +43,7 @@
           :label="addressText"
           disabled
           copyable
-          :copy-label="copyText"
+          :copy-label="t('actions.copy')"
           :aria-label="`URL: ${fullUrl}`"
           hide-error-message
         />
@@ -147,7 +150,7 @@
               class="mr-2 text-body-60"
               aria-hidden="true"
             />
-            <span>{{ emailText }}</span>
+            <span>{{ t('form.email') }}</span>
           </a>
         </nav>
       </section>
@@ -160,6 +163,11 @@
  * AppShareBox component for sharing URLs across social media platforms and via email.
  * Provides a collapsible interface with multiple sharing options and copy-to-clipboard functionality.
  *
+ * Uses internal i18n for standard text:
+ * - Share button text: actions.share
+ * - Copy button text: actions.copy
+ * - Email sharing text: form.email
+ *
  * @component AppShareBox
  */
 import {
@@ -171,8 +179,11 @@ import {
 } from '@fortawesome/free-brands-svg-icons';
 import { faEnvelope, faShareNodes } from '@fortawesome/free-solid-svg-icons';
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import { AppExpandableBox, AppInput } from '../..';
+
+const { t } = useI18n();
 
 /**
  * Props for the AppShareBox component
@@ -182,38 +193,21 @@ export interface AppShareBoxProps {
   url: string;
   /** The base URL to prepend to the relative URL */
   baseUrl: string;
-  /** Text label for the share button */
-  shareText: string;
-  /** Text label for the copy button */
-  copyText: string;
   /** Text describing the address/URL section */
   addressText: string;
   /** Text describing the social media services section */
   servicesText: string;
-  /** Text label for the email sharing option */
-  emailText: string;
 }
 
 const props = withDefaults(defineProps<AppShareBoxProps>(), {
-  shareText: 'Share',
-  copyText: 'Copy',
   addressText: 'Share this address:',
   servicesText: 'Or share via social media:',
-  emailText: 'Email',
 });
 
 /**
- * Computed full URL combining base URL and relative URL
+ * Computed full URL by combining baseUrl and url
  */
 const fullUrl = computed(() => {
-  if (!props.baseUrl || !props.url) {
-    return '';
-  }
-
-  const base = props.baseUrl.endsWith('/')
-    ? props.baseUrl.slice(0, -1)
-    : props.baseUrl;
-  const url = props.url.startsWith('/') ? props.url : `/${props.url}`;
-  return base + url;
+  return `${props.baseUrl}${props.url}`;
 });
 </script>

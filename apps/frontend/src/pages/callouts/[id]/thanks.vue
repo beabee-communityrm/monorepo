@@ -13,11 +13,8 @@ meta:
     <AppShareBox
       :url="`/callouts/${callout.slug}`"
       :base-url="env.appUrl"
-      :share-text="t('actions.share')"
-      :copy-text="t('actions.copy')"
       :address-text="t('callout.share.address')"
       :services-text="t('callout.share.services')"
-      :email-text="t('form.email')"
     />
   </div>
 </template>
