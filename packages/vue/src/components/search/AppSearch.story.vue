@@ -135,29 +135,7 @@ const operatorLabels: OperatorLabels = {
   },
 };
 
-const labels = {
-  advancedSearchButton: 'Advanced Search',
-  createFiltersBefore: 'Show results where',
-  createFiltersAfter: 'of the following conditions are met:',
-  conditionTypes: {
-    all: 'all',
-    any: 'any',
-  },
-  matchConditions: {
-    AND: 'AND',
-    OR: 'OR',
-  },
-  addRule: 'Add Rule',
-  search: 'Search',
-  reset: 'Reset',
-  selectFilter: 'Select a filter...',
-  yes: 'Yes',
-  no: 'No',
-  relativeDatePlaceholder: '$now(d:-1)',
-  and: 'and',
-  nestedRules: 'Nested rules (read-only)',
-  noNestedRules: 'Nested rules are not supported in edit mode',
-};
+// Labels object removed - AppSearch now uses internal i18n
 
 // Demo state
 const searchState = reactive({
@@ -213,7 +191,6 @@ function clearRules() {
           :filter-groups="filterGroups"
           :has-changed="searchState.hasChanged"
           :operator-labels="operatorLabels"
-          :labels="labels"
           :button-icon="faFilter"
           @update:model-value="handleSearch"
           @reset="handleReset"
@@ -265,7 +242,6 @@ function clearRules() {
           :model-value="presetRules"
           :filter-groups="filterGroups"
           :operator-labels="operatorLabels"
-          :labels="labels"
           :button-icon="faFilter"
           @update:model-value="handleSearch"
           @reset="handleReset"
@@ -288,7 +264,6 @@ function clearRules() {
           :model-value="undefined"
           :filter-groups="[filterGroups[0]]"
           :operator-labels="operatorLabels"
-          :labels="labels"
           :button-icon="faFilter"
           @update:model-value="handleSearch"
           @reset="handleReset"
@@ -312,7 +287,6 @@ function clearRules() {
           :model-value="undefined"
           :filter-groups="filterGroups"
           :operator-labels="operatorLabels"
-          :labels="labels"
           :button-icon="faFilter"
           @update:model-value="handleSearch"
           @reset="handleReset"

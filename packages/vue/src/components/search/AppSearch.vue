@@ -3,7 +3,7 @@
     <AppExpandableBox
       v-model:expanded="showExpanded"
       :button-icon="buttonIcon"
-      :button-text="labels.advancedSearchButton"
+      :button-text="t('advancedSearch.button')"
     >
       <template #before><slot /></template>
       <AppSearchForm
@@ -11,7 +11,6 @@
         :filter-groups="filterGroups"
         :has-changed="!!hasChanged"
         :operator-labels="operatorLabels"
-        :labels="labels"
         :locale="locale"
         @update:model-value="emit('update:modelValue', $event)"
       />
@@ -25,7 +24,6 @@
         :model-value="modelValue"
         :filter-groups="filterGroups"
         :operator-labels="operatorLabels"
-        :labels="labels"
         :locale="locale"
         @update:model-value="emit('update:modelValue', $event)"
       />
@@ -45,8 +43,12 @@ import type { FilterGroups, OperatorLabels } from '../../types/search';
 import AppSearchForm from './AppSearchForm.vue';
 import AppSearchSummary from './AppSearchSummary.vue';
 
+const { t } = useI18n();
+
 /**
- * Main search component that provides expandable advanced search functionality
+ * Main search component that provides expandable advanced search functionality.
+ * Now completely simplified with all child components using internal i18n.
+ *
  * @param filterGroups - Available filter groups
  * @param modelValue - The current rule group
  * @param hasChanged - Whether the search has changes
@@ -74,7 +76,6 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const emit = defineEmits<Emits>();
-const { t } = useI18n();
 
 const operatorLabels = computed<OperatorLabels>(() => ({
   text: {
@@ -136,30 +137,6 @@ const operatorLabels = computed<OperatorLabels>(() => ({
     is_empty: t('advancedSearch.operators.all.is_empty'),
     is_not_empty: t('advancedSearch.operators.all.is_not_empty'),
   },
-}));
-
-const labels = computed(() => ({
-  advancedSearchButton: t('advancedSearch.button'),
-  createFiltersBefore: t('advancedSearch.createFiltersBefore'),
-  createFiltersAfter: t('advancedSearch.createFiltersAfter'),
-  conditionTypes: {
-    all: t('advancedSearch.createFiltersType.all'),
-    any: t('advancedSearch.createFiltersType.any'),
-  },
-  matchConditions: {
-    AND: t('advancedSearch.matchWord.AND'),
-    OR: t('advancedSearch.matchWord.OR'),
-  },
-  addRule: t('advancedSearch.addRule'),
-  search: t('actions.search'),
-  reset: t('actions.reset'),
-  selectFilter: t('advancedSearch.selectFilter'),
-  yes: t('common.yes'),
-  no: t('common.no'),
-  relativeDatePlaceholder: '$now(d:-1)',
-  and: t('advancedSearch.matchWord.AND'),
-  nestedRules: t('advancedSearch.nestedRules'),
-  noNestedRules: t('advancedSearch.noNestedRules'),
 }));
 
 const showExpanded = ref(false);

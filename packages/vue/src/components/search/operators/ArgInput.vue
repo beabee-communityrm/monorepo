@@ -4,8 +4,8 @@
     v-else-if="item.type === 'boolean'"
     v-model="value"
     :options="[
-      [true, labels.yes],
-      [false, labels.no],
+      [true, t('common.yes')],
+      [false, t('common.no')],
     ]"
     inline
     required
@@ -19,7 +19,7 @@
   <DateInput
     v-else-if="item.type === 'date'"
     v-model="value"
-    :relative-placeholder="labels.relativeDatePlaceholder"
+    relative-placeholder="$now(d:-1)"
   />
   <AppInput
     v-else
@@ -42,16 +42,20 @@ import type { BaseLocale } from '@beabee/locale';
 import { AppInput, AppRadioGroup, AppSelect, formatLocale } from '@beabee/vue';
 
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import type { FilterItem } from '../../../types/search';
 import DateInput from './DateInput.vue';
 
+const { t } = useI18n();
+
 /**
- * Argument input component for different filter types
+ * Argument input component for different filter types.
+ * Now uses internal i18n for yes/no labels and hardcoded relative date placeholder.
+ *
  * @param modelValue - The current value
  * @param item - The filter item configuration
  * @param readonly - Whether the component is in readonly mode
- * @param labels - Labels for UI text
  * @param locale - Locale for date formatting
  */
 
@@ -59,11 +63,6 @@ interface Props {
   modelValue: RuleValue;
   item: FilterItem;
   readonly: boolean;
-  labels: {
-    yes: string;
-    no: string;
-    relativeDatePlaceholder: string;
-  };
   locale?: BaseLocale;
 }
 
@@ -99,7 +98,7 @@ const readonlyValue = computed(() => {
       }
     }
     case 'boolean':
-      return props.modelValue === true ? props.labels.yes : props.labels.no;
+      return props.modelValue === true ? t('common.yes') : t('common.no');
 
     case 'array':
     case 'enum':

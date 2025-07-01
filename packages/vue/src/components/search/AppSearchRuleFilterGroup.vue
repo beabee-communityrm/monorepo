@@ -6,7 +6,6 @@
       <AppSearchRuleFilterGroupItem
         :rule="rule"
         :item="ruleFilterItem"
-        :labels="labels"
         :locale="locale"
         readonly
       />
@@ -20,7 +19,7 @@
   <div v-else class="flex items-center gap-2">
     <AppSelect
       :model-value="rule?.field || ''"
-      :placeholder="labels.selectFilter"
+      :placeholder="t('advancedSearch.selectFilter')"
       :items="filterItems"
       required
       class="basis-2/5"
@@ -40,7 +39,6 @@
         <AppSearchRuleFilterGroupItem
           :rule="rule"
           :item="ruleFilterItem"
-          :labels="labels"
           :locale="locale"
         />
       </div>
@@ -55,6 +53,7 @@ import { AppSelect } from '@beabee/vue';
 
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import {
   type OperatorLabels,
@@ -66,25 +65,22 @@ import {
 import { createNewRule, getDefaultRuleValue } from '../../utils/rules';
 import AppSearchRuleFilterGroupItem from './AppSearchRuleFilterGroupItem.vue';
 
+const { t } = useI18n();
+
 /**
- * Rule filter group component that handles selection of fields and operators
+ * Rule filter group component that handles selection of fields and operators.
+ * Now uses internal i18n for select filter placeholder and simplified since
+ * child components handle their own labels.
+ *
  * @param filterGroup - The filter group configuration
  * @param rule - The current rule
  * @param readonly - Whether the component is in readonly mode
  * @param operatorLabels - Labels for operators
- * @param labels - Labels for UI text
  * @param locale - Locale for date formatting
  */
 
 interface Props extends SearchRuleFilterGroupProps {
   operatorLabels: OperatorLabels;
-  labels: {
-    selectFilter: string;
-    yes: string;
-    no: string;
-    relativeDatePlaceholder: string;
-    and: string;
-  };
   locale?: BaseLocale;
 }
 

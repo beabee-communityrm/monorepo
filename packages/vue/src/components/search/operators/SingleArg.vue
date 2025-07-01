@@ -4,7 +4,6 @@
     v-model="value[0]"
     :item="item"
     :readonly="readonly"
-    :labels="labels"
     :locale="locale"
   />
 </template>
@@ -17,11 +16,12 @@ import type { FilterItem } from '../../../types/search';
 import ArgInput from './ArgInput.vue';
 
 /**
- * Single argument operator component for rules that take one input value
+ * Single argument operator component for rules that take one input value.
+ * Now simplified since ArgInput uses internal i18n.
+ *
  * @param value - Array containing the single value
  * @param item - The filter item configuration
  * @param readonly - Whether the component is in readonly mode
- * @param labels - Labels for UI text
  * @param locale - Locale for date formatting
  */
 
@@ -29,11 +29,6 @@ interface Props {
   value: RuleValue[];
   item: FilterItem;
   readonly: boolean;
-  labels: {
-    yes: string;
-    no: string;
-    relativeDatePlaceholder: string;
-  };
   locale?: BaseLocale;
 }
 
