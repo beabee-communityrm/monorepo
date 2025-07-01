@@ -1,13 +1,17 @@
 <template>
   <AppForm
-    :button-text="labels.save"
+    :button-text="t('actions.save')"
     @submit.prevent="$emit('submit', convertFormData(data))"
   >
     <div class="mb-3">
-      <AppInput v-model="data.name" :label="labels.name" required />
+      <AppInput
+        v-model="data.name"
+        :label="t('addNotice.form.name')"
+        required
+      />
     </div>
 
-    <AppLabel :label="labels.startDateAndTime" />
+    <AppLabel :label="t('addNotice.form.startDateAndTime')" />
     <div class="mb-3 flex">
       <div>
         <AppInput v-model="data.startDate" type="date" />
@@ -17,7 +21,7 @@
       </div>
     </div>
 
-    <AppLabel :label="labels.expirationDateAndTime" />
+    <AppLabel :label="t('addNotice.form.expirationDateAndTime')" />
     <div class="mb-3 flex">
       <div>
         <AppInput v-model="data.expirationDate" type="date" />
@@ -28,18 +32,25 @@
     </div>
 
     <div class="mb-3">
-      <AppInput v-model="data.text" :label="labels.text" required />
+      <AppInput
+        v-model="data.text"
+        :label="t('addNotice.form.text')"
+        required
+      />
     </div>
 
     <div class="mb-3">
-      <AppInput v-model="data.buttonText" :label="labels.buttonText" />
+      <AppInput
+        v-model="data.buttonText"
+        :label="t('addNotice.form.buttonText')"
+      />
     </div>
 
     <div class="mb-3">
       <AppInput
         v-model="data.url"
         :required="!!data.buttonText"
-        :label="labels.url"
+        :label="t('addNotice.form.url')"
       />
     </div>
   </AppForm>
@@ -50,6 +61,7 @@ import type { CreateNoticeData } from '@beabee/beabee-common';
 
 import { format } from 'date-fns';
 import { reactive } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import type {
   NoticeFormData,
@@ -57,6 +69,8 @@ import type {
   NoticeFormProps,
 } from '../../types/notice';
 import { AppForm, AppInput, AppLabel } from '../form';
+
+const { t } = useI18n();
 
 defineEmits<NoticeFormEmits>();
 const props = withDefaults(defineProps<NoticeFormProps>(), {
