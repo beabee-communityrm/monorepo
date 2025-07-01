@@ -1,3 +1,31 @@
+<!--
+  # AppTextArea
+  A comprehensive textarea component with validation, character counting, and accessibility features.
+  
+  Uses internal i18n for standard messages:
+  - Required field error: form.errors.unknown.required
+  - Max length error: form.errors.unknown.maxLength
+  - Character count display: form.characters.remaining
+
+  ## Features
+  - Built-in validation with Vuelidate
+  - Character count display with max length support
+  - Copy-to-clipboard functionality
+  - Accessibility with proper ARIA labels
+  - Error state management
+  - Info message support
+  - Mobile-first responsive design
+
+  ## Usage
+  ```vue
+  <AppTextArea 
+    v-model="description" 
+    label="Description"
+    :maxlength="500"
+    required 
+  />
+  ```
+-->
 <template>
   <div>
     <AppLabel v-if="label" :label="label" :required="required" :for="id" />
@@ -53,6 +81,16 @@
 </template>
 
 <script lang="ts" setup>
+/**
+ * AppTextArea component with validation, character counting, and accessibility features.
+ *
+ * Uses internal i18n for standard messages:
+ * - Required field error: form.errors.unknown.required
+ * - Max length error: form.errors.unknown.maxLength
+ * - Character count display: form.characters.remaining
+ *
+ * @component AppTextArea
+ */
 import useVuelidate from '@vuelidate/core';
 import {
   helpers,
@@ -60,11 +98,14 @@ import {
   requiredIf,
 } from '@vuelidate/validators';
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import AppCopyButton from '../button/AppCopyButton.vue';
 import AppInputError from './AppInputError.vue';
 import AppInputHelp from './AppInputHelp.vue';
 import AppLabel from './AppLabel.vue';
+
+const { t } = useI18n();
 
 /**
  * Props for the AppTextArea component
@@ -90,12 +131,6 @@ export interface AppTextAreaProps {
   copyButtonDisabled?: boolean;
   /** Custom ID for the textarea element */
   id?: string;
-  /** Text to display for required field error (e.g., "This field is required") */
-  requiredErrorText?: string;
-  /** Text template for max length error (e.g., "Must be no more than {max} characters") */
-  maxLengthErrorText?: string;
-  /** Text template for character count (e.g., "{remaining} of {max} characters remaining") */
-  characterCountText?: string;
 }
 
 const emit = defineEmits(['update:modelValue', 'update:validation']);
@@ -110,9 +145,6 @@ const props = withDefaults(defineProps<AppTextAreaProps>(), {
   copyable: false,
   copyButtonDisabled: false,
   id: undefined,
-  requiredErrorText: 'This field is required',
-  maxLengthErrorText: 'Must be no more than {max} characters',
-  characterCountText: '{remaining} of {max} characters remaining',
 });
 
 // Generate unique ID for aria-labels and form associations
@@ -131,25 +163,23 @@ const remainingChars = computed(() => {
   return Math.max(0, props.maxlength - (value.value?.length || 0));
 });
 
-// Format character count text
+// Format character count text using i18n
 const characterCountText = computed(() => {
   if (props.maxlength === undefined || remainingChars.value === undefined)
     return '';
-  return props.characterCountText
-    .replace('{remaining}', remainingChars.value.toString())
-    .replace('{max}', props.maxlength.toString());
+  return t('form.characters.remaining', { remaining: remainingChars.value });
 });
 
 const rules = computed(() => ({
   v: {
     required: helpers.withMessage(
-      props.requiredErrorText,
+      t('form.errors.unknown.required'),
       requiredIf(!!props.required)
     ),
     // Add maxLength validation when maxlength prop is provided
     ...(props.maxlength !== undefined && {
       maxLength: helpers.withMessage(
-        props.maxLengthErrorText.replace('{max}', props.maxlength.toString()),
+        t('form.errors.unknown.maxLength', { max: props.maxlength }),
         maxLengthValidator(props.maxlength)
       ),
     }),
