@@ -44,6 +44,7 @@
  * />
  */
 import { ItemStatus } from '@beabee/beabee-common';
+import type { BaseLocale } from '@beabee/locale';
 
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -84,7 +85,11 @@ const props = withDefaults(defineProps<ItemStatusTextProps>(), {
 const scheduledText = computed(() => {
   if (props.status !== ItemStatus.Scheduled || !props.starts) return '';
 
-  const duration = formatDistanceLocale(props.starts, new Date(), locale.value);
+  const duration = formatDistanceLocale(
+    props.starts,
+    new Date(),
+    locale.value as BaseLocale
+  );
   return t('item.status.startsIn', { duration });
 });
 
@@ -97,7 +102,7 @@ const openText = computed(() => {
   const duration = formatDistanceLocale(
     props.expires,
     new Date(),
-    locale.value
+    locale.value as BaseLocale
   );
   return t('item.status.endsIn', { duration });
 });
@@ -108,7 +113,11 @@ const openText = computed(() => {
 const endedText = computed(() => {
   if (props.status !== ItemStatus.Ended || !props.expires) return '';
 
-  const time = formatDistanceLocale(props.expires, new Date(), locale.value);
+  const time = formatDistanceLocale(
+    props.expires,
+    new Date(),
+    locale.value as BaseLocale
+  );
   return t('common.timeAgo', { time });
 });
 </script>
