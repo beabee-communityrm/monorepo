@@ -134,19 +134,7 @@ const operatorLabels: OperatorLabels = {
   },
 };
 
-const labels = {
-  selectFilter: 'Select a filter...',
-  yes: 'Yes',
-  no: 'No',
-  relativeDatePlaceholder: '$now(d:-1)',
-  and: 'and',
-  nestedRules: 'Nested rules (read-only)',
-  noNestedRules: 'Nested rules are not supported in edit mode',
-  matchConditions: {
-    AND: 'AND',
-    OR: 'OR',
-  },
-};
+// Labels object removed - AppSearchSummary now uses internal i18n
 
 // Sample rules for demonstration
 const simpleRules: RuleGroup = {
@@ -232,7 +220,6 @@ const arrayRules: RuleGroup = {
           :model-value="{ condition: 'AND', rules: [] }"
           :filter-groups="filterGroups"
           :operator-labels="operatorLabels"
-          :labels="labels"
         />
         <p class="text-gray-600 mt-2 text-sm">
           Shows empty state when no rules are provided.
@@ -246,7 +233,6 @@ const arrayRules: RuleGroup = {
           :model-value="simpleRules"
           :filter-groups="filterGroups"
           :operator-labels="operatorLabels"
-          :labels="labels"
         />
         <div class="border-gray-200 bg-gray-50 mt-4 rounded border p-3">
           <h4 class="mb-2 text-sm font-semibold">Rule Structure:</h4>
@@ -263,7 +249,6 @@ const arrayRules: RuleGroup = {
           :model-value="complexRules"
           :filter-groups="filterGroups"
           :operator-labels="operatorLabels"
-          :labels="labels"
         />
         <div class="border-gray-200 bg-gray-50 mt-4 rounded border p-3">
           <h4 class="mb-2 text-sm font-semibold">Rule Structure:</h4>
@@ -280,7 +265,6 @@ const arrayRules: RuleGroup = {
           :model-value="booleanRules"
           :filter-groups="filterGroups"
           :operator-labels="operatorLabels"
-          :labels="labels"
         />
         <div class="border-gray-200 bg-gray-50 mt-4 rounded border p-3">
           <h4 class="mb-2 text-sm font-semibold">Rule Structure:</h4>
@@ -297,7 +281,6 @@ const arrayRules: RuleGroup = {
           :model-value="arrayRules"
           :filter-groups="filterGroups"
           :operator-labels="operatorLabels"
-          :labels="labels"
         />
         <div class="border-gray-200 bg-gray-50 mt-4 rounded border p-3">
           <h4 class="mb-2 text-sm font-semibold">Rule Structure:</h4>
@@ -314,10 +297,9 @@ const arrayRules: RuleGroup = {
           :model-value="complexRules"
           :filter-groups="filterGroups"
           :operator-labels="operatorLabels"
-          :labels="labels"
         />
         <p class="text-gray-600 mt-2 text-sm">
-          This demonstrates how the summary adapts to narrow layouts.
+          This demonstrates how the summary adapts to smaller screens.
         </p>
       </div>
     </Variant>

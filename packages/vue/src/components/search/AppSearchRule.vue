@@ -4,7 +4,6 @@
     :rule="rule"
     :filter-groups="filterGroups"
     :operator-labels="operatorLabels"
-    :labels="labels"
     :locale="locale"
     readonly
     @remove="emit('remove')"
@@ -22,7 +21,6 @@
       :rule="rule"
       :filter-groups="filterGroups"
       :operator-labels="operatorLabels"
-      :labels="labels"
       :locale="locale"
       @update:rule="emit('update:rule', $event)"
     />
@@ -42,24 +40,18 @@ import type {
 import AppSearchRuleFilter from './AppSearchRuleFilter.vue';
 
 /**
- * Search rule component that wraps rule filter with remove functionality
+ * Search rule component that wraps rule filter with remove functionality.
+ * Now simplified since child components handle their own i18n internally.
+ *
  * @param filterGroups - Available filter groups
  * @param rule - The current rule
  * @param readonly - Whether the component is in readonly mode
  * @param operatorLabels - Labels for operators
- * @param labels - Labels for UI text
  * @param locale - Locale for date formatting
  */
 
 interface Props extends SearchRuleProps {
   operatorLabels: OperatorLabels;
-  labels: {
-    selectFilter: string;
-    yes: string;
-    no: string;
-    relativeDatePlaceholder: string;
-    and: string;
-  };
   locale?: BaseLocale;
 }
 

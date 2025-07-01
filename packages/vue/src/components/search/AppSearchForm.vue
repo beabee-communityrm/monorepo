@@ -4,17 +4,17 @@
       class="mb-3 flex items-center gap-2 text-sm font-semibold text-body-80"
     >
       <span>
-        {{ labels.createFiltersBefore }}
+        {{ t('advancedSearch.createFiltersBefore') }}
       </span>
       <AppSelect
         v-model="ruleGroup.condition"
         :items="[
-          { id: 'AND', label: labels.conditionTypes.all },
-          { id: 'OR', label: labels.conditionTypes.any },
+          { id: 'AND', label: t('advancedSearch.createFiltersType.all') },
+          { id: 'OR', label: t('advancedSearch.createFiltersType.any') },
         ]"
         required
       />
-      <span>{{ labels.createFiltersAfter }}</span>
+      <span>{{ t('advancedSearch.createFiltersAfter') }}</span>
     </div>
 
     <div class="relative mb-4">
@@ -28,13 +28,12 @@
             v-model:rule="ruleGroup.rules[i]"
             :filter-groups="filterGroups"
             :operator-labels="operatorLabels"
-            :labels="labels"
             :locale="locale"
             @remove="removeRule(i)"
           />
           <span
             class="absolute bottom-full left-1/2 z-10 -translate-x-1/2 translate-y-1/2 rounded bg-primary-70 px-2 py-1 font-bold uppercase text-white group-first:hidden"
-            >{{ labels.matchConditions[ruleGroup.condition] }}</span
+            >{{ t(`advancedSearch.matchWord.${ruleGroup.condition}`) }}</span
           >
         </li>
       </ul>
@@ -45,7 +44,7 @@
           size="xs"
           @click="addRule"
         >
-          {{ labels.addRule }}
+          {{ t('advancedSearch.addRule') }}
         </AppButton>
       </div>
     </div>
@@ -56,10 +55,10 @@
         :disabled="validation.$invalid || !hasChanged"
         type="submit"
       >
-        {{ labels.search }}
+        {{ t('actions.search') }}
       </AppButton>
       <AppButton v-if="hasChanged" variant="text" @click="handleReset">
-        {{ labels.reset }}
+        {{ t('actions.reset') }}
       </AppButton>
     </div>
   </form>
@@ -73,6 +72,7 @@ import { AppButton, AppSelect } from '@beabee/vue';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import useVuelidate from '@vuelidate/core';
 import { computed, reactive, toRef, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import type {
   FilterGroups,
@@ -82,13 +82,17 @@ import type {
 import { copyRuleGroup, isRuleGroupEqual } from '../../utils/rules';
 import AppSearchRuleOrGroup from './AppSearchRuleOrGroup.vue';
 
+const { t } = useI18n();
+
 /**
- * Search form component for building complex filter rules
+ * Search form component for building complex filter rules.
+ * Now uses internal i18n for all UI text and simplified since child
+ * components handle their own labels.
+ *
  * @param filterGroups - Available filter groups
  * @param modelValue - The current rule group
  * @param hasChanged - Whether the form has changes
  * @param operatorLabels - Labels for operators
- * @param labels - Labels for UI text
  * @param locale - Locale for date formatting
  */
 
@@ -97,28 +101,6 @@ interface Props {
   modelValue: RuleGroup | undefined;
   hasChanged: boolean;
   operatorLabels: OperatorLabels;
-  labels: {
-    createFiltersBefore: string;
-    createFiltersAfter: string;
-    conditionTypes: {
-      all: string;
-      any: string;
-    };
-    matchConditions: {
-      AND: string;
-      OR: string;
-    };
-    addRule: string;
-    search: string;
-    reset: string;
-    selectFilter: string;
-    yes: string;
-    no: string;
-    relativeDatePlaceholder: string;
-    and: string;
-    nestedRules: string;
-    noNestedRules: string;
-  };
   locale?: BaseLocale;
 }
 

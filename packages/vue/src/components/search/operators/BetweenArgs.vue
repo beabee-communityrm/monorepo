@@ -4,15 +4,13 @@
     v-model="value[0]"
     :item="item"
     :readonly="readonly"
-    :labels="labels"
     :locale="locale"
   />
-  {{ labels.and }}
+  {{ t('advancedSearch.matchWord.AND') }}
   <ArgInput
     v-model="value[1]"
     :item="item"
     :readonly="readonly"
-    :labels="labels"
     :locale="locale"
   />
 </template>
@@ -21,15 +19,20 @@
 import type { RuleValue } from '@beabee/beabee-common';
 import type { BaseLocale } from '@beabee/locale';
 
+import { useI18n } from 'vue-i18n';
+
 import type { FilterItem } from '../../../types/search';
 import ArgInput from './ArgInput.vue';
 
+const { t } = useI18n();
+
 /**
- * Between arguments operator component for rules that take two input values (e.g., between X and Y)
+ * Between arguments operator component for rules that take two input values (e.g., between X and Y).
+ * Now uses internal i18n for the "and" connector and ArgInput handles its own labels.
+ *
  * @param value - Array containing the two values for the range
  * @param item - The filter item configuration
  * @param readonly - Whether the component is in readonly mode
- * @param labels - Labels for UI text including the "and" connector
  * @param locale - Locale for date formatting
  */
 
@@ -37,12 +40,6 @@ interface Props {
   value: RuleValue[];
   item: FilterItem;
   readonly: boolean;
-  labels: {
-    yes: string;
-    no: string;
-    relativeDatePlaceholder: string;
-    and: string;
-  };
   locale?: BaseLocale;
 }
 

@@ -6,7 +6,6 @@
       :filter-group="selectedFilterGroup"
       :rule="rule"
       :operator-labels="operatorLabels"
-      :labels="labels"
       :locale="locale"
       readonly
       @remove="emit('remove')"
@@ -23,7 +22,6 @@
       :filter-group="selectedFilterGroup"
       :rule="rule"
       :operator-labels="operatorLabels"
-      :labels="labels"
       :locale="locale"
       @update:rule="emit('update:rule', $event)"
     />
@@ -44,24 +42,18 @@ import type {
 import AppSearchRuleFilterGroup from './AppSearchRuleFilterGroup.vue';
 
 /**
- * Rule filter component that handles filter group selection and custom components
+ * Rule filter component that handles filter group selection and custom components.
+ * Now simplified since child components handle their own i18n internally.
+ *
  * @param filterGroups - Available filter groups
  * @param rule - The current rule
  * @param readonly - Whether the component is in readonly mode
  * @param operatorLabels - Labels for operators
- * @param labels - Labels for UI text
  * @param locale - Locale for date formatting
  */
 
 interface Props extends SearchRuleProps {
   operatorLabels: OperatorLabels;
-  labels: {
-    selectFilter: string;
-    yes: string;
-    no: string;
-    relativeDatePlaceholder: string;
-    and: string;
-  };
   locale?: BaseLocale;
 }
 

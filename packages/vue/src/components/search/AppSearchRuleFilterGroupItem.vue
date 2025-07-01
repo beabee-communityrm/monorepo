@@ -4,7 +4,6 @@
     :value="rule.value"
     :item="item"
     :readonly="readonly"
-    :labels="labels"
     :locale="locale"
   />
 </template>
@@ -20,11 +19,12 @@ import SingleArg from './operators/SingleArg.vue';
 
 /**
  * Filter group item component that renders the appropriate operator component
- * based on the rule's operator type
+ * based on the rule's operator type. Now simplified since operator components
+ * handle their own i18n internally.
+ *
  * @param rule - The rule object containing field, operator, and value
  * @param item - The filter item configuration
  * @param readonly - Whether the component is in readonly mode
- * @param labels - Labels for UI text
  * @param locale - Locale for date formatting
  */
 
@@ -32,12 +32,6 @@ interface Props {
   rule: Rule;
   item: FilterItem;
   readonly?: boolean;
-  labels: {
-    yes: string;
-    no: string;
-    relativeDatePlaceholder: string;
-    and: string;
-  };
   locale?: BaseLocale;
 }
 
