@@ -3,7 +3,6 @@ import type { ContactRoleData } from '@beabee/beabee-common';
 
 import { reactive, ref } from 'vue';
 
-import type { AppRoleEditorLabels } from './AppRoleEditor.vue';
 import AppRoleEditor from './AppRoleEditor.vue';
 
 // Mock role data
@@ -34,30 +33,6 @@ const expiredRoles: ContactRoleData[] = [
     dateExpires: null,
   },
 ];
-
-// Labels for the component
-const labels: AppRoleEditorLabels = {
-  addButtonText: 'Add Role',
-  editButtonText: 'Edit',
-  deleteButtonText: 'Delete',
-  updateButtonText: 'Update',
-  cancelButtonText: 'Cancel',
-  noBackButtonText: 'No, go back',
-  yesRemoveButtonText: 'Yes, remove',
-  deleteTitle: 'Confirm Role Removal',
-  deleteText: 'Are you sure you want to remove this role?',
-  todayText: 'Today',
-  newRoleLabel: 'New Role',
-  startsLabel: 'Role Starts',
-  startsNowOption: 'Now',
-  startsScheduleOption: 'Schedule',
-  expiresLabel: 'Role Expires',
-  expiresNeverOption: 'Never',
-  expiresScheduleOption: 'Schedule',
-  memberRoleLabel: 'Member',
-  adminRoleLabel: 'Administrator',
-  superAdminRoleLabel: 'Super Administrator',
-};
 
 // Interactive playground state
 const playgroundRoles = ref<ContactRoleData[]>([
@@ -105,7 +80,6 @@ function clearLog() {
           <h3 class="mb-2 text-lg font-semibold">Interactive Role Editor</h3>
           <AppRoleEditor
             :roles="playgroundRoles"
-            :labels="labels"
             locale="en"
             @update="handleUpdate"
             @delete="handleDelete"
@@ -150,7 +124,6 @@ function clearLog() {
         </p>
         <AppRoleEditor
           :roles="emptyRoles"
-          :labels="labels"
           locale="en"
           @update="handleUpdate"
           @delete="handleDelete"
@@ -167,7 +140,6 @@ function clearLog() {
         </p>
         <AppRoleEditor
           :roles="existingRoles"
-          :labels="labels"
           locale="en"
           @update="handleUpdate"
           @delete="handleDelete"
@@ -184,7 +156,6 @@ function clearLog() {
         </p>
         <AppRoleEditor
           :roles="expiredRoles"
-          :labels="labels"
           locale="en"
           @update="handleUpdate"
           @delete="handleDelete"
@@ -198,7 +169,6 @@ function clearLog() {
           <h3 class="mb-2 text-lg font-semibold">English (Default)</h3>
           <AppRoleEditor
             :roles="existingRoles"
-            :labels="labels"
             locale="en"
             @update="handleUpdate"
             @delete="handleDelete"
@@ -209,7 +179,6 @@ function clearLog() {
           <h3 class="mb-2 text-lg font-semibold">German Date Format</h3>
           <AppRoleEditor
             :roles="existingRoles"
-            :labels="labels"
             locale="de"
             @update="handleUpdate"
             @delete="handleDelete"

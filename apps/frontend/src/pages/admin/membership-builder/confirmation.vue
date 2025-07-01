@@ -72,7 +72,6 @@ meta:
           v-model:text="setupContent.newsletterText"
           v-model:opt-in="setupContent.newsletterOptIn"
           v-model:groups="setupContent.newsletterGroups"
-          :labels="newsletterSettingsLabels"
         />
 
         <AppSubHeading class="mt-6">
@@ -131,7 +130,6 @@ import {
   AppSubHeading,
 } from '@beabee/vue';
 import { AppNewsletterOptInSettings } from '@beabee/vue';
-import type { AppNewsletterOptInSettingsLabels } from '@beabee/vue';
 
 import SetupForm from '@components/pages/join/SetupForm.vue';
 import { client } from '@utils/api';
@@ -145,20 +143,6 @@ const { t } = useI18n();
 
 const stepT = (key: string) =>
   t('membershipBuilder.steps.accountConfirmation.' + key);
-
-// Newsletter settings labels
-const newsletterSettingsLabels: AppNewsletterOptInSettingsLabels = {
-  title: t('newsletterOptIn.title'),
-  text: t('newsletterOptIn.text'),
-  optInLabel: t('newsletterOptIn.optInLabel'),
-  optInDisabled: t('newsletterOptIn.optInDisabled'),
-  groupsTitle: t('newsletterOptIn.groups.title'),
-  groupsHelp: t('newsletterOptIn.groups.help'),
-  groupsAdd: t('newsletterOptIn.groups.add'),
-  commonId: t('common.id'),
-  commonLabel: t('common.label'),
-  commonDefault: t('common.default'),
-};
 
 async function handleUpdate() {
   if (setupContent.value) {

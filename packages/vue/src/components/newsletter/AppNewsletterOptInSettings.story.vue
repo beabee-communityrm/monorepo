@@ -1,23 +1,9 @@
 <script lang="ts" setup>
 import type { NewsletterGroupData } from '@beabee/beabee-common';
 
-import { reactive, ref } from 'vue';
+import { ref } from 'vue';
 
 import AppNewsletterOptInSettings from './AppNewsletterOptInSettings.vue';
-
-const mockLabels = reactive({
-  title: 'Newsletter Title',
-  text: 'Newsletter Text',
-  optInLabel: 'Opt-in Label',
-  optInDisabled: 'Opt-in is disabled when groups are configured',
-  groupsTitle: 'Newsletter Groups',
-  groupsHelp:
-    '<p>Configure newsletter groups to allow users to select specific types of content they want to receive.</p>',
-  groupsAdd: 'Add Group',
-  commonId: 'ID',
-  commonLabel: 'Label',
-  commonDefault: 'Default',
-});
 
 const title = ref('Subscribe to Our Newsletter');
 const text = ref('<p>Stay informed about our latest updates and news.</p>');
@@ -58,7 +44,8 @@ function toggleGroups() {
         <div class="mb-6 rounded border bg-grey-lighter p-4">
           <h3 class="mb-2 font-semibold">Newsletter Configuration</h3>
           <p class="text-sm text-body-80">
-            Configure how the newsletter opt-in appears to users.
+            Configure how the newsletter opt-in appears to users. All labels are
+            now internally localized.
           </p>
         </div>
 
@@ -67,7 +54,6 @@ function toggleGroups() {
           v-model:text="text"
           v-model:opt-in="optIn"
           v-model:groups="groups"
-          :labels="mockLabels"
         />
 
         <div class="mt-8 rounded border bg-primary-5 p-4">
@@ -104,7 +90,6 @@ function toggleGroups() {
           v-model:text="text"
           v-model:opt-in="optIn"
           v-model:groups="simpleGroups"
-          :labels="mockLabels"
         />
       </div>
     </Variant>
@@ -116,32 +101,6 @@ function toggleGroups() {
           v-model:text="text"
           v-model:opt-in="optIn"
           v-model:groups="groups"
-          :labels="mockLabels"
-        />
-      </div>
-    </Variant>
-
-    <Variant title="Custom Labels">
-      <div class="max-w-2xl">
-        <AppNewsletterOptInSettings
-          v-model:title="title"
-          v-model:text="text"
-          v-model:opt-in="optIn"
-          v-model:groups="groups"
-          :labels="{
-            title: 'Newsletter Heading',
-            text: 'Newsletter Description',
-            optInLabel: 'Subscription Text',
-            optInDisabled:
-              'This field is disabled when newsletter groups are configured',
-            groupsTitle: 'Subscription Categories',
-            groupsHelp:
-              '<p><strong>Pro tip:</strong> Use groups to segment your audience and send targeted content.</p>',
-            groupsAdd: 'Add New Category',
-            commonId: 'Category ID',
-            commonLabel: 'Display Name',
-            commonDefault: 'Selected by Default',
-          }"
         />
       </div>
     </Variant>
@@ -153,7 +112,6 @@ function toggleGroups() {
           v-model:text="emptyText"
           v-model:opt-in="emptyOptIn"
           v-model:groups="emptyGroups"
-          :labels="mockLabels"
         />
       </div>
     </Variant>
@@ -170,6 +128,7 @@ function toggleGroups() {
             <li>Disabled states are clearly indicated</li>
             <li>Rich text editor has full keyboard navigation</li>
             <li>Help text provides context for complex features</li>
+            <li>Uses internal i18n for consistent translations</li>
           </ul>
         </div>
 
@@ -178,7 +137,6 @@ function toggleGroups() {
           v-model:text="text"
           v-model:opt-in="optIn"
           v-model:groups="groups"
-          :labels="mockLabels"
         />
       </div>
     </Variant>

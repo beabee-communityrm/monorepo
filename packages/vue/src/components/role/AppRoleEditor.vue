@@ -15,7 +15,6 @@
   ```vue
   <AppRoleEditor
     :roles="contactRoles"
-    :labels="roleEditorLabels"
     @update="handleRoleUpdate"
     @delete="handleRoleDelete"
   />
@@ -25,15 +24,15 @@
   <ItemManager
     :items="roles"
     :item-to-data="roleToFormData"
-    :add-button-text="labels.addButtonText"
-    :edit-button-text="labels.editButtonText"
-    :delete-button-text="labels.deleteButtonText"
-    :update-button-text="labels.updateButtonText"
-    :cancel-button-text="labels.cancelButtonText"
-    :no-back-button-text="labels.noBackButtonText"
-    :yes-remove-button-text="labels.yesRemoveButtonText"
-    :delete-title="labels.deleteTitle"
-    :delete-text="() => labels.deleteText"
+    :add-button-text="t('roleEditor.add')"
+    :edit-button-text="t('actions.edit')"
+    :delete-button-text="t('actions.delete')"
+    :update-button-text="t('actions.update')"
+    :cancel-button-text="t('actions.cancel')"
+    :no-back-button-text="t('actions.noBack')"
+    :yes-remove-button-text="t('actions.yesRemove')"
+    :delete-title="t('roleEditor.confirmDelete.title')"
+    :delete-text="() => t('roleEditor.confirmDelete.text')"
     @add="handleUpsert"
     @update="(item, data) => handleUpsert(data)"
     @delete="handleDelete"
@@ -46,7 +45,9 @@
       <span>
         {{ formatRoleDate(item.dateAdded) + ' → ' }}
         {{
-          item.dateExpires ? formatRoleDate(item.dateExpires) : labels.todayText
+          item.dateExpires
+            ? formatRoleDate(item.dateExpires)
+            : t('roleEditor.today')
         }}
       </span>
     </template>
@@ -55,20 +56,20 @@
       <AppSelect
         v-if="mode === 'add'"
         v-model="data.role"
-        :label="labels.newRoleLabel"
+        :label="t('roleEditor.new')"
         :items="availableRoleItems"
         required
         class="mb-4"
       />
 
       <div class="mb-4">
-        <AppLabel :label="labels.startsLabel" required />
+        <AppLabel :label="t('roleEditor.starts.label')" required />
         <AppRadioGroup
           v-if="mode === 'add'"
           v-model="data.hasStartDate"
           :options="[
-            [false, labels.startsNowOption],
-            [true, labels.startsScheduleOption],
+            [false, t('roleEditor.starts.opts.now')],
+            [true, t('roleEditor.starts.opts.schedule')],
           ]"
           required
         />
@@ -85,10 +86,10 @@
       <div class="mb-4">
         <AppRadioGroup
           v-model="data.hasEndDate"
-          :label="labels.expiresLabel"
+          :label="t('roleEditor.expires.label')"
           :options="[
-            [false, labels.expiresNeverOption],
-            [true, labels.expiresScheduleOption],
+            [false, t('roleEditor.expires.opts.never')],
+            [true, t('roleEditor.expires.opts.schedule')],
           ]"
           required
         />
@@ -131,52 +132,9 @@ import {
 
 import { format } from 'date-fns';
 import { computed, reactive } from 'vue';
+import { useI18n } from 'vue-i18n';
 
-/**
- * Interface for role editor labels/text content
- */
-export interface AppRoleEditorLabels {
-  /** Text for the add button */
-  addButtonText: string;
-  /** Text for the edit button */
-  editButtonText: string;
-  /** Text for the delete button */
-  deleteButtonText: string;
-  /** Text for the update button */
-  updateButtonText: string;
-  /** Text for the cancel button */
-  cancelButtonText: string;
-  /** Text for the "No, go back" button */
-  noBackButtonText: string;
-  /** Text for the "Yes, remove" button */
-  yesRemoveButtonText: string;
-  /** Title for delete confirmation dialog */
-  deleteTitle: string;
-  /** Text for delete confirmation dialog */
-  deleteText: string;
-  /** Text shown for "today" in role display */
-  todayText: string;
-  /** Label for new role selection */
-  newRoleLabel: string;
-  /** Label for role start date section */
-  startsLabel: string;
-  /** Option text for "starts now" */
-  startsNowOption: string;
-  /** Option text for "schedule start" */
-  startsScheduleOption: string;
-  /** Label for role expiration section */
-  expiresLabel: string;
-  /** Option text for "never expires" */
-  expiresNeverOption: string;
-  /** Option text for "schedule expiration" */
-  expiresScheduleOption: string;
-  /** Label for member role */
-  memberRoleLabel: string;
-  /** Label for admin role */
-  adminRoleLabel: string;
-  /** Label for super admin role */
-  superAdminRoleLabel: string;
-}
+const { t } = useI18n();
 
 /**
  * Props for the AppRoleEditor component
@@ -184,8 +142,6 @@ export interface AppRoleEditorLabels {
 export interface AppRoleEditorProps {
   /** Array of current contact roles */
   roles: ContactRoleData[];
-  /** Labels and text content for the component */
-  labels: AppRoleEditorLabels;
   /** Current locale for date formatting */
   locale?: BaseLocale;
 }
@@ -235,15 +191,15 @@ const availableRoleItems = computed(() => {
   return [
     {
       id: 'member' as const,
-      label: props.labels.memberRoleLabel,
+      label: t('common.role.member'),
     },
     {
       id: 'admin' as const,
-      label: props.labels.adminRoleLabel,
+      label: t('common.role.admin'),
     },
     {
       id: 'superadmin' as const,
-      label: props.labels.superAdminRoleLabel,
+      label: t('common.role.superadmin'),
     },
   ].filter(
     (item) => !availableRoles.length || availableRoles.includes(item.id)
@@ -268,11 +224,11 @@ function isRoleCurrent(role: ContactRoleData): boolean {
 function getRoleLabel(roleType: RoleType): string {
   switch (roleType) {
     case 'member':
-      return props.labels.memberRoleLabel;
+      return t('common.role.member');
     case 'admin':
-      return props.labels.adminRoleLabel;
+      return t('common.role.admin');
     case 'superadmin':
-      return props.labels.superAdminRoleLabel;
+      return t('common.role.superadmin');
     default:
       return roleType;
   }
@@ -323,20 +279,12 @@ function roleToFormData(
 ): ContactRoleFormData {
   return reactive({
     role: role?.role || ('' as const),
-    ...(role
-      ? {
-          startDate: format(role.dateAdded, 'yyyy-MM-dd'),
-          startTime: format(role.dateAdded, 'HH:mm'),
-          hasStartDate: true,
-        }
-      : { startDate: '', startTime: '', hasStartDate: false }),
-    ...(role?.dateExpires
-      ? {
-          endDate: format(role.dateExpires, 'yyyy-MM-dd'),
-          endTime: format(role.dateExpires, 'HH:mm'),
-          hasEndDate: true,
-        }
-      : { endDate: '', endTime: '', hasEndDate: false }),
+    startDate: role ? format(role.dateAdded, 'yyyy-MM-dd') : '',
+    startTime: role ? format(role.dateAdded, 'HH:mm') : '',
+    hasStartDate: !!role,
+    endDate: role?.dateExpires ? format(role.dateExpires, 'yyyy-MM-dd') : '',
+    endTime: role?.dateExpires ? format(role.dateExpires, 'HH:mm') : '',
+    hasEndDate: !!role?.dateExpires,
   });
 }
 </script>

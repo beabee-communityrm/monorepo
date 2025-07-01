@@ -89,12 +89,6 @@
       v-model:post-code="data.postCode"
       v-model:city-or-town="data.cityOrTown"
       :required="data.deliveryOptIn"
-      :labels="{
-        addressLine1: t('form.addressLine1'),
-        addressLine2: t('form.addressLine2'),
-        cityOrTown: t('form.cityOrTown'),
-        postCode: t('form.postCode'),
-      }"
     />
   </AppForm>
 </template>
