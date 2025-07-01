@@ -105,7 +105,8 @@
     "view": "Anzeigen",
     "yesDelete": "Ja, löschen",
     "yesDisable": "Ja, deaktivieren",
-    "yesRemove": "Ja, entfernen"
+    "yesRemove": "Ja, entfernen",
+    "tryAgain": "Nochmal versuchen"
   },
   "addContact": {
     "contactSaved": "Kontakt gespeichert",
@@ -1525,5 +1526,12 @@
   },
   "taxRate": {
     "invoiceName": "MwSt"
+  },
+  "status": {
+    "loadingApplication": "Anwendung wird geladen",
+    "pleaseWait": "Bitte warten...",
+    "connectingToServer": "Verbindung zum Server wird hergestellt...",
+    "initializing": "Wird initialisiert...",
+    "usuallyTakesSeconds": "Das dauert normalerweise nur wenige Sekunden"
   }
 }
