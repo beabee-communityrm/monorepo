@@ -5,7 +5,7 @@
   simple checkbox and multi-group selection modes.
 
   Uses internal i18n for accessibility:
-  - Newsletter groups label: newsletter.groups
+  - Newsletter groups label: newsletterOptIn.groups.title
 
   ## Features
   - Single opt-in checkbox mode when no groups are provided
@@ -34,7 +34,7 @@
       v-if="groups.length > 0"
       v-model="optInGroups"
       :options="groups"
-      :aria-label="t('newsletter.groups')"
+      :aria-label="t('newsletterOptIn.groups.title')"
       class="space-y-3"
     />
 
@@ -55,7 +55,7 @@
  * Supports both simple checkbox and multi-group selection modes.
  *
  * Uses internal i18n for accessibility:
- * - Newsletter groups label: newsletter.groups
+ * - Newsletter groups label: newsletterOptIn.groups.title
  *
  * @component AppNewsletterOptIn
  */
