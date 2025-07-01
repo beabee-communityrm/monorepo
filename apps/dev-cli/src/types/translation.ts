@@ -1,4 +1,4 @@
-import type { Locale } from '@beabee/locale';
+import type { Locale } from '@beabee/locale/src';
 
 /**
  * Translation key validation result

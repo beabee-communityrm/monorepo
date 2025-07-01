@@ -1,4 +1,4 @@
-#!/usr/bin/env -S node --experimental-specifier-resolution=node --experimental-strip-types --no-warnings
+#!/usr/bin/env -S node --experimental-specifier-resolution=node --experimental-strip-types --experimental-transform-types --no-warnings
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 

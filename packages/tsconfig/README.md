@@ -115,7 +115,7 @@ Configuration for packages that export TypeScript files directly without a build
 
 Packages using this configuration can be run directly with:
 ```bash
-node --experimental-specifier-resolution=node --experimental-strip-types --no-warnings your-file.ts
+node --experimental-specifier-resolution=node --experimental-strip-types --experimental-transform-types --no-warnings your-file.ts
 ```
 
 ### tsconfig.options.json

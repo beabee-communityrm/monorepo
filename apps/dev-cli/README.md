@@ -229,6 +229,7 @@ The MCP server is automatically available in Cursor when working in this workspa
       "args": [
         "--experimental-specifier-resolution=node",
         "--experimental-strip-types",
+        "--experimental-transform-types",
         "--no-warnings",
         "${workspaceFolder}/apps/dev-cli/src/index.ts",
         "mcp"
@@ -266,6 +267,7 @@ To integrate with other MCP-compatible clients (Claude Desktop, VS Code with MCP
       "args": [
         "--experimental-specifier-resolution=node",
         "--experimental-strip-types",
+        "--experimental-transform-types",
         "--no-warnings",
         "/path/to/beabee/monorepo/apps/dev-cli/src/index.ts",
         "mcp"

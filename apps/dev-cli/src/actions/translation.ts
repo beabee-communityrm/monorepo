@@ -1,4 +1,4 @@
-import { type Locale, config as localeConfig } from '@beabee/locale';
+import { type Locale, config as localeConfig } from '@beabee/locale/src';
 
 import Module from 'node:module';
 
@@ -10,7 +10,7 @@ import type {
 } from '../types/translation.ts';
 
 const require = Module.createRequire(import.meta.url);
-const locales = require('@beabee/locale/locales') as Record<
+const locales = require('@beabee/locale/src/locales') as Record<
   Locale,
   Record<string, string>
 >;
