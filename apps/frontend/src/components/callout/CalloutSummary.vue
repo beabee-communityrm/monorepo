@@ -16,27 +16,6 @@
         :status-text="t('common.status.' + callout.status)"
         :starts="callout.starts"
         :expires="callout.expires"
-        :scheduled-text="
-          callout.status === 'scheduled' && callout.starts
-            ? t('item.status.startsIn', {
-                duration: formatDistanceLocale(callout.starts, new Date()),
-              })
-            : ''
-        "
-        :open-text="
-          callout.status === 'open' && callout.expires
-            ? t('item.status.endsIn', {
-                duration: formatDistanceLocale(callout.expires, new Date()),
-              })
-            : ''
-        "
-        :ended-text="
-          callout.status === 'ended' && callout.expires
-            ? t('common.timeAgo', {
-                time: formatDistanceLocale(callout.expires, new Date()),
-              })
-            : ''
-        "
         inline
         circle
       />
@@ -79,7 +58,6 @@ import {
 
 import env from '@env';
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
-import { formatDistanceLocale } from '@utils/dates';
 import { resolveImageUrl } from '@utils/url';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';

@@ -17,39 +17,6 @@ meta:
           :status-text="t('common.status.' + notice.status)"
           :starts="notice.starts"
           :expires="notice.expires"
-          :scheduled-text="
-            notice.status === 'scheduled' && notice.starts
-              ? t('item.status.startsIn', {
-                  duration: formatDistanceLocale(
-                    notice.starts,
-                    new Date(),
-                    locale as BaseLocale
-                  ),
-                })
-              : ''
-          "
-          :open-text="
-            notice.status === 'open' && notice.expires
-              ? t('item.status.endsIn', {
-                  duration: formatDistanceLocale(
-                    notice.expires,
-                    new Date(),
-                    locale as BaseLocale
-                  ),
-                })
-              : ''
-          "
-          :ended-text="
-            notice.status === 'ended' && notice.expires
-              ? t('common.timeAgo', {
-                  time: formatDistanceLocale(
-                    notice.expires,
-                    new Date(),
-                    locale as BaseLocale
-                  ),
-                })
-              : ''
-          "
         />
         <ItemDateRange
           :starts="notice.starts"
@@ -97,7 +64,6 @@ import {
   ItemDateRange,
   ItemStatusText,
   PageTitle,
-  formatDistanceLocale,
 } from '@beabee/vue';
 
 import {

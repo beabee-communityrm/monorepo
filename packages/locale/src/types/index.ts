@@ -1,3 +1,3 @@
-export * from "./base-locale.ts";
-export * from "./locale-option.ts";
-export * from "./locale.ts";
+export * from "./base-locale.js";
+export * from "./locale-option.js";
+export * from "./locale.js";
