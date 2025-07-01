@@ -235,6 +235,7 @@ yarn dev-cli mcp --name "beabee-dev-tools"
 **Available MCP Tools:**
 
 **Translation Tools:**
+
 - `check_translation_key` - Check if a translation key exists across locales
 - `get_translations` - Get translation values for a key across all locales
 - `list_translation_keys` - List available translation keys with filtering
@@ -242,21 +243,7 @@ yarn dev-cli mcp --name "beabee-dev-tools"
 - `get_available_locales` - Get all supported locales
 - `set_translation` - Set translation values for a key across multiple locales
 
-**Server Management Tools:**
-- `restart_server` - Restart the MCP server to reload new tools and changes
-
-> **Note:** Tool listing is built into the MCP protocol itself - AI assistants can automatically discover available tools without needing a separate `list_tools` command.
-
-### Server Management
-
-When developing new MCP tools, the server needs to be restarted to load the new tools. Use the `restart_server` tool to automatically restart the server:
-
-```
-# After adding new tools, restart the server
-Use the restart_server tool with reason "New tools added"
-```
-
-AI assistants can use the built-in MCP tool discovery to verify which tools are currently available after a restart.
+> **Note:** New translations are immediately available without server restart thanks to dynamic file loading.
 
 ## MCP Integration
 
