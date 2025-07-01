@@ -40,6 +40,7 @@
  * Uses internal i18n for:
  * - Notification close button: notifications.remove
  * - Validation error message: form.errorMessages.validation
+ * - Default success message: form.saved
  * - Default error messages: form.errorMessages.*
  *
  * @component AppForm
@@ -61,7 +62,7 @@ export interface AppFormProps {
   buttonText: string;
   /** The text of the reset button */
   resetButtonText?: string;
-  /** The text of the success notification */
+  /** Custom success message (defaults to 'Saved!' from form.saved) */
   successText?: string;
   /** The text of the error notification */
   errorText?: Record<string, string>;
@@ -97,6 +98,11 @@ const errorMessages = computed<Record<string, string>>(() => ({
   ...props.errorText,
 }));
 
+// Get success message with internal i18n default
+const successMessage = computed(() => {
+  return props.successText || t('form.saved');
+});
+
 const isLoading = ref(false);
 const inlineErrorText = ref('');
 
@@ -108,9 +114,9 @@ async function handleSubmit(evt: Event) {
 
   try {
     const ret = await props.onSubmit?.(evt);
-    if (ret !== false && props.successText) {
+    if (ret !== false) {
       addNotification({
-        title: props.successText,
+        title: successMessage.value,
         variant: 'success',
         removeAriaLabel: t('notifications.remove'),
       });
