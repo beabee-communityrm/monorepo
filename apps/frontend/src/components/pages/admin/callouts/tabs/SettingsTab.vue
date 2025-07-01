@@ -209,7 +209,6 @@
                 v-model:opt-in="data.newsletterSettings.optIn"
                 v-model:text="data.newsletterSettings.text"
                 v-model:groups="data.newsletterSettings.groups"
-                :labels="newsletterSettingsLabels"
               />
             </AppFormField>
           </AppFormBox>
@@ -263,7 +262,6 @@ import {
   type ScrollSection,
 } from '@beabee/vue';
 import { AppNewsletterOptInSettings } from '@beabee/vue';
-import type { AppNewsletterOptInSettingsLabels } from '@beabee/vue';
 
 import env from '@env';
 import useVuelidate from '@vuelidate/core';
@@ -308,21 +306,6 @@ const props = defineProps<SettingsTabProps>();
 const { t } = useI18n();
 const inputT = (key: string) =>
   t('callout.builder.tabs.settings.inputs.' + key);
-
-// Newsletter settings labels
-
-const newsletterSettingsLabels: AppNewsletterOptInSettingsLabels = {
-  title: t('newsletterOptIn.title'),
-  text: t('newsletterOptIn.text'),
-  optInLabel: t('newsletterOptIn.optInLabel'),
-  optInDisabled: t('newsletterOptIn.optInDisabled'),
-  groupsTitle: t('newsletterOptIn.groups.title'),
-  groupsHelp: t('newsletterOptIn.groups.help'),
-  groupsAdd: t('newsletterOptIn.groups.add'),
-  commonId: t('common.id'),
-  commonLabel: t('common.label'),
-  commonDefault: t('common.default'),
-};
 
 // Reference to content container
 const contentRef = ref<HTMLElement | null>(null);

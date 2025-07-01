@@ -2,7 +2,7 @@
   <div class="mb-3">
     <AppInput
       :model-value="line1"
-      :label="labels.addressLine1"
+      :label="t('form.addressLine1')"
       name="addressLine1"
       :required="required"
       @update:model-value="$emit('update:line1', $event)"
@@ -12,7 +12,7 @@
   <div class="mb-3">
     <AppInput
       :model-value="line2"
-      :label="labels.addressLine2"
+      :label="t('form.addressLine2')"
       @update:model-value="$emit('update:line2', $event)"
     />
   </div>
@@ -21,7 +21,7 @@
     <div class="col-span-4 mb-3">
       <AppInput
         :model-value="cityOrTown"
-        :label="labels.cityOrTown"
+        :label="t('form.cityOrTown')"
         name="cityOrTown"
         :required="required"
         @update:model-value="$emit('update:cityOrTown', $event)"
@@ -31,7 +31,7 @@
     <div class="col-span-2 mb-3">
       <AppInput
         :model-value="postCode"
-        :label="labels.postCode"
+        :label="t('form.postCode')"
         name="postCode"
         :required="required"
         @update:model-value="$emit('update:postCode', $event)"
@@ -41,10 +41,19 @@
 </template>
 
 <script lang="ts" setup>
+import { useI18n } from 'vue-i18n';
+
 import { AppInput } from '../form';
 
+const { t } = useI18n();
+
 /**
- * Address input component with structured address fields
+ * Address input component with structured address fields.
+ * Now uses internal i18n with these translation keys:
+ * - form.addressLine1: "Address line 1"
+ * - form.addressLine2: "Address line 2"
+ * - form.cityOrTown: "City/Town"
+ * - form.postCode: "Postcode"
  *
  * @example
  * ```vue
@@ -53,27 +62,10 @@ import { AppInput } from '../form';
  *   v-model:line2="address.line2"
  *   v-model:city-or-town="address.city"
  *   v-model:post-code="address.postCode"
- *   :labels="{
- *     addressLine1: 'Address Line 1',
- *     addressLine2: 'Address Line 2',
- *     cityOrTown: 'City',
- *     postCode: 'Post Code'
- *   }"
  *   :required="true"
  * />
  * ```
  */
-
-export interface AddressLabels {
-  /** Label for address line 1 field */
-  addressLine1: string;
-  /** Label for address line 2 field */
-  addressLine2: string;
-  /** Label for city/town field */
-  cityOrTown: string;
-  /** Label for post code field */
-  postCode: string;
-}
 
 defineProps<{
   /** First line of address */
@@ -86,8 +78,6 @@ defineProps<{
   postCode: string;
   /** Whether fields are required */
   required?: boolean;
-  /** Labels for the form fields */
-  labels: AddressLabels;
 }>();
 
 defineEmits<{

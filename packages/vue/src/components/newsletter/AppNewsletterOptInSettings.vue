@@ -10,19 +10,34 @@
   - Rich text editor with customizable labels
   - Responsive form layout
   - Accessibility support with proper labeling
+
+  ## Usage:
+  ```vue
+  <AppNewsletterOptInSettings
+    v-model:title="newsletterTitle"
+    v-model:text="newsletterText"
+    v-model:opt-in="newsletterOptIn"
+    v-model:groups="newsletterGroups"
+  />
+  ```
 -->
 <template>
   <div class="max-w-none space-y-4">
     <!-- Title Configuration -->
     <div class="mb-4">
-      <AppInput v-model="title" :label="labels.title" required class="w-full" />
+      <AppInput
+        v-model="title"
+        :label="t('newsletterOptIn.title')"
+        required
+        class="w-full"
+      />
     </div>
 
     <!-- Text Content Configuration -->
     <div class="mb-4">
       <AppRichTextEditor
         v-model="text"
-        :label="labels.text"
+        :label="t('newsletterOptIn.text')"
         required
         class="w-full"
       />
@@ -32,8 +47,10 @@
     <div class="mb-4">
       <AppInput
         v-model="optIn"
-        :label="labels.optInLabel"
-        :info-message="groups.length > 0 ? labels.optInDisabled : undefined"
+        :label="t('newsletterOptIn.optInLabel')"
+        :info-message="
+          groups.length > 0 ? t('newsletterOptIn.optInDisabled') : undefined
+        "
         :required="groups.length === 0"
         :disabled="groups.length > 0"
         class="w-full"
@@ -43,19 +60,18 @@
     <!-- Groups Section -->
     <section class="space-y-4">
       <AppSectionHeading class="mb-3">
-        {{ labels.groupsTitle }}
+        {{ t('newsletterOptIn.groups.title') }}
       </AppSectionHeading>
 
       <div
-        v-if="labels.groupsHelp"
         class="mb-4 max-w-none text-sm text-body-80"
-        v-html="labels.groupsHelp"
+        v-html="t('newsletterOptIn.groups.help')"
       />
 
       <AppRepeatable
         v-model="groups"
         :new-item="() => ({ id: '', label: '', checked: false })"
-        :add-label="labels.groupsAdd"
+        :add-label="t('newsletterOptIn.groups.add')"
         class="space-y-4"
       >
         <template #default="{ item }">
@@ -64,7 +80,7 @@
             <div class="flex-1">
               <AppInput
                 v-model="item.id"
-                :label="labels.commonId"
+                :label="t('common.id')"
                 required
                 class="min-w-0"
               />
@@ -74,7 +90,7 @@
             <div class="flex-1">
               <AppInput
                 v-model="item.label"
-                :label="labels.commonLabel"
+                :label="t('common.label')"
                 required
                 class="min-w-0"
               />
@@ -86,7 +102,7 @@
             >
               <AppCheckbox
                 v-model="item.checked"
-                :label="labels.commonDefault"
+                :label="t('common.default')"
                 class="whitespace-nowrap"
               />
             </div>
@@ -106,6 +122,8 @@
  */
 import type { NewsletterGroupData } from '@beabee/beabee-common';
 
+import { useI18n } from 'vue-i18n';
+
 import {
   AppCheckbox,
   AppInput,
@@ -114,41 +132,7 @@ import {
 } from '../form/index';
 import { AppSectionHeading } from '../typography/index';
 
-/**
- * Labels for the NewsletterOptInSettings component
- */
-export interface AppNewsletterOptInSettingsLabels {
-  /** Label for the title input field */
-  title: string;
-  /** Label for the text editor field */
-  text: string;
-  /** Label for the opt-in label input field */
-  optInLabel: string;
-  /** Help text shown when opt-in is disabled due to groups */
-  optInDisabled: string;
-  /** Title for the groups section */
-  groupsTitle: string;
-  /** Help text for the groups section (supports HTML) */
-  groupsHelp: string;
-  /** Label for the add group button */
-  groupsAdd: string;
-  /** Label for the group ID field */
-  commonId: string;
-  /** Label for the group label field */
-  commonLabel: string;
-  /** Label for the default checked checkbox */
-  commonDefault: string;
-}
-
-/**
- * Props for the AppNewsletterOptInSettings component
- */
-export interface AppNewsletterOptInSettingsProps {
-  /** Text labels for all UI elements */
-  labels: AppNewsletterOptInSettingsLabels;
-}
-
-const props = defineProps<AppNewsletterOptInSettingsProps>();
+const { t } = useI18n();
 
 /**
  * Model values for the component configuration
