@@ -1,5 +1,6 @@
 import 'module-alias/register';
 
+import { resolveImageUrl } from '@beabee/beabee-common';
 //import specialUrlHandler from '@apps/tools/apps/special-urls/handler';
 import config from '@beabee/core/config';
 import { log, requestErrorLogger, requestLogger } from '@beabee/core/logging';
@@ -14,7 +15,7 @@ import cleanDeep from 'clean-deep';
 import cookie from 'cookie-parser';
 import csrf from 'csurf';
 // TODO: This package is deprecated, see https://www.npmjs.com/package/csurf
-import express, { ErrorRequestHandler, RequestHandler } from 'express';
+import express, { ErrorRequestHandler } from 'express';
 import flash from 'express-flash';
 // TODO: Last release was 2013
 import helmet from 'helmet';
@@ -74,7 +75,9 @@ app.use('/membership.js', (req, res) => {
 app.use('/static', express.static(path.join(__dirname, 'static')));
 
 app.get('/favicon.png', (req, res) => {
-  res.redirect(OptionsService.getText('logo'));
+  const logoUrl = OptionsService.getText('logo');
+  const fullImageUrl = resolveImageUrl(logoUrl, '/api/1.0/', config.audience);
+  res.redirect(fullImageUrl);
 });
 
 // Log the rest
