@@ -1538,7 +1538,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@beabee/dev-cli@workspace:apps/dev-cli":
+"@beabee/dev-cli@workspace:^, @beabee/dev-cli@workspace:apps/dev-cli":
   version: 0.0.0-use.local
   resolution: "@beabee/dev-cli@workspace:apps/dev-cli"
   dependencies:
@@ -1598,6 +1598,7 @@ __metadata:
     "@babel/types": "npm:^7.26.3"
     "@beabee/beabee-common": "workspace:^"
     "@beabee/client": "workspace:^"
+    "@beabee/dev-cli": "workspace:^"
     "@beabee/locale": "workspace:^"
     "@beabee/prettier-config": "workspace:^"
     "@beabee/tsconfig": "workspace:^"
