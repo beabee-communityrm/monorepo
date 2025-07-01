@@ -1,7 +1,6 @@
 import { type Locale, config as localeConfig } from '@beabee/locale/src';
 
 import { readFile, writeFile } from 'node:fs/promises';
-import Module from 'node:module';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -13,12 +12,6 @@ import type {
   TranslationKeyInfo,
   TranslationValidationResult,
 } from '../types/translation.ts';
-
-const require = Module.createRequire(import.meta.url);
-const locales = require('@beabee/locale/src/locales') as Record<
-  Locale,
-  Record<string, string>
->;
 
 // Get the locale package path
 const __filename = fileURLToPath(import.meta.url);
@@ -171,15 +164,8 @@ export async function checkTranslationKey(
   // Check each locale for the key
   for (const locale of availableLocales) {
     try {
-      // Get the locale data dynamically
-      const localeData = (locales as any)[
-        locale.replace(/[@-]/g, '').toLowerCase()
-      ];
-
-      if (!localeData) {
-        missingIn.push(locale);
-        continue;
-      }
+      // Get the locale data dynamically from file
+      const localeData = await readLocaleFile(locale);
 
       const value = getNestedValue(localeData, key);
 
@@ -214,10 +200,8 @@ export async function getTranslations(
 
   for (const locale of availableLocales) {
     try {
-      const localeData = (locales as any)[
-        locale.replace(/[@-]/g, '').toLowerCase()
-      ];
-      result[locale] = localeData ? getNestedValue(localeData, key) : undefined;
+      const localeData = await readLocaleFile(locale);
+      result[locale] = getNestedValue(localeData, key);
     } catch (error) {
       result[locale] = undefined;
     }
@@ -238,15 +222,7 @@ export async function listTranslationKeys(
   const targetLocale = locale || 'en';
 
   try {
-    const localeData = locales[targetLocale.replace(/[@-]/g, '').toLowerCase()];
-
-    if (!localeData) {
-      return {
-        keys: [],
-        total: 0,
-        truncated: false,
-      };
-    }
+    const localeData = await readLocaleFile(targetLocale);
 
     let allKeys = getAllKeysFromObject(localeData);
 
