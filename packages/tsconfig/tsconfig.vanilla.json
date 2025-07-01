@@ -3,7 +3,10 @@
     "./tsconfig.options.json"
   ],
   "compilerOptions": {
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "noEmit": true,
     "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true
   }
 }

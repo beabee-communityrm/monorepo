@@ -105,7 +105,8 @@
     "view": "Visualiser",
     "yesDelete": "Oui, supprimer",
     "yesDisable": "Oui, désactiver",
-    "yesRemove": "Oui, retirer"
+    "yesRemove": "Oui, retirer",
+    "tryAgain": ""
   },
   "addContact": {
     "contactSaved": "Contact enregistré",
@@ -1525,5 +1526,12 @@
   },
   "taxRate": {
     "invoiceName": "TVA"
+  },
+  "status": {
+    "loadingApplication": "",
+    "pleaseWait": "",
+    "connectingToServer": "",
+    "initializing": "",
+    "usuallyTakesSeconds": ""
   }
 }

@@ -105,7 +105,8 @@
     "view": "Просмотреть",
     "yesDelete": "Да, удалить",
     "yesDisable": "Да, отключить",
-    "yesRemove": "Да, удалить"
+    "yesRemove": "Да, удалить",
+    "tryAgain": ""
   },
   "addContact": {
     "contactSaved": "",
@@ -1525,5 +1526,12 @@
   },
   "taxRate": {
     "invoiceName": "???"
+  },
+  "status": {
+    "loadingApplication": "",
+    "pleaseWait": "",
+    "connectingToServer": "",
+    "initializing": "",
+    "usuallyTakesSeconds": ""
   }
 }

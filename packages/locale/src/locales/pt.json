@@ -105,7 +105,8 @@
     "view": "Ver",
     "yesDelete": "Sim, apagar",
     "yesDisable": "Sim, desactivar",
-    "yesRemove": "Sim, remover"
+    "yesRemove": "Sim, remover",
+    "tryAgain": ""
   },
   "addContact": {
     "contactSaved": "Contacto gravado",
@@ -1525,5 +1526,12 @@
   },
   "taxRate": {
     "invoiceName": "???"
+  },
+  "status": {
+    "loadingApplication": "",
+    "pleaseWait": "",
+    "connectingToServer": "",
+    "initializing": "",
+    "usuallyTakesSeconds": ""
   }
 }

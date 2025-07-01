@@ -105,7 +105,8 @@
     "view": "",
     "yesDelete": "",
     "yesDisable": "",
-    "yesRemove": ""
+    "yesRemove": "",
+    "tryAgain": ""
   },
   "addContact": {
     "contactSaved": "",
@@ -1525,5 +1526,12 @@
   },
   "taxRate": {
     "invoiceName": "MwSt"
+  },
+  "status": {
+    "loadingApplication": "",
+    "pleaseWait": "",
+    "connectingToServer": "",
+    "initializing": "",
+    "usuallyTakesSeconds": ""
   }
 }

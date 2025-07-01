@@ -105,7 +105,8 @@
     "view": "Bekijk",
     "yesDelete": "“Ja, verwijder het”",
     "yesDisable": "“Ja, schakel het uit”",
-    "yesRemove": "“Ja, verwijder het”"
+    "yesRemove": "“Ja, verwijder het”",
+    "tryAgain": ""
   },
   "addContact": {
     "contactSaved": "Contact opgeslagen",
@@ -1525,5 +1526,12 @@
   },
   "taxRate": {
     "invoiceName": "BTW"
+  },
+  "status": {
+    "loadingApplication": "",
+    "pleaseWait": "",
+    "connectingToServer": "",
+    "initializing": "",
+    "usuallyTakesSeconds": ""
   }
 }
