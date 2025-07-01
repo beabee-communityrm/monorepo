@@ -1,5 +1,5 @@
-import type { LocaleOptions } from "./types/locale-option.js";
-import { LocaleContext } from "./locale-context.js";
+import type { LocaleOptions } from "./types/locale-option.ts";
+import { LocaleContext } from "./locale-context.ts";
 
 export const config: LocaleOptions = {
   en: {
