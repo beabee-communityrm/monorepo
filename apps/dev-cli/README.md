@@ -130,6 +130,33 @@ yarn dev-cli translation get actions.save
 yarn dev-cli translation get form.validation.required
 ```
 
+#### `set`
+
+Set translation values for a key across multiple locales.
+
+```bash
+yarn dev-cli translation set <key> --locale <locale=value>...
+```
+
+**Options:**
+
+- `--locale, -l`: Translation values by locale (format: `locale=value`)
+- `--createMissingKeys, -c`: Create missing nested keys (default: `true`)
+- `--format, -f`: Output format (`json`, `detailed`)
+
+**Examples:**
+
+```bash
+# Set translation for multiple locales
+yarn dev-cli translation set actions.newAction --locale en="New Action" de="Neue Aktion"
+
+# Set translation for one locale
+yarn dev-cli translation set form.errors.newField --locale en="This field is required"
+
+# Set translation without creating missing keys
+yarn dev-cli translation set existing.key --locale en="Updated Value" --createMissingKeys false
+```
+
 #### `list-keys`
 
 List available translation keys with optional filtering.
@@ -212,6 +239,7 @@ yarn dev-cli mcp --name "beabee-dev-tools"
 - `list_translation_keys` - List available translation keys with filtering
 - `validate_translation_usage` - Validate key format and get suggestions
 - `get_available_locales` - Get all supported locales
+- `set_translation` - Set translation values for a key across multiple locales
 
 ## MCP Integration
 

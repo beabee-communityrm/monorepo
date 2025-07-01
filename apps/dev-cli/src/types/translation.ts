@@ -51,3 +51,29 @@ export interface TranslationValidationResult {
   /** Suggestions for improvement */
   suggestions: string[];
 }
+
+/**
+ * Options for setting translations
+ */
+export interface SetTranslationOptions {
+  /** Translation key */
+  key: string;
+  /** Translation values by locale */
+  translations: Partial<Record<Locale, string>>;
+  /** Whether to create missing nested keys */
+  createMissingKeys?: boolean;
+}
+
+/**
+ * Result for setting translations
+ */
+export interface SetTranslationResult {
+  /** Whether the operation was successful */
+  success: boolean;
+  /** Updated locales */
+  updatedLocales: Locale[];
+  /** Locales that failed to update */
+  failedLocales: Locale[];
+  /** Error messages if any */
+  errors: string[];
+}
