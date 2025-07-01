@@ -8,12 +8,12 @@
       :delete-title="deleteTitle"
       :delete-text="deleteText(item)"
       :no-update="!!noUpdate"
-      :edit-button-text="editButtonText"
-      :delete-button-text="deleteButtonText"
-      :update-button-text="updateButtonText"
-      :cancel-button-text="cancelButtonText"
-      :no-back-button-text="noBackButtonText"
-      :yes-remove-button-text="yesRemoveButtonText"
+      :edit-button-text="t('actions.edit')"
+      :delete-button-text="t('actions.delete')"
+      :update-button-text="t('actions.update')"
+      :cancel-button-text="t('actions.cancel')"
+      :no-back-button-text="t('actions.noBack')"
+      :yes-remove-button-text="t('actions.yesRemove')"
       @update="(data) => onUpdate?.(item, data)"
       @delete="() => onDelete?.(item)"
     >
@@ -33,7 +33,7 @@
         mode="add"
         :data="itemToData(undefined)"
         :button-text="addButtonText"
-        :reset-button-text="cancelButtonText"
+        :reset-button-text="t('actions.cancel')"
         @cancel="formVisible = false"
         @save="handleAdd"
       >
@@ -58,6 +58,14 @@
  * A comprehensive item management component that provides CRUD operations for lists of items.
  * Includes add, edit, delete functionality with confirmation dialogs and customizable text.
  *
+ * Uses internal i18n for standard action buttons:
+ * - Edit button: actions.edit
+ * - Delete button: actions.delete
+ * - Update button: actions.update
+ * - Cancel button: actions.cancel
+ * - No back button: actions.noBack
+ * - Yes remove button: actions.yesRemove
+ *
  * @component ItemManager
  *
  * @example
@@ -65,12 +73,6 @@
  *   :items="tags"
  *   :item-to-data="tagToFormData"
  *   add-button-text="Add Tag"
- *   edit-button-text="Edit"
- *   delete-button-text="Delete"
- *   update-button-text="Update Tag"
- *   cancel-button-text="Cancel"
- *   no-back-button-text="No, keep it"
- *   yes-remove-button-text="Yes, delete"
  *   delete-title="Delete Tag"
  *   :delete-text="(tag) => `Are you sure you want to delete ${tag.name}?`"
  *   @add="handleAdd"
@@ -86,6 +88,7 @@
  * </ItemManager>
  */
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import { AppButton } from '../button';
 import ItemManagerForm from './ItemManagerForm.vue';
@@ -99,21 +102,9 @@ export interface ItemManagerProps<T, D> {
   items: T[];
   /** Function to convert item to form data */
   itemToData: (item: T | undefined) => D;
-  /** Text for the add button */
+  /** Text for the add button (context-specific, e.g., "Add Tag") */
   addButtonText: string;
-  /** Text for the edit button */
-  editButtonText: string;
-  /** Text for the delete button */
-  deleteButtonText: string;
-  /** Text for the update button */
-  updateButtonText: string;
-  /** Text for the cancel button */
-  cancelButtonText: string;
-  /** Text for the "No, go back" button in delete dialog */
-  noBackButtonText: string;
-  /** Text for the "Yes, remove" button in delete dialog */
-  yesRemoveButtonText: string;
-  /** Title for the delete confirmation dialog */
+  /** Title for the delete confirmation dialog (context-specific, e.g., "Delete Tag") */
   deleteTitle: string;
   /** Function that returns delete confirmation text for each item */
   deleteText: (item: T) => string;
@@ -129,6 +120,7 @@ export interface ItemManagerProps<T, D> {
 
 const props = defineProps<ItemManagerProps<T, D>>();
 
+const { t } = useI18n();
 const formVisible = ref(false);
 
 /**

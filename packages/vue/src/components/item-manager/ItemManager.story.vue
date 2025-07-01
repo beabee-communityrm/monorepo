@@ -15,21 +15,39 @@ interface TagFormData {
   name: string;
 }
 
+// Sample data
 const tags = ref<Tag[]>([
-  { id: '1', name: 'Technology' },
-  { id: '2', name: 'Design' },
-  { id: '3', name: 'Business' },
+  { id: '1', name: 'Important' },
+  { id: '2', name: 'Urgent' },
+  { id: '3', name: 'Follow Up' },
 ]);
 
+// State for playground variant
 const state = reactive({
   addButtonText: 'Add Tag',
-  editButtonText: 'Edit',
-  deleteButtonText: 'Delete',
-  updateButtonText: 'Update',
-  cancelButtonText: 'Cancel',
-  noBackButtonText: 'No, keep it',
-  yesRemoveButtonText: 'Yes, delete',
   deleteTitle: 'Delete Tag',
+});
+
+// State for form component variant
+const formState = reactive({
+  mode: 'add' as 'add' | 'update',
+  buttonText: 'Save Tag',
+  resetButtonText: 'Cancel',
+});
+
+// State for item component variant
+const itemState = reactive({
+  deleteTitle: 'Delete Tag',
+  deleteText: 'Are you sure you want to delete this tag?',
+});
+
+const sampleTag = reactive({
+  id: '1',
+  name: 'Sample Tag',
+});
+
+const formData = reactive<TagFormData>({
+  name: '',
 });
 
 function tagToFormData(tag?: Tag): TagFormData {
@@ -39,84 +57,62 @@ function tagToFormData(tag?: Tag): TagFormData {
 }
 
 function getDeleteText(tag: Tag): string {
-  return `Are you sure you want to delete "${tag.name}"? This action cannot be undone.`;
+  return `Are you sure you want to delete "${tag.name}"?`;
 }
 
 async function handleAdd(data: TagFormData) {
-  const newTag: Tag = {
+  const newTag = {
     id: Date.now().toString(),
     name: data.name,
   };
   tags.value.push(newTag);
+  console.log('Added tag:', newTag);
 }
 
 async function handleUpdate(tag: Tag, data: TagFormData) {
   const index = tags.value.findIndex((t) => t.id === tag.id);
   if (index !== -1) {
     tags.value[index] = { ...tag, name: data.name };
+    console.log('Updated tag:', tags.value[index]);
   }
 }
 
 async function handleDelete(tag: Tag) {
-  tags.value = tags.value.filter((t) => t.id !== tag.id);
+  const index = tags.value.findIndex((t) => t.id === tag.id);
+  if (index !== -1) {
+    tags.value.splice(index, 1);
+    console.log('Deleted tag:', tag);
+  }
 }
 
-// Separate state for ItemManagerForm demo
-const formData = ref<TagFormData>(tagToFormData());
-const formState = reactive({
-  mode: 'add' as 'add' | 'update',
-  buttonText: 'Add Tag',
-  resetButtonText: 'Cancel',
-});
-
 async function handleFormSave(data: TagFormData) {
-  console.log('Form saved with data:', data);
-  // Reset form after save
-  formData.value = tagToFormData();
+  console.log('Form saved:', data);
+  formData.name = '';
 }
 
 function handleFormCancel() {
   console.log('Form cancelled');
-  formData.value = tagToFormData();
+  formData.name = '';
 }
 
-// Separate state for ItemManagerItem demo
-const sampleTag = ref<Tag>({ id: 'demo', name: 'Demo Tag' });
-const itemState = reactive({
-  editButtonText: 'Edit',
-  deleteButtonText: 'Delete',
-  updateButtonText: 'Update',
-  cancelButtonText: 'Cancel',
-  noBackButtonText: 'No, keep it',
-  yesRemoveButtonText: 'Yes, delete',
-  deleteTitle: 'Delete Tag',
-  deleteText: 'Are you sure you want to delete this tag?',
-});
-
 async function handleItemUpdate(data: TagFormData) {
-  console.log('Item updated with data:', data);
-  sampleTag.value.name = data.name;
+  sampleTag.name = data.name;
+  console.log('Item updated:', data);
 }
 
 async function handleItemDelete() {
-  console.log('Item deleted');
+  console.log('Item deleted:', sampleTag);
 }
 </script>
 
 <template>
-  <Story title="Item/ItemManager">
+  <Story title="Item Manager/ItemManager">
     <Variant title="Playground">
       <div class="max-w-md">
         <ItemManager
           :items="tags"
           :item-to-data="tagToFormData"
           :add-button-text="state.addButtonText"
-          :edit-button-text="state.editButtonText"
-          :delete-button-text="state.deleteButtonText"
-          :update-button-text="state.updateButtonText"
-          :cancel-button-text="state.cancelButtonText"
-          :no-back-button-text="state.noBackButtonText"
-          :yes-remove-button-text="state.yesRemoveButtonText"
           :delete-title="state.deleteTitle"
           :delete-text="getDeleteText"
           @add="handleAdd"
@@ -137,15 +133,6 @@ async function handleItemDelete() {
 
       <template #controls>
         <HstText v-model="state.addButtonText" title="Add Button Text" />
-        <HstText v-model="state.editButtonText" title="Edit Button Text" />
-        <HstText v-model="state.deleteButtonText" title="Delete Button Text" />
-        <HstText v-model="state.updateButtonText" title="Update Button Text" />
-        <HstText v-model="state.cancelButtonText" title="Cancel Button Text" />
-        <HstText v-model="state.noBackButtonText" title="No Back Button Text" />
-        <HstText
-          v-model="state.yesRemoveButtonText"
-          title="Yes Remove Button Text"
-        />
         <HstText v-model="state.deleteTitle" title="Delete Title" />
       </template>
     </Variant>
@@ -156,12 +143,6 @@ async function handleItemDelete() {
           :items="tags"
           :item-to-data="tagToFormData"
           add-button-text="Add Tag"
-          edit-button-text="Edit"
-          delete-button-text="Delete"
-          update-button-text="Update"
-          cancel-button-text="Cancel"
-          no-back-button-text="No, keep it"
-          yes-remove-button-text="Yes, delete"
           delete-title="Delete Tag"
           :delete-text="getDeleteText"
           no-update
@@ -229,12 +210,12 @@ async function handleItemDelete() {
           :delete-title="itemState.deleteTitle"
           :delete-text="itemState.deleteText"
           :no-update="false"
-          :edit-button-text="itemState.editButtonText"
-          :delete-button-text="itemState.deleteButtonText"
-          :update-button-text="itemState.updateButtonText"
-          :cancel-button-text="itemState.cancelButtonText"
-          :no-back-button-text="itemState.noBackButtonText"
-          :yes-remove-button-text="itemState.yesRemoveButtonText"
+          edit-button-text="Edit"
+          delete-button-text="Delete"
+          update-button-text="Update"
+          cancel-button-text="Cancel"
+          no-back-button-text="No, keep it"
+          yes-remove-button-text="Yes, delete"
           @update="handleItemUpdate"
           @delete="handleItemDelete"
         >
@@ -258,19 +239,6 @@ async function handleItemDelete() {
 
       <template #controls>
         <HstText v-model="sampleTag.name" title="Tag Name" />
-        <HstText v-model="itemState.editButtonText" title="Edit Button Text" />
-        <HstText
-          v-model="itemState.deleteButtonText"
-          title="Delete Button Text"
-        />
-        <HstText
-          v-model="itemState.updateButtonText"
-          title="Update Button Text"
-        />
-        <HstText
-          v-model="itemState.cancelButtonText"
-          title="Cancel Button Text"
-        />
         <HstText v-model="itemState.deleteTitle" title="Delete Title" />
         <HstText v-model="itemState.deleteText" title="Delete Text" />
       </template>
