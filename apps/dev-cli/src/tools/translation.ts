@@ -3,6 +3,7 @@ import {
   getAvailableLocales,
   getTranslations,
   listTranslationKeys,
+  setTranslation,
   validateTranslationUsage,
 } from '../actions/translation.ts';
 import type { McpToolDefinition, McpToolResult } from '../types/mcp.ts';
@@ -219,6 +220,71 @@ export const getAvailableLocalesTool: McpToolDefinition = {
           {
             type: 'text',
             text: `Error getting available locales: ${error instanceof Error ? error.message : String(error)}`,
+          },
+        ],
+        isError: true,
+      };
+    }
+  },
+};
+
+/**
+ * MCP tool for setting translation values
+ */
+export const setTranslationTool: McpToolDefinition = {
+  name: 'set_translation',
+  description:
+    'Set translation values for a specific key across multiple locales',
+  inputSchema: {
+    type: 'object',
+    properties: {
+      key: {
+        type: 'string',
+        description:
+          'The translation key to set values for (e.g., "actions.newAction")',
+      },
+      translations: {
+        type: 'object',
+        description:
+          'Translation values by locale (e.g., {"en": "Save", "de": "Speichern"})',
+        additionalProperties: {
+          type: 'string',
+        },
+      },
+      createMissingKeys: {
+        type: 'boolean',
+        description: 'Whether to create missing nested keys (default: true)',
+        default: true,
+      },
+    },
+    required: ['key', 'translations'],
+  },
+  handler: async (args: {
+    key: string;
+    translations: Record<string, string>;
+    createMissingKeys?: boolean;
+  }): Promise<McpToolResult> => {
+    try {
+      const result = await setTranslation({
+        key: args.key,
+        translations: args.translations,
+        createMissingKeys: args.createMissingKeys ?? true,
+      });
+
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2),
+          },
+        ],
+      };
+    } catch (error) {
+      return {
+        content: [
+          {
+            type: 'text',
+            text: `Error setting translation: ${error instanceof Error ? error.message : String(error)}`,
           },
         ],
         isError: true,

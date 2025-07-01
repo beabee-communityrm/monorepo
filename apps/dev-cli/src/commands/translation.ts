@@ -5,6 +5,7 @@ import {
   getAvailableLocales,
   getTranslations,
   listTranslationKeys,
+  setTranslation,
   validateTranslationUsage,
 } from '../actions/index.ts';
 import type { ListTranslationKeysOptions } from '../types/index.ts';
@@ -277,6 +278,125 @@ const validateCommand: CommandModule = {
 };
 
 /**
+ * Set translation values command
+ */
+const setTranslationCommand: CommandModule = {
+  command: 'set <key>',
+  describe: 'Set translation values for a specific key',
+  builder: (yargs) => {
+    return yargs
+      .positional('key', {
+        describe: 'Translation key to set values for',
+        type: 'string',
+        demandOption: true,
+      })
+      .option('locale', {
+        alias: 'l',
+        type: 'array',
+        describe: 'Locales to update (format: locale=value)',
+        demandOption: true,
+      })
+      .option('createMissingKeys', {
+        alias: 'c',
+        type: 'boolean',
+        describe: 'Create missing nested keys',
+        default: true,
+      })
+      .option('format', {
+        alias: 'f',
+        type: 'string',
+        choices: ['json', 'detailed'],
+        default: 'detailed',
+        describe: 'Output format',
+      })
+      .example(
+        'yarn dev-cli translation set actions.newAction --locale en="New Action" de="Neue Aktion"',
+        'Set translation for multiple locales'
+      )
+      .example(
+        'yarn dev-cli translation set form.errors.newField --locale en="This field is required"',
+        'Set translation for one locale'
+      );
+  },
+  handler: async (
+    argv: ArgumentsCamelCase<{
+      key: string;
+      locale: string[];
+      createMissingKeys: boolean;
+      format: 'json' | 'detailed';
+    }>
+  ) => {
+    try {
+      // Parse locale arguments (format: locale=value)
+      const translations: Record<string, string> = {};
+
+      for (const localeArg of argv.locale) {
+        const match = localeArg.match(/^([^=]+)=(.*)$/);
+        if (!match) {
+          console.error(
+            `❌ Invalid locale format: "${localeArg}". Use format: locale=value`
+          );
+          process.exit(1);
+        }
+
+        const [, locale, value] = match;
+        translations[locale] = value;
+      }
+
+      if (Object.keys(translations).length === 0) {
+        console.error('❌ No valid locale translations provided');
+        process.exit(1);
+      }
+
+      const result = await setTranslation({
+        key: argv.key,
+        translations,
+        createMissingKeys: argv.createMissingKeys,
+      });
+
+      if (argv.format === 'json') {
+        console.log(JSON.stringify(result, null, 2));
+      } else {
+        console.log(`\n📝 Setting translations for: "${argv.key}"`);
+
+        if (result.success) {
+          console.log('✅ Success!');
+
+          if (result.updatedLocales.length > 0) {
+            console.log(
+              `\n✅ Updated locales: ${result.updatedLocales.join(', ')}`
+            );
+          }
+        } else {
+          console.log('❌ Failed!');
+
+          if (result.errors.length > 0) {
+            console.log('\n❌ Errors:');
+            result.errors.forEach((error) => {
+              console.log(`  • ${error}`);
+            });
+          }
+        }
+
+        if (result.failedLocales.length > 0) {
+          console.log(
+            `\n❌ Failed locales: ${result.failedLocales.join(', ')}`
+          );
+        }
+      }
+
+      // Exit with error code if not successful
+      if (!result.success) {
+        process.exit(1);
+      }
+    } catch (error) {
+      console.error('❌ Error setting translation:', error);
+      process.exit(1);
+    }
+  },
+};
+
+/**
  * List locales command
  */
 const listLocalesCommand: CommandModule = {
@@ -323,6 +443,7 @@ export const translationCommand: CommandModule = {
       .command(checkKeyCommand)
       .command(getTranslationsCommand)
       .command(listKeysCommand)
+      .command(setTranslationCommand)
       .command(validateCommand)
       .command(listLocalesCommand)
       .demandCommand(1, 'You need to specify a subcommand')

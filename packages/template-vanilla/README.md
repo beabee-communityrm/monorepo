@@ -136,7 +136,7 @@ yarn workspace @beabee/your-package run check
 yarn workspace @beabee/your-package run format
 ```
 
-The `test` script demonstrates how TypeScript sources can be executed directly with Node.js using the `--experimental-strip-types` flag, without requiring a build step. This serves both as a verification that imports work correctly and as an example of running TypeScript directly.
+The `test` script demonstrates how TypeScript sources can be executed directly with Node.js using the `--experimental-strip-types` and `--experimental-transform-types` flags, without requiring a build step. This serves both as a verification that imports work correctly and as an example of running TypeScript directly.
 
 **Note**: The test script and example files (`src/index.test.ts`, `src/utils/hello.ts`) are only for demonstration purposes and should be removed or adapted when creating your actual package.
 

@@ -1,25 +1,111 @@
-import { type Locale, config as localeConfig } from '@beabee/locale';
+import { type Locale, config as localeConfig } from '@beabee/locale/src';
 
+import { readFile, writeFile } from 'node:fs/promises';
 import Module from 'node:module';
+import { dirname, resolve } from 'node:path';
 
 import type {
   ListTranslationKeysOptions,
   ListTranslationKeysResult,
+  SetTranslationOptions,
+  SetTranslationResult,
   TranslationKeyInfo,
   TranslationValidationResult,
 } from '../types/translation.ts';
 
+// Get the locale package path using require.resolve for better robustness
 const require = Module.createRequire(import.meta.url);
-const locales = require('@beabee/locale/locales') as Record<
-  Locale,
-  Record<string, string>
->;
+const LOCALE_PACKAGE_PATH = dirname(
+  require.resolve('@beabee/locale/src/locales')
+);
 
 /**
  * Get all available locales from the locale config
  */
 export function getAvailableLocales(): Locale[] {
   return Object.keys(localeConfig) as Locale[];
+}
+
+/**
+ * Get the correct locale file name from locale code
+ */
+function getLocaleFileName(locale: Locale): string {
+  return `${locale}.json`;
+}
+
+/**
+ * Get locale file path
+ */
+function getLocaleFilePath(locale: Locale): string {
+  return resolve(LOCALE_PACKAGE_PATH, getLocaleFileName(locale));
+}
+
+/**
+ * Set nested value in object using dot notation
+ */
+function setNestedValue(
+  obj: Record<string, any>,
+  path: string,
+  value: string,
+  createMissing = true
+): boolean {
+  const keys = path.split('.');
+  let current = obj;
+
+  for (let i = 0; i < keys.length - 1; i++) {
+    const key = keys[i];
+
+    if (!(key in current)) {
+      if (!createMissing) {
+        return false;
+      }
+      current[key] = {};
+    } else if (typeof current[key] !== 'object' || current[key] === null) {
+      if (!createMissing) {
+        return false;
+      }
+      current[key] = {};
+    }
+
+    current = current[key];
+  }
+
+  const finalKey = keys[keys.length - 1];
+  current[finalKey] = value;
+  return true;
+}
+
+/**
+ * Read locale file
+ */
+async function readLocaleFile(locale: Locale): Promise<Record<string, any>> {
+  try {
+    const filePath = getLocaleFilePath(locale);
+    const content = await readFile(filePath, 'utf-8');
+    return JSON.parse(content);
+  } catch (error) {
+    throw new Error(
+      `Failed to read locale file for ${locale}: ${error instanceof Error ? error.message : String(error)}`
+    );
+  }
+}
+
+/**
+ * Write locale file
+ */
+async function writeLocaleFile(
+  locale: Locale,
+  data: Record<string, any>
+): Promise<void> {
+  try {
+    const filePath = getLocaleFilePath(locale);
+    const content = JSON.stringify(data, null, 2) + '\n';
+    await writeFile(filePath, content, 'utf-8');
+  } catch (error) {
+    throw new Error(
+      `Failed to write locale file for ${locale}: ${error instanceof Error ? error.message : String(error)}`
+    );
+  }
 }
 
 /**
@@ -76,15 +162,8 @@ export async function checkTranslationKey(
   // Check each locale for the key
   for (const locale of availableLocales) {
     try {
-      // Get the locale data dynamically
-      const localeData = (locales as any)[
-        locale.replace(/[@-]/g, '').toLowerCase()
-      ];
-
-      if (!localeData) {
-        missingIn.push(locale);
-        continue;
-      }
+      // Get the locale data dynamically from file
+      const localeData = await readLocaleFile(locale);
 
       const value = getNestedValue(localeData, key);
 
@@ -119,10 +198,8 @@ export async function getTranslations(
 
   for (const locale of availableLocales) {
     try {
-      const localeData = (locales as any)[
-        locale.replace(/[@-]/g, '').toLowerCase()
-      ];
-      result[locale] = localeData ? getNestedValue(localeData, key) : undefined;
+      const localeData = await readLocaleFile(locale);
+      result[locale] = getNestedValue(localeData, key);
     } catch (error) {
       result[locale] = undefined;
     }
@@ -143,15 +220,7 @@ export async function listTranslationKeys(
   const targetLocale = locale || 'en';
 
   try {
-    const localeData = locales[targetLocale.replace(/[@-]/g, '').toLowerCase()];
-
-    if (!localeData) {
-      return {
-        keys: [],
-        total: 0,
-        truncated: false,
-      };
-    }
+    const localeData = await readLocaleFile(targetLocale);
 
     let allKeys = getAllKeysFromObject(localeData);
 
@@ -272,5 +341,72 @@ export async function validateTranslationUsage(
     valid,
     errors,
     suggestions,
+  };
+}
+
+/**
+ * Set translations for a specific key across specified locales
+ */
+export async function setTranslation(
+  options: SetTranslationOptions
+): Promise<SetTranslationResult> {
+  const { key, translations, createMissingKeys = true } = options;
+  const updatedLocales: Locale[] = [];
+  const failedLocales: Locale[] = [];
+  const errors: string[] = [];
+
+  // Validate key format first
+  const validation = await validateTranslationUsage(key);
+  if (!validation.valid) {
+    return {
+      success: false,
+      updatedLocales: [],
+      failedLocales: Object.keys(translations) as Locale[],
+      errors: validation.errors,
+    };
+  }
+
+  // Process each locale
+  for (const [locale, value] of Object.entries(translations)) {
+    if (!value) continue; // Skip empty values
+
+    try {
+      // Validate locale
+      if (!getAvailableLocales().includes(locale as Locale)) {
+        errors.push(`Unknown locale: ${locale}`);
+        failedLocales.push(locale as Locale);
+        continue;
+      }
+
+      // Read current locale file
+      const localeData = await readLocaleFile(locale as Locale);
+
+      // Set the new value
+      const success = setNestedValue(localeData, key, value, createMissingKeys);
+
+      if (!success) {
+        errors.push(
+          `Failed to set key "${key}" in locale ${locale} (missing parent keys)`
+        );
+        failedLocales.push(locale as Locale);
+        continue;
+      }
+
+      // Write back to file
+      await writeLocaleFile(locale as Locale, localeData);
+      updatedLocales.push(locale as Locale);
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+      errors.push(`Failed to update ${locale}: ${errorMessage}`);
+      failedLocales.push(locale as Locale);
+    }
+  }
+
+  return {
+    success: updatedLocales.length > 0 && failedLocales.length === 0,
+    updatedLocales,
+    failedLocales,
+    errors,
   };
 }
