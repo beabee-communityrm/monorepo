@@ -1173,7 +1173,9 @@
       "link": "Link",
       "numberedlist": "Genummerde lijst",
       "strikethrough": "Doorhalen",
-      "underline": "Onderstrepen"
+      "underline": "Onderstrepen",
+      "toolbar": "Rich text opmaak werkbalk",
+      "editor": "Rich text editor"
     },
     "saveChanges": "Wijzigingen opslaan",
     "saved": "Opgeslagen!",

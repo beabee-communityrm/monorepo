@@ -1173,7 +1173,9 @@
       "link": "Link",
       "numberedlist": "Lista numerada",
       "strikethrough": "Rasurado",
-      "underline": "Sublinhado"
+      "underline": "Sublinhado",
+      "toolbar": "Barra de ferramentas de formatação de texto rico",
+      "editor": "Editor de texto rico"
     },
     "saveChanges": "Gravar alterações",
     "saved": "Gravado!",

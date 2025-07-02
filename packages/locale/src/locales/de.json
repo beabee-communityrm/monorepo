@@ -1173,7 +1173,9 @@
       "link": "Link",
       "numberedlist": "Nummerierung",
       "strikethrough": "Durchstreichen",
-      "underline": "Unterstreichen"
+      "underline": "Unterstreichen",
+      "toolbar": "Rich-Text-Formatierung Symbolleiste",
+      "editor": "Rich-Text-Editor"
     },
     "saveChanges": "Änderungen speichern",
     "saved": "Gespeichert!",
