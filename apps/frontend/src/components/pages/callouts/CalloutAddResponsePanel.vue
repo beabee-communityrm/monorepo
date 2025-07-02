@@ -5,8 +5,6 @@
       <AppShareBox
         :url="`/callouts/${callout.slug}/map`"
         :base-url="env.appUrl"
-        :address-text="t('callout.share.address')"
-        :services-text="t('callout.share.services')"
       />
     </div>
     <template v-else>

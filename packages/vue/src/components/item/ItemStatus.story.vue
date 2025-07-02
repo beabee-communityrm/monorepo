@@ -1,50 +1,55 @@
 <script lang="ts" setup>
+/**
+ * ItemStatus component stories showcasing status display with color-coded styling.
+ * Component now uses internal i18n for status text automatically.
+ */
 import { ItemStatus } from '@beabee/beabee-common';
 
 import { reactive } from 'vue';
 
 import ItemStatusComponent from './ItemStatus.vue';
 
+// State for interactive playground
 const state = reactive({
   status: ItemStatus.Open,
-  statusText: 'Open',
   circle: false,
 });
 
+// Status options for controls and examples
 const statusOptions = [
-  { label: 'Draft', value: ItemStatus.Draft, text: 'Draft' },
-  { label: 'Scheduled', value: ItemStatus.Scheduled, text: 'Scheduled' },
-  { label: 'Open', value: ItemStatus.Open, text: 'Open' },
-  { label: 'Ended', value: ItemStatus.Ended, text: 'Ended' },
-] as const;
+  { label: 'Draft', value: ItemStatus.Draft },
+  { label: 'Scheduled', value: ItemStatus.Scheduled },
+  { label: 'Open', value: ItemStatus.Open },
+  { label: 'Ended', value: ItemStatus.Ended },
+];
 
-// Sample status scenarios
+// Content scenarios for real-world examples
 const contentScenarios = [
   {
-    title: 'Blog Article',
+    title: 'Blog Post',
     items: [
-      { status: ItemStatus.Draft, text: 'Draft' },
-      { status: ItemStatus.Scheduled, text: 'Scheduled' },
-      { status: ItemStatus.Open, text: 'Published' },
-      { status: ItemStatus.Ended, text: 'Archived' },
+      { status: ItemStatus.Draft },
+      { status: ItemStatus.Scheduled },
+      { status: ItemStatus.Open },
+      { status: ItemStatus.Ended },
     ],
   },
   {
     title: 'Event Registration',
     items: [
-      { status: ItemStatus.Draft, text: 'Preparation' },
-      { status: ItemStatus.Scheduled, text: 'Opening Soon' },
-      { status: ItemStatus.Open, text: 'Registration Open' },
-      { status: ItemStatus.Ended, text: 'Registration Closed' },
+      { status: ItemStatus.Draft },
+      { status: ItemStatus.Scheduled },
+      { status: ItemStatus.Open },
+      { status: ItemStatus.Ended },
     ],
   },
   {
     title: 'Campaign',
     items: [
-      { status: ItemStatus.Draft, text: 'Planning' },
-      { status: ItemStatus.Scheduled, text: 'Launching Soon' },
-      { status: ItemStatus.Open, text: 'Active Campaign' },
-      { status: ItemStatus.Ended, text: 'Campaign Ended' },
+      { status: ItemStatus.Draft },
+      { status: ItemStatus.Scheduled },
+      { status: ItemStatus.Open },
+      { status: ItemStatus.Ended },
     ],
   },
 ];
@@ -54,11 +59,7 @@ const contentScenarios = [
   <Story title="Item/ItemStatus">
     <Variant title="Playground">
       <div class="flex max-w-md flex-col gap-4">
-        <ItemStatusComponent
-          :status="state.status"
-          :status-text="state.statusText"
-          :circle="state.circle"
-        />
+        <ItemStatusComponent :status="state.status" :circle="state.circle" />
       </div>
 
       <template #controls>
@@ -68,13 +69,7 @@ const contentScenarios = [
           :options="
             statusOptions.map((s) => ({ label: s.label, value: s.value }))
           "
-          @update:model-value="
-            state.statusText =
-              statusOptions.find((s) => s.value === state.status)?.text ||
-              'Unknown'
-          "
         />
-        <HstText v-model="state.statusText" title="Status Text" />
         <HstCheckbox v-model="state.circle" title="Show Circle" />
       </template>
     </Variant>
@@ -92,18 +87,11 @@ const contentScenarios = [
               <span class="text-gray-600 mb-1 block text-sm"
                 >Without Circle:</span
               >
-              <ItemStatusComponent
-                :status="option.value"
-                :status-text="option.text"
-              />
+              <ItemStatusComponent :status="option.value" />
             </div>
             <div>
               <span class="text-gray-600 mb-1 block text-sm">With Circle:</span>
-              <ItemStatusComponent
-                :status="option.value"
-                :status-text="option.text"
-                circle
-              />
+              <ItemStatusComponent :status="option.value" circle />
             </div>
           </div>
         </div>
@@ -124,99 +112,46 @@ const contentScenarios = [
               :key="item.status"
               class="bg-gray-50 rounded p-3"
             >
-              <ItemStatusComponent
-                :status="item.status"
-                :status-text="item.text"
-                circle
-              />
+              <ItemStatusComponent :status="item.status" circle />
             </div>
           </div>
         </div>
       </div>
     </Variant>
 
-    <Variant title="Custom Status Text">
+    <Variant title="International Localization">
       <div class="flex flex-col gap-4">
         <div class="rounded border p-4">
-          <h4 class="mb-3 font-semibold">Multilingual Examples</h4>
-          <div class="grid grid-cols-1 gap-3 md:grid-cols-2">
-            <div>
-              <span class="text-gray-600 mb-1 block text-sm">English:</span>
-              <ItemStatusComponent
-                :status="ItemStatus.Open"
-                status-text="Active"
-                circle
-              />
-            </div>
-            <div>
-              <span class="text-gray-600 mb-1 block text-sm">German:</span>
-              <ItemStatusComponent
-                :status="ItemStatus.Open"
-                status-text="Aktiv"
-                circle
-              />
-            </div>
-            <div>
-              <span class="text-gray-600 mb-1 block text-sm">French:</span>
-              <ItemStatusComponent
-                :status="ItemStatus.Open"
-                status-text="Actif"
-                circle
-              />
-            </div>
-            <div>
-              <span class="text-gray-600 mb-1 block text-sm">Spanish:</span>
-              <ItemStatusComponent
-                :status="ItemStatus.Open"
-                status-text="Activo"
-                circle
-              />
-            </div>
-          </div>
-        </div>
-
-        <div class="rounded border p-4">
-          <h4 class="mb-3 font-semibold">Custom Business States</h4>
+          <h4 class="mb-3 font-semibold">Automatic i18n Translation</h4>
+          <p class="text-gray-600 mb-4 text-sm">
+            Status text is automatically translated using internal i18n keys
+            (common.status.*). The examples below show the same component
+            displaying different translations.
+          </p>
           <div class="grid grid-cols-1 gap-3 md:grid-cols-2">
             <div>
               <span class="text-gray-600 mb-1 block text-sm"
-                >Approval Process:</span
+                >Standard Status Display:</span
               >
-              <ItemStatusComponent
-                :status="ItemStatus.Draft"
-                status-text="Pending Review"
-                circle
-              />
+              <ItemStatusComponent :status="ItemStatus.Open" circle />
             </div>
             <div>
               <span class="text-gray-600 mb-1 block text-sm"
-                >Content Lifecycle:</span
+                >With Circle Indicator:</span
               >
-              <ItemStatusComponent
-                :status="ItemStatus.Ended"
-                status-text="Archived"
-                circle
-              />
+              <ItemStatusComponent :status="ItemStatus.Scheduled" circle />
             </div>
             <div>
               <span class="text-gray-600 mb-1 block text-sm"
-                >Event Status:</span
+                >Draft Status:</span
               >
-              <ItemStatusComponent
-                :status="ItemStatus.Scheduled"
-                status-text="Upcoming"
-                circle
-              />
+              <ItemStatusComponent :status="ItemStatus.Draft" circle />
             </div>
             <div>
               <span class="text-gray-600 mb-1 block text-sm"
-                >Registration:</span
+                >Ended Status:</span
               >
-              <ItemStatusComponent
-                :status="ItemStatus.Open"
-                status-text="Accepting Submissions"
-                circle
-              />
+              <ItemStatusComponent :status="ItemStatus.Ended" circle />
             </div>
           </div>
         </div>

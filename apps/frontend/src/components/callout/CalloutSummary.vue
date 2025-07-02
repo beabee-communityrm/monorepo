@@ -13,7 +13,6 @@
       <ItemStatusText
         class="font-semibold text-body-60"
         :status="callout.status"
-        :status-text="t('common.status.' + callout.status)"
         :starts="callout.starts"
         :expires="callout.expires"
         inline

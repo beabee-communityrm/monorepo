@@ -7,8 +7,6 @@
         <AppShareBox
           :url="route.path /* Could be either /map or /gallery */"
           :base-url="env.appUrl"
-          :address-text="t('callout.share.address')"
-          :services-text="t('callout.share.services')"
         />
       </div>
 

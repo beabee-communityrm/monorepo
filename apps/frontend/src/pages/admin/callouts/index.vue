@@ -36,10 +36,7 @@ meta:
     >
       <template #header-hidden><font-awesome-icon :icon="faEye" /></template>
       <template #value-status="{ value }">
-        <ItemStatus
-          :status="value"
-          :status-text="t('common.status.' + value)"
-        />
+        <ItemStatus :status="value" />
       </template>
       <template #value-title="{ item, value }">
         <router-link
