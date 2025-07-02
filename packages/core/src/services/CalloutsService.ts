@@ -523,7 +523,7 @@ class CalloutsService {
 
     // Get all responses
     const responses = await getRepository(CalloutResponse).find({
-      select: ['id', 'answers'],
+      select: ['id', 'calloutId', 'answers'],
     });
 
     // Filter responses with file uploads
@@ -531,13 +531,13 @@ class CalloutsService {
       // Iterate through each slide's answers
       for (const slideId in response.answers) {
         const slideAnswers = response.answers[slideId];
-        if (!slideAnswers) return false;
+        if (!slideAnswers) continue; // Skip empty slides instead of rejecting entire response
 
         // Iterate through each component's answer in the slide
         for (const componentKey in slideAnswers) {
           const answer = slideAnswers[componentKey];
 
-          if (!answer) return false;
+          if (!answer) continue; // Skip empty answers instead of rejecting entire response
 
           // Check if the answer or any item in an array of answers contains a file upload
           if (Array.isArray(answer)) {
