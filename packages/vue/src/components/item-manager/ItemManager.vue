@@ -8,12 +8,6 @@
       :delete-title="deleteTitle"
       :delete-text="deleteText(item)"
       :no-update="!!noUpdate"
-      :edit-button-text="t('actions.edit')"
-      :delete-button-text="t('actions.delete')"
-      :update-button-text="t('actions.update')"
-      :cancel-button-text="t('actions.cancel')"
-      :no-back-button-text="t('actions.noBack')"
-      :yes-remove-button-text="t('actions.yesRemove')"
       @update="(data) => onUpdate?.(item, data)"
       @delete="() => onDelete?.(item)"
     >
@@ -58,13 +52,9 @@
  * A comprehensive item management component that provides CRUD operations for lists of items.
  * Includes add, edit, delete functionality with confirmation dialogs and customizable text.
  *
- * Uses internal i18n for standard action buttons:
- * - Edit button: actions.edit
- * - Delete button: actions.delete
- * - Update button: actions.update
- * - Cancel button: actions.cancel
- * - No back button: actions.noBack
- * - Yes remove button: actions.yesRemove
+ * Uses internal i18n for standard action buttons via ItemManagerItem:
+ * - Edit, Delete, Update, Cancel buttons: actions.*
+ * - Dialog confirmation buttons: actions.noBack, actions.yesRemove
  *
  * @component ItemManager
  *

@@ -9,14 +9,14 @@
           variant="text"
           @click="formVisible = !formVisible"
         >
-          {{ editButtonText }}
+          {{ t('actions.edit') }}
         </AppButton>
         <AppButton
           size="sm"
           variant="dangerText"
           @click="showDeleteModal = true"
         >
-          {{ deleteButtonText }}
+          {{ t('actions.delete') }}
         </AppButton>
       </AppButtonGroup>
     </div>
@@ -26,8 +26,8 @@
       mode="update"
       class="p-4"
       :data="itemToData(item)"
-      :button-text="updateButtonText"
-      :reset-button-text="cancelButtonText"
+      :button-text="t('actions.update')"
+      :reset-button-text="t('actions.cancel')"
       @save="handleUpdate"
       @cancel="formVisible = false"
     >
@@ -39,8 +39,8 @@
     <AppConfirmDialog
       :open="showDeleteModal"
       :title="deleteTitle"
-      :cancel="noBackButtonText"
-      :confirm="yesRemoveButtonText"
+      :cancel="t('actions.noBack')"
+      :confirm="t('actions.yesRemove')"
       variant="danger"
       @close="showDeleteModal = false"
       @confirm="onDelete"
@@ -55,6 +55,14 @@
  * A component for displaying and managing individual items in a list.
  * Provides view, edit, and delete functionality with confirmation dialogs.
  *
+ * Uses internal i18n for standard action buttons:
+ * - Edit button: actions.edit
+ * - Delete button: actions.delete
+ * - Update button: actions.update
+ * - Cancel button: actions.cancel
+ * - No back button: actions.noBack
+ * - Yes remove button: actions.yesRemove
+ *
  * @component ItemManagerItem
  *
  * @example
@@ -63,12 +71,6 @@
  *   :item-to-data="convertItemToFormData"
  *   delete-title="Delete Item"
  *   delete-text="Are you sure you want to delete this item?"
- *   edit-button-text="Edit"
- *   delete-button-text="Delete"
- *   update-button-text="Update"
- *   cancel-button-text="Cancel"
- *   no-back-button-text="No, keep it"
- *   yes-remove-button-text="Yes, delete"
  *   @update="handleUpdate"
  *   @delete="handleDelete"
  * >
@@ -81,6 +83,7 @@
  * </ItemManagerItem>
  */
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import { AppButton, AppButtonGroup } from '../button';
 import { AppConfirmDialog } from '../dialog';
@@ -100,18 +103,6 @@ export interface ItemManagerItemProps<T, D> {
   noUpdate: boolean;
   /** Function to convert item to form data */
   itemToData: (item: T | undefined) => D;
-  /** Text for the edit button */
-  editButtonText: string;
-  /** Text for the delete button */
-  deleteButtonText: string;
-  /** Text for the update button */
-  updateButtonText: string;
-  /** Text for the cancel button */
-  cancelButtonText: string;
-  /** Text for the "No, go back" button in delete dialog */
-  noBackButtonText: string;
-  /** Text for the "Yes, remove" button in delete dialog */
-  yesRemoveButtonText: string;
   /** Async function to execute on update */
   onUpdate?: (data: D) => Promise<void> | undefined;
   /** Async function to execute on delete */
@@ -119,6 +110,8 @@ export interface ItemManagerItemProps<T, D> {
 }
 
 const props = defineProps<ItemManagerItemProps<T, D>>();
+
+const { t } = useI18n();
 
 const formVisible = ref(false);
 const showDeleteModal = ref(false);
