@@ -66,7 +66,7 @@ export const headers = computed<Header[]>(() => [
  */
 const filterItems = computed<FilterItems<ContactFilterName>>(() => ({
   // Contact Information Filters
-  id: withLabel(contactFilters.id, t('contacts.data.id')),
+  id: withLabel(contactFilters.id, t('common.id')),
   firstname: withLabel(contactFilters.firstname, t('contacts.data.firstname')),
   lastname: withLabel(contactFilters.lastname, t('contacts.data.lastname')),
   email: withLabel(contactFilters.email, t('contacts.data.email')),

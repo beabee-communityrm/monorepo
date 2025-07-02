@@ -1172,7 +1172,9 @@
       "link": "",
       "numberedlist": "",
       "strikethrough": "",
-      "underline": ""
+      "underline": "",
+      "toolbar": "Barra degli strumenti di formattazione del testo ricco",
+      "editor": "Editor di testo ricco"
     },
     "saveChanges": "",
     "saved": "Salvato!",

@@ -1154,8 +1154,7 @@
         "max": "The code may only be a maximum of {max} characters long.",
         "min": "The code must be at least {min} characters long.",
         "required": "Code is required"
-      }
-    },
+      }    },
     "firstName": "First name",
     "lastName": "Last name",
     "newPassword": "New password",
@@ -1173,7 +1172,9 @@
       "link": "Link",
       "numberedlist": "Numbered list",
       "strikethrough": "Strikethrough",
-      "underline": "Underline"
+      "underline": "Underline",
+      "toolbar": "Rich text formatting toolbar",
+      "editor": "Rich text editor"
     },
     "saveChanges": "Save Changes",
     "saved": "Saved!",

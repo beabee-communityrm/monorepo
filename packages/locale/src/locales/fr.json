@@ -1172,7 +1172,9 @@
       "link": "Lien",
       "numberedlist": "Liste ordonnée",
       "strikethrough": "Barré",
-      "underline": "Souligné"
+      "underline": "Souligné",
+      "toolbar": "Barre d'outils de formatage de texte enrichi",
+      "editor": "Éditeur de texte enrichi"
     },
     "saveChanges": "Enregistrer les modifications",
     "saved": "Enregistré !",

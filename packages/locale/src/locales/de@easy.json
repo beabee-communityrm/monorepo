@@ -1172,7 +1172,9 @@
       "link": "",
       "numberedlist": "",
       "strikethrough": "",
-      "underline": ""
+      "underline": "",
+      "toolbar": "Text-Format Leiste",
+      "editor": "Text-Editor"
     },
     "saveChanges": "",
     "saved": "",

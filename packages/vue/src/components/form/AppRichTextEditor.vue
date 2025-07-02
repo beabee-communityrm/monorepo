@@ -223,7 +223,7 @@ watch(toRef(props, 'disabled'), (value) => {
 const rules = computed(() => ({
   v: {
     required: helpers.withMessage(
-      t('form.errors.required'),
+      t('form.errors.unknown.required'),
       requiredIf(!!props.required)
     ),
   },

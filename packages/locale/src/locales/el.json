@@ -1172,7 +1172,9 @@
       "link": "",
       "numberedlist": "",
       "strikethrough": "",
-      "underline": ""
+      "underline": "",
+      "toolbar": "Γραμμή εργαλείων μορφοποίησης εμπλουτισμένου κειμένου",
+      "editor": "Επεξεργαστής εμπλουτισμένου κειμένου"
     },
     "saveChanges": "",
     "saved": "",
