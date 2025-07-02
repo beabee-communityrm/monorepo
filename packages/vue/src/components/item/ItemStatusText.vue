@@ -3,18 +3,15 @@
   A comprehensive status display component showing item status with contextual time information.
   Displays different messages based on status and timing.
 
-  Uses internal i18n for status text messages:
+  Uses internal i18n for all text content:
+  - Status text: via ItemStatus component (common.status.*)
   - Scheduled items: item.status.startsIn
   - Open items: item.status.endsIn  
   - Ended items: common.timeAgo
 -->
 <template>
   <div class="flex" :class="inline ? 'gap-2' : 'flex-col'">
-    <ItemStatusComponent
-      :status="status"
-      :status-text="statusText"
-      :circle="circle"
-    />
+    <ItemStatusComponent :status="status" :circle="circle" />
     <span v-if="status === ItemStatus.Scheduled && starts && scheduledText">
       {{ scheduledText }}
     </span>
@@ -38,7 +35,6 @@
  * @example
  * <ItemStatusText
  *   :status="ItemStatus.Scheduled"
- *   status-text="Scheduled"
  *   :starts="new Date('2024-01-01')"
  *   :circle="true"
  * />
@@ -60,8 +56,6 @@ const { t, locale } = useI18n();
 export interface ItemStatusTextProps {
   /** Current status of the item */
   status: ItemStatus;
-  /** Translated status text to display */
-  statusText: string;
   /** Start date of the item (for scheduled items) */
   starts?: Date | null;
   /** Expiration date of the item (for open/ended items) */

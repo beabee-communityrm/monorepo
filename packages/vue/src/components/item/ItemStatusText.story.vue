@@ -1,53 +1,54 @@
 <script lang="ts" setup>
+/**
+ * ItemStatusText component stories showcasing advanced status display with time information.
+ * Component now uses internal i18n for status text automatically.
+ */
 import { ItemStatus } from '@beabee/beabee-common';
 
 import { reactive } from 'vue';
 
 import ItemStatusText from './ItemStatusText.vue';
 
+// State for interactive playground
 const state = reactive({
   status: ItemStatus.Open,
-  statusText: 'Open',
-  starts: new Date('2024-01-15T10:00:00'),
+  starts: null as Date | null,
   expires: new Date('2024-03-15T18:00:00'),
   circle: false,
   inline: false,
 });
 
+// Status options for controls and examples
 const statusOptions = [
-  { label: 'Draft', value: ItemStatus.Draft, text: 'Draft' },
-  { label: 'Scheduled', value: ItemStatus.Scheduled, text: 'Scheduled' },
-  { label: 'Open', value: ItemStatus.Open, text: 'Open' },
-  { label: 'Ended', value: ItemStatus.Ended, text: 'Ended' },
-] as const;
+  { label: 'Draft', value: ItemStatus.Draft },
+  { label: 'Scheduled', value: ItemStatus.Scheduled },
+  { label: 'Open', value: ItemStatus.Open },
+  { label: 'Ended', value: ItemStatus.Ended },
+];
 
-// Real-world event scenarios
+// Real-world scenarios for demonstrations
 const eventScenarios = [
   {
-    title: 'Conference Registration',
+    title: 'Upcoming Conference',
     status: ItemStatus.Scheduled,
-    statusText: 'Registration Opening Soon',
     starts: new Date('2024-06-15T09:00:00'),
-    expires: new Date('2024-06-30T23:59:59'),
+    expires: new Date('2024-06-17T18:00:00'),
   },
   {
-    title: 'Community Survey',
+    title: 'Registration Open',
     status: ItemStatus.Open,
-    statusText: 'Survey Active',
     starts: new Date('2024-01-01T00:00:00'),
-    expires: new Date('2024-02-01T23:59:59'),
+    expires: new Date('2024-03-01T23:59:59'),
   },
   {
-    title: 'Annual Meeting',
+    title: 'Survey Closed',
     status: ItemStatus.Ended,
-    statusText: 'Meeting Completed',
-    starts: new Date('2023-12-15T14:00:00'),
-    expires: new Date('2023-12-15T16:00:00'),
+    starts: new Date('2023-11-01T00:00:00'),
+    expires: new Date('2023-12-01T23:59:59'),
   },
   {
-    title: 'Newsletter Draft',
+    title: 'Draft Event',
     status: ItemStatus.Draft,
-    statusText: 'In Preparation',
     starts: null,
     expires: null,
   },
@@ -60,7 +61,6 @@ const eventScenarios = [
       <div class="flex max-w-md flex-col gap-4">
         <ItemStatusText
           :status="state.status"
-          :status-text="state.statusText"
           :starts="state.starts"
           :expires="state.expires"
           :circle="state.circle"
@@ -75,13 +75,7 @@ const eventScenarios = [
           :options="
             statusOptions.map((s) => ({ label: s.label, value: s.value }))
           "
-          @update:model-value="
-            state.statusText =
-              statusOptions.find((s) => s.value === state.status)?.text ||
-              'Unknown'
-          "
         />
-        <HstText v-model="state.statusText" title="Status Text" />
         <HstDate v-model="state.starts" title="Start Date" />
         <HstDate v-model="state.expires" title="End Date" />
         <HstCheckbox v-model="state.circle" title="Show Circle" />
@@ -95,7 +89,6 @@ const eventScenarios = [
           <h4 class="mb-3 font-semibold">Vertical (Default) Layout</h4>
           <ItemStatusText
             :status="ItemStatus.Open"
-            status-text="Event Active"
             :starts="new Date('2024-01-01T00:00:00')"
             :expires="new Date('2024-02-01T23:59:59')"
             circle
@@ -106,7 +99,6 @@ const eventScenarios = [
           <h4 class="mb-3 font-semibold">Horizontal (Inline) Layout</h4>
           <ItemStatusText
             :status="ItemStatus.Open"
-            status-text="Event Active"
             :starts="new Date('2024-01-01T00:00:00')"
             :expires="new Date('2024-02-01T23:59:59')"
             inline
@@ -131,7 +123,6 @@ const eventScenarios = [
               >
               <ItemStatusText
                 :status="scenario.status"
-                :status-text="scenario.statusText"
                 :starts="scenario.starts"
                 :expires="scenario.expires"
                 circle
@@ -143,7 +134,6 @@ const eventScenarios = [
               >
               <ItemStatusText
                 :status="scenario.status"
-                :status-text="scenario.statusText"
                 :starts="scenario.starts"
                 :expires="scenario.expires"
                 inline
@@ -158,14 +148,13 @@ const eventScenarios = [
     <Variant title="Status States Overview">
       <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
         <div
-          v-for="{ label, value, text } in statusOptions"
+          v-for="{ label, value } in statusOptions"
           :key="value"
           class="rounded border p-4"
         >
           <h4 class="mb-3 font-semibold">{{ label }} Status</h4>
           <ItemStatusText
             :status="value"
-            :status-text="text"
             :starts="
               value === ItemStatus.Scheduled
                 ? new Date('2024-06-15T09:00:00')
@@ -188,7 +177,6 @@ const eventScenarios = [
           <h4 class="mb-3 font-semibold">Without Circle</h4>
           <ItemStatusText
             :status="ItemStatus.Open"
-            status-text="Active Survey"
             :starts="new Date('2024-01-01T00:00:00')"
             :expires="new Date('2024-02-01T23:59:59')"
             :circle="false"
@@ -199,7 +187,6 @@ const eventScenarios = [
           <h4 class="mb-3 font-semibold">With Circle</h4>
           <ItemStatusText
             :status="ItemStatus.Open"
-            status-text="Active Survey"
             :starts="new Date('2024-01-01T00:00:00')"
             :expires="new Date('2024-02-01T23:59:59')"
             :circle="true"
@@ -216,7 +203,6 @@ const eventScenarios = [
           </h4>
           <ItemStatusText
             :status="ItemStatus.Scheduled"
-            status-text="Upcoming Conference"
             :starts="new Date('2024-06-15T09:00:00')"
             :expires="new Date('2024-06-17T18:00:00')"
             circle
@@ -229,7 +215,6 @@ const eventScenarios = [
           </h4>
           <ItemStatusText
             :status="ItemStatus.Open"
-            status-text="Registration Open"
             :starts="new Date('2024-01-01T00:00:00')"
             :expires="new Date('2024-03-01T23:59:59')"
             circle
@@ -240,7 +225,6 @@ const eventScenarios = [
           <h4 class="mb-3 font-semibold">Completed Event (Ended)</h4>
           <ItemStatusText
             :status="ItemStatus.Ended"
-            status-text="Survey Closed"
             :starts="new Date('2023-11-01T00:00:00')"
             :expires="new Date('2023-12-01T23:59:59')"
             circle
@@ -249,13 +233,7 @@ const eventScenarios = [
 
         <div class="rounded border p-4">
           <h4 class="mb-3 font-semibold">Draft (No dates)</h4>
-          <ItemStatusText
-            :status="ItemStatus.Draft"
-            status-text="In Preparation"
-            :starts="null"
-            :expires="null"
-            circle
-          />
+          <ItemStatusText :status="ItemStatus.Draft" circle />
         </div>
       </div>
     </Variant>

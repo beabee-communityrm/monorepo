@@ -29,8 +29,6 @@ meta:
           <AppShareBox
             :url="`/callouts/${callout.slug}`"
             :base-url="env.appUrl"
-            :address-text="t('callout.share.address')"
-            :services-text="t('callout.share.services')"
           />
         </div>
         <img class="mb-6 w-full" :src="imageUrl" />

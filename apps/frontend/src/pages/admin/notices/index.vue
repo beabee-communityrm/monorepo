@@ -29,7 +29,7 @@ meta:
     :result="noticesTable"
   >
     <template #value-status="{ value }">
-      <ItemStatus :status="value" :status-text="t('common.status.' + value)" />
+      <ItemStatus :status="value" />
     </template>
     <template #value-name="{ item, value }">
       <router-link

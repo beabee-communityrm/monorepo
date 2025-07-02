@@ -14,7 +14,6 @@ meta:
         <AppNotice :notice="notice"></AppNotice>
         <ItemStatusText
           :status="notice.status"
-          :status-text="t('common.status.' + notice.status)"
           :starts="notice.starts"
           :expires="notice.expires"
         />

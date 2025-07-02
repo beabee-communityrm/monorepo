@@ -3,10 +3,12 @@
   A component for sharing URLs across various social media platforms and methods.
   Provides a collapsible box with social sharing options and a copy-to-clipboard feature.
 
-  Uses internal i18n for standard text:
+  Uses internal i18n for all text content:
   - Share button text: actions.share
   - Copy button text: actions.copy
   - Email sharing text: form.email
+  - Address text: callout.share.address
+  - Services text: callout.share.services
 
   ## Features:
   - Multiple social media sharing options (Facebook, LinkedIn, Telegram, Twitter, WhatsApp)
@@ -22,8 +24,6 @@
   <AppShareBox
     url="/my-page"
     base-url="https://example.com"
-    address-text="Share this page using the address below:"
-    services-text="Or share via social media:"
   />
   ```
 -->
@@ -37,10 +37,12 @@
     <div class="space-y-4">
       <!-- Address section -->
       <section>
-        <p class="mb-2 text-sm text-body-80">{{ addressText }}</p>
+        <p class="mb-2 text-sm text-body-80">
+          {{ t('callout.share.address') }}
+        </p>
         <AppInput
           :model-value="fullUrl"
-          :label="addressText"
+          :label="t('callout.share.address')"
           disabled
           copyable
           :copy-label="t('actions.copy')"
@@ -51,7 +53,9 @@
 
       <!-- Social sharing section -->
       <section>
-        <p class="mb-3 text-sm text-body-80">{{ servicesText }}</p>
+        <p class="mb-3 text-sm text-body-80">
+          {{ t('callout.share.services') }}
+        </p>
         <nav
           class="grid grid-cols-2 gap-3 sm:grid-cols-3"
           role="navigation"
@@ -163,10 +167,12 @@
  * AppShareBox component for sharing URLs across social media platforms and via email.
  * Provides a collapsible interface with multiple sharing options and copy-to-clipboard functionality.
  *
- * Uses internal i18n for standard text:
+ * Uses internal i18n for all text content:
  * - Share button text: actions.share
  * - Copy button text: actions.copy
  * - Email sharing text: form.email
+ * - Address text: callout.share.address
+ * - Services text: callout.share.services
  *
  * @component AppShareBox
  */
@@ -193,16 +199,9 @@ export interface AppShareBoxProps {
   url: string;
   /** The base URL to prepend to the relative URL */
   baseUrl: string;
-  /** Text describing the address/URL section */
-  addressText: string;
-  /** Text describing the social media services section */
-  servicesText: string;
 }
 
-const props = withDefaults(defineProps<AppShareBoxProps>(), {
-  addressText: 'Share this address:',
-  servicesText: 'Or share via social media:',
-});
+const props = defineProps<AppShareBoxProps>();
 
 /**
  * Computed full URL by combining baseUrl and url
