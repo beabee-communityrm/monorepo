@@ -10,7 +10,6 @@
         :model-value="modelValue"
         :filter-groups="filterGroups"
         :has-changed="!!hasChanged"
-        :operator-labels="operatorLabels"
         :locale="locale"
         @update:model-value="emit('update:modelValue', $event)"
       />
@@ -23,7 +22,6 @@
       <AppSearchSummary
         :model-value="modelValue"
         :filter-groups="filterGroups"
-        :operator-labels="operatorLabels"
         :locale="locale"
         @update:model-value="emit('update:modelValue', $event)"
       />
@@ -39,7 +37,8 @@ import { AppExpandableBox } from '@beabee/vue';
 import { computed, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import type { FilterGroups, OperatorLabels } from '../../types/search';
+import type { FilterGroups } from '../../types/search';
+import { createOperatorLabels } from '../../utils/rules';
 import AppSearchForm from './AppSearchForm.vue';
 import AppSearchSummary from './AppSearchSummary.vue';
 
@@ -47,7 +46,7 @@ const { t } = useI18n();
 
 /**
  * Main search component that provides expandable advanced search functionality.
- * Now completely simplified with all child components using internal i18n.
+ * Now uses internal i18n for all labels and operator text.
  *
  * @param filterGroups - Available filter groups
  * @param modelValue - The current rule group
@@ -77,67 +76,8 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<Emits>();
 
-const operatorLabels = computed<OperatorLabels>(() => ({
-  text: {
-    equal: t('advancedSearch.operators.text.equal'),
-    not_equal: t('advancedSearch.operators.text.not_equal'),
-    contains: t('advancedSearch.operators.text.contains'),
-    not_contains: t('advancedSearch.operators.text.not_contains'),
-    begins_with: t('advancedSearch.operators.text.begins_with'),
-    not_begins_with: t('advancedSearch.operators.text.not_begins_with'),
-    ends_with: t('advancedSearch.operators.text.ends_with'),
-    not_ends_with: t('advancedSearch.operators.text.not_ends_with'),
-  },
-  blob: {
-    contains: t('advancedSearch.operators.blob.contains'),
-    not_contains: t('advancedSearch.operators.blob.not_contains'),
-  },
-  number: {
-    equal: t('advancedSearch.operators.number.equal'),
-    not_equal: t('advancedSearch.operators.number.not_equal'),
-    less: t('advancedSearch.operators.number.less'),
-    less_or_equal: t('advancedSearch.operators.number.less_or_equal'),
-    greater: t('advancedSearch.operators.number.greater'),
-    greater_or_equal: t('advancedSearch.operators.number.greater_or_equal'),
-    between: t('advancedSearch.operators.number.between'),
-    not_between: t('advancedSearch.operators.number.not_between'),
-  },
-  enum: {
-    equal: t('advancedSearch.operators.enum.equal'),
-    not_equal: t('advancedSearch.operators.enum.not_equal'),
-  },
-  boolean: {
-    equal: t('advancedSearch.operators.boolean.equal'),
-  },
-  contact: {
-    equal: t('advancedSearch.operators.contact.equal'),
-    not_equal: t('advancedSearch.operators.contact.not_equal'),
-    contains: t('advancedSearch.operators.contact.contains'),
-    not_contains: t('advancedSearch.operators.contact.not_contains'),
-    begins_with: t('advancedSearch.operators.contact.begins_with'),
-    not_begins_with: t('advancedSearch.operators.contact.not_begins_with'),
-    ends_with: t('advancedSearch.operators.contact.ends_with'),
-    not_ends_with: t('advancedSearch.operators.contact.not_ends_with'),
-  },
-  date: {
-    equal: t('advancedSearch.operators.date.equal'),
-    not_equal: t('advancedSearch.operators.date.not_equal'),
-    less: t('advancedSearch.operators.date.less'),
-    less_or_equal: t('advancedSearch.operators.date.less_or_equal'),
-    greater: t('advancedSearch.operators.date.greater'),
-    greater_or_equal: t('advancedSearch.operators.date.greater_or_equal'),
-    between: t('advancedSearch.operators.date.between'),
-    not_between: t('advancedSearch.operators.date.not_between'),
-  },
-  array: {
-    contains: t('advancedSearch.operators.array.contains'),
-    not_contains: t('advancedSearch.operators.array.not_contains'),
-  },
-  all: {
-    is_empty: t('advancedSearch.operators.all.is_empty'),
-    is_not_empty: t('advancedSearch.operators.all.is_not_empty'),
-  },
-}));
+// Create operator labels using internal i18n
+const operatorLabels = computed(() => createOperatorLabels(t));
 
 const showExpanded = ref(false);
 

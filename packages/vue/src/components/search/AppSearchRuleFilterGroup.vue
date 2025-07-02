@@ -56,31 +56,31 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import {
-  type OperatorLabels,
   type SearchRuleEmits,
   type SearchRuleFilterGroupProps,
   buildNullableOperatorItems,
   buildOperatorItems,
 } from '../../types/search';
-import { createNewRule, getDefaultRuleValue } from '../../utils/rules';
+import {
+  createNewRule,
+  createOperatorLabels,
+  getDefaultRuleValue,
+} from '../../utils/rules';
 import AppSearchRuleFilterGroupItem from './AppSearchRuleFilterGroupItem.vue';
 
 const { t } = useI18n();
 
 /**
  * Rule filter group component that handles selection of fields and operators.
- * Now uses internal i18n for select filter placeholder and simplified since
- * child components handle their own labels.
+ * Now uses internal i18n for all labels and operator text.
  *
  * @param filterGroup - The filter group configuration
  * @param rule - The current rule
  * @param readonly - Whether the component is in readonly mode
- * @param operatorLabels - Labels for operators
  * @param locale - Locale for date formatting
  */
 
 interface Props extends SearchRuleFilterGroupProps {
-  operatorLabels: OperatorLabels;
   locale?: BaseLocale;
 }
 
@@ -95,9 +95,12 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<Emits>();
 
-const operatorItems = computed(() => buildOperatorItems(props.operatorLabels));
+// Create operator labels using internal i18n
+const operatorLabels = computed(() => createOperatorLabels(t));
+
+const operatorItems = computed(() => buildOperatorItems(operatorLabels.value));
 const nullableOperatorItems = computed(() =>
-  buildNullableOperatorItems(props.operatorLabels)
+  buildNullableOperatorItems(operatorLabels.value)
 );
 
 const ruleFilterItem = computed(() => {
@@ -132,8 +135,9 @@ function getOperatorLabel(type: string, operator: RuleOperator): string {
   }
 
   return (
-    props.operatorLabels[labelType as keyof OperatorLabels]?.[operator] ||
-    operator
+    operatorLabels.value[labelType as keyof typeof operatorLabels.value]?.[
+      operator
+    ] || operator
   );
 }
 

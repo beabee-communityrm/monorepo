@@ -5,7 +5,6 @@
         <AppSearchRuleOrGroup
           :filter-groups="filterGroups"
           :rule="rule"
-          :operator-labels="operatorLabels"
           :locale="locale"
           readonly
           @remove="handleRemove(i)"
@@ -24,26 +23,23 @@ import type { BaseLocale } from '@beabee/locale';
 
 import { useI18n } from 'vue-i18n';
 
-import type { FilterGroups, OperatorLabels } from '../../types/search';
+import type { FilterGroups } from '../../types/search';
 import AppSearchRuleOrGroup from './AppSearchRuleOrGroup.vue';
 
 const { t } = useI18n();
 
 /**
  * Search summary component that displays active rules in a compact format.
- * Now uses internal i18n for match conditions and simplified since child
- * components handle their own labels.
+ * Now uses internal i18n for match conditions.
  *
  * @param modelValue - The current rule group
  * @param filterGroups - Available filter groups
- * @param operatorLabels - Labels for operators
  * @param locale - Locale for date formatting
  */
 
 interface Props {
   modelValue: RuleGroup;
   filterGroups: FilterGroups;
-  operatorLabels: OperatorLabels;
   locale?: BaseLocale;
 }
 

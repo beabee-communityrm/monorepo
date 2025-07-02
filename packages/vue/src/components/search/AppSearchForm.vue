@@ -27,7 +27,6 @@
           <AppSearchRuleOrGroup
             v-model:rule="ruleGroup.rules[i]"
             :filter-groups="filterGroups"
-            :operator-labels="operatorLabels"
             :locale="locale"
             @remove="removeRule(i)"
           />
@@ -74,11 +73,7 @@ import useVuelidate from '@vuelidate/core';
 import { computed, reactive, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import type {
-  FilterGroups,
-  OperatorLabels,
-  RuleGroupWithEmpty,
-} from '../../types/search';
+import type { FilterGroups, RuleGroupWithEmpty } from '../../types/search';
 import { copyRuleGroup, isRuleGroupEqual } from '../../utils/rules';
 import AppSearchRuleOrGroup from './AppSearchRuleOrGroup.vue';
 
@@ -86,13 +81,11 @@ const { t } = useI18n();
 
 /**
  * Search form component for building complex filter rules.
- * Now uses internal i18n for all UI text and simplified since child
- * components handle their own labels.
+ * Now uses internal i18n for all UI text.
  *
  * @param filterGroups - Available filter groups
  * @param modelValue - The current rule group
  * @param hasChanged - Whether the form has changes
- * @param operatorLabels - Labels for operators
  * @param locale - Locale for date formatting
  */
 
@@ -100,7 +93,6 @@ interface Props {
   filterGroups: FilterGroups;
   modelValue: RuleGroup | undefined;
   hasChanged: boolean;
-  operatorLabels: OperatorLabels;
   locale?: BaseLocale;
 }
 
