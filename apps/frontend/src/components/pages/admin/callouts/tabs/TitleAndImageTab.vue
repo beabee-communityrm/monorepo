@@ -76,7 +76,6 @@
                 :model-value="env.appUrl + '/callouts/' + data.autoSlug"
                 :disabled="true"
                 :copyable="true"
-                :copy-label="t('actions.copy')"
               />
               <AppInput
                 v-else
@@ -84,7 +83,6 @@
                 :disabled="!canEditSlug"
                 :prefix="env.appUrl + '/callouts/'"
                 :copyable="true"
-                :copy-label="t('actions.copy')"
                 required
               />
             </AppFormField>

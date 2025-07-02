@@ -11,7 +11,6 @@
         :placeholder="getPlaceholder('title')"
         :disabled="selectedLocale === defaultLocale"
         :copyable="true"
-        :copy-label="t('actions.copy')"
         @update:model-value="updateValue('title', selectedLocale, $event)"
       />
     </div>
@@ -27,7 +26,6 @@
         :placeholder="getPlaceholder('description')"
         :disabled="selectedLocale === defaultLocale"
         :copyable="true"
-        :copy-label="t('actions.copy')"
         rows="3"
         @update:model-value="updateValue('description', selectedLocale, $event)"
       />
@@ -44,7 +42,6 @@
         :placeholder="getPlaceholder('shareTitle')"
         :disabled="selectedLocale === defaultLocale"
         :copyable="true"
-        :copy-label="t('actions.copy')"
         @update:model-value="updateValue('shareTitle', selectedLocale, $event)"
       />
     </div>
@@ -62,7 +59,6 @@
         :placeholder="getPlaceholder('shareDescription')"
         :disabled="selectedLocale === defaultLocale"
         :copyable="true"
-        :copy-label="t('actions.copy')"
         rows="3"
         @update:model-value="
           updateValue('shareDescription', selectedLocale, $event)
