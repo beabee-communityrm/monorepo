@@ -29,7 +29,6 @@
           :placeholder="getPlaceholder(endMessage.thankYouText)"
           :disabled="selectedLocale === defaultLocale"
           :copyable="true"
-          :copy-label="t('actions.copy')"
           @update:model-value="
             updateValue('thankYouText', selectedLocale, $event)
           "

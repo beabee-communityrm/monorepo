@@ -10,7 +10,6 @@
           v-model="email.body"
           label="Message"
           :copyable="true"
-          :copy-label="t('actions.copy')"
           class="col-span-12"
           required
         />
@@ -36,11 +35,8 @@ import {
 } from '@beabee/vue';
 
 import { computed, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
 
 import { currentUser } from '../../../../store';
-
-const { t } = useI18n();
 
 const props = defineProps<{
   label: string;

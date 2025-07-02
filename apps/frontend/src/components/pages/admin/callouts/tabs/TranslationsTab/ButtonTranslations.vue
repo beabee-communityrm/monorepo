@@ -28,7 +28,6 @@
             "
             :disabled="selectedLocale === defaultLocale"
             :copyable="true"
-            :copy-label="t('actions.copy')"
             @update:model-value="
               updateValue(slide, 'prevText', selectedLocale, $event)
             "
@@ -50,7 +49,6 @@
             "
             :disabled="selectedLocale === defaultLocale"
             :copyable="true"
-            :copy-label="t('actions.copy')"
             @update:model-value="
               updateValue(slide, 'nextText', selectedLocale, $event)
             "
@@ -72,7 +70,6 @@
             "
             :disabled="selectedLocale === defaultLocale"
             :copyable="true"
-            :copy-label="t('actions.copy')"
             @update:model-value="
               updateValue(slide, 'submitText', selectedLocale, $event)
             "
