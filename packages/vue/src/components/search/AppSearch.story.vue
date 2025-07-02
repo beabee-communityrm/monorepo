@@ -4,138 +4,70 @@ import type { RuleGroup } from '@beabee/beabee-common';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import { reactive, ref } from 'vue';
 
-import type { FilterGroups, OperatorLabels } from '../../types/search';
+import type { FilterGroups } from '../../types/search';
 import AppSearch from './AppSearch.vue';
 
 // Mock filter groups for demonstration
 const filterGroups = ref<FilterGroups>([
   {
-    id: 'member',
-    label: 'Member Filters',
+    id: 'person',
+    label: 'Person',
     items: {
       firstname: {
-        type: 'text',
+        type: 'text' as const,
         label: 'First Name',
       },
       lastname: {
-        type: 'text',
+        type: 'text' as const,
         label: 'Last Name',
       },
       email: {
-        type: 'text',
+        type: 'text' as const,
         label: 'Email',
       },
-      joinDate: {
-        type: 'date',
-        label: 'Join Date',
+      age: {
+        type: 'number' as const,
+        label: 'Age',
       },
       active: {
-        type: 'boolean',
-        label: 'Active Status',
+        type: 'boolean' as const,
+        label: 'Active',
       },
-      membershipType: {
-        type: 'enum',
-        label: 'Membership Type',
+      tags: {
+        type: 'array' as const,
+        label: 'Tags',
         options: [
-          { id: 'basic', label: 'Basic' },
+          { id: 'vip', label: 'VIP' },
           { id: 'premium', label: 'Premium' },
-          { id: 'enterprise', label: 'Enterprise' },
+          { id: 'standard', label: 'Standard' },
         ],
-      },
-      age: {
-        type: 'number',
-        label: 'Age',
       },
     },
   },
   {
-    id: 'activity',
-    label: 'Activity Filters',
+    id: 'membership',
+    label: 'Membership',
     items: {
-      lastLogin: {
-        type: 'date',
-        label: 'Last Login',
-      },
-      loginCount: {
-        type: 'number',
-        label: 'Login Count',
-      },
-      tags: {
-        type: 'array',
-        label: 'Tags',
+      status: {
+        type: 'enum' as const,
+        label: 'Status',
         options: [
-          { id: 'vip', label: 'VIP' },
-          { id: 'beta-tester', label: 'Beta Tester' },
-          { id: 'newsletter', label: 'Newsletter Subscriber' },
+          { id: 'active', label: 'Active' },
+          { id: 'pending', label: 'Pending' },
+          { id: 'expired', label: 'Expired' },
+        ],
+      },
+      type: {
+        type: 'enum' as const,
+        label: 'Membership Type',
+        options: [
+          { id: 'monthly', label: 'Monthly' },
+          { id: 'yearly', label: 'Yearly' },
         ],
       },
     },
   },
 ]);
-
-const operatorLabels: OperatorLabels = {
-  text: {
-    equal: 'equals',
-    not_equal: 'does not equal',
-    contains: 'contains',
-    not_contains: 'does not contain',
-    begins_with: 'begins with',
-    not_begins_with: 'does not begin with',
-    ends_with: 'ends with',
-    not_ends_with: 'does not end with',
-  },
-  blob: {
-    contains: 'contains',
-    not_contains: 'does not contain',
-  },
-  number: {
-    equal: 'equals',
-    not_equal: 'does not equal',
-    less: 'is less than',
-    less_or_equal: 'is less than or equal to',
-    greater: 'is greater than',
-    greater_or_equal: 'is greater than or equal to',
-    between: 'is between',
-    not_between: 'is not between',
-  },
-  enum: {
-    equal: 'equals',
-    not_equal: 'does not equal',
-  },
-  boolean: {
-    equal: 'is',
-  },
-  contact: {
-    equal: 'equals',
-    not_equal: 'does not equal',
-    contains: 'contains',
-    not_contains: 'does not contain',
-    begins_with: 'begins with',
-    not_begins_with: 'does not begin with',
-    ends_with: 'ends with',
-    not_ends_with: 'does not end with',
-  },
-  date: {
-    equal: 'is',
-    not_equal: 'is not',
-    less: 'is before',
-    less_or_equal: 'is before or on',
-    greater: 'is after',
-    greater_or_equal: 'is after or on',
-    between: 'is between',
-    not_between: 'is not between',
-  },
-  array: {
-    contains: 'contains',
-    not_contains: 'does not contain',
-  },
-  all: {
-    is_empty: 'is empty',
-    is_not_empty: 'is not empty',
-  },
-};
-
-// Labels object removed - AppSearch now uses internal i18n
 
 // Demo state
 const searchState = reactive({
@@ -190,7 +122,6 @@ function clearRules() {
           :model-value="searchState.currentRules"
           :filter-groups="filterGroups"
           :has-changed="searchState.hasChanged"
-          :operator-labels="operatorLabels"
           :button-icon="faFilter"
           @update:model-value="handleSearch"
           @reset="handleReset"
@@ -241,7 +172,6 @@ function clearRules() {
         <AppSearch
           :model-value="presetRules"
           :filter-groups="filterGroups"
-          :operator-labels="operatorLabels"
           :button-icon="faFilter"
           @update:model-value="handleSearch"
           @reset="handleReset"
@@ -263,7 +193,6 @@ function clearRules() {
         <AppSearch
           :model-value="undefined"
           :filter-groups="[filterGroups[0]]"
-          :operator-labels="operatorLabels"
           :button-icon="faFilter"
           @update:model-value="handleSearch"
           @reset="handleReset"
@@ -286,7 +215,6 @@ function clearRules() {
         <AppSearch
           :model-value="undefined"
           :filter-groups="filterGroups"
-          :operator-labels="operatorLabels"
           :button-icon="faFilter"
           @update:model-value="handleSearch"
           @reset="handleReset"

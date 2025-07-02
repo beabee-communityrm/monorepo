@@ -3,7 +3,6 @@
     v-if="readonly"
     :rule="rule"
     :filter-groups="filterGroups"
-    :operator-labels="operatorLabels"
     :locale="locale"
     readonly
     @remove="emit('remove')"
@@ -20,7 +19,6 @@
       class="flex-1"
       :rule="rule"
       :filter-groups="filterGroups"
-      :operator-labels="operatorLabels"
       :locale="locale"
       @update:rule="emit('update:rule', $event)"
     />
@@ -32,26 +30,20 @@ import type { BaseLocale } from '@beabee/locale';
 
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
-import type {
-  OperatorLabels,
-  SearchRuleEmits,
-  SearchRuleProps,
-} from '../../types/search';
+import type { SearchRuleEmits, SearchRuleProps } from '../../types/search';
 import AppSearchRuleFilter from './AppSearchRuleFilter.vue';
 
 /**
  * Search rule component that wraps rule filter with remove functionality.
- * Now simplified since child components handle their own i18n internally.
+ * Now uses internal i18n.
  *
  * @param filterGroups - Available filter groups
  * @param rule - The current rule
  * @param readonly - Whether the component is in readonly mode
- * @param operatorLabels - Labels for operators
  * @param locale - Locale for date formatting
  */
 
 interface Props extends SearchRuleProps {
-  operatorLabels: OperatorLabels;
   locale?: BaseLocale;
 }
 
