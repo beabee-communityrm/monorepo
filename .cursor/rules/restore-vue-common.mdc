@@ -38,17 +38,32 @@ Move components with external dependencies from `packages/vue` to `apps/frontend
 6. **Update frontend usage**: Change `@beabee/vue` imports to local component imports
    - `import { Component } from '@beabee/vue'` → `import Component from '@components/[dir]/Component.vue'`
 
-### Phase 3: Validation
-7. **Test both packages**: 
+### Phase 3: Validation ⚠️ CRITICAL
+7. **Format and validate continuously**: 
    ```bash
-   cd packages/vue && yarn format && yarn check
-   cd /path/to/monorepo && yarn workspace @beabee/frontend run format && yarn workspace @beabee/frontend run check
+   # After every major change, run:
+   yarn format && yarn check
    ```
 
-8. **Commit changes**: 
+8. **Final validation before commit**: 
    ```bash
+   # MANDATORY: Both packages must pass before any commit
+   cd packages/vue && yarn format && yarn check
+   cd /path/to/monorepo/apps/frontend && yarn format && yarn check
+   cd /path/to/monorepo && yarn check  # Full workspace check
+   ```
+
+9. **Commit only if validation passes**: 
+   ```bash
+   # Only commit if all checks pass with exit code 0
    git add -A && git commit -m "refactor(frontend): Update [component] imports and cleanup after migration"
    ```
+
+## ⚠️ VALIDATION RULES
+- **NEVER commit code that fails `yarn format` or `yarn check`**
+- **Run validation after each phase, not just at the end**
+- **If TypeScript errors persist after 3 attempts, document them and seek guidance**
+- **Vue package MUST always compile cleanly after migration**
 
 ## Migration Targets
 

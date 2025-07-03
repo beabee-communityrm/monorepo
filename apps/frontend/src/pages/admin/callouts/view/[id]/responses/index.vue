@@ -110,40 +110,42 @@ meta:
 
         <template #value-number="{ value, item }">
           <router-link
-            :to="`${route.path}/${item.id}`"
+            :to="`${route.path}/${(item as any).id}`"
             class="text-base font-bold text-link"
           >
-            {{ t('calloutResponsesPage.responseNo', { no: n(value) }) }}
+            {{
+              t('calloutResponsesPage.responseNo', { no: n(value as number) })
+            }}
           </router-link>
         </template>
         <template #value-assignee="{ value }">
           <router-link
             v-if="value"
-            :to="`/admin/contacts/${value.id}`"
+            :to="`/admin/contacts/${(value as any).id}`"
             class="text-link"
           >
-            {{ value.displayName }}
+            {{ (value as any).displayName }}
           </router-link>
           <span v-else>-</span>
         </template>
         <template #value-contact="{ value, item }">
           <router-link
             v-if="value"
-            :to="`/admin/contacts/${value.id}`"
+            :to="`/admin/contacts/${(value as any).id}`"
             class="text-link"
           >
             <font-awesome-icon :icon="faUser" class="mr-2" />{{
-              value.displayName
+              (value as any).displayName
             }}
           </router-link>
-          <span v-else-if="item.guestName">
-            {{ item.guestName }} ({{ item.guestEmail }})
+          <span v-else-if="(item as any).guestName">
+            {{ (item as any).guestName }} ({{ (item as any).guestEmail }})
           </span>
           <span v-else>-</span>
         </template>
         <template #value-createdAt="{ value }">
           <AppTime
-            :datetime="value"
+            :datetime="value as Date"
             :time-ago-template="t('common.timeAgo', { time: '{time}' })"
             :time-in-template="t('common.timeIn', { time: '{time}' })"
             :locale="locale as BaseLocale"

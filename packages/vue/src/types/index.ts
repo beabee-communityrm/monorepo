@@ -1,4 +1,3 @@
-export * from './contribution.ts';
 export * from './form.interface.ts';
 export * from './notice.ts';
 export * from './qr-code.ts';

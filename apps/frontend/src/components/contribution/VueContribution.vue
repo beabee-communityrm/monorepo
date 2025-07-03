@@ -86,11 +86,11 @@ import {
   calcPaymentFee,
 } from '@beabee/beabee-common';
 import { AppChoice } from '@beabee/vue';
-import type { ContributionContent } from '@beabee/vue';
 
 import { computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import type { ContributionContent } from '../../type/contribution';
 import ContributionAmount from './ContributionAmount.vue';
 import ContributionFee from './ContributionFee.vue';
 import ContributionMethod from './ContributionMethod.vue';
@@ -149,7 +149,7 @@ const amountProxy = computed({
 
 const periodProxy = computed({
   get: () => props.period,
-  set: (period) => emit('update:period', period),
+  set: (period: ContributionPeriod) => emit('update:period', period),
 });
 
 const payFeeProxy = computed({

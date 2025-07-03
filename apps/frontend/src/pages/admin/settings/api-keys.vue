@@ -48,15 +48,19 @@ meta:
     "
     class="mb-8"
   >
-    <template #value-id="{ item }"> {{ item.id }}_••••••••••••••••••</template>
+    <template #value-id="{ item }">
+      {{ (item as any).id }}_••••••••••••••••••</template
+    >
     <template #value-createdAt="{ value }">
-      <span class="whitespace-nowrap">{{ formatLocale(value, 'PP') }}</span>
+      <span class="whitespace-nowrap">{{
+        value instanceof Date ? formatLocale(value, 'PP') : ''
+      }}</span>
     </template>
     <template #value-expires="{ value }">
       <span class="whitespace-nowrap">
         <AppTime
           v-if="value"
-          :datetime="value"
+          :datetime="value as Date"
           :time-ago-template="t('common.timeAgo', { time: '{time}' })"
           :time-in-template="t('common.timeIn', { time: '{time}' })"
         />

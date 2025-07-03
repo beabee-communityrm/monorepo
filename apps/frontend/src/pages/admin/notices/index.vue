@@ -29,7 +29,9 @@ meta:
     :result="noticesTable"
   >
     <template #value-status="{ value }">
-      <ItemStatus :status="value" />
+      <ItemStatus
+        :status="value as import('@beabee/beabee-common').ItemStatus"
+      />
     </template>
     <template #value-name="{ item, value }">
       <router-link
@@ -40,7 +42,9 @@ meta:
       </router-link>
     </template>
     <template #value-createdAt="{ value }">
-      <span class="whitespace-nowrap">{{ formatLocale(value, 'PP') }}</span>
+      <span class="whitespace-nowrap">{{
+        value instanceof Date ? formatLocale(value, 'PP') : ''
+      }}</span>
     </template>
   </AppPaginatedTable>
 </template>
