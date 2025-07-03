@@ -10,7 +10,6 @@ export * from './list';
 export * from './navigation';
 export * from './notification';
 export * from './scroll';
-export * from './search';
 export * from './status';
 export * from './table';
 export * from './tabs';
