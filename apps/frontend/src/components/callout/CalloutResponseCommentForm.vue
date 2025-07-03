@@ -6,6 +6,7 @@
         : t('calloutResponseComments.actions.addComment')
     "
     :reset-button-text="props.comment && t('actions.cancel')"
+    :extract-error-code="extractDefaultErrorCode"
     @submit.prevent="handleSubmit"
     @reset="emit('cancel')"
   >
@@ -19,6 +20,7 @@
 import type { GetCalloutResponseCommentData } from '@beabee/beabee-common';
 import { AppForm, AppRichTextEditor } from '@beabee/vue';
 
+import { extractDefaultErrorCode } from '@utils/api-error';
 import useVuelidate from '@vuelidate/core';
 import { reactive } from 'vue';
 import { useI18n } from 'vue-i18n';

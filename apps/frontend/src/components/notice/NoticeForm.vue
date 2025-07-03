@@ -1,6 +1,7 @@
 <template>
   <AppForm
     :button-text="t('actions.save')"
+    :extract-error-code="extractDefaultErrorCode"
     @submit.prevent="$emit('submit', convertFormData(data))"
   >
     <div class="mb-3">
@@ -61,6 +62,7 @@ import type { CreateNoticeData } from '@beabee/beabee-common';
 import type { GetNoticeData } from '@beabee/beabee-common';
 import { AppForm, AppInput, AppLabel } from '@beabee/vue';
 
+import { extractDefaultErrorCode } from '@utils/api-error';
 import { format } from 'date-fns';
 import { reactive } from 'vue';
 import { useI18n } from 'vue-i18n';

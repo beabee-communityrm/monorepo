@@ -16,6 +16,7 @@
     <AppForm
       :button-text="t('joinSetup.continue')"
       full-button
+      :extract-error-code="extractDefaultErrorCode"
       @submit.prevent="onSubmit?.(data)"
     >
       <div class="mb-6">
@@ -76,6 +77,7 @@ import ContactBasicFields from '@components/contact/ContactBasicFields.vue';
 import ContactMailOptIn from '@components/contact/ContactMailOptIn.vue';
 import AppNewsletterOptIn from '@components/newsletter/AppNewsletterOptIn.vue';
 import { client } from '@utils/api';
+import { extractDefaultErrorCode } from '@utils/api-error';
 import useVuelidate from '@vuelidate/core';
 import { computed, reactive } from 'vue';
 import { useI18n } from 'vue-i18n';
