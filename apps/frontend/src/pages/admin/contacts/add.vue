@@ -71,11 +71,11 @@ import {
   AppHeading,
   PageTitle,
 } from '@beabee/vue';
-import { AppRoleEditor } from '@beabee/vue';
 
 import ContactBasicFields from '@components/contact/ContactBasicFields.vue';
 import ContactContributionFields from '@components/contact/ContactContributionFields.vue';
 import type { UpdateContribution } from '@components/contact/contact.interface';
+import AppRoleEditor from '@components/role/AppRoleEditor.vue';
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { client } from '@utils/api';

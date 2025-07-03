@@ -10,7 +10,6 @@ export * from './list';
 export * from './navigation';
 export * from './notice';
 export * from './notification';
-export * from './role';
 export * from './scroll';
 export * from './search';
 export * from './status';

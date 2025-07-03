@@ -284,10 +284,10 @@ import {
   AppInput,
   AppRichTextEditor,
 } from '@beabee/vue';
-import { AppRoleEditor } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
 import CalloutForm from '@components/pages/callouts/CalloutForm.vue';
+import AppRoleEditor from '@components/role/AppRoleEditor.vue';
 import TagList from '@components/tag/TagList.vue';
 import ToggleTagButton from '@components/tag/ToggleTagButton.vue';
 import env from '@env';
