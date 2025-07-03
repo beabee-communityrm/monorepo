@@ -129,8 +129,8 @@ import {
   AppSelect,
   AppSubHeading,
 } from '@beabee/vue';
-import { AppNewsletterOptInSettings } from '@beabee/vue';
 
+import AppNewsletterOptInSettings from '@components/newsletter/AppNewsletterOptInSettings.vue';
 import SetupForm from '@components/pages/join/SetupForm.vue';
 import { client } from '@utils/api';
 import { onBeforeMount, ref } from 'vue';
