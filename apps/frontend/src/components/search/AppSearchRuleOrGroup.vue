@@ -20,7 +20,7 @@ import type { BaseLocale } from '@beabee/locale';
 
 import { useI18n } from 'vue-i18n';
 
-import type { SearchRuleEmits, SearchRuleProps } from '../../types/search';
+import type { SearchRuleEmits, SearchRuleProps } from '../../type/search';
 import AppSearchRule from './AppSearchRule.vue';
 
 const { t } = useI18n();

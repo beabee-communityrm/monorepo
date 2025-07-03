@@ -23,23 +23,29 @@ Move components with external dependencies from `packages/vue` to `apps/frontend
    rm apps/frontend/src/components/[component]/*.story.* apps/frontend/src/components/[component]/index.ts
    ```
 
-3. **Fix imports in migrated components**: Change relative imports to `@beabee/vue`
+3. **Migrate related types**: Move component-specific types from `packages/vue/src/types/` to `apps/frontend/src/type/`
+   ```bash
+   git mv packages/vue/src/types/[component].ts apps/frontend/src/type/
+   ```
+
+4. **Fix imports in migrated components**: Change relative imports to `@beabee/vue`
    - `'../form'` → `'@beabee/vue'`
    - `'../button'` → `'@beabee/vue'`
+   - `'../../types/[component]'` → `'@/type/[component]'`
 
-4. **Remove exports from vue package**: Delete from `packages/vue/src/components/index.ts`
+5. **Remove exports from vue package**: Delete from `packages/vue/src/components/index.ts` and update `packages/vue/src/types/index.ts`
 
-5. **Update frontend usage**: Change `@beabee/vue` imports to local component imports
+6. **Update frontend usage**: Change `@beabee/vue` imports to local component imports
    - `import { Component } from '@beabee/vue'` → `import Component from '@components/[dir]/Component.vue'`
 
 ### Phase 3: Validation
-6. **Test both packages**: 
+7. **Test both packages**: 
    ```bash
    cd packages/vue && yarn format && yarn check
    cd /path/to/monorepo && yarn workspace @beabee/frontend run format && yarn workspace @beabee/frontend run check
    ```
 
-7. **Commit changes**: 
+8. **Commit changes**: 
    ```bash
    git add -A && git commit -m "refactor(frontend): Update [component] imports and cleanup after migration"
    ```

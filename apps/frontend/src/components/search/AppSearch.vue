@@ -13,10 +13,10 @@
 
 <script lang="ts" setup>
 import type { RuleGroup } from '@beabee/beabee-common';
-import type { FilterGroups } from '@beabee/vue';
 
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 
+import type { FilterGroups } from '../../type/search';
 import AppSearch from './VueAppSearch.vue';
 
 const emit = defineEmits<{

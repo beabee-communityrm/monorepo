@@ -60,7 +60,7 @@ import {
   type SearchRuleFilterGroupProps,
   buildNullableOperatorItems,
   buildOperatorItems,
-} from '../../types/search';
+} from '../../type/search';
 import {
   createNewRule,
   createOperatorLabels,
@@ -93,7 +93,7 @@ const props = withDefaults(defineProps<Props>(), {
   locale: 'en' as BaseLocale,
 });
 
-const emit = defineEmits<Emits>();
+const emit = defineEmits<Emits & { 'update:rule': [rule: Rule] }>();
 
 // Create operator labels using internal i18n
 const operatorLabels = computed(() => createOperatorLabels(t));

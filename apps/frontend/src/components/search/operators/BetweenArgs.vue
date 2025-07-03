@@ -21,7 +21,7 @@ import type { BaseLocale } from '@beabee/locale';
 
 import { useI18n } from 'vue-i18n';
 
-import type { FilterItem } from '../../../types/search';
+import type { FilterItem } from '../../../type/search';
 import ArgInput from './ArgInput.vue';
 
 const { t } = useI18n();
