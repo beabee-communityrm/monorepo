@@ -33,7 +33,7 @@ import { AppToggle } from '@beabee/vue';
 import { computed, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import type { SearchRuleEmits, SearchRuleProps } from '../../types/search';
+import type { SearchRuleEmits, SearchRuleProps } from '../../type/search';
 import { createOperatorLabels } from '../../utils/rules';
 import AppSearchRuleFilterGroup from './AppSearchRuleFilterGroup.vue';
 

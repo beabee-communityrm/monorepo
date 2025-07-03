@@ -1,18 +1,22 @@
-import {
-  type ArrayFilterArgs,
-  type EnumFilterArgs,
-  type OtherFilterArgs,
+import type {
+  ArrayFilterArgs,
+  EnumFilterArgs,
+  OtherFilterArgs,
 } from '@beabee/beabee-common';
 
 import type { Ref } from 'vue';
 
-import type {
-  FilterItem,
-  FilterItemArray,
-  FilterItemEnum,
-  FilterItemOther,
-  FilterItems,
-} from '../types/search';
+// Simple re-exports of the functions that were moved to frontend
+// This maintains compatibility for existing vue package users
+
+export interface FilterItem {
+  type: string;
+  label: string;
+  options?: { id: string; label: string }[];
+  prefix?: string;
+}
+
+export type FilterItems<T extends string = string> = Record<T, FilterItem>;
 
 interface LabelOpts {
   prefix: string;
@@ -21,37 +25,20 @@ interface LabelOpts {
 /**
  * Create filter items with labels and options
  */
-export function withLabel<T extends readonly string[]>(
-  args: EnumFilterArgs<T>,
-  label: string,
-  optionLabels: Record<T[number], string>
-): FilterItemEnum<T>;
 export function withLabel(
-  args: ArrayFilterArgs<undefined>,
+  args:
+    | EnumFilterArgs<readonly string[]>
+    | ArrayFilterArgs<readonly string[] | undefined>
+    | OtherFilterArgs,
   label: string,
-  opts?: LabelOpts
-): FilterItemArray<undefined>;
-export function withLabel<T extends readonly string[]>(
-  args: ArrayFilterArgs<T>,
-  label: string,
-  optionLabels: Record<T[number], string>
-): FilterItemArray<T>;
-export function withLabel(
-  args: OtherFilterArgs,
-  label: string,
-  opts?: LabelOpts
-): FilterItemOther;
-export function withLabel<T extends readonly string[]>(
-  args: EnumFilterArgs<T> | ArrayFilterArgs<T> | OtherFilterArgs,
-  label: string,
-  extraArg?: Record<T[number], string> | LabelOpts
+  extraArg?: Record<string, string> | LabelOpts
 ): FilterItem {
   if (args.type === 'enum' || (args.type === 'array' && args.options)) {
-    const optionLabels = extraArg as Record<T[number], string>;
+    const optionLabels = extraArg as Record<string, string>;
     return {
       ...args,
       label,
-      options: (args.options || []).map((id: T[number]) => ({
+      options: (args.options || []).map((id: string) => ({
         id,
         label: optionLabels[id],
       })),

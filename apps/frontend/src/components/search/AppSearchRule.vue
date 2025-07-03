@@ -30,7 +30,7 @@ import type { BaseLocale } from '@beabee/locale';
 
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
-import type { SearchRuleEmits, SearchRuleProps } from '../../types/search';
+import type { SearchRuleEmits, SearchRuleProps } from '../../type/search';
 import AppSearchRuleFilter from './AppSearchRuleFilter.vue';
 
 /**

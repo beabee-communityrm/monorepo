@@ -9,7 +9,7 @@ import {
   operatorsByTypeMap,
 } from '@beabee/beabee-common';
 
-import type { OperatorLabels, RuleGroupWithEmpty } from '../types/search';
+import type { OperatorLabels, RuleGroupWithEmpty } from '../type/search';
 
 /**
  * Get default value for a rule based on its type

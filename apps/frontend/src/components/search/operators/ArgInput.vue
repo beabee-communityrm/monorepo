@@ -44,7 +44,7 @@ import { AppInput, AppRadioGroup, AppSelect, formatLocale } from '@beabee/vue';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import type { FilterItem } from '../../../types/search';
+import type { FilterItem } from '../../../type/search';
 import DateInput from './DateInput.vue';
 
 const { t } = useI18n();

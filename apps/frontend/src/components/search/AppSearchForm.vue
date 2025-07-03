@@ -73,7 +73,7 @@ import useVuelidate from '@vuelidate/core';
 import { computed, reactive, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import type { FilterGroups, RuleGroupWithEmpty } from '../../types/search';
+import type { FilterGroups, RuleGroupWithEmpty } from '../../type/search';
 import { copyRuleGroup, isRuleGroupEqual } from '../../utils/rules';
 import AppSearchRuleOrGroup from './AppSearchRuleOrGroup.vue';
 

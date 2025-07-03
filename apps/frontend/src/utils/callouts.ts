@@ -15,7 +15,6 @@ import {
   flattenComponents,
 } from '@beabee/beabee-common';
 import { type LocaleOptions, config as localeConfig } from '@beabee/locale';
-import type { FilterItem, FilterItems } from '@beabee/vue';
 
 import type {
   FormBuilderNavigation,
@@ -32,6 +31,7 @@ import { computed } from 'vue';
 
 import env from '../env';
 import { i18n } from '../lib/i18n';
+import type { FilterItem, FilterItems } from '../type/search';
 
 const { t } = i18n.global;
 

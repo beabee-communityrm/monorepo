@@ -23,7 +23,7 @@ import type { BaseLocale } from '@beabee/locale';
 
 import { useI18n } from 'vue-i18n';
 
-import type { FilterGroups } from '../../types/search';
+import type { FilterGroups } from '../../type/search';
 import AppSearchRuleOrGroup from './AppSearchRuleOrGroup.vue';
 
 const { t } = useI18n();

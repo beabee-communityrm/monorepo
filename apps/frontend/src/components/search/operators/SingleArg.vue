@@ -12,7 +12,7 @@
 import type { RuleValue } from '@beabee/beabee-common';
 import type { BaseLocale } from '@beabee/locale';
 
-import type { FilterItem } from '../../../types/search';
+import type { FilterItem } from '../../../type/search';
 import ArgInput from './ArgInput.vue';
 
 /**
