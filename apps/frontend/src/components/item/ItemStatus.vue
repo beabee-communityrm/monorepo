@@ -1,5 +1,5 @@
 <!--
-  # ItemStatus  
+  # ItemStatus
   A component for displaying item status with color-coded styling and optional circle indicator.
   Shows status text in various predefined color schemes using internal i18n.
 
@@ -10,13 +10,13 @@
   - Ended: common.status.ended
 -->
 <template>
-  <span class="text-sm font-bold uppercase" :class="colorClasses[status]">
+  <span class="text-sm font-bold uppercase" :class="colorClasses[props.status]">
     <span
-      v-if="circle"
+      v-if="props.circle"
       class="-mt-px mr-1 inline-block h-3 w-3 rounded-full bg-[currentColor] align-middle"
       :aria-hidden="true"
     />
-    {{ t(`common.status.${status}`) }}
+    {{ t(`common.status.${props.status}`) }}
   </span>
 </template>
 

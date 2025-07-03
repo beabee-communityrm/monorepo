@@ -48,12 +48,7 @@
 <script lang="ts" setup>
 import type { GetCalloutDataWith } from '@beabee/beabee-common';
 import type { BaseLocale } from '@beabee/locale';
-import {
-  AppButton,
-  AppSubHeading,
-  ItemDateRange,
-  ItemStatusText,
-} from '@beabee/vue';
+import { AppButton, AppSubHeading, ItemDateRange } from '@beabee/vue';
 
 import env from '@env';
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
@@ -62,6 +57,7 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import noImage from '../../assets/images/no-image.avif';
+import ItemStatusText from '../item/ItemStatusText.vue';
 
 const { t, locale } = useI18n();
 

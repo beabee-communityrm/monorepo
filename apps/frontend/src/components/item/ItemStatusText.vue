@@ -6,7 +6,7 @@
   Uses internal i18n for all text content:
   - Status text: via ItemStatus component (common.status.*)
   - Scheduled items: item.status.startsIn
-  - Open items: item.status.endsIn  
+  - Open items: item.status.endsIn
   - Ended items: common.timeAgo
 -->
 <template>
@@ -40,15 +40,14 @@
  * />
  */
 import { ItemStatus } from '@beabee/beabee-common';
-import type { BaseLocale } from '@beabee/locale';
 
+import { formatDistanceLocale } from '@utils/dates';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { formatDistanceLocale } from '../../utils/dates';
 import ItemStatusComponent from './ItemStatus.vue';
 
-const { t, locale } = useI18n();
+const { t } = useI18n();
 
 /**
  * Props for the ItemStatusText component
@@ -79,11 +78,7 @@ const props = withDefaults(defineProps<ItemStatusTextProps>(), {
 const scheduledText = computed(() => {
   if (props.status !== ItemStatus.Scheduled || !props.starts) return '';
 
-  const duration = formatDistanceLocale(
-    props.starts,
-    new Date(),
-    locale.value as BaseLocale
-  );
+  const duration = formatDistanceLocale(props.starts, new Date());
   return t('item.status.startsIn', { duration });
 });
 
@@ -93,11 +88,7 @@ const scheduledText = computed(() => {
 const openText = computed(() => {
   if (props.status !== ItemStatus.Open || !props.expires) return '';
 
-  const duration = formatDistanceLocale(
-    props.expires,
-    new Date(),
-    locale.value as BaseLocale
-  );
+  const duration = formatDistanceLocale(props.expires, new Date());
   return t('item.status.endsIn', { duration });
 });
 
@@ -107,11 +98,7 @@ const openText = computed(() => {
 const endedText = computed(() => {
   if (props.status !== ItemStatus.Ended || !props.expires) return '';
 
-  const time = formatDistanceLocale(
-    props.expires,
-    new Date(),
-    locale.value as BaseLocale
-  );
+  const time = formatDistanceLocale(props.expires, new Date());
   return t('common.timeAgo', { time });
 });
 </script>
