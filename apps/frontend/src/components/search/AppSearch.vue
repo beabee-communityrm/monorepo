@@ -13,10 +13,11 @@
 
 <script lang="ts" setup>
 import type { RuleGroup } from '@beabee/beabee-common';
-import { AppSearch } from '@beabee/vue';
 import type { FilterGroups } from '@beabee/vue';
 
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
+
+import AppSearch from './VueAppSearch.vue';
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: RuleGroup): void;
