@@ -121,16 +121,15 @@
  * @component AppNewsletterOptInSettings
  */
 import type { NewsletterGroupData } from '@beabee/beabee-common';
-
-import { useI18n } from 'vue-i18n';
-
 import {
   AppCheckbox,
   AppInput,
   AppRepeatable,
   AppRichTextEditor,
-} from '../form/index';
-import { AppSectionHeading } from '../typography/index';
+  AppSectionHeading,
+} from '@beabee/vue';
+
+import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 

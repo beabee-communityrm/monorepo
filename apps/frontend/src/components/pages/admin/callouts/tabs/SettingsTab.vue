@@ -261,8 +261,8 @@ import {
   AppToggleField,
   type ScrollSection,
 } from '@beabee/vue';
-import { AppNewsletterOptInSettings } from '@beabee/vue';
 
+import AppNewsletterOptInSettings from '@components/newsletter/AppNewsletterOptInSettings.vue';
 import env from '@env';
 import useVuelidate from '@vuelidate/core';
 import { sameAs } from '@vuelidate/validators';

@@ -1,7 +1,7 @@
 <!--
   # AppNewsletterOptIn
-  A newsletter opt-in component that allows users to subscribe to newsletters 
-  with optional group selection. Provides flexible configuration for both 
+  A newsletter opt-in component that allows users to subscribe to newsletters
+  with optional group selection. Provides flexible configuration for both
   simple checkbox and multi-group selection modes.
 
   Uses internal i18n for accessibility:
@@ -60,11 +60,10 @@
  * @component AppNewsletterOptIn
  */
 import type { NewsletterGroupData } from '@beabee/beabee-common';
+import { AppCheckbox, AppCheckboxGroup } from '@beabee/vue';
 
 import { computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-
-import { AppCheckbox, AppCheckboxGroup } from '../form/index';
 
 const { t } = useI18n();
 
@@ -82,7 +81,7 @@ export interface AppNewsletterOptInProps {
   groups: NewsletterGroupData[];
 }
 
-const props = defineProps<AppNewsletterOptInProps>();
+defineProps<AppNewsletterOptInProps>();
 
 /**
  * Model values for the component
