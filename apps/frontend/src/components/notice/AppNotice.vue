@@ -24,10 +24,9 @@
 
 <script lang="ts" setup>
 import type { GetNoticeData } from '@beabee/beabee-common';
+import { AppButton } from '@beabee/vue';
 
 import { faBullhorn } from '@fortawesome/free-solid-svg-icons';
-
-import { AppButton } from '../button';
 
 /**
  * Notice component for displaying promotional or informational notices

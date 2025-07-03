@@ -8,7 +8,6 @@ export * from './item-manager';
 export * from './layout';
 export * from './list';
 export * from './navigation';
-export * from './notice';
 export * from './notification';
 export * from './scroll';
 export * from './search';
