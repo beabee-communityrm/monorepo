@@ -271,6 +271,7 @@ import {
   GetContactWith,
   type RoleType,
 } from '@beabee/beabee-common';
+import { PaymentMethod } from '@beabee/beabee-common';
 import type { BaseLocale } from '@beabee/locale';
 import {
   App2ColGrid,
@@ -284,7 +285,6 @@ import {
   AppRichTextEditor,
 } from '@beabee/vue';
 import { AppRoleEditor } from '@beabee/vue';
-import { PaymentMethod } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
 import CalloutForm from '@components/pages/callouts/CalloutForm.vue';

@@ -13,9 +13,9 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { AppCheckbox } from '@beabee/vue';
 
-import { AppCheckbox } from '../form';
+import { computed } from 'vue';
 
 const emit = defineEmits(['update:modelValue']);
 
