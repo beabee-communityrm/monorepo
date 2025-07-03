@@ -2,7 +2,7 @@
   # Contribution
   A comprehensive contribution form component that orchestrates all contribution-related inputs.
   Combines amount selection, period selection, payment method selection, and fee handling.
-  
+
   ## Props
   - `amount` (number): Current contribution amount
   - `period` (ContributionPeriod): Current contribution period
@@ -15,13 +15,13 @@
   - `disabled` (boolean): Whether the form is disabled
   - `currencySymbol` (string): Currency symbol (e.g. "€", "$")
   - `currencyFormatter` (function): Function to format currency values
-  
+
   ## Events
   - `update:amount` (number): Emitted when amount changes
   - `update:period` (ContributionPeriod): Emitted when period changes
   - `update:payFee` (boolean): Emitted when pay fee selection changes
   - `update:paymentMethod` (PaymentMethod): Emitted when payment method changes
-  
+
   ## Features
   - Period selection with dynamic amount adjustment
   - Amount validation and preset selection
@@ -85,12 +85,12 @@ import {
   PaymentMethod,
   calcPaymentFee,
 } from '@beabee/beabee-common';
+import { AppChoice } from '@beabee/vue';
+import type { ContributionContent } from '@beabee/vue';
 
 import { computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import type { ContributionContent } from '../../types/contribution';
-import { AppChoice } from '../form';
 import ContributionAmount from './ContributionAmount.vue';
 import ContributionFee from './ContributionFee.vue';
 import ContributionMethod from './ContributionMethod.vue';
