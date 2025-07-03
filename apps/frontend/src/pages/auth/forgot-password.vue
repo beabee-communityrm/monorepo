@@ -15,6 +15,7 @@ meta:
         :button-text="t('actions.resetPassword')"
         inline-error
         full-button
+        :extract-error-code="extractDefaultErrorCode"
         @submit="submitForgotPassword"
       >
         <p class="mb-4">{{ t('forgotPassword.description') }}</p>
@@ -56,6 +57,7 @@ import { AppTitle } from '@beabee/vue';
 
 import AuthBox from '@components/AuthBox.vue';
 import { client } from '@utils/api';
+import { extractDefaultErrorCode } from '@utils/api-error';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';

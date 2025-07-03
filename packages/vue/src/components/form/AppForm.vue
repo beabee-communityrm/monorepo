@@ -45,8 +45,6 @@
  *
  * @component AppForm
  */
-import { isApiError } from '@beabee/client';
-
 import useVuelidate from '@vuelidate/core';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -72,6 +70,8 @@ export interface AppFormProps {
   fullButton?: boolean;
   /** The function to call when the form is submitted */
   onSubmit?: (evt: Event) => Promise<void | false> | void | false;
+  /** Function to extract error code from error object (defaults to returning 'unknown') */
+  extractErrorCode?: (error: unknown) => string;
 }
 
 const emit = defineEmits(['reset']);
@@ -82,6 +82,7 @@ const props = withDefaults(defineProps<AppFormProps>(), {
   inlineError: false,
   fullButton: false,
   onSubmit: undefined,
+  extractErrorCode: () => 'unknown',
 });
 
 const defaultErrorMessages = computed<Record<string, string>>(() => ({
@@ -122,8 +123,8 @@ async function handleSubmit(evt: Event) {
       });
     }
   } catch (err) {
-    const errorCode = isApiError(err, undefined, [400, 401])
-      ? err.code
+    const errorCode = props.extractErrorCode
+      ? props.extractErrorCode(err)
       : 'unknown';
     const errorText =
       errorCode && errorMessages.value[errorCode]

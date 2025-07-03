@@ -4,7 +4,12 @@
       <AppTitle>{{ joinContent.title }}</AppTitle>
       <div class="content-message mb-6" v-html="joinContent.subtitle" />
     </template>
-    <AppForm :button-text="buttonText" full-button @submit="onSubmit">
+    <AppForm
+      :button-text="buttonText"
+      full-button
+      :extract-error-code="extractDefaultErrorCode"
+      @submit="onSubmit"
+    >
       <AccountSection v-model:email="signUpData.email" class="mb-6" />
     </AppForm>
   </AuthBox>
@@ -72,6 +77,7 @@ import beabeeLogo from '@assets/images/beabee-logo.png';
 import AuthBox from '@components/AuthBox.vue';
 import Contribution from '@components/contribution/Contribution.vue';
 import { generalContent, isEmbed } from '@store';
+import { extractDefaultErrorCode } from '@utils/api-error';
 import useVuelidate from '@vuelidate/core';
 import { computed, toRef } from 'vue';
 import { useI18n } from 'vue-i18n';
