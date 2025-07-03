@@ -52,7 +52,9 @@ Move components with external dependencies from `packages/vue` to `apps/frontend
 
 **Keep in Vue (Design System):**
 - Basic UI components (buttons, inputs, modals)
-- Layout/typography components without external dependencies
+- Layout/typography components
+- Generic utilities without business logic
+- Components without beabee client, common, or backend dependencies
 
 ## Success Criteria
 - Clean git history with explicit moves
