@@ -59,12 +59,12 @@ import {
   ActionButton,
   AppConfirmDialog,
   AppHeading,
-  AppNotice,
   ItemDateRange,
   ItemStatusText,
   PageTitle,
 } from '@beabee/vue';
 
+import AppNotice from '@components/notice/AppNotice.vue';
 import {
   faPencilAlt,
   faSignHanging,
