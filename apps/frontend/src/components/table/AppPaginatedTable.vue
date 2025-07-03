@@ -67,13 +67,13 @@
  *
  * @component AppPaginatedTable
  */
-import { type Paginated } from '@beabee/beabee-common';
+import { AppTable } from '@beabee/vue';
 
 import { computed, useSlots } from 'vue';
 
-import { type Header, type Item, type Sort } from '../../types/table';
+import { type Paginated } from '../../type/paginated';
+import { type Header, type Item, type Sort } from '../../type/table';
 import AppPaginatedTableResult from './AppPaginatedTableResult.vue';
-import AppTable from './AppTable.vue';
 
 /**
  * Props for the AppPaginatedTable component

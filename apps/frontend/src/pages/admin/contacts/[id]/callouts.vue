@@ -41,13 +41,15 @@ import {
   type GetContactData,
   type Paginated,
 } from '@beabee/beabee-common';
-import { AppPaginatedTable, type Header } from '@beabee/vue';
+import { type Header } from '@beabee/vue';
 
 import { client } from '@utils/api';
 import { formatLocale } from '@utils/dates';
 import { definePaginatedQuery } from '@utils/pagination';
 import { ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import AppPaginatedTable from '../../../../components/table/AppPaginatedTable.vue';
 
 const props = defineProps<{
   contact: GetContactData;

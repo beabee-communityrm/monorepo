@@ -75,7 +75,6 @@ import type {
 import {
   AppButton,
   AppFilterGrid,
-  AppPaginatedTable,
   AppSearchInput,
   type Header,
   PageTitle,
@@ -95,6 +94,7 @@ import { computed, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import ItemStatus from '../../../components/item/ItemStatus.vue';
+import AppPaginatedTable from '../../../components/table/AppPaginatedTable.vue';
 
 const { t } = useI18n();
 

@@ -121,7 +121,6 @@ import {
 import {
   App2ColGrid,
   AppHeading,
-  AppPaginatedTable,
   type Header,
   addNotification,
 } from '@beabee/vue';
@@ -134,6 +133,8 @@ import useVuelidate from '@vuelidate/core';
 import { addDays } from 'date-fns';
 import { computed, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import AppPaginatedTable from '../../../components/table/AppPaginatedTable.vue';
 
 const { n, t } = useI18n();
 

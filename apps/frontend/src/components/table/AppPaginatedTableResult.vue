@@ -57,12 +57,13 @@
  *
  * @component AppPaginatedTableResult
  */
-import type { Paginated } from '@beabee/beabee-common';
 import { AppSelect } from '@beabee/vue';
 import { AppPagination } from '@beabee/vue';
 
 import { computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import type { Paginated } from '../../type/paginated';
 
 const { t } = useI18n();
 
