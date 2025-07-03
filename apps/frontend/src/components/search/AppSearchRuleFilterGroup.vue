@@ -57,7 +57,6 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import {
-  type SearchRuleEmits,
   type SearchRuleFilterGroupProps,
   buildNullableOperatorItems,
   buildOperatorItems,
@@ -85,8 +84,9 @@ interface Props extends SearchRuleFilterGroupProps {
   locale?: BaseLocale;
 }
 
-interface Emits extends SearchRuleEmits {
-  (event: 'remove'): void;
+interface ComponentEmits {
+  'update:rule': [rule: Rule];
+  remove: [];
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -94,7 +94,7 @@ const props = withDefaults(defineProps<Props>(), {
   locale: 'en' as BaseLocale,
 });
 
-const emit = defineEmits<Emits & { 'update:rule': [rule: Rule] }>();
+const emit = defineEmits<ComponentEmits>();
 
 // Create operator labels using internal i18n
 const operatorLabels = computed(() => createOperatorLabels(t));
