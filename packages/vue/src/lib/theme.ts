@@ -1,7 +1,5 @@
-import { generalContent } from '@beabee/vue/store/generalContent';
-
 import { mix, parseToRgba } from 'color2k';
-import { watch } from 'vue';
+import { ref, watch } from 'vue';
 
 // [Font name, fallbacks]
 export const validFonts = {
@@ -84,6 +82,24 @@ export const availableFonts = Object.entries(validFonts).map(
   })
 );
 
+// Internal reactive theme store
+const currentTheme = ref<PartialTheme>({});
+
+/**
+ * Set the theme for the Vue design system
+ * This function can be called from outside the package to update the theme
+ */
+export function setTheme(theme: PartialTheme) {
+  currentTheme.value = theme;
+}
+
+/**
+ * Get the current theme
+ */
+export function getCurrentTheme(): PartialTheme {
+  return currentTheme.value;
+}
+
 function getFont(s: string | undefined): FontId {
   return s !== undefined && s in allFonts ? (s as FontId) : 'open-sans';
 }
@@ -147,13 +163,13 @@ function loadFont(font: string) {
   return import(`../assets/styles/fonts-${font}.css`);
 }
 
+// Watch for theme changes and apply them
 watch(
-  () => generalContent.value.theme,
+  currentTheme,
   (newTheme) => {
     const { colors, fonts } = getFullTheme(newTheme);
 
     // Set colors
-
     setShades('primary', colors.primary, [5, 10, 20, 40, 70, 80]);
     setShades('body', colors.body, [60, 80]);
     setShades('link', colors.link, [10, 70, 110]);
@@ -164,7 +180,6 @@ watch(
     setShades('black', colors.black || '#000000');
 
     // Load fonts
-
     setCSSVar('--ff-body', allFonts[fonts.body].join(','));
     setCSSVar('--ff-title', allFonts[fonts.title].join(','));
 
@@ -176,6 +191,6 @@ watch(
   },
   {
     deep: true,
-    immediate: true, // Initialise default theme on page load
+    immediate: true, // Initialize default theme on page load
   }
 );
