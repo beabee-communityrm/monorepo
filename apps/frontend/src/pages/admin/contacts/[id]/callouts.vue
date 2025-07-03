@@ -22,14 +22,14 @@ meta:
       </template>
       <template #value-callout="{ value }">
         <router-link
-          :to="`/admin/callouts/view/${value.slug}`"
+          :to="`/admin/callouts/view/${(value as any).slug}`"
           class="text-link"
         >
-          {{ value.title }}
+          {{ (value as any).title }}
         </router-link>
       </template>
       <template #value-createdAt="{ value }">
-        {{ formatLocale(value, 'Pp') }}
+        {{ value instanceof Date ? formatLocale(value, 'Pp') : '' }}
       </template>
     </AppPaginatedTable>
   </div>

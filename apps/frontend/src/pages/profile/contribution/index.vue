@@ -71,12 +71,7 @@ import {
   MembershipStatus,
   PaymentMethod,
 } from '@beabee/beabee-common';
-import {
-  App2ColGrid,
-  AppNotification,
-  type ContributionContent,
-  PageTitle,
-} from '@beabee/vue';
+import { App2ColGrid, AppNotification, PageTitle } from '@beabee/vue';
 
 import ContactCancelContribution from '@components/contact/ContactCancelContribution.vue';
 import ContactPaymentsHistory from '@components/contact/ContactPaymentsHistory.vue';
@@ -88,6 +83,8 @@ import { client } from '@utils/api';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
+
+import type { ContributionContent } from '../../../type/contribution';
 
 const { t } = useI18n();
 const route = useRoute();

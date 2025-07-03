@@ -29,34 +29,40 @@
     <div class="mb-2 flex items-end gap-4">
       <slot name="actions"></slot>
       <AppPaginatedTableResult
-        v-model:page="query.page"
-        v-model:limit="query.limit"
+        :page="query.page"
+        :limit="query.limit"
         :result="result"
         :format-number="formatNumber"
         class="ml-auto items-end"
         no-limit
+        @update:page="updatePage"
+        @update:limit="updateLimit"
       />
     </div>
     <div class="overflow-x-auto">
       <AppTable
-        v-model:sort="query.sort"
+        :sort="query.sort"
         :headers="headers"
         :items="result?.items || null"
         :selectable="selectable"
         :row-class="rowClass"
         class="mb-4 w-full"
+        @update:sort="updateSort"
       >
         <template v-for="name of slotNames" #[name]="slotData" :key="name">
-          <slot :name="name" v-bind="slotData || {}"></slot>
+          <!-- eslint-disable-next-line @typescript-eslint/no-explicit-any -->
+          <slot :name="name as any" v-bind="(slotData || {}) as any"></slot>
         </template>
       </AppTable>
     </div>
     <AppPaginatedTableResult
-      v-model:page="query.page"
-      v-model:limit="query.limit"
+      :page="query.page"
+      :limit="query.limit"
       :result="result"
       :format-number="formatNumber"
       class="items-center"
+      @update:page="updatePage"
+      @update:limit="updateLimit"
     />
   </div>
 </template>
@@ -106,11 +112,38 @@ const props = withDefaults(defineProps<AppPaginatedTableProps<I>>(), {
   formatNumber: (value: number) => value.toLocaleString(),
 });
 
+/**
+ * Events emitted by the AppPaginatedTable component
+ */
+const emit = defineEmits<{
+  'update:query': [query: { page: number; limit: number; sort?: Sort }];
+}>();
+
+/**
+ * Update page number
+ */
+function updatePage(page: number) {
+  emit('update:query', { ...props.query, page });
+}
+
+/**
+ * Update items per page limit
+ */
+function updateLimit(limit: number) {
+  emit('update:query', { ...props.query, limit });
+}
+
+/**
+ * Update sort configuration
+ */
+function updateSort(sort: Sort) {
+  emit('update:query', { ...props.query, sort });
+}
+
 // Slots are passed to AppTable, typing is currently lost
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const slotNames = computed<any[]>(() => {
+const slotNames = computed<string[]>(() => {
   const slots = useSlots();
-  return Object.keys(slots);
+  return Object.keys(slots).filter((name) => name !== 'actions');
 });
 
 /**
@@ -121,33 +154,33 @@ defineSlots<
     /**
      * Custom action controls displayed above the table
      */
-    actions: () => any;
+    actions: () => unknown;
     /**
      * Additional content displayed after each row
      * @param item - The row item
      */
-    after: (props: { item: I }) => any;
+    after: (props: { item: I }) => unknown;
     /**
      * Custom empty state content
      */
-    empty: () => any;
+    empty: () => unknown;
     /**
      * Custom loading state content
      */
-    loading: () => any;
+    loading: () => unknown;
   } & {
     /**
      * Custom content for a specific header
      * @param header - The header configuration
      */
-    [K in `header-${string}`]: (props: { header: Header }) => any;
+    [K in `header-${string}`]: (props: { header: Header }) => unknown;
   } & {
     /**
      * Custom content for a specific cell value
      * @param item - The row item
      * @param value - The cell value
      */
-    [K in `value-${string}`]: (props: { item: I; value: any }) => any;
+    [K in `value-${string}`]: (props: { item: I; value: unknown }) => unknown;
   }
 >();
 </script>

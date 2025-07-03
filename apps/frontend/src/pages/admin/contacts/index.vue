@@ -123,7 +123,9 @@ meta:
         </span>
       </template>
       <template #value-joined="{ value }">
-        <span class="whitespace-nowrap">{{ formatLocale(value, 'PPP') }}</span>
+        <span class="whitespace-nowrap">{{
+          value instanceof Date ? formatLocale(value, 'PPP') : ''
+        }}</span>
       </template>
       <template #value-membershipStarts="{ item }">
         <span class="whitespace-nowrap">{{

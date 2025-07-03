@@ -101,13 +101,7 @@ import {
   MembershipStatus,
   PaymentMethod,
 } from '@beabee/beabee-common';
-import {
-  AppButton,
-  AppHeading,
-  AppModal,
-  AppNotification,
-  type ContributionContent,
-} from '@beabee/vue';
+import { AppButton, AppHeading, AppModal, AppNotification } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
 import StripePayment from '@components/StripePayment.vue';
@@ -120,6 +114,7 @@ import useVuelidate from '@vuelidate/core';
 import { computed, onBeforeMount, reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import type { ContributionContent } from '../../../../type/contribution';
 import ProrateContribution from './ProrateContribution.vue';
 
 const validation = useVuelidate();

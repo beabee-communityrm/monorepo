@@ -22,23 +22,25 @@ meta:
     >
       <template #value-status="{ value }">
         <PaymentStatus
-          :status="value"
-          :status-text="t('common.paymentStatus.' + value)"
+          :status="value as import('@beabee/beabee-common').PaymentStatus"
+          :status-text="t('common.paymentStatus.' + (value as string))"
         />
       </template>
       <template #value-contact="{ value }">
         <router-link
-          :to="'/admin/contacts/' + value.id"
+          :to="'/admin/contacts/' + (value as any).id"
           class="text-base font-bold text-link"
         >
-          {{ value.displayName }}
+          {{ (value as any).displayName }}
         </router-link>
       </template>
       <template #value-chargeDate="{ value }">
-        <span class="whitespace-nowrap">{{ formatLocale(value, 'PP') }}</span>
+        <span class="whitespace-nowrap">{{
+          value instanceof Date ? formatLocale(value, 'PP') : ''
+        }}</span>
       </template>
       <template #value-amount="{ value }">
-        {{ n(value, 'currency') }}
+        {{ n(value as number, 'currency') }}
       </template>
     </AppPaginatedTable>
   </AppFilterGrid>
