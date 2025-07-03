@@ -1,5 +1,8 @@
-# Restore Vue Design System Independence
-
+---
+description: Restore Vue Design System Independence
+globs: 
+alwaysApply: false
+---
 Move components with external dependencies from `packages/vue` to `apps/frontend` for clear separation.
 
 ## AI Agent Workflow
