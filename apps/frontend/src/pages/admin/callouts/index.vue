@@ -78,7 +78,6 @@ import {
   AppPaginatedTable,
   AppSearchInput,
   type Header,
-  ItemStatus,
   PageTitle,
 } from '@beabee/vue';
 
@@ -94,6 +93,8 @@ import { formatLocale } from '@utils/dates';
 import { definePaginatedQuery, defineParam } from '@utils/pagination';
 import { computed, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import ItemStatus from '../../../components/item/ItemStatus.vue';
 
 const { t } = useI18n();
 

@@ -240,7 +240,7 @@ function getRoleLabel(roleType: RoleType): string {
  * @returns Formatted date string
  */
 function formatRoleDate(date: Date): string {
-  return formatLocale(date, 'P', props.locale as any);
+  return formatLocale(date, 'P', props.locale as BaseLocale);
 }
 
 /**

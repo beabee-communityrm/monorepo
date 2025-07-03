@@ -60,7 +60,6 @@ import {
   AppConfirmDialog,
   AppHeading,
   ItemDateRange,
-  ItemStatusText,
   PageTitle,
 } from '@beabee/vue';
 
@@ -75,6 +74,8 @@ import { client } from '@utils/api';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
+
+import ItemStatusText from '../../../../components/item/ItemStatusText.vue';
 
 const props = defineProps<{ id: string }>();
 const { t, locale } = useI18n();

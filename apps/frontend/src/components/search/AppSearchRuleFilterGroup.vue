@@ -48,6 +48,7 @@
 
 <script setup lang="ts">
 import { type RuleOperator, operatorsByTypeMap } from '@beabee/beabee-common';
+import type { Rule } from '@beabee/beabee-common';
 import type { BaseLocale } from '@beabee/locale';
 import { AppSelect } from '@beabee/vue';
 
