@@ -1,10 +1,25 @@
-import { generalContent } from '@beabee/vue/store/generalContent';
+import type { ContentGeneralData } from '@beabee/beabee-common';
 
 import { client } from '@utils/api';
 import { resolveImageUrl } from '@utils/url';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 
-export { generalContent };
+export const generalContent = ref<ContentGeneralData>({
+  organisationName: '',
+  logoUrl: '',
+  siteUrl: '',
+  supportEmail: '',
+  impressumLink: '',
+  privacyLink: '',
+  termsLink: '',
+  locale: '',
+  currencyCode: '',
+  currencySymbol: '',
+  footerLinks: [],
+  theme: {},
+  backgroundUrl: '',
+  hideContribution: false,
+});
 
 export const initGeneralContent = () =>
   client.content.get('general').then((content) => {

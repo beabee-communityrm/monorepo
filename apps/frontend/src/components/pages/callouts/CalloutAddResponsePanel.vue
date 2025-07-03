@@ -44,12 +44,12 @@ import {
   type GetCalloutDataWith,
 } from '@beabee/beabee-common';
 import { AppShareBox } from '@beabee/vue';
-import { generalContent } from '@beabee/vue/store/generalContent';
 
 import env from '@env';
 import { ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import { generalContent } from '../../../store/generalContent';
 import CalloutForm from './CalloutForm.vue';
 import CalloutLoginPrompt from './CalloutLoginPrompt.vue';
 import CalloutMemberOnlyPrompt from './CalloutMemberOnlyPrompt.vue';
