@@ -223,7 +223,6 @@ import {
   AppButton,
   AppButtonGroup,
   AppCheckbox,
-  AppPaginatedTable,
   AppSelect,
   AppVTabs,
   addNotification,
@@ -258,6 +257,7 @@ import { toRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 
+import AppPaginatedTable from '../../../../../../components/table/AppPaginatedTable.vue';
 import { useTagFilter } from '../../../../../../composables/useTagFilter';
 
 /**

@@ -51,7 +51,7 @@ import type {
   Paginated,
 } from '@beabee/beabee-common';
 import { PaymentStatus } from '@beabee/beabee-common';
-import { AppFilterGrid, AppPaginatedTable, PageTitle } from '@beabee/vue';
+import { AppFilterGrid, PageTitle } from '@beabee/vue';
 
 import {
   filterGroups,
@@ -70,6 +70,8 @@ import {
 } from '@utils/pagination';
 import { computed, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import AppPaginatedTable from '../../../components/table/AppPaginatedTable.vue';
 
 const { t, n } = useI18n();
 
