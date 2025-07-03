@@ -3,62 +3,61 @@ description: Restore Vue Design System Independence
 globs: 
 alwaysApply: false
 ---
+
 Move components with external dependencies from `packages/vue` to `apps/frontend` for clear separation.
 
 ## AI Agent Workflow
 
-### Phase 1: Dependency Analysis
-1. **Analyze vue components**: Search `packages/vue/src/components` for external dependencies
-2. **Identify problematic imports**: Find imports from `@beabee/beabee-common`, `@beabee/client`, business logic packages
-3. **Document findings**: Store component categorization in memory for tracking
+### Phase 1: Component Migration
+**CRITICAL**: Always use `git mv` for clean history tracking.
 
-### Phase 2: Migration (Move-First Strategy)
-**CRITICAL**: Always move files explicitly with `git mv` for clean history tracking.
+1. **Move component directory**: 
+   ```bash
+   git mv packages/vue/src/components/[component] apps/frontend/src/components/
+   git commit -m "refactor(vue): Move [component] components to frontend"
+   ```
 
-**Per Component Process:**
-1. **Move component files**: `git mv packages/vue/src/components/[Component] apps/frontend/src/components/[Component]`
-2. **Commit move**: `git commit -m "refactor(vue): Move [Component] to frontend"`
-3. **Update frontend imports**: Change from `@beabee/vue` to relative paths
-4. **Remove vue exports**: Delete from `packages/vue/src/index.ts`
-5. **Clean up stories**: Remove story files from vue package
-6. **Commit adaptations**: `git commit -m "refactor(frontend): Update [Component] imports and cleanup"`
+### Phase 2: Cleanup and Import Fixes
+2. **Remove story files and index**: 
+   ```bash
+   rm apps/frontend/src/components/[component]/*.story.* apps/frontend/src/components/[component]/index.ts
+   ```
+
+3. **Fix imports in migrated components**: Change relative imports to `@beabee/vue`
+   - `'../form'` → `'@beabee/vue'`
+   - `'../button'` → `'@beabee/vue'`
+
+4. **Remove exports from vue package**: Delete from `packages/vue/src/components/index.ts`
+
+5. **Update frontend usage**: Change `@beabee/vue` imports to local component imports
+   - `import { Component } from '@beabee/vue'` → `import Component from '@components/[dir]/Component.vue'`
 
 ### Phase 3: Validation
-- Build both packages: `yarn build`
-- Verify no broken imports remain
-- Test component functionality
+6. **Test both packages**: 
+   ```bash
+   cd packages/vue && yarn format && yarn check
+   cd /path/to/monorepo && yarn workspace @beabee/frontend run format && yarn workspace @beabee/frontend run check
+   ```
+
+7. **Commit changes**: 
+   ```bash
+   git add -A && git commit -m "refactor(frontend): Update [component] imports and cleanup after migration"
+   ```
 
 ## Migration Targets
 
 **Move to Frontend (Business Logic Dependencies):**
-- Components importing from `@beabee/beabee-common`
-- API client usage
-- Backend-specific schemas/workflows
+- Components importing from `@beabee/beabee-common`, `@beabee/client`
+- API client usage, backend schemas/workflows
 
 **Keep in Vue (Design System):**
 - Basic UI components (buttons, inputs, modals)
-- Layout/typography components
-- Generic utilities without business logic
-
-## Implementation Rules
-
-- **Move first, adapt second**: Explicit `git mv` operations for history tracking
-- **Commit frequently**: One commit per move operation, one per adaptation
-- **Use available tools**: Verify dependencies and imports with search tools
-- **Update memory**: Track progress and categorization
-- **Follow commit patterns**: 
-  - Move: `refactor(vue): Move [Component] to frontend`
-  - Adapt: `refactor(frontend): Update [Component] imports and cleanup`
+- Layout/typography components without external dependencies
 
 ## Success Criteria
-
-- Clean git history showing explicit file moves
+- Clean git history with explicit moves
+- Both packages build and pass linting
 - Vue package contains only design system components
-- No external business logic dependencies in vue package
 - All imports resolve correctly
-- Both packages build successfully
 
-- All moved components function correctly in frontend with updated import paths
-- Build processes for both packages complete successfully
-- No broken imports or missing dependencies remain
-- Clear separation between design system (vue) and application logic (frontend) is established
+
