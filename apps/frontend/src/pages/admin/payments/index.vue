@@ -50,8 +50,8 @@ import type {
   GetPaymentsQuery,
   Paginated,
 } from '@beabee/beabee-common';
+import { PaymentStatus } from '@beabee/beabee-common';
 import { AppFilterGrid, AppPaginatedTable, PageTitle } from '@beabee/vue';
-import { PaymentStatus } from '@beabee/vue';
 
 import {
   filterGroups,

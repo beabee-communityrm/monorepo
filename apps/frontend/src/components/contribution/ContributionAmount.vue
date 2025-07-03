@@ -2,7 +2,7 @@
   # ContributionAmount
   A component for selecting and entering contribution amounts.
   Features large numerical input with increment/decrement buttons and preset amount selection.
-  
+
   ## Props
   - `modelValue` (number): The current amount value
   - `isMonthly` (boolean): Whether the contribution is monthly
@@ -13,10 +13,10 @@
   - `minimumText` (string): Text for minimum contribution error
   - `perPeriodText` (string): Text for per period (e.g. "per month", "per year")
   - `currencyFormatter` (function): Function to format currency values for preset amounts
-  
+
   ## Events
   - `update:modelValue` (number): Emitted when the amount changes
-  
+
   ## Features
   - Large numerical input with visual prominence
   - Increment/decrement buttons for easy adjustment
@@ -111,11 +111,11 @@
 </template>
 
 <script lang="ts" setup>
+import { AppChoice } from '@beabee/vue';
+
 import useVuelidate from '@vuelidate/core';
 import { minValue } from '@vuelidate/validators';
 import { computed, toRefs } from 'vue';
-
-import { AppChoice } from '../form';
 
 /**
  * Props for the ContributionAmount component
