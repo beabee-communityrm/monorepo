@@ -1,4 +1,4 @@
-import { type Locale, config as localeConfig } from '@beabee/locale/src';
+import { type Locale, config as localeConfig } from '@beabee/locale';
 
 import { readFile, writeFile } from 'node:fs/promises';
 import Module from 'node:module';
@@ -15,8 +15,9 @@ import type {
 
 // Get the locale package path using require.resolve for better robustness
 const require = Module.createRequire(import.meta.url);
-const LOCALE_PACKAGE_PATH = dirname(
-  require.resolve('@beabee/locale/src/locales')
+const LOCALES_PATH = resolve(
+  dirname(require.resolve('@beabee/locale/package.json')),
+  'src/locales'
 );
 
 /**
@@ -37,7 +38,7 @@ function getLocaleFileName(locale: Locale): string {
  * Get locale file path
  */
 function getLocaleFilePath(locale: Locale): string {
-  return resolve(LOCALE_PACKAGE_PATH, getLocaleFileName(locale));
+  return resolve(LOCALES_PATH, getLocaleFileName(locale));
 }
 
 /**

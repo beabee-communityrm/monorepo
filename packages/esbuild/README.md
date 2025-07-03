@@ -75,13 +75,14 @@ await generateTemplate('./src/locales', './src/template.json');
 
 - `normalizeTranslations(localesDir)` - Normalizes translation file structure
 - `generateTemplate(localesDir, templatePath)` - Generates template from English locale
+- `applyFallbacksToSources(config, localesDir)` - Applies fallback translations to source files
 
 ### Types
 
 Import types from `@beabee/esbuild/types`:
 
 - `BuildStandardOptions`, `BuildOptions`, `BuildIIFEOptions`
-- `LocalePluginOptions`, `CopyPluginOptions`
+- `CopyPluginOptions`
 
 ## Examples
 
