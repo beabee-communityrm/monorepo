@@ -1,0 +1,82 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+
+Restore independence to Vue design system by moving components with external dependencies back to frontend.
+
+## AI Agent Instructions
+**CRITICAL**: Use available tools to analyze component dependencies before implementing changes. Always verify imports and dependencies are correctly handled.
+
+## Migration Strategy
+- **Dependency-based approach**: Identify components in `packages/vue/src/components` that import from `@beabee/beabee-common` or other external business logic packages
+- **Independence assessment**: Analyze components by their external dependencies:
+  - **Independent**: Components using only Vue, basic utilities, and design tokens
+  - **Dependent**: Components importing from `@beabee/beabee-common`, API clients, or business-specific logic
+  - **Borderline**: Components that could be made independent with minor refactoring
+
+## Prerequisites (AI Agent Workflow)
+1. **Analyze vue package components**: Search `packages/vue/src/components` for external dependencies
+2. **Identify problematic imports**: Look for imports from `@beabee/beabee-common`, `@beabee/client`, or other business logic packages
+3. **Map usage in frontend**: Find where these components are used in `apps/frontend/src`
+4. **Document component categorization**: Store findings in memory for reference
+5. **Plan migration order**: Start with components that have the most external dependencies
+
+## Dependency Analysis Protocol
+**MANDATORY**: Before any migration, analyze component dependencies using available tools:
+- Check imports in component files for external business logic packages
+- Identify components that use business-specific types or utilities
+- Verify component story files for business logic dependencies
+- Document which components are truly design-system independent
+
+## Migration Rules
+- **Move dependent components**: Relocate components with external dependencies from `packages/vue/src/components` to `apps/frontend/src/components`
+- **Update import paths**: Change all imports in frontend from `@beabee/vue` to relative paths
+- **Preserve component functionality**: Ensure all functionality remains intact after migration
+- **Remove vue package exports**: Remove moved components from `packages/vue/src/index.ts`
+- **Clean up stories**: Remove story files for moved components from vue package
+- **Maintain design system purity**: Keep only truly independent, reusable components in vue package
+
+## Implementation Patterns
+- Follow [git-commit-best-practices.mdc](mdc:.cursor/rules/git-commit-best-practices.mdc) for regular and clean git commits
+- Move component files: `packages/vue/src/components/[ComponentName]` → `apps/frontend/src/components/[ComponentName]`
+- Update imports: `import { ComponentName } from '@beabee/vue'` → `import ComponentName from './path/to/ComponentName.vue'`
+- **ALWAYS verify dependencies**: Use available tools to confirm no broken imports remain
+- **Use memory for tracking**: Reference documented component analysis from dependency analysis phase
+- Remove component exports from vue package index files
+- Delete associated story files and documentation from vue package
+
+## Target Component Categories for Migration
+**Business Logic Components** (should move to frontend):
+- Components importing from `@beabee/beabee-common` (types, utilities, constants)
+- Components using API clients or backend-specific logic
+- Components with business-specific workflows or data handling
+- Form components tied to specific backend schemas
+
+**Design System Components** (should remain in vue):
+- Basic UI components (buttons, inputs, modals, etc.)
+- Layout components (grids, containers, spacing)
+- Typography and styling components
+- Generic form components without business logic
+- Icon and image components
+
+## Completion Steps
+- **Update frontend imports**: Change all component imports from `@beabee/vue` to local paths for moved components
+- **Clean up vue package**: Remove moved components from exports and build process
+- **Verify independence**: Confirm vue package has no remaining business logic dependencies
+- **Validate with tools**: Confirm all imports resolve correctly and no circular dependencies exist
+- Run `yarn build` in both packages to validate build integrity
+- Test component functionality in development environment
+- Provide commit messages following pattern: `refactor(vue): Move [ComponentName] to frontend - business logic dependency`
+- **Document migration results** in memory for tracking progress and future reference
+
+## Error Recovery
+If import resolution fails after migration, use available tools to trace dependency paths and ensure all imports are correctly updated. Consult with user if complex circular dependencies are discovered.
+
+## Success Criteria
+- Vue package (`packages/vue`) contains only design system components with no external business logic dependencies
+- All moved components function correctly in frontend with updated import paths
+- Build processes for both packages complete successfully
+- No broken imports or missing dependencies remain
+- Clear separation between design system (vue) and application logic (frontend) is established
