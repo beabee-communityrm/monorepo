@@ -6,7 +6,9 @@ import {
   createCopyPlugin,
   normalizeTranslations,
   generateTemplate,
+  applyFallbacksToSources,
 } from "@beabee/esbuild";
+import { config } from "./src/config.ts";
 
 const OUTDIR_CJS = "./dist/cjs";
 const SOURCE_LOCALES_DIR = "./src/locales";
@@ -41,6 +43,10 @@ async function main() {
   // Prepare locale files
   await normalizeTranslations(SOURCE_LOCALES_DIR);
   await generateTemplate(SOURCE_LOCALES_DIR, TEMPLATE_PATH);
+
+  // Apply fallback translations to source files
+  // This ensures direct TypeScript imports get fallbacks
+  await applyFallbacksToSources(config, SOURCE_LOCALES_DIR);
 
   const entryPoints = ["./src/index.ts", "./src/**/*.ts"];
 
