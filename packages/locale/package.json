@@ -13,7 +13,7 @@
     "clear": "rm -rf dist/ tsconfig.build.tsbuildinfo",
     "build": "yarn build:types && yarn build:esbuild",
     "build:types": "rm -f tsconfig.build.tsbuildinfo && tsc -p tsconfig.build.json",
-    "build:esbuild": "node --experimental-specifier-resolution=node --experimental-strip-types --no-warnings esbuild.ts",
+    "build:esbuild": "node --experimental-specifier-resolution=node --experimental-strip-types --experimental-transform-types --no-warnings esbuild.ts",
     "check": "tsc --noEmit -p tsconfig.build.json",
     "watch": "yarn build:esbuild --watch",
     "dev": "yarn watch",
@@ -26,7 +26,8 @@
     "typescript": "~5.6.3"
   },
   "files": [
-    "dist/"
+    "dist/",
+    "src/"
   ],
   "main": "./dist/cjs/index.cjs",
   "module": "./dist/esm/index.js",
@@ -43,6 +44,10 @@
         "default": "./dist/cjs/locales/index.cjs"
       }
     },
+    "./src/*": "./src/*.ts",
+    "./src": "./src/index.ts",
+    "./src/locales/*": "./src/locales/*.json",
+    "./src/locales": "./src/locales/index.ts",
     ".": {
       "import": {
         "types": "./dist/types/index.d.ts",
