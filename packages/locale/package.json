@@ -30,28 +30,25 @@
     "src/"
   ],
   "main": "./dist/cjs/index.cjs",
-  "module": "./dist/esm/index.js",
-  "types": "./dist/types/index.d.ts",
+  "module": "./src/index.ts",
+  "types": "./src/index.ts",
   "exports": {
-    "./locales/*": "./dist/esm/locales/*.json",
+    "./package.json": "./package.json",
+    "./locales/*": "./src/locales/*.json",
     "./locales": {
       "import": {
-        "types": "./dist/types/locales/index.d.ts",
-        "default": "./dist/esm/locales/index.js"
+        "types": "./src/locales/index.ts",
+        "default": "./src/locales/index.ts"
       },
       "require": {
         "types": "./dist/types/locales/index.d.cts",
         "default": "./dist/cjs/locales/index.cjs"
       }
     },
-    "./src/*": "./src/*.ts",
-    "./src": "./src/index.ts",
-    "./src/locales/*": "./src/locales/*.json",
-    "./src/locales": "./src/locales/index.ts",
     ".": {
       "import": {
-        "types": "./dist/types/index.d.ts",
-        "default": "./dist/esm/index.js"
+        "types": "./src/index.ts",
+        "default": "./src/index.ts"
       },
       "require": {
         "types": "./dist/types/index.d.cts",
