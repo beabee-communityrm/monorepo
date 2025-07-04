@@ -1803,7 +1803,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@beabee/vue@workspace:packages/vue"
   dependencies:
-    "@beabee/client": "workspace:^"
     "@beabee/prettier-config": "workspace:^"
     "@beabee/tsconfig": "workspace:^"
     "@fontsource/fira-sans": "npm:^5.1.1"
