@@ -48,7 +48,7 @@ watch(
       // For the dynamic import to work the locale must be a path, we can't
       // reference @beabee/locale here
       const messages = await import(
-        `../../../../packages/locale/dist/esm/locales/${newLocale}.json`
+        `../../../../packages/locale/src/locales/${newLocale}.json`
       );
       i18n.global.setLocaleMessage(justLocale, messages.default);
     }

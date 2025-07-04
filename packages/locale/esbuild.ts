@@ -1,15 +1,15 @@
-// Build Node.js ESM module with esbuild.
+// Build Node.js CJS module with esbuild.
 import * as esbuild from "esbuild";
 import {
-  buildESM,
   buildCJS,
   isWatchMode,
   createCopyPlugin,
   normalizeTranslations,
   generateTemplate,
+  applyFallbacksToSources,
 } from "@beabee/esbuild";
+import { config } from "./src/config.ts";
 
-const OUTDIR_ESM = "./dist/esm";
 const OUTDIR_CJS = "./dist/cjs";
 const SOURCE_LOCALES_DIR = "./src/locales";
 const TEMPLATE_PATH = "./src/template.json";
@@ -17,11 +17,7 @@ const TEMPLATE_PATH = "./src/template.json";
 const isWatch = isWatchMode();
 
 async function buildJSON(outdir: string, watch = false) {
-  const dirName = outdir.includes("esm")
-    ? "JSON-ESM"
-    : outdir.includes("cjs")
-      ? "JSON-CJS"
-      : "JSON-Types";
+  const dirName = outdir.includes("cjs") ? "JSON-CJS" : "JSON-Types";
 
   const ctx = await esbuild.context({
     entryPoints: [], // No actual entry points needed, just using for the plugin system
@@ -48,14 +44,16 @@ async function main() {
   await normalizeTranslations(SOURCE_LOCALES_DIR);
   await generateTemplate(SOURCE_LOCALES_DIR, TEMPLATE_PATH);
 
+  // Apply fallback translations to source files
+  // This ensures direct TypeScript imports get fallbacks
+  await applyFallbacksToSources(config, SOURCE_LOCALES_DIR);
+
   const entryPoints = ["./src/index.ts", "./src/**/*.ts"];
 
   if (isWatch) {
     console.log("🚀 Starting watch mode...");
     await Promise.all([
-      buildESM({ entryPoints, outdir: OUTDIR_ESM, watch: true }),
       buildCJS({ entryPoints, outdir: OUTDIR_CJS, watch: true }),
-      buildJSON(OUTDIR_ESM, true),
       buildJSON(OUTDIR_CJS, true),
       buildJSON("./dist/types", true),
     ]);
@@ -63,15 +61,13 @@ async function main() {
     // Keep process alive
     process.stdin.resume();
   } else {
-    const esm = await buildESM({ entryPoints, outdir: OUTDIR_ESM });
     const cjs = await buildCJS({ entryPoints, outdir: OUTDIR_CJS });
 
-    for (const outdir of [OUTDIR_ESM, OUTDIR_CJS, "./dist/types"]) {
+    for (const outdir of [OUTDIR_CJS, "./dist/types"]) {
       const json = await buildJSON(outdir);
       await json.dispose();
     }
 
-    await esm.dispose();
     await cjs.dispose();
     console.log("@beabee/locale build completed");
   }
