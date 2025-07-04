@@ -16,6 +16,7 @@ export async function buildESM(options: BuildOptions) {
   ensureDir(options.outdir);
 
   const plugins = [
+    transformExtPlugin({ outExtension: { '.ts': '.js' } }),
     ...(options.additionalPlugins || []),
     ...(options.watch ? [createWatchLoggerPlugin('ESM')] : []),
   ];
@@ -47,7 +48,7 @@ export async function buildCJS(options: BuildOptions) {
   ensureDir(options.outdir);
 
   const plugins = [
-    transformExtPlugin({ outExtension: { '.js': '.cjs' } }),
+    transformExtPlugin({ outExtension: { '.js': '.cjs', '.ts': '.cjs' } }),
     ...(options.additionalPlugins || []),
     ...(options.watch ? [createWatchLoggerPlugin('CJS')] : []),
     createCjsRenamePlugin(options.outdir, options.baseDir),
@@ -78,6 +79,7 @@ export async function buildCJS(options: BuildOptions) {
  */
 export async function buildBrowser(options: BuildIIFEOptions) {
   const plugins = [
+    transformExtPlugin({ outExtension: { '.ts': '.js' } }),
     ...(options.additionalPlugins || []),
     ...(options.watch ? [createWatchLoggerPlugin('Browser')] : []),
   ];
