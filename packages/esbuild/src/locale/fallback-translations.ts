@@ -66,8 +66,10 @@ async function processFallbacksForLocale(
  * Applies fallback translations to all locale files in a directory using config object
  * @param config The locale configuration object
  * @param localesDir Directory containing the locale files
+ * @returns The processed translations with fallbacks applied
+ * @private Internal function used by applyFallbacksToSources
  */
-export async function applyFallbackTranslations(
+async function applyFallbackTranslations(
   config: Record<string, LocaleOption>,
   localesDir: string
 ): Promise<Record<string, Record<string, any>>> {
