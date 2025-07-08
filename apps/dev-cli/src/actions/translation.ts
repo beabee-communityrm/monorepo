@@ -56,12 +56,13 @@ function setNestedValue(
   for (let i = 0; i < keys.length - 1; i++) {
     const key = keys[i];
 
-    if (!(key in current)) {
-      if (!createMissing) {
-        return false;
-      }
-      current[key] = {};
-    } else if (typeof current[key] !== 'object' || current[key] === null) {
+    // Check if we need to create or replace the current key
+    const needsNewObject =
+      !(key in current) ||
+      typeof current[key] !== 'object' ||
+      current[key] === null;
+
+    if (needsNewObject) {
       if (!createMissing) {
         return false;
       }
@@ -79,11 +80,11 @@ function setNestedValue(
 /**
  * Read locale file
  */
-async function readLocaleFile(locale: Locale): Promise<Record<string, any>> {
+async function readLocaleFile(locale: Locale): Promise<TranslationData> {
   try {
     const filePath = getLocaleFilePath(locale);
     const content = await readFile(filePath, 'utf-8');
-    return JSON.parse(content);
+    return JSON.parse(content) as TranslationData;
   } catch (error) {
     throw new Error(
       `Failed to read locale file for ${locale}: ${error instanceof Error ? error.message : String(error)}`
@@ -96,7 +97,7 @@ async function readLocaleFile(locale: Locale): Promise<Record<string, any>> {
  */
 async function writeLocaleFile(
   locale: Locale,
-  data: Record<string, any>
+  data: TranslationData
 ): Promise<void> {
   try {
     const filePath = getLocaleFilePath(locale);
@@ -117,7 +118,7 @@ function getNestedValue(
   path: string
 ): string | undefined {
   const keys = path.split('.');
-  let current = obj;
+  let current: any = obj;
 
   for (const key of keys) {
     if (current && typeof current === 'object' && key in current) {
@@ -131,9 +132,16 @@ function getNestedValue(
 }
 
 /**
+ * Translation data structure - can be nested objects with string values
+ */
+type TranslationData = {
+  [key: string]: string | TranslationData;
+};
+
+/**
  * Get all translation keys from a locale object
  */
-function getAllKeysFromObject(obj: Record<string, any>, prefix = ''): string[] {
+function getAllKeysFromObject(obj: TranslationData, prefix = ''): string[] {
   const keys: string[] = [];
 
   for (const [key, value] of Object.entries(obj)) {
