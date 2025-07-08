@@ -41,21 +41,23 @@ const props = defineProps<{
 const currencyFormatter = (value: number): string => n(value, 'currency');
 
 /**
- * Absorb fee explanation text using internal i18n
+ * Text explaining the fee absorption option
  */
-const absorbFeeText = computed(() =>
-  t('join.absorbFeeText', { fee: currencyFormatter(props.fee) })
-);
+const absorbFeeText = computed(() => {
+  return t('join.absorbFeeText', { fee: n(props.fee, 'currency') });
+});
 
 /**
- * Absorb fee checkbox label using internal i18n
+ * Label for the fee absorption checkbox
  */
 const absorbFeeLabel = computed(() => {
-  const template = props.force ? 'join.absorbFeeForce' : 'join.absorbFeeOptIn';
-  return t(template, {
-    fee: currencyFormatter(props.fee),
-    amount: currencyFormatter(props.amount),
-  });
+  if (props.force) {
+    return t('join.absorbFeeForce', {
+      amount: n(props.amount, 'currency'),
+      fee: n(props.fee, 'currency'),
+    });
+  }
+  return t('join.absorbFeeOptIn', { fee: n(props.fee, 'currency') });
 });
 
 const payFee = computed<boolean>({

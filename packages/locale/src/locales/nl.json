@@ -106,7 +106,9 @@
     "yesDelete": "“Ja, verwijder het”",
     "yesDisable": "“Ja, schakel het uit”",
     "yesRemove": "“Ja, verwijder het”",
-    "tryAgain": ""
+    "tryAgain": "",
+    "increase": "",
+    "decrease": ""
   },
   "addContact": {
     "contactSaved": "Contact opgeslagen",
@@ -896,7 +898,8 @@
     "timeIn": "in {time}",
     "until": "tot",
     "yes": "Ja",
-    "showingOf": ""
+    "showingOf": "",
+    "statusLabel": ""
   },
   "contactAccount": {
     "confirmDelete": {
