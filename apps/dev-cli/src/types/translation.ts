@@ -77,3 +77,24 @@ export interface SetTranslationResult {
   /** Error messages if any */
   errors: string[];
 }
+
+/**
+ * Translation data structure - can be nested objects with string values
+ */
+export type TranslationData = {
+  [key: string]: number | string | boolean | TranslationData;
+};
+
+/**
+ * Result of getting a nested value with detailed information
+ */
+export type GetNestedValueResult =
+  | { success: true; value: string }
+  | { success: false; reason: 'path_not_found'; missingKey: string }
+  | {
+      success: false;
+      reason: 'wrong_type';
+      foundType: string;
+      path: string;
+      actualValue: unknown;
+    };
