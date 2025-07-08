@@ -1,21 +1,14 @@
 <!--
   # PaymentStatus
   Displays payment status with appropriate styling and formatting.
-  
+    
   ## Props
   - `status` (PaymentStatus): The payment status enum value
-  - `statusText` (string): The translated status text to display
   
   ## Examples
   ```vue
-  <PaymentStatus 
-    :status="PaymentStatus.Successful" 
-    status-text="Successful" 
-  />
-  <PaymentStatus 
-    :status="PaymentStatus.Failed" 
-    status-text="Failed" 
-  />
+  <PaymentStatus :status="PaymentStatus.Successful" />
+  <PaymentStatus :status="PaymentStatus.Failed" />
   ```
 -->
 <template>
@@ -23,7 +16,7 @@
     class="whitespace-nowrap text-sm font-bold uppercase"
     :class="colorClasses"
     role="status"
-    :aria-label="`Payment status: ${statusText}`"
+    :aria-label="ariaLabel"
   >
     {{ statusText }}
   </span>
@@ -33,6 +26,9 @@
 import { PaymentStatus } from '@beabee/beabee-common';
 
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 /**
  * Props for the PaymentStatus component
@@ -40,11 +36,23 @@ import { computed } from 'vue';
 export interface PaymentStatusProps {
   /** The payment status enum value */
   status: PaymentStatus;
-  /** The translated status text to display */
-  statusText: string;
 }
 
 const props = defineProps<PaymentStatusProps>();
+
+/**
+ * Internal status text using vue-i18n
+ */
+const statusText = computed(() => {
+  return t(`common.paymentStatus.${props.status}`);
+});
+
+/**
+ * Accessible aria-label for payment status
+ */
+const ariaLabel = computed(() => {
+  return t('payment.statusLabel', { status: statusText.value });
+});
 
 /**
  * Computed color classes based on payment status

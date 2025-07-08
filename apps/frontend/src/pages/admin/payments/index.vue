@@ -21,10 +21,7 @@ meta:
       :result="paymentsTable"
     >
       <template #value-status="{ value }">
-        <PaymentStatus
-          :status="value"
-          :status-text="t('common.paymentStatus.' + value)"
-        />
+        <PaymentStatus :status="value" />
       </template>
       <template #value-contact="{ value }">
         <router-link
@@ -50,8 +47,12 @@ import type {
   GetPaymentsQuery,
   Paginated,
 } from '@beabee/beabee-common';
-import { AppFilterGrid, AppPaginatedTable, PageTitle } from '@beabee/vue';
-import { PaymentStatus } from '@beabee/vue';
+import {
+  AppFilterGrid,
+  AppPaginatedTable,
+  PageTitle,
+  PaymentStatus,
+} from '@beabee/vue';
 
 import {
   filterGroups,

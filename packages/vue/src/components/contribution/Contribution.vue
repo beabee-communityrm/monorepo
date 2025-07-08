@@ -47,9 +47,6 @@
       :defined-amounts="definedAmounts"
       :disabled="disabled"
       :currency-symbol="currencySymbol"
-      :minimum-text="t('join.minimumContribution')"
-      :per-period-text="perPeriodText"
-      :currency-formatter="currencyFormatter"
       class="mb-4"
     />
 
@@ -72,8 +69,6 @@
       :fee="fee"
       :force="shouldForceFee"
       :disabled="disabled"
-      :absorb-fee-text="absorbFeeText"
-      :absorb-fee-label="absorbFeeLabel"
     />
   </div>
 </template>
@@ -95,7 +90,7 @@ import ContributionAmount from './ContributionAmount.vue';
 import ContributionFee from './ContributionFee.vue';
 import ContributionMethod from './ContributionMethod.vue';
 
-const { t, n } = useI18n();
+const { t } = useI18n();
 
 /**
  * Props for the Contribution component
@@ -128,11 +123,6 @@ const props = withDefaults(defineProps<ContributionProps>(), {
   showPaymentMethod: true,
   disabled: false,
 });
-
-/**
- * Internal currency formatter using vue-i18n
- */
-const currencyFormatter = (value: number): string => n(value, 'currency');
 
 const fee = computed(() =>
   calcPaymentFee(props, props.paymentContent.stripeCountry)
@@ -181,10 +171,6 @@ const definedAmounts = computed(() => {
   return selectedPeriod?.presetAmounts || [];
 });
 
-const perPeriodText = computed(() => {
-  return isMonthly.value ? t('common.perMonth') : t('common.perYear');
-});
-
 const periodItems = computed(() =>
   props.content.periods.map((period) => ({
     label: t(`common.contributionPeriod.${period.name}`),
@@ -217,19 +203,5 @@ const shouldForceFee = computed(() => {
 
 watch(shouldForceFee, (force) => {
   if (force) payFeeProxy.value = true;
-});
-
-const absorbFeeText = computed(() =>
-  t('join.absorbFeeText', { fee: currencyFormatter(fee.value) })
-);
-
-const absorbFeeLabel = computed(() => {
-  const template = shouldForceFee.value
-    ? 'join.absorbFeeForce'
-    : 'join.absorbFeeOptIn';
-  return t(template, {
-    fee: currencyFormatter(fee.value),
-    amount: currencyFormatter(amountProxy.value),
-  });
 });
 </script>
