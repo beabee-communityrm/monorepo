@@ -3,6 +3,11 @@
   A component for selecting and entering contribution amounts.
   Features large numerical input with increment/decrement buttons and preset amount selection.
   
+  Uses internal i18n for:
+  - Minimum contribution error: join.minimumContribution
+  - Period text: common.perMonth, common.perYear
+  - Currency formatting: vue-i18n n() function
+  
   ## Props
   - `modelValue` (number): The current amount value
   - `isMonthly` (boolean): Whether the contribution is monthly
@@ -10,9 +15,6 @@
   - `definedAmounts` (number[]): Preset amounts to display as quick choices
   - `disabled` (boolean): Whether the component is disabled
   - `currencySymbol` (string): Currency symbol to display (e.g. "€", "$")
-  - `minimumText` (string): Text for minimum contribution error
-  - `perPeriodText` (string): Text for per period (e.g. "per month", "per year")
-  - `currencyFormatter` (function): Function to format currency values for preset amounts
   
   ## Events
   - `update:modelValue` (number): Emitted when the amount changes
@@ -66,7 +68,7 @@
           class="amount-button border-b border-l"
           type="button"
           :disabled="disabled"
-          :aria-label="`Increase amount by 1`"
+          :aria-label="t('contribution.increaseAmount')"
           @click="changeAmount(amount + 1)"
         >
           ▲
@@ -77,7 +79,7 @@
           type="button"
           :disabled="disabled"
           :class="{ 'is-invalid': amount <= minAmount }"
-          :aria-label="`Decrease amount by 1`"
+          :aria-label="t('contribution.decreaseAmount')"
           @click="changeAmount(amount - 1)"
         >
           ▼
@@ -114,8 +116,11 @@
 import useVuelidate from '@vuelidate/core';
 import { minValue } from '@vuelidate/validators';
 import { computed, toRefs } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import { AppChoice } from '../form';
+
+const { t, n } = useI18n();
 
 /**
  * Props for the ContributionAmount component
@@ -133,16 +138,29 @@ export interface ContributionAmountProps {
   disabled: boolean;
   /** Currency symbol to display */
   currencySymbol: string;
-  /** Text for minimum contribution error */
-  minimumText: string;
-  /** Text for per period display */
-  perPeriodText: string;
-  /** Function to format currency values */
-  currencyFormatter: (value: number) => string;
 }
 
 const emit = defineEmits(['update:modelValue']);
 const props = defineProps<ContributionAmountProps>();
+
+/**
+ * Internal currency formatter using vue-i18n
+ */
+const currencyFormatter = (value: number): string => n(value, 'currency');
+
+/**
+ * Per period text based on contribution type
+ */
+const perPeriodText = computed(() => {
+  return props.isMonthly ? t('common.perMonth') : t('common.perYear');
+});
+
+/**
+ * Minimum contribution error text
+ */
+const minimumText = computed(() => {
+  return t('join.minimumContribution');
+});
 
 const amount = computed({
   get: () => props.modelValue,

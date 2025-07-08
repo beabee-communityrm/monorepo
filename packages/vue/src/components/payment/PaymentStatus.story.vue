@@ -7,20 +7,18 @@ import PaymentStatusComponent from './PaymentStatus.vue';
 
 const state = reactive({
   status: PaymentStatus.Successful,
-  statusText: 'Successful',
 });
 
 const statusOptions = [
-  { label: 'Draft', value: PaymentStatus.Draft, text: 'Draft' },
-  { label: 'Pending', value: PaymentStatus.Pending, text: 'Pending' },
-  { label: 'Successful', value: PaymentStatus.Successful, text: 'Successful' },
-  { label: 'Cancelled', value: PaymentStatus.Cancelled, text: 'Cancelled' },
-  { label: 'Failed', value: PaymentStatus.Failed, text: 'Failed' },
+  { label: 'Draft', value: PaymentStatus.Draft },
+  { label: 'Pending', value: PaymentStatus.Pending },
+  { label: 'Successful', value: PaymentStatus.Successful },
+  { label: 'Cancelled', value: PaymentStatus.Cancelled },
+  { label: 'Failed', value: PaymentStatus.Failed },
 ];
 
-const updateStatus = (option: { value: PaymentStatus; text: string }) => {
-  state.status = option.value;
-  state.statusText = option.text;
+const updateStatus = (value: PaymentStatus) => {
+  state.status = value;
 };
 </script>
 
@@ -28,23 +26,17 @@ const updateStatus = (option: { value: PaymentStatus; text: string }) => {
   <Story title="Payment/PaymentStatus">
     <Variant title="Playground">
       <div class="flex flex-col gap-4">
-        <PaymentStatusComponent
-          :status="state.status"
-          :status-text="state.statusText"
-        />
+        <PaymentStatusComponent :status="state.status" />
       </div>
 
       <template #controls>
-        <HstText v-model="state.statusText" title="Status Text" />
         <HstSelect
           :model-value="state.status"
           title="Status"
           :options="
             statusOptions.map((opt) => ({ label: opt.label, value: opt.value }))
           "
-          @update:model-value="
-            updateStatus(statusOptions.find((opt) => opt.value === $event)!)
-          "
+          @update:model-value="updateStatus($event)"
         />
       </template>
     </Variant>
@@ -56,10 +48,7 @@ const updateStatus = (option: { value: PaymentStatus; text: string }) => {
           :key="option.value"
           class="flex flex-col items-center gap-2"
         >
-          <PaymentStatusComponent
-            :status="option.value"
-            :status-text="option.text"
-          />
+          <PaymentStatusComponent :status="option.value" />
           <small class="text-body-60">{{ option.label }}</small>
         </div>
       </div>
@@ -69,24 +58,15 @@ const updateStatus = (option: { value: PaymentStatus; text: string }) => {
       <div class="space-y-4">
         <div class="flex items-center justify-between rounded border p-4">
           <span>Payment #12345</span>
-          <PaymentStatusComponent
-            :status="PaymentStatus.Successful"
-            status-text="Successful"
-          />
+          <PaymentStatusComponent :status="PaymentStatus.Successful" />
         </div>
         <div class="flex items-center justify-between rounded border p-4">
           <span>Payment #12346</span>
-          <PaymentStatusComponent
-            :status="PaymentStatus.Failed"
-            status-text="Failed"
-          />
+          <PaymentStatusComponent :status="PaymentStatus.Failed" />
         </div>
         <div class="flex items-center justify-between rounded border p-4">
           <span>Payment #12347</span>
-          <PaymentStatusComponent
-            :status="PaymentStatus.Pending"
-            status-text="Pending"
-          />
+          <PaymentStatusComponent :status="PaymentStatus.Pending" />
         </div>
       </div>
     </Variant>

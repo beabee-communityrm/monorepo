@@ -10,9 +10,6 @@ const state = reactive({
   definedAmounts: [5, 10, 25, 50],
   disabled: false,
   currencySymbol: '€',
-  minimumText: 'Minimum contribution',
-  perPeriodText: 'per month',
-  currencyFormatter: (value: number) => `€${value}`,
 });
 
 const amount = ref(25);
@@ -30,9 +27,6 @@ const amountYearly = ref(300);
           :defined-amounts="state.definedAmounts"
           :disabled="state.disabled"
           :currency-symbol="state.currencySymbol"
-          :minimum-text="state.minimumText"
-          :per-period-text="state.perPeriodText"
-          :currency-formatter="state.currencyFormatter"
         />
         <div class="mt-4 text-sm text-grey">
           <strong>Current value:</strong> {{ amount }}
@@ -45,8 +39,6 @@ const amountYearly = ref(300);
         <HstNumber v-model="state.minAmount" title="Min Amount" />
         <HstCheckbox v-model="state.disabled" title="Disabled" />
         <HstText v-model="state.currencySymbol" title="Currency Symbol" />
-        <HstText v-model="state.minimumText" title="Minimum Text" />
-        <HstText v-model="state.perPeriodText" title="Per Period Text" />
       </template>
     </Variant>
 
@@ -59,9 +51,6 @@ const amountYearly = ref(300);
           :defined-amounts="[5, 10, 25, 50]"
           :disabled="false"
           currency-symbol="€"
-          minimum-text="Minimum contribution"
-          per-period-text="per month"
-          :currency-formatter="(value) => `€${value}`"
         />
         <div class="mt-4 text-sm text-grey">
           <strong>Selected amount:</strong> €{{ amount }} per month
@@ -78,9 +67,6 @@ const amountYearly = ref(300);
           :defined-amounts="[60, 120, 300, 600]"
           :disabled="false"
           currency-symbol="€"
-          minimum-text="Minimum contribution"
-          per-period-text="per year"
-          :currency-formatter="(value) => `€${value}`"
         />
         <div class="mt-4 text-sm text-grey">
           <strong>Selected amount:</strong> €{{ amountYearly }} per year
@@ -97,9 +83,6 @@ const amountYearly = ref(300);
           :defined-amounts="[5, 15, 30, 60]"
           :disabled="false"
           currency-symbol="$"
-          minimum-text="Minimum contribution"
-          per-period-text="per month"
-          :currency-formatter="(value) => `$${value}`"
         />
         <div class="mt-4 text-sm text-grey">
           <strong>Selected amount:</strong> ${{ amount }} per month
@@ -116,9 +99,6 @@ const amountYearly = ref(300);
           :defined-amounts="[5, 10, 25, 50]"
           :disabled="true"
           currency-symbol="€"
-          minimum-text="Minimum contribution"
-          per-period-text="per month"
-          :currency-formatter="(value) => `€${value}`"
         />
       </div>
     </Variant>
@@ -132,9 +112,6 @@ const amountYearly = ref(300);
           :defined-amounts="[100, 250, 500, 1000]"
           :disabled="false"
           currency-symbol="€"
-          minimum-text="Minimum contribution"
-          per-period-text="per month"
-          :currency-formatter="(value) => `€${value.toLocaleString()}`"
         />
         <div class="mt-4 text-sm text-grey">
           <strong>Selected amount:</strong> €{{ amount.toLocaleString() }} per
