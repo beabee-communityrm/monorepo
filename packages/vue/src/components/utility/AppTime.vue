@@ -89,9 +89,8 @@ const label = computed(() => {
     return time;
   }
 
-  const template =
-    dateObject.value > now ? t('common.timeIn') : t('common.timeAgo');
+  const template = dateObject.value > now ? 'common.timeIn' : 'common.timeAgo';
 
-  return template.replace('{time}', time);
+  return t(template, { time });
 });
 </script>
