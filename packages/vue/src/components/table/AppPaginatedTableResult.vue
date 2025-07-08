@@ -47,16 +47,6 @@
 </template>
 
 <script lang="ts" setup>
-/**
- * Pagination information and controls component
- *
- * Uses internal i18n for pagination text:
- * - Showing text: common.showingOf
- * - Page count text: common.pageCount
- * - Items per page text: common.itemsPerPage
- *
- * @component AppPaginatedTableResult
- */
 import type { Paginated } from '@beabee/beabee-common';
 import { AppPagination, AppSelect } from '@beabee/vue';
 
@@ -65,9 +55,6 @@ import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
-/**
- * Props for the AppPaginatedTableResult component
- */
 export interface AppPaginatedTableResultProps {
   /** Current page number (0-based) */
   page: number;
@@ -86,23 +73,10 @@ const props = withDefaults(defineProps<AppPaginatedTableResultProps>(), {
   formatNumber: (value: number) => value.toLocaleString(),
 });
 
-/**
- * Events emitted by the AppPaginatedTableResult component
- */
 const emit = defineEmits<{
-  /**
-   * Emitted when the page changes
-   * @param page - The new page number
-   */
   'update:page': [page: number];
-  /**
-   * Emitted when the limit changes
-   * @param limit - The new limit
-   */
   'update:limit': [limit: number];
 }>();
-
-// Computed properties
 const currentPage = computed({
   get: () => props.page,
   set: (newPage) => emit('update:page', newPage),

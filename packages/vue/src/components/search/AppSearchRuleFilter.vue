@@ -31,10 +31,8 @@ import type { BaseLocale } from '@beabee/locale';
 import { AppToggle } from '@beabee/vue';
 
 import { computed, ref, watchEffect } from 'vue';
-import { useI18n } from 'vue-i18n';
 
 import type { SearchRuleEmits, SearchRuleProps } from '../../types/search';
-import { createOperatorLabels } from '../../utils/rules';
 import AppSearchRuleFilterGroup from './AppSearchRuleFilterGroup.vue';
 
 /**
@@ -57,25 +55,6 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const emit = defineEmits<SearchRuleEmits>();
-const { t } = useI18n();
-
-// Create operator labels using internal i18n
-const operatorLabels = computed(() => createOperatorLabels(t));
-
-// Create standard labels for search components
-const labels = computed(() => ({
-  selectFilter: t('advancedSearch.selectFilter'),
-  yes: t('common.yes'),
-  no: t('common.no'),
-  relativeDatePlaceholder: '$now(d:-1)',
-  and: t('advancedSearch.matchWord.AND'),
-  nestedRules: t('advancedSearch.nestedRules'),
-  noNestedRules: t('advancedSearch.noNestedRules'),
-  matchConditions: {
-    AND: t('advancedSearch.matchWord.AND'),
-    OR: t('advancedSearch.matchWord.OR'),
-  },
-}));
 
 const selectedFilterGroupId = ref('');
 
