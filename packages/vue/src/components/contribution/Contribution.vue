@@ -58,7 +58,6 @@
       :methods="content.paymentMethods"
       :disabled="disabled"
       :title="t('join.paymentMethod')"
-      :method-labels="paymentMethodLabels"
       class="mb-4"
     />
 
@@ -177,17 +176,6 @@ const periodItems = computed(() =>
     value: period.name,
   }))
 );
-
-const paymentMethodLabels = computed(() => ({
-  [PaymentMethod.StripeCard]: t('paymentMethods.s_card.label'),
-  [PaymentMethod.StripeSEPA]: t('paymentMethods.s_sepa.label'),
-  [PaymentMethod.StripeBACS]: t('paymentMethods.s_bacs.label'),
-  [PaymentMethod.StripePayPal]: t('paymentMethods.s_paypal.label'),
-  [PaymentMethod.StripeIdeal]: t('paymentMethods.s_ideal.label'),
-  [PaymentMethod.GoCardlessDirectDebit]: t(
-    'paymentMethods.gc_direct-debit.label'
-  ),
-}));
 
 watch(isMonthly, (value) => {
   amountProxy.value = value

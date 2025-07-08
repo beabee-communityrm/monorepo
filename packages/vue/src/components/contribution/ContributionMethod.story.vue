@@ -9,14 +9,6 @@ const state = reactive({
   methods: [PaymentMethod.StripeCard, PaymentMethod.StripePayPal],
   disabled: false,
   title: 'Payment Method',
-  methodLabels: {
-    [PaymentMethod.StripeCard]: 'Credit Card',
-    [PaymentMethod.StripeSEPA]: 'SEPA',
-    [PaymentMethod.StripeBACS]: 'BACS',
-    [PaymentMethod.StripePayPal]: 'PayPal',
-    [PaymentMethod.StripeIdeal]: 'iDEAL',
-    [PaymentMethod.GoCardlessDirectDebit]: 'Direct Debit',
-  },
 });
 
 const selectedMethod = ref(PaymentMethod.StripeCard);
@@ -33,7 +25,6 @@ const selectedMethodAll = ref(PaymentMethod.StripeCard);
           :methods="state.methods"
           :disabled="state.disabled"
           :title="state.title"
-          :method-labels="state.methodLabels"
         />
         <div class="mt-4 text-sm text-grey">
           <strong>Selected method:</strong> {{ selectedMethod }}
@@ -53,10 +44,9 @@ const selectedMethodAll = ref(PaymentMethod.StripeCard);
           :methods="[PaymentMethod.StripeCard, PaymentMethod.StripePayPal]"
           :disabled="false"
           title="Choose Payment Method"
-          :method-labels="state.methodLabels"
         />
         <div class="mt-4 text-sm text-grey">
-          <strong>Selected:</strong> {{ state.methodLabels[selectedMethod] }}
+          <strong>Selected:</strong> {{ selectedMethod }}
         </div>
       </div>
     </Variant>
@@ -72,11 +62,9 @@ const selectedMethodAll = ref(PaymentMethod.StripeCard);
           ]"
           :disabled="false"
           title="Payment Method"
-          :method-labels="state.methodLabels"
         />
         <div class="mt-4 text-sm text-grey">
-          <strong>Selected:</strong>
-          {{ state.methodLabels[selectedMethodThree] }}
+          <strong>Selected:</strong> {{ selectedMethodThree }}
         </div>
       </div>
     </Variant>
@@ -95,10 +83,9 @@ const selectedMethodAll = ref(PaymentMethod.StripeCard);
           ]"
           :disabled="false"
           title="Select Payment Method"
-          :method-labels="state.methodLabels"
         />
         <div class="mt-4 text-sm text-grey">
-          <strong>Selected:</strong> {{ state.methodLabels[selectedMethodAll] }}
+          <strong>Selected:</strong> {{ selectedMethodAll }}
         </div>
       </div>
     </Variant>
@@ -110,7 +97,6 @@ const selectedMethodAll = ref(PaymentMethod.StripeCard);
           :methods="[PaymentMethod.StripeCard, PaymentMethod.StripePayPal]"
           :disabled="true"
           title="Payment Method (Disabled)"
-          :method-labels="state.methodLabels"
         />
       </div>
     </Variant>
@@ -122,7 +108,6 @@ const selectedMethodAll = ref(PaymentMethod.StripeCard);
           :methods="[PaymentMethod.StripeCard]"
           :disabled="false"
           title="Payment Method"
-          :method-labels="state.methodLabels"
         />
         <p class="mt-4 text-sm text-grey">
           Component is hidden when only one method is available
