@@ -1551,7 +1551,7 @@ __metadata:
     typescript: "npm:^5.8.3"
     yargs: "npm:^17.7.2"
   bin:
-    dev-cli: ./src/index.ts
+    dev-cli: ./bin/dev-cli.js
   languageName: unknown
   linkType: soft
 
