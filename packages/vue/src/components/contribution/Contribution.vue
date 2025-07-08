@@ -14,7 +14,6 @@
   - `showPaymentMethod` (boolean): Whether to show payment method selection
   - `disabled` (boolean): Whether the form is disabled
   - `currencySymbol` (string): Currency symbol (e.g. "€", "$")
-  - `currencyFormatter` (function): Function to format currency values
   
   ## Events
   - `update:amount` (number): Emitted when amount changes
@@ -27,6 +26,7 @@
   - Amount validation and preset selection
   - Payment method selection with icons
   - Fee absorption option with automatic forcing for minimum amounts
+  - Internal currency formatting using vue-i18n
   - Responsive layout with proper spacing
   - Full accessibility support
 -->
@@ -95,7 +95,7 @@ import ContributionAmount from './ContributionAmount.vue';
 import ContributionFee from './ContributionFee.vue';
 import ContributionMethod from './ContributionMethod.vue';
 
-const { t } = useI18n();
+const { t, n } = useI18n();
 
 /**
  * Props for the Contribution component
@@ -121,8 +121,6 @@ export interface ContributionProps {
   disabled?: boolean;
   /** Currency symbol (e.g. "€", "$") */
   currencySymbol: string;
-  /** Function to format currency values */
-  currencyFormatter: (value: number) => string;
 }
 
 const props = withDefaults(defineProps<ContributionProps>(), {
@@ -130,6 +128,11 @@ const props = withDefaults(defineProps<ContributionProps>(), {
   showPaymentMethod: true,
   disabled: false,
 });
+
+/**
+ * Internal currency formatter using vue-i18n
+ */
+const currencyFormatter = (value: number): string => n(value, 'currency');
 
 const fee = computed(() =>
   calcPaymentFee(props, props.paymentContent.stripeCountry)
@@ -217,7 +220,7 @@ watch(shouldForceFee, (force) => {
 });
 
 const absorbFeeText = computed(() =>
-  t('join.absorbFeeText', { fee: props.currencyFormatter(fee.value) })
+  t('join.absorbFeeText', { fee: currencyFormatter(fee.value) })
 );
 
 const absorbFeeLabel = computed(() => {
@@ -225,8 +228,8 @@ const absorbFeeLabel = computed(() => {
     ? 'join.absorbFeeForce'
     : 'join.absorbFeeOptIn';
   return t(template, {
-    fee: props.currencyFormatter(fee.value),
-    amount: props.currencyFormatter(amountProxy.value),
+    fee: currencyFormatter(fee.value),
+    amount: currencyFormatter(amountProxy.value),
   });
 });
 </script>
