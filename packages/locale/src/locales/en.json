@@ -896,7 +896,9 @@
     "timeAgo": "{time} ago",
     "timeIn": "in {time}",
     "until": "until",
-    "yes": "Yes"
+    "yes": "Yes",
+    "shareAddress": "Share using the following address:",
+    "shareServices": "Or share using one of these services:"
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1154,7 +1156,8 @@
         "max": "The code may only be a maximum of {max} characters long.",
         "min": "The code must be at least {min} characters long.",
         "required": "Code is required"
-      }    },
+      }
+    },
     "firstName": "First name",
     "lastName": "Last name",
     "newPassword": "New password",

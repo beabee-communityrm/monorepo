@@ -896,7 +896,9 @@
     "timeIn": "in {time}",
     "until": "bis",
     "yes": "Ja",
-    "showingOf": ""
+    "showingOf": "",
+    "shareAddress": "Mit der folgenden Adresse teilen:",
+    "shareServices": "Oder mit einem dieser Services teilen:"
   },
   "contactAccount": {
     "confirmDelete": {

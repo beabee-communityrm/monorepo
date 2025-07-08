@@ -896,7 +896,9 @@
     "timeIn": "in {time}",
     "until": "tot",
     "yes": "Ja",
-    "showingOf": ""
+    "showingOf": "",
+    "shareAddress": "Delen met het volgende adres:",
+    "shareServices": "Of deel met een van deze diensten:"
   },
   "contactAccount": {
     "confirmDelete": {
