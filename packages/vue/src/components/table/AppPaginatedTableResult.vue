@@ -53,7 +53,7 @@ import { AppPagination, AppSelect } from '@beabee/vue';
 import { computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-const { t } = useI18n();
+const { t, n } = useI18n();
 
 export interface AppPaginatedTableResultProps {
   /** Current page number (0-based) */
@@ -64,13 +64,10 @@ export interface AppPaginatedTableResultProps {
   result: Paginated<unknown> | undefined;
   /** Hide the items per page selector */
   noLimit?: boolean;
-  /** Number formatter function */
-  formatNumber?: (value: number) => string;
 }
 
 const props = withDefaults(defineProps<AppPaginatedTableResultProps>(), {
   noLimit: false,
-  formatNumber: (value: number) => value.toLocaleString(),
 });
 
 const emit = defineEmits<{
@@ -90,7 +87,7 @@ const currentLimit = computed({
 const limits = computed(() =>
   [12, 25, 50, 100].map((x) => ({
     id: x,
-    label: t('common.itemsPerPage', { items: props.formatNumber(x) }),
+    label: t('common.itemsPerPage', { items: n(x) }),
   }))
 );
 
@@ -102,9 +99,9 @@ const formattedShowingText = computed(() => {
   if (!props.result || props.result.count === 0) return '';
 
   return t('common.showingOf', {
-    start: props.formatNumber(props.result.offset + 1),
-    end: props.formatNumber(props.result.offset + props.result.count),
-    total: props.formatNumber(props.result.total),
+    start: n(props.result.offset + 1),
+    end: n(props.result.offset + props.result.count),
+    total: n(props.result.total),
   });
 });
 
@@ -112,8 +109,8 @@ const formattedPageCountText = computed(() => {
   if (!props.result || props.result.count === 0) return '';
 
   return t('common.pageCount', {
-    pageNumber: props.formatNumber(props.page + 1),
-    pageTotal: props.formatNumber(totalPages.value),
+    pageNumber: n(props.page + 1),
+    pageTotal: n(totalPages.value),
   });
 });
 

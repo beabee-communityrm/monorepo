@@ -15,7 +15,6 @@
   - `query`: Query object with page, limit, and sort
   - `selectable`: Enable row selection
   - `rowClass`: Function to add custom row classes
-  - `formatNumber`: Number formatter function
 
   ## Events:
   - Inherits all events from AppTable and AppPaginatedTableResult
@@ -32,7 +31,6 @@
         v-model:page="query.page"
         v-model:limit="query.limit"
         :result="result"
-        :format-number="formatNumber"
         class="ml-auto items-end"
         no-limit
       />
@@ -55,7 +53,6 @@
       v-model:page="query.page"
       v-model:limit="query.limit"
       :result="result"
-      :format-number="formatNumber"
       class="items-center"
     />
   </div>
@@ -96,14 +93,11 @@ export interface AppPaginatedTableProps<I extends Item> {
   selectable?: boolean;
   /** Function to add custom CSS classes to rows */
   rowClass?: (item: I) => string;
-  /** Number formatter function */
-  formatNumber?: (value: number) => string;
 }
 
 const props = withDefaults(defineProps<AppPaginatedTableProps<I>>(), {
   selectable: false,
   rowClass: undefined,
-  formatNumber: (value: number) => value.toLocaleString(),
 });
 
 // Slots are passed to AppTable, typing is currently lost

@@ -3,8 +3,6 @@
   A component for selecting payment methods.
   Displays payment methods as selectable buttons with icons and labels.
   
-  Uses internal i18n for payment method labels: paymentMethods.{method}.label
-  
   ## Props
   - `modelValue` (PaymentMethod): The currently selected payment method
   - `methods` (PaymentMethod[]): Available payment methods to choose from
@@ -15,11 +13,10 @@
   - `update:modelValue` (PaymentMethod): Emitted when the selected method changes
   
   ## Features
-  - Visual selection with highlighted active state
-  - Payment method icons for visual recognition
-  - Responsive grid layout (2-3 columns based on method count)
-  - Hover effects and accessibility support
-  - Disabled state support
+  - Visual selection with icons and labels
+  - Responsive grid layout
+  - Keyboard navigation support
+  - Accessibility with proper ARIA attributes
 -->
 <template>
   <div v-if="methods.length > 1" :class="disabled && 'opacity-50'">
