@@ -82,5 +82,5 @@ export interface SetTranslationResult {
  * Translation data structure - can be nested objects with string values
  */
 export type TranslationData = {
-  [key: string]: string | TranslationData;
+  [key: string]: number | string | boolean | TranslationData;
 };
