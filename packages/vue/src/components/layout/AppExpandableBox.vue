@@ -46,6 +46,8 @@ import { AppButton } from '../button';
  * ```
  */
 
+// Disable automatic attribute inheritance to manually control
+// where attributes are applied (to the root div wrapper)
 defineOptions({
   inheritAttrs: false,
 });
