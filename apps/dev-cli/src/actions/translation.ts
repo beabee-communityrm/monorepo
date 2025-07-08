@@ -9,6 +9,7 @@ import type {
   ListTranslationKeysResult,
   SetTranslationOptions,
   SetTranslationResult,
+  TranslationData,
   TranslationKeyInfo,
   TranslationValidationResult,
 } from '../types/translation.ts';
@@ -130,13 +131,6 @@ function getNestedValue(
 
   return typeof current === 'string' ? current : undefined;
 }
-
-/**
- * Translation data structure - can be nested objects with string values
- */
-type TranslationData = {
-  [key: string]: string | TranslationData;
-};
 
 /**
  * Get all translation keys from a locale object

@@ -77,3 +77,10 @@ export interface SetTranslationResult {
   /** Error messages if any */
   errors: string[];
 }
+
+/**
+ * Translation data structure - can be nested objects with string values
+ */
+export type TranslationData = {
+  [key: string]: string | TranslationData;
+};

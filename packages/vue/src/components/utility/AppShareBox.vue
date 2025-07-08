@@ -38,11 +38,11 @@
       <!-- Address section -->
       <section>
         <p class="mb-2 text-sm text-body-80">
-          {{ t('common.shareAddress') }}
+          {{ t('callout.share.address') }}
         </p>
         <AppInput
           :model-value="fullUrl"
-          :label="t('common.shareAddress')"
+          :label="t('callout.share.address')"
           disabled
           copyable
           :copy-label="t('actions.copy')"
@@ -54,7 +54,7 @@
       <!-- Social sharing section -->
       <section>
         <p class="mb-3 text-sm text-body-80">
-          {{ t('common.shareServices') }}
+          {{ t('callout.share.services') }}
         </p>
         <nav
           class="grid grid-cols-2 gap-3 sm:grid-cols-3"
