@@ -32,8 +32,6 @@ const paymentContent: ContentPaymentData = {
   noticeText: '',
 };
 
-// Mock currency formatter
-const currencyFormatter = (value: number) => `€${value}`;
 const currencySymbol = '€';
 
 // State for the playground
@@ -85,7 +83,6 @@ const minimumState = reactive({
           :show-payment-method="state.showPaymentMethod"
           :disabled="state.disabled"
           :currency-symbol="currencySymbol"
-          :currency-formatter="currencyFormatter"
         />
         <div class="mt-6 rounded bg-grey-lighter p-4 text-sm">
           <h4 class="mb-2 font-semibold">Current Values:</h4>
@@ -120,7 +117,6 @@ const minimumState = reactive({
           :show-payment-method="true"
           :disabled="false"
           :currency-symbol="currencySymbol"
-          :currency-formatter="currencyFormatter"
         />
         <div class="mt-4 text-sm text-grey">
           Monthly contribution with fee absorption option
@@ -141,7 +137,6 @@ const minimumState = reactive({
           :show-payment-method="true"
           :disabled="false"
           :currency-symbol="currencySymbol"
-          :currency-formatter="currencyFormatter"
         />
         <div class="mt-4 text-sm text-grey">
           Annual contribution (fee option hidden for yearly)
@@ -162,7 +157,6 @@ const minimumState = reactive({
           :show-payment-method="true"
           :disabled="false"
           :currency-symbol="currencySymbol"
-          :currency-formatter="currencyFormatter"
         />
         <div class="mt-4 text-sm text-grey">
           Minimum contribution amount forces fee absorption
@@ -183,7 +177,6 @@ const minimumState = reactive({
           :show-payment-method="false"
           :disabled="false"
           :currency-symbol="currencySymbol"
-          :currency-formatter="currencyFormatter"
         />
         <div class="mt-4 text-sm text-grey">
           Amount selection only (period and payment method hidden)
@@ -204,9 +197,8 @@ const minimumState = reactive({
           :show-payment-method="true"
           :disabled="true"
           :currency-symbol="currencySymbol"
-          :currency-formatter="currencyFormatter"
         />
-        <div class="mt-4 text-sm text-grey">All form elements are disabled</div>
+        <div class="mt-4 text-sm text-grey">All form elements disabled</div>
       </div>
     </Variant>
 
@@ -226,7 +218,6 @@ const minimumState = reactive({
           :show-payment-method="true"
           :disabled="false"
           :currency-symbol="currencySymbol"
-          :currency-formatter="currencyFormatter"
         />
         <div class="mt-4 text-sm text-grey">
           Only one payment method available
