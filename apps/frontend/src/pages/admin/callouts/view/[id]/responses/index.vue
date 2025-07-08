@@ -142,12 +142,7 @@ meta:
           <span v-else>-</span>
         </template>
         <template #value-createdAt="{ value }">
-          <AppTime
-            :datetime="value"
-            :time-ago-template="t('common.timeAgo', { time: '{time}' })"
-            :time-in-template="t('common.timeIn', { time: '{time}' })"
-            :locale="locale as BaseLocale"
-          />
+          <AppTime :datetime="value" :locale="locale as BaseLocale" />
         </template>
 
         <template
@@ -191,8 +186,6 @@ meta:
               <AppTime
                 class="font-semibold text-body-60"
                 :datetime="item.latestComment.createdAt"
-                :time-ago-template="t('common.timeAgo', { time: '{time}' })"
-                :time-in-template="t('common.timeIn', { time: '{time}' })"
                 :locale="locale as BaseLocale"
               />
               <b> • {{ item.latestComment.contact.displayName }}:{{ ' ' }}</b>
@@ -225,10 +218,10 @@ import {
   AppCheckbox,
   AppPaginatedTable,
   AppSelect,
+  AppTime,
   AppVTabs,
   addNotification,
 } from '@beabee/vue';
-import { AppTime } from '@beabee/vue';
 
 import {
   headers,
@@ -253,8 +246,7 @@ import {
   defineParam,
   defineRulesParam,
 } from '@utils/pagination';
-import { computed, ref, watch } from 'vue';
-import { toRef } from 'vue';
+import { computed, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 
