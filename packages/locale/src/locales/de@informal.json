@@ -800,10 +800,10 @@
     "add": "Auswerter hinzufügen",
     "confirmDelete": {
       "text": "Bist du sicher, dass du {reviewerName} entfernen möchtest? Diese Person wird diesen Callout nicht mehr überprüfen können.",
-      "title": ""
+      "title": "Auswerter entfernen"
     },
-    "contact": "",
-    "title": ""
+    "contact": "Kontakt ID",
+    "title": "Callout Auswerter"
   },
   "calloutThanksPage": {
     "oneResponseWarning": "Bitte beacht, dass dieser Callout nur eine Antwort pro Person zulässt. Wenn du bereits teilgenommen hast, werden weitere Antworten nicht berücksichtigt."
