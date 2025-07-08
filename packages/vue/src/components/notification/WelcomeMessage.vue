@@ -9,7 +9,6 @@
       <WelcomeIcon
         class="float-left mb-4 mr-4 h-auto w-[4.5rem] md:w-[7.5rem]"
         :class="!small && 'lg:mb-8 lg:mr-8 lg:w-[17rem]'"
-        :aria-label="t('membershipBuilder.intro.title')"
       />
 
       <AppSubHeading :id="headingId">
@@ -50,8 +49,8 @@ const { t } = useI18n();
  * and a closeable interface for onboarding or informational content.
  *
  * Uses internal i18n for accessibility labels:
- * - Icon aria-label: membershipBuilder.intro.title
  * - Close button aria-label: actions.close
+ * - WelcomeIcon manages its own aria-label internally
  */
 
 export interface WelcomeMessageProps {
