@@ -58,8 +58,7 @@
  * @component AppPaginatedTableResult
  */
 import type { Paginated } from '@beabee/beabee-common';
-import { AppSelect } from '@beabee/vue';
-import { AppPagination } from '@beabee/vue';
+import { AppPagination, AppSelect } from '@beabee/vue';
 
 import { computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -117,7 +116,7 @@ const currentLimit = computed({
 const limits = computed(() =>
   [12, 25, 50, 100].map((x) => ({
     id: x,
-    label: t('common.itemsPerPage').replace('{items}', props.formatNumber(x)),
+    label: t('common.itemsPerPage', { items: props.formatNumber(x) }),
   }))
 );
 
@@ -128,21 +127,20 @@ const totalPages = computed(() =>
 const formattedShowingText = computed(() => {
   if (!props.result || props.result.count === 0) return '';
 
-  return t('common.showingOf')
-    .replace('{start}', props.formatNumber(props.result.offset + 1))
-    .replace(
-      '{end}',
-      props.formatNumber(props.result.offset + props.result.count)
-    )
-    .replace('{total}', props.formatNumber(props.result.total));
+  return t('common.showingOf', {
+    start: props.formatNumber(props.result.offset + 1),
+    end: props.formatNumber(props.result.offset + props.result.count),
+    total: props.formatNumber(props.result.total),
+  });
 });
 
 const formattedPageCountText = computed(() => {
   if (!props.result || props.result.count === 0) return '';
 
-  return t('common.pageCount')
-    .replace('{pageNumber}', props.formatNumber(props.page + 1))
-    .replace('{pageTotal}', props.formatNumber(totalPages.value));
+  return t('common.pageCount', {
+    pageNumber: props.formatNumber(props.page + 1),
+    pageTotal: props.formatNumber(totalPages.value),
+  });
 });
 
 // Watch for total pages changes and adjust current page if needed
