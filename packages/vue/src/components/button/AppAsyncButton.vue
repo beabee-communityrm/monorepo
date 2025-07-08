@@ -90,11 +90,12 @@ async function handleClick(evt: Event) {
   try {
     await props.onClick?.(evt);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (_: unknown) {
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
     addNotification({
       title: t('notifications.error'),
+      description: message,
       variant: 'error',
-      removeAriaLabel: t('notifications.remove'),
     });
   } finally {
     loading.value = false;
