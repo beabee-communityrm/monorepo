@@ -1,30 +1,29 @@
 <!--
   # AppTextArea
-  A comprehensive textarea component with validation, character counting, and accessibility features.
-  
-  Uses internal i18n for standard messages:
-  - Required field error: form.errors.unknown.required
-  - Max length error: form.errors.unknown.maxLength
-  - Character count display: form.characters.remaining
+  A textarea input component with validation and character counting.
 
   ## Features
-  - Built-in validation with Vuelidate
-  - Character count display with max length support
-  - Copy-to-clipboard functionality
-  - Accessibility with proper ARIA labels
-  - Error state management
-  - Info message support
-  - Mobile-first responsive design
+  - Multi-line text input
+  - Character counting with limit support
+  - Form validation integration
+  - Required field validation
+  - Maximum length validation
+  - Accessibility features
 
-  ## Usage
-  ```vue
-  <AppTextArea 
-    v-model="description" 
-    label="Description"
-    :maxlength="500"
-    required 
-  />
-  ```
+  ## Props
+  - `modelValue`: Current textarea value
+  - `maxlength`: Maximum number of characters allowed
+  - `required`: Whether the field is required
+  - `label`: Input label text
+  - Standard textarea attributes
+
+  ## Events
+  - `update:modelValue`: Emitted when value changes
+
+  ## Validation
+  - Integrates with form validation systems
+  - Shows character count and remaining characters
+  - Displays validation errors when present
 -->
 <template>
   <div>
@@ -82,12 +81,7 @@
 
 <script lang="ts" setup>
 /**
- * AppTextArea component with validation, character counting, and accessibility features.
- *
- * Uses internal i18n for standard messages:
- * - Required field error: form.errors.unknown.required
- * - Max length error: form.errors.unknown.maxLength
- * - Character count display: form.characters.remaining
+ * AppTextArea component providing textarea functionality with validation and character counting
  *
  * @component AppTextArea
  */
