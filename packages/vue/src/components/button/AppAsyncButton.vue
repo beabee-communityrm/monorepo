@@ -1,11 +1,19 @@
 <!--
   # AppAsyncButton
-  An asynchronous button component that extends AppButton with built-in async operation handling.
-  Automatically manages loading states and error notifications for async operations.
-  
-  Uses internal i18n for standard messages:
-  - Loading text: common.loading
-  - Error notifications: notifications.error, notifications.remove
+  A button component that handles async operations with loading states.
+
+  ## Features
+  - Automatic loading state during async operations
+  - Error handling with notifications
+  - Customizable styling and sizing
+  - Icon support
+  - Accessibility features
+
+  ## Props
+  - Standard button props (variant, size, icon, etc.)
+
+  ## Events
+  - `click`: Emitted when button is clicked (returns Promise for async operations)
 -->
 <template>
   <AppButton
@@ -26,11 +34,7 @@
 <script lang="ts" setup>
 /**
  * Asynchronous button component that handles loading states and error notifications.
- * Extends AppButton with automatic async operation support including loading states and error handling.
- *
- * Uses internal i18n for standard messages:
- * - Loading text: common.loading
- * - Error notifications: notifications.error, notifications.remove
+ * Extends AppButton with automatic async operation support.
  *
  * @component AppAsyncButton
  *
@@ -44,14 +48,14 @@ import { addNotification } from '@beabee/vue/store/notifications';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import AppButton from './AppButton.vue';
+import AppButton, { type AppButtonProps } from './AppButton.vue';
 
 const { t } = useI18n();
 
 /**
  * Props for the AppAsyncButton component
  */
-export interface AppAsyncButtonProps {
+export interface AppAsyncButtonProps extends AppButtonProps {
   /** Async function to execute when the button is clicked */
   onClick?: (evt: Event) => Promise<void>;
   /** Accessible label for the button */
