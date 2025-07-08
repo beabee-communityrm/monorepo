@@ -5,6 +5,7 @@ import Module from 'node:module';
 import { dirname, resolve } from 'node:path';
 
 import type {
+  GetNestedValueResult,
   ListTranslationKeysOptions,
   ListTranslationKeysResult,
   SetTranslationOptions,
@@ -111,20 +112,6 @@ async function writeLocaleFile(
     );
   }
 }
-
-/**
- * Result of getting a nested value with detailed information
- */
-type GetNestedValueResult =
-  | { success: true; value: string }
-  | { success: false; reason: 'path_not_found'; missingKey: string }
-  | {
-      success: false;
-      reason: 'wrong_type';
-      foundType: string;
-      path: string;
-      actualValue: unknown;
-    };
 
 /**
  * Get translation value from nested object using dot notation with detailed error information
