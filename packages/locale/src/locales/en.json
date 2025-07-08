@@ -896,9 +896,7 @@
     "timeAgo": "{time} ago",
     "timeIn": "in {time}",
     "until": "until",
-    "yes": "Yes",
-    "shareAddress": "Share using the following address:",
-    "shareServices": "Or share using one of these services:"
+    "yes": "Yes"
   },
   "contactAccount": {
     "confirmDelete": {

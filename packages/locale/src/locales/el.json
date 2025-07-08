@@ -895,9 +895,7 @@
     "timeIn": "σε {time}",
     "until": "",
     "yes": "",
-    "showingOf": "",
-    "shareAddress": "Κοινοποιήστε με την παρακάτω διεύθυνση:",
-    "shareServices": "Ή μοιραστείτε χρησιμοποιώντας μία από αυτές τις υπηρεσίες:"
+    "showingOf": ""
   },
   "contactAccount": {
     "confirmDelete": {

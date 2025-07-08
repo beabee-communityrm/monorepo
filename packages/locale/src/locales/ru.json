@@ -895,9 +895,7 @@
     "timeIn": "в {time}",
     "until": "до",
     "yes": "Да",
-    "showingOf": "",
-    "shareAddress": "Поделиться по следующему адресу:",
-    "shareServices": "Или поделиться с помощью одной из этих служб:"
+    "showingOf": ""
   },
   "contactAccount": {
     "confirmDelete": {
