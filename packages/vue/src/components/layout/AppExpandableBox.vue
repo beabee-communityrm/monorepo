@@ -1,5 +1,5 @@
 <template>
-  <div v-bind="$attrs">
+  <div>
     <div class="mb-2 flex gap-2">
       <slot name="before"></slot>
       <AppButton
@@ -45,12 +45,6 @@ import { AppButton } from '../button';
  * </AppExpandableBox>
  * ```
  */
-
-// Disable automatic attribute inheritance to manually control
-// where attributes are applied (to the root div wrapper)
-defineOptions({
-  inheritAttrs: false,
-});
 
 defineProps<{
   /** Icon to display on the toggle button */
