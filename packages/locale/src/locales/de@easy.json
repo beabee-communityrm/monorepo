@@ -100,12 +100,15 @@
     "share": "Hier schickst du den Text / die Datei / das Bild an andere.",
     "skip": "",
     "submit": "Hier wird deine Meldung weg-geschickt.",
-    "unpublish": "",
-    "update": "",
-    "view": "",
-    "yesDelete": "",
-    "yesDisable": "",
-    "yesRemove": ""
+    "unpublish": "Veröffentlichung aufheben",
+    "update": "Änderungen speichern",
+    "view": "Anzeigen",
+    "yesDelete": "Ja, löschen",
+    "yesDisable": "Ja, deaktivieren",
+    "yesRemove": "Ja, entfernen",
+    "tryAgain": "Nochmal versuchen",
+    "increase": "Erhöhen",
+    "decrease": "Verringern"
   },
   "addContact": {
     "contactSaved": "",
@@ -893,9 +896,10 @@
     "thankYou": "Vielen Dank.",
     "timeAgo": "vor",
     "timeIn": "in",
-    "until": "",
-    "yes": "",
-    "showingOf": ""
+    "until": "bis",
+    "yes": "Ja",
+    "showingOf": "",
+    "statusLabel": "Status: {status}"
   },
   "contactAccount": {
     "confirmDelete": {

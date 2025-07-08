@@ -51,7 +51,7 @@ const statusText = computed(() => {
  * Accessible aria-label for payment status
  */
 const ariaLabel = computed(() => {
-  return t('payment.statusLabel', { status: statusText.value });
+  return t('common.statusLabel', { status: statusText.value });
 });
 
 /**

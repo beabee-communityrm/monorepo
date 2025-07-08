@@ -68,7 +68,7 @@
           class="amount-button border-b border-l"
           type="button"
           :disabled="disabled"
-          :aria-label="t('contribution.increaseAmount')"
+          :aria-label="t('actions.increase')"
           @click="changeAmount(amount + 1)"
         >
           ▲
@@ -79,7 +79,7 @@
           type="button"
           :disabled="disabled"
           :class="{ 'is-invalid': amount <= minAmount }"
-          :aria-label="t('contribution.decreaseAmount')"
+          :aria-label="t('actions.decrease')"
           @click="changeAmount(amount - 1)"
         >
           ▼

@@ -105,7 +105,10 @@
     "view": "Просмотреть",
     "yesDelete": "Да, удалить",
     "yesDisable": "Да, отключить",
-    "yesRemove": "Да, удалить"
+    "yesRemove": "Да, удалить",
+    "tryAgain": "",
+    "increase": "",
+    "decrease": ""
   },
   "addContact": {
     "contactSaved": "",
@@ -895,7 +898,8 @@
     "timeIn": "в {time}",
     "until": "до",
     "yes": "Да",
-    "showingOf": ""
+    "showingOf": "",
+    "statusLabel": ""
   },
   "contactAccount": {
     "confirmDelete": {
