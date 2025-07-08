@@ -57,8 +57,7 @@ meta:
         <AppTime
           v-if="value"
           :datetime="value"
-          :time-ago-template="t('common.timeAgo', { time: '{time}' })"
-          :time-in-template="t('common.timeIn', { time: '{time}' })"
+          :locale="locale as BaseLocale"
         />
         <span v-else :title="t('adminSettings.apikey.expiresHelp')">
           <font-awesome-icon :icon="faWarning" />
@@ -109,19 +108,18 @@ meta:
 
 <script lang="ts" setup>
 import type { GetApiKeyData, Paginated } from '@beabee/beabee-common';
+import type { BaseLocale } from '@beabee/locale';
 import {
+  App2ColGrid,
   AppButton,
   AppCheckbox,
   AppConfirmDialog,
   AppForm,
+  AppHeading,
   AppInput,
+  AppPaginatedTable,
   AppSelect,
   AppTime,
-} from '@beabee/vue';
-import {
-  App2ColGrid,
-  AppHeading,
-  AppPaginatedTable,
   type Header,
   addNotification,
 } from '@beabee/vue';
@@ -135,7 +133,7 @@ import { addDays } from 'date-fns';
 import { computed, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-const { n, t } = useI18n();
+const { n, t, locale } = useI18n();
 
 const validation = useVuelidate();
 
