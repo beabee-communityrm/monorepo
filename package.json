@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "clear": "yarn workspaces foreach -v -W run clear",
-    "build": "yarn workspace @beabee/locale run build && yarn workspaces foreach -v -W --topological-dev --exclude @beabee/locale run build",
+    "build": "yarn workspaces foreach -v -W --topological-dev run build",
     "dev": "yarn workspaces foreach -v -W -p -i -j unlimited run dev",
     "format": "yarn workspaces foreach -v -W -p run format",
     "test": "yarn workspaces foreach -v -W run test",

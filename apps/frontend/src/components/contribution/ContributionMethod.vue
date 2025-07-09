@@ -8,17 +8,15 @@
   - `methods` (PaymentMethod[]): Available payment methods to choose from
   - `disabled` (boolean): Whether the component is disabled
   - `title` (string): Title text for the payment method selection
-  - `methodLabels` (Record<PaymentMethod, string>): Labels for each payment method
 
   ## Events
   - `update:modelValue` (PaymentMethod): Emitted when the selected method changes
 
   ## Features
-  - Visual selection with highlighted active state
-  - Payment method icons for visual recognition
-  - Responsive grid layout (2-3 columns based on method count)
-  - Hover effects and accessibility support
-  - Disabled state support
+  - Visual selection with icons and labels
+  - Responsive grid layout
+  - Keyboard navigation support
+  - Accessibility with proper ARIA attributes
 -->
 <template>
   <div v-if="methods.length > 1" :class="disabled && 'opacity-50'">
@@ -59,7 +57,12 @@
 import { PaymentMethod } from '@beabee/beabee-common';
 import { AppSubHeading } from '@beabee/vue';
 
+import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+
 import { PaymentMethodIcon } from '../payment';
+
+const { t } = useI18n();
 
 /**
  * Props for the ContributionMethod component
@@ -73,10 +76,22 @@ export interface ContributionMethodProps {
   disabled: boolean;
   /** Title text for the payment method selection */
   title: string;
-  /** Labels for each payment method */
-  methodLabels: Record<PaymentMethod, string>;
 }
 
 const emit = defineEmits(['update:modelValue']);
 defineProps<ContributionMethodProps>();
+
+/**
+ * Internal payment method labels using vue-i18n
+ */
+const methodLabels = computed(() => ({
+  [PaymentMethod.StripeCard]: t('paymentMethods.s_card.label'),
+  [PaymentMethod.StripeSEPA]: t('paymentMethods.s_sepa.label'),
+  [PaymentMethod.StripeBACS]: t('paymentMethods.s_bacs.label'),
+  [PaymentMethod.StripePayPal]: t('paymentMethods.s_paypal.label'),
+  [PaymentMethod.StripeIdeal]: t('paymentMethods.s_ideal.label'),
+  [PaymentMethod.GoCardlessDirectDebit]: t(
+    'paymentMethods.gc_direct-debit.label'
+  ),
+}));
 </script>

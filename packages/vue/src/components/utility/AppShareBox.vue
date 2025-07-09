@@ -1,31 +1,29 @@
 <!--
   # AppShareBox
-  A component for sharing URLs across various social media platforms and methods.
-  Provides a collapsible box with social sharing options and a copy-to-clipboard feature.
+  A component for sharing content via various platforms with address and services links.
 
-  Uses internal i18n for all text content:
-  - Share button text: actions.share
-  - Copy button text: actions.copy
-  - Email sharing text: form.email
-  - Address text: callout.share.address
-  - Services text: callout.share.services
+  ## Features
+  - Share buttons for social media platforms
+  - Email sharing option
+  - Copy-to-clipboard functionality for links
+  - Address link with customizable text
+  - Services link with customizable text
+  - Responsive layout
 
-  ## Features:
-  - Multiple social media sharing options (Facebook, LinkedIn, Telegram, Twitter, WhatsApp)
-  - Email sharing support
-  - Copy-to-clipboard functionality using AppInput
-  - Collapsible interface using AppExpandableBox
-  - Full keyboard navigation support
-  - Accessibility features with ARIA labels
-  - Mobile-first responsive design
+  ## Props
+  - `addressText`: Custom text for the address link
+  - `servicesText`: Custom text for the services link
+  - `addressLink`: URL for the address link
+  - `servicesLink`: URL for the services link
+  - Additional standard share box props
+
+  ## Slots
+  - Default slot for additional content
 
   ## Usage:
-  ```vue
-  <AppShareBox
-    url="/my-page"
-    base-url="https://example.com"
-  />
-  ```
+  - Place in any layout where sharing functionality is needed
+  - Customize address and services links as needed
+  - Content will automatically be shared based on current URL
 -->
 <template>
   <AppExpandableBox
@@ -164,15 +162,7 @@
 
 <script lang="ts" setup>
 /**
- * AppShareBox component for sharing URLs across social media platforms and via email.
- * Provides a collapsible interface with multiple sharing options and copy-to-clipboard functionality.
- *
- * Uses internal i18n for all text content:
- * - Share button text: actions.share
- * - Copy button text: actions.copy
- * - Email sharing text: form.email
- * - Address text: callout.share.address
- * - Services text: callout.share.services
+ * AppShareBox component for sharing content across various platforms
  *
  * @component AppShareBox
  */

@@ -15,7 +15,6 @@
   - `query`: Query object with page, limit, and sort
   - `selectable`: Enable row selection
   - `rowClass`: Function to add custom row classes
-  - `formatNumber`: Number formatter function
 
   ## Events:
   - Inherits all events from AppTable and AppPaginatedTableResult
@@ -32,7 +31,6 @@
         :page="query.page"
         :limit="query.limit"
         :result="result"
-        :format-number="formatNumber"
         class="ml-auto items-end"
         no-limit
         @update:page="updatePage"
@@ -59,7 +57,6 @@
       :page="query.page"
       :limit="query.limit"
       :result="result"
-      :format-number="formatNumber"
       class="items-center"
       @update:page="updatePage"
       @update:limit="updateLimit"
@@ -102,14 +99,11 @@ export interface AppPaginatedTableProps<I extends Item> {
   selectable?: boolean;
   /** Function to add custom CSS classes to rows */
   rowClass?: (item: I) => string;
-  /** Number formatter function */
-  formatNumber?: (value: number) => string;
 }
 
 const props = withDefaults(defineProps<AppPaginatedTableProps<I>>(), {
   selectable: false,
   rowClass: undefined,
-  formatNumber: (value: number) => value.toLocaleString(),
 });
 
 /**

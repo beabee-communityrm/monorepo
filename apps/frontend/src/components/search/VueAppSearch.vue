@@ -79,8 +79,6 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<Emits>();
 
-// Note: operatorLabels now created internally by individual components
-
 const showExpanded = ref(false);
 
 const hasRules = computed(

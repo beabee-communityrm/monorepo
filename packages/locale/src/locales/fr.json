@@ -105,7 +105,10 @@
     "view": "Visualiser",
     "yesDelete": "Oui, supprimer",
     "yesDisable": "Oui, désactiver",
-    "yesRemove": "Oui, retirer"
+    "yesRemove": "Oui, retirer",
+    "tryAgain": "",
+    "increase": "",
+    "decrease": ""
   },
   "addContact": {
     "contactSaved": "Contact enregistré",
@@ -895,7 +898,8 @@
     "timeIn": "dans {time}",
     "until": "jusqu'à",
     "yes": "Oui",
-    "showingOf": ""
+    "showingOf": "",
+    "statusLabel": ""
   },
   "contactAccount": {
     "confirmDelete": {

@@ -24,8 +24,6 @@
             <AppTime
               class="text-body-80"
               :datetime="callout.expires"
-              :time-ago-template="t('common.timeAgo', { time: '{time}' })"
-              :time-in-template="t('common.timeIn', { time: '{time}' })"
               :locale="locale as BaseLocale"
             />
           </div>

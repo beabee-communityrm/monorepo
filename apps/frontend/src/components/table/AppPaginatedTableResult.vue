@@ -47,29 +47,14 @@
 </template>
 
 <script lang="ts" setup>
-/**
- * Pagination information and controls component
- *
- * Uses internal i18n for pagination text:
- * - Showing text: common.showingOf
- * - Page count text: common.pageCount
- * - Items per page text: common.itemsPerPage
- *
- * @component AppPaginatedTableResult
- */
-import { AppSelect } from '@beabee/vue';
-import { AppPagination } from '@beabee/vue';
+import type { Paginated } from '@beabee/beabee-common';
+import { AppPagination, AppSelect } from '@beabee/vue';
 
 import { computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import type { Paginated } from '../../type/paginated';
+const { t, n } = useI18n();
 
-const { t } = useI18n();
-
-/**
- * Props for the AppPaginatedTableResult component
- */
 export interface AppPaginatedTableResultProps {
   /** Current page number (0-based) */
   page: number;
@@ -79,32 +64,16 @@ export interface AppPaginatedTableResultProps {
   result: Paginated<unknown> | undefined;
   /** Hide the items per page selector */
   noLimit?: boolean;
-  /** Number formatter function */
-  formatNumber?: (value: number) => string;
 }
 
 const props = withDefaults(defineProps<AppPaginatedTableResultProps>(), {
   noLimit: false,
-  formatNumber: (value: number) => value.toLocaleString(),
 });
 
-/**
- * Events emitted by the AppPaginatedTableResult component
- */
 const emit = defineEmits<{
-  /**
-   * Emitted when the page changes
-   * @param page - The new page number
-   */
   'update:page': [page: number];
-  /**
-   * Emitted when the limit changes
-   * @param limit - The new limit
-   */
   'update:limit': [limit: number];
 }>();
-
-// Computed properties
 const currentPage = computed({
   get: () => props.page,
   set: (newPage) => emit('update:page', newPage),
@@ -118,7 +87,7 @@ const currentLimit = computed({
 const limits = computed(() =>
   [12, 25, 50, 100].map((x) => ({
     id: x,
-    label: t('common.itemsPerPage').replace('{items}', props.formatNumber(x)),
+    label: t('common.itemsPerPage', { items: n(x) }),
   }))
 );
 
@@ -129,21 +98,20 @@ const totalPages = computed(() =>
 const formattedShowingText = computed(() => {
   if (!props.result || props.result.count === 0) return '';
 
-  return t('common.showingOf')
-    .replace('{start}', props.formatNumber(props.result.offset + 1))
-    .replace(
-      '{end}',
-      props.formatNumber(props.result.offset + props.result.count)
-    )
-    .replace('{total}', props.formatNumber(props.result.total));
+  return t('common.showingOf', {
+    start: n(props.result.offset + 1),
+    end: n(props.result.offset + props.result.count),
+    total: n(props.result.total),
+  });
 });
 
 const formattedPageCountText = computed(() => {
   if (!props.result || props.result.count === 0) return '';
 
-  return t('common.pageCount')
-    .replace('{pageNumber}', props.formatNumber(props.page + 1))
-    .replace('{pageTotal}', props.formatNumber(totalPages.value));
+  return t('common.pageCount', {
+    pageNumber: n(props.page + 1),
+    pageTotal: n(totalPages.value),
+  });
 });
 
 // Watch for total pages changes and adjust current page if needed

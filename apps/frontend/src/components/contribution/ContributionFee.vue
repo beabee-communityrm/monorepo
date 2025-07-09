@@ -16,6 +16,9 @@
 import { AppCheckbox } from '@beabee/vue';
 
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+const { t, n } = useI18n();
 
 const emit = defineEmits(['update:modelValue']);
 
@@ -30,11 +33,27 @@ const props = defineProps<{
   modelValue: boolean;
   /** Whether the component is disabled */
   disabled: boolean;
-  /** Text explaining the fee absorption */
-  absorbFeeText: string;
-  /** Label text for the checkbox */
-  absorbFeeLabel: string;
 }>();
+
+/**
+ * Text explaining the fee absorption option
+ */
+const absorbFeeText = computed(() => {
+  return t('join.absorbFeeText', { fee: n(props.fee, 'currency') });
+});
+
+/**
+ * Label for the fee absorption checkbox
+ */
+const absorbFeeLabel = computed(() => {
+  if (props.force) {
+    return t('join.absorbFeeForce', {
+      amount: n(props.amount, 'currency'),
+      fee: n(props.fee, 'currency'),
+    });
+  }
+  return t('join.absorbFeeOptIn', { fee: n(props.fee, 'currency') });
+});
 
 const payFee = computed<boolean>({
   get: () => !props.disabled && props.modelValue,

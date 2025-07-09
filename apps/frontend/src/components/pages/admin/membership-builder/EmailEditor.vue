@@ -10,7 +10,6 @@
           v-model="email.body"
           label="Message"
           :copyable="true"
-          class="col-span-12"
           required
         />
       </template>

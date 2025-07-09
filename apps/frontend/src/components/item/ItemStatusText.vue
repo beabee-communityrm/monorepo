@@ -28,7 +28,6 @@
 /**
  * Advanced status display component showing status with dynamic time-based messages.
  * Provides contextual information about when items start, end, or expired.
- * Uses vue-i18n for internal translations - no translation props needed.
  *
  * @component ItemStatusText
  *

@@ -9,7 +9,6 @@
       <WelcomeIcon
         class="float-left mb-4 mr-4 h-auto w-[4.5rem] md:w-[7.5rem]"
         :class="!small && 'lg:mb-8 lg:mr-8 lg:w-[17rem]'"
-        :aria-label="t('membershipBuilder.intro.title')"
       />
 
       <AppSubHeading :id="headingId">
@@ -49,9 +48,10 @@ const { t } = useI18n();
  * WelcomeMessage displays a personalized welcome message with user information
  * and a closeable interface for onboarding or informational content.
  *
- * Uses internal i18n for accessibility labels:
- * - Icon aria-label: membershipBuilder.intro.title
+ * Uses internal i18n for welcome text and accessibility labels:
+ * - Welcome message: homePage.welcome with firstName/lastName interpolation
  * - Close button aria-label: actions.close
+ * - WelcomeIcon manages its own aria-label internally
  */
 
 export interface WelcomeMessageProps {
@@ -61,8 +61,6 @@ export interface WelcomeMessageProps {
   lastName: string;
   /** HTML content of the welcome message */
   text: string;
-  /** Template for the welcome greeting with firstName and lastName placeholders */
-  welcomeTemplate: string;
   /** Whether to display in small/compact mode */
   small?: boolean;
 }
@@ -72,9 +70,10 @@ const props = withDefaults(defineProps<WelcomeMessageProps>(), {
 });
 
 const welcomeText = computed(() => {
-  return props.welcomeTemplate
-    .replace('{firstName}', props.firstName)
-    .replace('{lastName}', props.lastName);
+  return t('homePage.welcome', {
+    firstName: props.firstName,
+    lastName: props.lastName,
+  });
 });
 
 const headingId = computed(

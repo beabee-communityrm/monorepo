@@ -46,10 +46,8 @@ meta:
             {{ member.displayName }}
           </router-link>
           <AppTime
-            class="flex-1 text-right text-sm font-semibold text-body-60"
+            class="text-sm text-body-80"
             :datetime="member.joined"
-            :time-ago-template="t('common.timeAgo', { time: '{time}' })"
-            :time-in-template="t('common.timeIn', { time: '{time}' })"
             :locale="locale as BaseLocale"
           />
         </li>

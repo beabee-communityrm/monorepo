@@ -105,7 +105,10 @@
     "view": "",
     "yesDelete": "",
     "yesDisable": "",
-    "yesRemove": ""
+    "yesRemove": "",
+    "tryAgain": "",
+    "increase": "",
+    "decrease": ""
   },
   "addContact": {
     "contactSaved": "",
@@ -895,7 +898,8 @@
     "timeAgo": "",
     "timeIn": "",
     "until": "",
-    "yes": ""
+    "yes": "",
+    "statusLabel": ""
   },
   "contactAccount": {
     "confirmDelete": {

@@ -21,10 +21,14 @@ meta:
       :result="paymentsTable"
     >
       <template #value-status="{ value }">
+<<<<<<< HEAD
         <PaymentStatus
           :status="value as import('@beabee/beabee-common').PaymentStatus"
           :status-text="t('common.paymentStatus.' + (value as string))"
         />
+=======
+        <PaymentStatus :status="value" />
+>>>>>>> refs/rewritten/refactor-vue-i18n-2
       </template>
       <template #value-contact="{ value }">
         <router-link
@@ -52,8 +56,17 @@ import type {
   GetPaymentsQuery,
   Paginated,
 } from '@beabee/beabee-common';
+<<<<<<< HEAD
 import { PaymentStatus } from '@beabee/beabee-common';
 import { AppFilterGrid, PageTitle } from '@beabee/vue';
+=======
+import {
+  AppFilterGrid,
+  AppPaginatedTable,
+  PageTitle,
+  PaymentStatus,
+} from '@beabee/vue';
+>>>>>>> refs/rewritten/refactor-vue-i18n-2
 
 import {
   filterGroups,

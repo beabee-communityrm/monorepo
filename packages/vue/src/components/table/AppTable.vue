@@ -138,7 +138,8 @@ import {
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { type Header, type Item, type Sort, SortType } from '../../types/table';
+import { SortType } from '../../constants';
+import { type Header, type Item, type Sort } from '../../types/table';
 import { hasSlotContent } from '../../utils/slots';
 
 /**

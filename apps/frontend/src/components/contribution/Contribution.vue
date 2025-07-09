@@ -24,7 +24,6 @@
     :show-payment-method="showPaymentMethod"
     :disabled="disabled"
     :currency-symbol="generalContent.currencySymbol"
-    :currency-formatter="(amount: number) => n(amount, 'currency')"
     class="mb-4"
   >
     <slot></slot>
@@ -66,7 +65,7 @@ const props = withDefaults(
   }
 );
 
-const { t, n } = useI18n();
+const { t } = useI18n();
 
 const emit = defineEmits([
   'update:amount',

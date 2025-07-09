@@ -14,7 +14,6 @@
   - `showPaymentMethod` (boolean): Whether to show payment method selection
   - `disabled` (boolean): Whether the form is disabled
   - `currencySymbol` (string): Currency symbol (e.g. "€", "$")
-  - `currencyFormatter` (function): Function to format currency values
 
   ## Events
   - `update:amount` (number): Emitted when amount changes
@@ -27,6 +26,7 @@
   - Amount validation and preset selection
   - Payment method selection with icons
   - Fee absorption option with automatic forcing for minimum amounts
+  - Internal currency formatting using vue-i18n
   - Responsive layout with proper spacing
   - Full accessibility support
 -->
@@ -47,9 +47,6 @@
       :defined-amounts="definedAmounts"
       :disabled="disabled"
       :currency-symbol="currencySymbol"
-      :minimum-text="t('join.minimumContribution')"
-      :per-period-text="perPeriodText"
-      :currency-formatter="currencyFormatter"
       class="mb-4"
     />
 
@@ -61,7 +58,6 @@
       :methods="content.paymentMethods"
       :disabled="disabled"
       :title="t('join.paymentMethod')"
-      :method-labels="paymentMethodLabels"
       class="mb-4"
     />
 
@@ -72,8 +68,6 @@
       :fee="fee"
       :force="shouldForceFee"
       :disabled="disabled"
-      :absorb-fee-text="absorbFeeText"
-      :absorb-fee-label="absorbFeeLabel"
     />
   </div>
 </template>
@@ -121,8 +115,6 @@ export interface ContributionProps {
   disabled?: boolean;
   /** Currency symbol (e.g. "€", "$") */
   currencySymbol: string;
-  /** Function to format currency values */
-  currencyFormatter: (value: number) => string;
 }
 
 const props = withDefaults(defineProps<ContributionProps>(), {
@@ -178,27 +170,12 @@ const definedAmounts = computed(() => {
   return selectedPeriod?.presetAmounts || [];
 });
 
-const perPeriodText = computed(() => {
-  return isMonthly.value ? t('common.perMonth') : t('common.perYear');
-});
-
 const periodItems = computed(() =>
   props.content.periods.map((period) => ({
     label: t(`common.contributionPeriod.${period.name}`),
     value: period.name,
   }))
 );
-
-const paymentMethodLabels = computed(() => ({
-  [PaymentMethod.StripeCard]: t('paymentMethods.s_card.label'),
-  [PaymentMethod.StripeSEPA]: t('paymentMethods.s_sepa.label'),
-  [PaymentMethod.StripeBACS]: t('paymentMethods.s_bacs.label'),
-  [PaymentMethod.StripePayPal]: t('paymentMethods.s_paypal.label'),
-  [PaymentMethod.StripeIdeal]: t('paymentMethods.s_ideal.label'),
-  [PaymentMethod.GoCardlessDirectDebit]: t(
-    'paymentMethods.gc_direct-debit.label'
-  ),
-}));
 
 watch(isMonthly, (value) => {
   amountProxy.value = value
@@ -214,19 +191,5 @@ const shouldForceFee = computed(() => {
 
 watch(shouldForceFee, (force) => {
   if (force) payFeeProxy.value = true;
-});
-
-const absorbFeeText = computed(() =>
-  t('join.absorbFeeText', { fee: props.currencyFormatter(fee.value) })
-);
-
-const absorbFeeLabel = computed(() => {
-  const template = shouldForceFee.value
-    ? 'join.absorbFeeForce'
-    : 'join.absorbFeeOptIn';
-  return t(template, {
-    fee: props.currencyFormatter(fee.value),
-    amount: props.currencyFormatter(amountProxy.value),
-  });
 });
 </script>

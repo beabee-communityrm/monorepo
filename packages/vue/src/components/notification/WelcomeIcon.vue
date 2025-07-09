@@ -5,7 +5,7 @@
     height="480"
     viewBox="0 0 134.938 127"
     role="img"
-    :aria-label="t('membershipBuilder.welcomeMessage')"
+    :aria-label="t('membershipBuilder.steps.intro.title')"
   >
     <g transform="matrix(0 0 0 0 0 264583.33)">
       <circle

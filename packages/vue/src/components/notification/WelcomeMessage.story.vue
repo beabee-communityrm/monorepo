@@ -21,7 +21,6 @@ function handleClose() {
         v-if="showMessage"
         first-name="John"
         last-name="Doe"
-        welcome-template="Welcome, {firstName} {lastName}!"
         text="<p>Thank you for joining our community! We're excited to have you on board. Here you can manage your profile, view your contributions, and stay updated with our latest news.</p>"
         @close="handleClose"
       />
@@ -34,7 +33,6 @@ function handleClose() {
       <WelcomeMessage
         first-name="Jane"
         last-name="Smith"
-        welcome-template="Hello, {firstName}!"
         text="<p>This is a smaller version of the welcome message, perfect for compact layouts.</p>"
         small
         @close="() => {}"
@@ -45,7 +43,6 @@ function handleClose() {
       <WelcomeMessage
         first-name="Alex"
         last-name="Johnson"
-        welcome-template="Welcome back, {firstName}!"
         text="<p>Welcome to your dashboard! Here are some things you can do:</p><ul><li>Update your profile information</li><li>Manage your subscription</li><li>View your contribution history</li><li>Connect with other members</li></ul>"
         @close="() => {}"
       />
@@ -55,7 +52,6 @@ function handleClose() {
       <WelcomeMessage
         first-name=""
         last-name=""
-        welcome-template="Welcome to our platform!"
         text="<p>This welcome message doesn't use personalization but still provides a warm greeting to new users.</p>"
         @close="() => {}"
       />
