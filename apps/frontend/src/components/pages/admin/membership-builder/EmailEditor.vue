@@ -6,12 +6,7 @@
         <div class="mb-4">
           <AppInput v-model="email.subject" label="Subject" required />
         </div>
-        <AppRichTextEditor
-          v-model="email.body"
-          label="Message"
-          :copyable="true"
-          required
-        />
+        <AppRichTextEditor v-model="email.body" label="Message" required />
       </template>
       <AppNotification v-else variant="warning" title="Can't edit email">
         <p>

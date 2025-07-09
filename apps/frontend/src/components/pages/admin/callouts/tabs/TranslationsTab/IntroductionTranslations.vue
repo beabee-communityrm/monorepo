@@ -5,7 +5,7 @@
         :model-value="getValue(selectedLocale)"
         :placeholder="getPlaceholder()"
         :disabled="selectedLocale === defaultLocale"
-        :copyable="true"
+        :copyable="selectedLocale === defaultLocale"
         @update:model-value="updateValue(selectedLocale, $event)"
       />
     </div>

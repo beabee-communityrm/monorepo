@@ -27,7 +27,7 @@
                 : getPlaceholder(slide.navigation.prevText, selectedLocale)
             "
             :disabled="selectedLocale === defaultLocale"
-            :copyable="true"
+            :copyable="selectedLocale === defaultLocale"
             @update:model-value="
               updateValue(slide, 'prevText', selectedLocale, $event)
             "
@@ -48,7 +48,7 @@
                 : getPlaceholder(slide.navigation.nextText, selectedLocale)
             "
             :disabled="selectedLocale === defaultLocale"
-            :copyable="true"
+            :copyable="selectedLocale === defaultLocale"
             @update:model-value="
               updateValue(slide, 'nextText', selectedLocale, $event)
             "
@@ -69,7 +69,7 @@
                 : getPlaceholder(slide.navigation.submitText, selectedLocale)
             "
             :disabled="selectedLocale === defaultLocale"
-            :copyable="true"
+            :copyable="selectedLocale === defaultLocale"
             @update:model-value="
               updateValue(slide, 'submitText', selectedLocale, $event)
             "

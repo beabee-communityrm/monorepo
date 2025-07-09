@@ -28,7 +28,7 @@
             "
             :placeholder="getDefaultText(component[field] as string)"
             :disabled="selectedLocale === defaultLocale"
-            :copyable="true"
+            :copyable="selectedLocale === defaultLocale"
             @update:model-value="
               updateValue(component[field] as string, selectedLocale, $event)
             "
@@ -42,7 +42,7 @@
             "
             :placeholder="getDefaultText(component[field] as string)"
             :disabled="selectedLocale === defaultLocale"
-            :copyable="true"
+            :copyable="selectedLocale === defaultLocale"
             rows="3"
             @update:model-value="
               updateValue(component[field] as string, selectedLocale, $event)
@@ -57,7 +57,7 @@
             "
             :placeholder="getDefaultText(component[field] as string)"
             :disabled="selectedLocale === defaultLocale"
-            :copyable="true"
+            :copyable="selectedLocale === defaultLocale"
             @update:model-value="
               updateValue(component[field] as string, selectedLocale, $event)
             "
@@ -84,7 +84,7 @@
             :model-value="getLocalizedValue(value.label, selectedLocale)"
             :placeholder="getDefaultText(value.label)"
             :disabled="selectedLocale === defaultLocale"
-            :copyable="true"
+            :copyable="selectedLocale === defaultLocale"
             @update:model-value="
               updateValue(value.label, selectedLocale, $event)
             "
