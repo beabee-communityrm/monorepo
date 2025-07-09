@@ -121,21 +121,21 @@ meta:
         <template #value-assignee="{ value }">
           <router-link
             v-if="value"
-            :to="`/admin/contacts/${(value as any).id}`"
+            :to="`/admin/contacts/${(value as GetContactData).id}`"
             class="text-link"
           >
-            {{ (value as any).displayName }}
+            {{ (value as GetContactData).displayName }}
           </router-link>
           <span v-else>-</span>
         </template>
         <template #value-contact="{ value, item }">
           <router-link
             v-if="value"
-            :to="`/admin/contacts/${(value as any).id}`"
+            :to="`/admin/contacts/${(value as GetContactData).id}`"
             class="text-link"
           >
             <font-awesome-icon :icon="faUser" class="mr-2" />{{
-              (value as any).displayName
+              (value as GetContactData).displayName
             }}
           </router-link>
           <span v-else-if="(item as any).guestName">
@@ -144,16 +144,7 @@ meta:
           <span v-else>-</span>
         </template>
         <template #value-createdAt="{ value }">
-<<<<<<< HEAD
-          <AppTime
-            :datetime="value as Date"
-            :time-ago-template="t('common.timeAgo', { time: '{time}' })"
-            :time-in-template="t('common.timeIn', { time: '{time}' })"
-            :locale="locale as BaseLocale"
-          />
-=======
-          <AppTime :datetime="value" :locale="locale as BaseLocale" />
->>>>>>> refs/rewritten/refactor-vue-i18n-2
+          <AppTime :datetime="value as Date" :locale="locale as BaseLocale" />
         </template>
 
         <template
@@ -216,6 +207,7 @@ import {
   type GetCalloutDataWith,
   type GetCalloutResponseDataWith,
   GetCalloutResponseWith,
+  type GetContactData,
   type Paginated,
   type Rule,
   type RuleGroup,
@@ -261,7 +253,6 @@ import { computed, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 
-import AppPaginatedTable from '../../../../../../components/table/AppPaginatedTable.vue';
 import { useTagFilter } from '../../../../../../composables/useTagFilter';
 
 /**

@@ -194,9 +194,9 @@ defineSlots<
     /**
      * Custom content for a specific cell value
      * @param item - The row item
-     * @param value - The cell value
+     * @param value - The cell value (use type assertions when you know the specific type)
      */
-    [K in `value-${string}`]: (props: { item: I; value: any }) => any;
+    [K in `value-${string}`]: (props: { item: I; value: unknown }) => any;
   } & {
     /**
      * Additional content displayed after each row

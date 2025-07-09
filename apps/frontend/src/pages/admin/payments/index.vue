@@ -25,15 +25,15 @@ meta:
       </template>
       <template #value-contact="{ value }">
         <router-link
-          :to="'/admin/contacts/' + (value as any).id"
+          :to="'/admin/contacts/' + (value as GetContactData).id"
           class="text-base font-bold text-link"
         >
-          {{ (value as any).displayName }}
+          {{ (value as GetContactData).displayName }}
         </router-link>
       </template>
       <template #value-chargeDate="{ value }">
         <span class="whitespace-nowrap">{{
-          value instanceof Date ? formatLocale(value, 'PP') : ''
+          formatLocale(value as Date, 'PP')
         }}</span>
       </template>
       <template #value-amount="{ value }">
@@ -45,11 +45,12 @@ meta:
 
 <script lang="ts" setup>
 import type {
+  GetContactData,
   GetPaymentDataWith,
   GetPaymentsQuery,
   Paginated,
-  PaymentStatus as PaymentStatusEnum,
 } from '@beabee/beabee-common';
+import { PaymentStatus as PaymentStatusEnum } from '@beabee/beabee-common';
 import { AppFilterGrid, PageTitle } from '@beabee/vue';
 
 import {
