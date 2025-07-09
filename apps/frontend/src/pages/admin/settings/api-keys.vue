@@ -48,21 +48,16 @@ meta:
     "
     class="mb-8"
   >
-    <template #value-id="{ item }">
-      {{ (item as any).id }}_••••••••••••••••••</template
-    >
+    <template #value-id="{ item }"> {{ item.id }}_••••••••••••••••••</template>
     <template #value-createdAt="{ value }">
-      <span class="whitespace-nowrap">{{
-        value instanceof Date ? formatLocale(value, 'PP') : ''
-      }}</span>
+      <span class="whitespace-nowrap">{{ formatLocale(value, 'PP') }}</span>
     </template>
     <template #value-expires="{ value }">
       <span class="whitespace-nowrap">
         <AppTime
           v-if="value"
-          :datetime="value as Date"
-          :time-ago-template="t('common.timeAgo', { time: '{time}' })"
-          :time-in-template="t('common.timeIn', { time: '{time}' })"
+          :datetime="value"
+          :locale="locale as BaseLocale"
         />
         <span v-else :title="t('adminSettings.apikey.expiresHelp')">
           <font-awesome-icon :icon="faWarning" />
@@ -113,18 +108,18 @@ meta:
 
 <script lang="ts" setup>
 import type { GetApiKeyData, Paginated } from '@beabee/beabee-common';
+import type { BaseLocale } from '@beabee/locale';
 import {
+  App2ColGrid,
   AppButton,
   AppCheckbox,
   AppConfirmDialog,
   AppForm,
+  AppHeading,
   AppInput,
+  AppPaginatedTable,
   AppSelect,
   AppTime,
-} from '@beabee/vue';
-import {
-  App2ColGrid,
-  AppHeading,
   type Header,
   addNotification,
 } from '@beabee/vue';
@@ -138,9 +133,7 @@ import { addDays } from 'date-fns';
 import { computed, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import AppPaginatedTable from '../../../components/table/AppPaginatedTable.vue';
-
-const { n, t } = useI18n();
+const { n, t, locale } = useI18n();
 
 const validation = useVuelidate();
 

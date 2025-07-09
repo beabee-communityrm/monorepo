@@ -32,7 +32,6 @@
 /**
  * Button component for copying text to the clipboard with user feedback.
  * Shows success notification when copying succeeds and error notification when it fails.
- * Uses vue-i18n for internal translations - no translation props needed.
  *
  * @component AppCopyButton
  *

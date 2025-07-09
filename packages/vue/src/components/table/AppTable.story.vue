@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
 
-import { type Header, type Item, type Sort, SortType } from '../../types/table';
+import { SortType } from '../../constants';
+import { type Header, type Item, type Sort } from '../../types/table';
 import AppTable from './AppTable.vue';
 
 interface SampleItem extends Item {

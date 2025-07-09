@@ -5,10 +5,12 @@ import Module from 'node:module';
 import { dirname, resolve } from 'node:path';
 
 import type {
+  GetNestedValueResult,
   ListTranslationKeysOptions,
   ListTranslationKeysResult,
   SetTranslationOptions,
   SetTranslationResult,
+  TranslationData,
   TranslationKeyInfo,
   TranslationValidationResult,
 } from '../types/translation.ts';
@@ -43,25 +45,27 @@ function getLocaleFilePath(locale: Locale): string {
 
 /**
  * Set nested value in object using dot notation
+ * Supports setting string values in objects that may contain numbers, booleans, etc.
  */
 function setNestedValue(
-  obj: Record<string, any>,
+  obj: TranslationData,
   path: string,
   value: string,
   createMissing = true
 ): boolean {
   const keys = path.split('.');
-  let current = obj;
+  let current: any = obj;
 
   for (let i = 0; i < keys.length - 1; i++) {
     const key = keys[i];
 
-    if (!(key in current)) {
-      if (!createMissing) {
-        return false;
-      }
-      current[key] = {};
-    } else if (typeof current[key] !== 'object' || current[key] === null) {
+    // Check if we need to create or replace the current key
+    const needsNewObject =
+      !(key in current) ||
+      typeof current[key] !== 'object' ||
+      current[key] === null;
+
+    if (needsNewObject) {
       if (!createMissing) {
         return false;
       }
@@ -79,11 +83,11 @@ function setNestedValue(
 /**
  * Read locale file
  */
-async function readLocaleFile(locale: Locale): Promise<Record<string, any>> {
+async function readLocaleFile(locale: Locale): Promise<TranslationData> {
   try {
     const filePath = getLocaleFilePath(locale);
     const content = await readFile(filePath, 'utf-8');
-    return JSON.parse(content);
+    return JSON.parse(content) as TranslationData;
   } catch (error) {
     throw new Error(
       `Failed to read locale file for ${locale}: ${error instanceof Error ? error.message : String(error)}`
@@ -96,7 +100,7 @@ async function readLocaleFile(locale: Locale): Promise<Record<string, any>> {
  */
 async function writeLocaleFile(
   locale: Locale,
-  data: Record<string, any>
+  data: TranslationData
 ): Promise<void> {
   try {
     const filePath = getLocaleFilePath(locale);
@@ -110,30 +114,62 @@ async function writeLocaleFile(
 }
 
 /**
- * Get translation value from nested object using dot notation
+ * Get translation value from nested object using dot notation with detailed error information
  */
 function getNestedValue(
-  obj: Record<string, any>,
+  obj: TranslationData,
   path: string
 ): string | undefined {
-  const keys = path.split('.');
-  let current = obj;
+  const result = getNestedValueDetailed(obj, path);
+  return result.success ? result.value : undefined;
+}
 
-  for (const key of keys) {
-    if (current && typeof current === 'object' && key in current) {
+/**
+ * Get translation value with detailed information about success/failure
+ */
+function getNestedValueDetailed(
+  obj: TranslationData,
+  path: string
+): GetNestedValueResult {
+  const keys = path.split('.');
+  let current: number | string | boolean | TranslationData = obj;
+
+  for (let i = 0; i < keys.length; i++) {
+    const key = keys[i];
+
+    // Check if current is an object and has the key
+    if (typeof current === 'object' && current !== null && key in current) {
       current = current[key];
     } else {
-      return undefined;
+      return {
+        success: false,
+        reason: 'path_not_found',
+        missingKey: keys.slice(0, i + 1).join('.'),
+      };
     }
   }
 
-  return typeof current === 'string' ? current : undefined;
+  // Type narrowing: at this point current should be string for a valid translation
+  if (typeof current === 'string') {
+    return { success: true, value: current };
+  }
+
+  // Found the path but it contains non-string value (could be object, number, boolean)
+  const foundType = typeof current === 'object' ? 'object' : typeof current;
+  return {
+    success: false,
+    reason: 'wrong_type',
+    foundType,
+    path,
+    actualValue: current,
+  };
 }
 
 /**
  * Get all translation keys from a locale object
+ * Only returns keys that lead to string values (valid translations)
  */
-function getAllKeysFromObject(obj: Record<string, any>, prefix = ''): string[] {
+function getAllKeysFromObject(obj: TranslationData, prefix = ''): string[] {
   const keys: string[] = [];
 
   for (const [key, value] of Object.entries(obj)) {
@@ -142,8 +178,10 @@ function getAllKeysFromObject(obj: Record<string, any>, prefix = ''): string[] {
     if (typeof value === 'string') {
       keys.push(fullKey);
     } else if (typeof value === 'object' && value !== null) {
+      // Recursively process nested objects
       keys.push(...getAllKeysFromObject(value, fullKey));
     }
+    // Skip number and boolean values as they are not valid translation strings
   }
 
   return keys;
@@ -166,13 +204,24 @@ export async function checkTranslationKey(
       // Get the locale data dynamically from file
       const localeData = await readLocaleFile(locale);
 
-      const value = getNestedValue(localeData, key);
+      const result = getNestedValueDetailed(localeData, key);
 
-      if (value !== undefined) {
-        translations[locale] = value;
+      if (result.success) {
+        translations[locale] = result.value;
         availableIn.push(locale);
       } else {
         missingIn.push(locale);
+
+        // Log detailed error information for debugging
+        const errorResult = result as Extract<
+          GetNestedValueResult,
+          { success: false }
+        >;
+        if (errorResult.reason === 'wrong_type') {
+          console.warn(
+            `Translation key "${key}" exists in locale "${locale}" but contains ${errorResult.foundType} instead of string`
+          );
+        }
       }
     } catch (error) {
       missingIn.push(locale);

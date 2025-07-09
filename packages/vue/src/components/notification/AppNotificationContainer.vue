@@ -14,9 +14,6 @@
           :description="notification.description"
           :variant="notification.variant"
           :removeable="notification.removeable"
-          :remove-aria-label="
-            notification.removeAriaLabel || t('notifications.remove')
-          "
           class="shadow-lg"
           @remove="removeItem(notification.id)"
         />

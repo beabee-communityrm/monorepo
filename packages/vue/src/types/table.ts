@@ -1,3 +1,5 @@
+import type { SortType } from '../constants';
+
 /**
  * Base interface for table items
  */
@@ -23,14 +25,6 @@ export interface Header {
   width?: string;
   /** Text alignment for the column */
   align?: 'left' | 'right' | 'center';
-}
-
-/**
- * Sort type enumeration
- */
-export enum SortType {
-  Desc = 'DESC',
-  Asc = 'ASC',
 }
 
 /**

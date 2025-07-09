@@ -32,7 +32,7 @@ import { AppToggle } from '@beabee/vue';
 
 import { computed, ref, watchEffect } from 'vue';
 
-import type { SearchRuleEmits, SearchRuleProps } from '../../type/search';
+import type { SearchRuleEmits, SearchRuleProps } from '../../types/search';
 import AppSearchRuleFilterGroup from './AppSearchRuleFilterGroup.vue';
 
 /**

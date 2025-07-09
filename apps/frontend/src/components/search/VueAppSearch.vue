@@ -34,14 +34,10 @@ import type { RuleGroup } from '@beabee/beabee-common';
 import type { BaseLocale } from '@beabee/locale';
 import { AppExpandableBox } from '@beabee/vue';
 
-import {
-  type IconDefinition,
-  faFilter,
-} from '@fortawesome/free-solid-svg-icons';
 import { computed, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import type { FilterGroups } from '../../type/search';
+import type { FilterGroups } from '../../types/search';
 import AppSearchForm from './AppSearchForm.vue';
 import AppSearchSummary from './AppSearchSummary.vue';
 
@@ -63,7 +59,7 @@ interface Props {
   modelValue: RuleGroup | undefined;
   hasChanged?: boolean;
   locale?: BaseLocale;
-  buttonIcon?: IconDefinition;
+  buttonIcon?: any;
 }
 
 interface Emits {
@@ -74,12 +70,10 @@ interface Emits {
 const props = withDefaults(defineProps<Props>(), {
   hasChanged: false,
   locale: 'en' as BaseLocale,
-  buttonIcon: () => faFilter,
+  buttonIcon: undefined,
 });
 
 const emit = defineEmits<Emits>();
-
-// Note: operatorLabels now created internally by individual components
 
 const showExpanded = ref(false);
 

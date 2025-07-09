@@ -36,7 +36,6 @@ meta:
         :first-name="currentUser?.firstname || ''"
         :last-name="currentUser?.lastname || ''"
         :text="introMessage"
-        :welcome-template="t('homePage.welcome')"
         small
       />
     </template>

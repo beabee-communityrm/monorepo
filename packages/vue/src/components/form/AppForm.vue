@@ -119,7 +119,6 @@ async function handleSubmit(evt: Event) {
       addNotification({
         title: successMessage.value,
         variant: 'success',
-        removeAriaLabel: t('notifications.remove'),
       });
     }
   } catch (err) {
@@ -134,9 +133,9 @@ async function handleSubmit(evt: Event) {
       inlineErrorText.value = errorText;
     } else {
       addNotification({
-        title: errorText,
+        title: t('notifications.error'),
+        description: errorText,
         variant: 'error',
-        removeAriaLabel: t('notifications.remove'),
       });
     }
   } finally {

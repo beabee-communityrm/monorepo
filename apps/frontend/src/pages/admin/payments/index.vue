@@ -21,26 +21,21 @@ meta:
       :result="paymentsTable"
     >
       <template #value-status="{ value }">
-        <PaymentStatus
-          :status="value as import('@beabee/beabee-common').PaymentStatus"
-          :status-text="t('common.paymentStatus.' + (value as string))"
-        />
+        <PaymentStatus :status="value" />
       </template>
       <template #value-contact="{ value }">
         <router-link
-          :to="'/admin/contacts/' + (value as any).id"
+          :to="'/admin/contacts/' + value.id"
           class="text-base font-bold text-link"
         >
-          {{ (value as any).displayName }}
+          {{ value.displayName }}
         </router-link>
       </template>
       <template #value-chargeDate="{ value }">
-        <span class="whitespace-nowrap">{{
-          value instanceof Date ? formatLocale(value, 'PP') : ''
-        }}</span>
+        <span class="whitespace-nowrap">{{ formatLocale(value, 'PP') }}</span>
       </template>
       <template #value-amount="{ value }">
-        {{ n(value as number, 'currency') }}
+        {{ n(value, 'currency') }}
       </template>
     </AppPaginatedTable>
   </AppFilterGrid>
@@ -52,8 +47,12 @@ import type {
   GetPaymentsQuery,
   Paginated,
 } from '@beabee/beabee-common';
-import { PaymentStatus } from '@beabee/beabee-common';
-import { AppFilterGrid, PageTitle } from '@beabee/vue';
+import {
+  AppFilterGrid,
+  AppPaginatedTable,
+  PageTitle,
+  PaymentStatus,
+} from '@beabee/vue';
 
 import {
   filterGroups,
@@ -72,8 +71,6 @@ import {
 } from '@utils/pagination';
 import { computed, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
-
-import AppPaginatedTable from '../../../components/table/AppPaginatedTable.vue';
 
 const { t, n } = useI18n();
 

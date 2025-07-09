@@ -13,9 +13,12 @@
 </template>
 
 <script lang="ts" setup>
-import { AppCheckbox } from '@beabee/vue';
-
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+import { AppCheckbox } from '../form';
+
+const { t, n } = useI18n();
 
 const emit = defineEmits(['update:modelValue']);
 
@@ -30,11 +33,32 @@ const props = defineProps<{
   modelValue: boolean;
   /** Whether the component is disabled */
   disabled: boolean;
-  /** Text explaining the fee absorption */
-  absorbFeeText: string;
-  /** Label text for the checkbox */
-  absorbFeeLabel: string;
 }>();
+
+/**
+ * Internal currency formatter using vue-i18n
+ */
+const currencyFormatter = (value: number): string => n(value, 'currency');
+
+/**
+ * Text explaining the fee absorption option
+ */
+const absorbFeeText = computed(() => {
+  return t('join.absorbFeeText', { fee: n(props.fee, 'currency') });
+});
+
+/**
+ * Label for the fee absorption checkbox
+ */
+const absorbFeeLabel = computed(() => {
+  if (props.force) {
+    return t('join.absorbFeeForce', {
+      amount: n(props.amount, 'currency'),
+      fee: n(props.fee, 'currency'),
+    });
+  }
+  return t('join.absorbFeeOptIn', { fee: n(props.fee, 'currency') });
+});
 
 const payFee = computed<boolean>({
   get: () => !props.disabled && props.modelValue,

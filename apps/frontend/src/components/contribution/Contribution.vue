@@ -24,7 +24,6 @@
     :show-payment-method="showPaymentMethod"
     :disabled="disabled"
     :currency-symbol="generalContent.currencySymbol"
-    :currency-formatter="(amount: number) => n(amount, 'currency')"
     class="mb-4"
   >
     <slot></slot>
@@ -37,14 +36,15 @@ import {
   ContributionPeriod,
   PaymentMethod,
 } from '@beabee/beabee-common';
-import { AppChoice } from '@beabee/vue';
+import {
+  AppChoice,
+  type ContributionContent,
+  Contribution as VueContribution,
+} from '@beabee/vue';
 
 import { generalContent } from '@store';
 import { computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-
-import type { ContributionContent } from '../../type/contribution';
-import VueContribution from './VueContribution.vue';
 
 const props = withDefaults(
   defineProps<{
@@ -66,7 +66,7 @@ const props = withDefaults(
   }
 );
 
-const { t, n } = useI18n();
+const { t } = useI18n();
 
 const emit = defineEmits([
   'update:amount',

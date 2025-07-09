@@ -110,46 +110,39 @@ meta:
 
         <template #value-number="{ value, item }">
           <router-link
-            :to="`${route.path}/${(item as any).id}`"
+            :to="`${route.path}/${item.id}`"
             class="text-base font-bold text-link"
           >
-            {{
-              t('calloutResponsesPage.responseNo', { no: n(value as number) })
-            }}
+            {{ t('calloutResponsesPage.responseNo', { no: n(value) }) }}
           </router-link>
         </template>
         <template #value-assignee="{ value }">
           <router-link
             v-if="value"
-            :to="`/admin/contacts/${(value as any).id}`"
+            :to="`/admin/contacts/${value.id}`"
             class="text-link"
           >
-            {{ (value as any).displayName }}
+            {{ value.displayName }}
           </router-link>
           <span v-else>-</span>
         </template>
         <template #value-contact="{ value, item }">
           <router-link
             v-if="value"
-            :to="`/admin/contacts/${(value as any).id}`"
+            :to="`/admin/contacts/${value.id}`"
             class="text-link"
           >
             <font-awesome-icon :icon="faUser" class="mr-2" />{{
-              (value as any).displayName
+              value.displayName
             }}
           </router-link>
-          <span v-else-if="(item as any).guestName">
-            {{ (item as any).guestName }} ({{ (item as any).guestEmail }})
+          <span v-else-if="item.guestName">
+            {{ item.guestName }} ({{ item.guestEmail }})
           </span>
           <span v-else>-</span>
         </template>
         <template #value-createdAt="{ value }">
-          <AppTime
-            :datetime="value as Date"
-            :time-ago-template="t('common.timeAgo', { time: '{time}' })"
-            :time-in-template="t('common.timeIn', { time: '{time}' })"
-            :locale="locale as BaseLocale"
-          />
+          <AppTime :datetime="value" :locale="locale as BaseLocale" />
         </template>
 
         <template
@@ -193,8 +186,6 @@ meta:
               <AppTime
                 class="font-semibold text-body-60"
                 :datetime="item.latestComment.createdAt"
-                :time-ago-template="t('common.timeAgo', { time: '{time}' })"
-                :time-in-template="t('common.timeIn', { time: '{time}' })"
                 :locale="locale as BaseLocale"
               />
               <b> • {{ item.latestComment.contact.displayName }}:{{ ' ' }}</b>
@@ -225,11 +216,12 @@ import {
   AppButton,
   AppButtonGroup,
   AppCheckbox,
+  AppPaginatedTable,
   AppSelect,
+  AppTime,
   AppVTabs,
   addNotification,
 } from '@beabee/vue';
-import { AppTime } from '@beabee/vue';
 
 import {
   headers,
@@ -254,12 +246,10 @@ import {
   defineParam,
   defineRulesParam,
 } from '@utils/pagination';
-import { computed, ref, watch } from 'vue';
-import { toRef } from 'vue';
+import { computed, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 
-import AppPaginatedTable from '../../../../../../components/table/AppPaginatedTable.vue';
 import { useTagFilter } from '../../../../../../composables/useTagFilter';
 
 /**
