@@ -55,6 +55,7 @@
               !canEditSlug
                 ? {
                     title: inputT('slug.locked.title'),
+                    description: inputT('slug.locked.description'),
                     variant: 'warning',
                     mode: 'inline',
                     removeable: false,
@@ -76,6 +77,7 @@
                 :model-value="env.appUrl + '/callouts/' + data.autoSlug"
                 :disabled="true"
                 :copyable="true"
+                required
               />
               <AppInput
                 v-else

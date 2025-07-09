@@ -133,7 +133,7 @@ export function useCalloutResponseFilters(
   const answerItems = computed(() =>
     Object.entries(answerFilterItems.value).map(([id, item]) => ({
       id: id,
-      label: (item as { label: string }).label,
+      label: item.label,
     }))
   );
 
