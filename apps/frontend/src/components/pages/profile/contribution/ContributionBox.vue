@@ -70,14 +70,12 @@ import {
   ContributionType,
   MembershipStatus,
 } from '@beabee/beabee-common';
-import type { BaseLocale } from '@beabee/locale';
-import { AppSubHeading, AppTime } from '@beabee/vue';
+import { AppSubHeading, AppTime, formatLocale } from '@beabee/vue';
 
-import { formatLocale } from '@utils/dates';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-const { n, t, locale } = useI18n();
+const { n, t } = useI18n();
 
 const props = defineProps<{
   contribution: ContributionInfo;

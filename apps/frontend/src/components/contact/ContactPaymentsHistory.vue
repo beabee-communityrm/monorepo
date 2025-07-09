@@ -48,10 +48,10 @@ import {
   AppTable,
   type Header,
   SortType,
+  formatLocale,
 } from '@beabee/vue';
 
 import { client } from '@utils/api';
-import { formatLocale } from '@utils/dates';
 import { computed, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 

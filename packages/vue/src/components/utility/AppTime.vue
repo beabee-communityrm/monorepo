@@ -17,10 +17,10 @@
 <template>
   <time
     :datetime="dateObject.toISOString()"
-    :title="formatLocale(dateObject, 'PPpp', locale)"
+    :title="formatLocale(dateObject, 'PPpp')"
     class="whitespace-nowrap"
     role="time"
-    :aria-label="`${label} (${formatLocale(dateObject, 'PPpp', locale)})`"
+    :aria-label="`${label} (${formatLocale(dateObject, 'PPpp')})`"
   >
     {{ label }}
   </time>
@@ -59,7 +59,7 @@ const dateObject = computed(() => {
 
 const label = computed(() => {
   const now = new Date();
-  const time = formatDistanceLocale(dateObject.value, now, props.locale);
+  const time = formatDistanceLocale(dateObject.value, now);
 
   if (props.timeOnly) {
     return time;

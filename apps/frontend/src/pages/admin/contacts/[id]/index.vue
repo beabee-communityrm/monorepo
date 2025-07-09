@@ -283,6 +283,7 @@ import {
   AppInfoListItem,
   AppInput,
   AppRichTextEditor,
+  formatLocale,
 } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
@@ -293,7 +294,6 @@ import ToggleTagButton from '@components/tag/ToggleTagButton.vue';
 import env from '@env';
 import { faCircleNotch, faMobileAlt } from '@fortawesome/free-solid-svg-icons';
 import { client } from '@utils/api';
-import { formatLocale } from '@utils/dates';
 import { onBeforeMount, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 

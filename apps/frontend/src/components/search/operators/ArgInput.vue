@@ -38,7 +38,6 @@
 
 <script setup lang="ts">
 import type { RuleValue } from '@beabee/beabee-common';
-import type { BaseLocale } from '@beabee/locale';
 import { AppInput, AppRadioGroup, AppSelect, formatLocale } from '@beabee/vue';
 
 import { computed } from 'vue';
@@ -56,23 +55,19 @@ const { t } = useI18n();
  * @param modelValue - The current value
  * @param item - The filter item configuration
  * @param readonly - Whether the component is in readonly mode
- * @param locale - Locale for date formatting
  */
 
 interface Props {
   modelValue: RuleValue;
   item: FilterItem;
   readonly: boolean;
-  locale?: BaseLocale;
 }
 
 interface Emits {
   (event: 'update:modelValue', value: RuleValue): void;
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  locale: 'en' as BaseLocale,
-});
+const props = defineProps<Props>();
 
 const emit = defineEmits<Emits>();
 
@@ -94,7 +89,7 @@ const readonlyValue = computed(() => {
       if (date.startsWith('$now')) {
         return props.modelValue;
       } else {
-        return formatLocale(new Date(date), 'P', props.locale);
+        return formatLocale(new Date(date), 'P');
       }
     }
     case 'boolean':

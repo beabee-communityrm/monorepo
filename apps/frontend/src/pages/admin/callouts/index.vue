@@ -79,6 +79,7 @@ import {
   AppSearchInput,
   type Header,
   PageTitle,
+  formatLocale,
 } from '@beabee/vue';
 
 import {
@@ -89,7 +90,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { client } from '@utils/api';
-import { formatLocale } from '@utils/dates';
 import { definePaginatedQuery, defineParam } from '@utils/pagination';
 import { computed, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';

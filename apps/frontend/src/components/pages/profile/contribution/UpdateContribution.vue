@@ -101,7 +101,13 @@ import {
   MembershipStatus,
   PaymentMethod,
 } from '@beabee/beabee-common';
-import { AppButton, AppHeading, AppModal, AppNotification } from '@beabee/vue';
+import {
+  AppButton,
+  AppHeading,
+  AppModal,
+  AppNotification,
+  formatLocale,
+} from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
 import StripePayment from '@components/StripePayment.vue';
@@ -109,7 +115,6 @@ import Contribution from '@components/contribution/Contribution.vue';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { currentUser } from '@store/currentUser';
 import { client, isApiError } from '@utils/api';
-import { formatLocale } from '@utils/dates';
 import useVuelidate from '@vuelidate/core';
 import { computed, onBeforeMount, reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';

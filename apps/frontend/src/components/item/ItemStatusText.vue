@@ -39,8 +39,8 @@
  * />
  */
 import { ItemStatus } from '@beabee/beabee-common';
+import { formatDistanceLocale } from '@beabee/vue';
 
-import { formatDistanceLocale } from '@utils/dates';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 

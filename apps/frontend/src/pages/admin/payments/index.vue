@@ -51,7 +51,7 @@ import type {
   Paginated,
 } from '@beabee/beabee-common';
 import { PaymentStatus as PaymentStatusEnum } from '@beabee/beabee-common';
-import { AppFilterGrid, PageTitle } from '@beabee/vue';
+import { AppFilterGrid, PageTitle, formatLocale } from '@beabee/vue';
 
 import {
   filterGroups,
@@ -64,7 +64,6 @@ import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
 import { faEuro } from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { client } from '@utils/api';
-import { formatLocale } from '@utils/dates';
 import {
   definePaginatedQuery,
   defineParam,

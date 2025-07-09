@@ -58,11 +58,15 @@ import type {
   GetCalloutResponseCommentData,
   UpdateCalloutResponseCommentData,
 } from '@beabee/beabee-common';
-import { AppButton, AppButtonGroup, AppConfirmDialog } from '@beabee/vue';
+import {
+  AppButton,
+  AppButtonGroup,
+  AppConfirmDialog,
+  formatLocale,
+} from '@beabee/vue';
 
 import { faPencil, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { client } from '@utils/api';
-import { formatLocale } from '@utils/dates';
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 

@@ -173,6 +173,7 @@ import {
   AppSelect,
   PageTitle,
   addNotification,
+  formatLocale,
 } from '@beabee/vue';
 
 import SaveSegment from '@components/pages/admin/contacts/SaveSegment.vue';
@@ -191,7 +192,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { client } from '@utils/api';
-import { formatLocale } from '@utils/dates';
 import {
   definePaginatedQuery,
   defineParam,

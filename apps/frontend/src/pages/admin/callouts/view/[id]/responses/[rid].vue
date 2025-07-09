@@ -180,6 +180,7 @@ import {
   AppInfoListItem,
   AppNotification,
   addNotification,
+  formatLocale,
 } from '@beabee/vue';
 
 import CalloutResponseComments from '@components/callout/CalloutResponseComments.vue';
@@ -199,7 +200,6 @@ import {
 import { addBreadcrumb } from '@store/breadcrumb';
 import { client } from '@utils/api';
 import { buckets } from '@utils/callouts';
-import { formatLocale } from '@utils/dates';
 import { computed, ref, toRef, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 

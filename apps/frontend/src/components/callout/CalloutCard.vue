@@ -44,9 +44,8 @@
 <script lang="ts" setup>
 import type { GetCalloutData } from '@beabee/beabee-common';
 import type { BaseLocale } from '@beabee/locale';
-import { AppSubHeading, AppTime } from '@beabee/vue';
+import { AppSubHeading, AppTime, formatLocale } from '@beabee/vue';
 
-import { formatLocale } from '@utils/dates';
 import { resolveImageUrl } from '@utils/url';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';

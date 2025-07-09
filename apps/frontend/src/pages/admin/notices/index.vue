@@ -52,12 +52,11 @@ import {
   ItemStatus,
   type Paginated,
 } from '@beabee/beabee-common';
-import { AppButton, type Header, PageTitle } from '@beabee/vue';
+import { AppButton, type Header, PageTitle, formatLocale } from '@beabee/vue';
 
 import { faPlus, faSignHanging } from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { client } from '@utils/api';
-import { formatLocale } from '@utils/dates';
 import { definePaginatedQuery } from '@utils/pagination';
 import { computed, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';

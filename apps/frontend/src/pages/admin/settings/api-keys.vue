@@ -125,12 +125,12 @@ import {
   AppTime,
   type Header,
   addNotification,
+  formatLocale,
 } from '@beabee/vue';
 
 import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
 import { faCopy, faTrash, faWarning } from '@fortawesome/free-solid-svg-icons';
 import { client } from '@utils/api';
-import { formatLocale } from '@utils/dates';
 import { definePaginatedQuery } from '@utils/pagination';
 import useVuelidate from '@vuelidate/core';
 import { addDays } from 'date-fns';

@@ -96,6 +96,7 @@ import {
   AppShareBox,
   AppTitle,
   addNotification,
+  formatLocale,
 } from '@beabee/vue';
 
 import noImage from '@assets/images/no-image.avif';
@@ -110,7 +111,6 @@ import { faBullhorn, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { canAdmin, currentUser, isEmbed } from '@store';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { client } from '@utils/api';
-import { formatLocale } from '@utils/dates';
 import { resolveImageUrl } from '@utils/url';
 import { computed, onBeforeMount, ref, toRef } from 'vue';
 import { useI18n } from 'vue-i18n';

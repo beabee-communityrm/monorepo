@@ -119,7 +119,6 @@ import {
   type RoleType,
   RoleTypes,
 } from '@beabee/beabee-common';
-import type { BaseLocale } from '@beabee/locale';
 import {
   AppInput,
   AppLabel,
@@ -142,13 +141,9 @@ const { t } = useI18n();
 export interface AppRoleEditorProps {
   /** Array of current contact roles */
   roles: ContactRoleData[];
-  /** Current locale for date formatting */
-  locale?: BaseLocale;
 }
 
-const props = withDefaults(defineProps<AppRoleEditorProps>(), {
-  locale: 'en',
-});
+const props = defineProps<AppRoleEditorProps>();
 
 /**
  * Events emitted by the AppRoleEditor component
@@ -240,7 +235,7 @@ function getRoleLabel(roleType: RoleType): string {
  * @returns Formatted date string
  */
 function formatRoleDate(date: Date): string {
-  return formatLocale(date, 'P', props.locale as BaseLocale);
+  return formatLocale(date, 'P');
 }
 
 /**
