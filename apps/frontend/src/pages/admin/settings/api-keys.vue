@@ -117,13 +117,13 @@ import {
   AppForm,
   AppHeading,
   AppInput,
-  AppPaginatedTable,
   AppSelect,
   AppTime,
   type Header,
   addNotification,
 } from '@beabee/vue';
 
+import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
 import { faCopy, faTrash, faWarning } from '@fortawesome/free-solid-svg-icons';
 import { client } from '@utils/api';
 import { formatLocale } from '@utils/dates';

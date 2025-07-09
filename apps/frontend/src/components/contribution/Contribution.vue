@@ -36,15 +36,14 @@ import {
   ContributionPeriod,
   PaymentMethod,
 } from '@beabee/beabee-common';
-import {
-  AppChoice,
-  type ContributionContent,
-  Contribution as VueContribution,
-} from '@beabee/vue';
+import { AppChoice } from '@beabee/vue';
 
 import { generalContent } from '@store';
 import { computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import type { ContributionContent } from '../../type/contribution';
+import VueContribution from './VueContribution.vue';
 
 const props = withDefaults(
   defineProps<{

@@ -37,7 +37,7 @@ import { AppExpandableBox } from '@beabee/vue';
 import { computed, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import type { FilterGroups } from '../../types/search';
+import type { FilterGroups } from '../../type/search';
 import AppSearchForm from './AppSearchForm.vue';
 import AppSearchSummary from './AppSearchSummary.vue';
 

@@ -2,12 +2,12 @@
   # ContributionAmount
   A component for selecting and entering contribution amounts.
   Features large numerical input with increment/decrement buttons and preset amount selection.
-  
+
   Uses internal i18n for:
   - Minimum contribution error: join.minimumContribution
   - Period text: common.perMonth, common.perYear
   - Currency formatting: vue-i18n n() function
-  
+
   ## Props
   - `modelValue` (number): The current amount value
   - `isMonthly` (boolean): Whether the contribution is monthly
@@ -15,10 +15,10 @@
   - `definedAmounts` (number[]): Preset amounts to display as quick choices
   - `disabled` (boolean): Whether the component is disabled
   - `currencySymbol` (string): Currency symbol to display (e.g. "€", "$")
-  
+
   ## Events
   - `update:modelValue` (number): Emitted when the amount changes
-  
+
   ## Features
   - Large numerical input with visual prominence
   - Increment/decrement buttons for easy adjustment
@@ -113,12 +113,12 @@
 </template>
 
 <script lang="ts" setup>
+import { AppChoice } from '@beabee/vue';
+
 import useVuelidate from '@vuelidate/core';
 import { minValue } from '@vuelidate/validators';
 import { computed, toRefs } from 'vue';
 import { useI18n } from 'vue-i18n';
-
-import { AppChoice } from '../form';
 
 const { t, n } = useI18n();
 

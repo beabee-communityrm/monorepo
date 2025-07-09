@@ -13,10 +13,10 @@
 </template>
 
 <script lang="ts" setup>
+import { AppCheckbox } from '@beabee/vue';
+
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-
-import { AppCheckbox } from '../form';
 
 const { t, n } = useI18n();
 
@@ -34,11 +34,6 @@ const props = defineProps<{
   /** Whether the component is disabled */
   disabled: boolean;
 }>();
-
-/**
- * Internal currency formatter using vue-i18n
- */
-const currencyFormatter = (value: number): string => n(value, 'currency');
 
 /**
  * Text explaining the fee absorption option

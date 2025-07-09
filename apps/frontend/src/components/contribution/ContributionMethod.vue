@@ -2,16 +2,16 @@
   # ContributionMethod
   A component for selecting payment methods.
   Displays payment methods as selectable buttons with icons and labels.
-  
+
   ## Props
   - `modelValue` (PaymentMethod): The currently selected payment method
   - `methods` (PaymentMethod[]): Available payment methods to choose from
   - `disabled` (boolean): Whether the component is disabled
   - `title` (string): Title text for the payment method selection
-  
+
   ## Events
   - `update:modelValue` (PaymentMethod): Emitted when the selected method changes
-  
+
   ## Features
   - Visual selection with icons and labels
   - Responsive grid layout
@@ -55,12 +55,12 @@
 
 <script lang="ts" setup>
 import { PaymentMethod } from '@beabee/beabee-common';
+import { AppSubHeading } from '@beabee/vue';
 
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { PaymentMethodIcon } from '../payment';
-import { AppSubHeading } from '../typography';
 
 const { t } = useI18n();
 
