@@ -1,23 +1,12 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <ArgInput
-    v-model="value[0]"
-    :item="item"
-    :readonly="readonly"
-    :locale="locale"
-  />
+  <ArgInput v-model="value[0]" :item="item" :readonly="readonly" />
   {{ t('advancedSearch.matchWord.AND') }}
-  <ArgInput
-    v-model="value[1]"
-    :item="item"
-    :readonly="readonly"
-    :locale="locale"
-  />
+  <ArgInput v-model="value[1]" :item="item" :readonly="readonly" />
 </template>
 
 <script setup lang="ts">
 import type { RuleValue } from '@beabee/beabee-common';
-import type { BaseLocale } from '@beabee/locale';
 
 import { useI18n } from 'vue-i18n';
 
@@ -33,17 +22,13 @@ const { t } = useI18n();
  * @param value - Array containing the two values for the range
  * @param item - The filter item configuration
  * @param readonly - Whether the component is in readonly mode
- * @param locale - Locale for date formatting
  */
 
 interface Props {
   value: RuleValue[];
   item: FilterItem;
   readonly: boolean;
-  locale?: BaseLocale;
 }
 
-withDefaults(defineProps<Props>(), {
-  locale: 'en' as BaseLocale,
-});
+defineProps<Props>();
 </script>

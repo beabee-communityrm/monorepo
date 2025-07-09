@@ -4,13 +4,11 @@
     :value="rule.value"
     :item="item"
     :readonly="readonly"
-    :locale="locale"
   />
 </template>
 
 <script setup lang="ts">
 import type { Rule } from '@beabee/beabee-common';
-import type { BaseLocale } from '@beabee/locale';
 
 import type { FilterItem } from '../../type/search';
 import BetweenArgs from './operators/BetweenArgs.vue';
@@ -25,19 +23,16 @@ import SingleArg from './operators/SingleArg.vue';
  * @param rule - The rule object containing field, operator, and value
  * @param item - The filter item configuration
  * @param readonly - Whether the component is in readonly mode
- * @param locale - Locale for date formatting
  */
 
 interface Props {
   rule: Rule;
   item: FilterItem;
   readonly?: boolean;
-  locale?: BaseLocale;
 }
 
 withDefaults(defineProps<Props>(), {
   readonly: false,
-  locale: 'en' as BaseLocale,
 });
 
 const operatorComponents = {

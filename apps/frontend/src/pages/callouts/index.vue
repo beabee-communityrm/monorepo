@@ -51,11 +51,7 @@ meta:
     </template>
 
     <template #value-expires="{ item }">
-      <AppTime
-        v-if="item.expires"
-        :datetime="item.expires"
-        :locale="locale as BaseLocale"
-      />
+      <AppTime v-if="item.expires" :datetime="item.expires" />
       <span v-else>-</span>
     </template>
 
@@ -80,7 +76,6 @@ import {
   ItemStatus,
   type Paginated,
 } from '@beabee/beabee-common';
-import type { BaseLocale } from '@beabee/locale';
 import {
   AppHeading,
   AppPagination,
@@ -99,7 +94,7 @@ import { defineParam } from '@utils/pagination';
 import { computed, onBeforeMount, ref, watch, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-const { t, locale } = useI18n();
+const { t } = useI18n();
 
 const headers: Header[] = [
   { value: 'name', text: t('callouts.data.callout') },

@@ -6,7 +6,6 @@
       <AppSearchRuleFilterGroupItem
         :rule="rule"
         :item="ruleFilterItem"
-        :locale="locale"
         readonly
       />
       <button type="button" class="-mr-2 px-2" @click="emit('remove')">
@@ -36,11 +35,7 @@
       />
       <span v-else>{{ filterOperatorItems[0].label }}</span>
       <div class="flex-1">
-        <AppSearchRuleFilterGroupItem
-          :rule="rule"
-          :item="ruleFilterItem"
-          :locale="locale"
-        />
+        <AppSearchRuleFilterGroupItem :rule="rule" :item="ruleFilterItem" />
       </div>
     </template>
   </div>
@@ -49,7 +44,6 @@
 <script setup lang="ts">
 import { type RuleOperator, operatorsByTypeMap } from '@beabee/beabee-common';
 import type { Rule } from '@beabee/beabee-common';
-import type { BaseLocale } from '@beabee/locale';
 import { AppSelect } from '@beabee/vue';
 
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
@@ -77,21 +71,15 @@ const { t } = useI18n();
  * @param filterGroup - The filter group configuration
  * @param rule - The current rule
  * @param readonly - Whether the component is in readonly mode
- * @param locale - Locale for date formatting
  */
-
-interface Props extends SearchRuleFilterGroupProps {
-  locale?: BaseLocale;
-}
 
 interface ComponentEmits {
   'update:rule': [rule: Rule];
   remove: [];
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<SearchRuleFilterGroupProps>(), {
   readonly: false,
-  locale: 'en' as BaseLocale,
 });
 
 const emit = defineEmits<ComponentEmits>();

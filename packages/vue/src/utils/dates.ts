@@ -20,7 +20,6 @@ export const DateFnsLocales: Record<BaseLocale, Locale> = {
  * Format distance between two dates with locale support
  * @param firstDate - The first date
  * @param secondDate - The second date
- * @param locale - The locale key (defaults to 'en')
  * @returns Formatted distance string
  */
 export function formatDistanceLocale(
@@ -36,7 +35,6 @@ export function formatDistanceLocale(
  * Format date with locale support
  * @param date - The date to format
  * @param formatString - The format string
- * @param locale - The locale key (defaults to 'en')
  * @returns Formatted date string
  */
 export function formatLocale(date: Date, formatString: string): string {

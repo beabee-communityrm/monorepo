@@ -5,7 +5,6 @@
       v-if="selectedFilterGroup"
       :filter-group="selectedFilterGroup"
       :rule="rule"
-      :locale="locale"
       readonly
       @remove="emit('remove')"
     />
@@ -20,14 +19,12 @@
       v-if="selectedFilterGroup"
       :filter-group="selectedFilterGroup"
       :rule="rule"
-      :locale="locale"
       @update:rule="emit('update:rule', $event)"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import type { BaseLocale } from '@beabee/locale';
 import { AppToggle } from '@beabee/vue';
 
 import { computed, ref, watchEffect } from 'vue';
@@ -42,16 +39,10 @@ import AppSearchRuleFilterGroup from './AppSearchRuleFilterGroup.vue';
  * @param filterGroups - Available filter groups
  * @param rule - The current rule
  * @param readonly - Whether the component is in readonly mode
- * @param locale - Locale for date formatting
  */
 
-interface Props extends SearchRuleProps {
-  locale?: BaseLocale;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<SearchRuleProps>(), {
   readonly: false,
-  locale: 'en' as BaseLocale,
 });
 
 const emit = defineEmits<SearchRuleEmits>();

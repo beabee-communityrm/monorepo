@@ -45,11 +45,7 @@ meta:
           <router-link :to="'/admin/contacts/' + member.id" class="text-link">
             {{ member.displayName }}
           </router-link>
-          <AppTime
-            class="text-sm text-body-80"
-            :datetime="member.joined"
-            :locale="locale as BaseLocale"
-          />
+          <AppTime class="text-sm text-body-80" :datetime="member.joined" />
         </li>
       </ul>
     </div>
@@ -97,7 +93,6 @@ import {
   type GetStatsData,
   ItemStatus,
 } from '@beabee/beabee-common';
-import type { BaseLocale } from '@beabee/locale';
 import { AppHeading, AppTime, PageTitle } from '@beabee/vue';
 
 import CalloutSummary from '@components/callout/CalloutSummary.vue';
@@ -113,7 +108,7 @@ import { useI18n } from 'vue-i18n';
 
 import env from '../../env';
 
-const { n, t, locale } = useI18n();
+const { n, t } = useI18n();
 
 addBreadcrumb(
   computed(() => [

@@ -6,9 +6,9 @@
 <template>
   <p v-if="starts" class="flex items-center">
     <font-awesome-icon v-if="showIcon" :icon="faCalendar" class="mr-1" />
-    {{ formatDate(starts, dateFormat) }}
+    {{ formatLocale(starts, dateFormat) }}
     <span v-if="expires" class="mx-1">{{ separator }}</span>
-    <span v-if="expires">{{ formatDate(expires, dateFormat) }}</span>
+    <span v-if="expires">{{ formatLocale(expires, dateFormat) }}</span>
   </p>
 </template>
 
@@ -24,15 +24,11 @@
  *   :starts="new Date('2023-01-01')"
  *   :expires="new Date('2023-12-31')"
  *   date-format="PP"
- *   locale="en"
  * />
  */
-import type { BaseLocale } from '@beabee/locale';
-
 import { faCalendar } from '@fortawesome/free-regular-svg-icons';
-import { format } from 'date-fns';
 
-import { DateFnsLocales } from '../../utils/dates';
+import { formatLocale } from '../../utils/dates';
 
 /**
  * Props for the ItemDateRange component
@@ -44,8 +40,6 @@ export interface ItemDateRangeProps {
   expires?: Date | null;
   /** Date format string (date-fns format) */
   dateFormat?: string;
-  /** Locale for date formatting */
-  locale?: BaseLocale;
   /** Separator between start and end dates */
   separator?: string;
   /** Whether to show the calendar icon */
@@ -55,17 +49,7 @@ export interface ItemDateRangeProps {
 const props = withDefaults(defineProps<ItemDateRangeProps>(), {
   expires: null,
   dateFormat: 'PP',
-  locale: 'en',
   separator: ' - ',
   showIcon: true,
 });
-
-/**
- * Formats a date using the specified locale and format
- */
-function formatDate(date: Date, formatString: string): string {
-  return format(date, formatString, {
-    locale: DateFnsLocales[props.locale],
-  });
-}
 </script>

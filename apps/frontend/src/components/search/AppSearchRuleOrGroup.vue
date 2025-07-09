@@ -8,7 +8,6 @@
     :filter-groups="filterGroups"
     :rule="rule"
     :readonly="readonly"
-    :locale="locale"
     @update:rule="$emit('update:rule', $event)"
     @remove="$emit('remove')"
   />
@@ -16,7 +15,6 @@
 
 <script setup lang="ts">
 import { type RuleGroup, isRuleGroup } from '@beabee/beabee-common';
-import type { BaseLocale } from '@beabee/locale';
 
 import { useI18n } from 'vue-i18n';
 
@@ -32,17 +30,9 @@ const { t } = useI18n();
  * @param filterGroups - Available filter groups
  * @param rule - The current rule or rule group
  * @param readonly - Whether the component is in readonly mode
- * @param locale - Locale for date formatting
  */
 
-interface Props extends SearchRuleProps<RuleGroup> {
-  locale?: BaseLocale;
-}
-
-withDefaults(defineProps<Props>(), {
-  readonly: false,
-  locale: 'en' as BaseLocale,
-});
+defineProps<SearchRuleProps<RuleGroup>>();
 
 defineEmits<SearchRuleEmits>();
 </script>

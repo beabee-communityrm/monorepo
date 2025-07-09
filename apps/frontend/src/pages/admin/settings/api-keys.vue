@@ -58,11 +58,7 @@ meta:
     </template>
     <template #value-expires="{ value }">
       <span class="whitespace-nowrap">
-        <AppTime
-          v-if="value"
-          :datetime="value as Date"
-          :locale="locale as BaseLocale"
-        />
+        <AppTime v-if="value" :datetime="value as Date" />
         <span v-else :title="t('adminSettings.apikey.expiresHelp')">
           <font-awesome-icon :icon="faWarning" />
           {{ t('adminSettings.apikey.expires.never') }}
@@ -112,7 +108,6 @@ meta:
 
 <script lang="ts" setup>
 import type { GetApiKeyData, Paginated } from '@beabee/beabee-common';
-import type { BaseLocale } from '@beabee/locale';
 import {
   App2ColGrid,
   AppButton,
@@ -137,7 +132,7 @@ import { addDays } from 'date-fns';
 import { computed, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-const { n, t, locale } = useI18n();
+const { n, t } = useI18n();
 
 const validation = useVuelidate();
 

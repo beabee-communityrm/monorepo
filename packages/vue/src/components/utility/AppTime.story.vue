@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import type { BaseLocale } from '@beabee/locale';
-
 import {
   addDays,
   addHours,
@@ -32,10 +30,7 @@ const dates = {
 const state = reactive({
   selectedTimestamp: dates.past.oneHourAgo.getTime(),
   timeOnly: false,
-  locale: 'en' as const,
 });
-
-const locales: BaseLocale[] = ['en', 'de', 'nl', 'pt', 'ru', 'it', 'fr', 'el'];
 
 // Create simple timestamp options for Histoire controls
 const timestampOptions: { label: string; value: number }[] = [
@@ -57,7 +52,6 @@ const timestampOptions: { label: string; value: number }[] = [
           <AppTime
             :datetime="state.selectedTimestamp"
             :time-only="state.timeOnly"
-            :locale="state.locale"
           />
           <p class="mt-2 text-xs text-body-60">
             Timestamp: {{ state.selectedTimestamp }}
@@ -72,7 +66,6 @@ const timestampOptions: { label: string; value: number }[] = [
           :options="timestampOptions"
         />
         <HstCheckbox v-model="state.timeOnly" title="Time Only" />
-        <HstSelect v-model="state.locale" title="Locale" :options="locales" />
       </template>
     </Variant>
 
@@ -119,18 +112,6 @@ const timestampOptions: { label: string; value: number }[] = [
         <div class="rounded border p-4">
           <p class="mb-2 font-medium">In 1 hour (time only):</p>
           <AppTime :datetime="dates.future.inOneHour.getTime()" time-only />
-        </div>
-      </div>
-    </Variant>
-
-    <Variant title="Different Locales">
-      <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <div v-for="locale in locales" :key="locale" class="rounded border p-4">
-          <p class="mb-2 font-medium">{{ locale.toUpperCase() }}:</p>
-          <AppTime
-            :datetime="dates.past.oneHourAgo.getTime()"
-            :locale="locale"
-          />
         </div>
       </div>
     </Variant>

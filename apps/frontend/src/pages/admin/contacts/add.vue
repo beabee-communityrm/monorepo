@@ -31,7 +31,6 @@ meta:
           <AppHeading>{{ t('contactOverview.roles') }}</AppHeading>
           <AppRoleEditor
             :roles="data.roles"
-            :locale="locale as BaseLocale"
             @delete="handleDeleteRole"
             @update="handleUpdateRole"
           />
@@ -62,7 +61,6 @@ import {
   NewsletterStatus,
   type RoleType,
 } from '@beabee/beabee-common';
-import type { BaseLocale } from '@beabee/locale';
 import {
   App2ColGrid,
   AppButton,
@@ -84,7 +82,7 @@ import { computed, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 
-const { t, locale } = useI18n();
+const { t } = useI18n();
 const router = useRouter();
 
 addBreadcrumb(

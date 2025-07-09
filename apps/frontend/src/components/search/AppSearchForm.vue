@@ -27,7 +27,6 @@
           <AppSearchRuleOrGroup
             v-model:rule="ruleGroup.rules[i]"
             :filter-groups="filterGroups"
-            :locale="locale"
             @remove="removeRule(i)"
           />
           <span
@@ -65,7 +64,6 @@
 
 <script setup lang="ts">
 import type { Rule, RuleGroup } from '@beabee/beabee-common';
-import type { BaseLocale } from '@beabee/locale';
 import { AppButton, AppSelect } from '@beabee/vue';
 
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
@@ -86,14 +84,12 @@ const { t } = useI18n();
  * @param filterGroups - Available filter groups
  * @param modelValue - The current rule group
  * @param hasChanged - Whether the form has changes
- * @param locale - Locale for date formatting
  */
 
 interface Props {
   filterGroups: FilterGroups;
   modelValue: RuleGroup | undefined;
   hasChanged: boolean;
-  locale?: BaseLocale;
 }
 
 interface Emits {
@@ -101,10 +97,7 @@ interface Emits {
   (event: 'reset'): void;
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  locale: 'en' as BaseLocale,
-});
-
+const props = defineProps<Props>();
 const emit = defineEmits<Emits>();
 
 const validation = useVuelidate();

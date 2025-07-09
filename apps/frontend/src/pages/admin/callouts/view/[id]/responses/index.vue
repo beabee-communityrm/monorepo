@@ -144,7 +144,7 @@ meta:
           <span v-else>-</span>
         </template>
         <template #value-createdAt="{ value }">
-          <AppTime :datetime="value as Date" :locale="locale as BaseLocale" />
+          <AppTime :datetime="value as Date" />
         </template>
 
         <template
@@ -188,7 +188,6 @@ meta:
               <AppTime
                 class="font-semibold text-body-60"
                 :datetime="item.latestComment.createdAt"
-                :locale="locale as BaseLocale"
               />
               <b> • {{ item.latestComment.contact.displayName }}:{{ ' ' }}</b>
               <span
@@ -214,7 +213,6 @@ import {
   type UpdateCalloutResponseData,
   stringifyAnswer,
 } from '@beabee/beabee-common';
-import type { BaseLocale } from '@beabee/locale';
 import {
   AppButton,
   AppButtonGroup,
@@ -270,7 +268,7 @@ import { useTagFilter } from '../../../../../../composables/useTagFilter';
  * Props & Composables
  */
 const props = defineProps<{ callout: GetCalloutDataWith<'form'> }>();
-const { t, n, locale } = useI18n();
+const { t, n } = useI18n();
 const route = useRoute();
 
 /**

@@ -18,11 +18,7 @@
         inline
         circle
       />
-      <ItemDateRange
-        :starts="callout.starts"
-        :expires="callout.expires"
-        :locale="locale as BaseLocale"
-      />
+      <ItemDateRange :starts="callout.starts" :expires="callout.expires" />
       <p>
         <router-link :to="calloutLink" class="relative z-10">
           <font-awesome-icon :icon="faExternalLinkAlt" />
@@ -47,7 +43,6 @@
 </template>
 <script lang="ts" setup>
 import type { GetCalloutDataWith } from '@beabee/beabee-common';
-import type { BaseLocale } from '@beabee/locale';
 import { AppButton, AppSubHeading, ItemDateRange } from '@beabee/vue';
 
 import env from '@env';
@@ -59,7 +54,7 @@ import { useI18n } from 'vue-i18n';
 import noImage from '../../assets/images/no-image.avif';
 import ItemStatusText from '../item/ItemStatusText.vue';
 
-const { t, locale } = useI18n();
+const { t } = useI18n();
 
 const props = defineProps<{
   callout: GetCalloutDataWith<'responseCount'>;

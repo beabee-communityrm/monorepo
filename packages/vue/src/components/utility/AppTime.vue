@@ -27,8 +27,6 @@
 </template>
 
 <script lang="ts" setup>
-import type { BaseLocale } from '@beabee/locale';
-
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -41,13 +39,10 @@ export interface AppTimeProps {
   datetime: Date | string | number;
   /** Only display relative time without prefix/suffix */
   timeOnly?: boolean;
-  /** Locale for date formatting */
-  locale?: BaseLocale;
 }
 
 const props = withDefaults(defineProps<AppTimeProps>(), {
   timeOnly: false,
-  locale: 'en',
 });
 
 const dateObject = computed(() => {

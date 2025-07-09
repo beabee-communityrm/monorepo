@@ -21,11 +21,7 @@
             <span class="font-semibold">{{
               `${t('common.until')} ${formatLocale(callout.expires, 'MMMM d')}`
             }}</span>
-            <AppTime
-              class="text-body-80"
-              :datetime="callout.expires"
-              :locale="locale as BaseLocale"
-            />
+            <AppTime class="text-body-80" :datetime="callout.expires" />
           </div>
         </div>
       </div>
@@ -43,7 +39,6 @@
 
 <script lang="ts" setup>
 import type { GetCalloutData } from '@beabee/beabee-common';
-import type { BaseLocale } from '@beabee/locale';
 import { AppSubHeading, AppTime, formatLocale } from '@beabee/vue';
 
 import { resolveImageUrl } from '@utils/url';
@@ -60,5 +55,5 @@ const imageUrl = computed(() => {
     : noImage;
 });
 
-const { t, locale } = useI18n();
+const { t } = useI18n();
 </script>

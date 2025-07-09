@@ -10,7 +10,6 @@
         :model-value="modelValue"
         :filter-groups="filterGroups"
         :has-changed="!!hasChanged"
-        :locale="locale"
         @update:model-value="emit('update:modelValue', $event)"
       />
     </AppExpandableBox>
@@ -22,7 +21,6 @@
       <AppSearchSummary
         :model-value="modelValue"
         :filter-groups="filterGroups"
-        :locale="locale"
         @update:model-value="emit('update:modelValue', $event)"
       />
     </div>
@@ -31,7 +29,6 @@
 
 <script setup lang="ts">
 import type { RuleGroup } from '@beabee/beabee-common';
-import type { BaseLocale } from '@beabee/locale';
 import { AppExpandableBox } from '@beabee/vue';
 
 import {
@@ -54,7 +51,6 @@ const { t } = useI18n();
  * @param filterGroups - Available filter groups
  * @param modelValue - The current rule group
  * @param hasChanged - Whether the search has changes
- * @param locale - Locale for date formatting
  * @param buttonIcon - Icon for the advanced search button
  */
 
@@ -62,7 +58,6 @@ interface Props {
   filterGroups: FilterGroups;
   modelValue: RuleGroup | undefined;
   hasChanged?: boolean;
-  locale?: BaseLocale;
   buttonIcon?: IconDefinition;
 }
 
@@ -73,7 +68,6 @@ interface Emits {
 
 const props = withDefaults(defineProps<Props>(), {
   hasChanged: false,
-  locale: 'en' as BaseLocale,
   buttonIcon: () => faFilter,
 });
 

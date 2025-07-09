@@ -3,7 +3,6 @@
     v-if="readonly"
     :rule="rule"
     :filter-groups="filterGroups"
-    :locale="locale"
     readonly
     @remove="emit('remove')"
   />
@@ -19,15 +18,12 @@
       class="flex-1"
       :rule="rule"
       :filter-groups="filterGroups"
-      :locale="locale"
       @update:rule="emit('update:rule', $event)"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import type { BaseLocale } from '@beabee/locale';
-
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 import type { SearchRuleEmits, SearchRuleProps } from '../../type/search';
@@ -40,16 +36,10 @@ import AppSearchRuleFilter from './AppSearchRuleFilter.vue';
  * @param filterGroups - Available filter groups
  * @param rule - The current rule
  * @param readonly - Whether the component is in readonly mode
- * @param locale - Locale for date formatting
  */
 
-interface Props extends SearchRuleProps {
-  locale?: BaseLocale;
-}
-
-withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<SearchRuleProps>(), {
   readonly: false,
-  locale: 'en' as BaseLocale,
 });
 
 const emit = defineEmits<SearchRuleEmits>();

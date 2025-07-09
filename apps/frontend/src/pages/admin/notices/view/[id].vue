@@ -17,11 +17,7 @@ meta:
           :starts="notice.starts"
           :expires="notice.expires"
         />
-        <ItemDateRange
-          :starts="notice.starts"
-          :expires="notice.expires"
-          :locale="locale as BaseLocale"
-        />
+        <ItemDateRange :starts="notice.starts" :expires="notice.expires" />
       </div>
 
       <div class="flex-0 flex flex-wrap gap-2 lg:flex-col">
@@ -54,7 +50,6 @@ meta:
 
 <script lang="ts" setup>
 import type { GetNoticeData } from '@beabee/beabee-common';
-import type { BaseLocale } from '@beabee/locale';
 import {
   ActionButton,
   AppConfirmDialog,
@@ -78,7 +73,7 @@ import { useRouter } from 'vue-router';
 import ItemStatusText from '../../../../components/item/ItemStatusText.vue';
 
 const props = defineProps<{ id: string }>();
-const { t, locale } = useI18n();
+const { t } = useI18n();
 
 const notice = ref<GetNoticeData | undefined>();
 const router = useRouter();

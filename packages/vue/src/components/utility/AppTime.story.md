@@ -13,13 +13,12 @@ A component that displays the relative time from a date to the current time, wit
 
 ## Props
 
-| Prop              | Type                                           | Default        | Description                                          |
-| ----------------- | ---------------------------------------------- | -------------- | ---------------------------------------------------- |
-| `datetime`        | `Date \| string \| number`                     | **Required**   | Date object, ISO string, or timestamp                |
-| `timeOnly`        | `boolean`                                      | `false`        | Only display relative time without prefix/suffix     |
-| `timeAgoTemplate` | `string`                                       | `'{time} ago'` | Template for past dates, use {time} as placeholder   |
-| `timeInTemplate`  | `string`                                       | `'in {time}'`  | Template for future dates, use {time} as placeholder |
-| `locale`          | `'en' \| 'de' \| 'nl' \| 'pt' \| 'ru' \| 'it'` | `'en'`         | Locale for date formatting                           |
+| Prop              | Type                       | Default        | Description                                          |
+| ----------------- | -------------------------- | -------------- | ---------------------------------------------------- |
+| `datetime`        | `Date \| string \| number` | **Required**   | Date object, ISO string, or timestamp                |
+| `timeOnly`        | `boolean`                  | `false`        | Only display relative time without prefix/suffix     |
+| `timeAgoTemplate` | `string`                   | `'{time} ago'` | Template for past dates, use {time} as placeholder   |
+| `timeInTemplate`  | `string`                   | `'in {time}'`  | Template for future dates, use {time} as placeholder |
 
 ## Usage
 

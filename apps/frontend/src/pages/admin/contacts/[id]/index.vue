@@ -92,7 +92,6 @@ meta:
       <div class="relative mt-4">
         <AppRoleEditor
           :roles="contact.roles"
-          :locale="locale as BaseLocale"
           @delete="handleDeleteRole"
           @update="handleUpdateRole"
         />
@@ -272,7 +271,6 @@ import {
   type RoleType,
 } from '@beabee/beabee-common';
 import { PaymentMethod } from '@beabee/beabee-common';
-import type { BaseLocale } from '@beabee/locale';
 import {
   App2ColGrid,
   AppButton,
@@ -297,7 +295,7 @@ import { client } from '@utils/api';
 import { onBeforeMount, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-const { t, n, locale } = useI18n();
+const { t, n } = useI18n();
 
 const props = defineProps<{
   contact: GetContactData;

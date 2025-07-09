@@ -29,7 +29,6 @@
             <AppTime
               v-if="contribution.membershipExpiryDate"
               :datetime="contribution.membershipExpiryDate"
-              :locale="locale as BaseLocale"
               time-only
               class="font-bold text-danger"
             />

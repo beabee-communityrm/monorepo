@@ -5,7 +5,6 @@
         <AppSearchRuleOrGroup
           :filter-groups="filterGroups"
           :rule="rule"
-          :locale="locale"
           readonly
           @remove="handleRemove(i)"
         />
@@ -19,7 +18,6 @@
 
 <script setup lang="ts">
 import type { RuleGroup } from '@beabee/beabee-common';
-import type { BaseLocale } from '@beabee/locale';
 
 import { useI18n } from 'vue-i18n';
 
@@ -34,22 +32,18 @@ const { t } = useI18n();
  *
  * @param modelValue - The current rule group
  * @param filterGroups - Available filter groups
- * @param locale - Locale for date formatting
  */
 
 interface Props {
   modelValue: RuleGroup;
   filterGroups: FilterGroups;
-  locale?: BaseLocale;
 }
 
 interface Emits {
   (event: 'update:modelValue', value: RuleGroup): void;
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  locale: 'en' as BaseLocale,
-});
+const props = defineProps<Props>();
 
 const emit = defineEmits<Emits>();
 
