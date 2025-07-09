@@ -240,6 +240,7 @@ import {
 import MoveBucketButton from '@components/pages/admin/callouts/MoveBucketButton.vue';
 import SetAssigneeButton from '@components/pages/admin/callouts/SetAssigneeButton.vue';
 import AppSearch from '@components/search/AppSearch.vue';
+import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
 import TagList from '@components/tag/TagList.vue';
 import ToggleTagButton from '@components/tag/ToggleTagButton.vue';
 import {
