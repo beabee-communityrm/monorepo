@@ -109,15 +109,6 @@
     "tryAgain": "Nochmal versuchen",
     "increase": "Erhöhen",
     "decrease": "Verringern"
-    "unpublish": "Veröffentlichung aufheben",
-    "update": "Änderungen speichern",
-    "view": "Anzeigen",
-    "yesDelete": "Ja, löschen",
-    "yesDisable": "Ja, deaktivieren",
-    "yesRemove": "Ja, entfernen",
-    "tryAgain": "Nochmal versuchen",
-    "increase": "Erhöhen",
-    "decrease": "Verringern"
   },
   "addContact": {
     "contactSaved": "Kontakt gespeichert",
@@ -905,10 +896,6 @@
     "thankYou": "Vielen Dank.",
     "timeAgo": "vor",
     "timeIn": "in",
-    "until": "bis",
-    "yes": "Ja",
-    "showingOf": "",
-    "statusLabel": "Status: {status}"
     "until": "bis",
     "yes": "Ja",
     "showingOf": "",

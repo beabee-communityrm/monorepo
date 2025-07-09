@@ -1531,5 +1531,12 @@
   },
   "taxRate": {
     "invoiceName": ""
+  },
+  "status": {
+    "loadingApplication": "",
+    "pleaseWait": "",
+    "connectingToServer": "",
+    "initializing": "",
+    "usuallyTakesSeconds": ""
   }
 }

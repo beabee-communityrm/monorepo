@@ -1531,5 +1531,12 @@
   },
   "taxRate": {
     "invoiceName": "VAT"
+  },
+  "status": {
+    "loadingApplication": "",
+    "pleaseWait": "",
+    "connectingToServer": "",
+    "initializing": "",
+    "usuallyTakesSeconds": ""
   }
 }

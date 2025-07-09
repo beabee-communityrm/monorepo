@@ -1531,5 +1531,12 @@
   },
   "taxRate": {
     "invoiceName": "TVA"
+  },
+  "status": {
+    "loadingApplication": "",
+    "pleaseWait": "",
+    "connectingToServer": "",
+    "initializing": "",
+    "usuallyTakesSeconds": ""
   }
 }
