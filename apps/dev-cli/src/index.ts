@@ -2,8 +2,8 @@
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 
+import packageJson from '../package.json' with { type: 'json' };
 import { esbuildCommand, generateIndexCommand } from './commands/index.ts';
-import { packageJson } from './utils/package.ts';
 
 yargs(hideBin(process.argv))
   .command(generateIndexCommand)
