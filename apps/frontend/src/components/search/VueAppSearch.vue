@@ -34,6 +34,7 @@ import type { RuleGroup } from '@beabee/beabee-common';
 import type { BaseLocale } from '@beabee/locale';
 import { AppExpandableBox } from '@beabee/vue';
 
+import type { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { computed, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -59,7 +60,7 @@ interface Props {
   modelValue: RuleGroup | undefined;
   hasChanged?: boolean;
   locale?: BaseLocale;
-  buttonIcon?: any;
+  buttonIcon?: IconDefinition;
 }
 
 interface Emits {

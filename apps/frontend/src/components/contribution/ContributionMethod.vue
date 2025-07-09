@@ -79,7 +79,7 @@ export interface ContributionMethodProps {
 }
 
 const emit = defineEmits(['update:modelValue']);
-const props = defineProps<ContributionMethodProps>();
+defineProps<ContributionMethodProps>();
 
 /**
  * Internal payment method labels using vue-i18n
