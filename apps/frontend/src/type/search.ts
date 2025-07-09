@@ -1,6 +1,7 @@
 import {
   type FilterType,
   type Rule,
+  type RuleGroup,
   type RuleOperator,
   nullableOperators,
   operatorsByTypeMap,
@@ -53,7 +54,7 @@ export type FilterGroups = FilterGroup[];
 // Rule group with empty states for form handling
 export interface RuleGroupWithEmpty {
   condition: 'AND' | 'OR';
-  rules: (Rule | import('@beabee/beabee-common').RuleGroup | null)[];
+  rules: (Rule | RuleGroup | null)[];
 }
 
 // Search component props and emits
