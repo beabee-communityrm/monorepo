@@ -113,27 +113,29 @@ meta:
             :to="`${route.path}/${item.id}`"
             class="text-base font-bold text-link"
           >
-            {{ t('calloutResponsesPage.responseNo', { no: n(value) }) }}
+            {{
+              t('calloutResponsesPage.responseNo', { no: n(value as number) })
+            }}
           </router-link>
         </template>
         <template #value-assignee="{ value }">
           <router-link
             v-if="value"
-            :to="`/admin/contacts/${value.id}`"
+            :to="`/admin/contacts/${(value as GetContactData).id}`"
             class="text-link"
           >
-            {{ value.displayName }}
+            {{ (value as GetContactData).displayName }}
           </router-link>
           <span v-else>-</span>
         </template>
         <template #value-contact="{ value, item }">
           <router-link
             v-if="value"
-            :to="`/admin/contacts/${value.id}`"
+            :to="`/admin/contacts/${(value as GetContactData).id}`"
             class="text-link"
           >
             <font-awesome-icon :icon="faUser" class="mr-2" />{{
-              value.displayName
+              (value as GetContactData).displayName
             }}
           </router-link>
           <span v-else-if="item.guestName">
@@ -142,7 +144,7 @@ meta:
           <span v-else>-</span>
         </template>
         <template #value-createdAt="{ value }">
-          <AppTime :datetime="value" :locale="locale as BaseLocale" />
+          <AppTime :datetime="value as Date" :locale="locale as BaseLocale" />
         </template>
 
         <template
@@ -205,6 +207,7 @@ import {
   type GetCalloutDataWith,
   type GetCalloutResponseDataWith,
   GetCalloutResponseWith,
+  type GetContactData,
   type Paginated,
   type Rule,
   type RuleGroup,

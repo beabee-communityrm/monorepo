@@ -21,21 +21,23 @@ meta:
       :result="paymentsTable"
     >
       <template #value-status="{ value }">
-        <PaymentStatus :status="value" />
+        <PaymentStatusComponent :status="value as PaymentStatus" />
       </template>
       <template #value-contact="{ value }">
         <router-link
-          :to="'/admin/contacts/' + value.id"
+          :to="'/admin/contacts/' + (value as GetContactData).id"
           class="text-base font-bold text-link"
         >
-          {{ value.displayName }}
+          {{ (value as GetContactData).displayName }}
         </router-link>
       </template>
       <template #value-chargeDate="{ value }">
-        <span class="whitespace-nowrap">{{ formatLocale(value, 'PP') }}</span>
+        <span class="whitespace-nowrap">{{
+          formatLocale(value as Date, 'PP')
+        }}</span>
       </template>
       <template #value-amount="{ value }">
-        {{ n(value, 'currency') }}
+        {{ n(value as number, 'currency') }}
       </template>
     </AppPaginatedTable>
   </AppFilterGrid>
@@ -43,10 +45,12 @@ meta:
 
 <script lang="ts" setup>
 import type {
+  GetContactData,
   GetPaymentDataWith,
   GetPaymentsQuery,
   Paginated,
 } from '@beabee/beabee-common';
+import { PaymentStatus } from '@beabee/beabee-common';
 import { AppFilterGrid, PageTitle } from '@beabee/vue';
 
 import {
@@ -54,7 +58,6 @@ import {
   headers,
   statusItems,
 } from '@components/pages/admin/payments.interface';
-import { PaymentStatus } from '@components/payment';
 import AppSearch from '@components/search/AppSearch.vue';
 import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
 import { faEuro } from '@fortawesome/free-solid-svg-icons';
