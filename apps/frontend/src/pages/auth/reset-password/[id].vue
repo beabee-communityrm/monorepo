@@ -77,12 +77,9 @@ meta:
     </AppForm>
 
     <div v-if="mode === 'reset'" class="mt-4 text-center">
-      <router-link
-        variant="link"
-        to="/auth/login"
-        class="font-semibold text-link underline"
-        >{{ t('resetPassword.login') }}</router-link
-      >
+      <router-link to="/auth/login" class="font-semibold text-link underline">{{
+        t('resetPassword.login')
+      }}</router-link>
     </div>
   </AuthBox>
 </template>
