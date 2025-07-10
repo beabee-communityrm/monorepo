@@ -61,7 +61,7 @@
  */
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
-import { computed, onBeforeUnmount, ref, toRef, watch } from 'vue';
+import { onBeforeUnmount, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { generateUniqueId } from '../../utils';
@@ -107,7 +107,7 @@ const props = withDefaults(defineProps<AppModalProps>(), {
 });
 
 // Generate unique ID for ARIA relationships
-const modalId = computed(() => generateUniqueId('modal'));
+const modalId = generateUniqueId('modal');
 
 const divRef = ref<HTMLElement>();
 

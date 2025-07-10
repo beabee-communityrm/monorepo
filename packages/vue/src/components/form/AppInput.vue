@@ -172,13 +172,11 @@ const props = withDefaults(defineProps<AppInputProps>(), {
 const { t } = useI18n();
 
 // Generate unique IDs for accessibility
-const inputId = computed(
-  () => props.id || generateUniqueId('input', [props.name])
-);
-const errorId = computed(() => `${inputId.value}-error`);
-const helpId = computed(() => `${inputId.value}-help`);
-const prefixId = computed(() => `${inputId.value}-prefix`);
-const suffixId = computed(() => `${inputId.value}-suffix`);
+const inputId = props.id || generateUniqueId('input', [props.name]);
+const errorId = computed(() => `${inputId}-error`);
+const helpId = computed(() => `${inputId}-help`);
+const prefixId = computed(() => `${inputId}-prefix`);
+const suffixId = computed(() => `${inputId}-suffix`);
 
 // Build aria-describedby string
 const ariaDescribedBy = computed(() => {

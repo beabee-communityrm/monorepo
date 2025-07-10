@@ -143,7 +143,7 @@ const props = withDefaults(defineProps<AppTextAreaProps>(), {
 });
 
 // Generate unique ID for aria-labels and form associations
-const id = computed(() => props.id || generateUniqueId('textarea'));
+const id = props.id || generateUniqueId('textarea');
 
 const value = computed({
   get: () => props.modelValue,
@@ -185,9 +185,9 @@ const hasError = computed(() => validation.value.$errors.length > 0);
 // Combine IDs for aria-describedby
 const getAriaDescribedBy = computed(() => {
   const ids = [];
-  if (hasError.value) ids.push(`${id.value}-error`);
-  if (props.infoMessage) ids.push(`${id.value}-info`);
-  if (props.maxlength !== undefined) ids.push(`${id.value}-char-count`);
+  if (hasError.value) ids.push(`${id}-error`);
+  if (props.infoMessage) ids.push(`${id}-info`);
+  if (props.maxlength !== undefined) ids.push(`${id}-char-count`);
   return ids.length ? ids.join(' ') : undefined;
 });
 </script>

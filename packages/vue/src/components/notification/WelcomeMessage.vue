@@ -77,7 +77,7 @@ const welcomeText = computed(() => {
   });
 });
 
-const headingId = computed(() => generateUniqueId('welcome-heading'));
+const headingId = generateUniqueId('welcome-heading');
 
 defineEmits<{
   /** Emitted when the close button is clicked */

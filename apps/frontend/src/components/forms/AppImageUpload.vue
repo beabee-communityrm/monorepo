@@ -89,7 +89,7 @@ const formError = ref('');
 const imageUrl = computed(() => resolveImageUrl(rawImageUrl.value as string));
 
 // Generate unique ID for aria attributes
-const id = computed(() => generateUniqueId('image-upload'));
+const id = generateUniqueId('image-upload');
 
 const rules = computed(() => ({
   v: {
