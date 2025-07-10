@@ -10,13 +10,13 @@
       class="w-full"
     >
       <template #value-chargeDate="{ value }">
-        {{ formatLocale(value as Date, 'PPP') }}
+        {{ formatLocale(value, 'PPP') }}
       </template>
       <template #value-amount="{ value, item }">
         <span v-if="item.status !== PaymentStatus.Successful" class="mr-3">
           {{ t('common.paymentStatus.' + item.status) }}
         </span>
-        <b>{{ n(value as number, 'currency') }}</b>
+        <b>{{ n(value, 'currency') }}</b>
       </template>
     </AppTable>
     <div v-if="totalPages > 1" class="mt-6 flex w-full justify-between gap-2">

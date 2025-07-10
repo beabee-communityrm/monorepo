@@ -28,38 +28,32 @@
     <div class="mb-2 flex items-end gap-4">
       <slot name="actions"></slot>
       <AppPaginatedTableResult
-        :page="query.page"
-        :limit="query.limit"
+        v-model:page="currentPage"
+        v-model:limit="currentLimit"
         :result="result"
         class="ml-auto items-end"
         no-limit
-        @update:page="updatePage"
-        @update:limit="updateLimit"
       />
     </div>
     <div class="overflow-x-auto">
       <AppTable
-        :sort="query.sort"
+        v-model:sort="currentSort"
         :headers="headers"
         :items="result?.items || null"
         :selectable="selectable"
         :row-class="rowClass"
         class="mb-4 w-full"
-        @update:sort="updateSort"
       >
         <template v-for="name of slotNames" #[name]="slotData" :key="name">
-          <!-- eslint-disable-next-line @typescript-eslint/no-explicit-any -->
-          <slot :name="name as any" v-bind="(slotData || {}) as any"></slot>
+          <slot :name="name" v-bind="slotData || {}"></slot>
         </template>
       </AppTable>
     </div>
     <AppPaginatedTableResult
-      :page="query.page"
-      :limit="query.limit"
+      v-model:page="currentPage"
+      v-model:limit="currentLimit"
       :result="result"
       class="items-center"
-      @update:page="updatePage"
-      @update:limit="updateLimit"
     />
   </div>
 </template>
@@ -78,103 +72,42 @@ import { type Paginated } from '../../type/paginated';
 import { type Header, type Item, type Sort } from '../../type/table';
 import AppPaginatedTableResult from './AppPaginatedTableResult.vue';
 
-/**
- * Props for the AppPaginatedTable component
- */
-export interface AppPaginatedTableProps<I extends Item> {
-  /** Array of column definitions */
+const props = defineProps<{
   headers: Header[];
-  /** Paginated result data */
   result: Paginated<I> | undefined;
-  /** Query object containing pagination and sort state */
   query: {
-    /** Current page number (0-based) */
     page: number;
-    /** Items per page */
     limit: number;
-    /** Current sort configuration */
     sort?: Sort;
   };
-  /** Enable row selection with checkboxes */
   selectable?: boolean;
-  /** Function to add custom CSS classes to rows */
   rowClass?: (item: I) => string;
-}
+}>();
 
-const props = withDefaults(defineProps<AppPaginatedTableProps<I>>(), {
-  selectable: false,
-  rowClass: undefined,
-});
-
-/**
- * Events emitted by the AppPaginatedTable component
- */
 const emit = defineEmits<{
   'update:query': [query: { page: number; limit: number; sort?: Sort }];
 }>();
 
-/**
- * Update page number
- */
-function updatePage(page: number) {
-  emit('update:query', { ...props.query, page });
-}
+// Computed properties for v-model compatibility
+const currentPage = computed({
+  get: () => props.query.page,
+  set: (page: number) => emit('update:query', { ...props.query, page }),
+});
 
-/**
- * Update items per page limit
- */
-function updateLimit(limit: number) {
-  emit('update:query', { ...props.query, limit });
-}
+const currentLimit = computed({
+  get: () => props.query.limit,
+  set: (limit: number) => emit('update:query', { ...props.query, limit }),
+});
 
-/**
- * Update sort configuration
- */
-function updateSort(sort: Sort) {
-  emit('update:query', { ...props.query, sort });
-}
+const currentSort = computed({
+  get: () => props.query.sort,
+  set: (sort: Sort | undefined) =>
+    emit('update:query', { ...props.query, sort }),
+});
 
-// Slots are passed to AppTable, typing is currently lost
-const slotNames = computed<string[]>(() => {
+// Slots are passed to AppTable, typing is handled by Vue's inference
+const slotNames = computed(() => {
   const slots = useSlots();
   return Object.keys(slots).filter((name) => name !== 'actions');
 });
-
-/**
- * Slots available in the AppPaginatedTable component
- */
-defineSlots<
-  {
-    /**
-     * Custom action controls displayed above the table
-     */
-    actions: () => unknown;
-    /**
-     * Additional content displayed after each row
-     * @param item - The row item
-     */
-    after: (props: { item: I }) => unknown;
-    /**
-     * Custom empty state content
-     */
-    empty: () => unknown;
-    /**
-     * Custom loading state content
-     */
-    loading: () => unknown;
-  } & {
-    /**
-     * Custom content for a specific header
-     * @param header - The header configuration
-     */
-    [K in `header-${string}`]: (props: { header: Header }) => unknown;
-  } & {
-    /**
-     * Custom content for a specific cell value
-     * @param item - The row item
-     * @param value - The cell value (use type assertions when you know the specific type)
-     */
-    [K in `value-${string}`]: (props: { item: I; value: unknown }) => unknown;
-  }
->();
 </script>

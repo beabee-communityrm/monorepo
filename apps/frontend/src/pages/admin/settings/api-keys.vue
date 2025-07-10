@@ -52,13 +52,11 @@ meta:
       {{ (item as any).id }}_••••••••••••••••••</template
     >
     <template #value-createdAt="{ value }">
-      <span class="whitespace-nowrap">{{
-        formatLocale(value as Date, 'PP')
-      }}</span>
+      <span class="whitespace-nowrap">{{ formatLocale(value, 'PP') }}</span>
     </template>
     <template #value-expires="{ value }">
       <span class="whitespace-nowrap">
-        <AppTime v-if="value" :datetime="value as Date" />
+        <AppTime v-if="value" :datetime="value" />
         <span v-else :title="t('adminSettings.apikey.expiresHelp')">
           <font-awesome-icon :icon="faWarning" />
           {{ t('adminSettings.apikey.expires.never') }}

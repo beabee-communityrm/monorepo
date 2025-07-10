@@ -25,19 +25,17 @@ meta:
       </template>
       <template #value-contact="{ value }">
         <router-link
-          :to="'/admin/contacts/' + (value as GetContactData).id"
+          :to="'/admin/contacts/' + value.id"
           class="text-base font-bold text-link"
         >
-          {{ (value as GetContactData).displayName }}
+          {{ value.displayName }}
         </router-link>
       </template>
       <template #value-chargeDate="{ value }">
-        <span class="whitespace-nowrap">{{
-          formatLocale(value as Date, 'PP')
-        }}</span>
+        <span class="whitespace-nowrap">{{ formatLocale(value, 'PP') }}</span>
       </template>
       <template #value-amount="{ value }">
-        {{ n(value as number, 'currency') }}
+        {{ n(value, 'currency') }}
       </template>
     </AppPaginatedTable>
   </AppFilterGrid>
@@ -45,7 +43,6 @@ meta:
 
 <script lang="ts" setup>
 import type {
-  GetContactData,
   GetPaymentDataWith,
   GetPaymentsQuery,
   Paginated,

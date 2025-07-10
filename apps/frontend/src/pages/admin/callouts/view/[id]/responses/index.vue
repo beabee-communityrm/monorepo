@@ -108,43 +108,38 @@ meta:
           </p>
         </template>
 
-        <template #value-number="{ value, item }">
-          <router-link
-            :to="`${route.path}/${(item as any).id}`"
-            class="text-base font-bold text-link"
-          >
-            {{
-              t('calloutResponsesPage.responseNo', { no: n(value as number) })
-            }}
-          </router-link>
+        <template #value-responseNo="{ value }">
+          {{ t('calloutResponsesPage.responseNo', { no: n(value) }) }}
         </template>
         <template #value-assignee="{ value }">
           <router-link
             v-if="value"
-            :to="`/admin/contacts/${(value as GetContactData).id}`"
+            :to="`/admin/contacts/${value.id}`"
             class="text-link"
           >
-            {{ (value as GetContactData).displayName }}
+            {{ value.displayName }}
           </router-link>
           <span v-else>-</span>
         </template>
         <template #value-contact="{ value, item }">
           <router-link
             v-if="value"
-            :to="`/admin/contacts/${(value as GetContactData).id}`"
+            :to="`/admin/contacts/${value.id}`"
             class="text-link"
           >
             <font-awesome-icon :icon="faUser" class="mr-2" />{{
-              (value as GetContactData).displayName
+              value.displayName
             }}
           </router-link>
           <span v-else-if="(item as any).guestName">
-            {{ (item as any).guestName }} ({{ (item as any).guestEmail }})
+            <font-awesome-icon :icon="faUser" class="mr-2" />{{
+              (item as any).guestName
+            }}
           </span>
           <span v-else>-</span>
         </template>
         <template #value-createdAt="{ value }">
-          <AppTime :datetime="value as Date" />
+          <AppTime :datetime="value" />
         </template>
 
         <template
@@ -206,7 +201,6 @@ import {
   type GetCalloutDataWith,
   type GetCalloutResponseDataWith,
   GetCalloutResponseWith,
-  type GetContactData,
   type Paginated,
   type Rule,
   type RuleGroup,

@@ -180,40 +180,6 @@ const emit = defineEmits<{
   'update:sort': [sort: Sort];
 }>();
 
-/**
- * Slots available in the AppTable component
- */
-defineSlots<
-  {
-    /**
-     * Custom content for a specific header
-     * @param header - The header configuration
-     */
-    [K in `header-${string}`]: (props: { header: Header }) => any;
-  } & {
-    /**
-     * Custom content for a specific cell value
-     * @param item - The row item
-     * @param value - The cell value (use type assertions when you know the specific type)
-     */
-    [K in `value-${string}`]: (props: { item: I; value: unknown }) => any;
-  } & {
-    /**
-     * Additional content displayed after each row
-     * @param item - The row item
-     */
-    after: (props: { item: I }) => any;
-    /**
-     * Custom empty state content
-     */
-    empty: () => any;
-    /**
-     * Custom loading state content
-     */
-    loading: () => any;
-  }
->();
-
 // Computed properties
 const sort = computed({
   get: () => props.sort,
