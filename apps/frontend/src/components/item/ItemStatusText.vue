@@ -11,16 +11,8 @@
 -->
 <template>
   <div class="flex" :class="inline ? 'gap-2' : 'flex-col'">
-    <ItemStatusComponent :status="status" :circle="circle" />
-    <span v-if="status === ItemStatus.Scheduled && starts && scheduledText">
-      {{ scheduledText }}
-    </span>
-    <span v-else-if="status === ItemStatus.Open && expires && openText">
-      {{ openText }}
-    </span>
-    <span v-else-if="status === ItemStatus.Ended && expires && endedText">
-      {{ endedText }}
-    </span>
+    <ItemStatusComponent :status="item.status" :circle="circle" />
+    <span>{{ text }}</span>
   </div>
 </template>
 
@@ -63,39 +55,28 @@ export interface ItemStatusTextProps {
 }
 
 const props = withDefaults(defineProps<ItemStatusTextProps>(), {
-  starts: null,
-  expires: null,
   circle: false,
   inline: false,
 });
 
 /**
- * Computed text for scheduled items showing start time
+ * Computed text for item status
  */
-const scheduledText = computed(() => {
-  if (props.status !== ItemStatus.Scheduled || !props.starts) return '';
-
-  const duration = formatDistanceLocale(props.starts, new Date());
-  return t('item.status.startsIn', { duration });
-});
-
-/**
- * Computed text for open items showing end time
- */
-const openText = computed(() => {
-  if (props.status !== ItemStatus.Open || !props.expires) return '';
-
-  const duration = formatDistanceLocale(props.expires, new Date());
-  return t('item.status.endsIn', { duration });
-});
-
-/**
- * Computed text for ended items showing time since end
- */
-const endedText = computed(() => {
-  if (props.status !== ItemStatus.Ended || !props.expires) return '';
-
-  const time = formatDistanceLocale(props.expires, new Date());
-  return t('common.timeAgo', { time });
+const text = computed(() => {
+  if (props.item.status === ItemStatus.Scheduled && props.item.starts) {
+    return t('item.status.startsIn', {
+      duration: formatDistanceLocale(props.item.starts, new Date()),
+    });
+  } else if (props.item.status === ItemStatus.Open && props.item.expires) {
+    return t('item.status.endsIn', {
+      duration: formatDistanceLocale(props.item.expires, new Date()),
+    });
+  } else if (props.item.status === ItemStatus.Ended && props.item.expires) {
+    return t('common.timeAgo', {
+      time: formatDistanceLocale(props.item.expires, new Date()),
+    });
+  } else {
+    return '';
+  }
 });
 </script>

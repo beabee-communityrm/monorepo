@@ -14,7 +14,7 @@
 <template>
   <span
     class="whitespace-nowrap text-sm font-bold uppercase"
-    :class="colorClasses"
+    :class="colorMap[status]"
     role="status"
     :aria-label="ariaLabel"
   >
@@ -29,6 +29,14 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
+
+const colorMap = {
+  [PaymentStatus.Draft]: 'text-body-60',
+  [PaymentStatus.Pending]: 'text-body-60',
+  [PaymentStatus.Successful]: 'text-success',
+  [PaymentStatus.Cancelled]: 'text-danger',
+  [PaymentStatus.Failed]: 'text-danger',
+};
 
 /**
  * Props for the PaymentStatus component
@@ -52,20 +60,5 @@ const statusText = computed(() => {
  */
 const ariaLabel = computed(() => {
   return t('common.statusLabel', { status: statusText.value });
-});
-
-/**
- * Computed color classes based on payment status
- */
-const colorClasses = computed(() => {
-  const colorMap = {
-    [PaymentStatus.Draft]: 'text-body-60',
-    [PaymentStatus.Pending]: 'text-body-60',
-    [PaymentStatus.Successful]: 'text-success',
-    [PaymentStatus.Cancelled]: 'text-danger',
-    [PaymentStatus.Failed]: 'text-danger',
-  };
-
-  return colorMap[props.status] || 'text-body-60';
 });
 </script>
