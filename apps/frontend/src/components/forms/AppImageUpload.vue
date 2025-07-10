@@ -44,7 +44,12 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { AppButton, AppInputError, AppLabel } from '@beabee/vue';
+import {
+  AppButton,
+  AppInputError,
+  AppLabel,
+  generateUniqueId,
+} from '@beabee/vue';
 
 import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 import { ClientApiError, client } from '@utils/api';
@@ -84,9 +89,7 @@ const formError = ref('');
 const imageUrl = computed(() => resolveImageUrl(rawImageUrl.value as string));
 
 // Generate unique ID for aria attributes
-const id = computed(
-  () => `image-upload-${Math.random().toString(36).substring(2, 11)}`
-);
+const id = computed(() => generateUniqueId('image-upload'));
 
 const rules = computed(() => ({
   v: {

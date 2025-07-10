@@ -22,6 +22,7 @@ import useVuelidate from '@vuelidate/core';
 import { requiredIf } from '@vuelidate/validators';
 import { computed } from 'vue';
 
+import { generateUniqueId } from '../../utils';
 import AppLabel from './AppLabel.vue';
 import AppRadioInput, { type AppRadioInputValue } from './AppRadioInput.vue';
 
@@ -55,7 +56,7 @@ const props = withDefaults(defineProps<AppRadioGroupProps>(), {
 const selected = defineModel<AppRadioInputValue>();
 
 // Use a random name to group the inputs if no name provider
-const uniqueName = Math.random().toString(16).substring(2);
+const uniqueName = generateUniqueId('radio-group');
 const name = computed(() => props.name || uniqueName);
 
 const isRequired = computed(() => !!props.required);

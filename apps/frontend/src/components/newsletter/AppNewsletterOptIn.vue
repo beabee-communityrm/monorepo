@@ -60,7 +60,7 @@
  * @component AppNewsletterOptIn
  */
 import type { NewsletterGroupData } from '@beabee/beabee-common';
-import { AppCheckbox, AppCheckboxGroup } from '@beabee/vue';
+import { AppCheckbox, AppCheckboxGroup, generateUniqueId } from '@beabee/vue';
 
 import { computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -92,9 +92,7 @@ const optInGroups = defineModel<string[]>('optInGroups', {
 });
 
 // Generate unique ID for ARIA relationships
-const componentId = computed(
-  () => `newsletter-opt-in-${Math.random().toString(36).substring(2, 11)}`
-);
+const componentId = computed(() => generateUniqueId('newsletter-opt-in'));
 
 /**
  * Synchronize opt-in status with selected groups
