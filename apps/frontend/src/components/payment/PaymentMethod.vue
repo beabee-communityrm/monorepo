@@ -14,12 +14,11 @@
 <template>
   <div
     v-if="source.method"
-    class="flex items-center gap-2"
     role="group"
     :aria-label="`Payment method: ${description}`"
   >
     <PaymentMethodIcon :method="source.method" aria-hidden="true" />
-    <span class="text-sm">{{ description }}</span>
+    {{ description }}
   </div>
 </template>
 

@@ -14,7 +14,6 @@
   - `minAmount` (number): Minimum allowed amount
   - `definedAmounts` (number[]): Preset amounts to display as quick choices
   - `disabled` (boolean): Whether the component is disabled
-  - `currencySymbol` (string): Currency symbol to display (e.g. "€", "$")
 
   ## Events
   - `update:modelValue` (number): Emitted when the amount changes
@@ -41,7 +40,7 @@
       "
     >
       <label class="flex flex-1 items-baseline px-6 font-bold text-body-60">
-        <span>{{ currencySymbol }}</span>
+        <span>{{ generalContent.currencySymbol }}</span>
         <div class="relative mx-1 font-semibold">
           <div class="text-6xl/[7rem]">
             {{ amount || '0' }}
@@ -91,7 +90,7 @@
       :model-value="amount"
       :items="
         definedAmounts.map((amount) => ({
-          label: currencyFormatter(amount),
+          label: n(amount, 'currency'),
           value: amount,
         }))
       "
@@ -106,8 +105,8 @@
       class="col-span-12 mt-0 text-sm font-semibold text-danger"
       role="alert"
     >
-      {{ minimumText }}
-      {{ currencyFormatter(minAmount) }} {{ perPeriodText }}
+      {{ t('join.minimumContribution') }}
+      {{ n(minAmount, 'currency') }} {{ perPeriodText }}
     </div>
   </div>
 </template>
@@ -115,6 +114,7 @@
 <script lang="ts" setup>
 import { AppChoice } from '@beabee/vue';
 
+import { generalContent } from '@store/generalContent';
 import useVuelidate from '@vuelidate/core';
 import { minValue } from '@vuelidate/validators';
 import { computed, toRefs } from 'vue';
@@ -136,30 +136,16 @@ export interface ContributionAmountProps {
   definedAmounts: number[];
   /** Whether the component is disabled */
   disabled: boolean;
-  /** Currency symbol to display */
-  currencySymbol: string;
 }
 
 const emit = defineEmits(['update:modelValue']);
 const props = defineProps<ContributionAmountProps>();
 
 /**
- * Internal currency formatter using vue-i18n
- */
-const currencyFormatter = (value: number): string => n(value, 'currency');
-
-/**
  * Per period text based on contribution type
  */
 const perPeriodText = computed(() => {
   return props.isMonthly ? t('common.perMonth') : t('common.perYear');
-});
-
-/**
- * Minimum contribution error text
- */
-const minimumText = computed(() => {
-  return t('join.minimumContribution');
 });
 
 const amount = computed({

@@ -45,7 +45,10 @@ meta:
           <router-link :to="'/admin/contacts/' + member.id" class="text-link">
             {{ member.displayName }}
           </router-link>
-          <AppTime class="text-sm text-body-80" :datetime="member.joined" />
+          <AppTime
+            class="flex-1 text-right text-sm font-semibold text-body-60"
+            :datetime="member.joined"
+          />
         </li>
       </ul>
     </div>

@@ -46,7 +46,6 @@
       :min-amount="minAmount"
       :defined-amounts="definedAmounts"
       :disabled="disabled"
-      :currency-symbol="currencySymbol"
       class="mb-4"
     />
 
@@ -113,8 +112,6 @@ export interface ContributionProps {
   showPaymentMethod?: boolean;
   /** Whether the form is disabled */
   disabled?: boolean;
-  /** Currency symbol (e.g. "€", "$") */
-  currencySymbol: string;
 }
 
 const props = withDefaults(defineProps<ContributionProps>(), {

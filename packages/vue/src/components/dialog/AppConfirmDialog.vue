@@ -86,12 +86,7 @@ export interface AppConfirmDialogProps {
   onConfirm?: () => Promise<void> | void;
 }
 
-const props = withDefaults(defineProps<AppConfirmDialogProps>(), {
-  variant: undefined,
-  cancel: undefined,
-  disableConfirm: false,
-  onConfirm: undefined,
-});
+const props = defineProps<AppConfirmDialogProps>();
 
 /**
  * Events emitted by the AppConfirmDialog component

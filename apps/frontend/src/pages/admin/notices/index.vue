@@ -40,28 +40,22 @@ meta:
       </router-link>
     </template>
     <template #value-createdAt="{ value }">
-      <span class="whitespace-nowrap">{{
-        value instanceof Date ? formatLocale(value, 'PP') : ''
-      }}</span>
+      <span class="whitespace-nowrap">{{ formatLocale(value, 'PP') }}</span>
     </template>
   </AppPaginatedTable>
 </template>
 <script lang="ts" setup>
-import {
-  type GetNoticeData,
-  ItemStatus,
-  type Paginated,
-} from '@beabee/beabee-common';
+import { type GetNoticeData, type Paginated } from '@beabee/beabee-common';
 import { AppButton, type Header, PageTitle, formatLocale } from '@beabee/vue';
 
+import ItemStatus from '@components/item/ItemStatus.vue';
+import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
 import { faPlus, faSignHanging } from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { client } from '@utils/api';
 import { definePaginatedQuery } from '@utils/pagination';
 import { computed, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
-
-import AppPaginatedTable from '../../../components/table/AppPaginatedTable.vue';
 
 const { t } = useI18n();
 

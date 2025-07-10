@@ -23,7 +23,6 @@
     :show-period="false"
     :show-payment-method="showPaymentMethod"
     :disabled="disabled"
-    :currency-symbol="generalContent.currencySymbol"
     class="mb-4"
   >
     <slot></slot>
@@ -38,7 +37,6 @@ import {
 } from '@beabee/beabee-common';
 import { AppChoice } from '@beabee/vue';
 
-import { generalContent } from '@store';
 import { computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -90,7 +88,7 @@ const payFeeProxy = computed({
 });
 
 const paymentMethodProxy = computed({
-  get: () => props.paymentMethod || PaymentMethod.StripeCard,
+  get: () => props.paymentMethod,
   set: (paymentMethod) => emit('update:paymentMethod', paymentMethod),
 });
 

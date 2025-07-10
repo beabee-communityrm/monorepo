@@ -83,12 +83,12 @@ async function handleClick(evt: Event) {
   try {
     await props.onClick?.(evt);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : String(error);
+  } catch (_: unknown) {
     addNotification({
-      title: t('notifications.error'),
-      description: message,
+      title: t('form.errorMessages.generic'),
       variant: 'error',
+      // Add more descriptive error message for screen readers
+      description: t('form.errorMessages.asyncActionFailed'),
     });
   } finally {
     loading.value = false;

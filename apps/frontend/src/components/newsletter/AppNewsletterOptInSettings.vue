@@ -22,15 +22,10 @@
   ```
 -->
 <template>
-  <div class="max-w-none space-y-4">
+  <div>
     <!-- Title Configuration -->
     <div class="mb-4">
-      <AppInput
-        v-model="title"
-        :label="t('newsletterOptIn.title')"
-        required
-        class="w-full"
-      />
+      <AppInput v-model="title" :label="t('newsletterOptIn.title')" required />
     </div>
 
     <!-- Text Content Configuration -->
@@ -39,7 +34,6 @@
         v-model="text"
         :label="t('newsletterOptIn.text')"
         required
-        class="w-full"
       />
     </div>
 
@@ -53,7 +47,6 @@
         "
         :required="groups.length === 0"
         :disabled="groups.length > 0"
-        class="w-full"
       />
     </div>
 
@@ -75,37 +68,23 @@
         class="space-y-4"
       >
         <template #default="{ item }">
-          <div class="flex flex-col gap-4 sm:flex-row sm:items-end">
-            <!-- Group ID -->
-            <div class="flex-1">
-              <AppInput
-                v-model="item.id"
-                :label="t('common.id')"
-                required
-                class="min-w-0"
-              />
-            </div>
+          <!-- Group ID -->
+          <div class="flex-1">
+            <AppInput v-model="item.id" :label="t('common.id')" required />
+          </div>
 
-            <!-- Group Label -->
-            <div class="flex-1">
-              <AppInput
-                v-model="item.label"
-                :label="t('common.label')"
-                required
-                class="min-w-0"
-              />
-            </div>
+          <!-- Group Label -->
+          <div class="flex-1">
+            <AppInput
+              v-model="item.label"
+              :label="t('common.label')"
+              required
+            />
+          </div>
 
-            <!-- Default Checked -->
-            <div
-              class="sm:flex-0 flex h-10 items-center justify-center sm:justify-start"
-            >
-              <AppCheckbox
-                v-model="item.checked"
-                :label="t('common.default')"
-                class="whitespace-nowrap"
-              />
-            </div>
+          <!-- Default Checked -->
+          <div class="flex-0 flex h-10 items-center self-end">
+            <AppCheckbox v-model="item.checked" :label="t('common.default')" />
           </div>
         </template>
       </AppRepeatable>

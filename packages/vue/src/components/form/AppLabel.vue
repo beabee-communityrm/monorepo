@@ -1,5 +1,5 @@
 <template>
-  <label class="mb-0.5 block font-semibold" :for="forId">
+  <label class="mb-0.5 block font-semibold" :for="for">
     {{ label }} {{ required ? '*' : '' }}
   </label>
 </template>
@@ -18,6 +18,5 @@ export interface AppLabelProps {
   for?: string;
 }
 
-const props = defineProps<AppLabelProps>();
-const forId = computed(() => props.for);
+defineProps<AppLabelProps>();
 </script>

@@ -108,8 +108,13 @@ meta:
           </p>
         </template>
 
-        <template #value-responseNo="{ value }">
-          {{ t('calloutResponsesPage.responseNo', { no: n(value) }) }}
+        <template #value-number="{ value, item }">
+          <router-link
+            :to="`${route.path}/${item.id}`"
+            class="text-base font-bold text-link"
+          >
+            {{ t('calloutResponsesPage.responseNo', { no: n(value) }) }}
+          </router-link>
         </template>
         <template #value-assignee="{ value }">
           <router-link
@@ -132,9 +137,7 @@ meta:
             }}
           </router-link>
           <span v-else-if="item.guestName">
-            <font-awesome-icon :icon="faUser" class="mr-2" />{{
-              item.guestName
-            }}
+            {{ item.guestName }} ({{ item.guestEmail }})
           </span>
           <span v-else>-</span>
         </template>

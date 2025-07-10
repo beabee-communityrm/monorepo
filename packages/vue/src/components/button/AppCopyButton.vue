@@ -19,12 +19,8 @@
     :disabled="props.disabled"
     @click="handleCopy"
   >
-    <font-awesome-icon
-      :icon="faCopy"
-      class="h-4 w-4"
-      :class="{ 'mr-2': label }"
-    />
-    <span v-if="label" class="text-sm">{{ label }}</span>
+    <font-awesome-icon :icon="faCopy" class="h-4 w-4" />
+    <span v-if="label" class="pl-2 text-sm">{{ label }}</span>
   </button>
 </template>
 

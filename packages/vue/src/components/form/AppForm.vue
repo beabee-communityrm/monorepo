@@ -60,7 +60,7 @@ export interface AppFormProps {
   buttonText: string;
   /** The text of the reset button */
   resetButtonText?: string;
-  /** Custom success message (defaults to 'Saved!' from form.saved) */
+  /** Custom success message */
   successText?: string;
   /** The text of the error notification */
   errorText?: Record<string, string>;
@@ -75,15 +75,7 @@ export interface AppFormProps {
 }
 
 const emit = defineEmits(['reset']);
-const props = withDefaults(defineProps<AppFormProps>(), {
-  resetButtonText: undefined,
-  successText: undefined,
-  errorText: () => ({}),
-  inlineError: false,
-  fullButton: false,
-  onSubmit: undefined,
-  extractErrorCode: () => 'unknown',
-});
+const props = defineProps<AppFormProps>();
 
 const defaultErrorMessages = computed<Record<string, string>>(() => ({
   unknown: t('form.errorMessages.generic'),
@@ -99,11 +91,6 @@ const errorMessages = computed<Record<string, string>>(() => ({
   ...props.errorText,
 }));
 
-// Get success message with internal i18n default
-const successMessage = computed(() => {
-  return props.successText || t('form.saved');
-});
-
 const isLoading = ref(false);
 const inlineErrorText = ref('');
 
@@ -115,9 +102,9 @@ async function handleSubmit(evt: Event) {
 
   try {
     const ret = await props.onSubmit?.(evt);
-    if (ret !== false) {
+    if (ret !== false && props.successText) {
       addNotification({
-        title: successMessage.value,
+        title: props.successText,
         variant: 'success',
       });
     }

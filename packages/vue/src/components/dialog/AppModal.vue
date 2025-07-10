@@ -23,19 +23,15 @@
           class="absolute right-0 top-0 h-8 w-8 hover:text-primary"
           type="button"
           :aria-label="t('actions.close')"
-          @click="$emit('close')"
+          @click="emit('close')"
         >
           <font-awesome-icon :icon="faTimes" />
         </button>
-        <h2
-          v-if="title"
-          :id="modalId + '-title'"
-          class="mb-4 text-lg font-semibold"
-        >
+        <AppHeading v-if="title" :id="modalId + '-title'">
           <span :class="{ 'text-danger': variant === 'danger' }">
             {{ title }}
           </span>
-        </h2>
+        </AppHeading>
         <div class="overflow-auto">
           <slot></slot>
         </div>
@@ -65,6 +61,7 @@ import { onBeforeUnmount, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { generateUniqueId } from '../../utils';
+import { AppHeading } from '../typography';
 
 const { t } = useI18n();
 
@@ -101,10 +98,7 @@ defineSlots<{
   default(): any;
 }>();
 
-const props = withDefaults(defineProps<AppModalProps>(), {
-  title: undefined,
-  variant: undefined,
-});
+const props = defineProps<AppModalProps>();
 
 // Generate unique ID for ARIA relationships
 const modalId = generateUniqueId('modal');

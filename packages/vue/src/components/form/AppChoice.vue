@@ -7,14 +7,14 @@
     @keydown="handleKeydown"
   >
     <button
-      v-for="(item, index) in items"
+      v-for="item in items"
       :key="item.value"
       ref="buttonRefs"
       type="button"
       role="radio"
       :aria-checked="item.value === modelValue"
       :tabindex="item.value === modelValue ? 0 : -1"
-      class="flex-grow basis-[90px] bg-white text-sm font-semibold outline outline-1 outline-primary-40 focus:z-30 focus:ring-2 focus:ring-link focus:ring-offset-2"
+      class="flex-grow basis-[90px] bg-white text-sm font-semibold outline outline-1 outline-primary-40"
       :class="[
         size === 'xs' ? 'p-2' : 'p-2.5',
         disabled

@@ -54,7 +54,7 @@
       <input
         :id="inputId"
         v-model.trim="value"
-        class="h-10 w-full flex-1 bg-white/0 px-2 leading-[20px] focus:outline-none focus:ring-2 focus:ring-link focus:ring-offset-2"
+        class="h-10 w-full flex-1 bg-white/0 px-2 leading-[20px] focus:outline-none"
         :class="disabled && 'opacity-60'"
         :type="type"
         :name="name"
@@ -73,7 +73,6 @@
       </span>
       <div v-if="copyable" class="flex-0 h-10 border-l border-primary-40">
         <AppCopyButton
-          variant="normal"
           :text="prefix ? `${prefix}${value}` : value?.toString() || ''"
           :disabled="copyButtonDisabled"
           :aria-label="`Copy ${label || 'input value'} to clipboard`"
