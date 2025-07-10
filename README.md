@@ -64,8 +64,6 @@ You need the following tools installed on your machine:
    yarn setup
    ```
 
-   Open your browser and navigate to http://localhost:3025 to access MailDev to confirm the email address you used for the setup script.
-
 6. Start the Docker Compose stack:
 
    ```bash
