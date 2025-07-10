@@ -27,13 +27,30 @@
 <template>
   <div v-if="result" class="flex flex-col items-end md:flex-row md:gap-4">
     <p class="mb-3 text-sm md:mb-0 md:flex-1">
-      <span v-if="result.count > 0" v-html="formattedShowingText" />
+      <i18n-t v-if="result.count > 0" keypath="common.showingOf">
+        <template #start
+          ><b>{{ n(result.offset + 1) }}</b></template
+        >
+        <template #end
+          ><b>{{ n(result.offset + result.count) }}</b></template
+        >
+        <template #total
+          ><b>{{ n(result.total) }}</b></template
+        >
+      </i18n-t>
     </p>
 
     <div v-if="!noLimit || totalPages > 1" class="flex gap-2">
       <template v-if="!noLimit">
         <p class="flex-1 self-center text-sm">
-          <span v-if="result.count > 0" v-html="formattedPageCountText" />
+          <i18n-t v-if="result.count > 0" keypath="common.pageCount">
+            <template #pageNumber
+              ><b>{{ n(props.page + 1) }}</b></template
+            >
+            <template #pageTotal
+              ><b>{{ n(totalPages) }}</b></template
+            >
+          </i18n-t>
         </p>
         <AppSelect v-model="currentLimit" :items="limits" />
       </template>
@@ -94,25 +111,6 @@ const limits = computed(() =>
 const totalPages = computed(() =>
   props.result ? Math.ceil(props.result.total / currentLimit.value) : 0
 );
-
-const formattedShowingText = computed(() => {
-  if (!props.result || props.result.count === 0) return '';
-
-  return t('common.showingOf', {
-    start: n(props.result.offset + 1),
-    end: n(props.result.offset + props.result.count),
-    total: n(props.result.total),
-  });
-});
-
-const formattedPageCountText = computed(() => {
-  if (!props.result || props.result.count === 0) return '';
-
-  return t('common.pageCount', {
-    pageNumber: n(props.page + 1),
-    pageTotal: n(totalPages.value),
-  });
-});
 
 // Watch for total pages changes and adjust current page if needed
 watch(totalPages, () => {
