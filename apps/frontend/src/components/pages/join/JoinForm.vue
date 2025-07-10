@@ -20,7 +20,7 @@
     </template>
 
     <AppForm :button-text="buttonText" full-button @submit="onSubmit">
-      <Contribution
+      <AppContribution
         v-model:amount="signUpData.amount"
         v-model:period="signUpData.period"
         v-model:pay-fee="signUpData.payFee"
@@ -36,7 +36,7 @@
           :label="t('join.noContribution')"
         />
         <AccountSection v-model:email="signUpData.email" class="my-6" />
-      </Contribution>
+      </AppContribution>
     </AppForm>
 
     <div class="mt-3 text-center text-xs">
@@ -70,12 +70,11 @@ import type {
   ContentJoinData,
   ContentPaymentData,
 } from '@beabee/beabee-common';
-import { AppCheckbox, AppForm } from '@beabee/vue';
-import { AppTitle } from '@beabee/vue';
+import { AppCheckbox, AppForm, AppTitle } from '@beabee/vue';
 
 import beabeeLogo from '@assets/images/beabee-logo.png';
 import AuthBox from '@components/AuthBox.vue';
-import Contribution from '@components/contribution/Contribution.vue';
+import AppContribution from '@components/contribution/AppContribution.vue';
 import { generalContent, isEmbed } from '@store';
 import { extractDefaultErrorCode } from '@utils/api-error';
 import useVuelidate from '@vuelidate/core';
