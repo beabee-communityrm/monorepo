@@ -131,9 +131,9 @@ meta:
               value.displayName
             }}
           </router-link>
-          <span v-else-if="(item as any).guestName">
+          <span v-else-if="item.guestName">
             <font-awesome-icon :icon="faUser" class="mr-2" />{{
-              (item as any).guestName
+              item.guestName
             }}
           </span>
           <span v-else>-</span>
@@ -171,7 +171,7 @@ meta:
                 {{
                   stringifyAnswer(
                     currentInlineComponent,
-                    (item.answers[currentInlineComponent.slideId] as any)?.[
+                    item.answers[currentInlineComponent.slideId]?.[
                       currentInlineComponent.key
                     ]
                   )

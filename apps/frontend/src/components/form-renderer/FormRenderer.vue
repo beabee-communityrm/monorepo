@@ -3,7 +3,7 @@
     :key="componentTextChangeCounter"
     class="callout-form-renderer"
     :form="{ components: localizedComponents }"
-    :submission="modelValue && ({ data: modelValue } as any)"
+    :submission="modelValue && { data: modelValue }"
     :options="formOpts"
     language="custom"
     @change="handleChange"

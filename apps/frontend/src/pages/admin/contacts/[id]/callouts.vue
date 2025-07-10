@@ -25,7 +25,7 @@ meta:
           :to="`/admin/callouts/view/${(value as any).slug}`"
           class="text-link"
         >
-          {{ (value as any).title }}
+          {{ value.title }}
         </router-link>
       </template>
       <template #value-createdAt="{ value }">

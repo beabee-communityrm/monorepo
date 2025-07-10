@@ -48,9 +48,7 @@ meta:
     "
     class="mb-8"
   >
-    <template #value-id="{ item }">
-      {{ (item as any).id }}_••••••••••••••••••</template
-    >
+    <template #value-id="{ item }"> {{ item.id }}_••••••••••••••••••</template>
     <template #value-createdAt="{ value }">
       <span class="whitespace-nowrap">{{ formatLocale(value, 'PP') }}</span>
     </template>
