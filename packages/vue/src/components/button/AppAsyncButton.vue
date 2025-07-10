@@ -64,17 +64,6 @@ export interface AppAsyncButtonProps extends AppButtonProps {
   title?: string;
 }
 
-/**
- * Slots available in the AppAsyncButton component
- */
-defineSlots<{
-  /**
-   * Default slot for button content
-   * @description The text or content to display inside the button when not loading
-   */
-  default(): any;
-}>();
-
 const props = withDefaults(defineProps<AppAsyncButtonProps>(), {
   onClick: undefined,
   ariaLabel: undefined,

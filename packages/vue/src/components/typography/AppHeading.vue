@@ -21,19 +21,8 @@
 
 <script lang="ts" setup>
 /**
- * Semantic H2 heading component with consistent typography
+ * Simple heading component that renders an h2 element with consistent styling
  *
  * @component AppHeading
  */
-
-/**
- * Slots available in the AppHeading component
- */
-defineSlots<{
-  /**
-   * Heading content
-   * @description The text or other content for the heading
-   */
-  default(): any;
-}>();
 </script>

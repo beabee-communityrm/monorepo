@@ -20,8 +20,7 @@
 
 <script lang="ts" setup>
 /**
- * Slide container component for AppSlider.
- * Provides a wrapper for individual slide content with proper styling and accessibility.
+ * Simple slide component for use within AppSlider
  *
  * @component AppSlide
  */
@@ -40,15 +39,4 @@ const props = withDefaults(defineProps<AppSlideProps>(), {
   ariaLabel: undefined,
   ariaRoleDescription: 'slide',
 });
-
-/**
- * Slots available in the AppSlide component
- */
-defineSlots<{
-  /**
-   * Default slot for slide content
-   * @description Place any content for the slide here
-   */
-  default(): any;
-}>();
 </script>

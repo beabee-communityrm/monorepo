@@ -23,19 +23,8 @@
 
 <script lang="ts" setup>
 /**
- * Semantic H3 subheading component with consistent typography
+ * Simple sub-heading component that renders an h3 element with consistent styling
  *
  * @component AppSubHeading
  */
-
-/**
- * Slots available in the AppSubHeading component
- */
-defineSlots<{
-  /**
-   * Subheading content
-   * @description The text or other content for the subheading
-   */
-  default(): any;
-}>();
 </script>

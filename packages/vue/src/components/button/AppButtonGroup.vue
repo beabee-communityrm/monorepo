@@ -4,12 +4,7 @@
   Creates a cohesive button group or toolbar appearance.
 -->
 <template>
-  <div
-    class="group/btns flex pl-px"
-    role="group"
-    :aria-label="ariaLabel"
-    :aria-description="ariaDescription"
-  >
+  <div class="group/btns flex pl-px" role="group" :aria-label="ariaLabel">
     <slot />
   </div>
 </template>
@@ -28,30 +23,13 @@
  * </AppButtonGroup>
  */
 
-/**
- * Props for the AppButtonGroup component
- */
 export interface AppButtonGroupProps {
   /** Accessible label for the button group */
   ariaLabel?: string;
-  /** Additional description for screen readers */
-  ariaDescription?: string;
 }
-
-/**
- * Slots available in the AppButtonGroup component
- */
-defineSlots<{
-  /**
-   * Default slot for AppButton components
-   * @description Place AppButton components here to create a connected button group
-   */
-  default(): any;
-}>();
 
 withDefaults(defineProps<AppButtonGroupProps>(), {
   ariaLabel: 'Button group',
-  ariaDescription: undefined,
 });
 </script>
 

@@ -28,15 +28,4 @@
  *
  * @component AppInfoList
  */
-
-/**
- * Slots available in the AppInfoList component
- */
-defineSlots<{
-  /**
-   * Definition list items
-   * @description Typically contains AppInfoListItem components or other dt/dd pairs
-   */
-  default(): any;
-}>();
 </script>

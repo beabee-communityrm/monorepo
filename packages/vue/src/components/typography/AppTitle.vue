@@ -31,7 +31,7 @@
 
 <script lang="ts" setup>
 /**
- * Semantic H1 title component with flexible styling options
+ * Simple title component that renders an h1 element with consistent styling
  *
  * @component AppTitle
  */
@@ -53,15 +53,4 @@ withDefaults(defineProps<AppTitleProps>(), {
   light: false,
   noMargin: false,
 });
-
-/**
- * Slots available in the AppTitle component
- */
-defineSlots<{
-  /**
-   * Title content
-   * @description The text or other content for the main title
-   */
-  default(): any;
-}>();
 </script>

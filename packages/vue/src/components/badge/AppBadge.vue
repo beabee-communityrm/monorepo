@@ -28,15 +28,4 @@
  *
  * @component AppBadge
  */
-
-/**
- * Slots available in the AppBadge component
- */
-defineSlots<{
-  /**
-   * Badge content - typically text, numbers, or icons
-   * @description The main content displayed within the badge
-   */
-  default(): any;
-}>();
 </script>

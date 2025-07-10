@@ -21,19 +21,8 @@
 
 <script lang="ts" setup>
 /**
- * Semantic H4 section heading component for content subsections
+ * Simple section heading component that renders an h3 element with consistent styling
  *
  * @component AppSectionHeading
  */
-
-/**
- * Slots available in the AppSectionHeading component
- */
-defineSlots<{
-  /**
-   * Section heading content
-   * @description The text or other content for the section heading
-   */
-  default(): any;
-}>();
 </script>

@@ -46,17 +46,6 @@ export interface ActionButtonProps {
   title?: string;
 }
 
-/**
- * Slots available in the ActionButton component
- */
-defineSlots<{
-  /**
-   * Default slot for button content
-   * @description The text or content to display inside the button
-   */
-  default(): any;
-}>();
-
 withDefaults(defineProps<ActionButtonProps>(), {
   ariaLabel: undefined,
   title: undefined,
