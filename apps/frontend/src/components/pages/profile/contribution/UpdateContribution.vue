@@ -256,21 +256,8 @@ watch(
         : props.modelValue.payFee
       : false;
     newContribution.prorate = true;
-
-    // Ensure paymentMethod is always set to a valid value
-    const currentPaymentMethod = props.modelValue.paymentSource?.method;
-    const availableMethods = props.content.paymentMethods;
-
-    // Fallback to a default payment method if none are configured
-    const defaultPaymentMethod =
-      availableMethods.length > 0
-        ? availableMethods[0]
-        : PaymentMethod.StripeCard; // Fallback if no methods configured
-
     newContribution.paymentMethod =
-      currentPaymentMethod && availableMethods.includes(currentPaymentMethod)
-        ? currentPaymentMethod
-        : defaultPaymentMethod;
+      props.modelValue.paymentSource?.method || props.content.paymentMethods[0];
   },
   { immediate: true }
 );

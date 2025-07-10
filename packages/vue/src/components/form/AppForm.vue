@@ -119,11 +119,7 @@ async function handleSubmit(evt: Event) {
     if (props.inlineError) {
       inlineErrorText.value = errorText;
     } else {
-      addNotification({
-        title: t('notifications.error'),
-        description: errorText,
-        variant: 'error',
-      });
+      addNotification({ title: errorText, variant: 'error' });
     }
   } finally {
     isLoading.value = false;
