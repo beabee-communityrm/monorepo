@@ -1165,7 +1165,8 @@
         "max": "",
         "min": "",
         "required": ""
-      }
+      },
+      "description": {}
     },
     "firstName": "Vorname",
     "lastName": "Nachname",

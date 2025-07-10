@@ -1165,7 +1165,8 @@
         "max": "Dein Code darf höchstens {max} Zeichen lang sein.",
         "min": "Dein Code muss mindestens {min} Zeichen haben.",
         "required": "Code benötigt"
-      }
+      },
+      "description": {}
     },
     "firstName": "Vorname",
     "lastName": "Nachname",

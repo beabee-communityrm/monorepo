@@ -1157,6 +1157,9 @@
         "required": "This field is required",
         "url": "Invalid URL"
       },
+      "description": {
+        "required": "Description is required"
+      },
       "url": {
         "required": "URL is required",
         "url": "Invalid URL"

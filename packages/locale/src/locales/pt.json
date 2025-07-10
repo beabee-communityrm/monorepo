@@ -1165,7 +1165,8 @@
         "max": "O código deve ter no máximo {max} caracteres.",
         "min": "O código deve ter no mínimo {min} caracteres.",
         "required": "O código é obrigatório"
-      }
+      },
+      "description": {}
     },
     "firstName": "Primeiro nome",
     "lastName": "Último nome",

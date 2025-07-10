@@ -1165,7 +1165,8 @@
         "max": "De code mag maximaal {max} tekens lang zijn.",
         "min": "De code moet minstens {min} tekens lang zijn.",
         "required": "Code is vereist"
-      }
+      },
+      "description": {}
     },
     "firstName": "Voornaam",
     "lastName": "Achternaam",

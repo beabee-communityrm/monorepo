@@ -1157,6 +1157,9 @@
         "required": "Dieses Feld wird benötigt",
         "url": "Ungültige URL"
       },
+      "description": {
+        "required": "Beschreibung benötigt"
+      },
       "url": {
         "required": "URL benötigt",
         "url": "Ungültige URL"
