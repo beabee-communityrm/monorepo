@@ -4,11 +4,13 @@
   Supports different date formats and optional icons for visual context.
 -->
 <template>
-  <p v-if="starts" class="flex items-center">
+  <p v-if="item.starts" class="flex items-center">
     <font-awesome-icon v-if="showIcon" :icon="faCalendar" class="mr-1" />
-    {{ formatLocale(starts, dateFormat) }}
-    <span v-if="expires" class="mx-1">{{ separator }}</span>
-    <span v-if="expires">{{ formatLocale(expires, dateFormat) }}</span>
+    {{ formatLocale(item.starts, dateFormat) }}
+    <span v-if="item.expires" class="mx-1">{{ separator }}</span>
+    <span v-if="item.expires">{{
+      formatLocale(item.expires, dateFormat)
+    }}</span>
   </p>
 </template>
 
@@ -20,11 +22,7 @@
  * @component ItemDateRange
  *
  * @example
- * <ItemDateRange
- *   :starts="new Date('2023-01-01')"
- *   :expires="new Date('2023-12-31')"
- *   date-format="PP"
- * />
+ * <ItemDateRange :item="item" date-format="PP" />
  */
 import { faCalendar } from '@fortawesome/free-regular-svg-icons';
 
@@ -34,10 +32,12 @@ import { formatLocale } from '../../utils/dates';
  * Props for the ItemDateRange component
  */
 export interface ItemDateRangeProps {
-  /** Start date of the range */
-  starts: Date | null;
-  /** End date of the range (optional) */
-  expires?: Date | null;
+  item: {
+    /** Start date of the range */
+    starts: Date | null;
+    /** End date of the range (optional) */
+    expires?: Date | null;
+  };
   /** Date format string (date-fns format) */
   dateFormat?: string;
   /** Separator between start and end dates */
@@ -46,8 +46,7 @@ export interface ItemDateRangeProps {
   showIcon?: boolean;
 }
 
-const props = withDefaults(defineProps<ItemDateRangeProps>(), {
-  expires: null,
+withDefaults(defineProps<ItemDateRangeProps>(), {
   dateFormat: 'PP',
   separator: ' - ',
   showIcon: true,

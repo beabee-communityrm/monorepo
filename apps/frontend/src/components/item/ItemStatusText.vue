@@ -32,11 +32,7 @@
  * @component ItemStatusText
  *
  * @example
- * <ItemStatusText
- *   :status="ItemStatus.Scheduled"
- *   :starts="new Date('2024-01-01')"
- *   :circle="true"
- * />
+ * <ItemStatusText :item="item" circle />
  */
 import { ItemStatus } from '@beabee/beabee-common';
 import { formatDistanceLocale } from '@beabee/vue';
@@ -52,12 +48,14 @@ const { t } = useI18n();
  * Props for the ItemStatusText component
  */
 export interface ItemStatusTextProps {
-  /** Current status of the item */
-  status: ItemStatus;
-  /** Start date of the item (for scheduled items) */
-  starts?: Date | null;
-  /** Expiration date of the item (for open/ended items) */
-  expires?: Date | null;
+  item: {
+    /** Current status of the item */
+    status: ItemStatus;
+    /** Start date of the item (for scheduled items) */
+    starts?: Date | null;
+    /** Expiration date of the item (for open/ended items) */
+    expires?: Date | null;
+  };
   /** Whether to show a colored circle indicator */
   circle?: boolean;
   /** Whether to display inline (horizontal) layout */

@@ -12,13 +12,11 @@
     <div class="mb-4 text-sm">
       <ItemStatusText
         class="font-semibold text-body-60"
-        :status="callout.status"
-        :starts="callout.starts"
-        :expires="callout.expires"
+        :item="callout"
         inline
         circle
       />
-      <ItemDateRange :starts="callout.starts" :expires="callout.expires" />
+      <ItemDateRange :item="callout" />
       <p>
         <router-link :to="calloutLink" class="relative z-10">
           <font-awesome-icon :icon="faExternalLinkAlt" />

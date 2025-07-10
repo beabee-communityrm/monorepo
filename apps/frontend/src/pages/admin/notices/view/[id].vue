@@ -12,12 +12,8 @@ meta:
       <div class="flex-initial basis-3/4">
         <AppHeading>{{ t('noticeAdminOverview.summary') }}</AppHeading>
         <AppNotice :notice="notice"></AppNotice>
-        <ItemStatusText
-          :status="notice.status"
-          :starts="notice.starts"
-          :expires="notice.expires"
-        />
-        <ItemDateRange :starts="notice.starts" :expires="notice.expires" />
+        <ItemStatusText :item="notice" />
+        <ItemDateRange :item="notice" />
       </div>
 
       <div class="flex-0 flex flex-wrap gap-2 lg:flex-col">
