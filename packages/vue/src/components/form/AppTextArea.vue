@@ -94,6 +94,7 @@ import {
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import { generateUniqueId } from '../../utils';
 import AppCopyButton from '../button/AppCopyButton.vue';
 import AppInputError from './AppInputError.vue';
 import AppInputHelp from './AppInputHelp.vue';
@@ -142,9 +143,7 @@ const props = withDefaults(defineProps<AppTextAreaProps>(), {
 });
 
 // Generate unique ID for aria-labels and form associations
-const id = computed(
-  () => props.id || `textarea-${Math.random().toString(36).substring(2, 11)}`
-);
+const id = computed(() => props.id || generateUniqueId('textarea'));
 
 const value = computed({
   get: () => props.modelValue,

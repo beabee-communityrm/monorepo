@@ -64,6 +64,8 @@ import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { computed, onBeforeUnmount, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import { generateUniqueId } from '../../utils';
+
 const { t } = useI18n();
 
 /**
@@ -105,9 +107,7 @@ const props = withDefaults(defineProps<AppModalProps>(), {
 });
 
 // Generate unique ID for ARIA relationships
-const modalId = computed(
-  () => `modal-${Math.random().toString(36).substring(2, 11)}`
-);
+const modalId = computed(() => generateUniqueId('modal'));
 
 const divRef = ref<HTMLElement>();
 

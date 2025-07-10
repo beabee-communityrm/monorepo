@@ -103,6 +103,7 @@ import {
 import { computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import { generateUniqueId } from '../../utils';
 import { AppCopyButton } from '../button';
 import AppInputError from './AppInputError.vue';
 import AppInputHelp from './AppInputHelp.vue';
@@ -172,8 +173,7 @@ const { t } = useI18n();
 
 // Generate unique IDs for accessibility
 const inputId = computed(
-  () =>
-    props.id || `input-${props.name}-${Math.random().toString(36).substr(2, 9)}`
+  () => props.id || generateUniqueId('input', [props.name])
 );
 const errorId = computed(() => `${inputId.value}-error`);
 const helpId = computed(() => `${inputId.value}-help`);
