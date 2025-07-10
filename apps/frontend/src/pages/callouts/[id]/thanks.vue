@@ -10,7 +10,7 @@ meta:
   <AppTitle v-if="!isEmbed" big>{{ callout.title }}</AppTitle>
   <CalloutThanksBox :callout="callout" class="mb-6" />
   <div class="w-full md:max-w-2xl">
-    <AppShareBox :url="`/callouts/${callout.slug}`" :base-url="env.appUrl" />
+    <AppShareBox :url="`${env.appUrl}/callouts/${callout.slug}`" />
   </div>
 </template>
 <script lang="ts" setup>

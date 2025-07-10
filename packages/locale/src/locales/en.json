@@ -673,7 +673,15 @@
     "responseSubmitted": "Response submitted",
     "share": {
       "address": "Share this callout with the following address:",
-      "services": "Or quickly share using one of these services:"
+      "services": "Or quickly share using one of these services:",
+      "aria": {
+        "facebook": "Share on Facebook",
+        "linkedin": "Share on LinkedIn",
+        "telegram": "Share on Telegram",
+        "twitter": "Share on Twitter",
+        "whatsapp": "Share on WhatsApp",
+        "email": "Share via email"
+      }
     },
     "showingPreview": "You can't submit a response in preview mode",
     "toContributionPage": "Edit my contribution",

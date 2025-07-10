@@ -26,10 +26,7 @@ meta:
     <div class="w-full md:max-w-2xl">
       <template v-if="!isRespondPage">
         <div v-if="callout.status === ItemStatus.Open" class="mb-6">
-          <AppShareBox
-            :url="`/callouts/${callout.slug}`"
-            :base-url="env.appUrl"
-          />
+          <AppShareBox :url="`${env.appUrl}/callouts/${callout.slug}`" />
         </div>
         <img class="mb-6 w-full" :src="imageUrl" />
         <div class="content-message mb-6 text-lg" v-html="callout.intro" />

@@ -1,29 +1,23 @@
 <!--
   # AppShareBox
-  A component for sharing content via various platforms with address and services links.
+  A component for sharing content via various platforms.
 
   ## Features
   - Share buttons for social media platforms
   - Email sharing option
   - Copy-to-clipboard functionality for links
-  - Address link with customizable text
-  - Services link with customizable text
   - Responsive layout
 
   ## Props
-  - `addressText`: Custom text for the address link
-  - `servicesText`: Custom text for the services link
-  - `addressLink`: URL for the address link
-  - `servicesLink`: URL for the services link
-  - Additional standard share box props
+  - `url`: The full URL to be shared
 
   ## Slots
   - Default slot for additional content
 
   ## Usage:
   - Place in any layout where sharing functionality is needed
-  - Customize address and services links as needed
-  - Content will automatically be shared based on current URL
+  - Pass the complete URL to be shared
+  - Content will automatically be shared based on the provided URL
 -->
 <template>
   <AppExpandableBox
@@ -35,9 +29,6 @@
     <div class="space-y-4">
       <!-- Address section -->
       <section>
-        <p class="mb-2 text-sm text-body-80">
-          {{ t('callout.share.address') }}
-        </p>
         <AppInput
           :model-value="fullUrl"
           :label="t('callout.share.address')"
@@ -65,7 +56,7 @@
             target="_blank"
             rel="nofollow noopener"
             class="hover:bg-grey-lightest flex items-center rounded border border-grey-light bg-white px-3 py-2 text-sm text-body transition-colors focus:outline-none focus:ring-2 focus:ring-primary-70 focus:ring-offset-2"
-            :aria-label="`Share on Facebook: ${fullUrl}`"
+            :aria-label="`${t('callout.share.aria.facebook')}: ${fullUrl}`"
           >
             <font-awesome-icon
               :icon="faFacebook"
@@ -81,7 +72,7 @@
             target="_blank"
             rel="nofollow noopener"
             class="hover:bg-grey-lightest flex items-center rounded border border-grey-light bg-white px-3 py-2 text-sm text-body transition-colors focus:outline-none focus:ring-2 focus:ring-primary-70 focus:ring-offset-2"
-            :aria-label="`Share on LinkedIn: ${fullUrl}`"
+            :aria-label="`${t('callout.share.aria.linkedin')}: ${fullUrl}`"
           >
             <font-awesome-icon
               :icon="faLinkedin"
@@ -97,7 +88,7 @@
             target="_blank"
             rel="nofollow noopener"
             class="hover:bg-grey-lightest flex items-center rounded border border-grey-light bg-white px-3 py-2 text-sm text-body transition-colors focus:outline-none focus:ring-2 focus:ring-primary-70 focus:ring-offset-2"
-            :aria-label="`Share on Telegram: ${fullUrl}`"
+            :aria-label="`${t('callout.share.aria.telegram')}: ${fullUrl}`"
           >
             <font-awesome-icon
               :icon="faTelegram"
@@ -113,7 +104,7 @@
             target="_blank"
             rel="nofollow noopener"
             class="hover:bg-grey-lightest flex items-center rounded border border-grey-light bg-white px-3 py-2 text-sm text-body transition-colors focus:outline-none focus:ring-2 focus:ring-primary-70 focus:ring-offset-2"
-            :aria-label="`Share on Twitter: ${fullUrl}`"
+            :aria-label="`${t('callout.share.aria.twitter')}: ${fullUrl}`"
           >
             <font-awesome-icon
               :icon="faTwitter"
@@ -129,7 +120,7 @@
             target="_blank"
             rel="nofollow noopener"
             class="hover:bg-grey-lightest flex items-center rounded border border-grey-light bg-white px-3 py-2 text-sm text-body transition-colors focus:outline-none focus:ring-2 focus:ring-primary-70 focus:ring-offset-2"
-            :aria-label="`Share on WhatsApp: ${fullUrl}`"
+            :aria-label="`${t('callout.share.aria.whatsapp')}: ${fullUrl}`"
           >
             <font-awesome-icon
               :icon="faWhatsapp"
@@ -145,7 +136,7 @@
             target="_blank"
             rel="nofollow noopener"
             class="hover:bg-grey-lightest flex items-center rounded border border-grey-light bg-white px-3 py-2 text-sm text-body transition-colors focus:outline-none focus:ring-2 focus:ring-primary-70 focus:ring-offset-2"
-            :aria-label="`Share via email: ${fullUrl}`"
+            :aria-label="`${t('callout.share.aria.email')}: ${fullUrl}`"
           >
             <font-awesome-icon
               :icon="faEnvelope"
@@ -185,18 +176,14 @@ const { t } = useI18n();
  * Props for the AppShareBox component
  */
 export interface AppShareBoxProps {
-  /** The relative URL or path to be shared */
+  /** The full URL to be shared */
   url: string;
-  /** The base URL to prepend to the relative URL */
-  baseUrl: string;
 }
 
 const props = defineProps<AppShareBoxProps>();
 
 /**
- * Computed full URL by combining baseUrl and url
+ * The URL to share (already complete)
  */
-const fullUrl = computed(() => {
-  return `${props.baseUrl}${props.url}`;
-});
+const fullUrl = computed(() => props.url);
 </script>
