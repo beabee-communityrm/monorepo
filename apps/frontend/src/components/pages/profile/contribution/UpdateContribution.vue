@@ -30,7 +30,7 @@
         class="mb-4"
       />
 
-      <Contribution
+      <AppContribution
         v-model:amount="newContribution.amount"
         v-model:pay-fee="newContribution.payFee"
         v-model:period="newContribution.period"
@@ -111,7 +111,7 @@ import {
 import { addNotification } from '@beabee/vue/store/notifications';
 
 import StripePayment from '@components/StripePayment.vue';
-import Contribution from '@components/contribution/Contribution.vue';
+import AppContribution from '@components/contribution/AppContribution.vue';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { currentUser } from '@store/currentUser';
 import { client, isApiError } from '@utils/api';
