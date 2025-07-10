@@ -105,10 +105,7 @@
     "view": "Bekijk",
     "yesDelete": "“Ja, verwijder het”",
     "yesDisable": "“Ja, schakel het uit”",
-    "yesRemove": "“Ja, verwijder het”",
-    "tryAgain": "",
-    "increase": "",
-    "decrease": ""
+    "yesRemove": "“Ja, verwijder het”"
   },
   "addContact": {
     "contactSaved": "Contact opgeslagen",
@@ -653,8 +650,7 @@
         "label": "",
         "option": "",
         "placeholder": ""
-      },
-      "title": ""
+      }
     },
     "confirmHuman": "Bevestig dat u een mens bent",
     "contactDetails": "Contactgegevens",
@@ -897,9 +893,7 @@
     "timeAgo": "{time} geleden",
     "timeIn": "in {time}",
     "until": "tot",
-    "yes": "Ja",
-    "showingOf": "",
-    "statusLabel": ""
+    "yes": "Ja"
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1176,9 +1170,7 @@
       "link": "Link",
       "numberedlist": "Genummerde lijst",
       "strikethrough": "Doorhalen",
-      "underline": "Onderstrepen",
-      "toolbar": "Rich text opmaak werkbalk",
-      "editor": "Rich text editor"
+      "underline": "Onderstrepen"
     },
     "saveChanges": "Wijzigingen opslaan",
     "saved": "Opgeslagen!",
@@ -1531,12 +1523,5 @@
   },
   "taxRate": {
     "invoiceName": "BTW"
-  },
-  "status": {
-    "loadingApplication": "",
-    "pleaseWait": "",
-    "connectingToServer": "",
-    "initializing": "",
-    "usuallyTakesSeconds": ""
   }
 }

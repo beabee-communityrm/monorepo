@@ -105,10 +105,7 @@
     "view": "",
     "yesDelete": "",
     "yesDisable": "",
-    "yesRemove": "",
-    "tryAgain": "",
-    "increase": "",
-    "decrease": ""
+    "yesRemove": ""
   },
   "addContact": {
     "contactSaved": "",
@@ -653,8 +650,7 @@
         "label": "",
         "option": "",
         "placeholder": ""
-      },
-      "title": ""
+      }
     },
     "confirmHuman": "",
     "contactDetails": "",
@@ -897,9 +893,7 @@
     "timeAgo": "{time} fa",
     "timeIn": "in {time}",
     "until": "fino",
-    "yes": "Sì",
-    "showingOf": "",
-    "statusLabel": ""
+    "yes": "Sì"
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1176,9 +1170,7 @@
       "link": "",
       "numberedlist": "",
       "strikethrough": "",
-      "underline": "",
-      "toolbar": "Barra degli strumenti di formattazione del testo ricco",
-      "editor": "Editor di testo ricco"
+      "underline": ""
     },
     "saveChanges": "",
     "saved": "Salvato!",
@@ -1531,12 +1523,5 @@
   },
   "taxRate": {
     "invoiceName": "VAT"
-  },
-  "status": {
-    "loadingApplication": "",
-    "pleaseWait": "",
-    "connectingToServer": "",
-    "initializing": "",
-    "usuallyTakesSeconds": ""
   }
 }

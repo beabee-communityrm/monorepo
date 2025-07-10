@@ -105,10 +105,7 @@
     "view": "",
     "yesDelete": "",
     "yesDisable": "",
-    "yesRemove": "",
-    "tryAgain": "",
-    "increase": "",
-    "decrease": ""
+    "yesRemove": ""
   },
   "addContact": {
     "contactSaved": "",
@@ -653,8 +650,7 @@
         "label": "",
         "option": "",
         "placeholder": ""
-      },
-      "title": ""
+      }
     },
     "confirmHuman": "Παρακαλώ επιβεβαιώστε ότι είστε άνθρωπος.",
     "contactDetails": "",
@@ -897,9 +893,7 @@
     "timeAgo": "πριν το {time}",
     "timeIn": "σε {time}",
     "until": "",
-    "yes": "",
-    "showingOf": "",
-    "statusLabel": ""
+    "yes": ""
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1176,9 +1170,7 @@
       "link": "",
       "numberedlist": "",
       "strikethrough": "",
-      "underline": "",
-      "toolbar": "Γραμμή εργαλείων μορφοποίησης εμπλουτισμένου κειμένου",
-      "editor": "Επεξεργαστής εμπλουτισμένου κειμένου"
+      "underline": ""
     },
     "saveChanges": "",
     "saved": "",
@@ -1531,12 +1523,5 @@
   },
   "taxRate": {
     "invoiceName": ""
-  },
-  "status": {
-    "loadingApplication": "",
-    "pleaseWait": "",
-    "connectingToServer": "",
-    "initializing": "",
-    "usuallyTakesSeconds": ""
   }
 }

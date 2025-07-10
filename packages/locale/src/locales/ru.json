@@ -105,10 +105,7 @@
     "view": "Просмотреть",
     "yesDelete": "Да, удалить",
     "yesDisable": "Да, отключить",
-    "yesRemove": "Да, удалить",
-    "tryAgain": "",
-    "increase": "",
-    "decrease": ""
+    "yesRemove": "Да, удалить"
   },
   "addContact": {
     "contactSaved": "",
@@ -653,8 +650,7 @@
         "label": "",
         "option": "",
         "placeholder": ""
-      },
-      "title": ""
+      }
     },
     "confirmHuman": "Confirma por favor que és um humano",
     "contactDetails": "Контакты",
@@ -897,9 +893,7 @@
     "timeAgo": "до {time}",
     "timeIn": "в {time}",
     "until": "до",
-    "yes": "Да",
-    "showingOf": "",
-    "statusLabel": ""
+    "yes": "Да"
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1176,9 +1170,7 @@
       "link": "Ссылка",
       "numberedlist": "Нумерованный список",
       "strikethrough": "Перечёркнутый",
-      "underline": "Подчёркнутый",
-      "toolbar": "Панель инструментов форматирования текста",
-      "editor": "Редактор текста"
+      "underline": "Подчёркнутый"
     },
     "saveChanges": "Сохранить изменения",
     "saved": "Изменения сохранены",
@@ -1531,12 +1523,5 @@
   },
   "taxRate": {
     "invoiceName": "???"
-  },
-  "status": {
-    "loadingApplication": "",
-    "pleaseWait": "",
-    "connectingToServer": "",
-    "initializing": "",
-    "usuallyTakesSeconds": ""
   }
 }

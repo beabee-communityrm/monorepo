@@ -105,10 +105,7 @@
     "view": "Visualiser",
     "yesDelete": "Oui, supprimer",
     "yesDisable": "Oui, désactiver",
-    "yesRemove": "Oui, retirer",
-    "tryAgain": "",
-    "increase": "",
-    "decrease": ""
+    "yesRemove": "Oui, retirer"
   },
   "addContact": {
     "contactSaved": "Contact enregistré",
@@ -653,8 +650,7 @@
         "label": "Intitulé",
         "option": "Option {n}",
         "placeholder": "Texte indicatif"
-      },
-      "title": ""
+      }
     },
     "confirmHuman": "Veuillez confirmer que vous êtes humain",
     "contactDetails": "Informations de contact",
@@ -897,9 +893,7 @@
     "timeAgo": "il y a {time}",
     "timeIn": "dans {time}",
     "until": "jusqu'à",
-    "yes": "Oui",
-    "showingOf": "",
-    "statusLabel": ""
+    "yes": "Oui"
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1176,9 +1170,7 @@
       "link": "Lien",
       "numberedlist": "Liste ordonnée",
       "strikethrough": "Barré",
-      "underline": "Souligné",
-      "toolbar": "Barre d'outils de formatage de texte enrichi",
-      "editor": "Éditeur de texte enrichi"
+      "underline": "Souligné"
     },
     "saveChanges": "Enregistrer les modifications",
     "saved": "Enregistré !",
@@ -1531,12 +1523,5 @@
   },
   "taxRate": {
     "invoiceName": "TVA"
-  },
-  "status": {
-    "loadingApplication": "",
-    "pleaseWait": "",
-    "connectingToServer": "",
-    "initializing": "",
-    "usuallyTakesSeconds": ""
   }
 }

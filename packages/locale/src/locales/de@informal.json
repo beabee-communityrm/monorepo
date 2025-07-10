@@ -105,10 +105,7 @@
     "view": "Anzeigen",
     "yesDelete": "Ja, löschen",
     "yesDisable": "Ja, deaktivieren",
-    "yesRemove": "Ja, entfernen",
-    "tryAgain": "Nochmal versuchen",
-    "increase": "Erhöhen",
-    "decrease": "Verringern"
+    "yesRemove": "Ja, entfernen"
   },
   "addContact": {
     "contactSaved": "Kontakt gespeichert",
@@ -653,8 +650,7 @@
         "label": "Bezeichnung",
         "option": "Option {n}",
         "placeholder": "Platzhalter"
-      },
-      "title": "Callout-Builder"
+      }
     },
     "confirmHuman": "Bitte bestätige, dass du ein Mensch bist",
     "contactDetails": "Kontaktdaten",
@@ -800,10 +796,10 @@
     "add": "Auswerter hinzufügen",
     "confirmDelete": {
       "text": "Bist du sicher, dass du {reviewerName} entfernen möchtest? Diese Person wird diesen Callout nicht mehr überprüfen können.",
-      "title": "Auswerter entfernen"
+      "title": ""
     },
-    "contact": "Kontakt ID",
-    "title": "Callout Auswerter"
+    "contact": "",
+    "title": ""
   },
   "calloutThanksPage": {
     "oneResponseWarning": "Bitte beacht, dass dieser Callout nur eine Antwort pro Person zulässt. Wenn du bereits teilgenommen hast, werden weitere Antworten nicht berücksichtigt."
@@ -897,9 +893,7 @@
     "timeAgo": "vor {time}",
     "timeIn": "in {time}",
     "until": "bis",
-    "yes": "Ja",
-    "showingOf": "",
-    "statusLabel": "Status: {status}"
+    "yes": "Ja"
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1176,9 +1170,7 @@
       "link": "Link",
       "numberedlist": "Nummerierung",
       "strikethrough": "Durchstreichen",
-      "underline": "Unterstreichen",
-      "toolbar": "Rich-Text-Formatierung Symbolleiste",
-      "editor": "Rich-Text-Editor"
+      "underline": "Unterstreichen"
     },
     "saveChanges": "Änderungen speichern",
     "saved": "Gespeichert!",
@@ -1531,12 +1523,5 @@
   },
   "taxRate": {
     "invoiceName": "MwSt"
-  },
-  "status": {
-    "loadingApplication": "Anwendung wird geladen",
-    "pleaseWait": "Bitte warten...",
-    "connectingToServer": "Verbindung zum Server wird hergestellt...",
-    "initializing": "Wird initialisiert...",
-    "usuallyTakesSeconds": "Das dauert normalerweise nur wenige Sekunden"
   }
 }
