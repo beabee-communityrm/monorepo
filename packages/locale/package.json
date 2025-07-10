@@ -35,6 +35,7 @@
   "exports": {
     "./package.json": "./package.json",
     "./locales/*": "./src/locales/*.json",
+    "./locales-with-fallback/*": "./src/locales/*.json",
     "./locales": {
       "import": {
         "types": "./src/locales/index.ts",

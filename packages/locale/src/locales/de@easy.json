@@ -105,7 +105,10 @@
     "view": "",
     "yesDelete": "",
     "yesDisable": "",
-    "yesRemove": ""
+    "yesRemove": "",
+    "tryAgain": "",
+    "increase": "",
+    "decrease": ""
   },
   "addContact": {
     "contactSaved": "",
@@ -650,7 +653,8 @@
         "label": "",
         "option": "",
         "placeholder": ""
-      }
+      },
+      "title": ""
     },
     "confirmHuman": "Du musst hier klicken. Dann weiß der Computer: Dass du ein Mensch bist. Und keine Maschine.",
     "contactDetails": "Kontaktdaten",
@@ -669,7 +673,15 @@
     "responseSubmitted": "Dein Brief / Deine Mail wurde weg-geschickt.",
     "share": {
       "address": "Hier kannst du den Aufruf an andere schicken. Drücke dazu hier.",
-      "services": "Diesen Aufruf kannst du hier auch an andere Menschen schicken. Zum Beispiel über Facebook oder über TikTok oder über Instagram."
+      "services": "Diesen Aufruf kannst du hier auch an andere Menschen schicken. Zum Beispiel über Facebook oder über TikTok oder über Instagram.",
+      "aria": {
+        "facebook": "",
+        "linkedin": "",
+        "telegram": "",
+        "twitter": "",
+        "whatsapp": "",
+        "email": ""
+      }
     },
     "showingPreview": "",
     "toContributionPage": "",
@@ -893,7 +905,9 @@
     "timeAgo": "vor",
     "timeIn": "in",
     "until": "",
-    "yes": ""
+    "yes": "",
+    "showingOf": "",
+    "statusLabel": ""
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1170,7 +1184,9 @@
       "link": "",
       "numberedlist": "",
       "strikethrough": "",
-      "underline": ""
+      "underline": "",
+      "toolbar": "",
+      "editor": ""
     },
     "saveChanges": "",
     "saved": "",
@@ -1523,5 +1539,12 @@
   },
   "taxRate": {
     "invoiceName": "MwSt"
+  },
+  "status": {
+    "loadingApplication": "",
+    "pleaseWait": "",
+    "connectingToServer": "",
+    "initializing": "",
+    "usuallyTakesSeconds": ""
   }
 }

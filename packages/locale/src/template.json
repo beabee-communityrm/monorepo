@@ -673,7 +673,15 @@
     "responseSubmitted": "",
     "share": {
       "address": "",
-      "services": ""
+      "services": "",
+      "aria": {
+        "facebook": "",
+        "linkedin": "",
+        "telegram": "",
+        "twitter": "",
+        "whatsapp": "",
+        "email": ""
+      }
     },
     "showingPreview": "",
     "toContributionPage": "",

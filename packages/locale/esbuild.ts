@@ -1,17 +1,18 @@
 // Build Node.js CJS module with esbuild.
-import * as esbuild from "esbuild";
 import {
   buildCJS,
-  isWatchMode,
   createCopyPlugin,
-  normalizeTranslations,
+  generateFallbackTranslations,
   generateTemplate,
-  applyFallbacksToSources,
+  isWatchMode,
+  normalizeTranslations,
 } from "@beabee/esbuild";
+import * as esbuild from "esbuild";
 import { config } from "./src/config.ts";
 
 const OUTDIR_CJS = "./dist/cjs";
 const SOURCE_LOCALES_DIR = "./src/locales";
+const FALLBACK_LOCALES_DIR = "./dist/locales-with-fallback";
 const TEMPLATE_PATH = "./src/template.json";
 
 const isWatch = isWatchMode();
@@ -44,9 +45,13 @@ async function main() {
   await normalizeTranslations(SOURCE_LOCALES_DIR);
   await generateTemplate(SOURCE_LOCALES_DIR, TEMPLATE_PATH);
 
-  // Apply fallback translations to source files
-  // This ensures direct TypeScript imports get fallbacks
-  await applyFallbacksToSources(config, SOURCE_LOCALES_DIR);
+  // Generate fallback translations to output directory
+  // This ensures TypeScript imports can use files with fallbacks without modifying sources
+  await generateFallbackTranslations(
+    config,
+    SOURCE_LOCALES_DIR,
+    FALLBACK_LOCALES_DIR,
+  );
 
   const entryPoints = ["./src/index.ts", "./src/**/*.ts"];
 

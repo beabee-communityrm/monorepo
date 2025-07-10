@@ -105,7 +105,10 @@
     "view": "Anzeigen",
     "yesDelete": "Ja, löschen",
     "yesDisable": "Ja, deaktivieren",
-    "yesRemove": "Ja, entfernen"
+    "yesRemove": "Ja, entfernen",
+    "tryAgain": "",
+    "increase": "",
+    "decrease": ""
   },
   "addContact": {
     "contactSaved": "Kontakt gespeichert",
@@ -650,7 +653,8 @@
         "label": "Bezeichnung",
         "option": "Option {n}",
         "placeholder": "Platzhalter"
-      }
+      },
+      "title": ""
     },
     "confirmHuman": "Bitte bestätige, dass du ein Mensch bist",
     "contactDetails": "Kontaktdaten",
@@ -669,7 +673,15 @@
     "responseSubmitted": "Antwort eingereicht",
     "share": {
       "address": "Diesen Callout per Link teilen:",
-      "services": "Diesen Callout auf einer der folgenden Plattformen teilen: "
+      "services": "Diesen Callout auf einer der folgenden Plattformen teilen: ",
+      "aria": {
+        "facebook": "",
+        "linkedin": "",
+        "telegram": "",
+        "twitter": "",
+        "whatsapp": "",
+        "email": ""
+      }
     },
     "showingPreview": "Im Vorschaumodus sind Antworten deaktiviert.",
     "toContributionPage": "Meinen Beitrag ändern",
@@ -893,7 +905,9 @@
     "timeAgo": "vor {time}",
     "timeIn": "in {time}",
     "until": "bis",
-    "yes": "Ja"
+    "yes": "Ja",
+    "showingOf": "",
+    "statusLabel": ""
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1170,7 +1184,9 @@
       "link": "Link",
       "numberedlist": "Nummerierung",
       "strikethrough": "Durchstreichen",
-      "underline": "Unterstreichen"
+      "underline": "Unterstreichen",
+      "toolbar": "",
+      "editor": ""
     },
     "saveChanges": "Änderungen speichern",
     "saved": "Gespeichert!",
@@ -1523,5 +1539,12 @@
   },
   "taxRate": {
     "invoiceName": "MwSt"
+  },
+  "status": {
+    "loadingApplication": "",
+    "pleaseWait": "",
+    "connectingToServer": "",
+    "initializing": "",
+    "usuallyTakesSeconds": ""
   }
 }

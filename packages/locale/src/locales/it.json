@@ -105,7 +105,10 @@
     "view": "",
     "yesDelete": "",
     "yesDisable": "",
-    "yesRemove": ""
+    "yesRemove": "",
+    "tryAgain": "",
+    "increase": "",
+    "decrease": ""
   },
   "addContact": {
     "contactSaved": "",
@@ -650,7 +653,8 @@
         "label": "",
         "option": "",
         "placeholder": ""
-      }
+      },
+      "title": ""
     },
     "confirmHuman": "",
     "contactDetails": "",
@@ -669,7 +673,15 @@
     "responseSubmitted": "",
     "share": {
       "address": "",
-      "services": ""
+      "services": "",
+      "aria": {
+        "facebook": "",
+        "linkedin": "",
+        "telegram": "",
+        "twitter": "",
+        "whatsapp": "",
+        "email": ""
+      }
     },
     "showingPreview": "",
     "toContributionPage": "",
@@ -893,7 +905,9 @@
     "timeAgo": "{time} fa",
     "timeIn": "in {time}",
     "until": "fino",
-    "yes": "Sì"
+    "yes": "Sì",
+    "showingOf": "",
+    "statusLabel": ""
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1170,7 +1184,9 @@
       "link": "",
       "numberedlist": "",
       "strikethrough": "",
-      "underline": ""
+      "underline": "",
+      "toolbar": "",
+      "editor": ""
     },
     "saveChanges": "",
     "saved": "Salvato!",
@@ -1523,5 +1539,12 @@
   },
   "taxRate": {
     "invoiceName": "VAT"
+  },
+  "status": {
+    "loadingApplication": "",
+    "pleaseWait": "",
+    "connectingToServer": "",
+    "initializing": "",
+    "usuallyTakesSeconds": ""
   }
 }

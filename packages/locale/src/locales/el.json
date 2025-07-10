@@ -105,7 +105,10 @@
     "view": "",
     "yesDelete": "",
     "yesDisable": "",
-    "yesRemove": ""
+    "yesRemove": "",
+    "tryAgain": "",
+    "increase": "",
+    "decrease": ""
   },
   "addContact": {
     "contactSaved": "",
@@ -650,7 +653,8 @@
         "label": "",
         "option": "",
         "placeholder": ""
-      }
+      },
+      "title": ""
     },
     "confirmHuman": "Παρακαλώ επιβεβαιώστε ότι είστε άνθρωπος.",
     "contactDetails": "",
@@ -669,7 +673,15 @@
     "responseSubmitted": "Το μήνυμά σας έχει σταλεί.",
     "share": {
       "address": "Εδώ μπορείτε να προωθήσετε αυτήν τη φόρμα στην ακόλουθη διεύθυνση:",
-      "services": "Μπορείτε επίσης να στείλετε αυτήν τη φόρμα σε άλλα άτομα, για παράδειγμα, μέσω Facebook, TikTok ή Instagram."
+      "services": "Μπορείτε επίσης να στείλετε αυτήν τη φόρμα σε άλλα άτομα, για παράδειγμα, μέσω Facebook, TikTok ή Instagram.",
+      "aria": {
+        "facebook": "",
+        "linkedin": "",
+        "telegram": "",
+        "twitter": "",
+        "whatsapp": "",
+        "email": ""
+      }
     },
     "showingPreview": "",
     "toContributionPage": "",
@@ -893,7 +905,9 @@
     "timeAgo": "πριν το {time}",
     "timeIn": "σε {time}",
     "until": "",
-    "yes": ""
+    "yes": "",
+    "showingOf": "",
+    "statusLabel": ""
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1170,7 +1184,9 @@
       "link": "",
       "numberedlist": "",
       "strikethrough": "",
-      "underline": ""
+      "underline": "",
+      "toolbar": "",
+      "editor": ""
     },
     "saveChanges": "",
     "saved": "",
@@ -1523,5 +1539,12 @@
   },
   "taxRate": {
     "invoiceName": ""
+  },
+  "status": {
+    "loadingApplication": "",
+    "pleaseWait": "",
+    "connectingToServer": "",
+    "initializing": "",
+    "usuallyTakesSeconds": ""
   }
 }

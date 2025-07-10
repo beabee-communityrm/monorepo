@@ -11,7 +11,7 @@ import pages from 'vite-plugin-pages';
 const require = createRequire(import.meta.url);
 const LOCALE_PATH = resolve(
   dirname(require.resolve('@beabee/locale/package.json')),
-  'src/locales'
+  'dist/locales-with-fallback'
 );
 
 export default ({ command, mode }) => {

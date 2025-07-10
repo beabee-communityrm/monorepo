@@ -105,7 +105,10 @@
     "view": "Просмотреть",
     "yesDelete": "Да, удалить",
     "yesDisable": "Да, отключить",
-    "yesRemove": "Да, удалить"
+    "yesRemove": "Да, удалить",
+    "tryAgain": "",
+    "increase": "",
+    "decrease": ""
   },
   "addContact": {
     "contactSaved": "",
@@ -650,7 +653,8 @@
         "label": "",
         "option": "",
         "placeholder": ""
-      }
+      },
+      "title": ""
     },
     "confirmHuman": "Confirma por favor que és um humano",
     "contactDetails": "Контакты",
@@ -669,7 +673,15 @@
     "responseSubmitted": "Ответ отправлен",
     "share": {
       "address": "Отправить этот опрос на почту:",
-      "services": "Или поделитесь им с помощью одного из этих сервисов:"
+      "services": "Или поделитесь им с помощью одного из этих сервисов:",
+      "aria": {
+        "facebook": "",
+        "linkedin": "",
+        "telegram": "",
+        "twitter": "",
+        "whatsapp": "",
+        "email": ""
+      }
     },
     "showingPreview": "Вы не можете отправить ответ в режиме предварительного просмотра",
     "toContributionPage": "Изменить мой уровень участия",
@@ -893,7 +905,9 @@
     "timeAgo": "до {time}",
     "timeIn": "в {time}",
     "until": "до",
-    "yes": "Да"
+    "yes": "Да",
+    "showingOf": "",
+    "statusLabel": ""
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1170,7 +1184,9 @@
       "link": "Ссылка",
       "numberedlist": "Нумерованный список",
       "strikethrough": "Перечёркнутый",
-      "underline": "Подчёркнутый"
+      "underline": "Подчёркнутый",
+      "toolbar": "",
+      "editor": ""
     },
     "saveChanges": "Сохранить изменения",
     "saved": "Изменения сохранены",
@@ -1523,5 +1539,12 @@
   },
   "taxRate": {
     "invoiceName": "???"
+  },
+  "status": {
+    "loadingApplication": "",
+    "pleaseWait": "",
+    "connectingToServer": "",
+    "initializing": "",
+    "usuallyTakesSeconds": ""
   }
 }
