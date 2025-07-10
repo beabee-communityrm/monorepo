@@ -2,10 +2,6 @@
   <AppForm
     :button-text="t('form.saveChanges')"
     :success-text="t('form.updated')"
-    :error-text="{
-      'duplicate-email': t('form.errorMessages.api.duplicate-email'),
-    }"
-    :validation-error-message="t('form.errorMessages.validation')"
     @submit="handleSubmit"
   >
     <AppHeading>{{ t('accountPage.contactInformation') }}</AppHeading>
