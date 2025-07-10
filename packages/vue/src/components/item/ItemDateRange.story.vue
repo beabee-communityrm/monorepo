@@ -32,8 +32,7 @@ const eventDates = {
     <Variant title="Playground">
       <div class="flex max-w-md flex-col gap-4">
         <ItemDateRange
-          :starts="state.starts"
-          :expires="state.expires"
+          :item="{ starts: state.starts, expires: state.expires }"
           :date-format="state.dateFormat"
           :separator="state.separator"
           :show-icon="state.showIcon"
@@ -64,8 +63,10 @@ const eventDates = {
         >
           <h4 class="mb-2 font-semibold">{{ format.label }}</h4>
           <ItemDateRange
-            :starts="new Date('2024-01-15T10:00:00')"
-            :expires="new Date('2024-03-15T18:00:00')"
+            :item="{
+              starts: new Date('2024-01-15T10:00:00'),
+              expires: new Date('2024-03-15T18:00:00'),
+            }"
             :date-format="format.value"
           />
         </div>
@@ -77,30 +78,36 @@ const eventDates = {
         <div class="rounded border p-3">
           <h4 class="mb-2 font-semibold">Upcoming Event</h4>
           <ItemDateRange
-            :starts="eventDates.upcoming"
-            :expires="new Date('2024-12-31T23:59:59')"
+            :item="{
+              starts: eventDates.upcoming,
+              expires: new Date('2024-12-31T23:59:59'),
+            }"
           />
         </div>
 
         <div class="rounded border p-3">
           <h4 class="mb-2 font-semibold">Current Event</h4>
           <ItemDateRange
-            :starts="eventDates.current"
-            :expires="new Date('2024-06-15T18:00:00')"
+            :item="{
+              starts: eventDates.current,
+              expires: new Date('2024-06-15T18:00:00'),
+            }"
           />
         </div>
 
         <div class="rounded border p-3">
           <h4 class="mb-2 font-semibold">Past Event</h4>
           <ItemDateRange
-            :starts="eventDates.past"
-            :expires="new Date('2023-08-15T17:00:00')"
+            :item="{
+              starts: eventDates.past,
+              expires: new Date('2023-08-15T17:00:00'),
+            }"
           />
         </div>
 
         <div class="rounded border p-3">
           <h4 class="mb-2 font-semibold">Single Date (No End)</h4>
-          <ItemDateRange :starts="eventDates.current" />
+          <ItemDateRange :item="{ starts: eventDates.current }" />
         </div>
       </div>
     </Variant>
@@ -110,8 +117,10 @@ const eventDates = {
         <div class="rounded border p-3">
           <h4 class="mb-2 font-semibold">Without Icon</h4>
           <ItemDateRange
-            :starts="new Date('2024-01-15T10:00:00')"
-            :expires="new Date('2024-03-15T18:00:00')"
+            :item="{
+              starts: new Date('2024-01-15T10:00:00'),
+              expires: new Date('2024-03-15T18:00:00'),
+            }"
             :show-icon="false"
           />
         </div>
@@ -119,8 +128,10 @@ const eventDates = {
         <div class="rounded border p-3">
           <h4 class="mb-2 font-semibold">Custom Separator</h4>
           <ItemDateRange
-            :starts="new Date('2024-01-15T10:00:00')"
-            :expires="new Date('2024-03-15T18:00:00')"
+            :item="{
+              starts: new Date('2024-01-15T10:00:00'),
+              expires: new Date('2024-03-15T18:00:00'),
+            }"
             separator=" → "
           />
         </div>
@@ -128,8 +139,10 @@ const eventDates = {
         <div class="rounded border p-3">
           <h4 class="mb-2 font-semibold">Long Separator</h4>
           <ItemDateRange
-            :starts="new Date('2024-01-15T10:00:00')"
-            :expires="new Date('2024-03-15T18:00:00')"
+            :item="{
+              starts: new Date('2024-01-15T10:00:00'),
+              expires: new Date('2024-03-15T18:00:00'),
+            }"
             separator=" until "
           />
         </div>
