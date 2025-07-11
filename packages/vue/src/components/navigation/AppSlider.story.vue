@@ -509,5 +509,126 @@ const onInteractiveSlideChange = (details: AppSliderSlideEventDetails) => {
         </div>
       </div>
     </Variant>
+
+    <!-- Disabled Slider -->
+    <Variant
+      title="Disabled Slider"
+      description="Slider with disabled state and keyboard navigation info"
+    >
+      <div class="mb-4 space-y-2">
+        <p class="text-sm text-grey-dark">
+          <strong>Keyboard Navigation:</strong> Focus the slider and use Arrow
+          Left/Right, Home, End keys to navigate
+        </p>
+        <p class="text-sm text-grey-dark">
+          <strong>Disabled:</strong> The slider below is disabled to show the
+          difference
+        </p>
+      </div>
+
+      <AppSlider disabled @slide="onSlideChange">
+        <template #slides>
+          <AppSlide>
+            <div
+              class="flex min-h-[200px] items-center justify-center rounded-lg bg-grey-light p-8 text-center text-grey-dark"
+            >
+              <div>
+                <h3 class="mb-4 text-2xl font-bold">Disabled Slide 1</h3>
+                <p>This slider is disabled and cannot be navigated.</p>
+              </div>
+            </div>
+          </AppSlide>
+          <AppSlide>
+            <div
+              class="flex min-h-[200px] items-center justify-center rounded-lg bg-grey-light p-8 text-center text-grey-dark"
+            >
+              <div>
+                <h3 class="mb-4 text-2xl font-bold">Disabled Slide 2</h3>
+                <p>Navigation is blocked when disabled prop is true.</p>
+              </div>
+            </div>
+          </AppSlide>
+        </template>
+        <template
+          #navigation="{ activeSlide, slideCount, nextSlide, prevSlide }"
+        >
+          <div class="mt-4 flex justify-center space-x-2">
+            <button
+              class="cursor-not-allowed rounded bg-grey-light px-4 py-2 text-grey-dark opacity-50"
+              disabled
+            >
+              Previous
+            </button>
+            <span class="px-4 py-2"
+              >{{ activeSlide + 1 }} / {{ slideCount }}</span
+            >
+            <button
+              class="cursor-not-allowed rounded bg-grey-light px-4 py-2 text-grey-dark opacity-50"
+              disabled
+            >
+              Next
+            </button>
+          </div>
+        </template>
+      </AppSlider>
+    </Variant>
+
+    <!-- Keyboard Navigation Demo -->
+    <Variant
+      title="Keyboard Navigation"
+      description="Interactive slider demonstrating keyboard navigation"
+    >
+      <div class="mb-4 space-y-2">
+        <p class="text-sm text-grey-dark">
+          <strong>Instructions:</strong> Click on the slider to focus it, then
+          use keyboard navigation
+        </p>
+        <div class="flex flex-wrap gap-2 text-sm">
+          <kbd class="rounded bg-grey-light px-2 py-1">←</kbd>
+          <span>Previous</span>
+          <kbd class="rounded bg-grey-light px-2 py-1">→</kbd>
+          <span>Next</span>
+          <kbd class="rounded bg-grey-light px-2 py-1">Home</kbd>
+          <span>First</span>
+          <kbd class="rounded bg-grey-light px-2 py-1">End</kbd>
+          <span>Last</span>
+        </div>
+      </div>
+
+      <AppSlider @slide="onSlideChange">
+        <template #slides>
+          <AppSlide>
+            <div
+              class="bg-info flex min-h-[200px] items-center justify-center rounded-lg p-8 text-center text-white"
+            >
+              <div>
+                <h3 class="mb-4 text-2xl font-bold">Keyboard Navigation</h3>
+                <p>Use arrow keys to navigate between slides.</p>
+              </div>
+            </div>
+          </AppSlide>
+          <AppSlide>
+            <div
+              class="flex min-h-[200px] items-center justify-center rounded-lg bg-success p-8 text-center text-white"
+            >
+              <div>
+                <h3 class="mb-4 text-2xl font-bold">Home/End Keys</h3>
+                <p>Use Home/End to jump to first/last slide.</p>
+              </div>
+            </div>
+          </AppSlide>
+          <AppSlide>
+            <div
+              class="flex min-h-[200px] items-center justify-center rounded-lg bg-warning p-8 text-center text-white"
+            >
+              <div>
+                <h3 class="mb-4 text-2xl font-bold">Accessible</h3>
+                <p>Keyboard navigation improves accessibility.</p>
+              </div>
+            </div>
+          </AppSlide>
+        </template>
+      </AppSlider>
+    </Variant>
   </Story>
 </template>
