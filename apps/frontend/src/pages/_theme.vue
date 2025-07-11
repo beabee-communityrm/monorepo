@@ -135,7 +135,7 @@ meta:
       </h3>
       <div class="bg-white p-4">
         <div class="relative mx-auto max-w-[1200px]">
-          <AppSlider :show-navigation-buttons="true" :infinite="true">
+          <AppSlider :infinite="true">
             <template #slides>
               <!-- Put your slides here -->
               <AppSlide>
@@ -195,7 +195,6 @@ meta:
       <div class="bg-white p-4">
         <div class="relative mx-auto max-w-[1200px]">
           <AppSlider
-            :show-navigation-buttons="true"
             :infinite="true"
             :steps="[
               { name: 'Step 1', validated: true, error: false },
@@ -248,9 +247,17 @@ meta:
 </template>
 
 <script lang="ts" setup>
-import { AppButton, AppCheckbox, AppColor, AppInput } from '@beabee/vue';
-import { AppQRCode, AppSlide, AppSlider, AppStepper } from '@beabee/vue';
 import type { AppStepperStep } from '@beabee/vue';
+import {
+  AppButton,
+  AppCheckbox,
+  AppColor,
+  AppInput,
+  AppQRCode,
+  AppSlide,
+  AppSlider,
+  AppStepper,
+} from '@beabee/vue';
 
 import {
   faAngleLeft,
