@@ -43,7 +43,6 @@
 
 <script setup lang="ts">
 import { type RuleOperator, operatorsByTypeMap } from '@beabee/beabee-common';
-import type { Rule } from '@beabee/beabee-common';
 import { AppSelect } from '@beabee/vue';
 
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
@@ -51,6 +50,7 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import {
+  type SearchRuleEmits,
   type SearchRuleFilterGroupProps,
   buildNullableOperatorItems,
   buildOperatorItems,
@@ -64,25 +64,11 @@ import AppSearchRuleFilterGroupItem from './AppSearchRuleFilterGroupItem.vue';
 
 const { t } = useI18n();
 
-/**
- * Rule filter group component that handles selection of fields and operators.
- * Now uses internal i18n for all labels and operator text.
- *
- * @param filterGroup - The filter group configuration
- * @param rule - The current rule
- * @param readonly - Whether the component is in readonly mode
- */
-
-interface ComponentEmits {
-  'update:rule': [rule: Rule];
-  remove: [];
-}
-
 const props = withDefaults(defineProps<SearchRuleFilterGroupProps>(), {
   readonly: false,
 });
 
-const emit = defineEmits<ComponentEmits>();
+const emit = defineEmits<SearchRuleEmits>();
 
 // Create operator labels using internal i18n
 const operatorLabels = computed(() => createOperatorLabels(t));
