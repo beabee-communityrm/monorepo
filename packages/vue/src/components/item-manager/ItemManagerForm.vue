@@ -2,7 +2,7 @@
   <AppForm
     :button-text="buttonText"
     :reset-button-text="resetButtonText"
-    @submit="onSave?.(data)"
+    @submit="$emit('save', data)"
     @reset="$emit('cancel')"
   >
     <slot :data="data" :mode="mode" />
@@ -47,8 +47,6 @@ export interface ItemManagerFormProps<D> {
   buttonText: string;
   /** Text for the reset/cancel button */
   resetButtonText: string;
-  /** Async function to execute on form save */
-  onSave?: (data: D) => Promise<void> | undefined;
 }
 
 const props = defineProps<ItemManagerFormProps<D>>();
@@ -57,6 +55,8 @@ const props = defineProps<ItemManagerFormProps<D>>();
  * Events emitted by the ItemManagerForm component
  */
 const emit = defineEmits<{
+  /** Emitted when the form is saved */
+  (e: 'save', data: D): void;
   /** Emitted when the form is cancelled */
   (e: 'cancel'): void;
 }>();

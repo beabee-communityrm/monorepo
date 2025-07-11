@@ -27,9 +27,9 @@
     :add-button-text="t('roleEditor.add')"
     :delete-title="t('roleEditor.confirmDelete.title')"
     :delete-text="() => t('roleEditor.confirmDelete.text')"
-    :on-add="handleUpsert"
-    :on-update="(item, data) => handleUpsert(data)"
-    :on-delete="(role) => onDelete?.(role.role)"
+    @add="handleUpsert"
+    @update="(_item, data) => handleUpsert(data)"
+    @delete="(role) => onDelete?.(role.role)"
   >
     <template #view="{ item }">
       <AppRoundBadge :type="isRoleCurrent(item) ? 'success' : 'danger'" />

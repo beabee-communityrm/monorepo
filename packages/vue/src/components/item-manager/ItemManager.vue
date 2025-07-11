@@ -65,9 +65,9 @@
  *   add-button-text="Add Tag"
  *   delete-title="Delete Tag"
  *   :delete-text="(tag) => `Are you sure you want to delete ${tag.name}?`"
- *   :on-add="handleAdd"
- *   :on-update="handleUpdate"
- *   :on-delete="handleDelete"
+ *   @add="handleAdd"
+ *   @update="handleUpdate"
+ *   @delete="handleDelete"
  * >
  *   <template #view="{ item }">
  *     <strong>{{ item.name }}</strong>

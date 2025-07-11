@@ -115,9 +115,9 @@ async function handleItemDelete() {
           :add-button-text="state.addButtonText"
           :delete-title="state.deleteTitle"
           :delete-text="getDeleteText"
-          :on-add="handleAdd"
-          :on-update="handleUpdate"
-          :on-delete="handleDelete"
+          @add="handleAdd"
+          @update="handleUpdate"
+          @delete="handleDelete"
         >
           <template #view="{ item }">
             <strong class="font-bold text-body-80">{{ item.name }}</strong>
@@ -146,8 +146,8 @@ async function handleItemDelete() {
           delete-title="Delete Tag"
           :delete-text="getDeleteText"
           no-update
-          :on-add="handleAdd"
-          :on-delete="handleDelete"
+          @add="handleAdd"
+          @delete="handleDelete"
         >
           <template #view="{ item }">
             <strong class="font-bold text-body-80">{{ item.name }}</strong>
@@ -210,8 +210,8 @@ async function handleItemDelete() {
           :delete-title="itemState.deleteTitle"
           :delete-text="itemState.deleteText"
           :no-update="false"
-          :on-update="handleItemUpdate"
-          :on-delete="handleItemDelete"
+          @update="handleItemUpdate"
+          @delete="handleItemDelete"
         >
           <template #view>
             <strong class="font-bold text-body-80">{{ sampleTag.name }}</strong>
@@ -247,7 +247,7 @@ async function handleItemDelete() {
           delete-title="Delete Tag"
           delete-text="Are you sure you want to delete this read-only tag?"
           :no-update="true"
-          :on-delete="handleItemDelete"
+          @delete="handleItemDelete"
         >
           <template #view>
             <strong class="font-bold text-body-80">{{ sampleTag.name }}</strong>

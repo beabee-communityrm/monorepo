@@ -43,7 +43,7 @@
       :confirm="t('actions.yesRemove')"
       variant="danger"
       @close="showDeleteModal = false"
-      @confirm="onDelete"
+      @confirm="handleDelete"
     >
       <p>{{ deleteText }}</p>
     </AppConfirmDialog>
@@ -71,8 +71,8 @@
  *   :item-to-data="convertItemToFormData"
  *   delete-title="Delete Item"
  *   delete-text="Are you sure you want to delete this item?"
- *   :on-update="handleUpdate"
- *   :on-delete="handleDelete"
+ *   @update="handleUpdate"
+ *   @delete="handleDelete"
  * >
  *   <template #view>
  *     <strong>{{ item.name }}</strong>
@@ -103,13 +103,19 @@ export interface ItemManagerItemProps<T, D> {
   noUpdate: boolean;
   /** Function to convert item to form data */
   itemToData: (item: T | undefined) => D;
-  /** Async function to execute on update */
-  onUpdate?: (data: D) => Promise<void> | undefined;
-  /** Async function to execute on delete */
-  onDelete?: () => Promise<void> | undefined;
 }
 
 const props = defineProps<ItemManagerItemProps<T, D>>();
+
+/**
+ * Events emitted by the ItemManagerItem component
+ */
+const emit = defineEmits<{
+  /** Emitted when an item is updated */
+  (e: 'update', data: D): void;
+  /** Emitted when an item is deleted */
+  (e: 'delete'): void;
+}>();
 
 const { t } = useI18n();
 
@@ -120,7 +126,15 @@ const showDeleteModal = ref(false);
  * Handles item update
  */
 async function handleUpdate(data: D) {
-  await props.onUpdate?.(data);
+  emit('update', data);
   formVisible.value = false;
+}
+
+/**
+ * Handles item deletion
+ */
+async function handleDelete() {
+  emit('delete');
+  showDeleteModal.value = false;
 }
 </script>
