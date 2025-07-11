@@ -1170,7 +1170,10 @@
         "required": "",
         "maxLength": ""
       },
-      "shareDescription": {}
+      "shareDescription": {
+        "maxLength": "",
+        "required": ""
+      }
     },
     "firstName": "Nome",
     "lastName": "Cognome",
@@ -1553,6 +1556,12 @@
     "usuallyTakesSeconds": ""
   },
   "icons": {
-    "welcome": {}
+    "welcome": {
+      "ariaLabel": ""
+    }
+  },
+  "stepper": {
+    "navigation": {},
+    "screen": {}
   }
 }

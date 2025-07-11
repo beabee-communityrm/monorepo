@@ -1555,6 +1555,16 @@
     "initializing": "",
     "usuallyTakesSeconds": ""
   },
+  "stepper": {
+    "navigation": {
+      "label": ""
+    },
+    "screen": {
+      "hasError": "",
+      "completed": "",
+      "currentStep": ""
+    }
+  },
   "icons": {
     "welcome": {
       "ariaLabel": ""
