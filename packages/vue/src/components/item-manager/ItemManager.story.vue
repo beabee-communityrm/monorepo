@@ -115,9 +115,9 @@ async function handleItemDelete() {
           :add-button-text="state.addButtonText"
           :delete-title="state.deleteTitle"
           :delete-text="getDeleteText"
-          @add="handleAdd"
-          @update="handleUpdate"
-          @delete="handleDelete"
+          :on-add="handleAdd"
+          :on-update="handleUpdate"
+          :on-delete="handleDelete"
         >
           <template #view="{ item }">
             <strong class="font-bold text-body-80">{{ item.name }}</strong>
@@ -146,8 +146,8 @@ async function handleItemDelete() {
           delete-title="Delete Tag"
           :delete-text="getDeleteText"
           no-update
-          @add="handleAdd"
-          @delete="handleDelete"
+          :on-add="handleAdd"
+          :on-delete="handleDelete"
         >
           <template #view="{ item }">
             <strong class="font-bold text-body-80">{{ item.name }}</strong>
