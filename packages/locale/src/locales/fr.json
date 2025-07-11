@@ -1166,7 +1166,9 @@
         "min": "Le code devrait comporter au moins {min} caractères.",
         "required": "Le code est obligatoire"
       },
-      "description": {}
+      "description": {
+        "required": ""
+      }
     },
     "firstName": "Prénom",
     "lastName": "Nom",

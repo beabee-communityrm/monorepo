@@ -1166,7 +1166,9 @@
         "min": "",
         "required": ""
       },
-      "description": {}
+      "description": {
+        "required": ""
+      }
     },
     "firstName": "Nome",
     "lastName": "Cognome",
