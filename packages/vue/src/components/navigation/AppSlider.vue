@@ -119,6 +119,8 @@ const props = withDefaults(
       ariaLabel?: string;
       /** ARIA live region behavior */
       ariaLive?: 'off' | 'polite' | 'assertive';
+      /** Whether to disable keyboard navigation (Arrow keys, Home, End) */
+      disableKeyboardNavigation?: boolean;
     }
   >(),
   {
