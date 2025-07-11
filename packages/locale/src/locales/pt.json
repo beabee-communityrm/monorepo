@@ -1167,8 +1167,10 @@
         "required": "O código é obrigatório"
       },
       "description": {
-        "required": ""
-      }
+        "required": "",
+        "maxLength": ""
+      },
+      "shareDescription": {}
     },
     "firstName": "Primeiro nome",
     "lastName": "Último nome",
@@ -1550,5 +1552,7 @@
     "initializing": "",
     "usuallyTakesSeconds": ""
   },
-  "icons": {}
+  "icons": {
+    "welcome": {}
+  }
 }

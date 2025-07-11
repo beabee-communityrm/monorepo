@@ -1158,6 +1158,11 @@
         "url": "Ungültige URL"
       },
       "description": {
+        "maxLength": "Die maximale Länge von {max} Zeichen wurde überschritten",
+        "required": "Beschreibung benötigt"
+      },
+      "shareDescription": {
+        "maxLength": "Die maximale Länge von {max} Zeichen wurde überschritten, {remaining} Zeichen verbleiben",
         "required": "Beschreibung benötigt"
       },
       "url": {

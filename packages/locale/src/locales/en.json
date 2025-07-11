@@ -1158,6 +1158,11 @@
         "url": "Invalid URL"
       },
       "description": {
+        "maxLength": "Maximum length of {max} characters exceeded",
+        "required": "Description is required"
+      },
+      "shareDescription": {
+        "maxLength": "Maximum length of {max} characters exceeded, {remaining} characters remaining",
         "required": "Description is required"
       },
       "url": {

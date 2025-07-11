@@ -1158,6 +1158,11 @@
         "url": ""
       },
       "description": {
+        "maxLength": "",
+        "required": ""
+      },
+      "shareDescription": {
+        "maxLength": "",
         "required": ""
       },
       "url": {
