@@ -3,6 +3,10 @@
   This component is used to set up MFA for a contact.
   It uses a slider to guide the user through the process.
 
+  Keyboard navigation is disabled for the slider because this is a complex
+  multi-step form where navigation should be controlled by the validation
+  logic and custom navigation buttons.
+
   ## Props
   - `contactId` (string): The id of the contact to set up MFA for.
 
@@ -73,7 +77,12 @@
     class="w-full"
     @close="onCloseMFAModal"
   >
-    <AppSlider ref="appSliderCo" :steps="stepsInOrder" @slide="onSlideChange">
+    <AppSlider
+      ref="appSliderCo"
+      :steps="stepsInOrder"
+      disable-keyboard-navigation
+      @slide="onSlideChange"
+    >
       <template #slides>
         <!-- QR code and secret slide -->
         <AppSlide>
@@ -213,21 +222,24 @@
 </template>
 
 <script lang="ts" setup>
-import { CONTACT_MFA_TYPE } from '@beabee/beabee-common';
-import { LOGIN_CODES } from '@beabee/beabee-common';
-import { GetContactWith } from '@beabee/beabee-common';
+import {
+  CONTACT_MFA_TYPE,
+  GetContactWith,
+  LOGIN_CODES,
+} from '@beabee/beabee-common';
+import type { AppSliderSlideEventDetails, AppStepperStep } from '@beabee/vue';
 import {
   AppButton,
   AppConfirmDialog,
+  AppHeading,
   AppInput,
   AppModal,
   AppNotification,
+  AppQRCode,
+  AppSlide,
+  AppSlider,
   addNotification,
 } from '@beabee/vue';
-import { AppHeading, AppQRCode } from '@beabee/vue';
-import type { AppStepperStep } from '@beabee/vue';
-import { AppSlide, AppSlider } from '@beabee/vue';
-import type { AppSliderSlideEventDetails } from '@beabee/vue';
 
 import { faMobileAlt } from '@fortawesome/free-solid-svg-icons';
 import { generalContent } from '@store/index';
