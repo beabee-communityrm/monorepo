@@ -1549,5 +1549,10 @@
     "connectingToServer": "",
     "initializing": "",
     "usuallyTakesSeconds": ""
+  },
+  "icons": {
+    "welcome": {
+      "ariaLabel": ""
+    }
   }
 }

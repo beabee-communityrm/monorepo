@@ -1548,6 +1548,11 @@
     "pleaseWait": "Bitte warten...",
     "connectingToServer": "Verbindung zum Server wird hergestellt...",
     "initializing": "Wird initialisiert...",
-    "usuallyTakesSeconds": "Das dauert normalerweise nur wenige Sekunden"
+    "usuallyTakesSeconds": "Das dauert normalerweise ein paar Sekunden"
+  },
+  "icons": {
+    "welcome": {
+      "ariaLabel": "Willkommen-Symbol"
+    }
   }
 }

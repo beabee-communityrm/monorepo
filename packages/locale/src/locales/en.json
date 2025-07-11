@@ -1549,5 +1549,10 @@
     "connectingToServer": "Connecting to server...",
     "initializing": "Initializing...",
     "usuallyTakesSeconds": "This usually takes a few seconds"
+  },
+  "icons": {
+    "welcome": {
+      "ariaLabel": "Welcome icon"
+    }
   }
 }
