@@ -15,8 +15,8 @@
   ```vue
   <AppRoleEditor
     :roles="contactRoles"
-    @update="handleRoleUpdate"
-    @delete="handleRoleDelete"
+    :on-update="handleRoleUpdate"
+    :on-delete="handleRoleDelete"
   />
   ```
 -->
@@ -25,28 +25,22 @@
     :items="roles"
     :item-to-data="roleToFormData"
     :add-button-text="t('roleEditor.add')"
-    :edit-button-text="t('actions.edit')"
-    :delete-button-text="t('actions.delete')"
-    :update-button-text="t('actions.update')"
-    :cancel-button-text="t('actions.cancel')"
-    :no-back-button-text="t('actions.noBack')"
-    :yes-remove-button-text="t('actions.yesRemove')"
     :delete-title="t('roleEditor.confirmDelete.title')"
     :delete-text="() => t('roleEditor.confirmDelete.text')"
-    @add="handleUpsert"
-    @update="(item, data) => handleUpsert(data)"
-    @delete="handleDelete"
+    :on-add="handleUpsert"
+    :on-update="(item, data) => handleUpsert(data)"
+    :on-delete="(role) => onDelete?.(role.role)"
   >
     <template #view="{ item }">
       <AppRoundBadge :type="isRoleCurrent(item) ? 'success' : 'danger'" />
       <strong class="mx-2 font-bold uppercase text-body-80">
-        {{ getRoleLabel(item.role) }}
+        {{ t(`common.role.${item.role}`) }}
       </strong>
       <span>
-        {{ formatRoleDate(item.dateAdded) + ' → ' }}
+        {{ formatLocale(item.dateAdded, 'P') + ' → ' }}
         {{
           item.dateExpires
-            ? formatRoleDate(item.dateExpires)
+            ? formatLocale(item.dateExpires, 'P')
             : t('roleEditor.today')
         }}
       </span>
@@ -107,13 +101,6 @@
 </template>
 
 <script lang="ts" setup>
-/**
- * Role editor component for managing contact roles with scheduling capabilities.
- * Provides a comprehensive interface for adding, editing, and deleting user roles
- * with support for date/time scheduling and visual status indicators.
- *
- * @component AppRoleEditor
- */
 import {
   type ContactRoleData,
   type RoleType,
@@ -135,36 +122,17 @@ import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
-/**
- * Props for the AppRoleEditor component
- */
 export interface AppRoleEditorProps {
   /** Array of current contact roles */
   roles: ContactRoleData[];
+  /** Async handler for role updates or additions */
+  onUpdate?: (roleType: RoleType, role: ContactRoleData) => Promise<void>;
+  /** Async handler for role deletions */
+  onDelete?: (roleType: RoleType) => Promise<void>;
 }
 
 const props = defineProps<AppRoleEditorProps>();
 
-/**
- * Events emitted by the AppRoleEditor component
- */
-const emit = defineEmits<{
-  /**
-   * Emitted when a role is updated or added
-   * @param roleType - The type of role being updated
-   * @param role - The role data
-   */
-  update: [roleType: RoleType, role: ContactRoleData];
-  /**
-   * Emitted when a role is deleted
-   * @param roleType - The type of role being deleted
-   */
-  delete: [roleType: RoleType];
-}>();
-
-/**
- * Interface for the role form data used internally
- */
 interface ContactRoleFormData {
   role: RoleType | '';
   startDate: string;
@@ -175,9 +143,6 @@ interface ContactRoleFormData {
   hasEndDate: boolean;
 }
 
-/**
- * Computed list of available role items for selection
- */
 const availableRoleItems = computed(() => {
   const availableRoles = RoleTypes.filter((type) =>
     props.roles.every((role) => role.role !== type)
@@ -201,51 +166,15 @@ const availableRoleItems = computed(() => {
   );
 });
 
-/**
- * Determines if a role is currently active
- * @param role - The role to check
- * @returns True if the role is currently active
- */
 function isRoleCurrent(role: ContactRoleData): boolean {
   const now = new Date();
   return role.dateAdded < now && (!role.dateExpires || role.dateExpires > now);
 }
 
-/**
- * Gets the display label for a role type
- * @param roleType - The role type
- * @returns The display label for the role
- */
-function getRoleLabel(roleType: RoleType): string {
-  switch (roleType) {
-    case 'member':
-      return t('common.role.member');
-    case 'admin':
-      return t('common.role.admin');
-    case 'superadmin':
-      return t('common.role.superadmin');
-    default:
-      return roleType;
-  }
-}
-
-/**
- * Formats a date for display in role entries
- * @param date - The date to format
- * @returns Formatted date string
- */
-function formatRoleDate(date: Date): string {
-  return formatLocale(date, 'P');
-}
-
-/**
- * Handles role upsert (update or insert) operations
- * @param data - The form data for the role
- */
 async function handleUpsert(data: ContactRoleFormData): Promise<void> {
   if (!data.role) return; // Can't submit without a role
 
-  emit('update', data.role, {
+  await props.onUpdate?.(data.role, {
     role: data.role,
     dateAdded: data.hasStartDate
       ? new Date(data.startDate + 'T' + data.startTime)
@@ -256,30 +185,25 @@ async function handleUpsert(data: ContactRoleFormData): Promise<void> {
   });
 }
 
-/**
- * Handles role deletion
- * @param role - The role to delete
- */
-async function handleDelete(role: ContactRoleData): Promise<void> {
-  emit('delete', role.role);
-}
-
-/**
- * Converts a role to form data for editing
- * @param role - The role to convert (undefined for new roles)
- * @returns Form data object
- */
 function roleToFormData(
   role: ContactRoleData | undefined
 ): ContactRoleFormData {
   return reactive({
     role: role?.role || ('' as const),
-    startDate: role ? format(role.dateAdded, 'yyyy-MM-dd') : '',
-    startTime: role ? format(role.dateAdded, 'HH:mm') : '',
-    hasStartDate: !!role,
-    endDate: role?.dateExpires ? format(role.dateExpires, 'yyyy-MM-dd') : '',
-    endTime: role?.dateExpires ? format(role.dateExpires, 'HH:mm') : '',
-    hasEndDate: !!role?.dateExpires,
+    ...(role
+      ? {
+          startDate: format(role.dateAdded, 'yyyy-MM-dd'),
+          startTime: format(role.dateAdded, 'HH:mm'),
+          hasStartDate: true,
+        }
+      : { startDate: '', startTime: '', hasStartDate: false }),
+    ...(role?.dateExpires
+      ? {
+          endDate: format(role.dateExpires, 'yyyy-MM-dd'),
+          endTime: format(role.dateExpires, 'HH:mm'),
+          hasEndDate: true,
+        }
+      : { endDate: '', endTime: '', hasEndDate: false }),
   });
 }
 </script>

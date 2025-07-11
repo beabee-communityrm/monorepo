@@ -92,8 +92,8 @@ meta:
       <div class="relative mt-4">
         <AppRoleEditor
           :roles="contact.roles"
-          @delete="handleDeleteRole"
-          @update="handleUpdateRole"
+          :on-delete="handleDeleteRole"
+          :on-update="handleUpdateRole"
         />
         <div
           v-if="changingRoles"
@@ -268,9 +268,9 @@ import {
   type GetContactData,
   type GetContactDataWith,
   GetContactWith,
+  PaymentMethod,
   type RoleType,
 } from '@beabee/beabee-common';
-import { PaymentMethod } from '@beabee/beabee-common';
 import {
   App2ColGrid,
   AppButton,
