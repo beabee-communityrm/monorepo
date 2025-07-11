@@ -18,6 +18,7 @@
   - `disabled` (boolean, optional): Whether the slider is disabled. Defaults to `false`.
   - `ariaLabel` (string, optional): Accessible label for the slider. Defaults to `'Content slider'`.
   - `ariaLive` (string, optional): ARIA live region behavior. Defaults to `'polite'`.
+  - `disableKeyboardNavigation` (boolean, optional): Whether to disable keyboard navigation. Defaults to `false`.
 
   ## Events
   - `slide` (details: AppSliderSlideEventDetails): Emitted when a slide is scrolled to. 
@@ -125,6 +126,7 @@ const props = withDefaults(
     disabled: false,
     ariaLabel: 'Content slider',
     ariaLive: 'polite',
+    disableKeyboardNavigation: false,
   }
 );
 
@@ -249,7 +251,7 @@ const handleResize = () => {
  * Handle keyboard navigation
  */
 const handleKeydown = (event: KeyboardEvent) => {
-  if (props.disabled) return;
+  if (props.disabled || props.disableKeyboardNavigation) return;
 
   switch (event.key) {
     case 'ArrowLeft':

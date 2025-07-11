@@ -14,13 +14,14 @@ A slider component that allows you to slide between elements. Useful for things 
 
 ## Props
 
-| Prop        | Type                               | Default            | Description                                        |
-| ----------- | ---------------------------------- | ------------------ | -------------------------------------------------- |
-| `infinite`  | `boolean`                          | `false`            | Whether to allow infinite scrolling between slides |
-| `steps`     | `AppStepperStep[]`                 | `undefined`        | Optional steps to display in stepper navigation    |
-| `disabled`  | `boolean`                          | `false`            | Whether the slider is disabled                     |
-| `ariaLabel` | `string`                           | `'Content slider'` | Accessible label for the slider                    |
-| `ariaLive`  | `'off' \| 'polite' \| 'assertive'` | `'polite'`         | ARIA live region behavior for screen readers       |
+| Prop                        | Type                               | Default            | Description                                        |
+| --------------------------- | ---------------------------------- | ------------------ | -------------------------------------------------- |
+| `infinite`                  | `boolean`                          | `false`            | Whether to allow infinite scrolling between slides |
+| `steps`                     | `AppStepperStep[]`                 | `undefined`        | Optional steps to display in stepper navigation    |
+| `disabled`                  | `boolean`                          | `false`            | Whether the slider is disabled                     |
+| `ariaLabel`                 | `string`                           | `'Content slider'` | Accessible label for the slider                    |
+| `ariaLive`                  | `'off' \| 'polite' \| 'assertive'` | `'polite'`         | ARIA live region behavior for screen readers       |
+| `disableKeyboardNavigation` | `boolean`                          | `false`            | Whether to disable keyboard navigation             |
 
 ## Keyboard Navigation
 

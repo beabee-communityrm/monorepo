@@ -599,7 +599,7 @@ const onInteractiveSlideChange = (details: AppSliderSlideEventDetails) => {
         <template #slides>
           <AppSlide>
             <div
-              class="bg-info flex min-h-[200px] items-center justify-center rounded-lg p-8 text-center text-white"
+              class="flex min-h-[200px] items-center justify-center rounded-lg bg-danger p-8 text-center text-white"
             >
               <div>
                 <h3 class="mb-4 text-2xl font-bold">Keyboard Navigation</h3>
@@ -627,6 +627,82 @@ const onInteractiveSlideChange = (details: AppSliderSlideEventDetails) => {
               </div>
             </div>
           </AppSlide>
+        </template>
+      </AppSlider>
+    </Variant>
+
+    <!-- Keyboard Navigation Disabled -->
+    <Variant
+      title="Keyboard Navigation Disabled"
+      description="Slider with keyboard navigation disabled"
+    >
+      <div class="mb-4 space-y-2">
+        <p class="text-sm text-grey-dark">
+          <strong>Disabled Keyboard Navigation:</strong> This slider has
+          keyboard navigation disabled. Focus it and try using arrow keys - they
+          won't work for navigation.
+        </p>
+        <p class="text-sm text-grey-dark">
+          <strong>Mouse/Touch:</strong> Custom navigation buttons still work
+          normally.
+        </p>
+      </div>
+
+      <AppSlider disable-keyboard-navigation @slide="onSlideChange">
+        <template #slides>
+          <AppSlide>
+            <div
+              class="flex min-h-[200px] items-center justify-center rounded-lg bg-primary p-8 text-center text-white"
+            >
+              <div>
+                <h3 class="mb-4 text-2xl font-bold">Slide 1</h3>
+                <p>Keyboard navigation is disabled for this slider.</p>
+              </div>
+            </div>
+          </AppSlide>
+          <AppSlide>
+            <div
+              class="flex min-h-[200px] items-center justify-center rounded-lg bg-success p-8 text-center text-white"
+            >
+              <div>
+                <h3 class="mb-4 text-2xl font-bold">Slide 2</h3>
+                <p>Use the buttons below to navigate.</p>
+              </div>
+            </div>
+          </AppSlide>
+          <AppSlide>
+            <div
+              class="flex min-h-[200px] items-center justify-center rounded-lg bg-warning p-8 text-center text-white"
+            >
+              <div>
+                <h3 class="mb-4 text-2xl font-bold">Slide 3</h3>
+                <p>Arrow keys won't work here.</p>
+              </div>
+            </div>
+          </AppSlide>
+        </template>
+        <template
+          #navigation="{ activeSlide, slideCount, nextSlide, prevSlide }"
+        >
+          <div class="mt-4 flex justify-center space-x-2">
+            <button
+              class="hover:bg-primary-dark rounded bg-primary px-4 py-2 text-white disabled:cursor-not-allowed disabled:opacity-50"
+              :disabled="activeSlide === 0"
+              @click="() => prevSlide()"
+            >
+              Previous
+            </button>
+            <span class="px-4 py-2"
+              >{{ activeSlide + 1 }} / {{ slideCount }}</span
+            >
+            <button
+              class="hover:bg-primary-dark rounded bg-primary px-4 py-2 text-white disabled:cursor-not-allowed disabled:opacity-50"
+              :disabled="activeSlide === slideCount - 1"
+              @click="() => nextSlide()"
+            >
+              Next
+            </button>
+          </div>
         </template>
       </AppSlider>
     </Variant>
