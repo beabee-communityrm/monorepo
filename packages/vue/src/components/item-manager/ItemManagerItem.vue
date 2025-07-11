@@ -71,8 +71,8 @@
  *   :item-to-data="convertItemToFormData"
  *   delete-title="Delete Item"
  *   delete-text="Are you sure you want to delete this item?"
- *   @update="handleUpdate"
- *   @delete="handleDelete"
+ *   :on-update="handleUpdate"
+ *   :on-delete="handleDelete"
  * >
  *   <template #view>
  *     <strong>{{ item.name }}</strong>

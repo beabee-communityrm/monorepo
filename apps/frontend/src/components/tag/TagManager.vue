@@ -89,9 +89,9 @@ onBeforeMount(async () => {
       :add-button-text="t('tagEditor.add')"
       :delete-title="t('tagEditor.confirmDelete.title')"
       :delete-text="(tag) => t(deleteText, { tagName: tag.name })"
-      @add="handleNewTag"
-      @update="handleUpdateTag"
-      @delete="handleDeleteTag"
+      :on-add="handleNewTag"
+      :on-update="handleUpdateTag"
+      :on-delete="handleDeleteTag"
     >
       <template #view="{ item }">
         <strong class="font-bold text-body-80">

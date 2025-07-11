@@ -13,8 +13,8 @@
           })
       "
       no-update
-      @add="handleAddReviewer"
-      @delete="handleDeleteReviewer"
+      :on-add="handleAddReviewer"
+      :on-delete="handleDeleteReviewer"
     >
       <template #view="{ item }">
         <router-link :to="`/admin/contacts/${item.contact.id}`">
