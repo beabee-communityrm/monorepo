@@ -1555,6 +1555,16 @@
     "initializing": "Initializing...",
     "usuallyTakesSeconds": "This usually takes a few seconds"
   },
+  "stepper": {
+    "navigation": {
+      "label": "Step progress"
+    },
+    "screen": {
+      "hasError": ", has error",
+      "completed": ", completed",
+      "currentStep": ", current step"
+    }
+  },
   "icons": {
     "welcome": {
       "ariaLabel": "Welcome icon"
