@@ -91,11 +91,9 @@ const props = defineProps<AppConfirmDialogProps>();
 /**
  * Events emitted by the AppConfirmDialog component
  */
-const emit = defineEmits<{
+defineEmits<{
   /** Emitted when the dialog should be closed */
   (e: 'close'): void;
-  /** Emitted when the confirm button is clicked */
-  (e: 'confirm'): void;
 }>();
 
 const isConfirming = ref(false);
@@ -105,11 +103,7 @@ const isConfirming = ref(false);
  */
 async function handleConfirm() {
   isConfirming.value = true;
-  try {
-    await props.onConfirm?.();
-    emit('confirm');
-  } finally {
-    isConfirming.value = false;
-  }
+  await props.onConfirm?.();
+  isConfirming.value = false;
 }
 </script>
