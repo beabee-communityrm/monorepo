@@ -23,6 +23,7 @@
     alpha-channel="hide"
     :color="modelValue"
     @color-change="changeColor($event.colors.hex)"
+    style="font-family: inherit"
   >
     <template #format-switch-button>
       <font-awesome-icon :icon="faSort" />
