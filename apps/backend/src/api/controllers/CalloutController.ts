@@ -340,8 +340,8 @@ export class CalloutController {
     @Body() data: CreateCalloutReviewerDto
   ): Promise<GetCalloutReviewerDto> {
     return CalloutReviewerTransformer.createOne(auth, {
-      calloutId: id,
       ...data,
+      calloutId: id,
     });
   }
 

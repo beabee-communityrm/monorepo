@@ -26,6 +26,7 @@ class CalloutReviewerTransformer extends BaseTransformer<
     return {
       id: reviewer.id,
       contact: ContactTransformer.convert(reviewer.contact, auth),
+      canEdit: reviewer.canEdit,
     };
   }
 
