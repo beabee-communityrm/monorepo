@@ -71,7 +71,7 @@ export class CalloutController {
 
   @Authorized('admin')
   @Post('/')
-  async createCallout(
+  async createCalout(
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @QueryParam('fromId', { required: false }) fromId: string,
     @Body({ validate: false, required: false }) data: CreateCalloutDto

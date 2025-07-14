@@ -143,6 +143,9 @@ export const calloutReviewerFilters = {
   contact: {
     type: 'contact',
   },
+  canEdit: {
+    type: 'boolean',
+  },
   calloutId: {
     type: 'text',
   },

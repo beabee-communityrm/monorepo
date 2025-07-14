@@ -70,9 +70,13 @@ const { t } = useI18n();
 
 const reviewers = ref<GetCalloutReviewerData[]>([]);
 
+async function reset() {
+  reviewers.value = await client.callout.reviewer.list(props.calloutId);
+}
+
 async function handleAddReviewer(data: CreateCalloutReviewerData) {
   await client.callout.reviewer.add(props.calloutId, data);
-  reviewers.value = await client.callout.reviewer.list(props.calloutId);
+  await reset();
 }
 
 async function handleUpdateReviewer(
@@ -82,12 +86,12 @@ async function handleUpdateReviewer(
   await client.callout.reviewer.update(props.calloutId, reviewer.id, {
     canEdit: data.canEdit,
   });
-  reviewers.value = await client.callout.reviewer.list(props.calloutId);
+  await reset();
 }
 
 async function handleDeleteReviewer(reviewer: GetCalloutReviewerData) {
   await client.callout.reviewer.delete(props.calloutId, reviewer.id);
-  reviewers.value = await client.callout.reviewer.list(props.calloutId);
+  await reset();
 }
 
 function reviewerToFormData(
@@ -99,7 +103,5 @@ function reviewerToFormData(
   });
 }
 
-watchEffect(async () => {
-  reviewers.value = await client.callout.reviewer.list(props.calloutId);
-});
+watchEffect(reset);
 </script>
