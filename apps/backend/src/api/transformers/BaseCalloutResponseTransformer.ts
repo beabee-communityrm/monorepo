@@ -38,13 +38,13 @@ export abstract class BaseCalloutResponseTransformer<
   }
 
   protected transformQuery<T extends GetOptsDto & PaginatedQuery>(query: T): T {
+    // If a callout is specified, we need to filter by that callout's ID
     if (query.callout) {
       return {
         ...query,
         rules: {
           condition: 'AND',
           rules: [
-            // If a callout is specified, we need to filter by that callout's ID
             {
               field: 'calloutId',
               operator: 'equal',
