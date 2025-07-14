@@ -1166,7 +1166,9 @@
         "min": "De code moet minstens {min} tekens lang zijn.",
         "required": "Code is vereist"
       },
-      "description": {}
+      "description": {
+        "required": ""
+      }
     },
     "firstName": "Voornaam",
     "lastName": "Achternaam",

@@ -1166,7 +1166,9 @@
         "min": "Dein Code muss mindestens {min} Zeichen haben.",
         "required": "Code benötigt"
       },
-      "description": {}
+      "description": {
+        "required": ""
+      }
     },
     "firstName": "Vorname",
     "lastName": "Nachname",
