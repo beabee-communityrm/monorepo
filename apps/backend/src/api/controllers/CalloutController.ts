@@ -134,19 +134,18 @@ export class CalloutController {
     }
 
     if (variants) {
-      for (const [name, variant] of Object.entries(variants)) {
-        await CalloutVariantTransformer.update(
-          auth,
-          {
-            condition: 'AND',
-            rules: [
-              { field: 'calloutId', operator: 'equal', value: [id] },
-              { field: 'name', operator: 'equal', value: [name] },
-            ],
-          },
-          variant
-        );
-      }
+      await CalloutVariantTransformer.delete(auth, {
+        condition: 'AND',
+        rules: [{ field: 'calloutId', operator: 'equal', value: [id] }],
+      });
+      await CalloutVariantTransformer.create(
+        auth,
+        Object.entries(variants).map(([name, variant]) => ({
+          calloutId: id,
+          name,
+          ...variant,
+        }))
+      );
     }
 
     return CalloutTransformer.fetchOneById(auth, id);

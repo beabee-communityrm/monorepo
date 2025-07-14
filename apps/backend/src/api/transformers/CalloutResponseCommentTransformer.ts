@@ -1,6 +1,5 @@
 import {
   CalloutResponseCommentFilterName,
-  PaginatedQuery,
   Rule,
   calloutResponseCommentFilters,
 } from '@beabee/beabee-common';
@@ -18,10 +17,9 @@ import ContactTransformer, {
   loadContactRoles,
 } from '@api/transformers/ContactTransformer';
 import { getReviewerRules } from '@api/utils/callouts';
-import { TransformerOperation } from '@type/transformer-operation';
 import { TransformPlainToInstance } from 'class-transformer';
 import { BadRequestError } from 'routing-controllers';
-import { SelectQueryBuilder } from 'typeorm';
+import { In, SelectQueryBuilder } from 'typeorm';
 
 class CalloutResponseCommentTransformer extends BaseTransformer<
   CalloutResponseComment,

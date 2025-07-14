@@ -7,7 +7,7 @@ import { CalloutVariant } from '@beabee/core/models';
 import { AuthInfo } from '@beabee/core/type';
 
 import { CalloutVariantDto } from '@api/dto/CalloutVariantDto';
-import { getReviewerRules } from '@api/utils';
+import { canCreateForCallout, getReviewerRules } from '@api/utils';
 import { TransformerOperation } from '@type/transformer-operation';
 import { TransformPlainToInstance } from 'class-transformer';
 
@@ -34,6 +34,13 @@ class CalloutVariantTransformer extends BaseTransformer<
       slideNavigation: variant.slideNavigation,
       componentText: variant.componentText,
     };
+  }
+
+  protected async canCreate(
+    auth: AuthInfo,
+    data: Partial<CalloutVariant>[]
+  ): Promise<boolean> {
+    return await canCreateForCallout(auth, data);
   }
 
   protected async getNonAdminAuthRules(
