@@ -276,7 +276,7 @@ export class CalloutController {
     @Body() data: CreateCalloutTagDto
   ): Promise<GetCalloutTagDto> {
     // TODO: handle foreign key error
-    return calloutTagTransformer.create(auth, {
+    return calloutTagTransformer.createOne(auth, {
       ...data,
       calloutId: id,
     });
@@ -340,7 +340,7 @@ export class CalloutController {
     @CalloutId() id: string,
     @Body() data: CreateCalloutReviewerDto
   ): Promise<GetCalloutReviewerDto> {
-    return CalloutReviewerTransformer.create(auth, {
+    return CalloutReviewerTransformer.createOne(auth, {
       calloutId: id,
       ...data,
     });

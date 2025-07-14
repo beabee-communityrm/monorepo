@@ -86,17 +86,21 @@ class CalloutResponseCommentTransformer extends BaseTransformer<
    *
    * @param auth The authentication info
    * @param data The comment data
-   * @returns
+   * @returns True if the user can create the comments, false otherwise
    */
   protected async canCreate(
     auth: AuthInfo,
-    data: Partial<CalloutResponseComment>
+    data: Partial<CalloutResponseComment>[]
   ): Promise<boolean> {
     if (auth.roles.includes('admin')) {
       return true;
     }
 
-    if (!data.responseId || !auth.contact) {
+    const responseIds = data
+      .map((c) => c.responseId)
+      .filter((s): s is string => !!s);
+
+    if (!responseIds.length || !auth.contact) {
       throw new BadRequestError('Response ID and contact required');
     }
 
@@ -108,10 +112,10 @@ class CalloutResponseCommentTransformer extends BaseTransformer<
         'reviewer.calloutId = response.calloutId'
       )
       .where('reviewer.contactId = :contactId')
-      .andWhere('response.id = :responseId')
+      .andWhere('response.id IN (:...responseIds)')
       .setParameters({
         contactId: auth.contact.id,
-        responseId: data.responseId,
+        responseIds,
       })
       .getRawOne();
 

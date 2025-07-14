@@ -103,7 +103,7 @@ export abstract class BaseTransformer<
    */
   protected async canCreate(
     auth: AuthInfo,
-    data: Partial<Model>
+    data: Partial<Model>[]
   ): Promise<boolean> {
     // Default to only admins for now as creating doesn't yet implement the
     // query building logic
@@ -522,17 +522,30 @@ export abstract class BaseTransformer<
   }
 
   /**
-   * Create a new item
+   * Create new items
    *
-   * @param data The data to create the item with
-   * @returns The created item
+   * @param auth The authentication info
+   * @param data The data to create the items with
+   * @returns The IDs of the created items
    */
-  async create(auth: AuthInfo, data: Partial<Model>): Promise<GetDto> {
+  async create(auth: AuthInfo, data: Partial<Model>[]): Promise<string[]> {
     if (!(await this.canCreate(auth, data))) {
       throw new UnauthorizedError();
     }
 
-    const item = await getRepository(this.model).save(data as Model);
-    return this.fetchOneByIdOrFail(auth, item[this.modelIdField]);
+    const items = await getRepository(this.model).save(data as Model[]);
+    return items.map((item) => item[this.modelIdField]);
+  }
+
+  /**
+   * Create a new item
+   *
+   * @param auth The authentication info
+   * @param data The data to create the item with
+   * @returns The created item
+   */
+  async createOne(auth: AuthInfo, data: Partial<Model>): Promise<GetDto> {
+    const [newId] = await this.create(auth, [data]);
+    return this.fetchOneByIdOrFail(auth, newId);
   }
 }
