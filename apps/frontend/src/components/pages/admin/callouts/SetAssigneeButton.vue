@@ -9,6 +9,7 @@
       v-slot="{ item }"
       :items="reviewerItems"
       :selected-item-ids="currentAssigneeId ? [currentAssigneeId] : []"
+      :disabled="!selectable"
       @click="handleAssign"
     >
       {{ item.label }}
@@ -39,6 +40,7 @@ defineProps<{
   manageUrl: string;
   currentAssigneeId?: string;
   withText?: boolean;
+  selectable?: boolean;
 }>();
 
 const { t } = useI18n();
