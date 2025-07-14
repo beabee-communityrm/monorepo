@@ -7,6 +7,7 @@ import {
   CalloutNewsletterSchema,
   CalloutResponseViewSchema,
   ItemStatus,
+  mapIconStylingSchema,
 } from '@beabee/beabee-common';
 
 import { GetPaginatedQuery } from '@api/dto/BaseDto';
@@ -121,6 +122,27 @@ class CalloutMapSchemaDto implements CalloutMapSchema {
   @IsOptional()
   @IsString()
   geocodeCountries?: string;
+
+  @IsOptional()
+  @IsString()
+  mapIconQuestion?: string;
+
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CalloutMapIconSchemaDto)
+  mapIconStyling?: CalloutMapIconSchemaDto[] | null;
+}
+
+class CalloutMapIconSchemaDto implements mapIconStylingSchema {
+  @IsString()
+  answer!: string;
+
+  @IsString()
+  color!: string;
+
+  @IsString()
+  icon!: string;
 }
 
 class CalloutNewsletterSchemaDto implements CalloutNewsletterSchema {

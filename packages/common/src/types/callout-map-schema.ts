@@ -1,3 +1,9 @@
+export interface mapIconStylingSchema {
+  answer: string;
+  color: string;
+  icon: string;
+}
+
 export interface CalloutMapSchema {
   style: string;
   center: [number, number];
@@ -9,4 +15,6 @@ export interface CalloutMapSchema {
   addressPattern: string;
   addressPatternProp: string;
   geocodeCountries?: string;
+  mapIconQuestion?: string;
+  mapIconStyling?: mapIconStylingSchema[];
 }

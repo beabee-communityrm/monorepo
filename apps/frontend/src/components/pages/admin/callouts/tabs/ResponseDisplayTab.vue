@@ -246,6 +246,60 @@
                   :label="inputT('mapSchema.geocodeCountries.label')"
                 />
               </AppFormField>
+              <AppFormField>
+                <AppSelect
+                  v-model="localData.mapSchema.mapIconQuestion"
+                  :label="inputT('mapSchema.mapIconQuestions.label')"
+                  :items="mapIconQuestions"
+                />
+              </AppFormField>
+              <div v-if="localData.mapSchema.mapIconQuestion">
+                <h3 class="mb-2 font-semibold">
+                  {{ inputT('mapSchema.mapIconStyling.label') }}
+                </h3>
+                <div
+                  v-for="(value, i) in getValues(
+                    localData.mapSchema.mapIconQuestion
+                  )"
+                  :key="i"
+                  class="mb-4"
+                >
+                  <div
+                    class="grid grid-cols-[1fr_auto_auto] items-center gap-2 rounded border border-primary-40 p-2"
+                  >
+                    <span>{{ value.label }}</span>
+                    <div class="flex items-center gap-2">
+                      <span
+                        class="inline-block h-6 w-6 rounded-full border"
+                        :style="{
+                          backgroundColor: localData.mapSchema.mapIconStyling
+                            ? localData.mapSchema.mapIconStyling[i].color
+                            : '#000000',
+                        }"
+                      ></span>
+                      <AppButton
+                        :icon="faPencil"
+                        :variant="'dangerGhost'"
+                        size="sm"
+                        @click="isPickerOpen[i] = !isPickerOpen[i]"
+                      ></AppButton>
+                    </div>
+                  </div>
+                  <AppModal
+                    v-if="isPickerOpen[i] && localData.mapSchema.mapIconStyling"
+                    :open="isPickerOpen[i]"
+                    :title="inputT('mapSchema.mapIconStyling.label') + value.label"
+                    @close="isPickerOpen[i] = false"
+                  >
+                    <div class="space-y-4">
+                      <AppColorInput
+                        id="mapIconColor"
+                        v-model="localData.mapSchema.mapIconStyling[i].color"
+                      />
+                    </div>
+                  </AppModal>
+                </div>
+              </div>
             </AppFormBox>
           </AppScrollSection>
         </template>
@@ -263,11 +317,14 @@
 import { ItemStatus, getCalloutComponents } from '@beabee/beabee-common';
 import type { CalloutMapSchema } from '@beabee/beabee-common';
 import {
+  AppButton,
   AppCheckboxGroup,
+  AppColorInput,
   AppFormBox,
   AppFormField,
   AppInput,
   AppLinkList,
+  AppModal,
   AppScrollNavigation,
   AppScrollSection,
   AppSelect,
@@ -275,6 +332,7 @@ import {
   type ScrollSection,
 } from '@beabee/vue';
 
+import { faPencil } from '@fortawesome/free-solid-svg-icons';
 import { buckets } from '@utils/callouts';
 import useVuelidate from '@vuelidate/core';
 import { computed, ref, watch } from 'vue';
@@ -368,6 +426,11 @@ const formComponentItems = computed(() =>
       id: c.fullKey,
       label: c.label || c.fullKey,
       type: c.type,
+      multiple: c.multiple || false,
+      values:
+        c.type === 'select'
+          ? c.data.values
+          : (c.values as MapIconQuestionValue[]) || [],
     }))
 );
 
@@ -382,6 +445,12 @@ const addressComponentItems = computed(() =>
 const textComponentItems = computed(() =>
   formComponentItems.value.filter(
     (c) => c.type === 'textfield' || c.type === 'textarea'
+  )
+);
+
+const mapIconQuestions = computed(() =>
+  formComponentItems.value.filter(
+    (c) => (c.type === 'select' && !c.multiple) || c.type === 'radio'
   )
 );
 
@@ -405,6 +474,42 @@ const mapBounds = computed({
     ];
   },
 });
+
+// Define MapIconQuestionValue
+type MapIconQuestionValue = {
+  label: string;
+  value: string;
+};
+
+// Get options / values for a selected map icon question
+function getValues(
+  mapIconQuestion: string | undefined
+): MapIconQuestionValue[] {
+  const question = mapIconQuestions.value.find((q) => q.id === mapIconQuestion);
+  return question ? question.values : [];
+}
+
+// Have one bool value per answer to open multiple modals
+const isPickerOpen = ref<boolean[]>([]);
+
+watch(
+  () => localData.value.mapSchema.mapIconQuestion,
+  (newQuestion) => {
+    localData.value.mapSchema.mapIconStyling = [];
+    const values = getValues(newQuestion);
+    values.forEach((value) => {
+      if (!localData.value.mapSchema.mapIconStyling) {
+        localData.value.mapSchema.mapIconStyling = [];
+      }
+      localData.value.mapSchema.mapIconStyling.push({
+        answer: value.label,
+        color: '#000000',
+        icon: 'default-icon',
+      });
+    });
+  },
+  { immediate: true }
+);
 
 // Update navigation sections when responseViews changes
 watch(
