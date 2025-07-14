@@ -131,7 +131,7 @@ class CalloutMapSchemaDto implements CalloutMapSchema {
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => CalloutMapIconSchemaDto)
-  mapIconStyling?: CalloutMapIconSchemaDto[] | null;
+  mapIconStyling?: CalloutMapIconSchemaDto[];
 }
 
 class CalloutMapIconSchemaDto implements mapIconStylingSchema {
