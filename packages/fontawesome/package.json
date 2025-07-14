@@ -1,0 +1,32 @@
+{
+  "name": "@beabee/fontawesome",
+  "description": "Complete FontAwesome integration package with advanced search, filtering, and icon picker functionality",
+  "version": "0.28.1",
+  "type": "module",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "update": "node --experimental-specifier-resolution=node --experimental-strip-types --no-warnings scripts/update.ts && yarn generate:index && yarn format",
+    "check": "yarn check:tsc && yarn check:prettier",
+    "check:tsc": "tsc --noEmit",
+    "check:prettier": "prettier -c .",
+    "format": "prettier --write .",
+    "generate:index": "yarn workspace @beabee/dev-cli start generate-index --baseDir $(pwd) --extension ts -p ./src/types ./src/utils ./src/data ./src/services"
+  },
+  "devDependencies": {
+    "@beabee/prettier-config": "workspace:^",
+    "@beabee/tsconfig": "workspace:^",
+    "@fortawesome/fontawesome-free": "^6.7.2",
+    "@types/node": "^22.15.28",
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.3",
+    "yaml": "^2.8.0"
+  },
+  "dependencies": {
+    "minisearch": "^7.1.2"
+  }
+}
