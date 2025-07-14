@@ -1,6 +1,7 @@
 import type {
   CreateCalloutReviewerData,
   GetCalloutReviewerData,
+  PaginatedQuery,
   Serial,
   UpdateCalloutReviewerData,
 } from '@beabee/beabee-common';
@@ -38,9 +39,13 @@ export class CalloutReviewerClient extends BaseClient {
    * @param calloutId The ID or slug of the callout
    * @returns List of reviewers
    */
-  async list(calloutId: string): Promise<GetCalloutReviewerData[]> {
+  async list(
+    calloutId: string,
+    query?: PaginatedQuery
+  ): Promise<GetCalloutReviewerData[]> {
     const { data } = await this.fetch.get<Serial<GetCalloutReviewerData[]>>(
-      `/${calloutId}/reviewers`
+      `/${calloutId}/reviewers`,
+      query
     );
     return data.map((reviewer) => this.deserialize(reviewer));
   }
