@@ -124,7 +124,14 @@ export class CalloutController {
   ): Promise<GetCalloutDto | undefined> {
     const { variants, ...calloutData } = data;
 
-    await CalloutTransformer.updateById(auth, id, calloutData);
+    const didUpdate = await CalloutTransformer.updateById(
+      auth,
+      id,
+      calloutData
+    );
+    if (!didUpdate) {
+      throw new NotFoundError();
+    }
 
     if (variants) {
       for (const [name, variant] of Object.entries(variants)) {
