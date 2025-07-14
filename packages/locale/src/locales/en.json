@@ -476,6 +476,15 @@
               "initialZoom": {
                 "label": "Initial zoom level"
               },
+              "mapIconQuestions": {
+                "label": "Select question for map icons"
+              },
+              "mapIconStyling": {
+                "label": "Label"
+              },
+              "mapIconStylingSetting": {
+                "label": "Please select a color and icon for: "
+              },
               "maxZoom": {
                 "label": "Maximum zoom level"
               },

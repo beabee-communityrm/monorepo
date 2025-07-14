@@ -46,6 +46,7 @@ meta:
           :cluster-properties="{
             all_responses: ['concat', ['get', 'all_responses']],
             first_response: ['min', ['get', 'first_response']],
+            cluster_color: ['get', 'cluster_color'],
           }"
         >
           <MglCircleLayer
@@ -78,7 +79,7 @@ meta:
             :layer-id="LAYER_IDS.UNCLUSTERED_POINTS"
             :filter="['!', ['has', 'point_count']]"
             :paint="{
-              'circle-color': 'black',
+              'circle-color': ['get', 'cluster_color'],
               'circle-radius': 10,
             }"
           />
@@ -185,6 +186,7 @@ meta:
 
 <script lang="ts" setup>
 import {
+  type CalloutResponseAnswer,
   type CalloutResponseAnswerAddress,
   type CalloutResponseAnswersSlide,
   type GetCalloutDataWith,
@@ -347,12 +349,26 @@ const newResponseAddress = computed(() => {
   return undefined;
 });
 
+const getMapIconQuestionResponse = (
+  response: GetCalloutResponseMapDataWithAddress
+): CalloutResponseAnswer | CalloutResponseAnswer[] | undefined => {
+  const mapIconQuestion =
+    props.callout.responseViewSchema?.map?.mapIconQuestion;
+
+  if (mapIconQuestion) {
+    const [slideId, answerKey] = mapIconQuestion.split('.');
+    return response.answers?.[slideId]?.[answerKey];
+  }
+};
+
 // A GeoJSON FeatureCollection of all the responses
 const responsesCollecton = computed<MapPointFeatureCollection>(() => {
   return {
     type: 'FeatureCollection',
     features: responses.value.map((response) => {
       const { lat, lng } = response.address.geometry.location;
+      const mapIconStyling =
+        props.callout.responseViewSchema?.map?.mapIconStyling;
 
       return {
         type: 'Feature',
@@ -360,6 +376,11 @@ const responsesCollecton = computed<MapPointFeatureCollection>(() => {
         properties: {
           all_responses: `<${response.number}>`,
           first_response: response.number,
+          cluster_color:
+            mapIconStyling?.find(
+              (s) =>
+                s.answer.toLowerCase() === getMapIconQuestionResponse(response)
+            )?.color ?? 'black',
         },
       };
     }),
