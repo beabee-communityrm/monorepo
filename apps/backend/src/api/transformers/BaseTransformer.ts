@@ -2,6 +2,7 @@ import {
   Filters,
   InvalidRule,
   PaginatedQuery,
+  Rule,
   RuleGroup,
   validateRuleGroup,
 } from '@beabee/beabee-common';
@@ -86,8 +87,8 @@ export abstract class BaseTransformer<
     auth: AuthInfo,
     query: Query,
     operation: TransformerOperation
-  ): Promise<RuleGroup | false> {
-    return false;
+  ): Promise<(Rule | RuleGroup)[]> {
+    return [];
   }
 
   /**
@@ -201,7 +202,7 @@ export abstract class BaseTransformer<
         finalQuery,
         operation
       );
-      if (!authRules) {
+      if (!authRules.length) {
         throw new UnauthorizedError();
       }
 
