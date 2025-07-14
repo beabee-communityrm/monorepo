@@ -22,6 +22,11 @@ export class GetCalloutReviewerDto {
   canEdit!: boolean;
 }
 
+export class UpdateCalloutReviewerDto {
+  @IsBoolean()
+  canEdit!: boolean;
+}
+
 export class ListCalloutReviewersDto extends GetPaginatedQuery {
   // No sort fields for now
   @IsIn([])

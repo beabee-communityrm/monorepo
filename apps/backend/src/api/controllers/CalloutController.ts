@@ -26,6 +26,7 @@ import {
 import {
   CreateCalloutReviewerDto,
   GetCalloutReviewerDto,
+  UpdateCalloutReviewerDto,
 } from '@api/dto/CalloutReviewerDto';
 import { CreateCalloutTagDto, GetCalloutTagDto } from '@api/dto/CalloutTagDto';
 import { PaginatedDto } from '@api/dto/PaginatedDto';
@@ -350,6 +351,16 @@ export class CalloutController {
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @Param('reviewerId') reviewerId: string
   ): Promise<GetCalloutReviewerDto | undefined> {
+    return CalloutReviewerTransformer.fetchOneById(auth, reviewerId);
+  }
+
+  @Patch('/:id/reviewers/:reviewerId')
+  async updateCalloutReviewer(
+    @CurrentAuth({ required: true }) auth: AuthInfo,
+    @Param('reviewerId') reviewerId: string,
+    @Body() data: UpdateCalloutReviewerDto
+  ): Promise<GetCalloutReviewerDto | undefined> {
+    await CalloutReviewerTransformer.updateById(auth, reviewerId, data);
     return CalloutReviewerTransformer.fetchOneById(auth, reviewerId);
   }
 
