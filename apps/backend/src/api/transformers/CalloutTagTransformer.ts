@@ -1,7 +1,8 @@
 import {
   CalloutTagFilterName,
   Filters,
-  RuleGroup,
+  PaginatedQuery,
+  Rule,
   calloutTagFilters,
 } from '@beabee/beabee-common';
 import { getRepository } from '@beabee/core/database';
@@ -14,7 +15,8 @@ import { AuthInfo } from '@beabee/core/type';
 
 import { GetCalloutTagDto } from '@api/dto';
 import { getReviewerRules } from '@api/utils/callouts';
-import { BadRequestError, UnauthorizedError } from 'routing-controllers';
+import { TransformerOperation } from '@type/transformer-operation';
+import { BadRequestError } from 'routing-controllers';
 
 import BaseTagTransformer from './BaseTagTransformer';
 
@@ -30,17 +32,11 @@ class CalloutTagTransformer extends BaseTagTransformer<
   protected entityIdField = 'responseId';
 
   protected async getNonAdminAuthRules(
-    auth: AuthInfo
-  ): Promise<RuleGroup | false> {
-    const reviewerRules = await getReviewerRules(auth.contact, 'calloutId');
-    if (reviewerRules.length) {
-      return {
-        condition: 'OR',
-        rules: reviewerRules,
-      };
-    }
-
-    return false;
+    auth: AuthInfo,
+    query: PaginatedQuery,
+    operation: TransformerOperation
+  ): Promise<Rule[]> {
+    return await getReviewerRules(auth.contact, 'calloutId', false);
   }
 
   /**

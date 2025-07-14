@@ -52,16 +52,13 @@ class CalloutResponseCommentTransformer extends BaseTransformer<
     };
   }
 
-  protected async getNonAdminAuthRules(auth: AuthInfo): Promise<RuleGroup> {
-    return {
-      condition: 'OR',
-      rules: [
-        // User's can always see their own response comments
-        { field: 'contact', operator: 'equal', value: ['me'] },
-        // And any comments for callouts they are reviewers for
-        ...(await getReviewerRules(auth.contact, 'calloutId')),
-      ],
-    };
+  protected async getNonAdminAuthRules(auth: AuthInfo): Promise<Rule[]> {
+    return [
+      // User's can always see their own response comments
+      { field: 'contact', operator: 'equal', value: ['me'] },
+      // And any comments for callouts they are reviewers for
+      ...(await getReviewerRules(auth.contact, 'calloutId', false)),
+    ];
   }
 
   protected modifyQueryBuilder(

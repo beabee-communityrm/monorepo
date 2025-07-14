@@ -1,6 +1,6 @@
 import {
   PaginatedQuery,
-  RuleGroup,
+  Rule,
   calloutVariantFilters,
 } from '@beabee/beabee-common';
 import { CalloutVariant } from '@beabee/core/models';
@@ -40,16 +40,13 @@ class CalloutVariantTransformer extends BaseTransformer<
     auth: AuthInfo,
     query: PaginatedQuery,
     operation: TransformerOperation
-  ): Promise<RuleGroup | false> {
-    const reviewerRules = await getReviewerRules(auth.contact, 'calloutId');
-    // Not a reviewer, can only read callouts
-    if (reviewerRules.length === 0 && operation !== 'read') {
-      return false;
-    }
-    return {
-      condition: 'OR',
-      rules: reviewerRules,
-    };
+  ): Promise<Rule[]> {
+    return await getReviewerRules(
+      auth.contact,
+      'calloutId',
+      // Reviewers with edit permission can create, update or delete variants
+      operation !== 'read'
+    );
   }
 }
 

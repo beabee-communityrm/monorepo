@@ -20,7 +20,7 @@ import { TransformerOperation } from '@type/index';
 import { FetchRawResult } from '@type/index';
 import { plainToInstance } from 'class-transformer';
 import { BadRequestError } from 'routing-controllers';
-import { Brackets, ObjectLiteral, SelectQueryBuilder, Table } from 'typeorm';
+import { Brackets, ObjectLiteral, SelectQueryBuilder } from 'typeorm';
 
 /**
  * Base transformer for querying and converting models to DTOs
