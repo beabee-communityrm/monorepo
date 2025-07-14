@@ -16,7 +16,6 @@ import {
   CalloutVariant,
 } from '@beabee/core/models';
 import { AuthInfo, FilterHandlers } from '@beabee/core/type';
-import { mergeRules } from '@beabee/core/utils/rules';
 
 import {
   GetCalloutDto,
@@ -36,6 +35,14 @@ import {
   UnauthorizedError,
 } from 'routing-controllers';
 import { SelectQueryBuilder } from 'typeorm';
+
+const statusRules: RuleGroup = {
+  condition: 'OR',
+  rules: [
+    { field: 'status', operator: 'equal', value: [ItemStatus.Open] },
+    { field: 'status', operator: 'equal', value: [ItemStatus.Ended] },
+  ],
+};
 
 class CalloutTransformer extends BaseTransformer<
   Callout,

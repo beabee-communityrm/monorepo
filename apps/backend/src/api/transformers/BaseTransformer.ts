@@ -12,7 +12,6 @@ import {
   UnauthorizedError,
 } from '@beabee/core/errors';
 import { AuthInfo, FilterHandlers } from '@beabee/core/type';
-import { mergeRules } from '@beabee/core/utils/rules';
 import { convertRulesToWhereClause } from '@beabee/core/utils/rules';
 
 import { PaginatedDto } from '@api/dto/PaginatedDto';
@@ -205,7 +204,15 @@ export abstract class BaseTransformer<
       if (!authRules) {
         throw new UnauthorizedError();
       }
-      finalQuery.rules = mergeRules([finalQuery.rules, authRules]);
+
+      // Merge the authentication rules with any existing rules
+      finalQuery.rules = {
+        condition: 'AND',
+        rules: [
+          ...(finalQuery.rules ? [finalQuery.rules] : []),
+          { condition: 'OR', rules: authRules },
+        ],
+      };
     }
 
     // Convert the query filters to a WHERE clause
