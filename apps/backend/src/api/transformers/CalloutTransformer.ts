@@ -190,42 +190,49 @@ class CalloutTransformer extends BaseTransformer<
   ): Promise<RuleGroup | false> {
     const reviewerRules = await getReviewerRules(auth.contact, 'id');
 
-    // Not a reviewer, can only read callouts
-    if (operation !== 'read' && reviewerRules.length === 0) {
+    if (operation === 'read') {
+      return {
+        condition: 'OR',
+        rules: [
+          // Reviewers can see all the callouts they are reviewers for
+          ...reviewerRules,
+
+          // Everyone can see open or ended callouts
+          mergeRules([
+            {
+              condition: 'OR',
+              rules: [
+                {
+                  field: 'status',
+                  operator: 'equal',
+                  value: [ItemStatus.Open],
+                },
+                {
+                  field: 'status',
+                  operator: 'equal',
+                  value: [ItemStatus.Ended],
+                },
+              ],
+            },
+            // Except hidden callouts which are hidden unless explicitly authorised.
+            // Typically this is used for direct access to a callout by its slug
+            !query.showHiddenForAll && {
+              field: 'hidden',
+              operator: 'equal',
+              value: [false],
+            },
+          ]),
+        ],
+      };
+    } else if (reviewerRules.length > 0) {
+      // If the user is a reviewer, they can update all callouts they are reviewers for
+      return {
+        condition: 'OR',
+        rules: reviewerRules,
+      };
+    } else {
       return false;
     }
-
-    return {
-      condition: 'OR',
-      rules: [
-        // Reviewers can see all the callouts they are reviewers for
-        ...reviewerRules,
-
-        // Non-admins can only see open or ended non-hidden callouts
-        mergeRules([
-          {
-            condition: 'OR',
-            rules: [
-              {
-                field: 'status',
-                operator: 'equal',
-                value: [ItemStatus.Open],
-              },
-              {
-                field: 'status',
-                operator: 'equal',
-                value: [ItemStatus.Ended],
-              },
-            ],
-          },
-          !query.showHiddenForAll && {
-            field: 'hidden',
-            operator: 'equal',
-            value: [false],
-          },
-        ]),
-      ],
-    };
   }
 
   protected modifyQueryBuilder(
