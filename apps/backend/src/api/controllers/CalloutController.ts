@@ -261,7 +261,10 @@ export class CalloutController {
       ...query,
       rules: {
         condition: 'AND',
-        rules: [{ field: 'calloutId', operator: 'equal', value: [id] }],
+        rules: [
+          ...(query.rules ? [query.rules] : []),
+          { field: 'calloutId', operator: 'equal', value: [id] },
+        ],
       },
     });
 
@@ -324,10 +327,14 @@ export class CalloutController {
     @QueryParams() query: ListCalloutResponsesDto
   ): Promise<GetCalloutReviewerDto[]> {
     const result = await CalloutReviewerTransformer.fetch(auth, {
+      limit: -1,
       ...query,
       rules: {
         condition: 'AND',
-        rules: [{ field: 'calloutId', operator: 'equal', value: [id] }],
+        rules: [
+          ...(query.rules ? [query.rules] : []),
+          { field: 'calloutId', operator: 'equal', value: [id] },
+        ],
       },
     });
 
