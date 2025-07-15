@@ -71,6 +71,7 @@
     "continue": "",
     "copy": "αντίγραφο",
     "create": "",
+    "decrease": "",
     "delete": "",
     "disable": "",
     "edit": "",
@@ -79,6 +80,7 @@
     "export": "",
     "getStarted": "αρχίζω",
     "goBack": "",
+    "increase": "",
     "next": "επόμενος",
     "noBack": "",
     "participate": "",
@@ -100,15 +102,13 @@
     "share": "Μοιραστείτε",
     "skip": "",
     "submit": "υποβάλετε",
+    "tryAgain": "",
     "unpublish": "",
     "update": "",
     "view": "",
     "yesDelete": "",
     "yesDisable": "",
-    "yesRemove": "",
-    "tryAgain": "",
-    "increase": "",
-    "decrease": ""
+    "yesRemove": ""
   },
   "addContact": {
     "contactSaved": "",
@@ -647,14 +647,14 @@
           "title": ""
         }
       },
+      "title": "",
       "translationFields": {
         "description": "",
         "html": "",
         "label": "",
         "option": "",
         "placeholder": ""
-      },
-      "title": ""
+      }
     },
     "confirmHuman": "Παρακαλώ επιβεβαιώστε ότι είστε άνθρωπος.",
     "contactDetails": "",
@@ -673,15 +673,15 @@
     "responseSubmitted": "Το μήνυμά σας έχει σταλεί.",
     "share": {
       "address": "Εδώ μπορείτε να προωθήσετε αυτήν τη φόρμα στην ακόλουθη διεύθυνση:",
-      "services": "Μπορείτε επίσης να στείλετε αυτήν τη φόρμα σε άλλα άτομα, για παράδειγμα, μέσω Facebook, TikTok ή Instagram.",
       "aria": {
+        "email": "",
         "facebook": "",
         "linkedin": "",
         "telegram": "",
         "twitter": "",
-        "whatsapp": "",
-        "email": ""
-      }
+        "whatsapp": ""
+      },
+      "services": "Μπορείτε επίσης να στείλετε αυτήν τη φόρμα σε άλλα άτομα, για παράδειγμα, μέσω Facebook, TikTok ή Instagram."
     },
     "showingPreview": "",
     "toContributionPage": "",
@@ -895,19 +895,19 @@
     "selectNone": "-- Κανένας --",
     "selectOne": "επιλέξτε",
     "show": "δείξε",
+    "showingOf": "",
     "status": {
       "draft": "Προσχέδιο",
       "ended": "πλήρης",
       "open": "ανοιχτό",
       "scheduled": "προγραμματισμένο"
     },
+    "statusLabel": "",
     "thankYou": "Ευχαριστώ πολύ!",
     "timeAgo": "πριν το {time}",
     "timeIn": "σε {time}",
     "until": "",
-    "yes": "",
-    "showingOf": "",
-    "statusLabel": ""
+    "yes": ""
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1123,6 +1123,10 @@
         "required": "",
         "sameAs": ""
       },
+      "description": {
+        "maxLength": "",
+        "required": ""
+      },
       "email": {
         "email": "",
         "required": ""
@@ -1149,6 +1153,10 @@
       "postCode": {
         "required": ""
       },
+      "shareDescription": {
+        "maxLength": "",
+        "required": ""
+      },
       "unknown": {
         "email": "",
         "max": "",
@@ -1165,14 +1173,6 @@
         "max": "",
         "min": "",
         "required": ""
-      },
-      "description": {
-        "required": "",
-        "maxLength": ""
-      },
-      "shareDescription": {
-        "maxLength": "",
-        "required": ""
       }
     },
     "firstName": "",
@@ -1187,14 +1187,14 @@
     "richtext": {
       "bold": "",
       "bulletlist": "",
+      "editor": "",
       "heading": "",
       "italic": "",
       "link": "",
       "numberedlist": "",
       "strikethrough": "",
-      "underline": "",
       "toolbar": "",
-      "editor": ""
+      "underline": ""
     },
     "saveChanges": "",
     "saved": "",
@@ -1227,6 +1227,11 @@
     "viewOpenCallouts": "",
     "welcome": "",
     "yourProfile": ""
+  },
+  "icons": {
+    "welcome": {
+      "ariaLabel": ""
+    }
   },
   "item": {
     "status": {
@@ -1345,13 +1350,13 @@
         "formSubtitle": "",
         "formTitle": "",
         "minAmount": "",
+        "noticeText": "",
+        "noticeTextHelp": "",
         "showAbsorbFee": "",
         "showNoContribution": "",
         "suggestedAmounts": "",
         "text": "",
-        "title": "",
-        "noticeText": "",
-        "noticeTextHelp": ""
+        "title": ""
       }
     },
     "title": ""
@@ -1525,6 +1530,13 @@
     "description": "",
     "title": ""
   },
+  "status": {
+    "connectingToServer": "",
+    "initializing": "",
+    "loadingApplication": "",
+    "pleaseWait": "",
+    "usuallyTakesSeconds": ""
+  },
   "tagEditor": {
     "add": "",
     "confirmDelete": {
@@ -1547,21 +1559,5 @@
   },
   "taxRate": {
     "invoiceName": ""
-  },
-  "status": {
-    "loadingApplication": "",
-    "pleaseWait": "",
-    "connectingToServer": "",
-    "initializing": "",
-    "usuallyTakesSeconds": ""
-  },
-  "icons": {
-    "welcome": {
-      "ariaLabel": ""
-    }
-  },
-  "stepper": {
-    "navigation": {},
-    "screen": {}
   }
 }
