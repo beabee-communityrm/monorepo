@@ -76,7 +76,6 @@
  * </ItemManager>
  */
 import { ref } from 'vue';
-import { useI18n } from 'vue-i18n';
 
 import { AppButton } from '../button';
 import ItemManagerForm from './ItemManagerForm.vue';
@@ -108,7 +107,6 @@ export interface ItemManagerProps<T, D> {
 
 const props = defineProps<ItemManagerProps<T, D>>();
 
-const { t } = useI18n();
 const formVisible = ref(false);
 
 /**

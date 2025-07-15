@@ -271,9 +271,7 @@ onBeforeMount(async () => {
   footerData.termsLink = storeGeneralContent.value.termsLink || '';
   footerData.impressumLink = storeGeneralContent.value.impressumLink || '';
   footerData.footerLinks =
-    storeGeneralContent.value.footerLinks?.map(
-      (l: { text: string; url: string }) => ({ ...l })
-    ) || [];
+    storeGeneralContent.value.footerLinks?.map((l) => ({ ...l })) || [];
 
   shareContent.value = await client.content.get('share');
 

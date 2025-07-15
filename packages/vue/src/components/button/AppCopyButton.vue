@@ -91,7 +91,6 @@ const handleCopy = async () => {
   } catch (error) {
     addNotification({
       title: t('notifications.error'),
-      description: t('notifications.copy.error', { error: String(error) }),
       variant: 'error',
       removeable: 'auto',
     });
