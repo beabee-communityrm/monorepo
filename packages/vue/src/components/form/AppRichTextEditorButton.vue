@@ -49,18 +49,14 @@ export interface AppRichTextEditorButtonProps {
   /** Whether the button is in active state (command is applied) */
   active: boolean;
   /** Whether the button is disabled */
-  disabled?: boolean;
+  disabled: boolean;
   /** FontAwesome icon to display */
-  icon?: IconDefinition;
+  icon: IconDefinition;
   /** Accessible title/tooltip text for the button */
-  title?: string;
+  title: string;
 }
 
-withDefaults(defineProps<AppRichTextEditorButtonProps>(), {
-  disabled: false,
-  icon: undefined,
-  title: undefined,
-});
+defineProps<AppRichTextEditorButtonProps>();
 
 /**
  * Events emitted by the AppRichTextEditorButton component
