@@ -130,14 +130,14 @@
     "title": "Een kennisgeving toevoegen"
   },
   "adminDashboard": {
-    "hint1": "<p>Wist je dat oproepen zonder einddatum kunnen worden gemaakt en gewoon kunnen blijven lopen? Zie onze <a href=\"https://beabee.io/en/beabee-full-feature-list/\" target=\"_blank\" rel=\"noopener noreferrer\">feature showcase</a> voor meer informatie.</p>\n",
+    "hint1": "<p>Wist je dat CrowdNewsrooms zonder einddatum kunnen worden gemaakt en gewoon kunnen blijven lopen? Zie onze <a href=\"https://beabee.io/en/beabee-full-feature-list/\" target=\"_blank\" rel=\"noopener noreferrer\">feature showcase</a> voor meer informatie.</p>\n",
     "hint2": "<p>Lees meer over <a href=\"https://beabee.io/en/beabee-model/\" target=\"_blank\" rel=\"noopener noreferrer\">de visie van beabee</a> over communitybetrokkenheid en betekenisvolle relaties met je publiek.</p>\n",
     "hint3": "<p>Onze <a href=\"https://beabee.io/en/beabee-faq/\" target=\"_blank\" rel=\"noopener noreferrer\">FAQ</a> behandelt veelgestelde vragen over opstarten en use cases. Als het antwoord dat je zoekt er niet bij staat, neem dan contact met ons op.</p>\n",
     "joinSlack": "Word lid van de beabee community op Slack!",
     "latestCallout": {
       "createNew": "Nieuwe aanmaken?",
-      "empty": "Momenteel geen actieve oproep.",
-      "title": "Laatste oproep"
+      "empty": "Momenteel geen actieve CrowdNewsroom.",
+      "title": "Laatste CrowdNewsroom"
     },
     "mostRecentMembers": {
       "title": "Laatst toegetreden leden"
@@ -658,7 +658,7 @@
     },
     "confirmHuman": "Bevestig dat u een mens bent",
     "contactDetails": "Contactgegevens",
-    "ended": "Deze callout eindigde op {date}",
+    "ended": "Deze CrowdNewsroom eindigde op {date}",
     "entryOf": "",
     "form": {
       "email": "Je e-mail",
@@ -669,7 +669,7 @@
     "getStarted": "Aan de slag",
     "joinNow": "Nu meedoen",
     "loginToYourAccount": "Inloggen op je account",
-    "membersOnly": "Deze oproep is alleen toegankelijk voor leden. Deelnemen",
+    "membersOnly": "Deze CrowdNewsroom is alleen toegankelijk voor leden. Deelnemen",
     "responseSubmitted": "Reactie ingediend",
     "share": {
       "address": "Deel deze oproep met het volgende adres:",
@@ -690,24 +690,24 @@
       "gallery": "Galerij",
       "map": "Kaart"
     },
-    "youResponded": "Je hebt gereageerd op deze oproep ♥",
+    "youResponded": "Je hebt gereageerd op deze CrowdNewsroom ♥",
     "yourResponse": "Je reactie"
   },
   "calloutAdmin": {
-    "deleted": "Oproep verwijderd.",
-    "ended": "Callout beëindigd. Je kunt hem heropenen door hem te bewerken.",
+    "deleted": "CrowdNewsroom verwijderd.",
+    "ended": "CrowdNewsroom beëindigd. Je kunt hem heropenen door hem te bewerken.",
     "overview": "Overzicht",
-    "reopened": "Callout heropend. Bewerk de callout als u een andere einddatum wilt instellen.",
+    "reopened": "CrowdNewsroom heropend. Bewerk de callout als u een andere einddatum wilt instellen.",
     "responses": "Antwoorden"
   },
   "calloutAdminOverview": {
     "actions": {
       "confirmDelete": {
-        "text": "Weet je zeker dat je deze callout wilt verwijderen?",
-        "title": "Oproep verwijderen?"
+        "text": "Weet je zeker dat je deze CrowdNewsroom wilt verwijderen?",
+        "title": "CrowdNewsroom verwijderd?"
       }
     },
-    "created": "Je nieuwe callout is succesvol aangemaakt.",
+    "created": "Je nieuwe CrowdNewsroom is succesvol aangemaakt.",
     "dates": {
       "ends": "Eindigt",
       "label": "Data",
@@ -737,14 +737,14 @@
       }
     },
     "summary": "Overzicht",
-    "updated": "Je callout is succesvol bijgewerkt."
+    "updated": "Je CrowdNewsroom is succesvol bijgewerkt."
   },
   "calloutResponse": {
     "data": {
       "answers": "Antwoorden",
       "assignee": "Toegewezen aan",
       "bucket": "Emmer",
-      "callout": "Oproep",
+      "callout": "CrowdNewsroom",
       "contact": "Contact",
       "createdAt": "Datum ingediend",
       "tags": "Tags",
@@ -807,7 +807,7 @@
   "calloutReviewerManager": {
     "add": "Recensent toevoegen",
     "confirmDelete": {
-      "text": "Weet u zeker dat u {reviewerName} wilt verwijderen? Ze zullen deze callout niet langer kunnen beoordelen.",
+      "text": "Weet u zeker dat u {reviewerName} wilt verwijderen? Ze zullen deze CrowdNewsroom niet langer kunnen beoordelen.",
       "title": "Recensent verwijderen"
     },
     "contact": "Contact ID",
@@ -819,7 +819,7 @@
   "callouts": {
     "archive": "Archief",
     "data": {
-      "callout": "Oproep",
+      "callout": "CrowdNewsroom",
       "endDate": "Einddatum"
     },
     "noArchivedCallouts": "Geen oproepen",
@@ -934,7 +934,7 @@
     "annotation": {
       "copy": "<p>Alle informatie die in dit gedeelte wordt toegevoegd is <strong>alleen zichtbaar voor admins</strong>. Leden zullen deze nooit zien in hun profiel of ledengedeelte.</p>\n"
     },
-    "callouts": "Oproepen",
+    "callouts": "CrowdNewsroom",
     "cancellationDate": "Geannuleerd op",
     "contribution": "Bijdrage",
     "contributionType": "Type",
@@ -1001,7 +1001,7 @@
       "tags": "Tags"
     },
     "dataGroup": {
-      "callout": "Oproep",
+      "callout": "CrowdNewsroom",
       "contact": "Contact informatie",
       "contribution": "Bijdrage",
       "role": "Rol"
@@ -1058,9 +1058,9 @@
     "willRenewWithNewAmount": "Je bijdrage zal automatisch vernieuwd worden op {renewalDate} en zal veranderen naar het door jou gekozen bedrag van {nextAmount}."
   },
   "editCallout": {
-    "replicated": "Je callout is succesvol gerepliceerd en je bent nu de nieuwe kopie aan het bewerken. Zorg ervoor dat je de titel aanpast op het tabblad “Titel en afbeelding”.",
+    "replicated": "Je CrowdNewsroom is succesvol gerepliceerd en je bent nu de nieuwe kopie aan het bewerken. Zorg ervoor dat je de titel aanpast op het tabblad “Titel en afbeelding”.",
     "title": "Bewerken: {title}",
-    "warning": "Voorzichtig! Je bent een live callout aan het bewerken. Het wijzigen van formuliereigenschappen brengt het risico met zich mee dat eerdere antwoorden onbruikbaar worden."
+    "warning": "Voorzichtig! Je bent een live CrowdNewsroom aan het bewerken..."
   },
   "editNotice": {
     "title": "Bewerken: {title}"
@@ -1219,12 +1219,12 @@
   "homePage": {
     "editProfile": "Bewerk je community profiel",
     "manageContribution": "Je bijdrage beheren",
-    "newCallout": "Nieuwe oproep!",
-    "openCallouts": "Oproepen openen",
+    "newCallout": "Nieuwe CrowdNewsroom!",
+    "openCallouts": "CrowdNewsroom openen",
     "quickActions": "Snelle acties",
     "title": "Home",
-    "viewAllCallouts": "Alle callouts bekijken",
-    "viewOpenCallouts": "Open callouts bekijken",
+    "viewAllCallouts": "Alle CrowdNewsrooms bekijken",
+    "viewOpenCallouts": "Open CrowdNewsrooms bekijken",
     "welcome": "Welkom bij ons {firstName}!",
     "yourProfile": "Uw profiel"
   },
@@ -1314,8 +1314,8 @@
         "description": "Stel je bevestigingsscherm samen",
         "joinSurvey": {
           "required": "Gebruikers moeten de enquête invullen voordat ze verder kunnen gaan",
-          "slug": "Oproep",
-          "slugHelp": "Je kunt elke open callout gebruiken die geen vervaldatum heeft.",
+          "slug": "CrowdNewsroom",
+          "slugHelp": "Je kunt elke open CrowdNewsroom gebruiken die geen vervaldatum heeft.",
           "text": "Je kunt je nieuwe gebruikers vragen om een uitnodiging in te vullen als onderdeel van de aanmeldingsprocedure. Dit is een goede manier om hen te vragen waarom ze lid zijn geworden of misschien wil je wat extra informatie van hen om hen te helpen in de community te passen.",
           "textIntro": "Vertel je gebruikers een beetje waarom je om deze informatie vraagt",
           "title": "Deelnemen aan enquête"
@@ -1365,7 +1365,7 @@
     "account": "Account",
     "admin": "Beheer",
     "adminSettings": "Instellingen",
-    "callouts": "Oproepen",
+    "callouts": "CrowdNewsroom",
     "contacts": "Contacten",
     "contribution": "Bijdrage",
     "dashboard": "Dashboard",
