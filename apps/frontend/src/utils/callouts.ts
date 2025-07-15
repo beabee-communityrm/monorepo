@@ -26,12 +26,12 @@ import type { SettingsTabData } from '@components/pages/admin/callouts/tabs/Sett
 import type { TitleAndImageTabData } from '@components/pages/admin/callouts/tabs/TitleAndImageTab.vue';
 import type { TranslationsTabData } from '@components/pages/admin/callouts/tabs/TranslationsTab.vue';
 import type { LocaleProp } from '@type';
-import type { FilterItem, FilterItems } from '@type';
 import { format } from 'date-fns';
 import { computed } from 'vue';
 
 import env from '../env';
 import { i18n } from '../lib/i18n';
+import type { FilterItem, FilterItems } from '../type/search';
 
 const { t } = i18n.global;
 

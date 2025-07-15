@@ -58,7 +58,7 @@ const handleTabClick = (tabId: string) => {
 </script>
 
 <template>
-  <Story title="Components/Tabs/AppTabs">
+  <Story title="Tabs/AppTabs">
     <Variant title="Basic">
       <div class="flex flex-col gap-4">
         <AppTabs

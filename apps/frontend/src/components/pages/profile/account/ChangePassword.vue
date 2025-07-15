@@ -20,6 +20,7 @@
     :success-text="t('accountPage.savedPassword')"
     :button-text="t('actions.changePassword')"
     :reset-button-text="t('form.cancel')"
+    :extract-error-code="extractApiErrorCode"
     @submit="handleFormSubmit"
     @reset="showForm = false"
   >
@@ -48,15 +49,13 @@
   </AppForm>
 </template>
 <script lang="ts" setup>
-import { AppButton, AppForm } from '@beabee/vue/components';
+import { AppButton, AppForm, AppHeading, AppInput } from '@beabee/vue';
 
 import { faKey } from '@fortawesome/free-solid-svg-icons';
 import { client } from '@utils/api';
+import { extractApiErrorCode } from '@utils/api-error';
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-
-import AppHeading from '../../../AppHeading.vue';
-import AppInput from '../../../forms/AppInput.vue';
 
 const { t } = useI18n();
 

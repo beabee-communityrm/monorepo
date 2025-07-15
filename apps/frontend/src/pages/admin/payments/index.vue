@@ -21,7 +21,7 @@ meta:
       :result="paymentsTable"
     >
       <template #value-status="{ value }">
-        <PaymentStatus :status="value" />
+        <PaymentStatus :status="value as PaymentStatusEnum" />
       </template>
       <template #value-contact="{ value }">
         <router-link
@@ -47,21 +47,20 @@ import type {
   GetPaymentsQuery,
   Paginated,
 } from '@beabee/beabee-common';
+import { PaymentStatus as PaymentStatusEnum } from '@beabee/beabee-common';
+import { AppFilterGrid, PageTitle, formatLocale } from '@beabee/vue';
 
-import AppFilterGrid from '@components/AppFilterGrid.vue';
-import PageTitle from '@components/PageTitle.vue';
 import {
   filterGroups,
   headers,
   statusItems,
 } from '@components/pages/admin/payments.interface';
-import PaymentStatus from '@components/payment/PaymentStatus.vue';
+import { PaymentStatus } from '@components/payment';
 import AppSearch from '@components/search/AppSearch.vue';
 import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
 import { faEuro } from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { client } from '@utils/api';
-import { formatLocale } from '@utils/dates';
 import {
   definePaginatedQuery,
   defineParam,

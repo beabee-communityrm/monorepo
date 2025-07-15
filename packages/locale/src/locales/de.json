@@ -105,7 +105,10 @@
     "view": "Anzeigen",
     "yesDelete": "Ja, löschen",
     "yesDisable": "Ja, deaktivieren",
-    "yesRemove": "Ja, entfernen"
+    "yesRemove": "Ja, entfernen",
+    "tryAgain": "Erneut versuchen",
+    "increase": "Erhöhen",
+    "decrease": "Verringern"
   },
   "addContact": {
     "contactSaved": "Kontakt gespeichert",
@@ -333,6 +336,7 @@
     "addAPoint": "Klicken Sie dort auf die Karte, wo Sie einen Ort ergänzen möchten",
     "addLocation": "Neuen Eintrag eingeben",
     "builder": {
+      "title": "Callout-Builder",
       "actions": {
         "addSlide": "Slide hinzufügen"
       },
@@ -669,7 +673,15 @@
     "responseSubmitted": "Antwort eingereicht",
     "share": {
       "address": "Diesen Callout per Link teilen:",
-      "services": "Diesen Callout auf einer der folgenden Plattformen teilen: "
+      "services": "Diesen Callout auf einer der folgenden Plattformen teilen: ",
+      "aria": {
+        "facebook": "Auf Facebook teilen",
+        "linkedin": "Auf LinkedIn teilen",
+        "telegram": "Auf Telegram teilen",
+        "twitter": "Auf Twitter teilen",
+        "whatsapp": "Auf WhatsApp teilen",
+        "email": "Per E-Mail teilen"
+      }
     },
     "showingPreview": "Im Vorschaumodus sind Antworten deaktiviert.",
     "toContributionPage": "Meinen Beitrag ändern",
@@ -893,7 +905,9 @@
     "timeAgo": "vor {time}",
     "timeIn": "in {time}",
     "until": "bis",
-    "yes": "Ja"
+    "yes": "Ja",
+    "showingOf": "",
+    "statusLabel": "Status: {status}"
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1143,6 +1157,14 @@
         "required": "Dieses Feld wird benötigt",
         "url": "Ungültige URL"
       },
+      "description": {
+        "maxLength": "Die maximale Länge von {max} Zeichen wurde überschritten",
+        "required": "Beschreibung benötigt"
+      },
+      "shareDescription": {
+        "maxLength": "Die maximale Länge von {max} Zeichen wurde überschritten, {remaining} Zeichen verbleiben",
+        "required": "Beschreibung benötigt"
+      },
       "url": {
         "required": "URL benötigt",
         "url": "Ungültige URL"
@@ -1170,7 +1192,9 @@
       "link": "Link",
       "numberedlist": "Nummerierung",
       "strikethrough": "Durchstreichen",
-      "underline": "Unterstreichen"
+      "underline": "Unterstreichen",
+      "toolbar": "Rich-Text-Formatierung Symbolleiste",
+      "editor": "Rich-Text-Editor"
     },
     "saveChanges": "Änderungen speichern",
     "saved": "Gespeichert!",
@@ -1523,5 +1547,27 @@
   },
   "taxRate": {
     "invoiceName": "MwSt"
+  },
+  "status": {
+    "loadingApplication": "Anwendung wird geladen",
+    "pleaseWait": "Bitte warten...",
+    "connectingToServer": "Verbindung zum Server wird hergestellt...",
+    "initializing": "Wird initialisiert...",
+    "usuallyTakesSeconds": "Das dauert normalerweise ein paar Sekunden"
+  },
+  "stepper": {
+    "navigation": {
+      "label": "Fortschritt"
+    },
+    "screen": {
+      "hasError": ", hat Fehler",
+      "completed": ", abgeschlossen",
+      "currentStep": ", aktueller Schritt"
+    }
+  },
+  "icons": {
+    "welcome": {
+      "ariaLabel": "Willkommen-Symbol"
+    }
   }
 }

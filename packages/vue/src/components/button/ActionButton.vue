@@ -1,3 +1,8 @@
+<!--
+  # ActionButton
+  A specialized button component that extends AppButton with primaryOutlined variant.
+  Used primarily for action items in navigation menus, toolbars, or action panels.
+-->
 <template>
   <AppButton
     variant="primaryOutlined"
@@ -15,18 +20,14 @@
 
 <script lang="ts" setup>
 /**
- * An action button component that extends AppButton with specific styling
- * and accessibility features.
+ * Action button component that extends AppButton with predefined styling.
+ * Always uses the primaryOutlined variant and requires an icon.
  *
  * @component ActionButton
  *
  * @example
- * <ActionButton
- *   :icon="faEdit"
- *   aria-label="Edit profile"
- *   title="Edit"
- * >
- *   Edit
+ * <ActionButton :icon="faEdit">
+ *   Edit Item
  * </ActionButton>
  */
 import type { IconDefinition } from '@fortawesome/free-solid-svg-icons';
@@ -37,11 +38,11 @@ import AppButton from './AppButton.vue';
  * Props for the ActionButton component
  */
 export interface ActionButtonProps {
-  /** Icon to display in the button */
+  /** FontAwesome icon to display in the button (required) */
   icon: IconDefinition;
   /** Accessible label for screen readers */
   ariaLabel?: string;
-  /** Tooltip text */
+  /** Tooltip text displayed on hover */
   title?: string;
 }
 

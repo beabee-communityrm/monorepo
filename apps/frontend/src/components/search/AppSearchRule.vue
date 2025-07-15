@@ -22,12 +22,25 @@
     />
   </div>
 </template>
-<script lang="ts" setup>
+
+<script setup lang="ts">
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
+import type { SearchRuleEmits, SearchRuleProps } from '../../type/search';
 import AppSearchRuleFilter from './AppSearchRuleFilter.vue';
-import type { SearchRuleEmits, SearchRuleProps } from './search.interface';
+
+/**
+ * Search rule component that wraps rule filter with remove functionality.
+ * Now uses internal i18n.
+ *
+ * @param filterGroups - Available filter groups
+ * @param rule - The current rule
+ * @param readonly - Whether the component is in readonly mode
+ */
+
+withDefaults(defineProps<SearchRuleProps>(), {
+  readonly: false,
+});
 
 const emit = defineEmits<SearchRuleEmits>();
-defineProps<SearchRuleProps>();
 </script>

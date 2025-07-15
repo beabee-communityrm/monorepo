@@ -4,11 +4,7 @@
       <AppTitle class="pt-8">{{ callout.title }}</AppTitle>
 
       <div v-if="callout.status === ItemStatus.Open" class="mb-6">
-        <AppShareBox
-          :address-text="t('callout.share.address')"
-          :services-text="t('callout.share.services')"
-          :url="route.path /* Could be either /map or /gallery */"
-        />
+        <AppShareBox :url="`${env.appUrl}/${route.path}`" />
       </div>
 
       <img class="mb-6 w-full" :src="imageUrl" />
@@ -40,12 +36,11 @@
 
 <script lang="ts" setup>
 import { type GetCalloutDataWith, ItemStatus } from '@beabee/beabee-common';
-import { AppButton } from '@beabee/vue/components';
-import { generalContent } from '@beabee/vue/store/generalContent';
+import { AppButton, AppShareBox, AppTitle } from '@beabee/vue';
 
 import noImage from '@assets/images/no-image.avif';
-import AppShareBox from '@components/AppShareBox.vue';
-import AppTitle from '@components/AppTitle.vue';
+import env from '@env';
+import { generalContent } from '@store/generalContent';
 import { resolveImageUrl } from '@utils/url';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';

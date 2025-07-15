@@ -105,7 +105,10 @@
     "view": "Ver",
     "yesDelete": "Sim, apagar",
     "yesDisable": "Sim, desactivar",
-    "yesRemove": "Sim, remover"
+    "yesRemove": "Sim, remover",
+    "tryAgain": "",
+    "increase": "",
+    "decrease": ""
   },
   "addContact": {
     "contactSaved": "Contacto gravado",
@@ -650,7 +653,8 @@
         "label": "",
         "option": "",
         "placeholder": ""
-      }
+      },
+      "title": ""
     },
     "confirmHuman": "",
     "contactDetails": "Detalhes de contacto",
@@ -669,7 +673,15 @@
     "responseSubmitted": "Resposta submetida",
     "share": {
       "address": "Podes partilhar esta chamada com este endereço:",
-      "services": "Ou partilha rapidamente com uma destas plataformas:"
+      "services": "Ou partilha rapidamente com uma destas plataformas:",
+      "aria": {
+        "facebook": "",
+        "linkedin": "",
+        "telegram": "",
+        "twitter": "",
+        "whatsapp": "",
+        "email": ""
+      }
     },
     "showingPreview": "",
     "toContributionPage": "Editar a minha contribuição",
@@ -893,7 +905,9 @@
     "timeAgo": "há {time}",
     "timeIn": "em {time}",
     "until": "até",
-    "yes": "Sim"
+    "yes": "Sim",
+    "showingOf": "",
+    "statusLabel": ""
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1151,6 +1165,14 @@
         "max": "O código deve ter no máximo {max} caracteres.",
         "min": "O código deve ter no mínimo {min} caracteres.",
         "required": "O código é obrigatório"
+      },
+      "description": {
+        "required": "",
+        "maxLength": ""
+      },
+      "shareDescription": {
+        "maxLength": "",
+        "required": ""
       }
     },
     "firstName": "Primeiro nome",
@@ -1170,7 +1192,9 @@
       "link": "Link",
       "numberedlist": "Lista numerada",
       "strikethrough": "Rasurado",
-      "underline": "Sublinhado"
+      "underline": "Sublinhado",
+      "toolbar": "",
+      "editor": ""
     },
     "saveChanges": "Gravar alterações",
     "saved": "Gravado!",
@@ -1523,5 +1547,21 @@
   },
   "taxRate": {
     "invoiceName": "???"
+  },
+  "status": {
+    "loadingApplication": "",
+    "pleaseWait": "",
+    "connectingToServer": "",
+    "initializing": "",
+    "usuallyTakesSeconds": ""
+  },
+  "icons": {
+    "welcome": {
+      "ariaLabel": ""
+    }
+  },
+  "stepper": {
+    "navigation": {},
+    "screen": {}
   }
 }

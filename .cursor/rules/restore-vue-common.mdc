@@ -1,0 +1,86 @@
+---
+description: Restore Vue Design System Independence
+globs: 
+alwaysApply: false
+---
+
+Move components with external dependencies from `packages/vue` to `apps/frontend` for clear separation.
+
+## AI Agent Workflow
+
+### Phase 1: Component Migration
+**CRITICAL**: Always use `git mv` for clean history tracking.
+
+1. **Move component directory**: 
+   ```bash
+   git mv packages/vue/src/components/[component] apps/frontend/src/components/
+   git commit -m "refactor(vue): Move [component] components to frontend"
+   ```
+
+### Phase 2: Cleanup and Import Fixes
+2. **Remove story files and index**: 
+   ```bash
+   rm apps/frontend/src/components/[component]/*.story.* apps/frontend/src/components/[component]/index.ts
+   ```
+
+3. **Migrate related types**: Move component-specific types from `packages/vue/src/types/` to `apps/frontend/src/type/`
+   ```bash
+   git mv packages/vue/src/types/[component].ts apps/frontend/src/type/
+   ```
+
+4. **Fix imports in migrated components**: Change relative imports to `@beabee/vue`
+   - `'../form'` → `'@beabee/vue'`
+   - `'../button'` → `'@beabee/vue'`
+   - `'../../types/[component]'` → `'@/type/[component]'`
+
+5. **Remove exports from vue package**: Delete from `packages/vue/src/components/index.ts` and update `packages/vue/src/types/index.ts`
+
+6. **Update frontend usage**: Change `@beabee/vue` imports to local component imports
+   - `import { Component } from '@beabee/vue'` → `import Component from '@components/[dir]/Component.vue'`
+
+### Phase 3: Validation ⚠️ CRITICAL
+7. **Format and validate continuously**: 
+   ```bash
+   # After every major change, run:
+   yarn format && yarn check
+   ```
+
+8. **Final validation before commit**: 
+   ```bash
+   # MANDATORY: Both packages must pass before any commit
+   cd packages/vue && yarn format && yarn check
+   cd /path/to/monorepo/apps/frontend && yarn format && yarn check
+   cd /path/to/monorepo && yarn check  # Full workspace check
+   ```
+
+9. **Commit only if validation passes**: 
+   ```bash
+   # Only commit if all checks pass with exit code 0
+   git add -A && git commit -m "refactor(frontend): Update [component] imports and cleanup after migration"
+   ```
+
+## ⚠️ VALIDATION RULES
+- **NEVER commit code that fails `yarn format` or `yarn check`**
+- **Run validation after each phase, not just at the end**
+- **If TypeScript errors persist after 3 attempts, document them and seek guidance**
+- **Vue package MUST always compile cleanly after migration**
+
+## Migration Targets
+
+**Move to Frontend (Business Logic Dependencies):**
+- Components importing from `@beabee/beabee-common`, `@beabee/client`
+- API client usage, backend schemas/workflows
+
+**Keep in Vue (Design System):**
+- Basic UI components (buttons, inputs, modals)
+- Layout/typography components
+- Generic utilities without business logic
+- Components without beabee client, common, or backend dependencies
+
+## Success Criteria
+- Clean git history with explicit moves
+- Both packages build and pass linting
+- Vue package contains only design system components
+- All imports resolve correctly
+
+

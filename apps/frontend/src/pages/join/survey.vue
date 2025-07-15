@@ -36,7 +36,7 @@ import type {
   ContentJoinSetupData,
   GetCalloutDataWith,
 } from '@beabee/beabee-common';
-import { AppButton } from '@beabee/vue/components';
+import { AppButton } from '@beabee/vue';
 
 import AuthBox from '@components/AuthBox.vue';
 import CalloutForm from '@components/pages/callouts/CalloutForm.vue';

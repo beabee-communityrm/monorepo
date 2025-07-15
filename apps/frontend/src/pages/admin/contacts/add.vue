@@ -29,7 +29,7 @@ meta:
         </section>
         <section class="mb-8">
           <AppHeading>{{ t('contactOverview.roles') }}</AppHeading>
-          <RoleEditor
+          <AppRoleEditor
             :roles="data.roles"
             @delete="handleDeleteRole"
             @update="handleUpdateRole"
@@ -61,15 +61,19 @@ import {
   NewsletterStatus,
   type RoleType,
 } from '@beabee/beabee-common';
-import { AppButton, AppCheckbox, AppForm } from '@beabee/vue/components';
+import {
+  App2ColGrid,
+  AppButton,
+  AppCheckbox,
+  AppForm,
+  AppHeading,
+  PageTitle,
+} from '@beabee/vue';
 
-import App2ColGrid from '@components/App2ColGrid.vue';
-import AppHeading from '@components/AppHeading.vue';
-import PageTitle from '@components/PageTitle.vue';
 import ContactBasicFields from '@components/contact/ContactBasicFields.vue';
 import ContactContributionFields from '@components/contact/ContactContributionFields.vue';
 import type { UpdateContribution } from '@components/contact/contact.interface';
-import RoleEditor from '@components/role/RoleEditor.vue';
+import AppRoleEditor from '@components/role/AppRoleEditor.vue';
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { client } from '@utils/api';

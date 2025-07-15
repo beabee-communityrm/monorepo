@@ -105,7 +105,10 @@
     "view": "Visualiser",
     "yesDelete": "Oui, supprimer",
     "yesDisable": "Oui, désactiver",
-    "yesRemove": "Oui, retirer"
+    "yesRemove": "Oui, retirer",
+    "tryAgain": "",
+    "increase": "",
+    "decrease": ""
   },
   "addContact": {
     "contactSaved": "Contact enregistré",
@@ -650,7 +653,8 @@
         "label": "Intitulé",
         "option": "Option {n}",
         "placeholder": "Texte indicatif"
-      }
+      },
+      "title": ""
     },
     "confirmHuman": "Veuillez confirmer que vous êtes humain",
     "contactDetails": "Informations de contact",
@@ -669,7 +673,15 @@
     "responseSubmitted": "Réponse envoyée",
     "share": {
       "address": "Partagez cette campagne avec l'adresse suivante :",
-      "services": "Ou partagez rapidement en utilisant l'un de ces services :"
+      "services": "Ou partagez rapidement en utilisant l'un de ces services :",
+      "aria": {
+        "facebook": "",
+        "linkedin": "",
+        "telegram": "",
+        "twitter": "",
+        "whatsapp": "",
+        "email": ""
+      }
     },
     "showingPreview": "Vous ne pouvez pas envoyer de réponse en mode aperçu",
     "toContributionPage": "Modifier ma cotisation",
@@ -893,7 +905,9 @@
     "timeAgo": "il y a {time}",
     "timeIn": "dans {time}",
     "until": "jusqu'à",
-    "yes": "Oui"
+    "yes": "Oui",
+    "showingOf": "",
+    "statusLabel": ""
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1151,6 +1165,14 @@
         "max": "Le code devrait comporter au maximum {max} caractères.",
         "min": "Le code devrait comporter au moins {min} caractères.",
         "required": "Le code est obligatoire"
+      },
+      "description": {
+        "required": "",
+        "maxLength": ""
+      },
+      "shareDescription": {
+        "maxLength": "",
+        "required": ""
       }
     },
     "firstName": "Prénom",
@@ -1170,7 +1192,9 @@
       "link": "Lien",
       "numberedlist": "Liste ordonnée",
       "strikethrough": "Barré",
-      "underline": "Souligné"
+      "underline": "Souligné",
+      "toolbar": "",
+      "editor": ""
     },
     "saveChanges": "Enregistrer les modifications",
     "saved": "Enregistré !",
@@ -1523,5 +1547,21 @@
   },
   "taxRate": {
     "invoiceName": "TVA"
+  },
+  "status": {
+    "loadingApplication": "",
+    "pleaseWait": "",
+    "connectingToServer": "",
+    "initializing": "",
+    "usuallyTakesSeconds": ""
+  },
+  "icons": {
+    "welcome": {
+      "ariaLabel": ""
+    }
+  },
+  "stepper": {
+    "navigation": {},
+    "screen": {}
   }
 }

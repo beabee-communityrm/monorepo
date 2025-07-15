@@ -10,20 +10,16 @@ meta:
   <AppTitle v-if="!isEmbed" big>{{ callout.title }}</AppTitle>
   <CalloutThanksBox :callout="callout" class="mb-6" />
   <div class="w-full md:max-w-2xl">
-    <AppShareBox
-      :address-text="t('callout.share.address')"
-      :services-text="t('callout.share.services')"
-      :url="`/callouts/${callout.slug}`"
-    />
+    <AppShareBox :url="`${env.appUrl}/callouts/${callout.slug}`" />
   </div>
 </template>
 <script lang="ts" setup>
 import type { GetCalloutDataWith } from '@beabee/beabee-common';
+import { AppShareBox, AppTitle } from '@beabee/vue';
 
-import AppShareBox from '@components/AppShareBox.vue';
-import AppTitle from '@components/AppTitle.vue';
 import CalloutThanksBox from '@components/pages/callouts/CalloutThanksBox.vue';
 import CalloutVariantsBox from '@components/pages/callouts/CalloutVariantsBox.vue';
+import env from '@env';
 import { faBullhorn } from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { currentUser, isEmbed } from '@store/index';

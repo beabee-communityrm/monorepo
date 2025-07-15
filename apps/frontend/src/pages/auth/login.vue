@@ -12,6 +12,7 @@ meta:
       :button-text="t('common.login')"
       inline-error
       full-button
+      :extract-error-code="extractApiErrorCode"
       @submit="submitLogin"
     >
       <AppTitle>{{ t('login.title') }}</AppTitle>
@@ -90,14 +91,13 @@ meta:
 <script lang="ts" setup>
 import { LOGIN_CODES } from '@beabee/beabee-common';
 import type { LoginData } from '@beabee/beabee-common';
-import { AppForm, AppNotification } from '@beabee/vue/components';
+import { AppForm, AppInput, AppNotification, AppTitle } from '@beabee/vue';
 
-import AppTitle from '@components/AppTitle.vue';
 import AuthBox from '@components/AuthBox.vue';
-import AppInput from '@components/forms/AppInput.vue';
 import env from '@env';
 import { updateCurrentUser } from '@store/index';
 import { client, isApiError } from '@utils/api';
+import { extractApiErrorCode } from '@utils/api-error';
 import { isInternalUrl } from '@utils/index';
 import { reactive, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';

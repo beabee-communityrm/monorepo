@@ -18,7 +18,7 @@
   </main>
 </template>
 <script lang="ts" setup>
-import { AppButton } from '@beabee/vue/components';
+import { AppButton } from '@beabee/vue';
 
 import { useI18n } from 'vue-i18n';
 

@@ -17,6 +17,8 @@ export const generateIndex = async (argv: GenerateIndexArgs): Promise<void> => {
 
   for (const path of paths) {
     const fullPath = resolve(baseDir, path);
+    const directoryName = basename(path);
+    const isTypesDirectory = directoryName === 'types';
 
     try {
       // Read directory contents asynchronously
@@ -30,7 +32,10 @@ export const generateIndex = async (argv: GenerateIndexArgs): Promise<void> => {
         if (file.name.endsWith('.ts') && file.name !== 'index.ts') {
           const importName = basename(file.name, '.ts');
           const importExtension = getImportExtension(extension);
-          indexContent += `export * from "./${importName}${importExtension}";\n`;
+          const exportPrefix = isTypesDirectory
+            ? 'export type * from'
+            : 'export * from';
+          indexContent += `${exportPrefix} './${importName}${importExtension}';\n`;
         }
       }
 
@@ -40,7 +45,9 @@ export const generateIndex = async (argv: GenerateIndexArgs): Promise<void> => {
       }
 
       // Write file asynchronously
-      console.log(`Generated index for: ${path}`);
+      console.log(
+        `Generated index for: ${path}${isTypesDirectory ? ' (using type exports)' : ''}`
+      );
       await writeFile(`${fullPath}/index.ts`, indexContent, 'utf-8');
     } catch (error) {
       console.error(`Error processing ${path}:`, error);

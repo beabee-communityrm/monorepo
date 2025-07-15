@@ -96,10 +96,8 @@ import {
   type GetStatsData,
   ItemStatus,
 } from '@beabee/beabee-common';
+import { AppHeading, AppTime, PageTitle } from '@beabee/vue';
 
-import AppHeading from '@components/AppHeading.vue';
-import AppTime from '@components/AppTime.vue';
-import PageTitle from '@components/PageTitle.vue';
 import CalloutSummary from '@components/callout/CalloutSummary.vue';
 import HintBox from '@components/pages/admin/HintBox.vue';
 import KeyStat from '@components/pages/admin/KeyStat.vue';

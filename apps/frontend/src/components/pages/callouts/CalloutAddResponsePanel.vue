@@ -2,11 +2,7 @@
   <CalloutSidePanel :show="!!answers" @close="$emit('close')">
     <div v-if="showOnlyThanks">
       <CalloutThanksBox :callout="callout" class="p-0" />
-      <AppShareBox
-        :address-text="t('callout.share.address')"
-        :services-text="t('callout.share.services')"
-        :url="`/callouts/${callout.slug}/map`"
-      />
+      <AppShareBox :url="`${env.appUrl}/callouts/${callout.slug}/map`" />
     </div>
     <template v-else>
       <CalloutLoginPrompt v-if="showLoginPrompt" />
@@ -44,12 +40,13 @@ import {
   type CalloutResponseAnswersSlide,
   type GetCalloutDataWith,
 } from '@beabee/beabee-common';
-import { generalContent } from '@beabee/vue/store/generalContent';
+import { AppShareBox } from '@beabee/vue';
 
+import env from '@env';
 import { ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import AppShareBox from '../../AppShareBox.vue';
+import { generalContent } from '../../../store/generalContent';
 import CalloutForm from './CalloutForm.vue';
 import CalloutLoginPrompt from './CalloutLoginPrompt.vue';
 import CalloutMemberOnlyPrompt from './CalloutMemberOnlyPrompt.vue';

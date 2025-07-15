@@ -19,10 +19,8 @@
 
 <script lang="ts" setup>
 import type { GetContactData } from '@beabee/beabee-common';
+import { AppInfoList, AppInfoListItem, formatLocale } from '@beabee/vue';
 
-import AppInfoList from '@components/AppInfoList.vue';
-import AppInfoListItem from '@components/AppInfoListItem.vue';
-import { formatLocale } from '@utils/dates';
 import { useI18n } from 'vue-i18n';
 
 const { t, n } = useI18n();

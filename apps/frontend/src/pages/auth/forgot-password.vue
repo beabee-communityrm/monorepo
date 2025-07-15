@@ -15,6 +15,7 @@ meta:
         :button-text="t('actions.resetPassword')"
         inline-error
         full-button
+        :extract-error-code="extractApiErrorCode"
         @submit="submitForgotPassword"
       >
         <p class="mb-4">{{ t('forgotPassword.description') }}</p>
@@ -50,12 +51,11 @@ meta:
 </template>
 
 <script lang="ts" setup>
-import { AppButton, AppForm } from '@beabee/vue/components';
+import { AppButton, AppForm, AppInput, AppTitle } from '@beabee/vue';
 
-import AppTitle from '@components/AppTitle.vue';
 import AuthBox from '@components/AuthBox.vue';
-import AppInput from '@components/forms/AppInput.vue';
 import { client } from '@utils/api';
+import { extractApiErrorCode } from '@utils/api-error';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';

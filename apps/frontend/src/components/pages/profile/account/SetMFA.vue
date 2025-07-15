@@ -3,6 +3,10 @@
   This component is used to set up MFA for a contact.
   It uses a slider to guide the user through the process.
 
+  Keyboard navigation is disabled for the slider because this is a complex
+  multi-step form where navigation should be controlled by the validation
+  logic and custom navigation buttons.
+
   ## Props
   - `contactId` (string): The id of the contact to set up MFA for.
 
@@ -73,7 +77,12 @@
     class="w-full"
     @close="onCloseMFAModal"
   >
-    <AppSlider ref="appSliderCo" :steps="stepsInOrder" @slide="onSlideChange">
+    <AppSlider
+      ref="appSliderCo"
+      :steps="stepsInOrder"
+      disable-keyboard-navigation
+      @slide="onSlideChange"
+    >
       <template #slides>
         <!-- QR code and secret slide -->
         <AppSlide>
@@ -213,23 +222,27 @@
 </template>
 
 <script lang="ts" setup>
-import { CONTACT_MFA_TYPE } from '@beabee/beabee-common';
-import { LOGIN_CODES } from '@beabee/beabee-common';
-import { GetContactWith } from '@beabee/beabee-common';
-import { AppButton, AppNotification } from '@beabee/vue/components';
-import { addNotification } from '@beabee/vue/store/notifications';
+import {
+  CONTACT_MFA_TYPE,
+  GetContactWith,
+  LOGIN_CODES,
+} from '@beabee/beabee-common';
+import type { AppSliderSlideEventDetails, AppStepperStep } from '@beabee/vue';
+import {
+  AppButton,
+  AppConfirmDialog,
+  AppHeading,
+  AppInput,
+  AppModal,
+  AppNotification,
+  AppQRCode,
+  AppSlide,
+  AppSlider,
+  addNotification,
+} from '@beabee/vue';
 
-import AppConfirmDialog from '@components/AppConfirmDialog.vue';
-import AppHeading from '@components/AppHeading.vue';
-import AppModal from '@components/AppModal.vue';
-import AppQRCode from '@components/AppQRCode.vue';
-import AppInput from '@components/forms/AppInput.vue';
-import AppSlide from '@components/slider/AppSlide.vue';
-import AppSlider from '@components/slider/AppSlider.vue';
 import { faMobileAlt } from '@fortawesome/free-solid-svg-icons';
 import { generalContent } from '@store/index';
-import type { AppSliderSlideEventDetails } from '@type/app-slider-slide-event-details';
-import type { AppStepperStep } from '@type/app-stepper-step';
 import type { SetMfaSteps } from '@type/set-mfa-steps';
 import type { SetMfaTotpIdentity } from '@type/set-mfa-totp-identity';
 import { client, isApiError } from '@utils/api';

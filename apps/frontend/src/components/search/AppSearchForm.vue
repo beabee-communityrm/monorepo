@@ -31,7 +31,7 @@
           />
           <span
             class="absolute bottom-full left-1/2 z-10 -translate-x-1/2 translate-y-1/2 rounded bg-primary-70 px-2 py-1 font-bold uppercase text-white group-first:hidden"
-            >{{ t('advancedSearch.matchWord.' + ruleGroup.condition) }}</span
+            >{{ t(`advancedSearch.matchWord.${ruleGroup.condition}`) }}</span
           >
         </li>
       </ul>
@@ -61,32 +61,45 @@
     </div>
   </form>
 </template>
-<script lang="ts" setup>
-import type { Rule, RuleGroup } from '@beabee/beabee-common';
-import { AppButton } from '@beabee/vue/components';
 
-import AppSelect from '@components/forms/AppSelect.vue';
+<script setup lang="ts">
+import type { Rule, RuleGroup } from '@beabee/beabee-common';
+import { AppButton, AppSelect } from '@beabee/vue';
+
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import type { FilterGroups } from '@type/index';
-import type { RuleGroupWithEmpty } from '@type/rule-group-with-empty';
-import { copyRuleGroup, isRuleGroupEqual } from '@utils/rules';
 import useVuelidate from '@vuelidate/core';
 import { computed, reactive, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import type { FilterGroups, RuleGroupWithEmpty } from '../../type/search';
+import { copyRuleGroup, isRuleGroupEqual } from '../../utils/rules';
 import AppSearchRuleOrGroup from './AppSearchRuleOrGroup.vue';
 
-const emit = defineEmits<{
-  (e: 'update:modelValue', value: RuleGroup): void;
-  (e: 'reset'): void;
-}>();
-const props = defineProps<{
+const { t } = useI18n();
+
+/**
+ * Search form component for building complex filter rules.
+ * Now uses internal i18n for all UI text.
+ *
+ * @param filterGroups - Available filter groups
+ * @param modelValue - The current rule group
+ * @param hasChanged - Whether the form has changes
+ */
+
+interface Props {
   filterGroups: FilterGroups;
   modelValue: RuleGroup | undefined;
   hasChanged: boolean;
-}>();
+}
 
-const { t } = useI18n();
+interface Emits {
+  (event: 'update:modelValue', value: RuleGroup): void;
+  (event: 'reset'): void;
+}
+
+const props = defineProps<Props>();
+const emit = defineEmits<Emits>();
+
 const validation = useVuelidate();
 
 const ruleGroup = reactive<RuleGroupWithEmpty>({

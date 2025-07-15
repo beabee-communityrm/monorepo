@@ -9,7 +9,7 @@ import AppLabel from './AppLabel.vue';
 const state = reactive({
   buttonText: 'Submit',
   resetButtonText: 'Reset',
-  successText: 'Form submitted successfully!',
+  successText: '',
   inlineError: false,
   fullButton: false,
   isSubmitting: false,
@@ -42,6 +42,11 @@ async function handleSubmit() {
   state.isSubmitting = false;
 }
 
+async function handleSubmitWithError() {
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  throw new Error('Simulated error');
+}
+
 function resetForm() {
   formData.username = '';
   formData.email = '';
@@ -50,67 +55,165 @@ function resetForm() {
 </script>
 
 <template>
-  <Story title="Components/Form/AppForm">
-    <Variant title="Playground">
-      <div class="flex max-w-md flex-col gap-4">
-        <AppForm
-          :button-text="state.buttonText"
-          :reset-button-text="state.resetButtonText"
-          :success-text="state.successText"
-          :error-text="customErrors"
-          :inline-error="state.inlineError"
-          :full-button="state.fullButton"
-          :on-submit="handleSubmit"
-          @reset="resetForm"
-        >
-          <AppFormField>
-            <AppLabel label="Username" required />
-            <input
-              v-model="formData.username"
-              type="text"
-              class="focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
-              placeholder="Enter username"
-              required
-            />
-          </AppFormField>
+  <Story title="Form/AppForm">
+    <Variant title="Default Success Message" :init-state="state">
+      <template #default="{ state }">
+        <div class="max-w-md">
+          <AppForm
+            :button-text="state.buttonText"
+            :reset-button-text="state.resetButtonText"
+            :success-text="state.successText || undefined"
+            :inline-error="state.inlineError"
+            :full-button="state.fullButton"
+            @submit="handleSubmit"
+            @reset="() => console.log('Form reset')"
+          >
+            <div class="space-y-4">
+              <input
+                class="w-full rounded border p-2"
+                placeholder="Sample input field"
+              />
+              <textarea
+                class="w-full rounded border p-2"
+                placeholder="Sample textarea"
+                rows="3"
+              />
+            </div>
+          </AppForm>
+          <p class="mt-4 text-sm text-body-80">
+            <strong>Default behavior:</strong> When no successText is provided,
+            the form uses the internal i18n message "Saved!" (t('form.saved'))
+          </p>
+        </div>
+      </template>
 
-          <AppFormField>
-            <AppLabel label="Email" required />
-            <input
-              v-model="formData.email"
-              type="email"
-              class="focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
-              placeholder="Enter email"
-              required
-            />
-          </AppFormField>
-
-          <AppFormField>
-            <AppLabel label="Password" required />
-            <input
-              v-model="formData.password"
-              type="password"
-              class="focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
-              placeholder="Enter password"
-              required
-            />
-          </AppFormField>
-        </AppForm>
-      </div>
-
-      <template #controls>
+      <template #controls="{ state }">
         <HstText v-model="state.buttonText" title="Button Text" />
         <HstText v-model="state.resetButtonText" title="Reset Button Text" />
-        <HstText v-model="state.successText" title="Success Text" />
-        <HstCheckbox v-model="state.inlineError" title="Inline Error" />
-        <HstCheckbox v-model="state.fullButton" title="Full Width Button" />
-        <HstCheckbox v-model="state.hasError" title="Simulate Error" />
-        <HstSelect
-          v-model="state.errorCode"
-          title="Error Code"
-          :options="['unknown', 'duplicate-email', 'invalid-password']"
+        <HstText
+          v-model="state.successText"
+          title="Custom Success Text (leave empty for default)"
         />
+        <HstCheckbox v-model="state.inlineError" title="Inline Error" />
+        <HstCheckbox v-model="state.fullButton" title="Full Button" />
       </template>
+    </Variant>
+
+    <!-- Custom success message example -->
+    <Variant title="Custom Success Message">
+      <div class="max-w-md">
+        <AppForm
+          button-text="Update Profile"
+          success-text="Profile updated successfully!"
+          @submit="handleSubmit"
+        >
+          <div class="space-y-4">
+            <input
+              class="w-full rounded border p-2"
+              placeholder="Name"
+              value="John Doe"
+            />
+            <input
+              class="w-full rounded border p-2"
+              placeholder="Email"
+              value="john@example.com"
+            />
+          </div>
+        </AppForm>
+        <p class="mt-4 text-sm text-body-80">
+          <strong>Custom success message:</strong> This form provides a
+          context-specific success message for profile updates.
+        </p>
+      </div>
+    </Variant>
+
+    <!-- Error handling example -->
+    <Variant title="Error Handling">
+      <div class="max-w-md">
+        <AppForm
+          button-text="Submit (will fail)"
+          inline-error
+          @submit="handleSubmitWithError"
+        >
+          <div class="space-y-4">
+            <input
+              class="w-full rounded border p-2"
+              placeholder="This will trigger an error"
+            />
+          </div>
+        </AppForm>
+        <p class="mt-4 text-sm text-body-80">
+          <strong>Error demonstration:</strong> This form will show an inline
+          error when submitted.
+        </p>
+      </div>
+    </Variant>
+
+    <!-- Real-world examples -->
+    <Variant title="Real-World Examples">
+      <div class="space-y-8">
+        <!-- Settings form (uses default) -->
+        <div class="max-w-md">
+          <h3 class="mb-4 font-semibold">Settings Form (Default Success)</h3>
+          <AppForm
+            button-text="Save Settings"
+            reset-button-text="Reset"
+            @submit="handleSubmit"
+            @reset="() => console.log('Settings reset')"
+          >
+            <div class="space-y-4">
+              <label class="block">
+                <span class="text-sm font-medium">Site Name</span>
+                <input
+                  class="mt-1 w-full rounded border p-2"
+                  value="My Organization"
+                />
+              </label>
+              <label class="block">
+                <span class="text-sm font-medium">Description</span>
+                <textarea class="mt-1 w-full rounded border p-2" rows="3">
+A community platform for engagement</textarea
+                >
+              </label>
+            </div>
+          </AppForm>
+          <p class="text-body-70 mt-2 text-xs">
+            Uses default "Saved!" message - perfect for settings pages
+          </p>
+        </div>
+
+        <!-- Password reset (custom message) -->
+        <div class="max-w-md">
+          <h3 class="mb-4 font-semibold">Password Reset (Custom Success)</h3>
+          <AppForm
+            button-text="Reset Password"
+            success-text="Your password has been reset successfully!"
+            @submit="handleSubmit"
+          >
+            <div class="space-y-4">
+              <label class="block">
+                <span class="text-sm font-medium">New Password</span>
+                <input
+                  type="password"
+                  class="mt-1 w-full rounded border p-2"
+                  placeholder="Enter new password"
+                />
+              </label>
+              <label class="block">
+                <span class="text-sm font-medium">Confirm Password</span>
+                <input
+                  type="password"
+                  class="mt-1 w-full rounded border p-2"
+                  placeholder="Confirm new password"
+                />
+              </label>
+            </div>
+          </AppForm>
+          <p class="text-body-70 mt-2 text-xs">
+            Uses custom success message - perfect for special operations
+          </p>
+        </div>
+      </div>
     </Variant>
 
     <Variant title="Basic Form">

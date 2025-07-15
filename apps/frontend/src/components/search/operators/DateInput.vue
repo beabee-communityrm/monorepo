@@ -17,7 +17,7 @@
         v-model="relativeValue"
         type="text"
         class="block w-[10rem] p-2 leading-tight focus:outline-none"
-        placeholder="$now(d:-1)"
+        :placeholder="relativePlaceholder"
       />
       <input
         v-else
@@ -28,7 +28,8 @@
     </div>
   </span>
 </template>
-<script lang="ts" setup>
+
+<script setup lang="ts">
 import {
   faCircleArrowRight,
   faCircleDot,
@@ -37,8 +38,26 @@ import useVuelidate from '@vuelidate/core';
 import { required } from '@vuelidate/validators';
 import { computed, ref, watch } from 'vue';
 
-const emit = defineEmits(['update:modelValue']);
-const props = defineProps<{ modelValue: string }>();
+/**
+ * Date input component that supports both absolute dates and relative date expressions
+ * @param modelValue - The current date value (either ISO date string or relative expression like "$now(d:-1)")
+ * @param relativePlaceholder - Placeholder text for relative date input
+ */
+
+interface Props {
+  modelValue: string;
+  relativePlaceholder?: string;
+}
+
+interface Emits {
+  (event: 'update:modelValue', value: string): void;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  relativePlaceholder: '$now(d:-1)',
+});
+
+const emit = defineEmits<Emits>();
 
 const isRelative = ref(props.modelValue.startsWith('$now'));
 

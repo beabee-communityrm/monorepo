@@ -105,7 +105,10 @@
     "view": "Bekijk",
     "yesDelete": "“Ja, verwijder het”",
     "yesDisable": "“Ja, schakel het uit”",
-    "yesRemove": "“Ja, verwijder het”"
+    "yesRemove": "“Ja, verwijder het”",
+    "tryAgain": "",
+    "increase": "",
+    "decrease": ""
   },
   "addContact": {
     "contactSaved": "Contact opgeslagen",
@@ -650,7 +653,8 @@
         "label": "",
         "option": "",
         "placeholder": ""
-      }
+      },
+      "title": ""
     },
     "confirmHuman": "Bevestig dat u een mens bent",
     "contactDetails": "Contactgegevens",
@@ -669,7 +673,15 @@
     "responseSubmitted": "Reactie ingediend",
     "share": {
       "address": "Deel deze oproep met het volgende adres:",
-      "services": "Of deel snel met een van deze diensten:"
+      "services": "Of deel snel met een van deze diensten:",
+      "aria": {
+        "facebook": "",
+        "linkedin": "",
+        "telegram": "",
+        "twitter": "",
+        "whatsapp": "",
+        "email": ""
+      }
     },
     "showingPreview": "Je kunt geen reactie indienen in de voorbeeldmodus",
     "toContributionPage": "Mijn bijdrage bewerken",
@@ -893,7 +905,9 @@
     "timeAgo": "{time} geleden",
     "timeIn": "in {time}",
     "until": "tot",
-    "yes": "Ja"
+    "yes": "Ja",
+    "showingOf": "",
+    "statusLabel": ""
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1151,6 +1165,14 @@
         "max": "De code mag maximaal {max} tekens lang zijn.",
         "min": "De code moet minstens {min} tekens lang zijn.",
         "required": "Code is vereist"
+      },
+      "description": {
+        "required": "",
+        "maxLength": ""
+      },
+      "shareDescription": {
+        "maxLength": "",
+        "required": ""
       }
     },
     "firstName": "Voornaam",
@@ -1170,7 +1192,9 @@
       "link": "Link",
       "numberedlist": "Genummerde lijst",
       "strikethrough": "Doorhalen",
-      "underline": "Onderstrepen"
+      "underline": "Onderstrepen",
+      "toolbar": "",
+      "editor": ""
     },
     "saveChanges": "Wijzigingen opslaan",
     "saved": "Opgeslagen!",
@@ -1523,5 +1547,21 @@
   },
   "taxRate": {
     "invoiceName": "BTW"
+  },
+  "status": {
+    "loadingApplication": "",
+    "pleaseWait": "",
+    "connectingToServer": "",
+    "initializing": "",
+    "usuallyTakesSeconds": ""
+  },
+  "icons": {
+    "welcome": {
+      "ariaLabel": ""
+    }
+  },
+  "stepper": {
+    "navigation": {},
+    "screen": {}
   }
 }

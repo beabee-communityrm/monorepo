@@ -16,7 +16,7 @@
         inline
         circle
       />
-      <ItemDateRange :item="callout"></ItemDateRange>
+      <ItemDateRange :item="callout" />
       <p>
         <router-link :to="calloutLink" class="relative z-10">
           <font-awesome-icon :icon="faExternalLinkAlt" />
@@ -41,11 +41,8 @@
 </template>
 <script lang="ts" setup>
 import type { GetCalloutDataWith } from '@beabee/beabee-common';
-import { AppButton } from '@beabee/vue/components';
+import { AppButton, AppSubHeading, ItemDateRange } from '@beabee/vue';
 
-import AppSubHeading from '@components/AppSubHeading.vue';
-import ItemDateRange from '@components/item/ItemDateRange.vue';
-import ItemStatusText from '@components/item/ItemStatusText.vue';
 import env from '@env';
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 import { resolveImageUrl } from '@utils/url';
@@ -53,6 +50,7 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import noImage from '../../assets/images/no-image.avif';
+import ItemStatusText from '../item/ItemStatusText.vue';
 
 const { t } = useI18n();
 

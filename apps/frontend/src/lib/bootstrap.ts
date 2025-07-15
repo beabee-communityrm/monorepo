@@ -1,4 +1,4 @@
-import { AppStatusPage } from '@beabee/vue/components';
+import { AppStatusPage } from '@beabee/vue';
 import { icons } from '@beabee/vue/plugins/icons';
 
 import { waitForBackend } from '@utils/api/client';

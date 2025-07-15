@@ -1,5 +1,5 @@
 <template>
-  <label class="mb-0.5 block font-semibold">
+  <label class="mb-0.5 block font-semibold" :for="htmlFor">
     {{ label }} {{ required ? '*' : '' }}
   </label>
 </template>
@@ -12,6 +12,8 @@ export interface AppLabelProps {
   label: string;
   /** Whether the label is required */
   required?: boolean;
+  /** The ID of the input element this label is for */
+  htmlFor?: string;
 }
 
 defineProps<AppLabelProps>();

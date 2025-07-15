@@ -31,9 +31,10 @@
   </div>
 </template>
 <script lang="ts" setup>
+import { AppTitle } from '@beabee/vue';
+
 import { isEmbed } from '../store';
 import AppLogo from './AppLogo.vue';
-import AppTitle from './AppTitle.vue';
 
 defineProps<{ title?: string; preview?: boolean }>();
 </script>

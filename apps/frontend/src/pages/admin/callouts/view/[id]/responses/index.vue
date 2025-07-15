@@ -174,7 +174,7 @@ meta:
                 {{
                   stringifyAnswer(
                     currentInlineComponent,
-                    (item.answers[currentInlineComponent.slideId] as any)?.[
+                    item.answers[currentInlineComponent.slideId]?.[
                       currentInlineComponent.key
                     ]
                   )
@@ -210,12 +210,16 @@ import {
   type UpdateCalloutResponseData,
   stringifyAnswer,
 } from '@beabee/beabee-common';
-import { AppButton, AppButtonGroup } from '@beabee/vue/components';
-import { AppCheckbox, AppVTabs } from '@beabee/vue/components';
-import { addNotification } from '@beabee/vue/store/notifications';
+import {
+  AppButton,
+  AppButtonGroup,
+  AppCheckbox,
+  AppSelect,
+  AppTime,
+  AppVTabs,
+  addNotification,
+} from '@beabee/vue';
 
-import AppTime from '@components/AppTime.vue';
-import AppSelect from '@components/forms/AppSelect.vue';
 import {
   headers,
   useCalloutResponseFilters,
@@ -240,8 +244,7 @@ import {
   defineParam,
   defineRulesParam,
 } from '@utils/pagination';
-import { computed, ref, watch } from 'vue';
-import { toRef } from 'vue';
+import { computed, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 

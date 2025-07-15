@@ -12,7 +12,7 @@ meta:
       <div class="flex-initial basis-3/4">
         <AppHeading>{{ t('noticeAdminOverview.summary') }}</AppHeading>
         <AppNotice :notice="notice"></AppNotice>
-        <ItemStatus :item="notice"></ItemStatus>
+        <ItemStatusText :item="notice" />
         <ItemDateRange :item="notice" />
       </div>
 
@@ -46,14 +46,15 @@ meta:
 
 <script lang="ts" setup>
 import type { GetNoticeData } from '@beabee/beabee-common';
-import { ActionButton } from '@beabee/vue/components';
+import {
+  ActionButton,
+  AppConfirmDialog,
+  AppHeading,
+  ItemDateRange,
+  PageTitle,
+} from '@beabee/vue';
 
-import AppConfirmDialog from '@components/AppConfirmDialog.vue';
-import AppHeading from '@components/AppHeading.vue';
-import AppNotice from '@components/AppNotice.vue';
-import PageTitle from '@components/PageTitle.vue';
-import ItemDateRange from '@components/item/ItemDateRange.vue';
-import ItemStatus from '@components/item/ItemStatusText.vue';
+import AppNotice from '@components/notice/AppNotice.vue';
 import {
   faPencilAlt,
   faSignHanging,
@@ -64,6 +65,8 @@ import { client } from '@utils/api';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
+
+import ItemStatusText from '../../../../components/item/ItemStatusText.vue';
 
 const props = defineProps<{ id: string }>();
 const { t } = useI18n();

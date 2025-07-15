@@ -94,7 +94,7 @@ const scenarios = {
 </script>
 
 <template>
-  <Story title="Components/Status/AppStatusPage">
+  <Story title="Status/AppStatusPage">
     <Variant title="Playground">
       <AppStatusPage
         :title="state.title"

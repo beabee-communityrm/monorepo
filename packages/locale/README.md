@@ -1,6 +1,6 @@
 # Beabee Locale Package
 
-This package contains translations for the Beabee project. It provides locale data in JSON format and builds it into ESM and CJS modules for use in both browser and Node.js environments.
+This package contains translations for the Beabee project. It provides locale data in JSON format and exports TypeScript sources directly for ESM environments, while building CJS modules for legacy CommonJS compatibility.
 
 ## Package Structure
 
@@ -19,13 +19,16 @@ Currently supported languages:
 
 ## Usage
 
-Import the locale data in your project:
+The package supports dual import formats:
+
+1. **ESM (TypeScript sources)** - Direct TypeScript import for modern environments
+2. **CJS (Built JavaScript)** - For legacy CommonJS environments
 
 ```typescript
-// Import config and helper functions
+// ESM imports (uses TypeScript sources directly)
 import { config, isLocale, type Locale } from '@beabee/locale';
 
-// Import specific locale data
+// Import specific locale data 
 import en from '@beabee/locale/locales/en';
 import de from '@beabee/locale/locales/de';
 
@@ -35,6 +38,19 @@ if (isLocale(userLocale)) {
   // It's a valid locale
   console.log(config[userLocale].name); // "Deutsch (informal)"
 }
+```
+
+**ESM TypeScript imports** work with bundlers that support TypeScript (Vite, esbuild, etc.) or Node.js with TypeScript support:
+```bash
+# With Node.js TypeScript support
+node --experimental-specifier-resolution=node --experimental-strip-types --experimental-transform-types --no-warnings your-file.ts
+
+# With bundlers like Vite or esbuild - no special flags needed
+```
+
+**CJS imports** work with standard Node.js:
+```javascript
+const { config, isLocale } = require('@beabee/locale');
 ```
 
 ## Development

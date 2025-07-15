@@ -39,10 +39,8 @@
 
 <script lang="ts" setup>
 import type { GetCalloutReviewerData } from '@beabee/beabee-common';
+import { AppHeading, AppInput, ItemManager } from '@beabee/vue';
 
-import AppHeading from '@components/AppHeading.vue';
-import AppInput from '@components/forms/AppInput.vue';
-import ItemManager from '@components/item-manager/ItemManager.vue';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { client } from '@utils/api';
 import { reactive, ref, watchEffect } from 'vue';

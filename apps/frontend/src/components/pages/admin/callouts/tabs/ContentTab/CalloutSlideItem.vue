@@ -44,7 +44,7 @@
 </template>
 
 <script lang="ts" setup>
-import { AppButton } from '@beabee/vue/components';
+import { AppButton } from '@beabee/vue';
 
 import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
 import { faGripVertical, faTrash } from '@fortawesome/free-solid-svg-icons';

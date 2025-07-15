@@ -20,7 +20,7 @@ const variants = ['primary', 'success', 'warning', 'error', 'info'] as const;
 </script>
 
 <template>
-  <Story title="Components/Form/AppFormBox">
+  <Story title="Form/AppFormBox">
     <Variant title="Playground">
       <div class="flex max-w-2xl flex-col gap-4">
         <AppFormBox

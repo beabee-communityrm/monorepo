@@ -163,20 +163,23 @@ import {
   type RuleGroup,
   type UpdateContactData,
 } from '@beabee/beabee-common';
-import { AppButton, AppButtonGroup } from '@beabee/vue/components';
-import { addNotification } from '@beabee/vue/store/notifications';
+import {
+  AppButton,
+  AppButtonGroup,
+  AppFilterGrid,
+  AppSearchInput,
+  AppSelect,
+  PageTitle,
+  addNotification,
+  formatLocale,
+} from '@beabee/vue';
 
-import AppFilterGrid from '@components/AppFilterGrid.vue';
-import PageTitle from '@components/PageTitle.vue';
-import AppSearchInput from '@components/forms/AppSearchInput.vue';
-import AppSelect from '@components/forms/AppSelect.vue';
 import SaveSegment from '@components/pages/admin/contacts/SaveSegment.vue';
 import {
   headers,
   useContactFilters,
 } from '@components/pages/admin/contacts/contacts.interface';
 import AppSearch from '@components/search/AppSearch.vue';
-import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
 import TagList from '@components/tag/TagList.vue';
 import ToggleTagButton from '@components/tag/ToggleTagButton.vue';
 import {
@@ -187,7 +190,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { client } from '@utils/api';
-import { formatLocale } from '@utils/dates';
 import {
   definePaginatedQuery,
   defineParam,
@@ -197,6 +199,7 @@ import { computed, onBeforeMount, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 
+import AppPaginatedTable from '../../../components/table/AppPaginatedTable.vue';
 import { useTagFilter } from '../../../composables/useTagFilter';
 
 /**

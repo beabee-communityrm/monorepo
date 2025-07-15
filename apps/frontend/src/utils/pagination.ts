@@ -1,4 +1,5 @@
 import type { RuleGroup } from '@beabee/beabee-common';
+import { SortType } from '@beabee/vue';
 
 import { type Ref, type WritableComputedRef, computed, reactive } from 'vue';
 import {
@@ -7,8 +8,6 @@ import {
   useRoute,
   useRouter,
 } from 'vue-router';
-
-import { SortType } from '../components/table/table.interface';
 
 export function defineParam<T extends LocationQueryValueRaw>(
   param: string,

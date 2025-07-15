@@ -1,2 +1,1 @@
-export * from './generalContent';
-export * from './notifications';
+export * from './notifications.ts';

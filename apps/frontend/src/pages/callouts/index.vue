@@ -76,16 +76,18 @@ import {
   ItemStatus,
   type Paginated,
 } from '@beabee/beabee-common';
+import {
+  AppHeading,
+  AppPagination,
+  AppSearchInput,
+  AppTable,
+  AppTime,
+  AppToggle,
+  type Header,
+  PageTitle,
+} from '@beabee/vue';
 
-import AppHeading from '@components/AppHeading.vue';
-import AppPagination from '@components/AppPagination.vue';
-import AppTime from '@components/AppTime.vue';
-import PageTitle from '@components/PageTitle.vue';
 import CalloutCard from '@components/callout/CalloutCard.vue';
-import AppSearchInput from '@components/forms/AppSearchInput.vue';
-import AppToggle from '@components/forms/AppToggle.vue';
-import AppTable from '@components/table/AppTable.vue';
-import type { Header } from '@components/table/table.interface';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { client } from '@utils/api';
 import { defineParam } from '@utils/pagination';

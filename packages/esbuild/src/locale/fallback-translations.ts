@@ -1,8 +1,9 @@
 import type { LocaleOption } from '@beabee/locale';
 
+import { mkdir } from 'node:fs/promises';
 import { join } from 'node:path';
 
-import { mergeObjects, readJsonFile } from './utils.ts';
+import { mergeObjects, readJsonFile, writeJsonFile } from './utils.ts';
 
 /**
  * Recursively applies fallback translations to a locale
@@ -63,16 +64,16 @@ async function processFallbacksForLocale(
 }
 
 /**
- * Applies fallback translations to all locale files in a directory
- * @param configPath Path to the config.json file
+ * Applies fallback translations to all locale files in a directory using config object
+ * @param config The locale configuration object
  * @param localesDir Directory containing the locale files
+ * @returns The processed translations with fallbacks applied
+ * @private Internal function used by applyFallbacksToSources
  */
-export async function applyFallbackTranslations(
-  configPath: string,
+async function applyFallbackTranslations(
+  config: Record<string, LocaleOption>,
   localesDir: string
 ): Promise<Record<string, Record<string, any>>> {
-  // Read the config file
-  const config = await readJsonFile<Record<string, LocaleOption>>(configPath);
   const processedTranslations: Record<string, Record<string, any>> = {};
 
   // Process each locale
@@ -92,4 +93,57 @@ export async function applyFallbackTranslations(
   }
 
   return processedTranslations;
+}
+
+/**
+ * Generates fallback translations and writes them to an output directory
+ * This ensures that direct TypeScript imports get the fallbacks applied without modifying source files
+ * @param config The locale configuration object
+ * @param localesDir Directory containing the source locale files
+ * @param outputDir Directory where processed locale files with fallbacks will be written
+ */
+export async function generateFallbackTranslations(
+  config: Record<string, LocaleOption>,
+  localesDir: string,
+  outputDir: string
+): Promise<void> {
+  console.log('📋 Applying fallback translations to output directory...');
+
+  // Ensure output directory exists
+  await mkdir(outputDir, { recursive: true });
+
+  // Get processed translations with fallbacks applied
+  const processedTranslations = await applyFallbackTranslations(
+    config,
+    localesDir
+  );
+
+  // Write the processed translations to the output directory
+  for (const [localeId, translations] of Object.entries(
+    processedTranslations
+  )) {
+    const outputFile = join(outputDir, `${localeId}.json`);
+    await writeJsonFile(outputFile, translations);
+    console.log(`✅ Applied fallbacks to ${localeId}.json in output directory`);
+  }
+
+  // Also copy locales without fallbacks to the output directory
+  for (const [localeId, localeConfig] of Object.entries(config)) {
+    if (
+      !localeConfig.fallbackLocale ||
+      localeId === localeConfig.fallbackLocale
+    ) {
+      const sourceFile = join(localesDir, `${localeId}.json`);
+      const outputFile = join(outputDir, `${localeId}.json`);
+
+      // Read source file and write to output directory
+      const translations = await readJsonFile<Record<string, any>>(sourceFile);
+      await writeJsonFile(outputFile, translations);
+      console.log(`✅ Copied ${localeId}.json to output directory`);
+    }
+  }
+
+  console.log(
+    `🎉 Fallback translations applied to output directory: ${outputDir}`
+  );
 }

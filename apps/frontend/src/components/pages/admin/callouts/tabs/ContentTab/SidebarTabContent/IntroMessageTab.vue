@@ -6,7 +6,7 @@
         :help="t('callout.builder.tabs.intro.help')"
         class="mx-auto max-w-3xl"
       >
-        <RichTextEditor
+        <AppRichTextEditor
           v-model="data.introText.default"
           :label="t('callout.builder.tabs.intro.label')"
           required
@@ -21,9 +21,8 @@
 </template>
 
 <script lang="ts" setup>
-import { AppFormField } from '@beabee/vue/components';
+import { AppFormField, AppRichTextEditor } from '@beabee/vue';
 
-import RichTextEditor from '@components/rte/RichTextEditor.vue';
 import type { LocaleProp } from '@type';
 import { useI18n } from 'vue-i18n';
 

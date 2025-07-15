@@ -105,7 +105,10 @@
     "view": "",
     "yesDelete": "",
     "yesDisable": "",
-    "yesRemove": ""
+    "yesRemove": "",
+    "tryAgain": "",
+    "increase": "",
+    "decrease": ""
   },
   "addContact": {
     "contactSaved": "",
@@ -333,6 +336,7 @@
     "addAPoint": "",
     "addLocation": "",
     "builder": {
+      "title": "",
       "actions": {
         "addSlide": ""
       },
@@ -669,7 +673,15 @@
     "responseSubmitted": "",
     "share": {
       "address": "",
-      "services": ""
+      "services": "",
+      "aria": {
+        "facebook": "",
+        "linkedin": "",
+        "telegram": "",
+        "twitter": "",
+        "whatsapp": "",
+        "email": ""
+      }
     },
     "showingPreview": "",
     "toContributionPage": "",
@@ -883,6 +895,7 @@
     "selectNone": "",
     "selectOne": "",
     "show": "",
+    "showingOf": "",
     "status": {
       "draft": "",
       "ended": "",
@@ -893,7 +906,8 @@
     "timeAgo": "",
     "timeIn": "",
     "until": "",
-    "yes": ""
+    "yes": "",
+    "statusLabel": ""
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1143,6 +1157,14 @@
         "required": "",
         "url": ""
       },
+      "description": {
+        "maxLength": "",
+        "required": ""
+      },
+      "shareDescription": {
+        "maxLength": "",
+        "required": ""
+      },
       "url": {
         "required": "",
         "url": ""
@@ -1170,7 +1192,9 @@
       "link": "",
       "numberedlist": "",
       "strikethrough": "",
-      "underline": ""
+      "underline": "",
+      "toolbar": "",
+      "editor": ""
     },
     "saveChanges": "",
     "saved": "",
@@ -1523,5 +1547,27 @@
   },
   "taxRate": {
     "invoiceName": ""
+  },
+  "status": {
+    "loadingApplication": "",
+    "pleaseWait": "",
+    "connectingToServer": "",
+    "initializing": "",
+    "usuallyTakesSeconds": ""
+  },
+  "stepper": {
+    "navigation": {
+      "label": ""
+    },
+    "screen": {
+      "hasError": "",
+      "completed": "",
+      "currentStep": ""
+    }
+  },
+  "icons": {
+    "welcome": {
+      "ariaLabel": ""
+    }
   }
 }
