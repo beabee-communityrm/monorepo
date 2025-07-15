@@ -71,6 +71,7 @@
     "continue": "Prosegui",
     "copy": "",
     "create": "",
+    "decrease": "",
     "delete": "",
     "disable": "Disattiva",
     "edit": "",
@@ -79,6 +80,7 @@
     "export": "",
     "getStarted": "",
     "goBack": "",
+    "increase": "",
     "next": "",
     "noBack": "",
     "participate": "",
@@ -100,15 +102,13 @@
     "share": "",
     "skip": "",
     "submit": "",
+    "tryAgain": "",
     "unpublish": "",
     "update": "Aggiorna",
     "view": "",
     "yesDelete": "",
     "yesDisable": "",
-    "yesRemove": "",
-    "tryAgain": "",
-    "increase": "",
-    "decrease": ""
+    "yesRemove": ""
   },
   "addContact": {
     "contactSaved": "",
@@ -647,14 +647,14 @@
           "title": ""
         }
       },
+      "title": "",
       "translationFields": {
         "description": "",
         "html": "",
         "label": "",
         "option": "",
         "placeholder": ""
-      },
-      "title": ""
+      }
     },
     "confirmHuman": "",
     "contactDetails": "",
@@ -673,15 +673,15 @@
     "responseSubmitted": "",
     "share": {
       "address": "",
-      "services": "",
       "aria": {
+        "email": "",
         "facebook": "",
         "linkedin": "",
         "telegram": "",
         "twitter": "",
-        "whatsapp": "",
-        "email": ""
-      }
+        "whatsapp": ""
+      },
+      "services": ""
     },
     "showingPreview": "",
     "toContributionPage": "",
@@ -895,19 +895,19 @@
     "selectNone": "-- Nessuno --",
     "selectOne": "Seleziona",
     "show": "Mostra",
+    "showingOf": "",
     "status": {
       "draft": "Bozza",
       "ended": "Chiuso",
       "open": "Aperto",
       "scheduled": "Programmato"
     },
+    "statusLabel": "",
     "thankYou": "Grazie!",
     "timeAgo": "{time} fa",
     "timeIn": "in {time}",
     "until": "fino",
-    "yes": "Sì",
-    "showingOf": "",
-    "statusLabel": ""
+    "yes": "Sì"
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1123,6 +1123,10 @@
         "required": "",
         "sameAs": ""
       },
+      "description": {
+        "maxLength": "",
+        "required": ""
+      },
       "email": {
         "email": "",
         "required": ""
@@ -1149,6 +1153,10 @@
       "postCode": {
         "required": ""
       },
+      "shareDescription": {
+        "maxLength": "",
+        "required": ""
+      },
       "unknown": {
         "email": "",
         "max": "",
@@ -1165,14 +1173,6 @@
         "max": "",
         "min": "",
         "required": ""
-      },
-      "description": {
-        "required": "",
-        "maxLength": ""
-      },
-      "shareDescription": {
-        "maxLength": "",
-        "required": ""
       }
     },
     "firstName": "Nome",
@@ -1187,14 +1187,14 @@
     "richtext": {
       "bold": "",
       "bulletlist": "",
+      "editor": "",
       "heading": "",
       "italic": "",
       "link": "",
       "numberedlist": "",
       "strikethrough": "",
-      "underline": "",
       "toolbar": "",
-      "editor": ""
+      "underline": ""
     },
     "saveChanges": "",
     "saved": "Salvato!",
@@ -1227,6 +1227,11 @@
     "viewOpenCallouts": "Vedi le callout in corso",
     "welcome": "Ben fatto {firstName}!",
     "yourProfile": "Il tuo profilo"
+  },
+  "icons": {
+    "welcome": {
+      "ariaLabel": ""
+    }
   },
   "item": {
     "status": {
@@ -1345,13 +1350,13 @@
         "formSubtitle": "",
         "formTitle": "",
         "minAmount": "",
+        "noticeText": "",
+        "noticeTextHelp": "",
         "showAbsorbFee": "",
         "showNoContribution": "",
         "suggestedAmounts": "",
         "text": "",
-        "title": "",
-        "noticeText": "",
-        "noticeTextHelp": ""
+        "title": ""
       }
     },
     "title": ""
@@ -1525,6 +1530,13 @@
     "description": "Imposta una nuova password.",
     "title": "Imposta una password"
   },
+  "status": {
+    "connectingToServer": "",
+    "initializing": "",
+    "loadingApplication": "",
+    "pleaseWait": "",
+    "usuallyTakesSeconds": ""
+  },
   "tagEditor": {
     "add": "",
     "confirmDelete": {
@@ -1547,21 +1559,5 @@
   },
   "taxRate": {
     "invoiceName": "VAT"
-  },
-  "status": {
-    "loadingApplication": "",
-    "pleaseWait": "",
-    "connectingToServer": "",
-    "initializing": "",
-    "usuallyTakesSeconds": ""
-  },
-  "icons": {
-    "welcome": {
-      "ariaLabel": ""
-    }
-  },
-  "stepper": {
-    "navigation": {},
-    "screen": {}
   }
 }
