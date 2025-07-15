@@ -71,6 +71,7 @@
     "continue": "Continuar",
     "copy": "Copiar",
     "create": "Criar",
+    "decrease": "",
     "delete": "Apagar",
     "disable": "Desativar",
     "edit": "Editar",
@@ -79,6 +80,7 @@
     "export": "Exportar",
     "getStarted": "Começar",
     "goBack": "Voltar atrás",
+    "increase": "",
     "next": "Próxima",
     "noBack": "Não, voltar atrás",
     "participate": "Participar",
@@ -100,15 +102,13 @@
     "share": "Partilhar",
     "skip": "Saltar",
     "submit": "Enviar",
+    "tryAgain": "",
     "unpublish": "Despublicar",
     "update": "Atualizar",
     "view": "Ver",
     "yesDelete": "Sim, apagar",
     "yesDisable": "Sim, desactivar",
-    "yesRemove": "Sim, remover",
-    "tryAgain": "",
-    "increase": "",
-    "decrease": ""
+    "yesRemove": "Sim, remover"
   },
   "addContact": {
     "contactSaved": "Contacto gravado",
@@ -647,14 +647,14 @@
           "title": ""
         }
       },
+      "title": "",
       "translationFields": {
         "description": "",
         "html": "",
         "label": "",
         "option": "",
         "placeholder": ""
-      },
-      "title": ""
+      }
     },
     "confirmHuman": "",
     "contactDetails": "Detalhes de contacto",
@@ -673,15 +673,15 @@
     "responseSubmitted": "Resposta submetida",
     "share": {
       "address": "Podes partilhar esta chamada com este endereço:",
-      "services": "Ou partilha rapidamente com uma destas plataformas:",
       "aria": {
+        "email": "",
         "facebook": "",
         "linkedin": "",
         "telegram": "",
         "twitter": "",
-        "whatsapp": "",
-        "email": ""
-      }
+        "whatsapp": ""
+      },
+      "services": "Ou partilha rapidamente com uma destas plataformas:"
     },
     "showingPreview": "",
     "toContributionPage": "Editar a minha contribuição",
@@ -895,19 +895,19 @@
     "selectNone": "Nenhum",
     "selectOne": "Escolhe uma opção...",
     "show": "Mostrar",
+    "showingOf": "",
     "status": {
       "draft": "Rascunho",
       "ended": "Concluído",
       "open": "Aberto",
       "scheduled": "Agendado"
     },
+    "statusLabel": "",
     "thankYou": "Obrigado!",
     "timeAgo": "há {time}",
     "timeIn": "em {time}",
     "until": "até",
-    "yes": "Sim",
-    "showingOf": "",
-    "statusLabel": ""
+    "yes": "Sim"
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1123,6 +1123,10 @@
         "required": "A palavra-passe é obrigatória",
         "sameAs": "As palavras-passe não coincidem"
       },
+      "description": {
+        "maxLength": "",
+        "required": ""
+      },
       "email": {
         "email": "Endereço de email inválido",
         "required": "O email é obrigatório"
@@ -1149,6 +1153,10 @@
       "postCode": {
         "required": "O código postal é obrigatório"
       },
+      "shareDescription": {
+        "maxLength": "",
+        "required": ""
+      },
       "unknown": {
         "email": "Endereço de email inválido",
         "max": "Este campo pode ter no máximo {max}",
@@ -1165,14 +1173,6 @@
         "max": "O código deve ter no máximo {max} caracteres.",
         "min": "O código deve ter no mínimo {min} caracteres.",
         "required": "O código é obrigatório"
-      },
-      "description": {
-        "required": "",
-        "maxLength": ""
-      },
-      "shareDescription": {
-        "maxLength": "",
-        "required": ""
       }
     },
     "firstName": "Primeiro nome",
@@ -1187,14 +1187,14 @@
     "richtext": {
       "bold": "Negrito",
       "bulletlist": "Lista",
+      "editor": "",
       "heading": "Cabeçalho",
       "italic": "Itálico",
       "link": "Link",
       "numberedlist": "Lista numerada",
       "strikethrough": "Rasurado",
-      "underline": "Sublinhado",
       "toolbar": "",
-      "editor": ""
+      "underline": "Sublinhado"
     },
     "saveChanges": "Gravar alterações",
     "saved": "Gravado!",
@@ -1227,6 +1227,11 @@
     "viewOpenCallouts": "Ver chamadas abertas",
     "welcome": "Damos-te as boas-vindas, {firstName}!",
     "yourProfile": "O teu perfil"
+  },
+  "icons": {
+    "welcome": {
+      "ariaLabel": ""
+    }
   },
   "item": {
     "status": {
@@ -1345,13 +1350,13 @@
         "formSubtitle": "",
         "formTitle": "",
         "minAmount": "",
+        "noticeText": "",
+        "noticeTextHelp": "",
         "showAbsorbFee": "",
         "showNoContribution": "",
         "suggestedAmounts": "",
         "text": "",
-        "title": "",
-        "noticeText": "",
-        "noticeTextHelp": ""
+        "title": ""
       }
     },
     "title": ""
@@ -1525,6 +1530,13 @@
     "description": "Define uma nova palavra-passe para poderes entrar.",
     "title": "Definir uma palavra-passe"
   },
+  "status": {
+    "connectingToServer": "",
+    "initializing": "",
+    "loadingApplication": "",
+    "pleaseWait": "",
+    "usuallyTakesSeconds": ""
+  },
   "tagEditor": {
     "add": "Adicionar etiqueta",
     "confirmDelete": {
@@ -1547,21 +1559,5 @@
   },
   "taxRate": {
     "invoiceName": "???"
-  },
-  "status": {
-    "loadingApplication": "",
-    "pleaseWait": "",
-    "connectingToServer": "",
-    "initializing": "",
-    "usuallyTakesSeconds": ""
-  },
-  "icons": {
-    "welcome": {
-      "ariaLabel": ""
-    }
-  },
-  "stepper": {
-    "navigation": {},
-    "screen": {}
   }
 }
