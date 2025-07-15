@@ -895,7 +895,7 @@
     "selectNone": "-- Keine --",
     "selectOne": "Auswählen",
     "show": "Anzeigen",
-    "showingOf": "",
+    "showingOf": "{start} bis {end} von {total} werden angezeigt",
     "status": {
       "draft": "Entwurf",
       "ended": "Beendet",
