@@ -71,7 +71,7 @@
     "continue": "Weiter",
     "copy": "Kopieren",
     "create": "Erstellen",
-    "decrease": "",
+    "decrease": "Verringern",
     "delete": "Löschen",
     "disable": "Deaktivieren",
     "edit": "Bearbeiten",
@@ -80,7 +80,7 @@
     "export": "Exportieren",
     "getStarted": "Starten",
     "goBack": "Zurück",
-    "increase": "",
+    "increase": "Erhöhen",
     "next": "Weiter",
     "noBack": "Nein, gehe zurück",
     "participate": "Teilnehmen",
@@ -102,7 +102,7 @@
     "share": "Teilen",
     "skip": "Überspringen",
     "submit": "Abschicken",
-    "tryAgain": "",
+    "tryAgain": "Erneut versuchen",
     "unpublish": "Veröffentlichung aufheben",
     "update": "Änderungen speichern",
     "view": "Anzeigen",
@@ -647,7 +647,7 @@
           "title": "Übersetzungen"
         }
       },
-      "title": "",
+      "title": "Callout-Builder",
       "translationFields": {
         "description": "Beschreibung",
         "html": "Inhalt",
@@ -674,12 +674,12 @@
     "share": {
       "address": "Diesen Callout per Link teilen:",
       "aria": {
-        "email": "",
-        "facebook": "",
-        "linkedin": "",
-        "telegram": "",
-        "twitter": "",
-        "whatsapp": ""
+        "email": "Per E-Mail teilen",
+        "facebook": "Auf Facebook teilen",
+        "linkedin": "Auf LinkedIn teilen",
+        "telegram": "Auf Telegram teilen",
+        "twitter": "Auf Twitter teilen",
+        "whatsapp": "Auf WhatsApp teilen"
       },
       "services": "Diesen Callout auf einer der folgenden Plattformen teilen: "
     },
@@ -808,10 +808,10 @@
     "add": "Auswerter hinzufügen",
     "confirmDelete": {
       "text": "Bist du sicher, dass du {reviewerName} entfernen möchtest? Diese Person wird diesen Callout nicht mehr überprüfen können.",
-      "title": ""
+      "title": "Auswerter entfernen"
     },
-    "contact": "",
-    "title": ""
+    "contact": "Kontakt ID",
+    "title": "Callout Auswerter"
   },
   "calloutThanksPage": {
     "oneResponseWarning": "Bitte beacht, dass dieser Callout nur eine Antwort pro Person zulässt. Wenn du bereits teilgenommen hast, werden weitere Antworten nicht berücksichtigt."
@@ -895,14 +895,14 @@
     "selectNone": "-- Keine --",
     "selectOne": "Auswählen",
     "show": "Anzeigen",
-    "showingOf": "",
+    "showingOf": "{start} bis {end} von {total} werden angezeigt",
     "status": {
       "draft": "Entwurf",
       "ended": "Beendet",
       "open": "Aktiv",
       "scheduled": "Geplant"
     },
-    "statusLabel": "",
+    "statusLabel": "Status: {status}",
     "thankYou": "Vielen Dank!",
     "timeAgo": "vor {time}",
     "timeIn": "in {time}",
@@ -1124,8 +1124,8 @@
         "sameAs": "Passwörter stimmen nicht überein"
       },
       "description": {
-        "maxLength": "",
-        "required": ""
+        "maxLength": "Die maximale Länge von {max} Zeichen wurde überschritten",
+        "required": "Beschreibung benötigt"
       },
       "email": {
         "email": "Ungültige E-Mail-Adresse",
@@ -1154,8 +1154,8 @@
         "required": "Postleitzahl benötigt"
       },
       "shareDescription": {
-        "maxLength": "",
-        "required": ""
+        "maxLength": "Die maximale Länge von {max} Zeichen wurde überschritten, {remaining} Zeichen verbleiben",
+        "required": "Beschreibung benötigt"
       },
       "unknown": {
         "email": "Ungültige E-Mail-Adresse",
@@ -1187,13 +1187,13 @@
     "richtext": {
       "bold": "Fett",
       "bulletlist": "Aufzählungszeichen",
-      "editor": "",
+      "editor": "Rich-Text-Editor",
       "heading": "Überschrift",
       "italic": "Kursiv",
       "link": "Link",
       "numberedlist": "Nummerierung",
       "strikethrough": "Durchstreichen",
-      "toolbar": "",
+      "toolbar": "Rich-Text-Formatierung Symbolleiste",
       "underline": "Unterstreichen"
     },
     "saveChanges": "Änderungen speichern",
@@ -1230,7 +1230,7 @@
   },
   "icons": {
     "welcome": {
-      "ariaLabel": ""
+      "ariaLabel": "Willkommen-Symbol"
     }
   },
   "item": {
@@ -1531,11 +1531,21 @@
     "title": "Passwort vergeben"
   },
   "status": {
-    "connectingToServer": "",
-    "initializing": "",
-    "loadingApplication": "",
-    "pleaseWait": "",
-    "usuallyTakesSeconds": ""
+    "connectingToServer": "Verbindung zum Server wird hergestellt...",
+    "initializing": "Wird initialisiert...",
+    "loadingApplication": "Anwendung wird geladen",
+    "pleaseWait": "Bitte warten...",
+    "usuallyTakesSeconds": "Das dauert normalerweise ein paar Sekunden"
+  },
+  "stepper": {
+    "navigation": {
+      "label": "Fortschritt"
+    },
+    "screen": {
+      "completed": ", abgeschlossen",
+      "currentStep": ", aktueller Schritt",
+      "hasError": ", hat Fehler"
+    }
   },
   "tagEditor": {
     "add": "Tag hinzufügen",
