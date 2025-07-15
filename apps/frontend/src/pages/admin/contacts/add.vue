@@ -31,8 +31,8 @@ meta:
           <AppHeading>{{ t('contactOverview.roles') }}</AppHeading>
           <AppRoleEditor
             :roles="data.roles"
-            :on-delete="handleDeleteRole"
-            :on-update="handleUpdateRole"
+            @delete="handleDeleteRole"
+            @update="handleUpdateRole"
           />
         </section>
         <section class="mb-8">

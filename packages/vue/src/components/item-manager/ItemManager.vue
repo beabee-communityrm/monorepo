@@ -26,8 +26,6 @@
       <ItemManagerForm
         mode="add"
         :data="itemToData(undefined)"
-        :button-text="addButtonText"
-        :reset-button-text="t('actions.cancel')"
         @cancel="formVisible = false"
         @save="handleAdd"
       >

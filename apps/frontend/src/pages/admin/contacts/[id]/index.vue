@@ -92,8 +92,8 @@ meta:
       <div class="relative mt-4">
         <AppRoleEditor
           :roles="contact.roles"
-          :on-delete="handleDeleteRole"
-          :on-update="handleUpdateRole"
+          @delete="handleDeleteRole"
+          @update="handleUpdateRole"
         />
         <div
           v-if="changingRoles"

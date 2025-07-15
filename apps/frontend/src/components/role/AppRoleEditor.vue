@@ -15,8 +15,8 @@
   ```vue
   <AppRoleEditor
     :roles="contactRoles"
-    :on-update="handleRoleUpdate"
-    :on-delete="handleRoleDelete"
+    @update="handleRoleUpdate"
+    @delete="handleRoleDelete"
   />
   ```
 -->
