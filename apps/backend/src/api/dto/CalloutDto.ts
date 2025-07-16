@@ -6,8 +6,9 @@ import {
   CalloutMapSchema,
   CalloutNewsletterSchema,
   CalloutResponseViewSchema,
+  IconSchema,
   ItemStatus,
-  mapIconStylingSchema,
+  MapIconStylingSchema,
 } from '@beabee/beabee-common';
 
 import { GetPaginatedQuery } from '@api/dto/BaseDto';
@@ -130,19 +131,29 @@ class CalloutMapSchemaDto implements CalloutMapSchema {
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => CalloutMapIconSchemaDto)
-  mapIconStyling?: CalloutMapIconSchemaDto[];
+  @Type(() => MapIconStylingSchemaDto)
+  mapIconStyling?: MapIconStylingSchemaDto[];
 }
 
-class CalloutMapIconSchemaDto implements mapIconStylingSchema {
+class MapIconStylingSchemaDto implements MapIconStylingSchema {
   @IsString()
   answer!: string;
 
   @IsString()
   color!: string;
 
+  @IsOptional()
+  @ValidateNested({ each: true })
+  @Type(() => IconSchemaDto)
+  icon!: IconSchemaDto;
+}
+
+class IconSchemaDto implements IconSchema {
   @IsString()
-  icon!: string;
+  prefix!: string;
+
+  @IsString()
+  name!: string;
 }
 
 class CalloutNewsletterSchemaDto implements CalloutNewsletterSchema {

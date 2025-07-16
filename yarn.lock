@@ -1593,7 +1593,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@beabee/fontawesome@workspace:packages/fontawesome":
+"@beabee/fontawesome@workspace:^, @beabee/fontawesome@workspace:packages/fontawesome":
   version: 0.0.0-use.local
   resolution: "@beabee/fontawesome@workspace:packages/fontawesome"
   dependencies:
@@ -1618,6 +1618,7 @@ __metadata:
     "@beabee/beabee-common": "workspace:^"
     "@beabee/client": "workspace:^"
     "@beabee/dev-cli": "workspace:^"
+    "@beabee/fontawesome": "workspace:^"
     "@beabee/locale": "workspace:^"
     "@beabee/prettier-config": "workspace:^"
     "@beabee/tsconfig": "workspace:^"
