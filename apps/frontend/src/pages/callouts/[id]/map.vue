@@ -731,13 +731,19 @@ function handleLoad({ map: mapInstance }: { map: Map }) {
     mapInstance.addControl(geocodeControl, 'top-left');
   }
 
-  // Load the images of the fontawesome icons to the map extracted from there SVGs
-  const iconNames = [
-    ...new Set(mapIconStyling.value.map(({ icon }) => icon.name)),
-  ];
-  const iconColors = [
-    ...new Set(mapIconStyling.value.map(({ color }) => color)),
-  ];
+  // Dynamically collect unique icon names and colors, always including defaults
+  const iconNames = Array.from(
+    new Set([
+      ...mapIconStyling.value.map(({ icon }) => icon.name),
+      'circle', // Default icon
+    ])
+  );
+  const iconColors = Array.from(
+    new Set([
+      ...mapIconStyling.value.map(({ color }) => color),
+      'black', // Default color
+    ])
+  );
 
   iconNames.forEach((iconName: string) => {
     iconColors.forEach((color: string) => {
