@@ -381,7 +381,6 @@ const getMapIconQuestionResponse = (
   }
 };
 
-
 /**
  * Get the icon styling for the given answers, based on the map icon question / category answer
  *
@@ -757,7 +756,6 @@ function handleLoad({ map: mapInstance }: { map: Map }) {
   });
 }
 
-
 /**
  * Convert an SVG string to a PNG data URL
  *
@@ -789,7 +787,6 @@ function svgToImage(
 
   img.src = url;
 }
-
 
 /**
  * Get the SVG string for a FontAwesome icon with a specific color
