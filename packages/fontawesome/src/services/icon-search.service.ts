@@ -179,11 +179,15 @@ export class IconSearchService {
 
     // Apply search query if provided
     if (options.query?.trim()) {
-      const searchResults = this.searchIconsInSet(filteredIcons, options.query);
+      const searchResults = this.searchIconsInSet(
+        filteredIcons,
+        options.query,
+        options.limit
+      );
       return searchResults;
     }
 
-    return filteredIcons;
+    return filteredIcons.slice(0, options.limit);
   }
 
   /**
@@ -304,10 +308,11 @@ export class IconSearchService {
    */
   private searchIconsInSet(
     iconSet: FontAwesome[],
-    query: string
+    query: string,
+    limit: number = 25
   ): FontAwesome[] {
     if (iconSet.length === FONTAWESOME_ICONS.length) {
-      return this.searchIcons(query);
+      return this.searchIcons(query, limit);
     }
 
     // Create temporary index for subset
@@ -338,7 +343,9 @@ export class IconSearchService {
     tempIndex.addAll(uniqueIconSet);
     const results = tempIndex.search(query);
 
-    return results.map((result) => this.mapSearchResultToIcon(result));
+    return results
+      .map((result) => this.mapSearchResultToIcon(result))
+      .slice(0, limit);
   }
 
   /**
@@ -349,7 +356,7 @@ export class IconSearchService {
       name: result.name,
       label: result.label,
       unicode: result.unicode,
-      styles: Array.isArray(result.styles) ? result.styles : [],
+      styles: result.styles,
       searchTerms: Array.isArray(result.searchTerms) ? result.searchTerms : [],
       categories: Array.isArray(result.categories) ? result.categories : [],
       aliases: Array.isArray(result.aliases) ? result.aliases : undefined,
