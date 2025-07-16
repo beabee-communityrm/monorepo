@@ -71,6 +71,7 @@
     "continue": "Doorgaan",
     "copy": "Kopieer",
     "create": "Aanmaken",
+    "decrease": "",
     "delete": "Verwijderen",
     "disable": "Uitschakelen",
     "edit": "Bewerken",
@@ -79,6 +80,7 @@
     "export": "Exporteer",
     "getStarted": "Beginnen",
     "goBack": "Terug",
+    "increase": "",
     "next": "Volgende",
     "noBack": "“Nee, ga terug”.",
     "participate": "Deelnemen",
@@ -100,15 +102,13 @@
     "share": "Delen",
     "skip": "Sla over",
     "submit": "Verzenden",
+    "tryAgain": "",
     "unpublish": "Publiceren",
     "update": "bijwerken",
     "view": "Bekijk",
     "yesDelete": "“Ja, verwijder het”",
     "yesDisable": "“Ja, schakel het uit”",
-    "yesRemove": "“Ja, verwijder het”",
-    "tryAgain": "",
-    "increase": "",
-    "decrease": ""
+    "yesRemove": "“Ja, verwijder het”"
   },
   "addContact": {
     "contactSaved": "Contact opgeslagen",
@@ -647,14 +647,14 @@
           "title": ""
         }
       },
+      "title": "",
       "translationFields": {
         "description": "",
         "html": "",
         "label": "",
         "option": "",
         "placeholder": ""
-      },
-      "title": ""
+      }
     },
     "confirmHuman": "Bevestig dat u een mens bent",
     "contactDetails": "Contactgegevens",
@@ -673,15 +673,15 @@
     "responseSubmitted": "Reactie ingediend",
     "share": {
       "address": "Deel deze oproep met het volgende adres:",
-      "services": "Of deel snel met een van deze diensten:",
       "aria": {
+        "email": "",
         "facebook": "",
         "linkedin": "",
         "telegram": "",
         "twitter": "",
-        "whatsapp": "",
-        "email": ""
-      }
+        "whatsapp": ""
+      },
+      "services": "Of deel snel met een van deze diensten:"
     },
     "showingPreview": "Je kunt geen reactie indienen in de voorbeeldmodus",
     "toContributionPage": "Mijn bijdrage bewerken",
@@ -895,19 +895,19 @@
     "selectNone": "-- Geen",
     "selectOne": "Selecteer een...",
     "show": "Toon",
+    "showingOf": "",
     "status": {
       "draft": "Concept",
       "ended": "Beëindigd",
       "open": "Open",
       "scheduled": "Gepland"
     },
+    "statusLabel": "",
     "thankYou": "Bedankt!",
     "timeAgo": "{time} geleden",
     "timeIn": "in {time}",
     "until": "tot",
-    "yes": "Ja",
-    "showingOf": "",
-    "statusLabel": ""
+    "yes": "Ja"
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1123,6 +1123,10 @@
         "required": "Wachtwoord is vereist",
         "sameAs": "De wachtwoorden komen niet overeen"
       },
+      "description": {
+        "maxLength": "",
+        "required": ""
+      },
       "email": {
         "email": "Ongeldig e-mailadres",
         "required": "E-mail is vereist"
@@ -1149,6 +1153,10 @@
       "postCode": {
         "required": "Postcode is vereist"
       },
+      "shareDescription": {
+        "maxLength": "",
+        "required": ""
+      },
       "unknown": {
         "email": "Ongeldig e-mailadres",
         "max": "Dit veld moet maximaal {max} zijn",
@@ -1165,9 +1173,6 @@
         "max": "De code mag maximaal {max} tekens lang zijn.",
         "min": "De code moet minstens {min} tekens lang zijn.",
         "required": "Code is vereist"
-      },
-      "description": {
-        "required": ""
       }
     },
     "firstName": "Voornaam",
@@ -1182,14 +1187,14 @@
     "richtext": {
       "bold": "Vet",
       "bulletlist": "Opsomming",
+      "editor": "",
       "heading": "Kop",
       "italic": "Cursief",
       "link": "Link",
       "numberedlist": "Genummerde lijst",
       "strikethrough": "Doorhalen",
-      "underline": "Onderstrepen",
       "toolbar": "",
-      "editor": ""
+      "underline": "Onderstrepen"
     },
     "saveChanges": "Wijzigingen opslaan",
     "saved": "Opgeslagen!",
@@ -1222,6 +1227,11 @@
     "viewOpenCallouts": "Open callouts bekijken",
     "welcome": "Welkom bij ons {firstName}!",
     "yourProfile": "Uw profiel"
+  },
+  "icons": {
+    "welcome": {
+      "ariaLabel": ""
+    }
   },
   "item": {
     "status": {
@@ -1340,13 +1350,13 @@
         "formSubtitle": "Ondertitel",
         "formTitle": "Titel",
         "minAmount": "Minimum bedrag",
+        "noticeText": "",
+        "noticeTextHelp": "",
         "showAbsorbFee": "Gebruiker vragen om de betalingskosten te absorberen",
         "showNoContribution": "Gebruiker toestaan mee te doen zonder bijdrage",
         "suggestedAmounts": "Voorgestelde contributiebedragen",
         "text": "In dit gedeelte kun je het lidmaatschapsformulier bewerken, verfijnen en een voorbeeld bekijken.",
-        "title": "Lidmaatschapsformulier",
-        "noticeText": "",
-        "noticeTextHelp": ""
+        "title": "Lidmaatschapsformulier"
       }
     },
     "title": "Lidmaatschap bouwer"
@@ -1520,6 +1530,13 @@
     "description": "Stel een nieuw wachtwoord in om in te loggen.",
     "title": "Wachtwoord instellen"
   },
+  "status": {
+    "connectingToServer": "",
+    "initializing": "",
+    "loadingApplication": "",
+    "pleaseWait": "",
+    "usuallyTakesSeconds": ""
+  },
   "tagEditor": {
     "add": "Label toevoegen",
     "confirmDelete": {
@@ -1542,12 +1559,5 @@
   },
   "taxRate": {
     "invoiceName": "BTW"
-  },
-  "status": {
-    "loadingApplication": "",
-    "pleaseWait": "",
-    "connectingToServer": "",
-    "initializing": "",
-    "usuallyTakesSeconds": ""
   }
 }

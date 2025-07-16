@@ -14,13 +14,3 @@ export function extractApiErrorCode(
     ? error.code || 'unknown'
     : 'unknown';
 }
-
-/**
- * Convenience function for the default behavior used in AppForm
- * Matches 400 and 401 status codes
- * @param error - The error object to extract code from
- * @returns The error code or 'unknown'
- */
-export function extractDefaultErrorCode(error: unknown): string {
-  return extractApiErrorCode(error);
-}

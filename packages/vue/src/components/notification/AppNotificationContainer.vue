@@ -34,7 +34,6 @@ import { useI18n } from 'vue-i18n';
 import { useNotifications } from '../../store/notifications';
 import AppNotification from './AppNotification.vue';
 
-// No props needed - component now uses i18n directly
 defineProps();
 
 const { t } = useI18n();

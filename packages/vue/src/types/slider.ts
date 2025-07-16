@@ -8,6 +8,8 @@ export interface AppSliderProps {
   infinite?: boolean;
   /** Optional steps to display in the stepper navigation */
   steps?: AppStepperStep[];
+  /** Whether to disable keyboard navigation (Arrow keys, Home, End) */
+  disableKeyboardNavigation?: boolean;
 }
 
 /**

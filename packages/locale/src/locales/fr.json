@@ -71,6 +71,7 @@
     "continue": "Continuer",
     "copy": "Copier",
     "create": "Créer",
+    "decrease": "",
     "delete": "Supprimer",
     "disable": "Désactiver",
     "edit": "Modifier",
@@ -79,6 +80,7 @@
     "export": "Exporter",
     "getStarted": "Commencer",
     "goBack": "Retour",
+    "increase": "",
     "next": "Suivant",
     "noBack": "Non, revenir en arrière",
     "participate": "Participer",
@@ -100,15 +102,13 @@
     "share": "Partager",
     "skip": "Ignorer",
     "submit": "Soumettre",
+    "tryAgain": "",
     "unpublish": "Dépublier",
     "update": "Mettre à jour",
     "view": "Visualiser",
     "yesDelete": "Oui, supprimer",
     "yesDisable": "Oui, désactiver",
-    "yesRemove": "Oui, retirer",
-    "tryAgain": "",
-    "increase": "",
-    "decrease": ""
+    "yesRemove": "Oui, retirer"
   },
   "addContact": {
     "contactSaved": "Contact enregistré",
@@ -647,14 +647,14 @@
           "title": "Traductions"
         }
       },
+      "title": "",
       "translationFields": {
         "description": "Description",
         "html": "Contenu",
         "label": "Intitulé",
         "option": "Option {n}",
         "placeholder": "Texte indicatif"
-      },
-      "title": ""
+      }
     },
     "confirmHuman": "Veuillez confirmer que vous êtes humain",
     "contactDetails": "Informations de contact",
@@ -673,15 +673,15 @@
     "responseSubmitted": "Réponse envoyée",
     "share": {
       "address": "Partagez cette campagne avec l'adresse suivante :",
-      "services": "Ou partagez rapidement en utilisant l'un de ces services :",
       "aria": {
+        "email": "",
         "facebook": "",
         "linkedin": "",
         "telegram": "",
         "twitter": "",
-        "whatsapp": "",
-        "email": ""
-      }
+        "whatsapp": ""
+      },
+      "services": "Ou partagez rapidement en utilisant l'un de ces services :"
     },
     "showingPreview": "Vous ne pouvez pas envoyer de réponse en mode aperçu",
     "toContributionPage": "Modifier ma cotisation",
@@ -895,19 +895,19 @@
     "selectNone": "-- Aucun --",
     "selectOne": "Sélectionner…",
     "show": "Afficher",
+    "showingOf": "",
     "status": {
       "draft": "Brouillon",
       "ended": "Terminée",
       "open": "Active",
       "scheduled": "Planifiée"
     },
+    "statusLabel": "",
     "thankYou": "Merci !",
     "timeAgo": "il y a {time}",
     "timeIn": "dans {time}",
     "until": "jusqu'à",
-    "yes": "Oui",
-    "showingOf": "",
-    "statusLabel": ""
+    "yes": "Oui"
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1123,6 +1123,10 @@
         "required": "Le mot de passe est obligatoire",
         "sameAs": "Les mots de passe ne correspondent pas"
       },
+      "description": {
+        "maxLength": "",
+        "required": ""
+      },
       "email": {
         "email": "Adresse e-mail invalide",
         "required": "L'e-mail est obligatoire"
@@ -1149,6 +1153,10 @@
       "postCode": {
         "required": "Le code postal est obligatoire"
       },
+      "shareDescription": {
+        "maxLength": "",
+        "required": ""
+      },
       "unknown": {
         "email": "Adresse e-mail invalide",
         "max": "Ce champ doit être au plus {max}",
@@ -1165,9 +1173,6 @@
         "max": "Le code devrait comporter au maximum {max} caractères.",
         "min": "Le code devrait comporter au moins {min} caractères.",
         "required": "Le code est obligatoire"
-      },
-      "description": {
-        "required": ""
       }
     },
     "firstName": "Prénom",
@@ -1182,14 +1187,14 @@
     "richtext": {
       "bold": "Gras",
       "bulletlist": "Liste à puces",
+      "editor": "",
       "heading": "Titre",
       "italic": "Italique",
       "link": "Lien",
       "numberedlist": "Liste ordonnée",
       "strikethrough": "Barré",
-      "underline": "Souligné",
       "toolbar": "",
-      "editor": ""
+      "underline": "Souligné"
     },
     "saveChanges": "Enregistrer les modifications",
     "saved": "Enregistré !",
@@ -1222,6 +1227,11 @@
     "viewOpenCallouts": "Voir les campagnes actives",
     "welcome": "Bienvenue à bord {firstName} !",
     "yourProfile": "Votre profil"
+  },
+  "icons": {
+    "welcome": {
+      "ariaLabel": ""
+    }
   },
   "item": {
     "status": {
@@ -1340,13 +1350,13 @@
         "formSubtitle": "Sous-titre",
         "formTitle": "Titre",
         "minAmount": "Montant minimum",
+        "noticeText": "",
+        "noticeTextHelp": "",
         "showAbsorbFee": "Proposer aux utilisateurs de prendre en charge les frais de paiement",
         "showNoContribution": "Autoriser les utilisateurs à s'inscrire sans cotisation",
         "suggestedAmounts": "Montants de cotisation suggérés",
         "text": "Dans cette section, vous pouvez modifier, ajuster et prévisualiser votre formulaire d'adhésion.",
-        "title": "Formulaire d'inscription",
-        "noticeText": "",
-        "noticeTextHelp": ""
+        "title": "Formulaire d'inscription"
       }
     },
     "title": "Créateur d'adhésion"
@@ -1520,6 +1530,13 @@
     "description": "Définissez un nouveau mot de passe pour vous connecter.",
     "title": "Définir un mot de passe"
   },
+  "status": {
+    "connectingToServer": "",
+    "initializing": "",
+    "loadingApplication": "",
+    "pleaseWait": "",
+    "usuallyTakesSeconds": ""
+  },
   "tagEditor": {
     "add": "Ajouter un libellé",
     "confirmDelete": {
@@ -1542,12 +1559,5 @@
   },
   "taxRate": {
     "invoiceName": "TVA"
-  },
-  "status": {
-    "loadingApplication": "",
-    "pleaseWait": "",
-    "connectingToServer": "",
-    "initializing": "",
-    "usuallyTakesSeconds": ""
   }
 }

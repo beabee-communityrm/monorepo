@@ -71,6 +71,7 @@
     "continue": "Продолжить",
     "copy": "Скопировать",
     "create": "Создать",
+    "decrease": "",
     "delete": "Удалить",
     "disable": "Отключить",
     "edit": "Редактировать",
@@ -79,6 +80,7 @@
     "export": "Экспортировать",
     "getStarted": "Начать",
     "goBack": "Назад",
+    "increase": "",
     "next": "Дальше",
     "noBack": "Нет, вернуться назад",
     "participate": "Участвовать",
@@ -100,15 +102,13 @@
     "share": "Поделиться",
     "skip": "Пропустить",
     "submit": "Отправить",
+    "tryAgain": "",
     "unpublish": "Снять с публикации",
     "update": "Обновить",
     "view": "Просмотреть",
     "yesDelete": "Да, удалить",
     "yesDisable": "Да, отключить",
-    "yesRemove": "Да, удалить",
-    "tryAgain": "",
-    "increase": "",
-    "decrease": ""
+    "yesRemove": "Да, удалить"
   },
   "addContact": {
     "contactSaved": "",
@@ -647,14 +647,14 @@
           "title": ""
         }
       },
+      "title": "",
       "translationFields": {
         "description": "",
         "html": "",
         "label": "",
         "option": "",
         "placeholder": ""
-      },
-      "title": ""
+      }
     },
     "confirmHuman": "Confirma por favor que és um humano",
     "contactDetails": "Контакты",
@@ -673,15 +673,15 @@
     "responseSubmitted": "Ответ отправлен",
     "share": {
       "address": "Отправить этот опрос на почту:",
-      "services": "Или поделитесь им с помощью одного из этих сервисов:",
       "aria": {
+        "email": "",
         "facebook": "",
         "linkedin": "",
         "telegram": "",
         "twitter": "",
-        "whatsapp": "",
-        "email": ""
-      }
+        "whatsapp": ""
+      },
+      "services": "Или поделитесь им с помощью одного из этих сервисов:"
     },
     "showingPreview": "Вы не можете отправить ответ в режиме предварительного просмотра",
     "toContributionPage": "Изменить мой уровень участия",
@@ -895,19 +895,19 @@
     "selectNone": "Отсутствует",
     "selectOne": "Выбрать одну опцию",
     "show": "Показать",
+    "showingOf": "",
     "status": {
       "draft": "Черновик",
       "ended": "Закрыто",
       "open": "Открыто",
       "scheduled": "Запланировано"
     },
+    "statusLabel": "",
     "thankYou": "Большое cпасибо!",
     "timeAgo": "до {time}",
     "timeIn": "в {time}",
     "until": "до",
-    "yes": "Да",
-    "showingOf": "",
-    "statusLabel": ""
+    "yes": "Да"
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1123,6 +1123,10 @@
         "required": "Нужно установить пароль",
         "sameAs": "Пароли не совпадают"
       },
+      "description": {
+        "maxLength": "",
+        "required": ""
+      },
       "email": {
         "email": "Некорректный почтовый адрес",
         "required": "Нужно добавить почту"
@@ -1149,6 +1153,10 @@
       "postCode": {
         "required": "Введите почтовый индекс"
       },
+      "shareDescription": {
+        "maxLength": "",
+        "required": ""
+      },
       "unknown": {
         "email": "Некорректный почтовый адрес",
         "max": "В этом поле может быть {max} символов",
@@ -1165,9 +1173,6 @@
         "max": "Код должен быть не более {max} символов в длину.",
         "min": "Код должен быть не менее {min} символов в длину.",
         "required": "Введите код"
-      },
-      "description": {
-        "required": ""
       }
     },
     "firstName": "Имя",
@@ -1182,14 +1187,14 @@
     "richtext": {
       "bold": "Жирный",
       "bulletlist": "Маркированный список",
+      "editor": "",
       "heading": "Заголовок",
       "italic": "Курсив",
       "link": "Ссылка",
       "numberedlist": "Нумерованный список",
       "strikethrough": "Перечёркнутый",
-      "underline": "Подчёркнутый",
       "toolbar": "",
-      "editor": ""
+      "underline": "Подчёркнутый"
     },
     "saveChanges": "Сохранить изменения",
     "saved": "Изменения сохранены",
@@ -1222,6 +1227,11 @@
     "viewOpenCallouts": "Показать все открытые опросы",
     "welcome": "Добро пожаловать, {firstName}!",
     "yourProfile": "Ваш профиль"
+  },
+  "icons": {
+    "welcome": {
+      "ariaLabel": ""
+    }
   },
   "item": {
     "status": {
@@ -1340,13 +1350,13 @@
         "formSubtitle": "",
         "formTitle": "",
         "minAmount": "",
+        "noticeText": "",
+        "noticeTextHelp": "",
         "showAbsorbFee": "",
         "showNoContribution": "",
         "suggestedAmounts": "",
         "text": "",
-        "title": "",
-        "noticeText": "",
-        "noticeTextHelp": ""
+        "title": ""
       }
     },
     "title": ""
@@ -1520,6 +1530,13 @@
     "description": "Введите новый пароль",
     "title": "Установить пароль"
   },
+  "status": {
+    "connectingToServer": "",
+    "initializing": "",
+    "loadingApplication": "",
+    "pleaseWait": "",
+    "usuallyTakesSeconds": ""
+  },
   "tagEditor": {
     "add": "",
     "confirmDelete": {
@@ -1542,12 +1559,5 @@
   },
   "taxRate": {
     "invoiceName": "???"
-  },
-  "status": {
-    "loadingApplication": "",
-    "pleaseWait": "",
-    "connectingToServer": "",
-    "initializing": "",
-    "usuallyTakesSeconds": ""
   }
 }

@@ -43,6 +43,7 @@
             :placeholder="getDefaultText(component[field] as string)"
             :disabled="selectedLocale === defaultLocale"
             :copyable="selectedLocale === defaultLocale"
+            name="description"
             rows="3"
             @update:model-value="
               updateValue(component[field] as string, selectedLocale, $event)

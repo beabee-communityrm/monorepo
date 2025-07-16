@@ -210,12 +210,6 @@ async function handleItemDelete() {
           :delete-title="itemState.deleteTitle"
           :delete-text="itemState.deleteText"
           :no-update="false"
-          edit-button-text="Edit"
-          delete-button-text="Delete"
-          update-button-text="Update"
-          cancel-button-text="Cancel"
-          no-back-button-text="No, keep it"
-          yes-remove-button-text="Yes, delete"
           @update="handleItemUpdate"
           @delete="handleItemDelete"
         >
@@ -253,12 +247,6 @@ async function handleItemDelete() {
           delete-title="Delete Tag"
           delete-text="Are you sure you want to delete this read-only tag?"
           :no-update="true"
-          edit-button-text="Edit"
-          delete-button-text="Delete"
-          update-button-text="Update"
-          cancel-button-text="Cancel"
-          no-back-button-text="No, keep it"
-          yes-remove-button-text="Yes, delete"
           @delete="handleItemDelete"
         >
           <template #view>

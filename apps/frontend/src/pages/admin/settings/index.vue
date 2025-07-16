@@ -64,8 +64,8 @@ meta:
           <AppTextArea
             v-model="shareContent.description"
             :label="t('adminSettings.general.socialSharing.description')"
+            name="description"
             required
-            :required-error-text="t('form.errors.description.required')"
           />
         </div>
         <div class="mb-4">
@@ -186,14 +186,16 @@ import type {
   ContentShareData,
 } from '@beabee/beabee-common';
 import {
+  App2ColGrid,
   AppCheckbox,
   AppForm,
+  AppHeading,
   AppInput,
   AppLinkList,
   AppSelect,
+  AppSubHeading,
   AppTextArea,
 } from '@beabee/vue';
-import { App2ColGrid, AppHeading, AppSubHeading } from '@beabee/vue';
 
 import AppImageUpload from '@components/forms/AppImageUpload.vue';
 import { localeItems } from '@lib/i18n';
@@ -269,9 +271,7 @@ onBeforeMount(async () => {
   footerData.termsLink = storeGeneralContent.value.termsLink || '';
   footerData.impressumLink = storeGeneralContent.value.impressumLink || '';
   footerData.footerLinks =
-    storeGeneralContent.value.footerLinks?.map(
-      (l: { text: string; url: string }) => ({ ...l })
-    ) || [];
+    storeGeneralContent.value.footerLinks?.map((l) => ({ ...l })) || [];
 
   shareContent.value = await client.content.get('share');
 

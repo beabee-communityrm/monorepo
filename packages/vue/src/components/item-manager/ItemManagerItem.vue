@@ -26,8 +26,6 @@
       mode="update"
       class="p-4"
       :data="itemToData(item)"
-      :button-text="t('actions.update')"
-      :reset-button-text="t('actions.cancel')"
       @save="handleUpdate"
       @cancel="formVisible = false"
     >
@@ -43,7 +41,7 @@
       :confirm="t('actions.yesRemove')"
       variant="danger"
       @close="showDeleteModal = false"
-      @confirm="onDelete"
+      @confirm="handleDelete"
     >
       <p>{{ deleteText }}</p>
     </AppConfirmDialog>
@@ -103,9 +101,9 @@ export interface ItemManagerItemProps<T, D> {
   noUpdate: boolean;
   /** Function to convert item to form data */
   itemToData: (item: T | undefined) => D;
-  /** Async function to execute on update */
+  /** Handler for update event */
   onUpdate?: (data: D) => Promise<void> | undefined;
-  /** Async function to execute on delete */
+  /** Handler for delete event */
   onDelete?: () => Promise<void> | undefined;
 }
 
@@ -122,5 +120,13 @@ const showDeleteModal = ref(false);
 async function handleUpdate(data: D) {
   await props.onUpdate?.(data);
   formVisible.value = false;
+}
+
+/**
+ * Handles item deletion
+ */
+async function handleDelete() {
+  await props.onDelete?.();
+  showDeleteModal.value = false;
 }
 </script>

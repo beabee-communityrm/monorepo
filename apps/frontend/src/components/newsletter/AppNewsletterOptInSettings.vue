@@ -51,13 +51,13 @@
     </div>
 
     <!-- Groups Section -->
-    <section class="space-y-4">
-      <AppSectionHeading class="mb-3">
+    <section>
+      <AppSectionHeading>
         {{ t('newsletterOptIn.groups.title') }}
       </AppSectionHeading>
 
       <div
-        class="mb-4 max-w-none text-sm text-body-80"
+        class="content-i18n mb-4"
         v-html="t('newsletterOptIn.groups.help')"
       />
 
@@ -65,7 +65,6 @@
         v-model="groups"
         :new-item="() => ({ id: '', label: '', checked: false })"
         :add-label="t('newsletterOptIn.groups.add')"
-        class="space-y-4"
       >
         <template #default="{ item }">
           <!-- Group ID -->

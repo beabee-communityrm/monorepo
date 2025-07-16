@@ -1,7 +1,7 @@
 <template>
   <AppForm
-    :button-text="buttonText"
-    :reset-button-text="resetButtonText"
+    :button-text="mode === 'update' ? t('actions.update') : t('actions.add')"
+    :reset-button-text="t('actions.cancel')"
     @submit="onSave?.(data)"
     @reset="$emit('cancel')"
   >
@@ -32,6 +32,7 @@
  */
 import useVuelidate from '@vuelidate/core';
 import { required } from '@vuelidate/validators';
+import { useI18n } from 'vue-i18n';
 
 import { AppForm } from '../form';
 
@@ -43,23 +44,21 @@ export interface ItemManagerFormProps<D> {
   mode: 'add' | 'update';
   /** Form data object */
   data: D;
-  /** Text for the submit button */
-  buttonText: string;
-  /** Text for the reset/cancel button */
-  resetButtonText: string;
-  /** Async function to execute on form save */
+  /** Handler for on save event */
   onSave?: (data: D) => Promise<void> | undefined;
 }
 
-const props = defineProps<ItemManagerFormProps<D>>();
+defineProps<ItemManagerFormProps<D>>();
 
 /**
  * Events emitted by the ItemManagerForm component
  */
-const emit = defineEmits<{
+defineEmits<{
   /** Emitted when the form is cancelled */
   (e: 'cancel'): void;
 }>();
+
+const { t } = useI18n();
 
 // This prevents a parent form from validating while it's open, preventing
 // unsaved changes from propagating

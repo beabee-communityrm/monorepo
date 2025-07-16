@@ -49,17 +49,19 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import {
-  type SearchRuleEmits,
-  type SearchRuleFilterGroupProps,
-  buildNullableOperatorItems,
-  buildOperatorItems,
+import type {
+  SearchRuleEmits,
+  SearchRuleFilterGroupProps,
 } from '../../type/search';
 import {
   createNewRule,
   createOperatorLabels,
   getDefaultRuleValue,
 } from '../../utils/rules';
+import {
+  buildNullableOperatorItems,
+  buildOperatorItems,
+} from '../../utils/search';
 import AppSearchRuleFilterGroupItem from './AppSearchRuleFilterGroupItem.vue';
 
 const { t } = useI18n();

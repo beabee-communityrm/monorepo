@@ -12,7 +12,7 @@ meta:
       :button-text="t('common.login')"
       inline-error
       full-button
-      :extract-error-code="extractDefaultErrorCode"
+      :extract-error-code="extractApiErrorCode"
       @submit="submitLogin"
     >
       <AppTitle>{{ t('login.title') }}</AppTitle>
@@ -97,7 +97,7 @@ import AuthBox from '@components/AuthBox.vue';
 import env from '@env';
 import { updateCurrentUser } from '@store/index';
 import { client, isApiError } from '@utils/api';
-import { extractDefaultErrorCode } from '@utils/api-error';
+import { extractApiErrorCode } from '@utils/api-error';
 import { isInternalUrl } from '@utils/index';
 import { reactive, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
