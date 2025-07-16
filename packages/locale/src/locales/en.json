@@ -481,7 +481,8 @@
                 "label": "Label"
               },
               "mapIconStylingSetting": {
-                "label": "Please select a color and icon for: "
+                "title": "Map Icon Style",
+                "label": "Please select a color and icon for the answer: "
               },
               "maxZoom": {
                 "label": "Maximum zoom level"

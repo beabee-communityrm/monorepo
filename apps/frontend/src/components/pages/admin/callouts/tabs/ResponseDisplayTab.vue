@@ -265,7 +265,7 @@
                   class="mb-4"
                 >
                   <div
-                    class="grid grid-cols-[1fr_auto_auto] items-center gap-2 rounded border border-primary-40 pl-4 py-2"
+                    class="grid grid-cols-[1fr_auto_auto] items-center gap-2 rounded border border-primary-40 py-2 pl-4"
                   >
                     <span>{{ value.label }}</span>
                     <div class="flex items-center gap-2">
@@ -292,19 +292,17 @@
                   <AppModal
                     v-if="isPickerOpen[i] && localData.mapSchema.mapIconStyling"
                     :open="isPickerOpen[i]"
-                    :title="inputT('mapSchema.mapIconStylingSetting.label')"
+                    :title="inputT('mapSchema.mapIconStylingSetting.title')"
                     @close="isPickerOpen[i] = false"
                   >
                     <div class="space-y-4">
                       <p class="mb-6 text-body-80">
-                        Please select a color and icon for the answer:
+                        {{ inputT('mapSchema.mapIconStylingSetting.label') }}
                         <strong>
-                          {{ localData.mapSchema.mapIconStyling[i].answer }}
-                        </strong>.
-                        <!-- of the question:
-                        <strong>
-                          {{ localData.mapSchema.mapIconQuestion }} </strong
-                        >. -->
+                          {{
+                            localData.mapSchema.mapIconStyling[i].answer
+                          }} </strong
+                        >.
                       </p>
                       <AppSubHeading class="text-m"> Color: </AppSubHeading>
                       <div style="margin-left: 8px">
