@@ -485,7 +485,17 @@
                 "help": "<p>Die Kartenansicht <strong>erfordert ein Drittanbieter-Kartentool</strong> wie <a href=\"https://www.maptiler.com\" target=\"_blank\" rel=\"noopener noreferrer\">Maptiler</a> oder <a href=\"https://www.mapbox.com\" target=\"_blank\" rel=\"noopener noreferrer\">Mapbox</a>. Diese Tools stellen dir die Karten-Style-URL zur Verfügung, die du hier einfügen musst.</p>",
                 "label": "Karten-Style-URL"
               },
-              "title": "Karteneinstellungen"
+              "title": "Karteneinstellungen",
+              "mapIconQuestions": {
+                "label": ""
+              },
+              "mapIconStyling": {
+                "label": "Label"
+              },
+              "mapIconStylingSetting": {
+                "label": "",
+                "title": ""
+              }
             },
             "newsletterSettings": {
               "disabled": "Du kannst keine Newsletter-Anmeldungen anfordern, wenn du keine Kontaktinformationen sammelst",
