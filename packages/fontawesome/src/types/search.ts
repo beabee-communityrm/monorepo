@@ -24,6 +24,7 @@ export interface IconFilterOptions {
   query?: string;
   categories?: string[];
   styles?: string[];
+  limit?: number;
 }
 
 /**

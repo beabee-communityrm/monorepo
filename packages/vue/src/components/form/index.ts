@@ -69,3 +69,8 @@ export {
   default as AppRichTextEditorButton,
   type AppRichTextEditorButtonProps,
 } from './AppRichTextEditorButton.vue';
+export {
+  default as AppIconPicker,
+  type AppIconPickerProps,
+} from './AppIconPicker.vue';
+
