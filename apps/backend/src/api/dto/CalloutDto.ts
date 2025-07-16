@@ -86,6 +86,27 @@ export class ListCalloutsDto
   showHiddenForAll: boolean = false;
 }
 
+class IconSchemaDto implements IconSchema {
+  @IsString()
+  prefix!: string;
+
+  @IsString()
+  name!: string;
+}
+
+class MapIconStylingSchemaDto implements MapIconStylingSchema {
+  @IsString()
+  answer!: string;
+
+  @IsString()
+  color!: string;
+
+  @IsOptional()
+  @ValidateNested({ each: true })
+  @Type(() => IconSchemaDto)
+  icon!: IconSchemaDto;
+}
+
 class CalloutMapSchemaDto implements CalloutMapSchema {
   @IsUrl()
   style!: string;
@@ -133,27 +154,6 @@ class CalloutMapSchemaDto implements CalloutMapSchema {
   @ValidateNested({ each: true })
   @Type(() => MapIconStylingSchemaDto)
   mapIconStyling?: MapIconStylingSchemaDto[];
-}
-
-class MapIconStylingSchemaDto implements MapIconStylingSchema {
-  @IsString()
-  answer!: string;
-
-  @IsString()
-  color!: string;
-
-  @IsOptional()
-  @ValidateNested({ each: true })
-  @Type(() => IconSchemaDto)
-  icon!: IconSchemaDto;
-}
-
-class IconSchemaDto implements IconSchema {
-  @IsString()
-  prefix!: string;
-
-  @IsString()
-  name!: string;
 }
 
 class CalloutNewsletterSchemaDto implements CalloutNewsletterSchema {
