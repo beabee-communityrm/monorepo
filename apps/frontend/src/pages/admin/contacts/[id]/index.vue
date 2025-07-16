@@ -268,9 +268,9 @@ import {
   type GetContactData,
   type GetContactDataWith,
   GetContactWith,
+  PaymentMethod,
   type RoleType,
 } from '@beabee/beabee-common';
-import { PaymentMethod } from '@beabee/beabee-common';
 import {
   App2ColGrid,
   AppButton,

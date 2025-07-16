@@ -26,6 +26,7 @@
         :placeholder="getPlaceholder('description')"
         :disabled="selectedLocale === defaultLocale"
         :copyable="selectedLocale === defaultLocale"
+        name="description"
         rows="3"
         @update:model-value="updateValue('description', selectedLocale, $event)"
       />
@@ -59,6 +60,7 @@
         :placeholder="getPlaceholder('shareDescription')"
         :disabled="selectedLocale === defaultLocale"
         :copyable="selectedLocale === defaultLocale"
+        name="shareDescription"
         rows="3"
         @update:model-value="
           updateValue('shareDescription', selectedLocale, $event)

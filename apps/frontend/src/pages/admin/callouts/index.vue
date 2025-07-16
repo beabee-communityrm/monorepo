@@ -36,7 +36,7 @@ meta:
     >
       <template #header-hidden><font-awesome-icon :icon="faEye" /></template>
       <template #value-status="{ value }">
-        <ItemStatus :status="value as ItemStatusType" />
+        <ItemStatus :status="value" />
       </template>
       <template #value-title="{ item, value }">
         <router-link
@@ -54,12 +54,12 @@ meta:
       </template>
       <template #value-starts="{ value }">
         <span class="whitespace-nowrap">{{
-          value && value instanceof Date ? formatLocale(value, 'PP') : ''
+          value && formatLocale(value, 'PP')
         }}</span>
       </template>
       <template #value-expires="{ value }">
         <span class="whitespace-nowrap">{{
-          value && value instanceof Date ? formatLocale(value, 'PP') : ''
+          value && formatLocale(value, 'PP')
         }}</span>
       </template>
     </AppPaginatedTable>
@@ -70,7 +70,6 @@ meta:
 import type {
   GetCalloutDataWith,
   GetCalloutsQuery,
-  ItemStatus as ItemStatusType,
   Paginated,
 } from '@beabee/beabee-common';
 import {

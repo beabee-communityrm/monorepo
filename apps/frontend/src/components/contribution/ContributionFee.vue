@@ -46,13 +46,12 @@ const absorbFeeText = computed(() => {
  * Label for the fee absorption checkbox
  */
 const absorbFeeLabel = computed(() => {
-  if (props.force) {
-    return t('join.absorbFeeForce', {
-      amount: n(props.amount, 'currency'),
-      fee: n(props.fee, 'currency'),
-    });
-  }
-  return t('join.absorbFeeOptIn', { fee: n(props.fee, 'currency') });
+  return props.force
+    ? t('join.absorbFeeForce', {
+        amount: n(props.amount, 'currency'),
+        fee: n(props.fee, 'currency'),
+      })
+    : t('join.absorbFeeOptIn', { fee: n(props.fee, 'currency') });
 });
 
 const payFee = computed<boolean>({

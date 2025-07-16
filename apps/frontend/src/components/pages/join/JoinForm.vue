@@ -7,7 +7,7 @@
     <AppForm
       :button-text="buttonText"
       full-button
-      :extract-error-code="extractDefaultErrorCode"
+      :extract-error-code="extractApiErrorCode"
       @submit="onSubmit"
     >
       <AccountSection v-model:email="signUpData.email" class="mb-6" />
@@ -76,7 +76,7 @@ import beabeeLogo from '@assets/images/beabee-logo.png';
 import AuthBox from '@components/AuthBox.vue';
 import AppContribution from '@components/contribution/AppContribution.vue';
 import { generalContent, isEmbed } from '@store';
-import { extractDefaultErrorCode } from '@utils/api-error';
+import { extractApiErrorCode } from '@utils/api-error';
 import useVuelidate from '@vuelidate/core';
 import { computed, toRef } from 'vue';
 import { useI18n } from 'vue-i18n';

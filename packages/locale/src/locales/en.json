@@ -1158,6 +1158,11 @@
         "url": "Invalid URL"
       },
       "description": {
+        "maxLength": "Maximum length of {max} characters exceeded",
+        "required": "Description is required"
+      },
+      "shareDescription": {
+        "maxLength": "Maximum length of {max} characters exceeded, {remaining} characters remaining",
         "required": "Description is required"
       },
       "url": {
@@ -1549,5 +1554,20 @@
     "connectingToServer": "Connecting to server...",
     "initializing": "Initializing...",
     "usuallyTakesSeconds": "This usually takes a few seconds"
+  },
+  "stepper": {
+    "navigation": {
+      "label": "Step progress"
+    },
+    "screen": {
+      "hasError": ", has error",
+      "completed": ", completed",
+      "currentStep": ", current step"
+    }
+  },
+  "icons": {
+    "welcome": {
+      "ariaLabel": "Welcome icon"
+    }
   }
 }

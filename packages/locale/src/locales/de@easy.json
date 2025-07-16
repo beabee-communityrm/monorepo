@@ -71,6 +71,7 @@
     "continue": "",
     "copy": "Hier kannst du es kopieren.",
     "create": "",
+    "decrease": "",
     "delete": "",
     "disable": "",
     "edit": "",
@@ -79,6 +80,7 @@
     "export": "",
     "getStarted": "Hier kannst du starten.",
     "goBack": "",
+    "increase": "",
     "next": "Hier kommst du auf die nächste Seite.",
     "noBack": "",
     "participate": "",
@@ -100,15 +102,13 @@
     "share": "Hier schickst du den Text / die Datei / das Bild an andere.",
     "skip": "",
     "submit": "Hier wird deine Meldung weg-geschickt.",
+    "tryAgain": "",
     "unpublish": "",
     "update": "",
     "view": "",
     "yesDelete": "",
     "yesDisable": "",
-    "yesRemove": "",
-    "tryAgain": "",
-    "increase": "",
-    "decrease": ""
+    "yesRemove": ""
   },
   "addContact": {
     "contactSaved": "",
@@ -647,14 +647,14 @@
           "title": ""
         }
       },
+      "title": "",
       "translationFields": {
         "description": "",
         "html": "",
         "label": "",
         "option": "",
         "placeholder": ""
-      },
-      "title": ""
+      }
     },
     "confirmHuman": "Du musst hier klicken. Dann weiß der Computer: Dass du ein Mensch bist. Und keine Maschine.",
     "contactDetails": "Kontaktdaten",
@@ -673,15 +673,15 @@
     "responseSubmitted": "Dein Brief / Deine Mail wurde weg-geschickt.",
     "share": {
       "address": "Hier kannst du den Aufruf an andere schicken. Drücke dazu hier.",
-      "services": "Diesen Aufruf kannst du hier auch an andere Menschen schicken. Zum Beispiel über Facebook oder über TikTok oder über Instagram.",
       "aria": {
+        "email": "",
         "facebook": "",
         "linkedin": "",
         "telegram": "",
         "twitter": "",
-        "whatsapp": "",
-        "email": ""
-      }
+        "whatsapp": ""
+      },
+      "services": "Diesen Aufruf kannst du hier auch an andere Menschen schicken. Zum Beispiel über Facebook oder über TikTok oder über Instagram."
     },
     "showingPreview": "",
     "toContributionPage": "",
@@ -895,19 +895,19 @@
     "selectNone": "keine",
     "selectOne": "Hier kannst du ein Bild / eine Unterschrift / … aus-suchen",
     "show": "Hier wird das Bild / der Text gezeigt.",
+    "showingOf": "",
     "status": {
       "draft": "Hier ist ein erster Vorschlag.",
       "ended": "… ist zu Ende.",
       "open": "Open",
       "scheduled": "Scheduled"
     },
+    "statusLabel": "",
     "thankYou": "Vielen Dank.",
     "timeAgo": "vor",
     "timeIn": "in",
     "until": "",
-    "yes": "",
-    "showingOf": "",
-    "statusLabel": ""
+    "yes": ""
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1123,6 +1123,10 @@
         "required": "",
         "sameAs": ""
       },
+      "description": {
+        "maxLength": "",
+        "required": ""
+      },
       "email": {
         "email": "Ungültige E-Mail-Adresse",
         "required": "E-Mail-Adresse benötigt"
@@ -1149,6 +1153,10 @@
       "postCode": {
         "required": ""
       },
+      "shareDescription": {
+        "maxLength": "",
+        "required": ""
+      },
       "unknown": {
         "email": "",
         "max": "",
@@ -1165,9 +1173,6 @@
         "max": "",
         "min": "",
         "required": ""
-      },
-      "description": {
-        "required": ""
       }
     },
     "firstName": "Vorname",
@@ -1182,14 +1187,14 @@
     "richtext": {
       "bold": "",
       "bulletlist": "",
+      "editor": "",
       "heading": "",
       "italic": "",
       "link": "",
       "numberedlist": "",
       "strikethrough": "",
-      "underline": "",
       "toolbar": "",
-      "editor": ""
+      "underline": ""
     },
     "saveChanges": "",
     "saved": "",
@@ -1222,6 +1227,11 @@
     "viewOpenCallouts": "",
     "welcome": "",
     "yourProfile": ""
+  },
+  "icons": {
+    "welcome": {
+      "ariaLabel": ""
+    }
   },
   "item": {
     "status": {
@@ -1340,13 +1350,13 @@
         "formSubtitle": "",
         "formTitle": "",
         "minAmount": "",
+        "noticeText": "",
+        "noticeTextHelp": "",
         "showAbsorbFee": "",
         "showNoContribution": "",
         "suggestedAmounts": "",
         "text": "",
-        "title": "",
-        "noticeText": "",
-        "noticeTextHelp": ""
+        "title": ""
       }
     },
     "title": ""
@@ -1520,6 +1530,13 @@
     "description": "",
     "title": ""
   },
+  "status": {
+    "connectingToServer": "",
+    "initializing": "",
+    "loadingApplication": "",
+    "pleaseWait": "",
+    "usuallyTakesSeconds": ""
+  },
   "tagEditor": {
     "add": "",
     "confirmDelete": {
@@ -1542,12 +1559,5 @@
   },
   "taxRate": {
     "invoiceName": "MwSt"
-  },
-  "status": {
-    "loadingApplication": "",
-    "pleaseWait": "",
-    "connectingToServer": "",
-    "initializing": "",
-    "usuallyTakesSeconds": ""
   }
 }

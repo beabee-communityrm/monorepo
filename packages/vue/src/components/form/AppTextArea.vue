@@ -45,7 +45,15 @@
         :required="required"
         :disabled="disabled"
         :aria-invalid="hasError"
-        :aria-describedby="getAriaDescribedBy"
+        :aria-describedby="
+          [
+            hasError && `${id}-error`,
+            infoMessage && `${id}-info`,
+            maxlength !== undefined && `${id}-char-count`,
+          ]
+            .filter(Boolean)
+            .join(' ') || undefined
+        "
         :maxlength="maxlength"
         v-bind="$attrs"
         @blur="validation.$touch"
@@ -166,13 +174,16 @@ const characterCountText = computed(() => {
 const rules = computed(() => ({
   v: {
     required: helpers.withMessage(
-      t('form.errors.unknown.required'),
+      t(`form.errors.${props.name}.required`),
       requiredIf(!!props.required)
     ),
     // Add maxLength validation when maxlength prop is provided
     ...(props.maxlength !== undefined && {
       maxLength: helpers.withMessage(
-        t('form.errors.unknown.maxLength', { max: props.maxlength }),
+        t(`form.errors.${props.name}.maxLength`, {
+          max: props.maxlength,
+          remaining: remainingChars.value,
+        }),
         maxLengthValidator(props.maxlength)
       ),
     }),
@@ -181,13 +192,4 @@ const rules = computed(() => ({
 
 const validation = useVuelidate(rules, { v: value });
 const hasError = computed(() => validation.value.$errors.length > 0);
-
-// Combine IDs for aria-describedby
-const getAriaDescribedBy = computed(() => {
-  const ids = [];
-  if (hasError.value) ids.push(`${id}-error`);
-  if (props.infoMessage) ids.push(`${id}-info`);
-  if (props.maxlength !== undefined) ids.push(`${id}-char-count`);
-  return ids.length ? ids.join(' ') : undefined;
-});
 </script>

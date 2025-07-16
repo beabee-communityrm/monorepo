@@ -13,7 +13,10 @@
   Used for multi-step processes like forms, wizards, or guided workflows where users need to see their current position and overall progress.
 -->
 <template>
-  <nav role="navigation" :aria-label="ariaLabel">
+  <nav
+    role="navigation"
+    :aria-label="props.ariaLabel || t('stepper.navigation.label')"
+  >
     <ol class="mb-8 flex gap-4" role="list">
       <li
         v-for="(step, stepIndex) in steps"
@@ -59,11 +62,15 @@
 
         <!-- Screen reader only status information -->
         <span class="sr-only">
-          <template v-if="step.error"> , has error </template>
-          <template v-else-if="step.validated"> , completed </template>
-          <template v-else-if="stepIndex === modelValue">
-            , current step
-          </template>
+          <template v-if="step.error">{{
+            t('stepper.screen.hasError')
+          }}</template>
+          <template v-else-if="step.validated">{{
+            t('stepper.screen.completed')
+          }}</template>
+          <template v-else-if="stepIndex === modelValue">{{
+            t('stepper.screen.currentStep')
+          }}</template>
         </span>
       </li>
     </ol>
@@ -77,6 +84,8 @@
  *
  * @component AppStepper
  */
+import { useI18n } from 'vue-i18n';
+
 import type { AppStepperStep } from '../../types/stepper';
 
 /**
@@ -93,9 +102,11 @@ export interface AppStepperProps {
   ariaLabel?: string;
 }
 
+const { t } = useI18n();
+
 const props = withDefaults(defineProps<AppStepperProps>(), {
   disabled: false,
-  ariaLabel: 'Step progress',
+  ariaLabel: undefined,
 });
 
 /**

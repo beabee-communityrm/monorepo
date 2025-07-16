@@ -17,7 +17,7 @@ meta:
       }"
       inline-error
       full-button
-      :extract-error-code="extractDefaultErrorCode"
+      :extract-error-code="extractApiErrorCode"
       @submit="handleSubmit"
     >
       <AppTitle>
@@ -49,7 +49,7 @@ import { AppForm, AppInput, AppTitle } from '@beabee/vue';
 import AuthBox from '@components/AuthBox.vue';
 import { updateCurrentUser } from '@store/index';
 import { client } from '@utils/api';
-import { extractDefaultErrorCode } from '@utils/api-error';
+import { extractApiErrorCode } from '@utils/api-error';
 import { isInternalUrl } from '@utils/index';
 import { reactive } from 'vue';
 import { useI18n } from 'vue-i18n';

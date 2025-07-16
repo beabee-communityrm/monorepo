@@ -20,7 +20,7 @@
     :success-text="t('accountPage.savedPassword')"
     :button-text="t('actions.changePassword')"
     :reset-button-text="t('form.cancel')"
-    :extract-error-code="extractDefaultErrorCode"
+    :extract-error-code="extractApiErrorCode"
     @submit="handleFormSubmit"
     @reset="showForm = false"
   >
@@ -53,7 +53,7 @@ import { AppButton, AppForm, AppHeading, AppInput } from '@beabee/vue';
 
 import { faKey } from '@fortawesome/free-solid-svg-icons';
 import { client } from '@utils/api';
-import { extractDefaultErrorCode } from '@utils/api-error';
+import { extractApiErrorCode } from '@utils/api-error';
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 

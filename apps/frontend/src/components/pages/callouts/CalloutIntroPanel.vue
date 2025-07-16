@@ -4,7 +4,7 @@
       <AppTitle class="pt-8">{{ callout.title }}</AppTitle>
 
       <div v-if="callout.status === ItemStatus.Open" class="mb-6">
-        <AppShareBox :url="`${env.appUrl}${route.path}`" />
+        <AppShareBox :url="`${env.appUrl}/${route.path}`" />
       </div>
 
       <img class="mb-6 w-full" :src="imageUrl" />

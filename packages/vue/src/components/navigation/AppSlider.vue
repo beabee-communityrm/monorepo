@@ -9,16 +9,25 @@
   - Integrated stepper navigation when steps are provided
   - Custom navigation slot support
   - Responsive design with resize handling
-  - Accessibility support with ARIA attributes
+  - Accessibility support with ARIA attributes and keyboard navigation
   - Programmatic navigation methods
 
   ## Props
   - `infinite` (boolean): Whether to allow infinite scrolling. Defaults to `false`.
   - `steps` (AppStepperStep[], optional): Steps to display in stepper. If provided, stepper navigation will be shown.
+  - `disabled` (boolean, optional): Whether the slider is disabled. Defaults to `false`.
+  - `ariaLabel` (string, optional): Accessible label for the slider. Defaults to `'Content slider'`.
+  - `ariaLive` (string, optional): ARIA live region behavior. Defaults to `'polite'`.
+  - `disableKeyboardNavigation` (boolean, optional): Whether to disable keyboard navigation. Defaults to `false`.
 
   ## Events
   - `slide` (details: AppSliderSlideEventDetails): Emitted when a slide is scrolled to. 
     `details` contains the slide number and the slide element.
+
+  ## Keyboard Navigation
+  - `Arrow Left/Right`: Navigate to previous/next slide
+  - `Home`: Navigate to first slide
+  - `End`: Navigate to last slide
 
   ## Slots
   - `slides` (Required): The slides to display in the slider.
@@ -31,8 +40,8 @@
 
   ## Possible improvements
   - Add support for touch (scrolling by swiping)
-  - Add support for keyboard navigation
   - Add support for indicators
+  - Add support for auto-play functionality
 -->
 <template>
   <div
@@ -40,6 +49,8 @@
     role="region"
     :aria-label="ariaLabel"
     :aria-live="ariaLive"
+    @keydown="handleKeydown"
+    tabindex="0"
   >
     <!-- Optional stepper navigation -->
     <AppStepper
@@ -82,8 +93,8 @@
  *
  * @component AppSlider
  */
-import { computed, onMounted, onUnmounted, ref } from 'vue';
 import type { Ref } from 'vue';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
 
 import type {
   AppSliderProps,
@@ -108,6 +119,8 @@ const props = withDefaults(
       ariaLabel?: string;
       /** ARIA live region behavior */
       ariaLive?: 'off' | 'polite' | 'assertive';
+      /** Whether to disable keyboard navigation (Arrow keys, Home, End) */
+      disableKeyboardNavigation?: boolean;
     }
   >(),
   {
@@ -115,6 +128,7 @@ const props = withDefaults(
     disabled: false,
     ariaLabel: 'Content slider',
     ariaLive: 'polite',
+    disableKeyboardNavigation: false,
   }
 );
 
@@ -233,6 +247,35 @@ const nextSlide = (behavior?: ScrollBehavior) => {
 const handleResize = () => {
   // If the user resizes the window, we want to make sure the active slide is still centered
   toSlide(activeSlide.value, 'auto');
+};
+
+/**
+ * Handle keyboard navigation
+ */
+const handleKeydown = (event: KeyboardEvent) => {
+  if (props.disabled || props.disableKeyboardNavigation) return;
+
+  switch (event.key) {
+    case 'ArrowLeft':
+      event.preventDefault();
+      prevSlide();
+      break;
+    case 'ArrowRight':
+      event.preventDefault();
+      nextSlide();
+      break;
+    case 'Home':
+      event.preventDefault();
+      toSlide(0);
+      break;
+    case 'End':
+      event.preventDefault();
+      toSlide(slideCount.value - 1);
+      break;
+    default:
+      // Allow default behavior for other keys
+      break;
+  }
 };
 
 onMounted(() => {

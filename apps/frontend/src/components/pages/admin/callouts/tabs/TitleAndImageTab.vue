@@ -30,6 +30,7 @@
                 v-model="data.description.default"
                 :label="inputT('description.label')"
                 :placeholder="inputT('description.placeholder')"
+                name="description"
                 required
               />
             </AppFormField>
@@ -120,6 +121,7 @@
                 :label="inputT('shareDescription.label')"
                 :placeholder="inputT('shareDescription.placeholder')"
                 :maxlength="200"
+                name="shareDescription"
                 :disabled="!data.overrideShare"
                 :required="data.overrideShare"
               />

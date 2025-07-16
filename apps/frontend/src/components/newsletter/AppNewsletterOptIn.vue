@@ -16,18 +16,14 @@
   - Rich text content support
 -->
 <template>
-  <section class="space-y-3 sm:space-y-2">
+  <section>
     <header class="mb-2">
       <h3 class="font-title text-xl font-semibold text-body">
         {{ title }}
       </h3>
     </header>
 
-    <div
-      v-if="text"
-      class="mb-4 max-w-none text-sm text-body-80"
-      v-html="text"
-    />
+    <div v-if="text" class="content-message mb-4 text-sm" v-html="text" />
 
     <!-- Multi-group selection mode -->
     <AppCheckboxGroup
@@ -35,7 +31,6 @@
       v-model="optInGroups"
       :options="groups"
       :aria-label="t('newsletterOptIn.groups.title')"
-      class="space-y-3"
     />
 
     <!-- Simple opt-in mode -->
@@ -43,7 +38,7 @@
       v-else
       v-model="optInStatus"
       :label="optIn"
-      class="font-bold transition-colors"
+      class="font-bold"
       :aria-describedby="text ? `${componentId}-description` : undefined"
     />
   </section>
