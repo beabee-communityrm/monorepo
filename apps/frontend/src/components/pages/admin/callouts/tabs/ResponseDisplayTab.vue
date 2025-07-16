@@ -265,20 +265,24 @@
                   class="mb-4"
                 >
                   <div
-                    class="grid grid-cols-[1fr_auto_auto] items-center gap-2 rounded border border-primary-40 p-2"
+                    class="grid grid-cols-[1fr_auto_auto] items-center gap-2 rounded border border-primary-40 pl-4 py-2"
                   >
                     <span>{{ value.label }}</span>
                     <div class="flex items-center gap-2">
-                      <span
-                        class="inline-block h-6 w-6 rounded-full border"
+                      <font-awesome-icon
+                        v-if="localData.mapSchema.mapIconStyling"
+                        :icon="[
+                          localData.mapSchema.mapIconStyling[i].icon.prefix,
+                          localData.mapSchema.mapIconStyling[i].icon.name,
+                        ]"
                         :style="{
-                          backgroundColor: localData.mapSchema.mapIconStyling
+                          color: localData.mapSchema.mapIconStyling
                             ? localData.mapSchema.mapIconStyling[i].color
-                            : '#000000',
+                            : '#262453',
                         }"
-                      ></span>
+                      />
                       <AppButton
-                        :icon="faPencil"
+                        :icon="solidIcons.faPencil"
                         :variant="'dangerGhost'"
                         size="sm"
                         @click="isPickerOpen[i] = !isPickerOpen[i]"
@@ -288,14 +292,35 @@
                   <AppModal
                     v-if="isPickerOpen[i] && localData.mapSchema.mapIconStyling"
                     :open="isPickerOpen[i]"
-                    :title="inputT('mapSchema.mapIconStyling.label') + value.label"
+                    :title="inputT('mapSchema.mapIconStylingSetting.label')"
                     @close="isPickerOpen[i] = false"
                   >
                     <div class="space-y-4">
-                      <AppColorInput
-                        id="mapIconColor"
-                        v-model="localData.mapSchema.mapIconStyling[i].color"
-                      />
+                      <p class="mb-6 text-body-80">
+                        Please select a color and icon for the answer:
+                        <strong>
+                          {{ localData.mapSchema.mapIconStyling[i].answer }}
+                        </strong>.
+                        <!-- of the question:
+                        <strong>
+                          {{ localData.mapSchema.mapIconQuestion }} </strong
+                        >. -->
+                      </p>
+                      <AppSubHeading class="text-m"> Color: </AppSubHeading>
+                      <div style="margin-left: 8px">
+                        <AppColorInput
+                          id="mapIconColor"
+                          v-model="localData.mapSchema.mapIconStyling[i].color"
+                        />
+                      </div>
+                      <div class="pt-4">
+                        <AppSubHeading class="text-m"> Icon: </AppSubHeading>
+                        <AppIconPicker
+                          :id="'mapIcon' + i"
+                          v-model="localData.mapSchema.mapIconStyling[i].icon"
+                          class="mb-4 mt-2"
+                        />
+                      </div>
                     </div>
                   </AppModal>
                 </div>
@@ -322,17 +347,20 @@ import {
   AppColorInput,
   AppFormBox,
   AppFormField,
+  AppIconPicker,
   AppInput,
   AppLinkList,
   AppModal,
   AppScrollNavigation,
   AppScrollSection,
   AppSelect,
+  AppSubHeading,
   AppToggleField,
   type ScrollSection,
 } from '@beabee/vue';
 
-import { faPencil } from '@fortawesome/free-solid-svg-icons';
+// Download all icons in the package
+import * as solidIcons from '@fortawesome/free-solid-svg-icons';
 import { buckets } from '@utils/callouts';
 import useVuelidate from '@vuelidate/core';
 import { computed, ref, watch } from 'vue';
@@ -495,6 +523,7 @@ const isPickerOpen = ref<boolean[]>([]);
 watch(
   () => localData.value.mapSchema.mapIconQuestion,
   (newQuestion) => {
+    if (localData.value.mapSchema.mapIconQuestion === newQuestion) return;
     localData.value.mapSchema.mapIconStyling = [];
     const values = getValues(newQuestion);
     values.forEach((value) => {
@@ -503,8 +532,11 @@ watch(
       }
       localData.value.mapSchema.mapIconStyling.push({
         answer: value.label,
-        color: '#000000',
-        icon: 'default-icon',
+        color: '#262453',
+        icon: {
+          prefix: 'fas',
+          name: 'circle',
+        },
       });
     });
   },

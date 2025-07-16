@@ -47,6 +47,7 @@ meta:
             all_responses: ['concat', ['get', 'all_responses']],
             first_response: ['min', ['get', 'first_response']],
             cluster_color: ['get', 'cluster_color'],
+            icon: ['get', 'icon'],
           }"
         >
           <MglCircleLayer
@@ -75,12 +76,13 @@ meta:
               'text-font': ['Bold'],
             }"
           />
-          <MglCircleLayer
+          <MglSymbolLayer
+            v-if="mapLoaded"
             :layer-id="LAYER_IDS.UNCLUSTERED_POINTS"
             :filter="['!', ['has', 'point_count']]"
-            :paint="{
-              'circle-color': ['get', 'cluster_color'],
-              'circle-radius': 10,
+            :layout="{
+              'icon-image': ['get', 'cluster_icon'],
+              'icon-size': 1,
             }"
           />
         </MglGeoJsonSource>
@@ -190,6 +192,7 @@ import {
   type CalloutResponseAnswerAddress,
   type CalloutResponseAnswersSlide,
   type GetCalloutDataWith,
+  type MapIconStylingSchema,
   isLngLat,
 } from '@beabee/beabee-common';
 import { AppButton } from '@beabee/vue';
@@ -202,7 +205,12 @@ import {
   HASH_PREFIX,
   useCallout,
 } from '@components/pages/callouts/use-callout';
-import { faInfoCircle, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { icon } from '@fortawesome/fontawesome-svg-core';
+import {
+  type IconName,
+  faInfoCircle,
+  faPlus,
+} from '@fortawesome/free-solid-svg-icons';
 import { currentLocaleConfig } from '@lib/i18n';
 import { GeocodingControl } from '@maptiler/geocoding-control/maplibregl';
 import '@maptiler/geocoding-control/style.css';
@@ -276,6 +284,7 @@ const map = ref<Map>();
 const route = useRoute();
 const router = useRouter();
 const { t } = useI18n();
+const mapLoaded = ref(false);
 
 const currentPosition = computed({
   get: () => {
@@ -349,17 +358,43 @@ const newResponseAddress = computed(() => {
   return undefined;
 });
 
-const getMapIconQuestionResponse = (
-  response: GetCalloutResponseMapDataWithAddress
-): CalloutResponseAnswer | CalloutResponseAnswer[] | undefined => {
-  const mapIconQuestion =
-    props.callout.responseViewSchema?.map?.mapIconQuestion;
+const mapIconQuestion = computed(() => {
+  return props.callout.responseViewSchema?.map?.mapIconQuestion;
+});
 
-  if (mapIconQuestion) {
-    const [slideId, answerKey] = mapIconQuestion.split('.');
-    return response.answers?.[slideId]?.[answerKey];
+const mapIconStyling = computed(() => {
+  return props.callout.responseViewSchema?.map?.mapIconStyling ?? [];
+});
+
+/**
+ * Get the answers for the map icon question / category, if it exists
+ *
+ * @param anwsers The answers for the callout response
+ * @returns The answer for the map icon question / category, or undefined if it doesn't exist
+ */
+const getMapIconQuestionResponse = (
+  anwsers: CalloutResponseAnswersSlide
+): CalloutResponseAnswer | CalloutResponseAnswer[] | undefined => {
+  if (mapIconQuestion.value) {
+    const [slideId, answerKey] = mapIconQuestion.value.split('.');
+    return anwsers[slideId]?.[answerKey];
   }
 };
+
+
+/**
+ * Get the icon styling for the given answers, based on the map icon question / category answer
+ *
+ * @param anwsers The answers for the callout response
+ * @returns The icon styling schema, or undefined if no matching styling is found
+ */
+function getIconStyling(
+  anwsers: CalloutResponseAnswersSlide
+): MapIconStylingSchema | undefined {
+  return mapIconStyling.value.find(
+    (s) => s.answer.toLowerCase() === getMapIconQuestionResponse(anwsers)
+  );
+}
 
 // A GeoJSON FeatureCollection of all the responses
 const responsesCollecton = computed<MapPointFeatureCollection>(() => {
@@ -367,8 +402,9 @@ const responsesCollecton = computed<MapPointFeatureCollection>(() => {
     type: 'FeatureCollection',
     features: responses.value.map((response) => {
       const { lat, lng } = response.address.geometry.location;
-      const mapIconStyling =
-        props.callout.responseViewSchema?.map?.mapIconStyling;
+      const clusterIconName =
+        getIconStyling(response.answers)?.icon.name || 'circle';
+      const clusterColor = getIconStyling(response.answers)?.color || 'black';
 
       return {
         type: 'Feature',
@@ -376,11 +412,7 @@ const responsesCollecton = computed<MapPointFeatureCollection>(() => {
         properties: {
           all_responses: `<${response.number}>`,
           first_response: response.number,
-          cluster_color:
-            mapIconStyling?.find(
-              (s) =>
-                s.answer.toLowerCase() === getMapIconQuestionResponse(response)
-            )?.color ?? 'black',
+          cluster_icon: clusterIconName + '-' + clusterColor,
         },
       };
     }),
@@ -699,6 +731,93 @@ function handleLoad({ map: mapInstance }: { map: Map }) {
 
     mapInstance.addControl(geocodeControl, 'top-left');
   }
+
+  // Load the images of the fontawesome icons to the map extracted from there SVGs
+  const iconNames = [
+    ...new Set(mapIconStyling.value.map(({ icon }) => icon.name)),
+  ];
+  const iconColors = [
+    ...new Set(mapIconStyling.value.map(({ color }) => color)),
+  ];
+
+  iconNames.forEach((iconName: string) => {
+    iconColors.forEach((color: string) => {
+      const svgString = getImageString(iconName, color);
+
+      svgToImage(svgString, (pngDataUrl) => {
+        mapInstance.loadImage(pngDataUrl, (error, image) => {
+          if (error) throw error;
+          if (image) {
+            mapInstance.addImage(iconName + '-' + color, image);
+            mapLoaded.value = true;
+          }
+        });
+      });
+    });
+  });
+}
+
+
+/**
+ * Convert an SVG string to a PNG data URL
+ *
+ * @param svgString The SVG string to convert
+ * @param callback The callback to call with the PNG data URL
+ */
+function svgToImage(
+  svgString: string,
+  callback: (pngDataUrl: string) => void
+): void {
+  const img = new Image();
+  const svgBlob = new Blob([svgString], {
+    type: 'image/svg+xml;charset=utf-8',
+  });
+  const url = URL.createObjectURL(svgBlob);
+
+  img.onload = () => {
+    const canvas = document.createElement('canvas');
+    canvas.width = img.width;
+    canvas.height = img.height;
+    const ctx = canvas.getContext('2d');
+    if (ctx) {
+      ctx.drawImage(img, 0, 0);
+      const pngDataUrl = canvas.toDataURL('image/png');
+      callback(pngDataUrl);
+    }
+    URL.revokeObjectURL(url);
+  };
+
+  img.src = url;
+}
+
+
+/**
+ * Get the SVG string for a FontAwesome icon with a specific color
+ *
+ * @param iconName The name of the icon
+ * @param color The color to use for the icon
+ * @returns The SVG string for the icon
+ */
+function getImageString(iconName: string, color: string): string {
+  const iconObject = icon({ prefix: 'fas', iconName: iconName as IconName });
+
+  const svgPath = iconObject.icon[4] as string;
+  const width = iconObject.icon[0] as number;
+  const height = iconObject.icon[1] as number;
+
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  const scale = 0.05;
+  svg.setAttribute('width', (width * scale).toString());
+  svg.setAttribute('height', (height * scale).toString());
+  svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+
+  const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  path.setAttribute('d', svgPath);
+  path.setAttribute('fill', color);
+
+  svg.appendChild(path);
+
+  return new XMLSerializer().serializeToString(svg);
 }
 
 /**
