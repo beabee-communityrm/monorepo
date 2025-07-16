@@ -71,6 +71,7 @@
     "continue": "",
     "copy": "",
     "create": "",
+    "decrease": "",
     "delete": "",
     "disable": "",
     "edit": "",
@@ -79,6 +80,7 @@
     "export": "",
     "getStarted": "",
     "goBack": "",
+    "increase": "",
     "next": "",
     "noBack": "",
     "participate": "",
@@ -100,15 +102,13 @@
     "share": "",
     "skip": "",
     "submit": "",
+    "tryAgain": "",
     "unpublish": "",
     "update": "",
     "view": "",
     "yesDelete": "",
     "yesDisable": "",
-    "yesRemove": "",
-    "tryAgain": "",
-    "increase": "",
-    "decrease": ""
+    "yesRemove": ""
   },
   "addContact": {
     "contactSaved": "",
@@ -336,7 +336,6 @@
     "addAPoint": "",
     "addLocation": "",
     "builder": {
-      "title": "",
       "actions": {
         "addSlide": ""
       },
@@ -648,6 +647,7 @@
           "title": ""
         }
       },
+      "title": "",
       "translationFields": {
         "description": "",
         "html": "",
@@ -673,15 +673,15 @@
     "responseSubmitted": "",
     "share": {
       "address": "",
-      "services": "",
       "aria": {
+        "email": "",
         "facebook": "",
         "linkedin": "",
         "telegram": "",
         "twitter": "",
-        "whatsapp": "",
-        "email": ""
-      }
+        "whatsapp": ""
+      },
+      "services": ""
     },
     "showingPreview": "",
     "toContributionPage": "",
@@ -902,12 +902,12 @@
       "open": "",
       "scheduled": ""
     },
+    "statusLabel": "",
     "thankYou": "",
     "timeAgo": "",
     "timeIn": "",
     "until": "",
-    "yes": "",
-    "statusLabel": ""
+    "yes": ""
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1123,6 +1123,10 @@
         "required": "",
         "sameAs": ""
       },
+      "description": {
+        "maxLength": "",
+        "required": ""
+      },
       "email": {
         "email": "",
         "required": ""
@@ -1149,6 +1153,10 @@
       "postCode": {
         "required": ""
       },
+      "shareDescription": {
+        "maxLength": "",
+        "required": ""
+      },
       "unknown": {
         "email": "",
         "max": "",
@@ -1156,14 +1164,6 @@
         "min": "",
         "required": "",
         "url": ""
-      },
-      "description": {
-        "maxLength": "",
-        "required": ""
-      },
-      "shareDescription": {
-        "maxLength": "",
-        "required": ""
       },
       "url": {
         "required": "",
@@ -1187,14 +1187,14 @@
     "richtext": {
       "bold": "",
       "bulletlist": "",
+      "editor": "",
       "heading": "",
       "italic": "",
       "link": "",
       "numberedlist": "",
       "strikethrough": "",
-      "underline": "",
       "toolbar": "",
-      "editor": ""
+      "underline": ""
     },
     "saveChanges": "",
     "saved": "",
@@ -1227,6 +1227,11 @@
     "viewOpenCallouts": "",
     "welcome": "",
     "yourProfile": ""
+  },
+  "icons": {
+    "welcome": {
+      "ariaLabel": ""
+    }
   },
   "item": {
     "status": {
@@ -1525,6 +1530,23 @@
     "description": "",
     "title": ""
   },
+  "status": {
+    "connectingToServer": "",
+    "initializing": "",
+    "loadingApplication": "",
+    "pleaseWait": "",
+    "usuallyTakesSeconds": ""
+  },
+  "stepper": {
+    "navigation": {
+      "label": ""
+    },
+    "screen": {
+      "completed": "",
+      "currentStep": "",
+      "hasError": ""
+    }
+  },
   "tagEditor": {
     "add": "",
     "confirmDelete": {
@@ -1547,27 +1569,5 @@
   },
   "taxRate": {
     "invoiceName": ""
-  },
-  "status": {
-    "loadingApplication": "",
-    "pleaseWait": "",
-    "connectingToServer": "",
-    "initializing": "",
-    "usuallyTakesSeconds": ""
-  },
-  "stepper": {
-    "navigation": {
-      "label": ""
-    },
-    "screen": {
-      "hasError": "",
-      "completed": "",
-      "currentStep": ""
-    }
-  },
-  "icons": {
-    "welcome": {
-      "ariaLabel": ""
-    }
   }
 }
