@@ -1559,5 +1559,15 @@
   },
   "taxRate": {
     "invoiceName": "BTW"
+  },
+  "stepper": {
+    "navigation": {
+      "label": ""
+    },
+    "screen": {
+      "hasError": "",
+      "completed": "",
+      "currentStep": ""
+    }
   }
 }
