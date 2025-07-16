@@ -474,6 +474,16 @@
               "initialZoom": {
                 "label": ""
               },
+              "mapIconQuestions": {
+                "label": ""
+              },
+              "mapIconStyling": {
+                "label": ""
+              },
+              "mapIconStylingSetting": {
+                "title": "",
+                "label": ""
+              },
               "maxZoom": {
                 "label": ""
               },

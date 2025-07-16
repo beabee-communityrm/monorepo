@@ -483,7 +483,17 @@
                 "help": "",
                 "label": ""
               },
-              "title": ""
+              "title": "",
+              "mapIconQuestions": {
+                "label": ""
+              },
+              "mapIconStyling": {
+                "label": ""
+              },
+              "mapIconStylingSetting": {
+                "label": "",
+                "title": ""
+              }
             },
             "newsletterSettings": {
               "disabled": "",
