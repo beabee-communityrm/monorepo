@@ -1,6 +1,6 @@
 import {
   CalloutReviewerFilterName,
-  RuleGroup,
+  Rule,
   calloutReviewerFilters,
 } from '@beabee/beabee-common';
 import { CalloutReviewer } from '@beabee/core/models';
@@ -26,6 +26,7 @@ class CalloutReviewerTransformer extends BaseTransformer<
     return {
       id: reviewer.id,
       contact: ContactTransformer.convert(reviewer.contact, auth),
+      canEdit: reviewer.canEdit,
     };
   }
 
@@ -33,15 +34,11 @@ class CalloutReviewerTransformer extends BaseTransformer<
     auth: AuthInfo,
     query: unknown,
     operation: TransformerOperation
-  ): Promise<RuleGroup | false> {
-    if (operation === 'read') {
-      const reviewerRules = await getReviewerRules(auth.contact, 'calloutId');
-      if (reviewerRules.length) {
-        return { condition: 'OR', rules: reviewerRules };
-      }
-    }
-
-    return false;
+  ): Promise<Rule[]> {
+    return operation === 'read'
+      ? await getReviewerRules(auth.contact, 'calloutId', false)
+      : // Only admins can create, updateor delete reviewers
+        [];
   }
 
   protected modifyQueryBuilder(

@@ -1,17 +1,27 @@
 import { CalloutVariantNavigationData } from '@beabee/beabee-common';
 
-import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  Unique,
+} from 'typeorm';
 
 import type { Callout } from './index';
 
 @Entity()
+@Unique(['calloutId', 'name'])
 export class CalloutVariant {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn('uuid')
+  id!: string;
+
+  @Column()
   calloutId!: string;
   @ManyToOne('Callout')
   callout!: Callout;
 
-  @PrimaryColumn()
+  @Column()
   name!: string;
 
   @Column()

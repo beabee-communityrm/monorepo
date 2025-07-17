@@ -143,8 +143,21 @@ export const calloutReviewerFilters = {
   contact: {
     type: 'contact',
   },
+  canEdit: {
+    type: 'boolean',
+  },
   calloutId: {
     type: 'text',
   },
 } as const;
 calloutReviewerFilters satisfies Filters;
+
+export const calloutVariantFilters = {
+  calloutId: {
+    type: 'text',
+  },
+  name: {
+    type: 'text',
+  },
+} as const;
+calloutVariantFilters satisfies Filters;

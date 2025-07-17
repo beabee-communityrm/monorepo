@@ -811,7 +811,9 @@
       "title": "Recensent verwijderen"
     },
     "contact": "Contact ID",
-    "title": "Recensenten oproepen"
+    "title": "Recensenten oproepen",
+    "canEdit": "",
+    "editorTag": ""
   },
   "calloutThanksPage": {
     "oneResponseWarning": "Houd er rekening mee dat deze oproep slechts één reactie per persoon toestaat. Als u al hebt bijgedragen, worden extra reacties niet geregistreerd."

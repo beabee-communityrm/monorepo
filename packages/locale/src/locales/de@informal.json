@@ -811,7 +811,9 @@
       "title": "Auswerter entfernen"
     },
     "contact": "Kontakt ID",
-    "title": "Callout Auswerter"
+    "title": "Callout Auswerter",
+    "canEdit": "",
+    "editorTag": ""
   },
   "calloutThanksPage": {
     "oneResponseWarning": "Bitte beacht, dass dieser Callout nur eine Antwort pro Person zulässt. Wenn du bereits teilgenommen hast, werden weitere Antworten nicht berücksichtigt."

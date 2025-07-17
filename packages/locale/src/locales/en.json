@@ -806,11 +806,13 @@
   },
   "calloutReviewerManager": {
     "add": "Add reviewer",
+    "canEdit": "Reviewer can also edit the callout",
     "confirmDelete": {
       "text": "Are you sure you want to remove {reviewerName}? They will no longer be able to review this callout.",
       "title": "Remove reviewer"
     },
     "contact": "Contact ID",
+    "editorTag": "Editor",
     "title": "Callout reviewers"
   },
   "calloutThanksPage": {

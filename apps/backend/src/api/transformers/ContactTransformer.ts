@@ -1,4 +1,4 @@
-import { GetContactWith, RuleGroup } from '@beabee/beabee-common';
+import { GetContactWith, Rule, RuleGroup } from '@beabee/beabee-common';
 import { createQueryBuilder, getRepository } from '@beabee/core/database';
 import { UnauthorizedError } from '@beabee/core/errors';
 import { CalloutReviewer, Contact, ContactRole } from '@beabee/core/models';
@@ -86,12 +86,9 @@ class ContactTransformer extends BaseContactTransformer<
     };
   }
 
-  protected async getNonAdminAuthRules(): Promise<RuleGroup> {
-    return {
-      condition: 'AND',
-      // Non-admins can only see themselves
-      rules: [{ field: 'id', operator: 'equal', value: ['me'] }],
-    };
+  protected async getNonAdminAuthRules(): Promise<Rule[]> {
+    // Non-admins can only see themselves
+    return [{ field: 'id', operator: 'equal', value: ['me'] }];
   }
 
   /**

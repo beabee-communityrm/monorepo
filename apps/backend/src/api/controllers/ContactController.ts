@@ -12,7 +12,6 @@ import PaymentFlowService from '@beabee/core/services/PaymentFlowService';
 import PaymentService from '@beabee/core/services/PaymentService';
 import { AuthInfo } from '@beabee/core/type';
 import { generatePassword } from '@beabee/core/utils/auth';
-import { mergeRules } from '@beabee/core/utils/rules';
 
 import { CurrentAuth } from '@api/decorators/CurrentAuth';
 import PartialBody from '@api/decorators/PartialBody';
@@ -330,10 +329,13 @@ export class ContactController {
   ): Promise<PaginatedDto<GetPaymentDto>> {
     return PaymentTransformer.fetch(auth, {
       ...query,
-      rules: mergeRules([
-        query.rules,
-        { field: 'contact', operator: 'equal', value: [target.id] },
-      ]),
+      rules: {
+        condition: 'AND',
+        rules: [
+          ...(query.rules ? [query.rules] : []),
+          { field: 'contact', operator: 'equal', value: [target.id] },
+        ],
+      },
     });
   }
 
