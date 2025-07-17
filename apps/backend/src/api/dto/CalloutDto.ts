@@ -6,6 +6,8 @@ import {
   CalloutMapSchema,
   CalloutNewsletterSchema,
   CalloutResponseViewSchema,
+  IconDefinition,
+  IconStyles,
   ItemStatus,
 } from '@beabee/beabee-common';
 
@@ -84,6 +86,29 @@ export class ListCalloutsDto
   showHiddenForAll: boolean = false;
 }
 
+class IconDefinitionDto implements IconDefinition {
+  @IsString()
+  prefix!: string;
+
+  @IsString()
+  name!: string;
+}
+
+class IconStylesDto implements IconStyles {
+  @IsString()
+  question!: string;
+
+  @IsString()
+  answer!: string;
+
+  @IsString()
+  color!: string;
+
+  @ValidateNested()
+  @Type(() => IconDefinitionDto)
+  icon!: IconDefinitionDto;
+}
+
 class CalloutMapSchemaDto implements CalloutMapSchema {
   @IsUrl()
   style!: string;
@@ -121,6 +146,16 @@ class CalloutMapSchemaDto implements CalloutMapSchema {
   @IsOptional()
   @IsString()
   geocodeCountries?: string;
+
+  @IsOptional()
+  @IsString()
+  mapIconQuestion?: string;
+
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => IconStylesDto)
+  mapIconStyling?: IconStylesDto[];
 }
 
 class CalloutNewsletterSchemaDto implements CalloutNewsletterSchema {
