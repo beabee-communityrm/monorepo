@@ -1559,5 +1559,15 @@
   },
   "taxRate": {
     "invoiceName": "VAT"
+  },
+  "stepper": {
+    "navigation": {
+      "label": ""
+    },
+    "screen": {
+      "hasError": "",
+      "completed": "",
+      "currentStep": ""
+    }
   }
 }
