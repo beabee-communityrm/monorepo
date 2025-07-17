@@ -2,6 +2,7 @@ import {
   CalloutResponseFilterName,
   Filters,
   PaginatedQuery,
+  RuleGroup,
   calloutResponseFilters,
   getCalloutFilters,
 } from '@beabee/beabee-common';
@@ -19,7 +20,8 @@ export abstract class BaseCalloutResponseTransformer<
   CalloutResponse,
   GetDto,
   CalloutResponseFilterName,
-  GetOptsDto
+  GetOptsDto,
+  GetOptsDto & PaginatedQuery
 > {
   protected model = CalloutResponse;
   filters = calloutResponseFilters;
@@ -45,14 +47,14 @@ export abstract class BaseCalloutResponseTransformer<
         rules: {
           condition: 'AND',
           rules: [
+            ...(query.rules ? [query.rules] : []),
             {
               field: 'calloutId',
               operator: 'equal',
               value: [query.callout.id],
             },
-            query.rules,
           ],
-        },
+        } satisfies RuleGroup, // TODO: why is this needed?
       };
     } else {
       return query;
