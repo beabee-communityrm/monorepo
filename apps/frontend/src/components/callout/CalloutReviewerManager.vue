@@ -22,7 +22,9 @@
             item.contact.displayName
           }}
         </router-link>
-        <AppTag v-if="item.canEdit" tag="Editor" class="ml-2">Editor</AppTag>
+        <AppTag v-if="item.canEdit" tag="Editor" class="ml-2">
+          {{ t('calloutReviewerManager.editorTag') }}
+        </AppTag>
       </template>
 
       <template #form="{ data, mode }">

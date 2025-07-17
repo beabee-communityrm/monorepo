@@ -7,15 +7,84 @@ This package contains translations for the Beabee project. It provides locale da
 The locale package is structured as follows:
 
 - `src/locales/`: Contains JSON files for each supported language
-- `src/config.json`: Contains configuration for each locale
+- `src/config.ts`: Contains configuration for each locale
 
-Currently supported languages:
-- English (en)
-- German (de, de@informal, de@easy)
-- Dutch (nl)
-- Portuguese (pt)
-- Italian (it)
+## Supported languages
+
+We support three levels of translation, each defining how many strings must be translated. This tiered approach helps us introduce new languages more efficiently based on the most common use cases.
+
+### CNR-only
+
+The smallest translation set. These languages are only available on public-facing CrowdNewsroom pages and should be used exclusively in CNR mode.
+
 - Russian (ru)
+- Germany (de@easy)
+- Greek (el)
+
+Example `config.ts` configuration:
+```ts
+  "de@easy": {
+    baseLocale: "de",
+    name: "Deutsch (einfach)",
+    displayName: "Leichte Sprache",
+    adminLocale: "de", // Fallback to German for admin panels
+    fallbackLocale: "de@informal",
+    availableIn: [LocaleContext.Callout], // Only available in CrowdNewsrooms (callouts)
+  },
+```
+
+Weblate:
+- Tags: CNR, System
+- [Missing translations](https://hosted.weblate.org/search/beabee/platform/?q=state%3Aempty+AND+%28language%3Aru+OR+language%3Ade%40easy+OR+language%3Ael%29+AND+%28label%3Acnr+OR+label%3Asystem%29&sort_by=-priority%2Cposition&checksum=)
+
+### User facing
+
+These languages are available across the platform for all users, but admin-only strings are not translated. Admins will see the dashboard in English. This is a practical compromise that allows broader language support while keeping admin functionality accessible.
+
+- Portugeuse (pt)
+- Italian (it)
+
+Example `config.ts` configuration:
+
+```ts
+  pt: {
+    baseLocale: "pt",
+    name: "Português",
+    displayName: "Português",
+    adminLocale: "en", // Fallback to English for admin panels
+    availableIn: [LocaleContext.Callout, LocaleContext.System], // Available everywhere
+  },
+```
+
+Weblate:
+- Tags: CNR, System, User
+- [Missing translations](https://hosted.weblate.org/search/beabee/platform/?q=state%3Aempty+AND+%28language%3Apt+OR+language%3Ait%29+AND+NOT+label%3Aadmin&sort_by=-priority%2Cposition&checksum=)
+
+### Fully translated
+
+These languages are available throughout the entire platform, including admin dashboards. All strings are fully translated.
+
+- English (en)
+- German (de, de@informal)
+- French (fr)
+- Dutch (nl)
+
+Example `config.ts` configuration:
+```ts
+  "de": {
+    baseLocale: "de",
+    name: "Deutsch",
+    displayName: "Deutsch",
+    adminLocale: "de", // Use on the admin panels too
+    fallbackLocale: "de",
+    availableIn: [LocaleContext.Callout, LocaleContext.System], // Available everywhere
+  },
+```
+
+
+Weblate:
+- Tags: CNR, System, User, Admin
+- [Missing translations](https://hosted.weblate.org/search/beabee/platform/?page=1&limit=100&q=state%3Aempty+AND+%28language%3Ade+OR+language%3Ade%40informal+OR+language%3Aen+OR+language%3Afr+OR+language%3Anl%29&sort_by=-priority%2Cposition)
 
 ## Usage
 

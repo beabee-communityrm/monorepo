@@ -811,7 +811,9 @@
       "title": ""
     },
     "contact": "",
-    "title": ""
+    "title": "",
+    "canEdit": "",
+    "editorTag": ""
   },
   "calloutThanksPage": {
     "oneResponseWarning": ""
@@ -1559,5 +1561,15 @@
   },
   "taxRate": {
     "invoiceName": "???"
+  },
+  "stepper": {
+    "navigation": {
+      "label": ""
+    },
+    "screen": {
+      "hasError": "",
+      "completed": "",
+      "currentStep": ""
+    }
   }
 }

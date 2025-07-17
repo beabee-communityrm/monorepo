@@ -811,7 +811,9 @@
       "title": "Auswerter entfernen"
     },
     "contact": "Kontakt ID",
-    "title": "Reviewer verwalten"
+    "title": "Reviewer verwalten",
+    "canEdit": "",
+    "editorTag": ""
   },
   "calloutThanksPage": {
     "oneResponseWarning": "Bitte beachte, dass nur eine Antwort pro Person möglich ist. Wenn du schon teilgenommen hast, werden weitere Antworten nicht berücksichtigt."
