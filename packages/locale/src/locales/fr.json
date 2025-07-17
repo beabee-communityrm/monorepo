@@ -811,7 +811,9 @@
       "title": "Supprimer le vérificateur"
     },
     "contact": "Identifiant de contact",
-    "title": "Vérificateurs de campagne"
+    "title": "Vérificateurs de campagne",
+    "canEdit": "",
+    "editorTag": ""
   },
   "calloutThanksPage": {
     "oneResponseWarning": "Veuillez noter que cette campagne n'autorise qu'une seule réponse par personne. Si vous y avez déjà répondu, les réponses supplémentaires ne seront pas enregistrées."
