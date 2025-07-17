@@ -86,7 +86,11 @@ meta:
             />
             <SetAssigneeButton
               :reviewer-items="reviewerItems"
-              :manage-url="`/admin/callouts/view/${callout.slug}/responses/tags`"
+              :manage-url="
+                canAdmin
+                  ? `/admin/callouts/view/${callout.slug}/responses/tags`
+                  : undefined
+              "
               :selectable="selectedCount > 0"
               :loading="doingAction"
               :current-assignee-id="selectedAssigneeId"
@@ -237,6 +241,7 @@ import {
   faUserPen,
 } from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';
+import { canAdmin } from '@store/currentUser';
 import { client } from '@utils/api';
 import { buckets } from '@utils/callouts';
 import {
