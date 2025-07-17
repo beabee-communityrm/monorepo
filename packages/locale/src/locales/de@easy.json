@@ -1153,6 +1153,10 @@
         "required": ""
       }
     },
+    "errorsFormio": {
+      "minLength": "",
+      "maxLength": ""
+    },
     "firstName": "Vorname",
     "lastName": "Nachname",
     "newPassword": "",

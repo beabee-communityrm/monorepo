@@ -1175,7 +1175,11 @@
     "saveChanges": "Gravar alterações",
     "saved": "Gravado!",
     "unsavedChanges": "Alterações não gravadas",
-    "updated": "Atualizado"
+    "updated": "Atualizado",
+    "errorsFormio": {
+      "minLength": "",
+      "maxLength": ""
+    }
   },
   "formRenderer": {
     "components": {
