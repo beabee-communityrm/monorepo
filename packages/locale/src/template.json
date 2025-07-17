@@ -1175,6 +1175,10 @@
         "required": ""
       }
     },
+    "errorsFormio": {
+      "minLength": "",
+      "maxLength": ""
+    },
     "firstName": "",
     "lastName": "",
     "newPassword": "",
