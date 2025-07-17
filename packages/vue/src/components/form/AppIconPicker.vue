@@ -31,7 +31,7 @@
 </template>
 
 <script lang="ts" setup>
-import { type IconSchema } from '@beabee/beabee-common';
+import { type IconDefinition } from '@beabee/beabee-common';
 import { IconSearchService, formatIconForDisplay } from '@beabee/fontawesome';
 
 import useVuelidate from '@vuelidate/core';
@@ -44,7 +44,7 @@ export interface AppIconPickerProps {
   /** The id of the color input */
   id: string;
   /** The model value of the color input */
-  modelValue: IconSchema;
+  modelValue: IconDefinition;
   /** The  limit of icons to display */
   limit?: number;
   /** The styles of icons to display */
