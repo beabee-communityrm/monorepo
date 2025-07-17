@@ -304,6 +304,7 @@
                         <AppColorInput
                           id="mapIconColor"
                           v-model="mapIconStyling[mapIconQuestion][i].color"
+                          :right-aligned="true"
                         />
                       </div>
                       <div class="pt-4">
