@@ -1177,6 +1177,10 @@
         "required": "Code benötigt"
       }
     },
+    "errorsFormio": {
+      "minLength": "Dieses Feld muss mindestens {'{{length}}'} Zeichen lang sein",
+      "maxLength": "Die maximale Länge von {'{{length}}'} Zeichen wurde überschritten"
+    },
     "firstName": "Vorname",
     "lastName": "Nachname",
     "newPassword": "Neues Passwort",
