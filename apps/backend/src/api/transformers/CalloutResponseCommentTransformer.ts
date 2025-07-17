@@ -19,7 +19,7 @@ import ContactTransformer, {
 import { getReviewerRules } from '@api/utils/callouts';
 import { TransformPlainToInstance } from 'class-transformer';
 import { BadRequestError } from 'routing-controllers';
-import { In, SelectQueryBuilder } from 'typeorm';
+import { SelectQueryBuilder } from 'typeorm';
 
 class CalloutResponseCommentTransformer extends BaseTransformer<
   CalloutResponseComment,
@@ -96,17 +96,18 @@ class CalloutResponseCommentTransformer extends BaseTransformer<
 
     const responseIds = data
       .map((c) => c.responseId)
-      .filter((s): s is string => !!s);
+      .filter((s): s is string => !!s)
+      .filter((s, i, a) => a.indexOf(s) === i);
 
     if (!responseIds.length || !auth.contact) {
       throw new BadRequestError('Response ID and contact required');
     }
 
-    const reviewer = await createQueryBuilder(CalloutReviewer, 'reviewer')
-      .select('1')
+    const responses = await createQueryBuilder(CalloutResponse, 'response')
+      .select('response.id', 'id')
       .innerJoin(
-        CalloutResponse,
-        'response',
+        CalloutReviewer,
+        'reviewer',
         'reviewer.calloutId = response.calloutId'
       )
       .where('reviewer.contactId = :contactId')
@@ -115,9 +116,9 @@ class CalloutResponseCommentTransformer extends BaseTransformer<
         contactId: auth.contact.id,
         responseIds,
       })
-      .getRawOne();
+      .getRawMany<{ id: string }>();
 
-    return !!reviewer;
+    return responseIds.every((id) => responses.some((r) => r.id === id));
   }
 }
 
