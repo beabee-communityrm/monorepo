@@ -258,9 +258,7 @@
                   {{ inputT('mapSchema.mapIconStyling.label') }}
                 </h3>
                 <div
-                  v-for="(value, i) in getValues(
-                    localData.mapSchema.mapIconQuestion
-                  )"
+                  v-for="(value, i) in getValues(mapIconQuestion)"
                   :key="i"
                   class="mb-4"
                 >
@@ -270,15 +268,12 @@
                     <span>{{ value.label }}</span>
                     <div class="flex items-center gap-2">
                       <font-awesome-icon
-                        v-if="localData.mapSchema.mapIconStyling"
                         :icon="[
-                          localData.mapSchema.mapIconStyling[i].icon.prefix,
-                          localData.mapSchema.mapIconStyling[i].icon.name,
+                          mapIconStyling[mapIconQuestion][i].icon.prefix,
+                          mapIconStyling[mapIconQuestion][i].icon.name,
                         ]"
                         :style="{
-                          color: localData.mapSchema.mapIconStyling
-                            ? localData.mapSchema.mapIconStyling[i].color
-                            : '#262453',
+                          color: mapIconStyling[mapIconQuestion][i].color,
                         }"
                       />
                       <AppButton
@@ -300,7 +295,7 @@
                         {{ inputT('mapSchema.mapIconStylingSetting.label') }}
                         <strong>
                           {{
-                            localData.mapSchema.mapIconStyling[i].answer
+                            mapIconStyling[mapIconQuestion][i].answer
                           }} </strong
                         >.
                       </p>
@@ -308,14 +303,14 @@
                       <div style="margin-left: 8px">
                         <AppColorInput
                           id="mapIconColor"
-                          v-model="localData.mapSchema.mapIconStyling[i].color"
+                          v-model="mapIconStyling[mapIconQuestion][i].color"
                         />
                       </div>
                       <div class="pt-4">
                         <AppSubHeading class="text-m"> Icon: </AppSubHeading>
                         <AppIconPicker
                           :id="'mapIcon' + i"
-                          v-model="localData.mapSchema.mapIconStyling[i].icon"
+                          v-model="mapIconStyling[mapIconQuestion][i].icon"
                           class="mb-4 mt-2"
                         />
                       </div>
@@ -338,7 +333,7 @@
 
 <script lang="ts" setup>
 import { ItemStatus, getCalloutComponents } from '@beabee/beabee-common';
-import type { CalloutMapSchema } from '@beabee/beabee-common';
+import type { CalloutMapSchema, IconStyles } from '@beabee/beabee-common';
 import {
   AppButton,
   AppCheckboxGroup,
@@ -518,24 +513,57 @@ function getValues(
 // Have one bool value per answer to open multiple modals
 const isPickerOpen = ref<boolean[]>([]);
 
+const mapIconQuestion = computed(() => {
+  return localData.value.mapSchema.mapIconQuestion || '';
+});
+
+// Computed property to manage mapIconStyling as an object
+// where keys are question IDs and values are arrays of IconStyles
+const mapIconStyling = computed({
+  get() {
+    const styling: Record<string, IconStyles[]> = {};
+    localData.value.mapSchema.mapIconStyling?.forEach((style) => {
+      if (!styling[style.question]) {
+        styling[style.question] = [];
+      }
+      styling[style.question].push(style);
+    });
+    return styling;
+  },
+  set(newVal: Record<string, IconStyles[]>) {
+    // Flatten the object back into an array and update localData
+    localData.value.mapSchema.mapIconStyling = Object.values(newVal).flat();
+  },
+});
+
 watch(
   () => localData.value.mapSchema.mapIconQuestion,
   (newQuestion) => {
-    if (localData.value.mapSchema.mapIconQuestion === newQuestion) return;
-    localData.value.mapSchema.mapIconStyling = [];
+    if (!newQuestion) return;
     const values = getValues(newQuestion);
-    values.forEach((value) => {
-      if (!localData.value.mapSchema.mapIconStyling) {
-        localData.value.mapSchema.mapIconStyling = [];
-      }
-      localData.value.mapSchema.mapIconStyling.push({
-        answer: value.label,
-        color: '#262453',
-        icon: {
-          prefix: 'fas',
-          name: 'circle',
-        },
-      });
+
+    // Ensure mapIconStyling exists
+    if (!localData.value.mapSchema.mapIconStyling) {
+      localData.value.mapSchema.mapIconStyling = [];
+    }
+
+    // Initialize mapIconStyling for the new question
+    localData.value.mapSchema.mapIconStyling = values.map((value) => {
+      const existing = localData.value.mapSchema.mapIconStyling?.find(
+        (styling: IconStyles) =>
+          styling.answer === value.label && styling.question === newQuestion
+      );
+      return (
+        existing || {
+          question: newQuestion,
+          answer: value.label,
+          color: '#262453',
+          icon: {
+            prefix: 'fas',
+            name: 'circle',
+          },
+        }
+      );
     });
   },
   { immediate: true }
