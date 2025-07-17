@@ -1153,6 +1153,10 @@
         "required": "Le code est obligatoire"
       }
     },
+    "errorsFormio": {
+      "minLength": "",
+      "maxLength": ""
+    },
     "firstName": "Prénom",
     "lastName": "Nom",
     "newPassword": "Nouveau mot de passe",

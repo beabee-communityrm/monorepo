@@ -1175,7 +1175,11 @@
     "saveChanges": "Wijzigingen opslaan",
     "saved": "Opgeslagen!",
     "unsavedChanges": "Niet-opgeslagen wijzigingen",
-    "updated": "Bijgewerkt"
+    "updated": "Bijgewerkt",
+    "errorsFormio": {
+      "minLength": "",
+      "maxLength": ""
+    }
   },
   "formRenderer": {
     "components": {
