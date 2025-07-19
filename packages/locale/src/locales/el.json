@@ -1212,7 +1212,7 @@
         "useCamera": "χρησιμοποιήστε κάμερα"
       },
       "multiple": {
-        "addAnother": "Εδώ μπορείτε να ανεβάσετε μια νέα φωτογραφία./ Εδώ μπορείτε να ανεβάσετε ένα νέο αρχείο."
+        "addAnother": "Προσθήκη συνδέσμου"
       }
     }
   },
@@ -1537,6 +1537,16 @@
     "pleaseWait": "",
     "usuallyTakesSeconds": ""
   },
+  "stepper": {
+    "navigation": {
+      "label": ""
+    },
+    "screen": {
+      "completed": "",
+      "currentStep": "",
+      "hasError": ""
+    }
+  },
   "tagEditor": {
     "add": "",
     "confirmDelete": {
@@ -1559,15 +1569,5 @@
   },
   "taxRate": {
     "invoiceName": ""
-  },
-  "stepper": {
-    "navigation": {
-      "label": ""
-    },
-    "screen": {
-      "hasError": "",
-      "completed": "",
-      "currentStep": ""
-    }
   }
 }
