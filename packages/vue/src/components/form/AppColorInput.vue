@@ -23,11 +23,7 @@
     alpha-channel="hide"
     :color="modelValue"
     @color-change="changeColor($event.colors.hex)"
-    :style="
-      rightAligned
-        ? 'font-family: inherit; margin-left: 30px;'
-        : 'font-family: inherit;'
-    "
+    :class="rightAligned ? 'ml-8' : ''"
   >
     <template #format-switch-button>
       <font-awesome-icon :icon="faSort" />
