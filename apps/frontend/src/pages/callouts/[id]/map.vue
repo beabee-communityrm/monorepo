@@ -367,29 +367,29 @@ const mapIconStyling = computed(() => {
 /**
  * Get the answers for the map icon question / category, if it exists
  *
- * @param anwsers The answers for the callout response
+ * @param answers The answers for the callout response
  * @returns The answer for the map icon question / category, or undefined if it doesn't exist
  */
 const getMapIconQuestionResponse = (
-  anwsers: CalloutResponseAnswersSlide
+  answers: CalloutResponseAnswersSlide
 ): CalloutResponseAnswer | CalloutResponseAnswer[] | undefined => {
   if (mapIconQuestion.value) {
     const [slideId, answerKey] = mapIconQuestion.value.split('.');
-    return anwsers[slideId]?.[answerKey];
+    return answers[slideId]?.[answerKey];
   }
 };
 
 /**
  * Get the icon styling for the given answers, based on the map icon question / category answer
  *
- * @param anwsers The answers for the callout response
+ * @param answers The answers for the callout response
  * @returns The icon styling schema, or undefined if no matching styling is found
  */
 function getIconStyling(
-  anwsers: CalloutResponseAnswersSlide
+  answers: CalloutResponseAnswersSlide
 ): CalloutMapIconStyle | undefined {
   return mapIconStyling.value.find(
-    (s) => s.answer.toLowerCase() === getMapIconQuestionResponse(anwsers)
+    (s) => s.answer.toLowerCase() === getMapIconQuestionResponse(answers)
   );
 }
 
@@ -408,7 +408,7 @@ const responsesCollecton = computed<MapPointFeatureCollection>(() => {
         properties: {
           all_responses: `<${response.number}>`,
           first_response: response.number,
-          icon: iconName + '-' + color,
+          icon: generateImageId(iconName, color),
         },
       };
     }),
@@ -750,7 +750,7 @@ function handleLoad({ map: mapInstance }: { map: Map }) {
           mapInstance.loadImage(pngDataUrl, (error, image) => {
             if (error) throw error;
             if (image) {
-              mapInstance.addImage(iconName + '-' + color, image);
+              mapInstance.addImage(generateImageId(iconName, color), image);
               mapLoaded.value = true;
             }
           });
@@ -760,6 +760,17 @@ function handleLoad({ map: mapInstance }: { map: Map }) {
         });
     }
   }
+}
+
+/**
+ * Generate a unique ID for an icon image based on its name and color
+ *
+ * @param iconName The name of the icon
+ * @param color The color of the icon
+ * @returns A unique ID for the icon
+ */
+function generateImageId(iconName: string, color: string): string {
+  return `icon-${iconName}-${color}`;
 }
 
 /**
