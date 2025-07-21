@@ -742,10 +742,9 @@ function handleLoad({ map: mapInstance }: { map: Map }) {
     ])
   );
 
-  iconNames.forEach((iconName: string) => {
-    iconColors.forEach((color: string) => {
+  for (const iconName of iconNames) {
+    for (const color of iconColors) {
       const svgString = getImageString(iconName, color);
-
       svgToImage(svgString)
         .then((pngDataUrl) => {
           mapInstance.loadImage(pngDataUrl, (error, image) => {
@@ -757,13 +756,18 @@ function handleLoad({ map: mapInstance }: { map: Map }) {
           });
         })
         .catch((error) => {
-          console.error('Failed to load icon:', iconName, color, error);
+          throw error;
         });
-    });
-  });
+    }
+  }
 }
 
-
+/**
+ * Convert an SVG string to a PNG data URL
+ *
+ * @param svgString The SVG string to convert
+ * @returns A promise that resolves to the PNG data URL
+ */
 function svgToImage(svgString: string): Promise<string> {
   return new Promise<string>((resolve, reject) => {
     const img = new Image();
