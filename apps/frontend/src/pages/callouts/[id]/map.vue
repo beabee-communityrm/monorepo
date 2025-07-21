@@ -746,49 +746,50 @@ function handleLoad({ map: mapInstance }: { map: Map }) {
     iconColors.forEach((color: string) => {
       const svgString = getImageString(iconName, color);
 
-      svgToImage(svgString, (pngDataUrl) => {
-        mapInstance.loadImage(pngDataUrl, (error, image) => {
-          if (error) throw error;
-          if (image) {
-            mapInstance.addImage(iconName + '-' + color, image);
-            mapLoaded.value = true;
-          }
+      svgToImage(svgString)
+        .then((pngDataUrl) => {
+          mapInstance.loadImage(pngDataUrl, (error, image) => {
+            if (error) throw error;
+            if (image) {
+              mapInstance.addImage(iconName + '-' + color, image);
+              mapLoaded.value = true;
+            }
+          });
+        })
+        .catch((error) => {
+          console.error('Failed to load icon:', iconName, color, error);
         });
-      });
     });
   });
 }
 
-/**
- * Convert an SVG string to a PNG data URL
- *
- * @param svgString The SVG string to convert
- * @param callback The callback to call with the PNG data URL
- */
-function svgToImage(
-  svgString: string,
-  callback: (pngDataUrl: string) => void
-): void {
-  const img = new Image();
-  const svgBlob = new Blob([svgString], {
-    type: 'image/svg+xml;charset=utf-8',
+
+function svgToImage(svgString: string): Promise<string> {
+  return new Promise<string>((resolve, reject) => {
+    const img = new Image();
+    const svgBlob = new Blob([svgString], {
+      type: 'image/svg+xml;charset=utf-8',
+    });
+    const url = URL.createObjectURL(svgBlob);
+
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.drawImage(img, 0, 0);
+        const pngDataUrl = canvas.toDataURL('image/png');
+        resolve(pngDataUrl);
+      } else {
+        reject(new Error('Failed to get canvas context'));
+      }
+      URL.revokeObjectURL(url);
+    };
+
+    img.onerror = (error) => reject(error);
+    img.src = url;
   });
-  const url = URL.createObjectURL(svgBlob);
-
-  img.onload = () => {
-    const canvas = document.createElement('canvas');
-    canvas.width = img.width;
-    canvas.height = img.height;
-    const ctx = canvas.getContext('2d');
-    if (ctx) {
-      ctx.drawImage(img, 0, 0);
-      const pngDataUrl = canvas.toDataURL('image/png');
-      callback(pngDataUrl);
-    }
-    URL.revokeObjectURL(url);
-  };
-
-  img.src = url;
 }
 
 /**
