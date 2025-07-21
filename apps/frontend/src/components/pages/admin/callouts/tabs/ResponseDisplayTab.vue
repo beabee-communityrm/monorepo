@@ -454,7 +454,9 @@ const formComponentItems = computed(() =>
       values:
         c.type === 'select'
           ? c.data.values
-          : (c.values as MapIconQuestionValue[]) || [],
+          : c.type === 'radio'
+            ? c.values || []
+            : [],
     }))
 );
 
@@ -499,16 +501,10 @@ const mapBounds = computed({
   },
 });
 
-// Define MapIconQuestionValue
-type MapIconQuestionValue = {
-  label: string;
-  value: string;
-};
-
 // Get options / values for a selected map icon question
 function getValues(
   mapIconQuestion: string | undefined
-): MapIconQuestionValue[] {
+): { label: string; value: string }[] {
   const question = mapIconQuestions.value.find((q) => q.id === mapIconQuestion);
   return question ? question.values : [];
 }
