@@ -254,9 +254,8 @@
                 />
               </AppFormField>
               <div v-if="localData.mapSchema.mapIconQuestion">
-                <h3 class="mb-2 font-semibold">
-                  {{ inputT('mapSchema.mapIconStyling.label') }}
-                </h3>
+                <AppLabel :label="inputT('mapSchema.mapIconStyling.label')">
+                </AppLabel>
                 <div
                   v-for="(value, i) in getValues(mapIconQuestion)"
                   :key="i"
@@ -304,7 +303,7 @@
                         <AppColorInput
                           id="mapIconColor"
                           v-model="mapIconStyling[mapIconQuestion][i].color"
-                          :right-aligned="true"
+                          right-aligned
                         />
                       </div>
                       <div class="pt-4">
@@ -343,6 +342,7 @@ import {
   AppFormField,
   AppIconPicker,
   AppInput,
+  AppLabel,
   AppLinkList,
   AppModal,
   AppScrollNavigation,
