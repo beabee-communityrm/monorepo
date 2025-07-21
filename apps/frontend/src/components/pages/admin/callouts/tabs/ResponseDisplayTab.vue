@@ -333,7 +333,10 @@
 
 <script lang="ts" setup>
 import { ItemStatus, getCalloutComponents } from '@beabee/beabee-common';
-import type { CalloutMapSchema, MapIconStyle } from '@beabee/beabee-common';
+import type {
+  CalloutMapIconStyle,
+  CalloutMapSchema,
+} from '@beabee/beabee-common';
 import {
   AppButton,
   AppCheckboxGroup,
@@ -522,7 +525,7 @@ const mapIconQuestion = computed(() => {
 // where keys are question IDs and values are arrays of IconStyles
 const mapIconStyling = computed({
   get() {
-    const styling: Record<string, MapIconStyle[]> = {};
+    const styling: Record<string, CalloutMapIconStyle[]> = {};
     localData.value.mapSchema.mapIconStyling?.forEach((style) => {
       if (!styling[style.question]) {
         styling[style.question] = [];
@@ -531,7 +534,7 @@ const mapIconStyling = computed({
     });
     return styling;
   },
-  set(newVal: Record<string, MapIconStyle[]>) {
+  set(newVal: Record<string, CalloutMapIconStyle[]>) {
     // Flatten the object back into an array and update localData
     localData.value.mapSchema.mapIconStyling = Object.values(newVal).flat();
   },
@@ -551,7 +554,7 @@ watch(
     // Initialize mapIconStyling for the new question
     localData.value.mapSchema.mapIconStyling = values.map((value) => {
       const existing = localData.value.mapSchema.mapIconStyling?.find(
-        (styling: MapIconStyle) =>
+        (styling: CalloutMapIconStyle) =>
           styling.answer === value.label && styling.question === newQuestion
       );
       return (

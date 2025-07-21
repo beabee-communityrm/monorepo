@@ -186,11 +186,11 @@ meta:
 
 <script lang="ts" setup>
 import {
+  type CalloutMapIconStyle,
   type CalloutResponseAnswer,
   type CalloutResponseAnswerAddress,
   type CalloutResponseAnswersSlide,
   type GetCalloutDataWith,
-  type MapIconStyle,
   isLngLat,
 } from '@beabee/beabee-common';
 import { AppButton } from '@beabee/vue';
@@ -387,7 +387,7 @@ const getMapIconQuestionResponse = (
  */
 function getIconStyling(
   anwsers: CalloutResponseAnswersSlide
-): MapIconStyle | undefined {
+): CalloutMapIconStyle | undefined {
   return mapIconStyling.value.find(
     (s) => s.answer.toLowerCase() === getMapIconQuestionResponse(anwsers)
   );

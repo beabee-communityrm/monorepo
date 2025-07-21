@@ -31,11 +31,11 @@
 </template>
 
 <script lang="ts" setup>
-import { type IconDefinition } from '@beabee/beabee-common';
+import { type CalloutMapIconDefinition } from '@beabee/beabee-common';
 import { IconSearchService, formatIconForDisplay } from '@beabee/fontawesome';
 
 import useVuelidate from '@vuelidate/core';
-import { computed, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 
 import AppButton from '../button/AppButton.vue';
 import AppSearchInput from './AppSearchInput.vue';
@@ -44,7 +44,7 @@ export interface AppIconPickerProps {
   /** The id of the color input */
   id: string;
   /** The model value of the color input */
-  modelValue: IconDefinition;
+  modelValue: CalloutMapIconDefinition;
   /** The  limit of icons to display */
   limit?: number;
   /** The styles of icons to display */
