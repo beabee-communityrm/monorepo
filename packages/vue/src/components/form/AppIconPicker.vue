@@ -4,28 +4,26 @@
 -->
 
 <template>
-  <div style="margin-left: 8px">
-    <div class="grid grid-cols-[auto_1fr] items-center gap-2">
-      <font-awesome-icon
-        :icon="[modelValue.prefix, modelValue.name]"
-        style="font-size: 1.7rem"
-      />
-      <AppSearchInput v-model="iconSearchValue" :placeholder="'Search...'" />
-    </div>
-    <div class="mt-4 grid grid-cols-5 gap-4 pl-7">
-      <div
-        v-for="(icon, idx) in icons"
-        :key="idx"
-        class="items-centersss flex flex-col"
+  <div class="grid grid-cols-[auto_1fr] items-center gap-2">
+    <font-awesome-icon
+      :icon="[modelValue.prefix, modelValue.name]"
+      class="text-2xl"
+    />
+    <AppSearchInput v-model="iconSearchValue" :placeholder="'Search...'" />
+  </div>
+  <div class="mt-4 grid grid-cols-5 gap-4 pl-7">
+    <div
+      v-for="(icon, idx) in icons"
+      :key="idx"
+      class="flex flex-col items-center"
+    >
+      <AppButton
+        size="xs"
+        :variant="'dangerGhost'"
+        @click="setIcon(props.style, icon.name)"
       >
-        <AppButton
-          size="xs"
-          :variant="'dangerGhost'"
-          @click="setIcon(props.style, icon.name)"
-        >
-          <font-awesome-icon :icon="[props.style, icon.name]" />
-        </AppButton>
-      </div>
+        <font-awesome-icon :icon="[props.style, icon.name]" />
+      </AppButton>
     </div>
   </div>
 </template>
