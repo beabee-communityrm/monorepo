@@ -299,13 +299,12 @@
                         >.
                       </p>
                       <AppSubHeading class="text-m"> Color: </AppSubHeading>
-                      <div style="margin-left: 8px">
-                        <AppColorInput
-                          id="mapIconColor"
-                          v-model="mapIconStyling[mapIconQuestion][i].color"
-                          right-aligned
-                        />
-                      </div>
+                      <AppColorInput
+                        id="mapIconColor"
+                        v-model="mapIconStyling[mapIconQuestion][i].color"
+                        right-aligned
+                      />
+
                       <div class="pt-4">
                         <AppSubHeading class="text-m"> Icon: </AppSubHeading>
                         <AppIconPicker
