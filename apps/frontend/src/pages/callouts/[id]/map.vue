@@ -187,10 +187,10 @@ meta:
 <script lang="ts" setup>
 import {
   type CalloutMapIconStyle,
-  type CalloutResponseAnswer,
   type CalloutResponseAnswerAddress,
   type CalloutResponseAnswersSlide,
   type GetCalloutDataWith,
+  getByPath,
   isLngLat,
 } from '@beabee/beabee-common';
 import { AppButton } from '@beabee/vue';
@@ -365,21 +365,6 @@ const mapIconStyling = computed(() => {
 });
 
 /**
- * Get the answers for the map icon question / category, if it exists
- *
- * @param answers The answers for the callout response
- * @returns The answer for the map icon question / category, or undefined if it doesn't exist
- */
-const getMapIconQuestionResponse = (
-  answers: CalloutResponseAnswersSlide
-): CalloutResponseAnswer | CalloutResponseAnswer[] | undefined => {
-  if (mapIconQuestion.value) {
-    const [slideId, answerKey] = mapIconQuestion.value.split('.');
-    return answers[slideId]?.[answerKey];
-  }
-};
-
-/**
  * Get the icon styling for the given answers, based on the map icon question / category answer
  *
  * @param answers The answers for the callout response
@@ -388,8 +373,13 @@ const getMapIconQuestionResponse = (
 function getIconStyling(
   answers: CalloutResponseAnswersSlide
 ): CalloutMapIconStyle | undefined {
+  const key = mapIconQuestion.value;
+  if (!key) return undefined;
+  const answer = getByPath(answers, key);
+  // We do not allow multiple answers for the map icon prop, so we can safely assume it's a string
+  if (!answer || typeof answer !== 'string') return undefined;
   return mapIconStyling.value.find(
-    (s) => s.answer.toLowerCase() === getMapIconQuestionResponse(answers)
+    (s) => s.answer.toLowerCase() === answer.toLowerCase()
   );
 }
 
