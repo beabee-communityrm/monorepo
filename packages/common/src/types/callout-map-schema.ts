@@ -1,13 +1,13 @@
-export interface IconDefinition {
+export interface MapIconDefinition {
   prefix: string;
   name: string;
 }
 
-export interface IconStyles {
+export interface MapIconStyle {
   question: string;
   answer: string;
   color: string;
-  icon: IconDefinition;
+  icon: MapIconDefinition;
 }
 
 export interface CalloutMapSchema {
@@ -21,6 +21,6 @@ export interface CalloutMapSchema {
   addressPattern: string;
   addressPatternProp: string;
   geocodeCountries?: string;
-  mapIconQuestion?: string;
-  mapIconStyling?: IconStyles[];
+  mapIconProp?: string;
+  mapIconStyling?: MapIconStyle[];
 }

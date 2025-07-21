@@ -248,12 +248,12 @@
               </AppFormField>
               <AppFormField>
                 <AppSelect
-                  v-model="localData.mapSchema.mapIconQuestion"
+                  v-model="localData.mapSchema.mapIconProp"
                   :label="inputT('mapSchema.mapIconQuestions.label')"
                   :items="mapIconQuestions"
                 />
               </AppFormField>
-              <div v-if="localData.mapSchema.mapIconQuestion">
+              <div v-if="localData.mapSchema.mapIconProp">
                 <AppLabel :label="inputT('mapSchema.mapIconStyling.label')">
                 </AppLabel>
                 <div
@@ -333,7 +333,7 @@
 
 <script lang="ts" setup>
 import { ItemStatus, getCalloutComponents } from '@beabee/beabee-common';
-import type { CalloutMapSchema, IconStyles } from '@beabee/beabee-common';
+import type { CalloutMapSchema, MapIconStyle } from '@beabee/beabee-common';
 import {
   AppButton,
   AppCheckboxGroup,
@@ -515,14 +515,14 @@ function getValues(
 const isPickerOpen = ref<boolean[]>([]);
 
 const mapIconQuestion = computed(() => {
-  return localData.value.mapSchema.mapIconQuestion || '';
+  return localData.value.mapSchema.mapIconProp || '';
 });
 
 // Computed property to manage mapIconStyling as an object
 // where keys are question IDs and values are arrays of IconStyles
 const mapIconStyling = computed({
   get() {
-    const styling: Record<string, IconStyles[]> = {};
+    const styling: Record<string, MapIconStyle[]> = {};
     localData.value.mapSchema.mapIconStyling?.forEach((style) => {
       if (!styling[style.question]) {
         styling[style.question] = [];
@@ -531,14 +531,14 @@ const mapIconStyling = computed({
     });
     return styling;
   },
-  set(newVal: Record<string, IconStyles[]>) {
+  set(newVal: Record<string, MapIconStyle[]>) {
     // Flatten the object back into an array and update localData
     localData.value.mapSchema.mapIconStyling = Object.values(newVal).flat();
   },
 });
 
 watch(
-  () => localData.value.mapSchema.mapIconQuestion,
+  () => localData.value.mapSchema.mapIconProp,
   (newQuestion) => {
     if (!newQuestion) return;
     const values = getValues(newQuestion);
@@ -551,7 +551,7 @@ watch(
     // Initialize mapIconStyling for the new question
     localData.value.mapSchema.mapIconStyling = values.map((value) => {
       const existing = localData.value.mapSchema.mapIconStyling?.find(
-        (styling: IconStyles) =>
+        (styling: MapIconStyle) =>
           styling.answer === value.label && styling.question === newQuestion
       );
       return (

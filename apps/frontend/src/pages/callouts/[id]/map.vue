@@ -46,8 +46,6 @@ meta:
           :cluster-properties="{
             all_responses: ['concat', ['get', 'all_responses']],
             first_response: ['min', ['get', 'first_response']],
-            cluster_color: ['get', 'cluster_color'],
-            icon: ['get', 'icon'],
           }"
         >
           <MglCircleLayer
@@ -81,7 +79,7 @@ meta:
             :layer-id="LAYER_IDS.UNCLUSTERED_POINTS"
             :filter="['!', ['has', 'point_count']]"
             :layout="{
-              'icon-image': ['get', 'cluster_icon'],
+              'icon-image': ['get', 'icon'],
               'icon-size': 1,
             }"
           />
@@ -192,7 +190,7 @@ import {
   type CalloutResponseAnswerAddress,
   type CalloutResponseAnswersSlide,
   type GetCalloutDataWith,
-  type IconStyles,
+  type MapIconStyle,
   isLngLat,
 } from '@beabee/beabee-common';
 import { AppButton } from '@beabee/vue';
@@ -359,7 +357,7 @@ const newResponseAddress = computed(() => {
 });
 
 const mapIconQuestion = computed(() => {
-  return props.callout.responseViewSchema?.map?.mapIconQuestion;
+  return props.callout.responseViewSchema?.map?.mapIconProp;
 });
 
 const mapIconStyling = computed(() => {
@@ -389,7 +387,7 @@ const getMapIconQuestionResponse = (
  */
 function getIconStyling(
   anwsers: CalloutResponseAnswersSlide
-): IconStyles | undefined {
+): MapIconStyle | undefined {
   return mapIconStyling.value.find(
     (s) => s.answer.toLowerCase() === getMapIconQuestionResponse(anwsers)
   );
@@ -401,9 +399,8 @@ const responsesCollecton = computed<MapPointFeatureCollection>(() => {
     type: 'FeatureCollection',
     features: responses.value.map((response) => {
       const { lat, lng } = response.address.geometry.location;
-      const clusterIconName =
-        getIconStyling(response.answers)?.icon.name || 'circle';
-      const clusterColor = getIconStyling(response.answers)?.color || 'black';
+      const iconName = getIconStyling(response.answers)?.icon.name || 'circle';
+      const color = getIconStyling(response.answers)?.color || 'black';
 
       return {
         type: 'Feature',
@@ -411,7 +408,7 @@ const responsesCollecton = computed<MapPointFeatureCollection>(() => {
         properties: {
           all_responses: `<${response.number}>`,
           first_response: response.number,
-          cluster_icon: clusterIconName + '-' + clusterColor,
+          icon: iconName + '-' + color,
         },
       };
     }),

@@ -6,9 +6,9 @@ import {
   CalloutMapSchema,
   CalloutNewsletterSchema,
   CalloutResponseViewSchema,
-  IconDefinition,
-  IconStyles,
   ItemStatus,
+  MapIconDefinition,
+  MapIconStyle,
 } from '@beabee/beabee-common';
 
 import { GetPaginatedQuery } from '@api/dto/BaseDto';
@@ -86,7 +86,7 @@ export class ListCalloutsDto
   showHiddenForAll: boolean = false;
 }
 
-class IconDefinitionDto implements IconDefinition {
+class MapIconDefinitionDto implements MapIconDefinition {
   @IsString()
   prefix!: string;
 
@@ -94,7 +94,7 @@ class IconDefinitionDto implements IconDefinition {
   name!: string;
 }
 
-class IconStylesDto implements IconStyles {
+class MapIconStyleDto implements MapIconStyle {
   @IsString()
   question!: string;
 
@@ -105,8 +105,8 @@ class IconStylesDto implements IconStyles {
   color!: string;
 
   @ValidateNested()
-  @Type(() => IconDefinitionDto)
-  icon!: IconDefinitionDto;
+  @Type(() => MapIconDefinitionDto)
+  icon!: MapIconDefinitionDto;
 }
 
 class CalloutMapSchemaDto implements CalloutMapSchema {
@@ -149,13 +149,13 @@ class CalloutMapSchemaDto implements CalloutMapSchema {
 
   @IsOptional()
   @IsString()
-  mapIconQuestion?: string;
+  mapIconProp?: string;
 
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => IconStylesDto)
-  mapIconStyling?: IconStylesDto[];
+  @Type(() => MapIconStyleDto)
+  mapIconStyling?: MapIconStyleDto[];
 }
 
 class CalloutNewsletterSchemaDto implements CalloutNewsletterSchema {
