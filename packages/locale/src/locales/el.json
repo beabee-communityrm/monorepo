@@ -333,8 +333,8 @@
     "actions": {
       "updateResponse": ""
     },
-    "addAPoint": "Μπορείτε να εισαγάγετε μια τοποθεσία εδώ.",
-    "addLocation": "Μπορείτε να εισαγάγετε μια νέα τοποθεσία εδώ.",
+    "addAPoint": "Πρόσθεσε μια νέα τοποθεσία εδώ",
+    "addLocation": "Πρόσθεσε μια νέα τοποθεσία εδώ",
     "builder": {
       "actions": {
         "addSlide": ""
@@ -687,8 +687,8 @@
     "toContributionPage": "",
     "updateContribution": "",
     "views": {
-      "gallery": "Συλλογή εικόνων / γκαλερί",
-      "map": "χάρτη"
+      "gallery": "Φωτογραφίες",
+      "map": "Χάρτης"
     },
     "youResponded": "",
     "yourResponse": ""
