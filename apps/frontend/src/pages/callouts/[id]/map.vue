@@ -188,6 +188,7 @@ import {
   type CalloutResponseAnswerAddress,
   type CalloutResponseAnswersSlide,
   type GetCalloutDataWith,
+  fetchAllPages,
   isLngLat,
 } from '@beabee/beabee-common';
 import { AppButton } from '@beabee/vue';
@@ -716,10 +717,12 @@ onBeforeMount(async () => {
     throw new Error('Callout does not have a map schema');
   }
 
-  // TODO: pagination
-  responses.value = (
-    await client.callout.listResponsesForMap(props.callout.slug)
-  ).items.filter((r): r is GetCalloutResponseMapDataWithAddress => !!r.address);
+  responses.value = await fetchAllPages(
+    client.callout.listResponsesForMap.bind(client.callout, props.callout.slug),
+    100
+  ).then((items) =>
+    items.filter((r): r is GetCalloutResponseMapDataWithAddress => !!r.address)
+  );
 });
 
 onMounted(async () => {
