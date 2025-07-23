@@ -254,68 +254,14 @@
                 />
               </AppFormField>
               <div v-if="localData.mapSchema.mapIconProp">
-                <AppLabel :label="inputT('mapSchema.mapIconStyling.label')">
-                </AppLabel>
-                <div
-                  v-for="(value, i) in getValues(mapIconQuestion)"
+                <AppLabel :label="inputT('mapSchema.mapIconStyling.label')" />
+                <MapIconPicker
+                  v-for="(value, i) in mapIconValues"
                   :key="i"
-                  class="mb-4"
-                >
-                  <div
-                    class="grid grid-cols-[1fr_auto_auto] items-center gap-2 rounded border border-primary-40 py-2 pl-4"
-                  >
-                    <span>{{ value.label }}</span>
-                    <div class="flex items-center gap-2">
-                      <font-awesome-icon
-                        :icon="[
-                          mapIconStyling[mapIconQuestion][i].icon.prefix,
-                          mapIconStyling[mapIconQuestion][i].icon.name,
-                        ]"
-                        :style="{
-                          color: mapIconStyling[mapIconQuestion][i].color,
-                        }"
-                      />
-                      <AppButton
-                        :icon="solidIcons.faPencil"
-                        :variant="'dangerGhost'"
-                        size="sm"
-                        @click="isPickerOpen[i] = !isPickerOpen[i]"
-                      ></AppButton>
-                    </div>
-                  </div>
-                  <AppModal
-                    v-if="isPickerOpen[i] && localData.mapSchema.mapIconStyling"
-                    :open="isPickerOpen[i]"
-                    :title="inputT('mapSchema.mapIconStylingSetting.title')"
-                    @close="isPickerOpen[i] = false"
-                  >
-                    <div class="space-y-4">
-                      <p class="mb-6 text-body-80">
-                        {{ inputT('mapSchema.mapIconStylingSetting.label') }}
-                        <strong>
-                          {{
-                            mapIconStyling[mapIconQuestion][i].answer
-                          }} </strong
-                        >.
-                      </p>
-                      <AppSubHeading class="text-m"> Color: </AppSubHeading>
-                      <AppColorInput
-                        id="mapIconColor"
-                        v-model="mapIconStyling[mapIconQuestion][i].color"
-                        right-aligned
-                      />
-
-                      <div class="pt-4">
-                        <AppSubHeading class="text-m"> Icon: </AppSubHeading>
-                        <AppIconPicker
-                          :id="'mapIcon' + i"
-                          v-model="mapIconStyling[mapIconQuestion][i].icon"
-                          class="mb-4 mt-2"
-                        />
-                      </div>
-                    </div>
-                  </AppModal>
-                </div>
+                  v-model="localData.mapSchema"
+                  :value="value"
+                  :i="i"
+                />
               </div>
             </AppFormBox>
           </AppScrollSection>
@@ -337,26 +283,20 @@ import type {
   CalloutMapSchema,
 } from '@beabee/beabee-common';
 import {
-  AppButton,
   AppCheckboxGroup,
-  AppColorInput,
   AppFormBox,
   AppFormField,
-  AppIconPicker,
   AppInput,
   AppLabel,
   AppLinkList,
-  AppModal,
   AppScrollNavigation,
   AppScrollSection,
   AppSelect,
-  AppSubHeading,
   AppToggleField,
   type ScrollSection,
 } from '@beabee/vue';
 
-// Download all icons in the package
-import * as solidIcons from '@fortawesome/free-solid-svg-icons';
+import MapIconPicker from '@components/pages/admin/callouts/MapIconPicker.vue';
 import { buckets } from '@utils/callouts';
 import useVuelidate from '@vuelidate/core';
 import { computed, ref, watch } from 'vue';
@@ -480,6 +420,47 @@ const mapIconQuestions = computed(() =>
   )
 );
 
+const mapIconValues = computed(() => {
+  const question = mapIconQuestions.value.find(
+    (q) => q.id === localData.value.mapSchema.mapIconProp
+  );
+  return question ? question.values : [];
+});
+
+watch(
+  () => localData.value.mapSchema.mapIconProp,
+  (newQuestion) => {
+    if (!newQuestion) return;
+
+    // Ensure mapIconStyling exists
+    if (!localData.value.mapSchema.mapIconStyling) {
+      localData.value.mapSchema.mapIconStyling = [];
+    }
+
+    // Initialize mapIconStyling for the new question
+    localData.value.mapSchema.mapIconStyling = mapIconValues.value.map(
+      (value) => {
+        const existing = localData.value.mapSchema.mapIconStyling?.find(
+          (styling: CalloutMapIconStyle) =>
+            styling.answer === value.label && styling.question === newQuestion
+        );
+        return (
+          existing || {
+            question: newQuestion,
+            answer: value.label,
+            color: '#262453',
+            icon: {
+              prefix: 'fas',
+              name: 'circle',
+            },
+          }
+        );
+      }
+    );
+  },
+  { immediate: true }
+);
+
 const mapCenter = computed({
   get: () => localData.value.mapSchema.center.join(', '),
   set: (newValue) => {
@@ -500,73 +481,6 @@ const mapBounds = computed({
     ];
   },
 });
-
-// Get options / values for a selected map icon question
-function getValues(
-  mapIconQuestion: string | undefined
-): { label: string; value: string }[] {
-  const question = mapIconQuestions.value.find((q) => q.id === mapIconQuestion);
-  return question ? question.values : [];
-}
-
-// Have one bool value per answer to open multiple modals
-const isPickerOpen = ref<boolean[]>([]);
-
-const mapIconQuestion = computed(() => {
-  return localData.value.mapSchema.mapIconProp || '';
-});
-
-// Computed property to manage mapIconStyling as an object
-// where keys are question IDs and values are arrays of IconStyles
-const mapIconStyling = computed({
-  get() {
-    const styling: Record<string, CalloutMapIconStyle[]> = {};
-    localData.value.mapSchema.mapIconStyling?.forEach((style) => {
-      if (!styling[style.question]) {
-        styling[style.question] = [];
-      }
-      styling[style.question].push(style);
-    });
-    return styling;
-  },
-  set(newVal: Record<string, CalloutMapIconStyle[]>) {
-    // Flatten the object back into an array and update localData
-    localData.value.mapSchema.mapIconStyling = Object.values(newVal).flat();
-  },
-});
-
-watch(
-  () => localData.value.mapSchema.mapIconProp,
-  (newQuestion) => {
-    if (!newQuestion) return;
-    const values = getValues(newQuestion);
-
-    // Ensure mapIconStyling exists
-    if (!localData.value.mapSchema.mapIconStyling) {
-      localData.value.mapSchema.mapIconStyling = [];
-    }
-
-    // Initialize mapIconStyling for the new question
-    localData.value.mapSchema.mapIconStyling = values.map((value) => {
-      const existing = localData.value.mapSchema.mapIconStyling?.find(
-        (styling: CalloutMapIconStyle) =>
-          styling.answer === value.label && styling.question === newQuestion
-      );
-      return (
-        existing || {
-          question: newQuestion,
-          answer: value.label,
-          color: '#262453',
-          icon: {
-            prefix: 'fas',
-            name: 'circle',
-          },
-        }
-      );
-    });
-  },
-  { immediate: true }
-);
 
 // Update navigation sections when responseViews changes
 watch(

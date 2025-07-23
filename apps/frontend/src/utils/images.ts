@@ -1,4 +1,7 @@
+import { library } from '@beabee/vue/plugins/icons';
+
 import { type IconName, icon } from '@fortawesome/fontawesome-svg-core';
+import { fas } from '@fortawesome/free-solid-svg-icons';
 
 /**
  * Generate a unique ID for an icon image based on its name and color
