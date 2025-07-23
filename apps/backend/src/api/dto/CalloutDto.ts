@@ -3,6 +3,8 @@ import {
   CalloutCaptcha,
   CalloutChannel,
   CalloutData,
+  CalloutMapIconDefinition,
+  CalloutMapIconStyle,
   CalloutMapSchema,
   CalloutNewsletterSchema,
   CalloutResponseViewSchema,
@@ -84,6 +86,29 @@ export class ListCalloutsDto
   showHiddenForAll: boolean = false;
 }
 
+class CalloutMapIconDefinitionDto implements CalloutMapIconDefinition {
+  @IsString()
+  prefix!: string;
+
+  @IsString()
+  name!: string;
+}
+
+class CalloutMapIconStyleDto implements CalloutMapIconStyle {
+  @IsString()
+  question!: string;
+
+  @IsString()
+  answer!: string;
+
+  @IsString()
+  color!: string;
+
+  @ValidateNested()
+  @Type(() => CalloutMapIconDefinitionDto)
+  icon!: CalloutMapIconDefinitionDto;
+}
+
 class CalloutMapSchemaDto implements CalloutMapSchema {
   @IsUrl()
   style!: string;
@@ -121,6 +146,16 @@ class CalloutMapSchemaDto implements CalloutMapSchema {
   @IsOptional()
   @IsString()
   geocodeCountries?: string;
+
+  @IsOptional()
+  @IsString()
+  mapIconProp?: string;
+
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CalloutMapIconStyleDto)
+  mapIconStyling?: CalloutMapIconStyleDto[];
 }
 
 class CalloutNewsletterSchemaDto implements CalloutNewsletterSchema {
