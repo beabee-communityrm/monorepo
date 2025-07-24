@@ -813,7 +813,15 @@
     },
     "contact": "Contact ID",
     "editorTag": "Editor",
-    "title": "Callout reviewers"
+    "title": "Callout reviewers",
+    "search": {
+      "placeholder": "Search Email Address...",
+      "error":{
+        "title": "Contact Not Found",
+        "message": "Please make sure that the email exists and has not typos."
+      },
+      "successMessage": "Email Valid"
+    }
   },
   "calloutThanksPage": {
     "oneResponseWarning": "Please note that this callout only allows one response per person. If you have already contributed, additional responses will not be recorded."

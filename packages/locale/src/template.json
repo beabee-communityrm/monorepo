@@ -813,6 +813,14 @@
     },
     "contact": "",
     "editorTag": "",
+    "search": {
+      "error": {
+        "message": "",
+        "title": ""
+      },
+      "placeholder": "",
+      "successMessage": ""
+    },
     "title": ""
   },
   "calloutThanksPage": {
