@@ -3,7 +3,7 @@
     v-model="email"
     :placeholder="t('calloutReviewerManager.search.placeholder')"
     :disabled="props.disabled"
-    @update:model-value="handleSearch"
+    @update:model-value="handleSearch('email', $event)"
   />
   <AppNotification
     v-if="!emailExists && email.length > 0"
