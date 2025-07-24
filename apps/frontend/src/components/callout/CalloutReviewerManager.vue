@@ -29,11 +29,10 @@
 
       <template #form="{ data, mode }">
         <div class="mb-4">
-          <AppInput
-            v-model="data.contactId"
-            :label="t('calloutReviewerManager.contact')"
+          <CalloutReviewerSearch
+            v-model:contact-id="data.contactId"
+            :reviewers="reviewers"
             :disabled="mode === 'update'"
-            required
           />
         </div>
         <AppCheckbox
@@ -47,22 +46,18 @@
 </template>
 
 <script lang="ts" setup>
-import type {
-  CreateCalloutReviewerData,
-  GetCalloutReviewerData,
-} from '@beabee/beabee-common';
 import {
-  AppCheckbox,
-  AppHeading,
-  AppInput,
-  AppTag,
-  ItemManager,
-} from '@beabee/vue';
+  type CreateCalloutReviewerData,
+  type GetCalloutReviewerData,
+} from '@beabee/beabee-common';
+import { AppCheckbox, AppHeading, AppTag, ItemManager } from '@beabee/vue';
 
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { client } from '@utils/api';
 import { reactive, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import CalloutReviewerSearch from './CalloutReviewerSearch.vue';
 
 const props = defineProps<{
   calloutId: string;
