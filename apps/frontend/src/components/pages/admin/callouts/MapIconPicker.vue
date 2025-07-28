@@ -78,7 +78,6 @@ const props = defineProps<{
   answer: { label: string; value: string };
 }>();
 
-// Have one bool value per answer to open multiple modals
 const isPickerOpen = ref<boolean>(false);
 
 const mapIconProp = computed(() => {
