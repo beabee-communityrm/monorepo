@@ -91,22 +91,4 @@ const mapIconStyling = computed(() => {
   ];
 });
 
-// // Computed property to manage mapIconStyling as an object
-// // where keys are question IDs and values are arrays of IconStyles
-// const mapIconStyling = computed({
-//   get() {
-//     const styling: Record<string, CalloutMapIconStyle[]> = {};
-//     mapSchema.value.mapIconStyling?.forEach((style) => {
-//       if (!styling[style.question]) {
-//         styling[style.question] = [];
-//       }
-//       styling[style.question].push(style);
-//     });
-//     return styling;
-//   },
-//   set(newVal: Record<string, CalloutMapIconStyle[]>) {
-//     // Flatten the object back into an array and update localData
-//     mapSchema.value.mapIconStyling = Object.values(newVal).flat();
-//   },
-// });
 </script>
