@@ -29,7 +29,7 @@
 </template>
 
 <script lang="ts" setup>
-import { type CalloutMapIconDefinition } from '@beabee/beabee-common';
+import { type CalloutMapSchemaIconStylingAnswerIconDefinition } from '@beabee/beabee-common';
 import { IconSearchService, formatIconForDisplay } from '@beabee/fontawesome';
 
 import useVuelidate from '@vuelidate/core';
@@ -42,7 +42,7 @@ export interface AppIconPickerProps {
   /** The id of the color input */
   id: string;
   /** The model value of the color input */
-  modelValue: CalloutMapIconDefinition;
+  modelValue: CalloutMapSchemaIconStylingAnswerIconDefinition;
   /** The  limit of icons to display */
   limit?: number;
   /** The styles of icons to display */

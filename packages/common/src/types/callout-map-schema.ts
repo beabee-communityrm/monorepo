@@ -1,14 +1,4 @@
-export interface CalloutMapIconDefinition {
-  prefix: string;
-  name: string;
-}
-
-export interface CalloutMapIconStyle {
-  question: string;
-  answer: string;
-  color: string;
-  icon: CalloutMapIconDefinition;
-}
+import { CalloutMapSchemaIconStyling } from './callout-map-schema-icon-styling';
 
 export interface CalloutMapSchema {
   style: string;
@@ -22,5 +12,5 @@ export interface CalloutMapSchema {
   addressPatternProp: string;
   geocodeCountries?: string;
   mapIconProp?: string;
-  mapIconStyling?: CalloutMapIconStyle[];
+  mapIconStyling?: CalloutMapSchemaIconStyling;
 }

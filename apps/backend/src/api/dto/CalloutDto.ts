@@ -3,9 +3,8 @@ import {
   CalloutCaptcha,
   CalloutChannel,
   CalloutData,
-  CalloutMapIconDefinition,
-  CalloutMapIconStyle,
   CalloutMapSchema,
+  CalloutMapSchemaIconStyling,
   CalloutNewsletterSchema,
   CalloutResponseViewSchema,
   ItemStatus,
@@ -35,6 +34,7 @@ import {
   IsEnum,
   IsIn,
   IsNumber,
+  IsObject,
   IsOptional,
   IsString,
   Max,
@@ -86,29 +86,6 @@ export class ListCalloutsDto
   showHiddenForAll: boolean = false;
 }
 
-class CalloutMapIconDefinitionDto implements CalloutMapIconDefinition {
-  @IsString()
-  prefix!: string;
-
-  @IsString()
-  name!: string;
-}
-
-class CalloutMapIconStyleDto implements CalloutMapIconStyle {
-  @IsString()
-  question!: string;
-
-  @IsString()
-  answer!: string;
-
-  @IsString()
-  color!: string;
-
-  @ValidateNested()
-  @Type(() => CalloutMapIconDefinitionDto)
-  icon!: CalloutMapIconDefinitionDto;
-}
-
 class CalloutMapSchemaDto implements CalloutMapSchema {
   @IsUrl()
   style!: string;
@@ -152,10 +129,8 @@ class CalloutMapSchemaDto implements CalloutMapSchema {
   mapIconProp?: string;
 
   @IsOptional()
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => CalloutMapIconStyleDto)
-  mapIconStyling?: CalloutMapIconStyleDto[];
+  @IsObject()
+  mapIconStyling?: CalloutMapSchemaIconStyling;
 }
 
 class CalloutNewsletterSchemaDto implements CalloutNewsletterSchema {

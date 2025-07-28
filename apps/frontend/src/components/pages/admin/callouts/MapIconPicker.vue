@@ -2,15 +2,15 @@
   <div
     class="mb-2 grid grid-cols-[1fr_auto_auto] items-center gap-2 rounded border border-primary-40 py-2 pl-4"
   >
-    <span>{{ props.value.label }}</span>
+    <span>{{ props.answer.label }}</span>
     <div class="flex items-center gap-2">
       <font-awesome-icon
         :icon="[
-          mapIconStyling[mapIconQuestion][i].icon.prefix,
-          mapIconStyling[mapIconQuestion][i].icon.name,
+          mapIconStyling?.icon.prefix || 'fas',
+          mapIconStyling?.icon.name || 'circle',
         ]"
         :style="{
-          color: mapIconStyling[mapIconQuestion][i].color,
+          color: mapIconStyling?.color || 'black',
         }"
       />
       <AppButton
@@ -30,20 +30,24 @@
     <div class="space-y-4">
       <p class="mb-6 text-body-80">
         {{ inputT('mapSchema.mapIconStylingSetting.label') }}
-        <strong> {{ mapIconStyling[mapIconQuestion][i].answer }} </strong>.
+        <strong> {{ props.answer.label }} </strong>.
       </p>
       <AppSubHeading class="text-m"> Color: </AppSubHeading>
       <AppColorInput
         id="mapIconColor"
-        v-model="mapIconStyling[mapIconQuestion][i].color"
+        v-model="
+          mapSchema.mapIconStyling[mapIconProp][props.answer.value].color
+        "
         right-aligned
       />
 
       <div class="pt-4">
         <AppSubHeading class="text-m"> Icon: </AppSubHeading>
         <AppIconPicker
-          :id="'mapIcon' + i"
-          v-model="mapIconStyling[mapIconQuestion][i].icon"
+          :id="'mapIcon-' + props.answer.value"
+          v-model="
+            mapSchema.mapIconStyling[mapIconProp][props.answer.value].icon
+          "
           class="mb-4 mt-2"
         />
       </div>
@@ -52,10 +56,7 @@
 </template>
 
 <script lang="ts" setup>
-import type {
-  CalloutMapIconStyle,
-  CalloutMapSchema,
-} from '@beabee/beabee-common';
+import type { CalloutMapSchema } from '@beabee/beabee-common';
 import {
   AppButton,
   AppColorInput,
@@ -74,33 +75,38 @@ const inputT = (key: string) =>
 
 const mapSchema = defineModel<CalloutMapSchema>({ required: true });
 const props = defineProps<{
-  value: { label: string; value: string };
-  i: number;
+  answer: { label: string; value: string };
 }>();
 
 // Have one bool value per answer to open multiple modals
 const isPickerOpen = ref<boolean>(false);
 
-const mapIconQuestion = computed(() => {
+const mapIconProp = computed(() => {
   return mapSchema.value.mapIconProp || '';
 });
 
-// Computed property to manage mapIconStyling as an object
-// where keys are question IDs and values are arrays of IconStyles
-const mapIconStyling = computed({
-  get() {
-    const styling: Record<string, CalloutMapIconStyle[]> = {};
-    mapSchema.value.mapIconStyling?.forEach((style) => {
-      if (!styling[style.question]) {
-        styling[style.question] = [];
-      }
-      styling[style.question].push(style);
-    });
-    return styling;
-  },
-  set(newVal: Record<string, CalloutMapIconStyle[]>) {
-    // Flatten the object back into an array and update localData
-    mapSchema.value.mapIconStyling = Object.values(newVal).flat();
-  },
+const mapIconStyling = computed(() => {
+  return mapSchema.value.mapIconStyling?.[mapIconProp.value][
+    props.answer.value
+  ];
 });
+
+// // Computed property to manage mapIconStyling as an object
+// // where keys are question IDs and values are arrays of IconStyles
+// const mapIconStyling = computed({
+//   get() {
+//     const styling: Record<string, CalloutMapIconStyle[]> = {};
+//     mapSchema.value.mapIconStyling?.forEach((style) => {
+//       if (!styling[style.question]) {
+//         styling[style.question] = [];
+//       }
+//       styling[style.question].push(style);
+//     });
+//     return styling;
+//   },
+//   set(newVal: Record<string, CalloutMapIconStyle[]>) {
+//     // Flatten the object back into an array and update localData
+//     mapSchema.value.mapIconStyling = Object.values(newVal).flat();
+//   },
+// });
 </script>

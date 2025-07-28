@@ -253,14 +253,13 @@
                   :items="mapIconQuestions"
                 />
               </AppFormField>
-              <div v-if="localData.mapSchema.mapIconProp">
+              <div v-if="localData.mapSchema.mapIconStyling">
                 <AppLabel :label="inputT('mapSchema.mapIconStyling.label')" />
                 <MapIconPicker
                   v-for="(value, i) in mapIconValues"
                   :key="i"
                   v-model="localData.mapSchema"
-                  :value="value"
-                  :i="i"
+                  :answer="value"
                 />
               </div>
             </AppFormBox>
@@ -278,10 +277,7 @@
 
 <script lang="ts" setup>
 import { ItemStatus, getCalloutComponents } from '@beabee/beabee-common';
-import type {
-  CalloutMapIconStyle,
-  CalloutMapSchema,
-} from '@beabee/beabee-common';
+import type { CalloutMapSchema } from '@beabee/beabee-common';
 import {
   AppCheckboxGroup,
   AppFormBox,
@@ -432,31 +428,20 @@ watch(
   (newQuestion) => {
     if (!newQuestion) return;
 
-    // Ensure mapIconStyling exists
-    if (!localData.value.mapSchema.mapIconStyling) {
-      localData.value.mapSchema.mapIconStyling = [];
-    }
+    const mapSchema = localData.value.mapSchema;
 
-    // Initialize mapIconStyling for the new question
-    localData.value.mapSchema.mapIconStyling = mapIconValues.value.map(
-      (value) => {
-        const existing = localData.value.mapSchema.mapIconStyling?.find(
-          (styling: CalloutMapIconStyle) =>
-            styling.answer === value.label && styling.question === newQuestion
-        );
-        return (
-          existing || {
-            question: newQuestion,
-            answer: value.label,
-            color: '#262453',
-            icon: {
-              prefix: 'fas',
-              name: 'circle',
+    mapIconValues.value.forEach(({ value }) => {
+      if (!mapSchema.mapIconStyling?.[newQuestion][value]) {
+        mapSchema.mapIconStyling = {
+          [newQuestion]: {
+            [value]: {
+              color: '#262453',
+              icon: { prefix: 'fas', name: 'circle' },
             },
-          }
-        );
+          },
+        };
       }
-    );
+    });
   },
   { immediate: true }
 );

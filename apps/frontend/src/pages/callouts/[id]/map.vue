@@ -186,7 +186,7 @@ meta:
 
 <script lang="ts" setup>
 import {
-  type CalloutMapIconStyle,
+  type CalloutMapSchemaIconStylingAnswerIcon,
   type CalloutResponseAnswerAddress,
   type CalloutResponseAnswersSlide,
   type GetCalloutDataWith,
@@ -351,12 +351,14 @@ const newResponseAddress = computed(() => {
   return undefined;
 });
 
-const mapIconQuestion = computed(() => {
-  return props.callout.responseViewSchema?.map?.mapIconProp;
+const mapIconProp = computed(() => {
+  return props.callout.responseViewSchema?.map?.mapIconProp || '';
 });
 
 const mapIconStyling = computed(() => {
-  return props.callout.responseViewSchema?.map?.mapIconStyling ?? [];
+  return props.callout.responseViewSchema?.map?.mapIconStyling?.[
+    mapIconProp.value
+  ];
 });
 
 /**
@@ -367,15 +369,13 @@ const mapIconStyling = computed(() => {
  */
 function getIconStyling(
   answers: CalloutResponseAnswersSlide
-): CalloutMapIconStyle | undefined {
-  const key = mapIconQuestion.value;
+): CalloutMapSchemaIconStylingAnswerIcon | undefined {
+  const key = mapIconProp.value;
   if (!key) return undefined;
   const answer = getByPath(answers, key);
   // We do not allow multiple answers for the map icon prop, so we can safely assume it's a string
   if (!answer || typeof answer !== 'string') return undefined;
-  return mapIconStyling.value.find(
-    (s) => s.answer.toLowerCase() === answer.toLowerCase()
-  );
+  return mapIconStyling.value?.[answer];
 }
 
 // A GeoJSON FeatureCollection of all the responses
@@ -714,19 +714,17 @@ function handleLoad({ map: mapInstance }: { map: Map }) {
   }
 
   // Dynamically collect unique icon names and colors, always including defaults
-  const iconNames = Array.from(
-    new Set([
-      ...mapIconStyling.value.map(({ icon }) => icon.name),
-      'circle', // Default icon
-    ])
-  );
-  const iconColors = Array.from(
-    new Set([
-      ...mapIconStyling.value.map(({ color }) => color),
-      'black', // Default color
-    ])
+  const iconNames = new Set<string>(
+    Object.keys(mapIconStyling.value || {}).map(
+      (key) => mapIconStyling.value?.[key]?.icon.name || 'circle'
+    )
   );
 
+  const iconColors = new Set<string>(
+    Object.keys(mapIconStyling.value || {}).map(
+      (key) => mapIconStyling.value?.[key]?.color || 'black'
+    )
+  );
   for (const iconName of iconNames) {
     for (const color of iconColors) {
       const svgString = getImageString(iconName, color);
