@@ -90,5 +90,4 @@ const mapIconStyling = computed(() => {
     props.answer.value
   ];
 });
-
 </script>
