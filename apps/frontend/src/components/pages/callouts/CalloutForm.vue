@@ -258,7 +258,7 @@ function handleNextSlide() {
 }
 
 // This function mimics the functionality of the next slide navigation and
-// collects all visible slides based on the current slide and its navigation.
+// collects all visible slides based on the component navigation elements.
 function getAllVisibleSlides(): GetCalloutSlideSchema[] {
   const visibleSlides: GetCalloutSlideSchema[] = [];
   const visited = new Set<string>();
