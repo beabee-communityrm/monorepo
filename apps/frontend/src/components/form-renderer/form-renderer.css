@@ -337,3 +337,7 @@
     @apply inline;
   }
 }
+
+.callout-show-response-side-panel .formio-component-url {
+  @apply inline-block max-w-full truncate;
+}

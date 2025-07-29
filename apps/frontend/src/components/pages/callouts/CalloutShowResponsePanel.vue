@@ -1,5 +1,9 @@
 <template>
-  <CalloutSidePanel :show="!!currentResponse" @close="$emit('close')">
+  <CalloutSidePanel
+    :show="!!currentResponse"
+    class="callout-show-response-side-panel"
+    @close="$emit('close')"
+  >
     <div v-if="responses.length > 1" class="mb-4 flex items-center gap-4">
       <AppButtonGroup>
         <AppButton
