@@ -185,6 +185,54 @@ const rules = computed(() => ({
 
 const validation = useVuelidate(rules, { captchaToken });
 
+function getNextSlideId(slide: GetCalloutSlideSchema, slideNo: number): string {
+  let nextSlideId;
+
+  // If there is a decision component check if the user has selected a value
+  const decisionComponent = getDecisionComponent(slide.components);
+  if (decisionComponent) {
+    const answers = answersProxy.value[slide.id];
+    const value = answers
+      ? answers[decisionComponent.key as keyof typeof answers]
+      : undefined;
+
+    nextSlideId = decisionComponent.values.find(
+      (v) => v.value === value
+    )?.nextSlideId;
+  }
+
+  // Otherwise use the next slide ID from the navigation
+  if (!nextSlideId) {
+    nextSlideId = slide.navigation.nextSlideId || slides.value[slideNo + 1].id;
+  }
+  return nextSlideId;
+}
+
+// This function mimics the functionality of the next slide navigation and
+// collects all visible slides based on the component navigation elements.
+function getAllVisibleSlides(): GetCalloutSlideSchema[] {
+  const visibleSlides: GetCalloutSlideSchema[] = [];
+  const visited = new Set<string>();
+  let i = 0;
+
+  while (i < slides.value.length) {
+    const slide = slides.value[i];
+    if (visited.has(slide.id)) break; // Prevent cycles
+    visibleSlides.push(slide);
+    visited.add(slide.id);
+
+    if (i === slides.value.length - 1) break; // Last slide
+
+    const nextSlideId = getNextSlideId(slide, i);
+    const nextIndex = slides.value.findIndex((s) => s.id === nextSlideId);
+
+    if (nextIndex === -1 || nextIndex === i) break; // No next slide or stuck
+    i = nextIndex;
+  }
+
+  return visibleSlides;
+}
+
 async function handleSubmit() {
   if (!props.callout) return; // Can't submit without a callout being loaded
 
@@ -226,60 +274,12 @@ async function handleSubmit() {
   }
 }
 
-function getNextSlideId(slide: GetCalloutSlideSchema, slideNo: number): string {
-  let nextSlideId;
-
-  // If there is a decision component check if the user has selected a value
-  const decisionComponent = getDecisionComponent(slide.components);
-  if (decisionComponent) {
-    const answers = answersProxy.value[slide.id];
-    const value = answers
-      ? answers[decisionComponent.key as keyof typeof answers]
-      : undefined;
-
-    nextSlideId = decisionComponent.values.find(
-      (v) => v.value === value
-    )?.nextSlideId;
-  }
-
-  // Otherwise use the next slide ID from the navigation
-  if (!nextSlideId) {
-    nextSlideId = slide.navigation.nextSlideId || slides.value[slideNo + 1].id;
-  }
-  return nextSlideId;
-}
-
 function handleNextSlide() {
   const nextSlideId = getNextSlideId(currentSlide.value, currentSlideNo.value);
 
   slideIds.value.unshift(nextSlideId);
 
   formEl.value?.scrollIntoView();
-}
-
-// This function mimics the functionality of the next slide navigation and
-// collects all visible slides based on the component navigation elements.
-function getAllVisibleSlides(): GetCalloutSlideSchema[] {
-  const visibleSlides: GetCalloutSlideSchema[] = [];
-  const visited = new Set<string>();
-  let i = 0;
-
-  while (i < slides.value.length) {
-    const slide = slides.value[i];
-    if (visited.has(slide.id)) break; // Prevent cycles
-    visibleSlides.push(slide);
-    visited.add(slide.id);
-
-    if (i === slides.value.length - 1) break; // Last slide
-
-    const nextSlideId = getNextSlideId(slide, i);
-    const nextIndex = slides.value.findIndex((s) => s.id === nextSlideId);
-
-    if (nextIndex === -1 || nextIndex === i) break; // No next slide or stuck
-    i = nextIndex;
-  }
-
-  return visibleSlides;
 }
 
 function handlePrevSlide() {
