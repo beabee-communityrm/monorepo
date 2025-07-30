@@ -1201,7 +1201,11 @@
     "saveChanges": "Сохранить изменения",
     "saved": "Изменения сохранены",
     "unsavedChanges": "Есть несохранённые изменения",
-    "updated": ""
+    "updated": "",
+    "errorsFormio": {
+      "minLength": "",
+      "maxLength": ""
+    }
   },
   "formRenderer": {
     "components": {
