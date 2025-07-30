@@ -135,6 +135,14 @@ class CalloutMapSchemaDto implements CalloutMapSchema {
   mapIconStyling?: MapIconStylingSchemaDto[];
 }
 
+class IconSchemaDto implements IconSchema {
+  @IsString()
+  prefix!: string;
+
+  @IsString()
+  name!: string;
+}
+
 class MapIconStylingSchemaDto implements MapIconStylingSchema {
   @IsString()
   answer!: string;
@@ -146,14 +154,6 @@ class MapIconStylingSchemaDto implements MapIconStylingSchema {
   @ValidateNested({ each: true })
   @Type(() => IconSchemaDto)
   icon!: IconSchemaDto;
-}
-
-class IconSchemaDto implements IconSchema {
-  @IsString()
-  prefix!: string;
-
-  @IsString()
-  name!: string;
 }
 
 class CalloutNewsletterSchemaDto implements CalloutNewsletterSchema {
