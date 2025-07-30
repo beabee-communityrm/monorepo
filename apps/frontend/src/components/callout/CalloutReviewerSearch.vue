@@ -9,6 +9,7 @@
     v-if="!emailExists && email.length > 0"
     :title="t('calloutReviewerManager.search.error.title')"
     variant="error"
+    class="mt-4"
   >
     <p>{{ t('calloutReviewerManager.search.error.message') }}</p>
   </AppNotification>
@@ -16,6 +17,7 @@
     v-if="emailExists && email.length > 0"
     :title="t('calloutReviewerManager.search.successMessage')"
     variant="success"
+    class="mt-4"
   >
   </AppNotification>
 </template>
@@ -31,7 +33,7 @@ import { AppNotification, AppSearchInput } from '@beabee/vue';
 import { client } from '@utils/api';
 import useVuelidate from '@vuelidate/core';
 import { not } from '@vuelidate/validators';
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -75,8 +77,6 @@ onMounted(() => {
   }
 });
 
-const emit = defineEmits(['update:validation']);
-
 const rules = {
   v: {
     email: () => emailExists.value,
@@ -84,9 +84,5 @@ const rules = {
   },
 };
 
-const validation = useVuelidate(rules, { v: emailExists });
-
-watch(validation, (newState) => {
-  emit('update:validation', !newState.$invalid);
-});
+useVuelidate(rules, { v: emailExists });
 </script>

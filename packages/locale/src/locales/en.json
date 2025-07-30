@@ -816,11 +816,11 @@
     "title": "Callout reviewers",
     "search": {
       "placeholder": "Search Email Address...",
-      "error":{
+      "error": {
         "title": "Contact Not Found",
-        "message": "Please make sure that the email exists and has no typos."
+        "message": "Please ensure that the email address exists and is free of typos."
       },
-      "successMessage": "Email Valid"
+      "successMessage": "Email Is Valid"
     }
   },
   "calloutThanksPage": {
