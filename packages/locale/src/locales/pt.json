@@ -811,7 +811,9 @@
       "title": ""
     },
     "contact": "",
-    "title": ""
+    "title": "",
+    "canEdit": "",
+    "editorTag": ""
   },
   "calloutThanksPage": {
     "oneResponseWarning": "Por favor, note que este aviso permite apenas uma resposta por pessoa. Se você já contribuiu, respostas adicionais não serão registradas."
