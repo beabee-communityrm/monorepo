@@ -188,9 +188,9 @@ import {
   type CalloutResponseAnswerAddress,
   type CalloutResponseAnswersSlide,
   type GetCalloutDataWith,
-  fetchAllPages,
   isLngLat,
 } from '@beabee/beabee-common';
+import { fetchAllPages } from '@beabee/client';
 import { AppButton } from '@beabee/vue';
 
 import CalloutAddResponsePanel from '@components/pages/callouts/CalloutAddResponsePanel.vue';

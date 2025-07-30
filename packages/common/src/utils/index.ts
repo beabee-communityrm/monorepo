@@ -7,4 +7,3 @@ export * from './rules.js';
 export * from './slug.js';
 export * from './url.js';
 export * from './validations.js';
-export * from './pagination.js';

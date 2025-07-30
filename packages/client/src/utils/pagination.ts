@@ -1,4 +1,4 @@
-import { Paginated } from '../types';
+import { Paginated } from '@beabee/beabee-common';
 
 /**
  * Fetches paginated data from an API endpoint.
