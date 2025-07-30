@@ -13,7 +13,7 @@
       v-slot="{ item }"
       :items="tagItems"
       :selected-item-ids="selectedTags"
-      :disabled="!selectable"
+      :disabled="disableTags"
       @click="handleToggle"
     >
       <font-awesome-icon class="mr-2" :icon="faTag" />{{ item.label }}
@@ -41,7 +41,7 @@ defineProps<{
   selectedTags: string[];
   manageUrl: string;
   withText?: boolean;
-  selectable?: boolean;
+  disableTags?: boolean;
 }>();
 
 const { t } = useI18n();

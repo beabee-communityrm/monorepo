@@ -2,6 +2,7 @@
 name: adminCalloutEdit
 meta:
   pageTitle: menu.callouts
+  role: admin
   layout: FlexibleDashboard
 </route>
 

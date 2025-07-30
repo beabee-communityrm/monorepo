@@ -28,7 +28,4 @@ export class CalloutReviewer {
 
   @CreateDateColumn()
   date!: Date;
-
-  @Column()
-  canEdit!: boolean;
 }

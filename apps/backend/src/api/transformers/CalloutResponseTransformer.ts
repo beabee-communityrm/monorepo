@@ -1,4 +1,5 @@
-import { GetCalloutResponseWith, Rule } from '@beabee/beabee-common';
+import { GetCalloutResponseWith } from '@beabee/beabee-common';
+import { RuleGroup } from '@beabee/beabee-common';
 import { createQueryBuilder, getRepository } from '@beabee/core/database';
 import { NotFoundError } from '@beabee/core/errors';
 import {
@@ -26,7 +27,6 @@ import ContactTransformer, {
   loadContactRoles,
 } from '@api/transformers/ContactTransformer';
 import { getReviewerRules } from '@api/utils';
-import { TransformerOperation } from '@type/transformer-operation';
 import { TransformPlainToInstance } from 'class-transformer';
 import { SelectQueryBuilder } from 'typeorm';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity.js';
@@ -85,22 +85,21 @@ export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
   protected async getNonAdminAuthRules(
     auth: AuthInfo,
     query: GetCalloutResponseOptsDto
-  ): Promise<Rule[]> {
-    const reviewerRules = await getReviewerRules(
-      auth.contact,
-      'calloutId',
-      false
-    );
+  ): Promise<RuleGroup> {
+    const reviewerRules = await getReviewerRules(auth.contact, 'calloutId');
 
     // This is a hacky way to pass the reviewer status to modifyQueryBuilder
     query.isReviewer = reviewerRules.length > 0;
 
-    return [
-      // User's can always see their own responses
-      { field: 'contact', operator: 'equal', value: ['me'] },
-      // And any responses for callouts they are reviewers for
-      ...reviewerRules,
-    ];
+    return {
+      condition: 'OR',
+      rules: [
+        // User's can always see their own responses
+        { field: 'contact', operator: 'equal', value: ['me'] },
+        // And any responses for callouts they are reviewers for
+        ...reviewerRules,
+      ],
+    };
   }
 
   protected modifyQueryBuilder(

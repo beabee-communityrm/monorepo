@@ -12,8 +12,8 @@
             reviewerName: reviewer.contact.displayName,
           })
       "
+      no-update
       @add="handleAddReviewer"
-      @update="handleUpdateReviewer"
       @delete="handleDeleteReviewer"
     >
       <template #view="{ item }">
@@ -22,47 +22,33 @@
             item.contact.displayName
           }}
         </router-link>
-        <AppTag v-if="item.canEdit" tag="Editor" class="ml-2">
-          {{ t('calloutReviewerManager.editorTag') }}
-        </AppTag>
       </template>
 
-      <template #form="{ data, mode }">
+      <template #form="{ data }">
         <div class="mb-4">
           <AppInput
             v-model="data.contactId"
             :label="t('calloutReviewerManager.contact')"
-            :disabled="mode === 'update'"
             required
           />
         </div>
-        <AppCheckbox
-          v-model="data.canEdit"
-          :label="t('calloutReviewerManager.canEdit')"
-          class="mb-4"
-        />
       </template>
     </ItemManager>
   </div>
 </template>
 
 <script lang="ts" setup>
-import type {
-  CreateCalloutReviewerData,
-  GetCalloutReviewerData,
-} from '@beabee/beabee-common';
-import {
-  AppCheckbox,
-  AppHeading,
-  AppInput,
-  AppTag,
-  ItemManager,
-} from '@beabee/vue';
+import type { GetCalloutReviewerData } from '@beabee/beabee-common';
+import { AppHeading, AppInput, ItemManager } from '@beabee/vue';
 
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { client } from '@utils/api';
 import { reactive, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+interface CalloutReviewerFormData {
+  contactId: string;
+}
 
 const props = defineProps<{
   calloutId: string;
@@ -72,38 +58,25 @@ const { t } = useI18n();
 
 const reviewers = ref<GetCalloutReviewerData[]>([]);
 
-async function reset() {
+async function handleAddReviewer(data: CalloutReviewerFormData) {
+  await client.callout.reviewer.add(props.calloutId, data.contactId);
   reviewers.value = await client.callout.reviewer.list(props.calloutId);
-}
-
-async function handleAddReviewer(data: CreateCalloutReviewerData) {
-  await client.callout.reviewer.add(props.calloutId, data);
-  await reset();
-}
-
-async function handleUpdateReviewer(
-  reviewer: GetCalloutReviewerData,
-  data: CreateCalloutReviewerData
-) {
-  await client.callout.reviewer.update(props.calloutId, reviewer.id, {
-    canEdit: data.canEdit,
-  });
-  await reset();
 }
 
 async function handleDeleteReviewer(reviewer: GetCalloutReviewerData) {
   await client.callout.reviewer.delete(props.calloutId, reviewer.id);
-  await reset();
+  reviewers.value = await client.callout.reviewer.list(props.calloutId);
 }
 
 function reviewerToFormData(
   reviewer?: GetCalloutReviewerData
-): CreateCalloutReviewerData {
+): CalloutReviewerFormData {
   return reactive({
     contactId: reviewer?.contact.id || '',
-    canEdit: reviewer?.canEdit || false,
   });
 }
 
-watchEffect(reset);
+watchEffect(async () => {
+  reviewers.value = await client.callout.reviewer.list(props.calloutId);
+});
 </script>

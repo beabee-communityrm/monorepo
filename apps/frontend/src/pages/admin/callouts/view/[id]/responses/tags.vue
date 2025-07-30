@@ -13,7 +13,7 @@ meta:
         type="response"
       />
     </template>
-    <template v-if="canAdmin" #col2>
+    <template #col2>
       <CalloutReviewerManager :callout-id="callout.id" />
     </template>
   </App2ColGrid>
@@ -26,7 +26,6 @@ import { App2ColGrid } from '@beabee/vue';
 import CalloutReviewerManager from '@components/callout/CalloutReviewerManager.vue';
 import TagManager from '@components/tag/TagManager.vue';
 import { addBreadcrumb } from '@store/breadcrumb';
-import { canAdmin } from '@store/currentUser';
 import { client } from '@utils/api';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';

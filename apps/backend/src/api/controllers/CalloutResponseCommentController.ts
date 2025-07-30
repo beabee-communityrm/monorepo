@@ -35,7 +35,7 @@ export class CalloutResponseCommentController {
       throw new BadRequestError('Authentication with contact required');
     }
 
-    return await CalloutResponseCommentTransformer.createOne(auth, {
+    return await CalloutResponseCommentTransformer.create(auth, {
       text: data.text,
       contactId: auth.contact.id,
       responseId: data.responseId,
