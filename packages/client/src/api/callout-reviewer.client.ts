@@ -1,10 +1,4 @@
-import type {
-  CreateCalloutReviewerData,
-  GetCalloutReviewerData,
-  PaginatedQuery,
-  Serial,
-  UpdateCalloutReviewerData,
-} from '@beabee/beabee-common';
+import type { GetCalloutReviewerData, Serial } from '@beabee/beabee-common';
 
 import type { BaseClientOptions } from '../types/index.js';
 import { cleanUrl } from '../utils/index.js';
@@ -39,13 +33,9 @@ export class CalloutReviewerClient extends BaseClient {
    * @param calloutId The ID or slug of the callout
    * @returns List of reviewers
    */
-  async list(
-    calloutId: string,
-    query?: PaginatedQuery
-  ): Promise<GetCalloutReviewerData[]> {
+  async list(calloutId: string): Promise<GetCalloutReviewerData[]> {
     const { data } = await this.fetch.get<Serial<GetCalloutReviewerData[]>>(
-      `/${calloutId}/reviewers`,
-      query
+      `/${calloutId}/reviewers`
     );
     return data.map((reviewer) => this.deserialize(reviewer));
   }
@@ -55,25 +45,8 @@ export class CalloutReviewerClient extends BaseClient {
    * @param calloutId The ID or slug of the callout
    * @param contactId The ID of the contact to add as reviewer
    */
-  async add(
-    calloutId: string,
-    newData: CreateCalloutReviewerData
-  ): Promise<void> {
-    await this.fetch.post(`/${calloutId}/reviewers`, newData);
-  }
-
-  /**
-   * Update a reviewer's details
-   * @param calloutId The ID or slug of the callout
-   * @param reviewerId The ID of the reviewer to update
-   * @param data The updated reviewer data
-   */
-  async update(
-    calloutId: string,
-    reviewerId: string,
-    data: UpdateCalloutReviewerData
-  ): Promise<void> {
-    await this.fetch.patch(`/${calloutId}/reviewers/${reviewerId}`, data);
+  async add(calloutId: string, contactId: string): Promise<void> {
+    await this.fetch.post(`/${calloutId}/reviewers`, { contactId });
   }
 
   /**

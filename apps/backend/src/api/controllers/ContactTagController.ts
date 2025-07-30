@@ -66,7 +66,7 @@ export class ContactTagController {
     @Body() data: CreateContactTagDto
   ): Promise<GetContactTagDto> {
     try {
-      return await contactTagTransformer.createOne(auth, data);
+      return await contactTagTransformer.create(auth, data);
     } catch (error) {
       if (DuplicateTagNameError.isPostgresError(error)) {
         throw new DuplicateTagNameError(data.name);

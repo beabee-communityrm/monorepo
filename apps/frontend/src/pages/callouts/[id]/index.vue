@@ -105,7 +105,7 @@ import CalloutVariantsBox from '@components/pages/callouts/CalloutVariantsBox.vu
 import { useCallout } from '@components/pages/callouts/use-callout';
 import env from '@env';
 import { faBullhorn, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-import { currentUser, isEmbed } from '@store';
+import { canAdmin, currentUser, isEmbed } from '@store';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { client } from '@utils/api';
 import { resolveImageUrl } from '@utils/url';
@@ -156,7 +156,7 @@ addBreadcrumb(
 );
 
 const isPreview = computed(
-  () => route.query.preview === null && currentUser.value?.isReviewer
+  () => route.query.preview === null && canAdmin.value
 );
 const isRespondPage = computed(() => isEmbed || props.respond);
 const imageUrl = computed(() => {

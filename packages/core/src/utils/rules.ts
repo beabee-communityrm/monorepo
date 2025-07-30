@@ -420,3 +420,12 @@ export async function batchSelect<
     }
   }
 }
+
+export function mergeRules(
+  rules: (Rule | RuleGroup | undefined | false)[]
+): RuleGroup {
+  return {
+    condition: 'AND',
+    rules: rules.filter((rule): rule is Rule | RuleGroup => !!rule),
+  };
+}

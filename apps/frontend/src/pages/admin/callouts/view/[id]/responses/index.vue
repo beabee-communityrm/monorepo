@@ -78,7 +78,7 @@ meta:
               :selected-tags="selectedTags"
               :manage-url="`/admin/callouts/view/${callout.slug}/responses/tags`"
               :loading="doingAction"
-              :selectable="selectedCount > 0"
+              :disable-tags="selectedCount === 0"
               @toggle="
                 (tagId, successText) =>
                   handleUpdateAction({ tags: [tagId] }, successText)
@@ -86,12 +86,8 @@ meta:
             />
             <SetAssigneeButton
               :reviewer-items="reviewerItems"
-              :manage-url="
-                canAdmin
-                  ? `/admin/callouts/view/${callout.slug}/responses/tags`
-                  : undefined
-              "
-              :selectable="selectedCount > 0"
+              :manage-url="`/admin/callouts/view/${callout.slug}/responses/tags`"
+              :disabled="selectedCount === 0"
               :loading="doingAction"
               :current-assignee-id="selectedAssigneeId"
               @assign="
@@ -241,7 +237,6 @@ import {
   faUserPen,
 } from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';
-import { canAdmin } from '@store/currentUser';
 import { client } from '@utils/api';
 import { buckets } from '@utils/callouts';
 import {

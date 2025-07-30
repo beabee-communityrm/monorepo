@@ -31,14 +31,9 @@
         class="relative z-10"
       >
         <AppButton class="text-sm font-semibold">
-          {{ t('adminDashboard.seeAllResponses') }}
-          <span
-            v-if="
-              callout.responseCount !==
-              undefined /* TODO: temporary fix as reviewers can't see response count */
-            "
-            >({{ callout.responseCount }})</span
-          >
+          {{ t('adminDashboard.seeAllResponses') }} ({{
+            callout.responseCount
+          }})
         </AppButton>
       </router-link>
     </div>

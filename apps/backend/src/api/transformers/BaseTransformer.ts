@@ -2,7 +2,6 @@ import {
   Filters,
   InvalidRule,
   PaginatedQuery,
-  Rule,
   RuleGroup,
   validateRuleGroup,
 } from '@beabee/beabee-common';
@@ -13,6 +12,7 @@ import {
   UnauthorizedError,
 } from '@beabee/core/errors';
 import { AuthInfo, FilterHandlers } from '@beabee/core/type';
+import { mergeRules } from '@beabee/core/utils/rules';
 import { convertRulesToWhereClause } from '@beabee/core/utils/rules';
 
 import { PaginatedDto } from '@api/dto/PaginatedDto';
@@ -87,8 +87,8 @@ export abstract class BaseTransformer<
     auth: AuthInfo,
     query: Query,
     operation: TransformerOperation
-  ): Promise<(Rule | RuleGroup)[]> {
-    return [];
+  ): Promise<RuleGroup | false> {
+    return false;
   }
 
   /**
@@ -103,7 +103,7 @@ export abstract class BaseTransformer<
    */
   protected async canCreate(
     auth: AuthInfo,
-    data: Partial<Model>[]
+    data: Partial<Model>
   ): Promise<boolean> {
     // Default to only admins for now as creating doesn't yet implement the
     // query building logic
@@ -154,8 +154,7 @@ export abstract class BaseTransformer<
     qb: SelectQueryBuilder<Model>,
     fieldPrefix: string,
     query: Query,
-    auth: AuthInfo,
-    operation: TransformerOperation
+    auth: AuthInfo
   ): void {}
 
   /**
@@ -185,7 +184,7 @@ export abstract class BaseTransformer<
   protected async prepareQuery<T extends Query>(
     query: T,
     auth: AuthInfo,
-    operation: TransformerOperation
+    operation: 'create' | 'read' | 'update' | 'delete'
   ): Promise<{
     query: T;
     filters: Filters<FilterName>;
@@ -202,18 +201,10 @@ export abstract class BaseTransformer<
         finalQuery,
         operation
       );
-      if (!authRules.length) {
+      if (!authRules) {
         throw new UnauthorizedError();
       }
-
-      // Merge the authentication rules with any existing rules
-      finalQuery.rules = {
-        condition: 'AND',
-        rules: [
-          ...(finalQuery.rules ? [finalQuery.rules] : []),
-          { condition: 'OR', rules: authRules },
-        ],
-      };
+      finalQuery.rules = mergeRules([finalQuery.rules, authRules]);
     }
 
     // Convert the query filters to a WHERE clause
@@ -286,7 +277,7 @@ export abstract class BaseTransformer<
       qb.orderBy(`item."${query.sort}"`, query.order || 'ASC', 'NULLS LAST');
     }
 
-    this.modifyQueryBuilder(qb, 'item.', query, auth, 'read');
+    this.modifyQueryBuilder(qb, 'item.', query, auth);
 
     const [items, total] = await qb.getManyAndCount();
 
@@ -424,7 +415,7 @@ export abstract class BaseTransformer<
           .from(this.model, 'item')
           .where(db.where);
 
-        this.modifyQueryBuilder(subQb, 'item.', query, auth, 'delete');
+        this.modifyQueryBuilder(subQb, 'item.', query, auth);
 
         // Override select to only select the primary key
         subQb.select('item.' + this.modelIdField);
@@ -484,7 +475,7 @@ export abstract class BaseTransformer<
           .from(this.model, 'item')
           .where(db.where);
 
-        this.modifyQueryBuilder(subQb, 'item.', query, auth, 'update');
+        this.modifyQueryBuilder(subQb, 'item.', query, auth);
 
         // Override select to only select the primary key
         subQb.select('item.' + this.modelIdField);
@@ -522,30 +513,17 @@ export abstract class BaseTransformer<
   }
 
   /**
-   * Create new items
+   * Create a new item
    *
-   * @param auth The authentication info
-   * @param data The data to create the items with
-   * @returns The IDs of the created items
+   * @param data The data to create the item with
+   * @returns The created item
    */
-  async create(auth: AuthInfo, data: Partial<Model>[]): Promise<string[]> {
+  async create(auth: AuthInfo, data: Partial<Model>): Promise<GetDto> {
     if (!(await this.canCreate(auth, data))) {
       throw new UnauthorizedError();
     }
 
-    const items = await getRepository(this.model).save(data as Model[]);
-    return items.map((item) => item[this.modelIdField]);
-  }
-
-  /**
-   * Create a new item
-   *
-   * @param auth The authentication info
-   * @param data The data to create the item with
-   * @returns The created item
-   */
-  async createOne(auth: AuthInfo, data: Partial<Model>): Promise<GetDto> {
-    const [newId] = await this.create(auth, [data]);
-    return this.fetchOneByIdOrFail(auth, newId);
+    const item = await getRepository(this.model).save(data as Model);
+    return this.fetchOneByIdOrFail(auth, item[this.modelIdField]);
   }
 }

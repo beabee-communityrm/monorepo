@@ -251,7 +251,7 @@ async function processRows(rows: SteadyRow[]) {
     .getOne();
 
   if (!steadyTag) {
-    await contactTagTransformer.createOne(
+    await contactTagTransformer.create(
       { method: 'internal', roles: ['admin'] },
       {
         name: 'Steady',

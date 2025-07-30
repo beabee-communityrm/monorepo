@@ -1,4 +1,8 @@
-import { PaymentFilterName, Rule, paymentFilters } from '@beabee/beabee-common';
+import {
+  PaymentFilterName,
+  RuleGroup,
+  paymentFilters,
+} from '@beabee/beabee-common';
 import { Contact, Payment } from '@beabee/core/models';
 import { AuthInfo } from '@beabee/core/type';
 
@@ -41,8 +45,12 @@ class PaymentTransformer extends BaseTransformer<
     };
   }
 
-  protected async getNonAdminAuthRules(): Promise<Rule[]> {
-    return [{ field: 'contact', operator: 'equal', value: ['me'] }];
+  protected async getNonAdminAuthRules(): Promise<RuleGroup> {
+    return {
+      condition: 'AND',
+      // Non-admins can only see their own payments
+      rules: [{ field: 'contact', operator: 'equal', value: ['me'] }],
+    };
   }
 
   protected modifyQueryBuilder(

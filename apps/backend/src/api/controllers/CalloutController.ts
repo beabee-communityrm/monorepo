@@ -26,7 +26,6 @@ import {
 import {
   CreateCalloutReviewerDto,
   GetCalloutReviewerDto,
-  UpdateCalloutReviewerDto,
 } from '@api/dto/CalloutReviewerDto';
 import { CreateCalloutTagDto, GetCalloutTagDto } from '@api/dto/CalloutTagDto';
 import { PaginatedDto } from '@api/dto/PaginatedDto';
@@ -36,7 +35,6 @@ import CalloutResponseTransformer from '@api/transformers/CalloutResponseTransfo
 import CalloutReviewerTransformer from '@api/transformers/CalloutReviewerTransformer';
 import calloutTagTransformer from '@api/transformers/CalloutTagTransformer';
 import CalloutTransformer from '@api/transformers/CalloutTransformer';
-import CalloutVariantTransformer from '@api/transformers/CalloutVariantTransformer';
 import { validateOrReject } from '@api/utils/validation';
 import { verify } from '@core/lib/captchafox';
 import { plainToInstance } from 'class-transformer';
@@ -117,38 +115,14 @@ export class CalloutController {
     });
   }
 
+  @Authorized('admin')
   @Patch('/:id')
   async updateCallout(
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @CalloutId() id: string,
     @PartialBody() data: CreateCalloutDto // Actually Partial<CreateCalloutDto>
   ): Promise<GetCalloutDto | undefined> {
-    const { variants, ...calloutData } = data;
-
-    const didUpdate = await CalloutTransformer.updateById(
-      auth,
-      id,
-      calloutData
-    );
-    if (!didUpdate) {
-      throw new NotFoundError();
-    }
-
-    if (variants) {
-      await CalloutVariantTransformer.delete(auth, {
-        condition: 'AND',
-        rules: [{ field: 'calloutId', operator: 'equal', value: [id] }],
-      });
-      await CalloutVariantTransformer.create(
-        auth,
-        Object.entries(variants).map(([name, variant]) => ({
-          calloutId: id,
-          name,
-          ...variant,
-        }))
-      );
-    }
-
+    await calloutsService.updateCallout(id, data);
     return CalloutTransformer.fetchOneById(auth, id);
   }
 
@@ -261,10 +235,7 @@ export class CalloutController {
       ...query,
       rules: {
         condition: 'AND',
-        rules: [
-          ...(query.rules ? [query.rules] : []),
-          { field: 'calloutId', operator: 'equal', value: [id] },
-        ],
+        rules: [{ field: 'calloutId', operator: 'equal', value: [id] }],
       },
     });
 
@@ -279,7 +250,7 @@ export class CalloutController {
     @Body() data: CreateCalloutTagDto
   ): Promise<GetCalloutTagDto> {
     // TODO: handle foreign key error
-    return calloutTagTransformer.createOne(auth, {
+    return calloutTagTransformer.create(auth, {
       ...data,
       calloutId: id,
     });
@@ -327,14 +298,10 @@ export class CalloutController {
     @QueryParams() query: ListCalloutResponsesDto
   ): Promise<GetCalloutReviewerDto[]> {
     const result = await CalloutReviewerTransformer.fetch(auth, {
-      limit: -1,
       ...query,
       rules: {
         condition: 'AND',
-        rules: [
-          ...(query.rules ? [query.rules] : []),
-          { field: 'calloutId', operator: 'equal', value: [id] },
-        ],
+        rules: [{ field: 'calloutId', operator: 'equal', value: [id] }],
       },
     });
 
@@ -347,9 +314,9 @@ export class CalloutController {
     @CalloutId() id: string,
     @Body() data: CreateCalloutReviewerDto
   ): Promise<GetCalloutReviewerDto> {
-    return CalloutReviewerTransformer.createOne(auth, {
-      ...data,
+    return CalloutReviewerTransformer.create(auth, {
       calloutId: id,
+      ...data,
     });
   }
 
@@ -358,16 +325,6 @@ export class CalloutController {
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @Param('reviewerId') reviewerId: string
   ): Promise<GetCalloutReviewerDto | undefined> {
-    return CalloutReviewerTransformer.fetchOneById(auth, reviewerId);
-  }
-
-  @Patch('/:id/reviewers/:reviewerId')
-  async updateCalloutReviewer(
-    @CurrentAuth({ required: true }) auth: AuthInfo,
-    @Param('reviewerId') reviewerId: string,
-    @Body() data: UpdateCalloutReviewerDto
-  ): Promise<GetCalloutReviewerDto | undefined> {
-    await CalloutReviewerTransformer.updateById(auth, reviewerId, data);
     return CalloutReviewerTransformer.fetchOneById(auth, reviewerId);
   }
 

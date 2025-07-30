@@ -1,6 +1,6 @@
 import {
   CalloutResponseCommentFilterName,
-  Rule,
+  RuleGroup,
   calloutResponseCommentFilters,
 } from '@beabee/beabee-common';
 import { createQueryBuilder } from '@beabee/core/database';
@@ -50,13 +50,16 @@ class CalloutResponseCommentTransformer extends BaseTransformer<
     };
   }
 
-  protected async getNonAdminAuthRules(auth: AuthInfo): Promise<Rule[]> {
-    return [
-      // User's can always see their own response comments
-      { field: 'contact', operator: 'equal', value: ['me'] },
-      // And any comments for callouts they are reviewers for
-      ...(await getReviewerRules(auth.contact, 'calloutId', false)),
-    ];
+  protected async getNonAdminAuthRules(auth: AuthInfo): Promise<RuleGroup> {
+    return {
+      condition: 'OR',
+      rules: [
+        // User's can always see their own response comments
+        { field: 'contact', operator: 'equal', value: ['me'] },
+        // And any comments for callouts they are reviewers for
+        ...(await getReviewerRules(auth.contact, 'calloutId')),
+      ],
+    };
   }
 
   protected modifyQueryBuilder(
@@ -84,41 +87,36 @@ class CalloutResponseCommentTransformer extends BaseTransformer<
    *
    * @param auth The authentication info
    * @param data The comment data
-   * @returns True if the user can create the comments, false otherwise
+   * @returns
    */
   protected async canCreate(
     auth: AuthInfo,
-    data: Partial<CalloutResponseComment>[]
+    data: Partial<CalloutResponseComment>
   ): Promise<boolean> {
     if (auth.roles.includes('admin')) {
       return true;
     }
 
-    const responseIds = data
-      .map((c) => c.responseId)
-      .filter((s): s is string => !!s)
-      .filter((s, i, a) => a.indexOf(s) === i);
-
-    if (!responseIds.length || !auth.contact) {
+    if (!data.responseId || !auth.contact) {
       throw new BadRequestError('Response ID and contact required');
     }
 
-    const responses = await createQueryBuilder(CalloutResponse, 'response')
-      .select('response.id', 'id')
+    const reviewer = await createQueryBuilder(CalloutReviewer, 'reviewer')
+      .select('1')
       .innerJoin(
-        CalloutReviewer,
-        'reviewer',
+        CalloutResponse,
+        'response',
         'reviewer.calloutId = response.calloutId'
       )
       .where('reviewer.contactId = :contactId')
-      .andWhere('response.id IN (:...responseIds)')
+      .andWhere('response.id = :responseId')
       .setParameters({
         contactId: auth.contact.id,
-        responseIds,
+        responseId: data.responseId,
       })
-      .getRawMany<{ id: string }>();
+      .getRawOne();
 
-    return responseIds.every((id) => responses.some((r) => r.id === id));
+    return !!reviewer;
   }
 }
 
