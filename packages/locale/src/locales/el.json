@@ -333,8 +333,8 @@
     "actions": {
       "updateResponse": ""
     },
-    "addAPoint": "Μπορείτε να εισαγάγετε μια τοποθεσία εδώ.",
-    "addLocation": "Μπορείτε να εισαγάγετε μια νέα τοποθεσία εδώ.",
+    "addAPoint": "Πρόσθεσε μια νέα τοποθεσία εδώ",
+    "addLocation": "Πρόσθεσε μια νέα τοποθεσία εδώ",
     "builder": {
       "actions": {
         "addSlide": ""
@@ -687,8 +687,8 @@
     "toContributionPage": "",
     "updateContribution": "",
     "views": {
-      "gallery": "Συλλογή εικόνων / γκαλερί",
-      "map": "χάρτη"
+      "gallery": "Φωτογραφίες",
+      "map": "Χάρτης"
     },
     "youResponded": "",
     "yourResponse": ""
@@ -1218,7 +1218,7 @@
         "useCamera": "χρησιμοποιήστε κάμερα"
       },
       "multiple": {
-        "addAnother": "Εδώ μπορείτε να ανεβάσετε μια νέα φωτογραφία./ Εδώ μπορείτε να ανεβάσετε ένα νέο αρχείο."
+        "addAnother": "Προσθήκη συνδέσμου"
       }
     }
   },
@@ -1543,6 +1543,16 @@
     "pleaseWait": "",
     "usuallyTakesSeconds": ""
   },
+  "stepper": {
+    "navigation": {
+      "label": ""
+    },
+    "screen": {
+      "completed": "",
+      "currentStep": "",
+      "hasError": ""
+    }
+  },
   "tagEditor": {
     "add": "",
     "confirmDelete": {
@@ -1565,15 +1575,5 @@
   },
   "taxRate": {
     "invoiceName": ""
-  },
-  "stepper": {
-    "navigation": {
-      "label": ""
-    },
-    "screen": {
-      "hasError": "",
-      "completed": "",
-      "currentStep": ""
-    }
   }
 }
