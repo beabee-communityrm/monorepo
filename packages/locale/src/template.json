@@ -1176,8 +1176,8 @@
       }
     },
     "errorsFormio": {
-      "minLength": "",
-      "maxLength": ""
+      "maxLength": "",
+      "minLength": ""
     },
     "firstName": "",
     "lastName": "",

@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-mutating-props -->
 <!--
   # AppPaginatedTable
   A wrapper component that combines AppTable with pagination controls.
@@ -28,8 +29,8 @@
     <div class="mb-2 flex items-end gap-4">
       <slot name="actions"></slot>
       <AppPaginatedTableResult
-        v-model:page="currentPage"
-        v-model:limit="currentLimit"
+        v-model:page="query.page"
+        v-model:limit="query.limit"
         :result="result"
         class="ml-auto items-end"
         no-limit
@@ -37,7 +38,7 @@
     </div>
     <div class="overflow-x-auto">
       <AppTable
-        v-model:sort="currentSort"
+        v-model:sort="query.sort"
         :headers="headers"
         :items="result?.items || null"
         :selectable="selectable"
@@ -50,8 +51,8 @@
       </AppTable>
     </div>
     <AppPaginatedTableResult
-      v-model:page="currentPage"
-      v-model:limit="currentLimit"
+      v-model:page="query.page"
+      v-model:limit="query.limit"
       :result="result"
       class="items-center"
     />
@@ -72,7 +73,7 @@ import { type Paginated } from '../../type/paginated';
 import { type Header, type Item, type Sort } from '../../type/table';
 import AppPaginatedTableResult from './AppPaginatedTableResult.vue';
 
-const props = defineProps<{
+defineProps<{
   headers: Header[];
   result: Paginated<I> | undefined;
   query: {
@@ -83,27 +84,6 @@ const props = defineProps<{
   selectable?: boolean;
   rowClass?: (item: I) => string;
 }>();
-
-const emit = defineEmits<{
-  'update:query': [query: { page: number; limit: number; sort?: Sort }];
-}>();
-
-// Computed properties for v-model compatibility
-const currentPage = computed({
-  get: () => props.query.page,
-  set: (page: number) => emit('update:query', { ...props.query, page }),
-});
-
-const currentLimit = computed({
-  get: () => props.query.limit,
-  set: (limit: number) => emit('update:query', { ...props.query, limit }),
-});
-
-const currentSort = computed({
-  get: () => props.query.sort,
-  set: (sort: Sort | undefined) =>
-    emit('update:query', { ...props.query, sort }),
-});
 
 // Slots are passed to AppTable, typing is handled by Vue's inference
 const slotNames = computed(() => {
