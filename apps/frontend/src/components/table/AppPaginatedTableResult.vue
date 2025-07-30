@@ -87,19 +87,8 @@ const props = withDefaults(defineProps<AppPaginatedTableResultProps>(), {
   noLimit: false,
 });
 
-const emit = defineEmits<{
-  'update:page': [page: number];
-  'update:limit': [limit: number];
-}>();
-const currentPage = computed({
-  get: () => props.page,
-  set: (newPage) => emit('update:page', newPage),
-});
-
-const currentLimit = computed({
-  get: () => props.limit,
-  set: (newLimit) => emit('update:limit', newLimit),
-});
+const currentPage = defineModel<number>('page', { default: 0 });
+const currentLimit = defineModel<number>('limit', { default: 12 });
 
 const limits = computed(() =>
   [12, 25, 50, 100].map((x) => ({
