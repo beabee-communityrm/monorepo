@@ -10,39 +10,34 @@ FROM node:${NODE_VERSION} AS base
 RUN apt-get update && apt-get install -y tini curl && rm -rf /var/lib/apt/lists/*
 
 # Copy the workspace configuration
-COPY --chown=node:node package.json yarn.lock .yarnrc.yml /opt/
-COPY --chown=node:node .yarn /opt/.yarn
+COPY package.json yarn.lock .yarnrc.yml /opt/
+COPY .yarn /opt/.yarn
 
 # Copy dependencies info from packages
-COPY --chown=node:node packages/client/package.json /opt/packages/client/package.json
-COPY --chown=node:node packages/common/package.json /opt/packages/common/package.json
-COPY --chown=node:node packages/core/package.json /opt/packages/core/package.json
-COPY --chown=node:node packages/docker/package.json /opt/packages/docker/package.json
-COPY --chown=node:node packages/fontawesome/package.json /opt/packages/fontawesome/package.json
-COPY --chown=node:node packages/locale/package.json /opt/packages/locale/package.json
-COPY --chown=node:node packages/template-vanilla/package.json /opt/packages/template-vanilla/package.json
-COPY --chown=node:node packages/test-utils/package.json /opt/packages/test-utils/package.json
-COPY --chown=node:node packages/vue/package.json /opt/packages/vue/package.json
-COPY --chown=node:node packages/weblate-client/package.json /opt/packages/weblate-client/package.json
+# NOTE: all packages must be listed here to resolve dependencies properly
+COPY packages/client/package.json /opt/packages/client/package.json
+COPY packages/common/package.json /opt/packages/common/package.json
+COPY packages/core/package.json /opt/packages/core/package.json
+COPY packages/docker/package.json /opt/packages/docker/package.json
+COPY packages/esbuild/package.json /opt/packages/esbuild/package.json
+COPY packages/fontawesome/package.json /opt/packages/fontawesome/package.json
+COPY packages/locale/package.json /opt/packages/locale/package.json
+COPY packages/prettier-config/package.json /opt/packages/prettier-config/package.json
+COPY packages/test-utils/package.json /opt/packages/test-utils/package.json
+COPY packages/template-vanilla/package.json /opt/packages/template-vanilla/package.json
+COPY packages/tsconfig/package.json /opt/packages/tsconfig/package.json
+COPY packages/vue/package.json /opt/packages/vue/package.json
+COPY packages/weblate-client/package.json /opt/packages/weblate-client/package.json
 
 # Copy dependencies info from apps
-COPY --chown=node:node apps/backend/package.json /opt/apps/backend/package.json
-COPY --chown=node:node apps/backend-cli/package.json /opt/apps/backend-cli/package.json
-COPY --chown=node:node apps/legacy/package.json /opt/apps/legacy/package.json
-COPY --chown=node:node apps/webhooks/package.json /opt/apps/webhooks/package.json
-COPY --chown=node:node apps/e2e-api-tests/package.json /opt/apps/e2e-api-tests/package.json
-
-# Copy dependencies with relevant content
-COPY --chown=node:node packages/prettier-config /opt/packages/prettier-config
-COPY --chown=node:node packages/tsconfig /opt/packages/tsconfig
-COPY --chown=node:node packages/esbuild /opt/packages/esbuild
-
-# Copy apps with relevant content
-COPY --chown=node:node apps/dev-cli /opt/apps/dev-cli
+COPY apps/backend/package.json /opt/apps/backend/package.json
+COPY apps/backend-cli/package.json /opt/apps/backend-cli/package.json
+COPY apps/dev-cli/package.json /opt/apps/dev-cli/package.json
+COPY apps/e2e-api-tests/package.json /opt/apps/e2e-api-tests/package.json
+COPY apps/legacy/package.json /opt/apps/legacy/package.json
+COPY apps/webhooks/package.json /opt/apps/webhooks/package.json
 
 ENV NODE_ENV=production
-ENV NODE_OPTIONS=--enable-source-maps
-
 WORKDIR /opt
 
 ##################################
@@ -51,11 +46,6 @@ WORKDIR /opt
 ##################################
 FROM base AS builder
 
-# Check versions
-RUN node --version
-RUN npm --version
-RUN yarn --version
-
 # Install dependencies
 RUN yarn workspaces focus -A
 
@@ -63,9 +53,9 @@ RUN yarn workspaces focus -A
 COPY packages /opt/packages
 COPY apps/backend /opt/apps/backend
 COPY apps/backend-cli /opt/apps/backend-cli
+COPY apps/dev-cli /opt/apps/dev-cli
 COPY apps/legacy /opt/apps/legacy
 COPY apps/webhooks /opt/apps/webhooks
-COPY apps/dev-cli /opt/apps/dev-cli
 
 # Build the applications
 RUN yarn build
@@ -80,6 +70,8 @@ RUN yarn workspaces focus -A --production
 
 # Common distribution base
 FROM base AS dist-common
+
+ENV NODE_OPTIONS=--enable-source-maps
 
 COPY --chown=node:node --from=builder /opt/node_modules /opt/node_modules
 COPY --chown=node:node --from=builder /opt/packages/core/dist /opt/packages/core/dist
