@@ -19,12 +19,12 @@ export async function fetchAllPages<T>(
 ): Promise<T[]> {
   const firstResponse = await apiCall({ offset: 0, limit: pageSize });
   const totalItems = firstResponse.total;
-  const promises: Promise<Paginated<T>>[] = [];
+  const responses = [firstResponse];
 
   for (let offset = pageSize; offset < totalItems; offset += pageSize) {
-    promises.push(apiCall({ offset, limit: pageSize }));
+    const response = await apiCall({ offset, limit: pageSize });
+    responses.push(response);
   }
 
-  const responses = await Promise.all(promises);
-  return [firstResponse, ...responses].flatMap((response) => response.items);
+  return responses.flatMap((response) => response.items);
 }
