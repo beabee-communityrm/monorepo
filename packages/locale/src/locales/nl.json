@@ -806,22 +806,22 @@
   },
   "calloutReviewerManager": {
     "add": "Recensent toevoegen",
+    "canEdit": "De recensent kan ook de CrowdNewsroom bewerken",
     "confirmDelete": {
       "text": "Weet u zeker dat u {reviewerName} wilt verwijderen? Ze zullen deze callout niet langer kunnen beoordelen.",
       "title": "Recensent verwijderen"
     },
     "contact": "Contact ID",
-    "title": "Recensenten oproepen",
-    "canEdit": "",
-    "editorTag": "",
+    "editorTag": "Editor",
     "search": {
       "error": {
-        "message": "",
-        "title": ""
+        "message": "Zorg ervoor dat het e-mailadres bestaat en geen typefouten bevat.",
+        "title": "Contact niet gevonden"
       },
-      "placeholder": "",
-      "successMessage": ""
-    }
+      "placeholder": "E-mailadres zoeken",
+      "successMessage": "E-mailadres is geldig"
+    },
+    "title": "Recensenten"
   },
   "calloutThanksPage": {
     "oneResponseWarning": "Houd er rekening mee dat deze oproep slechts één reactie per persoon toestaat. Als u al hebt bijgedragen, worden extra reacties niet geregistreerd."
@@ -1185,6 +1185,10 @@
         "required": "Code is vereist"
       }
     },
+    "errorsFormio": {
+      "maxLength": "",
+      "minLength": ""
+    },
     "firstName": "Voornaam",
     "lastName": "Achternaam",
     "newPassword": "Nieuw wachtwoord",
@@ -1209,11 +1213,7 @@
     "saveChanges": "Wijzigingen opslaan",
     "saved": "Opgeslagen!",
     "unsavedChanges": "Niet-opgeslagen wijzigingen",
-    "updated": "Bijgewerkt",
-    "errorsFormio": {
-      "minLength": "",
-      "maxLength": ""
-    }
+    "updated": "Bijgewerkt"
   },
   "formRenderer": {
     "components": {
@@ -1551,6 +1551,16 @@
     "pleaseWait": "",
     "usuallyTakesSeconds": ""
   },
+  "stepper": {
+    "navigation": {
+      "label": ""
+    },
+    "screen": {
+      "completed": "",
+      "currentStep": "",
+      "hasError": ""
+    }
+  },
   "tagEditor": {
     "add": "Label toevoegen",
     "confirmDelete": {
@@ -1573,15 +1583,5 @@
   },
   "taxRate": {
     "invoiceName": "BTW"
-  },
-  "stepper": {
-    "navigation": {
-      "label": ""
-    },
-    "screen": {
-      "hasError": "",
-      "completed": "",
-      "currentStep": ""
-    }
   }
 }
