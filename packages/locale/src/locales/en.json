@@ -71,6 +71,7 @@
     "continue": "Continue",
     "copy": "Copy",
     "create": "Create",
+    "decrease": "Decrease",
     "delete": "Delete",
     "disable": "Disable",
     "edit": "Edit",
@@ -79,6 +80,7 @@
     "export": "Export",
     "getStarted": "Get started",
     "goBack": "Go back",
+    "increase": "Increase",
     "next": "Next",
     "noBack": "No, go back",
     "participate": "Participate",
@@ -100,15 +102,13 @@
     "share": "Share",
     "skip": "Skip",
     "submit": "Submit",
+    "tryAgain": "Try again",
     "unpublish": "Unpublish",
     "update": "Update",
     "view": "View",
     "yesDelete": "Yes, delete it",
     "yesDisable": "Yes, disable it",
-    "yesRemove": "Yes, remove it",
-    "tryAgain": "Try again",
-    "increase": "Increase",
-    "decrease": "Decrease"
+    "yesRemove": "Yes, remove it"
   },
   "addContact": {
     "contactSaved": "Contact saved",
@@ -336,7 +336,6 @@
     "addAPoint": "Click on the map where you want to add a point",
     "addLocation": "Add a new entry",
     "builder": {
-      "title": "Callout builder",
       "actions": {
         "addSlide": "Add slide"
       },
@@ -648,6 +647,7 @@
           "title": "Translations"
         }
       },
+      "title": "Callout builder",
       "translationFields": {
         "description": "Description",
         "html": "Content",
@@ -673,15 +673,15 @@
     "responseSubmitted": "Response submitted",
     "share": {
       "address": "Share using the following link:",
-      "services": "Or quickly share using one of these services:",
       "aria": {
+        "email": "Share via email",
         "facebook": "Share on Facebook",
         "linkedin": "Share on LinkedIn",
         "telegram": "Share on Telegram",
         "twitter": "Share on Twitter",
-        "whatsapp": "Share on WhatsApp",
-        "email": "Share via email"
-      }
+        "whatsapp": "Share on WhatsApp"
+      },
+      "services": "Or quickly share using one of these services:"
     },
     "showingPreview": "You can't submit a response in preview mode",
     "toContributionPage": "Edit my contribution",
@@ -806,22 +806,22 @@
   },
   "calloutReviewerManager": {
     "add": "Add reviewer",
-    "canEdit": "Reviewer can also edit the callout",
+    "canEdit": "Reviewer can also edit the CrowdNewsroom",
     "confirmDelete": {
       "text": "Are you sure you want to remove {reviewerName}? They will no longer be able to review this CrowdNewsroom.",
       "title": "Remove reviewer"
     },
     "contact": "Contact ID",
     "editorTag": "Editor",
-    "title": "Manage Reviewers",
     "search": {
-      "placeholder": "Search Email Address...",
       "error": {
-        "title": "Contact Not Found",
-        "message": "Please ensure that the email address exists and is free of typos."
+        "message": "Please ensure that the email address exists and is free of typos.",
+        "title": "Contact not found"
       },
+      "placeholder": "Search email address",
       "successMessage": "Email Is Valid"
-    }
+    },
+    "title": "Reviewers"
   },
   "calloutThanksPage": {
     "oneResponseWarning": "Please note that only one response is allowed per person. If you have already contributed, additional responses will not be recorded."
@@ -912,12 +912,12 @@
       "open": "Open",
       "scheduled": "Scheduled"
     },
+    "statusLabel": "Status: {status}",
     "thankYou": "Thank you!",
     "timeAgo": "{time} ago",
     "timeIn": "in {time}",
     "until": "until",
-    "yes": "Yes",
-    "statusLabel": "Status: {status}"
+    "yes": "Yes"
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1133,6 +1133,10 @@
         "required": "Password is required",
         "sameAs": "The passwords don't match"
       },
+      "description": {
+        "maxLength": "Maximum length of {max} characters exceeded",
+        "required": "Description is required"
+      },
       "email": {
         "email": "Invalid email address",
         "required": "Email is required"
@@ -1159,6 +1163,10 @@
       "postCode": {
         "required": "Postcode is required"
       },
+      "shareDescription": {
+        "maxLength": "Maximum length of {max} characters exceeded, {remaining} characters remaining",
+        "required": "Description is required"
+      },
       "unknown": {
         "email": "Invalid email address",
         "max": "This field must be at most {max}",
@@ -1166,14 +1174,6 @@
         "min": "This field must be at least {min}",
         "required": "This field is required",
         "url": "Invalid URL"
-      },
-      "description": {
-        "maxLength": "Maximum length of {max} characters exceeded",
-        "required": "Description is required"
-      },
-      "shareDescription": {
-        "maxLength": "Maximum length of {max} characters exceeded, {remaining} characters remaining",
-        "required": "Description is required"
       },
       "url": {
         "required": "URL is required",
@@ -1186,8 +1186,8 @@
       }
     },
     "errorsFormio": {
-      "minLength": "This field must be at least {'{{length}}'} characters long",
-      "maxLength": "Maximum length of {'{{length}}'} characters exceeded"
+      "maxLength": "Maximum length of {'{{length}}'} characters exceeded",
+      "minLength": "This field must be at least {'{{length}}'} characters long"
     },
     "firstName": "First name",
     "lastName": "Last name",
@@ -1201,14 +1201,14 @@
     "richtext": {
       "bold": "Bold",
       "bulletlist": "Bullet list",
+      "editor": "Rich text editor",
       "heading": "Heading",
       "italic": "Italic",
       "link": "Link",
       "numberedlist": "Numbered list",
       "strikethrough": "Strikethrough",
-      "underline": "Underline",
       "toolbar": "Rich text formatting toolbar",
-      "editor": "Rich text editor"
+      "underline": "Underline"
     },
     "saveChanges": "Save Changes",
     "saved": "Saved!",
@@ -1241,6 +1241,11 @@
     "viewOpenCallouts": "Open the CrowdNewsroom",
     "welcome": "Welcome aboard {firstName}!",
     "yourProfile": "Your profile"
+  },
+  "icons": {
+    "welcome": {
+      "ariaLabel": "Welcome icon"
+    }
   },
   "item": {
     "status": {
@@ -1539,6 +1544,23 @@
     "description": "Set a new password to login.",
     "title": "Set a password"
   },
+  "status": {
+    "connectingToServer": "Connecting to server...",
+    "initializing": "Initializing...",
+    "loadingApplication": "Loading Application",
+    "pleaseWait": "Please wait...",
+    "usuallyTakesSeconds": "This usually takes a few seconds"
+  },
+  "stepper": {
+    "navigation": {
+      "label": "Step progress"
+    },
+    "screen": {
+      "completed": ", completed",
+      "currentStep": ", current step",
+      "hasError": ", has error"
+    }
+  },
   "tagEditor": {
     "add": "Add tag",
     "confirmDelete": {
@@ -1561,27 +1583,5 @@
   },
   "taxRate": {
     "invoiceName": "VAT"
-  },
-  "status": {
-    "loadingApplication": "Loading Application",
-    "pleaseWait": "Please wait...",
-    "connectingToServer": "Connecting to server...",
-    "initializing": "Initializing...",
-    "usuallyTakesSeconds": "This usually takes a few seconds"
-  },
-  "stepper": {
-    "navigation": {
-      "label": "Step progress"
-    },
-    "screen": {
-      "hasError": ", has error",
-      "completed": ", completed",
-      "currentStep": ", current step"
-    }
-  },
-  "icons": {
-    "welcome": {
-      "ariaLabel": "Welcome icon"
-    }
   }
 }

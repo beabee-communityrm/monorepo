@@ -805,23 +805,23 @@
     "showingOf": "Respostas {start} a {end} de um total de {total}"
   },
   "calloutReviewerManager": {
-    "add": "",
+    "add": "Adicionar revisor",
+    "canEdit": "O revisor também pode editar o CrowdNewsroom",
     "confirmDelete": {
-      "text": "",
-      "title": ""
+      "text": "Tem certeza de que deseja remover {reviewerName}? Ele(a) não poderá mais revisar esta chamada.",
+      "title": "Remover revisor"
     },
-    "contact": "",
-    "title": "",
-    "canEdit": "",
-    "editorTag": "",
+    "contact": "ID do contato",
+    "editorTag": "Editor",
     "search": {
       "error": {
-        "message": "",
-        "title": ""
+        "message": "Por favor, verifique se o endereço de e-mail existe e está livre de erros de digitação.",
+        "title": "Contato não encontrado"
       },
-      "placeholder": "",
-      "successMessage": ""
-    }
+      "placeholder": "Pesquisar endereço de e-mail",
+      "successMessage": "O e-mail é válido"
+    },
+    "title": "Revisores"
   },
   "calloutThanksPage": {
     "oneResponseWarning": "Por favor, note que este aviso permite apenas uma resposta por pessoa. Se você já contribuiu, respostas adicionais não serão registradas."
@@ -1185,6 +1185,10 @@
         "required": "O código é obrigatório"
       }
     },
+    "errorsFormio": {
+      "maxLength": "",
+      "minLength": ""
+    },
     "firstName": "Primeiro nome",
     "lastName": "Último nome",
     "newPassword": "Nova palavra-passe",
@@ -1209,11 +1213,7 @@
     "saveChanges": "Gravar alterações",
     "saved": "Gravado!",
     "unsavedChanges": "Alterações não gravadas",
-    "updated": "Atualizado",
-    "errorsFormio": {
-      "minLength": "",
-      "maxLength": ""
-    }
+    "updated": "Atualizado"
   },
   "formRenderer": {
     "components": {
@@ -1551,6 +1551,16 @@
     "pleaseWait": "",
     "usuallyTakesSeconds": ""
   },
+  "stepper": {
+    "navigation": {
+      "label": ""
+    },
+    "screen": {
+      "completed": "",
+      "currentStep": "",
+      "hasError": ""
+    }
+  },
   "tagEditor": {
     "add": "Adicionar etiqueta",
     "confirmDelete": {
@@ -1573,15 +1583,5 @@
   },
   "taxRate": {
     "invoiceName": "???"
-  },
-  "stepper": {
-    "navigation": {
-      "label": ""
-    },
-    "screen": {
-      "hasError": "",
-      "completed": "",
-      "currentStep": ""
-    }
   }
 }
