@@ -215,7 +215,13 @@ import type {
   MapPointFeature,
   MapPointFeatureCollection,
 } from '@type';
-import { generateImageId, getImageString, setKey, svgToImage } from '@utils';
+import {
+  generateImageId,
+  getImageString,
+  loadImageFromDataURLToMap,
+  setKey,
+  svgToDataURL,
+} from '@utils';
 import { client } from '@utils/api';
 import {
   type GeocodeResult,
@@ -666,7 +672,7 @@ function handleMouseOver(e: { event: MapMouseEvent }) {
  *
  * @param e The map load event
  */
-function handleLoad({ map: mapInstance }: { map: Map }) {
+async function handleLoad({ map: mapInstance }: { map: Map }) {
   /**
    * Check if the responses source data is loaded
    * @param sourceDataEvent The source data event
@@ -728,19 +734,15 @@ function handleLoad({ map: mapInstance }: { map: Map }) {
   for (const iconName of iconNames) {
     for (const color of iconColors) {
       const svgString = getImageString(iconName, color);
-      svgToImage(svgString)
-        .then((pngDataUrl) => {
-          mapInstance.loadImage(pngDataUrl, (error, image) => {
-            if (error) throw error;
-            if (image) {
-              mapInstance.addImage(generateImageId(iconName, color), image);
-              mapLoaded.value = true;
-            }
-          });
-        })
-        .catch((error) => {
-          throw error;
-        });
+
+      const pngDataUrl = await svgToDataURL(svgString);
+
+      const image = await loadImageFromDataURLToMap(mapInstance, pngDataUrl);
+
+      if (image) {
+        mapInstance.addImage(generateImageId(iconName, color), image);
+        mapLoaded.value = true;
+      }
     }
   }
 }

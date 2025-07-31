@@ -1,4 +1,5 @@
 import { type IconName, icon } from '@fortawesome/fontawesome-svg-core';
+import { Map } from 'maplibre-gl';
 
 /**
  * Generate a unique ID for an icon image based on its name and color
@@ -17,7 +18,7 @@ export function generateImageId(iconName: string, color: string): string {
  * @param svgString The SVG string to convert
  * @returns A promise that resolves to the PNG data URL
  */
-export function svgToImage(svgString: string): Promise<string> {
+export function svgToDataURL(svgString: string): Promise<string> {
   return new Promise<string>((resolve, reject) => {
     const img = new Image();
     const svgBlob = new Blob([svgString], {
@@ -43,6 +44,25 @@ export function svgToImage(svgString: string): Promise<string> {
     img.onerror = (error) => reject(error);
     img.src = url;
   });
+}
+
+/**
+ * Load image from external URL and add it to a MapLibre GL JS map instance.
+ * @param mapInstance The MapLibre GL JS map instance
+ * @param pngDataUrl
+ * @returns image element or ImageBitmap
+ */
+export function loadImageFromDataURLToMap(
+  mapInstance: Map,
+  pngDataUrl: string
+) {
+  return new Promise<HTMLImageElement | ImageBitmap | null | undefined>(
+    (resolve, reject) => {
+      mapInstance.loadImage(pngDataUrl, (error, image) =>
+        error ? reject(error) : resolve(image)
+      );
+    }
+  );
 }
 
 /**
