@@ -805,23 +805,23 @@
     "showingOf": ""
   },
   "calloutReviewerManager": {
-    "add": "",
+    "add": "Aggiungere un verificatore",
+    "canEdit": "Il verificatore può anche modificare il CrowdNewsroom",
     "confirmDelete": {
-      "text": "",
-      "title": ""
+      "text": "È sicuro di voler rimuovere {reviewerName}? Non potrà più verificare questo invito.",
+      "title": "Rimuovere il verificatore"
     },
-    "contact": "",
-    "title": "",
-    "canEdit": "",
-    "editorTag": "",
+    "contact": "ID del contatto",
+    "editorTag": "Editor",
     "search": {
       "error": {
-        "message": "",
-        "title": ""
+        "message": "La preghiamo di assicurarsi che l’indirizzo e-mail esista e non contenga errori di battitura.",
+        "title": "Contatto non trovato"
       },
-      "placeholder": "",
-      "successMessage": ""
-    }
+      "placeholder": "Cercare un indirizzo e-mail",
+      "successMessage": "L’indirizzo e-mail è valido"
+    },
+    "title": "Verificatori"
   },
   "calloutThanksPage": {
     "oneResponseWarning": ""
@@ -1186,8 +1186,8 @@
       }
     },
     "errorsFormio": {
-      "minLength": "",
-      "maxLength": ""
+      "maxLength": "",
+      "minLength": ""
     },
     "firstName": "Nome",
     "lastName": "Cognome",
@@ -1551,6 +1551,16 @@
     "pleaseWait": "",
     "usuallyTakesSeconds": ""
   },
+  "stepper": {
+    "navigation": {
+      "label": ""
+    },
+    "screen": {
+      "completed": "",
+      "currentStep": "",
+      "hasError": ""
+    }
+  },
   "tagEditor": {
     "add": "",
     "confirmDelete": {
@@ -1573,15 +1583,5 @@
   },
   "taxRate": {
     "invoiceName": "VAT"
-  },
-  "stepper": {
-    "navigation": {
-      "label": ""
-    },
-    "screen": {
-      "hasError": "",
-      "completed": "",
-      "currentStep": ""
-    }
   }
 }
