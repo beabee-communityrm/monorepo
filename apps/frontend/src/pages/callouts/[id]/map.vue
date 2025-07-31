@@ -362,9 +362,11 @@ const mapIconProp = computed(() => {
 });
 
 const mapIconStyling = computed(() => {
-  return props.callout.responseViewSchema?.map?.mapIconStyling?.[
-    mapIconProp.value
-  ];
+  return (
+    props.callout.responseViewSchema?.map?.mapIconStyling?.[
+      mapIconProp.value
+    ] || {}
+  );
 });
 
 /**
@@ -721,13 +723,13 @@ async function handleLoad({ map: mapInstance }: { map: Map }) {
 
   // Dynamically collect unique icon names and colors, always including defaults
   const iconNames = new Set<string>(
-    Object.keys(mapIconStyling.value || {}).map(
+    Object.keys(mapIconStyling.value).map(
       (key) => mapIconStyling.value?.[key]?.icon.name || 'circle'
     )
   );
 
   const iconColors = new Set<string>(
-    Object.keys(mapIconStyling.value || {}).map(
+    Object.keys(mapIconStyling.value).map(
       (key) => mapIconStyling.value?.[key]?.color || 'black'
     )
   );
@@ -741,10 +743,10 @@ async function handleLoad({ map: mapInstance }: { map: Map }) {
 
       if (image) {
         mapInstance.addImage(generateImageId(iconName, color), image);
-        mapLoaded.value = true;
       }
     }
   }
+  mapLoaded.value = true;
 }
 
 /**
