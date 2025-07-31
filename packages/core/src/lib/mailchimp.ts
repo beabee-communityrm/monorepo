@@ -185,6 +185,11 @@ export function mcStatusToStatus(mcStatus: MCStatus): NewsletterStatus {
       return NewsletterStatus.Subscribed;
     case 'unsubscribed':
       return NewsletterStatus.Unsubscribed;
+    case 'archived':
+      return NewsletterStatus.None;
+    default:
+      log.error(`Unknown Mailchimp status: ${mcStatus}`);
+      return NewsletterStatus.None;
   }
 }
 
