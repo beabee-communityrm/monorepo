@@ -719,7 +719,7 @@ onBeforeMount(async () => {
 
   responses.value = await fetchAllPages(
     client.callout.listResponsesForMap.bind(client.callout, props.callout.slug),
-    100
+    1000
   ).then((items) =>
     items.filter((r): r is GetCalloutResponseMapDataWithAddress => !!r.address)
   );
