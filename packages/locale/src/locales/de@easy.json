@@ -813,7 +813,15 @@
     "contact": "",
     "title": "",
     "canEdit": "",
-    "editorTag": ""
+    "editorTag": "",
+    "search": {
+      "error": {
+        "message": "",
+        "title": ""
+      },
+      "placeholder": "",
+      "successMessage": ""
+    }
   },
   "calloutThanksPage": {
     "oneResponseWarning": ""
