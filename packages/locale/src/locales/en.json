@@ -806,12 +806,22 @@
   },
   "calloutReviewerManager": {
     "add": "Add reviewer",
+    "canEdit": "Reviewer can also edit the callout",
     "confirmDelete": {
       "text": "Are you sure you want to remove {reviewerName}? They will no longer be able to review this CrowdNewsroom.",
       "title": "Remove reviewer"
     },
     "contact": "Contact ID",
-    "title": "Manage Reviewers"
+    "editorTag": "Editor",
+    "title": "Manage Reviewers",
+    "search": {
+      "placeholder": "Search Email Address...",
+      "error": {
+        "title": "Contact Not Found",
+        "message": "Please ensure that the email address exists and is free of typos."
+      },
+      "successMessage": "Email Is Valid"
+    }
   },
   "calloutThanksPage": {
     "oneResponseWarning": "Please note that only one response is allowed per person. If you have already contributed, additional responses will not be recorded."
@@ -1174,6 +1184,10 @@
         "min": "The code must be at least {min} characters long.",
         "required": "Code is required"
       }
+    },
+    "errorsFormio": {
+      "minLength": "This field must be at least {'{{length}}'} characters long",
+      "maxLength": "Maximum length of {'{{length}}'} characters exceeded"
     },
     "firstName": "First name",
     "lastName": "Last name",

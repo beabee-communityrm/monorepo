@@ -811,7 +811,17 @@
       "title": "Auswerter entfernen"
     },
     "contact": "Kontakt ID",
-    "title": "Reviewer verwalten"
+    "title": "Reviewer verwalten",
+    "canEdit": "",
+    "editorTag": "",
+    "search": {
+      "error": {
+        "message": "",
+        "title": ""
+      },
+      "placeholder": "",
+      "successMessage": ""
+    }
   },
   "calloutThanksPage": {
     "oneResponseWarning": "Bitte beachten Sie, dass nur eine Antwort pro Person möglich ist. Wenn Sie bereits teilgenommen haben, werden weitere Antworten nicht berücksichtigt."
@@ -895,7 +905,7 @@
     "selectNone": "-- Keine --",
     "selectOne": "Auswählen",
     "show": "Anzeigen",
-    "showingOf": "",
+    "showingOf": "{start} bis {end} von {total} werden angezeigt",
     "status": {
       "draft": "Entwurf",
       "ended": "Beendet",
@@ -1174,6 +1184,10 @@
         "min": "Der Code muss mindestens {min} Zeichen lang sein.",
         "required": "Code benötigt"
       }
+    },
+    "errorsFormio": {
+      "minLength": "Dieses Feld muss mindestens {'{{length}}'} Zeichen lang sein",
+      "maxLength": "Die maximale Länge von {'{{length}}'} Zeichen wurde überschritten"
     },
     "firstName": "Vorname",
     "lastName": "Nachname",

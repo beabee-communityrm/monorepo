@@ -336,4 +336,9 @@
   div[ref='value'] {
     @apply inline;
   }
+
+  /* Truncate URLs into one line and cut of with (...) */
+  .formio-component-url {
+    @apply inline-block max-w-full truncate;
+  }
 }

@@ -811,7 +811,17 @@
       "title": "Supprimer le vérificateur"
     },
     "contact": "Identifiant de contact",
-    "title": "Vérificateurs de campagne"
+    "title": "Vérificateurs de campagne",
+    "canEdit": "",
+    "editorTag": "",
+    "search": {
+      "error": {
+        "message": "",
+        "title": ""
+      },
+      "placeholder": "",
+      "successMessage": ""
+    }
   },
   "calloutThanksPage": {
     "oneResponseWarning": "Veuillez noter que cette campagne n'autorise qu'une seule réponse par personne. Si vous y avez déjà répondu, les réponses supplémentaires ne seront pas enregistrées."
@@ -1174,6 +1184,10 @@
         "min": "Le code devrait comporter au moins {min} caractères.",
         "required": "Le code est obligatoire"
       }
+    },
+    "errorsFormio": {
+      "minLength": "",
+      "maxLength": ""
     },
     "firstName": "Prénom",
     "lastName": "Nom",
@@ -1559,5 +1573,15 @@
   },
   "taxRate": {
     "invoiceName": "TVA"
+  },
+  "stepper": {
+    "navigation": {
+      "label": ""
+    },
+    "screen": {
+      "hasError": "",
+      "completed": "",
+      "currentStep": ""
+    }
   }
 }

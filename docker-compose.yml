@@ -154,6 +154,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    volumes:
+      - ./packages/core/dist/migrations:/opt/packages/core/dist/migrations
     env_file:
       - .env
 
