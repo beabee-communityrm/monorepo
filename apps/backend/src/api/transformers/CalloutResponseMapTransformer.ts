@@ -117,8 +117,6 @@ class CalloutResponseMapTransformer extends BaseCalloutResponseTransformer<
     return await this.fetch(auth, {
       ...query,
       callout: calloutWithSchema,
-      // TODO: support pagination in frontend
-      limit: 2200,
     });
   }
 }
