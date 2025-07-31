@@ -430,7 +430,7 @@ watch(
 
     const mapSchema = localData.value.mapSchema;
 
-    mapIconValues.value.forEach(({ value }) => {
+    for (const { value } of mapIconValues.value) {
       if (!mapSchema.mapIconStyling?.[newQuestion][value]) {
         mapSchema.mapIconStyling = {
           [newQuestion]: {
@@ -441,7 +441,7 @@ watch(
           },
         };
       }
-    });
+    }
   },
   { immediate: true }
 );
