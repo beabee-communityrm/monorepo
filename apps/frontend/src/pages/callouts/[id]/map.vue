@@ -74,12 +74,13 @@ meta:
               'text-font': ['Bold'],
             }"
           />
-          <MglCircleLayer
+          <MglSymbolLayer
+            v-if="mapLoaded"
             :layer-id="LAYER_IDS.UNCLUSTERED_POINTS"
             :filter="['!', ['has', 'point_count']]"
-            :paint="{
-              'circle-color': 'black',
-              'circle-radius': 10,
+            :layout="{
+              'icon-image': ['get', 'icon'],
+              'icon-size': 1,
             }"
           />
         </MglGeoJsonSource>
@@ -185,9 +186,11 @@ meta:
 
 <script lang="ts" setup>
 import {
+  type CalloutMapSchemaIconStylingAnswerIcon,
   type CalloutResponseAnswerAddress,
   type CalloutResponseAnswersSlide,
   type GetCalloutDataWith,
+  getByPath,
   isLngLat,
 } from '@beabee/beabee-common';
 import { fetchAllPages } from '@beabee/client';
@@ -213,7 +216,13 @@ import type {
   MapPointFeature,
   MapPointFeatureCollection,
 } from '@type';
-import { setKey } from '@utils';
+import {
+  generateImageId,
+  getImageString,
+  loadImageFromDataURLToMap,
+  setKey,
+  svgToDataURL,
+} from '@utils';
 import { client } from '@utils/api';
 import {
   type GeocodeResult,
@@ -275,6 +284,7 @@ const map = ref<Map>();
 const route = useRoute();
 const router = useRouter();
 const { t } = useI18n();
+const mapLoaded = ref(false);
 
 const currentPosition = computed({
   get: () => {
@@ -348,12 +358,43 @@ const newResponseAddress = computed(() => {
   return undefined;
 });
 
+const mapIconProp = computed(() => {
+  return props.callout.responseViewSchema?.map?.mapIconProp || '';
+});
+
+const mapIconStyling = computed(() => {
+  return (
+    props.callout.responseViewSchema?.map?.mapIconStyling?.[
+      mapIconProp.value
+    ] || {}
+  );
+});
+
+/**
+ * Get the icon styling for the given answers, based on the map icon question / category answer
+ *
+ * @param answers The answers for the callout response
+ * @returns The icon styling schema, or undefined if no matching styling is found
+ */
+function getIconStyling(
+  answers: CalloutResponseAnswersSlide
+): CalloutMapSchemaIconStylingAnswerIcon | undefined {
+  const key = mapIconProp.value;
+  if (!key) return undefined;
+  const answer = getByPath(answers, key);
+  // We do not allow multiple answers for the map icon prop, so we can safely assume it's a string
+  if (!answer || typeof answer !== 'string') return undefined;
+  return mapIconStyling.value?.[answer];
+}
+
 // A GeoJSON FeatureCollection of all the responses
 const responsesCollecton = computed<MapPointFeatureCollection>(() => {
   return {
     type: 'FeatureCollection',
     features: responses.value.map((response) => {
       const { lat, lng } = response.address.geometry.location;
+      const iconName = getIconStyling(response.answers)?.icon.name || 'circle';
+      const color = getIconStyling(response.answers)?.color || 'black';
 
       return {
         type: 'Feature',
@@ -361,6 +402,7 @@ const responsesCollecton = computed<MapPointFeatureCollection>(() => {
         properties: {
           all_responses: `<${response.number}>`,
           first_response: response.number,
+          icon: generateImageId(iconName, color),
         },
       };
     }),
@@ -633,7 +675,7 @@ function handleMouseOver(e: { event: MapMouseEvent }) {
  *
  * @param e The map load event
  */
-function handleLoad({ map: mapInstance }: { map: Map }) {
+async function handleLoad({ map: mapInstance }: { map: Map }) {
   /**
    * Check if the responses source data is loaded
    * @param sourceDataEvent The source data event
@@ -679,6 +721,33 @@ function handleLoad({ map: mapInstance }: { map: Map }) {
 
     mapInstance.addControl(geocodeControl, 'top-left');
   }
+
+  // Dynamically collect unique icon names and colors, always including defaults
+  const iconNames = new Set<string>(
+    Object.keys(mapIconStyling.value).map(
+      (key) => mapIconStyling.value?.[key]?.icon.name || 'circle'
+    )
+  );
+
+  const iconColors = new Set<string>(
+    Object.keys(mapIconStyling.value).map(
+      (key) => mapIconStyling.value?.[key]?.color || 'black'
+    )
+  );
+  for (const iconName of iconNames) {
+    for (const color of iconColors) {
+      const svgString = getImageString(iconName, color);
+
+      const pngDataUrl = await svgToDataURL(svgString);
+
+      const image = await loadImageFromDataURLToMap(mapInstance, pngDataUrl);
+
+      if (image) {
+        mapInstance.addImage(generateImageId(iconName, color), image);
+      }
+    }
+  }
+  mapLoaded.value = true;
 }
 
 /**

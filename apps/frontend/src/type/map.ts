@@ -3,6 +3,7 @@ import type GeoJSON from 'geojson';
 interface MapPointProps {
   all_responses: string;
   first_response: number;
+  icon: string;
 }
 
 interface MapClusterProps extends MapPointProps {

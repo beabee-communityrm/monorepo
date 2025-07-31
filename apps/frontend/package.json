@@ -21,6 +21,7 @@
     "@appsignal/javascript": "^1.5.0",
     "@beabee/beabee-common": "workspace:^",
     "@beabee/client": "workspace:^",
+    "@beabee/fontawesome": "workspace:^",
     "@beabee/locale": "workspace:^",
     "@beabee/vue": "workspace:^",
     "@captchafox/vue": "^1.3.0",
