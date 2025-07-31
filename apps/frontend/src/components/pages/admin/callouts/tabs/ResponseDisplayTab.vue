@@ -253,13 +253,22 @@
                   :items="mapIconQuestions"
                 />
               </AppFormField>
-              <div v-if="localData.mapSchema.mapIconStyling">
+              <div
+                v-if="
+                  localData.mapSchema.mapIconStyling &&
+                  localData.mapSchema.mapIconProp
+                "
+              >
                 <AppLabel :label="inputT('mapSchema.mapIconStyling.label')" />
                 <MapIconPicker
-                  v-for="(value, i) in mapIconValues"
+                  v-for="(answer, i) in mapIconAnswers"
                   :key="i"
-                  v-model="localData.mapSchema"
-                  :answer="value"
+                  v-model="
+                    localData.mapSchema.mapIconStyling[
+                      localData.mapSchema.mapIconProp
+                    ][answer.value]
+                  "
+                  :answer="answer"
                 />
               </div>
             </AppFormBox>
@@ -416,7 +425,7 @@ const mapIconQuestions = computed(() =>
   )
 );
 
-const mapIconValues = computed(() => {
+const mapIconAnswers = computed(() => {
   const question = mapIconQuestions.value.find(
     (q) => q.id === localData.value.mapSchema.mapIconProp
   );
@@ -430,7 +439,7 @@ watch(
 
     const mapSchema = localData.value.mapSchema;
 
-    for (const { value } of mapIconValues.value) {
+    for (const { value } of mapIconAnswers.value) {
       if (!mapSchema.mapIconStyling?.[newQuestion][value]) {
         mapSchema.mapIconStyling = {
           [newQuestion]: {

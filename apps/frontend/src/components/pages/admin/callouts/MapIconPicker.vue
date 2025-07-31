@@ -6,11 +6,11 @@
     <div class="flex items-center gap-2">
       <font-awesome-icon
         :icon="[
-          mapIconStyling?.icon.prefix || 'fas',
-          mapIconStyling?.icon.name || 'circle',
+          iconStyling.icon.prefix || 'fas',
+          iconStyling.icon.name || 'circle',
         ]"
         :style="{
-          color: mapIconStyling?.color || 'black',
+          color: iconStyling.color || 'black',
         }"
       />
       <AppButton
@@ -22,7 +22,7 @@
     </div>
   </div>
   <AppModal
-    v-if="isPickerOpen && mapSchema.mapIconStyling"
+    v-if="isPickerOpen && iconStyling"
     :open="isPickerOpen"
     :title="inputT('mapSchema.mapIconStylingSetting.title')"
     @close="isPickerOpen = false"
@@ -35,20 +35,15 @@
       <AppSubHeading class="text-m"> Color: </AppSubHeading>
       <AppColorInput
         id="mapIconColor"
-        v-model="
-          mapSchema.mapIconStyling[mapIconProp][props.answer.value].color
-        "
+        v-model="iconStyling.color"
         right-aligned
       />
 
-      <div class="pt-4">
+      <div class="pb-4 pt-4">
         <AppSubHeading class="text-m"> Icon: </AppSubHeading>
         <AppIconPicker
           :id="'mapIcon-' + props.answer.value"
-          v-model="
-            mapSchema.mapIconStyling[mapIconProp][props.answer.value].icon
-          "
-          class="mb-4 mt-2"
+          v-model="iconStyling.icon"
         />
       </div>
     </div>
@@ -56,7 +51,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { CalloutMapSchema } from '@beabee/beabee-common';
+import type { CalloutMapSchemaIconStylingAnswerIcon } from '@beabee/beabee-common';
 import {
   AppButton,
   AppColorInput,
@@ -66,27 +61,19 @@ import {
 } from '@beabee/vue';
 
 import { faPencil } from '@fortawesome/free-solid-svg-icons';
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 const inputT = (key: string) =>
   t('callout.builder.tabs.settings.inputs.' + key);
 
-const mapSchema = defineModel<CalloutMapSchema>({ required: true });
+const iconStyling = defineModel<CalloutMapSchemaIconStylingAnswerIcon>({
+  required: true,
+});
 const props = defineProps<{
   answer: { label: string; value: string };
 }>();
 
 const isPickerOpen = ref<boolean>(false);
-
-const mapIconProp = computed(() => {
-  return mapSchema.value.mapIconProp || '';
-});
-
-const mapIconStyling = computed(() => {
-  return mapSchema.value.mapIconStyling?.[mapIconProp.value][
-    props.answer.value
-  ];
-});
 </script>
