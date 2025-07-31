@@ -806,11 +806,13 @@
   },
   "calloutReviewerManager": {
     "add": "",
+    "canEdit": "",
     "confirmDelete": {
       "text": "",
       "title": ""
     },
     "contact": "",
+    "editorTag": "",
     "title": ""
   },
   "calloutThanksPage": {

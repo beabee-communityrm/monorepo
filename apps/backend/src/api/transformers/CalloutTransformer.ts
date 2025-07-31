@@ -16,7 +16,6 @@ import {
   CalloutVariant,
 } from '@beabee/core/models';
 import { AuthInfo, FilterHandlers } from '@beabee/core/type';
-import { mergeRules } from '@beabee/core/utils/rules';
 
 import {
   GetCalloutDto,
@@ -28,6 +27,7 @@ import { BaseTransformer } from '@api/transformers/BaseTransformer';
 import CalloutVariantTransformer from '@api/transformers/CalloutVariantTransformer';
 import { groupBy } from '@api/utils';
 import { getReviewerRules } from '@api/utils/callouts';
+import { TransformerOperation } from '@type/index';
 import { TransformPlainToInstance } from 'class-transformer';
 import {
   BadRequestError,
@@ -35,6 +35,20 @@ import {
   UnauthorizedError,
 } from 'routing-controllers';
 import { SelectQueryBuilder } from 'typeorm';
+
+const isOpenOrEndedRule: RuleGroup = {
+  condition: 'OR',
+  rules: [
+    { field: 'status', operator: 'equal', value: [ItemStatus.Open] },
+    { field: 'status', operator: 'equal', value: [ItemStatus.Ended] },
+  ],
+};
+
+const isNotHiddenRule: Rule = {
+  field: 'hidden',
+  operator: 'equal',
+  value: [false],
+};
 
 class CalloutTransformer extends BaseTransformer<
   Callout,
@@ -184,46 +198,44 @@ class CalloutTransformer extends BaseTransformer<
 
   protected async getNonAdminAuthRules(
     auth: AuthInfo,
-    query: GetCalloutOptsDto
-  ): Promise<RuleGroup> {
-    return {
-      condition: 'OR',
-      rules: [
-        // Reviewers can see all the callouts they are reviewers for
-        ...(await getReviewerRules(auth.contact, 'id')),
+    query: GetCalloutOptsDto,
+    operation: TransformerOperation
+  ): Promise<(Rule | RuleGroup)[]> {
+    // Only admins can create or delete callouts
+    if (operation === 'create' || operation === 'delete') {
+      return [];
+    }
 
-        // Non-admins can only see open or ended non-hidden callouts
-        mergeRules([
-          {
-            condition: 'OR',
-            rules: [
-              {
-                field: 'status',
-                operator: 'equal',
-                value: [ItemStatus.Open],
-              },
-              {
-                field: 'status',
-                operator: 'equal',
-                value: [ItemStatus.Ended],
-              },
-            ],
-          },
-          !query.showHiddenForAll && {
-            field: 'hidden',
-            operator: 'equal',
-            value: [false],
-          },
-        ]),
-      ],
-    };
+    const reviewerRules = await getReviewerRules(
+      auth.contact,
+      'id',
+      operation === 'update'
+    );
+
+    if (operation === 'read') {
+      return [
+        ...reviewerRules,
+        // If the user is not a reviewer, they can still read open or ended callouts
+        {
+          condition: 'AND',
+          rules: [
+            isOpenOrEndedRule,
+            // By default they can't see hidden callouts unless explicitly enabled
+            ...(query.showHiddenForAll ? [] : [isNotHiddenRule]),
+          ],
+        },
+      ];
+    } else {
+      return reviewerRules;
+    }
   }
 
   protected modifyQueryBuilder(
     qb: SelectQueryBuilder<Callout>,
     fieldPrefix: string,
     query: ListCalloutsDto,
-    auth: AuthInfo
+    auth: AuthInfo,
+    operation: TransformerOperation
   ): void {
     if (
       query.with?.includes(GetCalloutWith.ResponseCount) &&
@@ -235,13 +247,19 @@ class CalloutTransformer extends BaseTransformer<
       );
     }
 
-    // Always load a variant for filtering and sorting
-    qb.leftJoinAndSelect(`${fieldPrefix}variants`, 'cvd', 'cvd.name = :name', {
-      name: query.variant || 'default',
-    });
-
-    if (query.sort === 'title') {
-      qb.orderBy('cvd.title', query.order || 'ASC');
+    if (operation === 'read') {
+      // Always load a variant for filtering and sorting
+      qb.leftJoinAndSelect(
+        `${fieldPrefix}variants`,
+        'cvd',
+        'cvd.name = :name',
+        {
+          name: query.variant || 'default',
+        }
+      );
+      if (query.sort === 'title') {
+        qb.orderBy('cvd.title', query.order || 'ASC');
+      }
     }
   }
 
