@@ -654,7 +654,8 @@
         "label": "Intitulé",
         "option": "Option {n}",
         "placeholder": "Texte indicatif"
-      }
+      },
+      "untitledCallout": ""
     },
     "confirmHuman": "Veuillez confirmer que vous êtes humain",
     "contactDetails": "Informations de contact",
