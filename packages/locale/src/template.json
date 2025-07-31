@@ -806,11 +806,21 @@
   },
   "calloutReviewerManager": {
     "add": "",
+    "canEdit": "",
     "confirmDelete": {
       "text": "",
       "title": ""
     },
     "contact": "",
+    "editorTag": "",
+    "search": {
+      "error": {
+        "message": "",
+        "title": ""
+      },
+      "placeholder": "",
+      "successMessage": ""
+    },
     "title": ""
   },
   "calloutThanksPage": {
@@ -1174,6 +1184,10 @@
         "min": "",
         "required": ""
       }
+    },
+    "errorsFormio": {
+      "maxLength": "",
+      "minLength": ""
     },
     "firstName": "",
     "lastName": "",

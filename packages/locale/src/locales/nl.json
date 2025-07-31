@@ -811,7 +811,17 @@
       "title": "Recensent verwijderen"
     },
     "contact": "Contact ID",
-    "title": "Recensenten oproepen"
+    "title": "Recensenten oproepen",
+    "canEdit": "",
+    "editorTag": "",
+    "search": {
+      "error": {
+        "message": "",
+        "title": ""
+      },
+      "placeholder": "",
+      "successMessage": ""
+    }
   },
   "calloutThanksPage": {
     "oneResponseWarning": "Houd er rekening mee dat deze oproep slechts één reactie per persoon toestaat. Als u al hebt bijgedragen, worden extra reacties niet geregistreerd."
@@ -1199,7 +1209,11 @@
     "saveChanges": "Wijzigingen opslaan",
     "saved": "Opgeslagen!",
     "unsavedChanges": "Niet-opgeslagen wijzigingen",
-    "updated": "Bijgewerkt"
+    "updated": "Bijgewerkt",
+    "errorsFormio": {
+      "minLength": "",
+      "maxLength": ""
+    }
   },
   "formRenderer": {
     "components": {

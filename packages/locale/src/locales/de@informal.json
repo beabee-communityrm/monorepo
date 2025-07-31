@@ -811,7 +811,17 @@
       "title": "Auswerter entfernen"
     },
     "contact": "Kontakt ID",
-    "title": "Callout Auswerter"
+    "title": "Callout Auswerter",
+    "canEdit": "",
+    "editorTag": "",
+    "search": {
+      "error": {
+        "message": "",
+        "title": ""
+      },
+      "placeholder": "",
+      "successMessage": ""
+    }
   },
   "calloutThanksPage": {
     "oneResponseWarning": "Bitte beacht, dass dieser Callout nur eine Antwort pro Person zulässt. Wenn du bereits teilgenommen hast, werden weitere Antworten nicht berücksichtigt."
@@ -1174,6 +1184,10 @@
         "min": "Dein Code muss mindestens {min} Zeichen haben.",
         "required": "Code benötigt"
       }
+    },
+    "errorsFormio": {
+      "minLength": "Dieses Feld muss mindestens {'{{length}}'} Zeichen haben",
+      "maxLength": "Du hast die maximale Länge von {'{{length}}'} Zeichen überschritten"
     },
     "firstName": "Vorname",
     "lastName": "Nachname",

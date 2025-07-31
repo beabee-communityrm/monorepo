@@ -1,7 +1,7 @@
 import {
   ItemStatus,
   NoticeFilterName,
-  RuleGroup,
+  Rule,
   noticeFilters,
 } from '@beabee/beabee-common';
 import { statusFilterHandler } from '@beabee/core/filter-handlers';
@@ -36,11 +36,9 @@ export class NoticeTransformer extends BaseTransformer<
     };
   }
 
-  protected async getNonAdminAuthRules(): Promise<RuleGroup> {
-    return {
-      condition: 'AND',
-      rules: [{ field: 'status', operator: 'equal', value: [ItemStatus.Open] }],
-    };
+  protected async getNonAdminAuthRules(): Promise<Rule[]> {
+    // Non-admins can only see notices that are open
+    return [{ field: 'status', operator: 'equal', value: [ItemStatus.Open] }];
   }
 }
 
