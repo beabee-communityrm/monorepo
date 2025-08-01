@@ -340,7 +340,7 @@
   .formio-component-url {
     /* Reset table styling so it doesn't resize beyond container */
     table,
-    thead,
+    tbody,
     tr,
     td {
       @apply block;
