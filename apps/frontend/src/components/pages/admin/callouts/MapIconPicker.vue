@@ -62,11 +62,8 @@ import {
 import { library } from '@beabee/vue/plugins/icons';
 
 import { faPencil, fas } from '@fortawesome/free-solid-svg-icons';
-import { ref } from 'vue';
+import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-
-// preload all solid icons for app search
-library.add(fas);
 
 const { t } = useI18n();
 const inputT = (key: string) =>
@@ -80,4 +77,10 @@ const props = defineProps<{
 }>();
 
 const isPickerOpen = ref<boolean>(false);
+
+onBeforeMount(() =>
+  // we need to preload all solid icons because we do not know
+  // which icon will be returned by the icon search
+  library.add(fas)
+);
 </script>

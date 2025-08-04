@@ -194,6 +194,7 @@ import {
   isLngLat,
 } from '@beabee/beabee-common';
 import { AppButton } from '@beabee/vue';
+import { library } from '@beabee/vue/plugins/icons';
 
 import CalloutAddResponsePanel from '@components/pages/callouts/CalloutAddResponsePanel.vue';
 import CalloutIntroPanel from '@components/pages/callouts/CalloutIntroPanel.vue';
@@ -203,7 +204,7 @@ import {
   HASH_PREFIX,
   useCallout,
 } from '@components/pages/callouts/use-callout';
-import { faInfoCircle, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faInfoCircle, faPlus, fas } from '@fortawesome/free-solid-svg-icons';
 import { currentLocaleConfig } from '@lib/i18n';
 import { GeocodingControl } from '@maptiler/geocoding-control/maplibregl';
 import '@maptiler/geocoding-control/style.css';
@@ -798,6 +799,12 @@ onMounted(async () => {
     showIntroPanel.value = true;
   }
 });
+
+onBeforeMount(() =>
+  // we need to preload all solid icons because we do not know
+  // which icon will be returned by the icon search
+  library.add(fas)
+);
 </script>
 
 <style lang="postcss" scoped>
