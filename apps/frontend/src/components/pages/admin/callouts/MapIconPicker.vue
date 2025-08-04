@@ -59,10 +59,14 @@ import {
   AppModal,
   AppSubHeading,
 } from '@beabee/vue';
+import { library } from '@beabee/vue/plugins/icons';
 
-import { faPencil } from '@fortawesome/free-solid-svg-icons';
+import { faPencil, fas } from '@fortawesome/free-solid-svg-icons';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+// preload all solid icons for app search
+library.add(fas);
 
 const { t } = useI18n();
 const inputT = (key: string) =>
