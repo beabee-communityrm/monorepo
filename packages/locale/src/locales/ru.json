@@ -822,7 +822,17 @@
       "title": ""
     },
     "contact": "",
-    "title": ""
+    "title": "",
+    "canEdit": "",
+    "editorTag": "",
+    "search": {
+      "error": {
+        "message": "",
+        "title": ""
+      },
+      "placeholder": "",
+      "successMessage": ""
+    }
   },
   "calloutThanksPage": {
     "oneResponseWarning": ""
@@ -1210,7 +1220,11 @@
     "saveChanges": "Сохранить изменения",
     "saved": "Изменения сохранены",
     "unsavedChanges": "Есть несохранённые изменения",
-    "updated": ""
+    "updated": "",
+    "errorsFormio": {
+      "minLength": "",
+      "maxLength": ""
+    }
   },
   "formRenderer": {
     "components": {
@@ -1572,7 +1586,13 @@
     "invoiceName": "???"
   },
   "stepper": {
-    "navigation": {},
-    "screen": {}
+    "navigation": {
+      "label": ""
+    },
+    "screen": {
+      "hasError": "",
+      "completed": "",
+      "currentStep": ""
+    }
   }
 }

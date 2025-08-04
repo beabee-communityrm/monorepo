@@ -333,8 +333,8 @@
     "actions": {
       "updateResponse": ""
     },
-    "addAPoint": "Μπορείτε να εισαγάγετε μια τοποθεσία εδώ.",
-    "addLocation": "Μπορείτε να εισαγάγετε μια νέα τοποθεσία εδώ.",
+    "addAPoint": "Πρόσθεσε μια νέα τοποθεσία εδώ",
+    "addLocation": "Πρόσθεσε μια νέα τοποθεσία εδώ",
     "builder": {
       "actions": {
         "addSlide": ""
@@ -698,8 +698,8 @@
     "toContributionPage": "",
     "updateContribution": "",
     "views": {
-      "gallery": "Συλλογή εικόνων / γκαλερί",
-      "map": "χάρτη"
+      "gallery": "Φωτογραφίες",
+      "map": "Χάρτης"
     },
     "youResponded": "",
     "yourResponse": ""
@@ -822,7 +822,17 @@
       "title": ""
     },
     "contact": "",
-    "title": ""
+    "title": "",
+    "canEdit": "",
+    "editorTag": "",
+    "search": {
+      "error": {
+        "message": "",
+        "title": ""
+      },
+      "placeholder": "",
+      "successMessage": ""
+    }
   },
   "calloutThanksPage": {
     "oneResponseWarning": ""
@@ -1186,6 +1196,10 @@
         "required": ""
       }
     },
+    "errorsFormio": {
+      "minLength": "",
+      "maxLength": ""
+    },
     "firstName": "",
     "lastName": "",
     "newPassword": "",
@@ -1223,7 +1237,7 @@
         "useCamera": "χρησιμοποιήστε κάμερα"
       },
       "multiple": {
-        "addAnother": "Εδώ μπορείτε να ανεβάσετε μια νέα φωτογραφία./ Εδώ μπορείτε να ανεβάσετε ένα νέο αρχείο."
+        "addAnother": "Προσθήκη συνδέσμου"
       }
     }
   },
@@ -1547,6 +1561,16 @@
     "loadingApplication": "",
     "pleaseWait": "",
     "usuallyTakesSeconds": ""
+  },
+  "stepper": {
+    "navigation": {
+      "label": ""
+    },
+    "screen": {
+      "completed": "",
+      "currentStep": "",
+      "hasError": ""
+    }
   },
   "tagEditor": {
     "add": "",

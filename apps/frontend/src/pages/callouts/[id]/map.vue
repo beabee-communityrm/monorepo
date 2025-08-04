@@ -193,6 +193,7 @@ import {
   getByPath,
   isLngLat,
 } from '@beabee/beabee-common';
+import { fetchAllPages } from '@beabee/client';
 import { AppButton } from '@beabee/vue';
 import { library } from '@beabee/vue/plugins/icons';
 
@@ -786,10 +787,12 @@ onBeforeMount(async () => {
     throw new Error('Callout does not have a map schema');
   }
 
-  // TODO: pagination
-  responses.value = (
-    await client.callout.listResponsesForMap(props.callout.slug)
-  ).items.filter((r): r is GetCalloutResponseMapDataWithAddress => !!r.address);
+  responses.value = await fetchAllPages(
+    client.callout.listResponsesForMap.bind(client.callout, props.callout.slug),
+    1000
+  ).then((items) =>
+    items.filter((r): r is GetCalloutResponseMapDataWithAddress => !!r.address)
+  );
 });
 
 onMounted(async () => {

@@ -817,12 +817,22 @@
   },
   "calloutReviewerManager": {
     "add": "Ajouter un vérificateur",
+    "canEdit": "Le vérificateur peut également modifier le CrowdNewsroom",
     "confirmDelete": {
-      "text": "Voulez-vous vraiment supprimer {reviewerName} ? Cette personne ne pourra plus vérifier cette campagne.",
+      "text": "Êtes-vous sûr de vouloir retirer {reviewerName} ? Cette personne ne pourra plus vérifier cet appel.",
       "title": "Supprimer le vérificateur"
     },
     "contact": "Identifiant de contact",
-    "title": "Vérificateurs de campagne"
+    "editorTag": "Éditeur",
+    "search": {
+      "error": {
+        "message": "Veuillez vous assurer que l’adresse e-mail existe et ne contient pas de fautes de frappe.",
+        "title": "Contact non trouvé"
+      },
+      "placeholder": "Rechercher une adresse e-mail",
+      "successMessage": "L’adresse e-mail est valide"
+    },
+    "title": "Vérificateurs"
   },
   "calloutThanksPage": {
     "oneResponseWarning": "Veuillez noter que cette campagne n'autorise qu'une seule réponse par personne. Si vous y avez déjà répondu, les réponses supplémentaires ne seront pas enregistrées."
@@ -1186,6 +1196,10 @@
         "required": "Le code est obligatoire"
       }
     },
+    "errorsFormio": {
+      "maxLength": "",
+      "minLength": ""
+    },
     "firstName": "Prénom",
     "lastName": "Nom",
     "newPassword": "Nouveau mot de passe",
@@ -1547,6 +1561,16 @@
     "loadingApplication": "",
     "pleaseWait": "",
     "usuallyTakesSeconds": ""
+  },
+  "stepper": {
+    "navigation": {
+      "label": ""
+    },
+    "screen": {
+      "completed": "",
+      "currentStep": "",
+      "hasError": ""
+    }
   },
   "tagEditor": {
     "add": "Ajouter un libellé",

@@ -336,4 +336,18 @@
   div[ref='value'] {
     @apply inline;
   }
+
+  .formio-component-url {
+    /* Reset table styling so it doesn't resize beyond container */
+    table,
+    tbody,
+    tr,
+    td {
+      @apply block;
+    }
+    /* Truncate URLs into one line and cut of with (...) */
+    a {
+      @apply block overflow-hidden text-ellipsis whitespace-nowrap;
+    }
+  }
 }

@@ -31,7 +31,7 @@
   - Full accessibility support
 -->
 <template>
-  <div class="space-y-4">
+  <div>
     <AppChoice
       v-if="showPeriod"
       v-model="periodProxy"

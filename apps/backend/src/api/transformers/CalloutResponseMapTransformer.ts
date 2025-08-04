@@ -4,7 +4,7 @@ import {
   CalloutResponseAnswerFileUpload,
   CalloutResponseAnswersSlide,
   CalloutResponseViewSchema,
-  RuleGroup,
+  Rule,
   getCalloutComponents,
   stringifyAnswer,
 } from '@beabee/beabee-common';
@@ -82,16 +82,13 @@ class CalloutResponseMapTransformer extends BaseCalloutResponseTransformer<
   protected async getNonAdminAuthRules(
     auth: AuthInfo,
     query: GetCalloutResponseMapOptsDto
-  ): Promise<RuleGroup> {
-    return {
-      // Only show results from relevant buckets
-      condition: 'OR',
-      rules: query.callout.responseViewSchema.buckets.map((bucket) => ({
-        field: 'bucket',
-        operator: 'equal',
-        value: [bucket],
-      })),
-    };
+  ): Promise<Rule[]> {
+    // Only show results from relevant buckets
+    return query.callout.responseViewSchema.buckets.map((bucket) => ({
+      field: 'bucket',
+      operator: 'equal',
+      value: [bucket],
+    }));
   }
 
   /**
@@ -120,8 +117,6 @@ class CalloutResponseMapTransformer extends BaseCalloutResponseTransformer<
     return await this.fetch(auth, {
       ...query,
       callout: calloutWithSchema,
-      // TODO: support pagination in frontend
-      limit: 2200,
     });
   }
 }

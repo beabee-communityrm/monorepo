@@ -817,12 +817,22 @@
   },
   "calloutReviewerManager": {
     "add": "Auswerter hinzufügen",
+    "canEdit": "Der Auswerter kann auch die CrowdNewsroom bearbeiten",
     "confirmDelete": {
-      "text": "Bist du sicher, dass du {reviewerName} entfernen möchtest? Diese Person wird diesen Callout nicht mehr überprüfen können.",
+      "text": "Bist du sicher, dass du {reviewerName} entfernen willst? Er/Sie kann diesen Aufruf dann nicht mehr auswerten.",
       "title": "Auswerter entfernen"
     },
     "contact": "Kontakt ID",
-    "title": "Callout Auswerter"
+    "editorTag": "Bearbeiter",
+    "search": {
+      "error": {
+        "message": "Bitte stell sicher, dass die E-Mail-Adresse existiert und keinen Tippfehler enthält.",
+        "title": "Kontakt nicht gefunden"
+      },
+      "placeholder": "E-Mail-Adresse suchen",
+      "successMessage": "E-Mail ist gültig"
+    },
+    "title": "Auswerter"
   },
   "calloutThanksPage": {
     "oneResponseWarning": "Bitte beacht, dass dieser Callout nur eine Antwort pro Person zulässt. Wenn du bereits teilgenommen hast, werden weitere Antworten nicht berücksichtigt."
@@ -1185,6 +1195,10 @@
         "min": "Dein Code muss mindestens {min} Zeichen haben.",
         "required": "Code benötigt"
       }
+    },
+    "errorsFormio": {
+      "maxLength": "Du hast die maximale Länge von {'{{length}}'} Zeichen überschritten",
+      "minLength": "Dieses Feld muss mindestens {'{{length}}'} Zeichen haben"
     },
     "firstName": "Vorname",
     "lastName": "Nachname",

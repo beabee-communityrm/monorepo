@@ -822,7 +822,17 @@
       "title": ""
     },
     "contact": "",
-    "title": ""
+    "title": "",
+    "canEdit": "",
+    "editorTag": "",
+    "search": {
+      "error": {
+        "message": "",
+        "title": ""
+      },
+      "placeholder": "",
+      "successMessage": ""
+    }
   },
   "calloutThanksPage": {
     "oneResponseWarning": ""
@@ -1185,6 +1195,10 @@
         "min": "",
         "required": ""
       }
+    },
+    "errorsFormio": {
+      "minLength": "",
+      "maxLength": ""
     },
     "firstName": "Vorname",
     "lastName": "Nachname",
@@ -1572,7 +1586,13 @@
     "invoiceName": "MwSt"
   },
   "stepper": {
-    "navigation": {},
-    "screen": {}
+    "navigation": {
+      "label": ""
+    },
+    "screen": {
+      "hasError": "",
+      "completed": "",
+      "currentStep": ""
+    }
   }
 }

@@ -268,7 +268,6 @@ import {
   type GetContactData,
   type GetContactDataWith,
   GetContactWith,
-  PaymentMethod,
   type RoleType,
 } from '@beabee/beabee-common';
 import {
@@ -286,6 +285,7 @@ import {
 import { addNotification } from '@beabee/vue/store/notifications';
 
 import CalloutForm from '@components/pages/callouts/CalloutForm.vue';
+import { PaymentMethod } from '@components/payment';
 import AppRoleEditor from '@components/role/AppRoleEditor.vue';
 import TagList from '@components/tag/TagList.vue';
 import ToggleTagButton from '@components/tag/ToggleTagButton.vue';

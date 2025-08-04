@@ -1,6 +1,5 @@
 import {
-  RoleType,
-  RuleGroup,
+  Rule,
   getCalloutComponents,
   stringifyAnswer,
 } from '@beabee/beabee-common';
@@ -20,6 +19,7 @@ import {
 } from '@api/dto/CalloutResponseDto';
 import { BaseCalloutResponseTransformer } from '@api/transformers/BaseCalloutResponseTransformer';
 import { getReviewerRules, groupBy } from '@api/utils';
+import { TransformerOperation } from '@type/transformer-operation';
 import { stringify } from 'csv-stringify/sync';
 import { format } from 'date-fns';
 import { In, SelectQueryBuilder } from 'typeorm';
@@ -59,14 +59,8 @@ class CalloutResponseExporter extends BaseCalloutResponseTransformer<
     ];
   }
 
-  protected async getNonAdminAuthRules(
-    auth: AuthInfo,
-    query: ExportCalloutResponsesOptsDto
-  ): Promise<RuleGroup | false> {
-    const reviewerRules = await getReviewerRules(auth.contact, 'calloutId');
-    return reviewerRules.length
-      ? { condition: 'OR', rules: reviewerRules }
-      : false;
+  protected async getNonAdminAuthRules(auth: AuthInfo): Promise<Rule[]> {
+    return await getReviewerRules(auth.contact, 'calloutId', false);
   }
 
   protected modifyQueryBuilder(
