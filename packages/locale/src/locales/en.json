@@ -477,9 +477,9 @@
               },
               "mapIconProp": {
                 "label": "Display question replies with special icons on the map?",
-                 "none": "– Use default icons for all replies –"
+                "none": "– Use default icons for all replies –"
               },
-              "mapIconStyling": {
+              "mapIconStylingProp": {
                 "label": "Label"
               },
               "mapIconStylingSetting": {

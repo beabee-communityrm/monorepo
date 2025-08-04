@@ -496,6 +496,9 @@
               "mapIconProp": {
                 "label": "",
                 "none": ""
+              },
+              "mapIconStylingProp": {
+                "label": ""
               }
             },
             "newsletterSettings": {
@@ -1594,9 +1597,5 @@
   },
   "taxRate": {
     "invoiceName": "TVA"
-  },
-  "stepper": {
-    "navigation": {},
-    "screen": {}
   }
 }

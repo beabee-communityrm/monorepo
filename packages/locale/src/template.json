@@ -479,12 +479,12 @@
                 "label": "",
                 "none": ""
               },
-              "mapIconStyling": {
+              "mapIconStylingProp": {
                 "label": ""
               },
               "mapIconStylingSetting": {
-                "title": "",
-                "label": ""
+                "label": "",
+                "title": ""
               },
               "maxZoom": {
                 "label": ""

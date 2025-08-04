@@ -486,9 +486,6 @@
                 "label": "Karten-Style-URL"
               },
               "title": "Karteneinstellungen",
-              "mapIconStyling": {
-                "label": "Label"
-              },
               "mapIconStylingSetting": {
                 "label": "",
                 "title": ""
@@ -496,6 +493,9 @@
               "mapIconProp": {
                 "label": "",
                 "none": ""
+              },
+              "mapIconStylingProp": {
+                "label": ""
               }
             },
             "newsletterSettings": {

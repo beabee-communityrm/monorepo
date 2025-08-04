@@ -265,7 +265,9 @@
                   localData.mapSchema.mapIconProp
                 "
               >
-                <AppLabel :label="inputT('mapSchema.mapIconStyling.label')" />
+                <AppLabel
+                  :label="inputT('mapSchema.mapIconStylingProp.label')"
+                />
                 <MapIconPicker
                   v-for="(answer, i) in mapIconAnswers"
                   :key="i"

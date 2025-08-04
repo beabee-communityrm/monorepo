@@ -486,9 +486,6 @@
                 "label": ""
               },
               "title": "",
-              "mapIconStyling": {
-                "label": ""
-              },
               "mapIconStylingSetting": {
                 "label": "",
                 "title": ""
@@ -496,6 +493,9 @@
               "mapIconProp": {
                 "label": "",
                 "none": ""
+              },
+              "mapIconStylingProp": {
+                "label": ""
               }
             },
             "newsletterSettings": {
@@ -1594,9 +1594,5 @@
   },
   "taxRate": {
     "invoiceName": "BTW"
-  },
-  "stepper": {
-    "navigation": {},
-    "screen": {}
   }
 }
