@@ -489,12 +489,13 @@
               "mapIconQuestions": {
                 "label": ""
               },
-              "mapIconStyling": {
-                "label": ""
-              },
               "mapIconStylingSetting": {
                 "label": "",
                 "title": ""
+              },
+              "mapIconProp": {
+                "label": "",
+                "none": ""
               }
             },
             "newsletterSettings": {
@@ -1569,5 +1570,9 @@
   },
   "taxRate": {
     "invoiceName": "TVA"
+  },
+  "stepper": {
+    "navigation": {},
+    "screen": {}
   }
 }

@@ -476,14 +476,15 @@
               "initialZoom": {
                 "label": "Initial zoom level"
               },
-              "mapIconQuestions": {
-                "label": "Select question for map icons"
+              "mapIconProp": {
+                "label": "Display question replies with special icons on the map?",
+                 "none": "– Use default icons for all replies –"
               },
               "mapIconStyling": {
                 "label": "Label"
               },
               "mapIconStylingSetting": {
-                "title": "Map Icon Style",
+                "title": "Style of Icon on Map",
                 "label": "Please select a color and icon for the answer: "
               },
               "maxZoom": {

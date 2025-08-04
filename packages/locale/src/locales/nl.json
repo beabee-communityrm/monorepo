@@ -486,15 +486,16 @@
                 "label": ""
               },
               "title": "",
-              "mapIconQuestions": {
-                "label": ""
-              },
               "mapIconStyling": {
                 "label": ""
               },
               "mapIconStylingSetting": {
                 "label": "",
                 "title": ""
+              },
+              "mapIconProp": {
+                "label": "",
+                "none": ""
               }
             },
             "newsletterSettings": {
@@ -1569,5 +1570,9 @@
   },
   "taxRate": {
     "invoiceName": "BTW"
+  },
+  "stepper": {
+    "navigation": {},
+    "screen": {}
   }
 }

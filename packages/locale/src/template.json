@@ -476,8 +476,9 @@
               "initialZoom": {
                 "label": ""
               },
-              "mapIconQuestions": {
-                "label": ""
+              "mapIconProp": {
+                "label": "",
+                "none": ""
               },
               "mapIconStyling": {
                 "label": ""

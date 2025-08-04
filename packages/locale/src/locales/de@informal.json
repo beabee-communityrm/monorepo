@@ -486,15 +486,16 @@
                 "label": "Karten-Style-URL"
               },
               "title": "Karteneinstellungen",
-              "mapIconQuestions": {
-                "label": ""
-              },
               "mapIconStyling": {
                 "label": "Label"
               },
               "mapIconStylingSetting": {
                 "label": "",
                 "title": ""
+              },
+              "mapIconProp": {
+                "label": "",
+                "none": ""
               }
             },
             "newsletterSettings": {

@@ -249,8 +249,14 @@
               <AppFormField>
                 <AppSelect
                   v-model="localData.mapSchema.mapIconProp"
-                  :label="inputT('mapSchema.mapIconQuestions.label')"
-                  :items="mapIconQuestions"
+                  :label="inputT('mapSchema.mapIconProp.label')"
+                  :items="[
+                    {
+                      id: '',
+                      label: inputT('mapSchema.mapIconProp.none'),
+                    },
+                    ...mapIconQuestions,
+                  ]"
                 />
               </AppFormField>
               <div
@@ -432,25 +438,33 @@ const mapIconAnswers = computed(() => {
   return question ? question.values : [];
 });
 
-watch(
-  () => localData.value.mapSchema.mapIconProp,
-  (newQuestion) => {
-    if (!newQuestion) return;
+function initializeMapSchema() {
+  const mapSchema = localData.value.mapSchema;
 
-    const mapSchema = localData.value.mapSchema;
+  if (!mapSchema.mapIconProp) return;
 
-    for (const { value } of mapIconAnswers.value) {
-      if (!mapSchema.mapIconStyling?.[newQuestion][value]) {
-        mapSchema.mapIconStyling = {
-          [newQuestion]: {
-            [value]: {
-              color: '#262453',
-              icon: { prefix: 'fas', name: 'circle' },
-            },
-          },
-        };
-      }
+  if (!mapSchema.mapIconStyling) {
+    mapSchema.mapIconStyling = {};
+  }
+
+  if (!mapSchema.mapIconStyling?.[mapSchema.mapIconProp]) {
+    mapSchema.mapIconStyling[mapSchema.mapIconProp] = {};
+  }
+
+  for (const { value } of mapIconAnswers.value) {
+    if (!mapSchema.mapIconStyling[mapSchema.mapIconProp][value]) {
+      mapSchema.mapIconStyling[mapSchema.mapIconProp][value] = {
+        color: '#262453',
+        icon: { prefix: 'fas', name: 'circle' },
+      };
     }
+  }
+}
+
+watch(
+  () => mapIconAnswers.value,
+  () => {
+    initializeMapSchema();
   },
   { immediate: true }
 );
