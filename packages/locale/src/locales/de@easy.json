@@ -534,9 +534,13 @@
                 "label": "",
                 "url": ""
               },
-              "text": {},
+              "text": {
+                "label": ""
+              },
               "add": "",
-              "url": {}
+              "url": {
+                "label": ""
+              }
             },
             "responseSettings": {
               "label": "",

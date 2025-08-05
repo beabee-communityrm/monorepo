@@ -534,9 +534,13 @@
                 "label": "Exemple : Signaler une erreur",
                 "url": "mailto:error{'@'}mail.com"
               },
-              "text": {},
+              "text": {
+                "label": ""
+              },
               "add": "",
-              "url": {}
+              "url": {
+                "label": ""
+              }
             },
             "responseSettings": {
               "label": "Comportement de réponse",

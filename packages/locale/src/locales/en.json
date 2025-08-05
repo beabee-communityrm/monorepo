@@ -535,11 +535,11 @@
                 "url": "mailto:error{'@'}mail.com"
               },
               "text": {
-                "label": ""
+                "label": "Text"
               },
-              "add": "",
+              "add": "Add",
               "url": {
-                "label": ""
+                "label": "Url"
               }
             },
             "responseSettings": {
