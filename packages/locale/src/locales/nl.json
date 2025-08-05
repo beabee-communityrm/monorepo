@@ -533,7 +533,10 @@
               "placeholder": {
                 "label": "",
                 "url": ""
-              }
+              },
+              "text": {},
+              "add": "",
+              "url": {}
             },
             "responseSettings": {
               "label": "",

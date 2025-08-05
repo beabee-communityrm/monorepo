@@ -533,7 +533,10 @@
               "placeholder": {
                 "label": "Beispiel: Fehler melden",
                 "url": "mailto:fehler{'@'}mail.com"
-              }
+              },
+              "text": {},
+              "add": "",
+              "url": {}
             },
             "responseSettings": {
               "label": "Antwortverhalten",
