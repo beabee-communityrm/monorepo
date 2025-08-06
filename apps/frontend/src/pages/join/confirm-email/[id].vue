@@ -9,18 +9,20 @@ meta:
 
 <script lang="ts" setup>
 import { client } from '@utils/api';
-import { onBeforeMount } from 'vue';
-import { useRouter } from 'vue-router';
+import { computed, onBeforeMount } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
 import { updateCurrentUser } from '../../../store';
 
-const props = defineProps<{ id: string }>();
-
+const route = useRoute('confirmEmailLoading');
 const router = useRouter();
+
+// Extract id from route params
+const id = computed(() => route.params.id);
 
 onBeforeMount(() => {
   client.signup
-    .confirmEmail(props.id)
+    .confirmEmail(id.value)
     .then(() => updateCurrentUser())
     .then(() => router.replace('/join/setup'))
     .catch(() => {

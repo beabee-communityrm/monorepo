@@ -17,6 +17,7 @@ import { faCog } from '@fortawesome/free-solid-svg-icons';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
+import type { RouteNamedMap } from 'vue-router/auto-routes';
 
 import { addBreadcrumb } from '../../store/breadcrumb';
 
@@ -44,7 +45,7 @@ const tabs = computed(() =>
     },
   ].map((item) => ({
     ...item,
-    to: router.resolve({ name: item.id }).href,
+    to: router.resolve({ name: item.id as keyof RouteNamedMap }).href,
   }))
 );
 

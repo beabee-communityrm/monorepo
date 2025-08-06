@@ -202,13 +202,17 @@ import { client } from '@utils/api';
 import { buckets } from '@utils/callouts';
 import { computed, ref, toRef, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useRoute } from 'vue-router';
 
 const props = defineProps<{
-  rid: string;
   callout: GetCalloutDataWith<'form' | 'responseViewSchema'>;
 }>();
 
+const route = useRoute('adminCalloutViewResponsesItem');
 const { t, n } = useI18n();
+
+// Extract rid from route params
+const rid = computed(() => route.params.rid);
 
 addBreadcrumb(
   computed(() => [
@@ -285,7 +289,7 @@ async function handleEditResponse(answers: CalloutResponseAnswersSlide) {
 }
 
 async function refreshResponse() {
-  const newResponse = await client.callout.response.get(props.rid, [
+  const newResponse = await client.callout.response.get(rid.value, [
     GetCalloutResponseWith.Answers,
     GetCalloutResponseWith.Assignee,
     GetCalloutResponseWith.Contact,

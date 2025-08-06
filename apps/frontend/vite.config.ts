@@ -26,17 +26,6 @@ export default ({ command, mode }) => {
       dts: true,
       // Configure route block lang (same as vite-plugin-pages default)
       routeBlockLang: 'yaml',
-      // Enable automatic props passing (like vite-plugin-pages)
-      extendRoute(route) {
-        // Enable props for all dynamic routes
-        if (route.path.includes(':') || route.path.includes('[')) {
-          return {
-            ...route,
-            props: true,
-          };
-        }
-        return route;
-      },
     }),
     vue(),
     vueI18n({

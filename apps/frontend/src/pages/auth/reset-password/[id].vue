@@ -95,13 +95,12 @@ import AuthBox from '@components/AuthBox.vue';
 import { updateCurrentUser } from '@store/index';
 import { client, isApiError } from '@utils/api';
 import { isInternalUrl } from '@utils/index';
-import { reactive, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
 const props = withDefaults(
   defineProps<{
-    id: string;
     mode?: 'set' | 'reset';
   }>(),
   { mode: 'reset' }
@@ -109,8 +108,12 @@ const props = withDefaults(
 
 const { t } = useI18n();
 
-const route = useRoute();
+const route = useRoute('reset_password');
 const router = useRouter();
+
+// Extract id from route params
+const id = computed(() => route.params.id);
+const mode = computed(() => props.mode);
 
 const redirectTo = route.query.next as string | undefined;
 
@@ -120,7 +123,7 @@ const data = reactive({ password: '', repeatPassword: '', token: '' });
 async function handleSubmit() {
   try {
     await client.resetSecurity.resetPasswordComplete(
-      props.id,
+      id.value,
       data.password,
       data.token || undefined
     );

@@ -28,14 +28,16 @@ import { client } from '@utils/api';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
+import type { RouteNamedMap } from 'vue-router/auto-routes';
 
 import env from '../../../env';
 
-const props = defineProps<{ id: string }>();
-
-const route = useRoute();
+const route = useRoute('adminContactsView');
 const router = useRouter();
 const { t } = useI18n();
+
+// Extract id from route params
+const id = computed(() => route.params.id);
 
 const contact = ref<GetContactData | undefined>();
 
@@ -64,7 +66,7 @@ const tabs = computed(() =>
   ].map((item) => ({
     ...item,
     to: router.resolve({
-      name: item.id,
+      name: item.id as keyof RouteNamedMap,
       params: { id: contact.value?.id || '-' },
     }).href,
   }))
@@ -97,6 +99,6 @@ addBreadcrumb(
 );
 
 onBeforeMount(async () => {
-  contact.value = await client.contact.get(props.id);
+  contact.value = await client.contact.get(id.value);
 });
 </script>

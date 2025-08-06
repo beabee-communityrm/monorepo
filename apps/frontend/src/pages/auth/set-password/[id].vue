@@ -11,7 +11,12 @@ meta:
 </template>
 
 <script lang="ts" setup>
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
+
 import ResetPasswordPage from '../reset-password/[id].vue';
 
-defineProps<{ id: string }>();
+const route = useRoute('set_password');
+// Extract id from route params
+const id = computed(() => route.params.id);
 </script>

@@ -29,12 +29,14 @@ import { addBreadcrumb } from '@store/breadcrumb';
 import { client } from '@utils/api';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 const { t } = useI18n();
+const route = useRoute('adminNoticeEdit');
 const router = useRouter();
 
-const props = defineProps<{ id: string }>();
+// Extract id from route params
+const id = computed(() => route.params.id);
 const notice = ref<GetNoticeData | undefined>();
 
 addBreadcrumb(
@@ -44,7 +46,7 @@ addBreadcrumb(
       ? [
           {
             title: notice.value?.name || '',
-            to: '/admin/notices/view/' + props.id,
+            to: '/admin/notices/view/' + id.value,
           },
           { title: t('actions.edit') },
         ]
@@ -53,7 +55,7 @@ addBreadcrumb(
 );
 
 onBeforeMount(async () => {
-  notice.value = await client.notice.get(props.id);
+  notice.value = await client.notice.get(id.value);
 });
 
 async function handleSubmit(formData: CreateNoticeData) {

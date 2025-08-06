@@ -10,7 +10,12 @@ meta:
 </template>
 
 <script lang="ts" setup>
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
+
 import NewCalloutPage from '../new.vue';
 
-defineProps<{ id: string }>();
+const route = useRoute('adminCalloutEdit');
+// Extract id from route params
+const id = computed(() => route.params.id);
 </script>

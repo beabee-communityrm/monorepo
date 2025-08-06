@@ -10,22 +10,22 @@ import {
   generateComponentTextWithFallbacks,
   generateSlidesWithNavigationFallbacks,
 } from '@utils/callouts';
-import { ref } from 'vue';
-import { watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
-const props = defineProps<{ id: string }>();
 const callout =
   ref<GetCalloutDataWith<'form' | 'responseViewSchema' | 'variantNames'>>();
 
-const route = useRoute();
+const route = useRoute('/callouts/[id]');
+// Extract id from route params
+const id = computed(() => route.params.id);
 
 watch(
-  [() => props.id, () => route.query.lang],
+  [() => id.value, () => route.query.lang],
   async () => {
     // Load callout with variants to get structured translation data
     const calloutWithVariants = await client.callout.get(
-      props.id,
+      id.value,
       ['form', 'responseViewSchema', 'variantNames', 'variants'],
       route.query.lang ? route.query.lang.toString() : undefined
     );
