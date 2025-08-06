@@ -533,6 +533,13 @@
               "placeholder": {
                 "label": "Example: Report an error",
                 "url": "mailto:error{'@'}mail.com"
+              },
+              "text": {
+                "label": "Text"
+              },
+              "add": "Add",
+              "url": {
+                "label": "Url"
               }
             },
             "responseSettings": {

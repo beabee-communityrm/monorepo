@@ -533,6 +533,13 @@
               "placeholder": {
                 "label": "Exemple : Signaler une erreur",
                 "url": "mailto:error{'@'}mail.com"
+              },
+              "text": {
+                "label": ""
+              },
+              "add": "",
+              "url": {
+                "label": ""
               }
             },
             "responseSettings": {
