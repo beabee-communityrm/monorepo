@@ -25,12 +25,5 @@
       "@assets/*": ["./src/assets/*"]
     }
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.d.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "env.d.ts",
-    "typed-router.d.ts"
-  ]
+  "include": ["src/**/*.ts", "**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"]
 }
