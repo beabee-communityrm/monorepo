@@ -91,6 +91,7 @@ export type TranslationData = {
 export type GetNestedValueResult =
   | { success: true; value: string }
   | { success: false; reason: 'path_not_found'; missingKey: string }
+  | { success: false; reason: 'empty_string'; path: string }
   | {
       success: false;
       reason: 'wrong_type';

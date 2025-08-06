@@ -149,9 +149,14 @@ function getNestedValueDetailed(
     }
   }
 
-  // Type narrowing: at this point current should be string for a valid translation
+  // Type narrowing: at this point current should be a non-empty string for a valid translation
   if (typeof current === 'string') {
-    return { success: true, value: current };
+    if (current.trim() !== '') {
+      return { success: true, value: current };
+    } else {
+      // Empty strings are considered missing translations
+      return { success: false, reason: 'empty_string', path };
+    }
   }
 
   // Found the path but it contains non-string value (could be object, number, boolean)
@@ -167,7 +172,7 @@ function getNestedValueDetailed(
 
 /**
  * Get all translation keys from a locale object
- * Only returns keys that lead to string values (valid translations)
+ * Only returns keys that lead to non-empty string values (valid translations)
  */
 function getAllKeysFromObject(obj: TranslationData, prefix = ''): string[] {
   const keys: string[] = [];
@@ -175,7 +180,7 @@ function getAllKeysFromObject(obj: TranslationData, prefix = ''): string[] {
   for (const [key, value] of Object.entries(obj)) {
     const fullKey = prefix ? `${prefix}.${key}` : key;
 
-    if (typeof value === 'string') {
+    if (typeof value === 'string' && value.trim() !== '') {
       keys.push(fullKey);
     } else if (typeof value === 'object' && value !== null) {
       // Recursively process nested objects
@@ -220,6 +225,10 @@ export async function checkTranslationKey(
         if (errorResult.reason === 'wrong_type') {
           console.warn(
             `Translation key "${key}" exists in locale "${locale}" but contains ${errorResult.foundType} instead of string`
+          );
+        } else if (errorResult.reason === 'empty_string') {
+          console.warn(
+            `Translation key "${key}" exists in locale "${locale}" but contains empty string (treated as missing)`
           );
         }
       }
@@ -418,7 +427,7 @@ export async function setTranslation(
 
   // Process each locale
   for (const [locale, value] of Object.entries(translations)) {
-    if (!value) continue; // Skip empty values
+    if (!value || value.trim() === '') continue; // Skip empty/whitespace-only values
 
     try {
       // Validate locale
