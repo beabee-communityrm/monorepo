@@ -8,7 +8,7 @@
       </router-link>
     </li>-->
     <li>
-      <router-link to="/callouts">
+      <router-link to="/crowdnewsrooms">
         {{ t('homePage.viewOpenCallouts') }}
       </router-link>
     </li>

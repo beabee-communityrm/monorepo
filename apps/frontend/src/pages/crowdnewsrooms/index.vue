@@ -44,7 +44,7 @@ meta:
 
     <template #value-name="{ item }">
       <router-link
-        :to="`/callouts/${item.slug}`"
+        :to="`/crowdnewsrooms/${item.slug}`"
         class="text-base font-bold text-link"
         >{{ item.title }}</router-link
       >

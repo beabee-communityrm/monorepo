@@ -6,7 +6,7 @@ meta:
 <template>
   <PageTitle :title="t('menu.callouts')" border>
     <div class="flex-0 ml-3 hidden md:block">
-      <AppButton to="/admin/callouts/new">{{
+      <AppButton to="/admin/crowdnewsrooms/new">{{
         t('calloutsAdmin.addCallout')
       }}</AppButton>
     </div>
@@ -16,7 +16,7 @@ meta:
         :title="t('calloutsAdmin.addCallout')"
         class="rounded-full drop-shadow-md"
         size="lg"
-        to="/admin/callouts/new"
+        to="/admin/crowdnewsrooms/new"
       />
     </div>
   </PageTitle>
@@ -40,7 +40,7 @@ meta:
       </template>
       <template #value-title="{ item, value }">
         <router-link
-          :to="'/admin/callouts/view/' + item.slug"
+          :to="'/admin/crowdnewsrooms/view/' + item.slug"
           class="text-base font-bold text-link"
         >
           {{ value }}
@@ -103,7 +103,7 @@ addBreadcrumb(
     {
       title: t('menu.callouts'),
       icon: faBullhorn,
-      to: '/admin/callouts',
+      to: '/admin/crowdnewsrooms',
     },
   ])
 );
@@ -112,27 +112,27 @@ const statusItems = computed(() => [
   {
     id: '',
     label: t('calloutsAdmin.filter.all'),
-    to: '/admin/callouts',
+    to: '/admin/crowdnewsrooms',
   },
   {
     id: 'open',
     label: t('calloutsAdmin.filter.open'),
-    to: '/admin/callouts?filter=open',
+    to: '/admin/crowdnewsrooms?filter=open',
   },
   {
     id: 'scheduled',
     label: t('calloutsAdmin.filter.scheduled'),
-    to: '/admin/callouts?filter=scheduled',
+    to: '/admin/crowdnewsrooms?filter=scheduled',
   },
   {
     id: 'ended',
     label: t('calloutsAdmin.filter.ended'),
-    to: '/admin/callouts?filter=ended',
+    to: '/admin/crowdnewsrooms?filter=ended',
   },
   {
     id: 'draft',
     label: t('calloutsAdmin.filter.draft'),
-    to: '/admin/callouts?filter=draft',
+    to: '/admin/crowdnewsrooms?filter=draft',
   },
 ]);
 

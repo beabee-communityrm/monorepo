@@ -25,7 +25,7 @@ meta:
           :disabled="!prevResponse"
           :to="
             prevResponse &&
-            `/admin/callouts/view/${callout.slug}/responses/${prevResponse.id}`
+            `/admin/crowdnewsrooms/view/${callout.slug}/responses/${prevResponse.id}`
           "
         />
         <AppButton
@@ -35,7 +35,7 @@ meta:
           :disabled="!nextResponse"
           :to="
             nextResponse &&
-            `/admin/callouts/view/${callout.slug}/responses/${nextResponse.id}`
+            `/admin/crowdnewsrooms/view/${callout.slug}/responses/${nextResponse.id}`
           "
         />
       </AppButtonGroup>
@@ -51,7 +51,7 @@ meta:
       @select="
         (tagId) =>
           $router.push(
-            `/admin/callouts/view/${callout.slug}/responses?tag=${tagId}`
+            `/admin/crowdnewsrooms/view/${callout.slug}/responses?tag=${tagId}`
           )
       "
     />
@@ -100,7 +100,7 @@ meta:
         with-text
         :tag-items="tagItems"
         :selected-tags="response.tags.map((t) => t.id)"
-        :manage-url="`/admin/callouts/view/${callout.slug}/responses/tags`"
+        :manage-url="`/admin/crowdnewsrooms/view/${callout.slug}/responses/tags`"
         :loading="doingAction"
         @toggle="
           (tagId, successText) => handleUpdate({ tags: [tagId] }, successText)
@@ -111,7 +111,7 @@ meta:
         with-text
         :reviewer-items="reviewerItems"
         :current-assignee-id="response.assignee?.id"
-        :manage-url="`/admin/callouts/view/${callout.slug}/responses/tags`"
+        :manage-url="`/admin/crowdnewsrooms/view/${callout.slug}/responses/tags`"
         :disabled="doingAction"
         :loading="doingAction"
         @assign="
@@ -125,7 +125,7 @@ meta:
     <div class="mb-4 flex gap-2">
       <AppButton
         v-if="callout.responseViewSchema?.map"
-        :to="`/callouts/${callout.slug}/map#response-${response.number}`"
+        :to="`/crowdnewsrooms/${callout.slug}/map#response-${response.number}`"
         :icon="faMap"
         size="sm"
       >
@@ -214,11 +214,11 @@ addBreadcrumb(
   computed(() => [
     {
       title: t('calloutAdmin.responses'),
-      to: `/admin/callouts/view/${props.callout.slug}/responses`,
+      to: `/admin/crowdnewsrooms/view/${props.callout.slug}/responses`,
     },
     {
       title: bucketName.value,
-      to: `/admin/callouts/view/${props.callout.slug}/responses?bucket=${response.value?.bucket}`,
+      to: `/admin/crowdnewsrooms/view/${props.callout.slug}/responses?bucket=${response.value?.bucket}`,
     },
     {
       title: t('calloutResponsesPage.responseNo', {
