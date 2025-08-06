@@ -6,16 +6,15 @@ import {
   NewsletterStatus,
   contactFilters,
 } from '@beabee/beabee-common';
-import type { SelectItem } from '@beabee/vue/types';
+import { type Header, type SelectItem } from '@beabee/vue';
 
-import { type Header } from '@components/table/table.interface';
 import { i18n } from '@lib/i18n';
 import { generalContent } from '@store';
-import type { FilterGroups, FilterItems } from '@type';
 import { client } from '@utils/api';
-import { withItems, withLabel } from '@utils/rules';
 import { computed, ref, watchEffect } from 'vue';
 
+import type { FilterGroups, FilterItems } from '../../../../type/search';
+import { withItems, withLabel } from '../../../../utils/filters';
 import CalloutResponseFilterGroup from './CalloutResponseFilterGroup.vue';
 
 const { t } = i18n.global;
@@ -67,7 +66,7 @@ export const headers = computed<Header[]>(() => [
  */
 const filterItems = computed<FilterItems<ContactFilterName>>(() => ({
   // Contact Information Filters
-  id: withLabel(contactFilters.id, t('contacts.data.id')),
+  id: withLabel(contactFilters.id, t('common.id')),
   firstname: withLabel(contactFilters.firstname, t('contacts.data.firstname')),
   lastname: withLabel(contactFilters.lastname, t('contacts.data.lastname')),
   email: withLabel(contactFilters.email, t('contacts.data.email')),

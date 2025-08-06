@@ -71,6 +71,7 @@
     "continue": "Continuar",
     "copy": "Copiar",
     "create": "Criar",
+    "decrease": "",
     "delete": "Apagar",
     "disable": "Desativar",
     "edit": "Editar",
@@ -79,6 +80,7 @@
     "export": "Exportar",
     "getStarted": "Começar",
     "goBack": "Voltar atrás",
+    "increase": "",
     "next": "Próxima",
     "noBack": "Não, voltar atrás",
     "participate": "Participar",
@@ -100,6 +102,7 @@
     "share": "Partilhar",
     "skip": "Saltar",
     "submit": "Enviar",
+    "tryAgain": "",
     "unpublish": "Despublicar",
     "update": "Atualizar",
     "view": "Ver",
@@ -644,6 +647,7 @@
           "title": ""
         }
       },
+      "title": "",
       "translationFields": {
         "description": "",
         "html": "",
@@ -669,6 +673,14 @@
     "responseSubmitted": "Resposta submetida",
     "share": {
       "address": "Podes partilhar esta chamada com este endereço:",
+      "aria": {
+        "email": "",
+        "facebook": "",
+        "linkedin": "",
+        "telegram": "",
+        "twitter": "",
+        "whatsapp": ""
+      },
       "services": "Ou partilha rapidamente com uma destas plataformas:"
     },
     "showingPreview": "",
@@ -793,13 +805,23 @@
     "showingOf": "Respostas {start} a {end} de um total de {total}"
   },
   "calloutReviewerManager": {
-    "add": "",
+    "add": "Adicionar revisor",
+    "canEdit": "O revisor também pode editar o CrowdNewsroom",
     "confirmDelete": {
-      "text": "",
-      "title": ""
+      "text": "Tem certeza de que deseja remover {reviewerName}? Ele(a) não poderá mais revisar esta chamada.",
+      "title": "Remover revisor"
     },
-    "contact": "",
-    "title": ""
+    "contact": "ID do contato",
+    "editorTag": "Editor",
+    "search": {
+      "error": {
+        "message": "Por favor, verifique se o endereço de e-mail existe e está livre de erros de digitação.",
+        "title": "Contato não encontrado"
+      },
+      "placeholder": "Pesquisar endereço de e-mail",
+      "successMessage": "O e-mail é válido"
+    },
+    "title": "Revisores"
   },
   "calloutThanksPage": {
     "oneResponseWarning": "Por favor, note que este aviso permite apenas uma resposta por pessoa. Se você já contribuiu, respostas adicionais não serão registradas."
@@ -883,12 +905,14 @@
     "selectNone": "Nenhum",
     "selectOne": "Escolhe uma opção...",
     "show": "Mostrar",
+    "showingOf": "",
     "status": {
       "draft": "Rascunho",
       "ended": "Concluído",
       "open": "Aberto",
       "scheduled": "Agendado"
     },
+    "statusLabel": "",
     "thankYou": "Obrigado!",
     "timeAgo": "há {time}",
     "timeIn": "em {time}",
@@ -1109,6 +1133,10 @@
         "required": "A palavra-passe é obrigatória",
         "sameAs": "As palavras-passe não coincidem"
       },
+      "description": {
+        "maxLength": "",
+        "required": ""
+      },
       "email": {
         "email": "Endereço de email inválido",
         "required": "O email é obrigatório"
@@ -1135,6 +1163,10 @@
       "postCode": {
         "required": "O código postal é obrigatório"
       },
+      "shareDescription": {
+        "maxLength": "",
+        "required": ""
+      },
       "unknown": {
         "email": "Endereço de email inválido",
         "max": "Este campo pode ter no máximo {max}",
@@ -1153,6 +1185,10 @@
         "required": "O código é obrigatório"
       }
     },
+    "errorsFormio": {
+      "maxLength": "",
+      "minLength": ""
+    },
     "firstName": "Primeiro nome",
     "lastName": "Último nome",
     "newPassword": "Nova palavra-passe",
@@ -1165,11 +1201,13 @@
     "richtext": {
       "bold": "Negrito",
       "bulletlist": "Lista",
+      "editor": "",
       "heading": "Cabeçalho",
       "italic": "Itálico",
       "link": "Link",
       "numberedlist": "Lista numerada",
       "strikethrough": "Rasurado",
+      "toolbar": "",
       "underline": "Sublinhado"
     },
     "saveChanges": "Gravar alterações",
@@ -1203,6 +1241,11 @@
     "viewOpenCallouts": "Ver chamadas abertas",
     "welcome": "Damos-te as boas-vindas, {firstName}!",
     "yourProfile": "O teu perfil"
+  },
+  "icons": {
+    "welcome": {
+      "ariaLabel": ""
+    }
   },
   "item": {
     "status": {
@@ -1321,13 +1364,13 @@
         "formSubtitle": "",
         "formTitle": "",
         "minAmount": "",
+        "noticeText": "",
+        "noticeTextHelp": "",
         "showAbsorbFee": "",
         "showNoContribution": "",
         "suggestedAmounts": "",
         "text": "",
-        "title": "",
-        "noticeText": "",
-        "noticeTextHelp": ""
+        "title": ""
       }
     },
     "title": ""
@@ -1500,6 +1543,23 @@
   "setPassword": {
     "description": "Define uma nova palavra-passe para poderes entrar.",
     "title": "Definir uma palavra-passe"
+  },
+  "status": {
+    "connectingToServer": "",
+    "initializing": "",
+    "loadingApplication": "",
+    "pleaseWait": "",
+    "usuallyTakesSeconds": ""
+  },
+  "stepper": {
+    "navigation": {
+      "label": ""
+    },
+    "screen": {
+      "completed": "",
+      "currentStep": "",
+      "hasError": ""
+    }
   },
   "tagEditor": {
     "add": "Adicionar etiqueta",

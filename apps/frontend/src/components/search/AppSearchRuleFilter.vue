@@ -24,15 +24,28 @@
   </div>
 </template>
 
-<script lang="ts" setup>
-import AppToggle from '@components/forms/AppToggle.vue';
+<script setup lang="ts">
+import { AppToggle } from '@beabee/vue';
+
 import { computed, ref, watchEffect } from 'vue';
 
+import type { SearchRuleEmits, SearchRuleProps } from '../../type/search';
 import AppSearchRuleFilterGroup from './AppSearchRuleFilterGroup.vue';
-import type { SearchRuleEmits, SearchRuleProps } from './search.interface';
+
+/**
+ * Rule filter component that handles filter group selection and custom components.
+ * Now uses internal i18n for all labels and operator text.
+ *
+ * @param filterGroups - Available filter groups
+ * @param rule - The current rule
+ * @param readonly - Whether the component is in readonly mode
+ */
+
+const props = withDefaults(defineProps<SearchRuleProps>(), {
+  readonly: false,
+});
 
 const emit = defineEmits<SearchRuleEmits>();
-const props = defineProps<SearchRuleProps>();
 
 const selectedFilterGroupId = ref('');
 

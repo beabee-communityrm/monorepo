@@ -204,7 +204,7 @@
             <AppFormField
               v-if="canAddNewsletterOptIn && data.showNewsletterOptIn"
             >
-              <NewsletterOptInSettings
+              <AppNewsletterOptInSettings
                 v-model:title="data.newsletterSettings.title"
                 v-model:opt-in="data.newsletterSettings.optIn"
                 v-model:text="data.newsletterSettings.text"
@@ -250,6 +250,7 @@ import {
   type CalloutNewsletterSchema,
   ItemStatus,
 } from '@beabee/beabee-common';
+import { AppInput } from '@beabee/vue';
 import {
   AppFormBox,
   AppFormField,
@@ -259,10 +260,9 @@ import {
   AppScrollSection,
   AppToggleField,
   type ScrollSection,
-} from '@beabee/vue/components';
+} from '@beabee/vue';
 
-import AppInput from '@components/forms/AppInput.vue';
-import NewsletterOptInSettings from '@components/newsletter/NewsletterOptInSettings.vue';
+import AppNewsletterOptInSettings from '@components/newsletter/AppNewsletterOptInSettings.vue';
 import env from '@env';
 import useVuelidate from '@vuelidate/core';
 import { sameAs } from '@vuelidate/validators';

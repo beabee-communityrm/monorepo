@@ -19,7 +19,7 @@ export async function writeJsonFile(
   filePath: string,
   data: Record<string, any>
 ): Promise<void> {
-  await writeFile(filePath, JSON.stringify(data, null, 2), 'utf-8');
+  await writeFile(filePath, JSON.stringify(data, null, 2) + '\n', 'utf-8');
 }
 
 /**
@@ -34,7 +34,7 @@ export function processObjectStrings(
 ): Record<string, any> {
   const result: Record<string, any> = {};
 
-  for (const [key, value] of Object.entries(obj)) {
+  for (const [key, value] of Object.entries(obj).sort()) {
     if (value !== null && typeof value === 'object') {
       result[key] = processObjectStrings(value, transformFn);
     } else if (typeof value === 'string') {

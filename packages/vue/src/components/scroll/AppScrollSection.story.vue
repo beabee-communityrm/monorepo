@@ -4,7 +4,7 @@ import AppScrollSection from './AppScrollSection.vue';
 </script>
 
 <template>
-  <Story title="Components/Scroll/AppScrollSection">
+  <Story title="Scroll/AppScrollSection">
     <Variant title="Basic Usage">
       <div class="bg-grey-lighter p-4">
         <AppScrollSection id="section1">

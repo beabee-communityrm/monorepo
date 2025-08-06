@@ -104,20 +104,24 @@ meta:
 
 <script lang="ts" setup>
 import type { GetApiKeyData, Paginated } from '@beabee/beabee-common';
-import { AppButton, AppCheckbox, AppForm } from '@beabee/vue/components';
-import { addNotification } from '@beabee/vue/store/notifications';
+import {
+  App2ColGrid,
+  AppButton,
+  AppCheckbox,
+  AppConfirmDialog,
+  AppForm,
+  AppHeading,
+  AppInput,
+  AppSelect,
+  AppTime,
+  type Header,
+  addNotification,
+  formatLocale,
+} from '@beabee/vue';
 
-import App2ColGrid from '@components/App2ColGrid.vue';
-import AppConfirmDialog from '@components/AppConfirmDialog.vue';
-import AppHeading from '@components/AppHeading.vue';
-import AppTime from '@components/AppTime.vue';
-import AppInput from '@components/forms/AppInput.vue';
-import AppSelect from '@components/forms/AppSelect.vue';
 import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
-import type { Header } from '@components/table/table.interface';
 import { faCopy, faTrash, faWarning } from '@fortawesome/free-solid-svg-icons';
 import { client } from '@utils/api';
-import { formatLocale } from '@utils/dates';
 import { definePaginatedQuery } from '@utils/pagination';
 import useVuelidate from '@vuelidate/core';
 import { addDays } from 'date-fns';

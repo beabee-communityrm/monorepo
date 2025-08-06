@@ -71,6 +71,7 @@
     "continue": "Doorgaan",
     "copy": "Kopieer",
     "create": "Aanmaken",
+    "decrease": "",
     "delete": "Verwijderen",
     "disable": "Uitschakelen",
     "edit": "Bewerken",
@@ -79,6 +80,7 @@
     "export": "Exporteer",
     "getStarted": "Beginnen",
     "goBack": "Terug",
+    "increase": "",
     "next": "Volgende",
     "noBack": "“Nee, ga terug”.",
     "participate": "Deelnemen",
@@ -100,6 +102,7 @@
     "share": "Delen",
     "skip": "Sla over",
     "submit": "Verzenden",
+    "tryAgain": "",
     "unpublish": "Publiceren",
     "update": "bijwerken",
     "view": "Bekijk",
@@ -644,6 +647,7 @@
           "title": ""
         }
       },
+      "title": "",
       "translationFields": {
         "description": "",
         "html": "",
@@ -669,6 +673,14 @@
     "responseSubmitted": "Reactie ingediend",
     "share": {
       "address": "Deel deze oproep met het volgende adres:",
+      "aria": {
+        "email": "",
+        "facebook": "",
+        "linkedin": "",
+        "telegram": "",
+        "twitter": "",
+        "whatsapp": ""
+      },
       "services": "Of deel snel met een van deze diensten:"
     },
     "showingPreview": "Je kunt geen reactie indienen in de voorbeeldmodus",
@@ -794,12 +806,22 @@
   },
   "calloutReviewerManager": {
     "add": "Recensent toevoegen",
+    "canEdit": "De recensent kan ook de CrowdNewsroom bewerken",
     "confirmDelete": {
       "text": "Weet u zeker dat u {reviewerName} wilt verwijderen? Ze zullen deze callout niet langer kunnen beoordelen.",
       "title": "Recensent verwijderen"
     },
     "contact": "Contact ID",
-    "title": "Recensenten oproepen"
+    "editorTag": "Editor",
+    "search": {
+      "error": {
+        "message": "Zorg ervoor dat het e-mailadres bestaat en geen typefouten bevat.",
+        "title": "Contact niet gevonden"
+      },
+      "placeholder": "E-mailadres zoeken",
+      "successMessage": "E-mailadres is geldig"
+    },
+    "title": "Recensenten"
   },
   "calloutThanksPage": {
     "oneResponseWarning": "Houd er rekening mee dat deze oproep slechts één reactie per persoon toestaat. Als u al hebt bijgedragen, worden extra reacties niet geregistreerd."
@@ -883,12 +905,14 @@
     "selectNone": "-- Geen",
     "selectOne": "Selecteer een...",
     "show": "Toon",
+    "showingOf": "",
     "status": {
       "draft": "Concept",
       "ended": "Beëindigd",
       "open": "Open",
       "scheduled": "Gepland"
     },
+    "statusLabel": "",
     "thankYou": "Bedankt!",
     "timeAgo": "{time} geleden",
     "timeIn": "in {time}",
@@ -1109,6 +1133,10 @@
         "required": "Wachtwoord is vereist",
         "sameAs": "De wachtwoorden komen niet overeen"
       },
+      "description": {
+        "maxLength": "",
+        "required": ""
+      },
       "email": {
         "email": "Ongeldig e-mailadres",
         "required": "E-mail is vereist"
@@ -1135,6 +1163,10 @@
       "postCode": {
         "required": "Postcode is vereist"
       },
+      "shareDescription": {
+        "maxLength": "",
+        "required": ""
+      },
       "unknown": {
         "email": "Ongeldig e-mailadres",
         "max": "Dit veld moet maximaal {max} zijn",
@@ -1153,6 +1185,10 @@
         "required": "Code is vereist"
       }
     },
+    "errorsFormio": {
+      "maxLength": "",
+      "minLength": ""
+    },
     "firstName": "Voornaam",
     "lastName": "Achternaam",
     "newPassword": "Nieuw wachtwoord",
@@ -1165,11 +1201,13 @@
     "richtext": {
       "bold": "Vet",
       "bulletlist": "Opsomming",
+      "editor": "",
       "heading": "Kop",
       "italic": "Cursief",
       "link": "Link",
       "numberedlist": "Genummerde lijst",
       "strikethrough": "Doorhalen",
+      "toolbar": "",
       "underline": "Onderstrepen"
     },
     "saveChanges": "Wijzigingen opslaan",
@@ -1203,6 +1241,11 @@
     "viewOpenCallouts": "Open callouts bekijken",
     "welcome": "Welkom bij ons {firstName}!",
     "yourProfile": "Uw profiel"
+  },
+  "icons": {
+    "welcome": {
+      "ariaLabel": ""
+    }
   },
   "item": {
     "status": {
@@ -1321,13 +1364,13 @@
         "formSubtitle": "Ondertitel",
         "formTitle": "Titel",
         "minAmount": "Minimum bedrag",
+        "noticeText": "",
+        "noticeTextHelp": "",
         "showAbsorbFee": "Gebruiker vragen om de betalingskosten te absorberen",
         "showNoContribution": "Gebruiker toestaan mee te doen zonder bijdrage",
         "suggestedAmounts": "Voorgestelde contributiebedragen",
         "text": "In dit gedeelte kun je het lidmaatschapsformulier bewerken, verfijnen en een voorbeeld bekijken.",
-        "title": "Lidmaatschapsformulier",
-        "noticeText": "",
-        "noticeTextHelp": ""
+        "title": "Lidmaatschapsformulier"
       }
     },
     "title": "Lidmaatschap bouwer"
@@ -1500,6 +1543,23 @@
   "setPassword": {
     "description": "Stel een nieuw wachtwoord in om in te loggen.",
     "title": "Wachtwoord instellen"
+  },
+  "status": {
+    "connectingToServer": "",
+    "initializing": "",
+    "loadingApplication": "",
+    "pleaseWait": "",
+    "usuallyTakesSeconds": ""
+  },
+  "stepper": {
+    "navigation": {
+      "label": ""
+    },
+    "screen": {
+      "completed": "",
+      "currentStep": "",
+      "hasError": ""
+    }
   },
   "tagEditor": {
     "add": "Label toevoegen",

@@ -16,7 +16,11 @@
     :items="item.options || []"
     required
   />
-  <DateInput v-else-if="item.type === 'date'" v-model="value" />
+  <DateInput
+    v-else-if="item.type === 'date'"
+    v-model="value"
+    relative-placeholder="$now(d:-1)"
+  />
   <AppInput
     v-else
     v-model="value"
@@ -31,27 +35,41 @@
     class="min-w-[10rem]"
   />
 </template>
-<script lang="ts" setup>
-import type { RuleValue } from '@beabee/beabee-common';
-import { AppRadioGroup } from '@beabee/vue/components';
 
-import type { FilterItem } from '@type';
+<script setup lang="ts">
+import type { RuleValue } from '@beabee/beabee-common';
+import { AppInput, AppRadioGroup, AppSelect, formatLocale } from '@beabee/vue';
+
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { formatLocale } from '../../../utils/dates';
-import AppInput from '../../forms/AppInput.vue';
-import AppSelect from '../../forms/AppSelect.vue';
+import type { FilterItem } from '../../../type/search';
 import DateInput from './DateInput.vue';
 
-const emit = defineEmits(['update:modelValue']);
-const props = defineProps<{
+const { t } = useI18n();
+
+/**
+ * Argument input component for different filter types.
+ * Now uses internal i18n for yes/no labels and hardcoded relative date placeholder.
+ *
+ * @param modelValue - The current value
+ * @param item - The filter item configuration
+ * @param readonly - Whether the component is in readonly mode
+ */
+
+interface Props {
   modelValue: RuleValue;
   item: FilterItem;
   readonly: boolean;
-}>();
+}
 
-const { t } = useI18n();
+interface Emits {
+  (event: 'update:modelValue', value: RuleValue): void;
+}
+
+const props = defineProps<Props>();
+
+const emit = defineEmits<Emits>();
 
 const value = computed({
   // modelValue has a different type depending on the item.type

@@ -24,7 +24,7 @@
           {{ t('callout.builder.tabs.endMessage.inputs.text.label') }}
         </label>
 
-        <RichTextEditor
+        <AppRichTextEditor
           :model-value="getValue(endMessage.thankYouText, selectedLocale)"
           :placeholder="getPlaceholder(endMessage.thankYouText)"
           :disabled="selectedLocale === defaultLocale"
@@ -60,10 +60,8 @@
 </template>
 
 <script lang="ts" setup>
-import { AppFormBox } from '@beabee/vue/components';
+import { AppFormBox, AppInput, AppRichTextEditor } from '@beabee/vue';
 
-import AppInput from '@components/forms/AppInput.vue';
-import RichTextEditor from '@components/rte/RichTextEditor.vue';
 import type { LocaleProp } from '@type';
 import {
   getLocalizedValueFallback,

@@ -65,15 +65,13 @@ import {
   type GetContactData,
   ItemStatus,
 } from '@beabee/beabee-common';
-import { AppButton } from '@beabee/vue/components';
+import { AppButton, PageTitle, WelcomeMessage } from '@beabee/vue';
 
-import PageTitle from '@components/PageTitle.vue';
 import CalloutCard from '@components/callout/CalloutCard.vue';
 import ContributionInfo from '@components/pages/profile/ContributionInfo.vue';
 import NoticeContainer from '@components/pages/profile/NoticeContainer.vue';
 import QuickActions from '@components/pages/profile/QuickActions.vue';
 import SectionTitle from '@components/pages/profile/SectionTitle.vue';
-import WelcomeMessage from '@components/welcome-message/WelcomeMessage.vue';
 import { currentUser, generalContent } from '@store';
 import { client } from '@utils/api';
 import { type Ref, onBeforeMount, ref } from 'vue';

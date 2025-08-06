@@ -47,7 +47,7 @@
         </svg>
         <button
           class="inline-block w-5 cursor-pointer text-center leading-5 hover:bg-grey-lighter hover:text-body"
-          :aria-label="t('notifications.remove', { title })"
+          :aria-label="t('notifications.remove')"
           @click="handleRemove"
         >
           <font-awesome-icon :icon="faTimes" aria-hidden="true" />

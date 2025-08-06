@@ -6,7 +6,7 @@
         <div class="mb-4">
           <AppInput v-model="email.subject" label="Subject" required />
         </div>
-        <RichTextEditor v-model="email.body" label="Message" required />
+        <AppRichTextEditor v-model="email.body" label="Message" required />
       </template>
       <AppNotification v-else variant="warning" title="Can't edit email">
         <p>
@@ -20,15 +20,17 @@
   </App2ColGrid>
 </template>
 <script lang="ts" setup>
-import { AppNotification } from '@beabee/vue/components';
+import {
+  App2ColGrid,
+  AppInput,
+  AppNotification,
+  AppRichTextEditor,
+  AppSubHeading,
+} from '@beabee/vue';
 
 import { computed, ref } from 'vue';
 
 import { currentUser } from '../../../../store';
-import App2ColGrid from '../../../App2ColGrid.vue';
-import AppSubHeading from '../../../AppSubHeading.vue';
-import AppInput from '../../../forms/AppInput.vue';
-import RichTextEditor from '../../../rte/RichTextEditor.vue';
 
 const props = defineProps<{
   label: string;

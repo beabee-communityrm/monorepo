@@ -1,3 +1,8 @@
+<!--
+  # AppToggleSwitch
+  A toggle switch component for binary choices with multiple color variants and sizes.
+  Provides visual feedback for on/off states with smooth animations.
+-->
 <template>
   <button
     type="button"
@@ -26,17 +31,13 @@
 
 <script lang="ts" setup>
 /**
- * A toggle switch component that provides a binary choice.
- * Used for enabling/disabling features or settings.
+ * Toggle switch component for binary choices with variant support.
+ * Provides a visual alternative to checkboxes for on/off states with smooth animations.
  *
  * @component AppToggleSwitch
  *
  * @example
- * <AppToggleSwitch
- *   v-model="enabled"
- *   variant="primary"
- *   size="default"
- * />
+ * <AppToggleSwitch v-model="enabled" variant="primary" />
  */
 
 /**
@@ -45,16 +46,22 @@
 export interface AppToggleSwitchProps {
   /** Current state of the toggle switch */
   modelValue: boolean;
-  /** Color variant of the switch */
+  /** Color variant affecting the active state styling */
   variant?: 'primary' | 'link' | 'danger';
-  /** Size variant of the switch */
+  /** Size variant affecting dimensions */
   size?: 'default' | 'small';
   /** Whether the switch is disabled */
   disabled?: boolean;
 }
 
+/**
+ * Events emitted by the AppToggleSwitch component
+ */
 const emit = defineEmits<{
-  /** Emitted when the switch state changes */
+  /**
+   * Emitted when the switch state changes
+   * @param value - The new boolean value
+   */
   (e: 'update:modelValue', value: boolean): void;
 }>();
 

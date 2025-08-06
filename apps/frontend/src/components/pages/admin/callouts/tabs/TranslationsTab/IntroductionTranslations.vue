@@ -1,7 +1,7 @@
 <template>
   <AppFormBox :title="t('callout.builder.tabs.intro.label')">
     <div class="space-y-2">
-      <RichTextEditor
+      <AppRichTextEditor
         :model-value="getValue(selectedLocale)"
         :placeholder="getPlaceholder()"
         :disabled="selectedLocale === defaultLocale"
@@ -13,9 +13,8 @@
 </template>
 
 <script lang="ts" setup>
-import { AppFormBox } from '@beabee/vue/components';
+import { AppFormBox, AppRichTextEditor } from '@beabee/vue';
 
-import RichTextEditor from '@components/rte/RichTextEditor.vue';
 import type { LocaleProp } from '@type/locale-prop';
 import {
   getLocalizedValueFallback,

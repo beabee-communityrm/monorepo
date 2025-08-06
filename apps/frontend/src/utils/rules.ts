@@ -1,8 +1,5 @@
 import {
-  type ArrayFilterArgs,
-  type EnumFilterArgs,
   type FilterType,
-  type OtherFilterArgs,
   type Rule,
   type RuleGroup,
   type RuleOperator,
@@ -12,73 +9,11 @@ import {
   operatorsByTypeMap,
 } from '@beabee/beabee-common';
 
-import type {
-  FilterItem,
-  FilterItemArray,
-  FilterItemEnum,
-  FilterItemOther,
-  FilterItems,
-  RuleGroupWithEmpty,
-} from '@type';
-import type { Ref } from 'vue';
+import type { OperatorLabels, RuleGroupWithEmpty } from '../type/search';
 
-interface LabelOpts {
-  prefix: string;
-}
-
-export function withLabel<T extends readonly string[]>(
-  args: EnumFilterArgs<T>,
-  label: string,
-  optionLabels: Record<T[number], string>
-): FilterItemEnum<T>;
-export function withLabel(
-  args: ArrayFilterArgs<undefined>,
-  label: string,
-  opts?: LabelOpts
-): FilterItemArray<undefined>;
-export function withLabel<T extends readonly string[]>(
-  args: ArrayFilterArgs<T>,
-  label: string,
-  optionLabels: Record<T[number], string>
-): FilterItemArray<T>;
-export function withLabel(
-  args: OtherFilterArgs,
-  label: string,
-  opts?: LabelOpts
-): FilterItemOther;
-export function withLabel<T extends readonly string[]>(
-  args: EnumFilterArgs<T> | ArrayFilterArgs<T> | OtherFilterArgs,
-  label: string,
-  extraArg?: Record<T[number], string> | LabelOpts
-): FilterItem {
-  if (args.type === 'enum' || (args.type === 'array' && args.options)) {
-    const optionLabels = extraArg as Record<T[number], string>;
-    return {
-      ...args,
-      label,
-      options: (args.options || []).map((id: T[number]) => ({
-        id,
-        label: optionLabels[id],
-      })),
-    };
-  } else {
-    const args2 = args as OtherFilterArgs | ArrayFilterArgs<undefined>;
-    const opts = extraArg as LabelOpts | undefined;
-    return { ...args2, label, ...opts };
-  }
-}
-
-export function withItems<T extends string, S extends T>(
-  items: Ref<FilterItems<T>>,
-  itemIds: S[]
-): FilterItems<S> {
-  const ret: Partial<FilterItems<S>> = {};
-  for (const id of itemIds) {
-    ret[id] = items.value[id];
-  }
-  return ret as FilterItems<S>;
-}
-
+/**
+ * Get default value for a rule based on its type
+ */
 export function getDefaultRuleValue(type: FilterType): RuleValue {
   switch (type) {
     case 'boolean':
@@ -90,7 +25,9 @@ export function getDefaultRuleValue(type: FilterType): RuleValue {
   }
 }
 
-// Enforces type safety for the operator and initial values
+/**
+ * Create default operator and value for a given type
+ */
 function withDefault<T extends FilterType>(
   type: T,
   operator: keyof (typeof operatorsByType)[T]
@@ -116,6 +53,9 @@ const ruleDefaultsByType: Record<
   array: () => withDefault('array', 'contains'),
 };
 
+/**
+ * Create a new rule with default operator and value for the given field type
+ */
 export function createNewRule(field: string, type: FilterType): Rule {
   return {
     field,
@@ -123,6 +63,9 @@ export function createNewRule(field: string, type: FilterType): Rule {
   };
 }
 
+/**
+ * Create a deep copy of a rule
+ */
 export function copyRule(rule: Rule): Rule {
   return {
     field: rule.field,
@@ -131,6 +74,9 @@ export function copyRule(rule: Rule): Rule {
   };
 }
 
+/**
+ * Create a deep copy of a rule group
+ */
 export function copyRuleGroup(ruleGroup: RuleGroup): RuleGroup {
   return {
     condition: ruleGroup.condition,
@@ -142,6 +88,9 @@ export function copyRuleGroup(ruleGroup: RuleGroup): RuleGroup {
   };
 }
 
+/**
+ * Check if two rules are equal
+ */
 export function isRuleEqual(a: Rule, b: Rule): boolean {
   return (
     a.field === b.field &&
@@ -151,6 +100,9 @@ export function isRuleEqual(a: Rule, b: Rule): boolean {
   );
 }
 
+/**
+ * Check if two rule groups are equal (including empty states)
+ */
 export function isRuleGroupEqual(
   a: RuleGroupWithEmpty,
   b: RuleGroupWithEmpty
@@ -172,4 +124,73 @@ export function isRuleGroupEqual(
       );
     })
   );
+}
+
+/**
+ * Create operator labels object using i18n translation function
+ */
+export function createOperatorLabels(
+  t: (key: string) => string
+): OperatorLabels {
+  return {
+    text: {
+      equal: t('advancedSearch.operators.text.equal'),
+      not_equal: t('advancedSearch.operators.text.not_equal'),
+      contains: t('advancedSearch.operators.text.contains'),
+      not_contains: t('advancedSearch.operators.text.not_contains'),
+      begins_with: t('advancedSearch.operators.text.begins_with'),
+      not_begins_with: t('advancedSearch.operators.text.not_begins_with'),
+      ends_with: t('advancedSearch.operators.text.ends_with'),
+      not_ends_with: t('advancedSearch.operators.text.not_ends_with'),
+    },
+    blob: {
+      contains: t('advancedSearch.operators.blob.contains'),
+      not_contains: t('advancedSearch.operators.blob.not_contains'),
+    },
+    number: {
+      equal: t('advancedSearch.operators.number.equal'),
+      not_equal: t('advancedSearch.operators.number.not_equal'),
+      less: t('advancedSearch.operators.number.less'),
+      less_or_equal: t('advancedSearch.operators.number.less_or_equal'),
+      greater: t('advancedSearch.operators.number.greater'),
+      greater_or_equal: t('advancedSearch.operators.number.greater_or_equal'),
+      between: t('advancedSearch.operators.number.between'),
+      not_between: t('advancedSearch.operators.number.not_between'),
+    },
+    enum: {
+      equal: t('advancedSearch.operators.enum.equal'),
+      not_equal: t('advancedSearch.operators.enum.not_equal'),
+    },
+    boolean: {
+      equal: t('advancedSearch.operators.boolean.equal'),
+    },
+    contact: {
+      equal: t('advancedSearch.operators.contact.equal'),
+      not_equal: t('advancedSearch.operators.contact.not_equal'),
+      contains: t('advancedSearch.operators.contact.contains'),
+      not_contains: t('advancedSearch.operators.contact.not_contains'),
+      begins_with: t('advancedSearch.operators.contact.begins_with'),
+      not_begins_with: t('advancedSearch.operators.contact.not_begins_with'),
+      ends_with: t('advancedSearch.operators.contact.ends_with'),
+      not_ends_with: t('advancedSearch.operators.contact.not_ends_with'),
+    },
+    date: {
+      equal: t('advancedSearch.operators.date.equal'),
+      not_equal: t('advancedSearch.operators.date.not_equal'),
+      less: t('advancedSearch.operators.date.less'),
+      less_or_equal: t('advancedSearch.operators.date.less_or_equal'),
+      greater: t('advancedSearch.operators.date.greater'),
+      greater_or_equal: t('advancedSearch.operators.date.greater_or_equal'),
+      between: t('advancedSearch.operators.date.between'),
+      not_between: t('advancedSearch.operators.date.not_between'),
+    },
+    array: {
+      contains: t('advancedSearch.operators.array.contains'),
+      not_contains: t('advancedSearch.operators.array.not_contains'),
+    },
+    all: {
+      is_empty: t('advancedSearch.operators.all.is_empty'),
+      is_not_empty: t('advancedSearch.operators.all.is_not_empty'),
+    },
+  };
 }

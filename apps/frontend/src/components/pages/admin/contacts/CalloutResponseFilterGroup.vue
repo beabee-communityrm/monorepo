@@ -27,18 +27,18 @@ import {
   ItemStatus,
   contactCalloutFilters,
 } from '@beabee/beabee-common';
+import { AppSelect } from '@beabee/vue';
 
-import AppSelect from '@components/forms/AppSelect.vue';
 import AppSearchRuleFilter from '@components/search/AppSearchRuleFilter.vue';
-import type {
-  SearchRuleEmits,
-  SearchRuleFilterGroupProps,
-} from '@components/search/search.interface';
 import { client } from '@utils/api';
-import { withLabel } from '@utils/rules';
 import { computed, onBeforeMount, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import type {
+  SearchRuleEmits,
+  SearchRuleFilterGroupProps,
+} from '../../../../type/search';
+import { withLabel } from '../../../../utils/filters';
 import { useCalloutResponseFilters } from '../callout-responses.interface';
 
 const emit = defineEmits<SearchRuleEmits>();

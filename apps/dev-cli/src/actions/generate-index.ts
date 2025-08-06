@@ -35,7 +35,7 @@ export const generateIndex = async (argv: GenerateIndexArgs): Promise<void> => {
           const exportPrefix = isTypesDirectory
             ? 'export type * from'
             : 'export * from';
-          indexContent += `${exportPrefix} "./${importName}${importExtension}";\n`;
+          indexContent += `${exportPrefix} './${importName}${importExtension}';\n`;
         }
       }
 

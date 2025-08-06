@@ -71,6 +71,7 @@
     "continue": "Продолжить",
     "copy": "Скопировать",
     "create": "Создать",
+    "decrease": "",
     "delete": "Удалить",
     "disable": "Отключить",
     "edit": "Редактировать",
@@ -79,6 +80,7 @@
     "export": "Экспортировать",
     "getStarted": "Начать",
     "goBack": "Назад",
+    "increase": "",
     "next": "Дальше",
     "noBack": "Нет, вернуться назад",
     "participate": "Участвовать",
@@ -100,6 +102,7 @@
     "share": "Поделиться",
     "skip": "Пропустить",
     "submit": "Отправить",
+    "tryAgain": "",
     "unpublish": "Снять с публикации",
     "update": "Обновить",
     "view": "Просмотреть",
@@ -644,6 +647,7 @@
           "title": ""
         }
       },
+      "title": "",
       "translationFields": {
         "description": "",
         "html": "",
@@ -669,6 +673,14 @@
     "responseSubmitted": "Ответ отправлен",
     "share": {
       "address": "Отправить этот опрос на почту:",
+      "aria": {
+        "email": "",
+        "facebook": "",
+        "linkedin": "",
+        "telegram": "",
+        "twitter": "",
+        "whatsapp": ""
+      },
       "services": "Или поделитесь им с помощью одного из этих сервисов:"
     },
     "showingPreview": "Вы не можете отправить ответ в режиме предварительного просмотра",
@@ -799,7 +811,17 @@
       "title": ""
     },
     "contact": "",
-    "title": ""
+    "title": "",
+    "canEdit": "",
+    "editorTag": "",
+    "search": {
+      "error": {
+        "message": "",
+        "title": ""
+      },
+      "placeholder": "",
+      "successMessage": ""
+    }
   },
   "calloutThanksPage": {
     "oneResponseWarning": ""
@@ -883,12 +905,14 @@
     "selectNone": "Отсутствует",
     "selectOne": "Выбрать одну опцию",
     "show": "Показать",
+    "showingOf": "",
     "status": {
       "draft": "Черновик",
       "ended": "Закрыто",
       "open": "Открыто",
       "scheduled": "Запланировано"
     },
+    "statusLabel": "",
     "thankYou": "Большое cпасибо!",
     "timeAgo": "до {time}",
     "timeIn": "в {time}",
@@ -1109,6 +1133,10 @@
         "required": "Нужно установить пароль",
         "sameAs": "Пароли не совпадают"
       },
+      "description": {
+        "maxLength": "",
+        "required": ""
+      },
       "email": {
         "email": "Некорректный почтовый адрес",
         "required": "Нужно добавить почту"
@@ -1134,6 +1162,10 @@
       },
       "postCode": {
         "required": "Введите почтовый индекс"
+      },
+      "shareDescription": {
+        "maxLength": "",
+        "required": ""
       },
       "unknown": {
         "email": "Некорректный почтовый адрес",
@@ -1165,17 +1197,23 @@
     "richtext": {
       "bold": "Жирный",
       "bulletlist": "Маркированный список",
+      "editor": "",
       "heading": "Заголовок",
       "italic": "Курсив",
       "link": "Ссылка",
       "numberedlist": "Нумерованный список",
       "strikethrough": "Перечёркнутый",
+      "toolbar": "",
       "underline": "Подчёркнутый"
     },
     "saveChanges": "Сохранить изменения",
     "saved": "Изменения сохранены",
     "unsavedChanges": "Есть несохранённые изменения",
-    "updated": ""
+    "updated": "",
+    "errorsFormio": {
+      "minLength": "",
+      "maxLength": ""
+    }
   },
   "formRenderer": {
     "components": {
@@ -1203,6 +1241,11 @@
     "viewOpenCallouts": "Показать все открытые опросы",
     "welcome": "Добро пожаловать, {firstName}!",
     "yourProfile": "Ваш профиль"
+  },
+  "icons": {
+    "welcome": {
+      "ariaLabel": ""
+    }
   },
   "item": {
     "status": {
@@ -1321,13 +1364,13 @@
         "formSubtitle": "",
         "formTitle": "",
         "minAmount": "",
+        "noticeText": "",
+        "noticeTextHelp": "",
         "showAbsorbFee": "",
         "showNoContribution": "",
         "suggestedAmounts": "",
         "text": "",
-        "title": "",
-        "noticeText": "",
-        "noticeTextHelp": ""
+        "title": ""
       }
     },
     "title": ""
@@ -1501,6 +1544,13 @@
     "description": "Введите новый пароль",
     "title": "Установить пароль"
   },
+  "status": {
+    "connectingToServer": "",
+    "initializing": "",
+    "loadingApplication": "",
+    "pleaseWait": "",
+    "usuallyTakesSeconds": ""
+  },
   "tagEditor": {
     "add": "",
     "confirmDelete": {
@@ -1523,5 +1573,15 @@
   },
   "taxRate": {
     "invoiceName": "???"
+  },
+  "stepper": {
+    "navigation": {
+      "label": ""
+    },
+    "screen": {
+      "hasError": "",
+      "completed": "",
+      "currentStep": ""
+    }
   }
 }

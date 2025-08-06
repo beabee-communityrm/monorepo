@@ -40,11 +40,8 @@ meta:
 </template>
 <script lang="ts" setup>
 import type { ContentEmailData } from '@beabee/beabee-common';
-import { AppForm } from '@beabee/vue/components';
+import { App2ColGrid, AppForm, AppHeading, AppInput } from '@beabee/vue';
 
-import App2ColGrid from '@components/App2ColGrid.vue';
-import AppHeading from '@components/AppHeading.vue';
-import AppInput from '@components/forms/AppInput.vue';
 import { client } from '@utils/api';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';

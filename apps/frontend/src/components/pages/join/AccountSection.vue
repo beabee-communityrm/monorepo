@@ -32,11 +32,12 @@
 </template>
 
 <script lang="ts" setup>
+import { AppInput } from '@beabee/vue';
+
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { isEmbed } from '../../../store';
-import AppInput from '../../forms/AppInput.vue';
 
 const emit = defineEmits(['update:email']);
 const props = defineProps<{

@@ -13,7 +13,7 @@
       v-slot="{ item }"
       :items="tagItems"
       :selected-item-ids="selectedTags"
-      :disabled="disableTags"
+      :disabled="!selectable"
       @click="handleToggle"
     >
       <font-awesome-icon class="mr-2" :icon="faTag" />{{ item.label }}
@@ -28,7 +28,7 @@
   </AppDropdownButton>
 </template>
 <script lang="ts" setup>
-import { AppDropdownButton, AppSelectableList } from '@beabee/vue/components';
+import { AppDropdownButton, AppSelectableList } from '@beabee/vue';
 
 import { faCog, faTag } from '@fortawesome/free-solid-svg-icons';
 import { useI18n } from 'vue-i18n';
@@ -41,7 +41,7 @@ defineProps<{
   selectedTags: string[];
   manageUrl: string;
   withText?: boolean;
-  disableTags?: boolean;
+  selectable?: boolean;
 }>();
 
 const { t } = useI18n();

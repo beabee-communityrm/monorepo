@@ -36,7 +36,7 @@ meta:
     >
       <template #header-hidden><font-awesome-icon :icon="faEye" /></template>
       <template #value-status="{ value }">
-        <AppItemStatus :status="value" />
+        <ItemStatus :status="value" />
       </template>
       <template #value-title="{ item, value }">
         <router-link
@@ -72,14 +72,15 @@ import type {
   GetCalloutsQuery,
   Paginated,
 } from '@beabee/beabee-common';
-import { AppButton } from '@beabee/vue/components';
+import {
+  AppButton,
+  AppFilterGrid,
+  AppSearchInput,
+  type Header,
+  PageTitle,
+  formatLocale,
+} from '@beabee/vue';
 
-import AppFilterGrid from '@components/AppFilterGrid.vue';
-import AppItemStatus from '@components/AppItemStatus.vue';
-import PageTitle from '@components/PageTitle.vue';
-import AppSearchInput from '@components/forms/AppSearchInput.vue';
-import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
-import type { Header } from '@components/table/table.interface';
 import {
   faBullhorn,
   faEye,
@@ -88,10 +89,12 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { client } from '@utils/api';
-import { formatLocale } from '@utils/dates';
 import { definePaginatedQuery, defineParam } from '@utils/pagination';
 import { computed, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import ItemStatus from '../../../components/item/ItemStatus.vue';
+import AppPaginatedTable from '../../../components/table/AppPaginatedTable.vue';
 
 const { t } = useI18n();
 

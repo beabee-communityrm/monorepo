@@ -22,7 +22,7 @@ const filterTabs: TabItem[] = [
 </script>
 
 <template>
-  <Story title="Components/Tabs/AppVTabs">
+  <Story title="Tabs/AppVTabs">
     <Variant title="Basic">
       <div class="w-[200px]">
         <AppVTabs v-model="state.selectedTab" :items="verticalTabs" />

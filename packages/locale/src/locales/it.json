@@ -71,6 +71,7 @@
     "continue": "Prosegui",
     "copy": "",
     "create": "",
+    "decrease": "",
     "delete": "",
     "disable": "Disattiva",
     "edit": "",
@@ -79,6 +80,7 @@
     "export": "",
     "getStarted": "",
     "goBack": "",
+    "increase": "",
     "next": "",
     "noBack": "",
     "participate": "",
@@ -100,6 +102,7 @@
     "share": "",
     "skip": "",
     "submit": "",
+    "tryAgain": "",
     "unpublish": "",
     "update": "Aggiorna",
     "view": "",
@@ -644,6 +647,7 @@
           "title": ""
         }
       },
+      "title": "",
       "translationFields": {
         "description": "",
         "html": "",
@@ -669,6 +673,14 @@
     "responseSubmitted": "",
     "share": {
       "address": "",
+      "aria": {
+        "email": "",
+        "facebook": "",
+        "linkedin": "",
+        "telegram": "",
+        "twitter": "",
+        "whatsapp": ""
+      },
       "services": ""
     },
     "showingPreview": "",
@@ -793,13 +805,23 @@
     "showingOf": ""
   },
   "calloutReviewerManager": {
-    "add": "",
+    "add": "Aggiungere un verificatore",
+    "canEdit": "Il verificatore può anche modificare il CrowdNewsroom",
     "confirmDelete": {
-      "text": "",
-      "title": ""
+      "text": "È sicuro di voler rimuovere {reviewerName}? Non potrà più verificare questo invito.",
+      "title": "Rimuovere il verificatore"
     },
-    "contact": "",
-    "title": ""
+    "contact": "ID del contatto",
+    "editorTag": "Editor",
+    "search": {
+      "error": {
+        "message": "La preghiamo di assicurarsi che l’indirizzo e-mail esista e non contenga errori di battitura.",
+        "title": "Contatto non trovato"
+      },
+      "placeholder": "Cercare un indirizzo e-mail",
+      "successMessage": "L’indirizzo e-mail è valido"
+    },
+    "title": "Verificatori"
   },
   "calloutThanksPage": {
     "oneResponseWarning": ""
@@ -883,12 +905,14 @@
     "selectNone": "-- Nessuno --",
     "selectOne": "Seleziona",
     "show": "Mostra",
+    "showingOf": "",
     "status": {
       "draft": "Bozza",
       "ended": "Chiuso",
       "open": "Aperto",
       "scheduled": "Programmato"
     },
+    "statusLabel": "",
     "thankYou": "Grazie!",
     "timeAgo": "{time} fa",
     "timeIn": "in {time}",
@@ -1109,6 +1133,10 @@
         "required": "",
         "sameAs": ""
       },
+      "description": {
+        "maxLength": "",
+        "required": ""
+      },
       "email": {
         "email": "",
         "required": ""
@@ -1135,6 +1163,10 @@
       "postCode": {
         "required": ""
       },
+      "shareDescription": {
+        "maxLength": "",
+        "required": ""
+      },
       "unknown": {
         "email": "",
         "max": "",
@@ -1153,6 +1185,10 @@
         "required": ""
       }
     },
+    "errorsFormio": {
+      "maxLength": "",
+      "minLength": ""
+    },
     "firstName": "Nome",
     "lastName": "Cognome",
     "newPassword": "",
@@ -1165,11 +1201,13 @@
     "richtext": {
       "bold": "",
       "bulletlist": "",
+      "editor": "",
       "heading": "",
       "italic": "",
       "link": "",
       "numberedlist": "",
       "strikethrough": "",
+      "toolbar": "",
       "underline": ""
     },
     "saveChanges": "",
@@ -1203,6 +1241,11 @@
     "viewOpenCallouts": "Vedi le callout in corso",
     "welcome": "Ben fatto {firstName}!",
     "yourProfile": "Il tuo profilo"
+  },
+  "icons": {
+    "welcome": {
+      "ariaLabel": ""
+    }
   },
   "item": {
     "status": {
@@ -1321,13 +1364,13 @@
         "formSubtitle": "",
         "formTitle": "",
         "minAmount": "",
+        "noticeText": "",
+        "noticeTextHelp": "",
         "showAbsorbFee": "",
         "showNoContribution": "",
         "suggestedAmounts": "",
         "text": "",
-        "title": "",
-        "noticeText": "",
-        "noticeTextHelp": ""
+        "title": ""
       }
     },
     "title": ""
@@ -1500,6 +1543,23 @@
   "setPassword": {
     "description": "Imposta una nuova password.",
     "title": "Imposta una password"
+  },
+  "status": {
+    "connectingToServer": "",
+    "initializing": "",
+    "loadingApplication": "",
+    "pleaseWait": "",
+    "usuallyTakesSeconds": ""
+  },
+  "stepper": {
+    "navigation": {
+      "label": ""
+    },
+    "screen": {
+      "completed": "",
+      "currentStep": "",
+      "hasError": ""
+    }
   },
   "tagEditor": {
     "add": "",

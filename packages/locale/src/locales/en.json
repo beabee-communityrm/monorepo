@@ -71,6 +71,7 @@
     "continue": "Continue",
     "copy": "Copy",
     "create": "Create",
+    "decrease": "Decrease",
     "delete": "Delete",
     "disable": "Disable",
     "edit": "Edit",
@@ -79,6 +80,7 @@
     "export": "Export",
     "getStarted": "Get started",
     "goBack": "Go back",
+    "increase": "Increase",
     "next": "Next",
     "noBack": "No, go back",
     "participate": "Participate",
@@ -100,6 +102,7 @@
     "share": "Share",
     "skip": "Skip",
     "submit": "Submit",
+    "tryAgain": "Try again",
     "unpublish": "Unpublish",
     "update": "Update",
     "view": "View",
@@ -644,6 +647,7 @@
           "title": "Translations"
         }
       },
+      "title": "Callout builder",
       "translationFields": {
         "description": "Description",
         "html": "Content",
@@ -669,6 +673,14 @@
     "responseSubmitted": "Response submitted",
     "share": {
       "address": "Share this callout with the following address:",
+      "aria": {
+        "email": "Share via email",
+        "facebook": "Share on Facebook",
+        "linkedin": "Share on LinkedIn",
+        "telegram": "Share on Telegram",
+        "twitter": "Share on Twitter",
+        "whatsapp": "Share on WhatsApp"
+      },
       "services": "Or quickly share using one of these services:"
     },
     "showingPreview": "You can't submit a response in preview mode",
@@ -794,12 +806,22 @@
   },
   "calloutReviewerManager": {
     "add": "Add reviewer",
+    "canEdit": "Reviewer can also edit the CrowdNewsroom",
     "confirmDelete": {
       "text": "Are you sure you want to remove {reviewerName}? They will no longer be able to review this callout.",
       "title": "Remove reviewer"
     },
     "contact": "Contact ID",
-    "title": "Callout reviewers"
+    "editorTag": "Editor",
+    "search": {
+      "error": {
+        "message": "Please ensure that the email address exists and is free of typos.",
+        "title": "Contact not found"
+      },
+      "placeholder": "Search email address",
+      "successMessage": "Email Is Valid"
+    },
+    "title": "Reviewers"
   },
   "calloutThanksPage": {
     "oneResponseWarning": "Please note that this callout only allows one response per person. If you have already contributed, additional responses will not be recorded."
@@ -883,12 +905,14 @@
     "selectNone": "-- None --",
     "selectOne": "Select one...",
     "show": "Show",
+    "showingOf": "Showing {start} to {end} of {total} results",
     "status": {
       "draft": "Draft",
       "ended": "Ended",
       "open": "Open",
       "scheduled": "Scheduled"
     },
+    "statusLabel": "Status: {status}",
     "thankYou": "Thank you!",
     "timeAgo": "{time} ago",
     "timeIn": "in {time}",
@@ -1109,6 +1133,10 @@
         "required": "Password is required",
         "sameAs": "The passwords don't match"
       },
+      "description": {
+        "maxLength": "Maximum length of {max} characters exceeded",
+        "required": "Description is required"
+      },
       "email": {
         "email": "Invalid email address",
         "required": "Email is required"
@@ -1135,6 +1163,10 @@
       "postCode": {
         "required": "Postcode is required"
       },
+      "shareDescription": {
+        "maxLength": "Maximum length of {max} characters exceeded, {remaining} characters remaining",
+        "required": "Description is required"
+      },
       "unknown": {
         "email": "Invalid email address",
         "max": "This field must be at most {max}",
@@ -1153,6 +1185,10 @@
         "required": "Code is required"
       }
     },
+    "errorsFormio": {
+      "maxLength": "Maximum length of {'{{length}}'} characters exceeded",
+      "minLength": "This field must be at least {'{{length}}'} characters long"
+    },
     "firstName": "First name",
     "lastName": "Last name",
     "newPassword": "New password",
@@ -1165,11 +1201,13 @@
     "richtext": {
       "bold": "Bold",
       "bulletlist": "Bullet list",
+      "editor": "Rich text editor",
       "heading": "Heading",
       "italic": "Italic",
       "link": "Link",
       "numberedlist": "Numbered list",
       "strikethrough": "Strikethrough",
+      "toolbar": "Rich text formatting toolbar",
       "underline": "Underline"
     },
     "saveChanges": "Save Changes",
@@ -1203,6 +1241,11 @@
     "viewOpenCallouts": "View open callouts",
     "welcome": "Welcome aboard {firstName}!",
     "yourProfile": "Your profile"
+  },
+  "icons": {
+    "welcome": {
+      "ariaLabel": "Welcome icon"
+    }
   },
   "item": {
     "status": {
@@ -1500,6 +1543,23 @@
   "setPassword": {
     "description": "Set a new password to login.",
     "title": "Set a password"
+  },
+  "status": {
+    "connectingToServer": "Connecting to server...",
+    "initializing": "Initializing...",
+    "loadingApplication": "Loading Application",
+    "pleaseWait": "Please wait...",
+    "usuallyTakesSeconds": "This usually takes a few seconds"
+  },
+  "stepper": {
+    "navigation": {
+      "label": "Step progress"
+    },
+    "screen": {
+      "completed": ", completed",
+      "currentStep": ", current step",
+      "hasError": ", has error"
+    }
   },
   "tagEditor": {
     "add": "Add tag",

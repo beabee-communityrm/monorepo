@@ -3,23 +3,37 @@
     :is="operatorComponents[rule.operator]"
     :value="rule.value"
     :item="item"
-    :readonly="!!readonly"
+    :readonly="readonly"
   />
 </template>
-<script lang="ts" setup>
+
+<script setup lang="ts">
 import type { Rule } from '@beabee/beabee-common';
 
-import type { FilterItem } from '@type';
-
+import type { FilterItem } from '../../type/search';
 import BetweenArgs from './operators/BetweenArgs.vue';
 import NoArg from './operators/NoArg.vue';
 import SingleArg from './operators/SingleArg.vue';
 
-defineProps<{
+/**
+ * Filter group item component that renders the appropriate operator component
+ * based on the rule's operator type. Now simplified since operator components
+ * handle their own i18n internally.
+ *
+ * @param rule - The rule object containing field, operator, and value
+ * @param item - The filter item configuration
+ * @param readonly - Whether the component is in readonly mode
+ */
+
+interface Props {
   rule: Rule;
   item: FilterItem;
   readonly?: boolean;
-}>();
+}
+
+withDefaults(defineProps<Props>(), {
+  readonly: false,
+});
 
 const operatorComponents = {
   equal: SingleArg,

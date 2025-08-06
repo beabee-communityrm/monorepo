@@ -50,7 +50,7 @@ yarn workspace @beabee/vue docs:start
 Components can be imported directly from the package:
 
 ```ts
-import { AppButton } from '@beabee/vue/components';
+import { AppButton } from '@beabee/vue';
 ```
 
 ### Theme System

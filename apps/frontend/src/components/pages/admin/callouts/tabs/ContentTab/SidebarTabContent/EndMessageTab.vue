@@ -25,7 +25,7 @@
         </AppFormField>
 
         <AppFormField class="mx-auto max-w-3xl" :help="inputT('text.help')">
-          <RichTextEditor
+          <AppRichTextEditor
             v-model="data.thankYouText.default"
             :label="inputT('text.label')"
             :placeholder="inputT('text.placeholder')"
@@ -51,10 +51,13 @@
 </template>
 
 <script lang="ts" setup>
-import { AppFormField, AppRadioGroup } from '@beabee/vue/components';
+import {
+  AppFormField,
+  AppInput,
+  AppRadioGroup,
+  AppRichTextEditor,
+} from '@beabee/vue';
 
-import AppInput from '@components/forms/AppInput.vue';
-import RichTextEditor from '@components/rte/RichTextEditor.vue';
 import type { LocaleProp } from '@type';
 import useVuelidate from '@vuelidate/core';
 import { watch } from 'vue';

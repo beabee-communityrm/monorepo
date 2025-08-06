@@ -37,6 +37,8 @@ import {
   IsOptional,
   IsString,
   IsUUID,
+  Max,
+  Min,
   ValidateNested,
 } from 'class-validator';
 
@@ -58,6 +60,11 @@ export class ListCalloutResponsesDto extends GetPaginatedQuery {
 
   @IsIn(['number', 'createdAt', 'updatedAt'])
   sort?: string;
+
+  @IsOptional()
+  @Min(1)
+  @Max(1000)
+  limit?: number;
 }
 
 // TODO: this is a bit hacky

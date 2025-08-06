@@ -2,7 +2,7 @@
   <template v-if="readonly">
     <template v-if="rule && ruleFilterItem">
       <b>{{ ruleFilterItem.label }}</b>
-      {{ operatorT(ruleFilterItem.type, rule.operator) }}
+      {{ getOperatorLabel(ruleFilterItem.type, rule.operator) }}
       <AppSearchRuleFilterGroupItem
         :rule="rule"
         :item="ruleFilterItem"
@@ -43,26 +43,42 @@
 
 <script setup lang="ts">
 import { type RuleOperator, operatorsByTypeMap } from '@beabee/beabee-common';
+import { AppSelect } from '@beabee/vue';
 
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
-import { createNewRule, getDefaultRuleValue } from '@utils/rules';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import AppSelect from '../forms/AppSelect.vue';
-import AppSearchRuleFilterGroupItem from './AppSearchRuleFilterGroupItem.vue';
+import type {
+  SearchRuleEmits,
+  SearchRuleFilterGroupProps,
+} from '../../type/search';
 import {
-  type SearchRuleEmits,
-  type SearchRuleFilterGroupProps,
-  nullableOperatorItems,
-  operatorItems,
-  operatorT,
-} from './search.interface';
-
-const emit = defineEmits<SearchRuleEmits>();
-const props = defineProps<SearchRuleFilterGroupProps>();
+  createNewRule,
+  createOperatorLabels,
+  getDefaultRuleValue,
+} from '../../utils/rules';
+import {
+  buildNullableOperatorItems,
+  buildOperatorItems,
+} from '../../utils/search';
+import AppSearchRuleFilterGroupItem from './AppSearchRuleFilterGroupItem.vue';
 
 const { t } = useI18n();
+
+const props = withDefaults(defineProps<SearchRuleFilterGroupProps>(), {
+  readonly: false,
+});
+
+const emit = defineEmits<SearchRuleEmits>();
+
+// Create operator labels using internal i18n
+const operatorLabels = computed(() => createOperatorLabels(t));
+
+const operatorItems = computed(() => buildOperatorItems(operatorLabels.value));
+const nullableOperatorItems = computed(() =>
+  buildNullableOperatorItems(operatorLabels.value)
+);
 
 const ruleFilterItem = computed(() => {
   return props.rule ? props.filterGroup.items[props.rule.field] : undefined;
@@ -81,10 +97,26 @@ const filterOperatorItems = computed(() => {
   if (!item) return [];
 
   return [
-    ...operatorItems[item.type],
-    ...(item.nullable ? nullableOperatorItems : []),
+    ...operatorItems.value[item.type],
+    ...(item.nullable ? nullableOperatorItems.value : []),
   ];
 });
+
+function getOperatorLabel(type: string, operator: RuleOperator): string {
+  let labelType = type;
+  if (operator === 'is_empty' || operator === 'is_not_empty') {
+    labelType = 'all';
+  }
+  if (labelType === 'contact') {
+    labelType = 'text';
+  }
+
+  return (
+    operatorLabels.value[labelType as keyof typeof operatorLabels.value]?.[
+      operator
+    ] || operator
+  );
+}
 
 function changeRule(id: string) {
   const type = props.filterGroup.items[id].type;

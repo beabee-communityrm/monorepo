@@ -78,7 +78,7 @@ meta:
               :selected-tags="selectedTags"
               :manage-url="`/admin/callouts/view/${callout.slug}/responses/tags`"
               :loading="doingAction"
-              :disable-tags="selectedCount === 0"
+              :selectable="selectedCount > 0"
               @toggle="
                 (tagId, successText) =>
                   handleUpdateAction({ tags: [tagId] }, successText)
@@ -86,8 +86,12 @@ meta:
             />
             <SetAssigneeButton
               :reviewer-items="reviewerItems"
-              :manage-url="`/admin/callouts/view/${callout.slug}/responses/tags`"
-              :disabled="selectedCount === 0"
+              :manage-url="
+                canAdmin
+                  ? `/admin/callouts/view/${callout.slug}/responses/tags`
+                  : undefined
+              "
+              :selectable="selectedCount > 0"
               :loading="doingAction"
               :current-assignee-id="selectedAssigneeId"
               @assign="
@@ -174,7 +178,7 @@ meta:
                 {{
                   stringifyAnswer(
                     currentInlineComponent,
-                    (item.answers[currentInlineComponent.slideId] as any)?.[
+                    item.answers[currentInlineComponent.slideId]?.[
                       currentInlineComponent.key
                     ]
                   )
@@ -210,12 +214,16 @@ import {
   type UpdateCalloutResponseData,
   stringifyAnswer,
 } from '@beabee/beabee-common';
-import { AppButton, AppButtonGroup } from '@beabee/vue/components';
-import { AppCheckbox, AppVTabs } from '@beabee/vue/components';
-import { addNotification } from '@beabee/vue/store/notifications';
+import {
+  AppButton,
+  AppButtonGroup,
+  AppCheckbox,
+  AppSelect,
+  AppTime,
+  AppVTabs,
+  addNotification,
+} from '@beabee/vue';
 
-import AppTime from '@components/AppTime.vue';
-import AppSelect from '@components/forms/AppSelect.vue';
 import {
   headers,
   useCalloutResponseFilters,
@@ -233,6 +241,7 @@ import {
   faUserPen,
 } from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';
+import { canAdmin } from '@store/currentUser';
 import { client } from '@utils/api';
 import { buckets } from '@utils/callouts';
 import {
@@ -240,8 +249,7 @@ import {
   defineParam,
   defineRulesParam,
 } from '@utils/pagination';
-import { computed, ref, watch } from 'vue';
-import { toRef } from 'vue';
+import { computed, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 

@@ -23,7 +23,7 @@ meta:
         :success-text="t('form.saved')"
         @submit="handleUpdate"
       >
-        <RichTextEditor
+        <AppRichTextEditor
           v-model="introMessage"
           :label="stepT('message')"
           class="mb-4"
@@ -42,15 +42,18 @@ meta:
   </App2ColGrid>
 </template>
 <script lang="ts" setup>
-import { AppCheckbox, AppForm } from '@beabee/vue/components';
+import {
+  App2ColGrid,
+  AppCheckbox,
+  AppForm,
+  AppRichTextEditor,
+  WelcomeMessage,
+} from '@beabee/vue';
 
 import { client } from '@utils/api';
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import App2ColGrid from '../../../components/App2ColGrid.vue';
-import RichTextEditor from '../../../components/rte/RichTextEditor.vue';
-import WelcomeMessage from '../../../components/welcome-message/WelcomeMessage.vue';
 import { currentUser } from '../../../store';
 
 const { t } = useI18n();

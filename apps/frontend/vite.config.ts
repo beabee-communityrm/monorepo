@@ -1,19 +1,17 @@
 import theme from '@beabee/vue/plugins/theme';
 
 import vueI18n from '@intlify/unplugin-vue-i18n/vite';
-// TODO: Replace with https://github.com/posva/unplugin-vue-router as recommended by `vite-plugin-pages` itself
 import replace from '@rollup/plugin-replace';
 import vue from '@vitejs/plugin-vue';
 import { createRequire } from 'node:module';
 import { dirname, resolve } from 'node:path';
-import { defineConfig, loadEnv } from 'vite';
-import type { Plugin } from 'vite';
+import { type Plugin, defineConfig, loadEnv } from 'vite';
 import pages from 'vite-plugin-pages';
 
 const require = createRequire(import.meta.url);
 const LOCALE_PATH = resolve(
   dirname(require.resolve('@beabee/locale/package.json')),
-  'src/locales'
+  'dist/locales-with-fallback'
 );
 
 export default ({ command, mode }) => {

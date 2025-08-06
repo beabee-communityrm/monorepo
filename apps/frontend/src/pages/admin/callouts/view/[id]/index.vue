@@ -59,55 +59,62 @@ meta:
             : t('actions.preview')
         }}
       </ActionButton>
-      <ActionButton
-        :icon="faPencilAlt"
-        :to="'/admin/callouts/edit/' + callout.slug"
-      >
-        {{ t('actions.edit') }}
-      </ActionButton>
-      <ActionButton :icon="faClone" @click="replicateThisCallout()">
-        {{ t('actions.replicate') }}
-      </ActionButton>
-      <ActionButton
-        v-if="callout.status === ItemStatus.Open"
-        :icon="faHourglassEnd"
-        @click="endThisCallout()"
-      >
-        {{ t('actions.endnow') }}
-      </ActionButton>
-      <ActionButton
-        v-if="callout.status === ItemStatus.Ended"
-        :icon="faHourglassStart"
-        @click="reopenThisCallout()"
-      >
-        {{ t('actions.reopen') }}
-      </ActionButton>
-      <ActionButton :icon="faTrash" @click="showDeleteModal = true">
-        {{ t('actions.delete') }}
-      </ActionButton>
-      <AppConfirmDialog
-        :open="showDeleteModal"
-        :title="t('calloutAdminOverview.actions.confirmDelete.title')"
-        :cancel="t('actions.noBack')"
-        :confirm="t('actions.yesDelete')"
-        variant="danger"
-        @close="showDeleteModal = false"
-        @confirm="confirmDeleteCallout"
-      >
-        <p>{{ t('calloutAdminOverview.actions.confirmDelete.text') }}</p>
-      </AppConfirmDialog>
+      <template v-if="canEdit">
+        <ActionButton
+          v-if="canEdit"
+          :icon="faPencilAlt"
+          :to="'/admin/callouts/edit/' + callout.slug"
+        >
+          {{ t('actions.edit') }}
+        </ActionButton>
+        <ActionButton
+          v-if="callout.status === ItemStatus.Open"
+          :icon="faHourglassEnd"
+          @click="endThisCallout()"
+        >
+          {{ t('actions.endnow') }}
+        </ActionButton>
+        <ActionButton
+          v-if="callout.status === ItemStatus.Ended"
+          :icon="faHourglassStart"
+          @click="reopenThisCallout()"
+        >
+          {{ t('actions.reopen') }}
+        </ActionButton>
+      </template>
+      <template v-if="canAdmin">
+        <ActionButton :icon="faClone" @click="replicateThisCallout()">
+          {{ t('actions.replicate') }}
+        </ActionButton>
+        <ActionButton :icon="faTrash" @click="showDeleteModal = true">
+          {{ t('actions.delete') }}
+        </ActionButton>
+        <AppConfirmDialog
+          :open="showDeleteModal"
+          :title="t('calloutAdminOverview.actions.confirmDelete.title')"
+          :cancel="t('actions.noBack')"
+          :confirm="t('actions.yesDelete')"
+          variant="danger"
+          @close="showDeleteModal = false"
+          @confirm="confirmDeleteCallout"
+        >
+          <p>{{ t('calloutAdminOverview.actions.confirmDelete.text') }}</p>
+        </AppConfirmDialog>
+      </template>
     </div>
   </div>
 </template>
 <script lang="ts" setup>
 import { type GetCalloutDataWith, ItemStatus } from '@beabee/beabee-common';
-import { ActionButton } from '@beabee/vue/components';
-import { addNotification } from '@beabee/vue/store/notifications';
+import {
+  ActionButton,
+  AppConfirmDialog,
+  AppHeading,
+  AppInfoList,
+  AppInfoListItem,
+  addNotification,
+} from '@beabee/vue';
 
-import AppConfirmDialog from '@components/AppConfirmDialog.vue';
-import AppHeading from '@components/AppHeading.vue';
-import AppInfoList from '@components/AppInfoList.vue';
-import AppInfoListItem from '@components/AppInfoListItem.vue';
 import CalloutSummary from '@components/callout/CalloutSummary.vue';
 import {
   faClone,
@@ -117,8 +124,9 @@ import {
   faPencilAlt,
   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
+import { canAdmin } from '@store/currentUser';
 import { client } from '@utils/api';
-import { ref } from 'vue';
+import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 
@@ -129,6 +137,7 @@ const { t } = useI18n();
 
 const router = useRouter();
 
+const canEdit = ref(false);
 const showDeleteModal = ref(false);
 
 async function confirmDeleteCallout() {
@@ -168,4 +177,21 @@ async function replicateThisCallout() {
     query: { replicated: null },
   });
 }
+
+onBeforeMount(async () => {
+  if (canAdmin.value) {
+    canEdit.value = true;
+  } else {
+    const reviewers = await client.callout.reviewer.list(props.callout.id, {
+      rules: {
+        condition: 'AND',
+        rules: [
+          { field: 'contact', operator: 'equal', value: ['me'] },
+          { field: 'canEdit', operator: 'equal', value: [true] },
+        ],
+      },
+    });
+    canEdit.value = reviewers.length > 0;
+  }
+});
 </script>

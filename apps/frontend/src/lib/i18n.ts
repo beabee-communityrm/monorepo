@@ -1,4 +1,5 @@
 import {
+  type BaseLocale,
   type Locale,
   LocaleContext,
   isLocale,
@@ -41,14 +42,16 @@ watch(
   [currentLocale, () => generalContent.value.currencyCode],
   async ([newLocale, newCurrencyCode]) => {
     // Remove variants (e.g. @informal)
-    const justLocale = newLocale.toString().split('@')[0];
+    const justLocale: BaseLocale = newLocale
+      .toString()
+      .split('@')[0] as BaseLocale;
 
     // en is already loaded
     if (newLocale !== 'en') {
       // For the dynamic import to work the locale must be a path, we can't
       // reference @beabee/locale here
       const messages = await import(
-        `../../../../packages/locale/src/locales/${newLocale}.json`
+        `../../../../packages/locale/dist/locales-with-fallback/${newLocale}.json`
       );
       i18n.global.setLocaleMessage(justLocale, messages.default);
     }

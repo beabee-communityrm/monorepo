@@ -25,7 +25,7 @@ const variants: ButtonVariant[] = [
 </script>
 
 <template>
-  <Story title="Components/Button/AppButtonGroup">
+  <Story title="Button/AppButtonGroup">
     <Variant title="Basic">
       <AppButtonGroup>
         <AppButton variant="primaryOutlined">Button 1</AppButton>

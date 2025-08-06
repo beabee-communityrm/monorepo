@@ -3,7 +3,7 @@
     :key="componentTextChangeCounter"
     class="callout-form-renderer"
     :form="{ components: localizedComponents }"
-    :submission="modelValue && ({ data: modelValue } as any)"
+    :submission="modelValue && { data: modelValue }"
     :options="formOpts"
     language="custom"
     @change="handleChange"
@@ -195,6 +195,8 @@ const formOpts = computed(() => {
         required: t('form.errors.unknown.required'),
         invalid_email: t('form.errors.unknown.email'),
         invalid_url: t('form.errors.unknown.url'),
+        minLength: t('form.errorsFormio.minLength'),
+        maxLength: t('form.errorsFormio.maxLength'),
       },
     },
   };

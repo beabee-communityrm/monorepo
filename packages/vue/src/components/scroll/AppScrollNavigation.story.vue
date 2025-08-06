@@ -27,7 +27,7 @@ const containerRef = ref<HTMLElement | null>(null);
 </script>
 
 <template>
-  <Story title="Components/Scroll/AppScrollNavigation">
+  <Story title="Scroll/AppScrollNavigation">
     <Variant title="Basic Usage">
       <div class="flex gap-4">
         <AppScrollNavigation

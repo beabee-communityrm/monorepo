@@ -34,9 +34,17 @@
   </form>
 </template>
 <script lang="ts" setup>
-import { LOGIN_CODES } from '@beabee/beabee-common';
-import { isApiError } from '@beabee/client';
-
+/**
+ * Form component with validation, error handling, and notifications.
+ *
+ * Uses internal i18n for:
+ * - Notification close button: notifications.remove
+ * - Validation error message: form.errorMessages.validation
+ * - Default success message: form.saved
+ * - Default error messages: form.errorMessages.*
+ *
+ * @component AppForm
+ */
 import useVuelidate from '@vuelidate/core';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -45,12 +53,14 @@ import { addNotification } from '../../store/notifications';
 import { AppButton } from '../button';
 import { AppNotification } from '../notification';
 
+const { t } = useI18n();
+
 export interface AppFormProps {
   /** The text of the submit button */
   buttonText: string;
   /** The text of the reset button */
   resetButtonText?: string;
-  /** The text of the success notification */
+  /** Custom success message */
   successText?: string;
   /** The text of the error notification */
   errorText?: Record<string, string>;
@@ -60,20 +70,24 @@ export interface AppFormProps {
   fullButton?: boolean;
   /** The function to call when the form is submitted */
   onSubmit?: (evt: Event) => Promise<void | false> | void | false;
+  /** Function to extract error code from error object (defaults to returning 'unknown') */
+  extractErrorCode?: (error: unknown) => string;
 }
 
 const emit = defineEmits(['reset']);
 const props = defineProps<AppFormProps>();
 
-const { t } = useI18n();
-
-const errorMessages = computed<Record<string, string>>(() => ({
+const defaultErrorMessages = computed<Record<string, string>>(() => ({
   unknown: t('form.errorMessages.generic'),
   'duplicate-email': t('form.errorMessages.api.duplicate-email'),
-  [LOGIN_CODES.LOGIN_FAILED]: t('form.errorMessages.api.login-failed'),
-  [LOGIN_CODES.INVALID_TOKEN]: t('form.errorMessages.api.invalid-token'),
-  [LOGIN_CODES.LOCKED]: t('form.errorMessages.api.account-locked'),
+  'login-failed': t('form.errorMessages.api.login-failed'),
+  'invalid-token': t('form.errorMessages.api.invalid-token'),
+  'account-locked': t('form.errorMessages.api.account-locked'),
   'duplicate-tag-name': t('form.errorMessages.api.duplicate-tag-name'),
+}));
+
+const errorMessages = computed<Record<string, string>>(() => ({
+  ...defaultErrorMessages.value,
   ...props.errorText,
 }));
 
@@ -95,8 +109,8 @@ async function handleSubmit(evt: Event) {
       });
     }
   } catch (err) {
-    const errorCode = isApiError(err, undefined, [400, 401])
-      ? err.code
+    const errorCode = props.extractErrorCode
+      ? props.extractErrorCode(err)
       : 'unknown';
     const errorText =
       errorCode && errorMessages.value[errorCode]

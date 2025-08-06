@@ -9,11 +9,13 @@
       v-slot="{ item }"
       :items="reviewerItems"
       :selected-item-ids="currentAssigneeId ? [currentAssigneeId] : []"
+      :disabled="!selectable"
       @click="handleAssign"
     >
       {{ item.label }}
     </AppSelectableList>
     <router-link
+      v-if="manageUrl"
       class="block border-t border-primary-40 px-3 py-2 font-semibold text-primary underline hover:bg-primary-5 group-hover:border-primary"
       :to="manageUrl"
     >
@@ -25,7 +27,7 @@
 </template>
 
 <script lang="ts" setup>
-import { AppDropdownButton, AppSelectableList } from '@beabee/vue/components';
+import { AppDropdownButton, AppSelectableList } from '@beabee/vue';
 import type { SelectItem } from '@beabee/vue/types';
 
 import { faCog, faUser } from '@fortawesome/free-solid-svg-icons';
@@ -36,9 +38,10 @@ const emit = defineEmits<{
 }>();
 defineProps<{
   reviewerItems: SelectItem<string>[];
-  manageUrl: string;
+  manageUrl?: string;
   currentAssigneeId?: string;
   withText?: boolean;
+  selectable?: boolean;
 }>();
 
 const { t } = useI18n();

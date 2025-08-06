@@ -30,7 +30,7 @@
         class="mb-4"
       />
 
-      <Contribution
+      <AppContribution
         v-model:amount="newContribution.amount"
         v-model:pay-fee="newContribution.payFee"
         v-model:period="newContribution.period"
@@ -101,22 +101,25 @@ import {
   MembershipStatus,
   PaymentMethod,
 } from '@beabee/beabee-common';
-import { AppButton, AppNotification } from '@beabee/vue/components';
+import {
+  AppButton,
+  AppHeading,
+  AppModal,
+  AppNotification,
+  formatLocale,
+} from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
-import AppHeading from '@components/AppHeading.vue';
-import AppModal from '@components/AppModal.vue';
 import StripePayment from '@components/StripePayment.vue';
-import Contribution from '@components/contribution/Contribution.vue';
-import { type ContributionContent } from '@components/contribution/contribution.interface';
+import AppContribution from '@components/contribution/AppContribution.vue';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { currentUser } from '@store/currentUser';
 import { client, isApiError } from '@utils/api';
-import { formatLocale } from '@utils/dates';
 import useVuelidate from '@vuelidate/core';
 import { computed, onBeforeMount, reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import type { ContributionContent } from '../../../../type/contribution';
 import ProrateContribution from './ProrateContribution.vue';
 
 const validation = useVuelidate();
@@ -212,6 +215,8 @@ async function handleUpdate() {
   } catch (err) {
     if (isApiError(err, ['cant-update-contribution'])) {
       cantUpdate.value = true;
+    } else {
+      throw err;
     }
   }
 }

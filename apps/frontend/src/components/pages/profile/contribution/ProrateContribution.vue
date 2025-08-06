@@ -54,11 +54,11 @@
 </template>
 
 <script lang="ts" setup>
+import { formatLocale } from '@beabee/vue';
+
 import { differenceInMonths } from 'date-fns';
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-
-import { formatLocale } from '../../../../utils/dates';
 
 const { t, n } = useI18n();
 
@@ -92,7 +92,6 @@ watch(
   { immediate: true }
 );
 
-// TODO: formatLocale isn't imported if used directly in the template
 const formattedRenewalDate = computed(() =>
   formatLocale(props.renewalDate, 'PPP')
 );

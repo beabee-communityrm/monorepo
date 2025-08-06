@@ -26,11 +26,7 @@ meta:
     <div class="w-full md:max-w-2xl">
       <template v-if="!isRespondPage">
         <div v-if="callout.status === ItemStatus.Open" class="mb-6">
-          <AppShareBox
-            :address-text="t('callout.share.address')"
-            :services-text="t('callout.share.services')"
-            :url="`/callouts/${callout.slug}`"
-          />
+          <AppShareBox :url="`${env.appUrl}/callouts/${callout.slug}`" />
         </div>
         <img class="mb-6 w-full" :src="imageUrl" />
         <div class="content-message mb-6 text-lg" v-html="callout.intro" />
@@ -85,29 +81,33 @@ import {
   type CalloutResponseAnswersSlide,
   type GetCalloutDataWith,
   type GetCalloutResponseDataWith,
+  GetCalloutResponseWith,
   ItemStatus,
   type Paginated,
 } from '@beabee/beabee-common';
-import { GetCalloutResponseWith } from '@beabee/beabee-common';
-import { AppButton, AppNotification } from '@beabee/vue/components';
-import { addNotification } from '@beabee/vue/store/notifications';
+import {
+  AppButton,
+  AppHeading,
+  AppMessageBox,
+  AppNotification,
+  AppShareBox,
+  AppTitle,
+  addNotification,
+  formatLocale,
+} from '@beabee/vue';
 
 import noImage from '@assets/images/no-image.avif';
-import AppHeading from '@components/AppHeading.vue';
-import AppMessageBox from '@components/AppMessageBox.vue';
-import AppShareBox from '@components/AppShareBox.vue';
-import AppTitle from '@components/AppTitle.vue';
 import CalloutForm from '@components/pages/callouts/CalloutForm.vue';
 import CalloutLoginPrompt from '@components/pages/callouts/CalloutLoginPrompt.vue';
 import CalloutMemberOnlyPrompt from '@components/pages/callouts/CalloutMemberOnlyPrompt.vue';
 import CalloutThanksBox from '@components/pages/callouts/CalloutThanksBox.vue';
 import CalloutVariantsBox from '@components/pages/callouts/CalloutVariantsBox.vue';
 import { useCallout } from '@components/pages/callouts/use-callout';
+import env from '@env';
 import { faBullhorn, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-import { canAdmin, currentUser, isEmbed } from '@store';
+import { currentUser, isEmbed } from '@store';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { client } from '@utils/api';
-import { formatLocale } from '@utils/dates';
 import { resolveImageUrl } from '@utils/url';
 import { computed, onBeforeMount, ref, toRef } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -156,7 +156,7 @@ addBreadcrumb(
 );
 
 const isPreview = computed(
-  () => route.query.preview === null && canAdmin.value
+  () => route.query.preview === null && currentUser.value?.isReviewer
 );
 const isRespondPage = computed(() => isEmbed || props.respond);
 const imageUrl = computed(() => {

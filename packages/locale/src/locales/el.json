@@ -71,6 +71,7 @@
     "continue": "",
     "copy": "αντίγραφο",
     "create": "",
+    "decrease": "",
     "delete": "",
     "disable": "",
     "edit": "",
@@ -79,6 +80,7 @@
     "export": "",
     "getStarted": "αρχίζω",
     "goBack": "",
+    "increase": "",
     "next": "επόμενος",
     "noBack": "",
     "participate": "",
@@ -100,6 +102,7 @@
     "share": "Μοιραστείτε",
     "skip": "",
     "submit": "υποβάλετε",
+    "tryAgain": "",
     "unpublish": "",
     "update": "",
     "view": "",
@@ -330,8 +333,8 @@
     "actions": {
       "updateResponse": ""
     },
-    "addAPoint": "Μπορείτε να εισαγάγετε μια τοποθεσία εδώ.",
-    "addLocation": "Μπορείτε να εισαγάγετε μια νέα τοποθεσία εδώ.",
+    "addAPoint": "Πρόσθεσε μια νέα τοποθεσία εδώ",
+    "addLocation": "Πρόσθεσε μια νέα τοποθεσία εδώ",
     "builder": {
       "actions": {
         "addSlide": ""
@@ -644,6 +647,7 @@
           "title": ""
         }
       },
+      "title": "",
       "translationFields": {
         "description": "",
         "html": "",
@@ -669,14 +673,22 @@
     "responseSubmitted": "Το μήνυμά σας έχει σταλεί.",
     "share": {
       "address": "Εδώ μπορείτε να προωθήσετε αυτήν τη φόρμα στην ακόλουθη διεύθυνση:",
+      "aria": {
+        "email": "",
+        "facebook": "",
+        "linkedin": "",
+        "telegram": "",
+        "twitter": "",
+        "whatsapp": ""
+      },
       "services": "Μπορείτε επίσης να στείλετε αυτήν τη φόρμα σε άλλα άτομα, για παράδειγμα, μέσω Facebook, TikTok ή Instagram."
     },
     "showingPreview": "",
     "toContributionPage": "",
     "updateContribution": "",
     "views": {
-      "gallery": "Συλλογή εικόνων / γκαλερί",
-      "map": "χάρτη"
+      "gallery": "Φωτογραφίες",
+      "map": "Χάρτης"
     },
     "youResponded": "",
     "yourResponse": ""
@@ -799,7 +811,17 @@
       "title": ""
     },
     "contact": "",
-    "title": ""
+    "title": "",
+    "canEdit": "",
+    "editorTag": "",
+    "search": {
+      "error": {
+        "message": "",
+        "title": ""
+      },
+      "placeholder": "",
+      "successMessage": ""
+    }
   },
   "calloutThanksPage": {
     "oneResponseWarning": ""
@@ -883,12 +905,14 @@
     "selectNone": "-- Κανένας --",
     "selectOne": "επιλέξτε",
     "show": "δείξε",
+    "showingOf": "",
     "status": {
       "draft": "Προσχέδιο",
       "ended": "πλήρης",
       "open": "ανοιχτό",
       "scheduled": "προγραμματισμένο"
     },
+    "statusLabel": "",
     "thankYou": "Ευχαριστώ πολύ!",
     "timeAgo": "πριν το {time}",
     "timeIn": "σε {time}",
@@ -1109,6 +1133,10 @@
         "required": "",
         "sameAs": ""
       },
+      "description": {
+        "maxLength": "",
+        "required": ""
+      },
       "email": {
         "email": "",
         "required": ""
@@ -1135,6 +1163,10 @@
       "postCode": {
         "required": ""
       },
+      "shareDescription": {
+        "maxLength": "",
+        "required": ""
+      },
       "unknown": {
         "email": "",
         "max": "",
@@ -1153,6 +1185,10 @@
         "required": ""
       }
     },
+    "errorsFormio": {
+      "minLength": "",
+      "maxLength": ""
+    },
     "firstName": "",
     "lastName": "",
     "newPassword": "",
@@ -1165,11 +1201,13 @@
     "richtext": {
       "bold": "",
       "bulletlist": "",
+      "editor": "",
       "heading": "",
       "italic": "",
       "link": "",
       "numberedlist": "",
       "strikethrough": "",
+      "toolbar": "",
       "underline": ""
     },
     "saveChanges": "",
@@ -1188,7 +1226,7 @@
         "useCamera": "χρησιμοποιήστε κάμερα"
       },
       "multiple": {
-        "addAnother": "Εδώ μπορείτε να ανεβάσετε μια νέα φωτογραφία./ Εδώ μπορείτε να ανεβάσετε ένα νέο αρχείο."
+        "addAnother": "Προσθήκη συνδέσμου"
       }
     }
   },
@@ -1203,6 +1241,11 @@
     "viewOpenCallouts": "",
     "welcome": "",
     "yourProfile": ""
+  },
+  "icons": {
+    "welcome": {
+      "ariaLabel": ""
+    }
   },
   "item": {
     "status": {
@@ -1321,13 +1364,13 @@
         "formSubtitle": "",
         "formTitle": "",
         "minAmount": "",
+        "noticeText": "",
+        "noticeTextHelp": "",
         "showAbsorbFee": "",
         "showNoContribution": "",
         "suggestedAmounts": "",
         "text": "",
-        "title": "",
-        "noticeText": "",
-        "noticeTextHelp": ""
+        "title": ""
       }
     },
     "title": ""
@@ -1500,6 +1543,23 @@
   "setPassword": {
     "description": "",
     "title": ""
+  },
+  "status": {
+    "connectingToServer": "",
+    "initializing": "",
+    "loadingApplication": "",
+    "pleaseWait": "",
+    "usuallyTakesSeconds": ""
+  },
+  "stepper": {
+    "navigation": {
+      "label": ""
+    },
+    "screen": {
+      "completed": "",
+      "currentStep": "",
+      "hasError": ""
+    }
   },
   "tagEditor": {
     "add": "",

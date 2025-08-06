@@ -29,7 +29,7 @@ meta:
     :result="noticesTable"
   >
     <template #value-status="{ value }">
-      <AppItemStatus :status="value" />
+      <ItemStatus :status="value" />
     </template>
     <template #value-name="{ item, value }">
       <router-link
@@ -45,17 +45,14 @@ meta:
   </AppPaginatedTable>
 </template>
 <script lang="ts" setup>
-import type { GetNoticeData, Paginated } from '@beabee/beabee-common';
-import { AppButton } from '@beabee/vue/components';
+import { type GetNoticeData, type Paginated } from '@beabee/beabee-common';
+import { AppButton, type Header, PageTitle, formatLocale } from '@beabee/vue';
 
-import AppItemStatus from '@components/AppItemStatus.vue';
-import PageTitle from '@components/PageTitle.vue';
+import ItemStatus from '@components/item/ItemStatus.vue';
 import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
-import type { Header } from '@components/table/table.interface';
 import { faPlus, faSignHanging } from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { client } from '@utils/api';
-import { formatLocale } from '@utils/dates';
 import { definePaginatedQuery } from '@utils/pagination';
 import { computed, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';

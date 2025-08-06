@@ -2,7 +2,7 @@
   <div class="mb-8">
     <AppExpandableBox
       v-model:expanded="showExpanded"
-      :button-icon="faFilter"
+      :button-icon="buttonIcon"
       :button-text="t('advancedSearch.button')"
     >
       <template #before><slot /></template>
@@ -11,6 +11,7 @@
         :filter-groups="filterGroups"
         :has-changed="!!hasChanged"
         @update:model-value="emit('update:modelValue', $event)"
+        @reset="emit('reset')"
       />
     </AppExpandableBox>
 
@@ -27,29 +28,51 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import type { RuleGroup } from '@beabee/beabee-common';
+import { AppExpandableBox } from '@beabee/vue';
 
-import AppExpandableBox from '@components/AppExpandableBox.vue';
-import { faFilter } from '@fortawesome/free-solid-svg-icons';
-import type { FilterGroups } from '@type';
+import {
+  type IconDefinition,
+  faFilter,
+} from '@fortawesome/free-solid-svg-icons';
 import { computed, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import type { FilterGroups } from '../../type/search';
 import AppSearchForm from './AppSearchForm.vue';
 import AppSearchSummary from './AppSearchSummary.vue';
 
-const emit = defineEmits<{
-  (e: 'update:modelValue', value: RuleGroup): void;
-  (e: 'reset'): void;
-}>();
-const props = defineProps<{
+const { t } = useI18n();
+
+/**
+ * Main search component that provides expandable advanced search functionality.
+ * Now uses internal i18n for all labels and operator text.
+ *
+ * @param filterGroups - Available filter groups
+ * @param modelValue - The current rule group
+ * @param hasChanged - Whether the search has changes
+ * @param buttonIcon - Icon for the advanced search button
+ */
+
+interface Props {
   filterGroups: FilterGroups;
   modelValue: RuleGroup | undefined;
   hasChanged?: boolean;
-}>();
+  buttonIcon?: IconDefinition;
+}
 
-const { t } = useI18n();
+interface Emits {
+  (event: 'update:modelValue', value: RuleGroup): void;
+  (event: 'reset'): void;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  hasChanged: false,
+  buttonIcon: () => faFilter,
+});
+
+const emit = defineEmits<Emits>();
 
 const showExpanded = ref(false);
 

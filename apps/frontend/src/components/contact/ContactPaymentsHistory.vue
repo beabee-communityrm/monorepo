@@ -42,13 +42,16 @@ import {
   type Paginated,
   PaymentStatus,
 } from '@beabee/beabee-common';
+import {
+  AppHeading,
+  AppPagination,
+  AppTable,
+  type Header,
+  SortType,
+  formatLocale,
+} from '@beabee/vue';
 
-import AppHeading from '@components/AppHeading.vue';
-import AppPagination from '@components/AppPagination.vue';
-import AppTable from '@components/table/AppTable.vue';
-import { type Header, SortType } from '@components/table/table.interface';
 import { client } from '@utils/api';
-import { formatLocale } from '@utils/dates';
 import { computed, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 

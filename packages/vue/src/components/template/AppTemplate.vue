@@ -82,7 +82,8 @@
  * @component AppTemplate
  */
 import type { IconDefinition } from '@fortawesome/free-solid-svg-icons';
-import { computed } from 'vue';
+
+import { generateUniqueId } from '../../utils';
 
 /**
  * Props for the AppTemplate component
@@ -150,9 +151,7 @@ defineSlots<{
 }>();
 
 // Generate unique ID for ARIA relationships
-const componentId = computed(
-  () => `template-${Math.random().toString(36).substring(2, 11)}`
-);
+const componentId = generateUniqueId('template');
 
 // Variant-based styling classes
 const variantClasses = {

@@ -35,8 +35,12 @@ async function contactToNlUpdate(
     });
   }
 
-  const status = updates?.newsletterStatus || contact.profile.newsletterStatus;
-  if (status === NewsletterStatus.None) {
+  const newStatus =
+    updates?.newsletterStatus || contact.profile.newsletterStatus;
+  if (
+    newStatus === NewsletterStatus.None &&
+    contact.profile.newsletterStatus === NewsletterStatus.None
+  ) {
     return undefined;
   }
 
@@ -51,7 +55,7 @@ async function contactToNlUpdate(
 
   return {
     email: contact.email,
-    status,
+    status: newStatus,
     groups,
     firstname: contact.firstname,
     lastname: contact.lastname,
@@ -149,27 +153,28 @@ class NewsletterService {
       return;
     }
 
-    let newState;
+    let newState = { status: NewsletterStatus.None, groups: [] as string[] };
 
-    try {
-      log.info('Upsert contact ' + contact.id);
-      newState = await this.provider.upsertContact(nlUpdate, opts?.oldEmail);
+    if (nlUpdate.status !== NewsletterStatus.None) {
+      try {
+        log.info('Upsert contact ' + contact.id);
+        newState = await this.provider.upsertContact(nlUpdate, opts?.oldEmail);
 
-      log.info(
-        `Got newsletter groups and status ${newState.status} for contact ${contact.id}`,
-        { groups: newState.groups }
-      );
-    } catch (err) {
-      // The newsletter provider rejected the update, set this contact's
-      // newsletter status to None to prevent further updates
-      if (err instanceof CantUpdateNewsletterContact) {
-        newState = { status: NewsletterStatus.None, groups: [] };
-        log.warning(
-          `Newsletter upsert failed, setting status to none for contact ${contact.id}`,
-          err
+        log.info(
+          `Got newsletter groups and status ${newState.status} for contact ${contact.id}`,
+          { groups: newState.groups }
         );
-      } else {
-        throw err;
+      } catch (err) {
+        // The newsletter provider rejected the update, set this contact's
+        // newsletter status to None to prevent further updates
+        if (err instanceof CantUpdateNewsletterContact) {
+          log.warning(
+            `Newsletter upsert failed, setting status to none for contact ${contact.id}`,
+            err
+          );
+        } else {
+          throw err;
+        }
       }
     }
 

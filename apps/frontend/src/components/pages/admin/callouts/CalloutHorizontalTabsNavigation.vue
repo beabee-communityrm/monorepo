@@ -8,8 +8,8 @@
 </template>
 
 <script lang="ts" setup>
-import { AppTabs } from '@beabee/vue/components';
-import type { TabItem } from '@beabee/vue/types';
+import type { TabItem } from '@beabee/vue';
+import { AppTabs } from '@beabee/vue';
 
 import { computed } from 'vue';
 

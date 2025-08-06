@@ -15,7 +15,7 @@ function handleCopy() {
 </script>
 
 <template>
-  <Story title="Components/Button/AppCopyButton">
+  <Story title="Button/AppCopyButton">
     <Variant title="Playground">
       <div class="flex flex-col gap-4">
         <div class="flex items-center rounded border">

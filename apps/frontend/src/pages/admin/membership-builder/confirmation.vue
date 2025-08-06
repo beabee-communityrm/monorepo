@@ -43,7 +43,7 @@ meta:
             />
           </div>
           <div class="mb-4">
-            <RichTextEditor
+            <AppRichTextEditor
               v-model="setupContent.mailText"
               :label="t('mailOptIn.text')"
               required
@@ -66,7 +66,7 @@ meta:
           :label="stepT('newsletter.showOptIn')"
           class="mb-4 font-semibold"
         />
-        <NewsletterOptInSettings
+        <AppNewsletterOptInSettings
           v-if="setupContent.showNewsletterOptIn"
           v-model:title="setupContent.newsletterTitle"
           v-model:text="setupContent.newsletterText"
@@ -93,7 +93,7 @@ meta:
           />
         </div>
         <template v-if="setupContent.surveySlug">
-          <RichTextEditor
+          <AppRichTextEditor
             v-model="setupContent.surveyText"
             :label="stepT('joinSurvey.textIntro')"
             class="mb-4"
@@ -120,15 +120,18 @@ import {
   type GetCalloutData,
   ItemStatus,
 } from '@beabee/beabee-common';
-import { AppCheckbox, AppForm } from '@beabee/vue/components';
+import {
+  App2ColGrid,
+  AppCheckbox,
+  AppForm,
+  AppInput,
+  AppRichTextEditor,
+  AppSelect,
+  AppSubHeading,
+} from '@beabee/vue';
 
-import App2ColGrid from '@components/App2ColGrid.vue';
-import AppSubHeading from '@components/AppSubHeading.vue';
-import AppInput from '@components/forms/AppInput.vue';
-import AppSelect from '@components/forms/AppSelect.vue';
-import NewsletterOptInSettings from '@components/newsletter/NewsletterOptInSettings.vue';
+import AppNewsletterOptInSettings from '@components/newsletter/AppNewsletterOptInSettings.vue';
 import SetupForm from '@components/pages/join/SetupForm.vue';
-import RichTextEditor from '@components/rte/RichTextEditor.vue';
 import { client } from '@utils/api';
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';

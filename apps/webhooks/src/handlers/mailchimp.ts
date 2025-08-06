@@ -172,8 +172,9 @@ async function handleUnsubscribe(data: MCProfileData) {
 
   const contact = await ContactsService.findOneBy({ email });
   if (contact) {
+    const nlContact = await NewsletterService.getNewsletterContact(email);
     await ContactsService.updateContactProfile(contact, {
-      newsletterStatus: NewsletterStatus.Unsubscribed,
+      newsletterStatus: nlContact?.status || NewsletterStatus.Unsubscribed,
     });
   }
 }

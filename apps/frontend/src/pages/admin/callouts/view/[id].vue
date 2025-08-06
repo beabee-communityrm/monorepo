@@ -13,8 +13,8 @@ meta:
 
 <script lang="ts" setup>
 import type { GetCalloutDataWith } from '@beabee/beabee-common';
+import { PageTitle } from '@beabee/vue';
 
-import PageTitle from '@components/PageTitle.vue';
 import { faBullhorn } from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { client } from '@utils/api';

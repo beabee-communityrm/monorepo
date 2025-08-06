@@ -1,4 +1,5 @@
-import type { AppStepperStep } from '@type';
+import type { AppStepperStep } from '@beabee/vue';
+
 import { type Component, type Raw } from 'vue';
 
 import type { ContentTabData } from './tabs/ContentTab/ContentTab.vue';
