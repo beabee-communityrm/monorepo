@@ -130,7 +130,7 @@
     "title": "Een kennisgeving toevoegen"
   },
   "adminDashboard": {
-    "hint1": "<p>Wist je dat oproepen zonder einddatum kunnen worden gemaakt en gewoon kunnen blijven lopen? Zie onze <a href=\"https://beabee.io/en/beabee-full-feature-list/\" target=\"_blank\" rel=\"noopener noreferrer\">feature showcase</a> voor meer informatie.</p>\n",
+    "hint1": "",
     "hint2": "<p>Lees meer over <a href=\"https://beabee.io/en/beabee-model/\" target=\"_blank\" rel=\"noopener noreferrer\">de visie van beabee</a> over communitybetrokkenheid en betekenisvolle relaties met je publiek.</p>\n",
     "hint3": "<p>Onze <a href=\"https://beabee.io/en/beabee-faq/\" target=\"_blank\" rel=\"noopener noreferrer\">FAQ</a> behandelt veelgestelde vragen over opstarten en use cases. Als het antwoord dat je zoekt er niet bij staat, neem dan contact met ons op.</p>\n",
     "joinSlack": "Word lid van de beabee community op Slack!",
@@ -524,6 +524,7 @@
               "label": ""
             },
             "responseLinks": {
+              "add": "",
               "description": "",
               "label": "",
               "opts": {
@@ -537,7 +538,6 @@
               "text": {
                 "label": ""
               },
-              "add": "",
               "url": {
                 "label": ""
               }
