@@ -226,11 +226,8 @@ export async function checkTranslationKey(
           console.warn(
             `Translation key "${key}" exists in locale "${locale}" but contains ${errorResult.foundType} instead of string`
           );
-        } else if (errorResult.reason === 'empty_string') {
-          console.warn(
-            `Translation key "${key}" exists in locale "${locale}" but contains empty string (treated as missing)`
-          );
         }
+        // Note: empty_string is expected behavior and doesn't need debug output
       }
     } catch (error) {
       missingIn.push(locale);
