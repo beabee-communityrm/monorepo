@@ -153,7 +153,7 @@ class NewsletterService {
       return;
     }
 
-    let newState = { status: NewsletterStatus.None, groups: nlUpdate.groups };
+    let newState = { status: NewsletterStatus.None, groups: [] as string[] };
 
     if (nlUpdate.status !== NewsletterStatus.None) {
       try {

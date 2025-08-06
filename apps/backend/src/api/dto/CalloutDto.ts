@@ -4,6 +4,7 @@ import {
   CalloutChannel,
   CalloutData,
   CalloutMapSchema,
+  CalloutMapSchemaIconStyling,
   CalloutNewsletterSchema,
   CalloutResponseViewSchema,
   ItemStatus,
@@ -33,6 +34,7 @@ import {
   IsEnum,
   IsIn,
   IsNumber,
+  IsObject,
   IsOptional,
   IsString,
   Max,
@@ -121,6 +123,14 @@ class CalloutMapSchemaDto implements CalloutMapSchema {
   @IsOptional()
   @IsString()
   geocodeCountries?: string;
+
+  @IsOptional()
+  @IsString()
+  mapIconProp?: string;
+
+  @IsOptional()
+  @IsObject()
+  mapIconStyling?: CalloutMapSchemaIconStyling;
 }
 
 class CalloutNewsletterSchemaDto implements CalloutNewsletterSchema {
