@@ -486,16 +486,16 @@
                 "label": "Karten-Style-URL"
               },
               "title": "Karteneinstellungen",
-              "mapIconStylingSetting": {
-                "label": "",
-                "title": ""
-              },
               "mapIconProp": {
-                "label": "",
-                "none": ""
+                "label": "Antworten auf Fragen mit speziellen Symbolen auf der Karte anzeigen?",
+                "none": "– Standard-Symbole für alle Antworten verwenden –"
               },
               "mapIconStylingProp": {
-                "label": ""
+                "label": "Beschriftung"
+              },
+              "mapIconStylingSetting": {
+                "title": "Symbolstil auf der Karte",
+                "label": "Bitte wählen Sie eine Farbe und ein Symbol für die Antwort aus: "
               }
             },
             "newsletterSettings": {
