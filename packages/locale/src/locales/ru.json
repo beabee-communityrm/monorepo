@@ -130,7 +130,7 @@
     "title": ""
   },
   "adminDashboard": {
-    "hint1": "<p>Вы знете, что можно создавать опросы без дедлайна — и они будут активны всегда? <a href=\"https://beabee.io/en/beabee-full-feature-list/\" target=\"_blank\" rel=\"noopener noreferrer\">Подробности здесь</a></p>\n",
+    "hint1": "",
     "hint2": "<p><a href=\"https://beabee.io/en/beabee-model/\" target=\"_blank\" rel=\"noopener noreferrer\">Узнайте больше</a> о том, как Beabee может помочь организовать комьюнити и поддерживать отношения с вашей аудиторией</p>\n",
     "hint3": "<p>Наш <a href=\"https://beabee.io/en/beabee-faq/\" target=\"_blank\" rel=\"noopener noreferrer\">FAQ</a> ответит на большинство вопросов, которые могут у вас возникнуть. Если какого-то ответа не хватает — напишите нам в поддержку.</p>\n",
     "joinSlack": "Присоединяйтесь к beabee в Slack!",
@@ -524,6 +524,7 @@
               "label": ""
             },
             "responseLinks": {
+              "add": "",
               "description": "",
               "label": "",
               "opts": {
@@ -537,7 +538,6 @@
               "text": {
                 "label": ""
               },
-              "add": "",
               "url": {
                 "label": ""
               }
@@ -813,13 +813,12 @@
   },
   "calloutReviewerManager": {
     "add": "",
+    "canEdit": "",
     "confirmDelete": {
       "text": "",
       "title": ""
     },
     "contact": "",
-    "title": "",
-    "canEdit": "",
     "editorTag": "",
     "search": {
       "error": {
@@ -828,7 +827,8 @@
       },
       "placeholder": "",
       "successMessage": ""
-    }
+    },
+    "title": ""
   },
   "calloutThanksPage": {
     "oneResponseWarning": ""
@@ -1192,6 +1192,10 @@
         "required": "Введите код"
       }
     },
+    "errorsFormio": {
+      "maxLength": "",
+      "minLength": ""
+    },
     "firstName": "Имя",
     "lastName": "Фамилия",
     "newPassword": "Новый пароль",
@@ -1216,11 +1220,7 @@
     "saveChanges": "Сохранить изменения",
     "saved": "Изменения сохранены",
     "unsavedChanges": "Есть несохранённые изменения",
-    "updated": "",
-    "errorsFormio": {
-      "minLength": "",
-      "maxLength": ""
-    }
+    "updated": ""
   },
   "formRenderer": {
     "components": {
@@ -1558,6 +1558,16 @@
     "pleaseWait": "",
     "usuallyTakesSeconds": ""
   },
+  "stepper": {
+    "navigation": {
+      "label": ""
+    },
+    "screen": {
+      "completed": "",
+      "currentStep": "",
+      "hasError": ""
+    }
+  },
   "tagEditor": {
     "add": "",
     "confirmDelete": {
@@ -1580,15 +1590,5 @@
   },
   "taxRate": {
     "invoiceName": "???"
-  },
-  "stepper": {
-    "navigation": {
-      "label": ""
-    },
-    "screen": {
-      "hasError": "",
-      "completed": "",
-      "currentStep": ""
-    }
   }
 }
