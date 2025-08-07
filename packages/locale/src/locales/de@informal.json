@@ -524,6 +524,7 @@
               "label": "Antwortbild"
             },
             "responseLinks": {
+              "add": "Hinzufügen",
               "description": "Verwende beispielsweise den Antwort-Fußbereich, um einen Link zum Melden eines Fehlers oder eine Kontakt-E-Mail einzufügen. Um auf eine E-Mail-Adresse zu verlinken, gib mailto: gefolgt von der E-Mail-Adresse im URL-Feld ein.",
               "label": "Einen Fußbereich am Ende der Antworten einfügen",
               "opts": {
@@ -537,7 +538,6 @@
               "text": {
                 "label": "Text"
               },
-              "add": "Hinzufügen",
               "url": {
                 "label": "Url"
               }
@@ -662,7 +662,7 @@
         "option": "Option {n}",
         "placeholder": "Platzhalter"
       },
-      "untitledCallout": ""
+      "untitledCallout": "Unbennater CrowdNewsroom"
     },
     "confirmHuman": "Bitte bestätige, dass du ein Mensch bist",
     "contactDetails": "Kontaktdaten",
