@@ -35,8 +35,6 @@ const { t } = useI18n();
 const route = useRoute('adminNoticeEdit');
 const router = useRouter();
 
-// Extract id from route params
-const id = computed(() => route.params.id);
 const notice = ref<GetNoticeData | undefined>();
 
 addBreadcrumb(
@@ -46,7 +44,7 @@ addBreadcrumb(
       ? [
           {
             title: notice.value?.name || '',
-            to: '/admin/notices/view/' + id.value,
+            to: '/admin/notices/view/' + route.params.id,
           },
           { title: t('actions.edit') },
         ]
@@ -55,7 +53,7 @@ addBreadcrumb(
 );
 
 onBeforeMount(async () => {
-  notice.value = await client.notice.get(id.value);
+  notice.value = await client.notice.get(route.params.id);
 });
 
 async function handleSubmit(formData: CreateNoticeData) {

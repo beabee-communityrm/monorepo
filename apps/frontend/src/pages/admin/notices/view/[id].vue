@@ -71,9 +71,6 @@ import ItemStatusText from '../../../../components/item/ItemStatusText.vue';
 const route = useRoute('adminNoticeView');
 const { t } = useI18n();
 
-// Extract id from route params
-const id = computed(() => route.params.id);
-
 const notice = ref<GetNoticeData | undefined>();
 const router = useRouter();
 
@@ -87,11 +84,11 @@ addBreadcrumb(
 const showDeleteModal = ref(false);
 
 onBeforeMount(async () => {
-  notice.value = await client.notice.get(id.value);
+  notice.value = await client.notice.get(route.params.id);
 });
 
 async function confirmDeleteNotice() {
-  await client.notice.delete(id.value);
+  await client.notice.delete(route.params.id);
   router.push({
     path: '/admin/notices',
     query: { deleted: null },

@@ -36,41 +36,43 @@ const route = useRoute('adminContactsView');
 const router = useRouter();
 const { t } = useI18n();
 
-// Extract id from route params
-const id = computed(() => route.params.id);
-
 const contact = ref<GetContactData | undefined>();
 
-const tabs = computed(() =>
-  [
+const tabs = computed(() => {
+  const tabItems = [
     {
-      id: 'adminContactsViewOverview',
+      id: 'adminContactsViewOverview' as const,
       label: t('contactOverview.overview'),
     },
     {
-      id: 'adminContactsViewAccount',
+      id: 'adminContactsViewAccount' as const,
       label: t('contactOverview.account'),
     },
     ...(env.cnrMode
       ? []
       : [
           {
-            id: 'adminContactsViewContribution',
+            id: 'adminContactsViewContribution' as const,
             label: t('contactOverview.contribution'),
           },
         ]),
     {
-      id: 'adminContactsViewCallouts',
+      id: 'adminContactsViewCallouts' as const,
       label: t('contactOverview.callouts'),
     },
-  ].map((item) => ({
+  ] satisfies Array<{
+    id: keyof RouteNamedMap;
+    label: string;
+  }>;
+
+  return tabItems.map((item) => ({
     ...item,
     to: router.resolve({
-      name: item.id as keyof RouteNamedMap,
+      name: item.id,
       params: { id: contact.value?.id || '-' },
     }).href,
-  }))
-);
+  }));
+});
 
 const selectedTab = computed(() =>
   tabs.value.find((tab) => tab.id === route.name)
@@ -99,6 +101,6 @@ addBreadcrumb(
 );
 
 onBeforeMount(async () => {
-  contact.value = await client.contact.get(id.value);
+  contact.value = await client.contact.get(route.params.id);
 });
 </script>

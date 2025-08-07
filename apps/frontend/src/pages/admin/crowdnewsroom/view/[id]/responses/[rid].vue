@@ -211,9 +211,6 @@ const props = defineProps<{
 const route = useRoute('adminCalloutViewResponsesItem');
 const { t, n } = useI18n();
 
-// Extract rid from route params
-const rid = computed(() => route.params.rid);
-
 addBreadcrumb(
   computed(() => [
     {
@@ -289,7 +286,7 @@ async function handleEditResponse(answers: CalloutResponseAnswersSlide) {
 }
 
 async function refreshResponse() {
-  const newResponse = await client.callout.response.get(rid.value, [
+  const newResponse = await client.callout.response.get(route.params.rid, [
     GetCalloutResponseWith.Answers,
     GetCalloutResponseWith.Assignee,
     GetCalloutResponseWith.Contact,

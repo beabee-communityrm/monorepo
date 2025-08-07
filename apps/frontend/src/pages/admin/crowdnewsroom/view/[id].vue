@@ -25,9 +25,6 @@ import { useRoute } from 'vue-router';
 const route = useRoute('adminCalloutView');
 const { t } = useI18n();
 
-// Extract id from route params
-const id = route.params.id as string;
-
 addBreadcrumb(
   computed(() => [
     {
@@ -37,7 +34,7 @@ addBreadcrumb(
     },
     {
       title: callout.value?.title || '',
-      to: '/admin/crowdnewsroom/view/' + id,
+      to: '/admin/crowdnewsroom/view/' + route.params.id,
     },
   ])
 );
@@ -46,7 +43,7 @@ const callout =
   ref<GetCalloutDataWith<'form' | 'responseCount' | 'responseViewSchema'>>();
 
 onBeforeMount(async () => {
-  callout.value = await client.callout.get(id, [
+  callout.value = await client.callout.get(route.params.id, [
     'form',
     'responseCount',
     'responseViewSchema',

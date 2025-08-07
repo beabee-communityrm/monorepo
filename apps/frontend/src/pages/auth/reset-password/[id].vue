@@ -111,8 +111,6 @@ const { t } = useI18n();
 const route = useRoute('reset_password');
 const router = useRouter();
 
-// Extract id from route params
-const id = computed(() => route.params.id);
 const mode = computed(() => props.mode);
 
 const redirectTo = route.query.next as string | undefined;
@@ -123,7 +121,7 @@ const data = reactive({ password: '', repeatPassword: '', token: '' });
 async function handleSubmit() {
   try {
     await client.resetSecurity.resetPasswordComplete(
-      id.value,
+      route.params.id,
       data.password,
       data.token || undefined
     );
