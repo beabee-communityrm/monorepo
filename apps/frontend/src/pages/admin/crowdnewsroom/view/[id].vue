@@ -20,9 +20,9 @@ import { addBreadcrumb } from '@store/breadcrumb';
 import { client } from '@utils/api';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useRoute } from 'vue-router';
 
-const props = defineProps<{ id: string }>();
-
+const route = useRoute('adminCalloutView');
 const { t } = useI18n();
 
 addBreadcrumb(
@@ -34,7 +34,7 @@ addBreadcrumb(
     },
     {
       title: callout.value?.title || '',
-      to: '/admin/crowdnewsroom/view/' + props.id,
+      to: '/admin/crowdnewsroom/view/' + route.params.id,
     },
   ])
 );
@@ -43,7 +43,7 @@ const callout =
   ref<GetCalloutDataWith<'form' | 'responseCount' | 'responseViewSchema'>>();
 
 onBeforeMount(async () => {
-  callout.value = await client.callout.get(props.id, [
+  callout.value = await client.callout.get(route.params.id, [
     'form',
     'responseCount',
     'responseViewSchema',
