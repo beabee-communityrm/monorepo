@@ -661,7 +661,8 @@
         "label": "",
         "option": "",
         "placeholder": ""
-      }
+      },
+      "untitledCallout": ""
     },
     "confirmHuman": "Παρακαλώ επιβεβαιώστε ότι είστε άνθρωπος.",
     "contactDetails": "",
@@ -1386,7 +1387,7 @@
     "account": "",
     "admin": "",
     "adminSettings": "",
-    "callouts": "Ένδειξη",
+    "callouts": "CrowdNewsroom",
     "contacts": "",
     "contribution": "",
     "dashboard": "",

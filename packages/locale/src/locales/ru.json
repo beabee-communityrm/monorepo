@@ -130,14 +130,14 @@
     "title": ""
   },
   "adminDashboard": {
-    "hint1": "<p>Вы знете, что можно создавать опросы без дедлайна — и они будут активны всегда? <a href=\"https://beabee.io/en/beabee-full-feature-list/\" target=\"_blank\" rel=\"noopener noreferrer\">Подробности здесь</a></p>\n",
+    "hint1": "<p>Знаете ли вы, что CrowdNewsroom можно создать без даты окончания и она будет продолжать работать? Подробнее смотрите в нашем <a href=\"https://beabee.io/en/beabee-full-feature-list/\" target=\"_blank\" rel=\"noopener noreferrer\">обзоре функций</a>.</p>\n",
     "hint2": "<p><a href=\"https://beabee.io/en/beabee-model/\" target=\"_blank\" rel=\"noopener noreferrer\">Узнайте больше</a> о том, как Beabee может помочь организовать комьюнити и поддерживать отношения с вашей аудиторией</p>\n",
     "hint3": "<p>Наш <a href=\"https://beabee.io/en/beabee-faq/\" target=\"_blank\" rel=\"noopener noreferrer\">FAQ</a> ответит на большинство вопросов, которые могут у вас возникнуть. Если какого-то ответа не хватает — напишите нам в поддержку.</p>\n",
     "joinSlack": "Присоединяйтесь к beabee в Slack!",
     "latestCallout": {
       "createNew": "Создать новый опрос?",
-      "empty": "У вас нет активных опросов.",
-      "title": "Последний опрос"
+      "empty": "Нет активных CrowdNewsroom",
+      "title": "Ваша CrowdNewsroom"
     },
     "mostRecentMembers": {
       "title": "Недавно присоединились"
@@ -381,7 +381,7 @@
               "placeholder": ""
             },
             "title": {
-              "help": "",
+              "help": "<p>Ваши читатели увидят <strong>заголовок благодарности</strong> после завершения CrowdNewsroom.</p>",
               "label": "",
               "placeholder": ""
             },
@@ -434,8 +434,8 @@
               "description": "",
               "label": "",
               "opts": {
-                "never": "",
-                "schedule": ""
+                "never": "CrowdNewsroom будет работать до ручного завершения",
+                "schedule": "CrowdNewsroom автоматически завершится в указанную дату."
               }
             },
             "mapAndGallery": {
@@ -496,15 +496,15 @@
               }
             },
             "openToEveryone": {
-              "help": "",
+              "help": "<p>CrowdNewsroom можно сделать доступной для <strong>всех</strong> или ограничить только <strong>членами</strong></p>",
               "label": "",
               "opts": {
-                "disabled": "",
-                "enabled": ""
+                "disabled": "Только члены смогут получить доступ и участвовать в этой CrowdNewsroom",
+                "enabled": "Любой сможет получить доступ и участвовать в этой CrowdNewsroom"
               }
             },
             "requireCaptcha": {
-              "help": "",
+              "help": "<p>Если включить <strong>защиту от ботов</strong>, пользователям потребуется пройти Captcha для подтверждения, что они не роботы. Это помогает защитить CrowdNewsroom от спама.</p>",
               "label": "",
               "members": {
                 "label": "",
@@ -546,7 +546,7 @@
               "label": "",
               "opts": {
                 "multiple": "",
-                "singleEditable": "",
+                "singleEditable": "Один ответ, но его можно редактировать, пока CrowdNewsroom открыта",
                 "singleNonEditable": ""
               },
               "title": ""
@@ -565,16 +565,16 @@
             "starts": {
               "label": "",
               "opts": {
-                "now": "",
-                "schedule": ""
+                "now": "CrowdNewsroom будет доступна немедленно.",
+                "schedule": "CrowdNewsroom станет доступна в указанную дату."
               }
             },
             "visible": {
-              "help": "",
-              "label": "",
+              "help": "CrowdNewsroom будет видна только пользователям, получившим ссылку",
+              "label": "Показывать CrowdNewsroom в панели участника",
               "opts": {
-                "disabled": "",
-                "enabled": ""
+                "disabled": "CrowdNewsroom не будет отображаться в панели участника",
+                "enabled": "CrowdNewsroom будет отображаться в панели участника"
               }
             },
             "whichResponseBuckets": {
@@ -614,26 +614,26 @@
             "shareTitle": {
               "help": "",
               "label": "",
-              "placeholder": ""
+              "placeholder": "Название вашей CrowdNewsroom"
             },
             "sharing": {
               "title": ""
             },
             "slug": {
               "boxTitle": "",
-              "help": "",
+              "help": "Используйте эту ссылку, чтобы поделиться CrowdNewsroom",
               "label": "",
               "locked": {
-                "title": ""
+                "title": "Постоянная ссылка заблокирована, так как CrowdNewsroom уже опубликована."
               },
               "opts": {
-                "auto": "",
+                "auto": "Постоянная ссылка генерируется на основе названия CrowdNewsroom. Ссылка автоматически обновится при изменении названия.",
                 "manual": ""
               }
             },
             "title": {
               "label": "",
-              "placeholder": ""
+              "placeholder": "Название вашей CrowdNewsroom."
             }
           },
           "title": "",
@@ -641,7 +641,7 @@
         },
         "translations": {
           "language": {
-            "description": "",
+            "description": "Вы можете перевести CrowdNewsroom на несколько языков. Если перевода не будет, мы покажем текст на основном языке.",
             "enableLanguages": "",
             "title": ""
           },
@@ -661,11 +661,12 @@
         "label": "",
         "option": "",
         "placeholder": ""
-      }
+      },
+      "untitledCallout": ""
     },
     "confirmHuman": "Confirma por favor que és um humano",
     "contactDetails": "Контакты",
-    "ended": "Этот опрос закончился {date}",
+    "ended": "Эта CrowdNewsroom завершилась {date}",
     "entryOf": "",
     "form": {
       "email": "Ваша почта",
@@ -676,7 +677,7 @@
     "getStarted": "Начать",
     "joinNow": "Присоединиться",
     "loginToYourAccount": "Войти в мой профиль",
-    "membersOnly": "Этот опрос доступен только для подписчиков. Зарегистрироваться",
+    "membersOnly": "Эта CrowdNewsroom открыта только для членов. Чтобы участвовать",
     "responseSubmitted": "Ответ отправлен",
     "share": {
       "address": "Отправить этот опрос на почту:",
@@ -697,24 +698,24 @@
       "gallery": "Галерея",
       "map": "Карта"
     },
-    "youResponded": "Вы ответили на этот опрос ♥",
+    "youResponded": "Вы ответили на эту CrowdNewsroom ♥",
     "yourResponse": "Ваш ответ"
   },
   "calloutAdmin": {
-    "deleted": "",
-    "ended": "",
+    "deleted": "CrowdNewsroom удалена.",
+    "ended": "CrowdNewsroom завершена. Вы можете снова открыть её, отредактировав.",
     "overview": "",
-    "reopened": "",
+    "reopened": "CrowdNewsroom снова открыта. Отредактируйте CrowdNewsroom, чтобы установить другую дату завершения.",
     "responses": ""
   },
   "calloutAdminOverview": {
     "actions": {
       "confirmDelete": {
-        "text": "",
-        "title": ""
+        "text": "Вы уверены, что хотите удалить эту CrowdNewsroom?",
+        "title": "Удалить CrowdNewsroom?"
       }
     },
-    "created": "",
+    "created": "Ваша новая CrowdNewsroom успешно создана.",
     "dates": {
       "ends": "",
       "label": "",
@@ -744,14 +745,14 @@
       }
     },
     "summary": "",
-    "updated": ""
+    "updated": "Ваша CrowdNewsroom успешно обновлена."
   },
   "calloutResponse": {
     "data": {
       "answers": "Ответы",
       "assignee": "?",
       "bucket": "Корзина",
-      "callout": "Опрос",
+      "callout": "CrowdNewsroom",
       "contact": "Контакт",
       "createdAt": "Установленная дата",
       "tags": "Теги",
@@ -814,7 +815,7 @@
   "calloutReviewerManager": {
     "add": "",
     "confirmDelete": {
-      "text": "",
+      "text": "Вы уверены, что хотите удалить {reviewerName}? Этот пользователь больше не сможет просматривать эту CrowdNewsroom.",
       "title": ""
     },
     "contact": "",
@@ -836,7 +837,7 @@
   "callouts": {
     "archive": "Архив",
     "data": {
-      "callout": "Опрос",
+      "callout": "CrowdNewsroom",
       "endDate": "Дата окончания"
     },
     "noArchivedCallouts": "Нет опросов",
@@ -951,7 +952,7 @@
     "annotation": {
       "copy": "<p>Вся информация, добавленная в этот раздел, <strong>видна только администраторам</strong>. Участники никогда не увидят их в своем профиле или личном кабинете.</p>\n"
     },
-    "callouts": "",
+    "callouts": "CrowdNewsroom",
     "cancellationDate": "",
     "contribution": "Взнос",
     "contributionType": "",
@@ -1018,7 +1019,7 @@
       "tags": "Теги"
     },
     "dataGroup": {
-      "callout": "Опрос",
+      "callout": "CrowdNewsroom",
       "contact": "Контакты",
       "contribution": "",
       "role": ""
@@ -1075,9 +1076,9 @@
     "willRenewWithNewAmount": "Ваша подписка будет автоматически продлена {renewalDate}. Начиная с этой даты мы будем списывать выбранную вами сумму {nextAmount}."
   },
   "editCallout": {
-    "replicated": "",
+    "replicated": "Ваша CrowdNewsroom успешно скопирована, и вы редактируете новую версию. Не забудьте изменить заголовок во вкладке «Заголовок и изображение».",
     "title": "",
-    "warning": ""
+    "warning": "Внимание! Вы редактируете активную CrowdNewsroom. Изменение свойств формы может сделать предыдущие ответы недействительными."
   },
   "editNotice": {
     "title": ""
@@ -1240,12 +1241,12 @@
   "homePage": {
     "editProfile": "Настроить ваш профиль",
     "manageContribution": "Изменить ваш взнос",
-    "newCallout": "Новый опрос!",
-    "openCallouts": "Открытые опросы",
+    "newCallout": "Новая CrowdNewsroom!",
+    "openCallouts": "CrowdNewsroom",
     "quickActions": "Быстрые действия",
     "title": "Главная страница",
-    "viewAllCallouts": "Показать все опросы",
-    "viewOpenCallouts": "Показать все открытые опросы",
+    "viewAllCallouts": "Открыть CrowdNewsroom",
+    "viewOpenCallouts": "Открыть CrowdNewsroom",
     "welcome": "Добро пожаловать, {firstName}!",
     "yourProfile": "Ваш профиль"
   },
@@ -1335,9 +1336,9 @@
         "description": "",
         "joinSurvey": {
           "required": "",
-          "slug": "",
-          "slugHelp": "",
-          "text": "",
+          "slug": "CrowdNewsroom",
+          "slugHelp": "Вы можете использовать любую открытую CrowdNewsroom без даты окончания.",
+          "text": "Вы можете попросить новых пользователей заполнить CrowdNewsroom в рамках процесса регистрации. Это отличный способ узнать, почему они присоединились, или собрать дополнительную информацию для лучшей адаптации в сообществе.",
           "textIntro": "",
           "title": ""
         },
@@ -1386,7 +1387,7 @@
     "account": "Аккаунт",
     "admin": "Администрирование",
     "adminSettings": "Настройки",
-    "callouts": "Опросы",
+    "callouts": "CrowdNewsroom",
     "contacts": "Контакты",
     "contribution": "Взнос",
     "dashboard": "Статистика",

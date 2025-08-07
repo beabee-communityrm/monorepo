@@ -130,14 +130,14 @@
     "title": "Add a notice"
   },
   "adminDashboard": {
-    "hint1": "<p>Did you know callouts can be created without an end date, and just keep running? See our <a href=\"https://beabee.io/en/beabee-full-feature-list/\" target=\"_blank\" rel=\"noopener noreferrer\">feature showcase</a> for more information.</p>\n",
+    "hint1": "<p>Did you know CrowdNewsrooms can be created without an end date, and just keep running? See our <a href=\"https://beabee.io/en/beabee-full-feature-list/\" target=\"_blank\" rel=\"noopener noreferrer\">feature showcase</a> for more information.</p>\n",
     "hint2": "<p>Find out more about <a href=\"https://beabee.io/en/beabee-model/\" target=\"_blank\" rel=\"noopener noreferrer\">the beabee vision</a> around community engagement and meaningful relationships with your audience.</p>\n",
     "hint3": "<p>Our <a href=\"https://beabee.io/en/beabee-faq/\" target=\"_blank\" rel=\"noopener noreferrer\">FAQ</a> addresses common questions about getting started and use cases. If the answer you're looking for isn't there, get in touch.</p>\n",
     "joinSlack": "Join the beabee community on Slack!",
     "latestCallout": {
       "createNew": "Create a new one?",
-      "empty": "No currently active callouts.",
-      "title": "Latest callout"
+      "empty": "No active CrowdNewsrooms",
+      "title": "Your CrowdNewsroom"
     },
     "mostRecentMembers": {
       "title": "Most recently joined members"
@@ -369,7 +369,7 @@
         "endMessage": {
           "inputs": {
             "action": {
-              "label": "When the user finishes answering the callout",
+              "label": "After an answer is submitted:",
               "opts": {
                 "redirect": "Redirect them to another page",
                 "showMessage": "Show a thank you message"
@@ -381,12 +381,12 @@
               "placeholder": "Include more details about how valuable their input was…"
             },
             "title": {
-              "help": "<p>You readers will see the <strong>Thank you title</strong> when they finish answering the callout.</p>",
+              "help": "<p>You readers will see the <strong>Thank you title</strong> when they finish answering the CrowdNewsroom.</p>",
               "label": "Thank you title",
               "placeholder": "Thank you!"
             },
             "url": {
-              "help": "<p>This could be your homepage or a first article about the topic of the callout.</p>",
+              "help": "Users will be automatically taken to this page after submitting a response",
               "label": "URL for redirect",
               "placeholder": "https://example.com"
             }
@@ -394,7 +394,7 @@
           "title": "End message"
         },
         "intro": {
-          "help": "<p>The <strong>Introduction text</strong> appears alongside the callout. It should explain why you are doing this callout and give any context the user might need before answering.</p>",
+          "help": "The introduction text should give any context the user might need before answering",
           "label": "Introduction text",
           "title": "Introduction"
         },
@@ -434,8 +434,8 @@
               "description": "Set an end date",
               "label": "Set an ending date",
               "opts": {
-                "never": "The callout will run until manually closed",
-                "schedule": "The callout will automatically close at a specific date."
+                "never": "The CrowdNewsroom will run until manually closed",
+                "schedule": "The CrowdNewsroom will automatically close at a specific date."
               }
             },
             "mapAndGallery": {
@@ -496,15 +496,15 @@
               }
             },
             "openToEveryone": {
-              "help": "<p>Callouts can be presented to <strong>Everyone</strong> or restricted to <strong>Members only</strong> participation</p>",
+              "help": "<p>CrowdNewsrooms can be presented to <strong>Everyone</strong> or restricted to <strong>Members only</strong> participation</p>",
               "label": "Open to everyone",
               "opts": {
-                "disabled": "Only members will be able to access and participate in this callout",
-                "enabled": "Anyone will be able to access and participate in this callout"
+                "disabled": "Only members will be able to access and participate in this CrowdNewsroom",
+                "enabled": "Anyone will be able to access and participate in this CrowdNewsroom"
               }
             },
             "requireCaptcha": {
-              "help": "<p>If you enable <strong>bot spam protection</strong> users will be required to complete a Captcha to confirm they are human. This is useful to prevent your callout being spammed by bots</p>",
+              "help": "<p>If you enable <strong>bot spam protection</strong> users will be required to complete a Captcha to confirm they are human. This is useful to prevent your CrowdNewsroom being spammed by bots</p>",
               "label": "Enable bot spam protection",
               "members": {
                 "label": "Activate for members too",
@@ -546,7 +546,7 @@
               "label": "Response behaviour",
               "opts": {
                 "multiple": "Multiple responses, non-editable",
-                "singleEditable": "Single response but editable while callout is open",
+                "singleEditable": "Single response but editable while CrowdNewsroom is open",
                 "singleNonEditable": "Single response, non-editable"
               },
               "title": "Response settings"
@@ -565,16 +565,16 @@
             "starts": {
               "label": "Set a starting date",
               "opts": {
-                "now": "The callout will be made available immediately.",
-                "schedule": "The callout will be made available at a specific date."
+                "now": "The CrowdNewsroom will be made available immediately.",
+                "schedule": "The CrowdNewsroom will be made available at a specific date."
               }
             },
             "visible": {
-              "help": "<p>You can make the callout <strong>not appear</strong> to users if you only want it to be answered by people who you share the link with.</p>",
-              "label": "Show callout in member dashboards",
+              "help": "The CrowdNewsroom will only be visible to people who receive the link",
+              "label": "Show CrowdNewsroom in member dashboards",
               "opts": {
-                "disabled": "The callout will not appear on member dashboards",
-                "enabled": "The callout will appear on member dashboards"
+                "disabled": "The CrowdNewsroom will not appear on member dashboards",
+                "enabled": "The CrowdNewsroom will appear on member dashboards"
               }
             },
             "whichResponseBuckets": {
@@ -587,16 +587,16 @@
         "titleAndImage": {
           "inputs": {
             "description": {
-              "help": "This description is shown if the callout is visible in the member's dashboard. It is also used for sharing.",
+              "help": "This description is shown in the member dashboard. It is also used for sharing.",
               "label": "Short description",
-              "placeholder": "Quickly explain why people should open this callout."
+              "placeholder": "Quickly explain why people should participate"
             },
             "general": {
               "title": "General information"
             },
             "image": {
               "description": "Don't forget to save after uploading an image!",
-              "help": "<p>The <strong>Cover image</strong> will serve as an illustration for the callout on menus and forms.</p>",
+              "help": "The cover image is displayed in thumbnails and share links",
               "label": "Cover image"
             },
             "overrideShare": {
@@ -609,31 +609,31 @@
             "shareDescription": {
               "help": "<p>The <strong>Share description</strong> field sets the short description as it should appear on social media cards.</p>",
               "label": "Share description",
-              "placeholder": "Quickly explain why people should respond to this callout."
+              "placeholder": "Quickly explain why people should participate"
             },
             "shareTitle": {
               "help": "<p>The <strong>Share title</strong> field sets the title as it should appear on social media cards.</p>",
               "label": "Share title",
-              "placeholder": "The name of your callout"
+              "placeholder": "The name of your CrowdNewsroom"
             },
             "sharing": {
               "title": "Sharing options"
             },
             "slug": {
               "boxTitle": "Permalink",
-              "help": "<p>You can share the <strong>permalink</strong> with users so they can access the callout directly</p>",
+              "help": "Use this link to share the CrowdNewsroom",
               "label": "Auto-generate slug from title",
               "locked": {
-                "title": "The permalink is locked because the callout has already been published."
+                "title": "The permalink is locked because the CrowdNewsroom has already been published."
               },
               "opts": {
-                "auto": "The permalink is generated from the callout title and automatically updated until the callout is published.",
+                "auto": "The permalink is generated from the CrowdNewsroom title. The link will automatically update if you change the title.",
                 "manual": "The permalink is set manually"
               }
             },
             "title": {
               "label": "Title",
-              "placeholder": "The name of your callout."
+              "placeholder": "The name of your CrowdNewsroom."
             }
           },
           "title": "Title and image",
@@ -641,7 +641,7 @@
         },
         "translations": {
           "language": {
-            "description": "You can translate the callout into multiple languages. If a translation is missing we'll show the text in the primary language.",
+            "description": "You can translate the CrowdNewsroom into multiple languages. If a translation is missing we’ll show the text in the primary language.",
             "enableLanguages": "Enable translation support",
             "title": "Language"
           },
@@ -661,11 +661,12 @@
         "label": "Label",
         "option": "Option {n}",
         "placeholder": "Placeholder"
-      }
+      },
+      "untitledCallout": "Untitled callout"
     },
     "confirmHuman": "Please confirm you are human",
     "contactDetails": "Contact details",
-    "ended": "This callout ended on {date}",
+    "ended": "This CrowdNewsroom ended on {date}",
     "entryOf": "Entry {no} of {total}",
     "form": {
       "email": "Your email",
@@ -676,10 +677,10 @@
     "getStarted": "Get started",
     "joinNow": "Join now",
     "loginToYourAccount": "Login to your account",
-    "membersOnly": "This callout is open to members only. To participate",
+    "membersOnly": "This CrowdNewsroom is open to members only. To participate",
     "responseSubmitted": "Response submitted",
     "share": {
-      "address": "Share this callout with the following address:",
+      "address": "Share using the following link:",
       "aria": {
         "email": "Share via email",
         "facebook": "Share on Facebook",
@@ -697,24 +698,24 @@
       "gallery": "Gallery",
       "map": "Map"
     },
-    "youResponded": "You replied to this callout ♥",
+    "youResponded": "You replied to this CrowdNewsroom ♥",
     "yourResponse": "Your response"
   },
   "calloutAdmin": {
-    "deleted": "Callout deleted.",
-    "ended": "Callout ended. You can reopen it by editing it.",
+    "deleted": "CrowdNewsroom deleted.",
+    "ended": "CrowdNewsroom ended. You can reopen it by editing it.",
     "overview": "Overview",
-    "reopened": "Callout reopened. Edit the callout if you need to set another end date.",
+    "reopened": "CrowdNewsroom reopened. Edit the CrowdNewsroom if you need to set another end date.",
     "responses": "Responses"
   },
   "calloutAdminOverview": {
     "actions": {
       "confirmDelete": {
-        "text": "Are you sure you want to delete this callout?",
-        "title": "Delete callout?"
+        "text": "Are you sure you want to delete this CrowdNewsroom?",
+        "title": "Delete CrowdNewsroom?"
       }
     },
-    "created": "Your new callout was successfully created.",
+    "created": "Your new CrowdNewsroom was successfully created.",
     "dates": {
       "ends": "Ends",
       "label": "Dates",
@@ -744,14 +745,14 @@
       }
     },
     "summary": "Summary",
-    "updated": "Your callout was successfully updated."
+    "updated": "Your CrowdNewsroom was successfully updated."
   },
   "calloutResponse": {
     "data": {
       "answers": "Answers",
       "assignee": "Assigned to",
       "bucket": "Bucket",
-      "callout": "Callout",
+      "callout": "CrowdNewsroom",
       "contact": "Contact",
       "createdAt": "Date submitted",
       "tags": "Tags",
@@ -815,7 +816,7 @@
     "add": "Add reviewer",
     "canEdit": "Reviewer can also edit the CrowdNewsroom",
     "confirmDelete": {
-      "text": "Are you sure you want to remove {reviewerName}? They will no longer be able to review this callout.",
+      "text": "Are you sure you want to remove {reviewerName}? They will no longer be able to review this CrowdNewsroom.",
       "title": "Remove reviewer"
     },
     "contact": "Contact ID",
@@ -831,22 +832,22 @@
     "title": "Reviewers"
   },
   "calloutThanksPage": {
-    "oneResponseWarning": "Please note that this callout only allows one response per person. If you have already contributed, additional responses will not be recorded."
+    "oneResponseWarning": "Please note that only one response is allowed per person. If you have already contributed, additional responses will not be recorded."
   },
   "callouts": {
     "archive": "Archive",
     "data": {
-      "callout": "Callout",
+      "callout": "CrowdNewsroom",
       "endDate": "End date"
     },
-    "noArchivedCallouts": "No callouts",
-    "search": "Search callouts...",
+    "noArchivedCallouts": "Nothing to see here",
+    "search": "Search",
     "showAll": "All",
     "showAnswered": "Answered",
-    "showingOf": "Showing {start} to {end} callouts out of {total}"
+    "showingOf": "Showing {start} to {end} out of {total}"
   },
   "calloutsAdmin": {
-    "addCallout": "Create callout",
+    "addCallout": "Create",
     "data": {
       "expires": "Expiry date",
       "responses": "Responses",
@@ -855,11 +856,11 @@
       "title": "Title"
     },
     "filter": {
-      "all": "All callouts",
-      "draft": "Draft callouts",
-      "ended": "Ended callouts",
-      "open": "Open callouts",
-      "scheduled": "Scheduled callouts"
+      "all": "All",
+      "draft": "Drafts",
+      "ended": "Ended",
+      "open": "Open",
+      "scheduled": "Scheduled"
     }
   },
   "common": {
@@ -951,7 +952,7 @@
     "annotation": {
       "copy": "<p>All information added in this section is <strong>visible for admins only</strong>. Members will never see these in their profile or member area.</p>\n"
     },
-    "callouts": "Callouts",
+    "callouts": "CrowdNewsroom",
     "cancellationDate": "Cancelled on",
     "contribution": "Contribution",
     "contributionType": "Type",
@@ -980,8 +981,8 @@
   "contacts": {
     "addContact": "Add contact",
     "advancedSearch": {
-      "hasAnswered": "Has participated in this callout?",
-      "selectCallout": "Select callout..."
+      "hasAnswered": "Has participated?",
+      "selectCallout": "Select"
     },
     "allContacts": "All contacts",
     "data": {
@@ -1018,7 +1019,7 @@
       "tags": "Tags"
     },
     "dataGroup": {
-      "callout": "Callout",
+      "callout": "CrowdNewsroom",
       "contact": "Contact information",
       "contribution": "Contribution",
       "role": "Role"
@@ -1075,9 +1076,9 @@
     "willRenewWithNewAmount": "Your contribution will automatically renew on {renewalDate} and will change to your chosen amount of {nextAmount}."
   },
   "editCallout": {
-    "replicated": "Your callout was successfully replicated, and you are now editing the new copy. Be sure to edit the title in the \"Title and Image\" tab.",
+    "replicated": "Your CrowdNewsroom was successfully replicated, and you are now editing the new copy. Be sure to edit the title in the \"Title and Image\" tab.",
     "title": "Edit: {title}",
-    "warning": "Careful! You are editing a live callout. Changing form properties carries the risk of rendering previous answers unusable."
+    "warning": "Careful! You are editing a live CrowdNewsroom. Changing form properties carries the risk of rendering previous answers unusable."
   },
   "editNotice": {
     "title": "Edit: {title}"
@@ -1240,12 +1241,12 @@
   "homePage": {
     "editProfile": "Edit your community profile",
     "manageContribution": "Manage your contribution",
-    "newCallout": "New callout!",
-    "openCallouts": "Open callouts",
+    "newCallout": "New CrowdNewsroom!",
+    "openCallouts": "CrowdNewsroom",
     "quickActions": "Quick actions",
     "title": "Home",
-    "viewAllCallouts": "View all callouts",
-    "viewOpenCallouts": "View open callouts",
+    "viewAllCallouts": "Open the CrowdNewsroom",
+    "viewOpenCallouts": "Open the CrowdNewsroom",
     "welcome": "Welcome aboard {firstName}!",
     "yourProfile": "Your profile"
   },
@@ -1335,9 +1336,9 @@
         "description": "Compose your confirmation screen",
         "joinSurvey": {
           "required": "Users must complete the survey before proceeding",
-          "slug": "Callout",
-          "slugHelp": "You can use any open callout that doesn't have an expiry date.",
-          "text": "You can ask your new users to complete a callout as part of the join flow. This is a great way to ask them why they joined or maybe you want some additional information off them to help them fit into the community.",
+          "slug": "CrowdNewsroom",
+          "slugHelp": "You can use any open CrowdNewsroom that doesn't have an expiry date.",
+          "text": "You can ask your new users to complete a CrowdNewsroom as part of the join flow. This is a great way to ask them why they joined or maybe you want some additional information off them to help them fit into the community.",
           "textIntro": "Tell your users a bit about why you are asking for this information",
           "title": "Join survey"
         },
@@ -1386,7 +1387,7 @@
     "account": "Account",
     "admin": "Administration",
     "adminSettings": "Settings",
-    "callouts": "Callouts",
+    "callouts": "CrowdNewsroom",
     "contacts": "Contacts",
     "contribution": "Contribution",
     "dashboard": "Dashboard",

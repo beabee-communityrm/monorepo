@@ -26,14 +26,18 @@ const route = useRoute('adminCalloutView');
 const { t } = useI18n();
 
 // Extract id from route params
-const id = computed(() => route.params.id);
+const id = route.params.id as string;
 
 addBreadcrumb(
   computed(() => [
-    { title: t('menu.callouts'), icon: faBullhorn, to: '/admin/callouts' },
+    {
+      title: t('menu.callouts'),
+      icon: faBullhorn,
+      to: '/admin/crowdnewsroom',
+    },
     {
       title: callout.value?.title || '',
-      to: '/admin/callouts/view/' + id.value,
+      to: '/admin/crowdnewsroom/view/' + id,
     },
   ])
 );
@@ -42,7 +46,7 @@ const callout =
   ref<GetCalloutDataWith<'form' | 'responseCount' | 'responseViewSchema'>>();
 
 onBeforeMount(async () => {
-  callout.value = await client.callout.get(id.value, [
+  callout.value = await client.callout.get(id, [
     'form',
     'responseCount',
     'responseViewSchema',
