@@ -36,6 +36,7 @@ COPY packages/prettier-config /opt/packages/prettier-config
 COPY packages/tsconfig /opt/packages/tsconfig
 COPY packages/vue /opt/packages/vue
 COPY packages/esbuild /opt/packages/esbuild
+COPY packages/fontawesome /opt/packages/fontawesome
 
 # Copy apps with relevant content
 COPY apps/dev-cli /opt/apps/dev-cli
