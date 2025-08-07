@@ -25,10 +25,10 @@ import { AppTabs, PageTitle } from '@beabee/vue';
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { client } from '@utils/api';
+import { resolveTabNavigation } from '@utils/navigation';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
-import type { RouteNamedMap } from 'vue-router/auto-routes';
 
 import env from '../../../env';
 
@@ -38,41 +38,36 @@ const { t } = useI18n();
 
 const contact = ref<GetContactData | undefined>();
 
-const tabs = computed(() => {
-  const tabItems = [
+const tabs = computed(() =>
+  resolveTabNavigation(
+    router,
+    [
+      {
+        id: 'adminContactsViewOverview' as const,
+        label: t('contactOverview.overview'),
+      },
+      {
+        id: 'adminContactsViewAccount' as const,
+        label: t('contactOverview.account'),
+      },
+      ...(env.cnrMode
+        ? []
+        : [
+            {
+              id: 'adminContactsViewContribution' as const,
+              label: t('contactOverview.contribution'),
+            },
+          ]),
+      {
+        id: 'adminContactsViewCallouts' as const,
+        label: t('contactOverview.callouts'),
+      },
+    ],
     {
-      id: 'adminContactsViewOverview' as const,
-      label: t('contactOverview.overview'),
-    },
-    {
-      id: 'adminContactsViewAccount' as const,
-      label: t('contactOverview.account'),
-    },
-    ...(env.cnrMode
-      ? []
-      : [
-          {
-            id: 'adminContactsViewContribution' as const,
-            label: t('contactOverview.contribution'),
-          },
-        ]),
-    {
-      id: 'adminContactsViewCallouts' as const,
-      label: t('contactOverview.callouts'),
-    },
-  ] satisfies Array<{
-    id: keyof RouteNamedMap;
-    label: string;
-  }>;
-
-  return tabItems.map((item) => ({
-    ...item,
-    to: router.resolve({
-      name: item.id,
       params: { id: contact.value?.id || '-' },
-    }).href,
-  }));
-});
+    }
+  )
+);
 
 const selectedTab = computed(() =>
   tabs.value.find((tab) => tab.id === route.name)

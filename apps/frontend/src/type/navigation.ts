@@ -17,3 +17,13 @@ export interface ResolvedTabItem extends TabItem {
   /** Resolved URL for navigation */
   to: string;
 }
+
+/**
+ * Options for tab navigation resolution
+ */
+export interface TabNavigationOptions {
+  /** Route parameters to pass to all routes */
+  params?: Record<string, string | number>;
+  /** Query parameters to pass to all routes */
+  query?: Record<string, string | string[] | null | undefined>;
+}

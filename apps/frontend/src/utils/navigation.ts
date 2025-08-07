@@ -1,4 +1,8 @@
-import type { ResolvedTabItem, TabItem } from '@type/navigation';
+import type {
+  ResolvedTabItem,
+  TabItem,
+  TabNavigationOptions,
+} from '@type/navigation';
 import type { Router } from 'vue-router';
 
 /**
@@ -6,22 +10,37 @@ import type { Router } from 'vue-router';
  *
  * @param router - Vue Router instance
  * @param items - Array of tab items with route names and labels
+ * @param options - Optional parameters and query options for routes
  * @returns Array of resolved tab items with navigation URLs
  *
  * @example
  * ```ts
+ * // Simple usage without parameters
  * const tabs = computed(() => resolveTabNavigation(router, [
  *   { id: 'adminSettingsGeneral', label: t('settings.general') },
  *   { id: 'adminSettingsEmail', label: t('settings.email') }
  * ]));
+ *
+ * // Usage with route parameters
+ * const tabs = computed(() => resolveTabNavigation(router, [
+ *   { id: 'adminContactsViewOverview', label: t('contact.overview') },
+ *   { id: 'adminContactsViewAccount', label: t('contact.account') }
+ * ], {
+ *   params: { id: contact.value?.id || '-' }
+ * }));
  * ```
  */
 export function resolveTabNavigation(
   router: Router,
-  items: TabItem[]
+  items: TabItem[],
+  options: TabNavigationOptions = {}
 ): ResolvedTabItem[] {
   return items.map((item) => ({
     ...item,
-    to: router.resolve({ name: item.id }).href,
+    to: router.resolve({
+      name: item.id,
+      params: options.params,
+      query: options.query,
+    }).href,
   }));
 }
