@@ -130,7 +130,7 @@
     "title": ""
   },
   "adminDashboard": {
-    "hint1": "<p>Sabias que as CrowdNewsrooms podem ser criadas sem data de conclusão, e assim continuarem indefinidamente? Há mais pormenores na nossa <a href=\"https://beabee.io/en/beabee-full-feature-list/\" target=\"_blank\" rel=\"noopener noreferrer\">demonstração de funcionalidades</a></p>\n",
+    "hint1": "",
     "hint2": "<p>Sabe mais sobre a <a href=\"https://beabee.io/en/beabee-model/\" target=\"_blank\" rel=\"noopener noreferrer\">visão beabee</a> no que toca ao envolvimento da comunidade e formar relações com o seu público.</p>\n",
     "hint3": "<p>O nosso <a href=\"https://beabee.io/en/beabee-faq/\" target=\"_blank\" rel=\"noopener noreferrer\">FAQ</a> abordamos questões frequentes sobre como começar e casos de estudo. Se a resposta que procuras não estiver lá, contacta-nos.</p>\n",
     "joinSlack": "Junta-te à comunidade beabee no Slack!",
@@ -524,6 +524,7 @@
               "label": ""
             },
             "responseLinks": {
+              "add": "",
               "description": "",
               "label": "",
               "opts": {
@@ -537,7 +538,6 @@
               "text": {
                 "label": ""
               },
-              "add": "",
               "url": {
                 "label": ""
               }
