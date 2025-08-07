@@ -135,9 +135,9 @@
     "hint3": "<p>Unsere Community-Meetups finden jeden dritten Donnerstag im Monat statt. Du willst dein Best-Practice-Beispiel mit anderen teilen? Schreib eine E-Mail an <a href=\"mailto:tobias.hauswurz{'@'}correctiv.org\">tobias.hauswurz{'@'}correctiv.org</a></p>\n",
     "joinSlack": "Tritt der beabee-Community auf Slack bei!",
     "latestCallout": {
-      "createNew": "Neuen Callout erstellen?",
-      "empty": "Es gibt aktuell keine aktiven Callouts.",
-      "title": "Letzer Callout"
+      "createNew": "Neuen CrowdNewsroom erstellen?",
+      "empty": "Es gibt aktuell keine aktiven CrowdNewsrooms.",
+      "title": "CrowdNewsroom"
     },
     "mostRecentMembers": {
       "title": "Neueste Mitglieder"
@@ -369,7 +369,7 @@
         "endMessage": {
           "inputs": {
             "action": {
-              "label": "Wenn der Nutzer die Beantwortung des Aufrufs abschließt",
+              "label": "Nachdem eine Antwort eingereicht wurde:",
               "opts": {
                 "redirect": "Auf eine andere Seite weiterleiten",
                 "showMessage": "Eine Dankesnachricht anzeigen"
@@ -386,7 +386,7 @@
               "placeholder": "Vielen Dank!"
             },
             "url": {
-              "help": "<p>Dies könnte deine Homepage oder ein erster Artikel zum Thema des Aufrufs sein.</p>",
+              "help": "Nach dem Absenden einer Antwort wird diese Seite automatisch geöffnet.",
               "label": "URL für die Weiterleitung",
               "placeholder": "https://beispiel.de"
             }
@@ -394,7 +394,7 @@
           "title": "Abschlussnachricht"
         },
         "intro": {
-          "help": "<p>Der <strong>Einleitungstext</strong> erscheint neben dem Aufruf. Er sollte erklären, warum du diesen Aufruf durchführst und den Nutzern alle Kontextinformationen geben, die sie vor dem Antworten benötigen könnten.</p>",
+          "help": "Der Einleitungstext sollte alle Informationen enthalten, die für die Teilnahme nötig sind.",
           "label": "Einleitungstext",
           "title": "Einleitung"
         },
@@ -434,8 +434,8 @@
               "description": "Enddatum festlegen",
               "label": "Enddatum festlegen",
               "opts": {
-                "never": "Der Aufruf läuft, bis er manuell geschlossen wird",
-                "schedule": "Der Aufruf wird automatisch zu einem bestimmten Datum geschlossen."
+                "never": "Der CrowdNewsroom läuft, bis du ihn manuell schließt.",
+                "schedule": "Der CrowdNewsroom wird automatisch zu einem bestimmten Datum geschlossen."
               }
             },
             "mapAndGallery": {
@@ -499,12 +499,12 @@
               "help": "<p>Aufrufe können <strong>Allen</strong> präsentiert oder auf die Teilnahme von <strong>nur Mitgliedern</strong> beschränkt werden</p>",
               "label": "Für alle zugänglich",
               "opts": {
-                "disabled": "Nur Mitglieder werden auf diesen Aufruf zugreifen und daran teilnehmen können",
-                "enabled": "Jeder wird auf diesen Aufruf zugreifen und daran teilnehmen können"
+                "disabled": "Nur Mitglieder werden auf diesen CrowdNewsroom zugreifen und daran teilnehmen können.",
+                "enabled": "Jede Person kann auf diesen CrowdNewsroom zugreifen und daran teilnehmen."
               }
             },
             "requireCaptcha": {
-              "help": "<p>Wenn du den <strong>Bot-Spam-Schutz</strong> aktivierst, müssen Nutzer ein Captcha ausfüllen, um zu bestätigen, dass sie Menschen sind. Dies ist nützlich, um zu verhindern, dass dein Aufruf von Bots mit Spam überflutet wird</p>",
+              "help": "<p>Wenn du den <strong>Bot-Spam-Schutz</strong> aktivierst, müssen Nutzer ein Captcha ausfüllen, um zu bestätigen, dass sie Menschen sind. Das ist nützlich, um zu verhindern, dass dein CrowdNewsroom von Bots mit Spam überflutet wird.</p>",
               "label": "Bot-Spam-Schutz aktivieren",
               "members": {
                 "label": "Auch für Mitglieder aktivieren",
@@ -546,7 +546,7 @@
               "label": "Antwortverhalten",
               "opts": {
                 "multiple": "Mehrere Antworten, nicht bearbeitbar",
-                "singleEditable": "Einzelne Antwort, aber bearbeitbar, solange der Aufruf geöffnet ist",
+                "singleEditable": "Einzelne Antwort, aber bearbeitbar, solange der CrowdNewsroom geöffnet ist.",
                 "singleNonEditable": "Einzelne Antwort, nicht bearbeitbar"
               },
               "title": "Antworteinstellungen"
@@ -565,16 +565,16 @@
             "starts": {
               "label": "Startdatum festlegen",
               "opts": {
-                "now": "Der Aufruf wird sofort verfügbar gemacht.",
-                "schedule": "Der Aufruf wird zu einem bestimmten Datum verfügbar gemacht."
+                "now": "Der CrowdNewsroom wird sofort verfügbar gemacht.",
+                "schedule": "Der CrowdNewsroom wird zu einem bestimmten Datum verfügbar gemacht."
               }
             },
             "visible": {
-              "help": "<p>Du kannst den Aufruf für Nutzer <strong>nicht anzeigen lassen</strong>, wenn du möchtest, dass er nur von Personen beantwortet wird, mit denen du den Link teilst.</p>",
-              "label": "Aufruf in Mitglieder-Dashboards anzeigen",
+              "help": "Der CrowdNewsroom wird nur sichtbar sein für Personen, die den Link erhalten.",
+              "label": "CrowdNewsroom im Mitglieder-Dashboard anzeigen",
               "opts": {
-                "disabled": "Der Aufruf wird nicht in Mitglieder-Dashboards erscheinen",
-                "enabled": "Der Aufruf wird in Mitglieder-Dashboards erscheinen"
+                "disabled": "Der CrowdNewsroom wird nicht im Mitglieder-Dashboard erscheinen.",
+                "enabled": "Der CrowdNewsroom wird im Mitglieder-Dashboard erscheinen."
               }
             },
             "whichResponseBuckets": {
@@ -589,14 +589,14 @@
             "description": {
               "help": "Diese Beschreibung wird angezeigt, wenn der Aufruf im Dashboard des Mitglieds sichtbar ist. Sie wird auch für das Teilen verwendet.",
               "label": "Kurzbeschreibung",
-              "placeholder": "Erkläre kurz, warum Menschen diesen Aufruf öffnen sollten."
+              "placeholder": "Erklär kurz, warum Menschen teilnehmen sollten."
             },
             "general": {
               "title": "Allgemeine Informationen"
             },
             "image": {
               "description": "Vergiss nicht, nach dem Hochladen eines Bildes zu speichern!",
-              "help": "<p>Das <strong>Titelbild</strong> dient als Illustration für den Aufruf in Menüs und Formularen.</p>",
+              "help": "Das Titelbild wird in Vorschaubildern und Freigabelinks angezeigt.",
               "label": "Titelbild"
             },
             "overrideShare": {
@@ -609,31 +609,31 @@
             "shareDescription": {
               "help": "<p>Das Feld <strong>Teilungsbeschreibung</strong> legt die Kurzbeschreibung fest, wie sie auf Social-Media-Karten erscheinen soll.</p>",
               "label": "Teilungsbeschreibung",
-              "placeholder": "Erkläre kurz, warum Menschen auf diesen Aufruf antworten sollten."
+              "placeholder": "Erklär kurz, warum Menschen teilnehmen sollten."
             },
             "shareTitle": {
               "help": "<p>Das Feld <strong>Teilungstitel</strong> legt den Titel fest, wie er auf Social-Media-Karten erscheinen soll.</p>",
               "label": "Teilungstitel",
-              "placeholder": "Der Name deines Aufrufs"
+              "placeholder": "Der Name deines CrowdNewsrooms"
             },
             "sharing": {
               "title": "Teilen-Optionen"
             },
             "slug": {
               "boxTitle": "Permalink",
-              "help": "<p>Du kannst den <strong>Permalink</strong> mit Nutzern teilen, damit diese direkt auf den Aufruf zugreifen können</p>",
+              "help": "Diesen CrowdNewsroom per Link teilen:",
               "label": "Slug automatisch aus dem Titel generieren",
               "locked": {
-                "title": "Der Permalink ist gesperrt, da der Aufruf bereits veröffentlicht wurde."
+                "title": "Der Permalink ist gesperrt, weil der CrowdNewsroom schon veröffentlicht wurde."
               },
               "opts": {
-                "auto": "Der Permalink wird aus dem Aufruf-Titel generiert und automatisch aktualisiert, bis der Aufruf veröffentlicht wird.",
+                "auto": "Der Permalink wird aus dem Titel des CrowdNewsrooms generiert. Der Link wird automatisch aktualisiert, wenn du den Titel änderst.",
                 "manual": "Der Permalink wird manuell festgelegt"
               }
             },
             "title": {
               "label": "Titel",
-              "placeholder": "Der Name deines Aufrufs."
+              "placeholder": "Der Name deines CrowdNewsrooms."
             }
           },
           "title": "Titel und Bild",
@@ -665,7 +665,7 @@
     },
     "confirmHuman": "Bitte bestätige, dass du ein Mensch bist",
     "contactDetails": "Kontaktdaten",
-    "ended": "Dieser Callout ist seit dem {date} beendet.",
+    "ended": "Dieser CrowdNewsroom ist seit dem {date} beendet.",
     "entryOf": "Eintrag {no} von {total}",
     "form": {
       "email": "Deine E-Mail-Adresse",
@@ -676,10 +676,10 @@
     "getStarted": "Starten",
     "joinNow": "Mitglied werden",
     "loginToYourAccount": "Einloggen",
-    "membersOnly": "An diesem Callout können nur zahlende Mitglieder teilnehmen. Um teilzunehmen",
+    "membersOnly": "An diesem CrowdNewsroom können nur Mitglieder teilnehmen. Um teilzunehmen …",
     "responseSubmitted": "Antwort eingereicht",
     "share": {
-      "address": "Diesen Callout per Link teilen:",
+      "address": "Diesen CrowdNewsroom per Link teilen:",
       "aria": {
         "email": "Per E-Mail teilen",
         "facebook": "Auf Facebook teilen",
@@ -688,7 +688,7 @@
         "twitter": "Auf Twitter teilen",
         "whatsapp": "Auf WhatsApp teilen"
       },
-      "services": "Diesen Callout auf einer der folgenden Plattformen teilen: "
+      "services": "Diesen CrowdNewsroom auf einer der folgenden Plattformen teilen:"
     },
     "showingPreview": "Im Vorschaumodus sind Antworten deaktiviert.",
     "toContributionPage": "Meinen Beitrag ändern",
@@ -701,20 +701,20 @@
     "yourResponse": "Deine Antwort"
   },
   "calloutAdmin": {
-    "deleted": "Callout gelöscht",
-    "ended": "Dieser Callout ist beendet. Du kannst ihn wieder öffnen, indem du ihn bearbeiten.",
+    "deleted": "CrowdNewsroom gelöscht",
+    "ended": "Dieser CrowdNewsroom ist beendet. Du kannst ihn wieder öffnen, indem du ihn bearbeitest.",
     "overview": "Überblick",
-    "reopened": "Dieser Callout ist wieder geöffnet. Gehe auf Bearbeiten um ein neues Enddatum einzustellen.",
+    "reopened": "Dieser CrowdNewsroom ist wieder geöffnet. Geh auf „Bearbeiten“, um ein neues Enddatum einzustellen.",
     "responses": "Antworten"
   },
   "calloutAdminOverview": {
     "actions": {
       "confirmDelete": {
-        "text": "Bist du sicher, dass du diesen Callout löschen willst?",
-        "title": "Callout löschen?"
+        "text": "Bist du sicher, dass du diesen CrowdNewsroom löschen willst?",
+        "title": "CrowdNewsroom löschen?"
       }
     },
-    "created": "Super, dein Callout wurde erstellt!",
+    "created": "Super, dein CrowdNewsroom wurde erstellt!",
     "dates": {
       "ends": "Enddatum",
       "label": "Termine",
@@ -751,7 +751,7 @@
       "answers": "Antworten",
       "assignee": "Zugewiesen an",
       "bucket": "Ordner",
-      "callout": "Callout",
+      "callout": "CrowdNewsroom",
       "contact": "Kontakt",
       "createdAt": "Teilgenommen am",
       "tags": "Tags",
@@ -815,7 +815,7 @@
     "add": "Auswerter hinzufügen",
     "canEdit": "Der Auswerter kann auch die CrowdNewsroom bearbeiten",
     "confirmDelete": {
-      "text": "Bist du sicher, dass du {reviewerName} entfernen willst? Er/Sie kann diesen Aufruf dann nicht mehr auswerten.",
+      "text": "Bist du sicher, dass du {reviewerName} entfernen willst? Er/Sie kann diesen CrowdNewsroom dann nicht mehr auswerten.",
       "title": "Auswerter entfernen"
     },
     "contact": "Kontakt ID",
@@ -831,22 +831,22 @@
     "title": "Auswerter"
   },
   "calloutThanksPage": {
-    "oneResponseWarning": "Bitte beacht, dass dieser Callout nur eine Antwort pro Person zulässt. Wenn du bereits teilgenommen hast, werden weitere Antworten nicht berücksichtigt."
+    "oneResponseWarning": "Bitte beachte, dass nur eine Antwort pro Person möglich ist. Wenn du schon teilgenommen hast, werden weitere Antworten nicht berücksichtigt."
   },
   "callouts": {
     "archive": "Archiv",
     "data": {
-      "callout": "Callout",
+      "callout": "CrowdNewsroom",
       "endDate": "Enddatum"
     },
-    "noArchivedCallouts": "Keine Callouts",
-    "search": "Callouts durchsuchen",
+    "noArchivedCallouts": "Keine CrowdNewsrooms",
+    "search": "CrowdNewsroom durchsuchen",
     "showAll": "Alle",
     "showAnswered": "Beantwortet",
-    "showingOf": "Callouts {start} bis {end} von {total} werden angezeigt."
+    "showingOf": "{start} bis {end} von {total} werden angezeigt."
   },
   "calloutsAdmin": {
-    "addCallout": "Callout anlegen",
+    "addCallout": "CrowdNewsroom anlegen",
     "data": {
       "expires": "Enddatum",
       "responses": "Antworten",
@@ -855,11 +855,11 @@
       "title": "Titel"
     },
     "filter": {
-      "all": "Alle Callouts",
+      "all": "Alle",
       "draft": "Entwürfe",
-      "ended": "Beendete Callouts",
-      "open": "Aktive Callouts",
-      "scheduled": "Geplante Callouts"
+      "ended": "Beendete",
+      "open": "Aktive",
+      "scheduled": "Geplante"
     }
   },
   "common": {
@@ -951,7 +951,7 @@
     "annotation": {
       "copy": "<p>Alle hier eingegebenen Information sind <strong>nur für Administratoren sichtbar</strong>.\nNutzer bekommen das nicht angezeigt.</p>\n"
     },
-    "callouts": "Callouts",
+    "callouts": "CrowdNewsroom",
     "cancellationDate": "Gekündigt am",
     "contribution": "Beitrag",
     "contributionType": "Zahlungsart",
@@ -981,7 +981,7 @@
     "addContact": "Kontakt hinzufügen",
     "advancedSearch": {
       "hasAnswered": "Hat teilgenommen?",
-      "selectCallout": "Callout auswählen..."
+      "selectCallout": "CrowdNewsroom auswählen..."
     },
     "allContacts": "Alle Kontakte",
     "data": {
@@ -1018,7 +1018,7 @@
       "tags": "Tags"
     },
     "dataGroup": {
-      "callout": "Callout",
+      "callout": "CrowdNewsroom",
       "contact": "Kontaktdaten",
       "contribution": "Beitrag",
       "role": "Rolle"
@@ -1075,9 +1075,9 @@
     "willRenewWithNewAmount": "Deine Mitgliedschaft verlängert sich am {renewalDate} automatisch. Dein Beitrag ist dann {nextAmount}."
   },
   "editCallout": {
-    "replicated": "Dein Callout wurde kopiert! Du bearbeitest jetzt die Kopie. Bitte denke unbedingt daran, den Titel zu bearbeiten.",
+    "replicated": "Dein CrowdNewsroom wurde kopiert! Du bearbeitest jetzt die Kopie. Denk bitte unbedingt daran, den Titel zu bearbeiten.",
     "title": "Bearbeiten: {title}",
-    "warning": "Vorsicht! Du bearbeitest einen veröffentlichten Callout. Wenn du Umfrageelemente bearbeitest riskierst Du, Antworten unbrauchbar zu machen."
+    "warning": "Vorsicht! Du bearbeitest einen veröffentlichten CrowdNewsroom. Wenn du Elemente bearbeitest, riskierst du, Antworten unbrauchbar zu machen."
   },
   "editNotice": {
     "title": "Bearbeiten: {title}"
@@ -1240,12 +1240,12 @@
   "homePage": {
     "editProfile": "Profil bearbeiten",
     "manageContribution": "Beitrag ändern",
-    "newCallout": "Neuer Callout!",
-    "openCallouts": "Aktuelle Callouts",
+    "newCallout": "Was Neues!",
+    "openCallouts": "CrowdNewsroom",
     "quickActions": "Schnellaktionen",
     "title": "Home",
-    "viewAllCallouts": "Alle Callouts anzeigen",
-    "viewOpenCallouts": "Aktive Callouts anzeigen",
+    "viewAllCallouts": "Alle anzeigen",
+    "viewOpenCallouts": "Alle anzeigen",
     "welcome": "Herzlich willkommen {firstName}!",
     "yourProfile": "Dein Profil"
   },
@@ -1335,9 +1335,9 @@
         "description": "Stelle ein, welche persönlichen Informationen Du über deine Mitglieder sammeln willst.",
         "joinSurvey": {
           "required": "Die Mitglieder müssen den Fragebogen ausfüllen, ehe sie fortfahren können.",
-          "slug": "Callout",
-          "slugHelp": "Du kannst jeden Callout verwenden, der Enddatum hat.",
-          "text": "Als Teil des Anmeldeprozesses kannst du deine Mitglieder einen kurzen Fragebogen ausfüllen lassen. Du kannst zum Beispiel zusätzliche Informationen abfragen oder in Erfahrung bringen, warum sie Mitglied geworden sind.",
+          "slug": "CrowdNewsroom",
+          "slugHelp": "Du kannst jeden CrowdNewsroom verwenden, der ein Enddatum hat.",
+          "text": "Als Teil des Anmeldeprozesses kannst du deine neuen Mitglieder einen kurzen Fragebogen ausfüllen lassen. Du kannst zum Beispiel zusätzliche Infos abfragen oder herausfinden, warum sie Mitglied geworden sind.",
           "textIntro": "Erkläre deinen Mitgliedern kurz, warum du weitere Informationen von ihnen haben möchtest.",
           "title": "Anmelde-Fragebogen"
         },
@@ -1386,7 +1386,7 @@
     "account": "Account",
     "admin": "Administration",
     "adminSettings": "Einstellungen",
-    "callouts": "Callouts",
+    "callouts": "CrowdNewsroom",
     "contacts": "Kontakte",
     "contribution": "Beitrag",
     "dashboard": "Dashboard",
