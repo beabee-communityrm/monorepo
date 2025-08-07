@@ -13,7 +13,7 @@ useRouter().replace(
   canAdmin.value
     ? '/admin'
     : env.cnrMode && currentUser.value?.isReviewer
-      ? '/admin/crowdnewsrooms'
+      ? '/admin/crowdnewsroom'
       : '/profile'
 );
 </script>

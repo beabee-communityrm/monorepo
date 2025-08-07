@@ -75,7 +75,7 @@
               />
               <AppInput
                 v-if="data.autoGenerateSlug"
-                :model-value="env.appUrl + '/crowdnewsrooms/' + data.autoSlug"
+                :model-value="env.appUrl + '/crowdnewsroom/' + data.autoSlug"
                 :disabled="true"
                 :copyable="true"
                 required
@@ -84,7 +84,7 @@
                 v-else
                 v-model="props.data.slug"
                 :disabled="!canEditSlug"
-                :prefix="env.appUrl + '/crowdnewsrooms/'"
+                :prefix="env.appUrl + '/crowdnewsroom/'"
                 :copyable="true"
                 required
               />

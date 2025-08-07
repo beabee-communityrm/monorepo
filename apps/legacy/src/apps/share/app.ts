@@ -15,7 +15,7 @@ app.set('views', __dirname + '/views');
 async function getCalloutShareSettings(
   uri: string
 ): Promise<JustPageSettings | undefined> {
-  const parts = uri.substring('/crowdnewsrooms/'.length).split('?');
+  const parts = uri.substring('/crowdnewsroom/'.length).split('?');
   const slug = parts[0].split('/')[0];
   const locale =
     parts[1]
@@ -40,7 +40,7 @@ async function getCalloutShareSettings(
       shareTitle: variant.shareTitle || variant.title,
       shareDescription: variant.shareDescription || variant.excerpt,
       shareImage: callout.image,
-      shareUrl: config.audience + '/crowdnewsrooms/' + callout.slug,
+      shareUrl: config.audience + '/crowdnewsroom/' + callout.slug,
     };
   }
 }
@@ -52,7 +52,7 @@ app.get(
 
     const uri = req.query.uri ? req.query.uri.toString() : undefined;
     if (uri) {
-      pageSettings = uri.startsWith('/crowdnewsrooms/')
+      pageSettings = uri.startsWith('/crowdnewsroom/')
         ? await getCalloutShareSettings(uri)
         : PageSettingsService.getPath(uri);
     }

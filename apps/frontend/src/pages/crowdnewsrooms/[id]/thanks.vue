@@ -10,7 +10,7 @@ meta:
   <AppTitle v-if="!isEmbed" big>{{ callout.title }}</AppTitle>
   <CalloutThanksBox :callout="callout" class="mb-6" />
   <div class="w-full md:max-w-2xl">
-    <AppShareBox :url="`${env.appUrl}/crowdnewsrooms/${callout.slug}`" />
+    <AppShareBox :url="`${env.appUrl}/crowdnewsroom/${callout.slug}`" />
   </div>
 </template>
 <script lang="ts" setup>
@@ -38,12 +38,12 @@ addBreadcrumb(
       ? [
           {
             title: t('menu.callouts'),
-            to: '/crowdnewsrooms',
+            to: '/crowdnewsroom',
             icon: faBullhorn,
           },
           {
             title: props.callout.title,
-            to: '/crowdnewsrooms/' + props.callout.slug,
+            to: '/crowdnewsroom/' + props.callout.slug,
           },
         ]
       : []

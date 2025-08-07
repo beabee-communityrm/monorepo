@@ -30,11 +30,11 @@ addBreadcrumb(
     {
       title: t('menu.callouts'),
       icon: faBullhorn,
-      to: '/admin/crowdnewsrooms',
+      to: '/admin/crowdnewsroom',
     },
     {
       title: callout.value?.title || '',
-      to: '/admin/crowdnewsrooms/view/' + props.id,
+      to: '/admin/crowdnewsroom/view/' + props.id,
     },
   ])
 );

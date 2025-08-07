@@ -14,7 +14,7 @@ meta:
     >
       <template #value-response="{ item }">
         <router-link
-          :to="`/admin/crowdnewsrooms/view/${item.callout.slug}/responses/${item.id}`"
+          :to="`/admin/crowdnewsroom/view/${item.callout.slug}/responses/${item.id}`"
           class="text-base font-bold text-link"
         >
           {{ item.id }}
@@ -22,7 +22,7 @@ meta:
       </template>
       <template #value-callout="{ value }">
         <router-link
-          :to="`/admin/crowdnewsrooms/view/${value.slug}`"
+          :to="`/admin/crowdnewsroom/view/${value.slug}`"
           class="text-link"
         >
           {{ value.title }}

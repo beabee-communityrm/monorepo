@@ -27,9 +27,9 @@ export const menu = computed<MenuSection[]>(() => [
       },
       {
         title: 'menu.callouts',
-        href: '/crowdnewsrooms',
+        href: '/crowdnewsroom',
         icon: faBullhorn,
-        isActive: /^\/crowdnewsrooms/,
+        isActive: /^\/crowdnewsroom/,
         visible: !env.cnrMode,
       },
     ],
@@ -74,9 +74,9 @@ export const adminMenu = computed<MenuSection[]>(() => [
       },
       {
         title: 'menu.callouts',
-        href: '/admin/crowdnewsrooms',
+        href: '/admin/crowdnewsroom',
         icon: faBullhorn,
-        isActive: /^\/admin\/crowdnewsrooms.*/,
+        isActive: /^\/admin\/crowdnewsroom.*/,
         visible: canAdmin.value || !!currentUser.value?.isReviewer,
       },
       {

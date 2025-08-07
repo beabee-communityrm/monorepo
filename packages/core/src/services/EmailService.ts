@@ -120,7 +120,7 @@ const contactEmailTemplates = {
     params: { calloutSlug: string; calloutTitle: string }
   ) => ({
     CALLOUTTITLE: params.calloutTitle,
-    CALLOUTLINK: `${config.audience}/crowdnewsrooms/${params.calloutSlug}`,
+    CALLOUTLINK: `${config.audience}/crowdnewsroom/${params.calloutSlug}`,
     SUPPORTEMAIL: OptionsService.getText('support-email'),
   }),
   'contribution-didnt-start': (_: Contact) => ({

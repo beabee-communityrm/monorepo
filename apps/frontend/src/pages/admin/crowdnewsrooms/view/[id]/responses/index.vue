@@ -76,7 +76,7 @@ meta:
             <ToggleTagButton
               :tag-items="tagItems"
               :selected-tags="selectedTags"
-              :manage-url="`/admin/crowdnewsrooms/view/${callout.slug}/responses/tags`"
+              :manage-url="`/admin/crowdnewsroom/view/${callout.slug}/responses/tags`"
               :loading="doingAction"
               :selectable="selectedCount > 0"
               @toggle="
@@ -88,7 +88,7 @@ meta:
               :reviewer-items="reviewerItems"
               :manage-url="
                 canAdmin
-                  ? `/admin/crowdnewsrooms/view/${callout.slug}/responses/tags`
+                  ? `/admin/crowdnewsroom/view/${callout.slug}/responses/tags`
                   : undefined
               "
               :selectable="selectedCount > 0"
@@ -386,7 +386,7 @@ addBreadcrumb(
   computed(() => [
     {
       title: t('calloutAdmin.responses'),
-      to: `/admin/crowdnewsrooms/view/${props.callout.slug}/responses`,
+      to: `/admin/crowdnewsroom/view/${props.callout.slug}/responses`,
     },
     {
       title:

@@ -3,7 +3,7 @@
     class="callout-card group w-full cursor-pointer overflow-hidden rounded bg-white shadow md:max-w-[19rem]"
   >
     <router-link
-      :to="`/crowdnewsrooms/${callout.slug}`"
+      :to="`/crowdnewsroom/${callout.slug}`"
       class="flex h-full flex-col"
     >
       <div class="h-36 bg-primary-40">

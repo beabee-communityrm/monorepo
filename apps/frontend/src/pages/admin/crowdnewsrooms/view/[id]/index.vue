@@ -53,7 +53,7 @@ meta:
     <div class="flex-0 flex flex-wrap gap-2 lg:flex-col">
       <ActionButton
         :icon="faEye"
-        :to="`/crowdnewsrooms/${callout.slug}?preview`"
+        :to="`/crowdnewsroom/${callout.slug}?preview`"
       >
         {{
           callout.status === ItemStatus.Open ||
@@ -66,7 +66,7 @@ meta:
         <ActionButton
           v-if="canEdit"
           :icon="faPencilAlt"
-          :to="'/admin/crowdnewsrooms/edit/' + callout.slug"
+          :to="'/admin/crowdnewsroom/edit/' + callout.slug"
         >
           {{ t('actions.edit') }}
         </ActionButton>
@@ -149,7 +149,7 @@ async function confirmDeleteCallout() {
     title: t('calloutAdmin.deleted'),
     variant: 'error',
   });
-  router.push({ path: '/admin/crowdnewsrooms' });
+  router.push({ path: '/admin/crowdnewsroom' });
 }
 
 async function endThisCallout() {
@@ -158,7 +158,7 @@ async function endThisCallout() {
     title: t('calloutAdmin.ended'),
     variant: 'success',
   });
-  router.push({ path: '/admin/crowdnewsrooms' });
+  router.push({ path: '/admin/crowdnewsroom' });
 }
 
 async function reopenThisCallout() {
@@ -167,7 +167,7 @@ async function reopenThisCallout() {
     title: t('calloutAdmin.reopened'),
     variant: 'success',
   });
-  router.push({ path: '/admin/crowdnewsrooms' });
+  router.push({ path: '/admin/crowdnewsroom' });
 }
 
 async function replicateThisCallout() {
@@ -176,7 +176,7 @@ async function replicateThisCallout() {
     expires: null,
   });
   router.push({
-    path: '/admin/crowdnewsrooms/edit/' + newCallout.slug,
+    path: '/admin/crowdnewsroom/edit/' + newCallout.slug,
     query: { replicated: null },
   });
 }

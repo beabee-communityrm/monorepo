@@ -59,12 +59,12 @@ meta:
           <CalloutSummary :callout="latestCallout" />
           <router-link
             class="absolute inset-0"
-            :to="'/admin/crowdnewsrooms/view/' + latestCallout.slug"
+            :to="'/admin/crowdnewsroom/view/' + latestCallout.slug"
           />
         </div>
         <div v-else-if="latestCallout === null">
           {{ t('adminDashboard.latestCallout.empty') }}
-          <router-link to="/admin/crowdnewsrooms/new" class="text-link">
+          <router-link to="/admin/crowdnewsroom/new" class="text-link">
             {{ t('adminDashboard.latestCallout.createNew') }}
           </router-link>
         </div>

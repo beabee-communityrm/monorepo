@@ -2,7 +2,7 @@
   <CalloutSidePanel :show="!!answers" @close="$emit('close')">
     <div v-if="showOnlyThanks">
       <CalloutThanksBox :callout="callout" class="p-0" />
-      <AppShareBox :url="`${env.appUrl}/crowdnewsrooms/${callout.slug}/map`" />
+      <AppShareBox :url="`${env.appUrl}/crowdnewsroom/${callout.slug}/map`" />
     </div>
     <template v-else>
       <CalloutLoginPrompt v-if="showLoginPrompt" />

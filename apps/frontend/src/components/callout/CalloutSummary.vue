@@ -27,7 +27,7 @@
 
     <div class="text-right">
       <router-link
-        :to="`/admin/crowdnewsrooms/view/${callout.slug}/responses`"
+        :to="`/admin/crowdnewsroom/view/${callout.slug}/responses`"
         class="relative z-10"
       >
         <AppButton class="text-sm font-semibold">
@@ -69,5 +69,5 @@ const imageUrl = computed(() => {
     : noImage;
 });
 
-const calloutLink = computed(() => `/crowdnewsrooms/${props.callout.slug}`);
+const calloutLink = computed(() => `/crowdnewsroom/${props.callout.slug}`);
 </script>
