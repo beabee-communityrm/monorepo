@@ -654,7 +654,7 @@
           "title": "Translations"
         }
       },
-      "title": "Callout builder",
+      "title": "CrowdNewsroom builder",
       "translationFields": {
         "description": "Description",
         "html": "Content",
@@ -662,7 +662,7 @@
         "option": "Option {n}",
         "placeholder": "Placeholder"
       },
-      "untitledCallout": "Untitled callout"
+      "untitledCallout": "Untitled CrowdNewsroom"
     },
     "confirmHuman": "Please confirm you are human",
     "contactDetails": "Contact details",
