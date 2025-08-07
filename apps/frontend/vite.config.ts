@@ -22,8 +22,8 @@ export default ({ command, mode }) => {
     VueRouter({
       // Specify the pages directory
       routesFolder: 'src/pages',
-      // Enable typed routes
-      dts: true,
+      // Enable typed routes - generate in src/typings directory
+      dts: 'src/typings/typed-router.d.ts',
       // Configure route block lang (same as vite-plugin-pages default)
       routeBlockLang: 'yaml',
     }),

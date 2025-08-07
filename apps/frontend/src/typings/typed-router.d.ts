@@ -22,14 +22,6 @@ declare module 'vue-router/auto-routes' {
     'theme': RouteRecordInfo<'theme', '/_theme', Record<never, never>, Record<never, never>>,
     '/[...all]': RouteRecordInfo<'/[...all]', '/:all(.*)', { all: ParamValue<true> }, { all: ParamValue<false> }>,
     'admin': RouteRecordInfo<'admin', '/admin', Record<never, never>, Record<never, never>>,
-    'adminCallouts': RouteRecordInfo<'adminCallouts', '/admin/callouts', Record<never, never>, Record<never, never>>,
-    'adminCalloutEdit': RouteRecordInfo<'adminCalloutEdit', '/admin/callouts/edit/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
-    'adminCalloutNew': RouteRecordInfo<'adminCalloutNew', '/admin/callouts/new', Record<never, never>, Record<never, never>>,
-    'adminCalloutView': RouteRecordInfo<'adminCalloutView', '/admin/callouts/view/:id', { id: ParamValue<true> }, { id: ParamValue<false> }, 'adminCalloutViewOverview' | 'adminCalloutViewResponsesItem' | 'adminCalloutViewResponsesTable' | 'adminCalloutViewResponsesTags'>,
-    'adminCalloutViewOverview': RouteRecordInfo<'adminCalloutViewOverview', '/admin/callouts/view/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
-    'adminCalloutViewResponsesTable': RouteRecordInfo<'adminCalloutViewResponsesTable', '/admin/callouts/view/:id/responses', { id: ParamValue<true> }, { id: ParamValue<false> }>,
-    'adminCalloutViewResponsesItem': RouteRecordInfo<'adminCalloutViewResponsesItem', '/admin/callouts/view/:id/responses/:rid', { id: ParamValue<true>, rid: ParamValue<true> }, { id: ParamValue<false>, rid: ParamValue<false> }>,
-    'adminCalloutViewResponsesTags': RouteRecordInfo<'adminCalloutViewResponsesTags', '/admin/callouts/view/:id/responses/tags', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'adminContacts': RouteRecordInfo<'adminContacts', '/admin/contacts', Record<never, never>, Record<never, never>>,
     'adminContactsView': RouteRecordInfo<'adminContactsView', '/admin/contacts/:id', { id: ParamValue<true> }, { id: ParamValue<false> }, 'adminContactsViewAccount' | 'adminContactsViewCallouts' | 'adminContactsViewContribution' | 'adminContactsViewOverview'>,
     'adminContactsViewOverview': RouteRecordInfo<'adminContactsViewOverview', '/admin/contacts/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
@@ -38,6 +30,14 @@ declare module 'vue-router/auto-routes' {
     'adminContactsViewContribution': RouteRecordInfo<'adminContactsViewContribution', '/admin/contacts/:id/contribution', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'adminContactsAdd': RouteRecordInfo<'adminContactsAdd', '/admin/contacts/add', Record<never, never>, Record<never, never>>,
     'adminContactTags': RouteRecordInfo<'adminContactTags', '/admin/contacts/tags', Record<never, never>, Record<never, never>>,
+    'adminCallouts': RouteRecordInfo<'adminCallouts', '/admin/crowdnewsroom', Record<never, never>, Record<never, never>>,
+    'adminCalloutEdit': RouteRecordInfo<'adminCalloutEdit', '/admin/crowdnewsroom/edit/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
+    'adminCalloutNew': RouteRecordInfo<'adminCalloutNew', '/admin/crowdnewsroom/new', Record<never, never>, Record<never, never>>,
+    'adminCalloutView': RouteRecordInfo<'adminCalloutView', '/admin/crowdnewsroom/view/:id', { id: ParamValue<true> }, { id: ParamValue<false> }, 'adminCalloutViewOverview' | 'adminCalloutViewResponsesItem' | 'adminCalloutViewResponsesTable' | 'adminCalloutViewResponsesTags'>,
+    'adminCalloutViewOverview': RouteRecordInfo<'adminCalloutViewOverview', '/admin/crowdnewsroom/view/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
+    'adminCalloutViewResponsesTable': RouteRecordInfo<'adminCalloutViewResponsesTable', '/admin/crowdnewsroom/view/:id/responses', { id: ParamValue<true> }, { id: ParamValue<false> }>,
+    'adminCalloutViewResponsesItem': RouteRecordInfo<'adminCalloutViewResponsesItem', '/admin/crowdnewsroom/view/:id/responses/:rid', { id: ParamValue<true>, rid: ParamValue<true> }, { id: ParamValue<false>, rid: ParamValue<false> }>,
+    'adminCalloutViewResponsesTags': RouteRecordInfo<'adminCalloutViewResponsesTags', '/admin/crowdnewsroom/view/:id/responses/tags', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'adminMembershipBuilder': RouteRecordInfo<'adminMembershipBuilder', '/admin/membership-builder', Record<never, never>, Record<never, never>, 'adminMembershipBuilderAccountConfirmation' | 'adminMembershipBuilderEmail' | 'adminMembershipBuilderIntroMessages' | 'adminMembershipBuilderJoinForm'>,
     'adminMembershipBuilderJoinForm': RouteRecordInfo<'adminMembershipBuilderJoinForm', '/admin/membership-builder', Record<never, never>, Record<never, never>>,
     'adminMembershipBuilderAccountConfirmation': RouteRecordInfo<'adminMembershipBuilderAccountConfirmation', '/admin/membership-builder/confirmation', Record<never, never>, Record<never, never>>,
@@ -60,13 +60,13 @@ declare module 'vue-router/auto-routes' {
     'reset_device': RouteRecordInfo<'reset_device', '/auth/reset-device/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'reset_password': RouteRecordInfo<'reset_password', '/auth/reset-password/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'set_password': RouteRecordInfo<'set_password', '/auth/set-password/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
-    'callouts': RouteRecordInfo<'callouts', '/callouts', Record<never, never>, Record<never, never>>,
-    '/callouts/[id]': RouteRecordInfo<'/callouts/[id]', '/callouts/:id', { id: ParamValue<true> }, { id: ParamValue<false> }, 'callout' | 'calloutGallery' | 'calloutMap' | 'calloutRespond' | 'calloutThanks'>,
-    'callout': RouteRecordInfo<'callout', '/callouts/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
-    'calloutGallery': RouteRecordInfo<'calloutGallery', '/callouts/:id/gallery', { id: ParamValue<true> }, { id: ParamValue<false> }>,
-    'calloutMap': RouteRecordInfo<'calloutMap', '/callouts/:id/map', { id: ParamValue<true> }, { id: ParamValue<false> }>,
-    'calloutRespond': RouteRecordInfo<'calloutRespond', '/callouts/:id/respond', { id: ParamValue<true> }, { id: ParamValue<false> }>,
-    'calloutThanks': RouteRecordInfo<'calloutThanks', '/callouts/:id/thanks', { id: ParamValue<true> }, { id: ParamValue<false> }>,
+    'callouts': RouteRecordInfo<'callouts', '/crowdnewsroom', Record<never, never>, Record<never, never>>,
+    '/crowdnewsroom/[id]': RouteRecordInfo<'/crowdnewsroom/[id]', '/crowdnewsroom/:id', { id: ParamValue<true> }, { id: ParamValue<false> }, 'callout' | 'calloutGallery' | 'calloutMap' | 'calloutRespond' | 'calloutThanks'>,
+    'callout': RouteRecordInfo<'callout', '/crowdnewsroom/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
+    'calloutGallery': RouteRecordInfo<'calloutGallery', '/crowdnewsroom/:id/gallery', { id: ParamValue<true> }, { id: ParamValue<false> }>,
+    'calloutMap': RouteRecordInfo<'calloutMap', '/crowdnewsroom/:id/map', { id: ParamValue<true> }, { id: ParamValue<false> }>,
+    'calloutRespond': RouteRecordInfo<'calloutRespond', '/crowdnewsroom/:id/respond', { id: ParamValue<true> }, { id: ParamValue<false> }>,
+    'calloutThanks': RouteRecordInfo<'calloutThanks', '/crowdnewsroom/:id/thanks', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'join': RouteRecordInfo<'join', '/join', Record<never, never>, Record<never, never>>,
     'joinComplete': RouteRecordInfo<'joinComplete', '/join/complete', Record<never, never>, Record<never, never>>,
     'confirmEmail': RouteRecordInfo<'confirmEmail', '/join/confirm-email', Record<never, never>, Record<never, never>>,
@@ -109,38 +109,6 @@ declare module 'vue-router/auto-routes' {
       routes: 'admin'
       views: never
     }
-    'src/pages/admin/callouts/index.vue': {
-      routes: 'adminCallouts'
-      views: never
-    }
-    'src/pages/admin/callouts/edit/[id].vue': {
-      routes: 'adminCalloutEdit'
-      views: never
-    }
-    'src/pages/admin/callouts/new.vue': {
-      routes: 'adminCalloutNew'
-      views: never
-    }
-    'src/pages/admin/callouts/view/[id].vue': {
-      routes: 'adminCalloutView' | 'adminCalloutViewOverview' | 'adminCalloutViewResponsesTable' | 'adminCalloutViewResponsesItem' | '/admin/callouts/view/[id]/responses' | 'adminCalloutViewResponsesTags'
-      views: 'default'
-    }
-    'src/pages/admin/callouts/view/[id]/index.vue': {
-      routes: 'adminCalloutViewOverview'
-      views: never
-    }
-    'src/pages/admin/callouts/view/[id]/responses/index.vue': {
-      routes: 'adminCalloutViewResponsesTable'
-      views: never
-    }
-    'src/pages/admin/callouts/view/[id]/responses/[rid].vue': {
-      routes: 'adminCalloutViewResponsesItem'
-      views: never
-    }
-    'src/pages/admin/callouts/view/[id]/responses/tags.vue': {
-      routes: 'adminCalloutViewResponsesTags'
-      views: never
-    }
     'src/pages/admin/contacts/index.vue': {
       routes: 'adminContacts'
       views: never
@@ -171,6 +139,38 @@ declare module 'vue-router/auto-routes' {
     }
     'src/pages/admin/contacts/tags.vue': {
       routes: 'adminContactTags'
+      views: never
+    }
+    'src/pages/admin/crowdnewsroom/index.vue': {
+      routes: 'adminCallouts'
+      views: never
+    }
+    'src/pages/admin/crowdnewsroom/edit/[id].vue': {
+      routes: 'adminCalloutEdit'
+      views: never
+    }
+    'src/pages/admin/crowdnewsroom/new.vue': {
+      routes: 'adminCalloutNew'
+      views: never
+    }
+    'src/pages/admin/crowdnewsroom/view/[id].vue': {
+      routes: 'adminCalloutView' | 'adminCalloutViewOverview' | 'adminCalloutViewResponsesTable' | 'adminCalloutViewResponsesItem' | '/admin/crowdnewsroom/view/[id]/responses' | 'adminCalloutViewResponsesTags'
+      views: 'default'
+    }
+    'src/pages/admin/crowdnewsroom/view/[id]/index.vue': {
+      routes: 'adminCalloutViewOverview'
+      views: never
+    }
+    'src/pages/admin/crowdnewsroom/view/[id]/responses/index.vue': {
+      routes: 'adminCalloutViewResponsesTable'
+      views: never
+    }
+    'src/pages/admin/crowdnewsroom/view/[id]/responses/[rid].vue': {
+      routes: 'adminCalloutViewResponsesItem'
+      views: never
+    }
+    'src/pages/admin/crowdnewsroom/view/[id]/responses/tags.vue': {
+      routes: 'adminCalloutViewResponsesTags'
       views: never
     }
     'src/pages/admin/membership-builder.vue': {
@@ -261,31 +261,31 @@ declare module 'vue-router/auto-routes' {
       routes: 'set_password'
       views: never
     }
-    'src/pages/callouts/index.vue': {
+    'src/pages/crowdnewsroom/index.vue': {
       routes: 'callouts'
       views: never
     }
-    'src/pages/callouts/[id].vue': {
-      routes: '/callouts/[id]' | 'callout' | 'calloutGallery' | 'calloutMap' | 'calloutRespond' | 'calloutThanks'
+    'src/pages/crowdnewsroom/[id].vue': {
+      routes: '/crowdnewsroom/[id]' | 'callout' | 'calloutGallery' | 'calloutMap' | 'calloutRespond' | 'calloutThanks'
       views: 'default'
     }
-    'src/pages/callouts/[id]/index.vue': {
+    'src/pages/crowdnewsroom/[id]/index.vue': {
       routes: 'callout'
       views: never
     }
-    'src/pages/callouts/[id]/gallery.vue': {
+    'src/pages/crowdnewsroom/[id]/gallery.vue': {
       routes: 'calloutGallery'
       views: never
     }
-    'src/pages/callouts/[id]/map.vue': {
+    'src/pages/crowdnewsroom/[id]/map.vue': {
       routes: 'calloutMap'
       views: never
     }
-    'src/pages/callouts/[id]/respond.vue': {
+    'src/pages/crowdnewsroom/[id]/respond.vue': {
       routes: 'calloutRespond'
       views: never
     }
-    'src/pages/callouts/[id]/thanks.vue': {
+    'src/pages/crowdnewsroom/[id]/thanks.vue': {
       routes: 'calloutThanks'
       views: never
     }
