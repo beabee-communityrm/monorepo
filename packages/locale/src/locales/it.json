@@ -524,6 +524,7 @@
               "label": ""
             },
             "responseLinks": {
+              "add": "",
               "description": "",
               "label": "",
               "opts": {
@@ -537,7 +538,6 @@
               "text": {
                 "label": ""
               },
-              "add": "",
               "url": {
                 "label": ""
               }
