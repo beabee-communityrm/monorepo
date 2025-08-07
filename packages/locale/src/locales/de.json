@@ -661,7 +661,8 @@
         "label": "Bezeichnung",
         "option": "Option {n}",
         "placeholder": "Platzhalter"
-      }
+      },
+      "untitledCallout": ""
     },
     "confirmHuman": "Bitte bestätigen Sie, dass Sie ein Mensch sind",
     "contactDetails": "Kontaktdaten",
