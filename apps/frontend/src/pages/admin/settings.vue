@@ -14,10 +14,10 @@ meta:
 import { AppTabs, PageTitle } from '@beabee/vue';
 
 import { faCog } from '@fortawesome/free-solid-svg-icons';
+import { resolveTabNavigation } from '@utils/navigation';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
-import type { RouteNamedMap } from 'vue-router/auto-routes';
 
 import { addBreadcrumb } from '../../store/breadcrumb';
 
@@ -26,7 +26,7 @@ const route = useRoute();
 const router = useRouter();
 
 const tabs = computed(() =>
-  [
+  resolveTabNavigation(router, [
     {
       id: 'adminSettingsGeneral',
       label: t('adminSettings.general.label'),
@@ -43,10 +43,7 @@ const tabs = computed(() =>
       id: 'adminSettingsApikeys',
       label: t('adminSettings.apikey.label'),
     },
-  ].map((item) => ({
-    ...item,
-    to: router.resolve({ name: item.id as keyof RouteNamedMap }).href,
-  }))
+  ])
 );
 
 const selectedTab = computed(() =>
