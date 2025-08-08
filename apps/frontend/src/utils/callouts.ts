@@ -265,6 +265,13 @@ export function convertCalloutToTabs(
   const translations: TranslationsTabData = {
     locales,
     componentText,
+    // Initialize editor-side LocaleProp map for response link labels using ref keys as default
+    responseLinkText: Object.fromEntries(
+      (callout?.responseViewSchema?.links || []).map((l) => [
+        l.text,
+        { default: l.text },
+      ])
+    ),
   };
 
   return {
@@ -328,6 +335,14 @@ function convertVariantForCallout(
     componentText[key] = tabs.translations.componentText[key][variant] || '';
   }
 
+  // Collect response link translations into a dedicated variant field
+  const responseLinkText: Record<string, string> = {};
+  for (const link of tabs.responseDisplay.responseLinks) {
+    const ref = link.text;
+    const value = tabs.translations.responseLinkText[ref]?.[variant] ?? '';
+    responseLinkText[ref] = value;
+  }
+
   return {
     title: tabs.titleAndImage.title[variant] || '',
     excerpt: tabs.titleAndImage.description[variant] || '',
@@ -357,6 +372,7 @@ function convertVariantForCallout(
         }),
     slideNavigation,
     componentText,
+    responseLinkText,
   };
 }
 
