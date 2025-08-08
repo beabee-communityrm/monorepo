@@ -136,8 +136,8 @@
     "joinSlack": "",
     "latestCallout": {
       "createNew": "",
-      "empty": "",
-      "title": ""
+      "empty": "Nessuna CrowdNewsroom attiva",
+      "title": "La tua CrowdNewsroom"
     },
     "mostRecentMembers": {
       "title": ""
@@ -381,7 +381,7 @@
               "placeholder": ""
             },
             "title": {
-              "help": "",
+              "help": "<p>I tuoi lettori vedranno il <strong>titolo di ringraziamento</strong> al termine della compilazione della CrowdNewsroom.</p>",
               "label": "",
               "placeholder": ""
             },
@@ -434,8 +434,8 @@
               "description": "",
               "label": "",
               "opts": {
-                "never": "",
-                "schedule": ""
+                "never": "La CrowdNewsroom rimarrà attiva fino alla chiusura manuale",
+                "schedule": "La CrowdNewsroom si chiuderà automaticamente a una data specifica."
               }
             },
             "mapAndGallery": {
@@ -496,15 +496,15 @@
               }
             },
             "openToEveryone": {
-              "help": "",
+              "help": "<p>Le CrowdNewsroom possono essere presentate a <strong>tutti</strong> o limitate alla partecipazione dei <strong>soli membri</strong></p>",
               "label": "",
               "opts": {
-                "disabled": "",
-                "enabled": ""
+                "disabled": "Solo i membri potranno accedere e partecipare a questa CrowdNewsroom",
+                "enabled": "Chiunque potrà accedere e partecipare a questa CrowdNewsroom"
               }
             },
             "requireCaptcha": {
-              "help": "",
+              "help": "<p>Se abiliti la <strong>protezione anti-bot</strong>, gli utenti dovranno completare un Captcha per confermare di essere umani. Questo è utile per evitare che la tua CrowdNewsroom venga spammata da bot</p>",
               "label": "",
               "members": {
                 "label": "",
@@ -524,6 +524,7 @@
               "label": ""
             },
             "responseLinks": {
+              "add": "",
               "description": "",
               "label": "",
               "opts": {
@@ -533,13 +534,19 @@
               "placeholder": {
                 "label": "",
                 "url": ""
+              },
+              "text": {
+                "label": ""
+              },
+              "url": {
+                "label": ""
               }
             },
             "responseSettings": {
               "label": "",
               "opts": {
                 "multiple": "",
-                "singleEditable": "",
+                "singleEditable": "Una sola risposta, ma modificabile finché la CrowdNewsroom è aperta",
                 "singleNonEditable": ""
               },
               "title": ""
@@ -558,16 +565,16 @@
             "starts": {
               "label": "",
               "opts": {
-                "now": "",
-                "schedule": ""
+                "now": "La CrowdNewsroom sarà resa disponibile immediatamente.",
+                "schedule": "La CrowdNewsroom sarà resa disponibile a una data specifica."
               }
             },
             "visible": {
-              "help": "",
-              "label": "",
+              "help": "La CrowdNewsroom sarà visibile solo a chi riceve il link",
+              "label": "Mostra la CrowdNewsroom nei pannelli dei membri",
               "opts": {
-                "disabled": "",
-                "enabled": ""
+                "disabled": "La CrowdNewsroom non apparirà nei pannelli dei membri",
+                "enabled": "La CrowdNewsroom apparirà nei pannelli dei membri"
               }
             },
             "whichResponseBuckets": {
@@ -607,26 +614,26 @@
             "shareTitle": {
               "help": "",
               "label": "",
-              "placeholder": ""
+              "placeholder": "Il nome della tua CrowdNewsroom"
             },
             "sharing": {
               "title": ""
             },
             "slug": {
               "boxTitle": "",
-              "help": "",
+              "help": "Usa questo link per condividere la CrowdNewsroom",
               "label": "",
               "locked": {
-                "title": ""
+                "title": "Il permalink è bloccato perché la CrowdNewsroom è già stata pubblicata."
               },
               "opts": {
-                "auto": "",
+                "auto": "Il permalink è generato dal titolo della CrowdNewsroom. Il link si aggiornerà automaticamente se cambi il titolo.",
                 "manual": ""
               }
             },
             "title": {
               "label": "",
-              "placeholder": ""
+              "placeholder": "Il nome della tua CrowdNewsroom."
             }
           },
           "title": "",
@@ -634,7 +641,7 @@
         },
         "translations": {
           "language": {
-            "description": "",
+            "description": "Puoi tradurre la CrowdNewsroom in più lingue. Se manca una traduzione, verrà mostrato il testo nella lingua principale.",
             "enableLanguages": "",
             "title": ""
           },
@@ -654,11 +661,12 @@
         "label": "",
         "option": "",
         "placeholder": ""
-      }
+      },
+      "untitledCallout": ""
     },
     "confirmHuman": "",
     "contactDetails": "",
-    "ended": "",
+    "ended": "Questa CrowdNewsroom è terminata il {date}",
     "entryOf": "",
     "form": {
       "email": "",
@@ -669,7 +677,7 @@
     "getStarted": "",
     "joinNow": "",
     "loginToYourAccount": "",
-    "membersOnly": "",
+    "membersOnly": "Questa CrowdNewsroom è aperta solo ai membri. Per partecipare",
     "responseSubmitted": "",
     "share": {
       "address": "",
@@ -690,24 +698,24 @@
       "gallery": "",
       "map": ""
     },
-    "youResponded": "",
+    "youResponded": "Hai risposto a questa CrowdNewsroom ♥",
     "yourResponse": ""
   },
   "calloutAdmin": {
-    "deleted": "",
-    "ended": "",
+    "deleted": "CrowdNewsroom eliminata.",
+    "ended": "CrowdNewsroom terminata. Puoi riaprirla modificandola.",
     "overview": "",
-    "reopened": "",
+    "reopened": "CrowdNewsroom riaperta. Modifica la CrowdNewsroom se vuoi impostare un'altra data di fine.",
     "responses": ""
   },
   "calloutAdminOverview": {
     "actions": {
       "confirmDelete": {
-        "text": "",
-        "title": ""
+        "text": "Sei sicuro di voler eliminare questa CrowdNewsroom?",
+        "title": "Eliminare la CrowdNewsroom?"
       }
     },
-    "created": "",
+    "created": "La tua nuova CrowdNewsroom è stata creata con successo.",
     "dates": {
       "ends": "",
       "label": "",
@@ -737,14 +745,14 @@
       }
     },
     "summary": "",
-    "updated": ""
+    "updated": "La tua CrowdNewsroom è stata aggiornata con successo."
   },
   "calloutResponse": {
     "data": {
       "answers": "",
       "assignee": "",
       "bucket": "",
-      "callout": "",
+      "callout": "CrowdNewsroom",
       "contact": "",
       "createdAt": "",
       "tags": "",
@@ -808,7 +816,7 @@
     "add": "Aggiungere un verificatore",
     "canEdit": "Il verificatore può anche modificare il CrowdNewsroom",
     "confirmDelete": {
-      "text": "È sicuro di voler rimuovere {reviewerName}? Non potrà più verificare questo invito.",
+      "text": "Sei sicuro di voler rimuovere {reviewerName}? Non potrà più revisionare questa CrowdNewsroom.",
       "title": "Rimuovere il verificatore"
     },
     "contact": "ID del contatto",
@@ -944,7 +952,7 @@
     "annotation": {
       "copy": ""
     },
-    "callouts": "",
+    "callouts": "CrowdNewsroom",
     "cancellationDate": "",
     "contribution": "",
     "contributionType": "",
@@ -1068,9 +1076,9 @@
     "willRenewWithNewAmount": ""
   },
   "editCallout": {
-    "replicated": "",
+    "replicated": "La tua CrowdNewsroom è stata replicata con successo e ora stai modificando la nuova copia. Ricordati di modificare il titolo nella scheda \"Titolo e Immagine\".",
     "title": "",
-    "warning": ""
+    "warning": "Attenzione! Stai modificando una CrowdNewsroom attiva. Modificare le proprietà del modulo può rendere inutilizzabili le risposte precedenti."
   },
   "editNotice": {
     "title": ""
@@ -1233,7 +1241,7 @@
   "homePage": {
     "editProfile": "",
     "manageContribution": "Gestisci il tuo contributo",
-    "newCallout": "",
+    "newCallout": "Nuova CrowdNewsroom!",
     "openCallouts": "Callout in corso",
     "quickActions": "Azioni veloci",
     "title": "Home",
@@ -1328,9 +1336,9 @@
         "description": "",
         "joinSurvey": {
           "required": "",
-          "slug": "",
-          "slugHelp": "",
-          "text": "",
+          "slug": "CrowdNewsroom",
+          "slugHelp": "Puoi usare qualsiasi CrowdNewsroom aperta che non abbia una data di scadenza.",
+          "text": "Puoi chiedere ai tuoi nuovi utenti di completare una CrowdNewsroom come parte del processo di iscrizione. È un ottimo modo per chiedere loro perché si sono uniti o per raccogliere informazioni aggiuntive utili alla loro integrazione nella community.",
           "textIntro": "",
           "title": ""
         },

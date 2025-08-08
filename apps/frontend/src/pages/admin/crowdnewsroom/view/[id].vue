@@ -27,10 +27,14 @@ const { t } = useI18n();
 
 addBreadcrumb(
   computed(() => [
-    { title: t('menu.callouts'), icon: faBullhorn, to: '/admin/callouts' },
+    {
+      title: t('menu.callouts'),
+      icon: faBullhorn,
+      to: '/admin/crowdnewsroom',
+    },
     {
       title: callout.value?.title || '',
-      to: '/admin/callouts/view/' + props.id,
+      to: '/admin/crowdnewsroom/view/' + props.id,
     },
   ])
 );
