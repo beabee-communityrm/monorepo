@@ -524,6 +524,7 @@
               "label": ""
             },
             "responseLinks": {
+              "add": "",
               "description": "",
               "label": "",
               "opts": {
@@ -537,7 +538,6 @@
               "text": {
                 "label": ""
               },
-              "add": "",
               "url": {
                 "label": ""
               }
@@ -814,13 +814,12 @@
   },
   "calloutReviewerManager": {
     "add": "",
+    "canEdit": "",
     "confirmDelete": {
       "text": "",
       "title": ""
     },
     "contact": "",
-    "title": "",
-    "canEdit": "",
     "editorTag": "",
     "search": {
       "error": {
@@ -829,7 +828,8 @@
       },
       "placeholder": "",
       "successMessage": ""
-    }
+    },
+    "title": ""
   },
   "calloutThanksPage": {
     "oneResponseWarning": ""
@@ -1194,8 +1194,8 @@
       }
     },
     "errorsFormio": {
-      "minLength": "",
-      "maxLength": ""
+      "maxLength": "",
+      "minLength": ""
     },
     "firstName": "",
     "lastName": "",

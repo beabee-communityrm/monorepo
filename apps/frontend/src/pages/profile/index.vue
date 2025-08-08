@@ -37,7 +37,7 @@ meta:
       />
     </div>
 
-    <AppButton to="/callouts" variant="primaryOutlined">{{
+    <AppButton to="/crowdnewsroom" variant="primaryOutlined">{{
       t('homePage.viewAllCallouts')
     }}</AppButton>
   </section>

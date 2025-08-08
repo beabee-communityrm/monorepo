@@ -130,9 +130,9 @@
     "title": "Hinweis hinzufügen"
   },
   "adminDashboard": {
-    "hint1": "<p>Das beabee-Handbuch für Community-Journalismus „Lust auf Lokal” <a href=\"https://beabee.io/neu-handbuch-community-journalismus/\" target=\"_blank\" rel=\"noopener noreferrer\">ist erschienen</a>. Es enthält nicht nur unser gesammeltes Wissen zum Aufbau unabhängiger Lokalredaktionen, sondern auch viele Beispiele aus der Praxis.</p>\n",
-    "hint2": "<p>Im <a href=\"https://beabee.io/#blog\" target=\"_blank\" rel=\"noopener noreferrer\">Blog</a> auf unserer Website findest du viele Best-Practice-Beispiele anderer Redaktionen, von denen du dich inspierieren lassen kannst.</p>\n",
-    "hint3": "<p>Unsere Community-Meetups finden jeden dritten Donnerstag im Monat statt. Du willst dein Best-Practice-Beispiel mit anderen teilen? Schreib eine E-Mail an <a href=\"mailto:tobias.hauswurz{'@'}correctiv.org\">tobias.hauswurz{'@'}correctiv.org</a></p>\n",
+    "hint1": "<p>„Callouts“ heißen jetzt „CrowdNewsrooms“. Im <a href=\"https://wiki.beabee.io/beabee-help-center/engagement/crowdnewsroom\" target=\"_blank\" rel=\"noopener noreferrer\"> Help Center </a> finden Sie Anleitungen und Fallstudien, um Ihre Community besser einzubinden.</p>",
+    "hint2": "<p>Im <a href=\"https://beabee.io/#blog\" target=\"_blank\" rel=\"noopener noreferrer\">Blog</a> auf unserer Website finden Sie viele Best-Practice-Beispiele anderer Redaktionen, von denen Sie sich inspirieren lassen können.</p>\n",
+    "hint3": "<p>Unsere Community-Meetups finden jeden dritten Donnerstag im Monat statt. Sie wollen Ihr Best-Practice-Beispiel mit anderen teilen? Schreiben Sie eine E-Mail an <a href=\"mailto:tobias.hauswurz{'@'}correctiv.org\">tobias.hauswurz{'@'}correctiv.org</a></p>\n",
     "joinSlack": "Tritt der beabee-Community auf Slack bei!",
     "latestCallout": {
       "createNew": "Neuen CrowdNewsroom erstellen?",
@@ -524,6 +524,7 @@
               "label": "Antwortbild"
             },
             "responseLinks": {
+              "add": "Hinzufügen",
               "description": "Verwenden Sie beispielsweise den Antwort-Fußbereich, um einen Link zum Melden eines Fehlers oder eine Kontakt-E-Mail einzufügen. Um auf eine E-Mail-Adresse zu verlinken, geben Sie mailto: gefolgt von der E-Mail-Adresse im URL-Feld ein.",
               "label": "Einen Fußbereich am Ende der Antworten einfügen",
               "opts": {
@@ -537,7 +538,6 @@
               "text": {
                 "label": "Text"
               },
-              "add": "Hinzufügen",
               "url": {
                 "label": "Url"
               }
@@ -654,7 +654,7 @@
           "title": "Übersetzungen"
         }
       },
-      "title": "Callout-Builder",
+      "title": "CrowdNewsroom-Builder",
       "translationFields": {
         "description": "Beschreibung",
         "html": "Inhalt",
@@ -662,7 +662,7 @@
         "option": "Option {n}",
         "placeholder": "Platzhalter"
       },
-      "untitledCallout": ""
+      "untitledCallout": "Unbennater CrowdNewsroom"
     },
     "confirmHuman": "Bitte bestätigen Sie, dass Sie ein Mensch sind",
     "contactDetails": "Kontaktdaten",
