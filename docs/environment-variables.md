@@ -9,19 +9,23 @@ This guide explains how to work with environment variables in the Beabee project
 Environment variable documentation is organized by location and purpose:
 
 ### Primary Documentation (TypeScript Files)
+
 - **Backend Variables**: `packages/core/src/config/config.ts` - Comprehensive JSDoc comments with types, defaults, and validation
 - **Frontend Variables**: `apps/frontend/src/env.ts` - Frontend-specific variables with detailed documentation
 - **Test Variables**: `packages/test-utils/vitest/env.ts` - Test environment configuration
 
 ### Quick Reference (Example Files)
+
 - **`.env.example`** - Simplified overview with required/optional indicators
 - **`.env.test.example`** - Test environment overrides
 - **`.env.remote.example`** - Remote CLI configuration
 
 ### This Guide
+
 Focuses on workflows, setup procedures, and best practices.
 
 When adding or updating environment variables:
+
 1. Update the relevant TypeScript file with full documentation
 2. Update the corresponding `.env.example` file with a brief description
 3. Update this guide only if workflows change
@@ -49,6 +53,7 @@ yarn bootstrap
 ```
 
 This command copies:
+
 - `.env.example` → `.env`
 - `.env.remote.example` → `.env.remote`
 - `.env.test.example` → `.env.test`
@@ -66,6 +71,52 @@ BEABEE_STRIPE_MEMBERSHIPPRODUCTID=prod_...
 
 > ⚠️ **Important**: Use test keys for development, never production keys in local environment.
 
+### Stripe setup (development)
+
+Follow these exact steps to obtain the Stripe values and make the local webhook work:
+
+1. Get API keys in Stripe Dashboard (Test mode):
+
+   - Go to Developers → API keys and copy the Publishable key (`pk_test_…`) and Secret key (`sk_test_…`).
+   - Screenshot for reference:
+
+     ![Stripe API keys](./assets/stripe-keys.png)
+
+2. Set the keys in your `.env` before starting Docker:
+
+   ```bash
+   BEABEE_STRIPE_PUBLICKEY=pk_test_...
+   BEABEE_STRIPE_SECRETKEY=sk_test_...
+   ```
+
+3. Get the Membership Product ID:
+
+   - Go to Product catalogue → open your “Membership” product → copy the Product ID (`prod_…`).
+   - Screenshot for reference:
+
+     ![Stripe product ID](./assets/stripe-membership.png)
+
+   - Add it to `.env`:
+
+   ```bash
+   BEABEE_STRIPE_MEMBERSHIPPRODUCTID=prod_...
+   ```
+
+4. Start Docker and retrieve the Webhook Signing Secret via Stripe CLI:
+   - Start the stack (the Stripe CLI service uses your `BEABEE_STRIPE_SECRETKEY`):
+   ```bash
+   docker compose up -d
+   ```
+   - Read the webhook secret from the Stripe CLI logs and set it in `.env`:
+   ```bash
+   docker compose logs -f stripe_cli | grep -i "webhook signing secret"
+   # Example output: Your webhook signing secret is whsec_XXXX
+   # Then set:
+   BEABEE_STRIPE_WEBHOOKSECRET=whsec_...
+   ```
+
+Once all four variables are set, restart the stack if needed.
+
 ## Environment File Details
 
 ### `.env` - Main Development Environment
@@ -73,6 +124,7 @@ BEABEE_STRIPE_MEMBERSHIPPRODUCTID=prod_...
 **Purpose**: Primary configuration for local development with Docker Compose.
 
 **Key Features**:
+
 - Core application settings
 - Database configuration
 - Payment provider credentials
@@ -83,6 +135,7 @@ BEABEE_STRIPE_MEMBERSHIPPRODUCTID=prod_...
 **Usage**: Automatically loaded by Docker Compose and development tools.
 
 **Port Configuration**:
+
 ```bash
 # Development Ports
 VITE_DEV_SERVER_PORT=3000    # Frontend dev server
@@ -92,6 +145,7 @@ DB_PORT=6543                # PostgreSQL database
 ```
 
 **Access Points**:
+
 - Frontend (Vite): http://localhost:3000 (uses BEABEE_AUDIENCE for API proxy)
 - Router (Docker): http://localhost:3002 (configured via BEABEE_AUDIENCE)
 - MailDev: http://localhost:3025
@@ -101,17 +155,20 @@ DB_PORT=6543                # PostgreSQL database
 **Purpose**: Enables running the backend CLI locally while connecting to a remote server.
 
 **Key Features**:
+
 - Remote database connection
 - Minimal configuration override
 - CLI-specific settings
 
 **Usage**:
+
 ```bash
 # Run CLI commands against remote server
 yarn backend-cli [command]
 ```
 
 **Configuration Example**:
+
 ```bash
 # Connect to remote production database
 BEABEE_DATABASE_URL=postgres://user:pass@your-server.com:5432/beabee_production
@@ -120,6 +177,7 @@ BEABEE_AUDIENCE=https://your-beabee-instance.com
 ```
 
 **Environment Loading Order** (when CLI runs outside Docker):
+
 1. `.env.remote` (highest priority)
 2. `.env` (root environment file)
 3. `.env.test` (if NODE_ENV=test)
@@ -129,17 +187,20 @@ BEABEE_AUDIENCE=https://your-beabee-instance.com
 **Purpose**: Configuration for local test execution and test environment setup.
 
 **Key Features**:
+
 - Test-specific ports to avoid conflicts
 - Test user credentials
 - Simplified provider configuration
 - Docker Compose test overrides
 
 **Usage**: Automatically loaded during test execution:
+
 ```bash
 yarn test
 ```
 
 **Test Ports**:
+
 ```bash
 # Test Environment Ports
 VITE_DEV_SERVER_PORT=4000    # Frontend test server
@@ -149,6 +210,7 @@ DB_PORT=5432                # Test database (container port)
 ```
 
 **Test User Configuration**:
+
 ```bash
 # Primary test user for API testing
 TEST_USER_EMAIL=test@beabee.io
@@ -169,11 +231,13 @@ TEST_RATE_LIMIT_USER_EMAIL=rate-limit-test@beabee.io
 Environment variables are comprehensively documented in the TypeScript source files:
 
 1. **Backend Variables**: [`packages/core/src/config/config.ts`](../packages/core/src/config/config.ts)
+
    - Complete JSDoc documentation for each variable
    - Type definitions and validation rules
    - Default values and allowed options
 
 2. **Frontend Variables**: [`apps/frontend/src/env.ts`](../apps/frontend/src/env.ts)
+
    - Frontend-specific environment variables
    - Usage examples and legacy fallbacks
    - Integration with build tools
@@ -213,11 +277,13 @@ Environment variables are organized into these main categories:
 ### Local Development Setup
 
 1. **Bootstrap environment files**:
+
    ```bash
    yarn bootstrap
    ```
 
 2. **Configure payment credentials** in `.env`:
+
    ```bash
    BEABEE_STRIPE_PUBLICKEY=pk_test_...
    BEABEE_STRIPE_SECRETKEY=sk_test_...
@@ -233,6 +299,7 @@ Environment variables are organized into these main categories:
 ### Remote Server Management
 
 1. **Configure remote access** in `.env.remote`:
+
    ```bash
    BEABEE_DATABASE_URL=postgres://user:pass@remote-host:5432/beabee
    BEABEE_AUDIENCE=https://your-instance.com
@@ -259,6 +326,7 @@ Environment variables are organized into these main categories:
 ### Sensitive Data
 
 Never commit the following to version control:
+
 - API keys and secrets
 - Database credentials
 - Webhook secrets
@@ -332,4 +400,4 @@ docker compose exec api_app env | grep BEABEE_
 - Keep `.env.example` files updated
 - Document required vs. optional variables
 - Provide setup instructions for new team members
-- Use clear variable names and descriptions 
+- Use clear variable names and descriptions
