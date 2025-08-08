@@ -149,6 +149,21 @@ class CalloutTransformer extends BaseTransformer<
       componentText: variant.componentText,
     };
 
+    // If variant-specific response link translations are present, resolve their labels here
+    // so consumers can render localized footer links without extra client logic.
+    const resolvedResponseViewSchema = callout.responseViewSchema
+      ? {
+          ...callout.responseViewSchema,
+          links: callout.responseViewSchema.links.map((l) => ({
+            ...l,
+            text:
+              variant.responseLinkText?.[l.text] !== undefined
+                ? variant.responseLinkText[l.text]
+                : l.text,
+          })),
+        }
+      : null;
+
     return {
       id: callout.id,
       slug: callout.slug,
@@ -185,7 +200,7 @@ class CalloutTransformer extends BaseTransformer<
         newsletterSchema: callout.newsletterSchema,
       }),
       ...(opts?.with?.includes(GetCalloutWith.ResponseViewSchema) && {
-        responseViewSchema: callout.responseViewSchema,
+        responseViewSchema: resolvedResponseViewSchema,
       }),
       ...(opts?.with?.includes(GetCalloutWith.VariantNames) && {
         variantNames: callout.variantNames,
